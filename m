@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay3-d.mail.gandi.net ([217.70.183.195])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kveo4-00042j-Tc
- for barebox@lists.infradead.org; Sat, 02 Jan 2021 11:10:49 +0000
-Received: from geraet.fritz.box (muedsl-82-207-204-096.citykom.de
- [82.207.204.96]) (Authenticated sender: ahmad@a3f.at)
- by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 1DACA60004
- for <barebox@lists.infradead.org>; Sat,  2 Jan 2021 11:10:44 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sat,  2 Jan 2021 12:10:39 +0100
-Message-Id: <20210102111039.2219861-1-ahmad@a3f.at>
-In-Reply-To: <20210101225228.2166084-3-ahmad@a3f.at>
-References: <20210101225228.2166084-3-ahmad@a3f.at>
+ id 1kwMF2-0007jL-8j
+ for barebox@lists.infradead.org; Mon, 04 Jan 2021 09:33:33 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1kwMEy-0002YU-KD
+ for barebox@lists.infradead.org; Mon, 04 Jan 2021 10:33:28 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1kwMEy-0001Ws-BW
+ for barebox@lists.infradead.org; Mon, 04 Jan 2021 10:33:28 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  4 Jan 2021 10:33:27 +0100
+Message-Id: <20210104093327.5830-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,103 +27,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! video: implement bochs dispi / QEMU VGA driver for PCI
- and ISA
+Subject: [PATCH] ARM: at91: constify struct at91_ddramc_register parameters
 To: barebox@lists.infradead.org
 
-Fix few comments and while at it, replace a -1 error with a more
-descriptive error code. No functional change.
+The SDRAM config passed as struct at91_ddramc_register is read-only,
+so make it const everywhere to document and enforce this.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/video/bochs/Kconfig     | 2 ++
- drivers/video/bochs/Makefile    | 2 ++
- drivers/video/bochs/bochs_hw.c  | 6 ++++--
- drivers/video/bochs/bochs_hw.h  | 2 ++
- drivers/video/bochs/bochs_isa.c | 2 +-
- drivers/video/bochs/bochs_pci.c | 2 +-
- 6 files changed, 12 insertions(+), 4 deletions(-)
+ arch/arm/mach-at91/ddramc_ll.c                       | 6 +++---
+ arch/arm/mach-at91/include/mach/ddramc.h             | 6 +++---
+ arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h | 2 +-
+ arch/arm/mach-at91/include/mach/sama5d2_ll.h         | 2 +-
+ arch/arm/mach-at91/sama5d2_ll.c                      | 2 +-
+ 5 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/video/bochs/Kconfig b/drivers/video/bochs/Kconfig
-index e23e68f1126c..ae5d38a8ad46 100644
---- a/drivers/video/bochs/Kconfig
-+++ b/drivers/video/bochs/Kconfig
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- config DRIVER_VIDEO_BOCHS
- 	select DRIVER_VIDEO_EDID
- 	bool
-diff --git a/drivers/video/bochs/Makefile b/drivers/video/bochs/Makefile
-index 78ec1fe0ca81..3ab7ade8a180 100644
---- a/drivers/video/bochs/Makefile
-+++ b/drivers/video/bochs/Makefile
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- obj-y += bochs_hw.o
- obj-$(CONFIG_DRIVER_VIDEO_BOCHS_PCI) += bochs_pci.o
- obj-$(CONFIG_DRIVER_VIDEO_BOCHS_ISA) += bochs_isa.o
-diff --git a/drivers/video/bochs/bochs_hw.c b/drivers/video/bochs/bochs_hw.c
-index 4f908a60318d..252350aebb5a 100644
---- a/drivers/video/bochs/bochs_hw.c
-+++ b/drivers/video/bochs/bochs_hw.c
-@@ -1,7 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- // SPDX-FileCopyrightText: Copyright (c) 2020 Ahmad Fatoum, Pengutronix
- /*
-- *  PCI Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
-+ *  Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
-+ *
-+ *  Based on the Linux v5.11-rc1 bochs-dispi DRM driver.
-  */
+diff --git a/arch/arm/mach-at91/ddramc_ll.c b/arch/arm/mach-at91/ddramc_ll.c
+index 4768fdcd6281..77d03720cca4 100644
+--- a/arch/arm/mach-at91/ddramc_ll.c
++++ b/arch/arm/mach-at91/ddramc_ll.c
+@@ -12,7 +12,7 @@
  
- #include <common.h>
-@@ -125,7 +127,7 @@ static int bochs_hw_load_edid(struct bochs *bochs)
- 	/* check header to detect whenever edid support is enabled in qemu */
- 	if (!edid_check_header(edid)) {
- 		free(edid);
--		return -1;
-+		return -EILSEQ;
- 	}
+ void at91_ddram_initialize(void __iomem *base_address,
+ 			   void __iomem *ram_address,
+-			   struct at91_ddramc_register *ddramc_config)
++			   const struct at91_ddramc_register *ddramc_config)
+ {
+ 	unsigned long ba_offset;
+ 	unsigned long cr = 0;
+@@ -235,7 +235,7 @@ void at91_ddram_initialize(void __iomem *base_address,
  
- 	for (i = EDID_HEADER_END + 1; i < EDID_LENGTH; i++)
-diff --git a/drivers/video/bochs/bochs_hw.h b/drivers/video/bochs/bochs_hw.h
-index 36c2cc1cc376..420b58f4dad6 100644
---- a/drivers/video/bochs/bochs_hw.h
-+++ b/drivers/video/bochs/bochs_hw.h
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
- #ifndef BOCHS_HW_H
- #define BOCHS_HW_H
+ void at91_lpddr2_sdram_initialize(void __iomem *base_address,
+ 				  void __iomem *ram_address,
+-				  struct at91_ddramc_register *ddramc_config)
++				  const struct at91_ddramc_register *ddramc_config)
+ {
+ 	unsigned long reg;
  
-diff --git a/drivers/video/bochs/bochs_isa.c b/drivers/video/bochs/bochs_isa.c
-index 7f75803baa0c..f273ac5f74a8 100644
---- a/drivers/video/bochs/bochs_isa.c
-+++ b/drivers/video/bochs/bochs_isa.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- // SPDX-FileCopyrightText: Copyright (c) 2020 Ahmad Fatoum, Pengutronix
- /*
-- *  ISA Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
-+ *  ISA driver entry point for VGA with the Bochs VBE / QEMU stdvga extensions.
-  */
+@@ -386,7 +386,7 @@ void at91_lpddr2_sdram_initialize(void __iomem *base_address,
  
- #include <common.h>
-diff --git a/drivers/video/bochs/bochs_pci.c b/drivers/video/bochs/bochs_pci.c
-index 39f582029d35..28785e1c0667 100644
---- a/drivers/video/bochs/bochs_pci.c
-+++ b/drivers/video/bochs/bochs_pci.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- // SPDX-FileCopyrightText: Copyright (c) 2020 Ahmad Fatoum, Pengutronix
- /*
-- *  PCI Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
-+ *  PCI driver entry point for VGA with the Bochs VBE / QEMU stdvga extensions.
-  */
+ void at91_lpddr1_sdram_initialize(void __iomem *base_address,
+ 				  void __iomem *ram_address,
+-				  struct at91_ddramc_register *ddramc_config)
++				  const struct at91_ddramc_register *ddramc_config)
+ {
+ 	unsigned long ba_offset;
  
- #include <common.h>
+diff --git a/arch/arm/mach-at91/include/mach/ddramc.h b/arch/arm/mach-at91/include/mach/ddramc.h
+index b929bf5f58e8..5d6f3a70b788 100644
+--- a/arch/arm/mach-at91/include/mach/ddramc.h
++++ b/arch/arm/mach-at91/include/mach/ddramc.h
+@@ -21,16 +21,16 @@ struct at91_ddramc_register {
+ 
+ void at91_ddram_initialize(void __iomem *base_address,
+ 			   void __iomem *ram_address,
+-			   struct at91_ddramc_register *ddramc_config);
++			   const struct at91_ddramc_register *ddramc_config);
+ 
+ void at91_lpddr2_sdram_initialize(void __iomem *base_address,
+ 				  void __iomem *ram_address,
+-				  struct at91_ddramc_register *ddramc_config);
++				  const struct at91_ddramc_register *ddramc_config);
+ 
+ 
+ void at91_lpddr1_sdram_initialize(void __iomem *base_address,
+ 				  void __iomem *ram_address,
+-				  struct at91_ddramc_register *ddramc_config);
++				  const struct at91_ddramc_register *ddramc_config);
+ 
+ void __noreturn sama5d2_barebox_entry(unsigned int r4, void *boarddata);
+ 
+diff --git a/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h b/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
+index 35c92c43fce8..6a75ac71fc35 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
++++ b/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
+@@ -11,7 +11,7 @@
+ 
+ static inline void sama5d2_d1g_ddrconf(void) /* DDR2 1Gbit SDRAM */
+ {
+-	struct at91_ddramc_register conf = {
++	const struct at91_ddramc_register conf = {
+ 		.mdr = AT91_DDRC2_DBW_16_BITS | AT91_DDRC2_MD_DDR2_SDRAM,
+ 
+ 		.cr = AT91_DDRC2_NC_DDR10_SDR9 | AT91_DDRC2_NR_13 |
+diff --git a/arch/arm/mach-at91/include/mach/sama5d2_ll.h b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
+index 96f3bc545284..244b1a706594 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d2_ll.h
++++ b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
+@@ -25,7 +25,7 @@ static inline void sama5d2_udelay_init(unsigned int msc)
+ }
+ 
+ 
+-void sama5d2_ddr2_init(struct at91_ddramc_register *ddramc_reg_config);
++void sama5d2_ddr2_init(const struct at91_ddramc_register *ddramc_reg_config);
+ 
+ static inline int sama5d2_pmc_enable_generic_clock(unsigned int periph_id,
+ 						   unsigned int clk_source,
+diff --git a/arch/arm/mach-at91/sama5d2_ll.c b/arch/arm/mach-at91/sama5d2_ll.c
+index c3b50617778a..3366a50e8fba 100644
+--- a/arch/arm/mach-at91/sama5d2_ll.c
++++ b/arch/arm/mach-at91/sama5d2_ll.c
+@@ -18,7 +18,7 @@
+ #define sama5d2_pmc_write(off, val) writel(val, SAMA5D2_BASE_PMC + off)
+ #define sama5d2_pmc_read(off) readl(SAMA5D2_BASE_PMC + off)
+ 
+-void sama5d2_ddr2_init(struct at91_ddramc_register *ddramc_reg_config)
++void sama5d2_ddr2_init(const struct at91_ddramc_register *ddramc_reg_config)
+ {
+ 	unsigned int reg;
+ 
 -- 
 2.29.2
 
