@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kwmUP-0006It-FS
- for barebox@lists.infradead.org; Tue, 05 Jan 2021 13:35:10 +0000
-Date: Tue, 5 Jan 2021 14:35:07 +0100
-Message-ID: <20210105133507.GF19063@pengutronix.de>
-References: <20201229202328.13857-1-dev@lynxeye.de>
+ id 1kwmVg-0006U9-5M
+ for barebox@lists.infradead.org; Tue, 05 Jan 2021 13:36:28 +0000
+Date: Tue, 5 Jan 2021 14:36:26 +0100
+Message-ID: <20210105133626.GG19063@pengutronix.de>
+References: <20201229123433.1054113-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201229202328.13857-1-dev@lynxeye.de>
+In-Reply-To: <20201229123433.1054113-1-ahmad@a3f.at>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,55 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx8mq: reclock ARM PLL to 800MHz
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH] video: sdl: delete useless debug output
+To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 29, 2020 at 09:23:28PM +0100, Lucas Stach wrote:
-> The BootROM sets up the ARM PLL to run at 1.6GHz and then uses the
-> divider after the PLL the achieve a CPU clock rate of 800MHz. New Linux
-> kernels (>= 5.8) switch to a clock path that bypasses the divider, as
-> the divider should not be used for CPU clock frequencies >1GHz. If the
-> BootROM setup is left unchanged this causes the CPU clock to jump to
-> the full 1.6GHz until CPUfreq takes over and reprograms the PLL. This
-> rate is outside of the chip specification and leads to crashes.
+On Tue, Dec 29, 2020 at 01:34:33PM +0100, Ahmad Fatoum wrote:
+> The information on the color mode is only populated at framebuffer
+> enable time. At probe time, it's all zero, so it's useless to print it
+> out. Drop it.
 > 
-> Fix this by reclocking the ARM PLL to 800MHz.
-> 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 > ---
->  arch/arm/dts/imx8mq.dtsi | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  drivers/video/sdl.c | 9 ---------
+>  1 file changed, 9 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
-> index ec8347f38fa8..e56cdfe1308e 100644
-> --- a/arch/arm/dts/imx8mq.dtsi
-> +++ b/arch/arm/dts/imx8mq.dtsi
-> @@ -17,7 +17,9 @@
->  			  <&clk IMX8MQ_CLK_USDHC2>,
->  			  <&clk IMX8MQ_CLK_ENET_AXI>,
->  			  <&clk IMX8MQ_CLK_ENET_TIMER>,
-> -			  <&clk IMX8MQ_CLK_ENET_REF>;
-> +			  <&clk IMX8MQ_CLK_ENET_REF>,
-> +			  <&clk IMX8MQ_ARM_PLL>,
-> +			  <&clk IMX8MQ_CLK_A53_DIV>;
+> diff --git a/drivers/video/sdl.c b/drivers/video/sdl.c
+> index 8f5b409efb4a..9811b2cf128e 100644
+> --- a/drivers/video/sdl.c
+> +++ b/drivers/video/sdl.c
+> @@ -59,15 +59,6 @@ static int sdlfb_probe(struct device_d *dev)
+>  	fb->screen_base = xzalloc(fb->xres * fb->yres *
+>  				  fb->bits_per_pixel >> 3);
 >  
->  	assigned-clock-parents =  <&clk IMX8MQ_SYS1_PLL_400M>,
->  				  <&clk IMX8MQ_SYS1_PLL_400M>,
-> @@ -29,5 +31,7 @@
->  			       <200000000>,
->  			       <266000000>,
->  			       <25000000>,
-> -			       <125000000>;
-> +			       <125000000>,
-> +			       <800000000>,
-> +			       <800000000>;
->  };
+> -	dev_dbg(dev, "red: length = %d, offset = %d\n",
+> -		fb->red.length, fb->red.offset);
+> -	dev_dbg(dev, "green: length = %d, offset = %d\n",
+> -		fb->green.length, fb->green.offset);
+> -	dev_dbg(dev, "blue: length = %d, offset = %d\n",
+> -		fb->blue.length, fb->blue.offset);
+> -	dev_dbg(dev, "transp: length = %d, offset = %d\n",
+> -		fb->transp.length, fb->transp.offset);
+> -
+>  	/* add runtime hardware info */
+>  	dev->priv = fb;
+>  
 > -- 
 > 2.29.2
 > 
