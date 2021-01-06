@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kx6A2-0000xN-SN
- for barebox@lists.infradead.org; Wed, 06 Jan 2021 10:35:27 +0000
-Date: Wed, 6 Jan 2021 11:35:25 +0100
-Message-ID: <20210106103525.GT19063@pengutronix.de>
-References: <CADbCKyKLBG=eSoKeqnvvGMCGdkpwNo_xGvH1D1xHHTgk0tMU1Q@mail.gmail.com>
+ id 1kx4qg-0000Aq-1p
+ for barebox@lists.infradead.org; Wed, 06 Jan 2021 09:11:22 +0000
+Date: Wed, 6 Jan 2021 10:11:20 +0100
+Message-ID: <20210106091120.GL19063@pengutronix.de>
+References: <20201217214816.405537-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CADbCKyKLBG=eSoKeqnvvGMCGdkpwNo_xGvH1D1xHHTgk0tMU1Q@mail.gmail.com>
+In-Reply-To: <20201217214816.405537-1-u.kleine-koenig@pengutronix.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,47 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: No oob scheme defined for oobsize 224 on imx6ull board
-To: =?utf-8?B?6YOR5bCP5Yab?= <jameszxj@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] arm/at91: Replace license and copyright boilerplate by
+ SPDX identifiers
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>
 
-SGksCgpPbiBGcmksIERlYyAxOCwgMjAyMCBhdCAwNToxMToxMVBNICswODAwLCDpg5HlsI/lhpsg
-d3JvdGU6Cj4gSGksIGFsbAo+ICAgICBJIGFtIHRyeWluZyB0byBydW4gYmFyZWJveCBvbiBteSBp
-Lm14NnVsbCBib2FyZC4gIEkgaW5oZXJpdCBmcm9tCj4gbnhwLWlteDZ1bGwtZXZrLiBXaGVuIEkg
-YWRkZWQgbmFuZCBmbGFzaCBzdXBwb3J0LCBzeXN0ZW0gY3Jhc2hlZC4gSQo+IGZvdW5kIHRoYXQg
-dGhlIHBvaW50ZXIgImNoaXAtPmxlZ2FjeS5zZXRfZmVhdHVyZXMiIGFuZAo+ICJjaGlwLT5sZWdh
-Y3kuZ2V0X2ZlYXR1cmVzIiBpbiBuYW5kX214cy5jIHdhcyBOVUxMLgo+IEkgcmVwbGFjZWQgaXQg
-d2l0aCBuYW5kX3NldF9mZWF0dXJlcygpIGFuZCBuYW5kX2dldF9mZWF0dXJlcygpLgoKVGhpcyBs
-b29rcyBsaWtlIHRoZSBjb3JyZWN0IHNvbHV0aW9uIGZvciB0aGlzLiBDYXJlIHRvIHNlbmQgYSBw
-YXRjaD8KCj4gQmFyZWJveCBkaWRuJ3QgY3Jhc2ggYWdhaW4sIGJ1dCBJIGdldCB0aGUgZXJyb3Jz
-Ogo+ICAgICAgICAgbmFuZF9iYXNlOiBkZXZpY2UgZm91bmQsIE1hbnVmYWN0dXJlciBJRDogMHgy
-YywgQ2hpcCBJRDogMHhkYwo+ICAgICAgICAgbmFuZF9iYXNlOiBNaWNyb24gTVQyOUY0RzA4QUJB
-RUFXUAo+ICAgICAgICAgbmFuZF9iYXNlOiA1MTIgTWlCLCBTTEMsIGVyYXNlIHNpemU6IDI1NiBL
-aUIsIHBhZ2Ugc2l6ZTogNDA5NiwKPiBPT0Igc2l6ZTogMjI0Cj4gICAgICAgICBXQVJOSU5HOiBh
-dCBkcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jOjU1OTEvbmFuZF9zY2FuX3RhaWwoKSEKPiAg
-ICAgICAgIFdBUk5JTkc6IE5vIG9vYiBzY2hlbWUgZGVmaW5lZCBmb3Igb29ic2l6ZSAyMjQKPiAg
-ICAgICAgIG14c19uYW5kIDE4MDYwMDAubmFuZC1jb250cm9sbGVyQDE4MDYwMDAub2Y6IHByb2Jl
-IGZhaWxlZDoKPiBJbnZhbGlkIGFyZ3VtZW50CgpZb3UgYXJlIGZhbGxpbmcgaW50bzoKCgkvKgoJ
-ICogSWYgbm8gZGVmYXVsdCBwbGFjZW1lbnQgc2NoZW1lIGlzIGdpdmVuLCBzZWxlY3QgYW4gYXBw
-cm9wcmlhdGUgb25lLgoJICovCglpZiAoIW10ZC0+b29ibGF5b3V0ICYmCgkgICAgIShlY2MtPm1v
-ZGUgPT0gTkFORF9FQ0NfU09GVCAmJiBlY2MtPmFsZ28gPT0gTkFORF9FQ0NfQkNIKSkgewoJCQku
-Li4KCX0KCk5vcm1hbGx5IG10ZC0+b29ibGF5b3V0IHNob3VsZCBiZSBzZXQgYXQgdGhpcyBwb2lu
-dC4gdGhlIG5hbmRfbXhzIGRyaXZlcgpjdXJyZW50bHkgbWlzc2VzIHRvIHNldCBpdC4gSSB0aGlu
-ayB5b3UgaGF2ZSB0byBhZG9wdApncG1pX29vYmxheW91dF9lY2MoKSBhbmQgZ3BtaV9vb2JsYXlv
-dXRfZnJlZSgpIGZyb20gdGhlIExpbnV4IGRyaXZlciBmb3IKYmFyZWJveC4KClRoaXMgYnVnIHNl
-ZW1zIHRvIHRyaWdnZXIgZm9yIE5BTkRzIHdpdGggYmlnZ2VyIHBhZ2Ugc2l6ZXMuIEkgb25seQp0
-ZXN0ZWQgdGhlIGxhc3QgTkFORCBsYXllciB1cGRhdGUgd2l0aCBzbWFsbGVyIHBhZ2Ugc2l6ZXMu
-IFNvIGl0J3Mgbm90CnlvdSB3aG8gbWlzc2VzIHNvbWV0aGluZywgaXQncyBtZSB3aG8gbWlzc2Vk
-IHNvbWV0aGluZyA7KQoKUmVnYXJkcywKICBTYXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApT
-dGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBl
-bmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAg
-ICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWlt
-LCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
-aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, Dec 17, 2020 at 10:48:16PM +0100, Uwe Kleine-K=F6nig wrote:
+> Converts the files that licensecheck can determine to be licensed under
+> GPL-2.0-only or GPL-2.0-or-later and also convert the copyright statements
+> to SPDX.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+
+Applied, thanks
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
