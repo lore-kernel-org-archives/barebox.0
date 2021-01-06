@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kwmXN-00070I-E7
- for barebox@lists.infradead.org; Tue, 05 Jan 2021 13:38:14 +0000
-Date: Tue, 5 Jan 2021 14:38:12 +0100
-Message-ID: <20210105133811.GH19063@pengutronix.de>
-References: <20201229123254.1053519-1-ahmad@a3f.at>
+ id 1kx4Tm-00056G-DB
+ for barebox@lists.infradead.org; Wed, 06 Jan 2021 08:47:43 +0000
+Date: Wed, 6 Jan 2021 09:47:40 +0100
+Message-ID: <20210106084740.GJ19063@pengutronix.de>
+References: <20201227215042.101009-1-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201229123254.1053519-1-ahmad@a3f.at>
+In-Reply-To: <20201227215042.101009-1-dev@lynxeye.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,586 +22,242 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] include: <linux/math64.h>: sync with upstream
-To: Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH 1/5] ddr: imx8m: implement i.MX8MQ support
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 29, 2020 at 01:32:54PM +0100, Ahmad Fatoum wrote:
-> The header implements definitions for the 64-bit division helpers
-> on 64-bit builds only. For 32-bit builds, it can only provide prototypes
-> and the actual implementation will need to come from elsewhere.
+On Sun, Dec 27, 2020 at 10:50:38PM +0100, Lucas Stach wrote:
+> The i.MX8MQ uses a different PLL type than the later i.MX8M family
+> members, so the PLL setup did not actually work on this SoC. In U-Boot
+> the used PLL setup routine is a compile time decision. As we want
+> our DRAM init code to work for multi-image builds, this passes the
+> SoC type through to the PLL init, so we can use the correct setup
+> routine depending on the SoC we are running on.
 > 
-> We didn't have any out-of-line definitions in barebox with the result
-> that functions like div_s64_rem() were so far only usable in
-> 64-bit barebox builds. On 32-bit builds, they would result in a linker
-> error.
-> 
-> Import the Linux v5.11-rc1 generic out-of-line 64-bit math on 32-bit
-> implementation to fix this. While at it, synchronize the header to
-> reduce diff to upstream.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
 > ---
->  include/linux/math64.h | 211 +++++++++++++++++++++++++++++++++++-
->  lib/Makefile           |   1 +
->  lib/math/Makefile      |   1 +
->  lib/math/div64.c       | 235 +++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 443 insertions(+), 5 deletions(-)
->  create mode 100644 lib/math/Makefile
->  create mode 100644 lib/math/div64.c
+>  drivers/ddr/imx8m/ddr_init.c     |   4 +-
+>  drivers/ddr/imx8m/ddrphy_train.c |   4 +-
+>  drivers/ddr/imx8m/ddrphy_utils.c | 107 ++++++++++++++++++++++++++++---
+>  include/soc/imx8m/ddr.h          |   4 +-
+>  4 files changed, 104 insertions(+), 15 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/include/linux/math64.h b/include/linux/math64.h
-> index 71dd6d7109b7..e8b737e70e50 100644
-> --- a/include/linux/math64.h
-> +++ b/include/linux/math64.h
-> @@ -1,3 +1,4 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
->  #ifndef _LINUX_MATH64_H
->  #define _LINUX_MATH64_H
+> diff --git a/drivers/ddr/imx8m/ddr_init.c b/drivers/ddr/imx8m/ddr_init.c
+> index 1cd7b7406dc7..34da44af6446 100644
+> --- a/drivers/ddr/imx8m/ddr_init.c
+> +++ b/drivers/ddr/imx8m/ddr_init.c
+> @@ -62,7 +62,7 @@ static int imx8m_ddr_init(struct dram_timing_info *dram_timing,
 >  
-> @@ -6,10 +7,16 @@
+>  	initial_drate = dram_timing->fsp_msg[0].drate;
+>  	/* default to the frequency point 0 clock */
+> -	ddrphy_init_set_dfi_clk(initial_drate);
+> +	ddrphy_init_set_dfi_clk(initial_drate, type);
 >  
->  #if BITS_PER_LONG == 64
+>  	/* D-aasert the presetn */
+>  	reg32_write(src_ddrc_rcr, 0x8F000006);
+> @@ -115,7 +115,7 @@ static int imx8m_ddr_init(struct dram_timing_info *dram_timing,
+>  	 */
+>  	pr_debug("ddrphy config start\n");
 >  
-> -#define div64_long(x,y) div64_s64((x),(y))
-> +#define div64_long(x, y) div64_s64((x), (y))
-> +#define div64_ul(x, y)   div64_u64((x), (y))
+> -	ret = ddr_cfg_phy(dram_timing);
+> +	ret = ddr_cfg_phy(dram_timing, type);
+>  	if (ret)
+>  		return ret;
 >  
->  /**
->   * div_u64_rem - unsigned 64bit divide with 32bit divisor with remainder
-> + * @dividend: unsigned 64bit dividend
-> + * @divisor: unsigned 32bit divisor
-> + * @remainder: pointer to unsigned 32bit remainder
-> + *
-> + * Return: sets ``*remainder``, then returns dividend / divisor
->   *
->   * This is commonly provided by 32bit archs to provide an optimized 64bit
->   * divide.
-> @@ -20,8 +27,13 @@ static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 *remainder)
->  	return dividend / divisor;
+> diff --git a/drivers/ddr/imx8m/ddrphy_train.c b/drivers/ddr/imx8m/ddrphy_train.c
+> index 9280c853aa1c..a4677f903c6b 100644
+> --- a/drivers/ddr/imx8m/ddrphy_train.c
+> +++ b/drivers/ddr/imx8m/ddrphy_train.c
+> @@ -31,7 +31,7 @@ void ddr_load_train_code(enum fw_type type)
+>  			       DDRC_PHY_DMEM, dmem, dsize);
 >  }
 >  
-> -/**
-> +/*
->   * div_s64_rem - signed 64bit divide with 32bit divisor with remainder
-> + * @dividend: signed 64bit dividend
-> + * @divisor: signed 32bit divisor
-> + * @remainder: pointer to signed 32bit remainder
-> + *
-> + * Return: sets ``*remainder``, then returns dividend / divisor
->   */
->  static inline s64 div_s64_rem(s64 dividend, s32 divisor, s32 *remainder)
+> -int ddr_cfg_phy(struct dram_timing_info *dram_timing)
+> +int ddr_cfg_phy(struct dram_timing_info *dram_timing, enum ddrc_type type)
 >  {
-> @@ -29,16 +41,38 @@ static inline s64 div_s64_rem(s64 dividend, s32 divisor, s32 *remainder)
->  	return dividend / divisor;
+>  	struct dram_cfg_param *dram_cfg;
+>  	struct dram_fsp_msg *fsp_msg;
+> @@ -54,7 +54,7 @@ int ddr_cfg_phy(struct dram_timing_info *dram_timing)
+>  	for (i = 0; i < dram_timing->fsp_msg_num; i++) {
+>  		pr_debug("DRAM PHY training for %dMTS\n", fsp_msg->drate);
+>  		/* set dram PHY input clocks to desired frequency */
+> -		ddrphy_init_set_dfi_clk(fsp_msg->drate);
+> +		ddrphy_init_set_dfi_clk(fsp_msg->drate, type);
+>  
+>  		/* load the dram training firmware image */
+>  		dwc_ddrphy_apb_wr(0xd0000, 0x0);
+> diff --git a/drivers/ddr/imx8m/ddrphy_utils.c b/drivers/ddr/imx8m/ddrphy_utils.c
+> index c48372491015..9a4e1a22ee5e 100644
+> --- a/drivers/ddr/imx8m/ddrphy_utils.c
+> +++ b/drivers/ddr/imx8m/ddrphy_utils.c
+> @@ -214,7 +214,7 @@ static struct imx_int_pll_rate_table *fracpll(u32 freq)
+>  	return NULL;
 >  }
 >  
-> -/**
-> +/*
-> + * div64_u64_rem - unsigned 64bit divide with 64bit divisor and remainder
-> + * @dividend: unsigned 64bit dividend
-> + * @divisor: unsigned 64bit divisor
-> + * @remainder: pointer to unsigned 64bit remainder
-> + *
-> + * Return: sets ``*remainder``, then returns dividend / divisor
-> + */
-> +static inline u64 div64_u64_rem(u64 dividend, u64 divisor, u64 *remainder)
-> +{
-> +	*remainder = dividend % divisor;
-> +	return dividend / divisor;
-> +}
-> +
-> +/*
->   * div64_u64 - unsigned 64bit divide with 64bit divisor
-> + * @dividend: unsigned 64bit dividend
-> + * @divisor: unsigned 64bit divisor
-> + *
-> + * Return: dividend / divisor
->   */
->  static inline u64 div64_u64(u64 dividend, u64 divisor)
+> -static int dram_pll_init(u32 freq)
+> +static int dram_frac_pll_init(u32 freq)
 >  {
->  	return dividend / divisor;
+>  	volatile int i;
+>  	u32 tmp;
+> @@ -261,35 +261,124 @@ static int dram_pll_init(u32 freq)
+>  	return 0;
 >  }
 >  
-> -/**
-> +/*
->   * div64_s64 - signed 64bit divide with 64bit divisor
-> + * @dividend: signed 64bit dividend
-> + * @divisor: signed 64bit divisor
-> + *
-> + * Return: dividend / divisor
->   */
->  static inline s64 div64_s64(s64 dividend, s64 divisor)
+> -void ddrphy_init_set_dfi_clk(unsigned int drate)
+> +#define SSCG_PLL_LOCK			BIT(31)
+> +#define SSCG_PLL_DRAM_PLL_CLKE		BIT(9)
+> +#define SSCG_PLL_PD			BIT(7)
+> +#define SSCG_PLL_BYPASS1		BIT(5)
+> +#define SSCG_PLL_BYPASS2		BIT(4)
+> +
+> +#define SSCG_PLL_REF_DIVR2_MASK		(0x3f << 19)
+> +#define SSCG_PLL_REF_DIVR2_VAL(n)	(((n) << 19) & SSCG_PLL_REF_DIVR2_MASK)
+> +#define SSCG_PLL_FEEDBACK_DIV_F1_MASK	(0x3f << 13)
+> +#define SSCG_PLL_FEEDBACK_DIV_F1_VAL(n)	(((n) << 13) & SSCG_PLL_FEEDBACK_DIV_F1_MASK)
+> +#define SSCG_PLL_FEEDBACK_DIV_F2_MASK	(0x3f << 7)
+> +#define SSCG_PLL_FEEDBACK_DIV_F2_VAL(n)	(((n) << 7) & SSCG_PLL_FEEDBACK_DIV_F2_MASK)
+> +#define SSCG_PLL_OUTPUT_DIV_VAL_MASK	(0x3f << 1)
+> +#define SSCG_PLL_OUTPUT_DIV_VAL(n)	(((n) << 1) & SSCG_PLL_OUTPUT_DIV_VAL_MASK)
+> +
+> +static int dram_sscg_pll_init(u32 freq)
+> +{
+> +	u32 val;
+> +	void __iomem *pll_base = IOMEM(MX8M_ANATOP_BASE_ADDR) + 0x60;
+> +
+> +	/* Bypass */
+> +	setbits_le32(pll_base, SSCG_PLL_BYPASS1 | SSCG_PLL_BYPASS2);
+> +
+> +	val = readl(pll_base + 0x8);
+> +	val &= ~(SSCG_PLL_OUTPUT_DIV_VAL_MASK |
+> +		 SSCG_PLL_FEEDBACK_DIV_F2_MASK |
+> +		 SSCG_PLL_FEEDBACK_DIV_F1_MASK |
+> +		 SSCG_PLL_REF_DIVR2_MASK);
+> +
+> +	switch (freq) {
+> +	case MHZ(800):
+> +		val |= SSCG_PLL_OUTPUT_DIV_VAL(0);
+> +		val |= SSCG_PLL_FEEDBACK_DIV_F2_VAL(11);
+> +		val |= SSCG_PLL_FEEDBACK_DIV_F1_VAL(39);
+> +		val |= SSCG_PLL_REF_DIVR2_VAL(29);
+> +		break;
+> +	case MHZ(600):
+> +		val |= SSCG_PLL_OUTPUT_DIV_VAL(1);
+> +		val |= SSCG_PLL_FEEDBACK_DIV_F2_VAL(17);
+> +		val |= SSCG_PLL_FEEDBACK_DIV_F1_VAL(39);
+> +		val |= SSCG_PLL_REF_DIVR2_VAL(29);
+> +		break;
+> +	case MHZ(400):
+> +		val |= SSCG_PLL_OUTPUT_DIV_VAL(1);
+> +		val |= SSCG_PLL_FEEDBACK_DIV_F2_VAL(11);
+> +		val |= SSCG_PLL_FEEDBACK_DIV_F1_VAL(39);
+> +		val |= SSCG_PLL_REF_DIVR2_VAL(29);
+> +		break;
+> +	case MHZ(167):
+> +		val |= SSCG_PLL_OUTPUT_DIV_VAL(3);
+> +		val |= SSCG_PLL_FEEDBACK_DIV_F2_VAL(8);
+> +		val |= SSCG_PLL_FEEDBACK_DIV_F1_VAL(45);
+> +		val |= SSCG_PLL_REF_DIVR2_VAL(30);
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	writel(val, pll_base + 0x8);
+> +
+> +	/* Clear power down bit */
+> +	clrbits_le32(pll_base, SSCG_PLL_PD);
+> +	/* Enable PLL  */
+> +	setbits_le32(pll_base, SSCG_PLL_DRAM_PLL_CLKE);
+> +
+> +	/* Clear bypass */
+> +	clrbits_le32(pll_base, SSCG_PLL_BYPASS1);
+> +	udelay(100);
+> +	clrbits_le32(pll_base, SSCG_PLL_BYPASS2);
+> +	/* Wait lock */
+> +	while (!(readl(pll_base) & SSCG_PLL_LOCK))
+> +		;
+> +
+> +	return 0;
+> +}
+> +
+> +static int dram_pll_init(u32 freq, enum ddrc_type type)
+> +{
+> +	switch (type) {
+> +	case DDRC_TYPE_MQ:
+> +		return dram_sscg_pll_init(freq);
+> +	case DDRC_TYPE_MM:
+> +	case DDRC_TYPE_MP:
+> +		return dram_frac_pll_init(freq);
+> +	default:
+> +		return -ENODEV;
+> +	}
+> +}
+> +
+> +void ddrphy_init_set_dfi_clk(unsigned int drate, enum ddrc_type type)
 >  {
-> @@ -47,7 +81,8 @@ static inline s64 div64_s64(s64 dividend, s64 divisor)
+>  	switch (drate) {
+>  	case 4000:
+> -		dram_pll_init(MHZ(1000));
+> +		dram_pll_init(MHZ(1000), type);
+>  		dram_disable_bypass();
+>  		break;
+>  	case 3200:
+> -		dram_pll_init(MHZ(800));
+> +		dram_pll_init(MHZ(800), type);
+>  		dram_disable_bypass();
+>  		break;
+>  	case 3000:
+> -		dram_pll_init(MHZ(750));
+> +		dram_pll_init(MHZ(750), type);
+>  		dram_disable_bypass();
+>  		break;
+>  	case 2400:
+> -		dram_pll_init(MHZ(600));
+> +		dram_pll_init(MHZ(600), type);
+>  		dram_disable_bypass();
+>  		break;
+>  	case 1600:
+> -		dram_pll_init(MHZ(400));
+> +		dram_pll_init(MHZ(400), type);
+>  		dram_disable_bypass();
+>  		break;
+>  	case 1066:
+> -		dram_pll_init(MHZ(266));
+> +		dram_pll_init(MHZ(266),type);
+>  		dram_disable_bypass();
+>  		break;
+>  	case 667:
+> -		dram_pll_init(MHZ(167));
+> +		dram_pll_init(MHZ(167), type);
+>  		dram_disable_bypass();
+>  		break;
+>  	case 400:
+> diff --git a/include/soc/imx8m/ddr.h b/include/soc/imx8m/ddr.h
+> index a5a610909212..78b15f1d461a 100644
+> --- a/include/soc/imx8m/ddr.h
+> +++ b/include/soc/imx8m/ddr.h
+> @@ -372,14 +372,14 @@ enum ddrc_type {
+>  int imx8mm_ddr_init(struct dram_timing_info *timing_info);
+>  int imx8mq_ddr_init(struct dram_timing_info *timing_info);
+>  int imx8mp_ddr_init(struct dram_timing_info *timing_info);
+> -int ddr_cfg_phy(struct dram_timing_info *timing_info);
+> +int ddr_cfg_phy(struct dram_timing_info *timing_info, enum ddrc_type type);
+>  void load_lpddr4_phy_pie(void);
+>  void ddrphy_trained_csr_save(struct dram_cfg_param *param, unsigned int num);
+>  void dram_config_save(struct dram_timing_info *info, unsigned long base);
 >  
->  #elif BITS_PER_LONG == 32
+>  /* utils function for ddr phy training */
+>  int wait_ddrphy_training_complete(void);
+> -void ddrphy_init_set_dfi_clk(unsigned int drate);
+> +void ddrphy_init_set_dfi_clk(unsigned int drate, enum ddrc_type type);
+>  void ddrphy_init_read_msg_block(enum fw_type type);
 >  
-> -#define div64_long(x,y) div_s64((x),(y))
-> +#define div64_long(x, y) div_s64((x), (y))
-> +#define div64_ul(x, y)   div_u64((x), (y))
->  
->  #ifndef div_u64_rem
->  static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 *remainder)
-> @@ -61,6 +96,10 @@ static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 *remainder)
->  extern s64 div_s64_rem(s64 dividend, s32 divisor, s32 *remainder);
->  #endif
->  
-> +#ifndef div64_u64_rem
-> +extern u64 div64_u64_rem(u64 dividend, u64 divisor, u64 *remainder);
-> +#endif
-> +
->  #ifndef div64_u64
->  extern u64 div64_u64(u64 dividend, u64 divisor);
->  #endif
-> @@ -73,6 +112,8 @@ extern s64 div64_s64(s64 dividend, s64 divisor);
->  
->  /**
->   * div_u64 - unsigned 64bit divide with 32bit divisor
-> + * @dividend: unsigned 64bit dividend
-> + * @divisor: unsigned 32bit divisor
->   *
->   * This is the most common 64bit divide and should be used if possible,
->   * as many 32bit archs can optimize this variant better than a full 64bit
-> @@ -88,6 +129,8 @@ static inline u64 div_u64(u64 dividend, u32 divisor)
->  
->  /**
->   * div_s64 - signed 64bit divide with 32bit divisor
-> + * @dividend: signed 64bit dividend
-> + * @divisor: signed 32bit divisor
->   */
->  #ifndef div_s64
->  static inline s64 div_s64(s64 dividend, s32 divisor)
-> @@ -99,6 +142,164 @@ static inline s64 div_s64(s64 dividend, s32 divisor)
->  
->  u32 iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder);
->  
-> +#ifndef mul_u32_u32
-> +/*
-> + * Many a GCC version messes this up and generates a 64x64 mult :-(
-> + */
-> +static inline u64 mul_u32_u32(u32 a, u32 b)
-> +{
-> +	return (u64)a * b;
-> +}
-> +#endif
-> +
-> +#if defined(CONFIG_ARCH_SUPPORTS_INT128) && defined(__SIZEOF_INT128__)
-> +
-> +#ifndef mul_u64_u32_shr
-> +static inline u64 mul_u64_u32_shr(u64 a, u32 mul, unsigned int shift)
-> +{
-> +	return (u64)(((unsigned __int128)a * mul) >> shift);
-> +}
-> +#endif /* mul_u64_u32_shr */
-> +
-> +#ifndef mul_u64_u64_shr
-> +static inline u64 mul_u64_u64_shr(u64 a, u64 mul, unsigned int shift)
-> +{
-> +	return (u64)(((unsigned __int128)a * mul) >> shift);
-> +}
-> +#endif /* mul_u64_u64_shr */
-> +
-> +#else
-> +
-> +#ifndef mul_u64_u32_shr
-> +static inline u64 mul_u64_u32_shr(u64 a, u32 mul, unsigned int shift)
-> +{
-> +	u32 ah, al;
-> +	u64 ret;
-> +
-> +	al = a;
-> +	ah = a >> 32;
-> +
-> +	ret = mul_u32_u32(al, mul) >> shift;
-> +	if (ah)
-> +		ret += mul_u32_u32(ah, mul) << (32 - shift);
-> +
-> +	return ret;
-> +}
-> +#endif /* mul_u64_u32_shr */
-> +
-> +#ifndef mul_u64_u64_shr
-> +static inline u64 mul_u64_u64_shr(u64 a, u64 b, unsigned int shift)
-> +{
-> +	union {
-> +		u64 ll;
-> +		struct {
-> +#ifdef __BIG_ENDIAN
-> +			u32 high, low;
-> +#else
-> +			u32 low, high;
-> +#endif
-> +		} l;
-> +	} rl, rm, rn, rh, a0, b0;
-> +	u64 c;
-> +
-> +	a0.ll = a;
-> +	b0.ll = b;
-> +
-> +	rl.ll = mul_u32_u32(a0.l.low, b0.l.low);
-> +	rm.ll = mul_u32_u32(a0.l.low, b0.l.high);
-> +	rn.ll = mul_u32_u32(a0.l.high, b0.l.low);
-> +	rh.ll = mul_u32_u32(a0.l.high, b0.l.high);
-> +
-> +	/*
-> +	 * Each of these lines computes a 64-bit intermediate result into "c",
-> +	 * starting at bits 32-95.  The low 32-bits go into the result of the
-> +	 * multiplication, the high 32-bits are carried into the next step.
-> +	 */
-> +	rl.l.high = c = (u64)rl.l.high + rm.l.low + rn.l.low;
-> +	rh.l.low = c = (c >> 32) + rm.l.high + rn.l.high + rh.l.low;
-> +	rh.l.high = (c >> 32) + rh.l.high;
-> +
-> +	/*
-> +	 * The 128-bit result of the multiplication is in rl.ll and rh.ll,
-> +	 * shift it right and throw away the high part of the result.
-> +	 */
-> +	if (shift == 0)
-> +		return rl.ll;
-> +	if (shift < 64)
-> +		return (rl.ll >> shift) | (rh.ll << (64 - shift));
-> +	return rh.ll >> (shift & 63);
-> +}
-> +#endif /* mul_u64_u64_shr */
-> +
-> +#endif
-> +
-> +#ifndef mul_u64_u32_div
-> +static inline u64 mul_u64_u32_div(u64 a, u32 mul, u32 divisor)
-> +{
-> +	union {
-> +		u64 ll;
-> +		struct {
-> +#ifdef __BIG_ENDIAN
-> +			u32 high, low;
-> +#else
-> +			u32 low, high;
-> +#endif
-> +		} l;
-> +	} u, rl, rh;
-> +
-> +	u.ll = a;
-> +	rl.ll = mul_u32_u32(u.l.low, mul);
-> +	rh.ll = mul_u32_u32(u.l.high, mul) + rl.l.high;
-> +
-> +	/* Bits 32-63 of the result will be in rh.l.low. */
-> +	rl.l.high = do_div(rh.ll, divisor);
-> +
-> +	/* Bits 0-31 of the result will be in rl.l.low.	*/
-> +	do_div(rl.ll, divisor);
-> +
-> +	rl.l.high = rh.l.low;
-> +	return rl.ll;
-> +}
-> +#endif /* mul_u64_u32_div */
-> +
-> +u64 mul_u64_u64_div_u64(u64 a, u64 mul, u64 div);
-> +
-> +#define DIV64_U64_ROUND_UP(ll, d)	\
-> +	({ u64 _tmp = (d); div64_u64((ll) + _tmp - 1, _tmp); })
-> +
-> +/**
-> + * DIV64_U64_ROUND_CLOSEST - unsigned 64bit divide with 64bit divisor rounded to nearest integer
-> + * @dividend: unsigned 64bit dividend
-> + * @divisor: unsigned 64bit divisor
-> + *
-> + * Divide unsigned 64bit dividend by unsigned 64bit divisor
-> + * and round to closest integer.
-> + *
-> + * Return: dividend / divisor rounded to nearest integer
-> + */
-> +#define DIV64_U64_ROUND_CLOSEST(dividend, divisor)	\
-> +	({ u64 _tmp = (divisor); div64_u64((dividend) + _tmp / 2, _tmp); })
-> +
-> +/*
-> + * DIV_S64_ROUND_CLOSEST - signed 64bit divide with 32bit divisor rounded to nearest integer
-> + * @dividend: signed 64bit dividend
-> + * @divisor: signed 32bit divisor
-> + *
-> + * Divide signed 64bit dividend by signed 32bit divisor
-> + * and round to closest integer.
-> + *
-> + * Return: dividend / divisor rounded to nearest integer
-> + */
-> +#define DIV_S64_ROUND_CLOSEST(dividend, divisor)(	\
-> +{							\
-> +	s64 __x = (dividend);				\
-> +	s32 __d = (divisor);				\
-> +	((__x > 0) == (__d > 0)) ?			\
-> +		div_s64((__x + (__d / 2)), __d) :	\
-> +		div_s64((__x - (__d / 2)), __d);	\
-> +}							\
-> +)
-> +
->  static __always_inline u32
->  __iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder)
->  {
-> diff --git a/lib/Makefile b/lib/Makefile
-> index ba6af6f2ab24..9c6f4133d77c 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -25,6 +25,7 @@ obj-y			+= cmdlinepart.o
->  obj-y			+= recursive_action.o
->  obj-y			+= make_directory.o
->  obj-y			+= math.o
-> +obj-y			+= math/
->  obj-$(CONFIG_XXHASH)	+= xxhash.o
->  obj-$(CONFIG_BZLIB)	+= decompress_bunzip2.o
->  obj-$(CONFIG_ZLIB)	+= decompress_inflate.o zlib_inflate/
-> diff --git a/lib/math/Makefile b/lib/math/Makefile
-> new file mode 100644
-> index 000000000000..3341a8e4744b
-> --- /dev/null
-> +++ b/lib/math/Makefile
-> @@ -0,0 +1 @@
-> +obj-y += div64.o
-> diff --git a/lib/math/div64.c b/lib/math/div64.c
-> new file mode 100644
-> index 000000000000..507de8216a3e
-> --- /dev/null
-> +++ b/lib/math/div64.c
-> @@ -0,0 +1,235 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2003 Bernardo Innocenti <bernie@develer.com>
-> + *
-> + * Based on former do_div() implementation from asm-parisc/div64.h:
-> + *	Copyright (C) 1999 Hewlett-Packard Co
-> + *	Copyright (C) 1999 David Mosberger-Tang <davidm@hpl.hp.com>
-> + *
-> + *
-> + * Generic C version of 64bit/32bit division and modulo, with
-> + * 64bit result and 32bit remainder.
-> + *
-> + * The fast case for (n>>32 == 0) is handled inline by do_div().
-> + *
-> + * Code generated for this function might be very inefficient
-> + * for some CPUs. __div64_32() can be overridden by linking arch-specific
-> + * assembly versions such as arch/ppc/lib/div64.S and arch/sh/lib/div64.S
-> + * or by defining a preprocessor macro in arch/include/asm/div64.h.
-> + */
-> +
-> +#include <linux/bitops.h>
-> +#include <linux/export.h>
-> +#include <linux/kernel.h>
-> +#include <linux/math64.h>
-> +#include <linux/log2.h>
-> +
-> +/* Not needed on 64bit architectures */
-> +#if BITS_PER_LONG == 32
-> +
-> +#ifndef __div64_32
-> +uint32_t __attribute__((weak)) __div64_32(uint64_t *n, uint32_t base)
-> +{
-> +	uint64_t rem = *n;
-> +	uint64_t b = base;
-> +	uint64_t res, d = 1;
-> +	uint32_t high = rem >> 32;
-> +
-> +	/* Reduce the thing a bit first */
-> +	res = 0;
-> +	if (high >= base) {
-> +		high /= base;
-> +		res = (uint64_t) high << 32;
-> +		rem -= (uint64_t) (high*base) << 32;
-> +	}
-> +
-> +	while ((int64_t)b > 0 && b < rem) {
-> +		b = b+b;
-> +		d = d+d;
-> +	}
-> +
-> +	do {
-> +		if (rem >= b) {
-> +			rem -= b;
-> +			res += d;
-> +		}
-> +		b >>= 1;
-> +		d >>= 1;
-> +	} while (d);
-> +
-> +	*n = res;
-> +	return rem;
-> +}
-> +EXPORT_SYMBOL(__div64_32);
-> +#endif
-> +
-> +/**
-> + * div_s64_rem - signed 64bit divide with 64bit divisor and remainder
-> + * @dividend:	64bit dividend
-> + * @divisor:	64bit divisor
-> + * @remainder:  64bit remainder
-> + */
-> +#ifndef div_s64_rem
-> +s64 div_s64_rem(s64 dividend, s32 divisor, s32 *remainder)
-> +{
-> +	u64 quotient;
-> +
-> +	if (dividend < 0) {
-> +		quotient = div_u64_rem(-dividend, abs(divisor), (u32 *)remainder);
-> +		*remainder = -*remainder;
-> +		if (divisor > 0)
-> +			quotient = -quotient;
-> +	} else {
-> +		quotient = div_u64_rem(dividend, abs(divisor), (u32 *)remainder);
-> +		if (divisor < 0)
-> +			quotient = -quotient;
-> +	}
-> +	return quotient;
-> +}
-> +EXPORT_SYMBOL(div_s64_rem);
-> +#endif
-> +
-> +/**
-> + * div64_u64_rem - unsigned 64bit divide with 64bit divisor and remainder
-> + * @dividend:	64bit dividend
-> + * @divisor:	64bit divisor
-> + * @remainder:  64bit remainder
-> + *
-> + * This implementation is a comparable to algorithm used by div64_u64.
-> + * But this operation, which includes math for calculating the remainder,
-> + * is kept distinct to avoid slowing down the div64_u64 operation on 32bit
-> + * systems.
-> + */
-> +#ifndef div64_u64_rem
-> +u64 div64_u64_rem(u64 dividend, u64 divisor, u64 *remainder)
-> +{
-> +	u32 high = divisor >> 32;
-> +	u64 quot;
-> +
-> +	if (high == 0) {
-> +		u32 rem32;
-> +		quot = div_u64_rem(dividend, divisor, &rem32);
-> +		*remainder = rem32;
-> +	} else {
-> +		int n = fls(high);
-> +		quot = div_u64(dividend >> n, divisor >> n);
-> +
-> +		if (quot != 0)
-> +			quot--;
-> +
-> +		*remainder = dividend - quot * divisor;
-> +		if (*remainder >= divisor) {
-> +			quot++;
-> +			*remainder -= divisor;
-> +		}
-> +	}
-> +
-> +	return quot;
-> +}
-> +EXPORT_SYMBOL(div64_u64_rem);
-> +#endif
-> +
-> +/**
-> + * div64_u64 - unsigned 64bit divide with 64bit divisor
-> + * @dividend:	64bit dividend
-> + * @divisor:	64bit divisor
-> + *
-> + * This implementation is a modified version of the algorithm proposed
-> + * by the book 'Hacker's Delight'.  The original source and full proof
-> + * can be found here and is available for use without restriction.
-> + *
-> + * 'http://www.hackersdelight.org/hdcodetxt/divDouble.c.txt'
-> + */
-> +#ifndef div64_u64
-> +u64 div64_u64(u64 dividend, u64 divisor)
-> +{
-> +	u32 high = divisor >> 32;
-> +	u64 quot;
-> +
-> +	if (high == 0) {
-> +		quot = div_u64(dividend, divisor);
-> +	} else {
-> +		int n = fls(high);
-> +		quot = div_u64(dividend >> n, divisor >> n);
-> +
-> +		if (quot != 0)
-> +			quot--;
-> +		if ((dividend - quot * divisor) >= divisor)
-> +			quot++;
-> +	}
-> +
-> +	return quot;
-> +}
-> +EXPORT_SYMBOL(div64_u64);
-> +#endif
-> +
-> +/**
-> + * div64_s64 - signed 64bit divide with 64bit divisor
-> + * @dividend:	64bit dividend
-> + * @divisor:	64bit divisor
-> + */
-> +#ifndef div64_s64
-> +s64 div64_s64(s64 dividend, s64 divisor)
-> +{
-> +	s64 quot, t;
-> +
-> +	quot = div64_u64(abs(dividend), abs(divisor));
-> +	t = (dividend ^ divisor) >> 63;
-> +
-> +	return (quot ^ t) - t;
-> +}
-> +EXPORT_SYMBOL(div64_s64);
-> +#endif
-> +
-> +#endif /* BITS_PER_LONG == 32 */
-> +
-> +/*
-> + * Iterative div/mod for use when dividend is not expected to be much
-> + * bigger than divisor.
-> + */
-> +u32 iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder)
-> +{
-> +	return __iter_div_u64_rem(dividend, divisor, remainder);
-> +}
-> +EXPORT_SYMBOL(iter_div_u64_rem);
-> +
-> +#ifndef mul_u64_u64_div_u64
-> +u64 mul_u64_u64_div_u64(u64 a, u64 b, u64 c)
-> +{
-> +	u64 res = 0, div, rem;
-> +	int shift;
-> +
-> +	/* can a * b overflow ? */
-> +	if (ilog2(a) + ilog2(b) > 62) {
-> +		/*
-> +		 * (b * a) / c is equal to
-> +		 *
-> +		 *      (b / c) * a +
-> +		 *      (b % c) * a / c
-> +		 *
-> +		 * if nothing overflows. Can the 1st multiplication
-> +		 * overflow? Yes, but we do not care: this can only
-> +		 * happen if the end result can't fit in u64 anyway.
-> +		 *
-> +		 * So the code below does
-> +		 *
-> +		 *      res = (b / c) * a;
-> +		 *      b = b % c;
-> +		 */
-> +		div = div64_u64_rem(b, c, &rem);
-> +		res = div * a;
-> +		b = rem;
-> +
-> +		shift = ilog2(a) + ilog2(b) - 62;
-> +		if (shift > 0) {
-> +			/* drop precision */
-> +			b >>= shift;
-> +			c >>= shift;
-> +			if (!c)
-> +				return res;
-> +		}
-> +	}
-> +
-> +	return res + div64_u64(a * b, c);
-> +}
-> +#endif
+>  void update_umctl2_rank_space_setting(unsigned int pstat_num,
 > -- 
 > 2.29.2
 > 
