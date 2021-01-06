@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kx5jy-0006BS-84
- for barebox@lists.infradead.org; Wed, 06 Jan 2021 10:08:31 +0000
-Date: Wed, 6 Jan 2021 11:08:28 +0100
-Message-ID: <20210106100828.GS19063@pengutronix.de>
-References: <20201216130949.25830-1-s.trumtrar@pengutronix.de>
+ id 1kx6A2-0000xN-SN
+ for barebox@lists.infradead.org; Wed, 06 Jan 2021 10:35:27 +0000
+Date: Wed, 6 Jan 2021 11:35:25 +0100
+Message-ID: <20210106103525.GT19063@pengutronix.de>
+References: <CADbCKyKLBG=eSoKeqnvvGMCGdkpwNo_xGvH1D1xHHTgk0tMU1Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201216130949.25830-1-s.trumtrar@pengutronix.de>
+In-Reply-To: <CADbCKyKLBG=eSoKeqnvvGMCGdkpwNo_xGvH1D1xHHTgk0tMU1Q@mail.gmail.com>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,64 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] i.MX7: Add CCM definitions for UART3
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: No oob scheme defined for oobsize 224 on imx6ull board
+To: =?utf-8?B?6YOR5bCP5Yab?= <jameszxj@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Wed, Dec 16, 2020 at 02:09:47PM +0100, Steffen Trumtrar wrote:
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  arch/arm/mach-imx/include/mach/imx7-ccm-regs.h | 4 ++++
->  1 file changed, 4 insertions(+)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-> index de6eb1bbd10d..5c60794ca74f 100644
-> --- a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-> +++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-> @@ -3,6 +3,7 @@
->  
->  #define IMX7_CCM_CCGR_UART1		148
->  #define IMX7_CCM_CCGR_UART2		149
-> +#define IMX7_CCM_CCGR_UART3		150
->  
->  #define IMX7_CLOCK_ROOT_INDEX(x)	(((x) - 0x8000) / 128)
->  
-> @@ -16,6 +17,9 @@
->  #define IMX7_UART2_CLK_ROOT		IMX7_CLOCK_ROOT_INDEX(0xb000)
->  #define IMX7_UART2_CLK_ROOT__OSC_24M IMX7_CCM_TARGET_ROOTn_MUX(0b000)
->  
-> +#define IMX7_UART3_CLK_ROOT		IMX7_CLOCK_ROOT_INDEX(0xb080)
-> +#define IMX7_UART3_CLK_ROOT__OSC_24M IMX7_CCM_TARGET_ROOTn_MUX(0b000)
-> +
->  /* 0 <= n <= 190 */
->  #define IMX7_CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
->  #define IMX7_CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpPbiBGcmksIERlYyAxOCwgMjAyMCBhdCAwNToxMToxMVBNICswODAwLCDpg5HlsI/lhpsg
+d3JvdGU6Cj4gSGksIGFsbAo+ICAgICBJIGFtIHRyeWluZyB0byBydW4gYmFyZWJveCBvbiBteSBp
+Lm14NnVsbCBib2FyZC4gIEkgaW5oZXJpdCBmcm9tCj4gbnhwLWlteDZ1bGwtZXZrLiBXaGVuIEkg
+YWRkZWQgbmFuZCBmbGFzaCBzdXBwb3J0LCBzeXN0ZW0gY3Jhc2hlZC4gSQo+IGZvdW5kIHRoYXQg
+dGhlIHBvaW50ZXIgImNoaXAtPmxlZ2FjeS5zZXRfZmVhdHVyZXMiIGFuZAo+ICJjaGlwLT5sZWdh
+Y3kuZ2V0X2ZlYXR1cmVzIiBpbiBuYW5kX214cy5jIHdhcyBOVUxMLgo+IEkgcmVwbGFjZWQgaXQg
+d2l0aCBuYW5kX3NldF9mZWF0dXJlcygpIGFuZCBuYW5kX2dldF9mZWF0dXJlcygpLgoKVGhpcyBs
+b29rcyBsaWtlIHRoZSBjb3JyZWN0IHNvbHV0aW9uIGZvciB0aGlzLiBDYXJlIHRvIHNlbmQgYSBw
+YXRjaD8KCj4gQmFyZWJveCBkaWRuJ3QgY3Jhc2ggYWdhaW4sIGJ1dCBJIGdldCB0aGUgZXJyb3Jz
+Ogo+ICAgICAgICAgbmFuZF9iYXNlOiBkZXZpY2UgZm91bmQsIE1hbnVmYWN0dXJlciBJRDogMHgy
+YywgQ2hpcCBJRDogMHhkYwo+ICAgICAgICAgbmFuZF9iYXNlOiBNaWNyb24gTVQyOUY0RzA4QUJB
+RUFXUAo+ICAgICAgICAgbmFuZF9iYXNlOiA1MTIgTWlCLCBTTEMsIGVyYXNlIHNpemU6IDI1NiBL
+aUIsIHBhZ2Ugc2l6ZTogNDA5NiwKPiBPT0Igc2l6ZTogMjI0Cj4gICAgICAgICBXQVJOSU5HOiBh
+dCBkcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jOjU1OTEvbmFuZF9zY2FuX3RhaWwoKSEKPiAg
+ICAgICAgIFdBUk5JTkc6IE5vIG9vYiBzY2hlbWUgZGVmaW5lZCBmb3Igb29ic2l6ZSAyMjQKPiAg
+ICAgICAgIG14c19uYW5kIDE4MDYwMDAubmFuZC1jb250cm9sbGVyQDE4MDYwMDAub2Y6IHByb2Jl
+IGZhaWxlZDoKPiBJbnZhbGlkIGFyZ3VtZW50CgpZb3UgYXJlIGZhbGxpbmcgaW50bzoKCgkvKgoJ
+ICogSWYgbm8gZGVmYXVsdCBwbGFjZW1lbnQgc2NoZW1lIGlzIGdpdmVuLCBzZWxlY3QgYW4gYXBw
+cm9wcmlhdGUgb25lLgoJICovCglpZiAoIW10ZC0+b29ibGF5b3V0ICYmCgkgICAgIShlY2MtPm1v
+ZGUgPT0gTkFORF9FQ0NfU09GVCAmJiBlY2MtPmFsZ28gPT0gTkFORF9FQ0NfQkNIKSkgewoJCQku
+Li4KCX0KCk5vcm1hbGx5IG10ZC0+b29ibGF5b3V0IHNob3VsZCBiZSBzZXQgYXQgdGhpcyBwb2lu
+dC4gdGhlIG5hbmRfbXhzIGRyaXZlcgpjdXJyZW50bHkgbWlzc2VzIHRvIHNldCBpdC4gSSB0aGlu
+ayB5b3UgaGF2ZSB0byBhZG9wdApncG1pX29vYmxheW91dF9lY2MoKSBhbmQgZ3BtaV9vb2JsYXlv
+dXRfZnJlZSgpIGZyb20gdGhlIExpbnV4IGRyaXZlciBmb3IKYmFyZWJveC4KClRoaXMgYnVnIHNl
+ZW1zIHRvIHRyaWdnZXIgZm9yIE5BTkRzIHdpdGggYmlnZ2VyIHBhZ2Ugc2l6ZXMuIEkgb25seQp0
+ZXN0ZWQgdGhlIGxhc3QgTkFORCBsYXllciB1cGRhdGUgd2l0aCBzbWFsbGVyIHBhZ2Ugc2l6ZXMu
+IFNvIGl0J3Mgbm90CnlvdSB3aG8gbWlzc2VzIHNvbWV0aGluZywgaXQncyBtZSB3aG8gbWlzc2Vk
+IHNvbWV0aGluZyA7KQoKUmVnYXJkcywKICBTYXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApT
+dGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBl
+bmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAg
+ICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWlt
+LCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
