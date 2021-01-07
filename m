@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbg403.qq.com ([113.96.223.47] helo=qq.com)
+Received: from smtpbguseast2.qq.com ([54.204.34.130])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kxKu8-0006OM-Ge
- for barebox@lists.infradead.org; Thu, 07 Jan 2021 02:20:03 +0000
-From: "=?ISO-8859-1?B?amFtZXN6eGo=?=" <jameszxj@gmail.com>
+ id 1kxL1v-0006jG-IA
+ for barebox@lists.infradead.org; Thu, 07 Jan 2021 02:28:04 +0000
+In-Reply-To: <20210106103525.GT19063@pengutronix.de>
+References: <CADbCKyKLBG=eSoKeqnvvGMCGdkpwNo_xGvH1D1xHHTgk0tMU1Q@mail.gmail.com>
+ <20210106103525.GT19063@pengutronix.de>
+From: "=?gb18030?B?amFtZXN6eGo=?=" <jameszxj@gmail.com>
 Mime-Version: 1.0
-Date: Thu, 7 Jan 2021 10:19:38 +0800
-Message-ID: <tencent_1F5884D31C07819F5E1EA02A84FDD10FDC0A@qq.com>
+Date: Thu, 7 Jan 2021 10:27:37 +0800
+Message-ID: <tencent_32C731E0539771A8566113F4823732E1FD08@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,44 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="gb18030"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1]mtd:nand_mxs:update get/set features legacy function call
-To: =?ISO-8859-1?B?YmFyZWJveA==?= <barebox@lists.infradead.org>
+Subject: Re: No oob scheme defined for oobsize 224 on imx6ull board
+To: =?gb18030?B?U2FzY2hhIEhhdWVy?= <sha@pengutronix.de>, =?gb18030?B?YmFyZWJveA==?= <barebox@lists.infradead.org>
 
-update get/set features legacy function call to avoid NULL pointer crash.
-
-Signed-off-by: zhengxiaojun <jameszxj at gmail.com>
---- 
- drivers/mtd/nand/nand_mxs.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-index 9f7ab1442..ad8aeb41f 100644
---- a/drivers/mtd/nand/nand_mxs.c
-+++ b/drivers/mtd/nand/nand_mxs.c
-@@ -2055,14 +2055,12 @@ static int mxs_nand_enable_edo_mode(struct mxs_nand_info *info)
- 		/* [1] send SET FEATURE commond to NAND */
- 		feature[0] = mode;
- 
--		ret = chip->legacy.set_features(chip,
--				ONFI_FEATURE_ADDR_TIMING_MODE, feature);
-+		ret = nand_set_features(chip, ONFI_FEATURE_ADDR_TIMING_MODE, feature);
- 		if (ret)
- 			goto err_out;
- 
- 		/* [2] send GET FEATURE command to double-check the timing mode */
--		ret = chip->legacy.get_features(chip,
--				ONFI_FEATURE_ADDR_TIMING_MODE, feature);
-+		ret = nand_get_features(chip, ONFI_FEATURE_ADDR_TIMING_MODE, feature);
- 		if (ret || feature[0] != mode)
- 			goto err_out;
- 	}
--- 
-2.29.2
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCiAKPiAKPiAKPiAtLS0tLS0tLS0tLS0tLS0tLS0gT3JpZ2luYWwgLS0tLS0tLS0tLS0tLS0t
+LS0tCj4gRnJvbTogIlNhc2NoYSBIYXVlciIgPHNoYUBwZW5ndXRyb25peC5kZT47Cj4gRGF0ZTog
+V2VkLCBKYW4gNiwgMjAyMSAwNjozNSBQTQo+IFRvOiAi1qPQob78IjxqYW1lc3p4akBnbWFpbC5j
+b20+Owo+IENjOiAiYmFyZWJveCI8YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnPjsKPiBTdWJq
+ZWN0OiBSZTogTm8gb29iIHNjaGVtZSBkZWZpbmVkIGZvciBvb2JzaXplIDIyNCBvbiBpbXg2dWxs
+IGJvYXJkCj4gCj4gSGksCj4gCj4gT24gRnJpLCBEZWMgMTgsIDIwMjAgYXQgMDU6MTE6MTFQTSAr
+MDgwMCwg1qPQob78IHdyb3RlOgo+ID4gSGksIGFsbAo+ID4gICAgIEkgYW0gdHJ5aW5nIHRvIHJ1
+biBiYXJlYm94IG9uIG15IGkubXg2dWxsIGJvYXJkLiAgSSBpbmhlcml0IGZyb20KPiA+IG54cC1p
+bXg2dWxsLWV2ay4gV2hlbiBJIGFkZGVkIG5hbmQgZmxhc2ggc3VwcG9ydCwgc3lzdGVtIGNyYXNo
+ZWQuIEkKPiA+IGZvdW5kIHRoYXQgdGhlIHBvaW50ZXIgImNoaXAtPmxlZ2FjeS5zZXRfZmVhdHVy
+ZXMiIGFuZAo+ID4gImNoaXAtPmxlZ2FjeS5nZXRfZmVhdHVyZXMiIGluIG5hbmRfbXhzLmMgd2Fz
+IE5VTEwuCj4gPiBJIHJlcGxhY2VkIGl0IHdpdGggbmFuZF9zZXRfZmVhdHVyZXMoKSBhbmQgbmFu
+ZF9nZXRfZmVhdHVyZXMoKS4KPiAKPiBUaGlzIGxvb2tzIGxpa2UgdGhlIGNvcnJlY3Qgc29sdXRp
+b24gZm9yIHRoaXMuIENhcmUgdG8gc2VuZCBhIHBhdGNoPwpJIGhhdmUgc2VudCBhIHBhdGNoIGVt
+YWlsLiBNeSBmaXJzdCB0aW1lIHNlbmQgYSBwYXRjaCB0byBiYXJlYm94LCBzbyBpZgp0aGUgZm9y
+bWF0IGlzIGltcHJvcGVyLCBmZWVsIGZyZWUgdG8gdGVsbCBtZS4KCj4gCj4gPiBCYXJlYm94IGRp
+ZG4ndCBjcmFzaCBhZ2FpbiwgYnV0IEkgZ2V0IHRoZSBlcnJvcnM6Cj4gPiAgICAgICAgIG5hbmRf
+YmFzZTogZGV2aWNlIGZvdW5kLCBNYW51ZmFjdHVyZXIgSUQ6IDB4MmMsIENoaXAgSUQ6IDB4ZGMK
+PiA+ICAgICAgICAgbmFuZF9iYXNlOiBNaWNyb24gTVQyOUY0RzA4QUJBRUFXUAo+ID4gICAgICAg
+ICBuYW5kX2Jhc2U6IDUxMiBNaUIsIFNMQywgZXJhc2Ugc2l6ZTogMjU2IEtpQiwgcGFnZSBzaXpl
+OiA0MDk2LAo+ID4gT09CIHNpemU6IDIyNAo+ID4gICAgICAgICBXQVJOSU5HOiBhdCBkcml2ZXJz
+L210ZC9uYW5kL25hbmRfYmFzZS5jOjU1OTEvbmFuZF9zY2FuX3RhaWwoKSEKPiA+ICAgICAgICAg
+V0FSTklORzogTm8gb29iIHNjaGVtZSBkZWZpbmVkIGZvciBvb2JzaXplIDIyNAo+ID4gICAgICAg
+ICBteHNfbmFuZCAxODA2MDAwLm5hbmQtY29udHJvbGxlckAxODA2MDAwLm9mOiBwcm9iZSBmYWls
+ZWQ6Cj4gPiBJbnZhbGlkIGFyZ3VtZW50Cj4gCj4gWW91IGFyZSBmYWxsaW5nIGludG86Cj4gCj4g
+LyoKPiAqIElmIG5vIGRlZmF1bHQgcGxhY2VtZW50IHNjaGVtZSBpcyBnaXZlbiwgc2VsZWN0IGFu
+IGFwcHJvcHJpYXRlIG9uZS4KPiAqLwo+IGlmICghbXRkLT5vb2JsYXlvdXQgJiYKPiAgICAgIShl
+Y2MtPm1vZGUgPT0gTkFORF9FQ0NfU09GVCAmJiBlY2MtPmFsZ28gPT0gTkFORF9FQ0NfQkNIKSkg
+ewo+IC4uLgo+IH0KPiAKPiBOb3JtYWxseSBtdGQtPm9vYmxheW91dCBzaG91bGQgYmUgc2V0IGF0
+IHRoaXMgcG9pbnQuIHRoZSBuYW5kX214cyBkcml2ZXIKPiBjdXJyZW50bHkgbWlzc2VzIHRvIHNl
+dCBpdC4gSSB0aGluayB5b3UgaGF2ZSB0byBhZG9wdAo+IGdwbWlfb29ibGF5b3V0X2VjYygpIGFu
+ZCBncG1pX29vYmxheW91dF9mcmVlKCkgZnJvbSB0aGUgTGludXggZHJpdmVyIGZvcgo+IGJhcmVi
+b3guCj4gCj4gVGhpcyBidWcgc2VlbXMgdG8gdHJpZ2dlciBmb3IgTkFORHMgd2l0aCBiaWdnZXIg
+cGFnZSBzaXplcy4gSSBvbmx5Cj4gdGVzdGVkIHRoZSBsYXN0IE5BTkQgbGF5ZXIgdXBkYXRlIHdp
+dGggc21hbGxlciBwYWdlIHNpemVzLiBTbyBpdCdzIG5vdAo+IHlvdSB3aG8gbWlzc2VzIHNvbWV0
+aGluZywgaXQncyBtZSB3aG8gbWlzc2VkIHNvbWV0aGluZyA7KQo+IAp0aGFua3MsIEknbGwgdHJ5
+IGl0LiBJZiBpdCBydW5zLCBJJ2xsIHNlbmQgYW5vdGhlciBwYXRjaC4KCj4gUmVnYXJkcywKPiAg
+IFNhc2NoYQo+IAo+IC0tIAo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAg
+ICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gU3RldWVyd2FsZGVyIFN0ci4g
+MjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwK
+PiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5
+LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAg
+ICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
