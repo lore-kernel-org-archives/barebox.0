@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kxPXh-0001lR-AZ
- for barebox@lists.infradead.org; Thu, 07 Jan 2021 07:17:10 +0000
-Date: Thu, 7 Jan 2021 08:17:04 +0100
-Message-ID: <20210107071704.GU19063@pengutronix.de>
-References: <tencent_1F5884D31C07819F5E1EA02A84FDD10FDC0A@qq.com>
+ id 1kxQ8X-0004f3-5F
+ for barebox@lists.infradead.org; Thu, 07 Jan 2021 07:55:14 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu,  7 Jan 2021 08:55:08 +0100
+Message-Id: <20210107075508.15261-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <tencent_1F5884D31C07819F5E1EA02A84FDD10FDC0A@qq.com>
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,60 +19,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1]mtd:nand_mxs:update get/set features legacy function
- call
-To: jameszxj <jameszxj@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH v1] MIPS: dts: ar9331: add stdout-path properties
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Thu, Jan 07, 2021 at 10:19:38AM +0800, jameszxj wrote:
-> update get/set features legacy function call to avoid NULL pointer crash.
-> 
-> Signed-off-by: zhengxiaojun <jameszxj at gmail.com>
-> --- 
->  drivers/mtd/nand/nand_mxs.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+With the kernel v5.11-rc2 the console will be automatically redirected
+to null if no default console is configured. Make sure the barebox is
+doing it to make kernel happy.
 
-The format is perfectly fine, thanks :)
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/mips/dts/ar9331-dptechnics-dpt-module.dts   | 2 ++
+ arch/mips/dts/ar9331-okud-max9331.dts            | 2 ++
+ arch/mips/dts/ar9331-openembed-som9331-board.dts | 2 ++
+ 3 files changed, 6 insertions(+)
 
-Applied.
-
-Sascha
-
-> 
-> diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-> index 9f7ab1442..ad8aeb41f 100644
-> --- a/drivers/mtd/nand/nand_mxs.c
-> +++ b/drivers/mtd/nand/nand_mxs.c
-> @@ -2055,14 +2055,12 @@ static int mxs_nand_enable_edo_mode(struct mxs_nand_info *info)
->  		/* [1] send SET FEATURE commond to NAND */
->  		feature[0] = mode;
->  
-> -		ret = chip->legacy.set_features(chip,
-> -				ONFI_FEATURE_ADDR_TIMING_MODE, feature);
-> +		ret = nand_set_features(chip, ONFI_FEATURE_ADDR_TIMING_MODE, feature);
->  		if (ret)
->  			goto err_out;
->  
->  		/* [2] send GET FEATURE command to double-check the timing mode */
-> -		ret = chip->legacy.get_features(chip,
-> -				ONFI_FEATURE_ADDR_TIMING_MODE, feature);
-> +		ret = nand_get_features(chip, ONFI_FEATURE_ADDR_TIMING_MODE, feature);
->  		if (ret || feature[0] != mode)
->  			goto err_out;
->  	}
-> -- 
-> 2.29.2
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+index cbaf5ab39e..24ce0d0d67 100644
+--- a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
++++ b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+@@ -7,6 +7,8 @@
+ 	};
+ 
+ 	chosen {
++		stdout-path = &uart;
++
+ 		environment {
+ 			compatible = "barebox,environment";
+ 			device-path = &spiflash, "partname:barebox-environment";
+diff --git a/arch/mips/dts/ar9331-okud-max9331.dts b/arch/mips/dts/ar9331-okud-max9331.dts
+index 53350899f9..3b93bee93b 100644
+--- a/arch/mips/dts/ar9331-okud-max9331.dts
++++ b/arch/mips/dts/ar9331-okud-max9331.dts
+@@ -17,6 +17,8 @@
+ 	};
+ 
+ 	chosen {
++		stdout-path = &uart;
++
+ 		environment {
+ 			compatible = "barebox,environment";
+ 			device-path = &spiflash, "partname:barebox-environment";
+diff --git a/arch/mips/dts/ar9331-openembed-som9331-board.dts b/arch/mips/dts/ar9331-openembed-som9331-board.dts
+index ff9d25e352..4736332f8f 100644
+--- a/arch/mips/dts/ar9331-openembed-som9331-board.dts
++++ b/arch/mips/dts/ar9331-openembed-som9331-board.dts
+@@ -33,6 +33,8 @@
+ 
+ 
+ 	chosen {
++		stdout-path = &uart;
++
+ 		environment {
+ 			compatible = "barebox,environment";
+ 			device-path = &spiflash, "partname:barebox-environment";
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.0
+
 
 _______________________________________________
 barebox mailing list
