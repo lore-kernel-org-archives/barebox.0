@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kyuUg-0007pm-Jc
- for barebox@lists.infradead.org; Mon, 11 Jan 2021 10:32:15 +0000
+ id 1kyuUg-0007po-L2
+ for barebox@lists.infradead.org; Mon, 11 Jan 2021 10:32:16 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 11 Jan 2021 11:32:04 +0100
-Message-Id: <20210111103205.4330-1-s.trumtrar@pengutronix.de>
+Date: Mon, 11 Jan 2021 11:32:05 +0100
+Message-Id: <20210111103205.4330-2-s.trumtrar@pengutronix.de>
+In-Reply-To: <20210111103205.4330-1-s.trumtrar@pengutronix.de>
+References: <20210111103205.4330-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,59 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] image-sparse: change retlen to size_t
+Subject: [PATCH 2/2] image-sparse: change chunk_data_sz to u64
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-retlen can potentially overflow. Also, write_full() in
-fastboot_handle_sparse() expects size_t anyway.
+chunk_data_sz is set to the result of a __le32 * __le32 multiplication:
+
+  chunk_data_sz = si->sparse.blk_sz * si->chunk.chunk_sz;
+
+This will overflow.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- common/fastboot.c      | 2 +-
- include/image-sparse.h | 2 +-
- lib/image-sparse.c     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ lib/image-sparse.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/common/fastboot.c b/common/fastboot.c
-index 1b6dc28d8e..40b92d9982 100644
---- a/common/fastboot.c
-+++ b/common/fastboot.c
-@@ -566,7 +566,7 @@ static int fastboot_handle_sparse(struct fastboot *fb,
- 	}
- 
- 	while (1) {
--		int retlen;
-+		size_t retlen;
- 		loff_t pos;
- 
- 		ret = sparse_image_read(sparse, buf, &pos, bufsiz, &retlen);
-diff --git a/include/image-sparse.h b/include/image-sparse.h
-index 29242f4fd5..6bff844411 100644
---- a/include/image-sparse.h
-+++ b/include/image-sparse.h
-@@ -60,7 +60,7 @@ struct sparse_image_ctx;
- 
- struct sparse_image_ctx *sparse_image_open(const char *path);
- int sparse_image_read(struct sparse_image_ctx *si, void *buf,
--		      loff_t *pos, size_t len, int *retlen);
-+		      loff_t *pos, size_t len, size_t *retlen);
- void sparse_image_close(struct sparse_image_ctx *si);
- loff_t sparse_image_size(struct sparse_image_ctx *si);
- 
 diff --git a/lib/image-sparse.c b/lib/image-sparse.c
-index 0c31742ab6..8e7a52fd71 100644
+index 8e7a52fd71..c375c78d63 100644
 --- a/lib/image-sparse.c
 +++ b/lib/image-sparse.c
-@@ -190,7 +190,7 @@ out:
- }
+@@ -62,7 +62,8 @@ struct sparse_image_ctx {
  
- int sparse_image_read(struct sparse_image_ctx *si, void *buf, loff_t *pos,
--		      size_t len, int *retlen)
-+		      size_t len, size_t *retlen)
+ static int sparse_seek(struct sparse_image_ctx *si)
  {
- 	size_t now;
- 	int ret, i;
+-	unsigned int chunk_data_sz, payload;
++	uint64_t chunk_data_sz;
++	unsigned int payload;
+ 	loff_t offs;
+ 	int ret;
+ 
+@@ -94,7 +95,7 @@ again:
+ 			return -errno;
+ 	}
+ 
+-	chunk_data_sz = si->sparse.blk_sz * si->chunk.chunk_sz;
++	chunk_data_sz = (uint64_t) si->sparse.blk_sz * si->chunk.chunk_sz;
+ 	payload = si->chunk.total_sz - si->sparse.chunk_hdr_sz;
+ 
+ 	si->processed_chunks++;
 -- 
 2.20.1
 
