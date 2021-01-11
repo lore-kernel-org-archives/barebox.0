@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kyuUg-0007po-L2
- for barebox@lists.infradead.org; Mon, 11 Jan 2021 10:32:16 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 11 Jan 2021 11:32:05 +0100
-Message-Id: <20210111103205.4330-2-s.trumtrar@pengutronix.de>
-In-Reply-To: <20210111103205.4330-1-s.trumtrar@pengutronix.de>
-References: <20210111103205.4330-1-s.trumtrar@pengutronix.de>
+ id 1kyyIa-0000Ft-IF
+ for barebox@lists.infradead.org; Mon, 11 Jan 2021 14:36:01 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1kyyIX-0001vN-1F
+ for barebox@lists.infradead.org; Mon, 11 Jan 2021 15:35:57 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1kyyIW-0003Ow-PV
+ for barebox@lists.infradead.org; Mon, 11 Jan 2021 15:35:56 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 11 Jan 2021 15:35:55 +0100
+Message-Id: <20210111143555.13002-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,46 +27,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] image-sparse: change chunk_data_sz to u64
+Subject: [PATCH] Documentation: boards: sandbox: describe --image flags
 To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-chunk_data_sz is set to the result of a __le32 * __le32 multiplication:
+barebox partition table parsing can be tested in sandbox using the
+recently added ,blkdev flag. Extend the documentation to cover this.
 
-  chunk_data_sz = si->sparse.blk_sz * si->chunk.chunk_sz;
-
-This will overflow.
-
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Juergen Borleis <jbe@pengutronix.de>
+Reported-by: Lucas Stach <lst@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- lib/image-sparse.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ Documentation/boards/sandbox.rst | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/lib/image-sparse.c b/lib/image-sparse.c
-index 8e7a52fd71..c375c78d63 100644
---- a/lib/image-sparse.c
-+++ b/lib/image-sparse.c
-@@ -62,7 +62,8 @@ struct sparse_image_ctx {
+diff --git a/Documentation/boards/sandbox.rst b/Documentation/boards/sandbox.rst
+index 8b24b6a64584..e9e5183653e6 100644
+--- a/Documentation/boards/sandbox.rst
++++ b/Documentation/boards/sandbox.rst
+@@ -34,6 +34,20 @@ Available sandbox invocation options include:
+     Map a <file> to barebox. This option can be given multiple times. The <file>s
+     will show up as ``/dev/fd0`` ... ``/dev/fdX`` in the barebox simulator.
  
- static int sparse_seek(struct sparse_image_ctx *si)
- {
--	unsigned int chunk_data_sz, payload;
-+	uint64_t chunk_data_sz;
-+	unsigned int payload;
- 	loff_t offs;
- 	int ret;
++    How the file is mapped in barebox can be controlled by a number of flags:
++
++    * ``,ro``: The host file is mapped read-only
++
++    * ``,blkdev``: The host file is to be mapped as block device. This is the
++      default when passing block devices from the host. The file's size must
++      be a multiple of the barebox sector size of 512 bytes.
++
++    * ``,cdev``: The host file is mapped as character device. This is the default,
++      unless the the host file is a block device.
++
++    Multiple options can be appended if they don't clash. Literal commas within the
++    file path can be escaped with a backslash. Example: ``-i './0\,0.hdimg,blkdev,ro'``.
++
+   ``-e <file>``
  
-@@ -94,7 +95,7 @@ again:
- 			return -errno;
- 	}
- 
--	chunk_data_sz = si->sparse.blk_sz * si->chunk.chunk_sz;
-+	chunk_data_sz = (uint64_t) si->sparse.blk_sz * si->chunk.chunk_sz;
- 	payload = si->chunk.total_sz - si->sparse.chunk_hdr_sz;
- 
- 	si->processed_chunks++;
+     Map <file> to barebox. With this option <file>s are mapped as
 -- 
-2.20.1
+2.30.0
 
 
 _______________________________________________
