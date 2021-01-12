@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kyyIa-0000Ft-IF
- for barebox@lists.infradead.org; Mon, 11 Jan 2021 14:36:01 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1kyyIX-0001vN-1F
- for barebox@lists.infradead.org; Mon, 11 Jan 2021 15:35:57 +0100
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1kyyIW-0003Ow-PV
- for barebox@lists.infradead.org; Mon, 11 Jan 2021 15:35:56 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 11 Jan 2021 15:35:55 +0100
-Message-Id: <20210111143555.13002-1-a.fatoum@pengutronix.de>
+ id 1kzG7q-0001XU-On
+ for barebox@lists.infradead.org; Tue, 12 Jan 2021 09:38:07 +0000
+From: Steffen Trumtrar <str@pengutronix.de>
+Date: Tue, 12 Jan 2021 10:38:01 +0100
+Message-Id: <20210112093801.2632-1-str@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,46 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: boards: sandbox: describe --image flags
+Subject: [PATCH] imd: change disabled checksum tag info to debug
 To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-barebox partition table parsing can be tested in sandbox using the
-recently added ,blkdev flag. Extend the documentation to cover this.
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Cc: Juergen Borleis <jbe@pengutronix.de>
-Reported-by: Lucas Stach <lst@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+When the checksum tag is disabled the CRC is most likely invalid.
+And if the checksum tag is disabled and the CRC is actually invalid the
+user doesn't care for it anyway.
+
+This information only confuses the user so make it a debug message.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- Documentation/boards/sandbox.rst | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ common/imd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/boards/sandbox.rst b/Documentation/boards/sandbox.rst
-index 8b24b6a64584..e9e5183653e6 100644
---- a/Documentation/boards/sandbox.rst
-+++ b/Documentation/boards/sandbox.rst
-@@ -34,6 +34,20 @@ Available sandbox invocation options include:
-     Map a <file> to barebox. This option can be given multiple times. The <file>s
-     will show up as ``/dev/fd0`` ... ``/dev/fdX`` in the barebox simulator.
- 
-+    How the file is mapped in barebox can be controlled by a number of flags:
-+
-+    * ``,ro``: The host file is mapped read-only
-+
-+    * ``,blkdev``: The host file is to be mapped as block device. This is the
-+      default when passing block devices from the host. The file's size must
-+      be a multiple of the barebox sector size of 512 bytes.
-+
-+    * ``,cdev``: The host file is mapped as character device. This is the default,
-+      unless the the host file is a block device.
-+
-+    Multiple options can be appended if they don't clash. Literal commas within the
-+    file path can be escaped with a backslash. Example: ``-i './0\,0.hdimg,blkdev,ro'``.
-+
-   ``-e <file>``
- 
-     Map <file> to barebox. With this option <file>s are mapped as
+diff --git a/common/imd.c b/common/imd.c
+index ef9eff876b..aff3b00b6b 100644
+--- a/common/imd.c
++++ b/common/imd.c
+@@ -406,7 +406,7 @@ int imd_verify_crc32(void *buf, size_t size)
+ 			       *p, crc);
+ 			return -EILSEQ;
+ 		} else if (*p != crc && !imd_crc32_is_valid(*flags)) {
+-			printf("CRC: is invalid, but the checksum tag is not enabled\n");
++			debug("CRC: is invalid, but the checksum tag is not enabled\n");
+ 			return -EINVAL;
+ 		} else {
+ 			printf("CRC: valid\n");
 -- 
-2.30.0
+2.20.1
 
 
 _______________________________________________
