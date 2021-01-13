@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kzc4H-0002XS-FO
- for barebox@lists.infradead.org; Wed, 13 Jan 2021 09:03:54 +0000
-Date: Wed, 13 Jan 2021 10:03:50 +0100
-Message-ID: <20210113090350.GF19063@pengutronix.de>
-References: <20210111103205.4330-1-s.trumtrar@pengutronix.de>
+ id 1kzc55-0002jd-Gw
+ for barebox@lists.infradead.org; Wed, 13 Jan 2021 09:04:44 +0000
+Date: Wed, 13 Jan 2021 10:04:42 +0100
+Message-ID: <20210113090442.GG19063@pengutronix.de>
+References: <20210107075508.15261-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210111103205.4330-1-s.trumtrar@pengutronix.de>
+In-Reply-To: <20210107075508.15261-1-o.rempel@pengutronix.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,67 +22,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] image-sparse: change retlen to size_t
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH v1] MIPS: dts: ar9331: add stdout-path properties
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jan 11, 2021 at 11:32:04AM +0100, Steffen Trumtrar wrote:
-> retlen can potentially overflow. Also, write_full() in
-> fastboot_handle_sparse() expects size_t anyway.
+On Thu, Jan 07, 2021 at 08:55:08AM +0100, Oleksij Rempel wrote:
+> With the kernel v5.11-rc2 the console will be automatically redirected
+> to null if no default console is configured. Make sure the barebox is
+> doing it to make kernel happy.
 > 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  common/fastboot.c      | 2 +-
->  include/image-sparse.h | 2 +-
->  lib/image-sparse.c     | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+>  arch/mips/dts/ar9331-dptechnics-dpt-module.dts   | 2 ++
+>  arch/mips/dts/ar9331-okud-max9331.dts            | 2 ++
+>  arch/mips/dts/ar9331-openembed-som9331-board.dts | 2 ++
+>  3 files changed, 6 insertions(+)
 
-Applied to master, thanks
+Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/fastboot.c b/common/fastboot.c
-> index 1b6dc28d8e..40b92d9982 100644
-> --- a/common/fastboot.c
-> +++ b/common/fastboot.c
-> @@ -566,7 +566,7 @@ static int fastboot_handle_sparse(struct fastboot *fb,
->  	}
+> diff --git a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+> index cbaf5ab39e..24ce0d0d67 100644
+> --- a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+> +++ b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+> @@ -7,6 +7,8 @@
+>  	};
 >  
->  	while (1) {
-> -		int retlen;
-> +		size_t retlen;
->  		loff_t pos;
+>  	chosen {
+> +		stdout-path = &uart;
+> +
+>  		environment {
+>  			compatible = "barebox,environment";
+>  			device-path = &spiflash, "partname:barebox-environment";
+> diff --git a/arch/mips/dts/ar9331-okud-max9331.dts b/arch/mips/dts/ar9331-okud-max9331.dts
+> index 53350899f9..3b93bee93b 100644
+> --- a/arch/mips/dts/ar9331-okud-max9331.dts
+> +++ b/arch/mips/dts/ar9331-okud-max9331.dts
+> @@ -17,6 +17,8 @@
+>  	};
 >  
->  		ret = sparse_image_read(sparse, buf, &pos, bufsiz, &retlen);
-> diff --git a/include/image-sparse.h b/include/image-sparse.h
-> index 29242f4fd5..6bff844411 100644
-> --- a/include/image-sparse.h
-> +++ b/include/image-sparse.h
-> @@ -60,7 +60,7 @@ struct sparse_image_ctx;
+>  	chosen {
+> +		stdout-path = &uart;
+> +
+>  		environment {
+>  			compatible = "barebox,environment";
+>  			device-path = &spiflash, "partname:barebox-environment";
+> diff --git a/arch/mips/dts/ar9331-openembed-som9331-board.dts b/arch/mips/dts/ar9331-openembed-som9331-board.dts
+> index ff9d25e352..4736332f8f 100644
+> --- a/arch/mips/dts/ar9331-openembed-som9331-board.dts
+> +++ b/arch/mips/dts/ar9331-openembed-som9331-board.dts
+> @@ -33,6 +33,8 @@
 >  
->  struct sparse_image_ctx *sparse_image_open(const char *path);
->  int sparse_image_read(struct sparse_image_ctx *si, void *buf,
-> -		      loff_t *pos, size_t len, int *retlen);
-> +		      loff_t *pos, size_t len, size_t *retlen);
->  void sparse_image_close(struct sparse_image_ctx *si);
->  loff_t sparse_image_size(struct sparse_image_ctx *si);
 >  
-> diff --git a/lib/image-sparse.c b/lib/image-sparse.c
-> index 0c31742ab6..8e7a52fd71 100644
-> --- a/lib/image-sparse.c
-> +++ b/lib/image-sparse.c
-> @@ -190,7 +190,7 @@ out:
->  }
->  
->  int sparse_image_read(struct sparse_image_ctx *si, void *buf, loff_t *pos,
-> -		      size_t len, int *retlen)
-> +		      size_t len, size_t *retlen)
->  {
->  	size_t now;
->  	int ret, i;
+>  	chosen {
+> +		stdout-path = &uart;
+> +
+>  		environment {
+>  			compatible = "barebox,environment";
+>  			device-path = &spiflash, "partname:barebox-environment";
 > -- 
-> 2.20.1
+> 2.30.0
 > 
 > 
 > _______________________________________________
