@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kzc55-0002jd-Gw
- for barebox@lists.infradead.org; Wed, 13 Jan 2021 09:04:44 +0000
-Date: Wed, 13 Jan 2021 10:04:42 +0100
-Message-ID: <20210113090442.GG19063@pengutronix.de>
-References: <20210107075508.15261-1-o.rempel@pengutronix.de>
+ id 1kzc5o-00031Y-Kj
+ for barebox@lists.infradead.org; Wed, 13 Jan 2021 09:05:29 +0000
+Date: Wed, 13 Jan 2021 10:05:26 +0100
+Message-ID: <20210113090526.GH19063@pengutronix.de>
+References: <20210111143555.13002-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210107075508.15261-1-o.rempel@pengutronix.de>
+In-Reply-To: <20210111143555.13002-1-a.fatoum@pengutronix.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,66 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] MIPS: dts: ar9331: add stdout-path properties
-To: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH] Documentation: boards: sandbox: describe --image flags
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jan 07, 2021 at 08:55:08AM +0100, Oleksij Rempel wrote:
-> With the kernel v5.11-rc2 the console will be automatically redirected
-> to null if no default console is configured. Make sure the barebox is
-> doing it to make kernel happy.
+On Mon, Jan 11, 2021 at 03:35:55PM +0100, Ahmad Fatoum wrote:
+> barebox partition table parsing can be tested in sandbox using the
+> recently added ,blkdev flag. Extend the documentation to cover this.
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Cc: Juergen Borleis <jbe@pengutronix.de>
+> Reported-by: Lucas Stach <lst@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/mips/dts/ar9331-dptechnics-dpt-module.dts   | 2 ++
->  arch/mips/dts/ar9331-okud-max9331.dts            | 2 ++
->  arch/mips/dts/ar9331-openembed-som9331-board.dts | 2 ++
->  3 files changed, 6 insertions(+)
+>  Documentation/boards/sandbox.rst | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-> index cbaf5ab39e..24ce0d0d67 100644
-> --- a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-> +++ b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-> @@ -7,6 +7,8 @@
->  	};
+> diff --git a/Documentation/boards/sandbox.rst b/Documentation/boards/sandbox.rst
+> index 8b24b6a64584..e9e5183653e6 100644
+> --- a/Documentation/boards/sandbox.rst
+> +++ b/Documentation/boards/sandbox.rst
+> @@ -34,6 +34,20 @@ Available sandbox invocation options include:
+>      Map a <file> to barebox. This option can be given multiple times. The <file>s
+>      will show up as ``/dev/fd0`` ... ``/dev/fdX`` in the barebox simulator.
 >  
->  	chosen {
-> +		stdout-path = &uart;
+> +    How the file is mapped in barebox can be controlled by a number of flags:
 > +
->  		environment {
->  			compatible = "barebox,environment";
->  			device-path = &spiflash, "partname:barebox-environment";
-> diff --git a/arch/mips/dts/ar9331-okud-max9331.dts b/arch/mips/dts/ar9331-okud-max9331.dts
-> index 53350899f9..3b93bee93b 100644
-> --- a/arch/mips/dts/ar9331-okud-max9331.dts
-> +++ b/arch/mips/dts/ar9331-okud-max9331.dts
-> @@ -17,6 +17,8 @@
->  	};
->  
->  	chosen {
-> +		stdout-path = &uart;
+> +    * ``,ro``: The host file is mapped read-only
 > +
->  		environment {
->  			compatible = "barebox,environment";
->  			device-path = &spiflash, "partname:barebox-environment";
-> diff --git a/arch/mips/dts/ar9331-openembed-som9331-board.dts b/arch/mips/dts/ar9331-openembed-som9331-board.dts
-> index ff9d25e352..4736332f8f 100644
-> --- a/arch/mips/dts/ar9331-openembed-som9331-board.dts
-> +++ b/arch/mips/dts/ar9331-openembed-som9331-board.dts
-> @@ -33,6 +33,8 @@
->  
->  
->  	chosen {
-> +		stdout-path = &uart;
+> +    * ``,blkdev``: The host file is to be mapped as block device. This is the
+> +      default when passing block devices from the host. The file's size must
+> +      be a multiple of the barebox sector size of 512 bytes.
 > +
->  		environment {
->  			compatible = "barebox,environment";
->  			device-path = &spiflash, "partname:barebox-environment";
+> +    * ``,cdev``: The host file is mapped as character device. This is the default,
+> +      unless the the host file is a block device.
+> +
+> +    Multiple options can be appended if they don't clash. Literal commas within the
+> +    file path can be escaped with a backslash. Example: ``-i './0\,0.hdimg,blkdev,ro'``.
+> +
+>    ``-e <file>``
+>  
+>      Map <file> to barebox. With this option <file>s are mapped as
 > -- 
 > 2.30.0
 > 
