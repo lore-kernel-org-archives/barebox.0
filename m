@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kze0t-0006cD-Mo
- for barebox@lists.infradead.org; Wed, 13 Jan 2021 11:08:33 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kze0r-0008Il-0H
- for barebox@lists.infradead.org; Wed, 13 Jan 2021 12:08:29 +0100
-Date: Wed, 13 Jan 2021 12:07:47 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20210113110747.j25v7lnrlgdx62ns@pengutronix.de>
+ id 1kzgoS-000473-2F
+ for barebox@lists.infradead.org; Wed, 13 Jan 2021 14:07:52 +0000
+Message-ID: <6d092867cfc86c63c2eb12fd7a156769d8a8d1f1.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Wed, 13 Jan 2021 15:07:48 +0100
+In-Reply-To: <20210113110747.j25v7lnrlgdx62ns@pengutronix.de>
+References: <20210113110747.j25v7lnrlgdx62ns@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,77 +17,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Barebox OF-Overlay Handling
-To: barebox@lists.infradead.org
+Subject: Re: Barebox OF-Overlay Handling
+To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
 Cc: Michael Tretter <mtr@pengutronix.de>
 
-Hi there,
-
-I have the following problem. My customer is using overlays for
-external devices like: display, camera, etc. The current overlay support
-is awesome and most of it works out of the box. There is only one
-nitpick: If Barebox isn't build with CONFIG_OF_OVERLAY_LIVE enabled many
-error's are printed during boot. Those error's are ignored but let the
-user assume that something went really bad:
-
-ERROR: of_resolver: __symbols__ missing from base devicetree
-ERROR: of_overlay: fragment 30164b88: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 30164c84: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 3012fb08: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 3012fc34: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 3012fd60: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 3012fe8c: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 3012ffb8: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 301300e4: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 30130210: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 3013033c: phandle 0xffffffff not found
-ERROR: of_resolver: __symbols__ missing from base devicetree
-ERROR: of_overlay: fragment 30130e94: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 30130fc4: phandle 0xffffffff not found
-ERROR: of_resolver: __symbols__ missing from base devicetree
-ERROR: of_overlay: fragment 30131a14: phandle 0xffffffff not found
-ERROR: of_overlay: fragment 301342d4: phandle 0xffffffff not found
-
-The of_firmware_load_overlay() calls triggering those errors.
-The error's by itself are correct and I don't wanna change them but the
-context must be correct by context I mean:
-
- - barebox-dt on fpga-platform: An FPGA platform needs a barebox
-   base devicetree with __symbols__ and those error are correct because
-   the firmware manager needs to load the firmware.
- - barebox-dt on non fpga-platform: Those errors are not correct.
-   We don't need __symbols__ for the barebox base devicetree.
- - kernel-dt on any platform: Those error's are correct if
-   the overlays are using phandles which should be the case most the
-   time.
-
-My proposed solution would be a stub like this:
-
-#ifdef CONFIG_OF_OVERLAY_LIVE
-int of_firmware_load_overlay(struct device_node *overlay, const char *path);
-#else
-static inline int of_firmware_load_overlay(struct device_node *overlay, const char *path)
-{
-       return 0;
-}
-#endif /* CONFIG_OF_OVERLAY_LIVE */
-
-The disadvantage of this solution is that it can happen to end in a
-non-booting device for FPGA platforms using overlays to programm the
-bit stream and forget to enable CONFIG_OF_OVERLAY_LIVE because the
-kernel tries to access regions not existing.
-
-I've discussed this with Michael in private but we didn't came to a
-conclusion. Therefore I'm asking here any input would be helpfull :)
-
-Regards,
-  Marco
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCAyMDIxLTAxLTEzIGF0IDEyOjA3ICswMTAwLCBNYXJjbyBGZWxzY2ggd3JvdGU6Cj4g
+SGkgdGhlcmUsCj4gCj4gSSBoYXZlIHRoZSBmb2xsb3dpbmcgcHJvYmxlbS4gTXkgY3VzdG9tZXIg
+aXMgdXNpbmcgb3ZlcmxheXMgZm9yCj4gZXh0ZXJuYWwgZGV2aWNlcyBsaWtlOiBkaXNwbGF5LCBj
+YW1lcmEsIGV0Yy4gVGhlIGN1cnJlbnQgb3ZlcmxheSBzdXBwb3J0Cj4gaXMgYXdlc29tZSBhbmQg
+bW9zdCBvZiBpdCB3b3JrcyBvdXQgb2YgdGhlIGJveC4gVGhlcmUgaXMgb25seSBvbmUKPiBuaXRw
+aWNrOiBJZiBCYXJlYm94IGlzbid0IGJ1aWxkIHdpdGggQ09ORklHX09GX09WRVJMQVlfTElWRSBl
+bmFibGVkIG1hbnkKPiBlcnJvcidzIGFyZSBwcmludGVkIGR1cmluZyBib290LiBUaG9zZSBlcnJv
+cidzIGFyZSBpZ25vcmVkIGJ1dCBsZXQgdGhlCj4gdXNlciBhc3N1bWUgdGhhdCBzb21ldGhpbmcg
+d2VudCByZWFsbHkgYmFkOgo+IAo+IEVSUk9SOiBvZl9yZXNvbHZlcjogX19zeW1ib2xzX18gbWlz
+c2luZyBmcm9tIGJhc2UgZGV2aWNldHJlZQo+IEVSUk9SOiBvZl9vdmVybGF5OiBmcmFnbWVudCAz
+MDE2NGI4ODogcGhhbmRsZSAweGZmZmZmZmZmIG5vdCBmb3VuZAo+IEVSUk9SOiBvZl9vdmVybGF5
+OiBmcmFnbWVudCAzMDE2NGM4NDogcGhhbmRsZSAweGZmZmZmZmZmIG5vdCBmb3VuZAo+IEVSUk9S
+OiBvZl9vdmVybGF5OiBmcmFnbWVudCAzMDEyZmIwODogcGhhbmRsZSAweGZmZmZmZmZmIG5vdCBm
+b3VuZAo+IEVSUk9SOiBvZl9vdmVybGF5OiBmcmFnbWVudCAzMDEyZmMzNDogcGhhbmRsZSAweGZm
+ZmZmZmZmIG5vdCBmb3VuZAo+IEVSUk9SOiBvZl9vdmVybGF5OiBmcmFnbWVudCAzMDEyZmQ2MDog
+cGhhbmRsZSAweGZmZmZmZmZmIG5vdCBmb3VuZAo+IEVSUk9SOiBvZl9vdmVybGF5OiBmcmFnbWVu
+dCAzMDEyZmU4YzogcGhhbmRsZSAweGZmZmZmZmZmIG5vdCBmb3VuZAo+IEVSUk9SOiBvZl9vdmVy
+bGF5OiBmcmFnbWVudCAzMDEyZmZiODogcGhhbmRsZSAweGZmZmZ3ZmZmZmZmZiBub3QgZm91bmQK
+PiBFUlJPUjogb2Zfb3ZlcmxheTogZnJhZ21lbnQgMzAxMzAwZTQ6IHBoYW5kbGUgMHhmZmZmZmZm
+ZiBub3QgZm91bmQKPiBFUlJPUjogb2Zfb3ZlcmxheTogZnJhZ21lbnQgMzAxMzAyMTA6IHBoYW5k
+bGUgMHhmZmZmZmZmZiBub3QgZm91bmQKPiBFUlJPUjogb2Zfb3ZlcmxheTogZnJhZ21lbnQgMzAx
+MzAzM2M6IHBoYW5kbGUgMHhmZmZmZmZmZiBub3QgZm91bmQKPiBFUlJPUjogb2ZfcmVzb2x2ZXI6
+IF9fc3ltYm9sc19fIG1pc3NpbmcgZnJvbSBiYXNlIGRldmljZXRyZWUKPiBFUlJPUjogb2Zfb3Zl
+cmxheTogZnJhZ21lbnQgMzAxMzBlOTQ6IHBoYW5kbGUgMHhmZmZmZmZmZiBub3QgZm91bmQKPiBF
+UlJPUjogb2Zfb3ZlcmxheTogZnJhZ21lbnQgMzAxMzBmYzQ6IHBoYW5kbGUgMHhmZmZmZmZmZiBu
+b3QgZm91bmQKPiBFUlJPUjogb2ZfcmVzb2x2ZXI6IF9fc3ltYm9sc19fIG1pc3NpbmcgZnJvbSBi
+YXNlIGRldmljZXRyZWUKPiBFUlJPUjogb2Zfb3ZlcmxheTogZnJhZ21lbnQgMzAxMzFhMTQ6IHBo
+YW5kbGUgMHhmZmZmZmZmZiBub3QgZm91bmQKPiBFUlJPUjogb2Zfb3ZlcmxheTogZnJhZ21lbnQg
+MzAxMzQyZDQ6IHBoYW5kbGUgMHhmZmZmZmZmZiBub3QgZm91bmQKPiAKPiBUaGUgb2ZfZmlybXdh
+cmVfbG9hZF9vdmVybGF5KCkgY2FsbHMgdHJpZ2dlcmluZyB0aG9zZSBlcnJvcnMuCj4gVGhlIGVy
+cm9yJ3MgYnkgaXRzZWxmIGFyZSBjb3JyZWN0IGFuZCBJIGRvbid0IHdhbm5hIGNoYW5nZSB0aGVt
+IGJ1dCB0aGUKPiBjb250ZXh0IG11c3QgYmUgY29ycmVjdCBieSBjb250ZXh0IEkgbWVhbjoKPiAK
+PiDCoC0gYmFyZWJveC1kdCBvbiBmcGdhLXBsYXRmb3JtOiBBbiBGUEdBIHBsYXRmb3JtIG5lZWRz
+IGEgYmFyZWJveAo+IMKgwqDCoGJhc2UgZGV2aWNldHJlZSB3aXRoIF9fc3ltYm9sc19fIGFuZCB0
+aG9zZSBlcnJvciBhcmUgY29ycmVjdCBiZWNhdXNlCj4gwqDCoMKgdGhlIGZpcm13YXJlIG1hbmFn
+ZXIgbmVlZHMgdG8gbG9hZCB0aGUgZmlybXdhcmUuCj4gwqAtIGJhcmVib3gtZHQgb24gbm9uIGZw
+Z2EtcGxhdGZvcm06IFRob3NlIGVycm9ycyBhcmUgbm90IGNvcnJlY3QuCj4gwqDCoMKgV2UgZG9u
+J3QgbmVlZCBfX3N5bWJvbHNfXyBmb3IgdGhlIGJhcmVib3ggYmFzZSBkZXZpY2V0cmVlLgoKSSB3
+YXMgd29uZGVyaW5nIHdoeSB5b3Ugd2VyZSBnZXR0aW5nIHRoaXMgZXJyb3IgZXZlbiBvbiBhIHBs
+YXRmb3JtCndpdGhvdXQgRlBHQSwgdHVybnMgb3V0IG9mX2Zpcm13YXJlX2xvYWRfb3ZlcmxheSgp
+IGlzIGFsd2F5cyBjYWxsZWQgaWYKYSBkZXZpY2V0cmVlIG92ZXJsYXkgaXMgcGFzc2VkIHZpYSB0
+aGUgRFQuIFRoaXMgaW4gaXRzZWxmIGlzbid0IGEKcHJvYmxlbSwgYnV0IElNTyBvZl9maXJtd2Fy
+ZV9sb2FkX292ZXJsYXkoKSBzaG91bGQgY2hlY2sgZmlyc3Qgd2hldGhlcgp0aGUgb3ZlcmxheSBj
+b250YWlucyB0aGUgcmlnaHQgY29tcGF0aWJsZSAoImZwZ2EtcmVnaW9uIikgYW5kIHByb3BlcnR5
+CigiZmlybXdhcmUtbmFtZSIpIGJlZm9yZSBkb2luZyBvZl9yZXNvbHZlX3BoYW5kbGVzIGFuZApv
+Zl9wcm9jZXNzX292ZXJsYXkuIFRoaXMgd2F5IHdlIGNhbiBza2lwIGEgbG90IG9mIHVubmVjZXNz
+YXJ5IG92ZXJsYXkKaGFuZGxpbmcgaWYgd2UgZG9uJ3QgZW5kIHVwIGxvYWRpbmcgYSBmaXJtd2Fy
+ZS4KIAo+IMKgLSBrZXJuZWwtZHQgb24gYW55IHBsYXRmb3JtOiBUaG9zZSBlcnJvcidzIGFyZSBj
+b3JyZWN0IGlmCj4gwqDCoMKgdGhlIG92ZXJsYXlzIGFyZSB1c2luZyBwaGFuZGxlcyB3aGljaCBz
+aG91bGQgYmUgdGhlIGNhc2UgbW9zdCB0aGUKPiDCoMKgwqB0aW1lLgoKQUZBSUNTIHRoaXMgc2hv
+dWxkIGFsc28gZml4IHRoaXMgY2FzZS4KCj4gTXkgcHJvcG9zZWQgc29sdXRpb24gd291bGQgYmUg
+YSBzdHViIGxpa2UgdGhpczoKPiAKPiAjaWZkZWYgQ09ORklHX09GX09WRVJMQVlfTElWRQo+IGlu
+dCBvZl9maXJtd2FyZV9sb2FkX292ZXJsYXkoc3RydWN0IGRldmljZV9ub2RlICpvdmVybGF5LCBj
+b25zdCBjaGFyICpwYXRoKTsKPiAjZWxzZQo+IHN0YXRpYyBpbmxpbmUgaW50IG9mX2Zpcm13YXJl
+X2xvYWRfb3ZlcmxheShzdHJ1Y3QgZGV2aWNlX25vZGUgKm92ZXJsYXksIGNvbnN0IGNoYXIgKnBh
+dGgpCj4gewo+IMKgwqDCoMKgwqDCoMKgcmV0dXJuIDA7Cj4gfQo+ICNlbmRpZiAvKiBDT05GSUdf
+T0ZfT1ZFUkxBWV9MSVZFICovCgpXaGlsZSBjb3JyZWN0IGluIGNhc2UgYWxsIGZpcm13YXJlIG92
+ZXJsYXlzIHVzZSBwaGFuZGxlcywgaW4gdGhlb3J5Cm92ZXJsYXlzIGNvdWxkIGJlIHB1cmVseSBw
+YXRoLWJhc2VkLCB3aXRoIG5vdCBkZXBlbmRlbmN5IG9uIHRoZQpfX3N5bWJvbHNfXyBub2RlLiBO
+b3Qgc3VyZSBob3cgY29tbW9uIHRoaXMgaXMuCgo+IFRoZSBkaXNhZHZhbnRhZ2Ugb2YgdGhpcyBz
+b2x1dGlvbiBpcyB0aGF0IGl0IGNhbiBoYXBwZW4gdG8gZW5kIGluIGEKPiBub24tYm9vdGluZyBk
+ZXZpY2UgZm9yIEZQR0EgcGxhdGZvcm1zIHVzaW5nIG92ZXJsYXlzIHRvIHByb2dyYW1tIHRoZQo+
+IGJpdCBzdHJlYW0gYW5kIGZvcmdldCB0byBlbmFibGUgQ09ORklHX09GX09WRVJMQVlfTElWRSBi
+ZWNhdXNlIHRoZQo+IGtlcm5lbCB0cmllcyB0byBhY2Nlc3MgcmVnaW9ucyBub3QgZXhpc3Rpbmcu
+Cj4gCj4gSSd2ZSBkaXNjdXNzZWQgdGhpcyB3aXRoIE1pY2hhZWwgaW4gcHJpdmF0ZSBidXQgd2Ug
+ZGlkbid0IGNhbWUgdG8gYQo+IGNvbmNsdXNpb24uIFRoZXJlZm9yZSBJJ20gYXNraW5nIGhlcmUg
+YW55IGlucHV0IHdvdWxkIGJlIGhlbHBmdWxsIDopCgpSZWdhcmRzLApSb3V2ZW4gQ3plcndpbnNr
+aQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
+b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
