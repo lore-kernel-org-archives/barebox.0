@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l1bYj-0003KA-DL
+ id 1l1bYj-0003K8-DK
  for barebox@lists.infradead.org; Mon, 18 Jan 2021 20:55:35 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1l1bYi-0002Nc-5E
+ (envelope-from <mfe@pengutronix.de>) id 1l1bYi-0002NZ-2m
  for barebox@lists.infradead.org; Mon, 18 Jan 2021 21:55:32 +0100
 Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1l1bYh-0002aA-PH
+ (envelope-from <mfe@pengutronix.de>) id 1l1bYh-0002a5-O8
  for barebox@lists.infradead.org; Mon, 18 Jan 2021 21:55:31 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 18 Jan 2021 21:55:27 +0100
-Message-Id: <20210118205528.9797-3-m.felsch@pengutronix.de>
-In-Reply-To: <20210118205528.9797-1-m.felsch@pengutronix.de>
-References: <20210118205528.9797-1-m.felsch@pengutronix.de>
+Date: Mon, 18 Jan 2021 21:55:25 +0100
+Message-Id: <20210118205528.9797-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -29,73 +27,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] nvmem: make nvmem_device_write/read public
+Subject: [PATCH 1/4] nvmem: sync stub return values with linux code
 To: barebox@lists.infradead.org
 
-Those functions already export their symbols so make it public
-available. Compared to the nvmem_device_cell_read/write() APIs these
-functions are a bit easier to use.
+Based on linux commit:
+8<------------------------------------------------------------------------
+commit 20167b70c894f20cd01e2579fad206de440816ef
+Author: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Fri Sep 21 06:40:22 2018 -0700
+
+    nvmem: use EOPNOTSUPP instead of ENOSYS
+
+    Checkpatch emits warnings when using ENOSYS. Some of the frameworks
+    started using EOPNOTSUPP as return values for API functions when given
+    subsystem is disabled in Kconfig.
+
+    Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+    Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+8<------------------------------------------------------------------------
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/nvmem/core.c           |  6 ------
- include/linux/nvmem-consumer.h | 19 +++++++++++++++++++
- 2 files changed, 19 insertions(+), 6 deletions(-)
+ include/linux/nvmem-consumer.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index 06e1414769..b9af31f4b5 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -48,12 +48,6 @@ struct nvmem_cell {
- static LIST_HEAD(nvmem_cells);
- static LIST_HEAD(nvmem_devs);
- 
--int nvmem_device_read(struct nvmem_device *nvmem, unsigned int offset,
--		      size_t bytes, void *buf);
--int nvmem_device_write(struct nvmem_device *nvmem, unsigned int offset,
--		       size_t bytes, const void *buf);
--
--
- static ssize_t nvmem_cdev_read(struct cdev *cdev, void *buf, size_t count,
- 			       loff_t offset, unsigned long flags)
- {
 diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
-index d86377bfda..5d3d72837b 100644
+index 9e0fd4265e..2f79014c0f 100644
 --- a/include/linux/nvmem-consumer.h
 +++ b/include/linux/nvmem-consumer.h
-@@ -40,6 +40,10 @@ int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len);
- /* direct nvmem device read/write interface */
- struct nvmem_device *nvmem_device_get(struct device_d *dev, const char *name);
- void nvmem_device_put(struct nvmem_device *nvmem);
-+int nvmem_device_read(struct nvmem_device *nvmem, unsigned int offset,
-+		      size_t bytes, void *buf);
-+int nvmem_device_write(struct nvmem_device *nvmem, unsigned int offset,
-+		       size_t bytes, const void *buf);
- ssize_t nvmem_device_cell_read(struct nvmem_device *nvmem,
- 			       struct nvmem_cell_info *info, void *buf);
- int nvmem_device_cell_write(struct nvmem_device *nvmem,
-@@ -98,6 +102,21 @@ static inline int nvmem_device_cell_write(struct nvmem_device *nvmem,
+@@ -50,7 +50,7 @@ int nvmem_device_cell_write(struct nvmem_device *nvmem,
+ static inline struct nvmem_cell *nvmem_cell_get(struct device_d *dev,
+ 						const char *name)
  {
- 	return -EOPNOTSUPP;
+-	return ERR_PTR(-ENOSYS);
++	return ERR_PTR(-EOPNOTSUPP);
  }
-+
-+static inline int nvmem_device_read(struct nvmem_device *nvmem,
-+				    unsigned int offset, size_t bytes,
-+				    void *buf)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline int nvmem_device_write(struct nvmem_device *nvmem,
-+				     unsigned int offset, size_t bytes,
-+				     const void *buf)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- #endif /* CONFIG_NVMEM */
  
- #if IS_ENABLED(CONFIG_NVMEM) && IS_ENABLED(CONFIG_OFTREE)
+ static inline void nvmem_cell_put(struct nvmem_cell *cell)
+@@ -59,26 +59,26 @@ static inline void nvmem_cell_put(struct nvmem_cell *cell)
+ 
+ static inline char *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return ERR_PTR(-EOPNOTSUPP);
+ }
+ 
+ static inline void *nvmem_cell_get_and_read(struct device_node *np,
+ 					    const char *cell_name,
+ 					    size_t bytes)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return ERR_PTR(-EOPNOTSUPP);
+ }
+ 
+ static inline int nvmem_cell_write(struct nvmem_cell *cell,
+ 				    const char *buf, size_t len)
+ {
+-	return -ENOSYS;
++	return -EOPNOTSUPP;
+ }
+ 
+ static inline struct nvmem_device *nvmem_device_get(struct device_d *dev,
+ 						    const char *name)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return ERR_PTR(-EOPNOTSUPP);
+ }
+ 
+ static inline void nvmem_device_put(struct nvmem_device *nvmem)
 -- 
 2.20.1
 
