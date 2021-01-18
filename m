@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l1YON-0002kJ-DX
- for barebox@lists.infradead.org; Mon, 18 Jan 2021 17:32:40 +0000
-References: <32b1e760-325e-b145-ba97-21aaee6ed868@netc.fr>
- <cc7279d9-f943-8b03-630e-fc7c41c9d0f2@pengutronix.de>
- <3add69f4-c8a3-3848-a1ea-8a041a8dafd4@netc.fr>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <9a9a0528-0a95-918b-6cd8-48d7c341bea8@pengutronix.de>
-Date: Mon, 18 Jan 2021 18:32:34 +0100
+ id 1l1Zu2-0005pI-CB
+ for barebox@lists.infradead.org; Mon, 18 Jan 2021 19:09:27 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1l1Zu0-0007Me-SF
+ for barebox@lists.infradead.org; Mon, 18 Jan 2021 20:09:24 +0100
+Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1l1Zu0-0000Ag-HZ
+ for barebox@lists.infradead.org; Mon, 18 Jan 2021 20:09:24 +0100
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Mon, 18 Jan 2021 20:09:23 +0100
+Message-Id: <20210118190923.531-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <3add69f4-c8a3-3848-a1ea-8a041a8dafd4@netc.fr>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,57 +27,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Environment is not overwritten at barebox update
-To: AD <ad.ensi@netc.fr>, barebox@lists.infradead.org
+Subject: [PATCH] usb: hub: fix state change check for not powercycled ports
+To: barebox@lists.infradead.org
 
-Hello,
+Since we don't power cycle the ports on start since patch "19bb0b2a usb:
+hub: Do not power-cycle usb devices on init" it is possible that the
+device on this port is already active from a previous enumeration. This
+way barebox will never get any change in USB_PORT_STAT_C_CONNECTION bit
+change.
 
-On 15.01.21 13:12, AD wrote:
->> You'll probably want to run saveenv -z to override this
->> and force use of the built-in environment.
-> 
-> If I understand well, the issue is not that my built-in env is not "updated" on the target, but that it is not loaded at startup.
+Although the device will probably still work fine after the following
+port reset, the current code will always miss reenumerating these still
+plugged devices. This patch fixes this by ignoring the check for
+STAT_C_CONNECTION bit and only go for USB_PORT_STAT_CONNECTION which
+should be enough.
 
-Exactly.
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ drivers/usb/core/hub.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> And it is not loaded, because I already have a modified environment, on which I did a "saveenv" previously ; as a consequence, at startup, this "local dev env" is loaded instead of the built-in one?
-
-Yep.
-
-> I tried a saveenv -z on a modified env, and it restores properly the built-in env at the next startup.
-> 
-> On some targets, I don't have the issue.
-> Is it possible that on those targets, I never did a saveenv which would have created a "local" env ; as a consequence, every time I update Barebox, the built-in env is always used?
-
-That's my assumption as well.
-
-> As a conclusion, I guess that updating barebox with "cp ${image} /dev/mmc2" and "saveenv -z" instead of only using the first command would solve this issue.
-
-Preferably, you'd update barebox with barebox_update ${image}. barebox_update knows
-how to handle eMMC boot partitions if you need that and it can be readily exported
-over Android Fastboot.
-
-saveenv -z is something you need to do when you have written an environment manually
-during development. When bringing up a board in the factory, there shouldn't be
-a valid environment in the eMMC, so you could skip that step.
-
-> In any case, many thanks for helping me to understand this mechanism.
-
-Glad it helped,
-Ahmad
-
-> 
-> Best Regards,
-> AD
-> 
-> 
-> 
-
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 01653d8c20..d1112248ee 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -336,8 +336,7 @@ static void usb_scan_port(struct usb_device_scan *usb_scan)
+ 	dev_dbg(&dev->dev, "port%d: Status 0x%04x Change 0x%04x\n",
+ 			port + 1, portstatus, portchange);
+ 
+-	if (!(portchange & USB_PORT_STAT_C_CONNECTION) ||
+-	    !(portstatus & USB_PORT_STAT_CONNECTION)) {
++	if (!(portstatus & USB_PORT_STAT_CONNECTION)) {
+ 		if (get_time_ns() >= hub->connect_timeout) {
+ 			dev_dbg(&dev->dev, "port%d: timeout\n", port + 1);
+ 			/* Remove this device from scanning list */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.0
+
 
 _______________________________________________
 barebox mailing list
