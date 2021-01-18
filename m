@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l0MS2-0003Od-EK
- for barebox@lists.infradead.org; Fri, 15 Jan 2021 10:35:31 +0000
+ id 1l1YON-0002kJ-DX
+ for barebox@lists.infradead.org; Mon, 18 Jan 2021 17:32:40 +0000
 References: <32b1e760-325e-b145-ba97-21aaee6ed868@netc.fr>
+ <cc7279d9-f943-8b03-630e-fc7c41c9d0f2@pengutronix.de>
+ <3add69f4-c8a3-3848-a1ea-8a041a8dafd4@netc.fr>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <cc7279d9-f943-8b03-630e-fc7c41c9d0f2@pengutronix.de>
-Date: Fri, 15 Jan 2021 11:35:25 +0100
+Message-ID: <9a9a0528-0a95-918b-6cd8-48d7c341bea8@pengutronix.de>
+Date: Mon, 18 Jan 2021 18:32:34 +0100
 MIME-Version: 1.0
-In-Reply-To: <32b1e760-325e-b145-ba97-21aaee6ed868@netc.fr>
+In-Reply-To: <3add69f4-c8a3-3848-a1ea-8a041a8dafd4@netc.fr>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,93 +20,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Environment is not overwritten at barebox update
 To: AD <ad.ensi@netc.fr>, barebox@lists.infradead.org
 
-CgpPbiAxNS4wMS4yMSAxMToyMiwgQUQgd3JvdGU6Cj4gCj4gRGVhciBhbGwsCj4gCj4gSSd2ZSBj
-b21waWxlZCBhbiBpbWFnZSBhbmQgdHJ5IHRvIGdldCBteSBlbnZpcm9ubWVudCBzY3JpcHRzIG9u
-IG15IHRhcmdldCBidXQgSSBjYW4ndCBnZXQgdGhlbS4KPiAKPiBIZXJlIGEgc25pcHBldCBvZiBt
-eSBEVFMgOgo+IAo+IC8gewo+IMKgwqDCoMKgwqDCoMKgIG1vZGVsID0gIk1haW4gQm9hcmQiOwo+
-IAo+IMKgwqDCoMKgwqDCoMKgIGNvbXBhdGlibGUgPSAiZnNsLGlteDZkbCI7Cj4gwqDCoMKgIGNo
-b3NlbiB7Cj4gwqDCoMKgIMKgwqDCoMKgwqDCoMKgIHN0ZG91dC1wYXRoID0gJnVhcnQzOwo+IMKg
-wqDCoCB9Owo+IAo+IMKgwqDCoCBlbnZpcm9ubWVudEAwIHsKPiDCoMKgwqAgwqDCoMKgIGNvbXBh
-dGlibGUgPSAiYmFyZWJveCxlbnZpcm9ubWVudCI7Cj4gwqDCoMKgIMKgwqDCoCBkZXZpY2UtcGF0
-aCA9ICZ1c2RoYzMsICJwYXJ0bmFtZTpiYXJlYm94LWVudmlyb25tZW50IjsKPiDCoMKgwqAgfTsK
-PiB9Owo+IAo+ICZ1c2RoYzMgewo+IMKgwqDCoCBwYXJ0aXRpb25AMCB7Cj4gwqDCoMKgIMKgwqDC
-oCBsYWJlbCA9ICJiYXJlYm94IjsKPiDCoMKgwqAgwqDCoMKgIHJlZyA9IDwweDAgMHg4MDAwMD47
-Cj4gwqDCoMKgIH07Cj4gwqDCoMKgIHBhcnRpdGlvbkAxIHsKPiDCoMKgwqAgwqDCoMKgIGxhYmVs
-ID0gImJhcmVib3gtZW52aXJvbm1lbnQiOwo+IMKgwqDCoCDCoMKgwqAgcmVnID0gPDB4ODAwMDAg
-MHg4MDAwMD47Cj4gwqDCoMKgIH07Cj4gCj4gwqDCoMKgwqDCoMKgwqAgLi4uCj4gCj4gwqDCoMKg
-wqDCoMKgwqAgIyBNYW55IG90aGVyIHBhcnRpdGlvbnMKPiAKPiDCoMKgwqDCoMKgwqDCoCAuLi4K
-PiAKPiB9Owo+IAo+IAo+IEhlcmUgYSBzbmlwcGV0IG9mIG15IC5jb25maWcgOgo+IAo+IENPTkZJ
-R19ERUZBVUxUX0VOVklST05NRU5UPXkKPiAjIENPTkZJR19ERUZBVUxUX0NPTVBSRVNTSU9OX0da
-SVAgaXMgbm90IHNldAo+ICMgQ09ORklHX0RFRkFVTFRfQ09NUFJFU1NJT05fTFpPIGlzIG5vdCBz
-ZXQKPiAjIENPTkZJR19ERUZBVUxUX0NPTVBSRVNTSU9OX0xaNCBpcyBub3Qgc2V0Cj4gIyBDT05G
-SUdfREVGQVVMVF9DT01QUkVTU0lPTl9YWiBpcyBub3Qgc2V0Cj4gQ09ORklHX0RFRkFVTFRfQ09N
-UFJFU1NJT05fTk9ORT15Cj4gQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfR0VORVJJQ19ORVc9
-eQo+IENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUNfTkVXX01FTlU9eQo+IENPTkZJ
-R19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUNfTkVXX0RGVT15Cj4gQ09ORklHX0RFRkFVTFRf
-RU5WSVJPTk1FTlRfUEFUSD0iYXJjaC9hcm0vYm9hcmRzL2FsLW14Ni9lbnYvIgo+IAo+IEFuZCBo
-ZXJlIHRoZSBjb250ZW50IG9mIDogImFyY2gvYXJtL2JvYXJkcy9hbC1teDYvZW52LyIKPiAKPiBh
-ZEBkZWJpYW46fi93b3Jrc3BhY2UvYmFyZWJveC9jaHJ5c2FsaXMvYXJjaC9hcm0vYm9hcmRzL2Fs
-LW14Ni9lbnYkIHRyZWUKPiAuCj4g4pSc4pSA4pSAIGJpbgo+IOKUgsKgwqAg4pSU4pSA4pSAIGlu
-aXQKPiDilJzilIDilIAgYm9vdAo+IOKUgsKgwqAg4pSc4pSA4pSAIGFsCj4g4pSCwqDCoCDilJzi
-lIDilIAgdGZ0cAo+IOKUgsKgwqAg4pSU4pSA4pSAIHVzYgo+IOKUnOKUgOKUgCBjb25maWcKPiDi
-lJTilIDilIAgZGF0YQo+IMKgwqDCoCDilJzilIDilIAgYW5zaS1jb2xvcnMKPiAKPiAKPiBOb3cs
-IG9uIHRoZSB0YXJnZXQsIEknbSB1cGdyYWRpbmcgYmFyZWJveCB1c2luZyBhIHNpbXBsZSA6IGNw
-IGJhcmVib3guaW1nIC9kZXYvbW1jMgo+IAo+IAo+IFdpdGggdGhlIGNvbXBpbGVkIGRhdGUgYW5k
-IGhvdXIgZnJvbSB0aGUgQmFyZWJveCBsb2dzIGF0IHN0YXJ0aW5nLCBJIGNhbiBzZWUgdGhhdCB0
-aGUgIm5ldyIgYmFyZWJveCBpcyByZWFsbHkgdGhlIG9uZSB0aGF0IEkganVzdGUgY29tcGlsZWQu
-Cj4gCj4gQnV0IEkgZG9uJ3QgaGF2ZSBteSBlbnYgY29ycmVjdGx5IHVwZGF0ZWQgOgo+IAo+IGJh
-cmVib3hATWFpbiBCb2FyZDovZW52IGxzIC1sCj4gZHJ3eHJ3eHJ3eMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIDAgLgo+IGQtLS0tLS0tLS3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAwIC4u
-Cj4gZHJ3eHJ3eHJ3eMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDAgYmluCj4gLXJ3eHJ3eHJ3
-eMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAyNSBjb25maWcKPiBkcnd4cnd4cnd4wqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgMCBkYXRhCj4gZHJ3eHJ3eHJ3eMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIDAgaW5pdAo+IGRyd3hyd3hyd3jCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAwIG1l
-bnUKPiBkcnd4cnd4cnd4wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgMCBuZXR3b3JrCj4gZHJ3
-eHJ3eHJ3eMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDAgbnYKPiAKPiAKPiBNeSBjb25maWcg
-ZmlsZSBpcyBub3QgdGhlIG9uZSB0aGF0IEkgY29tcGlsZWQsIGFuZCB0aGUgYm9vdC8gZGlyZWN0
-b3J5IGhhcyBub3QgYmVlbiB1cGRhdGVkLi4uCj4gQnV0IHRoZSBuZXdseSBjcmVhdGVkIGZpbGVz
-IGFyZSBhbHdheXMgdXBkYXRlZC4KPiBPbmx5IHRoZSBhbHJlYWR5IGV4aXN0aW5nIG9uZXMgYXJl
-IG5vdCBvdmVyd3JpdHRlbi4KPiBOb3Qgc3VyZSBvZiB0aGF0LCBidXQgaXQgc2VlbXMgdG8gYmUg
-ZGlmZmVyZW50IGJldHdlZW4gc2V2ZXJhbCBib2FyZHMuLi4KPiAKPiAKPiBJIGFtIG1pc3Npbmcg
-c29tZXRoaW5nPwo+IAo+IAo+IEhlcmUgdGhlIHN0YXJ0aW5nIGxvZ3MgOgo+IAo+IAo+IGJhcmVi
-b3ggMjAxOS4wNy4wLTA2ODcyLWcyYzdjYTcxZjktZGlydHkgIzIgVHVlIERlYyA4IDE4OjQxOjI5
-IENFVCAyMDIwCj4gCj4gCj4gQm9hcmQ6IE1haW4gQm9hcmQKPiBkZXRlY3RlZCBpLk1YNiBEdWFs
-TGl0ZSByZXZpc2lvbiAxLjQKPiBpLk1YIHJlc2V0IHJlYXNvbiBQT1IgKFNSU1I6IDB4MDAwMDAw
-MDEpCj4gaS5NWDYgRHVhbExpdGUgdW5pcXVlIElEOiBmMjFmZDIzZTE4MWJjMWQ0Cj4gbWRpb19i
-dXM6IG1paWJ1czA6IHByb2JlZAo+IGlteC11c2IgMjE4NDIwMC51c2JAMDIxODQyMDAub2Y6IFVT
-QiBFSENJIDEuMDAKPiBpbXgtZXNkaGMgMjE5NDAwMC51c2RoY0AwMjE5NDAwMC5vZjogcmVnaXN0
-ZXJlZCBhcyBtbWMxCj4gaW14LWVzZGhjIDIxOTgwMDAudXNkaGNAMDIxOTgwMDAub2Y6IHJlZ2lz
-dGVyZWQgYXMgbW1jMgo+IGlteC1pcHV2MyAyNDAwMDAwLmlwdUAwMjQwMDAwMC5vZjogSVBVdjNI
-IHByb2JlZAo+IGNhYW0gMjEwMDAwMC5jYWFtQDIxMDAwMDAub2Y6IEluc3RhbnRpYXRlZCBSTkc0
-IFNIMAo+IGNhYW0gMjEwMDAwMC5jYWFtQDIxMDAwMDAub2Y6IEluc3RhbnRpYXRlZCBSTkc0IFNI
-MQo+IGNhYW0gMjEwMDAwMC5jYWFtQDIxMDAwMDAub2Y6IHJlZ2lzdGVyaW5nIHJuZy1jYWFtCj4g
-bmV0Y29uc29sZTogcmVnaXN0ZXJlZCBhcyBuZXRjb25zb2xlLTEKPiBHUFIxID0gNDg2MDAwMDUK
-PiBtYWxsb2Mgc3BhY2U6IDB4M2ZkZjY1NDAgLT4gMHg0ZmRmNjUzZiAoc2l6ZSAyNTYgTWlCKQo+
-IG1tYzI6IGRldGVjdGVkIE1NQyBjYXJkIHZlcnNpb24gNS4wCj4gbW1jMjogcmVnaXN0ZXJlZCBt
-bWMyLmJvb3QwCj4gbW1jMjogcmVnaXN0ZXJlZCBtbWMyLmJvb3QxCj4gbW1jMjogcmVnaXN0ZXJl
-ZCBtbWMyCj4gcnVubmluZyAvZW52L2Jpbi9pbml0Li4uCj4gCj4gSGl0IG0gZm9yIG1lbnUgb3Ig
-YW55IG90aGVyIGtleSB0byBzdG9wIGF1dG9ib290Ogo+IHR5cGUgZXhpdCB0byBnZXQgdG8gdGhl
-IG1lbnUKPiBiYXJlYm94QENocnlzYWxpcyBNYWluIEJvYXJkOi8KPiAKPiAKPiBUaGFua3MgZm9y
-IGV2ZXJ5dGhpbmcsCgpUaGUgYmFyZWJveCBtdXRhYmxlIGVudmlyb25tZW50IGlzIG1lYW50IGFz
-IGRldmVsb3BtZW50CmZlYXR1cmUsIHNvIHlvdSBjYW4gb3ZlcnJpZGUgdGhlIGJ1aWx0LWluIGVu
-dmlyb25tZW50LgoKWW91J2xsIHByb2JhYmx5IHdhbnQgdG8gcnVuIHNhdmVlbnYgLXogdG8gb3Zl
-cnJpZGUgdGhpcwphbmQgZm9yY2UgdXNlIG9mIHRoZSBidWlsdC1pbiBlbnZpcm9ubWVudC4KCkNo
-ZWVycywKQWhtYWQKCj4gCj4gQUQKPiAKPiAKPiAKPiAKPiAKPiBfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94CgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVy
-IFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5k
-ZS8gIHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6
-ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYg
-ICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hello,
+
+On 15.01.21 13:12, AD wrote:
+>> You'll probably want to run saveenv -z to override this
+>> and force use of the built-in environment.
+> 
+> If I understand well, the issue is not that my built-in env is not "updated" on the target, but that it is not loaded at startup.
+
+Exactly.
+
+> And it is not loaded, because I already have a modified environment, on which I did a "saveenv" previously ; as a consequence, at startup, this "local dev env" is loaded instead of the built-in one?
+
+Yep.
+
+> I tried a saveenv -z on a modified env, and it restores properly the built-in env at the next startup.
+> 
+> On some targets, I don't have the issue.
+> Is it possible that on those targets, I never did a saveenv which would have created a "local" env ; as a consequence, every time I update Barebox, the built-in env is always used?
+
+That's my assumption as well.
+
+> As a conclusion, I guess that updating barebox with "cp ${image} /dev/mmc2" and "saveenv -z" instead of only using the first command would solve this issue.
+
+Preferably, you'd update barebox with barebox_update ${image}. barebox_update knows
+how to handle eMMC boot partitions if you need that and it can be readily exported
+over Android Fastboot.
+
+saveenv -z is something you need to do when you have written an environment manually
+during development. When bringing up a board in the factory, there shouldn't be
+a valid environment in the eMMC, so you could skip that step.
+
+> In any case, many thanks for helping me to understand this mechanism.
+
+Glad it helped,
+Ahmad
+
+> 
+> Best Regards,
+> AD
+> 
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
