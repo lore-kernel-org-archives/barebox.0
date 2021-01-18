@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l0PRg-0007UW-RS
- for barebox@lists.infradead.org; Fri, 15 Jan 2021 13:47:21 +0000
-Date: Fri, 15 Jan 2021 14:47:17 +0100
-From: Michael Tretter <m.tretter@pengutronix.de>
-Message-ID: <20210115134717.GD30739@pengutronix.de>
-References: <20210113110747.j25v7lnrlgdx62ns@pengutronix.de>
- <6d092867cfc86c63c2eb12fd7a156769d8a8d1f1.camel@pengutronix.de>
- <20210113145223.GD29774@pengutronix.de>
+ id 1l1PUZ-0006Cu-M7
+ for barebox@lists.infradead.org; Mon, 18 Jan 2021 08:02:31 +0000
+Date: Mon, 18 Jan 2021 09:02:24 +0100
+Message-ID: <20210118080224.GP19063@pengutronix.de>
+References: <20210113170018.8045-1-r.czerwinski@pengutronix.de>
+ <20210113171258.sk3k6cph7irdsl3s@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210113145223.GD29774@pengutronix.de>
+In-Reply-To: <20210113171258.sk3k6cph7irdsl3s@pengutronix.de>
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,113 +19,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox OF-Overlay Handling
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org, Marco Felsch <m.felsch@pengutronix.de>
+Subject: Re: [PATCH] fixup! of: overlay: do not parse phandles as properties
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org, Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-T24gV2VkLCAxMyBKYW4gMjAyMSAxNTo1MjoyMyArMDEwMCwgTWljaGFlbCBUcmV0dGVyIHdyb3Rl
-Ogo+IE9uIFdlZCwgMTMgSmFuIDIwMjEgMTU6MDc6NDggKzAxMDAsIFJvdXZlbiBDemVyd2luc2tp
-IHdyb3RlOgo+ID4gT24gV2VkLCAyMDIxLTAxLTEzIGF0IDEyOjA3ICswMTAwLCBNYXJjbyBGZWxz
-Y2ggd3JvdGU6Cj4gPiA+IEhpIHRoZXJlLAo+ID4gPiAKPiA+ID4gSSBoYXZlIHRoZSBmb2xsb3dp
-bmcgcHJvYmxlbS4gTXkgY3VzdG9tZXIgaXMgdXNpbmcgb3ZlcmxheXMgZm9yCj4gPiA+IGV4dGVy
-bmFsIGRldmljZXMgbGlrZTogZGlzcGxheSwgY2FtZXJhLCBldGMuIFRoZSBjdXJyZW50IG92ZXJs
-YXkgc3VwcG9ydAo+ID4gPiBpcyBhd2Vzb21lIGFuZCBtb3N0IG9mIGl0IHdvcmtzIG91dCBvZiB0
-aGUgYm94LiBUaGVyZSBpcyBvbmx5IG9uZQo+ID4gPiBuaXRwaWNrOiBJZiBCYXJlYm94IGlzbid0
-IGJ1aWxkIHdpdGggQ09ORklHX09GX09WRVJMQVlfTElWRSBlbmFibGVkIG1hbnkKPiA+ID4gZXJy
-b3IncyBhcmUgcHJpbnRlZCBkdXJpbmcgYm9vdC4gVGhvc2UgZXJyb3IncyBhcmUgaWdub3JlZCBi
-dXQgbGV0IHRoZQo+ID4gPiB1c2VyIGFzc3VtZSB0aGF0IHNvbWV0aGluZyB3ZW50IHJlYWxseSBi
-YWQ6Cj4gPiA+IAo+ID4gPiBFUlJPUjogb2ZfcmVzb2x2ZXI6IF9fc3ltYm9sc19fIG1pc3Npbmcg
-ZnJvbSBiYXNlIGRldmljZXRyZWUKPiA+ID4gRVJST1I6IG9mX292ZXJsYXk6IGZyYWdtZW50IDMw
-MTY0Yjg4OiBwaGFuZGxlIDB4ZmZmZmZmZmYgbm90IGZvdW5kCj4gPiA+IEVSUk9SOiBvZl9vdmVy
-bGF5OiBmcmFnbWVudCAzMDE2NGM4NDogcGhhbmRsZSAweGZmZmZmZmZmIG5vdCBmb3VuZAo+ID4g
-PiBFUlJPUjogb2Zfb3ZlcmxheTogZnJhZ21lbnQgMzAxMmZiMDg6IHBoYW5kbGUgMHhmZmZmZmZm
-ZiBub3QgZm91bmQKPiA+ID4gRVJST1I6IG9mX292ZXJsYXk6IGZyYWdtZW50IDMwMTJmYzM0OiBw
-aGFuZGxlIDB4ZmZmZmZmZmYgbm90IGZvdW5kCj4gPiA+IEVSUk9SOiBvZl9vdmVybGF5OiBmcmFn
-bWVudCAzMDEyZmQ2MDogcGhhbmRsZSAweGZmZmZmZmZmIG5vdCBmb3VuZAo+ID4gPiBFUlJPUjog
-b2Zfb3ZlcmxheTogZnJhZ21lbnQgMzAxMmZlOGM6IHBoYW5kbGUgMHhmZmZmZmZmZiBub3QgZm91
-bmQKPiA+ID4gRVJST1I6IG9mX292ZXJsYXk6IGZyYWdtZW50IDMwMTJmZmI4OiBwaGFuZGxlIDB4
-ZmZmZndmZmZmZmZmIG5vdCBmb3VuZAo+ID4gPiBFUlJPUjogb2Zfb3ZlcmxheTogZnJhZ21lbnQg
-MzAxMzAwZTQ6IHBoYW5kbGUgMHhmZmZmZmZmZiBub3QgZm91bmQKPiA+ID4gRVJST1I6IG9mX292
-ZXJsYXk6IGZyYWdtZW50IDMwMTMwMjEwOiBwaGFuZGxlIDB4ZmZmZmZmZmYgbm90IGZvdW5kCj4g
-PiA+IEVSUk9SOiBvZl9vdmVybGF5OiBmcmFnbWVudCAzMDEzMDMzYzogcGhhbmRsZSAweGZmZmZm
-ZmZmIG5vdCBmb3VuZAo+ID4gPiBFUlJPUjogb2ZfcmVzb2x2ZXI6IF9fc3ltYm9sc19fIG1pc3Np
-bmcgZnJvbSBiYXNlIGRldmljZXRyZWUKPiA+ID4gRVJST1I6IG9mX292ZXJsYXk6IGZyYWdtZW50
-IDMwMTMwZTk0OiBwaGFuZGxlIDB4ZmZmZmZmZmYgbm90IGZvdW5kCj4gPiA+IEVSUk9SOiBvZl9v
-dmVybGF5OiBmcmFnbWVudCAzMDEzMGZjNDogcGhhbmRsZSAweGZmZmZmZmZmIG5vdCBmb3VuZAo+
-ID4gPiBFUlJPUjogb2ZfcmVzb2x2ZXI6IF9fc3ltYm9sc19fIG1pc3NpbmcgZnJvbSBiYXNlIGRl
-dmljZXRyZWUKPiA+ID4gRVJST1I6IG9mX292ZXJsYXk6IGZyYWdtZW50IDMwMTMxYTE0OiBwaGFu
-ZGxlIDB4ZmZmZmZmZmYgbm90IGZvdW5kCj4gPiA+IEVSUk9SOiBvZl9vdmVybGF5OiBmcmFnbWVu
-dCAzMDEzNDJkNDogcGhhbmRsZSAweGZmZmZmZmZmIG5vdCBmb3VuZAo+ID4gPiAKPiA+ID4gVGhl
-IG9mX2Zpcm13YXJlX2xvYWRfb3ZlcmxheSgpIGNhbGxzIHRyaWdnZXJpbmcgdGhvc2UgZXJyb3Jz
-Lgo+ID4gPiBUaGUgZXJyb3IncyBieSBpdHNlbGYgYXJlIGNvcnJlY3QgYW5kIEkgZG9uJ3Qgd2Fu
-bmEgY2hhbmdlIHRoZW0gYnV0IHRoZQo+ID4gPiBjb250ZXh0IG11c3QgYmUgY29ycmVjdCBieSBj
-b250ZXh0IEkgbWVhbjoKPiA+ID4gCj4gPiA+IMKgLSBiYXJlYm94LWR0IG9uIGZwZ2EtcGxhdGZv
-cm06IEFuIEZQR0EgcGxhdGZvcm0gbmVlZHMgYSBiYXJlYm94Cj4gPiA+IMKgwqDCoGJhc2UgZGV2
-aWNldHJlZSB3aXRoIF9fc3ltYm9sc19fIGFuZCB0aG9zZSBlcnJvciBhcmUgY29ycmVjdCBiZWNh
-dXNlCj4gPiA+IMKgwqDCoHRoZSBmaXJtd2FyZSBtYW5hZ2VyIG5lZWRzIHRvIGxvYWQgdGhlIGZp
-cm13YXJlLgo+ID4gPiDCoC0gYmFyZWJveC1kdCBvbiBub24gZnBnYS1wbGF0Zm9ybTogVGhvc2Ug
-ZXJyb3JzIGFyZSBub3QgY29ycmVjdC4KPiA+ID4gwqDCoMKgV2UgZG9uJ3QgbmVlZCBfX3N5bWJv
-bHNfXyBmb3IgdGhlIGJhcmVib3ggYmFzZSBkZXZpY2V0cmVlLgo+ID4gCj4gPiBJIHdhcyB3b25k
-ZXJpbmcgd2h5IHlvdSB3ZXJlIGdldHRpbmcgdGhpcyBlcnJvciBldmVuIG9uIGEgcGxhdGZvcm0K
-PiA+IHdpdGhvdXQgRlBHQSwgdHVybnMgb3V0IG9mX2Zpcm13YXJlX2xvYWRfb3ZlcmxheSgpIGlz
-IGFsd2F5cyBjYWxsZWQgaWYKPiA+IGEgZGV2aWNldHJlZSBvdmVybGF5IGlzIHBhc3NlZCB2aWEg
-dGhlIERULiBUaGlzIGluIGl0c2VsZiBpc24ndCBhCj4gPiBwcm9ibGVtLCBidXQgSU1PIG9mX2Zp
-cm13YXJlX2xvYWRfb3ZlcmxheSgpIHNob3VsZCBjaGVjayBmaXJzdCB3aGV0aGVyCj4gPiB0aGUg
-b3ZlcmxheSBjb250YWlucyB0aGUgcmlnaHQgY29tcGF0aWJsZSAoImZwZ2EtcmVnaW9uIikgYW5k
-IHByb3BlcnR5Cj4gPiAoImZpcm13YXJlLW5hbWUiKSBiZWZvcmUgZG9pbmcgb2ZfcmVzb2x2ZV9w
-aGFuZGxlcyBhbmQKPiA+IG9mX3Byb2Nlc3Nfb3ZlcmxheS4gVGhpcyB3YXkgd2UgY2FuIHNraXAg
-YSBsb3Qgb2YgdW5uZWNlc3Nhcnkgb3ZlcmxheQo+ID4gaGFuZGxpbmcgaWYgd2UgZG9uJ3QgZW5k
-IHVwIGxvYWRpbmcgYSBmaXJtd2FyZS4KPiAKPiBBdCB0aGUgbW9tZW50LCB0aGUgY2hlY2sgYW5k
-IGZpcm13YXJlIGxvYWQgcGF0aCB1c2UgdGhlIHNhbWUgY29kZSBwYXRoLAo+IGJlY2F1c2UgdGhl
-cmUgaXMgbm8gZGlmZmVyZW5jZSBleGNlcHQgdGhhdCBmaXJtd2FyZSBsb2FkIHJlcXVpcmVzIGEg
-cmVzb2x2ZWQKPiBvdmVybGF5IGFuZCB0aGUgY2hlY2sgZG9lcyBub3QuIFRoaXMgaXMgYSB2aWFi
-bGUgc29sdXRpb24gYW5kIHRoZXJlIGlzIGV2ZW4gYQo+IGhlbHBlciB0byBpdGVyYXRlIHRoZSBm
-cmFnbWVudHMgYW5kIGNhbGwgYSBjaGVjayBmdW5jdGlvbiBmb3IgZWFjaCBmcmFnbWVudC4KPiBI
-b3dldmVyIHRoZSBoZWxwZXIgY2FsbHMgZmluZF90YXJnZXQsIHdoaWNoIGlzIHJlc3BvbnNpYmxl
-IGZvciBtb3N0IG9mIHRoZQo+IGVycm9yIG1lc3NhZ2VzLCBhbmQgdGhlcmVmb3JlLCBkb2VzIG5v
-dCBjb21wbGV0ZWx5IHJlc29sdmUgdGhlIGlzc3VlLgo+IAo+IChJbmRlZWQsIHRoZSBjaGVjayBp
-ZiB0aGUgZnJhZ21lbnQgaGFzIHRoZSAiZnBnYS1yZWdpb24iIGNvbXBhdGlibGUgaXMKPiBtaXNz
-aW5nLiBUaGF0J3MgYSBidWcuKQoKVGhpcyBpcyB3cm9uZy4gVGhlIG92ZXJsYXkgZG9lcyBub3Qg
-aGF2ZSB0aGUgImZwZ2EtcmVnaW9uIiBjb21wYXRpYmxlLiBPbmx5CnRoZSB0YXJnZXQgbm9kZSBk
-ZXRlcm1pbmVzIGlmIGFuIG92ZXJsYXkgdGFyZ2V0cyBhbiBmcGdhLXJlZ2lvbiBvciBub3QuCgpN
-aWNoYWVsCgo+IAo+IEkgd291bGQgcmF0aGVyIGNoYW5nZSB0aGUgZXJyb3IgbG9nZ2luZyB0byBv
-bmx5IGxvZyBlcnJvcnMgaWYgYWN0dWFsbHkKPiBzb21ldGhpbmcgZ29lcyB3cm9uZy4gQmVjYXVz
-ZSBub25lIG9mIHRoZSBhZm9yZW1lbnRpb25lZCBlcnJvcnMgaXMgYWN0dWFsbHkKPiBmYXRhbCBm
-cm9tIGEgc3lzdGVtIHBlcnNwZWN0aXZlLCBidXQgb25seSBmcm9tIGEgZnVuY3Rpb24gcGVyc3Bl
-Y3RpdmUuCj4gRnVydGhlcm1vcmUsIHRoZSBtZXNzYWdlcyBhcmUgbm90IGhlbHBmdWwgYXQgYWxs
-IHRvIGFjdHVhbGx5IGZpbmQgdGhlIHByb2JsZW0KPiBpbiBjYXNlIG9mIGEgdW5yZXNvbHZlZCBv
-dmVybGF5Lgo+IAo+ID4gIAo+ID4gPiDCoC0ga2VybmVsLWR0IG9uIGFueSBwbGF0Zm9ybTogVGhv
-c2UgZXJyb3IncyBhcmUgY29ycmVjdCBpZgo+ID4gPiDCoMKgwqB0aGUgb3ZlcmxheXMgYXJlIHVz
-aW5nIHBoYW5kbGVzIHdoaWNoIHNob3VsZCBiZSB0aGUgY2FzZSBtb3N0IHRoZQo+ID4gPiDCoMKg
-wqB0aW1lLgo+ID4gCj4gPiBBRkFJQ1MgdGhpcyBzaG91bGQgYWxzbyBmaXggdGhpcyBjYXNlLgo+
-ID4gCj4gPiA+IE15IHByb3Bvc2VkIHNvbHV0aW9uIHdvdWxkIGJlIGEgc3R1YiBsaWtlIHRoaXM6
-Cj4gPiA+IAo+ID4gPiAjaWZkZWYgQ09ORklHX09GX09WRVJMQVlfTElWRQo+ID4gPiBpbnQgb2Zf
-ZmlybXdhcmVfbG9hZF9vdmVybGF5KHN0cnVjdCBkZXZpY2Vfbm9kZSAqb3ZlcmxheSwgY29uc3Qg
-Y2hhciAqcGF0aCk7Cj4gPiA+ICNlbHNlCj4gPiA+IHN0YXRpYyBpbmxpbmUgaW50IG9mX2Zpcm13
-YXJlX2xvYWRfb3ZlcmxheShzdHJ1Y3QgZGV2aWNlX25vZGUgKm92ZXJsYXksIGNvbnN0IGNoYXIg
-KnBhdGgpCj4gPiA+IHsKPiA+ID4gwqDCoMKgwqDCoMKgwqByZXR1cm4gMDsKPiA+ID4gfQo+ID4g
-PiAjZW5kaWYgLyogQ09ORklHX09GX09WRVJMQVlfTElWRSAqLwo+IAo+IE5hY2suIG9mX2Zpcm13
-YXJlX2xvYWRfb3ZlcmxheSBtdXN0IGZhaWwgaWYgdGhlIG92ZXJsYXkgZGVzY3JpYmVzIGFuCj4g
-ZnBnYS1yZWdpb24uIE90aGVyd2lzZSB0aGUgZGV2aWNlIHRyZWUgdGhhdCBpcyBwYXNzZWQgdG8g
-dGhlIGtlcm5lbCBtaWdodCBoYXZlCj4gYW4gZnBnYS1yZWdpb24gd2l0aCBhIGZpcm13YXJlLW5h
-bWUgcHJvcGVydHkgYW5kIHRoYXQgcGVyIHNwZWNpZmljYXRpb24KPiByZXF1aXJlcyB0aGF0IHRo
-ZSBmcGdhIGlzIHByb2dyYW1tZWQuCj4gCj4gTWljaGFlbAo+IAo+ID4gCj4gPiBXaGlsZSBjb3Jy
-ZWN0IGluIGNhc2UgYWxsIGZpcm13YXJlIG92ZXJsYXlzIHVzZSBwaGFuZGxlcywgaW4gdGhlb3J5
-Cj4gPiBvdmVybGF5cyBjb3VsZCBiZSBwdXJlbHkgcGF0aC1iYXNlZCwgd2l0aCBub3QgZGVwZW5k
-ZW5jeSBvbiB0aGUKPiA+IF9fc3ltYm9sc19fIG5vZGUuIE5vdCBzdXJlIGhvdyBjb21tb24gdGhp
-cyBpcy4KPiAKPiA+IAo+ID4gPiBUaGUgZGlzYWR2YW50YWdlIG9mIHRoaXMgc29sdXRpb24gaXMg
-dGhhdCBpdCBjYW4gaGFwcGVuIHRvIGVuZCBpbiBhCj4gPiA+IG5vbi1ib290aW5nIGRldmljZSBm
-b3IgRlBHQSBwbGF0Zm9ybXMgdXNpbmcgb3ZlcmxheXMgdG8gcHJvZ3JhbW0gdGhlCj4gPiA+IGJp
-dCBzdHJlYW0gYW5kIGZvcmdldCB0byBlbmFibGUgQ09ORklHX09GX09WRVJMQVlfTElWRSBiZWNh
-dXNlIHRoZQo+ID4gPiBrZXJuZWwgdHJpZXMgdG8gYWNjZXNzIHJlZ2lvbnMgbm90IGV4aXN0aW5n
-Lgo+ID4gPiAKPiA+ID4gSSd2ZSBkaXNjdXNzZWQgdGhpcyB3aXRoIE1pY2hhZWwgaW4gcHJpdmF0
-ZSBidXQgd2UgZGlkbid0IGNhbWUgdG8gYQo+ID4gPiBjb25jbHVzaW9uLiBUaGVyZWZvcmUgSSdt
-IGFza2luZyBoZXJlIGFueSBpbnB1dCB3b3VsZCBiZSBoZWxwZnVsbCA6KQo+ID4gCj4gPiBSZWdh
-cmRzLAo+ID4gUm91dmVuIEN6ZXJ3aW5za2kKPiA+IAo+ID4gCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+On Wed, Jan 13, 2021 at 06:12:58PM +0100, Marco Felsch wrote:
+> On 21-01-13 18:00, Rouven Czerwinski wrote:
+> > This breaks the eventual fixup of phandles into the linux device tree.
+> > Fix this by also keeping the phandle properties in the DT.
+> > ---
+> >  drivers/of/overlay.c | 1 -
+> >  1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+> > index 0bebe26e39..d7695726fc 100644
+> > --- a/drivers/of/overlay.c
+> > +++ b/drivers/of/overlay.c
+> > @@ -60,7 +60,6 @@ static int of_overlay_apply(struct device_node *target,
+> >  
+> >  		if (of_prop_cmp(prop->name, "phandle") == 0) {
+> >  			target->phandle = be32_to_cpup(prop->value);
+> > -			continue;
+> >  		}
+> 
+> Nit:
+> 
+> We could also remove the {} so it's becoming a two-liner :)
+
+Did that while applying
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
