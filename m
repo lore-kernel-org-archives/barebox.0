@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from cpanel.siel.si ([46.19.9.99])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l2Cxs-00031Y-TM
- for barebox@lists.infradead.org; Wed, 20 Jan 2021 12:52:04 +0000
-Received: from 2e130e83.rdns.siel.si ([46.19.14.131]:24969
+ id 1l2Cy8-0003Fv-5a
+ for barebox@lists.infradead.org; Wed, 20 Jan 2021 12:52:17 +0000
+Received: from 2e130e83.rdns.siel.si ([46.19.14.131]:36323
  helo=localhost.localdomain)
  by cpanel.siel.si with esmtpsa (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.93)
- (envelope-from <andrej.picej@norik.com>) id 1l2Cx6-008Cx0-9q
- for barebox@lists.infradead.org; Wed, 20 Jan 2021 13:51:12 +0100
+ (envelope-from <andrej.picej@norik.com>) id 1l2Cy2-008D7H-MC
+ for barebox@lists.infradead.org; Wed, 20 Jan 2021 13:52:10 +0100
 From: Andrej Picej <andrej.picej@norik.com>
-Date: Wed, 20 Jan 2021 13:51:06 +0100
-Message-Id: <20210120125107.736121-3-andrej.picej@norik.com>
-In-Reply-To: <20210120125107.736121-1-andrej.picej@norik.com>
-References: <20210120125107.736121-1-andrej.picej@norik.com>
+Date: Wed, 20 Jan 2021 13:52:03 +0100
+Message-Id: <20210120125203.736421-1-andrej.picej@norik.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,147 +25,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: i.MX: implement GPMI NAND xload
+Subject: [RFC PATCH] ARM: phytec-som-imx6: phycard DRAM autodetection
 To: barebox@lists.infradead.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Add support for automatic DRAM size detection on phytec phycard imx6q
+machines. Currently supported SoM variants are 1 GiB (1 bank) and 2 GiB
+variant. Machines now boot from internal SRAM (see DCD table loadaddr
+0x00907000) and then do DRAM size detection and configuration in plain
+C code (instead of hardcoded DCD table values). After initializing DRAM,
+remaining barebox image is xloaded from GPMI NAND to DRAM and started
+from there.
 
-Commit is based on initial Sascha Hauer's work. It implements PBL xload
-mechanism to load image from GPMI NAND flash.
+Booting process / strategy on phycard machines:
+ 1) lowlevel in SRAM (PBL)
+  1.1) detect DRAM size
+  1.2) configure DRAM accordingly
+  1.3) copy remaining barebox image from NAND to DRAM (addr 0x10000000)
+  1.4) jump to DRAM (addr 0x10000000)
+ 2) lowlevel in DRAM (PBL)
+  2.1) skip DRAM detection since already running from DRAM
+  2.2) main barebox entry
+ 3) board code
+ 4) ...
 
-Additional work was done, so that the NAND's size, page size and OOB's
-size are autodetected and not hardcoded. Detection method follows the
-same methods as used in NAND driver, meaning NAND ONFI support is probed
-and if NAND supports ONFI, NAND memory organization is read from ONFI
-parameter page otherwise "READ ID" is used.
-
-Currently only implemented for i.MX6 familly of SoCs.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
 Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 ---
- arch/arm/mach-imx/Makefile             |    2 +-
- arch/arm/mach-imx/include/mach/xload.h |    1 +
- arch/arm/mach-imx/xload-gpmi-nand.c    | 1163 ++++++++++++++++++++++++
- 3 files changed, 1165 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-imx/xload-gpmi-nand.c
+ .../flash-header-phytec-pcaaxl3.imxcfg        |   4 +
+ arch/arm/boards/phytec-som-imx6/lowlevel.c    | 255 ++++++++++++++++++
+ images/Makefile.imx                           |   2 +
+ 3 files changed, 261 insertions(+)
+ create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.imxcfg
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index e45f758e9..d94c846a1 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -26,4 +26,4 @@ obj-$(CONFIG_BAREBOX_UPDATE) += imx-bbu-internal.o
- obj-$(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND) += imx-bbu-external-nand.o
- obj-$(CONFIG_RESET_IMX_SRC) += src.o
- lwl-y += cpu_init.o
--pbl-y += xload-spi.o xload-common.o xload-imx-nand.o
-+pbl-y += xload-spi.o xload-common.o xload-imx-nand.o xload-gpmi-nand.o
-diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
-index 94b2f3761..7187787f5 100644
---- a/arch/arm/mach-imx/include/mach/xload.h
-+++ b/arch/arm/mach-imx/include/mach/xload.h
-@@ -5,6 +5,7 @@ int imx53_nand_start_image(void);
- int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int len);
- int imx6_spi_start_image(int instance);
- int imx6_esdhc_start_image(int instance);
-+int imx6_nand_start_image(void);
- int imx7_esdhc_start_image(int instance);
- int imx8m_esdhc_load_image(int instance, bool start);
- int imx8mp_esdhc_load_image(int instance, bool start);
-diff --git a/arch/arm/mach-imx/xload-gpmi-nand.c b/arch/arm/mach-imx/xload-gpmi-nand.c
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.imxcfg
 new file mode 100644
-index 000000000..04f799604
+index 000000000..fcfef9c23
 --- /dev/null
-+++ b/arch/arm/mach-imx/xload-gpmi-nand.c
-@@ -0,0 +1,1163 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; version 2.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-+ * General Public License for more details.
-+ */
-+
-+#define pr_fmt(fmt) "xload-gpmi-nand: " fmt
-+
-+#include <common.h>
-+#include <stmp-device.h>
-+#include <asm-generic/io.h>
-+#include <linux/sizes.h>
-+#include <linux/mtd/nand.h>
-+#include <asm/cache.h>
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.imxcfg
+@@ -0,0 +1,4 @@
++soc imx6
++loadaddr 0x00907000
++max_load_size 0x31000
++ivtofs 0x400
+diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+index 62a1c8de7..7bc9d123a 100644
+--- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
++++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+@@ -16,6 +16,261 @@
+ #include <asm/cache.h>
+ #include <asm/mmu.h>
+ #include <mach/imx6.h>
++#include <mach/imx6-mmdc.h>
++#include <mach/esdctl.h>
 +#include <mach/xload.h>
-+#include <mach/imx-nand-bcb.h>
-+#include <linux/mtd/rawnand.h>
-+
-+/*
-+ * MXS DMA hardware command.
-+ *
-+ * This structure describes the in-memory layout of an entire DMA command,
-+ * including space for the maximum number of PIO accesses. See the appropriate
-+ * reference manual for a detailed description of what these fields mean to the
-+ * DMA hardware.
-+ */
-+#define	DMACMD_COMMAND_DMA_WRITE	0x1
-+#define	DMACMD_COMMAND_DMA_READ		0x2
-+#define	DMACMD_COMMAND_DMA_SENSE	0x3
-+#define	DMACMD_CHAIN			(1 << 2)
-+#define	DMACMD_IRQ			(1 << 3)
-+#define	DMACMD_NAND_LOCK		(1 << 4)
-+#define	DMACMD_NAND_WAIT_4_READY	(1 << 5)
-+#define	DMACMD_DEC_SEM			(1 << 6)
-+#define	DMACMD_WAIT4END			(1 << 7)
-+#define	DMACMD_HALT_ON_TERMINATE	(1 << 8)
-+#define	DMACMD_TERMINATE_FLUSH		(1 << 9)
-+#define	DMACMD_PIO_WORDS(words)		((words) << 12)
-+#define	DMACMD_XFER_COUNT(x)		((x) << 16)
-+
-+struct mxs_dma_cmd {
-+	unsigned long		next;
-+	unsigned long		data;
-+	unsigned long		address;
-+#define	APBH_DMA_PIO_WORDS	6
-+	unsigned long		pio_words[APBH_DMA_PIO_WORDS];
-+};
-+
-+enum mxs_dma_id {
-+	IMX23_DMA,
-+	IMX28_DMA,
-+};
-+
-+struct apbh_dma {
-+	void __iomem *regs;
-+	enum mxs_dma_id id;
-+};
-+
-+struct mxs_dma_chan {
-+	unsigned int flags;
-+	int channel;
-+	struct apbh_dma *apbh;
-+};
-+
-+#define	HW_APBHX_CTRL0				0x000
-+#define	BM_APBH_CTRL0_APB_BURST8_EN		(1 << 29)
-+#define	BM_APBH_CTRL0_APB_BURST_EN		(1 << 28)
-+#define	BP_APBH_CTRL0_CLKGATE_CHANNEL		8
-+#define	BP_APBH_CTRL0_RESET_CHANNEL		16
-+#define	HW_APBHX_CTRL1				0x010
-+#define	BP_APBHX_CTRL1_CH_CMDCMPLT_IRQ_EN	16
-+#define	HW_APBHX_CTRL2				0x020
-+#define	HW_APBHX_CHANNEL_CTRL			0x030
-+#define	BP_APBHX_CHANNEL_CTRL_RESET_CHANNEL	16
-+#define	BP_APBHX_VERSION_MAJOR			24
-+#define	HW_APBHX_CHn_NXTCMDAR_MX23(n)		(0x050 + (n) * 0x70)
-+#define	HW_APBHX_CHn_NXTCMDAR_MX28(n)		(0x110 + (n) * 0x70)
-+#define	HW_APBHX_CHn_SEMA_MX23(n)		(0x080 + (n) * 0x70)
-+#define	HW_APBHX_CHn_SEMA_MX28(n)		(0x140 + (n) * 0x70)
-+#define	NAND_ONFI_CRC_BASE			0x4f4e
-+
-+#define apbh_dma_is_imx23(aphb) ((apbh)->id == IMX23_DMA)
 +
 +/* udelay() is not available in PBL, need to improvise */
 +static void __udelay(int us)
@@ -177,1073 +87,265 @@ index 000000000..04f799604
 +	for (i = 0; i < us * 4; i++);
 +}
 +
-+/*
-+ * Enable a DMA channel.
-+ *
-+ * If the given channel has any DMA descriptors on its active list, this
-+ * function causes the DMA hardware to begin processing them.
-+ *
-+ * This function marks the DMA channel as "busy," whether or not there are any
-+ * descriptors to process.
-+ */
-+static int mxs_dma_enable(struct mxs_dma_chan *pchan,
-+	struct mxs_dma_cmd *pdesc)
-+{
-+	struct apbh_dma *apbh = pchan->apbh;
-+	int channel_bit;
-+	int channel = pchan->channel;
++#define	IMX6Q_UART2			2
++#define	IMX6Q_UART3			3
++#define	DRIVE_STRENGTH_40_OHM		0x30
++#define	DRIVE_STRENGTH_48_OHM		0x28
 +
-+	if (apbh_dma_is_imx23(apbh)) {
-+		writel((uint32_t)pdesc,
-+			apbh->regs + HW_APBHX_CHn_NXTCMDAR_MX23(channel));
-+		writel(1, apbh->regs + HW_APBHX_CHn_SEMA_MX23(channel));
-+		channel_bit = channel + BP_APBH_CTRL0_CLKGATE_CHANNEL;
-+	} else {
-+		writel((uint32_t)pdesc,
-+			apbh->regs + HW_APBHX_CHn_NXTCMDAR_MX28(channel));
-+		writel(1, apbh->regs + HW_APBHX_CHn_SEMA_MX28(channel));
-+		channel_bit = channel;
-+	}
-+
-+	writel(1 << channel_bit, apbh->regs +
-+		HW_APBHX_CTRL0 + STMP_OFFSET_REG_CLR);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Resets the DMA channel hardware.
-+ */
-+static int mxs_dma_reset(struct mxs_dma_chan *pchan)
-+{
-+	struct apbh_dma *apbh = pchan->apbh;
-+
-+	if (apbh_dma_is_imx23(apbh))
-+		writel(1 << (pchan->channel + BP_APBH_CTRL0_RESET_CHANNEL),
-+			apbh->regs + HW_APBHX_CTRL0 + STMP_OFFSET_REG_SET);
-+	else
-+		writel(1 << (pchan->channel +
-+			BP_APBHX_CHANNEL_CTRL_RESET_CHANNEL),
-+			apbh->regs + HW_APBHX_CHANNEL_CTRL +
-+			STMP_OFFSET_REG_SET);
-+
-+	return 0;
-+}
-+
-+static int mxs_dma_wait_complete(struct mxs_dma_chan *pchan)
-+{
-+	struct apbh_dma *apbh = pchan->apbh;
-+	int timeout = 1000000;
-+
-+	while (1) {
-+		if (readl(apbh->regs + HW_APBHX_CTRL1) & (1 << pchan->channel))
-+			return 0;
-+
-+		if (!timeout--)
-+			return -ETIMEDOUT;
-+	}
-+}
-+
-+/*
-+ * Execute the DMA channel
-+ */
-+static int mxs_dma_run(struct mxs_dma_chan *pchan, struct mxs_dma_cmd *pdesc,
-+		int num)
-+{
-+	struct apbh_dma *apbh = pchan->apbh;
-+	int i, ret;
-+
-+	/* chain descriptors */
-+	for (i = 0; i < num - 1; i++) {
-+		pdesc[i].next = (uint32_t)(&pdesc[i + 1]);
-+		pdesc[i].data |= DMACMD_CHAIN;
-+	}
-+
-+	writel(1 << (pchan->channel + BP_APBHX_CTRL1_CH_CMDCMPLT_IRQ_EN),
-+		apbh->regs + HW_APBHX_CTRL1 + STMP_OFFSET_REG_SET);
-+
-+	ret = mxs_dma_enable(pchan, pdesc);
-+	if (ret) {
-+		pr_err("%s: Failed to enable dma channel: %d\n",
-+			__func__, ret);
-+		return ret;
-+	}
-+
-+	ret = mxs_dma_wait_complete(pchan);
-+	if (ret) {
-+		pr_err("%s: Failed to wait for completion: %d\n",
-+			__func__, ret);
-+		return ret;
-+	}
-+
-+	/* Shut the DMA channel down. */
-+	writel(1 << pchan->channel, apbh->regs +
-+		HW_APBHX_CTRL1 + STMP_OFFSET_REG_CLR);
-+	writel(1 << pchan->channel, apbh->regs +
-+		HW_APBHX_CTRL2 + STMP_OFFSET_REG_CLR);
-+
-+	mxs_dma_reset(pchan);
-+
-+	writel(1 << (pchan->channel + BP_APBHX_CTRL1_CH_CMDCMPLT_IRQ_EN),
-+		apbh->regs + HW_APBHX_CTRL1 + STMP_OFFSET_REG_CLR);
-+
-+	return 0;
-+}
-+
-+/* ----------------------------- NAND driver part -------------------------- */
-+
-+#define	GPMI_CTRL0					0x00000000
-+#define	GPMI_CTRL0_RUN					(1 << 29)
-+#define	GPMI_CTRL0_DEV_IRQ_EN				(1 << 28)
-+#define	GPMI_CTRL0_UDMA					(1 << 26)
-+#define	GPMI_CTRL0_COMMAND_MODE_MASK			(0x3 << 24)
-+#define	GPMI_CTRL0_COMMAND_MODE_OFFSET			24
-+#define	GPMI_CTRL0_COMMAND_MODE_WRITE			(0x0 << 24)
-+#define	GPMI_CTRL0_COMMAND_MODE_READ			(0x1 << 24)
-+#define	GPMI_CTRL0_COMMAND_MODE_READ_AND_COMPARE	(0x2 << 24)
-+#define	GPMI_CTRL0_COMMAND_MODE_WAIT_FOR_READY		(0x3 << 24)
-+#define	GPMI_CTRL0_WORD_LENGTH				(1 << 23)
-+#define	GPMI_CTRL0_CS(cs)				((cs) << 20)
-+#define	GPMI_CTRL0_ADDRESS_MASK				(0x7 << 17)
-+#define	GPMI_CTRL0_ADDRESS_OFFSET			17
-+#define	GPMI_CTRL0_ADDRESS_NAND_DATA			(0x0 << 17)
-+#define	GPMI_CTRL0_ADDRESS_NAND_CLE			(0x1 << 17)
-+#define	GPMI_CTRL0_ADDRESS_NAND_ALE			(0x2 << 17)
-+#define	GPMI_CTRL0_ADDRESS_INCREMENT			(1 << 16)
-+#define	GPMI_CTRL0_XFER_COUNT_MASK			0xffff
-+#define	GPMI_CTRL0_XFER_COUNT_OFFSET			0
-+
-+#define	GPMI_ECCCTRL_ECC_CMD_DECODE			(0x0 << 13)
-+#define	GPMI_ECCCTRL_ENABLE_ECC				(1 << 12)
-+#define	GPMI_ECCCTRL_BUFFER_MASK_BCH_PAGE		0x1ff
-+
-+#define	BCH_CTRL					0x00000000
-+#define	BCH_CTRL_COMPLETE_IRQ				(1 << 0)
-+
-+#define	MXS_NAND_DMA_DESCRIPTOR_COUNT			6
-+#define	MXS_NAND_CHUNK_DATA_CHUNK_SIZE			512
-+#define	MXS_NAND_METADATA_SIZE				10
-+#define	MXS_NAND_COMMAND_BUFFER_SIZE			128
-+
-+struct mxs_nand_info {
-+	void __iomem *io_base;
-+	void __iomem *bch_base;
-+	struct mxs_dma_chan *dma_channel;
-+	int cs;
-+	uint8_t *cmd_buf;
-+	struct mxs_dma_cmd *desc;
-+	struct fcb_block fcb;
-+	int dbbt_num_entries;
-+	u32 *dbbt;
-+	struct nand_memory_organization organization;
-+	unsigned long nand_size;
++/* mmdc DDR io registers */
++static struct mx6dq_iomux_ddr_regs mx6dq_ddr_ioregs = {
++	.dram_sdclk_0 = DRIVE_STRENGTH_40_OHM,
++	.dram_sdclk_1 = DRIVE_STRENGTH_40_OHM,
++	.dram_cas = DRIVE_STRENGTH_40_OHM,
++	.dram_ras = DRIVE_STRENGTH_40_OHM,
++	.dram_reset = DRIVE_STRENGTH_40_OHM,
++	.dram_sdcke0 = 0x00003000,
++	.dram_sdcke1 = 0x00003000,
++	.dram_sdba2 = 0x00000000,
++	.dram_sdodt0 = DRIVE_STRENGTH_40_OHM,
++	.dram_sdodt1 = DRIVE_STRENGTH_40_OHM,
++	.dram_sdqs0 = DRIVE_STRENGTH_40_OHM,
++	.dram_sdqs1 = DRIVE_STRENGTH_40_OHM,
++	.dram_sdqs2 = DRIVE_STRENGTH_40_OHM,
++	.dram_sdqs3 = DRIVE_STRENGTH_40_OHM,
++	.dram_sdqs4 = DRIVE_STRENGTH_40_OHM,
++	.dram_sdqs5 = DRIVE_STRENGTH_40_OHM,
++	.dram_sdqs6 = DRIVE_STRENGTH_40_OHM,
++	.dram_sdqs7 = DRIVE_STRENGTH_40_OHM,
++	.dram_dqm0 = DRIVE_STRENGTH_40_OHM,
++	.dram_dqm1 = DRIVE_STRENGTH_40_OHM,
++	.dram_dqm2 = DRIVE_STRENGTH_40_OHM,
++	.dram_dqm3 = DRIVE_STRENGTH_40_OHM,
++	.dram_dqm4 = DRIVE_STRENGTH_40_OHM,
++	.dram_dqm5 = DRIVE_STRENGTH_40_OHM,
++	.dram_dqm6 = DRIVE_STRENGTH_40_OHM,
++	.dram_dqm7 = DRIVE_STRENGTH_40_OHM,
 +};
 +
-+static uint32_t mxs_nand_aux_status_offset(void)
++static struct mx6_mmdc_calibration mx6q_mmdc_calib = {
++	.p0_mpwldectrl0 = 0x0013001b,
++	.p0_mpwldectrl1 = 0x003b0034,
++	.p1_mpwldectrl0 = 0x0037004b,
++	.p1_mpwldectrl1 = 0x004b0055,
++	.p0_mpdgctrl0 = 0x4350035e,
++	.p0_mpdgctrl1 = 0x035c0358,
++	.p1_mpdgctrl0 = 0x436e0376,
++	.p1_mpdgctrl1 = 0x03770352,
++	.p0_mprddlctl = 0x3c333436,
++	.p1_mprddlctl = 0x35332f3b,
++	.p0_mpwrdlctl = 0x37363e39,
++	.p1_mpwrdlctl = 0x432f433d,
++};
++
++/* MT41K128M16JT-125 IT */
++static struct mx6_ddr3_cfg mt41k128m16jt = {
++	.mem_speed = 1600,
++	.density = 2,
++	.width = 16,
++	.banks = 8,
++	.rowaddr = 14,
++	.coladdr = 10,
++	.pagesz = 2,
++	.trcd = 1375,
++	.trcmin = 4875,
++	.trasmin = 3500,
++};
++
++/* DDR 64bit 1GB */
++static struct mx6_ddr_sysinfo mem1g_q = {
++	.dsize		= 2,
++	.cs1_mirror	= 1,
++	.cs_density	= 8,
++	.ncs		= 1,
++	.bi_on		= 1,
++	.rtt_nom	= 1,
++	.rtt_wr		= 0,
++	.ralat		= 5,
++	.walat		= 1,
++	.mif3_mode	= 3,
++	.rst_to_cke	= 0x23,
++	.sde_to_rst	= 0x10,
++};
++
++/* DDR 64bit 2GB */
++static struct mx6_ddr_sysinfo mem2g_q = {
++	.dsize		= 2,
++	.cs1_mirror	= 1,
++	.cs_density	= 8,
++	.ncs		= 2,
++	.bi_on		= 1,
++	.rtt_nom	= 1,
++	.rtt_wr		= 0,
++	.ralat		= 5,
++	.walat		= 1,
++	.mif3_mode	= 3,
++	.rst_to_cke	= 0x23,
++	.sde_to_rst	= 0x10,
++};
++
++/* mmdc GRP io registers */
++static struct mx6dq_iomux_grp_regs mx6dq_grp_ioregs = {
++	.grp_ddr_type = 0x000c0000,
++	.grp_ddrmode_ctl = 0x00020000,
++	.grp_ddrpke = 0x00000000,
++	.grp_addds = DRIVE_STRENGTH_40_OHM,
++	.grp_ctlds = DRIVE_STRENGTH_40_OHM,
++	.grp_ddrmode = 0x00020000,
++	.grp_b0ds = DRIVE_STRENGTH_40_OHM,
++	.grp_b1ds = DRIVE_STRENGTH_40_OHM,
++	.grp_b2ds = DRIVE_STRENGTH_40_OHM,
++	.grp_b3ds = DRIVE_STRENGTH_40_OHM,
++	.grp_b4ds = DRIVE_STRENGTH_40_OHM,
++	.grp_b5ds = DRIVE_STRENGTH_40_OHM,
++	.grp_b6ds = DRIVE_STRENGTH_40_OHM,
++	.grp_b7ds = DRIVE_STRENGTH_40_OHM,
++};
++
++static inline void setup_uart_phycard_imx6q(int UARTn)
 +{
-+	return (MXS_NAND_METADATA_SIZE + 0x3) & ~0x3;
++	void __iomem *iomuxbase = (void *)MX6_IOMUXC_BASE_ADDR;
++
++	switch (UARTn) {
++	case IMX6Q_UART2:
++		/* Setup UART2 pin muxing */
++		writel(0x4, iomuxbase + 0xc0);
++		writel(0x4, iomuxbase + 0xbc);
++		writel(0x1, iomuxbase + 0x928);
++
++		imx6_ungate_all_peripherals();
++		imx6_uart_setup((void *)MX6_UART2_BASE_ADDR);
++		pbl_set_putc(imx_uart_putc, (void *)MX6_UART2_BASE_ADDR);
++		break;
++	case IMX6Q_UART3:
++		/* Setup UART3 pin muxing */
++		writel(0x2, iomuxbase + 0xb4);
++		writel(0x2, iomuxbase + 0xb8);
++		writel(0x1, iomuxbase + 0x930);
++
++		imx6_ungate_all_peripherals();
++		imx6_uart_setup((void *)MX6_UART3_BASE_ADDR);
++		pbl_set_putc(imx_uart_putc, (void *)MX6_UART3_BASE_ADDR);
++		break;
++	default:
++		return;
++	}
++
++	putc_ll('>');
 +}
 +
-+static int mxs_nand_read_page(struct mxs_nand_info *info, int writesize,
-+		int oobsize, int pagenum, void *databuf, int raw)
++#define DRAM_CONFIG_DELAY	5000
++#define DRAM_CALIB_DELAY	50000
++
++static unsigned long phycard_imx6q_ll_autodetect_dram_init(void)
 +{
-+	void __iomem *bch_regs = info->bch_base;
-+	unsigned column = 0;
-+	struct mxs_dma_cmd *d;
-+	int cmd_queue_len;
-+	u8 *cmd_buf;
-+	int ret;
-+	uint8_t	*status;
-+	int i;
-+	int timeout;
-+	int descnum = 0;
-+	int max_pagenum = info->nand_size /
-+		info->organization.pagesize;
++	unsigned long memsize = SZ_2G;
++	unsigned long dram_size = 0;
 +
-+	memset(info->desc, 0,
-+		sizeof(*info->desc) * MXS_NAND_DMA_DESCRIPTOR_COUNT);
++	pr_debug("DRAM init & size detection\n");
 +
-+	/* Compile DMA descriptor - read0 */
-+	cmd_buf = info->cmd_buf;
-+	cmd_queue_len = 0;
-+	d = &info->desc[descnum++];
-+	d->address = (dma_addr_t)(cmd_buf);
-+	cmd_buf[cmd_queue_len++] = NAND_CMD_READ0;
-+	cmd_buf[cmd_queue_len++] = column;
-+	cmd_buf[cmd_queue_len++] = column >> 8;
-+	cmd_buf[cmd_queue_len++] = pagenum;
-+	cmd_buf[cmd_queue_len++] = pagenum >> 8;
++	/* First try with 2 GiB DRAM configuration */
++	mx6dq_dram_iocfg(64, &mx6dq_ddr_ioregs, &mx6dq_grp_ioregs);
++	mx6_dram_cfg(&mem2g_q, &mx6q_mmdc_calib, &mt41k128m16jt);
++	__udelay(DRAM_CONFIG_DELAY);
 +
-+	if ((max_pagenum - 1) >= SZ_64K)
-+		cmd_buf[cmd_queue_len++] = pagenum >> 16;
++	mmdc_do_write_level_calibration();
++	mmdc_do_dqs_calibration();
++	__udelay(DRAM_CALIB_DELAY);
 +
-+	d->data = DMACMD_COMMAND_DMA_READ |
-+		DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(cmd_queue_len);
++	pr_debug("DRAM probe with 2 GiB config\n");
 +
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_WRITE |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_CLE |
-+		GPMI_CTRL0_ADDRESS_INCREMENT |
-+		cmd_queue_len;
++	dram_size = get_ram_size((volatile long *)0x10000000, (long)memsize);
++	pr_debug("DRAM detected size: 0x%lx\n", dram_size);
 +
-+	/* Compile DMA descriptor - readstart */
-+	cmd_buf = &info->cmd_buf[8];
-+	cmd_queue_len = 0;
-+	d = &info->desc[descnum++];
-+	d->address = (dma_addr_t)(cmd_buf);
++	if (dram_size != SZ_2G) {
++		/* Next try with 1 GiB DRAM configuration */
++		memsize = SZ_1G;
 +
-+	cmd_buf[cmd_queue_len++] = NAND_CMD_READSTART;
++		mx6dq_dram_iocfg(64, &mx6dq_ddr_ioregs, &mx6dq_grp_ioregs);
++		mx6_dram_cfg(&mem1g_q, &mx6q_mmdc_calib, &mt41k128m16jt);
++		__udelay(DRAM_CONFIG_DELAY);
 +
-+	d->data = DMACMD_COMMAND_DMA_READ |
-+		DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(cmd_queue_len);
++		mmdc_do_write_level_calibration();
++		mmdc_do_dqs_calibration();
++		__udelay(DRAM_CALIB_DELAY);
 +
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_WRITE |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_CLE |
-+		GPMI_CTRL0_ADDRESS_INCREMENT |
-+		cmd_queue_len;
-+
-+	/* Compile DMA descriptor - wait for ready. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_CHAIN |
-+		DMACMD_NAND_WAIT_4_READY |
-+		DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(2);
-+
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_WAIT_FOR_READY |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_DATA;
-+
-+	if (raw) {
-+		/* Compile DMA descriptor - read. */
-+		d = &info->desc[descnum++];
-+		d->data = DMACMD_WAIT4END |
-+			DMACMD_PIO_WORDS(1) |
-+			DMACMD_XFER_COUNT(writesize + oobsize) |
-+			DMACMD_COMMAND_DMA_WRITE;
-+		d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_READ |
-+			GPMI_CTRL0_WORD_LENGTH |
-+			GPMI_CTRL0_CS(info->cs) |
-+			GPMI_CTRL0_ADDRESS_NAND_DATA |
-+			(writesize + oobsize);
-+		d->address = (dma_addr_t)databuf;
++		pr_debug("DRAM probe with 1 GiB config\n");
 +	} else {
-+		/* Compile DMA descriptor - enable the BCH block and read. */
-+		d = &info->desc[descnum++];
-+		d->data = DMACMD_WAIT4END | DMACMD_PIO_WORDS(6);
-+		d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_READ |
-+			GPMI_CTRL0_WORD_LENGTH |
-+			GPMI_CTRL0_CS(info->cs) |
-+			GPMI_CTRL0_ADDRESS_NAND_DATA |
-+			(writesize + oobsize);
-+		d->pio_words[1] = 0;
-+		d->pio_words[2] = GPMI_ECCCTRL_ENABLE_ECC |
-+			GPMI_ECCCTRL_ECC_CMD_DECODE |
-+			GPMI_ECCCTRL_BUFFER_MASK_BCH_PAGE;
-+		d->pio_words[3] = writesize + oobsize;
-+		d->pio_words[4] = (dma_addr_t)databuf;
-+		d->pio_words[5] = (dma_addr_t)(databuf + writesize);
-+
-+		/* Compile DMA descriptor - disable the BCH block. */
-+		d = &info->desc[descnum++];
-+		d->data = DMACMD_NAND_WAIT_4_READY |
-+			DMACMD_WAIT4END |
-+			DMACMD_PIO_WORDS(3);
-+		d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_WAIT_FOR_READY |
-+			GPMI_CTRL0_WORD_LENGTH |
-+			GPMI_CTRL0_CS(info->cs) |
-+			GPMI_CTRL0_ADDRESS_NAND_DATA |
-+			(writesize + oobsize);
++		pr_debug("DRAM size 0x%lx already detected, " \
++			"skipping DRAM re-configuration\n", dram_size);
 +	}
 +
-+	/* Compile DMA descriptor - de-assert the NAND lock and interrupt. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_IRQ | DMACMD_DEC_SEM;
++	dram_size = get_ram_size((volatile long *)0x10000000, (long)memsize);
++	pr_debug("DRAM final detected size: 0x%lx\n", dram_size);
 +
-+	/* Execute the DMA chain. */
-+	ret = mxs_dma_run(info->dma_channel, info->desc, descnum);
-+	if (ret) {
-+		pr_err("DMA read error\n");
-+		goto err;
-+	}
-+
-+	if (raw)
-+		return 0;
-+
-+	timeout = 1000000;
-+
-+	while (1) {
-+		if (!timeout--) {
-+			ret = -ETIMEDOUT;
-+			goto err;
-+		}
-+
-+		if (readl(bch_regs + BCH_CTRL) & BCH_CTRL_COMPLETE_IRQ)
-+			break;
-+	}
-+
-+	writel(BCH_CTRL_COMPLETE_IRQ,
-+		bch_regs + BCH_CTRL + STMP_OFFSET_REG_CLR);
-+
-+	/* Loop over status bytes, accumulating ECC status. */
-+	status = databuf + writesize + mxs_nand_aux_status_offset();
-+	for (i = 0; i < writesize / MXS_NAND_CHUNK_DATA_CHUNK_SIZE; i++) {
-+		if (status[i] == 0xfe) {
-+			ret = -EBADMSG;
-+			goto err;
-+		}
-+	}
-+
-+	ret = 0;
-+err:
-+	return ret;
++#ifdef DEBUG
++	pr_debug("DRAM calibration results:\n");
++	mmdc_print_calibration_results();
++#endif
++	return memsize;
 +}
 +
-+static int mxs_nand_get_read_status(struct mxs_nand_info *info, void *databuf)
++static void phycard_imx6q_ll_autodetect_init(void)
 +{
-+	int ret;
-+	u8 *cmd_buf;
-+	struct mxs_dma_cmd *d;
-+	int descnum = 0;
-+	int cmd_queue_len;
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart_phycard_imx6q(IMX6Q_UART3);
 +
-+	memset(info->desc, 0,
-+		sizeof(*info->desc) * MXS_NAND_DMA_DESCRIPTOR_COUNT);
-+
-+	/* Compile DMA descriptor - READ STATUS */
-+	cmd_buf = info->cmd_buf;
-+	cmd_queue_len = 0;
-+	d = &info->desc[descnum++];
-+	d->address = (dma_addr_t)(cmd_buf);
-+	cmd_buf[cmd_queue_len++] = NAND_CMD_STATUS;
-+
-+	d->data = DMACMD_COMMAND_DMA_READ |
-+		DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(cmd_queue_len);
-+
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_WRITE |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_CLE |
-+		GPMI_CTRL0_ADDRESS_INCREMENT |
-+		cmd_queue_len;
-+
-+	/* Compile DMA descriptor - read. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(1) |
-+		DMACMD_COMMAND_DMA_WRITE;
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_READ |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_DATA |
-+		(1);
-+	d->address = (dma_addr_t)databuf;
-+
-+	/* Compile DMA descriptor - de-assert the NAND lock and interrupt. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_IRQ | DMACMD_DEC_SEM;
-+
-+	/* Execute the DMA chain. */
-+	ret = mxs_dma_run(info->dma_channel, info->desc, descnum);
-+	if (ret) {
-+		pr_err("DMA read error\n");
-+		return ret;
++	/* Already running from DRAM? */
++	if (get_pc() > 0x10000000) {
++		pr_debug("DRAM already initialized, skipping...\n");
++		return;
 +	}
 +
-+	return ret;
++	/* Running from SRAM, need to configure DRAM */
++	phycard_imx6q_ll_autodetect_dram_init();
++
++	/* Now xload remaining part of barebox image from NAND */
++	pr_debug("xloading barebox image from NAND\n");
++	imx6_nand_start_image();
++
++	pr_err("Booting failed!\n");
++	hang();
 +}
 +
-+static int mxs_nand_reset(struct mxs_nand_info *info, void *databuf)
++extern char __dtb_imx6q_phytec_phycard_start[];
++
++static noinline void phycard_imx6q_ll_autodetect_start(void)
 +{
-+	int ret, i;
-+	u8 *cmd_buf;
-+	struct mxs_dma_cmd *d;
-+	int descnum = 0;
-+	int cmd_queue_len;
-+	u8 read_status;
++	void *fdt = __dtb_imx6q_phytec_phycard_start + get_runtime_offset();
 +
-+	memset(info->desc, 0,
-+		sizeof(*info->desc) * MXS_NAND_DMA_DESCRIPTOR_COUNT);
++	phycard_imx6q_ll_autodetect_init();
 +
-+	/* Compile DMA descriptor - RESET */
-+	cmd_buf = info->cmd_buf;
-+	cmd_queue_len = 0;
-+	d = &info->desc[descnum++];
-+	d->address = (dma_addr_t)(cmd_buf);
-+	cmd_buf[cmd_queue_len++] = NAND_CMD_RESET;
-+
-+	d->data = DMACMD_COMMAND_DMA_READ |
-+		DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(cmd_queue_len);
-+
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_WRITE |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_CLE |
-+		GPMI_CTRL0_ADDRESS_INCREMENT |
-+		cmd_queue_len;
-+
-+	/* Compile DMA descriptor - de-assert the NAND lock and interrupt. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_IRQ | DMACMD_DEC_SEM;
-+
-+	/* Execute the DMA chain. */
-+	ret = mxs_dma_run(info->dma_channel, info->desc, descnum);
-+	if (ret) {
-+		pr_err("DMA read error\n");
-+		return ret;
-+	}
-+
-+	/* Wait for NAND to wake up */
-+	for (i = 0; i < 10; i++) {
-+		__udelay(50000);
-+		ret = mxs_nand_get_read_status(info, databuf);
-+		if (ret)
-+			return ret;
-+		memcpy(&read_status, databuf, 1);
-+		if (read_status == 0xe0)
-+			return 0;
-+	}
-+
-+	pr_warn("NAND Reset failed\n");
-+	return -1;
++	imx6q_barebox_entry(fdt);
 +}
 +
-+/* function taken from nand_onfi.c */
-+static u16 onfi_crc16(u16 crc, u8 const *p, size_t len)
++ENTRY_FUNCTION(start_phycard_imx6q_ll_autodetect, r0, r1, r2)
 +{
-+	int i;
++	imx6_cpu_lowlevel_init();
 +
-+	while (len--) {
-+		crc ^= *p++ << 8;
-+		for (i = 0; i < 8; i++)
-+			crc = (crc << 1) ^ ((crc & 0x8000) ? 0x8005 : 0);
-+	}
-+	return crc;
-+}
++	arm_setup_stack(0x00940000);
 +
-+static int mxs_nand_get_onfi(struct mxs_nand_info *info, void *databuf)
-+{
-+	int ret;
-+	u8 *cmd_buf;
-+	u16 crc;
-+	struct mxs_dma_cmd *d;
-+	int descnum = 0;
-+	int cmd_queue_len;
-+	struct nand_onfi_params nand_params;
-+
-+	memset(info->desc, 0,
-+		sizeof(*info->desc) * MXS_NAND_DMA_DESCRIPTOR_COUNT);
-+
-+	/* Compile DMA descriptor - READ PARAMETER PAGE */
-+	cmd_buf = info->cmd_buf;
-+	cmd_queue_len = 0;
-+	d = &info->desc[descnum++];
-+	d->address = (dma_addr_t)(cmd_buf);
-+	cmd_buf[cmd_queue_len++] = NAND_CMD_PARAM;
-+	cmd_buf[cmd_queue_len++] = 0x00;
-+
-+	d->data = DMACMD_COMMAND_DMA_READ |
-+		DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(cmd_queue_len);
-+
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_WRITE |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_CLE |
-+		GPMI_CTRL0_ADDRESS_INCREMENT |
-+		cmd_queue_len;
-+
-+	/* Compile DMA descriptor - wait for ready. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_CHAIN |
-+		DMACMD_NAND_WAIT_4_READY |
-+		DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(2);
-+
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_WAIT_FOR_READY |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_DATA;
-+
-+	/* Compile DMA descriptor - read. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(sizeof(struct nand_onfi_params)) |
-+		DMACMD_COMMAND_DMA_WRITE;
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_READ |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_DATA |
-+		(sizeof(struct nand_onfi_params));
-+	d->address = (dma_addr_t)databuf;
-+
-+	/* Compile DMA descriptor - de-assert the NAND lock and interrupt. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_IRQ | DMACMD_DEC_SEM;
-+
-+	/* Execute the DMA chain. */
-+	ret = mxs_dma_run(info->dma_channel, info->desc, descnum);
-+	if (ret) {
-+		pr_err("DMA read error\n");
-+		return ret;
-+	}
-+
-+	memcpy(&nand_params, databuf, sizeof(struct nand_onfi_params));
-+
-+	crc = onfi_crc16(NAND_ONFI_CRC_BASE, (u8 *)&nand_params, 254);
-+	pr_debug("ONFI CRC: 0x%x, CALC. CRC 0x%x\n", nand_params.crc, crc);
-+	if (crc != le16_to_cpu(nand_params.crc)) {
-+		pr_debug("ONFI CRC mismatch!\n");
-+		ret = -EUCLEAN;
-+		return ret;
-+	}
-+
-+	/* Fill the NAND organization struct with data */
-+	info->organization.bits_per_cell = nand_params.bits_per_cell;
-+	info->organization.pagesize = le32_to_cpu(nand_params.byte_per_page);
-+	info->organization.oobsize =
-+		le16_to_cpu(nand_params.spare_bytes_per_page);
-+	info->organization.pages_per_eraseblock =
-+		le32_to_cpu(nand_params.pages_per_block);
-+	info->organization.eraseblocks_per_lun =
-+		le32_to_cpu(nand_params.blocks_per_lun);
-+	info->organization.max_bad_eraseblocks_per_lun =
-+		le16_to_cpu(nand_params.bb_per_lun);
-+	info->organization.luns_per_target = nand_params.lun_count;
-+	info->nand_size = info->organization.pagesize *
-+		info->organization.pages_per_eraseblock *
-+		info->organization.eraseblocks_per_lun *
-+		info->organization.luns_per_target;
-+
-+	return ret;
-+}
-+
-+static int mxs_nand_check_onfi(struct mxs_nand_info *info, void *databuf)
-+{
-+	int ret;
-+	u8 *cmd_buf;
-+	struct mxs_dma_cmd *d;
-+	int descnum = 0;
-+	int cmd_queue_len;
-+
-+	struct onfi_header {
-+		u8 byte0;
-+		u8 byte1;
-+		u8 byte2;
-+		u8 byte3;
-+	} onfi_head;
-+
-+	memset(info->desc, 0,
-+		sizeof(*info->desc) * MXS_NAND_DMA_DESCRIPTOR_COUNT);
-+
-+	/* Compile DMA descriptor - READID + 0x20 (ADDR) */
-+	cmd_buf = info->cmd_buf;
-+	cmd_queue_len = 0;
-+	d = &info->desc[descnum++];
-+	d->address = (dma_addr_t)(cmd_buf);
-+	cmd_buf[cmd_queue_len++] = NAND_CMD_READID;
-+	cmd_buf[cmd_queue_len++] = 0x20;
-+
-+	d->data = DMACMD_COMMAND_DMA_READ |
-+		DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(cmd_queue_len);
-+
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_WRITE |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_CLE |
-+		GPMI_CTRL0_ADDRESS_INCREMENT |
-+		cmd_queue_len;
-+
-+	/* Compile DMA descriptor - read. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(sizeof(struct onfi_header)) |
-+		DMACMD_COMMAND_DMA_WRITE;
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_READ |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_DATA |
-+		(sizeof(struct onfi_header));
-+	d->address = (dma_addr_t)databuf;
-+
-+	/* Compile DMA descriptor - de-assert the NAND lock and interrupt. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_IRQ | DMACMD_DEC_SEM;
-+
-+	/* Execute the DMA chain. */
-+	ret = mxs_dma_run(info->dma_channel, info->desc, descnum);
-+	if (ret) {
-+		pr_err("DMA read error\n");
-+		return ret;
-+	}
-+
-+	memcpy(&onfi_head, databuf, sizeof(struct onfi_header));
-+
-+	pr_debug("ONFI Byte0: 0x%x\n", onfi_head.byte0);
-+	pr_debug("ONFI Byte1: 0x%x\n", onfi_head.byte1);
-+	pr_debug("ONFI Byte2: 0x%x\n", onfi_head.byte2);
-+	pr_debug("ONFI Byte3: 0x%x\n", onfi_head.byte3);
-+
-+	/* check if returned values correspond to ascii characters "ONFI" */
-+	if (onfi_head.byte0 != 0x4f || onfi_head.byte1 != 0x4e ||
-+		onfi_head.byte2 != 0x46 || onfi_head.byte3 != 0x49) {
-+		pr_warn("ONFI not supported\n");
-+		return 1;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mxs_nand_get_readid(struct mxs_nand_info *info, void *databuf)
-+{
-+	int ret;
-+	u8 *cmd_buf;
-+	struct mxs_dma_cmd *d;
-+	int descnum = 0;
-+	int cmd_queue_len;
-+
-+	struct readid_data {
-+		u8 byte0;
-+		u8 byte1;
-+		u8 byte2;
-+		u8 byte3;
-+		u8 byte4;
-+	} id_data;
-+
-+	memset(info->desc, 0,
-+		sizeof(*info->desc) * MXS_NAND_DMA_DESCRIPTOR_COUNT);
-+
-+	/* Compile DMA descriptor - READID */
-+	cmd_buf = info->cmd_buf;
-+	cmd_queue_len = 0;
-+	d = &info->desc[descnum++];
-+	d->address = (dma_addr_t)(cmd_buf);
-+	cmd_buf[cmd_queue_len++] = NAND_CMD_READID;
-+	cmd_buf[cmd_queue_len++] = 0x00;
-+
-+	d->data = DMACMD_COMMAND_DMA_READ |
-+		DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(cmd_queue_len);
-+
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_WRITE |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_CLE |
-+		GPMI_CTRL0_ADDRESS_INCREMENT |
-+		cmd_queue_len;
-+
-+	/* Compile DMA descriptor - read. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_WAIT4END |
-+		DMACMD_PIO_WORDS(1) |
-+		DMACMD_XFER_COUNT(sizeof(struct readid_data)) |
-+		DMACMD_COMMAND_DMA_WRITE;
-+	d->pio_words[0] = GPMI_CTRL0_COMMAND_MODE_READ |
-+		GPMI_CTRL0_WORD_LENGTH |
-+		GPMI_CTRL0_CS(info->cs) |
-+		GPMI_CTRL0_ADDRESS_NAND_DATA |
-+		(sizeof(struct readid_data));
-+	d->address = (dma_addr_t)databuf;
-+
-+	/* Compile DMA descriptor - de-assert the NAND lock and interrupt. */
-+	d = &info->desc[descnum++];
-+	d->data = DMACMD_IRQ | DMACMD_DEC_SEM;
-+
-+	/* Execute the DMA chain. */
-+	ret = mxs_dma_run(info->dma_channel, info->desc, descnum);
-+	if (ret) {
-+		pr_err("DMA read error\n");
-+		return ret;
-+	}
-+
-+	memcpy(&id_data, databuf, sizeof(struct readid_data));
-+
-+	pr_debug("NAND Byte0: 0x%x\n", id_data.byte0);
-+	pr_debug("NAND Byte1: 0x%x\n", id_data.byte1);
-+	pr_debug("NAND Byte2: 0x%x\n", id_data.byte2);
-+	pr_debug("NAND Byte3: 0x%x\n", id_data.byte3);
-+	pr_debug("NAND Byte4: 0x%x\n", id_data.byte4);
-+
-+	if (id_data.byte0 == 0xff || id_data.byte1 == 0xff ||
-+		id_data.byte2 == 0xff || id_data.byte3 == 0xff ||
-+		id_data.byte4 == 0xff) {
-+		pr_err("\"READ ID\" returned 0xff, possible error!\n");
-+		return -EOVERFLOW;
-+	}
-+
-+	/* Fill the NAND organization struct with data */
-+	info->organization.bits_per_cell =
-+		(1 << ((id_data.byte2 >> 2) & 0x3)) * 2;
-+	info->organization.pagesize =
-+		(1 << (id_data.byte3 & 0x3)) * SZ_1K;
-+	info->organization.oobsize = id_data.byte3 & 0x4 ?
-+		info->organization.pagesize / 512 * 16 :
-+		info->organization.pagesize / 512 * 8;
-+	info->organization.pages_per_eraseblock =
-+		(1 << ((id_data.byte3 >> 4) & 0x3)) * SZ_64K /
-+		info->organization.pagesize;
-+	info->organization.planes_per_lun =
-+		1 << ((id_data.byte4 >> 2) & 0x3);
-+	info->nand_size = info->organization.planes_per_lun *
-+		(1 << ((id_data.byte4 >> 4) & 0x7)) * SZ_8M;
-+	info->organization.eraseblocks_per_lun = info->nand_size /
-+		(info->organization.pages_per_eraseblock *
-+		info->organization.pagesize);
-+
-+	return ret;
-+}
-+
-+static int mxs_nand_get_info(struct mxs_nand_info *info, void *databuf)
-+{
-+	int ret, i;
-+
-+	ret = mxs_nand_check_onfi(info, databuf);
-+	if (ret) {
-+		if (ret != 1)
-+			return ret;
-+		pr_warn("ONFI not supported, try \"READ ID\"...\n");
-+	} else {
-+		/*
-+		 * Some NAND's don't return the correct data the first time
-+		 * "READ PARAMETER PAGE" is returned. Execute the command
-+		 * multimple times
-+		 */
-+		for (i = 0; i < 3; i++) {
-+			/*
-+			 * Some NAND's need to be reset before "READ PARAMETER
-+			 * PAGE" can be successfully executed.
-+			 */
-+			ret = mxs_nand_reset(info, databuf);
-+			if (ret)
-+				return ret;
-+			ret = mxs_nand_get_onfi(info, databuf);
-+			if (ret)
-+				pr_err("ONFI error: %d\n", ret);
-+			else
-+				break;
-+		}
-+		if (!ret)
-+			goto succ;
-+	}
-+
-+	/*
-+	 * If ONFI is not supported or if it fails try to get NAND's info from
-+	 * "READ ID" command.
-+	 */
-+	pr_debug("Trying \"READ ID\" command...\n");
-+	ret = mxs_nand_get_readid(info, databuf);
-+	if (ret) {
-+		if (ret != -EOVERFLOW)
-+			return ret;
-+
-+		/*
-+		 * If NAND's "READ ID" returns bad values, try to set them to
-+		 * default (most common NAND memory org.) and continue.
-+		 */
-+		pr_warn("NANDs READ ID command returned bad values" \
-+			" set them to default and try to continue!\n");
-+		info->organization.pagesize = 2048;
-+		info->organization.oobsize = 64;
-+		info->nand_size = SZ_1G;
-+	}
-+succ:
-+	pr_debug("NAND page_size: %d\n", info->organization.pagesize);
-+	pr_debug("NAND block_size: %d\n",
-+		info->organization.pages_per_eraseblock
-+		* info->organization.pagesize);
-+	pr_debug("NAND oob_size: %d\n", info->organization.oobsize);
-+	pr_debug("NAND nand_size: %lu\n", info->nand_size);
-+	pr_debug("NAND bits_per_cell: %d\n", info->organization.bits_per_cell);
-+	pr_debug("NAND planes_per_lun: %d\n",
-+		info->organization.planes_per_lun);
-+	pr_debug("NAND luns_per_target: %d\n",
-+		info->organization.luns_per_target);
-+	pr_debug("NAND eraseblocks_per_lun: %d\n",
-+		info->organization.eraseblocks_per_lun);
-+	pr_debug("NAND ntargets: %d\n", info->organization.ntargets);
-+
-+
-+	return 0;
-+}
-+
-+/* ---------------------------- BCB handling part -------------------------- */
-+
-+static uint32_t calc_chksum(void *buf, size_t size)
-+{
-+	u32 chksum = 0;
-+	u8 *bp = buf;
-+	size_t i;
-+
-+	for (i = 0; i < size; i++)
-+		chksum += bp[i];
-+
-+	return ~chksum;
-+}
-+
-+static int get_fcb(struct mxs_nand_info *info, void *databuf)
-+{
-+	int i, pagenum, ret;
-+	uint32_t checksum;
-+	struct fcb_block *fcb = &info->fcb;
-+
-+	/* First page read fails, this shouldn't be necessary */
-+	mxs_nand_read_page(info, info->organization.pagesize,
-+		info->organization.oobsize, 0, databuf, 1);
-+
-+	for (i = 0; i < 4; i++) {
-+		pagenum = 64 * i;
-+
-+		ret = mxs_nand_read_page(info, info->organization.pagesize,
-+			info->organization.oobsize, pagenum, databuf, 1);
-+		if (ret)
-+			continue;
-+
-+		memcpy(fcb, databuf + mxs_nand_aux_status_offset(),
-+			sizeof(*fcb));
-+
-+		if (fcb->FingerPrint != FCB_FINGERPRINT) {
-+			pr_err("No FCB found on page %d\n", pagenum);
-+			continue;
-+		}
-+
-+		checksum = calc_chksum((void *)fcb +
-+			sizeof(uint32_t), sizeof(*fcb) - sizeof(uint32_t));
-+
-+		if (checksum != fcb->Checksum) {
-+			pr_err("FCB on page %d has invalid checksum. " \
-+				"Expected: 0x%08x, calculated: 0x%08x",
-+				pagenum, fcb->Checksum, checksum);
-+			continue;
-+		}
-+
-+		pr_debug("Found FCB:\n");
-+		pr_debug("PageDataSize:     0x%08x\n", fcb->PageDataSize);
-+		pr_debug("TotalPageSize:    0x%08x\n", fcb->TotalPageSize);
-+		pr_debug("SectorsPerBlock:  0x%08x\n", fcb->SectorsPerBlock);
-+		pr_debug("FW1_startingPage: 0x%08x\n",
-+			fcb->Firmware1_startingPage);
-+		pr_debug("PagesInFW1:       0x%08x\n", fcb->PagesInFirmware1);
-+		pr_debug("FW2_startingPage: 0x%08x\n",
-+			fcb->Firmware2_startingPage);
-+		pr_debug("PagesInFW2:       0x%08x\n", fcb->PagesInFirmware2);
-+
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int get_dbbt(struct mxs_nand_info *info, void *databuf)
-+{
-+	int i, ret;
-+	int page;
-+	int startpage = info->fcb.DBBTSearchAreaStartAddress;
-+	struct dbbt_block dbbt;
-+
-+	for (i = 0; i < 4; i++) {
-+		page = startpage + i * 64;
-+
-+		ret = mxs_nand_read_page(info, info->organization.pagesize,
-+			info->organization.oobsize, page, databuf, 0);
-+		if (ret)
-+			continue;
-+
-+		memcpy(&dbbt, databuf, sizeof(struct dbbt_block));
-+
-+		if (*(u32 *)(databuf + sizeof(u32)) != DBBT_FINGERPRINT)
-+			continue;
-+
-+		/* Version check */
-+		if (be32_to_cpup(databuf + 2 * sizeof(u32)) < 1)
-+			return -ENOENT;
-+
-+		ret = mxs_nand_read_page(info, info->organization.pagesize,
-+			info->organization.oobsize, page + 4, databuf, 0);
-+		if (ret)
-+			continue;
-+
-+		info->dbbt_num_entries = *(u32 *)(databuf + sizeof(u32));
-+
-+		pr_debug("Found DBBT with %d entries\n",
-+			info->dbbt_num_entries);
-+		pr_debug("Checksum = 0x%08x\n", dbbt.Checksum);
-+		pr_debug("FingerPrint = 0x%08x\n", dbbt.FingerPrint);
-+		pr_debug("Version = 0x%08x\n", dbbt.Version);
-+		pr_debug("numberBB = 0x%08x\n", dbbt.numberBB);
-+		pr_debug("DBBTNumOfPages= 0x%08x\n", dbbt.DBBTNumOfPages);
-+
-+		for (i = 0; i < info->dbbt_num_entries; i++)
-+			pr_debug("badblock %d at block %d\n", i,
-+				*(u32 *)(databuf + (2 + i) * sizeof(u32)));
-+
-+		info->dbbt = databuf + 2 * sizeof(u32);
-+
-+		return 0;
-+	}
-+
-+	return -ENOENT;
-+}
-+
-+static int block_is_bad(struct mxs_nand_info *info, int blocknum)
-+{
-+	int i;
-+	u32 *dbbt = info->dbbt;
-+
-+	if (!dbbt)
-+		return 0;
-+
-+	for (i = 0; i < info->dbbt_num_entries; i++) {
-+		if (dbbt[i] == blocknum)
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
-+static int read_firmware(struct mxs_nand_info *info, int startpage,
-+	void *dest, int len)
-+{
-+	int curpage = startpage;
-+	struct fcb_block *fcb = &info->fcb;
-+	int pagesperblock = fcb->SectorsPerBlock;
-+	int numpages = (len / fcb->PageDataSize) + 1;
-+	int ret;
-+	int pagesize = fcb->PageDataSize;
-+	int oobsize = fcb->TotalPageSize - pagesize;
-+
-+	pr_debug("Reading %d pages starting from page %d\n",
-+		numpages, startpage);
-+
-+	if (block_is_bad(info, curpage / pagesperblock))
-+		curpage = ALIGN_DOWN(curpage + pagesperblock, pagesperblock);
-+
-+	while (numpages) {
-+		if (!(curpage & (pagesperblock - 1))) {
-+			/* Check for bad blocks on each block boundary */
-+			if (block_is_bad(info, curpage / pagesperblock)) {
-+				pr_debug("Skipping bad block at page %d\n",
-+					curpage);
-+				curpage += pagesperblock;
-+				continue;
-+			}
-+		}
-+
-+		ret = mxs_nand_read_page(info, pagesize, oobsize,
-+			curpage, dest, 0);
-+		if (ret) {
-+			pr_debug("Failed to read page %d\n", curpage);
-+			return ret;
-+		}
-+
-+		*((u8 *)dest + fcb->BadBlockMarkerByte) =
-+			*(u8 *)(dest + pagesize);
-+
-+		numpages--;
-+		dest += pagesize;
-+		curpage++;
-+	}
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused imx6_nand_load_image(void *cmdbuf, void *descs,
-+	void *databuf, void *dest, int len)
-+{
-+	struct mxs_nand_info info = {
-+		.io_base = (void *)0x00112000,
-+		.bch_base = (void *)0x00114000,
-+	};
-+	struct apbh_dma apbh = {
-+		.id = IMX28_DMA,
-+		.regs = (void *)0x00110000,
-+	};
-+	struct mxs_dma_chan pchan = {
-+		.channel = 0, /* MXS: MXS_DMA_CHANNEL_AHB_APBH_GPMI0 */
-+		.apbh = &apbh,
-+	};
-+	int ret;
-+	struct fcb_block *fcb;
-+
-+	info.dma_channel = &pchan;
-+
-+	pr_debug("cmdbuf: 0x%p descs: 0x%p databuf: 0x%p dest: 0x%p\n",
-+			cmdbuf, descs, databuf, dest);
-+
-+	/* Command buffers */
-+	info.cmd_buf = cmdbuf;
-+	info.desc = descs;
-+
-+	ret = mxs_nand_get_info(&info, databuf);
-+	if (ret)
-+		return ret;
-+
-+	ret = get_fcb(&info, databuf);
-+	if (ret)
-+		return ret;
-+
-+	fcb = &info.fcb;
-+
-+	get_dbbt(&info, databuf);
-+
-+	ret = read_firmware(&info, fcb->Firmware1_startingPage, dest, len);
-+	if (ret) {
-+		pr_err("Failed to read firmware1, trying firmware2\n");
-+		ret = read_firmware(&info, fcb->Firmware2_startingPage,
-+			dest, len);
-+		if (ret) {
-+			pr_err("Failed to also read firmware2\n");
-+			return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+int imx6_nand_start_image(void)
-+{
-+	int ret;
-+	void *sdram = (void *)0x10000000;
-+	void __noreturn (*bb)(void);
-+	void *cmdbuf, *databuf, *descs;
-+
-+	cmdbuf = sdram;
-+	descs = sdram + MXS_NAND_COMMAND_BUFFER_SIZE;
-+	databuf = descs +
-+		sizeof(struct mxs_dma_cmd) * MXS_NAND_DMA_DESCRIPTOR_COUNT;
-+	bb = (void *)PAGE_ALIGN((unsigned long)databuf + SZ_8K);
-+
-+	ret = imx6_nand_load_image(cmdbuf, descs, databuf,
-+		bb, imx_image_size());
-+	if (ret) {
-+		pr_err("Loading image failed: %d\n", ret);
-+		return ret;
-+	}
-+
-+	pr_debug("Starting barebox image at 0x%p\n", bb);
-+
-+	arm_early_mmu_cache_invalidate();
++	relocate_to_current_adr();
++	setup_c();
 +	barrier();
 +
-+	bb();
++	phycard_imx6q_ll_autodetect_start();
 +}
+ 
+ static inline void setup_uart(void)
+ {
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 514db326b..80d2fd805 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -205,6 +205,8 @@ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phyboard_su
+ 
+ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phyboard_subra_1gib_1bank, phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank, phytec-phyboard-subra-1gib-1bank)
+ 
++$(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phycard_imx6q_ll_autodetect, phytec-som-imx6/flash-header-phytec-pcaaxl3, phytec-phycard-imx6q-som-nand)
++
+ $(call build_imx_habv4img, CONFIG_MACH_DFI_FS700_M60, start_imx6dl_dfi_fs700_m60_6s, dfi-fs700-m60/flash-header-fs700-m60-6s, dfi-fs700-m60-6s)
+ 
+ $(call build_imx_habv4img, CONFIG_MACH_DFI_FS700_M60, start_imx6q_dfi_fs700_m60_6q_micron, dfi-fs700-m60/flash-header-fs700-m60-6q-micron, dfi-fs700-m60-6q-micron)
 -- 
 2.25.1
 
