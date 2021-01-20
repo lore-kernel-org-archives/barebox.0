@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from cpanel.siel.si ([46.19.9.99])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l2Ce9-0000Ol-Lw
- for barebox@lists.infradead.org; Wed, 20 Jan 2021 12:31:38 +0000
-Date: Wed, 20 Jan 2021 13:31:33 +0100
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Message-ID: <20210120123133.GY9321@pengutronix.de>
-References: <20210118204850.8420-1-m.felsch@pengutronix.de>
- <20210119110134.GX19063@pengutronix.de>
- <20210119114208.6kxdsj5pa5zo25qo@pengutronix.de>
- <20210120090321.GY19063@pengutronix.de>
- <20210120105422.zpizm7bet22ze4dq@pengutronix.de>
+ id 1l2Cxs-00031V-UR
+ for barebox@lists.infradead.org; Wed, 20 Jan 2021 12:52:02 +0000
+Received: from 2e130e83.rdns.siel.si ([46.19.14.131]:24969
+ helo=localhost.localdomain)
+ by cpanel.siel.si with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.93)
+ (envelope-from <andrej.picej@norik.com>) id 1l2Cx6-008Cx0-5n
+ for barebox@lists.infradead.org; Wed, 20 Jan 2021 13:51:12 +0100
+From: Andrej Picej <andrej.picej@norik.com>
+Date: Wed, 20 Jan 2021 13:51:04 +0100
+Message-Id: <20210120125107.736121-1-andrej.picej@norik.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210120105422.zpizm7bet22ze4dq@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,62 +25,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] blspec: allow board files to overwrite config file
- settings
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org, Sascha Hauer <sha@pengutronix.de>
+Subject: [PATCH 0/3] GPMI NAND xload for i.MX6
+To: barebox@lists.infradead.org
 
-On Wed, Jan 20, 2021 at 11:54:22AM +0100, Marco Felsch wrote:
-> On 21-01-20 10:03, Sascha Hauer wrote:
-> > On Tue, Jan 19, 2021 at 12:42:08PM +0100, Marco Felsch wrote:
-> > > Hi Sascha,
-> > > 
-> > > On 21-01-19 12:01, Sascha Hauer wrote:
-> > > > Hi Marco,
-> > > > On Mon, Jan 18, 2021 at 09:48:49PM +0100, Marco Felsch wrote:
-> > > > > This commit adds the support to overwrite and/or adapt blspec config
-> > > > > files by the following global variables:
-> > > > >   - global.blspec.fixup.devicetree
-> > > > >   - global.blspec.fixup.initrd
-> > > > >   - global.blspec.fixup.options
-> > > > >   - global.blspec.fixup.linux
-> > > > >   - global.blspec.fixup.devicetree-overlay.
-> > > > > 
-> > > > > Overwriting blspec-config's shouldn't be the normal case but there are
-> > > > > cases where this support is needed. One use-case can be a special
-> > > > > handling during update. E.g. the normal boot-flow don't need the initrd
-> > > > > but the update-flow uses it because the update system is on the initrd.
-> > > > 
-> > > > When you have an update system and a regular system on the same
-> > > > filesystem then I would expect an additional bootspec entry for the
-> > > > update system.
-> > > 
-> > > AFAIK, barebox tries to find the correct entry by checking all config
-> > > files and loads the first matching config file. Is there a way to
-> > > specify an explicite config file?
-> > 
-> > Not yet, but maybe we are at a point where a way should be added.
-> 
-> Maybe but how do you decide it? Also IMHO this wouldn't be that flexible
-> as this solution.
+Hi all,
 
-Maybe allow globing?
+these patches implement GPMI NAND xload mechanism for i.MX6 SoCs. The xload from
+GPMI NAND is needed in case board wants to boot from internal SRAM (limited in
+size) and then load remaining barebox image from NAND.
 
-So I can say I want to boot 'default.conf' and create that as a symlink in
-the filesystem. That would be for the desktop use-case with multiple kernel
-versions.
+The usual use-case for xload mechanism is board DRAM size auto-detection and
+runtime configuration without the need for separate DCD tables for each SoM
+variant.
 
-Or I could switch between '*-regular.conf' and '*-update.conf'. And then
-provide two entries for each device-tree.
+In our case patches were required to support DRAM size auto-detection on
+Phytec's phycard-imx6 SoM with 1GiB and 2GiB DRAM variants. Thus we decided to
+submit example implementation on the mentioned board as RFC patch that will
+follow these patch series.
 
-Michael
+Nonetheless, the majority of work was already provided by Sascha Hauer, but his
+patches were in WIP stage and not found in the mainline. We added missing parts
+for detecting NAND's page and oob size necessary for initial FCB page
+reading, etc.
 
+We hope patches spawn ideas for future implementations and work!
+
+Best regards,
+Andrej Picej
+
+Andrej Picej (1):
+  ARM: i.MX: xload-gpmi-nand: apply errata 007117
+
+Primoz Fiser (1):
+  ARM: i.MX: move BCB structures to header file
+
+Sascha Hauer (1):
+  ARM: i.MX: implement GPMI NAND xload
+
+ arch/arm/mach-imx/Makefile                    |    2 +-
+ arch/arm/mach-imx/include/mach/imx-nand-bcb.h |   80 ++
+ arch/arm/mach-imx/include/mach/xload.h        |    1 +
+ arch/arm/mach-imx/xload-gpmi-nand.c           | 1225 +++++++++++++++++
+ common/imx-bbu-nand-fcb.c                     |   69 +-
+ 5 files changed, 1308 insertions(+), 69 deletions(-)
+ create mode 100644 arch/arm/mach-imx/include/mach/imx-nand-bcb.h
+ create mode 100644 arch/arm/mach-imx/xload-gpmi-nand.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.1
+
 
 _______________________________________________
 barebox mailing list
