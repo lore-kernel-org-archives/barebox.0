@@ -1,20 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout-p-102.mailbox.org ([80.241.56.152])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l2DVf-0004Lr-Hx
- for barebox@lists.infradead.org; Wed, 20 Jan 2021 13:26:57 +0000
-Date: Wed, 20 Jan 2021 14:26:54 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20210120132654.odcbdxu64v6clibs@pengutronix.de>
-References: <20210118204850.8420-1-m.felsch@pengutronix.de>
- <20210119110134.GX19063@pengutronix.de>
- <20210119114208.6kxdsj5pa5zo25qo@pengutronix.de>
- <20210120090321.GY19063@pengutronix.de>
- <20210120105422.zpizm7bet22ze4dq@pengutronix.de>
- <20210120123133.GY9321@pengutronix.de>
+ id 1l2EFS-0000dV-CI
+ for barebox@lists.infradead.org; Wed, 20 Jan 2021 14:14:15 +0000
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4DLSFH35TgzQlYt
+ for <barebox@lists.infradead.org>; Wed, 20 Jan 2021 15:14:11 +0100 (CET)
+Received: from smtp1.mailbox.org ([80.241.60.240])
+ by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173])
+ (amavisd-new, port 10030)
+ with ESMTP id tar3nQPIPzph for <barebox@lists.infradead.org>;
+ Wed, 20 Jan 2021 15:14:04 +0100 (CET)
+Date: Wed, 20 Jan 2021 15:14:04 +0100 (CET)
+From: barebox+mailing@cookiesoft.de
+Message-ID: <199631954.110480.1611152044705@office.mailbox.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210120123133.GY9321@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,64 +30,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] blspec: allow board files to overwrite config file
- settings
-To: Sascha Hauer <sha@pengutronix.de>, barebox@lists.infradead.org
+Subject: /env/init script order
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On 21-01-20 13:31, Michael Olbrich wrote:
-> On Wed, Jan 20, 2021 at 11:54:22AM +0100, Marco Felsch wrote:
-> > On 21-01-20 10:03, Sascha Hauer wrote:
-> > > On Tue, Jan 19, 2021 at 12:42:08PM +0100, Marco Felsch wrote:
-> > > > Hi Sascha,
-> > > > 
-> > > > On 21-01-19 12:01, Sascha Hauer wrote:
-> > > > > Hi Marco,
-> > > > > On Mon, Jan 18, 2021 at 09:48:49PM +0100, Marco Felsch wrote:
-> > > > > > This commit adds the support to overwrite and/or adapt blspec config
-> > > > > > files by the following global variables:
-> > > > > >   - global.blspec.fixup.devicetree
-> > > > > >   - global.blspec.fixup.initrd
-> > > > > >   - global.blspec.fixup.options
-> > > > > >   - global.blspec.fixup.linux
-> > > > > >   - global.blspec.fixup.devicetree-overlay.
-> > > > > > 
-> > > > > > Overwriting blspec-config's shouldn't be the normal case but there are
-> > > > > > cases where this support is needed. One use-case can be a special
-> > > > > > handling during update. E.g. the normal boot-flow don't need the initrd
-> > > > > > but the update-flow uses it because the update system is on the initrd.
-> > > > > 
-> > > > > When you have an update system and a regular system on the same
-> > > > > filesystem then I would expect an additional bootspec entry for the
-> > > > > update system.
-> > > > 
-> > > > AFAIK, barebox tries to find the correct entry by checking all config
-> > > > files and loads the first matching config file. Is there a way to
-> > > > specify an explicite config file?
-> > > 
-> > > Not yet, but maybe we are at a point where a way should be added.
-> > 
-> > Maybe but how do you decide it? Also IMHO this wouldn't be that flexible
-> > as this solution.
-> 
-> Maybe allow globing?
-> 
-> So I can say I want to boot 'default.conf' and create that as a symlink in
-> the filesystem. That would be for the desktop use-case with multiple kernel
-> versions.
+Hey folks, 
 
-That would be a solution. But...
+according to the doc[0] the scripts in /env/init will be "executed in alphabetical order". But certainly, this isn't the case (for me). 
 
-> Or I could switch between '*-regular.conf' and '*-update.conf'. And then
-> provide two entries for each device-tree.
+If I look into the source[1], I see a `readdir` call, which certainly guarantees no order at all. But I want a certain order, at least I want my script to be executed after the automount script. 
 
-.. if I wanna cover all platforms I have at least 2 platform confs for
-each platform. The reason for that is because different platforms using
-different overlays. By platform I mean a different variant of the same
-platform family. Therefore I use my abbroach to patch the needed
-overlays live and the platform is always the same.
+1. Why is there a discrepancy? Was there a time where the scripts were executed in order? 
+2. How can I achieve, that "my script" get's executed after a certain (the autmount) script? 
 
-Regards,
-  Marco
+Greetings, 
+Marcel 
+
+
+[0]: https://barebox.org/doc/latest/user/defaultenv-2.html#env-init
+[1]: https://git.pengutronix.de/cgit/barebox/tree/common/startup.c#n333
 
 _______________________________________________
 barebox mailing list
