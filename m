@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from cpanel.siel.si ([46.19.9.99])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l2Wp0-0001So-UH
- for barebox@lists.infradead.org; Thu, 21 Jan 2021 10:04:12 +0000
-Date: Thu, 21 Jan 2021 11:04:08 +0100
-Message-ID: <20210121100408.GJ19063@pengutronix.de>
-References: <20210120125203.736421-1-andrej.picej@norik.com>
+ id 1l2XCt-0004jn-JC
+ for barebox@lists.infradead.org; Thu, 21 Jan 2021 10:28:53 +0000
+References: <20210120125107.736121-1-andrej.picej@norik.com>
+ <20210120125107.736121-3-andrej.picej@norik.com>
+ <20210121090148.GF19063@pengutronix.de>
+From: Andrej Picej <andrej.picej@norik.com>
+Message-ID: <7df4659e-7237-c5fa-767f-7dedd5c44005@norik.com>
+Date: Thu, 21 Jan 2021 11:28:39 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210120125203.736421-1-andrej.picej@norik.com>
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <20210121090148.GF19063@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,355 +20,219 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH] ARM: phytec-som-imx6: phycard DRAM autodetection
-To: Andrej Picej <andrej.picej@norik.com>
-Cc: Yunus Bas <y.bas@phytec.de>, barebox@lists.infradead.org, Stefan Christ <s.christ@phytec.de>, Stefan Riedmueller <s.riedmueller@phytec.de>
+Subject: Re: [PATCH 2/3] ARM: i.MX: implement GPMI NAND xload
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-+Cc some Phytec guys
+Hi Sascha,
 
-On Wed, Jan 20, 2021 at 01:52:03PM +0100, Andrej Picej wrote:
-> Add support for automatic DRAM size detection on phytec phycard imx6q
-> machines. Currently supported SoM variants are 1 GiB (1 bank) and 2 GiB
-> variant. Machines now boot from internal SRAM (see DCD table loadaddr
-> 0x00907000) and then do DRAM size detection and configuration in plain
-> C code (instead of hardcoded DCD table values). After initializing DRAM,
-> remaining barebox image is xloaded from GPMI NAND to DRAM and started
-> from there.
-> 
-> Booting process / strategy on phycard machines:
->  1) lowlevel in SRAM (PBL)
->   1.1) detect DRAM size
->   1.2) configure DRAM accordingly
->   1.3) copy remaining barebox image from NAND to DRAM (addr 0x10000000)
->   1.4) jump to DRAM (addr 0x10000000)
->  2) lowlevel in DRAM (PBL)
->   2.1) skip DRAM detection since already running from DRAM
->   2.2) main barebox entry
->  3) board code
->  4) ...
-> 
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> ---
->  .../flash-header-phytec-pcaaxl3.imxcfg        |   4 +
->  arch/arm/boards/phytec-som-imx6/lowlevel.c    | 255 ++++++++++++++++++
->  images/Makefile.imx                           |   2 +
->  3 files changed, 261 insertions(+)
->  create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.imxcfg
-> 
-> diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.imxcfg
-> new file mode 100644
-> index 000000000..fcfef9c23
-> --- /dev/null
-> +++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.imxcfg
-> @@ -0,0 +1,4 @@
-> +soc imx6
-> +loadaddr 0x00907000
-> +max_load_size 0x31000
-> +ivtofs 0x400
-> diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
-> index 62a1c8de7..7bc9d123a 100644
-> --- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
-> +++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
-> @@ -16,6 +16,261 @@
->  #include <asm/cache.h>
->  #include <asm/mmu.h>
->  #include <mach/imx6.h>
-> +#include <mach/imx6-mmdc.h>
-> +#include <mach/esdctl.h>
-> +#include <mach/xload.h>
-> +
-> +/* udelay() is not available in PBL, need to improvise */
-> +static void __udelay(int us)
-> +{
-> +	volatile int i;
-> +
-> +	for (i = 0; i < us * 4; i++);
-> +}
-> +
-> +#define	IMX6Q_UART2			2
-> +#define	IMX6Q_UART3			3
-> +#define	DRIVE_STRENGTH_40_OHM		0x30
-> +#define	DRIVE_STRENGTH_48_OHM		0x28
-> +
-> +/* mmdc DDR io registers */
-> +static struct mx6dq_iomux_ddr_regs mx6dq_ddr_ioregs = {
-> +	.dram_sdclk_0 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdclk_1 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_cas = DRIVE_STRENGTH_40_OHM,
-> +	.dram_ras = DRIVE_STRENGTH_40_OHM,
-> +	.dram_reset = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdcke0 = 0x00003000,
-> +	.dram_sdcke1 = 0x00003000,
-> +	.dram_sdba2 = 0x00000000,
-> +	.dram_sdodt0 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdodt1 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdqs0 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdqs1 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdqs2 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdqs3 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdqs4 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdqs5 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdqs6 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_sdqs7 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_dqm0 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_dqm1 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_dqm2 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_dqm3 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_dqm4 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_dqm5 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_dqm6 = DRIVE_STRENGTH_40_OHM,
-> +	.dram_dqm7 = DRIVE_STRENGTH_40_OHM,
-> +};
-> +
-> +static struct mx6_mmdc_calibration mx6q_mmdc_calib = {
-> +	.p0_mpwldectrl0 = 0x0013001b,
-> +	.p0_mpwldectrl1 = 0x003b0034,
-> +	.p1_mpwldectrl0 = 0x0037004b,
-> +	.p1_mpwldectrl1 = 0x004b0055,
-> +	.p0_mpdgctrl0 = 0x4350035e,
-> +	.p0_mpdgctrl1 = 0x035c0358,
-> +	.p1_mpdgctrl0 = 0x436e0376,
-> +	.p1_mpdgctrl1 = 0x03770352,
-> +	.p0_mprddlctl = 0x3c333436,
-> +	.p1_mprddlctl = 0x35332f3b,
-> +	.p0_mpwrdlctl = 0x37363e39,
-> +	.p1_mpwrdlctl = 0x432f433d,
-> +};
-> +
-> +/* MT41K128M16JT-125 IT */
-> +static struct mx6_ddr3_cfg mt41k128m16jt = {
-> +	.mem_speed = 1600,
-> +	.density = 2,
-> +	.width = 16,
-> +	.banks = 8,
-> +	.rowaddr = 14,
-> +	.coladdr = 10,
-> +	.pagesz = 2,
-> +	.trcd = 1375,
-> +	.trcmin = 4875,
-> +	.trasmin = 3500,
-> +};
-> +
-> +/* DDR 64bit 1GB */
-> +static struct mx6_ddr_sysinfo mem1g_q = {
-> +	.dsize		= 2,
-> +	.cs1_mirror	= 1,
-> +	.cs_density	= 8,
-> +	.ncs		= 1,
-> +	.bi_on		= 1,
-> +	.rtt_nom	= 1,
-> +	.rtt_wr		= 0,
-> +	.ralat		= 5,
-> +	.walat		= 1,
-> +	.mif3_mode	= 3,
-> +	.rst_to_cke	= 0x23,
-> +	.sde_to_rst	= 0x10,
-> +};
-> +
-> +/* DDR 64bit 2GB */
-> +static struct mx6_ddr_sysinfo mem2g_q = {
-> +	.dsize		= 2,
-> +	.cs1_mirror	= 1,
-> +	.cs_density	= 8,
-> +	.ncs		= 2,
-> +	.bi_on		= 1,
-> +	.rtt_nom	= 1,
-> +	.rtt_wr		= 0,
-> +	.ralat		= 5,
-> +	.walat		= 1,
-> +	.mif3_mode	= 3,
-> +	.rst_to_cke	= 0x23,
-> +	.sde_to_rst	= 0x10,
-> +};
-> +
-> +/* mmdc GRP io registers */
-> +static struct mx6dq_iomux_grp_regs mx6dq_grp_ioregs = {
-> +	.grp_ddr_type = 0x000c0000,
-> +	.grp_ddrmode_ctl = 0x00020000,
-> +	.grp_ddrpke = 0x00000000,
-> +	.grp_addds = DRIVE_STRENGTH_40_OHM,
-> +	.grp_ctlds = DRIVE_STRENGTH_40_OHM,
-> +	.grp_ddrmode = 0x00020000,
-> +	.grp_b0ds = DRIVE_STRENGTH_40_OHM,
-> +	.grp_b1ds = DRIVE_STRENGTH_40_OHM,
-> +	.grp_b2ds = DRIVE_STRENGTH_40_OHM,
-> +	.grp_b3ds = DRIVE_STRENGTH_40_OHM,
-> +	.grp_b4ds = DRIVE_STRENGTH_40_OHM,
-> +	.grp_b5ds = DRIVE_STRENGTH_40_OHM,
-> +	.grp_b6ds = DRIVE_STRENGTH_40_OHM,
-> +	.grp_b7ds = DRIVE_STRENGTH_40_OHM,
-> +};
-> +
-> +static inline void setup_uart_phycard_imx6q(int UARTn)
-> +{
-> +	void __iomem *iomuxbase = (void *)MX6_IOMUXC_BASE_ADDR;
-> +
-> +	switch (UARTn) {
-> +	case IMX6Q_UART2:
-> +		/* Setup UART2 pin muxing */
-> +		writel(0x4, iomuxbase + 0xc0);
-> +		writel(0x4, iomuxbase + 0xbc);
-> +		writel(0x1, iomuxbase + 0x928);
-> +
-> +		imx6_ungate_all_peripherals();
-> +		imx6_uart_setup((void *)MX6_UART2_BASE_ADDR);
-> +		pbl_set_putc(imx_uart_putc, (void *)MX6_UART2_BASE_ADDR);
-> +		break;
-> +	case IMX6Q_UART3:
-> +		/* Setup UART3 pin muxing */
-> +		writel(0x2, iomuxbase + 0xb4);
-> +		writel(0x2, iomuxbase + 0xb8);
-> +		writel(0x1, iomuxbase + 0x930);
-> +
-> +		imx6_ungate_all_peripherals();
-> +		imx6_uart_setup((void *)MX6_UART3_BASE_ADDR);
-> +		pbl_set_putc(imx_uart_putc, (void *)MX6_UART3_BASE_ADDR);
-> +		break;
-> +	default:
-> +		return;
-> +	}
-> +
-> +	putc_ll('>');
-> +}
-> +
-> +#define DRAM_CONFIG_DELAY	5000
-> +#define DRAM_CALIB_DELAY	50000
-> +
-> +static unsigned long phycard_imx6q_ll_autodetect_dram_init(void)
-> +{
-> +	unsigned long memsize = SZ_2G;
-> +	unsigned long dram_size = 0;
-> +
-> +	pr_debug("DRAM init & size detection\n");
-> +
-> +	/* First try with 2 GiB DRAM configuration */
-> +	mx6dq_dram_iocfg(64, &mx6dq_ddr_ioregs, &mx6dq_grp_ioregs);
-> +	mx6_dram_cfg(&mem2g_q, &mx6q_mmdc_calib, &mt41k128m16jt);
-> +	__udelay(DRAM_CONFIG_DELAY);
-> +
-> +	mmdc_do_write_level_calibration();
-> +	mmdc_do_dqs_calibration();
-> +	__udelay(DRAM_CALIB_DELAY);
-> +
-> +	pr_debug("DRAM probe with 2 GiB config\n");
-> +
-> +	dram_size = get_ram_size((volatile long *)0x10000000, (long)memsize);
-> +	pr_debug("DRAM detected size: 0x%lx\n", dram_size);
-> +
-> +	if (dram_size != SZ_2G) {
-> +		/* Next try with 1 GiB DRAM configuration */
-> +		memsize = SZ_1G;
-> +
-> +		mx6dq_dram_iocfg(64, &mx6dq_ddr_ioregs, &mx6dq_grp_ioregs);
-> +		mx6_dram_cfg(&mem1g_q, &mx6q_mmdc_calib, &mt41k128m16jt);
-> +		__udelay(DRAM_CONFIG_DELAY);
-> +
-> +		mmdc_do_write_level_calibration();
-> +		mmdc_do_dqs_calibration();
-> +		__udelay(DRAM_CALIB_DELAY);
-> +
-> +		pr_debug("DRAM probe with 1 GiB config\n");
-> +	} else {
-> +		pr_debug("DRAM size 0x%lx already detected, " \
-> +			"skipping DRAM re-configuration\n", dram_size);
-> +	}
-> +
-> +	dram_size = get_ram_size((volatile long *)0x10000000, (long)memsize);
-> +	pr_debug("DRAM final detected size: 0x%lx\n", dram_size);
-> +
-> +#ifdef DEBUG
-> +	pr_debug("DRAM calibration results:\n");
-> +	mmdc_print_calibration_results();
-> +#endif
-> +	return memsize;
-> +}
-> +
-> +static void phycard_imx6q_ll_autodetect_init(void)
-> +{
-> +	if (IS_ENABLED(CONFIG_DEBUG_LL))
-> +		setup_uart_phycard_imx6q(IMX6Q_UART3);
-> +
-> +	/* Already running from DRAM? */
-> +	if (get_pc() > 0x10000000) {
-> +		pr_debug("DRAM already initialized, skipping...\n");
-> +		return;
-> +	}
-> +
-> +	/* Running from SRAM, need to configure DRAM */
-> +	phycard_imx6q_ll_autodetect_dram_init();
-> +
-> +	/* Now xload remaining part of barebox image from NAND */
-> +	pr_debug("xloading barebox image from NAND\n");
-> +	imx6_nand_start_image();
+thanks for your comments.
 
-You should detect where we are booting from and load the rest from the
-same device. Speaking of which, we should finally add some
-imx6_xload_start_image() function which does that generically for i.MX6.
+Responses inline.
 
-> +
-> +	pr_err("Booting failed!\n");
-> +	hang();
-> +}
-> +
-> +extern char __dtb_imx6q_phytec_phycard_start[];
-> +
-> +static noinline void phycard_imx6q_ll_autodetect_start(void)
-> +{
-> +	void *fdt = __dtb_imx6q_phytec_phycard_start + get_runtime_offset();
-> +
-> +	phycard_imx6q_ll_autodetect_init();
-> +
-> +	imx6q_barebox_entry(fdt);
-> +}
-> +
-> +ENTRY_FUNCTION(start_phycard_imx6q_ll_autodetect, r0, r1, r2)
-> +{
-> +	imx6_cpu_lowlevel_init();
-> +
-> +	arm_setup_stack(0x00940000);
-> +
-> +	relocate_to_current_adr();
-> +	setup_c();
-> +	barrier();
-> +
-> +	phycard_imx6q_ll_autodetect_start();
-> +}
->  
->  static inline void setup_uart(void)
->  {
-> diff --git a/images/Makefile.imx b/images/Makefile.imx
-> index 514db326b..80d2fd805 100644
-> --- a/images/Makefile.imx
-> +++ b/images/Makefile.imx
-> @@ -205,6 +205,8 @@ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phyboard_su
->  
->  $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phyboard_subra_1gib_1bank, phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank, phytec-phyboard-subra-1gib-1bank)
->  
-> +$(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phycard_imx6q_ll_autodetect, phytec-som-imx6/flash-header-phytec-pcaaxl3, phytec-phycard-imx6q-som-nand)
-> +
->  $(call build_imx_habv4img, CONFIG_MACH_DFI_FS700_M60, start_imx6dl_dfi_fs700_m60_6s, dfi-fs700-m60/flash-header-fs700-m60-6s, dfi-fs700-m60-6s)
->  
->  $(call build_imx_habv4img, CONFIG_MACH_DFI_FS700_M60, start_imx6q_dfi_fs700_m60_6q_micron, dfi-fs700-m60/flash-header-fs700-m60-6q-micron, dfi-fs700-m60-6q-micron)
-> -- 
-> 2.25.1
+On 21. 01. 21 10:01, Sascha Hauer wrote:
+> Hi Andrej,
 > 
+> Some comments inline.
 > 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> On Wed, Jan 20, 2021 at 01:51:06PM +0100, Andrej Picej wrote:
+>> From: Sascha Hauer <s.hauer@pengutronix.de>
+>>
+>> Commit is based on initial Sascha Hauer's work. It implements PBL xload
+>> mechanism to load image from GPMI NAND flash.
+>>
+>> Additional work was done, so that the NAND's size, page size and OOB's
+>> size are autodetected and not hardcoded. Detection method follows the
+>> same methods as used in NAND driver, meaning NAND ONFI support is probed
+>> and if NAND supports ONFI, NAND memory organization is read from ONFI
+>> parameter page otherwise "READ ID" is used.
+>>
+>> Currently only implemented for i.MX6 familly of SoCs.
+>>
+>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+>> ---
+>>   arch/arm/mach-imx/Makefile             |    2 +-
+>>   arch/arm/mach-imx/include/mach/xload.h |    1 +
+>>   arch/arm/mach-imx/xload-gpmi-nand.c    | 1163 ++++++++++++++++++++++++
+>>   3 files changed, 1165 insertions(+), 1 deletion(-)
+>>   create mode 100644 arch/arm/mach-imx/xload-gpmi-nand.c
+>>
+>> diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+>> index e45f758e9..d94c846a1 100644
+>> --- a/arch/arm/mach-imx/Makefile
+>> +++ b/arch/arm/mach-imx/Makefile
+>> +static int mxs_nand_get_info(struct mxs_nand_info *info, void *databuf)
+>> +{
+>> +	int ret, i;
+>> +
+>> +	ret = mxs_nand_check_onfi(info, databuf);
+>> +	if (ret) {
+>> +		if (ret != 1)
+>> +			return ret;
+>> +		pr_warn("ONFI not supported, try \"READ ID\"...\n");
+> 
+> You already printed a "ONFI not supported\n" message. Printing it once
+> is enough. Also this message appears with every non-ONFI nand, right? In
+> that case it should rather be pr_info()
+
+OK, I agree, will fix it in v2.
+
+> 
+>> +	/*
+>> +	 * If ONFI is not supported or if it fails try to get NAND's info from
+>> +	 * "READ ID" command.
+>> +	 */
+>> +	pr_debug("Trying \"READ ID\" command...\n");
+>> +	ret = mxs_nand_get_readid(info, databuf);
+>> +	if (ret) {
+>> +		if (ret != -EOVERFLOW)
+>> +			return ret;
+>> +
+>> +		/*
+>> +		 * If NAND's "READ ID" returns bad values, try to set them to
+>> +		 * default (most common NAND memory org.) and continue.
+>> +		 */
+>> +		pr_warn("NANDs READ ID command returned bad values" \
+>> +			" set them to default and try to continue!\n");
+>> +		info->organization.pagesize = 2048;
+>> +		info->organization.oobsize = 64;
+>> +		info->nand_size = SZ_1G;
+> 
+> Is this worth it? READ ID is the most basic command, when this doesn't
+> work I don't think there's a point in continuing.
+
+We had a case with Samsung K9K8G08U0E when sometimes (reasons not known) 
+the 5th byte returned 0xff instead of correct values, all other returned 
+values were correct. In this case the device booted successfully because 
+of this hook. Maybe a better solution would be to check only the 5th 
+byte for 0xff value (5th byte is not supported from all NAND vendors), 
+if this is the case set the NAND size to 1GB.
+Would that make more sense?
+
+> 
+>> +	}
+>> +succ:
+>> +	pr_debug("NAND page_size: %d\n", info->organization.pagesize);
+>> +	pr_debug("NAND block_size: %d\n",
+>> +		info->organization.pages_per_eraseblock
+>> +		* info->organization.pagesize);
+>> +	pr_debug("NAND oob_size: %d\n", info->organization.oobsize);
+>> +	pr_debug("NAND nand_size: %lu\n", info->nand_size);
+>> +	pr_debug("NAND bits_per_cell: %d\n", info->organization.bits_per_cell);
+>> +	pr_debug("NAND planes_per_lun: %d\n",
+>> +		info->organization.planes_per_lun);
+>> +	pr_debug("NAND luns_per_target: %d\n",
+>> +		info->organization.luns_per_target);
+>> +	pr_debug("NAND eraseblocks_per_lun: %d\n",
+>> +		info->organization.eraseblocks_per_lun);
+>> +	pr_debug("NAND ntargets: %d\n", info->organization.ntargets);
+>> +
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +/* ---------------------------- BCB handling part -------------------------- */
+>> +
+>> +static uint32_t calc_chksum(void *buf, size_t size)
+>> +{
+>> +	u32 chksum = 0;
+>> +	u8 *bp = buf;
+>> +	size_t i;
+>> +
+>> +	for (i = 0; i < size; i++)
+>> +		chksum += bp[i];
+>> +
+>> +	return ~chksum;
+>> +}
+>> +
+>> +static int get_fcb(struct mxs_nand_info *info, void *databuf)
+>> +{
+>> +	int i, pagenum, ret;
+>> +	uint32_t checksum;
+>> +	struct fcb_block *fcb = &info->fcb;
+>> +
+>> +	/* First page read fails, this shouldn't be necessary */
+>> +	mxs_nand_read_page(info, info->organization.pagesize,
+>> +		info->organization.oobsize, 0, databuf, 1);
+>> +
+>> +	for (i = 0; i < 4; i++) {
+>> +		pagenum = 64 * i;
+> 
+> I haven't looked at the documentation, but the '64' should probably be pages
+> per block, so better info->organization.pages_per_eraseblock.
+Yes, I agree, will fix it in v2.
+
+> 
+>> +
+>> +		ret = mxs_nand_read_page(info, info->organization.pagesize,
+>> +			info->organization.oobsize, pagenum, databuf, 1);
+>> +		if (ret)
+>> +			continue;
+>> +
+>> +		memcpy(fcb, databuf + mxs_nand_aux_status_offset(),
+>> +			sizeof(*fcb));
+>> +
+>> +		if (fcb->FingerPrint != FCB_FINGERPRINT) {
+>> +			pr_err("No FCB found on page %d\n", pagenum);
+>> +			continue;
+>> +		}
+>> +
+>> +		checksum = calc_chksum((void *)fcb +
+>> +			sizeof(uint32_t), sizeof(*fcb) - sizeof(uint32_t));
+>> +
+>> +		if (checksum != fcb->Checksum) {
+>> +			pr_err("FCB on page %d has invalid checksum. " \
+>> +				"Expected: 0x%08x, calculated: 0x%08x",
+>> +				pagenum, fcb->Checksum, checksum);
+>> +			continue;
+>> +		}
+>> +
+>> +		pr_debug("Found FCB:\n");
+>> +		pr_debug("PageDataSize:     0x%08x\n", fcb->PageDataSize);
+>> +		pr_debug("TotalPageSize:    0x%08x\n", fcb->TotalPageSize);
+>> +		pr_debug("SectorsPerBlock:  0x%08x\n", fcb->SectorsPerBlock);
+>> +		pr_debug("FW1_startingPage: 0x%08x\n",
+>> +			fcb->Firmware1_startingPage);
+>> +		pr_debug("PagesInFW1:       0x%08x\n", fcb->PagesInFirmware1);
+>> +		pr_debug("FW2_startingPage: 0x%08x\n",
+>> +			fcb->Firmware2_startingPage);
+>> +		pr_debug("PagesInFW2:       0x%08x\n", fcb->PagesInFirmware2);
+>> +
+>> +		return 0;
+>> +	}
+>> +
+>> +	return -EINVAL;
+>> +}
+>> +
+>> +static int get_dbbt(struct mxs_nand_info *info, void *databuf)
+>> +{
+>> +	int i, ret;
+>> +	int page;
+>> +	int startpage = info->fcb.DBBTSearchAreaStartAddress;
+>> +	struct dbbt_block dbbt;
+>> +
+>> +	for (i = 0; i < 4; i++) {
+>> +		page = startpage + i * 64;
+> 
+> Same here.
+
+Again, will fix it in v2.
+
+> 
+> Regards,
+>   Sascha
 > 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thank you for your comments and review.
+
+Best regards,
+Andrej Picej
 
 _______________________________________________
 barebox mailing list
