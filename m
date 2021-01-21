@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l2VAY-0002H5-AB
- for barebox@lists.infradead.org; Thu, 21 Jan 2021 08:18:19 +0000
-Date: Thu, 21 Jan 2021 09:18:16 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20210121081816.GE19063@pengutronix.de>
-References: <199631954.110480.1611152044705@office.mailbox.org>
- <20210120150247.GB19063@pengutronix.de>
- <455862580.118925.1611212218785@office.mailbox.org>
+ id 1l2W02-0003qc-Nt
+ for barebox@lists.infradead.org; Thu, 21 Jan 2021 09:11:33 +0000
+Date: Thu, 21 Jan 2021 10:11:29 +0100
+Message-ID: <20210121091128.GG19063@pengutronix.de>
+References: <20210120125107.736121-1-andrej.picej@norik.com>
+ <20210120125107.736121-4-andrej.picej@norik.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <455862580.118925.1611212218785@office.mailbox.org>
+In-Reply-To: <20210120125107.736121-4-andrej.picej@norik.com>
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,19 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: /env/init script order
-To: barebox+mailing@cookiesoft.de
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 3/3] ARM: i.MX: xload-gpmi-nand: apply errata 007117
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: barebox@lists.infradead.org
 
-On Thu, Jan 21, 2021 at 07:56:58AM +0100, barebox+mailing@cookiesoft.de wrote:
-> Hey Sasha,
+On Wed, Jan 20, 2021 at 01:51:07PM +0100, Andrej Picej wrote:
+> During raw NAND booting, GPMI/BCH clock generation might fail due to
+> improper clock gating conditions and consequently booting from NAND will
+> fail. This is caused by silicon errata ERR007117. Apply errata fix
+> workaround before GPMI NAND xload to prevent this from occurring.
 > 
-> thanks for that patch, LGTM.
-> I will integrate that into our yocto build system, should be fairly easy.
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> ---
+>  arch/arm/mach-imx/xload-gpmi-nand.c | 62 +++++++++++++++++++++++++++++
+>  1 file changed, 62 insertions(+)
 > 
-> Are you planning to patch that upstream?
+> diff --git a/arch/arm/mach-imx/xload-gpmi-nand.c b/arch/arm/mach-imx/xload-gpmi-nand.c
+> index 04f799604..4be6d1890 100644
+> --- a/arch/arm/mach-imx/xload-gpmi-nand.c
+> +++ b/arch/arm/mach-imx/xload-gpmi-nand.c
+> @@ -20,6 +20,8 @@
+>  #include <mach/xload.h>
+>  #include <mach/imx-nand-bcb.h>
+>  #include <linux/mtd/rawnand.h>
+> +#include <mach/imx6-regs.h>
+> +#include <mach/clock-imx6.h>
+>  
+>  /*
+>   * MXS DMA hardware command.
+> @@ -256,6 +258,63 @@ struct mxs_nand_info {
+>  	unsigned long nand_size;
+>  };
+>  
+> +/**
+> + * It was discovered that xloading barebox from NAND sometimes fails. Observed
+> + * behaviour is similar to silicon errata ERR007117 for i.MX6.
 
-Sure, I'll queue this for the next release.
+Have you really seen this behaviour? I wonder because the ROM has
+already loaded the initial code that is just running from NAND, so it
+surprises me that we still have to apply clock fixes.
 
 Sascha
 
