@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l2YAE-0001lm-Cm
+ id 1l2YAE-0001ll-He
  for barebox@lists.infradead.org; Thu, 21 Jan 2021 11:30:13 +0000
 From: Steffen Trumtrar <str@pengutronix.de>
-Date: Thu, 21 Jan 2021 12:29:58 +0100
-Message-Id: <20210121112958.25937-13-str@pengutronix.de>
+Date: Thu, 21 Jan 2021 12:29:54 +0100
+Message-Id: <20210121112958.25937-9-str@pengutronix.de>
 In-Reply-To: <20210121112958.25937-1-str@pengutronix.de>
 References: <20210121112958.25937-1-str@pengutronix.de>
 MIME-Version: 1.0
@@ -21,85 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/13] firmware: add support for compressed images
+Subject: [PATCH 09/13] of: kconfig: of_overlay uses firmwaremgr_load_file
 To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+As of_firmware.c uses the firmwaremgr_load_file function, it depends on
+FIRMWARE.
 
-At least bitstreams for FPGAs can consist of a lot of zeros depending on
-device utilization. These bitstreams can be compressed very effectively.
-
-Let the firmware code accept these images and decompress them before
-handing it to the firmware-manager in question.
-
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Steffen Trumtrar <str@pengutronix.de>
 ---
- common/firmware.c | 43 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 38 insertions(+), 5 deletions(-)
+ drivers/of/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/common/firmware.c b/common/firmware.c
-index 58509d5da6..c617ecc0f1 100644
---- a/common/firmware.c
-+++ b/common/firmware.c
-@@ -14,6 +14,8 @@
- #include <linux/list.h>
- #include <linux/stat.h>
- #include <linux/err.h>
-+#include <uncompress.h>
-+#include <filetype.h>
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index 23be25d85d..e58fe50f70 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -49,6 +49,7 @@ config OF_BAREBOX_ENV_IN_FS
  
- #define BUFSIZ 4096
- 
-@@ -211,12 +213,43 @@ out:
-  */
- int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
- {
--	int ret;
--	char *name = basprintf("/dev/%s", mgr->handler->id);
--
--	ret = copy_file(firmware, name, 0);
-+	char *dst;
-+	enum filetype type;
-+	int ret = -ENOENT;
-+	int srcfd = 0;
-+	int dstfd = 0;
-+
-+	if (mgr->handler->id) {
-+		dst = basprintf("/dev/%s", mgr->handler->id);
-+	} else {
-+		pr_err("id not defined for handler\n");
-+		return -ENODEV;
-+	}
- 
--	free(name);
-+	if (firmware) {
-+		type = file_name_detect_type(firmware);
-+		if (type == filetype_unknown) {
-+			ret = copy_file(firmware, dst, 0);
-+		} else {
-+			srcfd = open(firmware, O_RDONLY);
-+			if (srcfd < 0)
-+				return srcfd;
-+			dstfd = open(dst, O_WRONLY | O_CREAT);
-+
-+			if (dstfd < 0) {
-+				printf("could not open %s: %s\n", dst, errno_str());
-+				ret = dstfd;
-+				goto out;
-+			}
-+
-+			ret = uncompress_fd_to_fd(srcfd, dstfd, uncompress_err_stdout);
-+
-+			close(dstfd);
-+		}
-+	}
-+out:
-+	close(srcfd);
-+	free(dst);
- 
- 	return ret;
- }
+ config OF_OVERLAY
+ 	select OFTREE
++	select FIRMWARE
+ 	bool "Devicetree overlays"
+ 	help
+ 	  Overlays allow to patch the devicetree. Unlike Linux, Barebox does
 -- 
 2.20.1
 
