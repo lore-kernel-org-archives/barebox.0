@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l2YAE-0001lk-NM
+ id 1l2YAE-0001lg-LT
  for barebox@lists.infradead.org; Thu, 21 Jan 2021 11:30:16 +0000
 From: Steffen Trumtrar <str@pengutronix.de>
-Date: Thu, 21 Jan 2021 12:29:56 +0100
-Message-Id: <20210121112958.25937-11-str@pengutronix.de>
+Date: Thu, 21 Jan 2021 12:29:49 +0100
+Message-Id: <20210121112958.25937-4-str@pengutronix.de>
 In-Reply-To: <20210121112958.25937-1-str@pengutronix.de>
 References: <20210121112958.25937-1-str@pengutronix.de>
 MIME-Version: 1.0
@@ -21,76 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/13] commands: firmwareload: allow loading firmware from dt
+Subject: [PATCH 04/13] reset: add of_reset_control_get to header
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-firmwareload can only load a bitstream into an FPGA without any
-knowledge of possible additional needs (e.g. FPGA bridges).
-
-These are defined in the fpga-region nodes in the devicetree. The
-fpga-region describes the layout of the FPGA and the bridges it needs
-en/disabled.
-
-Add an option to let firmwareload go via the oftree route and load the
-firmware that way.
-
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- commands/firmwareload.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/reset/core.c  | 2 +-
+ include/linux/reset.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/commands/firmwareload.c b/commands/firmwareload.c
-index b735088f61..f2b7a74be0 100644
---- a/commands/firmwareload.c
-+++ b/commands/firmwareload.c
-@@ -5,18 +5,23 @@
- #include <command.h>
- #include <getopt.h>
- #include <firmware.h>
-+#include <of.h>
- 
- static int do_firmwareload(int argc, char *argv[])
+diff --git a/drivers/reset/core.c b/drivers/reset/core.c
+index 26a54f21df..1c9eeaec54 100644
+--- a/drivers/reset/core.c
++++ b/drivers/reset/core.c
+@@ -147,7 +147,7 @@ EXPORT_SYMBOL_GPL(reset_control_deassert);
+  *
+  * Use of id names is optional.
+  */
+-static struct reset_control *of_reset_control_get(struct device_node *node,
++struct reset_control *of_reset_control_get(struct device_node *node,
+ 						  const char *id)
  {
- 	int ret, opt;
- 	const char *name = NULL, *firmware;
- 	struct firmware_mgr *mgr;
-+	int oftree = 0;
+ 	struct reset_control *rstc;
+diff --git a/include/linux/reset.h b/include/linux/reset.h
+index 4a92a177bc..76f40145d9 100644
+--- a/include/linux/reset.h
++++ b/include/linux/reset.h
+@@ -11,6 +11,8 @@ int reset_control_assert(struct reset_control *rstc);
+ int reset_control_deassert(struct reset_control *rstc);
  
--	while ((opt = getopt(argc, argv, "t:l")) > 0) {
-+	while ((opt = getopt(argc, argv, "t:lo")) > 0) {
- 		switch (opt) {
- 		case 't':
- 			name = optarg;
- 			break;
-+		case 'o':
-+			oftree = 1;
-+			break;
- 		case 'l':
- 			firmwaremgr_list_handlers();
- 			return 0;
-@@ -30,6 +35,11 @@ static int do_firmwareload(int argc, char *argv[])
+ struct reset_control *reset_control_get(struct device_d *dev, const char *id);
++struct reset_control *of_reset_control_get(struct device_node *node,
++					   const char *id);
+ void reset_control_put(struct reset_control *rstc);
  
- 	firmware = argv[optind];
- 
-+	if (oftree) {
-+		ret = of_firmware_load_file(firmware);
-+		return ret;
-+	}
-+
- 	mgr = firmwaremgr_find(name);
- 
- 	if (!mgr) {
-@@ -46,6 +56,7 @@ static int do_firmwareload(int argc, char *argv[])
- BAREBOX_CMD_HELP_START(firmwareload)
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT("-t <target>", "define the firmware handler by name")
-+BAREBOX_CMD_HELP_OPT("-o\t", "find firmware definition from devicetree")
- BAREBOX_CMD_HELP_OPT("-l\t", "list devices capable of firmware loading")
- BAREBOX_CMD_HELP_END
- 
+ int __must_check device_reset(struct device_d *dev);
 -- 
 2.20.1
 
