@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from msg-1.mailo.com ([213.182.54.11])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l0MFT-0002Oo-3p
- for barebox@lists.infradead.org; Fri, 15 Jan 2021 10:22:32 +0000
-From: AD <ad.ensi@netc.fr>
-Message-ID: <32b1e760-325e-b145-ba97-21aaee6ed868@netc.fr>
-Date: Fri, 15 Jan 2021 11:22:29 +0100
+ id 1l2Vqh-0001sg-BJ
+ for barebox@lists.infradead.org; Thu, 21 Jan 2021 09:01:52 +0000
+Date: Thu, 21 Jan 2021 10:01:48 +0100
+Message-ID: <20210121090148.GF19063@pengutronix.de>
+References: <20210120125107.736121-1-andrej.picej@norik.com>
+ <20210120125107.736121-3-andrej.picej@norik.com>
 MIME-Version: 1.0
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20210120125107.736121-3-andrej.picej@norik.com>
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,76 +19,197 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Environment is not overwritten at barebox update
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] ARM: i.MX: implement GPMI NAND xload
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: barebox@lists.infradead.org
 
-CkRlYXIgYWxsLAoKSSd2ZSBjb21waWxlZCBhbiBpbWFnZSBhbmQgdHJ5IHRvIGdldCBteSBlbnZp
-cm9ubWVudCBzY3JpcHRzIG9uIG15IAp0YXJnZXQgYnV0IEkgY2FuJ3QgZ2V0IHRoZW0uCgpIZXJl
-IGEgc25pcHBldCBvZiBteSBEVFMgOgoKLyB7CiDCoMKgwqDCoMKgwqDCoCBtb2RlbCA9ICJNYWlu
-IEJvYXJkIjsKCiDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImZzbCxpbXg2ZGwiOwogwqDC
-oMKgIGNob3NlbiB7CiDCoMKgwqAgwqDCoMKgwqDCoMKgwqAgc3Rkb3V0LXBhdGggPSAmdWFydDM7
-CiDCoMKgwqAgfTsKCiDCoMKgwqAgZW52aXJvbm1lbnRAMCB7CiDCoMKgwqAgwqDCoMKgIGNvbXBh
-dGlibGUgPSAiYmFyZWJveCxlbnZpcm9ubWVudCI7CiDCoMKgwqAgwqDCoMKgIGRldmljZS1wYXRo
-ID0gJnVzZGhjMywgInBhcnRuYW1lOmJhcmVib3gtZW52aXJvbm1lbnQiOwogwqDCoMKgIH07Cn07
-CgomdXNkaGMzIHsKIMKgwqDCoCBwYXJ0aXRpb25AMCB7CiDCoMKgwqAgwqDCoMKgIGxhYmVsID0g
-ImJhcmVib3giOwogwqDCoMKgIMKgwqDCoCByZWcgPSA8MHgwIDB4ODAwMDA+OwogwqDCoMKgIH07
-CiDCoMKgwqAgcGFydGl0aW9uQDEgewogwqDCoMKgIMKgwqDCoCBsYWJlbCA9ICJiYXJlYm94LWVu
-dmlyb25tZW50IjsKIMKgwqDCoCDCoMKgwqAgcmVnID0gPDB4ODAwMDAgMHg4MDAwMD47CiDCoMKg
-wqAgfTsKCiDCoMKgwqDCoMKgwqDCoCAuLi4KCiDCoMKgwqDCoMKgwqDCoCAjIE1hbnkgb3RoZXIg
-cGFydGl0aW9ucwoKIMKgwqDCoMKgwqDCoMKgIC4uLgoKfTsKCgpIZXJlIGEgc25pcHBldCBvZiBt
-eSAuY29uZmlnIDoKCkNPTkZJR19ERUZBVUxUX0VOVklST05NRU5UPXkKIyBDT05GSUdfREVGQVVM
-VF9DT01QUkVTU0lPTl9HWklQIGlzIG5vdCBzZXQKIyBDT05GSUdfREVGQVVMVF9DT01QUkVTU0lP
-Tl9MWk8gaXMgbm90IHNldAojIENPTkZJR19ERUZBVUxUX0NPTVBSRVNTSU9OX0xaNCBpcyBub3Qg
-c2V0CiMgQ09ORklHX0RFRkFVTFRfQ09NUFJFU1NJT05fWFogaXMgbm90IHNldApDT05GSUdfREVG
-QVVMVF9DT01QUkVTU0lPTl9OT05FPXkKQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfR0VORVJJ
-Q19ORVc9eQpDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVOVF9HRU5FUklDX05FV19NRU5VPXkKQ09O
-RklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfR0VORVJJQ19ORVdfREZVPXkKQ09ORklHX0RFRkFVTFRf
-RU5WSVJPTk1FTlRfUEFUSD0iYXJjaC9hcm0vYm9hcmRzL2FsLW14Ni9lbnYvIgoKQW5kIGhlcmUg
-dGhlIGNvbnRlbnQgb2YgOiAiYXJjaC9hcm0vYm9hcmRzL2FsLW14Ni9lbnYvIgoKYWRAZGViaWFu
-On4vd29ya3NwYWNlL2JhcmVib3gvY2hyeXNhbGlzL2FyY2gvYXJtL2JvYXJkcy9hbC1teDYvZW52
-JCB0cmVlCi4K4pSc4pSA4pSAIGJpbgrilILCoMKgIOKUlOKUgOKUgCBpbml0CuKUnOKUgOKUgCBi
-b290CuKUgsKgwqAg4pSc4pSA4pSAIGFsCuKUgsKgwqAg4pSc4pSA4pSAIHRmdHAK4pSCwqDCoCDi
-lJTilIDilIAgdXNiCuKUnOKUgOKUgCBjb25maWcK4pSU4pSA4pSAIGRhdGEKIMKgwqDCoCDilJzi
-lIDilIAgYW5zaS1jb2xvcnMKCgpOb3csIG9uIHRoZSB0YXJnZXQsIEknbSB1cGdyYWRpbmcgYmFy
-ZWJveCB1c2luZyBhIHNpbXBsZSA6IGNwIApiYXJlYm94LmltZyAvZGV2L21tYzIKCgpXaXRoIHRo
-ZSBjb21waWxlZCBkYXRlIGFuZCBob3VyIGZyb20gdGhlIEJhcmVib3ggbG9ncyBhdCBzdGFydGlu
-ZywgSSBjYW4gCnNlZSB0aGF0IHRoZSAibmV3IiBiYXJlYm94IGlzIHJlYWxseSB0aGUgb25lIHRo
-YXQgSSBqdXN0ZSBjb21waWxlZC4KCkJ1dCBJIGRvbid0IGhhdmUgbXkgZW52IGNvcnJlY3RseSB1
-cGRhdGVkIDoKCmJhcmVib3hATWFpbiBCb2FyZDovZW52IGxzIC1sCmRyd3hyd3hyd3jCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCAwIC4KZC0tLS0tLS0tLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIDAgLi4KZHJ3eHJ3eHJ3eMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDAgYmluCi1yd3hy
-d3hyd3jCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgMjUgY29uZmlnCmRyd3hyd3hyd3jCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCAwIGRhdGEKZHJ3eHJ3eHJ3eMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIDAgaW5pdApkcnd4cnd4cnd4wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgMCBtZW51
-CmRyd3hyd3hyd3jCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAwIG5ldHdvcmsKZHJ3eHJ3eHJ3
-eMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDAgbnYKCgpNeSBjb25maWcgZmlsZSBpcyBub3Qg
-dGhlIG9uZSB0aGF0IEkgY29tcGlsZWQsIGFuZCB0aGUgYm9vdC8gZGlyZWN0b3J5IApoYXMgbm90
-IGJlZW4gdXBkYXRlZC4uLgpCdXQgdGhlIG5ld2x5IGNyZWF0ZWQgZmlsZXMgYXJlIGFsd2F5cyB1
-cGRhdGVkLgpPbmx5IHRoZSBhbHJlYWR5IGV4aXN0aW5nIG9uZXMgYXJlIG5vdCBvdmVyd3JpdHRl
-bi4KTm90IHN1cmUgb2YgdGhhdCwgYnV0IGl0IHNlZW1zIHRvIGJlIGRpZmZlcmVudCBiZXR3ZWVu
-IHNldmVyYWwgYm9hcmRzLi4uCgoKSSBhbSBtaXNzaW5nIHNvbWV0aGluZz8KCgpIZXJlIHRoZSBz
-dGFydGluZyBsb2dzIDoKCgpiYXJlYm94IDIwMTkuMDcuMC0wNjg3Mi1nMmM3Y2E3MWY5LWRpcnR5
-ICMyIFR1ZSBEZWMgOCAxODo0MToyOSBDRVQgMjAyMAoKCkJvYXJkOiBNYWluIEJvYXJkCmRldGVj
-dGVkIGkuTVg2IER1YWxMaXRlIHJldmlzaW9uIDEuNAppLk1YIHJlc2V0IHJlYXNvbiBQT1IgKFNS
-U1I6IDB4MDAwMDAwMDEpCmkuTVg2IER1YWxMaXRlIHVuaXF1ZSBJRDogZjIxZmQyM2UxODFiYzFk
-NAptZGlvX2J1czogbWlpYnVzMDogcHJvYmVkCmlteC11c2IgMjE4NDIwMC51c2JAMDIxODQyMDAu
-b2Y6IFVTQiBFSENJIDEuMDAKaW14LWVzZGhjIDIxOTQwMDAudXNkaGNAMDIxOTQwMDAub2Y6IHJl
-Z2lzdGVyZWQgYXMgbW1jMQppbXgtZXNkaGMgMjE5ODAwMC51c2RoY0AwMjE5ODAwMC5vZjogcmVn
-aXN0ZXJlZCBhcyBtbWMyCmlteC1pcHV2MyAyNDAwMDAwLmlwdUAwMjQwMDAwMC5vZjogSVBVdjNI
-IHByb2JlZApjYWFtIDIxMDAwMDAuY2FhbUAyMTAwMDAwLm9mOiBJbnN0YW50aWF0ZWQgUk5HNCBT
-SDAKY2FhbSAyMTAwMDAwLmNhYW1AMjEwMDAwMC5vZjogSW5zdGFudGlhdGVkIFJORzQgU0gxCmNh
-YW0gMjEwMDAwMC5jYWFtQDIxMDAwMDAub2Y6IHJlZ2lzdGVyaW5nIHJuZy1jYWFtCm5ldGNvbnNv
-bGU6IHJlZ2lzdGVyZWQgYXMgbmV0Y29uc29sZS0xCkdQUjEgPSA0ODYwMDAwNQptYWxsb2Mgc3Bh
-Y2U6IDB4M2ZkZjY1NDAgLT4gMHg0ZmRmNjUzZiAoc2l6ZSAyNTYgTWlCKQptbWMyOiBkZXRlY3Rl
-ZCBNTUMgY2FyZCB2ZXJzaW9uIDUuMAptbWMyOiByZWdpc3RlcmVkIG1tYzIuYm9vdDAKbW1jMjog
-cmVnaXN0ZXJlZCBtbWMyLmJvb3QxCm1tYzI6IHJlZ2lzdGVyZWQgbW1jMgpydW5uaW5nIC9lbnYv
-YmluL2luaXQuLi4KCkhpdCBtIGZvciBtZW51IG9yIGFueSBvdGhlciBrZXkgdG8gc3RvcCBhdXRv
-Ym9vdDoKdHlwZSBleGl0IHRvIGdldCB0byB0aGUgbWVudQpiYXJlYm94QENocnlzYWxpcyBNYWlu
-IEJvYXJkOi8KCgpUaGFua3MgZm9yIGV2ZXJ5dGhpbmcsCgpBRAoKCgoKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Andrej,
+
+Some comments inline.
+
+On Wed, Jan 20, 2021 at 01:51:06PM +0100, Andrej Picej wrote:
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> Commit is based on initial Sascha Hauer's work. It implements PBL xload
+> mechanism to load image from GPMI NAND flash.
+> 
+> Additional work was done, so that the NAND's size, page size and OOB's
+> size are autodetected and not hardcoded. Detection method follows the
+> same methods as used in NAND driver, meaning NAND ONFI support is probed
+> and if NAND supports ONFI, NAND memory organization is read from ONFI
+> parameter page otherwise "READ ID" is used.
+> 
+> Currently only implemented for i.MX6 familly of SoCs.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> ---
+>  arch/arm/mach-imx/Makefile             |    2 +-
+>  arch/arm/mach-imx/include/mach/xload.h |    1 +
+>  arch/arm/mach-imx/xload-gpmi-nand.c    | 1163 ++++++++++++++++++++++++
+>  3 files changed, 1165 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/arm/mach-imx/xload-gpmi-nand.c
+> 
+> diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+> index e45f758e9..d94c846a1 100644
+> --- a/arch/arm/mach-imx/Makefile
+> +++ b/arch/arm/mach-imx/Makefile
+> +static int mxs_nand_get_info(struct mxs_nand_info *info, void *databuf)
+> +{
+> +	int ret, i;
+> +
+> +	ret = mxs_nand_check_onfi(info, databuf);
+> +	if (ret) {
+> +		if (ret != 1)
+> +			return ret;
+> +		pr_warn("ONFI not supported, try \"READ ID\"...\n");
+
+You already printed a "ONFI not supported\n" message. Printing it once
+is enough. Also this message appears with every non-ONFI nand, right? In
+that case it should rather be pr_info()
+
+> +	/*
+> +	 * If ONFI is not supported or if it fails try to get NAND's info from
+> +	 * "READ ID" command.
+> +	 */
+> +	pr_debug("Trying \"READ ID\" command...\n");
+> +	ret = mxs_nand_get_readid(info, databuf);
+> +	if (ret) {
+> +		if (ret != -EOVERFLOW)
+> +			return ret;
+> +
+> +		/*
+> +		 * If NAND's "READ ID" returns bad values, try to set them to
+> +		 * default (most common NAND memory org.) and continue.
+> +		 */
+> +		pr_warn("NANDs READ ID command returned bad values" \
+> +			" set them to default and try to continue!\n");
+> +		info->organization.pagesize = 2048;
+> +		info->organization.oobsize = 64;
+> +		info->nand_size = SZ_1G;
+
+Is this worth it? READ ID is the most basic command, when this doesn't
+work I don't think there's a point in continuing.
+
+> +	}
+> +succ:
+> +	pr_debug("NAND page_size: %d\n", info->organization.pagesize);
+> +	pr_debug("NAND block_size: %d\n",
+> +		info->organization.pages_per_eraseblock
+> +		* info->organization.pagesize);
+> +	pr_debug("NAND oob_size: %d\n", info->organization.oobsize);
+> +	pr_debug("NAND nand_size: %lu\n", info->nand_size);
+> +	pr_debug("NAND bits_per_cell: %d\n", info->organization.bits_per_cell);
+> +	pr_debug("NAND planes_per_lun: %d\n",
+> +		info->organization.planes_per_lun);
+> +	pr_debug("NAND luns_per_target: %d\n",
+> +		info->organization.luns_per_target);
+> +	pr_debug("NAND eraseblocks_per_lun: %d\n",
+> +		info->organization.eraseblocks_per_lun);
+> +	pr_debug("NAND ntargets: %d\n", info->organization.ntargets);
+> +
+> +
+> +	return 0;
+> +}
+> +
+> +/* ---------------------------- BCB handling part -------------------------- */
+> +
+> +static uint32_t calc_chksum(void *buf, size_t size)
+> +{
+> +	u32 chksum = 0;
+> +	u8 *bp = buf;
+> +	size_t i;
+> +
+> +	for (i = 0; i < size; i++)
+> +		chksum += bp[i];
+> +
+> +	return ~chksum;
+> +}
+> +
+> +static int get_fcb(struct mxs_nand_info *info, void *databuf)
+> +{
+> +	int i, pagenum, ret;
+> +	uint32_t checksum;
+> +	struct fcb_block *fcb = &info->fcb;
+> +
+> +	/* First page read fails, this shouldn't be necessary */
+> +	mxs_nand_read_page(info, info->organization.pagesize,
+> +		info->organization.oobsize, 0, databuf, 1);
+> +
+> +	for (i = 0; i < 4; i++) {
+> +		pagenum = 64 * i;
+
+I haven't looked at the documentation, but the '64' should probably be pages
+per block, so better info->organization.pages_per_eraseblock?
+
+> +
+> +		ret = mxs_nand_read_page(info, info->organization.pagesize,
+> +			info->organization.oobsize, pagenum, databuf, 1);
+> +		if (ret)
+> +			continue;
+> +
+> +		memcpy(fcb, databuf + mxs_nand_aux_status_offset(),
+> +			sizeof(*fcb));
+> +
+> +		if (fcb->FingerPrint != FCB_FINGERPRINT) {
+> +			pr_err("No FCB found on page %d\n", pagenum);
+> +			continue;
+> +		}
+> +
+> +		checksum = calc_chksum((void *)fcb +
+> +			sizeof(uint32_t), sizeof(*fcb) - sizeof(uint32_t));
+> +
+> +		if (checksum != fcb->Checksum) {
+> +			pr_err("FCB on page %d has invalid checksum. " \
+> +				"Expected: 0x%08x, calculated: 0x%08x",
+> +				pagenum, fcb->Checksum, checksum);
+> +			continue;
+> +		}
+> +
+> +		pr_debug("Found FCB:\n");
+> +		pr_debug("PageDataSize:     0x%08x\n", fcb->PageDataSize);
+> +		pr_debug("TotalPageSize:    0x%08x\n", fcb->TotalPageSize);
+> +		pr_debug("SectorsPerBlock:  0x%08x\n", fcb->SectorsPerBlock);
+> +		pr_debug("FW1_startingPage: 0x%08x\n",
+> +			fcb->Firmware1_startingPage);
+> +		pr_debug("PagesInFW1:       0x%08x\n", fcb->PagesInFirmware1);
+> +		pr_debug("FW2_startingPage: 0x%08x\n",
+> +			fcb->Firmware2_startingPage);
+> +		pr_debug("PagesInFW2:       0x%08x\n", fcb->PagesInFirmware2);
+> +
+> +		return 0;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int get_dbbt(struct mxs_nand_info *info, void *databuf)
+> +{
+> +	int i, ret;
+> +	int page;
+> +	int startpage = info->fcb.DBBTSearchAreaStartAddress;
+> +	struct dbbt_block dbbt;
+> +
+> +	for (i = 0; i < 4; i++) {
+> +		page = startpage + i * 64;
+
+Same here.
+
+Regards,
+ Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
