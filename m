@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l2YAE-0001la-Ef
- for barebox@lists.infradead.org; Thu, 21 Jan 2021 11:30:15 +0000
+ id 1l2YAE-0001lk-NM
+ for barebox@lists.infradead.org; Thu, 21 Jan 2021 11:30:16 +0000
 From: Steffen Trumtrar <str@pengutronix.de>
-Date: Thu, 21 Jan 2021 12:29:46 +0100
-Message-Id: <20210121112958.25937-1-str@pengutronix.de>
+Date: Thu, 21 Jan 2021 12:29:56 +0100
+Message-Id: <20210121112958.25937-11-str@pengutronix.de>
+In-Reply-To: <20210121112958.25937-1-str@pengutronix.de>
+References: <20210121112958.25937-1-str@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,130 +21,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/13] ARM: add fncpy.h from linux v4.6
+Subject: [PATCH 11/13] commands: firmwareload: allow loading firmware from dt
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Description from the linux commit 5756e9dd0de6d5c307773f8f734c0684b3098fdd:
+firmwareload can only load a bitstream into an FPGA without any
+knowledge of possible additional needs (e.g. FPGA bridges).
 
-    ARM: 6640/1: Thumb-2: Symbol manipulation macros for function body copying
+These are defined in the fpga-region nodes in the devicetree. The
+fpga-region describes the layout of the FPGA and the bridges it needs
+en/disabled.
 
-    In low-level board support code, there is sometimes a need to
-    copy a function body to another location at run-time.
-
-    A straightforward call to memcpy doesn't work in Thumb-2,
-    because bit 0 of external Thumb function symbols is set to 1,
-    indicating that the function is Thumb.  Without corrective
-    measures, this will cause an off-by-one copy, and the copy
-    may be called using the wrong instruction set.
-
-    This patch adds an fncpy() macro to help with such copies.
-
-    Particular care is needed, because C doesn't guarantee any
-    defined behaviour when casting a function pointer to any other
-    type.  This has been observed to lead to strange optimisation
-    side-effects when doing the arithmetic which is required in
-    order to copy/move function bodies correctly in Thumb-2.
-
-    Thanks to Russell King and Nicolas Pitre for their input
-    on this patch.
+Add an option to let firmwareload go via the oftree route and load the
+firmware that way.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/include/asm/fncpy.h | 82 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
- create mode 100644 arch/arm/include/asm/fncpy.h
+ commands/firmwareload.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/fncpy.h b/arch/arm/include/asm/fncpy.h
-new file mode 100644
-index 0000000000..d13876bffa
---- /dev/null
-+++ b/arch/arm/include/asm/fncpy.h
-@@ -0,0 +1,82 @@
-+/*
-+ * arch/arm/include/asm/fncpy.h - helper macros for function body copying
-+ *
-+ * Copyright (C) 2011 Linaro Limited
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ */
+diff --git a/commands/firmwareload.c b/commands/firmwareload.c
+index b735088f61..f2b7a74be0 100644
+--- a/commands/firmwareload.c
++++ b/commands/firmwareload.c
+@@ -5,18 +5,23 @@
+ #include <command.h>
+ #include <getopt.h>
+ #include <firmware.h>
++#include <of.h>
+ 
+ static int do_firmwareload(int argc, char *argv[])
+ {
+ 	int ret, opt;
+ 	const char *name = NULL, *firmware;
+ 	struct firmware_mgr *mgr;
++	int oftree = 0;
+ 
+-	while ((opt = getopt(argc, argv, "t:l")) > 0) {
++	while ((opt = getopt(argc, argv, "t:lo")) > 0) {
+ 		switch (opt) {
+ 		case 't':
+ 			name = optarg;
+ 			break;
++		case 'o':
++			oftree = 1;
++			break;
+ 		case 'l':
+ 			firmwaremgr_list_handlers();
+ 			return 0;
+@@ -30,6 +35,11 @@ static int do_firmwareload(int argc, char *argv[])
+ 
+ 	firmware = argv[optind];
+ 
++	if (oftree) {
++		ret = of_firmware_load_file(firmware);
++		return ret;
++	}
 +
-+/*
-+ * These macros are intended for use when there is a need to copy a low-level
-+ * function body into special memory.
-+ *
-+ * For example, when reconfiguring the SDRAM controller, the code doing the
-+ * reconfiguration may need to run from SRAM.
-+ *
-+ * NOTE: that the copied function body must be entirely self-contained and
-+ * position-independent in order for this to work properly.
-+ *
-+ * NOTE: in order for embedded literals and data to get referenced correctly,
-+ * the alignment of functions must be preserved when copying.  To ensure this,
-+ * the source and destination addresses for fncpy() must be aligned to a
-+ * multiple of 8 bytes: you will be get a BUG() if this condition is not met.
-+ * You will typically need a ".align 3" directive in the assembler where the
-+ * function to be copied is defined, and ensure that your allocator for the
-+ * destination buffer returns 8-byte-aligned pointers.
-+ *
-+ * Typical usage example:
-+ *
-+ * extern int f(args);
-+ * extern uint32_t size_of_f;
-+ * int (*copied_f)(args);
-+ * void *sram_buffer;
-+ *
-+ * copied_f = fncpy(sram_buffer, &f, size_of_f);
-+ *
-+ * ... later, call the function: ...
-+ *
-+ * copied_f(args);
-+ *
-+ * The size of the function to be copied can't be determined from C:
-+ * this must be determined by other means, such as adding assmbler directives
-+ * in the file where f is defined.
-+ */
-+
-+#ifndef __ASM_FNCPY_H
-+#define __ASM_FNCPY_H
-+
-+#include <linux/types.h>
-+#include <linux/string.h>
-+
-+/*
-+ * Minimum alignment requirement for the source and destination addresses
-+ * for function copying.
-+ */
-+#define FNCPY_ALIGN 8
-+
-+#define fncpy(dest_buf, funcp, size) ({					\
-+	uintptr_t __funcp_address;					\
-+	typeof(funcp) __result;						\
-+									\
-+	asm("" : "=r" (__funcp_address) : "0" (funcp));			\
-+									\
-+	memcpy(dest_buf, (void const *)(__funcp_address & ~1), size);	\
-+									\
-+	asm("" : "=r" (__result)					\
-+		: "0" ((uintptr_t)(dest_buf) | (__funcp_address & 1)));	\
-+									\
-+	__result;							\
-+})
-+
-+#endif /* !__ASM_FNCPY_H */
+ 	mgr = firmwaremgr_find(name);
+ 
+ 	if (!mgr) {
+@@ -46,6 +56,7 @@ static int do_firmwareload(int argc, char *argv[])
+ BAREBOX_CMD_HELP_START(firmwareload)
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT("-t <target>", "define the firmware handler by name")
++BAREBOX_CMD_HELP_OPT("-o\t", "find firmware definition from devicetree")
+ BAREBOX_CMD_HELP_OPT("-l\t", "list devices capable of firmware loading")
+ BAREBOX_CMD_HELP_END
+ 
 -- 
 2.20.1
 
