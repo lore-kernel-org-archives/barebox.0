@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l2YAE-0001ll-He
- for barebox@lists.infradead.org; Thu, 21 Jan 2021 11:30:13 +0000
+ id 1l2YAE-0001lj-JZ
+ for barebox@lists.infradead.org; Thu, 21 Jan 2021 11:30:14 +0000
 From: Steffen Trumtrar <str@pengutronix.de>
-Date: Thu, 21 Jan 2021 12:29:54 +0100
-Message-Id: <20210121112958.25937-9-str@pengutronix.de>
+Date: Thu, 21 Jan 2021 12:29:57 +0100
+Message-Id: <20210121112958.25937-12-str@pengutronix.de>
 In-Reply-To: <20210121112958.25937-1-str@pengutronix.de>
 References: <20210121112958.25937-1-str@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/13] of: kconfig: of_overlay uses firmwaremgr_load_file
+Subject: [PATCH 12/13] drivers: firmware: socfpga: remove bridges shutdown
 To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-As of_firmware.c uses the firmwaremgr_load_file function, it depends on
-FIRMWARE.
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Signed-off-by: Steffen Trumtrar <str@pengutronix.de>
+The bridges are now handled via the bridges driver. There is no
+need to hardcode the memory writes anymore.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/of/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/socfpga.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index 23be25d85d..e58fe50f70 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -49,6 +49,7 @@ config OF_BAREBOX_ENV_IN_FS
+diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
+index 605c931604..eb3fc557c7 100644
+--- a/drivers/firmware/socfpga.c
++++ b/drivers/firmware/socfpga.c
+@@ -294,15 +294,6 @@ static int socfpga_fpgamgr_program_start(struct firmware_handler *fh)
+ 	/* disable all signals from hps peripheral controller to fpga */
+ 	writel(0, SYSMGR_FPGAINTF_MODULE);
  
- config OF_OVERLAY
- 	select OFTREE
-+	select FIRMWARE
- 	bool "Devicetree overlays"
- 	help
- 	  Overlays allow to patch the devicetree. Unlike Linux, Barebox does
+-	/* disable all signals from fpga to hps sdram */
+-	writel(0, (CYCLONE5_SDR_ADDRESS + SDR_CTRLGRP_FPGAPORTRST_ADDRESS));
+-
+-	/* disable all axi bridge (hps2fpga, lwhps2fpga & fpga2hps) */
+-	writel(~0, CYCLONE5_RSTMGR_ADDRESS + RESET_MGR_BRG_MOD_RESET_OFS);
+-
+-	/* unmap the bridges from NIC-301 */
+-	writel(0x1, CYCLONE5_L3REGS_ADDRESS);
+-
+ 	dev_dbg(&mgr->dev, "start programming...\n");
+ 
+ 	/* initialize the FPGA Manager */
 -- 
 2.20.1
 
