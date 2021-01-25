@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l3xyP-0008Ca-2u
- for barebox@lists.infradead.org; Mon, 25 Jan 2021 09:15:49 +0000
-Date: Mon, 25 Jan 2021 10:15:47 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20210125091547.GB8233@pengutronix.de>
-References: <20210120125107.736121-1-andrej.picej@norik.com>
- <20210120125107.736121-3-andrej.picej@norik.com>
- <20210121090148.GF19063@pengutronix.de>
- <7df4659e-7237-c5fa-767f-7dedd5c44005@norik.com>
+ id 1l3y3q-0000IY-Nr
+ for barebox@lists.infradead.org; Mon, 25 Jan 2021 09:21:27 +0000
+References: <CAP1tNvT79QvYYTL9O+V+HR=XVTKHS=UxJtc1ZvNaMu1yQZns9w@mail.gmail.com>
+ <a8d24265-a9e7-c521-c0b1-cc8e0691d636@pengutronix.de>
+ <CAP1tNvSGFXWxVKoQanR9S6FxjV_U0DUMrkL-C1Bg7Ze5TaS1+w@mail.gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <b5da0650-b5a0-a81b-a2e6-5a24ae1c81a5@pengutronix.de>
+Date: Mon, 25 Jan 2021 10:21:25 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <7df4659e-7237-c5fa-767f-7dedd5c44005@norik.com>
+In-Reply-To: <CAP1tNvSGFXWxVKoQanR9S6FxjV_U0DUMrkL-C1Bg7Ze5TaS1+w@mail.gmail.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,116 +20,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] ARM: i.MX: implement GPMI NAND xload
-To: Andrej Picej <andrej.picej@norik.com>
+Subject: Re: AM335x NAND write hungs
+To: Alexander Shiyan <eagle.alexander923@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jan 21, 2021 at 11:28:39AM +0100, Andrej Picej wrote:
-> Hi Sascha,
-> 
-> thanks for your comments.
-> 
-> Responses inline.
-> 
-> On 21. 01. 21 10:01, Sascha Hauer wrote:
-> > Hi Andrej,
-> > 
-> > Some comments inline.
-> > 
-> > On Wed, Jan 20, 2021 at 01:51:06PM +0100, Andrej Picej wrote:
-> > > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > > 
-> > > Commit is based on initial Sascha Hauer's work. It implements PBL xload
-> > > mechanism to load image from GPMI NAND flash.
-> > > 
-> > > Additional work was done, so that the NAND's size, page size and OOB's
-> > > size are autodetected and not hardcoded. Detection method follows the
-> > > same methods as used in NAND driver, meaning NAND ONFI support is probed
-> > > and if NAND supports ONFI, NAND memory organization is read from ONFI
-> > > parameter page otherwise "READ ID" is used.
-> > > 
-> > > Currently only implemented for i.MX6 familly of SoCs.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> > > Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> > > ---
-> > >   arch/arm/mach-imx/Makefile             |    2 +-
-> > >   arch/arm/mach-imx/include/mach/xload.h |    1 +
-> > >   arch/arm/mach-imx/xload-gpmi-nand.c    | 1163 ++++++++++++++++++++++++
-> > >   3 files changed, 1165 insertions(+), 1 deletion(-)
-> > >   create mode 100644 arch/arm/mach-imx/xload-gpmi-nand.c
-> > > 
-> > > diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-> > > index e45f758e9..d94c846a1 100644
-> > > --- a/arch/arm/mach-imx/Makefile
-> > > +++ b/arch/arm/mach-imx/Makefile
-> > > +static int mxs_nand_get_info(struct mxs_nand_info *info, void *databuf)
-> > > +{
-> > > +	int ret, i;
-> > > +
-> > > +	ret = mxs_nand_check_onfi(info, databuf);
-> > > +	if (ret) {
-> > > +		if (ret != 1)
-> > > +			return ret;
-> > > +		pr_warn("ONFI not supported, try \"READ ID\"...\n");
-> > 
-> > You already printed a "ONFI not supported\n" message. Printing it once
-> > is enough. Also this message appears with every non-ONFI nand, right? In
-> > that case it should rather be pr_info()
-> 
-> OK, I agree, will fix it in v2.
-> 
-> > 
-> > > +	/*
-> > > +	 * If ONFI is not supported or if it fails try to get NAND's info from
-> > > +	 * "READ ID" command.
-> > > +	 */
-> > > +	pr_debug("Trying \"READ ID\" command...\n");
-> > > +	ret = mxs_nand_get_readid(info, databuf);
-> > > +	if (ret) {
-> > > +		if (ret != -EOVERFLOW)
-> > > +			return ret;
-> > > +
-> > > +		/*
-> > > +		 * If NAND's "READ ID" returns bad values, try to set them to
-> > > +		 * default (most common NAND memory org.) and continue.
-> > > +		 */
-> > > +		pr_warn("NANDs READ ID command returned bad values" \
-> > > +			" set them to default and try to continue!\n");
-> > > +		info->organization.pagesize = 2048;
-> > > +		info->organization.oobsize = 64;
-> > > +		info->nand_size = SZ_1G;
-> > 
-> > Is this worth it? READ ID is the most basic command, when this doesn't
-> > work I don't think there's a point in continuing.
-> 
-> We had a case with Samsung K9K8G08U0E when sometimes (reasons not known) the
-> 5th byte returned 0xff instead of correct values, all other returned values
-> were correct. In this case the device booted successfully because of this
-> hook. Maybe a better solution would be to check only the 5th byte for 0xff
-> value (5th byte is not supported from all NAND vendors), if this is the case
-> set the NAND size to 1GB.
-> Would that make more sense?
-
-The best would be to track the issue down and to fix it ;)
-It's not very nice to assume it in case of read id failures it's exactly
-that NAND type you have troubles with.
-Does it help to reset the NAND chip before reading the ID?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMjUuMDEuMjEgMDk6NTYsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gV29ya3MgYXMgZXhw
+ZWN0ZWQuCj4gQ2FuIHlvdSBjb21taXQgdGhpcyBjaGFuZ2UgaW50byBtYXN0ZXI/CgpJJ2QgcHJl
+ZmVyIFNhc2NoYSBkaWQgdGhhdCAoYWZ0ZXIgY29uZmlybWluZyB0aGF0J3MKdGhlIGNvcnJlY3Qg
+Zml4KS4KCj4gVGhhbmtzIQo+IAo+INC/0L0sIDI1INGP0L3Qsi4gMjAyMSDQsy4g0LIgMTE6Mzcs
+IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Ogo+Pgo+PiBIZWxsbywKPj4K
+Pj4gT24gMjUuMDEuMjEgMDk6MjAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4+PiBIZWxsby4K
+Pj4+Cj4+PiBJIHJlY2VudGx5IHVwZ3JhZGVkIG15IGJhcmVib3ggZnJvbSAyMDIwLjExIHRvIDIw
+MjEuMDEgZm9yIGEgY3VzdG9tIGJvYXJkCj4+PiBiYXNlZCBvbiBUSSBBTTMzNXggcHJvY2Vzc29y
+Lgo+Pj4gVGhlIHVwZGF0ZSByZXZlYWxlZCB0aGUgaW5vcGVyYWJpbGl0eSBvZiB3cml0aW5nIHRv
+IE5BTkQuIFdoZW4gdHJ5aW5nIHRvIHdyaXRlLAo+Pj4gdGhlIGJvb3Rsb2FkZXIgaGFuZ3MgZm9y
+ZXZlci4KPj4+IFJldmVydGluZyB0aGUgY29tbWl0ICJtdGQ6IG5hbmQ6IG9tYXBfZ3BtYzogRml4
+IHdyb25nIGxlbmd0aCBjaGVjayIgaGVscHMKPj4+IHRvIHNvbHZlIHRoZSBwcm9ibGVtLgo+Pgo+
+PiBXaGF0IGhhcHBlbnMgd2hlbiBjaGFuZ2luZyB0aGUgY29uZGl0aW9uIHRvIGxlbiA+IDA/Cj4+
+Cj4+PiBEb2VzIGFueW9uZSBoYXZlIHNpbWlsYXIgcHJvYmxlbXM/Cj4+Pgo+Pj4gVGhhbmtzIQo+
+Pj4KPj4+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4+
+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+Pj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4+
+PiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPj4+
+Cj4+Cj4+IC0tCj4+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4+IFN0ZXVlcndhbGRlciBTdHIuIDIxICAg
+ICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4+IDMx
+MTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEy
+MS0yMDY5MTctMCAgICB8Cj4+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAg
+ICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4gCgotLSAKUGVuZ3V0cm9uaXgg
+ZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDov
+L3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAg
+ICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGls
+ZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1
+IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
+b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
