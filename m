@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l3xfy-0005Pq-SL
- for barebox@lists.infradead.org; Mon, 25 Jan 2021 08:56:47 +0000
-Received: by mail-ej1-x62d.google.com with SMTP id l9so16878226ejx.3
- for <barebox@lists.infradead.org>; Mon, 25 Jan 2021 00:56:46 -0800 (PST)
+ id 1l3xgV-0005U2-9u
+ for barebox@lists.infradead.org; Mon, 25 Jan 2021 08:57:21 +0000
+Date: Mon, 25 Jan 2021 09:57:17 +0100
+From: Sascha Hauer <sha@pengutronix.de>
+Message-ID: <20210125085717.GC31738@pengutronix.de>
+References: <20210120125107.736121-1-andrej.picej@norik.com>
+ <20210120125107.736121-4-andrej.picej@norik.com>
+ <20210121091128.GG19063@pengutronix.de>
+ <435bb8a9-96b8-4a09-1a42-19cc77e42ebf@norik.com>
+ <20210122081215.GM19063@pengutronix.de>
+ <65415553-750c-810d-7902-b1052d764bec@norik.com>
 MIME-Version: 1.0
-References: <CAP1tNvT79QvYYTL9O+V+HR=XVTKHS=UxJtc1ZvNaMu1yQZns9w@mail.gmail.com>
- <a8d24265-a9e7-c521-c0b1-cc8e0691d636@pengutronix.de>
-In-Reply-To: <a8d24265-a9e7-c521-c0b1-cc8e0691d636@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Mon, 25 Jan 2021 11:56:34 +0300
-Message-ID: <CAP1tNvSGFXWxVKoQanR9S6FxjV_U0DUMrkL-C1Bg7Ze5TaS1+w@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <65415553-750c-810d-7902-b1052d764bec@norik.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,34 +23,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AM335x NAND write hungs
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 3/3] ARM: i.MX: xload-gpmi-nand: apply errata 007117
+To: Andrej Picej <andrej.picej@norik.com>
 Cc: barebox@lists.infradead.org
 
-V29ya3MgYXMgZXhwZWN0ZWQuCkNhbiB5b3UgY29tbWl0IHRoaXMgY2hhbmdlIGludG8gbWFzdGVy
-PwpUaGFua3MhCgrQv9C9LCAyNSDRj9C90LIuIDIwMjEg0LMuINCyIDExOjM3LCBBaG1hZCBGYXRv
-dW0gPGEuZmF0b3VtQHBlbmd1dHJvbml4LmRlPjoKPgo+IEhlbGxvLAo+Cj4gT24gMjUuMDEuMjEg
-MDk6MjAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gPiBIZWxsby4KPiA+Cj4gPiBJIHJlY2Vu
-dGx5IHVwZ3JhZGVkIG15IGJhcmVib3ggZnJvbSAyMDIwLjExIHRvIDIwMjEuMDEgZm9yIGEgY3Vz
-dG9tIGJvYXJkCj4gPiBiYXNlZCBvbiBUSSBBTTMzNXggcHJvY2Vzc29yLgo+ID4gVGhlIHVwZGF0
-ZSByZXZlYWxlZCB0aGUgaW5vcGVyYWJpbGl0eSBvZiB3cml0aW5nIHRvIE5BTkQuIFdoZW4gdHJ5
-aW5nIHRvIHdyaXRlLAo+ID4gdGhlIGJvb3Rsb2FkZXIgaGFuZ3MgZm9yZXZlci4KPiA+IFJldmVy
-dGluZyB0aGUgY29tbWl0ICJtdGQ6IG5hbmQ6IG9tYXBfZ3BtYzogRml4IHdyb25nIGxlbmd0aCBj
-aGVjayIgaGVscHMKPiA+IHRvIHNvbHZlIHRoZSBwcm9ibGVtLgo+Cj4gV2hhdCBoYXBwZW5zIHdo
-ZW4gY2hhbmdpbmcgdGhlIGNvbmRpdGlvbiB0byBsZW4gPiAwPwo+Cj4gPiBEb2VzIGFueW9uZSBo
-YXZlIHNpbWlsYXIgcHJvYmxlbXM/Cj4gPgo+ID4gVGhhbmtzIQo+ID4KPiA+IF9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gPiBiYXJlYm94IG1haWxpbmcg
-bGlzdAo+ID4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gPiBodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPiA+Cj4KPiAtLQo+IFBlbmd1dHJv
-bml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8Cj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwg
-aHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
-ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNn
-ZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0y
-MDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Fri, Jan 22, 2021 at 10:47:09AM +0100, Andrej Picej wrote:
+> 
+> 
+> On 22. 01. 21 09:12, Sascha Hauer wrote:
+> > On Thu, Jan 21, 2021 at 01:23:16PM +0100, Andrej Picej wrote:
+> > > Hi Sascha,
+> > > 
+> > > yes, unfortunately we have. We applied this just because we experienced
+> > > hangs in device booting tests. After this patch the NAND booting problems
+> > > went away. The booting failed during DMA page reading.
+> > > I just tested this again and after excluding the changes in this patch the
+> > > device fails at executing DMA commands. The boot fails in approximately one
+> > > out of 10 boots.
+> > 
+> > Where exactly did it hang? In the xloader or later in the real barebox
+> > driver?
+> > You probably mean that it hangs in the xloader. Sorry to ask, but I'm
+> > still trying to understand. That would mean the ROM leaves the GPMI in
+> > an unusable state and I really wonder how this can happen.
+> > 
+> > Sascha
+> > 
+> 
+> Sorry for not being clear enough the first time. You are correct, it hangs
+> in xloader.
+> 
+> Maybe some additional information that may be relevant. When we boot barebox
+> without PBL support barebox boots without problem and NAND behaves normal,
+> so i guess the ROM sets the GPMI in usable state.
+> Just a thought: could it be that the problem is in xloader and we somehow
+> repair or reset the GPMI with this errata fix, so it works with xloader?
+
+It could be that the ROM changes parts of the clock tree after having
+loaded the image from NAND and before it jumps to the payload. It might
+be that we would have the same problem in the real barebox driver if we
+wouldn't reconfigure the clocks anyway in the clock driver.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
