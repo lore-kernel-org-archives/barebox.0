@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l3yZ3-0003rx-8n
- for barebox@lists.infradead.org; Mon, 25 Jan 2021 09:53:42 +0000
-Date: Mon, 25 Jan 2021 10:53:39 +0100
-Message-ID: <20210125095339.GE31738@pengutronix.de>
-References: <20210118190923.531-1-m.grzeschik@pengutronix.de>
+ id 1l3ybP-0004SQ-So
+ for barebox@lists.infradead.org; Mon, 25 Jan 2021 09:56:08 +0000
+Date: Mon, 25 Jan 2021 10:56:06 +0100
+Message-ID: <20210125095606.GF31738@pengutronix.de>
+References: <20210121112958.25937-1-str@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210118190923.531-1-m.grzeschik@pengutronix.de>
+In-Reply-To: <20210121112958.25937-1-str@pengutronix.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,56 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: hub: fix state change check for not powercycled ports
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 01/13] ARM: add fncpy.h from linux v4.6
+To: Steffen Trumtrar <str@pengutronix.de>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Mon, Jan 18, 2021 at 08:09:23PM +0100, Michael Grzeschik wrote:
-> Since we don't power cycle the ports on start since patch "19bb0b2a usb:
-> hub: Do not power-cycle usb devices on init" it is possible that the
-> device on this port is already active from a previous enumeration. This
-> way barebox will never get any change in USB_PORT_STAT_C_CONNECTION bit
-> change.
+On Thu, Jan 21, 2021 at 12:29:46PM +0100, Steffen Trumtrar wrote:
+> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > 
-> Although the device will probably still work fine after the following
-> port reset, the current code will always miss reenumerating these still
-> plugged devices. This patch fixes this by ignoring the check for
-> STAT_C_CONNECTION bit and only go for USB_PORT_STAT_CONNECTION which
-> should be enough.
+> Description from the linux commit 5756e9dd0de6d5c307773f8f734c0684b3098fdd:
 > 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+>     ARM: 6640/1: Thumb-2: Symbol manipulation macros for function body copying
+> 
+>     In low-level board support code, there is sometimes a need to
+>     copy a function body to another location at run-time.
+> 
+>     A straightforward call to memcpy doesn't work in Thumb-2,
+>     because bit 0 of external Thumb function symbols is set to 1,
+>     indicating that the function is Thumb.  Without corrective
+>     measures, this will cause an off-by-one copy, and the copy
+>     may be called using the wrong instruction set.
+> 
+>     This patch adds an fncpy() macro to help with such copies.
+> 
+>     Particular care is needed, because C doesn't guarantee any
+>     defined behaviour when casting a function pointer to any other
+>     type.  This has been observed to lead to strange optimisation
+>     side-effects when doing the arithmetic which is required in
+>     order to copy/move function bodies correctly in Thumb-2.
+> 
+>     Thanks to Russell King and Nicolas Pitre for their input
+>     on this patch.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  drivers/usb/core/hub.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  arch/arm/include/asm/fncpy.h | 82 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 82 insertions(+)
+>  create mode 100644 arch/arm/include/asm/fncpy.h
 
-Applied, thanks
+Applied this patch for now, but with an update to v5.10 with the only
+change that the licence header is changed to SPDX now.
 
 Sascha
 
-> 
-> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-> index 01653d8c20..d1112248ee 100644
-> --- a/drivers/usb/core/hub.c
-> +++ b/drivers/usb/core/hub.c
-> @@ -336,8 +336,7 @@ static void usb_scan_port(struct usb_device_scan *usb_scan)
->  	dev_dbg(&dev->dev, "port%d: Status 0x%04x Change 0x%04x\n",
->  			port + 1, portstatus, portchange);
->  
-> -	if (!(portchange & USB_PORT_STAT_C_CONNECTION) ||
-> -	    !(portstatus & USB_PORT_STAT_CONNECTION)) {
-> +	if (!(portstatus & USB_PORT_STAT_CONNECTION)) {
->  		if (get_time_ns() >= hub->connect_timeout) {
->  			dev_dbg(&dev->dev, "port%d: timeout\n", port + 1);
->  			/* Remove this device from scanning list */
-> -- 
-> 2.30.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
