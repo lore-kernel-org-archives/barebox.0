@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l3y3q-0000IY-Nr
- for barebox@lists.infradead.org; Mon, 25 Jan 2021 09:21:27 +0000
+ id 1l3y45-0000Ky-Gg
+ for barebox@lists.infradead.org; Mon, 25 Jan 2021 09:21:42 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 25 Jan 2021 10:21:36 +0100
+Message-Id: <20210125092136.32404-1-s.hauer@pengutronix.de>
+In-Reply-To: <CAP1tNvT79QvYYTL9O+V+HR=XVTKHS=UxJtc1ZvNaMu1yQZns9w@mail.gmail.com>
 References: <CAP1tNvT79QvYYTL9O+V+HR=XVTKHS=UxJtc1ZvNaMu1yQZns9w@mail.gmail.com>
- <a8d24265-a9e7-c521-c0b1-cc8e0691d636@pengutronix.de>
- <CAP1tNvSGFXWxVKoQanR9S6FxjV_U0DUMrkL-C1Bg7Ze5TaS1+w@mail.gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <b5da0650-b5a0-a81b-a2e6-5a24ae1c81a5@pengutronix.de>
-Date: Mon, 25 Jan 2021 10:21:25 +0100
 MIME-Version: 1.0
-In-Reply-To: <CAP1tNvSGFXWxVKoQanR9S6FxjV_U0DUMrkL-C1Bg7Ze5TaS1+w@mail.gmail.com>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,42 +17,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AM335x NAND write hungs
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: nand: omap_gpmc: Fix wrong length check for real
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
 
-T24gMjUuMDEuMjEgMDk6NTYsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gV29ya3MgYXMgZXhw
-ZWN0ZWQuCj4gQ2FuIHlvdSBjb21taXQgdGhpcyBjaGFuZ2UgaW50byBtYXN0ZXI/CgpJJ2QgcHJl
-ZmVyIFNhc2NoYSBkaWQgdGhhdCAoYWZ0ZXIgY29uZmlybWluZyB0aGF0J3MKdGhlIGNvcnJlY3Qg
-Zml4KS4KCj4gVGhhbmtzIQo+IAo+INC/0L0sIDI1INGP0L3Qsi4gMjAyMSDQsy4g0LIgMTE6Mzcs
-IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Ogo+Pgo+PiBIZWxsbywKPj4K
-Pj4gT24gMjUuMDEuMjEgMDk6MjAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4+PiBIZWxsby4K
-Pj4+Cj4+PiBJIHJlY2VudGx5IHVwZ3JhZGVkIG15IGJhcmVib3ggZnJvbSAyMDIwLjExIHRvIDIw
-MjEuMDEgZm9yIGEgY3VzdG9tIGJvYXJkCj4+PiBiYXNlZCBvbiBUSSBBTTMzNXggcHJvY2Vzc29y
-Lgo+Pj4gVGhlIHVwZGF0ZSByZXZlYWxlZCB0aGUgaW5vcGVyYWJpbGl0eSBvZiB3cml0aW5nIHRv
-IE5BTkQuIFdoZW4gdHJ5aW5nIHRvIHdyaXRlLAo+Pj4gdGhlIGJvb3Rsb2FkZXIgaGFuZ3MgZm9y
-ZXZlci4KPj4+IFJldmVydGluZyB0aGUgY29tbWl0ICJtdGQ6IG5hbmQ6IG9tYXBfZ3BtYzogRml4
-IHdyb25nIGxlbmd0aCBjaGVjayIgaGVscHMKPj4+IHRvIHNvbHZlIHRoZSBwcm9ibGVtLgo+Pgo+
-PiBXaGF0IGhhcHBlbnMgd2hlbiBjaGFuZ2luZyB0aGUgY29uZGl0aW9uIHRvIGxlbiA+IDA/Cj4+
-Cj4+PiBEb2VzIGFueW9uZSBoYXZlIHNpbWlsYXIgcHJvYmxlbXM/Cj4+Pgo+Pj4gVGhhbmtzIQo+
-Pj4KPj4+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4+
-PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+Pj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4+
-PiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPj4+
-Cj4+Cj4+IC0tCj4+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4+IFN0ZXVlcndhbGRlciBTdHIuIDIxICAg
-ICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4+IDMx
-MTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEy
-MS0yMDY5MTctMCAgICB8Cj4+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAg
-ICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4gCgotLSAKUGVuZ3V0cm9uaXgg
-ZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDov
-L3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAg
-ICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGls
-ZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1
-IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Check for length > 0 because otherwise len may become smaller than
+0 in which case the loop never ends.
+
+Reported-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_omap_gpmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index db1ca88791..0f3ffa1c0e 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -636,7 +636,7 @@ static void omap_write_buf_pref(struct nand_chip *nand_chip,
+ 	gpmc_prefetch_enable(info->gpmc_cs,
+ 			PREFETCH_FIFOTHRESHOLD_MAX, 0x0, len, 0x1);
+ 
+-	while (len) {
++	while (len > 0) {
+ 		w_count = readl(info->gpmc_base + GPMC_PREFETCH_STATUS);
+ 		w_count = GPMC_PREFETCH_STATUS_FIFO_CNT(w_count);
+ 		w_count = w_count >> 2;
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
