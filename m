@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp35.i.mail.ru ([94.100.177.95])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l3ybP-0004SQ-So
- for barebox@lists.infradead.org; Mon, 25 Jan 2021 09:56:08 +0000
-Date: Mon, 25 Jan 2021 10:56:06 +0100
-Message-ID: <20210125095606.GF31738@pengutronix.de>
-References: <20210121112958.25937-1-str@pengutronix.de>
+ id 1l3yg5-0004o3-PO
+ for barebox@lists.infradead.org; Mon, 25 Jan 2021 10:00:58 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Mon, 25 Jan 2021 13:00:47 +0300
+Message-Id: <20210125100047.7498-1-shc_work@mail.ru>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210121112958.25937-1-str@pengutronix.de>
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +19,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/13] ARM: add fncpy.h from linux v4.6
-To: Steffen Trumtrar <str@pengutronix.de>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: [PATCH] ARM: dts: imx6qdl: pfla02: Use NAND pinmux entries from
+ upstream
+To: barebox@lists.infradead.org
 
-On Thu, Jan 21, 2021 at 12:29:46PM +0100, Steffen Trumtrar wrote:
-> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> 
-> Description from the linux commit 5756e9dd0de6d5c307773f8f734c0684b3098fdd:
-> 
->     ARM: 6640/1: Thumb-2: Symbol manipulation macros for function body copying
-> 
->     In low-level board support code, there is sometimes a need to
->     copy a function body to another location at run-time.
-> 
->     A straightforward call to memcpy doesn't work in Thumb-2,
->     because bit 0 of external Thumb function symbols is set to 1,
->     indicating that the function is Thumb.  Without corrective
->     measures, this will cause an off-by-one copy, and the copy
->     may be called using the wrong instruction set.
-> 
->     This patch adds an fncpy() macro to help with such copies.
-> 
->     Particular care is needed, because C doesn't guarantee any
->     defined behaviour when casting a function pointer to any other
->     type.  This has been observed to lead to strange optimisation
->     side-effects when doing the arithmetic which is required in
->     order to copy/move function bodies correctly in Thumb-2.
-> 
->     Thanks to Russell King and Nicolas Pitre for their input
->     on this patch.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  arch/arm/include/asm/fncpy.h | 82 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 82 insertions(+)
->  create mode 100644 arch/arm/include/asm/fncpy.h
+The gpminand pinmux entries are in the upstream dtsi now, so use them.
 
-Applied this patch for now, but with an update to v5.10 with the only
-change that the licence header is changed to SPDX now.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-Sascha
-
-
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index f499ca568..e1aa3183b 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -127,30 +127,6 @@
+ 				MX6QDL_PAD_SD4_DAT7__GPIO2_IO15	0x80000000
+ 			>;
+ 		};
+-
+-		pinctrl_gpmi_nand: gpminandgrp {
+-			fsl,pins = <
+-				MX6QDL_PAD_NANDF_CLE__NAND_CLE     0xb0b1
+-				MX6QDL_PAD_NANDF_ALE__NAND_ALE     0xb0b1
+-				MX6QDL_PAD_NANDF_WP_B__NAND_WP_B   0xb0b1
+-				MX6QDL_PAD_NANDF_RB0__NAND_READY_B 0xb000
+-				MX6QDL_PAD_NANDF_CS0__NAND_CE0_B   0xb0b1
+-				MX6QDL_PAD_NANDF_CS1__NAND_CE1_B   0xb0b1
+-				MX6QDL_PAD_NANDF_CS2__NAND_CE2_B   0xb0b1
+-				MX6QDL_PAD_NANDF_CS3__NAND_CE3_B   0xb0b1
+-				MX6QDL_PAD_SD4_CMD__NAND_RE_B      0xb0b1
+-				MX6QDL_PAD_SD4_CLK__NAND_WE_B      0xb0b1
+-				MX6QDL_PAD_NANDF_D0__NAND_DATA00   0xb0b1
+-				MX6QDL_PAD_NANDF_D1__NAND_DATA01   0xb0b1
+-				MX6QDL_PAD_NANDF_D2__NAND_DATA02   0xb0b1
+-				MX6QDL_PAD_NANDF_D3__NAND_DATA03   0xb0b1
+-				MX6QDL_PAD_NANDF_D4__NAND_DATA04   0xb0b1
+-				MX6QDL_PAD_NANDF_D5__NAND_DATA05   0xb0b1
+-				MX6QDL_PAD_NANDF_D6__NAND_DATA06   0xb0b1
+-				MX6QDL_PAD_NANDF_D7__NAND_DATA07   0xb0b1
+-				MX6QDL_PAD_SD4_DAT0__NAND_DQS      0x00b1
+-			>;
+-		};
+ 	};
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.2
+
 
 _______________________________________________
 barebox mailing list
