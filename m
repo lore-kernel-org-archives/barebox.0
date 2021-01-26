@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from cpanel.siel.si ([46.19.9.99])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l4M6m-000390-8M
- for barebox@lists.infradead.org; Tue, 26 Jan 2021 11:02:05 +0000
-Date: Tue, 26 Jan 2021 12:02:02 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20210126110202.GC28722@pengutronix.de>
-References: <20210121112958.25937-1-str@pengutronix.de>
- <20210121112958.25937-10-str@pengutronix.de>
- <20210125095242.GD31738@pengutronix.de>
- <87sg6ot790.fsf@pengutronix.de>
+ id 1l4MiU-0007Pr-B0
+ for barebox@lists.infradead.org; Tue, 26 Jan 2021 11:41:03 +0000
+From: Andrej Picej <andrej.picej@norik.com>
+References: <20210120125107.736121-1-andrej.picej@norik.com>
+ <20210120125107.736121-3-andrej.picej@norik.com>
+ <20210121090148.GF19063@pengutronix.de>
+ <7df4659e-7237-c5fa-767f-7dedd5c44005@norik.com>
+ <20210125091547.GB8233@pengutronix.de>
+ <200bfc2a-e616-0e34-b2c4-91ef67915836@norik.com>
+Message-ID: <da704371-9ad7-e42d-675c-08a34afa5159@norik.com>
+Date: Tue, 26 Jan 2021 12:40:17 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <87sg6ot790.fsf@pengutronix.de>
+In-Reply-To: <200bfc2a-e616-0e34-b2c4-91ef67915836@norik.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,91 +23,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 10/13] of: of_firmware: add support for fpga bridges
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH 2/3] ARM: i.MX: implement GPMI NAND xload
+To: Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 26, 2021 at 09:47:07AM +0100, Steffen Trumtrar wrote:
-> 
-> Sascha Hauer <sha@pengutronix.de> writes:
-> 
-> > On Thu, Jan 21, 2021 at 12:29:55PM +0100, Steffen Trumtrar wrote:
-> >> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> >>
-> >> Add support for potentially defined FPGA-bridges in the overlay.
-> >>
-> >> While at it also add support for loading the firmware directly via a
-> >> path instead of 'needing' an overlay for that.
-> >> The direct loading will be done with the existent firmwareload command.
-> >>
-> >> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> >> ---
-> >>  drivers/of/Makefile      |  3 +-
-> >>  drivers/of/of_firmware.c | 88 ++++++++++++++++++++++++++++++++++++----
-> >>  include/of.h             | 21 +++++++---
-> >>  3 files changed, 96 insertions(+), 16 deletions(-)
-> >>
-> >> diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-> >> index b6847752d2..6199c9791f 100644
-> >> --- a/drivers/of/Makefile
-> >> +++ b/drivers/of/Makefile
-> >> @@ -6,4 +6,5 @@ obj-y += partition.o
-> >>  obj-y += of_net.o
-> >>  obj-$(CONFIG_MTD) += of_mtd.o
-> >>  obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o
-> >> -obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o of_firmware.o
-> >> +obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o
-> >> +obj-$(CONFIG_FIRMWARE) += of_firmware.o
-> >> diff --git a/drivers/of/of_firmware.c b/drivers/of/of_firmware.c
-> >> index 096f84572e..ef0ccd0221 100644
-> >> --- a/drivers/of/of_firmware.c
-> >> +++ b/drivers/of/of_firmware.c
-> >> @@ -4,12 +4,52 @@
-> >>   */
-> >>  #include <common.h>
-> >>  #include <firmware.h>
-> >> +#include <fpga-bridge.h>
-> >>  #include <of.h>
-> >>
-> >>  struct overlay_info {
-> >>  	const char *firmware_path;
-> >>  };
-> >>
-> >> +#ifdef CONFIG_FPGA_BRIDGE
-> >
-> > Trailing whitespace here.
-> >
-> 
-> Meh :(
-> 
-> >> +int of_firmware_load_file(const char *path)
-> >> +{
-> >> +	int err;
-> >> +	struct device_node *target;
-> >> +
-> >> +	target = of_find_compatible_node(NULL, NULL, "fpga-region");
-> >
-> > This assumes there is only one node compatible to fpga-region. What
-> > about others?
-> 
-> Ah, right, it is actually allowed to have multiple regions in one FPGA.
-> I didn't think about that.
-
-Also multiple regions in multiple FPGAs
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Ck9uIDI1LiAwMS4gMjEgMTA6NDMsIEFuZHJlaiBQaWNlaiB3cm90ZToKPiBPbiAyNS4gMDEuIDIx
+IDEwOjE1LCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4+IE9uIFRodSwgSmFuIDIxLCAyMDIxIGF0IDEx
+OjI4OjM5QU0gKzAxMDAsIEFuZHJlaiBQaWNlaiB3cm90ZToKPj4+IEhpIFNhc2NoYSwKPj4+Cj4+
+PiB0aGFua3MgZm9yIHlvdXIgY29tbWVudHMuCj4+Pgo+Pj4gUmVzcG9uc2VzIGlubGluZS4KPj4+
+Cj4+PiBPbiAyMS4gMDEuIDIxIDEwOjAxLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4+Pj4gSGkgQW5k
+cmVqLAo+Pj4+Cj4+Pj4gU29tZSBjb21tZW50cyBpbmxpbmUuCj4+Pj4KPj4+PiBPbiBXZWQsIEph
+biAyMCwgMjAyMSBhdCAwMTo1MTowNlBNICswMTAwLCBBbmRyZWogUGljZWogd3JvdGU6Cj4+Pj4+
+IEZyb206IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KPj4+Pj4KPj4+Pj4g
+Q29tbWl0IGlzIGJhc2VkIG9uIGluaXRpYWwgU2FzY2hhIEhhdWVyJ3Mgd29yay4gSXQgaW1wbGVt
+ZW50cyBQQkwgCj4+Pj4+IHhsb2FkCj4+Pj4+IG1lY2hhbmlzbSB0byBsb2FkIGltYWdlIGZyb20g
+R1BNSSBOQU5EIGZsYXNoLgo+Pj4+Pgo+Pj4+PiBBZGRpdGlvbmFsIHdvcmsgd2FzIGRvbmUsIHNv
+IHRoYXQgdGhlIE5BTkQncyBzaXplLCBwYWdlIHNpemUgYW5kIE9PQidzCj4+Pj4+IHNpemUgYXJl
+IGF1dG9kZXRlY3RlZCBhbmQgbm90IGhhcmRjb2RlZC4gRGV0ZWN0aW9uIG1ldGhvZCBmb2xsb3dz
+IHRoZQo+Pj4+PiBzYW1lIG1ldGhvZHMgYXMgdXNlZCBpbiBOQU5EIGRyaXZlciwgbWVhbmluZyBO
+QU5EIE9ORkkgc3VwcG9ydCBpcyAKPj4+Pj4gcHJvYmVkCj4+Pj4+IGFuZCBpZiBOQU5EIHN1cHBv
+cnRzIE9ORkksIE5BTkQgbWVtb3J5IG9yZ2FuaXphdGlvbiBpcyByZWFkIGZyb20gT05GSQo+Pj4+
+PiBwYXJhbWV0ZXIgcGFnZSBvdGhlcndpc2UgIlJFQUQgSUQiIGlzIHVzZWQuCj4+Pj4+Cj4+Pj4+
+IEN1cnJlbnRseSBvbmx5IGltcGxlbWVudGVkIGZvciBpLk1YNiBmYW1pbGx5IG9mIFNvQ3MuCj4+
+Pj4+Cj4+Pj4+IFNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25p
+eC5kZT4KPj4+Pj4gU2lnbmVkLW9mZi1ieTogUHJpbW96IEZpc2VyIDxwcmltb3ouZmlzZXJAbm9y
+aWsuY29tPgo+Pj4+PiBTaWduZWQtb2ZmLWJ5OiBBbmRyZWogUGljZWogPGFuZHJlai5waWNlakBu
+b3Jpay5jb20+Cj4+Pj4+IC0tLQo+Pj4+PiDCoMKgIGFyY2gvYXJtL21hY2gtaW14L01ha2VmaWxl
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgwqAgMiArLQo+Pj4+PiDCoMKgIGFyY2gvYXJt
+L21hY2gtaW14L2luY2x1ZGUvbWFjaC94bG9hZC5oIHzCoMKgwqAgMSArCj4+Pj4+IMKgwqAgYXJj
+aC9hcm0vbWFjaC1pbXgveGxvYWQtZ3BtaS1uYW5kLmPCoMKgwqAgfCAxMTYzIAo+Pj4+PiArKysr
+KysrKysrKysrKysrKysrKysrKysKPj4+Pj4gwqDCoCAzIGZpbGVzIGNoYW5nZWQsIDExNjUgaW5z
+ZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+Pj4+PiDCoMKgIGNyZWF0ZSBtb2RlIDEwMDY0NCBh
+cmNoL2FybS9tYWNoLWlteC94bG9hZC1ncG1pLW5hbmQuYwo+Pj4+Pgo+Pj4+PiBkaWZmIC0tZ2l0
+IGEvYXJjaC9hcm0vbWFjaC1pbXgvTWFrZWZpbGUgYi9hcmNoL2FybS9tYWNoLWlteC9NYWtlZmls
+ZQo+Pj4+PiBpbmRleCBlNDVmNzU4ZTkuLmQ5NGM4NDZhMSAxMDA2NDQKPj4+Pj4gLS0tIGEvYXJj
+aC9hcm0vbWFjaC1pbXgvTWFrZWZpbGUKPj4+Pj4gKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvTWFr
+ZWZpbGUKPj4+Pj4gK3N0YXRpYyBpbnQgbXhzX25hbmRfZ2V0X2luZm8oc3RydWN0IG14c19uYW5k
+X2luZm8gKmluZm8sIHZvaWQgCj4+Pj4+ICpkYXRhYnVmKQo+Pj4+PiArewo+Pj4+PiArwqDCoMKg
+IGludCByZXQsIGk7Cj4+Pj4+ICsKPj4+Pj4gK8KgwqDCoCByZXQgPSBteHNfbmFuZF9jaGVja19v
+bmZpKGluZm8sIGRhdGFidWYpOwo+Pj4+PiArwqDCoMKgIGlmIChyZXQpIHsKPj4+Pj4gK8KgwqDC
+oMKgwqDCoMKgIGlmIChyZXQgIT0gMSkKPj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0
+dXJuIHJldDsKPj4+Pj4gK8KgwqDCoMKgwqDCoMKgIHByX3dhcm4oIk9ORkkgbm90IHN1cHBvcnRl
+ZCwgdHJ5IFwiUkVBRCBJRFwiLi4uXG4iKTsKPj4+Pgo+Pj4+IFlvdSBhbHJlYWR5IHByaW50ZWQg
+YSAiT05GSSBub3Qgc3VwcG9ydGVkXG4iIG1lc3NhZ2UuIFByaW50aW5nIGl0IG9uY2UKPj4+PiBp
+cyBlbm91Z2guIEFsc28gdGhpcyBtZXNzYWdlIGFwcGVhcnMgd2l0aCBldmVyeSBub24tT05GSSBu
+YW5kLCAKPj4+PiByaWdodD8gSW4KPj4+PiB0aGF0IGNhc2UgaXQgc2hvdWxkIHJhdGhlciBiZSBw
+cl9pbmZvKCkKPj4+Cj4+PiBPSywgSSBhZ3JlZSwgd2lsbCBmaXggaXQgaW4gdjIuCj4+Pgo+Pj4+
+Cj4+Pj4+ICvCoMKgwqAgLyoKPj4+Pj4gK8KgwqDCoMKgICogSWYgT05GSSBpcyBub3Qgc3VwcG9y
+dGVkIG9yIGlmIGl0IGZhaWxzIHRyeSB0byBnZXQgTkFORCdzIAo+Pj4+PiBpbmZvIGZyb20KPj4+
+Pj4gK8KgwqDCoMKgICogIlJFQUQgSUQiIGNvbW1hbmQuCj4+Pj4+ICvCoMKgwqDCoCAqLwo+Pj4+
+PiArwqDCoMKgIHByX2RlYnVnKCJUcnlpbmcgXCJSRUFEIElEXCIgY29tbWFuZC4uLlxuIik7Cj4+
+Pj4+ICvCoMKgwqAgcmV0ID0gbXhzX25hbmRfZ2V0X3JlYWRpZChpbmZvLCBkYXRhYnVmKTsKPj4+
+Pj4gK8KgwqDCoCBpZiAocmV0KSB7Cj4+Pj4+ICvCoMKgwqDCoMKgwqDCoCBpZiAocmV0ICE9IC1F
+T1ZFUkZMT1cpCj4+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiByZXQ7Cj4+Pj4+
+ICsKPj4+Pj4gK8KgwqDCoMKgwqDCoMKgIC8qCj4+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgICogSWYg
+TkFORCdzICJSRUFEIElEIiByZXR1cm5zIGJhZCB2YWx1ZXMsIHRyeSB0byBzZXQgdGhlbSB0bwo+
+Pj4+PiArwqDCoMKgwqDCoMKgwqDCoCAqIGRlZmF1bHQgKG1vc3QgY29tbW9uIE5BTkQgbWVtb3J5
+IG9yZy4pIGFuZCBjb250aW51ZS4KPj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqAgKi8KPj4+Pj4gK8Kg
+wqDCoMKgwqDCoMKgIHByX3dhcm4oIk5BTkRzIFJFQUQgSUQgY29tbWFuZCByZXR1cm5lZCBiYWQg
+dmFsdWVzIiBcCj4+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICIgc2V0IHRoZW0gdG8gZGVm
+YXVsdCBhbmQgdHJ5IHRvIGNvbnRpbnVlIVxuIik7Cj4+Pj4+ICvCoMKgwqDCoMKgwqDCoCBpbmZv
+LT5vcmdhbml6YXRpb24ucGFnZXNpemUgPSAyMDQ4Owo+Pj4+PiArwqDCoMKgwqDCoMKgwqAgaW5m
+by0+b3JnYW5pemF0aW9uLm9vYnNpemUgPSA2NDsKPj4+Pj4gK8KgwqDCoMKgwqDCoMKgIGluZm8t
+Pm5hbmRfc2l6ZSA9IFNaXzFHOwo+Pj4+Cj4+Pj4gSXMgdGhpcyB3b3J0aCBpdD8gUkVBRCBJRCBp
+cyB0aGUgbW9zdCBiYXNpYyBjb21tYW5kLCB3aGVuIHRoaXMgZG9lc24ndAo+Pj4+IHdvcmsgSSBk
+b24ndCB0aGluayB0aGVyZSdzIGEgcG9pbnQgaW4gY29udGludWluZy4KPj4+Cj4+PiBXZSBoYWQg
+YSBjYXNlIHdpdGggU2Ftc3VuZyBLOUs4RzA4VTBFIHdoZW4gc29tZXRpbWVzIChyZWFzb25zIG5v
+dCAKPj4+IGtub3duKSB0aGUKPj4+IDV0aCBieXRlIHJldHVybmVkIDB4ZmYgaW5zdGVhZCBvZiBj
+b3JyZWN0IHZhbHVlcywgYWxsIG90aGVyIHJldHVybmVkIAo+Pj4gdmFsdWVzCj4+PiB3ZXJlIGNv
+cnJlY3QuIEluIHRoaXMgY2FzZSB0aGUgZGV2aWNlIGJvb3RlZCBzdWNjZXNzZnVsbHkgYmVjYXVz
+ZSBvZiAKPj4+IHRoaXMKPj4+IGhvb2suIE1heWJlIGEgYmV0dGVyIHNvbHV0aW9uIHdvdWxkIGJl
+IHRvIGNoZWNrIG9ubHkgdGhlIDV0aCBieXRlIGZvciAKPj4+IDB4ZmYKPj4+IHZhbHVlICg1dGgg
+Ynl0ZSBpcyBub3Qgc3VwcG9ydGVkIGZyb20gYWxsIE5BTkQgdmVuZG9ycyksIGlmIHRoaXMgaXMg
+Cj4+PiB0aGUgY2FzZQo+Pj4gc2V0IHRoZSBOQU5EIHNpemUgdG8gMUdCLgo+Pj4gV291bGQgdGhh
+dCBtYWtlIG1vcmUgc2Vuc2U/Cj4+Cj4+IFRoZSBiZXN0IHdvdWxkIGJlIHRvIHRyYWNrIHRoZSBp
+c3N1ZSBkb3duIGFuZCB0byBmaXggaXQgOykKPj4gSXQncyBub3QgdmVyeSBuaWNlIHRvIGFzc3Vt
+ZSBpdCBpbiBjYXNlIG9mIHJlYWQgaWQgZmFpbHVyZXMgaXQncyBleGFjdGx5Cj4+IHRoYXQgTkFO
+RCB0eXBlIHlvdSBoYXZlIHRyb3VibGVzIHdpdGguCj4+IERvZXMgaXQgaGVscCB0byByZXNldCB0
+aGUgTkFORCBjaGlwIGJlZm9yZSByZWFkaW5nIHRoZSBJRD8KPj4KPj4gU2FzY2hhCj4+Cj4gCj4g
+SSB0b3RhbGx5IGFncmVlIHdpdGggZml4aW5nIHRoZSBpc3N1ZSBhbmQgd2lsbCBsb29rIGludG8g
+aXQgYSBiaXQgbW9yZS4KPiBJIHdpbGwgcmVzZXQgdGhlIE5BTkQgYmVmb3JlIHJlYWRpbmcgdGhl
+IElEIGluIHRoZSBzYW1lIHdheSBhcyBpdCBpcyAKPiBkb25lIGJlZm9yZSByZWFkaW5nIHBhcmFt
+ZXRlciBwYWdlLiBJIHdpbGwgbGVhdmUgdGhlIHRlc3Rpbmcgb24gb3ZlciAKPiBuaWdodCAocmVh
+ZGluZyB0aGUgSUQgZmFpbGVkIGluIGFib3V0IDEgb3V0IG9mIDUwMCBib290cykgYW5kIHJlcG9y
+dCB0aGUgCj4gcmVzdWx0cyB0b21vcnJvdy4KPiAKCkkgZ3Vlc3MgcmVzZXR0aW5nIGZpeGVkIHRo
+aXMgcHJvYmxlbSwgSSBnb3QgNTAuMDAwIGJvb3RzIHdpdGhvdXQgYW55IApwcm9ibGVtcy4gV2ls
+bCBmaXggdGhpcyBpbiB2MiA6KS4KClNob3VsZCBJIG5vdyBjb21wbGV0ZWx5IGFiYW5kb24gc2V0
+dGluZyB0aGUgTkFORHMgbWVtb3J5IHRvIGRlZmF1bHQgCnZhbHVlcyBhbmQganVzdCByZXR1cm4g
+ZXJyb3Igb24gZmFpbHVyZT8KU29tZXRoaW5nIGxpa2UgdGhpczoKCj4gCS8qCj4gCSAqIElmIE9O
+RkkgaXMgbm90IHN1cHBvcnRlZCBvciBpZiBpdCBmYWlscyB0cnkgdG8gZ2V0IE5BTkQncyBpbmZv
+IGZyb20KPiAJICogIlJFQUQgSUQiIGNvbW1hbmQuCj4gCSAqLwo+IAlyZXQgPSBteHNfbmFuZF9y
+ZXNldChpbmZvLCBkYXRhYnVmKTsKPiAJaWYgKHJldCkKPiAJCXJldHVybiByZXQ7Cj4gCXByX2Rl
+YnVnKCJUcnlpbmcgXCJSRUFEIElEXCIgY29tbWFuZC4uLlxuIik7Cj4gCXJldCA9IG14c19uYW5k
+X2dldF9yZWFkaWQoaW5mbywgZGF0YWJ1Zik7Cj4gCWlmIChyZXQpIHsKPiAJCXByX2VycigieGxv
+YWRlciBzdXBwb3J0cyBvbmx5IE9ORkkgYW5kIGdlbmVyaWMgXCJSRUFEIElEXCIgIiBcCj4gCQkJ
+InN1cHBvcnRlZCBOQU5Ec1xuIik7Cj4gCQlyZXR1cm4gLTE7Cj4gCX0KCkknbSBhc2tpbmcgdGhp
+cyBiZWNhdXNlIE5BTkRzIElEIGNvbW1hbmQgaXMgbWFudWZhY3R1cmVyIHNwZWNpZmljLCBzb21l
+IAptYW51ZmFjdHVyZXJzIGZvbGxvdyBnZW5lcmljIHZhbHVlcyBhbmQgb3RoZXIgdW5mb3J0dW5h
+dGVseSBkb24ndC4gSW4gCmJhcmVib3ggTkFORCBkcml2ZXIgZGVjb2RpbmcgaXMgZG9uZSBiYXNl
+ZCBvbiBtYW51ZmFjdHVyZXIuIEkgZ3Vlc3Mgd2UgCmNvdWxkIGRvIHRoZSBzYW1lIGhlcmUgYnV0
+IEkgZG9uJ3Qgd2FudCB0byBleHBhbmQgdGhlIFBCTCBwYXJ0IHRvbyBtdWNoIApqdXN0IGZvciBy
+ZWFkaW5nIEZDQiwgd2hlcmUgYWxsIE5BTkQncyBtZW1vcnkgcGFyYW1ldGVycyBhcmUgZGVjb2Rl
+ZCBmcm9tLgoKQlIsCkFuZHJlagoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
