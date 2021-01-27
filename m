@@ -1,11 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l4g37-0003xw-6s
- for barebox@lists.infradead.org; Wed, 27 Jan 2021 08:19:37 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Jan 2021 09:19:33 +0100
-Message-Id: <20210127081933.12678-1-s.hauer@pengutronix.de>
+ by casper.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
+ id 1l4lUQ-0076Jh-O8
+ for barebox@lists.infradead.org; Wed, 27 Jan 2021 14:08:52 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1l4l7X-0006Ra-2W
+ for barebox@lists.infradead.org; Wed, 27 Jan 2021 14:44:31 +0100
+Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1l4l7W-0000RC-Eo
+ for barebox@lists.infradead.org; Wed, 27 Jan 2021 14:44:30 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Wed, 27 Jan 2021 14:44:18 +0100
+Message-Id: <20210127134423.31587-7-s.trumtrar@pengutronix.de>
+In-Reply-To: <20210127134423.31587-1-s.trumtrar@pengutronix.de>
+References: <20210127134423.31587-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,37 +29,167 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] hush: stop parsing string at its end
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 07/12] firmware: import fpga-mgr.h from linux
+To: barebox@lists.infradead.org
 
-remove_quotes_in_str() doesn't stop parsing at the string end when
-there's a single "'" in the string.
-Handling quotes and double quotes is broken in many ways in hush, so
-I am not exactly sure this is the right thing to do, but at least it
-avoids going out of the string boundaries.
+Instead of defining the fpga-mgr structure in the socfpga driver, import
+the fpga-mgr.h file from linux v4.13.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- common/hush.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/firmware/socfpga.c |   9 +---
+ include/firmware.h         |   1 +
+ include/fpga-mgr.h         | 102 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 104 insertions(+), 8 deletions(-)
+ create mode 100644 include/fpga-mgr.h
 
-diff --git a/common/hush.c b/common/hush.c
-index 9ced67af48..44ce4e5225 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -623,8 +623,11 @@ static void remove_quotes_in_str(char *src)
- 	while (*src) {
- 		if (*src == '\'') {
- 			src++;
--			while (*src != '\'')
-+			while (*src != '\'') {
-+				if (!*src)
-+					return;
- 				*trg++ = *src++;
-+			}
- 			src++;
- 			continue;
- 		}
+diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
+index 14875214b1aa..605c931604c9 100644
+--- a/drivers/firmware/socfpga.c
++++ b/drivers/firmware/socfpga.c
+@@ -27,6 +27,7 @@
+  */
+ 
+ #include <firmware.h>
++#include <fpga-mgr.h>
+ #include <command.h>
+ #include <common.h>
+ #include <malloc.h>
+@@ -83,14 +84,6 @@
+ extern void socfpga_sdram_apply_static_cfg(void __iomem *sdrctrlgrp);
+ extern void socfpga_sdram_apply_static_cfg_end(void *);
+ 
+-struct fpgamgr {
+-	struct firmware_handler fh;
+-	struct device_d dev;
+-	void __iomem *regs;
+-	void __iomem *regs_data;
+-	int programmed;
+-};
+-
+ /* Get the FPGA mode */
+ static uint32_t socfpga_fpgamgr_get_mode(struct fpgamgr *mgr)
+ {
+diff --git a/include/firmware.h b/include/firmware.h
+index 19777d9bf711..2fef97a48f56 100644
+--- a/include/firmware.h
++++ b/include/firmware.h
+@@ -13,6 +13,7 @@ struct firmware_handler {
+ 	char *id; /* unique identifier for this firmware device */
+ 	char *model; /* description for this device */
+ 	struct device_d *dev;
++	void *priv;
+ 	/* called once to prepare the firmware's programming cycle */
+ 	int (*open)(struct firmware_handler*);
+ 	/* called multiple times to program the firmware with the given data */
+diff --git a/include/fpga-mgr.h b/include/fpga-mgr.h
+new file mode 100644
+index 000000000000..a120b3918990
+--- /dev/null
++++ b/include/fpga-mgr.h
+@@ -0,0 +1,102 @@
++/*
++ * FPGA Framework
++ *
++ *  Copyright (C) 2013-2015 Altera Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++#ifndef _LINUX_FPGA_MGR_H
++#define _LINUX_FPGA_MGR_H
++
++#include <firmware.h>
++
++struct fpga_manager;
++
++/**
++ * enum fpga_mgr_states - fpga framework states
++ * @FPGA_MGR_STATE_UNKNOWN: can't determine state
++ * @FPGA_MGR_STATE_POWER_OFF: FPGA power is off
++ * @FPGA_MGR_STATE_POWER_UP: FPGA reports power is up
++ * @FPGA_MGR_STATE_RESET: FPGA in reset state
++ * @FPGA_MGR_STATE_FIRMWARE_REQ: firmware request in progress
++ * @FPGA_MGR_STATE_FIRMWARE_REQ_ERR: firmware request failed
++ * @FPGA_MGR_STATE_WRITE_INIT: preparing FPGA for programming
++ * @FPGA_MGR_STATE_WRITE_INIT_ERR: Error during WRITE_INIT stage
++ * @FPGA_MGR_STATE_WRITE: writing image to FPGA
++ * @FPGA_MGR_STATE_WRITE_ERR: Error while writing FPGA
++ * @FPGA_MGR_STATE_WRITE_COMPLETE: Doing post programming steps
++ * @FPGA_MGR_STATE_WRITE_COMPLETE_ERR: Error during WRITE_COMPLETE
++ * @FPGA_MGR_STATE_OPERATING: FPGA is programmed and operating
++ */
++enum fpga_mgr_states {
++	/* default FPGA states */
++	FPGA_MGR_STATE_UNKNOWN,
++	FPGA_MGR_STATE_POWER_OFF,
++	FPGA_MGR_STATE_POWER_UP,
++	FPGA_MGR_STATE_RESET,
++
++	/* getting an image for loading */
++	FPGA_MGR_STATE_FIRMWARE_REQ,
++	FPGA_MGR_STATE_FIRMWARE_REQ_ERR,
++
++	/* write sequence: init, write, complete */
++	FPGA_MGR_STATE_WRITE_INIT,
++	FPGA_MGR_STATE_WRITE_INIT_ERR,
++	FPGA_MGR_STATE_WRITE,
++	FPGA_MGR_STATE_WRITE_ERR,
++	FPGA_MGR_STATE_WRITE_COMPLETE,
++	FPGA_MGR_STATE_WRITE_COMPLETE_ERR,
++
++	/* fpga is programmed and operating */
++	FPGA_MGR_STATE_OPERATING,
++};
++
++/*
++ * FPGA Manager flags
++ * FPGA_MGR_PARTIAL_RECONFIG: do partial reconfiguration if supported
++ * FPGA_MGR_EXTERNAL_CONFIG: FPGA has been configured prior to Linux booting
++ * FPGA_MGR_BITSTREAM_LSB_FIRST: SPI bitstream bit order is LSB first
++ * FPGA_MGR_COMPRESSED_BITSTREAM: FPGA bitstream is compressed
++ */
++#define FPGA_MGR_PARTIAL_RECONFIG	BIT(0)
++#define FPGA_MGR_EXTERNAL_CONFIG	BIT(1)
++#define FPGA_MGR_ENCRYPTED_BITSTREAM	BIT(2)
++#define FPGA_MGR_BITSTREAM_LSB_FIRST	BIT(3)
++#define FPGA_MGR_COMPRESSED_BITSTREAM	BIT(4)
++
++/**
++ * struct fpga_image_info - information specific to a FPGA image
++ * @flags: boolean flags as defined above
++ * @enable_timeout_us: maximum time to enable traffic through bridge (uSec)
++ * @disable_timeout_us: maximum time to disable traffic through bridge (uSec)
++ * @config_complete_timeout_us: maximum time for FPGA to switch to operating
++ *	   status in the write_complete op.
++ */
++struct fpga_image_info {
++	u32 flags;
++	u32 enable_timeout_us;
++	u32 disable_timeout_us;
++	u32 config_complete_timeout_us;
++};
++
++struct fpgamgr {
++	struct firmware_handler fh;
++	struct device_d dev;
++	void *priv;
++	void __iomem *regs;
++	void __iomem *regs_data;
++	int programmed;
++};
++
++
++#endif /*_LINUX_FPGA_MGR_H */
 -- 
 2.20.1
 
