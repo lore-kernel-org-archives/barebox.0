@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1l4lAp-0075Br-Ix
- for barebox@lists.infradead.org; Wed, 27 Jan 2021 13:48:05 +0000
+ id 1l4lAN-0075Bv-4g
+ for barebox@lists.infradead.org; Wed, 27 Jan 2021 13:47:55 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1l4l7X-0006RX-2t
+ (envelope-from <str@pengutronix.de>) id 1l4l7X-0006Rc-4z
  for barebox@lists.infradead.org; Wed, 27 Jan 2021 14:44:31 +0100
 Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1l4l7W-0000R3-DY
+ (envelope-from <str@pengutronix.de>) id 1l4l7W-0000RJ-Fc
  for barebox@lists.infradead.org; Wed, 27 Jan 2021 14:44:30 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 27 Jan 2021 14:44:15 +0100
-Message-Id: <20210127134423.31587-4-s.trumtrar@pengutronix.de>
+Date: Wed, 27 Jan 2021 14:44:20 +0100
+Message-Id: <20210127134423.31587-9-s.trumtrar@pengutronix.de>
 In-Reply-To: <20210127134423.31587-1-s.trumtrar@pengutronix.de>
 References: <20210127134423.31587-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -29,435 +29,259 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 04/12] drivers: add fpga bridge framework
+Subject: [PATCH v2 09/12] of: of_firmware: add support for fpga bridges
 To: barebox@lists.infradead.org
 
-Import the fpga bridge framework from linux v4.10-rc2.
+Add support for potentially defined FPGA-bridges in the overlay.
 
-Description from the initial commit adding this to linux:
-21aeda950c5f84a8351b862816d832120b217a9b
-
-    fpga: add fpga bridge framework
-
-    This framework adds API functions for enabling/
-    disabling FPGA bridges under kernel control.
-
-    This allows the Linux kernel to disable FPGA bridges
-    during FPGA reprogramming and to enable FPGA bridges
-    when FPGA reprogramming is done.  This framework is
-    be manufacturer-agnostic, allowing it to be used in
-    interfaces that use the FPGA Manager Framework to
-    reprogram FPGA's.
-
-    The functions are:
-    * of_fpga_bridge_get
-    * fpga_bridge_put
-       Get/put an exclusive reference to a FPGA bridge.
-
-    * fpga_bridge_enable
-    * fpga_bridge_disable
-       Enable/Disable traffic through a bridge.
-
-    * fpga_bridge_register
-    * fpga_bridge_unregister
-       Register/unregister a device-specific low level FPGA
-       Bridge driver.
-
-    Get an exclusive reference to a bridge and add it to a list:
-    * fpga_bridge_get_to_list
-
-    To enable/disable/put a set of bridges that are on a list:
-    * fpga_bridges_enable
-    * fpga_bridges_disable
-    * fpga_bridges_put
-
-    Signed-off-by: Alan Tull <atull@opensource.altera.com>
+While at it also add support for loading the firmware directly via a
+path instead of 'needing' an overlay for that.
+The direct loading will be done with the existent firmwareload command.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/Kconfig            |   1 +
- drivers/Makefile           |   1 +
- drivers/fpga/Kconfig       |  22 ++++
- drivers/fpga/Makefile      |   6 +
- drivers/fpga/fpga-bridge.c | 226 +++++++++++++++++++++++++++++++++++++
- include/fpga-bridge.h      |  69 +++++++++++
- 6 files changed, 325 insertions(+)
- create mode 100644 drivers/fpga/Kconfig
- create mode 100644 drivers/fpga/Makefile
- create mode 100644 drivers/fpga/fpga-bridge.c
- create mode 100644 include/fpga-bridge.h
+ drivers/of/Makefile      |   3 +-
+ drivers/of/of_firmware.c | 130 +++++++++++++++++++++++++++++++++++++--
+ include/of.h             |  23 +++++--
+ 3 files changed, 143 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index dda240578067..3bb9c09536e8 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -36,6 +36,7 @@ source "drivers/reset/Kconfig"
- source "drivers/pci/Kconfig"
- source "drivers/rtc/Kconfig"
- source "drivers/firmware/Kconfig"
-+source "drivers/fpga/Kconfig"
- source "drivers/phy/Kconfig"
- source "drivers/crypto/Kconfig"
- source "drivers/memory/Kconfig"
-diff --git a/drivers/Makefile b/drivers/Makefile
-index 5a03bdceab81..5221c2ca5586 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -34,6 +34,7 @@ obj-$(CONFIG_RESET_CONTROLLER) += reset/
- obj-$(CONFIG_PCI) += pci/
- obj-y += rtc/
- obj-$(CONFIG_FIRMWARE) += firmware/
-+obj-$(CONFIG_FPGA) += fpga/
- obj-$(CONFIG_GENERIC_PHY) += phy/
- obj-$(CONFIG_HAB) += hab/
- obj-$(CONFIG_CRYPTO_HW) += crypto/
-diff --git a/drivers/fpga/Kconfig b/drivers/fpga/Kconfig
-new file mode 100644
-index 000000000000..fccdbff6eb3f
---- /dev/null
-+++ b/drivers/fpga/Kconfig
-@@ -0,0 +1,22 @@
-+#
-+# FPGA framework configuration
-+#
-+
-+menu "FPGA Configuration Support"
-+
-+config FPGA
-+	tristate "FPGA Configuration Framework"
-+	help
-+	  Say Y here if you want support for configuring FPGAs from barebox.
-+
-+if FPGA
-+
-+config FPGA_BRIDGE
-+	tristate "FPGA Bridge Framework"
-+	help
-+	  Say Y here if you want to support bridges connected between host
-+	  processors and FPGAs or between FPGAs.
-+
-+endif # FPGA
-+
-+endmenu
-diff --git a/drivers/fpga/Makefile b/drivers/fpga/Makefile
-new file mode 100644
-index 000000000000..fc71a29d3b33
---- /dev/null
-+++ b/drivers/fpga/Makefile
-@@ -0,0 +1,6 @@
-+#
-+# Makefile for the fpga framework and fpga manager drivers.
-+#
-+
-+# FPGA Bridge Drivers
-+obj-$(CONFIG_FPGA_BRIDGE)		+= fpga-bridge.o
-diff --git a/drivers/fpga/fpga-bridge.c b/drivers/fpga/fpga-bridge.c
-new file mode 100644
-index 000000000000..edf29b0ecf13
---- /dev/null
-+++ b/drivers/fpga/fpga-bridge.c
-@@ -0,0 +1,226 @@
-+/*
-+ * FPGA Bridge Framework Driver
-+ *
-+ *  Copyright (C) 2013-2016 Altera Corporation, All Rights Reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+#include <common.h>
+diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+index b6847752d247..6199c9791f52 100644
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -6,4 +6,5 @@ obj-y += partition.o
+ obj-y += of_net.o
+ obj-$(CONFIG_MTD) += of_mtd.o
+ obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o
+-obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o of_firmware.o
++obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o
++obj-$(CONFIG_FIRMWARE) += of_firmware.o
+diff --git a/drivers/of/of_firmware.c b/drivers/of/of_firmware.c
+index 096f84572e63..ff5ac60e9fd5 100644
+--- a/drivers/of/of_firmware.c
++++ b/drivers/of/of_firmware.c
+@@ -4,12 +4,52 @@
+  */
+ #include <common.h>
+ #include <firmware.h>
 +#include <fpga-bridge.h>
-+
-+/**
-+ * fpga_bridge_enable - Enable transactions on the bridge
-+ *
-+ * @bridge: FPGA bridge
-+ *
-+ * Return: 0 for success, error code otherwise.
-+ */
-+int fpga_bridge_enable(struct fpga_bridge *bridge)
-+{
-+	dev_dbg(&bridge->dev, "enable\n");
-+
-+	if (bridge->br_ops && bridge->br_ops->enable_set)
-+		return bridge->br_ops->enable_set(bridge, 1);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(fpga_bridge_enable);
-+
-+/**
-+ * fpga_bridge_disable - Disable transactions on the bridge
-+ *
-+ * @bridge: FPGA bridge
-+ *
-+ * Return: 0 for success, error code otherwise.
-+ */
-+int fpga_bridge_disable(struct fpga_bridge *bridge)
-+{
-+	dev_dbg(&bridge->dev, "disable\n");
-+
-+	if (bridge->br_ops && bridge->br_ops->enable_set)
-+		return bridge->br_ops->enable_set(bridge, 0);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(fpga_bridge_disable);
-+
-+/**
-+ * of_fpga_bridge_get - get an exclusive reference to a fpga bridge
-+ *
-+ * @np: node pointer of a FPGA bridge
-+ *
-+ * Return fpga_bridge struct if successful.
-+ * Return -EBUSY if someone already has a reference to the bridge.
-+ * Return -ENODEV if @np is not a FPGA Bridge.
-+ */
-+struct fpga_bridge *of_fpga_bridge_get(struct device_node *np)
-+
-+{
-+	struct device_d *dev;
-+	struct fpga_bridge *bridge;
-+	int ret = -ENODEV;
-+
-+	dev = of_find_device_by_node(np);
-+	if (!dev || !dev->priv)
-+		return ERR_PTR(ret);
-+
-+	bridge = dev->priv;
-+
-+	return bridge;
-+}
-+EXPORT_SYMBOL_GPL(of_fpga_bridge_get);
-+
-+/**
-+ * fpga_bridges_enable - enable bridges in a list
-+ * @bridge_list: list of FPGA bridges
-+ *
-+ * Enable each bridge in the list.  If list is empty, do nothing.
-+ *
-+ * Return 0 for success or empty bridge list; return error code otherwise.
-+ */
-+int fpga_bridges_enable(struct list_head *bridge_list)
-+{
-+	struct fpga_bridge *bridge;
-+	int ret;
-+
-+	list_for_each_entry(bridge, bridge_list, node) {
-+		ret = fpga_bridge_enable(bridge);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(fpga_bridges_enable);
-+
-+/**
-+ * fpga_bridges_disable - disable bridges in a list
-+ *
-+ * @bridge_list: list of FPGA bridges
-+ *
-+ * Disable each bridge in the list.  If list is empty, do nothing.
-+ *
-+ * Return 0 for success or empty bridge list; return error code otherwise.
-+ */
-+int fpga_bridges_disable(struct list_head *bridge_list)
-+{
-+	struct fpga_bridge *bridge;
-+	int ret;
-+
-+	list_for_each_entry(bridge, bridge_list, node) {
-+		ret = fpga_bridge_disable(bridge);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(fpga_bridges_disable);
-+
-+/**
-+ * fpga_bridges_get_to_list - get a bridge, add it to a list
-+ *
-+ * @np: node pointer of a FPGA bridge
-+ * @bridge_list: list of FPGA bridges
-+ *
-+ * Get an exclusive reference to the bridge and and it to the list.
-+ *
-+ * Return 0 for success, error code from of_fpga_bridge_get() othewise.
-+ */
-+int fpga_bridge_get_to_list(struct device_node *np,
-+			    struct list_head *bridge_list)
-+{
-+	struct fpga_bridge *bridge;
-+
-+	bridge = of_fpga_bridge_get(np);
-+	if (IS_ERR(bridge))
-+		return PTR_ERR(bridge);
-+	list_add(&bridge->node, bridge_list);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(fpga_bridge_get_to_list);
-+
-+static int set_enable(struct param_d *p, void *priv)
-+{
-+	struct fpga_bridge *bridge = priv;
-+
-+	if (bridge->enable)
-+		fpga_bridge_enable(bridge);
-+	else
-+		fpga_bridge_disable(bridge);
-+
-+	return 0;
-+}
-+
-+/**
-+ * fpga_bridge_register - register a fpga bridge driver
-+ * @dev:	FPGA bridge device from pdev
-+ * @name:	FPGA bridge name
-+ * @br_ops:	pointer to structure of fpga bridge ops
-+ * @priv:	FPGA bridge private data
-+ *
-+ * Return: 0 for success, error code otherwise.
-+ */
-+int fpga_bridge_register(struct device_d *dev, const char *name,
-+			 const struct fpga_bridge_ops *br_ops, void *priv)
-+{
-+	struct fpga_bridge *bridge;
-+	struct param_d *p;
-+	int ret = 0;
-+
-+	if (!name || !strlen(name)) {
-+		dev_err(dev, "Attempt to register with no name!\n");
-+		return -EINVAL;
-+	}
-+
-+	bridge = xzalloc(sizeof(*bridge));
-+	if (!bridge)
-+		return -ENOMEM;
-+
-+	INIT_LIST_HEAD(&bridge->node);
-+
-+	bridge->br_ops = br_ops;
-+	bridge->priv = priv;
-+
-+	bridge->dev.parent = dev;
-+	bridge->dev.device_node = dev->device_node;
-+	bridge->dev.id = DEVICE_ID_DYNAMIC;
-+
-+	bridge->dev.name = xstrdup(name);
-+
-+	ret = register_device(&bridge->dev);
-+	if (ret)
-+		goto out;
-+
-+	dev->priv = bridge;
-+
-+	bridge->enable = 0;
-+	p = dev_add_param_bool(&bridge->dev, "enable", set_enable,
-+			       NULL, &bridge->enable, bridge);
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
-+
-+	of_platform_populate(dev->device_node, NULL, dev);
-+
-+	dev_info(bridge->dev.parent, "fpga bridge [%s] registered\n",
-+		 bridge->dev.name);
-+
-+	return 0;
-+
-+out:
-+	kfree(bridge);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(fpga_bridge_register);
-diff --git a/include/fpga-bridge.h b/include/fpga-bridge.h
-new file mode 100644
-index 000000000000..8d55043a7738
---- /dev/null
-+++ b/include/fpga-bridge.h
-@@ -0,0 +1,69 @@
-+#include <common.h>
-+
-+#ifndef _LINUX_FPGA_BRIDGE_H
-+#define _LINUX_FPGA_BRIDGE_H
-+
-+struct fpga_bridge;
-+
-+/**
-+ * struct fpga_bridge_ops - ops for low level FPGA bridge drivers
-+ * @enable_show: returns the FPGA bridge's status
-+ * @enable_set: set a FPGA bridge as enabled or disabled
-+ * @fpga_bridge_remove: set FPGA into a specific state during driver remove
-+ */
-+struct fpga_bridge_ops {
-+	int (*enable_show)(struct fpga_bridge *bridge);
-+	int (*enable_set)(struct fpga_bridge *bridge, bool enable);
-+	void (*fpga_bridge_remove)(struct fpga_bridge *bridge);
-+};
-+
-+/**
-+ * struct fpga_bridge - FPGA bridge structure
-+ * @name: name of low level FPGA bridge
-+ * @dev: FPGA bridge device
-+ * @mutex: enforces exclusive reference to bridge
-+ * @br_ops: pointer to struct of FPGA bridge ops
-+ * @info: fpga image specific information
-+ * @node: FPGA bridge list node
-+ * @priv: low level driver private date
-+ */
-+struct fpga_bridge {
-+	struct device_d dev;
-+	const struct fpga_bridge_ops *br_ops;
-+	struct list_head node;
-+	unsigned int enable;
-+	void *priv;
-+};
-+
-+#define to_fpga_bridge(d) container_of(d, struct fpga_bridge, dev)
-+
-+struct fpga_bridge *of_fpga_bridge_get(struct device_node *node);
-+void fpga_bridge_put(struct fpga_bridge *bridge);
-+int fpga_bridge_enable(struct fpga_bridge *bridge);
-+int fpga_bridge_disable(struct fpga_bridge *bridge);
-+
+ #include <of.h>
+ 
+ struct overlay_info {
+ 	const char *firmware_path;
+ };
+ 
 +#ifdef CONFIG_FPGA_BRIDGE
-+int fpga_bridges_enable(struct list_head *bridge_list);
-+int fpga_bridges_disable(struct list_head *bridge_list);
-+int fpga_bridge_get_to_list(struct device_node *np,
-+			    struct list_head *bridge_list);
++static int of_get_bridges(struct device_node *region, struct list_head *bridges)
++{
++	struct device_node *br, *parent_br = NULL;
++	int i, ret;
++
++	/* If parent is a bridge, add to list */
++	ret = fpga_bridge_get_to_list(region->parent, bridges);
++	if (!ret) {
++		parent_br = region->parent;
++		pr_debug("Add %s to list of bridges\n", parent_br->name);
++	}
++
++	for (i = 0; ; i++) {
++		br = of_parse_phandle(region, "fpga-bridges", i);
++		if (!br)
++			break;
++
++		/* If parent bridge is in list, skip it. */
++		if (br == parent_br)
++			continue;
++
++		/* If node is a bridge, get it and add to list */
++		ret = fpga_bridge_get_to_list(br, bridges);
++		if (ret)
++			return ret;
++
++		pr_debug("Add %s to list of bridges\n", br->name);
++	}
++
++	return 0;
++}
 +#else
-+static inline int fpga_bridges_enable(struct list_head *bridge_list)
++static int of_get_bridges(struct device_node *np, struct list_head *br)
 +{
-+	return -ENOSYS;
-+};
-+static inline int fpga_bridges_disable(struct list_head *bridge_list)
-+{
-+	return -ENOSYS;
-+};
-+static inline int fpga_bridge_get_to_list(struct device_node *np,
-+			    struct list_head *bridge_list)
-+{
-+	return -ENOSYS;
-+};
++	return 0;
++}
 +#endif
 +
-+int fpga_bridge_register(struct device_d *dev, const char *name,
-+			 const struct fpga_bridge_ops *br_ops, void *priv);
+ static struct firmware_mgr *of_node_get_mgr(struct device_node *np)
+ {
+ 	struct device_node *mgr_node;
+@@ -25,6 +65,33 @@ static struct firmware_mgr *of_node_get_mgr(struct device_node *np)
+ 	return NULL;
+ }
+ 
++static int of_load_firmware(struct device_node *target, const char *path)
++{
++	struct list_head bridge_list;
++	struct firmware_mgr *mgr;
++	int err;
 +
-+#endif /* _LINUX_FPGA_BRIDGE_H */
++	mgr = of_node_get_mgr(target);
++	if (!mgr)
++		return -EINVAL;
++
++	pr_debug("Found firmware manager @%s\n", target->name);
++
++	INIT_LIST_HEAD(&bridge_list);
++
++	of_get_bridges(target, &bridge_list);
++
++	fpga_bridges_disable(&bridge_list);
++
++	pr_debug("Loading %s to %s\n", path, target->name);
++
++	err = firmwaremgr_load_file(mgr, path);
++
++	fpga_bridges_enable(&bridge_list);
++
++	return err;
++}
++
+ static int load_firmware(struct device_node *target,
+ 			 struct device_node *fragment, void *data)
+ {
+@@ -33,7 +100,6 @@ static int load_firmware(struct device_node *target,
+ 	const char *firmware_path = info->firmware_path;
+ 	char *firmware;
+ 	int err;
+-	struct firmware_mgr *mgr;
+ 
+ 	err = of_property_read_string(fragment,
+ 				      "firmware-name", &firmware_name);
+@@ -46,21 +112,73 @@ static int load_firmware(struct device_node *target,
+ 	if (!target)
+ 		return -EINVAL;
+ 
+-	mgr = of_node_get_mgr(target);
+-	if (!mgr)
+-		return -EINVAL;
+-
+ 	firmware = basprintf("%s/%s", firmware_path, firmware_name);
+ 	if (!firmware)
+ 		return -ENOMEM;
+ 
+-	err = firmwaremgr_load_file(mgr, firmware);
++	err = of_load_firmware(target, firmware);
+ 
+ 	free(firmware);
+ 
+ 	return err;
+ }
+ 
++int of_firmware_load_file(const char *path, const char *compatible,
++			  const char *search_path, const char *firmware)
++{
++	struct overlay_info info = {
++		.firmware_path = search_path,
++	};
++	struct device_node *target;
++	struct device_node *node;
++	struct device_node *root;
++
++	if (!compatible) {
++		compatible = basprintf("fpga-region");
++		if (!compatible)
++			return -ENOMEM;
++	}
++
++	/*
++	 * firmware-name not specified. Use load_firmware function to get it from
++	 * the devicetree. This allows loading firmware to multiple devices.
++	 */
++	if (!firmware && !path) {
++		int err;
++
++		pr_debug("No firmware specified. Searching devicetree for %s\n", compatible);
++		for_each_compatible_node(node, NULL, compatible) {
++			pr_debug("Load firmware from %s\n", node->name);
++			err = load_firmware(node, node, &info);
++			if (err == -ENOMEM)
++				return err;
++		}
++
++		return 0;
++	}
++
++	root = of_get_root_node();
++
++	if (path) {
++		target = of_find_node_by_path_or_alias(root, path);
++		if (!target) {
++			pr_debug("Cannot find nodepath %s\n", path);
++			return -ENOENT;
++		}
++	} else {
++		target = of_find_compatible_node(NULL, NULL, compatible);
++		if (!target) {
++			pr_debug("No node matching %s found\n", compatible);
++			return -ENOSYS;
++		}
++	}
++	
++	if (!firmware)
++		return load_firmware(target, target, &info);
++
++	return of_load_firmware(target, firmware);
++}
++
+ int of_firmware_load_overlay(struct device_node *overlay, const char *path)
+ {
+ 	struct overlay_info info = {
+diff --git a/include/of.h b/include/of.h
+index 645f429bdeed..b18875478dc0 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -1020,6 +1020,23 @@ static inline struct device_node *of_find_root_node(struct device_node *node)
+ 	return node;
+ }
+ 
++#ifdef CONFIG_FIRMWARE
++int of_firmware_load_file(const char *path, const char *compatible,
++			  const char *search_path, const char *firmware);
++int of_firmware_load_overlay(struct device_node *overlay, const char *path);
++#else
++int of_firmware_load_file(const char *path, const char *compatible,
++			  const char *search_path, const char *firmware)
++{
++	return -ENOSYS;
++}
++
++static inline int of_firmware_load_overlay(const char *path)
++{
++	return -ENOSYS;
++}
++#endif
++
+ #ifdef CONFIG_OF_OVERLAY
+ struct device_node *of_resolve_phandles(struct device_node *root,
+ 					const struct device_node *overlay);
+@@ -1032,7 +1049,6 @@ int of_process_overlay(struct device_node *root,
+ 				   struct device_node *overlay, void *data),
+ 		    void *data);
+ 
+-int of_firmware_load_overlay(struct device_node *overlay, const char *path);
+ #else
+ static inline struct device_node *of_resolve_phandles(struct device_node *root,
+ 					const struct device_node *overlay)
+@@ -1059,11 +1075,6 @@ static inline int of_process_overlay(struct device_node *root,
+ {
+ 	return -ENOSYS;
+ }
+-
+-static inline int of_firmware_load_overlay(struct device_node *overlay, const char *path)
+-{
+-	return -ENOSYS;
+-}
+ #endif
+ 
+ #endif /* __OF_H */
 -- 
 2.20.1
 
