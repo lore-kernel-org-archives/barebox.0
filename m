@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1l4lUQ-0076Jh-O8
- for barebox@lists.infradead.org; Wed, 27 Jan 2021 14:08:52 +0000
+ id 1l4lSz-0076Jh-AQ
+ for barebox@lists.infradead.org; Wed, 27 Jan 2021 14:07:12 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1l4l7X-0006Ra-2W
+ (envelope-from <str@pengutronix.de>) id 1l4l7X-0006Rd-4T
  for barebox@lists.infradead.org; Wed, 27 Jan 2021 14:44:31 +0100
 Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1l4l7W-0000RC-Eo
+ (envelope-from <str@pengutronix.de>) id 1l4l7W-0000RM-GA
  for barebox@lists.infradead.org; Wed, 27 Jan 2021 14:44:30 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 27 Jan 2021 14:44:18 +0100
-Message-Id: <20210127134423.31587-7-s.trumtrar@pengutronix.de>
+Date: Wed, 27 Jan 2021 14:44:21 +0100
+Message-Id: <20210127134423.31587-10-s.trumtrar@pengutronix.de>
 In-Reply-To: <20210127134423.31587-1-s.trumtrar@pengutronix.de>
 References: <20210127134423.31587-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -29,167 +29,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/12] firmware: import fpga-mgr.h from linux
+Subject: [PATCH v2 10/12] commands: firmwareload: allow loading firmware from
+ dt
 To: barebox@lists.infradead.org
 
-Instead of defining the fpga-mgr structure in the socfpga driver, import
-the fpga-mgr.h file from linux v4.13.
+firmwareload can only load a bitstream into an FPGA without any
+knowledge of possible additional needs (e.g. FPGA bridges).
+
+These are defined in the fpga-region nodes in the devicetree. The
+fpga-region describes the layout of the FPGA and the bridges it needs
+en/disabled.
+
+Add an option to let firmwareload go via the oftree route and load the
+firmware that way.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/firmware/socfpga.c |   9 +---
- include/firmware.h         |   1 +
- include/fpga-mgr.h         | 102 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 104 insertions(+), 8 deletions(-)
- create mode 100644 include/fpga-mgr.h
+ commands/firmwareload.c | 42 +++++++++++++++++++++++++++++++++++------
+ 1 file changed, 36 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
-index 14875214b1aa..605c931604c9 100644
---- a/drivers/firmware/socfpga.c
-+++ b/drivers/firmware/socfpga.c
-@@ -27,6 +27,7 @@
-  */
- 
- #include <firmware.h>
-+#include <fpga-mgr.h>
+diff --git a/commands/firmwareload.c b/commands/firmwareload.c
+index b735088f6117..2b1e770662d1 100644
+--- a/commands/firmwareload.c
++++ b/commands/firmwareload.c
+@@ -5,18 +5,38 @@
  #include <command.h>
- #include <common.h>
- #include <malloc.h>
-@@ -83,14 +84,6 @@
- extern void socfpga_sdram_apply_static_cfg(void __iomem *sdrctrlgrp);
- extern void socfpga_sdram_apply_static_cfg_end(void *);
+ #include <getopt.h>
+ #include <firmware.h>
++#include <of.h>
  
--struct fpgamgr {
--	struct firmware_handler fh;
--	struct device_d dev;
--	void __iomem *regs;
--	void __iomem *regs_data;
--	int programmed;
--};
--
- /* Get the FPGA mode */
- static uint32_t socfpga_fpgamgr_get_mode(struct fpgamgr *mgr)
+ static int do_firmwareload(int argc, char *argv[])
  {
-diff --git a/include/firmware.h b/include/firmware.h
-index 19777d9bf711..2fef97a48f56 100644
---- a/include/firmware.h
-+++ b/include/firmware.h
-@@ -13,6 +13,7 @@ struct firmware_handler {
- 	char *id; /* unique identifier for this firmware device */
- 	char *model; /* description for this device */
- 	struct device_d *dev;
-+	void *priv;
- 	/* called once to prepare the firmware's programming cycle */
- 	int (*open)(struct firmware_handler*);
- 	/* called multiple times to program the firmware with the given data */
-diff --git a/include/fpga-mgr.h b/include/fpga-mgr.h
-new file mode 100644
-index 000000000000..a120b3918990
---- /dev/null
-+++ b/include/fpga-mgr.h
-@@ -0,0 +1,102 @@
-+/*
-+ * FPGA Framework
-+ *
-+ *  Copyright (C) 2013-2015 Altera Corporation
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+#ifndef _LINUX_FPGA_MGR_H
-+#define _LINUX_FPGA_MGR_H
+-	int ret, opt;
++	int opt;
+ 	const char *name = NULL, *firmware;
+ 	struct firmware_mgr *mgr;
++	char *path = NULL;
++	char *search_path = NULL;
++	char *compatible = NULL;
++	int oftree = 0;
+ 
+-	while ((opt = getopt(argc, argv, "t:l")) > 0) {
++	while ((opt = getopt(argc, argv, "t:c:S:D:lo")) > 0) {
+ 		switch (opt) {
+ 		case 't':
+ 			name = optarg;
+ 			break;
++		case 'c':
++			compatible = xzalloc(strlen(optarg) + 1);
++			strcpy(compatible, optarg);
++			oftree = 1;
++			break;
++		case 'S':
++			search_path = xzalloc(strlen(optarg) + 1);
++			strcpy(search_path, optarg);
++			oftree = 1;
++			break;
++		case 'D':
++			path = xzalloc(strlen(optarg) + 1);
++			strcpy(path, optarg);
++			oftree = 1;
++			break;
+ 		case 'l':
+ 			firmwaremgr_list_handlers();
+ 			return 0;
+@@ -25,11 +45,20 @@ static int do_firmwareload(int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	if (!(argc - optind))
++	if (!oftree && !(argc - optind))
+ 		return COMMAND_ERROR_USAGE;
+ 
+ 	firmware = argv[optind];
+ 
++	if (oftree) {
++		if (!search_path && !firmware) {
++			printf("Provide at least a file to load or a search path (-S)\n");
++			return 1;
++		}
 +
-+#include <firmware.h>
++		return of_firmware_load_file(path, compatible, search_path, firmware);
++	}
 +
-+struct fpga_manager;
-+
-+/**
-+ * enum fpga_mgr_states - fpga framework states
-+ * @FPGA_MGR_STATE_UNKNOWN: can't determine state
-+ * @FPGA_MGR_STATE_POWER_OFF: FPGA power is off
-+ * @FPGA_MGR_STATE_POWER_UP: FPGA reports power is up
-+ * @FPGA_MGR_STATE_RESET: FPGA in reset state
-+ * @FPGA_MGR_STATE_FIRMWARE_REQ: firmware request in progress
-+ * @FPGA_MGR_STATE_FIRMWARE_REQ_ERR: firmware request failed
-+ * @FPGA_MGR_STATE_WRITE_INIT: preparing FPGA for programming
-+ * @FPGA_MGR_STATE_WRITE_INIT_ERR: Error during WRITE_INIT stage
-+ * @FPGA_MGR_STATE_WRITE: writing image to FPGA
-+ * @FPGA_MGR_STATE_WRITE_ERR: Error while writing FPGA
-+ * @FPGA_MGR_STATE_WRITE_COMPLETE: Doing post programming steps
-+ * @FPGA_MGR_STATE_WRITE_COMPLETE_ERR: Error during WRITE_COMPLETE
-+ * @FPGA_MGR_STATE_OPERATING: FPGA is programmed and operating
-+ */
-+enum fpga_mgr_states {
-+	/* default FPGA states */
-+	FPGA_MGR_STATE_UNKNOWN,
-+	FPGA_MGR_STATE_POWER_OFF,
-+	FPGA_MGR_STATE_POWER_UP,
-+	FPGA_MGR_STATE_RESET,
-+
-+	/* getting an image for loading */
-+	FPGA_MGR_STATE_FIRMWARE_REQ,
-+	FPGA_MGR_STATE_FIRMWARE_REQ_ERR,
-+
-+	/* write sequence: init, write, complete */
-+	FPGA_MGR_STATE_WRITE_INIT,
-+	FPGA_MGR_STATE_WRITE_INIT_ERR,
-+	FPGA_MGR_STATE_WRITE,
-+	FPGA_MGR_STATE_WRITE_ERR,
-+	FPGA_MGR_STATE_WRITE_COMPLETE,
-+	FPGA_MGR_STATE_WRITE_COMPLETE_ERR,
-+
-+	/* fpga is programmed and operating */
-+	FPGA_MGR_STATE_OPERATING,
-+};
-+
-+/*
-+ * FPGA Manager flags
-+ * FPGA_MGR_PARTIAL_RECONFIG: do partial reconfiguration if supported
-+ * FPGA_MGR_EXTERNAL_CONFIG: FPGA has been configured prior to Linux booting
-+ * FPGA_MGR_BITSTREAM_LSB_FIRST: SPI bitstream bit order is LSB first
-+ * FPGA_MGR_COMPRESSED_BITSTREAM: FPGA bitstream is compressed
-+ */
-+#define FPGA_MGR_PARTIAL_RECONFIG	BIT(0)
-+#define FPGA_MGR_EXTERNAL_CONFIG	BIT(1)
-+#define FPGA_MGR_ENCRYPTED_BITSTREAM	BIT(2)
-+#define FPGA_MGR_BITSTREAM_LSB_FIRST	BIT(3)
-+#define FPGA_MGR_COMPRESSED_BITSTREAM	BIT(4)
-+
-+/**
-+ * struct fpga_image_info - information specific to a FPGA image
-+ * @flags: boolean flags as defined above
-+ * @enable_timeout_us: maximum time to enable traffic through bridge (uSec)
-+ * @disable_timeout_us: maximum time to disable traffic through bridge (uSec)
-+ * @config_complete_timeout_us: maximum time for FPGA to switch to operating
-+ *	   status in the write_complete op.
-+ */
-+struct fpga_image_info {
-+	u32 flags;
-+	u32 enable_timeout_us;
-+	u32 disable_timeout_us;
-+	u32 config_complete_timeout_us;
-+};
-+
-+struct fpgamgr {
-+	struct firmware_handler fh;
-+	struct device_d dev;
-+	void *priv;
-+	void __iomem *regs;
-+	void __iomem *regs_data;
-+	int programmed;
-+};
-+
-+
-+#endif /*_LINUX_FPGA_MGR_H */
+ 	mgr = firmwaremgr_find(name);
+ 
+ 	if (!mgr) {
+@@ -38,14 +67,15 @@ static int do_firmwareload(int argc, char *argv[])
+ 		return 1;
+ 	}
+ 
+-	ret = firmwaremgr_load_file(mgr, firmware);
+-
+-	return ret;
++	return firmwaremgr_load_file(mgr, firmware);
+ }
+ 
+ BAREBOX_CMD_HELP_START(firmwareload)
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT("-t <target>", "define the firmware handler by name")
++BAREBOX_CMD_HELP_OPT("-c <compatible>", "type of firmware device (e.g. 'fpga-region')")
++BAREBOX_CMD_HELP_OPT("-D <path>", "load firmware to oftree path")
++BAREBOX_CMD_HELP_OPT("-S <path>", "load firmware using this search path")
+ BAREBOX_CMD_HELP_OPT("-l\t", "list devices capable of firmware loading")
+ BAREBOX_CMD_HELP_END
+ 
 -- 
 2.20.1
 
