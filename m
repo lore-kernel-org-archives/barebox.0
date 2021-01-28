@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l59Cp-0007RT-7E
- for barebox@lists.infradead.org; Thu, 28 Jan 2021 15:27:36 +0000
-Date: Thu, 28 Jan 2021 16:27:33 +0100
-Message-ID: <20210128152733.GD19583@pengutronix.de>
-References: <20210127134423.31587-1-s.trumtrar@pengutronix.de>
- <20210127134423.31587-12-s.trumtrar@pengutronix.de>
+ id 1l5EOy-00066y-II
+ for barebox@lists.infradead.org; Thu, 28 Jan 2021 21:00:29 +0000
+From: Roland Hieber <rhi@pengutronix.de>
+Date: Thu, 28 Jan 2021 22:00:22 +0100
+Message-Id: <20210128210022.31841-1-rhi@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210127134423.31587-12-s.trumtrar@pengutronix.de>
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,115 +19,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 12/12] firmware: add support for compressed images
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] common: Kconfig: improve defaultenv help texts
+To: Barebox Mailing List <barebox@lists.infradead.org>
+Cc: Roland Hieber <rhi@pengutronix.de>
 
-On Wed, Jan 27, 2021 at 02:44:23PM +0100, Steffen Trumtrar wrote:
-> At least bitstreams for FPGAs can consist of a lot of zeros depending on
-> device utilization. These bitstreams can be compressed very effectively.
-> 
-> Let the firmware code accept these images and decompress them before
-> handing it to the firmware-manager in question.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  common/firmware.c | 43 ++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 38 insertions(+), 5 deletions(-)
-> 
-> diff --git a/common/firmware.c b/common/firmware.c
-> index 58509d5da615..c617ecc0f129 100644
-> --- a/common/firmware.c
-> +++ b/common/firmware.c
-> @@ -14,6 +14,8 @@
->  #include <linux/list.h>
->  #include <linux/stat.h>
->  #include <linux/err.h>
-> +#include <uncompress.h>
-> +#include <filetype.h>
->  
->  #define BUFSIZ 4096
->  
-> @@ -211,12 +213,43 @@ int firmwaremgr_register(struct firmware_handler *fh)
->   */
->  int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
->  {
-> -	int ret;
-> -	char *name = basprintf("/dev/%s", mgr->handler->id);
-> -
-> -	ret = copy_file(firmware, name, 0);
-> +	char *dst;
-> +	enum filetype type;
-> +	int ret = -ENOENT;
-> +	int srcfd = 0;
-> +	int dstfd = 0;
-> +
-> +	if (mgr->handler->id) {
-> +		dst = basprintf("/dev/%s", mgr->handler->id);
-> +	} else {
-> +		pr_err("id not defined for handler\n");
-> +		return -ENODEV;
-> +	}
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+---
+ common/Kconfig | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-I'd do the error handling for !mgr->handler->id first, then the dst =
-basprintf(...) doesn't have to be done conditionally.
-
->  
-> -	free(name);
-> +	if (firmware) {
-
-This function seems to do nothing when firmware is not given. Is this
-the correct behaviour? If yes, then you could bail out early instead of
-putting the rest of the function inside an if() {}
-
-> +		type = file_name_detect_type(firmware);
-> +		if (type == filetype_unknown) {
-> +			ret = copy_file(firmware, dst, 0);
-
-When going this way srcfd is closed below, but never opened.
-
-> +		} else {
-> +			srcfd = open(firmware, O_RDONLY);
-> +			if (srcfd < 0)
-> +				return srcfd;
-
-'dst' is not freed here.
-
-> +			dstfd = open(dst, O_WRONLY | O_CREAT);
-
-You'll probably want to add a O_TRUNC here because otherwise if the file
-existed before and was bigger than the data you gonna write to it you'll
-have garbage at the end of the file.
-OTOH I don't know what 'dst' is. When this could be a device file then
-truncating it will fail.
-
-> +
-> +			if (dstfd < 0) {
-> +				printf("could not open %s: %s\n", dst, errno_str());
-> +				ret = dstfd;
-> +				goto out;
-> +			}
-> +
-> +			ret = uncompress_fd_to_fd(srcfd, dstfd, uncompress_err_stdout);
-> +
-> +			close(dstfd);
-> +		}
-> +	}
-> +out:
-> +	close(srcfd);
-> +	free(dst);
->  
->  	return ret;
->  }
-
-Sascha
-
-
+diff --git a/common/Kconfig b/common/Kconfig
+index b350f5c355fa..c62c70fb27eb 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -874,6 +874,13 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW
+ 	select NET_CMD_IFUP if NET
+ 	select CMD_IP_ROUTE_GET if NET
+ 	select CMD_HOST if NET
++	help
++	  With this option barebox will use the files found under
++	  defaultenv/defaultenv-2-base/ in the source tree as a template for
++	  the defaultenv. The directories specified in DEFAULT_ENVIRONMENT_PATH
++	  will be added to the default environment. If a file is present in
++	  both locations, the file from DEFAULT_ENVIRONMENT_PATH will overwrite
++	  that from the template.
+ 
+ config DEFAULT_ENVIRONMENT_GENERIC
+ 	bool "Generic environment template (old version)"
+@@ -887,9 +894,12 @@ config DEFAULT_ENVIRONMENT_GENERIC
+ 	select CMD_CRC_CMP
+ 	select CMD_GLOBAL
+ 	help
+-	  With this option barebox will use the generic default
+-	  environment found under defaultenv/ in the src tree.
+-	  The Directory given with DEFAULT_ENVIRONMENT_PATH
++	  Note: this option is not recommended for new boards; use
++	  DEFAULT_ENVIRONMENT_GENERIC_NEW instead.
++
++	  With this option barebox will use the old generic default environment
++	  found under defaultenv/defaultenv-1/ in the source tree.
++	  The directory given with DEFAULT_ENVIRONMENT_PATH
+ 	  will be added to the default environment. This should
+ 	  at least contain a /env/config file.
+ 	  This will be able to overwrite the files from defaultenv.
+@@ -899,21 +909,27 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU
+ 	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
+ 	depends on CMD_MENUTREE
+ 	default y
++	help
++	  Extend the defaultenv template with a menu that is displayed at boot.
++	  The menu files are taken from defaultenv/defaultenv-2-menu/.
+ 
+ config DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU
+ 	bool
+ 	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
+ 	depends on USB_GADGET_DFU
+ 	default y
++	help
++	  Extend the defaultenv template with the 'dfu' boot entry, which
++	  allows uploading the kernel and oftree over USB via the dfu protocol.
+ 
+ config DEFAULT_ENVIRONMENT_PATH
+ 	string
+ 	depends on DEFAULT_ENVIRONMENT
+ 	prompt "Default environment path"
+ 	help
+-	  Space separated list of paths the default environment will be taken from.
+-	  Relative paths will be relative to the barebox Toplevel dir, but absolute
+-	  paths are fine as well.
++	  Space separated list of paths from which the default environment will
++	  be taken. Relative paths will be relative to the barebox top-level
++	  directory, but absolute paths are fine as well.
+ 
+ config BAREBOXENV_TARGET
+ 	bool
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.0
+
 
 _______________________________________________
 barebox mailing list
