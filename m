@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l58h6-0001OW-40
- for barebox@lists.infradead.org; Thu, 28 Jan 2021 14:54:49 +0000
-Date: Thu, 28 Jan 2021 15:52:35 +0100
-Message-ID: <20210128145235.GA19583@pengutronix.de>
-References: <20210127075115.63425-1-andrej.picej@norik.com>
+ id 1l58w2-0003IO-JS
+ for barebox@lists.infradead.org; Thu, 28 Jan 2021 15:10:15 +0000
+Date: Thu, 28 Jan 2021 16:10:11 +0100
+Message-ID: <20210128151011.GB19583@pengutronix.de>
+References: <20210127134423.31587-1-s.trumtrar@pengutronix.de>
+ <20210127134423.31587-9-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210127075115.63425-1-andrej.picej@norik.com>
+In-Reply-To: <20210127134423.31587-9-s.trumtrar@pengutronix.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,207 +23,191 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] ARM: i.MX: move BCB structures to header file
-To: Andrej Picej <andrej.picej@norik.com>
+Subject: Re: [PATCH v2 09/12] of: of_firmware: add support for fpga bridges
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 27, 2021 at 08:51:13AM +0100, Andrej Picej wrote:
-> From: Primoz Fiser <primoz.fiser@norik.com>
-> 
-> Move i.MX BCB related structures to header file so they can be used by
-> others.
-> 
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> ---
-> v2:
-> - no changes
-> 
->  arch/arm/mach-imx/include/mach/imx-nand-bcb.h | 80 +++++++++++++++++++
->  common/imx-bbu-nand-fcb.c                     | 69 +---------------
->  2 files changed, 81 insertions(+), 68 deletions(-)
->  create mode 100644 arch/arm/mach-imx/include/mach/imx-nand-bcb.h
+On Wed, Jan 27, 2021 at 02:44:20PM +0100, Steffen Trumtrar wrote:
+> +static int of_load_firmware(struct device_node *target, const char *path)
+> +{
+> +	struct list_head bridge_list;
+> +	struct firmware_mgr *mgr;
+> +	int err;
+> +
+> +	mgr = of_node_get_mgr(target);
+> +	if (!mgr)
+> +		return -EINVAL;
+> +
+> +	pr_debug("Found firmware manager @%s\n", target->name);
+> +
+> +	INIT_LIST_HEAD(&bridge_list);
+> +
+> +	of_get_bridges(target, &bridge_list);
+> +
+> +	fpga_bridges_disable(&bridge_list);
+> +
+> +	pr_debug("Loading %s to %s\n", path, target->name);
+> +
+> +	err = firmwaremgr_load_file(mgr, path);
+> +
+> +	fpga_bridges_enable(&bridge_list);
 
-Applied, thanks
+The resources added to this list are never freed.
 
-Sascha
-
-> 
-> diff --git a/arch/arm/mach-imx/include/mach/imx-nand-bcb.h b/arch/arm/mach-imx/include/mach/imx-nand-bcb.h
-> new file mode 100644
-> index 000000000..b60205bd5
-> --- /dev/null
-> +++ b/arch/arm/mach-imx/include/mach/imx-nand-bcb.h
-> @@ -0,0 +1,80 @@
-> +#ifndef __MACH_IMX_NAND_BCB_H
-> +#define __MACH_IMX_NAND_BCB_H
 > +
-> +#define	FCB_FINGERPRINT		0x20424346	/* 'FCB' */
-> +#define	FCB_VERSION_1		0x01000000
-> +#define	FCB_FINGERPRINT_OFF	0x4		/* FCB fingerprint offset*/
+> +	return err;
+> +}
 > +
-> +#define	DBBT_FINGERPRINT	0x54424244	/* 'DBBT' */
-> +#define	DBBT_VERSION_1		0x01000000
-> +#define	DBBT_FINGERPRINT_OFF	0x4		/* DBBT fingerprint offset*/
-> +
-> +struct dbbt_block {
-> +	uint32_t Checksum;
-> +	uint32_t FingerPrint;
-> +	uint32_t Version;
-> +	uint32_t numberBB; /* reserved on i.MX6 */
-> +	uint32_t DBBTNumOfPages;
-> +};
-> +
-> +struct fcb_block {
-> +	uint32_t Checksum;		/* First fingerprint in first byte */
-> +	uint32_t FingerPrint;		/* 2nd fingerprint at byte 4 */
-> +	uint32_t Version;		/* 3rd fingerprint at byte 8 */
-> +	uint8_t DataSetup;
-> +	uint8_t DataHold;
-> +	uint8_t AddressSetup;
-> +	uint8_t DSAMPLE_TIME;
-> +	/* These are for application use only and not for ROM. */
-> +	uint8_t NandTimingState;
-> +	uint8_t REA;
-> +	uint8_t RLOH;
-> +	uint8_t RHOH;
-> +	uint32_t PageDataSize;		/* 2048 for 2K pages, 4096 for 4K pages */
-> +	uint32_t TotalPageSize;		/* 2112 for 2K pages, 4314 for 4K pages */
-> +	uint32_t SectorsPerBlock;	/* Number of 2K sections per block */
-> +	uint32_t NumberOfNANDs;		/* Total Number of NANDs - not used by ROM */
-> +	uint32_t TotalInternalDie;	/* Number of separate chips in this NAND */
-> +	uint32_t CellType;		/* MLC or SLC */
-> +	uint32_t EccBlockNEccType;	/* Type of ECC, can be one of BCH-0-20 */
-> +	uint32_t EccBlock0Size;		/* Number of bytes for Block0 - BCH */
-> +	uint32_t EccBlockNSize;		/* Block size in bytes for all blocks other than Block0 - BCH */
-> +	uint32_t EccBlock0EccType;	/* Ecc level for Block 0 - BCH */
-> +	uint32_t MetadataBytes;		/* Metadata size - BCH */
-> +	uint32_t NumEccBlocksPerPage;	/* Number of blocks per page for ROM use - BCH */
-> +	uint32_t EccBlockNEccLevelSDK;	/* Type of ECC, can be one of BCH-0-20 */
-> +	uint32_t EccBlock0SizeSDK;	/* Number of bytes for Block0 - BCH */
-> +	uint32_t EccBlockNSizeSDK;	/* Block size in bytes for all blocks other than Block0 - BCH */
-> +	uint32_t EccBlock0EccLevelSDK;	/* Ecc level for Block 0 - BCH */
-> +	uint32_t NumEccBlocksPerPageSDK;/* Number of blocks per page for SDK use - BCH */
-> +	uint32_t MetadataBytesSDK;	/* Metadata size - BCH */
-> +	uint32_t EraseThreshold;	/* To set into BCH_MODE register */
-> +	uint32_t BootPatch;		/* 0 for normal boot and 1 to load patch starting next to FCB */
-> +	uint32_t PatchSectors;		/* Size of patch in sectors */
-> +	uint32_t Firmware1_startingPage;/* Firmware image starts on this sector */
-> +	uint32_t Firmware2_startingPage;/* Secondary FW Image starting Sector */
-> +	uint32_t PagesInFirmware1;	/* Number of sectors in firmware image */
-> +	uint32_t PagesInFirmware2;	/* Number of sector in secondary FW image */
-> +	uint32_t DBBTSearchAreaStartAddress; /* Page address where dbbt search area begins */
-> +	uint32_t BadBlockMarkerByte;	/* Byte in page data that have manufacturer marked bad block marker, */
-> +					/* this will be swapped with metadata[0] to complete page data. */
-> +	uint32_t BadBlockMarkerStartBit;/* For BCH ECC sizes other than 8 and 16 the bad block marker does not */
-> +					/* start at 0th bit of BadBlockMarkerByte. This field is used to get to */
-> +					/* the start bit of bad block marker byte with in BadBlockMarkerByte */
-> +	uint32_t BBMarkerPhysicalOffset;/* FCB value that gives byte offset for bad block marker on physical NAND page */
-> +	uint32_t BCHType;
-> +
-> +	uint32_t TMTiming2_ReadLatency;
-> +	uint32_t TMTiming2_PreambleDelay;
-> +	uint32_t TMTiming2_CEDelay;
-> +	uint32_t TMTiming2_PostambleDelay;
-> +	uint32_t TMTiming2_CmdAddPause;
-> +	uint32_t TMTiming2_DataPause;
-> +	uint32_t TMSpeed;
-> +	uint32_t TMTiming1_BusyTimeout;
-> +
-> +	uint32_t DISBBM;	/* the flag to enable (1)/disable(0) bi swap */
-> +	uint32_t BBMarkerPhysicalOffsetInSpareData; /* The swap position of main area in spare area */
-> +};
-> +
-> +#endif /* __MACH_IMX_NAND_BCB_H */
-> diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-> index f8c457805..a08a1d834 100644
-> --- a/common/imx-bbu-nand-fcb.c
-> +++ b/common/imx-bbu-nand-fcb.c
-> @@ -25,6 +25,7 @@
->  #include <crc.h>
->  #include <mach/generic.h>
->  #include <mtd/mtd-peb.h>
-> +#include <mach/imx-nand-bcb.h>
+>  static int load_firmware(struct device_node *target,
+>  			 struct device_node *fragment, void *data)
+>  {
+> @@ -33,7 +100,6 @@ static int load_firmware(struct device_node *target,
+>  	const char *firmware_path = info->firmware_path;
+>  	char *firmware;
+>  	int err;
+> -	struct firmware_mgr *mgr;
 >  
->  #ifdef CONFIG_ARCH_IMX6
->  #include <mach/imx6.h>
-> @@ -39,74 +40,6 @@ static inline int fcb_is_bch_encoded(void)
+>  	err = of_property_read_string(fragment,
+>  				      "firmware-name", &firmware_name);
+> @@ -46,21 +112,73 @@ static int load_firmware(struct device_node *target,
+>  	if (!target)
+>  		return -EINVAL;
+>  
+> -	mgr = of_node_get_mgr(target);
+> -	if (!mgr)
+> -		return -EINVAL;
+> -
+>  	firmware = basprintf("%s/%s", firmware_path, firmware_name);
+>  	if (!firmware)
+>  		return -ENOMEM;
+>  
+> -	err = firmwaremgr_load_file(mgr, firmware);
+> +	err = of_load_firmware(target, firmware);
+>  
+>  	free(firmware);
+>  
+>  	return err;
 >  }
+>  
+> +int of_firmware_load_file(const char *path, const char *compatible,
+> +			  const char *search_path, const char *firmware)
+> +{
+> +	struct overlay_info info = {
+> +		.firmware_path = search_path,
+> +	};
+> +	struct device_node *target;
+> +	struct device_node *node;
+> +	struct device_node *root;
+> +
+> +	if (!compatible) {
+> +		compatible = basprintf("fpga-region");
+> +		if (!compatible)
+> +			return -ENOMEM;
+> +	}
+
+compatible is not freed. The original pointer comes in as a const char *,
+allocated and freed outside of this function, so you can do a plain
+
+	if (!compatible)
+		comaptible = "fpga-region";
+
+> +
+> +	/*
+> +	 * firmware-name not specified. Use load_firmware function to get it from
+> +	 * the devicetree. This allows loading firmware to multiple devices.
+> +	 */
+> +	if (!firmware && !path) {
+> +		int err;
+> +
+> +		pr_debug("No firmware specified. Searching devicetree for %s\n", compatible);
+> +		for_each_compatible_node(node, NULL, compatible) {
+> +			pr_debug("Load firmware from %s\n", node->name);
+> +			err = load_firmware(node, node, &info);
+> +			if (err == -ENOMEM)
+> +				return err;
+> +		}
+> +
+> +		return 0;
+> +	}
+> +
+> +	root = of_get_root_node();
+
+root is only used in the if () path below, so you can assign it there.
+
+> +
+> +	if (path) {
+> +		target = of_find_node_by_path_or_alias(root, path);
+> +		if (!target) {
+> +			pr_debug("Cannot find nodepath %s\n", path);
+> +			return -ENOENT;
+> +		}
+> +	} else {
+> +		target = of_find_compatible_node(NULL, NULL, compatible);
+> +		if (!target) {
+> +			pr_debug("No node matching %s found\n", compatible);
+> +			return -ENOSYS;
+> +		}
+> +	}
+> +	
+> +	if (!firmware)
+> +		return load_firmware(target, target, &info);
+> +
+> +	return of_load_firmware(target, firmware);
+> +}
+> +
+>  int of_firmware_load_overlay(struct device_node *overlay, const char *path)
+>  {
+>  	struct overlay_info info = {
+> diff --git a/include/of.h b/include/of.h
+> index 645f429bdeed..b18875478dc0 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -1020,6 +1020,23 @@ static inline struct device_node *of_find_root_node(struct device_node *node)
+>  	return node;
+>  }
+>  
+> +#ifdef CONFIG_FIRMWARE
+> +int of_firmware_load_file(const char *path, const char *compatible,
+> +			  const char *search_path, const char *firmware);
+> +int of_firmware_load_overlay(struct device_node *overlay, const char *path);
+> +#else
+> +int of_firmware_load_file(const char *path, const char *compatible,
+> +			  const char *search_path, const char *firmware)
+> +{
+> +	return -ENOSYS;
+> +}
+> +
+> +static inline int of_firmware_load_overlay(const char *path)
+> +{
+> +	return -ENOSYS;
+> +}
+> +#endif
+> +
+>  #ifdef CONFIG_OF_OVERLAY
+>  struct device_node *of_resolve_phandles(struct device_node *root,
+>  					const struct device_node *overlay);
+> @@ -1032,7 +1049,6 @@ int of_process_overlay(struct device_node *root,
+>  				   struct device_node *overlay, void *data),
+>  		    void *data);
+>  
+> -int of_firmware_load_overlay(struct device_node *overlay, const char *path);
+>  #else
+>  static inline struct device_node *of_resolve_phandles(struct device_node *root,
+>  					const struct device_node *overlay)
+> @@ -1059,11 +1075,6 @@ static inline int of_process_overlay(struct device_node *root,
+>  {
+>  	return -ENOSYS;
+>  }
+> -
+> -static inline int of_firmware_load_overlay(struct device_node *overlay, const char *path)
+> -{
+> -	return -ENOSYS;
+> -}
 >  #endif
 >  
-> -struct dbbt_block {
-> -	uint32_t Checksum;
-> -	uint32_t FingerPrint;
-> -	uint32_t Version;
-> -	uint32_t numberBB; /* reserved on i.MX6 */
-> -	uint32_t DBBTNumOfPages;
-> -};
-> -
-> -struct fcb_block {
-> -	uint32_t Checksum;		/* First fingerprint in first byte */
-> -	uint32_t FingerPrint;		/* 2nd fingerprint at byte 4 */
-> -	uint32_t Version;		/* 3rd fingerprint at byte 8 */
-> -	uint8_t DataSetup;
-> -	uint8_t DataHold;
-> -	uint8_t AddressSetup;
-> -	uint8_t DSAMPLE_TIME;
-> -	/* These are for application use only and not for ROM. */
-> -	uint8_t NandTimingState;
-> -	uint8_t REA;
-> -	uint8_t RLOH;
-> -	uint8_t RHOH;
-> -	uint32_t PageDataSize;		/* 2048 for 2K pages, 4096 for 4K pages */
-> -	uint32_t TotalPageSize;		/* 2112 for 2K pages, 4314 for 4K pages */
-> -	uint32_t SectorsPerBlock;	/* Number of 2K sections per block */
-> -	uint32_t NumberOfNANDs;		/* Total Number of NANDs - not used by ROM */
-> -	uint32_t TotalInternalDie;	/* Number of separate chips in this NAND */
-> -	uint32_t CellType;		/* MLC or SLC */
-> -	uint32_t EccBlockNEccType;	/* Type of ECC, can be one of BCH-0-20 */
-> -	uint32_t EccBlock0Size;		/* Number of bytes for Block0 - BCH */
-> -	uint32_t EccBlockNSize;		/* Block size in bytes for all blocks other than Block0 - BCH */
-> -	uint32_t EccBlock0EccType;	/* Ecc level for Block 0 - BCH */
-> -	uint32_t MetadataBytes;		/* Metadata size - BCH */
-> -	uint32_t NumEccBlocksPerPage;	/* Number of blocks per page for ROM use - BCH */
-> -	uint32_t EccBlockNEccLevelSDK;	/* Type of ECC, can be one of BCH-0-20 */
-> -	uint32_t EccBlock0SizeSDK;	/* Number of bytes for Block0 - BCH */
-> -	uint32_t EccBlockNSizeSDK;	/* Block size in bytes for all blocks other than Block0 - BCH */
-> -	uint32_t EccBlock0EccLevelSDK;	/* Ecc level for Block 0 - BCH */
-> -	uint32_t NumEccBlocksPerPageSDK;/* Number of blocks per page for SDK use - BCH */
-> -	uint32_t MetadataBytesSDK;	/* Metadata size - BCH */
-> -	uint32_t EraseThreshold;	/* To set into BCH_MODE register */
-> -	uint32_t BootPatch;		/* 0 for normal boot and 1 to load patch starting next to FCB */
-> -	uint32_t PatchSectors;		/* Size of patch in sectors */
-> -	uint32_t Firmware1_startingPage;/* Firmware image starts on this sector */
-> -	uint32_t Firmware2_startingPage;/* Secondary FW Image starting Sector */
-> -	uint32_t PagesInFirmware1;	/* Number of sectors in firmware image */
-> -	uint32_t PagesInFirmware2;	/* Number of sector in secondary FW image */
-> -	uint32_t DBBTSearchAreaStartAddress; /* Page address where dbbt search area begins */
-> -	uint32_t BadBlockMarkerByte;	/* Byte in page data that have manufacturer marked bad block marker, */
-> -					/* this will be swapped with metadata[0] to complete page data. */
-> -	uint32_t BadBlockMarkerStartBit;/* For BCH ECC sizes other than 8 and 16 the bad block marker does not */
-> -					/* start at 0th bit of BadBlockMarkerByte. This field is used to get to */
-> -					/* the start bit of bad block marker byte with in BadBlockMarkerByte */
-> -	uint32_t BBMarkerPhysicalOffset;/* FCB value that gives byte offset for bad block marker on physical NAND page */
-> -	uint32_t BCHType;
-> -
-> -	uint32_t TMTiming2_ReadLatency;
-> -	uint32_t TMTiming2_PreambleDelay;
-> -	uint32_t TMTiming2_CEDelay;
-> -	uint32_t TMTiming2_PostambleDelay;
-> -	uint32_t TMTiming2_CmdAddPause;
-> -	uint32_t TMTiming2_DataPause;
-> -	uint32_t TMSpeed;
-> -	uint32_t TMTiming1_BusyTimeout;
-> -
-> -	uint32_t DISBBM;	/* the flag to enable (1)/disable(0) bi swap */
-> -	uint32_t BBMarkerPhysicalOffsetInSpareData; /* The swap position of main area in spare area */
-> -};
-> -
->  struct imx_nand_fcb_bbu_handler {
->  	struct bbu_handler handler;
->  
+>  #endif /* __OF_H */
 > -- 
-> 2.25.1
+> 2.20.1
 > 
 > 
 > _______________________________________________
