@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mib.mailinblack.com ([137.74.84.110])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l5RNi-0006LZ-6F
- for barebox@lists.infradead.org; Fri, 29 Jan 2021 10:52:03 +0000
-Received: from localhost (localhost [127.0.0.1])
- by mib.mailinblack.com (Postfix) with ESMTP id 6DDDF1A2F8B
- for <barebox@lists.infradead.org>; Fri, 29 Jan 2021 10:51:58 +0000 (UTC)
-Date: Fri, 29 Jan 2021 11:51:52 +0100
-From: Jules Maselbas <jmaselbas@kalray.eu>
-Message-ID: <20210129105152.GA22732@tellis.lin.mbt.kalray.eu>
-References: <20210127164937.20328-1-jmaselbas@kalray.eu>
- <91ec3053-201d-ff02-0f78-6d86a6b8a0f0@pengutronix.de>
+ id 1l5TNE-00078t-JN
+ for barebox@lists.infradead.org; Fri, 29 Jan 2021 12:59:42 +0000
+From: Bastian Krause <bst@pengutronix.de>
+Date: Fri, 29 Jan 2021 13:59:36 +0100
+Message-Id: <20210129125936.20053-1-bst@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <91ec3053-201d-ff02-0f78-6d86a6b8a0f0@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,32 +19,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH] usb: gadget: dfu: Wrap fs operation in workqueue
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Documentation: state: recommend a partition type GUID for
+ state GPT partitions
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Bastian Krause <bst@pengutronix.de>
 
-Hi Ahmad,
+The partition type GUID was generated randomly. Having a defined GUID
+should reduce the risk of collisions in the future.
 
-On Fri, Jan 29, 2021 at 10:51:18AM +0100, Ahmad Fatoum wrote:
-> Hello Jules,
-> 
-> On 27.01.21 17:49, Jules Maselbas wrote:
-> > File system operation shouldn't be executed in a poller. Use
-> > a workqueue to delay filesystem operation to command context.
-> > 
-> > This is an RFC, extra work must be done to properly handle error
-> > cases and dfu cleanup.
-> 
-> I erroneously thought the poller is within the DFU bits. I wonder what
-> side-effect moving the whole USB gadget polling into a workqueue would
-> have. In that case, we wouldn't need to any changes for DFU itself.
-> 
-If I understood correctly you're suggesting to wrap the entire dfu
-gadget inside a poller. I have not tried this and it might work.
-However wrapping each fs operation allow the dfu gadget to respond
-to GET_STATUS queries will erase/write operation are on-going.
+A dedicated GUID could also allow us to implement a fallback in case no
+state backend property is defined. This could then look for a GPT
+partition with this partition type GUID and use that as the backend.
+dt-utils could do the same in userspace. This would be similar to [1].
 
-Jules
+[1] https://www.freedesktop.org/wiki/Specifications/DiscoverablePartitionsSpec/
+
+Signed-off-by: Bastian Krause <bst@pengutronix.de>
+---
+ Documentation/user/state.rst | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
+index 54aa396257..a0e27d4fe8 100644
+--- a/Documentation/user/state.rst
++++ b/Documentation/user/state.rst
+@@ -579,6 +579,9 @@ content, its backend-type and *state* variable layout.
+ 		};
+ 	};
+ 
++If the *state* variable set is set to be located in a GPT partition, use
++``4778ed65-bf42-45fa-9c5b-287a1dc4aab1`` as the partition type GUID.
++
+ SRAM
+ ####
+ 
+-- 
+2.30.0
 
 
 _______________________________________________
