@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from unifiededge.gtri.gatech.edu ([130.207.205.170])
+Received: from mail-dm6nam10on2110.outbound.protection.outlook.com
+ ([40.107.93.110] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l5XqD-0004Qf-7t
- for barebox@lists.infradead.org; Fri, 29 Jan 2021 17:45:54 +0000
-From: Mike Nawrocki <michael.nawrocki@gtri.gatech.edu>
-Date: Fri, 29 Jan 2021 12:44:35 -0500
-Message-ID: <20210129174435.17699-1-michael.nawrocki@gtri.gatech.edu>
+ id 1l5Y30-0005rO-6v
+ for barebox@lists.infradead.org; Fri, 29 Jan 2021 17:59:07 +0000
+From: "Barbier, Renaud" <renaud.barbier@abaco.com>
+Date: Fri, 29 Jan 2021 17:59:02 +0000
+Message-ID: <MN2PR16MB31357A9BB6E7D4B2B31274A591B99@MN2PR16MB3135.namprd16.prod.outlook.com>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,38 +21,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers: smc911x fix inverted wait_on_timeout
-To: barebox@lists.infradead.org
-Cc: Mike Nawrocki <michael.nawrocki@gtri.gatech.edu>
+Subject: Layerscape secure boot
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-The smc911x driver probe routine polls the READY bit using
-wait_on_timeout, which returns 0 on success. The error check following
-the wait_on_timeout invocation in the probe routine interprets a
-returned 0 as failure.
+Is secure boot supported or planned to be supported on Layerscape (LS1046A)?
+This will be our first board supporting secure boot.
 
-This patch correctly interprets the return value of wait_on_timeout.
+If not supported yet we intend to support it (pending having the documentation/SDK...) and would like to do in a way that could be accepted upstream.
 
-Signed-off-by: Mike Nawrocki <michael.nawrocki@gtri.gatech.edu>
----
- drivers/net/smc911x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Are other boards like the IMX6/8 in barebox supporting secure boot a reference to do secure boot for other boards? 
+I guess it quite hardware specific.
 
-diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
-index ea7cea5f1..1edc16ce4 100644
---- a/drivers/net/smc911x.c
-+++ b/drivers/net/smc911x.c
-@@ -541,7 +541,7 @@ static int smc911x_probe(struct device_d *dev)
- 	 * forbidden while this bit isn't set. Try for 100ms
- 	 */
- 	ret = wait_on_timeout(100 * MSECOND, smc911x_reg_read(priv, PMT_CTRL) & PMT_CTRL_READY);
--	if (!ret) {
-+	if (ret) {
- 		dev_err(dev, "Device not READY in 100ms aborting\n");
- 		return -ENODEV;
- 	}
--- 
-2.20.1
 
+
+Cheers,
+Renaud
 
 _______________________________________________
 barebox mailing list
