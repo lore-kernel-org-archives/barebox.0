@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l5TNE-00078t-JN
- for barebox@lists.infradead.org; Fri, 29 Jan 2021 12:59:42 +0000
-From: Bastian Krause <bst@pengutronix.de>
-Date: Fri, 29 Jan 2021 13:59:36 +0100
-Message-Id: <20210129125936.20053-1-bst@pengutronix.de>
+ id 1l5UIH-0004ZK-KK
+ for barebox@lists.infradead.org; Fri, 29 Jan 2021 13:58:38 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 29 Jan 2021 14:58:33 +0100
+Message-Id: <20210129135833.5748-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,40 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: state: recommend a partition type GUID for
- state GPT partitions
+Subject: [PATCH] efi: declare prototype for close_protocol BootService
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Bastian Krause <bst@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The partition type GUID was generated randomly. Having a defined GUID
-should reduce the risk of collisions in the future.
+Sometimes, drivers need to probe whether the EFI device in front of them
+is the actual hardware they expect. If it's not, the driver should call
+close_protocol to leave the decision on whether to match this device to
+another driver. Use the correct type for close_protocol to facilitate
+this.
 
-A dedicated GUID could also allow us to implement a fallback in case no
-state backend property is defined. This could then look for a GPT
-partition with this partition type GUID and use that as the backend.
-dt-utils could do the same in userspace. This would be similar to [1].
+No functional change, as no in-tree driver makes use of this yet.
 
-[1] https://www.freedesktop.org/wiki/Specifications/DiscoverablePartitionsSpec/
-
-Signed-off-by: Bastian Krause <bst@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/user/state.rst | 3 +++
- 1 file changed, 3 insertions(+)
+ include/efi.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
-index 54aa396257..a0e27d4fe8 100644
---- a/Documentation/user/state.rst
-+++ b/Documentation/user/state.rst
-@@ -579,6 +579,9 @@ content, its backend-type and *state* variable layout.
- 		};
- 	};
- 
-+If the *state* variable set is set to be located in a GPT partition, use
-+``4778ed65-bf42-45fa-9c5b-287a1dc4aab1`` as the partition type GUID.
-+
- SRAM
- ####
- 
+diff --git a/include/efi.h b/include/efi.h
+index 43c05939513d..f6833fde1e75 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -256,7 +256,8 @@ typedef struct {
+ 	efi_status_t (EFIAPI *open_protocol)(efi_handle_t handle, efi_guid_t *protocol,
+ 			void ** interface, efi_handle_t agent_handle,
+ 			efi_handle_t controller_handle, u32 attributes);
+-	void *close_protocol;
++	efi_status_t (EFIAPI *close_protocol)(efi_handle_t handle, efi_guid_t *protocol,
++					      efi_handle_t agent, efi_handle_t controller);
+ 	efi_status_t(EFIAPI *open_protocol_information)(efi_handle_t handle, efi_guid_t *Protocol,
+ 			struct efi_open_protocol_information_entry **entry_buffer,
+ 			unsigned long *entry_count);
 -- 
 2.30.0
 
