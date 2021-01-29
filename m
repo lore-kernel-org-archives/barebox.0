@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l5Vh4-0004Wz-Jk
- for barebox@lists.infradead.org; Fri, 29 Jan 2021 15:28:19 +0000
+ id 1l5WMi-0002oh-0s
+ for barebox@lists.infradead.org; Fri, 29 Jan 2021 16:11:20 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 29 Jan 2021 16:25:54 +0100
-Message-Id: <20210129152553.15792-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20210129152553.15792-1-a.fatoum@pengutronix.de>
-References: <20210129152553.15792-1-a.fatoum@pengutronix.de>
+Date: Fri, 29 Jan 2021 17:11:09 +0100
+Message-Id: <20210129161116.9971-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,68 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: i.MX8MM: move system counter enabling into
- imx8mm_cpu_lowlevel_init
+Subject: [PATCH 1/8] commands: usbgadget: remove deprecated s option from help
+ text
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-From: Ahmad Fatoum <ahmad@a3f.at>
-
-Other i.MX8MM boards will likely need this as well, so just move it
-into the helper and while at it, rewrite it using
-imx8m_ccgr_clock_enable, which is defined as:
-
-  void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
-
-  writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
-    ccm + IMX8M_CCM_CCGRn_SET(index));
-
-No functional change.
+Prior to 44add42d4330 ("usbgadget: autostart: add DFU support"), -s used
+to do nothing. That commit made it behave like -a, but deprecated it and
+changed the help text to omit it. Remove it from the short help text as
+well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/nxp-imx8mm-evk/lowlevel.c | 5 -----
- arch/arm/mach-imx/cpu_init.c              | 4 ++++
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ commands/usbgadget.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-index 2297dc01e77f..4bd29c226912 100644
---- a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-@@ -172,11 +172,6 @@ static __noreturn noinline void nxp_imx8mm_evk_start(void)
- 
- ENTRY_FUNCTION(start_nxp_imx8mm_evk, r0, r1, r2)
- {
--	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
--
--	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
--	       ccm + IMX8M_CCM_CCGRn_SET(IMX8M_CCM_CCGR_SCTR));
--
- 	imx8mm_cpu_lowlevel_init();
- 
- 	relocate_to_current_adr();
-diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
-index cc7a409e373a..9d86353e2255 100644
---- a/arch/arm/mach-imx/cpu_init.c
-+++ b/arch/arm/mach-imx/cpu_init.c
-@@ -20,6 +20,7 @@
- #include <mach/generic.h>
- #include <mach/imx7-regs.h>
- #include <mach/imx8mq-regs.h>
-+#include <mach/imx8m-ccm-regs.h>
- #include <common.h>
- #include <io.h>
- #include <asm/syscounter.h>
-@@ -79,6 +80,9 @@ static void imx8m_cpu_lowlevel_init(void)
- 
- void imx8mm_cpu_lowlevel_init(void)
- {
-+	/* ungate system counter */
-+	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_SCTR);
-+
- 	imx8m_cpu_lowlevel_init();
- }
- 
+diff --git a/commands/usbgadget.c b/commands/usbgadget.c
+index 9133402f52fb..3b115f147d80 100644
+--- a/commands/usbgadget.c
++++ b/commands/usbgadget.c
+@@ -67,7 +67,7 @@ BAREBOX_CMD_HELP_END
+ BAREBOX_CMD_START(usbgadget)
+ 	.cmd		= do_usbgadget,
+ 	BAREBOX_CMD_DESC("Create USB Gadget multifunction device")
+-	BAREBOX_CMD_OPTS("[-asdAD]")
++	BAREBOX_CMD_OPTS("[-adAD]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
+ 	BAREBOX_CMD_HELP(cmd_usbgadget_help)
+ BAREBOX_CMD_END
 -- 
 2.30.0
 
