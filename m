@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from unifiededge.gtri.gatech.edu ([130.207.205.170])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l5WP4-0003QL-Gh
- for barebox@lists.infradead.org; Fri, 29 Jan 2021 16:13:47 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 29 Jan 2021 17:11:11 +0100
-Message-Id: <20210129161116.9971-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20210129161116.9971-1-a.fatoum@pengutronix.de>
-References: <20210129161116.9971-1-a.fatoum@pengutronix.de>
+ id 1l5XqD-0004Qf-7t
+ for barebox@lists.infradead.org; Fri, 29 Jan 2021 17:45:54 +0000
+From: Mike Nawrocki <michael.nawrocki@gtri.gatech.edu>
+Date: Fri, 29 Jan 2021 12:44:35 -0500
+Message-ID: <20210129174435.17699-1-michael.nawrocki@gtri.gatech.edu>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,37 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] ARM: <asm/io.h>: define macros for I/O memcpy/memset
+Subject: [PATCH] drivers: smc911x fix inverted wait_on_timeout
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Mike Nawrocki <michael.nawrocki@gtri.gatech.edu>
 
-<asm-generic/io.h> expects architectures to define memcpy_toio,
-memcpy_fromio and memset_io as macros as it checks for their existence
-with #ifndef. Only ARM defines an own implementation, but does so
-as function declaration. Add the missing macros.
+The smc911x driver probe routine polls the READY bit using
+wait_on_timeout, which returns 0 on success. The error check following
+the wait_on_timeout invocation in the probe routine interprets a
+returned 0 as failure.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+This patch correctly interprets the return value of wait_on_timeout.
+
+Signed-off-by: Mike Nawrocki <michael.nawrocki@gtri.gatech.edu>
 ---
- arch/arm/include/asm/io.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/smc911x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index 072b47317c03..b442a37b9c1d 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -3,6 +3,10 @@
- 
- #define	IO_SPACE_LIMIT	0
- 
-+#define memcpy_fromio memcpy_fromio
-+#define memcpy_toio memcpy_toio
-+#define memset_io memset_io
-+
- #include <asm-generic/io.h>
- #include <asm-generic/bitio.h>
- 
+diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
+index ea7cea5f1..1edc16ce4 100644
+--- a/drivers/net/smc911x.c
++++ b/drivers/net/smc911x.c
+@@ -541,7 +541,7 @@ static int smc911x_probe(struct device_d *dev)
+ 	 * forbidden while this bit isn't set. Try for 100ms
+ 	 */
+ 	ret = wait_on_timeout(100 * MSECOND, smc911x_reg_read(priv, PMT_CTRL) & PMT_CTRL_READY);
+-	if (!ret) {
++	if (ret) {
+ 		dev_err(dev, "Device not READY in 100ms aborting\n");
+ 		return -ENODEV;
+ 	}
 -- 
-2.30.0
+2.20.1
 
 
 _______________________________________________
