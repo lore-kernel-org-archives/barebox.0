@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l5WMp-0002qL-DY
- for barebox@lists.infradead.org; Fri, 29 Jan 2021 16:11:28 +0000
+ id 1l5WOo-0003L8-0M
+ for barebox@lists.infradead.org; Fri, 29 Jan 2021 16:13:31 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 29 Jan 2021 17:11:12 +0100
-Message-Id: <20210129161116.9971-4-a.fatoum@pengutronix.de>
+Date: Fri, 29 Jan 2021 17:11:13 +0100
+Message-Id: <20210129161116.9971-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20210129161116.9971-1-a.fatoum@pengutronix.de>
 References: <20210129161116.9971-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,58 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] asm-generic: io.h: remove wrong use of IOMEM
+Subject: [PATCH 5/8] ppc: <asm/io.h>: remove duplicate definition
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-addr is already __iomem, but we need to force strip that away to use it
-as normal pointer. Define __io_virt like Linux does and use it.
+This implementation is equivalent to the one now provided by
+<asm-generic/io.h>, so it can be dropped.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/asm-generic/io.h | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/io.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index 150a97645b6b..a4b0dc4b4337 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -425,6 +425,8 @@ static inline void iowrite64be(u64 value, volatile void __iomem *addr)
- #define IOMEM(addr)	((void __force __iomem *)(addr))
- #endif
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index 025c06f3b735..8488c36f6558 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -86,10 +86,6 @@ extern void _outsl_ns(volatile u32 *port, const void *buf, int nl);
  
-+#define __io_virt(x) ((void __force *)(x))
-+
- #ifndef memset_io
- #define memset_io memset_io
- /**
-@@ -438,7 +440,7 @@ static inline void iowrite64be(u64 value, volatile void __iomem *addr)
- static inline void memset_io(volatile void __iomem *addr, int value,
- 			     size_t size)
- {
--	memset(IOMEM(addr), value, size);
-+	memset(__io_virt(addr), value, size);
- }
- #endif
+ #define IO_SPACE_LIMIT ~0
  
-@@ -456,7 +458,7 @@ static inline void memcpy_fromio(void *buffer,
- 				 const volatile void __iomem *addr,
- 				 size_t size)
- {
--	memcpy(buffer, IOMEM(addr), size);
-+	memcpy(buffer, __io_virt(addr), size);
- }
- #endif
- 
-@@ -473,7 +475,7 @@ static inline void memcpy_fromio(void *buffer,
- static inline void memcpy_toio(volatile void __iomem *addr, const void *buffer,
- 			       size_t size)
- {
--	memcpy(IOMEM(addr), buffer, size);
-+	memcpy(__io_virt(addr), buffer, size);
- }
- #endif
- 
+-#define memset_io(a,b,c)       memset((void *)(a),(b),(c))
+-#define memcpy_fromio(a,b,c)   memcpy((a),(void *)(b),(c))
+-#define memcpy_toio(a,b,c)  memcpy((void *)(a),(b),(c))
+-
+ /*
+  * Enforce In-order Execution of I/O:
+  * Acts as a barrier to ensure all previous I/O accesses have
 -- 
 2.30.0
 
