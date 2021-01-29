@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l5Vex-0004AS-1I
- for barebox@lists.infradead.org; Fri, 29 Jan 2021 15:26:08 +0000
+ id 1l5Vh4-0004Wz-Jk
+ for barebox@lists.infradead.org; Fri, 29 Jan 2021 15:28:19 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 29 Jan 2021 16:25:53 +0100
-Message-Id: <20210129152553.15792-1-a.fatoum@pengutronix.de>
+Date: Fri, 29 Jan 2021 16:25:54 +0100
+Message-Id: <20210129152553.15792-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20210129152553.15792-1-a.fatoum@pengutronix.de>
+References: <20210129152553.15792-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,47 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: i.MX8MM: fix sparse warnings in early clock code
+Subject: [PATCH 2/2] ARM: i.MX8MM: move system counter enabling into
+ imx8mm_cpu_lowlevel_init
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Some __iomem markers were being casted away. Fix that.
+From: Ahmad Fatoum <ahmad@a3f.at>
+
+Other i.MX8MM boards will likely need this as well, so just move it
+into the helper and while at it, rewrite it using
+imx8m_ccgr_clock_enable, which is defined as:
+
+  void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
+
+  writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
+    ccm + IMX8M_CCM_CCGRn_SET(index));
+
+No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-imx/imx8m.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boards/nxp-imx8mm-evk/lowlevel.c | 5 -----
+ arch/arm/mach-imx/cpu_init.c              | 4 ++++
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
-index b9e01a1d1854..350d203539fc 100644
---- a/arch/arm/mach-imx/imx8m.c
-+++ b/arch/arm/mach-imx/imx8m.c
-@@ -35,14 +35,14 @@
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
+index 2297dc01e77f..4bd29c226912 100644
+--- a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
+@@ -172,11 +172,6 @@ static __noreturn noinline void nxp_imx8mm_evk_start(void)
  
- void imx8m_clock_set_target_val(int clock_id, u32 val)
+ ENTRY_FUNCTION(start_nxp_imx8mm_evk, r0, r1, r2)
  {
--	void *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
-+	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
+-	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
+-
+-	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
+-	       ccm + IMX8M_CCM_CCGRn_SET(IMX8M_CCM_CCGR_SCTR));
+-
+ 	imx8mm_cpu_lowlevel_init();
  
- 	writel(val, ccm + IMX8M_CCM_TARGET_ROOTn(clock_id));
+ 	relocate_to_current_adr();
+diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+index cc7a409e373a..9d86353e2255 100644
+--- a/arch/arm/mach-imx/cpu_init.c
++++ b/arch/arm/mach-imx/cpu_init.c
+@@ -20,6 +20,7 @@
+ #include <mach/generic.h>
+ #include <mach/imx7-regs.h>
+ #include <mach/imx8mq-regs.h>
++#include <mach/imx8m-ccm-regs.h>
+ #include <common.h>
+ #include <io.h>
+ #include <asm/syscounter.h>
+@@ -79,6 +80,9 @@ static void imx8m_cpu_lowlevel_init(void)
+ 
+ void imx8mm_cpu_lowlevel_init(void)
+ {
++	/* ungate system counter */
++	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_SCTR);
++
+ 	imx8m_cpu_lowlevel_init();
  }
  
- void imx8m_ccgr_clock_enable(int index)
- {
--	void *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
-+	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
- 
- 	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
- 	       ccm + IMX8M_CCM_CCGRn_SET(index));
-@@ -50,7 +50,7 @@ void imx8m_ccgr_clock_enable(int index)
- 
- void imx8m_ccgr_clock_disable(int index)
- {
--	void *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
-+	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
- 
- 	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
- 	       ccm + IMX8M_CCM_CCGRn_CLR(index));
 -- 
 2.30.0
 
