@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay7-d.mail.gandi.net ([217.70.183.200])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l6JBQ-0004Di-D4
- for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:18:59 +0000
+ id 1l6JBP-0004Ca-Gv
+ for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:18:58 +0000
 Received: from geraet.fritz.box (unknown [87.123.110.69])
  (Authenticated sender: ahmad@a3f.at)
- by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 5BA7A20009
- for <barebox@lists.infradead.org>; Sun, 31 Jan 2021 20:18:55 +0000 (UTC)
+ by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 79B2220005
+ for <barebox@lists.infradead.org>; Sun, 31 Jan 2021 20:18:54 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sun, 31 Jan 2021 21:18:46 +0100
-Message-Id: <20210131201846.3440477-8-ahmad@a3f.at>
+Date: Sun, 31 Jan 2021 21:18:44 +0100
+Message-Id: <20210131201846.3440477-6-ahmad@a3f.at>
 In-Reply-To: <20210131201846.3440477-1-ahmad@a3f.at>
 References: <20210131201846.3440477-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,141 +21,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] sound: add gpio-beeper support
+Subject: [PATCH 5/7] commands: add beep command
 To: barebox@lists.infradead.org
 
-Add support for simple gpio-beepers.
-
-Note that unlike with PWM buzzers, GPIO buzzers can't be controlled
-in frequency and thus it doesn't make much sense to use the multiple
-argument version of beep with them.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- drivers/sound/Kconfig       |  6 +++
- drivers/sound/Makefile      |  1 +
- drivers/sound/gpio-beeper.c | 77 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 84 insertions(+)
- create mode 100644 drivers/sound/gpio-beeper.c
-
-diff --git a/drivers/sound/Kconfig b/drivers/sound/Kconfig
-index 9b7bbd7e7a33..bf6f715200e0 100644
---- a/drivers/sound/Kconfig
-+++ b/drivers/sound/Kconfig
-@@ -20,6 +20,12 @@ config PWM_BEEPER
- 	help
- 	  Say Y here to get support for PWM based beeper devices.
- 
-+config GPIO_BEEPER
-+	bool "GPIO beeper support"
-+	depends on GPIOLIB && OFDEVICE
-+	help
-+	  Say Y here to get support for GPIO based beeper devices.
-+
- config SYNTH_SQUARES
- 	bool "Synthesize square waves only"
- 	help
-diff --git a/drivers/sound/Makefile b/drivers/sound/Makefile
-index 468e5bee838d..57d9cbd332f7 100644
---- a/drivers/sound/Makefile
-+++ b/drivers/sound/Makefile
-@@ -2,3 +2,4 @@
- obj-y += core.o synth.o
- obj-$(CONFIG_SOUND_SDL)		+= sdl.o
- obj-$(CONFIG_PWM_BEEPER) 	+= pwm-beeper.o
-+obj-$(CONFIG_GPIO_BEEPER)	+= gpio-beeper.o
-diff --git a/drivers/sound/gpio-beeper.c b/drivers/sound/gpio-beeper.c
-new file mode 100644
-index 000000000000..86fd4a4ee67c
---- /dev/null
-+++ b/drivers/sound/gpio-beeper.c
-@@ -0,0 +1,77 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ *  Copyright (C) 2021, Ahmad Fatoum
-+ */
-+
-+#include <common.h>
-+#include <regulator.h>
-+#include <sound.h>
-+#include <of.h>
-+#include <gpio.h>
-+#include <of_gpio.h>
-+
-+struct gpio_beeper {
-+	int gpio;
-+	struct sound_card card;
-+};
-+
-+static int gpio_beeper_beep(struct sound_card *card, unsigned freq, unsigned duration)
-+{
-+	struct gpio_beeper *beeper = container_of(card, struct gpio_beeper, card);
-+
-+	gpio_set_active(beeper->gpio, freq);
-+	return 0;
-+}
-+
-+static int gpio_beeper_probe(struct device_d *dev)
-+{
-+	struct device_node *np = dev->device_node;
-+	struct gpio_beeper *beeper;
-+	struct sound_card *card;
-+	enum of_gpio_flags of_flags;
-+	unsigned long gpio_flags = GPIOF_OUT_INIT_ACTIVE;
-+	int ret, gpio;
-+
-+	gpio = of_get_named_gpio_flags(np, "gpios", 0, &of_flags);
-+	if (!gpio_is_valid(gpio))
-+		return gpio;
-+
-+	if (of_flags & OF_GPIO_ACTIVE_LOW)
-+		gpio_flags |= GPIOF_ACTIVE_LOW;
-+
-+	ret = gpio_request_one(gpio, gpio_flags, "gpio-beeper");
-+	if (ret) {
-+		dev_err(dev, "failed to request gpio %d: %d\n", gpio, ret);
-+		return ret;
-+	}
-+
-+	beeper = xzalloc(sizeof(*beeper));
-+	beeper->gpio = gpio;
-+	dev->priv = beeper;
-+
-+	card = &beeper->card;
-+	card->name = np->full_name;
-+	card->beep = gpio_beeper_beep;
-+
-+	return sound_card_register(card);
-+}
-+
-+static void gpio_beeper_suspend(struct device_d *dev)
-+{
-+	struct gpio_beeper *beeper = dev->priv;
-+
-+	gpio_beeper_beep(&beeper->card, 0, 0);
-+}
-+
-+static const struct of_device_id gpio_beeper_match[] = {
-+	{ .compatible = "gpio-beeper", },
-+	{ },
-+};
-+
-+static struct driver_d gpio_beeper_driver = {
-+	.name		= "gpio-beeper",
-+	.probe		= gpio_beeper_probe,
-+	.remove		= gpio_beeper_suspend,
-+	.of_compatible	= gpio_beeper_match,
-+};
-+device_platform_driver(gpio_beeper_driver);
--- 
-2.30.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWRkIGEgYmVlcCBjb21tYW5kIHRoYXQncyBjb21wYXRpYmxlIHdpdGggR1JVQidzCgogIHBsYXkg
+InRlbXBvIHBpdGNoMSBkdXJhdGlvbjEuLi4iCgpVbmxpa2UgdGhlIEdSVUIgY29tbWFuZCwgcGxh
+eWluZyBhIHR1bmUgaXMgbm90IGEgYmxvY2tpbmcgb3BlcmF0aW5nLgpGb3IgdGhpcyByZWFzb24g
+YmFyZWJveCwgYWRkaXRpb25hbGx5IHN1cHBvcnRzOgogICogLXc6IHdhaXQgdW50aWwgdHVuZSBp
+cyBvdmVyCiAgKiAtYzogY2FuY2VsIHBsYXlpbmcgdHVuZQoKQWRkaXRpb25hbGx5LCBgYmVlcCB0
+ZW1wb2AgY2FuIGJlIHVzZWQgdG8gcmluZyB0aGUgYmVsbCBhdCBhIGZyZXF1ZW5jeQpjaG9zZW4g
+YnkgdGhlIHNvdW5kIGNhcmQuCgpFeGFtcGxlczoKCiAgIyAxLXVwCiAgYmVlcCAxNzUwIDUyMyAx
+IDM5MiAxIDUyMyAxIDY1OSAxIDc4NCAxIDEwNDcgMSA3ODQgMSA0MTUgMSA1MjMgXAoJMSA2MjIg
+MSA4MzEgMSA2MjIgMSA4MzEgMSAxMDQ2IDEgMTI0NCAxIDE2NjEgMQoKICAjIDEtc2Vjb25kIGJl
+ZXAKICBiZWVwIDYwCgpTaWduZWQtb2ZmLWJ5OiBBaG1hZCBGYXRvdW0gPGFobWFkQGEzZi5hdD4K
+LS0tCiBjb21tYW5kcy9LY29uZmlnICB8ICA3ICsrKysKIGNvbW1hbmRzL01ha2VmaWxlIHwgIDEg
+KwogY29tbWFuZHMvYmVlcC5jICAgfCA5OSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKwogMyBmaWxlcyBjaGFuZ2VkLCAxMDcgaW5zZXJ0aW9ucygrKQogY3Jl
+YXRlIG1vZGUgMTAwNjQ0IGNvbW1hbmRzL2JlZXAuYwoKZGlmZiAtLWdpdCBhL2NvbW1hbmRzL0tj
+b25maWcgYi9jb21tYW5kcy9LY29uZmlnCmluZGV4IDAzZGRmYzg4NzA3NC4uYjY3MmYwYzE2YTg1
+IDEwMDY0NAotLS0gYS9jb21tYW5kcy9LY29uZmlnCisrKyBiL2NvbW1hbmRzL0tjb25maWcKQEAg
+LTE0NzQsNiArMTQ3NCwxMyBAQCBjb25maWcgQ01EX0ZCVEVTVAogCSAgRnJhbWVidWZmZXIgdGVz
+dCBjb21tYW5kIHRoYXQgYWxsb3dzIHRvIHByb2R1Y2UgYSBudW1iZXIgb2YKIAkgIHRlc3QgcGF0
+dGVybnMgb24gYSBzY3JlZW4uCiAKK2NvbmZpZyBDTURfQkVFUAorCWRlZl9ib29sIHkKKwlkZXBl
+bmRzIG9uIFNPVU5ECisJcHJvbXB0ICJCZWVwIgorCWhlbHAKKwkgIFBsYXkgYmVlcHMuIEFjY2Vw
+dHMgc2FtZSBmb3JtYXQgYXMgR1JVQiBwbGF5CisKIGNvbmZpZyBDTURfUkVBRExJTkUKIAl0cmlz
+dGF0ZQogCXByb21wdCAicmVhZGxpbmUiCmRpZmYgLS1naXQgYS9jb21tYW5kcy9NYWtlZmlsZSBi
+L2NvbW1hbmRzL01ha2VmaWxlCmluZGV4IGRjMjg1Y2QwMGUxYi4uMDM0YzBlNjM4M2QzIDEwMDY0
+NAotLS0gYS9jb21tYW5kcy9NYWtlZmlsZQorKysgYi9jb21tYW5kcy9NYWtlZmlsZQpAQCAtNTgs
+NiArNTgsNyBAQCBvYmotJChDT05GSUdfQ01EX0xTTU9EKQkJKz0gbHNtb2Qubwogb2JqLSQoQ09O
+RklHX0NNRF9JTlNNT0QpCSs9IGluc21vZC5vCiBvYmotJChDT05GSUdfQ01EX1NQTEFTSCkJKz0g
+c3BsYXNoLm8KIG9iai0kKENPTkZJR19DTURfRkJURVNUKQkrPSBmYnRlc3Qubworb2JqLSQoQ09O
+RklHX0NNRF9CRUVQKQkJKz0gYmVlcC5vCiBvYmotJChDT05GSUdfVVNCX0dBREdFVF9ERlUpCSs9
+IGRmdS5vCiBvYmotJChDT05GSUdfVVNCX0dBREdFVF9TRVJJQUwpCSs9IHVzYnNlcmlhbC5vCiBv
+YmotJChDT05GSUdfQ01EX0dQSU8pCQkrPSBncGlvLm8KZGlmZiAtLWdpdCBhL2NvbW1hbmRzL2Jl
+ZXAuYyBiL2NvbW1hbmRzL2JlZXAuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAw
+MDAwMDAuLjRlOTAyMTVjYmYyNgotLS0gL2Rldi9udWxsCisrKyBiL2NvbW1hbmRzL2JlZXAuYwpA
+QCAtMCwwICsxLDk5IEBACisvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5
+CisvLyBTUERYLUZpbGVDb3B5cmlnaHRUZXh0OiDCqSAyMDIxIEFobWFkIEZhdG91bQorCisjaW5j
+bHVkZSA8Y29tbW9uLmg+CisjaW5jbHVkZSA8Y29tbWFuZC5oPgorI2luY2x1ZGUgPHNvdW5kLmg+
+CisjaW5jbHVkZSA8Z2V0b3B0Lmg+CisKK3N0YXRpYyBpbnQgZG9fYmVlcChpbnQgYXJnYywgY2hh
+ciAqYXJndltdKQoreworCWludCByZXQsIGksIG9wdDsKKwl1MzIgdGVtcG8sIHRvdGFsX3VzID0g
+MDsKKwlib29sIHdhaXQgPSBmYWxzZTsKKworCXdoaWxlKChvcHQgPSBnZXRvcHQoYXJnYywgYXJn
+diwgIndjIikpID4gMCkgeworCQlzd2l0Y2gob3B0KSB7CisJCWNhc2UgJ3cnOgorCQkJd2FpdCA9
+IHRydWU7CisJCQlicmVhazsKKwkJY2FzZSAnYyc6CisJCQlyZXR1cm4gYmVlcF9jYW5jZWwoKTsK
+KwkJZGVmYXVsdDoKKwkJCXJldHVybiBDT01NQU5EX0VSUk9SX1VTQUdFOworCQl9CisJfQorCisJ
+YXJnYyAtPSBvcHRpbmQ7CisJYXJndiArPSBvcHRpbmQ7CisKKwlpZiAoYXJnYyA9PSAwIHx8IGFy
+Z2MgJSAyICE9IDEpCisJCXJldHVybiBDT01NQU5EX0VSUk9SX1VTQUdFOworCisJcmV0ID0ga3N0
+cnRvdTMyKGFyZ3ZbMF0sIDAsICZ0ZW1wbyk7CisJaWYgKHJldCB8fCB0ZW1wbyA9PSAwKQorCQly
+ZXR1cm4gQ09NTUFORF9FUlJPUl9VU0FHRTsKKworCXRlbXBvID0gNjAgKiBVU0VDX1BFUl9TRUMg
+LyB0ZW1wbzsKKworCWlmIChhcmdjID09IDEpIHsKKwkJcmV0ID0gYmVlcChCRUxMX0RFRkFVTFRf
+RlJFUVVFTkNZLCB0ZW1wbyk7CisJCWlmIChyZXQpCisJCQlyZXR1cm4gcmV0OworCisJCXRvdGFs
+X3VzICs9IHRlbXBvOworCQlnb3RvIG91dDsKKwl9CisKKwlmb3IgKGkgPSAxOyBpIDwgYXJnYzsg
+aSArPSAyKSB7CisJCXUzMiBwaXRjaCA9IDAsIGR1cmF0aW9uOworCQl1MTYgdmFsOworCisJCXJl
+dCA9IGtzdHJ0b3UxNihhcmd2W2ldLCAwLCAmdmFsKTsKKwkJaWYgKHJldCkKKwkJCXJldHVybiBD
+T01NQU5EX0VSUk9SX1VTQUdFOworCisJCWlmICh2YWwpCisJCQlwaXRjaCA9IGNsYW1wX3QodW5z
+aWduZWQsIHZhbCwgMjAsIDIwMDAwKTsKKworCQlyZXQgPSBrc3RydG91MTYoYXJndltpKzFdLCAw
+LCAmdmFsKTsKKwkJaWYgKHJldCkKKwkJCXJldHVybiBDT01NQU5EX0VSUk9SX1VTQUdFOworCisJ
+CWR1cmF0aW9uID0gdmFsICogdGVtcG87CisKKwkJcmV0ID0gYmVlcChwaXRjaCwgZHVyYXRpb24p
+OworCQlpZiAocmV0KQorCQkJcmV0dXJuIHJldDsKKworCQl0b3RhbF91cyArPSBkdXJhdGlvbjsK
+Kwl9CisKK291dDoKKwlpZiAod2FpdCkKKwkJYmVlcF93YWl0KHRvdGFsX3VzKTsKKworCXJldHVy
+biAwOworfQorCisvKiBodHRwczovL3d3dy5nbnUub3JnL3NvZnR3YXJlL2dydWIvbWFudWFsL2dy
+dWIvaHRtbF9ub2RlL3BsYXkuaHRtbCAqLworQkFSRUJPWF9DTURfSEVMUF9TVEFSVChiZWVwKQor
+QkFSRUJPWF9DTURfSEVMUF9URVhUKCJUZW1wbyBpcyBhbiB1bnNpZ25lZCAzMmJpdCBudW1iZXIu
+IEl0J3MgZm9sbG93ZWQgYnkgcGFpcnMgb2YgdW5zaWduZWQiKQorQkFSRUJPWF9DTURfSEVMUF9U
+RVhUKCIxNmJpdCBudW1iZXJzIGZvciBwaXRjaCBhbmQgZHVyYXRpb24uIikKK0JBUkVCT1hfQ01E
+X0hFTFBfVEVYVCgiVGhlIHRlbXBvIGlzIHRoZSBiYXNlIGZvciBhbGwgbm90ZSBkdXJhdGlvbnMu
+IDYwIGdpdmVzIGEgMS1zZWNvbmQgYmFzZSwiKQorQkFSRUJPWF9DTURfSEVMUF9URVhUKCIxMjAg
+Z2l2ZXMgYSBoYWxmLXNlY29uZCBiYXNlLCBldGMuIFBpdGNoZXMgYXJlIEh6LiIpCitCQVJFQk9Y
+X0NNRF9IRUxQX1RFWFQoIlNldCBwaXRjaCB0byAwIHRvIHByb2R1Y2UgYSByZXN0LiIpCitCQVJF
+Qk9YX0NNRF9IRUxQX1RFWFQoIldoZW4gb25seSB0ZW1wbyBpcyBnaXZlbiwgYSBiZWVwIG9mIGR1
+cmF0aW9uIDEgYXQgYmVsbCBmcmVxdWVuY3kgcmVzdWx0cy4iKQorQkFSRUJPWF9DTURfSEVMUF9U
+RVhUKCIiKQorQkFSRUJPWF9DTURfSEVMUF9URVhUKCJPcHRpb25zOiIpCitCQVJFQk9YX0NNRF9I
+RUxQX09QVCAoIi1jIiwgICJjYW5jZWwgcGVuZGluZyBiZWVwcyIpCitCQVJFQk9YX0NNRF9IRUxQ
+X09QVCAoIi13IiwgICJ3YWl0IHVudGlsIGJlZXAgaXMgb3ZlciIpCitCQVJFQk9YX0NNRF9IRUxQ
+X0VORAorCitCQVJFQk9YX0NNRF9TVEFSVChiZWVwKQorCS5jbWQgPSBkb19iZWVwLAorCUJBUkVC
+T1hfQ01EX0RFU0MoInBsYXkgYSBHUlVCIGJlZXAgdHVuZSIpCisJQkFSRUJPWF9DTURfT1BUUygi
+dGVtcG8gW3BpdGNoMSBkdXJhdGlvbjEgW3BpdGNoMiBkaXJhY3Rpb24yXSAuLi5dIikKKwlCQVJF
+Qk9YX0NNRF9IRUxQKGNtZF9iZWVwX2hlbHApCisJQkFSRUJPWF9DTURfR1JPVVAoQ01EX0dSUF9D
+T05TT0xFKQorQkFSRUJPWF9DTURfRU5ECi0tIAoyLjMwLjAKCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
