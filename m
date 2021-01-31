@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay7-d.mail.gandi.net ([217.70.183.200])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l6JBP-0004CX-3W
- for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:18:58 +0000
+ id 1l6JBO-0004CW-Nl
+ for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:18:57 +0000
 Received: from geraet.fritz.box (unknown [87.123.110.69])
  (Authenticated sender: ahmad@a3f.at)
- by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 095262000A
+ by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 32B6F20007
  for <barebox@lists.infradead.org>; Sun, 31 Jan 2021 20:18:53 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sun, 31 Jan 2021 21:18:43 +0100
-Message-Id: <20210131201846.3440477-5-ahmad@a3f.at>
+Date: Sun, 31 Jan 2021 21:18:42 +0100
+Message-Id: <20210131201846.3440477-4-ahmad@a3f.at>
 In-Reply-To: <20210131201846.3440477-1-ahmad@a3f.at>
 References: <20210131201846.3440477-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,244 +21,170 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] sound: add SDL 2.0 sound driver
+Subject: [PATCH 3/7] sound: add basic synthesizers for PCM beeper use
 To: barebox@lists.infradead.org
 
-SDL 2.0.4 features SDL_QueueAudio, which we could use to just queue
-buffers for audio playback. Use it to implement the new sound API for
-the sandbox architecture.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- arch/sandbox/configs/sandbox_defconfig        |  1 +
- arch/sandbox/dts/sandbox.dts                  |  4 +
- .../sandbox/mach-sandbox/include/mach/linux.h |  5 ++
- arch/sandbox/os/sdl.c                         | 44 ++++++++++
- drivers/sound/Kconfig                         |  5 ++
- drivers/sound/Makefile                        |  1 +
- drivers/sound/sdl.c                           | 87 +++++++++++++++++++
- 7 files changed, 147 insertions(+)
- create mode 100644 drivers/sound/sdl.c
-
-diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-index ca24d81acac7..66fcfbdbd0a3 100644
---- a/arch/sandbox/configs/sandbox_defconfig
-+++ b/arch/sandbox/configs/sandbox_defconfig
-@@ -107,6 +107,7 @@ CONFIG_MTD=y
- CONFIG_MTD_M25P80=y
- CONFIG_VIDEO=y
- CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_SOUND=y
- CONFIG_MFD_SYSCON=y
- CONFIG_STATE_DRV=y
- CONFIG_UBOOTVAR=y
-diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
-index afe48154c488..ef1fa7b8661f 100644
---- a/arch/sandbox/dts/sandbox.dts
-+++ b/arch/sandbox/dts/sandbox.dts
-@@ -94,4 +94,8 @@ barebox,sandbox-power
- 		compatible = "barebox,sandbox-watchdog";
- 		barebox,reset-source = <&stickypage 0>;
- 	};
-+
-+	sound {
-+		compatible = "barebox,sandbox-sound";
-+	};
- };
-diff --git a/arch/sandbox/mach-sandbox/include/mach/linux.h b/arch/sandbox/mach-sandbox/include/mach/linux.h
-index c636a9af9cd2..6e10fdbe6d80 100644
---- a/arch/sandbox/mach-sandbox/include/mach/linux.h
-+++ b/arch/sandbox/mach-sandbox/include/mach/linux.h
-@@ -49,6 +49,11 @@ int sdl_video_open(const struct sdl_fb_info *);
- void sdl_video_pause(void);
- void sdl_video_close(void);
- 
-+int sdl_sound_init(unsigned sample_rate);
-+int sdl_sound_play(const void *data, unsigned nsamples);
-+void sdl_sound_stop(void);
-+void sdl_sound_close(void);
-+
- struct ft2232_bitbang;
- struct ft2232_bitbang *barebox_libftdi1_open(int vendor_id, int device_id,
- 						const char *serial);
-diff --git a/arch/sandbox/os/sdl.c b/arch/sandbox/os/sdl.c
-index 623e24cf0b26..13178abfc044 100644
---- a/arch/sandbox/os/sdl.c
-+++ b/arch/sandbox/os/sdl.c
-@@ -111,3 +111,47 @@ quit_subsystem:
- 
- 	return -1;
- }
-+
-+static SDL_AudioDeviceID dev;
-+
-+int sdl_sound_init(unsigned sample_rate)
-+{
-+	SDL_AudioSpec audiospec = {
-+		.freq = sample_rate,
-+		.format = AUDIO_S16,
-+		.channels = 1,
-+		.samples = 2048,
-+	};
-+
-+	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
-+		sdl_perror("initialize SDL Audio");
-+		return -1;
-+	}
-+
-+	dev = SDL_OpenAudioDevice(NULL, 0, &audiospec, NULL, 0);
-+	if (!dev) {
-+		sdl_perror("initialize open audio device");
-+		SDL_QuitSubSystem(SDL_INIT_AUDIO);
-+		return -1;
-+	}
-+
-+	SDL_PauseAudioDevice(dev, 0);
-+	return 0;
-+}
-+
-+void sdl_sound_close(void)
-+{
-+	SDL_QuitSubSystem(SDL_INIT_AUDIO);
-+}
-+
-+int sdl_sound_play(const void *data, unsigned nsamples)
-+{
-+	/* core sound support handles all the queueing for us */
-+	SDL_ClearQueuedAudio(dev);
-+	return SDL_QueueAudio(dev, data, nsamples * sizeof(uint16_t));
-+}
-+
-+void sdl_sound_stop(void)
-+{
-+	SDL_ClearQueuedAudio(dev);
-+}
-diff --git a/drivers/sound/Kconfig b/drivers/sound/Kconfig
-index d9f63a5f3c55..889657305b0b 100644
---- a/drivers/sound/Kconfig
-+++ b/drivers/sound/Kconfig
-@@ -9,6 +9,11 @@ menuconfig SOUND
- 
- if SOUND
- 
-+config SOUND_SDL
-+	bool "SDL sound driver for sandbox"
-+	depends on SANDBOX && OFDEVICE
-+	select SDL
-+
- config SYNTH_SQUARES
- 	bool "Synthesize square waves only"
- 	help
-diff --git a/drivers/sound/Makefile b/drivers/sound/Makefile
-index 69873faab985..692105fd6b59 100644
---- a/drivers/sound/Makefile
-+++ b/drivers/sound/Makefile
-@@ -1,2 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-y += core.o synth.o
-+obj-$(CONFIG_SOUND_SDL)		+= sdl.o
-diff --git a/drivers/sound/sdl.c b/drivers/sound/sdl.c
-new file mode 100644
-index 000000000000..118d7742955f
---- /dev/null
-+++ b/drivers/sound/sdl.c
-@@ -0,0 +1,87 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <common.h>
-+#include <errno.h>
-+#include <driver.h>
-+#include <mach/linux.h>
-+#include <linux/time.h>
-+#include <linux/math64.h>
-+#include <of.h>
-+#include <sound.h>
-+
-+#define AMPLITUDE	28000
-+#define SAMPLERATE	44000ULL
-+
-+struct sandbox_sound {
-+	struct sound_card card;
-+};
-+
-+static int sandbox_sound_beep(struct sound_card *card, unsigned freq, unsigned duration)
-+{
-+    size_t nsamples = div_s64(SAMPLERATE * duration, USEC_PER_SEC);
-+    int16_t *data;
-+    int ret;
-+
-+    if (!freq) {
-+	    sdl_sound_stop();
-+	    return 0;
-+    }
-+
-+    data = malloc(nsamples * sizeof(*data));
-+    if (!data)
-+	    return -ENOMEM;
-+
-+    synth_sin(freq, AMPLITUDE, data, SAMPLERATE, nsamples);
-+    ret = sdl_sound_play(data, nsamples);
-+    if (ret)
-+	    ret = -EIO;
-+    free(data);
-+
-+    return ret;
-+}
-+
-+static int sandbox_sound_probe(struct device_d *dev)
-+{
-+	struct sandbox_sound *priv;
-+	struct sound_card *card;
-+	int ret;
-+
-+	priv = xzalloc(sizeof(*priv));
-+
-+	card = &priv->card;
-+	card->name = "SDL-Audio";
-+	card->beep = sandbox_sound_beep;
-+
-+	ret = sdl_sound_init(SAMPLERATE);
-+	if (ret) {
-+		ret = -ENODEV;
-+		goto free_priv;
-+	}
-+
-+	ret = sound_card_register(card);
-+	if (ret)
-+		goto sdl_sound_close;
-+
-+	dev_info(dev, "probed\n");
-+	return 0;
-+
-+sdl_sound_close:
-+	sdl_sound_close();
-+free_priv:
-+	free(priv);
-+
-+	return ret;
-+}
-+
-+
-+static __maybe_unused struct of_device_id sandbox_sound_dt_ids[] = {
-+	{ .compatible = "barebox,sandbox-sound" },
-+	{ /* sentinel */ }
-+};
-+
-+static struct driver_d sandbox_sound_drv = {
-+	.name  = "sandbox-sound",
-+	.of_compatible = sandbox_sound_dt_ids,
-+	.probe = sandbox_sound_probe,
-+};
-+device_platform_driver(sandbox_sound_drv);
--- 
-2.30.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Rm9yIGJlZXBpbmcgb24gUENNIHNvdW5kIGNhcmRzLCBiYXJlYm94IHdpbGwgbmVlZCB0byBzeW50
+aGVzaXplIHNhbXBsZXMuCkFkZCBiYXNpYyBzaW5lIGFuZCBzcXVhcmUgd2F2ZSBzeW50aGVzaXpl
+cnMgdG8gYWNoaWV2ZSB0aGlzLgoKQ2xpZW50IGNvZGUgY2FuIGVpdGhlciBjYWxsIF9fc3ludGhf
+RiB0byBleHBsaWNpdGx5IHNlbGVjdCBzeW50aCBGIG9yCnN5bnRoX0YsIHdoaWNoIGRlcGVuZGlu
+ZyBvbiBDT05GSUdfU1lOVEhfU1FVQVJFUyBtYXkgZXhwYW5kIHRvIGVpdGhlcgpfX3N5bnRoX0Yg
+b3IgYSBnYWluLWFkanVzdGVkIF9fc3ludGhfZ2VuZXJhdGVfc3F1YXJlLgoKVGhlIGxhdHRlciBp
+cyBtYWlubHkgdXNlZnVsIGZvciBzbG93IHN5c3RlbXMgdGhhdCBjYW4ndCBzeW50aGVzaXplCmVu
+b3VnaCBzaW5lIHNhbXBsZXMgaW4gYSBwb2xsZXIgd2l0aG91dCBpbXBhY3RpbmcgYm9vdCBwZXJm
+b3JtYW5jZS4KClNpZ25lZC1vZmYtYnk6IEFobWFkIEZhdG91bSA8YWhtYWRAYTNmLmF0PgotLS0K
+IGRyaXZlcnMvc291bmQvS2NvbmZpZyAgICAgIHwgIDEzICsrKysKIGRyaXZlcnMvc291bmQvTWFr
+ZWZpbGUgICAgIHwgICAyICstCiBkcml2ZXJzL3NvdW5kL3N5bnRoLmMgICAgICB8ICA0MyArKysr
+KysrKysrKwogaW5jbHVkZS9saW51eC9maXhwLWFyaXRoLmggfCAxNDQgKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKwogaW5jbHVkZS9zb3VuZC5oICAgICAgICAgICAgfCAgMzIg
+KysrKysrKysrCiA1IGZpbGVzIGNoYW5nZWQsIDIzMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9u
+KC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9zb3VuZC9zeW50aC5jCiBjcmVhdGUgbW9k
+ZSAxMDA2NDQgaW5jbHVkZS9saW51eC9maXhwLWFyaXRoLmgKCmRpZmYgLS1naXQgYS9kcml2ZXJz
+L3NvdW5kL0tjb25maWcgYi9kcml2ZXJzL3NvdW5kL0tjb25maWcKaW5kZXggY2NlNWM3NjBhZmRj
+Li5kOWY2M2E1ZjNjNTUgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc291bmQvS2NvbmZpZworKysgYi9k
+cml2ZXJzL3NvdW5kL0tjb25maWcKQEAgLTYsMyArNiwxNiBAQCBtZW51Y29uZmlnIFNPVU5ECiAJ
+ICBTYXkgWSBoZXJlIGZvciBzb3VuZCBzdXBwb3J0LiBBdCB0aGUgbW9tZW50IHRoYXQncyBqdXN0
+IGJlZXAgdG9uZXMuCiAJICBUb25lcyBhcmUgcGxheWVkIGFzeW5jaHJvbm91c2x5IGluIGEgcG9s
+bGVyLiBDaGVjayB0aGUgYmVlcCBjb21tYW5kCiAJICBmb3IgaG93IHRvIGV4ZXJjaXNlIHRoZSBB
+UEkuCisKK2lmIFNPVU5ECisKK2NvbmZpZyBTWU5USF9TUVVBUkVTCisJYm9vbCAiU3ludGhlc2l6
+ZSBzcXVhcmUgd2F2ZXMgb25seSIKKwloZWxwCisJICBGb3IgYmVlcGluZyBvbiBQQ00gc291bmQg
+Y2FyZHMsIGJhcmVib3ggbmVlZHMgdG8gc3ludGhlc2l6ZSBzYW1wbGVzLAorCSAgd2hpY2ggY2Fu
+IHRha2UgdG9vIG11Y2ggcG9sbGVyIHRpbWUgZm9yIGNyaXNwIHBsYXliYWNrIGFuZC9vciBxdWlj
+aworCSAgYm9vdGluZy4gSWYgeW91ciBwbGF5YmFjayBzdHV0dGVycywgc2F5IFkgaGVyZS4gVGhp
+cyB3aWxsIGhhdmUgYWxsCisJICBzeW50aGVzaXplcnMgb3V0cHV0IGEgZ2Fpbi1hZGp1c3RlZCBz
+cXVhcmUgd2F2ZSBpbnN0ZWFkLCB3aGljaCBpcworCSAgbGVzcyB0aW1lLWNvbnN1bWluZyB0byBj
+b21wdXRlLgorCitlbmRpZgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zb3VuZC9NYWtlZmlsZSBiL2Ry
+aXZlcnMvc291bmQvTWFrZWZpbGUKaW5kZXggZTM0M2UwZmE3MmIwLi42OTg3M2ZhYWI5ODUgMTAw
+NjQ0Ci0tLSBhL2RyaXZlcnMvc291bmQvTWFrZWZpbGUKKysrIGIvZHJpdmVycy9zb3VuZC9NYWtl
+ZmlsZQpAQCAtMSwyICsxLDIgQEAKICMgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAt
+b25seQotb2JqLXkgKz0gY29yZS5vCitvYmoteSArPSBjb3JlLm8gc3ludGgubwpkaWZmIC0tZ2l0
+IGEvZHJpdmVycy9zb3VuZC9zeW50aC5jIGIvZHJpdmVycy9zb3VuZC9zeW50aC5jCm5ldyBmaWxl
+IG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAwMC4uYzlkZTYyYjUxNjg0Ci0tLSAvZGV2L251
+bGwKKysrIGIvZHJpdmVycy9zb3VuZC9zeW50aC5jCkBAIC0wLDAgKzEsNDMgQEAKKy8vIFNQRFgt
+TGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKKy8qCisgKiBDb3B5cmlnaHQgKEMpIDIw
+MTIgU2Ftc3VuZyBFbGVjdHJvbmljcywgUi4gQ2hhbmRyYXNla2FyIDxyY3Nla2FyQHNhbXN1bmcu
+Y29tPgorICogQ29weXJpZ2h0IChDKSAyMDIxIEFobWFkIEZhdG91bQorICovCisKKyNpbmNsdWRl
+IDxjb21tb24uaD4KKyNpbmNsdWRlIDxsaW51eC9maXhwLWFyaXRoLmg+CisjaW5jbHVkZSA8bGlu
+dXgvbWF0aDY0Lmg+CisjaW5jbHVkZSA8c291bmQuaD4KKwordm9pZCBfX3N5bnRoX3Npbih1bnNp
+Z25lZCBmcmVxLCBzMTYgYW1wbGl0dWRlLCBzMTYgKnN0cmVhbSwKKwkJIHVuc2lnbmVkIHNhbXBs
+ZV9yYXRlLCB1bnNpZ25lZCBuc2FtcGxlcykKK3sKKyAgICBpbnQ2NF90IHYgPSAwOworICAgIGlu
+dCBpID0gMDsKKworICAgIGZvciAoaSA9IDA7IGkgPCBuc2FtcGxlczsgaSsrKSB7CisJICAgIC8q
+IEFzc3VtZSBSSFMgc2lnbiBleHRlbnNpb24sIHRydWUgZm9yIEdDQyAqLworCSAgICBzdHJlYW1b
+aV0gPSAoZml4cF9zaW4zMihkaXZfczY0KHYgKiAzNjAsIHNhbXBsZV9yYXRlKSkgKiAoaW50NjRf
+dClhbXBsaXR1ZGUpID4+IDMxOworCSAgICB2ICs9IGZyZXE7CisgICAgfQorfQorCit2b2lkIF9f
+c3ludGhfc3F1YXJlKHVuc2lnbmVkIGZyZXEsIHMxNiBhbXBsaXR1ZGUsIHMxNiAqc3RyZWFtLAor
+CQkgICAgdW5zaWduZWQgc2FtcGxlX3JhdGUsIHVuc2lnbmVkIG5zYW1wbGVzKQoreworCXVuc2ln
+bmVkIHBlcmlvZCA9IGZyZXEgPyBzYW1wbGVfcmF0ZSAvIGZyZXEgOiAwOworCWludCBoYWxmID0g
+cGVyaW9kIC8gMjsKKworCXdoaWxlIChuc2FtcGxlcykgeworCQlpbnQgaTsKKworCQlmb3IgKGkg
+PSAwOyBuc2FtcGxlcyAmJiBpIDwgaGFsZjsgaSsrKSB7CisJCQluc2FtcGxlcy0tOworCQkJKnN0
+cmVhbSsrID0gYW1wbGl0dWRlOworCQl9CisJCWZvciAoaSA9IDA7IG5zYW1wbGVzICYmIGkgPCBw
+ZXJpb2QgLSBoYWxmOyBpKyspIHsKKwkJCW5zYW1wbGVzLS07CisJCQkqc3RyZWFtKysgPSAtYW1w
+bGl0dWRlOworCQl9CisJfQorfQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9maXhwLWFyaXRo
+LmggYi9pbmNsdWRlL2xpbnV4L2ZpeHAtYXJpdGguaApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRl
+eCAwMDAwMDAwMDAwMDAuLjgzOTYwMTM3ODVlZgotLS0gL2Rldi9udWxsCisrKyBiL2luY2x1ZGUv
+bGludXgvZml4cC1hcml0aC5oCkBAIC0wLDAgKzEsMTQ0IEBACisvKiBTUERYLUxpY2Vuc2UtSWRl
+bnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLworI2lmbmRlZiBfRklYUF9BUklUSF9ICisjZGVm
+aW5lIF9GSVhQX0FSSVRIX0gKKworI2luY2x1ZGUgPGxpbnV4L21hdGg2NC5oPgorCisvKgorICog
+U2ltcGxpc3RpYyBmaXhlZC1wb2ludCBhcml0aG1ldGljcy4KKyAqIEhtbSwgSSdtIHByb2JhYmx5
+IGR1cGxpY2F0aW5nIHNvbWUgY29kZSA6KAorICoKKyAqIENvcHlyaWdodCAoYykgMjAwMiBKb2hh
+bm4gRGVuZXV4CisgKi8KKworLyoKKyAqCisgKiBTaG91bGQgeW91IG5lZWQgdG8gY29udGFjdCBt
+ZSwgdGhlIGF1dGhvciwgeW91IGNhbiBkbyBzbyBieQorICogZS1tYWlsIC0gbWFpbCB5b3VyIG1l
+c3NhZ2UgdG8gPGpvaGFubi5kZW5ldXhAZ21haWwuY29tPgorICovCisKKyNpbmNsdWRlIDxsaW51
+eC90eXBlcy5oPgorCitzdGF0aWMgY29uc3QgczMyIHNpbl90YWJsZVtdID0geworCTB4MDAwMDAw
+MDAsIDB4MDIzYmUxNjUsIDB4MDQ3Nzk2MzIsIDB4MDZiMmYxZDIsIDB4MDhlZGM3YjYsIDB4MGIy
+N2ViNWMsCisJMHgwZDYxMzA0ZCwgMHgwZjk5NmEyNiwgMHgxMWQwNmM5NiwgMHgxNDA2MGI2Nywg
+MHgxNjNhMWE3ZCwgMHgxODZjNmRkZCwKKwkweDFhOWNkOWFjLCAweDFjY2IzMjM2LCAweDFlZjc0
+YmYyLCAweDIxMjBmYjgyLCAweDIzNDgxNWJhLCAweDI1NmM2ZjllLAorCTB4Mjc4ZGRlNmUsIDB4
+MjlhYzM3OWYsIDB4MmJjNzUwZTgsIDB4MmRkZjAwM2YsIDB4MmZmMzFiZGQsIDB4MzIwMzdhNDQs
+CisJMHgzNDBmZjI0MSwgMHgzNjE4NWFlZSwgMHgzODFjOGJiNSwgMHgzYTFjNWM1NiwgMHgzYzE3
+YTRlNywgMHgzZTBlM2RkYiwKKwkweDNmZmZmZmZmLCAweDQxZWNjNDgzLCAweDQzZDQ2NGZhLCAw
+eDQ1YjZiYjVkLCAweDQ3OTNhMjBmLCAweDQ5NmFmM2UxLAorCTB4NGIzYzhjMTEsIDB4NGQwODQ2
+NTAsIDB4NGVjZGZlYzYsIDB4NTA4ZDkyMTAsIDB4NTI0NmRkNDgsIDB4NTNmOWJlMDQsCisJMHg1
+NWE2MTI1YSwgMHg1NzRiYjhlNSwgMHg1OGVhOTBjMiwgMHg1YTgyNzk5OSwgMHg1YzEzNTM5OSwg
+MHg1ZDljZmY4MiwKKwkweDVmMWY1ZWEwLCAweDYwOWE1MmQxLCAweDYyMGRiZThhLCAweDYzNzk4
+NGQzLCAweDY0ZGQ4OTRmLCAweDY2MzliMDM5LAorCTB4Njc4ZGRlNmQsIDB4NjhkOWY5NjMsIDB4
+NmExZGU3MzUsIDB4NmI1OThlYTEsIDB4NmM4Y2Q3MGEsIDB4NmRiN2E4NzksCisJMHg2ZWQ5ZWJh
+MCwgMHg2ZmYzODlkZSwgMHg3MTA0NmQzYywgMHg3MjBjODA3NCwgMHg3MzBiYWVlYywgMHg3NDAx
+ZTRiZiwKKwkweDc0ZWYwZWJiLCAweDc1ZDMxYTVmLCAweDc2YWRmNWU1LCAweDc3N2Y5MDNiLCAw
+eDc4NDdkOTA4LCAweDc5MDZjMGFmLAorCTB4NzliYzM4NGMsIDB4N2E2ODMxYjgsIDB4N2IwYTlm
+OGMsIDB4N2JhMzc1MWMsIDB4N2MzMmE2N2MsIDB4N2NiODI4ODQsCisJMHg3ZDMzZjBjOCwgMHg3
+ZGE1ZjVhMywgMHg3ZTBlMmUzMSwgMHg3ZTZjOTI0ZiwgMHg3ZWMxMWFhMywgMHg3ZjBiYzA5NSwK
+KwkweDdmNGM3ZTUyLCAweDdmODM0ZWNmLCAweDdmYjAyZGM0LCAweDdmZDMxN2IzLCAweDdmZWMw
+OWUxLCAweDdmZmIwMjVlLAorCTB4N2ZmZmZmZmYKK307CisKKy8qKgorICogX19maXhwX3NpbjMy
+KCkgcmV0dXJucyB0aGUgc2luIG9mIGFuIGFuZ2xlIGluIGRlZ3JlZXMKKyAqCisgKiBAZGVncmVl
+czogYW5nbGUsIGluIGRlZ3JlZXMsIGZyb20gMCB0byAzNjAuCisgKgorICogVGhlIHJldHVybmVk
+IHZhbHVlIHJhbmdlcyBmcm9tIC0weDdmZmZmZmZmIHRvICsweDdmZmZmZmZmLgorICovCitzdGF0
+aWMgaW5saW5lIHMzMiBfX2ZpeHBfc2luMzIoaW50IGRlZ3JlZXMpCit7CisJczMyIHJldDsKKwli
+b29sIG5lZ2F0aXZlID0gZmFsc2U7CisKKwlpZiAoZGVncmVlcyA+IDE4MCkgeworCQluZWdhdGl2
+ZSA9IHRydWU7CisJCWRlZ3JlZXMgLT0gMTgwOworCX0KKwlpZiAoZGVncmVlcyA+IDkwKQorCQlk
+ZWdyZWVzID0gMTgwIC0gZGVncmVlczsKKworCXJldCA9IHNpbl90YWJsZVtkZWdyZWVzXTsKKwor
+CXJldHVybiBuZWdhdGl2ZSA/IC1yZXQgOiByZXQ7Cit9CisKKy8qKgorICogZml4cF9zaW4zMigp
+IHJldHVybnMgdGhlIHNpbiBvZiBhbiBhbmdsZSBpbiBkZWdyZWVzCisgKgorICogQGRlZ3JlZXM6
+IGFuZ2xlLCBpbiBkZWdyZWVzLiBUaGUgYW5nbGUgY2FuIGJlIHBvc2l0aXZlIG9yIG5lZ2F0aXZl
+CisgKgorICogVGhlIHJldHVybmVkIHZhbHVlIHJhbmdlcyBmcm9tIC0weDdmZmZmZmZmIHRvICsw
+eDdmZmZmZmZmLgorICovCitzdGF0aWMgaW5saW5lIHMzMiBmaXhwX3NpbjMyKGludCBkZWdyZWVz
+KQoreworCWRlZ3JlZXMgPSAoZGVncmVlcyAlIDM2MCArIDM2MCkgJSAzNjA7CisKKwlyZXR1cm4g
+X19maXhwX3NpbjMyKGRlZ3JlZXMpOworfQorCisvKiBjb3MoeCkgPSBzaW4oeCArIDkwIGRlZ3Jl
+ZXMpICovCisjZGVmaW5lIGZpeHBfY29zMzIodikgZml4cF9zaW4zMigodikgKyA5MCkKKworLyoK
+KyAqIDE2IGJpdHMgdmFyaWFudHMKKyAqCisgKiBUaGUgcmV0dXJuZWQgdmFsdWUgcmFuZ2VzIGZy
+b20gLTB4N2ZmZiB0byAweDdmZmYKKyAqLworCisjZGVmaW5lIGZpeHBfc2luMTYodikgKGZpeHBf
+c2luMzIodikgPj4gMTYpCisjZGVmaW5lIGZpeHBfY29zMTYodikgKGZpeHBfY29zMzIodikgPj4g
+MTYpCisKKy8qKgorICogZml4cF9zaW4zMl9yYWQoKSAtIGNhbGN1bGF0ZXMgdGhlIHNpbiBvZiBh
+biBhbmdsZSBpbiByYWRpYW5zCisgKgorICogQHJhZGlhbnM6IGFuZ2xlLCBpbiByYWRpYW5zCisg
+KiBAdHdvcGk6IHZhbHVlIHRvIGJlIHVzZWQgZm9yIDIqcGkKKyAqCisgKiBQcm92aWRlcyBhIHZh
+cmlhbnQgZm9yIHRoZSBjYXNlcyB3aGVyZSBqdXN0IDM2MAorICogdmFsdWVzIGlzIG5vdCBlbm91
+Z2guIFRoaXMgZnVuY3Rpb24gdXNlcyBsaW5lYXIKKyAqIGludGVycG9sYXRpb24gdG8gYSB3aWRl
+ciByYW5nZSBvZiB2YWx1ZXMgZ2l2ZW4gYnkKKyAqIHR3b3BpIHZhci4KKyAqCisgKiBFeHBlcmlt
+ZW50YWwgdGVzdHMgZ2F2ZSBhIG1heGltdW0gZGlmZmVyZW5jZSBvZgorICogMC4wMDAwMzggYmV0
+d2VlbiB0aGUgdmFsdWUgY2FsY3VsYXRlZCBieSBzaW4oKSBhbmQKKyAqIHRoZSBvbmUgcHJvZHVj
+ZWQgYnkgdGhpcyBmdW5jdGlvbiwgd2hlbiB0d29waSBpcworICogZXF1YWwgdG8gMzYwMDAwLiBU
+aGF0IHNlZW1zIHRvIGJlIGVub3VnaCBwcmVjaXNpb24KKyAqIGZvciBwcmFjdGljYWwgcHVycG9z
+ZXMuCisgKgorICogUGxlYXNlIG5vdGljZSB0aGF0IHR3byBoaWdoIG51bWJlcnMgZm9yIHR3b3Bp
+IGNvdWxkIGNhdXNlCisgKiBvdmVyZmxvd3MsIHNvIHRoZSByb3V0aW5lIHdpbGwgbm90IGFsbG93
+IHZhbHVlcyBvZiB0d29waQorICogYmlnZ2VyIHRoYW4gMV4xOC4KKyAqLworc3RhdGljIGlubGlu
+ZSBzMzIgZml4cF9zaW4zMl9yYWQodTMyIHJhZGlhbnMsIHUzMiB0d29waSkKK3sKKwlpbnQgZGVn
+cmVlczsKKwlzMzIgdjEsIHYyLCBkeCwgZHk7CisJczY0IHRtcDsKKworCS8qCisJICogQXZvaWQg
+dG9vIGxhcmdlIHZhbHVlcyBmb3IgdHdvcGksIGFzIHdlIGRvbid0IHdhbnQgb3ZlcmZsb3dzLgor
+CSAqLworCUJVR19PTih0d29waSA+IDEgPDwgMTgpOworCisJZGVncmVlcyA9IChyYWRpYW5zICog
+MzYwKSAvIHR3b3BpOworCXRtcCA9IHJhZGlhbnMgLSAoZGVncmVlcyAqIHR3b3BpKSAvIDM2MDsK
+KworCWRlZ3JlZXMgPSAoZGVncmVlcyAlIDM2MCArIDM2MCkgJSAzNjA7CisJdjEgPSBfX2ZpeHBf
+c2luMzIoZGVncmVlcyk7CisKKwl2MiA9IGZpeHBfc2luMzIoZGVncmVlcyArIDEpOworCisJZHgg
+PSB0d29waSAvIDM2MDsKKwlkeSA9IHYyIC0gdjE7CisKKwl0bXAgKj0gZHk7CisKKwlyZXR1cm4g
+djEgKyAgZGl2X3M2NCh0bXAsIGR4KTsKK30KKworLyogY29zKHgpID0gc2luKHggKyBwaS8yIHJh
+ZGlhbnMpICovCisKKyNkZWZpbmUgZml4cF9jb3MzMl9yYWQocmFkLCB0d29waSkJXAorCWZpeHBf
+c2luMzJfcmFkKHJhZCArIHR3b3BpIC8gNCwgdHdvcGkpCisKKyNlbmRpZgpkaWZmIC0tZ2l0IGEv
+aW5jbHVkZS9zb3VuZC5oIGIvaW5jbHVkZS9zb3VuZC5oCmluZGV4IGY1MTI0YWViYmRhMS4uNjJm
+ZWYxMDZlZTczIDEwMDY0NAotLS0gYS9pbmNsdWRlL3NvdW5kLmgKKysrIGIvaW5jbHVkZS9zb3Vu
+ZC5oCkBAIC00Miw0ICs0MiwzNiBAQCBzdGF0aWMgaW5saW5lIGludCBiZWVwX2NhbmNlbCh2b2lk
+KQogCXJldHVybiBzb3VuZF9jYXJkX2JlZXBfY2FuY2VsKHNvdW5kX2NhcmRfZ2V0X2RlZmF1bHQo
+KSk7CiB9CiAKKworLyoKKyAqIFN5bnRoZXNpemVycyBhbGwgaGF2ZSB0aGUgc2FtZSBwcm90b3R5
+cGUsIGJ1dCB0aGVpciBpbXBsZW1lbnRhdGlvbgorICogaXMgcmVwbGFjZWQgd2l0aCBhIGdhaW4t
+YWRqdXN0ZWQgc3F1YXJlIHdhdmUgaWYgQ09ORklHX1NZTlRIX1NRVUFSRVM9eS4KKyAqIFRoaXMg
+aXMgdG8gc3VwcG9ydCBQQ00gYmVlcGluZyBvbiBzeXN0ZW1zLCB3aGVyZSBzaW5lIGdlbmVyYXRp
+b24gbWF5CisgKiBzcGVuZCB0byBtdWNoIHRpbWUgaW4gdGhlIHBvbGxlci4KKyAqLwordHlwZWRl
+ZiB2b2lkIHN5bnRoX3QodW5zaWduZWQgZnJlcSwgczE2IGFtcGxpdHVkZSwgczE2ICpzdHJlYW0s
+CisJCSAgICAgdW5zaWduZWQgc2FtcGxlX3JhdGUsIHVuc2lnbmVkIG5zYW1wbGVzKTsKKworI2lm
+ZGVmIENPTkZJR19TWU5USF9TUVVBUkVTCisjZGVmaW5lIFNZTlRIKGZuLCB2b2x1bWVfcGVyY2Vu
+dCkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwKKwlzdGF0aWMgaW5saW5lIHZvaWQg
+Zm4odW5zaWduZWQgZiwgczE2IGFtcGxpdHVkZSwgczE2ICpzLCBcCisJCQkgICAgICB1bnNpZ25l
+ZCByLCB1bnNpZ25lZCBuKSB7ICAgICAgICAgIFwKKwkJc3ludGhfdCBfX3N5bnRoX3NxdWFyZTsg
+ICAgICAgICAgICAgICAgICAgICAgICAgIFwKKwkJYW1wbGl0dWRlID0gYW1wbGl0dWRlICogdm9s
+dW1lX3BlcmNlbnQgLyAxMDA7ICAgIFwKKwkJX19zeW50aF9zcXVhcmUoZiwgYW1wbGl0dWRlLCBz
+LCByLCBuKTsgICAgICAgICAgIFwKKwl9ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICBcCisJc3ludGhfdCBfXyMjZm4KKyNlbHNlCisjZGVmaW5l
+IFNZTlRIKGZuLCB2b2x1bWVfcGVyY2VudCkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IFwKKwlzdGF0aWMgaW5saW5lIHZvaWQgZm4odW5zaWduZWQgZiwgczE2IGEsIHMxNiAqcywgICAg
+ICAgICBcCisJCQkgICAgICB1bnNpZ25lZCByLCB1bnNpZ25lZCBuKSB7ICAgICAgICAgIFwKKwkJ
+c3ludGhfdCBfXyMjZm47ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwKKwkJX18j
+I2ZuKGYsIGEsIHMsIHIsIG4pOyAgICAgICAgICAgICAgICAgICAgICAgICAgIFwKKwl9ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcCisgICAg
+ICAgIHN5bnRoX3QgX18jI2ZuCisjZW5kaWYKKworU1lOVEgoc3ludGhfc3F1YXJlLCAxMDApOwkv
+KiBzcXVhcmUgd2F2ZSBhbHdheXMgaGFzIGZ1bGwgYW1wbGl0dWRlICovCitTWU5USChzeW50aF9z
+aW4sIDY0KTsJCS8qIOKIq+KCgMK5IHNpbijPgHgpIGR4IOKJiCA2NCUgKi8KKwogI2VuZGlmCi0t
+IAoyLjMwLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
