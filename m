@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay7-d.mail.gandi.net ([217.70.183.200])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l6JBO-0004CT-Ni
- for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:18:55 +0000
+ id 1l6JBO-0004CV-Nj
+ for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:18:56 +0000
 Received: from geraet.fritz.box (unknown [87.123.110.69])
  (Authenticated sender: ahmad@a3f.at)
- by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id B9A2320002
- for <barebox@lists.infradead.org>; Sun, 31 Jan 2021 20:18:51 +0000 (UTC)
+ by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id B644920006
+ for <barebox@lists.infradead.org>; Sun, 31 Jan 2021 20:18:52 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sun, 31 Jan 2021 21:18:39 +0100
-Message-Id: <20210131201846.3440477-1-ahmad@a3f.at>
+Date: Sun, 31 Jan 2021 21:18:41 +0100
+Message-Id: <20210131201846.3440477-3-ahmad@a3f.at>
+In-Reply-To: <20210131201846.3440477-1-ahmad@a3f.at>
+References: <20210131201846.3440477-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,78 +21,132 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] Add sound and GRUB beep tune support
+Subject: [PATCH 2/7] drivers: add sound card driver support
 To: barebox@lists.infradead.org
 
-I've been meaning to upstream pwm-beeper support for a piezobuzzer,
-but it would be a real shame if the obnoxious buzzing would delay the
-boot. So let me present asynchronous beeping support for barebox.
-
-If you don't have the suitable hardware lying around you can synth
-your own tunes on the barebox sandbox shell as well.
-
-The Imperial March:
-  beep 480 440 4 440 4 440 4 349 3 523 1 440 4 349 3 523 1 440 8 659 4 659 4 659 4 698 3 523 1 415 4 349 3 523 1 440 8
-
-Rebel's sabotage:
-  beep -c
-
-Cheers,
-Ahmad Fatoum (7):
-  sandbox: migrate to SDL 2.0
-  drivers: add sound card driver support
-  sound: add basic synthesizers for PCM beeper use
-  sound: add SDL 2.0 sound driver
-  commands: add beep command
-  sound: add PWM beeper support
-  sound: add gpio-beeper support
-
- arch/sandbox/Kconfig                          |   3 +
- arch/sandbox/Makefile                         |   6 +-
- arch/sandbox/configs/sandbox_defconfig        |   1 +
- arch/sandbox/dts/sandbox.dts                  |   4 +
- .../sandbox/mach-sandbox/include/mach/linux.h |  22 ++-
- arch/sandbox/os/Makefile                      |   4 +-
- arch/sandbox/os/sdl.c                         | 184 +++++++++++-------
- commands/Kconfig                              |   7 +
- commands/Makefile                             |   1 +
- commands/beep.c                               |  99 ++++++++++
- drivers/Kconfig                               |   1 +
- drivers/Makefile                              |   1 +
- drivers/sound/Kconfig                         |  38 ++++
- drivers/sound/Makefile                        |   5 +
- drivers/sound/core.c                          | 121 ++++++++++++
- drivers/sound/gpio-beeper.c                   |  77 ++++++++
- drivers/sound/pwm-beeper.c                    | 124 ++++++++++++
- drivers/sound/sdl.c                           |  87 +++++++++
- drivers/sound/synth.c                         |  43 ++++
- drivers/video/Kconfig                         |   1 +
- drivers/video/sdl.c                           |  37 ++--
- include/linux/fixp-arith.h                    | 144 ++++++++++++++
- include/poller.h                              |   4 +
- include/pwm.h                                 |  33 ++++
- include/sound.h                               |  77 ++++++++
- 25 files changed, 1033 insertions(+), 91 deletions(-)
- create mode 100644 commands/beep.c
- create mode 100644 drivers/sound/Kconfig
- create mode 100644 drivers/sound/Makefile
- create mode 100644 drivers/sound/core.c
- create mode 100644 drivers/sound/gpio-beeper.c
- create mode 100644 drivers/sound/pwm-beeper.c
- create mode 100644 drivers/sound/sdl.c
- create mode 100644 drivers/sound/synth.c
- create mode 100644 include/linux/fixp-arith.h
- create mode 100644 include/sound.h
-
--- 
-2.30.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWRkIGRyaXZlciBjb3JlIGJvaWxlcnBsYXRlIGZvciBzb3VuZCBzdXBwb3J0IGluIGJhcmVib3gu
+IFVzaW5nIHRoZQpwcm92aWRlZCBBUEkgaW4gPHNvdW5kLmg+LCBjb25zdW1lcnMgY2FuIHBsYXkg
+YmVlcHMgZm9yIGEgZml4ZWQgZHVyYXRpb24Kb2YgdGltZS4KClBsYXlpbmcgYmVlcHMgaXMgbm90
+IGJsb2NraW5nIGFuZCBuZXcgYmVlcHMgY2FuIGJlIGVucXVldWVkIHdoaWxlIG9uZQppcyBhbHJl
+YWR5IHBsYXlpbmcuIFRoZXkgd2lsbCBiZSBwbGF5ZWQgaW4gc3VjY2Vzc2lvbiBieSBhIHBvbGxl
+ciwgd2hpY2gKd2lsbCBhbHNvIHR1cm4gb2ZmIHRoZSBzb3VuZCBjYXJkIHdoZW4gdGhlIGJlZXAg
+dHVuZSBpcyBvdmVyLgoKQVBJIGlzIGFsc28gYXZhaWxhYmxlIGZvciBibG9ja2luZyB1bnRpbCBh
+bGwgYmVlcHMgYXJlIHBsYXllZCBhbmQgZm9yCmNhbmNlbGxpbmcgYW4gdW5kZXJ3YXkgYmVlcCB0
+dW5lLgoKVGhlIEFQSSBjb3VsZCBiZSBsYXRlciBleHRlbmRlZCBmb3IgYXJiaXRyYXJ5IFBDTSBh
+dWRpbywgc2hvdWxkIHRoZQpuZWVkIGFyaXNlLgoKU2lnbmVkLW9mZi1ieTogQWhtYWQgRmF0b3Vt
+IDxhaG1hZEBhM2YuYXQ+Ci0tLQogZHJpdmVycy9LY29uZmlnICAgICAgICB8ICAgMSArCiBkcml2
+ZXJzL01ha2VmaWxlICAgICAgIHwgICAxICsKIGRyaXZlcnMvc291bmQvS2NvbmZpZyAgfCAgIDgg
+KysrCiBkcml2ZXJzL3NvdW5kL01ha2VmaWxlIHwgICAyICsKIGRyaXZlcnMvc291bmQvY29yZS5j
+ICAgfCAxMjEgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIGluY2x1
+ZGUvcG9sbGVyLmggICAgICAgfCAgIDQgKysKIGluY2x1ZGUvc291bmQuaCAgICAgICAgfCAgNDUg
+KysrKysrKysrKysrKysrCiA3IGZpbGVzIGNoYW5nZWQsIDE4MiBpbnNlcnRpb25zKCspCiBjcmVh
+dGUgbW9kZSAxMDA2NDQgZHJpdmVycy9zb3VuZC9LY29uZmlnCiBjcmVhdGUgbW9kZSAxMDA2NDQg
+ZHJpdmVycy9zb3VuZC9NYWtlZmlsZQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvc291bmQv
+Y29yZS5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgaW5jbHVkZS9zb3VuZC5oCgpkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9LY29uZmlnIGIvZHJpdmVycy9LY29uZmlnCmluZGV4IGRkYTI0MDU3ODA2Ny4uMGI4
+N2MyYWYyYTgzIDEwMDY0NAotLS0gYS9kcml2ZXJzL0tjb25maWcKKysrIGIvZHJpdmVycy9LY29u
+ZmlnCkBAIC0xMyw2ICsxMyw3IEBAIHNvdXJjZSAiZHJpdmVycy9tdGQvS2NvbmZpZyIKIHNvdXJj
+ZSAiZHJpdmVycy9hdGEvS2NvbmZpZyIKIHNvdXJjZSAiZHJpdmVycy91c2IvS2NvbmZpZyIKIHNv
+dXJjZSAiZHJpdmVycy92aWRlby9LY29uZmlnIgorc291cmNlICJkcml2ZXJzL3NvdW5kL0tjb25m
+aWciCiBzb3VyY2UgImRyaXZlcnMvbWNpL0tjb25maWciCiBzb3VyY2UgImRyaXZlcnMvY2xrL0tj
+b25maWciCiBzb3VyY2UgImRyaXZlcnMvY2xvY2tzb3VyY2UvS2NvbmZpZyIKZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvTWFrZWZpbGUgYi9kcml2ZXJzL01ha2VmaWxlCmluZGV4IDVhMDNiZGNlYWI4MS4u
+ZmFiMzc5MDI4OGY3IDEwMDY0NAotLS0gYS9kcml2ZXJzL01ha2VmaWxlCisrKyBiL2RyaXZlcnMv
+TWFrZWZpbGUKQEAgLTQzLDMgKzQzLDQgQEAgb2JqLXkJKz0gc29jL2lteC8KIG9iai15CSs9IG52
+bWUvCiBvYmoteQkrPSBkZHIvCiBvYmoteQkrPSBwb3dlci8KK29iai0kKENPTkZJR19TT1VORCkg
+Kz0gc291bmQvCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NvdW5kL0tjb25maWcgYi9kcml2ZXJzL3Nv
+dW5kL0tjb25maWcKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi5jY2U1
+Yzc2MGFmZGMKLS0tIC9kZXYvbnVsbAorKysgYi9kcml2ZXJzL3NvdW5kL0tjb25maWcKQEAgLTAs
+MCArMSw4IEBACisjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKK21lbnVj
+b25maWcgU09VTkQKKwlib29sICJTb3VuZCBkcml2ZXJzIgorCXNlbGVjdCBQT0xMRVIKKwloZWxw
+CisJICBTYXkgWSBoZXJlIGZvciBzb3VuZCBzdXBwb3J0LiBBdCB0aGUgbW9tZW50IHRoYXQncyBq
+dXN0IGJlZXAgdG9uZXMuCisJICBUb25lcyBhcmUgcGxheWVkIGFzeW5jaHJvbm91c2x5IGluIGEg
+cG9sbGVyLiBDaGVjayB0aGUgYmVlcCBjb21tYW5kCisJICBmb3IgaG93IHRvIGV4ZXJjaXNlIHRo
+ZSBBUEkuCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NvdW5kL01ha2VmaWxlIGIvZHJpdmVycy9zb3Vu
+ZC9NYWtlZmlsZQpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLmUzNDNl
+MGZhNzJiMAotLS0gL2Rldi9udWxsCisrKyBiL2RyaXZlcnMvc291bmQvTWFrZWZpbGUKQEAgLTAs
+MCArMSwyIEBACisjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKK29iai15
+ICs9IGNvcmUubwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zb3VuZC9jb3JlLmMgYi9kcml2ZXJzL3Nv
+dW5kL2NvcmUuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjgwMWIx
+ZmFkZTU1MgotLS0gL2Rldi9udWxsCisrKyBiL2RyaXZlcnMvc291bmQvY29yZS5jCkBAIC0wLDAg
+KzEsMTIxIEBACisvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5CisvLyBT
+UERYLUZpbGVDb3B5cmlnaHRUZXh0OiDCqSAyMDIxIEFobWFkIEZhdG91bQorCisjaW5jbHVkZSA8
+Y29tbW9uLmg+CisjaW5jbHVkZSA8bGludXgvbGlzdC5oPgorI2luY2x1ZGUgPHNvdW5kLmg+Cisj
+aW5jbHVkZSA8cG9sbGVyLmg+CisjaW5jbHVkZSA8bGludXgvaW9wb2xsLmg+CisKK3N0YXRpYyBM
+SVNUX0hFQUQoY2FyZF9saXN0KTsKKworc3RydWN0IGJlZXAgeworCWludCBmcmVxOworCXVuc2ln
+bmVkIGludCB1czsKKwlzdHJ1Y3QgbGlzdF9oZWFkIGxpc3Q7Cit9OworCitzdGF0aWMgaW50IHNv
+dW5kX2NhcmRfZG9fYmVlcChzdHJ1Y3Qgc291bmRfY2FyZCAqY2FyZCwKKwkJCSAgICAgIGludCBm
+cmVxLCB1bnNpZ25lZCBpbnQgdXMpCit7CisJaWYgKGZyZXEgPT0gLTEpCisJCWZyZXEgPSBjYXJk
+LT5iZWxsX2ZyZXF1ZW5jeTsKKworCXJldHVybiBjYXJkLT5iZWVwKGNhcmQsIGZyZXEsIHVzKTsK
+K30KKworc3RhdGljIHZvaWQgc291bmRfY2FyZF9wb2xsZXJfY2Iodm9pZCAqX2NhcmQpCit7CisJ
+c3RydWN0IHNvdW5kX2NhcmQgKmNhcmQgPSBfY2FyZDsKKwlzdHJ1Y3QgYmVlcCAqYmVlcDsKKwor
+CWJlZXAgPSBsaXN0X2ZpcnN0X2VudHJ5X29yX251bGwoJmNhcmQtPnR1bmUsIHN0cnVjdCBiZWVw
+LCBsaXN0KTsKKwlpZiAoIWJlZXApIHsKKwkJc291bmRfY2FyZF9kb19iZWVwKGNhcmQsIDAsIDAp
+OworCQlyZXR1cm47CisJfQorCisJbGlzdF9kZWwoJmJlZXAtPmxpc3QpOworCisJcG9sbGVyX2Nh
+bGxfYXN5bmMoJmNhcmQtPnBvbGxlciwgYmVlcC0+dXMgKiAxMDAwVUxMLAorCQkJICBzb3VuZF9j
+YXJkX3BvbGxlcl9jYiwgY2FyZCk7CisJc291bmRfY2FyZF9kb19iZWVwKGNhcmQsIGJlZXAtPmZy
+ZXEsIGJlZXAtPnVzKTsKKworCWZyZWUoYmVlcCk7Cit9CisKK2ludCBzb3VuZF9jYXJkX3JlZ2lz
+dGVyKHN0cnVjdCBzb3VuZF9jYXJkICpjYXJkKQoreworCWlmICghY2FyZC0+bmFtZSkKKwkJcmV0
+dXJuIC1FSU5WQUw7CisKKwlpZiAoY2FyZC0+YmVsbF9mcmVxdWVuY3kgPD0gMCkKKwkJY2FyZC0+
+YmVsbF9mcmVxdWVuY3kgPSAxMDAwOworCisJcG9sbGVyX2FzeW5jX3JlZ2lzdGVyKCZjYXJkLT5w
+b2xsZXIsIGNhcmQtPm5hbWUpOworCUlOSVRfTElTVF9IRUFEKCZjYXJkLT50dW5lKTsKKworCWxp
+c3RfYWRkX3RhaWwoJmNhcmQtPmxpc3QsICZjYXJkX2xpc3QpOworCXJldHVybiAwOworfQorCitz
+dHJ1Y3Qgc291bmRfY2FyZCAqc291bmRfY2FyZF9nZXRfZGVmYXVsdCh2b2lkKQoreworCXJldHVy
+biBsaXN0X2ZpcnN0X2VudHJ5X29yX251bGwoJmNhcmRfbGlzdCwgc3RydWN0IHNvdW5kX2NhcmQs
+IGxpc3QpOworfQorCitpbnQgc291bmRfY2FyZF9iZWVwKHN0cnVjdCBzb3VuZF9jYXJkICpjYXJk
+LCBpbnQgZnJlcSwgdW5zaWduZWQgaW50IHVzKQoreworCXN0cnVjdCBiZWVwICpiZWVwOworCWlu
+dCByZXQ7CisKKwlpZiAoIWNhcmQpCisJCXJldHVybiAtRU5PREVWOworCisJaWYgKCFwb2xsZXJf
+YXN5bmNfYWN0aXZlKCZjYXJkLT5wb2xsZXIpKSB7CisJCXJldCA9IHNvdW5kX2NhcmRfZG9fYmVl
+cChjYXJkLCBmcmVxLCB1cyk7CisJCWlmICghcmV0KQorCQkJcG9sbGVyX2NhbGxfYXN5bmMoJmNh
+cmQtPnBvbGxlciwgdXMgKiAxMDAwVUxMLAorCQkJCQkgIHNvdW5kX2NhcmRfcG9sbGVyX2NiLCBj
+YXJkKTsKKworCQlyZXR1cm4gcmV0OworCX0KKworCWJlZXAgPSBtYWxsb2Moc2l6ZW9mKCpiZWVw
+KSk7CisJaWYgKCFiZWVwKQorCQlyZXR1cm4gLUVOT01FTTsKKworCWJlZXAtPmZyZXEgPSBmcmVx
+OworCWJlZXAtPnVzID0gdXM7CisKKwlsaXN0X2FkZF90YWlsKCZiZWVwLT5saXN0LCAmY2FyZC0+
+dHVuZSk7CisKKwlyZXR1cm4gMDsKK30KKworaW50IHNvdW5kX2NhcmRfYmVlcF93YWl0KHN0cnVj
+dCBzb3VuZF9jYXJkICpjYXJkLCB1bnNpZ25lZCB0aW1lb3V0KQoreworCWJvb2wgYWN0aXZlOwor
+CXJldHVybiByZWFkX3BvbGxfdGltZW91dChwb2xsZXJfYXN5bmNfYWN0aXZlLCBhY3RpdmUsCisJ
+CQkJICFhY3RpdmUsIHRpbWVvdXQsICZjYXJkLT5wb2xsZXIpOworfQorCitpbnQgc291bmRfY2Fy
+ZF9iZWVwX2NhbmNlbChzdHJ1Y3Qgc291bmRfY2FyZCAqY2FyZCkKK3sKKwlzdHJ1Y3QgYmVlcCAq
+YmVlcCwgKnRtcDsKKwlpbnQgcmV0OworCisJaWYgKCFjYXJkKQorCQlyZXR1cm4gLUVOT0RFVjsK
+KworCXBvbGxlcl9hc3luY19jYW5jZWwoJmNhcmQtPnBvbGxlcik7CisKKwlyZXQgPSBjYXJkLT5i
+ZWVwKGNhcmQsIDAsIDApOworCisJbGlzdF9mb3JfZWFjaF9lbnRyeV9zYWZlKGJlZXAsIHRtcCwg
+JmNhcmQtPnR1bmUsIGxpc3QpIHsKKwkJbGlzdF9kZWwoJmJlZXAtPmxpc3QpOworCQlmcmVlKGJl
+ZXApOworCX0KKworCXJldHVybiByZXQ7Cit9CmRpZmYgLS1naXQgYS9pbmNsdWRlL3BvbGxlci5o
+IGIvaW5jbHVkZS9wb2xsZXIuaAppbmRleCA4ODY1NTcyNTJiNjkuLmRiNzczMjY1YjJmNiAxMDA2
+NDQKLS0tIGEvaW5jbHVkZS9wb2xsZXIuaAorKysgYi9pbmNsdWRlL3BvbGxlci5oCkBAIC0zNCw2
+ICszNCwxMCBAQCBpbnQgcG9sbGVyX2FzeW5jX3VucmVnaXN0ZXIoc3RydWN0IHBvbGxlcl9hc3lu
+YyAqcGEpOwogaW50IHBvbGxlcl9jYWxsX2FzeW5jKHN0cnVjdCBwb2xsZXJfYXN5bmMgKnBhLCB1
+aW50NjRfdCBkZWxheV9ucywKIAkJdm9pZCAoKmZuKSh2b2lkICopLCB2b2lkICpjdHgpOwogaW50
+IHBvbGxlcl9hc3luY19jYW5jZWwoc3RydWN0IHBvbGxlcl9hc3luYyAqcGEpOworc3RhdGljIGlu
+bGluZSBib29sIHBvbGxlcl9hc3luY19hY3RpdmUoc3RydWN0IHBvbGxlcl9hc3luYyAqcGEpCit7
+CisJcmV0dXJuIHBhLT5hY3RpdmU7Cit9CiAKICNpZmRlZiBDT05GSUdfUE9MTEVSCiB2b2lkIHBv
+bGxlcl9jYWxsKHZvaWQpOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9zb3VuZC5oIGIvaW5jbHVkZS9z
+b3VuZC5oCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAwMC4uZjUxMjRhZWJi
+ZGExCi0tLSAvZGV2L251bGwKKysrIGIvaW5jbHVkZS9zb3VuZC5oCkBAIC0wLDAgKzEsNDUgQEAK
+Ky8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyICovCisvKiBTUERY
+LUZpbGVDb3B5cmlnaHRUZXh0OiDCqSAyMDIxIEFobWFkIEZhdG91bSAqLworCisjaWZuZGVmIF9f
+U09VTkRfSF8KKyNkZWZpbmUgX19TT1VORF9IXworCisjaW5jbHVkZSA8bGludXgvbGlzdC5oPgor
+I2luY2x1ZGUgPHBvbGxlci5oPgorCisjZGVmaW5lIEJFTExfREVGQVVMVF9GUkVRVUVOQ1kJLTEK
+Kworc3RydWN0IHNvdW5kX2NhcmQgeworCWNvbnN0IGNoYXIgKm5hbWU7CisJaW50IGJlbGxfZnJl
+cXVlbmN5OworCWludCAoKmJlZXApKHN0cnVjdCBzb3VuZF9jYXJkICosIHVuc2lnbmVkIGZyZXEs
+IHVuc2lnbmVkIHVzKTsKKworCS8qIHByaXZhdGUgKi8KKwlzdHJ1Y3QgbGlzdF9oZWFkIGxpc3Q7
+CisJc3RydWN0IGxpc3RfaGVhZCB0dW5lOworCXN0cnVjdCBwb2xsZXJfYXN5bmMgcG9sbGVyOwor
+fTsKKworaW50IHNvdW5kX2NhcmRfcmVnaXN0ZXIoc3RydWN0IHNvdW5kX2NhcmQgKmNhcmQpOwor
+aW50IHNvdW5kX2NhcmRfYmVlcF93YWl0KHN0cnVjdCBzb3VuZF9jYXJkICpjYXJkLCB1bnNpZ25l
+ZCB0aW1lb3V0X3VzKTsKK2ludCBzb3VuZF9jYXJkX2JlZXAoc3RydWN0IHNvdW5kX2NhcmQgKmNh
+cmQsIGludCBmcmVxLCB1bnNpZ25lZCBpbnQgdXMpOworaW50IHNvdW5kX2NhcmRfYmVlcF9jYW5j
+ZWwoc3RydWN0IHNvdW5kX2NhcmQgKmNhcmQpOworCitzdHJ1Y3Qgc291bmRfY2FyZCAqc291bmRf
+Y2FyZF9nZXRfZGVmYXVsdCh2b2lkKTsKKworc3RhdGljIGlubGluZSBpbnQgYmVlcChpbnQgZnJl
+cSwgdW5zaWduZWQgdXMpCit7CisJcmV0dXJuIHNvdW5kX2NhcmRfYmVlcChzb3VuZF9jYXJkX2dl
+dF9kZWZhdWx0KCksIGZyZXEsIHVzKTsKK30KKworc3RhdGljIGlubGluZSBpbnQgYmVlcF93YWl0
+KHVuc2lnbmVkIHRpbWVvdXRfdXMpCit7CisJcmV0dXJuIHNvdW5kX2NhcmRfYmVlcF93YWl0KHNv
+dW5kX2NhcmRfZ2V0X2RlZmF1bHQoKSwgdGltZW91dF91cyk7Cit9CisKK3N0YXRpYyBpbmxpbmUg
+aW50IGJlZXBfY2FuY2VsKHZvaWQpCit7CisJcmV0dXJuIHNvdW5kX2NhcmRfYmVlcF9jYW5jZWwo
+c291bmRfY2FyZF9nZXRfZGVmYXVsdCgpKTsKK30KKworI2VuZGlmCi0tIAoyLjMwLjAKCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
