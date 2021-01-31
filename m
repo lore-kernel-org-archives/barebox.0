@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay7-d.mail.gandi.net ([217.70.183.200])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l6JBO-0004CW-Nl
- for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:18:57 +0000
+ id 1l6JBO-0004CU-Nj
+ for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:18:59 +0000
 Received: from geraet.fritz.box (unknown [87.123.110.69])
  (Authenticated sender: ahmad@a3f.at)
- by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 32B6F20007
- for <barebox@lists.infradead.org>; Sun, 31 Jan 2021 20:18:53 +0000 (UTC)
+ by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 3F62720003
+ for <barebox@lists.infradead.org>; Sun, 31 Jan 2021 20:18:52 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sun, 31 Jan 2021 21:18:42 +0100
-Message-Id: <20210131201846.3440477-4-ahmad@a3f.at>
+Date: Sun, 31 Jan 2021 21:18:40 +0100
+Message-Id: <20210131201846.3440477-2-ahmad@a3f.at>
 In-Reply-To: <20210131201846.3440477-1-ahmad@a3f.at>
 References: <20210131201846.3440477-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,170 +21,401 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] sound: add basic synthesizers for PCM beeper use
+Subject: [PATCH 1/7] sandbox: migrate to SDL 2.0
 To: barebox@lists.infradead.org
 
-Rm9yIGJlZXBpbmcgb24gUENNIHNvdW5kIGNhcmRzLCBiYXJlYm94IHdpbGwgbmVlZCB0byBzeW50
-aGVzaXplIHNhbXBsZXMuCkFkZCBiYXNpYyBzaW5lIGFuZCBzcXVhcmUgd2F2ZSBzeW50aGVzaXpl
-cnMgdG8gYWNoaWV2ZSB0aGlzLgoKQ2xpZW50IGNvZGUgY2FuIGVpdGhlciBjYWxsIF9fc3ludGhf
-RiB0byBleHBsaWNpdGx5IHNlbGVjdCBzeW50aCBGIG9yCnN5bnRoX0YsIHdoaWNoIGRlcGVuZGlu
-ZyBvbiBDT05GSUdfU1lOVEhfU1FVQVJFUyBtYXkgZXhwYW5kIHRvIGVpdGhlcgpfX3N5bnRoX0Yg
-b3IgYSBnYWluLWFkanVzdGVkIF9fc3ludGhfZ2VuZXJhdGVfc3F1YXJlLgoKVGhlIGxhdHRlciBp
-cyBtYWlubHkgdXNlZnVsIGZvciBzbG93IHN5c3RlbXMgdGhhdCBjYW4ndCBzeW50aGVzaXplCmVu
-b3VnaCBzaW5lIHNhbXBsZXMgaW4gYSBwb2xsZXIgd2l0aG91dCBpbXBhY3RpbmcgYm9vdCBwZXJm
-b3JtYW5jZS4KClNpZ25lZC1vZmYtYnk6IEFobWFkIEZhdG91bSA8YWhtYWRAYTNmLmF0PgotLS0K
-IGRyaXZlcnMvc291bmQvS2NvbmZpZyAgICAgIHwgIDEzICsrKysKIGRyaXZlcnMvc291bmQvTWFr
-ZWZpbGUgICAgIHwgICAyICstCiBkcml2ZXJzL3NvdW5kL3N5bnRoLmMgICAgICB8ICA0MyArKysr
-KysrKysrKwogaW5jbHVkZS9saW51eC9maXhwLWFyaXRoLmggfCAxNDQgKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKwogaW5jbHVkZS9zb3VuZC5oICAgICAgICAgICAgfCAgMzIg
-KysrKysrKysrCiA1IGZpbGVzIGNoYW5nZWQsIDIzMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9u
-KC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9zb3VuZC9zeW50aC5jCiBjcmVhdGUgbW9k
-ZSAxMDA2NDQgaW5jbHVkZS9saW51eC9maXhwLWFyaXRoLmgKCmRpZmYgLS1naXQgYS9kcml2ZXJz
-L3NvdW5kL0tjb25maWcgYi9kcml2ZXJzL3NvdW5kL0tjb25maWcKaW5kZXggY2NlNWM3NjBhZmRj
-Li5kOWY2M2E1ZjNjNTUgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc291bmQvS2NvbmZpZworKysgYi9k
-cml2ZXJzL3NvdW5kL0tjb25maWcKQEAgLTYsMyArNiwxNiBAQCBtZW51Y29uZmlnIFNPVU5ECiAJ
-ICBTYXkgWSBoZXJlIGZvciBzb3VuZCBzdXBwb3J0LiBBdCB0aGUgbW9tZW50IHRoYXQncyBqdXN0
-IGJlZXAgdG9uZXMuCiAJICBUb25lcyBhcmUgcGxheWVkIGFzeW5jaHJvbm91c2x5IGluIGEgcG9s
-bGVyLiBDaGVjayB0aGUgYmVlcCBjb21tYW5kCiAJICBmb3IgaG93IHRvIGV4ZXJjaXNlIHRoZSBB
-UEkuCisKK2lmIFNPVU5ECisKK2NvbmZpZyBTWU5USF9TUVVBUkVTCisJYm9vbCAiU3ludGhlc2l6
-ZSBzcXVhcmUgd2F2ZXMgb25seSIKKwloZWxwCisJICBGb3IgYmVlcGluZyBvbiBQQ00gc291bmQg
-Y2FyZHMsIGJhcmVib3ggbmVlZHMgdG8gc3ludGhlc2l6ZSBzYW1wbGVzLAorCSAgd2hpY2ggY2Fu
-IHRha2UgdG9vIG11Y2ggcG9sbGVyIHRpbWUgZm9yIGNyaXNwIHBsYXliYWNrIGFuZC9vciBxdWlj
-aworCSAgYm9vdGluZy4gSWYgeW91ciBwbGF5YmFjayBzdHV0dGVycywgc2F5IFkgaGVyZS4gVGhp
-cyB3aWxsIGhhdmUgYWxsCisJICBzeW50aGVzaXplcnMgb3V0cHV0IGEgZ2Fpbi1hZGp1c3RlZCBz
-cXVhcmUgd2F2ZSBpbnN0ZWFkLCB3aGljaCBpcworCSAgbGVzcyB0aW1lLWNvbnN1bWluZyB0byBj
-b21wdXRlLgorCitlbmRpZgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zb3VuZC9NYWtlZmlsZSBiL2Ry
-aXZlcnMvc291bmQvTWFrZWZpbGUKaW5kZXggZTM0M2UwZmE3MmIwLi42OTg3M2ZhYWI5ODUgMTAw
-NjQ0Ci0tLSBhL2RyaXZlcnMvc291bmQvTWFrZWZpbGUKKysrIGIvZHJpdmVycy9zb3VuZC9NYWtl
-ZmlsZQpAQCAtMSwyICsxLDIgQEAKICMgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAt
-b25seQotb2JqLXkgKz0gY29yZS5vCitvYmoteSArPSBjb3JlLm8gc3ludGgubwpkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9zb3VuZC9zeW50aC5jIGIvZHJpdmVycy9zb3VuZC9zeW50aC5jCm5ldyBmaWxl
-IG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAwMC4uYzlkZTYyYjUxNjg0Ci0tLSAvZGV2L251
-bGwKKysrIGIvZHJpdmVycy9zb3VuZC9zeW50aC5jCkBAIC0wLDAgKzEsNDMgQEAKKy8vIFNQRFgt
-TGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKKy8qCisgKiBDb3B5cmlnaHQgKEMpIDIw
-MTIgU2Ftc3VuZyBFbGVjdHJvbmljcywgUi4gQ2hhbmRyYXNla2FyIDxyY3Nla2FyQHNhbXN1bmcu
-Y29tPgorICogQ29weXJpZ2h0IChDKSAyMDIxIEFobWFkIEZhdG91bQorICovCisKKyNpbmNsdWRl
-IDxjb21tb24uaD4KKyNpbmNsdWRlIDxsaW51eC9maXhwLWFyaXRoLmg+CisjaW5jbHVkZSA8bGlu
-dXgvbWF0aDY0Lmg+CisjaW5jbHVkZSA8c291bmQuaD4KKwordm9pZCBfX3N5bnRoX3Npbih1bnNp
-Z25lZCBmcmVxLCBzMTYgYW1wbGl0dWRlLCBzMTYgKnN0cmVhbSwKKwkJIHVuc2lnbmVkIHNhbXBs
-ZV9yYXRlLCB1bnNpZ25lZCBuc2FtcGxlcykKK3sKKyAgICBpbnQ2NF90IHYgPSAwOworICAgIGlu
-dCBpID0gMDsKKworICAgIGZvciAoaSA9IDA7IGkgPCBuc2FtcGxlczsgaSsrKSB7CisJICAgIC8q
-IEFzc3VtZSBSSFMgc2lnbiBleHRlbnNpb24sIHRydWUgZm9yIEdDQyAqLworCSAgICBzdHJlYW1b
-aV0gPSAoZml4cF9zaW4zMihkaXZfczY0KHYgKiAzNjAsIHNhbXBsZV9yYXRlKSkgKiAoaW50NjRf
-dClhbXBsaXR1ZGUpID4+IDMxOworCSAgICB2ICs9IGZyZXE7CisgICAgfQorfQorCit2b2lkIF9f
-c3ludGhfc3F1YXJlKHVuc2lnbmVkIGZyZXEsIHMxNiBhbXBsaXR1ZGUsIHMxNiAqc3RyZWFtLAor
-CQkgICAgdW5zaWduZWQgc2FtcGxlX3JhdGUsIHVuc2lnbmVkIG5zYW1wbGVzKQoreworCXVuc2ln
-bmVkIHBlcmlvZCA9IGZyZXEgPyBzYW1wbGVfcmF0ZSAvIGZyZXEgOiAwOworCWludCBoYWxmID0g
-cGVyaW9kIC8gMjsKKworCXdoaWxlIChuc2FtcGxlcykgeworCQlpbnQgaTsKKworCQlmb3IgKGkg
-PSAwOyBuc2FtcGxlcyAmJiBpIDwgaGFsZjsgaSsrKSB7CisJCQluc2FtcGxlcy0tOworCQkJKnN0
-cmVhbSsrID0gYW1wbGl0dWRlOworCQl9CisJCWZvciAoaSA9IDA7IG5zYW1wbGVzICYmIGkgPCBw
-ZXJpb2QgLSBoYWxmOyBpKyspIHsKKwkJCW5zYW1wbGVzLS07CisJCQkqc3RyZWFtKysgPSAtYW1w
-bGl0dWRlOworCQl9CisJfQorfQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9maXhwLWFyaXRo
-LmggYi9pbmNsdWRlL2xpbnV4L2ZpeHAtYXJpdGguaApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRl
-eCAwMDAwMDAwMDAwMDAuLjgzOTYwMTM3ODVlZgotLS0gL2Rldi9udWxsCisrKyBiL2luY2x1ZGUv
-bGludXgvZml4cC1hcml0aC5oCkBAIC0wLDAgKzEsMTQ0IEBACisvKiBTUERYLUxpY2Vuc2UtSWRl
-bnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLworI2lmbmRlZiBfRklYUF9BUklUSF9ICisjZGVm
-aW5lIF9GSVhQX0FSSVRIX0gKKworI2luY2x1ZGUgPGxpbnV4L21hdGg2NC5oPgorCisvKgorICog
-U2ltcGxpc3RpYyBmaXhlZC1wb2ludCBhcml0aG1ldGljcy4KKyAqIEhtbSwgSSdtIHByb2JhYmx5
-IGR1cGxpY2F0aW5nIHNvbWUgY29kZSA6KAorICoKKyAqIENvcHlyaWdodCAoYykgMjAwMiBKb2hh
-bm4gRGVuZXV4CisgKi8KKworLyoKKyAqCisgKiBTaG91bGQgeW91IG5lZWQgdG8gY29udGFjdCBt
-ZSwgdGhlIGF1dGhvciwgeW91IGNhbiBkbyBzbyBieQorICogZS1tYWlsIC0gbWFpbCB5b3VyIG1l
-c3NhZ2UgdG8gPGpvaGFubi5kZW5ldXhAZ21haWwuY29tPgorICovCisKKyNpbmNsdWRlIDxsaW51
-eC90eXBlcy5oPgorCitzdGF0aWMgY29uc3QgczMyIHNpbl90YWJsZVtdID0geworCTB4MDAwMDAw
-MDAsIDB4MDIzYmUxNjUsIDB4MDQ3Nzk2MzIsIDB4MDZiMmYxZDIsIDB4MDhlZGM3YjYsIDB4MGIy
-N2ViNWMsCisJMHgwZDYxMzA0ZCwgMHgwZjk5NmEyNiwgMHgxMWQwNmM5NiwgMHgxNDA2MGI2Nywg
-MHgxNjNhMWE3ZCwgMHgxODZjNmRkZCwKKwkweDFhOWNkOWFjLCAweDFjY2IzMjM2LCAweDFlZjc0
-YmYyLCAweDIxMjBmYjgyLCAweDIzNDgxNWJhLCAweDI1NmM2ZjllLAorCTB4Mjc4ZGRlNmUsIDB4
-MjlhYzM3OWYsIDB4MmJjNzUwZTgsIDB4MmRkZjAwM2YsIDB4MmZmMzFiZGQsIDB4MzIwMzdhNDQs
-CisJMHgzNDBmZjI0MSwgMHgzNjE4NWFlZSwgMHgzODFjOGJiNSwgMHgzYTFjNWM1NiwgMHgzYzE3
-YTRlNywgMHgzZTBlM2RkYiwKKwkweDNmZmZmZmZmLCAweDQxZWNjNDgzLCAweDQzZDQ2NGZhLCAw
-eDQ1YjZiYjVkLCAweDQ3OTNhMjBmLCAweDQ5NmFmM2UxLAorCTB4NGIzYzhjMTEsIDB4NGQwODQ2
-NTAsIDB4NGVjZGZlYzYsIDB4NTA4ZDkyMTAsIDB4NTI0NmRkNDgsIDB4NTNmOWJlMDQsCisJMHg1
-NWE2MTI1YSwgMHg1NzRiYjhlNSwgMHg1OGVhOTBjMiwgMHg1YTgyNzk5OSwgMHg1YzEzNTM5OSwg
-MHg1ZDljZmY4MiwKKwkweDVmMWY1ZWEwLCAweDYwOWE1MmQxLCAweDYyMGRiZThhLCAweDYzNzk4
-NGQzLCAweDY0ZGQ4OTRmLCAweDY2MzliMDM5LAorCTB4Njc4ZGRlNmQsIDB4NjhkOWY5NjMsIDB4
-NmExZGU3MzUsIDB4NmI1OThlYTEsIDB4NmM4Y2Q3MGEsIDB4NmRiN2E4NzksCisJMHg2ZWQ5ZWJh
-MCwgMHg2ZmYzODlkZSwgMHg3MTA0NmQzYywgMHg3MjBjODA3NCwgMHg3MzBiYWVlYywgMHg3NDAx
-ZTRiZiwKKwkweDc0ZWYwZWJiLCAweDc1ZDMxYTVmLCAweDc2YWRmNWU1LCAweDc3N2Y5MDNiLCAw
-eDc4NDdkOTA4LCAweDc5MDZjMGFmLAorCTB4NzliYzM4NGMsIDB4N2E2ODMxYjgsIDB4N2IwYTlm
-OGMsIDB4N2JhMzc1MWMsIDB4N2MzMmE2N2MsIDB4N2NiODI4ODQsCisJMHg3ZDMzZjBjOCwgMHg3
-ZGE1ZjVhMywgMHg3ZTBlMmUzMSwgMHg3ZTZjOTI0ZiwgMHg3ZWMxMWFhMywgMHg3ZjBiYzA5NSwK
-KwkweDdmNGM3ZTUyLCAweDdmODM0ZWNmLCAweDdmYjAyZGM0LCAweDdmZDMxN2IzLCAweDdmZWMw
-OWUxLCAweDdmZmIwMjVlLAorCTB4N2ZmZmZmZmYKK307CisKKy8qKgorICogX19maXhwX3NpbjMy
-KCkgcmV0dXJucyB0aGUgc2luIG9mIGFuIGFuZ2xlIGluIGRlZ3JlZXMKKyAqCisgKiBAZGVncmVl
-czogYW5nbGUsIGluIGRlZ3JlZXMsIGZyb20gMCB0byAzNjAuCisgKgorICogVGhlIHJldHVybmVk
-IHZhbHVlIHJhbmdlcyBmcm9tIC0weDdmZmZmZmZmIHRvICsweDdmZmZmZmZmLgorICovCitzdGF0
-aWMgaW5saW5lIHMzMiBfX2ZpeHBfc2luMzIoaW50IGRlZ3JlZXMpCit7CisJczMyIHJldDsKKwli
-b29sIG5lZ2F0aXZlID0gZmFsc2U7CisKKwlpZiAoZGVncmVlcyA+IDE4MCkgeworCQluZWdhdGl2
-ZSA9IHRydWU7CisJCWRlZ3JlZXMgLT0gMTgwOworCX0KKwlpZiAoZGVncmVlcyA+IDkwKQorCQlk
-ZWdyZWVzID0gMTgwIC0gZGVncmVlczsKKworCXJldCA9IHNpbl90YWJsZVtkZWdyZWVzXTsKKwor
-CXJldHVybiBuZWdhdGl2ZSA/IC1yZXQgOiByZXQ7Cit9CisKKy8qKgorICogZml4cF9zaW4zMigp
-IHJldHVybnMgdGhlIHNpbiBvZiBhbiBhbmdsZSBpbiBkZWdyZWVzCisgKgorICogQGRlZ3JlZXM6
-IGFuZ2xlLCBpbiBkZWdyZWVzLiBUaGUgYW5nbGUgY2FuIGJlIHBvc2l0aXZlIG9yIG5lZ2F0aXZl
-CisgKgorICogVGhlIHJldHVybmVkIHZhbHVlIHJhbmdlcyBmcm9tIC0weDdmZmZmZmZmIHRvICsw
-eDdmZmZmZmZmLgorICovCitzdGF0aWMgaW5saW5lIHMzMiBmaXhwX3NpbjMyKGludCBkZWdyZWVz
-KQoreworCWRlZ3JlZXMgPSAoZGVncmVlcyAlIDM2MCArIDM2MCkgJSAzNjA7CisKKwlyZXR1cm4g
-X19maXhwX3NpbjMyKGRlZ3JlZXMpOworfQorCisvKiBjb3MoeCkgPSBzaW4oeCArIDkwIGRlZ3Jl
-ZXMpICovCisjZGVmaW5lIGZpeHBfY29zMzIodikgZml4cF9zaW4zMigodikgKyA5MCkKKworLyoK
-KyAqIDE2IGJpdHMgdmFyaWFudHMKKyAqCisgKiBUaGUgcmV0dXJuZWQgdmFsdWUgcmFuZ2VzIGZy
-b20gLTB4N2ZmZiB0byAweDdmZmYKKyAqLworCisjZGVmaW5lIGZpeHBfc2luMTYodikgKGZpeHBf
-c2luMzIodikgPj4gMTYpCisjZGVmaW5lIGZpeHBfY29zMTYodikgKGZpeHBfY29zMzIodikgPj4g
-MTYpCisKKy8qKgorICogZml4cF9zaW4zMl9yYWQoKSAtIGNhbGN1bGF0ZXMgdGhlIHNpbiBvZiBh
-biBhbmdsZSBpbiByYWRpYW5zCisgKgorICogQHJhZGlhbnM6IGFuZ2xlLCBpbiByYWRpYW5zCisg
-KiBAdHdvcGk6IHZhbHVlIHRvIGJlIHVzZWQgZm9yIDIqcGkKKyAqCisgKiBQcm92aWRlcyBhIHZh
-cmlhbnQgZm9yIHRoZSBjYXNlcyB3aGVyZSBqdXN0IDM2MAorICogdmFsdWVzIGlzIG5vdCBlbm91
-Z2guIFRoaXMgZnVuY3Rpb24gdXNlcyBsaW5lYXIKKyAqIGludGVycG9sYXRpb24gdG8gYSB3aWRl
-ciByYW5nZSBvZiB2YWx1ZXMgZ2l2ZW4gYnkKKyAqIHR3b3BpIHZhci4KKyAqCisgKiBFeHBlcmlt
-ZW50YWwgdGVzdHMgZ2F2ZSBhIG1heGltdW0gZGlmZmVyZW5jZSBvZgorICogMC4wMDAwMzggYmV0
-d2VlbiB0aGUgdmFsdWUgY2FsY3VsYXRlZCBieSBzaW4oKSBhbmQKKyAqIHRoZSBvbmUgcHJvZHVj
-ZWQgYnkgdGhpcyBmdW5jdGlvbiwgd2hlbiB0d29waSBpcworICogZXF1YWwgdG8gMzYwMDAwLiBU
-aGF0IHNlZW1zIHRvIGJlIGVub3VnaCBwcmVjaXNpb24KKyAqIGZvciBwcmFjdGljYWwgcHVycG9z
-ZXMuCisgKgorICogUGxlYXNlIG5vdGljZSB0aGF0IHR3byBoaWdoIG51bWJlcnMgZm9yIHR3b3Bp
-IGNvdWxkIGNhdXNlCisgKiBvdmVyZmxvd3MsIHNvIHRoZSByb3V0aW5lIHdpbGwgbm90IGFsbG93
-IHZhbHVlcyBvZiB0d29waQorICogYmlnZ2VyIHRoYW4gMV4xOC4KKyAqLworc3RhdGljIGlubGlu
-ZSBzMzIgZml4cF9zaW4zMl9yYWQodTMyIHJhZGlhbnMsIHUzMiB0d29waSkKK3sKKwlpbnQgZGVn
-cmVlczsKKwlzMzIgdjEsIHYyLCBkeCwgZHk7CisJczY0IHRtcDsKKworCS8qCisJICogQXZvaWQg
-dG9vIGxhcmdlIHZhbHVlcyBmb3IgdHdvcGksIGFzIHdlIGRvbid0IHdhbnQgb3ZlcmZsb3dzLgor
-CSAqLworCUJVR19PTih0d29waSA+IDEgPDwgMTgpOworCisJZGVncmVlcyA9IChyYWRpYW5zICog
-MzYwKSAvIHR3b3BpOworCXRtcCA9IHJhZGlhbnMgLSAoZGVncmVlcyAqIHR3b3BpKSAvIDM2MDsK
-KworCWRlZ3JlZXMgPSAoZGVncmVlcyAlIDM2MCArIDM2MCkgJSAzNjA7CisJdjEgPSBfX2ZpeHBf
-c2luMzIoZGVncmVlcyk7CisKKwl2MiA9IGZpeHBfc2luMzIoZGVncmVlcyArIDEpOworCisJZHgg
-PSB0d29waSAvIDM2MDsKKwlkeSA9IHYyIC0gdjE7CisKKwl0bXAgKj0gZHk7CisKKwlyZXR1cm4g
-djEgKyAgZGl2X3M2NCh0bXAsIGR4KTsKK30KKworLyogY29zKHgpID0gc2luKHggKyBwaS8yIHJh
-ZGlhbnMpICovCisKKyNkZWZpbmUgZml4cF9jb3MzMl9yYWQocmFkLCB0d29waSkJXAorCWZpeHBf
-c2luMzJfcmFkKHJhZCArIHR3b3BpIC8gNCwgdHdvcGkpCisKKyNlbmRpZgpkaWZmIC0tZ2l0IGEv
-aW5jbHVkZS9zb3VuZC5oIGIvaW5jbHVkZS9zb3VuZC5oCmluZGV4IGY1MTI0YWViYmRhMS4uNjJm
-ZWYxMDZlZTczIDEwMDY0NAotLS0gYS9pbmNsdWRlL3NvdW5kLmgKKysrIGIvaW5jbHVkZS9zb3Vu
-ZC5oCkBAIC00Miw0ICs0MiwzNiBAQCBzdGF0aWMgaW5saW5lIGludCBiZWVwX2NhbmNlbCh2b2lk
-KQogCXJldHVybiBzb3VuZF9jYXJkX2JlZXBfY2FuY2VsKHNvdW5kX2NhcmRfZ2V0X2RlZmF1bHQo
-KSk7CiB9CiAKKworLyoKKyAqIFN5bnRoZXNpemVycyBhbGwgaGF2ZSB0aGUgc2FtZSBwcm90b3R5
-cGUsIGJ1dCB0aGVpciBpbXBsZW1lbnRhdGlvbgorICogaXMgcmVwbGFjZWQgd2l0aCBhIGdhaW4t
-YWRqdXN0ZWQgc3F1YXJlIHdhdmUgaWYgQ09ORklHX1NZTlRIX1NRVUFSRVM9eS4KKyAqIFRoaXMg
-aXMgdG8gc3VwcG9ydCBQQ00gYmVlcGluZyBvbiBzeXN0ZW1zLCB3aGVyZSBzaW5lIGdlbmVyYXRp
-b24gbWF5CisgKiBzcGVuZCB0byBtdWNoIHRpbWUgaW4gdGhlIHBvbGxlci4KKyAqLwordHlwZWRl
-ZiB2b2lkIHN5bnRoX3QodW5zaWduZWQgZnJlcSwgczE2IGFtcGxpdHVkZSwgczE2ICpzdHJlYW0s
-CisJCSAgICAgdW5zaWduZWQgc2FtcGxlX3JhdGUsIHVuc2lnbmVkIG5zYW1wbGVzKTsKKworI2lm
-ZGVmIENPTkZJR19TWU5USF9TUVVBUkVTCisjZGVmaW5lIFNZTlRIKGZuLCB2b2x1bWVfcGVyY2Vu
-dCkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwKKwlzdGF0aWMgaW5saW5lIHZvaWQg
-Zm4odW5zaWduZWQgZiwgczE2IGFtcGxpdHVkZSwgczE2ICpzLCBcCisJCQkgICAgICB1bnNpZ25l
-ZCByLCB1bnNpZ25lZCBuKSB7ICAgICAgICAgIFwKKwkJc3ludGhfdCBfX3N5bnRoX3NxdWFyZTsg
-ICAgICAgICAgICAgICAgICAgICAgICAgIFwKKwkJYW1wbGl0dWRlID0gYW1wbGl0dWRlICogdm9s
-dW1lX3BlcmNlbnQgLyAxMDA7ICAgIFwKKwkJX19zeW50aF9zcXVhcmUoZiwgYW1wbGl0dWRlLCBz
-LCByLCBuKTsgICAgICAgICAgIFwKKwl9ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBcCisJc3ludGhfdCBfXyMjZm4KKyNlbHNlCisjZGVmaW5l
-IFNZTlRIKGZuLCB2b2x1bWVfcGVyY2VudCkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IFwKKwlzdGF0aWMgaW5saW5lIHZvaWQgZm4odW5zaWduZWQgZiwgczE2IGEsIHMxNiAqcywgICAg
-ICAgICBcCisJCQkgICAgICB1bnNpZ25lZCByLCB1bnNpZ25lZCBuKSB7ICAgICAgICAgIFwKKwkJ
-c3ludGhfdCBfXyMjZm47ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwKKwkJX18j
-I2ZuKGYsIGEsIHMsIHIsIG4pOyAgICAgICAgICAgICAgICAgICAgICAgICAgIFwKKwl9ICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcCisgICAg
-ICAgIHN5bnRoX3QgX18jI2ZuCisjZW5kaWYKKworU1lOVEgoc3ludGhfc3F1YXJlLCAxMDApOwkv
-KiBzcXVhcmUgd2F2ZSBhbHdheXMgaGFzIGZ1bGwgYW1wbGl0dWRlICovCitTWU5USChzeW50aF9z
-aW4sIDY0KTsJCS8qIOKIq+KCgMK5IHNpbijPgHgpIGR4IOKJiCA2NCUgKi8KKwogI2VuZGlmCi0t
-IAoyLjMwLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+SDL 2.0 has been released more than 7 years ago and should be available
+everywhere. Replace barebox's SDL 1.2 with SDL 2.0 instead:
+
+ - better maintained
+
+ - At least on Debian, you can't install x86_64 and i386 libsdl-dev at
+   the same time, which makes a quick use of CONFIG_SANDBOX_LINUX_I386
+   harder as the user needs to reinstall libraries. With SDL 2.0, it
+   works
+
+ - SDL 2.0 has easier audio API, which will be used in a later commit
+
+ - Wayland support for sandbox video driver
+
+Port to SDL 2.0 and as we touch everything anyway, rename the
+sdl_ functions to start with sdl_video_ to differentiate from upcoming
+sdl_sound_.
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/sandbox/Kconfig                          |   3 +
+ arch/sandbox/Makefile                         |   6 +-
+ .../sandbox/mach-sandbox/include/mach/linux.h |  17 +-
+ arch/sandbox/os/Makefile                      |   4 +-
+ arch/sandbox/os/sdl.c                         | 146 ++++++++++--------
+ drivers/video/Kconfig                         |   1 +
+ drivers/video/sdl.c                           |  37 +++--
+ 7 files changed, 120 insertions(+), 94 deletions(-)
+
+diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+index d9fc0c947b02..deff7f56a025 100644
+--- a/arch/sandbox/Kconfig
++++ b/arch/sandbox/Kconfig
+@@ -43,3 +43,6 @@ config 64BIT
+ 
+ config SANDBOX_LINUX_I386
+ 	bool "32-bit x86 barebox" if CC_HAS_LINUX_I386_SUPPORT
++
++config SDL
++	bool
+diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
+index 17f9a298d773..ea594944e4eb 100644
+--- a/arch/sandbox/Makefile
++++ b/arch/sandbox/Makefile
+@@ -37,8 +37,8 @@ archprepare: maketools
+ 
+ PHONY += maketools
+ 
+-ifeq ($(CONFIG_DRIVER_VIDEO_SDL),y)
+-SDL_LIBS := $(shell pkg-config sdl --libs)
++ifeq ($(CONFIG_SDL),y)
++SDL_LIBS := $(shell pkg-config sdl2 --libs)
+ endif
+ 
+ ifeq ($(CONFIG_GPIO_LIBFTDI1),y)
+@@ -64,7 +64,7 @@ endif
+ BAREBOX_LDFLAGS += \
+ 	-Wl,-T,$(BAREBOX_LDS) \
+ 	-Wl,--whole-archive $(BAREBOX_OBJS) -Wl,--no-whole-archive \
+-	-lrt -lpthread $(SDL_LIBS) $(FTDI1_LIBS) \
++	-lrt $(SDL_LIBS) $(FTDI1_LIBS) \
+ 	$(SANITIZER_LIBS)
+ 
+ cmd_barebox__ = $(CC) -o $@ $(BAREBOX_LDFLAGS)
+diff --git a/arch/sandbox/mach-sandbox/include/mach/linux.h b/arch/sandbox/mach-sandbox/include/mach/linux.h
+index b26bfc24a291..c636a9af9cd2 100644
+--- a/arch/sandbox/mach-sandbox/include/mach/linux.h
++++ b/arch/sandbox/mach-sandbox/include/mach/linux.h
+@@ -38,13 +38,16 @@ struct linux_console_data {
+ 
+ extern int sdl_xres;
+ extern int sdl_yres;
+-void sdl_close(void);
+-int sdl_open(int xres, int yres, int bpp, void* buf);
+-void sdl_stop_timer(void);
+-void sdl_start_timer(void);
+-void sdl_get_bitfield_rgba(struct fb_bitfield *r, struct fb_bitfield *g,
+-			    struct fb_bitfield *b, struct fb_bitfield *a);
+-void sdl_setpixel(int x, int y, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
++struct sdl_fb_info {
++	void *screen_base;
++	int xres;
++	int yres;
++	int bpp;
++	int rmask, gmask, bmask, amask;
++};
++int sdl_video_open(const struct sdl_fb_info *);
++void sdl_video_pause(void);
++void sdl_video_close(void);
+ 
+ struct ft2232_bitbang;
+ struct ft2232_bitbang *barebox_libftdi1_open(int vendor_id, int device_id,
+diff --git a/arch/sandbox/os/Makefile b/arch/sandbox/os/Makefile
+index 15d688bfdd1b..575b1a213050 100644
+--- a/arch/sandbox/os/Makefile
++++ b/arch/sandbox/os/Makefile
+@@ -17,8 +17,8 @@ endif
+ obj-y = common.o tap.o
+ obj-$(CONFIG_MALLOC_LIBC) += libc_malloc.o
+ 
+-CFLAGS_sdl.o = $(shell pkg-config sdl --cflags)
+-obj-$(CONFIG_DRIVER_VIDEO_SDL) += sdl.o
++CFLAGS_sdl.o = $(shell pkg-config sdl2 --cflags)
++obj-$(CONFIG_SDL) += sdl.o
+ 
+ CFLAGS_ftdi.o = $(shell pkg-config libftdi1 --cflags)
+ obj-$(CONFIG_GPIO_LIBFTDI1) += ftdi.o
+diff --git a/arch/sandbox/os/sdl.c b/arch/sandbox/os/sdl.c
+index 9a35279eb79e..623e24cf0b26 100644
+--- a/arch/sandbox/os/sdl.c
++++ b/arch/sandbox/os/sdl.c
+@@ -1,103 +1,113 @@
++// SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+- *
+- * GPL v2
++ * Copyright (c) 2021 Ahmad Fatoum
+  */
+ 
+ #include <stdio.h>
++#include <stdbool.h>
+ #include <SDL.h>
+-#include <time.h>
+-#include <signal.h>
+ #include <mach/linux.h>
+-#include <unistd.h>
+-#include <pthread.h>
+ 
+-struct fb_bitfield {
+-	uint32_t offset;			/* beginning of bitfield	*/
+-	uint32_t length;			/* length of bitfield		*/
+-	uint32_t msb_right;			/* != 0 : Most significant bit is */
+-					/* right */
+-};
++static void sdl_perror(const char *what)
++{
++	printf("SDL: Could not %s: %s.\n", what, SDL_GetError());
++}
+ 
+-static SDL_Surface *real_screen;
+-static void *buffer = NULL;
+-pthread_t th;
++static struct sdl_fb_info info;
++static SDL_atomic_t shutdown;
++SDL_Window *window;
+ 
+-static void sdl_copy_buffer(SDL_Surface *screen)
++static int scanout(void *ptr)
+ {
+-	if (SDL_MUSTLOCK(screen)) {
+-		if (SDL_LockSurface(screen) < 0)
+-			return;
++	SDL_Renderer *renderer;
++	SDL_Surface *surface;
++	SDL_Texture *texture;
++	void *buf = info.screen_base;
++	int ret = -1;
++
++	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
++	if (!renderer) {
++		sdl_perror("create renderer");
++		return -1;
+ 	}
+ 
+-	memcpy(screen->pixels, buffer, screen->pitch * screen->h);
++	surface = SDL_CreateRGBSurface(0, info.xres, info.yres, info.bpp,
++				       info.rmask, info.gmask, info.bmask, info.amask);
++	if (!surface) {
++		sdl_perror("create surface");
++		goto destroy_renderer;
++	}
+ 
+-	if(SDL_MUSTLOCK(screen))
+-		SDL_UnlockSurface(screen);
+-}
++	texture = SDL_CreateTextureFromSurface(renderer, surface);
++	if (!texture) {
++		sdl_perror("create texture");
++		goto free_surface;
++	}
+ 
+-static void *threadStart(void *ptr)
+-{
+-	while (1) {
+-		usleep(1000 * 100);
++	while (!SDL_AtomicGet(&shutdown)) {
++		SDL_Delay(100);
+ 
+-		sdl_copy_buffer(real_screen);
+-		SDL_Flip(real_screen);
++		SDL_UpdateTexture(texture, NULL, buf, surface->pitch);
++		SDL_RenderClear(renderer);
++		SDL_RenderCopy(renderer, texture, NULL, NULL);
++		SDL_RenderPresent(renderer);
+ 	}
+ 
+-	return 0;
+-}
++	ret = 0;
+ 
+-void sdl_start_timer(void)
+-{
+-	pthread_attr_t attr;
+-	pthread_attr_init(&attr);
+-	pthread_create(&th, &attr, threadStart, NULL);
+-}
++	SDL_DestroyTexture(texture);
++free_surface:
++	SDL_FreeSurface(surface);
++destroy_renderer:
++	SDL_DestroyRenderer(renderer);
+ 
+-void sdl_stop_timer(void)
+-{
+-	pthread_cancel(th);
++	return ret;
+ }
+ 
+-void sdl_get_bitfield_rgba(struct fb_bitfield *r, struct fb_bitfield *g,
+-			    struct fb_bitfield *b, struct fb_bitfield *a)
++static SDL_Thread *thread;
++
++void sdl_video_close(void)
+ {
+-	SDL_Surface *screen = real_screen;
+-
+-	r->length = 8 - screen->format->Rloss;
+-	r->offset = screen->format->Rshift;
+-	g->length = 8 - screen->format->Gloss;
+-	g->offset = screen->format->Gshift;
+-	b->length = 8 - screen->format->Bloss;
+-	b->offset = screen->format->Bshift;
+-	a->length = 8 - screen->format->Aloss;
+-	a->offset = screen->format->Ashift;
++	SDL_AtomicSet(&shutdown, true); /* implies full memory barrier */
++	SDL_WaitThread(thread, NULL);
++	SDL_AtomicSet(&shutdown, false);
++	SDL_DestroyWindow(window);
++	SDL_QuitSubSystem(SDL_INIT_VIDEO);
+ }
+ 
+-int sdl_open(int xres, int yres, int bpp, void* buf)
++int sdl_video_open(const struct sdl_fb_info *_info)
+ {
+-	int flags = SDL_HWSURFACE | SDL_ASYNCBLIT | SDL_HWACCEL;
++	info = *_info;
+ 
+-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) < 0) {
+-		printf("Could not initialize SDL: %s.\n", SDL_GetError());
++	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0) {
++		sdl_perror("initialize SDL Video");
+ 		return -1;
+ 	}
+ 
+-	real_screen = SDL_SetVideoMode(xres, yres, bpp, flags);
+-	if (!real_screen) {
+-		sdl_close();
+-		fprintf(stderr, "Couldn't create renderer: %s\n", SDL_GetError());
+-		return -1;
++	window = SDL_CreateWindow("barebox", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
++				  info.xres, info.yres, 0);
++	if (!window) {
++		sdl_perror("create window");
++		goto quit_subsystem;
+ 	}
+ 
+-	buffer = buf;
++	/* All scanout needs to happen in the same thread, because not all
++	 * graphic backends are thread-safe. The window is created in the main
++	 * thread though to work around libEGL crashing with SDL_VIDEODRIVER=wayland
++	 */
++
++	thread = SDL_CreateThread(scanout, "video-scanout", NULL);
++	if (!thread) {
++		sdl_perror("start scanout thread");
++		goto destroy_window;
++	}
+ 
+ 	return 0;
+-}
+ 
+-void sdl_close(void)
+-{
+-	sdl_stop_timer();
+-	SDL_Quit();
++destroy_window:
++	SDL_DestroyWindow(window);
++quit_subsystem:
++	SDL_QuitSubSystem(SDL_INIT_VIDEO);
++
++	return -1;
+ }
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 9ec6ea4248c1..b6d468c63c03 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -82,6 +82,7 @@ endif
+ config DRIVER_VIDEO_SDL
+ 	bool "SDL framebuffer driver"
+ 	depends on SANDBOX
++	select SDL
+ 
+ config DRIVER_VIDEO_PXA
+ 	bool "PXA27x framebuffer driver"
+diff --git a/drivers/video/sdl.c b/drivers/video/sdl.c
+index 9811b2cf128e..e9debc51b1e9 100644
+--- a/drivers/video/sdl.c
++++ b/drivers/video/sdl.c
+@@ -13,23 +13,25 @@
+ #include <errno.h>
+ #include <gui/graphic_utils.h>
+ 
++#define to_mask(color) GENMASK(color.length - 1, color.offset)
++
+ static void sdlfb_enable(struct fb_info *info)
+ {
+-	int ret;
+-
+-	ret = sdl_open(info->xres, info->yres, info->bits_per_pixel,
+-		     info->screen_base);
+-	if (ret)
+-		return;
+-	sdl_get_bitfield_rgba(&info->red, &info->green, &info->blue, &info->transp);
+-
+-	sdl_start_timer();
++	struct sdl_fb_info sdl_info = {
++		.screen_base = info->screen_base,
++		.xres = info->xres, .yres = info->yres, .bpp = info->bits_per_pixel,
++		.rmask = to_mask(info->red),
++		.gmask = to_mask(info->green),
++		.bmask = to_mask(info->blue),
++		.amask = to_mask(info->transp),
++	};
++
++	sdl_video_open(&sdl_info);
+ }
+ 
+ static void sdlfb_disable(struct fb_info *info)
+ {
+-	sdl_stop_timer();
+-	sdl_close();
++	sdl_video_close();
+ }
+ 
+ static struct fb_ops sdlfb_ops = {
+@@ -48,10 +50,19 @@ static int sdlfb_probe(struct device_d *dev)
+ 	fb = xzalloc(sizeof(*fb));
+ 	fb->modes.modes = fb->mode = dev->platform_data;
+ 	fb->modes.num_modes = 1;
+-	fb->bits_per_pixel = 4 << 3;
+ 	fb->xres = fb->mode->xres;
+ 	fb->yres = fb->mode->yres;
+ 
++	fb->bits_per_pixel = 32;
++	fb->transp.length = 8;
++	fb->red.length = 8;
++	fb->green.length = 8;
++	fb->blue.length = 8;
++	fb->transp.offset = 24;
++	fb->red.offset = 16;
++	fb->green.offset = 8;
++	fb->blue.offset = 0;
++
+ 	fb->priv = fb;
+ 	fb->fbops = &sdlfb_ops;
+ 
+@@ -68,7 +79,6 @@ static int sdlfb_probe(struct device_d *dev)
+ 
+ 	kfree(fb->screen_base);
+ 	kfree(fb);
+-	sdl_close();
+ 	return ret;
+ }
+ 
+@@ -78,7 +88,6 @@ static void sdlfb_remove(struct device_d *dev)
+ 
+ 	kfree(fb->screen_base);
+ 	kfree(fb);
+-	sdl_close();
+ }
+ 
+ static struct driver_d sdlfb_driver = {
+-- 
+2.30.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
