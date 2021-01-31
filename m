@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay7-d.mail.gandi.net ([217.70.183.200])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l6JBO-0004CV-Nj
- for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:18:56 +0000
+ id 1l6JBP-0004CX-3W
+ for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:18:58 +0000
 Received: from geraet.fritz.box (unknown [87.123.110.69])
  (Authenticated sender: ahmad@a3f.at)
- by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id B644920006
- for <barebox@lists.infradead.org>; Sun, 31 Jan 2021 20:18:52 +0000 (UTC)
+ by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 095262000A
+ for <barebox@lists.infradead.org>; Sun, 31 Jan 2021 20:18:53 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sun, 31 Jan 2021 21:18:41 +0100
-Message-Id: <20210131201846.3440477-3-ahmad@a3f.at>
+Date: Sun, 31 Jan 2021 21:18:43 +0100
+Message-Id: <20210131201846.3440477-5-ahmad@a3f.at>
 In-Reply-To: <20210131201846.3440477-1-ahmad@a3f.at>
 References: <20210131201846.3440477-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,132 +21,244 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] drivers: add sound card driver support
+Subject: [PATCH 4/7] sound: add SDL 2.0 sound driver
 To: barebox@lists.infradead.org
 
-QWRkIGRyaXZlciBjb3JlIGJvaWxlcnBsYXRlIGZvciBzb3VuZCBzdXBwb3J0IGluIGJhcmVib3gu
-IFVzaW5nIHRoZQpwcm92aWRlZCBBUEkgaW4gPHNvdW5kLmg+LCBjb25zdW1lcnMgY2FuIHBsYXkg
-YmVlcHMgZm9yIGEgZml4ZWQgZHVyYXRpb24Kb2YgdGltZS4KClBsYXlpbmcgYmVlcHMgaXMgbm90
-IGJsb2NraW5nIGFuZCBuZXcgYmVlcHMgY2FuIGJlIGVucXVldWVkIHdoaWxlIG9uZQppcyBhbHJl
-YWR5IHBsYXlpbmcuIFRoZXkgd2lsbCBiZSBwbGF5ZWQgaW4gc3VjY2Vzc2lvbiBieSBhIHBvbGxl
-ciwgd2hpY2gKd2lsbCBhbHNvIHR1cm4gb2ZmIHRoZSBzb3VuZCBjYXJkIHdoZW4gdGhlIGJlZXAg
-dHVuZSBpcyBvdmVyLgoKQVBJIGlzIGFsc28gYXZhaWxhYmxlIGZvciBibG9ja2luZyB1bnRpbCBh
-bGwgYmVlcHMgYXJlIHBsYXllZCBhbmQgZm9yCmNhbmNlbGxpbmcgYW4gdW5kZXJ3YXkgYmVlcCB0
-dW5lLgoKVGhlIEFQSSBjb3VsZCBiZSBsYXRlciBleHRlbmRlZCBmb3IgYXJiaXRyYXJ5IFBDTSBh
-dWRpbywgc2hvdWxkIHRoZQpuZWVkIGFyaXNlLgoKU2lnbmVkLW9mZi1ieTogQWhtYWQgRmF0b3Vt
-IDxhaG1hZEBhM2YuYXQ+Ci0tLQogZHJpdmVycy9LY29uZmlnICAgICAgICB8ICAgMSArCiBkcml2
-ZXJzL01ha2VmaWxlICAgICAgIHwgICAxICsKIGRyaXZlcnMvc291bmQvS2NvbmZpZyAgfCAgIDgg
-KysrCiBkcml2ZXJzL3NvdW5kL01ha2VmaWxlIHwgICAyICsKIGRyaXZlcnMvc291bmQvY29yZS5j
-ICAgfCAxMjEgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIGluY2x1
-ZGUvcG9sbGVyLmggICAgICAgfCAgIDQgKysKIGluY2x1ZGUvc291bmQuaCAgICAgICAgfCAgNDUg
-KysrKysrKysrKysrKysrCiA3IGZpbGVzIGNoYW5nZWQsIDE4MiBpbnNlcnRpb25zKCspCiBjcmVh
-dGUgbW9kZSAxMDA2NDQgZHJpdmVycy9zb3VuZC9LY29uZmlnCiBjcmVhdGUgbW9kZSAxMDA2NDQg
-ZHJpdmVycy9zb3VuZC9NYWtlZmlsZQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvc291bmQv
-Y29yZS5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgaW5jbHVkZS9zb3VuZC5oCgpkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy9LY29uZmlnIGIvZHJpdmVycy9LY29uZmlnCmluZGV4IGRkYTI0MDU3ODA2Ny4uMGI4
-N2MyYWYyYTgzIDEwMDY0NAotLS0gYS9kcml2ZXJzL0tjb25maWcKKysrIGIvZHJpdmVycy9LY29u
-ZmlnCkBAIC0xMyw2ICsxMyw3IEBAIHNvdXJjZSAiZHJpdmVycy9tdGQvS2NvbmZpZyIKIHNvdXJj
-ZSAiZHJpdmVycy9hdGEvS2NvbmZpZyIKIHNvdXJjZSAiZHJpdmVycy91c2IvS2NvbmZpZyIKIHNv
-dXJjZSAiZHJpdmVycy92aWRlby9LY29uZmlnIgorc291cmNlICJkcml2ZXJzL3NvdW5kL0tjb25m
-aWciCiBzb3VyY2UgImRyaXZlcnMvbWNpL0tjb25maWciCiBzb3VyY2UgImRyaXZlcnMvY2xrL0tj
-b25maWciCiBzb3VyY2UgImRyaXZlcnMvY2xvY2tzb3VyY2UvS2NvbmZpZyIKZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvTWFrZWZpbGUgYi9kcml2ZXJzL01ha2VmaWxlCmluZGV4IDVhMDNiZGNlYWI4MS4u
-ZmFiMzc5MDI4OGY3IDEwMDY0NAotLS0gYS9kcml2ZXJzL01ha2VmaWxlCisrKyBiL2RyaXZlcnMv
-TWFrZWZpbGUKQEAgLTQzLDMgKzQzLDQgQEAgb2JqLXkJKz0gc29jL2lteC8KIG9iai15CSs9IG52
-bWUvCiBvYmoteQkrPSBkZHIvCiBvYmoteQkrPSBwb3dlci8KK29iai0kKENPTkZJR19TT1VORCkg
-Kz0gc291bmQvCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NvdW5kL0tjb25maWcgYi9kcml2ZXJzL3Nv
-dW5kL0tjb25maWcKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi5jY2U1
-Yzc2MGFmZGMKLS0tIC9kZXYvbnVsbAorKysgYi9kcml2ZXJzL3NvdW5kL0tjb25maWcKQEAgLTAs
-MCArMSw4IEBACisjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKK21lbnVj
-b25maWcgU09VTkQKKwlib29sICJTb3VuZCBkcml2ZXJzIgorCXNlbGVjdCBQT0xMRVIKKwloZWxw
-CisJICBTYXkgWSBoZXJlIGZvciBzb3VuZCBzdXBwb3J0LiBBdCB0aGUgbW9tZW50IHRoYXQncyBq
-dXN0IGJlZXAgdG9uZXMuCisJICBUb25lcyBhcmUgcGxheWVkIGFzeW5jaHJvbm91c2x5IGluIGEg
-cG9sbGVyLiBDaGVjayB0aGUgYmVlcCBjb21tYW5kCisJICBmb3IgaG93IHRvIGV4ZXJjaXNlIHRo
-ZSBBUEkuCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NvdW5kL01ha2VmaWxlIGIvZHJpdmVycy9zb3Vu
-ZC9NYWtlZmlsZQpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLmUzNDNl
-MGZhNzJiMAotLS0gL2Rldi9udWxsCisrKyBiL2RyaXZlcnMvc291bmQvTWFrZWZpbGUKQEAgLTAs
-MCArMSwyIEBACisjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKK29iai15
-ICs9IGNvcmUubwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zb3VuZC9jb3JlLmMgYi9kcml2ZXJzL3Nv
-dW5kL2NvcmUuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjgwMWIx
-ZmFkZTU1MgotLS0gL2Rldi9udWxsCisrKyBiL2RyaXZlcnMvc291bmQvY29yZS5jCkBAIC0wLDAg
-KzEsMTIxIEBACisvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5CisvLyBT
-UERYLUZpbGVDb3B5cmlnaHRUZXh0OiDCqSAyMDIxIEFobWFkIEZhdG91bQorCisjaW5jbHVkZSA8
-Y29tbW9uLmg+CisjaW5jbHVkZSA8bGludXgvbGlzdC5oPgorI2luY2x1ZGUgPHNvdW5kLmg+Cisj
-aW5jbHVkZSA8cG9sbGVyLmg+CisjaW5jbHVkZSA8bGludXgvaW9wb2xsLmg+CisKK3N0YXRpYyBM
-SVNUX0hFQUQoY2FyZF9saXN0KTsKKworc3RydWN0IGJlZXAgeworCWludCBmcmVxOworCXVuc2ln
-bmVkIGludCB1czsKKwlzdHJ1Y3QgbGlzdF9oZWFkIGxpc3Q7Cit9OworCitzdGF0aWMgaW50IHNv
-dW5kX2NhcmRfZG9fYmVlcChzdHJ1Y3Qgc291bmRfY2FyZCAqY2FyZCwKKwkJCSAgICAgIGludCBm
-cmVxLCB1bnNpZ25lZCBpbnQgdXMpCit7CisJaWYgKGZyZXEgPT0gLTEpCisJCWZyZXEgPSBjYXJk
-LT5iZWxsX2ZyZXF1ZW5jeTsKKworCXJldHVybiBjYXJkLT5iZWVwKGNhcmQsIGZyZXEsIHVzKTsK
-K30KKworc3RhdGljIHZvaWQgc291bmRfY2FyZF9wb2xsZXJfY2Iodm9pZCAqX2NhcmQpCit7CisJ
-c3RydWN0IHNvdW5kX2NhcmQgKmNhcmQgPSBfY2FyZDsKKwlzdHJ1Y3QgYmVlcCAqYmVlcDsKKwor
-CWJlZXAgPSBsaXN0X2ZpcnN0X2VudHJ5X29yX251bGwoJmNhcmQtPnR1bmUsIHN0cnVjdCBiZWVw
-LCBsaXN0KTsKKwlpZiAoIWJlZXApIHsKKwkJc291bmRfY2FyZF9kb19iZWVwKGNhcmQsIDAsIDAp
-OworCQlyZXR1cm47CisJfQorCisJbGlzdF9kZWwoJmJlZXAtPmxpc3QpOworCisJcG9sbGVyX2Nh
-bGxfYXN5bmMoJmNhcmQtPnBvbGxlciwgYmVlcC0+dXMgKiAxMDAwVUxMLAorCQkJICBzb3VuZF9j
-YXJkX3BvbGxlcl9jYiwgY2FyZCk7CisJc291bmRfY2FyZF9kb19iZWVwKGNhcmQsIGJlZXAtPmZy
-ZXEsIGJlZXAtPnVzKTsKKworCWZyZWUoYmVlcCk7Cit9CisKK2ludCBzb3VuZF9jYXJkX3JlZ2lz
-dGVyKHN0cnVjdCBzb3VuZF9jYXJkICpjYXJkKQoreworCWlmICghY2FyZC0+bmFtZSkKKwkJcmV0
-dXJuIC1FSU5WQUw7CisKKwlpZiAoY2FyZC0+YmVsbF9mcmVxdWVuY3kgPD0gMCkKKwkJY2FyZC0+
-YmVsbF9mcmVxdWVuY3kgPSAxMDAwOworCisJcG9sbGVyX2FzeW5jX3JlZ2lzdGVyKCZjYXJkLT5w
-b2xsZXIsIGNhcmQtPm5hbWUpOworCUlOSVRfTElTVF9IRUFEKCZjYXJkLT50dW5lKTsKKworCWxp
-c3RfYWRkX3RhaWwoJmNhcmQtPmxpc3QsICZjYXJkX2xpc3QpOworCXJldHVybiAwOworfQorCitz
-dHJ1Y3Qgc291bmRfY2FyZCAqc291bmRfY2FyZF9nZXRfZGVmYXVsdCh2b2lkKQoreworCXJldHVy
-biBsaXN0X2ZpcnN0X2VudHJ5X29yX251bGwoJmNhcmRfbGlzdCwgc3RydWN0IHNvdW5kX2NhcmQs
-IGxpc3QpOworfQorCitpbnQgc291bmRfY2FyZF9iZWVwKHN0cnVjdCBzb3VuZF9jYXJkICpjYXJk
-LCBpbnQgZnJlcSwgdW5zaWduZWQgaW50IHVzKQoreworCXN0cnVjdCBiZWVwICpiZWVwOworCWlu
-dCByZXQ7CisKKwlpZiAoIWNhcmQpCisJCXJldHVybiAtRU5PREVWOworCisJaWYgKCFwb2xsZXJf
-YXN5bmNfYWN0aXZlKCZjYXJkLT5wb2xsZXIpKSB7CisJCXJldCA9IHNvdW5kX2NhcmRfZG9fYmVl
-cChjYXJkLCBmcmVxLCB1cyk7CisJCWlmICghcmV0KQorCQkJcG9sbGVyX2NhbGxfYXN5bmMoJmNh
-cmQtPnBvbGxlciwgdXMgKiAxMDAwVUxMLAorCQkJCQkgIHNvdW5kX2NhcmRfcG9sbGVyX2NiLCBj
-YXJkKTsKKworCQlyZXR1cm4gcmV0OworCX0KKworCWJlZXAgPSBtYWxsb2Moc2l6ZW9mKCpiZWVw
-KSk7CisJaWYgKCFiZWVwKQorCQlyZXR1cm4gLUVOT01FTTsKKworCWJlZXAtPmZyZXEgPSBmcmVx
-OworCWJlZXAtPnVzID0gdXM7CisKKwlsaXN0X2FkZF90YWlsKCZiZWVwLT5saXN0LCAmY2FyZC0+
-dHVuZSk7CisKKwlyZXR1cm4gMDsKK30KKworaW50IHNvdW5kX2NhcmRfYmVlcF93YWl0KHN0cnVj
-dCBzb3VuZF9jYXJkICpjYXJkLCB1bnNpZ25lZCB0aW1lb3V0KQoreworCWJvb2wgYWN0aXZlOwor
-CXJldHVybiByZWFkX3BvbGxfdGltZW91dChwb2xsZXJfYXN5bmNfYWN0aXZlLCBhY3RpdmUsCisJ
-CQkJICFhY3RpdmUsIHRpbWVvdXQsICZjYXJkLT5wb2xsZXIpOworfQorCitpbnQgc291bmRfY2Fy
-ZF9iZWVwX2NhbmNlbChzdHJ1Y3Qgc291bmRfY2FyZCAqY2FyZCkKK3sKKwlzdHJ1Y3QgYmVlcCAq
-YmVlcCwgKnRtcDsKKwlpbnQgcmV0OworCisJaWYgKCFjYXJkKQorCQlyZXR1cm4gLUVOT0RFVjsK
-KworCXBvbGxlcl9hc3luY19jYW5jZWwoJmNhcmQtPnBvbGxlcik7CisKKwlyZXQgPSBjYXJkLT5i
-ZWVwKGNhcmQsIDAsIDApOworCisJbGlzdF9mb3JfZWFjaF9lbnRyeV9zYWZlKGJlZXAsIHRtcCwg
-JmNhcmQtPnR1bmUsIGxpc3QpIHsKKwkJbGlzdF9kZWwoJmJlZXAtPmxpc3QpOworCQlmcmVlKGJl
-ZXApOworCX0KKworCXJldHVybiByZXQ7Cit9CmRpZmYgLS1naXQgYS9pbmNsdWRlL3BvbGxlci5o
-IGIvaW5jbHVkZS9wb2xsZXIuaAppbmRleCA4ODY1NTcyNTJiNjkuLmRiNzczMjY1YjJmNiAxMDA2
-NDQKLS0tIGEvaW5jbHVkZS9wb2xsZXIuaAorKysgYi9pbmNsdWRlL3BvbGxlci5oCkBAIC0zNCw2
-ICszNCwxMCBAQCBpbnQgcG9sbGVyX2FzeW5jX3VucmVnaXN0ZXIoc3RydWN0IHBvbGxlcl9hc3lu
-YyAqcGEpOwogaW50IHBvbGxlcl9jYWxsX2FzeW5jKHN0cnVjdCBwb2xsZXJfYXN5bmMgKnBhLCB1
-aW50NjRfdCBkZWxheV9ucywKIAkJdm9pZCAoKmZuKSh2b2lkICopLCB2b2lkICpjdHgpOwogaW50
-IHBvbGxlcl9hc3luY19jYW5jZWwoc3RydWN0IHBvbGxlcl9hc3luYyAqcGEpOworc3RhdGljIGlu
-bGluZSBib29sIHBvbGxlcl9hc3luY19hY3RpdmUoc3RydWN0IHBvbGxlcl9hc3luYyAqcGEpCit7
-CisJcmV0dXJuIHBhLT5hY3RpdmU7Cit9CiAKICNpZmRlZiBDT05GSUdfUE9MTEVSCiB2b2lkIHBv
-bGxlcl9jYWxsKHZvaWQpOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9zb3VuZC5oIGIvaW5jbHVkZS9z
-b3VuZC5oCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAwMC4uZjUxMjRhZWJi
-ZGExCi0tLSAvZGV2L251bGwKKysrIGIvaW5jbHVkZS9zb3VuZC5oCkBAIC0wLDAgKzEsNDUgQEAK
-Ky8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyICovCisvKiBTUERY
-LUZpbGVDb3B5cmlnaHRUZXh0OiDCqSAyMDIxIEFobWFkIEZhdG91bSAqLworCisjaWZuZGVmIF9f
-U09VTkRfSF8KKyNkZWZpbmUgX19TT1VORF9IXworCisjaW5jbHVkZSA8bGludXgvbGlzdC5oPgor
-I2luY2x1ZGUgPHBvbGxlci5oPgorCisjZGVmaW5lIEJFTExfREVGQVVMVF9GUkVRVUVOQ1kJLTEK
-Kworc3RydWN0IHNvdW5kX2NhcmQgeworCWNvbnN0IGNoYXIgKm5hbWU7CisJaW50IGJlbGxfZnJl
-cXVlbmN5OworCWludCAoKmJlZXApKHN0cnVjdCBzb3VuZF9jYXJkICosIHVuc2lnbmVkIGZyZXEs
-IHVuc2lnbmVkIHVzKTsKKworCS8qIHByaXZhdGUgKi8KKwlzdHJ1Y3QgbGlzdF9oZWFkIGxpc3Q7
-CisJc3RydWN0IGxpc3RfaGVhZCB0dW5lOworCXN0cnVjdCBwb2xsZXJfYXN5bmMgcG9sbGVyOwor
-fTsKKworaW50IHNvdW5kX2NhcmRfcmVnaXN0ZXIoc3RydWN0IHNvdW5kX2NhcmQgKmNhcmQpOwor
-aW50IHNvdW5kX2NhcmRfYmVlcF93YWl0KHN0cnVjdCBzb3VuZF9jYXJkICpjYXJkLCB1bnNpZ25l
-ZCB0aW1lb3V0X3VzKTsKK2ludCBzb3VuZF9jYXJkX2JlZXAoc3RydWN0IHNvdW5kX2NhcmQgKmNh
-cmQsIGludCBmcmVxLCB1bnNpZ25lZCBpbnQgdXMpOworaW50IHNvdW5kX2NhcmRfYmVlcF9jYW5j
-ZWwoc3RydWN0IHNvdW5kX2NhcmQgKmNhcmQpOworCitzdHJ1Y3Qgc291bmRfY2FyZCAqc291bmRf
-Y2FyZF9nZXRfZGVmYXVsdCh2b2lkKTsKKworc3RhdGljIGlubGluZSBpbnQgYmVlcChpbnQgZnJl
-cSwgdW5zaWduZWQgdXMpCit7CisJcmV0dXJuIHNvdW5kX2NhcmRfYmVlcChzb3VuZF9jYXJkX2dl
-dF9kZWZhdWx0KCksIGZyZXEsIHVzKTsKK30KKworc3RhdGljIGlubGluZSBpbnQgYmVlcF93YWl0
-KHVuc2lnbmVkIHRpbWVvdXRfdXMpCit7CisJcmV0dXJuIHNvdW5kX2NhcmRfYmVlcF93YWl0KHNv
-dW5kX2NhcmRfZ2V0X2RlZmF1bHQoKSwgdGltZW91dF91cyk7Cit9CisKK3N0YXRpYyBpbmxpbmUg
-aW50IGJlZXBfY2FuY2VsKHZvaWQpCit7CisJcmV0dXJuIHNvdW5kX2NhcmRfYmVlcF9jYW5jZWwo
-c291bmRfY2FyZF9nZXRfZGVmYXVsdCgpKTsKK30KKworI2VuZGlmCi0tIAoyLjMwLjAKCgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+SDL 2.0.4 features SDL_QueueAudio, which we could use to just queue
+buffers for audio playback. Use it to implement the new sound API for
+the sandbox architecture.
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/sandbox/configs/sandbox_defconfig        |  1 +
+ arch/sandbox/dts/sandbox.dts                  |  4 +
+ .../sandbox/mach-sandbox/include/mach/linux.h |  5 ++
+ arch/sandbox/os/sdl.c                         | 44 ++++++++++
+ drivers/sound/Kconfig                         |  5 ++
+ drivers/sound/Makefile                        |  1 +
+ drivers/sound/sdl.c                           | 87 +++++++++++++++++++
+ 7 files changed, 147 insertions(+)
+ create mode 100644 drivers/sound/sdl.c
+
+diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+index ca24d81acac7..66fcfbdbd0a3 100644
+--- a/arch/sandbox/configs/sandbox_defconfig
++++ b/arch/sandbox/configs/sandbox_defconfig
+@@ -107,6 +107,7 @@ CONFIG_MTD=y
+ CONFIG_MTD_M25P80=y
+ CONFIG_VIDEO=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_SOUND=y
+ CONFIG_MFD_SYSCON=y
+ CONFIG_STATE_DRV=y
+ CONFIG_UBOOTVAR=y
+diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
+index afe48154c488..ef1fa7b8661f 100644
+--- a/arch/sandbox/dts/sandbox.dts
++++ b/arch/sandbox/dts/sandbox.dts
+@@ -94,4 +94,8 @@ barebox,sandbox-power
+ 		compatible = "barebox,sandbox-watchdog";
+ 		barebox,reset-source = <&stickypage 0>;
+ 	};
++
++	sound {
++		compatible = "barebox,sandbox-sound";
++	};
+ };
+diff --git a/arch/sandbox/mach-sandbox/include/mach/linux.h b/arch/sandbox/mach-sandbox/include/mach/linux.h
+index c636a9af9cd2..6e10fdbe6d80 100644
+--- a/arch/sandbox/mach-sandbox/include/mach/linux.h
++++ b/arch/sandbox/mach-sandbox/include/mach/linux.h
+@@ -49,6 +49,11 @@ int sdl_video_open(const struct sdl_fb_info *);
+ void sdl_video_pause(void);
+ void sdl_video_close(void);
+ 
++int sdl_sound_init(unsigned sample_rate);
++int sdl_sound_play(const void *data, unsigned nsamples);
++void sdl_sound_stop(void);
++void sdl_sound_close(void);
++
+ struct ft2232_bitbang;
+ struct ft2232_bitbang *barebox_libftdi1_open(int vendor_id, int device_id,
+ 						const char *serial);
+diff --git a/arch/sandbox/os/sdl.c b/arch/sandbox/os/sdl.c
+index 623e24cf0b26..13178abfc044 100644
+--- a/arch/sandbox/os/sdl.c
++++ b/arch/sandbox/os/sdl.c
+@@ -111,3 +111,47 @@ quit_subsystem:
+ 
+ 	return -1;
+ }
++
++static SDL_AudioDeviceID dev;
++
++int sdl_sound_init(unsigned sample_rate)
++{
++	SDL_AudioSpec audiospec = {
++		.freq = sample_rate,
++		.format = AUDIO_S16,
++		.channels = 1,
++		.samples = 2048,
++	};
++
++	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
++		sdl_perror("initialize SDL Audio");
++		return -1;
++	}
++
++	dev = SDL_OpenAudioDevice(NULL, 0, &audiospec, NULL, 0);
++	if (!dev) {
++		sdl_perror("initialize open audio device");
++		SDL_QuitSubSystem(SDL_INIT_AUDIO);
++		return -1;
++	}
++
++	SDL_PauseAudioDevice(dev, 0);
++	return 0;
++}
++
++void sdl_sound_close(void)
++{
++	SDL_QuitSubSystem(SDL_INIT_AUDIO);
++}
++
++int sdl_sound_play(const void *data, unsigned nsamples)
++{
++	/* core sound support handles all the queueing for us */
++	SDL_ClearQueuedAudio(dev);
++	return SDL_QueueAudio(dev, data, nsamples * sizeof(uint16_t));
++}
++
++void sdl_sound_stop(void)
++{
++	SDL_ClearQueuedAudio(dev);
++}
+diff --git a/drivers/sound/Kconfig b/drivers/sound/Kconfig
+index d9f63a5f3c55..889657305b0b 100644
+--- a/drivers/sound/Kconfig
++++ b/drivers/sound/Kconfig
+@@ -9,6 +9,11 @@ menuconfig SOUND
+ 
+ if SOUND
+ 
++config SOUND_SDL
++	bool "SDL sound driver for sandbox"
++	depends on SANDBOX && OFDEVICE
++	select SDL
++
+ config SYNTH_SQUARES
+ 	bool "Synthesize square waves only"
+ 	help
+diff --git a/drivers/sound/Makefile b/drivers/sound/Makefile
+index 69873faab985..692105fd6b59 100644
+--- a/drivers/sound/Makefile
++++ b/drivers/sound/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-y += core.o synth.o
++obj-$(CONFIG_SOUND_SDL)		+= sdl.o
+diff --git a/drivers/sound/sdl.c b/drivers/sound/sdl.c
+new file mode 100644
+index 000000000000..118d7742955f
+--- /dev/null
++++ b/drivers/sound/sdl.c
+@@ -0,0 +1,87 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <common.h>
++#include <errno.h>
++#include <driver.h>
++#include <mach/linux.h>
++#include <linux/time.h>
++#include <linux/math64.h>
++#include <of.h>
++#include <sound.h>
++
++#define AMPLITUDE	28000
++#define SAMPLERATE	44000ULL
++
++struct sandbox_sound {
++	struct sound_card card;
++};
++
++static int sandbox_sound_beep(struct sound_card *card, unsigned freq, unsigned duration)
++{
++    size_t nsamples = div_s64(SAMPLERATE * duration, USEC_PER_SEC);
++    int16_t *data;
++    int ret;
++
++    if (!freq) {
++	    sdl_sound_stop();
++	    return 0;
++    }
++
++    data = malloc(nsamples * sizeof(*data));
++    if (!data)
++	    return -ENOMEM;
++
++    synth_sin(freq, AMPLITUDE, data, SAMPLERATE, nsamples);
++    ret = sdl_sound_play(data, nsamples);
++    if (ret)
++	    ret = -EIO;
++    free(data);
++
++    return ret;
++}
++
++static int sandbox_sound_probe(struct device_d *dev)
++{
++	struct sandbox_sound *priv;
++	struct sound_card *card;
++	int ret;
++
++	priv = xzalloc(sizeof(*priv));
++
++	card = &priv->card;
++	card->name = "SDL-Audio";
++	card->beep = sandbox_sound_beep;
++
++	ret = sdl_sound_init(SAMPLERATE);
++	if (ret) {
++		ret = -ENODEV;
++		goto free_priv;
++	}
++
++	ret = sound_card_register(card);
++	if (ret)
++		goto sdl_sound_close;
++
++	dev_info(dev, "probed\n");
++	return 0;
++
++sdl_sound_close:
++	sdl_sound_close();
++free_priv:
++	free(priv);
++
++	return ret;
++}
++
++
++static __maybe_unused struct of_device_id sandbox_sound_dt_ids[] = {
++	{ .compatible = "barebox,sandbox-sound" },
++	{ /* sentinel */ }
++};
++
++static struct driver_d sandbox_sound_drv = {
++	.name  = "sandbox-sound",
++	.of_compatible = sandbox_sound_dt_ids,
++	.probe = sandbox_sound_probe,
++};
++device_platform_driver(sandbox_sound_drv);
+-- 
+2.30.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
