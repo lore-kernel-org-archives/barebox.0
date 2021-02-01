@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l6UqC-0002Ks-LL
- for barebox@lists.infradead.org; Mon, 01 Feb 2021 08:45:49 +0000
-Date: Mon, 1 Feb 2021 09:45:47 +0100
-Message-ID: <20210201084547.GL19583@pengutronix.de>
-References: <20210129152553.15792-1-a.fatoum@pengutronix.de>
+ id 1l6V1z-0003ZA-RS
+ for barebox@lists.infradead.org; Mon, 01 Feb 2021 08:58:01 +0000
+Date: Mon, 1 Feb 2021 09:57:58 +0100
+Message-ID: <20210201085758.GM19583@pengutronix.de>
+References: <20210129161116.9971-1-a.fatoum@pengutronix.de>
+ <20210129161116.9971-4-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210129152553.15792-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20210129161116.9971-4-a.fatoum@pengutronix.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,62 +23,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: i.MX8MM: fix sparse warnings in early clock code
+Subject: Re: [PATCH 4/8] asm-generic: io.h: remove wrong use of IOMEM
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jan 29, 2021 at 04:25:53PM +0100, Ahmad Fatoum wrote:
-> Some __iomem markers were being casted away. Fix that.
+On Fri, Jan 29, 2021 at 05:11:12PM +0100, Ahmad Fatoum wrote:
+> addr is already __iomem, but we need to force strip that away to use it
+> as normal pointer. Define __io_virt like Linux does and use it.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/arm/mach-imx/imx8m.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  include/asm-generic/io.h | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+> index 150a97645b6b..a4b0dc4b4337 100644
+> --- a/include/asm-generic/io.h
+> +++ b/include/asm-generic/io.h
+> @@ -425,6 +425,8 @@ static inline void iowrite64be(u64 value, volatile void __iomem *addr)
+>  #define IOMEM(addr)	((void __force __iomem *)(addr))
+>  #endif
+>  
+> +#define __io_virt(x) ((void __force *)(x))
+> +
+>  #ifndef memset_io
+>  #define memset_io memset_io
+>  /**
+> @@ -438,7 +440,7 @@ static inline void iowrite64be(u64 value, volatile void __iomem *addr)
+>  static inline void memset_io(volatile void __iomem *addr, int value,
+>  			     size_t size)
+>  {
+> -	memset(IOMEM(addr), value, size);
+> +	memset(__io_virt(addr), value, size);
+>  }
 
-Applied, thanks
+Why did you add it differently than Linux in the first place?
+Should this be merged into 2/8?
 
 Sascha
-
-> 
-> diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
-> index b9e01a1d1854..350d203539fc 100644
-> --- a/arch/arm/mach-imx/imx8m.c
-> +++ b/arch/arm/mach-imx/imx8m.c
-> @@ -35,14 +35,14 @@
->  
->  void imx8m_clock_set_target_val(int clock_id, u32 val)
->  {
-> -	void *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
-> +	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
->  
->  	writel(val, ccm + IMX8M_CCM_TARGET_ROOTn(clock_id));
->  }
->  
->  void imx8m_ccgr_clock_enable(int index)
->  {
-> -	void *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
-> +	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
->  
->  	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
->  	       ccm + IMX8M_CCM_CCGRn_SET(index));
-> @@ -50,7 +50,7 @@ void imx8m_ccgr_clock_enable(int index)
->  
->  void imx8m_ccgr_clock_disable(int index)
->  {
-> -	void *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
-> +	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
->  
->  	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
->  	       ccm + IMX8M_CCM_CCGRn_CLR(index));
-> -- 
-> 2.30.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
