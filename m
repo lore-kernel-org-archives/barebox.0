@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l6Vod-0001KB-49
- for barebox@lists.infradead.org; Mon, 01 Feb 2021 09:48:16 +0000
-Date: Mon, 1 Feb 2021 10:46:02 +0100
-Message-ID: <20210201094602.GP19583@pengutronix.de>
-References: <MN2PR16MB31357A9BB6E7D4B2B31274A591B99@MN2PR16MB3135.namprd16.prod.outlook.com>
+ id 1l70oq-0007yM-QF
+ for barebox@lists.infradead.org; Tue, 02 Feb 2021 18:54:33 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1l70on-0004oz-GX
+ for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:54:29 +0100
+Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1l70on-0004my-7x
+ for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:54:29 +0100
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Tue,  2 Feb 2021 19:54:13 +0100
+Message-Id: <20210202185413.18332-2-m.grzeschik@pengutronix.de>
+In-Reply-To: <20210202185413.18332-1-m.grzeschik@pengutronix.de>
+References: <20210202185413.18332-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <MN2PR16MB31357A9BB6E7D4B2B31274A591B99@MN2PR16MB3135.namprd16.prod.outlook.com>
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +29,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Layerscape secure boot
-To: "Barbier, Renaud" <renaud.barbier@abaco.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/2] usb: imx: add overcurrent polarity handling on i.MX6
+To: barebox@lists.infradead.org
 
-Hi Renaud,
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ drivers/usb/imx/imx-usb-misc.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-On Fri, Jan 29, 2021 at 05:59:02PM +0000, Barbier, Renaud wrote:
-> Is secure boot supported or planned to be supported on Layerscape
-> (LS1046A)?  This will be our first board supporting secure boot.
-
-We have no plans adding that.
-
-> 
-> If not supported yet we intend to support it (pending having the
-> documentation/SDK...) and would like to do in a way that could be
-> accepted upstream.
-
-Nice :)
-
-> 
-> Are other boards like the IMX6/8 in barebox supporting secure boot a
-> reference to do secure boot for other boards?  I guess it quite
-> hardware specific.
-
-It seems that NXP reused parts of the secure boot concept from i.MX. The
-overall concept on i.MX is known as "High Assurance Boot" (HAB), I
-haven't found that on Layerscape. However, just like the i.MX the
-Layerscape also has "Command Sequence Files" (CSF), the Code signing
-Tool (CST) also works on Layerscape, and on Layerscape there are also
-"Super Root Key hashes". I suspect the overall process is quite similar
-to i.MX, so the HAB code could probably be used as a stone quarry.
-
-Sascha
-
+diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
+index 660ebecd78..c16b4cf0ab 100644
+--- a/drivers/usb/imx/imx-usb-misc.c
++++ b/drivers/usb/imx/imx-usb-misc.c
+@@ -379,8 +379,15 @@ static __maybe_unused int mx6_initialize_usb_hw(void __iomem *base, int port,
+ 	case 0:
+ 	case 1:
+ 		val = readl(base + MX6_USB_CTRL(port));
+-		if (flags & MXC_EHCI_DISABLE_OVERCURRENT)
++		if (flags & MXC_EHCI_DISABLE_OVERCURRENT) {
+ 			val |= MX6_USB_CTRL_OVER_CUR_DIS;
++		} else {
++			val &= ~MX6_USB_CTRL_OVER_CUR_DIS;
++			if (flags & MXC_EHCI_OC_PIN_ACTIVE_LOW)
++				val |= MX6_USB_CTRL_OVER_CUR_ACT_LOW;
++			else
++				val &= ~MX6_USB_CTRL_OVER_CUR_ACT_LOW;
++		}
+ 		if (flags & MXC_EHCI_PWR_PIN_ACTIVE_HIGH)
+ 			val |= MX6_USB_CTRL_PWR_POLARITY;
+ 		writel(val, base + MX6_USB_CTRL(port));
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.0
+
 
 _______________________________________________
 barebox mailing list
