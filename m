@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l71Y6-0004VD-CU
- for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:41:19 +0000
+ id 1l71YC-0004Xg-C8
+ for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:41:25 +0000
+References: <20210129161116.9971-1-a.fatoum@pengutronix.de>
+ <20210129161116.9971-2-a.fatoum@pengutronix.de>
+ <20210202190317.GD8233@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Feb 2021 20:40:55 +0100
-Message-Id: <20210202194059.9466-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20210202194059.9466-1-a.fatoum@pengutronix.de>
-References: <20210202194059.9466-1-a.fatoum@pengutronix.de>
+Message-ID: <91adf5c0-43c2-f2a8-a208-8403a72e44ca@pengutronix.de>
+Date: Tue, 2 Feb 2021 20:41:22 +0100
 MIME-Version: 1.0
+In-Reply-To: <20210202190317.GD8233@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,97 +24,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] asm-generic: define fallback memcpy and memset for device
- I/O
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 2/8] asm-generic: define fallback memcpy and memset for
+ device I/O
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The Atmel quadspi driver makes use of the memcpy_(to|from)io,
-but we don't define them on all platforms. Fix this to allow
-for easier porting of kernel code.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
- - squash commit in v1 series that changed same file (Sascha)
----
- include/asm-generic/io.h | 55 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
 
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index 76e6d0dc1112..a4b0dc4b4337 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -11,6 +11,7 @@
- #ifndef __ASM_GENERIC_IO_H
- #define __ASM_GENERIC_IO_H
- 
-+#include <linux/string.h> /* for memset() and memcpy() */
- #include <linux/types.h>
- #include <asm/byteorder.h>
- 
-@@ -424,4 +425,58 @@ static inline void iowrite64be(u64 value, volatile void __iomem *addr)
- #define IOMEM(addr)	((void __force __iomem *)(addr))
- #endif
- 
-+#define __io_virt(x) ((void __force *)(x))
-+
-+#ifndef memset_io
-+#define memset_io memset_io
-+/**
-+ * memset_io	Set a range of I/O memory to a constant value
-+ * @addr:	The beginning of the I/O-memory range to set
-+ * @val:	The value to set the memory to
-+ * @count:	The number of bytes to set
-+ *
-+ * Set a range of I/O memory to a given value.
-+ */
-+static inline void memset_io(volatile void __iomem *addr, int value,
-+			     size_t size)
-+{
-+	memset(__io_virt(addr), value, size);
-+}
-+#endif
-+
-+#ifndef memcpy_fromio
-+#define memcpy_fromio memcpy_fromio
-+/**
-+ * memcpy_fromio	Copy a block of data from I/O memory
-+ * @dst:		The (RAM) destination for the copy
-+ * @src:		The (I/O memory) source for the data
-+ * @count:		The number of bytes to copy
-+ *
-+ * Copy a block of data from I/O memory.
-+ */
-+static inline void memcpy_fromio(void *buffer,
-+				 const volatile void __iomem *addr,
-+				 size_t size)
-+{
-+	memcpy(buffer, __io_virt(addr), size);
-+}
-+#endif
-+
-+#ifndef memcpy_toio
-+#define memcpy_toio memcpy_toio
-+/**
-+ * memcpy_toio		Copy a block of data into I/O memory
-+ * @dst:		The (I/O memory) destination for the copy
-+ * @src:		The (RAM) source for the data
-+ * @count:		The number of bytes to copy
-+ *
-+ * Copy a block of data to I/O memory.
-+ */
-+static inline void memcpy_toio(volatile void __iomem *addr, const void *buffer,
-+			       size_t size)
-+{
-+	memcpy(__io_virt(addr), buffer, size);
-+}
-+#endif
-+
- #endif /* __ASM_GENERIC_IO_H */
+On 02.02.21 20:03, Sascha Hauer wrote:
+> On Fri, Jan 29, 2021 at 05:11:10PM +0100, Ahmad Fatoum wrote:
+>> The Atmel quadspi driver makes use of the memcpy_(to|from)io,
+>> but we don't define them on all platforms. Fix this to allow
+>> for easier porting of kernel code.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  include/asm-generic/io.h | 53 ++++++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 53 insertions(+)
+> 
+> This patch breaks compilation for ARM:
+
+Apologies, the order of the commits is wrong.
+I just sent out a v2 (which I forgot the v2 tag..) and made sure this time
+that all intermediate commits compile.
+
+> 
+> In file included from /ptx/work/WORK_EIHEI/sha/backup/barebox/barebox-maintainer-utils/barebox/arch/arm/include/asm/io.h:6,
+>                  from include/io.h:5,
+>                  from arch/arm/lib32/io.c:3:
+> include/asm-generic/io.h:448:23: error: redefinition of 'memcpy_fromio'
+>   448 | #define memcpy_fromio memcpy_fromio
+>       |                       ^~~~~~~~~~~~~
+> arch/arm/lib32/io.c:9:6: note: in expansion of macro 'memcpy_fromio'
+>     9 | void memcpy_fromio(void *to, const volatile void __iomem *from, size_t count)
+>       |      ^~~~~~~~~~~~~
+> include/asm-generic/io.h:448:23: note: previous definition of 'memcpy_fromio' was here
+>   448 | #define memcpy_fromio memcpy_fromio
+>       |                       ^~~~~~~~~~~~~
+> include/asm-generic/io.h:457:20: note: in expansion of macro 'memcpy_fromio'
+>   457 | static inline void memcpy_fromio(void *buffer,
+>       |                    ^~~~~~~~~~~~~
+> include/asm-generic/io.h:466:21: error: redefinition of 'memcpy_toio'
+>   466 | #define memcpy_toio memcpy_toio
+>       |                     ^~~~~~~~~~~
+> arch/arm/lib32/io.c:24:6: note: in expansion of macro 'memcpy_toio'
+>    24 | void memcpy_toio(volatile void __iomem *to, const void *from, size_t count)
+>       |      ^~~~~~~~~~~
+> include/asm-generic/io.h:466:21: note: previous definition of 'memcpy_toio' was here
+>   466 | #define memcpy_toio memcpy_toio
+>       |                     ^~~~~~~~~~~
+> include/asm-generic/io.h:475:20: note: in expansion of macro 'memcpy_toio'
+>   475 | static inline void memcpy_toio(volatile void __iomem *addr, const void *buffer,
+>       |                    ^~~~~~~~~~~
+> include/asm-generic/io.h:431:19: error: redefinition of 'memset_io'
+>   431 | #define memset_io memset_io
+>       |                   ^~~~~~~~~
+> arch/arm/lib32/io.c:39:6: note: in expansion of macro 'memset_io'
+>    39 | void memset_io(volatile void __iomem *dst, int c, size_t count)
+>       |      ^~~~~~~~~
+> include/asm-generic/io.h:431:19: note: previous definition of 'memset_io' was here
+>   431 | #define memset_io memset_io
+>       |                   ^~~~~~~~~
+> include/asm-generic/io.h:440:20: note: in expansion of macro 'memset_io'
+>   440 | static inline void memset_io(volatile void __iomem *addr, int value,
+>       |                    ^~~~~~~~~
+> 
+> 
+
 -- 
-2.30.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
