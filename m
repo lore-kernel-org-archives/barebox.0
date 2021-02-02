@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l71Xy-0004S6-BZ
- for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:41:11 +0000
+ id 1l71Xr-0004P4-O3
+ for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:41:05 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Feb 2021 20:40:56 +0100
-Message-Id: <20210202194059.9466-4-a.fatoum@pengutronix.de>
-In-Reply-To: <20210202194059.9466-1-a.fatoum@pengutronix.de>
-References: <20210202194059.9466-1-a.fatoum@pengutronix.de>
+Date: Tue,  2 Feb 2021 20:40:53 +0100
+Message-Id: <20210202194059.9466-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,36 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] ppc: <asm/io.h>: remove duplicate definition
+Subject: [PATCH 1/7] commands: usbgadget: remove deprecated s option from help
+ text
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-This implementation is equivalent to the one now provided by
-<asm-generic/io.h>, so it can be dropped.
+Prior to 44add42d4330 ("usbgadget: autostart: add DFU support"), -s used
+to do nothing. That commit made it behave like -a, but deprecated it and
+changed the help text to omit it. Remove it from the short help text as
+well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
  - no change
 ---
- arch/powerpc/include/asm/io.h | 4 ----
- 1 file changed, 4 deletions(-)
+ commands/usbgadget.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index 025c06f3b735..8488c36f6558 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -86,10 +86,6 @@ extern void _outsl_ns(volatile u32 *port, const void *buf, int nl);
- 
- #define IO_SPACE_LIMIT ~0
- 
--#define memset_io(a,b,c)       memset((void *)(a),(b),(c))
--#define memcpy_fromio(a,b,c)   memcpy((a),(void *)(b),(c))
--#define memcpy_toio(a,b,c)  memcpy((void *)(a),(b),(c))
--
- /*
-  * Enforce In-order Execution of I/O:
-  * Acts as a barrier to ensure all previous I/O accesses have
+diff --git a/commands/usbgadget.c b/commands/usbgadget.c
+index 9133402f52fb..3b115f147d80 100644
+--- a/commands/usbgadget.c
++++ b/commands/usbgadget.c
+@@ -67,7 +67,7 @@ BAREBOX_CMD_HELP_END
+ BAREBOX_CMD_START(usbgadget)
+ 	.cmd		= do_usbgadget,
+ 	BAREBOX_CMD_DESC("Create USB Gadget multifunction device")
+-	BAREBOX_CMD_OPTS("[-asdAD]")
++	BAREBOX_CMD_OPTS("[-adAD]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
+ 	BAREBOX_CMD_HELP(cmd_usbgadget_help)
+ BAREBOX_CMD_END
 -- 
 2.30.0
 
