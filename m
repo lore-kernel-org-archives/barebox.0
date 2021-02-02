@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l70oq-0007yI-R8
- for barebox@lists.infradead.org; Tue, 02 Feb 2021 18:54:33 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1l70on-0004ot-18
- for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:54:29 +0100
-Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1l70om-0004mv-Oy
- for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:54:28 +0100
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Tue,  2 Feb 2021 19:54:12 +0100
-Message-Id: <20210202185413.18332-1-m.grzeschik@pengutronix.de>
+ id 1l70xM-0001Cl-4l
+ for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:03:21 +0000
+Date: Tue, 2 Feb 2021 20:03:17 +0100
+Message-ID: <20210202190317.GD8233@pengutronix.de>
+References: <20210129161116.9971-1-a.fatoum@pengutronix.de>
+ <20210129161116.9971-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20210129161116.9971-2-a.fatoum@pengutronix.de>
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,45 +23,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] usb: imx: fix overcurrent polarity handling on i.MX7
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/8] asm-generic: define fallback memcpy and memset for
+ device I/O
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The reference manual says the overcurrent polarity is changed to low
-with the bit set. We fix that according to the description.
+On Fri, Jan 29, 2021 at 05:11:10PM +0100, Ahmad Fatoum wrote:
+> The Atmel quadspi driver makes use of the memcpy_(to|from)io,
+> but we don't define them on all platforms. Fix this to allow
+> for easier porting of kernel code.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  include/asm-generic/io.h | 53 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 53 insertions(+)
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
- drivers/usb/imx/imx-usb-misc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+This patch breaks compilation for ARM:
 
-diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
-index b663d073aa..660ebecd78 100644
---- a/drivers/usb/imx/imx-usb-misc.c
-+++ b/drivers/usb/imx/imx-usb-misc.c
-@@ -353,7 +353,7 @@ static __maybe_unused struct imx_usb_misc_data mx5_data = {
- 
- #define MX6_USB_CTRL(n)			((n) * 4)
- #define MX6_USB_CTRL_OVER_CUR_DIS	(1 << 7)
--#define MX6_USB_CTRL_OVER_CUR_ACT_HIGH	(1 << 8)
-+#define MX6_USB_CTRL_OVER_CUR_ACT_LOW	(1 << 8)
- #define MX6_USB_CTRL_PWR_POLARITY	(1 << 9)
- 
- static void mx6_hsic_pullup(unsigned long reg, int on)
-@@ -453,9 +453,9 @@ static int usbmisc_imx7d_init(void __iomem *base, int port,
- 	} else {
- 		reg &= ~MX6_USB_CTRL_OVER_CUR_DIS;
- 		if (flags & MXC_EHCI_OC_PIN_ACTIVE_LOW)
--			reg &= ~MX6_USB_CTRL_OVER_CUR_ACT_HIGH;
-+			reg |= MX6_USB_CTRL_OVER_CUR_ACT_LOW;
- 		else
--			reg |= MX6_USB_CTRL_OVER_CUR_ACT_HIGH;
-+			reg &= ~MX6_USB_CTRL_OVER_CUR_ACT_LOW;
- 	}
- 	if (flags & MXC_EHCI_PWR_PIN_ACTIVE_HIGH)
- 		reg |= MX6_USB_CTRL_PWR_POLARITY;
+In file included from /ptx/work/WORK_EIHEI/sha/backup/barebox/barebox-maintainer-utils/barebox/arch/arm/include/asm/io.h:6,
+                 from include/io.h:5,
+                 from arch/arm/lib32/io.c:3:
+include/asm-generic/io.h:448:23: error: redefinition of 'memcpy_fromio'
+  448 | #define memcpy_fromio memcpy_fromio
+      |                       ^~~~~~~~~~~~~
+arch/arm/lib32/io.c:9:6: note: in expansion of macro 'memcpy_fromio'
+    9 | void memcpy_fromio(void *to, const volatile void __iomem *from, size_t count)
+      |      ^~~~~~~~~~~~~
+include/asm-generic/io.h:448:23: note: previous definition of 'memcpy_fromio' was here
+  448 | #define memcpy_fromio memcpy_fromio
+      |                       ^~~~~~~~~~~~~
+include/asm-generic/io.h:457:20: note: in expansion of macro 'memcpy_fromio'
+  457 | static inline void memcpy_fromio(void *buffer,
+      |                    ^~~~~~~~~~~~~
+include/asm-generic/io.h:466:21: error: redefinition of 'memcpy_toio'
+  466 | #define memcpy_toio memcpy_toio
+      |                     ^~~~~~~~~~~
+arch/arm/lib32/io.c:24:6: note: in expansion of macro 'memcpy_toio'
+   24 | void memcpy_toio(volatile void __iomem *to, const void *from, size_t count)
+      |      ^~~~~~~~~~~
+include/asm-generic/io.h:466:21: note: previous definition of 'memcpy_toio' was here
+  466 | #define memcpy_toio memcpy_toio
+      |                     ^~~~~~~~~~~
+include/asm-generic/io.h:475:20: note: in expansion of macro 'memcpy_toio'
+  475 | static inline void memcpy_toio(volatile void __iomem *addr, const void *buffer,
+      |                    ^~~~~~~~~~~
+include/asm-generic/io.h:431:19: error: redefinition of 'memset_io'
+  431 | #define memset_io memset_io
+      |                   ^~~~~~~~~
+arch/arm/lib32/io.c:39:6: note: in expansion of macro 'memset_io'
+   39 | void memset_io(volatile void __iomem *dst, int c, size_t count)
+      |      ^~~~~~~~~
+include/asm-generic/io.h:431:19: note: previous definition of 'memset_io' was here
+  431 | #define memset_io memset_io
+      |                   ^~~~~~~~~
+include/asm-generic/io.h:440:20: note: in expansion of macro 'memset_io'
+  440 | static inline void memset_io(volatile void __iomem *addr, int value,
+      |                    ^~~~~~~~~
+
+
 -- 
-2.30.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
