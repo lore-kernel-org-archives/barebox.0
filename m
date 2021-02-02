@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l71Xy-0004S5-A1
- for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:41:12 +0000
+ id 1l71Xy-0004S6-BZ
+ for barebox@lists.infradead.org; Tue, 02 Feb 2021 19:41:11 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Feb 2021 20:40:54 +0100
-Message-Id: <20210202194059.9466-2-a.fatoum@pengutronix.de>
+Date: Tue,  2 Feb 2021 20:40:56 +0100
+Message-Id: <20210202194059.9466-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20210202194059.9466-1-a.fatoum@pengutronix.de>
 References: <20210202194059.9466-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,38 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] ARM: <asm/io.h>: define macros for I/O memcpy/memset
+Subject: [PATCH 4/7] ppc: <asm/io.h>: remove duplicate definition
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-<asm-generic/io.h> expects architectures to define memcpy_toio,
-memcpy_fromio and memset_io as macros as it checks for their existence
-with #ifndef. Only ARM defines an own implementation, but does so
-as function declaration. Add the missing macros.
+This implementation is equivalent to the one now provided by
+<asm-generic/io.h>, so it can be dropped.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
- - reordered commit to resolve intermittent breakage
+ - no change
 ---
- arch/arm/include/asm/io.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/include/asm/io.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index 072b47317c03..b442a37b9c1d 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -3,6 +3,10 @@
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index 025c06f3b735..8488c36f6558 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -86,10 +86,6 @@ extern void _outsl_ns(volatile u32 *port, const void *buf, int nl);
  
- #define	IO_SPACE_LIMIT	0
+ #define IO_SPACE_LIMIT ~0
  
-+#define memcpy_fromio memcpy_fromio
-+#define memcpy_toio memcpy_toio
-+#define memset_io memset_io
-+
- #include <asm-generic/io.h>
- #include <asm-generic/bitio.h>
- 
+-#define memset_io(a,b,c)       memset((void *)(a),(b),(c))
+-#define memcpy_fromio(a,b,c)   memcpy((a),(void *)(b),(c))
+-#define memcpy_toio(a,b,c)  memcpy((void *)(a),(b),(c))
+-
+ /*
+  * Enforce In-order Execution of I/O:
+  * Acts as a barrier to ensure all previous I/O accesses have
 -- 
 2.30.0
 
