@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l7cCt-0007mg-Dj
- for barebox@lists.infradead.org; Thu, 04 Feb 2021 10:49:52 +0000
+ id 1l7cGO-0008Fl-9M
+ for barebox@lists.infradead.org; Thu, 04 Feb 2021 10:53:28 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  4 Feb 2021 11:49:48 +0100
-Message-Id: <20210204104948.30500-1-s.hauer@pengutronix.de>
+Date: Thu,  4 Feb 2021 11:53:25 +0100
+Message-Id: <20210204105325.9970-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,47 +19,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] gpio: orion: Do not overwrite device id
+Subject: [PATCH] watchdog: Print seconds to expire
 To: Barebox List <barebox@lists.infradead.org>
 
-The driver has no busyness manipulating the id field in the given device
-struct. Leave it untouched.
+This adds a parameter to the watchdog devices that shows what we think
+when the watchdog expires. The watchdog should reset the system once the
+counter hits zero. When the system resets earlier or the counter shows
+negative values then there might be problems with the watchdog. Useful
+for debugging watchdog related problems.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/gpio/gpio-orion.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/watchdog/wd_core.c | 29 +++++++++++++++++++++++++++++
+ include/watchdog.h         |  3 +++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/drivers/gpio/gpio-orion.c b/drivers/gpio/gpio-orion.c
-index 63ef966edf..ba2729d1f0 100644
---- a/drivers/gpio/gpio-orion.c
-+++ b/drivers/gpio/gpio-orion.c
-@@ -91,10 +91,7 @@ static int orion_gpio_probe(struct device_d *dev)
+diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+index 643c53268f..4b0ee31d5b 100644
+--- a/drivers/watchdog/wd_core.c
++++ b/drivers/watchdog/wd_core.c
+@@ -54,6 +54,9 @@ int watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+ 	if (ret)
+ 		return ret;
+ 
++	wd->last_ping = get_time_ns();
++	wd->timeout_cur = timeout;
++
+ 	wd->running = timeout ? WDOG_HW_RUNNING : WDOG_HW_NOT_RUNNING;
+ 
+ 	return 0;
+@@ -155,6 +158,25 @@ static unsigned int dev_get_watchdog_priority(struct device_d *dev)
+ 	return priority;
+ }
+ 
++static int seconds_to_expire_get(struct param_d *p, void *priv)
++{
++	struct watchdog *wd = priv;
++	uint64_t diff;
++
++	if (!wd->timeout_cur) {
++		wd->seconds_to_expire = -1;
++		return 0;
++	}
++
++	diff = get_time_ns() - wd->last_ping;
++
++	do_div(diff, 1000000000);
++
++	wd->seconds_to_expire = wd->timeout_cur - diff;
++
++	return 0;
++}
++
+ int watchdog_register(struct watchdog *wd)
  {
- 	struct resource *iores;
- 	struct orion_gpio_chip *gpio;
--
--	dev->id = of_alias_get_id(dev->device_node, "gpio");
--	if (dev->id < 0)
--		return dev->id;
-+	int id;
+ 	struct param_d *p;
+@@ -218,6 +240,13 @@ int watchdog_register(struct watchdog *wd)
+ 			goto error_unregister;
+ 	}
  
- 	gpio = xzalloc(sizeof(*gpio));
- 	iores = dev_request_mem_resource(dev, 0);
-@@ -105,7 +102,12 @@ static int orion_gpio_probe(struct device_d *dev)
- 	gpio->regs = IOMEM(iores->start);
- 	gpio->chip.dev = dev;
- 	gpio->chip.ops = &orion_gpio_ops;
--	gpio->chip.base = dev->id * 32;
++	p = dev_add_param_uint32(&wd->dev, "seconds_to_expire", param_set_readonly,
++			seconds_to_expire_get, &wd->seconds_to_expire, "%d", wd);
++	if (IS_ERR(p)) {
++		ret = PTR_ERR(p);
++		goto error_unregister;
++	}
 +
-+	id = of_alias_get_id(dev->device_node, "gpio");
-+	if (id < 0)
-+		return id;
-+
-+	gpio->chip.base = id * 32;
- 	gpio->chip.ngpio = 32;
- 	of_property_read_u32(dev->device_node, "ngpios", &gpio->chip.ngpio);
+ 	list_add_tail(&wd->list, &watchdog_list);
  
+ 	pr_debug("registering watchdog %s with priority %d\n", watchdog_name(wd),
+diff --git a/include/watchdog.h b/include/watchdog.h
+index 4d755a5a79..281885686e 100644
+--- a/include/watchdog.h
++++ b/include/watchdog.h
+@@ -22,8 +22,11 @@ struct watchdog {
+ 	struct device_d dev;
+ 	unsigned int priority;
+ 	unsigned int timeout_max;
++	unsigned int timeout_cur;
+ 	unsigned int poller_timeout_cur;
+ 	unsigned int poller_enable;
++	uint64_t last_ping;
++	int seconds_to_expire;
+ 	struct poller_async poller;
+ 	struct list_head list;
+ 	int running; /* enum wdog_hw_running */
 -- 
 2.20.1
 
