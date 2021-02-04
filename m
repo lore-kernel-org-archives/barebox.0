@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l7bsp-00066u-3N
- for barebox@lists.infradead.org; Thu, 04 Feb 2021 10:29:08 +0000
-Date: Thu, 4 Feb 2021 11:29:05 +0100
-Message-ID: <20210204102905.GB19583@pengutronix.de>
-References: <20210129125936.20053-1-bst@pengutronix.de>
+ id 1l7btz-0006IG-QH
+ for barebox@lists.infradead.org; Thu, 04 Feb 2021 10:30:20 +0000
+Date: Thu, 4 Feb 2021 11:28:07 +0100
+Message-ID: <20210204102807.GA19583@pengutronix.de>
+References: <20210202185413.18332-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210129125936.20053-1-bst@pengutronix.de>
+In-Reply-To: <20210202185413.18332-1-m.grzeschik@pengutronix.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,46 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: state: recommend a partition type GUID
- for state GPT partitions
-To: Bastian Krause <bst@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/2] usb: imx: fix overcurrent polarity handling on i.MX7
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Jan 29, 2021 at 01:59:36PM +0100, Bastian Krause wrote:
-> The partition type GUID was generated randomly. Having a defined GUID
-> should reduce the risk of collisions in the future.
+On Tue, Feb 02, 2021 at 07:54:12PM +0100, Michael Grzeschik wrote:
+> The reference manual says the overcurrent polarity is changed to low
+> with the bit set. We fix that according to the description.
 > 
-> A dedicated GUID could also allow us to implement a fallback in case no
-> state backend property is defined. This could then look for a GPT
-> partition with this partition type GUID and use that as the backend.
-> dt-utils could do the same in userspace. This would be similar to [1].
-> 
-> [1] https://www.freedesktop.org/wiki/Specifications/DiscoverablePartitionsSpec/
-> 
-> Signed-off-by: Bastian Krause <bst@pengutronix.de>
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 > ---
->  Documentation/user/state.rst | 3 +++
->  1 file changed, 3 insertions(+)
+>  drivers/usb/imx/imx-usb-misc.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
-> index 54aa396257..a0e27d4fe8 100644
-> --- a/Documentation/user/state.rst
-> +++ b/Documentation/user/state.rst
-> @@ -579,6 +579,9 @@ content, its backend-type and *state* variable layout.
->  		};
->  	};
+> diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
+> index b663d073aa..660ebecd78 100644
+> --- a/drivers/usb/imx/imx-usb-misc.c
+> +++ b/drivers/usb/imx/imx-usb-misc.c
+> @@ -353,7 +353,7 @@ static __maybe_unused struct imx_usb_misc_data mx5_data = {
 >  
-> +If the *state* variable set is set to be located in a GPT partition, use
-> +``4778ed65-bf42-45fa-9c5b-287a1dc4aab1`` as the partition type GUID.
-> +
->  SRAM
->  ####
+>  #define MX6_USB_CTRL(n)			((n) * 4)
+>  #define MX6_USB_CTRL_OVER_CUR_DIS	(1 << 7)
+> -#define MX6_USB_CTRL_OVER_CUR_ACT_HIGH	(1 << 8)
+> +#define MX6_USB_CTRL_OVER_CUR_ACT_LOW	(1 << 8)
+>  #define MX6_USB_CTRL_PWR_POLARITY	(1 << 9)
 >  
+>  static void mx6_hsic_pullup(unsigned long reg, int on)
+> @@ -453,9 +453,9 @@ static int usbmisc_imx7d_init(void __iomem *base, int port,
+>  	} else {
+>  		reg &= ~MX6_USB_CTRL_OVER_CUR_DIS;
+>  		if (flags & MXC_EHCI_OC_PIN_ACTIVE_LOW)
+> -			reg &= ~MX6_USB_CTRL_OVER_CUR_ACT_HIGH;
+> +			reg |= MX6_USB_CTRL_OVER_CUR_ACT_LOW;
+>  		else
+> -			reg |= MX6_USB_CTRL_OVER_CUR_ACT_HIGH;
+> +			reg &= ~MX6_USB_CTRL_OVER_CUR_ACT_LOW;
+>  	}
+>  	if (flags & MXC_EHCI_PWR_PIN_ACTIVE_HIGH)
+>  		reg |= MX6_USB_CTRL_PWR_POLARITY;
 > -- 
 > 2.30.0
 > 
