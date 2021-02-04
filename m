@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l7btz-0006IG-QH
- for barebox@lists.infradead.org; Thu, 04 Feb 2021 10:30:20 +0000
-Date: Thu, 4 Feb 2021 11:28:07 +0100
-Message-ID: <20210204102807.GA19583@pengutronix.de>
-References: <20210202185413.18332-1-m.grzeschik@pengutronix.de>
+ id 1l7cCt-0007mg-Dj
+ for barebox@lists.infradead.org; Thu, 04 Feb 2021 10:49:52 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  4 Feb 2021 11:49:48 +0100
+Message-Id: <20210204104948.30500-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210202185413.18332-1-m.grzeschik@pengutronix.de>
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,64 +19,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] usb: imx: fix overcurrent polarity handling on i.MX7
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] gpio: orion: Do not overwrite device id
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Feb 02, 2021 at 07:54:12PM +0100, Michael Grzeschik wrote:
-> The reference manual says the overcurrent polarity is changed to low
-> with the bit set. We fix that according to the description.
-> 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
->  drivers/usb/imx/imx-usb-misc.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+The driver has no busyness manipulating the id field in the given device
+struct. Leave it untouched.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/gpio/gpio-orion.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
-> index b663d073aa..660ebecd78 100644
-> --- a/drivers/usb/imx/imx-usb-misc.c
-> +++ b/drivers/usb/imx/imx-usb-misc.c
-> @@ -353,7 +353,7 @@ static __maybe_unused struct imx_usb_misc_data mx5_data = {
->  
->  #define MX6_USB_CTRL(n)			((n) * 4)
->  #define MX6_USB_CTRL_OVER_CUR_DIS	(1 << 7)
-> -#define MX6_USB_CTRL_OVER_CUR_ACT_HIGH	(1 << 8)
-> +#define MX6_USB_CTRL_OVER_CUR_ACT_LOW	(1 << 8)
->  #define MX6_USB_CTRL_PWR_POLARITY	(1 << 9)
->  
->  static void mx6_hsic_pullup(unsigned long reg, int on)
-> @@ -453,9 +453,9 @@ static int usbmisc_imx7d_init(void __iomem *base, int port,
->  	} else {
->  		reg &= ~MX6_USB_CTRL_OVER_CUR_DIS;
->  		if (flags & MXC_EHCI_OC_PIN_ACTIVE_LOW)
-> -			reg &= ~MX6_USB_CTRL_OVER_CUR_ACT_HIGH;
-> +			reg |= MX6_USB_CTRL_OVER_CUR_ACT_LOW;
->  		else
-> -			reg |= MX6_USB_CTRL_OVER_CUR_ACT_HIGH;
-> +			reg &= ~MX6_USB_CTRL_OVER_CUR_ACT_LOW;
->  	}
->  	if (flags & MXC_EHCI_PWR_PIN_ACTIVE_HIGH)
->  		reg |= MX6_USB_CTRL_PWR_POLARITY;
-> -- 
-> 2.30.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/gpio/gpio-orion.c b/drivers/gpio/gpio-orion.c
+index 63ef966edf..ba2729d1f0 100644
+--- a/drivers/gpio/gpio-orion.c
++++ b/drivers/gpio/gpio-orion.c
+@@ -91,10 +91,7 @@ static int orion_gpio_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+ 	struct orion_gpio_chip *gpio;
+-
+-	dev->id = of_alias_get_id(dev->device_node, "gpio");
+-	if (dev->id < 0)
+-		return dev->id;
++	int id;
+ 
+ 	gpio = xzalloc(sizeof(*gpio));
+ 	iores = dev_request_mem_resource(dev, 0);
+@@ -105,7 +102,12 @@ static int orion_gpio_probe(struct device_d *dev)
+ 	gpio->regs = IOMEM(iores->start);
+ 	gpio->chip.dev = dev;
+ 	gpio->chip.ops = &orion_gpio_ops;
+-	gpio->chip.base = dev->id * 32;
++
++	id = of_alias_get_id(dev->device_node, "gpio");
++	if (id < 0)
++		return id;
++
++	gpio->chip.base = id * 32;
+ 	gpio->chip.ngpio = 32;
+ 	of_property_read_u32(dev->device_node, "ngpios", &gpio->chip.ngpio);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
