@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay1-d.mail.gandi.net ([217.70.183.193])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l6JUf-0005w5-3y
- for barebox@lists.infradead.org; Sun, 31 Jan 2021 20:38:50 +0000
-Received: from geraet.fritz.box (unknown [87.123.110.69])
- (Authenticated sender: ahmad@a3f.at)
- by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 70AEE240005
- for <barebox@lists.infradead.org>; Sun, 31 Jan 2021 20:38:47 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sun, 31 Jan 2021 21:38:43 +0100
-Message-Id: <20210131203843.3459595-1-ahmad@a3f.at>
+ id 1l7cFG-000875-2n
+ for barebox@lists.infradead.org; Thu, 04 Feb 2021 10:52:18 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  4 Feb 2021 11:50:05 +0100
+Message-Id: <20210204105005.30722-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,32 +19,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of: overlay: fix warning about format specifier in debug
- message
-To: barebox@lists.infradead.org
+Subject: [PATCH] of: base: call of_set_root_node() before of_fix_tree()
+To: Barebox List <barebox@lists.infradead.org>
 
-GCC catches a -Wformat-extra-args. Fix it.
+This was the original order in the arm code. The mvebu architecture
+needs this as it has some early of fixups in the mvebu_mbus code
+registered which use of_machine_is_compatible(). This only works
+when the root node has been set before running the fixup.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/overlay.c | 2 +-
+ drivers/of/base.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index e2a68b0ae8bd..8f4ee3f0a245 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -223,7 +223,7 @@ int of_process_overlay(struct device_node *root,
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index edb0a8e71a..8759099d74 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1704,8 +1704,8 @@ void barebox_register_of(struct device_node *root)
+ 	if (root_node)
+ 		return;
  
- 		target = find_target(root, fragment);
- 		if (!target)
--			pr_debug("cannot find target for fragment",
-+			pr_debug("cannot find target for fragment %s\n",
- 				 fragment->name);
+-	of_fix_tree(root);
+ 	of_set_root_node(root);
++	of_fix_tree(root);
  
- 		err = process(target, ovl, data);
+ 	if (IS_ENABLED(CONFIG_OFDEVICE))
+ 		of_probe();
 -- 
-2.30.0
+2.20.1
 
 
 _______________________________________________
