@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from mickerik.phytec.de ([195.145.39.210])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l7cGO-0008Fl-9M
- for barebox@lists.infradead.org; Thu, 04 Feb 2021 10:53:28 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  4 Feb 2021 11:53:25 +0100
-Message-Id: <20210204105325.9970-1-s.hauer@pengutronix.de>
+ id 1l7yzs-0003ht-VM
+ for barebox@lists.infradead.org; Fri, 05 Feb 2021 11:09:59 +0000
+From: =?utf-8?B?U3RlZmFuIFJpZWRtw7xsbGVy?= <S.Riedmueller@phytec.de>
+Date: Fri, 5 Feb 2021 11:09:52 +0000
+Message-ID: <53f5610110bdfaab978ce139d565aaa40549c1a6.camel@phytec.de>
+References: <20210120125203.736421-1-andrej.picej@norik.com>
+In-Reply-To: <20210120125203.736421-1-andrej.picej@norik.com>
+Content-Language: de-DE
+Content-ID: <67B4DADA6BB4EF4B97307AC50B1A84F7@phytec.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,95 +23,369 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] watchdog: Print seconds to expire
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [RFC PATCH] ARM: phytec-som-imx6: phycard DRAM autodetection
+To: "andrej.picej@norik.com" <andrej.picej@norik.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-This adds a parameter to the watchdog devices that shows what we think
-when the watchdog expires. The watchdog should reset the system once the
-counter hits zero. When the system resets earlier or the counter shows
-negative values then there might be problems with the watchdog. Useful
-for debugging watchdog related problems.
+Hi Andrej,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/watchdog/wd_core.c | 29 +++++++++++++++++++++++++++++
- include/watchdog.h         |  3 +++
- 2 files changed, 32 insertions(+)
+I like this idea. It is nice to have a working example of DRAM size detection
+available aside from the DCD table setups.
 
-diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index 643c53268f..4b0ee31d5b 100644
---- a/drivers/watchdog/wd_core.c
-+++ b/drivers/watchdog/wd_core.c
-@@ -54,6 +54,9 @@ int watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
- 	if (ret)
- 		return ret;
- 
-+	wd->last_ping = get_time_ns();
-+	wd->timeout_cur = timeout;
-+
- 	wd->running = timeout ? WDOG_HW_RUNNING : WDOG_HW_NOT_RUNNING;
- 
- 	return 0;
-@@ -155,6 +158,25 @@ static unsigned int dev_get_watchdog_priority(struct device_d *dev)
- 	return priority;
- }
- 
-+static int seconds_to_expire_get(struct param_d *p, void *priv)
-+{
-+	struct watchdog *wd = priv;
-+	uint64_t diff;
-+
-+	if (!wd->timeout_cur) {
-+		wd->seconds_to_expire = -1;
-+		return 0;
-+	}
-+
-+	diff = get_time_ns() - wd->last_ping;
-+
-+	do_div(diff, 1000000000);
-+
-+	wd->seconds_to_expire = wd->timeout_cur - diff;
-+
-+	return 0;
-+}
-+
- int watchdog_register(struct watchdog *wd)
- {
- 	struct param_d *p;
-@@ -218,6 +240,13 @@ int watchdog_register(struct watchdog *wd)
- 			goto error_unregister;
- 	}
- 
-+	p = dev_add_param_uint32(&wd->dev, "seconds_to_expire", param_set_readonly,
-+			seconds_to_expire_get, &wd->seconds_to_expire, "%d", wd);
-+	if (IS_ERR(p)) {
-+		ret = PTR_ERR(p);
-+		goto error_unregister;
-+	}
-+
- 	list_add_tail(&wd->list, &watchdog_list);
- 
- 	pr_debug("registering watchdog %s with priority %d\n", watchdog_name(wd),
-diff --git a/include/watchdog.h b/include/watchdog.h
-index 4d755a5a79..281885686e 100644
---- a/include/watchdog.h
-+++ b/include/watchdog.h
-@@ -22,8 +22,11 @@ struct watchdog {
- 	struct device_d dev;
- 	unsigned int priority;
- 	unsigned int timeout_max;
-+	unsigned int timeout_cur;
- 	unsigned int poller_timeout_cur;
- 	unsigned int poller_enable;
-+	uint64_t last_ping;
-+	int seconds_to_expire;
- 	struct poller_async poller;
- 	struct list_head list;
- 	int running; /* enum wdog_hw_running */
--- 
-2.20.1
+Please see my notes below.
 
+On Wed, 2021-01-20 at 13:52 +0100, Andrej Picej wrote:
+> Add support for automatic DRAM size detection on phytec phycard imx6q
+> machines. Currently supported SoM variants are 1 GiB (1 bank) and 2 GiB
+> variant. Machines now boot from internal SRAM (see DCD table loadaddr
+> 0x00907000) and then do DRAM size detection and configuration in plain
+> C code (instead of hardcoded DCD table values). After initializing DRAM,
+> remaining barebox image is xloaded from GPMI NAND to DRAM and started
+> from there.
+> 
+> Booting process / strategy on phycard machines:
+>  1) lowlevel in SRAM (PBL)
+>   1.1) detect DRAM size
+>   1.2) configure DRAM accordingly
+>   1.3) copy remaining barebox image from NAND to DRAM (addr 0x10000000)
+>   1.4) jump to DRAM (addr 0x10000000)
+>  2) lowlevel in DRAM (PBL)
+>   2.1) skip DRAM detection since already running from DRAM
+>   2.2) main barebox entry
+>  3) board code
+>  4) ...
+> 
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> ---
+>  .../flash-header-phytec-pcaaxl3.imxcfg        |   4 +
+>  arch/arm/boards/phytec-som-imx6/lowlevel.c    | 255 ++++++++++++++++++
+>  images/Makefile.imx                           |   2 +
+>  3 files changed, 261 insertions(+)
+>  create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-
+> pcaaxl3.imxcfg
+> 
+> diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-
+> pcaaxl3.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-
+> pcaaxl3.imxcfg
+> new file mode 100644
+> index 000000000..fcfef9c23
+> --- /dev/null
+> +++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.imxcfg
+> @@ -0,0 +1,4 @@
+> +soc imx6
+> +loadaddr 0x00907000
+> +max_load_size 0x31000
+> +ivtofs 0x400
+> diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c
+> b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+> index 62a1c8de7..7bc9d123a 100644
+> --- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
+> +++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+> @@ -16,6 +16,261 @@
+>  #include <asm/cache.h>
+>  #include <asm/mmu.h>
+>  #include <mach/imx6.h>
+> +#include <mach/imx6-mmdc.h>
+> +#include <mach/esdctl.h>
+> +#include <mach/xload.h>
+> +
+> +/* udelay() is not available in PBL, need to improvise */
+> +static void __udelay(int us)
+> +{
+> +	volatile int i;
+> +
+> +	for (i = 0; i < us * 4; i++);
+> +}
+> +
+> +#define	IMX6Q_UART2			2
+> +#define	IMX6Q_UART3			3
+> +#define	DRIVE_STRENGTH_40_OHM		0x30
+> +#define	DRIVE_STRENGTH_48_OHM		0x28
+> +
+> +/* mmdc DDR io registers */
+> +static struct mx6dq_iomux_ddr_regs mx6dq_ddr_ioregs = {
+> +	.dram_sdclk_0 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdclk_1 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_cas = DRIVE_STRENGTH_40_OHM,
+> +	.dram_ras = DRIVE_STRENGTH_40_OHM,
+> +	.dram_reset = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdcke0 = 0x00003000,
+> +	.dram_sdcke1 = 0x00003000,
+> +	.dram_sdba2 = 0x00000000,
+> +	.dram_sdodt0 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdodt1 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdqs0 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdqs1 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdqs2 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdqs3 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdqs4 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdqs5 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdqs6 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_sdqs7 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_dqm0 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_dqm1 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_dqm2 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_dqm3 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_dqm4 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_dqm5 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_dqm6 = DRIVE_STRENGTH_40_OHM,
+> +	.dram_dqm7 = DRIVE_STRENGTH_40_OHM,
+> +};
+> +
+> +static struct mx6_mmdc_calibration mx6q_mmdc_calib = {
+> +	.p0_mpwldectrl0 = 0x0013001b,
+> +	.p0_mpwldectrl1 = 0x003b0034,
+> +	.p1_mpwldectrl0 = 0x0037004b,
+> +	.p1_mpwldectrl1 = 0x004b0055,
+> +	.p0_mpdgctrl0 = 0x4350035e,
+> +	.p0_mpdgctrl1 = 0x035c0358,
+> +	.p1_mpdgctrl0 = 0x436e0376,
+> +	.p1_mpdgctrl1 = 0x03770352,
+> +	.p0_mprddlctl = 0x3c333436,
+> +	.p1_mprddlctl = 0x35332f3b,
+> +	.p0_mpwrdlctl = 0x37363e39,
+> +	.p1_mpwrdlctl = 0x432f433d,
+> +};
+> +
+> +/* MT41K128M16JT-125 IT */
+> +static struct mx6_ddr3_cfg mt41k128m16jt = {
+> +	.mem_speed = 1600,
+> +	.density = 2,
+> +	.width = 16,
+> +	.banks = 8,
+> +	.rowaddr = 14,
+> +	.coladdr = 10,
+> +	.pagesz = 2,
+> +	.trcd = 1375,
+> +	.trcmin = 4875,
+> +	.trasmin = 3500,
+> +};
+> +
+> +/* DDR 64bit 1GB */
+> +static struct mx6_ddr_sysinfo mem1g_q = {
+> +	.dsize		= 2,
+> +	.cs1_mirror	= 1,
+> +	.cs_density	= 8,
+> +	.ncs		= 1,
+> +	.bi_on		= 1,
+> +	.rtt_nom	= 1,
+> +	.rtt_wr		= 0,
+> +	.ralat		= 5,
+> +	.walat		= 1,
+> +	.mif3_mode	= 3,
+> +	.rst_to_cke	= 0x23,
+> +	.sde_to_rst	= 0x10,
+> +};
+> +
+> +/* DDR 64bit 2GB */
+> +static struct mx6_ddr_sysinfo mem2g_q = {
+> +	.dsize		= 2,
+> +	.cs1_mirror	= 1,
+> +	.cs_density	= 8,
+> +	.ncs		= 2,
+> +	.bi_on		= 1,
+> +	.rtt_nom	= 1,
+> +	.rtt_wr		= 0,
+> +	.ralat		= 5,
+> +	.walat		= 1,
+> +	.mif3_mode	= 3,
+> +	.rst_to_cke	= 0x23,
+> +	.sde_to_rst	= 0x10,
+> +};
+> +
+> +/* mmdc GRP io registers */
+> +static struct mx6dq_iomux_grp_regs mx6dq_grp_ioregs = {
+> +	.grp_ddr_type = 0x000c0000,
+> +	.grp_ddrmode_ctl = 0x00020000,
+> +	.grp_ddrpke = 0x00000000,
+> +	.grp_addds = DRIVE_STRENGTH_40_OHM,
+> +	.grp_ctlds = DRIVE_STRENGTH_40_OHM,
+> +	.grp_ddrmode = 0x00020000,
+> +	.grp_b0ds = DRIVE_STRENGTH_40_OHM,
+> +	.grp_b1ds = DRIVE_STRENGTH_40_OHM,
+> +	.grp_b2ds = DRIVE_STRENGTH_40_OHM,
+> +	.grp_b3ds = DRIVE_STRENGTH_40_OHM,
+> +	.grp_b4ds = DRIVE_STRENGTH_40_OHM,
+> +	.grp_b5ds = DRIVE_STRENGTH_40_OHM,
+> +	.grp_b6ds = DRIVE_STRENGTH_40_OHM,
+> +	.grp_b7ds = DRIVE_STRENGTH_40_OHM,
+> +};
 
+Wouldn't it make sense to put these structs into a separate header file. If
+there will be more variants in the future, e.g. phyCORE or phyFLEX it would
+fast get confusing.
+
+> +
+> +static inline void setup_uart_phycard_imx6q(int UARTn)
+> +{
+> +	void __iomem *iomuxbase = (void *)MX6_IOMUXC_BASE_ADDR;
+> +
+> +	switch (UARTn) {
+> +	case IMX6Q_UART2:
+> +		/* Setup UART2 pin muxing */
+> +		writel(0x4, iomuxbase + 0xc0);
+> +		writel(0x4, iomuxbase + 0xbc);
+> +		writel(0x1, iomuxbase + 0x928);
+> +
+> +		imx6_ungate_all_peripherals();
+> +		imx6_uart_setup((void *)MX6_UART2_BASE_ADDR);
+> +		pbl_set_putc(imx_uart_putc, (void *)MX6_UART2_BASE_ADDR);
+> +		break;
+> +	case IMX6Q_UART3:
+> +		/* Setup UART3 pin muxing */
+> +		writel(0x2, iomuxbase + 0xb4);
+> +		writel(0x2, iomuxbase + 0xb8);
+> +		writel(0x1, iomuxbase + 0x930);
+> +
+> +		imx6_ungate_all_peripherals();
+> +		imx6_uart_setup((void *)MX6_UART3_BASE_ADDR);
+> +		pbl_set_putc(imx_uart_putc, (void *)MX6_UART3_BASE_ADDR);
+> +		break;
+> +	default:
+> +		return;
+> +	}
+> +
+> +	putc_ll('>');
+> +}
+> +
+> +#define DRAM_CONFIG_DELAY	5000
+> +#define DRAM_CALIB_DELAY	50000
+> +
+> +static unsigned long phycard_imx6q_ll_autodetect_dram_init(void)
+> +{
+> +	unsigned long memsize = SZ_2G;
+> +	unsigned long dram_size = 0;
+> +
+> +	pr_debug("DRAM init & size detection\n");
+> +
+> +	/* First try with 2 GiB DRAM configuration */
+> +	mx6dq_dram_iocfg(64, &mx6dq_ddr_ioregs, &mx6dq_grp_ioregs);
+> +	mx6_dram_cfg(&mem2g_q, &mx6q_mmdc_calib, &mt41k128m16jt);
+> +	__udelay(DRAM_CONFIG_DELAY);
+> +
+> +	mmdc_do_write_level_calibration();
+> +	mmdc_do_dqs_calibration();
+> +	__udelay(DRAM_CALIB_DELAY);
+> +
+> +	pr_debug("DRAM probe with 2 GiB config\n");
+> +
+> +	dram_size = get_ram_size((volatile long *)0x10000000, (long)memsize);
+> +	pr_debug("DRAM detected size: 0x%lx\n", dram_size);
+> +
+> +	if (dram_size != SZ_2G) {
+> +		/* Next try with 1 GiB DRAM configuration */
+> +		memsize = SZ_1G;
+> +
+> +		mx6dq_dram_iocfg(64, &mx6dq_ddr_ioregs, &mx6dq_grp_ioregs);
+> +		mx6_dram_cfg(&mem1g_q, &mx6q_mmdc_calib, &mt41k128m16jt);
+> +		__udelay(DRAM_CONFIG_DELAY);
+> +
+> +		mmdc_do_write_level_calibration();
+> +		mmdc_do_dqs_calibration();
+> +		__udelay(DRAM_CALIB_DELAY);
+> +
+> +		pr_debug("DRAM probe with 1 GiB config\n");
+> +	} else {
+> +		pr_debug("DRAM size 0x%lx already detected, " \
+> +			"skipping DRAM re-configuration\n", dram_size);
+> +	}
+> +
+> +	dram_size = get_ram_size((volatile long *)0x10000000, (long)memsize);
+> +	pr_debug("DRAM final detected size: 0x%lx\n", dram_size);
+> +
+> +#ifdef DEBUG
+> +	pr_debug("DRAM calibration results:\n");
+> +	mmdc_print_calibration_results();
+> +#endif
+> +	return memsize;
+> +}
+
+If get_ram_size returns the actual DRAM size in the specified region, wouldn't
+it make sense to detect it with the maximum possible size (SZ_4G) and use the
+actual size returned from get_ram_size to select the correct setting? This
+would make it easier to add support for additional DRAM configurations.
+
+Or am I missing something here?
+
+> +
+> +static void phycard_imx6q_ll_autodetect_init(void)
+> +{
+> +	if (IS_ENABLED(CONFIG_DEBUG_LL))
+> +		setup_uart_phycard_imx6q(IMX6Q_UART3);
+> +
+> +	/* Already running from DRAM? */
+> +	if (get_pc() > 0x10000000) {
+> +		pr_debug("DRAM already initialized, skipping...\n");
+> +		return;
+> +	}
+> +
+> +	/* Running from SRAM, need to configure DRAM */
+> +	phycard_imx6q_ll_autodetect_dram_init();
+> +
+> +	/* Now xload remaining part of barebox image from NAND */
+> +	pr_debug("xloading barebox image from NAND\n");
+> +	imx6_nand_start_image();
+> +
+> +	pr_err("Booting failed!\n");
+> +	hang();
+> +}
+> +
+> +extern char __dtb_imx6q_phytec_phycard_start[];
+> +
+> +static noinline void phycard_imx6q_ll_autodetect_start(void)
+> +{
+> +	void *fdt = __dtb_imx6q_phytec_phycard_start + get_runtime_offset();
+> +
+> +	phycard_imx6q_ll_autodetect_init();
+> +
+> +	imx6q_barebox_entry(fdt);
+> +}
+> +
+> +ENTRY_FUNCTION(start_phycard_imx6q_ll_autodetect, r0, r1, r2)
+> +{
+> +	imx6_cpu_lowlevel_init();
+> +
+> +	arm_setup_stack(0x00940000);
+> +
+> +	relocate_to_current_adr();
+> +	setup_c();
+> +	barrier();
+> +
+> +	phycard_imx6q_ll_autodetect_start();
+> +}
+
+It would be nice to have this included in PHYTEC_ENTRY instead of creating a
+new entry function.
+
+Best regards,
+Stefan
+
+>  
+>  static inline void setup_uart(void)
+>  {
+> diff --git a/images/Makefile.imx b/images/Makefile.imx
+> index 514db326b..80d2fd805 100644
+> --- a/images/Makefile.imx
+> +++ b/images/Makefile.imx
+> @@ -205,6 +205,8 @@ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6,
+> start_phytec_phyboard_su
+>  
+>  $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6,
+> start_phytec_phyboard_subra_1gib_1bank, phytec-som-imx6/flash-header-phytec-
+> pfla02-1gib-1bank, phytec-phyboard-subra-1gib-1bank)
+>  
+> +$(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6,
+> start_phycard_imx6q_ll_autodetect, phytec-som-imx6/flash-header-phytec-
+> pcaaxl3, phytec-phycard-imx6q-som-nand)
+> +
+>  $(call build_imx_habv4img, CONFIG_MACH_DFI_FS700_M60,
+> start_imx6dl_dfi_fs700_m60_6s, dfi-fs700-m60/flash-header-fs700-m60-6s, dfi-
+> fs700-m60-6s)
+>  
+>  $(call build_imx_habv4img, CONFIG_MACH_DFI_FS700_M60,
+> start_imx6q_dfi_fs700_m60_6q_micron, dfi-fs700-m60/flash-header-fs700-m60-
+> 6q-micron, dfi-fs700-m60-6q-micron)
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
