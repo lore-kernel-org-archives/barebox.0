@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l9C3J-0005FE-NH
+ id 1l9C3J-0005FF-NE
  for barebox@lists.infradead.org; Mon, 08 Feb 2021 19:18:34 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  8 Feb 2021 20:18:26 +0100
-Message-Id: <20210208191827.19241-3-a.fatoum@pengutronix.de>
+Date: Mon,  8 Feb 2021 20:18:27 +0100
+Message-Id: <20210208191827.19241-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20210208191827.19241-1-a.fatoum@pengutronix.de>
 References: <20210208191827.19241-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,357 +21,731 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] regulator: add driver for stm32-vrefbuf
+Subject: [PATCH 4/4] aiodev: add support for STM32 ADC
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, has@pengutronix.de
 
-This driver supports STMicroelectronics STM32 VREFBUF (voltage
-reference buffer) which can be used as voltage reference for
-internal ADCs, DACs and also for external components through
-dedicated Vref+ pin. Ported from Linux v5.11-rc1.
+This driver supports simple one-shot readings rather than continuous
+sampling with DMA, etc. ADC channels should be configured via
+device tree, using the kernel bindings.
+
+Code is based on the stm32-adc drivers of Linux v5.11-rc1 and
+U-Boot v2021.01-rc4.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/stm32mp151.dtsi      |   4 +
- drivers/regulator/Kconfig         |   9 ++
- drivers/regulator/Makefile        |   1 +
- drivers/regulator/helpers.c       |  25 ++++
- drivers/regulator/stm32-vrefbuf.c | 220 ++++++++++++++++++++++++++++++
- include/regulator.h               |   5 +
- 6 files changed, 264 insertions(+)
- create mode 100644 drivers/regulator/stm32-vrefbuf.c
+ arch/arm/configs/stm32mp_defconfig |   3 +
+ drivers/aiodev/Kconfig             |   7 +
+ drivers/aiodev/Makefile            |   1 +
+ drivers/aiodev/stm32-adc-core.c    | 211 ++++++++++++++++
+ drivers/aiodev/stm32-adc-core.h    |  52 ++++
+ drivers/aiodev/stm32-adc.c         | 374 +++++++++++++++++++++++++++++
+ 6 files changed, 648 insertions(+)
+ create mode 100644 drivers/aiodev/stm32-adc-core.c
+ create mode 100644 drivers/aiodev/stm32-adc-core.h
+ create mode 100644 drivers/aiodev/stm32-adc.c
 
-diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
-index ca11492de564..b82227fa206e 100644
---- a/arch/arm/dts/stm32mp151.dtsi
-+++ b/arch/arm/dts/stm32mp151.dtsi
-@@ -62,3 +62,7 @@
- &bsec {
- 	barebox,provide-mac-address = <&ethernet0 0x39>;
- };
-+
-+&vrefbuf {
-+	regulator-name = "vref";
-+};
-diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
-index 1ce057180a01..9be81832f23d 100644
---- a/drivers/regulator/Kconfig
-+++ b/drivers/regulator/Kconfig
-@@ -28,6 +28,15 @@ config REGULATOR_STM32_PWR
- 	  This driver supports internal regulators (1V1, 1V8, 3V3) in the
- 	  STMicroelectronics STM32 chips.
+diff --git a/arch/arm/configs/stm32mp_defconfig b/arch/arm/configs/stm32mp_defconfig
+index e9f89e69d969..e1ee4ec08205 100644
+--- a/arch/arm/configs/stm32mp_defconfig
++++ b/arch/arm/configs/stm32mp_defconfig
+@@ -94,6 +94,8 @@ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_FASTBOOT=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_AIODEV=y
++CONFIG_STM32_ADC=y
+ CONFIG_DRIVER_SERIAL_STM32=y
+ CONFIG_DRIVER_NET_DESIGNWARE_EQOS=y
+ CONFIG_DRIVER_NET_DESIGNWARE_STM32=y
+@@ -132,6 +134,7 @@ CONFIG_STM32_BSEC=y
+ CONFIG_REGULATOR=y
+ CONFIG_REGULATOR_FIXED=y
+ CONFIG_REGULATOR_STM32_PWR=y
++CONFIG_REGULATOR_STM32_VREFBUF=y
+ CONFIG_REGULATOR_STPMIC1=y
+ CONFIG_REMOTEPROC=y
+ CONFIG_STM32_REMOTEPROC=y
+diff --git a/drivers/aiodev/Kconfig b/drivers/aiodev/Kconfig
+index 5fb445c096e6..88d013aad0b9 100644
+--- a/drivers/aiodev/Kconfig
++++ b/drivers/aiodev/Kconfig
+@@ -43,4 +43,11 @@ config AM335X_ADC
+ 	  rather than continuous sampling with DMA, etc.  ADC channels should be
+ 	  configured via device tree, using the kernel bindings.
  
-+config REGULATOR_STM32_VREFBUF
-+	tristate "STMicroelectronics STM32 VREFBUF"
++config STM32_ADC
++	tristate "STM32 ADC driver"
 +	depends on ARCH_STM32MP || COMPILE_TEST
 +	help
-+	  This driver supports STMicroelectronics STM32 VREFBUF (voltage
-+	  reference buffer) which can be used as voltage reference for
-+	  internal ADCs, DACs and also for external components through
-+	  dedicated Vref+ pin.
-+
- config REGULATOR_STPMIC1
- 	tristate "STMicroelectronics STPMIC1 PMIC Regulators"
- 	depends on MFD_STPMIC1
-diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
-index 4d0bba6c52dd..67859bb79ee4 100644
---- a/drivers/regulator/Makefile
-+++ b/drivers/regulator/Makefile
-@@ -6,3 +6,4 @@ obj-$(CONFIG_REGULATOR_PFUZE) += pfuze.o
- obj-$(CONFIG_REGULATOR_STPMIC1) += stpmic1_regulator.o
- obj-$(CONFIG_REGULATOR_ANATOP) += anatop-regulator.o
- obj-$(CONFIG_REGULATOR_STM32_PWR) += stm32-pwr.o
-+obj-$(CONFIG_REGULATOR_STM32_VREFBUF) += stm32-vrefbuf.o
-diff --git a/drivers/regulator/helpers.c b/drivers/regulator/helpers.c
-index c4877cecf7e9..e741944ce7cf 100644
---- a/drivers/regulator/helpers.c
-+++ b/drivers/regulator/helpers.c
-@@ -369,4 +369,29 @@ int regulator_map_voltage_iterate(struct regulator_dev *rdev,
- }
- EXPORT_SYMBOL_GPL(regulator_map_voltage_iterate);
- 
-+/**
-+ * regulator_list_voltage_table - List voltages with table based mapping
-+ *
-+ * @rdev: Regulator device
-+ * @selector: Selector to convert into a voltage
-+ *
-+ * Regulators with table based mapping between voltages and
-+ * selectors can set volt_table in the regulator descriptor
-+ * and then use this function as their list_voltage() operation.
-+ */
-+int regulator_list_voltage_table(struct regulator_dev *rdev,
-+				 unsigned int selector)
-+{
-+	if (!rdev->desc->volt_table) {
-+		BUG_ON(!rdev->desc->volt_table);
-+		return -EINVAL;
-+	}
- 
-+	if (selector >= rdev->desc->n_voltages)
-+		return -EINVAL;
-+	if (selector < rdev->desc->linear_min_sel)
-+		return 0;
-+
-+	return rdev->desc->volt_table[selector];
-+}
-+EXPORT_SYMBOL_GPL(regulator_list_voltage_table);
-diff --git a/drivers/regulator/stm32-vrefbuf.c b/drivers/regulator/stm32-vrefbuf.c
++	  Support for ADC on STM32.  Supports simple one-shot readings
++	  rather than continuous sampling with DMA, etc.  ADC channels should be
++	  configured via device tree, using the kernel bindings.
+ endif
+diff --git a/drivers/aiodev/Makefile b/drivers/aiodev/Makefile
+index 5f48b2022a81..52652f67b756 100644
+--- a/drivers/aiodev/Makefile
++++ b/drivers/aiodev/Makefile
+@@ -5,3 +5,4 @@ obj-$(CONFIG_LM75) += lm75.o
+ obj-$(CONFIG_MC13XXX_ADC) += mc13xxx_adc.o
+ obj-$(CONFIG_QORIQ_THERMAL) += qoriq_thermal.o
+ obj-$(CONFIG_AM335X_ADC) += am335x_adc.o
++obj-$(CONFIG_STM32_ADC) += stm32-adc.o stm32-adc-core.o
+diff --git a/drivers/aiodev/stm32-adc-core.c b/drivers/aiodev/stm32-adc-core.c
 new file mode 100644
-index 000000000000..3956b1f64f6e
+index 000000000000..410e2a894e12
 --- /dev/null
-+++ b/drivers/regulator/stm32-vrefbuf.c
-@@ -0,0 +1,220 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/aiodev/stm32-adc-core.c
+@@ -0,0 +1,211 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Copyright (C) STMicroelectronics 2017
-+ *
++ * Copyright (C) 2018, STMicroelectronics - All Rights Reserved
 + * Author: Fabrice Gasnier <fabrice.gasnier@st.com>
++ *
++ * Originally based on the Linux kernel v4.18 drivers/iio/adc/stm32-adc-core.c.
 + */
 +
 +#include <common.h>
-+#include <linux/bitfield.h>
 +#include <linux/clk.h>
-+#include <linux/iopoll.h>
-+#include <of.h>
 +#include <regulator.h>
++#include <linux/bitops.h>
++#include "stm32-adc-core.h"
 +
-+/* STM32 VREFBUF registers */
-+#define STM32_VREFBUF_CSR		0x00
++/* STM32H7 - common registers for all ADC instances */
++#define STM32H7_ADC_CCR			(STM32_ADCX_COMN_OFFSET + 0x08)
 +
-+/* STM32 VREFBUF CSR bitfields */
-+#define STM32_VRS			GENMASK(6, 4)
-+#define STM32_VRR			BIT(3)
-+#define STM32_HIZ			BIT(1)
-+#define STM32_ENVR			BIT(0)
++/* STM32H7_ADC_CCR - bit fields */
++#define STM32H7_PRESC_SHIFT		18
++#define STM32H7_PRESC_MASK		GENMASK(21, 18)
++#define STM32H7_CKMODE_SHIFT		16
++#define STM32H7_CKMODE_MASK		GENMASK(17, 16)
 +
-+#define STM32_VREFBUF_AUTO_SUSPEND_DELAY_MS	10
++/* STM32 H7 maximum analog clock rate (from datasheet) */
++#define STM32H7_ADC_MAX_CLK_RATE	36000000
 +
-+#define readl_relaxed readl
-+#define writel_relaxed writel
-+
-+struct stm32_vrefbuf {
-+	void __iomem *base;
-+	struct clk *clk;
-+	struct device_d *dev;
-+	struct regulator_dev rdev;
++/**
++ * struct stm32h7_adc_ck_spec - specification for stm32h7 adc clock
++ * @ckmode: ADC clock mode, Async or sync with prescaler.
++ * @presc: prescaler bitfield for async clock mode
++ * @div: prescaler division ratio
++ */
++struct stm32h7_adc_ck_spec {
++	u32 ckmode;
++	u32 presc;
++	int div;
 +};
 +
-+struct stm32_vrefbuf_desc {
-+	struct regulator_desc desc;
-+	const char *supply_name;
++static const struct stm32h7_adc_ck_spec stm32h7_adc_ckmodes_spec[] = {
++	/* 00: CK_ADC[1..3]: Asynchronous clock modes */
++	{ 0, 0, 1 },
++	{ 0, 1, 2 },
++	{ 0, 2, 4 },
++	{ 0, 3, 6 },
++	{ 0, 4, 8 },
++	{ 0, 5, 10 },
++	{ 0, 6, 12 },
++	{ 0, 7, 16 },
++	{ 0, 8, 32 },
++	{ 0, 9, 64 },
++	{ 0, 10, 128 },
++	{ 0, 11, 256 },
++	/* HCLK used: Synchronous clock modes (1, 2 or 4 prescaler) */
++	{ 1, 0, 1 },
++	{ 2, 0, 2 },
++	{ 3, 0, 4 },
 +};
 +
-+static inline struct stm32_vrefbuf *to_stm32_vrefbuf(struct regulator_dev *rdev)
++static int stm32h7_adc_clk_sel(struct device_d *dev,
++			       struct stm32_adc_common *common)
 +{
-+	return container_of(rdev, struct stm32_vrefbuf, rdev);
-+}
++	u32 ckmode, presc;
++	unsigned long rate;
++	unsigned int i;
++	int div;
 +
-+static const unsigned int stm32_vrefbuf_voltages[] = {
-+	/* Matches resp. VRS = 000b, 001b, 010b, 011b */
-+	2500000, 2048000, 1800000, 1500000,
-+};
-+
-+static int stm32_vrefbuf_enable(struct regulator_dev *rdev)
-+{
-+	struct stm32_vrefbuf *priv = to_stm32_vrefbuf(rdev);
-+	u32 val;
-+	int ret;
-+
-+	val = readl_relaxed(priv->base + STM32_VREFBUF_CSR);
-+	val = (val & ~STM32_HIZ) | STM32_ENVR;
-+	writel_relaxed(val, priv->base + STM32_VREFBUF_CSR);
-+
-+	/*
-+	 * Vrefbuf startup time depends on external capacitor: wait here for
-+	 * VRR to be set. That means output has reached expected value.
-+	 * ~650us sleep should be enough for caps up to 1.5uF. Use 10ms as
-+	 * arbitrary timeout.
-+	 */
-+	ret = readl_poll_timeout(priv->base + STM32_VREFBUF_CSR, val,
-+				 val & STM32_VRR, 10000);
-+	if (ret) {
-+		dev_err(priv->dev, "stm32 vrefbuf timed out!\n");
-+		val = readl_relaxed(priv->base + STM32_VREFBUF_CSR);
-+		val = (val & ~STM32_ENVR) | STM32_HIZ;
-+		writel_relaxed(val, priv->base + STM32_VREFBUF_CSR);
++	/* stm32h7 bus clock is common for all ADC instances (mandatory) */
++	if (!common->bclk) {
++		dev_err(dev, "No bclk clock found\n");
++		return -ENOENT;
 +	}
 +
-+	return ret;
-+}
++	/*
++	 * stm32h7 can use either 'bus' or 'adc' clock for analog circuitry.
++	 * So, choice is to have bus clock mandatory and adc clock optional.
++	 * If optional 'adc' clock has been found, then try to use it first.
++	 */
++	if (common->aclk) {
++		/*
++		 * Asynchronous clock modes (e.g. ckmode == 0)
++		 * From spec: PLL output musn't exceed max rate
++		 */
++		rate = clk_get_rate(common->aclk);
++		if (!rate) {
++			dev_err(dev, "Invalid aclk rate: 0\n");
++			return -EINVAL;
++		}
 +
-+static int stm32_vrefbuf_disable(struct regulator_dev *rdev)
-+{
-+	struct stm32_vrefbuf *priv = to_stm32_vrefbuf(rdev);
-+	u32 val;
++		for (i = 0; i < ARRAY_SIZE(stm32h7_adc_ckmodes_spec); i++) {
++			ckmode = stm32h7_adc_ckmodes_spec[i].ckmode;
++			presc = stm32h7_adc_ckmodes_spec[i].presc;
++			div = stm32h7_adc_ckmodes_spec[i].div;
 +
-+	val = readl_relaxed(priv->base + STM32_VREFBUF_CSR);
-+	val &= ~STM32_ENVR;
-+	writel_relaxed(val, priv->base + STM32_VREFBUF_CSR);
++			if (ckmode)
++				continue;
++
++			if ((rate / div) <= STM32H7_ADC_MAX_CLK_RATE)
++				goto out;
++		}
++	}
++
++	/* Synchronous clock modes (e.g. ckmode is 1, 2 or 3) */
++	rate = clk_get_rate(common->bclk);
++	if (!rate) {
++		dev_err(dev, "Invalid bus clock rate: 0\n");
++		return -EINVAL;
++	}
++
++	for (i = 0; i < ARRAY_SIZE(stm32h7_adc_ckmodes_spec); i++) {
++		ckmode = stm32h7_adc_ckmodes_spec[i].ckmode;
++		presc = stm32h7_adc_ckmodes_spec[i].presc;
++		div = stm32h7_adc_ckmodes_spec[i].div;
++
++		if (!ckmode)
++			continue;
++
++		if ((rate / div) <= STM32H7_ADC_MAX_CLK_RATE)
++			goto out;
++	}
++
++	dev_err(dev, "clk selection failed\n");
++	return -EINVAL;
++
++out:
++	/* rate used later by each ADC instance to control BOOST mode */
++	common->rate = rate / div;
++
++	/* Set common clock mode and prescaler */
++	clrsetbits_le32(common->base + STM32H7_ADC_CCR,
++			STM32H7_CKMODE_MASK | STM32H7_PRESC_MASK,
++			ckmode << STM32H7_CKMODE_SHIFT |
++			presc << STM32H7_PRESC_SHIFT);
++
++	dev_dbg(dev, "Using %s clock/%d source at %ld kHz\n",
++		ckmode ? "bus" : "adc", div, common->rate / 1000);
 +
 +	return 0;
 +}
 +
-+static int stm32_vrefbuf_is_enabled(struct regulator_dev *rdev)
++static int stm32_adc_core_probe(struct device_d *dev)
 +{
-+	struct stm32_vrefbuf *priv = to_stm32_vrefbuf(rdev);
++	struct stm32_adc_common *common;
 +	int ret;
 +
-+	ret = readl_relaxed(priv->base + STM32_VREFBUF_CSR) & STM32_ENVR;
++	common = xzalloc(sizeof(*common));
++
++	common->vref = regulator_get(dev, "vref");
++	if (IS_ERR(common->vref)) {
++		dev_err(dev, "can't get vref-supply: %pe\n", common->vref);
++		return PTR_ERR(common->vref);
++	}
++
++	ret = regulator_get_voltage(common->vref);
++	if (ret < 0) {
++		dev_err(dev, "can't get vref-supply value: %d\n", ret);
++		return ret;
++	}
++	common->vref_uv = ret;
++
++	common->aclk = clk_get(dev, "adc");
++	if (!IS_ERR(common->aclk)) {
++		ret = clk_enable(common->aclk);
++		if (ret) {
++			dev_err(dev, "Can't enable aclk: %d\n", ret);
++			return ret;
++		}
++	}
++
++	common->bclk = clk_get(dev, "bus");
++	if (!IS_ERR(common->bclk)) {
++		ret = clk_enable(common->bclk);
++		if (ret) {
++			dev_err(dev, "Can't enable bclk: %d\n", ret);
++			goto err_aclk_disable;
++		}
++	}
++
++	common->base = dev_request_mem_region(dev, 0);
++	if (IS_ERR(common->base)) {
++		dev_err(dev, "can't get address\n");
++		return -ENOENT;
++	}
++
++	ret = stm32h7_adc_clk_sel(dev, common);
++	if (ret)
++		goto err_bclk_disable;
++
++	dev->priv = common;
++	return of_platform_populate(dev->device_node, NULL, dev);
++
++err_bclk_disable:
++	clk_disable(common->bclk);
++
++err_aclk_disable:
++	clk_disable(common->aclk);
 +
 +	return ret;
 +}
 +
-+static int stm32_vrefbuf_set_voltage_sel(struct regulator_dev *rdev,
-+					 unsigned sel)
-+{
-+	struct stm32_vrefbuf *priv = to_stm32_vrefbuf(rdev);
-+	u32 val;
-+
-+	val = readl_relaxed(priv->base + STM32_VREFBUF_CSR);
-+	val = (val & ~STM32_VRS) | FIELD_PREP(STM32_VRS, sel);
-+	writel_relaxed(val, priv->base + STM32_VREFBUF_CSR);
-+
-+	return 0;
-+}
-+
-+static int stm32_vrefbuf_get_voltage_sel(struct regulator_dev *rdev)
-+{
-+	struct stm32_vrefbuf *priv = to_stm32_vrefbuf(rdev);
-+	u32 val;
-+	int ret;
-+
-+	val = readl_relaxed(priv->base + STM32_VREFBUF_CSR);
-+	ret = FIELD_GET(STM32_VRS, val);
-+
-+	return ret;
-+}
-+
-+static const struct regulator_ops stm32_vrefbuf_volt_ops = {
-+	.enable		= stm32_vrefbuf_enable,
-+	.disable	= stm32_vrefbuf_disable,
-+	.is_enabled	= stm32_vrefbuf_is_enabled,
-+	.get_voltage_sel = stm32_vrefbuf_get_voltage_sel,
-+	.set_voltage_sel = stm32_vrefbuf_set_voltage_sel,
-+	.list_voltage	= regulator_list_voltage_table,
++static const struct of_device_id stm32_adc_core_ids[] = {
++	{ .compatible = "st,stm32h7-adc-core" },
++	{ .compatible = "st,stm32mp1-adc-core" },
++	{}
 +};
 +
-+static const struct stm32_vrefbuf_desc stm32_vrefbuf_regu = {
-+	.desc = {
-+		.volt_table = stm32_vrefbuf_voltages,
-+		.n_voltages = ARRAY_SIZE(stm32_vrefbuf_voltages),
-+		.ops = &stm32_vrefbuf_volt_ops,
-+		.off_on_delay = 1000,
-+	},
-+	.supply_name = "vdda",
++static struct driver_d stm32_adc_core_driver = {
++	.name		= "stm32-adc-core",
++	.probe		= stm32_adc_core_probe,
++	.of_compatible	= DRV_OF_COMPAT(stm32_adc_core_ids),
++};
++device_platform_driver(stm32_adc_core_driver);
+diff --git a/drivers/aiodev/stm32-adc-core.h b/drivers/aiodev/stm32-adc-core.h
+new file mode 100644
+index 000000000000..de6c0b9495f3
+--- /dev/null
++++ b/drivers/aiodev/stm32-adc-core.h
+@@ -0,0 +1,52 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2018, STMicroelectronics - All Rights Reserved
++ * Author: Fabrice Gasnier <fabrice.gasnier@st.com>.
++ *
++ * Originally based on the Linux kernel v4.18 drivers/iio/adc/stm32-adc-core.h.
++ */
++
++#ifndef __STM32_ADC_H
++#define __STM32_ADC_H
++
++/*
++ * STM32 - ADC global register map
++ * ________________________________________________________
++ * | Offset |                 Register                    |
++ * --------------------------------------------------------
++ * | 0x000  |                Master ADC1                  |
++ * --------------------------------------------------------
++ * | 0x100  |                Slave ADC2                   |
++ * --------------------------------------------------------
++ * | 0x200  |                Slave ADC3                   |
++ * --------------------------------------------------------
++ * | 0x300  |         Master & Slave common regs          |
++ * --------------------------------------------------------
++ */
++#define STM32_ADC_MAX_ADCS		3
++#define STM32_ADCX_COMN_OFFSET		0x300
++
++#include <linux/types.h>
++
++struct regulator;
++struct clk;
++
++/**
++ * struct stm32_adc_common - stm32 ADC driver common data (for all instances)
++ * @base:		control registers base cpu addr
++ * @rate:		clock rate used for analog circuitry
++ * @aclk:		clock for the analog circuitry
++ * @bclk:		bus clock common for all ADCs
++ * @vref:		regulator reference
++ * @vref_uv:		reference supply voltage (uV)
++ */
++struct stm32_adc_common {
++	void __iomem *base;
++	unsigned long rate;
++	struct clk *aclk;
++	struct clk *bclk;
++	struct regulator *vref;
++	int vref_uv;
 +};
 +
-+static int stm32_vrefbuf_probe(struct device_d *dev)
++#endif
+diff --git a/drivers/aiodev/stm32-adc.c b/drivers/aiodev/stm32-adc.c
+new file mode 100644
+index 000000000000..eb9548adef70
+--- /dev/null
++++ b/drivers/aiodev/stm32-adc.c
+@@ -0,0 +1,374 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2018, STMicroelectronics - All Rights Reserved
++ * Author: Fabrice Gasnier <fabrice.gasnier@st.com>
++ *
++ * Originally based on the Linux kernel v4.18 drivers/iio/adc/stm32-adc.c.
++ */
++
++#include <common.h>
++#include <linux/bitops.h>
++#include <linux/iopoll.h>
++#include <aiodev.h>
++#include <regulator.h>
++#include <linux/math64.h>
++#include "stm32-adc-core.h"
++
++/* STM32H7 - Registers for each ADC instance */
++#define STM32H7_ADC_ISR			0x00
++#define STM32H7_ADC_CR			0x08
++#define STM32H7_ADC_CFGR		0x0C
++#define STM32H7_ADC_SMPR1		0x14
++#define STM32H7_ADC_SMPR2		0x18
++#define STM32H7_ADC_PCSEL		0x1C
++#define STM32H7_ADC_SQR1		0x30
++#define STM32H7_ADC_DR			0x40
++#define STM32H7_ADC_DIFSEL		0xC0
++
++/* STM32H7_ADC_ISR - bit fields */
++#define STM32MP1_VREGREADY		BIT(12)
++#define STM32H7_EOC			BIT(2)
++#define STM32H7_ADRDY			BIT(0)
++
++/* STM32H7_ADC_CR - bit fields */
++#define STM32H7_DEEPPWD			BIT(29)
++#define STM32H7_ADVREGEN		BIT(28)
++#define STM32H7_BOOST			BIT(8)
++#define STM32H7_ADSTART			BIT(2)
++#define STM32H7_ADDIS			BIT(1)
++#define STM32H7_ADEN			BIT(0)
++
++/* STM32H7_ADC_CFGR bit fields */
++#define STM32H7_EXTEN			GENMASK(11, 10)
++#define STM32H7_DMNGT			GENMASK(1, 0)
++
++/* STM32H7_ADC_SQR1 - bit fields */
++#define STM32H7_SQ1_SHIFT		6
++
++/* BOOST bit must be set on STM32H7 when ADC clock is above 20MHz */
++#define STM32H7_BOOST_CLKRATE		20000000UL
++
++#define STM32_ADC_CH_MAX		20	/* max number of channels */
++#define STM32_ADC_MAX_SMP		7	/* SMPx range is [0..7] */
++#define STM32_ADC_TIMEOUT_US		100000
++
++struct stm32_adc_regs {
++	int reg;
++	int mask;
++	int shift;
++};
++
++struct stm32_adc_cfg {
++	unsigned int max_channels;
++	unsigned int num_bits;
++	bool has_vregready;
++	const struct stm32_adc_regs *smp_bits;
++	const unsigned int *smp_cycles;
++};
++
++struct stm32_adc {
++	struct stm32_adc_common *common;
++	void __iomem *regs;
++	const struct stm32_adc_cfg *cfg;
++	u32 channel_mask;
++	u32 data_mask;
++	struct aiodevice aiodev;
++	void __iomem *base;
++	struct aiochannel *channels;
++	u32 *channel_map;
++	u32 smpr_val[2];
++};
++
++static void stm32_adc_stop(struct stm32_adc *adc)
 +{
-+	struct stm32_vrefbuf *priv;
-+	struct regulator_dev *rdev;
-+	struct regulator *supply;
++	setbits_le32(adc->regs + STM32H7_ADC_CR, STM32H7_ADDIS);
++	clrbits_le32(adc->regs + STM32H7_ADC_CR, STM32H7_BOOST);
++	/* Setting DEEPPWD disables ADC vreg and clears ADVREGEN */
++	setbits_le32(adc->regs + STM32H7_ADC_CR, STM32H7_DEEPPWD);
++
++	regulator_disable(adc->common->vref);
++}
++
++static int stm32_adc_start_channel(struct stm32_adc *adc, int channel)
++{
++	struct device_d *dev = adc->aiodev.hwdev;
++	struct stm32_adc_common *common = adc->common;
 +	int ret;
++	u32 val;
 +
-+	supply = regulator_get(dev, stm32_vrefbuf_regu.supply_name);
-+	if (IS_ERR(supply))
-+		return PTR_ERR(supply);
++	ret = regulator_enable(common->vref);
++	if (ret)
++		return ret;
 +
-+	priv = xzalloc(sizeof(*priv));
-+	priv->dev = dev;
++	/* Exit deep power down, then enable ADC voltage regulator */
++	clrbits_le32(adc->regs + STM32H7_ADC_CR, STM32H7_DEEPPWD);
++	setbits_le32(adc->regs + STM32H7_ADC_CR, STM32H7_ADVREGEN);
++	if (common->rate > STM32H7_BOOST_CLKRATE)
++		setbits_le32(adc->regs + STM32H7_ADC_CR, STM32H7_BOOST);
 +
-+	priv->base = dev_request_mem_region(dev, 0);
-+	if (IS_ERR(priv->base))
-+		return PTR_ERR(priv->base);
++	/* Wait for startup time */
++	if (!adc->cfg->has_vregready) {
++		udelay(20);
++	} else {
++		ret = readl_poll_timeout(adc->regs + STM32H7_ADC_ISR, val,
++					 val & STM32MP1_VREGREADY,
++					 STM32_ADC_TIMEOUT_US);
++		if (ret < 0) {
++			stm32_adc_stop(adc);
++			dev_err(dev, "Failed to enable vreg: %d\n", ret);
++			return ret;
++		}
++	}
 +
-+	priv->clk = clk_get(dev, NULL);
-+	if (IS_ERR(priv->clk))
-+		return PTR_ERR(priv->clk);
++	/* Only use single ended channels */
++	writel(0, adc->regs + STM32H7_ADC_DIFSEL);
 +
-+	ret = clk_enable(priv->clk);
-+	if (ret) {
-+		dev_err(dev, "clk enable failed with error %d\n", ret);
++	/* Enable ADC, Poll for ADRDY to be set (after adc startup time) */
++	setbits_le32(adc->regs + STM32H7_ADC_CR, STM32H7_ADEN);
++	ret = readl_poll_timeout(adc->regs + STM32H7_ADC_ISR, val,
++				 val & STM32H7_ADRDY, STM32_ADC_TIMEOUT_US);
++	if (ret < 0) {
++		stm32_adc_stop(adc);
++		dev_err(dev, "Failed to enable ADC: %d\n", ret);
 +		return ret;
 +	}
 +
-+	rdev = &priv->rdev;
++	/* Preselect channels */
++	writel(adc->channel_mask, adc->regs + STM32H7_ADC_PCSEL);
 +
-+	rdev->dev = dev;
-+	rdev->desc = &stm32_vrefbuf_regu.desc;
++	/* Apply sampling time settings */
++	writel(adc->smpr_val[0], adc->regs + STM32H7_ADC_SMPR1);
++	writel(adc->smpr_val[1], adc->regs + STM32H7_ADC_SMPR2);
 +
-+	ret = of_regulator_register(rdev, dev->device_node);
-+	if (ret) {
-+		ret = PTR_ERR(rdev);
-+		dev_err(dev, "register failed with error %d\n", ret);
-+		goto err_clk_dis;
-+	}
++	/* Program regular sequence: chan in SQ1 & len = 0 for one channel */
++	writel(channel << STM32H7_SQ1_SHIFT, adc->regs + STM32H7_ADC_SQR1);
 +
-+	regulator_enable(supply);
-+
-+	dev->priv = priv;
++	/* Trigger detection disabled (conversion can be launched in SW) */
++	clrbits_le32(adc->regs + STM32H7_ADC_CFGR, STM32H7_EXTEN |
++		     STM32H7_DMNGT);
 +
 +	return 0;
++}
 +
-+err_clk_dis:
-+	clk_disable(priv->clk);
++static int stm32_adc_channel_data(struct stm32_adc *adc, int channel,
++				  int *data)
++{
++	struct device_d *dev = &adc->aiodev.dev;
++	int ret;
++	u32 val;
++
++	setbits_le32(adc->regs + STM32H7_ADC_CR, STM32H7_ADSTART);
++	ret = readl_poll_timeout(adc->regs + STM32H7_ADC_ISR, val,
++				 val & STM32H7_EOC, STM32_ADC_TIMEOUT_US);
++	if (ret < 0) {
++		dev_err(dev, "conversion timed out: %d\n", ret);
++		return ret;
++	}
++
++	*data = readl(adc->regs + STM32H7_ADC_DR);
++
++	return 0;
++}
++
++static int stm32_adc_channel_single_shot(struct aiochannel *chan, int *data)
++{
++	struct stm32_adc *adc = container_of(chan->aiodev, struct stm32_adc, aiodev);
++	int ret, index;
++	s64 raw64;
++
++	index = adc->channel_map[chan->index];
++
++	ret = stm32_adc_start_channel(adc, index);
++	if (ret)
++		return ret;
++
++	ret = stm32_adc_channel_data(adc, index, data);
++	if (ret)
++		return ret;
++
++	raw64 = *data;
++	raw64 *= adc->common->vref_uv;
++	*data = div_s64(raw64, adc->data_mask);
++
++	return 0;
++}
++
++static void stm32_adc_smpr_init(struct stm32_adc *adc, int channel, u32 smp_ns)
++{
++	const struct stm32_adc_regs *smpr = &adc->cfg->smp_bits[channel];
++	u32 period_ns, shift = smpr->shift, mask = smpr->mask;
++	unsigned int smp, r = smpr->reg;
++
++	/* Determine sampling time (ADC clock cycles) */
++	period_ns = NSEC_PER_SEC / adc->common->rate;
++	for (smp = 0; smp <= STM32_ADC_MAX_SMP; smp++)
++		if ((period_ns * adc->cfg->smp_cycles[smp]) >= smp_ns)
++			break;
++	if (smp > STM32_ADC_MAX_SMP)
++		smp = STM32_ADC_MAX_SMP;
++
++	/* pre-build sampling time registers (e.g. smpr1, smpr2) */
++	adc->smpr_val[r] = (adc->smpr_val[r] & ~mask) | (smp << shift);
++}
++
++static int stm32_adc_chan_of_init(struct device_d *dev, struct stm32_adc *adc)
++{
++	unsigned int i;
++	int num_channels = 0, num_times = 0;
++	u32 smp = 0xffffffff; /* Set sampling time to max value by default */
++	int ret;
++
++	/* Retrieve single ended channels listed in device tree */
++	of_get_property(dev->device_node, "st,adc-channels", &num_channels);
++	num_channels /= sizeof(__be32);
++
++	if (num_channels > adc->cfg->max_channels) {
++		dev_err(dev, "too many st,adc-channels: %d\n", num_channels);
++		return -EINVAL;
++	}
++
++	/* Optional sample time is provided either for each, or all channels */
++	of_get_property(dev->device_node, "st,min-sample-time-nsecs", &num_times);
++	num_times /= sizeof(__be32);
++	if (num_times > 1 && num_times != num_channels) {
++		dev_err(dev, "Invalid st,min-sample-time-nsecs\n");
++		return -EINVAL;
++	}
++
++	adc->channels = calloc(sizeof(*adc->channels), num_channels);
++	if (!adc->channels)
++		return -ENOMEM;
++
++	adc->aiodev.channels = calloc(sizeof(*adc->aiodev.channels), num_channels);
++	if (!adc->aiodev.channels)
++		return -ENOMEM;
++
++	adc->channel_map = calloc(sizeof(u32), num_channels);
++
++	adc->aiodev.num_channels = num_channels;
++	adc->aiodev.hwdev = dev;
++	adc->aiodev.read = stm32_adc_channel_single_shot;
++
++	for (i = 0; i < num_channels; i++) {
++		u32 chan;
++
++		ret = of_property_read_u32_index(dev->device_node, "st,adc-channels", i, &chan);
++		if (ret)
++			return ret;
++
++		if (chan >= adc->cfg->max_channels) {
++			dev_err(dev, "bad channel %u\n", chan);
++			return -EINVAL;
++		}
++
++		adc->channel_mask |= 1 << chan;
++
++		adc->aiodev.channels[i] = &adc->channels[i];
++		adc->channels[i].unit = "uV";
++		adc->channel_map[i] = chan;
++
++		/*
++		 * Using of_property_read_u32_index(), smp value will only be
++		 * modified if valid u32 value can be decoded. This allows to
++		 * get either no value, 1 shared value for all indexes, or one
++		 * value per channel.
++		 */
++		of_property_read_u32_index(dev->device_node, "st,min-sample-time-nsecs",
++					   i, &smp);
++		/* Prepare sampling time settings */
++		stm32_adc_smpr_init(adc, chan, smp);
++	}
++
++	adc->data_mask = (1 << adc->cfg->num_bits) - 1;
++
++	ret = aiodevice_register(&adc->aiodev);
++	if (ret < 0)
++		dev_err(dev, "Failed to register aiodev\n");
 +
 +	return ret;
 +}
 +
-+static void stm32_vrefbuf_remove(struct device_d *dev)
++static int stm32_adc_probe(struct device_d *dev)
 +{
-+	struct stm32_vrefbuf *priv = dev->priv;
++	struct stm32_adc_common *common = dev->parent->priv;
++	struct stm32_adc *adc;
++	u32 offset;
++	int ret;
 +
-+	clk_disable(priv->clk);
++	ret = of_property_read_u32(dev->device_node, "reg", &offset);
++	if (ret) {
++		dev_err(dev, "Can't read reg property\n");
++		return ret;
++	}
++
++	adc = xzalloc(sizeof(*adc));
++
++	adc->regs = common->base + offset;
++	adc->cfg = device_get_match_data(dev);
++	adc->common = common;
++
++	return stm32_adc_chan_of_init(dev, adc);
++}
++
++/*
++ * stm32h7_smp_bits - describe sampling time register index & bit fields
++ * Sorted so it can be indexed by channel number.
++ */
++static const struct stm32_adc_regs stm32h7_smp_bits[] = {
++	/* STM32H7_ADC_SMPR1, smpr[] index, mask, shift for SMP0 to SMP9 */
++	{ 0, GENMASK(2, 0), 0 },
++	{ 0, GENMASK(5, 3), 3 },
++	{ 0, GENMASK(8, 6), 6 },
++	{ 0, GENMASK(11, 9), 9 },
++	{ 0, GENMASK(14, 12), 12 },
++	{ 0, GENMASK(17, 15), 15 },
++	{ 0, GENMASK(20, 18), 18 },
++	{ 0, GENMASK(23, 21), 21 },
++	{ 0, GENMASK(26, 24), 24 },
++	{ 0, GENMASK(29, 27), 27 },
++	/* STM32H7_ADC_SMPR2, smpr[] index, mask, shift for SMP10 to SMP19 */
++	{ 1, GENMASK(2, 0), 0 },
++	{ 1, GENMASK(5, 3), 3 },
++	{ 1, GENMASK(8, 6), 6 },
++	{ 1, GENMASK(11, 9), 9 },
++	{ 1, GENMASK(14, 12), 12 },
++	{ 1, GENMASK(17, 15), 15 },
++	{ 1, GENMASK(20, 18), 18 },
++	{ 1, GENMASK(23, 21), 21 },
++	{ 1, GENMASK(26, 24), 24 },
++	{ 1, GENMASK(29, 27), 27 },
 +};
 +
-+static const struct of_device_id __maybe_unused stm32_vrefbuf_of_match[] = {
-+	{ .compatible = "st,stm32-vrefbuf", },
-+	{},
++/* STM32H7 programmable sampling time (ADC clock cycles, rounded down) */
++static const unsigned int stm32h7_adc_smp_cycles[STM32_ADC_MAX_SMP + 1] = {
++	1, 2, 8, 16, 32, 64, 387, 810,
 +};
 +
-+static struct driver_d stm32_vrefbuf_driver = {
-+	.probe = stm32_vrefbuf_probe,
-+	.name  = "stm32-vrefbuf",
-+	.remove = stm32_vrefbuf_remove,
-+	.of_compatible = stm32_vrefbuf_of_match,
++static const struct stm32_adc_cfg stm32h7_adc_cfg = {
++	.num_bits = 16,
++	.max_channels = STM32_ADC_CH_MAX,
++	.smp_bits = stm32h7_smp_bits,
++	.smp_cycles = stm32h7_adc_smp_cycles,
 +};
-+device_platform_driver(stm32_vrefbuf_driver);
 +
-+MODULE_LICENSE("GPL v2");
-+MODULE_AUTHOR("Fabrice Gasnier <fabrice.gasnier@st.com>");
-+MODULE_DESCRIPTION("STMicroelectronics STM32 VREFBUF driver");
-+MODULE_ALIAS("platform:stm32-vrefbuf");
-diff --git a/include/regulator.h b/include/regulator.h
-index 83a8813265ff..bbe8dd91d84b 100644
---- a/include/regulator.h
-+++ b/include/regulator.h
-@@ -51,6 +51,7 @@ struct regulator_bulk_data {
-  * @disable_val: Disabling value for control when using regmap enable/disable ops
-  * @enable_is_inverted: A flag to indicate set enable_mask bits to disable
-  *                      when using regulator_enable_regmap and friends APIs.
-+ * @volt_table: Voltage mapping table (if table based mapping)
-  * @fixed_uV: Fixed voltage of rails.
-  * @off_on_delay: guard time (in uS), before re-enabling a regulator
-  */
-@@ -75,6 +76,7 @@ struct regulator_desc {
- 
- 	const struct regulator_linear_range *linear_ranges;
- 	int n_linear_ranges;
-+	const unsigned int *volt_table;
- 	int fixed_uV;
- 	unsigned int off_on_delay;
- };
-@@ -190,6 +192,9 @@ int regulator_get_voltage(struct regulator *regulator);
-  */
- int regulator_desc_list_voltage_linear_range(const struct regulator_desc *desc,
- 					     unsigned int selector);
 +
-+int regulator_list_voltage_table(struct regulator_dev *rdev,
-+				  unsigned int selector);
- #else
- 
- static inline struct regulator *regulator_get(struct device_d *dev, const char *id)
++static const struct stm32_adc_cfg stm32mp1_adc_cfg = {
++	.num_bits = 16,
++	.max_channels = STM32_ADC_CH_MAX,
++	.smp_bits = stm32h7_smp_bits,
++	.smp_cycles = stm32h7_adc_smp_cycles,
++	.has_vregready = true,
++};
++
++static const struct of_device_id qoriq_tmu_match[] = {
++	{ .compatible = "st,stm32h7-adc", .data = &stm32h7_adc_cfg },
++	{ .compatible = "st,stm32mp1-adc", .data = &stm32mp1_adc_cfg },
++	{}
++};
++
++static struct driver_d imx_thermal_driver = {
++	.name		= "stm32-adc",
++	.probe		= stm32_adc_probe,
++	.of_compatible	= DRV_OF_COMPAT(qoriq_tmu_match),
++};
++device_platform_driver(imx_thermal_driver);
 -- 
 2.30.0
 
