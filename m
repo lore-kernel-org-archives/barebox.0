@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l93zm-0000GP-G0
- for barebox@lists.infradead.org; Mon, 08 Feb 2021 10:42:19 +0000
-Date: Mon, 8 Feb 2021 11:42:16 +0100
-Message-ID: <20210208104216.GH19583@pengutronix.de>
-References: <20210131201846.3440477-1-ahmad@a3f.at>
+ id 1l943R-0000c8-Gz
+ for barebox@lists.infradead.org; Mon, 08 Feb 2021 10:46:06 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  8 Feb 2021 11:46:01 +0100
+Message-Id: <20210208104601.7141-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210131201846.3440477-1-ahmad@a3f.at>
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7] Add sound and GRUB beep tune support
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] sandbox: increase MALLOC_SIZE from 4M to 16M
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Sun, Jan 31, 2021 at 09:18:39PM +0100, Ahmad Fatoum wrote:
-> I've been meaning to upstream pwm-beeper support for a piezobuzzer,
-> but it would be a real shame if the obnoxious buzzing would delay the
-> boot. So let me present asynchronous beeping support for barebox.
-> 
-> If you don't have the suitable hardware lying around you can synth
-> your own tunes on the barebox sandbox shell as well.
-> 
-> The Imperial March:
->   beep 480 440 4 440 4 440 4 349 3 523 1 440 4 349 3 523 1 440 8 659 4 659 4 659 4 698 3 523 1 415 4 349 3 523 1 440 8
-> 
-> Rebel's sabotage:
->   beep -c
-> 
-> Cheers,
-> Ahmad Fatoum (7):
->   sandbox: migrate to SDL 2.0
->   drivers: add sound card driver support
->   sound: add basic synthesizers for PCM beeper use
->   sound: add SDL 2.0 sound driver
->   commands: add beep command
->   sound: add PWM beeper support
->   sound: add gpio-beeper support
+4M of malloc space is quite limited when comparing this to the systems
+that run Linux and use barebox for bootstrap. Increase the malloc size
+in sandbox to be better able to test code that does bigger allocations.
 
-Finally! I've been waiting for that for so long ;)
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/sandbox/configs/sandbox_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Applied, thanks
-
-Sascha
-
-
+diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+index 66fcfbdbd0a3..d9d96d948155 100644
+--- a/arch/sandbox/configs/sandbox_defconfig
++++ b/arch/sandbox/configs/sandbox_defconfig
+@@ -1,3 +1,4 @@
++CONFIG_MALLOC_SIZE=0x1000000
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.0
+
 
 _______________________________________________
 barebox mailing list
