@@ -1,11 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from www153.your-server.de ([213.133.104.153])
+Received: from mout-p-102.mailbox.org ([2001:67c:2050::465:102])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l9TOm-0003Yy-BO
- for barebox@lists.infradead.org; Tue, 09 Feb 2021 13:49:50 +0000
-From: Edoardo Scaglia <scaglia@amelchem.com>
-Date: Tue,  9 Feb 2021 14:49:36 +0100
-Message-Id: <20210209134936.2551-1-scaglia@amelchem.com>
+ id 1l9kzD-00060o-Kq
+ for barebox@lists.infradead.org; Wed, 10 Feb 2021 08:36:37 +0000
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4DbCm06JyWzQlYS
+ for <barebox@lists.infradead.org>; Wed, 10 Feb 2021 09:36:32 +0100 (CET)
+Received: from smtp1.mailbox.org ([80.241.60.240])
+ by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de
+ [80.241.56.117]) (amavisd-new, port 10030)
+ with ESMTP id AaJhUXJMTeAr for <barebox@lists.infradead.org>;
+ Wed, 10 Feb 2021 09:36:29 +0100 (CET)
+Date: Wed, 10 Feb 2021 09:36:29 +0100 (CET)
+From: barebox+mailing@cookiesoft.de
+Message-ID: <315301163.215482.1612946189188@office.mailbox.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,54 +30,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of: partitions: fix NULL pointer dereference in
- of_partition_fixup()
-To: barebox@lists.infradead.org
-Cc: Edoardo Scaglia <scaglia@amelchem.com>
+Subject: lock path in barebox-state
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-When barebox 'internal devicetree' is not used and your board
-registers a device that in turn registers a of_partition_fixup() (such
-as at24 EEPROM), running the bootm command crashes barebox with a NULL
-pointer dereference.
+Hey everyone, 
 
-The error occurs when barebox applies Linux DTB fixups, specifically
-in following lines of_partition_fixup():
+we use barebox-state in conjunction with systemd on our platform. 
+We removed all legacy programs and paths (in systemd terms), so is `/var/lock` removed as well. 
 
-    name = of_get_reproducible_name(cdev->device_node);
-    np = of_find_node_by_reproducible_name(root, name);
+Lennart Poettering decribed it in a github issue why /var/lock is bad (and the reason why it's not pupolated per default): https://github.com/systemd/systemd/issues/15668#issuecomment-623069821 
 
-since internal devicetree is not used cdev->device_node is NULL thus
-of_get_reproducibile_name() returns NULL then NULL is passed as lookup
-string to of_find_node_by_reproducible_name() which crashes trying to
-dereference NULL pointer.
+So for now our option is to create /var/lock via tmpfiles so barebox-state can use them. 
 
-The culprit is commit fa9179444c36f9daf5010215cf8e4dcb3bd1ffb2.
-Previously of_partition_fixup() returned -EINVAL when
-cdev->device_node was NULL, apparently that check was lost along the
-road.
+I would like to see a upstream fix for this, where barebox uses its own directory, e.g. `/run/barebox/lock` or similar. 
 
-Signed-off-by: Edoardo Scaglia <scaglia@amelchem.com>
----
- drivers/of/partition.c | 3 +++
- 1 file changed, 3 insertions(+)
+I'm not sure if this breaks anything on older systems, maybe you can think about it for a second. 
 
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index 65c24c5426..b71716218b 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -235,6 +235,9 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
- 	struct device_node *np;
- 	char *name;
- 
-+	if (!cdev->device_node)
-+		return -EINVAL;
-+
- 	name = of_get_reproducible_name(cdev->device_node);
- 	np = of_find_node_by_reproducible_name(root, name);
- 	free(name);
--- 
-2.30.0
+Please let me know what you think the best approach would be. 
 
+Greetings, 
+Marcel
 
 _______________________________________________
 barebox mailing list
