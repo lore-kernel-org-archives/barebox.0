@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout-p-201.mailbox.org ([80.241.56.171])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l9lQG-00016H-Cq
- for barebox@lists.infradead.org; Wed, 10 Feb 2021 09:04:33 +0000
-Date: Wed, 10 Feb 2021 10:04:26 +0100 (CET)
-From: barebox+mailing@cookiesoft.de
-Message-ID: <1144651043.216228.1612947866221@office.mailbox.org>
-In-Reply-To: <bbd44e26-4d30-83b1-a103-e9e3b8ef1819@pengutronix.de>
-References: <315301163.215482.1612946189188@office.mailbox.org>
- <463f958aef1dca20c56278a4cf81c6154127cfe2.camel@pengutronix.de>
- <bbd44e26-4d30-83b1-a103-e9e3b8ef1819@pengutronix.de>
+ id 1l9laS-0002Ug-4Z
+ for barebox@lists.infradead.org; Wed, 10 Feb 2021 09:15:05 +0000
+Date: Wed, 10 Feb 2021 10:15:00 +0100
+Message-ID: <20210210091500.GQ19583@pengutronix.de>
+References: <20210208191827.19241-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20210208191827.19241-1-a.fatoum@pengutronix.de>
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,26 +22,148 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: lock path in barebox-state
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Rouven Czerwinski <r.czerwinski@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/4] regulator: add regulator_get_voltage() to API
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, has@pengutronix.de
 
-Hey both of you,
+On Mon, Feb 08, 2021 at 08:18:24PM +0100, Ahmad Fatoum wrote:
+> ADC drivers need to query their reference regulator's voltage to
+> format their raw readings. Provide regulator_get_voltage() so ADC
+> drivers need not hardcode a reference voltage. Regulator drivers
+> that don't support this (i.e. nearly everything in-tree) will
+> have the function return with -EINVAL.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/regulator/core.c | 27 +++++++++++++++++++++++++++
+>  include/regulator.h      | 21 +++++++++++++++++++++
+>  2 files changed, 48 insertions(+)
 
-> Since barebox-state is part of the dt-utils software suite, questions
-should be directed to oss-tools@pengutronix.de  
+Applied, thanks
 
-Sorry for that, but thanks for the hint!
+Sascha
 
+> 
+> diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+> index 6ea21a4609d5..7ced283c116c 100644
+> --- a/drivers/regulator/core.c
+> +++ b/drivers/regulator/core.c
+> @@ -176,6 +176,9 @@ int of_regulator_register(struct regulator_dev *rd, struct device_node *node)
+>  
+>  	ri->node = node;
+>  
+> +	if (rd->desc->fixed_uV && rd->desc->n_voltages == 1)
+> +		ri->min_uv = ri->max_uv = rd->desc->fixed_uV;
+> +
+>  	of_property_read_u32(node, "regulator-enable-ramp-delay",
+>  			&ri->enable_time_us);
+>  	of_property_read_u32(node, "regulator-min-microvolt",
+> @@ -539,6 +542,30 @@ void regulator_bulk_free(int num_consumers,
+>  }
+>  EXPORT_SYMBOL_GPL(regulator_bulk_free);
+>  
+> +int regulator_get_voltage(struct regulator *regulator)
+> +{
+> +	struct regulator_dev *rdev = regulator->ri->rdev;
+> +	int sel, ret;
+> +
+> +	if (rdev->desc->ops->get_voltage_sel) {
+> +		sel = rdev->desc->ops->get_voltage_sel(rdev);
+> +		if (sel < 0)
+> +			return sel;
+> +		ret = rdev->desc->ops->list_voltage(rdev, sel);
+> +	} else if (rdev->desc->ops->get_voltage) {
+> +		ret = rdev->desc->ops->get_voltage(rdev);
+> +	} else if (rdev->desc->ops->list_voltage) {
+> +		ret = rdev->desc->ops->list_voltage(rdev, 0);
+> +	} else if (rdev->desc->fixed_uV && (rdev->desc->n_voltages == 1)) {
+> +		ret = rdev->desc->fixed_uV;
+> +	} else {
+> +		return -EINVAL;
+> +	}
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(regulator_get_voltage_rdev);
+> +
+>  static void regulator_print_one(struct regulator_internal *ri)
+>  {
+>  	struct regulator *r;
+> diff --git a/include/regulator.h b/include/regulator.h
+> index 7c2a01b6875c..524e53042c92 100644
+> --- a/include/regulator.h
+> +++ b/include/regulator.h
+> @@ -51,6 +51,7 @@ struct regulator_bulk_data {
+>   * @disable_val: Disabling value for control when using regmap enable/disable ops
+>   * @enable_is_inverted: A flag to indicate set enable_mask bits to disable
+>   *                      when using regulator_enable_regmap and friends APIs.
+> + * @fixed_uV: Fixed voltage of rails.
+>   */
+>  
+>  struct regulator_desc {
+> @@ -73,6 +74,7 @@ struct regulator_desc {
+>  
+>  	const struct regulator_linear_range *linear_ranges;
+>  	int n_linear_ranges;
+> +	int fixed_uV;
+>  };
+>  
+>  struct regulator_dev {
+> @@ -92,6 +94,9 @@ struct regulator_ops {
+>  	int (*list_voltage) (struct regulator_dev *, unsigned int);
+>  	int (*set_voltage_sel) (struct regulator_dev *, unsigned int);
+>  	int (*map_voltage)(struct regulator_dev *, int min_uV, int max_uV);
+> +
+> +	int (*get_voltage) (struct regulator_dev *);
+> +	int (*get_voltage_sel) (struct regulator_dev *);
+>  };
+>  
+>  /*
+> @@ -166,6 +171,17 @@ int regulator_bulk_disable(int num_consumers,
+>  void regulator_bulk_free(int num_consumers,
+>  			 struct regulator_bulk_data *consumers);
+>  
+> +/**
+> + * regulator_get_voltage - get regulator output voltage
+> + * @regulator: regulator source
+> + *
+> + * This returns the current regulator voltage in uV.
+> + *
+> + * NOTE: If the regulator is disabled it will return the voltage value. This
+> + * function should not be used to determine regulator state.
+> + */
+> +int regulator_get_voltage(struct regulator *regulator);
+> +
+>  /*
+>   * Helper functions intended to be used by regulator drivers prior registering
+>   * their regulators.
+> @@ -223,6 +239,11 @@ static inline void regulator_bulk_free(int num_consumers,
+>  {
+>  }
+>  
+> +static inline int regulator_get_voltage(struct regulator *regulator)
+> +{
+> +	return -EINVAL;
+> +}
+> +
+>  #endif
+>  
+>  #endif /* __REGULATOR_H */
+> -- 
+> 2.30.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-> There's already a patch for that:
-> https://www.mail-archive.com/oss-tools@pengutronix.de/msg00063.html
-
-Wow, I haven't found it (maybe because I looked at the wrong mailing list (: )
-
-I will ask both of my questions there again.
-
-Greetings,
-Marcel
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
