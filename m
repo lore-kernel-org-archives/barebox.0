@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l9m3I-0006gf-Fi
- for barebox@lists.infradead.org; Wed, 10 Feb 2021 09:44:53 +0000
-Date: Wed, 10 Feb 2021 10:44:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20210210094447.GU19583@pengutronix.de>
+ id 1l9m9p-0007mp-EE
+ for barebox@lists.infradead.org; Wed, 10 Feb 2021 09:51:38 +0000
 References: <20210208163458.29143-1-jmaselbas@kalray.eu>
+ <20210208163458.29143-3-jmaselbas@kalray.eu>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <eeb04f6e-92d7-2e84-3ce1-156d2cd7cfe3@pengutronix.de>
+Date: Wed, 10 Feb 2021 10:51:35 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210208163458.29143-1-jmaselbas@kalray.eu>
+In-Reply-To: <20210208163458.29143-3-jmaselbas@kalray.eu>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] usb: gadget: dfu: Use func_to_dfu
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 3/3] usb: gadget: dfu: Replace printf with pr_err
+To: Jules Maselbas <jmaselbas@kalray.eu>, barebox@lists.infradead.org
 
-On Mon, Feb 08, 2021 at 05:34:56PM +0100, Jules Maselbas wrote:
-> Replace the uses of container_of with func_to_dfu when available.
-> 
+Hello Jules,
+
+On 08.02.21 17:34, Jules Maselbas wrote:
 > Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 > ---
->  drivers/usb/gadget/dfu.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-
-Applied, thanks
-
-Sascha
-
+>  drivers/usb/gadget/dfu.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
 > diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-> index 7e23fa315..9d6a9d252 100644
+> index 95e8da82e..a28e7c9e8 100644
 > --- a/drivers/usb/gadget/dfu.c
 > +++ b/drivers/usb/gadget/dfu.c
-> @@ -181,7 +181,7 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
->  	struct usb_descriptor_header **header;
->  	struct usb_interface_descriptor *desc;
->  	struct file_list_entry *fentry;
-> -	struct f_dfu *dfu = container_of(f, struct f_dfu, func);
-> +	struct f_dfu *dfu = func_to_dfu(f);
->  	int i;
->  	int			status;
->  	struct usb_string	*us;
-> @@ -863,7 +863,7 @@ out:
+> @@ -351,7 +351,7 @@ static void dfu_do_copy(struct dfu_work *dw)
 >  
->  static void dfu_free_func(struct usb_function *f)
->  {
-> -	struct f_dfu *dfu = container_of(f, struct f_dfu, func);
-> +	struct f_dfu *dfu = func_to_dfu(f);
+>  	ret = copy_file(DFU_TEMPFILE, dfu_file_entry->filename, 0);
+>  	if (ret) {
+> -		printf("copy file failed\n");
+> +		pr_err("dfu: copy file failed\n");
+
+Like with Linux, you could define pr_fmt(fmt) "dfu: " fmt before including
+any headers and that prefix will be applied for all pr_ in that file.
+
+>  		dfu->dfu_state = DFU_STATE_dfuERROR;
+>  		dfu->dfu_status = DFU_STATUS_errWRITE;
+>  		return;
+> @@ -396,7 +396,7 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
 >  
->  	free(dfu);
->  }
-> -- 
-> 2.17.1
-> 
-> 
+>  	dfu->dnreq = usb_ep_alloc_request(c->cdev->gadget->ep0);
+>  	if (!dfu->dnreq) {
+> -		printf("usb_ep_alloc_request failed\n");
+> +		pr_err("dfu: usb_ep_alloc_request failed\n");
+>  		status = -ENOMEM;
+>  		goto out;
+>  	}
+> @@ -445,7 +445,7 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
+>  
+>  	i = 0;
+>  	file_list_for_each_entry(dfu_files, fentry) {
+> -		printf("dfu: register alt%d(%s) with device %s\n",
+> +		pr_err("dfu: register alt%d(%s) with device %s\n",
+>  				i, fentry->name, fentry->filename);
+>  		i++;
+>  	}
 > 
 
 -- 
