@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l9ldt-0002xe-4W
- for barebox@lists.infradead.org; Wed, 10 Feb 2021 09:18:37 +0000
-Date: Wed, 10 Feb 2021 10:18:35 +0100
-Message-ID: <20210210091835.GS19583@pengutronix.de>
-References: <20210208104601.7141-1-a.fatoum@pengutronix.de>
+ id 1l9ll9-0004Qf-Pw
+ for barebox@lists.infradead.org; Wed, 10 Feb 2021 09:26:08 +0000
+Date: Wed, 10 Feb 2021 10:26:05 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20210210092605.GT19583@pengutronix.de>
+References: <20200918084532.2794-1-s.hauer@pengutronix.de>
+ <20200918084532.2794-10-s.hauer@pengutronix.de>
+ <c513bdd8-dda7-956d-b237-5f960878fa02@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210208104601.7141-1-a.fatoum@pengutronix.de>
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <c513bdd8-dda7-956d-b237-5f960878fa02@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +24,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] sandbox: increase MALLOC_SIZE from 4M to 16M
+Subject: Re: [PATCH 9/9] ARM: Add KASan support
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Feb 08, 2021 at 11:46:01AM +0100, Ahmad Fatoum wrote:
-> 4M of malloc space is quite limited when comparing this to the systems
-> that run Linux and use barebox for bootstrap. Increase the malloc size
-> in sandbox to be better able to test code that does bigger allocations.
+On Tue, Feb 09, 2021 at 10:25:57AM +0100, Ahmad Fatoum wrote:
+> Hello Sascha,
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/sandbox/configs/sandbox_defconfig | 1 +
->  1 file changed, 1 insertion(+)
+> On 18.09.20 10:45, Sascha Hauer wrote:
+> > This adds KASan support to the ARM architecture. What we are doing is:
+> > 
+> > * Add __no_sanitize_address attribute to various lowlevel functions
+> >   which do not run in a proper C environment
+> > * Add non-instrumented variants of memset/memcpy (prefixed with '__')
+> > * make original memcpy/memset weak symbols so strong definitions in
+> >   lib/kasan/common.c can replace them
+> > * Use non-instrumented memcpy in early functions
+> > * call kasan_init()
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  arch/arm/Kconfig              |  1 +
+> >  arch/arm/cpu/Makefile         |  2 ++
+> >  arch/arm/cpu/common.c         |  2 +-
+> >  arch/arm/cpu/setupc.S         |  6 +++---
+> 
+> Shouldn't you've touched setupc_64.S here as well?
 
-Applied, thanks
+Likely, yes. How did you stumble upon this?
 
 Sascha
-
-> 
-> diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-> index 66fcfbdbd0a3..d9d96d948155 100644
-> --- a/arch/sandbox/configs/sandbox_defconfig
-> +++ b/arch/sandbox/configs/sandbox_defconfig
-> @@ -1,3 +1,4 @@
-> +CONFIG_MALLOC_SIZE=0x1000000
->  CONFIG_HUSH_FANCY_PROMPT=y
->  CONFIG_CMDLINE_EDITING=y
->  CONFIG_AUTO_COMPLETE=y
-> -- 
-> 2.30.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
