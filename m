@@ -1,23 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpout-2.cvg.de ([2003:49:a034:1067:5::2])
+Received: from smtpout-3.cvg.de ([2003:49:a034:1067:5::3])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l9qTP-0003Ha-EG
- for barebox@lists.infradead.org; Wed, 10 Feb 2021 14:28:09 +0000
+ id 1l9qTP-0003Ht-DM
+ for barebox@lists.infradead.org; Wed, 10 Feb 2021 14:28:10 +0000
 Received: from mail-mta-3.intern.sigma-chemnitz.de
  (mail-mta-3.intern.sigma-chemnitz.de [192.168.12.71])
- by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id
- 11AERPq5732870
+ by mail-out-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id
+ 11AERSTA736622
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
- for <barebox@lists.infradead.org>; Wed, 10 Feb 2021 15:27:26 +0100
+ for <barebox@lists.infradead.org>; Wed, 10 Feb 2021 15:27:28 +0100
 Received: from reddoxx.intern.sigma-chemnitz.de
  (reddoxx.intern.sigma-chemnitz.de [192.168.0.193])
  by mail-mta-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id
- 11AERNni1819514
+ 11AERQZ11819526
  for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de;
- Wed, 10 Feb 2021 15:27:23 +0100
+ Wed, 10 Feb 2021 15:27:26 +0100
 From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Date: Wed, 10 Feb 2021 15:27:02 +0100
-Message-Id: <20210210142704.1855761-1-enrico.scholz@sigma-chemnitz.de>
+Date: Wed, 10 Feb 2021 15:27:04 +0100
+Message-Id: <20210210142704.1855761-3-enrico.scholz@sigma-chemnitz.de>
+In-Reply-To: <20210210142704.1855761-1-enrico.scholz@sigma-chemnitz.de>
+References: <20210210142704.1855761-1-enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -31,48 +33,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] dt:overlay: fix operation with multiple overlays
+Subject: [PATCH] nvmem: avoid false positive in of_nvmem_find() and simplify it
 To: barebox@lists.infradead.org
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 
-When applying multiple devicetree overlays the 'phandle' attribute
-must be updated too.  Else, every overlay will be adjusted to start
-with the same base which causes duplicate phandles.
+of_nvmem_find() compared only the node names which can return the
+wrong device in setups like
+
+|  &i2c1 {
+|      eeprom@50 {
+|      };
+|  };
+|  &i2c2 {
+|      eeprom@50 {
+|      };
+|  };
+
+Instead of checking the complete path ('full_name' attribute), the
+patch compares the device_node pointers directly.
+
+This is done in other places (e.g. of_find_i2c_adapter_by_node()) and
+in the linux kernel too.
 
 Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 ---
- drivers/of/base.c    | 1 +
- drivers/of/overlay.c | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/nvmem/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index edb0a8e71a0f..c88803d8ab4b 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -2385,6 +2385,7 @@ struct device_node *of_copy_node(struct device_node *parent, const struct device
- 	struct property *pp;
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 06e1414769aa..02d0af6e1de0 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -129,7 +129,7 @@ static struct nvmem_device *of_nvmem_find(struct device_node *nvmem_np)
+ 		return NULL;
  
- 	np = of_new_node(parent, other->name);
-+	np->phandle = other->phandle;
+ 	list_for_each_entry(dev, &nvmem_devs, node)
+-		if (dev->dev.device_node->name && !strcmp(dev->dev.device_node->name, nvmem_np->name))
++		if (dev->dev.device_node == nvmem_np)
+ 			return dev;
  
- 	list_for_each_entry(pp, &other->properties, list)
- 		of_new_property(np, pp->name, pp->value, pp->length);
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index 92d20b9a247e..79f8b6dfdbcf 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -66,8 +66,10 @@ static int of_overlay_apply(struct device_node *target,
- 
- 	for_each_child_of_node(overlay, child) {
- 		target_child = of_get_child_by_name(target, child->name);
--		if (!target_child)
-+		if (!target_child) {
- 			target_child = of_new_node(target, child->name);
-+			target_child->phandle = child->phandle;
-+		}
- 		if (!target_child)
- 			return -ENOMEM;
- 
+ 	return NULL;
 -- 
 2.29.2
 
