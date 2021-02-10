@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l9m9p-0007mp-EE
- for barebox@lists.infradead.org; Wed, 10 Feb 2021 09:51:38 +0000
-References: <20210208163458.29143-1-jmaselbas@kalray.eu>
- <20210208163458.29143-3-jmaselbas@kalray.eu>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <eeb04f6e-92d7-2e84-3ce1-156d2cd7cfe3@pengutronix.de>
-Date: Wed, 10 Feb 2021 10:51:35 +0100
+ id 1l9o8l-0002dl-QV
+ for barebox@lists.infradead.org; Wed, 10 Feb 2021 11:58:40 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Wed, 10 Feb 2021 12:58:10 +0100
+Message-Id: <20210210115807.4223-3-r.czerwinski@pengutronix.de>
+In-Reply-To: <20210210115807.4223-1-r.czerwinski@pengutronix.de>
+References: <20210210115807.4223-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20210208163458.29143-3-jmaselbas@kalray.eu>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,59 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] usb: gadget: dfu: Replace printf with pr_err
-To: Jules Maselbas <jmaselbas@kalray.eu>, barebox@lists.infradead.org
+Subject: [PATCH 3/3] commands: readline: release command slice
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Hello Jules,
+Release the command slice around readline to let the workqueues run
+while waiting for input.
 
-On 08.02.21 17:34, Jules Maselbas wrote:
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> ---
->  drivers/usb/gadget/dfu.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-> index 95e8da82e..a28e7c9e8 100644
-> --- a/drivers/usb/gadget/dfu.c
-> +++ b/drivers/usb/gadget/dfu.c
-> @@ -351,7 +351,7 @@ static void dfu_do_copy(struct dfu_work *dw)
->  
->  	ret = copy_file(DFU_TEMPFILE, dfu_file_entry->filename, 0);
->  	if (ret) {
-> -		printf("copy file failed\n");
-> +		pr_err("dfu: copy file failed\n");
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ commands/readline.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Like with Linux, you could define pr_fmt(fmt) "dfu: " fmt before including
-any headers and that prefix will be applied for all pr_ in that file.
-
->  		dfu->dfu_state = DFU_STATE_dfuERROR;
->  		dfu->dfu_status = DFU_STATUS_errWRITE;
->  		return;
-> @@ -396,7 +396,7 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
->  
->  	dfu->dnreq = usb_ep_alloc_request(c->cdev->gadget->ep0);
->  	if (!dfu->dnreq) {
-> -		printf("usb_ep_alloc_request failed\n");
-> +		pr_err("dfu: usb_ep_alloc_request failed\n");
->  		status = -ENOMEM;
->  		goto out;
->  	}
-> @@ -445,7 +445,7 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
->  
->  	i = 0;
->  	file_list_for_each_entry(dfu_files, fentry) {
-> -		printf("dfu: register alt%d(%s) with device %s\n",
-> +		pr_err("dfu: register alt%d(%s) with device %s\n",
->  				i, fentry->name, fentry->filename);
->  		i++;
->  	}
-> 
-
+diff --git a/commands/readline.c b/commands/readline.c
+index 796b4def95..ece25d12f5 100644
+--- a/commands/readline.c
++++ b/commands/readline.c
+@@ -5,6 +5,7 @@
+ #include <common.h>
+ #include <environment.h>
+ #include <malloc.h>
++#include <slice.h>
+ #include <xfuncs.h>
+ 
+ static int do_readline(int argc, char *argv[])
+@@ -14,11 +15,16 @@ static int do_readline(int argc, char *argv[])
+ 	if (argc < 3)
+ 		return COMMAND_ERROR_USAGE;
+ 
++	command_slice_release();
++
+ 	if (readline(argv[1], buf, CONFIG_CBSIZE) < 0) {
++		command_slice_acquire();
+ 		free(buf);
+ 		return COMMAND_ERROR;
+ 	}
+ 
++	command_slice_acquire();
++
+ 	setenv(argv[2], buf);
+ 	free(buf);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.0
+
 
 _______________________________________________
 barebox mailing list
