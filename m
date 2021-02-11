@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lAAhP-00042l-Q3
- for barebox@lists.infradead.org; Thu, 11 Feb 2021 12:03:56 +0000
-References: <20210118190923.531-1-m.grzeschik@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <fb80f1ad-acac-0f45-5f87-1b725252906f@pengutronix.de>
-Date: Thu, 11 Feb 2021 13:03:54 +0100
+ id 1lADW9-0005lq-FT
+ for barebox@lists.infradead.org; Thu, 11 Feb 2021 15:04:30 +0000
+From: =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
+Date: Thu, 11 Feb 2021 16:03:48 +0100
+Message-Id: <20210211150348.3670852-1-l.goehrs@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20210118190923.531-1-m.grzeschik@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,99 +15,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: hub: fix state change check for not powercycled ports
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH] watchdog: prevent the STPMIC1 watchdog probe from modifying
+ the global turn-OFF behaviour
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
 
-Hello,
-
-On 18.01.21 20:09, Michael Grzeschik wrote:
-> Since we don't power cycle the ports on start since patch "19bb0b2a usb:
-> hub: Do not power-cycle usb devices on init" it is possible that the
-> device on this port is already active from a previous enumeration. This
-> way barebox will never get any change in USB_PORT_STAT_C_CONNECTION bit
-> change.
-> 
-> Although the device will probably still work fine after the following
-> port reset, the current code will always miss reenumerating these still
-> plugged devices. This patch fixes this by ignoring the check for
-> STAT_C_CONNECTION bit and only go for USB_PORT_STAT_CONNECTION which
-> should be enough.
-
-This breaks USB enumeration for me on an i.MX6Q. The USB flash driver behind
-the hub is detected twice, which barebox doesn't like at all:
-
-barebox@Embest MarS Board i.MX6Dual:/ usb -s
-usb: USB: scanning bus for devices...
-usb1: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-usb1-0: Bus 001 Device 002: ID 1a40:0101 USB 2.0 Hub [MTT]
-usb1-0-1: Bus 001 Device 003: ID 058f:6387 Mass Storage
-Using index 0 for the new disk
-usb1-0-1: Bus 001 Device 004: ID 058f:6387 Mass Storage
-ERROR: register_device: already registered usb1-0-1
-ERROR: usb1-0-1: Failed to register device: Invalid argument
-usb: 3 USB Device(s) found
-Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-Bus 001 Device 002: ID 1a40:0101 USB 2.0 Hub [MTT]
-Bus 001 Device 003: ID 058f:6387 Mass Storage
-
-This seems to corrupt some internal barebox state as reading
-/dev/disk0.0 will hang. Reading /dev/disk0 is fine however.
-
-With this patch reverted it however works:
-
-usb: USB: scanning bus for devices...
-usb1: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-usb1-0: Bus 001 Device 002: ID 1a40:0101 USB 2.0 Hub [MTT]
-usb1-0-1: Bus 001 Device 003: ID 058f:6387 Mass Storage
-Using index 0 for the new disk
-usb: 3 USB Device(s) found
-Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-Bus 001 Device 002: ID 1a40:0101 USB 2.0 Hub [MTT]
-Bus 001 Device 003: ID 058f:6387 Mass Storage
-
-The USB drive is not self-powered. It doesn't make a difference
-whether it's done directly after cold reset or:
-  usb -s
-  boot bnet
-  usb -s
-
-Cheers,
-Ahmad
-
-
-> 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
->  drivers/usb/core/hub.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-> index 01653d8c20..d1112248ee 100644
-> --- a/drivers/usb/core/hub.c
-> +++ b/drivers/usb/core/hub.c
-> @@ -336,8 +336,7 @@ static void usb_scan_port(struct usb_device_scan *usb_scan)
->  	dev_dbg(&dev->dev, "port%d: Status 0x%04x Change 0x%04x\n",
->  			port + 1, portstatus, portchange);
->  
-> -	if (!(portchange & USB_PORT_STAT_C_CONNECTION) ||
-> -	    !(portstatus & USB_PORT_STAT_CONNECTION)) {
-> +	if (!(portstatus & USB_PORT_STAT_CONNECTION)) {
->  		if (get_time_ns() >= hub->connect_timeout) {
->  			dev_dbg(&dev->dev, "port%d: timeout\n", port + 1);
->  			/* Remove this device from scanning list */
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWNjb3JkaW5nIHRvIFRhYmxlIDEyIGluIHRoZSBTVFBNSUMxLWRhdGFzaGVldCAoUmV2IDcgLSBE
+ZWNlbWJlciAyMDIwKQp0aGVyZSBhcmUgdGhlIGZvbGxvd2luZyB0dXJuLU9GRiBjb25kaXRpb25z
+OgoKLSBTb2Z0d2FyZSBzd2l0Y2gtT0ZGKgotIFBPTktFWW4gbG9uZyBrZXkgcHJlc3MqCi0gVGhl
+cm1hbCBzaHV0ZG93bgotIE92ZXJjdXJyZW50IHByb3RlY3Rpb24KLSBXYXRjaGRvZyoKLSBWSU5f
+T0tfRmFsbCoKClRoZSBjb25kaXRpb25zIG1hcmtlZCB3aXRoIGFuICogY2FuIGJlIHJlLWNvbmZp
+Z3VyZWQgZnJvbSB0dXJuLU9mZiBjb25kaXRpb25zCnRvIHJlc3RhcnQgcmVxdWVzdHMgdXNpbmcg
+dGhlIFJSRVFfRU4tYml0IGluIHRoZSBDUiByZWdpc3RlcgooQ2FsbGVkIFJFU1RBUlRfUkVRVUVT
+VF9FTkFCTEVEIGluIExpbnV4L0JhcmVib3gpLgoKVGhlIHdhdGNoZG9nIGNvZGUgZW5hYmxlZCB0
+aGlzIGJpdCBpbiBpdCdzIHByb2JlIGZ1bmN0aW9uIHRvIHRyaWdnZXIgYSByZXN0YXJ0Cm9uIGEg
+d2F0Y2hkb2cgZXZlbnQuIFRoaXMgbWF5IGhvd2V2ZXIgcmVzdWx0IGluIHVuZXhwZWN0ZWQgYmVo
+YXZpb3VyLApsaWtlIGEgbG9uZy1wcmVzcyBvZiB0aGUgUE9OS0VZIHJlc3VsdGluZyBpbiBhIHJl
+c3RhcnQgaW5zdGVhZCBvZiBhIHR1cm4tb2ZmCndoZW4gdGhlIHdhdGNoZG9nIGlzIGVuYWJsZWQg
+dnMuIHdoZW4gaXQgaXMgbm90LgoKVGhpcyBjaGFuZ2UgZG9lcyBub3QgYWZmZWN0IHRoZSByZXN0
+YXJ0IGFuZCBwb3dlcm9mZiBmdW5jdGlvbmFsaXR5IHByb3ZpZGVkIGJ5CnRoZSB3ZHQgZHJpdmVy
+LCBhcyB0aGUgcmVzdGFydC0vcG93ZXJvZmYtaGFuZGxlcnMgZXhwbGljaXRseSBzZXQvY2xlYXIg
+dGhlClJFU1RBUlRfUkVRVUVTVF9FTkFCTEVEIGZsYWcgd2hlbiB0cmlnZ2VyaW5nIGEgc29mdHdh
+cmUgdHVybi1PRkYuCgpUbyBwcmV2ZW50IHVuZXhwZWN0ZWQgYmVoYXZpb3VyIG9mIHRoZSBQT05L
+RVluIGFuZCBvdGhlciB0dXJuLU9GRiBzb3VyY2VzIHRoZQpSRVNUQVJUX1JFUVVFU1RfRU5BQkxF
+RCBjb25maWd1cmF0aW9uIGluIHRoZSBwcm9iZSBmdW5jdGlvbiBjYW4gYW5kIHNob3VsZCB0aHVz
+IGJlIHJlbW92ZWQuCgpTaWduZWQtb2ZmLWJ5OiBMZW9uYXJkIEfDtmhycyA8bC5nb2VocnNAcGVu
+Z3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy93YXRjaGRvZy9zdHBtaWMxX3dkdC5jIHwgNCAtLS0t
+CiAxIGZpbGUgY2hhbmdlZCwgNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3dh
+dGNoZG9nL3N0cG1pYzFfd2R0LmMgYi9kcml2ZXJzL3dhdGNoZG9nL3N0cG1pYzFfd2R0LmMKaW5k
+ZXggMTIyODBmMTQ0Li4xMDViYTM5ZmIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvd2F0Y2hkb2cvc3Rw
+bWljMV93ZHQuYworKysgYi9kcml2ZXJzL3dhdGNoZG9nL3N0cG1pYzFfd2R0LmMKQEAgLTE3NCwx
+MCArMTc0LDYgQEAgc3RhdGljIGludCBzdHBtaWMxX3dkdF9wcm9iZShzdHJ1Y3QgZGV2aWNlX2Qg
+KmRldikKIAl3ZGQtPnNldF90aW1lb3V0ID0gc3RwbWljMV93ZHRfc2V0X3RpbWVvdXQ7CiAJd2Rk
+LT50aW1lb3V0X21heCA9IFBNSUNfV0RUX01BWF9USU1FT1VUOwogCi0JLyogaGF2ZSB0aGUgd2F0
+Y2hkb2cgcmVzZXQsIG5vdCBwb3dlci1vZmYgdGhlIHN5c3RlbSAqLwotCXJlZ21hcF93cml0ZV9i
+aXRzKHdkdC0+cmVnbWFwLCBTV09GRl9QV1JDVFJMX0NSLAotCQkJICBSRVNUQVJUX1JFUVVFU1Rf
+RU5BQkxFRCwgUkVTVEFSVF9SRVFVRVNUX0VOQUJMRUQpOwotCiAJcmV0ID0gd2F0Y2hkb2dfcmVn
+aXN0ZXIod2RkKTsKIAlpZiAocmV0KSB7CiAJCWRldl9lcnIoZGV2LCAiRmFpbGVkIHRvIHJlZ2lz
+dGVyIHdhdGNoZG9nIGRldmljZVxuIik7Ci0tIAoyLjIwLjEKCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
