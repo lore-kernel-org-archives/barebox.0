@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lADxT-0001Lt-1u
- for barebox@lists.infradead.org; Thu, 11 Feb 2021 15:32:43 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
- helo=[127.0.0.1]) by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.goehrs@pengutronix.de>) id 1lADxQ-0007ND-R4
- for barebox@lists.infradead.org; Thu, 11 Feb 2021 16:32:40 +0100
+ id 1lADzs-0001tT-GQ
+ for barebox@lists.infradead.org; Thu, 11 Feb 2021 15:35:17 +0000
 References: <20210211150348.3670852-1-l.goehrs@pengutronix.de>
-From: Leonard Goehrs <l.goehrs@pengutronix.de>
-Message-ID: <f8ed5e26-0022-0555-680a-1e70ba9aba81@pengutronix.de>
-Date: Thu, 11 Feb 2021 16:32:40 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <f00a2894-b0c3-3282-0b7e-30a03c2ce738@pengutronix.de>
+Date: Thu, 11 Feb 2021 16:35:09 +0100
 MIME-Version: 1.0
 In-Reply-To: <20210211150348.3670852-1-l.goehrs@pengutronix.de>
-Content-Language: en-US-large
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] watchdog: prevent the STPMIC1 watchdog probe from
  modifying the global turn-OFF behaviour
-To: barebox@lists.infradead.org
+To: =?UTF-8?Q?Leonard_G=c3=b6hrs?= <l.goehrs@pengutronix.de>, barebox@lists.infradead.org
 
-
-It turns out that the subject line used in the original commit is
-rather long and may be truncated when viewed using git log --oneline.
-
-I would thus propose changing it to something shorter, like:
-
-  stpmic1-wdt: don't modify global turn-off behaviour in probe
-
-before applying it.
-
-Sorry for the inconvenience caused
-Leonard
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8KCk9uIDExLjAyLjIxIDE2OjAzLCBMZW9uYXJkIEfDtmhycyB3cm90ZToKPiBBY2NvcmRp
+bmcgdG8gVGFibGUgMTIgaW4gdGhlIFNUUE1JQzEtZGF0YXNoZWV0IChSZXYgNyAtIERlY2VtYmVy
+IDIwMjApCj4gdGhlcmUgYXJlIHRoZSBmb2xsb3dpbmcgdHVybi1PRkYgY29uZGl0aW9uczoKPiAK
+PiAtIFNvZnR3YXJlIHN3aXRjaC1PRkYqCj4gLSBQT05LRVluIGxvbmcga2V5IHByZXNzKgo+IC0g
+VGhlcm1hbCBzaHV0ZG93bgo+IC0gT3ZlcmN1cnJlbnQgcHJvdGVjdGlvbgo+IC0gV2F0Y2hkb2cq
+Cj4gLSBWSU5fT0tfRmFsbCoKPiAKPiBUaGUgY29uZGl0aW9ucyBtYXJrZWQgd2l0aCBhbiAqIGNh
+biBiZSByZS1jb25maWd1cmVkIGZyb20gdHVybi1PZmYgY29uZGl0aW9ucwo+IHRvIHJlc3RhcnQg
+cmVxdWVzdHMgdXNpbmcgdGhlIFJSRVFfRU4tYml0IGluIHRoZSBDUiByZWdpc3Rlcgo+IChDYWxs
+ZWQgUkVTVEFSVF9SRVFVRVNUX0VOQUJMRUQgaW4gTGludXgvQmFyZWJveCkuCj4gCj4gVGhlIHdh
+dGNoZG9nIGNvZGUgZW5hYmxlZCB0aGlzIGJpdCBpbiBpdCdzIHByb2JlIGZ1bmN0aW9uIHRvIHRy
+aWdnZXIgYSByZXN0YXJ0Cj4gb24gYSB3YXRjaGRvZyBldmVudC4gVGhpcyBtYXkgaG93ZXZlciBy
+ZXN1bHQgaW4gdW5leHBlY3RlZCBiZWhhdmlvdXIsCj4gbGlrZSBhIGxvbmctcHJlc3Mgb2YgdGhl
+IFBPTktFWSByZXN1bHRpbmcgaW4gYSByZXN0YXJ0IGluc3RlYWQgb2YgYSB0dXJuLW9mZgo+IHdo
+ZW4gdGhlIHdhdGNoZG9nIGlzIGVuYWJsZWQgdnMuIHdoZW4gaXQgaXMgbm90Lgo+IAo+IFRoaXMg
+Y2hhbmdlIGRvZXMgbm90IGFmZmVjdCB0aGUgcmVzdGFydCBhbmQgcG93ZXJvZmYgZnVuY3Rpb25h
+bGl0eSBwcm92aWRlZCBieQo+IHRoZSB3ZHQgZHJpdmVyLCBhcyB0aGUgcmVzdGFydC0vcG93ZXJv
+ZmYtaGFuZGxlcnMgZXhwbGljaXRseSBzZXQvY2xlYXIgdGhlCj4gUkVTVEFSVF9SRVFVRVNUX0VO
+QUJMRUQgZmxhZyB3aGVuIHRyaWdnZXJpbmcgYSBzb2Z0d2FyZSB0dXJuLU9GRi4KPiAKPiBUbyBw
+cmV2ZW50IHVuZXhwZWN0ZWQgYmVoYXZpb3VyIG9mIHRoZSBQT05LRVluIGFuZCBvdGhlciB0dXJu
+LU9GRiBzb3VyY2VzIHRoZQo+IFJFU1RBUlRfUkVRVUVTVF9FTkFCTEVEIGNvbmZpZ3VyYXRpb24g
+aW4gdGhlIHByb2JlIGZ1bmN0aW9uIGNhbiBhbmQgc2hvdWxkIHRodXMgYmUgcmVtb3ZlZC4KPiAK
+PiBTaWduZWQtb2ZmLWJ5OiBMZW9uYXJkIEfDtmhycyA8bC5nb2VocnNAcGVuZ3V0cm9uaXguZGU+
+CgpSZXZpZXdlZC1ieTogQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4KCj4g
+LS0tCj4gIGRyaXZlcnMvd2F0Y2hkb2cvc3RwbWljMV93ZHQuYyB8IDQgLS0tLQo+ICAxIGZpbGUg
+Y2hhbmdlZCwgNCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy93YXRjaGRv
+Zy9zdHBtaWMxX3dkdC5jIGIvZHJpdmVycy93YXRjaGRvZy9zdHBtaWMxX3dkdC5jCj4gaW5kZXgg
+MTIyODBmMTQ0Li4xMDViYTM5ZmIgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy93YXRjaGRvZy9zdHBt
+aWMxX3dkdC5jCj4gKysrIGIvZHJpdmVycy93YXRjaGRvZy9zdHBtaWMxX3dkdC5jCj4gQEAgLTE3
+NCwxMCArMTc0LDYgQEAgc3RhdGljIGludCBzdHBtaWMxX3dkdF9wcm9iZShzdHJ1Y3QgZGV2aWNl
+X2QgKmRldikKPiAgCXdkZC0+c2V0X3RpbWVvdXQgPSBzdHBtaWMxX3dkdF9zZXRfdGltZW91dDsK
+PiAgCXdkZC0+dGltZW91dF9tYXggPSBQTUlDX1dEVF9NQVhfVElNRU9VVDsKPiAgCj4gLQkvKiBo
+YXZlIHRoZSB3YXRjaGRvZyByZXNldCwgbm90IHBvd2VyLW9mZiB0aGUgc3lzdGVtICovCj4gLQly
+ZWdtYXBfd3JpdGVfYml0cyh3ZHQtPnJlZ21hcCwgU1dPRkZfUFdSQ1RSTF9DUiwKPiAtCQkJICBS
+RVNUQVJUX1JFUVVFU1RfRU5BQkxFRCwgUkVTVEFSVF9SRVFVRVNUX0VOQUJMRUQpOwo+IC0KPiAg
+CXJldCA9IHdhdGNoZG9nX3JlZ2lzdGVyKHdkZCk7Cj4gIAlpZiAocmV0KSB7Cj4gIAkJZGV2X2Vy
+cihkZXYsICJGYWlsZWQgdG8gcmVnaXN0ZXIgd2F0Y2hkb2cgZGV2aWNlXG4iKTsKPiAKCi0tIApQ
+ZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAg
+ICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJt
+YW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRz
+Z2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEt
+MjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
