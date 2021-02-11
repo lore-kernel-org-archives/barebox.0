@@ -1,12 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lADW9-0005lq-FT
- for barebox@lists.infradead.org; Thu, 11 Feb 2021 15:04:30 +0000
-From: =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
-Date: Thu, 11 Feb 2021 16:03:48 +0100
-Message-Id: <20210211150348.3670852-1-l.goehrs@pengutronix.de>
+ id 1lADxT-0001Lt-1u
+ for barebox@lists.infradead.org; Thu, 11 Feb 2021 15:32:43 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ helo=[127.0.0.1]) by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <l.goehrs@pengutronix.de>) id 1lADxQ-0007ND-R4
+ for barebox@lists.infradead.org; Thu, 11 Feb 2021 16:32:40 +0100
+References: <20210211150348.3670852-1-l.goehrs@pengutronix.de>
+From: Leonard Goehrs <l.goehrs@pengutronix.de>
+Message-ID: <f8ed5e26-0022-0555-680a-1e70ba9aba81@pengutronix.de>
+Date: Thu, 11 Feb 2021 16:32:40 +0100
 MIME-Version: 1.0
+In-Reply-To: <20210211150348.3670852-1-l.goehrs@pengutronix.de>
+Content-Language: en-US-large
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,48 +22,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] watchdog: prevent the STPMIC1 watchdog probe from modifying
- the global turn-OFF behaviour
+Subject: Re: [PATCH] watchdog: prevent the STPMIC1 watchdog probe from
+ modifying the global turn-OFF behaviour
 To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
 
-QWNjb3JkaW5nIHRvIFRhYmxlIDEyIGluIHRoZSBTVFBNSUMxLWRhdGFzaGVldCAoUmV2IDcgLSBE
-ZWNlbWJlciAyMDIwKQp0aGVyZSBhcmUgdGhlIGZvbGxvd2luZyB0dXJuLU9GRiBjb25kaXRpb25z
-OgoKLSBTb2Z0d2FyZSBzd2l0Y2gtT0ZGKgotIFBPTktFWW4gbG9uZyBrZXkgcHJlc3MqCi0gVGhl
-cm1hbCBzaHV0ZG93bgotIE92ZXJjdXJyZW50IHByb3RlY3Rpb24KLSBXYXRjaGRvZyoKLSBWSU5f
-T0tfRmFsbCoKClRoZSBjb25kaXRpb25zIG1hcmtlZCB3aXRoIGFuICogY2FuIGJlIHJlLWNvbmZp
-Z3VyZWQgZnJvbSB0dXJuLU9mZiBjb25kaXRpb25zCnRvIHJlc3RhcnQgcmVxdWVzdHMgdXNpbmcg
-dGhlIFJSRVFfRU4tYml0IGluIHRoZSBDUiByZWdpc3RlcgooQ2FsbGVkIFJFU1RBUlRfUkVRVUVT
-VF9FTkFCTEVEIGluIExpbnV4L0JhcmVib3gpLgoKVGhlIHdhdGNoZG9nIGNvZGUgZW5hYmxlZCB0
-aGlzIGJpdCBpbiBpdCdzIHByb2JlIGZ1bmN0aW9uIHRvIHRyaWdnZXIgYSByZXN0YXJ0Cm9uIGEg
-d2F0Y2hkb2cgZXZlbnQuIFRoaXMgbWF5IGhvd2V2ZXIgcmVzdWx0IGluIHVuZXhwZWN0ZWQgYmVo
-YXZpb3VyLApsaWtlIGEgbG9uZy1wcmVzcyBvZiB0aGUgUE9OS0VZIHJlc3VsdGluZyBpbiBhIHJl
-c3RhcnQgaW5zdGVhZCBvZiBhIHR1cm4tb2ZmCndoZW4gdGhlIHdhdGNoZG9nIGlzIGVuYWJsZWQg
-dnMuIHdoZW4gaXQgaXMgbm90LgoKVGhpcyBjaGFuZ2UgZG9lcyBub3QgYWZmZWN0IHRoZSByZXN0
-YXJ0IGFuZCBwb3dlcm9mZiBmdW5jdGlvbmFsaXR5IHByb3ZpZGVkIGJ5CnRoZSB3ZHQgZHJpdmVy
-LCBhcyB0aGUgcmVzdGFydC0vcG93ZXJvZmYtaGFuZGxlcnMgZXhwbGljaXRseSBzZXQvY2xlYXIg
-dGhlClJFU1RBUlRfUkVRVUVTVF9FTkFCTEVEIGZsYWcgd2hlbiB0cmlnZ2VyaW5nIGEgc29mdHdh
-cmUgdHVybi1PRkYuCgpUbyBwcmV2ZW50IHVuZXhwZWN0ZWQgYmVoYXZpb3VyIG9mIHRoZSBQT05L
-RVluIGFuZCBvdGhlciB0dXJuLU9GRiBzb3VyY2VzIHRoZQpSRVNUQVJUX1JFUVVFU1RfRU5BQkxF
-RCBjb25maWd1cmF0aW9uIGluIHRoZSBwcm9iZSBmdW5jdGlvbiBjYW4gYW5kIHNob3VsZCB0aHVz
-IGJlIHJlbW92ZWQuCgpTaWduZWQtb2ZmLWJ5OiBMZW9uYXJkIEfDtmhycyA8bC5nb2VocnNAcGVu
-Z3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy93YXRjaGRvZy9zdHBtaWMxX3dkdC5jIHwgNCAtLS0t
-CiAxIGZpbGUgY2hhbmdlZCwgNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3dh
-dGNoZG9nL3N0cG1pYzFfd2R0LmMgYi9kcml2ZXJzL3dhdGNoZG9nL3N0cG1pYzFfd2R0LmMKaW5k
-ZXggMTIyODBmMTQ0Li4xMDViYTM5ZmIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvd2F0Y2hkb2cvc3Rw
-bWljMV93ZHQuYworKysgYi9kcml2ZXJzL3dhdGNoZG9nL3N0cG1pYzFfd2R0LmMKQEAgLTE3NCwx
-MCArMTc0LDYgQEAgc3RhdGljIGludCBzdHBtaWMxX3dkdF9wcm9iZShzdHJ1Y3QgZGV2aWNlX2Qg
-KmRldikKIAl3ZGQtPnNldF90aW1lb3V0ID0gc3RwbWljMV93ZHRfc2V0X3RpbWVvdXQ7CiAJd2Rk
-LT50aW1lb3V0X21heCA9IFBNSUNfV0RUX01BWF9USU1FT1VUOwogCi0JLyogaGF2ZSB0aGUgd2F0
-Y2hkb2cgcmVzZXQsIG5vdCBwb3dlci1vZmYgdGhlIHN5c3RlbSAqLwotCXJlZ21hcF93cml0ZV9i
-aXRzKHdkdC0+cmVnbWFwLCBTV09GRl9QV1JDVFJMX0NSLAotCQkJICBSRVNUQVJUX1JFUVVFU1Rf
-RU5BQkxFRCwgUkVTVEFSVF9SRVFVRVNUX0VOQUJMRUQpOwotCiAJcmV0ID0gd2F0Y2hkb2dfcmVn
-aXN0ZXIod2RkKTsKIAlpZiAocmV0KSB7CiAJCWRldl9lcnIoZGV2LCAiRmFpbGVkIHRvIHJlZ2lz
-dGVyIHdhdGNoZG9nIGRldmljZVxuIik7Ci0tIAoyLjIwLjEKCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+
+It turns out that the subject line used in the original commit is
+rather long and may be truncated when viewed using git log --oneline.
+
+I would thus propose changing it to something shorter, like:
+
+  stpmic1-wdt: don't modify global turn-off behaviour in probe
+
+before applying it.
+
+Sorry for the inconvenience caused
+Leonard
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
