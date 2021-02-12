@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lAUr9-0002yZ-46
- for barebox@lists.infradead.org; Fri, 12 Feb 2021 09:35:20 +0000
-References: <20210211171139.25987-1-a.fatoum@pengutronix.de>
- <20210212085809.GH19583@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ccfb942b-42a7-88ed-e637-b8a1ed180a22@pengutronix.de>
-Date: Fri, 12 Feb 2021 10:35:17 +0100
+ id 1lAVUm-0000MO-69
+ for barebox@lists.infradead.org; Fri, 12 Feb 2021 10:16:16 +0000
+Date: Fri, 12 Feb 2021 11:16:13 +0100
+Message-ID: <20210212101613.GL19583@pengutronix.de>
+References: <20210210142704.1855761-1-enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
-In-Reply-To: <20210212085809.GH19583@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20210210142704.1855761-1-enrico.scholz@sigma-chemnitz.de>
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,123 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fs: increase reference count for backing store when loop
- mounting
-To: Sascha Hauer <sha@pengutronix.de>
+Subject: Re: [PATCH] dt:overlay: fix operation with multiple overlays
+To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 Cc: barebox@lists.infradead.org
 
 
+Hi Enrico,
 
-On 12.02.21 09:58, Sascha Hauer wrote:
-> On Thu, Feb 11, 2021 at 06:11:39PM +0100, Ahmad Fatoum wrote:
->> The VFS layer already increase the mount reference count for the mount
->> point. This means e.g. following sequence is well-behaving:
->>
->>   mkdir -p /mnt/disk0.0/media
->>   mount -o loop backing.squashfs /mnt/disk0.0/media
->>   umount /mnt/disk0.0
->>
->> barebox will do the right thing and report
->>
->>   umount: Device or resource busy
->>
->> However the reference count of the file where backing.squashfs comes
->> from is not incremented on mount with the effect that following sequence
->> crashes:
->>
->>   mkdir -p /media
->>   mount -o loop /mnt/disk0.0/backing.squashfs /media
->>   umount /mnt/disk0.0 # should've returned EBUSY
->>   umount /media
->>
->> Fix this by touching the backing store's mount reference count when
->> loop mounting and unmounting.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  fs/fs.c | 38 +++++++++++++++++++++++++++++++++-----
->>  1 file changed, 33 insertions(+), 5 deletions(-)
->>
->> diff --git a/fs/fs.c b/fs/fs.c
->> index 00b8645fb0e9..10cc08fc93ab 100644
->> --- a/fs/fs.c
->> +++ b/fs/fs.c
->> @@ -89,7 +89,13 @@ static int init_fs(void)
->>  
->>  postcore_initcall(init_fs);
->>  
->> +struct filename;
->> +
->>  static struct fs_device_d *get_fsdevice_by_path(const char *path);
->> +static int filename_lookup(int dfd, struct filename *name, unsigned flags,
->> +			   struct path *path);;
->> +static struct filename *getname(const char *filename);
->> +static void path_put(const struct path *path);
->>  
->>  LIST_HEAD(fs_device_list);
->>  
->> @@ -683,6 +689,8 @@ static void fs_remove(struct device_d *dev)
->>  	struct fs_device_d *fsdev = dev_to_fs_device(dev);
->>  	struct super_block *sb = &fsdev->sb;
->>  	struct inode *inode, *tmp;
->> +	struct path path;
->> +	int ret;
->>  
->>  	if (fsdev->dev.driver) {
->>  		dev->driver->remove(dev);
->> @@ -695,9 +703,17 @@ static void fs_remove(struct device_d *dev)
->>  	if (fsdev->cdev)
->>  		cdev_close(fsdev->cdev);
->>  
->> -	if (fsdev->loop && fsdev->cdev)
->> +	if (fsdev->loop && fsdev->cdev) {
->>  		cdev_remove_loop(fsdev->cdev);
->>  
->> +		ret = filename_lookup(AT_FDCWD, getname(fsdev->backingstore),
->> +				      LOOKUP_FOLLOW, &path);
->> +		if (!ret) {
->> +			mntput(path.mnt);
->> +			path_put(&path);
->> +		}
->> +	}
->> +
->>  	if (fsdev->vfsmount.mountpoint)
->>  		fsdev->vfsmount.mountpoint->d_flags &= ~DCACHE_MOUNTED;
->>  
->> @@ -767,17 +783,29 @@ static const char *detect_fs(const char *filename, const char *fsoptions)
->>  int fsdev_open_cdev(struct fs_device_d *fsdev)
->>  {
->>  	unsigned long long offset = 0;
->> +	struct path path = {};
->> +	int ret;
->>  
->>  	parseopt_b(fsdev->options, "loop", &fsdev->loop);
->>  	parseopt_llu_suffix(fsdev->options, "offset", &offset);
->> -	if (fsdev->loop)
->> -		fsdev->cdev = cdev_create_loop(fsdev->backingstore, O_RDWR,
->> -					       offset);
->> -	else
->> +	if (fsdev->loop) {
->> +		ret = filename_lookup(AT_FDCWD, getname(fsdev->backingstore),
->> +				      LOOKUP_FOLLOW, &path);
->> +		if (ret)
->> +			return ret;
->> +
->> +		fsdev->cdev = cdev_create_loop(fsdev->backingstore, O_RDWR, offset);
->> +	} else {
->>  		fsdev->cdev = cdev_open(fsdev->backingstore, O_RDWR);
->> +	}
->>  	if (!fsdev->cdev)
->>  		return -EINVAL;
+On Wed, Feb 10, 2021 at 03:27:02PM +0100, Enrico Scholz wrote:
+> When applying multiple devicetree overlays the 'phandle' attribute
+> must be updated too.  Else, every overlay will be adjusted to start
+> with the same base which causes duplicate phandles.
 > 
-> path_put() is missing in this error path.
+> Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+> ---
+>  drivers/of/base.c    | 1 +
+>  drivers/of/overlay.c | 4 +++-
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index edb0a8e71a0f..c88803d8ab4b 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -2385,6 +2385,7 @@ struct device_node *of_copy_node(struct device_node *parent, const struct device
+>  	struct property *pp;
+>  
+>  	np = of_new_node(parent, other->name);
+> +	np->phandle = other->phandle;
 
-Thanks for catching. Just sent out v2.
+I can see why we have to do this for overlays. Without this all phandle
+values from the overlay are lost.
+I think however, that just copying the phandle values is wrong at least
+in some cases of_copy_node() is used. When of_copy_node() is called with
+a non NULL parent argument it duplicates the tree given in 'other' and
+puts it below 'parent'. In that case we can't just copy the phandle
+values as we would risk having duplicate phandle values in the parent
+tree.
 
-> 
-> Sascha
-> 
-> 
+Maybe we can split of_copy_node() into two functions. One
+
+struct device_node *of_duplicate(struct device_node *np);
+
+this function can copy the phandle values without risk. The other
+function
+
+int of_attach(struct device_node *np, struct device_node *to);
+
+would just make np a child node of 'to' and makes sure that phandle
+values do not overlap.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
