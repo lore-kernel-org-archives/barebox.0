@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lAVUm-0000MO-69
- for barebox@lists.infradead.org; Fri, 12 Feb 2021 10:16:16 +0000
-Date: Fri, 12 Feb 2021 11:16:13 +0100
-Message-ID: <20210212101613.GL19583@pengutronix.de>
+ id 1lAVWM-0000Zr-7W
+ for barebox@lists.infradead.org; Fri, 12 Feb 2021 10:17:55 +0000
+Date: Fri, 12 Feb 2021 11:17:52 +0100
+Message-ID: <20210212101752.GM19583@pengutronix.de>
 References: <20210210142704.1855761-1-enrico.scholz@sigma-chemnitz.de>
+ <20210210142704.1855761-2-enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210210142704.1855761-1-enrico.scholz@sigma-chemnitz.de>
+In-Reply-To: <20210210142704.1855761-2-enrico.scholz@sigma-chemnitz.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,56 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] dt:overlay: fix operation with multiple overlays
+Subject: Re: [PATCH] imx8:pinfunc: fix definition
 To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 Cc: barebox@lists.infradead.org
 
-
-Hi Enrico,
-
-On Wed, Feb 10, 2021 at 03:27:02PM +0100, Enrico Scholz wrote:
-> When applying multiple devicetree overlays the 'phandle' attribute
-> must be updated too.  Else, every overlay will be adjusted to start
-> with the same base which causes duplicate phandles.
-> 
+On Wed, Feb 10, 2021 at 03:27:03PM +0100, Enrico Scholz wrote:
 > Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 > ---
->  drivers/of/base.c    | 1 +
->  drivers/of/overlay.c | 4 +++-
->  2 files changed, 4 insertions(+), 1 deletion(-)
+>  dts/src/arm64/freescale/imx8mm-pinfunc.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index edb0a8e71a0f..c88803d8ab4b 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2385,6 +2385,7 @@ struct device_node *of_copy_node(struct device_node *parent, const struct device
->  	struct property *pp;
->  
->  	np = of_new_node(parent, other->name);
-> +	np->phandle = other->phandle;
 
-I can see why we have to do this for overlays. Without this all phandle
-values from the overlay are lost.
-I think however, that just copying the phandle values is wrong at least
-in some cases of_copy_node() is used. When of_copy_node() is called with
-a non NULL parent argument it duplicates the tree given in 'other' and
-puts it below 'parent'. In that case we can't just copy the phandle
-values as we would risk having duplicate phandle values in the parent
-tree.
-
-Maybe we can split of_copy_node() into two functions. One
-
-struct device_node *of_duplicate(struct device_node *np);
-
-this function can copy the phandle values without risk. The other
-function
-
-int of_attach(struct device_node *np, struct device_node *to);
-
-would just make np a child node of 'to' and makes sure that phandle
-values do not overlap.
+Applied this one and 3/3, thanks
 
 Sascha
+
+> diff --git a/dts/src/arm64/freescale/imx8mm-pinfunc.h b/dts/src/arm64/freescale/imx8mm-pinfunc.h
+> index 5ccc4cc91959..a003e6af3353 100644
+> --- a/dts/src/arm64/freescale/imx8mm-pinfunc.h
+> +++ b/dts/src/arm64/freescale/imx8mm-pinfunc.h
+> @@ -124,7 +124,7 @@
+>  #define MX8MM_IOMUXC_SD1_CMD_USDHC1_CMD                                     0x0A4 0x30C 0x000 0x0 0x0
+>  #define MX8MM_IOMUXC_SD1_CMD_GPIO2_IO1                                      0x0A4 0x30C 0x000 0x5 0x0
+>  #define MX8MM_IOMUXC_SD1_DATA0_USDHC1_DATA0                                 0x0A8 0x310 0x000 0x0 0x0
+> -#define MX8MM_IOMUXC_SD1_DATA0_GPIO2_IO2                                    0x0A8 0x31  0x000 0x5 0x0
+> +#define MX8MM_IOMUXC_SD1_DATA0_GPIO2_IO2                                    0x0A8 0x310 0x000 0x5 0x0
+>  #define MX8MM_IOMUXC_SD1_DATA1_USDHC1_DATA1                                 0x0AC 0x314 0x000 0x0 0x0
+>  #define MX8MM_IOMUXC_SD1_DATA1_GPIO2_IO3                                    0x0AC 0x314 0x000 0x5 0x0
+>  #define MX8MM_IOMUXC_SD1_DATA2_USDHC1_DATA2                                 0x0B0 0x318 0x000 0x0 0x0
+> -- 
+> 2.29.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
