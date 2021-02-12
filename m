@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lAUJ6-0006tI-Je
- for barebox@lists.infradead.org; Fri, 12 Feb 2021 09:00:09 +0000
-Date: Fri, 12 Feb 2021 10:00:07 +0100
-Message-ID: <20210212090007.GJ19583@pengutronix.de>
-References: <20210212085148.19347-1-a.fatoum@pengutronix.de>
+ id 1lAUPT-0007ri-9Y
+ for barebox@lists.infradead.org; Fri, 12 Feb 2021 09:06:44 +0000
+Date: Fri, 12 Feb 2021 10:06:40 +0100
+Message-ID: <20210212090640.GK19583@pengutronix.de>
+References: <20210210115807.4223-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210212085148.19347-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20210210115807.4223-1-r.czerwinski@pengutronix.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,56 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH master] sandbox: fix unreliable block device detection
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/3] commands: readline: sort includes
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 12, 2021 at 09:51:48AM +0100, Ahmad Fatoum wrote:
-> If barebox detects that an --image file is a block device, it will try
-> to represent it as a block device internally as well, provided that
-> the user didn't explicitly specify that it should be mapped as a
-> character device instead. The hf_info::is_cdev member used to indicate
-> this override wasn't initialized though, so detection was unreliable,
-> Fix this.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Wed, Feb 10, 2021 at 12:58:06PM +0100, Rouven Czerwinski wrote:
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > ---
->  arch/sandbox/os/common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  commands/readline.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> =
 
-Applied, thanks
+> diff --git a/commands/readline.c b/commands/readline.c
+> index ef54b5e92f..426f579ee4 100644
+> --- a/commands/readline.c
+> +++ b/commands/readline.c
+> @@ -1,11 +1,11 @@
+>  // SPDX-License-Identifier: GPL-2.0-or-later
+>  // SPDX-FileCopyrightText: =A9 2000-2003 Wolfgang Denk <wd@denx.de>, DEN=
+X Software Engineering
+>  =
+
+> -#include <common.h>
+>  #include <command.h>
+> +#include <common.h>
+> +#include <environment.h>
+>  #include <malloc.h>
+>  #include <xfuncs.h>
+> -#include <environment.h>
+
+I don't see much value in sorting includes, so I won't take this.
+Applied the other ones, thanks
 
 Sascha
 
-> 
-> diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-> index da87be29c74d..56c2d0519388 100644
-> --- a/arch/sandbox/os/common.c
-> +++ b/arch/sandbox/os/common.c
-> @@ -276,7 +276,7 @@ extern char * strsep_unescaped(char **s, const char *ct);
->  
->  static int add_image(const char *_str, char *devname_template, int *devname_number)
->  {
-> -	struct hf_info *hf = malloc(sizeof(struct hf_info));
-> +	struct hf_info *hf = calloc(1, sizeof(struct hf_info));
->  	char *str, *filename, *devname;
->  	char tmp[16];
->  	char *opt;
-> -- 
-> 2.29.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+-- =
 
--- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
