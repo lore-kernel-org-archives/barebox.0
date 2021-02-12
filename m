@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lAUAB-0005ub-CP
- for barebox@lists.infradead.org; Fri, 12 Feb 2021 08:50:56 +0000
-Date: Fri, 12 Feb 2021 09:50:54 +0100
-Message-ID: <20210212085054.GG19583@pengutronix.de>
-References: <20210211150348.3670852-1-l.goehrs@pengutronix.de>
+ id 1lAUB4-00061U-Go
+ for barebox@lists.infradead.org; Fri, 12 Feb 2021 08:51:51 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 12 Feb 2021 09:51:48 +0100
+Message-Id: <20210212085148.19347-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210211150348.3670852-1-l.goehrs@pengutronix.de>
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +15,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] watchdog: prevent the STPMIC1 watchdog probe from
- modifying the global turn-OFF behaviour
-To: Leonard =?iso-8859-15?Q?G=F6hrs?= <l.goehrs@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH master] sandbox: fix unreliable block device detection
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Thu, Feb 11, 2021 at 04:03:48PM +0100, Leonard G=F6hrs wrote:
-> According to Table 12 in the STPMIC1-datasheet (Rev 7 - December 2020)
-> there are the following turn-OFF conditions:
-> =
+If barebox detects that an --image file is a block device, it will try
+to represent it as a block device internally as well, provided that
+the user didn't explicitly specify that it should be mapped as a
+character device instead. The hf_info::is_cdev member used to indicate
+this override wasn't initialized though, so detection was unreliable,
+Fix this.
 
-> - Software switch-OFF*
-> - PONKEYn long key press*
-> - Thermal shutdown
-> - Overcurrent protection
-> - Watchdog*
-> - VIN_OK_Fall*
-> =
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/sandbox/os/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> The conditions marked with an * can be re-configured from turn-Off condit=
-ions
-> to restart requests using the RREQ_EN-bit in the CR register
-> (Called RESTART_REQUEST_ENABLED in Linux/Barebox).
-> =
+diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
+index da87be29c74d..56c2d0519388 100644
+--- a/arch/sandbox/os/common.c
++++ b/arch/sandbox/os/common.c
+@@ -276,7 +276,7 @@ extern char * strsep_unescaped(char **s, const char *ct);
+ 
+ static int add_image(const char *_str, char *devname_template, int *devname_number)
+ {
+-	struct hf_info *hf = malloc(sizeof(struct hf_info));
++	struct hf_info *hf = calloc(1, sizeof(struct hf_info));
+ 	char *str, *filename, *devname;
+ 	char tmp[16];
+ 	char *opt;
+-- 
+2.29.2
 
-> The watchdog code enabled this bit in it's probe function to trigger a re=
-start
-> on a watchdog event. This may however result in unexpected behaviour,
-> like a long-press of the PONKEY resulting in a restart instead of a turn-=
-off
-> when the watchdog is enabled vs. when it is not.
-> =
-
-> This change does not affect the restart and poweroff functionality provid=
-ed by
-> the wdt driver, as the restart-/poweroff-handlers explicitly set/clear the
-> RESTART_REQUEST_ENABLED flag when triggering a software turn-OFF.
-> =
-
-> To prevent unexpected behaviour of the PONKEYn and other turn-OFF sources=
- the
-> RESTART_REQUEST_ENABLED configuration in the probe function can and shoul=
-d thus be removed.
-> =
-
-> Signed-off-by: Leonard G=F6hrs <l.goehrs@pengutronix.de>
-> ---
->  drivers/watchdog/stpmic1_wdt.c | 4 ----
->  1 file changed, 4 deletions(-)
-
-Applied, thanks
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
