@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lBbJp-0005Ze-BJ
- for barebox@lists.infradead.org; Mon, 15 Feb 2021 10:41:31 +0000
+ id 1lBbJx-0005eB-ED
+ for barebox@lists.infradead.org; Mon, 15 Feb 2021 10:41:39 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 15 Feb 2021 11:36:58 +0100
-Message-Id: <20210215103704.32537-6-a.fatoum@pengutronix.de>
+Date: Mon, 15 Feb 2021 11:36:54 +0100
+Message-Id: <20210215103704.32537-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20210215103704.32537-1-a.fatoum@pengutronix.de>
 References: <20210215103704.32537-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,310 +21,320 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/12] sandbox: asm: implement setjmp/longjmp/initjmp
+Subject: [PATCH 01/12] common: add coroutine support
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-To extend yielding poller support to sandbox, implement setjmp, longjmp
-and initjmp. Unlike bare metal platforms, setjmp() and longjmp() are
-readily provided on standard-conforming hosted platforms.  initjmp() on
-the other hand requires us to be able to invoke a function with a
-user-supplied stack pointer, which isn't possible in standard C.
+Coroutines generalize subroutines for non-preemptive multitasking,
+by allowing execution to be suspended and resumed. We already have very
+limited coroutines in the form of pollers. A poller is a function that
+is cooperatively scheduled and yields after it has run to completion.
+In the next poller_call(), this function is resumed from start.
 
-For POSIX systems, there are two methods to portably achieve this
-though:
+Proper coroutines allow for the this yielding to happen at any point of
+time. The coroutine's state is then saved and execution continues else
+where. Later on, execution is resumed by restoring the saved context.
 
-  - Use makecontext(2) to set up a new context. makecontext(2) was however
-    removed in POSIX.1-2008 and at least GCC 10.2.1 ASan complains that it
-    "doesn't fully support makecontext/swapcontext functions and may
-    produce false positives in some cases!"
+standard C setjmp/longjmp can be used to implement stackless coroutines.
+setjmp stores the registers comprising the execution context into a
+jmp_buf and longjmp switches to that context and continues execution just
+after the setjmp that allocated that jmp_buf.
 
-  - Use sigaltstack to set a new signal stack, call setjmp there to
-    store the stack pointer, return regularly from signal handler and then
-    longjmp back and invoke the coroutine.
+These coroutines are stackless, because jumping to a setjmp down the
+call stack means that the code there will clobber the stack
+below it. On resuming the coroutine, it will run with a stack changed
+in the interim leading to undefined behavior.
 
-Both methods are implemented in QEMU. While QEMU uses the makecontext
-method by default, for the reasons described, import the second implementation
-and use it implement initjmp.
+There are ways around that without resorting to Assembly:
+
+  - Allocate a buffer on the scheduler's stack, so coroutine can
+    grow into them
+     -> Problem: exploits Undefined behavior
+  - Yield first time on scheduler stack, then patch jmp_buf to point at
+    another stack
+     -> Problem: Code switching stacks should not itself use the stack
+
+It thus seems there is no way around adding a new function to initialize
+a setjmp with a freshly cloned stack.
+
+This commit adds the C boilerplate. Architectures wishing to use it need
+to provide setjmp/longjmp/initjmp and in their arch Kconfig should
+select CONFIG_HAS_ARCH_SJLJ. Code wishing to make use of it will need a
+depends on CONFIG_HAS_ARCH_SJLJ. For now this will just be the new
+poller_yield() facility introduced in a later commit.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/sandbox/Kconfig              |   1 +
- arch/sandbox/Makefile             |   5 +-
- arch/sandbox/include/asm/setjmp.h |  17 +++
- arch/sandbox/os/Makefile          |   5 +-
- arch/sandbox/os/setjmp.c          | 180 ++++++++++++++++++++++++++++++
- 5 files changed, 204 insertions(+), 4 deletions(-)
- create mode 100644 arch/sandbox/include/asm/setjmp.h
- create mode 100644 arch/sandbox/os/setjmp.c
+ common/Kconfig      |   6 ++
+ common/Makefile     |   1 +
+ common/coroutine.c  | 178 ++++++++++++++++++++++++++++++++++++++++++++
+ include/coroutine.h |  43 +++++++++++
+ 4 files changed, 228 insertions(+)
+ create mode 100644 common/coroutine.c
+ create mode 100644 include/coroutine.h
 
-diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index 1a4e3bacf66d..cef8e9fb7ab4 100644
---- a/arch/sandbox/Kconfig
-+++ b/arch/sandbox/Kconfig
-@@ -13,6 +13,7 @@ config SANDBOX
- 	select PARTITION_DISK
- 	select ARCH_HAS_STACK_DUMP if ASAN
- 	select GENERIC_FIND_NEXT_BIT
-+	select HAS_ARCH_SJLJ
- 	default y
+diff --git a/common/Kconfig b/common/Kconfig
+index edadcc9f4979..d78aad1deb6b 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -20,6 +20,12 @@ config HAS_CACHE
+ 	  Drivers that depend on a cache implementation can depend on this
+ 	  config, so that you don't get a compilation error.
  
- config ARCH_TEXT_BASE
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index ea594944e4eb..5fc7e227be67 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -27,7 +27,8 @@ KBUILD_CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
- 		-Dftruncate=barebox_ftruncate -Dasprintf=barebox_asprintf \
- 		-Dopendir=barebox_opendir -Dreaddir=barebox_readdir \
- 		-Dclosedir=barebox_closedir -Dreadlink=barebox_readlink \
--		-Doptarg=barebox_optarg -Doptind=barebox_optind
-+		-Doptarg=barebox_optarg -Doptind=barebox_optind \
-+		-Dsetjmp=barebox_setjmp -Dlongjmp=barebox_longjmp
- 
- machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
- 
-@@ -64,7 +65,7 @@ endif
- BAREBOX_LDFLAGS += \
- 	-Wl,-T,$(BAREBOX_LDS) \
- 	-Wl,--whole-archive $(BAREBOX_OBJS) -Wl,--no-whole-archive \
--	-lrt $(SDL_LIBS) $(FTDI1_LIBS) \
-+	-lrt -pthread $(SDL_LIBS) $(FTDI1_LIBS) \
- 	$(SANITIZER_LIBS)
- 
- cmd_barebox__ = $(CC) -o $@ $(BAREBOX_LDFLAGS)
-diff --git a/arch/sandbox/include/asm/setjmp.h b/arch/sandbox/include/asm/setjmp.h
++config HAS_ARCH_SJLJ
++	bool
++	help
++	  Architecture has support implemented for
++	  setjmp()/longjmp()/initjmp()
++
+ config HAS_DMA
+ 	bool
+ 	help
+diff --git a/common/Makefile b/common/Makefile
+index 0e0ba384c9b5..e85a27713177 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -50,6 +50,7 @@ obj-$(CONFIG_OFTREE)		+= oftree.o
+ obj-$(CONFIG_PARTITION_DISK)	+= partitions.o partitions/
+ obj-$(CONFIG_PASSWORD)		+= password.o
+ obj-$(CONFIG_POLLER)		+= poller.o
++obj-$(CONFIG_HAS_ARCH_SJLJ)	+= coroutine.o
+ obj-$(CONFIG_RESET_SOURCE)	+= reset_source.o
+ obj-$(CONFIG_SHELL_HUSH)	+= hush.o
+ obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
+diff --git a/common/coroutine.c b/common/coroutine.c
 new file mode 100644
-index 000000000000..f085a9079dd7
+index 000000000000..d21cfc45067f
 --- /dev/null
-+++ b/arch/sandbox/include/asm/setjmp.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/common/coroutine.c
+@@ -0,0 +1,178 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2021 Ahmad Fatoum, Pengutronix
++ *
++ * ASAN bookkeeping based on Qemu coroutine-ucontext.c
++ */
 +
-+#ifndef __SETJMP_H_
-+#define __SETJMP_H_
++/* To avoid future issues; fortify doesn't like longjmp up the call stack */
++#ifndef __NO_FORTIFY
++#define __NO_FORTIFY
++#endif
 +
-+struct jmp_buf_data {
-+	unsigned char opaque[512] __aligned(16);
++#include <common.h>
++#include <coroutine.h>
++#include <asm/setjmp.h>
++#include <linux/overflow.h>
++
++/** struct coroutine
++ *
++ * @entry	coroutine entry point
++ * @arg		coroutine user-supplied argument
++ * @jmp_buf	coroutine context when yielded
++ * @stack	pointer to stack bottom (for stacks growing down)
++ * @stack_size	size of stack in bytes
++ * @stack_space actual stack for coroutines; empty for main thread
++ */
++struct coroutine {
++	__coroutine (*entry)(void *);
++	void *arg;
++	jmp_buf jmp_buf;
++	void *stack;
++	size_t stack_size;
++	u8 stack_space[] __aligned(16);
 +};
 +
-+typedef struct jmp_buf_data jmp_buf[1];
-+
-+int setjmp(jmp_buf jmp) __attribute__((returns_twice));
-+void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn));
-+
-+int initjmp(jmp_buf jmp, void __noreturn (*func)(void), void *stack_top);
-+
-+#endif
-diff --git a/arch/sandbox/os/Makefile b/arch/sandbox/os/Makefile
-index fb2c3cfd8632..5d0c938ce68c 100644
---- a/arch/sandbox/os/Makefile
-+++ b/arch/sandbox/os/Makefile
-@@ -4,7 +4,8 @@ machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
- 
- KBUILD_CPPFLAGS = $(patsubst %,-I$(srctree)/%include,$(machdirs))
- 
--KBUILD_CPPFLAGS += -DCONFIG_MALLOC_SIZE=$(CONFIG_MALLOC_SIZE) -D_FILE_OFFSET_BITS=64
-+KBUILD_CPPFLAGS += -DCONFIG_MALLOC_SIZE=$(CONFIG_MALLOC_SIZE) -D_FILE_OFFSET_BITS=64 \
-+		   -DCONFIG_STACK_SIZE=$(CONFIG_STACK_SIZE)
- 
- KBUILD_CFLAGS := -Wall
- 
-@@ -14,7 +15,7 @@ ifeq ($(CONFIG_SANDBOX_LINUX_I386),y)
- KBUILD_CFLAGS += -m32
- endif
- 
--obj-y = common.o tap.o
-+obj-y = common.o tap.o setjmp.o
- obj-$(CONFIG_MALLOC_LIBC) += libc_malloc.o
- 
- CFLAGS_sdl.o = $(shell pkg-config sdl2 --cflags)
-diff --git a/arch/sandbox/os/setjmp.c b/arch/sandbox/os/setjmp.c
-new file mode 100644
-index 000000000000..7f686b0fc6e9
---- /dev/null
-+++ b/arch/sandbox/os/setjmp.c
-@@ -0,0 +1,180 @@
-+// SPDX-License-Identifier: LGPL-2.1-or-later
-+/*
-+ * sigaltstack coroutine initialization code
++/** enum coroutine_action
 + *
-+ * Copyright (C) 2006  Anthony Liguori <anthony@codemonkey.ws>
-+ * Copyright (C) 2011  Kevin Wolf <kwolf@redhat.com>
-+ * Copyright (C) 2012  Alex Barcelo <abarcelo@ac.upc.edu>
-+ * Copyright (C) 2021  Ahmad Fatoum, Pengutronix
-+ * This file is partly based on pth_mctx.c, from the GNU Portable Threads
-+ *  Copyright (c) 1999-2006 Ralf S. Engelschall <rse@engelschall.com>
++ * @COROUTINE_CHECKPOINT	placeholder, 0 reserved for regular setjmp return
++ * @COROUTINE_BOOTSTRAP		initial yield in trampline
++ * @COROUTINE_ENTER		switching from scheduler to coroutine
++ * @COROUTINE_YIELD		switching from coroutine to scheduler
++ * @COROUTINE_TERMINATE		final yield in trampoline
++ */
++enum coroutine_action {
++	COROUTINE_CHECKPOINT = 0,
++	COROUTINE_BOOTSTRAP,
++	COROUTINE_ENTER,
++	COROUTINE_YIELD,
++	COROUTINE_TERMINATE
++};
++
++/** The main "thread". Execution returns here when a coroutine yields */
++static struct coroutine scheduler;
++/** Argument for trampoline as initjmp doesn't pass an argument */
++static struct coroutine *new_coro;
++
++static enum coroutine_action coroutine_switch(struct coroutine *from,
++					      struct coroutine *to,
++					      enum coroutine_action action);
++
++static void __noreturn coroutine_trampoline(void)
++{
++	struct coroutine *coro = new_coro;
++
++	coroutine_switch(coro, &scheduler, COROUTINE_BOOTSTRAP);
++
++	coro->entry(coro->arg);
++
++	longjmp(scheduler.jmp_buf, COROUTINE_TERMINATE);
++}
++
++struct coroutine *coroutine_alloc(__coroutine (*entry)(void *), void *arg)
++{
++	struct coroutine *coro;
++	int ret;
++
++	coro = malloc(struct_size(coro, stack_space, CONFIG_STACK_SIZE));
++	if (!coro)
++		return NULL;
++
++	coro->stack = coro->stack_space;
++	coro->stack_size = CONFIG_STACK_SIZE;
++	coro->entry = entry;
++	coro->arg = arg;
++
++	/* set up coroutine context with the new stack */
++	ret = initjmp(coro->jmp_buf, coroutine_trampoline,
++		      coro->stack + CONFIG_STACK_SIZE);
++	if (ret) {
++		free(coro);
++		return NULL;
++	}
++
++	/* jump to new context to finish initialization */
++	new_coro = coro;
++	coroutine_schedule(coro);
++	new_coro = NULL;
++
++	return coro;
++}
++
++void coroutine_schedule(struct coroutine *coro)
++{
++	coroutine_switch(&scheduler, coro, COROUTINE_ENTER);
++}
++
++void coroutine_yield(struct coroutine *coro)
++{
++	coroutine_switch(coro, &scheduler, COROUTINE_YIELD);
++}
++
++void coroutine_free(struct coroutine *coro)
++{
++	free(coro);
++}
++
++/*
++ * When using ASAN, it needs to be told when we switch stacks.
++ */
++static void start_switch_fiber(void **fake_stack, struct coroutine *to);
++static void finish_switch_fiber(void *fake_stack_save);
++
++static enum coroutine_action coroutine_switch(struct coroutine *from, struct coroutine *to,
++					      enum coroutine_action action)
++{
++	void *fake_stack_save = NULL;
++	int ret;
++
++	if (action == COROUTINE_BOOTSTRAP)
++		finish_switch_fiber(NULL);
++
++	ret = setjmp(from->jmp_buf);
++	if (ret == 0) {
++		start_switch_fiber(action == COROUTINE_TERMINATE ? NULL : &fake_stack_save, to);
++		longjmp(to->jmp_buf, COROUTINE_YIELD);
++	}
++
++	finish_switch_fiber(fake_stack_save);
++
++	return ret;
++}
++
++#ifdef CONFIG_ASAN
++
++void __sanitizer_start_switch_fiber(void **fake_stack_save, const void *bottom, size_t size);
++void __sanitizer_finish_switch_fiber(void *fake_stack_save, const void **bottom_old, size_t *size_old);
++
++static void finish_switch_fiber(void *fake_stack_save)
++{
++    const void *bottom_old;
++    size_t size_old;
++
++    __sanitizer_finish_switch_fiber(fake_stack_save, &bottom_old, &size_old);
++
++    if (!scheduler.stack) {
++        scheduler.stack = (void *)bottom_old;
++        scheduler.stack_size = size_old;
++    }
++}
++
++static void start_switch_fiber(void **fake_stack_save,
++                               struct coroutine *to)
++{
++	__sanitizer_start_switch_fiber(fake_stack_save, to->stack, to->stack_size);
++}
++
++#else
++
++static void finish_switch_fiber(void *fake_stack_save)
++{
++}
++
++static void start_switch_fiber(void **fake_stack_save,
++                               struct coroutine *to)
++{
++}
++
++#endif
+diff --git a/include/coroutine.h b/include/coroutine.h
+new file mode 100644
+index 000000000000..f6484e930166
+--- /dev/null
++++ b/include/coroutine.h
+@@ -0,0 +1,43 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2021 Ahmad Fatoum, Pengutronix
 + */
 +
-+/* XXX Is there a nicer way to disable glibc's stack check for longjmp? */
-+#ifdef _FORTIFY_SOURCE
-+#undef _FORTIFY_SOURCE
++#ifndef __COROUTINE_H_
++#define __COROUTINE_H_
++
++#include <linux/stddef.h>
++
++struct coroutine;
++
++#define __coroutine void
++
++#ifdef CONFIG_HAS_ARCH_SJLJ
++
++struct coroutine *coroutine_alloc(__coroutine (*entry)(void *), void *arg);
++void coroutine_schedule(struct coroutine *coro);
++void coroutine_yield(struct coroutine *coro);
++void coroutine_free(struct coroutine *coro);
++
++#else
++
++static inline struct coroutine *coroutine_alloc(__coroutine (*entry)(void *), void *arg)
++{
++	return NULL;
++}
++
++static inline void coroutine_schedule(struct coroutine *coro)
++{
++}
++
++static inline void coroutine_yield(struct coroutine *coro)
++{
++}
++
++static inline void coroutine_free(struct coroutine *coro)
++{
++}
++
 +#endif
 +
-+#include <pthread.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <setjmp.h>
-+#include <signal.h>
-+
-+typedef sigjmp_buf _jmp_buf __attribute__((aligned((16))));
-+_Static_assert(sizeof(_jmp_buf) <= 512, "sigjmp_buf size exceeds expectation");
-+
-+/*
-+ * Information for the signal handler (trampoline)
-+ */
-+static struct {
-+	_jmp_buf *reenter;
-+	void (*entry)(void);
-+	volatile sig_atomic_t called;
-+} tr_state;
-+
-+/*
-+ * "boot" function
-+ * This is what starts the coroutine, is called from the trampoline
-+ * (from the signal handler when it is not signal handling, read ahead
-+ * for more information).
-+ */
-+static void __attribute__((noinline, noreturn))
-+coroutine_bootstrap(void (*entry)(void))
-+{
-+	for (;;)
-+		entry();
-+}
-+
-+/*
-+ * This is used as the signal handler. This is called with the brand new stack
-+ * (thanks to sigaltstack). We have to return, given that this is a signal
-+ * handler and the sigmask and some other things are changed.
-+ */
-+static void coroutine_trampoline(int signal)
-+{
-+	/* Get the thread specific information */
-+	tr_state.called = 1;
-+
-+	/*
-+	 * Here we have to do a bit of a ping pong between the caller, given that
-+	 * this is a signal handler and we have to do a return "soon". Then the
-+	 * caller can reestablish everything and do a siglongjmp here again.
-+	 */
-+	if (!sigsetjmp(*tr_state.reenter, 0)) {
-+		return;
-+	}
-+
-+	/*
-+	 * Ok, the caller has siglongjmp'ed back to us, so now prepare
-+	 * us for the real machine state switching. We have to jump
-+	 * into another function here to get a new stack context for
-+	 * the auto variables (which have to be auto-variables
-+	 * because the start of the thread happens later). Else with
-+	 * PIC (i.e. Position Independent Code which is used when PTH
-+	 * is built as a shared library) most platforms would
-+	 * horrible core dump as experience showed.
-+	 */
-+	coroutine_bootstrap(tr_state.entry);
-+}
-+
-+int initjmp(_jmp_buf jmp, void (*func)(void), void *stack_top)
-+{
-+	struct sigaction sa;
-+	struct sigaction osa;
-+	stack_t ss;
-+	stack_t oss;
-+	sigset_t sigs;
-+	sigset_t osigs;
-+
-+	/* The way to manipulate stack is with the sigaltstack function. We
-+	 * prepare a stack, with it delivering a signal to ourselves and then
-+	 * put sigsetjmp/siglongjmp where needed.
-+	 * This has been done keeping coroutine-ucontext (from the QEMU project)
-+	 * as a model and with the pth ideas (GNU Portable Threads).
-+	 * See coroutine-ucontext for the basics of the coroutines and see
-+	 * pth_mctx.c (from the pth project) for the
-+	 * sigaltstack way of manipulating stacks.
-+	 */
-+
-+	tr_state.entry = func;
-+	tr_state.reenter = (void *)jmp;
-+
-+	/*
-+	 * Preserve the SIGUSR2 signal state, block SIGUSR2,
-+	 * and establish our signal handler. The signal will
-+	 * later transfer control onto the signal stack.
-+	 */
-+	sigemptyset(&sigs);
-+	sigaddset(&sigs, SIGUSR2);
-+	pthread_sigmask(SIG_BLOCK, &sigs, &osigs);
-+	sa.sa_handler = coroutine_trampoline;
-+	sigfillset(&sa.sa_mask);
-+	sa.sa_flags = SA_ONSTACK;
-+	if (sigaction(SIGUSR2, &sa, &osa) != 0) {
-+		return -1;
-+	}
-+
-+	/*
-+	 * Set the new stack.
-+	 */
-+	ss.ss_sp = stack_top - CONFIG_STACK_SIZE;
-+	ss.ss_size = CONFIG_STACK_SIZE;
-+	ss.ss_flags = 0;
-+	if (sigaltstack(&ss, &oss) < 0) {
-+		return -1;
-+	}
-+
-+	/*
-+	 * Now transfer control onto the signal stack and set it up.
-+	 * It will return immediately via "return" after the sigsetjmp()
-+	 * was performed. Be careful here with race conditions.  The
-+	 * signal can be delivered the first time sigsuspend() is
-+	 * called.
-+	 */
-+	tr_state.called = 0;
-+	pthread_kill(pthread_self(), SIGUSR2);
-+	sigfillset(&sigs);
-+	sigdelset(&sigs, SIGUSR2);
-+	while (!tr_state.called) {
-+		sigsuspend(&sigs);
-+	}
-+
-+	/*
-+	 * Inform the system that we are back off the signal stack by
-+	 * removing the alternative signal stack. Be careful here: It
-+	 * first has to be disabled, before it can be removed.
-+	 */
-+	sigaltstack(NULL, &ss);
-+	ss.ss_flags = SS_DISABLE;
-+	if (sigaltstack(&ss, NULL) < 0) {
-+		return -1;
-+	}
-+	sigaltstack(NULL, &ss);
-+	if (!(oss.ss_flags & SS_DISABLE)) {
-+		sigaltstack(&oss, NULL);
-+	}
-+
-+	/*
-+	 * Restore the old SIGUSR2 signal handler and mask
-+	 */
-+	sigaction(SIGUSR2, &osa, NULL);
-+	pthread_sigmask(SIG_SETMASK, &osigs, NULL);
-+
-+	/*
-+	 * jmp can now be used to enter the trampoline again, but not as a
-+	 * signal handler. Instead it's longjmp'd to directly.
-+	 */
-+
-+	return 0;
-+}
-+
-+int  __attribute__((returns_twice)) barebox_setjmp(_jmp_buf jmp)
-+{
-+	return sigsetjmp(jmp, 0);
-+}
-+
-+void __attribute((noreturn)) barebox_longjmp(_jmp_buf jmp, int ret)
-+{
-+	siglongjmp(jmp, ret);
-+}
++#endif
 -- 
 2.29.2
 
