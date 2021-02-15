@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lBbJc-0005UP-Bn
- for barebox@lists.infradead.org; Mon, 15 Feb 2021 10:41:17 +0000
+ id 1lBbJZ-0005TN-GS
+ for barebox@lists.infradead.org; Mon, 15 Feb 2021 10:41:14 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 15 Feb 2021 11:37:00 +0100
-Message-Id: <20210215103704.32537-8-a.fatoum@pengutronix.de>
+Date: Mon, 15 Feb 2021 11:37:01 +0100
+Message-Id: <20210215103704.32537-9-a.fatoum@pengutronix.de>
 In-Reply-To: <20210215103704.32537-1-a.fatoum@pengutronix.de>
 References: <20210215103704.32537-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,43 +21,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/12] slice: have assert_command_context() yield until true
- if possible
+Subject: [PATCH 08/12] poller: implement basic Linux-like completion API
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-assert_command_context() is a safety net to warn about pollers doing
-file system operations. It so far prints a splat when this happens.
-
-With pollers that may yield, this can be implemented differently by
-just yielding until the poller is run in the command context. So so.
+So far, completions made sense only in one direction: The main thread
+can wait for pollers, but the other way around didn't work. With the new
+yielding poller support, pollers can wait for completions as well. Wrap
+this up using the Linux poller API to make porting threaded code easier.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/slice.h | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/linux/completion.h | 61 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
+ create mode 100644 include/linux/completion.h
 
-diff --git a/include/slice.h b/include/slice.h
-index d09d17924fb4..eae74b9fc199 100644
---- a/include/slice.h
-+++ b/include/slice.h
-@@ -36,8 +36,14 @@ void command_slice_acquire(void);
- void command_slice_release(void);
- 
- #ifdef CONFIG_POLLER
--#define assert_command_context() ({    \
--	WARN_ONCE(in_poller(), "%s called in poller\n", __func__); \
-+#define assert_command_context() ({                                       \
-+	while (in_poller() && !slice_acquired(&command_slice)) {          \
-+		if (!IS_ENABLED(CONFIG_POLLER_YIELD)) {                   \
-+			WARN_ONCE(1, "%s called in poller\n", __func__);  \
-+			break;                                            \
-+		}                                                         \
-+		poller_yield();                                           \
-+	}                                                                 \
- })
- #else
- #define assert_command_context() do { } while (0)
+diff --git a/include/linux/completion.h b/include/linux/completion.h
+new file mode 100644
+index 000000000000..f2db80716c7f
+--- /dev/null
++++ b/include/linux/completion.h
+@@ -0,0 +1,61 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __LINUX_COMPLETION_H
++#define __LINUX_COMPLETION_H
++
++/*
++ * (C) Copyright 2021 Ahmad Fatoum
++ *
++ * Async wait-for-completion handler data structures.
++ * This allows pollers to wait for main thread and vice versa
++ * Requires poller_yield() support
++ */
++
++#include <poller.h>
++#include <linux/bug.h>
++
++struct completion {
++	unsigned int done;
++};
++
++static inline void init_completion(struct completion *x)
++{
++	x->done = 0;
++}
++
++static inline void reinit_completion(struct completion *x)
++{
++	x->done = 0;
++}
++
++static inline int wait_for_completion_interruptible(struct completion *x)
++{
++	int ret;
++
++	while (!x->done) {
++		ret = poller_reschedule();
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static inline bool completion_done(struct completion *x)
++{
++	return x->done;
++}
++
++static inline void complete(struct completion *x)
++{
++	x->done = 1;
++}
++
++static inline void __noreturn complete_and_exit(struct completion *x, int ret)
++{
++	BUG_ON(!in_poller());
++	complete(x);
++	for (;;)
++		poller_yield();
++}
++
++#endif
 -- 
 2.29.2
 
