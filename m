@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lBbJZ-0005TN-GS
- for barebox@lists.infradead.org; Mon, 15 Feb 2021 10:41:14 +0000
+ id 1lBbJh-0005W0-5n
+ for barebox@lists.infradead.org; Mon, 15 Feb 2021 10:41:22 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 15 Feb 2021 11:37:01 +0100
-Message-Id: <20210215103704.32537-9-a.fatoum@pengutronix.de>
+Date: Mon, 15 Feb 2021 11:36:59 +0100
+Message-Id: <20210215103704.32537-7-a.fatoum@pengutronix.de>
 In-Reply-To: <20210215103704.32537-1-a.fatoum@pengutronix.de>
 References: <20210215103704.32537-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,88 +21,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/12] poller: implement basic Linux-like completion API
+Subject: [PATCH 06/12] poller: command: add new coroutine check
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-So far, completions made sense only in one direction: The main thread
-can wait for pollers, but the other way around didn't work. With the new
-yielding poller support, pollers can wait for completions as well. Wrap
-this up using the Linux poller API to make porting threaded code easier.
+The poller command can already counts how many pollers can execute
+serially in a second. Add a new -c options that additionally
+registers a poller that does non-blockingly sleep via poller_yield.
+
+A system with working coroutines and enabled CONFIG_POLLER_YIELD should
+show that the poller yielded exactly 4 times during considerably more
+poller_call()s. For example:
+
+    barebox@Embest MarS Board i.MX6Dual:/ poller -c
+    Poller yield #1
+    Poller yield #2
+    Poller yield #3
+    Poller yield #4
+    295066 poller calls in 1s
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/completion.h | 61 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
- create mode 100644 include/linux/completion.h
+ common/poller.c | 41 +++++++++++++++++++++++++++++++++++------
+ 1 file changed, 35 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/completion.h b/include/linux/completion.h
-new file mode 100644
-index 000000000000..f2db80716c7f
---- /dev/null
-+++ b/include/linux/completion.h
-@@ -0,0 +1,61 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __LINUX_COMPLETION_H
-+#define __LINUX_COMPLETION_H
-+
-+/*
-+ * (C) Copyright 2021 Ahmad Fatoum
-+ *
-+ * Async wait-for-completion handler data structures.
-+ * This allows pollers to wait for main thread and vice versa
-+ * Requires poller_yield() support
-+ */
-+
-+#include <poller.h>
-+#include <linux/bug.h>
-+
-+struct completion {
-+	unsigned int done;
-+};
-+
-+static inline void init_completion(struct completion *x)
+diff --git a/common/poller.c b/common/poller.c
+index 592dc0a11a39..a63af0e792a6 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -187,8 +187,9 @@ void poller_call(void)
+ 
+ #include <command.h>
+ #include <getopt.h>
++#include <clock.h>
+ 
+-static void poller_time(void)
++static int poller_time(void)
+ {
+ 	uint64_t start = get_time_ns();
+ 	int i = 0;
+@@ -202,7 +203,7 @@ static void poller_time(void)
+ 	while (!is_timeout(start, SECOND))
+ 		i++;
+ 
+-	printf("%d poller calls in 1s\n", i);
++	return i;
+ }
+ 
+ static void poller_info(void)
+@@ -226,20 +227,48 @@ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT ("-i", "Print information about registered pollers")
+ BAREBOX_CMD_HELP_OPT ("-t", "measure how many pollers we run in 1s")
++BAREBOX_CMD_HELP_OPT ("-c", "run coroutine test")
+ BAREBOX_CMD_HELP_END
+ 
++static void poller_coroutine(struct poller_struct *poller)
 +{
-+	x->done = 0;
-+}
++	volatile u64 start;
++	volatile int i = 0;
 +
-+static inline void reinit_completion(struct completion *x)
-+{
-+	x->done = 0;
-+}
++	for (;;) {
++		start = get_time_ns();
++		while (!is_timeout_non_interruptible(start, 225 * MSECOND))
++			__poller_yield(active_poller);
 +
-+static inline int wait_for_completion_interruptible(struct completion *x)
-+{
-+	int ret;
-+
-+	while (!x->done) {
-+		ret = poller_reschedule();
-+		if (ret)
-+			return ret;
++		printf("Poller yield #%d\n", ++i);
 +	}
-+
-+	return 0;
 +}
 +
-+static inline bool completion_done(struct completion *x)
-+{
-+	return x->done;
-+}
+ static int do_poller(int argc, char *argv[])
+ {
+-	int opt;
++	struct poller_struct poller = {};
++	int ret, opt;
+ 
+-	while ((opt = getopt(argc, argv, "it")) > 0) {
++	while ((opt = getopt(argc, argv, "itc")) > 0) {
+ 		switch (opt) {
+ 		case 'i':
+ 			poller_info();
+ 			return 0;
++		case 'c':
++			if (!IS_ENABLED(CONFIG_POLLER_YIELD)) {
++				printf("CONFIG_POLLER_YIELD support not compiled in\n");
++				return -ENOSYS;
++			}
 +
-+static inline void complete(struct completion *x)
-+{
-+	x->done = 1;
-+}
++			poller.func = poller_coroutine;
++			ret = poller_register(&poller, "poller-coroutine-test");
++			if (ret)
++				return ret;
 +
-+static inline void __noreturn complete_and_exit(struct completion *x, int ret)
-+{
-+	BUG_ON(!in_poller());
-+	complete(x);
-+	for (;;)
-+		poller_yield();
-+}
-+
-+#endif
++			/* fallthrough */
+ 		case 't':
+-			poller_time();
+-			return 0;
++			printf("%d poller calls in 1s\n", poller_time());
++			return poller.func ? poller_unregister(&poller) : 0;
+ 		}
+ 	}
+ 
 -- 
 2.29.2
 
