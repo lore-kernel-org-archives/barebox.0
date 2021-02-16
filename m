@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lBwdo-0001Hm-4G
- for barebox@lists.infradead.org; Tue, 16 Feb 2021 09:27:32 +0000
-Date: Tue, 16 Feb 2021 10:27:29 +0100
-Message-ID: <20210216092729.GW19583@pengutronix.de>
-References: <20210208163458.29143-2-jmaselbas@kalray.eu>
- <20210215141843.27629-1-jmaselbas@kalray.eu>
- <2e8c050e-b72d-5f29-c905-8c8e1bf5e303@grinn-global.com>
+ id 1lBwjo-0001vY-Rp
+ for barebox@lists.infradead.org; Tue, 16 Feb 2021 09:33:47 +0000
+Date: Tue, 16 Feb 2021 10:33:43 +0100
+Message-ID: <20210216093343.GX19583@pengutronix.de>
+References: <20210118190923.531-1-m.grzeschik@pengutronix.de>
+ <fb80f1ad-acac-0f45-5f87-1b725252906f@pengutronix.de>
+ <20210216082001.GB16279@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <2e8c050e-b72d-5f29-c905-8c8e1bf5e303@grinn-global.com>
+In-Reply-To: <20210216082001.GB16279@pengutronix.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,50 +24,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] usb: gadget: dfu: Rework print messages
-To: Bartosz Bilas <b.bilas@grinn-global.com>
-Cc: Jules Maselbas <jmaselbas@kalray.eu>, Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH] usb: hub: fix state change check for not powercycled ports
+To: Michael Grzeschik <mgr@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Tue, Feb 16, 2021 at 10:19:00AM +0100, Bartosz Bilas wrote:
-> Hello Jules,
+On Tue, Feb 16, 2021 at 09:20:01AM +0100, Michael Grzeschik wrote:
+> Hi!
 > 
-> On 15.02.2021 15:18, Jules Maselbas wrote:
-> > Replace printf with pr_err and debug with pr_debug.
-> > Defines "dfu :" as a prefix for formatted prints.
+> On Thu, Feb 11, 2021 at 01:03:54PM +0100, Ahmad Fatoum wrote:
+> > Hello,
 > > 
-> > ---
-> > v1 -> v2:
-> >   - add `pr_fmt(fmt) "dfu: " fmt`
-> >   - change debug call to pr_debug
-> >   - remove "dfu: " in print messages
+> > On 18.01.21 20:09, Michael Grzeschik wrote:
+> > > Since we don't power cycle the ports on start since patch "19bb0b2a usb:
+> > > hub: Do not power-cycle usb devices on init" it is possible that the
+> > > device on this port is already active from a previous enumeration. This
+> > > way barebox will never get any change in USB_PORT_STAT_C_CONNECTION bit
+> > > change.
+> > > 
+> > > Although the device will probably still work fine after the following
+> > > port reset, the current code will always miss reenumerating these still
+> > > plugged devices. This patch fixes this by ignoring the check for
+> > > STAT_C_CONNECTION bit and only go for USB_PORT_STAT_CONNECTION which
+> > > should be enough.
 > > 
-> > Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> > ---
-> >   drivers/usb/gadget/dfu.c | 11 ++++++-----
-> >   1 file changed, 6 insertions(+), 5 deletions(-)
+> > This breaks USB enumeration for me on an i.MX6Q. The USB flash driver behind
+> > the hub is detected twice, which barebox doesn't like at all:
 > > 
-> > diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-> > index 9d6a9d252..fba4ad782 100644
-> > --- a/drivers/usb/gadget/dfu.c
-> > +++ b/drivers/usb/gadget/dfu.c
-> > @@ -32,6 +32,7 @@
-> >    *   checking?
-> >    * - make 'dnstate' attached to 'struct usb_device_instance'
-> >    */
-> > +#define pr_fmt(fmt) "dfu: " fmt
-> >   #include <dma.h>
-> >   #include <asm/byteorder.h>
-> > @@ -209,7 +210,7 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
-> >   	dfu->dnreq = usb_ep_alloc_request(c->cdev->gadget->ep0);
-> >   	if (!dfu->dnreq) {
-> > -		printf("usb_ep_alloc_request failed\n");
-> > +		pr_err("dfu: usb_ep_alloc_request failed\n");
+> > barebox@Embest MarS Board i.MX6Dual:/ usb -s
+> > usb: USB: scanning bus for devices...
+> > usb1: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> > usb1-0: Bus 001 Device 002: ID 1a40:0101 USB 2.0 Hub [MTT]
+> > usb1-0-1: Bus 001 Device 003: ID 058f:6387 Mass Storage
+> > Using index 0 for the new disk
+> > usb1-0-1: Bus 001 Device 004: ID 058f:6387 Mass Storage
+> > ERROR: register_device: already registered usb1-0-1
+> > ERROR: usb1-0-1: Failed to register device: Invalid argument
+> > usb: 3 USB Device(s) found
+> > Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> > Bus 001 Device 002: ID 1a40:0101 USB 2.0 Hub [MTT]
+> > Bus 001 Device 003: ID 058f:6387 Mass Storage
+> > 
+> > This seems to corrupt some internal barebox state as reading
+> > /dev/disk0.0 will hang. Reading /dev/disk0 is fine however.
+> > 
+> > With this patch reverted it however works:
+> > 
+> > usb: USB: scanning bus for devices...
+> > usb1: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> > usb1-0: Bus 001 Device 002: ID 1a40:0101 USB 2.0 Hub [MTT]
+> > usb1-0-1: Bus 001 Device 003: ID 058f:6387 Mass Storage
+> > Using index 0 for the new disk
+> > usb: 3 USB Device(s) found
+> > Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> > Bus 001 Device 002: ID 1a40:0101 USB 2.0 Hub [MTT]
+> > Bus 001 Device 003: ID 058f:6387 Mass Storage
+> > 
+> > The USB drive is not self-powered. It doesn't make a difference
+> > whether it's done directly after cold reset or:
+> >  usb -s
+> >  boot bnet
+> >  usb -s
+> > 
+> > Cheers,
+> > Ahmad
 > 
-> you have missed this one ^^^^^
+> I have reproduced that. My latest findings are that, when I debugged
+> this, usb core on my board I was debugging was behaving uncommon. It was
+> not setting the USB_PORT_STAT_C_CONNECTION in the first place. But the
+> further patches I send did solve this.
+> 
+> So this whole issue was due to an uncorrect configured over-current
+> polarity setup. With my other patches applied I see this bit
+> USB_PORT_STAT_C_CONNECTION set even without the power-cycle.
+> 
+> My suggestion is to _revert_ this patch, as it is solving a
+> bogus problem not related to the whole usb-core state machine.
 
-Fixed while applying, thanks
+Ok, dropped this patch.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
