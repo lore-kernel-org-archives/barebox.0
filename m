@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2.megiteam.pl ([213.189.52.193])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lBwVj-0000dm-NR
- for barebox@lists.infradead.org; Tue, 16 Feb 2021 09:19:12 +0000
-References: <20210208163458.29143-2-jmaselbas@kalray.eu>
- <20210215141843.27629-1-jmaselbas@kalray.eu>
-From: Bartosz Bilas <b.bilas@grinn-global.com>
-Message-ID: <2e8c050e-b72d-5f29-c905-8c8e1bf5e303@grinn-global.com>
-Date: Tue, 16 Feb 2021 10:19:00 +0100
+ id 1lBwYh-0000tf-S9
+ for barebox@lists.infradead.org; Tue, 16 Feb 2021 09:22:16 +0000
+Date: Tue, 16 Feb 2021 10:22:14 +0100
+Message-ID: <20210216092214.GU19583@pengutronix.de>
+References: <20210212093450.32227-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20210215141843.27629-1-jmaselbas@kalray.eu>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20210212093450.32227-1-a.fatoum@pengutronix.de>
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,94 +18,148 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] usb: gadget: dfu: Rework print messages
-To: Jules Maselbas <jmaselbas@kalray.eu>, barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH v2] fs: increase reference count for backing store when
+ loop mounting
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello Jules,
-
-On 15.02.2021 15:18, Jules Maselbas wrote:
-> Replace printf with pr_err and debug with pr_debug.
-> Defines "dfu :" as a prefix for formatted prints.
->
+On Fri, Feb 12, 2021 at 10:34:50AM +0100, Ahmad Fatoum wrote:
+> From: Ahmad Fatoum <ahmad@a3f.at>
+> 
+> The VFS layer already increase the mount reference count for the mount
+> point. This means e.g. following sequence is well-behaving:
+> 
+>  mkdir -p /mnt/disk0.0/media
+>  mount -o loop backing.squashfs /mnt/disk0.0/media
+>  umount /mnt/disk0.0
+> 
+> barebox will do the right thing and report
+> 
+>   umount: Device or resource busy
+> 
+> However the reference count of the file where backing.squashfs comes
+> from is not incremented on mount with the effect that following sequence
+> crashes:
+> 
+>  mkdir -p /media
+>  mount -o loop /mnt/disk0.0/backing.squashfs /media
+>  umount /mnt/disk0.0 # should've returned EBUSY
+>  umount /media
+> 
+> Fix this by touching the backing store's mount reference count when
+> loop mounting and unmounting.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 > ---
-> v1 -> v2:
->   - add `pr_fmt(fmt) "dfu: " fmt`
->   - change debug call to pr_debug
->   - remove "dfu: " in print messages
->
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> ---
->   drivers/usb/gadget/dfu.c | 11 ++++++-----
->   1 file changed, 6 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-> index 9d6a9d252..fba4ad782 100644
-> --- a/drivers/usb/gadget/dfu.c
-> +++ b/drivers/usb/gadget/dfu.c
-> @@ -32,6 +32,7 @@
->    *   checking?
->    * - make 'dnstate' attached to 'struct usb_device_instance'
->    */
-> +#define pr_fmt(fmt) "dfu: " fmt
->   
->   #include <dma.h>
->   #include <asm/byteorder.h>
-> @@ -209,7 +210,7 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
->   
->   	dfu->dnreq = usb_ep_alloc_request(c->cdev->gadget->ep0);
->   	if (!dfu->dnreq) {
-> -		printf("usb_ep_alloc_request failed\n");
-> +		pr_err("dfu: usb_ep_alloc_request failed\n");
+>  fs/fs.c | 42 ++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 36 insertions(+), 6 deletions(-)
 
-you have missed this one ^^^^^
+Applied, thanks
 
+Sascha
 
-Best
-Bartek
->   		status = -ENOMEM;
->   		goto out;
->   	}
-> @@ -254,7 +255,7 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
->   
->   	i = 0;
->   	file_list_for_each_entry(dfu_files, fentry) {
-> -		printf("dfu: register alt%d(%s) with device %s\n",
-> +		pr_err("register alt%d(%s) with device %s\n",
->   				i, fentry->name, fentry->filename);
->   		i++;
->   	}
-> @@ -418,7 +419,7 @@ static int handle_manifest(struct usb_function *f, const struct usb_ctrlrequest
->   
->   		ret = copy_file(DFU_TEMPFILE, dfu_file_entry->filename, 0);
->   		if (ret) {
-> -			printf("copy file failed\n");
-> +			pr_err("copy file failed\n");
->   			ret = -EINVAL;
->   			goto out;
->   		}
-> @@ -500,7 +501,7 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
->   				value = -EINVAL;
->   				goto out;
->   			}
-> -			debug("dfu: starting download to %s\n", dfu_file_entry->filename);
-> +			pr_debug("starting download to %s\n", dfu_file_entry->filename);
->   			if (dfu_file_entry->flags & FILE_LIST_FLAG_SAFE) {
->   				dfufd = open(DFU_TEMPFILE, O_WRONLY | O_CREAT);
->   			} else {
-> @@ -529,7 +530,7 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
->   			return 0;
->   		case USB_REQ_DFU_UPLOAD:
->   			dfu->dfu_state = DFU_STATE_dfuUPLOAD_IDLE;
-> -			debug("dfu: starting upload from %s\n", dfu_file_entry->filename);
-> +			pr_debug("starting upload from %s\n", dfu_file_entry->filename);
->   			if (!(dfu_file_entry->flags & FILE_LIST_FLAG_READBACK)) {
->   				dfu->dfu_state = DFU_STATE_dfuERROR;
->   				goto out;
+> 
+> diff --git a/fs/fs.c b/fs/fs.c
+> index 00b8645fb0e9..3db24b7b6822 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -89,7 +89,13 @@ static int init_fs(void)
+>  
+>  postcore_initcall(init_fs);
+>  
+> +struct filename;
+> +
+>  static struct fs_device_d *get_fsdevice_by_path(const char *path);
+> +static int filename_lookup(int dfd, struct filename *name, unsigned flags,
+> +			   struct path *path);;
+> +static struct filename *getname(const char *filename);
+> +static void path_put(const struct path *path);
+>  
+>  LIST_HEAD(fs_device_list);
+>  
+> @@ -683,6 +689,8 @@ static void fs_remove(struct device_d *dev)
+>  	struct fs_device_d *fsdev = dev_to_fs_device(dev);
+>  	struct super_block *sb = &fsdev->sb;
+>  	struct inode *inode, *tmp;
+> +	struct path path;
+> +	int ret;
+>  
+>  	if (fsdev->dev.driver) {
+>  		dev->driver->remove(dev);
+> @@ -695,9 +703,17 @@ static void fs_remove(struct device_d *dev)
+>  	if (fsdev->cdev)
+>  		cdev_close(fsdev->cdev);
+>  
+> -	if (fsdev->loop && fsdev->cdev)
+> +	if (fsdev->loop && fsdev->cdev) {
+>  		cdev_remove_loop(fsdev->cdev);
+>  
+> +		ret = filename_lookup(AT_FDCWD, getname(fsdev->backingstore),
+> +				      LOOKUP_FOLLOW, &path);
+> +		if (!ret) {
+> +			mntput(path.mnt);
+> +			path_put(&path);
+> +		}
+> +	}
+> +
+>  	if (fsdev->vfsmount.mountpoint)
+>  		fsdev->vfsmount.mountpoint->d_flags &= ~DCACHE_MOUNTED;
+>  
+> @@ -767,16 +783,30 @@ static const char *detect_fs(const char *filename, const char *fsoptions)
+>  int fsdev_open_cdev(struct fs_device_d *fsdev)
+>  {
+>  	unsigned long long offset = 0;
+> +	struct path path = {};
+> +	int ret;
+>  
+>  	parseopt_b(fsdev->options, "loop", &fsdev->loop);
+>  	parseopt_llu_suffix(fsdev->options, "offset", &offset);
+> -	if (fsdev->loop)
+> -		fsdev->cdev = cdev_create_loop(fsdev->backingstore, O_RDWR,
+> -					       offset);
+> -	else
+> +	if (fsdev->loop) {
+> +		ret = filename_lookup(AT_FDCWD, getname(fsdev->backingstore),
+> +				      LOOKUP_FOLLOW, &path);
+> +		if (ret)
+> +			return ret;
+> +
+> +		fsdev->cdev = cdev_create_loop(fsdev->backingstore, O_RDWR, offset);
+> +	} else {
+>  		fsdev->cdev = cdev_open(fsdev->backingstore, O_RDWR);
+> -	if (!fsdev->cdev)
+> +	}
+> +	if (!fsdev->cdev) {
+> +		path_put(&path);
+>  		return -EINVAL;
+> +	}
+> +
+> +	if (path.mnt) {
+> +		mntget(path.mnt);
+> +		path_put(&path);
+> +	}
+>  
+>  	fsdev->dev.parent = fsdev->cdev->dev;
+>  	fsdev->parent_device = fsdev->cdev->dev;
+> -- 
+> 2.29.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
