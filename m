@@ -1,23 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout-p-201.mailbox.org ([80.241.56.171])
+Received: from mout-p-101.mailbox.org ([80.241.56.151])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lCNo0-0001l9-2q
- for barebox@lists.infradead.org; Wed, 17 Feb 2021 14:27:53 +0000
-Received: from smtp2.mailbox.org (smtp2.mailbox.org
- [IPv6:2001:67c:2050:105:465:1:2:0])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4DggD46n8PzQlZc
- for <barebox@lists.infradead.org>; Wed, 17 Feb 2021 15:27:48 +0100 (CET)
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172])
- (amavisd-new, port 10030)
- with ESMTP id KnkOZQ0rJHlA for <barebox@lists.infradead.org>;
- Wed, 17 Feb 2021 15:27:44 +0100 (CET)
-From: Marcel Hellwig <git@cookiesoft.de>
-Date: Wed, 17 Feb 2021 15:27:44 +0100
-Message-Id: <20210217142744.3166-1-git@cookiesoft.de>
+ id 1lCeF1-0005PH-GY
+ for barebox@lists.infradead.org; Thu, 18 Feb 2021 08:00:52 +0000
+Date: Thu, 18 Feb 2021 09:00:42 +0100 (CET)
+From: Marcel Hellwig <barebox+mailing@cookiesoft.de>
+Message-ID: <1708069310.14913.1613635242547@office.mailbox.org>
+In-Reply-To: <20210217131702.GD19583@pengutronix.de>
+References: <1474779923.1916.1613564552090@office.mailbox.org>
+ <20210217123517.GC19583@pengutronix.de>
+ <635893483.2404.1613565899806@office.mailbox.org>
+ <20210217131702.GD19583@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -31,52 +24,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] common: memtest: Allow memtest to be interrupted
-To: barebox@lists.infradead.org
+Subject: Re: Heartbeat LED during init script
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-This change will allow the user to interrupt a running memtest, as well
-as poller to run in the background. This makes it possible to let a led
-blink while doing a memtest to indicate process.
+Hey Sasha,
 
-Signed-off-by: Marcel Hellwig <git@cookiesoft.de>
----
- common/memtest.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+I have a slight problem here:
+This is what I think:
 
-diff --git a/common/memtest.c b/common/memtest.c
-index d47e4a672..0834f344e 100644
---- a/common/memtest.c
-+++ b/common/memtest.c
-@@ -390,6 +390,8 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
- 		if (ret)
- 			return ret;
- 		start[offset] = offset + 1;
-+		if (ctrlc())
-+			return -EINTR;
- 	}
- 
- 	/* Check each location and invert it for the second pass */
-@@ -409,6 +411,8 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
- 
- 		anti_pattern = ~(offset + 1);
- 		start[offset] = anti_pattern;
-+		if (ctrlc())
-+			return -EINTR;
- 	}
- 
- 	/* Check each location for the inverted pattern and zero it */
-@@ -429,6 +433,8 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
- 		}
- 
- 		start[offset] = 0;
-+		if (ctrlc())
-+			return -EINTR;
- 	}
- 	show_progress(3 * num_words);
- 
--- 
-2.25.1
+Because the memtest gets called in the init routine, the `ctrl` is completly ignored, at least I can't interrupt it nor the LED blinks.
+But if I insert `poller_call`, the led blinks, but the memtest is painfully slow (like 10x slower at least).
 
+I don't think that this will work for me, but I have to accept, that the LED doesn't blink while doing a memtest.
+
+But an interruptable memtest would be nice at least for the user, so my patch I sent yesterday still remains ;)
+
+Greetings,
+Marcel
+
+> Sascha Hauer <sha@pengutronix.de> hat am 17.02.2021 14:17 geschrieben:
+> 
+>  
+> On Wed, Feb 17, 2021 at 01:44:59PM +0100, barebox+mailing@cookiesoft.de wrote:
+> > Hey Sasha,
+> > 
+> > thanks for the answer.
+> > 
+> > > barebox doesn't support interrupts. LED blinking is done in pollers
+> > 
+> > That explains the obversation.
+> > 
+> > > add a ctrlc() call to your memtester code inside some loop.
+> > > That will cause the poller to run.
+> > 
+> > I'm not entirely sure, if I understand you correctly or you didn't understand me.
+> > 
+> > I use the memtest command[0] from barebox so there is nothing custom written or any loop that I can control.
+> 
+> Ok, somehow I thought you added some memtest code yourself. I was
+> mistaken.
+> 
+> > However, if I understand you correctly one could add the `ctrlc`
+> > command in all of these[1] three loops inside the
+> > `mem_test_moving_inversions` function. Is that correct? 
+> 
+> Yes, correct.
+> 
+> > Or is there an
+> > other way to not listen on ctrl+c but let the poller itself run?
+> 
+> You could add poller_call() directly. The idea of adding ctrlc() is just
+> that this way you could also make the memtest interruptible for the
+> user.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
