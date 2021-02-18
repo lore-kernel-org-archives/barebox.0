@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lCeeZ-000772-69
- for barebox@lists.infradead.org; Thu, 18 Feb 2021 08:27:16 +0000
-Date: Thu, 18 Feb 2021 09:27:13 +0100
-Message-ID: <20210218082713.GC10569@pengutronix.de>
-References: <20210216173811.4550-1-jmaselbas@kalray.eu>
- <20210217093632.31471-1-jmaselbas@kalray.eu>
+ id 1lCels-0007Xu-R3
+ for barebox@lists.infradead.org; Thu, 18 Feb 2021 08:34:51 +0000
+Date: Thu, 18 Feb 2021 09:34:44 +0100
+From: Sascha Hauer <sha@pengutronix.de>
+Message-ID: <20210218083444.GD10569@pengutronix.de>
+References: <1474779923.1916.1613564552090@office.mailbox.org>
+ <20210217123517.GC19583@pengutronix.de>
+ <635893483.2404.1613565899806@office.mailbox.org>
+ <20210217131702.GD19583@pengutronix.de>
+ <1708069310.14913.1613635242547@office.mailbox.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210217093632.31471-1-jmaselbas@kalray.eu>
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <1708069310.14913.1613635242547@office.mailbox.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,135 +26,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] usb: otg: Add support to register more than one otg dev
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: barebox@lists.infradead.org
+Subject: Re: Heartbeat LED during init script
+To: Marcel Hellwig <barebox+mailing@cookiesoft.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Feb 17, 2021 at 10:36:32AM +0100, Jules Maselbas wrote:
-> This allow each otg controller to register one otg device for
-> host/peripheral mode switch. The first otg device registered
-> "otg0" will also be aliased by "otg" for compatibility.
+On Thu, Feb 18, 2021 at 09:00:42AM +0100, Marcel Hellwig wrote:
+> Hey Sasha,
 > 
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> ---
-> change v1 -> v2:
->  - replace xmalloc with xzalloc
-> ---
+> I have a slight problem here:
+> This is what I think:
+> 
+> Because the memtest gets called in the init routine, the `ctrl` is
+> completly ignored, at least I can't interrupt it nor the LED blinks.
 
-Applied, thanks
+Yes, ctrlc() is allowed only after startup. We could move calling
+poller_call() up, before we test if ctrlc is allowed.
+
+> But if I insert `poller_call`, the led blinks, but the memtest is
+> painfully slow (like 10x slower at least).
+
+poller_call() takes some time. A solution might be to call poller_call()
+just every thousand times or so in memtest loop.
 
 Sascha
-
->  drivers/usb/otg/otgdev.c | 63 +++++++++++++++++++++++++++-------------
->  1 file changed, 43 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/usb/otg/otgdev.c b/drivers/usb/otg/otgdev.c
-> index 52f43b75d..c233315d9 100644
-> --- a/drivers/usb/otg/otgdev.c
-> +++ b/drivers/usb/otg/otgdev.c
-> @@ -4,28 +4,33 @@
->  #include <driver.h>
->  #include <usb/usb.h>
->  
-> -static int (*set_mode_callback)(void *ctx, enum usb_dr_mode mode);
-> -static unsigned int otg_mode;
-> +struct otg_mode {
-> +	struct device_d dev;
-> +	unsigned int var_mode;
-> +	unsigned int cur_mode;
-> +	int (*set_mode_callback)(void *ctx, enum usb_dr_mode mode);
-> +	void *ctx;
-> +};
->  
->  static int otg_set_mode(struct param_d *param, void *ctx)
->  {
-> -	static int cur_mode = USB_DR_MODE_OTG;
-> +	struct otg_mode *otg = ctx;
->  	int ret;
->  
-> -	if (otg_mode == USB_DR_MODE_UNKNOWN)
-> +	if (otg->var_mode == USB_DR_MODE_UNKNOWN)
->  		return -EINVAL;
->  
-> -	if (otg_mode == cur_mode)
-> +	if (otg->var_mode == otg->cur_mode)
->  		return 0;
->  
-> -	if (cur_mode != USB_DR_MODE_OTG)
-> +	if (otg->cur_mode != USB_DR_MODE_OTG)
->  		return -EBUSY;
->  
-> -	ret = set_mode_callback(ctx, otg_mode);
-> +	ret = otg->set_mode_callback(otg->ctx, otg->var_mode);
->  	if (ret)
->  		return ret;
->  
-> -	cur_mode = otg_mode;
-> +	otg->cur_mode = otg->var_mode;
->  
->  	return 0;
->  }
-> @@ -47,20 +52,38 @@ int usb_register_otg_device(struct device_d *parent,
->  {
->  	int ret;
->  	struct param_d *param_mode;
-> -
-> -	if (otg_device.parent)
-> -		return -EBUSY;
-> -
-> -	otg_device.parent = parent;
-> -	set_mode_callback = set_mode;
-> -	otg_mode = USB_DR_MODE_OTG;
-> -
-> -	ret = register_device(&otg_device);
-> +	struct otg_mode *otg;
-> +
-> +	otg = xzalloc(sizeof(*otg));
-> +	otg->dev.priv = otg;
-> +	otg->dev.parent = parent;
-> +	otg->dev.id = DEVICE_ID_DYNAMIC;
-> +	dev_set_name(&otg->dev, "otg");
-> +
-> +	otg->var_mode = USB_DR_MODE_OTG;
-> +	otg->cur_mode = USB_DR_MODE_OTG;
-> +	otg->set_mode_callback = set_mode;
-> +	otg->ctx = ctx;
-> +
-> +	/* register otg.mode as an alias of otg0.mode */
-> +	if (otg_device.parent == NULL) {
-> +		otg_device.parent = parent;
-> +		ret = register_device(&otg_device);
-> +		if (ret)
-> +			return ret;
-> +
-> +		param_mode = dev_add_param_enum(&otg_device, "mode",
-> +				otg_set_mode, NULL, &otg->var_mode,
-> +				otg_mode_names, ARRAY_SIZE(otg_mode_names), otg);
-> +	}
-> +
-> +	ret = register_device(&otg->dev);
->  	if (ret)
->  		return ret;
->  
-> -	param_mode = dev_add_param_enum(&otg_device, "mode",
-> -			otg_set_mode, NULL, &otg_mode,
-> -			otg_mode_names, ARRAY_SIZE(otg_mode_names), ctx);
-> +	param_mode = dev_add_param_enum(&otg->dev, "mode",
-> +			otg_set_mode, NULL, &otg->var_mode,
-> +			otg_mode_names, ARRAY_SIZE(otg_mode_names), otg);
-> +
->  	return PTR_ERR_OR_ZERO(param_mode);
->  }
-> -- 
-> 2.17.1
-> 
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
