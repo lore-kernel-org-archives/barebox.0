@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout-p-101.mailbox.org ([80.241.56.151])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lCeF1-0005PH-GY
- for barebox@lists.infradead.org; Thu, 18 Feb 2021 08:00:52 +0000
-Date: Thu, 18 Feb 2021 09:00:42 +0100 (CET)
-From: Marcel Hellwig <barebox+mailing@cookiesoft.de>
-Message-ID: <1708069310.14913.1613635242547@office.mailbox.org>
-In-Reply-To: <20210217131702.GD19583@pengutronix.de>
-References: <1474779923.1916.1613564552090@office.mailbox.org>
- <20210217123517.GC19583@pengutronix.de>
- <635893483.2404.1613565899806@office.mailbox.org>
- <20210217131702.GD19583@pengutronix.de>
+ id 1lCebi-0006iM-V9
+ for barebox@lists.infradead.org; Thu, 18 Feb 2021 08:24:19 +0000
+Date: Thu, 18 Feb 2021 09:24:16 +0100
+Message-ID: <20210218082416.GA10569@pengutronix.de>
+References: <20210216200208.5275-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20210216200208.5275-1-a.fatoum@pengutronix.de>
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,67 +22,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Heartbeat LED during init script
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 0/8] Support large files on larger ext4 partitions on
+ larger still USB disks
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hey Sasha,
+On Tue, Feb 16, 2021 at 09:02:00PM +0100, Ahmad Fatoum wrote:
+> Most of this series is patching in 64-bit types at a lot of places.
+> I hope this doesn't add any nasty regressions elsewhere.
+> 
+> I tested this on ARM 32-bit (i.MX6) and sandbox x86 and x86_64.
+> 
+> Stuff that newly works:
+>  - Accessing all of a 2 TiB USB drive
+>  - Having multi-TB ext4 partitions
+>  - Having ext4 files larger than 2G
+> 
+> This series depends on 
+> "treewide: include <linux/math64.h> wrapper instead of <asm-generic/div64.h>"
+> to not cause a build error.
+> 
+> Cheers,
+> Ahmad Fatoum (8):
+>   ext4: ext_common.h: drop declaration of never-defined part_offset
+>   fs: ext4: ext4fs.h: remove unused struct members of ext_filesystem
+>   block: use 64-bit types for sector offset and count on all platforms
+>   usb: storage: support USB disks up to 2TiB of size
+>   fs: ext4: use sector_t and loff_t where appropriate
+>   fs: ext4: support files exceeding 4G
+>   show_progress: change HASHES_PER_LINE from 65 to 64 to avoid division
+>   copy_file: fix progress bar for files larger than 2G
 
-I have a slight problem here:
-This is what I think:
+Applied, thanks
 
-Because the memtest gets called in the init routine, the `ctrl` is completly ignored, at least I can't interrupt it nor the LED blinks.
-But if I insert `poller_call`, the led blinks, but the memtest is painfully slow (like 10x slower at least).
+Sascha
 
-I don't think that this will work for me, but I have to accept, that the LED doesn't blink while doing a memtest.
-
-But an interruptable memtest would be nice at least for the user, so my patch I sent yesterday still remains ;)
-
-Greetings,
-Marcel
-
-> Sascha Hauer <sha@pengutronix.de> hat am 17.02.2021 14:17 geschrieben:
 > 
->  
-> On Wed, Feb 17, 2021 at 01:44:59PM +0100, barebox+mailing@cookiesoft.de wrote:
-> > Hey Sasha,
-> > 
-> > thanks for the answer.
-> > 
-> > > barebox doesn't support interrupts. LED blinking is done in pollers
-> > 
-> > That explains the obversation.
-> > 
-> > > add a ctrlc() call to your memtester code inside some loop.
-> > > That will cause the poller to run.
-> > 
-> > I'm not entirely sure, if I understand you correctly or you didn't understand me.
-> > 
-> > I use the memtest command[0] from barebox so there is nothing custom written or any loop that I can control.
-> 
-> Ok, somehow I thought you added some memtest code yourself. I was
-> mistaken.
-> 
-> > However, if I understand you correctly one could add the `ctrlc`
-> > command in all of these[1] three loops inside the
-> > `mem_test_moving_inversions` function. Is that correct? 
-> 
-> Yes, correct.
-> 
-> > Or is there an
-> > other way to not listen on ctrl+c but let the poller itself run?
-> 
-> You could add poller_call() directly. The idea of adding ctrlc() is just
-> that this way you could also make the memtest interruptible for the
-> user.
-> 
-> Sascha
+>  arch/sandbox/board/hostfile.c |  4 ++--
+>  common/block.c                | 35 +++++++++++++++++-----------------
+>  common/partitions.c           |  2 +-
+>  drivers/ata/ahci.c            | 12 ++++++------
+>  drivers/ata/disk_ata_drive.c  | 10 +++++-----
+>  drivers/ata/disk_bios_drive.c | 16 ++++++++--------
+>  drivers/ata/ide-sff.c         | 12 ++++++------
+>  drivers/block/efi-block-io.c  |  8 ++++----
+>  drivers/mci/mci-core.c        | 36 +++++++++++++++++------------------
+>  drivers/nvme/host/core.c      | 12 ++++++------
+>  drivers/usb/storage/usb.c     | 25 ++++++++++++------------
+>  fs/ext4/ext4_common.c         | 23 ++++++++++++----------
+>  fs/ext4/ext4_common.h         |  4 ++--
+>  fs/ext4/ext4fs.c              | 36 +++++++++++++++++++----------------
+>  fs/ext4/ext4fs.h              | 31 +-----------------------------
+>  fs/ext4/ext_barebox.c         |  8 ++++----
+>  fs/ext4/ext_common.h          | 10 +++++++++-
+>  include/ata_drive.h           |  4 ++--
+>  include/block.h               | 15 ++++++++-------
+>  include/linux/types.h         |  5 -----
+>  include/progress.h            |  6 ++++--
+>  lib/libfile.c                 |  2 +-
+>  lib/show_progress.c           | 17 ++++++++---------
+>  23 files changed, 159 insertions(+), 174 deletions(-)
 > 
 > -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 2.29.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
