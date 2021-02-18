@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lCfYN-0004Ey-O8
- for barebox@lists.infradead.org; Thu, 18 Feb 2021 09:24:56 +0000
-Date: Thu, 18 Feb 2021 10:24:53 +0100
-Message-ID: <20210218092453.GC4207@pengutronix.de>
-References: <20210216185737.10621-1-a.fatoum@pengutronix.de>
+ id 1lCfiz-0005V8-BK
+ for barebox@lists.infradead.org; Thu, 18 Feb 2021 09:35:54 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 18 Feb 2021 10:35:47 +0100
+Message-Id: <20210218093547.12704-4-a.fatoum@pengutronix.de>
+In-Reply-To: <20210218093547.12704-1-a.fatoum@pengutronix.de>
+References: <20210218093547.12704-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210216185737.10621-1-a.fatoum@pengutronix.de>
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +21,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] treewide: include <linux/math64.h> wrapper instead
- of <asm-generic/div64.h>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 4/4] lib: remove duplicate __div64_32
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Tue, Feb 16, 2021 at 07:57:34PM +0100, Ahmad Fatoum wrote:
-> <asm-generic/div64.h> isn't meant for direct usage as <asm/div64.h> may
-> override this on a per-architecture basis. We don't do that currently,
-> but in the future we might. Include the <linux/math64.h> instead.
-> 
-> No functional change.
+f933da28cf3f ("include: <linux/math64.h>: sync with upstream") imported
+the div64 code from Linux, which also defines __div64_32 as a weak
+symbol. __div64_32 was defined before in a separate file though and used
+from do_div. Remove this duplication.
 
-This breaks rk3188_defconfig:
+No functional change.
 
-config:     arm              rk3188_defconfig
-In file included from drivers/clk/rockchip/clk-pll.c:7:
-include/linux/math64.h:303:8: error: unknown type name '__always_inline'
-  303 | static __always_inline u32
-      |        ^~~~~~~~~~~~~~~
-include/linux/math64.h:304:1: error: expected '=', ',', ';', 'asm' or '__attribute__' before '__iter_div_u64_rem'
-  304 | __iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder)
-      | ^~~~~~~~~~~~~~~~~~
-make[3]: *** [/ptx/work/WORK_EIHEI/sha/backup/barebox/barebox-maintainer-utils/barebox/scripts/Makefile.build:141: drivers/clk/rockchip/clk-pll.o] Error 1
-make[3]: *** Waiting for unfinished jobs....
-make[2]: *** [/ptx/work/WORK_EIHEI/sha/backup/barebox/barebox-maintainer-utils/barebox/scripts/Makefile.build:275: drivers/clk/rockchip] Error 2
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/ptx/work/WORK_EIHEI/sha/backup/barebox/barebox-maintainer-utils/barebox/scripts/Makefile.build:275: drivers/clk] Error 2
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:925: drivers] Error 2
-make: *** Waiting for unfinished jobs....
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+ - no change
+---
+ lib/Makefile      |  2 --
+ lib/div64.c       | 54 -----------------------------------------------
+ lib/math/Makefile |  1 +
+ 3 files changed, 1 insertion(+), 56 deletions(-)
+ delete mode 100644 lib/div64.c
 
-Sascha
-
+diff --git a/lib/Makefile b/lib/Makefile
+index 9c6f4133d77c..9b37d847e0cc 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -9,8 +9,6 @@ obj-y			+= kstrtox.o
+ obj-y			+= vsprintf.o
+ obj-$(CONFIG_KASAN)	+= kasan/
+ pbl-$(CONFIG_PBL_CONSOLE) += vsprintf.o
+-obj-y			+= div64.o
+-pbl-y			+= div64.o
+ obj-y			+= misc.o
+ obj-$(CONFIG_PARAMETER)	+= parameter.o
+ obj-y			+= xfuncs.o
+diff --git a/lib/div64.c b/lib/div64.c
+deleted file mode 100644
+index 0196725ce9b2..000000000000
+--- a/lib/div64.c
++++ /dev/null
+@@ -1,54 +0,0 @@
+-/*
+- * Copyright (C) 2003 Bernardo Innocenti <bernie@develer.com>
+- *
+- * Based on former do_div() implementation from asm-parisc/div64.h:
+- *	Copyright (C) 1999 Hewlett-Packard Co
+- *	Copyright (C) 1999 David Mosberger-Tang <davidm@hpl.hp.com>
+- *
+- *
+- * Generic C version of 64bit/32bit division and modulo, with
+- * 64bit result and 32bit remainder.
+- *
+- * The fast case for (n>>32 == 0) is handled inline by do_div().
+- *
+- * Code generated for this function might be very inefficient
+- * for some CPUs. __div64_32() can be overridden by linking arch-specific
+- * assembly versions such as arch/ppc/lib/div64.S and arch/sh/lib/div64.S.
+- */
+-
+-#include <linux/types.h>
+-
+-#include <asm-generic/div64.h>
+-
+-uint32_t __div64_32(uint64_t *n, uint32_t base)
+-{
+-	uint64_t rem = *n;
+-	uint64_t b = base;
+-	uint64_t res, d = 1;
+-	uint32_t high = rem >> 32;
+-
+-	/* Reduce the thing a bit first */
+-	res = 0;
+-	if (high >= base) {
+-		high /= base;
+-		res = (uint64_t) high << 32;
+-		rem -= (uint64_t) (high*base) << 32;
+-	}
+-
+-	while ((int64_t)b > 0 && b < rem) {
+-		b = b+b;
+-		d = d+d;
+-	}
+-
+-	do {
+-		if (rem >= b) {
+-			rem -= b;
+-			res += d;
+-		}
+-		b >>= 1;
+-		d >>= 1;
+-	} while (d);
+-
+-	*n = res;
+-	return rem;
+-}
+diff --git a/lib/math/Makefile b/lib/math/Makefile
+index 3341a8e4744b..c2c892dd557c 100644
+--- a/lib/math/Makefile
++++ b/lib/math/Makefile
+@@ -1 +1,2 @@
+ obj-y += div64.o
++pbl-y += div64.o
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.2
+
 
 _______________________________________________
 barebox mailing list
