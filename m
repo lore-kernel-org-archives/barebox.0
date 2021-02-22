@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay10.mail.gandi.net ([217.70.178.230])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lE68M-0001Mk-Ev
- for barebox@lists.infradead.org; Mon, 22 Feb 2021 07:59:59 +0000
-Date: Mon, 22 Feb 2021 08:59:52 +0100
-Message-ID: <20210222075952.GH10966@pengutronix.de>
-References: <20210222063052.566792-1-ahmad@a3f.at>
+ id 1lE6lE-0003ht-QV
+ for barebox@lists.infradead.org; Mon, 22 Feb 2021 08:40:11 +0000
+Received: from geraet.guest.stw.pengutronix.de (unknown [185.203.202.7])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay10.mail.gandi.net (Postfix) with ESMTPSA id 3400F24000F
+ for <barebox@lists.infradead.org>; Mon, 22 Feb 2021 08:40:05 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 22 Feb 2021 09:39:59 +0100
+Message-Id: <20210222083959.601990-1-ahmad@a3f.at>
+In-Reply-To: <20210222070605.589180-9-ahmad@a3f.at>
+References: <20210222070605.589180-9-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210222063052.566792-1-ahmad@a3f.at>
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,72 +25,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: cpu: board-dt-2nd: rename of_find_mem for more
- generic use
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! fixup! Documentation: add Documentation on VirtIO for
+ barebox
+To: barebox@lists.infradead.org
 
-On Mon, Feb 22, 2021 at 07:30:51AM +0100, Ahmad Fatoum wrote:
-> of_find_mem can be used for generic DT images for other architectures as
-> well. Prepare for the move by giving it a more descriptive name and
-> type to reflect that it operates read-only on a FDT.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  arch/arm/cpu/board-dt-2nd.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+Add note about how to access console.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ Documentation/user/virtio.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Sascha
-
-> 
-> diff --git a/arch/arm/cpu/board-dt-2nd.c b/arch/arm/cpu/board-dt-2nd.c
-> index 4e7d575e8a71..7a8155b7b01b 100644
-> --- a/arch/arm/cpu/board-dt-2nd.c
-> +++ b/arch/arm/cpu/board-dt-2nd.c
-> @@ -10,7 +10,7 @@
->  #include <asm/sections.h>
->  #include <linux/libfdt.h>
->  
-> -static void of_find_mem(void *fdt, unsigned long *membase, unsigned long *memsize)
-> +static void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsize)
->  {
->  	const __be32 *nap, *nsp, *reg;
->  	uint32_t na, ns;
-> @@ -85,7 +85,7 @@ static noinline void dt_2nd_continue_aarch64(void *fdt)
->  	if (!fdt)
->  		hang();
->  
-> -	of_find_mem(fdt, &membase, &memsize);
-> +	fdt_find_mem(fdt, &membase, &memsize);
->  
->  	barebox_arm_entry(membase, memsize, fdt);
->  }
-> @@ -114,7 +114,7 @@ static noinline void dt_2nd_continue(void *fdt)
->  	if (!fdt)
->  		hang();
->  
-> -	of_find_mem(fdt, &membase, &memsize);
-> +	fdt_find_mem(fdt, &membase, &memsize);
->  
->  	barebox_arm_entry(membase, memsize, fdt);
->  }
-> -- 
-> 2.30.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/Documentation/user/virtio.rst b/Documentation/user/virtio.rst
+index caf88ecf73b3..8740c7046340 100644
+--- a/Documentation/user/virtio.rst
++++ b/Documentation/user/virtio.rst
+@@ -59,6 +59,8 @@ a VirtIO console on ARM::
+   	-chardev socket,path=/tmp/foo,server,nowait,id=foo \
+   	-device virtconsole,chardev=foo,name=console.foo
+ 
++To access the console socket, you can use ``socat /tmp/foo -``.
++
+ Note the use of ``-kernel ./images/barebox-dt-2nd.img`` instead of
+ ``-bios ./images/barebox-$BOARD.img``. ``-kernel`` will cause QEMU
+ to pass barebox a fixed-up device tree describing the ``virtio-mmio``
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.0
+
 
 _______________________________________________
 barebox mailing list
