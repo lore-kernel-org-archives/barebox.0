@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lE5IQ-0005L0-MF
- for barebox@lists.infradead.org; Mon, 22 Feb 2021 07:06:23 +0000
+ id 1lE5IR-0005LK-ET
+ for barebox@lists.infradead.org; Mon, 22 Feb 2021 07:06:24 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 22 Feb 2021 08:06:01 +0100
-Message-Id: <20210222070605.589180-6-ahmad@a3f.at>
+Date: Mon, 22 Feb 2021 08:06:02 +0100
+Message-Id: <20210222070605.589180-7-ahmad@a3f.at>
 In-Reply-To: <20210222070605.589180-1-ahmad@a3f.at>
 References: <20210222070605.589180-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,241 +21,220 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] serial: add basic VirtIO console driver
+Subject: [PATCH 6/8] block: add VirtIO block device driver
 To: barebox@lists.infradead.org
 Cc: rcz@pengutronix.de
 
-With this driver enabled, -device virtio-serial-device can now be passed
-to Qemu for barebox to detect a VirtIO console device. If barebox is
-passed as argument to the Qemu -kernel option, no device tree changes are
-necessary.
+With this driver enabled, -device virtio-blk-device can now be passed
+to Qemu for barebox to detect a VirtIO block device mapping a host
+file or block device.
+
+If barebox is passed as argument to the Qemu -kernel option, no device
+tree changes are necessary.
 
 Example:
 
-  $ qemu-system-arm -m 256M -M virt -nographic             \
-  	-kernel build/images/barebox-dt-2nd.img            \
-  	-device virtio-serial-device                       \
-  	-chardev socket,path=/tmp/foo,server,nowait,id=foo \
-  	-device virtconsole,chardev=foo,name=console.foo
+  $ qemu-system-arm -m 256M -M virt -nographic                  \
+  	-kernel build/images/barebox-dt-2nd.img                 \
+  	-device virtio-rng-device                               \
+  	-drive if=none,file=/tmp/first.hdimg,format=raw,id=hd0  \
+  	-device virtio-blk-device,drive=hd0                     \
+  	-drive if=none,file=/tmp/second.hdimg,format=raw,id=hd1 \
+  	-device virtio-blk-device,drive=hd1
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/serial/Kconfig              |   8 ++
- drivers/serial/Makefile             |   1 +
- drivers/serial/virtio_console.c     | 166 ++++++++++++++++++++++++++++
- include/uapi/linux/virtio_console.h |  78 +++++++++++++
- 4 files changed, 253 insertions(+)
- create mode 100644 drivers/serial/virtio_console.c
- create mode 100644 include/uapi/linux/virtio_console.h
+ drivers/ata/Kconfig             |   2 +
+ drivers/block/Kconfig           |   6 +
+ drivers/block/Makefile          |   1 +
+ drivers/block/virtio_blk.c      | 133 +++++++++++++++++++++
+ include/uapi/linux/virtio_blk.h | 203 ++++++++++++++++++++++++++++++++
+ 5 files changed, 345 insertions(+)
+ create mode 100644 drivers/block/Kconfig
+ create mode 100644 drivers/block/virtio_blk.c
+ create mode 100644 include/uapi/linux/virtio_blk.h
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 5c6f0e88e398..09434c1ba86c 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -156,4 +156,12 @@ config DRIVER_SERIAL_LPUART
- 	default y
- 	bool "LPUART serial driver"
+diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+index 040c5fd237fd..c0f0a3dbe3f3 100644
+--- a/drivers/ata/Kconfig
++++ b/drivers/ata/Kconfig
+@@ -16,6 +16,8 @@ config DISK_WRITE
+ 	select BLOCK_WRITE
+ 	bool "support writing to disk drives"
  
-+config VIRTIO_CONSOLE
-+	tristate "Virtio console"
-+	select VIRTIO
-+	help
-+	  Virtio console for use with hypervisors.
++source "drivers/block/Kconfig"
 +
-+	  Also serves as a general-purpose serial device for data
-+	  transfer between the guest and host.
- endmenu
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 8a2abbbe45cf..7ff41cd5c744 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -22,3 +22,4 @@ obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
- obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
- obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
- obj-$(CONFIG_DRIVER_SERIAL_LPUART)		+= serial_lpuart.o
-+obj-$(CONFIG_VIRTIO_CONSOLE)			+= virtio_console.o
-diff --git a/drivers/serial/virtio_console.c b/drivers/serial/virtio_console.c
+ comment "drive types"
+ 
+ config DISK_BIOS
+diff --git a/drivers/block/Kconfig b/drivers/block/Kconfig
 new file mode 100644
-index 000000000000..a1331035d9ef
+index 000000000000..b42571eca5c6
 --- /dev/null
-+++ b/drivers/serial/virtio_console.c
-@@ -0,0 +1,166 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
++++ b/drivers/block/Kconfig
+@@ -0,0 +1,6 @@
++config VIRTIO_BLK
++        bool "Virtio block driver"
++        depends on VIRTIO
++        help
++          This is the virtual block driver for virtio.  It can be used with
++          QEMU based VMMs (like KVM or Xen).
+diff --git a/drivers/block/Makefile b/drivers/block/Makefile
+index 8812c0faecb1..23d634f00676 100644
+--- a/drivers/block/Makefile
++++ b/drivers/block/Makefile
+@@ -1 +1,2 @@
+ obj-$(CONFIG_EFI_BOOTUP) += efi-block-io.o
++obj-$(CONFIG_VIRTIO_BLK) += virtio_blk.o
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+new file mode 100644
+index 000000000000..b7a83cf686c1
+--- /dev/null
++++ b/drivers/block/virtio_blk.c
+@@ -0,0 +1,133 @@
++// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * Copyright (C) 2006, 2007, 2009 Rusty Russell, IBM Corporation
-+ * Copyright (C) 2009, 2010, 2011 Red Hat, Inc.
-+ * Copyright (C) 2009, 2010, 2011 Amit Shah <amit.shah@redhat.com>
-+ * Copyright (C) 2021 Ahmad Fatoum
-+ *
-+ * This ridiculously simple implementation does a DMA transfer for
-+ * every single character. On the plus side, we neither need to
-+ * buffer RX or to wade through TX to turn LFs to CRLFs.
++ * Copyright (C) 2018, Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>
++ * Copyright (C) 2018, Bin Meng <bmeng.cn@gmail.com>
 + */
++
 +#include <common.h>
 +#include <driver.h>
-+#include <init.h>
-+#include <linux/list.h>
-+#include <malloc.h>
-+#include <console.h>
-+#include <xfuncs.h>
-+#include <linux/spinlock.h>
++#include <block.h>
++#include <disks.h>
++#include <linux/virtio_types.h>
 +#include <linux/virtio.h>
 +#include <linux/virtio_ring.h>
-+#include <linux/virtio_console.h>
++#include <uapi/linux/virtio_blk.h>
 +
-+struct virtio_console {
-+	struct console_device cdev;
-+	struct virtqueue *in_vq, *out_vq;
-+	char inbuf[1];
++struct virtio_blk_priv {
++	struct virtqueue *vq;
++	struct virtio_device *vdev;
++	struct block_device blk;
 +};
 +
-+static bool have_one;
-+
-+/*
-+ * The put_chars() callback is pretty straightforward.
-+ *
-+ * We turn the characters into a scatter-gather list, add it to the
-+ * output queue and then kick the Host.  Then we sit here waiting for
-+ * it to finish: inefficient in theory, but in practice
-+ * implementations will do it immediately (lguest's Launcher does).
-+ */
-+static void put_chars(struct virtio_console *virtcons, const char *buf, int count)
++static int virtio_blk_do_req(struct virtio_blk_priv *priv, void *buffer,
++			     sector_t sector, blkcnt_t blkcnt, u32 type)
 +{
-+	struct virtqueue *out_vq = virtcons->out_vq;
-+	unsigned int len;
-+	struct virtio_sg *sgs[1] = {
-+		&(struct virtio_sg) { .addr = (void *)buf, .length = count }
++	unsigned int num_out = 0, num_in = 0;
++	struct virtio_sg *sgs[3];
++	u8 status;
++	int ret;
++
++	struct virtio_blk_outhdr out_hdr = {
++		.type = cpu_to_virtio32(priv->vdev, type),
++		.sector = cpu_to_virtio64(priv->vdev, sector),
 +	};
++	struct virtio_sg hdr_sg = { &out_hdr, sizeof(out_hdr) };
++	struct virtio_sg data_sg = { buffer, blkcnt * 512 };
++	struct virtio_sg status_sg = { &status, sizeof(status) };
 +
-+	/*
-+	 * add_buf wants a token to identify this buffer: we hand it
-+	 * any non-NULL pointer, since there's only ever one buffer.
-+	 */
-+	if (virtqueue_add(out_vq, sgs, 1, 0) >= 0) {
-+		/* Tell Host to go! */
-+		virtqueue_kick(out_vq);
-+		/* Chill out until it's done with the buffer. */
-+		while (!virtqueue_get_buf(out_vq, &len))
-+			cpu_relax();
-+	}
-+}
++	sgs[num_out++] = &hdr_sg;
 +
-+static void virtcons_putc(struct console_device *cdev, char c)
-+{
-+	struct virtio_console *virtcons = container_of(cdev, struct virtio_console, cdev);
-+
-+	return put_chars(virtcons, &c, 1);
-+}
-+
-+/*
-+ * Create a scatter-gather list representing our input buffer and put
-+ * it in the queue.
-+ */
-+static void add_inbuf(struct virtio_console *virtcons)
-+{
-+	struct virtio_sg *sgs[1] = { &(struct virtio_sg) {
-+		.addr = virtcons->inbuf, .length = sizeof(virtcons->inbuf) }
-+	};
-+
-+	/* We should always be able to add one buffer to an empty queue. */
-+	if (virtqueue_add(virtcons->in_vq, sgs, 0, 1) < 0)
-+		BUG();
-+	virtqueue_kick(virtcons->in_vq);
-+}
-+
-+static int virtcons_tstc(struct console_device *cdev)
-+{
-+	struct virtio_console *virtcons = container_of(cdev, struct virtio_console, cdev);
-+
-+	return virtqueue_poll(virtcons->in_vq, virtcons->in_vq->last_used_idx);
-+}
-+
-+static int virtcons_getc(struct console_device *cdev)
-+{
-+	struct virtio_console *virtcons = container_of(cdev, struct virtio_console, cdev);
-+	char *in;
-+	int ch;
-+
-+	in = virtqueue_get_buf(virtcons->in_vq, NULL);
-+	if (!in)
-+		BUG();
-+
-+	ch = *in;
-+
-+	add_inbuf(virtcons);
-+
-+	return ch;
-+}
-+
-+static int virtcons_probe(struct virtio_device *vdev)
-+{
-+	struct virtqueue *vqs[2];
-+	struct virtio_console *virtcons;
-+	int err;
-+
-+	if (have_one) {
-+		/* Neither multiport consoles (one virtio_device for multiple consoles)
-+		 * nor multiple consoles (one virtio_device per each console
-+		 * is supported. I would've expected:
-+		 *   -chardev socket,path=/tmp/bar,server,nowait,id=bar \
-+		 *   -device virtconsole,chardev=bar,name=console.bar \
-+		 *   -device virtio-serial-device \
-+		 *   -chardev socket,path=/tmp/baz,server,nowait,id=baz \
-+		 *   -device virtconsole,chardev=baz,name=console.baz \
-+		 * to just work, but it doesn't
-+		 */
-+		dev_warn(&vdev->dev,
-+			 "Multiple virtio-console devices not supported yet\n");
-+		return -EEXIST;
++	switch(type) {
++	case VIRTIO_BLK_T_OUT:
++		sgs[num_out++] = &data_sg;
++		break;
++	case VIRTIO_BLK_T_IN:
++		sgs[num_out + num_in++] = &data_sg;
++		break;
 +	}
 +
-+	/* Find the queues. */
-+	err = virtio_find_vqs(vdev, 2, vqs);
-+	if (err)
-+		return err;
++	sgs[num_out + num_in++] = &status_sg;
 +
-+	virtcons = xzalloc(sizeof(*virtcons));
++	ret = virtqueue_add(priv->vq, sgs, num_out, num_in);
++	if (ret)
++		return ret;
 +
-+	virtcons->in_vq = vqs[0];
-+	virtcons->out_vq = vqs[1];
++	virtqueue_kick(priv->vq);
 +
-+	/* Register the input buffer the first time. */
-+	add_inbuf(virtcons);
++	while (!virtqueue_get_buf(priv->vq, NULL))
++		;
 +
-+	virtcons->cdev.dev = &vdev->dev;
-+	virtcons->cdev.tstc = virtcons_tstc;
-+	virtcons->cdev.getc = virtcons_getc;
-+	virtcons->cdev.putc = virtcons_putc;
-+
-+	have_one = true;
-+
-+	return console_register(&virtcons->cdev);
++	return status == VIRTIO_BLK_S_OK ? 0 : -EIO;
 +}
 +
-+static struct virtio_device_id id_table[] = {
-+	{ VIRTIO_ID_CONSOLE, VIRTIO_DEV_ANY_ID },
-+	{ 0 },
++static int virtio_blk_read(struct block_device *blk, void *buffer,
++			   sector_t start, blkcnt_t blkcnt)
++{
++	struct virtio_blk_priv *priv = container_of(blk, struct virtio_blk_priv, blk);
++	return virtio_blk_do_req(priv, buffer, start, blkcnt,
++				 VIRTIO_BLK_T_IN);
++}
++
++static int virtio_blk_write(struct block_device *blk, const void *buffer,
++			    sector_t start, blkcnt_t blkcnt)
++{
++	struct virtio_blk_priv *priv = container_of(blk, struct virtio_blk_priv, blk);
++	return virtio_blk_do_req(priv, (void *)buffer, start, blkcnt,
++				 VIRTIO_BLK_T_OUT);
++}
++
++static struct block_device_ops virtio_blk_ops = {
++	.read	= virtio_blk_read,
++	.write	= virtio_blk_write,
 +};
 +
-+static struct virtio_driver virtio_console = {
-+	.driver.name =	"virtio_console",
-+	.id_table =	id_table,
-+	.probe =	virtcons_probe,
-+};
-+device_virtio_driver(virtio_console);
++static int virtio_blk_probe(struct virtio_device *vdev)
++{
++	struct virtio_blk_priv *priv;
++	u64 cap;
++	int devnum;
++	int ret;
 +
-+MODULE_DESCRIPTION("Virtio console driver");
-+MODULE_LICENSE("GPL");
-diff --git a/include/uapi/linux/virtio_console.h b/include/uapi/linux/virtio_console.h
++	priv = xzalloc(sizeof(*priv));
++
++	ret = virtio_find_vqs(vdev, 1, &priv->vq);
++	if (ret)
++		return ret;
++
++	priv->vdev = vdev;
++
++	devnum = cdev_find_free_index("virtioblk");
++	priv->blk.cdev.name = xasprintf("virtioblk%d", devnum);
++	priv->blk.dev = &vdev->dev;
++	priv->blk.blockbits = SECTOR_SHIFT;
++	virtio_cread(vdev, struct virtio_blk_config, capacity, &cap);
++	priv->blk.num_blocks = cap;
++	priv->blk.ops = &virtio_blk_ops;
++
++	ret = blockdevice_register(&priv->blk);
++	if (ret)
++		return ret;
++
++	parse_partition_table(&priv->blk);
++
++	return 0;
++}
++
++static void virtio_blk_remove(struct virtio_device *vdev)
++{
++	vdev->config->reset(vdev);
++	vdev->config->del_vqs(vdev);
++}
++
++static const struct virtio_device_id id_table[] = {
++        { VIRTIO_ID_BLOCK, VIRTIO_DEV_ANY_ID },
++        { 0 },
++};
++
++static struct virtio_driver virtio_blk = {
++        .driver.name	= "virtio_blk",
++        .id_table	= id_table,
++        .probe		= virtio_blk_probe,
++	.remove		= virtio_blk_remove,
++};
++device_virtio_driver(virtio_blk);
+diff --git a/include/uapi/linux/virtio_blk.h b/include/uapi/linux/virtio_blk.h
 new file mode 100644
-index 000000000000..7e6ec2ff0560
+index 000000000000..d888f013d9ff
 --- /dev/null
-+++ b/include/uapi/linux/virtio_console.h
-@@ -0,0 +1,78 @@
-+/*
-+ * This header, excluding the #ifdef __KERNEL__ part, is BSD licensed so
-+ * anyone can use the definitions to implement compatible drivers/servers:
-+ *
++++ b/include/uapi/linux/virtio_blk.h
+@@ -0,0 +1,203 @@
++#ifndef _LINUX_VIRTIO_BLK_H
++#define _LINUX_VIRTIO_BLK_H
++/* This header is BSD licensed so anyone can use the definitions to implement
++ * compatible drivers/servers.
 + *
 + * Redistribution and use in source and binary forms, with or without
 + * modification, are permitted provided that the following conditions
@@ -278,58 +257,183 @@ index 000000000000..7e6ec2ff0560
 + * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
 + * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 + * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-+ * SUCH DAMAGE.
-+ *
-+ * Copyright (C) Red Hat, Inc., 2009, 2010, 2011
-+ * Copyright (C) Amit Shah <amit.shah@redhat.com>, 2009, 2010, 2011
-+ */
-+#ifndef _UAPI_LINUX_VIRTIO_CONSOLE_H
-+#define _UAPI_LINUX_VIRTIO_CONSOLE_H
++ * SUCH DAMAGE. */
 +#include <linux/types.h>
-+#include <linux/virtio_types.h>
 +#include <linux/virtio_ids.h>
 +#include <linux/virtio_config.h>
++#include <linux/virtio_types.h>
 +
 +/* Feature bits */
-+#define VIRTIO_CONSOLE_F_SIZE	0	/* Does host provide console size? */
-+#define VIRTIO_CONSOLE_F_MULTIPORT 1	/* Does host provide multiple ports? */
-+#define VIRTIO_CONSOLE_F_EMERG_WRITE 2 /* Does host support emergency write? */
++#define VIRTIO_BLK_F_SIZE_MAX	1	/* Indicates maximum segment size */
++#define VIRTIO_BLK_F_SEG_MAX	2	/* Indicates maximum # of segments */
++#define VIRTIO_BLK_F_GEOMETRY	4	/* Legacy geometry available  */
++#define VIRTIO_BLK_F_RO		5	/* Disk is read-only */
++#define VIRTIO_BLK_F_BLK_SIZE	6	/* Block size of disk is available*/
++#define VIRTIO_BLK_F_TOPOLOGY	10	/* Topology information is available */
++#define VIRTIO_BLK_F_MQ		12	/* support more than one vq */
++#define VIRTIO_BLK_F_DISCARD	13	/* DISCARD is supported */
++#define VIRTIO_BLK_F_WRITE_ZEROES	14	/* WRITE ZEROES is supported */
 +
-+#define VIRTIO_CONSOLE_BAD_ID		(~(__u32)0)
++/* Legacy feature bits */
++#ifndef VIRTIO_BLK_NO_LEGACY
++#define VIRTIO_BLK_F_BARRIER	0	/* Does host support barriers? */
++#define VIRTIO_BLK_F_SCSI	7	/* Supports scsi command passthru */
++#define VIRTIO_BLK_F_FLUSH	9	/* Flush command supported */
++#define VIRTIO_BLK_F_CONFIG_WCE	11	/* Writeback mode available in config */
++#ifndef __KERNEL__
++/* Old (deprecated) name for VIRTIO_BLK_F_FLUSH. */
++#define VIRTIO_BLK_F_WCE VIRTIO_BLK_F_FLUSH
++#endif
++#endif /* !VIRTIO_BLK_NO_LEGACY */
 +
-+struct virtio_console_config {
-+	/* colums of the screens */
-+	__virtio16 cols;
-+	/* rows of the screens */
-+	__virtio16 rows;
-+	/* max. number of ports this device can hold */
-+	__virtio32 max_nr_ports;
-+	/* emergency write register */
-+	__virtio32 emerg_wr;
++#define VIRTIO_BLK_ID_BYTES	20	/* ID string length */
++
++struct virtio_blk_config {
++	/* The capacity (in 512-byte sectors). */
++	__virtio64 capacity;
++	/* The maximum segment size (if VIRTIO_BLK_F_SIZE_MAX) */
++	__virtio32 size_max;
++	/* The maximum number of segments (if VIRTIO_BLK_F_SEG_MAX) */
++	__virtio32 seg_max;
++	/* geometry of the device (if VIRTIO_BLK_F_GEOMETRY) */
++	struct virtio_blk_geometry {
++		__virtio16 cylinders;
++		__u8 heads;
++		__u8 sectors;
++	} geometry;
++
++	/* block size of device (if VIRTIO_BLK_F_BLK_SIZE) */
++	__virtio32 blk_size;
++
++	/* the next 4 entries are guarded by VIRTIO_BLK_F_TOPOLOGY  */
++	/* exponent for physical block per logical block. */
++	__u8 physical_block_exp;
++	/* alignment offset in logical blocks. */
++	__u8 alignment_offset;
++	/* minimum I/O size without performance penalty in logical blocks. */
++	__virtio16 min_io_size;
++	/* optimal sustained I/O size in logical blocks. */
++	__virtio32 opt_io_size;
++
++	/* writeback mode (if VIRTIO_BLK_F_CONFIG_WCE) */
++	__u8 wce;
++	__u8 unused;
++
++	/* number of vqs, only available when VIRTIO_BLK_F_MQ is set */
++	__virtio16 num_queues;
++
++	/* the next 3 entries are guarded by VIRTIO_BLK_F_DISCARD */
++	/*
++	 * The maximum discard sectors (in 512-byte sectors) for
++	 * one segment.
++	 */
++	__virtio32 max_discard_sectors;
++	/*
++	 * The maximum number of discard segments in a
++	 * discard command.
++	 */
++	__virtio32 max_discard_seg;
++	/* Discard commands must be aligned to this number of sectors. */
++	__virtio32 discard_sector_alignment;
++
++	/* the next 3 entries are guarded by VIRTIO_BLK_F_WRITE_ZEROES */
++	/*
++	 * The maximum number of write zeroes sectors (in 512-byte sectors) in
++	 * one segment.
++	 */
++	__virtio32 max_write_zeroes_sectors;
++	/*
++	 * The maximum number of segments in a write zeroes
++	 * command.
++	 */
++	__virtio32 max_write_zeroes_seg;
++	/*
++	 * Set if a VIRTIO_BLK_T_WRITE_ZEROES request may result in the
++	 * deallocation of one or more of the sectors.
++	 */
++	__u8 write_zeroes_may_unmap;
++
++	__u8 unused1[3];
 +} __attribute__((packed));
 +
 +/*
-+ * A message that's passed between the Host and the Guest for a
-+ * particular port.
++ * Command types
++ *
++ * Usage is a bit tricky as some bits are used as flags and some are not.
++ *
++ * Rules:
++ *   VIRTIO_BLK_T_OUT may be combined with VIRTIO_BLK_T_SCSI_CMD or
++ *   VIRTIO_BLK_T_BARRIER.  VIRTIO_BLK_T_FLUSH is a command of its own
++ *   and may not be combined with any of the other flags.
 + */
-+struct virtio_console_control {
-+	__virtio32 id;		/* Port number */
-+	__virtio16 event;	/* The kind of control event (see below) */
-+	__virtio16 value;	/* Extra information for the key */
++
++/* These two define direction. */
++#define VIRTIO_BLK_T_IN		0
++#define VIRTIO_BLK_T_OUT	1
++
++#ifndef VIRTIO_BLK_NO_LEGACY
++/* This bit says it's a scsi command, not an actual read or write. */
++#define VIRTIO_BLK_T_SCSI_CMD	2
++#endif /* VIRTIO_BLK_NO_LEGACY */
++
++/* Cache flush command */
++#define VIRTIO_BLK_T_FLUSH	4
++
++/* Get device ID command */
++#define VIRTIO_BLK_T_GET_ID    8
++
++/* Discard command */
++#define VIRTIO_BLK_T_DISCARD	11
++
++/* Write zeroes command */
++#define VIRTIO_BLK_T_WRITE_ZEROES	13
++
++#ifndef VIRTIO_BLK_NO_LEGACY
++/* Barrier before this op. */
++#define VIRTIO_BLK_T_BARRIER	0x80000000
++#endif /* !VIRTIO_BLK_NO_LEGACY */
++
++/*
++ * This comes first in the read scatter-gather list.
++ * For legacy virtio, if VIRTIO_F_ANY_LAYOUT is not negotiated,
++ * this is the first element of the read scatter-gather list.
++ */
++struct virtio_blk_outhdr {
++	/* VIRTIO_BLK_T* */
++	__virtio32 type;
++	/* io priority. */
++	__virtio32 ioprio;
++	/* Sector (ie. 512 byte offset) */
++	__virtio64 sector;
 +};
 +
-+/* Some events for control messages */
-+#define VIRTIO_CONSOLE_DEVICE_READY	0
-+#define VIRTIO_CONSOLE_PORT_ADD		1
-+#define VIRTIO_CONSOLE_PORT_REMOVE	2
-+#define VIRTIO_CONSOLE_PORT_READY	3
-+#define VIRTIO_CONSOLE_CONSOLE_PORT	4
-+#define VIRTIO_CONSOLE_RESIZE		5
-+#define VIRTIO_CONSOLE_PORT_OPEN	6
-+#define VIRTIO_CONSOLE_PORT_NAME	7
++/* Unmap this range (only valid for write zeroes command) */
++#define VIRTIO_BLK_WRITE_ZEROES_FLAG_UNMAP	0x00000001
 +
++/* Discard/write zeroes range for each request. */
++struct virtio_blk_discard_write_zeroes {
++	/* discard/write zeroes start sector */
++	__le64 sector;
++	/* number of discard/write zeroes sectors */
++	__le32 num_sectors;
++	/* flags for this range */
++	__le32 flags;
++};
 +
-+#endif /* _UAPI_LINUX_VIRTIO_CONSOLE_H */
++#ifndef VIRTIO_BLK_NO_LEGACY
++struct virtio_scsi_inhdr {
++	__virtio32 errors;
++	__virtio32 data_len;
++	__virtio32 sense_len;
++	__virtio32 residual;
++};
++#endif /* !VIRTIO_BLK_NO_LEGACY */
++
++/* And this is the final byte of the write scatter-gather list. */
++#define VIRTIO_BLK_S_OK		0
++#define VIRTIO_BLK_S_IOERR	1
++#define VIRTIO_BLK_S_UNSUPP	2
++#endif /* _LINUX_VIRTIO_BLK_H */
 -- 
 2.30.0
 
