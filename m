@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from www153.your-server.de ([213.133.104.153])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lEUTA-0006eK-69
- for barebox@lists.infradead.org; Tue, 23 Feb 2021 09:59:05 +0000
-Date: Tue, 23 Feb 2021 10:59:02 +0100
-Message-ID: <20210223095902.GD5549@pengutronix.de>
+ id 1lEVmw-0005P8-Lv
+ for barebox@lists.infradead.org; Tue, 23 Feb 2021 11:23:36 +0000
+From: Edoardo Scaglia <scaglia@amelchem.com>
+Date: Tue, 23 Feb 2021 12:22:53 +0100
+Message-Id: <20210223112253.5468-1-scaglia@amelchem.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,30 +19,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: nios2 and openrisc in barebox
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] mtd: nand: fix hardware ECC support in atmel_nand driver
+To: barebox@lists.infradead.org
+Cc: Edoardo Scaglia <scaglia@amelchem.com>
 
-Hi Franck, Antony
+When using a NAND memory with hardware ECC enabled on a Atmel SoC
+probing fails during barebox boot with following error:
 
-Are you still interested in barebox support for NIOS2 and openrisc? If
-not I would consider removing it. Background is that we are planning to
-introduce green threads and implement pollers with them which makes
-green threads rather mandatory. Green threads need a setjmp/longjmp
-implementation that would have to be added for these architectures.
+nand_base: device found, Manufacturer ID: 0x2c, Chip ID: 0xdc
+nand_base: Micron MT29F4G08ABAEAWP
+nand_base: 512 MiB, SLC, erase size: 256 KiB, page size: 4096, OOB size: 224
+WARNING: at drivers/mtd/nand/nand_base.c:5594/nand_scan_tail()!
+WARNING: No oob scheme defined for oobsize 224
+atmel_nand atmel_nand0: probe failed: No such device or address
 
-Keeping the architectures is no big deal normally, but I don't want to
-add untested new functionality, also I don't want to implement things
-that nobody uses, so if you are still interested it would be great if
-you volunteer to implement setjmp/longjmp.
+The problem arises from commit b6bcd96de5a75bdc5d06a06f2efffc2d89e346ec
+which among several changes dropped CONFIG_NAND_ECC_HW symbol, however
+two references remained in atmel_nand driver causing the failure of NAND
+probing when hardware ECC is configured in a Atmel SoC.
 
-Thanks
-  Sascha
+Signed-off-by: Edoardo Scaglia <scaglia@amelchem.com>
+---
+ drivers/mtd/nand/atmel_nand.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+index db13f5b7e4..58d53b7a78 100644
+--- a/drivers/mtd/nand/atmel_nand.c
++++ b/drivers/mtd/nand/atmel_nand.c
+@@ -1351,8 +1351,7 @@ static int __init atmel_nand_probe(struct device_d *dev)
+ 	nand_chip->ecc.strength = pdata->ecc_strength ? : 1;
+ 	nand_chip->ecc.size = 1 << pdata->ecc_size_shift ? : 512;
+ 
+-	if (IS_ENABLED(CONFIG_NAND_ECC_HW) &&
+-	    pdata->ecc_mode == NAND_ECC_HW) {
++	if (pdata->ecc_mode == NAND_ECC_HW) {
+ 		nand_chip->ecc.mode = NAND_ECC_HW;
+ 	}
+ 
+@@ -1411,8 +1410,7 @@ static int __init atmel_nand_probe(struct device_d *dev)
+ 
+ 	host->ecc_code = xmalloc(mtd->oobsize);
+ 
+-	if (IS_ENABLED(CONFIG_NAND_ECC_HW) &&
+-	    nand_chip->ecc.mode == NAND_ECC_HW) {
++	if (nand_chip->ecc.mode == NAND_ECC_HW) {
+ 		if (IS_ENABLED(CONFIG_NAND_ATMEL_PMECC) && pdata->has_pmecc)
+ 			res = atmel_pmecc_nand_init_params(dev, host);
+ 		else
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.0
+
 
 _______________________________________________
 barebox mailing list
