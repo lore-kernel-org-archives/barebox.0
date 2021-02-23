@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtpbgau1.qq.com ([54.206.16.166])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lE7uK-00034F-Cu
- for barebox@lists.infradead.org; Mon, 22 Feb 2021 09:53:37 +0000
-Date: Mon, 22 Feb 2021 10:53:34 +0100
-Message-ID: <20210222095334.GJ10966@pengutronix.de>
-References: <20210222070605.589180-1-ahmad@a3f.at>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210222070605.589180-1-ahmad@a3f.at>
-From: Sascha Hauer <sha@pengutronix.de>
+ id 1lELSy-0005dL-0V
+ for barebox@lists.infradead.org; Tue, 23 Feb 2021 00:22:17 +0000
+In-Reply-To: <tencent_38A3D28635D0E3DF1085571FDB818F5D420A@qq.com>
+References: <CADbCKyKLBG=eSoKeqnvvGMCGdkpwNo_xGvH1D1xHHTgk0tMU1Q@mail.gmail.com>
+ <20210106103525.GT19063@pengutronix.de>
+ <tencent_38A3D28635D0E3DF1085571FDB818F5D420A@qq.com>
+From: "=?gb18030?B?amFtZXN6eGo=?=" <jameszxj@gmail.com>
+Mime-Version: 1.0
+Date: Tue, 23 Feb 2021 08:21:47 +0800
+Message-ID: <tencent_D7DEA1CE8785D247DD74849F1DC380CF5C0A@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="gb18030"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] drivers: add VirtIO console, block device support
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org, rcz@pengutronix.de
+Subject: Re: No oob scheme defined for oobsize 224 on imx6ull board
+To: =?gb18030?B?YmFyZWJveA==?= <barebox@lists.infradead.org>
 
-On Mon, Feb 22, 2021 at 08:05:56AM +0100, Ahmad Fatoum wrote:
-> To make it easier to exchange data with paravirtualized barebox during
-> testing, import parts of the VirtIO support in Linux and U-Boot.
-> 
-> API basically looks like U-Boot's, but driver boilerplate (like having
-> a virtio bus) is taken from Linux. Headers are the Linux ones with some
-> necessary modifications on top.
-> 
-> Quite nifty thing is that Qemu will fix up the device tree appropriately,
-> so just compile in the drivers and it works. The vexpress_defconfig
-> already does this, so this just works:
-> 
->   $ qemu-system-arm -m 256M -M virt -nographic                  \
->  	-kernel ./images/barebox-dt-2nd.img                     \
->   	-device virtio-rng-device                               \
->   	-drive if=none,file=/tmp/first.hdimg,format=raw,id=hd0  \
->   	-device virtio-blk-device,drive=hd0		        \
-> 
-> Ahmad Fatoum (8):
->   kbuild: add include/uapi to path
->   driver: Don't throw an error on probes that didn't find the device
->   drivers: add support for memory-mapped VirtIO paravirtualization
->   hw_random: add VirtIO RNG driver
->   serial: add basic VirtIO console driver
->   block: add VirtIO block device driver
->   ARM: vexpress: config: update for VirtIO support
->   Documentation: add Documentation on VirtIO for barebox
-
-Applied, thanks
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKPiAKPiBTdWJqZWN0OiBSZTogTm8gb29iIHNjaGVtZSBkZWZpbmVkIGZvciBv
+b2JzaXplIDIyNCBvbiBpbXg2dWxsIGJvYXJkCj4gCj4gSGksCj4gCj4gT24gRnJpLCBEZWMgMTgs
+IDIwMjAgYXQgMDU6MTE6MTFQTSArMDgwMCwg1qPQob78IHdyb3RlOgo+ID4gSGksIGFsbAo+ID4g
+ICAgIEkgYW0gdHJ5aW5nIHRvIHJ1biBiYXJlYm94IG9uIG15IGkubXg2dWxsIGJvYXJkLiAgSSBp
+bmhlcml0IGZyb20KPiA+IG54cC1pbXg2dWxsLWV2ay4gV2hlbiBJIGFkZGVkIG5hbmQgZmxhc2gg
+c3VwcG9ydCwgc3lzdGVtIGNyYXNoZWQuIEkKPiA+IGZvdW5kIHRoYXQgdGhlIHBvaW50ZXIgImNo
+aXAtPmxlZ2FjeS5zZXRfZmVhdHVyZXMiIGFuZAo+ID4gImNoaXAtPmxlZ2FjeS5nZXRfZmVhdHVy
+ZXMiIGluIG5hbmRfbXhzLmMgd2FzIE5VTEwuCj4gPiBJIHJlcGxhY2VkIGl0IHdpdGggbmFuZF9z
+ZXRfZmVhdHVyZXMoKSBhbmQgbmFuZF9nZXRfZmVhdHVyZXMoKS4KPiAKPiBUaGlzIGxvb2tzIGxp
+a2UgdGhlIGNvcnJlY3Qgc29sdXRpb24gZm9yIHRoaXMuIENhcmUgdG8gc2VuZCBhIHBhdGNoPwo+
+IAo+ID4gQmFyZWJveCBkaWRuJ3QgY3Jhc2ggYWdhaW4sIGJ1dCBJIGdldCB0aGUgZXJyb3JzOgo+
+ID4gICAgICAgICBuYW5kX2Jhc2U6IGRldmljZSBmb3VuZCwgTWFudWZhY3R1cmVyIElEOiAweDJj
+LCBDaGlwIElEOiAweGRjCj4gPiAgICAgICAgIG5hbmRfYmFzZTogTWljcm9uIE1UMjlGNEcwOEFC
+QUVBV1AKPiA+ICAgICAgICAgbmFuZF9iYXNlOiA1MTIgTWlCLCBTTEMsIGVyYXNlIHNpemU6IDI1
+NiBLaUIsIHBhZ2Ugc2l6ZTogNDA5NiwKPiA+IE9PQiBzaXplOiAyMjQKPiA+ICAgICAgICAgV0FS
+TklORzogYXQgZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jhc2UuYzo1NTkxL25hbmRfc2Nhbl90YWls
+KCkhCj4gPiAgICAgICAgIFdBUk5JTkc6IE5vIG9vYiBzY2hlbWUgZGVmaW5lZCBmb3Igb29ic2l6
+ZSAyMjQKPiA+ICAgICAgICAgbXhzX25hbmQgMTgwNjAwMC5uYW5kLWNvbnRyb2xsZXJAMTgwNjAw
+MC5vZjogcHJvYmUgZmFpbGVkOgo+ID4gSW52YWxpZCBhcmd1bWVudAo+IAo+IFlvdSBhcmUgZmFs
+bGluZyBpbnRvOgo+IAo+IC8qCj4gKiBJZiBubyBkZWZhdWx0IHBsYWNlbWVudCBzY2hlbWUgaXMg
+Z2l2ZW4sIHNlbGVjdCBhbiBhcHByb3ByaWF0ZSBvbmUuCj4gKi8KPiBpZiAoIW10ZC0+b29ibGF5
+b3V0ICYmCj4gICAgICEoZWNjLT5tb2RlID09IE5BTkRfRUNDX1NPRlQgJiYgZWNjLT5hbGdvID09
+IE5BTkRfRUNDX0JDSCkpIHsKPiAuLi4KPiB9Cj4gCj4gTm9ybWFsbHkgbXRkLT5vb2JsYXlvdXQg
+c2hvdWxkIGJlIHNldCBhdCB0aGlzIHBvaW50LiB0aGUgbmFuZF9teHMgZHJpdmVyCj4gY3VycmVu
+dGx5IG1pc3NlcyB0byBzZXQgaXQuIEkgdGhpbmsgeW91IGhhdmUgdG8gYWRvcHQKPiBncG1pX29v
+YmxheW91dF9lY2MoKSBhbmQgZ3BtaV9vb2JsYXlvdXRfZnJlZSgpIGZyb20gdGhlIExpbnV4IGRy
+aXZlciBmb3IKPiBiYXJlYm94Lgo+IAo+IFRoaXMgYnVnIHNlZW1zIHRvIHRyaWdnZXIgZm9yIE5B
+TkRzIHdpdGggYmlnZ2VyIHBhZ2Ugc2l6ZXMuIEkgb25seQo+IHRlc3RlZCB0aGUgbGFzdCBOQU5E
+IGxheWVyIHVwZGF0ZSB3aXRoIHNtYWxsZXIgcGFnZSBzaXplcy4gU28gaXQncyBub3QKPiB5b3Ug
+d2hvIG1pc3NlcyBzb21ldGhpbmcsIGl0J3MgbWUgd2hvIG1pc3NlZCBzb21ldGhpbmcgOykKPiAK
+CkknbSB0cnlpbmcgdG8gcG9ydCBncG1pX29vYmxheW91dF9lY2MoKSBhbmQgZ3BtaV9vb2JsYXlv
+dXRfZnJlZSgpIApmcm9tIExpbnV4LCBiYXJlYm94IGNhbiBydW4gYW5kIGxvYWQgbGludXgsIGJ1
+dCBJIGVuY291bnRlcmVkIGFub3RoZXIgZXJyb3IsIApiYXJlYm94IGNhbiBub3QgIHdyaXRlIGl0
+c2VsZiBhbmQga2VybmVsKGxpbnV4KSB0byBuYW5kIGRldmljZSB0aHJvdWdoIApiYXJlYm94X3Vw
+ZGF0ZSBjb21tYW5kLiBJIHRyYWNlZCB0aGUgc291cmNlIGFuZCBmb3VuZCB0aGF0IHRoZSAKYmJ1
+X3N0ZF9maWxlX2hhbmRsZXIoKSBuZWVkIHVucHJvdGVjdCBkZXZpY2UsIGJ1dCBuYW5kIGRyaXZl
+ciBkbyBub3QKc3VwcGx5IHRoZSB1bmxvY2sgZnVuY3Rpb24sIHNvIG5hbmRfdW5sb2NrKCkgcmV0
+dXJuIC1FTk9UU1VQUCwgCmFuZCBiYnVfc3RkX2ZpbGVfaGFuZGxlcigpIGZhaWxlZC4KTGludXgg
+ZHJpdmVyIGp1c3QgYXNzaWduIG10ZC0+X3VubG9jayB0byBOVUxMLCBidXQgYmFyZWJveCBhc3Np
+Z24gaXQgdG8gCm5hbmRfdW5sb2NrKCksIEkgZm91bmQgbmFuZF9tYWNyb25peC5jIHN1cHBseSBv
+cHMudW5sb2NrX2FyZWEKZnVuY3Rpb24sIHNvIG10ZC0+X3VubG9jayBpcyBuZWVkZWQuIApTbyBJ
+IG1ha2UgdGhlIG5hbmRfdW5sb2NrKCkgcmV0dXJuIC1FTk9TWVMsIGl0IGl0IHRoZSByaWdodCB3
+YXk/CgpBbHRob3VnaCB0aGUgZ3BtaV9vb2JsYXlvdXRfZWNjKCkgaXMgd29ya2VkLCBidXQgdGhl
+IHNvdXJjZSBpbmNsdWRlZCAKdWdseSBkZWJ1ZyBjb2RlcywgSSdsbCBzZW5kIGEgcGF0Y2ggYWZ0
+ZXIgY2xlYW4gaXQuCgoKPiBSZWdhcmRzLAo+ICAgU2FzY2hhCj4gCj4gLS0gCj4gUGVuZ3V0cm9u
+aXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwKPiBTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBo
+dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAo+IDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkg
+ICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dl
+cmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIw
+NjkxNy01NTU1IHwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
