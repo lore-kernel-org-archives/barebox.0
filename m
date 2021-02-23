@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lESTt-0005Gr-Cr
- for barebox@lists.infradead.org; Tue, 23 Feb 2021 07:51:42 +0000
-Date: Tue, 23 Feb 2021 08:51:38 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20210223075138.GA5549@pengutronix.de>
-References: <CADbCKyKLBG=eSoKeqnvvGMCGdkpwNo_xGvH1D1xHHTgk0tMU1Q@mail.gmail.com>
- <20210106103525.GT19063@pengutronix.de>
- <tencent_38A3D28635D0E3DF1085571FDB818F5D420A@qq.com>
+ id 1lETR6-0000p0-K1
+ for barebox@lists.infradead.org; Tue, 23 Feb 2021 08:52:53 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 23 Feb 2021 09:52:49 +0100
+Message-Id: <20210223085249.29780-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <tencent_38A3D28635D0E3DF1085571FDB818F5D420A@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,76 +15,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: No oob scheme defined for oobsize 224 on imx6ull board
-To: jameszxj <jameszxj@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] of: fdt: Add root name checks during unflattening
+To: Barebox List <barebox@lists.infradead.org>
 
-T24gTW9uLCBGZWIgMjIsIDIwMjEgYXQgMTA6NTU6NTVQTSArMDgwMCwgamFtZXN6eGogd3JvdGU6
-Cj4gICAgSGkgU2FzY2hhLAo+ICAgID4KPiAgICA+IFN1YmplY3Q6IFJlOiBObyBvb2Igc2NoZW1l
-IGRlZmluZWQgZm9yIG9vYnNpemUgMjI0IG9uIGlteDZ1bGwgYm9hcmQKPiAgICA+Cj4gICAgPiBI
-aSwKPiAgICA+Cj4gICAgPiBPbiBGcmksIERlYyAxOCwgMjAyMCBhdCAwNToxMToxMVBNICswODAw
-LCDpg5HlsI/lhpsgd3JvdGU6Cj4gICAgPiA+IEhpLCBhbGwKPiAgICA+ID4gICAgIEkgYW0gdHJ5
-aW5nIHRvIHJ1biBiYXJlYm94IG9uIG15IGkubXg2dWxsIGJvYXJkLiAgSSBpbmhlcml0IGZyb20K
-PiAgICA+ID4gbnhwLWlteDZ1bGwtZXZrLiBXaGVuIEkgYWRkZWQgbmFuZCBmbGFzaCBzdXBwb3J0
-LCBzeXN0ZW0gY3Jhc2hlZC4gSQo+ICAgID4gPiBmb3VuZCB0aGF0IHRoZSBwb2ludGVyICJjaGlw
-LT5sZWdhY3kuc2V0X2ZlYXR1cmVzIiBhbmQKPiAgICA+ID4gImNoaXAtPmxlZ2FjeS5nZXRfZmVh
-dHVyZXMiIGluIG5hbmRfbXhzLmMgd2FzIE5VTEwuCj4gICAgPiA+IEkgcmVwbGFjZWQgaXQgd2l0
-aCBuYW5kX3NldF9mZWF0dXJlcygpIGFuZCBuYW5kX2dldF9mZWF0dXJlcygpLgo+ICAgID4KPiAg
-ICA+IFRoaXMgbG9va3MgbGlrZSB0aGUgY29ycmVjdCBzb2x1dGlvbiBmb3IgdGhpcy4gQ2FyZSB0
-byBzZW5kIGEgcGF0Y2g/Cj4gICAgPgo+ICAgID4gPiBCYXJlYm94IGRpZG4ndCBjcmFzaCBhZ2Fp
-biwgYnV0IEkgZ2V0IHRoZSBlcnJvcnM6Cj4gICAgPiA+ICAgICAgICAgbmFuZF9iYXNlOiBkZXZp
-Y2UgZm91bmQsIE1hbnVmYWN0dXJlciBJRDogMHgyYywgQ2hpcCBJRDogMHhkYwo+ICAgID4gPiAg
-ICAgICAgIG5hbmRfYmFzZTogTWljcm9uIE1UMjlGNEcwOEFCQUVBV1AKPiAgICA+ID4gICAgICAg
-ICBuYW5kX2Jhc2U6IDUxMiBNaUIsIFNMQywgZXJhc2Ugc2l6ZTogMjU2IEtpQiwgcGFnZSBzaXpl
-OiA0MDk2LAo+ICAgID4gPiBPT0Igc2l6ZTogMjI0Cj4gICAgPiA+ICAgICAgICAgV0FSTklORzog
-YXQKPiAgICBkcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jOjU1OTEvbmFuZF9zY2FuX3RhaWwo
-KSEKPiAgICA+ID4gICAgICAgICBXQVJOSU5HOiBObyBvb2Igc2NoZW1lIGRlZmluZWQgZm9yIG9v
-YnNpemUgMjI0Cj4gICAgPiA+ICAgICAgICAgbXhzX25hbmQgMTgwNjAwMC5uYW5kLWNvbnRyb2xs
-ZXJAMTgwNjAwMC5vZjogcHJvYmUgZmFpbGVkOgo+ICAgID4gPiBJbnZhbGlkIGFyZ3VtZW50Cj4g
-ICAgPgo+ICAgID4gWW91IGFyZSBmYWxsaW5nIGludG86Cj4gICAgPgo+ICAgID4gLyoKPiAgICA+
-ICogSWYgbm8gZGVmYXVsdCBwbGFjZW1lbnQgc2NoZW1lIGlzIGdpdmVuLCBzZWxlY3QgYW4gYXBw
-cm9wcmlhdGUgb25lLgo+ICAgID4gKi8KPiAgICA+IGlmICghbXRkLT5vb2JsYXlvdXQgJiYKPiAg
-ICA+ICAgICAhKGVjYy0+bW9kZSA9PSBOQU5EX0VDQ19TT0ZUICYmIGVjYy0+YWxnbyA9PSBOQU5E
-X0VDQ19CQ0gpKSB7Cj4gICAgPiAuLi4KPiAgICA+IH0KPiAgICA+Cj4gICAgPiBOb3JtYWxseSBt
-dGQtPm9vYmxheW91dCBzaG91bGQgYmUgc2V0IGF0IHRoaXMgcG9pbnQuIHRoZSBuYW5kX214cyBk
-cml2ZXIKPiAgICA+IGN1cnJlbnRseSBtaXNzZXMgdG8gc2V0IGl0LiBJIHRoaW5rIHlvdSBoYXZl
-IHRvIGFkb3B0Cj4gICAgPiBncG1pX29vYmxheW91dF9lY2MoKSBhbmQgZ3BtaV9vb2JsYXlvdXRf
-ZnJlZSgpIGZyb20gdGhlIExpbnV4IGRyaXZlciBmb3IKPiAgICA+IGJhcmVib3guCj4gICAgPgo+
-ICAgID4gVGhpcyBidWcgc2VlbXMgdG8gdHJpZ2dlciBmb3IgTkFORHMgd2l0aCBiaWdnZXIgcGFn
-ZSBzaXplcy4gSSBvbmx5Cj4gICAgPiB0ZXN0ZWQgdGhlIGxhc3QgTkFORCBsYXllciB1cGRhdGUg
-d2l0aCBzbWFsbGVyIHBhZ2Ugc2l6ZXMuIFNvIGl0J3Mgbm90Cj4gICAgPiB5b3Ugd2hvIG1pc3Nl
-cyBzb21ldGhpbmcsIGl0J3MgbWUgd2hvIG1pc3NlZCBzb21ldGhpbmcgOykKPiAgICA+Cj4gICAg
-SSdtIHRyeWluZyB0byBwb3J0IGdwbWlfb29ibGF5b3V0X2VjYygpIGFuZCBncG1pX29vYmxheW91
-dF9mcmVlKCkgZnJvbQo+ICAgIExpbnV4LCBiYXJlYm94IGNhbiBydW4gYW5kCj4gICAgbG9hZCBs
-aW51eCwgYnV0IEkgZW5jb3VudGVyZWQgYW5vdGhlciBlcnJvciwgYmFyZWJveCBjYW4gbm90IHdy
-aXRlIGl0c2VsZgo+ICAgIG9yIGtlcm5lbChsaW51eCkgdG8gbmFuZCBkZXZpY2UgdGhyb3VnaAo+
-ICAgIGJhcmVib3hfdXBkYXRlIGNvbW1hbmQuIEkgdHJhY2VkIHRoZSBzb3VyY2UgYW5kIGZvdW5k
-IHRoYXQgdGhlCj4gICAgYmJ1X3N0ZF9maWxlX2hhbmRsZXIoKSBuZWVkIHVucHJvdGVjdCBkZXZp
-Y2UsIGJ1dCBuYW5kIGRyaXZlciBkbyBub3QKPiAgICBzdXBwbHkgdGhlIHVubG9jayBmdW5jdGlv
-biwgc28gbmFuZF91bmxvY2soKSByZXR1cm4gLUVOT1RTVVBQLCBhbmQKPiAgICBiYnVfc3RkX2Zp
-bGVfaGFuZGxlcigpIGZhaWxlZC4KCmJidV9zdGRfZmlsZV9oYW5kbGVyKCkgY2hlY2tzIGZvciAt
-RU5PU1lTLCBsaWtlbHkgdGhpcyBlcnJvciBjb2RlCmNoYW5nZWQgdG8gLUVOT1RTVVBQIG92ZXIg
-dGltZSB3aGljaCBzaG91bGQgYmUgZml4ZWQuCkFueXdheSwgYmJ1X3N0ZF9maWxlX2hhbmRsZXIo
-KSBpcyB0aGUgd3JvbmcgZnVuY3Rpb24gdG8gd3JpdGUgYmFyZWJveCB0bwpOQU5ELCB0aGlzIHdv
-bid0IHdvcmsuIFlvdSdsbCBuZWVkIGlteDZfYmJ1X25hbmRfcmVnaXN0ZXJfaGFuZGxlcigpIHRv
-CmNyZWF0ZSBhIGJhcmVib3ggdXBkYXRlIGhhbmRsZXIgZm9yIE5BTkQuCgo+ICAgIExpbnV4IGRy
-aXZlciBqdXN0IGFzc2lnbiBtdGQtPl91bmxvY2sgdG8gTlVMTCwgYnV0IGJhcmVib3ggYXNzaWdu
-IGl0IHRvCj4gICAgbmFuZF91bmxvY2soKSwgSSBmb3VuZCBuYW5kX21hY3Jvbml4LmMgc3VwcGx5
-IG9wcy51bmxvY2tfYXJlYQo+ICAgIGZ1bmN0aW9uLCBzbyBtdGQtPl91bmxvY2sgaXMgbmVlZGVk
-LiBTbyBJIG1ha2UgdGhlIG5hbmRfdW5sb2NrKCkgcmV0dXJuCj4gICAgLUVOT1NZUywgaXQgaXQg
-dGhlIHJpZ2h0IHdheT8KClBlb3BsZSB1c2UgLUVOT1RTVVAgbm93YWRheXMsIEkgdGhpbmsgdXNp
-bmcgLUVOT1NZUyBmb3Igc2F5aW5nICJJIGRvbid0Cm5lZWQgdGhhdCBvcGVyYXRpb24iIGlzIGRl
-cHJlY2F0ZWQuIFNvIHdlIHNob3VsZCByYXRoZXIgZXh0ZW5kIHRoZSB0ZXN0CmluIGJidV9zdGRf
-ZmlsZV9oYW5kbGVyKCkgdG8gYWxzbyBjaGVjayBmb3IgLUVOT1RTVVAuCgpTYXNjaGEKCi0tIApQ
-ZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAg
-ICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJt
-YW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRz
-Z2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEt
-MjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+In a valid dtb the root node must have an empty name. Also, every other
+node name must be non empty. Add additional checks for this for better
+protection against invalid dtbs.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/of/fdt.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index a31e2c348a..d98913e54a 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -184,10 +184,21 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, bool constprops
+ 				goto err;
+ 			}
+ 
+-			if (!node)
++			if (!node) {
++				/* The root node must have an empty name */
++				if (*pathp) {
++					ret = -EINVAL;
++					goto err;
++				}
+ 				node = root;
+-			else
++			} else {
++				/* Only the root node may have an empty name */
++				if (!*pathp) {
++					ret = -EINVAL;
++					goto err;
++				}
+ 				node = of_new_node(node, pathp);
++			}
+ 
+ 			dt_struct = dt_struct_advance(&f, dt_struct,
+ 					sizeof(struct fdt_node_header) + len + 1);
+-- 
+2.29.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
