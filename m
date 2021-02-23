@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbg480.qq.com ([59.36.132.97] helo=qq.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lEU2j-0003mF-7I
- for barebox@lists.infradead.org; Tue, 23 Feb 2021 09:31:46 +0000
-From: "=?ISO-8859-1?B?amFtZXN6eGo=?=" <jameszxj@gmail.com>
-Mime-Version: 1.0
-Date: Tue, 23 Feb 2021 17:31:22 +0800
-Message-ID: <tencent_E28F8E77C0112E2550D5C300E9436E3CC309@qq.com>
+ id 1lEUTA-0006eK-69
+ for barebox@lists.infradead.org; Tue, 23 Feb 2021 09:59:05 +0000
+Date: Tue, 23 Feb 2021 10:59:02 +0100
+Message-ID: <20210223095902.GD5549@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +20,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] extend the test in bbu_std_file_handler() to also check for
- -ENOTSUP.
-To: =?ISO-8859-1?B?YmFyZWJveA==?= <barebox@lists.infradead.org>
+Subject: nios2 and openrisc in barebox
+To: Barebox List <barebox@lists.infradead.org>
 
-extend the test in bbu_std_file_handler() to also check for  -ENOTSUP.
+Hi Franck, Antony
 
-Signed-off-by: zhengxiaojun <jameszxj at gmail.com>
----
- common/bbu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Are you still interested in barebox support for NIOS2 and openrisc? If
+not I would consider removing it. Background is that we are planning to
+introduce green threads and implement pollers with them which makes
+green threads rather mandatory. Green threads need a setjmp/longjmp
+implementation that would have to be added for these architectures.
 
-diff --git a/common/bbu.c b/common/bbu.c
-index 1279d56..ee9f78e 100644
---- a/common/bbu.c
-+++ b/common/bbu.c
-@@ -313,7 +313,7 @@ static int bbu_std_file_handler(struct bbu_handler *handler,
- 		return fd;
- 
- 	ret = protect(fd, data->len, 0, 0);
--	if (ret && ret != -ENOSYS) {
-+	if (ret && (ret != -ENOSYS) && (ret != -ENOTSUPP)) {
- 		printf("unprotecting %s failed with %s\n", data->devicefile,
- 				strerror(-ret));
- 		goto err_close;
+Keeping the architectures is no big deal normally, but I don't want to
+add untested new functionality, also I don't want to implement things
+that nobody uses, so if you are still interested it would be great if
+you volunteer to implement setjmp/longjmp.
+
+Thanks
+  Sascha
+
 -- 
-2.7.4
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
