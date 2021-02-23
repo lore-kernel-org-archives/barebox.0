@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtpbg480.qq.com ([59.36.132.97] helo=qq.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lETR6-0000p0-K1
- for barebox@lists.infradead.org; Tue, 23 Feb 2021 08:52:53 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 23 Feb 2021 09:52:49 +0100
-Message-Id: <20210223085249.29780-1-s.hauer@pengutronix.de>
-MIME-Version: 1.0
+ id 1lEU2j-0003mF-7I
+ for barebox@lists.infradead.org; Tue, 23 Feb 2021 09:31:46 +0000
+From: "=?ISO-8859-1?B?amFtZXN6eGo=?=" <jameszxj@gmail.com>
+Mime-Version: 1.0
+Date: Tue, 23 Feb 2021 17:31:22 +0800
+Message-ID: <tencent_E28F8E77C0112E2550D5C300E9436E3CC309@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of: fdt: Add root name checks during unflattening
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] extend the test in bbu_std_file_handler() to also check for
+ -ENOTSUP.
+To: =?ISO-8859-1?B?YmFyZWJveA==?= <barebox@lists.infradead.org>
 
-In a valid dtb the root node must have an empty name. Also, every other
-node name must be non empty. Add additional checks for this for better
-protection against invalid dtbs.
+extend the test in bbu_std_file_handler() to also check for  -ENOTSUP.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: zhengxiaojun <jameszxj at gmail.com>
 ---
- drivers/of/fdt.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ common/bbu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index a31e2c348a..d98913e54a 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -184,10 +184,21 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, bool constprops
- 				goto err;
- 			}
+diff --git a/common/bbu.c b/common/bbu.c
+index 1279d56..ee9f78e 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -313,7 +313,7 @@ static int bbu_std_file_handler(struct bbu_handler *handler,
+ 		return fd;
  
--			if (!node)
-+			if (!node) {
-+				/* The root node must have an empty name */
-+				if (*pathp) {
-+					ret = -EINVAL;
-+					goto err;
-+				}
- 				node = root;
--			else
-+			} else {
-+				/* Only the root node may have an empty name */
-+				if (!*pathp) {
-+					ret = -EINVAL;
-+					goto err;
-+				}
- 				node = of_new_node(node, pathp);
-+			}
- 
- 			dt_struct = dt_struct_advance(&f, dt_struct,
- 					sizeof(struct fdt_node_header) + len + 1);
+ 	ret = protect(fd, data->len, 0, 0);
+-	if (ret && ret != -ENOSYS) {
++	if (ret && (ret != -ENOSYS) && (ret != -ENOTSUPP)) {
+ 		printf("unprotecting %s failed with %s\n", data->devicefile,
+ 				strerror(-ret));
+ 		goto err_close;
 -- 
-2.29.2
-
-
+2.7.4
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
