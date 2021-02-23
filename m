@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbgau1.qq.com ([54.206.16.166])
+Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lELSy-0005dL-0V
- for barebox@lists.infradead.org; Tue, 23 Feb 2021 00:22:17 +0000
-In-Reply-To: <tencent_38A3D28635D0E3DF1085571FDB818F5D420A@qq.com>
-References: <CADbCKyKLBG=eSoKeqnvvGMCGdkpwNo_xGvH1D1xHHTgk0tMU1Q@mail.gmail.com>
- <20210106103525.GT19063@pengutronix.de>
- <tencent_38A3D28635D0E3DF1085571FDB818F5D420A@qq.com>
-From: "=?gb18030?B?amFtZXN6eGo=?=" <jameszxj@gmail.com>
-Mime-Version: 1.0
-Date: Tue, 23 Feb 2021 08:21:47 +0800
-Message-ID: <tencent_D7DEA1CE8785D247DD74849F1DC380CF5C0A@qq.com>
+ id 1lES3j-0003Xn-Eu
+ for barebox@lists.infradead.org; Tue, 23 Feb 2021 07:24:40 +0000
+Received: from geraet.fritz.box (unknown [87.123.107.144])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id EDA951BF205
+ for <barebox@lists.infradead.org>; Tue, 23 Feb 2021 07:24:31 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Tue, 23 Feb 2021 08:24:26 +0100
+Message-Id: <20210223072427.166689-1-ahmad@a3f.at>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,63 +19,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="gb18030"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: No oob scheme defined for oobsize 224 on imx6ull board
-To: =?gb18030?B?YmFyZWJveA==?= <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] kbuild: add '-fno-stack-check' to barebox build options
+To: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKPiAKPiBTdWJqZWN0OiBSZTogTm8gb29iIHNjaGVtZSBkZWZpbmVkIGZvciBv
-b2JzaXplIDIyNCBvbiBpbXg2dWxsIGJvYXJkCj4gCj4gSGksCj4gCj4gT24gRnJpLCBEZWMgMTgs
-IDIwMjAgYXQgMDU6MTE6MTFQTSArMDgwMCwg1qPQob78IHdyb3RlOgo+ID4gSGksIGFsbAo+ID4g
-ICAgIEkgYW0gdHJ5aW5nIHRvIHJ1biBiYXJlYm94IG9uIG15IGkubXg2dWxsIGJvYXJkLiAgSSBp
-bmhlcml0IGZyb20KPiA+IG54cC1pbXg2dWxsLWV2ay4gV2hlbiBJIGFkZGVkIG5hbmQgZmxhc2gg
-c3VwcG9ydCwgc3lzdGVtIGNyYXNoZWQuIEkKPiA+IGZvdW5kIHRoYXQgdGhlIHBvaW50ZXIgImNo
-aXAtPmxlZ2FjeS5zZXRfZmVhdHVyZXMiIGFuZAo+ID4gImNoaXAtPmxlZ2FjeS5nZXRfZmVhdHVy
-ZXMiIGluIG5hbmRfbXhzLmMgd2FzIE5VTEwuCj4gPiBJIHJlcGxhY2VkIGl0IHdpdGggbmFuZF9z
-ZXRfZmVhdHVyZXMoKSBhbmQgbmFuZF9nZXRfZmVhdHVyZXMoKS4KPiAKPiBUaGlzIGxvb2tzIGxp
-a2UgdGhlIGNvcnJlY3Qgc29sdXRpb24gZm9yIHRoaXMuIENhcmUgdG8gc2VuZCBhIHBhdGNoPwo+
-IAo+ID4gQmFyZWJveCBkaWRuJ3QgY3Jhc2ggYWdhaW4sIGJ1dCBJIGdldCB0aGUgZXJyb3JzOgo+
-ID4gICAgICAgICBuYW5kX2Jhc2U6IGRldmljZSBmb3VuZCwgTWFudWZhY3R1cmVyIElEOiAweDJj
-LCBDaGlwIElEOiAweGRjCj4gPiAgICAgICAgIG5hbmRfYmFzZTogTWljcm9uIE1UMjlGNEcwOEFC
-QUVBV1AKPiA+ICAgICAgICAgbmFuZF9iYXNlOiA1MTIgTWlCLCBTTEMsIGVyYXNlIHNpemU6IDI1
-NiBLaUIsIHBhZ2Ugc2l6ZTogNDA5NiwKPiA+IE9PQiBzaXplOiAyMjQKPiA+ICAgICAgICAgV0FS
-TklORzogYXQgZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jhc2UuYzo1NTkxL25hbmRfc2Nhbl90YWls
-KCkhCj4gPiAgICAgICAgIFdBUk5JTkc6IE5vIG9vYiBzY2hlbWUgZGVmaW5lZCBmb3Igb29ic2l6
-ZSAyMjQKPiA+ICAgICAgICAgbXhzX25hbmQgMTgwNjAwMC5uYW5kLWNvbnRyb2xsZXJAMTgwNjAw
-MC5vZjogcHJvYmUgZmFpbGVkOgo+ID4gSW52YWxpZCBhcmd1bWVudAo+IAo+IFlvdSBhcmUgZmFs
-bGluZyBpbnRvOgo+IAo+IC8qCj4gKiBJZiBubyBkZWZhdWx0IHBsYWNlbWVudCBzY2hlbWUgaXMg
-Z2l2ZW4sIHNlbGVjdCBhbiBhcHByb3ByaWF0ZSBvbmUuCj4gKi8KPiBpZiAoIW10ZC0+b29ibGF5
-b3V0ICYmCj4gICAgICEoZWNjLT5tb2RlID09IE5BTkRfRUNDX1NPRlQgJiYgZWNjLT5hbGdvID09
-IE5BTkRfRUNDX0JDSCkpIHsKPiAuLi4KPiB9Cj4gCj4gTm9ybWFsbHkgbXRkLT5vb2JsYXlvdXQg
-c2hvdWxkIGJlIHNldCBhdCB0aGlzIHBvaW50LiB0aGUgbmFuZF9teHMgZHJpdmVyCj4gY3VycmVu
-dGx5IG1pc3NlcyB0byBzZXQgaXQuIEkgdGhpbmsgeW91IGhhdmUgdG8gYWRvcHQKPiBncG1pX29v
-YmxheW91dF9lY2MoKSBhbmQgZ3BtaV9vb2JsYXlvdXRfZnJlZSgpIGZyb20gdGhlIExpbnV4IGRy
-aXZlciBmb3IKPiBiYXJlYm94Lgo+IAo+IFRoaXMgYnVnIHNlZW1zIHRvIHRyaWdnZXIgZm9yIE5B
-TkRzIHdpdGggYmlnZ2VyIHBhZ2Ugc2l6ZXMuIEkgb25seQo+IHRlc3RlZCB0aGUgbGFzdCBOQU5E
-IGxheWVyIHVwZGF0ZSB3aXRoIHNtYWxsZXIgcGFnZSBzaXplcy4gU28gaXQncyBub3QKPiB5b3Ug
-d2hvIG1pc3NlcyBzb21ldGhpbmcsIGl0J3MgbWUgd2hvIG1pc3NlZCBzb21ldGhpbmcgOykKPiAK
-CkknbSB0cnlpbmcgdG8gcG9ydCBncG1pX29vYmxheW91dF9lY2MoKSBhbmQgZ3BtaV9vb2JsYXlv
-dXRfZnJlZSgpIApmcm9tIExpbnV4LCBiYXJlYm94IGNhbiBydW4gYW5kIGxvYWQgbGludXgsIGJ1
-dCBJIGVuY291bnRlcmVkIGFub3RoZXIgZXJyb3IsIApiYXJlYm94IGNhbiBub3QgIHdyaXRlIGl0
-c2VsZiBhbmQga2VybmVsKGxpbnV4KSB0byBuYW5kIGRldmljZSB0aHJvdWdoIApiYXJlYm94X3Vw
-ZGF0ZSBjb21tYW5kLiBJIHRyYWNlZCB0aGUgc291cmNlIGFuZCBmb3VuZCB0aGF0IHRoZSAKYmJ1
-X3N0ZF9maWxlX2hhbmRsZXIoKSBuZWVkIHVucHJvdGVjdCBkZXZpY2UsIGJ1dCBuYW5kIGRyaXZl
-ciBkbyBub3QKc3VwcGx5IHRoZSB1bmxvY2sgZnVuY3Rpb24sIHNvIG5hbmRfdW5sb2NrKCkgcmV0
-dXJuIC1FTk9UU1VQUCwgCmFuZCBiYnVfc3RkX2ZpbGVfaGFuZGxlcigpIGZhaWxlZC4KTGludXgg
-ZHJpdmVyIGp1c3QgYXNzaWduIG10ZC0+X3VubG9jayB0byBOVUxMLCBidXQgYmFyZWJveCBhc3Np
-Z24gaXQgdG8gCm5hbmRfdW5sb2NrKCksIEkgZm91bmQgbmFuZF9tYWNyb25peC5jIHN1cHBseSBv
-cHMudW5sb2NrX2FyZWEKZnVuY3Rpb24sIHNvIG10ZC0+X3VubG9jayBpcyBuZWVkZWQuIApTbyBJ
-IG1ha2UgdGhlIG5hbmRfdW5sb2NrKCkgcmV0dXJuIC1FTk9TWVMsIGl0IGl0IHRoZSByaWdodCB3
-YXk/CgpBbHRob3VnaCB0aGUgZ3BtaV9vb2JsYXlvdXRfZWNjKCkgaXMgd29ya2VkLCBidXQgdGhl
-IHNvdXJjZSBpbmNsdWRlZCAKdWdseSBkZWJ1ZyBjb2RlcywgSSdsbCBzZW5kIGEgcGF0Y2ggYWZ0
-ZXIgY2xlYW4gaXQuCgoKPiBSZWdhcmRzLAo+ICAgU2FzY2hhCj4gCj4gLS0gCj4gUGVuZ3V0cm9u
-aXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwKPiBTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBo
-dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAo+IDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkg
-ICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dl
-cmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIw
-NjkxNy01NTU1IHwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+This ports over Linux commit 3ce120b16cc5 ("kbuild: add
+'-fno-stack-check' to kernel build options"):
+
+  Author:     Linus Torvalds <torvalds@linux-foundation.org>
+
+    kbuild: add '-fno-stack-check' to kernel build options
+
+    It appears that hardened gentoo enables "-fstack-check" by default for
+    gcc.
+
+    That doesn't work _at_all_ for the kernel, because the kernel stack
+    doesn't act like a user stack at all: it's much smaller, and it doesn't
+    auto-expand on use.  So the extra "probe one page below the stack" code
+    generated by -fstack-check just breaks the kernel in horrible ways,
+    causing infinite double faults etc.
+
+    [ I have to say, that the particular code gcc generates looks very
+      stupid even for user space where it works, but that's a separate
+      issue.  ]
+
+    Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+
+I am porting it, because it may become more acute with the incoming
+support for multiple stacks (via initjmp).
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index f3c85cff9430..fa7fbbeb35f0 100644
+--- a/Makefile
++++ b/Makefile
+@@ -622,6 +622,9 @@ KBUILD_CFLAGS += $(call cc-option, -fno-delete-null-pointer-checks,)
+ # disable invalid "can't wrap" optimizations for signed / pointers
+ KBUILD_CFLAGS	+= $(call cc-option,-fno-strict-overflow)
+ 
++# Make sure -fstack-check isn't enabled (like gentoo apparently did)
++KBUILD_CFLAGS  += $(call cc-option,-fno-stack-check)
++
+ KBUILD_CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
+ 
+ # Align the bit size of userspace programs with the kernel
+-- 
+2.30.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
