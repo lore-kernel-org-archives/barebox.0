@@ -1,51 +1,58 @@
-Delivery-date: Tue, 23 Feb 2021 18:30:41 +0100
+Delivery-date: Tue, 23 Feb 2021 21:26:12 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lEbWD-0002cg-Kz
-	for lore@lore.pengutronix.de; Tue, 23 Feb 2021 18:30:41 +0100
+	id 1lEeG4-0002kZ-OG
+	for lore@lore.pengutronix.de; Tue, 23 Feb 2021 21:26:12 +0100
 Received: from merlin.infradead.org ([2001:8b0:10b:1231::1])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lEbWC-0002OW-JZ
-	for lore@pengutronix.de; Tue, 23 Feb 2021 18:30:41 +0100
+	id 1lEeG4-0004Oc-0Z
+	for lore@pengutronix.de; Tue, 23 Feb 2021 21:26:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=merlin.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:List-Unsubscribe
-	:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=i4tuRDukEN2swatEdryOTUf890Pvg4XbQ0g+aMeMxUM=; b=2I5hFa/Hcwx2LSAtMo4Ai1hkbM
-	Mr/pZj0zWjjV78A7bDyZ7S1Vr5yyI+7qASYUgSbrBm0JCmFC/xutRsGpR6Rd44ISV0dzR5VL0lzZr
-	CC+tPtbrcf+xL3oPToMSlGynscFiBJVDeMPyx+pUtTks48iQ5YDQjrpDcOBFlUAZKdYdU6Qw6aZrB
-	AfLOV0vaX23ZZWTIS1QDaALNfhGNtOCjtBRNqUp/5fzhD/Os2CYEZYI/k2S3rgiISIFHtAIXJ7Gqe
-	3yees9l/gwZhBfFZ/z2x7YYKWJrwyK6z4H0u92aI8ByQuNM+cEGps4M3kx508mTawQv/dkCu94Zkn
-	Knd6MRFg==;
+	Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=xmsCyG523LghD1E1ltSCnsx/9ujSsaPly22wPEk70TM=; b=zDOQ3imbWv+L8V1E3bEU+uxNOh
+	msCl3rYbs+ucNWzJQw+MNr3fH/hqGLyht2LNFnz5+SPzJLFKKLgDdA8yIj6XUPssPYRYM5CkgnKEA
+	FLPYd2m1ZxQTEoR1FOJ/VtyG1hWeGfkpaK4Ztm6UDX3crz/nbtwZY0cSYg76i3gLxA7/A8sqECYgK
+	zcwqxzKpyE0DDse6WznNRSwwmeIUg58/mM7qD3/jZA7JxPK5eSTdYUOySGknG0FOkZfJ4ajeVvHNF
+	zWoqo/fb+nyv7SZDQ8bRyFDfLhF6Pze2xWGRyYtitHHJJefiATrYHrdWGDcslcK1KYP3AS/Qo8CgR
+	C6hwg0Og==;
 Received: from localhost ([::1] helo=merlin.infradead.org)
 	by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1lEbUZ-0008PF-8v; Tue, 23 Feb 2021 17:28:59 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lEeEX-0002jz-Ud; Tue, 23 Feb 2021 20:24:38 +0000
+Received: from mout-p-101.mailbox.org ([80.241.56.151])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lEbUW-0008OK-6T
- for barebox@lists.infradead.org; Tue, 23 Feb 2021 17:28:57 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1lEbUT-0002Al-1G; Tue, 23 Feb 2021 18:28:53 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1lEbUS-0003v1-Mw; Tue, 23 Feb 2021 18:28:52 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+ id 1lEeEV-0002jD-6r
+ for barebox@lists.infradead.org; Tue, 23 Feb 2021 20:24:36 +0000
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4DlVrs6MnyzQlY4;
+ Tue, 23 Feb 2021 21:24:29 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+ by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de
+ [80.241.56.123]) (amavisd-new, port 10030)
+ with ESMTP id LdS7XkXdpSbH; Tue, 23 Feb 2021 21:24:28 +0100 (CET)
+From: Thorsten Scherer <tsc@scherer.tk>
 To: barebox@lists.infradead.org
-Date: Tue, 23 Feb 2021 18:28:51 +0100
-Message-Id: <20210223172851.68579-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.0
+Date: Tue, 23 Feb 2021 21:24:01 +0100
+Message-Id: <20210223202401.35896-1-tsc@scherer.tk>
 MIME-Version: 1.0
+X-MBO-SPAM-Probability: ****
+X-Rspamd-Score: 4.65 / 15.00 / 15.00
+X-Rspamd-Queue-Id: 4C86717CC
+X-Rspamd-UID: d03b90
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210223_122856_278624_D9E460E3 
-X-CRM114-Status: GOOD (  12.91  )
+X-CRM114-CacheID: sfid-20210223_152435_377681_57EF2E16 
+X-CRM114-Status: UNSURE (   7.62  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,106 +64,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: Thorsten Scherer <tsc@scherer.tk>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1231::1
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.6 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: davinci: Replace license and copyright boilerplate by
- SPDX identifiers
+Subject: [PATCH] Documentation: devicetree: include firmware in toctree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Q29udmVydHMgdGhlIGZpbGVzIHRoYXQgbGljZW5zZWNoZWNrIGNhbiBkZXRlcm1pbmUgdG8gYmUg
-bGljZW5zZWQgdW5kZXIKR1BMLTIuMC1vbmx5IG9yIEdQTC0yLjAtb3ItbGF0ZXIgYW5kIGFsc28g
-Y29udmVydCB0aGUgY29weXJpZ2h0IHN0YXRlbWVudHMKdG8gU1BEWC4KClNpZ25lZC1vZmYtYnk6
-IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQog
-YXJjaC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oIHwgMTcgKystLS0t
-LS0tLS0tLS0tLS0KIGFyY2gvYXJtL21hY2gtZGF2aW5jaS9pbmNsdWRlL21hY2gvaGFyZHdhcmUu
-aCB8ICA4ICsrKy0tLS0tCiBhcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9tYWNoL3Nlcmlh
-bC5oICAgfCAgOCArKystLS0tLQogYXJjaC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1ZGUvbWFjaC90
-aW1lLmggICAgIHwgIDggKysrLS0tLS0KIGFyY2gvYXJtL21hY2gtZGF2aW5jaS90aW1lLmMgICAg
-ICAgICAgICAgICAgICB8ICA4ICsrKy0tLS0tCiA1IGZpbGVzIGNoYW5nZWQsIDE0IGluc2VydGlv
-bnMoKyksIDM1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtZGF2aW5j
-aS9pbmNsdWRlL21hY2gvZGVidWdfbGwuaCBiL2FyY2gvYXJtL21hY2gtZGF2aW5jaS9pbmNsdWRl
-L21hY2gvZGVidWdfbGwuaAppbmRleCBkNTA5ZTg0OWYzOWQuLjYwYThkMmE1ZjE4NCAxMDA2NDQK
-LS0tIGEvYXJjaC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCisrKyBi
-L2FyY2gvYXJtL21hY2gtZGF2aW5jaS9pbmNsdWRlL21hY2gvZGVidWdfbGwuaApAQCAtMSwxOCAr
-MSw1IEBACi0vKgotICogQ29weXJpZ2h0IChDKSAyMDE0IEFudG9ueSBQYXZsb3YgPGFudG9ueW5w
-YXZsb3ZAZ21haWwuY29tPgotICoKLSAqIFRoaXMgZmlsZSBpcyBwYXJ0IG9mIGJhcmVib3guCi0g
-KgotICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRl
-IGl0IGFuZC9vciBtb2RpZnkKLSAqIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVy
-YWwgUHVibGljIExpY2Vuc2UgdmVyc2lvbiAyCi0gKiBhcyBwdWJsaXNoZWQgYnkgdGhlIEZyZWUg
-U29mdHdhcmUgRm91bmRhdGlvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQg
-aW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBX
-QVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFO
-VEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCi0g
-KiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoKLSAqLwor
-LyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb25seSAqLworLyogU1BEWC1GaWxl
-Q29weXJpZ2h0VGV4dDogMjAxNCBBbnRvbnkgUGF2bG92IDxhbnRvbnlucGF2bG92QGdtYWlsLmNv
-bT4gKi8KIAogLyoqIEBmaWxlCiAgKiAgVGhpcyBGaWxlIGNvbnRhaW5zIGRlY2xhcmF0aW9uIGZv
-ciBlYXJseSBvdXRwdXQgc3VwcG9ydApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1kYXZpbmNp
-L2luY2x1ZGUvbWFjaC9oYXJkd2FyZS5oIGIvYXJjaC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1ZGUv
-bWFjaC9oYXJkd2FyZS5oCmluZGV4IGVhOWY0ODE4NDQwNC4uOGFiODI0ODAwZTBjIDEwMDY0NAot
-LS0gYS9hcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9tYWNoL2hhcmR3YXJlLmgKKysrIGIv
-YXJjaC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1ZGUvbWFjaC9oYXJkd2FyZS5oCkBAIC0xLDEyICsx
-LDEwIEBACisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5ICovCisvKiBT
-UERYLUZpbGVDb3B5cmlnaHRUZXh0OiAyMDA3IERlZXAgUm9vdCBTeXN0ZW1zLCBMTEMuICovCisK
-IC8qCiAgKiBIYXJkd2FyZSBkZWZpbml0aW9ucyBjb21tb24gdG8gYWxsIERhVmluY2kgZmFtaWx5
-IHByb2Nlc3NvcnMKICAqCiAgKiBBdXRob3I6IEtldmluIEhpbG1hbiwgRGVlcCBSb290IFN5c3Rl
-bXMsIExMQwotICoKLSAqIDIwMDcgKGMpIERlZXAgUm9vdCBTeXN0ZW1zLCBMTEMuIFRoaXMgZmls
-ZSBpcyBsaWNlbnNlZCB1bmRlcgotICogdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJs
-aWMgTGljZW5zZSB2ZXJzaW9uIDIuIFRoaXMgcHJvZ3JhbQotICogaXMgbGljZW5zZWQgImFzIGlz
-IiB3aXRob3V0IGFueSB3YXJyYW50eSBvZiBhbnkga2luZCwgd2hldGhlciBleHByZXNzCi0gKiBv
-ciBpbXBsaWVkLgogICovCiAjaWZuZGVmIF9fQVNNX0FSQ0hfSEFSRFdBUkVfSAogI2RlZmluZSBf
-X0FTTV9BUkNIX0hBUkRXQVJFX0gKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtZGF2aW5jaS9p
-bmNsdWRlL21hY2gvc2VyaWFsLmggYi9hcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9tYWNo
-L3NlcmlhbC5oCmluZGV4IGJjNzQ0OWYzZDc2NS4uMDNlOGVmNDNkZDdjIDEwMDY0NAotLS0gYS9h
-cmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9tYWNoL3NlcmlhbC5oCisrKyBiL2FyY2gvYXJt
-L21hY2gtZGF2aW5jaS9pbmNsdWRlL21hY2gvc2VyaWFsLmgKQEAgLTEsMTIgKzEsMTAgQEAKKy8q
-IFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkgKi8KKy8qIFNQRFgtRmlsZUNv
-cHlyaWdodFRleHQ6IDIwMDcgTW9udGFWaXN0YSBTb2Z0d2FyZSwgSW5jLiAqLworCiAvKgogICog
-RGFWaW5jaSBzZXJpYWwgZGV2aWNlIGRlZmluaXRpb25zCiAgKgogICogQXV0aG9yOiBLZXZpbiBI
-aWxtYW4sIE1vbnRhVmlzdGEgU29mdHdhcmUsIEluYy4gPHNvdXJjZUBtdmlzdGEuY29tPgotICoK
-LSAqIDIwMDcgKGMpIE1vbnRhVmlzdGEgU29mdHdhcmUsIEluYy4gVGhpcyBmaWxlIGlzIGxpY2Vu
-c2VkIHVuZGVyCi0gKiB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNl
-IHZlcnNpb24gMi4gVGhpcyBwcm9ncmFtCi0gKiBpcyBsaWNlbnNlZCAiYXMgaXMiIHdpdGhvdXQg
-YW55IHdhcnJhbnR5IG9mIGFueSBraW5kLCB3aGV0aGVyIGV4cHJlc3MKLSAqIG9yIGltcGxpZWQu
-CiAgKi8KICNpZm5kZWYgX19BU01fQVJDSF9TRVJJQUxfSAogI2RlZmluZSBfX0FTTV9BUkNIX1NF
-UklBTF9ICmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9tYWNoL3Rp
-bWUuaCBiL2FyY2gvYXJtL21hY2gtZGF2aW5jaS9pbmNsdWRlL21hY2gvdGltZS5oCmluZGV4IDM0
-NzgxYjZlYzVhNy4uNjQ1NjIwNTg1OWM1IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWRhdmlu
-Y2kvaW5jbHVkZS9tYWNoL3RpbWUuaAorKysgYi9hcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVk
-ZS9tYWNoL3RpbWUuaApAQCAtMSwxMiArMSwxMCBAQAorLyogU1BEWC1MaWNlbnNlLUlkZW50aWZp
-ZXI6IEdQTC0yLjAtb25seSAqLworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAwNyBNb250
-YVZpc3RhIFNvZnR3YXJlLCBJbmMuICovCisKIC8qCiAgKiBMb2NhbCBoZWFkZXIgZmlsZSBmb3Ig
-RGFWaW5jaSB0aW1lIGNvZGUuCiAgKgogICogQXV0aG9yOiBLZXZpbiBIaWxtYW4sIE1vbnRhVmlz
-dGEgU29mdHdhcmUsIEluYy4gPHNvdXJjZUBtdmlzdGEuY29tPgotICoKLSAqIDIwMDcgKGMpIE1v
-bnRhVmlzdGEgU29mdHdhcmUsIEluYy4gVGhpcyBmaWxlIGlzIGxpY2Vuc2VkIHVuZGVyCi0gKiB0
-aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIHZlcnNpb24gMi4gVGhp
-cyBwcm9ncmFtCi0gKiBpcyBsaWNlbnNlZCAiYXMgaXMiIHdpdGhvdXQgYW55IHdhcnJhbnR5IG9m
-IGFueSBraW5kLCB3aGV0aGVyIGV4cHJlc3MKLSAqIG9yIGltcGxpZWQuCiAgKi8KICNpZm5kZWYg
-X19BUkNIX0FSTV9NQUNIX0RBVklOQ0lfVElNRV9ICiAjZGVmaW5lIF9fQVJDSF9BUk1fTUFDSF9E
-QVZJTkNJX1RJTUVfSApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1kYXZpbmNpL3RpbWUuYyBi
-L2FyY2gvYXJtL21hY2gtZGF2aW5jaS90aW1lLmMKaW5kZXggNWI1N2ZlNjE5MjliLi41MmIzYWMz
-ZTY4MjMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtZGF2aW5jaS90aW1lLmMKKysrIGIvYXJj
-aC9hcm0vbWFjaC1kYXZpbmNpL3RpbWUuYwpAQCAtMSwxMiArMSwxMCBAQAorLy8gU1BEWC1MaWNl
-bnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb25seQorLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDog
-MjAwNyBNb250YVZpc3RhIFNvZnR3YXJlLCBJbmMuICovCisKIC8qCiAgKiBEYVZpbmNpIHRpbWVy
-IHN1YnN5c3RlbQogICoKICAqIEF1dGhvcjogS2V2aW4gSGlsbWFuLCBNb250YVZpc3RhIFNvZnR3
-YXJlLCBJbmMuIDxzb3VyY2VAbXZpc3RhLmNvbT4KLSAqCi0gKiAyMDA3IChjKSBNb250YVZpc3Rh
-IFNvZnR3YXJlLCBJbmMuIFRoaXMgZmlsZSBpcyBsaWNlbnNlZCB1bmRlcgotICogdGhlIHRlcm1z
-IG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSB2ZXJzaW9uIDIuIFRoaXMgcHJvZ3Jh
-bQotICogaXMgbGljZW5zZWQgImFzIGlzIiB3aXRob3V0IGFueSB3YXJyYW50eSBvZiBhbnkga2lu
-ZCwgd2hldGhlciBleHByZXNzCi0gKiBvciBpbXBsaWVkLgogICovCiAKICNpbmNsdWRlIDxjb21t
-b24uaD4KLS0gCjIuMzAuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Fix Sphinx consistency warning.
+
+Fixes: fcdcb8177 ("documentation: devicetree: migrate remaining binding to reST")
+Signed-off-by: Thorsten Scherer <tsc@scherer.tk>
+---
+ Documentation/devicetree/index.rst | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
+index 8c47d033f..ce62ebe10 100644
+--- a/Documentation/devicetree/index.rst
++++ b/Documentation/devicetree/index.rst
+@@ -108,6 +108,7 @@ Contents:
+    :maxdepth: 1
+ 
+    bindings/barebox/*
++   bindings/firmware/*
+    bindings/leds/*
+    bindings/misc/*
+    bindings/mtd/*
+-- 
+2.30.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
