@@ -1,49 +1,47 @@
-Delivery-date: Wed, 24 Feb 2021 09:46:37 +0100
+Delivery-date: Wed, 24 Feb 2021 09:46:47 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lEpob-0004cg-MB
-	for lore@lore.pengutronix.de; Wed, 24 Feb 2021 09:46:37 +0100
+	id 1lEpol-0004eS-JV
+	for lore@lore.pengutronix.de; Wed, 24 Feb 2021 09:46:47 +0100
 Received: from merlin.infradead.org ([2001:8b0:10b:1231::1])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lEpoU-0007Cm-Vh
-	for lore@pengutronix.de; Wed, 24 Feb 2021 09:46:37 +0100
+	id 1lEpof-0007DX-5f
+	for lore@pengutronix.de; Wed, 24 Feb 2021 09:46:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=merlin.20170209; h=Sender:Content-Transfer-Encoding:
 	Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:List-Unsubscribe
-	:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kdqRHuUJkZif+Bn9jd+Kg/MMWG5/cDq6P6qFz9fDwTI=; b=YH2QcvpImFw6AC4RGNUiPeScTL
-	FS7CmRnTIWXdylZpQMjKRrYbIogDYEC2+WdhZI8DhjswvQvybk4j4SgQuZEDMpncCIYX1abGunzle
-	GDXloP/KgDPDkTxyK+5RbzpCyXaAsFBAOTWmKV9leoP/HVV0e5WrFyeChT69BiI2pLHtogUy4+Fvq
-	fxKenV5ZOXahofkt5awRLUTMv28mTdVPztXfw+5jjci/WCVJyGXb6vLX8P6d3cdY3csfbUXcPkyoB
-	QrN6WD9AzXqmsfG+3vkp74PHoYzDFDyXr++vYUIwPL32BC9gBgXhwAKmyCW/Tdmp0/k9eDqDtP6nQ
-	gYWSzPuw==;
+	:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=78tp3kwHGVV+1x0IzbdLvD7aQu1irQ80kxYTGq4nbpI=; b=Gxmms6AZU4FW2R8ylgaWUURkB5
+	Ajv0YCUUg3L42zvjm/0TuMPgi5laGFBaYjK6wzkNHXKz+8yh7MygdNJMEQYrFo8sW9orIVWTWrsoE
+	Idces2v2iiWs/tNLl+UjtwcCvI5qKshErin+yJ11pcCmn7QZiJQQZdW/zsizl7TQMAXvbkNqgRqTQ
+	XUzONP5Fg04TsGDEcLAa8AlQVchMPkJSO1e7j6uoGqI26g3E3yINNpcFP1OS/WJHvlmxgcosVvavf
+	CwPotA3vW4ByCJiBlL+FtL6+yYcYH2LvBAO6qfBSCnYZZVSWDC/ZFBR17i4A6TNb8/lgkKtbqJ6e7
+	JXSILsfw==;
 Received: from localhost ([::1] helo=merlin.infradead.org)
 	by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1lEpmn-0005io-Ni; Wed, 24 Feb 2021 08:44:45 +0000
+	id 1lEpmo-0005j3-Nt; Wed, 24 Feb 2021 08:44:46 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lEpmh-0005iF-By
+ id 1lEpmh-0005iE-B5
  for barebox@lists.infradead.org; Wed, 24 Feb 2021 08:44:43 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lEpmg-0006n4-FB; Wed, 24 Feb 2021 09:44:38 +0100
+ id 1lEpmg-0006n3-E6; Wed, 24 Feb 2021 09:44:38 +0100
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lEpmg-0008OY-6P; Wed, 24 Feb 2021 09:44:38 +0100
+ id 1lEpmg-0008OB-5I; Wed, 24 Feb 2021 09:44:38 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 24 Feb 2021 09:44:37 +0100
-Message-Id: <20210224084437.31344-2-s.hauer@pengutronix.de>
+Date: Wed, 24 Feb 2021 09:44:36 +0100
+Message-Id: <20210224084437.31344-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210224084437.31344-1-s.hauer@pengutronix.de>
-References: <20210224084437.31344-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.29
@@ -68,224 +66,169 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] openrisc: Remove architecture
+Subject: [PATCH 1/2] nios2: Remove architecture
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-barebox openrisc support was merged in 2011. It hasn't seen very much
+barebox nios2 support was merged in 2011. It hasn't seen very much
 active development since then and appears to have no active users.
-Remove the architecture. Along with it also remove the ethoc driver
-which depends on and is only used with openrisc.
+Remove the architecture.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/boards/openrisc.rst        |  57 ---
- arch/openrisc/Kconfig                    |  29 --
- arch/openrisc/Makefile                   |  30 --
- arch/openrisc/boards/generic/Makefile    |   1 -
- arch/openrisc/boards/generic/config.h    |  24 -
- arch/openrisc/boards/generic/env/config  |  19 -
- arch/openrisc/boards/generic/generic.c   |  10 -
- arch/openrisc/configs/generic_defconfig  |  35 --
- arch/openrisc/cpu/.gitignore             |   1 -
- arch/openrisc/cpu/Makefile               |   5 -
- arch/openrisc/cpu/barebox.lds.S          |  78 ---
- arch/openrisc/cpu/cache.c                | 151 ------
- arch/openrisc/cpu/cpu.c                  |  38 --
- arch/openrisc/cpu/exceptions.c           |  84 ----
- arch/openrisc/cpu/start.S                | 358 --------------
- arch/openrisc/dts/Makefile               |   5 -
- arch/openrisc/dts/or1ksim.dts            |  51 --
- arch/openrisc/include/asm/bitops.h       |  35 --
- arch/openrisc/include/asm/bitops/ffs.h   |  26 -
- arch/openrisc/include/asm/bitops/fls.h   |  26 -
- arch/openrisc/include/asm/bitsperlong.h  |   1 -
- arch/openrisc/include/asm/byteorder.h    |   1 -
- arch/openrisc/include/asm/cache.h        |  43 --
- arch/openrisc/include/asm/common.h       |   4 -
- arch/openrisc/include/asm/dma.h          |  13 -
- arch/openrisc/include/asm/elf.h          | 107 -----
- arch/openrisc/include/asm/io.h           |  24 -
- arch/openrisc/include/asm/mmu.h          |   6 -
- arch/openrisc/include/asm/openrisc_exc.h |  37 --
- arch/openrisc/include/asm/posix_types.h  |   1 -
- arch/openrisc/include/asm/ptrace.h       | 131 -----
- arch/openrisc/include/asm/sections.h     |   1 -
- arch/openrisc/include/asm/spr-defs.h     | 578 ----------------------
- arch/openrisc/include/asm/string.h       |   4 -
- arch/openrisc/include/asm/swab.h         |   4 -
- arch/openrisc/include/asm/system.h       |  35 --
- arch/openrisc/include/asm/types.h        |  21 -
- arch/openrisc/include/asm/unaligned.h    |  51 --
- arch/openrisc/lib/Makefile               |   8 -
- arch/openrisc/lib/ashldi3.S              |  41 --
- arch/openrisc/lib/ashrdi3.S              |  55 ---
- arch/openrisc/lib/asm-offsets.c          |  18 -
- arch/openrisc/lib/board.c                |  31 --
- arch/openrisc/lib/clock.c                |  41 --
- arch/openrisc/lib/cpuinfo.c              | 200 --------
- arch/openrisc/lib/dtb.c                  |  35 --
- arch/openrisc/lib/lshrdi3.S              |  41 --
- arch/openrisc/lib/muldi3.S               |  58 ---
- drivers/net/ethoc.c                      | 580 -----------------------
- 49 files changed, 3233 deletions(-)
- delete mode 100644 Documentation/boards/openrisc.rst
- delete mode 100644 arch/openrisc/Kconfig
- delete mode 100644 arch/openrisc/Makefile
- delete mode 100644 arch/openrisc/boards/generic/Makefile
- delete mode 100644 arch/openrisc/boards/generic/config.h
- delete mode 100644 arch/openrisc/boards/generic/env/config
- delete mode 100644 arch/openrisc/boards/generic/generic.c
- delete mode 100644 arch/openrisc/configs/generic_defconfig
- delete mode 100644 arch/openrisc/cpu/.gitignore
- delete mode 100644 arch/openrisc/cpu/Makefile
- delete mode 100644 arch/openrisc/cpu/barebox.lds.S
- delete mode 100644 arch/openrisc/cpu/cache.c
- delete mode 100644 arch/openrisc/cpu/cpu.c
- delete mode 100644 arch/openrisc/cpu/exceptions.c
- delete mode 100644 arch/openrisc/cpu/start.S
- delete mode 100644 arch/openrisc/dts/Makefile
- delete mode 100644 arch/openrisc/dts/or1ksim.dts
- delete mode 100644 arch/openrisc/include/asm/bitops.h
- delete mode 100644 arch/openrisc/include/asm/bitops/ffs.h
- delete mode 100644 arch/openrisc/include/asm/bitops/fls.h
- delete mode 100644 arch/openrisc/include/asm/bitsperlong.h
- delete mode 100644 arch/openrisc/include/asm/byteorder.h
- delete mode 100644 arch/openrisc/include/asm/cache.h
- delete mode 100644 arch/openrisc/include/asm/common.h
- delete mode 100644 arch/openrisc/include/asm/dma.h
- delete mode 100644 arch/openrisc/include/asm/elf.h
- delete mode 100644 arch/openrisc/include/asm/io.h
- delete mode 100644 arch/openrisc/include/asm/mmu.h
- delete mode 100644 arch/openrisc/include/asm/openrisc_exc.h
- delete mode 100644 arch/openrisc/include/asm/posix_types.h
- delete mode 100644 arch/openrisc/include/asm/ptrace.h
- delete mode 100644 arch/openrisc/include/asm/sections.h
- delete mode 100644 arch/openrisc/include/asm/spr-defs.h
- delete mode 100644 arch/openrisc/include/asm/string.h
- delete mode 100644 arch/openrisc/include/asm/swab.h
- delete mode 100644 arch/openrisc/include/asm/system.h
- delete mode 100644 arch/openrisc/include/asm/types.h
- delete mode 100644 arch/openrisc/include/asm/unaligned.h
- delete mode 100644 arch/openrisc/lib/Makefile
- delete mode 100644 arch/openrisc/lib/ashldi3.S
- delete mode 100644 arch/openrisc/lib/ashrdi3.S
- delete mode 100644 arch/openrisc/lib/asm-offsets.c
- delete mode 100644 arch/openrisc/lib/board.c
- delete mode 100644 arch/openrisc/lib/clock.c
- delete mode 100644 arch/openrisc/lib/cpuinfo.c
- delete mode 100644 arch/openrisc/lib/dtb.c
- delete mode 100644 arch/openrisc/lib/lshrdi3.S
- delete mode 100644 arch/openrisc/lib/muldi3.S
- delete mode 100644 drivers/net/ethoc.c
+ Documentation/user/barebox.rst                |   1 -
+ arch/nios2/Kconfig                            |  29 -
+ arch/nios2/Makefile                           |  27 -
+ arch/nios2/boards/generic/Makefile            |   2 -
+ arch/nios2/boards/generic/config.h            |  63 ---
+ .../boards/generic/defaultenv-generic/config  |  20 -
+ arch/nios2/boards/generic/generic.c           |  77 ---
+ arch/nios2/boards/generic/nios_sopc.h         | 406 --------------
+ arch/nios2/configs/generic_defconfig          |  32 --
+ arch/nios2/cpu/.gitignore                     |   1 -
+ arch/nios2/cpu/Makefile                       |   5 -
+ arch/nios2/cpu/barebox.lds.S                  | 114 ----
+ arch/nios2/cpu/cpu.c                          |  36 --
+ arch/nios2/cpu/exceptions.S                   | 144 -----
+ arch/nios2/cpu/start.S                        | 158 ------
+ arch/nios2/cpu/traps.c                        |  36 --
+ arch/nios2/include/asm/bitops.h               |  35 --
+ arch/nios2/include/asm/bitsperlong.h          |   1 -
+ arch/nios2/include/asm/byteorder.h            |   1 -
+ arch/nios2/include/asm/cache.h                |  21 -
+ arch/nios2/include/asm/common.h               |   4 -
+ arch/nios2/include/asm/dma-mapping.h          |  48 --
+ arch/nios2/include/asm/dma.h                  |   8 -
+ arch/nios2/include/asm/early_printf.h         |  10 -
+ arch/nios2/include/asm/elf.h                  | 165 ------
+ arch/nios2/include/asm/io.h                   |  51 --
+ arch/nios2/include/asm/mmu.h                  |   6 -
+ arch/nios2/include/asm/nios2-io.h             | 175 ------
+ arch/nios2/include/asm/nios2.h                |  56 --
+ arch/nios2/include/asm/opcodes.h              | 124 -----
+ arch/nios2/include/asm/posix_types.h          |   1 -
+ arch/nios2/include/asm/ptrace.h               |  26 -
+ arch/nios2/include/asm/sections.h             |   1 -
+ arch/nios2/include/asm/spi.h                  |  22 -
+ arch/nios2/include/asm/string.h               |  40 --
+ arch/nios2/include/asm/swab.h                 |   4 -
+ arch/nios2/include/asm/system.h               |  57 --
+ arch/nios2/include/asm/types.h                |   6 -
+ arch/nios2/include/asm/unaligned.h            |  15 -
+ arch/nios2/lib/Makefile                       |   7 -
+ arch/nios2/lib/asm-offsets.c                  |  22 -
+ arch/nios2/lib/board.c                        |  29 -
+ arch/nios2/lib/bootm.c                        |  80 ---
+ arch/nios2/lib/cache.c                        |  77 ---
+ arch/nios2/lib/clock.c                        |  53 --
+ arch/nios2/lib/early_printf.c                 |  49 --
+ arch/nios2/lib/libgcc.c                       | 524 ------------------
+ arch/nios2/lib/longlong.h                     | 253 ---------
+ 48 files changed, 3122 deletions(-)
+ delete mode 100644 arch/nios2/Kconfig
+ delete mode 100644 arch/nios2/Makefile
+ delete mode 100644 arch/nios2/boards/generic/Makefile
+ delete mode 100644 arch/nios2/boards/generic/config.h
+ delete mode 100644 arch/nios2/boards/generic/defaultenv-generic/config
+ delete mode 100644 arch/nios2/boards/generic/generic.c
+ delete mode 100644 arch/nios2/boards/generic/nios_sopc.h
+ delete mode 100644 arch/nios2/configs/generic_defconfig
+ delete mode 100644 arch/nios2/cpu/.gitignore
+ delete mode 100644 arch/nios2/cpu/Makefile
+ delete mode 100644 arch/nios2/cpu/barebox.lds.S
+ delete mode 100644 arch/nios2/cpu/cpu.c
+ delete mode 100644 arch/nios2/cpu/exceptions.S
+ delete mode 100644 arch/nios2/cpu/start.S
+ delete mode 100644 arch/nios2/cpu/traps.c
+ delete mode 100644 arch/nios2/include/asm/bitops.h
+ delete mode 100644 arch/nios2/include/asm/bitsperlong.h
+ delete mode 100644 arch/nios2/include/asm/byteorder.h
+ delete mode 100644 arch/nios2/include/asm/cache.h
+ delete mode 100644 arch/nios2/include/asm/common.h
+ delete mode 100644 arch/nios2/include/asm/dma-mapping.h
+ delete mode 100644 arch/nios2/include/asm/dma.h
+ delete mode 100644 arch/nios2/include/asm/early_printf.h
+ delete mode 100644 arch/nios2/include/asm/elf.h
+ delete mode 100644 arch/nios2/include/asm/io.h
+ delete mode 100644 arch/nios2/include/asm/mmu.h
+ delete mode 100644 arch/nios2/include/asm/nios2-io.h
+ delete mode 100644 arch/nios2/include/asm/nios2.h
+ delete mode 100644 arch/nios2/include/asm/opcodes.h
+ delete mode 100644 arch/nios2/include/asm/posix_types.h
+ delete mode 100644 arch/nios2/include/asm/ptrace.h
+ delete mode 100644 arch/nios2/include/asm/sections.h
+ delete mode 100644 arch/nios2/include/asm/spi.h
+ delete mode 100644 arch/nios2/include/asm/string.h
+ delete mode 100644 arch/nios2/include/asm/swab.h
+ delete mode 100644 arch/nios2/include/asm/system.h
+ delete mode 100644 arch/nios2/include/asm/types.h
+ delete mode 100644 arch/nios2/include/asm/unaligned.h
+ delete mode 100644 arch/nios2/lib/Makefile
+ delete mode 100644 arch/nios2/lib/asm-offsets.c
+ delete mode 100644 arch/nios2/lib/board.c
+ delete mode 100644 arch/nios2/lib/bootm.c
+ delete mode 100644 arch/nios2/lib/cache.c
+ delete mode 100644 arch/nios2/lib/clock.c
+ delete mode 100644 arch/nios2/lib/early_printf.c
+ delete mode 100644 arch/nios2/lib/libgcc.c
+ delete mode 100644 arch/nios2/lib/longlong.h
 
-diff --git a/Documentation/boards/openrisc.rst b/Documentation/boards/openrisc.rst
+diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
+index 6bea883115..503f0b9797 100644
+--- a/Documentation/user/barebox.rst
++++ b/Documentation/user/barebox.rst
+@@ -54,7 +54,6 @@ variable. Currently, ``ARCH`` must be one of:
+ 
+ * arm
+ * mips
+-* nios2
+ * openrisc
+ * ppc
+ * riscv
+diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
 deleted file mode 100644
-index f9d67f9650..0000000000
---- a/Documentation/boards/openrisc.rst
-+++ /dev/null
-@@ -1,57 +0,0 @@
--OpenRISC
--========
--
--or1ksim
---------
--
--Compile or1ksim emulator:
--
--.. code-block:: console
--
-- $ cd ~/
-- $ git clone https://github.com/openrisc/or1ksim
-- $ cd or1ksim
-- $ ./configure
-- $ make
--
--Create minimal or1ksim.cfg file:
--
--.. code-block:: none
--
-- section cpu
--   ver = 0x12
--   cfgr = 0x20
--   rev = 0x0001
-- end
--
-- section memory
--   name = "RAM"
--   type = unknown
--   baseaddr = 0x00000000
--   size = 0x02000000
--   delayr = 1
--   delayw = 2
-- end
--
-- section uart
--   enabled = 1
--   baseaddr = 0x90000000
--   irq = 2
--   16550 = 1
--   /* channel = "tcp:10084" */
--   channel = "xterm:"
-- end
--
-- section ethernet
--   enabled = 1
--   baseaddr = 0x92000000
--   irq = 4
--   rtx_type = "tap"
--   tap_dev = "tap0"
-- end
--
--Run or1ksim:
--
--.. code-block:: console
--
-- $ ~/or1ksim/sim -f or1ksim.cfg barebox
-diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
-deleted file mode 100644
-index 32d23029d8..0000000000
---- a/arch/openrisc/Kconfig
+index c7c13a464b..0000000000
+--- a/arch/nios2/Kconfig
 +++ /dev/null
 @@ -1,29 +0,0 @@
--config OPENRISC
+-config NIOS2
 -	bool
--	select OFTREE
+-	select HAS_KALLSYMS
+-	select HAS_MODULES
 -	select HAS_CACHE
 -	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
 -	select GENERIC_FIND_NEXT_BIT
 -	default y
 -
--# not used
 -config ARCH_TEXT_BASE
 -	hex
 -	default 0x00000000
--
--config BUILTIN_DTB
--	bool "link a DTB into the barebox image"
--	depends on OFTREE
--
--config BUILTIN_DTB_NAME
--	string "DTB to build into the barebox image"
--	depends on BUILTIN_DTB
 -
 -choice
 -	prompt "Select your board"
 -
 -config GENERIC
 -	bool "Generic"
--	select OPENRISC
+-	select NIOS2
 -
 -endchoice
-diff --git a/arch/openrisc/Makefile b/arch/openrisc/Makefile
+-
+-menu "Board configuration"
+-
+-config EARLY_PRINTF
+-	default n
+-	bool "Enable early printf functions"
+-
+-endmenu
+diff --git a/arch/nios2/Makefile b/arch/nios2/Makefile
 deleted file mode 100644
-index 72d7fa3d53..0000000000
---- a/arch/openrisc/Makefile
+index ef283f4143..0000000000
+--- a/arch/nios2/Makefile
 +++ /dev/null
-@@ -1,30 +0,0 @@
+@@ -1,27 +0,0 @@
 -KBUILD_DEFCONFIG := generic_defconfig
 -
--KBUILD_CPPFLAGS += -D__OR1K__ -ffixed-r10 -mhard-mul -mhard-div
+-KBUILD_CPPFLAGS += -fno-strict-aliasing -mno-hw-mul
 -
 -board-$(CONFIG_GENERIC) := generic
 -
@@ -293,69 +236,106 @@ index 72d7fa3d53..0000000000
 -
 -archprepare: maketools
 -
+-	@$(kecho) "  SYMLINK include/nios_sopc.h -> arch/nios2/boards/$(board-y)/nios_sopc.h"
+-	@ln -fsn $(src)/arch/nios2/boards/$(board-y)/nios_sopc.h $(obj)/include/nios_sopc.h
+-
 -PHONY += maketools
 -
 -ifneq ($(board-y),)
--BOARD  := arch/openrisc/boards/$(board-y)/
+-BOARD  := arch/nios2/boards/$(board-y)/
 -else
 -BOARD  :=
 -endif
 -
 -common-y += $(BOARD)
--common-y += arch/openrisc/lib/
--common-y += arch/openrisc/cpu/
+-common-y += arch/nios2/lib/
+-common-y += arch/nios2/cpu/
 -
--lds-y += arch/openrisc/cpu/barebox.lds
+-lds-y += arch/nios2/cpu/barebox.lds
 -
--common-$(CONFIG_BUILTIN_DTB) += arch/openrisc/dts/
--
--dts := arch/openrisc/dts
--
--%.dtb: scripts
--	$(Q)$(MAKE) $(build)=$(dts) $(dts)/$@
-diff --git a/arch/openrisc/boards/generic/Makefile b/arch/openrisc/boards/generic/Makefile
+diff --git a/arch/nios2/boards/generic/Makefile b/arch/nios2/boards/generic/Makefile
 deleted file mode 100644
-index d8a3d7f2cc..0000000000
---- a/arch/openrisc/boards/generic/Makefile
+index f26283832a..0000000000
+--- a/arch/nios2/boards/generic/Makefile
 +++ /dev/null
-@@ -1 +0,0 @@
+@@ -1,2 +0,0 @@
 -obj-y += generic.o
-diff --git a/arch/openrisc/boards/generic/config.h b/arch/openrisc/boards/generic/config.h
+-bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-generic
+diff --git a/arch/nios2/boards/generic/config.h b/arch/nios2/boards/generic/config.h
 deleted file mode 100644
-index f6a054beed..0000000000
---- a/arch/openrisc/boards/generic/config.h
+index 4bca902f75..0000000000
+--- a/arch/nios2/boards/generic/config.h
 +++ /dev/null
-@@ -1,24 +0,0 @@
+@@ -1,63 +0,0 @@
 -#ifndef _GENERIC_NAMES_H_
 -#define _GENERIC_NAMES_H_
 -
--#define CONFIG_SYS_CLK_FREQ		50000000
+-#include "nios_sopc.h"
 -
--#define OPENRISC_TIMER_FREQ		CONFIG_SYS_CLK_FREQ
+-#ifndef MMU_PRESENT
+-#define IO_REGION_BASE                  0x80000000
+-#define KERNEL_REGION_BASE              0x00000000
+-#endif
 -
--#define OPENRISC_SOPC_MEMORY_BASE	0x00000000
--#define OPENRISC_SOPC_MEMORY_SIZE	0x02000000
+-/*Name of the RAM memory in your SOPC project */
+-#define NIOS_SOPC_MEMORY_BASE           (KERNEL_REGION_BASE | DDR_SDRAM_BASE)
+-#define NIOS_SOPC_MEMORY_SIZE           DDR_SDRAM_SPAN
 -
--/* We reserve 512K for barebox */
--#define BAREBOX_RESERVED_SIZE		0x80000
+-/*Name of the timer in your SOPC project */
+-#define NIOS_SOPC_TIMER_BASE            (IO_REGION_BASE | SYS_CLK_TIMER_BASE)
+-#define NIOS_SOPC_TIMER_FREQ            SYS_CLK_TIMER_FREQ
+-
+-/*Name of TSE and SGDMA in your SOPC project */
+-#define NIOS_SOPC_SGDMA_RX_BASE         (IO_REGION_BASE | SGDMA_RX_BASE)
+-#define NIOS_SOPC_SGDMA_TX_BASE         (IO_REGION_BASE | SGDMA_TX_BASE)
+-#define NIOS_SOPC_TSE_BASE              (IO_REGION_BASE | TSE_BASE)
+-#define NIOS_SOPC_TSE_DESC_MEM_BASE     (IO_REGION_BASE | DESCRIPTOR_MEMORY_BASE)
+-
+-/*Name of the UART in your SOPC project */
+-#define NIOS_SOPC_UART_BASE             (IO_REGION_BASE | UART_BASE)
+-
+-/*Name of the JTAG UART in your SOPC project */
+-#define NIOS_SOPC_JTAG_UART_BASE        (IO_REGION_BASE | JTAG_UART_BASE)
+-
+-/*Name of the CFI flash in your SOPC project */
+-#define NIOS_SOPC_FLASH_BASE            (IO_REGION_BASE | CFI_FLASH_BASE)
+-#define NIOS_SOPC_FLASH_SIZE            CFI_FLASH_SPAN
+-
+-/*Name of the EPCS flash controller in your SOPC project */
+-
+-#define NIOS_SOPC_EPCS_BASE             (IO_REGION_BASE | (EPCS_FLASH_CONTROLLER_BASE + EPCS_FLASH_CONTROLLER_REGISTER_OFFSET))
+-
+-/* PHY MDIO Address */
+-#define NIOS_SOPC_PHY_ADDR              1
+-
+-/* We reserve 256K for barebox */
+-#define BAREBOX_RESERVED_SIZE           0x80000
 -
 -/* Barebox will be at top of main memory */
--#define OPENRISC_SOPC_TEXT_BASE		(OPENRISC_SOPC_MEMORY_BASE + OPENRISC_SOPC_MEMORY_SIZE - BAREBOX_RESERVED_SIZE)
+-#define NIOS_SOPC_TEXT_BASE             (NIOS_SOPC_MEMORY_BASE + NIOS_SOPC_MEMORY_SIZE - BAREBOX_RESERVED_SIZE)
 -
 -/*
 -* TEXT_BASE is defined here because STACK_BASE definition
 -*  in include/asm-generic/memory_layout.h uses this name
 -*/
 -
--#define TEXT_BASE                       OPENRISC_SOPC_TEXT_BASE
+-#define TEXT_BASE                       NIOS_SOPC_TEXT_BASE
+-
+-/* Board banner */
+-
+-#define BOARD_BANNER "\
+-\033[44;1m***********************************************\e[0m\n\
+-\033[44;1m*             Altera generic board            *\e[0m\n\
+-\033[44;1m***********************************************\e[0m\
+-\e[0m\n\n"
 -
 -#endif
-diff --git a/arch/openrisc/boards/generic/env/config b/arch/openrisc/boards/generic/env/config
+diff --git a/arch/nios2/boards/generic/defaultenv-generic/config b/arch/nios2/boards/generic/defaultenv-generic/config
 deleted file mode 100644
-index 4027f2775f..0000000000
---- a/arch/openrisc/boards/generic/env/config
+index 16adc49f1c..0000000000
+--- a/arch/nios2/boards/generic/defaultenv-generic/config
 +++ /dev/null
-@@ -1,19 +0,0 @@
+@@ -1,20 +0,0 @@
 -#!/bin/sh
 -
 -# can be either 'net' or 'flash'
@@ -374,90 +354,578 @@ index 4027f2775f..0000000000
 -bootargs="console=ttyS0,9600"
 -
 -# set a fancy prompt (if support is compiled in)
--PS1="\e[1;33mbarebox@\e[1;32mor32:\w\e[0m "
-diff --git a/arch/openrisc/boards/generic/generic.c b/arch/openrisc/boards/generic/generic.c
+-PS1="\e[1;33mbarebox@\e[1;32mgeneric:\w\e[0m "
+-
+diff --git a/arch/nios2/boards/generic/generic.c b/arch/nios2/boards/generic/generic.c
 deleted file mode 100644
-index ff6f9f4d42..0000000000
---- a/arch/openrisc/boards/generic/generic.c
+index 0c2c67c567..0000000000
+--- a/arch/nios2/boards/generic/generic.c
 +++ /dev/null
-@@ -1,10 +0,0 @@
+@@ -1,77 +0,0 @@
 -#include <common.h>
 -#include <init.h>
+-#include <driver.h>
+-#include <partition.h>
+-#include <fs.h>
+-#include <memory.h>
+-#include <envfs.h>
 -
--static int openrisc_core_init(void)
+-static int phy_address = 1;
+-
+-static struct resource mac_resources[] = {
+-	[0] = {
+-		.start	= NIOS_SOPC_TSE_BASE,
+-		.end	= NIOS_SOPC_TSE_BASE + 0x400 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= NIOS_SOPC_SGDMA_RX_BASE,
+-		.end	= 0x40 + NIOS_SOPC_SGDMA_RX_BASE - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[2] = {
+-		.start	= NIOS_SOPC_SGDMA_TX_BASE,
+-		.end	= 0x40 + NIOS_SOPC_SGDMA_TX_BASE - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-};
+-
+-static struct device_d mac_dev = {
+-	.id            = DEVICE_ID_DYNAMIC,
+-	.name          = "altera_tse",
+-	.num_resources = ARRAY_SIZE(mac_resources),
+-	.resource      = mac_resources,
+-	.platform_data = &phy_address,
+-};
+-
+-static int mem_init(void)
 -{
--	barebox_set_hostname("or1k");
+-	barebox_add_memory_bank("ram0", NIOS_SOPC_MEMORY_BASE, NIOS_SOPC_MEMORY_SIZE);
 -
 -	return 0;
 -}
--core_initcall(openrisc_core_init);
-diff --git a/arch/openrisc/configs/generic_defconfig b/arch/openrisc/configs/generic_defconfig
+-mem_initcall(mem_init);
+-
+-static int generic_devices_init(void)
+-{
+-	add_cfi_flash_device(DEVICE_ID_DYNAMIC, NIOS_SOPC_FLASH_BASE, NIOS_SOPC_FLASH_SIZE, 0);
+-	platform_device_register(&mac_dev);
+-	/*register_device(&epcs_flash_device);*/
+-
+-	devfs_add_partition("nor0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self0");
+-	devfs_add_partition("nor0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
+-
+-	protect_file("/dev/env0", 1);
+-
+-	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
+-		defaultenv_append_directory(defaultenv_generic);
+-
+-	return 0;
+-}
+-
+-device_initcall(generic_devices_init);
+-
+-
+-static int altera_console_init(void)
+-{
+-	barebox_set_model("Altera Generic Board");
+-	barebox_set_hostname("nios2");
+-
+-	add_generic_device("altera_serial", DEVICE_ID_DYNAMIC, NULL,
+-			NIOS_SOPC_UART_BASE, 0x20, IORESOURCE_MEM, NULL);
+-
+-	return 0;
+-}
+-
+-console_initcall(altera_console_init);
+-
+diff --git a/arch/nios2/boards/generic/nios_sopc.h b/arch/nios2/boards/generic/nios_sopc.h
 deleted file mode 100644
-index 1f2d40eae9..0000000000
---- a/arch/openrisc/configs/generic_defconfig
+index 688bc44f41..0000000000
+--- a/arch/nios2/boards/generic/nios_sopc.h
 +++ /dev/null
-@@ -1,35 +0,0 @@
--CONFIG_BUILTIN_DTB=y
--CONFIG_BUILTIN_DTB_NAME="or1ksim"
+@@ -1,406 +0,0 @@
+-#ifndef _ALTERA_NIOSLINUX_H_
+-#define _ALTERA_NIOSLINUX_H_
+-
+-/*
+- * This file was automatically generated by the swinfo2header utility.
+- *
+- * Created from SOPC Builder system 'NiosLinux' in
+- * file 'NiosLinux.sopcinfo'.
+- */
+-
+-/*
+- * This file contains macros for module 'LINUX_CPU' and devices
+- * connected to the following masters:
+- *   instruction_master
+- *   tightly_coupled_instruction_master_0
+- *   data_master
+- *   tightly_coupled_data_master_0
+- *
+- * Do not include this header file and another header file created for a
+- * different module or master group at the same time.
+- * Doing so may result in duplicate macro names.
+- * Instead, use the system header file which has macros with unique names.
+- */
+-
+-/*
+- * Macros for module 'LINUX_CPU', class 'altera_nios2'.
+- * The macros have no prefix.
+- */
+-#define CPU_IMPLEMENTATION "fast"
+-#define BIG_ENDIAN 0
+-#define CPU_FREQ 100000000
+-#define ICACHE_LINE_SIZE 32
+-#define ICACHE_LINE_SIZE_LOG2 5
+-#define ICACHE_SIZE 8192
+-#define DCACHE_LINE_SIZE 32
+-#define DCACHE_LINE_SIZE_LOG2 5
+-#define DCACHE_SIZE 8192
+-#define INITDA_SUPPORTED
+-#define FLUSHDA_SUPPORTED
+-#define HAS_JMPI_INSTRUCTION
+-#define MMU_PRESENT
+-#define KERNEL_REGION_BASE 0xc0000000
+-#define IO_REGION_BASE 0xe0000000
+-#define KERNEL_MMU_REGION_BASE 0x80000000
+-#define USER_REGION_BASE 0x0
+-#define PROCESS_ID_NUM_BITS 8
+-#define TLB_NUM_WAYS 16
+-#define TLB_NUM_WAYS_LOG2 4
+-#define TLB_PTR_SZ 8
+-#define TLB_NUM_ENTRIES 256
+-#define FAST_TLB_MISS_EXCEPTION_ADDR 0xc4201000
+-#define EXCEPTION_ADDR 0xc0000020
+-#define RESET_ADDR 0xc30e0000
+-#define BREAK_ADDR 0xc4203820
+-#define HAS_DEBUG_STUB
+-#define HAS_DEBUG_CORE 1
+-#define HAS_ILLEGAL_INSTRUCTION_EXCEPTION
+-#define HAS_ILLEGAL_MEMORY_ACCESS_EXCEPTION
+-#define HAS_EXTRA_EXCEPTION_INFO
+-#define CPU_ID_SIZE 1
+-#define CPU_ID_VALUE 0x0
+-#define HARDWARE_DIVIDE_PRESENT 0
+-#define HARDWARE_MULTIPLY_PRESENT 1
+-#define HARDWARE_MULX_PRESENT 0
+-#define INST_ADDR_WIDTH 27
+-#define DATA_ADDR_WIDTH 27
+-#define NUM_OF_SHADOW_REG_SETS 0
+-
+-/*
+- * Macros for device 'DDR_SDRAM', class 'altmemddr'
+- * The macros are prefixed with 'DDR_SDRAM_'.
+- * The prefix is the slave descriptor.
+- */
+-#define DDR_SDRAM_COMPONENT_TYPE altmemddr
+-#define DDR_SDRAM_COMPONENT_NAME DDR_SDRAM
+-#define DDR_SDRAM_BASE 0x0
+-#define DDR_SDRAM_SPAN 33554432
+-#define DDR_SDRAM_END 0x1ffffff
+-#define DDR_SDRAM_MEMORY_INFO_MEM_INIT_DATA_WIDTH 32
+-#define DDR_SDRAM_MEMORY_INFO_GENERATE_DAT_SYM 1
+-#define DDR_SDRAM_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
+-
+-/*
+- * Macros for device 'CFI_FLASH', class 'altera_avalon_cfi_flash'
+- * The macros are prefixed with 'CFI_FLASH_'.
+- * The prefix is the slave descriptor.
+- */
+-#define CFI_FLASH_COMPONENT_TYPE altera_avalon_cfi_flash
+-#define CFI_FLASH_COMPONENT_NAME CFI_FLASH
+-#define CFI_FLASH_BASE 0x3000000
+-#define CFI_FLASH_SPAN 16777216
+-#define CFI_FLASH_END 0x3ffffff
+-#define CFI_FLASH_SETUP_VALUE 25
+-#define CFI_FLASH_WAIT_VALUE 100
+-#define CFI_FLASH_HOLD_VALUE 20
+-#define CFI_FLASH_TIMING_UNITS "ns"
+-#define CFI_FLASH_SIZE 16777216
+-#define CFI_FLASH_MEMORY_INFO_MEM_INIT_DATA_WIDTH 16
+-#define CFI_FLASH_MEMORY_INFO_HAS_BYTE_LANE 1
+-#define CFI_FLASH_MEMORY_INFO_IS_FLASH 1
+-#define CFI_FLASH_MEMORY_INFO_GENERATE_DAT_SYM 1
+-#define CFI_FLASH_MEMORY_INFO_GENERATE_FLASH 1
+-#define CFI_FLASH_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
+-#define CFI_FLASH_MEMORY_INFO_FLASH_INSTALL_DIR APP_DIR
+-
+-/*
+- * Macros for device 'SSRAM', class 'altera_avalon_cy7c1380_ssram'
+- * The macros are prefixed with 'SSRAM_'.
+- * The prefix is the slave descriptor.
+- */
+-#define SSRAM_COMPONENT_TYPE altera_avalon_cy7c1380_ssram
+-#define SSRAM_COMPONENT_NAME SSRAM
+-#define SSRAM_BASE 0x4100000
+-#define SSRAM_SPAN 1048576
+-#define SSRAM_END 0x41fffff
+-#define SSRAM_SRAM_MEMORY_SIZE 1
+-#define SSRAM_SRAM_MEMORY_UNITS 1048576
+-#define SSRAM_SSRAM_DATA_WIDTH 32
+-#define SSRAM_SSRAM_READ_LATENCY 2
+-#define SSRAM_MEMORY_INFO_MEM_INIT_DATA_WIDTH 32
+-#define SSRAM_MEMORY_INFO_HAS_BYTE_LANE 1
+-#define SSRAM_MEMORY_INFO_GENERATE_DAT_SYM 1
+-#define SSRAM_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
+-
+-/*
+- * Macros for device 'TLB', class 'altera_avalon_onchip_memory2'
+- * The macros are prefixed with 'TLB_'.
+- * The prefix is the slave descriptor.
+- */
+-#define TLB_COMPONENT_TYPE altera_avalon_onchip_memory2
+-#define TLB_COMPONENT_NAME TLB
+-#define TLB_BASE 0x4201000
+-#define TLB_SPAN 4096
+-#define TLB_END 0x4201fff
+-#define TLB_ALLOW_MRAM_SIM_CONTENTS_ONLY_FILE 0
+-#define TLB_INIT_CONTENTS_FILE "TLB"
+-#define TLB_NON_DEFAULT_INIT_FILE_ENABLED 0
+-#define TLB_GUI_RAM_BLOCK_TYPE "Automatic"
+-#define TLB_WRITABLE 1
+-#define TLB_DUAL_PORT 1
+-#define TLB_SIZE_VALUE 4096
+-#define TLB_SIZE_MULTIPLE 1
+-#define TLB_CONTENTS_INFO ""
+-#define TLB_RAM_BLOCK_TYPE "Auto"
+-#define TLB_INIT_MEM_CONTENT 1
+-#define TLB_ALLOW_IN_SYSTEM_MEMORY_CONTENT_EDITOR 0
+-#define TLB_INSTANCE_ID "NONE"
+-#define TLB_READ_DURING_WRITE_MODE "DONT_CARE"
+-#define TLB_MEMORY_INFO_MEM_INIT_DATA_WIDTH 32
+-#define TLB_MEMORY_INFO_HAS_BYTE_LANE 0
+-#define TLB_MEMORY_INFO_GENERATE_HEX 1
+-#define TLB_MEMORY_INFO_HEX_INSTALL_DIR QPF_DIR
+-#define TLB_MEMORY_INFO_GENERATE_DAT_SYM 1
+-#define TLB_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
+-
+-/*
+- * Macros for device 'DESCRIPTOR_MEMORY', class 'altera_avalon_onchip_memory2'
+- * The macros are prefixed with 'DESCRIPTOR_MEMORY_'.
+- * The prefix is the slave descriptor.
+- */
+-#define DESCRIPTOR_MEMORY_COMPONENT_TYPE altera_avalon_onchip_memory2
+-#define DESCRIPTOR_MEMORY_COMPONENT_NAME DESCRIPTOR_MEMORY
+-#define DESCRIPTOR_MEMORY_BASE 0x4202000
+-#define DESCRIPTOR_MEMORY_SPAN 4096
+-#define DESCRIPTOR_MEMORY_END 0x4202fff
+-#define DESCRIPTOR_MEMORY_ALLOW_MRAM_SIM_CONTENTS_ONLY_FILE 0
+-#define DESCRIPTOR_MEMORY_INIT_CONTENTS_FILE "DESCRIPTOR_MEMORY"
+-#define DESCRIPTOR_MEMORY_NON_DEFAULT_INIT_FILE_ENABLED 0
+-#define DESCRIPTOR_MEMORY_GUI_RAM_BLOCK_TYPE "Automatic"
+-#define DESCRIPTOR_MEMORY_WRITABLE 1
+-#define DESCRIPTOR_MEMORY_DUAL_PORT 0
+-#define DESCRIPTOR_MEMORY_SIZE_VALUE 4096
+-#define DESCRIPTOR_MEMORY_SIZE_MULTIPLE 1
+-#define DESCRIPTOR_MEMORY_CONTENTS_INFO ""
+-#define DESCRIPTOR_MEMORY_RAM_BLOCK_TYPE "Auto"
+-#define DESCRIPTOR_MEMORY_INIT_MEM_CONTENT 1
+-#define DESCRIPTOR_MEMORY_ALLOW_IN_SYSTEM_MEMORY_CONTENT_EDITOR 0
+-#define DESCRIPTOR_MEMORY_INSTANCE_ID "NONE"
+-#define DESCRIPTOR_MEMORY_READ_DURING_WRITE_MODE "DONT_CARE"
+-#define DESCRIPTOR_MEMORY_MEMORY_INFO_MEM_INIT_DATA_WIDTH 32
+-#define DESCRIPTOR_MEMORY_MEMORY_INFO_HAS_BYTE_LANE 0
+-#define DESCRIPTOR_MEMORY_MEMORY_INFO_GENERATE_HEX 1
+-#define DESCRIPTOR_MEMORY_MEMORY_INFO_HEX_INSTALL_DIR QPF_DIR
+-#define DESCRIPTOR_MEMORY_MEMORY_INFO_GENERATE_DAT_SYM 1
+-#define DESCRIPTOR_MEMORY_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
+-
+-/*
+- * Macros for device 'TSE', class 'triple_speed_ethernet'
+- * The macros are prefixed with 'TSE_'.
+- * The prefix is the slave descriptor.
+- */
+-#define TSE_COMPONENT_TYPE triple_speed_ethernet
+-#define TSE_COMPONENT_NAME TSE
+-#define TSE_BASE 0x4204000
+-#define TSE_SPAN 1024
+-#define TSE_END 0x42043ff
+-#define TSE_TRANSMIT "SGDMA_TX"
+-#define TSE_RECEIVE "SGDMA_RX"
+-#define TSE_TRANSMIT_FIFO_DEPTH 2048
+-#define TSE_RECEIVE_FIFO_DEPTH 2048
+-#define TSE_FIFO_WIDTH 32
+-#define TSE_ENABLE_MACLITE 1
+-#define TSE_MACLITE_GIGE 0
+-#define TSE_USE_MDIO 1
+-#define TSE_NUMBER_OF_CHANNEL 1
+-#define TSE_NUMBER_OF_MAC_MDIO_SHARED 1
+-#define TSE_IS_MULTICHANNEL_MAC 0
+-#define TSE_MDIO_SHARED 0
+-#define TSE_REGISTER_SHARED 0
+-#define TSE_PCS 0
+-#define TSE_PCS_SGMII 0
+-#define TSE_PCS_ID 0
+-
+-/*
+- * Macros for device 'SGDMA_TX', class 'altera_avalon_sgdma'
+- * The macros are prefixed with 'SGDMA_TX_'.
+- * The prefix is the slave descriptor.
+- */
+-#define SGDMA_TX_COMPONENT_TYPE altera_avalon_sgdma
+-#define SGDMA_TX_COMPONENT_NAME SGDMA_TX
+-#define SGDMA_TX_BASE 0x4204400
+-#define SGDMA_TX_SPAN 64
+-#define SGDMA_TX_END 0x420443f
+-#define SGDMA_TX_IRQ 5
+-#define SGDMA_TX_READ_BLOCK_DATA_WIDTH 32
+-#define SGDMA_TX_WRITE_BLOCK_DATA_WIDTH 32
+-#define SGDMA_TX_STREAM_DATA_WIDTH 32
+-#define SGDMA_TX_ADDRESS_WIDTH 32
+-#define SGDMA_TX_HAS_READ_BLOCK 1
+-#define SGDMA_TX_HAS_WRITE_BLOCK 0
+-#define SGDMA_TX_READ_BURSTCOUNT_WIDTH 4
+-#define SGDMA_TX_WRITE_BURSTCOUNT_WIDTH 4
+-#define SGDMA_TX_BURST_TRANSFER 0
+-#define SGDMA_TX_ALWAYS_DO_MAX_BURST 1
+-#define SGDMA_TX_DESCRIPTOR_READ_BURST 0
+-#define SGDMA_TX_UNALIGNED_TRANSFER 0
+-#define SGDMA_TX_CONTROL_SLAVE_DATA_WIDTH 32
+-#define SGDMA_TX_CONTROL_SLAVE_ADDRESS_WIDTH 4
+-#define SGDMA_TX_DESC_DATA_WIDTH 32
+-#define SGDMA_TX_CHAIN_WRITEBACK_DATA_WIDTH 32
+-#define SGDMA_TX_STATUS_TOKEN_DATA_WIDTH 24
+-#define SGDMA_TX_BYTES_TO_TRANSFER_DATA_WIDTH 16
+-#define SGDMA_TX_BURST_DATA_WIDTH 8
+-#define SGDMA_TX_CONTROL_DATA_WIDTH 8
+-#define SGDMA_TX_ATLANTIC_CHANNEL_DATA_WIDTH 4
+-#define SGDMA_TX_COMMAND_FIFO_DATA_WIDTH 104
+-#define SGDMA_TX_SYMBOLS_PER_BEAT 4
+-#define SGDMA_TX_IN_ERROR_WIDTH 0
+-#define SGDMA_TX_OUT_ERROR_WIDTH 1
+-
+-/*
+- * Macros for device 'DDR_SDRAM', class 'altmemddr'
+- * Path to the device is from the master group 'SGDMA_TX_m_read'.
+- * The macros are prefixed with 'SGDMA_TX_M_READ_DDR_SDRAM_'.
+- * The prefix is the master group descriptor and the slave descriptor.
+- */
+-#define SGDMA_TX_M_READ_DDR_SDRAM_COMPONENT_TYPE altmemddr
+-#define SGDMA_TX_M_READ_DDR_SDRAM_COMPONENT_NAME DDR_SDRAM
+-#define SGDMA_TX_M_READ_DDR_SDRAM_BASE 0x0
+-#define SGDMA_TX_M_READ_DDR_SDRAM_SPAN 33554432
+-#define SGDMA_TX_M_READ_DDR_SDRAM_END 0x1ffffff
+-#define SGDMA_TX_M_READ_DDR_SDRAM_MEMORY_INFO_MEM_INIT_DATA_WIDTH 32
+-#define SGDMA_TX_M_READ_DDR_SDRAM_MEMORY_INFO_GENERATE_DAT_SYM 1
+-#define SGDMA_TX_M_READ_DDR_SDRAM_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
+-
+-/*
+- * Macros for device 'SGDMA_RX', class 'altera_avalon_sgdma'
+- * The macros are prefixed with 'SGDMA_RX_'.
+- * The prefix is the slave descriptor.
+- */
+-#define SGDMA_RX_COMPONENT_TYPE altera_avalon_sgdma
+-#define SGDMA_RX_COMPONENT_NAME SGDMA_RX
+-#define SGDMA_RX_BASE 0x4204440
+-#define SGDMA_RX_SPAN 64
+-#define SGDMA_RX_END 0x420447f
+-#define SGDMA_RX_IRQ 3
+-#define SGDMA_RX_READ_BLOCK_DATA_WIDTH 32
+-#define SGDMA_RX_WRITE_BLOCK_DATA_WIDTH 32
+-#define SGDMA_RX_STREAM_DATA_WIDTH 32
+-#define SGDMA_RX_ADDRESS_WIDTH 32
+-#define SGDMA_RX_HAS_READ_BLOCK 0
+-#define SGDMA_RX_HAS_WRITE_BLOCK 1
+-#define SGDMA_RX_READ_BURSTCOUNT_WIDTH 4
+-#define SGDMA_RX_WRITE_BURSTCOUNT_WIDTH 4
+-#define SGDMA_RX_BURST_TRANSFER 0
+-#define SGDMA_RX_ALWAYS_DO_MAX_BURST 1
+-#define SGDMA_RX_DESCRIPTOR_READ_BURST 0
+-#define SGDMA_RX_UNALIGNED_TRANSFER 0
+-#define SGDMA_RX_CONTROL_SLAVE_DATA_WIDTH 32
+-#define SGDMA_RX_CONTROL_SLAVE_ADDRESS_WIDTH 4
+-#define SGDMA_RX_DESC_DATA_WIDTH 32
+-#define SGDMA_RX_CHAIN_WRITEBACK_DATA_WIDTH 32
+-#define SGDMA_RX_STATUS_TOKEN_DATA_WIDTH 24
+-#define SGDMA_RX_BYTES_TO_TRANSFER_DATA_WIDTH 16
+-#define SGDMA_RX_BURST_DATA_WIDTH 8
+-#define SGDMA_RX_CONTROL_DATA_WIDTH 8
+-#define SGDMA_RX_ATLANTIC_CHANNEL_DATA_WIDTH 4
+-#define SGDMA_RX_COMMAND_FIFO_DATA_WIDTH 104
+-#define SGDMA_RX_SYMBOLS_PER_BEAT 4
+-#define SGDMA_RX_IN_ERROR_WIDTH 6
+-#define SGDMA_RX_OUT_ERROR_WIDTH 0
+-
+-/*
+- * Macros for device 'DDR_SDRAM', class 'altmemddr'
+- * Path to the device is from the master group 'SGDMA_RX_m_write'.
+- * The macros are prefixed with 'SGDMA_RX_M_WRITE_DDR_SDRAM_'.
+- * The prefix is the master group descriptor and the slave descriptor.
+- */
+-#define SGDMA_RX_M_WRITE_DDR_SDRAM_COMPONENT_TYPE altmemddr
+-#define SGDMA_RX_M_WRITE_DDR_SDRAM_COMPONENT_NAME DDR_SDRAM
+-#define SGDMA_RX_M_WRITE_DDR_SDRAM_BASE 0x0
+-#define SGDMA_RX_M_WRITE_DDR_SDRAM_SPAN 33554432
+-#define SGDMA_RX_M_WRITE_DDR_SDRAM_END 0x1ffffff
+-#define SGDMA_RX_M_WRITE_DDR_SDRAM_MEMORY_INFO_MEM_INIT_DATA_WIDTH 32
+-#define SGDMA_RX_M_WRITE_DDR_SDRAM_MEMORY_INFO_GENERATE_DAT_SYM 1
+-#define SGDMA_RX_M_WRITE_DDR_SDRAM_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
+-
+-/*
+- * Macros for device 'UART', class 'altera_avalon_uart'
+- * The macros are prefixed with 'UART_'.
+- * The prefix is the slave descriptor.
+- */
+-#define UART_COMPONENT_TYPE altera_avalon_uart
+-#define UART_COMPONENT_NAME UART
+-#define UART_BASE 0x4204480
+-#define UART_SPAN 32
+-#define UART_END 0x420449f
+-#define UART_IRQ 1
+-#define UART_BAUD 9600
+-#define UART_DATA_BITS 8
+-#define UART_FIXED_BAUD 0
+-#define UART_PARITY 'N'
+-#define UART_STOP_BITS 1
+-#define UART_SYNC_REG_DEPTH 2
+-#define UART_USE_CTS_RTS 0
+-#define UART_USE_EOP_REGISTER 0
+-#define UART_SIM_TRUE_BAUD 0
+-#define UART_SIM_CHAR_STREAM ""
+-#define UART_FREQ 100000000
+-
+-/*
+- * Macros for device 'SYS_CLK_TIMER', class 'altera_avalon_timer'
+- * The macros are prefixed with 'SYS_CLK_TIMER_'.
+- * The prefix is the slave descriptor.
+- */
+-#define SYS_CLK_TIMER_COMPONENT_TYPE altera_avalon_timer
+-#define SYS_CLK_TIMER_COMPONENT_NAME SYS_CLK_TIMER
+-#define SYS_CLK_TIMER_BASE 0x42044a0
+-#define SYS_CLK_TIMER_SPAN 32
+-#define SYS_CLK_TIMER_END 0x42044bf
+-#define SYS_CLK_TIMER_IRQ 2
+-#define SYS_CLK_TIMER_ALWAYS_RUN 0
+-#define SYS_CLK_TIMER_FIXED_PERIOD 0
+-#define SYS_CLK_TIMER_SNAPSHOT 1
+-#define SYS_CLK_TIMER_PERIOD 1
+-#define SYS_CLK_TIMER_PERIOD_UNITS "ms"
+-#define SYS_CLK_TIMER_RESET_OUTPUT 0
+-#define SYS_CLK_TIMER_TIMEOUT_PULSE_OUTPUT 0
+-#define SYS_CLK_TIMER_FREQ 100000000
+-#define SYS_CLK_TIMER_LOAD_VALUE 99999ULL
+-#define SYS_CLK_TIMER_COUNTER_SIZE 32
+-#define SYS_CLK_TIMER_MULT 0.0010
+-#define SYS_CLK_TIMER_TICKS_PER_SEC 1000
+-
+-/*
+- * Macros for device 'LED_STATUS', class 'altera_avalon_pio'
+- * The macros are prefixed with 'LED_STATUS_'.
+- * The prefix is the slave descriptor.
+- */
+-#define LED_STATUS_COMPONENT_TYPE altera_avalon_pio
+-#define LED_STATUS_COMPONENT_NAME LED_STATUS
+-#define LED_STATUS_BASE 0x42044c0
+-#define LED_STATUS_SPAN 16
+-#define LED_STATUS_END 0x42044cf
+-#define LED_STATUS_DO_TEST_BENCH_WIRING 0
+-#define LED_STATUS_DRIVEN_SIM_VALUE 0x0
+-#define LED_STATUS_HAS_TRI 0
+-#define LED_STATUS_HAS_OUT 1
+-#define LED_STATUS_HAS_IN 0
+-#define LED_STATUS_CAPTURE 0
+-#define LED_STATUS_BIT_CLEARING_EDGE_REGISTER 0
+-#define LED_STATUS_BIT_MODIFYING_OUTPUT_REGISTER 0
+-#define LED_STATUS_DATA_WIDTH 2
+-#define LED_STATUS_RESET_VALUE 0x3
+-#define LED_STATUS_EDGE_TYPE "NONE"
+-#define LED_STATUS_IRQ_TYPE "NONE"
+-#define LED_STATUS_FREQ 100000000
+-
+-/*
+- * Macros for device 'JTAG_UART', class 'altera_avalon_jtag_uart'
+- * The macros are prefixed with 'JTAG_UART_'.
+- * The prefix is the slave descriptor.
+- */
+-#define JTAG_UART_COMPONENT_TYPE altera_avalon_jtag_uart
+-#define JTAG_UART_COMPONENT_NAME JTAG_UART
+-#define JTAG_UART_BASE 0x42044d0
+-#define JTAG_UART_SPAN 8
+-#define JTAG_UART_END 0x42044d7
+-#define JTAG_UART_IRQ 4
+-#define JTAG_UART_WRITE_DEPTH 64
+-#define JTAG_UART_READ_DEPTH 64
+-#define JTAG_UART_WRITE_THRESHOLD 8
+-#define JTAG_UART_READ_THRESHOLD 8
+-
+-
+-#endif /* _ALTERA_NIOSLINUX_H_ */
+diff --git a/arch/nios2/configs/generic_defconfig b/arch/nios2/configs/generic_defconfig
+deleted file mode 100644
+index 44c040a61a..0000000000
+--- a/arch/nios2/configs/generic_defconfig
++++ /dev/null
+@@ -1,32 +0,0 @@
+-CONFIG_EARLY_PRINTF=y
+-CONFIG_BAUDRATE=9600
 -CONFIG_HUSH_FANCY_PROMPT=y
 -CONFIG_CMDLINE_EDITING=y
 -CONFIG_AUTO_COMPLETE=y
+-CONFIG_BOOTM_SHOW_TYPE=y
+-CONFIG_BOOTM_VERBOSE=y
 -CONFIG_PARTITION=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
 -CONFIG_LONGHELP=y
--CONFIG_CMD_IOMEM=y
--CONFIG_CMD_MEMINFO=y
--# CONFIG_CMD_BOOTM is not set
 -CONFIG_CMD_GO=y
 -CONFIG_CMD_RESET=y
+-CONFIG_CMD_UIMAGE=y
 -CONFIG_CMD_PARTITION=y
 -CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_LOADENV=y
 -CONFIG_CMD_PRINTENV=y
 -CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_MIITOOL=y
+-CONFIG_CMD_SLEEP=y
 -CONFIG_CMD_PING=y
 -CONFIG_CMD_TFTP=y
 -CONFIG_CMD_ECHO_E=y
 -CONFIG_CMD_EDIT=y
+-CONFIG_CMD_READLINE=y
 -CONFIG_CMD_TIMEOUT=y
 -CONFIG_CMD_FLASH=y
--CONFIG_CMD_OF_NODE=y
--CONFIG_CMD_OF_PROPERTY=y
--CONFIG_CMD_OFTREE=y
--CONFIG_CMD_TIME=y
 -CONFIG_NET=y
--CONFIG_OFDEVICE=y
--CONFIG_OF_BAREBOX_DRIVERS=y
--CONFIG_DRIVER_SERIAL_NS16550=y
--CONFIG_DRIVER_NET_ETHOC=y
+-CONFIG_DRIVER_NET_TSE=y
+-CONFIG_MTD=y
+-CONFIG_DRIVER_CFI=y
 -CONFIG_FS_TFTP=y
-diff --git a/arch/openrisc/cpu/.gitignore b/arch/openrisc/cpu/.gitignore
+-CONFIG_ZLIB=y
+diff --git a/arch/nios2/cpu/.gitignore b/arch/nios2/cpu/.gitignore
 deleted file mode 100644
 index d1165788c9..0000000000
---- a/arch/openrisc/cpu/.gitignore
+--- a/arch/nios2/cpu/.gitignore
 +++ /dev/null
 @@ -1 +0,0 @@
 -barebox.lds
-diff --git a/arch/openrisc/cpu/Makefile b/arch/openrisc/cpu/Makefile
+diff --git a/arch/nios2/cpu/Makefile b/arch/nios2/cpu/Makefile
 deleted file mode 100644
-index 1cd7506003..0000000000
---- a/arch/openrisc/cpu/Makefile
+index 0b59ec57c1..0000000000
+--- a/arch/nios2/cpu/Makefile
 +++ /dev/null
 @@ -1,5 +0,0 @@
 -obj-y                 += start.o
--obj-y                 += cpu.o
 -obj-y                 += exceptions.o
--obj-y                 += cache.o
+-obj-y                 += cpu.o
+-obj-y                 += traps.o
 -extra-y               += barebox.lds
-diff --git a/arch/openrisc/cpu/barebox.lds.S b/arch/openrisc/cpu/barebox.lds.S
+diff --git a/arch/nios2/cpu/barebox.lds.S b/arch/nios2/cpu/barebox.lds.S
 deleted file mode 100644
-index adb0c22f85..0000000000
---- a/arch/openrisc/cpu/barebox.lds.S
+index 8d82aa59e7..0000000000
+--- a/arch/nios2/cpu/barebox.lds.S
 +++ /dev/null
-@@ -1,78 +0,0 @@
+@@ -1,114 +0,0 @@
 -/*
 - * barebox - barebox.lds.S
+- *
+- * (C) Copyright 2011, Franck JULLIEN, <elec4fun@gmail.com>
+- *
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
+- *
+- * Copyright (c) 2005-2007 Analog Device Inc.
+- *
+- * (C) Copyright 2000-2004
+- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+- *
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -474,232 +942,100 @@ index adb0c22f85..0000000000
 -#include <config.h>
 -#include <asm-generic/barebox.lds.h>
 -
--OUTPUT_FORMAT("elf32-or1k", "elf32-or1k", "elf32-or1k")
--__DYNAMIC  =  0;
--
--MEMORY
--{
--	vectors	: ORIGIN = 0, LENGTH = 0x2000
--	ram	: ORIGIN = TEXT_BASE,
--		  LENGTH = BAREBOX_RESERVED_SIZE
--}
+-OUTPUT_FORMAT("elf32-littlenios2")
+-OUTPUT_ARCH("nios2")
 -
 -SECTIONS
 -{
--	.vectors :
--	{
--		*(.vectors)
--	} > vectors
+-	. = NIOS_SOPC_TEXT_BASE;
 -
 -	. = ALIGN(4);
--	__start = .;
--	.text : AT (__start) {
+-	.text      :
+-	{
 -		_stext = .;
+-		__text = .;
+-		_text = .;
+-		__bare_init_start = .;
+-		*(.text_entry)
+-		__bare_init_end = .;
 -		*(.text)
--		_etext = .;
--		*(.lit)
--		*(.shdata)
--		_endtext = .;
--	}  > ram
+-	}
+-	BAREBOX_BARE_INIT_SIZE
 -
 -	. = ALIGN(4);
+-
 -	.rodata : {
--		*(.rodata);
--		*(.rodata.*)
--		*(.bbenv.rodata.*)
+-		*(.rodata*)
 -		RO_DATA_SECTION
--	} > ram
+-	}
 -
--	__etext = .; /* End of text and rodata section */
+-	_etext = .; /* End of text and rodata section */
 -
--	. = ALIGN(4);
--	.data : {
--		sdata = .;
--		_sdata = .;
--		*(.data)
--		edata = .;
--		_edata = .;
--	} > ram
--
--	. = ALIGN(4);
--	.bss :
+-	/* INIT DATA sections - "Small" data (see the gcc -G option)
+-	 * is always gp-relative. Here we make all init data sections
+-	 * adjacent to simplify the startup code -- and provide
+-	 * the global pointer for gp-relative access.
+-	 */
+-	_sdata = .;
+-	_data = .;
+-	.data :
 -	{
--		__bss_start = .;
--		_bss_start = .;
--		*(.shbss)
--		*(.bss)
--		*(COMMON)
--		_bss_end = .;
--		__bss_stop = .;
--	} > ram
--	__end = .;
+-	  *(.data)
+-	  *(.data.*)
+-	  *(.gnu.linkonce.d*)
+-	}
+-
+-	. = ALIGN(16);
+-	_gp = .;            /* Global pointer addr */
+-	PROVIDE (gp = .);
+-
+-	.sdata :
+-	{
+-	  *(.sdata)
+-	  *(.sdata.*)
+-	  *(.gnu.linkonce.s.*)
+-	}
+-	. = ALIGN(4);
+-
+-	_edata = .;
+-	PROVIDE (edata = .);
+-
+-	/* UNINIT DATA - Small uninitialized data is first so it's
+-	 * adjacent to sdata and can be referenced via gp. The normal
+-	 * bss follows. We keep it adjacent to simplify init code.
+-	 */
+-	__bss_start = .;
+-	.sbss (NOLOAD) :
+-	{
+-	  *(.sbss)
+-	  *(.sbss.*)
+-	  *(.gnu.linkonce.sb.*)
+-	  *(.scommon)
+-	}
+-	. = ALIGN(4);
+-	.bss (NOLOAD) :
+-	{
+-	  *(.bss)
+-	  *(.bss.*)
+-	  *(.dynbss)
+-	  *(COMMON)
+-	  *(.scommon)
+-	}
+-	__bss_stop = .;
+-
+-	. = ALIGN(4);
+-	_end = .;
+-	PROVIDE (end = .);
 -}
-diff --git a/arch/openrisc/cpu/cache.c b/arch/openrisc/cpu/cache.c
+diff --git a/arch/nios2/cpu/cpu.c b/arch/nios2/cpu/cpu.c
 deleted file mode 100644
-index a124d6612c..0000000000
---- a/arch/openrisc/cpu/cache.c
+index 9f86c911cc..0000000000
+--- a/arch/nios2/cpu/cpu.c
 +++ /dev/null
-@@ -1,151 +0,0 @@
+@@ -1,36 +0,0 @@
 -/*
-- * (C) Copyright 2011, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-- * (C) Copyright 2011, Julius Baxter <julius@opencores.org>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#include <common.h>
--#include <init.h>
--#include <asm/system.h>
--#include <asm/cache.h>
--
--void flush_dcache_range(unsigned long addr, unsigned long stop)
--{
--	ulong block_size = (mfspr(SPR_DCCFGR) & SPR_DCCFGR_CBS) ? 32 : 16;
--
--	while (addr < stop) {
--		mtspr(SPR_DCBFR, addr);
--		addr += block_size;
--	}
--}
--
--void invalidate_dcache_range(unsigned long addr, unsigned long stop)
--{
--	ulong block_size = (mfspr(SPR_DCCFGR) & SPR_DCCFGR_CBS) ? 32 : 16;
--
--	while (addr < stop) {
--		mtspr(SPR_DCBIR, addr);
--		addr += block_size;
--	}
--}
--
--static void invalidate_icache_range(unsigned long addr, unsigned long stop)
--{
--	ulong block_size = (mfspr(SPR_ICCFGR) & SPR_ICCFGR_CBS) ? 32 : 16;
--
--	while (addr < stop) {
--		mtspr(SPR_ICBIR, addr);
--		addr += block_size;
--	}
--}
--
--void flush_cache(unsigned long addr, unsigned long size)
--{
--	flush_dcache_range(addr, addr + size);
--	invalidate_icache_range(addr, addr + size);
--}
--
--int icache_status(void)
--{
--	return mfspr(SPR_SR) & SPR_SR_ICE;
--}
--
--int checkicache(void)
--{
--	unsigned long iccfgr;
--	unsigned long cache_set_size;
--	unsigned long cache_ways;
--	unsigned long cache_block_size;
--
--	iccfgr = mfspr(SPR_ICCFGR);
--	cache_ways = 1 << (iccfgr & SPR_ICCFGR_NCW);
--	cache_set_size = 1 << ((iccfgr & SPR_ICCFGR_NCS) >> 3);
--	cache_block_size = (iccfgr & SPR_ICCFGR_CBS) ? 32 : 16;
--
--	return cache_set_size * cache_ways * cache_block_size;
--}
--
--int dcache_status(void)
--{
--	return mfspr(SPR_SR) & SPR_SR_DCE;
--}
--
--int checkdcache(void)
--{
--	unsigned long dccfgr;
--	unsigned long cache_set_size;
--	unsigned long cache_ways;
--	unsigned long cache_block_size;
--
--	dccfgr = mfspr(SPR_DCCFGR);
--	cache_ways = 1 << (dccfgr & SPR_DCCFGR_NCW);
--	cache_set_size = 1 << ((dccfgr & SPR_DCCFGR_NCS) >> 3);
--	cache_block_size = (dccfgr & SPR_DCCFGR_CBS) ? 32 : 16;
--
--	return cache_set_size * cache_ways * cache_block_size;
--}
--
--void dcache_enable(void)
--{
--	mtspr(SPR_SR, mfspr(SPR_SR) | SPR_SR_DCE);
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--}
--
--void dcache_disable(void)
--{
--	mtspr(SPR_SR, mfspr(SPR_SR) & ~SPR_SR_DCE);
--}
--
--void icache_enable(void)
--{
--	mtspr(SPR_SR, mfspr(SPR_SR) | SPR_SR_ICE);
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--	asm volatile("l.nop");
--}
--
--void icache_disable(void)
--{
--	mtspr(SPR_SR, mfspr(SPR_SR) & ~SPR_SR_ICE);
--}
--
--static int cache_init(void)
--{
--	if (mfspr(SPR_UPR) & SPR_UPR_ICP) {
--		icache_disable();
--		invalidate_icache_range(0, checkicache());
--		icache_enable();
--	}
--
--	if (mfspr(SPR_UPR) & SPR_UPR_DCP) {
--		dcache_disable();
--		invalidate_dcache_range(0, checkdcache());
--		dcache_enable();
--	}
--
--	return 0;
--}
--
--core_initcall(cache_init);
-diff --git a/arch/openrisc/cpu/cpu.c b/arch/openrisc/cpu/cpu.c
-deleted file mode 100644
-index 47d8ab4288..0000000000
---- a/arch/openrisc/cpu/cpu.c
-+++ /dev/null
-@@ -1,38 +0,0 @@
--/*
-- * (C) Copyright 2011, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-- * (C) Copyright 2011, Julius Baxter <julius@opencores.org>
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -717,14 +1053,11 @@ index 47d8ab4288..0000000000
 -#include <init.h>
 -#include <restart.h>
 -#include <asm/system.h>
--#include <asm/openrisc_exc.h>
 -
--extern void __reset(void);
--
--static void __noreturn openrisc_restart_cpu(struct restart_handler *rst)
+-static void __noreturn nios2_restart_soc(struct restart_handler *rst)
 -{
--	__reset();
--	/* not reached, __reset does not return */
+-	/* indirect call to go beyond 256MB limitation of toolchain */
+-	nios2_callr(RESET_ADDR);
 -
 -	/* Not reached */
 -	hang();
@@ -732,18 +1065,19 @@ index 47d8ab4288..0000000000
 -
 -static int restart_register_feature(void)
 -{
--	return restart_handler_register_fn("vector", openrisc_restart_cpu);
+-	return restart_handler_register_fn("vector", nios2_restart_soc);
 -}
 -coredevice_initcall(restart_register_feature);
-diff --git a/arch/openrisc/cpu/exceptions.c b/arch/openrisc/cpu/exceptions.c
+-
+diff --git a/arch/nios2/cpu/exceptions.S b/arch/nios2/cpu/exceptions.S
 deleted file mode 100644
-index c69ceafe80..0000000000
---- a/arch/openrisc/cpu/exceptions.c
+index 8806f5cebf..0000000000
+--- a/arch/nios2/cpu/exceptions.S
 +++ /dev/null
-@@ -1,84 +0,0 @@
+@@ -1,144 +0,0 @@
 -/*
-- * (C) Copyright 2011, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-- * (C) Copyright 2011, Julius Baxter <julius@opencores.org>
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -752,88 +1086,148 @@ index c69ceafe80..0000000000
 - *
 - * This program is distributed in the hope that it will be useful,
 - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
 - * GNU General Public License for more details.
 - *
 - */
 -
--#include <common.h>
--#include <asm/system.h>
--#include <asm/openrisc_exc.h>
+-#include <config.h>
+-#include <asm/opcodes.h>
 -
--static const char * const excp_table[] = {
--	"Unknown exception",
--	"Reset",
--	"Bus Error",
--	"Data Page Fault",
--	"Instruction Page Fault",
--	"Tick Timer",
--	"Alignment",
--	"Illegal Instruction",
--	"External Interrupt",
--	"D-TLB Miss",
--	"I-TLB Miss",
--	"Range",
--	"System Call",
--	"Floating Point",
--	"Trap",
--};
 -
--static void (*handlers[32])(void);
+-	.text
+-	.align 4
 -
--void exception_install_handler(int exception, void (*handler)(void))
--{
--	if (exception < 0 || exception > 31)
--		return;
+-	.global _exception
 -
--	handlers[exception] = handler;
--}
+-	.set noat
+-	.set nobreak
 -
--void exception_free_handler(int exception)
--{
--	if (exception < 0 || exception > 31)
--		return;
+-_exception:
+-	/* SAVE ALL REGS -- this allows trap and unimplemented
+-	 * instruction handlers to be coded conveniently in C
+-	 */
+-	addi    sp, sp, -(33*4)
+-	stw     r0, 0(sp)
+-	stw     r1, 4(sp)
+-	stw     r2, 8(sp)
+-	stw     r3, 12(sp)
+-	stw     r4, 16(sp)
+-	stw     r5, 20(sp)
+-	stw     r6, 24(sp)
+-	stw     r7, 28(sp)
+-	stw     r8, 32(sp)
+-	stw     r9, 36(sp)
+-	stw     r10, 40(sp)
+-	stw     r11, 44(sp)
+-	stw     r12, 48(sp)
+-	stw     r13, 52(sp)
+-	stw     r14, 56(sp)
+-	stw     r15, 60(sp)
+-	stw     r16, 64(sp)
+-	stw     r17, 68(sp)
+-	stw     r19, 72(sp)
+-	stw     r19, 76(sp)
+-	stw     r20, 80(sp)
+-	stw     r21, 84(sp)
+-	stw     r22, 88(sp)
+-	stw     r23, 92(sp)
+-	stw     r24, 96(sp)
+-	stw     r25, 100(sp)
+-	stw     r26, 104(sp)
+-	stw     r27, 108(sp)
+-	stw     r28, 112(sp)
+-	stw     r29, 116(sp)
+-	stw     r30, 120(sp)
+-	stw     r31, 124(sp)
+-	rdctl   et, estatus
+-	stw     et, 128(sp)
 -
--	handlers[exception] = 0;
--}
+-	/* If interrupts are disabled -- software interrupt */
+-	rdctl   et, estatus
+-	andi    et, et, 1
+-	beq     et, r0, 0f
 -
--static void exception_hang(int vect)
--{
--	printf("Unhandled exception at 0x%x ", vect & 0xff00);
+-	/* If no interrupts are pending -- software interrupt */
+-	rdctl   et, ipending
+-	beq     et, r0, 0f
 -
--	vect = ((vect >> 8) & 0xff);
--	if (vect < ARRAY_SIZE(excp_table))
--		printf("(%s)\n", excp_table[vect]);
--	else
--		printf("(%s)\n", excp_table[0]);
+-        br      _exception_return
 -
--	printf("EPCR: 0x%08lx\n", mfspr(SPR_EPCR_BASE));
--	printf("EEAR: 0x%08lx\n", mfspr(SPR_EEAR_BASE));
--	printf("ESR:  0x%08lx\n", mfspr(SPR_ESR_BASE));
--	hang();
--}
+-	/* Return address fixup: execution resumes by re-issue of
+-	 * interrupted instruction at ea-4 (ea == r29). Here we do
+-	 * simple fixup to allow common exception return.
+-	 */
+-	ldw     r3, 116(sp)
+-	addi    r3, r3, -4
+-	stw     r3, 116(sp)
+-	br      _exception_return
 -
--/* Called from assembly */
--void exception_handler(int vect);
+-0:
+-	/* TRAP EXCEPTION */
+-	movhi   r3, %hi(OPC_TRAP)
+-	ori     r3, r3, %lo(OPC_TRAP)
+-	addi    r1, ea, -4
+-	ldw     r1, 0(r1)
+-	bne     r1, r3, 1f
+-	movhi   r3, %hi(trap_handler)
+-	ori     r3, r3, %lo(trap_handler)
+-	mov     r4, sp  /* ptr to regs */
+-	callr   r3
+-	br      _exception_return
 -
--void exception_handler(int vect)
--{
--	int exception = vect >> 8;
+-1:
+-	/* UNIMPLEMENTED INSTRUCTION EXCEPTION */
+-	movhi   r3, %hi(soft_emulation)
+-	ori     r3, r3, %lo(soft_emulation)
+-	mov     r4, sp  /* ptr to regs */
+-	callr   r3
 -
--	if (handlers[exception])
--		handlers[exception]();
--	else
--		exception_hang(vect);
--}
-diff --git a/arch/openrisc/cpu/start.S b/arch/openrisc/cpu/start.S
+-	/* Restore registers and return from exception */
+-_exception_return:
+-	ldw     r1, 4(sp)
+-	ldw     r2, 8(sp)
+-	ldw     r3, 12(sp)
+-	ldw     r4, 16(sp)
+-	ldw     r5, 20(sp)
+-	ldw     r6, 24(sp)
+-	ldw     r7, 28(sp)
+-	ldw     r8, 32(sp)
+-	ldw     r9, 36(sp)
+-	ldw     r10, 40(sp)
+-	ldw     r11, 44(sp)
+-	ldw     r12, 48(sp)
+-	ldw     r13, 52(sp)
+-	ldw     r14, 56(sp)
+-	ldw     r15, 60(sp)
+-	ldw     r16, 64(sp)
+-	ldw     r17, 68(sp)
+-	ldw     r19, 72(sp)
+-	ldw     r19, 76(sp)
+-	ldw     r20, 80(sp)
+-	ldw     r21, 84(sp)
+-	ldw     r22, 88(sp)
+-	ldw     r23, 92(sp)
+-	ldw     r24, 96(sp)
+-	ldw     r25, 100(sp)
+-	ldw     r26, 104(sp)
+-	ldw     r27, 108(sp)
+-	ldw     r28, 112(sp)
+-	ldw     r29, 116(sp)
+-	ldw     r30, 120(sp)
+-	ldw     r31, 124(sp)
+-	addi    sp, sp, (33*4)
+-	eret
+-/*-------------------------------------------------------------*/
+diff --git a/arch/nios2/cpu/start.S b/arch/nios2/cpu/start.S
 deleted file mode 100644
-index 7ac790b055..0000000000
---- a/arch/openrisc/cpu/start.S
+index d770b0014d..0000000000
+--- a/arch/nios2/cpu/start.S
 +++ /dev/null
-@@ -1,358 +0,0 @@
+@@ -1,158 +0,0 @@
 -/*
-- * (C) Copyright 2011, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-- * (C) Copyright 2011, Julius Baxter <julius@opencores.org>
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -849,418 +1243,192 @@ index 7ac790b055..0000000000
 -
 -#include <config.h>
 -#include <asm-generic/memory_layout.h>
--#include <asm/spr-defs.h>
 -
--#define EXCEPTION_STACK_SIZE (128+128)
+-/*************************************************************************
+- * RESTART
+- ************************************************************************/
 -
--#define HANDLE_EXCEPTION			\
--	l.addi	r1, r1, -EXCEPTION_STACK_SIZE	;\
--	l.sw	0x1c(r1), r9			;\
--	l.jal	_exception_handler		;\
--	 l.nop					;\
--	l.lwz 	r9, 0x1c(r1)			;\
--	l.addi	r1, r1, EXCEPTION_STACK_SIZE	;\
--	l.rfe					;\
--	 l.nop
+-.section ".text_entry","ax"
 -
--	.section .vectors, "ax"
--	.global __reset
+-_start:
+-	wrctl   status, r0      /* Disable interrupts */
+-	/* ICACHE INIT -- only the icache line at the reset address
+-	 * is invalidated at reset. So the init must stay within
+-	 * the cache line size (8 words). If GERMS is used, we'll
+-	 * just be invalidating the cache a second time. If cache
+-	 * is not implemented initi behaves as nop.
+-	 */
+-	ori     r4, r0, %lo(ICACHE_LINE_SIZE)
+-	movhi   r5, %hi(ICACHE_SIZE)
+-	ori     r5, r5, %lo(ICACHE_SIZE)
+-0:	initi   r5
+-	sub     r5, r5, r4
+-	bgt     r5, r0, 0b
+-	br      _except_end   /* Skip the tramp */
 -
--	/* reset */
--	.org	0x100
--__reset:
--	/* there is no guarantee r0 is hardwired to zero, clear it here */
--	l.andi	r0, r0, 0
--	/* reset stack and frame pointers */
--	l.andi	r1, r0, 0
--	l.andi	r2, r0, 0
+-	/* EXCEPTION TRAMPOLINE -- the following gets copied
+-	 * to the exception address (below), but is otherwise at the
+-	 * default exception vector offset (0x0020).
+-	 */
+-_except_start:
+-	movhi   et, %hi(_exception)
+-	ori     et, et, %lo(_exception)
+-	jmp     et
+-_except_end:
 -
--	/* set supervisor mode */
--	l.ori	r3,r0,SPR_SR_SM
--	l.mtspr	r0,r3,SPR_SR
+-	/* INTERRUPTS -- for now, all interrupts masked and globally
+-	 * disabled.
+-	 */
+-	wrctl   ienable, r0  /* All disabled */
 -
--	l.jal	_cur
--	l.nop
--_cur:
--	l.ori	r8, r9, 0		/* Get _cur current address */
+-	/* DCACHE INIT -- if dcache not implemented, initd behaves as
+-	 * nop.
+-	 */
+-	movhi   r4, %hi(DCACHE_LINE_SIZE)
+-	ori     r4, r4, %lo(DCACHE_LINE_SIZE)
+-	movhi   r5, %hi(DCACHE_SIZE)
+-	ori     r5, r5, %lo(DCACHE_SIZE)
+-	mov     r6, r0
+-1:	initd   0(r6)
+-	add     r6, r6, r4
+-	bltu    r6, r5, 1b
 -
--	l.movhi	r3, hi(_cur)
--	l.ori	r3, r3, lo(_cur)
--	l.sfeq	r8, r3			/* If we are running at the linked address */
--	l.bf	_no_vector_reloc	/* there is not need for relocation */
--	 l.sub	r8, r8, r3
+-	/* RELOCATE CODE, DATA & COMMAND TABLE -- the following code
+-	 * assumes code, data and the command table are all
+-	 * contiguous. This lets us relocate everything as a single
+-	 * block. Make sure the linker script matches this ;-)
+-	 */
+-	nextpc  r4
+-_cur:	movhi   r5, %hi(_cur - _start)
+-	ori     r5, r5, %lo(_cur - _start)
+-	sub     r4, r4, r5                 /* r4 <- cur _start */
+-	mov     r8, r4
+-	movhi   r5, %hi(_start)
+-	ori     r5, r5, %lo(_start)        /* r5 <- linked _start */
+-	beq     r4, r5, 3f
 -
--	l.mfspr	r4, r0, SPR_CPUCFGR
--	l.andi	r4, r4, SPR_CPUCFGR_EVBARP	/* Exception Vector Base Address Register present ? */
--	l.sfnei	r4,0
--	l.bnf	_reloc_vectors
--	l.movhi	r5, 0			/* Destination */
+-	movhi   r6, %hi(_edata)
+-	ori     r6, r6, %lo(_edata)
+-2:	ldwio   r7, 0(r4)
+-	addi    r4, r4, 4
+-	stwio   r7, 0(r5)
+-	addi    r5, r5, 4
+-	bne     r5, r6, 2b
+-3:
 -
--	l.mfspr	r4, r0, SPR_EVBAR
--	l.add	r5, r5, r4
+-	/* ZERO BSS/SBSS -- bss and sbss are assumed to be adjacent
+-	 * and between __bss_start and _end.
+-	 */
+-	 movhi  r5, %hi(__bss_start)
+-	 ori    r5, r5, %lo(__bss_start)
+-	 movhi  r6, %hi(_end)
+-	 ori    r6, r6, %lo(_end)
+-	 beq    r5, r6, 5f
 -
--_reloc_vectors:
--	/* Relocate vectors*/
--	l.movhi	r6, hi(__start)		/* Length */
--	l.ori	r6, r6, lo(__start)
--	l.ori	r3, r8, 0
--
--.L_relocvectors:
--	l.lwz	r7, 0(r3)
--	l.sw	0(r5), r7
--	l.addi	r5, r5, 4
--	l.sfeq	r5, r6
--	l.bnf	.L_relocvectors
--	 l.addi	r3, r3, 4
--
--_no_vector_reloc:
--
--	/* Relocate barebox */
--	l.movhi	r3,hi(__start)		/* source start offset */
--	l.ori	r3,r3,lo(__start)
--	l.add	r3,r8,r3
--
--	l.movhi	r4,hi(_stext)		/* dest start address */
--	l.ori	r4,r4,lo(_stext)
--	l.movhi	r5,hi(__end)		/* dest end address */
--	l.ori	r5,r5,lo(__end)
--
--.L_reloc:
--	l.lwz	r6,0(r3)
--	l.sw	0(r4),r6
--	l.addi	r3,r3,4
--	l.sfltu	r4,r5
--	l.bf	.L_reloc
--	l.addi	r4,r4,4			/*delay slot */
+-4:	stwio   r0, 0(r5)
+-	 addi   r5, r5, 4
+-	 bne    r5, r6, 4b
+-5:
 -
 -	/* JUMP TO RELOC ADDR */
--	l.movhi	r4, hi(_start)
--	l.ori	r4, r4, lo(_start)
--	l.jr	r4
--	l.nop
+-	movhi   r4, %hi(_reloc)
+-	ori     r4, r4, %lo(_reloc)
+-	jmp     r4
+-_reloc:
 -
--	/* bus error */
--	.org	0x200
--	HANDLE_EXCEPTION
+-	/* COPY EXCEPTION TRAMPOLINE -- copy the tramp to the
+-	 * exception address. Define CONFIG_ROM_STUBS to prevent
+-	 * the copy (e.g. exception in flash or in other
+-	 * softare/firmware component).
+-	 */
+-#if !defined(CONFIG_ROM_STUBS)
+-	movhi   r4, %hi(_except_start)
+-	ori     r4, r4, %lo(_except_start)
+-	movhi   r5, %hi(_except_end)
+-	ori     r5, r5, %lo(_except_end)
+-	movhi   r6, %hi(EXCEPTION_ADDR)
+-	ori     r6, r6, %lo(EXCEPTION_ADDR)
+-	beq     r4, r6, 7f                  /* Skip if at proper addr */
 -
--	/* data page fault */
--	.org	0x300
--	HANDLE_EXCEPTION
+-6:	ldwio   r7, 0(r4)
+-	stwio   r7, 0(r6)
+-	addi    r4, r4, 4
+-	addi    r6, r6, 4
+-	bne     r4, r5, 6b
+-7:
+-#endif
 -
--	/* instruction page fault */
--	.org	0x400
--	HANDLE_EXCEPTION
+-	/* STACK INIT -- zero top two words for call back chain.
+-	 */
+-	movhi   sp, %hi(STACK_BASE)
+-	ori     sp, sp, %lo(STACK_BASE)
+-	addi    sp, sp, -8
+-	stw     r0, 0(sp)
+-	stw     r0, 4(sp)
+-	mov     fp, sp
 -
--	/* tick timer */
--	.org	0x500
--	HANDLE_EXCEPTION
--
--	/* alignment */
--	.org	0x600
--	HANDLE_EXCEPTION
--
--	/* illegal instruction */
--	.org	0x700
--	HANDLE_EXCEPTION
--
--	/* external interrupt */
--	.org	0x800
--	HANDLE_EXCEPTION
--
--	/* D-TLB miss */
--	.org	0x900
--	HANDLE_EXCEPTION
--
--	/* I-TLB miss */
--	.org	0xa00
--	HANDLE_EXCEPTION
--
--	/* range */
--	.org	0xb00
--	HANDLE_EXCEPTION
--
--	/* system call */
--	.org	0xc00
--	HANDLE_EXCEPTION
--
--	/* floating point */
--	.org	0xd00
--	HANDLE_EXCEPTION
--
--	/* trap */
--	.org	0xe00
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0xf00
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1100
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1200
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1300
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1400
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1500
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1600
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1700
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1800
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1900
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1a00
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1b00
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1c00
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1d00
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1e00
--	HANDLE_EXCEPTION
--
--	/* reserved */
--	.org	0x1f00
--	HANDLE_EXCEPTION
--
--	/* Startup routine */
--	.text
--	.global _start
--_start:
--	/* Init stack and frame pointers */
--	l.movhi	r1, hi(STACK_BASE)
--	l.ori	r1, r1, lo(STACK_BASE)
--	l.or	r2, r0, r1
--
--	/* clear BSS segments */
--	l.movhi	r4, hi(_bss_start)
--	l.ori	r4, r4, lo(_bss_start)
--	l.movhi	r5, hi(_bss_end)
--	l.ori	r5, r5, lo(_bss_end)
--.L_clear_bss:
--	l.sw	0(r4), r0
--	l.sfltu	r4,r5
--	l.bf	.L_clear_bss
--	 l.addi	r4,r4,4
--
--	/* Reset registers before jumping to board_init */
--	l.andi	r3, r0, 0
--	l.andi	r4, r0, 0
--	l.andi	r5, r0, 0
--	l.andi	r6, r0, 0
--	l.andi	r7, r0, 0
--	l.andi	r8, r0, 0
--	l.andi	r9, r0, 0
--	l.andi	r10, r0, 0
--	l.andi	r11, r0, 0
--	l.andi	r12, r0, 0
--	l.andi	r13, r0, 0
--	l.andi	r14, r0, 0
--	l.andi	r15, r0, 0
--	l.andi	r17, r0, 0
--	l.andi	r18, r0, 0
--	l.andi	r19, r0, 0
--	l.andi	r20, r0, 0
--	l.andi	r21, r0, 0
--	l.andi	r22, r0, 0
--	l.andi	r23, r0, 0
--	l.andi	r24, r0, 0
--	l.andi	r25, r0, 0
--	l.andi	r26, r0, 0
--	l.andi	r27, r0, 0
--	l.andi	r28, r0, 0
--	l.andi	r29, r0, 0
--	l.andi	r30, r0, 0
--	l.andi	r31, r0, 0
--
--	l.j	openrisc_start_barebox
--	 l.nop
--
--	.size	_start, .-_start
--
--/*
-- * Store state onto stack and call the real exception handler
-- */
--	.section .text
--	.extern	exception_handler
--	.type	_exception_handler,@function
--
--_exception_handler:
--	/* Store state (r9 already saved)*/
--	l.sw	0x00(r1), r2
--	l.sw	0x04(r1), r3
--	l.sw	0x08(r1), r4
--	l.sw	0x0c(r1), r5
--	l.sw	0x10(r1), r6
--	l.sw	0x14(r1), r7
--	l.sw	0x18(r1), r8
--	l.sw	0x20(r1), r10
--	l.sw	0x24(r1), r11
--	l.sw	0x28(r1), r12
--	l.sw	0x2c(r1), r13
--	l.sw	0x30(r1), r14
--	l.sw	0x34(r1), r15
--	l.sw	0x38(r1), r16
--	l.sw	0x3c(r1), r17
--	l.sw	0x40(r1), r18
--	l.sw	0x44(r1), r19
--	l.sw	0x48(r1), r20
--	l.sw	0x4c(r1), r21
--	l.sw	0x50(r1), r22
--	l.sw	0x54(r1), r23
--	l.sw	0x58(r1), r24
--	l.sw	0x5c(r1), r25
--	l.sw	0x60(r1), r26
--	l.sw	0x64(r1), r27
--	l.sw	0x68(r1), r28
--	l.sw	0x6c(r1), r29
--	l.sw	0x70(r1), r30
--	l.sw	0x74(r1), r31
--
--	/* Save return address */
--	l.or	r14, r0, r9
--	/* Call exception handler with the link address as argument */
--	l.jal	exception_handler
--	 l.or	r3, r0, r14
--	/* Load return address */
--	l.or	r9, r0, r14
--
--	/* Restore state */
--	l.lwz	r2, 0x00(r1)
--	l.lwz	r3, 0x04(r1)
--	l.lwz	r4, 0x08(r1)
--	l.lwz	r5, 0x0c(r1)
--	l.lwz	r6, 0x10(r1)
--	l.lwz	r7, 0x14(r1)
--	l.lwz	r8, 0x18(r1)
--	l.lwz	r10, 0x20(r1)
--	l.lwz	r11, 0x24(r1)
--	l.lwz	r12, 0x28(r1)
--	l.lwz	r13, 0x2c(r1)
--	l.lwz	r14, 0x30(r1)
--	l.lwz	r15, 0x34(r1)
--	l.lwz	r16, 0x38(r1)
--	l.lwz	r17, 0x3c(r1)
--	l.lwz	r18, 0x40(r1)
--	l.lwz	r19, 0x44(r1)
--	l.lwz	r20, 0x48(r1)
--	l.lwz	r21, 0x4c(r1)
--	l.lwz	r22, 0x50(r1)
--	l.lwz	r23, 0x54(r1)
--	l.lwz	r24, 0x58(r1)
--	l.lwz	r25, 0x5c(r1)
--	l.lwz	r26, 0x60(r1)
--	l.lwz	r27, 0x64(r1)
--	l.lwz	r28, 0x68(r1)
--	l.lwz	r29, 0x6c(r1)
--	l.lwz	r30, 0x70(r1)
--	l.lwz	r31, 0x74(r1)
--	l.jr	r9
--	 l.nop
-diff --git a/arch/openrisc/dts/Makefile b/arch/openrisc/dts/Makefile
-deleted file mode 100644
-index 6d6c9a3ce0..0000000000
---- a/arch/openrisc/dts/Makefile
-+++ /dev/null
-@@ -1,5 +0,0 @@
--
--BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
--obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
--
--clean-files := *.dtb *.dtb.S
-diff --git a/arch/openrisc/dts/or1ksim.dts b/arch/openrisc/dts/or1ksim.dts
-deleted file mode 100644
-index 7316cc6770..0000000000
---- a/arch/openrisc/dts/or1ksim.dts
-+++ /dev/null
-@@ -1,51 +0,0 @@
--/dts-v1/;
--/ {
--	model = "or1ksim";
--	compatible = "opencores,or1ksim";
--	#address-cells = <1>;
--	#size-cells = <1>;
--	interrupt-parent = <&pic>;
--
--	chosen {
--		bootargs = "console=uart,mmio,0x90000000,115200";
--	};
--
--	memory {
--		device_type = "memory";
--		reg = <0x00000000 0x02000000>;
--	};
--
--	cpus {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		cpu@0 {
--			compatible = "opencores,or1200-rtlsvn481";
--			reg = <0>;
--			clock-frequency = <20000000>;
--		};
--	};
+-        /* Set the global pointer */
+-	movhi   r26, %hi(_gp)
+-	ori     r26, r26, %lo(_gp)
 -
 -	/*
--	 * OR1K PIC is built into CPU and accessed via special purpose
--	 * registers.  It is not addressable and, hence, has no 'reg'
--	 * property.
+-	 * Call board_init -- never returns
 -	 */
--	pic: pic {
--		compatible = "opencores,or1k-pic";
--		#interrupt-cells = <1>;
--		interrupt-controller;
--	};
+-	movhi   r4, %hi(nios_start_barebox@h)
+-	ori     r4, r4, %lo(nios_start_barebox@h)
+-	callr   r4
 -
--	serial0: serial@90000000 {
--		compatible = "ns16550a";
--		reg = <0x90000000 0x100>;
--		interrupts = <2>;
--		clock-frequency = <50000000>;
--	};
+-	/* NEVER RETURNS -- but branch to the _start just
+-	 * in case ;-)
+-	 */
+-	br      _start
 -
--	enet0: ethoc@92000000 {
--		compatible = "opencores,ethoc";
--		reg = <0x92000000 0x100>;
--		interrupts = <4>;
--	};
--};
-diff --git a/arch/openrisc/include/asm/bitops.h b/arch/openrisc/include/asm/bitops.h
+diff --git a/arch/nios2/cpu/traps.c b/arch/nios2/cpu/traps.c
+deleted file mode 100644
+index 484d007090..0000000000
+--- a/arch/nios2/cpu/traps.c
++++ /dev/null
+@@ -1,36 +0,0 @@
+-/*
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <asm/ptrace.h>
+-#include <common.h>
+-
+-void trap_handler (struct pt_regs *regs)
+-{
+-	/* Just issue warning */
+-	printf("\n\n*** WARNING: unimplemented trap @ %08x\n\n",
+-			regs->reg[29] - 4);
+-}
+-
+-void soft_emulation(struct pt_regs *regs)
+-{
+-	/* TODO: Software emulation of mul/div etc. Until this is
+-	 * implemented, generate warning and hang.
+-	 */
+-	printf("\n\n*** ERROR: unimplemented instruction @ %08x\n",
+-			regs->reg[29] - 4);
+-
+-	hang();
+-}
+diff --git a/arch/nios2/include/asm/bitops.h b/arch/nios2/include/asm/bitops.h
 deleted file mode 100644
 index e77ab83202..0000000000
---- a/arch/openrisc/include/asm/bitops.h
+--- a/arch/nios2/include/asm/bitops.h
 +++ /dev/null
 @@ -1,35 +0,0 @@
 -/*
@@ -1298,149 +1466,117 @@ index e77ab83202..0000000000
 -#define test_and_change_bit(x, y)	__test_and_change_bit(x, y)
 -
 -#endif /* _ASM_BITOPS_H_ */
-diff --git a/arch/openrisc/include/asm/bitops/ffs.h b/arch/openrisc/include/asm/bitops/ffs.h
-deleted file mode 100644
-index 1de5295816..0000000000
---- a/arch/openrisc/include/asm/bitops/ffs.h
-+++ /dev/null
-@@ -1,26 +0,0 @@
--/*
-- * OpenRISC Linux
-- *
-- * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- */
--
--#ifndef __ASM_OPENRISC_FFS_H
--#define __ASM_OPENRISC_FFS_H
--
--static inline int ffs(int x)
--{
--	int ret;
--
--	__asm__ ("l.ff1 %0,%1"
--		 : "=r" (ret)
--		 : "r" (x));
--
--	return ret;
--}
--
--#endif /* __ASM_OPENRISC_FFS_H */
-diff --git a/arch/openrisc/include/asm/bitops/fls.h b/arch/openrisc/include/asm/bitops/fls.h
-deleted file mode 100644
-index 8c77c13776..0000000000
---- a/arch/openrisc/include/asm/bitops/fls.h
-+++ /dev/null
-@@ -1,26 +0,0 @@
--/*
-- * OpenRISC Linux
-- *
-- * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- */
--
--#ifndef __ASM_OPENRISC_FLS_H
--#define __ASM_OPENRISC_FLS_H
--
--static inline int fls(int x)
--{
--	int ret;
--
--	__asm__ ("l.fl1 %0,%1"
--		 : "=r" (ret)
--		 : "r" (x));
--
--	return ret;
--}
--
--#endif /* __ASM_OPENRISC_FLS_H */
-diff --git a/arch/openrisc/include/asm/bitsperlong.h b/arch/openrisc/include/asm/bitsperlong.h
+diff --git a/arch/nios2/include/asm/bitsperlong.h b/arch/nios2/include/asm/bitsperlong.h
 deleted file mode 100644
 index 6dc0bb0c13..0000000000
---- a/arch/openrisc/include/asm/bitsperlong.h
+--- a/arch/nios2/include/asm/bitsperlong.h
 +++ /dev/null
 @@ -1 +0,0 @@
 -#include <asm-generic/bitsperlong.h>
-diff --git a/arch/openrisc/include/asm/byteorder.h b/arch/openrisc/include/asm/byteorder.h
+diff --git a/arch/nios2/include/asm/byteorder.h b/arch/nios2/include/asm/byteorder.h
 deleted file mode 100644
-index 60d14f7e14..0000000000
---- a/arch/openrisc/include/asm/byteorder.h
+index 9558416d57..0000000000
+--- a/arch/nios2/include/asm/byteorder.h
 +++ /dev/null
 @@ -1 +0,0 @@
--#include <linux/byteorder/big_endian.h>
-diff --git a/arch/openrisc/include/asm/cache.h b/arch/openrisc/include/asm/cache.h
+-#include <linux/byteorder/little_endian.h>
+diff --git a/arch/nios2/include/asm/cache.h b/arch/nios2/include/asm/cache.h
 deleted file mode 100644
-index 5dee26b190..0000000000
---- a/arch/openrisc/include/asm/cache.h
+index d9de8f999a..0000000000
+--- a/arch/nios2/include/asm/cache.h
 +++ /dev/null
-@@ -1,43 +0,0 @@
+@@ -1,21 +0,0 @@
 -/*
-- * (C) Copyright 2011, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+- * Copyright (C) 2003 Microtronix Datacom Ltd.
+- * Copyright (C) 2000-2002 Greg Ungerer <gerg@snapgear.com>
 - *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
+- * Ported from m68knommu.
 - *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License. See the file "COPYING" in the main directory of this archive
+- * for more details.
 - */
 -
--#ifndef __ASM_OPENRISC_CACHE_H_
--#define __ASM_OPENRISC_CACHE_H_
+-#ifndef _ASM_NIOS2_CACHEFLUSH_H
+-#define _ASM_NIOS2_CACHEFLUSH_H
 -
--void flush_dcache_range(unsigned long addr, unsigned long stop);
--void invalidate_dcache_range(unsigned long addr, unsigned long stop);
--void flush_cache(unsigned long addr, unsigned long size);
--int icache_status(void);
--int checkicache(void);
--int dcache_status(void);
--int checkdcache(void);
--void dcache_enable(void);
--void dcache_disable(void);
--void icache_enable(void);
--void icache_disable(void);
+-void flush_cache_all(void);
+-void flush_dcache_all(void);
+-void flush_icache_all(void);
+-void flush_icache_range(unsigned long start, unsigned long end);
+-void flush_dcache_range(unsigned long start, unsigned long end);
 -
--/*
-- * Valid L1 data cache line sizes for the OpenRISC architecture are
-- * 16 and 32 bytes.
-- * If the board configuration has not specified one we default to the
-- * largest of these values for alignment of DMA buffers.
-- */
--#ifdef CONFIG_SYS_CACHELINE_SIZE
--#define ARCH_DMA_MINALIGN       CONFIG_SYS_CACHELINE_SIZE
--#else
--#define ARCH_DMA_MINALIGN       32
--#endif
--
--#endif /* __ASM_OPENRISC_CACHE_H_ */
-diff --git a/arch/openrisc/include/asm/common.h b/arch/openrisc/include/asm/common.h
+-#endif /* _ASM_NIOS2_CACHEFLUSH_H */
+diff --git a/arch/nios2/include/asm/common.h b/arch/nios2/include/asm/common.h
 deleted file mode 100644
 index 027dca2d56..0000000000
---- a/arch/openrisc/include/asm/common.h
+--- a/arch/nios2/include/asm/common.h
 +++ /dev/null
 @@ -1,4 +0,0 @@
 -#ifndef _ASM_COMMON_H
 -#define __ASM_COMMON_H
 -
 -#endif /* _ASM_COMMON_H */
-diff --git a/arch/openrisc/include/asm/dma.h b/arch/openrisc/include/asm/dma.h
+diff --git a/arch/nios2/include/asm/dma-mapping.h b/arch/nios2/include/asm/dma-mapping.h
 deleted file mode 100644
-index 27d269f491..0000000000
---- a/arch/openrisc/include/asm/dma.h
+index 5ecc1ed21e..0000000000
+--- a/arch/nios2/include/asm/dma-mapping.h
 +++ /dev/null
-@@ -1,13 +0,0 @@
+@@ -1,48 +0,0 @@
+-#ifndef __ASM_NIOS2_DMA_MAPPING_H
+-#define __ASM_NIOS2_DMA_MAPPING_H
+-
+-#include <common.h>
+-#include <xfuncs.h>
+-
+-#include <asm/cache.h>
+-
+-/* dma_alloc_coherent() return cache-line aligned allocation which is mapped
+- * to uncached io region.
+- *
+- * IO_REGION_BASE should be defined in board config header file
+- *   0x80000000 for nommu, 0xe0000000 for mmu
+- */
+-
+-#if (DCACHE_SIZE != 0)
+-static inline void *dma_alloc_coherent(size_t len, dma_addr_t *handle)
+-{
+-	void *addr = malloc(len + DCACHE_LINE_SIZE);
+-	if (!addr)
+-		return 0;
+-	flush_dcache_range((unsigned long)addr,(unsigned long)addr + len + DCACHE_LINE_SIZE);
+-	if (handle)
+-		*handle = ((dma_addr_t)addr + (DCACHE_LINE_SIZE - 1)) &
+-			  ~(DCACHE_LINE_SIZE - 1) & ~(IO_REGION_BASE);
+-	return (void *)(*handle | IO_REGION_BASE);
+-}
+-#else
+-static inline void *dma_alloc_coherent(size_t len, dma_addr_t *handle)
+-{
+-	void *addr = malloc(len);
+-	if (!addr)
+-		return 0;
+-	if (handle)
+-		*handle = (dma_addr_t)addr;
+-	return (void *)(*handle | IO_REGION_BASE);
+-}
+-#endif
+-
+-#if (DCACHE_SIZE != 0)
+-#define dma_alloc dma_alloc
+-static inline void *dma_alloc(size_t size)
+-{
+-	return xmemalign(DCACHE_LINE_SIZE, ALIGN(size, DCACHE_LINE_SIZE));
+-}
+-#endif
+-
+-#endif /* __ASM_NIOS2_DMA_MAPPING_H */
+diff --git a/arch/nios2/include/asm/dma.h b/arch/nios2/include/asm/dma.h
+deleted file mode 100644
+index 8f709d2dbf..0000000000
+--- a/arch/nios2/include/asm/dma.h
++++ /dev/null
+@@ -1,8 +0,0 @@
 -/*
 - * Copyright (C) 2012 by Marc Kleine-Budde <mkl@pengutronix.de>
 - *
@@ -1448,133 +1584,203 @@ index 27d269f491..0000000000
 - *
 - */
 -
--#ifndef __ASM_DMA_H
--#define __ASM_DMA_H
--
--/* empty */
--
--#endif /* __ASM_DMA_H */
-diff --git a/arch/openrisc/include/asm/elf.h b/arch/openrisc/include/asm/elf.h
+-#include <asm/dma-mapping.h>
+diff --git a/arch/nios2/include/asm/early_printf.h b/arch/nios2/include/asm/early_printf.h
 deleted file mode 100644
-index 6a134a5723..0000000000
---- a/arch/openrisc/include/asm/elf.h
+index e483e345fe..0000000000
+--- a/arch/nios2/include/asm/early_printf.h
 +++ /dev/null
-@@ -1,107 +0,0 @@
+@@ -1,10 +0,0 @@
+-#ifndef _EARLY_PRINTF_
+-#define _EARLY_PRINTF_
+-
+-#include <asm/nios2-io.h>
+-
+-void early_putc(char ch);
+-void early_puts(const char *s);
+-int early_printf(const char *fmt, ...);
+-
+-#endif  /* _EARLY_PRINTF_ */
+diff --git a/arch/nios2/include/asm/elf.h b/arch/nios2/include/asm/elf.h
+deleted file mode 100644
+index 6060e1ee6e..0000000000
+--- a/arch/nios2/include/asm/elf.h
++++ /dev/null
+@@ -1,165 +0,0 @@
 -/*
-- * OpenRISC Linux
+- * Copyright (C) 2011 Tobias Klauser <tklauser@distanz.ch>
 - *
-- * Linux architectural port borrowing liberally from similar works of
-- * others.  All original copyrights apply as per the original source
-- * declaration.
-- *
-- * OpenRISC implementation:
-- * Copyright (C) 2003 Matjaz Breskvar <phoenix@bsemi.com>
-- * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
-- * et al.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License. See the file COPYING in the main directory of this archive
+- * for more details.
 - */
 -
--#ifndef __ASM_OPENRISC_ELF_H
--#define __ASM_OPENRISC_ELF_H
+-#ifndef _ASM_NIOS2_ELF_H
+-#define _ASM_NIOS2_ELF_H
 -
--/*
-- * ELF register definitions..
-- */
--#include <linux/types.h>
+-/* Relocation types */
+-#define R_NIOS2_NONE		0
+-#define R_NIOS2_S16		1
+-#define R_NIOS2_U16		2
+-#define R_NIOS2_PCREL16		3
+-#define R_NIOS2_CALL26		4
+-#define R_NIOS2_IMM5		5
+-#define R_NIOS2_CACHE_OPX	6
+-#define R_NIOS2_IMM6		7
+-#define R_NIOS2_IMM8		8
+-#define R_NIOS2_HI16		9
+-#define R_NIOS2_LO16		10
+-#define R_NIOS2_HIADJ16		11
+-#define R_NIOS2_BFD_RELOC_32	12
+-#define R_NIOS2_BFD_RELOC_16	13
+-#define R_NIOS2_BFD_RELOC_8	14
+-#define R_NIOS2_GPREL		15
+-#define R_NIOS2_GNU_VTINHERIT	16
+-#define R_NIOS2_GNU_VTENTRY	17
+-#define R_NIOS2_UJMP		18
+-#define R_NIOS2_CJMP		19
+-#define R_NIOS2_CALLR		20
+-#define R_NIOS2_ALIGN		21
+-/* Keep this the last entry.  */
+-#define R_NIOS2_NUM		22
+-
 -#include <asm/ptrace.h>
--
--/* The OR1K relocation types... not all relevant for module loader */
--#define R_OR32_NONE	0
--#define R_OR32_32	1
--#define R_OR32_16	2
--#define R_OR32_8	3
--#define R_OR32_CONST	4
--#define R_OR32_CONSTH	5
--#define R_OR32_JUMPTARG	6
--#define R_OR32_VTINHERIT 7
--#define R_OR32_VTENTRY	8
 -
 -typedef unsigned long elf_greg_t;
 -
--/*
-- * Note that NGREG is defined to ELF_NGREG in include/linux/elfcore.h, and is
-- * thus exposed to user-space.
-- */
--#define ELF_NGREG (sizeof(struct user_regs_struct) / sizeof(elf_greg_t))
+-#define ELF_NGREG (sizeof(struct pt_regs) / sizeof(elf_greg_t))
 -typedef elf_greg_t elf_gregset_t[ELF_NGREG];
 -
--/* A placeholder; OR32 does not have fp support yes, so no fp regs for now.  */
 -typedef unsigned long elf_fpregset_t;
--
--/* This should be moved to include/linux/elf.h */
--#define EM_OR32         0x8472
--#define EM_OPENRISC     92     /* OpenRISC 32-bit embedded processor */
--
--/*
-- * These are used to set parameters in the core dumps.
-- */
--#define ELF_ARCH	EM_OR32
--#define ELF_CLASS	ELFCLASS32
--#define ELF_DATA	ELFDATA2MSB
--
--#ifdef __KERNEL__
 -
 -/*
 - * This is used to ensure we don't load something for the wrong architecture.
 - */
+-#define elf_check_arch(x) ((x)->e_machine == EM_ALTERA_NIOS2)
 -
--#define elf_check_arch(x) \
--	(((x)->e_machine == EM_OR32) || ((x)->e_machine == EM_OPENRISC))
+-/*
+- * These are used to set parameters in the core dumps.
+- */
+-#define ELF_CLASS  ELFCLASS32
+-#define ELF_DATA   ELFDATA2LSB
+-#define ELF_ARCH   EM_ALTERA_NIOS2
+-
+-#define ELF_PLAT_INIT(_r, load_addr)
+-
+-#define USE_ELF_CORE_DUMP
+-#define ELF_EXEC_PAGESIZE 4096
 -
 -/* This is the location that an ET_DYN program is loaded if exec'ed.  Typical
 -   use of this is to invoke "./ld.so someprog" to test out a new version of
 -   the loader.  We need to make sure that it is out of the way of the program
 -   that it will "exec", and that there is sufficient room for the brk.  */
 -
--#define ELF_ET_DYN_BASE         (0x08000000)
+-#define ELF_ET_DYN_BASE         0xD0000000UL
 -
--/*
-- * Enable dump using regset.
-- * This covers all of general/DSP/FPU regs.
-- */
--#define CORE_DUMP_USE_REGSET
+-/* regs is struct pt_regs, pr_reg is elf_gregset_t (which is
+-   now struct_user_regs, they are different) */
 -
--#define ELF_EXEC_PAGESIZE	8192
+-#ifdef CONFIG_MMU
+-#define ELF_CORE_COPY_REGS(pr_reg, regs)                                             \
+-	do {                                                                         \
+-		pr_reg[0]  = regs->r8;                                               \
+-		pr_reg[1]  = regs->r9;                                               \
+-		pr_reg[2]  = regs->r10;                                              \
+-		pr_reg[3]  = regs->r11;                                              \
+-		pr_reg[4]  = regs->r12;                                              \
+-		pr_reg[5]  = regs->r13;                                              \
+-		pr_reg[6]  = regs->r14;                                              \
+-		pr_reg[7]  = regs->r15;                                              \
+-		pr_reg[8]  = regs->r1;                                               \
+-		pr_reg[9]  = regs->r2;                                               \
+-		pr_reg[10] = regs->r3;                                               \
+-		pr_reg[11] = regs->r4;                                               \
+-		pr_reg[12] = regs->r5;                                               \
+-		pr_reg[13] = regs->r6;                                               \
+-		pr_reg[14] = regs->r7                                                \
+-		pr_reg[15] = regs->orig_r2;                                          \
+-		pr_reg[16] = regs->ra;                                               \
+-		pr_reg[17] = regs->fp;                                               \
+-		pr_reg[18] = regs->sp;                                               \
+-		pr_reg[19] = regs->gp;                                               \
+-		pr_reg[20] = regs->estatus;                                          \
+-		pr_reg[21] = regs->ea;                                               \
+-		pr_reg[22] = regs->orig_r7;                                          \
+-			{                                                            \
+-			struct switch_stack *sw = ((struct switch_stack *)regs) - 1; \
+-			pr_reg[23] = sw->r16;                                        \
+-			pr_reg[24] = sw->r17;                                        \
+-			pr_reg[25] = sw->r18;                                        \
+-			pr_reg[26] = sw->r19;                                        \
+-			pr_reg[27] = sw->r20;                                        \
+-			pr_reg[28] = sw->r21;                                        \
+-			pr_reg[29] = sw->r22;                                        \
+-			pr_reg[30] = sw->r23;                                        \
+-			pr_reg[31] = sw->fp;                                         \
+-			pr_reg[32] = sw->gp;                                         \
+-			pr_reg[33] = sw->ra;                                         \
+-			}                                                            \
+-	} while (0)
+-#else
+-#define ELF_CORE_COPY_REGS(pr_reg, regs)                                             \
+-	do {                                                                         \
+-		pr_reg[0] = regs->r1;                                                \
+-		pr_reg[1] = regs->r2;                                                \
+-		pr_reg[2] = regs->r3;                                                \
+-		pr_reg[3] = regs->r4;                                                \
+-		pr_reg[4] = regs->r5;                                                \
+-		pr_reg[5] = regs->r6;                                                \
+-		pr_reg[6] = regs->r7;                                                \
+-		pr_reg[7] = regs->r8;                                                \
+-		pr_reg[8] = regs->r9;                                                \
+-		pr_reg[9] = regs->r10;                                               \
+-		pr_reg[10] = regs->r11;                                              \
+-		pr_reg[11] = regs->r12;                                              \
+-		pr_reg[12] = regs->r13;                                              \
+-		pr_reg[13] = regs->r14;                                              \
+-		pr_reg[14] = regs->r15;                                              \
+-		pr_reg[23] = regs->sp;                                               \
+-		pr_reg[26] = regs->estatus;                                          \
+-		{                                                                    \
+-			struct switch_stack *sw = ((struct switch_stack *)regs) - 1; \
+-			pr_reg[15] = sw->r16;                                        \
+-			pr_reg[16] = sw->r17;                                        \
+-			pr_reg[17] = sw->r18;                                        \
+-			pr_reg[18] = sw->r19;                                        \
+-			pr_reg[19] = sw->r20;                                        \
+-			pr_reg[20] = sw->r21;                                        \
+-			pr_reg[21] = sw->r22;                                        \
+-			pr_reg[22] = sw->r23;                                        \
+-			pr_reg[24] = sw->fp;                                         \
+-			pr_reg[25] = sw->gp;                                         \
+-		}                                                                    \
+-	} while (0)
 -
--extern void dump_elf_thread(elf_greg_t *dest, struct pt_regs *pt);
--#define ELF_CORE_COPY_REGS(dest, regs) dump_elf_thread(dest, regs);
+-#endif /* CONFIG_MMU */
 -
 -/* This yields a mask that user programs can use to figure out what
--   instruction set this cpu supports.  This could be done in userspace,
--   but it's not easy, and we've already done it here.  */
+-   instruction set this cpu supports.  */
 -
--#define ELF_HWCAP	(0)
+-#define ELF_HWCAP (0)
 -
 -/* This yields a string that ld.so will use to load implementation
 -   specific libraries for optimization.  This is more specific in
--   intent than poking at uname or /proc/cpuinfo.
+-   intent than poking at uname or /proc/cpuinfo.  */
 -
--   For the moment, we have only optimizations for the Intel generations,
--   but that could change... */
+-#define ELF_PLATFORM  (NULL)
 -
--#define ELF_PLATFORM	(NULL)
+-#define SET_PERSONALITY(ex) set_personality(PER_LINUX_32BIT)
 -
--#define SET_PERSONALITY(ex) set_personality(PER_LINUX)
--
--#endif /* __KERNEL__ */
 -#endif
-diff --git a/arch/openrisc/include/asm/io.h b/arch/openrisc/include/asm/io.h
+diff --git a/arch/nios2/include/asm/io.h b/arch/nios2/include/asm/io.h
 deleted file mode 100644
-index 05580bd193..0000000000
---- a/arch/openrisc/include/asm/io.h
+index a964c695e7..0000000000
+--- a/arch/nios2/include/asm/io.h
 +++ /dev/null
-@@ -1,24 +0,0 @@
+@@ -1,51 +0,0 @@
 -/*
-- * (C) Copyright 2011, Julius Baxter <julius@opencores.org>
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -1588,19 +1794,45 @@ index 05580bd193..0000000000
 - *
 - */
 -
--#ifndef __ASM_OPENRISC_IO_H
--#define __ASM_OPENRISC_IO_H
--
--#define IO_SPACE_LIMIT		0x0
+-#ifndef __ASM_NIOS2_IO_H_
+-#define __ASM_NIOS2_IO_H_
 -
 -#include <asm/byteorder.h>
+-
+-#define	IO_SPACE_LIMIT	0
+-
+-#define __raw_writeb(v, a)       (*(volatile unsigned char  *)(a) = (v))
+-#define __raw_writew(v, a)       (*(volatile unsigned short *)(a) = (v))
+-#define __raw_writel(v, a)       (*(volatile unsigned int   *)(a) = (v))
+-
+-#define __raw_readb(a)          (*(volatile unsigned char  *)(a))
+-#define __raw_readw(a)          (*(volatile unsigned short *)(a))
+-#define __raw_readl(a)          (*(volatile unsigned int   *)(a))
+-
+-#define readb(addr)\
+-	({unsigned char val;\
+-	 asm volatile("ldbio %0, 0(%1)" : "=r"(val) : "r" (addr)); val; })
+-#define readw(addr)\
+-	({unsigned short val;\
+-	 asm volatile("ldhio %0, 0(%1)" : "=r"(val) : "r" (addr)); val; })
+-#define readl(addr)\
+-	({unsigned int val;\
+-	 asm volatile("ldwio %0, 0(%1)" : "=r"(val) : "r" (addr)); val; })
+-
+-#define writeb(val, addr)\
+-	asm volatile("stbio %0, 0(%1)" : : "r" (val), "r" (addr))
+-#define writew(val, addr)\
+-	asm volatile ("sthio %0, 0(%1)" : : "r" (val), "r" (addr))
+-#define writel(val, addr)\
+-	asm volatile("stwio %0, 0(%1)" : : "r" (val), "r" (addr))
+-
 -#include <asm-generic/io.h>
 -
--#endif
-diff --git a/arch/openrisc/include/asm/mmu.h b/arch/openrisc/include/asm/mmu.h
+-#endif /* __ASM_NIOS2_IO_H_ */
+diff --git a/arch/nios2/include/asm/mmu.h b/arch/nios2/include/asm/mmu.h
 deleted file mode 100644
 index 95af871420..0000000000
---- a/arch/openrisc/include/asm/mmu.h
+--- a/arch/nios2/include/asm/mmu.h
 +++ /dev/null
 @@ -1,6 +0,0 @@
 -#ifndef __ASM_MMU_H
@@ -1609,14 +1841,15 @@ index 95af871420..0000000000
 -#define MAP_ARCH_DEFAULT MAP_UNCACHED
 -
 -#endif /* __ASM_MMU_H */
-diff --git a/arch/openrisc/include/asm/openrisc_exc.h b/arch/openrisc/include/asm/openrisc_exc.h
+diff --git a/arch/nios2/include/asm/nios2-io.h b/arch/nios2/include/asm/nios2-io.h
 deleted file mode 100644
-index 58d677e6d1..0000000000
---- a/arch/openrisc/include/asm/openrisc_exc.h
+index 6511548a55..0000000000
+--- a/arch/nios2/include/asm/nios2-io.h
 +++ /dev/null
-@@ -1,37 +0,0 @@
+@@ -1,175 +0,0 @@
 -/*
-- * (C) Copyright 2011, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -1630,791 +1863,496 @@ index 58d677e6d1..0000000000
 - *
 - */
 -
--#ifndef _OPENRISC_EXC_H_
--#define _OPENRISC_EXC_H_
+-/*************************************************************************
+- * Altera Nios2 Standard Peripherals
+- ************************************************************************/
 -
--#define EXC_RESET		0x01
--#define EXC_BUS_ERROR		0x02
--#define EXC_DATA_PAGE_FAULT	0x03
--#define EXC_INSTR_PAGE_FAULT	0x04
--#define EXC_TIMER		0x05
--#define EXC_ALIGNMENT		0x06
--#define EXC_ILLEGAL_INSTR	0x07
--#define EXC_EXT_IRQ		0x08
--#define EXC_DTLB_MISS		0x09
--#define EXC_ITLB_MISS		0x0a
--#define EXC_RANGE		0x0b
--#define EXC_SYSCALL		0x0c
--#define EXC_FLOAT_POINT		0x0d
--#define EXC_TRAP		0x0e
+-#ifndef __NIOS2IO_H__
+-#define __NIOS2IO_H__
 -
--void exception_install_handler(int exception, void (*handler)(void));
--void exception_free_handler(int exception);
+-/*------------------------------------------------------------------------
+- * UART (http://www.altera.com/literature/ds/ds_nios_uart.pdf)
+- *----------------------------------------------------------------------*/
+-struct nios_uart {
+-	unsigned	rxdata;		/* Rx data reg */
+-	unsigned	txdata;		/* Tx data reg */
+-	unsigned	status;		/* Status reg */
+-	unsigned	control;	/* Control reg */
+-	unsigned	divisor;	/* Baud rate divisor reg */
+-	unsigned	endofpacket;	/* End-of-packet reg */
+-};
 -
--#endif
-diff --git a/arch/openrisc/include/asm/posix_types.h b/arch/openrisc/include/asm/posix_types.h
+-/* status register */
+-#define NIOS_UART_PE		(1 << 0)	/* parity error */
+-#define NIOS_UART_FE		(1 << 1)	/* frame error */
+-#define NIOS_UART_BRK		(1 << 2)	/* break detect */
+-#define NIOS_UART_ROE		(1 << 3)	/* rx overrun */
+-#define NIOS_UART_TOE		(1 << 4)	/* tx overrun */
+-#define NIOS_UART_TMT		(1 << 5)	/* tx empty */
+-#define NIOS_UART_TRDY		(1 << 6)	/* tx ready */
+-#define NIOS_UART_RRDY		(1 << 7)	/* rx ready */
+-#define NIOS_UART_E		(1 << 8)	/* exception */
+-#define NIOS_UART_DCTS		(1 << 10)	/* cts change */
+-#define NIOS_UART_CTS		(1 << 11)	/* cts */
+-#define NIOS_UART_EOP		(1 << 12)	/* eop detected */
+-
+-/* control register */
+-#define NIOS_UART_IPE		(1 << 0)	/* parity error int ena*/
+-#define NIOS_UART_IFE		(1 << 1)	/* frame error int ena */
+-#define NIOS_UART_IBRK		(1 << 2)	/* break detect int ena */
+-#define NIOS_UART_IROE		(1 << 3)	/* rx overrun int ena */
+-#define NIOS_UART_ITOE		(1 << 4)	/* tx overrun int ena */
+-#define NIOS_UART_ITMT		(1 << 5)	/* tx empty int ena */
+-#define NIOS_UART_ITRDY		(1 << 6)	/* tx ready int ena */
+-#define NIOS_UART_IRRDY		(1 << 7)	/* rx ready int ena */
+-#define NIOS_UART_IE		(1 << 8)	/* exception int ena */
+-#define NIOS_UART_TBRK		(1 << 9)	/* transmit break */
+-#define NIOS_UART_IDCTS		(1 << 10)	/* cts change int ena */
+-#define NIOS_UART_RTS		(1 << 11)	/* rts */
+-#define NIOS_UART_IEOP		(1 << 12)	/* eop detected int ena */
+-
+-
+-/*------------------------------------------------------------------------
+- * TIMER (http://www.altera.com/literature/ds/ds_nios_timer.pdf)
+- *----------------------------------------------------------------------*/
+-struct nios_timer {
+-	unsigned	status;			/* Timer status reg */
+-	unsigned	control;		/* Timer control reg */
+-	unsigned	periodl;		/* Timeout period low */
+-	unsigned	periodh;		/* Timeout period high */
+-	unsigned	snapl;			/* Snapshot low */
+-	unsigned	snaph;			/* Snapshot high */
+-};
+-
+-struct nios_timer_64 {
+-	unsigned	status;			/* Timer status reg */
+-	unsigned	control;		/* Timer control reg */
+-	unsigned	period0;		/* Timeout period low */
+-	unsigned	period1;		/* Timeout period high */
+-	unsigned	period2;		/* Timeout period low */
+-	unsigned	period3;		/* Timeout period high */
+-	unsigned	snap0;			/* Snapshot low */
+-	unsigned	snap1;			/* Snapshot high */
+-	unsigned	snap2;			/* Snapshot low */
+-	unsigned	snap3;			/* Snapshot high */
+-};
+-
+-/* status register */
+-#define NIOS_TIMER_TO		(1 << 0)	/* Timeout */
+-#define NIOS_TIMER_RUN		(1 << 1)	/* Timer running */
+-
+-/* control register */
+-#define NIOS_TIMER_ITO		(1 << 0)	/* Timeout int ena */
+-#define NIOS_TIMER_CONT		(1 << 1)	/* Continuous mode */
+-#define NIOS_TIMER_START	(1 << 2)	/* Start timer */
+-#define NIOS_TIMER_STOP		(1 << 3)	/* Stop timer */
+-
+-
+-/*------------------------------------------------------------------------
+- * PIO (http://www.altera.com/literature/ds/ds_nios_pio.pdf)
+- *----------------------------------------------------------------------*/
+-struct nios_pio {
+-	unsigned int	data;		/* Data value at each PIO in/out */
+-	unsigned int	direction;	/* Data direct. for each PIO bit */
+-	unsigned int	interruptmask;	/* Per-bit IRQ enable/disable */
+-	unsigned int	edgecapture;	/* Per-bit sync. edge detect & hold */
+-};
+-
+-/* direction register */
+-#define NIOS_PIO_OUT		(1)		/* PIO bit is output */
+-#define NIOS_PIO_IN		(0)		/* PIO bit is input */
+-
+-
+-/*------------------------------------------------------------------------
+- * SPI (http://www.altera.com/literature/ds/ds_nios_spi.pdf)
+- *----------------------------------------------------------------------*/
+-struct nios_spi {
+-	unsigned	rxdata;		/* Rx data reg */
+-	unsigned	txdata;		/* Tx data reg */
+-	unsigned	status;		/* Status reg */
+-	unsigned	control;	/* Control reg */
+-	unsigned	reserved;	/* (master only) */
+-	unsigned	slaveselect;	/* SPI slave select mask (master only) */
+-};
+-
+-/* status register */
+-#define NIOS_SPI_ROE		(1 << 3)	/* rx overrun */
+-#define NIOS_SPI_TOE		(1 << 4)	/* tx overrun */
+-#define NIOS_SPI_TMT		(1 << 5)	/* tx empty */
+-#define NIOS_SPI_TRDY		(1 << 6)	/* tx ready */
+-#define NIOS_SPI_RRDY		(1 << 7)	/* rx ready */
+-#define NIOS_SPI_E		(1 << 8)	/* exception */
+-
+-/* control register */
+-#define NIOS_SPI_IROE		(1 << 3)	/* rx overrun int ena */
+-#define NIOS_SPI_ITOE		(1 << 4)	/* tx overrun int ena */
+-#define NIOS_SPI_ITRDY		(1 << 6)	/* tx ready int ena */
+-#define NIOS_SPI_IRRDY		(1 << 7)	/* rx ready int ena */
+-#define NIOS_SPI_IE		(1 << 8)	/* exception int ena */
+-#define NIOS_SPI_SSO		(1 << 10)	/* override SS_n output */
+-
+-/*------------------------------------------------------------------------
+- * JTAG UART
+- *----------------------------------------------------------------------*/
+-struct nios_jtag {
+-	unsigned	data;			/* Data register */
+-	unsigned	control;		/* Control register */
+-};
+-
+-/* data register */
+-#define NIOS_JTAG_RVALID	(1<<15)		/* Read valid */
+-#define NIOS_JTAG_DATA(d)	((d)&0x0ff)	/* Read data */
+-#define NIOS_JTAG_RAVAIL(d)	((d)>>16)	/* Read space avail */
+-
+-/* control register */
+-#define NIOS_JTAG_RE		(1 << 0)	/* read intr enable */
+-#define NIOS_JTAG_WE		(1 << 1)	/* write intr enable */
+-#define NIOS_JTAG_RI		(1 << 8)	/* read intr pending */
+-#define NIOS_JTAG_WI		(1 << 9)	/* write intr pending*/
+-#define NIOS_JTAG_AC		(1 << 10)	/* activity indicator */
+-#define NIOS_JTAG_RRDY		(1 << 12)	/* read available */
+-#define NIOS_JTAG_WSPACE(d)	((d)>>16)	/* Write space avail */
+-
+-/*------------------------------------------------------------------------
+- * SYSTEM ID
+- *----------------------------------------------------------------------*/
+-struct nios_sysid {
+-	unsigned	id;			/* The system build id*/
+-	unsigned	timestamp;		/* Timestamp */
+-};
+-
+-#endif /* __NIOS2IO_H__ */
+diff --git a/arch/nios2/include/asm/nios2.h b/arch/nios2/include/asm/nios2.h
+deleted file mode 100644
+index 67e3177bad..0000000000
+--- a/arch/nios2/include/asm/nios2.h
++++ /dev/null
+@@ -1,56 +0,0 @@
+-/*
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#ifndef __NIOS2_H__
+-#define __NIOS2_H__
+-
+-/*------------------------------------------------------------------------
+- * Control registers -- use with wrctl() & rdctl()
+- *----------------------------------------------------------------------*/
+-#define CTL_STATUS	0		/* Processor status reg		*/
+-#define CTL_ESTATUS	1		/* Exception status reg		*/
+-#define CTL_BSTATUS	2		/* Break status reg		*/
+-#define CTL_IENABLE	3		/* Interrut enable reg		*/
+-#define CTL_IPENDING	4		/* Interrut pending reg		*/
+-
+-/*------------------------------------------------------------------------
+- * Access to control regs
+- *----------------------------------------------------------------------*/
+-#define _str_(x) #x
+-
+-#define rdctl(reg)\
+-	({unsigned int val;\
+-	asm volatile("rdctl %0, ctl" _str_(reg)\
+-		: "=r" (val)); val; })
+-
+-#define wrctl(reg, val)\
+-	asm volatile("wrctl ctl" _str_(reg) ",%0"\
+-		: : "r" (val))
+-
+-/*------------------------------------------------------------------------
+- * Control reg bit masks
+- *----------------------------------------------------------------------*/
+-#define STATUS_IE	(1<<0)		/* Interrupt enable		*/
+-#define STATUS_U	(1<<1)		/* User-mode			*/
+-
+-/*------------------------------------------------------------------------
+- * Bit-31 Cache bypass -- only valid for data access. When data cache
+- * is not implemented, bit 31 is ignored for compatibility.
+- *----------------------------------------------------------------------*/
+-#define CACHE_BYPASS(a) ((a) | 0x80000000)
+-#define CACHE_NO_BYPASS(a) ((a) & ~0x80000000)
+-
+-#endif /* __NIOS2_H__ */
+diff --git a/arch/nios2/include/asm/opcodes.h b/arch/nios2/include/asm/opcodes.h
+deleted file mode 100644
+index dc186e3a00..0000000000
+--- a/arch/nios2/include/asm/opcodes.h
++++ /dev/null
+@@ -1,124 +0,0 @@
+-/*
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#ifndef __ASM_NIOS2_OPCODES_H_
+-#define __ASM_NIOS2_OPCODES_H_
+-
+-#define OPCODE_OP(inst)	((inst) & 0x3f)
+-#define OPCODE_OPX(inst) (((inst)>>11) & 0x3f)
+-#define OPCODE_RA(inst) (((inst)>>27) & 01f)
+-#define OPCODE_RB(inst) (((inst)>>22) & 01f)
+-#define OPCODE_RC(inst) (((inst)>>17) & 01f)
+-
+-/* I-TYPE (immediate) and J-TYPE (jump) opcodes
+- */
+-#define OPCODE_CALL	0x00
+-#define OPCODE_LDBU	0x03
+-#define OPCODE_ADDI	0x04
+-#define OPCODE_STB	0x05
+-#define OPCODE_BR	0x06
+-#define OPCODE_LDB	0x07
+-#define OPCODE_CMPGEI	0x08
+-#define OPCODE_LDHU	0x0B
+-#define OPCODE_ANDI	0x0C
+-#define OPCODE_STH	0x0D
+-#define OPCODE_BGE	0x0E
+-#define OPCODE_LDH	0x0F
+-#define OPCODE_CMPLTI	0x10
+-#define OPCODE_XORI	0x1C
+-#define OPCODE_ORI	0x14
+-#define OPCODE_STW	0x15
+-#define OPCODE_BLT	0x16
+-#define OPCODE_LDW	0x17
+-#define OPCODE_CMPNEI	0x18
+-#define OPCODE_BNE	0x1E
+-#define OPCODE_CMPEQI	0x20
+-#define OPCODE_LDBUIO	0x23
+-#define OPCODE_MULI	0x24
+-#define OPCODE_STBIO	0x25
+-#define OPCODE_BEQ	0x26
+-#define OPCODE_LDBIO	0x27
+-#define OPCODE_CMPGEUI	0x28
+-#define OPCODE_ANDHI	0x2C
+-#define OPCODE_STHIO	0x2D
+-#define OPCODE_BGEU	0x2E
+-#define OPCODE_LDHIO	0x2F
+-#define OPCODE_CMPLTUI	0x30
+-#define OPCODE_CUSTOM	0x32
+-#define OPCODE_INITD	0x33
+-#define OPCODE_ORHI	0x34
+-#define OPCODE_STWIO	0x35
+-#define OPCODE_BLTU	0x36
+-#define OPCODE_LDWIO	0x37
+-#define OPCODE_RTYPE	0x3A
+-#define OPCODE_LDHUIO	0x2B
+-#define OPCODE_FLUSHD	0x3B
+-#define OPCODE_XORHI	0x3C
+-
+-/* R-Type (register) OPX field encodings
+- */
+-#define OPCODE_ERET	0x01
+-#define OPCODE_ROLI	0x02
+-#define OPCODE_ROL	0x03
+-#define OPCODE_FLUSHP	0x04
+-#define OPCODE_RET	0x05
+-#define OPCODE_NOR	0x06
+-#define OPCODE_MULXUU	0x07
+-#define OPCODE_CMPGE	0x08
+-#define OPCODE_BRET	0x09
+-#define OPCODE_ROR	0x0B
+-#define OPCODE_FLUSHI	0x0C
+-#define OPCODE_JMP	0x0D
+-#define OPCODE_AND	0x0E
+-
+-#define OPCODE_CMPLT	0x10
+-#define OPCODE_SLLI	0x12
+-#define OPCODE_SLL	0x13
+-#define OPCODE_OR	0x16
+-#define OPCODE_MULXSU	0x17
+-#define OPCODE_CMPNE	0x18
+-#define OPCODE_SRLI	0x1A
+-#define OPCODE_SRL	0x1B
+-#define OPCODE_NEXTPC	0x1C
+-#define OPCODE_CALLR	0x1D
+-#define OPCODE_XOR	0x1E
+-#define OPCODE_MULXSS	0x1F
+-
+-#define OPCODE_CMPEQ	0x20
+-#define OPCODE_CMPLTU	0x30
+-#define OPCODE_ADD	0x31
+-#define OPCODE_DIVU	0x24
+-#define OPCODE_DIV	0x25
+-#define OPCODE_RDCTL	0x26
+-#define OPCODE_MUL	0x27
+-#define OPCODE_CMPGEU	0x28
+-#define OPCODE_TRAP	0x2D
+-#define OPCODE_WRCTL	0x2E
+-
+-#define OPCODE_BREAK	0x34
+-#define OPCODE_SYNC	0x36
+-#define OPCODE_INITI	0x29
+-#define OPCODE_SUB	0x39
+-#define OPCODE_SRAI	0x3A
+-#define OPCODE_SRA	0x3B
+-
+-/*Full instruction encodings for R-Type, without the R's ;-)
+- *
+- * TODO: BREAK, BRET, ERET, RET, SYNC (as needed)
+- */
+-#define OPC_TRAP	0x003b683a
+-
+-#endif /* __ASM_NIOS2_OPCODES_H_ */
+diff --git a/arch/nios2/include/asm/posix_types.h b/arch/nios2/include/asm/posix_types.h
 deleted file mode 100644
 index 22cae6230c..0000000000
---- a/arch/openrisc/include/asm/posix_types.h
+--- a/arch/nios2/include/asm/posix_types.h
 +++ /dev/null
 @@ -1 +0,0 @@
 -#include <asm-generic/posix_types.h>
-diff --git a/arch/openrisc/include/asm/ptrace.h b/arch/openrisc/include/asm/ptrace.h
+diff --git a/arch/nios2/include/asm/ptrace.h b/arch/nios2/include/asm/ptrace.h
 deleted file mode 100644
-index ffdea52925..0000000000
---- a/arch/openrisc/include/asm/ptrace.h
+index a0b137152b..0000000000
+--- a/arch/nios2/include/asm/ptrace.h
 +++ /dev/null
-@@ -1,131 +0,0 @@
+@@ -1,26 +0,0 @@
 -/*
-- * OpenRISC Linux
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
 - *
-- * Linux architectural port borrowing liberally from similar works of
-- * others.  All original copyrights apply as per the original source
-- * declaration.
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
 - *
-- * OpenRISC implementation:
-- * Copyright (C) 2003 Matjaz Breskvar <phoenix@bsemi.com>
-- * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
-- * et al.
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
 - *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
 - */
 -
--#ifndef __ASM_OPENRISC_PTRACE_H
--#define __ASM_OPENRISC_PTRACE_H
--
--#include <asm/spr-defs.h>
--
--#ifndef __ASSEMBLY__
--/*
-- * This is the layout of the regset returned by the GETREGSET ptrace call
-- */
--struct user_regs_struct {
--	/* GPR R0-R31... */
--	unsigned long gpr[32];
--	unsigned long pc;
--	unsigned long sr;
--	unsigned long pad1;
--	unsigned long pad2;
--};
--#endif
--
--#ifdef __KERNEL__
--
--/*
-- * Make kernel PTrace/register structures opaque to userspace... userspace can
-- * access thread state via the regset mechanism.  This allows us a bit of
-- * flexibility in how we order the registers on the stack, permitting some
-- * optimizations like packing call-clobbered registers together so that
-- * they share a cacheline (not done yet, though... future optimization).
-- */
--
--#ifndef __ASSEMBLY__
--/*
-- * This struct describes how the registers are laid out on the kernel stack
-- * during a syscall or other kernel entry.
-- *
-- * This structure should always be cacheline aligned on the stack.
-- * FIXME: I don't think that's the case right now.  The alignment is
-- * taken care of elsewhere... head.S, process.c, etc.
-- */
+-#ifndef __ASM_NIOS2_PTRACE_H_
+-#define __ASM_NIOS2_PTRACE_H_
 -
 -struct pt_regs {
--	union {
--		struct {
--			/* Named registers */
--			long  sr;	/* Stored in place of r0 */
--			long  sp;	/* r1 */
--		};
--		struct {
--			/* Old style */
--			long offset[2];
--			long gprs[30];
--		};
--		struct {
--			/* New style */
--			long gpr[32];
--		};
--	};
--	long  pc;
--	long  orig_gpr11;	/* For restarting system calls */
--	long  syscallno;	/* Syscall number (used by strace) */
--	long dummy;		/* Cheap alignment fix */
+-	unsigned reg[32];
+-	unsigned status;
 -};
--#endif /* __ASSEMBLY__ */
 -
--/* TODO: Rename this to REDZONE because that's what it is */
--#define STACK_FRAME_OVERHEAD  128  /* size of minimum stack frame */
 -
--#define instruction_pointer(regs)	((regs)->pc)
--#define user_mode(regs)			(((regs)->sr & SPR_SR_SM) == 0)
--#define user_stack_pointer(regs)	((unsigned long)(regs)->sp)
--#define profile_pc(regs)		instruction_pointer(regs)
--
--/*
-- * Offsets used by 'ptrace' system call interface.
-- */
--#define PT_SR         0
--#define PT_SP         4
--#define PT_GPR2       8
--#define PT_GPR3       12
--#define PT_GPR4       16
--#define PT_GPR5       20
--#define PT_GPR6       24
--#define PT_GPR7       28
--#define PT_GPR8       32
--#define PT_GPR9       36
--#define PT_GPR10      40
--#define PT_GPR11      44
--#define PT_GPR12      48
--#define PT_GPR13      52
--#define PT_GPR14      56
--#define PT_GPR15      60
--#define PT_GPR16      64
--#define PT_GPR17      68
--#define PT_GPR18      72
--#define PT_GPR19      76
--#define PT_GPR20      80
--#define PT_GPR21      84
--#define PT_GPR22      88
--#define PT_GPR23      92
--#define PT_GPR24      96
--#define PT_GPR25      100
--#define PT_GPR26      104
--#define PT_GPR27      108
--#define PT_GPR28      112
--#define PT_GPR29      116
--#define PT_GPR30      120
--#define PT_GPR31      124
--#define PT_PC	      128
--#define PT_ORIG_GPR11 132
--#define PT_SYSCALLNO  136
--
--#endif /* __KERNEL__ */
--
--#endif /* __ASM_OPENRISC_PTRACE_H */
-diff --git a/arch/openrisc/include/asm/sections.h b/arch/openrisc/include/asm/sections.h
+-#endif /* __ASM_NIOS2_PTRACE_H_ */
+diff --git a/arch/nios2/include/asm/sections.h b/arch/nios2/include/asm/sections.h
 deleted file mode 100644
 index 2b8c516038..0000000000
---- a/arch/openrisc/include/asm/sections.h
+--- a/arch/nios2/include/asm/sections.h
 +++ /dev/null
 @@ -1 +0,0 @@
 -#include <asm-generic/sections.h>
-diff --git a/arch/openrisc/include/asm/spr-defs.h b/arch/openrisc/include/asm/spr-defs.h
+diff --git a/arch/nios2/include/asm/spi.h b/arch/nios2/include/asm/spi.h
 deleted file mode 100644
-index b3b08db4d0..0000000000
---- a/arch/openrisc/include/asm/spr-defs.h
+index 6c5740c340..0000000000
+--- a/arch/nios2/include/asm/spi.h
 +++ /dev/null
-@@ -1,578 +0,0 @@
--/*
-- * SPR Definitions
-- *
-- * Copyright (C) 2000 Damjan Lampret
-- * Copyright (C) 2003 Matjaz Breskvar <phoenix@bsemi.com>
-- * Copyright (C) 2008, 2010 Embecosm Limited
-- * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
-- * et al.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- *
-- * This file is part of OpenRISC 1000 Architectural Simulator.
-- */
+@@ -1,22 +0,0 @@
+-#ifndef __ALTERA_SPI_H_
+-#define __ALTERA_SPI_H_
 -
--#ifndef SPR_DEFS__H
--#define SPR_DEFS__H
+-#include <spi/spi.h>
 -
--/* Definition of special-purpose registers (SPRs) */
+-struct spi_altera_master {
+-	int	num_chipselect;
+-	int	spi_mode;
+-	int	databits;
+-	int	speed;
+-	int	bus_num;
+-};
 -
--#define MAX_GRPS (32)
--#define MAX_SPRS_PER_GRP_BITS (11)
--#define MAX_SPRS_PER_GRP (1 << MAX_SPRS_PER_GRP_BITS)
--#define MAX_SPRS (0x10000)
+-struct altera_spi {
+-	struct spi_master	master;
+-	int			databits;
+-	int			speed;
+-	int			mode;
+-	void __iomem		*regs;
+-};
 -
--/* Base addresses for the groups */
--#define SPRGROUP_SYS	(0 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_DMMU	(1 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_IMMU	(2 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_DC	(3 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_IC	(4 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_MAC	(5 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_D	(6 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_PC	(7 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_PM	(8 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_PIC	(9 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_TT	(10 << MAX_SPRS_PER_GRP_BITS)
--#define SPRGROUP_FP	(11 << MAX_SPRS_PER_GRP_BITS)
--
--/* System control and status group */
--#define SPR_VR		(SPRGROUP_SYS + 0)
--#define SPR_UPR		(SPRGROUP_SYS + 1)
--#define SPR_CPUCFGR	(SPRGROUP_SYS + 2)
--#define SPR_DMMUCFGR	(SPRGROUP_SYS + 3)
--#define SPR_IMMUCFGR	(SPRGROUP_SYS + 4)
--#define SPR_DCCFGR	(SPRGROUP_SYS + 5)
--#define SPR_ICCFGR	(SPRGROUP_SYS + 6)
--#define SPR_DCFGR	(SPRGROUP_SYS + 7)
--#define SPR_PCCFGR	(SPRGROUP_SYS + 8)
--#define SPR_VR2		(SPRGROUP_SYS + 9)
--#define SPR_AVR		(SPRGROUP_SYS + 10)
--#define SPR_EVBAR	(SPRGROUP_SYS + 11)
--#define SPR_AECR	(SPRGROUP_SYS + 12)
--#define SPR_AESR	(SPRGROUP_SYS + 13)
--#define SPR_NPC		(SPRGROUP_SYS + 16)
--#define SPR_SR		(SPRGROUP_SYS + 17)
--#define SPR_PPC		(SPRGROUP_SYS + 18)
--#define SPR_FPCSR	(SPRGROUP_SYS + 20)
--#define SPR_EPCR_BASE	(SPRGROUP_SYS + 32)
--#define SPR_EPCR_LAST	(SPRGROUP_SYS + 47)
--#define SPR_EEAR_BASE	(SPRGROUP_SYS + 48)
--#define SPR_EEAR_LAST	(SPRGROUP_SYS + 63)
--#define SPR_ESR_BASE	(SPRGROUP_SYS + 64)
--#define SPR_ESR_LAST	(SPRGROUP_SYS + 79)
--#define SPR_GPR_BASE	(SPRGROUP_SYS + 1024)
--
--/* Data MMU group */
--#define SPR_DMMUCR	(SPRGROUP_DMMU + 0)
--#define SPR_DTLBEIR	(SPRGROUP_DMMU + 2)
--#define SPR_DTLBMR_BASE(WAY)	(SPRGROUP_DMMU + 0x200 + (WAY) * 0x100)
--#define SPR_DTLBMR_LAST(WAY)	(SPRGROUP_DMMU + 0x27f + (WAY) * 0x100)
--#define SPR_DTLBTR_BASE(WAY)	(SPRGROUP_DMMU + 0x280 + (WAY) * 0x100)
--#define SPR_DTLBTR_LAST(WAY)	(SPRGROUP_DMMU + 0x2ff + (WAY) * 0x100)
--
--/* Instruction MMU group */
--#define SPR_IMMUCR	(SPRGROUP_IMMU + 0)
--#define SPR_ITLBEIR	(SPRGROUP_IMMU + 2)
--#define SPR_ITLBMR_BASE(WAY)	(SPRGROUP_IMMU + 0x200 + (WAY) * 0x100)
--#define SPR_ITLBMR_LAST(WAY)	(SPRGROUP_IMMU + 0x27f + (WAY) * 0x100)
--#define SPR_ITLBTR_BASE(WAY)	(SPRGROUP_IMMU + 0x280 + (WAY) * 0x100)
--#define SPR_ITLBTR_LAST(WAY)	(SPRGROUP_IMMU + 0x2ff + (WAY) * 0x100)
--
--/* Data cache group */
--#define SPR_DCCR	(SPRGROUP_DC + 0)
--#define SPR_DCBPR	(SPRGROUP_DC + 1)
--#define SPR_DCBFR	(SPRGROUP_DC + 2)
--#define SPR_DCBIR	(SPRGROUP_DC + 3)
--#define SPR_DCBWR	(SPRGROUP_DC + 4)
--#define SPR_DCBLR	(SPRGROUP_DC + 5)
--#define SPR_DCR_BASE(WAY)	(SPRGROUP_DC + 0x200 + (WAY) * 0x200)
--#define SPR_DCR_LAST(WAY)	(SPRGROUP_DC + 0x3ff + (WAY) * 0x200)
--
--/* Instruction cache group */
--#define SPR_ICCR	(SPRGROUP_IC + 0)
--#define SPR_ICBPR	(SPRGROUP_IC + 1)
--#define SPR_ICBIR	(SPRGROUP_IC + 2)
--#define SPR_ICBLR	(SPRGROUP_IC + 3)
--#define SPR_ICR_BASE(WAY)	(SPRGROUP_IC + 0x200 + (WAY) * 0x200)
--#define SPR_ICR_LAST(WAY)	(SPRGROUP_IC + 0x3ff + (WAY) * 0x200)
--
--/* MAC group */
--#define SPR_MACLO	(SPRGROUP_MAC + 1)
--#define SPR_MACHI	(SPRGROUP_MAC + 2)
--
--/* Debug group */
--#define SPR_DVR(N)	(SPRGROUP_D + (N))
--#define SPR_DCR(N)	(SPRGROUP_D + 8 + (N))
--#define SPR_DMR1	(SPRGROUP_D + 16)
--#define SPR_DMR2	(SPRGROUP_D + 17)
--#define SPR_DWCR0	(SPRGROUP_D + 18)
--#define SPR_DWCR1	(SPRGROUP_D + 19)
--#define SPR_DSR		(SPRGROUP_D + 20)
--#define SPR_DRR		(SPRGROUP_D + 21)
--
--/* Performance counters group */
--#define SPR_PCCR(N)	(SPRGROUP_PC + (N))
--#define SPR_PCMR(N)	(SPRGROUP_PC + 8 + (N))
--
--/* Power management group */
--#define SPR_PMR		(SPRGROUP_PM + 0)
--
--/* PIC group */
--#define SPR_PICMR	(SPRGROUP_PIC + 0)
--#define SPR_PICPR	(SPRGROUP_PIC + 1)
--#define SPR_PICSR	(SPRGROUP_PIC + 2)
--
--/* Tick Timer group */
--#define SPR_TTMR	(SPRGROUP_TT + 0)
--#define SPR_TTCR	(SPRGROUP_TT + 1)
--
--/*
-- * Bit definitions for the Version Register
-- */
--#define SPR_VR_VER	0xff000000 /* Processor version */
--#define SPR_VR_CFG	0x00ff0000 /* Processor configuration */
--#define SPR_VR_RES	0x0000ffc0 /* Reserved */
--#define SPR_VR_REV	0x0000003f /* Processor revision */
--
--#define SPR_VR_VER_OFF	24
--#define SPR_VR_CFG_OFF	16
--#define SPR_VR_REV_OFF	0
--
--/*
-- * Bit definitions for the Unit Present Register
-- */
--#define SPR_UPR_UP	0x00000001 /* UPR present */
--#define SPR_UPR_DCP	0x00000002 /* Data cache present */
--#define SPR_UPR_ICP	0x00000004 /* Instruction cache present */
--#define SPR_UPR_DMP	0x00000008 /* Data MMU present */
--#define SPR_UPR_IMP	0x00000010 /* Instruction MMU present */
--#define SPR_UPR_MP	0x00000020 /* MAC present */
--#define SPR_UPR_DUP	0x00000040 /* Debug unit present */
--#define SPR_UPR_PCUP	0x00000080 /* Performance counters unit present */
--#define SPR_UPR_PMP	0x00000100 /* Power management present */
--#define SPR_UPR_PICP	0x00000200 /* PIC present */
--#define SPR_UPR_TTP	0x00000400 /* Tick timer present */
--#define SPR_UPR_RES	0x00fe0000 /* Reserved */
--#define SPR_UPR_CUP	0xff000000 /* Context units present */
--
--/*
-- * Bit definitions for the CPU configuration register
-- */
--#define SPR_CPUCFGR_NSGF	0x0000000f /* Number of shadow GPR files */
--#define SPR_CPUCFGR_CGF		0x00000010 /* Custom GPR file */
--#define SPR_CPUCFGR_OB32S	0x00000020 /* ORBIS32 supported */
--#define SPR_CPUCFGR_OB64S	0x00000040 /* ORBIS64 supported */
--#define SPR_CPUCFGR_OF32S	0x00000080 /* ORFPX32 supported */
--#define SPR_CPUCFGR_OF64S	0x00000100 /* ORFPX64 supported */
--#define SPR_CPUCFGR_OV64S	0x00000200 /* ORVDX64 supported */
--#define SPR_CPUCFGR_ND		0x00000400 /* No delay slot */
--#define SPR_CPUCFGR_AVRP	0x00000800 /* Arch. Version Register present */
--#define SPR_CPUCFGR_EVBARP	0x00001000 /* Exception Vector Base Address Register (EVBAR) present */
--#define SPR_CPUCFGR_ISRP	0x00002000 /* Implementation-Specific Registers (ISR0-7) present */
--#define SPR_CPUCFGR_AECSRP	0x00004000 /* Arithmetic Exception Control Register (AECR) and */
--					   /* Arithmetic Exception Status Register (AESR) presents */
--#define SPR_CPUCFGR_RES		0xffffc000 /* Reserved */
--
--/*
-- * Bit definitions for the Debug configuration register and other
-- * constants.
-- */
--
--#define SPR_DCFGR_NDP	0x00000007  /* Number of matchpoints mask */
--#define SPR_DCFGR_NDP1	0x00000000  /* One matchpoint supported */
--#define SPR_DCFGR_NDP2	0x00000001  /* Two matchpoints supported */
--#define SPR_DCFGR_NDP3	0x00000002  /* Three matchpoints supported */
--#define SPR_DCFGR_NDP4	0x00000003  /* Four matchpoints supported */
--#define SPR_DCFGR_NDP5	0x00000004  /* Five matchpoints supported */
--#define SPR_DCFGR_NDP6	0x00000005  /* Six matchpoints supported */
--#define SPR_DCFGR_NDP7	0x00000006  /* Seven matchpoints supported */
--#define SPR_DCFGR_NDP8	0x00000007  /* Eight matchpoints supported */
--#define SPR_DCFGR_WPCI	0x00000008  /* Watchpoint counters implemented */
--
--#define MATCHPOINTS_TO_NDP(n)	(1 == n ? SPR_DCFGR_NDP1 : \
--				2 == n ? SPR_DCFGR_NDP2 : \
--				3 == n ? SPR_DCFGR_NDP3 : \
--				4 == n ? SPR_DCFGR_NDP4 : \
--				5 == n ? SPR_DCFGR_NDP5 : \
--				6 == n ? SPR_DCFGR_NDP6 : \
--				7 == n ? SPR_DCFGR_NDP7 : SPR_DCFGR_NDP8)
--#define MAX_MATCHPOINTS	8
--#define MAX_WATCHPOINTS	(MAX_MATCHPOINTS + 2)
--
--/*
-- * Bit definitions for the Supervision Register
-- */
--#define SPR_SR_SM	0x00000001 /* Supervisor Mode */
--#define SPR_SR_TEE	0x00000002 /* Tick timer Exception Enable */
--#define SPR_SR_IEE	0x00000004 /* Interrupt Exception Enable */
--#define SPR_SR_DCE	0x00000008 /* Data Cache Enable */
--#define SPR_SR_ICE	0x00000010 /* Instruction Cache Enable */
--#define SPR_SR_DME	0x00000020 /* Data MMU Enable */
--#define SPR_SR_IME	0x00000040 /* Instruction MMU Enable */
--#define SPR_SR_LEE	0x00000080 /* Little Endian Enable */
--#define SPR_SR_CE	0x00000100 /* CID Enable */
--#define SPR_SR_F	0x00000200 /* Condition Flag */
--#define SPR_SR_CY	0x00000400 /* Carry flag */
--#define SPR_SR_OV	0x00000800 /* Overflow flag */
--#define SPR_SR_OVE	0x00001000 /* Overflow flag Exception */
--#define SPR_SR_DSX	0x00002000 /* Delay Slot Exception */
--#define SPR_SR_EPH	0x00004000 /* Exception Prefix High */
--#define SPR_SR_FO	0x00008000 /* Fixed one */
--#define SPR_SR_SUMRA	0x00010000 /* Supervisor SPR read access */
--#define SPR_SR_RES	0x0ffe0000 /* Reserved */
--#define SPR_SR_CID	0xf0000000 /* Context ID */
--
--/*
-- * Bit definitions for the Data MMU Control Register
-- */
--#define SPR_DMMUCR_P2S		0x0000003e /* Level 2 Page Size */
--#define SPR_DMMUCR_P1S		0x000007c0 /* Level 1 Page Size */
--#define SPR_DMMUCR_VADDR_WIDTH	0x0000f800 /* Virtual ADDR Width */
--#define SPR_DMMUCR_PADDR_WIDTH	0x000f0000 /* Physical ADDR Width */
--
--/*
-- * Bit definitions for the Instruction MMU Control Register
-- */
--#define SPR_IMMUCR_P2S		0x0000003e /* Level 2 Page Size */
--#define SPR_IMMUCR_P1S		0x000007c0 /* Level 1 Page Size */
--#define SPR_IMMUCR_VADDR_WIDTH	0x0000f800 /* Virtual ADDR Width */
--#define SPR_IMMUCR_PADDR_WIDTH	0x000f0000 /* Physical ADDR Width */
--
--/*
-- * Bit definitions for the Data TLB Match Register
-- */
--#define SPR_DTLBMR_V	0x00000001 /* Valid */
--#define SPR_DTLBMR_PL1	0x00000002 /* Page Level 1 (if 0 then PL2) */
--#define SPR_DTLBMR_CID	0x0000003c /* Context ID */
--#define SPR_DTLBMR_LRU	0x000000c0 /* Least Recently Used */
--#define SPR_DTLBMR_VPN	0xfffff000 /* Virtual Page Number */
--
--/*
-- * Bit definitions for the Data TLB Translate Register
-- */
--#define SPR_DTLBTR_CC	0x00000001 /* Cache Coherency */
--#define SPR_DTLBTR_CI	0x00000002 /* Cache Inhibit */
--#define SPR_DTLBTR_WBC	0x00000004 /* Write-Back Cache */
--#define SPR_DTLBTR_WOM	0x00000008 /* Weakly-Ordered Memory */
--#define SPR_DTLBTR_A	0x00000010 /* Accessed */
--#define SPR_DTLBTR_D	0x00000020 /* Dirty */
--#define SPR_DTLBTR_URE	0x00000040 /* User Read Enable */
--#define SPR_DTLBTR_UWE	0x00000080 /* User Write Enable */
--#define SPR_DTLBTR_SRE	0x00000100 /* Supervisor Read Enable */
--#define SPR_DTLBTR_SWE	0x00000200 /* Supervisor Write Enable */
--#define SPR_DTLBTR_PPN	0xfffff000 /* Physical Page Number */
--
--/*
-- * Bit definitions for the Instruction TLB Match Register
-- */
--#define SPR_ITLBMR_V	0x00000001 /* Valid */
--#define SPR_ITLBMR_PL1	0x00000002 /* Page Level 1 (if 0 then PL2) */
--#define SPR_ITLBMR_CID	0x0000003c /* Context ID */
--#define SPR_ITLBMR_LRU	0x000000c0 /* Least Recently Used */
--#define SPR_ITLBMR_VPN	0xfffff000 /* Virtual Page Number */
--
--/*
-- * Bit definitions for the Instruction TLB Translate Register
-- */
--#define SPR_ITLBTR_CC	0x00000001 /* Cache Coherency */
--#define SPR_ITLBTR_CI	0x00000002 /* Cache Inhibit */
--#define SPR_ITLBTR_WBC	0x00000004 /* Write-Back Cache */
--#define SPR_ITLBTR_WOM	0x00000008 /* Weakly-Ordered Memory */
--#define SPR_ITLBTR_A	0x00000010 /* Accessed */
--#define SPR_ITLBTR_D	0x00000020 /* Dirty */
--#define SPR_ITLBTR_SXE	0x00000040 /* User Read Enable */
--#define SPR_ITLBTR_UXE	0x00000080 /* User Write Enable */
--#define SPR_ITLBTR_PPN	0xfffff000 /* Physical Page Number */
--
--/*
-- * Bit definitions for Data Cache Control register
-- */
--#define SPR_DCCR_EW	0x000000ff /* Enable ways */
--
--/*
-- * Bit definitions for Insn Cache Control register
-- */
--#define SPR_ICCR_EW	0x000000ff /* Enable ways */
--
--/*
-- * Bit definitions for Data Cache Configuration Register
-- */
--
--#define SPR_DCCFGR_NCW		0x00000007
--#define SPR_DCCFGR_NCS		0x00000078
--#define SPR_DCCFGR_CBS		0x00000080
--#define SPR_DCCFGR_CWS		0x00000100
--#define SPR_DCCFGR_CCRI		0x00000200
--#define SPR_DCCFGR_CBIRI	0x00000400
--#define SPR_DCCFGR_CBPRI	0x00000800
--#define SPR_DCCFGR_CBLRI	0x00001000
--#define SPR_DCCFGR_CBFRI	0x00002000
--#define SPR_DCCFGR_CBWBRI	0x00004000
--
--#define SPR_DCCFGR_NCW_OFF	0
--#define SPR_DCCFGR_NCS_OFF	3
--#define SPR_DCCFGR_CBS_OFF	7
--
--/*
-- * Bit definitions for Instruction Cache Configuration Register
-- */
--#define SPR_ICCFGR_NCW		0x00000007
--#define SPR_ICCFGR_NCS		0x00000078
--#define SPR_ICCFGR_CBS		0x00000080
--#define SPR_ICCFGR_CCRI		0x00000200
--#define SPR_ICCFGR_CBIRI	0x00000400
--#define SPR_ICCFGR_CBPRI	0x00000800
--#define SPR_ICCFGR_CBLRI	0x00001000
--
--#define SPR_ICCFGR_NCW_OFF	0
--#define SPR_ICCFGR_NCS_OFF	3
--#define SPR_ICCFGR_CBS_OFF	7
--
--/*
-- * Bit definitions for Data MMU Configuration Register
-- */
--#define SPR_DMMUCFGR_NTW	0x00000003
--#define SPR_DMMUCFGR_NTS	0x0000001C
--#define SPR_DMMUCFGR_NAE	0x000000E0
--#define SPR_DMMUCFGR_CRI	0x00000100
--#define SPR_DMMUCFGR_PRI	0x00000200
--#define SPR_DMMUCFGR_TEIRI	0x00000400
--#define SPR_DMMUCFGR_HTR	0x00000800
--
--#define SPR_DMMUCFGR_NTW_OFF	0
--#define SPR_DMMUCFGR_NTS_OFF	2
--
--/*
-- * Bit definitions for Instruction MMU Configuration Register
-- */
--#define SPR_IMMUCFGR_NTW	0x00000003
--#define SPR_IMMUCFGR_NTS	0x0000001C
--#define SPR_IMMUCFGR_NAE	0x000000E0
--#define SPR_IMMUCFGR_CRI	0x00000100
--#define SPR_IMMUCFGR_PRI	0x00000200
--#define SPR_IMMUCFGR_TEIRI	0x00000400
--#define SPR_IMMUCFGR_HTR	0x00000800
--
--#define SPR_IMMUCFGR_NTW_OFF	0
--#define SPR_IMMUCFGR_NTS_OFF	2
--
--/*
-- * Bit definitions for Debug Control registers
-- */
--#define SPR_DCR_DP	0x00000001 /* DVR/DCR present */
--#define SPR_DCR_CC	0x0000000e /* Compare condition */
--#define SPR_DCR_SC	0x00000010 /* Signed compare */
--#define SPR_DCR_CT	0x000000e0 /* Compare to */
--
--/* Bit results with SPR_DCR_CC mask */
--#define SPR_DCR_CC_MASKED	0x00000000
--#define SPR_DCR_CC_EQUAL	0x00000002
--#define SPR_DCR_CC_LESS		0x00000004
--#define SPR_DCR_CC_LESSE	0x00000006
--#define SPR_DCR_CC_GREAT	0x00000008
--#define SPR_DCR_CC_GREATE	0x0000000a
--#define SPR_DCR_CC_NEQUAL	0x0000000c
--
--/* Bit results with SPR_DCR_CT mask */
--#define SPR_DCR_CT_DISABLED	0x00000000
--#define SPR_DCR_CT_IFEA		0x00000020
--#define SPR_DCR_CT_LEA		0x00000040
--#define SPR_DCR_CT_SEA		0x00000060
--#define SPR_DCR_CT_LD		0x00000080
--#define SPR_DCR_CT_SD		0x000000a0
--#define SPR_DCR_CT_LSEA		0x000000c0
--#define SPR_DCR_CT_LSD		0x000000e0
--
--/*
-- * Bit definitions for Debug Mode 1 register
-- */
--#define SPR_DMR1_CW		0x000fffff /* Chain register pair data */
--#define SPR_DMR1_CW0_AND	0x00000001
--#define SPR_DMR1_CW0_OR		0x00000002
--#define SPR_DMR1_CW0		(SPR_DMR1_CW0_AND | SPR_DMR1_CW0_OR)
--#define SPR_DMR1_CW1_AND	0x00000004
--#define SPR_DMR1_CW1_OR		0x00000008
--#define SPR_DMR1_CW1		(SPR_DMR1_CW1_AND | SPR_DMR1_CW1_OR)
--#define SPR_DMR1_CW2_AND	0x00000010
--#define SPR_DMR1_CW2_OR		0x00000020
--#define SPR_DMR1_CW2		(SPR_DMR1_CW2_AND | SPR_DMR1_CW2_OR)
--#define SPR_DMR1_CW3_AND	0x00000040
--#define SPR_DMR1_CW3_OR		0x00000080
--#define SPR_DMR1_CW3		(SPR_DMR1_CW3_AND | SPR_DMR1_CW3_OR)
--#define SPR_DMR1_CW4_AND	0x00000100
--#define SPR_DMR1_CW4_OR		0x00000200
--#define SPR_DMR1_CW4		(SPR_DMR1_CW4_AND | SPR_DMR1_CW4_OR)
--#define SPR_DMR1_CW5_AND	0x00000400
--#define SPR_DMR1_CW5_OR		0x00000800
--#define SPR_DMR1_CW5		(SPR_DMR1_CW5_AND | SPR_DMR1_CW5_OR)
--#define SPR_DMR1_CW6_AND	0x00001000
--#define SPR_DMR1_CW6_OR		0x00002000
--#define SPR_DMR1_CW6		(SPR_DMR1_CW6_AND | SPR_DMR1_CW6_OR)
--#define SPR_DMR1_CW7_AND	0x00004000
--#define SPR_DMR1_CW7_OR		0x00008000
--#define SPR_DMR1_CW7		(SPR_DMR1_CW7_AND | SPR_DMR1_CW7_OR)
--#define SPR_DMR1_CW8_AND	0x00010000
--#define SPR_DMR1_CW8_OR		0x00020000
--#define SPR_DMR1_CW8		(SPR_DMR1_CW8_AND | SPR_DMR1_CW8_OR)
--#define SPR_DMR1_CW9_AND	0x00040000
--#define SPR_DMR1_CW9_OR		0x00080000
--#define SPR_DMR1_CW9		(SPR_DMR1_CW9_AND | SPR_DMR1_CW9_OR)
--#define SPR_DMR1_RES1		0x00300000 /* Reserved */
--#define SPR_DMR1_ST		0x00400000 /* Single-step trace*/
--#define SPR_DMR1_BT		0x00800000 /* Branch trace */
--#define SPR_DMR1_RES2		0xff000000 /* Reserved */
--
--/*
-- * Bit definitions for Debug Mode 2 register. AWTC and WGB corrected by JPB
-- */
--#define SPR_DMR2_WCE0		0x00000001 /* Watchpoint counter 0 enable */
--#define SPR_DMR2_WCE1		0x00000002 /* Watchpoint counter 0 enable */
--#define SPR_DMR2_AWTC		0x00000ffc /* Assign watchpoints to counters */
--#define SPR_DMR2_AWTC_OFF	2 /* Bit offset to AWTC field */
--#define SPR_DMR2_WGB		0x003ff000 /* Watch generating breakpoint */
--#define SPR_DMR2_WGB_OFF	12 /* Bit offset to WGB field */
--#define SPR_DMR2_WBS		0xffc00000 /* Watchpoint status */
--#define SPR_DMR2_WBS_OFF	22 /* Bit offset to WBS field */
--
--/*
-- * Bit definitions for Debug watchpoint counter registers
-- */
--#define SPR_DWCR_COUNT		0x0000ffff /* Count */
--#define SPR_DWCR_MATCH		0xffff0000 /* Match */
--#define SPR_DWCR_MATCH_OFF	16 /* Match bit offset */
--
--/*
-- * Bit definitions for Debug stop register
-- *
-- */
--#define SPR_DSR_RSTE	0x00000001 /* Reset exception */
--#define SPR_DSR_BUSEE	0x00000002 /* Bus error exception */
--#define SPR_DSR_DPFE	0x00000004 /* Data Page Fault exception */
--#define SPR_DSR_IPFE	0x00000008 /* Insn Page Fault exception */
--#define SPR_DSR_TTE	0x00000010 /* Tick Timer exception */
--#define SPR_DSR_AE	0x00000020 /* Alignment exception */
--#define SPR_DSR_IIE	0x00000040 /* Illegal Instruction exception */
--#define SPR_DSR_IE	0x00000080 /* Interrupt exception */
--#define SPR_DSR_DME	0x00000100 /* DTLB miss exception */
--#define SPR_DSR_IME	0x00000200 /* ITLB miss exception */
--#define SPR_DSR_RE	0x00000400 /* Range exception */
--#define SPR_DSR_SCE	0x00000800 /* System call exception */
--#define SPR_DSR_FPE	0x00001000 /* Floating Point Exception */
--#define SPR_DSR_TE	0x00002000 /* Trap exception */
--
--/*
-- * Bit definitions for Debug reason register
-- */
--#define SPR_DRR_RSTE	0x00000001 /* Reset exception */
--#define SPR_DRR_BUSEE	0x00000002 /* Bus error exception */
--#define SPR_DRR_DPFE	0x00000004 /* Data Page Fault exception */
--#define SPR_DRR_IPFE	0x00000008 /* Insn Page Fault exception */
--#define SPR_DRR_TTE	0x00000010 /* Tick Timer exception */
--#define SPR_DRR_AE	0x00000020 /* Alignment exception */
--#define SPR_DRR_IIE	0x00000040 /* Illegal Instruction exception */
--#define SPR_DRR_IE	0x00000080 /* Interrupt exception */
--#define SPR_DRR_DME	0x00000100 /* DTLB miss exception */
--#define SPR_DRR_IME	0x00000200 /* ITLB miss exception */
--#define SPR_DRR_RE	0x00000400 /* Range exception */
--#define SPR_DRR_SCE	0x00000800 /* System call exception */
--#define SPR_DRR_FPE	0x00001000 /* Floating Point Exception */
--#define SPR_DRR_TE	0x00002000 /* Trap exception */
--
--/*
-- * Bit definitions for Performance counters mode registers
-- */
--#define SPR_PCMR_CP	0x00000001 /* Counter present */
--#define SPR_PCMR_UMRA	0x00000002 /* User mode read access */
--#define SPR_PCMR_CISM	0x00000004 /* Count in supervisor mode */
--#define SPR_PCMR_CIUM	0x00000008 /* Count in user mode */
--#define SPR_PCMR_LA	0x00000010 /* Load access event */
--#define SPR_PCMR_SA	0x00000020 /* Store access event */
--#define SPR_PCMR_IF	0x00000040 /* Instruction fetch event*/
--#define SPR_PCMR_DCM	0x00000080 /* Data cache miss event */
--#define SPR_PCMR_ICM	0x00000100 /* Insn cache miss event */
--#define SPR_PCMR_IFS	0x00000200 /* Insn fetch stall event */
--#define SPR_PCMR_LSUS	0x00000400 /* LSU stall event */
--#define SPR_PCMR_BS	0x00000800 /* Branch stall event */
--#define SPR_PCMR_DTLBM	0x00001000 /* DTLB miss event */
--#define SPR_PCMR_ITLBM	0x00002000 /* ITLB miss event */
--#define SPR_PCMR_DDS	0x00004000 /* Data dependency stall event */
--#define SPR_PCMR_WPE	0x03ff8000 /* Watchpoint events */
--
--/*
-- * Bit definitions for the Power management register
-- */
--#define SPR_PMR_SDF	0x0000000f /* Slow down factor */
--#define SPR_PMR_DME	0x00000010 /* Doze mode enable */
--#define SPR_PMR_SME	0x00000020 /* Sleep mode enable */
--#define SPR_PMR_DCGE	0x00000040 /* Dynamic clock gating enable */
--#define SPR_PMR_SUME	0x00000080 /* Suspend mode enable */
--
--/*
-- * Bit definitions for PICMR
-- */
--#define SPR_PICMR_IUM	0xfffffffc /* Interrupt unmask */
--
--/*
-- * Bit definitions for PICPR
-- */
--#define SPR_PICPR_IPRIO	0xfffffffc /* Interrupt priority */
--
--/*
-- * Bit definitions for PICSR
-- */
--#define SPR_PICSR_IS	0xffffffff /* Interrupt status */
--
--/*
-- * Bit definitions for Tick Timer Control Register
-- */
--#define SPR_TTCR_CNT	0xffffffff /* Count, time period */
--#define SPR_TTMR_TP	0x0fffffff /* Time period */
--#define SPR_TTMR_IP	0x10000000 /* Interrupt Pending */
--#define SPR_TTMR_IE	0x20000000 /* Interrupt Enable */
--#define SPR_TTMR_DI	0x00000000 /* Disabled */
--#define SPR_TTMR_RT	0x40000000 /* Restart tick */
--#define SPR_TTMR_SR	0x80000000 /* Single run */
--#define SPR_TTMR_CR	0xc0000000 /* Continuous run */
--#define SPR_TTMR_M	0xc0000000 /* Tick mode */
--
--/*
-- * Bit definitions for the FP Control Status Register
-- */
--#define SPR_FPCSR_FPEE	0x00000001 /* Floating Point Exception Enable */
--#define SPR_FPCSR_RM	0x00000006 /* Rounding Mode */
--#define SPR_FPCSR_OVF	0x00000008 /* Overflow Flag */
--#define SPR_FPCSR_UNF	0x00000010 /* Underflow Flag */
--#define SPR_FPCSR_SNF	0x00000020 /* SNAN Flag */
--#define SPR_FPCSR_QNF	0x00000040 /* QNAN Flag */
--#define SPR_FPCSR_ZF	0x00000080 /* Zero Flag */
--#define SPR_FPCSR_IXF	0x00000100 /* Inexact Flag */
--#define SPR_FPCSR_IVF	0x00000200 /* Invalid Flag */
--#define SPR_FPCSR_INF	0x00000400 /* Infinity Flag */
--#define SPR_FPCSR_DZF	0x00000800 /* Divide By Zero Flag */
--#define SPR_FPCSR_ALLF	(SPR_FPCSR_OVF | SPR_FPCSR_UNF | SPR_FPCSR_SNF | \
--			SPR_FPCSR_QNF | SPR_FPCSR_ZF | SPR_FPCSR_IXF | \
--			SPR_FPCSR_IVF | SPR_FPCSR_INF | SPR_FPCSR_DZF)
--
--#define FPCSR_RM_RN	(0<<1)
--#define FPCSR_RM_RZ	(1<<1)
--#define FPCSR_RM_RIP	(2<<1)
--#define FPCSR_RM_RIN	(3<<1)
--
--/*
-- * l.nop constants
-- */
--#define NOP_NOP			0x0000 /* Normal nop instruction */
--#define NOP_EXIT		0x0001 /* End of simulation */
--#define NOP_REPORT		0x0002 /* Simple report */
--#define NOP_PUTC		0x0004 /* Simputc instruction */
--#define NOP_CNT_RESET		0x0005 /* Reset statistics counters */
--#define NOP_GET_TICKS		0x0006 /* Get # ticks running */
--#define NOP_GET_PS		0x0007 /* Get picosecs/cycle */
--#define NOP_REPORT_FIRST	0x0400 /* Report with number */
--#define NOP_REPORT_LAST		0x03ff /* Report with number */
--
--#endif /* SPR_DEFS__H */
-diff --git a/arch/openrisc/include/asm/string.h b/arch/openrisc/include/asm/string.h
+-#endif /*__ALTERA_SPI_H_*/
+diff --git a/arch/nios2/include/asm/string.h b/arch/nios2/include/asm/string.h
 deleted file mode 100644
-index 73e265564a..0000000000
---- a/arch/openrisc/include/asm/string.h
+index c1b74990dc..0000000000
+--- a/arch/nios2/include/asm/string.h
 +++ /dev/null
-@@ -1,4 +0,0 @@
--#ifndef __ASM_OPENRISC_STRING_H
--#define __ASM_OPENRISC_STRING_H
+@@ -1,40 +0,0 @@
+-/*
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-#ifndef __ASM_NIOS2_STRING_H_
+-#define __ASM_NIOS2_STRING_H_
+-/*
+-#undef __HAVE_ARCH_STRRCHR
+-extern char *strrchr(const char * s, int c);
 -
--#endif
-diff --git a/arch/openrisc/include/asm/swab.h b/arch/openrisc/include/asm/swab.h
+-#undef __HAVE_ARCH_STRCHR
+-extern char *strchr(const char * s, int c);
+-*/
+-#undef __HAVE_ARCH_MEMCPY
+-extern void *memcpy(void *, const void *, __kernel_size_t);
+-
+-#undef __HAVE_ARCH_MEMMOVE
+-extern void *memmove(void *, const void *, __kernel_size_t);
+-
+-#undef __HAVE_ARCH_MEMCHR
+-extern void *memchr(const void *, int, __kernel_size_t);
+-
+-#undef __HAVE_ARCH_MEMSET
+-extern void *memset(void *, int, __kernel_size_t);
+-
+-#undef __HAVE_ARCH_MEMZERO
+-extern void memzero(void *ptr, __kernel_size_t n);
+-
+-#endif /* __ASM_NIOS2_STRING_H_ */
+diff --git a/arch/nios2/include/asm/swab.h b/arch/nios2/include/asm/swab.h
 deleted file mode 100644
 index b07e1d51f1..0000000000
---- a/arch/openrisc/include/asm/swab.h
+--- a/arch/nios2/include/asm/swab.h
 +++ /dev/null
 @@ -1,4 +0,0 @@
 -#ifndef _ASM_SWAB_H
 -#define _ASM_SWAB_H
 -
 -#endif /* _ASM_SWAB_H */
-diff --git a/arch/openrisc/include/asm/system.h b/arch/openrisc/include/asm/system.h
+diff --git a/arch/nios2/include/asm/system.h b/arch/nios2/include/asm/system.h
 deleted file mode 100644
-index 0c6249721f..0000000000
---- a/arch/openrisc/include/asm/system.h
+index 63f14f50db..0000000000
+--- a/arch/nios2/include/asm/system.h
 +++ /dev/null
-@@ -1,35 +0,0 @@
+@@ -1,57 +0,0 @@
 -/*
-- * (C) Copyright 2011, Julius Baxter <julius@opencores.org>
+- * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -2427,249 +2365,114 @@ index 0c6249721f..0000000000
 - * GNU General Public License for more details.
 - *
 - */
+-#ifndef __ASM_NIOS2_SYSTEM_H_
+-#define __ASM_NIOS2_SYSTEM_H_
 -
--#ifndef __ASM_OPENRISC_SYSTEM_H
--#define __ASM_OPENRISC_SYSTEM_H
+-#define local_irq_enable() __asm__ __volatile__ (  \
+-	"rdctl	r8, status\n"			   \
+-	"ori	r8, r8, 1\n"			   \
+-	"wrctl	status, r8\n"			   \
+-	: : : "r8")
 -
--#include <asm/spr-defs.h>
+-#define local_irq_disable() __asm__ __volatile__ ( \
+-	"rdctl	r8, status\n"			   \
+-	"andi	r8, r8, 0xfffe\n"		   \
+-	"wrctl	status, r8\n"			   \
+-	: : : "r8")
 -
--static inline unsigned long mfspr(unsigned long add)
--{
--	unsigned long ret;
+-#define local_save_flags(x) __asm__ __volatile__ (	\
+-	"rdctl	r8, status\n"				\
+-	"mov	%0, r8\n"				\
+-	: "=r" (x) : : "r8", "memory")
 -
--	__asm__ __volatile__ ("l.mfspr %0,r0,%1" : "=r" (ret) : "K" (add));
+-#define local_irq_restore(x) __asm__ __volatile__ (	\
+-	"mov	r8, %0\n"				\
+-	"wrctl	status, r8\n"				\
+-	: : "r" (x) : "r8", "memory")
 -
--	return ret;
--}
+-/* For spinlocks etc */
+-#define local_irq_save(x) do { local_save_flags(x); local_irq_disable(); } \
+-	while (0)
 -
--static inline void mtspr(unsigned long add, unsigned long val)
--{
--	__asm__ __volatile__ ("l.mtspr r0,%1,%0" : : "K" (add), "r" (val));
--}
+-#define	irqs_disabled()					\
+-({							\
+-	unsigned long flags;				\
+-	local_save_flags(flags);			\
+-	((flags & NIOS2_STATUS_PIE_MSK) == 0x0);	\
+-})
 -
--#endif /* __ASM_OPENRISC_SYSTEM_H */
-diff --git a/arch/openrisc/include/asm/types.h b/arch/openrisc/include/asm/types.h
+-/* indirect call to go beyond 256MB limitation of toolchain */
+-#define nios2_callr(addr) __asm__ __volatile__ (	\
+-	"callr	%0"					\
+-	: : "r" (addr))
+-
+-#endif /* __ASM_NIOS2_SYSTEM_H */
+diff --git a/arch/nios2/include/asm/types.h b/arch/nios2/include/asm/types.h
 deleted file mode 100644
-index 21a45b74cd..0000000000
---- a/arch/openrisc/include/asm/types.h
+index 380ad340c3..0000000000
+--- a/arch/nios2/include/asm/types.h
 +++ /dev/null
-@@ -1,21 +0,0 @@
--/*
-- * (C) Copyright 2011, Julius Baxter <julius@opencores.org>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#ifndef _ASM_TYPES_H
--#define _ASM_TYPES_H
+@@ -1,6 +0,0 @@
+-#ifndef __ASM_TYPES_H
+-#define __ASM_TYPES_H
 -
 -#include <asm-generic/int-ll64.h>
 -
--#endif /* _ASM_TYPES_H */
-diff --git a/arch/openrisc/include/asm/unaligned.h b/arch/openrisc/include/asm/unaligned.h
+-#endif
+diff --git a/arch/nios2/include/asm/unaligned.h b/arch/nios2/include/asm/unaligned.h
 deleted file mode 100644
-index 1141cbd6fd..0000000000
---- a/arch/openrisc/include/asm/unaligned.h
+index 7615e8a85d..0000000000
+--- a/arch/nios2/include/asm/unaligned.h
 +++ /dev/null
-@@ -1,51 +0,0 @@
+@@ -1,15 +0,0 @@
+-#ifndef _ASM_NIOS_UNALIGNED_H
+-#define _ASM_NIOS_UNALIGNED_H
+-
+-#include <linux/unaligned/le_byteshift.h>
+-#include <linux/unaligned/be_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-
 -/*
-- * OpenRISC Linux
-- *
-- * Linux architectural port borrowing liberally from similar works of
-- * others.  All original copyrights apply as per the original source
-- * declaration.
-- *
-- * OpenRISC implementation:
-- * Copyright (C) 2003 Matjaz Breskvar <phoenix@bsemi.com>
-- * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
-- * et al.
-- *
+- * Select endianness
+- */
+-
+-#define get_unaligned	__get_unaligned_le
+-#define put_unaligned	__put_unaligned_le
+-
+-#endif /* _ASM_NIOS_UNALIGNED_H */
+diff --git a/arch/nios2/lib/Makefile b/arch/nios2/lib/Makefile
+deleted file mode 100644
+index 3affc45f48..0000000000
+--- a/arch/nios2/lib/Makefile
++++ /dev/null
+@@ -1,7 +0,0 @@
+-obj-y                      += board.o
+-obj-y                      += libgcc.o
+-obj-y                      += clock.o
+-obj-y                      += cache.o
+-obj-$(CONFIG_CMD_BOOTM)    += bootm.o
+-obj-$(CONFIG_EARLY_PRINTF) += early_printf.o
+-
+diff --git a/arch/nios2/lib/asm-offsets.c b/arch/nios2/lib/asm-offsets.c
+deleted file mode 100644
+index 21e4771e54..0000000000
+--- a/arch/nios2/lib/asm-offsets.c
++++ /dev/null
+@@ -1,22 +0,0 @@
+-/*
 - * This program is free software; you can redistribute it and/or modify
 - * it under the terms of the GNU General Public License as published by
 - * the Free Software Foundation; either version 2 of the License, or
 - * (at your option) any later version.
-- */
--
--#ifndef __ASM_OPENRISC_UNALIGNED_H
--#define __ASM_OPENRISC_UNALIGNED_H
--
--/*
-- * This is copied from the generic implementation and the C-struct
-- * variant replaced with the memmove variant.  The GCC compiler
-- * for the OR32 arch optimizes too aggressively for the C-struct
-- * variant to work, so use the memmove variant instead.
-- *
-- * It may be worth considering implementing the unaligned access
-- * exception handler and allowing unaligned accesses (access_ok.h)...
-- * not sure if it would be much of a performance win without further
-- * investigation.
-- */
--#include <asm/byteorder.h>
--
--#if defined(__LITTLE_ENDIAN)
--# include <linux/unaligned/le_memmove.h>
--# include <linux/unaligned/be_byteshift.h>
--# include <linux/unaligned/generic.h>
--# define get_unaligned	__get_unaligned_le
--# define put_unaligned	__put_unaligned_le
--#elif defined(__BIG_ENDIAN)
--# include <linux/unaligned/be_memmove.h>
--# include <linux/unaligned/le_byteshift.h>
--# include <linux/unaligned/generic.h>
--# define get_unaligned	__get_unaligned_be
--# define put_unaligned	__put_unaligned_be
--#else
--# error need to define endianess
--#endif
--
--#endif /* __ASM_OPENRISC_UNALIGNED_H */
-diff --git a/arch/openrisc/lib/Makefile b/arch/openrisc/lib/Makefile
-deleted file mode 100644
-index 62082feed0..0000000000
---- a/arch/openrisc/lib/Makefile
-+++ /dev/null
-@@ -1,8 +0,0 @@
--obj-y                 += clock.o
--obj-y                 += board.o
--obj-y                 += cpuinfo.o
--obj-y                 += muldi3.o
--obj-y                 += lshrdi3.o
--obj-y                 += ashldi3.o
--obj-y                 += ashrdi3.o
--obj-$(CONFIG_BUILTIN_DTB) += dtb.o
-diff --git a/arch/openrisc/lib/ashldi3.S b/arch/openrisc/lib/ashldi3.S
-deleted file mode 100644
-index 3e422fadc4..0000000000
---- a/arch/openrisc/lib/ashldi3.S
-+++ /dev/null
-@@ -1,41 +0,0 @@
--/*
-- * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
-- *
-- * Extracted from gcc generated assembly.
-- *
-- * Extended precision shifts.
-- *
-- * R3/R4 (MSW, LSW) has 64 bit value
-- * R5    has shift count
-- * result in R11/R12
-- *
-- */
--
--.globl __ashldi3
--
--__ashldi3:
--	l.sfeqi r5,0x0
--	l.bf out		/* if count = 0, go out                   */
--
--	l.addi r6,r0,0x20	/* r6 = 32                                */
--	l.sub r6,r6,r5		/* r6 = 32 - count                        */
--	l.sfgtsi r6,0x0		/* if count >= 32                         */
--	l.bnf more_than_32	/* branch to more_than_32                 */
--	l.nop 0x0
--
--less_than_32:
--	l.srl r6,r4,r6		/* r6 gets the bits moved from LSW to MSW */
--	l.sll r3,r3,r5		/* shift MSW                              */
--	l.sll r4,r4,r5		/* shift LSW                              */
--	l.or r3,r6,r3		/* MSW gets bits shifted from LSW         */
--
--out:
--	l.ori r11,r3,0x0
--	l.jr r9
--	l.ori r12,r4,0x0
--
--more_than_32:
--	l.sub r3,r0,r6		/* r3 = -r6, the number of bits above 32  */
--	l.sll r3,r4,r3		/* MSW = LSW << r3                        */
--	l.j out			/* go out                                 */
--	l.addi r4,r0,0x0	/* LSW = 0                                */
-diff --git a/arch/openrisc/lib/ashrdi3.S b/arch/openrisc/lib/ashrdi3.S
-deleted file mode 100644
-index 92ba65dbf7..0000000000
---- a/arch/openrisc/lib/ashrdi3.S
-+++ /dev/null
-@@ -1,55 +0,0 @@
--/*
-- * (C) Copyright 2012 - Franck JULLIEN <elec4fun@gmail.com>
-- *
-- * Extracted from gcc generated assembly.
-- *
-- * Extended precision shifts.
-- *
-- * R3/R4 (MSW, LSW) has 64 bit value
-- * R5    has shift count
-- * result in R11/R12
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
 - *
 - * This program is distributed in the hope that it will be useful,
 - * but WITHOUT ANY WARRANTY; without even the implied warranty of
 - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - * GNU General Public License for more details.
 - *
-- */
--
--
--.globl __ashrdi3
--
--__ashrdi3:
--	l.sfeqi r5,0x0			/* if count = 0, go out                   */
--	l.bf out
--
--	l.addi r6,r0,0x20		/* r6 = 32                                */
--	l.sub r6,r6,r5			/* r6 = 32 - count                        */
--	l.sfgtsi r6,0x0			/* if count >= 32                         */
--	l.bnf more_than_32		/* branch to more_than_32                 */
--	l.nop 0x0
--
--
-- less_than_32:
--	l.sll r6,r3,r6			/* r6 gets the bits moved from MSW to LSW */
--	l.srl r4,r4,r5			/* shift LSW                              */
--	l.sra r5,r3,r5			/* shift MSW to r5                        */
--	l.or r4,r6,r4			/* LSW gets bits shifted from MSW         */
--	l.ori r3,r5,0x0			/* r3 = MSW                               */
--
-- out:
--	l.ori r11,r3,0x0
--	l.jr r9
--	l.ori r12,r4,0x0
--
-- more_than_32:
--	l.srai r5,r3,0x1f		/* r5 = MSW sign extended                 */
--	l.sub r4,r0,r6			/* r4 = -r6, the number of bits above 32  */
--	l.sra r4,r3,r4			/* LSW gets bits shifted from MSB         */
--	l.j out				/* go out                                 */
--	l.ori r3,r5,0x0			/* r3 = MSW                               */
-diff --git a/arch/openrisc/lib/asm-offsets.c b/arch/openrisc/lib/asm-offsets.c
-deleted file mode 100644
-index 8cee8e00c6..0000000000
---- a/arch/openrisc/lib/asm-offsets.c
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/*
-- * OpenRISC asm-offsets.c
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - *
-- * This program is used to generate definitions needed by
-- * assembly language modules.
-- *
-- * We use the technique used in the OSF Mach kernel code:
-- * generate asm statements containing #defines,
-- * compile this file to assembler, and then extract the
-- * #defines from the assembly-language output.
 - */
 -
 -#include <linux/kbuild.h>
@@ -2678,12 +2481,12 @@ index 8cee8e00c6..0000000000
 -{
 -	return 0;
 -}
-diff --git a/arch/openrisc/lib/board.c b/arch/openrisc/lib/board.c
+diff --git a/arch/nios2/lib/board.c b/arch/nios2/lib/board.c
 deleted file mode 100644
-index 9591120fee..0000000000
---- a/arch/openrisc/lib/board.c
+index 0ca79f0f60..0000000000
+--- a/arch/nios2/lib/board.c
 +++ /dev/null
-@@ -1,31 +0,0 @@
+@@ -1,29 +0,0 @@
 -/*
 - * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
 - *
@@ -2701,26 +2504,193 @@ index 9591120fee..0000000000
 -
 -#include <common.h>
 -#include <malloc.h>
--#include <init.h>
 -#include <memory.h>
 -#include <asm-generic/memory_layout.h>
+-#include <cache.h>
 -
--/* Called from assembly */
--void openrisc_start_barebox(void);
--
--void __noreturn openrisc_start_barebox(void)
+-void __noreturn nios_start_barebox(void)
 -{
--	mem_malloc_init((void *)(OPENRISC_SOPC_TEXT_BASE - MALLOC_SIZE),
--			(void *)(OPENRISC_SOPC_TEXT_BASE - 1));
+-
+-	mem_malloc_init((void *)(NIOS_SOPC_TEXT_BASE - MALLOC_SIZE),
+-			(void *)(NIOS_SOPC_TEXT_BASE - 1));
 -
 -	start_barebox();
 -}
-diff --git a/arch/openrisc/lib/clock.c b/arch/openrisc/lib/clock.c
+diff --git a/arch/nios2/lib/bootm.c b/arch/nios2/lib/bootm.c
 deleted file mode 100644
-index 5ff978e841..0000000000
---- a/arch/openrisc/lib/clock.c
+index 2293cb1691..0000000000
+--- a/arch/nios2/lib/bootm.c
 +++ /dev/null
-@@ -1,41 +0,0 @@
+@@ -1,80 +0,0 @@
+-/*
+- * barebox - bootm.c
+- *
+- * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
+- *
+- * (C) Copyright 2003, Psyent Corporation <www.psyent.com>
+- * Scott McNutt <smcnutt@psyent.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <common.h>
+-#include <command.h>
+-#include <image.h>
+-#include <environment.h>
+-#include <init.h>
+-#include <boot.h>
+-#include <bootm.h>
+-#include <errno.h>
+-#include <asm/cache.h>
+-
+-#define NIOS_MAGIC 0x534f494e /* enable command line and initrd passing */
+-
+-static int do_bootm_linux(struct image_data *idata)
+-{
+-	void (*kernel)(int, int, int, const char *);
+-	const char *commandline = linux_bootargs_get();
+-	int ret;
+-
+-	ret = bootm_load_os(idata, idata->os_address);
+-	if (ret)
+-		return ret;
+-
+-	if (idata->dryrun)
+-		return 0;
+-
+-	kernel = (void *)(idata->os_address + idata->os_entry);
+-
+-	/* kernel parameters passing
+-	 * r4 : NIOS magic
+-	 * r5 : initrd start
+-	 * r6 : initrd end or fdt
+-	 * r7 : kernel command line
+-	 * fdt is passed to kernel via r6, the same as initrd_end. fdt will be
+-	 * verified with fdt magic. when both initrd and fdt are used at the
+-	 * same time, fdt must follow immediately after initrd.
+-	 */
+-
+-	/* flushes data and instruction caches before calling the kernel */
+-	flush_cache_all();
+-
+-	kernel(NIOS_MAGIC, 0, 0, commandline);
+-	/* does not return */
+-
+-	return 1;
+-}
+-
+-static struct image_handler handler = {
+-	.name = "NIOS2 Linux",
+-	.bootm = do_bootm_linux,
+-	.filetype = filetype_uimage,
+-	.ih_os = IH_OS_LINUX,
+-};
+-
+-int nios2_register_image_handler(void)
+-{
+-	return register_image_handler(&handler);
+-}
+-
+-late_initcall(nios2_register_image_handler);
+-
+diff --git a/arch/nios2/lib/cache.c b/arch/nios2/lib/cache.c
+deleted file mode 100644
+index 8d2822105f..0000000000
+--- a/arch/nios2/lib/cache.c
++++ /dev/null
+@@ -1,77 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2009, Wind River Systems Inc
+- * Implemented by fredrik.markstrom@gmail.com and ivarholmqvist@gmail.com
+- */
+-
+-#include <config.h>
+-
+-static void __flush_dcache(unsigned long start, unsigned long end)
+-{
+-	unsigned long addr;
+-
+-	start &= ~(DCACHE_LINE_SIZE - 1);
+-	end += (DCACHE_LINE_SIZE - 1);
+-	end &= ~(DCACHE_LINE_SIZE - 1);
+-
+-	if (end > start + DCACHE_SIZE)
+-		end = start + DCACHE_SIZE;
+-
+-	for (addr = start; addr < end; addr += DCACHE_LINE_SIZE) {
+-		__asm__ __volatile__ ("   flushd 0(%0)\n"
+-					: /* Outputs */
+-					: /* Inputs  */ "r"(addr)
+-					/* : No clobber */);
+-	}
+-}
+-
+-static void __flush_icache(unsigned long start, unsigned long end)
+-{
+-	unsigned long addr;
+-
+-	start &= ~(ICACHE_LINE_SIZE - 1);
+-	end += (ICACHE_LINE_SIZE - 1);
+-	end &= ~(ICACHE_LINE_SIZE - 1);
+-
+-	if (end > start + ICACHE_SIZE)
+-		end = start + ICACHE_SIZE;
+-
+-	for (addr = start; addr < end; addr += ICACHE_LINE_SIZE) {
+-		__asm__ __volatile__ ("   flushi %0\n"
+-					: /* Outputs */
+-					: /* Inputs  */ "r"(addr)
+-					/* : No clobber */);
+-	}
+-	__asm__ __volatile(" flushp\n");
+-}
+-
+-void flush_dcache_all(void)
+-{
+-	__flush_dcache(0, DCACHE_SIZE);
+-}
+-
+-void flush_icache_all(void)
+-{
+-	__flush_icache(0, ICACHE_SIZE);
+-}
+-
+-void flush_cache_all(void)
+-{
+-	flush_dcache_all();
+-	flush_icache_all();
+-}
+-
+-void flush_icache_range(unsigned long start, unsigned long end)
+-{
+-	__flush_icache(start, end);
+-}
+-
+-void flush_dcache_range(unsigned long start, unsigned long end)
+-{
+-	__flush_dcache(start, end);
+-	/* FIXME: Maybe we should remove __flush_icache ? */
+-	__flush_icache(start, end);
+-}
+diff --git a/arch/nios2/lib/clock.c b/arch/nios2/lib/clock.c
+deleted file mode 100644
+index cfd896077d..0000000000
+--- a/arch/nios2/lib/clock.c
++++ /dev/null
+@@ -1,53 +0,0 @@
 -/*
 - * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
 - *
@@ -2739,38 +2709,49 @@ index 5ff978e841..0000000000
 -#include <common.h>
 -#include <clock.h>
 -#include <init.h>
--#include <asm/system.h>
--#include <asm/openrisc_exc.h>
+-#include <asm/nios2-io.h>
+-#include <io.h>
 -
--static uint64_t openrisc_clocksource_read(void)
+-static struct nios_timer *timer = (struct nios_timer *)NIOS_SOPC_TIMER_BASE;
+-
+-static uint64_t nios_clocksource_read(void)
 -{
--	return (uint64_t)(mfspr(SPR_TTCR));
+-	uint64_t value;
+-
+-	writew(0x5555, &timer->snapl);       /* Dummy value*/
+-	value = (uint64_t)((readw(&timer->snaph) << 16) + readw(&timer->snapl));
+-
+-	return ~value;
 -}
 -
 -static struct clocksource cs = {
--	.read	= openrisc_clocksource_read,
+-	.read	= nios_clocksource_read,
 -	.mask	= 0xffffffff,
 -	.shift	= 12,
 -};
 -
 -static int clocksource_init(void)
 -{
--	mtspr(SPR_TTMR, SPR_TTMR_CR | 0xFFFFFF);
--	cs.mult = clocksource_hz2mult(OPENRISC_TIMER_FREQ, cs.shift);
+-	writew(0, &timer->control);
+-	writew(0xFFFF, &timer->periodl);
+-	writew(0xFFFF, &timer->periodh);
+-	writew(NIOS_TIMER_CONT | NIOS_TIMER_START, &timer->control);
+-
+-	cs.mult = clocksource_hz2mult(NIOS_SOPC_TIMER_FREQ, cs.shift);
 -
 -	return init_clock(&cs);
 -}
 -
 -core_initcall(clocksource_init);
-diff --git a/arch/openrisc/lib/cpuinfo.c b/arch/openrisc/lib/cpuinfo.c
+-
+diff --git a/arch/nios2/lib/early_printf.c b/arch/nios2/lib/early_printf.c
 deleted file mode 100644
-index d94178ea59..0000000000
---- a/arch/openrisc/lib/cpuinfo.c
+index 7b4ac97dcd..0000000000
+--- a/arch/nios2/lib/early_printf.c
 +++ /dev/null
-@@ -1,200 +0,0 @@
+@@ -1,49 +0,0 @@
 -/*
-- * (C) Copyright 2011, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-- * (C) Copyright 2011, Julius Baxter <julius@opencores.org>
+- * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -2784,928 +2765,829 @@ index d94178ea59..0000000000
 - *
 - */
 -
+-#include <stdio.h>
 -#include <common.h>
--#include <command.h>
--#include <asm/system.h>
--#include <asm/cache.h>
--#include <asm/openrisc_exc.h>
+-#include <asm/nios2-io.h>
+-#include <io.h>
 -
--/* CPUID */
--#define OR1KSIM	0x00
--#define OR1200	0x12
--#define MOR1KX	0x01
--#define ALTOR32	0x32
--#define OR10	0x10
--
--static volatile int illegal_instruction;
--
--static void illegal_instruction_handler(void)
+-void early_putc(char ch)
 -{
--	ulong *epcr = (ulong *)mfspr(SPR_EPCR_BASE);
+-	struct nios_uart *uart = (struct nios_uart *)NIOS_SOPC_UART_BASE;
 -
--	/* skip over the illegal instruction */
--	mtspr(SPR_EPCR_BASE, (ulong)(++epcr));
--	illegal_instruction = 1;
+-	while ((readl(&uart->status) & NIOS_UART_TRDY) == 0);
+-	writel((unsigned char)ch, &uart->txdata);
 -}
 -
--static int checkinstructions(void)
+-void early_puts(const char *s)
 -{
--	ulong ra = 1, rb = 1, rc;
+-	while (*s != 0)
+-		early_putc(*s++);
+-}
 -
--	exception_install_handler(EXC_ILLEGAL_INSTR,
--				illegal_instruction_handler);
+-int early_printf(const char *fmt, ...)
+-{
+-	va_list args;
+-	uint i;
+-	char printbuffer[50];
 -
--	illegal_instruction = 0;
--	asm volatile("l.mul %0,%1,%2" : "=r" (rc) : "r" (ra), "r" (rb));
--	printf("           Hardware multiplier: %s\n",
--		illegal_instruction ? "no" : "yes");
+-	va_start(args, fmt);
 -
--	illegal_instruction = 0;
--	asm volatile("l.div %0,%1,%2" : "=r" (rc) : "r" (ra), "r" (rb));
--	printf("           Hardware divider: %s\n",
--		illegal_instruction ? "no" : "yes");
+-	i = vsprintf(printbuffer, fmt, args);
+-	va_end(args);
 -
--	exception_free_handler(EXC_ILLEGAL_INSTR);
+-	early_puts(printbuffer);
 -
 -	return 0;
 -}
--
--static void cpu_implementation(ulong vr2, char *string)
--{
--	switch (vr2 >> 24) {
--
--	case OR1KSIM:
--		sprintf(string, "or1ksim");
--		break;
--	case OR1200:
--		sprintf(string, "OR1200");
--		break;
--	case MOR1KX:
--		sprintf(string, "mor1kx v%u.%u - ", (uint)((vr2 >> 16) & 0xff),
--			(uint)((vr2 >> 8) & 0xff));
--
--		if ((uint)(vr2 & 0xff) == 1)
--			strcat(string, "cappuccino");
--		else if ((uint)(vr2 & 0xff) == 2)
--			strcat(string, "espresso");
--		else if ((uint)(vr2 & 0xff) == 3)
--			strcat(string, "prontoespresso");
--		else
--			strcat(string, "unknwown");
--
--		break;
--	case ALTOR32:
--		sprintf(string, "AltOr32");
--		break;
--	case OR10:
--		sprintf(string, "OR10");
--		break;
--	default:
--		sprintf(string, "unknown");
--	}
--}
--
--static int checkcpu(void)
--{
--	ulong upr = mfspr(SPR_UPR);
--	ulong vr = mfspr(SPR_VR);
--	ulong vr2 = mfspr(SPR_VR2);
--	ulong iccfgr = mfspr(SPR_ICCFGR);
--	ulong dccfgr = mfspr(SPR_DCCFGR);
--	ulong immucfgr = mfspr(SPR_IMMUCFGR);
--	ulong dmmucfgr = mfspr(SPR_DMMUCFGR);
--	ulong cpucfgr = mfspr(SPR_CPUCFGR);
--	uint ver = (vr & SPR_VR_VER) >> 24;
--	uint rev = vr & SPR_VR_REV;
--	uint block_size;
--	uint ways;
--	uint sets;
--
--	char impl_str[50];
--
--	printf("CPU:   OpenRISC-%x00 (rev %d) @ %d MHz\n",
--		ver, rev, (CONFIG_SYS_CLK_FREQ / 1000000));
--
--	if (vr2) {
--		cpu_implementation(vr2, impl_str);
--		printf("       Implementation: %s\n", impl_str);
--	}
--
--	if (upr & SPR_UPR_DCP) {
--		block_size = (dccfgr & SPR_DCCFGR_CBS) ? 32 : 16;
--		ways = 1 << (dccfgr & SPR_DCCFGR_NCW);
--		printf("       D-Cache: %d bytes, %d bytes/line, %d way(s)\n",
--		       checkdcache(), block_size, ways);
--	} else {
--		printf("       D-Cache: no\n");
--	}
--
--	if (upr & SPR_UPR_ICP) {
--		block_size = (iccfgr & SPR_ICCFGR_CBS) ? 32 : 16;
--		ways = 1 << (iccfgr & SPR_ICCFGR_NCW);
--		printf("       I-Cache: %d bytes, %d bytes/line, %d way(s)\n",
--		       checkicache(), block_size, ways);
--	} else {
--		printf("       I-Cache: no\n");
--	}
--
--	if (upr & SPR_UPR_DMP) {
--		sets = 1 << ((dmmucfgr & SPR_DMMUCFGR_NTS) >> 2);
--		ways = (dmmucfgr & SPR_DMMUCFGR_NTW) + 1;
--		printf("       DMMU: %d sets, %d way(s)\n",
--		       sets, ways);
--	} else {
--		printf("       DMMU: no\n");
--	}
--
--	if (upr & SPR_UPR_IMP) {
--		sets = 1 << ((immucfgr & SPR_IMMUCFGR_NTS) >> 2);
--		ways = (immucfgr & SPR_IMMUCFGR_NTW) + 1;
--		printf("       IMMU: %d sets, %d way(s)\n",
--		       sets, ways);
--	} else {
--		printf("       IMMU: no\n");
--	}
--
--	printf("       MAC unit: %s\n",
--		(upr & SPR_UPR_MP) ? "yes" : "no");
--	printf("       Debug unit: %s\n",
--		(upr & SPR_UPR_DUP) ? "yes" : "no");
--	printf("       Performance counters: %s\n",
--		(upr & SPR_UPR_PCUP) ? "yes" : "no");
--	printf("       Power management: %s\n",
--		(upr & SPR_UPR_PMP) ? "yes" : "no");
--	printf("       Interrupt controller: %s\n",
--		(upr & SPR_UPR_PICP) ? "yes" : "no");
--	printf("       Timer: %s\n",
--		(upr & SPR_UPR_TTP) ? "yes" : "no");
--	printf("       Custom unit(s): %s\n",
--		(upr & SPR_UPR_CUP) ? "yes" : "no");
--
--	printf("       Supported instructions:\n");
--	printf("           ORBIS32: %s\n",
--		(cpucfgr & SPR_CPUCFGR_OB32S) ? "yes" : "no");
--	printf("           ORBIS64: %s\n",
--		(cpucfgr & SPR_CPUCFGR_OB64S) ? "yes" : "no");
--	printf("           ORFPX32: %s\n",
--		(cpucfgr & SPR_CPUCFGR_OF32S) ? "yes" : "no");
--	printf("           ORFPX64: %s\n",
--		(cpucfgr & SPR_CPUCFGR_OF64S) ? "yes" : "no");
--
--	checkinstructions();
--
--	return 0;
--}
--
--static int do_cpuinfo(int argc, char *argv[])
--{
--	checkcpu();
--	return 0;
--}
--
--BAREBOX_CMD_START(cpuinfo)
--	.cmd            = do_cpuinfo,
--	BAREBOX_CMD_DESC("show CPU information")
--	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
--BAREBOX_CMD_END
-diff --git a/arch/openrisc/lib/dtb.c b/arch/openrisc/lib/dtb.c
+diff --git a/arch/nios2/lib/libgcc.c b/arch/nios2/lib/libgcc.c
 deleted file mode 100644
-index 61cf35ddf3..0000000000
---- a/arch/openrisc/lib/dtb.c
+index 814df73310..0000000000
+--- a/arch/nios2/lib/libgcc.c
 +++ /dev/null
-@@ -1,35 +0,0 @@
+@@ -1,524 +0,0 @@
 -/*
-- * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
+- * This file is part of GNU CC.
 - *
-- * Based on arch/arm/cpu/dtb.c:
-- * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+- * GNU CC is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published
+- * by the Free Software Foundation; either version 2, or (at your
+- * option) any later version.
 - *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2
-- * as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
+- * GNU CC is distributed in the hope that it will be useful,
 - * but WITHOUT ANY WARRANTY; without even the implied warranty of
 - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - * GNU General Public License for more details.
 - *
 - */
--#include <common.h>
--#include <init.h>
--#include <of.h>
 -
--extern char __dtb_start[];
 -
--static int of_openrisc_init(void)
+-#define W_TYPE_SIZE 32
+-#define BITS_PER_UNIT 8
+-
+-typedef unsigned int UWtype;
+-typedef unsigned int UHWtype;
+-typedef unsigned long long UDWtype;
+-
+-typedef unsigned char UQItype;
+-typedef long SItype;
+-typedef unsigned long USItype;
+-typedef long long DItype;
+-typedef unsigned long long DSItype;
+-
+-#include "longlong.h"
+-
+-typedef int word_type;
+-typedef long Wtype;
+-typedef long long DWtype;
+-
+-struct DWstruct { Wtype low, high; };
+-
+-typedef union {
+-	struct DWstruct s;
+-	DWtype ll;
+-} DWunion;
+-
+-const UQItype __clz_tab[256] = {
+-	0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4,
+-	5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+-	6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+-	6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+-	7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+-	7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+-	7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+-	7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+-	8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+-	8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+-	8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+-	8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+-	8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+-	8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+-	8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+-	8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8
+-};
+-
+-
+-DWtype __ashldi3(DWtype u, word_type b)
 -{
--	struct device_node *root;
+-	const DWunion uu = {.ll = u};
+-	const word_type bm = (sizeof(Wtype) * BITS_PER_UNIT) - b;
+-	DWunion w;
+-	UWtype carries;
 -
--	root = of_get_root_node();
--	if (root)
+-	if (b == 0)
+-		return u;
+-
+-	if (bm <= 0) {
+-		w.s.low = 0;
+-		w.s.high = (UWtype) uu.s.low << -bm;
+-	} else {
+-		carries = (UWtype) uu.s.low >> bm;
+-		w.s.low = (UWtype) uu.s.low << b;
+-		w.s.high = ((UWtype) uu.s.high << b) | carries;
+-	}
+-
+-	return w.ll;
+-}
+-
+-DWtype __ashrdi3(DWtype u, word_type b)
+-{
+-	const DWunion uu = {.ll = u};
+-	const word_type bm = (sizeof(Wtype) * BITS_PER_UNIT) - b;
+-	DWunion w;
+-	UWtype carries;
+-
+-	if (b == 0)
+-		return u;
+-
+-	if (bm <= 0) {
+-		w.s.high = uu.s.high >> (sizeof(Wtype) * BITS_PER_UNIT - 1);
+-		w.s.low = uu.s.high >> -bm;
+-	} else {
+-		carries = (UWtype) uu.s.high << bm;
+-		w.s.high = uu.s.high >> b;
+-		w.s.low = ((UWtype) uu.s.low >> b) | carries;
+-	}
+-
+-	return w.ll;
+-}
+-
+-DWtype __lshrdi3(DWtype u, word_type b)
+-{
+-	const DWunion uu = {.ll = u};
+-	const word_type bm = (sizeof(Wtype) * BITS_PER_UNIT) - b;
+-	DWunion w;
+-	UWtype carries;
+-
+-	if (b == 0)
+-		return u;
+-
+-	if (bm <= 0) {
+-		w.s.high = 0;
+-		w.s.low = (UWtype) uu.s.high >> -bm;
+-	} else {
+-		carries = (UWtype) uu.s.high << bm;
+-		w.s.high = (UWtype) uu.s.high >> b;
+-		w.s.low = ((UWtype) uu.s.low >> b) | carries;
+-	}
+-
+-	return w.ll;
+-}
+-
+-word_type __cmpdi2(DWtype a, DWtype b)
+-{
+-	const DWunion au = {.ll = a};
+-	const DWunion bu = {.ll = b};
+-
+-	if (au.s.high < bu.s.high)
 -		return 0;
+-	else if (au.s.high > bu.s.high)
+-		return 2;
 -
--	barebox_register_fdt(__dtb_start);
+-	if ((UWtype) au.s.low < (UWtype) bu.s.low)
+-		return 0;
+-	else if ((UWtype) au.s.low > (UWtype) bu.s.low)
+-		return 2;
 -
+-	return 1;
+-}
+-
+-UDWtype __udivmoddi4(UDWtype n, UDWtype d, UDWtype *rp)
+-{
+-	const DWunion nn = {.ll = n};
+-	const DWunion dd = {.ll = d};
+-
+-	DWunion rr;
+-	UWtype d0, d1, n0, n1, n2;
+-	UWtype q0, q1;
+-	UWtype b, bm;
+-
+-	DWunion ww;
+-
+-	d0 = dd.s.low;
+-	d1 = dd.s.high;
+-	n0 = nn.s.low;
+-	n1 = nn.s.high;
+-
+-#if !UDIV_NEEDS_NORMALIZATION
+-	if (d1 == 0) {
+-		if (d0 > n1) {
+-			udiv_qrnnd(q0, n0, n1, n0, d0);
+-			q1 = 0;
+-		} else {
+-			if (d0 == 0)
+-				d0 = 1 / d0;  /* Divide intentionally by zero.*/
+-			udiv_qrnnd(q1, n1, 0, n1, d0);
+-			udiv_qrnnd(q0, n0, n1, n0, d0);
+-			/* Remainder in n0.  */
+-		}
+-
+-		if (rp != 0) {
+-			rr.s.low = n0;
+-			rr.s.high = 0;
+-			*rp = rr.ll;
+-		}
+-	}
+-
+-#else /* UDIV_NEEDS_NORMALIZATION */
+-
+-	if (d1 == 0) {
+-		if (d0 > n1) {
+-			count_leading_zeros(bm, d0);
+-			if (bm != 0) {
+-				/* Normalize, i.e. make the most significant
+-				bit of the denominator set.  */
+-				d0 = d0 << bm;
+-				n1 = (n1 << bm) | (n0 >> (W_TYPE_SIZE - bm));
+-				n0 = n0 << bm;
+-			}
+-
+-		udiv_qrnnd(q0, n0, n1, n0, d0);
+-		q1 = 0;
+-		/* Remainder in n0 >> bm.  */
+-		} else { /* qq = NN / 0d */
+-			if (d0 == 0)
+-				d0 = 1 / d0; /* Divide intentionally by zero. */
+-
+-			count_leading_zeros(bm, d0);
+-
+-			if (bm == 0) {
+-				/* From (n1 >= d0) /\ (the most significant bit
+-				of d0 is set), conclude (the most significant
+-				bit of n1 is set) /\ (the leading quotient digit
+-				q1 = 1).
+-
+-				 This special case is necessary, not an
+-				 optimization.(Shifts counts of W_TYPE_SIZE are
+-				 undefined.) */
+-
+-				n1 -= d0;
+-				q1 = 1;
+-			} else { /* Normalize.  */
+-				b = W_TYPE_SIZE - bm;
+-
+-				d0 = d0 << bm;
+-				n2 = n1 >> b;
+-				n1 = (n1 << bm) | (n0 >> b);
+-				n0 = n0 << bm;
+-
+-				udiv_qrnnd(q1, n1, n2, n1, d0);
+-			}
+-
+-			/* n1 != d0...  */
+-			udiv_qrnnd(q0, n0, n1, n0, d0);
+-		}
+-
+-		if (rp != 0) {
+-			rr.s.low = n0 >> bm;
+-			rr.s.high = 0;
+-			*rp = rr.ll;
+-		}
+-	}
+-#endif /* UDIV_NEEDS_NORMALIZATION */
+-
+-	else {
+-		if (d1 > n1) { /* 00 = nn / DD */
+-			q0 = 0;
+-			q1 = 0;
+-			/* Remainder in n1n0.  */
+-			if (rp != 0) {
+-				rr.s.low = n0;
+-				rr.s.high = n1;
+-				*rp = rr.ll;
+-			}
+-		} else { /* 0q = NN / dd */
+-			count_leading_zeros(bm, d1);
+-			if (bm == 0) {
+-				/* From (n1 >= d1) /\ (the most significant bit
+-				of d1 is set), conclude (the most significant
+-				bit of n1 is set) /\ (the quotient digit q0 = 0
+-				or 1).
+-
+-				This special case is necessary,
+-				not an optimization.  */
+-
+-				/* The condition on the next line takes
+-				advantage of that n1 >= d1 (true due to program
+-				flow).  */
+-
+-				if (n1 > d1 || n0 >= d0) {
+-					q0 = 1;
+-					sub_ddmmss(n1, n0, n1, n0, d1, d0);
+-				} else
+-					q0 = 0;
+-
+-				q1 = 0;
+-
+-				if (rp != 0) {
+-					rr.s.low = n0;
+-					rr.s.high = n1;
+-					*rp = rr.ll;
+-				}
+-			} else {
+-				UWtype m1, m0;
+-				/* Normalize.  */
+-				b = W_TYPE_SIZE - bm;
+-				d1 = (d1 << bm) | (d0 >> b);
+-				d0 = d0 << bm;
+-				n2 = n1 >> b;
+-				n1 = (n1 << bm) | (n0 >> b);
+-				n0 = n0 << bm;
+-				udiv_qrnnd(q0, n1, n2, n1, d1);
+-				umul_ppmm(m1, m0, q0, d0);
+-
+-				if (m1 > n1 || (m1 == n1 && m0 > n0)) {
+-					q0--;
+-					sub_ddmmss(m1, m0, m1, m0, d1, d0);
+-				}
+-
+-				q1 = 0;
+-
+-				/* Remainder in (n1n0 - m1m0) >> bm.  */
+-				if (rp != 0) {
+-					sub_ddmmss(n1, n0, n1, n0, m1, m0);
+-					rr.s.low = (n1 << b) | (n0 >> bm);
+-					rr.s.high = n1 >> bm;
+-					*rp = rr.ll;
+-				}
+-			}
+-		}
+-	}
+-
+-	ww.s.low = q0;
+-	ww.s.high = q1;
+-
+-	return ww.ll;
+-}
+-
+-DWtype __divdi3(DWtype u, DWtype v)
+-{
+-	word_type c = 0;
+-	DWunion uu = {.ll = u};
+-	DWunion vv = {.ll = v};
+-	DWtype w;
+-
+-	if (uu.s.high < 0) {
+-		c = ~c;
+-		uu.ll = -uu.ll;
+-	}
+-
+-	if (vv.s.high < 0) {
+-		c = ~c;
+-		vv.ll = -vv.ll;
+-	}
+-
+-	w = __udivmoddi4(uu.ll, vv.ll, (UDWtype *) 0);
+-
+-	if (c)
+-		w = -w;
+-
+-	return w;
+-}
+-
+-DWtype __negdi2(DWtype u)
+-{
+-	const DWunion uu = {.ll = u};
+-	const DWunion w = { {.low = -uu.s.low,
+-			.high = -uu.s.high - ((UWtype) -uu.s.low > 0) } };
+-
+-	return w.ll;
+-}
+-
+-
+-DWtype __muldi3(DWtype u, DWtype v)
+-{
+-	const DWunion uu = {.ll = u};
+-	const DWunion vv = {.ll = v};
+-	DWunion  w = {.ll = __umulsidi3(uu.s.low, vv.s.low)};
+-
+-	w.s.high += ((UWtype) uu.s.low * (UWtype) vv.s.high
+-		+ (UWtype) uu.s.high * (UWtype) vv.s.low);
+-
+-	return w.ll;
+-}
+-
+-DWtype __moddi3(DWtype u, DWtype v)
+-{
+-	word_type c = 0;
+-	DWunion uu = {.ll = u};
+-	DWunion vv = {.ll = v};
+-	DWtype w;
+-
+-	if (uu.s.high < 0) {
+-		c = ~c;
+-		uu.ll = -uu.ll;
+-	}
+-
+-	if (vv.s.high < 0)
+-		vv.ll = -vv.ll;
+-
+-	(void) __udivmoddi4(uu.ll, vv.ll, (UDWtype *)&w);
+-
+-	if (c)
+-		w = -w;
+-
+-	return w;
+-}
+-
+-word_type __ucmpdi2(DWtype a, DWtype b)
+-{
+-	const DWunion au = {.ll = a};
+-	const DWunion bu = {.ll = b};
+-
+-	if ((UWtype) au.s.high < (UWtype) bu.s.high)
+-		return 0;
+-	else if ((UWtype) au.s.high > (UWtype) bu.s.high)
+-		return 2;
+-	if ((UWtype) au.s.low < (UWtype) bu.s.low)
+-		return 0;
+-	else if ((UWtype) au.s.low > (UWtype) bu.s.low)
+-		return 2;
+-	return 1;
+-}
+-
+-
+-UDWtype __udivdi3(UDWtype n, UDWtype d)
+-{
+-	return __udivmoddi4(n, d, (UDWtype *) 0);
+-}
+-
+-UDWtype __umoddi3(UDWtype u, UDWtype v)
+-{
+-	UDWtype w;
+-	(void) __udivmoddi4(u, v, &w);
+-
+-	return w;
+-}
+-
+-static USItype udivmodsi4(USItype num, USItype den, word_type modwanted)
+-{
+-	USItype bit = 1;
+-	USItype res = 0;
+-
+-	while (den < num && bit && !(den & (1L<<31))) {
+-		den <<= 1;
+-		bit <<= 1;
+-	}
+-	while (bit) {
+-		if (num >= den) {
+-			num -= den;
+-			res |= bit;
+-		}
+-
+-		bit >>= 1;
+-		den >>= 1;
+-	}
+-
+-	if (modwanted)
+-		return num;
+-
+-	return res;
+-}
+-
+-SItype __divsi3(SItype a, SItype b)
+-{
+-	word_type neg = 0;
+-	SItype res;
+-
+-	if (a < 0) {
+-		a = -a;
+-		neg = !neg;
+-	}
+-
+-	if (b < 0) {
+-		b = -b;
+-		neg = !neg;
+-	}
+-
+-	res = udivmodsi4(a, b, 0);
+-
+-	if (neg)
+-		res = -res;
+-
+-	return res;
+-}
+-
+-
+-SItype __udivsi3(SItype a, SItype b)
+-{
+-	return udivmodsi4(a, b, 0);
+-}
+-
+-
+-SItype __modsi3(SItype a, SItype b)
+-{
+-	word_type neg = 0;
+-	SItype res;
+-
+-	if (a < 0) {
+-		a = -a;
+-		neg = 1;
+-	}
+-
+-	if (b < 0)
+-		b = -b;
+-
+-	res = udivmodsi4(a, b, 1);
+-
+-	if (neg)
+-		res = -res;
+-
+-	return res;
+-}
+-
+-SItype __mulsi3(SItype a, SItype b)
+-{
+-	SItype res = 0;
+-	USItype cnt = a;
+-
+-	while (cnt) {
+-		if (cnt & 1)
+-			res += b;
+-		b <<= 1;
+-		cnt >>= 1;
+-	}
+-
+-	return res;
+-}
+-
+-SItype __umodsi3(SItype a, SItype b)
+-{
+-	return udivmodsi4(a, b, 1);
+-}
+-
+-int __gcc_bcmp(const unsigned char *s1, const unsigned char *s2, unsigned long size)
+-{
+-	unsigned char c1;
+-	unsigned char c2;
+-
+-	while (size > 0) {
+-		c1 = *s1++;
+-		c2 = *s2++;
+-		if (c1 != c2)
+-			return c1 - c2;
+-		size--;
+-	}
 -	return 0;
 -}
--core_initcall(of_openrisc_init);
-diff --git a/arch/openrisc/lib/lshrdi3.S b/arch/openrisc/lib/lshrdi3.S
+diff --git a/arch/nios2/lib/longlong.h b/arch/nios2/lib/longlong.h
 deleted file mode 100644
-index de30445f4e..0000000000
---- a/arch/openrisc/lib/lshrdi3.S
+index 58b29d89e6..0000000000
+--- a/arch/nios2/lib/longlong.h
 +++ /dev/null
-@@ -1,41 +0,0 @@
--/*
-- * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
+@@ -1,253 +0,0 @@
+-/* longlong.h -- definitions for mixed size 32/64 bit arithmetic.
+- * Copyright (C) 1991, 1992, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2004,
+- * 2005  Free Software Foundation, Inc.
 - *
-- * Extracted from gcc generated assembly.
-- *
-- * Extended precision shifts.
-- *
-- * R3/R4 (MSW, LSW) has 64 bit value
-- * R5    has shift count
-- * result in R11/R12
-- *
+- * This definition file is free software; you can redistribute it
+- * and/or modify it under the terms of the GNU General Public
+- * License as published by the Free Software Foundation; either
+- * version 2, or (at your option) any later version.
+-
+- * This definition file is distributed in the hope that it will be
+- * useful, but WITHOUT ANY WARRANTY; without even the implied
+- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+- * See the GNU General Public License for more details.
 - */
--
--.globl __lshrdi3
--
--__lshrdi3:
--	l.sfeqi r5,0x0
--	l.bf out		/* if count = 0, go out                   */
--
--	l.addi r6,r0,0x20	/* r6 = 32                                */
--	l.sub r6,r6,r5		/* r6 = 32 - count                        */
--	l.sfgtsi r6,0x0		/* if count >= 32                         */
--	l.bnf more_than_32	/* branch to more_than_32                 */
--	l.nop 0x0
--
--less_than_32:
--	l.sll r6,r3,r6		/* r6 gets the bits moved from MSW to LSW */
--	l.srl r4,r4,r5		/* shift LSW                              */
--	l.srl r3,r3,r5		/* shift MSW                              */
--	l.or r4,r6,r4		/* LSW gets bits shifted from MSW         */
--
-- out:
--	l.ori r11,r3,0x0
--	l.jr r9
--	l.ori r12,r4,0x0
--
--more_than_32:
--	l.sub r4,r0,r6		/* r4 = -r6, the number of bits above 32  */
--	l.srl r4,r3,r4		/* LSW = MSW >> r4                        */
--	l.j out			/* go out                                 */
--	l.addi r3,r0,0x0	/* MSW = 0                                */
-diff --git a/arch/openrisc/lib/muldi3.S b/arch/openrisc/lib/muldi3.S
-deleted file mode 100644
-index 902338a242..0000000000
---- a/arch/openrisc/lib/muldi3.S
-+++ /dev/null
-@@ -1,58 +0,0 @@
--/*
-- * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
-- *
-- * Extracted from gcc generated assembly.
-- *
-- * Multiply two quads. Hereafter, the illustration of what is going on :
-- *
-- *                        |    r3    |    r4    |
-- *                        |    r5    |    r6    |
-- *                         --------------------
-- *                        |       r4 * r6       |
-- *             |       r3 * r6       |          | +
-- *             |       r5 * r4       |          | +
-- *  |       r3 * r5       |          |          | +
-- *   -------------------------------------------  =
-- *                        |    64 bits result   |
-- *
-- */
--
--.globl __muldi3
--
--__muldi3:
--	/* starts with the full 64 bits mul (r4 * r6) */
--	l.andi r7,r4,0xffff
--	l.srli r8,r4,0x10
--
--	l.andi r11,r6,0xffff
--	l.srli r12,r6,0x10
--
--	l.mul r13,r11,r7
--	l.mul r11,r11,r8
--	l.mul r7,r12,r7
--
--	l.srli r15,r13,0x10
--	l.add r7,r7,r15
--	l.add r7,r11,r7
--	l.sfleu r11,r7
--	l.bf no_carry
--	l.mul r8,r12,r8
--
--	l.movhi r15,0x1
--	l.add r8,r8,r15
--
--no_carry:
--	/* Now compute r3 * r6  */
--	l.mul r6,r6,r3
--	/* and r4 * r5          */
--	l.mul r4,r4,r5
--	/* finaly previous results and put the result in r11:r12 */
--	l.srli r3,r7,0x10
--	l.slli r7,r7,0x10
--	l.andi r13,r13,0xffff
--	l.add r8,r8,r3
--	l.add r11,r4,r6
--	l.add r12,r7,r13
--	l.add r11,r11,r8
--	l.jr r9
--	l.nop
-diff --git a/drivers/net/ethoc.c b/drivers/net/ethoc.c
-deleted file mode 100644
-index f24120ce72..0000000000
---- a/drivers/net/ethoc.c
-+++ /dev/null
-@@ -1,580 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * OpenCores 10/100 Mbps Ethernet driver
-- *
-- * Copyright (C) 2007-2008 Avionic Design Development GmbH
-- * Copyright (C) 2008-2009 Avionic Design GmbH
-- * Copyright (C) 2013 Beniamino Galvani <b.galvani@gmail.com>
-- *
-- * Originally written by Thierry Reding <thierry.reding@avionic-design.de>
-- */
--
--#include <common.h>
--#include <net.h>
--#include <init.h>
--#include <io.h>
--#include <asm/cache.h>
--#include <linux/err.h>
--
--/* register offsets */
--#define	MODER		0x00
--#define	INT_SOURCE	0x04
--#define	INT_MASK	0x08
--#define	IPGT		0x0c
--#define	IPGR1		0x10
--#define	IPGR2		0x14
--#define	PACKETLEN	0x18
--#define	COLLCONF	0x1c
--#define	TX_BD_NUM	0x20
--#define	CTRLMODER	0x24
--#define	MIIMODER	0x28
--#define	MIICOMMAND	0x2c
--#define	MIIADDRESS	0x30
--#define	MIITX_DATA	0x34
--#define	MIIRX_DATA	0x38
--#define	MIISTATUS	0x3c
--#define	MAC_ADDR0	0x40
--#define	MAC_ADDR1	0x44
--#define	ETH_HASH0	0x48
--#define	ETH_HASH1	0x4c
--#define	ETH_TXCTRL	0x50
--
--/* mode register */
--#define	MODER_RXEN	(1 <<  0) /* receive enable */
--#define	MODER_TXEN	(1 <<  1) /* transmit enable */
--#define	MODER_NOPRE	(1 <<  2) /* no preamble */
--#define	MODER_BRO	(1 <<  3) /* broadcast address */
--#define	MODER_IAM	(1 <<  4) /* individual address mode */
--#define	MODER_PRO	(1 <<  5) /* promiscuous mode */
--#define	MODER_IFG	(1 <<  6) /* interframe gap for incoming frames */
--#define	MODER_LOOP	(1 <<  7) /* loopback */
--#define	MODER_NBO	(1 <<  8) /* no back-off */
--#define	MODER_EDE	(1 <<  9) /* excess defer enable */
--#define	MODER_FULLD	(1 << 10) /* full duplex */
--#define	MODER_RESET	(1 << 11) /* FIXME: reset (undocumented) */
--#define	MODER_DCRC	(1 << 12) /* delayed CRC enable */
--#define	MODER_CRC	(1 << 13) /* CRC enable */
--#define	MODER_HUGE	(1 << 14) /* huge packets enable */
--#define	MODER_PAD	(1 << 15) /* padding enabled */
--#define	MODER_RSM	(1 << 16) /* receive small packets */
--
--/* interrupt source and mask registers */
--#define	INT_MASK_TXF	(1 << 0) /* transmit frame */
--#define	INT_MASK_TXE	(1 << 1) /* transmit error */
--#define	INT_MASK_RXF	(1 << 2) /* receive frame */
--#define	INT_MASK_RXE	(1 << 3) /* receive error */
--#define	INT_MASK_BUSY	(1 << 4)
--#define	INT_MASK_TXC	(1 << 5) /* transmit control frame */
--#define	INT_MASK_RXC	(1 << 6) /* receive control frame */
--
--#define	INT_MASK_TX	(INT_MASK_TXF | INT_MASK_TXE)
--#define	INT_MASK_RX	(INT_MASK_RXF | INT_MASK_RXE)
--
--#define	INT_MASK_ALL ( \
--		INT_MASK_TXF | INT_MASK_TXE | \
--		INT_MASK_RXF | INT_MASK_RXE | \
--		INT_MASK_TXC | INT_MASK_RXC | \
--		INT_MASK_BUSY \
--	)
--
--/* packet length register */
--#define	PACKETLEN_MIN(min)		(((min) & 0xffff) << 16)
--#define	PACKETLEN_MAX(max)		(((max) & 0xffff) <<  0)
--#define	PACKETLEN_MIN_MAX(min, max)	(PACKETLEN_MIN(min) | \
--					PACKETLEN_MAX(max))
--
--/* transmit buffer number register */
--#define	TX_BD_NUM_VAL(x)	(((x) <= 0x80) ? (x) : 0x80)
--
--/* control module mode register */
--#define	CTRLMODER_PASSALL	(1 << 0) /* pass all receive frames */
--#define	CTRLMODER_RXFLOW	(1 << 1) /* receive control flow */
--#define	CTRLMODER_TXFLOW	(1 << 2) /* transmit control flow */
--
--/* MII mode register */
--#define	MIIMODER_CLKDIV(x)	((x) & 0xfe) /* needs to be an even number */
--#define	MIIMODER_NOPRE		(1 << 8) /* no preamble */
--
--/* MII command register */
--#define	MIICOMMAND_SCAN		(1 << 0) /* scan status */
--#define	MIICOMMAND_READ		(1 << 1) /* read status */
--#define	MIICOMMAND_WRITE	(1 << 2) /* write control data */
--
--/* MII address register */
--#define	MIIADDRESS_FIAD(x)		(((x) & 0x1f) << 0)
--#define	MIIADDRESS_RGAD(x)		(((x) & 0x1f) << 8)
--#define	MIIADDRESS_ADDR(phy, reg)	(MIIADDRESS_FIAD(phy) | \
--					MIIADDRESS_RGAD(reg))
--
--/* MII transmit data register */
--#define	MIITX_DATA_VAL(x)	((x) & 0xffff)
--
--/* MII receive data register */
--#define	MIIRX_DATA_VAL(x)	((x) & 0xffff)
--
--/* MII status register */
--#define	MIISTATUS_LINKFAIL	(1 << 0)
--#define	MIISTATUS_BUSY		(1 << 1)
--#define	MIISTATUS_INVALID	(1 << 2)
--
--/* TX buffer descriptor */
--#define	TX_BD_CS		(1 <<  0) /* carrier sense lost */
--#define	TX_BD_DF		(1 <<  1) /* defer indication */
--#define	TX_BD_LC		(1 <<  2) /* late collision */
--#define	TX_BD_RL		(1 <<  3) /* retransmission limit */
--#define	TX_BD_RETRY_MASK	(0x00f0)
--#define	TX_BD_RETRY(x)		(((x) & 0x00f0) >>  4)
--#define	TX_BD_UR		(1 <<  8) /* transmitter underrun */
--#define	TX_BD_CRC		(1 << 11) /* TX CRC enable */
--#define	TX_BD_PAD		(1 << 12) /* pad enable for short packets */
--#define	TX_BD_WRAP		(1 << 13)
--#define	TX_BD_IRQ		(1 << 14) /* interrupt request enable */
--#define	TX_BD_READY		(1 << 15) /* TX buffer ready */
--#define	TX_BD_LEN(x)		(((x) & 0xffff) << 16)
--#define	TX_BD_LEN_MASK		(0xffff << 16)
--
--#define	TX_BD_STATS		(TX_BD_CS | TX_BD_DF | TX_BD_LC | \
--				TX_BD_RL | TX_BD_RETRY_MASK | TX_BD_UR)
--
--/* RX buffer descriptor */
--#define	RX_BD_LC	(1 <<  0) /* late collision */
--#define	RX_BD_CRC	(1 <<  1) /* RX CRC error */
--#define	RX_BD_SF	(1 <<  2) /* short frame */
--#define	RX_BD_TL	(1 <<  3) /* too long */
--#define	RX_BD_DN	(1 <<  4) /* dribble nibble */
--#define	RX_BD_IS	(1 <<  5) /* invalid symbol */
--#define	RX_BD_OR	(1 <<  6) /* receiver overrun */
--#define	RX_BD_MISS	(1 <<  7)
--#define	RX_BD_CF	(1 <<  8) /* control frame */
--#define	RX_BD_WRAP	(1 << 13)
--#define	RX_BD_IRQ	(1 << 14) /* interrupt request enable */
--#define	RX_BD_EMPTY	(1 << 15)
--#define	RX_BD_LEN(x)	(((x) & 0xffff) << 16)
--
--#define	RX_BD_STATS	(RX_BD_LC | RX_BD_CRC | RX_BD_SF | RX_BD_TL | \
--			RX_BD_DN | RX_BD_IS | RX_BD_OR | RX_BD_MISS)
--
--#define	ETHOC_BUFSIZ		1536
--#define	ETHOC_ZLEN		64
--#define	ETHOC_BD_BASE		0x400
--
--/**
-- * struct ethoc - driver-private device structure
-- * @iobase:	pointer to I/O memory region
-- * @num_tx:	number of send buffers
-- * @cur_tx:	last send buffer written
-- * @dty_tx:	last buffer actually sent
-- * @num_rx:	number of receive buffers
-- * @cur_rx:	current receive buffer
-- */
--struct ethoc {
--	void __iomem *iobase;
--
--	u32 num_tx;
--	u32 cur_tx;
--	u32 dty_tx;
--
--	u32 num_rx;
--	u32 cur_rx;
--
--	struct mii_bus miibus;
--};
--
--/**
-- * struct ethoc_bd - buffer descriptor
-- * @stat:	buffer statistics
-- * @addr:	physical memory address
-- */
--struct ethoc_bd {
--	u32 stat;
--	u32 addr;
--};
--
--static inline u32 ethoc_read(struct ethoc *dev, loff_t offset)
--{
--	return ioread32be(dev->iobase + offset);
--}
--
--static inline void ethoc_write(struct ethoc *dev, loff_t offset, u32 data)
--{
--	iowrite32be(data, dev->iobase + offset);
--}
--
--static inline void ethoc_read_bd(struct ethoc *dev, int index,
--				 struct ethoc_bd *bd)
--{
--	loff_t offset = ETHOC_BD_BASE + (index * sizeof(struct ethoc_bd));
--	bd->stat = ethoc_read(dev, offset + 0);
--	bd->addr = ethoc_read(dev, offset + 4);
--}
--
--static inline void ethoc_write_bd(struct ethoc *dev, int index,
--				  const struct ethoc_bd *bd)
--{
--	loff_t offset = ETHOC_BD_BASE + (index * sizeof(struct ethoc_bd));
--	ethoc_write(dev, offset + 0, bd->stat);
--	ethoc_write(dev, offset + 4, bd->addr);
--}
--
--static inline void ethoc_ack_irq(struct ethoc *dev, u32 mask)
--{
--	ethoc_write(dev, INT_SOURCE, mask);
--}
--
--static inline void ethoc_enable_rx_and_tx(struct ethoc *dev)
--{
--	u32 mode = ethoc_read(dev, MODER);
--	mode |= MODER_RXEN | MODER_TXEN;
--	ethoc_write(dev, MODER, mode);
--}
--
--static inline void ethoc_disable_rx_and_tx(struct ethoc *dev)
--{
--	u32 mode = ethoc_read(dev, MODER);
--	mode &= ~(MODER_RXEN | MODER_TXEN);
--	ethoc_write(dev, MODER, mode);
--}
--
--static int ethoc_init_ring(struct ethoc *dev)
--{
--	struct ethoc_bd bd;
--	int i;
--
--	dev->num_tx = 1;
--	dev->num_rx = PKTBUFSRX;
--
--	dev->cur_tx = 0;
--	dev->dty_tx = 0;
--	dev->cur_rx = 0;
--
--	ethoc_write(dev, TX_BD_NUM, dev->num_tx);
--
--	/* setup transmission buffers */
--	bd.addr = 0;
--	bd.stat = TX_BD_IRQ | TX_BD_CRC;
--
--	for (i = 0; i < dev->num_tx; i++) {
--		if (i == dev->num_tx - 1)
--			bd.stat |= TX_BD_WRAP;
--
--		ethoc_write_bd(dev, i, &bd);
--	}
--
--	bd.stat = RX_BD_EMPTY | RX_BD_IRQ;
--
--	for (i = 0; i < dev->num_rx; i++) {
--		if (i == dev->num_rx - 1)
--			bd.stat |= RX_BD_WRAP;
--
--		bd.addr = (u32)NetRxPackets[i];
--		ethoc_write_bd(dev, dev->num_tx + i, &bd);
--
--		flush_dcache_range(bd.addr, bd.addr + PKTSIZE);
--	}
--
--	return 0;
--}
--
--static int ethoc_reset(struct ethoc *dev)
--{
--	u32 mode;
--
--	/* TODO: reset controller? */
--
--	ethoc_disable_rx_and_tx(dev);
--
--	/* TODO: setup registers */
--
--	/* enable FCS generation and automatic padding */
--	mode = ethoc_read(dev, MODER);
--	mode |= MODER_CRC | MODER_PAD;
--	ethoc_write(dev, MODER, mode);
--
--	/* set full-duplex mode */
--	mode = ethoc_read(dev, MODER);
--	mode |= MODER_FULLD;
--	ethoc_write(dev, MODER, mode);
--	ethoc_write(dev, IPGT, 0x15);
--
--	ethoc_write(dev, PACKETLEN, PACKETLEN_MIN_MAX(64, PKTSIZE));
--
--	ethoc_ack_irq(dev, INT_MASK_ALL);
--	ethoc_enable_rx_and_tx(dev);
--	return 0;
--}
--
--static unsigned int ethoc_update_rx_stats(struct eth_device *edev,
--					  struct ethoc_bd *bd)
--{
--	unsigned int ret = 0;
--
--	if (bd->stat & RX_BD_TL) {
--		dev_err(&edev->dev, "RX: frame too long\n");
--		ret++;
--	}
--
--	if (bd->stat & RX_BD_SF) {
--		dev_err(&edev->dev, "RX: frame too short\n");
--		ret++;
--	}
--
--	if (bd->stat & RX_BD_DN)
--		dev_err(&edev->dev, "RX: dribble nibble\n");
--
--	if (bd->stat & RX_BD_CRC) {
--		dev_err(&edev->dev, "RX: wrong CRC\n");
--		ret++;
--	}
--
--	if (bd->stat & RX_BD_OR) {
--		dev_err(&edev->dev, "RX: overrun\n");
--		ret++;
--	}
--
--	if (bd->stat & RX_BD_LC) {
--		dev_err(&edev->dev, "RX: late collision\n");
--		ret++;
--	}
--
--	return ret;
--}
--
--static int ethoc_rx(struct eth_device *edev, int limit)
--{
--	struct ethoc *priv = edev->priv;
--	int count;
--
--	for (count = 0; count < limit; ++count) {
--		unsigned int entry;
--		struct ethoc_bd bd;
--
--		entry = priv->num_tx + priv->cur_rx;
--		ethoc_read_bd(priv, entry, &bd);
--		if (bd.stat & RX_BD_EMPTY) {
--			ethoc_ack_irq(priv, INT_MASK_RX);
--			/* If packet (interrupt) came in between checking
--			 * BD_EMTPY and clearing the interrupt source, then we
--			 * risk missing the packet as the RX interrupt won't
--			 * trigger right away when we reenable it; hence, check
--			 * BD_EMTPY here again to make sure there isn't such a
--			 * packet waiting for us...
--			 */
--			ethoc_read_bd(priv, entry, &bd);
--			if (bd.stat & RX_BD_EMPTY)
--				break;
--		}
--
--		if (ethoc_update_rx_stats(edev, &bd) == 0) {
--			int size = bd.stat >> 16;
--
--			size -= 4; /* strip the CRC */
--			invalidate_dcache_range(bd.addr, bd.addr + PKTSIZE);
--			net_receive(edev, (unsigned char *)bd.addr, size);
--		}
--
--		/* clear the buffer descriptor so it can be reused */
--		bd.stat &= ~RX_BD_STATS;
--		bd.stat |=  RX_BD_EMPTY;
--		ethoc_write_bd(priv, entry, &bd);
--		if (++priv->cur_rx == priv->num_rx)
--			priv->cur_rx = 0;
--	}
--
--	return count;
--}
--
--static int ethoc_recv_packet(struct eth_device *edev)
--{
--	struct ethoc *priv = edev->priv;
--
--	if (ethoc_read(priv, INT_SOURCE) & INT_MASK_RX)
--		return ethoc_rx(edev, PKTBUFSRX);
--
--	return 0;
--}
--
--static int ethoc_init_dev(struct eth_device *edev)
--{
--	return 0;
--}
--
--
--static int ethoc_open(struct eth_device *edev)
--{
--	struct ethoc *dev = edev->priv;
--
--	ethoc_init_ring(dev);
--	ethoc_reset(dev);
--
--	return 0;
--}
--
--static void ethoc_halt(struct eth_device *edev)
--{
--	ethoc_disable_rx_and_tx(edev->priv);
--}
--
--static int ethoc_get_ethaddr(struct eth_device *edev, unsigned char *mac)
--{
--	struct ethoc *priv = edev->priv;
--	u32 reg;
--
--	reg = ethoc_read(priv, MAC_ADDR0);
--	mac[2] = (reg >> 24) & 0xff;
--	mac[3] = (reg >> 16) & 0xff;
--	mac[4] = (reg >>  8) & 0xff;
--	mac[5] = (reg >>  0) & 0xff;
--
--	reg = ethoc_read(priv, MAC_ADDR1);
--	mac[0] = (reg >>  8) & 0xff;
--	mac[1] = (reg >>  0) & 0xff;
--
--	return 0;
--}
--
--static int ethoc_set_ethaddr(struct eth_device *edev, const unsigned char *mac)
--{
--	struct ethoc *dev = edev->priv;
--
--	ethoc_write(dev, MAC_ADDR0, (mac[2] << 24) | (mac[3] << 16) |
--		    (mac[4] << 8) | (mac[5] << 0));
--	ethoc_write(dev, MAC_ADDR1, (mac[0] << 8) | (mac[1] << 0));
--
--	return 0;
--}
--
--static int ethoc_send_packet(struct eth_device *edev, void *packet, int length)
--{
--	struct ethoc *priv = edev->priv;
--	struct ethoc_bd bd;
--	u32 entry;
--	u32 pending;
--	u64 start;
--
--	entry = priv->cur_tx % priv->num_tx;
--	ethoc_read_bd(priv, entry, &bd);
--	if (unlikely(length < ETHOC_ZLEN))
--		bd.stat |= TX_BD_PAD;
--	else
--		bd.stat &= ~TX_BD_PAD;
--	bd.addr = (u32)packet;
--
--	flush_dcache_range(bd.addr, bd.addr + length);
--	bd.stat &= ~(TX_BD_STATS | TX_BD_LEN_MASK);
--	bd.stat |= TX_BD_LEN(length);
--	ethoc_write_bd(priv, entry, &bd);
--
--	bd.stat |= TX_BD_READY;
--	ethoc_write_bd(priv, entry, &bd);
--
--	start = get_time_ns();
--	do {
--		pending = ethoc_read(priv, INT_SOURCE);
--		ethoc_ack_irq(priv, pending & INT_MASK_TX);
--
--		if (is_timeout(start, 200 * MSECOND)) {
--			dev_err(&edev->dev, "TX timeout\n");
--			return -ETIMEDOUT;
--		}
--	} while (!(pending & INT_MASK_TX));
--
--	return 0;
--}
--
--static int ethoc_mdio_read(struct mii_bus *bus, int phy, int reg)
--{
--	struct ethoc *priv = bus->priv;
--	u64 start;
--	u32 data;
--
--	ethoc_write(priv, MIIADDRESS, MIIADDRESS_ADDR(phy, reg));
--	ethoc_write(priv, MIICOMMAND, MIICOMMAND_READ);
--
--	start = get_time_ns();
--	while (ethoc_read(priv, MIISTATUS) & MIISTATUS_BUSY) {
--		if (is_timeout(start, 2 * MSECOND)) {
--			dev_err(bus->parent, "PHY command timeout\n");
--			return -EBUSY;
--		}
--	}
--
--	data = ethoc_read(priv, MIIRX_DATA);
--
--	/* reset MII command register */
--	ethoc_write(priv, MIICOMMAND, 0);
--
--	return data;
--}
--
--static int ethoc_mdio_write(struct mii_bus *bus, int phy, int reg, u16 val)
--{
--	struct ethoc *priv = bus->priv;
--	u64 start;
--
--	ethoc_write(priv, MIIADDRESS, MIIADDRESS_ADDR(phy, reg));
--	ethoc_write(priv, MIITX_DATA, val);
--	ethoc_write(priv, MIICOMMAND, MIICOMMAND_WRITE);
--
--	start = get_time_ns();
--	while (ethoc_read(priv, MIISTATUS) & MIISTATUS_BUSY) {
--		if (is_timeout(start, 2 * MSECOND)) {
--			dev_err(bus->parent, "PHY command timeout\n");
--			return -EBUSY;
--		}
--	}
--
--	/* reset MII command register */
--	ethoc_write(priv, MIICOMMAND, 0);
--
--	return 0;
--}
--
--static int ethoc_probe(struct device_d *dev)
--{
--	struct resource *iores;
--	struct eth_device *edev;
--	struct ethoc *priv;
--
--	edev = xzalloc(sizeof(struct eth_device) +
--		       sizeof(struct ethoc));
--	edev->priv = (struct ethoc *)(edev + 1);
--
--	priv = edev->priv;
--	iores = dev_request_mem_resource(dev, 0);
--	if (IS_ERR(iores))
--		return PTR_ERR(iores);
--	priv->iobase = IOMEM(iores->start);
--
--	priv->miibus.read = ethoc_mdio_read;
--	priv->miibus.write = ethoc_mdio_write;
--	priv->miibus.priv = priv;
--	priv->miibus.parent = dev;
--
--	edev->init = ethoc_init_dev;
--	edev->open = ethoc_open;
--	edev->send = ethoc_send_packet;
--	edev->recv = ethoc_recv_packet;
--	edev->halt = ethoc_halt;
--
--	edev->get_ethaddr = ethoc_get_ethaddr;
--	edev->set_ethaddr = ethoc_set_ethaddr;
--	edev->parent = dev;
--
--	mdiobus_register(&priv->miibus);
--
--	eth_register(edev);
--
--	return 0;
--}
--
--static struct of_device_id ethoc_dt_ids[] = {
--	{ .compatible = "opencores,ethoc", },
--	{ }
--};
--
--static struct driver_d ethoc_driver = {
--	.name  = "ethoc",
--	.probe = ethoc_probe,
--	.of_compatible = DRV_OF_COMPAT(ethoc_dt_ids),
--};
--device_platform_driver(ethoc_driver);
+-/* You have to define the following before including this file:
+-
+-   UWtype -- An unsigned type, default type for operations (typically a "word")
+-   UHWtype -- An unsigned type, at least half the size of UWtype.
+-   UDWtype -- An unsigned type, at least twice as large a UWtype
+-   W_TYPE_SIZE -- size in bits of UWtype
+-
+-   UQItype -- Unsigned 8 bit type.
+-   SItype, USItype -- Signed and unsigned 32 bit types.
+-   DItype, UDItype -- Signed and unsigned 64 bit types.
+-
+-   On a 32 bit machine UWtype should typically be USItype;
+-   on a 64 bit machine, UWtype should typically be UDItype.  */
+-
+-#define __BITS4 (W_TYPE_SIZE / 4)
+-#define __ll_B ((UWtype) 1 << (W_TYPE_SIZE / 2))
+-#define __ll_lowpart(t) ((UWtype) (t) & (__ll_B - 1))
+-#define __ll_highpart(t) ((UWtype) (t) >> (W_TYPE_SIZE / 2))
+-
+-#ifndef W_TYPE_SIZE
+-#define W_TYPE_SIZE	32
+-#define UWtype		USItype
+-#define UHWtype		USItype
+-#define UDWtype		UDItype
+-#endif
+-
+-extern const UQItype __clz_tab[256];
+-
+-/* Define auxiliary asm macros.
+-
+-   1) umul_ppmm(high_prod, low_prod, multiplier, multiplicand) multiplies two
+-   UWtype integers MULTIPLIER and MULTIPLICAND, and generates a two UWtype
+-   word product in HIGH_PROD and LOW_PROD.
+-
+-   2) __umulsidi3(a,b) multiplies two UWtype integers A and B, and returns a
+-   UDWtype product.  This is just a variant of umul_ppmm.
+-
+-   3) udiv_qrnnd(quotient, remainder, high_numerator, low_numerator,
+-   denominator) divides a UDWtype, composed by the UWtype integers
+-   HIGH_NUMERATOR and LOW_NUMERATOR, by DENOMINATOR and places the quotient
+-   in QUOTIENT and the remainder in REMAINDER.  HIGH_NUMERATOR must be less
+-   than DENOMINATOR for correct operation.  If, in addition, the most
+-   significant bit of DENOMINATOR must be 1, then the pre-processor symbol
+-   UDIV_NEEDS_NORMALIZATION is defined to 1.
+-
+-   4) sdiv_qrnnd(quotient, remainder, high_numerator, low_numerator,
+-   denominator).  Like udiv_qrnnd but the numbers are signed.  The quotient
+-   is rounded towards 0.
+-
+-   5) count_leading_zeros(count, x) counts the number of zero-bits from the
+-   msb to the first nonzero bit in the UWtype X.  This is the number of
+-   steps X needs to be shifted left to set the msb.  Undefined for X == 0,
+-   unless the symbol COUNT_LEADING_ZEROS_0 is defined to some value.
+-
+-   6) count_trailing_zeros(count, x) like count_leading_zeros, but counts
+-   from the least significant end.
+-
+-   7) add_ssaaaa(high_sum, low_sum, high_addend_1, low_addend_1,
+-   high_addend_2, low_addend_2) adds two UWtype integers, composed by
+-   HIGH_ADDEND_1 and LOW_ADDEND_1, and HIGH_ADDEND_2 and LOW_ADDEND_2
+-   respectively.  The result is placed in HIGH_SUM and LOW_SUM.  Overflow
+-   (i.e. carry out) is not stored anywhere, and is lost.
+-
+-   8) sub_ddmmss(high_difference, low_difference, high_minuend, low_minuend,
+-   high_subtrahend, low_subtrahend) subtracts two two-word UWtype integers,
+-   composed by HIGH_MINUEND_1 and LOW_MINUEND_1, and HIGH_SUBTRAHEND_2 and
+-   LOW_SUBTRAHEND_2 respectively.  The result is placed in HIGH_DIFFERENCE
+-   and LOW_DIFFERENCE.  Overflow (i.e. carry out) is not stored anywhere,
+-   and is lost.
+-
+-   If any of these macros are left undefined for a particular CPU,
+-   C macros are used.  */
+-
+-/* The CPUs come in alphabetical order below.
+-
+-   Please add support for more CPUs here, or improve the current support
+-   for the CPUs below!
+-   (E.g. WE32100, IBM360.)  */
+-
+-/* Snipped per CPU support */
+-
+-/* If this machine has no inline assembler, use C macros.  */
+-
+-#if !defined (add_ssaaaa)
+-#define add_ssaaaa(sh, sl, ah, al, bh, bl) \
+-	do {                                            \
+-		UWtype __x;                             \
+-		__x = (al) + (bl);                      \
+-		(sh) = (ah) + (bh) + (__x < (al));      \
+-		(sl) = __x;                             \
+-	} while (0)
+-#endif
+-
+-#if !defined (sub_ddmmss)
+-#define sub_ddmmss(sh, sl, ah, al, bh, bl) \
+-	do {                                            \
+-		UWtype __x;                             \
+-		__x = (al) - (bl);                      \
+-		(sh) = (ah) - (bh) - (__x > (al));      \
+-		(sl) = __x;                             \
+-	} while (0)
+-#endif
+-
+-/* If we lack umul_ppmm but have smul_ppmm, define umul_ppmm in terms of
+-   smul_ppmm.  */
+-#if !defined (umul_ppmm) && defined (smul_ppmm)
+-#define umul_ppmm(w1, w0, u, v) \
+-	do {                                                              \
+-		UWtype __w1;                                              \
+-		UWtype __xm0 = (u), __xm1 = (v);                          \
+-		smul_ppmm (__w1, w0, __xm0, __xm1);                       \
+-		(w1) = __w1 + (-(__xm0 >> (W_TYPE_SIZE - 1)) & __xm1)     \
+-		+ (-(__xm1 >> (W_TYPE_SIZE - 1)) & __xm0);                \
+-  } while (0)
+-#endif
+-
+-/* If we still don't have umul_ppmm, define it using plain C.  */
+-#if !defined (umul_ppmm)
+-#define umul_ppmm(w1, w0, u, v) \
+-	do {                                                                  \
+-		UWtype __x0, __x1, __x2, __x3;                                \
+-		UHWtype __ul, __vl, __uh, __vh;                               \
+-		                                                              \
+-		__ul = __ll_lowpart (u);                                      \
+-		__uh = __ll_highpart (u);                                     \
+-		__vl = __ll_lowpart (v);                                      \
+-		__vh = __ll_highpart (v);                                     \
+-		                                                              \
+-		__x0 = (UWtype) __ul * __vl;                                  \
+-		__x1 = (UWtype) __ul * __vh;                                  \
+-		__x2 = (UWtype) __uh * __vl;                                  \
+-		__x3 = (UWtype) __uh * __vh;                                  \
+-		                                                              \
+-		__x1 += __ll_highpart (__x0);/* this can't give carry */      \
+-		__x1 += __x2;		/* but this indeed can */             \
+-		if (__x1 < __x2)		/* did we get it? */          \
+-		__x3 += __ll_B;		/* yes, add it in the proper pos.  */ \
+-		                                                              \
+-		(w1) = __x3 + __ll_highpart (__x1);                           \
+-		(w0) = __ll_lowpart (__x1) * __ll_B + __ll_lowpart (__x0);    \
+-	} while (0)
+-#endif
+-
+-#if !defined (__umulsidi3)
+-#define __umulsidi3(u, v) \
+-	({DWunion __w;                           \
+-	umul_ppmm (__w.s.high, __w.s.low, u, v); \
+-	__w.ll; })
+-#endif
+-
+-/* Define this unconditionally, so it can be used for debugging.  */
+-#define __udiv_qrnnd_c(q, r, n1, n0, d) \
+-	do {                                                                                \
+-		UWtype __d1, __d0, __q1, __q0;                                              \
+-		UWtype __r1, __r0, __m;                                                     \
+-		__d1 = __ll_highpart (d);                                                   \
+-		__d0 = __ll_lowpart (d);                                                    \
+-		                                                                            \
+-		__r1 = (n1) % __d1;                                                         \
+-		__q1 = (n1) / __d1;                                                         \
+-		__m = (UWtype) __q1 * __d0;                                                 \
+-		__r1 = __r1 * __ll_B | __ll_highpart (n0);                                  \
+-		if (__r1 < __m) {                                                           \
+-			__q1--, __r1 += (d);                                                \
+-			if (__r1 >= (d)) /* i.e. we didn't get carry when adding to __r1 */ \
+-				if (__r1 < __m)                                             \
+-					__q1--, __r1 += (d);                                \
+-		}                                                                           \
+-		__r1 -= __m;                                                                \
+-		                                                                            \
+-		__r0 = __r1 % __d1;                                                         \
+-		__q0 = __r1 / __d1;                                                         \
+-		__m = (UWtype) __q0 * __d0;                                                 \
+-		__r0 = __r0 * __ll_B | __ll_lowpart (n0);                                   \
+-		if (__r0 < __m) {                                                           \
+-			__q0--, __r0 += (d);                                                \
+-			if (__r0 >= (d))                                                    \
+-				if (__r0 < __m)                                             \
+-					__q0--, __r0 += (d);                                \
+-		}                                                                           \
+-		__r0 -= __m;                                                                \
+-		                                                                            \
+-		(q) = (UWtype) __q1 * __ll_B | __q0;                                        \
+-		(r) = __r0;                                                                 \
+-	} while (0)
+-
+-/* If the processor has no udiv_qrnnd but sdiv_qrnnd, go through
+-   __udiv_w_sdiv (defined in libgcc or elsewhere).  */
+-#if !defined (udiv_qrnnd) && defined (sdiv_qrnnd)
+-#define udiv_qrnnd(q, r, nh, nl, d) \
+-	do {                                           \
+-		USItype __r;                           \
+-		(q) = __udiv_w_sdiv (&__r, nh, nl, d); \
+-		(r) = __r;                             \
+-	} while (0)
+-#endif
+-
+-/* If udiv_qrnnd was not defined for this processor, use __udiv_qrnnd_c.  */
+-#if !defined (udiv_qrnnd)
+-#define UDIV_NEEDS_NORMALIZATION 1
+-#define udiv_qrnnd __udiv_qrnnd_c
+-#endif
+-
+-#if !defined (count_leading_zeros)
+-#define count_leading_zeros(count, x) \
+-	do {                                                                        \
+-		UWtype __xr = (x);                                                  \
+-		UWtype __a;                                                         \
+-		                                                                    \
+-		if (W_TYPE_SIZE <= 32) {                                            \
+-			__a = __xr < ((UWtype)1<<2*__BITS4)                         \
+-			? (__xr < ((UWtype)1<<__BITS4) ? 0 : __BITS4)               \
+-			: (__xr < ((UWtype)1<<3*__BITS4) ?  2*__BITS4 : 3*__BITS4); \
+-		}                                                                   \
+-		else {                                                              \
+-			for (__a = W_TYPE_SIZE - 8; __a > 0; __a -= 8)              \
+-			if (((__xr >> __a) & 0xff) != 0)                            \
+-				break;                                              \
+-		}                                                                   \
+-		(count) = W_TYPE_SIZE - (__clz_tab[__xr >> __a] + __a);             \
+-	} while (0)
+-#define COUNT_LEADING_ZEROS_0 W_TYPE_SIZE
+-#endif
+-
+-#if !defined (count_trailing_zeros)
+-/* Define count_trailing_zeros using count_leading_zeros.  The latter might be
+-   defined in asm, but if it is not, the C version above is good enough.  */
+-#define count_trailing_zeros(count, x) \
+-	do {                                                       \
+-		UWtype __ctz_x = (x);                              \
+-		UWtype __ctz_c;                                    \
+-		count_leading_zeros (__ctz_c, __ctz_x & -__ctz_x); \
+-		(count) = W_TYPE_SIZE - 1 - __ctz_c;               \
+-	} while (0)
+-#endif
+-
+-#ifndef UDIV_NEEDS_NORMALIZATION
+-#define UDIV_NEEDS_NORMALIZATION 0
+-#endif
 -- 
 2.29.2
 
