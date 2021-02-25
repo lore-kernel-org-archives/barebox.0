@@ -1,78 +1,81 @@
-Delivery-date: Thu, 25 Feb 2021 13:46:39 +0100
+Delivery-date: Thu, 25 Feb 2021 14:04:06 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lFG2R-0007AD-J1
-	for lore@lore.pengutronix.de; Thu, 25 Feb 2021 13:46:39 +0100
+	id 1lFGJK-0007BE-MW
+	for lore@lore.pengutronix.de; Thu, 25 Feb 2021 14:04:06 +0100
 Received: from merlin.infradead.org ([2001:8b0:10b:1231::1])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lFG2Q-0006fB-Mu
-	for lore@pengutronix.de; Thu, 25 Feb 2021 13:46:39 +0100
+	id 1lFGJJ-000087-Tc
+	for lore@pengutronix.de; Thu, 25 Feb 2021 14:04:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=merlin.20170209; h=Sender:Content-Transfer-Encoding:
 	Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=yjLxnhw9zLDgc7QiPjf54Flp3OAm0CZFdCULPmcSy1s=; b=RJxQHOXPF4r3GMBa4vYsNNfYD
-	VWPOHBllDPjhZvfpL4BKwQpxpA9gDgcjRTfIJLhSKw7IJ5pB18bIbR+MEyygAIRaZkT8X7OMOhaLn
-	QOrtDeCijGdB+2lVsT5Zspd1js/WoTSI2VEErLTx1Z6glJBKgVJh8S+LxX9Cr8qPvtrHirAaQLzwY
-	CqFt2whGyR59Ivhah2vqLWyZbYTvv8ymlIoCsTdegCjJNwy8jhjW+ahgunRBYPZTtJzjmcjV7bcvU
-	erxfcE2FdzRQHBC0mUE9jpn2bDr05zwYQtLjYfX3TDqzhUP0Cbb9izbeXtMhtdOjdReUGRfAXKN+1
-	SrcOd7meg==;
+	 bh=SfVaoONWBbkzqnevdeJL0B1RCNL8nGsRSDCVeykaaJY=; b=AmKmBoOtuYk5uyIwSpSYcWkxp
+	phxWFrGN0So5yPRYkIYcXJH4EDoKxSrReST/J28Nq9s1/osbd2JpHsuRJ88q0bCPoMbQnVXVu+/zj
+	OYO4fdkPHYdmNpAFhTbuh5WgyfoL3rBiiYPSZJ7Gxfm/qhP/PufP8E6hx21IZdu/Z1aGC/sUJTtpc
+	c3VDMYyrcboTXG510pdD/lgnjUX4g+D0YQfY5Z0DPbylRDeOh6CBOGzAT9cYpQ6nELxqXEs+VP4gC
+	/IqPpfgdD2Z15D35zm5i6D+ptM+6gzmOq9LRHJO6yuQ96ozLvtuXYJL0yj/p/RMIWhMkTfQs03NX+
+	rtC1lfedw==;
 Received: from localhost ([::1] helo=merlin.infradead.org)
 	by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1lFG10-0006TS-VL; Thu, 25 Feb 2021 12:45:11 +0000
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+	id 1lFGIA-00085o-Qh; Thu, 25 Feb 2021 13:02:54 +0000
+Received: from mib.mailinblack.com ([137.74.84.110])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lFG0y-0006T5-Be
- for barebox@lists.infradead.org; Thu, 25 Feb 2021 12:45:09 +0000
-Received: by mail-pf1-x42a.google.com with SMTP id q20so3521389pfu.8
- for <barebox@lists.infradead.org>; Thu, 25 Feb 2021 04:45:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=E/MSDqYgfjZ1oxvCdWWvP2+mFnRud/M7Bymem7mkBZM=;
- b=pNgxCLVcULZQq+yqgOlo/ytmTOkcT0aCn13QL5EjnapDpTXEftA5PRbDKt4wbp/jw3
- SiuOFRaFR7kUR5dHDx9nRXJD/3GXUpZMBLSzSJn1uULuE9ja4Niu+8Hq3fm85AZr1Uq1
- Wsdv1Q/Q12vjMkBFS9Qu3HFkMnvhzzb2cGFv3+PpbRe3DJTvStSKftBgJak5jEsM0CBF
- 2Nmwykb62xl39uCBKfS67JyzaJc7dUHmQEVG9KCJxJJLXkcz6gNuU6joa8TjSiUBXGFl
- 1wPLmJaCQCCQT8Y1tOrw89Qc51GfOFu121lwkkoezQnl5VhNYmD3QFPk5sKuY5w17mK8
- tNng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=E/MSDqYgfjZ1oxvCdWWvP2+mFnRud/M7Bymem7mkBZM=;
- b=EbGgDfa9Lxwivfm+oogO60SbRHLkqsKdclXLxvLlyIfBx2pzOk3x7yvMJNcoYgZqJo
- vQ4iIxXBzEV6C6W3v7aSwn2PzwsFU4Pf7IsK8LuQGydx3C/HYWVPnuoEUb+k5nAgS3Kl
- 2Ju2uM/MP/IkIamE9Qkq9XgtR6WBi6zr0oFI2NJh3poVdQIHuYeLfOYNz8nX7KQ/UHd0
- YEhonFB1RF1Fe13bOgRaaE5od+OlrnrQ7k0t21l36MJucV2OnWmyWZxDfBQ9Sectuy3q
- SPeuUd+cHlbFjJgDEfkzANNNxhogNf+RsnqCC71BSNrC8pfUi22Z00QHzmR9aexkpPnV
- ShGw==
-X-Gm-Message-State: AOAM533dx/w0FZOgey2tp/8grkVLpnvvVVAwnJynkT8WcPqDaWVrPA7k
- DddwTUutxOlF6fvR9CzpQ2Y=
-X-Google-Smtp-Source: ABdhPJwuqRp22Y4kPMWC6+y3OWZsFKYGeU244K6+SWRmsbm2qRHvCFFi9CBL9VjOLDpRYQXXqBOhAQ==
-X-Received: by 2002:a63:2f86:: with SMTP id v128mr2758661pgv.241.1614257103645; 
- Thu, 25 Feb 2021 04:45:03 -0800 (PST)
-Received: from localhost (g98.115-65-200.ppp.wakwak.ne.jp. [115.65.200.98])
- by smtp.gmail.com with ESMTPSA id e185sm6479355pfe.117.2021.02.25.04.45.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Feb 2021 04:45:02 -0800 (PST)
-Date: Thu, 25 Feb 2021 21:45:00 +0900
-From: Stafford Horne <shorne@gmail.com>
-To: Yann Sionneau <ysionneau@kalray.eu>
-Message-ID: <20210225124500.GA365039@lianli.shorne-pla.net>
+ id 1lFGI7-000858-2c
+ for barebox@lists.infradead.org; Thu, 25 Feb 2021 13:02:52 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mib.mailinblack.com (Postfix) with ESMTP id C106B1A26E3
+ for <barebox@lists.infradead.org>; Thu, 25 Feb 2021 13:02:47 +0000 (UTC)
+Received: from mib.mailinblack.com (localhost [127.0.0.1])
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KLKVMTRU;
+ Thu, 25 Feb 2021 13:02:47 +0000 (UTC)
+Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
+ by mib.mailinblack.com (Postfix) with ESMTPS id 878BF1A26BE;
+ Thu, 25 Feb 2021 13:02:47 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 560CE27E05BE;
+ Thu, 25 Feb 2021 14:02:47 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id STo3WrUuOuPz; Thu, 25 Feb 2021 14:02:46 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id D490527E0840;
+ Thu, 25 Feb 2021 14:02:46 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu D490527E0840
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1614258166;
+ bh=fJ4i4QbGdXHjnSolc8rTJT5lsts9PhD4VXa5uvWuU0k=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=GHiCoP8ld1o3GmLQpafmT6rRskIPMSk9PK8pvfuz4Qd0Vf2BijPM2F+mGzktrDHHU
+ LdwevYP3y6Y/z9IsYP1UB8j9EaFR6TTGnSvNw+/Z/P7GivH2/V0X7YLRgjLzF6cLbl
+ pkGfx5OBcSybrr0lsMkBgwNKKguBs+TMzNteIllA=
+X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id MxxmS7zDFJ3C; Thu, 25 Feb 2021 14:02:46 +0100 (CET)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id B769427E05BE;
+ Thu, 25 Feb 2021 14:02:46 +0100 (CET)
+Date: Thu, 25 Feb 2021 14:02:40 +0100
+From: Jules Maselbas <jmaselbas@kalray.eu>
+To: Stafford Horne <shorne@gmail.com>
+Message-ID: <20210225130240.GA5081@tellis.lin.mbt.kalray.eu>
 References: <20210223095902.GD5549@pengutronix.de>
  <7c538f1d-9cc4-c25c-0ccd-44831597c80e@kalray.eu>
+ <20210225124500.GA365039@lianli.shorne-pla.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <7c538f1d-9cc4-c25c-0ccd-44831597c80e@kalray.eu>
+In-Reply-To: <20210225124500.GA365039@lianli.shorne-pla.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210225_074508_447026_8417B011 
-X-CRM114-Status: GOOD (  17.40  )
+X-CRM114-CacheID: sfid-20210225_080251_336546_A3EFBC83 
+X-CRM114-Status: GOOD (  13.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,8 +87,9 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Barebox List <barebox@lists.infradead.org>,
- Sascha Hauer <sha@pengutronix.de>, shorne@opencores.org
+Cc: Yann Sionneau <ysionneau@kalray.eu>,
+ Barebox List <barebox@lists.infradead.org>, Sascha Hauer <sha@pengutronix.de>,
+ shorne@opencores.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -94,59 +98,47 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
 Subject: Re: nios2 and openrisc in barebox
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello,
-
-On Thu, Feb 25, 2021 at 08:17:41AM +0100, Yann Sionneau wrote:
+On Thu, Feb 25, 2021 at 09:45:00PM +0900, Stafford Horne wrote:
 > Hello,
 > 
-> I am adding Stafford Horne in CC, as I think he might want to help about
-> openrisc port :)
+> I am the maintainer of most OpenRISC things right now.  I would be happy to
+> help, but I don't really use barebox right now.  Most of my deployments I use
+> with litex FPGA SoC's that has its own bootloader.
 > 
-> Cheers
+> That said, we have a setjmp/longjmp implementation in our glibc port which I
+> have been testing for upstreaming lately.
 > 
-> Yann
+>   https://github.com/stffrdhrn/or1k-glibc/blob/or1k-port-2/sysdeps/or1k/setjmp.S
+>   https://github.com/stffrdhrn/or1k-glibc/blob/or1k-port-2/sysdeps/or1k/__longjmp.S
 > 
-> On 23/02/2021 10:59, Sascha Hauer wrote:
-> > Hi Franck, Antony
-> > 
-> > Are you still interested in barebox support for NIOS2 and openrisc? If
-> > not I would consider removing it. Background is that we are planning to
-> > introduce green threads and implement pollers with them which makes
-> > green threads rather mandatory. Green threads need a setjmp/longjmp
-> > implementation that would have to be added for these architectures.
-> > 
-> > Keeping the architectures is no big deal normally, but I don't want to
-> > add untested new functionality, also I don't want to implement things
-> > that nobody uses, so if you are still interested it would be great if
-> > you volunteer to implement setjmp/longjmp.
+> I had a look at the barebox docs and openrisc port, it seems like there is
+> support for our standard platform, or1ksim, which is the same as my de0-nano
+> fpga board/soc and qemu.  I should be able to make use of this.
+> 
+> Is there a branch where you are doing the green thread work?  I could add and
+> test the OpenRISC implementation.
+Hi,
 
-I am the maintainer of most OpenRISC things right now.  I would be happy to
-help, but I don't really use barebox right now.  Most of my deployments I use
-with litex FPGA SoC's that has its own bootloader.
+I've done this yesterday, I've push a branch[1] that has the green
+thread paches applied (except patches on usb mass storage gadget).
+https://github.com/jmaselbas/barebox/tree/test_setjmp 
 
-That said, we have a setjmp/longjmp implementation in our glibc port which I
-have been testing for upstreaming lately.
+To test greenthread your can run the `poller -c` command in barebox's
+prompt. To do you you'll need to enable CONFIG_POLLER_YIELD and define
+CONFIG_HAS_ARCH_SJLJ
 
-  https://github.com/stffrdhrn/or1k-glibc/blob/or1k-port-2/sysdeps/or1k/setjmp.S
-  https://github.com/stffrdhrn/or1k-glibc/blob/or1k-port-2/sysdeps/or1k/__longjmp.S
+Best,
+Jules
+ 
 
-I had a look at the barebox docs and openrisc port, it seems like there is
-support for our standard platform, or1ksim, which is the same as my de0-nano
-fpga board/soc and qemu.  I should be able to make use of this.
-
-Is there a branch where you are doing the green thread work?  I could add and
-test the OpenRISC implementation.
-
--Stafford
 
 _______________________________________________
 barebox mailing list
