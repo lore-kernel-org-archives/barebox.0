@@ -1,50 +1,48 @@
-Delivery-date: Sun, 28 Feb 2021 20:10:22 +0100
+Delivery-date: Sun, 28 Feb 2021 20:10:35 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lGRSQ-0003W8-98
-	for lore@lore.pengutronix.de; Sun, 28 Feb 2021 20:10:22 +0100
+	id 1lGRSd-0003WW-IT
+	for lore@lore.pengutronix.de; Sun, 28 Feb 2021 20:10:35 +0100
 Received: from merlin.infradead.org ([2001:8b0:10b:1231::1])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lGRSN-0001Bx-CQ
-	for lore@pengutronix.de; Sun, 28 Feb 2021 20:10:22 +0100
+	id 1lGRSa-0001Ic-R3
+	for lore@pengutronix.de; Sun, 28 Feb 2021 20:10:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=merlin.20170209; h=Sender:Content-Transfer-Encoding:
 	Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
-	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=comywj+uYeGPva2MQ61H6sSyaXY/Ysd0vHVXfqNDB/I=; b=nfBPxNC6C1Q/Aul+SDkpfD260
-	JSoDF6NNNqdDPm34ussrWwiUGjTCVfsitJU+N8p2alv8bU89ju6CQjlD7yCqSxUukfAJlaQzvBvw4
-	9cshEjIQCQO+fkW2Dd9MjsYFp73jS/maUF9xx2dynp2n4SZw0AcF/LaR/unFaUAyh0GGrAhm2ARa3
-	+put9wNKW952UxLrNQsiQhwI6PIqxZ5pbSD6mxOoSCF3zL8eQPSamN3T4lpEmq63TcRzrluDZIWKk
-	KFZiUebqJp43x1iKtGjNQXe3SkOkbaMDbJduKnjeNMB4fXOQWfjpoFmnJ8zq67ifN3qLXGN4TyAFM
-	/jEkSvCPA==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=CyJZSEfZ8ibTx5fVsyRE32rl6tJCa5MvejeREqtOLaM=; b=Mxiri0rC+4zc2blJWdVN25Ybew
+	vPnQTpZ4qj2lfRMkU4Jg/KzAz76+iR87L0bGnbxJWeoU+IatJD+y5JRIIeh1N1JLjAaid6lgxe5Uj
+	maCGX0vbS+D6VToOej1xF8yjLVZMoToP0NVkpEnZkFuyTKPQwb8AWiHibOYa55vVdORZTGsEgFvBX
+	Jb7kjLGsp9LJX0N6p8GaTM8ShKyo5WFg9Sp0vlo2OaP499UMoBGoBMaVAe0EL0+qXM30NFMi5yTse
+	vOMubp1BeRm8YuKUvBfUBfvSiylreucsnt+M8tQC8b/HrT1rb4wohgnSYMD7I/EF0LSbqyUr7xhtm
+	vjNrd3sg==;
 Received: from localhost ([::1] helo=merlin.infradead.org)
 	by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1lGRRA-0006Ct-2n; Sun, 28 Feb 2021 19:09:04 +0000
-Received: from relay3-d.mail.gandi.net ([217.70.183.195])
+	id 1lGRRG-0006GX-IN; Sun, 28 Feb 2021 19:09:10 +0000
+Received: from relay6-d.mail.gandi.net ([217.70.183.198])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lGRQs-000661-6Z
- for barebox@lists.infradead.org; Sun, 28 Feb 2021 19:08:48 +0000
+ id 1lGRRB-0006De-JU
+ for barebox@lists.infradead.org; Sun, 28 Feb 2021 19:09:07 +0000
 X-Originating-IP: 87.123.101.180
 Received: from geraet.fritz.box (unknown [87.123.101.180])
  (Authenticated sender: ahmad@a3f.at)
- by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id D458E6000F;
- Sun, 28 Feb 2021 19:08:44 +0000 (UTC)
+ by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 3AB3DC0008;
+ Sun, 28 Feb 2021 19:09:02 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
-Date: Sun, 28 Feb 2021 20:08:34 +0100
-Message-Id: <20210228190836.1451663-7-ahmad@a3f.at>
+Date: Sun, 28 Feb 2021 20:08:58 +0100
+Message-Id: <20210228190858.1451988-1-ahmad@a3f.at>
 X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210228190836.1451663-1-ahmad@a3f.at>
-References: <20210228190836.1451663-1-ahmad@a3f.at>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210228_140846_436802_09B498E2 
-X-CRM114-Status: GOOD (  14.30  )
+X-CRM114-CacheID: sfid-20210228_140905_900558_FA5235AD 
+X-CRM114-Status: GOOD (  23.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,142 +67,274 @@ X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 7/9] PCI: port Linux pci_find_capability
+Subject: [PATCH] video: add simplefb driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Incomding Linux virtio_pci code uses these functions, so port them over.
+barebox has support to fix up a framebuffer it has set up as simplefb
+into the device tree of a kernel it boots. Add the counterpart to this,
+so barebox itself can reuse an already set up frame buffer.
+
+This is done to support the framebuffer device on the tinyemu RISC-V
+machine.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/pci/pci.c   | 90 +++++++++++++++++++++++++++++++++++++++++++++
- include/linux/pci.h |  5 +++
- 2 files changed, 95 insertions(+)
+ drivers/video/Kconfig                         |   8 +-
+ drivers/video/Makefile                        |   3 +-
+ drivers/video/simplefb-client.c               | 149 ++++++++++++++++++
+ .../video/{simplefb.c => simplefb-fixup.c}    |   0
+ include/linux/platform_data/simplefb.h        |  46 ++++++
+ 5 files changed, 204 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/video/simplefb-client.c
+ rename drivers/video/{simplefb.c => simplefb-fixup.c} (100%)
+ create mode 100644 include/linux/platform_data/simplefb.h
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 7d1024d8d1d2..945a983387ed 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -506,6 +506,96 @@ int pci_enable_device(struct pci_dev *dev)
- }
- EXPORT_SYMBOL(pci_enable_device);
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index b6d468c63c03..95d993dde854 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -101,8 +101,14 @@ source "drivers/video/imx-ipu-v3/Kconfig"
  
-+static u8 __pci_find_next_cap_ttl(struct pci_bus *bus, unsigned int devfn,
-+				  u8 pos, int cap, int *ttl)
-+{
-+	u8 id;
-+	u16 ent;
+ source "drivers/video/bochs/Kconfig"
+ 
++config DRIVER_VIDEO_SIMPLEFB_CLIENT
++	bool "Simple framebuffer client support"
++	depends on OFTREE
++	help
++	  Add support for reusing a previously set up simple framebuffer.
 +
-+	pci_bus_read_config_byte(bus, devfn, pos, &pos);
-+
-+	while ((*ttl)--) {
-+		if (pos < 0x40)
-+			break;
-+		pos &= ~3;
-+		pci_bus_read_config_word(bus, devfn, pos, &ent);
-+
-+		id = ent & 0xff;
-+		if (id == 0xff)
-+			break;
-+		if (id == cap)
-+			return pos;
-+		pos = (ent >> 8);
-+	}
-+	return 0;
-+}
-+
-+static u8 __pci_find_next_cap(struct pci_bus *bus, unsigned int devfn,
-+			      u8 pos, int cap)
-+{
-+	int ttl = PCI_FIND_CAP_TTL;
-+
-+	return __pci_find_next_cap_ttl(bus, devfn, pos, cap, &ttl);
-+}
-+
-+u8 pci_find_next_capability(struct pci_dev *dev, u8 pos, int cap)
-+{
-+	return __pci_find_next_cap(dev->bus, dev->devfn,
-+				   pos + PCI_CAP_LIST_NEXT, cap);
-+}
-+EXPORT_SYMBOL_GPL(pci_find_next_capability);
-+
-+static u8 __pci_bus_find_cap_start(struct pci_bus *bus,
-+				    unsigned int devfn, u8 hdr_type)
-+{
-+	u16 status;
-+
-+	pci_bus_read_config_word(bus, devfn, PCI_STATUS, &status);
-+	if (!(status & PCI_STATUS_CAP_LIST))
-+		return 0;
-+
-+	switch (hdr_type) {
-+	case PCI_HEADER_TYPE_NORMAL:
-+	case PCI_HEADER_TYPE_BRIDGE:
-+		return PCI_CAPABILITY_LIST;
-+	case PCI_HEADER_TYPE_CARDBUS:
-+		return PCI_CB_CAPABILITY_LIST;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * pci_find_capability - query for devices' capabilities
-+ * @dev: PCI device to query
-+ * @cap: capability code
+ config DRIVER_VIDEO_SIMPLEFB
+-	bool "Simple framebuffer support"
++	bool "Simple framebuffer fixup support"
+ 	depends on OFTREE
+ 	help
+ 	  Add support for setting up the kernel's simple framebuffer driver
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 28d0fe205b83..2c002f7e5342 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -19,7 +19,8 @@ obj-$(CONFIG_DRIVER_VIDEO_PXA) += pxa.o
+ obj-$(CONFIG_DRIVER_VIDEO_SDL) += sdl.o
+ obj-$(CONFIG_DRIVER_VIDEO_OMAP) += omap.o
+ obj-$(CONFIG_DRIVER_VIDEO_BCM283X) += bcm2835.o
+-obj-$(CONFIG_DRIVER_VIDEO_SIMPLEFB) += simplefb.o
++obj-$(CONFIG_DRIVER_VIDEO_SIMPLEFB_CLIENT) += simplefb-client.o
++obj-$(CONFIG_DRIVER_VIDEO_SIMPLEFB) += simplefb-fixup.o
+ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += imx-ipu-v3/
+ obj-$(CONFIG_DRIVER_VIDEO_EFI_GOP) += efi_gop.o
+ obj-$(CONFIG_DRIVER_VIDEO_FB_SSD1307) += ssd1307fb.o
+diff --git a/drivers/video/simplefb-client.c b/drivers/video/simplefb-client.c
+new file mode 100644
+index 000000000000..2d0495f6162e
+--- /dev/null
++++ b/drivers/video/simplefb-client.c
+@@ -0,0 +1,149 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Simplest possible simple frame-buffer driver, as a platform device
 + *
-+ * Tell if a device supports a given PCI capability.
-+ * Returns the address of the requested capability structure within the
-+ * device's PCI configuration space or 0 in case the device does not
-+ * support it.  Possible values for @cap include:
++ * Copyright (c) 2013, Stephen Warren
 + *
-+ *  %PCI_CAP_ID_PM           Power Management
-+ *  %PCI_CAP_ID_AGP          Accelerated Graphics Port
-+ *  %PCI_CAP_ID_VPD          Vital Product Data
-+ *  %PCI_CAP_ID_SLOTID       Slot Identification
-+ *  %PCI_CAP_ID_MSI          Message Signalled Interrupts
-+ *  %PCI_CAP_ID_CHSWP        CompactPCI HotSwap
-+ *  %PCI_CAP_ID_PCIX         PCI-X
-+ *  %PCI_CAP_ID_EXP          PCI Express
++ * Based on q40fb.c, which was:
++ * Copyright (C) 2001 Richard Zidlicky <rz@linux-m68k.org>
++ *
++ * Also based on offb.c, which was:
++ * Copyright (C) 1997 Geert Uytterhoeven
++ * Copyright (C) 1996 Paul Mackerras
 + */
-+u8 pci_find_capability(struct pci_dev *dev, int cap)
++
++#include <common.h>
++#include <fb.h>
++#include <io.h>
++#include <linux/platform_data/simplefb.h>
++#include <driver.h>
++#include <of.h>
++
++static struct fb_ops simplefb_ops;
++
++static struct simplefb_format simplefb_formats[] = SIMPLEFB_FORMATS;
++
++struct simplefb_params {
++	u32 width;
++	u32 height;
++	u32 stride;
++	struct simplefb_format *format;
++};
++
++static int simplefb_parse_dt(struct device_d *dev,
++			   struct simplefb_params *params)
 +{
-+	u8 pos;
++	struct device_node *np = dev->device_node;
++	int ret;
++	const char *format;
++	int i;
 +
-+	pos = __pci_bus_find_cap_start(dev->bus, dev->devfn, dev->hdr_type);
-+	if (pos)
-+		pos = __pci_find_next_cap(dev->bus, dev->devfn, pos, cap);
++	ret = of_property_read_u32(np, "width", &params->width);
++	if (ret) {
++		dev_err(dev, "Can't parse width property\n");
++		return ret;
++	}
 +
-+	return pos;
++	ret = of_property_read_u32(np, "height", &params->height);
++	if (ret) {
++		dev_err(dev, "Can't parse height property\n");
++		return ret;
++	}
++
++	ret = of_property_read_u32(np, "stride", &params->stride);
++	if (ret) {
++		dev_err(dev, "Can't parse stride property\n");
++		return ret;
++	}
++
++	ret = of_property_read_string(np, "format", &format);
++	if (ret) {
++		dev_err(dev, "Can't parse format property\n");
++		return ret;
++	}
++	params->format = NULL;
++	for (i = 0; i < ARRAY_SIZE(simplefb_formats); i++) {
++		if (strcmp(format, simplefb_formats[i].name))
++			continue;
++		params->format = &simplefb_formats[i];
++		break;
++	}
++	if (!params->format) {
++		dev_err(dev, "Invalid format value\n");
++		return -EINVAL;
++	}
++
++	return 0;
 +}
-+EXPORT_SYMBOL(pci_find_capability);
 +
- static void pci_do_fixups(struct pci_dev *dev, struct pci_fixup *f,
- 			  struct pci_fixup *end)
- {
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index c742570e3684..0c8fed7c8e0d 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -31,6 +31,8 @@
- 
- #define PCI_ANY_ID (~0)
- 
-+#define PCI_FIND_CAP_TTL	48
++static int simplefb_probe(struct device_d *dev)
++{
++	int ret;
++	struct simplefb_params params;
++	struct fb_info *info;
++	struct resource *mem;
 +
- /*
-  * The PCI interface treats multi-function devices as independent
-  * devices.  The slot/function address of each device is encoded
-@@ -320,6 +322,9 @@ void pci_set_master(struct pci_dev *dev);
- void pci_clear_master(struct pci_dev *dev);
- int pci_enable_device(struct pci_dev *dev);
- 
-+u8 pci_find_next_capability(struct pci_dev *dev, u8 pos, int cap);
-+u8 pci_find_capability(struct pci_dev *dev, int cap);
++	ret = -ENODEV;
++	if (dev->device_node)
++		ret = simplefb_parse_dt(dev, &params);
 +
- extern void __iomem *pci_iomap(struct pci_dev *dev, int bar);
- 
- /*
++	if (ret)
++		return ret;
++
++	mem = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(mem)) {
++		dev_err(dev, "No memory resource\n");
++		return PTR_ERR(mem);
++	}
++
++	info = xzalloc(sizeof(*info));
++	dev->priv = info;
++
++	info->xres = params.width;
++	info->yres = params.height;
++	info->bits_per_pixel = params.format->bits_per_pixel;
++	info->red = params.format->red;
++	info->green = params.format->green;
++	info->blue = params.format->blue;
++	info->transp = params.format->transp;
++	info->line_length = params.stride;
++
++	info->screen_base = (void *)mem->start;
++	info->screen_size = resource_size(mem);
++
++
++	info->fbops = &simplefb_ops;
++
++	dev_info(dev, "framebuffer at 0x%p, 0x%lx bytes\n",
++		 info->screen_base, info->screen_size);
++	dev_info(dev, "format=%s, mode=%dx%dx%d, linelength=%d\n",
++		 params.format->name,
++		 info->xres, info->yres,
++		 info->bits_per_pixel, info->line_length);
++
++	ret = register_framebuffer(info);
++	if (ret < 0) {
++		dev_err(dev, "Unable to register simplefb: %d\n", ret);
++		return ret;
++	}
++
++	dev_info(dev, "simplefb registered!\n");
++
++	return 0;
++}
++
++static const struct of_device_id simplefb_of_match[] = {
++	{ .compatible = "simple-framebuffer", },
++	{ },
++};
++
++static struct driver_d simplefb_driver = {
++	.name = "simple-framebuffer",
++	.of_compatible = simplefb_of_match,
++	.probe = simplefb_probe,
++};
++device_platform_driver(simplefb_driver);
++
++MODULE_AUTHOR("Stephen Warren <swarren@wwwdotorg.org>");
++MODULE_DESCRIPTION("Simple framebuffer driver");
++MODULE_LICENSE("GPL v2");
+diff --git a/drivers/video/simplefb.c b/drivers/video/simplefb-fixup.c
+similarity index 100%
+rename from drivers/video/simplefb.c
+rename to drivers/video/simplefb-fixup.c
+diff --git a/include/linux/platform_data/simplefb.h b/include/linux/platform_data/simplefb.h
+new file mode 100644
+index 000000000000..a4f07eccd81d
+--- /dev/null
++++ b/include/linux/platform_data/simplefb.h
+@@ -0,0 +1,46 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * simplefb.h - Simple Framebuffer Device
++ *
++ * Copyright (C) 2013 David Herrmann <dh.herrmann@gmail.com>
++ */
++
++#ifndef __PLATFORM_DATA_SIMPLEFB_H__
++#define __PLATFORM_DATA_SIMPLEFB_H__
++
++#include <video/fourcc.h>
++#include <fb.h>
++#include <linux/types.h>
++
++/* format array, use it to initialize a "struct simplefb_format" array */
++#define SIMPLEFB_FORMATS \
++{ \
++	{ "r5g6b5", 16, {11, 5}, {5, 6}, {0, 5}, {0, 0}, DRM_FORMAT_RGB565 }, \
++	{ "x1r5g5b5", 16, {10, 5}, {5, 5}, {0, 5}, {0, 0}, DRM_FORMAT_XRGB1555 }, \
++	{ "a1r5g5b5", 16, {10, 5}, {5, 5}, {0, 5}, {15, 1}, DRM_FORMAT_ARGB1555 }, \
++	{ "r8g8b8", 24, {16, 8}, {8, 8}, {0, 8}, {0, 0}, DRM_FORMAT_RGB888 }, \
++	{ "x8r8g8b8", 32, {16, 8}, {8, 8}, {0, 8}, {0, 0}, DRM_FORMAT_XRGB8888 }, \
++	{ "a8r8g8b8", 32, {16, 8}, {8, 8}, {0, 8}, {24, 8}, DRM_FORMAT_ARGB8888 }, \
++	{ "a8b8g8r8", 32, {0, 8}, {8, 8}, {16, 8}, {24, 8}, DRM_FORMAT_ABGR8888 }, \
++	{ "x2r10g10b10", 32, {20, 10}, {10, 10}, {0, 10}, {0, 0}, DRM_FORMAT_XRGB2101010 }, \
++	{ "a2r10g10b10", 32, {20, 10}, {10, 10}, {0, 10}, {30, 2}, DRM_FORMAT_ARGB2101010 }, \
++}
++
++/*
++ * Data-Format for Simple-Framebuffers
++ * @name: unique 0-terminated name that can be used to identify the mode
++ * @red,green,blue: Offsets and sizes of the single RGB parts
++ * @transp: Offset and size of the alpha bits. length=0 means no alpha
++ * @fourcc: 32bit DRM four-CC code (see drm_fourcc.h)
++ */
++struct simplefb_format {
++	const char *name;
++	u32 bits_per_pixel;
++	struct fb_bitfield red;
++	struct fb_bitfield green;
++	struct fb_bitfield blue;
++	struct fb_bitfield transp;
++	u32 fourcc;
++};
++
++#endif /* __PLATFORM_DATA_SIMPLEFB_H__ */
 -- 
 2.30.0
 
