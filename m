@@ -1,61 +1,60 @@
-Delivery-date: Mon, 01 Mar 2021 16:52:34 +0100
+Delivery-date: Mon, 01 Mar 2021 16:54:08 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lGkqY-0004wD-8Z
-	for lore@lore.pengutronix.de; Mon, 01 Mar 2021 16:52:34 +0100
+	id 1lGks4-0004wc-Px
+	for lore@lore.pengutronix.de; Mon, 01 Mar 2021 16:54:08 +0100
 Received: from merlin.infradead.org ([2001:8b0:10b:1231::1])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lGkqX-0000JQ-Fi
-	for lore@pengutronix.de; Mon, 01 Mar 2021 16:52:34 +0100
+	id 1lGks3-0000Wd-T2
+	for lore@pengutronix.de; Mon, 01 Mar 2021 16:54:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=merlin.20170209; h=Sender:Content-Transfer-Encoding:
 	Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=x1CrwZCAXwhpEsqvuum+T3lbcIsWMHtccdn78wsstv8=; b=izN9uz293SEXe3Gjza6Fjn52S
-	Kd7LRelOeKJQ5XMaIpxDMUFalybCjBhLi4extuSFjL5hnrbTc2bDF1RQJ/3F+DTkRIYqHGnN4JJAS
-	dxJK0XzIvHsB4HX6IxEOcd+kK3ryQkuEJnt0rMZIAbHIvSvk+5jpJ1rjUWYcLLPB7I/4qQYMLXl2J
-	UcSzJEpLf3lWq8Ay8L0u3gPFojB2WQhAr+IlQY/Cc5ZlCWlZi1/ZJRL/osKSggJhAe+4JCpOEPa2R
-	VKAxxr1wLmsbmU1e0LECTFon55IujU1Cg4wrSg+FRxZ5ziw4vV3+Q6SLIyvXbJdSK6DmuXflR1vd4
-	fZIQM+gDw==;
+	 bh=/RGw0QFWgJliDrjO0UgfiSbP7Cw6sY0ITvvGGAtmE40=; b=qlrdy5Cq8xWvXuXedc06JvnJZ
+	T96RX3VZ2+OFbyGv6AfQaWwwPE+X3rN81kghZU/7jEdw/ZI2j6cSgT86ODcap16SaqHrOZnBVtJoo
+	HmUk8MNpXrBJAtxSd8o8aMwJS44EaR30E/17JwvOY2EZzz79aCSJb8sPY51pF7H/OpC+uG6H1NHGl
+	eSTM2bDR6FBpNcBmnmhTZm2BVAQjI0UfT3jmqtPzjPMb3+KRVJoKMVYjHcxLWxRUn4vmFYOvxH8P8
+	EId9nwF27s1hAXD6Rlk9KEf+x/MPA1aTv8+DryZi0Ns1OcDnu5HDaSbI0tgMv6l7cicyQHMgwGBrf
+	ue86eoLtA==;
 Received: from localhost ([::1] helo=merlin.infradead.org)
 	by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1lGkp1-0006Co-FE; Mon, 01 Mar 2021 15:50:59 +0000
+	id 1lGkqy-0006P0-0Q; Mon, 01 Mar 2021 15:53:00 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lGkoy-0006CF-Lk
- for barebox@lists.infradead.org; Mon, 01 Mar 2021 15:50:57 +0000
+ id 1lGkqu-0006OK-Fs
+ for barebox@lists.infradead.org; Mon, 01 Mar 2021 15:52:57 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lGkov-00007i-Ji; Mon, 01 Mar 2021 16:50:53 +0100
+ id 1lGkqt-0000Kv-FA; Mon, 01 Mar 2021 16:52:55 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lGkov-0004Iq-A2; Mon, 01 Mar 2021 16:50:53 +0100
-Date: Mon, 1 Mar 2021 16:50:53 +0100
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Message-ID: <20210301155053.GE5549@pengutronix.de>
-References: <20210224101545.15009-1-m.felsch@pengutronix.de>
- <b6704ce8e092b1ae6f975d755c969ecb64f6428a.camel@pengutronix.de>
+ id 1lGkqt-0004L7-5Z; Mon, 01 Mar 2021 16:52:55 +0100
+Date: Mon, 1 Mar 2021 16:52:55 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <20210301155255.GF5549@pengutronix.de>
+References: <20210225104618.29874-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <b6704ce8e092b1ae6f975d755c969ecb64f6428a.camel@pengutronix.de>
+In-Reply-To: <20210225104618.29874-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 16:50:27 up 11 days, 19:14, 73 users,  load average: 0.21, 0.08, 0.08
+X-Uptime: 16:52:46 up 11 days, 19:16, 73 users,  load average: 0.07, 0.06, 0.07
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210301_105056_728576_254DE777 
-X-CRM114-Status: GOOD (  15.60  )
+X-CRM114-CacheID: sfid-20210301_105256_553131_84C21BF3 
+X-CRM114-Status: GOOD (  25.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,7 +66,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org, Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -80,36 +79,144 @@ X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] bbremote: fix the exit usage
+Subject: Re: [PATCH 1/2] usb: storage: refactor usb 32-bit capacity read
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Marco,
+On Thu, Feb 25, 2021 at 11:46:17AM +0100, Ahmad Fatoum wrote:
+> usb_stor_read_capacity uses SCSI Read Capacity 10, which assumes
+> capacity never exceeds 32-bit, which equals 2TiB max capacity at
+> 512 byte sector size.
+> 
+> In preparation for porting support for SCSI Read Capacity 16 from
+> Linux, move over all Read Capacity 10 related code into a single
+> function. Some more refactoring is done to make the function look
+> more like the Linux implementation. This also makes it easier to spot
+> the differences in retry/timeout handling, which we might want to
+> adopt in future.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/usb/storage/usb.c | 62 +++++++++++++++++++++------------------
+>  1 file changed, 33 insertions(+), 29 deletions(-)
 
-On Wed, Feb 24, 2021 at 02:22:38PM +0100, Rouven Czerwinski wrote:
-> Hi,
-> 
-> On Wed, 2021-02-24 at 11:15 +0100, Marco Felsch wrote:
-> > Unlike the sys.exit() function the builtin exit() function don't take an
-> > argument. Fix it by using the exit function from the sys module which is
-> > already imported.
-> 
-> This is not entirely correct, the builtin exit() function also takes an
-> exit code and works fine when I tested this:
-> 
->   $ python3 -c "exit(1)"; echo $?
->   1
->   $
-> 
-> Nevertheless the documentation [1] says that sys.exit() should be used
-> in scripts. So the patch is fine, but the justification not entirely
-> correct.
-> 
-> [1]: https://docs.python.org/3/library/constants.html#constants-added-by-the-site-module
-
-Could you adjust the commit message accordingly?
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+> index c264dd4b71e2..122af659820f 100644
+> --- a/drivers/usb/storage/usb.c
+> +++ b/drivers/usb/storage/usb.c
+> @@ -157,31 +157,49 @@ static int usb_stor_test_unit_ready(struct us_blk_dev *usb_blkdev)
+>  	return 0;
+>  }
+>  
+> -static int usb_stor_read_capacity(struct us_blk_dev *usb_blkdev,
+> -				  u32 *last_lba, u32 *block_length)
+> +static int read_capacity_10(struct us_blk_dev *usb_blkdev)
+>  {
+>  	struct device_d *dev = &usb_blkdev->us->pusb_dev->dev;
+> +	unsigned char cmd[16];
+>  	const u32 datalen = 8;
+> -	u32 *data = xzalloc(datalen);
+> -	u8 cmd[10];
+> +	__be32 *data = xzalloc(datalen);
+>  	int ret;
+> +	sector_t lba;
+> +	unsigned sector_size;
+>  
+>  	memset(cmd, 0, sizeof(cmd));
+>  	cmd[0] = SCSI_RD_CAPAC;
+>  
+>  	ret = usb_stor_transport(usb_blkdev, cmd, sizeof(cmd), data, datalen,
+>  				 3, USB_STOR_NO_REQUEST_SENSE);
+> -	if (ret < 0)
+> -		goto exit;
+>  
+> -	dev_dbg(dev, "Read Capacity returns: 0x%x, 0x%x\n",
+> -		data[0], data[1]);
+> -	*last_lba = be32_to_cpu(data[0]);
+> -	*block_length = be32_to_cpu(data[1]);
+> +	if (ret < 0) {
+> +		dev_dbg(dev, "Cannot read device capacity\n");
+> +		return ret;
+> +	}
+>  
+> -exit:
+> -	free(data);
+> -	return ret;
+> +	sector_size = be32_to_cpu(data[1]);
+> +	lba = be32_to_cpu(data[0]);
+> +
+> +	dev_dbg(dev, "LBA (10) = 0x%llx w/ sector size = %u\n",
+> +		lba, sector_size);
+> +
+> +
+> +	if (lba == U32_MAX) {
+> +		lba = U32_MAX - 1;
+> +		dev_warn(dev,
+> +			 "Limiting device size due to 32 bit constraints\n");
+> +		/* To support LBA >= U32_MAX, a READ CAPACITY (16) should be issued instead */
+> +	}
+> +
+> +
+> +	if (sector_size != SECTOR_SIZE)
+> +		dev_warn(dev, "Support only %d bytes sectors\n", SECTOR_SIZE);
+> +
+> +	usb_blkdev->blk.num_blocks = lba + 1;
+> +	usb_blkdev->blk.blockbits = SECTOR_SHIFT;
+> +
+> +	return SECTOR_SIZE;
+>  }
+>  
+>  static int usb_stor_io_10(struct us_blk_dev *usb_blkdev, u8 opcode,
+> @@ -275,7 +293,6 @@ static int usb_stor_init_blkdev(struct us_blk_dev *pblk_dev)
+>  {
+>  	struct us_data *us = pblk_dev->us;
+>  	struct device_d *dev = &us->pusb_dev->dev;
+> -	u32 last_lba = 0, block_length = 0;
+>  	int result;
+>  
+>  	/* get device info */
+> @@ -299,23 +316,10 @@ static int usb_stor_init_blkdev(struct us_blk_dev *pblk_dev)
+>  	/* read capacity */
+>  	dev_dbg(dev, "Reading capacity\n");
+>  
+> -	result = usb_stor_read_capacity(pblk_dev, &last_lba, &block_length);
+> -	if (result < 0) {
+> -		dev_dbg(dev, "Cannot read device capacity\n");
+> +	result = read_capacity_10(pblk_dev);
+> +	if (result < 0)
+>  		return result;
+> -	}
+> -
+> -	if (last_lba == U32_MAX) {
+> -		last_lba = U32_MAX - 1;
+> -		dev_warn(dev,
+> -			 "Limiting device size due to 32 bit constraints\n");
+> -		/* To support LBA >= U32_MAX, a READ CAPACITY (16) should be issued here */
+> -	}
+>  
+> -	pblk_dev->blk.num_blocks = last_lba + 1;
+> -	if (block_length != SECTOR_SIZE)
+> -		pr_warn("Support only %d bytes sectors\n", SECTOR_SIZE);
+> -	pblk_dev->blk.blockbits = SECTOR_SHIFT;
+>  	dev_dbg(dev, "Capacity = 0x%llx, blockshift = 0x%x\n",
+>  		 pblk_dev->blk.num_blocks, pblk_dev->blk.blockbits);
+>  
+> -- 
+> 2.29.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
