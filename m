@@ -1,81 +1,60 @@
-Delivery-date: Mon, 01 Mar 2021 17:07:29 +0100
+Delivery-date: Mon, 01 Mar 2021 17:31:12 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lGl4z-00050i-Tb
-	for lore@lore.pengutronix.de; Mon, 01 Mar 2021 17:07:29 +0100
+	id 1lGlRw-000525-3n
+	for lore@lore.pengutronix.de; Mon, 01 Mar 2021 17:31:12 +0100
 Received: from merlin.infradead.org ([2001:8b0:10b:1231::1])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lGl4z-0002TA-36
-	for lore@pengutronix.de; Mon, 01 Mar 2021 17:07:29 +0100
+	id 1lGlRv-0005Bp-4p
+	for lore@pengutronix.de; Mon, 01 Mar 2021 17:31:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=merlin.20170209; h=Sender:Content-Transfer-Encoding:
 	Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=8ip190Y/2M4YmtXRR3A6NJTIEidTA1CHY6W1Tcdvtg4=; b=0byvQF0FvRHuoOW3BIzsWrZa2
-	dG6On5WW09UOKzXswQ3GSm6CBNSmQRKbrjKtoOH8vL4QphiihqMIGh1nDKg3VlxDzwR/bzaAHanDg
-	Otj49BEKhF2ZrE5oyZy1BWiABS4gxsF/PTOkPIOh/u183zzvbB1ykpC4AqcUfTfz2jpa36c7lox/e
-	CdoFnPDrXI1nkUUMumjNxqOn9RRzCC7+iq8l0Ff/MhX6lqWcqgv0ynjkz7QtcrGqE3ydX9+zHGSKZ
-	PoIvNFHF15q9zcV//zWhoY9L8rIVGg7kvikMr3ZQnXzL6Qe4fRZ62A7NNzSAHnrhnYohzQrHJfIZd
-	zPRw6VeQg==;
+	 bh=NREyH3miSHFbyBE+sS1mxGsxXSdr6RJ3+8Xk6jGGEiE=; b=m5liyqCyw1y+yAv6b0ph+pVZ4
+	Y8Y+Sy+N/Daj/ulaEQePBVKLiCWPyZu4BM0Fo50xpRfB7n4sE3UVEFpXjF6PQ+Lafp6lb86eNk5VU
+	2OVJBg6ejz50WZA4NvWaNBJ5z+dJHXWsItqBomh22PfBEa5cSQKckkLEmUNtGCZo4Q+Av2vmu9qp6
+	qZYxjKVtUSWilkcQF4NX5BxngPr97ytNsjwvvE8NzDpydcBXPWcoU9GEdLM9Y4Sb3upvKW54+iJWd
+	fq8PqWYHNejqEH/63s4jT9rv2TvWur4aHcOXDRIRE725/bEY1g8CgK51nshCoMF3Xvyozkzd0WXXW
+	mg91fizWQ==;
 Received: from localhost ([::1] helo=merlin.infradead.org)
 	by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1lGl42-0008F6-25; Mon, 01 Mar 2021 16:06:30 +0000
-Received: from mib.mailinblack.com ([137.74.84.110])
+	id 1lGlQe-0002cs-JT; Mon, 01 Mar 2021 16:29:52 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lGl3y-0008E3-Mi
- for barebox@lists.infradead.org; Mon, 01 Mar 2021 16:06:27 +0000
-Received: from localhost (localhost [127.0.0.1])
- by mib.mailinblack.com (Postfix) with ESMTP id 7892E1A5466
- for <barebox@lists.infradead.org>; Mon,  1 Mar 2021 16:06:25 +0000 (UTC)
-Received: from mib.mailinblack.com (localhost [127.0.0.1])
- by mib.mailinblack.com with SMTP (Mib Daemon ) id KLQRYDRS;
- Mon, 01 Mar 2021 16:06:25 +0000 (UTC)
-Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
- by mib.mailinblack.com (Postfix) with ESMTPS id 4863F1A5463;
- Mon,  1 Mar 2021 16:06:25 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 18A9C27E0680;
- Mon,  1 Mar 2021 17:06:25 +0100 (CET)
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id adbl35O9HcCB; Mon,  1 Mar 2021 17:06:24 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 877B327E069F;
- Mon,  1 Mar 2021 17:06:24 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 877B327E069F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1614614784;
- bh=lUI5YGscK8+Nd1wG3KP/RwnQvtdRdguyHuNUkJXdi+A=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=qtRxUi5VNG0qzHlcNd73nGU092DV8WNJ6JE1Uf133GNB+qSUswXxbVhA0qCMWVkCt
- wM4xy/Vg0CaRBcjdyUP8fnFxaDVXzSQOhQZUEWruMaWIGXvhNbZK7Tog6AqOpXCTcy
- lLu+e7R8b5hc3zpKV5k+9b8WZf1WtDaFxdekLcWI=
-X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id DL1vey1s_ZVf; Mon,  1 Mar 2021 17:06:24 +0100 (CET)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
- by zimbra2.kalray.eu (Postfix) with ESMTPSA id 742C127E0680;
- Mon,  1 Mar 2021 17:06:24 +0100 (CET)
-Date: Mon, 1 Mar 2021 17:06:23 +0100
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20210301160623.GB9273@tellis.lin.mbt.kalray.eu>
-References: <20210215141843.27629-2-jmaselbas@kalray.eu>
- <20210301093040.1721-1-jmaselbas@kalray.eu>
- <20210301160331.GI5549@pengutronix.de>
+ id 1lGlQb-0002cW-3s
+ for barebox@lists.infradead.org; Mon, 01 Mar 2021 16:29:50 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lGlQZ-00050k-Of; Mon, 01 Mar 2021 17:29:47 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lGlQZ-0007a4-9N; Mon, 01 Mar 2021 17:29:47 +0100
+Date: Mon, 1 Mar 2021 17:29:47 +0100
+To: Ahmad Fatoum <ahmad@a3f.at>
+Message-ID: <20210301162947.GJ5549@pengutronix.de>
+References: <20210228190836.1451663-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210301160331.GI5549@pengutronix.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20210228190836.1451663-1-ahmad@a3f.at>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 17:29:34 up 11 days, 19:53, 83 users,  load average: 0.03, 0.19, 0.20
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210301_110626_954686_0452A7B9 
-X-CRM114-Status: GOOD (  18.25  )
+X-CRM114-CacheID: sfid-20210301_112949_743509_11671AF9 
+X-CRM114-Status: GOOD (  25.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,7 +66,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -96,72 +75,104 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] fixup! usb: gadget: dfu: Wrap fs operation in
- workqueue
+Subject: Re: [PATCH 1/9] virtio: align virtio_config_ops::generation return
+ type with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Mar 01, 2021 at 05:03:31PM +0100, Sascha Hauer wrote:
-> On Mon, Mar 01, 2021 at 10:30:39AM +0100, Jules Maselbas wrote:
-> > When not in mode "safe", do_close was never called.
-> > 
-> > Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> > ---
-> >  drivers/usb/gadget/dfu.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
+On Sun, Feb 28, 2021 at 08:08:28PM +0100, Ahmad Fatoum wrote:
+> The U-Boot return type for the function differs from Linux. We use
+> the Linux API elsewhere, so use it here as well.
 > 
-> I have rewritten the commit messages while applying. fixup! is no longer
-> possible because the patch is already in master.
-Ok thanks, I wasn't sure to send this as fixup or not.
-I'll take a look at master next time.
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  drivers/virtio/virtio_mmio.c  | 8 +++-----
+>  include/linux/virtio_config.h | 9 ++++-----
+>  2 files changed, 7 insertions(+), 10 deletions(-)
 
-> Applied, thanks
+Applied, thanks
+
+Sascha
+
 > 
-> Sascha
-> 
-> 
-> > 
-> > diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-> > index 82c9dc030..3234f25b3 100644
-> > --- a/drivers/usb/gadget/dfu.c
-> > +++ b/drivers/usb/gadget/dfu.c
-> > @@ -359,7 +359,6 @@ static void dfu_do_copy(struct dfu_work *dw)
-> >  	}
-> >  
-> >  	dfu->dfu_state = DFU_STATE_dfuIDLE;
-> > -	dfu_do_close(dw);
-> >  }
-> >  
-> >  static int
-> > @@ -557,6 +556,11 @@ static int handle_manifest(struct usb_function *f, const struct usb_ctrlrequest
-> >  		wq_queue_work(&dfu->wq, &dw->work);
-> >  	}
-> >  
-> > +	dw = xzalloc(sizeof(*dw));
-> > +	dw->dfu = dfu;
-> > +	dw->task = dfu_do_close;
-> > +	wq_queue_work(&dfu->wq, &dw->work);
-> > +
-> >  	return 0;
-> >  }
-> >  
-> > -- 
-> > 2.17.1
-> > 
-> > 
-> > 
-> 
+> diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+> index 821b43871a04..4a689495b8df 100644
+> --- a/drivers/virtio/virtio_mmio.c
+> +++ b/drivers/virtio/virtio_mmio.c
+> @@ -141,16 +141,14 @@ static int virtio_mmio_set_config(struct virtio_device *vdev, unsigned int offse
+>  	return 0;
+>  }
+>  
+> -static int virtio_mmio_generation(struct virtio_device *vdev, u32 *counter)
+> +static u32 virtio_mmio_generation(struct virtio_device *vdev)
+>  {
+>  	struct virtio_mmio_device *priv = to_virtio_mmio_device(vdev);
+>  
+>  	if (priv->version == 1)
+> -		*counter = 0;
+> -	else
+> -		*counter = readl(priv->base + VIRTIO_MMIO_CONFIG_GENERATION);
+> +		return 0;
+>  
+> -	return 0;
+> +	return readl(priv->base + VIRTIO_MMIO_CONFIG_GENERATION);
+>  }
+>  
+>  static int virtio_mmio_get_status(struct virtio_device *vdev)
+> diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+> index 5ee0807fb098..3ed7001f4800 100644
+> --- a/include/linux/virtio_config.h
+> +++ b/include/linux/virtio_config.h
+> @@ -49,10 +49,9 @@ struct virtio_config_ops {
+>  	 * generation() - config generation counter
+>  	 *
+>  	 * @vdev:	the real virtio device
+> -	 * @counter:	the returned config generation counter
+> -	 * @return 0 if OK, -ve on error
+> +	 * @return the config generation counter
+>  	 */
+> -	int (*generation)(struct virtio_device *vdev, u32 *counter);
+> +	u32 (*generation)(struct virtio_device *vdev);
+>  	/**
+>  	 * get_status() - read the status byte
+>  	 *
+> @@ -311,7 +310,7 @@ static inline void __virtio_cread_many(struct virtio_device *vdev,
+>  	int i;
+>  
+>  	/* no need to check return value as generation can be optional */
+> -	vdev->config->generation(vdev, &gen);
+> +	gen = vdev->config->generation(vdev);
+>  	do {
+>  		old = gen;
+>  
+> @@ -319,7 +318,7 @@ static inline void __virtio_cread_many(struct virtio_device *vdev,
+>  			virtio_get_config(vdev, offset + bytes * i,
+>  					  buf + i * bytes, bytes);
+>  
+> -		vdev->config->generation(vdev, &gen);
+> +		gen = vdev->config->generation(vdev);
+>  	} while (gen != old);
+>  }
+>  
 > -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 2.30.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
