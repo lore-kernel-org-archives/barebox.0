@@ -1,93 +1,98 @@
-Delivery-date: Wed, 03 Mar 2021 17:19:41 +0100
+Delivery-date: Wed, 03 Mar 2021 18:20:59 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHUDt-0008NU-8t
-	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 17:19:41 +0100
+	id 1lHVBD-0008QQ-37
+	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 18:20:59 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHUDr-0000TL-Le
-	for lore@pengutronix.de; Wed, 03 Mar 2021 17:19:41 +0100
+	id 1lHVBB-0008E8-Of
+	for lore@pengutronix.de; Wed, 03 Mar 2021 18:20:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:Mime-Version:References:In-Reply-To:Message-Id:
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=lz6v/xsaM4QJP5/v6nbPQxnENRH2nfEPFsv880jInvU=; b=pOjNP08u5XZreZk7V2ARGOb1/
-	aJsGbr6kiXjwM2hjnmfyXl/sjvP+ZhNDQ6WTPuV7bA9I+toOZPWDly8/GB8rCD8Wh7vKkc561ZmvH
-	lwtnWd0x1AAA0JuJEW7Bv8yISeYZ57kZL5jQ0SQZKQVPpxne7M1AeJcjxy3HDYQW1ZyszBUgLPbG9
-	HyTNm6QuNXr7jEMqB4bMbcojWT++dGxgCHYEUJi7Vaieeq4tJw44+ofBgySdNX7ZqFxKKi58VDB12
-	ylS5v6JHbCTaYMS0sT7FSiY2ILVoISNfgS1eBPZ8HVXedygJmAtUOnWvYiDcw24Og7838p+j8VMd3
-	uMDEMlN6g==;
+	 bh=fXExhKbZjy/6Aq6eIms2Oheu9XZlzyUj4YswynE2cO0=; b=dlYRR8nV19sgiTcl+DrtvfFba
+	3vyiiPITr69iAZVA4YF7w5rfiHa1Ytl5dsdIuF4kYNk4dpt+dOgG2ZwFqeiDAj4G+AVGdqqaUzwi8
+	EPDF0xmM7FzWxePZQ9k7YA3Qy0alv3c6zDukm+e9T8F4JUExSoOwetZcNPo2zaFPj9x7SVMOzQaO4
+	QBNNZsAKPgJSJQyPHtRLyz8oL09s3ximxjWvI/rRZ6uEicPgnQ1hn38d2BKzIOT9IYS3nEql8Tcck
+	alSbhYLI15SCttUiiQT/YxWEqyD1DluyJQOC0bchUaKJq2zdqNdK5bT/ZczHFo5hHzPzuLKpQ5Goz
+	FzlMumF6Q==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lHUCI-005ZHu-Lk; Wed, 03 Mar 2021 16:18:03 +0000
+	id 1lHV95-005lk5-V7; Wed, 03 Mar 2021 17:18:48 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHSpT-005DwN-UX
- for barebox@desiato.infradead.org; Wed, 03 Mar 2021 14:50:24 +0000
+ id 1lHStk-005F5c-9X
+ for barebox@desiato.infradead.org; Wed, 03 Mar 2021 14:54:48 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
- Mime-Version:References:In-Reply-To:Message-Id:Subject:Cc:To:From:Date:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=qo6BHcWJrNiLEoUuUIeHaoEykj6MCU3i7SZs1lpImgk=; b=i8+ahdtXMitaCN9rtDkXKzocZI
- YvYmGEBQWYbOAENoioeD9baUc1rybKRl6dELnZqTYs5BO8VPV3YquGQcumx4v9wIGohxNMKD7Z7DA
- tRNHJ7Vz9dEqnuSmb++4xqmFDkaIZmmP5PTK7q2GHAqUpv/z+ApxuuzyOdL1UyirLKSYkh3M24z2h
- EsiYp+LmIYbJZeQ9ONHrMNieTGfSSBhbkorT3fdLNDNCNeH1Sc4QmyPFqdLE48K5Nisc1d6R4Ki2p
- bUxrLwOrzf69XgsXl/xuxvMsRE0r2PnxPl8RrzNvHY9i6g9xtUt1VM9x/bMo54DbEdyQAZsdKVene
- K489v2lg==;
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=3YCphWZnywTnrluQjrY4JxepX6vb6C1HaJ2+pUbUYjU=; b=YAuLnXFjfK53mlOh2ZXMFwzFJM
+ P1+J6mX+1RSKTNfIf2WPq0pTJ87BIJtmrK7VyNh32OgRJ7Y9tGmbHIt2K/70VkoJsY0cDynDIsI6r
+ bV8CCX6WVz7dSV0gEhXcQNVMBIGZ297rCpnOCd1pvL+dEseYyUIQrQLi2T0rEZvB0wsdi0Rk+VWnY
+ 42hBsK6Q2IE+G1dSSZiY9rPwiY5bGd4h+VDZYntsgja0Av+vyp0B7z7iWCfMMYkyzVh3zO1mVcYsL
+ z8IED8wyJgLm2cjeyZZSs9U5mB0qI2bkKSYtoqexs2r/ueH9lkjqN0243ORjUXJuO3d2ODa9T2QZu
+ niDqoQCQ==;
+Received: from mib.mailinblack.com ([137.74.84.110])
  by casper.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lH61Z-00HGM2-UM
- for barebox@lists.infradead.org; Tue, 02 Mar 2021 14:29:22 +0000
-Received: by mail-lj1-x22e.google.com with SMTP id u4so24166093ljh.6
- for <barebox@lists.infradead.org>; Tue, 02 Mar 2021 06:29:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=qo6BHcWJrNiLEoUuUIeHaoEykj6MCU3i7SZs1lpImgk=;
- b=nVlUiGHsurcdllqtBSVyivD3+ZwKsXP3m6BtI9Xbai96Dz/f7TLHFwSXWLVm8Tc22M
- iIrFfjm16pgoQ5h/FENXgCYrWUAU4tEzs7KTFpYTGVEuo/weF+zV169EQL4254uUbktd
- u8DIEieHr2FNc3FpQ0MFW3hYqSwhojv740MhUl7qkyUGY5H/t1N9wnuHOBx3VPb1RYa2
- pcyfmCh7OInsvgfpu5mFd2SbQ4HZ0pZNaDgJm8rQrjxRkpsCzrNcu/yc6P1jcP+yaAwe
- QHJaq+ibfByDS/m0PUk7DIn5c/CWlhK4hxxZ5VqDdaf1nSWk2wJ+L9cw5QymmMKKcnFO
- fuxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=qo6BHcWJrNiLEoUuUIeHaoEykj6MCU3i7SZs1lpImgk=;
- b=lUj94mct9clwUWwp38SwyO6EvqUplM3qwWT4OMHfo9qbtj6roFEVddVIJO3nrJmO0g
- EWZaf492RzAWslBEWe8vg7+0C3lPwmFywQ4fzK5F1E/mCXUYos19a1+593vyD+feziW+
- 4tqDNaitWrsGfH5xODq/zKWHhy2rqflRzP0V0qY7v2f+rDPkwY49B2WyzLOcaO2Q4jVU
- 27dTZD5DEuPBi4ogyTX0y0mEuO58MBuPEylSsEFc7c4XCogSKpNunYBJQnWc59bFiZnB
- efTAD2JnwvFI4zRoApI1WWovud/mBxvByhZ0m0pRuNTAMQeRq3fCcAW1tfKC0ZWY3Jf2
- NcAA==
-X-Gm-Message-State: AOAM533ffiBzZ36AP3rXMURfp50VcAAQkHrhJmI0sBW0tgXtkHW5/7uj
- gybMJOADfw4R93wVCpMfja0aXPSYMCj8zw==
-X-Google-Smtp-Source: ABdhPJyOrcImY/2tKbLpSUyQP4a9AR5BhN/y9QZC7HZ9we7RPxQAEeNgyCxQA6yQRCn04KzqQEFHQg==
-X-Received: by 2002:a2e:87d8:: with SMTP id v24mr11965723ljj.387.1614695295871; 
- Tue, 02 Mar 2021 06:28:15 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
- by smtp.gmail.com with ESMTPSA id z14sm2653047lfh.296.2021.03.02.06.28.15
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 02 Mar 2021 06:28:15 -0800 (PST)
-Date: Tue, 2 Mar 2021 17:28:14 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
-Message-Id: <20210302172814.ac8a31bd01efa18df2065992@gmail.com>
-In-Reply-To: <20210228190836.1451663-9-ahmad@a3f.at>
-References: <20210228190836.1451663-1-ahmad@a3f.at>
- <20210228190836.1451663-9-ahmad@a3f.at>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; i686-pc-linux-gnu)
-Mime-Version: 1.0
+ id 1lH2ja-00GyVH-Vf
+ for barebox@lists.infradead.org; Tue, 02 Mar 2021 10:58:36 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mib.mailinblack.com (Postfix) with ESMTP id 6101F1A6EE1
+ for <barebox@lists.infradead.org>; Tue,  2 Mar 2021 10:58:29 +0000 (UTC)
+Received: from mib.mailinblack.com (localhost [127.0.0.1])
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KLRWE871;
+ Tue, 02 Mar 2021 10:58:29 +0000 (UTC)
+Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
+ by mib.mailinblack.com (Postfix) with ESMTPS id 2442F1A6EDE;
+ Tue,  2 Mar 2021 10:58:29 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id E1C8A27E0842;
+ Tue,  2 Mar 2021 11:58:28 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id 4AbicW5IkzLt; Tue,  2 Mar 2021 11:58:28 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 3D55127E0840;
+ Tue,  2 Mar 2021 11:58:28 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 3D55127E0840
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1614682708;
+ bh=3YCphWZnywTnrluQjrY4JxepX6vb6C1HaJ2+pUbUYjU=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=gPCbGuhQxgrn4sNlYd+OF47Cjt+LufmePDCvMBxtGS63TS85sWDClpR3mnyjF9hkX
+ PiX0uFumYX+TJiZAWJ4NYxuLQ87KoxtoLDxh7Or6zfY6rbp2YQkbQXV0keGXkHdHCQ
+ F6kK+HsUHzmZoQ3GbECfrdzLOIEKAcJipN6HMuf0=
+X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id ynvszx8mAOaU; Tue,  2 Mar 2021 11:58:28 +0100 (CET)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id 27C8E27E066B;
+ Tue,  2 Mar 2021 11:58:28 +0100 (CET)
+Date: Tue, 2 Mar 2021 11:58:27 +0100
+From: Jules Maselbas <jmaselbas@kalray.eu>
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org,
+ Yann Sionneau <ysionneau@kalray.eu>
+Message-ID: <20210302105827.GD9273@tellis.lin.mbt.kalray.eu>
+References: <20210301155851.12463-1-jmaselbas@kalray.eu>
+ <20210301155851.12463-3-jmaselbas@kalray.eu>
+ <04c18498-970c-9a69-ebf7-97bf85d2f961@pengutronix.de>
+ <595cae1711b8bdc79876371194cadd772f8646e6.camel@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <595cae1711b8bdc79876371194cadd772f8646e6.camel@pengutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210302_142922_309816_7DA686ED 
-X-CRM114-Status: GOOD (  17.05  )
+X-CRM114-CacheID: sfid-20210302_105836_172669_3C0FB7CB 
+X-CRM114-Status: GOOD (  21.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,77 +104,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 9/9] virtio: virtio-pci: restrict MIPS support to MMU
- configuration
+Subject: Re: [PATCH 3/5] kvx: Implement dma handling primitives
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sun, 28 Feb 2021 20:08:36 +0100
-Ahmad Fatoum <ahmad@a3f.at> wrote:
+Hi Lucas and Ahmad,
 
-Hi!
+On Tue, Mar 02, 2021 at 11:14:09AM +0100, Lucas Stach wrote:
+> Am Dienstag, dem 02.03.2021 um 09:37 +0100 schrieb Ahmad Fatoum:
+> > Hello Jules, Yann,
+> > 
+> > On 01.03.21 16:58, Jules Maselbas wrote:
+> > > From: Yann Sionneau <ysionneau@kalray.eu>
+> > Some comments inline. I am not a cache cohereny expert, so take
+> > it with a grain of salt.
+> > 
+> > > +static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+> > > +{
+> > > +	void *ret = xmemalign(PAGE_SIZE, size);
+> > > +
+> > > +	if (dma_handle)
+> > > +		*dma_handle = (dma_addr_t)(uintptr_t)ret;
+> > > +
+> > > +	return ret;
+> > > +}
+> > 
+> > This would imply that the CPU barebox is booting is coherent with all
+> > 
+> > devices that barebox needs to access. Is that the case?
+> > 
+> > (See below)
+> > 
+This is bogus, memory is not coherent with all devices, this should be
+handled by the mmu, which is currently not supported in our barebox port.
+Using this can lead to coherency issues. We can either drop this
+function, so that is leads to an error at link time, or add a call to
+BUG for a runtime error.
 
-> MMU-less MIPS doesn't play along nicely with VIRTIO_PCI.
-> e.g. Reading from a virtio-rng, will return clearly bogus data.
-> Document this in the Kconfig, so no one else trips over this.
-> =
+Right now we aren't using any driver that require dma_alloc_coherent,
+but we use drivers that requires dma_alloc and dma_map_single instead.
 
-> Eventually, this should be fixed..
+> > > +/*
+> > > + * The implementation of arch should follow the following rules:
+> > > + *		map		for_cpu		for_device	unmap
+> > > + * TO_DEV	writeback	none		writeback	none
+> > > + * FROM_DEV	invalidate	invalidate(*)	invalidate	invalidate(*)
+> > > + * BIDIR	writeback	invalidate	writeback	invalidate
+> > > + *
+> > > + * (*) - only necessary if the CPU speculatively prefetches.
+> > > + *
+> > > + * (see https://lkml.org/lkml/2018/5/18/979)
+> > > + */
+> > > +
+> > > +void dma_sync_single_for_device(dma_addr_t addr, size_t size,
+> > > +				enum dma_data_direction dir)
+> > > +{
+> > > +	switch (dir) {
+> > > +	case DMA_FROM_DEVICE:
+> > > +		kvx_dcache_invalidate_mem_area(addr, size);
+> 
+> Why do you need to explicitly invalidate, but not flush? Even if the
+> CPU speculatively prefetches, the coherency protocol should make sure
+> to invalidate the speculatively loaded lines, right?
+Since we don't have a coherent memory, here we need to invalidate L1
+dcache to let the CPU see deivce's writes in memory.
+Also every write goes through the cache, flush is not required.
+
+> 
+> > > +		break;
+> > > +	case DMA_TO_DEVICE:
+> > > +	case DMA_BIDIRECTIONAL:
+> > > +		/* allow device to read buffer written by CPU */
+> > > +		wmb();
+> > 
+> > If the interconnect was indeed coherent, like dma_alloc_coherent
+> > above hints, you wouldn't need any barriers here..?
+> 
+> Coherency does not imply strict ordering, so the barriers are in fact
+> correct, as the CPU write buffers and/or the interconnect can still
+> change the ordering of the writes as seen by a remote observer.
 
 
-Please describe, how can I reproduce the problem.
+Best,
+Jules 
 
-
-> =
-
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  drivers/virtio/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> =
-
-> diff --git a/drivers/virtio/Kconfig b/drivers/virtio/Kconfig
-> index ecf66987b3ed..91a89d3e1b89 100644
-> --- a/drivers/virtio/Kconfig
-> +++ b/drivers/virtio/Kconfig
-> @@ -28,6 +28,7 @@ config VIRTIO_MMIO
->  config VIRTIO_PCI
->  	tristate "PCI driver for virtio devices"
->  	depends on PCI && HAS_DMA
-> +	depends on MMU && MIPS || !MIPS
->  	select VIRTIO
->  	help
->  	  This driver provides support for virtio based paravirtual device
-> -- =
-
-> 2.30.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
