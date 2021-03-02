@@ -1,98 +1,96 @@
-Delivery-date: Wed, 03 Mar 2021 18:20:59 +0100
+Delivery-date: Wed, 03 Mar 2021 18:22:25 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHVBD-0008QQ-37
-	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 18:20:59 +0100
+	id 1lHVCb-0008Qp-0y
+	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 18:22:25 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHVBB-0008E8-Of
-	for lore@pengutronix.de; Wed, 03 Mar 2021 18:20:58 +0100
+	id 1lHVCa-0008UM-2D
+	for lore@pengutronix.de; Wed, 03 Mar 2021 18:22:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=fXExhKbZjy/6Aq6eIms2Oheu9XZlzyUj4YswynE2cO0=; b=dlYRR8nV19sgiTcl+DrtvfFba
-	3vyiiPITr69iAZVA4YF7w5rfiHa1Ytl5dsdIuF4kYNk4dpt+dOgG2ZwFqeiDAj4G+AVGdqqaUzwi8
-	EPDF0xmM7FzWxePZQ9k7YA3Qy0alv3c6zDukm+e9T8F4JUExSoOwetZcNPo2zaFPj9x7SVMOzQaO4
-	QBNNZsAKPgJSJQyPHtRLyz8oL09s3ximxjWvI/rRZ6uEicPgnQ1hn38d2BKzIOT9IYS3nEql8Tcck
-	alSbhYLI15SCttUiiQT/YxWEqyD1DluyJQOC0bchUaKJq2zdqNdK5bT/ZczHFo5hHzPzuLKpQ5Goz
-	FzlMumF6Q==;
+	 bh=kCVjIrsBibyfcBjJYW9C8Kay+gp9eisARR1ovf54Zdw=; b=bqJ6tndsFqyX7Ehihs4RPC5Xk
+	2vdJnOtjMcBfN3/7LTuMJMhCaklpMV9PxEbD9d1koUslbWPXlnbH5g6mG5ZeP3KN1ld0j+8oPw4SO
+	SNXW5rLORdqwO2WNFMa36GC91zQg9ZFBOLHXH0iKXMQM/qxrIIMJwM272gNcujoLGXIoSbpZC/gjV
+	gZd8o98kzb+Y4M6oJofwOKoRngDGthWOVUVvlBvbuAlh+LndkXuGxgr0v8fT7w+acaeFYTYtaBU8r
+	7ubyiEIMnCFAJEj5yzgXuh5UYnmPbFU4b1olqZ6hAophuV8fMm9fS2MJnxNYgTlvcL26grIi71+O6
+	ENb4wKCtQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lHV95-005lk5-V7; Wed, 03 Mar 2021 17:18:48 +0000
+	id 1lHVB1-005mBV-D7; Wed, 03 Mar 2021 17:20:47 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHStk-005F5c-9X
- for barebox@desiato.infradead.org; Wed, 03 Mar 2021 14:54:48 +0000
+ id 1lHSuU-005FHk-HD
+ for barebox@desiato.infradead.org; Wed, 03 Mar 2021 14:55:36 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=3YCphWZnywTnrluQjrY4JxepX6vb6C1HaJ2+pUbUYjU=; b=YAuLnXFjfK53mlOh2ZXMFwzFJM
- P1+J6mX+1RSKTNfIf2WPq0pTJ87BIJtmrK7VyNh32OgRJ7Y9tGmbHIt2K/70VkoJsY0cDynDIsI6r
- bV8CCX6WVz7dSV0gEhXcQNVMBIGZ297rCpnOCd1pvL+dEseYyUIQrQLi2T0rEZvB0wsdi0Rk+VWnY
- 42hBsK6Q2IE+G1dSSZiY9rPwiY5bGd4h+VDZYntsgja0Av+vyp0B7z7iWCfMMYkyzVh3zO1mVcYsL
- z8IED8wyJgLm2cjeyZZSs9U5mB0qI2bkKSYtoqexs2r/ueH9lkjqN0243ORjUXJuO3d2ODa9T2QZu
- niDqoQCQ==;
-Received: from mib.mailinblack.com ([137.74.84.110])
+ bh=KhZzWoUg9IdCGzFrK3DyMAmfsmaHIAJnRNHC0+CCIcA=; b=QimFjoZegRRsFREcjrB1VmLWJk
+ d0brYWuu/VwzygyQsV0QQc/zcNcWxCPqj9VxTLZYPjiNINZ9US/MMlkb9/lKATin+PaSaGzj3QCg3
+ RJp5ztX8GESYw1zDB52Cxw3+hH0wzc5IvEJgYskXq3XDMIP0Z1Yf0ilp8c/ewuJlh2I+AeMNGu8lT
+ Lz0gmsg7HbcNmQZY83EQziYJ+S6mkuZ2Q9HAN1AKEFWOEiN9JNBlv8dYTbt/DU3WJ4/eu1WHvX1ej
+ 0MYqi9L8t5CorMiP3FxOf6myMLUBo9PFTkRjPaklEvBQdRADk363zewi1tLG6MK3QVEuXwYqUktmR
+ w9uTZDBA==;
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by casper.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lH2ja-00GyVH-Vf
- for barebox@lists.infradead.org; Tue, 02 Mar 2021 10:58:36 +0000
-Received: from localhost (localhost [127.0.0.1])
- by mib.mailinblack.com (Postfix) with ESMTP id 6101F1A6EE1
- for <barebox@lists.infradead.org>; Tue,  2 Mar 2021 10:58:29 +0000 (UTC)
-Received: from mib.mailinblack.com (localhost [127.0.0.1])
- by mib.mailinblack.com with SMTP (Mib Daemon ) id KLRWE871;
- Tue, 02 Mar 2021 10:58:29 +0000 (UTC)
-Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
- by mib.mailinblack.com (Postfix) with ESMTPS id 2442F1A6EDE;
- Tue,  2 Mar 2021 10:58:29 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id E1C8A27E0842;
- Tue,  2 Mar 2021 11:58:28 +0100 (CET)
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id 4AbicW5IkzLt; Tue,  2 Mar 2021 11:58:28 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 3D55127E0840;
- Tue,  2 Mar 2021 11:58:28 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 3D55127E0840
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1614682708;
- bh=3YCphWZnywTnrluQjrY4JxepX6vb6C1HaJ2+pUbUYjU=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=gPCbGuhQxgrn4sNlYd+OF47Cjt+LufmePDCvMBxtGS63TS85sWDClpR3mnyjF9hkX
- PiX0uFumYX+TJiZAWJ4NYxuLQ87KoxtoLDxh7Or6zfY6rbp2YQkbQXV0keGXkHdHCQ
- F6kK+HsUHzmZoQ3GbECfrdzLOIEKAcJipN6HMuf0=
-X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id ynvszx8mAOaU; Tue,  2 Mar 2021 11:58:28 +0100 (CET)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
- by zimbra2.kalray.eu (Postfix) with ESMTPSA id 27C8E27E066B;
- Tue,  2 Mar 2021 11:58:28 +0100 (CET)
-Date: Tue, 2 Mar 2021 11:58:27 +0100
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org,
- Yann Sionneau <ysionneau@kalray.eu>
-Message-ID: <20210302105827.GD9273@tellis.lin.mbt.kalray.eu>
-References: <20210301155851.12463-1-jmaselbas@kalray.eu>
- <20210301155851.12463-3-jmaselbas@kalray.eu>
- <04c18498-970c-9a69-ebf7-97bf85d2f961@pengutronix.de>
- <595cae1711b8bdc79876371194cadd772f8646e6.camel@pengutronix.de>
+ id 1lHDNa-000UQF-O3
+ for barebox@lists.infradead.org; Tue, 02 Mar 2021 22:20:35 +0000
+Received: by mail-lf1-x130.google.com with SMTP id b1so23051777lfb.7
+ for <barebox@lists.infradead.org>; Tue, 02 Mar 2021 14:20:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=KhZzWoUg9IdCGzFrK3DyMAmfsmaHIAJnRNHC0+CCIcA=;
+ b=ECba4XlPjE36O6BFp/geBHf/LEl8D6x52qqVkOxS9go8Wopal4UPgnjJ9QqjAgygnk
+ Kh/KAbWn7ZowerGeXZJJA6gTpTNyZi1Os6klWKlvnP5DMzjgQfI3sUflWrdoY3dwjDQJ
+ UhZzefBaUaJ754m0fTizfSUujnQ8ZuqX2uxJqBB9LXUJocekwr+nMVPwGiswyyPZXH0F
+ CP5QgOJ1lR0PayJnQapKlU93GmyO25aI0r9QPepJwtTb/pmYogCnd3OTKQpALW3JY7hu
+ oMSihAp5aycEXOKYn6Dw7YKXV4HsTWrqCXdTyrYT534gILC3pvKTW2nXHHFhswkul+Pw
+ rt2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=KhZzWoUg9IdCGzFrK3DyMAmfsmaHIAJnRNHC0+CCIcA=;
+ b=iN+ZR0J4KodAZAGj8W7fx5LkWtzD4eb6WJOQQfFo3WfVNxzGSFkyFr5RwM/XzEPXbL
+ x0PhaoBm8p7ekCGtKmWw4JNwZFN2JBU2/+Y7qyh64WRAdU8vxoBDKzX86ptOlyp57Urs
+ FL9LTI6C4GRfS12XonpZRZdNmdtXF7L0iWtH7EcZubt21gwQQSePQlD4vTYrsg4X+o/I
+ qmEMlag6bl/g+x4iuQsNQQDn3podC5mOGi5WFZhjjUtc49/aDiyHLB1traD2nsp9aRjX
+ p+3P5NFBBUB8dmKi4riiloAaxGzMvwdGMqSMbHZ3NGfbLodBaDycnGWYoHHQaTCLuDrN
+ lr9g==
+X-Gm-Message-State: AOAM533ywBTDWgycq1oER/AuyhjHNcJNVzi5CJ4MxUMSIEp2vKZeoUSw
+ cq32yN1CaNy8zQDBMzBPcz4=
+X-Google-Smtp-Source: ABdhPJy5ohH7weUEP/f7xF9s0RU3s0zUyqy0tbIHJ6rbMBau98GoaejZpeKckKRQmMQfvxFXiwiBSg==
+X-Received: by 2002:a05:6512:3693:: with SMTP id
+ d19mr13014035lfs.118.1614723569041; 
+ Tue, 02 Mar 2021 14:19:29 -0800 (PST)
+Received: from chr (109-252-61-199.nat.spd-mgts.ru. [109.252.61.199])
+ by smtp.gmail.com with ESMTPSA id 1sm2884968ljo.61.2021.03.02.14.19.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Mar 2021 14:19:28 -0800 (PST)
+Date: Wed, 3 Mar 2021 01:19:26 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org, Jules Maselbas <jmaselbas@kalray.eu>,
+ Stafford Horne <shorne@gmail.com>, sha@pengutronix.de
+Message-ID: <20210302221920.GC1407@chr>
+References: <20210301110106.3764-1-a.fatoum@pengutronix.de>
+ <20210301110106.3764-11-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <595cae1711b8bdc79876371194cadd772f8646e6.camel@pengutronix.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20210301110106.3764-11-a.fatoum@pengutronix.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210302_105836_172669_3C0FB7CB 
-X-CRM114-Status: GOOD (  21.50  )
+X-CRM114-CacheID: sfid-20210302_222035_147705_4D761C0F 
+X-CRM114-Status: GOOD (  17.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -112,94 +110,107 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/5] kvx: Implement dma handling primitives
+X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH v2 10/11] mips: Implement setjmp/longjmp/initjmp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Lucas and Ahmad,
+Hi, Sascha and Ahmad,
 
-On Tue, Mar 02, 2021 at 11:14:09AM +0100, Lucas Stach wrote:
-> Am Dienstag, dem 02.03.2021 um 09:37 +0100 schrieb Ahmad Fatoum:
-> > Hello Jules, Yann,
-> > 
-> > On 01.03.21 16:58, Jules Maselbas wrote:
-> > > From: Yann Sionneau <ysionneau@kalray.eu>
-> > Some comments inline. I am not a cache cohereny expert, so take
-> > it with a grain of salt.
-> > 
-> > > +static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
-> > > +{
-> > > +	void *ret = xmemalign(PAGE_SIZE, size);
-> > > +
-> > > +	if (dma_handle)
-> > > +		*dma_handle = (dma_addr_t)(uintptr_t)ret;
-> > > +
-> > > +	return ret;
-> > > +}
-> > 
-> > This would imply that the CPU barebox is booting is coherent with all
-> > 
-> > devices that barebox needs to access. Is that the case?
-> > 
-> > (See below)
-> > 
-This is bogus, memory is not coherent with all devices, this should be
-handled by the mmu, which is currently not supported in our barebox port.
-Using this can lead to coherency issues. We can either drop this
-function, so that is leads to an error at link time, or add a call to
-BUG for a runtime error.
-
-Right now we aren't using any driver that require dma_alloc_coherent,
-but we use drivers that requires dma_alloc and dma_map_single instead.
-
-> > > +/*
-> > > + * The implementation of arch should follow the following rules:
-> > > + *		map		for_cpu		for_device	unmap
-> > > + * TO_DEV	writeback	none		writeback	none
-> > > + * FROM_DEV	invalidate	invalidate(*)	invalidate	invalidate(*)
-> > > + * BIDIR	writeback	invalidate	writeback	invalidate
-> > > + *
-> > > + * (*) - only necessary if the CPU speculatively prefetches.
-> > > + *
-> > > + * (see https://lkml.org/lkml/2018/5/18/979)
-> > > + */
-> > > +
-> > > +void dma_sync_single_for_device(dma_addr_t addr, size_t size,
-> > > +				enum dma_data_direction dir)
-> > > +{
-> > > +	switch (dir) {
-> > > +	case DMA_FROM_DEVICE:
-> > > +		kvx_dcache_invalidate_mem_area(addr, size);
+On Mon, Mar 01, 2021 at 12:01:05PM +0100, Ahmad Fatoum wrote:
+> From: Sascha Hauer <s.hauer@pengutronix.de>
 > 
-> Why do you need to explicitly invalidate, but not flush? Even if the
-> CPU speculatively prefetches, the coherency protocol should make sure
-> to invalidate the speculatively loaded lines, right?
-Since we don't have a coherent memory, here we need to invalidate L1
-dcache to let the CPU see deivce's writes in memory.
-Also every write goes through the cache, flush is not required.
-
+> The header has been taken from glibc, the implementation itself is based
+> on the newlib implementation.
 > 
-> > > +		break;
-> > > +	case DMA_TO_DEVICE:
-> > > +	case DMA_BIDIRECTIONAL:
-> > > +		/* allow device to read buffer written by CPU */
-> > > +		wmb();
-> > 
-> > If the interconnect was indeed coherent, like dma_alloc_coherent
-> > above hints, you wouldn't need any barriers here..?
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/mips/Kconfig              |  1 +
+>  arch/mips/include/asm/setjmp.h | 32 ++++++++++++++++++++++
+>  arch/mips/lib/Makefile         |  1 +
+>  arch/mips/lib/setjmp.S         | 50 ++++++++++++++++++++++++++++++++++
+>  4 files changed, 84 insertions(+)
+>  create mode 100644 arch/mips/include/asm/setjmp.h
+>  create mode 100644 arch/mips/lib/setjmp.S
 > 
-> Coherency does not imply strict ordering, so the barriers are in fact
-> correct, as the CPU write buffers and/or the interconnect can still
-> change the ordering of the writes as seen by a remote observer.
+> ...
+>
+> diff --git a/arch/mips/lib/setjmp.S b/arch/mips/lib/setjmp.S
+> new file mode 100644
+> index 000000000000..b09a7c55293c
+> --- /dev/null
+> +++ b/arch/mips/lib/setjmp.S
+> @@ -0,0 +1,50 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +
+> +#include <asm/regdef.h>
+> +#include <asm/asm.h>
+> +#include <linux/linkage.h>
+> +
+> +/* int setjmp (jmp_buf);  */
+> +LEAF(setjmp)
+> +	sw	ra, (0 * 4)(a0)
+> +	sw	sp, (1 * 4)(a0)
+> +	sw	s0, (2 * 4)(a0)
+> +	sw	s1, (3 * 4)(a0)
+> +	sw	s2, (4 * 4)(a0)
+> +	sw	s3, (5 * 4)(a0)
+> +	sw	s4, (6 * 4)(a0)
+> +	sw	s5, (7 * 4)(a0)
+> +	sw	s6, (8 * 4)(a0)
+> +	sw	s7, (9 * 4)(a0)
+> +	sw	fp, (10 * 4)(a0)
+> +	move	v0, zero
+> +	j	ra
+> +END(setjmp)
+> +
+> +/* volatile void longjmp (jmp_buf, int);  */
+> +LEAF(longjmp)
+> +	lw	ra, (0 * 4)(a0)
+> +	lw	sp, (1 * 4)(a0)
+> +	lw	s0, (2 * 4)(a0)
+> +	lw	s1, (3 * 4)(a0)
+> +	lw	s2, (4 * 4)(a0)
+> +	lw	s3, (5 * 4)(a0)
+> +	lw	s4, (6 * 4)(a0)
+> +	lw	s5, (7 * 4)(a0)
+> +	lw	s6, (8 * 4)(a0)
+> +	lw	s7, (9 * 4)(a0)
+> +	lw	fp, (10 * 4)(a0)
+> +	bne	a1, zero, 1f
+> +	li	a1, 1
+> +1:
+> +	move	v0, a1
+> +	j	ra
+> +END(longjmp)
+> +
+> +/* int initjmp(jmp_buf jmp, void __noreturn (*func)(void), void *stack_top); */
+> +LEAF(initjmp)
+> +	sw	a1, (0 * 4)(a0)
+> +	sw	a2, (1 * 4)(a0)
+> +	move	v0, zero
+> +	j	ra
+> +END(initjmp)
 
+I would suggest using `REG_S/REG_L r, (n * SZREG)(a0)` here for the sake of 
+MIPS64 targets. See arch/mips/include/asm/asm.h:272.
 
-Best,
-Jules 
+Regards,
+Peter
 
+> -- 
+> 2.29.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
