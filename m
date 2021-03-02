@@ -1,92 +1,93 @@
-Delivery-date: Wed, 03 Mar 2021 16:52:05 +0100
+Delivery-date: Wed, 03 Mar 2021 17:19:41 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHTnB-0008M0-00
-	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 16:52:05 +0100
+	id 1lHUDt-0008NU-8t
+	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 17:19:41 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHTnA-0005H7-2L
-	for lore@pengutronix.de; Wed, 03 Mar 2021 16:52:04 +0100
+	id 1lHUDr-0000TL-Le
+	for lore@pengutronix.de; Wed, 03 Mar 2021 17:19:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
-	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:Mime-Version:References:In-Reply-To:Message-Id:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=WUS3NnzKlTDJMXR6Pq1cCJvOUTiW4MokgYPvudt8IMI=; b=m5/9ez1iTrijd3CjuybdFnh5p
-	glD7Yv3Iez4QnJA2UiS5WxjpdmnnemYWafDb4KT4RzvvSnoOqB5vYdWB7N3rgoGTUxlTsWRwIRfRK
-	y7GzvSpuBBjaekcWFLsuc0cPStSLCum3WS1JHJj6q/QCgqCZ6pT1beRYCx9EH04Dj9Pv91Ynk61vX
-	+CECaN5MKIVt9LxEIo/WUmz8MC9V3/F46QujVyCEqqc+kHeSym7nHsPJh+e4PSEzH3TKFP4aoWufo
-	F/P6US6YKEsr1NpnOKFKhxfx1WkB+Gmp7GqvmZh8qh/5GbGW0aa6NVujYR+9zUtxlBOo24kRNf/sS
-	BDktm6aIQ==;
+	 bh=lz6v/xsaM4QJP5/v6nbPQxnENRH2nfEPFsv880jInvU=; b=pOjNP08u5XZreZk7V2ARGOb1/
+	aJsGbr6kiXjwM2hjnmfyXl/sjvP+ZhNDQ6WTPuV7bA9I+toOZPWDly8/GB8rCD8Wh7vKkc561ZmvH
+	lwtnWd0x1AAA0JuJEW7Bv8yISeYZ57kZL5jQ0SQZKQVPpxne7M1AeJcjxy3HDYQW1ZyszBUgLPbG9
+	HyTNm6QuNXr7jEMqB4bMbcojWT++dGxgCHYEUJi7Vaieeq4tJw44+ofBgySdNX7ZqFxKKi58VDB12
+	ylS5v6JHbCTaYMS0sT7FSiY2ILVoISNfgS1eBPZ8HVXedygJmAtUOnWvYiDcw24Og7838p+j8VMd3
+	uMDEMlN6g==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lHTlr-005Sze-Hl; Wed, 03 Mar 2021 15:50:43 +0000
+	id 1lHUCI-005ZHu-Lk; Wed, 03 Mar 2021 16:18:03 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHSk8-005CNp-6L
- for barebox@desiato.infradead.org; Wed, 03 Mar 2021 14:44:52 +0000
+ id 1lHSpT-005DwN-UX
+ for barebox@desiato.infradead.org; Wed, 03 Mar 2021 14:50:24 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
- Content-Type:Content-ID:Content-Description;
- bh=EftmGZdjLp3X1b5WI/aqMkWru2/fOhiuSqIREAuvwXM=; b=Tpfjr9cUzT2EyU22UydTYSaTd5
- kN9N1Msjw6Lu40UnhDiBWF4pgyUjk5pfsKwLF42TTz0HzKWnyS9LeVk0GtBzNG9msFvkCsdHJycxv
- zQqiUaNu5Uo12taFDvzKpAvYgCC1UarRn+Ow5sLSJviUhNGh+KLOY27ZpRO/sOqedh9TwErnRUdeo
- 7xpt8edrENWZbLDvO7cSxJuhaKlr+Xx7m5s2Hv7CmwomhFo2oTrzp3mLidi8Noz6FZHXtzvLSYhHz
- rgvwMJHGIXAkTIiCJS2ILGktD6CjGbU1jb3b+xDEoyg7LDQ9Gy/zrWpvbWIXk9nWQadZTjmPE4sXR
- wM56KwpQ==;
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+ Mime-Version:References:In-Reply-To:Message-Id:Subject:Cc:To:From:Date:Sender
+ :Reply-To:Content-ID:Content-Description;
+ bh=qo6BHcWJrNiLEoUuUIeHaoEykj6MCU3i7SZs1lpImgk=; b=i8+ahdtXMitaCN9rtDkXKzocZI
+ YvYmGEBQWYbOAENoioeD9baUc1rybKRl6dELnZqTYs5BO8VPV3YquGQcumx4v9wIGohxNMKD7Z7DA
+ tRNHJ7Vz9dEqnuSmb++4xqmFDkaIZmmP5PTK7q2GHAqUpv/z+ApxuuzyOdL1UyirLKSYkh3M24z2h
+ EsiYp+LmIYbJZeQ9ONHrMNieTGfSSBhbkorT3fdLNDNCNeH1Sc4QmyPFqdLE48K5Nisc1d6R4Ki2p
+ bUxrLwOrzf69XgsXl/xuxvMsRE0r2PnxPl8RrzNvHY9i6g9xtUt1VM9x/bMo54DbEdyQAZsdKVene
+ K489v2lg==;
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by casper.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHRuq-002qLg-Vf
- for barebox@lists.infradead.org; Wed, 03 Mar 2021 13:51:53 +0000
-Received: by mail-pg1-x532.google.com with SMTP id p21so16381838pgl.12
- for <barebox@lists.infradead.org>; Wed, 03 Mar 2021 05:51:48 -0800 (PST)
+ id 1lH61Z-00HGM2-UM
+ for barebox@lists.infradead.org; Tue, 02 Mar 2021 14:29:22 +0000
+Received: by mail-lj1-x22e.google.com with SMTP id u4so24166093ljh.6
+ for <barebox@lists.infradead.org>; Tue, 02 Mar 2021 06:29:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
+ h=date:from:to:cc:subject:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=EftmGZdjLp3X1b5WI/aqMkWru2/fOhiuSqIREAuvwXM=;
- b=H20IitUyWiUpKW5ZAsnQM1meeyUma5jNr20Y84ib4Z1nw18Hy+2f+64gQUxIgqN7hj
- twrtOfzXQsuiY8PKgXVy/1VCsVuxAzMHIEXdedX2CYFq1wlDKGUwYBUBHgbMa9HggbOy
- Sogfb3BpRyYE2BkdMgYKH4oAeIKPOsl1o1TEjoO0nszGIt6uJYU4Lhe1IIfVEVFjbaZA
- J0qbUfA+gxuV82nIx+iVUk0nxZ/Nvf4KOh72S+EBaQKhUa7/kS4y1hRPpEJl164xDHJa
- Ri3UG0V5nbvOSI+n/ckagGjUeyb1RM1wR61C7lX2jNtIkQl1/mG8KS7h0HQ6JYwUsfTs
- 5GWA==
+ bh=qo6BHcWJrNiLEoUuUIeHaoEykj6MCU3i7SZs1lpImgk=;
+ b=nVlUiGHsurcdllqtBSVyivD3+ZwKsXP3m6BtI9Xbai96Dz/f7TLHFwSXWLVm8Tc22M
+ iIrFfjm16pgoQ5h/FENXgCYrWUAU4tEzs7KTFpYTGVEuo/weF+zV169EQL4254uUbktd
+ u8DIEieHr2FNc3FpQ0MFW3hYqSwhojv740MhUl7qkyUGY5H/t1N9wnuHOBx3VPb1RYa2
+ pcyfmCh7OInsvgfpu5mFd2SbQ4HZ0pZNaDgJm8rQrjxRkpsCzrNcu/yc6P1jcP+yaAwe
+ QHJaq+ibfByDS/m0PUk7DIn5c/CWlhK4hxxZ5VqDdaf1nSWk2wJ+L9cw5QymmMKKcnFO
+ fuxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=EftmGZdjLp3X1b5WI/aqMkWru2/fOhiuSqIREAuvwXM=;
- b=uaMHhRaMlcPubhihTnkmquqLZCYEq+rpwjPhrLKznpYsQUx9Ck6X+1wLGYGB0lqqMu
- 3nkT6Y9b1wZzelNGlCyatPkp1ppj0Hf35dermvPkmcSX8E8iHyUQtKfolC7ye7e2St5/
- vszdA24hZEuClde4e8zGk0Mu6u7bLIXzRvP/8yMh5SV2ftXI1s9AriL9k8q4XIziorh3
- FdvniG9EPCgB+eVT1OSPpbcXfcS+7g1jRSVFl8bBXktcgfUcBRrC828AgnMYRddLE+yD
- 2lfTYZH2qMQB+SI36Ly5CegUZSctHL7Jbe0gaWxDyJA/2BKv5RHTyWI9oUbiieQw4Gub
- aVjg==
-X-Gm-Message-State: AOAM531K5j8BvwjdoihIiOze1zUFQ69Uq3QT7gQBqbV3n8kOr95XU4S1
- I5DvbO+jcrfxvxs50eBW/Wb/p61TGmY=
-X-Google-Smtp-Source: ABdhPJwKfVtjxpk16Nj4MGzOgAKgk7J0xUyUIRCrv9L1qr8XcBoKhlWMe169OJLYAdIwsAtSpFL6nw==
-X-Received: by 2002:a65:6207:: with SMTP id d7mr24014291pgv.92.1614779446304; 
- Wed, 03 Mar 2021 05:50:46 -0800 (PST)
-Received: from localhost (g98.115-65-200.ppp.wakwak.ne.jp. [115.65.200.98])
- by smtp.gmail.com with ESMTPSA id 184sm23257577pgj.93.2021.03.03.05.50.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Mar 2021 05:50:45 -0800 (PST)
-From: Stafford Horne <shorne@gmail.com>
-To: Barebox <barebox@lists.infradead.org>
-Date: Wed,  3 Mar 2021 22:50:25 +0900
-Message-Id: <20210303135026.3450789-4-shorne@gmail.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210303135026.3450789-1-shorne@gmail.com>
-References: <20210303135026.3450789-1-shorne@gmail.com>
-MIME-Version: 1.0
+ bh=qo6BHcWJrNiLEoUuUIeHaoEykj6MCU3i7SZs1lpImgk=;
+ b=lUj94mct9clwUWwp38SwyO6EvqUplM3qwWT4OMHfo9qbtj6roFEVddVIJO3nrJmO0g
+ EWZaf492RzAWslBEWe8vg7+0C3lPwmFywQ4fzK5F1E/mCXUYos19a1+593vyD+feziW+
+ 4tqDNaitWrsGfH5xODq/zKWHhy2rqflRzP0V0qY7v2f+rDPkwY49B2WyzLOcaO2Q4jVU
+ 27dTZD5DEuPBi4ogyTX0y0mEuO58MBuPEylSsEFc7c4XCogSKpNunYBJQnWc59bFiZnB
+ efTAD2JnwvFI4zRoApI1WWovud/mBxvByhZ0m0pRuNTAMQeRq3fCcAW1tfKC0ZWY3Jf2
+ NcAA==
+X-Gm-Message-State: AOAM533ffiBzZ36AP3rXMURfp50VcAAQkHrhJmI0sBW0tgXtkHW5/7uj
+ gybMJOADfw4R93wVCpMfja0aXPSYMCj8zw==
+X-Google-Smtp-Source: ABdhPJyOrcImY/2tKbLpSUyQP4a9AR5BhN/y9QZC7HZ9we7RPxQAEeNgyCxQA6yQRCn04KzqQEFHQg==
+X-Received: by 2002:a2e:87d8:: with SMTP id v24mr11965723ljj.387.1614695295871; 
+ Tue, 02 Mar 2021 06:28:15 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+ by smtp.gmail.com with ESMTPSA id z14sm2653047lfh.296.2021.03.02.06.28.15
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 02 Mar 2021 06:28:15 -0800 (PST)
+Date: Tue, 2 Mar 2021 17:28:14 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
+Message-Id: <20210302172814.ac8a31bd01efa18df2065992@gmail.com>
+In-Reply-To: <20210228190836.1451663-9-ahmad@a3f.at>
+References: <20210228190836.1451663-1-ahmad@a3f.at>
+ <20210228190836.1451663-9-ahmad@a3f.at>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; i686-pc-linux-gnu)
+Mime-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210303_135153_781302_B78E7844 
-X-CRM114-Status: UNSURE (   9.95  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210302_142922_309816_7DA686ED 
+X-CRM114-Status: GOOD (  17.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,49 +99,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Openrisc <openrisc@lists.librecores.org>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>, Stafford Horne <shorne@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
+X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,
 	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH 3/4] openrisc: Add linkage.h
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 9/9] virtio: virtio-pci: restrict MIPS support to MMU
+ configuration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Copied from glibc minus bits we don't need.
+On Sun, 28 Feb 2021 20:08:36 +0100
+Ahmad Fatoum <ahmad@a3f.at> wrote:
 
-Signed-off-by: Stafford Horne <shorne@gmail.com>
----
- arch/openrisc/include/asm/linkage.h | 7 +++++++
- 1 file changed, 7 insertions(+)
- create mode 100644 arch/openrisc/include/asm/linkage.h
+Hi!
 
-diff --git a/arch/openrisc/include/asm/linkage.h b/arch/openrisc/include/asm/linkage.h
-new file mode 100644
-index 000000000..dbe4b4e31
---- /dev/null
-+++ b/arch/openrisc/include/asm/linkage.h
-@@ -0,0 +1,7 @@
-+#ifndef __ASM_LINKAGE_H
-+#define __ASM_LINKAGE_H
-+
-+#define __ALIGN .align 0
-+#define __ALIGN_STR ".align 0"
-+
-+#endif
--- 
-2.26.2
+> MMU-less MIPS doesn't play along nicely with VIRTIO_PCI.
+> e.g. Reading from a virtio-rng, will return clearly bogus data.
+> Document this in the Kconfig, so no one else trips over this.
+> =
 
+> Eventually, this should be fixed..
+
+
+Please describe, how can I reproduce the problem.
+
+
+> =
+
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  drivers/virtio/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> =
+
+> diff --git a/drivers/virtio/Kconfig b/drivers/virtio/Kconfig
+> index ecf66987b3ed..91a89d3e1b89 100644
+> --- a/drivers/virtio/Kconfig
+> +++ b/drivers/virtio/Kconfig
+> @@ -28,6 +28,7 @@ config VIRTIO_MMIO
+>  config VIRTIO_PCI
+>  	tristate "PCI driver for virtio devices"
+>  	depends on PCI && HAS_DMA
+> +	depends on MMU && MIPS || !MIPS
+>  	select VIRTIO
+>  	help
+>  	  This driver provides support for virtio based paravirtual device
+> -- =
+
+> 2.30.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
