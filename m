@@ -1,75 +1,95 @@
-Delivery-date: Wed, 03 Mar 2021 16:17:31 +0100
+Delivery-date: Wed, 03 Mar 2021 16:48:49 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHTFj-000890-Dw
-	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 16:17:31 +0100
+	id 1lHTk1-0008LW-4F
+	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 16:48:49 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHTFi-0000Uu-Ap
-	for lore@pengutronix.de; Wed, 03 Mar 2021 16:17:31 +0100
+	id 1lHTjz-0004lR-OY
+	for lore@pengutronix.de; Wed, 03 Mar 2021 16:48:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
+	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=TpHCEnS5Cptm0wUXulxTQFArrT6aIN7PWVzwyv354qw=; b=GjOIn6XH8cR5nP3FIHX4Yspiu
-	v7EIOAjQRWybpFcc6151MgG73e4zyau6rZNjJ5iWks7x2q0tjVoWpQJ4Y3V5/fwYpncCXdetnwh7C
-	8X5z8ZJzhF1PACb3ay3u7uyD7uJxTaZ289AE8fsZ8XHjjFWwmkAkXjCPdpOqXRjjc/4y6VhoOb7a4
-	n5NrKEk2I3shz0gdCuuILjyuTg5egV3vbQDSqTpqp50PF+j8gncE4GUszcDAZpMG3SochhyIU36XB
-	ll7C0KgfTwchCSXMkZMgvKVlo+DgfXfs0Hh6oUsd1HyixZ6bCf1aBGqJjtUH3gUrQoGEqp50EvIPa
-	AmK0sU1oA==;
+	 bh=j0sJdrPaf6IlaNfsreOcQ7fyWPEnWrF90WK2e3xF0vI=; b=JZsBrlHjLU54xi13/cKoeZ/MT
+	GdXL06hsRXONsKsEwxDwTj/nKv1OGW/PVLtV1rUY0BcSV9LLTldI3jw77Nra0WS4GBtd5kFx16FA/
+	mNKG2z+0s0U7QJqiayAwEE6A1vUcegTgtgaYqXeh02+w69VquhTeYVYQWqNUY4YmrCRIXQnMfCwz+
+	CCOad5BqwIpERUboIsp+ot143p57wMSZNIzhyrAfRnYwoQmmdJN2OsBYnQmF/UNM1X8nUr7lpV4tU
+	c6UcIQLYyrc8CkBw4eS0eButeHzAoa/U2OoyEgVFP+K7OnU+MJPAw/MPQpySOUrR9C4UZzrRcTm1T
+	oHelGTm3Q==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lHTE0-005LVr-E4; Wed, 03 Mar 2021 15:15:44 +0000
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+	id 1lHTiY-005S8f-DO; Wed, 03 Mar 2021 15:47:18 +0000
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHSEg-0055Fj-JB
- for barebox@lists.infradead.org; Wed, 03 Mar 2021 14:12:43 +0000
-Received: by mail-pf1-x436.google.com with SMTP id q204so15304625pfq.10
- for <barebox@lists.infradead.org>; Wed, 03 Mar 2021 06:12:21 -0800 (PST)
+ id 1lHShO-0059sC-Uf
+ for barebox@desiato.infradead.org; Wed, 03 Mar 2021 14:42:03 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=JacfHgm4MfZJ38j9CE3/9gpUWhD3eNqM7fZqztGQJ9g=; b=ULxrKB/98A5QZLgtsMkfaZd3Qq
+ qglDGr+clct3MQAASc6HzNTZnm4EenCYva/ZL4GmtoXwysRWmIOwZ19V6MKL9x/sXYdCGmYwGhurc
+ CK4QqR8lMhGd7rdQ6ZXBUR+ZopzgBkaWK4AOFYv3tl+pZbGt+dBp0VpLioY0w2RDB9e+Fel47dq+g
+ Iy2L1LL+h7qyqDHIFJfpNfBdpp1jTRmhI0xyBCHGdyAImRYWRYLz5prWrmoWAosm/jMl5mdkILDS7
+ Y+OxHajd1pIgoCMwRrQRSz5mM7P/pjEGWE9cahYE1TRHpkzE8jHindeR/KhAqxz8jpsJgt87HhtFU
+ 88MNGjVw==;
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by casper.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
+ id 1lHRfT-002nu1-O0
+ for barebox@lists.infradead.org; Wed, 03 Mar 2021 13:36:05 +0000
+Received: by mail-pl1-x62f.google.com with SMTP id j6so483156plx.6
+ for <barebox@lists.infradead.org>; Wed, 03 Mar 2021 05:35:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to;
- bh=Nyc79OkBqcm91dkYJ8y+teIBbOTw+kWRs6mRqnmse6Q=;
- b=UiJ5B8DNYc+tMp/m8bJR7YjJ5D4v1XpJV7/7RZTdF0ef2Ch2xSUbs9v3VUXd5dyFEs
- FNNgzGEMERw1tPeUFfXtuJppD1N7s8NxZgLPqaOQlQ8k5hIMIjgQGwyUmrEXRU/J66OT
- LAy1nJZBQNY3KiP7T6C1GDxbltfY8/Rd2QL7obmLziBms/bHMKGp1Y/ucf1S8ixO509G
- xjVcoMn4CX0pMp0oc53fFzguf0PkvbHhf5kaZQwwDuVtXIqTZU439rMW5uRZ/oEB2dxi
- T1NkijT03rWkRohgL3PEsMy2UbzSBFMshyApxbvLGd2UCpBnr6CO9tamh+ohoyRbk1LD
- ti2g==
+ bh=JacfHgm4MfZJ38j9CE3/9gpUWhD3eNqM7fZqztGQJ9g=;
+ b=qEMLhis94pVMfRFWFjGtGeIFS28QJwFIFAnYH+dw+7lwCJl90UQ19qQwJ0lSUBhMId
+ Lim6pRlb1Q7kjygUL+khWCfAp9kxmDWWnGtb5zkU6Jjnwrb6moW4nGzIfYTNifhEAbgv
+ z4U6GuGE6HX6dvQA3AUKGDr90ADrcc1NBNF1vP4466exrsy6858QbaDSWU5AfpENbiNK
+ gSjLPV1SdAOxgcbijNeQmVFjC4iuEHewLDIiv9eGDx3lh6OYFhZ2mtqfIYT6z9xd7IQA
+ SH0WiLgN3KbHHjqrLB54xL1NgdsWu58Vcsj0+mkSgcfCV5AHnRAIr+YuygU+QEIPtBlu
+ tuyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=Nyc79OkBqcm91dkYJ8y+teIBbOTw+kWRs6mRqnmse6Q=;
- b=sM/oa/7MZ22TVulzytzcKlJMYAcngEtVBoCWO4ZLoK2Ro0VT+aAgVqEsADpoka2H6C
- UeUYHzm7Txg3q76HCtD0PCrfL+vFbpG4bAy/WckYT9V1U+hdjFXEWs07ksynQ1rygS4r
- NJgl7xj2hIzNHhhh1QeNKdUjofetoqHU971mhQlTwxe2pG+0EDnBjRSjOVFF5h9gBBA/
- xGYtBzvQ1e82w+yPLdge0qRNCfh5fzBf2X0QScZDS2gCqjN3MW+HbfdV04bc4vRiZ2Fs
- nXBeAj+DD+2LGbEq3v+WHl0zduapm6t9a3+UlZIKr10wCahAde2IYtTJHMg11U7DY6fd
- k5SQ==
-X-Gm-Message-State: AOAM530cmlRlZ7Oz3CP5IbudP1hW7VHcOLAo8WPjDMZmGhZdzb0vjhLY
- 3W/R2udNyr82TOenDh75C0c=
-X-Google-Smtp-Source: ABdhPJypQEnF38zZ3cu8bG/UWzZKijlW/Tbckc4bFxPUWM2rqFLo6eulTofJwbXpgbpxSqD/vHM2DA==
-X-Received: by 2002:a63:4e09:: with SMTP id c9mr23402537pgb.107.1614780737947; 
- Wed, 03 Mar 2021 06:12:17 -0800 (PST)
+ bh=JacfHgm4MfZJ38j9CE3/9gpUWhD3eNqM7fZqztGQJ9g=;
+ b=DbOnpR+jvFeQFcrEij0bXnM0H0CL+ng66KJ19u6RQt77hWVAVX+DTk+eSh2drqhi8T
+ smMh3rIPjAGrL9ZtAx0N0PGMLLqP25qwSseM2k0F3tuALrEwKgixJHwQzv2IKjqkNJgp
+ 8zm/mBhr01QgmANUlDufWjDyr3xbXO71dyP5UyisdoKAQGYwtPrtcYpAozy+sOlFi/1V
+ zz/8lo77gXq0Hy3yz8O3nQcOgd8BDMTExT5/fvvPV9kiMfprfjnDiK8r0dV625JlHWUj
+ V0DJ2i6jtgCGNaGjABineo4soVHoNcHID+zmizROJk20DMO+JomtR7vSVwQQzGrd3v8q
+ oatg==
+X-Gm-Message-State: AOAM531hv0I0ZKj6SmgRnd9VEJo4t1gN50ZxzSs0Vg66YeEq7TLzOdL4
+ 7/sA3P+oqDLbXdTwMJe8lBk=
+X-Google-Smtp-Source: ABdhPJyAswWBJgHAq1FG8bzAXKZos/Iwdc/gnj0MgterrC7KcXpXSx2lopejgtuONpQ1DHrdcKSndw==
+X-Received: by 2002:a17:902:e886:b029:e4:2b8e:3c65 with SMTP id
+ w6-20020a170902e886b02900e42b8e3c65mr24914970plg.1.1614778557522; 
+ Wed, 03 Mar 2021 05:35:57 -0800 (PST)
 Received: from localhost (g98.115-65-200.ppp.wakwak.ne.jp. [115.65.200.98])
- by smtp.gmail.com with ESMTPSA id 190sm24992707pfv.155.2021.03.03.06.12.16
+ by smtp.gmail.com with ESMTPSA id u4sm24423969pgj.29.2021.03.03.05.35.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Mar 2021 06:12:17 -0800 (PST)
-Date: Wed, 3 Mar 2021 23:12:14 +0900
+ Wed, 03 Mar 2021 05:35:56 -0800 (PST)
+Date: Wed, 3 Mar 2021 22:35:54 +0900
 From: Stafford Horne <shorne@gmail.com>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20210303141214.GG365039@lianli.shorne-pla.net>
-References: <20210303135026.3450789-1-shorne@gmail.com>
- <57222afc-9d92-e52d-34d4-0737eff1ec82@pengutronix.de>
+Cc: barebox@lists.infradead.org, sha@pengutronix.de,
+ Jules Maselbas <jmaselbas@kalray.eu>
+Message-ID: <20210303133554.GF365039@lianli.shorne-pla.net>
+References: <20210301110106.3764-1-a.fatoum@pengutronix.de>
+ <20210303121547.GE365039@lianli.shorne-pla.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <57222afc-9d92-e52d-34d4-0737eff1ec82@pengutronix.de>
+In-Reply-To: <20210303121547.GE365039@lianli.shorne-pla.net>
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20210303_133605_480455_CED2CB03 
+X-CRM114-Status: GOOD (  22.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,8 +101,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Barebox <barebox@lists.infradead.org>,
- Openrisc <openrisc@lists.librecores.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -91,37 +109,53 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=4.0 tests=AWL,BAYES_00,
+X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
 	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 0/4] OpenRISC fixes and setjmp/longjmp work
+Subject: Re: [PATCH v2 00/11] common: introduce bthreads, co-operative
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Mar 03, 2021 at 03:03:11PM +0100, Ahmad Fatoum wrote:
-> Hello Stafford,
-> 
-> On 03.03.21 14:50, Stafford Horne wrote:
+On Wed, Mar 03, 2021 at 09:15:47PM +0900, Stafford Horne wrote:
+> On Mon, Mar 01, 2021 at 12:00:55PM +0100, Ahmad Fatoum wrote:
 > > Hello,
 > > 
-> > These are the patches I came up with to get the setjmp/longjmp routines to work
-> > on OpenRISC.  It seems to be working well.
+> > This is v2 of barebox coroutine support:
+> >     https://lists.infradead.org/pipermail/barebox/2021-February/035032.html
 > > 
-> > The patches are on github here:
-> >   https://github.com/stffrdhrn/barebox/tree/openrisc-bthread
+> > As discussed with Sascha, if this is to be added, this should be added for
+> > all architectures and not be optional. If we have this as integral part,
+> > it means we can substitute coroutines for:
+> >     - pollers: just wrap the code in a loop
+> >     - async pollers: just call a delay function in the loop
+> >     - workqueues: assert_command_context yields until in command context
 > > 
-> > I had to revert a commit to remove openrisc to do this work, I hope that can be
-> > reverted.
+> > In addition, we will have much less work porting over threaded code from
+> > Linux. See the referenced series for an example of a USB mass storage
+> > gadget.
+> > 
+> > To prepare for replacing them, the functionality is renamed to
+> > bthreads (as in barebox threads) and is made separate from pollers.
+> > 
+> > How to add new architecture support:
+> > 
+> >   - Apply this series or check out https://github.com/a3f/barebox/tree/bthread
 > 
-> Great. Thanks for taking the time!
-> Could this be tested on qemu-system-or1k? If so, it would be great to have this
-> documented in-tree, so future changes could be tested.
+> Now that I got a dev environment booting off master I have switched to your
+> bthread branch.  I found there is already a commit to remove openrisc in next.
+> 
+> I will revert this in my branch.
+> 
+> Is there a timeframe you aim to have this all done?
+> 
+> Also, It seems networking it not working for me that is ok for the work here,
+> but it will be something I have to look into next for OpenRISC.
 
-Sure, I will try to get it working.  For some reason qemu was getting hung.
+The openrisc implementation is on this branch, I will send a patch in bit.
 
-Give me a few days.
+  https://github.com/stffrdhrn/barebox/tree/openrisc-bthread
 
 -Stafford
 
