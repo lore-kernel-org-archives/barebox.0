@@ -1,71 +1,48 @@
-Delivery-date: Wed, 03 Mar 2021 23:44:03 +0100
+Delivery-date: Thu, 04 Mar 2021 00:12:28 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHaDr-0000Gm-Qw
-	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 23:44:03 +0100
+	id 1lHafM-0000Je-IL
+	for lore@lore.pengutronix.de; Thu, 04 Mar 2021 00:12:28 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHaDq-000576-Em
-	for lore@pengutronix.de; Wed, 03 Mar 2021 23:44:03 +0100
+	id 1lHafK-0008Bu-NS
+	for lore@pengutronix.de; Thu, 04 Mar 2021 00:12:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Date:Cc:To:From:
-	Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=JavGkiSeSyRkNwTABAhNEoXIzEDUiFUPn/N2X8lQNOM=; b=eAsfqIWaNFLZiT3hJM1PBVpUt
-	xD96KWBDmJyAwni3KQ4lurrox/oPhADvzum+60g86Fw9cewHl2dKkbkg+YiyTzu+PC8O8JVO5W5yX
-	HXqU0QE7khhdfTzU4Ekf20QeDAHZEbNzSZ4vqLuJu516uvsrsMZRLAsbV64EbI/tGMNtYRrfoEMeU
-	oPKHRA8o3EZlvuofsAxmYzOOuI8kwLX0p8yikMuZR7EfWrU2UIBUsYp0FrUEcNjLOaPHw3thwf0hS
-	SBeUnNbRTKXt0+NQBaNuA/1Jq1AGIzSscayH5XWfmTCr1oLwI0BqsDFRM35C/SQpPkps16pAxfWdD
-	09lhVKaTg==;
+	 bh=iPHPsbd4G0H0wlaLrGnr5mZR7WXCKge8sTudbgHKwvk=; b=NDXGvrnAga5tY3o+4PQqf1vrR
+	Owk+vCkHuNYQwmPGh5GnR6dVoayIX9CT7A3z3HIb4SokRzDYLsJ+/qJ3/tSTsyrk+aT9Pilhrdj6Z
+	71akIKEQmNpKiUHfR4GRGUhc/8fh5jgFMJ0qy+NbCoBnxwOS3CP5fZEUaNj8ZEB7uvnzCz9SaIhAN
+	8nGqcgjIFj9XOqt1AR62ZumQIUBDtp5MEmyYXQAn20BI/NWmPQLoT4tvnFAxB9fJpEtSaZgxndYrL
+	oliBeMH6nOflrrJOeIhIn42hPNoJGMN+s5xKTpmuoAU0JnfeyEwjw/bEB4UyX6VA9IdDNiQD49gHE
+	JT1UEa2SQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lHa8x-006mLW-Mj; Wed, 03 Mar 2021 22:39:00 +0000
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+	id 1lHacr-006siL-C0; Wed, 03 Mar 2021 23:09:55 +0000
+Received: from relay11.mail.gandi.net ([217.70.178.231])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHTBB-005Krb-EB
- for barebox@desiato.infradead.org; Wed, 03 Mar 2021 15:12:49 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
- Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=SFgFGxkJ9mHx0vsvfI7GU9QZtVdhlVmLQZ8cxvi6Hf4=; b=HllEDtRFDnfeoTdPBNUoYJOtmR
- qsvpUFHODNxUZF2AxQq2WUTU8bRKkbzEMORVfaYYY7/A8eCxBd2WoFpYbAonVttr9mkVVxLeAKZgo
- AnLNybjzQljQD3CEsFoumogm7hNOJ4sBa9vIC6FaWd+lYn954y7tpv34vEeKpLJ/0lhFXlEXfk8E1
- is2DDMV1LHdR/3xaknTu32+pj+yhSIRXj5fgJn6qpT0lvwtZXWKZF9zoGOjpqZa1N3oUWCGwYh1OC
- F971Ze0ELbA3Z4X6A6gbm1BpB+uGuILKcl8ShDJno7bcAwfgaOZOZG5hrpnirLAeNyaHcE0EFh4bu
- T7wqAC5w==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHNay-001yEK-9I
- for barebox@lists.infradead.org; Wed, 03 Mar 2021 09:15:06 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>)
- id 1lHNam-0003Jb-NG; Wed, 03 Mar 2021 10:14:52 +0100
-Message-ID: <927983935004c68be871fe2182b0e33fd0dff381.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org, 
- Yann Sionneau <ysionneau@kalray.eu>
-Date: Wed, 03 Mar 2021 10:14:47 +0100
-In-Reply-To: <20210302105827.GD9273@tellis.lin.mbt.kalray.eu>
-References: <20210301155851.12463-1-jmaselbas@kalray.eu>
- <20210301155851.12463-3-jmaselbas@kalray.eu>
- <04c18498-970c-9a69-ebf7-97bf85d2f961@pengutronix.de>
- <595cae1711b8bdc79876371194cadd772f8646e6.camel@pengutronix.de>
- <20210302105827.GD9273@tellis.lin.mbt.kalray.eu>
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ id 1lHU7M-005YNn-TZ
+ for barebox@lists.infradead.org; Wed, 03 Mar 2021 16:13:00 +0000
+Received: from geraet.pengutronix.de (hazel.nat.pengutronix.de [85.220.165.66])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay11.mail.gandi.net (Postfix) with ESMTPSA id 0297D100007;
+ Wed,  3 Mar 2021 16:12:53 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+To: sha@pengutronix.de,
+	barebox@lists.infradead.org
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Wed,  3 Mar 2021 17:12:47 +0100
+Message-Id: <20210303161247.3691857-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210228190836.1451663-4-ahmad@a3f.at>
+References: <20210228190836.1451663-4-ahmad@a3f.at>
 MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210303_091506_872705_0F568700 
-X-CRM114-Status: GOOD (  25.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,90 +62,200 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/5] kvx: Implement dma handling primitives
+Subject: [PATCH] dma: move dma_map/unmap_single from ARM to common code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Jules,
+There's nothing ARM specific about these functions. Move them to a
+common location, so other arches can use them as well.
 
-Am Dienstag, dem 02.03.2021 um 11:58 +0100 schrieb Jules Maselbas:
-> Hi Lucas and Ahmad,
-> 
-> On Tue, Mar 02, 2021 at 11:14:09AM +0100, Lucas Stach wrote:
-> > Am Dienstag, dem 02.03.2021 um 09:37 +0100 schrieb Ahmad Fatoum:
-> > > Hello Jules, Yann,
-> > > 
-> > > On 01.03.21 16:58, Jules Maselbas wrote:
-> > > > From: Yann Sionneau <ysionneau@kalray.eu>
-> > > Some comments inline. I am not a cache cohereny expert, so take
-> > > it with a grain of salt.
-> > > 
-> > > > +static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
-> > > > +{
-> > > > +	void *ret = xmemalign(PAGE_SIZE, size);
-> > > > +
-> > > > +	if (dma_handle)
-> > > > +		*dma_handle = (dma_addr_t)(uintptr_t)ret;
-> > > > +
-> > > > +	return ret;
-> > > > +}
-> > > 
-> > > This would imply that the CPU barebox is booting is coherent with all
-> > > 
-> > > devices that barebox needs to access. Is that the case?
-> > > 
-> > > (See below)
-> > > 
-> This is bogus, memory is not coherent with all devices, this should be
-> handled by the mmu, which is currently not supported in our barebox port.
-> Using this can lead to coherency issues. We can either drop this
-> function, so that is leads to an error at link time, or add a call to
-> BUG for a runtime error.
-> 
-> Right now we aren't using any driver that require dma_alloc_coherent,
-> but we use drivers that requires dma_alloc and dma_map_single instead.
+This also fixes a bug on ARM MMU=n configurations:
+Previously these two functions these functions only respected
+dma-ranges translation when compiled with MMU support. DMA address
+translation is applicable regardless of CPU use of MMU though.
+Now, dma-ranges should be respected unconditionally.
 
-I would vote for a BUILD_BUG_ON_MSG in this function, so you get a
-compile time error and you can state what needs to be done in order to
-get rid of the failure.
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+Sascha, please replace the original patch with this one.
+---
+ arch/arm/cpu/mmu-common.c      | 41 +--------------------------------
+ arch/arm/include/asm/dma.h     | 11 ---------
+ arch/sandbox/include/asm/dma.h | 11 ---------
+ drivers/dma/Makefile           |  1 +
+ drivers/dma/map.c              | 42 ++++++++++++++++++++++++++++++++++
+ 5 files changed, 44 insertions(+), 62 deletions(-)
+ create mode 100644 drivers/dma/map.c
 
-> > > > +/*
-> > > > + * The implementation of arch should follow the following rules:
-> > > > + *		map		for_cpu		for_device	unmap
-> > > > + * TO_DEV	writeback	none		writeback	none
-> > > > + * FROM_DEV	invalidate	invalidate(*)	invalidate	invalidate(*)
-> > > > + * BIDIR	writeback	invalidate	writeback	invalidate
-> > > > + *
-> > > > + * (*) - only necessary if the CPU speculatively prefetches.
-> > > > + *
-> > > > + * (see https://lkml.org/lkml/2018/5/18/979)
-> > > > + */
-> > > > +
-> > > > +void dma_sync_single_for_device(dma_addr_t addr, size_t size,
-> > > > +				enum dma_data_direction dir)
-> > > > +{
-> > > > +	switch (dir) {
-> > > > +	case DMA_FROM_DEVICE:
-> > > > +		kvx_dcache_invalidate_mem_area(addr, size);
-> > 
-> > Why do you need to explicitly invalidate, but not flush? Even if the
-> > CPU speculatively prefetches, the coherency protocol should make sure
-> > to invalidate the speculatively loaded lines, right?
-> Since we don't have a coherent memory, here we need to invalidate L1
-> dcache to let the CPU see deivce's writes in memory.
-> Also every write goes through the cache, flush is not required.
-
-Ah, if all your caches are write-through that makes sense. Can you add
-a comment somewhere stating that this implementation assumes WT caches
-on KVX? This way we can avoid the confusion Ahamd and myself fell into
-when glancing over the code.
-
-Regards,
-Lucas
+diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+index 287622b20399..5cc5138cfa3d 100644
+--- a/arch/arm/cpu/mmu-common.c
++++ b/arch/arm/cpu/mmu-common.c
+@@ -10,27 +10,6 @@
+ #include <memory.h>
+ #include "mmu.h"
+ 
+-
+-static inline dma_addr_t cpu_to_dma(struct device_d *dev, unsigned long cpu_addr)
+-{
+-	dma_addr_t dma_addr = cpu_addr;
+-
+-	if (dev)
+-		dma_addr -= dev->dma_offset;
+-
+-	return dma_addr;
+-}
+-
+-static inline unsigned long dma_to_cpu(struct device_d *dev, dma_addr_t addr)
+-{
+-	unsigned long cpu_addr = addr;
+-
+-	if (dev)
+-		cpu_addr += dev->dma_offset;
+-
+-	return cpu_addr;
+-}
+-
+ void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 			     enum dma_data_direction dir)
+ {
+@@ -41,24 +20,6 @@ void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 		dma_inv_range((void *)address, size);
+ }
+ 
+-dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
+-			  enum dma_data_direction dir)
+-{
+-	unsigned long addr = (unsigned long)ptr;
+-
+-	dma_sync_single_for_device(addr, size, dir);
+-
+-	return cpu_to_dma(dev, addr);
+-}
+-
+-void dma_unmap_single(struct device_d *dev, dma_addr_t dma_addr, size_t size,
+-		      enum dma_data_direction dir)
+-{
+-	unsigned long addr = dma_to_cpu(dev, dma_addr);
+-
+-	dma_sync_single_for_cpu(addr, size, dir);
+-}
+-
+ void *dma_alloc_map(size_t size, dma_addr_t *dma_handle, unsigned flags)
+ {
+ 	void *ret;
+@@ -108,4 +69,4 @@ static int mmu_init(void)
+ 
+ 	return 0;
+ }
+-mmu_initcall(mmu_init);
+\ No newline at end of file
++mmu_initcall(mmu_init);
+diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
+index 08a9fc43b7fc..226b1c146479 100644
+--- a/arch/arm/include/asm/dma.h
++++ b/arch/arm/include/asm/dma.h
+@@ -32,17 +32,6 @@ static inline void dma_free_coherent(void *mem, dma_addr_t dma_handle,
+ 	free(mem);
+ }
+ 
+-static inline dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
+-					enum dma_data_direction dir)
+-{
+-	return (dma_addr_t)ptr;
+-}
+-
+-static inline void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
+-				    enum dma_data_direction dir)
+-{
+-}
+-
+ static inline void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 					   enum dma_data_direction dir)
+ {
+diff --git a/arch/sandbox/include/asm/dma.h b/arch/sandbox/include/asm/dma.h
+index 5e72d8e7df2d..34c0fc5190f8 100644
+--- a/arch/sandbox/include/asm/dma.h
++++ b/arch/sandbox/include/asm/dma.h
+@@ -40,17 +40,6 @@ static inline void dma_free_coherent(void *mem, dma_addr_t dma_handle,
+ 	free(mem);
+ }
+ 
+-static inline dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
+-					enum dma_data_direction dir)
+-{
+-	return (dma_addr_t)ptr;
+-}
+-
+-static inline void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
+-				    enum dma_data_direction dir)
+-{
+-}
+-
+ static inline void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 					   enum dma_data_direction dir)
+ {
+diff --git a/drivers/dma/Makefile b/drivers/dma/Makefile
+index 7a3a3b2bd85d..49d6d6573f4f 100644
+--- a/drivers/dma/Makefile
++++ b/drivers/dma/Makefile
+@@ -1 +1,2 @@
+ obj-$(CONFIG_MXS_APBH_DMA)	+= apbh_dma.o
++obj-$(CONFIG_HAS_DMA)		+= map.o
+diff --git a/drivers/dma/map.c b/drivers/dma/map.c
+new file mode 100644
+index 000000000000..a3e1b3b5b527
+--- /dev/null
++++ b/drivers/dma/map.c
+@@ -0,0 +1,42 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* SPDX-FileCopyrightText: 2012 Marc Kleine-Budde <mkl@pengutronix.de> */
++
++#include <dma.h>
++
++static inline dma_addr_t cpu_to_dma(struct device_d *dev, unsigned long cpu_addr)
++{
++	dma_addr_t dma_addr = cpu_addr;
++
++	if (dev)
++		dma_addr -= dev->dma_offset;
++
++	return dma_addr;
++}
++
++static inline unsigned long dma_to_cpu(struct device_d *dev, dma_addr_t addr)
++{
++	unsigned long cpu_addr = addr;
++
++	if (dev)
++		cpu_addr += dev->dma_offset;
++
++	return cpu_addr;
++}
++
++dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
++			  enum dma_data_direction dir)
++{
++	unsigned long addr = (unsigned long)ptr;
++
++	dma_sync_single_for_device(addr, size, dir);
++
++	return cpu_to_dma(dev, addr);
++}
++
++void dma_unmap_single(struct device_d *dev, dma_addr_t dma_addr, size_t size,
++		      enum dma_data_direction dir)
++{
++	unsigned long addr = dma_to_cpu(dev, dma_addr);
++
++	dma_sync_single_for_cpu(addr, size, dir);
++}
+-- 
+2.30.0
 
 
 _______________________________________________
