@@ -1,56 +1,77 @@
-Delivery-date: Tue, 02 Mar 2021 11:15:53 +0100
+Delivery-date: Wed, 03 Mar 2021 15:03:08 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lH24H-0005t9-O3
-	for lore@lore.pengutronix.de; Tue, 02 Mar 2021 11:15:53 +0100
-Received: from merlin.infradead.org ([2001:8b0:10b:1231::1])
+	id 1lHS5j-000844-0l
+	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 15:03:08 +0100
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lH24G-0004w2-EK
-	for lore@pengutronix.de; Tue, 02 Mar 2021 11:15:53 +0100
+	id 1lHS5f-0006v5-3v
+	for lore@pengutronix.de; Wed, 03 Mar 2021 15:03:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=merlin.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Date:To:From:
-	Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
+	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
+	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=MadYeBaASN+N0+A/d5NkXNn2yjTRARBJXBXQQBlE7ps=; b=Y6az6gU/DFmxhyKkG9I6YxhPP
-	mAjBkBKDWsSF8uUr/L+4f6yOfu09oN/Dzy1K0zSE7dR8IdhVdRy/LL3R9XY6jSop+jXnml6jYX5wl
-	jOkbtCde5oQSwDaVptFmmk7q7Fv0ilgE5m2rApT3ysjaAkO2HZ8TJSKTov+1MKH+FM2CxGEVEWGBq
-	WEiEkHQi7uDmNxYyIgZWIbn3FPc0gMHUD3bGZFC1hy405iCC/SYqqohCW0tSSJYgIvnZLH0HyOsBa
-	TH4dzx/+9gW1XwB21V0ywCys1q3O1rTlV/u0HQOt+aO42qvln2omdVR57mdJ89gY7+EZrbKE9BMdB
-	JdWpQWSvg==;
-Received: from localhost ([::1] helo=merlin.infradead.org)
-	by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1lH22r-0000sF-CI; Tue, 02 Mar 2021 10:14:26 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lH22f-0000kt-D3
- for barebox@lists.infradead.org; Tue, 02 Mar 2021 10:14:14 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>)
- id 1lH22c-0004Lk-B2; Tue, 02 Mar 2021 11:14:10 +0100
-Message-ID: <595cae1711b8bdc79876371194cadd772f8646e6.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Jules Maselbas
- <jmaselbas@kalray.eu>,  barebox@lists.infradead.org
-Date: Tue, 02 Mar 2021 11:14:09 +0100
-In-Reply-To: <04c18498-970c-9a69-ebf7-97bf85d2f961@pengutronix.de>
-References: <20210301155851.12463-1-jmaselbas@kalray.eu>
- <20210301155851.12463-3-jmaselbas@kalray.eu>
- <04c18498-970c-9a69-ebf7-97bf85d2f961@pengutronix.de>
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+	 bh=9bF7LjJa6dJfAZjPH2+9VewhwDByZckA2dpqrdSsQW0=; b=HmWd4XfeJq2cVtDiHKz43R7DY
+	87z/hcgH+b22sljqvIBWPgMkggh90XFYs+6/1K58t3HZklLXIKZAvLZBkJ5ED2BnbEtoLbyWwAFRn
+	s65htclCVGGIC1lO5okbQJqWMm1qyA0zY84D2FhvyfOMjG16ikEbFR3VHWqWm0NZxqZ0htky8MQ+g
+	KagjhFTqscy6ZGL+gmSL54RnMzSxuH615u64Ap4sDcF3Bc3Ql2Ch4qgfBGtvR3bOvkj5I/rzRgWNo
+	GYj0LgIxh79kfAuYDeRxTQZ76l7JO4m43NpTrf6DxQmsuAfwRudbtqPEm5OIJBH+FSiJMIPu86n/g
+	/fyzpTxmg==;
+Received: from localhost ([::1] helo=desiato.infradead.org)
+	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
+	id 1lHS3t-0051sd-6b; Wed, 03 Mar 2021 14:01:13 +0000
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
+ id 1lHRtl-0051VI-DH
+ for barebox@lists.infradead.org; Wed, 03 Mar 2021 13:50:51 +0000
+Received: by mail-pj1-x102a.google.com with SMTP id i14so4186586pjz.4
+ for <barebox@lists.infradead.org>; Wed, 03 Mar 2021 05:50:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=rwtyh/9//FqwfK3T8xlQfkzXCQ/XE4sDAP3QlTIiPsg=;
+ b=NZYCw1YaIkZ2HYLaT1aqoZLiWmgUh61xr5JYO/AKk54X5TQ3qskRBhFfKXnFR7OJxt
+ anahZPBfkCUd8+2MYb4iD2bzK6Qh8h0j0A4HpNGrq5BJTvnq4gcJN/fq9tRTCT3vmUnD
+ T7rJ+f0JxAf/2uHl/Wa7oAGn7tSy6jUYDUTvhN8denOQy4+gX1/uiMWODRmhBvBrRIuh
+ Onuk5LEmC+yo/s/3bzOnfCXw6YJsICYY/cq8s4JkXxkyTLPMR4/ZaT9QOcFMmjosS/UG
+ DF7H1POI7P4QaYOHH4T69kFCz6v9OviCvReNzMxKHhsneMWttWoLL8wFqHR3bVjdZor7
+ M8gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=rwtyh/9//FqwfK3T8xlQfkzXCQ/XE4sDAP3QlTIiPsg=;
+ b=IX6nDOI2cUgnTK5huw/2c1Vbp8WF3Aa3H2Sw07nWYmjDt4nIjwjr1UYHakqGacKHeM
+ ZBcNpvEmrfMh7qc2Vw/KcyGpH5Aws40B+/w275gh+J3KEUBJ7Lk0tzhHz79HKVWtcDp4
+ VxcGqHOJ0fqUfNsLKb9V35jfyyvgGMRqUu+vgUZy5XPxYD+mjrg6H+EIZ/gZGE2BA4JV
+ 4h2wLZ0R2sPQ0WuaJBcpnZ/Ao9/XdUuHIKocT/u/snOv3wBLvLQUvXrk42R7cNDLhfzR
+ WmpQa+1DZTkUc5Wgyla1SDsK6SNfrbFG5WQJxA8vkL9ze4LSgcp+hHCQd4OPlE6mPiIz
+ SGoQ==
+X-Gm-Message-State: AOAM532OlcdI03wk8ZF8rfQteleMbMtxZNnooF6uD5/+WKUCqI/kKOcU
+ j2W6bVGJncIDDMELxhrQXujg5OUGifU=
+X-Google-Smtp-Source: ABdhPJy2SjVDWfxSV7JYXXXX/UCONgKAoHmp5NJ2GqKqYoIEqmIctA75emwyfPY2d9S6N4pJ1YqcZQ==
+X-Received: by 2002:a17:902:70c5:b029:e4:4ce3:90f5 with SMTP id
+ l5-20020a17090270c5b02900e44ce390f5mr2798299plt.58.1614779440236; 
+ Wed, 03 Mar 2021 05:50:40 -0800 (PST)
+Received: from localhost (g98.115-65-200.ppp.wakwak.ne.jp. [115.65.200.98])
+ by smtp.gmail.com with ESMTPSA id 142sm18611200pfz.196.2021.03.03.05.50.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Mar 2021 05:50:39 -0800 (PST)
+From: Stafford Horne <shorne@gmail.com>
+To: Barebox <barebox@lists.infradead.org>
+Date: Wed,  3 Mar 2021 22:50:23 +0900
+Message-Id: <20210303135026.3450789-2-shorne@gmail.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20210303135026.3450789-1-shorne@gmail.com>
+References: <20210303135026.3450789-1-shorne@gmail.com>
 MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210302_051413_503934_D3D039DC 
-X-CRM114-Status: GOOD (  25.72  )
 X-BeenThere: barebox@lists.infradead.org
-X-Mailman-Version: 2.1.29
+X-Mailman-Version: 2.1.34
 Precedence: list
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -60,130 +81,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Yann Sionneau <ysionneau@kalray.eu>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: Openrisc <openrisc@lists.librecores.org>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>, Stafford Horne <shorne@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-SA-Exim-Connect-IP: 2001:8b0:10b:1231::1
+X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/5] kvx: Implement dma handling primitives
+X-Spam-Status: No, score=-2.5 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH 1/4] openrisc: Use movhi to zero registers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-QW0gRGllbnN0YWcsIGRlbSAwMi4wMy4yMDIxIHVtIDA5OjM3ICswMTAwIHNjaHJpZWIgQWhtYWQg
-RmF0b3VtOgo+IEhlbGxvIEp1bGVzLCBZYW5uLAo+IAo+IE9uIDAxLjAzLjIxIDE2OjU4LCBKdWxl
-cyBNYXNlbGJhcyB3cm90ZToKPiA+IEZyb206IFlhbm4gU2lvbm5lYXUgPHlzaW9ubmVhdUBrYWxy
-YXkuZXU+Cj4gCj4gU29tZSBjb21tZW50cyBpbmxpbmUuIEkgYW0gbm90IGEgY2FjaGUgY29oZXJl
-bnkgZXhwZXJ0LCBzbyB0YWtlCj4gaXQgd2l0aCBhIGdyYWluIG9mIHNhbHQuCj4gCj4gPiAKPiA+
-IFNpZ25lZC1vZmYtYnk6IFlhbm4gU2lvbm5lYXUgPHlzaW9ubmVhdUBrYWxyYXkuZXU+Cj4gPiBT
-aWduZWQtb2ZmLWJ5OiBKdWxlcyBNYXNlbGJhcyA8am1hc2VsYmFzQGthbHJheS5ldT4KPiA+IC0t
-LQo+IAo+ID4gLS0tIC9kZXYvbnVsbAo+ID4gKysrIGIvYXJjaC9rdngvaW5jbHVkZS9hc20vZG1h
-LmgKPiA+IEBAIC0wLDAgKzEsMzUgQEAKPiA+ICsvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjog
-R1BMLTIuMC1vbmx5ICovCj4gPiArLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAyMSBZYW5u
-IFNpb25uZWF1IDx5c2lvbm5lYXVAa2FscmF5LmV1PiwgS2FscmF5IEluYy4gKi8KPiA+ICsKPiA+
-ICsjaWZuZGVmIF9fQVNNX0RNQV9ICj4gPiArI2RlZmluZSBfX0FTTV9ETUFfSAo+ID4gKwo+ID4g
-KyNpbmNsdWRlIDxjb21tb24uaD4KPiA+ICsKPiA+ICsjZGVmaW5lIEtWWF9ERFJfMzJCSVRfUkFN
-X1dJTkRPV19CQQkoMHg4MDAwMDAwMFVMTCkKPiA+ICsjZGVmaW5lIEtWWF9ERFJfNjRCSVRfUkFN
-X1dJTkRPV19CQQkoMHgxMDAwMDAwMDBVTEwpCj4gPiArI2RlZmluZSBNQVhfMzJCSVRfQUREUgkJ
-CSgweGZmZmZmZmZmVUxMKQo+ID4gKwo+ID4gKyNkZWZpbmUgZG1hX2FsbG9jIGRtYV9hbGxvYwo+
-ID4gK3N0YXRpYyBpbmxpbmUgdm9pZCAqZG1hX2FsbG9jKHNpemVfdCBzaXplKQo+ID4gK3sKPiA+
-ICsJcmV0dXJuIHhtZW1hbGlnbig2NCwgQUxJR04oc2l6ZSwgNjQpKTsKPiA+ICt9Cj4gPiArCj4g
-PiArc3RhdGljIGlubGluZSB2b2lkICpkbWFfYWxsb2NfY29oZXJlbnQoc2l6ZV90IHNpemUsIGRt
-YV9hZGRyX3QgKmRtYV9oYW5kbGUpCj4gPiArewo+ID4gKwl2b2lkICpyZXQgPSB4bWVtYWxpZ24o
-UEFHRV9TSVpFLCBzaXplKTsKPiA+ICsKPiA+ICsJaWYgKGRtYV9oYW5kbGUpCj4gPiArCQkqZG1h
-X2hhbmRsZSA9IChkbWFfYWRkcl90KSh1aW50cHRyX3QpcmV0Owo+ID4gKwo+ID4gKwlyZXR1cm4g
-cmV0Owo+ID4gK30KPiAKPiBUaGlzIHdvdWxkIGltcGx5IHRoYXQgdGhlIENQVSBiYXJlYm94IGlz
-IGJvb3RpbmcgaXMgY29oZXJlbnQgd2l0aCBhbGwKPiAKPiBkZXZpY2VzIHRoYXQgYmFyZWJveCBu
-ZWVkcyB0byBhY2Nlc3MuIElzIHRoYXQgdGhlIGNhc2U/Cj4gCj4gKFNlZSBiZWxvdykKPiAKPiA+
-ICsKPiA+ICtzdGF0aWMgaW5saW5lIHZvaWQgZG1hX2ZyZWVfY29oZXJlbnQodm9pZCAqbWVtLCBk
-bWFfYWRkcl90IGRtYV9oYW5kbGUsCj4gPiArCQkJCSAgICAgc2l6ZV90IHNpemUpCj4gPiArewo+
-ID4gKwlmcmVlKG1lbSk7Cj4gPiArfQo+ID4gKwo+ID4gKyNlbmRpZiAvKiBfX0FTTV9ETUFfSCAq
-Lwo+ID4gZGlmZiAtLWdpdCBhL2FyY2gva3Z4L2luY2x1ZGUvYXNtL3N5c19hcmNoLmggYi9hcmNo
-L2t2eC9pbmNsdWRlL2FzbS9zeXNfYXJjaC5oCj4gPiBpbmRleCA5ZGYzMmM0ZTcuLmNlMDdhNTU5
-OCAxMDA2NDQKPiA+IC0tLSBhL2FyY2gva3Z4L2luY2x1ZGUvYXNtL3N5c19hcmNoLmgKPiA+ICsr
-KyBiL2FyY2gva3Z4L2luY2x1ZGUvYXNtL3N5c19hcmNoLmgKPiA+IEBAIC0xMSw2ICsxMSw5IEBA
-Cj4gPiDCoCNkZWZpbmUgRVhDRVBUSU9OX1NUUklERQkweDQwCj4gPiDCoCNkZWZpbmUgRVhDRVBU
-SU9OX0FMSUdOTUVOVAkweDEwMAo+ID4gwqAKPiA+IAo+ID4gCj4gPiAKPiA+IAo+ID4gCj4gPiAK
-PiA+IAo+ID4gKyNkZWZpbmUga3Z4X2NsdXN0ZXJfaWQoKSAoKGludCkgXAo+ID4gKwkoKGt2eF9z
-ZnJfZ2V0KFBDUikgJiBLVlhfU0ZSX1BDUl9DSURfTUFTSykgXAo+ID4gKwkJCQkJPj4gS1ZYX1NG
-Ul9QQ1JfQ0lEX1NISUZUKSkKPiA+IMKgI2RlZmluZSBLVlhfU0ZSX1NUQVJUKF9fc2ZyX3JlZykg
-XAo+ID4gwqAJKEtWWF9TRlJfIyMgX19zZnJfcmVnICMjIF9TSElGVCkKPiA+IMKgCj4gPiAKPiA+
-IAo+ID4gCj4gPiAKPiA+IAo+ID4gCj4gPiAKPiA+IGRpZmYgLS1naXQgYS9hcmNoL2t2eC9saWIv
-TWFrZWZpbGUgYi9hcmNoL2t2eC9saWIvTWFrZWZpbGUKPiA+IGluZGV4IGQyNzFlYmNjZi4uYzcz
-MGUxYzIzIDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9rdngvbGliL01ha2VmaWxlCj4gPiArKysgYi9h
-cmNoL2t2eC9saWIvTWFrZWZpbGUKPiA+IEBAIC0zLDQgKzMsNCBAQAo+ID4gwqAjIENvcHlyaWdo
-dCAoQykgMjAxOSBLYWxyYXkgSW5jLgo+ID4gwqAjCj4gPiDCoAo+ID4gCj4gPiAKPiA+IAo+ID4g
-Cj4gPiAKPiA+IAo+ID4gCj4gPiAtb2JqLXkJKz0gY3B1aW5mby5vIGJvYXJkLm8gZHRiLm8gcG93
-ZXJvZmYubyBib290bS5vIHNldGptcC5vIGNhY2hlLm8KPiA+ICtvYmoteQkrPSBjcHVpbmZvLm8g
-Ym9hcmQubyBkdGIubyBwb3dlcm9mZi5vIGJvb3RtLm8gc2V0am1wLm8gY2FjaGUubyBkbWEtZGVm
-YXVsdC5vCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9rdngvbGliL2RtYS1kZWZhdWx0LmMgYi9hcmNo
-L2t2eC9saWIvZG1hLWRlZmF1bHQuYwo+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiA+IGluZGV4
-IDAwMDAwMDAwMC4uNzU1YThjNjZmCj4gPiAtLS0gL2Rldi9udWxsCj4gPiArKysgYi9hcmNoL2t2
-eC9saWIvZG1hLWRlZmF1bHQuYwo+ID4gQEAgLTAsMCArMSw5MSBAQAo+ID4gKy8vIFNQRFgtTGlj
-ZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKPiA+ICsvLyBTUERYLUZpbGVDb3B5cmlnaHRU
-ZXh0OiAyMDIxIFlhbm4gU2lvbm5lYXUgPHlzaW9ubmVhdUBrYWxyYXkuZXU+LCBLYWxyYXkgSW5j
-Lgo+ID4gKwo+ID4gKyNpbmNsdWRlIDxkbWEuaD4KPiA+ICsjaW5jbHVkZSA8YXNtL2JhcnJpZXIu
-aD4KPiA+ICsjaW5jbHVkZSA8YXNtL2lvLmg+Cj4gPiArI2luY2x1ZGUgPGFzbS9jYWNoZS5oPgo+
-ID4gKyNpbmNsdWRlIDxhc20vc2ZyLmg+Cj4gPiArI2luY2x1ZGUgPGFzbS9zeXNfYXJjaC5oPgo+
-ID4gKwo+ID4gKy8qCj4gPiArICogVGhlIGltcGxlbWVudGF0aW9uIG9mIGFyY2ggc2hvdWxkIGZv
-bGxvdyB0aGUgZm9sbG93aW5nIHJ1bGVzOgo+ID4gKyAqCQltYXAJCWZvcl9jcHUJCWZvcl9kZXZp
-Y2UJdW5tYXAKPiA+ICsgKiBUT19ERVYJd3JpdGViYWNrCW5vbmUJCXdyaXRlYmFjawlub25lCj4g
-PiArICogRlJPTV9ERVYJaW52YWxpZGF0ZQlpbnZhbGlkYXRlKCopCWludmFsaWRhdGUJaW52YWxp
-ZGF0ZSgqKQo+ID4gKyAqIEJJRElSCXdyaXRlYmFjawlpbnZhbGlkYXRlCXdyaXRlYmFjawlpbnZh
-bGlkYXRlCj4gPiArICoKPiA+ICsgKiAoKikgLSBvbmx5IG5lY2Vzc2FyeSBpZiB0aGUgQ1BVIHNw
-ZWN1bGF0aXZlbHkgcHJlZmV0Y2hlcy4KPiA+ICsgKgo+ID4gKyAqIChzZWUgaHR0cHM6Ly9sa21s
-Lm9yZy9sa21sLzIwMTgvNS8xOC85NzkpCj4gPiArICovCj4gPiArCj4gPiArdm9pZCBkbWFfc3lu
-Y19zaW5nbGVfZm9yX2RldmljZShkbWFfYWRkcl90IGFkZHIsIHNpemVfdCBzaXplLAo+ID4gKwkJ
-CQllbnVtIGRtYV9kYXRhX2RpcmVjdGlvbiBkaXIpCj4gPiArewo+ID4gKwlzd2l0Y2ggKGRpcikg
-ewo+ID4gKwljYXNlIERNQV9GUk9NX0RFVklDRToKPiA+ICsJCWt2eF9kY2FjaGVfaW52YWxpZGF0
-ZV9tZW1fYXJlYShhZGRyLCBzaXplKTsKCldoeSBkbyB5b3UgbmVlZCB0byBleHBsaWNpdGx5IGlu
-dmFsaWRhdGUsIGJ1dCBub3QgZmx1c2g/IEV2ZW4gaWYgdGhlCkNQVSBzcGVjdWxhdGl2ZWx5IHBy
-ZWZldGNoZXMsIHRoZSBjb2hlcmVuY3kgcHJvdG9jb2wgc2hvdWxkIG1ha2Ugc3VyZQp0byBpbnZh
-bGlkYXRlIHRoZSBzcGVjdWxhdGl2ZWx5IGxvYWRlZCBsaW5lcywgcmlnaHQ/Cgo+ID4gKwkJYnJl
-YWs7Cj4gPiArCWNhc2UgRE1BX1RPX0RFVklDRToKPiA+ICsJY2FzZSBETUFfQklESVJFQ1RJT05B
-TDoKPiA+ICsJCS8qIGFsbG93IGRldmljZSB0byByZWFkIGJ1ZmZlciB3cml0dGVuIGJ5IENQVSAq
-Lwo+ID4gKwkJd21iKCk7Cj4gCj4gSWYgdGhlIGludGVyY29ubmVjdCB3YXMgaW5kZWVkIGNvaGVy
-ZW50LCBsaWtlIGRtYV9hbGxvY19jb2hlcmVudAo+IGFib3ZlIGhpbnRzLCB5b3Ugd291bGRuJ3Qg
-bmVlZCBhbnkgYmFycmllcnMgaGVyZS4uPwoKQ29oZXJlbmN5IGRvZXMgbm90IGltcGx5IHN0cmlj
-dCBvcmRlcmluZywgc28gdGhlIGJhcnJpZXJzIGFyZSBpbiBmYWN0CmNvcnJlY3QsIGFzIHRoZSBD
-UFUgd3JpdGUgYnVmZmVycyBhbmQvb3IgdGhlIGludGVyY29ubmVjdCBjYW4gc3RpbGwKY2hhbmdl
-IHRoZSBvcmRlcmluZyBvZiB0aGUgd3JpdGVzIGFzIHNlZW4gYnkgYSByZW1vdGUgb2JzZXJ2ZXIu
-Cgo+ID4gKwkJYnJlYWs7Cj4gPiArCWRlZmF1bHQ6Cj4gPiArCQlCVUcoKTsKPiA+ICsJfQo+ID4g
-K30KPiA+ICsKPiA+ICt2b2lkIGRtYV9zeW5jX3NpbmdsZV9mb3JfY3B1KGRtYV9hZGRyX3QgYWRk
-ciwgc2l6ZV90IHNpemUsCj4gPiArCQkJCWVudW0gZG1hX2RhdGFfZGlyZWN0aW9uIGRpcikKPiA+
-ICt7Cj4gPiArCXN3aXRjaCAoZGlyKSB7Cj4gPiArCWNhc2UgRE1BX0ZST01fREVWSUNFOgo+ID4g
-KwljYXNlIERNQV9UT19ERVZJQ0U6Cj4gPiArCQlicmVhazsKPiA+ICsJY2FzZSBETUFfQklESVJF
-Q1RJT05BTDoKPiA+ICsJCWt2eF9kY2FjaGVfaW52YWxpZGF0ZV9tZW1fYXJlYShhZGRyLCBzaXpl
-KTsKPiA+ICsJCWJyZWFrOwo+ID4gKwlkZWZhdWx0Ogo+ID4gKwkJQlVHKCk7Cj4gPiArCX0KPiA+
-ICt9Cj4gPiArCj4gPiArI2RlZmluZSBLVlhfRERSX0FMSUFTX09GRlNFVCBcCj4gPiArCShLVlhf
-RERSXzY0QklUX1JBTV9XSU5ET1dfQkEgLSBLVlhfRERSXzMyQklUX1JBTV9XSU5ET1dfQkEpCj4g
-PiArI2RlZmluZSBLVlhfRERSX0FMSUFTX1dJTkRPVyBcCj4gPiArCShLVlhfRERSXzY0QklUX1JB
-TV9XSU5ET1dfQkEgKyBLVlhfRERSX0FMSUFTX09GRlNFVCkKPiA+ICsKPiA+ICsvKiBMb2NhbCBz
-bWVtIGlzIGFsaWFzZWQgYmV0d2VlbiAwIGFuZCAxNk1CICovCj4gPiArI2RlZmluZSBLVlhfU01F
-TV9MT0NBTF9BTElBUyAweDEwMDAwMDBVTEwKPiA+ICsKPiA+ICtkbWFfYWRkcl90IGRtYV9tYXBf
-c2luZ2xlKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCB2b2lkICpwdHIsIHNpemVfdCBzaXplLAo+ID4g
-KwkJCSAgZW51bSBkbWFfZGF0YV9kaXJlY3Rpb24gZGlyKQo+ID4gK3sKPiA+ICsJdWludHB0cl90
-IGFkZHIgPSAodWludHB0cl90KSBwdHI7Cj4gPiArCj4gPiArCWRtYV9zeW5jX3NpbmdsZV9mb3Jf
-ZGV2aWNlKGFkZHIsIHNpemUsIGRpcik7Cj4gPiArCj4gPiArCS8qIExvY2FsIHNtZW0gYWxpYXMg
-c2hvdWxkIG5ldmVyIGJlIHVzZWQgZm9yIGRtYSAqLwo+ID4gKwlpZiAoYWRkciA8IEtWWF9TTUVN
-X0xPQ0FMX0FMSUFTKQo+ID4gKwkJcmV0dXJuIGFkZHIgKyAoMSArIGt2eF9jbHVzdGVyX2lkKCkp
-ICogS1ZYX1NNRU1fTE9DQUxfQUxJQVM7Cj4gPiArCj4gPiArCWlmIChkZXYtPmRtYV9tYXNrICYm
-IGFkZHIgPD0gZGV2LT5kbWFfbWFzaykKPiA+ICsJCXJldHVybiBhZGRyOwo+ID4gKwo+ID4gKwlp
-ZiAoYWRkciA+PSBLVlhfRERSX0FMSUFTX1dJTkRPVykKPiA+ICsJCXJldHVybiBETUFfRVJST1Jf
-Q09ERTsKPiA+ICsKPiA+ICsJYWRkciAtPSBLVlhfRERSX0FMSUFTX09GRlNFVDsKPiA+ICsJaWYg
-KGRldi0+ZG1hX21hc2sgJiYgYWRkciA+IGRldi0+ZG1hX21hc2spCj4gPiArCQlyZXR1cm4gRE1B
-X0VSUk9SX0NPREU7Cj4gPiArCj4gPiArCXJldHVybiBhZGRyOwo+ID4gK30KPiA+ICsKPiA+ICt2
-b2lkIGRtYV91bm1hcF9zaW5nbGUoc3RydWN0IGRldmljZV9kICpkZXYsIGRtYV9hZGRyX3QgYWRk
-ciwgc2l6ZV90IHNpemUsCj4gPiArCQkgICAgICBlbnVtIGRtYV9kYXRhX2RpcmVjdGlvbiBkaXIp
-Cj4gPiArewo+ID4gKwlkbWFfc3luY19zaW5nbGVfZm9yX2NwdShhZGRyLCBzaXplLCBkaXIpOwo+
-ID4gK30KPiA+IAo+IAoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This is needed when running on FPGA as registers are not guaranteed
+to be initialized to 0.  Using movhi allows to explicitly set 0.
+
+Signed-off-by: Stafford Horne <shorne@gmail.com>
+---
+ arch/openrisc/cpu/start.S | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/openrisc/cpu/start.S b/arch/openrisc/cpu/start.S
+index 7ac790b05..c448d3775 100644
+--- a/arch/openrisc/cpu/start.S
++++ b/arch/openrisc/cpu/start.S
+@@ -37,10 +37,10 @@
+ 	.org	0x100
+ __reset:
+ 	/* there is no guarantee r0 is hardwired to zero, clear it here */
+-	l.andi	r0, r0, 0
++	l.movhi	r0, 0x0
+ 	/* reset stack and frame pointers */
+-	l.andi	r1, r0, 0
+-	l.andi	r2, r0, 0
++	l.movhi	r1, 0x0
++	l.movhi	r2, 0x0
+ 
+ 	/* set supervisor mode */
+ 	l.ori	r3,r0,SPR_SR_SM
+-- 
+2.26.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
