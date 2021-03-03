@@ -1,77 +1,71 @@
-Delivery-date: Wed, 03 Mar 2021 23:07:28 +0100
+Delivery-date: Wed, 03 Mar 2021 23:44:03 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHZeS-0000Eo-37
-	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 23:07:28 +0100
+	id 1lHaDr-0000Gm-Qw
+	for lore@lore.pengutronix.de; Wed, 03 Mar 2021 23:44:03 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHZeQ-0001Uj-AU
-	for lore@pengutronix.de; Wed, 03 Mar 2021 23:07:27 +0100
+	id 1lHaDq-000576-Em
+	for lore@pengutronix.de; Wed, 03 Mar 2021 23:44:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Date:Cc:To:From:
+	Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=DqP3ec+gymU3YDpCd/uIMxYcCOANsDt7I+oCZF2IFwY=; b=UqkefPbnQsn/eh9Yh18PiHpC3
-	d0kBWdUD/U611MGJ2VAldUjxpBzzythhQN0rin+cUZ03DNRj1JwhajgpWbnS7Mhci3l8od0VqK2un
-	PSKoL9H9m9w4DQT6DTh5jgV4PU9OpRFtq8mOP66+Aqx3aMajQGiHENEjamdr+n6R3xEjczcbB11cp
-	eGYRg8NfaERGP7SKpwdybj9OlfZxLYqEErrmE0uaX7FjkD90Nq0g2VPv3CpBmQ51iB/SsiApm0KCf
-	6tCQ/dS9jGkPiHGDvJzDvkvVy1R04mMvqwYHufA+Hd8k2Qmm+Fjs8RWg2I6Hp2OL17dIhqWeRqbym
-	VUpcioAQA==;
+	 bh=JavGkiSeSyRkNwTABAhNEoXIzEDUiFUPn/N2X8lQNOM=; b=eAsfqIWaNFLZiT3hJM1PBVpUt
+	xD96KWBDmJyAwni3KQ4lurrox/oPhADvzum+60g86Fw9cewHl2dKkbkg+YiyTzu+PC8O8JVO5W5yX
+	HXqU0QE7khhdfTzU4Ekf20QeDAHZEbNzSZ4vqLuJu516uvsrsMZRLAsbV64EbI/tGMNtYRrfoEMeU
+	oPKHRA8o3EZlvuofsAxmYzOOuI8kwLX0p8yikMuZR7EfWrU2UIBUsYp0FrUEcNjLOaPHw3thwf0hS
+	SBeUnNbRTKXt0+NQBaNuA/1Jq1AGIzSscayH5XWfmTCr1oLwI0BqsDFRM35C/SQpPkps16pAxfWdD
+	09lhVKaTg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lHZcC-006hKY-Qg; Wed, 03 Mar 2021 22:05:09 +0000
+	id 1lHa8x-006mLW-Mj; Wed, 03 Mar 2021 22:39:00 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHTAa-005Kba-O4
- for barebox@desiato.infradead.org; Wed, 03 Mar 2021 15:12:13 +0000
+ id 1lHTBB-005Krb-EB
+ for barebox@desiato.infradead.org; Wed, 03 Mar 2021 15:12:49 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=qyK68NLeBcBqOxafisLtYgYwuKM7VhIIsadG0+ClA/Y=; b=mnfqwn5N0gjDN3djUKnzsQi3oo
- qDWJkABbLT3gsJp6HXq6UjoQFDSuZq5Oom16xUWnvpGDN05vuM9wEj16egnO6IODoCj1PffGlnA0O
- I9IVZ16kp0D9vqOAH6Jo3kstZg/QltnQ1K00XTrExHUUYxDIqu/yC2oGcFzloWUEgqX0fX7zQdo5V
- nU8HGDNor3ag0Zez6V6IjieEfQ8Q64EF2KkOgr/LZ1l6Bk86tFwmLwz24QvcvVzKaLNLXi+i94h07
- G4//3Z8fvDcJw6Ed9+HDXc0n8n6aU1uBEnTHaEAWIS5X//P/pQQR2x1DfQw7ODWmrq8i9s4PNaE7I
- CqcQW8tw==;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+ :Reply-To:Content-ID:Content-Description;
+ bh=SFgFGxkJ9mHx0vsvfI7GU9QZtVdhlVmLQZ8cxvi6Hf4=; b=HllEDtRFDnfeoTdPBNUoYJOtmR
+ qsvpUFHODNxUZF2AxQq2WUTU8bRKkbzEMORVfaYYY7/A8eCxBd2WoFpYbAonVttr9mkVVxLeAKZgo
+ AnLNybjzQljQD3CEsFoumogm7hNOJ4sBa9vIC6FaWd+lYn954y7tpv34vEeKpLJ/0lhFXlEXfk8E1
+ is2DDMV1LHdR/3xaknTu32+pj+yhSIRXj5fgJn6qpT0lvwtZXWKZF9zoGOjpqZa1N3oUWCGwYh1OC
+ F971Ze0ELbA3Z4X6A6gbm1BpB+uGuILKcl8ShDJno7bcAwfgaOZOZG5hrpnirLAeNyaHcE0EFh4bu
+ T7wqAC5w==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHTAV-00366e-JB
- for barebox@lists.infradead.org; Wed, 03 Mar 2021 15:12:10 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1lHNay-001yEK-9I
+ for barebox@lists.infradead.org; Wed, 03 Mar 2021 09:15:06 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lHTAU-0007rj-UD; Wed, 03 Mar 2021 16:12:06 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lHTAU-0002JE-6c; Wed, 03 Mar 2021 16:12:06 +0100
-Date: Wed, 3 Mar 2021 16:12:06 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-To: Stafford Horne <shorne@gmail.com>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org,
- Jules Maselbas <jmaselbas@kalray.eu>
-Message-ID: <20210303151206.GM5549@pengutronix.de>
-References: <20210301110106.3764-1-a.fatoum@pengutronix.de>
- <20210303121547.GE365039@lianli.shorne-pla.net>
+ (envelope-from <l.stach@pengutronix.de>)
+ id 1lHNam-0003Jb-NG; Wed, 03 Mar 2021 10:14:52 +0100
+Message-ID: <927983935004c68be871fe2182b0e33fd0dff381.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org, 
+ Yann Sionneau <ysionneau@kalray.eu>
+Date: Wed, 03 Mar 2021 10:14:47 +0100
+In-Reply-To: <20210302105827.GD9273@tellis.lin.mbt.kalray.eu>
+References: <20210301155851.12463-1-jmaselbas@kalray.eu>
+ <20210301155851.12463-3-jmaselbas@kalray.eu>
+ <04c18498-970c-9a69-ebf7-97bf85d2f961@pengutronix.de>
+ <595cae1711b8bdc79876371194cadd772f8646e6.camel@pengutronix.de>
+ <20210302105827.GD9273@tellis.lin.mbt.kalray.eu>
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210303121547.GE365039@lianli.shorne-pla.net>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 16:10:56 up 13 days, 18:34, 77 users,  load average: 0.38, 0.41, 0.30
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210303_151210_512691_59DFF6A8 
-X-CRM114-Status: GOOD (  19.80  )
+X-CRM114-CacheID: sfid-20210303_091506_872705_0F568700 
+X-CRM114-Status: GOOD (  25.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,55 +85,91 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 00/11] common: introduce bthreads, co-operative
+Subject: Re: [PATCH 3/5] kvx: Implement dma handling primitives
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Mar 03, 2021 at 09:15:47PM +0900, Stafford Horne wrote:
-> On Mon, Mar 01, 2021 at 12:00:55PM +0100, Ahmad Fatoum wrote:
-> > Hello,
-> > 
-> > This is v2 of barebox coroutine support:
-> >     https://lists.infradead.org/pipermail/barebox/2021-February/035032.html
-> > 
-> > As discussed with Sascha, if this is to be added, this should be added for
-> > all architectures and not be optional. If we have this as integral part,
-> > it means we can substitute coroutines for:
-> >     - pollers: just wrap the code in a loop
-> >     - async pollers: just call a delay function in the loop
-> >     - workqueues: assert_command_context yields until in command context
-> > 
-> > In addition, we will have much less work porting over threaded code from
-> > Linux. See the referenced series for an example of a USB mass storage
-> > gadget.
-> > 
-> > To prepare for replacing them, the functionality is renamed to
-> > bthreads (as in barebox threads) and is made separate from pollers.
-> > 
-> > How to add new architecture support:
-> > 
-> >   - Apply this series or check out https://github.com/a3f/barebox/tree/bthread
+Hi Jules,
+
+Am Dienstag, dem 02.03.2021 um 11:58 +0100 schrieb Jules Maselbas:
+> Hi Lucas and Ahmad,
 > 
-> Now that I got a dev environment booting off master I have switched to your
-> bthread branch.  I found there is already a commit to remove openrisc in next.
+> On Tue, Mar 02, 2021 at 11:14:09AM +0100, Lucas Stach wrote:
+> > Am Dienstag, dem 02.03.2021 um 09:37 +0100 schrieb Ahmad Fatoum:
+> > > Hello Jules, Yann,
+> > > 
+> > > On 01.03.21 16:58, Jules Maselbas wrote:
+> > > > From: Yann Sionneau <ysionneau@kalray.eu>
+> > > Some comments inline. I am not a cache cohereny expert, so take
+> > > it with a grain of salt.
+> > > 
+> > > > +static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+> > > > +{
+> > > > +	void *ret = xmemalign(PAGE_SIZE, size);
+> > > > +
+> > > > +	if (dma_handle)
+> > > > +		*dma_handle = (dma_addr_t)(uintptr_t)ret;
+> > > > +
+> > > > +	return ret;
+> > > > +}
+> > > 
+> > > This would imply that the CPU barebox is booting is coherent with all
+> > > 
+> > > devices that barebox needs to access. Is that the case?
+> > > 
+> > > (See below)
+> > > 
+> This is bogus, memory is not coherent with all devices, this should be
+> handled by the mmu, which is currently not supported in our barebox port.
+> Using this can lead to coherency issues. We can either drop this
+> function, so that is leads to an error at link time, or add a call to
+> BUG for a runtime error.
 > 
-> I will revert this in my branch.
+> Right now we aren't using any driver that require dma_alloc_coherent,
+> but we use drivers that requires dma_alloc and dma_map_single instead.
 
-In the meantime I reverted removing of openrisc. Thank you for looking
-at it.
+I would vote for a BUILD_BUG_ON_MSG in this function, so you get a
+compile time error and you can state what needs to be done in order to
+get rid of the failure.
 
-Sascha
+> > > > +/*
+> > > > + * The implementation of arch should follow the following rules:
+> > > > + *		map		for_cpu		for_device	unmap
+> > > > + * TO_DEV	writeback	none		writeback	none
+> > > > + * FROM_DEV	invalidate	invalidate(*)	invalidate	invalidate(*)
+> > > > + * BIDIR	writeback	invalidate	writeback	invalidate
+> > > > + *
+> > > > + * (*) - only necessary if the CPU speculatively prefetches.
+> > > > + *
+> > > > + * (see https://lkml.org/lkml/2018/5/18/979)
+> > > > + */
+> > > > +
+> > > > +void dma_sync_single_for_device(dma_addr_t addr, size_t size,
+> > > > +				enum dma_data_direction dir)
+> > > > +{
+> > > > +	switch (dir) {
+> > > > +	case DMA_FROM_DEVICE:
+> > > > +		kvx_dcache_invalidate_mem_area(addr, size);
+> > 
+> > Why do you need to explicitly invalidate, but not flush? Even if the
+> > CPU speculatively prefetches, the coherency protocol should make sure
+> > to invalidate the speculatively loaded lines, right?
+> Since we don't have a coherent memory, here we need to invalidate L1
+> dcache to let the CPU see deivce's writes in memory.
+> Also every write goes through the cache, flush is not required.
 
+Ah, if all your caches are write-through that makes sense. Can you add
+a comment somewhere stating that this implementation assumes WT caches
+on KVX? This way we can avoid the confusion Ahamd and myself fell into
+when glancing over the code.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+Lucas
+
 
 _______________________________________________
 barebox mailing list
