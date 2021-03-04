@@ -1,65 +1,78 @@
-Delivery-date: Thu, 04 Mar 2021 07:31:39 +0100
+Delivery-date: Thu, 04 Mar 2021 09:43:29 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHhWN-0000rG-DR
-	for lore@lore.pengutronix.de; Thu, 04 Mar 2021 07:31:39 +0100
+	id 1lHjZx-0000xE-QY
+	for lore@lore.pengutronix.de; Thu, 04 Mar 2021 09:43:29 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHhWI-0000WC-FR
-	for lore@pengutronix.de; Thu, 04 Mar 2021 07:31:35 +0100
+	id 1lHjZw-0005fX-NS
+	for lore@pengutronix.de; Thu, 04 Mar 2021 09:43:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=tV1bwlLsfr5prlNDcMcVoVa3K2l3XNTDG8+eFrD3y/I=; b=gVIKIV8sdYKdL1lvbYyafZ2wK7
-	g3S4mwx1az3tAeKifU8SJ0b+SEmKEXpGvs+aNmnypvJP3aaq6yKgDq1HzNIM9rjAtEsaD8NSp6W5W
-	cM0ZNqLFEIdLgw6BMWbL2TDc7ds3L753frQAapLaORXtmKw/rrqQyjGg782h06iDA70Oj5cEV3DCn
-	l4rbDNwZrkpBUX9QbKf8ZTDlrwrZD5scCo9e9D5OyHVTNoDPC0Ci2yzi5IH5Ww+YVVIsy2sV2vig1
-	r+lYf4ZW3Dmef4z0jP8+4dEt3vWuBMX4kMN0McB8g4S1d0SfA+n/k4qENwGtj/uf3ri7+858JbztP
-	4vCkP92w==;
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=9pwyHG5SCFBe7girfR325+NKeT15DereKgd9tJWZaGI=; b=BQ3RJYiw0Mm3XbOUtFBnQw6bp
+	VLBl/DPID8Wy/mZv044cxkYEs5Zi+Emstz3tvE1QH89k6AauzZi2TEtBiLEVY/K0NlvahjpQVutnw
+	0McszNZmn6od015ePc5hyNuAz2NjYYGFwauvhauhKxqWCZxCN/XS89lxaIY5P/xtZUzvDAKhuTMq4
+	jpSNro7wnQi+I+JNnM2dm5xTzQ786iHKwoxjEXJOxtuHfyr/sUb+nRj1bYHoFo8XDkRChWgsPgkVK
+	BPZ9BC7XRBDkD6PMzfKngj1IECgq+j8sMtQSwes0zD2uBvBeE1gagRWmkcmhkYWLH/jOhqeaazxvq
+	vjYglg4XQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lHhUn-007vVD-JF; Thu, 04 Mar 2021 06:30:01 +0000
+	id 1lHjYK-0089eZ-AQ; Thu, 04 Mar 2021 08:41:48 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHhUQ-007vTt-Om
- for barebox@desiato.infradead.org; Thu, 04 Mar 2021 06:29:39 +0000
+ id 1lHjUx-0089Qt-D3
+ for barebox@desiato.infradead.org; Thu, 04 Mar 2021 08:38:24 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:In-Reply-To:References;
- bh=jjn1DPiJeFXMJvaEels9QRG+PujNHZ5Mpg+5rr0QNKA=; b=CoaHaKftyPXqJCkfAPgzBa6sPt
- eB2yDhDi7RpKtX2Gh2W8Mg00aEsfeF+jm98IZ7Guh4GR5jCtZx47TR/xkpIA6SkM6XUFZsay4ZLvr
- PqOag9a2c/W1nRkr0NrrtcXfGJP0iBaNCyJjRVB7HyR0HE+zkQvW/vpv7GDeNl+cRdqxMsUdRlceg
- 1k5RDwXrKTpziYWaa92C9m5cr/IK1yH+Fd+83GH6ydSXEJnUlaAMfC7ldKxvlTNuBgoa2L8c9BXsR
- C1lYnot+M+tu4IVQ1ELhrj+9B+Yg3pAFZPvvHl5bPt33qvHJZG2MdxyMi1JQ208uM9AZulw8IvBe9
- X9qiDViQ==;
-Received: from vs10.datenmanufaktur-hosting.net ([213.160.73.65]
- helo=vs81.iboxed.net)
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=sh44YuiZFvOpvonvKBoVpw9Yt4SbrdKwbhghidfmwhc=; b=USpvX3mzIU5mEjZyvPqAdr8rI2
+ f03B9XixECcY3ivgnBWr7f0brujPursUaYym+GJ+H8vX5WDom2Mv3DjOW/V6j9aQ/MUIZehTSnOXV
+ W1IJurQ7Rc0uNzd0YzH94i5+HhmYgr9HVPRzYLc3sekW0MfW0VLz5TD2P+cLaIsFrHN7J0eUkYd6j
+ pzHz2VTlpcScDog4iNOa9uWbHlNvYZvP6r7WNboCDiKCp7hCR4j1JjyBukamdwWzqZuDk188VoLoa
+ vP7H0HImylBEqLRidV5Mh9u4Tm3UtbWtFmyOzazhae1YIidLa+oX9mGwYaniF1/DTCf5Fy2cRAqar
+ gpyGIYFQ==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHhUH-005rNO-Sy
- for barebox@lists.infradead.org; Thu, 04 Mar 2021 06:29:33 +0000
-Received: from blala.de (localhost [127.0.0.1])
- by vs81.iboxed.net (8.15.2/8.15.2/Debian-14~deb10u1) with ESMTP id
- 1246WxSP016124; Thu, 4 Mar 2021 06:32:59 GMT
-Received: (from akurz@localhost)
- by blala.de (8.15.2/8.15.2/Submit) id 1246WxE2016123;
- Thu, 4 Mar 2021 06:32:59 GMT
-From: Alexander Kurz <akurz@blala.de>
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Alexander Kurz <akurz@blala.de>
-Date: Thu,  4 Mar 2021 06:32:58 +0000
-Message-Id: <20210304063258.16080-1-user@vserver64>
-X-Mailer: git-send-email 2.20.1
+ id 1lHjUu-006Gsw-7X
+ for barebox@lists.infradead.org; Thu, 04 Mar 2021 08:38:17 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lHjUq-0005EC-MU; Thu, 04 Mar 2021 09:38:12 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lHjUp-0004Jt-S7; Thu, 04 Mar 2021 09:38:11 +0100
+Date: Thu, 4 Mar 2021 09:38:11 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org,
+ Jules Maselbas <jmaselbas@kalray.eu>, Stafford Horne <shorne@gmail.com>
+Message-ID: <20210304083811.GO5549@pengutronix.de>
+References: <20210301110106.3764-1-a.fatoum@pengutronix.de>
+ <20210301110106.3764-11-a.fatoum@pengutronix.de>
+ <20210302221920.GC1407@chr>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20210302221920.GC1407@chr>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:35:20 up 14 days, 11:59, 73 users,  load average: 0.27, 0.15, 0.14
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210304_062933_327931_3AEF854C 
-X-CRM114-Status: GOOD (  10.10  )
+X-CRM114-CacheID: sfid-20210304_083817_205412_CC13FE10 
+X-CRM114-Status: GOOD (  20.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,87 +92,113 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: i.MX8M: bbu: fix variable name to used semantic
+Subject: Re: [PATCH v2 10/11] mips: Implement setjmp/longjmp/initjmp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Alexander Kurz <akurz@blala.de>
+Hi Peter,
 
-Both flags handle BBU behavior and should be bbu_flags.
+On Wed, Mar 03, 2021 at 01:19:26AM +0300, Peter Mamonov wrote:
+> Hi, Sascha and Ahmad,
+> 
+> On Mon, Mar 01, 2021 at 12:01:05PM +0100, Ahmad Fatoum wrote:
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > 
+> > The header has been taken from glibc, the implementation itself is based
+> > on the newlib implementation.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> > ---
+> >  arch/mips/Kconfig              |  1 +
+> >  arch/mips/include/asm/setjmp.h | 32 ++++++++++++++++++++++
+> >  arch/mips/lib/Makefile         |  1 +
+> >  arch/mips/lib/setjmp.S         | 50 ++++++++++++++++++++++++++++++++++
+> >  4 files changed, 84 insertions(+)
+> >  create mode 100644 arch/mips/include/asm/setjmp.h
+> >  create mode 100644 arch/mips/lib/setjmp.S
+> > 
+> > ...
+> >
+> > diff --git a/arch/mips/lib/setjmp.S b/arch/mips/lib/setjmp.S
+> > new file mode 100644
+> > index 000000000000..b09a7c55293c
+> > --- /dev/null
+> > +++ b/arch/mips/lib/setjmp.S
+> > @@ -0,0 +1,50 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +
+> > +#include <asm/regdef.h>
+> > +#include <asm/asm.h>
+> > +#include <linux/linkage.h>
+> > +
+> > +/* int setjmp (jmp_buf);  */
+> > +LEAF(setjmp)
+> > +	sw	ra, (0 * 4)(a0)
+> > +	sw	sp, (1 * 4)(a0)
+> > +	sw	s0, (2 * 4)(a0)
+> > +	sw	s1, (3 * 4)(a0)
+> > +	sw	s2, (4 * 4)(a0)
+> > +	sw	s3, (5 * 4)(a0)
+> > +	sw	s4, (6 * 4)(a0)
+> > +	sw	s5, (7 * 4)(a0)
+> > +	sw	s6, (8 * 4)(a0)
+> > +	sw	s7, (9 * 4)(a0)
+> > +	sw	fp, (10 * 4)(a0)
+> > +	move	v0, zero
+> > +	j	ra
+> > +END(setjmp)
+> > +
+> > +/* volatile void longjmp (jmp_buf, int);  */
+> > +LEAF(longjmp)
+> > +	lw	ra, (0 * 4)(a0)
+> > +	lw	sp, (1 * 4)(a0)
+> > +	lw	s0, (2 * 4)(a0)
+> > +	lw	s1, (3 * 4)(a0)
+> > +	lw	s2, (4 * 4)(a0)
+> > +	lw	s3, (5 * 4)(a0)
+> > +	lw	s4, (6 * 4)(a0)
+> > +	lw	s5, (7 * 4)(a0)
+> > +	lw	s6, (8 * 4)(a0)
+> > +	lw	s7, (9 * 4)(a0)
+> > +	lw	fp, (10 * 4)(a0)
+> > +	bne	a1, zero, 1f
+> > +	li	a1, 1
+> > +1:
+> > +	move	v0, a1
+> > +	j	ra
+> > +END(longjmp)
+> > +
+> > +/* int initjmp(jmp_buf jmp, void __noreturn (*func)(void), void *stack_top); */
+> > +LEAF(initjmp)
+> > +	sw	a1, (0 * 4)(a0)
+> > +	sw	a2, (1 * 4)(a0)
+> > +	move	v0, zero
+> > +	j	ra
+> > +END(initjmp)
+> 
+> I would suggest using `REG_S/REG_L r, (n * SZREG)(a0)` here for the sake of 
+> MIPS64 targets. See arch/mips/include/asm/asm.h:272.
 
-Signed-off-by: Alexander Kurz <akurz@blala.de>
----
- arch/arm/boards/nxp-imx8mm-evk/board.c | 6 +++---
- arch/arm/boards/nxp-imx8mp-evk/board.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+I agree with you, but barebox doesn't support MIPS64 currently and I
+wasn't confident enough to add such things when I can't test them.
+Maybe we can add a
 
-diff --git a/arch/arm/boards/nxp-imx8mm-evk/board.c b/arch/arm/boards/nxp-imx8mm-evk/board.c
-index 2603a2ab0..6e4df6006 100644
---- a/arch/arm/boards/nxp-imx8mm-evk/board.c
-+++ b/arch/arm/boards/nxp-imx8mm-evk/board.c
-@@ -33,7 +33,7 @@ static int ar8031_phy_fixup(struct phy_device *phydev)
- static int nxp_imx8mm_evk_init(void)
- {
- 	int emmc_bbu_flag = 0;
--	int emmc_sd_flag = 0;
-+	int sd_bbu_flag = 0;
- 
- 	if (!of_machine_is_compatible("fsl,imx8mm-evk"))
- 		return 0;
-@@ -46,14 +46,14 @@ static int nxp_imx8mm_evk_init(void)
- 			emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
- 		} else {
- 			of_device_enable_path("/chosen/environment-sd");
--			emmc_sd_flag = BBU_HANDLER_FLAG_DEFAULT;
-+			sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
- 		}
- 	} else {
- 		of_device_enable_path("/chosen/environment-emmc");
- 		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
- 	}
- 
--	imx8m_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox", emmc_sd_flag);
-+	imx8m_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox", sd_bbu_flag);
- 	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc2", emmc_bbu_flag);
- 
- 	phy_register_fixup_for_uid(PHY_ID_AR8031, AR_PHY_ID_MASK,
-diff --git a/arch/arm/boards/nxp-imx8mp-evk/board.c b/arch/arm/boards/nxp-imx8mp-evk/board.c
-index f64f46681..a3ff59810 100644
---- a/arch/arm/boards/nxp-imx8mp-evk/board.c
-+++ b/arch/arm/boards/nxp-imx8mp-evk/board.c
-@@ -17,7 +17,7 @@
- static int nxp_imx8mp_evk_init(void)
- {
- 	int emmc_bbu_flag = 0;
--	int emmc_sd_flag = 0;
-+	int sd_bbu_flag = 0;
- 	u32 val;
- 
- 	if (!of_machine_is_compatible("fsl,imx8mp-evk"))
-@@ -29,14 +29,14 @@ static int nxp_imx8mp_evk_init(void)
- 			emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
- 		} else {
- 			of_device_enable_path("/chosen/environment-sd");
--			emmc_sd_flag = BBU_HANDLER_FLAG_DEFAULT;
-+			sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
- 		}
- 	} else {
- 		of_device_enable_path("/chosen/environment-emmc");
- 		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
- 	}
- 
--	imx8m_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox", emmc_sd_flag);
-+	imx8m_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox", sd_bbu_flag);
- 	imx8m_bbu_internal_mmc_register_handler("eMMC", "/dev/mmc2", emmc_bbu_flag);
- 
- 	val = readl(MX8MP_IOMUXC_GPR_BASE_ADDR + MX8MP_IOMUXC_GPR1);
+#if SZREG != 4
+#error setjmp/longjmp currently only supports 32bit targets
+#endif
+
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
