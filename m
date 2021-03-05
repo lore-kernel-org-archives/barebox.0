@@ -1,73 +1,53 @@
-Delivery-date: Thu, 04 Mar 2021 22:09:54 +0100
+Delivery-date: Fri, 05 Mar 2021 10:01:48 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHvEI-0001i9-QK
-	for lore@lore.pengutronix.de; Thu, 04 Mar 2021 22:09:54 +0100
+	id 1lI6LE-0002Sj-Ai
+	for lore@lore.pengutronix.de; Fri, 05 Mar 2021 10:01:48 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lHvEE-0005nu-B2
-	for lore@pengutronix.de; Thu, 04 Mar 2021 22:09:51 +0100
+	id 1lI6LD-0002Gg-Ic
+	for lore@pengutronix.de; Fri, 05 Mar 2021 10:01:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
 	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=MPBcYa9nGwAuAtyGyy10LsE+J7zNdoswMSlY7+j1+/g=; b=mscq0nO7+ad0If20cgEPHMzIRm
-	i9CG3Bhfn813V9DTGHDQJQAwWouoh8yegAbUjCEWcNnUrMiHfwydBARQsDXBWHvumMTJ+uo9PwJbh
-	akY9VyENNWkJVFmf+NmCjFTd5HdAX20JLwG/2OnyPRs/mG5PFo+S8XWmBGDBzb1oK7cTP1QEsOmH+
-	/cZizg7zQShYJqaVkyQKqRxdUTm+WFmWAjXc3q4EMJ7LOUtkzi4aTbzl6U9cp4Ac3qsqi+lS4JJLw
-	ipkKcYnx9KG+pqU3ync9iGF9Bnihmy/UrZgiKOiuHmYXFE/eENmzqa1LAMz9Fiq6ivqWbEf0uPM42
-	SgNRsZ5g==;
+	bh=M5qGryekC+taiEl+jl9bl9HbeeRj6kacVr50nrqyb/I=; b=rbbJBGPnC9wE0a7/EJJWjSzrfs
+	S+qGLchyHu35UcOXyhtNgcr439Rcd7BpHNMslN3vRjgxFrJaE9zuUckri+Ah6NTy0flSeAsHS1zST
+	uBsvUbOZKzvX/XPNWi3aU33nkT+8+splV+k7dV1YOUw7KSUKHNv3PoHV2eSMCnmDjljc0f0SA6TkP
+	LEZL8v+hm64y+EbjEbMNCPVksgldUOiVd1WqrsD885ErCuBBSNinCXrAOtefWsSQupcDef6yHIbkv
+	wm0GBTFa0Mm80WZ8yHYxRxbdLaq31xjFudw9mzhaYg4h/HZHZiSihQqFBUhTPqgslc0kpBcljhX64
+	Ijf7huAA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lHvCe-00A7D2-2E; Thu, 04 Mar 2021 21:08:12 +0000
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+	id 1lI6Jg-00E7yi-RV; Fri, 05 Mar 2021 09:00:12 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lHvCO-00A7B5-KH
- for barebox@lists.infradead.org; Thu, 04 Mar 2021 21:07:59 +0000
-Received: by mail-pf1-x435.google.com with SMTP id q204so18804828pfq.10
- for <barebox@lists.infradead.org>; Thu, 04 Mar 2021 13:07:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=uWpwsFeTZlyH65avZ7SZctfAq5Qo7PlY77pEY+JXJ0M=;
- b=QL6oBIAiE93CPhZrSRNhRrggev393e4/JxrZETyARV2U5acynFnngoBlB4pbzul9fD
- H2FExHVoO4vT7ouo0+Vf+U9d21PJdLI4vWCuilBPnw/8RMKbF0zwx8EXEU4Mxs5VBNq1
- JCPBkBNTsghybQpkUo4lS0nWHJUmCIxuCTbe0WlWwZ5+LJsH6AM4zF62qTetiEkT1kRD
- XRLRpZ6je85rxIpI2oRzBhKwv5f1go+NOVNS9+dbOnicxxu+Fo5BQtsAUTnx5S4c3Ehe
- 63efl+XuaqGuwLxxxhJ/VNtXB/xAG7DKmzNpf0b+6w/Z69Cfx4Ln1bi16xF6+w41g61b
- myDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=uWpwsFeTZlyH65avZ7SZctfAq5Qo7PlY77pEY+JXJ0M=;
- b=EHk8WM/ZkNvByJlPhUhNCZ1AV2qs6rxMG9jJkluoKLOFaCdf18fmg311bup+0Gr3Oj
- XQPZkbzVyNv7/lUmEhSo5gPTwKqThSXsxQWp5JqHDrOiMv7N2AjmaBiz9AeYM2nWI1FW
- Bo/fb3IqgV3OsG+rT92i4opQdT6sSafDINeCHaQHbVX2C26K4EWCmNJKPxbr4tZs4Qap
- zLqwZb8wRgVIZCT6IvicLu3LZHmRuC+YOqNSxTc+dwjsuVWxRiCGyoJMRHfWJNHb32lF
- 50KZUd0I60G+Qtx5+vrcz6njAGyBzjMr4Yom1fslxeHCT/8IUTDJxZKep5RpOzPYepZH
- aOFQ==
-X-Gm-Message-State: AOAM530mwGj8/RWMEwXUEG6GDLwuW2tMeXvHAlBt887Bk+b9wjyLJD+0
- U1P2W00SURCgbeyGNZ35eTLlHngEbLY=
-X-Google-Smtp-Source: ABdhPJyXvOiayNu1ZYOuxub1XoPuXSpylghLzvY7PF3iGnaGJfLSqilojq/e/q19nad9FDYSw3B2Fg==
-X-Received: by 2002:a62:3181:0:b029:1df:4f2:16b3 with SMTP id
- x123-20020a6231810000b02901df04f216b3mr5623699pfx.24.1614892074002; 
- Thu, 04 Mar 2021 13:07:54 -0800 (PST)
-Received: from localhost (g98.115-65-200.ppp.wakwak.ne.jp. [115.65.200.98])
- by smtp.gmail.com with ESMTPSA id y9sm297453pgc.9.2021.03.04.13.07.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Mar 2021 13:07:53 -0800 (PST)
-From: Stafford Horne <shorne@gmail.com>
-To: Barebox <barebox@lists.infradead.org>
-Date: Fri,  5 Mar 2021 06:07:47 +0900
-Message-Id: <20210304210747.3679483-1-shorne@gmail.com>
-X-Mailer: git-send-email 2.26.2
+ id 1lI6JZ-00E7xD-WB
+ for barebox@lists.infradead.org; Fri, 05 Mar 2021 09:00:08 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1lI6JW-0001yK-VD; Fri, 05 Mar 2021 10:00:02 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1lI6JW-0001At-CE; Fri, 05 Mar 2021 10:00:02 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Marco Felsch <m.felsch@pengutronix.de>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri,  5 Mar 2021 10:00:01 +0100
+Message-Id: <20210305090001.3619780-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20210305_090007_390487_42961AE4 
+X-CRM114-Status: GOOD (  15.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,118 +59,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Openrisc <openrisc@lists.librecores.org>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>, Stafford Horne <shorne@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] Documentation: Add qemu instructions for OpenRISC
+Subject: [PATCH v2] usb: i.MX: warn if vbus regulator isn't available
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Most developers have qemu and rather not download and install the
-or1ksim.  Also, this adds details on how to get a openrisc toolchain.
-
-Signed-off-by: Stafford Horne <shorne@gmail.com>
----
- Documentation/boards/openrisc.rst | 68 +++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
-
-diff --git a/Documentation/boards/openrisc.rst b/Documentation/boards/openrisc.rst
-index f9d67f965..34586b4a7 100644
---- a/Documentation/boards/openrisc.rst
-+++ b/Documentation/boards/openrisc.rst
-@@ -1,6 +1,74 @@
- OpenRISC
- ========
- 
-+Optaining an OpenRISC toolchain
-+-------------------------------
-+
-+Toolchain binaries can be obtained from openrisc.io or our github releases page.
-+Instructions for building the different toolchains can be found on openrisc.io
-+or Stafford's toolchain build and release scripts.
-+
-+See:
-+
-+  * https://github.com/stffrdhrn/gcc/releases
-+  * https://github.com/stffrdhrn/or1k-toolchain-build
-+  * https://openrisc.io/software
-+
-+Example of downloading and installing a toolchain::
-+
-+  $ curl --remote-name --location \
-+    https://github.com/stffrdhrn/gcc/releases/download/or1k-10.0.0-20190723/or1k-elf-10.0.0-20190723.tar.xz
-+  $ tar -xf or1k-elf-10.0.0-20190723.tar.xz
-+  $ export PATH=$PATH:$PWD/or1k-elf/bin
-+
-+Running OpenRISC barebox on qemu
-+------------------------------
-+
-+Running barebox on qemu is similar to running linux on qemu see more details on
-+the qemu wiki site at https://wiki.qemu.org/Documentation/Platforms/OpenRISC
-+
-+Compile the qemu emulator::
-+
-+  $ git clone https://gitlab.com/qemu-project/qemu.git
-+  $ cd qemu
-+  $ mkdir build ; cd build
-+  $ ../configure \
-+    --target-list="or1k-softmmu" \
-+    --enable-fdt \
-+    --disable-kvm \
-+    --disable-xen \
-+    --disable-xkbcommon \
-+    --enable-debug \
-+    --enable-debug-info
-+  $ make
-+
-+Next compile barebox::
-+
-+  $ make ARCH=openrisc defconfig
-+  ...
-+  $ make ARCH=openrisc CROSS_COMPILE=or1k-elf-
-+
-+Run barebox::
-+
-+  $ <path to qemu source>/build/or1k-softmmu/qemu-system-or1k \
-+    -cpu or1200 \
-+    -M or1k-sim \
-+    -kernel /home/shorne/work/openrisc/barebox/barebox \
-+    -net nic -net tap,ifname=tap0,script=no,downscript=no \
-+    -serial mon:stdio -nographic -gdb tcp::10001 \
-+    -m 32
-+
-+
-+  barebox 2021.02.0-00120-g763c6fee7-dirty #14 Thu Mar 4 05:13:51 JST 2021
-+
-+
-+  Board: or1ksim
-+  mdio_bus: miibus0: probed
-+  malloc space: 0x01b80000 -> 0x01f7ffff (size 4 MiB)
-+
-+  Hit any to stop autoboot:    3
-+  barebox@or1ksim:/
-+
- or1ksim
- -------
- 
--- 
-2.26.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SW5zdGVhZCBvZiBqdXN0IGlnbm9yaW5nIGVycm9ycyByZWxhdGVkIHRvIGdldHRpbmcgdGhlIHZi
+dXMgcmVndWxhdG9yCnlpZWxkIGF0IGxlYXN0IGEgd2FybmluZyBtZXNzYWdlLiBUaGlzIHdvdWxk
+IGhhdmUgc2F2ZWQgbWUgc29tZQpkZWJ1Z2dpbmcgdGltZSB3aGVuIHRyeWluZyB0byB1bmRlcnN0
+YW5kIHdoeSBVU0IgZG9lc24ndCB3b3JrIHdpdGhvdXQKdGhlIHJpZ2h0IHJlZ3VsYXRvciBkcml2
+ZXIgZW5hYmxlZC4KCk5vdGUgdGhhdCBtYWNoaW5lcyB0aGF0IGRvbid0IGRlZmluZSBhIHJlZ3Vs
+YXRvciBpbiB0aGVpciBkZXZpY2UgdHJlZQpkb24ndCBpc3N1ZSB0aGlzIHdhcm5pbmcgYXMgcmVn
+dWxhdG9yX2dldCgpIHJldHVybnMgdGhlIGR1bW15IHJlZ3VsYXRvcgppbiB0aGlzIGNhc2UuCgpU
+aGUgYWx0ZXJuYXRpdmUgdG8gZXJyb3Igb3V0IHdhc24ndCBhY2NlcHRlZCBiZWNhdXNlIHRoaXMg
+cHJvYmFibHkKY3JlYXRlcyByZWdyZXNzaW9ucyBmb3IgcmVndWxhdG9ycyB0aGF0IGFyZSBkZWZh
+dWx0LW9uIGJ1dCB3aXRob3V0IGEKZHJpdmVyIGluIGJhcmVib3guCgpTaWduZWQtb2ZmLWJ5OiBV
+d2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KSGVs
+bG8sCgooaW1wbGljaXQpIHYxIHdhcyBzZW50IHNvbWUgdGltZSBhZ28gd2l0aCBNZXNzYWdlLUlE
+Ogo8MTQ4NWQzNWEtZDU1Yi0yNDQwLTQ4NTItMTczN2U3OGY4YWExQHBlbmd1dHJvbml4LmRlPi4g
+QWhtYWQgc3VnZ2VzdGVkCnRvIHVzZSAlcGUgaW5zdGVhZCBvZiBzdHJlcnJvcigtcmV0KS4gVGhp
+cyBpcyBhbHNvIHRoZSBvbmx5IGNoYW5nZQpjb21wYXJlZCB0byB0aGUgZmlyc3Qgc3VibWlzc2lv
+bi4KCkJlc3QgcmVnYXJkcwpVd2UKCiBkcml2ZXJzL3VzYi9pbXgvY2hpcGlkZWEtaW14LmMgfCA1
+ICsrKystCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCgpk
+aWZmIC0tZ2l0IGEvZHJpdmVycy91c2IvaW14L2NoaXBpZGVhLWlteC5jIGIvZHJpdmVycy91c2Iv
+aW14L2NoaXBpZGVhLWlteC5jCmluZGV4IDdiODdmMzAyYTkyMS4uYWEyNzk0MWM4YzY2IDEwMDY0
+NAotLS0gYS9kcml2ZXJzL3VzYi9pbXgvY2hpcGlkZWEtaW14LmMKKysrIGIvZHJpdmVycy91c2Iv
+aW14L2NoaXBpZGVhLWlteC5jCkBAIC0yNTYsOCArMjU2LDExIEBAIHN0YXRpYyBpbnQgaW14X2No
+aXBpZGVhX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQogCX0KIAogCWNpLT52YnVzID0gcmVn
+dWxhdG9yX2dldChkZXYsICJ2YnVzIik7Ci0JaWYgKElTX0VSUihjaS0+dmJ1cykpCisJaWYgKElT
+X0VSUihjaS0+dmJ1cykpIHsKKwkJZGV2X3dhcm4oZGV2LCAiQ2Fubm90IGdldCB2YnVzIHJlZ3Vs
+YXRvcjogJXBlIChpZ25vcmluZylcbiIsCisJCQkgY2ktPnZidXMpOwogCQljaS0+dmJ1cyA9IE5V
+TEw7CisJfQogCiAJLyoKIAkgKiBTb21lIGRldmljZXMgaGF2ZSBtb3JlIHRoYW4gb25lIGNsb2Nr
+LCBpbiB0aGlzIGNhc2UgdGhleSBhcmUgZW5hYmxlZAotLSAKMi4zMC4wCgoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
 
