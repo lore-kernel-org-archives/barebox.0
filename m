@@ -1,75 +1,77 @@
-Delivery-date: Fri, 05 Mar 2021 19:43:04 +0100
+Delivery-date: Fri, 05 Mar 2021 19:43:07 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lIFPk-000368-GU
-	for lore@lore.pengutronix.de; Fri, 05 Mar 2021 19:43:04 +0100
+	id 1lIFPn-00036f-6L
+	for lore@lore.pengutronix.de; Fri, 05 Mar 2021 19:43:07 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lIFPj-0002gX-LZ
-	for lore@pengutronix.de; Fri, 05 Mar 2021 19:43:04 +0100
+	id 1lIFPm-0002hD-4k
+	for lore@pengutronix.de; Fri, 05 Mar 2021 19:43:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:MIME-Version:Cc:List-Subscribe:List-Help:List-Post:List-Archive
-	:List-Unsubscribe:List-Id:Message-Id:Date:Subject:To:From:Reply-To:Content-ID
-	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=zryBpOW6/XU4nsbmhFbSCwm8av4YaP4moMeg41FyOMI=; b=auybMg0AJNcDUUka4MiqXjfJHG
-	C6bcrrx8ETkQwvJyZnyIVEo5bA/7wZF89S/KuwEEkqHnpv3d7nosfkbX07UK8Qd3XT9MD4e4CfgSj
-	CtKvP3I3sbRHh1L91rx0RRVdr2HmTNcrq0NVOnc7xr1kilZjDyQxSZB9nboDYPz8DkXOvlATAGvRX
-	JDaJv7pXbitlCcD7trVH/nvZarhlO02SpiBnxmrkFm5p6I3izJLg+maEyvCkAINjQnLXeQyrIJjuo
-	exY7GTPoeR0VoA4POOUfv4O5cQyPto3Xvid0rtZNILayfLZd/hYGLVuFVd0sAYLvsw+Dn5NIlNHD+
-	s/5YZ7fg==;
+	:List-Unsubscribe:List-Id:References:In-Reply-To:Message-Id:Date:Subject:To:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=JSEpc4uc4hTmPKaeNbB0qi89EmNUWPr27xKdcjWSUKo=; b=VmkJnL1l9yBDP6sMb1OtFZQLCq
+	9KBbpZwX3ozQyN0IFpUcbbZ1vTGuttFortmBtgmkF+exulswryD32sbsvPnf9tyKJ26V79Gva2bJP
+	yHoiwbFA4q5bu4MnZ0zVm2JDz9WqVBfLBDT41H9bGr0szv7BmkOXlEEodfyZw34i+brMvX3hF+IYA
+	qRdoK5hxvNw0KxxT06Rexy1bIuU4/m7x4b8yzN94mYJtkroyJeiV55/plpPGQzC4FF9gWC8rWaYvx
+	ufvw6vJqf0DL8TYAFnsvA+wzMEsDh1vHuoBmZRfxezA6OvAPc6Xw6MfXRji+NqPfrepcaU4mrkji1
+	9WxqSuRA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lIFOT-00G0qk-7w; Fri, 05 Mar 2021 18:41:45 +0000
+	id 1lIFOc-00G0t6-L1; Fri, 05 Mar 2021 18:41:57 +0000
 Received: from mib.mailinblack.com ([137.74.84.110])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lIFOJ-00G0oK-IW
- for barebox@lists.infradead.org; Fri, 05 Mar 2021 18:41:38 +0000
+ id 1lIFOL-00G0pA-MI
+ for barebox@lists.infradead.org; Fri, 05 Mar 2021 18:41:41 +0000
 Received: from localhost (localhost [127.0.0.1])
- by mib.mailinblack.com (Postfix) with ESMTP id C9DA91A5728
- for <barebox@lists.infradead.org>; Fri,  5 Mar 2021 18:41:33 +0000 (UTC)
+ by mib.mailinblack.com (Postfix) with ESMTP id 725331A5729
+ for <barebox@lists.infradead.org>; Fri,  5 Mar 2021 18:41:37 +0000 (UTC)
 Received: from mib.mailinblack.com (localhost [127.0.0.1])
- by mib.mailinblack.com with SMTP (Mib Daemon ) id KLWN9ATA;
- Fri, 05 Mar 2021 18:41:33 +0000 (UTC)
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KLWN9DMJ;
+ Fri, 05 Mar 2021 18:41:37 +0000 (UTC)
 Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
- by mib.mailinblack.com (Postfix) with ESMTPS id 9B59F1A5726;
- Fri,  5 Mar 2021 18:41:33 +0000 (UTC)
+ by mib.mailinblack.com (Postfix) with ESMTPS id 46D861A5726;
+ Fri,  5 Mar 2021 18:41:37 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 725CD27E073C;
- Fri,  5 Mar 2021 19:41:33 +0100 (CET)
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 1FBF227E073C;
+ Fri,  5 Mar 2021 19:41:37 +0100 (CET)
 Received: from zimbra2.kalray.eu ([127.0.0.1])
  by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id 26uNT19036mp; Fri,  5 Mar 2021 19:41:32 +0100 (CET)
+ with ESMTP id yEXHe68A2uP6; Fri,  5 Mar 2021 19:41:36 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id D485127E0732;
- Fri,  5 Mar 2021 19:41:32 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu D485127E0732
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 8175B27E0732;
+ Fri,  5 Mar 2021 19:41:36 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 8175B27E0732
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1614969692;
- bh=zG7XqWJKM7t24bJHC0xp9t6qiu1v3n7KsVQPL0iX63E=;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1614969696;
+ bh=VpPsKBJnTgn3sJOsQ6hOHKkxjbstNM2jy1rDGNfjJyo=;
  h=From:To:Date:Message-Id;
- b=gul3Hsik2joJTpjxBFhG+gMtBbsmREGHq4SGOB11JQnPzdH4OCI4PtNQavUCG1Yvz
- 6Kx+CsIpJuYSmLEgO/eWmH8m4an6o2t7S6d1T3AnvlqDBx1qS14UvAZxA4GMwBJL2b
- NnKMnqpFwQPwYuMhlO2JUfGCVT7fnWfg7nsy9J3Y=
+ b=V6rv0YPcy4wOiagkfYZ6CiGdkKri8Oap0hhe1MAdLsc9Q8Kh5I/UDUWBZF3tQy411
+ V6jvdWLzuyaFGYy6IOzaTnWUtYM6nlsen/Fyf/2+eUq+2ZyAsKg4PemCdgj2XjbS2a
+ SviK2l+Ynho2dKnxeRhRizBWmluUcJGd3IrYXHUE=
 X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
 Received: from zimbra2.kalray.eu ([127.0.0.1])
  by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id AOyPiEraHpqS; Fri,  5 Mar 2021 19:41:32 +0100 (CET)
+ with ESMTP id cR7Tr6W9a0xP; Fri,  5 Mar 2021 19:41:36 +0100 (CET)
 Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
- by zimbra2.kalray.eu (Postfix) with ESMTPSA id B463127E0673;
- Fri,  5 Mar 2021 19:41:32 +0100 (CET)
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id 6378827E0673;
+ Fri,  5 Mar 2021 19:41:36 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
 To: barebox@lists.infradead.org
-Date: Fri,  5 Mar 2021 19:33:23 +0100
-Message-Id: <20210305183327.29753-1-jmaselbas@kalray.eu>
+Date: Fri,  5 Mar 2021 19:33:25 +0100
+Message-Id: <20210305183327.29753-3-jmaselbas@kalray.eu>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210305183327.29753-1-jmaselbas@kalray.eu>
+References: <20210305183327.29753-1-jmaselbas@kalray.eu>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210305_184136_464662_3729A53A 
-X-CRM114-Status: GOOD (  11.73  )
+X-CRM114-CacheID: sfid-20210305_184139_386290_15D617EE 
+X-CRM114-Status: GOOD (  16.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,156 +98,202 @@ X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/5] kvx: Implement setjmp/longjmp/initjmp
+Subject: [PATCH v2 3/5] kvx: Implement dma handling primitives
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+From: Yann Sionneau <ysionneau@kalray.eu>
+
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
-changes v1 -> v2: nothing
+changes v1 -> v2:
+ - add BUILD_BUG_ON_MSG in dma_alloc_coherent
+ - renamed kvx_dcache_invalidate_mem_area to invalidate_dcache_range
+ - add comment on dcache beeing write-through
 ---
- arch/kvx/Kconfig              |  1 +
- arch/kvx/include/asm/setjmp.h | 15 +++++++
- arch/kvx/lib/Makefile         |  2 +-
- arch/kvx/lib/setjmp.S         | 85 +++++++++++++++++++++++++++++++++++
- 4 files changed, 102 insertions(+), 1 deletion(-)
- create mode 100644 arch/kvx/include/asm/setjmp.h
- create mode 100644 arch/kvx/lib/setjmp.S
+ arch/kvx/Kconfig                |  1 +
+ arch/kvx/include/asm/dma.h      | 32 +++++++++++
+ arch/kvx/include/asm/sys_arch.h |  3 ++
+ arch/kvx/lib/Makefile           |  2 +-
+ arch/kvx/lib/dma-default.c      | 94 +++++++++++++++++++++++++++++++++
+ 5 files changed, 131 insertions(+), 1 deletion(-)
+ create mode 100644 arch/kvx/include/asm/dma.h
+ create mode 100644 arch/kvx/lib/dma-default.c
 
 diff --git a/arch/kvx/Kconfig b/arch/kvx/Kconfig
-index 3327021e1..8483ae6e6 100644
+index 4e02613ec..093444088 100644
 --- a/arch/kvx/Kconfig
 +++ b/arch/kvx/Kconfig
-@@ -11,6 +11,7 @@ config KVX
- 	select ELF
- 	select FLEXIBLE_BOOTARGS
+@@ -13,6 +13,7 @@ config KVX
  	select GENERIC_FIND_NEXT_BIT
-+	select HAS_ARCH_SJLJ
+ 	select HAS_ARCH_SJLJ
+ 	select HAS_CACHE
++	select HAS_DMA
  	select LIBFDT
  	select MFD_SYSCON
  	select OF_BAREBOX_DRIVERS
-diff --git a/arch/kvx/include/asm/setjmp.h b/arch/kvx/include/asm/setjmp.h
+diff --git a/arch/kvx/include/asm/dma.h b/arch/kvx/include/asm/dma.h
 new file mode 100644
-index 000000000..3cfc698d9
+index 000000000..a7ecf279a
 --- /dev/null
-+++ b/arch/kvx/include/asm/setjmp.h
-@@ -0,0 +1,15 @@
++++ b/arch/kvx/include/asm/dma.h
+@@ -0,0 +1,32 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
-+/* SPDX-FileCopyrightText: 2021 Jules Maselbas <jmaselbas@kalray.eu>, Kalray Inc. */
++/* SPDX-FileCopyrightText: 2021 Yann Sionneau <ysionneau@kalray.eu>, Kalray Inc. */
 +
-+#ifndef _ASM_KVX_SETJMP_H_
-+#define _ASM_KVX_SETJMP_H_
++#ifndef __ASM_DMA_H
++#define __ASM_DMA_H
 +
-+#include <linux/types.h>
++#include <common.h>
 +
-+typedef u64 jmp_buf[22];
++#define KVX_DDR_32BIT_RAM_WINDOW_BA	(0x80000000ULL)
++#define KVX_DDR_64BIT_RAM_WINDOW_BA	(0x100000000ULL)
++#define MAX_32BIT_ADDR			(0xffffffffULL)
 +
-+int initjmp(jmp_buf jmp, void __noreturn (*func)(void), void *stack_top);
-+int setjmp(jmp_buf jmp) __attribute__((returns_twice));
-+void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn));
++#define dma_alloc dma_alloc
++static inline void *dma_alloc(size_t size)
++{
++	return xmemalign(64, ALIGN(size, 64));
++}
 +
-+#endif /* _ASM_KVX_SETJMP_H_ */
++static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
++{
++	BUILD_BUG_ON_MSG(1, "dma_alloc_coherent not supported: "
++			"MMU support is required to map uncached pages");
++	return NULL;
++}
++
++static inline void dma_free_coherent(void *mem, dma_addr_t dma_handle,
++				     size_t size)
++{
++	free(mem);
++}
++
++#endif /* __ASM_DMA_H */
+diff --git a/arch/kvx/include/asm/sys_arch.h b/arch/kvx/include/asm/sys_arch.h
+index 9df32c4e7..ce07a5598 100644
+--- a/arch/kvx/include/asm/sys_arch.h
++++ b/arch/kvx/include/asm/sys_arch.h
+@@ -11,6 +11,9 @@
+ #define EXCEPTION_STRIDE	0x40
+ #define EXCEPTION_ALIGNMENT	0x100
+ 
++#define kvx_cluster_id() ((int) \
++	((kvx_sfr_get(PCR) & KVX_SFR_PCR_CID_MASK) \
++					>> KVX_SFR_PCR_CID_SHIFT))
+ #define KVX_SFR_START(__sfr_reg) \
+ 	(KVX_SFR_## __sfr_reg ## _SHIFT)
+ 
 diff --git a/arch/kvx/lib/Makefile b/arch/kvx/lib/Makefile
-index 6e56462da..cee08b0fa 100644
+index d271ebccf..c730e1c23 100644
 --- a/arch/kvx/lib/Makefile
 +++ b/arch/kvx/lib/Makefile
 @@ -3,4 +3,4 @@
  # Copyright (C) 2019 Kalray Inc.
  #
  
--obj-y	+= cpuinfo.o board.o dtb.o poweroff.o bootm.o
-+obj-y	+= cpuinfo.o board.o dtb.o poweroff.o bootm.o setjmp.o
-diff --git a/arch/kvx/lib/setjmp.S b/arch/kvx/lib/setjmp.S
+-obj-y	+= cpuinfo.o board.o dtb.o poweroff.o bootm.o setjmp.o cache.o
++obj-y	+= cpuinfo.o board.o dtb.o poweroff.o bootm.o setjmp.o cache.o dma-default.o
+diff --git a/arch/kvx/lib/dma-default.c b/arch/kvx/lib/dma-default.c
 new file mode 100644
-index 000000000..829299711
+index 000000000..2a4144696
 --- /dev/null
-+++ b/arch/kvx/lib/setjmp.S
-@@ -0,0 +1,85 @@
-+/* SPDX-License-Identifier: LGPL-2.1 */
-+/* SPDX-FileCopyrightText: 2021 Jules Maselbas <jmaselbas@kalray.eu>, Kalray Inc. */
++++ b/arch/kvx/lib/dma-default.c
+@@ -0,0 +1,94 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: 2021 Yann Sionneau <ysionneau@kalray.eu>, Kalray Inc.
 +
-+#define REG_SIZE 8
++#include <dma.h>
++#include <asm/barrier.h>
++#include <asm/io.h>
++#include <asm/cache.h>
++#include <asm/sfr.h>
++#include <asm/sys_arch.h>
 +
-+#include <linux/linkage.h>
-+
-+/* jmp_buf layout:
-+ * [0]  = $ra,  $sp,  $cs,  $r14,
-+ * [4]  = $r20, $r21, $r22, $r23,
-+ * [8]  = $r24, $r25, $r26, $r27,
-+ * [12] = $r28, $r29, $r30, $r31,
-+ * [16] = $r18, $r19,
-+ * [18] = $lc,  $le,  $ls,  xxxx
++/*
++ * The implementation of arch should follow the following rules:
++ *		map		for_cpu		for_device	unmap
++ * TO_DEV	writeback	none		writeback	none
++ * FROM_DEV	invalidate	invalidate(*)	invalidate	invalidate(*)
++ * BIDIR	writeback	invalidate	writeback	invalidate
++ *
++ * (*) - only necessary if the CPU speculatively prefetches.
++ *
++ * (see https://lkml.org/lkml/2018/5/18/979)
 + */
 +
-+/**
-+ * int initjmp(jmp_buf jmp, void __noreturn (*func)(void), void *stack_top);
-+ */
-+ENTRY(initjmp)
-+	/* store $ra */
-+	sd (0 * REG_SIZE)[$r0] = $r1
-+	;;
-+	/* store $sp */
-+	sd (1 * REG_SIZE)[$r0] = $r2
-+	make $r0 = 0
-+	ret
-+	;;
-+ENDPROC(initjmp)
++void dma_sync_single_for_device(dma_addr_t addr, size_t size,
++				enum dma_data_direction dir)
++{
++	/* dcache is Write-Through: no need to flush to force writeback */
++	switch (dir) {
++	case DMA_FROM_DEVICE:
++		invalidate_dcache_range(addr, addr + size);
++		break;
++	case DMA_TO_DEVICE:
++	case DMA_BIDIRECTIONAL:
++		/* allow device to read buffer written by CPU */
++		wmb();
++		break;
++	default:
++		BUG();
++	}
++}
 +
-+/**
-+ * int setjmp(jmp_buf jmp);
-+ */
-+ENTRY(setjmp)
-+	sq (16 * REG_SIZE)[$r0] = $r18r19
-+	get $r40 = $ra
-+	copyd $r41 = $sp
-+	;;
-+	so (4 * REG_SIZE)[$r0] = $r20r21r22r23
-+	get $r42 = $cs
-+	copyd $r43 = $r14
-+	;;
-+	so (0 * REG_SIZE)[$r0] = $r40r41r42r43
-+	get $r40 = $lc
-+	;;
-+	so (8 * REG_SIZE)[$r0] = $r24r25r26r27
-+	get $r41 = $le
-+	;;
-+	so (12 * REG_SIZE)[$r0] = $r28r29r30r31
-+	get $r42 = $ls
-+	;;
-+	so (18 * REG_SIZE)[$r0] = $r40r41r42r43
-+	make $r0 = 0
-+	ret
-+	;;
-+ENDPROC(setjmp)
++void dma_sync_single_for_cpu(dma_addr_t addr, size_t size,
++				enum dma_data_direction dir)
++{
++	/* CPU does not speculatively prefetches */
++	switch (dir) {
++	case DMA_FROM_DEVICE:
++		/* invalidate has been done during map/for_device */
++	case DMA_TO_DEVICE:
++		break;
++	case DMA_BIDIRECTIONAL:
++		invalidate_dcache_range(addr, addr + size);
++		break;
++	default:
++		BUG();
++	}
++}
 +
-+/**
-+ * void longjmp(jmp_buf jmp, int ret);
-+ */
-+ENTRY(longjmp)
-+	lo $r40r41r42r43 = (0 * REG_SIZE)[$r0]
-+	;;
-+	lo $r44r45r46r47 = (18 * REG_SIZE)[$r0]
-+	set $ra = $r40
-+	copyd $sp = $r41
-+	;;
-+	lo $r20r21r22r23 = (4 * REG_SIZE)[$r0]
-+	set $cs = $r42
-+	copyd $r14 = $r43
-+	;;
-+	lo $r24r25r26r27 = (8 * REG_SIZE)[$r0]
-+	set $lc = $r44
-+	;;
-+	lo $r28r29r30r31 = (12 * REG_SIZE)[$r0]
-+	set $le = $r45
-+	;;
-+	lq $r18r19 = (16 * REG_SIZE)[$r0]
-+	set $ls = $r46
-+	;;
-+	/* According to man, if retval is equal to 0, then we should return 1 */
-+	maxud $r0 = $r1, 1
-+	ret
-+	;;
-+ENDPROC(longjmp)
++#define KVX_DDR_ALIAS_OFFSET \
++	(KVX_DDR_64BIT_RAM_WINDOW_BA - KVX_DDR_32BIT_RAM_WINDOW_BA)
++#define KVX_DDR_ALIAS_WINDOW \
++	(KVX_DDR_64BIT_RAM_WINDOW_BA + KVX_DDR_ALIAS_OFFSET)
++
++/* Local smem is aliased between 0 and 16MB */
++#define KVX_SMEM_LOCAL_ALIAS 0x1000000ULL
++
++dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
++			  enum dma_data_direction dir)
++{
++	uintptr_t addr = (uintptr_t) ptr;
++
++	dma_sync_single_for_device(addr, size, dir);
++
++	/* Local smem alias should never be used for dma */
++	if (addr < KVX_SMEM_LOCAL_ALIAS)
++		return addr + (1 + kvx_cluster_id()) * KVX_SMEM_LOCAL_ALIAS;
++
++	if (dev->dma_mask && addr <= dev->dma_mask)
++		return addr;
++
++	if (addr >= KVX_DDR_ALIAS_WINDOW)
++		return DMA_ERROR_CODE;
++
++	addr -= KVX_DDR_ALIAS_OFFSET;
++	if (dev->dma_mask && addr > dev->dma_mask)
++		return DMA_ERROR_CODE;
++
++	return addr;
++}
++
++void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
++		      enum dma_data_direction dir)
++{
++	dma_sync_single_for_cpu(addr, size, dir);
++}
 -- 
 2.17.1
 
