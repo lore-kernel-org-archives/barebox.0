@@ -1,53 +1,53 @@
-Delivery-date: Fri, 05 Mar 2021 12:05:44 +0100
+Delivery-date: Fri, 05 Mar 2021 12:05:47 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lI8HA-0002ZQ-EU
-	for lore@lore.pengutronix.de; Fri, 05 Mar 2021 12:05:44 +0100
+	id 1lI8HD-0002Zm-FN
+	for lore@lore.pengutronix.de; Fri, 05 Mar 2021 12:05:47 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lI8H9-0001jU-Pi
-	for lore@pengutronix.de; Fri, 05 Mar 2021 12:05:44 +0100
+	id 1lI8HC-0001kT-Qf
+	for lore@pengutronix.de; Fri, 05 Mar 2021 12:05:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=yjSutD6opvgt6xBVP4o/mAqep9ReMUpaXmhZ6rgbTxA=; b=Fu1oRsztywcN7mPvmqTyD+w6N
-	+QMw/az7qM6reqndrkInTsRHs3kRj76CeHvJ4kfxzwtPAVMjC4p00b74F/rKpv9K5DPcfWxpO49Te
-	1jok1Q24Ajq3e4Phxq80Y9tb2vnf0YjPqjLqxJy7NWlVqySTV369NqGHS7GFYZGJ47D/gemckm0W0
-	LmML4M7odT5DhK3lsVoTe0W6jGt12xHEApT3/CQTipY2Tm79n+8lU2xmyCGsn2wrUWssPu1X1F3OJ
-	UEEWI9HCmgBLfSgpPLvahDqLcw1nziPxAV45S2OaW8cpdBDiu4+/YoM25/KjNjhNyqMvSn3Agggnu
-	V+Rgeig8w==;
+	 bh=tKW6BeTWo2U4f3MB8nzM9d0OXjuV2Aq14FJPyRkZeXM=; b=eA3vfzFt57yl5+E00LCY2LD/e
+	IEokuN2ObvsiXojF3E0trz9ieKdO81vT39A/QxkBaAMbqW3y01+jk67RC/gRA4giCAW7zWCKofNZh
+	Nsvgm+7nL/XZqTRfOp1/ft4Y9+dvoOSiRUV3WgRYJIIc+yqCm2ByLGf3Iodq/VfUR/SiT1BkHndgv
+	+vcDwQX50Fa9UtiCseKCSkgpzGlZvK3g89zovw/XqQw/sa4TWKR28+D/mOxLSjzJyw8JYuSEMRYqJ
+	qvnCjzdaY13op5bywcvtLmB5Vs4cfv0SjrZ8cEgG6Y3HM69j6hfRR1aDOjBJMjswXdJjMCXS7jWZu
+	pml0Ur5xA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lI8G1-00EgJ2-Oa; Fri, 05 Mar 2021 11:04:33 +0000
+	id 1lI8G6-00EgM0-NQ; Fri, 05 Mar 2021 11:04:41 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lI8F1-00Eg0Y-Iw
- for barebox@lists.infradead.org; Fri, 05 Mar 2021 11:03:35 +0000
+ id 1lI8F1-00Eg0P-Iw
+ for barebox@lists.infradead.org; Fri, 05 Mar 2021 11:03:34 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lI8F1-0001U3-2Z; Fri, 05 Mar 2021 12:03:31 +0100
+ id 1lI8F1-0001U2-07; Fri, 05 Mar 2021 12:03:31 +0100
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lI8F0-0008FT-NJ; Fri, 05 Mar 2021 12:03:30 +0100
+ id 1lI8F0-0008F0-LM; Fri, 05 Mar 2021 12:03:30 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri,  5 Mar 2021 12:03:29 +0100
-Message-Id: <20210305110329.31046-3-s.hauer@pengutronix.de>
+Date: Fri,  5 Mar 2021 12:03:28 +0100
+Message-Id: <20210305110329.31046-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210305110329.31046-1-s.hauer@pengutronix.de>
 References: <20210305110329.31046-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210305_110332_336817_A112B2A7 
-X-CRM114-Status: GOOD (  10.70  )
+X-CRM114-CacheID: sfid-20210305_110332_156642_420F73DD 
+X-CRM114-Status: GOOD (  10.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,35 +71,30 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] complete: Use string_list_add_sort_uniq()
+Subject: [PATCH 2/3] stringlist: Initialize HEAD str member to NULL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+HEAD str member should be unused, but when it's used accidently then at
+least make sure we do not use an uninitialized string.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/complete.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ include/stringlist.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/common/complete.c b/common/complete.c
-index ad630f4c95..e504b75606 100644
---- a/common/complete.c
-+++ b/common/complete.c
-@@ -101,14 +101,7 @@ static int path_command_complete(struct string_list *sl, char *instr)
- 				else
- 					strcat(tmp, " ");
+diff --git a/include/stringlist.h b/include/stringlist.h
+index dbf159da91..c5d6e70a36 100644
+--- a/include/stringlist.h
++++ b/include/stringlist.h
+@@ -19,6 +19,7 @@ void string_list_print_by_column(struct string_list *sl);
+ static inline void string_list_init(struct string_list *sl)
+ {
+ 	INIT_LIST_HEAD(&sl->list);
++	sl->str = NULL;
+ }
  
--				/* This function is called
--				 * after command_complete,
--				 * so we check if a double
--				 * entry exist */
--				if (string_list_contains
--						(sl, tmp) == 0) {
--					string_list_add_sorted(sl, tmp);
--				}
-+				string_list_add_sort_uniq(sl, tmp);
- 			}
- 		}
- 
+ static inline void string_list_free(struct string_list *sl)
 -- 
 2.29.2
 
