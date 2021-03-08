@@ -1,52 +1,52 @@
-Delivery-date: Mon, 08 Mar 2021 16:22:20 +0100
-Received: from [2001:67c:670:201:290:27ff:fe1d:cc33] (helo=metis.ext.pengutronix.de)
+Delivery-date: Mon, 08 Mar 2021 20:33:37 +0100
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lJHi8-000772-Fw
-	for lore@lore.pengutronix.de; Mon, 08 Mar 2021 16:22:20 +0100
+	id 1lJLdJ-0007Tq-2y
+	for lore@lore.pengutronix.de; Mon, 08 Mar 2021 20:33:37 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lJHhx-0008V5-Lf
-	for lore@pengutronix.de; Mon, 08 Mar 2021 16:22:10 +0100
+	id 1lJLdE-0003iU-S3
+	for lore@pengutronix.de; Mon, 08 Mar 2021 20:33:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
 	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=rCtTv2kR7nqRiLicGtp/ZH42c/TufUJJ/2lbUw8VCaI=; b=Xi4kLgYDfq90PP3gNDxjvHE66+
-	+cPFcRRvx8q8MjEa/IandBhbPvFV3E8bIwP7WpYcYilwJvi9ey3hQCT7OP3qS2ZlMzdFqRY+VfWXG
-	IDJxc8J+Q8Q9no+1MEQ/BNu1cr0VUZf026ZziY3RjIVaBpgv5cb4nFX43MjpgHWAvnOBSHMi+y2Pp
-	wmw4LRFfcz7fhAuRODcGrkxPmVAmmLyg1M5Av6SvCbwEP1mgLu8jazav3Bi/3hEgvFEEUeLTQ9Yz+
-	osbrCRVaSpRIgZjyvnAh+1ffAItNC46BF4VXKUxXrhcbRMO9Q50uKBlrWidV3EIt/LMk24ylaJV2H
-	C9qIIP1Q==;
+	bh=SqIpCJqs2CQTQcFnrLAvFTTa/wsgb4sc8Fdu2RhbT9c=; b=OSYjTDWYszYEf/nZ0t+qsdzKpY
+	yrRftX8HRE88pOGZ8F5j4+CHEk/p1LQGd2lbay+CR4yz423f+rByyGvkIxvF/0+uj99LrIZDXVCI7
+	RIHFLf9BcZH52VYtNSs8lJjoQ7nBRgSN9iUDIHpgxD/mmWBi0PQnF/Zj3D5uipUqbECWVX8kHY1NX
+	jPGw6bf5qviNiOCMkLmLgjpFP90sZf3x7J3m1OiiKhGUc+Y3gKea3amnGlhGSNSlm9FkU/fl2vJxm
+	mEYnFLiW6X74SN/+s3qPjcwAzKb8+tOknswm1VtgwaUeXaP/iyyJG1SNvbIqu46DLJHpLbMDHqpu9
+	IGROSJdA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lJHgV-000VLN-IW; Mon, 08 Mar 2021 15:20:39 +0000
+	id 1lJLc9-0027IL-0X; Mon, 08 Mar 2021 19:32:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lJHf4-000Ukt-Os
- for barebox@lists.infradead.org; Mon, 08 Mar 2021 15:19:12 +0000
+ id 1lJLc2-0027FC-Hb
+ for barebox@lists.infradead.org; Mon, 08 Mar 2021 19:32:20 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lJHf3-0007lk-B1; Mon, 08 Mar 2021 16:19:09 +0100
+ id 1lJLc1-0003Z0-Rn; Mon, 08 Mar 2021 20:32:17 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lJHf3-00041v-2e; Mon, 08 Mar 2021 16:19:09 +0100
+ id 1lJLc1-0008VG-Jm; Mon, 08 Mar 2021 20:32:17 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  8 Mar 2021 16:19:08 +0100
-Message-Id: <20210308151908.15416-1-a.fatoum@pengutronix.de>
+Date: Mon,  8 Mar 2021 20:32:11 +0100
+Message-Id: <20210308193214.32573-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210308_151910_915484_64886FDF 
-X-CRM114-Status: UNSURE (   9.44  )
+X-CRM114-CacheID: sfid-20210308_193218_831825_D250789D 
+X-CRM114-Status: UNSURE (   9.75  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -71,42 +71,70 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] resource: include region name in conflict's debug output
+Subject: [PATCH 1/4] ARM64: qemu-virt64: remove dead CPU identification code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The iomem command does print names, but it won't list dynamically
-allocated and deallocated regions, like those requested during bootm.
+cpu_is_arm(cpu) masks the read_cpuid_id() return value and compares with
+a CPU-specific value. The used masks for the Cortex A53/57 zeroes bits
+that are set in the value, so the comparison will never return true.
 
-Include region name in conflict debug output to make them easier
-to debug.
+In fact the compiler already optimizes it away completely, because
+read_cpuid_id() is only implemented for ARM32 anyway.
+
+Drop the dead code.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/resource.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm/boards/qemu-virt64/init.c |  5 -----
+ arch/arm/include/asm/system_info.h | 11 -----------
+ 2 files changed, 16 deletions(-)
 
-diff --git a/common/resource.c b/common/resource.c
-index 92fe96252fdc..ff4318a0d77f 100644
---- a/common/resource.c
-+++ b/common/resource.c
-@@ -61,12 +61,14 @@ struct resource *__request_region(struct resource *parent,
- 			goto ok;
- 		if (start > r->end)
- 			continue;
--		debug("%s: 0x%08llx:0x%08llx conflicts with 0x%08llx:0x%08llx\n",
-+		debug("%s: 0x%08llx:0x%08llx (%s) conflicts with 0x%08llx:0x%08llx (%s)\n",
- 				__func__,
- 				(unsigned long long)start,
- 				(unsigned long long)end,
-+				name,
- 				(unsigned long long)r->start,
--				(unsigned long long)r->end);
-+				(unsigned long long)r->end,
-+				r->name);
- 		return ERR_PTR(-EBUSY);
- 	}
+diff --git a/arch/arm/boards/qemu-virt64/init.c b/arch/arm/boards/qemu-virt64/init.c
+index 19cfcae1f0d8..c2e7af77bba1 100644
+--- a/arch/arm/boards/qemu-virt64/init.c
++++ b/arch/arm/boards/qemu-virt64/init.c
+@@ -51,11 +51,6 @@ static int virt_core_init(void)
+ {
+ 	char *hostname = "virt64";
  
+-	if (cpu_is_cortex_a53())
+-		hostname = "virt64-a53";
+-	else if (cpu_is_cortex_a57())
+-		hostname = "virt64-a57";
+-
+ 	barebox_set_model("ARM QEMU virt64");
+ 	barebox_set_hostname(hostname);
+ 
+diff --git a/arch/arm/include/asm/system_info.h b/arch/arm/include/asm/system_info.h
+index a27b79e6dd08..1e3dfc845c8d 100644
+--- a/arch/arm/include/asm/system_info.h
++++ b/arch/arm/include/asm/system_info.h
+@@ -42,12 +42,6 @@
+ #define CPU_IS_CORTEX_A15	0x410fc0f0
+ #define CPU_IS_CORTEX_A15_MASK	0xff0ffff0
+ 
+-#define CPU_IS_CORTEX_A53	0x410fd034
+-#define CPU_IS_CORTEX_A53_MASK	0xff0ffff0
+-
+-#define CPU_IS_CORTEX_A57	0x411fd070
+-#define CPU_IS_CORTEX_A57_MASK	0xff0ffff0
+-
+ #define CPU_IS_PXA250		0x69052100
+ #define CPU_IS_PXA250_MASK	0xfffff7f0
+ 
+@@ -125,11 +119,6 @@
+ #else
+ #define ARM_ARCH CPU_ARCH_ARMv8
+ #endif
+-#define cpu_is_cortex_a53() cpu_is_arm(CORTEX_A53)
+-#define cpu_is_cortex_a57() cpu_is_arm(CORTEX_A57)
+-#else
+-#define cpu_is_cortex_a53() (0)
+-#define cpu_is_cortex_a57() (0)
+ #endif
+ 
+ #ifndef __ASSEMBLY__
 -- 
 2.29.2
 
