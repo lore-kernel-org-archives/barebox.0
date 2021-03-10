@@ -2,54 +2,54 @@ Delivery-date: Wed, 10 Mar 2021 09:50:55 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lJuYQ-0001DZ-WD
+	id 1lJuYR-0001Dv-OG
 	for lore@lore.pengutronix.de; Wed, 10 Mar 2021 09:50:55 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lJuYP-0002ij-Sn
-	for lore@pengutronix.de; Wed, 10 Mar 2021 09:50:54 +0100
+	id 1lJuYQ-0002ja-S7
+	for lore@pengutronix.de; Wed, 10 Mar 2021 09:50:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=wZI+XGQiRbDp6sOtx7gJh5w0fk+a1Q/DGnS9tN75GbA=; b=V1nSsloIdY32cCZsSZ5xPtPl6
-	75zlbLo6AS+NpYKidkXiHn+ocL5l8dssDf45z1lszOOKcBUG9aCTBTrXijsTI+Z/upzM+AG0Pa47s
-	QSV1q3fneYnEzg5XMJeSVJ4dO7sxFvJ1BoP6ReO9mKhpAPyPZUYnlPWfta+KH/Fc8m82ExmMJJAYE
-	oqNw3651GJ/PK7vbcDmtuor665RyPZPRM+30RbqRaqJT/4Wb/p08F80diPMExjKA7eJoU/Tw9I5iJ
-	0taN3aHzgUhbSC1rgtVxKrZGzIo+OZm/FwwqhnbX0SwFbqYoKbcQB4+on+dsszyQuDA0vsv90cpvd
-	7QpdaQRaw==;
+	 bh=OlTyn4NRF4GH79ez6Puel7DkI82n35kzJTzktYvn3N0=; b=mkM2qk3TBk36scsQCprLs3+ZI
+	yqc6VEXtN811WAeV+FmeNGhOKQYdg7jBm/JrX/9ASOD2qohUWf/L0m8LeUfhcCgT+ooZzCSX/xlZA
+	ZvS1j0AtAtXSb7G2OLi5PL8zY5qtpvH5L+lgcBeY9oJHU7+4hU+sTLaF85rkICX2cwmiC7aP0DvSP
+	G0lYYRDr6xqQn157SzNGeeUGKfNdQ24fvlm7eGE5cjhlxYM1wUTTt91L41ajnSNrqAaVL1a+IBwoK
+	BE30OVxtOU5mb5axDseKblZHSPVq4h4D8HgT3DOwcJcEE2Og9VM8ksoMqvhpxYoxb0OWdUTj74vu9
+	RQtWjW5WQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lJuXA-006LrL-Op; Wed, 10 Mar 2021 08:49:37 +0000
+	id 1lJuXF-006LvL-9Z; Wed, 10 Mar 2021 08:49:42 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lJuVs-006LO6-3M
- for barebox@lists.infradead.org; Wed, 10 Mar 2021 08:48:17 +0000
+ id 1lJuVv-006LOs-OL
+ for barebox@lists.infradead.org; Wed, 10 Mar 2021 08:48:21 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lJuVj-0001Tf-Ih; Wed, 10 Mar 2021 09:48:07 +0100
+ id 1lJuVf-0001Tc-2j; Wed, 10 Mar 2021 09:48:03 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lJuVd-0001za-KG; Wed, 10 Mar 2021 09:48:01 +0100
+ id 1lJuVd-0001zR-Ip; Wed, 10 Mar 2021 09:48:01 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>, Peter Korsgaard <peter@korsgaard.com>,
  Sascha Hauer <sha@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 10 Mar 2021 09:47:54 +0100
-Message-Id: <20210310084800.3584-11-a.fatoum@pengutronix.de>
+Date: Wed, 10 Mar 2021 09:47:51 +0100
+Message-Id: <20210310084800.3584-8-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210310084800.3584-1-a.fatoum@pengutronix.de>
 References: <20210310084800.3584-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210310_084816_328928_F295AFED 
-X-CRM114-Status: GOOD (  16.15  )
+X-CRM114-CacheID: sfid-20210310_084819_950112_93D6087A 
+X-CRM114-Status: GOOD (  14.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,44 +73,43 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 10/16] powerpc: Implement initjmp/setjmp/longjmp
+Subject: [PATCH v3 07/16] riscv: Implement setjmp/longjmp/initjmp for RV32I
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Implementation has been taken from newlib as this is much simpler than
-the glibc version.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/powerpc/Kconfig              |  1 +
- arch/powerpc/include/asm/setjmp.h | 21 ++++++++
- arch/powerpc/lib/Makefile         |  2 +-
- arch/powerpc/lib/setjmp.S         | 86 +++++++++++++++++++++++++++++++
- 4 files changed, 109 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/include/asm/setjmp.h
- create mode 100644 arch/powerpc/lib/setjmp.S
+ arch/riscv/Kconfig              |  1 +
+ arch/riscv/include/asm/setjmp.h | 27 +++++++++++++++++++++++++
+ arch/riscv/lib/Makefile         |  1 +
+ arch/riscv/lib/longjmp.S        | 28 ++++++++++++++++++++++++++
+ arch/riscv/lib/setjmp.S         | 35 +++++++++++++++++++++++++++++++++
+ 5 files changed, 92 insertions(+)
+ create mode 100644 arch/riscv/include/asm/setjmp.h
+ create mode 100644 arch/riscv/lib/longjmp.S
+ create mode 100644 arch/riscv/lib/setjmp.S
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 90ec7b1702e9..376c1bf42b5e 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -6,6 +6,7 @@ config PPC
- 	select HAS_CACHE
- 	select GENERIC_FIND_NEXT_BIT
- 	select OFTREE
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 16c3eecce6f8..c8d63f99bb28 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -36,6 +36,7 @@ config ARCH_RV32I
+ 	select GENERIC_LIB_ASHLDI3
+ 	select GENERIC_LIB_ASHRDI3
+ 	select GENERIC_LIB_LSHRDI3
 +	select HAS_ARCH_SJLJ
- 	default y
  
- choice
-diff --git a/arch/powerpc/include/asm/setjmp.h b/arch/powerpc/include/asm/setjmp.h
+ endchoice
+ 
+diff --git a/arch/riscv/include/asm/setjmp.h b/arch/riscv/include/asm/setjmp.h
 new file mode 100644
-index 000000000000..c558415c99d9
+index 000000000000..7516f6825841
 --- /dev/null
-+++ b/arch/powerpc/include/asm/setjmp.h
-@@ -0,0 +1,21 @@
++++ b/arch/riscv/include/asm/setjmp.h
+@@ -0,0 +1,27 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * (C) Copyright 2017 Theobroma Systems Design und Consulting GmbH
@@ -122,8 +121,14 @@ index 000000000000..c558415c99d9
 +
 +#include <asm/types.h>
 +
-+typedef struct __jmp_buf_internal_tag {
-+	long int __regs[24];
++typedef struct __jmp_buf_internal_tag
++  {
++	/* Program counter.  */
++	long int __pc;
++	/* Callee-saved registers.  */
++	long int __regs[12];
++	/* Stack pointer.  */
++	long int __sp;
 +} jmp_buf[1];
 +
 +int setjmp(jmp_buf jmp) __attribute__((returns_twice));
@@ -132,108 +137,90 @@ index 000000000000..c558415c99d9
 +int initjmp(jmp_buf jmp, void __noreturn (*func)(void), void *stack_top);
 +
 +#endif /* _SETJMP_H_ */
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index ba2f078b6277..405351c19929 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -9,4 +9,4 @@ obj-$(CONFIG_CMD_BOOTM) += ppclinux.o
- obj-$(CONFIG_MODULES) += module.o
- obj-y += crtsavres.o
- obj-y += reloc.o
--
-+obj-y += setjmp.o
-diff --git a/arch/powerpc/lib/setjmp.S b/arch/powerpc/lib/setjmp.S
+diff --git a/arch/riscv/lib/Makefile b/arch/riscv/lib/Makefile
+index a1df0b7dc78c..7fe57b0b554c 100644
+--- a/arch/riscv/lib/Makefile
++++ b/arch/riscv/lib/Makefile
+@@ -1,3 +1,4 @@
+ extra-y += barebox.lds
+ 
+ obj-y += riscv_timer.o
++obj-$(CONFIG_HAS_ARCH_SJLJ) += setjmp.o longjmp.o
+diff --git a/arch/riscv/lib/longjmp.S b/arch/riscv/lib/longjmp.S
 new file mode 100644
-index 000000000000..021a57eebc3c
+index 000000000000..7bcb5b30495d
 --- /dev/null
-+++ b/arch/powerpc/lib/setjmp.S
-@@ -0,0 +1,86 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/arch/riscv/lib/longjmp.S
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: LGPL-2.1-or-later
 +
-+/*
-+ * This is a simple version of setjmp and longjmp for the PowerPC.
-+ * Ian Lance Taylor, Cygnus Support, 9 Feb 1994.
-+ */
++/* longjmp, RISC-V version. */
 +
 +#include <linux/linkage.h>
-+#include <asm/ppc_asm.tmpl>
++#include <asm/asm.h>
 +
-+ENTRY(setjmp)
-+	addi	r3,r3,7		# align to 8 byte boundary
-+	rlwinm	r3,r3,0,0,28
-+	stw	r1,0(r3)	# offset 0
-+	stwu	r2,4(r3)	# offset 4
-+	stwu	r13,4(r3)	# offset 8
-+	stwu	r14,4(r3)	# offset 12
-+	stwu	r15,4(r3)	# offset 16
-+	stwu	r16,4(r3)	# offset 20
-+	stwu	r17,4(r3)	# offset 24
-+	stwu	r18,4(r3)	# offset 28
-+	stwu	r19,4(r3)	# offset 32
-+	stwu	r20,4(r3)	# offset 36
-+	stwu	r21,4(r3)	# offset 40
-+	stwu	r22,4(r3)	# offset 44
-+	stwu	r23,4(r3)	# offset 48
-+	stwu	r24,4(r3)	# offset 52
-+	stwu	r25,4(r3)	# offset 56
-+	stwu	r26,4(r3)	# offset 60
-+	stwu	r27,4(r3)	# offset 64
-+	stwu	r28,4(r3)	# offset 68
-+	stwu	r29,4(r3)	# offset 72
-+	stwu	r30,4(r3)	# offset 76
-+	stwu	r31,4(r3)	# offset 80
-+	mflr	r4
-+	stwu	r4,4(r3)	# offset 84
-+	mfcr	r4
-+	stwu	r4,4(r3)	# offset 88
++ENTRY (longjmp)
++	REG_L ra,  0*SZREG(a0)
++	REG_L s0,  1*SZREG(a0)
++	REG_L s1,  2*SZREG(a0)
++	REG_L s2,  3*SZREG(a0)
++	REG_L s3,  4*SZREG(a0)
++	REG_L s4,  5*SZREG(a0)
++	REG_L s5,  6*SZREG(a0)
++	REG_L s6,  7*SZREG(a0)
++	REG_L s7,  8*SZREG(a0)
++	REG_L s8,  9*SZREG(a0)
++	REG_L s9, 10*SZREG(a0)
++	REG_L s10,11*SZREG(a0)
++	REG_L s11,12*SZREG(a0)
++	REG_L sp, 13*SZREG(a0)
 +
-+	li	r3,0
-+	blr
-+END(setjmp)
++	seqz a0, a1
++	add  a0, a0, a1   # a0 = (a1 == 0) ? 1 : a1
++	ret
 +
-+ENTRY(longjmp)
-+	addi	r3,r3,7		# align to 8 byte boundary
-+	rlwinm	r3,r3,0,0,28
-+	lwz	r1,0(r3)	# offset 0
-+	lwzu	r2,4(r3)	# offset 4
-+	lwzu	r13,4(r3)	# offset 8
-+	lwzu	r14,4(r3)	# offset 12
-+	lwzu	r15,4(r3)	# offset 16
-+	lwzu	r16,4(r3)	# offset 20
-+	lwzu	r17,4(r3)	# offset 24
-+	lwzu	r18,4(r3)	# offset 28
-+	lwzu	r19,4(r3)	# offset 32
-+	lwzu	r20,4(r3)	# offset 36
-+	lwzu	r21,4(r3)	# offset 40
-+	lwzu	r22,4(r3)	# offset 44
-+	lwzu	r23,4(r3)	# offset 48
-+	lwzu	r24,4(r3)	# offset 52
-+	lwzu	r25,4(r3)	# offset 56
-+	lwzu	r26,4(r3)	# offset 60
-+	lwzu	r27,4(r3)	# offset 64
-+	lwzu	r28,4(r3)	# offset 68
-+	lwzu	r29,4(r3)	# offset 72
-+	lwzu	r30,4(r3)	# offset 76
-+	lwzu	r31,4(r3)	# offset 80
-+	lwzu	r5,4(r3)	# offset 84
-+	mtlr	r5
-+	lwzu	r5,4(r3)	# offset 88
-+	mtcrf	255,r5
++END (longjmp)
+diff --git a/arch/riscv/lib/setjmp.S b/arch/riscv/lib/setjmp.S
+new file mode 100644
+index 000000000000..e8ad01635dd3
+--- /dev/null
++++ b/arch/riscv/lib/setjmp.S
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: LGPL-2.1-or-later
 +
-+	mr.	r3,r4
-+	bclr+	4,2
-+	li	r3,1
-+	blr
-+END(longjmp)
++/* setjmp for RISC-V. */
 +
-+ENTRY(initjmp)
-+	addi	r3,r3,7		# align to 8 byte boundary
-+	rlwinm	r3,r3,0,0,28
-+	stw	r5,0(r3)	# offset 0
-+	stwu	r4,88(r3)	# offset 88
-+	li	r3,0
-+	blr
-+END(initjmp)
++#include <linux/linkage.h>
++#include <asm/asm.h>
++
++ENTRY (setjmp)
++	REG_S ra,  0*SZREG(a0)
++	REG_S s0,  1*SZREG(a0)
++	REG_S s1,  2*SZREG(a0)
++	REG_S s2,  3*SZREG(a0)
++	REG_S s3,  4*SZREG(a0)
++	REG_S s4,  5*SZREG(a0)
++	REG_S s5,  6*SZREG(a0)
++	REG_S s6,  7*SZREG(a0)
++	REG_S s7,  8*SZREG(a0)
++	REG_S s8,  9*SZREG(a0)
++	REG_S s9, 10*SZREG(a0)
++	REG_S s10,11*SZREG(a0)
++	REG_S s11,12*SZREG(a0)
++	REG_S sp, 13*SZREG(a0)
++
++	li a0, 0
++	ret
++
++END (setjmp)
++
++ENTRY (initjmp)
++	REG_S a1,  0*SZREG(a0)
++	REG_S a2, 13*SZREG(a0)
++	li a0, 0
++	ret
++
++END (initjmp)
 -- 
 2.29.2
 
