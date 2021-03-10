@@ -1,53 +1,55 @@
-Delivery-date: Wed, 10 Mar 2021 09:49:39 +0100
+Delivery-date: Wed, 10 Mar 2021 09:49:46 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lJuXD-00019c-1L
-	for lore@lore.pengutronix.de; Wed, 10 Mar 2021 09:49:39 +0100
+	id 1lJuXK-00019y-Bl
+	for lore@lore.pengutronix.de; Wed, 10 Mar 2021 09:49:46 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lJuXB-000236-95
-	for lore@pengutronix.de; Wed, 10 Mar 2021 09:49:38 +0100
+	id 1lJuXI-00027a-4f
+	for lore@pengutronix.de; Wed, 10 Mar 2021 09:49:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=rQ9my6+6wX1r+3e24hFk2tUF2PNYtZ/PfjeXYw6j98Q=; b=FB4qsgCAMjD6uudyCuXiQ6Kn3l
-	XCglTkW+WE4jHAMoXlClTQJyToSzIlvSKFqgkB2kHvM5a0hKwuyGrHnh4A1h2KfYnQHQoHtpE3kk2
-	Urt4rNMPGMzgM1P9CHBmAzHlmywO/bJrQ8NG9/gz+f/caE9Bsc89tAqKvEw3Fqi44ruQq5Kk0CosY
-	klJPmGxp12zmB5BJ8Ys+pbRn4595U8NpeUAnkemwI538F+Ot1JXDiMTDoWxt+ZcV4jEXyGRr2BgsM
-	DOEquXxkzxZj9w8CJYXxtj5/9FFHBK2i3OzsJeZCIoibe0+9vUUhtYGDO6VMXDKqQe1LaXn81PUsR
-	WcnwEfiA==;
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=c+ExWhLyDhZ5asxw3o8Fd1qNMsvDPDb9u5ZlOjsGGII=; b=c1ebJCM37iCs8TArQ5JVAH468
+	LVLl2qmvmAhSoI06zT8B+kDHm48OHJ7m5lsoux9nZgK4oJh5D9eWmezehhWUGkpU6u/nI3JqBcJp2
+	Y1KqFI3LKPdbx94Wu7uyFYvfh6kibc1tfsC0w1sk63IATRvMiqdUY5aIVUuUN8IF72YHONQcXRimk
+	Kj86SG/QL4ctI4vBLLUU+3cA6p6+x6g/di6o3OipgfdBF0Gg+GwfRzHxsWj99AcGgwbIW/N5rLH1i
+	a1FIY1et76uLtig2tBiRhgyiGkmti7QPIwR7cxcg9B9p+JzoBmsc0TCx9EM1us0BHwOa6PSw7qq4m
+	8+K3kOSDw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lJuVt-006LNZ-DX; Wed, 10 Mar 2021 08:48:17 +0000
+	id 1lJuW7-006LQT-6G; Wed, 10 Mar 2021 08:48:31 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lJuVh-006LJY-0J
+ id 1lJuVh-006LJZ-3L
  for barebox@lists.infradead.org; Wed, 10 Mar 2021 08:48:07 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lJuVf-0001TV-2l; Wed, 10 Mar 2021 09:48:03 +0100
+ id 1lJuVf-0001TW-2n; Wed, 10 Mar 2021 09:48:03 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lJuVd-0001z7-FJ; Wed, 10 Mar 2021 09:48:01 +0100
+ id 1lJuVd-0001z9-Fk; Wed, 10 Mar 2021 09:48:01 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>, Peter Korsgaard <peter@korsgaard.com>,
  Sascha Hauer <sha@pengutronix.de>
-Date: Wed, 10 Mar 2021 09:47:44 +0100
-Message-Id: <20210310084800.3584-1-a.fatoum@pengutronix.de>
+Date: Wed, 10 Mar 2021 09:47:45 +0100
+Message-Id: <20210310084800.3584-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210310084800.3584-1-a.fatoum@pengutronix.de>
+References: <20210310084800.3584-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210310_084805_338795_5B3C1FD6 
-X-CRM114-Status: GOOD (  12.97  )
+X-CRM114-CacheID: sfid-20210310_084805_390230_9A93FA1A 
+X-CRM114-Status: GOOD (  15.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,128 +73,75 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 00/16] common: introduce bthreads, co-operative
+Subject: [PATCH v3 01/16] common: introduce HAS_ARCH_SJLJ
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Current state of CONFIG_HAS_ARCH_SJLJ
+From: Ahmad Fatoum <ahmad@a3f.at>
 
-    [x] arm 32-bit (Ahmad)
-    [x] arm 64-bit (Sascha)
-    [x] mips (Sascha)
-    [x] powerpc (Sascha)
-    [x] riscv (Sascha)
-    [x] sandbox (Ahmad)
-    [-] nios2 (Removed; Sascha)
-    [x] x86 32-bit (Ahmad)
-    [x] x86 64-bit (Ahmad)
-    [x] openrisc (Stafford)
-    [x] kvx (Jules)
+setjmp stores the registers comprising the execution context into a
+jmp_buf and longjmp switches to that context and continues execution just
+after the setjmp that allocated that jmp_buf.
 
-Legend: [-] arch removed, [x] implemented
+setjmp/longjmp can have multiple uses:
 
-Changes since v2:
-  - Reworked bthread_reschedule(): Threads now always schedule the next
-    thread in the runqueue. Simplifies code and saves context switch back
-    to scheduler
-  - Removed assert_command_context yield. Will need further rework until
-    it's usable, so just warn for now like with pollers
-  - Added resched() to collect the reschedule bits in one place
-  - Migrate LED poller as an example
-  - Rework bthread command to use API better
-  - Split up commits for shorter, reworked, commit messages
-  - Fixed poor English and copy-paste errors (Peter Korsgaard)
-  - Marked RISC-V and MIPS CONFIG_HAS_ARCH_SJLJ explicitly 32-bit only
-    (Peter Mamonov)
-  - Added x86 implementations (tested on EFI x86_64 and i386 sandbox)
+  - Handle return from firmware that clobbers registers. This is why we
+    already have a setjmp/longjmp ARM
 
-Cheers,
-Ahmad Fatoum (10):
-  common: introduce HAS_ARCH_SJLJ
-  ARM: asm: setjmp: annotate setjmp/longjmp for GCC
-  ARM: asm: setjmp: implement coroutine dependency initjmp()
-  sandbox: asm: implement setjmp/longjmp/initjmp
-  x86: implement setjmp/longjmp/initjmp
-  common: poller: replace explicit calls to poller_call() with resched()
-  console: unconditionally run resched() in ctrlc()
-  common: introduce bthreads, co-operative barebox threads
-  commands: add new bthread test command
-  RFC: led: migrate from poller to bthread
+  - Do exception handling[1]
 
-Sascha Hauer (6):
-  riscv: Add asm/asm.h
-  riscv: Add asm/linkage.h
-  riscv: Implement setjmp/longjmp/initjmp for RV32I
-  mips: Add linkage.h
-  mips: Implement setjmp/longjmp/initjmp for 32BIT
-  powerpc: Implement initjmp/setjmp/longjmp
+  - Port over scripting language VMs that use sjlj for context switching
 
- Documentation/devel/background-execution.rst |  37 +++-
- arch/arm/Kconfig                             |   1 +
- arch/arm/include/asm/setjmp.h                |   6 +-
- arch/arm/lib32/setjmp.S                      |   8 +
- arch/arm/lib64/setjmp.S                      |   9 +
- arch/mips/Kconfig                            |   1 +
- arch/mips/include/asm/linkage.h              |   9 +
- arch/mips/include/asm/setjmp.h               |  32 +++
- arch/mips/lib/Makefile                       |   1 +
- arch/mips/lib/setjmp.S                       |  50 +++++
- arch/powerpc/Kconfig                         |   1 +
- arch/powerpc/include/asm/setjmp.h            |  21 ++
- arch/powerpc/lib/Makefile                    |   2 +-
- arch/powerpc/lib/setjmp.S                    |  86 ++++++++
- arch/riscv/Kconfig                           |   1 +
- arch/riscv/include/asm/asm.h                 |  69 ++++++
- arch/riscv/include/asm/linkage.h             |  12 ++
- arch/riscv/include/asm/setjmp.h              |  27 +++
- arch/riscv/lib/Makefile                      |   1 +
- arch/riscv/lib/longjmp.S                     |  28 +++
- arch/riscv/lib/setjmp.S                      |  35 +++
- arch/sandbox/Kconfig                         |   1 +
- arch/sandbox/Makefile                        |   5 +-
- arch/sandbox/include/asm/setjmp.h            |  17 ++
- arch/sandbox/os/Makefile                     |   5 +-
- arch/sandbox/os/setjmp.c                     | 180 ++++++++++++++++
- arch/x86/Kconfig                             |   2 +
- arch/x86/include/asm/setjmp.h                |  44 ++++
- arch/x86/lib/Makefile                        |   3 +
- arch/x86/lib/setjmp_32.S                     |  60 ++++++
- arch/x86/lib/setjmp_64.S                     |  60 ++++++
- commands/Kconfig                             |   9 +
- commands/Makefile                            |   1 +
- commands/bthread.c                           | 195 +++++++++++++++++
- common/Kconfig                               |  13 ++
- common/Makefile                              |   1 +
- common/bthread.c                             | 214 +++++++++++++++++++
- common/clock.c                               |   4 +-
- common/console.c                             |   6 +-
- drivers/led/core.c                           |  52 ++---
- include/bthread.h                            |  53 +++++
- include/poller.h                             |   2 +
- include/sched.h                              |  15 ++
- include/slice.h                              |  17 +-
- lib/readline.c                               |   4 +-
- 45 files changed, 1349 insertions(+), 51 deletions(-)
- create mode 100644 arch/mips/include/asm/linkage.h
- create mode 100644 arch/mips/include/asm/setjmp.h
- create mode 100644 arch/mips/lib/setjmp.S
- create mode 100644 arch/powerpc/include/asm/setjmp.h
- create mode 100644 arch/powerpc/lib/setjmp.S
- create mode 100644 arch/riscv/include/asm/asm.h
- create mode 100644 arch/riscv/include/asm/linkage.h
- create mode 100644 arch/riscv/include/asm/setjmp.h
- create mode 100644 arch/riscv/lib/longjmp.S
- create mode 100644 arch/riscv/lib/setjmp.S
- create mode 100644 arch/sandbox/include/asm/setjmp.h
- create mode 100644 arch/sandbox/os/setjmp.c
- create mode 100644 arch/x86/include/asm/setjmp.h
- create mode 100644 arch/x86/lib/setjmp_32.S
- create mode 100644 arch/x86/lib/setjmp_64.S
- create mode 100644 commands/bthread.c
- create mode 100644 common/bthread.c
- create mode 100644 include/bthread.h
- create mode 100644 include/sched.h
+  - Implement stackless coroutines in C.
 
+These coroutines would be stackless, because jumping to a setjmp down the
+call stack means that the code there will clobber the stack below it.
+On resuming the coroutine, it will run with a stack changed in the
+interim leading to undefined behavior.
+
+There are ways around that without resorting to custom Assembly:
+
+  - Allocate a buffer on the scheduler's stack, so coroutine can
+    grow into them
+     -> Problem: exploits Undefined behavior
+
+  - Yield first time on scheduler stack, then patch jmp_buf to point at
+    another stack
+     -> Problem: Code switching stacks should not itself use the stack
+
+  - Construct a new jmp_buf with user-supplied return address and stack top:
+    int initjmp(jmp_buf jmp, void __noreturn (*func)(void), void *stack_top);
+
+The latter could also be reused as a portable way of setting up a stack
+in early init code.
+
+We are going to implement green threads in later commits, so add a
+symbol that can be selected to indicate architecture support for setjmp,
+longjmp and the new initjmp.
+
+[1]: https://www.spinics.net/lists/u-boot-v2/msg41322.html
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ common/Kconfig | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/common/Kconfig b/common/Kconfig
+index edadcc9f4979..c0ff57bcdba4 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -28,6 +28,11 @@ config HAS_DMA
+ 	  Drivers that depend on a DMA implementation can depend on this
+ 	  config, so that you don't get a compilation error.
+ 
++config HAS_ARCH_SJLJ
++	bool
++	help
++	  Architecture has support implemented for setjmp()/longjmp()/initjmp()
++
+ config GENERIC_GPIO
+ 	bool
+ 
 -- 
 2.29.2
 
