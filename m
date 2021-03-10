@@ -1,53 +1,53 @@
-Delivery-date: Wed, 10 Mar 2021 14:31:22 +0100
+Delivery-date: Wed, 10 Mar 2021 14:31:29 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lJyvq-0001WP-9y
-	for lore@lore.pengutronix.de; Wed, 10 Mar 2021 14:31:22 +0100
+	id 1lJyvx-0001Wn-1f
+	for lore@lore.pengutronix.de; Wed, 10 Mar 2021 14:31:29 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lJyvo-00050Z-GP
-	for lore@pengutronix.de; Wed, 10 Mar 2021 14:31:22 +0100
+	id 1lJyvw-000565-54
+	for lore@pengutronix.de; Wed, 10 Mar 2021 14:31:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=5o+KWXnorRD88lkqVXhiyhnuhte3RJjUMl8ZV10qGvU=; b=jp/ThcZCIFfoF/ET0mTSAjvy4
-	Zd1WBWBCQiEBsUN1wS2UExFvIWH2WRfaf4ciXEfco1HVCmVUDAZj+3bKzS49GoowPbI+ROkd3Uwb4
-	DHQtguW0u+li+d5rw2qj+ztuyqcpNpeFzyFkhJiG2nCan/iiDuPywfOoy63hZkqtyBZwphyn8bVeF
-	QuqTOtggLbrXb4cs8qSPuF+qRbL3rlQo5UKKeJEQ3qjB7X+LH3HPKlci7G4mWbHcOUU1Em8pA0Wfz
-	lCDeu+2qOo+rY3WLDMJDCFnpPyX3WbUmMbk8KRBOWfUT489IqhjTctBPmjunNo7Pr6n3gfm9cthWW
-	DrzYffF3g==;
+	 bh=qgdtItDT2P2LoH2HkmhPHuTvOBTVwDzNMr/AFvigYQU=; b=dTpCENJW1gxsVgJwp6Y4Hc3z8
+	8/5TLzAPKPsCHIHgKcx5+WpO02zjkumEkRLpsOJEDM7X5vI23MxxIKZ+MQ7mHF8YpOtRWbhDFXfFZ
+	yhlFZ38/Ma2yxT4750TWa8jR99k7AIljfCuJYKYzQEWkPmjL0JXegXlAv3uh07yLBmaa41Wm2p/DT
+	BpFlSsioqiuisjjc96YmZyENk6YmQq4wPtWQiP08NCnc7Rm+YYRK2xYNa56gqtn8MDuMeZ+dLTq9L
+	1PjUCWz3EPEdqHzAnQ4sD1AYmD4lnflvy9cPo79rfEfVUiM68TPf8CwBljidUJgleESHhZujtQX65
+	X7GYwLDWw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lJyuR-006vXO-OF; Wed, 10 Mar 2021 13:29:55 +0000
+	id 1lJyua-006vbi-16; Wed, 10 Mar 2021 13:30:04 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lJytO-006uuX-Dn
- for barebox@lists.infradead.org; Wed, 10 Mar 2021 13:28:53 +0000
+ id 1lJytO-006uuY-EE
+ for barebox@lists.infradead.org; Wed, 10 Mar 2021 13:28:55 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lJyt7-0003ft-S7; Wed, 10 Mar 2021 14:28:33 +0100
+ id 1lJyt7-0003fo-Un; Wed, 10 Mar 2021 14:28:33 +0100
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lJyt6-0006cK-MS; Wed, 10 Mar 2021 14:28:32 +0100
+ id 1lJyt6-0006c5-KL; Wed, 10 Mar 2021 14:28:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 10 Mar 2021 14:28:24 +0100
-Message-Id: <20210310132829.7662-13-s.hauer@pengutronix.de>
+Date: Wed, 10 Mar 2021 14:28:19 +0100
+Message-Id: <20210310132829.7662-8-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210310132829.7662-1-s.hauer@pengutronix.de>
 References: <20210310132829.7662-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210310_132852_166906_FA4EC1FA 
-X-CRM114-Status: GOOD (  22.12  )
+X-CRM114-CacheID: sfid-20210310_132852_275096_B17A3F5D 
+X-CRM114-Status: GOOD (  15.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,222 +71,51 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 12/17] blspec: Rework firmware load
+Subject: [PATCH 07/17] firmware: recognize by reproducible name
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Applying overlays in blspec currently works in two steps. First
-of_firmware_load_overlay() is called which doesn't load an overlay,
-but instead loads firmware when one is needed by the overlay. This
-is done on the live tree, because that was needed to find the firmware
-manager. The second step is to call of_register_overlay() to apply
-the overlay to the kernel device tree when the fixups are executed.
-
-Instead of using a separate step to load the firmware, load the firmware
-as part of the of_fixups.
+firmwaremgr_find_by_node() matches the device node pointers to find the
+firmware manager associated to a node. This function is called by the
+of_overlay code when it finds a firmware-name property to find a firmware
+manager for this node. This works when the overlay is applied to the
+live tree, but not when it's applied to the tree we are going to load
+the kernel with. To overcome this limitation match by the nodes
+reproducible name instead of pointers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/of_overlay.c    |  4 ---
- common/blspec.c          | 73 +++++++++++-----------------------------
- drivers/of/of_firmware.c | 24 ++-----------
- drivers/of/overlay.c     |  2 ++
- include/of.h             |  4 +--
- 5 files changed, 25 insertions(+), 82 deletions(-)
+ common/firmware.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/commands/of_overlay.c b/commands/of_overlay.c
-index 9b1cc6e8c7..17b0c9f4cb 100644
---- a/commands/of_overlay.c
-+++ b/commands/of_overlay.c
-@@ -42,10 +42,6 @@ static int do_of_overlay(int argc, char *argv[])
- 	if (IS_ERR(overlay))
- 		return PTR_ERR(overlay);
- 
--	ret = of_firmware_load_overlay(overlay);
--	if (ret)
--		goto err;
--
- 	ret = of_register_overlay(overlay);
- 	if (ret) {
- 		printf("cannot apply oftree overlay: %s\n", strerror(-ret));
-diff --git a/common/blspec.c b/common/blspec.c
-index d771176a45..fd3e088920 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -32,71 +32,33 @@ int blspec_entry_var_set(struct blspec_entry *entry, const char *name,
- 			val ? strlen(val) + 1 : 0, 1);
- }
- 
--static int blspec_apply_oftree_overlay(char *file, const char *abspath,
--				       int dryrun)
--{
--	int ret = 0;
--	struct fdt_header *fdt;
--	struct device_node *overlay;
--	char *path;
--	size_t size;
--
--	path = basprintf("%s/%s", abspath, file);
--
--	fdt = read_file(path, &size);
--	if (!fdt) {
--		pr_warn("unable to read \"%s\"\n", path);
--		ret = -EINVAL;
--		goto out;
--	}
--
--	overlay = of_unflatten_dtb(fdt, size);
--	free(fdt);
--	if (IS_ERR(overlay)) {
--		ret = PTR_ERR(overlay);
--		goto out;
--	}
--
--	if (dryrun) {
--		pr_info("dry run: skip overlay %s\n", path);
--		of_delete_node(overlay);
--		goto out;
--	}
--
--	ret = of_firmware_load_overlay(overlay);
--	if (ret) {
--		pr_warn("failed to load firmware: skip overlay \"%s\"\n", path);
--		of_delete_node(overlay);
--		goto out;
--	}
--
--	ret = of_register_overlay(overlay);
--	if (ret) {
--		pr_warn("cannot register devicetree overlay \"%s\"\n", path);
--		of_delete_node(overlay);
--	}
--
--out:
--	free(path);
--
--	return ret;
--}
--
--static void blspec_apply_oftree_overlays(const char *overlays,
--					 const char *abspath, int dryrun)
-+static int blspec_overlay_fixup(struct device_node *root, void *ctx)
+diff --git a/common/firmware.c b/common/firmware.c
+index fce1f4b596..fc8ccd768c 100644
+--- a/common/firmware.c
++++ b/common/firmware.c
+@@ -66,10 +66,22 @@ struct firmware_mgr *firmwaremgr_find(const char *id)
+ struct firmware_mgr *firmwaremgr_find_by_node(struct device_node *np)
  {
-+	struct blspec_entry *entry = ctx;
-+	const char *overlays;
- 	char *overlay;
- 	char *sep, *freep;
+ 	struct firmware_mgr *mgr;
++	char *na, *nb;
  
-+	overlays = blspec_entry_var_get(entry, "devicetree-overlay");
+-	list_for_each_entry(mgr, &firmwaremgr_list, list)
+-		if (mgr->handler->device_node == np)
++	na = of_get_reproducible_name(np);
 +
- 	sep = freep = xstrdup(overlays);
- 
- 	while ((overlay = strsep(&sep, " "))) {
-+		char *path;
++	list_for_each_entry(mgr, &firmwaremgr_list, list) {
++		nb = of_get_reproducible_name(mgr->handler->device_node);
++		if (!strcmp(na, nb)) {
++			free(na);
++			free(nb);
+ 			return mgr;
++		}
 +
- 		if (!*overlay)
- 			continue;
--		blspec_apply_oftree_overlay(overlay, abspath, dryrun);
++		free(nb);
++	}
 +
-+		path = basprintf("%s/%s", entry->rootpath, overlay);
-+
-+		of_overlay_apply_file(root, path);
-+
-+		free(path);
- 	}
++	free(na);
  
- 	free(freep);
-+
-+	return 0;
- }
- 
- /*
-@@ -153,7 +115,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
- 	}
- 
- 	if (overlays)
--		blspec_apply_oftree_overlays(overlays, abspath, dryrun);
-+		of_register_fixup(blspec_overlay_fixup, entry);
- 
- 	if (initrd)
- 		data.initrd_file = basprintf("%s/%s", abspath, initrd);
-@@ -186,6 +148,9 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
- 	if (ret)
- 		pr_err("Booting failed\n");
- 
-+	if (overlays)
-+		of_unregister_fixup(blspec_overlay_fixup, entry);
-+
- 	firmware_set_searchpath(old_fws);
- 
- err_out:
-diff --git a/drivers/of/of_firmware.c b/drivers/of/of_firmware.c
-index 12ce1d95d0..d66f0ae7ce 100644
---- a/drivers/of/of_firmware.c
-+++ b/drivers/of/of_firmware.c
-@@ -48,27 +48,7 @@ static int load_firmware(struct device_node *target,
- 	return err;
- }
- 
--int of_firmware_load_overlay(struct device_node *overlay)
-+int of_overlay_load_firmware(struct device_node *root, struct device_node *overlay)
- {
--	int err;
--	struct device_node *root;
--	struct device_node *resolved;
--	struct device_node *ovl;
--
--	root = of_get_root_node();
--	resolved = of_resolve_phandles(root, overlay);
--	/*
--	 * If the overlay cannot be resolved, use the load_firmware callback
--	 * with the unresolved overlay to verify that the overlay does not
--	 * depend on a firmware to be loaded. If a required firmware cannot be
--	 * loaded, the overlay must not be applied.
--	 */
--	ovl = resolved ? resolved : overlay;
--
--	err = of_process_overlay(root, ovl, load_firmware, NULL);
--
--	if (resolved)
--		of_delete_node(resolved);
--
--	return err;
-+	return of_process_overlay(root, overlay, load_firmware, NULL);
- }
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index c9ede614a6..d42e15ed1c 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -221,6 +221,8 @@ int of_overlay_apply_tree(struct device_node *root,
- 			pr_warn("failed to apply %s\n", fragment->name);
- 	}
- 
-+	err = of_overlay_load_firmware(root, resolved);
-+
- 	of_delete_node(resolved);
- 
- 	return err;
-diff --git a/include/of.h b/include/of.h
-index 56291b9801..ecc5f5101a 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -1033,7 +1033,7 @@ int of_process_overlay(struct device_node *root,
- 				   struct device_node *overlay, void *data),
- 		    void *data);
- 
--int of_firmware_load_overlay(struct device_node *overlay);
-+int of_overlay_load_firmware(struct device_node *root, struct device_node *overlay);
- #else
- static inline struct device_node *of_resolve_phandles(struct device_node *root,
- 					const struct device_node *overlay)
-@@ -1067,7 +1067,7 @@ static inline int of_process_overlay(struct device_node *root,
- 	return -ENOSYS;
- }
- 
--static inline int of_firmware_load_overlay(struct device_node *overlay)
-+static inline int of_overlay_load_firmware(struct device_node *root, struct device_node *overlay)
- {
- 	return -ENOSYS;
+ 	return NULL;
  }
 -- 
 2.29.2
