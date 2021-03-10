@@ -1,55 +1,55 @@
-Delivery-date: Wed, 10 Mar 2021 09:50:53 +0100
+Delivery-date: Wed, 10 Mar 2021 09:50:55 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lJuYP-0001DD-Po
-	for lore@lore.pengutronix.de; Wed, 10 Mar 2021 09:50:53 +0100
+	id 1lJuYQ-0001DZ-WD
+	for lore@lore.pengutronix.de; Wed, 10 Mar 2021 09:50:55 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lJuYM-0002h2-CA
-	for lore@pengutronix.de; Wed, 10 Mar 2021 09:50:53 +0100
+	id 1lJuYP-0002ij-Sn
+	for lore@pengutronix.de; Wed, 10 Mar 2021 09:50:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=34NnyjjlCMZdwhSmiEz1fS2/OVlforEp+1/lupq4Gx4=; b=VVJ399cdgrr0A4TehNM88NuZ/
-	05JQIKhQNfZ2SuFe2hkDWPS9Rk18pqnb9yGX+5u661Mcu4tS/YOLcXHi62QLAePPFXziuHRBqJ4yq
-	ZeJQOCq/ejvHM181+Pm3xNCTskcqtf8RuOjjt4yLCotwNz/2faczsmKLKb+UWxdAfOpKmdNq/QzPG
-	B9eY70pukuvC99ktaAWpZ70/fFQ6DMgjkGpNbn9LD0Q0i+6sNOm9WU9XGIkpY5B9YXKRAKgOKj1e9
-	+e/5qbB1+c42Ca7TUMjqTOWCchAmbT3oj+VjGG+WPOHnRfjIs6SOActBzDi7QonKCcUVzxeMd3I2Y
-	xt1yrgRBg==;
+	 bh=wZI+XGQiRbDp6sOtx7gJh5w0fk+a1Q/DGnS9tN75GbA=; b=V1nSsloIdY32cCZsSZ5xPtPl6
+	75zlbLo6AS+NpYKidkXiHn+ocL5l8dssDf45z1lszOOKcBUG9aCTBTrXijsTI+Z/upzM+AG0Pa47s
+	QSV1q3fneYnEzg5XMJeSVJ4dO7sxFvJ1BoP6ReO9mKhpAPyPZUYnlPWfta+KH/Fc8m82ExmMJJAYE
+	oqNw3651GJ/PK7vbcDmtuor665RyPZPRM+30RbqRaqJT/4Wb/p08F80diPMExjKA7eJoU/Tw9I5iJ
+	0taN3aHzgUhbSC1rgtVxKrZGzIo+OZm/FwwqhnbX0SwFbqYoKbcQB4+on+dsszyQuDA0vsv90cpvd
+	7QpdaQRaw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lJuX2-006LnG-RY; Wed, 10 Mar 2021 08:49:28 +0000
+	id 1lJuXA-006LrL-Op; Wed, 10 Mar 2021 08:49:37 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lJuVn-006LMg-Kh
- for barebox@lists.infradead.org; Wed, 10 Mar 2021 08:48:15 +0000
+ id 1lJuVs-006LO6-3M
+ for barebox@lists.infradead.org; Wed, 10 Mar 2021 08:48:17 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lJuVf-0001TZ-2u; Wed, 10 Mar 2021 09:48:03 +0100
+ id 1lJuVj-0001Tf-Ih; Wed, 10 Mar 2021 09:48:07 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lJuVd-0001zI-H8; Wed, 10 Mar 2021 09:48:01 +0100
+ id 1lJuVd-0001za-KG; Wed, 10 Mar 2021 09:48:01 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>, Peter Korsgaard <peter@korsgaard.com>,
  Sascha Hauer <sha@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 10 Mar 2021 09:47:48 +0100
-Message-Id: <20210310084800.3584-5-a.fatoum@pengutronix.de>
+Date: Wed, 10 Mar 2021 09:47:54 +0100
+Message-Id: <20210310084800.3584-11-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210310084800.3584-1-a.fatoum@pengutronix.de>
 References: <20210310084800.3584-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210310_084812_017741_8644DF28 
-X-CRM114-Status: GOOD (  34.57  )
+X-CRM114-CacheID: sfid-20210310_084816_328928_F295AFED 
+X-CRM114-Status: GOOD (  16.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,309 +73,167 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 04/16] sandbox: asm: implement setjmp/longjmp/initjmp
+Subject: [PATCH v3 10/16] powerpc: Implement initjmp/setjmp/longjmp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-To extend incoming bthread support to sandbox, implement setjmp, longjmp
-and initjmp. Unlike bare metal platforms, setjmp() and longjmp() are
-readily provided on standard-conforming hosted platforms.  initjmp() on
-the other hand requires us to be able to invoke a function with a
-user-supplied stack pointer, which isn't possible in standard C.
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-For POSIX systems, there are two methods to portably achieve this though:
+Implementation has been taken from newlib as this is much simpler than
+the glibc version.
 
-  - Use makecontext(2) to set up a new context. makecontext(2) was however
-    removed in POSIX.1-2008 and at least GCC 10.2.1 ASan complains that it
-    "doesn't fully support makecontext/swapcontext functions and may
-    produce false positives in some cases!"
-
-  - Use sigaltstack to set a new signal stack, raise the signal call,
-    setjmp in the signal handler to store the new stack pointer, return
-    regularly from signal handler and then longjmp back
-
-Both methods are implemented in QEMU. While QEMU uses the makecontext
-method by default, for the reasons described, import the second implementation
-and use it implement initjmp.
-
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/sandbox/Kconfig              |   1 +
- arch/sandbox/Makefile             |   5 +-
- arch/sandbox/include/asm/setjmp.h |  17 +++
- arch/sandbox/os/Makefile          |   5 +-
- arch/sandbox/os/setjmp.c          | 180 ++++++++++++++++++++++++++++++
- 5 files changed, 204 insertions(+), 4 deletions(-)
- create mode 100644 arch/sandbox/include/asm/setjmp.h
- create mode 100644 arch/sandbox/os/setjmp.c
+ arch/powerpc/Kconfig              |  1 +
+ arch/powerpc/include/asm/setjmp.h | 21 ++++++++
+ arch/powerpc/lib/Makefile         |  2 +-
+ arch/powerpc/lib/setjmp.S         | 86 +++++++++++++++++++++++++++++++
+ 4 files changed, 109 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/include/asm/setjmp.h
+ create mode 100644 arch/powerpc/lib/setjmp.S
 
-diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index 1a4e3bacf66d..cef8e9fb7ab4 100644
---- a/arch/sandbox/Kconfig
-+++ b/arch/sandbox/Kconfig
-@@ -13,6 +13,7 @@ config SANDBOX
- 	select PARTITION_DISK
- 	select ARCH_HAS_STACK_DUMP if ASAN
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 90ec7b1702e9..376c1bf42b5e 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -6,6 +6,7 @@ config PPC
+ 	select HAS_CACHE
  	select GENERIC_FIND_NEXT_BIT
+ 	select OFTREE
 +	select HAS_ARCH_SJLJ
  	default y
  
- config ARCH_TEXT_BASE
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index ea594944e4eb..5fc7e227be67 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -27,7 +27,8 @@ KBUILD_CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
- 		-Dftruncate=barebox_ftruncate -Dasprintf=barebox_asprintf \
- 		-Dopendir=barebox_opendir -Dreaddir=barebox_readdir \
- 		-Dclosedir=barebox_closedir -Dreadlink=barebox_readlink \
--		-Doptarg=barebox_optarg -Doptind=barebox_optind
-+		-Doptarg=barebox_optarg -Doptind=barebox_optind \
-+		-Dsetjmp=barebox_setjmp -Dlongjmp=barebox_longjmp
- 
- machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
- 
-@@ -64,7 +65,7 @@ endif
- BAREBOX_LDFLAGS += \
- 	-Wl,-T,$(BAREBOX_LDS) \
- 	-Wl,--whole-archive $(BAREBOX_OBJS) -Wl,--no-whole-archive \
--	-lrt $(SDL_LIBS) $(FTDI1_LIBS) \
-+	-lrt -pthread $(SDL_LIBS) $(FTDI1_LIBS) \
- 	$(SANITIZER_LIBS)
- 
- cmd_barebox__ = $(CC) -o $@ $(BAREBOX_LDFLAGS)
-diff --git a/arch/sandbox/include/asm/setjmp.h b/arch/sandbox/include/asm/setjmp.h
+ choice
+diff --git a/arch/powerpc/include/asm/setjmp.h b/arch/powerpc/include/asm/setjmp.h
 new file mode 100644
-index 000000000000..f085a9079dd7
+index 000000000000..c558415c99d9
 --- /dev/null
-+++ b/arch/sandbox/include/asm/setjmp.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/arch/powerpc/include/asm/setjmp.h
+@@ -0,0 +1,21 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * (C) Copyright 2017 Theobroma Systems Design und Consulting GmbH
++ * (C) Copyright 2016 Alexander Graf <agraf@suse.de>
++ */
 +
-+#ifndef __SETJMP_H_
-+#define __SETJMP_H_
++#ifndef _SETJMP_H_
++#define _SETJMP_H_	1
 +
-+struct jmp_buf_data {
-+	unsigned char opaque[512] __aligned(16);
-+};
++#include <asm/types.h>
 +
-+typedef struct jmp_buf_data jmp_buf[1];
++typedef struct __jmp_buf_internal_tag {
++	long int __regs[24];
++} jmp_buf[1];
 +
 +int setjmp(jmp_buf jmp) __attribute__((returns_twice));
 +void longjmp(jmp_buf jmp, int ret) __attribute__((noreturn));
 +
 +int initjmp(jmp_buf jmp, void __noreturn (*func)(void), void *stack_top);
 +
-+#endif
-diff --git a/arch/sandbox/os/Makefile b/arch/sandbox/os/Makefile
-index fb2c3cfd8632..5d0c938ce68c 100644
---- a/arch/sandbox/os/Makefile
-+++ b/arch/sandbox/os/Makefile
-@@ -4,7 +4,8 @@ machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
- 
- KBUILD_CPPFLAGS = $(patsubst %,-I$(srctree)/%include,$(machdirs))
- 
--KBUILD_CPPFLAGS += -DCONFIG_MALLOC_SIZE=$(CONFIG_MALLOC_SIZE) -D_FILE_OFFSET_BITS=64
-+KBUILD_CPPFLAGS += -DCONFIG_MALLOC_SIZE=$(CONFIG_MALLOC_SIZE) -D_FILE_OFFSET_BITS=64 \
-+		   -DCONFIG_STACK_SIZE=$(CONFIG_STACK_SIZE)
- 
- KBUILD_CFLAGS := -Wall
- 
-@@ -14,7 +15,7 @@ ifeq ($(CONFIG_SANDBOX_LINUX_I386),y)
- KBUILD_CFLAGS += -m32
- endif
- 
--obj-y = common.o tap.o
-+obj-y = common.o tap.o setjmp.o
- obj-$(CONFIG_MALLOC_LIBC) += libc_malloc.o
- 
- CFLAGS_sdl.o = $(shell pkg-config sdl2 --cflags)
-diff --git a/arch/sandbox/os/setjmp.c b/arch/sandbox/os/setjmp.c
++#endif /* _SETJMP_H_ */
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index ba2f078b6277..405351c19929 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -9,4 +9,4 @@ obj-$(CONFIG_CMD_BOOTM) += ppclinux.o
+ obj-$(CONFIG_MODULES) += module.o
+ obj-y += crtsavres.o
+ obj-y += reloc.o
+-
++obj-y += setjmp.o
+diff --git a/arch/powerpc/lib/setjmp.S b/arch/powerpc/lib/setjmp.S
 new file mode 100644
-index 000000000000..7f686b0fc6e9
+index 000000000000..021a57eebc3c
 --- /dev/null
-+++ b/arch/sandbox/os/setjmp.c
-@@ -0,0 +1,180 @@
-+// SPDX-License-Identifier: LGPL-2.1-or-later
-+/*
-+ * sigaltstack coroutine initialization code
-+ *
-+ * Copyright (C) 2006  Anthony Liguori <anthony@codemonkey.ws>
-+ * Copyright (C) 2011  Kevin Wolf <kwolf@redhat.com>
-+ * Copyright (C) 2012  Alex Barcelo <abarcelo@ac.upc.edu>
-+ * Copyright (C) 2021  Ahmad Fatoum, Pengutronix
-+ * This file is partly based on pth_mctx.c, from the GNU Portable Threads
-+ *  Copyright (c) 1999-2006 Ralf S. Engelschall <rse@engelschall.com>
-+ */
-+
-+/* XXX Is there a nicer way to disable glibc's stack check for longjmp? */
-+#ifdef _FORTIFY_SOURCE
-+#undef _FORTIFY_SOURCE
-+#endif
-+
-+#include <pthread.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <setjmp.h>
-+#include <signal.h>
-+
-+typedef sigjmp_buf _jmp_buf __attribute__((aligned((16))));
-+_Static_assert(sizeof(_jmp_buf) <= 512, "sigjmp_buf size exceeds expectation");
++++ b/arch/powerpc/lib/setjmp.S
+@@ -0,0 +1,86 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +
 +/*
-+ * Information for the signal handler (trampoline)
++ * This is a simple version of setjmp and longjmp for the PowerPC.
++ * Ian Lance Taylor, Cygnus Support, 9 Feb 1994.
 + */
-+static struct {
-+	_jmp_buf *reenter;
-+	void (*entry)(void);
-+	volatile sig_atomic_t called;
-+} tr_state;
 +
-+/*
-+ * "boot" function
-+ * This is what starts the coroutine, is called from the trampoline
-+ * (from the signal handler when it is not signal handling, read ahead
-+ * for more information).
-+ */
-+static void __attribute__((noinline, noreturn))
-+coroutine_bootstrap(void (*entry)(void))
-+{
-+	for (;;)
-+		entry();
-+}
++#include <linux/linkage.h>
++#include <asm/ppc_asm.tmpl>
 +
-+/*
-+ * This is used as the signal handler. This is called with the brand new stack
-+ * (thanks to sigaltstack). We have to return, given that this is a signal
-+ * handler and the sigmask and some other things are changed.
-+ */
-+static void coroutine_trampoline(int signal)
-+{
-+	/* Get the thread specific information */
-+	tr_state.called = 1;
++ENTRY(setjmp)
++	addi	r3,r3,7		# align to 8 byte boundary
++	rlwinm	r3,r3,0,0,28
++	stw	r1,0(r3)	# offset 0
++	stwu	r2,4(r3)	# offset 4
++	stwu	r13,4(r3)	# offset 8
++	stwu	r14,4(r3)	# offset 12
++	stwu	r15,4(r3)	# offset 16
++	stwu	r16,4(r3)	# offset 20
++	stwu	r17,4(r3)	# offset 24
++	stwu	r18,4(r3)	# offset 28
++	stwu	r19,4(r3)	# offset 32
++	stwu	r20,4(r3)	# offset 36
++	stwu	r21,4(r3)	# offset 40
++	stwu	r22,4(r3)	# offset 44
++	stwu	r23,4(r3)	# offset 48
++	stwu	r24,4(r3)	# offset 52
++	stwu	r25,4(r3)	# offset 56
++	stwu	r26,4(r3)	# offset 60
++	stwu	r27,4(r3)	# offset 64
++	stwu	r28,4(r3)	# offset 68
++	stwu	r29,4(r3)	# offset 72
++	stwu	r30,4(r3)	# offset 76
++	stwu	r31,4(r3)	# offset 80
++	mflr	r4
++	stwu	r4,4(r3)	# offset 84
++	mfcr	r4
++	stwu	r4,4(r3)	# offset 88
 +
-+	/*
-+	 * Here we have to do a bit of a ping pong between the caller, given that
-+	 * this is a signal handler and we have to do a return "soon". Then the
-+	 * caller can reestablish everything and do a siglongjmp here again.
-+	 */
-+	if (!sigsetjmp(*tr_state.reenter, 0)) {
-+		return;
-+	}
++	li	r3,0
++	blr
++END(setjmp)
 +
-+	/*
-+	 * Ok, the caller has siglongjmp'ed back to us, so now prepare
-+	 * us for the real machine state switching. We have to jump
-+	 * into another function here to get a new stack context for
-+	 * the auto variables (which have to be auto-variables
-+	 * because the start of the thread happens later). Else with
-+	 * PIC (i.e. Position Independent Code which is used when PTH
-+	 * is built as a shared library) most platforms would
-+	 * horrible core dump as experience showed.
-+	 */
-+	coroutine_bootstrap(tr_state.entry);
-+}
++ENTRY(longjmp)
++	addi	r3,r3,7		# align to 8 byte boundary
++	rlwinm	r3,r3,0,0,28
++	lwz	r1,0(r3)	# offset 0
++	lwzu	r2,4(r3)	# offset 4
++	lwzu	r13,4(r3)	# offset 8
++	lwzu	r14,4(r3)	# offset 12
++	lwzu	r15,4(r3)	# offset 16
++	lwzu	r16,4(r3)	# offset 20
++	lwzu	r17,4(r3)	# offset 24
++	lwzu	r18,4(r3)	# offset 28
++	lwzu	r19,4(r3)	# offset 32
++	lwzu	r20,4(r3)	# offset 36
++	lwzu	r21,4(r3)	# offset 40
++	lwzu	r22,4(r3)	# offset 44
++	lwzu	r23,4(r3)	# offset 48
++	lwzu	r24,4(r3)	# offset 52
++	lwzu	r25,4(r3)	# offset 56
++	lwzu	r26,4(r3)	# offset 60
++	lwzu	r27,4(r3)	# offset 64
++	lwzu	r28,4(r3)	# offset 68
++	lwzu	r29,4(r3)	# offset 72
++	lwzu	r30,4(r3)	# offset 76
++	lwzu	r31,4(r3)	# offset 80
++	lwzu	r5,4(r3)	# offset 84
++	mtlr	r5
++	lwzu	r5,4(r3)	# offset 88
++	mtcrf	255,r5
 +
-+int initjmp(_jmp_buf jmp, void (*func)(void), void *stack_top)
-+{
-+	struct sigaction sa;
-+	struct sigaction osa;
-+	stack_t ss;
-+	stack_t oss;
-+	sigset_t sigs;
-+	sigset_t osigs;
++	mr.	r3,r4
++	bclr+	4,2
++	li	r3,1
++	blr
++END(longjmp)
 +
-+	/* The way to manipulate stack is with the sigaltstack function. We
-+	 * prepare a stack, with it delivering a signal to ourselves and then
-+	 * put sigsetjmp/siglongjmp where needed.
-+	 * This has been done keeping coroutine-ucontext (from the QEMU project)
-+	 * as a model and with the pth ideas (GNU Portable Threads).
-+	 * See coroutine-ucontext for the basics of the coroutines and see
-+	 * pth_mctx.c (from the pth project) for the
-+	 * sigaltstack way of manipulating stacks.
-+	 */
-+
-+	tr_state.entry = func;
-+	tr_state.reenter = (void *)jmp;
-+
-+	/*
-+	 * Preserve the SIGUSR2 signal state, block SIGUSR2,
-+	 * and establish our signal handler. The signal will
-+	 * later transfer control onto the signal stack.
-+	 */
-+	sigemptyset(&sigs);
-+	sigaddset(&sigs, SIGUSR2);
-+	pthread_sigmask(SIG_BLOCK, &sigs, &osigs);
-+	sa.sa_handler = coroutine_trampoline;
-+	sigfillset(&sa.sa_mask);
-+	sa.sa_flags = SA_ONSTACK;
-+	if (sigaction(SIGUSR2, &sa, &osa) != 0) {
-+		return -1;
-+	}
-+
-+	/*
-+	 * Set the new stack.
-+	 */
-+	ss.ss_sp = stack_top - CONFIG_STACK_SIZE;
-+	ss.ss_size = CONFIG_STACK_SIZE;
-+	ss.ss_flags = 0;
-+	if (sigaltstack(&ss, &oss) < 0) {
-+		return -1;
-+	}
-+
-+	/*
-+	 * Now transfer control onto the signal stack and set it up.
-+	 * It will return immediately via "return" after the sigsetjmp()
-+	 * was performed. Be careful here with race conditions.  The
-+	 * signal can be delivered the first time sigsuspend() is
-+	 * called.
-+	 */
-+	tr_state.called = 0;
-+	pthread_kill(pthread_self(), SIGUSR2);
-+	sigfillset(&sigs);
-+	sigdelset(&sigs, SIGUSR2);
-+	while (!tr_state.called) {
-+		sigsuspend(&sigs);
-+	}
-+
-+	/*
-+	 * Inform the system that we are back off the signal stack by
-+	 * removing the alternative signal stack. Be careful here: It
-+	 * first has to be disabled, before it can be removed.
-+	 */
-+	sigaltstack(NULL, &ss);
-+	ss.ss_flags = SS_DISABLE;
-+	if (sigaltstack(&ss, NULL) < 0) {
-+		return -1;
-+	}
-+	sigaltstack(NULL, &ss);
-+	if (!(oss.ss_flags & SS_DISABLE)) {
-+		sigaltstack(&oss, NULL);
-+	}
-+
-+	/*
-+	 * Restore the old SIGUSR2 signal handler and mask
-+	 */
-+	sigaction(SIGUSR2, &osa, NULL);
-+	pthread_sigmask(SIG_SETMASK, &osigs, NULL);
-+
-+	/*
-+	 * jmp can now be used to enter the trampoline again, but not as a
-+	 * signal handler. Instead it's longjmp'd to directly.
-+	 */
-+
-+	return 0;
-+}
-+
-+int  __attribute__((returns_twice)) barebox_setjmp(_jmp_buf jmp)
-+{
-+	return sigsetjmp(jmp, 0);
-+}
-+
-+void __attribute((noreturn)) barebox_longjmp(_jmp_buf jmp, int ret)
-+{
-+	siglongjmp(jmp, ret);
-+}
++ENTRY(initjmp)
++	addi	r3,r3,7		# align to 8 byte boundary
++	rlwinm	r3,r3,0,0,28
++	stw	r5,0(r3)	# offset 0
++	stwu	r4,88(r3)	# offset 88
++	li	r3,0
++	blr
++END(initjmp)
 -- 
 2.29.2
 
