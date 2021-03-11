@@ -1,64 +1,64 @@
-Delivery-date: Thu, 11 Mar 2021 18:08:52 +0100
+Delivery-date: Thu, 11 Mar 2021 18:08:55 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKOns-0003VM-Kf
-	for lore@lore.pengutronix.de; Thu, 11 Mar 2021 18:08:52 +0100
+	id 1lKOnv-0003Vi-BR
+	for lore@lore.pengutronix.de; Thu, 11 Mar 2021 18:08:55 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKOnr-0003Gh-Ta
-	for lore@pengutronix.de; Thu, 11 Mar 2021 18:08:52 +0100
+	id 1lKOnu-0003H9-8v
+	for lore@pengutronix.de; Thu, 11 Mar 2021 18:08:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:Message-ID:Date:Subject:To:From:
 	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=aS5/zy8yz0cpFNZ2Oo22qcU6xovA/wEheV480kOhE/g=; b=KppaFdAMKUTWTA
-	NLAObNJIE9NgclBn2LGJzGRQ3dYNie7VNbwT6GOC9XvaRWsW/6NPehEKkTfpkWOMxNkCbPyQgH/uM
-	9YjzxINEUPerHOTxB1cpKVtPHVAtESYb0e9AFnsuf2ri39YWHTUFu53TYecbqaDZsnjpR2xW4MdHO
-	RhrBGTtkOJ/eE7caFU1DHgKme3qTZr8VaHaxORXOUfQfh8os2T4OBdeBcGauWMrq6KFPbtuSsLGnI
-	yJ1kGj4vCGFY1mQPJW2ELmcvIYnHLEZH1WJfHOfXpPBF9hfi7TM73U//OsLfVK5gpdoo2/T4xlmeI
-	Fn7L1xeEVLIRnPyHJIbg==;
+	List-Owner; bh=IMO6QKag30Mo7n7MESrL43bJfb8E6wIHAWzU0Rh+/1U=; b=kdM48Ty/QggKVQ
+	2t4UHM+S4dy+bw7AnQe81bPMHzc18AqcTvfHOQhEP5uyo82Iez8mXWmjTQGmZScxUJfLhZB8YKBeW
+	pzOWu90JkVhMt1fMKemSus1xCvIzWh2UQjkn4dd3xUYHIMTMbXBNw1ztVrjor017zIpkACxoE7ER4
+	HBNk4NwBhh7QWM2DjCJvpEFcGhYb6P5C3Y/LldLMwQl9rgCLAeIGkGsZoGg56cKixBtDiKTcbyrQL
+	2XQ3b9k/B24wVP+CWBrHOeivOi8YRQ2pogcjUJQN67guIf6QaKYMLTpyJ3Aw7pfj+X4g2fAc5A56V
+	5CoZEjqRwT77EfW0lfaw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lKOmd-009eiC-5M; Thu, 11 Mar 2021 17:07:35 +0000
+	id 1lKOmp-009ejx-7i; Thu, 11 Mar 2021 17:07:47 +0000
 Received: from enterprise02.smtp.diehl.com ([193.201.238.220])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lKOmU-009egC-Fn
- for barebox@lists.infradead.org; Thu, 11 Mar 2021 17:07:30 +0000
+ id 1lKOmY-009egC-LU
+ for barebox@lists.infradead.org; Thu, 11 Mar 2021 17:07:33 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=diehl.com; i=@diehl.com; q=dns/txt; s=default;
- t=1615482447; x=1647018447; h=from:to:subject:date:message-id:
+ t=1615482451; x=1647018451; h=from:to:subject:date:message-id:
  content-transfer-encoding:mime-version;
- bh=h5gcPZWxLIeHM+dKpBcXhbELRKlKmt0KqnkHkL4DKUU=;
- b=OKdGqshlO4eYY5rojiyDLhNn3ZmfY77VTKktZzWU1K24bKaHQxVcqDge
- dSJI/OUel36en7etqWGIxD1MpimwKxg21CKDikxiGwyVWmibe6XFf1uWB
- gn8yLRjkPsTJLr3feGeRlEfk/kvlluJax6Q1fiiUSv1lJ3tPT1GqDRtPe
- f+HHXQqJgKZAE6BZjHkGCYUQZWpOzsHg7lheAAVFTjj5DQl49ySy2WfR3
- bhf5NJ6m/x1+1xxdNFqKTWSxhNyxFKvBSfDXgqcy5jgy4VVcIxdXTY9ir
- bhFCRRusykthOUWW02vcK0XnA9XOnfeyBbxGw/oC3yBhGZPU27cMC02SF w==;
-IronPort-SDR: Bi65OCOIYJ/m8gosVOy8UVt33dAU9rV807NroVxv1ehfu+1qfwbA9Xrer8JUJH42l+ajHeGX1N
- 5EbI03CcS9A+mAj6uHCrywyKNl5B1MdAEx+l98YHn9aCKhNDQ1juQsOkOgKJ88bNsDU/LDkI7i
- c+cZu59XB8zHs8HJs0UyH4UwrF17Tt9HtTm7wbOBjFFvDzL3e6TQa4JiSz6qw4zItDuBPQz+F9
- oVANrZO4UlkwaAADjfl0vg9/b0lcS6NpyWN0NfwJJR4HAxdOqTgJq4ue02VS0QK12IIKOqyl6g
- cSE=
-IronPort-HdrOrdr: A9a23:GPQCS63Y/fonIyaqUtfnEgqjBf9yeYIsi2QD101hICF9WMqeis
- yogbAnxQb54QxxZFgMu/ClfJOBT3TV6IJv7eAqVt2fdSTvpWfAFvAA0aLM2DvlcheSysd51b
- 18N5R4EsH6F1Jgjc33iTPIdeoI5Pmi3OSWifzFz3FrJDsFV4hF4x1iAgiWVm1aLTMrObMDGJ
- CR5tVKqlObEBwqR/+2HmUEROSGnNHAlIvnbRkaQyEu7QmCyQmp77T3eiLopys2aS9Fwrsp7A
- H+/DDR26PLiZGG4y6Z8m/V7ZhauNyk4N5KHtbksLl2FhzcziOpY4ZsVp2E+BA5ydvfj2oCoZ
- 3ooxAjM8lS7DftcmWtpBPx12DboVMTwk6n7F+eg3fvgcu8Szk+YvAx4b5kTg==
+ bh=nYXnCUkrwSMWcyIkGB/TizLVzdOfAjn04Qm9eZZqNC0=;
+ b=HUKLjxjRwn8T05DQ1jhHs/QApMuGDgsQKhbsIWco8ZcUXh8/bIaqoOrD
+ TFmVweuDGgB4DJQNkove3LKygx5pULSER9LzGJYCn+yoAaqwgHj/J0EdT
+ WNJ06pvnpKCV6CaQFfsiE5mQv8TRlPexC0ZhQi5wlzjnLCGZknurzQJj/
+ Bs63qG29NBqHZGI5p2oilxtcl+vP9KM8hfPzXyvNEjf1N8CenXFQL2Nsg
+ eL3HyakDzII5JGRx/av76N/QtextxmbJkmBRkkGJ/MDyl4PzsgFNLJJpt
+ JVEBq/qo7jZnYPyg/U1ecfwz+QT2WtIYLjuZwhHLd6LMoJO3b3eGrA2yL A==;
+IronPort-SDR: 9Vblb6U7FkXBt4z5CsQoNhN32KsaZJFjhGXhk1ZHs/4nQBiA42wdnHpWoYC2yEvRrQQwo6oSjV
+ 81FRcdPpX2/tiQoADcU43lXSifsi3p0jpSLu5HpcPZ+tkWyBey5WiN8/5+buBrIHR6QTKpDpz8
+ whhJ1UF8N4AU9U7dqA8IfbvWsAHwHRCkeaeteZbseXdnR5i1FXtugW2xZl/Uv2kuTHoyOkqpQb
+ Z1QdfM9YRK4vcn0aix5xSRLyCavTiBJqS9j8tmiVLGpe0ErlIjtfTJ4fok2W++bjMNV9VgVpzD
+ LOc=
+IronPort-HdrOrdr: A9a23:FUC4ZKzqj2rmn3VWfYFsKrPxYeskLtp033Aq2lEZdDV+dMuEm8
+ ey2MkKzBOcslcscVwDufTFAqmPRnvA6YV4iLN7V4uKcQH6tAKTXeJfxKT4xTmIIUDD38tcz7
+ olT69lFNbrB0N7hsqS2njfL/8F4P2qtJ+lnv3fyXAFd29XQoVt9R1wBAreMmAefmV7LKE0Hp
+ ad+cZLzgDIEUg/VciiGnkfU6z5q9fKjZLrZgNDOBYj6ATLtzOu4rKSKWng4j4lTzhNzb0+mF
+ KrryXF4MyY082T+1v412jQ45l3n5/Kz9NYHqW3+6ooAwSprwauZohte7rHnD1dmpDJ1H8a1P
+ zNpBUtMuR1r07cenixqQbgsjOQtQoG2jvGyVibjXbCpoj3TzdSMbskub5k
 X-IronPort-AV: E=Sophos;i="5.81,241,1610406000"; 
-   d="scan'208";a="5802794"
+   d="scan'208";a="5802796"
 From: Denis Osterland-Heim <denis.osterland@diehl.com>
 To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: [PATCH] arch: arm: mach-imx: print HAB ROM code version
-Thread-Index: AQHXFpj//SmYagvV2Ea73pcSD91H7Q==
+Thread-Topic: [PATCH] scripts: imx: add support for additional hab Blocks
+Thread-Index: AQHXFpj/U18JbvZyj0aAm1Nb7R19NA==
 Date: Thu, 11 Mar 2021 17:07:20 +0000
-Message-ID: <20210311170137.22411-1-denis.osterland@diehl.com>
+Message-ID: <20210311170249.22520-1-denis.osterland@diehl.com>
 Accept-Language: de-DE, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -67,11 +67,10 @@ x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2
 x-ms-exchange-messagesentrepresentingtype: 1
 x-disclaimerprocessed: True
 MIME-Version: 1.0
-X-GBS-PROC: 5x5xXKsZ7k4sJw6jWwvS4p3Trid70NcCAfrXWeuS2B+hQG57V0jq5/wQBmwGCiGS
+X-GBS-PROC: PkB65aL1SqtESF35r/jQn0uDQCb7Hke6m5GyzI61qokFmljCPIvVbU5pHkH4gwEE
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210311_170726_815641_9268A2D5 
-X-CRM114-Status: UNSURE (   7.85  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210311_170730_933382_79737E20 
+X-CRM114-Status: GOOD (  12.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,64 +95,123 @@ X-Spam-Status: No, score=-103.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED,
 	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] arch: arm: mach-imx: print HAB ROM code version
+Subject: [PATCH] scripts: imx: add support for additional hab Blocks
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 From: Denis Osterland-Heim <Denis.Osterland@diehl.com>
 
-Add the two missing function pointers according to HAB4_API.pdf
-from cst-3.1.0 and print the version of ROM code.
+This allows to specifiy additional singed blocks
+in the format `offset+size@address` within the imximg.
+
+It is needed by the uuu tool, which loads the image different to
+the imx-usb-loader. It loads the DCD always to 0x910000 in the OCRAM.
+So this area have to be signed as well.
+
+In my case this needs `hab_blocks 0x42c+0x1f0@0x910000`.
+
+It supports to remove quotes to support Kconfig variable here.
 
 Signed-off-by: Denis Osterland-Heim <Denis.Osterland@diehl.com>
 ---
- drivers/hab/habv4.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ scripts/imx/imx.c | 62 +++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 60 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index c2acb8136..f30e5d68c 100644
---- a/drivers/hab/habv4.c
-+++ b/drivers/hab/habv4.c
-@@ -161,6 +161,7 @@ struct hab_header {
- uint8_t par;
- } __packed;
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index 6b8dabd04..d37e200ca 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -328,6 +328,7 @@ static int do_hab_blocks(struct config_data *data, int =
+argc, char *argv[])
+ {
+ char *str;
+ int ret;
++int i;
+ uint32_t signed_size =3D data->load_size;
+ uint32_t offset =3D data->image_ivt_offset;
 
-+typedef void (*hab_image_entry_fn)(void);
- typedef enum hab_status hab_loader_callback_fn(void **start, uint32_t *byt=
-es, const void *boot_data);
-
- struct habv4_rvt {
-@@ -175,6 +176,8 @@ struct habv4_rvt {
- enum hab_status (*report_event)(enum hab_status status, uint32_t index, vo=
-id *event, uint32_t *bytes);
- enum hab_status (*report_status)(enum hab_config *config, enum hab_state *=
-state);
- void (*failsafe)(void);
-+hab_image_entry_fn (*authenticate_image_no_dcd)(uint8_t cid, ptrdiff_t ivt=
-_offset, void **start, size_t *bytes, hab_loader_callback_fn loader);
-+uint32_t (*get_version)(void);
- } __packed;
-
- #define FSL_SIP_HAB             0xC2000007
-@@ -528,6 +531,7 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
- uint8_t *data;
- uint32_t len;
- int i;
-+uint32_t version;
- enum hab_status status;
- enum hab_config config =3D 0x0;
- enum hab_state state =3D 0x0;
-@@ -537,6 +541,9 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
- return -EINVAL;
+@@ -352,7 +353,7 @@ static int do_hab_blocks(struct config_data *data, int =
+argc, char *argv[])
  }
 
-+version =3D rvt->get_version();
-+pr_info("version: %u.%u.%u\n", (version >> 16), ((version >> 8) & 0xff), (=
-version & 0xff));
+ if (signed_size > 0) {
+-ret =3D asprintf(&str, "Blocks =3D 0x%08x 0x%08x 0x%08x \"%s\"\n",
++ret =3D asprintf(&str, "Blocks =3D 0x%08x 0x%08x 0x%08x \"%s\"",
+ data->image_load_addr + data->image_ivt_offset, offset,
+ signed_size - data->image_ivt_offset, data->outfile);
+ } else {
+@@ -365,10 +366,67 @@ static int do_hab_blocks(struct config_data *data, in=
+t argc, char *argv[])
+ return -ENOMEM;
+
+ ret =3D hab_add_str(data, str);
++free(str);
+ if (ret)
+ return ret;
+
+-return 0;
++for (i =3D 1; i < argc; i++)
++{
++uint32_t addr;
++uint32_t off;
++uint32_t size;
++char *b;
++char *e;
 +
- status =3D rvt->report_status(&config, &state);
- pr_info("Status: %s (0x%02x)\n", habv4_get_status_str(status), status);
- pr_info("Config: %s (0x%02x)\n", habv4_get_config_str(config), config);
++b =3D argv[i];
++if (b[0] =3D=3D '"') // remove qoutes
++{
++b++;
++for (e =3D b; *e; e++)
++/* find end of string */;
++e--;
++if (*e =3D=3D '"')
++*e =3D '\0';
++else
++fprintf(stderr, "warning: no '\"' at the end of '%s' [b=3D%p'%s', e=3D%p'%=
+s']\n", argv[i], b, b, e, e);
++}
++if (!*b)
++continue; // skip if empty
++
++e =3D strchr(b, '+');
++if (!e)
++{
++fprintf(stderr, "failed to find '+' in '%s'\n", b);
++fprintf(stderr, "format off+size@addr expected, but given: %s\n", argv[i]);
++return -EINVAL;
++}
++*e =3D '\0';
++off =3D strtoul(b, NULL, 0);
++
++b =3D e + 1;
++e =3D strchr(b, '@');
++if (!e)
++{
++fprintf(stderr, "failed to find '@' in '%s'\n", b);
++fprintf(stderr, "format off+size@addr expected, but given: %s", argv[i]);
++return -EINVAL;
++}
++*e =3D '\0';
++size =3D strtoul(b, NULL, 0);
++
++addr =3D strtoul(e + 1, NULL, 0);
++
++ret =3D asprintf(&str, ", 0x%08x 0x%08x 0x%08x \"%s\"", addr, off, size, d=
+ata->outfile);
++if (ret < 0)
++return -ENOMEM;
++
++ret =3D hab_add_str(data, str);
++free(str);
++if (ret)
++return ret;
++}
++
++return hab_add_str(data, "\n");
+ }
+
+ static int do_hab_encrypt(struct config_data *data, int argc, char *argv[])
 --
 2.30.2
 
