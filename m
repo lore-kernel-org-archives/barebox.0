@@ -1,61 +1,61 @@
-Delivery-date: Thu, 11 Mar 2021 09:54:46 +0100
+Delivery-date: Thu, 11 Mar 2021 09:55:23 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKH5i-0002mK-38
-	for lore@lore.pengutronix.de; Thu, 11 Mar 2021 09:54:46 +0100
+	id 1lKH6J-0002mg-Dz
+	for lore@lore.pengutronix.de; Thu, 11 Mar 2021 09:55:23 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKH5c-0001Cc-Ue
-	for lore@pengutronix.de; Thu, 11 Mar 2021 09:54:41 +0100
+	id 1lKH6I-0001HN-NQ
+	for lore@pengutronix.de; Thu, 11 Mar 2021 09:55:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=lTkVYuiVoABfb+d9vHIpFD8WLhuMoujqKLbnHtBC/6w=; b=BmnBdyYyKbgCD13X+OqMOH2y/
-	lzYodFwy0fyN3D65peR3fNCCtuBEfmb+IuJ6FVjhFmqGrc0+qRi7Pnpw4w0B3Hzpm+vZwCe5t3zdI
-	wigcHk7Hv5zD15Zwa+NY1Bis3223ZjH3d5++j7u4H0abRAsPpgUWd/K7Sf0c2mK1qmeQo+AP59WbL
-	X/LebjAzaKTzRqI85xlt4GFte5kYCMBA0CuZN68UA9pIR0Y0XHbafp8HezImo97E+epsbAVFDMWBy
-	OIOMapVLSVMFD5zvDI+NveGw1q3h/VGNNPfddcLClmemoZYbbmZvnkAHR/Oon17Pc/Wc20M9CZLXX
-	ihujlXMIw==;
+	 bh=7ZDVEGc2RUwKnm/MZVcj0/KNCcaReMTs5873Xg8RTSo=; b=V18ubJo+aMqYTB5GBYgG7qf82
+	TrstZNvCLBnvu5xPoI7ga/ApEvpe6urPWrTOZa77htJN/m1JT0I/39NLulZuYXADoERao3Eb9Z4vh
+	cqjmDdQu9TgKIe+J8Y9bxZ2fZ9MsshBHcT995QbwcCwPksY6zfL6/IrlsePZ0Kytn32RZx++VFzc9
+	B+A7OZkVY9Du7j75IK9zlHGTH2I5F0m8KCPZsSXuxixxMGtlRkZz/Ow9W2KBHYVy0QbqDq7ftGM2V
+	0jM8GWD2lBXMfS63sgNmhTlDyRFaKwOEi4g3q5Ak5szxZvBhyYvpiX5vvZzrp5qzMMdtTuArSnPRq
+	A9d9sXEnA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lKH4R-008haL-Gr; Thu, 11 Mar 2021 08:53:27 +0000
+	id 1lKH5X-008hic-1P; Thu, 11 Mar 2021 08:54:35 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lKH4M-008hZy-1h
- for barebox@lists.infradead.org; Thu, 11 Mar 2021 08:53:24 +0000
+ id 1lKH5R-008hho-7H
+ for barebox@lists.infradead.org; Thu, 11 Mar 2021 08:54:31 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lKH4L-0000uo-FS; Thu, 11 Mar 2021 09:53:21 +0100
+ id 1lKH5Q-00018I-QL; Thu, 11 Mar 2021 09:54:28 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lKH4K-0001yb-Vp; Thu, 11 Mar 2021 09:53:20 +0100
-Date: Thu, 11 Mar 2021 09:53:20 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Alexander Kurz <akurz@blala.de>
+ id 1lKH5Q-0001zK-GK; Thu, 11 Mar 2021 09:54:28 +0100
+Date: Thu, 11 Mar 2021 09:54:28 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210311085320.GA23724@pengutronix.de>
-References: <20210305200422.927-1-user@vserver64>
+Message-ID: <20210311085428.GB23724@pengutronix.de>
+References: <20210308151908.15416-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210305200422.927-1-user@vserver64>
+In-Reply-To: <20210308151908.15416-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 09:49:16 up 21 days, 12:13, 81 users,  load average: 0.00, 0.03, 0.07
+X-Uptime: 09:54:18 up 21 days, 12:18, 82 users,  load average: 0.11, 0.07, 0.07
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210311_085322_149612_82473DFA 
-X-CRM114-Status: GOOD (  22.49  )
+X-CRM114-CacheID: sfid-20210311_085429_391515_4E638FFE 
+X-CRM114-Status: GOOD (  22.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,52 +75,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] scripts: imx-image: fix iMX35 header generation
+Subject: Re: [PATCH] resource: include region name in conflict's debug output
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Mar 05, 2021 at 08:04:22PM +0000, Alexander Kurz wrote:
-> From: Alexander Kurz <akurz@blala.de>
+On Mon, Mar 08, 2021 at 04:19:08PM +0100, Ahmad Fatoum wrote:
+> The iomem command does print names, but it won't list dynamically
+> allocated and deallocated regions, like those requested during bootm.
 > 
-> Two header copies exist in the iMX35 image.
-> When writing the barebox_header, also write it to the second copy.
+> Include region name in conflict debug output to make them easier
+> to debug.
 > 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  scripts/imx/imx-image.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  common/resource.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
-It was likely me who broke this, Sorry for that.
-
 Sascha
 
-> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-> index f5e89d07a..6cbee1d9b 100644
-> --- a/scripts/imx/imx-image.c
-> +++ b/scripts/imx/imx-image.c
-> @@ -984,8 +984,11 @@ int main(int argc, char *argv[])
->  		xwrite(outfd, buf, header_len);
+> 
+> diff --git a/common/resource.c b/common/resource.c
+> index 92fe96252fdc..ff4318a0d77f 100644
+> --- a/common/resource.c
+> +++ b/common/resource.c
+> @@ -61,12 +61,14 @@ struct resource *__request_region(struct resource *parent,
+>  			goto ok;
+>  		if (start > r->end)
+>  			continue;
+> -		debug("%s: 0x%08llx:0x%08llx conflicts with 0x%08llx:0x%08llx\n",
+> +		debug("%s: 0x%08llx:0x%08llx (%s) conflicts with 0x%08llx:0x%08llx (%s)\n",
+>  				__func__,
+>  				(unsigned long long)start,
+>  				(unsigned long long)end,
+> +				name,
+>  				(unsigned long long)r->start,
+> -				(unsigned long long)r->end);
+> +				(unsigned long long)r->end,
+> +				r->name);
+>  		return ERR_PTR(-EBUSY);
 >  	}
 >  
-> -	if (add_barebox_header)
-> +	if (add_barebox_header) {
->  		pwrite(outfd, bb_header, sizeof_bb_header, 0);
-> +		if (data.cpu_type == IMX_CPU_IMX35)
-> +			pwrite(outfd, bb_header, sizeof_bb_header, header_len);
-> +	}
->  
->  	xwrite(outfd, infile, insize);
->  
 > -- 
-> 2.20.1
+> 2.29.2
 > 
 > 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
