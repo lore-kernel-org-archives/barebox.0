@@ -1,63 +1,64 @@
-Delivery-date: Thu, 11 Mar 2021 18:08:51 +0100
+Delivery-date: Thu, 11 Mar 2021 18:08:52 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKOnr-0003V0-CN
-	for lore@lore.pengutronix.de; Thu, 11 Mar 2021 18:08:51 +0100
+	id 1lKOns-0003VM-Kf
+	for lore@lore.pengutronix.de; Thu, 11 Mar 2021 18:08:52 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKOnq-0003G0-Ff
-	for lore@pengutronix.de; Thu, 11 Mar 2021 18:08:51 +0100
+	id 1lKOnr-0003Gh-Ta
+	for lore@pengutronix.de; Thu, 11 Mar 2021 18:08:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:Message-ID:Date:Subject:To:From:
 	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=Uc5hQpeIcSViEB3K5gxfmaU9ND6bCG3kQnJwewJ/Zsg=; b=VziHBykyvdpRXJ
-	Dh5cHL7Y9Uy4S3trESSd2/TE4bcIBVn9ZIDOoluJV5T2824zDqQLYy/PV+PyfUnMgk/3FBlZcJScF
-	zQu43T/G45QqeLbowH1aTy9mbuUoBAY99MOUWKPuWr8VTzkUHlKsEm6osogCz2np8IDzlsOOGsqD9
-	xnddyGlA6zEDSE17efysN8CL+jcT2+uOCoIxrpARHKTrTMLC1Gc8RUqVUw2VYrUQb5gu+fCWZ/2cJ
-	mj7djxAJdep5bZZauVkOrfy/ZOS1OhklfiAcQpp6qZasawFoYA/DSNXo4jKnwFtGFFFlP0OGEbdZB
-	hJowoHAXBeQ41fNA6+mA==;
+	List-Owner; bh=aS5/zy8yz0cpFNZ2Oo22qcU6xovA/wEheV480kOhE/g=; b=KppaFdAMKUTWTA
+	NLAObNJIE9NgclBn2LGJzGRQ3dYNie7VNbwT6GOC9XvaRWsW/6NPehEKkTfpkWOMxNkCbPyQgH/uM
+	9YjzxINEUPerHOTxB1cpKVtPHVAtESYb0e9AFnsuf2ri39YWHTUFu53TYecbqaDZsnjpR2xW4MdHO
+	RhrBGTtkOJ/eE7caFU1DHgKme3qTZr8VaHaxORXOUfQfh8os2T4OBdeBcGauWMrq6KFPbtuSsLGnI
+	yJ1kGj4vCGFY1mQPJW2ELmcvIYnHLEZH1WJfHOfXpPBF9hfi7TM73U//OsLfVK5gpdoo2/T4xlmeI
+	Fn7L1xeEVLIRnPyHJIbg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lKOmi-009eiu-4G; Thu, 11 Mar 2021 17:07:41 +0000
-Received: from enterprise01.smtp.diehl.com ([193.201.238.219])
+	id 1lKOmd-009eiC-5M; Thu, 11 Mar 2021 17:07:35 +0000
+Received: from enterprise02.smtp.diehl.com ([193.201.238.220])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lKOmU-009egD-Ig
- for barebox@lists.infradead.org; Thu, 11 Mar 2021 17:07:32 +0000
+ id 1lKOmU-009egC-Fn
+ for barebox@lists.infradead.org; Thu, 11 Mar 2021 17:07:30 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=diehl.com; i=@diehl.com; q=dns/txt; s=default;
  t=1615482447; x=1647018447; h=from:to:subject:date:message-id:
  content-transfer-encoding:mime-version;
- bh=BhZohKR9DIFowRK0TfslAiJ8k4EQDiUSTzjIxUUFJaw=;
- b=UnXg9cpWODMQvoiOUK8lC5BkLWsRcAsqF4MBZtf3Sfe489JYGb+n1fp+
- vO6SFW6jSALIiadlABrdDJLO0SXjFxzaZ6bDvR+pDcVs/SHWh/FqaKApB
- JWAR5kxfHSDOytXT+RUzZUbQ5jW1HxZ/hYIFRyZSaxAlfFRExIo89sw/W
- TI9gpAQJiS5NAzsF+D/s/0BvVjTn9wOa6ceMXlYMgn3xJaqC4wFGqPa6K
- lQOAsw0ODeUgUMoEqum0RexgKbEA/TE4+nw8cQxM2CsVzn1t0XEfmc1Ns
- FPzIYq4pjku6QcGMq1CAaldV8uZEq8oOnCUQ71BwzAmMS6wOjRsKPDsh/ Q==;
-IronPort-SDR: R7ceuyh9a8tNh6afJWIkMq/syoym79dK0ia4Ifn2jTN9w8uYBXW33510W+hlxL6kr1oL+D7U2b
- fsYoHHi4kIP1lZeYMHlb9v2mECbAeESZYNpxK/wmv255hjpaTwk8s+Xmc01MBTCh/Z67AFatWJ
- 9dpRJWuYL6dyhDkPxvpbDuxStJ/LiizpOg3bGI0xoriDlQzixvcaJRABSzQ6KRxB17bj0IU38R
- /vz4mxnZZ5ICM7RWGMs7fO6Fzc0LluDstNwrtOqFcpgxQqVCHvbD0mevPU7uRkJ9IP+FbEHHVQ
- j88=
-IronPort-HdrOrdr: A9a23:QFnaAa38OQ+okTHJBIkr5wqjBAkkLtp033Aq2lEZdDV+dMuEm8
- ey2MkKzBOcskdpZFgMu/ClfJOBT3TV6IJv7eAqVouKcQH6tAKTXeZfxKT4xTmIIVydysd51b
- 18N5R4EsH6F1Jgjc33iTPZL/8F4P2qtJ+lnv3fyXAFd3AIV4hF4x1iAgiWVm1aLTMqObMDGJ
- CR5tVKqlObEBx8Uu2BCmABT6z/obTw5fbbSCQbDB0q4hTmt0LP1JfGFXGjr3IjegIK6rck/G
- jDnWXCipmLgrWwyhK07Q7uxqUTlN74891PbfbjtuElbjnokjypeYhAdtS50wwInA==
+ bh=h5gcPZWxLIeHM+dKpBcXhbELRKlKmt0KqnkHkL4DKUU=;
+ b=OKdGqshlO4eYY5rojiyDLhNn3ZmfY77VTKktZzWU1K24bKaHQxVcqDge
+ dSJI/OUel36en7etqWGIxD1MpimwKxg21CKDikxiGwyVWmibe6XFf1uWB
+ gn8yLRjkPsTJLr3feGeRlEfk/kvlluJax6Q1fiiUSv1lJ3tPT1GqDRtPe
+ f+HHXQqJgKZAE6BZjHkGCYUQZWpOzsHg7lheAAVFTjj5DQl49ySy2WfR3
+ bhf5NJ6m/x1+1xxdNFqKTWSxhNyxFKvBSfDXgqcy5jgy4VVcIxdXTY9ir
+ bhFCRRusykthOUWW02vcK0XnA9XOnfeyBbxGw/oC3yBhGZPU27cMC02SF w==;
+IronPort-SDR: Bi65OCOIYJ/m8gosVOy8UVt33dAU9rV807NroVxv1ehfu+1qfwbA9Xrer8JUJH42l+ajHeGX1N
+ 5EbI03CcS9A+mAj6uHCrywyKNl5B1MdAEx+l98YHn9aCKhNDQ1juQsOkOgKJ88bNsDU/LDkI7i
+ c+cZu59XB8zHs8HJs0UyH4UwrF17Tt9HtTm7wbOBjFFvDzL3e6TQa4JiSz6qw4zItDuBPQz+F9
+ oVANrZO4UlkwaAADjfl0vg9/b0lcS6NpyWN0NfwJJR4HAxdOqTgJq4ue02VS0QK12IIKOqyl6g
+ cSE=
+IronPort-HdrOrdr: A9a23:GPQCS63Y/fonIyaqUtfnEgqjBf9yeYIsi2QD101hICF9WMqeis
+ yogbAnxQb54QxxZFgMu/ClfJOBT3TV6IJv7eAqVt2fdSTvpWfAFvAA0aLM2DvlcheSysd51b
+ 18N5R4EsH6F1Jgjc33iTPIdeoI5Pmi3OSWifzFz3FrJDsFV4hF4x1iAgiWVm1aLTMrObMDGJ
+ CR5tVKqlObEBwqR/+2HmUEROSGnNHAlIvnbRkaQyEu7QmCyQmp77T3eiLopys2aS9Fwrsp7A
+ H+/DDR26PLiZGG4y6Z8m/V7ZhauNyk4N5KHtbksLl2FhzcziOpY4ZsVp2E+BA5ydvfj2oCoZ
+ 3ooxAjM8lS7DftcmWtpBPx12DboVMTwk6n7F+eg3fvgcu8Szk+YvAx4b5kTg==
 X-IronPort-AV: E=Sophos;i="5.81,241,1610406000"; 
-   d="scan'208";a="6165194"
+   d="scan'208";a="5802794"
 From: Denis Osterland-Heim <denis.osterland@diehl.com>
 To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: [PATCH] nvmem: ocotp: add support to revoke keys
-Thread-Index: AQHXFpkApOo+rbfPeke7j5zTFEps9w==
-Date: Thu, 11 Mar 2021 17:07:21 +0000
-Message-ID: <20210311170403.22671-1-denis.osterland@diehl.com>
+Thread-Topic: [PATCH] arch: arm: mach-imx: print HAB ROM code version
+Thread-Index: AQHXFpj//SmYagvV2Ea73pcSD91H7Q==
+Date: Thu, 11 Mar 2021 17:07:20 +0000
+Message-ID: <20210311170137.22411-1-denis.osterland@diehl.com>
 Accept-Language: de-DE, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -66,10 +67,11 @@ x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2
 x-ms-exchange-messagesentrepresentingtype: 1
 x-disclaimerprocessed: True
 MIME-Version: 1.0
-X-GBS-PROC: 5x5xXKsZ7k4sJw6jWwvS4p3Trid70NcCAfrXWeuS2B+HoABx79bHc06wZt9/4whV
+X-GBS-PROC: 5x5xXKsZ7k4sJw6jWwvS4p3Trid70NcCAfrXWeuS2B+hQG57V0jq5/wQBmwGCiGS
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210311_170727_017897_059AA0CC 
-X-CRM114-Status: GOOD (  11.63  )
+X-CRM114-CacheID: sfid-20210311_170726_815641_9268A2D5 
+X-CRM114-Status: UNSURE (   7.85  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,119 +96,64 @@ X-Spam-Status: No, score=-103.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED,
 	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] nvmem: ocotp: add support to revoke keys
+Subject: [PATCH] arch: arm: mach-imx: print HAB ROM code version
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 From: Denis Osterland-Heim <Denis.Osterland@diehl.com>
 
-Add device tree property 'barebox,key-revoke' with the syntax:
-< key_phandle fuse_offset mask >
-
-An example:
-signature {
-key1: key-img1 { ... };
-key2: key-srk1 { ... };
-};
-};
-&ocotp {
-barebox,key-revoke =3D <
-&key1 0x660 1
-&key2 0x6f0 1
->;
-};
+Add the two missing function pointers according to HAB4_API.pdf
+from cst-3.1.0 and print the version of ROM code.
 
 Signed-off-by: Denis Osterland-Heim <Denis.Osterland@diehl.com>
 ---
- .../bindings/misc/fsl,imx-ocotp.rst           |  4 ++
- drivers/nvmem/ocotp.c                         | 37 ++++++++++++++++++-
- 2 files changed, 39 insertions(+), 2 deletions(-)
+ drivers/hab/habv4.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/misc/fsl,imx-ocotp.rst b/Doc=
-umentation/devicetree/bindings/misc/fsl,imx-ocotp.rst
-index 202bb3aa0..63a6f5331 100644
---- a/Documentation/devicetree/bindings/misc/fsl,imx-ocotp.rst
-+++ b/Documentation/devicetree/bindings/misc/fsl,imx-ocotp.rst
-@@ -12,6 +12,9 @@ Optional properties:
-   can be multiple entries in the form <&phandle regofs> to assign a MAC
-   address to an Ethernet device.
+diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+index c2acb8136..f30e5d68c 100644
+--- a/drivers/hab/habv4.c
++++ b/drivers/hab/habv4.c
+@@ -161,6 +161,7 @@ struct hab_header {
+ uint8_t par;
+ } __packed;
 
-+* ``barebox,key-revoke``: Revoke (remove) key if bit is set. This can be m=
-ultiple
-+  entries in the form <&phandle regofs mask> to revoke a key if bit is set.
-+
- Example:
++typedef void (*hab_image_entry_fn)(void);
+ typedef enum hab_status hab_loader_callback_fn(void **start, uint32_t *byt=
+es, const void *boot_data);
 
- .. code-block:: none
-@@ -20,4 +23,5 @@ Example:
-   compatible =3D "fsl,imx6q-ocotp";
-   reg =3D <0x021bc000 0x4000>;
-   barebox,provide-mac-address =3D <&fec 0x620>;
-+  barebox,key-revoke =3D <&/signature/key-img1 0x6f0 1>;
-   };
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index cee50955e..00ee6cd06 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -641,7 +641,7 @@ static struct regmap_bus imx_ocotp_regmap_bus =3D {
- .reg_read =3D imx_ocotp_reg_read,
- };
+ struct habv4_rvt {
+@@ -175,6 +176,8 @@ struct habv4_rvt {
+ enum hab_status (*report_event)(enum hab_status status, uint32_t index, vo=
+id *event, uint32_t *bytes);
+ enum hab_status (*report_status)(enum hab_config *config, enum hab_state *=
+state);
+ void (*failsafe)(void);
++hab_image_entry_fn (*authenticate_image_no_dcd)(uint8_t cid, ptrdiff_t ivt=
+_offset, void **start, size_t *bytes, hab_loader_callback_fn loader);
++uint32_t (*get_version)(void);
+ } __packed;
 
--static void imx_ocotp_init_dt(struct ocotp_priv *priv)
-+static void imx_ocotp_init_mac_dt(struct ocotp_priv *priv)
- {
- char mac[MAC_BYTES];
- const __be32 *prop;
-@@ -673,6 +673,38 @@ static void imx_ocotp_init_dt(struct ocotp_priv *priv)
- }
+ #define FSL_SIP_HAB             0xC2000007
+@@ -528,6 +531,7 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
+ uint8_t *data;
+ uint32_t len;
+ int i;
++uint32_t version;
+ enum hab_status status;
+ enum hab_config config =3D 0x0;
+ enum hab_state state =3D 0x0;
+@@ -537,6 +541,9 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
+ return -EINVAL;
  }
 
-+static void imx_ocotp_init_key_dt(struct ocotp_priv *priv)
-+{
-+const __be32 *prop;
-+struct device_node *node =3D priv->dev.parent->device_node;
-+int len;
++version =3D rvt->get_version();
++pr_info("version: %u.%u.%u\n", (version >> 16), ((version >> 8) & 0xff), (=
+version & 0xff));
 +
-+if (!node)
-+return;
-+
-+prop =3D of_get_property(node, "barebox,key-revoke", &len);
-+if (!prop)
-+return;
-+
-+for (; len >=3D 3; len -=3D 3) {
-+struct device_node *rnode;
-+uint32_t phandle, offset, mask;
-+unsigned val;
-+
-+phandle =3D be32_to_cpup(prop++);
-+
-+rnode =3D of_find_node_by_phandle(phandle);
-+offset =3D be32_to_cpup(prop++);
-+mask =3D be32_to_cpup(prop++);
-+
-+if (imx6_ocotp_read_one_u32(priv, OCOTP_OFFSET_TO_INDEX(offset), &val))
-+continue;
-+
-+if (val & mask)
-+of_delete_node(rnode);
-+}
-+}
-+
- static int imx_ocotp_write(struct device_d *dev, const int offset,
-     const void *val, int bytes)
- {
-@@ -790,7 +822,8 @@ static int imx_ocotp_probe(struct device_d *dev)
- if (IS_ENABLED(CONFIG_MACHINE_ID))
- imx_ocotp_set_unique_machine_id();
-
--imx_ocotp_init_dt(priv);
-+imx_ocotp_init_mac_dt(priv);
-+imx_ocotp_init_key_dt(priv);
-
- dev_add_param_bool(&(priv->dev), "sense_enable", NULL, NULL, &priv->sense_=
-enable, priv);
-
+ status =3D rvt->report_status(&config, &state);
+ pr_info("Status: %s (0x%02x)\n", habv4_get_status_str(status), status);
+ pr_info("Config: %s (0x%02x)\n", habv4_get_config_str(config), config);
 --
 2.30.2
 
