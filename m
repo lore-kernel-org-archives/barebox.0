@@ -1,92 +1,52 @@
-Delivery-date: Fri, 12 Mar 2021 11:57:06 +0100
+Delivery-date: Fri, 12 Mar 2021 12:04:42 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKfTd-0004Mf-Fu
-	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 11:57:06 +0100
+	id 1lKfb0-0004NL-Ae
+	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 12:04:42 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKfTc-0007Eo-F4
-	for lore@pengutronix.de; Fri, 12 Mar 2021 11:57:05 +0100
+	id 1lKfaz-00089u-7G
+	for lore@pengutronix.de; Fri, 12 Mar 2021 12:04:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-ID:Date:Subject:To:From:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=tL6jeNf0p7My8gz9ru0Jx0TwzOFK4fjzhhKfJTkO0dM=; b=eXzlb/2V48Lraj
-	3/0gGJ26ZcqzxBcO3gWXD22p5WTprWwSm4a+ZuDD5QhhBkk0gWUcpRevZ1H7FnZUuXhdQ5uStePDD
-	Yg14lyLsXTXjE1ShmeYZfZspWkj23Q96qfv1Opk+y7uMrVK4iNTWopvXlKaavMSXpx5SUEHwqrwau
-	JQmHcqko5lW35TeTi8rp7HnAV7PICraU5vX9DSC5f3AFsCnaA3H0ib7z56oAUUx76NBmYP3nntYr4
-	BR2Pd/BWGjIM37XaNBmB5nhPj4R8DdXvkz7nJtc8NWeG3k8oM9xQ1VmY0dw/95qu2zlk4JnPFiENM
-	DF8KgtuxtwE4sK8ewtbQ==;
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Date:To:From:
+	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=oHD3gHBcX3NimCSMZhkqo1BNDMaDtAVreYhqgBbfn7k=; b=g8WPkOQefWHJ2AeCjw/mM7Qaj
+	wzTuUiKFd5AHTFS48t7VdbFeD0QRotxnfsw4VWIFe14tPmef+AgOmkvtYWr9udfuS1HloJTegCJ88
+	D2/D5jR00x3TdE8qpqeh1Ubt6seX0DuagMpDlhzxykwVYKXb+I1h+5thk7pwPUs8Mw6SgE8KGc318
+	gtB2GeskjGb/mcusbvAKn8wjc4AHY+omQFGsZl7fKidsVez2g7BMHyrpdyEAwfkx6q2EnW5/VrO6N
+	fwBq4tbwQ+K4FBTnw2H+/7JEWGWPjHm0CYCti33EDFXvivVR/fidjmsBTB0pyuECW/rPW+jrLCTuh
+	PGAY2HjjA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lKfSb-00BE2I-W4; Fri, 12 Mar 2021 10:56:02 +0000
-Received: from de-out1.bosch-org.com ([139.15.230.186])
+	id 1lKfa5-00BFFa-RD; Fri, 12 Mar 2021 11:03:45 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lKfSV-00BE1k-GW
- for barebox@lists.infradead.org; Fri, 12 Mar 2021 10:55:58 +0000
-Received: from fe0vm1650.rbesz01.com
- (lb41g3-ha-dmz-psi-sl1-mailout.fe.ssn.bosch.com [139.15.230.188])
- by fe0vms0186.rbdmz01.com (Postfix) with ESMTPS id 4DxjQx0nzvz1XLFjX
- for <barebox@lists.infradead.org>; Fri, 12 Mar 2021 11:55:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=de.bosch.com;
- s=key3-intmail; t=1615546553;
- bh=afkfjf0rNHOAMxlhDCI2HZ++2PuBUKSLDZIxt4RjCAU=; l=10;
- h=From:Subject:From:Reply-To:Sender;
- b=BhZGaPa9HWVv/cyWBQVN/hhUBtvDeY1bGmIUrsQHemXDS9+TaFQttpFO3KPSlF2R8
- pEGPV4cpR7ux2YFWnw0MIiL4wSJu0GHi9it+DZaQ0BOTkqKTJhGjvVVUkOTT/7l0/e
- KjvL3NI1QW+2eNyLcV+G8XgDFpTvgoQf20fi+QF8=
-Received: from fe0vm7918.rbesz01.com (unknown [10.58.172.176])
- by fe0vm1650.rbesz01.com (Postfix) with ESMTPS id 4DxjQx0VwVz1yf
- for <barebox@lists.infradead.org>; Fri, 12 Mar 2021 11:55:53 +0100 (CET)
-X-AuditID: 0a3aad10-e8dff7000000444e-93-604b48b84200
-Received: from fe0vm1652.rbesz01.com ( [10.58.173.29])
- (using TLS with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by fe0vm7918.rbesz01.com (SMG Outbound) with SMTP id D3.A1.17486.9B84B406;
- Fri, 12 Mar 2021 11:55:53 +0100 (CET)
-Received: from FE-MBX2043.de.bosch.com (fe-mbx2043.de.bosch.com [10.3.231.53])
- by fe0vm1652.rbesz01.com (Postfix) with ESMTPS id 4DxjQw6rP8zV18
- for <barebox@lists.infradead.org>; Fri, 12 Mar 2021 11:55:52 +0100 (CET)
-Received: from FE-MBX2042.de.bosch.com (10.3.231.52) by
- FE-MBX2043.de.bosch.com (10.3.231.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2176.2; Fri, 12 Mar 2021 11:55:52 +0100
-Received: from FE-MBX2042.de.bosch.com ([fe80::8a5:f97e:ffde:bf70]) by
- FE-MBX2042.de.bosch.com ([fe80::8a5:f97e:ffde:bf70%5]) with mapi id
- 15.01.2176.009; Fri, 12 Mar 2021 11:55:52 +0100
-From: "Gittinger Joerg (XC-ECO/ESH2)" <Joerg.Gittinger@de.bosch.com>
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: Aarch64 Qemu virt - crash
-Thread-Index: AdcXKkgU1NnwUDzcRhGgxF+ARU5EdQ==
-Date: Fri, 12 Mar 2021 10:55:52 +0000
-Message-ID: <f9f47ca6b7cb4fe88344dea3c63b5d84@de.bosch.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.142.129.1]
+ id 1lKfa0-00BFEn-0B
+ for barebox@lists.infradead.org; Fri, 12 Mar 2021 11:03:42 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ helo=[IPv6:::1]) by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <r.czerwinski@pengutronix.de>)
+ id 1lKfZz-0007wT-EQ; Fri, 12 Mar 2021 12:03:39 +0100
+Message-ID: <994e5b7a6fa2cb44e09c29a5022c6fc08499f8dc.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+To: "Gittinger Joerg (XC-ECO/ESH2)" <Joerg.Gittinger@de.bosch.com>, 
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Date: Fri, 12 Mar 2021 12:03:38 +0100
+In-Reply-To: <f9f47ca6b7cb4fe88344dea3c63b5d84@de.bosch.com>
+References: <f9f47ca6b7cb4fe88344dea3c63b5d84@de.bosch.com>
+Organization: Pengutronix e.K.
+User-Agent: Evolution 3.38.4 
 MIME-Version: 1.0
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrOLMWRmVeSWpSXmKPExsXCZbVWVnenh3eCwYIdjBYnFvczOzB6bF5S
- H8AYxWWTkpqTWZZapG+XwJVx5tk+loJW2YpjB2MbGP9IdDFyckgImEhM+/OEHcQWEpjOJHGu
- X6yLkQvIvsMo8eDnK2YI5y2jxL2DT5khqvYxSnT0lIHYbAIuErPPnGUDsUUE7CV69u1nArGF
- BZQk+o/uZYKIq0u0/HzPDGHrSbxqngEWZxFQlTj9rJmxi5GDg1fAWuL9GVeQMKOArMSGDefB
- ypkFxCU2PfvOCnGogMSSPRBxCQFRiZeP/0HFFSSat61lhKjXkViw+xMbhK0tsWzha7B6XgFB
- iZMzn7BMYBSZhWTsLCQts5C0zELSsoCRZRWjaFqqQVmuuaWhhV5RUmpxlYGhXnJ+7iZGSNgL
- 7GC83f1B7xAjEwfjIUYJDmYlEd4LL70ShHhTEiurUovy44tKc1KLDzFKc7AoifOq8GyMExJI
- TyxJzU5NLUgtgskycXBKNTBtWvOYg/PMk2M9m1Yd/Hrs1Vk2NenzmxjXzFFmc8p1M55vqvKL
- QWXxHLtNbn/aJBtU/73edoDt5h7Tavbl5zkeTnlcYWkr1Wc0Laz/9MNzpyvWRBa5WBx6uC9z
- E2/nzg0rr21jYTBdx8rDy6x11+3t9cuKjhf33zP+tVLzqP4mCXG3Lbny9X7HTjxyeSo/31Mh
- njPpbV0+89Fdl22fWDumzDEWXZwx57TA/Gw5g9uz5KcIJrDMqbKpLTogyZ01pb9gM9vnD7d4
- zd9fuyzkf2JHWoBk29OAz91rt/7/tHR3BP/J+6e/3ola+vBviIILwwOZPMWymtvsjvcfXOv6
- pGxhe8XD+rzwIvUatuWL6j6UKbEUZyQaajEXFScCAMrO5P7qAgAA
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210312_105555_722151_30E0880D 
-X-CRM114-Status: GOOD (  11.41  )
+X-CRM114-CacheID: sfid-20210312_110340_157837_A825DD1F 
+X-CRM114-Status: GOOD (  18.18  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,74 +58,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Aarch64 Qemu virt - crash
+Subject: Re: Aarch64 Qemu virt - crash
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
-
-I'd like to check out bareboot. In the documentation I found that aarch64 QEMU virt target is supported. Therefore I wanted to build it and run it in the emulator. I checked out latest git and built it for aarch64. When running it in QEMU 
-  $ qemu-system-aarch64 -m 2G -M virt -cpu cortex-a53 -kernel ../barebox/barebox -display none -serial stdio
-I run into an exception:
-
--------- qemu output ---------
-barebox 2021.02.0-jg-00106-g43a513fa8 #1 Mon Mar 8 15:56:47 CET 2021
-
-
-Board: ARM QEMU virt64
-DABT (current EL) exception (ESR 0x9600004b) at 0x0000000000000000
-elr: 000000004100d754 lr : 000000004100d740
-x0 : 0000000000000001 x1 : 00000000000000f0
-x2 : 00000000bffefdbc x3 : 00000000ffffffff
-x4 : 0000000000000008 x5 : 0000000000000000
-x6 : 0000000040c07ad0 x7 : 0000000000000000
-x8 : 0000000040c07ad0 x9 : 00000000bffefe90
-...
------------------------------------
-
-I debugged it in gdb and set a breakpoint at the ELR value. Backtrace shows this:
-
------------------------------------
-#0  flash_write8 (addr=0x0, value=240 '\360') at drivers/mtd/nor/cfi_flash.h:258
-#1  flash_write_word (addr=0x0, datum=240, info=0x40c07ad0) at drivers/mtd/nor/cfi_flash.h:336
-#2  flash_write_cmd (info=info@entry=0x40c07ad0, sect=sect@entry=0, offset=offset@entry=0, cmd=cmd@entry=240) at drivers/mtd/nor/cfi_flash.c:837
-#3  0x000000004100d940 in flash_detect_width (info=info@entry=0x40c07ad0, qry=qry@entry=0xbffefe90) at drivers/mtd/nor/cfi_flash.c:244
-#4  0x000000004100dc60 in flash_detect_cfi (qry=0xbffefe90, info=0x40c07ad0) at drivers/mtd/nor/cfi_flash.c:287
-#5  flash_detect_size (info=0x40c07ad0) at drivers/mtd/nor/cfi_flash.c:321
-#6  cfi_probe_one (num=0, info=0x40c07ad0) at drivers/mtd/nor/cfi_flash.c:972
-#7  cfi_probe (dev=0x40c07910) at drivers/mtd/nor/cfi_flash.c:1013
-#8  0x000000004100c188 in device_probe (dev=0x40c07910, dev@entry=0x40c07998) at drivers/base/driver.c:91
-#9  0x000000004100c258 in match (drv=drv@entry=0x40c07910, dev=0x40c07998, dev@entry=0x40c07910) at drivers/base/driver.c:164
-#10 0x000000004100c574 in register_device (new_device=0x40c07910) at drivers/base/driver.c:209
-#11 0x000000004100ca28 in add_generic_device (devname=devname@entry=0x4102b5d0 "cfi_flash", id=id@entry=0, resname=resname@entry=0x0, start=start@entry=0,
-    size=size@entry=134217728, flags=flags@entry=512, pdata=pdata@entry=0x0) at drivers/base/resource.c:78
-#12 0x0000000041027260 in add_cfi_flash_device (flags=0, size=134217728, start=0, id=0) at include/driver.h:267
-#13 virt_env_init () at arch/arm/boards/qemu-virt64/init.c:30
-#14 0x0000000041001610 in start_barebox () at common/startup.c:412
-#15 0x00000000410289a0 in barebox_non_pbl_start (membase=1090689334, memsize=<optimized out>, boarddata=0x41035000 <__barebox_cmd_drvinfo+8>)
-    at arch/arm/cpu/start.c:246
-#16 0x00000000410289d0 in __barebox_arm_entry ()
------------------------------------
-
-Apparently the NOR cfi driver tries to figure out the flash width by writing to it. In QEMU aarch64 virt machine, the flash starts at 0x0, so the address is correct. In barebox config the "QEMU arm64 virt machine" is selected. I tried with specifying a "-pflash ..." parameter at QEMU command line but still got the same exception. MMU (SCTLR.M) is turned on - therefore I wonder why I get this exception. It seems that the MMU region for the flash is not or not correctly set up when the memory access occurs..? Or do I do something wrong? Please let me know how I get it running.
-
-Thanks + Regards
-Joerg
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgSm9lcmcsCgpPbiBGcmksIDIwMjEtMDMtMTIgYXQgMTA6NTUgKzAwMDAsIEdpdHRpbmdlciBK
+b2VyZyAoWEMtRUNPL0VTSDIpIHdyb3RlOgo+IEhpLAo+IAo+IEknZCBsaWtlIHRvIGNoZWNrIG91
+dCBiYXJlYm9vdC4gSW4gdGhlIGRvY3VtZW50YXRpb24gSSBmb3VuZCB0aGF0IGFhcmNoNjQgUUVN
+VSB2aXJ0IHRhcmdldCBpcyBzdXBwb3J0ZWQuIFRoZXJlZm9yZSBJIHdhbnRlZCB0byBidWlsZCBp
+dCBhbmQgcnVuIGl0IGluIHRoZSBlbXVsYXRvci4gSSBjaGVja2VkIG91dCBsYXRlc3QgZ2l0IGFu
+ZCBidWlsdCBpdCBmb3IgYWFyY2g2NC4gV2hlbiBydW5uaW5nIGl0IGluIFFFTVUgCj4gwqDCoCQg
+cWVtdS1zeXN0ZW0tYWFyY2g2NCAtbSAyRyAtTSB2aXJ0IC1jcHUgY29ydGV4LWE1MyAta2VybmVs
+IC4uL2JhcmVib3gvYmFyZWJveCAtZGlzcGxheSBub25lIC1zZXJpYWwgc3RkaW8KPiBJIHJ1biBp
+bnRvIGFuIGV4Y2VwdGlvbjoKPiAKPiAtLS0tLS0tLSBxZW11IG91dHB1dCAtLS0tLS0tLS0KPiBi
+YXJlYm94IDIwMjEuMDIuMC1qZy0wMDEwNi1nNDNhNTEzZmE4ICMxIE1vbiBNYXIgOCAxNTo1Njo0
+NyBDRVQgMjAyMQo+IAo+IAo+IEJvYXJkOiBBUk0gUUVNVSB2aXJ0NjQKPiBEQUJUIChjdXJyZW50
+IEVMKSBleGNlcHRpb24gKEVTUiAweDk2MDAwMDRiKSBhdCAweDAwMDAwMDAwMDAwMDAwMDAKPiBl
+bHI6IDAwMDAwMDAwNDEwMGQ3NTQgbHIgOiAwMDAwMDAwMDQxMDBkNzQwCj4geDAgOiAwMDAwMDAw
+MDAwMDAwMDAxIHgxIDogMDAwMDAwMDAwMDAwMDBmMAo+IHgyIDogMDAwMDAwMDBiZmZlZmRiYyB4
+MyA6IDAwMDAwMDAwZmZmZmZmZmYKPiB4NCA6IDAwMDAwMDAwMDAwMDAwMDggeDUgOiAwMDAwMDAw
+MDAwMDAwMDAwCj4geDYgOiAwMDAwMDAwMDQwYzA3YWQwIHg3IDogMDAwMDAwMDAwMDAwMDAwMAo+
+IHg4IDogMDAwMDAwMDA0MGMwN2FkMCB4OSA6IDAwMDAwMDAwYmZmZWZlOTAKPiAuLi4KPiAtLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IAo+IEkgZGVidWdnZWQgaXQgaW4gZ2Ri
+IGFuZCBzZXQgYSBicmVha3BvaW50IGF0IHRoZSBFTFIgdmFsdWUuIEJhY2t0cmFjZSBzaG93cyB0
+aGlzOgo+IAo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gIzAgIGZsYXNo
+X3dyaXRlOCAoYWRkcj0weDAsIHZhbHVlPTI0MCAnXDM2MCcpIGF0IGRyaXZlcnMvbXRkL25vci9j
+ZmlfZmxhc2guaDoyNTgKPiAjMSAgZmxhc2hfd3JpdGVfd29yZCAoYWRkcj0weDAsIGRhdHVtPTI0
+MCwgaW5mbz0weDQwYzA3YWQwKSBhdCBkcml2ZXJzL210ZC9ub3IvY2ZpX2ZsYXNoLmg6MzM2Cj4g
+IzIgIGZsYXNoX3dyaXRlX2NtZCAoaW5mbz1pbmZvQGVudHJ5PTB4NDBjMDdhZDAsIHNlY3Q9c2Vj
+dEBlbnRyeT0wLCBvZmZzZXQ9b2Zmc2V0QGVudHJ5PTAsIGNtZD1jbWRAZW50cnk9MjQwKSBhdCBk
+cml2ZXJzL210ZC9ub3IvY2ZpX2ZsYXNoLmM6ODM3Cj4gIzMgIDB4MDAwMDAwMDA0MTAwZDk0MCBp
+biBmbGFzaF9kZXRlY3Rfd2lkdGggKGluZm89aW5mb0BlbnRyeT0weDQwYzA3YWQwLCBxcnk9cXJ5
+QGVudHJ5PTB4YmZmZWZlOTApIGF0IGRyaXZlcnMvbXRkL25vci9jZmlfZmxhc2guYzoyNDQKPiAj
+NCAgMHgwMDAwMDAwMDQxMDBkYzYwIGluIGZsYXNoX2RldGVjdF9jZmkgKHFyeT0weGJmZmVmZTkw
+LCBpbmZvPTB4NDBjMDdhZDApIGF0IGRyaXZlcnMvbXRkL25vci9jZmlfZmxhc2guYzoyODcKPiAj
+NSAgZmxhc2hfZGV0ZWN0X3NpemUgKGluZm89MHg0MGMwN2FkMCkgYXQgZHJpdmVycy9tdGQvbm9y
+L2NmaV9mbGFzaC5jOjMyMQo+ICM2ICBjZmlfcHJvYmVfb25lIChudW09MCwgaW5mbz0weDQwYzA3
+YWQwKSBhdCBkcml2ZXJzL210ZC9ub3IvY2ZpX2ZsYXNoLmM6OTcyCj4gIzcgIGNmaV9wcm9iZSAo
+ZGV2PTB4NDBjMDc5MTApIGF0IGRyaXZlcnMvbXRkL25vci9jZmlfZmxhc2guYzoxMDEzCj4gIzgg
+IDB4MDAwMDAwMDA0MTAwYzE4OCBpbiBkZXZpY2VfcHJvYmUgKGRldj0weDQwYzA3OTEwLCBkZXZA
+ZW50cnk9MHg0MGMwNzk5OCkgYXQgZHJpdmVycy9iYXNlL2RyaXZlci5jOjkxCj4gIzkgIDB4MDAw
+MDAwMDA0MTAwYzI1OCBpbiBtYXRjaCAoZHJ2PWRydkBlbnRyeT0weDQwYzA3OTEwLCBkZXY9MHg0
+MGMwNzk5OCwgZGV2QGVudHJ5PTB4NDBjMDc5MTApIGF0IGRyaXZlcnMvYmFzZS9kcml2ZXIuYzox
+NjQKPiAjMTAgMHgwMDAwMDAwMDQxMDBjNTc0IGluIHJlZ2lzdGVyX2RldmljZSAobmV3X2Rldmlj
+ZT0weDQwYzA3OTEwKSBhdCBkcml2ZXJzL2Jhc2UvZHJpdmVyLmM6MjA5Cj4gIzExIDB4MDAwMDAw
+MDA0MTAwY2EyOCBpbiBhZGRfZ2VuZXJpY19kZXZpY2UgKGRldm5hbWU9ZGV2bmFtZUBlbnRyeT0w
+eDQxMDJiNWQwICJjZmlfZmxhc2giLCBpZD1pZEBlbnRyeT0wLCByZXNuYW1lPXJlc25hbWVAZW50
+cnk9MHgwLCBzdGFydD1zdGFydEBlbnRyeT0wLAo+IMKgwqDCoMKgc2l6ZT1zaXplQGVudHJ5PTEz
+NDIxNzcyOCwgZmxhZ3M9ZmxhZ3NAZW50cnk9NTEyLCBwZGF0YT1wZGF0YUBlbnRyeT0weDApIGF0
+IGRyaXZlcnMvYmFzZS9yZXNvdXJjZS5jOjc4Cj4gIzEyIDB4MDAwMDAwMDA0MTAyNzI2MCBpbiBh
+ZGRfY2ZpX2ZsYXNoX2RldmljZSAoZmxhZ3M9MCwgc2l6ZT0xMzQyMTc3MjgsIHN0YXJ0PTAsIGlk
+PTApIGF0IGluY2x1ZGUvZHJpdmVyLmg6MjY3Cj4gIzEzIHZpcnRfZW52X2luaXQgKCkgYXQgYXJj
+aC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L2luaXQuYzozMAo+ICMxNCAweDAwMDAwMDAwNDEwMDE2
+MTAgaW4gc3RhcnRfYmFyZWJveCAoKSBhdCBjb21tb24vc3RhcnR1cC5jOjQxMgo+ICMxNSAweDAw
+MDAwMDAwNDEwMjg5YTAgaW4gYmFyZWJveF9ub25fcGJsX3N0YXJ0IChtZW1iYXNlPTEwOTA2ODkz
+MzQsIG1lbXNpemU9PG9wdGltaXplZCBvdXQ+LCBib2FyZGRhdGE9MHg0MTAzNTAwMCA8X19iYXJl
+Ym94X2NtZF9kcnZpbmZvKzg+KQo+IMKgwqDCoMKgYXQgYXJjaC9hcm0vY3B1L3N0YXJ0LmM6MjQ2
+Cj4gIzE2IDB4MDAwMDAwMDA0MTAyODlkMCBpbiBfX2JhcmVib3hfYXJtX2VudHJ5ICgpCj4gLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiAKPiBBcHBhcmVudGx5IHRoZSBOT1Ig
+Y2ZpIGRyaXZlciB0cmllcyB0byBmaWd1cmUgb3V0IHRoZSBmbGFzaCB3aWR0aCBieSB3cml0aW5n
+IHRvIGl0LiBJbiBRRU1VIGFhcmNoNjQgdmlydCBtYWNoaW5lLCB0aGUgZmxhc2ggc3RhcnRzIGF0
+IDB4MCwgc28gdGhlIGFkZHJlc3MgaXMgY29ycmVjdC4gSW4gYmFyZWJveCBjb25maWcgdGhlICJR
+RU1VIGFybTY0IHZpcnQgbWFjaGluZSIgaXMgc2VsZWN0ZWQuIEkgdHJpZWQgd2l0aCBzcGVjaWZ5
+aW5nIGEgIi1wZmxhc2ggLi4uIiBwYXJhbWV0ZXIgYXQgUUVNVSBjb21tYW5kIGxpbmUgYnV0IHN0
+aWxsIGdvdCB0aGUgc2FtZSBleGNlcHRpb24uIE1NVSAoU0NUTFIuTSkgaXMgdHVybmVkIG9uIC0g
+dGhlcmVmb3JlIEkgd29uZGVyIHdoeSBJIGdldCB0aGlzIGV4Y2VwdGlvbi4gSXQgc2VlbXMgdGhh
+dCB0aGUgTU1VIHJlZ2lvbiBmb3IgdGhlIGZsYXNoIGlzIG5vdCBvciBub3QgY29ycmVjdGx5IHNl
+dCB1cCB3aGVuIHRoZSBtZW1vcnkgYWNjZXNzIG9jY3Vycy4uPyBPciBkbyBJIGRvIHNvbWV0aGlu
+ZyB3cm9uZz8gUGxlYXNlIGxldCBtZSBrbm93IGhvdyBJIGdldCBpdCBydW5uaW5nLgo+IAoKcWVt
+dSBkZWNpZGVkIHRvIG1hcCB0aGUgZmxhc2ggYXQgMHgwLCB3aGljaCBjb2luY2lkZXMgd2l0aCB0
+aGUgemVybwpwYWdlIG1hcHBpbmcgb2YgdGhlIE1NVSB3aGljaCBpcyBjcmVhdGVkIHdpdGhpbiBi
+YXJlYm94IGJ5IGRlZmF1bHQuIEkKc2VuZCBzb21lIHBhdGNoZXMgdG8gdGhlIGxpc3Qgd2hlcmUg
+dGhpcyB3YXMgKHVnbGlseSkgZml4ZWQoWzFdLCBbMl0pLApidXQgd2UgZGlkbid0IGRlZW0gaXQg
+d29ydGggaXQgdG8gaGF2ZSBhbiBNTVUgb24gcWVtdSBmb3IgdGhlCndvcmthcm91bmRzLiBJbiB0
+aGUgZW5kIE1NVSBvbiBxZW11IHdvbid0IGdhaW4gYW55IHNwZWVkIGFkdmFudGFnZSwgc28KZm9y
+IG5vdyB0aGUgdmlydCBtYWNoaW5lIHdpbGwgb25seSB3b3JrIHdpdGggTU1VPW4uCgpbMV06IGh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL3BpcGVybWFpbC9iYXJlYm94LzIwMjAtTm92ZW1iZXIv
+MDM0NTA5Lmh0bWwKWzJdOiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9waXBlcm1haWwvYmFy
+ZWJveC8yMDIwLU5vdmVtYmVyLzAzNDUxMS5odG1sCgpSZWdhcmRzLApSb3V2ZW4gQ3plcndpbnNr
+aQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
+b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
 
