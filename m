@@ -2,74 +2,76 @@ Delivery-date: Fri, 12 Mar 2021 17:26:19 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKkcF-00055N-Du
+	id 1lKkcF-00055j-Tu
 	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 17:26:19 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKkcE-0005wX-Ld
+	id 1lKkcF-0005wq-4j
 	for lore@pengutronix.de; Fri, 12 Mar 2021 17:26:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:MIME-Version:Cc:List-Subscribe:List-Help:List-Post:List-Archive
-	:List-Unsubscribe:List-Id:Message-Id:Date:Subject:To:From:Reply-To:Content-ID
-	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GrWFBheqMFgxfL4jV7k6s/RlgMcUPWbB6VNe/3XUbQc=; b=FIEFsD4R6nB4NF1pMexUqHkT9K
-	sKe+beuEpqDBVq3tFfdHpOpfbj8DUQlwAggzT4Qk73Z1YX10WhARcjMpDU/Ec0qPej42VnV/VyXLW
-	PW1KtsLR8m4KYsy3Kq3BWMNb9iiKS8wDmcsS5e9BFA0jkpm/atoSRX/x8IilLxiQX3IyywzJvIz5M
-	qRoa6fqBlMKeGODcxmfwMy4LWbHUZgpghQ/a26rI3sLe3+X4Na9k/Ip6t5MFmhwfWe4my9MjN6Zln
-	mn4ABiIDLH+ZpNE/pxPhd90rWYGbQgXqKYyuM2/xkuLmeUkF1IEoI+lCruZw3g1ohs6RfEDZ8H7xi
-	/0KBRPig==;
+	:List-Unsubscribe:List-Id:References:In-Reply-To:Message-Id:Date:Subject:To:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=KPJaUwA2AWayPerKTu++U1Ukj2A29WmcYmSAuubnnZA=; b=BEHCullPKvVsElt0DIVkXPcH2B
+	mt6C2olTjYWij9vwuteWTEOTV9rya4mz1mnEEDP7D93/S2BkYs8J3Mp9VtoAAqECLMdWDv78Gd2J2
+	nTDaccqbQKW2ZLTOeB37A8dYTmFA9J4udbNAnu4EgfjPvEuOJLD12UR5PUZv3eeWA/0k2gRub1nIr
+	NUImVmXEW9AgplAujH3R+XyrID1BlfzCRxPVvDR1dMIPIdwrmdnHWmZ5Jfn1s4ulq5ihMzhe80Jf8
+	oYO3tXe0kdsHJabl2YTtwjTTZpvapvu/9bTD3k7VNY6ic4FNqweyzhc2f4Of7Xy0rsUe0J2UhI/z8
+	k1Fbp9Pg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lKkas-00BwZn-7M; Fri, 12 Mar 2021 16:24:54 +0000
+	id 1lKkb4-00Bwd3-1M; Fri, 12 Mar 2021 16:25:06 +0000
 Received: from mib.mailinblack.com ([137.74.84.110])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lKkaj-00BwYp-Jf
- for barebox@lists.infradead.org; Fri, 12 Mar 2021 16:24:48 +0000
+ id 1lKkar-00Bwa6-NP
+ for barebox@lists.infradead.org; Fri, 12 Mar 2021 16:24:55 +0000
 Received: from localhost (localhost [127.0.0.1])
- by mib.mailinblack.com (Postfix) with ESMTP id 1136D1A3B47
- for <barebox@lists.infradead.org>; Fri, 12 Mar 2021 16:24:45 +0000 (UTC)
+ by mib.mailinblack.com (Postfix) with ESMTP id 7C71F1A3B47
+ for <barebox@lists.infradead.org>; Fri, 12 Mar 2021 16:24:53 +0000 (UTC)
 Received: from mib.mailinblack.com (localhost [127.0.0.1])
- by mib.mailinblack.com with SMTP (Mib Daemon ) id KM6IGBKE;
- Fri, 12 Mar 2021 16:24:44 +0000 (UTC)
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KM6IGI2T;
+ Fri, 12 Mar 2021 16:24:53 +0000 (UTC)
 Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
- by mib.mailinblack.com (Postfix) with ESMTPS id DF2591A0123;
- Fri, 12 Mar 2021 16:24:44 +0000 (UTC)
+ by mib.mailinblack.com (Postfix) with ESMTPS id 561651A0123;
+ Fri, 12 Mar 2021 16:24:53 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id B6FC327E0514;
- Fri, 12 Mar 2021 17:24:44 +0100 (CET)
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 2FB0027E0514;
+ Fri, 12 Mar 2021 17:24:53 +0100 (CET)
 Received: from zimbra2.kalray.eu ([127.0.0.1])
  by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id qFe0sPguBMdA; Fri, 12 Mar 2021 17:24:44 +0100 (CET)
+ with ESMTP id oRXqWaR2A3_1; Fri, 12 Mar 2021 17:24:52 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 0AEEB27E0512;
- Fri, 12 Mar 2021 17:24:44 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 0AEEB27E0512
+ by zimbra2.kalray.eu (Postfix) with ESMTP id D103C27E0512;
+ Fri, 12 Mar 2021 17:24:52 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu D103C27E0512
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1615566284;
- bh=GSJ30PbkMWda7g2tJstoan3/jtCXYAVMuXIkmXR5k10=;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1615566292;
+ bh=kg+v3j6nzI8edsc2ix8Bjb2x7rkO+8G+BuLlueAPZ7g=;
  h=From:To:Date:Message-Id;
- b=Iacq8TlVgr3BXWb7fFv0HZPT4GBxXrMMtNpflwUn4VPtd2ItPylACDl7FEkKmiYL0
- cYSBItNUU0KV7vGuo3ggRfDAtKZ8VlaB6cVhAdFGex27DKGZvaeYA/wXvP0N54a8xB
- 9Ifh6tQGN5io1bFLATbShhKryzt7FCFMdNihF6qw=
+ b=fYUUfoZuUWifHTpVd5NC5+kKLZVCgwWHcR9iDQRscO5yTTRJdpbZDR90ab7ARL6p+
+ KIqEn/CdGcJJXGWhUlCSUhIwWbmKwsQxZQ0qQVPo9upJjuCeC4+U0OfnD0+3iGKSoV
+ 8ahwUqPInaSpXBKqggNVITZk0c2qIKTH7EWCkMDA=
 X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
 Received: from zimbra2.kalray.eu ([127.0.0.1])
  by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id 1dBadoxgX42E; Fri, 12 Mar 2021 17:24:43 +0100 (CET)
+ with ESMTP id EUijotViTzJd; Fri, 12 Mar 2021 17:24:52 +0100 (CET)
 Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
- by zimbra2.kalray.eu (Postfix) with ESMTPSA id ED16427E02DD;
- Fri, 12 Mar 2021 17:24:43 +0100 (CET)
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id B529327E02DD;
+ Fri, 12 Mar 2021 17:24:52 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
 To: barebox@lists.infradead.org
-Date: Fri, 12 Mar 2021 17:24:28 +0100
-Message-Id: <20210312162432.9189-1-jmaselbas@kalray.eu>
+Date: Fri, 12 Mar 2021 17:24:29 +0100
+Message-Id: <20210312162432.9189-2-jmaselbas@kalray.eu>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210312162432.9189-1-jmaselbas@kalray.eu>
+References: <20210312162432.9189-1-jmaselbas@kalray.eu>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210312_162447_182406_1CCEF277 
-X-CRM114-Status: UNSURE (   8.16  )
+X-CRM114-CacheID: sfid-20210312_162453_895871_1C67E51F 
+X-CRM114-Status: UNSURE (   6.65  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -96,35 +98,43 @@ X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] usb: dwc2: Make dwc2_wait_bit_set wait all bits in mask
+Subject: [PATCH 2/5] usb: dwc2: Replace pr_info with dev_warn
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The dwc2_wait_bit_set() wasn't waiting for all bits in the mask to be
-set but was waiting for only one bit set a mask.
-This is not the expected behavior as stated in the function's comment.
-
-The function dwc2_wait_bit_set() is always called with a mask of only
-one bit.
+There is no reason to not use dev_warn (as done in Linux), this might
+have been unwanted changes made when porting the driver to barebox.
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/dwc2/core.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc2/core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
-index 780efb262..fa9d6ae95 100644
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -532,7 +532,7 @@ static inline int dwc2_wait_bit_set(struct dwc2 *dwc2, u32 offset, u32 mask,
- 			    u32 timeout)
- {
- 	return wait_on_timeout(timeout * USECOND,
--			dwc2_readl(dwc2, offset) & mask);
-+			(dwc2_readl(dwc2, offset) & mask) == mask);
- }
+diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+index cc5729ed9..8ec77d68a 100644
+--- a/drivers/usb/dwc2/core.c
++++ b/drivers/usb/dwc2/core.c
+@@ -696,8 +696,8 @@ int dwc2_core_reset(struct dwc2 *dwc2)
+ 	/* Wait for AHB master IDLE state. */
+ 	ret = dwc2_wait_bit_set(dwc2, GRSTCTL, GRSTCTL_AHBIDLE, 10000);
+ 	if (ret) {
+-		pr_info("%s: Timeout! Waiting for AHB master IDLE state\n",
+-			__func__);
++		dwc2_warn(dwc2, "%s: Timeout! Waiting for AHB master IDLE state\n",
++				__func__);
+ 		return ret;
+ 	}
  
- /**
+@@ -728,7 +728,8 @@ int dwc2_core_reset(struct dwc2 *dwc2)
+ 
+ 	ret = dwc2_wait_bit_clear(dwc2, GRSTCTL, GRSTCTL_CSFTRST, 10000);
+ 	if (ret) {
+-		pr_info("%s: Timeout! Waiting for Core Soft Reset\n", __func__);
++		dwc2_warn(dwc2, "%s: Timeout! Waiting for Core Soft Reset\n",
++				__func__);
+ 		return ret;
+ 	}
+ 
 -- 
 2.17.1
 
