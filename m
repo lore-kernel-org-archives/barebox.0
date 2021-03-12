@@ -1,53 +1,62 @@
-Delivery-date: Fri, 12 Mar 2021 12:15:24 +0100
+Delivery-date: Fri, 12 Mar 2021 12:16:17 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKflM-0004OR-Tv
-	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 12:15:24 +0100
+	id 1lKfmD-0004Op-Mw
+	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 12:16:17 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKflL-0001Jw-TC
-	for lore@pengutronix.de; Fri, 12 Mar 2021 12:15:24 +0100
+	id 1lKfmC-0001Wv-LT
+	for lore@pengutronix.de; Fri, 12 Mar 2021 12:16:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
-	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=DLc+ENZ7aoupK7yRELe5E+SM3qdj7UTUo/TXOHwvlKE=; b=fBxsdvGQ9pa8Z3tiO4kz9Dfe2
-	XCvqDE0KhJPGIiTQLb0SI/b8AjF3RARx/tqTMMnh1uP4PeQ6Jfhah0Ps/6SF5v9Zti3xr4BeJNOLk
-	10AZsQ2+nZGBwr1AUfSBAOBlUlNaHyInaajSf45zNL7qfhWD4ziNWJPihN1eIQruowPQvwToj3EwC
-	sbG9/5ihvjrj0Fa0Pt67s6pK1voG68OLqmdoYgARWDW3ML6EpmmWf8hezk+7uIm2Xh958uS5ckPD3
-	NH3N1idrf8tMZ8EMBA4mZ57+r1tasiN4KbDOxaJ7QL8y088zGUshFjka/FTPSf+EXow0705fVN8QD
-	oZ6arYzfA==;
+	 bh=ke5HiGkQ5w9U0GZ0WbMpO2BV9gTgwVEln65PFO80zio=; b=clagSzyTCYpa2E7ji1BU8Gwyu
+	XOepTFTY6uUBWCVXriyHvwCL3uR5kow8OpFDOdEKK7hg3RGOgWBV47nvASBjN29f+aHxmUnJOV0cM
+	fcbYIgh/pPcP6Xb/EuB+osmFbAdyTFQfATjcjOyfAzY83lSw8yhSHIGt6P0nWrIMmrtDTbToWP8q9
+	GtvQI08VUGKyTgkTVikahqrBAJQZiy/3YbzP+LWbRrADnFc58BrnR7T4wAIn8yLQI2p+TKSgWl3lD
+	rbRXXV7B1rBAZA9OeYosebDN6qoTmISD4nyX4RDa3q4ArYEBwPb34sjsPsvRR0Kdqzi00BMfaB8w3
+	ERhuSfctg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lKfkD-00BGcp-7X; Fri, 12 Mar 2021 11:14:13 +0000
+	id 1lKflE-00BGkH-S2; Fri, 12 Mar 2021 11:15:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lKfjy-00BGbb-Mn
- for barebox@lists.infradead.org; Fri, 12 Mar 2021 11:14:00 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1lKfjv-00015e-G7; Fri, 12 Mar 2021 12:13:55 +0100
-To: "Gittinger Joerg (XC-ECO/ESH2)" <Joerg.Gittinger@de.bosch.com>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <f9f47ca6b7cb4fe88344dea3c63b5d84@de.bosch.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <33279efb-c168-04a4-10fe-8492d426679a@pengutronix.de>
-Date: Fri, 12 Mar 2021 12:13:55 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+ id 1lKfl5-00BGj5-Eu
+ for barebox@lists.infradead.org; Fri, 12 Mar 2021 11:15:10 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mtr@pengutronix.de>)
+ id 1lKfl3-0001HB-IY; Fri, 12 Mar 2021 12:15:05 +0100
+Received: from mtr by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mtr@pengutronix.de>)
+ id 1lKfl3-0000CW-9X; Fri, 12 Mar 2021 12:15:05 +0100
+Date: Fri, 12 Mar 2021 12:15:05 +0100
+From: Michael Tretter <m.tretter@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20210312111505.GN12621@pengutronix.de>
+References: <20210310132829.7662-1-s.hauer@pengutronix.de>
+ <20210310132829.7662-13-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <f9f47ca6b7cb4fe88344dea3c63b5d84@de.bosch.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20210310132829.7662-13-s.hauer@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 11:46:35 up 22 days, 14:10, 91 users,  load average: 0.06, 0.10, 0.14
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210312_111358_898363_2559E1B4 
-X-CRM114-Status: GOOD (  24.26  )
+X-CRM114-CacheID: sfid-20210312_111508_831282_6F696050 
+X-CRM114-Status: GOOD (  34.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,94 +76,247 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Aarch64 Qemu virt - crash
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 12/17] blspec: Rework firmware load
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello,
+On Wed, 10 Mar 2021 14:28:24 +0100, Sascha Hauer wrote:
+> Applying overlays in blspec currently works in two steps. First
+> of_firmware_load_overlay() is called which doesn't load an overlay,
+> but instead loads firmware when one is needed by the overlay. This
+> is done on the live tree, because that was needed to find the firmware
+> manager. The second step is to call of_register_overlay() to apply
+> the overlay to the kernel device tree when the fixups are executed.
+> 
+> Instead of using a separate step to load the firmware, load the firmware
+> as part of the of_fixups.
 
-On 12.03.21 11:55, Gittinger Joerg (XC-ECO/ESH2) wrote:
-> Hi,
-> 
-> I'd like to check out bareboot. In the documentation I found that aarch64 QEMU virt target is supported. Therefore I wanted to build it and run it in the emulator. I checked out latest git and built it for aarch64. When running it in QEMU 
->   $ qemu-system-aarch64 -m 2G -M virt -cpu cortex-a53 -kernel ../barebox/barebox -display none -serial stdio
-> I run into an exception:
-> 
-> -------- qemu output ---------
-> barebox 2021.02.0-jg-00106-g43a513fa8 #1 Mon Mar 8 15:56:47 CET 2021
-> 
-> 
-> Board: ARM QEMU virt64
-> DABT (current EL) exception (ESR 0x9600004b) at 0x0000000000000000
-> elr: 000000004100d754 lr : 000000004100d740
-> x0 : 0000000000000001 x1 : 00000000000000f0
-> x2 : 00000000bffefdbc x3 : 00000000ffffffff
-> x4 : 0000000000000008 x5 : 0000000000000000
-> x6 : 0000000040c07ad0 x7 : 0000000000000000
-> x8 : 0000000040c07ad0 x9 : 00000000bffefe90
-> ...
-> -----------------------------------
-> 
-> I debugged it in gdb and set a breakpoint at the ELR value. Backtrace shows this:
-> 
-> -----------------------------------
-> #0  flash_write8 (addr=0x0, value=240 '\360') at drivers/mtd/nor/cfi_flash.h:258
-> #1  flash_write_word (addr=0x0, datum=240, info=0x40c07ad0) at drivers/mtd/nor/cfi_flash.h:336
-> #2  flash_write_cmd (info=info@entry=0x40c07ad0, sect=sect@entry=0, offset=offset@entry=0, cmd=cmd@entry=240) at drivers/mtd/nor/cfi_flash.c:837
-> #3  0x000000004100d940 in flash_detect_width (info=info@entry=0x40c07ad0, qry=qry@entry=0xbffefe90) at drivers/mtd/nor/cfi_flash.c:244
-> #4  0x000000004100dc60 in flash_detect_cfi (qry=0xbffefe90, info=0x40c07ad0) at drivers/mtd/nor/cfi_flash.c:287
-> #5  flash_detect_size (info=0x40c07ad0) at drivers/mtd/nor/cfi_flash.c:321
-> #6  cfi_probe_one (num=0, info=0x40c07ad0) at drivers/mtd/nor/cfi_flash.c:972
-> #7  cfi_probe (dev=0x40c07910) at drivers/mtd/nor/cfi_flash.c:1013
-> #8  0x000000004100c188 in device_probe (dev=0x40c07910, dev@entry=0x40c07998) at drivers/base/driver.c:91
-> #9  0x000000004100c258 in match (drv=drv@entry=0x40c07910, dev=0x40c07998, dev@entry=0x40c07910) at drivers/base/driver.c:164
-> #10 0x000000004100c574 in register_device (new_device=0x40c07910) at drivers/base/driver.c:209
-> #11 0x000000004100ca28 in add_generic_device (devname=devname@entry=0x4102b5d0 "cfi_flash", id=id@entry=0, resname=resname@entry=0x0, start=start@entry=0,
->     size=size@entry=134217728, flags=flags@entry=512, pdata=pdata@entry=0x0) at drivers/base/resource.c:78
-> #12 0x0000000041027260 in add_cfi_flash_device (flags=0, size=134217728, start=0, id=0) at include/driver.h:267
-> #13 virt_env_init () at arch/arm/boards/qemu-virt64/init.c:30
-> #14 0x0000000041001610 in start_barebox () at common/startup.c:412
-> #15 0x00000000410289a0 in barebox_non_pbl_start (membase=1090689334, memsize=<optimized out>, boarddata=0x41035000 <__barebox_cmd_drvinfo+8>)
->     at arch/arm/cpu/start.c:246
-> #16 0x00000000410289d0 in __barebox_arm_entry ()
-> -----------------------------------
-> 
-> Apparently the NOR cfi driver tries to figure out the flash width by writing to it. In QEMU aarch64 virt machine, the flash starts at 0x0, so the address is correct. In barebox config the "QEMU arm64 virt machine" is selected. I tried with specifying a "-pflash ..." parameter at QEMU command line but still got the same exception. MMU (SCTLR.M) is turned on - therefore I wonder why I get this exception. It seems that the MMU region for the flash is not or not correctly set up when the memory access occurs..? Or do I do something wrong? Please let me know how I get it running.
-
-There was recent rework on this platform, please pull again. This particular
-issue is worked around with
-767edcc58757 ("mtd: cfi-flash: fail gracefully instead of crashing on NULL page")
-
-The root cause is that when MMU is enabled, barebox traps NULL pointer dereference
-and accessing the first page of a cfi-flash mapped at zero looks just like one.
-
-The proper fix would be to remap the cfi-flash for this board, but no one
-has come around to do this yet. An alternative if you need to pass data to barebox
-is to use VirtIO Block devices. They need no further configuration than qemu command
-line parameters. That's in next as well.
-
-Cheers,
-Ahmad
+Wouldn't this result in the firmware being loaded whenever of_fix_tree is
+called? Then, every use of the of_dump or of_diff commands would result in a
+reload of the firmware.
 
 > 
-> Thanks + Regards
-> Joerg
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  commands/of_overlay.c    |  4 ---
+>  common/blspec.c          | 73 +++++++++++-----------------------------
+>  drivers/of/of_firmware.c | 24 ++-----------
+>  drivers/of/overlay.c     |  2 ++
+>  include/of.h             |  4 +--
+>  5 files changed, 25 insertions(+), 82 deletions(-)
 > 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> diff --git a/commands/of_overlay.c b/commands/of_overlay.c
+> index 9b1cc6e8c7..17b0c9f4cb 100644
+> --- a/commands/of_overlay.c
+> +++ b/commands/of_overlay.c
+> @@ -42,10 +42,6 @@ static int do_of_overlay(int argc, char *argv[])
+>  	if (IS_ERR(overlay))
+>  		return PTR_ERR(overlay);
+>  
+> -	ret = of_firmware_load_overlay(overlay);
+> -	if (ret)
+> -		goto err;
+> -
+>  	ret = of_register_overlay(overlay);
+>  	if (ret) {
+>  		printf("cannot apply oftree overlay: %s\n", strerror(-ret));
+> diff --git a/common/blspec.c b/common/blspec.c
+> index d771176a45..fd3e088920 100644
+> --- a/common/blspec.c
+> +++ b/common/blspec.c
+> @@ -32,71 +32,33 @@ int blspec_entry_var_set(struct blspec_entry *entry, const char *name,
+>  			val ? strlen(val) + 1 : 0, 1);
+>  }
+>  
+> -static int blspec_apply_oftree_overlay(char *file, const char *abspath,
+> -				       int dryrun)
+> -{
+> -	int ret = 0;
+> -	struct fdt_header *fdt;
+> -	struct device_node *overlay;
+> -	char *path;
+> -	size_t size;
+> -
+> -	path = basprintf("%s/%s", abspath, file);
+> -
+> -	fdt = read_file(path, &size);
+> -	if (!fdt) {
+> -		pr_warn("unable to read \"%s\"\n", path);
+> -		ret = -EINVAL;
+> -		goto out;
+> -	}
+> -
+> -	overlay = of_unflatten_dtb(fdt, size);
+> -	free(fdt);
+> -	if (IS_ERR(overlay)) {
+> -		ret = PTR_ERR(overlay);
+> -		goto out;
+> -	}
+> -
+> -	if (dryrun) {
+> -		pr_info("dry run: skip overlay %s\n", path);
+> -		of_delete_node(overlay);
+> -		goto out;
+> -	}
+> -
+> -	ret = of_firmware_load_overlay(overlay);
+> -	if (ret) {
+> -		pr_warn("failed to load firmware: skip overlay \"%s\"\n", path);
+> -		of_delete_node(overlay);
+> -		goto out;
+> -	}
+> -
+> -	ret = of_register_overlay(overlay);
+> -	if (ret) {
+> -		pr_warn("cannot register devicetree overlay \"%s\"\n", path);
+> -		of_delete_node(overlay);
+> -	}
+> -
+> -out:
+> -	free(path);
+> -
+> -	return ret;
+> -}
+> -
+> -static void blspec_apply_oftree_overlays(const char *overlays,
+> -					 const char *abspath, int dryrun)
+> +static int blspec_overlay_fixup(struct device_node *root, void *ctx)
+>  {
+> +	struct blspec_entry *entry = ctx;
+> +	const char *overlays;
+>  	char *overlay;
+>  	char *sep, *freep;
+>  
+> +	overlays = blspec_entry_var_get(entry, "devicetree-overlay");
+> +
+>  	sep = freep = xstrdup(overlays);
+>  
+>  	while ((overlay = strsep(&sep, " "))) {
+> +		char *path;
+> +
+>  		if (!*overlay)
+>  			continue;
+> -		blspec_apply_oftree_overlay(overlay, abspath, dryrun);
+> +
+> +		path = basprintf("%s/%s", entry->rootpath, overlay);
+> +
+> +		of_overlay_apply_file(root, path);
+> +
+> +		free(path);
+>  	}
+>  
+>  	free(freep);
+> +
+> +	return 0;
+>  }
+>  
+>  /*
+> @@ -153,7 +115,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+>  	}
+>  
+>  	if (overlays)
+> -		blspec_apply_oftree_overlays(overlays, abspath, dryrun);
+> +		of_register_fixup(blspec_overlay_fixup, entry);
+>  
+>  	if (initrd)
+>  		data.initrd_file = basprintf("%s/%s", abspath, initrd);
+> @@ -186,6 +148,9 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+>  	if (ret)
+>  		pr_err("Booting failed\n");
+>  
+> +	if (overlays)
+> +		of_unregister_fixup(blspec_overlay_fixup, entry);
+> +
+>  	firmware_set_searchpath(old_fws);
+>  
+>  err_out:
+> diff --git a/drivers/of/of_firmware.c b/drivers/of/of_firmware.c
+> index 12ce1d95d0..d66f0ae7ce 100644
+> --- a/drivers/of/of_firmware.c
+> +++ b/drivers/of/of_firmware.c
+> @@ -48,27 +48,7 @@ static int load_firmware(struct device_node *target,
+>  	return err;
+>  }
+>  
+> -int of_firmware_load_overlay(struct device_node *overlay)
+> +int of_overlay_load_firmware(struct device_node *root, struct device_node *overlay)
+>  {
+> -	int err;
+> -	struct device_node *root;
+> -	struct device_node *resolved;
+> -	struct device_node *ovl;
+> -
+> -	root = of_get_root_node();
+> -	resolved = of_resolve_phandles(root, overlay);
+> -	/*
+> -	 * If the overlay cannot be resolved, use the load_firmware callback
+> -	 * with the unresolved overlay to verify that the overlay does not
+> -	 * depend on a firmware to be loaded. If a required firmware cannot be
+> -	 * loaded, the overlay must not be applied.
+> -	 */
+> -	ovl = resolved ? resolved : overlay;
+> -
+> -	err = of_process_overlay(root, ovl, load_firmware, NULL);
+> -
+> -	if (resolved)
+> -		of_delete_node(resolved);
+> -
+> -	return err;
+> +	return of_process_overlay(root, overlay, load_firmware, NULL);
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+This drops the check, if the overlay depends on firmware, which cannot be
+loaded, because Barebox could not resolve the overlay. This might be OK,
+because in this case, we also don't know if the target is an fpga-region.
+Looks fragile to me, anyway.
+
+>  }
+> diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+> index c9ede614a6..d42e15ed1c 100644
+> --- a/drivers/of/overlay.c
+> +++ b/drivers/of/overlay.c
+> @@ -221,6 +221,8 @@ int of_overlay_apply_tree(struct device_node *root,
+>  			pr_warn("failed to apply %s\n", fragment->name);
+>  	}
+>  
+> +	err = of_overlay_load_firmware(root, resolved);
+
+The firmware must be loaded before the overlay is applied. If the firmware
+cannot be loaded, the device tree must not be modified.
+
+Michael
+
+> +
+>  	of_delete_node(resolved);
+>  
+>  	return err;
+> diff --git a/include/of.h b/include/of.h
+> index 56291b9801..ecc5f5101a 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -1033,7 +1033,7 @@ int of_process_overlay(struct device_node *root,
+>  				   struct device_node *overlay, void *data),
+>  		    void *data);
+>  
+> -int of_firmware_load_overlay(struct device_node *overlay);
+> +int of_overlay_load_firmware(struct device_node *root, struct device_node *overlay);
+>  #else
+>  static inline struct device_node *of_resolve_phandles(struct device_node *root,
+>  					const struct device_node *overlay)
+> @@ -1067,7 +1067,7 @@ static inline int of_process_overlay(struct device_node *root,
+>  	return -ENOSYS;
+>  }
+>  
+> -static inline int of_firmware_load_overlay(struct device_node *overlay)
+> +static inline int of_overlay_load_firmware(struct device_node *root, struct device_node *overlay)
+>  {
+>  	return -ENOSYS;
+>  }
+> -- 
+> 2.29.2
 
 _______________________________________________
 barebox mailing list
