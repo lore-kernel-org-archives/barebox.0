@@ -1,51 +1,52 @@
-Delivery-date: Fri, 12 Mar 2021 11:14:50 +0100
+Delivery-date: Fri, 12 Mar 2021 11:16:56 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKeok-0004JJ-Ju
-	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 11:14:50 +0100
+	id 1lKeqm-0004Jj-Ne
+	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 11:16:56 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKeoj-0001gL-Su
-	for lore@pengutronix.de; Fri, 12 Mar 2021 11:14:50 +0100
+	id 1lKeql-00026m-L0
+	for lore@pengutronix.de; Fri, 12 Mar 2021 11:16:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=DP3flybS2bGO0jdUL/IX7ZY5cDSoRQBYX7faGFt1snQ=; b=T6gqSRpWoDmAGZH/fu2QLFIQXy
-	joZk+PPBGH1nuUy6MHofpolEW1WihZmDgaZHrV07RgwcSHLgH8XpaRhYLGpnzqhckWJF+ZPBcrSwq
-	uodsWSFgpooAfz17fN1fw0oi/xppt/NMZplxRBcY8X22Z1KXCQo26qPhUK9bWEY9dBv1/OMjfTt3w
-	tv+H3eV7U6vaYPQMmm5CZFrDd5g8hDR3aKzUQwypTjlnj0ib/+pXBr8qFb9E8/Za/WCDlrI1co8kv
-	Xc3XX8xgd6FLdCt3GSpcOlbKsgPu6owQ8GTgFLvxJaAYBUYYAkqTtg3zjEyy8kQ5ZiF97QA+2NkwW
-	s7tkXEUw==;
+	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Date:To:From:
+	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=kf3YFvEsxmNpLRcmQOb1BFZIFyIoQKtMGSgMPl0frvo=; b=D2sdtKY2wFYEVxAZP744qRCOf
+	wiLbgdgXImAQBrrqnWDZsbNh6w2O+f63Kt1dxH8+igwLAqHz6L5x8SEH7dTHyEesuQ1nYIDJGo7JS
+	8prvhRf35NBybKBWVWAu2cCNnYkHHv7wtI1wevsZl9v3/yXJQFfnklzMWSBDeiH9mWwr7AUjE/GZK
+	E5JFE2aO+rLP9vN17SD4n5pN3lwphpjmVDYED/AayYm1CBbaR333dT0yPBM8/BOWV4fwOVanaXvCI
+	vxL9ZCmZgZYnbf1/fwjJ+Xma4tj4QxZAQ5slOp5lghkEqUTxmufqzSzHRDfwEfle/j8aMc+PPNp7S
+	qUqeQvTnA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lKenQ-00B829-H4; Fri, 12 Mar 2021 10:13:30 +0000
+	id 1lKepq-00B8bO-Qp; Fri, 12 Mar 2021 10:15:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lKenC-00B80I-A0
- for barebox@lists.infradead.org; Fri, 12 Mar 2021 10:13:17 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
+ id 1lKepl-00B8aB-Fm
+ for barebox@lists.infradead.org; Fri, 12 Mar 2021 10:15:55 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ helo=[IPv6:::1]) by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lKen8-0001RP-Lq; Fri, 12 Mar 2021 11:13:10 +0100
-Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lKen8-0007oL-DC; Fri, 12 Mar 2021 11:13:10 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 12 Mar 2021 11:13:09 +0100
-Message-Id: <20210312101309.29650-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
+ (envelope-from <r.czerwinski@pengutronix.de>)
+ id 1lKepk-0001s8-1L; Fri, 12 Mar 2021 11:15:52 +0100
+Message-ID: <29418bb8fccd7967e6350e799067f4235a665fe2.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+To: Denis Osterland-Heim <denis.osterland@diehl.com>, 
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Date: Fri, 12 Mar 2021 11:15:51 +0100
+In-Reply-To: <20210311170403.22671-1-denis.osterland@diehl.com>
+References: <20210311170403.22671-1-denis.osterland@diehl.com>
+Organization: Pengutronix e.K.
+User-Agent: Evolution 3.38.4 
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210312_101314_675481_CB333B64 
-X-CRM114-Status: GOOD (  11.78  )
+X-CRM114-CacheID: sfid-20210312_101553_610687_76A6F39F 
+X-CRM114-Status: GOOD (  23.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -57,59 +58,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] net: phy: fix waiting for link
+Subject: Re: [PATCH] nvmem: ocotp: add support to revoke keys
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-phydev->adjust_link() is called only from phy_update_status() when the
-link status changes during that function. phydev->link is also updated
-in genphy_update_link() called from phy_wait_aneg_done(), so it can
-happen that phydev->link changes outside of phy_update_status(), thus
-phydev->adjust_link is never called and no link change notice is
-printed.
-
-Instead of calling genphy_update_link() from phy_wait_aneg_done(), call
-phy_update_status(). This makes sure that a link change is properly
-noticed.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/phy/phy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 622acbe40d..e8e8dad5bd 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -571,7 +571,7 @@ int phy_wait_aneg_done(struct phy_device *phydev)
- 	}
- 
- 	do {
--		genphy_update_link(phydev);
-+		phy_update_status(phydev);
- 		if (phydev->link == 1)
- 			return 0;
- 	} while (!is_timeout(start, PHY_AN_TIMEOUT * SECOND));
--- 
-2.29.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gRGVuaXMsCgpPbiBUaHUsIDIwMjEtMDMtMTEgYXQgMTc6MDcgKzAwMDAsIERlbmlzIE9z
+dGVybGFuZC1IZWltIHdyb3RlOgo+IEZyb206IERlbmlzIE9zdGVybGFuZC1IZWltIDxEZW5pcy5P
+c3RlcmxhbmRAZGllaGwuY29tPgo+IAo+IEFkZCBkZXZpY2UgdHJlZSBwcm9wZXJ0eSAnYmFyZWJv
+eCxrZXktcmV2b2tlJyB3aXRoIHRoZSBzeW50YXg6Cj4gPCBrZXlfcGhhbmRsZSBmdXNlX29mZnNl
+dCBtYXNrID4KPiAKPiBBbiBleGFtcGxlOgo+IHNpZ25hdHVyZSB7Cj4ga2V5MToga2V5LWltZzEg
+eyAuLi4gfTsKPiBrZXkyOiBrZXktc3JrMSB7IC4uLiB9Owo+IH07Cj4gfTsKPiAmb2NvdHAgewo+
+IGJhcmVib3gsa2V5LXJldm9rZSA9IDwKPiAma2V5MSAweDY2MCAxCj4gJmtleTIgMHg2ZjAgMQo+
+ID4gOwo+IH07CgpJIHRoaW5rIHVzaW5nIGRldmljZSB0cmVlIHByb3BlcnRpZXMgZm9yIHRoaXMg
+aXMgYSBiYWQgaWRlYS4gVGhpcwpzaG91bGQgcmF0aGVyIGJlIGltcGxlbWVudGVkIGFzIGEgcmV2
+b2tlIGFyZ3VtZW50IHRvIHRoZSBoYWIgY29tbWFuZC4KUmV2b2NhdGlvbiBjYW4gdGhhbiBiZSBk
+b25lIHdpdGhpbiBhIGJvb3R1cCBzY3JpcHQgZHVyaW5nIGJhcmVib3gKc3RhcnQuCgpSZWdhcmRz
+LApSb3V2ZW4KCj4gU2lnbmVkLW9mZi1ieTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0gPERlbmlzLk9z
+dGVybGFuZEBkaWVobC5jb20+Cj4gLS0tCj4gwqAuLi4vYmluZGluZ3MvbWlzYy9mc2wsaW14LW9j
+b3RwLnJzdCAgICAgICAgICAgfCAgNCArKwo+IMKgZHJpdmVycy9udm1lbS9vY290cC5jICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgMzcgKysrKysrKysrKysrKysrKysrLQo+IMKgMiBmaWxlcyBj
+aGFuZ2VkLCAzOSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQg
+YS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWlzYy9mc2wsaW14LW9jb3RwLnJz
+dCBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9taXNjL2ZzbCxpbXgtb2NvdHAu
+cnN0Cj4gaW5kZXggMjAyYmIzYWEwLi42M2E2ZjUzMzEgMTAwNjQ0Cj4gLS0tIGEvRG9jdW1lbnRh
+dGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL21pc2MvZnNsLGlteC1vY290cC5yc3QKPiArKysgYi9E
+b2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWlzYy9mc2wsaW14LW9jb3RwLnJzdAo+
+IEBAIC0xMiw2ICsxMiw5IEBAIE9wdGlvbmFsIHByb3BlcnRpZXM6Cj4gwqDCoMKgY2FuIGJlIG11
+bHRpcGxlIGVudHJpZXMgaW4gdGhlIGZvcm0gPCZwaGFuZGxlIHJlZ29mcz4gdG8gYXNzaWduIGEg
+TUFDCj4gwqDCoMKgYWRkcmVzcyB0byBhbiBFdGhlcm5ldCBkZXZpY2UuCj4gCj4gKyogYGBiYXJl
+Ym94LGtleS1yZXZva2VgYDogUmV2b2tlIChyZW1vdmUpIGtleSBpZiBiaXQgaXMgc2V0LiBUaGlz
+IGNhbiBiZSBtdWx0aXBsZQo+ICsgIGVudHJpZXMgaW4gdGhlIGZvcm0gPCZwaGFuZGxlIHJlZ29m
+cyBtYXNrPiB0byByZXZva2UgYSBrZXkgaWYgYml0IGlzIHNldC4KPiArCj4gwqBFeGFtcGxlOgo+
+IAo+IMKgLi4gY29kZS1ibG9jazo6IG5vbmUKPiBAQCAtMjAsNCArMjMsNSBAQCBFeGFtcGxlOgo+
+IMKgwqDCoGNvbXBhdGlibGUgPSAiZnNsLGlteDZxLW9jb3RwIjsKPiDCoMKgwqByZWcgPSA8MHgw
+MjFiYzAwMCAweDQwMDA+Owo+IMKgwqDCoGJhcmVib3gscHJvdmlkZS1tYWMtYWRkcmVzcyA9IDwm
+ZmVjIDB4NjIwPjsKPiArICBiYXJlYm94LGtleS1yZXZva2UgPSA8Ji9zaWduYXR1cmUva2V5LWlt
+ZzEgMHg2ZjAgMT47Cj4gwqDCoMKgfTsKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9udm1lbS9vY290
+cC5jIGIvZHJpdmVycy9udm1lbS9vY290cC5jCj4gaW5kZXggY2VlNTA5NTVlLi4wMGVlNmNkMDYg
+MTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9udm1lbS9vY290cC5jCj4gKysrIGIvZHJpdmVycy9udm1l
+bS9vY290cC5jCj4gQEAgLTY0MSw3ICs2NDEsNyBAQCBzdGF0aWMgc3RydWN0IHJlZ21hcF9idXMg
+aW14X29jb3RwX3JlZ21hcF9idXMgPSB7Cj4gwqAucmVnX3JlYWQgPSBpbXhfb2NvdHBfcmVnX3Jl
+YWQsCj4gwqB9Owo+IAo+IC1zdGF0aWMgdm9pZCBpbXhfb2NvdHBfaW5pdF9kdChzdHJ1Y3Qgb2Nv
+dHBfcHJpdiAqcHJpdikKPiArc3RhdGljIHZvaWQgaW14X29jb3RwX2luaXRfbWFjX2R0KHN0cnVj
+dCBvY290cF9wcml2ICpwcml2KQo+IMKgewo+IMKgY2hhciBtYWNbTUFDX0JZVEVTXTsKPiDCoGNv
+bnN0IF9fYmUzMiAqcHJvcDsKPiBAQCAtNjczLDYgKzY3MywzOCBAQCBzdGF0aWMgdm9pZCBpbXhf
+b2NvdHBfaW5pdF9kdChzdHJ1Y3Qgb2NvdHBfcHJpdiAqcHJpdikKPiDCoH0KPiDCoH0KPiAKPiAr
+c3RhdGljIHZvaWQgaW14X29jb3RwX2luaXRfa2V5X2R0KHN0cnVjdCBvY290cF9wcml2ICpwcml2
+KQo+ICt7Cj4gK2NvbnN0IF9fYmUzMiAqcHJvcDsKPiArc3RydWN0IGRldmljZV9ub2RlICpub2Rl
+ID0gcHJpdi0+ZGV2LnBhcmVudC0+ZGV2aWNlX25vZGU7Cj4gK2ludCBsZW47Cj4gKwo+ICtpZiAo
+IW5vZGUpCj4gK3JldHVybjsKPiArCj4gK3Byb3AgPSBvZl9nZXRfcHJvcGVydHkobm9kZSwgImJh
+cmVib3gsa2V5LXJldm9rZSIsICZsZW4pOwo+ICtpZiAoIXByb3ApCj4gK3JldHVybjsKPiArCj4g
+K2ZvciAoOyBsZW4gPj0gMzsgbGVuIC09IDMpIHsKPiArc3RydWN0IGRldmljZV9ub2RlICpybm9k
+ZTsKPiArdWludDMyX3QgcGhhbmRsZSwgb2Zmc2V0LCBtYXNrOwo+ICt1bnNpZ25lZCB2YWw7Cj4g
+Kwo+ICtwaGFuZGxlID0gYmUzMl90b19jcHVwKHByb3ArKyk7Cj4gKwo+ICtybm9kZSA9IG9mX2Zp
+bmRfbm9kZV9ieV9waGFuZGxlKHBoYW5kbGUpOwo+ICtvZmZzZXQgPSBiZTMyX3RvX2NwdXAocHJv
+cCsrKTsKPiArbWFzayA9IGJlMzJfdG9fY3B1cChwcm9wKyspOwo+ICsKPiAraWYgKGlteDZfb2Nv
+dHBfcmVhZF9vbmVfdTMyKHByaXYsIE9DT1RQX09GRlNFVF9UT19JTkRFWChvZmZzZXQpLCAmdmFs
+KSkKPiArY29udGludWU7Cj4gKwo+ICtpZiAodmFsICYgbWFzaykKPiArb2ZfZGVsZXRlX25vZGUo
+cm5vZGUpOwo+ICt9Cj4gK30KPiArCj4gwqBzdGF0aWMgaW50IGlteF9vY290cF93cml0ZShzdHJ1
+Y3QgZGV2aWNlX2QgKmRldiwgY29uc3QgaW50IG9mZnNldCwKPiDCoMKgwqDCoMKgY29uc3Qgdm9p
+ZCAqdmFsLCBpbnQgYnl0ZXMpCj4gwqB7Cj4gQEAgLTc5MCw3ICs4MjIsOCBAQCBzdGF0aWMgaW50
+IGlteF9vY290cF9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKPiDCoGlmIChJU19FTkFCTEVE
+KENPTkZJR19NQUNISU5FX0lEKSkKPiDCoGlteF9vY290cF9zZXRfdW5pcXVlX21hY2hpbmVfaWQo
+KTsKPiAKPiAtaW14X29jb3RwX2luaXRfZHQocHJpdik7Cj4gK2lteF9vY290cF9pbml0X21hY19k
+dChwcml2KTsKPiAraW14X29jb3RwX2luaXRfa2V5X2R0KHByaXYpOwo+IAo+IMKgZGV2X2FkZF9w
+YXJhbV9ib29sKCYocHJpdi0+ZGV2KSwgInNlbnNlX2VuYWJsZSIsIE5VTEwsIE5VTEwsICZwcml2
+LT5zZW5zZV9lbmFibGUsIHByaXYpOwo+IAo+IC0tCj4gMi4zMC4yCj4gCj4gRGllaGwgQ29ubmVj
+dGl2aXR5IFNvbHV0aW9ucyBHbWJICj4gR2VzY2jDpGZ0c2bDvGhydW5nOiBIb3JzdCBMZW9uYmVy
+Z2VyCj4gU2l0eiBkZXIgR2VzZWxsc2NoYWZ0OiBOw7xybmJlcmcgLSBSZWdpc3RlcmdlcmljaHQ6
+IEFtdHNnZXJpY2h0Cj4gTsO8cm5iZXJnOiBIUkIgMzIzMTUKPiAKPiBfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwo+IAo+IERlciBJbmhhbHQgZGVyIHZvcnN0ZWhlbmRlbiBFLU1haWwg
+aXN0IG5pY2h0IHJlY2h0bGljaCBiaW5kZW5kLiBEaWVzZSBFLU1haWwgZW50aGFlbHQgdmVydHJh
+dWxpY2hlIHVuZC9vZGVyIHJlY2h0bGljaCBnZXNjaHVldHp0ZSBJbmZvcm1hdGlvbmVuLgo+IElu
+Zm9ybWllcmVuIFNpZSB1bnMgYml0dGUsIHdlbm4gU2llIGRpZXNlIEUtTWFpbCBmYWVsc2NobGlj
+aGVyd2Vpc2UgZXJoYWx0ZW4gaGFiZW4uIEJpdHRlIGxvZXNjaGVuIFNpZSBpbiBkaWVzZW0gRmFs
+bCBkaWUgTmFjaHJpY2h0Lgo+IEplZGUgdW5lcmxhdWJ0ZSBGb3JtIGRlciBSZXByb2R1a3Rpb24s
+IEJla2FubnRnYWJlLCBBZW5kZXJ1bmcsIFZlcnRlaWx1bmcgdW5kL29kZXIgUHVibGlrYXRpb24g
+ZGllc2VyIEUtTWFpbCBpc3Qgc3RyZW5nc3RlbnMgdW50ZXJzYWd0Lgo+IAo+IC0gSW5mb3JtYXRp
+b25lbiB6dW0gRGF0ZW5zY2h1dHosIGluc2Jlc29uZGVyZSB6dSBJaHJlbiBSZWNodGVuLCBlcmhh
+bHRlbiBTaWUgdW50ZXI6Cj4gCj4gaHR0cHM6Ly93d3cuZGllaGwuY29tL2dyb3VwL2RlL3RyYW5z
+cGFyZW56LXVuZC1pbmZvcm1hdGlvbnNwZmxpY2h0ZW4vCj4gCj4gVGhlIGNvbnRlbnRzIG9mIHRo
+ZSBhYm92ZSBtZW50aW9uZWQgZS1tYWlsIGlzIG5vdCBsZWdhbGx5IGJpbmRpbmcuIFRoaXMgZS1t
+YWlsIGNvbnRhaW5zIGNvbmZpZGVudGlhbCBhbmQvb3IgbGVnYWxseSBwcm90ZWN0ZWQgaW5mb3Jt
+YXRpb24uIFBsZWFzZSBpbmZvcm0gdXMgaWYgeW91IGhhdmUgcmVjZWl2ZWQgdGhpcyBlLW1haWwg
+YnkKPiBtaXN0YWtlIGFuZCBkZWxldGUgaXQgaW4gc3VjaCBhIGNhc2UuIEVhY2ggdW5hdXRob3Jp
+emVkIHJlcHJvZHVjdGlvbiwgZGlzY2xvc3VyZSwgYWx0ZXJhdGlvbiwgZGlzdHJpYnV0aW9uIGFu
+ZC9vciBwdWJsaWNhdGlvbiBvZiB0aGlzIGUtbWFpbCBpcyBzdHJpY3RseSBwcm9oaWJpdGVkLgo+
+IAo+IC0gRm9yIGdlbmVyYWwgaW5mb3JtYXRpb24gb24gZGF0YSBwcm90ZWN0aW9uIGFuZCB5b3Vy
+IHJlc3BlY3RpdmUgcmlnaHRzIHBsZWFzZSB2aXNpdDoKPiAKPiBodHRwczovL3d3dy5kaWVobC5j
+b20vZ3JvdXAvZW4vdHJhbnNwYXJlbmN5LWFuZC1pbmZvcm1hdGlvbi1vYmxpZ2F0aW9ucy8KPiAK
+PiAKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+
+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cj4gCgoKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
 
