@@ -1,62 +1,86 @@
-Delivery-date: Fri, 12 Mar 2021 12:16:17 +0100
+Delivery-date: Fri, 12 Mar 2021 12:35:22 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKfmD-0004Op-Mw
-	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 12:16:17 +0100
+	id 1lKg4g-0004Q8-C8
+	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 12:35:22 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKfmC-0001Wv-LT
-	for lore@pengutronix.de; Fri, 12 Mar 2021 12:16:17 +0100
+	id 1lKg4c-0003Is-IE
+	for lore@pengutronix.de; Fri, 12 Mar 2021 12:35:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	d=lists.infradead.org; s=desiato.20200630; h=Sender:List-Subscribe:List-Help:
+	List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:Content-Type:
+	In-Reply-To:References:Message-ID:Date:Subject:To:From:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=ke5HiGkQ5w9U0GZ0WbMpO2BV9gTgwVEln65PFO80zio=; b=clagSzyTCYpa2E7ji1BU8Gwyu
-	XOepTFTY6uUBWCVXriyHvwCL3uR5kow8OpFDOdEKK7hg3RGOgWBV47nvASBjN29f+aHxmUnJOV0cM
-	fcbYIgh/pPcP6Xb/EuB+osmFbAdyTFQfATjcjOyfAzY83lSw8yhSHIGt6P0nWrIMmrtDTbToWP8q9
-	GtvQI08VUGKyTgkTVikahqrBAJQZiy/3YbzP+LWbRrADnFc58BrnR7T4wAIn8yLQI2p+TKSgWl3lD
-	rbRXXV7B1rBAZA9OeYosebDN6qoTmISD4nyX4RDa3q4ArYEBwPb34sjsPsvRR0Kdqzi00BMfaB8w3
-	ERhuSfctg==;
+	 bh=I0Nxr0vbeHK7yIuYpzGHH9wcGzq/pyzOQHHdBBRe6eQ=; b=S/AbhfIAPLg65wnAqzofl2MR5
+	5VrQnpZSAT7ePdO1Gj8oHBGefodBbg86DMfWewEIxs+OTbmkX2YcKu8degqZp0oPZT4mEuN7ZSgCh
+	7IgpITRqR1ONNjTDQeTRK29C3miVQFfNeYp4qGcra9vLt7jY2KK2o/tDU96knfVrxHEdXmy3/N0Vp
+	QAB9Ig6k4RQbws2kNP2QpggtjjB9kcL43o5rQ9LHgs7/9K/QFfSI6HSV3d6+U0ObLs52u5d5lMcqB
+	SoRv22jC2xDGTd/6dTyDZssPKQGy3RfIoL3tHY2Sb4s0LSVRqplAeLIqdBd82AfSQgQ5Nyi6itq2c
+	YDixUWCHw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lKflE-00BGkH-S2; Fri, 12 Mar 2021 11:15:16 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lKg3Q-00BIkh-Vw; Fri, 12 Mar 2021 11:34:05 +0000
+Received: from enterprise01.smtp.diehl.com ([193.201.238.219])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lKfl5-00BGj5-Eu
- for barebox@lists.infradead.org; Fri, 12 Mar 2021 11:15:10 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mtr@pengutronix.de>)
- id 1lKfl3-0001HB-IY; Fri, 12 Mar 2021 12:15:05 +0100
-Received: from mtr by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mtr@pengutronix.de>)
- id 1lKfl3-0000CW-9X; Fri, 12 Mar 2021 12:15:05 +0100
-Date: Fri, 12 Mar 2021 12:15:05 +0100
-From: Michael Tretter <m.tretter@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20210312111505.GN12621@pengutronix.de>
-References: <20210310132829.7662-1-s.hauer@pengutronix.de>
- <20210310132829.7662-13-s.hauer@pengutronix.de>
+ id 1lKg3H-00BIk1-Mz
+ for barebox@lists.infradead.org; Fri, 12 Mar 2021 11:33:59 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=diehl.com; i=@diehl.com; q=dns/txt; s=default;
+ t=1615548836; x=1647084836;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ mime-version; bh=Xv2ikQCaJEdQgnbEnMD9UAXGY4M2/Yb88rhqCLriyjE=;
+ b=aT0n3v50Kw8BvKXmsNnBKESPLtcGlY0SwFR5eyssLZ6Pkl/ePWrt7API
+ lGiCd0gDE6JrfERyj5Q3/o1by73xdoHrsyN8Na0Wt8uJQ0EWoTUMU5c/u
+ B/u488+ABj0DeCQGxnhlVqZUM52cjhYTD3tCTAZHR7XCjJtPW3zUmUumb
+ N4DWAGWLGhtr2WaEik+Yx+P79K3knkzl3VxarHIHc89PqAkPivYUOUJ5d
+ 2WHTctcxuXF/J9Ozc2V5JsJ/Fy4mAMIoQ4Nv5Eh2smsAkrkJsOL1LIf+Y
+ +gL3sUBQZ/14xv0k5TkDGYnM6DNd/hWMpf+idYJPsZzNTe2/Ou1Y4cmyh w==;
+IronPort-SDR: AAEtJNHHB9n1eHxBFf3zkd0O6bAbjuRfENoVu0Ituht1UIoKNKIx2bkr8vI5g8zWlzt5eG86ah
+ EZwNJnvK3kgxkQIra4HbUwoSFnSc6hTG38qUrlJOTs39WINl6xNQbLp3VcKVvSfdZAtsCrQvcQ
+ JC8CEGBhgwzBN+Su8iFA3EiRAv859BhmU8S1e7s6AP2qBfpraJxEBG0ouX1W2hPVngVFCiAOxz
+ 2E5HoMj4AQceax3rSt8xBPNydoXUNgzPpmMvGbrUVQCMcSq3/DZGjXeH9Z6hWNoYVns31AYnsg
+ lQg=
+IronPort-HdrOrdr: A9a23:hoy/9ap2nYvzZ43f3eyCnPUaV5uhL9V00zAX/kB9WHVpW+STnc
+ y2gbA/3Rj7lD4eVBgb6Le9EYOHRm7R8oMwxIEXM6urUgWOghrPEKhJ64z+zzr8XxDv7+I179
+ YfT4FSAMD9ZGIK7vrSzxK/F78brOWv0KftvuvGymcocAcCUdAF0y5cKiK2VnJ7XxNHA51RLu
+ vs2uNiqyC7cXoaKuSXb0N1PdTrnNHAmJL4bRNuPXdOg2PisRqS5LH3CBSe1BsFOgk/pIsKym
+ TZjxf/opyqrvDT8G6t60bo859UlNH9o+EsOOWwi9MYIjipqgGkaJUJYd2/lQ01u+2m5RIWls
+ DNqX4bXvhb1nW5RA6IiCqo9SLblA8UzVWK8y7qvVLT5ejCABMzEY5omJ9QeBqx0TtYgPhMlI
+ Zwm1+/m7USJxXahyj578XPTHhR5zKJiGtnnO4IhXlWUY8Tc6ZLq4YS5llYHf47bV3HwZFiFO
+ FvCc3GjcwmCm+yfjTcpC1i0dasVnM8ElODTlIZssKYyTRQgWt01lAV3sAZg3cG+o8sUpUs3Z
+ W/Do140LVVCsMGZ6N0A+kMBdatAmvWWBTWLSacOlLiGKYbO2/cqpL+7bkvjdvaBaAg3d81g5
+ TOUFRRqG40dQbvEKS1reF2ziw=
+X-IronPort-AV: E=Sophos;i="5.81,243,1610406000"; 
+ d="mbox'208?scan'208,208";a="6208398"
+From: Denis Osterland-Heim <denis.osterland@diehl.com>
+To: "r.czerwinski@pengutronix.de" <r.czerwinski@pengutronix.de>,
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Thread-Topic: [PATCH] arch: arm: mach-imx: print HAB ROM code version
+Thread-Index: AQHXFpj//SmYagvV2Ea73pcSD91H7aqAFRYAgAAUGoA=
+Date: Fri, 12 Mar 2021 11:33:52 +0000
+Message-ID: <c951856e43f7946b71d7b1dd4d9dca11caba4b47.camel@diehl.com>
+References: <20210311170137.22411-1-denis.osterland@diehl.com>
+ <5cec528064955430448ef721fb4a351c0ac47c19.camel@pengutronix.de>
+In-Reply-To: <5cec528064955430448ef721fb4a351c0ac47c19.camel@pengutronix.de>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-disclaimerprocessed: True
+Content-Type: multipart/mixed;
+ boundary="_005_c951856e43f7946b71d7b1dd4d9dca11caba4b47cameldiehlcom_"
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210310132829.7662-13-s.hauer@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 11:46:35 up 22 days, 14:10, 91 users,  load average: 0.06, 0.10, 0.14
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-GBS-PROC: 5x5xXKsZ7k4sJw6jWwvS4qcX3wyWAdh83LVqijjILpOFVNUyTelsbaMZAGUtJAa0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210312_111508_831282_6F696050 
-X-CRM114-Status: GOOD (  34.53  )
+X-CRM114-CacheID: sfid-20210312_113356_535638_259F175B 
+X-CRM114-Status: GOOD (  33.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,258 +92,350 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-103.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 12/17] blspec: Rework firmware load
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,USER_IN_WELCOMELIST,
+	USER_IN_WHITELIST autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] arch: arm: mach-imx: print HAB ROM code version
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, 10 Mar 2021 14:28:24 +0100, Sascha Hauer wrote:
-> Applying overlays in blspec currently works in two steps. First
-> of_firmware_load_overlay() is called which doesn't load an overlay,
-> but instead loads firmware when one is needed by the overlay. This
-> is done on the live tree, because that was needed to find the firmware
-> manager. The second step is to call of_register_overlay() to apply
-> the overlay to the kernel device tree when the fixups are executed.
-> 
-> Instead of using a separate step to load the firmware, load the firmware
-> as part of the of_fixups.
+--_005_c951856e43f7946b71d7b1dd4d9dca11caba4b47cameldiehlcom_
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <F1A64402513DDC4ABEE196F020550BA3@diehl.internal>
+Content-Transfer-Encoding: base64
 
-Wouldn't this result in the firmware being loaded whenever of_fix_tree is
-called? Then, every use of the of_dump or of_diff commands would result in a
-reload of the firmware.
+SGkgUm91dmVuLA0KDQpJIGFtIHVzaW5nIGdpdCBzZW5kLWVtYWlsLCBidXQgdGhlIE1TLUV4Y2hh
+bmdlIHNlcnZlciAiaW1wcm92ZXMiIHRoZSBtZXNzYWdlcy4NCkluIG15IG91dGJveCBvbiB0aGUg
+c2VydmVyIChPV0EpIHRoZXkgbG9vayBnb29kIGFuZCBkbyBub3QgaGF2ZSB0aGUgZm9vdGVyLg0K
+DQpQbGVhc2UgZmluZCBvcmlnaW5hbCBtYm94ZXMgYXR0YWNoZWQuDQpNaWNoYWVsIE9sYnJpY2gg
+Z2F2ZSBtZSB0aGUgdGlwLCB0aGF0IGFuIGF0dGFjaGVkIG1ib3ggaXMgYXMgZWFzeSBmb3IgaGlt
+IGFzIGlubGluZS4NCkhvcGVmdWxseSB0aGlzIGlzIHRydWUgZm9yIFNhc2hhLCB0b28uDQoNClJl
+Z2FyZHMsIERlbmlzDQoNCkFtIEZyZWl0YWcsIGRlbiAxMi4wMy4yMDIxLCAxMToyMSArMDEwMCBz
+Y2hyaWViIFJvdXZlbiBDemVyd2luc2tpOg0KPiBIaSBEZW5pcywNCj4NCj4gT24gVGh1LCAyMDIx
+LTAzLTExIGF0IDE3OjA3ICswMDAwLCBEZW5pcyBPc3RlcmxhbmQtSGVpbSB3cm90ZToNCj4gPiBG
+cm9tOiBEZW5pcyBPc3RlcmxhbmQtSGVpbSA8RGVuaXMuT3N0ZXJsYW5kQGRpZWhsLmNvbT4NCj4g
+Pg0KPiA+IEFkZCB0aGUgdHdvIG1pc3NpbmcgZnVuY3Rpb24gcG9pbnRlcnMgYWNjb3JkaW5nIHRv
+IEhBQjRfQVBJLnBkZg0KPiA+IGZyb20gY3N0LTMuMS4wIGFuZCBwcmludCB0aGUgdmVyc2lvbiBv
+ZiBST00gY29kZS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IERlbmlzIE9zdGVybGFuZC1IZWlt
+IDxEZW5pcy5Pc3RlcmxhbmRAZGllaGwuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL2hhYi9o
+YWJ2NC5jIHwgNyArKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKykN
+Cj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2hhYi9oYWJ2NC5jIGIvZHJpdmVycy9oYWIv
+aGFidjQuYw0KPiA+IGluZGV4IGMyYWNiODEzNi4uZjMwZTVkNjhjIDEwMDY0NA0KPiA+IC0tLSBh
+L2RyaXZlcnMvaGFiL2hhYnY0LmMNCj4gPiArKysgYi9kcml2ZXJzL2hhYi9oYWJ2NC5jDQo+ID4g
+QEAgLTE2MSw2ICsxNjEsNyBAQCBzdHJ1Y3QgaGFiX2hlYWRlciB7DQo+ID4gIHVpbnQ4X3QgcGFy
+Ow0KPiA+ICB9IF9fcGFja2VkOw0KPiA+DQo+ID4gK3R5cGVkZWYgdm9pZCAoKmhhYl9pbWFnZV9l
+bnRyeV9mbikodm9pZCk7DQo+ID4gIHR5cGVkZWYgZW51bSBoYWJfc3RhdHVzIGhhYl9sb2FkZXJf
+Y2FsbGJhY2tfZm4odm9pZCAqKnN0YXJ0LCB1aW50MzJfdCAqYnl0ZXMsIGNvbnN0IHZvaWQgKmJv
+b3RfZGF0YSk7DQo+ID4NCj4gPiAgc3RydWN0IGhhYnY0X3J2dCB7DQo+ID4gQEAgLTE3NSw2ICsx
+NzYsOCBAQCBzdHJ1Y3QgaGFidjRfcnZ0IHsNCj4gPiAgZW51bSBoYWJfc3RhdHVzICgqcmVwb3J0
+X2V2ZW50KShlbnVtIGhhYl9zdGF0dXMgc3RhdHVzLCB1aW50MzJfdCBpbmRleCwgdm9pZCAqZXZl
+bnQsIHVpbnQzMl90ICpieXRlcyk7DQo+ID4gIGVudW0gaGFiX3N0YXR1cyAoKnJlcG9ydF9zdGF0
+dXMpKGVudW0gaGFiX2NvbmZpZyAqY29uZmlnLCBlbnVtIGhhYl9zdGF0ZSAqc3RhdGUpOw0KPiA+
+ICB2b2lkICgqZmFpbHNhZmUpKHZvaWQpOw0KPiA+ICtoYWJfaW1hZ2VfZW50cnlfZm4gKCphdXRo
+ZW50aWNhdGVfaW1hZ2Vfbm9fZGNkKSh1aW50OF90IGNpZCwgcHRyZGlmZl90IGl2dF9vZmZzZXQs
+IHZvaWQgKipzdGFydCwgc2l6ZV90ICpieXRlcywgaGFiX2xvYWRlcl9jYWxsYmFja19mbiBsb2Fk
+ZXIpOw0KPiA+ICt1aW50MzJfdCAoKmdldF92ZXJzaW9uKSh2b2lkKTsNCj4gPiAgfSBfX3BhY2tl
+ZDsNCj4gPg0KPiA+ICAjZGVmaW5lIEZTTF9TSVBfSEFCICAgICAgICAgICAgIDB4QzIwMDAwMDcN
+Cj4gPiBAQCAtNTI4LDYgKzUzMSw3IEBAIHN0YXRpYyBpbnQgaGFidjRfZ2V0X3N0YXR1cyhjb25z
+dCBzdHJ1Y3QgaGFidjRfcnZ0ICpydnQpDQo+ID4gIHVpbnQ4X3QgKmRhdGE7DQo+ID4gIHVpbnQz
+Ml90IGxlbjsNCj4gPiAgaW50IGk7DQo+ID4gK3VpbnQzMl90IHZlcnNpb247DQo+ID4gIGVudW0g
+aGFiX3N0YXR1cyBzdGF0dXM7DQo+ID4gIGVudW0gaGFiX2NvbmZpZyBjb25maWcgPSAweDA7DQo+
+ID4gIGVudW0gaGFiX3N0YXRlIHN0YXRlID0gMHgwOw0KPiA+IEBAIC01MzcsNiArNTQxLDkgQEAg
+c3RhdGljIGludCBoYWJ2NF9nZXRfc3RhdHVzKGNvbnN0IHN0cnVjdCBoYWJ2NF9ydnQgKnJ2dCkN
+Cj4gPiAgcmV0dXJuIC1FSU5WQUw7DQo+ID4gIH0NCj4gPg0KPiA+ICt2ZXJzaW9uID0gcnZ0LT5n
+ZXRfdmVyc2lvbigpOw0KPg0KPiBUaGlzIHVuY29uZGl0aW9uYWwgY2FsbCB3aWxsIGJyZWFrIEhB
+QiBvbiBpLk1YOE1RIHdoZXJlIGl0IGlzbid0DQo+IGltcGxlbWVudGVkIGluIHRoZSBSVlQsIEkg
+ZG9uJ3Qga25vdyBpZiB0aGUgY2FsbCBpcyBldmVuIHJvdXRlZCBpbiB0aGUNCj4gZG93bnN0cmVh
+bSBURi1BLg0KPg0KPiBBc2lkZSBmcm9tIHRoaXMgeW91ciBtYWlsZXIvbWFpbHNlcnZlciBpcyBt
+YW5nbGluZyB0aGUgcGF0Y2hlcywgaWYgaXQNCj4gaXMgdGhlIG1haWxlciwgbWF5YmUgeW91IGNh
+biBzd2l0Y2ggdG8gZ2l0LXNlbmQtZW1haWwsIHNlZQ0KPiBodHRwczovL2dpdC1zZW5kLWVtYWls
+LmlvDQo+DQo+ID4gK3ByX2luZm8oInZlcnNpb246ICV1LiV1LiV1XG4iLCAodmVyc2lvbiA+PiAx
+NiksICgodmVyc2lvbiA+PiA4KSAmIDB4ZmYpLCAodmVyc2lvbiAmIDB4ZmYpKTsNCj4gPiArDQo+
+ID4gIHN0YXR1cyA9IHJ2dC0+cmVwb3J0X3N0YXR1cygmY29uZmlnLCAmc3RhdGUpOw0KPiA+ICBw
+cl9pbmZvKCJTdGF0dXM6ICVzICgweCUwMngpXG4iLCBoYWJ2NF9nZXRfc3RhdHVzX3N0cihzdGF0
+dXMpLCBzdGF0dXMpOw0KPiA+ICBwcl9pbmZvKCJDb25maWc6ICVzICgweCUwMngpXG4iLCBoYWJ2
+NF9nZXRfY29uZmlnX3N0cihjb25maWcpLCBjb25maWcpOw0KPiA+IC0tDQo+ID4gMi4zMC4yDQo+
+DQo+IFJlZ2FyZHMsDQo+IFJvdXZlbiBDemVyd2luc2tpDQpEaWVobCBDb25uZWN0aXZpdHkgU29s
+dXRpb25zIEdtYkgNCkdlc2Now6RmdHNmw7xocnVuZzogSG9yc3QgTGVvbmJlcmdlcg0KU2l0eiBk
+ZXIgR2VzZWxsc2NoYWZ0OiBOw7xybmJlcmcgLSBSZWdpc3RlcmdlcmljaHQ6IEFtdHNnZXJpY2h0
+DQpOw7xybmJlcmc6IEhSQiAzMjMxNQ0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+Xw0KDQpEZXIgSW5oYWx0IGRlciB2b3JzdGVoZW5kZW4gRS1NYWlsIGlzdCBuaWNodCByZWNodGxp
+Y2ggYmluZGVuZC4gRGllc2UgRS1NYWlsIGVudGhhZWx0IHZlcnRyYXVsaWNoZSB1bmQvb2RlciBy
+ZWNodGxpY2ggZ2VzY2h1ZXR6dGUgSW5mb3JtYXRpb25lbi4NCkluZm9ybWllcmVuIFNpZSB1bnMg
+Yml0dGUsIHdlbm4gU2llIGRpZXNlIEUtTWFpbCBmYWVsc2NobGljaGVyd2Vpc2UgZXJoYWx0ZW4g
+aGFiZW4uIEJpdHRlIGxvZXNjaGVuIFNpZSBpbiBkaWVzZW0gRmFsbCBkaWUgTmFjaHJpY2h0Lg0K
+SmVkZSB1bmVybGF1YnRlIEZvcm0gZGVyIFJlcHJvZHVrdGlvbiwgQmVrYW5udGdhYmUsIEFlbmRl
+cnVuZywgVmVydGVpbHVuZyB1bmQvb2RlciBQdWJsaWthdGlvbiBkaWVzZXIgRS1NYWlsIGlzdCBz
+dHJlbmdzdGVucyB1bnRlcnNhZ3QuDQoNCi0gSW5mb3JtYXRpb25lbiB6dW0gRGF0ZW5zY2h1dHos
+IGluc2Jlc29uZGVyZSB6dSBJaHJlbiBSZWNodGVuLCBlcmhhbHRlbiBTaWUgdW50ZXI6DQoNCmh0
+dHBzOi8vd3d3LmRpZWhsLmNvbS9ncm91cC9kZS90cmFuc3BhcmVuei11bmQtaW5mb3JtYXRpb25z
+cGZsaWNodGVuLw0KDQpUaGUgY29udGVudHMgb2YgdGhlIGFib3ZlIG1lbnRpb25lZCBlLW1haWwg
+aXMgbm90IGxlZ2FsbHkgYmluZGluZy4gVGhpcyBlLW1haWwgY29udGFpbnMgY29uZmlkZW50aWFs
+IGFuZC9vciBsZWdhbGx5IHByb3RlY3RlZCBpbmZvcm1hdGlvbi4gUGxlYXNlIGluZm9ybSB1cyBp
+ZiB5b3UgaGF2ZSByZWNlaXZlZCB0aGlzIGUtbWFpbCBieQ0KbWlzdGFrZSBhbmQgZGVsZXRlIGl0
+IGluIHN1Y2ggYSBjYXNlLiBFYWNoIHVuYXV0aG9yaXplZCByZXByb2R1Y3Rpb24sIGRpc2Nsb3N1
+cmUsIGFsdGVyYXRpb24sIGRpc3RyaWJ1dGlvbiBhbmQvb3IgcHVibGljYXRpb24gb2YgdGhpcyBl
+LW1haWwgaXMgc3RyaWN0bHkgcHJvaGliaXRlZC4NCg0KLSBGb3IgZ2VuZXJhbCBpbmZvcm1hdGlv
+biBvbiBkYXRhIHByb3RlY3Rpb24gYW5kIHlvdXIgcmVzcGVjdGl2ZSByaWdodHMgcGxlYXNlIHZp
+c2l0Og0KDQpodHRwczovL3d3dy5kaWVobC5jb20vZ3JvdXAvZW4vdHJhbnNwYXJlbmN5LWFuZC1p
+bmZvcm1hdGlvbi1vYmxpZ2F0aW9ucy8NCg0KDQo=
 
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  commands/of_overlay.c    |  4 ---
->  common/blspec.c          | 73 +++++++++++-----------------------------
->  drivers/of/of_firmware.c | 24 ++-----------
->  drivers/of/overlay.c     |  2 ++
->  include/of.h             |  4 +--
->  5 files changed, 25 insertions(+), 82 deletions(-)
-> 
-> diff --git a/commands/of_overlay.c b/commands/of_overlay.c
-> index 9b1cc6e8c7..17b0c9f4cb 100644
-> --- a/commands/of_overlay.c
-> +++ b/commands/of_overlay.c
-> @@ -42,10 +42,6 @@ static int do_of_overlay(int argc, char *argv[])
->  	if (IS_ERR(overlay))
->  		return PTR_ERR(overlay);
->  
-> -	ret = of_firmware_load_overlay(overlay);
-> -	if (ret)
-> -		goto err;
-> -
->  	ret = of_register_overlay(overlay);
->  	if (ret) {
->  		printf("cannot apply oftree overlay: %s\n", strerror(-ret));
-> diff --git a/common/blspec.c b/common/blspec.c
-> index d771176a45..fd3e088920 100644
-> --- a/common/blspec.c
-> +++ b/common/blspec.c
-> @@ -32,71 +32,33 @@ int blspec_entry_var_set(struct blspec_entry *entry, const char *name,
->  			val ? strlen(val) + 1 : 0, 1);
->  }
->  
-> -static int blspec_apply_oftree_overlay(char *file, const char *abspath,
-> -				       int dryrun)
-> -{
-> -	int ret = 0;
-> -	struct fdt_header *fdt;
-> -	struct device_node *overlay;
-> -	char *path;
-> -	size_t size;
-> -
-> -	path = basprintf("%s/%s", abspath, file);
-> -
-> -	fdt = read_file(path, &size);
-> -	if (!fdt) {
-> -		pr_warn("unable to read \"%s\"\n", path);
-> -		ret = -EINVAL;
-> -		goto out;
-> -	}
-> -
-> -	overlay = of_unflatten_dtb(fdt, size);
-> -	free(fdt);
-> -	if (IS_ERR(overlay)) {
-> -		ret = PTR_ERR(overlay);
-> -		goto out;
-> -	}
-> -
-> -	if (dryrun) {
-> -		pr_info("dry run: skip overlay %s\n", path);
-> -		of_delete_node(overlay);
-> -		goto out;
-> -	}
-> -
-> -	ret = of_firmware_load_overlay(overlay);
-> -	if (ret) {
-> -		pr_warn("failed to load firmware: skip overlay \"%s\"\n", path);
-> -		of_delete_node(overlay);
-> -		goto out;
-> -	}
-> -
-> -	ret = of_register_overlay(overlay);
-> -	if (ret) {
-> -		pr_warn("cannot register devicetree overlay \"%s\"\n", path);
-> -		of_delete_node(overlay);
-> -	}
-> -
-> -out:
-> -	free(path);
-> -
-> -	return ret;
-> -}
-> -
-> -static void blspec_apply_oftree_overlays(const char *overlays,
-> -					 const char *abspath, int dryrun)
-> +static int blspec_overlay_fixup(struct device_node *root, void *ctx)
->  {
-> +	struct blspec_entry *entry = ctx;
-> +	const char *overlays;
->  	char *overlay;
->  	char *sep, *freep;
->  
-> +	overlays = blspec_entry_var_get(entry, "devicetree-overlay");
-> +
->  	sep = freep = xstrdup(overlays);
->  
->  	while ((overlay = strsep(&sep, " "))) {
-> +		char *path;
-> +
->  		if (!*overlay)
->  			continue;
-> -		blspec_apply_oftree_overlay(overlay, abspath, dryrun);
-> +
-> +		path = basprintf("%s/%s", entry->rootpath, overlay);
-> +
-> +		of_overlay_apply_file(root, path);
-> +
-> +		free(path);
->  	}
->  
->  	free(freep);
-> +
-> +	return 0;
->  }
->  
->  /*
-> @@ -153,7 +115,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
->  	}
->  
->  	if (overlays)
-> -		blspec_apply_oftree_overlays(overlays, abspath, dryrun);
-> +		of_register_fixup(blspec_overlay_fixup, entry);
->  
->  	if (initrd)
->  		data.initrd_file = basprintf("%s/%s", abspath, initrd);
-> @@ -186,6 +148,9 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
->  	if (ret)
->  		pr_err("Booting failed\n");
->  
-> +	if (overlays)
-> +		of_unregister_fixup(blspec_overlay_fixup, entry);
-> +
->  	firmware_set_searchpath(old_fws);
->  
->  err_out:
-> diff --git a/drivers/of/of_firmware.c b/drivers/of/of_firmware.c
-> index 12ce1d95d0..d66f0ae7ce 100644
-> --- a/drivers/of/of_firmware.c
-> +++ b/drivers/of/of_firmware.c
-> @@ -48,27 +48,7 @@ static int load_firmware(struct device_node *target,
->  	return err;
->  }
->  
-> -int of_firmware_load_overlay(struct device_node *overlay)
-> +int of_overlay_load_firmware(struct device_node *root, struct device_node *overlay)
->  {
-> -	int err;
-> -	struct device_node *root;
-> -	struct device_node *resolved;
-> -	struct device_node *ovl;
-> -
-> -	root = of_get_root_node();
-> -	resolved = of_resolve_phandles(root, overlay);
-> -	/*
-> -	 * If the overlay cannot be resolved, use the load_firmware callback
-> -	 * with the unresolved overlay to verify that the overlay does not
-> -	 * depend on a firmware to be loaded. If a required firmware cannot be
-> -	 * loaded, the overlay must not be applied.
-> -	 */
-> -	ovl = resolved ? resolved : overlay;
-> -
-> -	err = of_process_overlay(root, ovl, load_firmware, NULL);
-> -
-> -	if (resolved)
-> -		of_delete_node(resolved);
-> -
-> -	return err;
-> +	return of_process_overlay(root, overlay, load_firmware, NULL);
+--_005_c951856e43f7946b71d7b1dd4d9dca11caba4b47cameldiehlcom_
+Content-Type: application/mbox; name="1.mbox"
+Content-Description: 1.mbox
+Content-Disposition: attachment; filename="1.mbox"; size=2436;
+	creation-date="Fri, 12 Mar 2021 11:33:52 GMT";
+	modification-date="Fri, 12 Mar 2021 11:33:52 GMT"
+Content-ID: <4FCCA5D7B76E074F80B258D6F48E6507@diehl.internal>
+Content-Transfer-Encoding: base64
 
-This drops the check, if the overlay depends on firmware, which cannot be
-loaded, because Barebox could not resolve the overlay. This might be OK,
-because in this case, we also don't know if the target is an fpga-region.
-Looks fragile to me, anyway.
+UmV0dXJuLVBhdGg6IDxvc3RlcmxhZEBjd3BjMTQzNS5kaWVobGFrby5sb2NhbD4KWC1PcmlnaW5h
+bC1UbzogYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCkRlbGl2ZXJlZC1Ubzogb3N0ZXJsYWRA
+Y3dwYzE0MzUuZGllaGxha28ubG9jYWwKUmVjZWl2ZWQ6IGJ5IGN3cGMxNDM1LmRpZWhsYWtvLmxv
+Y2FsIChQb3N0Zml4LCBmcm9tIHVzZXJpZCAxMDAxKQoJaWQgQkI3NEMzRTU5M0E7IFRodSwgMTEg
+TWFyIDIwMjEgMTg6MDE6MzcgKzAxMDAgKENFVCkKRnJvbTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0g
+PGRlbmlzLm9zdGVybGFuZEBkaWVobC5jb20+ClRvOiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKU3ViamVjdDogW1BBVENIXSBhcmNoOiBhcm06IG1hY2gtaW14OiBwcmludCBIQUIgUk9NIGNv
+ZGUgdmVyc2lvbgpEYXRlOiBUaHUsIDExIE1hciAyMDIxIDE4OjAxOjM3ICswMTAwCk1lc3NhZ2Ut
+SWQ6IDwyMDIxMDMxMTE3MDEzNy4yMjQxMS0xLWRlbmlzLm9zdGVybGFuZEBkaWVobC5jb20+Clgt
+TWFpbGVyOiBnaXQtc2VuZC1lbWFpbCAyLjMwLjIKTUlNRS1WZXJzaW9uOiAxLjAKQ29udGVudC1U
+cmFuc2Zlci1FbmNvZGluZzogOGJpdAoKRnJvbTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0gPERlbmlz
+Lk9zdGVybGFuZEBkaWVobC5jb20+CgpBZGQgdGhlIHR3byBtaXNzaW5nIGZ1bmN0aW9uIHBvaW50
+ZXJzIGFjY29yZGluZyB0byBIQUI0X0FQSS5wZGYKZnJvbSBjc3QtMy4xLjAgYW5kIHByaW50IHRo
+ZSB2ZXJzaW9uIG9mIFJPTSBjb2RlLgoKU2lnbmVkLW9mZi1ieTogRGVuaXMgT3N0ZXJsYW5kLUhl
+aW0gPERlbmlzLk9zdGVybGFuZEBkaWVobC5jb20+Ci0tLQogZHJpdmVycy9oYWIvaGFidjQuYyB8
+IDcgKysrKysrKwogMSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvaGFiL2hhYnY0LmMgYi9kcml2ZXJzL2hhYi9oYWJ2NC5jCmluZGV4IGMyYWNiODEz
+Ni4uZjMwZTVkNjhjIDEwMDY0NAotLS0gYS9kcml2ZXJzL2hhYi9oYWJ2NC5jCisrKyBiL2RyaXZl
+cnMvaGFiL2hhYnY0LmMKQEAgLTE2MSw2ICsxNjEsNyBAQCBzdHJ1Y3QgaGFiX2hlYWRlciB7CiAJ
+dWludDhfdCBwYXI7CiB9IF9fcGFja2VkOwogCit0eXBlZGVmIHZvaWQgKCpoYWJfaW1hZ2VfZW50
+cnlfZm4pKHZvaWQpOwogdHlwZWRlZiBlbnVtIGhhYl9zdGF0dXMgaGFiX2xvYWRlcl9jYWxsYmFj
+a19mbih2b2lkICoqc3RhcnQsIHVpbnQzMl90ICpieXRlcywgY29uc3Qgdm9pZCAqYm9vdF9kYXRh
+KTsKIAogc3RydWN0IGhhYnY0X3J2dCB7CkBAIC0xNzUsNiArMTc2LDggQEAgc3RydWN0IGhhYnY0
+X3J2dCB7CiAJZW51bSBoYWJfc3RhdHVzICgqcmVwb3J0X2V2ZW50KShlbnVtIGhhYl9zdGF0dXMg
+c3RhdHVzLCB1aW50MzJfdCBpbmRleCwgdm9pZCAqZXZlbnQsIHVpbnQzMl90ICpieXRlcyk7CiAJ
+ZW51bSBoYWJfc3RhdHVzICgqcmVwb3J0X3N0YXR1cykoZW51bSBoYWJfY29uZmlnICpjb25maWcs
+IGVudW0gaGFiX3N0YXRlICpzdGF0ZSk7CiAJdm9pZCAoKmZhaWxzYWZlKSh2b2lkKTsKKwloYWJf
+aW1hZ2VfZW50cnlfZm4gKCphdXRoZW50aWNhdGVfaW1hZ2Vfbm9fZGNkKSh1aW50OF90IGNpZCwg
+cHRyZGlmZl90IGl2dF9vZmZzZXQsIHZvaWQgKipzdGFydCwgc2l6ZV90ICpieXRlcywgaGFiX2xv
+YWRlcl9jYWxsYmFja19mbiBsb2FkZXIpOworCXVpbnQzMl90ICgqZ2V0X3ZlcnNpb24pKHZvaWQp
+OwogfSBfX3BhY2tlZDsKIAogI2RlZmluZSBGU0xfU0lQX0hBQiAgICAgICAgICAgICAweEMyMDAw
+MDA3CkBAIC01MjgsNiArNTMxLDcgQEAgc3RhdGljIGludCBoYWJ2NF9nZXRfc3RhdHVzKGNvbnN0
+IHN0cnVjdCBoYWJ2NF9ydnQgKnJ2dCkKIAl1aW50OF90ICpkYXRhOwogCXVpbnQzMl90IGxlbjsK
+IAlpbnQgaTsKKwl1aW50MzJfdCB2ZXJzaW9uOwogCWVudW0gaGFiX3N0YXR1cyBzdGF0dXM7CiAJ
+ZW51bSBoYWJfY29uZmlnIGNvbmZpZyA9IDB4MDsKIAllbnVtIGhhYl9zdGF0ZSBzdGF0ZSA9IDB4
+MDsKQEAgLTUzNyw2ICs1NDEsOSBAQCBzdGF0aWMgaW50IGhhYnY0X2dldF9zdGF0dXMoY29uc3Qg
+c3RydWN0IGhhYnY0X3J2dCAqcnZ0KQogCQlyZXR1cm4gLUVJTlZBTDsKIAl9CiAKKwl2ZXJzaW9u
+ID0gcnZ0LT5nZXRfdmVyc2lvbigpOworCXByX2luZm8oInZlcnNpb246ICV1LiV1LiV1XG4iLCAo
+dmVyc2lvbiA+PiAxNiksICgodmVyc2lvbiA+PiA4KSAmIDB4ZmYpLCAodmVyc2lvbiAmIDB4ZmYp
+KTsKKwogCXN0YXR1cyA9IHJ2dC0+cmVwb3J0X3N0YXR1cygmY29uZmlnLCAmc3RhdGUpOwogCXBy
+X2luZm8oIlN0YXR1czogJXMgKDB4JTAyeClcbiIsIGhhYnY0X2dldF9zdGF0dXNfc3RyKHN0YXR1
+cyksIHN0YXR1cyk7CiAJcHJfaW5mbygiQ29uZmlnOiAlcyAoMHglMDJ4KVxuIiwgaGFidjRfZ2V0
+X2NvbmZpZ19zdHIoY29uZmlnKSwgY29uZmlnKTsKLS0gCjIuMzAuMgoK
 
->  }
-> diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-> index c9ede614a6..d42e15ed1c 100644
-> --- a/drivers/of/overlay.c
-> +++ b/drivers/of/overlay.c
-> @@ -221,6 +221,8 @@ int of_overlay_apply_tree(struct device_node *root,
->  			pr_warn("failed to apply %s\n", fragment->name);
->  	}
->  
-> +	err = of_overlay_load_firmware(root, resolved);
+--_005_c951856e43f7946b71d7b1dd4d9dca11caba4b47cameldiehlcom_
+Content-Type: application/mbox; name="2.mbox"
+Content-Description: 2.mbox
+Content-Disposition: attachment; filename="2.mbox"; size=3510;
+	creation-date="Fri, 12 Mar 2021 11:33:52 GMT";
+	modification-date="Fri, 12 Mar 2021 11:33:52 GMT"
+Content-ID: <99AB7C3EF13CA0498F680DA579B004DA@diehl.internal>
+Content-Transfer-Encoding: base64
 
-The firmware must be loaded before the overlay is applied. If the firmware
-cannot be loaded, the device tree must not be modified.
+UmV0dXJuLVBhdGg6IDxvc3RlcmxhZEBjd3BjMTQzNS5kaWVobGFrby5sb2NhbD4KWC1PcmlnaW5h
+bC1UbzogYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCkRlbGl2ZXJlZC1Ubzogb3N0ZXJsYWRA
+Y3dwYzE0MzUuZGllaGxha28ubG9jYWwKUmVjZWl2ZWQ6IGJ5IGN3cGMxNDM1LmRpZWhsYWtvLmxv
+Y2FsIChQb3N0Zml4LCBmcm9tIHVzZXJpZCAxMDAxKQoJaWQgOEZFRjEzRTU5M0E7IFRodSwgMTEg
+TWFyIDIwMjEgMTg6MDI6NDkgKzAxMDAgKENFVCkKRnJvbTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0g
+PGRlbmlzLm9zdGVybGFuZEBkaWVobC5jb20+ClRvOiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKU3ViamVjdDogW1BBVENIXSBzY3JpcHRzOiBpbXg6IGFkZCBzdXBwb3J0IGZvciBhZGRpdGlv
+bmFsIGhhYiBCbG9ja3MKRGF0ZTogVGh1LCAxMSBNYXIgMjAyMSAxODowMjo0OSArMDEwMApNZXNz
+YWdlLUlkOiA8MjAyMTAzMTExNzAyNDkuMjI1MjAtMS1kZW5pcy5vc3RlcmxhbmRAZGllaGwuY29t
+PgpYLU1haWxlcjogZ2l0LXNlbmQtZW1haWwgMi4zMC4yCk1JTUUtVmVyc2lvbjogMS4wCkNvbnRl
+bnQtVHJhbnNmZXItRW5jb2Rpbmc6IDhiaXQKCkZyb206IERlbmlzIE9zdGVybGFuZC1IZWltIDxE
+ZW5pcy5Pc3RlcmxhbmRAZGllaGwuY29tPgoKVGhpcyBhbGxvd3MgdG8gc3BlY2lmaXkgYWRkaXRp
+b25hbCBzaW5nZWQgYmxvY2tzCmluIHRoZSBmb3JtYXQgYG9mZnNldCtzaXplQGFkZHJlc3NgIHdp
+dGhpbiB0aGUgaW14aW1nLgoKSXQgaXMgbmVlZGVkIGJ5IHRoZSB1dXUgdG9vbCwgd2hpY2ggbG9h
+ZHMgdGhlIGltYWdlIGRpZmZlcmVudCB0bwp0aGUgaW14LXVzYi1sb2FkZXIuIEl0IGxvYWRzIHRo
+ZSBEQ0QgYWx3YXlzIHRvIDB4OTEwMDAwIGluIHRoZSBPQ1JBTS4KU28gdGhpcyBhcmVhIGhhdmUg
+dG8gYmUgc2lnbmVkIGFzIHdlbGwuCgpJbiBteSBjYXNlIHRoaXMgbmVlZHMgYGhhYl9ibG9ja3Mg
+MHg0MmMrMHgxZjBAMHg5MTAwMDBgLgoKSXQgc3VwcG9ydHMgdG8gcmVtb3ZlIHF1b3RlcyB0byBz
+dXBwb3J0IEtjb25maWcgdmFyaWFibGUgaGVyZS4KClNpZ25lZC1vZmYtYnk6IERlbmlzIE9zdGVy
+bGFuZC1IZWltIDxEZW5pcy5Pc3RlcmxhbmRAZGllaGwuY29tPgotLS0KIHNjcmlwdHMvaW14L2lt
+eC5jIHwgNjIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0K
+IDEgZmlsZSBjaGFuZ2VkLCA2MCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAt
+LWdpdCBhL3NjcmlwdHMvaW14L2lteC5jIGIvc2NyaXB0cy9pbXgvaW14LmMKaW5kZXggNmI4ZGFi
+ZDA0Li5kMzdlMjAwY2EgMTAwNjQ0Ci0tLSBhL3NjcmlwdHMvaW14L2lteC5jCisrKyBiL3Njcmlw
+dHMvaW14L2lteC5jCkBAIC0zMjgsNiArMzI4LDcgQEAgc3RhdGljIGludCBkb19oYWJfYmxvY2tz
+KHN0cnVjdCBjb25maWdfZGF0YSAqZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIHsKIAlj
+aGFyICpzdHI7CiAJaW50IHJldDsKKwlpbnQgaTsKIAl1aW50MzJfdCBzaWduZWRfc2l6ZSA9IGRh
+dGEtPmxvYWRfc2l6ZTsKIAl1aW50MzJfdCBvZmZzZXQgPSBkYXRhLT5pbWFnZV9pdnRfb2Zmc2V0
+OwogCkBAIC0zNTIsNyArMzUzLDcgQEAgc3RhdGljIGludCBkb19oYWJfYmxvY2tzKHN0cnVjdCBj
+b25maWdfZGF0YSAqZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAl9CiAKIAlpZiAoc2ln
+bmVkX3NpemUgPiAwKSB7Ci0JCXJldCA9IGFzcHJpbnRmKCZzdHIsICJCbG9ja3MgPSAweCUwOHgg
+MHglMDh4IDB4JTA4eCBcIiVzXCJcbiIsCisJCXJldCA9IGFzcHJpbnRmKCZzdHIsICJCbG9ja3Mg
+PSAweCUwOHggMHglMDh4IDB4JTA4eCBcIiVzXCIiLAogCQkJZGF0YS0+aW1hZ2VfbG9hZF9hZGRy
+ICsgZGF0YS0+aW1hZ2VfaXZ0X29mZnNldCwgb2Zmc2V0LAogCQkJc2lnbmVkX3NpemUgLSBkYXRh
+LT5pbWFnZV9pdnRfb2Zmc2V0LCBkYXRhLT5vdXRmaWxlKTsKIAl9IGVsc2UgewpAQCAtMzY1LDEw
+ICszNjYsNjcgQEAgc3RhdGljIGludCBkb19oYWJfYmxvY2tzKHN0cnVjdCBjb25maWdfZGF0YSAq
+ZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAkJcmV0dXJuIC1FTk9NRU07CiAKIAlyZXQg
+PSBoYWJfYWRkX3N0cihkYXRhLCBzdHIpOworCWZyZWUoc3RyKTsKIAlpZiAocmV0KQogCQlyZXR1
+cm4gcmV0OwogCi0JcmV0dXJuIDA7CisJZm9yIChpID0gMTsgaSA8IGFyZ2M7IGkrKykKKwl7CisJ
+CXVpbnQzMl90IGFkZHI7CisJCXVpbnQzMl90IG9mZjsKKwkJdWludDMyX3Qgc2l6ZTsKKwkJY2hh
+ciAqYjsKKwkJY2hhciAqZTsKKworCQliID0gYXJndltpXTsKKwkJaWYgKGJbMF0gPT0gJyInKSAv
+LyByZW1vdmUgcW91dGVzCisJCXsKKwkJCWIrKzsKKwkJCWZvciAoZSA9IGI7ICplOyBlKyspCisJ
+CQkJLyogZmluZCBlbmQgb2Ygc3RyaW5nICovOworCQkJZS0tOworCQkJaWYgKCplID09ICciJykK
+KwkJCQkqZSA9ICdcMCc7CisJCQllbHNlCisJCQkJZnByaW50ZihzdGRlcnIsICJ3YXJuaW5nOiBu
+byAnXCInIGF0IHRoZSBlbmQgb2YgJyVzJyBbYj0lcCclcycsIGU9JXAnJXMnXVxuIiwgYXJndltp
+XSwgYiwgYiwgZSwgZSk7CisJCX0KKwkJaWYgKCEqYikKKwkJCWNvbnRpbnVlOyAvLyBza2lwIGlm
+IGVtcHR5CisKKwkJZSA9IHN0cmNocihiLCAnKycpOworCQlpZiAoIWUpCisJCXsKKwkJCWZwcmlu
+dGYoc3RkZXJyLCAiZmFpbGVkIHRvIGZpbmQgJysnIGluICclcydcbiIsIGIpOworCQkJZnByaW50
+ZihzdGRlcnIsICJmb3JtYXQgb2ZmK3NpemVAYWRkciBleHBlY3RlZCwgYnV0IGdpdmVuOiAlc1xu
+IiwgYXJndltpXSk7CisJCQlyZXR1cm4gLUVJTlZBTDsKKwkJfQorCQkqZSA9ICdcMCc7CisJCW9m
+ZiA9IHN0cnRvdWwoYiwgTlVMTCwgMCk7CisKKwkJYiA9IGUgKyAxOworCQllID0gc3RyY2hyKGIs
+ICdAJyk7CisJCWlmICghZSkKKwkJeworCQkJZnByaW50ZihzdGRlcnIsICJmYWlsZWQgdG8gZmlu
+ZCAnQCcgaW4gJyVzJ1xuIiwgYik7CisJCQlmcHJpbnRmKHN0ZGVyciwgImZvcm1hdCBvZmYrc2l6
+ZUBhZGRyIGV4cGVjdGVkLCBidXQgZ2l2ZW46ICVzIiwgYXJndltpXSk7CisJCQlyZXR1cm4gLUVJ
+TlZBTDsKKwkJfQorCQkqZSA9ICdcMCc7CisJCXNpemUgPSBzdHJ0b3VsKGIsIE5VTEwsIDApOwor
+CisJCWFkZHIgPSBzdHJ0b3VsKGUgKyAxLCBOVUxMLCAwKTsKKworCQlyZXQgPSBhc3ByaW50Zigm
+c3RyLCAiLCAweCUwOHggMHglMDh4IDB4JTA4eCBcIiVzXCIiLCBhZGRyLCBvZmYsIHNpemUsIGRh
+dGEtPm91dGZpbGUpOworCQlpZiAocmV0IDwgMCkKKwkJCXJldHVybiAtRU5PTUVNOworCisJCXJl
+dCA9IGhhYl9hZGRfc3RyKGRhdGEsIHN0cik7CisJCWZyZWUoc3RyKTsKKwkJaWYgKHJldCkKKwkJ
+CXJldHVybiByZXQ7CisJfQorCisJcmV0dXJuIGhhYl9hZGRfc3RyKGRhdGEsICJcbiIpOwogfQog
+CiBzdGF0aWMgaW50IGRvX2hhYl9lbmNyeXB0KHN0cnVjdCBjb25maWdfZGF0YSAqZGF0YSwgaW50
+IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKLS0gCjIuMzAuMgoK
 
-Michael
+--_005_c951856e43f7946b71d7b1dd4d9dca11caba4b47cameldiehlcom_
+Content-Type: application/mbox; name="3.mbox"
+Content-Description: 3.mbox
+Content-Disposition: attachment; filename="3.mbox"; size=1594;
+	creation-date="Fri, 12 Mar 2021 11:33:52 GMT";
+	modification-date="Fri, 12 Mar 2021 11:33:52 GMT"
+Content-ID: <B825650217E66D41BFF5DFA1BEC82CD5@diehl.internal>
+Content-Transfer-Encoding: base64
 
-> +
->  	of_delete_node(resolved);
->  
->  	return err;
-> diff --git a/include/of.h b/include/of.h
-> index 56291b9801..ecc5f5101a 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -1033,7 +1033,7 @@ int of_process_overlay(struct device_node *root,
->  				   struct device_node *overlay, void *data),
->  		    void *data);
->  
-> -int of_firmware_load_overlay(struct device_node *overlay);
-> +int of_overlay_load_firmware(struct device_node *root, struct device_node *overlay);
->  #else
->  static inline struct device_node *of_resolve_phandles(struct device_node *root,
->  					const struct device_node *overlay)
-> @@ -1067,7 +1067,7 @@ static inline int of_process_overlay(struct device_node *root,
->  	return -ENOSYS;
->  }
->  
-> -static inline int of_firmware_load_overlay(struct device_node *overlay)
-> +static inline int of_overlay_load_firmware(struct device_node *root, struct device_node *overlay)
->  {
->  	return -ENOSYS;
->  }
-> -- 
-> 2.29.2
+UmV0dXJuLVBhdGg6IDxvc3RlcmxhZEBjd3BjMTQzNS5kaWVobGFrby5sb2NhbD4KWC1PcmlnaW5h
+bC1UbzogYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCkRlbGl2ZXJlZC1Ubzogb3N0ZXJsYWRA
+Y3dwYzE0MzUuZGllaGxha28ubG9jYWwKUmVjZWl2ZWQ6IGJ5IGN3cGMxNDM1LmRpZWhsYWtvLmxv
+Y2FsIChQb3N0Zml4LCBmcm9tIHVzZXJpZCAxMDAxKQoJaWQgODlEQUUzRTU5M0E7IFRodSwgMTEg
+TWFyIDIwMjEgMTg6MDM6MzQgKzAxMDAgKENFVCkKRnJvbTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0g
+PGRlbmlzLm9zdGVybGFuZEBkaWVobC5jb20+ClRvOiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKU3ViamVjdDogW1BBVENIXSBpbWFnZS1maXQ6IGlnbm9yZSByc2EgYnkgaW1hZ2Ugc2VsZWN0
+aW9uCkRhdGU6IFRodSwgMTEgTWFyIDIwMjEgMTg6MDM6MzQgKzAxMDAKTWVzc2FnZS1JZDogPDIw
+MjEwMzExMTcwMzM0LjIyNjA3LTEtZGVuaXMub3N0ZXJsYW5kQGRpZWhsLmNvbT4KWC1NYWlsZXI6
+IGdpdC1zZW5kLWVtYWlsIDIuMzAuMgpNSU1FLVZlcnNpb246IDEuMApDb250ZW50LVRyYW5zZmVy
+LUVuY29kaW5nOiA4Yml0CgpGcm9tOiBEZW5pcyBPc3RlcmxhbmQtSGVpbSA8RGVuaXMuT3N0ZXJs
+YW5kQGRpZWhsLmNvbT4KCkZvciBoYXNoIGFsZ29yaXRobSBzZWxlY3Rpb24sIG9ubHkgdGhlIGZp
+cnN0IGFyZ3VtZW50IG9mIHRoZSB0dXBsZSBpcwpuZWVkZWQuIFRoZSAnLCcgaXMgaW5jbHVkZWQg
+dG8gYXZvaWQgZmFsc2UtcG9zaXRpdmUgbWF0Y2hlcy4KClNpZ25lZC1vZmYtYnk6IERlbmlzIE9z
+dGVybGFuZC1IZWltIDxEZW5pcy5Pc3RlcmxhbmRAZGllaGwuY29tPgotLS0KIGNvbW1vbi9pbWFn
+ZS1maXQuYyB8IDYgKystLS0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA0IGRl
+bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9pbWFnZS1maXQuYyBiL2NvbW1vbi9pbWFn
+ZS1maXQuYwppbmRleCA1MzhlNjFmNTEuLjJjNWVmN2Y2OCAxMDA2NDQKLS0tIGEvY29tbW9uL2lt
+YWdlLWZpdC5jCisrKyBiL2NvbW1vbi9pbWFnZS1maXQuYwpAQCAtMjMwLDExICsyMzAsOSBAQCBz
+dGF0aWMgc3RydWN0IGRpZ2VzdCAqZml0X2FsbG9jX2RpZ2VzdChzdHJ1Y3QgZGV2aWNlX25vZGUg
+KnNpZ19ub2RlLAogCQlyZXR1cm4gRVJSX1BUUigtRUlOVkFMKTsKIAl9CiAKLQlpZiAoc3RyY21w
+KGFsZ29fbmFtZSwgInNoYTEscnNhMjA0OCIpID09IDApIHsKKwlpZiAoc3RybmNtcChhbGdvX25h
+bWUsICJzaGExLCIsIDUpID09IDApIHsKIAkJYWxnbyA9IEhBU0hfQUxHT19TSEExOwotCX0gZWxz
+ZSBpZiAoc3RyY21wKGFsZ29fbmFtZSwgInNoYTI1Nixyc2EyMDQ4IikgPT0gMCkgewotCQlhbGdv
+ID0gSEFTSF9BTEdPX1NIQTI1NjsKLQl9IGVsc2UgaWYgKHN0cmNtcChhbGdvX25hbWUsICJzaGEy
+NTYscnNhNDA5NiIpID09IDApIHsKKwl9IGVsc2UgaWYgKHN0cm5jbXAoYWxnb19uYW1lLCAic2hh
+MjU2LCIsIDcpID09IDApIHsKIAkJYWxnbyA9IEhBU0hfQUxHT19TSEEyNTY7CiAJfSBlbHNlCXsK
+IAkJcHJfZXJyKCJ1bmtub3duIGFsZ28gJXNcbiIsIGFsZ29fbmFtZSk7Ci0tIAoyLjMwLjIKCg==
+
+--_005_c951856e43f7946b71d7b1dd4d9dca11caba4b47cameldiehlcom_
+Content-Type: application/mbox; name="4.mbox"
+Content-Description: 4.mbox
+Content-Disposition: attachment; filename="4.mbox"; size=3620;
+	creation-date="Fri, 12 Mar 2021 11:33:52 GMT";
+	modification-date="Fri, 12 Mar 2021 11:33:52 GMT"
+Content-ID: <39267C7187E4B04695AF91B4E8AF6806@diehl.internal>
+Content-Transfer-Encoding: base64
+
+UmV0dXJuLVBhdGg6IDxvc3RlcmxhZEBjd3BjMTQzNS5kaWVobGFrby5sb2NhbD4KWC1PcmlnaW5h
+bC1UbzogYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCkRlbGl2ZXJlZC1Ubzogb3N0ZXJsYWRA
+Y3dwYzE0MzUuZGllaGxha28ubG9jYWwKUmVjZWl2ZWQ6IGJ5IGN3cGMxNDM1LmRpZWhsYWtvLmxv
+Y2FsIChQb3N0Zml4LCBmcm9tIHVzZXJpZCAxMDAxKQoJaWQgQTgzNjMzRTU5M0E7IFRodSwgMTEg
+TWFyIDIwMjEgMTg6MDQ6MDMgKzAxMDAgKENFVCkKRnJvbTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0g
+PGRlbmlzLm9zdGVybGFuZEBkaWVobC5jb20+ClRvOiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKU3ViamVjdDogW1BBVENIXSBudm1lbTogb2NvdHA6IGFkZCBzdXBwb3J0IHRvIHJldm9rZSBr
+ZXlzCkRhdGU6IFRodSwgMTEgTWFyIDIwMjEgMTg6MDQ6MDMgKzAxMDAKTWVzc2FnZS1JZDogPDIw
+MjEwMzExMTcwNDAzLjIyNjcxLTEtZGVuaXMub3N0ZXJsYW5kQGRpZWhsLmNvbT4KWC1NYWlsZXI6
+IGdpdC1zZW5kLWVtYWlsIDIuMzAuMgpNSU1FLVZlcnNpb246IDEuMApDb250ZW50LVRyYW5zZmVy
+LUVuY29kaW5nOiA4Yml0CgpGcm9tOiBEZW5pcyBPc3RlcmxhbmQtSGVpbSA8RGVuaXMuT3N0ZXJs
+YW5kQGRpZWhsLmNvbT4KCkFkZCBkZXZpY2UgdHJlZSBwcm9wZXJ0eSAnYmFyZWJveCxrZXktcmV2
+b2tlJyB3aXRoIHRoZSBzeW50YXg6Cjwga2V5X3BoYW5kbGUgZnVzZV9vZmZzZXQgbWFzayA+CgpB
+biBleGFtcGxlOgoJc2lnbmF0dXJlIHsKCQlrZXkxOiBrZXktaW1nMSB7IC4uLiB9OwoJCWtleTI6
+IGtleS1zcmsxIHsgLi4uIH07Cgl9Owp9Owomb2NvdHAgewoJYmFyZWJveCxrZXktcmV2b2tlID0g
+PAoJCSZrZXkxIDB4NjYwIDEKCQkma2V5MiAweDZmMCAxCgk+Owp9OwoKU2lnbmVkLW9mZi1ieTog
+RGVuaXMgT3N0ZXJsYW5kLUhlaW0gPERlbmlzLk9zdGVybGFuZEBkaWVobC5jb20+Ci0tLQogLi4u
+L2JpbmRpbmdzL21pc2MvZnNsLGlteC1vY290cC5yc3QgICAgICAgICAgIHwgIDQgKysKIGRyaXZl
+cnMvbnZtZW0vb2NvdHAuYyAgICAgICAgICAgICAgICAgICAgICAgICB8IDM3ICsrKysrKysrKysr
+KysrKysrKy0KIDIgZmlsZXMgY2hhbmdlZCwgMzkgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMo
+LSkKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWlzYy9m
+c2wsaW14LW9jb3RwLnJzdCBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9taXNj
+L2ZzbCxpbXgtb2NvdHAucnN0CmluZGV4IDIwMmJiM2FhMC4uNjNhNmY1MzMxIDEwMDY0NAotLS0g
+YS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWlzYy9mc2wsaW14LW9jb3RwLnJz
+dAorKysgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWlzYy9mc2wsaW14LW9j
+b3RwLnJzdApAQCAtMTIsNiArMTIsOSBAQCBPcHRpb25hbCBwcm9wZXJ0aWVzOgogICBjYW4gYmUg
+bXVsdGlwbGUgZW50cmllcyBpbiB0aGUgZm9ybSA8JnBoYW5kbGUgcmVnb2ZzPiB0byBhc3NpZ24g
+YSBNQUMKICAgYWRkcmVzcyB0byBhbiBFdGhlcm5ldCBkZXZpY2UuCiAKKyogYGBiYXJlYm94LGtl
+eS1yZXZva2VgYDogUmV2b2tlIChyZW1vdmUpIGtleSBpZiBiaXQgaXMgc2V0LiBUaGlzIGNhbiBi
+ZSBtdWx0aXBsZQorICBlbnRyaWVzIGluIHRoZSBmb3JtIDwmcGhhbmRsZSByZWdvZnMgbWFzaz4g
+dG8gcmV2b2tlIGEga2V5IGlmIGJpdCBpcyBzZXQuCisKIEV4YW1wbGU6CiAKIC4uIGNvZGUtYmxv
+Y2s6OiBub25lCkBAIC0yMCw0ICsyMyw1IEBAIEV4YW1wbGU6CiAgIAljb21wYXRpYmxlID0gImZz
+bCxpbXg2cS1vY290cCI7CiAgIAlyZWcgPSA8MHgwMjFiYzAwMCAweDQwMDA+OwogICAJYmFyZWJv
+eCxwcm92aWRlLW1hYy1hZGRyZXNzID0gPCZmZWMgMHg2MjA+OworICAJYmFyZWJveCxrZXktcmV2
+b2tlID0gPCYvc2lnbmF0dXJlL2tleS1pbWcxIDB4NmYwIDE+OwogICB9OwpkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9udm1lbS9vY290cC5jIGIvZHJpdmVycy9udm1lbS9vY290cC5jCmluZGV4IGNlZTUw
+OTU1ZS4uMDBlZTZjZDA2IDEwMDY0NAotLS0gYS9kcml2ZXJzL252bWVtL29jb3RwLmMKKysrIGIv
+ZHJpdmVycy9udm1lbS9vY290cC5jCkBAIC02NDEsNyArNjQxLDcgQEAgc3RhdGljIHN0cnVjdCBy
+ZWdtYXBfYnVzIGlteF9vY290cF9yZWdtYXBfYnVzID0gewogCS5yZWdfcmVhZCA9IGlteF9vY290
+cF9yZWdfcmVhZCwKIH07CiAKLXN0YXRpYyB2b2lkIGlteF9vY290cF9pbml0X2R0KHN0cnVjdCBv
+Y290cF9wcml2ICpwcml2KQorc3RhdGljIHZvaWQgaW14X29jb3RwX2luaXRfbWFjX2R0KHN0cnVj
+dCBvY290cF9wcml2ICpwcml2KQogewogCWNoYXIgbWFjW01BQ19CWVRFU107CiAJY29uc3QgX19i
+ZTMyICpwcm9wOwpAQCAtNjczLDYgKzY3MywzOCBAQCBzdGF0aWMgdm9pZCBpbXhfb2NvdHBfaW5p
+dF9kdChzdHJ1Y3Qgb2NvdHBfcHJpdiAqcHJpdikKIAl9CiB9CiAKK3N0YXRpYyB2b2lkIGlteF9v
+Y290cF9pbml0X2tleV9kdChzdHJ1Y3Qgb2NvdHBfcHJpdiAqcHJpdikKK3sKKwljb25zdCBfX2Jl
+MzIgKnByb3A7CisJc3RydWN0IGRldmljZV9ub2RlICpub2RlID0gcHJpdi0+ZGV2LnBhcmVudC0+
+ZGV2aWNlX25vZGU7CisJaW50IGxlbjsKKworCWlmICghbm9kZSkKKwkJcmV0dXJuOworCisJcHJv
+cCA9IG9mX2dldF9wcm9wZXJ0eShub2RlLCAiYmFyZWJveCxrZXktcmV2b2tlIiwgJmxlbik7CisJ
+aWYgKCFwcm9wKQorCQlyZXR1cm47CisKKwlmb3IgKDsgbGVuID49IDM7IGxlbiAtPSAzKSB7CisJ
+CXN0cnVjdCBkZXZpY2Vfbm9kZSAqcm5vZGU7CisJCXVpbnQzMl90IHBoYW5kbGUsIG9mZnNldCwg
+bWFzazsKKwkJdW5zaWduZWQgdmFsOworCisJCXBoYW5kbGUgPSBiZTMyX3RvX2NwdXAocHJvcCsr
+KTsKKworCQlybm9kZSA9IG9mX2ZpbmRfbm9kZV9ieV9waGFuZGxlKHBoYW5kbGUpOworCQlvZmZz
+ZXQgPSBiZTMyX3RvX2NwdXAocHJvcCsrKTsKKwkJbWFzayA9IGJlMzJfdG9fY3B1cChwcm9wKysp
+OworCisJCWlmIChpbXg2X29jb3RwX3JlYWRfb25lX3UzMihwcml2LCBPQ09UUF9PRkZTRVRfVE9f
+SU5ERVgob2Zmc2V0KSwgJnZhbCkpCisJCQljb250aW51ZTsKKworCQlpZiAodmFsICYgbWFzaykK
+KwkJCW9mX2RlbGV0ZV9ub2RlKHJub2RlKTsKKwl9Cit9CisKIHN0YXRpYyBpbnQgaW14X29jb3Rw
+X3dyaXRlKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCBjb25zdCBpbnQgb2Zmc2V0LAogCQkJICAgIGNv
+bnN0IHZvaWQgKnZhbCwgaW50IGJ5dGVzKQogewpAQCAtNzkwLDcgKzgyMiw4IEBAIHN0YXRpYyBp
+bnQgaW14X29jb3RwX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQogCWlmIChJU19FTkFCTEVE
+KENPTkZJR19NQUNISU5FX0lEKSkKIAkJaW14X29jb3RwX3NldF91bmlxdWVfbWFjaGluZV9pZCgp
+OwogCi0JaW14X29jb3RwX2luaXRfZHQocHJpdik7CisJaW14X29jb3RwX2luaXRfbWFjX2R0KHBy
+aXYpOworCWlteF9vY290cF9pbml0X2tleV9kdChwcml2KTsKIAogCWRldl9hZGRfcGFyYW1fYm9v
+bCgmKHByaXYtPmRldiksICJzZW5zZV9lbmFibGUiLCBOVUxMLCBOVUxMLCAmcHJpdi0+c2Vuc2Vf
+ZW5hYmxlLCBwcml2KTsKIAotLSAKMi4zMC4yCgo=
+
+--_005_c951856e43f7946b71d7b1dd4d9dca11caba4b47cameldiehlcom_
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--_005_c951856e43f7946b71d7b1dd4d9dca11caba4b47cameldiehlcom_--
+
 
