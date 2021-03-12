@@ -1,51 +1,77 @@
-Delivery-date: Fri, 12 Mar 2021 16:15:30 +0100
+Delivery-date: Fri, 12 Mar 2021 16:23:02 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKjVi-0004qj-Ti
-	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 16:15:30 +0100
+	id 1lKjd0-0004rT-3w
+	for lore@lore.pengutronix.de; Fri, 12 Mar 2021 16:23:02 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lKjVi-00056v-8D
-	for lore@pengutronix.de; Fri, 12 Mar 2021 16:15:30 +0100
+	id 1lKjcz-0006GH-Db
+	for lore@pengutronix.de; Fri, 12 Mar 2021 16:23:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=w4FyLwO98JrGothLfefyuGT0VP0OFy0QQRb1xjAOuqM=; b=MGeYzU080vVuwy
-	KGOu7sf3MgVUqOvhD/ej5H95lxezgx8MtzXekfToHSwLhj563M7QIj0pDQMZBkQNeBFOGiGG7LzZ4
-	x1FwWKxToohG/B28FNA0n2LE/5/O2Ti7OVDc6D5I9YNUZmCXKayOwECE13lWV7Ga7vmhBxYwQRtfO
-	OWVztpULhuGpCnH2DOURjHQKGzW9DvcW4kbWGBTRjaXN/dL6BpoL2w5CBWrQCpnWlyaq4Yl/TE+e5
-	YPAXHN+6v1z7KqzlIVgyC9lC9lTwhuLPEIszEBDf1K86dCGyInygKgbFWIM59FPNdU47+/4X5IAd4
-	Cc1EociizyLnG4JCdqCQ==;
+	:Content-Type:MIME-Version:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:Message-Id:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=EgtRE1SHkETQj/zDaJaLN7IzZZf/vRQB9GTJFk0uD9Q=; b=VK9blJtN7a7wSx2UVH3dDmJh21
+	dzahvXqHPUE2IJa8AZs+CKnZUCC+KRCLpqBG6XkE39L9HgzbdRgSwk7LwJ4WmoqnZeFPpH1aO1+J5
+	4rHYQYv1jiYdVvUsWeYIfkIwqDZ1t7pwpcvr/iI+iiqRjxV7cIY9d4crBR/fHMgQVk6yEEq3G55y0
+	UKrIi5f/yjhi9SrMNTubXEuC33vRNUyfTV27Syi+NJ23tjPWW/zX+iWycDLNdVW5FvHqZOX7cCMFb
+	VRAM8Y78i2es0xRx+I+cWQrmBd48V/aBxDvJfKS5GGYb/cQo69tm7XNoejp74xIyXYXUVAmagteDs
+	sWcoSqPA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lKjUh-00Bkg0-CJ; Fri, 12 Mar 2021 15:14:27 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lKjcC-00BmKv-6x; Fri, 12 Mar 2021 15:22:12 +0000
+Received: from mib.mailinblack.com ([137.74.84.110])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lKjUW-00BkeO-2L
- for barebox@lists.infradead.org; Fri, 12 Mar 2021 15:14:17 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lKjUU-0004x6-M4; Fri, 12 Mar 2021 16:14:14 +0100
-Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lKjUU-0004pU-CW; Fri, 12 Mar 2021 16:14:14 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 12 Mar 2021 16:14:13 +0100
-Message-Id: <20210312151413.18429-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-MIME-Version: 1.0
+ id 1lKjc4-00BmJX-Kd
+ for barebox@lists.infradead.org; Fri, 12 Mar 2021 15:22:06 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mib.mailinblack.com (Postfix) with ESMTP id 8556A1A3DA7
+ for <barebox@lists.infradead.org>; Fri, 12 Mar 2021 15:22:03 +0000 (UTC)
+Received: from mib.mailinblack.com (localhost [127.0.0.1])
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KM6G7P5R
+ for barebox@lists.infradead.org;
+ Fri, 12 Mar 2021 15:22:03 +0000 (UTC)
+Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
+ by mib.mailinblack.com (Postfix) with ESMTPS id 47CE21A3DA3
+ for <barebox@lists.infradead.org>; Fri, 12 Mar 2021 15:22:03 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 1814527E0512
+ for <barebox@lists.infradead.org>; Fri, 12 Mar 2021 16:22:03 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id TRIjfHKjn5qd; Fri, 12 Mar 2021 16:22:01 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 8A9E627E04CC;
+ Fri, 12 Mar 2021 16:22:01 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 8A9E627E04CC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1615562521;
+ bh=6giYpTNFHzsYFjOAhAl4hQBg2w+8VWPwpDW+8B57IyY=;
+ h=From:To:Date:Message-Id;
+ b=lM4wDKYvQcHyP3cQkDHYeBfHqw41uYMVblhTqbphLbcPgv8FRz9Y8zKVFEee2thoZ
+ HteYUAnmiyN1vwpWSMB83R4pDjC2N1i4yfYCeOzleh1z/I/hWVvjGjXAwEY4hBCpmf
+ atMw6Sdx5NOBE4MucRiULu4uotwYKIX37QK2+PLE=
+X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id kWJXy4dOdlsA; Fri, 12 Mar 2021 16:22:01 +0100 (CET)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id 6FCD927E02DD;
+ Fri, 12 Mar 2021 16:22:01 +0100 (CET)
+From: Jules Maselbas <jmaselbas@kalray.eu>
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Fri, 12 Mar 2021 16:21:45 +0100
+Message-Id: <20210312152145.2761-1-jmaselbas@kalray.eu>
+X-Mailer: git-send-email 2.17.1
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210312_151416_214310_F19B384C 
-X-CRM114-Status: UNSURE (   9.42  )
+X-CRM114-CacheID: sfid-20210312_152204_945911_301B4B9D 
+X-CRM114-Status: UNSURE (   6.08  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -58,6 +84,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -66,48 +93,76 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] net: e1000: Fix mtd compilation
+Subject: [RFC PATCH] reset: Remove WARN_ON when CONFIG_RESET_CONTROLLER=n
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-mtd function hooks have been renamed to start with an underscore. Fix
-e1000 driver accordingly.
-
-Fixes: 4d3c779dfc ("mtd: Add underscore prefix to mtd hooks")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/net/e1000/eeprom.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+I am using dwc2 but my platform doesn't has CONFIG_RESET_CONTROLLER enabled,
+when booting barebox I got this kind of message:
+WARNING: at barebox/include/linux/reset.h:54/device_reset_us()!
 
-diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-index 900be2f09b..5a7d8675ce 100644
---- a/drivers/net/e1000/eeprom.c
-+++ b/drivers/net/e1000/eeprom.c
-@@ -1614,12 +1614,12 @@ int e1000_register_eeprom(struct e1000_hw *hw)
- 	}
+Not sure if removing all the WARN_ON is a good idea... asking for insight.
+---
+ include/linux/reset.h | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/include/linux/reset.h b/include/linux/reset.h
+index 4a92a177b..a166fe1cf 100644
+--- a/include/linux/reset.h
++++ b/include/linux/reset.h
+@@ -21,43 +21,36 @@ int __must_check device_reset_us(struct device_d *dev, int us);
  
- 	if (eecd & E1000_EECD_I210_FLASH_DETECTED) {
--		hw->mtd.parent = hw->dev;
--		hw->mtd.read = e1000_mtd_read;
--		hw->mtd.write = e1000_mtd_write;
--		hw->mtd.erase = e1000_mtd_erase;
--		hw->mtd.lock = e1000_mtd_lock;
--		hw->mtd.unlock = e1000_mtd_unlock;
-+		hw->mtd.dev.parent = hw->dev;
-+		hw->mtd._read = e1000_mtd_read;
-+		hw->mtd._write = e1000_mtd_write;
-+		hw->mtd._erase = e1000_mtd_erase;
-+		hw->mtd._lock = e1000_mtd_lock;
-+		hw->mtd._unlock = e1000_mtd_unlock;
- 		hw->mtd.size = eeprom->word_size * 2;
- 		hw->mtd.writesize = 1;
- 		hw->mtd.subpage_sft = 0;
+ static inline int reset_control_reset(struct reset_control *rstc)
+ {
+-	WARN_ON(1);
+ 	return 0;
+ }
+ 
+ static inline int reset_control_assert(struct reset_control *rstc)
+ {
+-	WARN_ON(1);
+ 	return 0;
+ }
+ 
+ static inline int reset_control_deassert(struct reset_control *rstc)
+ {
+-	WARN_ON(1);
+ 	return 0;
+ }
+ 
+ static inline struct reset_control *
+ reset_control_get(struct device_d *dev, const char *id)
+ {
+-	WARN_ON(1);
+ 	return NULL;
+ }
+ 
+ static inline void reset_control_put(struct reset_control *rstc)
+ {
+-	WARN_ON(1);
+ }
+ 
+ static inline int device_reset_us(struct device_d *dev, int us)
+ {
+-	WARN_ON(1);
+ 	return 0;
+ }
+ 
+ static inline int device_reset(struct device_d *dev)
+ {
+-	WARN_ON(1);
+ 	return 0;
+ }
+ 
 -- 
-2.29.2
+2.17.1
+
 
 
 _______________________________________________
