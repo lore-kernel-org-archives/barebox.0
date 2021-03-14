@@ -1,51 +1,53 @@
-Delivery-date: Sun, 14 Mar 2021 13:29:42 +0100
+Delivery-date: Sun, 14 Mar 2021 13:29:47 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lLPsM-0007nD-En
-	for lore@lore.pengutronix.de; Sun, 14 Mar 2021 13:29:42 +0100
+	id 1lLPsR-0007nk-4M
+	for lore@lore.pengutronix.de; Sun, 14 Mar 2021 13:29:47 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lLPsI-00078D-6F
-	for lore@pengutronix.de; Sun, 14 Mar 2021 13:29:42 +0100
+	id 1lLPsM-0007B9-MU
+	for lore@pengutronix.de; Sun, 14 Mar 2021 13:29:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=HDQ3haUycLJc8PnYOko203S8EFO6thowJnDIk8Pdnn8=; b=Jzi2hDsqny7t8QwoL1lQOTZlIA
-	5UcOClaJ0aQcgQAKOWAkby+PCfy+ln5qgFsYV4YPrYmGP7EsuMuC82cK8LoR0kSp08Z6VurWEO0qX
-	hyYj+Zq/9CWRr3EAnc0+kLOIEdDZD0tDIMHuDXYSVYal91VchiJRKy+mrPdx7oT7POTPjbgfRY/72
-	Gr6oRr60A2TIBhxEtDn+lbxL1rvcc/O/HqooPw26dXvMwgO41kNEPhf9ulAI5Iviy36u02WkuGndG
-	fr9ij/1wiCu0wOyXtDlDjY3YtVXyTMKZsHLrt4ADaW4419bvX9TKY0nET7m2W/w7GdFFJITHRkIJA
-	pIRpf5Jg==;
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=xOOJGciNwFuBxesQdbtv/2M4e/7vlUHxCKO+4JBos8s=; b=MSco5sH/VOLPY1Xj88hxJmT7k
+	eo5Ruq+HX5aOCIdxH7djz9EL3gwARBOSf3MP2htW5zVhSMrJUvXfKkCFO19T3Ah5z36Eo+/TgRIPc
+	UPlZdjogbwq6WNPn5q4cskpLOrfEwYKSEAqw/zfpu5N2h3V6ESNXtaR1CjFBteWkYTqcUDVJHpE+Q
+	0JTobIPXvjUHP6S4mR1A9/20FvB+hJ9DH7cf3lGptSIS+dp+UdGz9zK3r1KiOwJ0XkjSGXDLP/g1s
+	srCB+2fSPd35apvBa2n8cyW1gvRSOqeyTQPgVr9h7N2G38OQ4ldQA778kvD/h/yAgwTo6QSbjswcF
+	07REghbZQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lLPrB-00EBza-9v; Sun, 14 Mar 2021 12:28:29 +0000
+	id 1lLPrI-00EC3I-Ds; Sun, 14 Mar 2021 12:28:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lLPqr-00EBrx-8q
- for barebox@lists.infradead.org; Sun, 14 Mar 2021 12:28:12 +0000
+ id 1lLPqr-00EBs6-Ag
+ for barebox@lists.infradead.org; Sun, 14 Mar 2021 12:28:13 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lLPqo-0006LR-Mc; Sun, 14 Mar 2021 13:28:06 +0100
+ id 1lLPqp-0006Li-4h; Sun, 14 Mar 2021 13:28:07 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lLPqn-00015s-Fm; Sun, 14 Mar 2021 13:28:05 +0100
+ id 1lLPqn-00016g-Np; Sun, 14 Mar 2021 13:28:05 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Sun, 14 Mar 2021 13:27:44 +0100
-Message-Id: <20210314122804.4128-1-a.fatoum@pengutronix.de>
+Date: Sun, 14 Mar 2021 13:28:01 +0100
+Message-Id: <20210314122804.4128-18-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210314122804.4128-1-a.fatoum@pengutronix.de>
+References: <20210314122804.4128-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210314_122809_475100_421C9CC3 
-X-CRM114-Status: GOOD (  13.52  )
+X-CRM114-CacheID: sfid-20210314_122809_548009_B86B76A6 
+X-CRM114-Status: GOOD (  19.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -57,7 +59,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: rcz@pengutronix.de
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, rcz@pengutronix.de
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -70,153 +72,193 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 00/20] RISC-V: rework for PBL, VIRT and 64-Bit support
+Subject: [PATCH 17/20] RISC-V: add generic DT image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-With these changes applied, barebox can now generate images that can
-be booted on qemu/tinyemu virt32 and virt64 machines.
+This barebox image implements the same header as Linux and receives
+the device tree in the same register. It can be booted from barebox
+or loaded by Qemu -kernel option.
 
-The boards have clocksource, virtio, cfi-flash,  reboot and poweroff
-support.
-
-Cheers,
-Ahmad Fatoum (18):
-  partitions: don't allocate dma capable memory
-  images: make BOARD_ARM_GENERIC_DT available for other arches
-  ARM: rename CONFIG_ARM_USE_COMPRESSED_DTB to CONFIG_USE_COMPRESSED_DTB
-  ARM: aarch64: ommit unused label in assembly
-  serial: virtio-console: depend on, but don't select VIRTIO
-  filetype: detect RISC-V Linux kernel image
-  asm: unaligned: don't do unaligned accesses
-  RISC-V: debug_ll: ns16550: align C access size with assembly's
-  RISC-V: drop duplicate or unneeded cflags
-  RISC-V: add cacheless HAS_DMA support
-  RISC-V: erizo: move to arch/riscv/boards/erizo
-  RISC-V: import Linux' optimized string functions
-  RISC-V: implement PBL and relocation support
-  RISC-V: erizo: migrate to PBL
-  RISC-V: support symbol names in barebox image
-  RISC-V: add generic DT image
-  clocksource: add driver for RISC-V CLINT timer
-  power: reset: add drivers for generic syscon reset and poweroff
-
-Rouven Czerwinski (2):
-  RISC-V: add 64-bit support
-  RISC-V: add Qemu virt support
-
- Documentation/boards/riscv.rst               |  72 ++++++-
- Makefile                                     |   1 +
- arch/arm/Kconfig                             |   9 +-
- arch/arm/cpu/start.c                         |   2 +-
- arch/arm/lib64/runtime-offset.S              |   2 +-
- arch/arm/mach-at91/Kconfig                   |   2 +-
- arch/arm/mach-imx/Kconfig                    |  26 +--
- arch/arm/mach-omap/Kconfig                   |   2 +-
- arch/riscv/Kconfig                           |  66 +++++--
- arch/riscv/Makefile                          |  34 ++--
- arch/riscv/boards/Makefile                   |   2 +
- arch/riscv/boards/erizo/Makefile             |   3 +
- arch/riscv/boards/erizo/lowlevel.c           |  18 ++
- arch/riscv/boot/Makefile                     |   5 +-
- arch/riscv/boot/board-dt-2nd-entry.S         |  26 +++
- arch/riscv/boot/board-dt-2nd.c               |  29 +++
- arch/riscv/boot/dtb.c                        |  25 ---
- arch/riscv/boot/entry.c                      |  33 ++++
- arch/riscv/boot/entry.h                      |  15 ++
- arch/riscv/boot/entry_ll.S                   |  15 ++
- arch/riscv/boot/main_entry.c                 |  35 ----
- arch/riscv/boot/start.S                      |  68 -------
- arch/riscv/boot/start.c                      | 197 +++++++++++++++++++
- arch/riscv/boot/uncompress.c                 |  74 +++++++
- arch/riscv/configs/erizo_generic_defconfig   |   5 -
- arch/riscv/configs/virt32_defconfig          | 117 +++++++++++
- arch/riscv/configs/virt64_defconfig          | 118 +++++++++++
- arch/riscv/dts/Makefile                      |   9 +-
- arch/riscv/include/asm/barebox-riscv.h       | 101 ++++++++++
- arch/riscv/include/asm/common.h              |  10 +-
- arch/riscv/include/asm/debug_ll_ns16550.h    |  16 +-
- arch/riscv/include/asm/dma.h                 |  44 +++++
- arch/riscv/include/asm/elf.h                 |   8 +-
- arch/riscv/include/asm/image.h               |  65 ++++++
- arch/riscv/include/asm/linkage.h             |   4 +
- arch/riscv/include/asm/sections.h            |  15 ++
- arch/riscv/include/asm/string.h              |  21 +-
- arch/riscv/include/asm/types.h               |   8 +-
- arch/riscv/include/asm/unaligned.h           |  16 +-
- arch/riscv/lib/Makefile                      |   6 +-
- arch/riscv/lib/barebox.lds.S                 |  55 ++++--
- arch/riscv/lib/dtb.c                         |  26 +++
- arch/riscv/lib/memcpy.S                      | 108 ++++++++++
- arch/riscv/lib/memmove.S                     |  64 ++++++
- arch/riscv/lib/memset.S                      | 113 +++++++++++
- arch/riscv/lib/pbl.lds.S                     |  88 +++++++++
- arch/riscv/lib/reloc.c                       |  64 ++++++
- arch/riscv/lib/runtime-offset.S              |  12 ++
- arch/riscv/lib/sections.c                    |   9 +
- arch/riscv/lib/setupc.S                      |  55 ++++++
- arch/riscv/mach-virt/Makefile                |   3 +
- arch/riscv/mach-virt/include/mach/debug_ll.h |  25 +++
- common/Kconfig                               |   8 +-
- common/filetype.c                            |   3 +
- common/partitions.c                          |   5 +-
- common/partitions/dos.c                      |   7 +-
- common/partitions/efi.c                      |   1 -
- drivers/clocksource/Kconfig                  |   7 +
- drivers/clocksource/Makefile                 |   1 +
- drivers/clocksource/timer-clint.c            |  98 +++++++++
- drivers/power/reset/Kconfig                  |  14 ++
- drivers/power/reset/Makefile                 |   2 +
- drivers/power/reset/syscon-poweroff.c        |  76 +++++++
- drivers/power/reset/syscon-reboot.c          |  92 +++++++++
- drivers/serial/Kconfig                       |   2 +-
- images/Makefile                              |   8 +-
- images/Makefile.erizo                        |  12 ++
- include/dma.h                                |   1 +
- include/filetype.h                           |   1 +
- pbl/Kconfig                                  |   6 +-
- scripts/.gitignore                           |   1 +
- scripts/Makefile                             |   1 +
- scripts/Makefile.lib                         |  11 ++
- scripts/prelink-riscv.c                      | 122 ++++++++++++
- scripts/prelink-riscv.inc                    | 123 ++++++++++++
- 75 files changed, 2285 insertions(+), 263 deletions(-)
- create mode 100644 arch/riscv/boards/Makefile
- create mode 100644 arch/riscv/boards/erizo/Makefile
- create mode 100644 arch/riscv/boards/erizo/lowlevel.c
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/riscv/Kconfig                   |  9 ++++
+ arch/riscv/boot/Makefile             |  1 +
+ arch/riscv/boot/board-dt-2nd-entry.S | 26 +++++++++++
+ arch/riscv/boot/board-dt-2nd.c       | 29 +++++++++++++
+ arch/riscv/include/asm/image.h       | 65 ++++++++++++++++++++++++++++
+ 5 files changed, 130 insertions(+)
  create mode 100644 arch/riscv/boot/board-dt-2nd-entry.S
  create mode 100644 arch/riscv/boot/board-dt-2nd.c
- delete mode 100644 arch/riscv/boot/dtb.c
- create mode 100644 arch/riscv/boot/entry.c
- create mode 100644 arch/riscv/boot/entry.h
- create mode 100644 arch/riscv/boot/entry_ll.S
- delete mode 100644 arch/riscv/boot/main_entry.c
- delete mode 100644 arch/riscv/boot/start.S
- create mode 100644 arch/riscv/boot/start.c
- create mode 100644 arch/riscv/boot/uncompress.c
- create mode 100644 arch/riscv/configs/virt32_defconfig
- create mode 100644 arch/riscv/configs/virt64_defconfig
- create mode 100644 arch/riscv/include/asm/barebox-riscv.h
- create mode 100644 arch/riscv/include/asm/dma.h
  create mode 100644 arch/riscv/include/asm/image.h
- create mode 100644 arch/riscv/lib/dtb.c
- create mode 100644 arch/riscv/lib/memcpy.S
- create mode 100644 arch/riscv/lib/memmove.S
- create mode 100644 arch/riscv/lib/memset.S
- create mode 100644 arch/riscv/lib/pbl.lds.S
- create mode 100644 arch/riscv/lib/reloc.c
- create mode 100644 arch/riscv/lib/runtime-offset.S
- create mode 100644 arch/riscv/lib/sections.c
- create mode 100644 arch/riscv/lib/setupc.S
- create mode 100644 arch/riscv/mach-virt/Makefile
- create mode 100644 arch/riscv/mach-virt/include/mach/debug_ll.h
- create mode 100644 drivers/clocksource/timer-clint.c
- create mode 100644 drivers/power/reset/syscon-poweroff.c
- create mode 100644 drivers/power/reset/syscon-reboot.c
- create mode 100644 images/Makefile.erizo
- create mode 100644 scripts/prelink-riscv.c
- create mode 100644 scripts/prelink-riscv.inc
 
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 29ac95aa0f4d..7a47bd90135a 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -73,6 +73,15 @@ config 64BIT
+ 
+ source "arch/riscv/mach-erizo/Kconfig"
+ 
++config BOARD_RISCV_GENERIC_DT
++	select BOARD_GENERIC_DT
++	bool "Build generic RISC-V device tree 2nd stage image"
++	help
++	  This enables compilation of a generic image that can be started 2nd
++	  stage from barebox or from qemu. It picks up a device tree passed
++	  in a1 like the Kernel does, so it could be used anywhere where a Kernel
++	  image could be used. The image will be called images/barebox-dt-2nd.img
++
+ endmenu
+ 
+ menu "RISC-V specific settings"
+diff --git a/arch/riscv/boot/Makefile b/arch/riscv/boot/Makefile
+index 954e9b602287..d32322875979 100644
+--- a/arch/riscv/boot/Makefile
++++ b/arch/riscv/boot/Makefile
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-y += start.o
+ obj-pbl-y += entry.o entry_ll.o uncompress.o
++pbl-$(CONFIG_BOARD_GENERIC_DT) += board-dt-2nd.o board-dt-2nd-entry.o
+diff --git a/arch/riscv/boot/board-dt-2nd-entry.S b/arch/riscv/boot/board-dt-2nd-entry.S
+new file mode 100644
+index 000000000000..520c40589356
+--- /dev/null
++++ b/arch/riscv/boot/board-dt-2nd-entry.S
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* SPDX-FileCopyrightText: Copyright (c) 2021 Ahmad Fatoum, Pengutronix */
++#include <linux/linkage.h>
++#include <asm/image.h>
++
++.section .text_head_entry_start_dt_2nd
++ENTRY(start_dt_2nd)
++	auipc sp, 0                /* code0 */
++	j dt_2nd_riscv
++	.balign 8
++#if __riscv_xlen == 64
++	.dword 0x200000            /* Image load offset(2MB) from start of RAM */
++#else
++	.dword 0x400000            /* Image load offset(4MB) from start of RAM */
++#endif
++	.dword _barebox_image_size /* Effective Image size */
++	.dword 0                   /* Kernel flags */
++	.word RISCV_HEADER_VERSION /* version */
++	.word 0                    /* reserved */
++	.dword 0                   /* reserved */
++	.ascii RISCV_IMAGE_MAGIC   /* magic1 */
++	.balign 4
++	.ascii RISCV_IMAGE_MAGIC2  /* magic2 */
++	.word   0                  /* reserved (PE-COFF offset) */
++	.asciz "barebox"           /* unused for now */
++END(start_dt_2nd)
+diff --git a/arch/riscv/boot/board-dt-2nd.c b/arch/riscv/boot/board-dt-2nd.c
+new file mode 100644
+index 000000000000..8eaddd80b1f3
+--- /dev/null
++++ b/arch/riscv/boot/board-dt-2nd.c
+@@ -0,0 +1,29 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <common.h>
++#include <asm/barebox-riscv.h>
++#include <debug_ll.h>
++#include <pbl.h>
++
++static noinline void dt_2nd_continue(void *fdt)
++{
++	unsigned long membase, memsize;
++
++	if (!fdt)
++		hang();
++
++	fdt_find_mem(fdt, &membase, &memsize);
++
++	barebox_riscv_entry(membase, memsize, fdt);
++}
++
++/* called from assembly */
++void dt_2nd_riscv(unsigned long a0, void *fdt);
++
++void dt_2nd_riscv(unsigned long a0, void *fdt)
++{
++	relocate_to_current_adr();
++	setup_c();
++
++	dt_2nd_continue(fdt);
++}
+diff --git a/arch/riscv/include/asm/image.h b/arch/riscv/include/asm/image.h
+new file mode 100644
+index 000000000000..e0b319af3681
+--- /dev/null
++++ b/arch/riscv/include/asm/image.h
+@@ -0,0 +1,65 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef _ASM_RISCV_IMAGE_H
++#define _ASM_RISCV_IMAGE_H
++
++#define RISCV_IMAGE_MAGIC	"RISCV\0\0\0"
++#define RISCV_IMAGE_MAGIC2	"RSC\x05"
++
++#define RISCV_IMAGE_FLAG_BE_SHIFT	0
++#define RISCV_IMAGE_FLAG_BE_MASK	0x1
++
++#define RISCV_IMAGE_FLAG_LE		0
++#define RISCV_IMAGE_FLAG_BE		1
++
++#ifdef CONFIG_CPU_BIG_ENDIAN
++#error conversion of header fields to LE not yet implemented
++#else
++#define __HEAD_FLAG_BE		RISCV_IMAGE_FLAG_LE
++#endif
++
++#define __HEAD_FLAG(field)	(__HEAD_FLAG_##field << \
++				RISCV_IMAGE_FLAG_##field##_SHIFT)
++
++#define __HEAD_FLAGS		(__HEAD_FLAG(BE))
++
++#define RISCV_HEADER_VERSION_MAJOR 0
++#define RISCV_HEADER_VERSION_MINOR 2
++
++#define RISCV_HEADER_VERSION (RISCV_HEADER_VERSION_MAJOR << 16 | \
++			      RISCV_HEADER_VERSION_MINOR)
++
++#ifndef __ASSEMBLY__
++/**
++ * struct riscv_image_header - riscv kernel image header
++ * @code0:		Executable code
++ * @code1:		Executable code
++ * @text_offset:	Image load offset (little endian)
++ * @image_size:		Effective Image size (little endian)
++ * @flags:		kernel flags (little endian)
++ * @version:		version
++ * @res1:		reserved
++ * @res2:		reserved
++ * @magic:		Magic number (RISC-V specific; deprecated)
++ * @magic2:		Magic number 2 (to match the ARM64 'magic' field pos)
++ * @res3:		reserved (will be used for PE COFF offset)
++ *
++ * The intention is for this header format to be shared between multiple
++ * architectures to avoid a proliferation of image header formats.
++ */
++
++struct riscv_image_header {
++	u32 code0;
++	u32 code1;
++	u64 text_offset;
++	u64 image_size;
++	u64 flags;
++	u32 version;
++	u32 res1;
++	u64 res2;
++	u64 magic;
++	u32 magic2;
++	u32 res3;
++};
++#endif /* __ASSEMBLY__ */
++#endif /* _ASM_RISCV_IMAGE_H */
 -- 
 2.29.2
 
