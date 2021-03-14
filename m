@@ -1,53 +1,53 @@
-Delivery-date: Sun, 14 Mar 2021 13:30:58 +0100
+Delivery-date: Sun, 14 Mar 2021 13:31:05 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lLPta-0007rg-S4
-	for lore@lore.pengutronix.de; Sun, 14 Mar 2021 13:30:58 +0100
+	id 1lLPth-0007s2-Pt
+	for lore@lore.pengutronix.de; Sun, 14 Mar 2021 13:31:05 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lLPtY-0007pg-N6
-	for lore@pengutronix.de; Sun, 14 Mar 2021 13:30:58 +0100
+	id 1lLPtf-0007sM-O8
+	for lore@pengutronix.de; Sun, 14 Mar 2021 13:31:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=ReMeHT6lKNzjmn+I7UghEGqfNACKGcehPMXQGzx9rOU=; b=P1qwwVL9WcDLN9tadfiM+3loh
-	5f8B0v8WiP5V/s3kq+Z55uswZMuO2gCiEbs8DTJke7zYADJx79octBTUEu2fxv/gCkZuUKB33Ar+x
-	LZNtUjPRt2umaJr6gUoxs+lnq8B0+mnUHqd6N+eBOvFrR7YlFFboPK2ABix31FKMPhKdNCDt4WdWW
-	XXVFMqm9awm32c4dqMgROCiJ6Nris/zaKcgoMIbTcYVSfF397auikNq/+ieCemnv9J8AvrYXso4rL
-	fL+T/uaDvoexbXYJ6B5PMKOgDiES7Je0lt57/9e3U7VUMUycWpPwmjTK24Bx7k9jvHoshIc4qfq+7
-	uxoUp3j2w==;
+	 bh=jyd/yBy9VDcXYgqev+rHHpR/qX1mMwDDzjPJcEiBeog=; b=a7csK5hyF+hMevlS/x5Xrvt5r
+	oX5InvWE7QuB0uz9oDEZkBkXEXzAZsSUFUHJy0SmuBMGJv3M7pHRUJaaG9RJFFQgQpdZqHv4IvzTz
+	4Y7UjYF79Q4hNghWDBaTyYl/ikzlHAlnTbAULPuzImRpDZnXJvjOpRQFQJw2r061c5s6QiOGNAjxh
+	XmSDxrr17pUt/zDSrTykdRvzbPSAF4cRAjlOYfkDvif+ky54Z3b/YudU0vs8Ehl2h1MfjJTlZwXlO
+	px4uA9o9/m1g3HRYVgGw6h6cdr9ScWxmxrNltk9qky/3tuvqmhvu0+Z+7PDJEsyqUZE40n1ReyoT1
+	FAFyO9MjQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lLPs8-00ECc9-LS; Sun, 14 Mar 2021 12:29:28 +0000
+	id 1lLPsD-00ECft-UV; Sun, 14 Mar 2021 12:29:34 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lLPrL-00EC64-Mx
- for barebox@lists.infradead.org; Sun, 14 Mar 2021 12:28:42 +0000
+ id 1lLPrT-00ECAQ-MP
+ for barebox@lists.infradead.org; Sun, 14 Mar 2021 12:28:49 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lLPqp-0006Ld-4O; Sun, 14 Mar 2021 13:28:07 +0100
+ id 1lLPqp-0006Ll-3f; Sun, 14 Mar 2021 13:28:07 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lLPqn-00016R-LB; Sun, 14 Mar 2021 13:28:05 +0100
+ id 1lLPqn-00016p-PD; Sun, 14 Mar 2021 13:28:05 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Sun, 14 Mar 2021 13:27:56 +0100
-Message-Id: <20210314122804.4128-13-a.fatoum@pengutronix.de>
+Date: Sun, 14 Mar 2021 13:28:04 +0100
+Message-Id: <20210314122804.4128-21-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210314122804.4128-1-a.fatoum@pengutronix.de>
 References: <20210314122804.4128-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210314_122840_034546_16E8B835 
-X-CRM114-Status: GOOD (  16.63  )
+X-CRM114-CacheID: sfid-20210314_122848_004372_3E4000F8 
+X-CRM114-Status: GOOD (  21.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,384 +70,434 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH 12/20] RISC-V: import Linux' optimized string functions
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,UPPERCASE_50_75
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 20/20] RISC-V: add Qemu virt support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-For non-NMON enabled board the RISC-V specific settings menu will be
-empty. Improve UI/UX by adding something there.
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
+The generic dt board added in a previous commit can be booted on RISC-V
+qemu -M virt. Add defconfigs for both 32- and 64-bit machines.
+
+We could in theory drop the mach directory altogether like it's done on
+arm64, but for now it's left in as it provides <mach/debug_ll.h>.
+
+It's expected that we can drop it in future in favor of generic earlycon
+support (which also wouldn't require manual adjustment of the shared entry
+point like with debug_ll).
+
+Signed-off-by: Rouven Czerwinski <r.czerwinksi@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/riscv/Kconfig              |   7 ++
- arch/riscv/include/asm/string.h |  21 +++++-
- arch/riscv/lib/Makefile         |   1 +
- arch/riscv/lib/memcpy.S         | 108 ++++++++++++++++++++++++++++++
- arch/riscv/lib/memmove.S        |  64 ++++++++++++++++++
- arch/riscv/lib/memset.S         | 113 ++++++++++++++++++++++++++++++++
- 6 files changed, 313 insertions(+), 1 deletion(-)
- create mode 100644 arch/riscv/lib/memcpy.S
- create mode 100644 arch/riscv/lib/memmove.S
- create mode 100644 arch/riscv/lib/memset.S
+ Documentation/boards/riscv.rst               |  59 ++++++++++
+ arch/riscv/Kconfig                           |   8 ++
+ arch/riscv/Makefile                          |   3 +-
+ arch/riscv/configs/virt32_defconfig          | 117 ++++++++++++++++++
+ arch/riscv/configs/virt64_defconfig          | 118 +++++++++++++++++++
+ arch/riscv/mach-virt/Makefile                |   3 +
+ arch/riscv/mach-virt/include/mach/debug_ll.h |  25 ++++
+ 7 files changed, 332 insertions(+), 1 deletion(-)
+ create mode 100644 arch/riscv/configs/virt32_defconfig
+ create mode 100644 arch/riscv/configs/virt64_defconfig
+ create mode 100644 arch/riscv/mach-virt/Makefile
+ create mode 100644 arch/riscv/mach-virt/include/mach/debug_ll.h
 
+diff --git a/Documentation/boards/riscv.rst b/Documentation/boards/riscv.rst
+index a1f7e30531ee..049029b4f23d 100644
+--- a/Documentation/boards/riscv.rst
++++ b/Documentation/boards/riscv.rst
+@@ -1,6 +1,65 @@
+ RISC-V
+ ======
+ 
++QEMU Virt
++---------
++
++barebox supports both the qemu riscv32 and riscv64 ``-M virt`` boards::
++
++  make ARCH=riscv virt64_defconfig
++  qemu-system-riscv64 -M virt -serial stdio -kernel build/images/barebox-dt-2nd.img
++
++Replace ``64`` by ``32`` for 32-bit build. :ref:`virtio` over MMIO is supported and
++can be used for e.g. an extra console or to pass in a virtio-blk device::
++
++  qemu-system-riscv64 -M virt -serial stdio                                \
++  	-kernel ./images/barebox-dt-2nd.img                                \
++  	-device virtio-rng-device                                          \
++  	-drive if=none,file=./images/barebox-dt-2nd.img,format=raw,id=hd0  \
++  	-device virtio-blk-device,drive=hd0                                \
++  	-device virtio-serial-device                                       \
++  	-chardev socket,path=/tmp/foo,server,nowait,id=foo           	   \
++  	-device virtconsole,chardev=foo,name=console.foo
++
++  barebox 2021.02.0 #27 Sun Mar 14 10:08:09 CET 2021
++  
++  
++  Board: riscv-virtio,qemu
++  malloc space: 0x83dff820 -> 0x87bff03f (size 62 MiB)
++  
++  barebox@riscv-virtio,qemu:/ filetype /dev/virtioblk0
++  /dev/virtioblk0: RISC-V Linux image (riscv-linux)
++
++Note that the ``board-dt-2nd.img`` uses the Linux RISC-V kernel image
++format and boot protocol. It thus requires the device tree to be passed
++from outside in ``a1`` and must be loaded at an offset as indicated in
++the header for the initial stack to work. Using the ``-kernel`` option
++in Qemu or booting from bootloaders that can properly boot Linux will
++take care of this.
++
++TinyEMU
++-------
++
++TinyEMU can emulate a qemu-virt like machine with a RISC-V 32-, 64-
++and 128-bit CPU. It can run barebox with this sample configuration::
++
++  /* temu barebox-virt64.cfg */
++  {
++      version: 1,
++      machine: "riscv64",
++      memory_size: 256,
++      bios: "bbl64.bin",
++      kernel: "./images/barebox-dt-2nd.img",
++  }
++
++``barebox-dt-2nd.img`` can be generated like with Qemu. Graphical
++output is also supported, but virtio input support is still missing.
++To activate add::
++
++    display0: { device: "simplefb", width: 800, height: 600 },
++
++into the config file.
++
+ Erizo
+ -----
+ 
 diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index a7f362d8e80c..b1b24f2e5764 100644
+index 7a47bd90135a..a53ac4d12031 100644
 --- a/arch/riscv/Kconfig
 +++ b/arch/riscv/Kconfig
-@@ -70,6 +70,13 @@ endmenu
+@@ -30,6 +30,14 @@ config MACH_ERIZO
+ 	select HAS_NMON
+ 	select USE_COMPRESSED_DTB
  
- menu "RISC-V specific settings"
- 
-+config RISCV_OPTIMZED_STRING_FUNCTIONS
-+	bool "use assembler optimized string functions"
++config MACH_VIRT
++	bool "virt family"
++	select BOARD_RISCV_GENERIC_DT
++	select CLINT_TIMER
 +	help
-+	  Say yes here to use assembler optimized memcpy / memset functions.
-+	  These functions work faster than the normal versions but increase
-+	  your binary size.
++	  Generates an image tht can be be booted by QEMU. The image is called
++	  barebox-dt-2nd.img
 +
- config HAS_NMON
- 	bool
+ endchoice
  
-diff --git a/arch/riscv/include/asm/string.h b/arch/riscv/include/asm/string.h
-index 2997587d820c..1e920c8688ce 100644
---- a/arch/riscv/include/asm/string.h
-+++ b/arch/riscv/include/asm/string.h
-@@ -1 +1,20 @@
--/* dummy */
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_RISCV_STRING_H
-+#define __ASM_RISCV_STRING_H
-+
-+#ifdef CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS
-+
-+#define __HAVE_ARCH_MEMCPY
-+extern void *memcpy(void *, const void *, __kernel_size_t);
-+#define __HAVE_ARCH_MEMSET
-+extern void *memset(void *, int, __kernel_size_t);
-+#define __HAVE_ARCH_MEMMOVE
-+extern void *memmove(void *, const void *, __kernel_size_t);
-+
-+#endif
-+
-+extern void *__memcpy(void *, const void *, __kernel_size_t);
-+extern void *__memset(void *, int, __kernel_size_t);
-+extern void *__memmove(void *, const void *, __kernel_size_t);
-+
-+#endif
-diff --git a/arch/riscv/lib/Makefile b/arch/riscv/lib/Makefile
-index 7fe57b0b554c..b983ca8cdca0 100644
---- a/arch/riscv/lib/Makefile
-+++ b/arch/riscv/lib/Makefile
-@@ -2,3 +2,4 @@ extra-y += barebox.lds
+ choice
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index f60239fd253b..133e43af41bf 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -1,4 +1,4 @@
+-KBUILD_DEFCONFIG := erizo_generic_defconfig
++KBUILD_DEFCONFIG := virt64_defconfig
  
- obj-y += riscv_timer.o
- obj-$(CONFIG_HAS_ARCH_SJLJ) += setjmp.o longjmp.o
-+obj-$(CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS) += memcpy.o memset.o memmove.o
-diff --git a/arch/riscv/lib/memcpy.S b/arch/riscv/lib/memcpy.S
+ KBUILD_CPPFLAGS += -fno-strict-aliasing
+ 
+@@ -20,6 +20,7 @@ cflags-y +=  $(riscv-cflags-y)
+ LDFLAGS_barebox += -nostdlib
+ 
+ machine-$(CONFIG_MACH_ERIZO)	:= erizo
++machine-$(CONFIG_MACH_VIRT)	:= virt
+ 
+ LDFLAGS_barebox += $(riscv-ldflags-y)
+ 
+diff --git a/arch/riscv/configs/virt32_defconfig b/arch/riscv/configs/virt32_defconfig
 new file mode 100644
-index 000000000000..51ab716253fa
+index 000000000000..2c6ecd7005c4
 --- /dev/null
-+++ b/arch/riscv/lib/memcpy.S
-@@ -0,0 +1,108 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/arch/riscv/configs/virt32_defconfig
+@@ -0,0 +1,117 @@
++CONFIG_MACH_VIRT=y
++CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_STACK_SIZE=0x20000
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_RELOCATABLE=y
++CONFIG_PANIC_HANG=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_IMD_TARGET=y
++CONFIG_CONSOLE_ACTIVATE_NONE=y
++CONFIG_CONSOLE_ALLOW_COLOR=y
++CONFIG_PBL_CONSOLE=y
++CONFIG_PARTITION_DISK_EFI=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_BAREBOXENV_TARGET=y
++CONFIG_BAREBOXCRC32_TARGET=y
++CONFIG_POLLER=y
++CONFIG_STATE=y
++CONFIG_STATE_CRYPTO=y
++CONFIG_BOOTCHOOSER=y
++CONFIG_RESET_SOURCE=y
++CONFIG_MACHINE_ID=y
++CONFIG_CMD_DMESG=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_POLLER=y
++CONFIG_CMD_SLICE=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_BOOTCHOOSER=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_CMP=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SPLASH=y
++CONFIG_CMD_FBTEST=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_POWEROFF=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_2048=y
++CONFIG_CMD_BAREBOX_UPDATE=y
++CONFIG_CMD_OF_DIFF=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OF_FIXUP_STATUS=y
++CONFIG_CMD_OF_OVERLAY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_DHRYSTONE=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_VIRTIO_CONSOLE=y
++CONFIG_DRIVER_SPI_GPIO=y
++CONFIG_I2C=y
++CONFIG_I2C_GPIO=y
++CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_MTD_CONCAT=y
++CONFIG_MTD_M25P80=y
++CONFIG_DRIVER_CFI=y
++CONFIG_DRIVER_CFI_BANK_WIDTH_8=y
++CONFIG_DISK=y
++CONFIG_DISK_WRITE=y
++CONFIG_VIRTIO_BLK=y
++CONFIG_VIDEO=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_DRIVER_VIDEO_SIMPLEFB_CLIENT=y
++CONFIG_CLOCKSOURCE_DUMMY_RATE=60000
++CONFIG_EEPROM_AT24=y
++CONFIG_HWRNG=y
++CONFIG_HW_RANDOM_VIRTIO=y
++CONFIG_GPIO_GENERIC_PLATFORM=y
++# CONFIG_PINCTRL is not set
++CONFIG_SYSCON_REBOOT_MODE=y
++CONFIG_POWER_RESET_SYSCON=y
++CONFIG_POWER_RESET_SYSCON_POWEROFF=y
++CONFIG_VIRTIO_MMIO=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_FS_UIMAGEFS=y
++CONFIG_FS_PSTORE=y
++CONFIG_FS_SQUASHFS=y
++CONFIG_ZLIB=y
++CONFIG_BZLIB=y
++CONFIG_LZ4_DECOMPRESS=y
++CONFIG_ZSTD_DECOMPRESS=y
++CONFIG_XZ_DECOMPRESS=y
++CONFIG_BASE64=y
++CONFIG_LZO_DECOMPRESS=y
++CONFIG_DIGEST_CRC32_GENERIC=y
+diff --git a/arch/riscv/configs/virt64_defconfig b/arch/riscv/configs/virt64_defconfig
+new file mode 100644
+index 000000000000..adfa6c3613b8
+--- /dev/null
++++ b/arch/riscv/configs/virt64_defconfig
+@@ -0,0 +1,118 @@
++CONFIG_MACH_VIRT=y
++CONFIG_ARCH_RV64I=y
++CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_STACK_SIZE=0x20000
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_RELOCATABLE=y
++CONFIG_PANIC_HANG=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_IMD_TARGET=y
++CONFIG_CONSOLE_ACTIVATE_NONE=y
++CONFIG_CONSOLE_ALLOW_COLOR=y
++CONFIG_PBL_CONSOLE=y
++CONFIG_PARTITION_DISK_EFI=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_BAREBOXENV_TARGET=y
++CONFIG_BAREBOXCRC32_TARGET=y
++CONFIG_POLLER=y
++CONFIG_STATE=y
++CONFIG_STATE_CRYPTO=y
++CONFIG_BOOTCHOOSER=y
++CONFIG_RESET_SOURCE=y
++CONFIG_MACHINE_ID=y
++CONFIG_CMD_DMESG=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_POLLER=y
++CONFIG_CMD_SLICE=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_BOOTCHOOSER=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_CMP=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SPLASH=y
++CONFIG_CMD_FBTEST=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_POWEROFF=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_2048=y
++CONFIG_CMD_BAREBOX_UPDATE=y
++CONFIG_CMD_OF_DIFF=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OF_FIXUP_STATUS=y
++CONFIG_CMD_OF_OVERLAY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_DHRYSTONE=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_VIRTIO_CONSOLE=y
++CONFIG_DRIVER_SPI_GPIO=y
++CONFIG_I2C=y
++CONFIG_I2C_GPIO=y
++CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_MTD_CONCAT=y
++CONFIG_MTD_M25P80=y
++CONFIG_DRIVER_CFI=y
++CONFIG_DRIVER_CFI_BANK_WIDTH_8=y
++CONFIG_DISK=y
++CONFIG_DISK_WRITE=y
++CONFIG_VIRTIO_BLK=y
++CONFIG_VIDEO=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_DRIVER_VIDEO_SIMPLEFB_CLIENT=y
++CONFIG_CLOCKSOURCE_DUMMY_RATE=60000
++CONFIG_EEPROM_AT24=y
++CONFIG_HWRNG=y
++CONFIG_HW_RANDOM_VIRTIO=y
++CONFIG_GPIO_GENERIC_PLATFORM=y
++# CONFIG_PINCTRL is not set
++CONFIG_SYSCON_REBOOT_MODE=y
++CONFIG_POWER_RESET_SYSCON=y
++CONFIG_POWER_RESET_SYSCON_POWEROFF=y
++CONFIG_VIRTIO_MMIO=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_FS_UIMAGEFS=y
++CONFIG_FS_PSTORE=y
++CONFIG_FS_SQUASHFS=y
++CONFIG_ZLIB=y
++CONFIG_BZLIB=y
++CONFIG_LZ4_DECOMPRESS=y
++CONFIG_ZSTD_DECOMPRESS=y
++CONFIG_XZ_DECOMPRESS=y
++CONFIG_BASE64=y
++CONFIG_LZO_DECOMPRESS=y
++CONFIG_DIGEST_CRC32_GENERIC=y
+diff --git a/arch/riscv/mach-virt/Makefile b/arch/riscv/mach-virt/Makefile
+new file mode 100644
+index 000000000000..d9c51e74c379
+--- /dev/null
++++ b/arch/riscv/mach-virt/Makefile
+@@ -0,0 +1,3 @@
++# just to build a built-in.o. Otherwise compilation fails when no o-files is
++# created.
++obj- += dummy.o
+diff --git a/arch/riscv/mach-virt/include/mach/debug_ll.h b/arch/riscv/mach-virt/include/mach/debug_ll.h
+new file mode 100644
+index 000000000000..056b7a330bdd
+--- /dev/null
++++ b/arch/riscv/mach-virt/include/mach/debug_ll.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +/*
-+ * Copyright (C) 2013 Regents of the University of California
++ * Copyright (C) 2017 Antony Pavlov <antonynpavlov@gmail.com>
 + */
 +
-+#include <linux/linkage.h>
-+#include <asm/asm.h>
++#ifndef __MACH_VIRT_DEBUG_LL__
++#define __MACH_VIRT_DEBUG_LL__
 +
-+/* void *memcpy(void *, const void *, size_t) */
-+ENTRY(__memcpy)
-+WEAK(memcpy)
-+	move t6, a0  /* Preserve return value */
-+
-+	/* Defer to byte-oriented copy for small sizes */
-+	sltiu a3, a2, 128
-+	bnez a3, 4f
-+	/* Use word-oriented copy only if low-order bits match */
-+	andi a3, t6, SZREG-1
-+	andi a4, a1, SZREG-1
-+	bne a3, a4, 4f
-+
-+	beqz a3, 2f  /* Skip if already aligned */
-+	/*
-+	 * Round to nearest double word-aligned address
-+	 * greater than or equal to start address
-+	 */
-+	andi a3, a1, ~(SZREG-1)
-+	addi a3, a3, SZREG
-+	/* Handle initial misalignment */
-+	sub a4, a3, a1
-+1:
-+	lb a5, 0(a1)
-+	addi a1, a1, 1
-+	sb a5, 0(t6)
-+	addi t6, t6, 1
-+	bltu a1, a3, 1b
-+	sub a2, a2, a4  /* Update count */
-+
-+2:
-+	andi a4, a2, ~((16*SZREG)-1)
-+	beqz a4, 4f
-+	add a3, a1, a4
-+3:
-+	REG_L a4,       0(a1)
-+	REG_L a5,   SZREG(a1)
-+	REG_L a6, 2*SZREG(a1)
-+	REG_L a7, 3*SZREG(a1)
-+	REG_L t0, 4*SZREG(a1)
-+	REG_L t1, 5*SZREG(a1)
-+	REG_L t2, 6*SZREG(a1)
-+	REG_L t3, 7*SZREG(a1)
-+	REG_L t4, 8*SZREG(a1)
-+	REG_L t5, 9*SZREG(a1)
-+	REG_S a4,       0(t6)
-+	REG_S a5,   SZREG(t6)
-+	REG_S a6, 2*SZREG(t6)
-+	REG_S a7, 3*SZREG(t6)
-+	REG_S t0, 4*SZREG(t6)
-+	REG_S t1, 5*SZREG(t6)
-+	REG_S t2, 6*SZREG(t6)
-+	REG_S t3, 7*SZREG(t6)
-+	REG_S t4, 8*SZREG(t6)
-+	REG_S t5, 9*SZREG(t6)
-+	REG_L a4, 10*SZREG(a1)
-+	REG_L a5, 11*SZREG(a1)
-+	REG_L a6, 12*SZREG(a1)
-+	REG_L a7, 13*SZREG(a1)
-+	REG_L t0, 14*SZREG(a1)
-+	REG_L t1, 15*SZREG(a1)
-+	addi a1, a1, 16*SZREG
-+	REG_S a4, 10*SZREG(t6)
-+	REG_S a5, 11*SZREG(t6)
-+	REG_S a6, 12*SZREG(t6)
-+	REG_S a7, 13*SZREG(t6)
-+	REG_S t0, 14*SZREG(t6)
-+	REG_S t1, 15*SZREG(t6)
-+	addi t6, t6, 16*SZREG
-+	bltu a1, a3, 3b
-+	andi a2, a2, (16*SZREG)-1  /* Update count */
-+
-+4:
-+	/* Handle trailing misalignment */
-+	beqz a2, 6f
-+	add a3, a1, a2
-+
-+	/* Use word-oriented copy if co-aligned to word boundary */
-+	or a5, a1, t6
-+	or a5, a5, a3
-+	andi a5, a5, 3
-+	bnez a5, 5f
-+7:
-+	lw a4, 0(a1)
-+	addi a1, a1, 4
-+	sw a4, 0(t6)
-+	addi t6, t6, 4
-+	bltu a1, a3, 7b
-+
-+	ret
-+
-+5:
-+	lb a4, 0(a1)
-+	addi a1, a1, 1
-+	sb a4, 0(t6)
-+	addi t6, t6, 1
-+	bltu a1, a3, 5b
-+6:
-+	ret
-+END(__memcpy)
-diff --git a/arch/riscv/lib/memmove.S b/arch/riscv/lib/memmove.S
-new file mode 100644
-index 000000000000..07d1d2152ba5
---- /dev/null
-+++ b/arch/riscv/lib/memmove.S
-@@ -0,0 +1,64 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#include <linux/linkage.h>
-+#include <asm/asm.h>
-+
-+ENTRY(__memmove)
-+WEAK(memmove)
-+        move    t0, a0
-+        move    t1, a1
-+
-+        beq     a0, a1, exit_memcpy
-+        beqz    a2, exit_memcpy
-+        srli    t2, a2, 0x2
-+
-+        slt     t3, a0, a1
-+        beqz    t3, do_reverse
-+
-+        andi    a2, a2, 0x3
-+        li      t4, 1
-+        beqz    t2, byte_copy
-+
-+word_copy:
-+        lw      t3, 0(a1)
-+        addi    t2, t2, -1
-+        addi    a1, a1, 4
-+        sw      t3, 0(a0)
-+        addi    a0, a0, 4
-+        bnez    t2, word_copy
-+        beqz    a2, exit_memcpy
-+        j       byte_copy
-+
-+do_reverse:
-+        add     a0, a0, a2
-+        add     a1, a1, a2
-+        andi    a2, a2, 0x3
-+        li      t4, -1
-+        beqz    t2, reverse_byte_copy
-+
-+reverse_word_copy:
-+        addi    a1, a1, -4
-+        addi    t2, t2, -1
-+        lw      t3, 0(a1)
-+        addi    a0, a0, -4
-+        sw      t3, 0(a0)
-+        bnez    t2, reverse_word_copy
-+        beqz    a2, exit_memcpy
-+
-+reverse_byte_copy:
-+        addi    a0, a0, -1
-+        addi    a1, a1, -1
-+
-+byte_copy:
-+        lb      t3, 0(a1)
-+        addi    a2, a2, -1
-+        sb      t3, 0(a0)
-+        add     a1, a1, t4
-+        add     a0, a0, t4
-+        bnez    a2, byte_copy
-+
-+exit_memcpy:
-+        move a0, t0
-+        move a1, t1
-+        ret
-+END(__memmove)
-diff --git a/arch/riscv/lib/memset.S b/arch/riscv/lib/memset.S
-new file mode 100644
-index 000000000000..34c5360c6705
---- /dev/null
-+++ b/arch/riscv/lib/memset.S
-@@ -0,0 +1,113 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2013 Regents of the University of California
++/** @file
++ *  This File contains declaration for early output support
 + */
 +
++#include <linux/kconfig.h>
 +
-+#include <linux/linkage.h>
-+#include <asm/asm.h>
++#define DEBUG_LL_UART_ADDR	0x10000000
++#define DEBUG_LL_UART_SHIFT	0
++#define DEBUG_LL_UART_IOSIZE8
 +
-+/* void *memset(void *, int, size_t) */
-+ENTRY(__memset)
-+WEAK(memset)
-+	move t0, a0  /* Preserve return value */
++#define DEBUG_LL_UART_CLK       0x00384000
++#define DEBUG_LL_UART_BPS       CONFIG_BAUDRATE
++#define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
 +
-+	/* Defer to byte-oriented fill for small sizes */
-+	sltiu a3, a2, 16
-+	bnez a3, 4f
++#include <asm/debug_ll_ns16550.h>
 +
-+	/*
-+	 * Round to nearest XLEN-aligned address
-+	 * greater than or equal to start address
-+	 */
-+	addi a3, t0, SZREG-1
-+	andi a3, a3, ~(SZREG-1)
-+	beq a3, t0, 2f  /* Skip if already aligned */
-+	/* Handle initial misalignment */
-+	sub a4, a3, t0
-+1:
-+	sb a1, 0(t0)
-+	addi t0, t0, 1
-+	bltu t0, a3, 1b
-+	sub a2, a2, a4  /* Update count */
-+
-+2: /* Duff's device with 32 XLEN stores per iteration */
-+	/* Broadcast value into all bytes */
-+	andi a1, a1, 0xff
-+	slli a3, a1, 8
-+	or a1, a3, a1
-+	slli a3, a1, 16
-+	or a1, a3, a1
-+#ifdef CONFIG_64BIT
-+	slli a3, a1, 32
-+	or a1, a3, a1
-+#endif
-+
-+	/* Calculate end address */
-+	andi a4, a2, ~(SZREG-1)
-+	add a3, t0, a4
-+
-+	andi a4, a4, 31*SZREG  /* Calculate remainder */
-+	beqz a4, 3f            /* Shortcut if no remainder */
-+	neg a4, a4
-+	addi a4, a4, 32*SZREG  /* Calculate initial offset */
-+
-+	/* Adjust start address with offset */
-+	sub t0, t0, a4
-+
-+	/* Jump into loop body */
-+	/* Assumes 32-bit instruction lengths */
-+	la a5, 3f
-+#ifdef CONFIG_64BIT
-+	srli a4, a4, 1
-+#endif
-+	add a5, a5, a4
-+	jr a5
-+3:
-+	REG_S a1,        0(t0)
-+	REG_S a1,    SZREG(t0)
-+	REG_S a1,  2*SZREG(t0)
-+	REG_S a1,  3*SZREG(t0)
-+	REG_S a1,  4*SZREG(t0)
-+	REG_S a1,  5*SZREG(t0)
-+	REG_S a1,  6*SZREG(t0)
-+	REG_S a1,  7*SZREG(t0)
-+	REG_S a1,  8*SZREG(t0)
-+	REG_S a1,  9*SZREG(t0)
-+	REG_S a1, 10*SZREG(t0)
-+	REG_S a1, 11*SZREG(t0)
-+	REG_S a1, 12*SZREG(t0)
-+	REG_S a1, 13*SZREG(t0)
-+	REG_S a1, 14*SZREG(t0)
-+	REG_S a1, 15*SZREG(t0)
-+	REG_S a1, 16*SZREG(t0)
-+	REG_S a1, 17*SZREG(t0)
-+	REG_S a1, 18*SZREG(t0)
-+	REG_S a1, 19*SZREG(t0)
-+	REG_S a1, 20*SZREG(t0)
-+	REG_S a1, 21*SZREG(t0)
-+	REG_S a1, 22*SZREG(t0)
-+	REG_S a1, 23*SZREG(t0)
-+	REG_S a1, 24*SZREG(t0)
-+	REG_S a1, 25*SZREG(t0)
-+	REG_S a1, 26*SZREG(t0)
-+	REG_S a1, 27*SZREG(t0)
-+	REG_S a1, 28*SZREG(t0)
-+	REG_S a1, 29*SZREG(t0)
-+	REG_S a1, 30*SZREG(t0)
-+	REG_S a1, 31*SZREG(t0)
-+	addi t0, t0, 32*SZREG
-+	bltu t0, a3, 3b
-+	andi a2, a2, SZREG-1  /* Update count */
-+
-+4:
-+	/* Handle trailing misalignment */
-+	beqz a2, 6f
-+	add a3, t0, a2
-+5:
-+	sb a1, 0(t0)
-+	addi t0, t0, 1
-+	bltu t0, a3, 5b
-+6:
-+	ret
-+END(__memset)
++#endif /* __MACH_VIRT_DEBUG_LL__ */
 -- 
 2.29.2
 
