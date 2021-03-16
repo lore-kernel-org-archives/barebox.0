@@ -1,53 +1,53 @@
-Delivery-date: Tue, 16 Mar 2021 09:07:11 +0100
+Delivery-date: Tue, 16 Mar 2021 09:07:13 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lM4jP-0002JC-PH
-	for lore@lore.pengutronix.de; Tue, 16 Mar 2021 09:07:11 +0100
+	id 1lM4jR-0002JY-14
+	for lore@lore.pengutronix.de; Tue, 16 Mar 2021 09:07:13 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lM4jM-0000WO-GX
-	for lore@pengutronix.de; Tue, 16 Mar 2021 09:07:11 +0100
+	id 1lM4jP-0000Xb-7D
+	for lore@pengutronix.de; Tue, 16 Mar 2021 09:07:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=ABTEXOid5lxqernN/ErSoeibG4mTUfjbpv9rCmttd0E=; b=Qlb5ZxmlXWgDNUNlnq/32MYWI
-	FoZ53GFMBemQPLzYhmw9WpXxBXqR6o37AhEtbqEdETFwGhY281vZcZ8UJzOUUB8btZM/rFOcKtLRy
-	yRfMIZsnKqnkeNiSKRXszTm9DuROsZoE5/J6upasKfbgGQB06HvW6oSVPNJZmZkjyKRy/L8/AEQxf
-	9/v3B71fb13sy+CIZsw9tufCxNi7+xVkUOLMvHppFEn/7PF3sHUvwZIXCsdk3Fds6EgljeZQ4xLnZ
-	o7jW3HuMADyCiuC2ksFewzXGfYesVofZ7fby5Be/ThTwrOn65j8JUvXhl2BeSJEKv4gqF0g9bAS1v
-	CZUiJu6TA==;
+	 bh=+36FwaBPzAR4N1MD6KfgdSeiElQGKnw14afe7rANRWQ=; b=M8Pe6xzJV2SIZd+6b3hvcKokS
+	g+KU0X2+Ezapt6rtMdvWByhDWRNZudGmUqCUvtXqzDnPMiYuoUZnYlyDnAT6yrOwnNnV84axhV31A
+	rIrz90TLXvVuaY0usHJ7+EGrmSX0+sEG6Dq/f+5R6GfXumuORQaehpwWW7OW9+yIvkE6lr1QmfGeG
+	ZdJ90hGllBOmPEPT5v0YQqXE6YVrGs9hC5xxQjf1Qbp6DcqHOlqhUFX/giBw0MfoF7sZWEUVqIJRh
+	h2RSs1F4e+1Wo7FzzSc4SdI6+/ToOAQ1VO4JzhXrfY5WPQT2J7fvAV0uYPCGzrqxozQskjWPd+gFc
+	fWDEmiKMw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lM4i8-0004oA-Rh; Tue, 16 Mar 2021 08:05:52 +0000
+	id 1lM4iD-0004pm-TM; Tue, 16 Mar 2021 08:05:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lM4hT-0004XV-Tp
+ id 1lM4hT-0004XT-TM
  for barebox@lists.infradead.org; Tue, 16 Mar 2021 08:05:18 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lM4hS-0007yH-Ga; Tue, 16 Mar 2021 09:05:10 +0100
+ id 1lM4hS-0007yA-ET; Tue, 16 Mar 2021 09:05:10 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lM4hR-0006DW-91; Tue, 16 Mar 2021 09:05:09 +0100
+ id 1lM4hR-0006DE-6f; Tue, 16 Mar 2021 09:05:09 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 16 Mar 2021 09:05:04 +0100
-Message-Id: <20210316080505.19361-20-a.fatoum@pengutronix.de>
+Date: Tue, 16 Mar 2021 09:04:59 +0100
+Message-Id: <20210316080505.19361-15-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210316080505.19361-1-a.fatoum@pengutronix.de>
 References: <20210316080505.19361-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210316_080512_217409_9FE24010 
-X-CRM114-Status: GOOD (  25.23  )
+X-CRM114-CacheID: sfid-20210316_080512_190265_3BE32D11 
+X-CRM114-Status: GOOD (  29.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,316 +72,596 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 19/20] power: reset: add drivers for generic syscon reset
- and poweroff
+Subject: [PATCH v2 14/20] RISC-V: erizo: migrate to PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Many SoC reset/poweroff mechanisms can be represented using this generic
-binding. Of the boards we support, at least the virt machines can
-be rebooted and powered off by it. Import the Linux v5.11 state
-of the driver to support this.
+We now have everything in place to migrate erizo to PBL.
+As currently, this is the only board, we can drop all non-PBL support
+in the same go.
 
+The board still throws TLSF errors on startup, but that was the case
+before the rework as well. Tested with qemu as described in the docs.
+
+Cc: Antony Pavlov <antonynpavlov@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/riscv/Kconfig                    |  1 +
- arch/riscv/dts/erizo.dtsi             |  2 +-
- drivers/clocksource/Kconfig           |  2 +-
- drivers/clocksource/timer-riscv.c     | 18 +++++-
- drivers/power/reset/Kconfig           | 14 ++++
- drivers/power/reset/Makefile          |  2 +
- drivers/power/reset/syscon-poweroff.c | 76 ++++++++++++++++++++++
- drivers/power/reset/syscon-reboot.c   | 92 +++++++++++++++++++++++++++
- 8 files changed, 204 insertions(+), 3 deletions(-)
- create mode 100644 drivers/power/reset/syscon-poweroff.c
- create mode 100644 drivers/power/reset/syscon-reboot.c
+I assume some memory corruption is happening due to the minimal malloc
+area size? It doesn't happen with dlmalloc. It doesn't happen on riscv
+virt added later on, so I will likely not pursue this further.
+---
+ Documentation/boards/riscv.rst             | 13 +++--
+ Makefile                                   |  1 +
+ arch/riscv/Kconfig                         | 15 ++---
+ arch/riscv/Makefile                        | 25 +++-----
+ arch/riscv/boards/erizo/Makefile           |  4 +-
+ arch/riscv/boards/erizo/board.c            | 25 --------
+ arch/riscv/boards/erizo/lowlevel.c         | 37 ++++--------
+ arch/riscv/boards/erizo/start.S            | 68 ----------------------
+ arch/riscv/configs/erizo_generic_defconfig |  5 --
+ arch/riscv/dts/Makefile                    |  9 +--
+ arch/riscv/lib/Makefile                    |  2 +-
+ arch/riscv/lib/barebox.lds.S               | 36 ++++++++----
+ arch/riscv/lib/dtb.c                       | 26 +++++++++
+ common/Kconfig                             |  4 +-
+ images/Makefile                            |  4 ++
+ images/Makefile.riscv                      | 12 ++++
+ pbl/Kconfig                                |  2 +-
+ 17 files changed, 107 insertions(+), 181 deletions(-)
+ delete mode 100644 arch/riscv/boards/erizo/board.c
+ delete mode 100644 arch/riscv/boards/erizo/start.S
+ create mode 100644 arch/riscv/lib/dtb.c
+ create mode 100644 images/Makefile.riscv
 
+diff --git a/Documentation/boards/riscv.rst b/Documentation/boards/riscv.rst
+index c7fa52aadbee..a1f7e30531ee 100644
+--- a/Documentation/boards/riscv.rst
++++ b/Documentation/boards/riscv.rst
+@@ -1,8 +1,11 @@
+ RISC-V
+ ======
+ 
+-Running RISC-V barebox on qemu
+-------------------------------
++Erizo
++-----
++
++Running on qemu
++~~~~~~~~~~~~~~~
+ 
+ Obtain RISC-V GCC/Newlib Toolchain,
+ see https://github.com/riscv/riscv-tools/blob/master/README.md
+@@ -44,7 +47,7 @@ Next compile barebox::
+ Run barebox::
+ 
+   $ <path to riscv-qemu source>/riscv32-softmmu/qemu-system-riscv32 \
+-      -nographic -M erizo -bios <path to barebox sources >/barebox.bin \
++      -nographic -M erizo -bios ./images/barebox-erizo-generic.img \
+       -serial stdio -monitor none -trace file=/dev/null
+   Switch to console [cs0]
+   
+@@ -59,8 +62,8 @@ Run barebox::
+   barebox:/
+ 
+ 
+-Running RISC-V barebox on DE0-Nano FPGA board
+----------------------------------------------
++Running on DE0-Nano FPGA board
++------------------------------
+ 
+ See https://github.com/open-design/riscv-soc-cores/ for instructions
+ on DE0-Nano bitstream generation and loading.
+diff --git a/Makefile b/Makefile
+index 6d44314f0a7e..4cc7bef2bd42 100644
+--- a/Makefile
++++ b/Makefile
+@@ -776,6 +776,7 @@ define rule_barebox__
+ 	$(if $(CONFIG_KALLSYMS),,+$(call cmd,barebox_version))
+ 	$(call cmd,barebox__)
+ 	$(Q)echo 'cmd_$@ := $(cmd_barebox__)' > $(@D)/.$(@F).cmd
++	$(call cmd,prelink__)
+ 	$(call cmd,sysmap)
+ endef
+ 
 diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 50c4d145cf54..6e8bfdef14db 100644
+index b1b24f2e5764..4a2a547a7b35 100644
 --- a/arch/riscv/Kconfig
 +++ b/arch/riscv/Kconfig
-@@ -32,6 +32,7 @@ config MACH_ERIZO
+@@ -1,14 +1,16 @@
+ config RISCV
+ 	def_bool y
+ 	select GENERIC_FIND_NEXT_BIT
+-	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
+-	select HAVE_CONFIGURABLE_TEXT_BASE
+ 	select GPIOLIB
+ 	select OFTREE
++	select OFDEVICE
+ 	select COMMON_CLK
+ 	select COMMON_CLK_OF_PROVIDER
+ 	select CLKDEV_LOOKUP
+ 	select HAS_DMA
++	select HAVE_PBL_IMAGE
++	select HAVE_PBL_MULTI_IMAGES
++	select HAVE_IMAGE_COMPRESSION
+ 
+ config ARCH_TEXT_BASE
+ 	hex
+@@ -24,6 +26,7 @@ config MACH_ERIZO
+ 	bool "erizo family"
+ 	select HAS_DEBUG_LL
  	select HAS_NMON
- 	select USE_COMPRESSED_DTB
- 	select RISCV_M_MODE
-+	select RISCV_TIMER
++	select USE_COMPRESSED_DTB
  
  endchoice
  
-diff --git a/arch/riscv/dts/erizo.dtsi b/arch/riscv/dts/erizo.dtsi
-index 07534798ac75..e854a48ae55c 100644
---- a/arch/riscv/dts/erizo.dtsi
-+++ b/arch/riscv/dts/erizo.dtsi
-@@ -22,7 +22,7 @@
+@@ -56,14 +59,6 @@ config 32BIT
  
- 		cpu@0 {
- 			device_type = "cpu";
--			compatible = "cliffordwolf,picorv32";
-+			compatible = "cliffordwolf,picorv32", "riscv";
- 			clocks = <&ref_clk>;
- 			reg = <0>;
- 		};
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 2d8f5113ad8d..7bc69afd7820 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -101,7 +101,7 @@ config CLOCKSOURCE_TI_32K
+ endchoice
  
- config RISCV_TIMER
- 	bool "Timer for the RISC-V platform" if COMPILE_TEST
--	depends on RISCV && RISCV_SBI
-+	depends on RISCV
- 	help
- 	  This enables the per-hart timer built into all RISC-V systems, which
- 	  is accessed via both the SBI and the rdcycle instruction.  This is
-diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
-index 637285fd78a7..eb5ba2d8c226 100644
---- a/drivers/clocksource/timer-riscv.c
-+++ b/drivers/clocksource/timer-riscv.c
-@@ -13,7 +13,7 @@
- #include <asm/timer.h>
- #include <asm/csr.h>
+-config BUILTIN_DTB
+-	bool "link a DTB into the barebox image"
+-	depends on OFTREE
+-
+-config BUILTIN_DTB_NAME
+-	string "DTB to build into the barebox image"
+-	depends on BUILTIN_DTB
+-
+ source "arch/riscv/mach-erizo/Kconfig"
  
--static u64 notrace riscv_timer_get_count(void)
-+static u64 notrace riscv_timer_get_count_sbi(void)
+ endmenu
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index df2b5bb681a4..00456ed02ce1 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -3,21 +3,23 @@ KBUILD_DEFCONFIG := erizo_generic_defconfig
+ KBUILD_CPPFLAGS += -fno-strict-aliasing
+ 
+ ifeq ($(CONFIG_ARCH_RV32I),y)
+-	cflags-y += -march=rv32im -mabi=ilp32
+-	riscv-ldflags-y += -melf32lriscv
++	riscv-cflags-y := -march=rv32im -mabi=ilp32
++	riscv-ldflags-y := -melf32lriscv
+ endif
+ 
+-cflags-y += -fno-pic -Wstrict-prototypes -mcmodel=medany
++riscv-cflags-y += -Wstrict-prototypes -mcmodel=medany -fpic
++riscv-ldflags-y += -pie -static
+ 
++PBL_CPPFLAGS += $(riscv-cflags-y)
++LDFLAGS_pbl += $(riscv-ldflags-y)
++
++cflags-y += $(riscv-cflags-y)
+ LDFLAGS_barebox += -nostdlib
+ 
+ machine-$(CONFIG_MACH_ERIZO)	:= erizo
+ 
+ LDFLAGS_barebox += $(riscv-ldflags-y)
+ 
+-TEXT_BASE = $(CONFIG_TEXT_BASE)
+-KBUILD_CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
+-
+ ifndef CONFIG_MODULES
+ # Add cleanup flags
+ KBUILD_CPPFLAGS += -fdata-sections -ffunction-sections
+@@ -54,13 +56,4 @@ lds-y	:= arch/riscv/lib/barebox.lds
+ 
+ CLEAN_FILES += arch/riscv/lib/barebox.lds
+ 
+-ifeq ($(CONFIG_MACH_ERIZO),y)
+-KBUILD_IMAGE := barebox.erizo.nmon
+-endif
+-
+-quiet_cmd_erizo_nmon_image = MKIMAGE $@
+-      cmd_erizo_nmon_image = $(srctree)/scripts/erizo-nmon-image $< $@ || \
+-	echo "WARNING: Couldn't create erizo nmon image due to previous errors."
+-
+-barebox.erizo.nmon: $(KBUILD_BINARY) FORCE
+-	$(call if_changed,erizo_nmon_image)
++KBUILD_IMAGE := $(KBUILD_BINARY)
+diff --git a/arch/riscv/boards/erizo/Makefile b/arch/riscv/boards/erizo/Makefile
+index 72b9a13ba73f..3d217ffe0b93 100644
+--- a/arch/riscv/boards/erizo/Makefile
++++ b/arch/riscv/boards/erizo/Makefile
+@@ -1,5 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-obj-y += lowlevel.o
+-obj-y += start.o
+-obj-y += board.o
++pbl-y += lowlevel.o
+diff --git a/arch/riscv/boards/erizo/board.c b/arch/riscv/boards/erizo/board.c
+deleted file mode 100644
+index b9b68fc7f254..000000000000
+--- a/arch/riscv/boards/erizo/board.c
++++ /dev/null
+@@ -1,25 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (C) 2016, 2018 Antony Pavlov <antonynpavlov@gmail.com>
+- *
+- * This file is part of barebox.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-#include <common.h>
+-#include <init.h>
+-#include <of.h>
+-
+-extern char __dtb_start[];
+-
+-static int of_riscv_init(void)
+-{
+-	barebox_register_fdt(__dtb_start);
+-
+-	return 0;
+-}
+-core_initcall(of_riscv_init);
+diff --git a/arch/riscv/boards/erizo/lowlevel.c b/arch/riscv/boards/erizo/lowlevel.c
+index f9c640c1123f..d9edb530b746 100644
+--- a/arch/riscv/boards/erizo/lowlevel.c
++++ b/arch/riscv/boards/erizo/lowlevel.c
+@@ -1,35 +1,18 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
+- *
+- * This file is part of barebox.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+ 
+ #include <common.h>
+-#include <memory.h>
+-#include <asm-generic/memory_layout.h>
+-#include <asm/sections.h>
++#include <asm/barebox-riscv.h>
++#include <debug_ll.h>
+ 
+-void main_entry(void);
+-
+-/**
+- * Called plainly from assembler code
+- *
+- * @note The C environment isn't initialized yet
+- */
+-void main_entry(void)
++ENTRY_FUNCTION(start_erizo_generic, a0, a1, a2)
  {
- 	__maybe_unused u32 hi, lo;
+-	/* clear the BSS first */
+-	memset(__bss_start, 0x00, __bss_stop - __bss_start);
++	extern char __dtb_z_erizo_generic_start[];
++
++	debug_ll_ns16550_init();
++	putc_ll('>');
  
-@@ -28,6 +28,22 @@ static u64 notrace riscv_timer_get_count(void)
- 	return ((u64)hi << 32) | lo;
+-	mem_malloc_init((void *)MALLOC_BASE,
+-			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
++	/* On POR, we are running from read-only memory here. */
+ 
+-	start_barebox();
++	barebox_riscv_entry(0x80000000, SZ_8M,
++			    __dtb_z_erizo_generic_start + get_runtime_offset());
  }
+diff --git a/arch/riscv/boards/erizo/start.S b/arch/riscv/boards/erizo/start.S
+deleted file mode 100644
+index d1dbe48b7bd6..000000000000
+--- a/arch/riscv/boards/erizo/start.S
++++ /dev/null
+@@ -1,68 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * Startup Code for RISC-V CPU
+- *
+- * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
+- *
+- * based on coreboot/src/arch/riscv/bootblock.S
+- *      and barebox/arch/mips/boot/start.S
+- *
+- * This file is part of barebox.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <asm-generic/memory_layout.h>
+-
+-#include "mach/debug_ll.h"
+-
+-#include "asm/riscv_nmon.h"
+-
+-	.text
+-	.section ".text_entry"
+-	.align 2
+-
+-.globl _start
+-_start:
+-	debug_ll_ns16550_init
+-
+-	riscv_nmon
+-
+-	li	sp, STACK_BASE + STACK_SIZE
+-
+-	/* copy barebox to link location */
+-
+-	la	a0, _start	/* a0 <- _start actual address */
+-	li	a1, CONFIG_TEXT_BASE	/* a1 <- _start link address */
+-
+-	beq	a0, a1, main_entry
+-
+-	la	a2, __bss_start
+-
+-#define LONGSIZE 4
+-
+-copy_loop:
+-	/* copy from source address [a0] */
+-	lw	t0, LONGSIZE * 0(a0)
+-	lw	t1, LONGSIZE * 1(a0)
+-	lw	t2, LONGSIZE * 2(a0)
+-	lw	t3, LONGSIZE * 3(a0)
+-	/* copy to target address [a1] */
+-	sw	t0, LONGSIZE * 0(a1)
+-	sw	t1, LONGSIZE * 1(a1)
+-	sw	t2, LONGSIZE * 2(a1)
+-	sw	t3, LONGSIZE * 3(a1)
+-	addi	a0, a0, LONGSIZE * 4
+-	addi	a1, a1, LONGSIZE * 4
+-	bgeu	a2, a0, copy_loop
+-
+-	/* Alas! At the moment I can't load main_entry __link__ address
+-	   into a0 with la. Use CONFIG_TEXT_BASE instead. This solution
+-	   leads to extra cycles for repeat sp initialization. */
+-
+-	li	a0, CONFIG_TEXT_BASE
+-	jalr	a0
+diff --git a/arch/riscv/configs/erizo_generic_defconfig b/arch/riscv/configs/erizo_generic_defconfig
+index 2ea1e46cc960..839b652ab53d 100644
+--- a/arch/riscv/configs/erizo_generic_defconfig
++++ b/arch/riscv/configs/erizo_generic_defconfig
+@@ -1,9 +1,5 @@
+ # CONFIG_GLOBALVAR is not set
+-CONFIG_TEXT_BASE=0x80000000
+-CONFIG_MEMORY_LAYOUT_FIXED=y
+-CONFIG_STACK_BASE=0x800e0000
+ CONFIG_STACK_SIZE=0x20000
+-CONFIG_MALLOC_BASE=0x80100000
+ CONFIG_MALLOC_SIZE=0x100000
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_PANIC_HANG=y
+@@ -36,7 +32,6 @@ CONFIG_CMD_SPI=y
+ CONFIG_CMD_OF_DUMP=y
+ CONFIG_CMD_TIME=y
+ CONFIG_CMD_DHRYSTONE=y
+-CONFIG_OFDEVICE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SPI_GPIO=y
+ CONFIG_I2C=y
+diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
+index 6bd4e5a9250c..4041c34e0c45 100644
+--- a/arch/riscv/dts/Makefile
++++ b/arch/riscv/dts/Makefile
+@@ -1,12 +1,9 @@
+-BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
+-ifneq ($(BUILTIN_DTB),)
+-obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
+-endif
+-
+-obj-$(CONFIG_BOARD_ERIZO_GENERIC) += erizo-generic.dtb.o
++# SPDX-License-Identifier: GPL-2.0
  
-+static u64 notrace riscv_timer_get_count_rdcycle(void)
-+{
-+	u64 ticks;
-+	asm volatile("rdcycle %0" : "=r" (ticks));
+ # just to build a built-in.o. Otherwise compilation fails when no devicetree is
+ # created.
+ obj- += dummy.o
+ 
++pbl-$(CONFIG_BOARD_ERIZO_GENERIC) += erizo-generic.dtb.o
 +
-+	return ticks;
-+}
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
+diff --git a/arch/riscv/lib/Makefile b/arch/riscv/lib/Makefile
+index 5f57d9fcd2e2..a9bf68bca597 100644
+--- a/arch/riscv/lib/Makefile
++++ b/arch/riscv/lib/Makefile
+@@ -2,7 +2,7 @@
+ 
+ extra-y += barebox.lds
+ 
+-obj-y += riscv_timer.o
++obj-y += riscv_timer.o dtb.o
+ obj-pbl-y += sections.o setupc.o reloc.o sections.o runtime-offset.o
+ obj-$(CONFIG_HAS_ARCH_SJLJ) += setjmp.o longjmp.o
+ obj-$(CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS) += memcpy.o memset.o memmove.o
+diff --git a/arch/riscv/lib/barebox.lds.S b/arch/riscv/lib/barebox.lds.S
+index c8a331c577cf..562ad5dc6662 100644
+--- a/arch/riscv/lib/barebox.lds.S
++++ b/arch/riscv/lib/barebox.lds.S
+@@ -14,22 +14,30 @@
+ #include <asm-generic/barebox.lds.h>
+ 
+ OUTPUT_ARCH(riscv)
+-ENTRY(_start)
++ENTRY(start)
+ SECTIONS
+ {
+-	. = TEXT_BASE;
++	. = 0x0;
+ 
+-	. = ALIGN(8);
++	.image_start : { *(.__image_start) }
 +
-+static u64 notrace riscv_timer_get_count(void)
-+{
-+	if (IS_ENABLED(CONFIG_RISCV_SBI))
-+		return riscv_timer_get_count_sbi();
-+	else
-+		return riscv_timer_get_count_rdcycle();
-+}
++	. = ALIGN(4);
++	._text : { *(._text) }
+ 	.text      :
+ 	{
+ 		_stext = .;
+-		_start = .;
+-		KEEP(*(.text_entry*))
+-		_text = .;
++		*(.text_entry*)
++		__bare_init_start = .;
++		*(.text_bare_init*)
++		__bare_init_end = .;
++		__exceptions_start = .;
++		KEEP(*(.text_exceptions*))
++		__exceptions_stop = .;
+ 		*(.text*)
+ 	}
++	BAREBOX_BARE_INIT_SIZE
+ 
+-	. = ALIGN(8);
++	. = ALIGN(4);
+ 	.rodata : {
+ 		*(.rodata*)
+ 		RO_DATA_SECTION
+@@ -38,7 +46,7 @@ SECTIONS
+ 	_etext = .;			/* End of text and rodata section */
+ 	_sdata = .;
+ 
+-	. = ALIGN(8);
++	. = ALIGN(4);
+ 	.data : { *(.data*) }
+ 
+ 	.barebox_imd : { BAREBOX_IMD }
+@@ -57,9 +65,13 @@ SECTIONS
+ 	}
+ 
+ 	_edata = .;
+-	. = ALIGN(8);
+-	__bss_start = .;
+-	.bss : { *(.bss*) *(.sbss*) }
+-	__bss_stop = .;
 +
- static struct clocksource riscv_clocksource = {
- 	.read		= riscv_timer_get_count,
- 	.mask		= CLOCKSOURCE_MASK(64),
-diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
-index f65e1f67fd59..e60037a6e637 100644
---- a/drivers/power/reset/Kconfig
-+++ b/drivers/power/reset/Kconfig
-@@ -14,3 +14,17 @@ config SYSCON_REBOOT_MODE
- 	  get reboot mode arguments and store it in SYSCON mapped
- 	  register, then the bootloader can read it to take different
- 	  action according to the mode.
++	.image_end : { *(.__image_end) }
 +
-+config POWER_RESET_SYSCON
-+	bool "Generic SYSCON regmap reset driver"
-+	depends on OFDEVICE
-+	select MFD_SYSCON
-+	help
-+	  Reboot support for generic SYSCON mapped register reset.
-+
-+config POWER_RESET_SYSCON_POWEROFF
-+	bool "Generic SYSCON regmap poweroff driver"
-+	depends on OFDEVICE
-+	select MFD_SYSCON
-+	help
-+	  Poweroff support for generic SYSCON mapped register poweroff.
-diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
-index 56feec78cf26..a490dce87333 100644
---- a/drivers/power/reset/Makefile
-+++ b/drivers/power/reset/Makefile
-@@ -1,3 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_REBOOT_MODE) += reboot-mode.o
- obj-$(CONFIG_SYSCON_REBOOT_MODE) += syscon-reboot-mode.o
-+obj-$(CONFIG_POWER_RESET_SYSCON) += syscon-reboot.o
-+obj-$(CONFIG_POWER_RESET_SYSCON_POWEROFF) += syscon-poweroff.o
-diff --git a/drivers/power/reset/syscon-poweroff.c b/drivers/power/reset/syscon-poweroff.c
++	. = ALIGN(4);
++	.__bss_start :  { *(.__bss_start) }
++	.bss : { *(.bss*) }
++	.__bss_stop :  { *(.__bss_stop) }
+ 	_end = .;
++	_barebox_image_size = __bss_start;
+ }
+diff --git a/arch/riscv/lib/dtb.c b/arch/riscv/lib/dtb.c
 new file mode 100644
-index 000000000000..3664c4d8bd08
+index 000000000000..c7fa6b0c31ca
 --- /dev/null
-+++ b/drivers/power/reset/syscon-poweroff.c
-@@ -0,0 +1,76 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Generic Syscon Poweroff Driver
-+ *
-+ * Copyright (c) 2015, National Instruments Corp.
-+ * Author: Moritz Fischer <moritz.fischer@ettus.com>
-+ */
-+
++++ b/arch/riscv/lib/dtb.c
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: 2013 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
 +#include <common.h>
 +#include <init.h>
-+#include <poweroff.h>
-+#include <mfd/syscon.h>
++#include <of.h>
++#include <asm/barebox-riscv.h>
 +
-+static struct regmap *map;
-+static u32 offset;
-+static u32 value;
-+static u32 mask;
-+
-+static void syscon_poweroff(struct poweroff_handler *handler)
++static int of_riscv_init(void)
 +{
-+	/* Issue the poweroff */
-+	regmap_update_bits(map, offset, mask, value);
++	void *fdt;
 +
-+	mdelay(1000);
-+
-+	pr_emerg("Unable to poweroff system\n");
-+}
-+
-+static int syscon_poweroff_probe(struct device_d *dev)
-+{
-+	int mask_err, value_err;
-+
-+	map = syscon_regmap_lookup_by_phandle(dev->device_node, "regmap");
-+	if (IS_ERR(map)) {
-+		dev_err(dev, "unable to get syscon");
-+		return PTR_ERR(map);
++	/* See if we are provided a dtb in boarddata */
++	fdt = barebox_riscv_boot_dtb();
++	if (!fdt) {
++		pr_err("No DTB found\n");
++		return -ENODATA;
 +	}
 +
-+	if (of_property_read_u32(dev->device_node, "offset", &offset)) {
-+		dev_err(dev, "unable to read 'offset'");
-+		return -EINVAL;
-+	}
++	pr_debug("using boarddata provided DTB\n");
 +
-+	value_err = of_property_read_u32(dev->device_node, "value", &value);
-+	mask_err = of_property_read_u32(dev->device_node, "mask", &mask);
-+	if (value_err && mask_err) {
-+		dev_err(dev, "unable to read 'value' and 'mask'");
-+		return -EINVAL;
-+	}
 +
-+	if (value_err) {
-+		/* support old binding */
-+		value = mask;
-+		mask = 0xFFFFFFFF;
-+	} else if (mask_err) {
-+		/* support value without mask*/
-+		mask = 0xFFFFFFFF;
-+	}
-+
-+	poweroff_handler_register_fn(syscon_poweroff);
++	barebox_register_fdt(fdt);
 +
 +	return 0;
 +}
++core_initcall(of_riscv_init);
+diff --git a/common/Kconfig b/common/Kconfig
+index 36207274f07f..37204fb40a44 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -44,7 +44,7 @@ config BLOCK_WRITE
+ 
+ config USE_COMPRESSED_DTB
+ 	bool
+-	depends on ARM
++	depends on ARM || RISCV
+ 	select UNCOMPRESS
+ 	select LZO_DECOMPRESS
+ 
+@@ -358,7 +358,7 @@ config KALLSYMS
+ 	  This is useful to print a nice backtrace when an exception occurs.
+ 
+ config RELOCATABLE
+-	depends on PPC || ARM
++	depends on PPC || ARM || RISCV
+ 	bool "generate relocatable barebox binary"
+ 	help
+ 	  A non relocatable barebox binary will run at it's compiled in
+diff --git a/images/Makefile b/images/Makefile
+index 84492a154d16..ee1347f6b6bd 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -42,6 +42,8 @@
+ # both as entrypoint and as filename
+ #
+ 
++include scripts/Makefile.lib
 +
-+static const struct of_device_id syscon_poweroff_of_match[] = {
-+	{ .compatible = "syscon-poweroff" },
-+	{}
-+};
-+
-+static struct driver_d syscon_poweroff_driver = {
-+	.name = "syscon-poweroff",
-+	.of_compatible = syscon_poweroff_of_match,
-+	.probe = syscon_poweroff_probe,
-+};
-+
-+coredevice_platform_driver(syscon_poweroff_driver);
-diff --git a/drivers/power/reset/syscon-reboot.c b/drivers/power/reset/syscon-reboot.c
+ quiet_cmd_objcopy_bin = OBJCOPYB $@
+       cmd_objcopy_bin = \
+ 		$(OBJCOPY) -O binary $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@ && \
+@@ -64,6 +66,7 @@ PBL_CPPFLAGS	+= -fdata-sections -ffunction-sections
+ 
+ $(obj)/%.pbl: $(pbl-lds) $(BAREBOX_PBL_OBJS) $(obj)/piggy.o $(obj)/sha_sum.o FORCE
+ 	$(call if_changed,elf__,$(*F))
++	$(call cmd,prelink__)
+ 
+ $(obj)/%.pblb: $(obj)/%.pbl FORCE
+ 	$(call if_changed,objcopy_bin,$(*F))
+@@ -164,6 +167,7 @@ include $(srctree)/images/Makefile.at91
+ include $(srctree)/images/Makefile.zynq
+ include $(srctree)/images/Makefile.zynqmp
+ include $(srctree)/images/Makefile.layerscape
++include $(srctree)/images/Makefile.riscv
+ 
+ 
+ pblb-$(CONFIG_BOARD_GENERIC_DT) += start_dt_2nd
+diff --git a/images/Makefile.riscv b/images/Makefile.riscv
 new file mode 100644
-index 000000000000..2dbb6c1ddcb8
+index 000000000000..463c6ce4400d
 --- /dev/null
-+++ b/drivers/power/reset/syscon-reboot.c
-@@ -0,0 +1,92 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Generic Syscon Reboot Driver
-+ *
-+ * Copyright (c) 2013, Applied Micro Circuits Corporation
-+ * Author: Feng Kan <fkan@apm.com>
-+ */
-+#include <common.h>
-+#include <init.h>
-+#include <restart.h>
-+#include <mfd/syscon.h>
++++ b/images/Makefile.riscv
+@@ -0,0 +1,12 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+struct syscon_reboot_context {
-+	struct regmap *map;
-+	u32 offset;
-+	u32 value;
-+	u32 mask;
-+	struct restart_handler restart_handler;
-+};
++quiet_cmd_erizo_nmon_image = MKIMAGE $@
++      cmd_erizo_nmon_image = $(srctree)/scripts/erizo-nmon-image $< $@ || \
++	echo "WARNING: Couldn't create erizo nmon image due to previous errors."
 +
-+static void __noreturn syscon_restart_handle(struct restart_handler *this)
-+{
-+	struct syscon_reboot_context *ctx =
-+			container_of(this, struct syscon_reboot_context,
-+					restart_handler);
++$(obj)/%.nmon: $(obj)/%.img FORCE
++	$(call if_changed,erizo_nmon_image)
 +
-+	/* Issue the reboot */
-+	regmap_update_bits(ctx->map, ctx->offset, ctx->mask, ctx->value);
-+
-+	mdelay(1000);
-+
-+	panic("Unable to restart system\n");
-+}
-+
-+static int syscon_reboot_probe(struct device_d *dev)
-+{
-+	struct syscon_reboot_context *ctx;
-+	int mask_err, value_err;
-+	int err;
-+
-+	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	ctx->map = syscon_regmap_lookup_by_phandle(dev->device_node, "regmap");
-+	if (IS_ERR(ctx->map)) {
-+		ctx->map = syscon_node_to_regmap(dev->parent->device_node);
-+		if (IS_ERR(ctx->map))
-+			return PTR_ERR(ctx->map);
-+	}
-+
-+	if (of_property_read_u32(dev->device_node, "offset", &ctx->offset))
-+		return -EINVAL;
-+
-+	value_err = of_property_read_u32(dev->device_node, "value", &ctx->value);
-+	mask_err = of_property_read_u32(dev->device_node, "mask", &ctx->mask);
-+	if (value_err && mask_err) {
-+		dev_err(dev, "unable to read 'value' and 'mask'");
-+		return -EINVAL;
-+	}
-+
-+	if (value_err) {
-+		/* support old binding */
-+		ctx->value = ctx->mask;
-+		ctx->mask = 0xFFFFFFFF;
-+	} else if (mask_err) {
-+		/* support value without mask*/
-+		ctx->mask = 0xFFFFFFFF;
-+	}
-+
-+	ctx->restart_handler.name = "syscon-reboot";
-+	ctx->restart_handler.restart = syscon_restart_handle;
-+	ctx->restart_handler.priority = 192;
-+
-+	err = restart_handler_register(&ctx->restart_handler);
-+	if (err)
-+		dev_err(dev, "can't register restart notifier\n");
-+
-+	return err;
-+}
-+
-+static const struct of_device_id syscon_reboot_of_match[] = {
-+	{ .compatible = "syscon-reboot" },
-+	{}
-+};
-+
-+static struct driver_d syscon_reboot_driver = {
-+	.probe = syscon_reboot_probe,
-+	.name = "syscon-reboot",
-+	.of_compatible = syscon_reboot_of_match,
-+};
-+coredevice_platform_driver(syscon_reboot_driver);
++pblb-$(CONFIG_BOARD_ERIZO_GENERIC) += start_erizo_generic
++FILE_barebox-erizo-generic.img = start_erizo_generic.pblb
++image-$(CONFIG_BOARD_ERIZO_GENERIC) += barebox-erizo-generic.img barebox-erizo-generic.nmon
+diff --git a/pbl/Kconfig b/pbl/Kconfig
+index 2eea5aef7a30..451a278c4088 100644
+--- a/pbl/Kconfig
++++ b/pbl/Kconfig
+@@ -27,7 +27,7 @@ config PBL_SINGLE_IMAGE
+ if PBL_IMAGE
+ 
+ config PBL_RELOCATABLE
+-	depends on ARM || MIPS
++	depends on ARM || MIPS || RISCV
+ 	bool "relocatable pbl image"
+ 	help
+ 	  Generate a pbl binary which can relocate itself during startup to run
 -- 
 2.29.2
 
