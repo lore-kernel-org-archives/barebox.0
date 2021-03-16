@@ -1,52 +1,54 @@
-Delivery-date: Tue, 16 Mar 2021 10:00:37 +0100
+Delivery-date: Tue, 16 Mar 2021 10:00:42 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lM5Z7-0002UR-It
-	for lore@lore.pengutronix.de; Tue, 16 Mar 2021 10:00:37 +0100
+	id 1lM5ZC-0002Un-2N
+	for lore@lore.pengutronix.de; Tue, 16 Mar 2021 10:00:42 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lM5Z6-0007jO-61
-	for lore@pengutronix.de; Tue, 16 Mar 2021 10:00:37 +0100
+	id 1lM5ZA-0007lH-Qy
+	for lore@pengutronix.de; Tue, 16 Mar 2021 10:00:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=oQ6wxiQgY5p924jPhRrquBLQMG3MZQosxxbfOKbwOhc=; b=eTXCEWoG7NaN6u8lXeCDjgt0WH
-	WMrp/I3lw+PICDFLr9y/ZX3rJHx4bpypeuclTZQz8Q5ax4vCSb6OnQa/x4A/wrYETrIgod003cyg1
-	NNjQI9CdiDuo74ll4NTrtBRkwl78t4d1K64h+RHIgKhBJhvp5HVFulgGeD/EwF72N03yO4QoN/TyK
-	jfKMMljiX62NTsEZQqBjVbwTZxm5yam+kMV0dPa/2cIIqpQQdzHgidUV6g3QiedairOq1uyLXsePv
-	YnK4krLRsXQqo9F8FNe1sAjq7d5+wlszHxkOqLh1NLXu+z7CuRaOtEq+7QASFnDNJirRSOBSw1hYd
-	U4TLcwiw==;
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=qP3fmVTiGA3vYy4WJJe//U6h4XRr8IpvFgU2tgyfFtA=; b=T3jNkfCMEqOY9Eg1jm3c4gwXH
+	3o/Wr4yfuWVGgpfhokZmTPy/HtOYNNaUeHmCHMa3iknPhcbejdS8g7qKkcyoCg3xyR4+SwO58qTfw
+	IWfMqnijvAIHOzLLTfl/uPrIDRTK1YCqf3rDT2fQ12/piKxGxl7At+esZnPJ4mfx9shrxnqGH4bCM
+	FX3O22J9QLWMBLQYWavnVbXNfWmK1sQxax82fhG6h4JZHZ+Xxk/nFq4e4vOo2J6u5ZRrGnkHmsjaM
+	uqRlBJg9wLZXvmJdA4EhZvXOcIMppi0u8npwmfE95qjqtVLnfaQVy9O8735yM8Fx549xdnd2WXhgP
+	fJXI6o6SQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lM5Xu-000BV7-Ux; Tue, 16 Mar 2021 08:59:23 +0000
+	id 1lM5Y8-000BZh-EL; Tue, 16 Mar 2021 08:59:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lM5Xm-000BT6-IU
- for barebox@lists.infradead.org; Tue, 16 Mar 2021 08:59:16 +0000
+ id 1lM5Xu-000BWC-UT
+ for barebox@lists.infradead.org; Tue, 16 Mar 2021 08:59:25 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lM5Xe-0007Wz-4t; Tue, 16 Mar 2021 09:59:06 +0100
+ id 1lM5Xe-0007X0-53; Tue, 16 Mar 2021 09:59:06 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lM5Xd-00045j-Ri; Tue, 16 Mar 2021 09:59:05 +0100
+ id 1lM5Xd-00045l-SC; Tue, 16 Mar 2021 09:59:05 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 16 Mar 2021 09:59:03 +0100
-Message-Id: <20210316085905.15672-1-a.fatoum@pengutronix.de>
+Date: Tue, 16 Mar 2021 09:59:04 +0100
+Message-Id: <20210316085905.15672-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210316085905.15672-1-a.fatoum@pengutronix.de>
+References: <20210316085905.15672-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210316_085914_896288_9BC74EB9 
-X-CRM114-Status: GOOD (  29.43  )
+X-CRM114-CacheID: sfid-20210316_085923_249133_51EDBFDE 
+X-CRM114-Status: GOOD (  23.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -58,8 +60,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -70,430 +72,163 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] phy: stm32: sync with upstream
+Subject: [PATCH 2/3] ARM: stm32mp: add support for STM32MP157-EV1 board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This imports following Linux patches by Amelie Delaunay
-<amelie.delaunay@foss.st.com>:
-
-  phy: stm32: manage 1v1 and 1v8 supplies at pll activation/deactivation
-  phy: stm32: replace regulator_bulk* by multiple regulator_*
-  phy: stm32: ensure pll is disabled before phys creation
-  phy: stm32: ensure phy are no more active when removing the driver
-  phy: stm32: rework PLL Lock detection
-  ARM: dts: stm32: add usbphyc vdda1v1 and vdda1v8 supplies on stm32mp151
-
-This makes barebox compatible to the new device tree binding,
-reduces our differences to the upstream driver and removes
-the power_on, power_off callbacks which are now integrated
-into init/exit.
-
-The device tree override is necessary, because unlike with Linux,
-barebox regulator core doesn't descend into child nodes to enable
-their regulators, but that's a fix for another day.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Sascha, could this be ordered before the dts sync? That one changes
-the device tree to use the binding implemented here
----
- arch/arm/dts/stm32mp151.dtsi    |   5 +
- drivers/phy/phy-stm32-usbphyc.c | 231 +++++++++++++++++++++-----------
- 2 files changed, 156 insertions(+), 80 deletions(-)
-
-diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
-index b82227fa206e..f1fd888fa1c6 100644
---- a/arch/arm/dts/stm32mp151.dtsi
-+++ b/arch/arm/dts/stm32mp151.dtsi
-@@ -66,3 +66,8 @@
- &vrefbuf {
- 	regulator-name = "vref";
- };
-+
-+&usbphyc {
-+	vdda1v1-supply = <&reg11>;
-+	vdda1v8-supply = <&reg18>;
-+};
-diff --git a/drivers/phy/phy-stm32-usbphyc.c b/drivers/phy/phy-stm32-usbphyc.c
-index d1e064440e73..a50eae94d459 100644
---- a/drivers/phy/phy-stm32-usbphyc.c
-+++ b/drivers/phy/phy-stm32-usbphyc.c
-@@ -10,6 +10,7 @@
- #include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <io.h>
-+#include <linux/iopoll.h>
- #include <linux/phy/phy.h>
- #include <linux/reset.h>
- #include <linux/math64.h>
-@@ -17,6 +18,7 @@
- 
- #define STM32_USBPHYC_PLL	0x0
- #define STM32_USBPHYC_MISC	0x8
-+#define STM32_USBPHYC_MONITOR(X) (0x108 + ((X) * 0x100))
- #define STM32_USBPHYC_VERSION	0x3F4
- 
- /* STM32_USBPHYC_PLL bit fields */
-@@ -32,19 +34,16 @@
- /* STM32_USBPHYC_MISC bit fields */
- #define SWITHOST		BIT(0)
- 
-+/* STM32_USBPHYC_MONITOR bit fields */
-+#define STM32_USBPHYC_MON_OUT	GENMASK(3, 0)
-+#define STM32_USBPHYC_MON_SEL	GENMASK(8, 4)
-+#define STM32_USBPHYC_MON_SEL_LOCKP 0x1F
-+#define STM32_USBPHYC_MON_OUT_LOCKP BIT(3)
-+
- /* STM32_USBPHYC_VERSION bit fields */
- #define MINREV			GENMASK(3, 0)
- #define MAJREV			GENMASK(7, 4)
- 
--static const char * const supplies_names[] = {
--	"vdda1v1",	/* 1V1 */
--	"vdda1v8",	/* 1V8 */
--};
--
--#define NUM_SUPPLIES		ARRAY_SIZE(supplies_names)
--
--#define PLL_LOCK_TIME_US	100
--#define PLL_PWR_DOWN_TIME_US	5
- #define PLL_FVCO_MHZ		2880
- #define PLL_INFF_MIN_RATE_HZ	19200000
- #define PLL_INFF_MAX_RATE_HZ	38400000
-@@ -58,7 +57,6 @@ struct pll_params {
- struct stm32_usbphyc_phy {
- 	struct phy *phy;
- 	struct stm32_usbphyc *usbphyc;
--	struct regulator_bulk_data supplies[NUM_SUPPLIES];
- 	u32 index;
- 	bool active;
- };
-@@ -69,6 +67,9 @@ struct stm32_usbphyc {
- 	struct clk *clk;
- 	struct stm32_usbphyc_phy **phys;
- 	int nphys;
-+	struct regulator *vdda1v1;
-+	struct regulator *vdda1v8;
-+	int n_pll_cons;
- 	int switch_setup;
- };
- 
-@@ -82,6 +83,41 @@ static inline void stm32_usbphyc_clr_bits(void __iomem *reg, u32 bits)
- 	writel(readl(reg) & ~bits, reg);
- }
- 
-+static int stm32_usbphyc_regulators_enable(struct stm32_usbphyc *usbphyc)
-+{
-+	int ret;
-+
-+	ret = regulator_enable(usbphyc->vdda1v1);
-+	if (ret)
-+		return ret;
-+
-+	ret = regulator_enable(usbphyc->vdda1v8);
-+	if (ret)
-+		goto vdda1v1_disable;
-+
-+	return 0;
-+
-+vdda1v1_disable:
-+	regulator_disable(usbphyc->vdda1v1);
-+
-+	return ret;
-+}
-+
-+static int stm32_usbphyc_regulators_disable(struct stm32_usbphyc *usbphyc)
-+{
-+	int ret;
-+
-+	ret = regulator_disable(usbphyc->vdda1v8);
-+	if (ret)
-+		return ret;
-+
-+	ret = regulator_disable(usbphyc->vdda1v1);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static void stm32_usbphyc_get_pll_params(u32 clk_rate,
- 					 struct pll_params *pll_params)
- {
-@@ -141,83 +177,106 @@ static int stm32_usbphyc_pll_init(struct stm32_usbphyc *usbphyc)
- 	return 0;
- }
- 
--static bool stm32_usbphyc_has_one_phy_active(struct stm32_usbphyc *usbphyc)
-+static int __stm32_usbphyc_pll_disable(struct stm32_usbphyc *usbphyc)
- {
--	int i;
-+	void __iomem *pll_reg = usbphyc->base + STM32_USBPHYC_PLL;
-+	u32 pllen;
-+
-+	stm32_usbphyc_clr_bits(pll_reg, PLLEN);
-+
-+	/* Wait for minimum width of powerdown pulse (ENABLE = Low) */
-+	if (readl_poll_timeout(pll_reg, pllen, !(pllen & PLLEN), 50))
-+		dev_err(usbphyc->dev, "PLL not reset\n");
- 
--	for (i = 0; i < usbphyc->nphys; i++)
--		if (usbphyc->phys[i]->active)
--			return true;
-+	return stm32_usbphyc_regulators_disable(usbphyc);
-+}
-+
-+static int stm32_usbphyc_pll_disable(struct stm32_usbphyc *usbphyc)
-+{
-+	/* Check if a phy port is still active or clk48 in use */
-+	if (--usbphyc->n_pll_cons > 0)
-+		return 0;
- 
--	return false;
-+	return __stm32_usbphyc_pll_disable(usbphyc);
- }
- 
- static int stm32_usbphyc_pll_enable(struct stm32_usbphyc *usbphyc)
- {
- 	void __iomem *pll_reg = usbphyc->base + STM32_USBPHYC_PLL;
--	bool pllen = (readl(pll_reg) & PLLEN);
-+	bool pllen = readl(pll_reg) & PLLEN;
- 	int ret;
- 
--	/* Check if one phy port has already configured the pll */
--	if (pllen && stm32_usbphyc_has_one_phy_active(usbphyc))
-+	/*
-+	 * Check if a phy port or clk48 prepare has configured the pll
-+	 * and ensure the PLL is enabled
-+	 */
-+	if (++usbphyc->n_pll_cons > 1 && pllen)
- 		return 0;
- 
- 	if (pllen) {
--		stm32_usbphyc_clr_bits(pll_reg, PLLEN);
--		/* Wait for minimum width of powerdown pulse (ENABLE = Low) */
--		udelay(PLL_PWR_DOWN_TIME_US);
-+		/*
-+		 * PLL shouldn't be enabled without known consumer,
-+		 * disable it and reinit n_pll_cons
-+		 */
-+		dev_warn(usbphyc->dev, "PLL enabled without known consumers\n");
-+
-+		ret = __stm32_usbphyc_pll_disable(usbphyc);
-+		if (ret)
-+			return ret;
- 	}
- 
-+	ret = stm32_usbphyc_regulators_enable(usbphyc);
-+	if (ret)
-+		goto dec_n_pll_cons;
-+
- 	ret = stm32_usbphyc_pll_init(usbphyc);
- 	if (ret)
--		return ret;
-+		goto reg_disable;
- 
- 	stm32_usbphyc_set_bits(pll_reg, PLLEN);
- 
--	/* Wait for maximum lock time */
--	udelay(PLL_LOCK_TIME_US);
--
--	if (!(readl(pll_reg) & PLLEN)) {
--		dev_err(usbphyc->dev, "PLLEN not set\n");
--		return -EIO;
--	}
--
- 	return 0;
--}
--
--static int stm32_usbphyc_pll_disable(struct stm32_usbphyc *usbphyc)
--{
--	void __iomem *pll_reg = usbphyc->base + STM32_USBPHYC_PLL;
--
--	/* Check if other phy port active */
--	if (stm32_usbphyc_has_one_phy_active(usbphyc))
--		return 0;
- 
--	stm32_usbphyc_clr_bits(pll_reg, PLLEN);
--	/* Wait for minimum width of powerdown pulse (ENABLE = Low) */
--	udelay(PLL_PWR_DOWN_TIME_US);
-+reg_disable:
-+	stm32_usbphyc_regulators_disable(usbphyc);
- 
--	if (readl(pll_reg) & PLLEN) {
--		dev_err(usbphyc->dev, "PLL not reset\n");
--		return -EIO;
--	}
-+dec_n_pll_cons:
-+	usbphyc->n_pll_cons--;
- 
--	return 0;
-+	return ret;
- }
- 
- static int stm32_usbphyc_phy_init(struct phy *phy)
- {
- 	struct stm32_usbphyc_phy *usbphyc_phy = phy_get_drvdata(phy);
- 	struct stm32_usbphyc *usbphyc = usbphyc_phy->usbphyc;
-+	u32 reg_mon = STM32_USBPHYC_MONITOR(usbphyc_phy->index);
-+	u32 monsel = FIELD_PREP(STM32_USBPHYC_MON_SEL,
-+				STM32_USBPHYC_MON_SEL_LOCKP);
-+	u32 monout;
- 	int ret;
- 
- 	ret = stm32_usbphyc_pll_enable(usbphyc);
- 	if (ret)
- 		return ret;
- 
-+	/* Check that PLL Lock input to PHY is High */
-+	writel(monsel, usbphyc->base + reg_mon);
-+	ret = readl_poll_timeout(usbphyc->base + reg_mon, monout,
-+				 (monout & STM32_USBPHYC_MON_OUT_LOCKP),
-+				 1000);
-+	if (ret) {
-+		dev_err(usbphyc->dev, "PLL Lock input to PHY is Low (val=%x)\n",
-+			(u32)(monout & STM32_USBPHYC_MON_OUT));
-+		goto pll_disable;
-+	}
-+
- 	usbphyc_phy->active = true;
- 
- 	return 0;
-+
-+pll_disable:
-+	return stm32_usbphyc_pll_disable(usbphyc);
- }
- 
- static int stm32_usbphyc_phy_exit(struct phy *phy)
-@@ -230,25 +289,9 @@ static int stm32_usbphyc_phy_exit(struct phy *phy)
- 	return stm32_usbphyc_pll_disable(usbphyc);
- }
- 
--static int stm32_usbphyc_phy_power_on(struct phy *phy)
--{
--	struct stm32_usbphyc_phy *usbphyc_phy = phy_get_drvdata(phy);
--
--	return regulator_bulk_enable(NUM_SUPPLIES, usbphyc_phy->supplies);
--}
--
--static int stm32_usbphyc_phy_power_off(struct phy *phy)
--{
--	struct stm32_usbphyc_phy *usbphyc_phy = phy_get_drvdata(phy);
--
--	return regulator_bulk_disable(NUM_SUPPLIES, usbphyc_phy->supplies);
--}
--
- static const struct phy_ops stm32_usbphyc_phy_ops = {
- 	.init = stm32_usbphyc_phy_init,
- 	.exit = stm32_usbphyc_phy_exit,
--	.power_on = stm32_usbphyc_phy_power_on,
--	.power_off = stm32_usbphyc_phy_power_off,
- };
- 
- static void stm32_usbphyc_switch_setup(struct stm32_usbphyc *usbphyc,
-@@ -311,7 +354,7 @@ static int stm32_usbphyc_probe(struct device_d *dev)
- 	struct device_node *child, *np = dev->device_node;
- 	struct resource *iores;
- 	struct phy_provider *phy_provider;
--	u32 version;
-+	u32 pllen, version;
- 	int ret, port = 0;
- 
- 	usbphyc = xzalloc(sizeof(*usbphyc));
-@@ -337,17 +380,51 @@ static int stm32_usbphyc_probe(struct device_d *dev)
- 		goto release_region;
- 	}
- 
--	device_reset_us(dev, 2);
-+	ret = device_reset_us(dev, 2);
-+	if (ret == -EPROBE_DEFER)
-+		goto clk_disable;
-+	if (ret)
-+		stm32_usbphyc_clr_bits(usbphyc->base + STM32_USBPHYC_PLL, PLLEN);
-+
-+	/*
-+	 * Wait for minimum width of powerdown pulse (ENABLE = Low):
-+	 * we have to ensure the PLL is disabled before phys initialization.
-+	 */
-+	if (readl_poll_timeout(usbphyc->base + STM32_USBPHYC_PLL,
-+			       pllen, !(pllen & PLLEN), 50)) {
-+		dev_warn(usbphyc->dev, "PLL not reset\n");
-+		ret = -EPROBE_DEFER;
-+		goto clk_disable;
-+	}
- 
- 	usbphyc->switch_setup = -EINVAL;
- 	usbphyc->nphys = of_get_child_count(np);
--	usbphyc->phys = xzalloc(usbphyc->nphys * sizeof(*usbphyc->phys));
-+	usbphyc->phys = calloc(usbphyc->nphys, sizeof(*usbphyc->phys));
-+	if (!usbphyc->phys) {
-+		ret = -ENOMEM;
-+		goto clk_disable;
-+	}
-+
-+	usbphyc->vdda1v1 = regulator_get(dev, "vdda1v1");
-+	if (IS_ERR(usbphyc->vdda1v1)) {
-+		ret = PTR_ERR(usbphyc->vdda1v1);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(dev, "failed to get vdda1v1 supply: %d\n", ret);
-+		goto clk_disable;
-+	}
-+
-+	usbphyc->vdda1v8 = regulator_get(dev, "vdda1v8");
-+	if (IS_ERR(usbphyc->vdda1v8)) {
-+		ret = PTR_ERR(usbphyc->vdda1v8);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(dev, "failed to get vdda1v8 supply: %d\n", ret);
-+		goto clk_disable;
-+	}
- 
- 	for_each_child_of_node(np, child) {
- 		struct stm32_usbphyc_phy *usbphyc_phy;
- 		struct phy *phy;
- 		u32 index;
--		int i;
- 
- 		phy = phy_create(dev, child, &stm32_usbphyc_phy_ops);
- 		if (IS_ERR(phy)) {
-@@ -360,18 +437,6 @@ static int stm32_usbphyc_probe(struct device_d *dev)
- 
- 		usbphyc_phy = xzalloc(sizeof(*usbphyc_phy));
- 
--		for (i = 0; i < NUM_SUPPLIES; i++)
--			usbphyc_phy->supplies[i].supply = supplies_names[i];
--
--		ret = regulator_bulk_get(&phy->dev, NUM_SUPPLIES,
--					 usbphyc_phy->supplies);
--		if (ret) {
--			if (ret != -EPROBE_DEFER)
--				dev_err(&phy->dev,
--					"failed to get regulators: %d\n", ret);
--			goto clk_disable;
--		}
--
- 		ret = of_property_read_u32(child, "reg", &index);
- 		if (ret || index > usbphyc->nphys) {
- 			dev_err(&phy->dev, "invalid reg property: %d\n", ret);
-@@ -417,6 +482,12 @@ release_region:
- static void stm32_usbphyc_remove(struct device_d *dev)
- {
- 	struct stm32_usbphyc *usbphyc = dev->priv;
-+	int port;
-+
-+	/* Ensure PHYs are not active, to allow PLL disabling */
-+	for (port = 0; port < usbphyc->nphys; port++)
-+		if (usbphyc->phys[port]->active)
-+			stm32_usbphyc_phy_exit(usbphyc->phys[port]->phy);
- 
- 	clk_disable(usbphyc->clk);
- }
--- 
-2.29.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIFNUTTMyTVAxNTdBLUVWMSBhbmQgU1RNMzJNUDE1N0MtRVYxIEV2YWx1YXRpb24gYm9hcmRz
+IGFyZSB0aGUKZnVsbC1mZWF0dXJlIGRlbW9uc3RyYXRpb24gYW5kIGRldmVsb3BtZW50IHBsYXRm
+b3JtcyBmb3IKU1RNaWNyb2VsZWN0cm9uaWNzIEFybcKuLWJhc2VkIGR1YWwgQ29ydGV4wq4tQTcg
+MzIgYml0cyBhbmQKQ29ydGV4wq4tTTQgMzIgYml0cyBNUFVzIGluIHRoZSBTVE0zMk1QMSBTZXJp
+ZXMuCgpBZGQgc3VwcG9ydCBmb3IgcnVubmluZyBiYXJlYm94IGFzIFNTQkwgb24gZWl0aGVyIG9m
+IHRoZW0uCgpTaWduZWQtb2ZmLWJ5OiBBaG1hZCBGYXRvdW0gPGEuZmF0b3VtQHBlbmd1dHJvbml4
+LmRlPgotLS0KIERvY3VtZW50YXRpb24vYm9hcmRzL3N0bTMybXAucnN0ICAgICAgICAgIHwgMzUg
+KysrKysrKysrKysrKysrKysrLS0KIGFyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZSAgICAgICAgICAg
+ICAgICAgIHwgIDEgKwogYXJjaC9hcm0vYm9hcmRzL3N0bTMybXAxNXgtZXYxL01ha2VmaWxlICAg
+fCAgMiArKwogYXJjaC9hcm0vYm9hcmRzL3N0bTMybXAxNXgtZXYxL2JvYXJkLmMgICAgfCAzOSAr
+KysrKysrKysrKysrKysrKysrKysrKwogYXJjaC9hcm0vYm9hcmRzL3N0bTMybXAxNXgtZXYxL2xv
+d2xldmVsLmMgfCAyNiArKysrKysrKysrKysrKysKIGFyY2gvYXJtL2NvbmZpZ3Mvc3RtMzJtcF9k
+ZWZjb25maWcgICAgICAgIHwgIDEgKwogYXJjaC9hcm0vZHRzL01ha2VmaWxlICAgICAgICAgICAg
+ICAgICAgICAgfCAgMSArCiBhcmNoL2FybS9kdHMvc3RtMzJtcDE1N2MtZXYxLmR0cyAgICAgICAg
+ICB8IDIwICsrKysrKysrKysrKwogYXJjaC9hcm0vbWFjaC1zdG0zMm1wL0tjb25maWcgICAgICAg
+ICAgICAgfCAgOCArKysrKwogaW1hZ2VzL01ha2VmaWxlLnN0bTMybXAgICAgICAgICAgICAgICAg
+ICAgfCAgNSArKysKIDEwIGZpbGVzIGNoYW5nZWQsIDEzNiBpbnNlcnRpb25zKCspLCAyIGRlbGV0
+aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9zdG0zMm1wMTV4LWV2
+MS9NYWtlZmlsZQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9zdG0zMm1wMTV4
+LWV2MS9ib2FyZC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3N0bTMybXAx
+NXgtZXYxL2xvd2xldmVsLmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9kdHMvc3RtMzJt
+cDE1N2MtZXYxLmR0cwoKZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vYm9hcmRzL3N0bTMybXAu
+cnN0IGIvRG9jdW1lbnRhdGlvbi9ib2FyZHMvc3RtMzJtcC5yc3QKaW5kZXggODdmZmY3ZDEyNTli
+Li4yNGI3YTE5Y2ViOTYgMTAwNjQ0Ci0tLSBhL0RvY3VtZW50YXRpb24vYm9hcmRzL3N0bTMybXAu
+cnN0CisrKyBiL0RvY3VtZW50YXRpb24vYm9hcmRzL3N0bTMybXAucnN0CkBAIC0zMiw2ICszMiw3
+IEBAIFRoZSByZXN1bHRpbmcgaW1hZ2VzIHdpbGwgYmUgcGxhY2VkIHVuZGVyIGBgaW1hZ2VzL2Bg
+OgogICBiYXJlYm94LXN0bTMybXAxNXh4LWRreC5pbWcgIyBib3RoIERLMSBhbmQgREsyCiAgIGJh
+cmVib3gtc3RtMzJtcDE1N2MtbHhhLW1jMS5pbWcKICAgYmFyZWJveC1zdG0zMm1wMTU3Yy1zZWVl
+ZC1vZHlzc2V5LmltZworICBiYXJlYm94LXN0bTMybXAxNXgtZXYxLmltZyAjIHN0bTMybXAxNTdj
+LWV2MSBhbmQgZnJpZW5kcwogCiAKIEZsYXNoaW5nIGJhcmVib3gKQEAgLTk0LDggKzk1LDM4IEBA
+IGFja25vd2xlZGdlLgogQm9vdCBzb3VyY2Ugc2VsZWN0aW9uCiAtLS0tLS0tLS0tLS0tLS0tLS0t
+LS0KIAotVGhlIFNUTTMyTVAgQm9vdFJPTSBzYW1wbGVzIHRocmVlIGJvb3QgcGlucyBhdCByZXNl
+dC4gVXN1YWxseSBCT09UMSBpcwotcHVsbGVkIGRvd24gYW5kIEJPT1QwIGFuZCBCT09UMiBhcmUg
+Y29ubmVjdGVkIHRvIGEgMlAgRElQIHN3aXRjaDo6CitUaGUgU1RNMzJNUCBCb290Uk9NIHNhbXBs
+ZXMgdGhyZWUgYm9vdCBwaW5zIGF0IHJlc2V0LiBPbiBvZmZpY2lhbAorZXZhbCBraXQsIHRoZXkg
+YXJlIGVpdGhlciBjb25uZWN0ZWQgdG8gYSAzUCBESVAgc3dpdGNoIG9yIDJQICh3aXRoCitCT09U
+MSBwdWxsZWQgZG93bikuCisKK0VWLTEKK15eXl4KK1NXMSBvbiB0aGUgREsgYm9hcmRzIHNldHMg
+Ym9vdCBtb2RlIGFzIGZvbGxvd3M6OgorCisgICAgICAgKy0tLS0tLS0rCisgICAgICAgfCAgIC0t
+LSB8CisgQk9PVDIgfCAgIE8tLSB8CisgQk9PVDEgfCBPIC0tTyB8CisgQk9PVDAgfCBOIE8tLSB8
+ICA8LS0tLSBTRC1DYXJkCisgICAgICAgKy0tLS0tLS0rCisKKyAgICAgICArLS0tLS0tLSsKKyAg
+ICAgICB8ICAgLS0tIHwKKyBCT09UMiB8ICAgLS1PIHwKKyBCT09UMSB8IE8gTy0tIHwKKyBCT09U
+MCB8IE4gLS1PIHwgIDwtLS0tIGVNTUMKKyAgICAgICArLS0tLS0tLSsKKworICAgICAgICstLS0t
+LS0tKworICAgICAgIHwgICAtLS0gfAorIEJPT1QyIHwgICAtLU8gfAorIEJPT1QxIHwgTyAtLU8g
+fAorIEJPT1QwIHwgTiAtLU8gfCAgPC0tLS0gREZVIG9uIFVBUlQgYW5kIFVTQiBPVEcKKyAgICAg
+ICArLS0tLS0tLSsKKworREstMS9ESy0yCiteXl5eXl5eXl4KK0Jvb3QgbW9kZSBvbiB0aGUgREsg
+Ym9hcmQgaXMgc2V0IGFzIGZvbGxvd3M6OgogCiAgICAgICAgKy0tLS0tLS0rCiAgQk9PVDIgfCBP
+IE8tLSB8CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUgYi9hcmNoL2FybS9i
+b2FyZHMvTWFrZWZpbGUKaW5kZXggZjhjZGQ5MGVkNmU2Li43MzI5MzZiYWQ2M2UgMTAwNjQ0Ci0t
+LSBhL2FyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZQorKysgYi9hcmNoL2FybS9ib2FyZHMvTWFrZWZp
+bGUKQEAgLTEzNCw2ICsxMzQsNyBAQCBvYmotJChDT05GSUdfTUFDSF9TT0xJRFJVTl9DVUJPWCkJ
+CSs9IHNvbGlkcnVuLWN1Ym94Lwogb2JqLSQoQ09ORklHX01BQ0hfU09MSURSVU5fTUlDUk9TT00p
+CQkrPSBzb2xpZHJ1bi1taWNyb3NvbS8KIG9iai0kKENPTkZJR19NQUNIX1NUTTMyTVAxNVhYX0RL
+WCkJCSs9IHN0bTMybXAxNXh4LWRreC8KIG9iai0kKENPTkZJR19NQUNIX0xYQV9NQzEpCQkJKz0g
+bHhhLW1jMS8KK29iai0kKENPTkZJR19NQUNIX1NUTTMyTVAxNVhfRVYxKQkJKz0gc3RtMzJtcDE1
+eC1ldjEvCiBvYmotJChDT05GSUdfTUFDSF9URUNITkVYSU9OX1BJQ09fSE9CQklUKQkrPSB0ZWNo
+bmV4aW9uLXBpY28taG9iYml0Lwogb2JqLSQoQ09ORklHX01BQ0hfVEVDSE5FWElPTl9XQU5EQk9B
+UkQpCQkrPSB0ZWNobmV4aW9uLXdhbmRib2FyZC8KIG9iai0kKENPTkZJR19NQUNIX1ROWV9BOTI2
+MCkJCQkrPSB0bnktYTkyNngvCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvc3RtMzJtcDE1
+eC1ldjEvTWFrZWZpbGUgYi9hcmNoL2FybS9ib2FyZHMvc3RtMzJtcDE1eC1ldjEvTWFrZWZpbGUK
+bmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi4wOTJjMzFkNmIyOGQKLS0t
+IC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9ib2FyZHMvc3RtMzJtcDE1eC1ldjEvTWFrZWZpbGUK
+QEAgLTAsMCArMSwyIEBACitsd2wteSArPSBsb3dsZXZlbC5vCitvYmoteSArPSBib2FyZC5vCmRp
+ZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvc3RtMzJtcDE1eC1ldjEvYm9hcmQuYyBiL2FyY2gv
+YXJtL2JvYXJkcy9zdG0zMm1wMTV4LWV2MS9ib2FyZC5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0Cmlu
+ZGV4IDAwMDAwMDAwMDAwMC4uYjhlMjZjZDM3YjNkCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9h
+cm0vYm9hcmRzL3N0bTMybXAxNXgtZXYxL2JvYXJkLmMKQEAgLTAsMCArMSwzOSBAQAorLy8gU1BE
+WC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjArCisKKyNpbmNsdWRlIDxib290c291cmNlLmg+
+CisjaW5jbHVkZSA8Y29tbW9uLmg+CisjaW5jbHVkZSA8aW5pdC5oPgorI2luY2x1ZGUgPG1hY2gv
+YmJ1Lmg+CisKK3N0YXRpYyBpbnQgZWQxX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQorewor
+CWludCBmbGFnczsKKworCWZsYWdzID0gYm9vdHNvdXJjZV9nZXRfaW5zdGFuY2UoKSA9PSAwID8g
+QkJVX0hBTkRMRVJfRkxBR19ERUZBVUxUIDogMDsKKwlzdG0zMm1wX2JidV9tbWNfcmVnaXN0ZXJf
+aGFuZGxlcigic2QiLCAiL2Rldi9tbWMwLnNzYmwiLCBmbGFncyk7CisKKwlmbGFncyA9IGJvb3Rz
+b3VyY2VfZ2V0X2luc3RhbmNlKCkgPT0gMSA/IEJCVV9IQU5ETEVSX0ZMQUdfREVGQVVMVCA6IDA7
+CisJc3RtMzJtcF9iYnVfbW1jX3JlZ2lzdGVyX2hhbmRsZXIoImVtbWMiLCAiL2Rldi9tbWMxLnNz
+YmwiLCBmbGFncyk7CisKKwlpZiAoYm9vdHNvdXJjZV9nZXRfaW5zdGFuY2UoKSA9PSAwKQorCQlv
+Zl9kZXZpY2VfZW5hYmxlX3BhdGgoIi9jaG9zZW4vZW52aXJvbm1lbnQtc2QiKTsKKwllbHNlCisJ
+CW9mX2RldmljZV9lbmFibGVfcGF0aCgiL2Nob3Nlbi9lbnZpcm9ubWVudC1lbW1jIik7CisKKwli
+YXJlYm94X3NldF9tb2RlbCgiU1RNMzJNUDE1N0MtRUQxIik7CisKKwlyZXR1cm4gMDsKK30KKwor
+LyogRUQxIGlzIHRoZSBTb00gb24gdG9wIG9mIHRoZSBFVjEgKi8KK3N0YXRpYyBjb25zdCBzdHJ1
+Y3Qgb2ZfZGV2aWNlX2lkIGVkMV9vZl9tYXRjaFtdID0geworCXsgLmNvbXBhdGlibGUgPSAic3Qs
+c3RtMzJtcDE1N2MtZWQxIiB9LAorCXsgLyogc2VudGluZWwgKi8gfSwKK307CisKK3N0YXRpYyBz
+dHJ1Y3QgZHJpdmVyX2QgZWQxX2JvYXJkX2RyaXZlciA9IHsKKwkubmFtZSA9ICJib2FyZC1zdG0z
+Mm1wMTV4LWVkMSIsCisJLnByb2JlID0gZWQxX3Byb2JlLAorCS5vZl9jb21wYXRpYmxlID0gZWQx
+X29mX21hdGNoLAorfTsKK3Bvc3Rjb3JlX3BsYXRmb3JtX2RyaXZlcihlZDFfYm9hcmRfZHJpdmVy
+KTsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9zdG0zMm1wMTV4LWV2MS9sb3dsZXZlbC5j
+IGIvYXJjaC9hcm0vYm9hcmRzL3N0bTMybXAxNXgtZXYxL2xvd2xldmVsLmMKbmV3IGZpbGUgbW9k
+ZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi4wNmZmNjI5MWI4YjQKLS0tIC9kZXYvbnVsbAor
+KysgYi9hcmNoL2FybS9ib2FyZHMvc3RtMzJtcDE1eC1ldjEvbG93bGV2ZWwuYwpAQCAtMCwwICsx
+LDI2IEBACisvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCsKKyNpbmNsdWRlIDxj
+b21tb24uaD4KKyNpbmNsdWRlIDxtYWNoL2VudHJ5Lmg+CisjaW5jbHVkZSA8ZGVidWdfbGwuaD4K
+KworZXh0ZXJuIGNoYXIgX19kdGJfel9zdG0zMm1wMTU3Y19ldjFfc3RhcnRbXTsKKworc3RhdGlj
+IHZvaWQgc2V0dXBfdWFydCh2b2lkKQoreworCS8qIGZpcnN0IHN0YWdlIGhhcyBzZXQgdXAgdGhl
+IFVBUlQsIHNvIG5vdGhpbmcgdG8gZG8gaGVyZSAqLworCXB1dGNfbGwoJz4nKTsKK30KKworRU5U
+UllfRlVOQ1RJT04oc3RhcnRfc3RtMzJtcDE1eF9ldjEsIHIwLCByMSwgcjIpCit7CisJdm9pZCAq
+ZmR0OworCisJc3RtMzJtcF9jcHVfbG93bGV2ZWxfaW5pdCgpOworCisJaWYgKElTX0VOQUJMRUQo
+Q09ORklHX0RFQlVHX0xMKSkKKwkJc2V0dXBfdWFydCgpOworCisJZmR0ID0gX19kdGJfel9zdG0z
+Mm1wMTU3Y19ldjFfc3RhcnQgKyBnZXRfcnVudGltZV9vZmZzZXQoKTsKKworCXN0bTMybXAxX2Jh
+cmVib3hfZW50cnkoZmR0KTsKK30KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NvbmZpZ3Mvc3RtMzJt
+cF9kZWZjb25maWcgYi9hcmNoL2FybS9jb25maWdzL3N0bTMybXBfZGVmY29uZmlnCmluZGV4IGUx
+ZWU0ZWMwODIwNS4uN2I5MDAwMmY4Nzk2IDEwMDY0NAotLS0gYS9hcmNoL2FybS9jb25maWdzL3N0
+bTMybXBfZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3Mvc3RtMzJtcF9kZWZjb25maWcK
+QEAgLTIsNiArMiw3IEBAIENPTkZJR19BUkNIX1NUTTMyTVA9eQogQ09ORklHX01BQ0hfU1RNMzJN
+UDE1WFhfREtYPXkKIENPTkZJR19NQUNIX0xYQV9NQzE9eQogQ09ORklHX01BQ0hfU0VFRURfT0RZ
+U1NFWT15CitDT05GSUdfTUFDSF9TVE0zMk1QMTVYX0VWMT15CiBDT05GSUdfVEhVTUIyX0JBUkVC
+T1g9eQogQ09ORklHX0FSTV9CT0FSRF9BUFBFTkRfQVRBRz15CiBDT05GSUdfQVJNX09QVElNWkVE
+X1NUUklOR19GVU5DVElPTlM9eQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL01ha2VmaWxlIGIv
+YXJjaC9hcm0vZHRzL01ha2VmaWxlCmluZGV4IDYzYmQ3M2RmYWE1ZC4uZDVmNjE3NjhhNWI1IDEw
+MDY0NAotLS0gYS9hcmNoL2FybS9kdHMvTWFrZWZpbGUKKysrIGIvYXJjaC9hcm0vZHRzL01ha2Vm
+aWxlCkBAIC0xMTMsNiArMTEzLDcgQEAgbHdsLSQoQ09ORklHX01BQ0hfU09MSURSVU5fTUlDUk9T
+T00pICs9IGlteDZkbC1odW1taW5nYm9hcmQuZHRiLm8gaW14NnEtaHVtbWluZ2IKIGx3bC0kKENP
+TkZJR19NQUNIX1NFRUVEX09EWVNTRVkpICs9IHN0bTMybXAxNTdjLW9keXNzZXkuZHRiLm8KIGx3
+bC0kKENPTkZJR19NQUNIX1NUTTMyTVAxNVhYX0RLWCkgKz0gc3RtMzJtcDE1N2MtZGsyLmR0Yi5v
+IHN0bTMybXAxNTdhLWRrMS5kdGIubwogbHdsLSQoQ09ORklHX01BQ0hfTFhBX01DMSkgKz0gc3Rt
+MzJtcDE1N2MtbHhhLW1jMS5kdGIubworbHdsLSQoQ09ORklHX01BQ0hfU1RNMzJNUDE1WF9FVjEp
+ICs9IHN0bTMybXAxNTdjLWV2MS5kdGIubwogbHdsLSQoQ09ORklHX01BQ0hfU0NCOTMyOCkgKz0g
+aW14MS1zY2I5MzI4LmR0Yi5vCiBsd2wtJChDT05GSUdfTUFDSF9URUNITkVYSU9OX1dBTkRCT0FS
+RCkgKz0gaW14NnEtd2FuZGJvYXJkLmR0Yi5vIGlteDZkbC13YW5kYm9hcmQuZHRiLm8KIGx3bC0k
+KENPTkZJR19NQUNIX1RFQ0hORVhJT05fUElDT19IT0JCSVQpICs9IGlteDZ1bC1waWNvLWhvYmJp
+dC5kdGIubwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL3N0bTMybXAxNTdjLWV2MS5kdHMgYi9h
+cmNoL2FybS9kdHMvc3RtMzJtcDE1N2MtZXYxLmR0cwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRl
+eCAwMDAwMDAwMDAwMDAuLjc0MmVjYTdhMzNjOQotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJt
+L2R0cy9zdG0zMm1wMTU3Yy1ldjEuZHRzCkBAIC0wLDAgKzEsMjAgQEAKKy8vIFNQRFgtTGljZW5z
+ZS1JZGVudGlmaWVyOiAoR1BMLTIuMCsgT1IgWDExKQorCisjaW5jbHVkZSA8YXJtL3N0bTMybXAx
+NTdjLWV2MS5kdHM+CisjaW5jbHVkZSAic3RtMzJtcDE1MS5kdHNpIgorCisvIHsKKwljaG9zZW4g
+eworCQllbnZpcm9ubWVudC1zZCB7CisJCQljb21wYXRpYmxlID0gImJhcmVib3gsZW52aXJvbm1l
+bnQiOworCQkJZGV2aWNlLXBhdGggPSAmc2RtbWMxLCAicGFydG5hbWU6YmFyZWJveC1lbnZpcm9u
+bWVudCI7CisJCQlzdGF0dXMgPSAiZGlzYWJsZWQiOworCQl9OworCisJCWVudmlyb25tZW50LWVt
+bWMgeworCQkJY29tcGF0aWJsZSA9ICJiYXJlYm94LGVudmlyb25tZW50IjsKKwkJCWRldmljZS1w
+YXRoID0gJnNkbW1jMiwgInBhcnRuYW1lOmJhcmVib3gtZW52aXJvbm1lbnQiOworCQkJc3RhdHVz
+ID0gImRpc2FibGVkIjsKKwkJfTsKKwl9OworfTsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gt
+c3RtMzJtcC9LY29uZmlnIGIvYXJjaC9hcm0vbWFjaC1zdG0zMm1wL0tjb25maWcKaW5kZXggYjhj
+Y2JhYWI2NzAyLi45NWQzZGM1MTBkMTIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtc3RtMzJt
+cC9LY29uZmlnCisrKyBiL2FyY2gvYXJtL21hY2gtc3RtMzJtcC9LY29uZmlnCkBAIC0yMyw0ICsy
+MywxMiBAQCBjb25maWcgTUFDSF9TRUVFRF9PRFlTU0VZCiAJc2VsZWN0IEFSQ0hfU1RNMzJNUDE1
+NwogCWJvb2wgIlNlZWVkIFN0dWRpbyBPZHlzc2V5IgogCitjb25maWcgTUFDSF9TVE0zMk1QMTVY
+X0VWMQorCXNlbGVjdCBBUkNIX1NUTTMyTVAxNTcKKwlib29sICJTVE0zMk1QMTVYLUVWMSBib2Fy
+ZCIKKwloZWxwCisJICBidWlsZHMgYSBzaW5nbGUgYmFyZWJveC1zdG0zMm1wMTV4LWV2MS5pbWcg
+dGhhdCBjYW4gYmUgZGVwbG95ZWQKKwkgIGFzIFNTQkwgb24gYW55IFNUTTMyTVAxNVgtRVZBTCBw
+bGF0Zm9ybSwgbGlrZSB0aGUKKwkgIFNUTTMyTVAxNTdDLUVWMQorCiBlbmRpZgpkaWZmIC0tZ2l0
+IGEvaW1hZ2VzL01ha2VmaWxlLnN0bTMybXAgYi9pbWFnZXMvTWFrZWZpbGUuc3RtMzJtcAppbmRl
+eCBlYWZlODRhNzIxODUuLjMzODRmNTAxNGJiMSAxMDA2NDQKLS0tIGEvaW1hZ2VzL01ha2VmaWxl
+LnN0bTMybXAKKysrIGIvaW1hZ2VzL01ha2VmaWxlLnN0bTMybXAKQEAgLTI3LDMgKzI3LDggQEAg
+cGJsYi0kKENPTkZJR19NQUNIX1NFRUVEX09EWVNTRVkpICs9IHN0YXJ0X3N0bTMybXAxNTdjX3Nl
+ZWVkX29keXNzZXkKIEZJTEVfYmFyZWJveC1zdG0zMm1wMTU3Yy1zZWVlZC1vZHlzc2V5LmltZyA9
+IHN0YXJ0X3N0bTMybXAxNTdjX3NlZWVkX29keXNzZXkucGJsYi5zdG0zMgogT1BUU19zdGFydF9z
+dG0zMm1wMTU3Y19zZWVlZF9vZHlzc2V5LnBibGIuc3RtMzIgPSAkKFNUTTMyTVAxX09QVFMpCiBp
+bWFnZS0kKENPTkZJR19NQUNIX1NFRUVEX09EWVNTRVkpICs9IGJhcmVib3gtc3RtMzJtcDE1N2Mt
+c2VlZWQtb2R5c3NleS5pbWcKKworcGJsYi0kKENPTkZJR19NQUNIX1NUTTMyTVAxNVhfRVYxKSAr
+PSBzdGFydF9zdG0zMm1wMTV4X2V2MQorRklMRV9iYXJlYm94LXN0bTMybXAxNXgtZXYxLmltZyA9
+IHN0YXJ0X3N0bTMybXAxNXhfZXYxLnBibGIuc3RtMzIKK09QVFNfc3RhcnRfc3RtMzJtcDE1eF9l
+djEucGJsYi5zdG0zMiA9ICQoU1RNMzJNUDFfT1BUUykKK2ltYWdlLSQoQ09ORklHX01BQ0hfU1RN
+MzJNUDE1WF9FVjEpICs9IGJhcmVib3gtc3RtMzJtcDE1eC1ldjEuaW1nCi0tIAoyLjI5LjIKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
 
