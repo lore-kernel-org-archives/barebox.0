@@ -1,51 +1,53 @@
-Delivery-date: Tue, 16 Mar 2021 09:06:49 +0100
+Delivery-date: Tue, 16 Mar 2021 09:07:11 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lM4j3-0002Iq-CX
-	for lore@lore.pengutronix.de; Tue, 16 Mar 2021 09:06:49 +0100
+	id 1lM4jP-0002JC-PH
+	for lore@lore.pengutronix.de; Tue, 16 Mar 2021 09:07:11 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lM4j0-0000Ke-Nd
-	for lore@pengutronix.de; Tue, 16 Mar 2021 09:06:49 +0100
+	id 1lM4jM-0000WO-GX
+	for lore@pengutronix.de; Tue, 16 Mar 2021 09:07:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GqSDVBK/cUE5b6wQAnfbTzhAOftJL+3H39v0Yhr2zLc=; b=UUJ+LtVi1gaWL3G0c0+vbuwjQS
-	bFvoBG4O0/JphmapeGBK0iig1li591c0KbhsHoU0nTsPT23J5/IlWcYOolTAyohW+Ln6r/WWQPJf0
-	X84vI2ReAHDjH3sRyLuMC7lb7smt/e53vjeW7egCTjj4+69sCUfOVqCydJtnWTMcIbyCoFHgWu4M7
-	+gnW6a/YrvYeZ+iigfil8OtLwd+MxIBHoh69nhXTH7ZabAdMTQsih5K2JaRxheml6zjwfEHFu/okx
-	jV75y1BO7F7DseQ86YqW/npzUuBJy7abfpyTTMdleW3bkCOV+YBjsTS4RKGZ6K4pK9UhcPUynyg5K
-	jFunauDQ==;
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=ABTEXOid5lxqernN/ErSoeibG4mTUfjbpv9rCmttd0E=; b=Qlb5ZxmlXWgDNUNlnq/32MYWI
+	FoZ53GFMBemQPLzYhmw9WpXxBXqR6o37AhEtbqEdETFwGhY281vZcZ8UJzOUUB8btZM/rFOcKtLRy
+	yRfMIZsnKqnkeNiSKRXszTm9DuROsZoE5/J6upasKfbgGQB06HvW6oSVPNJZmZkjyKRy/L8/AEQxf
+	9/v3B71fb13sy+CIZsw9tufCxNi7+xVkUOLMvHppFEn/7PF3sHUvwZIXCsdk3Fds6EgljeZQ4xLnZ
+	o7jW3HuMADyCiuC2ksFewzXGfYesVofZ7fby5Be/ThTwrOn65j8JUvXhl2BeSJEKv4gqF0g9bAS1v
+	CZUiJu6TA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lM4hs-0004gN-MD; Tue, 16 Mar 2021 08:05:36 +0000
+	id 1lM4i8-0004oA-Rh; Tue, 16 Mar 2021 08:05:52 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lM4hT-0004X6-Ld
- for barebox@lists.infradead.org; Tue, 16 Mar 2021 08:05:15 +0000
+ id 1lM4hT-0004XV-Tp
+ for barebox@lists.infradead.org; Tue, 16 Mar 2021 08:05:18 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lM4hR-0007xv-LY; Tue, 16 Mar 2021 09:05:09 +0100
+ id 1lM4hS-0007yH-Ga; Tue, 16 Mar 2021 09:05:10 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lM4hQ-0006CZ-VK; Tue, 16 Mar 2021 09:05:08 +0100
+ id 1lM4hR-0006DW-91; Tue, 16 Mar 2021 09:05:09 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 16 Mar 2021 09:04:45 +0100
-Message-Id: <20210316080505.19361-1-a.fatoum@pengutronix.de>
+Date: Tue, 16 Mar 2021 09:05:04 +0100
+Message-Id: <20210316080505.19361-20-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210316080505.19361-1-a.fatoum@pengutronix.de>
+References: <20210316080505.19361-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210316_080512_103679_042BC460 
-X-CRM114-Status: GOOD (  17.62  )
+X-CRM114-CacheID: sfid-20210316_080512_217409_9FE24010 
+X-CRM114-Status: GOOD (  25.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -57,7 +59,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: rcz@pengutronix.de
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, rcz@pengutronix.de
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -70,188 +72,316 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 00/20] RISC-V: rework for PBL, VIRT and 64-Bit support
+Subject: [PATCH v2 19/20] power: reset: add drivers for generic syscon reset
+ and poweroff
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-With these changes applied, barebox can now generate images that can
-be booted on qemu/tinyemu virt32 and virt64 machines.
+Many SoC reset/poweroff mechanisms can be represented using this generic
+binding. Of the boards we support, at least the virt machines can
+be rebooted and powered off by it. Import the Linux v5.11 state
+of the driver to support this.
 
-The boards have clocksource, virtio, cfi-flash,  reboot and poweroff
-support.
-
-This can also be pulled from Github:
-https://github.com/a3f/barebox/tree/multi-image-riscv-v2
-
-v1 -> v2:
- - moved compressed dtb helpers into common header for both ARM and
-   RISC-V to use
- - relocate_to_adr(fixed_base) can now be called multiple times in a row
- - removed some extra spaces (Antony)
- - as arch is DT only, bumped pr_debug to pr_err if dt is not found.
-   no panic, because with debug_ll you might still be able to boot to shell
-   for further debugging
- - rename Makefile.erizo to Makefile.riscv. Let's just build all board images
-   out of the same Makefile now
- - HAS_ARCH_SJLJ selected for 64-bit as well
- - don't require compiler to support atomics or floating point on rv64 (Rouven)
- - added RISCV timer for SBI and rdcycle mode. This is used on tinyemu virt.
-   rdcycle mode could be used on erizo as well if suitable timerbase chosen.
- - activate first console because Tinyemu only describes virtio mmio region
-   for console and no stdout-path
-
-Cheers,
-Ahmad Fatoum (18):
-  partitions: don't allocate dma capable memory
-  images: make BOARD_ARM_GENERIC_DT available for other arches
-  ARM: make ARM_USE_COMPRESSED_DTB available for other arches
-  ARM: aarch64: ommit unused label in assembly
-  serial: virtio-console: depend on, but don't select VIRTIO
-  filetype: detect RISC-V Linux kernel image
-  asm: unaligned: don't do unaligned accesses
-  RISC-V: debug_ll: ns16550: align C access size with assembly's
-  RISC-V: drop duplicate or unneeded cflags
-  RISC-V: add cacheless HAS_DMA support
-  RISC-V: erizo: move to arch/riscv/boards/erizo
-  RISC-V: import Linux' optimized string functions
-  RISC-V: implement PBL and relocation support
-  RISC-V: erizo: migrate to PBL
-  RISC-V: support symbol names in barebox image
-  RISC-V: add generic DT image
-  clocksource: add driver for RISC-V and CLINT timers
-  power: reset: add drivers for generic syscon reset and poweroff
-
-Rouven Czerwinski (2):
-  RISC-V: add 64-bit support
-  RISC-V: add Qemu virt support
-
- Documentation/boards/riscv.rst               |  72 ++++++-
- Makefile                                     |   1 +
- arch/arm/Kconfig                             |   7 +-
- arch/arm/cpu/start.c                         |  20 +-
- arch/arm/include/asm/barebox-arm.h           |   7 -
- arch/arm/lib64/runtime-offset.S              |   2 +-
- arch/riscv/Kconfig                           |  81 +++++--
- arch/riscv/Makefile                          |  35 ++-
- arch/riscv/boards/Makefile                   |   2 +
- arch/riscv/boards/erizo/Makefile             |   3 +
- arch/riscv/boards/erizo/lowlevel.c           |  18 ++
- arch/riscv/boot/Makefile                     |   5 +-
- arch/riscv/boot/board-dt-2nd-entry.S         |  26 +++
- arch/riscv/boot/board-dt-2nd.c               |  29 +++
- arch/riscv/boot/dtb.c                        |  25 ---
- arch/riscv/boot/entry.c                      |  33 +++
- arch/riscv/boot/entry.h                      |  15 ++
- arch/riscv/boot/entry_ll.S                   |  15 ++
- arch/riscv/boot/main_entry.c                 |  35 ---
- arch/riscv/boot/start.S                      |  68 ------
- arch/riscv/boot/start.c                      | 185 ++++++++++++++++
- arch/riscv/boot/uncompress.c                 |  74 +++++++
- arch/riscv/configs/erizo_generic_defconfig   |   5 -
- arch/riscv/configs/virt32_defconfig          | 116 ++++++++++
- arch/riscv/configs/virt64_defconfig          | 117 ++++++++++
- arch/riscv/cpu/Makefile                      |   3 +
- arch/riscv/cpu/core.c                        |  50 +++++
- arch/riscv/cpu/time.c                        |  38 ++++
- arch/riscv/dts/Makefile                      |   9 +-
- arch/riscv/dts/erizo.dtsi                    |   2 +-
- arch/riscv/include/asm/barebox-riscv.h       |  94 +++++++++
- arch/riscv/include/asm/common.h              |  10 +-
- arch/riscv/include/asm/csr.h                 | 211 +++++++++++++++++++
- arch/riscv/include/asm/debug_ll_ns16550.h    |  16 +-
- arch/riscv/include/asm/dma.h                 |  44 ++++
- arch/riscv/include/asm/elf.h                 |   8 +-
- arch/riscv/include/asm/image.h               |  65 ++++++
- arch/riscv/include/asm/linkage.h             |   4 +
- arch/riscv/include/asm/sbi.h                 | 153 ++++++++++++++
- arch/riscv/include/asm/sections.h            |  15 ++
- arch/riscv/include/asm/string.h              |  21 +-
- arch/riscv/include/asm/timer.h               |   9 +
- arch/riscv/include/asm/types.h               |   8 +-
- arch/riscv/include/asm/unaligned.h           |  16 +-
- arch/riscv/lib/Makefile                      |   6 +-
- arch/riscv/lib/barebox.lds.S                 |  55 +++--
- arch/riscv/lib/dtb.c                         |  30 +++
- arch/riscv/lib/memcpy.S                      | 108 ++++++++++
- arch/riscv/lib/memmove.S                     |  64 ++++++
- arch/riscv/lib/memset.S                      | 113 ++++++++++
- arch/riscv/lib/pbl.lds.S                     |  85 ++++++++
- arch/riscv/lib/reloc.c                       |  64 ++++++
- arch/riscv/lib/runtime-offset.S              |  12 ++
- arch/riscv/lib/sections.c                    |   9 +
- arch/riscv/lib/setupc.S                      |  55 +++++
- arch/riscv/mach-virt/Makefile                |   3 +
- arch/riscv/mach-virt/include/mach/debug_ll.h |  25 +++
- common/Kconfig                               |   8 +-
- common/filetype.c                            |   3 +
- common/partitions.c                          |   5 +-
- common/partitions/dos.c                      |   7 +-
- common/partitions/efi.c                      |   1 -
- drivers/clocksource/Kconfig                  |  15 ++
- drivers/clocksource/Makefile                 |   2 +
- drivers/clocksource/timer-clint.c            |  93 ++++++++
- drivers/clocksource/timer-riscv.c            |  66 ++++++
- drivers/power/reset/Kconfig                  |  14 ++
- drivers/power/reset/Makefile                 |   2 +
- drivers/power/reset/syscon-poweroff.c        |  76 +++++++
- drivers/power/reset/syscon-reboot.c          |  92 ++++++++
- drivers/serial/Kconfig                       |   2 +-
- images/Makefile                              |   8 +-
- images/Makefile.riscv                        |  12 ++
- include/compressed-dtb.h                     |  33 +++
- include/dma.h                                |   1 +
- include/filetype.h                           |   1 +
- pbl/Kconfig                                  |   6 +-
- scripts/.gitignore                           |   1 +
- scripts/Makefile                             |   1 +
- scripts/Makefile.lib                         |  11 +
- scripts/prelink-riscv.c                      | 122 +++++++++++
- scripts/prelink-riscv.inc                    | 123 +++++++++++
- 82 files changed, 2837 insertions(+), 269 deletions(-)
- create mode 100644 arch/riscv/boards/Makefile
- create mode 100644 arch/riscv/boards/erizo/Makefile
- create mode 100644 arch/riscv/boards/erizo/lowlevel.c
- create mode 100644 arch/riscv/boot/board-dt-2nd-entry.S
- create mode 100644 arch/riscv/boot/board-dt-2nd.c
- delete mode 100644 arch/riscv/boot/dtb.c
- create mode 100644 arch/riscv/boot/entry.c
- create mode 100644 arch/riscv/boot/entry.h
- create mode 100644 arch/riscv/boot/entry_ll.S
- delete mode 100644 arch/riscv/boot/main_entry.c
- delete mode 100644 arch/riscv/boot/start.S
- create mode 100644 arch/riscv/boot/start.c
- create mode 100644 arch/riscv/boot/uncompress.c
- create mode 100644 arch/riscv/configs/virt32_defconfig
- create mode 100644 arch/riscv/configs/virt64_defconfig
- create mode 100644 arch/riscv/cpu/Makefile
- create mode 100644 arch/riscv/cpu/core.c
- create mode 100644 arch/riscv/cpu/time.c
- create mode 100644 arch/riscv/include/asm/barebox-riscv.h
- create mode 100644 arch/riscv/include/asm/csr.h
- create mode 100644 arch/riscv/include/asm/dma.h
- create mode 100644 arch/riscv/include/asm/image.h
- create mode 100644 arch/riscv/include/asm/sbi.h
- create mode 100644 arch/riscv/include/asm/timer.h
- create mode 100644 arch/riscv/lib/dtb.c
- create mode 100644 arch/riscv/lib/memcpy.S
- create mode 100644 arch/riscv/lib/memmove.S
- create mode 100644 arch/riscv/lib/memset.S
- create mode 100644 arch/riscv/lib/pbl.lds.S
- create mode 100644 arch/riscv/lib/reloc.c
- create mode 100644 arch/riscv/lib/runtime-offset.S
- create mode 100644 arch/riscv/lib/sections.c
- create mode 100644 arch/riscv/lib/setupc.S
- create mode 100644 arch/riscv/mach-virt/Makefile
- create mode 100644 arch/riscv/mach-virt/include/mach/debug_ll.h
- create mode 100644 drivers/clocksource/timer-clint.c
- create mode 100644 drivers/clocksource/timer-riscv.c
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/riscv/Kconfig                    |  1 +
+ arch/riscv/dts/erizo.dtsi             |  2 +-
+ drivers/clocksource/Kconfig           |  2 +-
+ drivers/clocksource/timer-riscv.c     | 18 +++++-
+ drivers/power/reset/Kconfig           | 14 ++++
+ drivers/power/reset/Makefile          |  2 +
+ drivers/power/reset/syscon-poweroff.c | 76 ++++++++++++++++++++++
+ drivers/power/reset/syscon-reboot.c   | 92 +++++++++++++++++++++++++++
+ 8 files changed, 204 insertions(+), 3 deletions(-)
  create mode 100644 drivers/power/reset/syscon-poweroff.c
  create mode 100644 drivers/power/reset/syscon-reboot.c
- create mode 100644 images/Makefile.riscv
- create mode 100644 include/compressed-dtb.h
- create mode 100644 scripts/prelink-riscv.c
- create mode 100644 scripts/prelink-riscv.inc
 
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 50c4d145cf54..6e8bfdef14db 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -32,6 +32,7 @@ config MACH_ERIZO
+ 	select HAS_NMON
+ 	select USE_COMPRESSED_DTB
+ 	select RISCV_M_MODE
++	select RISCV_TIMER
+ 
+ endchoice
+ 
+diff --git a/arch/riscv/dts/erizo.dtsi b/arch/riscv/dts/erizo.dtsi
+index 07534798ac75..e854a48ae55c 100644
+--- a/arch/riscv/dts/erizo.dtsi
++++ b/arch/riscv/dts/erizo.dtsi
+@@ -22,7 +22,7 @@
+ 
+ 		cpu@0 {
+ 			device_type = "cpu";
+-			compatible = "cliffordwolf,picorv32";
++			compatible = "cliffordwolf,picorv32", "riscv";
+ 			clocks = <&ref_clk>;
+ 			reg = <0>;
+ 		};
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 2d8f5113ad8d..7bc69afd7820 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -101,7 +101,7 @@ config CLOCKSOURCE_TI_32K
+ 
+ config RISCV_TIMER
+ 	bool "Timer for the RISC-V platform" if COMPILE_TEST
+-	depends on RISCV && RISCV_SBI
++	depends on RISCV
+ 	help
+ 	  This enables the per-hart timer built into all RISC-V systems, which
+ 	  is accessed via both the SBI and the rdcycle instruction.  This is
+diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+index 637285fd78a7..eb5ba2d8c226 100644
+--- a/drivers/clocksource/timer-riscv.c
++++ b/drivers/clocksource/timer-riscv.c
+@@ -13,7 +13,7 @@
+ #include <asm/timer.h>
+ #include <asm/csr.h>
+ 
+-static u64 notrace riscv_timer_get_count(void)
++static u64 notrace riscv_timer_get_count_sbi(void)
+ {
+ 	__maybe_unused u32 hi, lo;
+ 
+@@ -28,6 +28,22 @@ static u64 notrace riscv_timer_get_count(void)
+ 	return ((u64)hi << 32) | lo;
+ }
+ 
++static u64 notrace riscv_timer_get_count_rdcycle(void)
++{
++	u64 ticks;
++	asm volatile("rdcycle %0" : "=r" (ticks));
++
++	return ticks;
++}
++
++static u64 notrace riscv_timer_get_count(void)
++{
++	if (IS_ENABLED(CONFIG_RISCV_SBI))
++		return riscv_timer_get_count_sbi();
++	else
++		return riscv_timer_get_count_rdcycle();
++}
++
+ static struct clocksource riscv_clocksource = {
+ 	.read		= riscv_timer_get_count,
+ 	.mask		= CLOCKSOURCE_MASK(64),
+diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
+index f65e1f67fd59..e60037a6e637 100644
+--- a/drivers/power/reset/Kconfig
++++ b/drivers/power/reset/Kconfig
+@@ -14,3 +14,17 @@ config SYSCON_REBOOT_MODE
+ 	  get reboot mode arguments and store it in SYSCON mapped
+ 	  register, then the bootloader can read it to take different
+ 	  action according to the mode.
++
++config POWER_RESET_SYSCON
++	bool "Generic SYSCON regmap reset driver"
++	depends on OFDEVICE
++	select MFD_SYSCON
++	help
++	  Reboot support for generic SYSCON mapped register reset.
++
++config POWER_RESET_SYSCON_POWEROFF
++	bool "Generic SYSCON regmap poweroff driver"
++	depends on OFDEVICE
++	select MFD_SYSCON
++	help
++	  Poweroff support for generic SYSCON mapped register poweroff.
+diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
+index 56feec78cf26..a490dce87333 100644
+--- a/drivers/power/reset/Makefile
++++ b/drivers/power/reset/Makefile
+@@ -1,3 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_REBOOT_MODE) += reboot-mode.o
+ obj-$(CONFIG_SYSCON_REBOOT_MODE) += syscon-reboot-mode.o
++obj-$(CONFIG_POWER_RESET_SYSCON) += syscon-reboot.o
++obj-$(CONFIG_POWER_RESET_SYSCON_POWEROFF) += syscon-poweroff.o
+diff --git a/drivers/power/reset/syscon-poweroff.c b/drivers/power/reset/syscon-poweroff.c
+new file mode 100644
+index 000000000000..3664c4d8bd08
+--- /dev/null
++++ b/drivers/power/reset/syscon-poweroff.c
+@@ -0,0 +1,76 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Generic Syscon Poweroff Driver
++ *
++ * Copyright (c) 2015, National Instruments Corp.
++ * Author: Moritz Fischer <moritz.fischer@ettus.com>
++ */
++
++#include <common.h>
++#include <init.h>
++#include <poweroff.h>
++#include <mfd/syscon.h>
++
++static struct regmap *map;
++static u32 offset;
++static u32 value;
++static u32 mask;
++
++static void syscon_poweroff(struct poweroff_handler *handler)
++{
++	/* Issue the poweroff */
++	regmap_update_bits(map, offset, mask, value);
++
++	mdelay(1000);
++
++	pr_emerg("Unable to poweroff system\n");
++}
++
++static int syscon_poweroff_probe(struct device_d *dev)
++{
++	int mask_err, value_err;
++
++	map = syscon_regmap_lookup_by_phandle(dev->device_node, "regmap");
++	if (IS_ERR(map)) {
++		dev_err(dev, "unable to get syscon");
++		return PTR_ERR(map);
++	}
++
++	if (of_property_read_u32(dev->device_node, "offset", &offset)) {
++		dev_err(dev, "unable to read 'offset'");
++		return -EINVAL;
++	}
++
++	value_err = of_property_read_u32(dev->device_node, "value", &value);
++	mask_err = of_property_read_u32(dev->device_node, "mask", &mask);
++	if (value_err && mask_err) {
++		dev_err(dev, "unable to read 'value' and 'mask'");
++		return -EINVAL;
++	}
++
++	if (value_err) {
++		/* support old binding */
++		value = mask;
++		mask = 0xFFFFFFFF;
++	} else if (mask_err) {
++		/* support value without mask*/
++		mask = 0xFFFFFFFF;
++	}
++
++	poweroff_handler_register_fn(syscon_poweroff);
++
++	return 0;
++}
++
++static const struct of_device_id syscon_poweroff_of_match[] = {
++	{ .compatible = "syscon-poweroff" },
++	{}
++};
++
++static struct driver_d syscon_poweroff_driver = {
++	.name = "syscon-poweroff",
++	.of_compatible = syscon_poweroff_of_match,
++	.probe = syscon_poweroff_probe,
++};
++
++coredevice_platform_driver(syscon_poweroff_driver);
+diff --git a/drivers/power/reset/syscon-reboot.c b/drivers/power/reset/syscon-reboot.c
+new file mode 100644
+index 000000000000..2dbb6c1ddcb8
+--- /dev/null
++++ b/drivers/power/reset/syscon-reboot.c
+@@ -0,0 +1,92 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Generic Syscon Reboot Driver
++ *
++ * Copyright (c) 2013, Applied Micro Circuits Corporation
++ * Author: Feng Kan <fkan@apm.com>
++ */
++#include <common.h>
++#include <init.h>
++#include <restart.h>
++#include <mfd/syscon.h>
++
++struct syscon_reboot_context {
++	struct regmap *map;
++	u32 offset;
++	u32 value;
++	u32 mask;
++	struct restart_handler restart_handler;
++};
++
++static void __noreturn syscon_restart_handle(struct restart_handler *this)
++{
++	struct syscon_reboot_context *ctx =
++			container_of(this, struct syscon_reboot_context,
++					restart_handler);
++
++	/* Issue the reboot */
++	regmap_update_bits(ctx->map, ctx->offset, ctx->mask, ctx->value);
++
++	mdelay(1000);
++
++	panic("Unable to restart system\n");
++}
++
++static int syscon_reboot_probe(struct device_d *dev)
++{
++	struct syscon_reboot_context *ctx;
++	int mask_err, value_err;
++	int err;
++
++	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
++		return -ENOMEM;
++
++	ctx->map = syscon_regmap_lookup_by_phandle(dev->device_node, "regmap");
++	if (IS_ERR(ctx->map)) {
++		ctx->map = syscon_node_to_regmap(dev->parent->device_node);
++		if (IS_ERR(ctx->map))
++			return PTR_ERR(ctx->map);
++	}
++
++	if (of_property_read_u32(dev->device_node, "offset", &ctx->offset))
++		return -EINVAL;
++
++	value_err = of_property_read_u32(dev->device_node, "value", &ctx->value);
++	mask_err = of_property_read_u32(dev->device_node, "mask", &ctx->mask);
++	if (value_err && mask_err) {
++		dev_err(dev, "unable to read 'value' and 'mask'");
++		return -EINVAL;
++	}
++
++	if (value_err) {
++		/* support old binding */
++		ctx->value = ctx->mask;
++		ctx->mask = 0xFFFFFFFF;
++	} else if (mask_err) {
++		/* support value without mask*/
++		ctx->mask = 0xFFFFFFFF;
++	}
++
++	ctx->restart_handler.name = "syscon-reboot";
++	ctx->restart_handler.restart = syscon_restart_handle;
++	ctx->restart_handler.priority = 192;
++
++	err = restart_handler_register(&ctx->restart_handler);
++	if (err)
++		dev_err(dev, "can't register restart notifier\n");
++
++	return err;
++}
++
++static const struct of_device_id syscon_reboot_of_match[] = {
++	{ .compatible = "syscon-reboot" },
++	{}
++};
++
++static struct driver_d syscon_reboot_driver = {
++	.probe = syscon_reboot_probe,
++	.name = "syscon-reboot",
++	.of_compatible = syscon_reboot_of_match,
++};
++coredevice_platform_driver(syscon_reboot_driver);
 -- 
 2.29.2
 
