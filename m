@@ -1,61 +1,61 @@
-Delivery-date: Wed, 17 Mar 2021 11:57:04 +0100
+Delivery-date: Wed, 17 Mar 2021 11:58:04 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lMTrM-0004Fa-3z
-	for lore@lore.pengutronix.de; Wed, 17 Mar 2021 11:57:04 +0100
+	id 1lMTsK-0004Fy-6l
+	for lore@lore.pengutronix.de; Wed, 17 Mar 2021 11:58:04 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lMTrL-00014f-DN
-	for lore@pengutronix.de; Wed, 17 Mar 2021 11:57:03 +0100
+	id 1lMTsJ-0001AA-Bp
+	for lore@pengutronix.de; Wed, 17 Mar 2021 11:58:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=lFlwdMpuS8MttQJxdwGfRKQRLVNglpNXCYGJTYdLpWs=; b=JUv/8F5hTa+9mri2t54zq8zVv
-	BDVa4MVIonlzbpDTymkCTPsykjaHLh0GG2+v3SNyiKcWxd/JVwIlHKIZuhLwxKGkP1SCJYmhLki+i
-	szcTe4hUwKMf8GtE5lG4W5MxdlABnVGcsZmKuK66GVcLiinnHy1EI8NXVXEn8Piyv74FPq/w5AvqU
-	1H64lMOQLNJumiEmbyafSmEkh7jb5gBYpMU3KlfCwsZFonby4MvgInZo2xzTEG07WQaiv9GNdziux
-	QCl6ZthINShHdIdU6F7Et3wRatxt7v0AxaTgeVIe4BwjExbuZo/JLPqPjzB+wdqZN6pIFpNpXlxhn
-	9OcenRVdw==;
+	 bh=fErtnpfkaeW9iYScw0uhwSbp/88rHawK/NjfR2RzyXo=; b=lvuCi18Q72wjiS7ueGLMjeTr3
+	FTlYKgonX7/vINTgh0ri7ccnmFbXChCpNQOpn3qMEe8NL3dcent1BoN1a96ZL4G6lhLg9CKeXh8jh
+	XzAIhxkNpU7i58SUxK/grUs1BwMWsE13rS8iUR4FC6mrb29EmJ3RksBZYoKhGnUSu67Te8bh7aS1g
+	bwF8hHhPKUw8+lWMwjl4kqg40lQrutwC13rHfF2l86/G8b3rqRKX7yjMkUuy8WSr0wT35o2iq5AUY
+	daeK3SImYL7Vkgp1yCkeMYmJq3QGfS4zLTMe6sevAKaAVYZUKiOeIHGi3N8Nvyse943x0+dGRrx9t
+	CGxq+CxnA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lMTqX-002zAl-BP; Wed, 17 Mar 2021 10:56:13 +0000
+	id 1lMTra-002zGG-6A; Wed, 17 Mar 2021 10:57:18 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lMTqR-002zA8-AN
- for barebox@lists.infradead.org; Wed, 17 Mar 2021 10:56:09 +0000
+ id 1lMTrU-002zFi-8l
+ for barebox@lists.infradead.org; Wed, 17 Mar 2021 10:57:14 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lMTqP-0000sh-PA; Wed, 17 Mar 2021 11:56:05 +0100
+ id 1lMTrT-00015D-Sj; Wed, 17 Mar 2021 11:57:11 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lMTqP-0007GS-D3; Wed, 17 Mar 2021 11:56:05 +0100
-Date: Wed, 17 Mar 2021 11:56:05 +0100
+ id 1lMTrT-0007H1-FS; Wed, 17 Mar 2021 11:57:11 +0100
+Date: Wed, 17 Mar 2021 11:57:11 +0100
 To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org, rcz@pengutronix.de
-Message-ID: <20210317105605.GB23724@pengutronix.de>
-References: <20210317104643.2058151-1-ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210317105711.GC23724@pengutronix.de>
+References: <20210317104322.2057679-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210317104643.2058151-1-ahmad@a3f.at>
+In-Reply-To: <20210317104322.2057679-1-ahmad@a3f.at>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 11:55:56 up 27 days, 14:19, 86 users,  load average: 0.12, 0.07, 0.07
+X-Uptime: 11:57:03 up 27 days, 14:20, 86 users,  load average: 0.04, 0.06, 0.07
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210317_105607_432232_8EC0FF5F 
-X-CRM114-Status: GOOD (  18.48  )
+X-CRM114-CacheID: sfid-20210317_105712_444024_D8F1CA70 
+X-CRM114-Status: GOOD (  20.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,44 +79,36 @@ X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/8] <asm/setjmp.h>: Don't use __noreturn without header
+Subject: Re: [PATCH] fixup! ARM64: qemu-virt64: migrate to generic DT image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Mar 17, 2021 at 11:46:35AM +0100, Ahmad Fatoum wrote:
-> __noreturn is defined in <linux/compiler.h>, which isn't included in
-> every <asm/setjmp>, so arm32 that uses setjmp outside of bthreads fails
-> to build. In order to keep changes to a minimum, just replace
-> __noreturn with __attribute__((noreturn))
+On Wed, Mar 17, 2021 at 11:43:22AM +0100, Ahmad Fatoum wrote:
+> Otherwise we get a warning.
 > 
-> Tested on:
-> arm32, aarch64, mipsel, mips, riscv32, riscv64
-> 
-> Ahmad Fatoum (8):
->   fixup! ARM: asm: setjmp: implement coroutine dependency initjmp()
->   fixup! kvx: Implement setjmp/longjmp/initjmp
->   fixup! mips: Implement setjmp/longjmp/initjmp for 32BIT
->   fixup! openrisc: Implement setjmp/longjmp/initjmp
->   fixup! powerpc: Implement initjmp/setjmp/longjmp
->   fixup! riscv: Implement setjmp/longjmp/initjmp for RV32I
->   fixup! sandbox: asm: implement setjmp/longjmp/initjmp
->   fixup! x86: implement setjmp/longjmp/initjmp
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  arch/arm/boards/qemu-virt/board.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
->  arch/arm/include/asm/setjmp.h      | 2 +-
->  arch/kvx/include/asm/setjmp.h      | 2 +-
->  arch/mips/include/asm/setjmp.h     | 2 +-
->  arch/openrisc/include/asm/setjmp.h | 2 +-
->  arch/powerpc/include/asm/setjmp.h  | 2 +-
->  arch/riscv/include/asm/setjmp.h    | 2 +-
->  arch/sandbox/include/asm/setjmp.h  | 2 +-
->  arch/x86/include/asm/setjmp.h      | 2 +-
->  8 files changed, 8 insertions(+), 8 deletions(-)
-> 
+> diff --git a/arch/arm/boards/qemu-virt/board.c b/arch/arm/boards/qemu-virt/board.c
+> index 3e2c00ca1763..d0a7e3da4ff3 100644
+> --- a/arch/arm/boards/qemu-virt/board.c
+> +++ b/arch/arm/boards/qemu-virt/board.c
+> @@ -9,7 +9,7 @@
+>  #include <asm/system_info.h>
+>  #include <asm/barebox-arm.h>
+>  
+> -#if CONFIG_64BIT
+> +#ifdef CONFIG_64BIT
+>  #define MACHINE "virt64"
+>  #else
+>  #define MACHINE "virt"
 > -- 
 > 2.30.0
 > 
