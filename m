@@ -1,54 +1,61 @@
-Delivery-date: Tue, 16 Mar 2021 20:12:00 +0100
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Delivery-date: Wed, 17 Mar 2021 09:35:53 +0100
+Received: from [2001:67c:670:201:290:27ff:fe1d:cc33] (helo=metis.ext.pengutronix.de)
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lMF6m-0003Qb-Vd
-	for lore@lore.pengutronix.de; Tue, 16 Mar 2021 20:12:00 +0100
+	id 1lMRej-00044L-PY
+	for lore@lore.pengutronix.de; Wed, 17 Mar 2021 09:35:53 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lMF6m-00009j-35
-	for lore@pengutronix.de; Tue, 16 Mar 2021 20:12:00 +0100
+	id 1lMRei-0001iB-EZ
+	for lore@pengutronix.de; Wed, 17 Mar 2021 09:35:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
-	References:Cc:To:Subject:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=8iOr5qhoPJ4ysyem/UbTDJF+euw7gUFV58GGOZyM29U=; b=daHMROPiZE/6eymn3+k3ZEJUz
-	8p9QMndoxNyx5xzOsZZ94N5DjCq2FZroKl7JkQP2ScWpDI6wx4JV/PDrCctztDtamWDhFALdb7N7l
-	uMMB1t6irBSGqicO5A9DU9KsMgq2yHf73Scy5aKUj5LXTZPs8+o/LDuVKI6SnfyPYN0Z5jFsx+8bI
-	pr76fQ/ZMEG4AdjNqEK+tlwfD62vYCaypenXhKs68NDJQmCsUFBgb7hxm+NS0sTPtdx/SUT0msF9i
-	ZHXuTD6JW8wkrS+UupCIQ6tU7Gc4uchZ9l0SAzEmLaBjcin7k761Ht9OVhz5HdJHJygp2whterPt2
-	kyO73BIpg==;
+	 bh=0w4p9cxXjZVSOEnCSLG9d5zEmxUVELLHtD51+5Hgqzc=; b=XilUK3PPBkOLUupUWD+1ZeKoL
+	aXufJrpJ9AjZpS5b0OdGLdYO2Y2Xh4WN4t0r8geE4eOYyk03zVEapq7qnR9t2PGZD4nWjWi9xyyZR
+	mkxuzubpKEKp5KdjCNy5SEJQSW3l8FYZ/uk3vHiZgZ/x7fRdyvqpzTMOlxS67MgiUwzMt1/OvRNgg
+	QSY+au1/KobbjzJKyaLs9qDJZfmvSVzaYUL+sxlaeMaX+TZYfvcbQeQwN3o4/OHyAOO6WMUn1lTX7
+	OabhpotHsQw81bMsiEEXPaQZuHiD0gfOPNKksKZspLlXhB2XSYfYEfoW4jpu6ZF3i1ZIphkMS7Adg
+	uzlNry1qw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lMF5n-001h0O-FY; Tue, 16 Mar 2021 19:10:59 +0000
+	id 1lMRdb-002lts-CI; Wed, 17 Mar 2021 08:34:43 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lMF5c-001gyo-GM
- for barebox@lists.infradead.org; Tue, 16 Mar 2021 19:10:53 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1lMF5b-0008MV-Sx; Tue, 16 Mar 2021 20:10:47 +0100
-To: Sascha Hauer <sha@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
+ id 1lMRdT-002lt6-MY
+ for barebox@lists.infradead.org; Wed, 17 Mar 2021 08:34:37 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lMRdS-0001a0-1L; Wed, 17 Mar 2021 09:34:34 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lMRdR-0006t8-Bs; Wed, 17 Mar 2021 09:34:33 +0100
+Date: Wed, 17 Mar 2021 09:34:33 +0100
+To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
-References: <20210223072427.166689-1-ahmad@a3f.at>
- <20210224084945.GI5549@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <f639c838-e999-7a9b-ed03-7fd46c9e6fad@pengutronix.de>
-Date: Tue, 16 Mar 2021 20:10:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+Message-ID: <20210317083433.GW23724@pengutronix.de>
+References: <20210316082034.1740511-1-ahmad@a3f.at>
 MIME-Version: 1.0
-In-Reply-To: <20210224084945.GI5549@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20210316082034.1740511-1-ahmad@a3f.at>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:34:24 up 27 days, 11:58, 83 users,  load average: 0.08, 0.12, 0.12
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210316_191048_820489_DA0241C7 
-X-CRM114-Status: GOOD (  22.09  )
+X-CRM114-CacheID: sfid-20210317_083435_829258_7F8E8F36 
+X-CRM114-Status: GOOD (  25.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,83 +75,76 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] kbuild: add '-fno-stack-check' to barebox build
- options
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] fixup! commands: add new bthread test command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Sascha,
-
-On 24.02.21 09:49, Sascha Hauer wrote:
-> On Tue, Feb 23, 2021 at 08:24:26AM +0100, Ahmad Fatoum wrote:
->> This ports over Linux commit 3ce120b16cc5 ("kbuild: add
->> '-fno-stack-check' to kernel build options"):
->>
->>   Author:     Linus Torvalds <torvalds@linux-foundation.org>
->>
->>     kbuild: add '-fno-stack-check' to kernel build options
->>
->>     It appears that hardened gentoo enables "-fstack-check" by default for
->>     gcc.
->>
->>     That doesn't work _at_all_ for the kernel, because the kernel stack
->>     doesn't act like a user stack at all: it's much smaller, and it doesn't
->>     auto-expand on use.  So the extra "probe one page below the stack" code
->>     generated by -fstack-check just breaks the kernel in horrible ways,
->>     causing infinite double faults etc.
->>
->>     [ I have to say, that the particular code gcc generates looks very
->>       stupid even for user space where it works, but that's a separate
->>       issue.  ]
->>
->>     Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
->>
->> I am porting it, because it may become more acute with the incoming
->> support for multiple stacks (via initjmp).
->>
->> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
->> ---
+On Tue, Mar 16, 2021 at 09:20:34AM +0100, Ahmad Fatoum wrote:
+> GCC whines about casting int to pointer, which aren't always the same
+> size in barebox. Use long instead to avoid the warning.
 > 
-> Applied, thanks
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  commands/bthread.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 
-Can't find both patches in next.
+Applied, thanks
 
-Cheers,
-Ahmad
+Sascha
 
 > 
-> Sascha
+> diff --git a/commands/bthread.c b/commands/bthread.c
+> index 05dfa68cc597..964a1044c58b 100644
+> --- a/commands/bthread.c
+> +++ b/commands/bthread.c
+> @@ -66,15 +66,15 @@ static int bthread_isolated_time(void)
+>  static int bthread_printer(void *arg)
+>  {
+>  	volatile u64 start;
+> -	volatile int i = 0;
+> +	volatile unsigned long i = 0;
+>  	start = get_time_ns();
+>  
+>  	while (!bthread_should_stop()) {
+>  		if (!is_timeout_non_interruptible(start, 225 * MSECOND))
+>  			continue;
+>  
+> -		if ((long)arg == i++)
+> -			printf("%s yield #%d\n", bthread_name(current), i);
+> +		if ((unsigned long)arg == i++)
+> +			printf("%s yield #%lu\n", bthread_name(current), i);
+>  		start = get_time_ns();
+>  	}
+>  
+> @@ -87,14 +87,14 @@ static int bthread_spawner(void *arg)
+>  {
+>  	struct bthread *bthread[4];
+>  	volatile u64 start;
+> -	volatile int i = 0;
+> +	volatile unsigned long i = 0;
+>  	int ret = 0;
+>  	int ecode;
+>  
+>  	start = get_time_ns();
+>  
+>  	for (i = 0; i < ARRAY_SIZE(bthread); i++) {
+> -		bthread[i] = bthread_run(bthread_printer, (void *)i,
+> +		bthread[i] = bthread_run(bthread_printer, (void *)(long)i,
+>  					 "%s-bthread%u", bthread_name(current), i+1);
+>  		if (!bthread[i]) {
+>  			ret = -ENOMEM;
+> -- 
+> 2.30.0
 > 
->>  Makefile | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/Makefile b/Makefile
->> index f3c85cff9430..fa7fbbeb35f0 100644
->> --- a/Makefile
->> +++ b/Makefile
->> @@ -622,6 +622,9 @@ KBUILD_CFLAGS += $(call cc-option, -fno-delete-null-pointer-checks,)
->>  # disable invalid "can't wrap" optimizations for signed / pointers
->>  KBUILD_CFLAGS	+= $(call cc-option,-fno-strict-overflow)
->>  
->> +# Make sure -fstack-check isn't enabled (like gentoo apparently did)
->> +KBUILD_CFLAGS  += $(call cc-option,-fno-stack-check)
->> +
->>  KBUILD_CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
->>  
->>  # Align the bit size of userspace programs with the kernel
->> -- 
->> 2.30.0
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
