@@ -1,77 +1,59 @@
-Delivery-date: Fri, 19 Mar 2021 11:27:22 +0100
+Delivery-date: Fri, 19 Mar 2021 14:11:59 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lNCLi-0007I2-KA
-	for lore@lore.pengutronix.de; Fri, 19 Mar 2021 11:27:22 +0100
+	id 1lNEv1-0007PV-NM
+	for lore@lore.pengutronix.de; Fri, 19 Mar 2021 14:11:59 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lNCLe-0003Pk-91
-	for lore@pengutronix.de; Fri, 19 Mar 2021 11:27:19 +0100
+	id 1lNEuw-0006tF-Io
+	for lore@pengutronix.de; Fri, 19 Mar 2021 14:11:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=hg9j0BXo/6XTCQVmknsW4A12d3kRcNk3Aq6dG9JN80o=; b=GjKHis7C+QKcjX
-	XgkDRwyG8h1hiLgrFuIKM/3KHsURnwpzvaORLTxWjJJ5HfAxZPq7FIqBIDLLCI6ilNdtwRBiwJ0Vt
-	YvMO/gBIjqEl5vyCR2j3fHkKqXsLVrBDBFAlAsBgtOtqqrXvN/ZURVEgXS8bTH5mciIROO2OKKPTO
-	BbPOrzTGnBExGgHRE8IbVwZDZ2kS/0tHf+9tqqAdomEH8Wi2s5KxV46KS6wfXGQF92kxqpax7WSXd
-	GBVyfXSccid9mILPVRPft3VIUG1p38kRP+KLsMS9lUtWjQMxeugekQYexJdFKx96KFCPcB2yhn0iH
-	wRliIr9xJD7M+D9VmBrA==;
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=+sYWFn2wC8YHl8iVPrJO2Vxcp4XxhSGhwCwD5DpFlR0=; b=OoiDBgJWv5cEt037yBLkvNWsJ
+	qGl79BjR60mb5hCYjSROVztGbnG9CCfhiX2KG1vgzL2OUb9Du0l3WJW0DAih9gTODNAUH9gcoelya
+	81Po9NuTrvlp8ex0cQd21TyE7Qh5N9wmAaZ+T8Pmi+6Be9wk2g06YtF4CF3rlESb90cY79qbGoSRi
+	1d71jhtZk8KMA6f91LEUpjxXv7eTY5JvszmewxFC/5DWj1Zjct1ET0ZHqKAlsw4ojuJzcX+4mvIg+
+	J/x6QgtNQC24TxM4wYHI9e6eGTX6ks9koFZJXMMPUCR0r3duENdWTb3pw8pQljLWbsnFg4AhuKQBT
+	Pp9nr1QqQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lNCJz-0078a6-TD; Fri, 19 Mar 2021 10:25:36 +0000
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+	id 1lNEtY-007SE7-SX; Fri, 19 Mar 2021 13:10:29 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lNC8U-0074fV-Ri
- for barebox@lists.infradead.org; Fri, 19 Mar 2021 10:13:55 +0000
-Received: by mail-lf1-x135.google.com with SMTP id o10so9125134lfb.9
- for <barebox@lists.infradead.org>; Fri, 19 Mar 2021 03:13:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=mapnOCKfCvutehQl6zSm3MOi0vcuzwPWGrKm4mt1z5Y=;
- b=IF3uLVT9o9tiyBvtWY0rl1XEXo0EzY7c5qnJsF+P5C+3f76/jbc+AyeGMVpl8mAbJz
- QU30RGzWPvxOrClZyBEeva3vRC8YLe4Kgf/0IC0wVMSbaTZUZNSH2/Uid6dCUhRCUI5E
- HBcSByURlcVIHwvHMH6D8LZUmNqF5Iyd/O03KUzRcGG4CZyjRf7PpyYAip5hotTBmItb
- CWvChjZZOk3yWLdYK3r38/jWZDxnBek0aSq+XCbTivV8BsrjwW4oFwAer1TCAP7Qk+UO
- EOn02ckCRHeX7YEDAxLL1xtyNSJILIWvxOgpaEmM/gxUD9WgjgyNtW4q1zYF2Kf8PKUd
- 0AfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=mapnOCKfCvutehQl6zSm3MOi0vcuzwPWGrKm4mt1z5Y=;
- b=X+ZCA7Th7sJEujj7Nj/oyqkLkNvay1xlUjr6uH4BOw1p+gWizXL8Sf47avscW06bY0
- WTLVOjcYaImaeDMnqlezJkcfT474PuDc+fg2qHluOyOnxc++ueuKhM2if+77J4kwxcPO
- /gBt5sxzVSQPsspJ+JmgANkyo5DseiQxO9b9Ah7+rgX/TntqdMtGy3fW/FF5Q9NDyFq9
- NRbL8AEdzBfAqKCzUZ7xDHhX0XjhxaSNiLbrbAfnjjnMEnpse7wzq28EIp6/Jg8mLQzE
- qhROpVWVZOXn/gyu3+GLew/3cyG2MsD+wvw+NCQahWjGQ2my3wyTuKe835HqFDtoOHdj
- Y00w==
-X-Gm-Message-State: AOAM533Qg3ZgJSv6yEk09IseI/HAOQH3XREKR3a7g4fjkGg1CCK7VBEu
- A3P9Pi+u86v73Sc+mqQy3+3Z8X1td/81zw==
-X-Google-Smtp-Source: ABdhPJzrYswAONQgIwMAb62xA2p64aWeM/jZ8NdT6r++Zcm7mRXJN/OEbMODfswTH1kAt1/eI6WlYg==
-X-Received: by 2002:a05:6512:20cc:: with SMTP id
- u12mr386713lfr.146.1616148820753; 
- Fri, 19 Mar 2021 03:13:40 -0700 (PDT)
-Received: from localhost.localdomain ([193.232.173.109])
- by smtp.gmail.com with ESMTPSA id 21sm562091lfh.231.2021.03.19.03.13.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Mar 2021 03:13:40 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
+ id 1lNEtP-007SAm-7P
+ for barebox@lists.infradead.org; Fri, 19 Mar 2021 13:10:22 +0000
+Received: from [2a0a:edc0:0:c01:1d::a2]
+ (helo=drehscheibe.grey.stw.pengutronix.de)
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mtr@pengutronix.de>)
+ id 1lNEtN-0006KI-EQ; Fri, 19 Mar 2021 14:10:17 +0100
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <mtr@pengutronix.de>)
+ id 1lNEtM-0000z0-D5; Fri, 19 Mar 2021 14:10:16 +0100
+Received: from mtr by dude03.red.stw.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mtr@pengutronix.de>)
+ id 1lNEtM-00AxY8-CU; Fri, 19 Mar 2021 14:10:16 +0100
+From: Michael Tretter <m.tretter@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 19 Mar 2021 13:13:27 +0300
-Message-Id: <20210319101327.162176-1-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 2.30.1
+Cc: m.tretter@pengutronix.de
+Date: Fri, 19 Mar 2021 14:10:13 +0100
+Message-Id: <20210319131016.2612134-5-m.tretter@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210319131016.2612134-1-m.tretter@pengutronix.de>
+References: <20210319131016.2612134-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210319_101343_174701_B0147763 
-X-CRM114-Status: UNSURE (   9.60  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210319_131019_382051_B90291AA 
+X-CRM114-Status: GOOD (  10.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,38 +73,95 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH] Documentation: mips: fixup qemu-system-mipsel cmdline
+X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 4/7] net: phy: dp83867: simplify dp83867_config_init
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Fix spelling mistake introduced in the commit 2ab6d2a76994
-("MIPS: qemu-malta_defconfig: enable VGA output").
+From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Reorder the code in dp83867_config_init to remove duplicated check of
+the phy interface.
+
+Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- Documentation/boards/mips/qemu-malta.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/dp83867.c | 49 ++++++++++++++++++---------------------
+ 1 file changed, 23 insertions(+), 26 deletions(-)
 
-diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
-index 470be32f1f..e188ae8c64 100644
---- a/Documentation/boards/mips/qemu-malta.rst
-+++ b/Documentation/boards/mips/qemu-malta.rst
-@@ -33,7 +33,7 @@ QEMU run string:
- .. code-block:: sh
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index 8a14927071b9..e796498c4a18 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -213,33 +213,7 @@ static int dp83867_config_init(struct phy_device *phydev)
+ 		ret = phy_write(phydev, MII_DP83867_PHYCTRL, val);
+ 		if (ret)
+ 			return ret;
+-	} else if (phy_interface_is_sgmii(phydev)) {
+-		phy_write(phydev, MII_BMCR,
+-			  BMCR_ANENABLE | BMCR_FULLDPLX | BMCR_SPEED1000);
+-
+-		cfg2 = phy_read(phydev, MII_DP83867_CFG2);
+-		cfg2 &= MII_DP83867_CFG2_MASK;
+-		cfg2 |= MII_DP83867_CFG2_SPEEDOPT_10EN |
+-			MII_DP83867_CFG2_SGMII_AUTONEGEN |
+-			MII_DP83867_CFG2_SPEEDOPT_ENH |
+-			MII_DP83867_CFG2_SPEEDOPT_CNT |
+-			MII_DP83867_CFG2_SPEEDOPT_INTLOW;
+-
+-		phy_write(phydev, MII_DP83867_CFG2, cfg2);
+-
+-		phy_write_mmd_indirect(phydev, DP83867_RGMIICTL,
+-				       DP83867_DEVADDR, 0x0);
+-
+-		val = DP83867_PHYCTRL_SGMIIEN |
+-		      DP83867_MDI_CROSSOVER_MDIX << DP83867_MDI_CROSSOVER |
+-		      dp83867->fifo_depth << DP83867_PHYCTRL_RXFIFO_SHIFT |
+-		      dp83867->fifo_depth << DP83867_PHYCTRL_TXFIFO_SHIFT;
+-
+-		phy_write(phydev, MII_DP83867_PHYCTRL, val);
+-		phy_write(phydev, MII_DP83867_BISCR, 0x0);
+-	}
  
-   qemu-system-mipsel -nodefaults -M malta -m 256 \
--      -devica VGA -serial stdio -monitor null \
-+      -device VGA -serial stdio -monitor null \
-       -bios barebox-flash-image
+-	if (phy_interface_is_rgmii(phydev)) {
+ 		val = phy_read_mmd_indirect(phydev, DP83867_RGMIICTL,
+ 					    DP83867_DEVADDR);
  
+@@ -276,6 +250,29 @@ static int dp83867_config_init(struct phy_device *phydev)
+ 			phy_write_mmd_indirect(phydev, DP83867_IO_MUX_CFG,
+ 					       DP83867_DEVADDR, val);
+ 		}
++	} else if (phy_interface_is_sgmii(phydev)) {
++		phy_write(phydev, MII_BMCR,
++			  BMCR_ANENABLE | BMCR_FULLDPLX | BMCR_SPEED1000);
++
++		cfg2 = phy_read(phydev, MII_DP83867_CFG2);
++		cfg2 &= MII_DP83867_CFG2_MASK;
++		cfg2 |= MII_DP83867_CFG2_SPEEDOPT_10EN |
++			MII_DP83867_CFG2_SGMII_AUTONEGEN |
++			MII_DP83867_CFG2_SPEEDOPT_ENH |
++			MII_DP83867_CFG2_SPEEDOPT_CNT |
++			MII_DP83867_CFG2_SPEEDOPT_INTLOW;
++		phy_write(phydev, MII_DP83867_CFG2, cfg2);
++
++		phy_write_mmd_indirect(phydev, DP83867_RGMIICTL,
++				       DP83867_DEVADDR, 0x0);
++
++		val = DP83867_PHYCTRL_SGMIIEN |
++		      DP83867_MDI_CROSSOVER_MDIX << DP83867_MDI_CROSSOVER |
++		      dp83867->fifo_depth << DP83867_PHYCTRL_RXFIFO_SHIFT |
++		      dp83867->fifo_depth << DP83867_PHYCTRL_TXFIFO_SHIFT;
++
++		phy_write(phydev, MII_DP83867_PHYCTRL, val);
++		phy_write(phydev, MII_DP83867_BISCR, 0x0);
+ 	}
  
+ 	if (dp83867->port_mirroring != DP83867_PORT_MIRROING_KEEP)
 -- 
-2.30.1
+2.29.2
 
 
 _______________________________________________
