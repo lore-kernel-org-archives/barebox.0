@@ -1,48 +1,77 @@
-Delivery-date: Fri, 19 Mar 2021 09:47:57 +0100
-Received: from [2001:67c:670:201:290:27ff:fe1d:cc33] (helo=metis.ext.pengutronix.de)
+Delivery-date: Fri, 19 Mar 2021 11:27:22 +0100
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lNAnV-0007DT-0d
-	for lore@lore.pengutronix.de; Fri, 19 Mar 2021 09:47:57 +0100
+	id 1lNCLi-0007I2-KA
+	for lore@lore.pengutronix.de; Fri, 19 Mar 2021 11:27:22 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lNAnT-0007cI-NP
-	for lore@pengutronix.de; Fri, 19 Mar 2021 09:47:56 +0100
+	id 1lNCLe-0003Pk-91
+	for lore@pengutronix.de; Fri, 19 Mar 2021 11:27:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Mv6Xg27pOCm4KkLRAZa8lFddtUeBzpfA5nACcOM4ADM=; b=cYgR1rAM+wZR7O2Io9bBgQJFpK
-	QIujje9NjFtlpJirvu9td5Dnq7PQ9uhJvL7om57PgvDLmagh5bCv/BdGG7BkQoldzhg+v3rRST6hV
-	zorn8+18JnvieBZeFGw4WhUB3s5/QmKYo/WMM4H6Q1I/NzU31il/rdJGsaFuEAF4xmXU9lqWcA5zU
-	x5ZiR+S59BXamkxOtc85opUXs61JzQcWN4Wo3D1zt8/fHk+JIDR2rtVZfYZdXbLBgS9ho7Na9rdqO
-	YQPHdaQKkSfUN9HAKCXyNFp07XR8t5S9z1haAbmzVbIlBR29u65mhhqw6Rr0FyBnTHzZspLDvfaT+
-	/D5aUdfg==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=hg9j0BXo/6XTCQVmknsW4A12d3kRcNk3Aq6dG9JN80o=; b=GjKHis7C+QKcjX
+	XgkDRwyG8h1hiLgrFuIKM/3KHsURnwpzvaORLTxWjJJ5HfAxZPq7FIqBIDLLCI6ilNdtwRBiwJ0Vt
+	YvMO/gBIjqEl5vyCR2j3fHkKqXsLVrBDBFAlAsBgtOtqqrXvN/ZURVEgXS8bTH5mciIROO2OKKPTO
+	BbPOrzTGnBExGgHRE8IbVwZDZ2kS/0tHf+9tqqAdomEH8Wi2s5KxV46KS6wfXGQF92kxqpax7WSXd
+	GBVyfXSccid9mILPVRPft3VIUG1p38kRP+KLsMS9lUtWjQMxeugekQYexJdFKx96KFCPcB2yhn0iH
+	wRliIr9xJD7M+D9VmBrA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lNAmF-006tim-Bg; Fri, 19 Mar 2021 08:46:39 +0000
-Received: from relay13.mail.gandi.net ([217.70.178.233])
+	id 1lNCJz-0078a6-TD; Fri, 19 Mar 2021 10:25:36 +0000
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lNAm4-006ti0-Sk
- for barebox@lists.infradead.org; Fri, 19 Mar 2021 08:46:31 +0000
-Received: from geraet.fritz.box (unknown [83.135.80.242])
- (Authenticated sender: ahmad@a3f.at)
- by relay13.mail.gandi.net (Postfix) with ESMTPSA id B7EBA8000A;
- Fri, 19 Mar 2021 08:46:25 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
+ id 1lNC8U-0074fV-Ri
+ for barebox@lists.infradead.org; Fri, 19 Mar 2021 10:13:55 +0000
+Received: by mail-lf1-x135.google.com with SMTP id o10so9125134lfb.9
+ for <barebox@lists.infradead.org>; Fri, 19 Mar 2021 03:13:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=mapnOCKfCvutehQl6zSm3MOi0vcuzwPWGrKm4mt1z5Y=;
+ b=IF3uLVT9o9tiyBvtWY0rl1XEXo0EzY7c5qnJsF+P5C+3f76/jbc+AyeGMVpl8mAbJz
+ QU30RGzWPvxOrClZyBEeva3vRC8YLe4Kgf/0IC0wVMSbaTZUZNSH2/Uid6dCUhRCUI5E
+ HBcSByURlcVIHwvHMH6D8LZUmNqF5Iyd/O03KUzRcGG4CZyjRf7PpyYAip5hotTBmItb
+ CWvChjZZOk3yWLdYK3r38/jWZDxnBek0aSq+XCbTivV8BsrjwW4oFwAer1TCAP7Qk+UO
+ EOn02ckCRHeX7YEDAxLL1xtyNSJILIWvxOgpaEmM/gxUD9WgjgyNtW4q1zYF2Kf8PKUd
+ 0AfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=mapnOCKfCvutehQl6zSm3MOi0vcuzwPWGrKm4mt1z5Y=;
+ b=X+ZCA7Th7sJEujj7Nj/oyqkLkNvay1xlUjr6uH4BOw1p+gWizXL8Sf47avscW06bY0
+ WTLVOjcYaImaeDMnqlezJkcfT474PuDc+fg2qHluOyOnxc++ueuKhM2if+77J4kwxcPO
+ /gBt5sxzVSQPsspJ+JmgANkyo5DseiQxO9b9Ah7+rgX/TntqdMtGy3fW/FF5Q9NDyFq9
+ NRbL8AEdzBfAqKCzUZ7xDHhX0XjhxaSNiLbrbAfnjjnMEnpse7wzq28EIp6/Jg8mLQzE
+ qhROpVWVZOXn/gyu3+GLew/3cyG2MsD+wvw+NCQahWjGQ2my3wyTuKe835HqFDtoOHdj
+ Y00w==
+X-Gm-Message-State: AOAM533Qg3ZgJSv6yEk09IseI/HAOQH3XREKR3a7g4fjkGg1CCK7VBEu
+ A3P9Pi+u86v73Sc+mqQy3+3Z8X1td/81zw==
+X-Google-Smtp-Source: ABdhPJzrYswAONQgIwMAb62xA2p64aWeM/jZ8NdT6r++Zcm7mRXJN/OEbMODfswTH1kAt1/eI6WlYg==
+X-Received: by 2002:a05:6512:20cc:: with SMTP id
+ u12mr386713lfr.146.1616148820753; 
+ Fri, 19 Mar 2021 03:13:40 -0700 (PDT)
+Received: from localhost.localdomain ([193.232.173.109])
+ by smtp.gmail.com with ESMTPSA id 21sm562091lfh.231.2021.03.19.03.13.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 Mar 2021 03:13:40 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Fri, 19 Mar 2021 09:46:21 +0100
-Message-Id: <20210319084621.2476100-1-ahmad@a3f.at>
-X-Mailer: git-send-email 2.30.0
+Date: Fri, 19 Mar 2021 13:13:27 +0300
+Message-Id: <20210319101327.162176-1-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210319_084629_247942_B61605B1 
-X-CRM114-Status: GOOD (  11.80  )
+X-CRM114-CacheID: sfid-20210319_101343_174701_B0147763 
+X-CRM114-Status: UNSURE (   9.60  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -62,103 +91,38 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] bthread: disable ASan accounting for fibers on 32-bit sandbox
+X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] Documentation: mips: fixup qemu-system-mipsel cmdline
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-For the sandbox architecture, we use __sanitizer_start_switch_fiber
-and __sanitizer_finish_switch_fiber to tell ASan when we switch stacks.
+Fix spelling mistake introduced in the commit 2ab6d2a76994
+("MIPS: qemu-malta_defconfig: enable VGA output").
 
-If we don't, ASan complains that:
-
-  ==2472828==WARNING: ASan is ignoring requested __asan_handle_no_return:
-    stack top: 0xff9fc000; bottom 0xf3be8000; size: 0x0be14000 (199311360)
-  False positive error reports may follow
-  For details see https://github.com/google/sanitizers/issues/189
-
-This works on 64-bit sandbox, but 32-bit sandbox currently crashes on
-bthread -v:
-
-==2469590==AddressSanitizer CHECK failed: ../../../../../src/libsanitizer/asan/asan_poisoning.cpp:37 "((AddrIsAlignedByGranularity(addr + size))) != (0)" (0x0, 0x0)
-    #0 0xf7a4aa46 in AsanCheckFailed ../../../../../src/libsanitizer/asan/asan_rtl.cpp:73
-    #1 0xf7a6b5cf in __sanitizer::CheckFailed(char const*, int, char const*, unsigned long long, unsigned long long) ../../../../../src/libsanitizer/sanitizer_common/sanitizer_termination.cpp:78
-    #2 0xf7a4489f in __asan::PoisonShadow(unsigned long, unsigned long, unsigned char) ../../../../../src/libsanitizer/asan/asan_poisoning.cpp:37
-    #3 0xf7a4c81b in __asan_handle_no_return ../../../../../src/libsanitizer/asan/asan_rtl.cpp:595
-    #4 0x566a1ce7 in bthread_schedule /home/a3f/dl/barebox-stm32mp/common/bthread.c:178
-    #5 0x566a1d54 in bthread_reschedule /home/a3f/dl/barebox-stm32mp/common/bthread.c:165
-    #6 0x566a1d80 in bthread_trampoline /home/a3f/dl/barebox-stm32mp/common/bthread.c:56
-    #7 0x567f5bfb in coroutine_bootstrap (/home/a3f/dl/build/barebox/sandbox/barebox+0x1bdbfb)
-    #8 0x567f5c4b in coroutine_trampoline (/home/a3f/dl/build/barebox/sandbox/barebox+0x1bdc4b)
-    #9 0xf7f7056f  (linux-gate.so.1+0x56f)
-    #10 0xf7f70558  (linux-gate.so.1+0x558)
-    #11 0x56892fff  (/home/a3f/dl/build/barebox/sandbox/barebox+0x25afff)
-
-Just disable the special ASan accounting there until this is figured
-out. bthreads still function there, but ASan may yield false positives
-according to the message. This does not affect non-sandbox platforms.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
-The original is sitting in in next, but I prefer a separate commit
-to a squash to expand on why it's being disabled.
----
- arch/sandbox/Kconfig | 3 +++
- common/bthread.c     | 8 ++++++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ Documentation/boards/mips/qemu-malta.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index cef8e9fb7ab4..01078bca971f 100644
---- a/arch/sandbox/Kconfig
-+++ b/arch/sandbox/Kconfig
-@@ -43,6 +43,9 @@ config 64BIT
- 	select ARCH_DMA_ADDR_T_64BIT
- 	select PHYS_ADDR_T_64BIT
+diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
+index 470be32f1f..e188ae8c64 100644
+--- a/Documentation/boards/mips/qemu-malta.rst
++++ b/Documentation/boards/mips/qemu-malta.rst
+@@ -33,7 +33,7 @@ QEMU run string:
+ .. code-block:: sh
  
-+config 32BIT
-+	def_bool !64BIT
-+
- config SANDBOX_LINUX_I386
- 	bool "32-bit x86 barebox" if CC_HAS_LINUX_I386_SUPPORT
+   qemu-system-mipsel -nodefaults -M malta -m 256 \
+-      -devica VGA -serial stdio -monitor null \
++      -device VGA -serial stdio -monitor null \
+       -bios barebox-flash-image
  
-diff --git a/common/bthread.c b/common/bthread.c
-index df8031266d55..80b486c99af7 100644
---- a/common/bthread.c
-+++ b/common/bthread.c
-@@ -15,6 +15,10 @@
- #include <asm/setjmp.h>
- #include <linux/overflow.h>
  
-+#if defined CONFIG_ASAN && !defined CONFIG_32BIT
-+#define HAVE_FIBER_SANITIZER
-+#endif
-+
- static struct bthread {
- 	int (*threadfn)(void *);
- 	union {
-@@ -26,7 +30,7 @@ static struct bthread {
- 	void *stack;
- 	u32 stack_size;
- 	struct list_head list;
--#ifdef CONFIG_ASAN
-+#ifdef HAVE_FIBER_SANITIZER
- 	void *fake_stack_save;
- #endif
- 	u16 awake :1;
-@@ -177,7 +181,7 @@ void bthread_schedule(struct bthread *to)
- 	finish_switch_fiber(from);
- }
- 
--#ifdef CONFIG_ASAN
-+#ifdef HAVE_FIBER_SANITIZER
- 
- void __sanitizer_start_switch_fiber(void **fake_stack_save, const void *bottom, size_t size);
- void __sanitizer_finish_switch_fiber(void *fake_stack_save, const void **bottom_old, size_t *size_old);
 -- 
-2.30.0
+2.30.1
 
 
 _______________________________________________
