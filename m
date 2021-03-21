@@ -1,53 +1,54 @@
-Delivery-date: Sun, 21 Mar 2021 16:20:53 +0100
+Delivery-date: Sun, 21 Mar 2021 16:21:02 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lNzsr-00023a-84
-	for lore@lore.pengutronix.de; Sun, 21 Mar 2021 16:20:53 +0100
+	id 1lNzt0-00023w-P9
+	for lore@lore.pengutronix.de; Sun, 21 Mar 2021 16:21:02 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lNzsm-0002S2-C3
-	for lore@pengutronix.de; Sun, 21 Mar 2021 16:20:52 +0100
+	id 1lNzsw-0002Xt-MU
+	for lore@pengutronix.de; Sun, 21 Mar 2021 16:21:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=Q4YQojIPQXSFH+EBzO/sQYi6+aPo+/a5DEYzNgjxz38=; b=VV++nBXLlrRVu6biUwbXrcg76
-	A/VHCp7Zwd6whBf/V63gcNdlsQjVi0CegBpIWsmgLy1shE4oVDH80fkhOJgMUVK17gvK0sLpOTfE/
-	rGj1XUQne+VGIrpnrox6ISICHejrKeM49X+XNPmY7RTsAwUdydV/RgzBnQZa61n7YxtLCLC+vCqui
-	1nRNHPp8O9dJDuvq1Uq2nfKmcgz+Qafvexbp4DG4twWidlu4U2J4P1WTcFLwya6Z8gDBmjbWEzpgf
-	cKiB34rUyK9Dl5KywUGfOQaAOyagx0Ty0TYR04IgBc94NnOSZK9JBJpqV04fOY39e9Id/NZLZfEGK
-	J5b0/j/Jg==;
+	 bh=tTnoHMdE7+u+Ejkjup/9nmjGc91H29lBtb4/K0cwabs=; b=AmAA4qabyRWnK+9VmouZcjEaL
+	fig8pVLLwRlPq42lTl/6tuWOxx7UMcXcV1+Fl/gxwPD0wk/flK6duik7zuhg4NtrQAuWPn7n1IzmH
+	Tb2HLjYBFHoFvu4GsK7PrJzhvKsaBqhh4G+qVaU7qmnY/9f0Oli3XX3wEKIvHkekvwXRbzlluHt90
+	49/zVsTJ998nqrsHkWmQ2Vb21KL99W3RIkeTBT62YgNWyXF8BwexE9aSRmifexZYUEZK0z6cBYzB5
+	Dg+zuJ0jh1dnCafJdVw4iptH7ySurR0r2jcXVhUJ9v3RLPFW9yQzn/9XKgCz7pzbHWFZwz+PLRqGV
+	n/JbR8ljw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lNzr3-00A4Tk-JG; Sun, 21 Mar 2021 15:19:10 +0000
+	id 1lNzrc-00A4cz-Dh; Sun, 21 Mar 2021 15:19:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lNzmE-00A41b-89
+ id 1lNzmI-00A42Q-Pu
  for barebox@lists.infradead.org; Sun, 21 Mar 2021 15:14:55 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lNzm2-00011e-Dl; Sun, 21 Mar 2021 16:13:50 +0100
+ id 1lNzm2-00011P-3i; Sun, 21 Mar 2021 16:13:50 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lNzm1-0007wt-4A; Sun, 21 Mar 2021 16:13:49 +0100
+ id 1lNzm0-0007wA-Tm; Sun, 21 Mar 2021 16:13:48 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Sun, 21 Mar 2021 16:13:44 +0100
-Message-Id: <20210321151344.5810-22-a.fatoum@pengutronix.de>
+Date: Sun, 21 Mar 2021 16:13:29 +0100
+Message-Id: <20210321151344.5810-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210321151344.5810-1-a.fatoum@pengutronix.de>
 References: <20210321151344.5810-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210321_151441_874583_5FD8BC96 
-X-CRM114-Status: GOOD (  21.45  )
+X-CRM114-CacheID: sfid-20210321_151443_390432_CDD5DA5F 
+X-CRM114-Status: UNSURE (   9.40  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,432 +71,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,UPPERCASE_50_75
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 21/21] RISC-V: add Qemu virt support
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH v3 06/21] RISC-V: <asm/unaligned.h>: don't do unaligned
+ accesses
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+While HW can emulate unaligned accesses at a performance penalty,
+it's probably best to just not generate them.
 
-The generic dt board added in a previous commit can be booted on RISC-V
-qemu -M virt. Add defconfigs for both 32- and 64-bit machines.
-
-We could in theory drop the mach directory altogether like it's done on
-arm64, but for now it's left in as it provides <mach/debug_ll.h>.
-
-It's expected that we can drop it in future in favor of generic earlycon
-support (which also wouldn't require manual adjustment of the shared entry
-point like with debug_ll).
-
-Signed-off-by: Rouven Czerwinski <r.czerwinksi@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/riscv.rst               |  59 ++++++++++
- arch/riscv/Kconfig                           |   8 ++
- arch/riscv/Makefile                          |   3 +-
- arch/riscv/configs/virt32_defconfig          | 116 ++++++++++++++++++
- arch/riscv/configs/virt64_defconfig          | 117 +++++++++++++++++++
- arch/riscv/mach-virt/Makefile                |   3 +
- arch/riscv/mach-virt/include/mach/debug_ll.h |  25 ++++
- 7 files changed, 330 insertions(+), 1 deletion(-)
- create mode 100644 arch/riscv/configs/virt32_defconfig
- create mode 100644 arch/riscv/configs/virt64_defconfig
- create mode 100644 arch/riscv/mach-virt/Makefile
- create mode 100644 arch/riscv/mach-virt/include/mach/debug_ll.h
+ arch/riscv/include/asm/unaligned.h | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/boards/riscv.rst b/Documentation/boards/riscv.rst
-index a1f7e30531ee..049029b4f23d 100644
---- a/Documentation/boards/riscv.rst
-+++ b/Documentation/boards/riscv.rst
-@@ -1,6 +1,65 @@
- RISC-V
- ======
+diff --git a/arch/riscv/include/asm/unaligned.h b/arch/riscv/include/asm/unaligned.h
+index aaebc064114e..c37b71c21ee5 100644
+--- a/arch/riscv/include/asm/unaligned.h
++++ b/arch/riscv/include/asm/unaligned.h
+@@ -1,19 +1,11 @@
+ #ifndef _ASM_RISCV_UNALIGNED_H
+ #define _ASM_RISCV_UNALIGNED_H
  
-+QEMU Virt
-+---------
-+
-+barebox supports both the qemu riscv32 and riscv64 ``-M virt`` boards::
-+
-+  make ARCH=riscv virt64_defconfig
-+  qemu-system-riscv64 -M virt -serial stdio -kernel build/images/barebox-dt-2nd.img
-+
-+Replace ``64`` by ``32`` for 32-bit build. :ref:`virtio` over MMIO is supported and
-+can be used for e.g. an extra console or to pass in a virtio-blk device::
-+
-+  qemu-system-riscv64 -M virt -serial stdio                                \
-+  	-kernel ./images/barebox-dt-2nd.img                                \
-+  	-device virtio-rng-device                                          \
-+  	-drive if=none,file=./images/barebox-dt-2nd.img,format=raw,id=hd0  \
-+  	-device virtio-blk-device,drive=hd0                                \
-+  	-device virtio-serial-device                                       \
-+  	-chardev socket,path=/tmp/foo,server,nowait,id=foo           	   \
-+  	-device virtconsole,chardev=foo,name=console.foo
-+
-+  barebox 2021.02.0 #27 Sun Mar 14 10:08:09 CET 2021
-+  
-+  
-+  Board: riscv-virtio,qemu
-+  malloc space: 0x83dff820 -> 0x87bff03f (size 62 MiB)
-+  
-+  barebox@riscv-virtio,qemu:/ filetype /dev/virtioblk0
-+  /dev/virtioblk0: RISC-V Linux image (riscv-linux)
-+
-+Note that the ``board-dt-2nd.img`` uses the Linux RISC-V kernel image
-+format and boot protocol. It thus requires the device tree to be passed
-+from outside in ``a1`` and must be loaded at an offset as indicated in
-+the header for the initial stack to work. Using the ``-kernel`` option
-+in Qemu or booting from bootloaders that can properly boot Linux will
-+take care of this.
-+
-+TinyEMU
-+-------
-+
-+TinyEMU can emulate a qemu-virt like machine with a RISC-V 32-, 64-
-+and 128-bit CPU. It can run barebox with this sample configuration::
-+
-+  /* temu barebox-virt64.cfg */
-+  {
-+      version: 1,
-+      machine: "riscv64",
-+      memory_size: 256,
-+      bios: "bbl64.bin",
-+      kernel: "./images/barebox-dt-2nd.img",
-+  }
-+
-+``barebox-dt-2nd.img`` can be generated like with Qemu. Graphical
-+output is also supported, but virtio input support is still missing.
-+To activate add::
-+
-+    display0: { device: "simplefb", width: 800, height: 600 },
-+
-+into the config file.
-+
- Erizo
- -----
+-/*
+- * FIXME: this file is copy-n-pasted from sandbox's unaligned.h
+- */
+-
+-#include <linux/unaligned/access_ok.h>
++#include <linux/unaligned/le_byteshift.h>
++#include <linux/unaligned/be_byteshift.h>
+ #include <linux/unaligned/generic.h>
  
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 6e8bfdef14db..c0583f31536b 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -34,6 +34,14 @@ config MACH_ERIZO
- 	select RISCV_M_MODE
- 	select RISCV_TIMER
+-#if __BYTE_ORDER == __LITTLE_ENDIAN
+-#define get_unaligned __get_unaligned_le
+-#define put_unaligned __put_unaligned_le
+-#else
+-#define get_unaligned __get_unaligned_be
+-#define put_unaligned __put_unaligned_be
+-#endif
++#define get_unaligned	__get_unaligned_le
++#define put_unaligned	__put_unaligned_le
  
-+config MACH_VIRT
-+	bool "virt family"
-+	select BOARD_RISCV_GENERIC_DT
-+	select CLINT_TIMER
-+	help
-+	  Generates an image tht can be be booted by QEMU. The image is called
-+	  barebox-dt-2nd.img
-+
- endchoice
- 
- choice
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index c0dadead42ad..aba4526bba5a 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -1,4 +1,4 @@
--KBUILD_DEFCONFIG := erizo_generic_defconfig
-+KBUILD_DEFCONFIG := virt64_defconfig
- 
- KBUILD_CPPFLAGS += -fno-strict-aliasing
- 
-@@ -20,6 +20,7 @@ cflags-y += $(riscv-cflags-y)
- LDFLAGS_barebox += -nostdlib
- 
- machine-$(CONFIG_MACH_ERIZO)	:= erizo
-+machine-$(CONFIG_MACH_VIRT)	:= virt
- 
- LDFLAGS_barebox += $(riscv-ldflags-y)
- 
-diff --git a/arch/riscv/configs/virt32_defconfig b/arch/riscv/configs/virt32_defconfig
-new file mode 100644
-index 000000000000..83e3ca1bade8
---- /dev/null
-+++ b/arch/riscv/configs/virt32_defconfig
-@@ -0,0 +1,116 @@
-+CONFIG_MACH_VIRT=y
-+CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_STACK_SIZE=0x20000
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
-+CONFIG_PANIC_HANG=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_IMD_TARGET=y
-+CONFIG_CONSOLE_ALLOW_COLOR=y
-+CONFIG_PBL_CONSOLE=y
-+CONFIG_PARTITION_DISK_EFI=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_BAREBOXENV_TARGET=y
-+CONFIG_BAREBOXCRC32_TARGET=y
-+CONFIG_POLLER=y
-+CONFIG_STATE=y
-+CONFIG_STATE_CRYPTO=y
-+CONFIG_BOOTCHOOSER=y
-+CONFIG_RESET_SOURCE=y
-+CONFIG_MACHINE_ID=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_POLLER=y
-+CONFIG_CMD_SLICE=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_BOOTCHOOSER=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_CMP=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SPLASH=y
-+CONFIG_CMD_FBTEST=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_POWEROFF=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_2048=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_OF_DIFF=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_DISPLAY_TIMINGS=y
-+CONFIG_CMD_OF_FIXUP_STATUS=y
-+CONFIG_CMD_OF_OVERLAY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_CMD_DHRYSTONE=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_VIRTIO_CONSOLE=y
-+CONFIG_DRIVER_SPI_GPIO=y
-+CONFIG_I2C=y
-+CONFIG_I2C_GPIO=y
-+CONFIG_MTD=y
-+# CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_CONCAT=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_DRIVER_CFI=y
-+CONFIG_DRIVER_CFI_BANK_WIDTH_8=y
-+CONFIG_DISK=y
-+CONFIG_DISK_WRITE=y
-+CONFIG_VIRTIO_BLK=y
-+CONFIG_VIDEO=y
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_DRIVER_VIDEO_SIMPLEFB_CLIENT=y
-+CONFIG_CLOCKSOURCE_DUMMY_RATE=60000
-+CONFIG_EEPROM_AT24=y
-+CONFIG_HWRNG=y
-+CONFIG_HW_RANDOM_VIRTIO=y
-+CONFIG_GPIO_GENERIC_PLATFORM=y
-+# CONFIG_PINCTRL is not set
-+CONFIG_SYSCON_REBOOT_MODE=y
-+CONFIG_POWER_RESET_SYSCON=y
-+CONFIG_POWER_RESET_SYSCON_POWEROFF=y
-+CONFIG_VIRTIO_MMIO=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_FS_UIMAGEFS=y
-+CONFIG_FS_PSTORE=y
-+CONFIG_FS_SQUASHFS=y
-+CONFIG_ZLIB=y
-+CONFIG_BZLIB=y
-+CONFIG_LZ4_DECOMPRESS=y
-+CONFIG_ZSTD_DECOMPRESS=y
-+CONFIG_XZ_DECOMPRESS=y
-+CONFIG_BASE64=y
-+CONFIG_LZO_DECOMPRESS=y
-+CONFIG_DIGEST_CRC32_GENERIC=y
-diff --git a/arch/riscv/configs/virt64_defconfig b/arch/riscv/configs/virt64_defconfig
-new file mode 100644
-index 000000000000..17ce16637d96
---- /dev/null
-+++ b/arch/riscv/configs/virt64_defconfig
-@@ -0,0 +1,117 @@
-+CONFIG_MACH_VIRT=y
-+CONFIG_ARCH_RV64I=y
-+CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_STACK_SIZE=0x20000
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
-+CONFIG_PANIC_HANG=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_IMD_TARGET=y
-+CONFIG_CONSOLE_ALLOW_COLOR=y
-+CONFIG_PBL_CONSOLE=y
-+CONFIG_PARTITION_DISK_EFI=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_BAREBOXENV_TARGET=y
-+CONFIG_BAREBOXCRC32_TARGET=y
-+CONFIG_POLLER=y
-+CONFIG_STATE=y
-+CONFIG_STATE_CRYPTO=y
-+CONFIG_BOOTCHOOSER=y
-+CONFIG_RESET_SOURCE=y
-+CONFIG_MACHINE_ID=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_POLLER=y
-+CONFIG_CMD_SLICE=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_BOOTCHOOSER=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_CMP=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SPLASH=y
-+CONFIG_CMD_FBTEST=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_POWEROFF=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_2048=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_OF_DIFF=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_DISPLAY_TIMINGS=y
-+CONFIG_CMD_OF_FIXUP_STATUS=y
-+CONFIG_CMD_OF_OVERLAY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_CMD_DHRYSTONE=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_VIRTIO_CONSOLE=y
-+CONFIG_DRIVER_SPI_GPIO=y
-+CONFIG_I2C=y
-+CONFIG_I2C_GPIO=y
-+CONFIG_MTD=y
-+# CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_CONCAT=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_DRIVER_CFI=y
-+CONFIG_DRIVER_CFI_BANK_WIDTH_8=y
-+CONFIG_DISK=y
-+CONFIG_DISK_WRITE=y
-+CONFIG_VIRTIO_BLK=y
-+CONFIG_VIDEO=y
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_DRIVER_VIDEO_SIMPLEFB_CLIENT=y
-+CONFIG_CLOCKSOURCE_DUMMY_RATE=60000
-+CONFIG_EEPROM_AT24=y
-+CONFIG_HWRNG=y
-+CONFIG_HW_RANDOM_VIRTIO=y
-+CONFIG_GPIO_GENERIC_PLATFORM=y
-+# CONFIG_PINCTRL is not set
-+CONFIG_SYSCON_REBOOT_MODE=y
-+CONFIG_POWER_RESET_SYSCON=y
-+CONFIG_POWER_RESET_SYSCON_POWEROFF=y
-+CONFIG_VIRTIO_MMIO=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_FS_UIMAGEFS=y
-+CONFIG_FS_PSTORE=y
-+CONFIG_FS_SQUASHFS=y
-+CONFIG_ZLIB=y
-+CONFIG_BZLIB=y
-+CONFIG_LZ4_DECOMPRESS=y
-+CONFIG_ZSTD_DECOMPRESS=y
-+CONFIG_XZ_DECOMPRESS=y
-+CONFIG_BASE64=y
-+CONFIG_LZO_DECOMPRESS=y
-+CONFIG_DIGEST_CRC32_GENERIC=y
-diff --git a/arch/riscv/mach-virt/Makefile b/arch/riscv/mach-virt/Makefile
-new file mode 100644
-index 000000000000..d9c51e74c379
---- /dev/null
-+++ b/arch/riscv/mach-virt/Makefile
-@@ -0,0 +1,3 @@
-+# just to build a built-in.o. Otherwise compilation fails when no o-files is
-+# created.
-+obj- += dummy.o
-diff --git a/arch/riscv/mach-virt/include/mach/debug_ll.h b/arch/riscv/mach-virt/include/mach/debug_ll.h
-new file mode 100644
-index 000000000000..056b7a330bdd
---- /dev/null
-+++ b/arch/riscv/mach-virt/include/mach/debug_ll.h
-@@ -0,0 +1,25 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2017 Antony Pavlov <antonynpavlov@gmail.com>
-+ */
-+
-+#ifndef __MACH_VIRT_DEBUG_LL__
-+#define __MACH_VIRT_DEBUG_LL__
-+
-+/** @file
-+ *  This File contains declaration for early output support
-+ */
-+
-+#include <linux/kconfig.h>
-+
-+#define DEBUG_LL_UART_ADDR	0x10000000
-+#define DEBUG_LL_UART_SHIFT	0
-+#define DEBUG_LL_UART_IOSIZE8
-+
-+#define DEBUG_LL_UART_CLK       0x00384000
-+#define DEBUG_LL_UART_BPS       CONFIG_BAUDRATE
-+#define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
-+
-+#include <asm/debug_ll_ns16550.h>
-+
-+#endif /* __MACH_VIRT_DEBUG_LL__ */
+ #endif /* _ASM_RISCV_UNALIGNED_H */
 -- 
 2.29.2
 
