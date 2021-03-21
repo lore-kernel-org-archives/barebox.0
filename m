@@ -1,49 +1,53 @@
-Delivery-date: Sun, 21 Mar 2021 16:05:31 +0100
+Delivery-date: Sun, 21 Mar 2021 16:19:02 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lNzdz-0001z4-HK
-	for lore@lore.pengutronix.de; Sun, 21 Mar 2021 16:05:31 +0100
+	id 1lNzr4-0001zx-A6
+	for lore@lore.pengutronix.de; Sun, 21 Mar 2021 16:19:02 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lNzdy-0008TN-IJ
-	for lore@pengutronix.de; Sun, 21 Mar 2021 16:05:31 +0100
+	id 1lNzr3-0001fi-8d
+	for lore@pengutronix.de; Sun, 21 Mar 2021 16:19:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=RUQkAQTlNin0Njnj3HEQ8CRJLlEQn9GDBpLUEwfU2I0=; b=W2fLPoDUO9ZsEy7KkmJDMWUzTM
-	G1IXqipBTMLW0/rppd9nDuZn9b5AvK3Pb+C2k+yXLjr9ZY4c/HaQVerOPx7Mgd/STi798jkjVUck+
-	wcjkLfKnO7vfRD0nkGzZzF5ks0XEnfQDFnDlX3Jm2p0q/wLGd+wry0imC8SUrqJ+AwIlzOtkGzbxi
-	CXEA2pWM4lFck+qoNNkyOiUvC/NxyvCJIc5SWPk5Ydk801YokDRtMabVScDQCE/BYO3WMNm9wbha1
-	XW6+UlstUwgQ67o5b0xqKKB72nh8lZ9rKYi0hf2g8Bqv3Jgnqdv108tJMKW+elK/TTxX7GALtKSlx
-	pTh1z7zw==;
+	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=rhX5Op4OxGOWY7Tq5cg2jdjhUg70krfdEziJ0kpAaAQ=; b=QMvNl1HOqQ/UASgaQYnYUucZO
+	FrMAA2Gyx/NEqoiR+3ltTBrBDL9m09mCYbFgnahobuwDz6+65USBlq9i9W1BvjPh6Y6UrhT0BXp3S
+	xlW26D3rV8rKNKfjc4Qjv1taNxOE++zy3ZL2VcKgalXKWaQU6ANb027ZmVhd/hH9xIDFl/FTNjg34
+	hf0z5JXNf/jyKNQATfZAdXecuBMeEBuZ7+uCPjc1abdWZtaUoHamMcWZPgsjKIZSZHctIoDFH0BZ4
+	YkAwRZMRSvXE58qrz3IJtVczD98SeKQZW2AYRRmDMEKNzDFKDgGLQkOHQBF3eRzVsOvUwO1DehtoD
+	+37JUKbIA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lNzbv-00A3In-IE; Sun, 21 Mar 2021 15:03:23 +0000
-Received: from relay7-d.mail.gandi.net ([217.70.183.200])
+	id 1lNznp-00A44y-39; Sun, 21 Mar 2021 15:15:41 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lNzbc-00A2yk-HF
- for barebox@lists.infradead.org; Sun, 21 Mar 2021 15:03:11 +0000
-X-Originating-IP: 83.135.82.223
-Received: from geraet.fritz.box (unknown [83.135.82.223])
- (Authenticated sender: ahmad@a3f.at)
- by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id C64882000B;
- Sun, 21 Mar 2021 15:00:56 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
+ id 1lNzm6-00A41W-1N
+ for barebox@lists.infradead.org; Sun, 21 Mar 2021 15:14:20 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1lNzm2-00011L-01; Sun, 21 Mar 2021 16:13:50 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1lNzm0-0007vy-Rz; Sun, 21 Mar 2021 16:13:48 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sun, 21 Mar 2021 16:00:50 +0100
-Message-Id: <20210321150050.3566868-1-ahmad@a3f.at>
-X-Mailer: git-send-email 2.30.0
+Date: Sun, 21 Mar 2021 16:13:25 +0100
+Message-Id: <20210321151344.5810-3-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210321151344.5810-1-a.fatoum@pengutronix.de>
+References: <20210321151344.5810-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210321_150304_710377_C77BD0B0 
-X-CRM114-Status: UNSURE (   8.73  )
+X-CRM114-CacheID: sfid-20210321_151419_241337_3ABD47C6 
+X-CRM114-Status: UNSURE (   9.78  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -56,6 +60,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, rcz@pengutronix.de
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -68,39 +73,70 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! common: introduce bthreads,
- co-operative barebox threads
+Subject: [PATCH v3 02/21] images: make BOARD_ARM_GENERIC_DT available for
+ other arches
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Specifying __aligned for a struct member only ensures a relative
-alignment to the start of the struct. To get an absolute alignment,
-we must ensure the struct itself is aligned suitably as well. Do so.
+Other architectures would benefit from the generic DT image too.
+Add a new arch-agnostic symbol that arches besides ARM can select.
 
-This fixes an issue where printf("%llu" printed bogus values when
-run from a bthread, because gcc va_arg on RISC-V requires 16-bit
-stack alignment.
+The new symbol itself should not have a prompt as the help text for
+each architecture likely differs (e.g. device tree handoff register).
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bthread.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/Kconfig | 2 +-
+ images/Makefile  | 4 ++--
+ pbl/Kconfig      | 4 ++++
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/common/bthread.c b/common/bthread.c
-index 80b486c99af7..ece02e091da9 100644
---- a/common/bthread.c
-+++ b/common/bthread.c
-@@ -88,7 +88,7 @@ struct bthread *bthread_create(int (*threadfn)(void *), void *data,
- 	va_list ap;
- 	int len;
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index a1f781b60f95..3b983c8b3d0a 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -323,7 +323,7 @@ config BOARD_ARM_VIRT
+ 	select OF_OVERLAY
  
--	bthread = malloc(struct_size(bthread, stack_space, CONFIG_STACK_SIZE));
-+	bthread = memalign(16, struct_size(bthread, stack_space, CONFIG_STACK_SIZE));
- 	if (!bthread)
- 		goto err;
+ config BOARD_ARM_GENERIC_DT
+-	select LIBFDT
++	select BOARD_GENERIC_DT
+ 	select ARM_AMBA
+ 	depends on HAVE_PBL_MULTI_IMAGES
+ 	depends on OFDEVICE
+diff --git a/images/Makefile b/images/Makefile
+index b8899dcd2a81..84492a154d16 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -166,9 +166,9 @@ include $(srctree)/images/Makefile.zynqmp
+ include $(srctree)/images/Makefile.layerscape
  
+ 
+-pblb-$(CONFIG_BOARD_ARM_GENERIC_DT) += start_dt_2nd
++pblb-$(CONFIG_BOARD_GENERIC_DT) += start_dt_2nd
+ FILE_barebox-dt-2nd.img = start_dt_2nd.pblb
+-image-$(CONFIG_BOARD_ARM_GENERIC_DT) += barebox-dt-2nd.img
++image-$(CONFIG_BOARD_GENERIC_DT) += barebox-dt-2nd.img
+ 
+ ifdef CONFIG_ARM
+ pblb-$(CONFIG_PBL_SINGLE_IMAGE) += start_pbl
+diff --git a/pbl/Kconfig b/pbl/Kconfig
+index 6e8cc3ac04ae..2eea5aef7a30 100644
+--- a/pbl/Kconfig
++++ b/pbl/Kconfig
+@@ -40,6 +40,10 @@ config PBL_VERIFY_PIGGY
+ 	depends on ARM
+ 	bool
+ 
++config BOARD_GENERIC_DT
++	bool
++	select LIBFDT
++
+ config IMAGE_COMPRESSION
+ 	bool
+ 	depends on HAVE_IMAGE_COMPRESSION
 -- 
-2.30.0
+2.29.2
 
 
 _______________________________________________
