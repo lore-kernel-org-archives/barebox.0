@@ -1,54 +1,54 @@
-Delivery-date: Mon, 22 Mar 2021 07:56:51 +0100
+Delivery-date: Mon, 22 Mar 2021 07:56:53 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lOEUd-00038M-UH
-	for lore@lore.pengutronix.de; Mon, 22 Mar 2021 07:56:51 +0100
+	id 1lOEUf-00038i-Gb
+	for lore@lore.pengutronix.de; Mon, 22 Mar 2021 07:56:53 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lOEUd-0006p6-19
-	for lore@pengutronix.de; Mon, 22 Mar 2021 07:56:51 +0100
+	id 1lOEUe-0006pL-JG
+	for lore@pengutronix.de; Mon, 22 Mar 2021 07:56:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=VEdHnWvqSGYsxzlYHLE5wy9ongZsVlydscs547YyRvM=; b=PuDuYa77jQQ7Wdp4LZURZ6zKn
-	3kjFq6BU6q9t29v7Y1mAa/as8BGoxRMOVvpBavQELKDbROGazWuk36+9jpjSiow/dvElmOde4zkKH
-	tO/jHfP7eb7virXi45lm90v6GQgKwlw08r1M9aaDCGpE6Ueq9ZcBrBgL4r+4wRdymXkrvI5kTzpL/
-	j9qIz9/JCgyNkLO/IaPozIlgBOkclV+7UO2smFmy+JR+U5X4w43msZgVgDdTrQ4FMOv/rhzKagGBy
-	NOvNRHYs36GdzrXCRbsykeK1BKUK8bhtT1U7Ud6RS3HV0fKDql7y5X4gdZHD62zf4NnCmTDPCV9hJ
-	STEP/SvAQ==;
+	 bh=mc8he0wfQsyAPyJHVelioWATpY2xOkWD5/5MXWu9WmI=; b=WIkjQphoQTKmwURQxyqlighgG
+	HqYun9DM562ca5KODuXIsoYq9hAyIL2HUWRNfG89if2VuXbF9MfQCm48ohApFl8o+VnBA4xWYx3nO
+	mlgKSDA0UMN8WyuZ3Fm3YsdNjTDQVwfjqWwY0lDCPTS2L3qfD8Uy5zpKqlsIW0Rw9jyldmCobWNN/
+	fQfO0PsDzsXFIIjDuDnFNXKQ8VjZYnYGeOHmK5aZfNDD/e/IDdj+oF54bkt3J1bsJk3wcbQ5oZMVg
+	oVwX99n6Wc3ADI51PSYa0gULS8F0QLE59/MVuJEf6H0p9fN7ftAIldwxI32U6MdSjtWz1f+Zt39FX
+	y23xXba2w==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lOETa-00B34T-HP; Mon, 22 Mar 2021 06:55:46 +0000
+	id 1lOETi-00B35f-39; Mon, 22 Mar 2021 06:55:55 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lOETS-00B33r-EZ
- for barebox@lists.infradead.org; Mon, 22 Mar 2021 06:55:40 +0000
+ id 1lOETa-00B34n-Eo
+ for barebox@lists.infradead.org; Mon, 22 Mar 2021 06:55:48 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lOETK-0006V2-1x; Mon, 22 Mar 2021 07:55:30 +0100
+ id 1lOETK-0006V4-1x; Mon, 22 Mar 2021 07:55:30 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lOETJ-0003zl-NV; Mon, 22 Mar 2021 07:55:29 +0100
+ id 1lOETJ-0003zp-OE; Mon, 22 Mar 2021 07:55:29 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 22 Mar 2021 07:55:26 +0100
-Message-Id: <20210322065527.14428-2-a.fatoum@pengutronix.de>
+Date: Mon, 22 Mar 2021 07:55:27 +0100
+Message-Id: <20210322065527.14428-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210322065527.14428-1-a.fatoum@pengutronix.de>
 References: <20210322065527.14428-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210322_065538_694132_C89B7220 
-X-CRM114-Status: GOOD (  11.85  )
+X-CRM114-CacheID: sfid-20210322_065546_650599_0EFE73F1 
+X-CRM114-Status: GOOD (  11.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,59 +72,41 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH master 2/3] common: readline: fix possible buffer overflows
+Subject: [PATCH master 3/3] sandbox: fix use of initialized variable in error
+ path
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Entering very long lines can crash the readline prompt due to missing
-NUL terminator. Make sure we don't exceed CONFIG_CBSIZE to avoid this.
+fd could be uninitialized in some error paths. Give it a value that
+close can be called on without adverse effect.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/readline.c | 2 +-
- common/hush.c       | 2 +-
- common/parser.c     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ arch/sandbox/os/common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/commands/readline.c b/commands/readline.c
-index 7933a58c08b4..57c8fbd7bc80 100644
---- a/commands/readline.c
-+++ b/commands/readline.c
-@@ -19,7 +19,7 @@ static int do_readline(int argc, char *argv[])
+diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
+index fd75cc04cc16..d09604af1400 100644
+--- a/arch/sandbox/os/common.c
++++ b/arch/sandbox/os/common.c
+@@ -321,7 +321,7 @@ int linux_open_hostfile(struct hf_info *hf)
+ {
+ 	char *buf = NULL;
+ 	struct stat s;
+-	int fd;
++	int fd = -1;
  
- 	command_slice_release();
+ 	printf("add %s %sbacked by file %s%s\n", hf->devname,
+ 	       hf->filename ? "" : "initially un", hf->filename ?: "",
+@@ -408,7 +408,7 @@ int linux_open_hostfile(struct hf_info *hf)
+ 	return 0;
  
--	if (readline(argv[1], buf, CONFIG_CBSIZE) < 0) {
-+	if (readline(argv[1], buf, CONFIG_CBSIZE - 1) < 0) {
- 		command_slice_acquire();
- 		free(buf);
- 		return COMMAND_ERROR;
-diff --git a/common/hush.c b/common/hush.c
-index 763e6cf74bbc..0475401321d1 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -451,7 +451,7 @@ static void get_user_input(struct in_str *i)
- 
- 	command_slice_release();
- 
--	n = readline(prompt, console_buffer, CONFIG_CBSIZE);
-+	n = readline(prompt, console_buffer, CONFIG_CBSIZE - 1);
- 
- 	command_slice_acquire();
- 
-diff --git a/common/parser.c b/common/parser.c
-index fb9ef42e7fab..584d4b0efece 100644
---- a/common/parser.c
-+++ b/common/parser.c
-@@ -270,7 +270,7 @@ int run_shell(void)
- 	login();
- 
- 	for (;;) {
--		len = readline (CONFIG_PROMPT, console_buffer, CONFIG_CBSIZE);
-+		len = readline (CONFIG_PROMPT, console_buffer, CONFIG_CBSIZE - 1);
- 
- 		if (len > 0)
- 			strcpy (lastcommand, console_buffer);
+ err_out:
+-	if (fd > 0)
++	if (fd >= 0)
+ 		close(fd);
+ 	free(buf);
+ 	return -1;
 -- 
 2.29.2
 
