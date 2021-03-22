@@ -1,75 +1,79 @@
-Delivery-date: Mon, 22 Mar 2021 13:07:02 +0100
+Delivery-date: Mon, 22 Mar 2021 13:07:55 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lOJKo-0003bd-Q2
-	for lore@lore.pengutronix.de; Mon, 22 Mar 2021 13:07:02 +0100
+	id 1lOJLf-0003c1-UL
+	for lore@lore.pengutronix.de; Mon, 22 Mar 2021 13:07:55 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lOJKn-0003Jb-Tv
-	for lore@pengutronix.de; Mon, 22 Mar 2021 13:07:02 +0100
+	id 1lOJLf-0003Wc-5b
+	for lore@pengutronix.de; Mon, 22 Mar 2021 13:07:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-ID:Date:Subject:To:From:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=ztU4SDYRsZFCFO7GCRSVpAqvnocdd86PFRhCmnZeRLw=; b=PTgIE+W1VSg6tP
-	zaMTgHMpHYMr5+/qwfYKScZcxYWZD+8JQfsUqS0GQ62c3nvMP6Tw2+Kh35RUctaMh+Grm6lxS1NwP
-	BlduemH5+epPcbddpTOLViEV3v8LRDovqXb1HSv+au0KQD0oCMp2XVzS3E3lGz+U02dwBm0dVusIC
-	cBRI4pdl4dwQMdkWAWGYdaaZaxutnW2DGQWvqpKRc88pE8DQ8M628Tpj+pHpFvw/xtHHVId1MVLKK
-	/GoRXhxYVo08/iXwRLY38Zzei8kj/4LqXj2aG+/EfqdH26FuLweeukWtO8oR28XU2FsX7B4lmJzOf
-	zpKRc7n2f4lIB7SPxtOw==;
+	d=lists.infradead.org; s=desiato.20200630; h=Sender:List-Subscribe:List-Help:
+	List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:Content-Type:
+	In-Reply-To:References:Message-ID:Date:Subject:To:From:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=8g+adU/TfMQNaylFYLXhLB5mf8eqHB5wLUOveqsYIXA=; b=h95zyEZd9t+ZYwYLLq2gUAj+7
+	g6xI0tWsEpq5ZZC71qgBSfEVOEwWplUY25m8Cz3RO7a9L9/ISZiw5cO3RNZknMy1eCiO/Nz2us/4/
+	XLD00lkyGsUyTvnCC/sBLN/wjH9u42WNM7iWR6qIuLmxRUkRBOA0YHS3WssJb53ElQiMuE4VTFWIm
+	JlXlkZeI9ZqlZKLOw7nVmSyt6PxDAdzrNhbJgmG6gSBJ8hH7GvbQNBWvheqSuYR/WIq8vVh06ImcW
+	RWp6wJFW+q4hWyvf4x87Kutc0A1vN6bXyL6Kr+4sXKYBkr+F6H4KI2F+8cjP7H7xBsPT+G+8h0Kfh
+	xFy7gxybg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lOJJe-00BXHC-Ne; Mon, 22 Mar 2021 12:05:50 +0000
+	id 1lOJKX-00BXMF-Mo; Mon, 22 Mar 2021 12:06:45 +0000
 Received: from enterprise01.smtp.diehl.com ([193.201.238.219])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lOJJS-00BXGV-Kj
- for barebox@lists.infradead.org; Mon, 22 Mar 2021 12:05:40 +0000
+ id 1lOJKN-00BXLA-Gb
+ for barebox@lists.infradead.org; Mon, 22 Mar 2021 12:06:38 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=diehl.com; i=@diehl.com; q=dns/txt; s=default;
- t=1616414739; x=1647950739; h=from:to:subject:date:message-id:
- content-transfer-encoding:mime-version;
- bh=O87mL9zPTs7IczHu0pV9hx7Z39udOpfDXrt8ihUMYIE=;
- b=MyoI11uJaWdQo4hnhC7prndO6BdKV3aX2vGe/r0FALE/OfoZ2ZS+0tJC
- G5vkMEcOaKUQqnUNTjJNyNtucptIkMB3wg1xio1lxN1WVh0qJbn+GMhdT
- sDFRrsIR9nPfdCr0LoVvJT3nFROipufyrln8oT1LzyNGKEH491dWOG2fv
- gxu2bqRFbhnMX/lCCOMg+BoH1VRa1iLbrCfam1dFLfMq4SwfVvSXC0osn
- s644yr/iAOJxonASFY6lFfoi357F5WoM8OpDSf92d4MP+kRlzNEeAEPaB
- 58plEj3kMZvmqGf2YazG7lfz13+7TX6b6cja0qlT0pKO6hwwN+yTrm4ee g==;
-IronPort-SDR: HlgkfPzyquU9BVesByQSkqxy47obt7LoZKRQP5p96O7SnNI7INGiNMAKp2QhpLYWRpqmKXpsQr
- k90F3guW7ShLKXPGmwWznTTwxy8xTPjO0EHmcvHk3g3KBiKP0YoXFhVU3MoxZr1aGtecSrJGmy
- zfznuV0d/jeDjnX2ZEXiuS2VnHzpnfK4ddRbFGGZxR6OOc45xeja2Iw931DftHqW2z8cSiAnXe
- /lVS2VojTn/lWnzCMyXSazEp0XbnjpfrlGCWe1WOfLVVZVL8I73FxGxSPxLlg072cPk2TRgtdY
- ysA=
-IronPort-HdrOrdr: A9a23:Y8wrn6wwuCu/0hG88GHMKrPwo71zdoIgy1knxilNYDZSddGVkN
- 3roeQD2XbP+VAscVwDufTFAqmPRnvA6YV4iLN6AZ6OVBTr0VHYS71KwofvzjbpES+71sM178
- ZdWodkDtmYNykese/e4BOkV+om2sWN6qqyhezTpk0AcShPS4VNqzh0ERyaFEoefmd7LL40Do
- CV6MYChxfIQxsqR/+2DHUEQOTPzuej/P/bSCULHhs2rDSJ5AnYi4LSKBSEwgwYFwpG3LZKyw
- P4ujbk7aauuezT8G6/60bv6f1t6b/c4+oGI/a34/J0FgnR
+ t=1616414796; x=1647950796;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ mime-version; bh=YKzjfcn593ptO923TOIaFukH9MjLxQ95H000i6CcE2o=;
+ b=SISF4ShkpeoDKtD6URZfK/0hUDFnixZjx6jP0mridYGui4BXjDqs4Lh6
+ 1gQRJPsYKAUdzKW6S3q0IpQtxv7AW4yDSbKb1gIcm4U1flhDsxftI2fH8
+ kgdqclvt3VS6kf3FS3QjEG5WG3d5HWjkTkVzBkE61XP1Vw9qoFc556Jz9
+ 30UXBQOwgQXQRqXljWDHaY8vdGX8f+4mt1DyWStOlMxapn4tDyJSUh4Er
+ D5pBy9m/a8u4gyyjQti5bpLfbaYqo5Bum3ur84F+SQ4NIlDekFqM5xrhQ
+ S5CIKKbS81I/56yBI76GYz0BFcZrroOAUhNbSDDHKPbRjBwEDstyu8+2B A==;
+IronPort-SDR: uN+wja7Hx7NHkoi+kq7fej8WGRVmp5f76KC+BSwa1kntJcRJCaX738+3Dbx1j2ehrUfx58fl8J
+ C3Wohs3APawQyQmXRIWuH6kas35MK1Qu6mwKrdXAgffJNh1vn2vUIwxGSwKEZX5YnufHvxM0x7
+ ssnwEZ1PmbWmisvQvGWQBoUobySZdnLtsFz1WLxFM5WEwKt0qMfv7/xzSWaOw789iMdKeW2kvd
+ +l8CgwEtAIV/sVIJ2CtVdr9YUy4FgOd6yxPncXR0Qm3Ue3u3Hj/sv/E+/wWBC6pB9vl7cI19SY
+ pn4=
+IronPort-HdrOrdr: A9a23:Xa/Bdq0pdJhoJF0soO6SHQqjBD0kLtp033Aq2lEZdDV+dMuEm8
+ ey2MkKzBOcskd2ZFgMu/ClfJOBT3TV6IJv7eAqV4uKcQH6tAKTXeZfxKTvzzDqEyf9ss5xvJ
+ 0AT4FQE9v1ZGIK6PrSxQmjDpIdx8Oa+7qjnufUwx5WIT1CT4FFw0NHBh2AEktwLTMpObMcGI
+ CH7sRK4xqMEE55Uu2BCnMIX/fOqrTw/fqKXTc8Cwcj+E2yi1qTmd3HOiOVwwsEVHd3yaoimF
+ KvryXC+q6hv/unoyWstVP70pI+oqqE9vJzQOu3sKEuSgnRtg==
 X-IronPort-AV: E=Sophos;i="5.81,268,1610406000"; 
-   d="scan'208";a="6707484"
+ d="mbox'208?scan'208,208";a="6707561"
 From: Denis Osterland-Heim <denis.osterland@diehl.com>
 To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 Thread-Topic: [PATCH] scripts: imx: add support for additional hab Blocks
-Thread-Index: AQHXHxOqNUvgkQ1VrEag377mUrVUmg==
-Date: Mon, 22 Mar 2021 12:05:35 +0000
-Message-ID: <20210322120222.29957-1-denis.osterland@diehl.com>
+Thread-Index: AQHXHxOqNUvgkQ1VrEag377mUrVUmqqP2KmA
+Date: Mon, 22 Mar 2021 12:06:32 +0000
+Message-ID: <1589abed24138f7213f84ab0cf83bc2b53bf031a.camel@diehl.com>
+References: <20210322120222.29957-1-denis.osterland@diehl.com>
+In-Reply-To: <20210322120222.29957-1-denis.osterland@diehl.com>
 Accept-Language: de-DE, en-US
 Content-Language: en-US
-X-MS-Has-Attach: 
+X-MS-Has-Attach: yes
 X-MS-TNEF-Correlator: 
 x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-disclaimerprocessed: True
+Content-Type: multipart/mixed;
+ boundary="_002_1589abed24138f7213f84ab0cf83bc2b53bf031acameldiehlcom_"
 MIME-Version: 1.0
-X-GBS-PROC: 5x5xXKsZ7k4sJw6jWwvS4tvC3iKApo8N8GU9qYgaKMPfvgIayMGNHsnIuSjQujAB
+X-GBS-PROC: 5x5xXKsZ7k4sJw6jWwvS4rcYiTyJ9zsnrE1N94KT/+KFpjQ9Sj4KA4ps+PFBcua4
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210322_120538_929616_0A960A07 
-X-CRM114-Status: GOOD (  12.61  )
+X-CRM114-CacheID: sfid-20210322_120636_439442_56F78DA2 
+X-CRM114-Status: GOOD (  30.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,161 +85,185 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-103.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-103.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,USER_IN_WELCOMELIST,
 	USER_IN_WHITELIST autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] scripts: imx: add support for additional hab Blocks
+Subject: Re: [PATCH] scripts: imx: add support for additional hab Blocks
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This allows to specifiy additional signed blocks
-in the format `offset+size@address` within the imximg.
+--_002_1589abed24138f7213f84ab0cf83bc2b53bf031acameldiehlcom_
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C36D01351506B0469C40060A4C5E4F45@diehl.internal>
+Content-Transfer-Encoding: base64
 
-It is needed by the uuu tool, which loads the image different to
-the imx-usb-loader. It loads the DCD always to 0x910000 in the OCRAM.
-So this area have to be signed as well.
+QW0gTW9udGFnLCBkZW4gMjIuMDMuMjAyMSwgMTM6MDIgKzAxMDAgc2NocmllYiBEZW5pcyBPc3Rl
+cmxhbmQtSGVpbToNCj4gVGhpcyBhbGxvd3MgdG8gc3BlY2lmaXkgYWRkaXRpb25hbCBzaWduZWQg
+YmxvY2tzDQo+IGluIHRoZSBmb3JtYXQgYG9mZnNldCtzaXplQGFkZHJlc3NgIHdpdGhpbiB0aGUg
+aW14aW1nLg0KPg0KPiBJdCBpcyBuZWVkZWQgYnkgdGhlIHV1dSB0b29sLCB3aGljaCBsb2FkcyB0
+aGUgaW1hZ2UgZGlmZmVyZW50IHRvDQo+IHRoZSBpbXgtdXNiLWxvYWRlci4gSXQgbG9hZHMgdGhl
+IERDRCBhbHdheXMgdG8gMHg5MTAwMDAgaW4gdGhlIE9DUkFNLg0KPiBTbyB0aGlzIGFyZWEgaGF2
+ZSB0byBiZSBzaWduZWQgYXMgd2VsbC4NCj4NCj4gSW4gbXkgY2FzZSB0aGlzIG5lZWRzIGBoYWJf
+YmxvY2tzIDB4NDJjKzB4MWYwQDB4OTEwMDAwYC4NCj4NCj4gSXQgc3VwcG9ydHMgdG8gcmVtb3Zl
+IHF1b3RlcyB0byBzdXBwb3J0IEtjb25maWcgdmFyaWFibGUgaGVyZS4NCj4NCj4gU2lnbmVkLW9m
+Zi1ieTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0gPGRlbmlzLm9zdGVybGFuZEBkaWVobC5jb20+DQo+
+IC0tLQ0KPiAgc2NyaXB0cy9pbXgvaW14LmMgfCA1MiArKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKystLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDUwIGluc2VydGlvbnMo
+KyksIDIgZGVsZXRpb25zKC0pDQo+DQo+IGRpZmYgLS1naXQgYS9zY3JpcHRzL2lteC9pbXguYyBi
+L3NjcmlwdHMvaW14L2lteC5jDQo+IGluZGV4IDZiOGRhYmQwNC4uY2UxODc3OGY1IDEwMDY0NA0K
+PiAtLS0gYS9zY3JpcHRzL2lteC9pbXguYw0KPiArKysgYi9zY3JpcHRzL2lteC9pbXguYw0KPiBA
+QCAtMzI4LDYgKzMyOCw3IEBAIHN0YXRpYyBpbnQgZG9faGFiX2Jsb2NrcyhzdHJ1Y3QgY29uZmln
+X2RhdGEgKmRhdGEsIGludCBhcmdjLCBjaGFyICphcmd2W10pDQo+ICB7DQo+ICBjaGFyICpzdHI7
+DQo+ICBpbnQgcmV0Ow0KPiAraW50IGk7DQo+ICB1aW50MzJfdCBzaWduZWRfc2l6ZSA9IGRhdGEt
+PmxvYWRfc2l6ZTsNCj4gIHVpbnQzMl90IG9mZnNldCA9IGRhdGEtPmltYWdlX2l2dF9vZmZzZXQ7
+DQo+DQo+IEBAIC0zNTIsNyArMzUzLDcgQEAgc3RhdGljIGludCBkb19oYWJfYmxvY2tzKHN0cnVj
+dCBjb25maWdfZGF0YSAqZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gIH0NCj4NCj4g
+IGlmIChzaWduZWRfc2l6ZSA+IDApIHsNCj4gLXJldCA9IGFzcHJpbnRmKCZzdHIsICJCbG9ja3Mg
+PSAweCUwOHggMHglMDh4IDB4JTA4eCBcIiVzXCJcbiIsDQo+ICtyZXQgPSBhc3ByaW50Zigmc3Ry
+LCAiQmxvY2tzID0gMHglMDh4IDB4JTA4eCAweCUwOHggXCIlc1wiIiwNCj4gIGRhdGEtPmltYWdl
+X2xvYWRfYWRkciArIGRhdGEtPmltYWdlX2l2dF9vZmZzZXQsIG9mZnNldCwNCj4gIHNpZ25lZF9z
+aXplIC0gZGF0YS0+aW1hZ2VfaXZ0X29mZnNldCwgZGF0YS0+b3V0ZmlsZSk7DQo+ICB9IGVsc2Ug
+ew0KPiBAQCAtMzY1LDEwICszNjYsNTcgQEAgc3RhdGljIGludCBkb19oYWJfYmxvY2tzKHN0cnVj
+dCBjb25maWdfZGF0YSAqZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gIHJldHVybiAt
+RU5PTUVNOw0KPg0KPiAgcmV0ID0gaGFiX2FkZF9zdHIoZGF0YSwgc3RyKTsNCj4gK2ZyZWUoc3Ry
+KTsNCj4gIGlmIChyZXQpDQo+ICByZXR1cm4gcmV0Ow0KPg0KPiAtcmV0dXJuIDA7DQo+ICtmb3Ig
+KGkgPSAxOyBpIDwgYXJnYzsgaSsrKSB7DQo+ICt1aW50MzJfdCBhZGRyOw0KPiArdWludDMyX3Qg
+b2ZmOw0KPiArdWludDMyX3Qgc2l6ZTsNCj4gK2NoYXIgKmI7DQo+ICtjaGFyICplOw0KPiArDQo+
+ICtiID0gYXJndltpXTsNCj4gK2lmICgqYiA9PSAnIicpIC8vIHJlbW92ZSBsZWFkaW5nIHFvdXRl
+DQo+ICtiKys7DQo+ICtpZiAoISpiIHx8ICpiID09ICciJykNCj4gK2NvbnRpbnVlOyAvLyBza2lw
+IGlmIGVtcHR5DQo+ICsNCj4gK29mZiA9IHN0cnRvdWwoYiwgJmUsIDApOw0KPiAraWYgKCplICE9
+ICcrJykgew0KPiArZnByaW50ZihzdGRlcnIsICJmYWlsZWQgdG8gZmluZCAnKycgaW4gJyVzJ1xu
+IiwgYik7DQo+ICtmcHJpbnRmKHN0ZGVyciwgImZvcm1hdCBvZmYrc2l6ZUBhZGRyIGV4cGVjdGVk
+LCBidXQgZ2l2ZW46ICVzXG4iLCBhcmd2W2ldKTsNCj4gK3JldHVybiAtRUlOVkFMOw0KPiArfQ0K
+PiArDQo+ICtiID0gZSArIDE7DQo+ICtzaXplID0gc3RydG91bChiLCAmZSwgMCk7DQo+ICtpZiAo
+KmUgIT0gJ0AnKSB7DQo+ICtmcHJpbnRmKHN0ZGVyciwgImZhaWxlZCB0byBmaW5kICdAJyBpbiAn
+JXMnXG4iLCBiKTsNCj4gK2ZwcmludGYoc3RkZXJyLCAiZm9ybWF0IG9mZitzaXplQGFkZHIgZXhw
+ZWN0ZWQsIGJ1dCBnaXZlbjogJXNcbiIsIGFyZ3ZbaV0pOw0KPiArcmV0dXJuIC1FSU5WQUw7DQo+
+ICt9DQo+ICsNCj4gK2IgPSBlICsgMTsNCj4gK2FkZHIgPSBzdHJ0b3VsKGIsICZlLCAwKTsNCj4g
+K2lmICgqZSAmJiAqZSAhPSAnIicpIHsgLy8gaWdub3JlIHRyYWlsaW5nIHFvdXRlDQo+ICtmcHJp
+bnRmKHN0ZGVyciwgInVuZXhwZWN0ZWQgY2hhciBhdCB0aGUgZW5kOiAnJWMnXG4iLCAqZSk7DQo+
+ICtmcHJpbnRmKHN0ZGVyciwgImZvcm1hdCBvZmYrc2l6ZUBhZGRyIGV4cGVjdGVkLCBidXQgZ2l2
+ZW46ICVzXG4iLCBhcmd2W2ldKTsNCj4gK3JldHVybiAtRUlOVkFMOw0KPiArfQ0KPiArDQo+ICty
+ZXQgPSBhc3ByaW50Zigmc3RyLCAiLCAweCUwOHggMHglMDh4IDB4JTA4eCBcIiVzXCIiLCBhZGRy
+LCBvZmYsIHNpemUsIGRhdGEtPm91dGZpbGUpOw0KPiAraWYgKHJldCA8IDApDQo+ICtyZXR1cm4g
+LUVOT01FTTsNCj4gKw0KPiArcmV0ID0gaGFiX2FkZF9zdHIoZGF0YSwgc3RyKTsNCj4gK2ZyZWUo
+c3RyKTsNCj4gK2lmIChyZXQpDQo+ICtyZXR1cm4gcmV0Ow0KPiArfQ0KPiArDQo+ICtyZXR1cm4g
+aGFiX2FkZF9zdHIoZGF0YSwgIlxuIik7DQo+ICB9DQo+DQo+ICBzdGF0aWMgaW50IGRvX2hhYl9l
+bmNyeXB0KHN0cnVjdCBjb25maWdfZGF0YSAqZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkN
+CkRpZWhsIENvbm5lY3Rpdml0eSBTb2x1dGlvbnMgR21iSA0KR2VzY2jDpGZ0c2bDvGhydW5nOiBI
+b3JzdCBMZW9uYmVyZ2VyDQpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IE7DvHJuYmVyZyAtIFJlZ2lz
+dGVyZ2VyaWNodDogQW10c2dlcmljaHQNCk7DvHJuYmVyZzogSFJCIDMyMzE1DQoNCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fDQoNCkRlciBJbmhhbHQgZGVyIHZvcnN0ZWhlbmRlbiBF
+LU1haWwgaXN0IG5pY2h0IHJlY2h0bGljaCBiaW5kZW5kLiBEaWVzZSBFLU1haWwgZW50aGFlbHQg
+dmVydHJhdWxpY2hlIHVuZC9vZGVyIHJlY2h0bGljaCBnZXNjaHVldHp0ZSBJbmZvcm1hdGlvbmVu
+Lg0KSW5mb3JtaWVyZW4gU2llIHVucyBiaXR0ZSwgd2VubiBTaWUgZGllc2UgRS1NYWlsIGZhZWxz
+Y2hsaWNoZXJ3ZWlzZSBlcmhhbHRlbiBoYWJlbi4gQml0dGUgbG9lc2NoZW4gU2llIGluIGRpZXNl
+bSBGYWxsIGRpZSBOYWNocmljaHQuDQpKZWRlIHVuZXJsYXVidGUgRm9ybSBkZXIgUmVwcm9kdWt0
+aW9uLCBCZWthbm50Z2FiZSwgQWVuZGVydW5nLCBWZXJ0ZWlsdW5nIHVuZC9vZGVyIFB1Ymxpa2F0
+aW9uIGRpZXNlciBFLU1haWwgaXN0IHN0cmVuZ3N0ZW5zIHVudGVyc2FndC4NCg0KLSBJbmZvcm1h
+dGlvbmVuIHp1bSBEYXRlbnNjaHV0eiwgaW5zYmVzb25kZXJlIHp1IElocmVuIFJlY2h0ZW4sIGVy
+aGFsdGVuIFNpZSB1bnRlcjoNCg0KaHR0cHM6Ly93d3cuZGllaGwuY29tL2dyb3VwL2RlL3RyYW5z
+cGFyZW56LXVuZC1pbmZvcm1hdGlvbnNwZmxpY2h0ZW4vDQoNClRoZSBjb250ZW50cyBvZiB0aGUg
+YWJvdmUgbWVudGlvbmVkIGUtbWFpbCBpcyBub3QgbGVnYWxseSBiaW5kaW5nLiBUaGlzIGUtbWFp
+bCBjb250YWlucyBjb25maWRlbnRpYWwgYW5kL29yIGxlZ2FsbHkgcHJvdGVjdGVkIGluZm9ybWF0
+aW9uLiBQbGVhc2UgaW5mb3JtIHVzIGlmIHlvdSBoYXZlIHJlY2VpdmVkIHRoaXMgZS1tYWlsIGJ5
+DQptaXN0YWtlIGFuZCBkZWxldGUgaXQgaW4gc3VjaCBhIGNhc2UuIEVhY2ggdW5hdXRob3JpemVk
+IHJlcHJvZHVjdGlvbiwgZGlzY2xvc3VyZSwgYWx0ZXJhdGlvbiwgZGlzdHJpYnV0aW9uIGFuZC9v
+ciBwdWJsaWNhdGlvbiBvZiB0aGlzIGUtbWFpbCBpcyBzdHJpY3RseSBwcm9oaWJpdGVkLg0KDQot
+IEZvciBnZW5lcmFsIGluZm9ybWF0aW9uIG9uIGRhdGEgcHJvdGVjdGlvbiBhbmQgeW91ciByZXNw
+ZWN0aXZlIHJpZ2h0cyBwbGVhc2UgdmlzaXQ6DQoNCmh0dHBzOi8vd3d3LmRpZWhsLmNvbS9ncm91
+cC9lbi90cmFuc3BhcmVuY3ktYW5kLWluZm9ybWF0aW9uLW9ibGlnYXRpb25zLw0KDQoNCg==
 
-In my case this needs `hab_blocks 0x42c+0x1f0@0x910000`.
+--_002_1589abed24138f7213f84ab0cf83bc2b53bf031acameldiehlcom_
+Content-Type: application/mbox; name="1616414542.Vfd01Idfd8d0M526972.mbox"
+Content-Description: 1616414542.Vfd01Idfd8d0M526972.mbox
+Content-Disposition: attachment;
+	filename="1616414542.Vfd01Idfd8d0M526972.mbox"; size=3420;
+	creation-date="Mon, 22 Mar 2021 12:06:32 GMT";
+	modification-date="Mon, 22 Mar 2021 12:06:32 GMT"
+Content-ID: <8159FDCB0134F545BD507F939BD3C3AD@diehl.internal>
+Content-Transfer-Encoding: base64
 
-It supports to remove quotes to support Kconfig variable here.
+UmV0dXJuLVBhdGg6IDxvc3RlcmxhZEBjd3BjMTQzNS5kaWVobGFrby5sb2NhbD4KWC1PcmlnaW5h
+bC1UbzogYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCkRlbGl2ZXJlZC1Ubzogb3N0ZXJsYWRA
+Y3dwYzE0MzUuZGllaGxha28ubG9jYWwKUmVjZWl2ZWQ6IGJ5IGN3cGMxNDM1LmRpZWhsYWtvLmxv
+Y2FsIChQb3N0Zml4LCBmcm9tIHVzZXJpZCAxMDAxKQoJaWQgN0U0NDMzRTU5M0E7IE1vbiwgMjIg
+TWFyIDIwMjEgMTM6MDI6MjIgKzAxMDAgKENFVCkKRnJvbTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0g
+PGRlbmlzLm9zdGVybGFuZEBkaWVobC5jb20+ClRvOiBCYXJlYm94IExpc3QgPGJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZz4KU3ViamVjdDogW1BBVENIXSBzY3JpcHRzOiBpbXg6IGFkZCBzdXBw
+b3J0IGZvciBhZGRpdGlvbmFsIGhhYiBCbG9ja3MKRGF0ZTogTW9uLCAyMiBNYXIgMjAyMSAxMzow
+MjoyMiArMDEwMApNZXNzYWdlLUlkOiA8MjAyMTAzMjIxMjAyMjIuMjk5NTctMS1kZW5pcy5vc3Rl
+cmxhbmRAZGllaGwuY29tPgpYLU1haWxlcjogZ2l0LXNlbmQtZW1haWwgMi4zMS4wCk1JTUUtVmVy
+c2lvbjogMS4wCkNvbnRlbnQtVHJhbnNmZXItRW5jb2Rpbmc6IDhiaXQKClRoaXMgYWxsb3dzIHRv
+IHNwZWNpZml5IGFkZGl0aW9uYWwgc2lnbmVkIGJsb2NrcwppbiB0aGUgZm9ybWF0IGBvZmZzZXQr
+c2l6ZUBhZGRyZXNzYCB3aXRoaW4gdGhlIGlteGltZy4KCkl0IGlzIG5lZWRlZCBieSB0aGUgdXV1
+IHRvb2wsIHdoaWNoIGxvYWRzIHRoZSBpbWFnZSBkaWZmZXJlbnQgdG8KdGhlIGlteC11c2ItbG9h
+ZGVyLiBJdCBsb2FkcyB0aGUgRENEIGFsd2F5cyB0byAweDkxMDAwMCBpbiB0aGUgT0NSQU0uClNv
+IHRoaXMgYXJlYSBoYXZlIHRvIGJlIHNpZ25lZCBhcyB3ZWxsLgoKSW4gbXkgY2FzZSB0aGlzIG5l
+ZWRzIGBoYWJfYmxvY2tzIDB4NDJjKzB4MWYwQDB4OTEwMDAwYC4KCkl0IHN1cHBvcnRzIHRvIHJl
+bW92ZSBxdW90ZXMgdG8gc3VwcG9ydCBLY29uZmlnIHZhcmlhYmxlIGhlcmUuCgpTaWduZWQtb2Zm
+LWJ5OiBEZW5pcyBPc3RlcmxhbmQtSGVpbSA8ZGVuaXMub3N0ZXJsYW5kQGRpZWhsLmNvbT4KLS0t
+CiBzY3JpcHRzL2lteC9pbXguYyB8IDUyICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKy0tCiAxIGZpbGUgY2hhbmdlZCwgNTAgaW5zZXJ0aW9ucygrKSwgMiBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9zY3JpcHRzL2lteC9pbXguYyBiL3NjcmlwdHMvaW14L2lt
+eC5jCmluZGV4IDZiOGRhYmQwNC4uY2UxODc3OGY1IDEwMDY0NAotLS0gYS9zY3JpcHRzL2lteC9p
+bXguYworKysgYi9zY3JpcHRzL2lteC9pbXguYwpAQCAtMzI4LDYgKzMyOCw3IEBAIHN0YXRpYyBp
+bnQgZG9faGFiX2Jsb2NrcyhzdHJ1Y3QgY29uZmlnX2RhdGEgKmRhdGEsIGludCBhcmdjLCBjaGFy
+ICphcmd2W10pCiB7CiAJY2hhciAqc3RyOwogCWludCByZXQ7CisJaW50IGk7CiAJdWludDMyX3Qg
+c2lnbmVkX3NpemUgPSBkYXRhLT5sb2FkX3NpemU7CiAJdWludDMyX3Qgb2Zmc2V0ID0gZGF0YS0+
+aW1hZ2VfaXZ0X29mZnNldDsKIApAQCAtMzUyLDcgKzM1Myw3IEBAIHN0YXRpYyBpbnQgZG9faGFi
+X2Jsb2NrcyhzdHJ1Y3QgY29uZmlnX2RhdGEgKmRhdGEsIGludCBhcmdjLCBjaGFyICphcmd2W10p
+CiAJfQogCiAJaWYgKHNpZ25lZF9zaXplID4gMCkgewotCQlyZXQgPSBhc3ByaW50Zigmc3RyLCAi
+QmxvY2tzID0gMHglMDh4IDB4JTA4eCAweCUwOHggXCIlc1wiXG4iLAorCQlyZXQgPSBhc3ByaW50
+Zigmc3RyLCAiQmxvY2tzID0gMHglMDh4IDB4JTA4eCAweCUwOHggXCIlc1wiIiwKIAkJCWRhdGEt
+PmltYWdlX2xvYWRfYWRkciArIGRhdGEtPmltYWdlX2l2dF9vZmZzZXQsIG9mZnNldCwKIAkJCXNp
+Z25lZF9zaXplIC0gZGF0YS0+aW1hZ2VfaXZ0X29mZnNldCwgZGF0YS0+b3V0ZmlsZSk7CiAJfSBl
+bHNlIHsKQEAgLTM2NSwxMCArMzY2LDU3IEBAIHN0YXRpYyBpbnQgZG9faGFiX2Jsb2NrcyhzdHJ1
+Y3QgY29uZmlnX2RhdGEgKmRhdGEsIGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJCXJldHVybiAt
+RU5PTUVNOwogCiAJcmV0ID0gaGFiX2FkZF9zdHIoZGF0YSwgc3RyKTsKKwlmcmVlKHN0cik7CiAJ
+aWYgKHJldCkKIAkJcmV0dXJuIHJldDsKIAotCXJldHVybiAwOworCWZvciAoaSA9IDE7IGkgPCBh
+cmdjOyBpKyspIHsKKwkJdWludDMyX3QgYWRkcjsKKwkJdWludDMyX3Qgb2ZmOworCQl1aW50MzJf
+dCBzaXplOworCQljaGFyICpiOworCQljaGFyICplOworCisJCWIgPSBhcmd2W2ldOworCQlpZiAo
+KmIgPT0gJyInKSAvLyByZW1vdmUgbGVhZGluZyBxb3V0ZQorCQkJYisrOworCQlpZiAoISpiIHx8
+ICpiID09ICciJykKKwkJCWNvbnRpbnVlOyAvLyBza2lwIGlmIGVtcHR5CisKKwkJb2ZmID0gc3Ry
+dG91bChiLCAmZSwgMCk7CisJCWlmICgqZSAhPSAnKycpIHsKKwkJCWZwcmludGYoc3RkZXJyLCAi
+ZmFpbGVkIHRvIGZpbmQgJysnIGluICclcydcbiIsIGIpOworCQkJZnByaW50ZihzdGRlcnIsICJm
+b3JtYXQgb2ZmK3NpemVAYWRkciBleHBlY3RlZCwgYnV0IGdpdmVuOiAlc1xuIiwgYXJndltpXSk7
+CisJCQlyZXR1cm4gLUVJTlZBTDsKKwkJfQorCisJCWIgPSBlICsgMTsKKwkJc2l6ZSA9IHN0cnRv
+dWwoYiwgJmUsIDApOworCQlpZiAoKmUgIT0gJ0AnKSB7CisJCQlmcHJpbnRmKHN0ZGVyciwgImZh
+aWxlZCB0byBmaW5kICdAJyBpbiAnJXMnXG4iLCBiKTsKKwkJCWZwcmludGYoc3RkZXJyLCAiZm9y
+bWF0IG9mZitzaXplQGFkZHIgZXhwZWN0ZWQsIGJ1dCBnaXZlbjogJXNcbiIsIGFyZ3ZbaV0pOwor
+CQkJcmV0dXJuIC1FSU5WQUw7CisJCX0KKworCQliID0gZSArIDE7CisJCWFkZHIgPSBzdHJ0b3Vs
+KGIsICZlLCAwKTsKKwkJaWYgKCplICYmICplICE9ICciJykgeyAvLyBpZ25vcmUgdHJhaWxpbmcg
+cW91dGUKKwkJCWZwcmludGYoc3RkZXJyLCAidW5leHBlY3RlZCBjaGFyIGF0IHRoZSBlbmQ6ICcl
+YydcbiIsICplKTsKKwkJCWZwcmludGYoc3RkZXJyLCAiZm9ybWF0IG9mZitzaXplQGFkZHIgZXhw
+ZWN0ZWQsIGJ1dCBnaXZlbjogJXNcbiIsIGFyZ3ZbaV0pOworCQkJcmV0dXJuIC1FSU5WQUw7CisJ
+CX0KKworCQlyZXQgPSBhc3ByaW50Zigmc3RyLCAiLCAweCUwOHggMHglMDh4IDB4JTA4eCBcIiVz
+XCIiLCBhZGRyLCBvZmYsIHNpemUsIGRhdGEtPm91dGZpbGUpOworCQlpZiAocmV0IDwgMCkKKwkJ
+CXJldHVybiAtRU5PTUVNOworCisJCXJldCA9IGhhYl9hZGRfc3RyKGRhdGEsIHN0cik7CisJCWZy
+ZWUoc3RyKTsKKwkJaWYgKHJldCkKKwkJCXJldHVybiByZXQ7CisJfQorCisJcmV0dXJuIGhhYl9h
+ZGRfc3RyKGRhdGEsICJcbiIpOwogfQogCiBzdGF0aWMgaW50IGRvX2hhYl9lbmNyeXB0KHN0cnVj
+dCBjb25maWdfZGF0YSAqZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKLS0gCjIuMzEuMAoK
 
-Signed-off-by: Denis Osterland-Heim <denis.osterland@diehl.com>
----
- scripts/imx/imx.c | 52 +++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 50 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index 6b8dabd04..ce18778f5 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -328,6 +328,7 @@ static int do_hab_blocks(struct config_data *data, int =
-argc, char *argv[])
- {
- char *str;
- int ret;
-+int i;
- uint32_t signed_size =3D data->load_size;
- uint32_t offset =3D data->image_ivt_offset;
-
-@@ -352,7 +353,7 @@ static int do_hab_blocks(struct config_data *data, int =
-argc, char *argv[])
- }
-
- if (signed_size > 0) {
--ret =3D asprintf(&str, "Blocks =3D 0x%08x 0x%08x 0x%08x \"%s\"\n",
-+ret =3D asprintf(&str, "Blocks =3D 0x%08x 0x%08x 0x%08x \"%s\"",
- data->image_load_addr + data->image_ivt_offset, offset,
- signed_size - data->image_ivt_offset, data->outfile);
- } else {
-@@ -365,10 +366,57 @@ static int do_hab_blocks(struct config_data *data, in=
-t argc, char *argv[])
- return -ENOMEM;
-
- ret =3D hab_add_str(data, str);
-+free(str);
- if (ret)
- return ret;
-
--return 0;
-+for (i =3D 1; i < argc; i++) {
-+uint32_t addr;
-+uint32_t off;
-+uint32_t size;
-+char *b;
-+char *e;
-+
-+b =3D argv[i];
-+if (*b =3D=3D '"') // remove leading qoute
-+b++;
-+if (!*b || *b =3D=3D '"')
-+continue; // skip if empty
-+
-+off =3D strtoul(b, &e, 0);
-+if (*e !=3D '+') {
-+fprintf(stderr, "failed to find '+' in '%s'\n", b);
-+fprintf(stderr, "format off+size@addr expected, but given: %s\n", argv[i]);
-+return -EINVAL;
-+}
-+
-+b =3D e + 1;
-+size =3D strtoul(b, &e, 0);
-+if (*e !=3D '@') {
-+fprintf(stderr, "failed to find '@' in '%s'\n", b);
-+fprintf(stderr, "format off+size@addr expected, but given: %s\n", argv[i]);
-+return -EINVAL;
-+}
-+
-+b =3D e + 1;
-+addr =3D strtoul(b, &e, 0);
-+if (*e && *e !=3D '"') { // ignore trailing qoute
-+fprintf(stderr, "unexpected char at the end: '%c'\n", *e);
-+fprintf(stderr, "format off+size@addr expected, but given: %s\n", argv[i]);
-+return -EINVAL;
-+}
-+
-+ret =3D asprintf(&str, ", 0x%08x 0x%08x 0x%08x \"%s\"", addr, off, size, d=
-ata->outfile);
-+if (ret < 0)
-+return -ENOMEM;
-+
-+ret =3D hab_add_str(data, str);
-+free(str);
-+if (ret)
-+return ret;
-+}
-+
-+return hab_add_str(data, "\n");
- }
-
- static int do_hab_encrypt(struct config_data *data, int argc, char *argv[])
---
-2.31.0
-
-Diehl Connectivity Solutions GmbH
-Gesch=E4ftsf=FChrung: Horst Leonberger
-Sitz der Gesellschaft: N=FCrnberg - Registergericht: Amtsgericht
-N=FCrnberg: HRB 32315
-
-________________________________
-
-Der Inhalt der vorstehenden E-Mail ist nicht rechtlich bindend. Diese E-Mai=
-l enthaelt vertrauliche und/oder rechtlich geschuetzte Informationen.
-Informieren Sie uns bitte, wenn Sie diese E-Mail faelschlicherweise erhalte=
-n haben. Bitte loeschen Sie in diesem Fall die Nachricht.
-Jede unerlaubte Form der Reproduktion, Bekanntgabe, Aenderung, Verteilung u=
-nd/oder Publikation dieser E-Mail ist strengstens untersagt.
-
-- Informationen zum Datenschutz, insbesondere zu Ihren Rechten, erhalten Si=
-e unter:
-
-https://www.diehl.com/group/de/transparenz-und-informationspflichten/
-
-The contents of the above mentioned e-mail is not legally binding. This e-m=
-ail contains confidential and/or legally protected information. Please info=
-rm us if you have received this e-mail by
-mistake and delete it in such a case. Each unauthorized reproduction, discl=
-osure, alteration, distribution and/or publication of this e-mail is strict=
-ly prohibited.
-
-- For general information on data protection and your respective rights ple=
-ase visit:
-
-https://www.diehl.com/group/en/transparency-and-information-obligations/
-
-
+--_002_1589abed24138f7213f84ab0cf83bc2b53bf031acameldiehlcom_
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--_002_1589abed24138f7213f84ab0cf83bc2b53bf031acameldiehlcom_--
+
 
