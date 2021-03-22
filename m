@@ -1,80 +1,61 @@
-Delivery-date: Sun, 21 Mar 2021 23:30:14 +0100
+Delivery-date: Mon, 22 Mar 2021 05:39:39 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lO6aM-0002d4-6D
-	for lore@lore.pengutronix.de; Sun, 21 Mar 2021 23:30:14 +0100
+	id 1lOCLr-0002uU-J8
+	for lore@lore.pengutronix.de; Mon, 22 Mar 2021 05:39:39 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lO6aG-0006aL-QP
-	for lore@pengutronix.de; Sun, 21 Mar 2021 23:30:09 +0100
+	id 1lOCLq-0001KI-Io
+	for lore@pengutronix.de; Mon, 22 Mar 2021 05:39:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:Mime-Version:References:In-Reply-To:Message-Id:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=5Gemg2ukil9vTYaXEdVBb4YezWH9m4updRZay8dtS/4=; b=fwL2DHpgUF2Bf6jSJTOqcwryc
-	dACkmJqp5JE5OJGMmegaaj4jQ3YJdViqm4xvUaXYWw1e/RozJ+nv4JrK4nKiSR1MPueoYeftegWLw
-	3CWXqyqWr51gOIUu7w7qkBylWd57vEfSFdCG9NULXENSl8CT5NWqhCn4mpSBMbu3W2zmZB8D270Xh
-	mbVOeoEOlWgnCAxk+Kt6PM2St1gRbRaC88HyK4cofVd/I/yyiOnp+AYeIwh4e5cQIUt2gumhGKpAg
-	j/iqqBIMz/LNHohLgDmQtr/BJBrrYXkx2LbbWiyxahUAKLmcXveHzLBn8t1IeiMPK9Rh13Gcoc+Jp
-	M5sIj1JWQ==;
+	 bh=n/U08GtcePOnFyqMm9KQzolLF3gs14MeAiRb48IgCUA=; b=gQAXyiNLzvRCB8AuCLTYITtPG
+	0zErhSdpbP2srXnZ3imPizgJSl6uAM6iGV788BGqfDsf4OkdU4Qa3tvCSr21LMZNUpJm6LS6NXGOp
+	AbL9pSL0kL/qjpJ2PHqnsXVJu5fbtzj9tDShZK++lZKEukzxP8Uv5PXBeV37LEdUWQu/zAohxZlce
+	LtjgjT7lA4k8cooHEXrOGuvlBavZrLQTpIYMhAAy4lc7qMu9pYbmGwTapC7848orHp1563+Pv19Fz
+	Ln3KYKdlN9C22KSazvQqYu+P5khgbShq6jJOjCHe9S9bzZTDnw1RfgAJ2Jd2ChSV5C6cU8MoXmVlo
+	AwClFcphQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lO6WT-00AU4O-Ee; Sun, 21 Mar 2021 22:26:13 +0000
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+	id 1lOCKU-00ArEf-Ne; Mon, 22 Mar 2021 04:38:15 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lO6WL-00AU3z-MN
- for barebox@lists.infradead.org; Sun, 21 Mar 2021 22:26:09 +0000
-Received: by mail-lj1-x229.google.com with SMTP id z25so18743118lja.3
- for <barebox@lists.infradead.org>; Sun, 21 Mar 2021 15:26:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=5bT8yPVXkEqxPvD8Vz91KeFNyCf0gAOtQhh8txx0qew=;
- b=h+u4gd1/XXwQsv0V8MvGdFlkLqWAIt66MhymwNFxf/AxqcI2ZS6i7+19xuZJucDji+
- GHLkOfGqM4DwI0pOmfDgZYEBF8cV4rZzWasG3vqrynGNd39l53jmDYe1csg3fYnyxn0P
- 747uNN1QpK6MvtoNF5zQleNvumrc1yxcmWgrJxuqUnT4Xbbe+2BcwtJ/kRtP+WzzQ0ay
- CLK+gu9WBeWtI9Eplmd9Tola28s+vZUUOTzjuJWBv0XX+gRqK2M9PfCddblIf3jSaMvi
- Gr7sSCxXDHK+F3XDlCEX7Dl1gApiCISwsYDWwvf0Ige+lblGDFfY70elz9TlU7rj80HY
- Zcsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=5bT8yPVXkEqxPvD8Vz91KeFNyCf0gAOtQhh8txx0qew=;
- b=IRtTFbsbzCM9bkvadlNUop7aaJXMmnEQokhrJgJiuHQ8b8PKSDC1r4w2bNPrV8rcs4
- Km408wJgFTAVgx96Dluq7m4biKzb1qmGtzyDTKZ5mUuOAWxtYrZ2MkRc9Jnlu23608h1
- qDnBNVcBZHgWxylDhRV/mqsI3AM2aURJ8gzZ3o4jwjl+PxG//FSFZjEfaa+1OTRMJKdO
- XmJX/nRIs/TMiWgX+bO50PZxf4N01w0rtDmVgzIICZ/d6vyd7UxhnEfvE3zGSW9kIW7S
- pJ/0vXOY+JJlUqUMr6UTu5qEstUmjPmM2JL4SbbPZ6KUqMLPrOgAI3bWr+ycmKNsko3x
- 4PeA==
-X-Gm-Message-State: AOAM530myWhIU56r8StKIFFyXt9Z2p2rQUzMvU37bkgxVvbTSYdUzt14
- 9Ml5ZE8XlXUjOwSNMl9JbV4=
-X-Google-Smtp-Source: ABdhPJwW2MI5TRbIA7Vk+BZLjstwKekASXJ/8b4ZDpdA0sLOYe3AqkkHEUdC9tWC2U9XSimyoGXyEA==
-X-Received: by 2002:a05:651c:118a:: with SMTP id
- w10mr7645907ljo.431.1616365562823; 
- Sun, 21 Mar 2021 15:26:02 -0700 (PDT)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
- by smtp.gmail.com with ESMTPSA id a1sm1691026ljb.76.2021.03.21.15.26.02
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Sun, 21 Mar 2021 15:26:02 -0700 (PDT)
-Date: Mon, 22 Mar 2021 01:26:01 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, rcz@pengutronix.de
-Message-Id: <20210322012601.05991bd2733d9d32e1688665@gmail.com>
-In-Reply-To: <20210321151344.5810-15-a.fatoum@pengutronix.de>
-References: <20210321151344.5810-1-a.fatoum@pengutronix.de>
- <20210321151344.5810-15-a.fatoum@pengutronix.de>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; i686-pc-linux-gnu)
-Mime-Version: 1.0
+ id 1lOCKN-00ArE1-AY
+ for barebox@lists.infradead.org; Mon, 22 Mar 2021 04:38:10 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lOCKK-0001CU-5T; Mon, 22 Mar 2021 05:38:04 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lOCKJ-0003ie-Cd; Mon, 22 Mar 2021 05:38:03 +0100
+Date: Mon, 22 Mar 2021 05:38:03 +0100
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210322043803.GD23724@pengutronix.de>
+References: <20210319084621.2476100-1-ahmad@a3f.at>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20210319084621.2476100-1-ahmad@a3f.at>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 05:37:37 up 32 days,  8:01, 49 users,  load average: 0.95, 0.39, 0.20
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210321_222606_304229_AA880635 
-X-CRM114-Status: GOOD (  11.52  )
+X-CRM114-CacheID: sfid-20210322_043807_819623_E06E1C4A 
+X-CRM114-Status: GOOD (  19.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,123 +67,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 14/21] RISC-V: implement PBL and relocation support
+Subject: Re: [PATCH] bthread: disable ASan accounting for fibers on 32-bit
+ sandbox
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sun, 21 Mar 2021 16:13:37 +0100
-Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+On Fri, Mar 19, 2021 at 09:46:21AM +0100, Ahmad Fatoum wrote:
+> For the sandbox architecture, we use __sanitizer_start_switch_fiber
+> and __sanitizer_finish_switch_fiber to tell ASan when we switch stacks.
+> 
+> If we don't, ASan complains that:
+> 
+>   ==2472828==WARNING: ASan is ignoring requested __asan_handle_no_return:
+>     stack top: 0xff9fc000; bottom 0xf3be8000; size: 0x0be14000 (199311360)
+>   False positive error reports may follow
+>   For details see https://github.com/google/sanitizers/issues/189
+> 
+> This works on 64-bit sandbox, but 32-bit sandbox currently crashes on
+> bthread -v:
+> 
+> ==2469590==AddressSanitizer CHECK failed: ../../../../../src/libsanitizer/asan/asan_poisoning.cpp:37 "((AddrIsAlignedByGranularity(addr + size))) != (0)" (0x0, 0x0)
+>     #0 0xf7a4aa46 in AsanCheckFailed ../../../../../src/libsanitizer/asan/asan_rtl.cpp:73
+>     #1 0xf7a6b5cf in __sanitizer::CheckFailed(char const*, int, char const*, unsigned long long, unsigned long long) ../../../../../src/libsanitizer/sanitizer_common/sanitizer_termination.cpp:78
+>     #2 0xf7a4489f in __asan::PoisonShadow(unsigned long, unsigned long, unsigned char) ../../../../../src/libsanitizer/asan/asan_poisoning.cpp:37
+>     #3 0xf7a4c81b in __asan_handle_no_return ../../../../../src/libsanitizer/asan/asan_rtl.cpp:595
+>     #4 0x566a1ce7 in bthread_schedule /home/a3f/dl/barebox-stm32mp/common/bthread.c:178
+>     #5 0x566a1d54 in bthread_reschedule /home/a3f/dl/barebox-stm32mp/common/bthread.c:165
+>     #6 0x566a1d80 in bthread_trampoline /home/a3f/dl/barebox-stm32mp/common/bthread.c:56
+>     #7 0x567f5bfb in coroutine_bootstrap (/home/a3f/dl/build/barebox/sandbox/barebox+0x1bdbfb)
+>     #8 0x567f5c4b in coroutine_trampoline (/home/a3f/dl/build/barebox/sandbox/barebox+0x1bdc4b)
+>     #9 0xf7f7056f  (linux-gate.so.1+0x56f)
+>     #10 0xf7f70558  (linux-gate.so.1+0x558)
+>     #11 0x56892fff  (/home/a3f/dl/build/barebox/sandbox/barebox+0x25afff)
+> 
+> Just disable the special ASan accounting there until this is figured
+> out. bthreads still function there, but ASan may yield false positives
+> according to the message. This does not affect non-sandbox platforms.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 
-Hi!
+Applied, thanks
 
-> --- /dev/null
-> +++ b/arch/riscv/include/asm/barebox-riscv.h
-> @@ -0,0 +1,104 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * (C) Copyright 2002
-> + * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
-> + * Marius Groeger <mgroeger@sysgo.de>
-> + *
-> + * (C) Copyright 2002
-> + * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
-> + * Alex Zuepke <azu@sysgo.de>
-> + */
-> +
-> +#ifndef _BAREBOX_RISCV_H_
-> +#define _BAREBOX_RISCV_H_
-> +
-> +#include <linux/sizes.h>
-> +#include <asm-generic/memory_layout.h>
-> +#include <linux/kernel.h>
-> +#include <linux/types.h>
-> +#include <linux/compiler.h>
-> +#include <asm/sections.h>
-> +
-> +unsigned long get_runtime_offset(void);
-> +
-> +void setup_c(void);
-> +void relocate_to_current_adr(void);
-> +void relocate_to_adr(unsigned long target);
-> +void __noreturn __naked barebox_riscv_entry(unsigned long membase, unsig=
-ned long memsize,
-> +					    void *boarddata);
-> +
-> +unsigned long riscv_mem_ramoops_get(void);
-> +unsigned long riscv_mem_endmem_get(void);
-> +
-> +void *barebox_riscv_boot_dtb(void);
-> +
-> +static inline unsigned long riscv_mem_stack_top(unsigned long membase,
-> +						unsigned long endmem)
-> +{
-> +	return endmem - SZ_2M;
-> +}
-> +
-> +static inline unsigned long riscv_mem_stack(unsigned long membase,
-> +					  unsigned long endmem)
-> +{
-> +	return riscv_mem_stack_top(membase, endmem) - STACK_SIZE;
-> +}
-> +
-> +static inline unsigned long riscv_mem_early_malloc(unsigned long membase,
-> +						   unsigned long endmem)
-> +{
-> +	return riscv_mem_stack(membase, endmem) - SZ_128K;
-> +}
-> +
-> +static inline unsigned long riscv_mem_early_malloc_end(unsigned long mem=
-base,
-> +						       unsigned long endmem)
-> +{
-> +	return riscv_mem_stack(membase, endmem);
-> +}
-> +
-> +static inline unsigned long riscv_mem_ramoops(unsigned long membase,
-> +					      unsigned long endmem)
-> +{
-> +	endmem =3D riscv_mem_stack(membase, endmem);
-> +#ifdef CONFIG_FS_PSTORE_RAMOOPS
-> +	endmem -=3D CONFIG_FS_PSTORE_RAMOOPS_SIZE;
-> +	endmem =3D ALIGN_DOWN(endmem, SZ_4K);
-> +#endif
-> +
-> +	return endmem;
-> +}
-> +
-> +static inline unsigned long riscv_mem_barebox_image(unsigned long membas=
-e,
-> +						    unsigned long endmem,
-> +						    unsigned long size)
-> +{
-> +	endmem =3D riscv_mem_ramoops(membase, endmem);
-> +
-> +	return ALIGN_DOWN(endmem - size, SZ_1M);
-> +}
-> +
-> +#define ENTRY_FUNCTION(name, arg0, arg1, arg2)                          \
-> +	void name (ulong r0, ulong r1, ulong r2);                       \
-> + 	static void __##name(ulong, ulong, ulong);                      \
-   ^^
-Please fix whitespace here.
+Sascha
 
--- =
-
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
