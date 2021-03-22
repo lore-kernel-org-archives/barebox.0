@@ -1,87 +1,52 @@
-Delivery-date: Mon, 22 Mar 2021 07:27:51 +0100
+Delivery-date: Mon, 22 Mar 2021 07:56:49 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lOE2Z-00036R-1b
-	for lore@lore.pengutronix.de; Mon, 22 Mar 2021 07:27:51 +0100
+	id 1lOEUb-000380-RG
+	for lore@lore.pengutronix.de; Mon, 22 Mar 2021 07:56:49 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lOE2Y-0004DX-3M
-	for lore@pengutronix.de; Mon, 22 Mar 2021 07:27:50 +0100
+	id 1lOEUb-0006oz-4b
+	for lore@pengutronix.de; Mon, 22 Mar 2021 07:56:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Content-ID:In-Reply-To:References:
-	Message-ID:Date:Subject:CC:To:From:Reply-To:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=CtK9uTys7jf/wKhceIzvJs0U+n0VPWdxRPH1Syvi2dE=; b=qQ6gPuKj7qiozXVZdGpOZ5Gcz
-	1+nm1Ot1XcHWTIAFvP7ckiLDBARPfkfvjo6AlTXd/9qkUr8Je25g8hNyHXDhSLD3wDdH/KRw8a2EK
-	/Q+goVzNYZfFIMCQBTWUvfV4uxRno7vjwU70zPNqxX0EIXZ5q9iOhFz0oWFRIZeBtvJCsRJZWTF7M
-	LWF1E8Il7D2hOmrlZXhMdBVMzfPfkld7JW393wKg7xc8e3jie/d05Mac2v0NLHjvTjywwK3xxczAO
-	I2axWozNfaiqcKv+Kwd1ZlUAUByCeBvi3JiXj47RyYF/saRkIBQBjs4BFTl50wRBuE4vAatGGq48U
-	BhcPmG4Aw==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=DujU75VTdRMsJIDnurs9f0AM2VPaSzUEdEsTjEgTSZs=; b=fGrrlRjquQSfxopkRKI6196PEe
+	EpMy4CW1D6sDcWXL939E7uvc7vpsI/8SKtATeM7agrRutXyrWTQz/r58ewWRHajRSokThr30cJk4F
+	+inAtsw/2ZrIhShxkn46pd0aEZey84Dm/hPqxXEUw/bxAyWAV4Z6VA+59WKhVp2SIlfXSEEiJrLOL
+	S1qzs086h5vwQuKyagwPH+FZVPMnwJ/kipeCyPPRaxOTUHKx8m1YUVb94c+Hq86EafaPKryJVnOeO
+	EgLAXUvYiv+RHxXq44wD5TgcdsqvZLcM+rZyBBYYkbMl5TzJwduKLFh6gSGiMuFfed7xf8X0WsT+1
+	uBQbqmTw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lOE1L-00B18e-BD; Mon, 22 Mar 2021 06:26:36 +0000
-Received: from enterprise02.smtp.diehl.com ([193.201.238.220])
+	id 1lOETW-00B33m-VC; Mon, 22 Mar 2021 06:55:43 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lOE1A-00B17D-FN
- for barebox@lists.infradead.org; Mon, 22 Mar 2021 06:26:28 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=diehl.com; i=@diehl.com; q=dns/txt; s=default;
- t=1616394384; x=1647930384;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=M3uk0sRaexQzTFn/CrkNCWJlpYbrlB7zEWNymQy95vY=;
- b=QqUqh0ePRZdxF512Su67pW5tnyf1ycmcgOJbQjPCN5Hj10iBHuWLqV3U
- e8PcPWJ4NtXkrF/01c4fipDyxzSto3HDQaX6xb/GCHf9cA5yqXULaJvzV
- RSbzSU6BfDFxjeFRL/sWZmdEOJwAtLB+slGLI7JayOLE9FgOxPQWewscO
- akR2Vk5w+Ukfu87KPzbFQQA0HAOG00jm4VdWmAYxclZJsbaiFb7TuEr4Z
- b67cq9DXWngQj6OkThZRA/9QzarrWowlPiunGUnM+mEg7XL6C55mufTQ1
- Aa6jfrfZ3hTEaXvYrOWcn61ta+e7ULtZim552FUj1xZ3AfQZfxfOz9Oiw g==;
-IronPort-SDR: rEkSBCjpU+c8FRcK4OcFuVzESAy3yiUCLyNiO+QcDoVr3MIhmNDhJ6k7bUobcqAGCpp+p76kQi
- x64Vv0dRVWqqEOpIiZHwOigBN8jrc5RfEC0H5mvmRbpwUDbuoiIFNK3cHqHYIj5Ef7Ncge0p/c
- yeYe2LAXNOSwze63nzIwA7mVWrbUQWmBrwstz8U0DL/2k407kkU9nRjEyyTZueAGzYnfnRo7cT
- f7J+Hx3t4o3a/a1/kiH8OV1TnxRKU/WIPpv6nn2TRjbxfUBiKXzyJw7UpAdkq3kjprTKr+TAU7
- Cys=
-IronPort-HdrOrdr: A9a23:b8JNHqhykxvmOKbqkUdjDooXpXBQX4523DAbvn1ZSRFFG/Gwvc
- aogfgdyFvYiCwJXmshhNCHP8C7L0/035hz/IUXIPOeRwHgomSlN8VP6oHlzj3mFUTFl9J1/6
- FmbqR4FZnMHUF35PyU3CCUMfYFhOOG/qehmPvEwx5WLT1CRql8425Ce36mO2JsQg0uP+tdKL
- O5xu5q4wWtYm4WaMPTPAhnY8Hmq8fQnJzrJT4qbiRXjjWmtj+j5L7kHxXw5H53OQ9n+6so8m
- TOjmXCl8Kemsy8oyWss1P73tB/ovWk59dJGMLJquV9EF7RozftTL5OH5uYvD5wmv2l6z8R4a
- DxiiZlF/5cr03Rfny4pBv2xmDbvAoG2jvIwUSCiXH+rMS8bwkGMY56mIpFbgGx0TtTgPhMlI
- lCxHmQvYZbBVfrmiP769LUPisa6XackD4ImfUJh3ZCXINbRLhatpwH4U9Zea1wbR7S2cQNGP
- J0BMvB6f4TXVSEY3Xep2Uq78erWh0IcyuucwwosteP2zJLkXg89UERw4g6hHlFzpIvR/B/lp
- f5G5Utv7lUVccdca90QN0dSdCrTlHMRR6kChPtHX3XUIoOIGnEoYL76PEI38TCQu158LIC3L
- 6baUhfv2IpYU7iL9aBtac7jizlcSGQRzjx6sw23ekChpTMAJbwPTC5REozltbImYRlPuTrH9
- O0Pos+OY6fEULeXaJA3wjzQPBpWBsjbPE=
-X-IronPort-AV: E=Sophos;i="5.81,268,1610406000"; 
-   d="scan'208";a="6300565"
-From: Denis Osterland-Heim <denis.osterland@diehl.com>
-To: "sha@pengutronix.de" <sha@pengutronix.de>
-CC: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: [PATCH] scripts: imx: add support for additional hab Blocks
-Thread-Index: AQHXFpj/U18JbvZyj0aAm1Nb7R19NKqPgHEAgAAKIgA=
-Date: Mon, 22 Mar 2021 06:26:20 +0000
-Message-ID: <b13dc15c2ab16b626f31b5ea9c07c2919d241ccb.camel@diehl.com>
-References: <20210311170249.22520-1-denis.osterland@diehl.com>
- <20210322055002.GM23724@pengutronix.de>
-In-Reply-To: <20210322055002.GM23724@pengutronix.de>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-disclaimerprocessed: True
-Content-ID: <EC187EEAE8A2E74D8D3C7255B89FFBFF@diehl.internal>
+ id 1lOETL-00B335-Go
+ for barebox@lists.infradead.org; Mon, 22 Mar 2021 06:55:35 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1lOETK-0006V1-1x; Mon, 22 Mar 2021 07:55:30 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1lOETJ-0003zj-N3; Mon, 22 Mar 2021 07:55:29 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 22 Mar 2021 07:55:25 +0100
+Message-Id: <20210322065527.14428-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-X-GBS-PROC: 5x5xXKsZ7k4sJw6jWwvS4u2hVUEq2/1SuRE2VYMhTlQfDQHg5yJMPq0euxIxUTmT
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210322_062625_974476_DEE01D1A 
-X-CRM114-Status: GOOD (  31.84  )
+X-CRM114-CacheID: sfid-20210322_065533_694001_7B0B5FFA 
+X-CRM114-Status: GOOD (  10.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,122 +58,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-103.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,USER_IN_WELCOMELIST,
-	USER_IN_WHITELIST autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] scripts: imx: add support for additional hab Blocks
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH master 1/3] commands: readline: fix memory leak on wrong usage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGkgU2FzaGEsDQoNCkFtIE1vbnRhZywgZGVuIDIyLjAzLjIwMjEsIDA2OjUwICswMTAwIHNjaHJp
-ZWIgU2FzY2hhIEhhdWVyOg0KPiBIaSBEZW5pcywNCj4NCj4gT24gVGh1LCBNYXIgMTEsIDIwMjEg
-YXQgMDU6MDc6MjBQTSArMDAwMCwgRGVuaXMgT3N0ZXJsYW5kLUhlaW0gd3JvdGU6DQo+ID4gRnJv
-bTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0gPERlbmlzLk9zdGVybGFuZEBkaWVobC5jb20+DQo+ID4N
-Cj4gPiBUaGlzIGFsbG93cyB0byBzcGVjaWZpeSBhZGRpdGlvbmFsIHNpbmdlZCBibG9ja3MNCj4g
-PiBpbiB0aGUgZm9ybWF0IGBvZmZzZXQrc2l6ZUBhZGRyZXNzYCB3aXRoaW4gdGhlIGlteGltZy4N
-Cj4gPg0KPiA+IEl0IGlzIG5lZWRlZCBieSB0aGUgdXV1IHRvb2wsIHdoaWNoIGxvYWRzIHRoZSBp
-bWFnZSBkaWZmZXJlbnQgdG8NCj4gPiB0aGUgaW14LXVzYi1sb2FkZXIuIEl0IGxvYWRzIHRoZSBE
-Q0QgYWx3YXlzIHRvIDB4OTEwMDAwIGluIHRoZSBPQ1JBTS4NCj4gPiBTbyB0aGlzIGFyZWEgaGF2
-ZSB0byBiZSBzaWduZWQgYXMgd2VsbC4NCj4gPg0KPiA+IEluIG15IGNhc2UgdGhpcyBuZWVkcyBg
-aGFiX2Jsb2NrcyAweDQyYysweDFmMEAweDkxMDAwMGAuDQo+ID4NCj4gPiBJdCBzdXBwb3J0cyB0
-byByZW1vdmUgcXVvdGVzIHRvIHN1cHBvcnQgS2NvbmZpZyB2YXJpYWJsZSBoZXJlLg0KPiA+DQo+
-ID4gU2lnbmVkLW9mZi1ieTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0gPERlbmlzLk9zdGVybGFuZEBk
-aWVobC5jb20+DQo+ID4gLS0tDQo+ID4gIHNjcmlwdHMvaW14L2lteC5jIHwgNjIgKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0NCj4gPiAgMSBmaWxlIGNoYW5n
-ZWQsIDYwIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0
-IGEvc2NyaXB0cy9pbXgvaW14LmMgYi9zY3JpcHRzL2lteC9pbXguYw0KPiA+IGluZGV4IDZiOGRh
-YmQwNC4uZDM3ZTIwMGNhIDEwMDY0NA0KPiA+IC0tLSBhL3NjcmlwdHMvaW14L2lteC5jDQo+ID4g
-KysrIGIvc2NyaXB0cy9pbXgvaW14LmMNCj4gPiBAQCAtMzI4LDYgKzMyOCw3IEBAIHN0YXRpYyBp
-bnQgZG9faGFiX2Jsb2NrcyhzdHJ1Y3QgY29uZmlnX2RhdGEgKmRhdGEsIGludCBhcmdjLCBjaGFy
-ICphcmd2W10pDQo+ID4gIHsNCj4gPiAgY2hhciAqc3RyOw0KPiA+ICBpbnQgcmV0Ow0KPiA+ICtp
-bnQgaTsNCj4gPiAgdWludDMyX3Qgc2lnbmVkX3NpemUgPSBkYXRhLT5sb2FkX3NpemU7DQo+ID4g
-IHVpbnQzMl90IG9mZnNldCA9IGRhdGEtPmltYWdlX2l2dF9vZmZzZXQ7DQo+ID4NCj4gPiBAQCAt
-MzUyLDcgKzM1Myw3IEBAIHN0YXRpYyBpbnQgZG9faGFiX2Jsb2NrcyhzdHJ1Y3QgY29uZmlnX2Rh
-dGEgKmRhdGEsIGludCBhcmdjLCBjaGFyICphcmd2W10pDQo+ID4gIH0NCj4gPg0KPiA+ICBpZiAo
-c2lnbmVkX3NpemUgPiAwKSB7DQo+ID4gLXJldCA9IGFzcHJpbnRmKCZzdHIsICJCbG9ja3MgPSAw
-eCUwOHggMHglMDh4IDB4JTA4eCBcIiVzXCJcbiIsDQo+ID4gK3JldCA9IGFzcHJpbnRmKCZzdHIs
-ICJCbG9ja3MgPSAweCUwOHggMHglMDh4IDB4JTA4eCBcIiVzXCIiLA0KPiA+ICBkYXRhLT5pbWFn
-ZV9sb2FkX2FkZHIgKyBkYXRhLT5pbWFnZV9pdnRfb2Zmc2V0LCBvZmZzZXQsDQo+ID4gIHNpZ25l
-ZF9zaXplIC0gZGF0YS0+aW1hZ2VfaXZ0X29mZnNldCwgZGF0YS0+b3V0ZmlsZSk7DQo+ID4gIH0g
-ZWxzZSB7DQo+ID4gQEAgLTM2NSwxMCArMzY2LDY3IEBAIHN0YXRpYyBpbnQgZG9faGFiX2Jsb2Nr
-cyhzdHJ1Y3QgY29uZmlnX2RhdGEgKmRhdGEsIGludCBhcmdjLCBjaGFyICphcmd2W10pDQo+ID4g
-IHJldHVybiAtRU5PTUVNOw0KPiA+DQo+ID4gIHJldCA9IGhhYl9hZGRfc3RyKGRhdGEsIHN0cik7
-DQo+ID4gK2ZyZWUoc3RyKTsNCj4gPiAgaWYgKHJldCkNCj4gPiAgcmV0dXJuIHJldDsNCj4gPg0K
-PiA+IC1yZXR1cm4gMDsNCj4gPiArZm9yIChpID0gMTsgaSA8IGFyZ2M7IGkrKykNCj4gPiArew0K
-Pg0KPiBDaWRpbmcgc3R5bGU6IFRoZSBvcGVuIGJyYWNlIHNob3VsZCBiZSBvbiBwcmV2aW91cyBs
-aW5lLg0Kb2theQ0KDQo+DQo+ID4gK3VpbnQzMl90IGFkZHI7DQo+ID4gK3VpbnQzMl90IG9mZjsN
-Cj4gPiArdWludDMyX3Qgc2l6ZTsNCj4gPiArY2hhciAqYjsNCj4gPiArY2hhciAqZTsNCj4gPiAr
-DQo+ID4gK2IgPSBhcmd2W2ldOw0KPiA+ICtpZiAoYlswXSA9PSAnIicpIC8vIHJlbW92ZSBxb3V0
-ZXMNCj4gPiArew0KPiA+ICtiKys7DQo+ID4gK2ZvciAoZSA9IGI7ICplOyBlKyspDQo+ID4gKy8q
-IGZpbmQgZW5kIG9mIHN0cmluZyAqLzsNCj4gPiArZS0tOw0KPiA+ICtpZiAoKmUgPT0gJyInKQ0K
-PiA+ICsqZSA9ICdcMCc7DQo+DQo+IFRvIG1ha2UgdGhpcyBsZXNzIGVmZmljaWVudCBidXQgYmV0
-dGVyIHJlYWRhYmxlLCBob3cgYWJvdXQ6DQo+DQo+IGUgPSBiICsgc3RybGVuKGIpIC0gMT8NCmRl
-ZmluaXRlbHkgZWFzaWVyIHRvIHJlYWQNCkkgd2lsbCB1c2UgaXQNCg0KPg0KPiBOb3RlIHRoaXMg
-ZmFpbHMgd2hlbiAnYicgaXMgYW4gZW1wdHkgc3RyaW5nLCBidXQgeW91ciB2ZXJzaW9uIGZhaWxz
-DQo+IHRoZXJlIGFzIHdlbGwuIEl0IG5lZWRzIGFuIGFkZGl0aW9uYWwgY2hlY2suDQpJbiBjYXNl
-IG9mIGFuIGVtcHR5IHN0cmluZywgYlswXSB3aWxsIGJlICdcMCcgYW5kIGBiWzBdID09ICciJ2Ag
-d2lsbCBldmFsIHRvIGZhbHNlLg0KSW4gY2FzZSBvZiBhICJcIiIgaW5wdXQgc3RyaW5nLCBmaXJz
-dCBldmFsIG9mIGAqZWAgd2lsbCBiZSBmYWxzZSBhbmQgeW91ciB2ZXJzaW9uIHdvdWxkIGdpdmUg
-YGUgPSBiICsgMSAtIDFgDQp3aGljaCBsb29rcyBib3RoIGNvcnJlY3QgdG8gbWUuDQoNCkJ1dCB3
-aXRoIHRoZSBoaW50cyBiZWxvdywgSSBjb3VsZCByZW1vdmUgdGhpcyBsb29rdXAgZW50aXJlbHkN
-CmFuZCBjaGFuZ2UgdG86DQoNCmBgYGMNCmNoYXIgKnNlcDsNCmlmIChiWzBdID09ICciJykNCmIr
-KzsgLy8gcmVtb3ZlIGxlYWRpbmcgcW91dGUNCmlmICghKmIgfHwgKmIgPT0gJyInKQ0KY29udGlu
-dWU7IC8vIHNraXAgaWYgZW1wdHkNCm9mZiA9IHN0cnRvdWwoYiwgJnNlcCwgMCk7DQppZiAoKnNl
-cCAhPSAnKycpIHsNCi8vIGNvbXBsYWluDQp9DQpiID0gc2VwICsgMTsNCnNpemUgPSBzdHJ0b3Vs
-KGIsICZzZXAsIDApOw0KaWYgKCpzZXAgIT0gJ0AnKSB7DQovLyBjb21wbGFpbg0KfQ0KYiA9IHNl
-cCArIDE7DQphZGRyID0gc3RydG91bChiLCAmc2VwLCAwKTsNCmlmICgqc2VwICYmICpzZXAgIT0g
-JyInKSB7DQovLyBjb21wbGFpbg0KfQ0KYGBgDQoNClJlZ2FyZHMsIERlbmlzDQoNCj4NCj4gPiAr
-ZWxzZQ0KPiA+ICtmcHJpbnRmKHN0ZGVyciwgIndhcm5pbmc6IG5vICdcIicgYXQgdGhlIGVuZCBv
-ZiAnJXMnIFtiPSVwJyVzJywgZT0lcCclcyddXG4iLCBhcmd2W2ldLCBiLCBiLCBlLCBlKTsNCj4g
-PiArfQ0KPiA+ICtpZiAoISpiKQ0KPiA+ICtjb250aW51ZTsgLy8gc2tpcCBpZiBlbXB0eQ0KPiA+
-ICsNCj4gPiArZSA9IHN0cmNocihiLCAnKycpOw0KPiA+ICtpZiAoIWUpDQo+ID4gK3sNCj4gPiAr
-ZnByaW50ZihzdGRlcnIsICJmYWlsZWQgdG8gZmluZCAnKycgaW4gJyVzJ1xuIiwgYik7DQo+ID4g
-K2ZwcmludGYoc3RkZXJyLCAiZm9ybWF0IG9mZitzaXplQGFkZHIgZXhwZWN0ZWQsIGJ1dCBnaXZl
-bjogJXNcbiIsIGFyZ3ZbaV0pOw0KPiA+ICtyZXR1cm4gLUVJTlZBTDsNCj4gPiArfQ0KPiA+ICsq
-ZSA9ICdcMCc7DQo+ID4gK29mZiA9IHN0cnRvdWwoYiwgTlVMTCwgMCk7DQo+DQo+IE5vIG5lZWQg
-dG8gc2V0IHRoZSBwbGFjZSB3aGVyZSB0aGUgJysnIGlzIHRvIHplcm8uIFlvdSBjYW4gZG8gaXQg
-bGlrZQ0KPiB0aGlzOg0KPg0KPiBjaGFyICpwbHVzOw0KPg0KPiBvZmYgPSBzdHJ0b3VsKGIsICZw
-bHVzLCAwKTsNCj4NCj4gaWYgKCpwbHVzICE9ICcrJykNCj4gLyogY29tcGxhaW4gKi8NCj4NCj4N
-Cj4gPiArDQo+ID4gK2IgPSBlICsgMTsNCj4gPiArZSA9IHN0cmNocihiLCAnQCcpOw0KPiA+ICtp
-ZiAoIWUpDQo+ID4gK3sNCj4gPiArZnByaW50ZihzdGRlcnIsICJmYWlsZWQgdG8gZmluZCAnQCcg
-aW4gJyVzJ1xuIiwgYik7DQo+ID4gK2ZwcmludGYoc3RkZXJyLCAiZm9ybWF0IG9mZitzaXplQGFk
-ZHIgZXhwZWN0ZWQsIGJ1dCBnaXZlbjogJXMiLCBhcmd2W2ldKTsNCj4gPiArcmV0dXJuIC1FSU5W
-QUw7DQo+ID4gK30NCj4gPiArKmUgPSAnXDAnOw0KPiA+ICtzaXplID0gc3RydG91bChiLCBOVUxM
-LCAwKTsNCj4NCj4gU2FtZSBoZXJlLg0KPg0KPiBTYXNjaGENCj4NCkRpZWhsIENvbm5lY3Rpdml0
-eSBTb2x1dGlvbnMgR21iSA0KR2VzY2jDpGZ0c2bDvGhydW5nOiBIb3JzdCBMZW9uYmVyZ2VyDQpT
-aXR6IGRlciBHZXNlbGxzY2hhZnQ6IE7DvHJuYmVyZyAtIFJlZ2lzdGVyZ2VyaWNodDogQW10c2dl
-cmljaHQNCk7DvHJuYmVyZzogSFJCIDMyMzE1DQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fDQoNCkRlciBJbmhhbHQgZGVyIHZvcnN0ZWhlbmRlbiBFLU1haWwgaXN0IG5pY2h0IHJl
-Y2h0bGljaCBiaW5kZW5kLiBEaWVzZSBFLU1haWwgZW50aGFlbHQgdmVydHJhdWxpY2hlIHVuZC9v
-ZGVyIHJlY2h0bGljaCBnZXNjaHVldHp0ZSBJbmZvcm1hdGlvbmVuLg0KSW5mb3JtaWVyZW4gU2ll
-IHVucyBiaXR0ZSwgd2VubiBTaWUgZGllc2UgRS1NYWlsIGZhZWxzY2hsaWNoZXJ3ZWlzZSBlcmhh
-bHRlbiBoYWJlbi4gQml0dGUgbG9lc2NoZW4gU2llIGluIGRpZXNlbSBGYWxsIGRpZSBOYWNocmlj
-aHQuDQpKZWRlIHVuZXJsYXVidGUgRm9ybSBkZXIgUmVwcm9kdWt0aW9uLCBCZWthbm50Z2FiZSwg
-QWVuZGVydW5nLCBWZXJ0ZWlsdW5nIHVuZC9vZGVyIFB1Ymxpa2F0aW9uIGRpZXNlciBFLU1haWwg
-aXN0IHN0cmVuZ3N0ZW5zIHVudGVyc2FndC4NCg0KLSBJbmZvcm1hdGlvbmVuIHp1bSBEYXRlbnNj
-aHV0eiwgaW5zYmVzb25kZXJlIHp1IElocmVuIFJlY2h0ZW4sIGVyaGFsdGVuIFNpZSB1bnRlcjoN
-Cg0KaHR0cHM6Ly93d3cuZGllaGwuY29tL2dyb3VwL2RlL3RyYW5zcGFyZW56LXVuZC1pbmZvcm1h
-dGlvbnNwZmxpY2h0ZW4vDQoNClRoZSBjb250ZW50cyBvZiB0aGUgYWJvdmUgbWVudGlvbmVkIGUt
-bWFpbCBpcyBub3QgbGVnYWxseSBiaW5kaW5nLiBUaGlzIGUtbWFpbCBjb250YWlucyBjb25maWRl
-bnRpYWwgYW5kL29yIGxlZ2FsbHkgcHJvdGVjdGVkIGluZm9ybWF0aW9uLiBQbGVhc2UgaW5mb3Jt
-IHVzIGlmIHlvdSBoYXZlIHJlY2VpdmVkIHRoaXMgZS1tYWlsIGJ5DQptaXN0YWtlIGFuZCBkZWxl
-dGUgaXQgaW4gc3VjaCBhIGNhc2UuIEVhY2ggdW5hdXRob3JpemVkIHJlcHJvZHVjdGlvbiwgZGlz
-Y2xvc3VyZSwgYWx0ZXJhdGlvbiwgZGlzdHJpYnV0aW9uIGFuZC9vciBwdWJsaWNhdGlvbiBvZiB0
-aGlzIGUtbWFpbCBpcyBzdHJpY3RseSBwcm9oaWJpdGVkLg0KDQotIEZvciBnZW5lcmFsIGluZm9y
-bWF0aW9uIG9uIGRhdGEgcHJvdGVjdGlvbiBhbmQgeW91ciByZXNwZWN0aXZlIHJpZ2h0cyBwbGVh
-c2UgdmlzaXQ6DQoNCmh0dHBzOi8vd3d3LmRpZWhsLmNvbS9ncm91cC9lbi90cmFuc3BhcmVuY3kt
-YW5kLWluZm9ybWF0aW9uLW9ibGlnYXRpb25zLw0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+Later error-handling frees buf, but the first early exit doesn't.
+Move buf beyond it to fix the memory leak.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ commands/readline.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/commands/readline.c b/commands/readline.c
+index 403ac8563a36..7933a58c08b4 100644
+--- a/commands/readline.c
++++ b/commands/readline.c
+@@ -10,11 +10,13 @@
+ 
+ static int do_readline(int argc, char *argv[])
+ {
+-	char *buf = xzalloc(CONFIG_CBSIZE);
++	char *buf;
+ 
+ 	if (argc < 3)
+ 		return COMMAND_ERROR_USAGE;
+ 
++	buf = xzalloc(CONFIG_CBSIZE);
++
+ 	command_slice_release();
+ 
+ 	if (readline(argv[1], buf, CONFIG_CBSIZE) < 0) {
+-- 
+2.29.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
