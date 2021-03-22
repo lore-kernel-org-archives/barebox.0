@@ -1,79 +1,62 @@
-Delivery-date: Mon, 22 Mar 2021 13:07:55 +0100
+Delivery-date: Mon, 22 Mar 2021 13:33:10 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lOJLf-0003c1-UL
-	for lore@lore.pengutronix.de; Mon, 22 Mar 2021 13:07:55 +0100
+	id 1lOJk6-0003dZ-Pv
+	for lore@lore.pengutronix.de; Mon, 22 Mar 2021 13:33:10 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lOJLf-0003Wc-5b
-	for lore@pengutronix.de; Mon, 22 Mar 2021 13:07:55 +0100
+	id 1lOJk5-0006ho-GE
+	for lore@pengutronix.de; Mon, 22 Mar 2021 13:33:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=desiato.20200630; h=Sender:List-Subscribe:List-Help:
-	List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:Content-Type:
-	In-Reply-To:References:Message-ID:Date:Subject:To:From:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
+	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=8g+adU/TfMQNaylFYLXhLB5mf8eqHB5wLUOveqsYIXA=; b=h95zyEZd9t+ZYwYLLq2gUAj+7
-	g6xI0tWsEpq5ZZC71qgBSfEVOEwWplUY25m8Cz3RO7a9L9/ISZiw5cO3RNZknMy1eCiO/Nz2us/4/
-	XLD00lkyGsUyTvnCC/sBLN/wjH9u42WNM7iWR6qIuLmxRUkRBOA0YHS3WssJb53ElQiMuE4VTFWIm
-	JlXlkZeI9ZqlZKLOw7nVmSyt6PxDAdzrNhbJgmG6gSBJ8hH7GvbQNBWvheqSuYR/WIq8vVh06ImcW
-	RWp6wJFW+q4hWyvf4x87Kutc0A1vN6bXyL6Kr+4sXKYBkr+F6H4KI2F+8cjP7H7xBsPT+G+8h0Kfh
-	xFy7gxybg==;
+	 bh=4FMLPVaSNpMxZxBa45Z3XAq7QiRJotMQfs8G5HejvQc=; b=PibOE1f1v+3Xy+eaG5/pBNzCG
+	ZNOg6kWZV0F541XXJmnL8FmziECKYCDp3iZR6PL+NkkOukYRc9faq36tvWs02H3x4ex+IlxCnxrxj
+	wpuvHxpUbSsvzASifiQUQk9EHZ9DKmPsiejljledLcl1k/k3yjMSrw4JqiRI8vPeL34QAB5MBgrvN
+	9fpQP7UqIPCqCWTiTjP3TBHOBS1RVrgZVqbGjKxpBkqISTSgexgtn3t4h+qP8R1gIHqWRLPn+MwaU
+	Nb5uGpSfhWLaEMTbOCzm8cXTZpmHen5x/g3kuVexSPrthXOLBo6AxLncyKuutg/kycIhJbs2fwRMJ
+	ONX2FeqsQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lOJKX-00BXMF-Mo; Mon, 22 Mar 2021 12:06:45 +0000
-Received: from enterprise01.smtp.diehl.com ([193.201.238.219])
+	id 1lOJir-00BadP-Dw; Mon, 22 Mar 2021 12:31:53 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lOJKN-00BXLA-Gb
- for barebox@lists.infradead.org; Mon, 22 Mar 2021 12:06:38 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=diehl.com; i=@diehl.com; q=dns/txt; s=default;
- t=1616414796; x=1647950796;
- h=from:to:subject:date:message-id:references:in-reply-to:
- mime-version; bh=YKzjfcn593ptO923TOIaFukH9MjLxQ95H000i6CcE2o=;
- b=SISF4ShkpeoDKtD6URZfK/0hUDFnixZjx6jP0mridYGui4BXjDqs4Lh6
- 1gQRJPsYKAUdzKW6S3q0IpQtxv7AW4yDSbKb1gIcm4U1flhDsxftI2fH8
- kgdqclvt3VS6kf3FS3QjEG5WG3d5HWjkTkVzBkE61XP1Vw9qoFc556Jz9
- 30UXBQOwgQXQRqXljWDHaY8vdGX8f+4mt1DyWStOlMxapn4tDyJSUh4Er
- D5pBy9m/a8u4gyyjQti5bpLfbaYqo5Bum3ur84F+SQ4NIlDekFqM5xrhQ
- S5CIKKbS81I/56yBI76GYz0BFcZrroOAUhNbSDDHKPbRjBwEDstyu8+2B A==;
-IronPort-SDR: uN+wja7Hx7NHkoi+kq7fej8WGRVmp5f76KC+BSwa1kntJcRJCaX738+3Dbx1j2ehrUfx58fl8J
- C3Wohs3APawQyQmXRIWuH6kas35MK1Qu6mwKrdXAgffJNh1vn2vUIwxGSwKEZX5YnufHvxM0x7
- ssnwEZ1PmbWmisvQvGWQBoUobySZdnLtsFz1WLxFM5WEwKt0qMfv7/xzSWaOw789iMdKeW2kvd
- +l8CgwEtAIV/sVIJ2CtVdr9YUy4FgOd6yxPncXR0Qm3Ue3u3Hj/sv/E+/wWBC6pB9vl7cI19SY
- pn4=
-IronPort-HdrOrdr: A9a23:Xa/Bdq0pdJhoJF0soO6SHQqjBD0kLtp033Aq2lEZdDV+dMuEm8
- ey2MkKzBOcskd2ZFgMu/ClfJOBT3TV6IJv7eAqV4uKcQH6tAKTXeZfxKTvzzDqEyf9ss5xvJ
- 0AT4FQE9v1ZGIK6PrSxQmjDpIdx8Oa+7qjnufUwx5WIT1CT4FFw0NHBh2AEktwLTMpObMcGI
- CH7sRK4xqMEE55Uu2BCnMIX/fOqrTw/fqKXTc8Cwcj+E2yi1qTmd3HOiOVwwsEVHd3yaoimF
- KvryXC+q6hv/unoyWstVP70pI+oqqE9vJzQOu3sKEuSgnRtg==
-X-IronPort-AV: E=Sophos;i="5.81,268,1610406000"; 
- d="mbox'208?scan'208,208";a="6707561"
-From: Denis Osterland-Heim <denis.osterland@diehl.com>
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: [PATCH] scripts: imx: add support for additional hab Blocks
-Thread-Index: AQHXHxOqNUvgkQ1VrEag377mUrVUmqqP2KmA
-Date: Mon, 22 Mar 2021 12:06:32 +0000
-Message-ID: <1589abed24138f7213f84ab0cf83bc2b53bf031a.camel@diehl.com>
-References: <20210322120222.29957-1-denis.osterland@diehl.com>
-In-Reply-To: <20210322120222.29957-1-denis.osterland@diehl.com>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-disclaimerprocessed: True
-Content-Type: multipart/mixed;
- boundary="_002_1589abed24138f7213f84ab0cf83bc2b53bf031acameldiehlcom_"
+ id 1lOJig-00Bac8-VG
+ for barebox@lists.infradead.org; Mon, 22 Mar 2021 12:31:45 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lOJig-0006UF-BQ; Mon, 22 Mar 2021 13:31:42 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lOJig-0006j8-0l; Mon, 22 Mar 2021 13:31:42 +0100
+Date: Mon, 22 Mar 2021 13:31:41 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20210322123141.GR23724@pengutronix.de>
+References: <20210322112412.4232-1-s.hauer@pengutronix.de>
+ <b6340cb4-0112-d64b-2ec4-a4eb9b22e381@pengutronix.de>
 MIME-Version: 1.0
-X-GBS-PROC: 5x5xXKsZ7k4sJw6jWwvS4rcYiTyJ9zsnrE1N94KT/+KFpjQ9Sj4KA4ps+PFBcua4
+Content-Disposition: inline
+In-Reply-To: <b6340cb4-0112-d64b-2ec4-a4eb9b22e381@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 13:30:27 up 32 days, 15:54, 86 users,  load average: 1.06, 0.58, 0.50
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210322_120636_439442_56F78DA2 
-X-CRM114-Status: GOOD (  30.17  )
+X-CRM114-CacheID: sfid-20210322_123143_154986_DB34A622 
+X-CRM114-Status: GOOD (  33.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,185 +68,115 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-103.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,USER_IN_WELCOMELIST,
-	USER_IN_WHITELIST autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] scripts: imx: add support for additional hab Blocks
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/2] of: Return copy of live tree as fixed tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
---_002_1589abed24138f7213f84ab0cf83bc2b53bf031acameldiehlcom_
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C36D01351506B0469C40060A4C5E4F45@diehl.internal>
-Content-Transfer-Encoding: base64
+On Mon, Mar 22, 2021 at 12:48:58PM +0100, Ahmad Fatoum wrote:
+> Hi,
+> 
+> On 22.03.21 12:24, Sascha Hauer wrote:
+> > the of fixups modify the the tree passed to them. It is undesired that
+> > these modify the live tree, so when we are requested to return the fixed
+> > live tree then make a copy first.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  common/oftree.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/common/oftree.c b/common/oftree.c
+> > index 075b9d6b8b..4868d8812e 100644
+> > --- a/common/oftree.c
+> > +++ b/common/oftree.c
+> > @@ -325,6 +325,9 @@ struct fdt_header *of_get_fixed_tree(struct device_node *node)
+> >  		node = of_get_root_node();
+> >  		if (!node)
+> >  			return NULL;
+> > +		node = of_copy_node(NULL, node);
+> > +		if (!node)
+> > +			return NULL;
+> 
+> Shouldn't this be freed somewhere?
 
-QW0gTW9udGFnLCBkZW4gMjIuMDMuMjAyMSwgMTM6MDIgKzAxMDAgc2NocmllYiBEZW5pcyBPc3Rl
-cmxhbmQtSGVpbToNCj4gVGhpcyBhbGxvd3MgdG8gc3BlY2lmaXkgYWRkaXRpb25hbCBzaWduZWQg
-YmxvY2tzDQo+IGluIHRoZSBmb3JtYXQgYG9mZnNldCtzaXplQGFkZHJlc3NgIHdpdGhpbiB0aGUg
-aW14aW1nLg0KPg0KPiBJdCBpcyBuZWVkZWQgYnkgdGhlIHV1dSB0b29sLCB3aGljaCBsb2FkcyB0
-aGUgaW1hZ2UgZGlmZmVyZW50IHRvDQo+IHRoZSBpbXgtdXNiLWxvYWRlci4gSXQgbG9hZHMgdGhl
-IERDRCBhbHdheXMgdG8gMHg5MTAwMDAgaW4gdGhlIE9DUkFNLg0KPiBTbyB0aGlzIGFyZWEgaGF2
-ZSB0byBiZSBzaWduZWQgYXMgd2VsbC4NCj4NCj4gSW4gbXkgY2FzZSB0aGlzIG5lZWRzIGBoYWJf
-YmxvY2tzIDB4NDJjKzB4MWYwQDB4OTEwMDAwYC4NCj4NCj4gSXQgc3VwcG9ydHMgdG8gcmVtb3Zl
-IHF1b3RlcyB0byBzdXBwb3J0IEtjb25maWcgdmFyaWFibGUgaGVyZS4NCj4NCj4gU2lnbmVkLW9m
-Zi1ieTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0gPGRlbmlzLm9zdGVybGFuZEBkaWVobC5jb20+DQo+
-IC0tLQ0KPiAgc2NyaXB0cy9pbXgvaW14LmMgfCA1MiArKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKystLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDUwIGluc2VydGlvbnMo
-KyksIDIgZGVsZXRpb25zKC0pDQo+DQo+IGRpZmYgLS1naXQgYS9zY3JpcHRzL2lteC9pbXguYyBi
-L3NjcmlwdHMvaW14L2lteC5jDQo+IGluZGV4IDZiOGRhYmQwNC4uY2UxODc3OGY1IDEwMDY0NA0K
-PiAtLS0gYS9zY3JpcHRzL2lteC9pbXguYw0KPiArKysgYi9zY3JpcHRzL2lteC9pbXguYw0KPiBA
-QCAtMzI4LDYgKzMyOCw3IEBAIHN0YXRpYyBpbnQgZG9faGFiX2Jsb2NrcyhzdHJ1Y3QgY29uZmln
-X2RhdGEgKmRhdGEsIGludCBhcmdjLCBjaGFyICphcmd2W10pDQo+ICB7DQo+ICBjaGFyICpzdHI7
-DQo+ICBpbnQgcmV0Ow0KPiAraW50IGk7DQo+ICB1aW50MzJfdCBzaWduZWRfc2l6ZSA9IGRhdGEt
-PmxvYWRfc2l6ZTsNCj4gIHVpbnQzMl90IG9mZnNldCA9IGRhdGEtPmltYWdlX2l2dF9vZmZzZXQ7
-DQo+DQo+IEBAIC0zNTIsNyArMzUzLDcgQEAgc3RhdGljIGludCBkb19oYWJfYmxvY2tzKHN0cnVj
-dCBjb25maWdfZGF0YSAqZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gIH0NCj4NCj4g
-IGlmIChzaWduZWRfc2l6ZSA+IDApIHsNCj4gLXJldCA9IGFzcHJpbnRmKCZzdHIsICJCbG9ja3Mg
-PSAweCUwOHggMHglMDh4IDB4JTA4eCBcIiVzXCJcbiIsDQo+ICtyZXQgPSBhc3ByaW50Zigmc3Ry
-LCAiQmxvY2tzID0gMHglMDh4IDB4JTA4eCAweCUwOHggXCIlc1wiIiwNCj4gIGRhdGEtPmltYWdl
-X2xvYWRfYWRkciArIGRhdGEtPmltYWdlX2l2dF9vZmZzZXQsIG9mZnNldCwNCj4gIHNpZ25lZF9z
-aXplIC0gZGF0YS0+aW1hZ2VfaXZ0X29mZnNldCwgZGF0YS0+b3V0ZmlsZSk7DQo+ICB9IGVsc2Ug
-ew0KPiBAQCAtMzY1LDEwICszNjYsNTcgQEAgc3RhdGljIGludCBkb19oYWJfYmxvY2tzKHN0cnVj
-dCBjb25maWdfZGF0YSAqZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gIHJldHVybiAt
-RU5PTUVNOw0KPg0KPiAgcmV0ID0gaGFiX2FkZF9zdHIoZGF0YSwgc3RyKTsNCj4gK2ZyZWUoc3Ry
-KTsNCj4gIGlmIChyZXQpDQo+ICByZXR1cm4gcmV0Ow0KPg0KPiAtcmV0dXJuIDA7DQo+ICtmb3Ig
-KGkgPSAxOyBpIDwgYXJnYzsgaSsrKSB7DQo+ICt1aW50MzJfdCBhZGRyOw0KPiArdWludDMyX3Qg
-b2ZmOw0KPiArdWludDMyX3Qgc2l6ZTsNCj4gK2NoYXIgKmI7DQo+ICtjaGFyICplOw0KPiArDQo+
-ICtiID0gYXJndltpXTsNCj4gK2lmICgqYiA9PSAnIicpIC8vIHJlbW92ZSBsZWFkaW5nIHFvdXRl
-DQo+ICtiKys7DQo+ICtpZiAoISpiIHx8ICpiID09ICciJykNCj4gK2NvbnRpbnVlOyAvLyBza2lw
-IGlmIGVtcHR5DQo+ICsNCj4gK29mZiA9IHN0cnRvdWwoYiwgJmUsIDApOw0KPiAraWYgKCplICE9
-ICcrJykgew0KPiArZnByaW50ZihzdGRlcnIsICJmYWlsZWQgdG8gZmluZCAnKycgaW4gJyVzJ1xu
-IiwgYik7DQo+ICtmcHJpbnRmKHN0ZGVyciwgImZvcm1hdCBvZmYrc2l6ZUBhZGRyIGV4cGVjdGVk
-LCBidXQgZ2l2ZW46ICVzXG4iLCBhcmd2W2ldKTsNCj4gK3JldHVybiAtRUlOVkFMOw0KPiArfQ0K
-PiArDQo+ICtiID0gZSArIDE7DQo+ICtzaXplID0gc3RydG91bChiLCAmZSwgMCk7DQo+ICtpZiAo
-KmUgIT0gJ0AnKSB7DQo+ICtmcHJpbnRmKHN0ZGVyciwgImZhaWxlZCB0byBmaW5kICdAJyBpbiAn
-JXMnXG4iLCBiKTsNCj4gK2ZwcmludGYoc3RkZXJyLCAiZm9ybWF0IG9mZitzaXplQGFkZHIgZXhw
-ZWN0ZWQsIGJ1dCBnaXZlbjogJXNcbiIsIGFyZ3ZbaV0pOw0KPiArcmV0dXJuIC1FSU5WQUw7DQo+
-ICt9DQo+ICsNCj4gK2IgPSBlICsgMTsNCj4gK2FkZHIgPSBzdHJ0b3VsKGIsICZlLCAwKTsNCj4g
-K2lmICgqZSAmJiAqZSAhPSAnIicpIHsgLy8gaWdub3JlIHRyYWlsaW5nIHFvdXRlDQo+ICtmcHJp
-bnRmKHN0ZGVyciwgInVuZXhwZWN0ZWQgY2hhciBhdCB0aGUgZW5kOiAnJWMnXG4iLCAqZSk7DQo+
-ICtmcHJpbnRmKHN0ZGVyciwgImZvcm1hdCBvZmYrc2l6ZUBhZGRyIGV4cGVjdGVkLCBidXQgZ2l2
-ZW46ICVzXG4iLCBhcmd2W2ldKTsNCj4gK3JldHVybiAtRUlOVkFMOw0KPiArfQ0KPiArDQo+ICty
-ZXQgPSBhc3ByaW50Zigmc3RyLCAiLCAweCUwOHggMHglMDh4IDB4JTA4eCBcIiVzXCIiLCBhZGRy
-LCBvZmYsIHNpemUsIGRhdGEtPm91dGZpbGUpOw0KPiAraWYgKHJldCA8IDApDQo+ICtyZXR1cm4g
-LUVOT01FTTsNCj4gKw0KPiArcmV0ID0gaGFiX2FkZF9zdHIoZGF0YSwgc3RyKTsNCj4gK2ZyZWUo
-c3RyKTsNCj4gK2lmIChyZXQpDQo+ICtyZXR1cm4gcmV0Ow0KPiArfQ0KPiArDQo+ICtyZXR1cm4g
-aGFiX2FkZF9zdHIoZGF0YSwgIlxuIik7DQo+ICB9DQo+DQo+ICBzdGF0aWMgaW50IGRvX2hhYl9l
-bmNyeXB0KHN0cnVjdCBjb25maWdfZGF0YSAqZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkN
-CkRpZWhsIENvbm5lY3Rpdml0eSBTb2x1dGlvbnMgR21iSA0KR2VzY2jDpGZ0c2bDvGhydW5nOiBI
-b3JzdCBMZW9uYmVyZ2VyDQpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IE7DvHJuYmVyZyAtIFJlZ2lz
-dGVyZ2VyaWNodDogQW10c2dlcmljaHQNCk7DvHJuYmVyZzogSFJCIDMyMzE1DQoNCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fDQoNCkRlciBJbmhhbHQgZGVyIHZvcnN0ZWhlbmRlbiBF
-LU1haWwgaXN0IG5pY2h0IHJlY2h0bGljaCBiaW5kZW5kLiBEaWVzZSBFLU1haWwgZW50aGFlbHQg
-dmVydHJhdWxpY2hlIHVuZC9vZGVyIHJlY2h0bGljaCBnZXNjaHVldHp0ZSBJbmZvcm1hdGlvbmVu
-Lg0KSW5mb3JtaWVyZW4gU2llIHVucyBiaXR0ZSwgd2VubiBTaWUgZGllc2UgRS1NYWlsIGZhZWxz
-Y2hsaWNoZXJ3ZWlzZSBlcmhhbHRlbiBoYWJlbi4gQml0dGUgbG9lc2NoZW4gU2llIGluIGRpZXNl
-bSBGYWxsIGRpZSBOYWNocmljaHQuDQpKZWRlIHVuZXJsYXVidGUgRm9ybSBkZXIgUmVwcm9kdWt0
-aW9uLCBCZWthbm50Z2FiZSwgQWVuZGVydW5nLCBWZXJ0ZWlsdW5nIHVuZC9vZGVyIFB1Ymxpa2F0
-aW9uIGRpZXNlciBFLU1haWwgaXN0IHN0cmVuZ3N0ZW5zIHVudGVyc2FndC4NCg0KLSBJbmZvcm1h
-dGlvbmVuIHp1bSBEYXRlbnNjaHV0eiwgaW5zYmVzb25kZXJlIHp1IElocmVuIFJlY2h0ZW4sIGVy
-aGFsdGVuIFNpZSB1bnRlcjoNCg0KaHR0cHM6Ly93d3cuZGllaGwuY29tL2dyb3VwL2RlL3RyYW5z
-cGFyZW56LXVuZC1pbmZvcm1hdGlvbnNwZmxpY2h0ZW4vDQoNClRoZSBjb250ZW50cyBvZiB0aGUg
-YWJvdmUgbWVudGlvbmVkIGUtbWFpbCBpcyBub3QgbGVnYWxseSBiaW5kaW5nLiBUaGlzIGUtbWFp
-bCBjb250YWlucyBjb25maWRlbnRpYWwgYW5kL29yIGxlZ2FsbHkgcHJvdGVjdGVkIGluZm9ybWF0
-aW9uLiBQbGVhc2UgaW5mb3JtIHVzIGlmIHlvdSBoYXZlIHJlY2VpdmVkIHRoaXMgZS1tYWlsIGJ5
-DQptaXN0YWtlIGFuZCBkZWxldGUgaXQgaW4gc3VjaCBhIGNhc2UuIEVhY2ggdW5hdXRob3JpemVk
-IHJlcHJvZHVjdGlvbiwgZGlzY2xvc3VyZSwgYWx0ZXJhdGlvbiwgZGlzdHJpYnV0aW9uIGFuZC9v
-ciBwdWJsaWNhdGlvbiBvZiB0aGlzIGUtbWFpbCBpcyBzdHJpY3RseSBwcm9oaWJpdGVkLg0KDQot
-IEZvciBnZW5lcmFsIGluZm9ybWF0aW9uIG9uIGRhdGEgcHJvdGVjdGlvbiBhbmQgeW91ciByZXNw
-ZWN0aXZlIHJpZ2h0cyBwbGVhc2UgdmlzaXQ6DQoNCmh0dHBzOi8vd3d3LmRpZWhsLmNvbS9ncm91
-cC9lbi90cmFuc3BhcmVuY3ktYW5kLWluZm9ybWF0aW9uLW9ibGlnYXRpb25zLw0KDQoNCg==
+Hm, you're right. Somehow I had the assumption this is freed by the
+caller, but it's not the device_node * that is returned here.
 
---_002_1589abed24138f7213f84ab0cf83bc2b53bf031acameldiehlcom_
-Content-Type: application/mbox; name="1616414542.Vfd01Idfd8d0M526972.mbox"
-Content-Description: 1616414542.Vfd01Idfd8d0M526972.mbox
-Content-Disposition: attachment;
-	filename="1616414542.Vfd01Idfd8d0M526972.mbox"; size=3420;
-	creation-date="Mon, 22 Mar 2021 12:06:32 GMT";
-	modification-date="Mon, 22 Mar 2021 12:06:32 GMT"
-Content-ID: <8159FDCB0134F545BD507F939BD3C3AD@diehl.internal>
-Content-Transfer-Encoding: base64
+-------------------------------8<------------------------------------
 
-UmV0dXJuLVBhdGg6IDxvc3RlcmxhZEBjd3BjMTQzNS5kaWVobGFrby5sb2NhbD4KWC1PcmlnaW5h
-bC1UbzogYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCkRlbGl2ZXJlZC1Ubzogb3N0ZXJsYWRA
-Y3dwYzE0MzUuZGllaGxha28ubG9jYWwKUmVjZWl2ZWQ6IGJ5IGN3cGMxNDM1LmRpZWhsYWtvLmxv
-Y2FsIChQb3N0Zml4LCBmcm9tIHVzZXJpZCAxMDAxKQoJaWQgN0U0NDMzRTU5M0E7IE1vbiwgMjIg
-TWFyIDIwMjEgMTM6MDI6MjIgKzAxMDAgKENFVCkKRnJvbTogRGVuaXMgT3N0ZXJsYW5kLUhlaW0g
-PGRlbmlzLm9zdGVybGFuZEBkaWVobC5jb20+ClRvOiBCYXJlYm94IExpc3QgPGJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZz4KU3ViamVjdDogW1BBVENIXSBzY3JpcHRzOiBpbXg6IGFkZCBzdXBw
-b3J0IGZvciBhZGRpdGlvbmFsIGhhYiBCbG9ja3MKRGF0ZTogTW9uLCAyMiBNYXIgMjAyMSAxMzow
-MjoyMiArMDEwMApNZXNzYWdlLUlkOiA8MjAyMTAzMjIxMjAyMjIuMjk5NTctMS1kZW5pcy5vc3Rl
-cmxhbmRAZGllaGwuY29tPgpYLU1haWxlcjogZ2l0LXNlbmQtZW1haWwgMi4zMS4wCk1JTUUtVmVy
-c2lvbjogMS4wCkNvbnRlbnQtVHJhbnNmZXItRW5jb2Rpbmc6IDhiaXQKClRoaXMgYWxsb3dzIHRv
-IHNwZWNpZml5IGFkZGl0aW9uYWwgc2lnbmVkIGJsb2NrcwppbiB0aGUgZm9ybWF0IGBvZmZzZXQr
-c2l6ZUBhZGRyZXNzYCB3aXRoaW4gdGhlIGlteGltZy4KCkl0IGlzIG5lZWRlZCBieSB0aGUgdXV1
-IHRvb2wsIHdoaWNoIGxvYWRzIHRoZSBpbWFnZSBkaWZmZXJlbnQgdG8KdGhlIGlteC11c2ItbG9h
-ZGVyLiBJdCBsb2FkcyB0aGUgRENEIGFsd2F5cyB0byAweDkxMDAwMCBpbiB0aGUgT0NSQU0uClNv
-IHRoaXMgYXJlYSBoYXZlIHRvIGJlIHNpZ25lZCBhcyB3ZWxsLgoKSW4gbXkgY2FzZSB0aGlzIG5l
-ZWRzIGBoYWJfYmxvY2tzIDB4NDJjKzB4MWYwQDB4OTEwMDAwYC4KCkl0IHN1cHBvcnRzIHRvIHJl
-bW92ZSBxdW90ZXMgdG8gc3VwcG9ydCBLY29uZmlnIHZhcmlhYmxlIGhlcmUuCgpTaWduZWQtb2Zm
-LWJ5OiBEZW5pcyBPc3RlcmxhbmQtSGVpbSA8ZGVuaXMub3N0ZXJsYW5kQGRpZWhsLmNvbT4KLS0t
-CiBzY3JpcHRzL2lteC9pbXguYyB8IDUyICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKy0tCiAxIGZpbGUgY2hhbmdlZCwgNTAgaW5zZXJ0aW9ucygrKSwgMiBkZWxl
-dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9zY3JpcHRzL2lteC9pbXguYyBiL3NjcmlwdHMvaW14L2lt
-eC5jCmluZGV4IDZiOGRhYmQwNC4uY2UxODc3OGY1IDEwMDY0NAotLS0gYS9zY3JpcHRzL2lteC9p
-bXguYworKysgYi9zY3JpcHRzL2lteC9pbXguYwpAQCAtMzI4LDYgKzMyOCw3IEBAIHN0YXRpYyBp
-bnQgZG9faGFiX2Jsb2NrcyhzdHJ1Y3QgY29uZmlnX2RhdGEgKmRhdGEsIGludCBhcmdjLCBjaGFy
-ICphcmd2W10pCiB7CiAJY2hhciAqc3RyOwogCWludCByZXQ7CisJaW50IGk7CiAJdWludDMyX3Qg
-c2lnbmVkX3NpemUgPSBkYXRhLT5sb2FkX3NpemU7CiAJdWludDMyX3Qgb2Zmc2V0ID0gZGF0YS0+
-aW1hZ2VfaXZ0X29mZnNldDsKIApAQCAtMzUyLDcgKzM1Myw3IEBAIHN0YXRpYyBpbnQgZG9faGFi
-X2Jsb2NrcyhzdHJ1Y3QgY29uZmlnX2RhdGEgKmRhdGEsIGludCBhcmdjLCBjaGFyICphcmd2W10p
-CiAJfQogCiAJaWYgKHNpZ25lZF9zaXplID4gMCkgewotCQlyZXQgPSBhc3ByaW50Zigmc3RyLCAi
-QmxvY2tzID0gMHglMDh4IDB4JTA4eCAweCUwOHggXCIlc1wiXG4iLAorCQlyZXQgPSBhc3ByaW50
-Zigmc3RyLCAiQmxvY2tzID0gMHglMDh4IDB4JTA4eCAweCUwOHggXCIlc1wiIiwKIAkJCWRhdGEt
-PmltYWdlX2xvYWRfYWRkciArIGRhdGEtPmltYWdlX2l2dF9vZmZzZXQsIG9mZnNldCwKIAkJCXNp
-Z25lZF9zaXplIC0gZGF0YS0+aW1hZ2VfaXZ0X29mZnNldCwgZGF0YS0+b3V0ZmlsZSk7CiAJfSBl
-bHNlIHsKQEAgLTM2NSwxMCArMzY2LDU3IEBAIHN0YXRpYyBpbnQgZG9faGFiX2Jsb2NrcyhzdHJ1
-Y3QgY29uZmlnX2RhdGEgKmRhdGEsIGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJCXJldHVybiAt
-RU5PTUVNOwogCiAJcmV0ID0gaGFiX2FkZF9zdHIoZGF0YSwgc3RyKTsKKwlmcmVlKHN0cik7CiAJ
-aWYgKHJldCkKIAkJcmV0dXJuIHJldDsKIAotCXJldHVybiAwOworCWZvciAoaSA9IDE7IGkgPCBh
-cmdjOyBpKyspIHsKKwkJdWludDMyX3QgYWRkcjsKKwkJdWludDMyX3Qgb2ZmOworCQl1aW50MzJf
-dCBzaXplOworCQljaGFyICpiOworCQljaGFyICplOworCisJCWIgPSBhcmd2W2ldOworCQlpZiAo
-KmIgPT0gJyInKSAvLyByZW1vdmUgbGVhZGluZyBxb3V0ZQorCQkJYisrOworCQlpZiAoISpiIHx8
-ICpiID09ICciJykKKwkJCWNvbnRpbnVlOyAvLyBza2lwIGlmIGVtcHR5CisKKwkJb2ZmID0gc3Ry
-dG91bChiLCAmZSwgMCk7CisJCWlmICgqZSAhPSAnKycpIHsKKwkJCWZwcmludGYoc3RkZXJyLCAi
-ZmFpbGVkIHRvIGZpbmQgJysnIGluICclcydcbiIsIGIpOworCQkJZnByaW50ZihzdGRlcnIsICJm
-b3JtYXQgb2ZmK3NpemVAYWRkciBleHBlY3RlZCwgYnV0IGdpdmVuOiAlc1xuIiwgYXJndltpXSk7
-CisJCQlyZXR1cm4gLUVJTlZBTDsKKwkJfQorCisJCWIgPSBlICsgMTsKKwkJc2l6ZSA9IHN0cnRv
-dWwoYiwgJmUsIDApOworCQlpZiAoKmUgIT0gJ0AnKSB7CisJCQlmcHJpbnRmKHN0ZGVyciwgImZh
-aWxlZCB0byBmaW5kICdAJyBpbiAnJXMnXG4iLCBiKTsKKwkJCWZwcmludGYoc3RkZXJyLCAiZm9y
-bWF0IG9mZitzaXplQGFkZHIgZXhwZWN0ZWQsIGJ1dCBnaXZlbjogJXNcbiIsIGFyZ3ZbaV0pOwor
-CQkJcmV0dXJuIC1FSU5WQUw7CisJCX0KKworCQliID0gZSArIDE7CisJCWFkZHIgPSBzdHJ0b3Vs
-KGIsICZlLCAwKTsKKwkJaWYgKCplICYmICplICE9ICciJykgeyAvLyBpZ25vcmUgdHJhaWxpbmcg
-cW91dGUKKwkJCWZwcmludGYoc3RkZXJyLCAidW5leHBlY3RlZCBjaGFyIGF0IHRoZSBlbmQ6ICcl
-YydcbiIsICplKTsKKwkJCWZwcmludGYoc3RkZXJyLCAiZm9ybWF0IG9mZitzaXplQGFkZHIgZXhw
-ZWN0ZWQsIGJ1dCBnaXZlbjogJXNcbiIsIGFyZ3ZbaV0pOworCQkJcmV0dXJuIC1FSU5WQUw7CisJ
-CX0KKworCQlyZXQgPSBhc3ByaW50Zigmc3RyLCAiLCAweCUwOHggMHglMDh4IDB4JTA4eCBcIiVz
-XCIiLCBhZGRyLCBvZmYsIHNpemUsIGRhdGEtPm91dGZpbGUpOworCQlpZiAocmV0IDwgMCkKKwkJ
-CXJldHVybiAtRU5PTUVNOworCisJCXJldCA9IGhhYl9hZGRfc3RyKGRhdGEsIHN0cik7CisJCWZy
-ZWUoc3RyKTsKKwkJaWYgKHJldCkKKwkJCXJldHVybiByZXQ7CisJfQorCisJcmV0dXJuIGhhYl9h
-ZGRfc3RyKGRhdGEsICJcbiIpOwogfQogCiBzdGF0aWMgaW50IGRvX2hhYl9lbmNyeXB0KHN0cnVj
-dCBjb25maWdfZGF0YSAqZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKLS0gCjIuMzEuMAoK
+>From 9408403cac204ffd46742f665b97de381eec3b99 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 22 Mar 2021 12:20:26 +0100
+Subject: [PATCH 1/2] of: Return copy of live tree as fixed tree
 
---_002_1589abed24138f7213f84ab0cf83bc2b53bf031acameldiehlcom_
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+the of fixups modify the the tree passed to them. It is undesired that
+these modify the live tree, so when we are requested to return the fixed
+live tree then make a copy first.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/oftree.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/common/oftree.c b/common/oftree.c
+index 075b9d6b8b..60d4327155 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -319,21 +319,27 @@ int of_fix_tree(struct device_node *node)
+ struct fdt_header *of_get_fixed_tree(struct device_node *node)
+ {
+ 	int ret;
+-	struct fdt_header *fdt;
++	struct fdt_header *fdt = NULL;
++	struct device_node *freenp = NULL;
+ 
+ 	if (!node) {
+ 		node = of_get_root_node();
+ 		if (!node)
+ 			return NULL;
++
++		freenp = node = of_copy_node(NULL, node);
++		if (!node)
++			return NULL;
+ 	}
+ 
+ 	ret = of_fix_tree(node);
+ 	if (ret)
+-		return NULL;
++		goto out;
+ 
+ 	fdt = of_flatten_dtb(node);
+-	if (!fdt)
+-		return NULL;
++
++out:
++	of_delete_node(freenp);
+ 
+ 	return fdt;
+ }
+-- 
+2.29.2
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---_002_1589abed24138f7213f84ab0cf83bc2b53bf031acameldiehlcom_--
-
 
