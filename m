@@ -1,55 +1,56 @@
-Delivery-date: Wed, 24 Mar 2021 13:26:01 +0100
+Delivery-date: Wed, 24 Mar 2021 13:26:06 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lP2aH-0006ZS-HX
-	for lore@lore.pengutronix.de; Wed, 24 Mar 2021 13:26:01 +0100
+	id 1lP2aM-0006Zo-Gu
+	for lore@lore.pengutronix.de; Wed, 24 Mar 2021 13:26:06 +0100
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lP2aG-0007Tp-Qf
-	for lore@pengutronix.de; Wed, 24 Mar 2021 13:26:01 +0100
+	id 1lP2aL-0007Vx-Ma
+	for lore@pengutronix.de; Wed, 24 Mar 2021 13:26:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=Bos5/ZioV447hfZxQzj/AMrnznd6K/0kqC+G1lohHTg=; b=kNEepkbdq+qzxG+6VIjFQ/Gdn
-	ph8JBeL8obftFl5uFHu/YJVFV7e+VuM7L+GUwi6BIwCaA/f5X0nE6YD4nCSiGAc3TfyOJD70Nz1Fx
-	w5SjYY36PlmrNIU8qzj5tSshkmW9Rgpcx6onxZZaMu0wmRraZH2ipmoibvuuxfYYmgOcfHfOVXzGW
-	0/RPQ035LsGT19yimpzO3rz9d98+L7fmMGqie7UAjtEab0HPRKcGP50Sod9u6FU0lgTSjqUZxX5S7
-	p+oUGfbZ7em8KyPccc2USkhzr7Nevu05uGM1p/iaC/vKH+bgWx9rrd4bBhL06chjFAcBYtc4FjdcF
-	M/GXGVDKA==;
+	 bh=yOG+V2U/qq31c2BqTc38CO7AA5dNTPS0sRcEvBnBVYs=; b=N5ndBaPL8Wn1rNJDgFiFZVYEi
+	8jQNdnRcmlXr+Uxicn2wnvI3QZ8WKB3CKXSrnV0+Hq3upwx3qN0h2XBtAJVoNzAO+PuO46/kAo+1l
+	xvdrTm/jM8Eh4b+U9+XT/hxe2roCIoG8dsAH13YrEtScDERUb7KC5dK3vrASbzttsCgDLaRlBBs6L
+	6dT34bsMH15OYPJjcABN0uZORXhF8BNbvdUPekiuIb7qkzKK/NaTKxt7/8uET8CXxzY59NNZdM5dP
+	vbM0rBQNM7NJ+NxIY3wAc7PTPsLhi1+G2URzqxx77z3YSovoMccBL8EA4YsckzMK9iKDWxmcV0DKJ
+	S8QcKVNaA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lP2ZD-00H44N-5D; Wed, 24 Mar 2021 12:24:55 +0000
+	id 1lP2ZK-00H496-T3; Wed, 24 Mar 2021 12:25:03 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lP2XB-00H3Ek-Ka
+ id 1lP2XB-00H3El-La
  for barebox@lists.infradead.org; Wed, 24 Mar 2021 12:22:52 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lP2XB-0006mq-89; Wed, 24 Mar 2021 13:22:49 +0100
+ id 1lP2XB-0006mr-93; Wed, 24 Mar 2021 13:22:49 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lP2XA-0002nK-VI; Wed, 24 Mar 2021 13:22:48 +0100
+ id 1lP2XA-0002nN-Vy; Wed, 24 Mar 2021 13:22:49 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: bst@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 24 Mar 2021 13:22:45 +0100
-Message-Id: <20210324122247.10683-2-a.fatoum@pengutronix.de>
+Date: Wed, 24 Mar 2021 13:22:46 +0100
+Message-Id: <20210324122247.10683-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210324122247.10683-1-a.fatoum@pengutronix.de>
 References: <20210324122247.10683-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210324_122249_800480_EE7845A2 
-X-CRM114-Status: GOOD (  13.99  )
+X-CRM114-CacheID: sfid-20210324_122249_934180_04745562 
+X-CRM114-Status: UNSURE (   9.26  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,63 +74,34 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/4] clk: imx: clk-pllv1: fix wrong PLL recalc on i.MX1/i.MX21
+Subject: [PATCH 3/4] kbuild: add -Wtype-limits to compile flags
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Adding -Wtype-limits to the build correctly detects that the
-first branch (mfn < 0) is never taken as mfn is unsigned.
+Not warning about e.g. comparisons of unsigned integers with 0 can
+introduce nasty bugs around error handling especially.
 
-Import the Linux v5.11 bits that correctly checks the sign of the
-sign/magnitude integer. Unlike Linux, we don't need to check
-whether it's an i.MX1 or i.MX21 here, because an #ifdef earlier
-normalizes the value to be aligned with the i.MX27's.
-
-This however means that a multi-image barebox wasn't and will remain
-not able to properly target both <= i.MX21 and newer SoCs at the same time.
-
-This is just build-time tested.
+Enable the warning to be able to identify these issues in future.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/clk/imx/clk-pllv1.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-pllv1.c b/drivers/clk/imx/clk-pllv1.c
-index 283ae843a75d..36192bb2112a 100644
---- a/drivers/clk/imx/clk-pllv1.c
-+++ b/drivers/clk/imx/clk-pllv1.c
-@@ -12,12 +12,21 @@
+diff --git a/Makefile b/Makefile
+index 6d78d1f58eca..81ceedafeb0c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -650,6 +650,9 @@ CHECKFLAGS     += $(NOSTDINC_FLAGS)
+ # warn about C99 declaration after statement
+ KBUILD_CFLAGS += $(call cc-option,-Wdeclaration-after-statement,)
  
- #include "clk.h"
- 
-+#define MFN_BITS	(10)
-+#define MFN_SIGN	(BIT(MFN_BITS - 1))
-+#define MFN_MASK	(MFN_SIGN - 1)
++# warn about e.g. (unsigned)x < 0
++KBUILD_CFLAGS += $(call cc-option,-Wtype-limits)
 +
- struct clk_pllv1 {
- 	struct clk clk;
- 	void __iomem *reg;
- 	const char *parent;
- };
+ # disable pointer signed / unsigned warnings in gcc 4.0
+ KBUILD_CFLAGS += $(call cc-option,-Wno-pointer-sign,)
  
-+static inline bool mfn_is_negative(unsigned int mfn)
-+{
-+    return mfn & MFN_SIGN;
-+}
-+
- static unsigned long clk_pllv1_recalc_rate(struct clk *clk,
- 		unsigned long parent_rate)
- {
-@@ -50,7 +59,7 @@ static unsigned long clk_pllv1_recalc_rate(struct clk *clk,
- 	ll = (unsigned long long)freq * mfn_abs;
- 
- 	do_div(ll, mfd + 1);
--	if (mfn < 0)
-+	if (mfn_is_negative(mfn))
- 		ll = (freq * mfi) - ll;
- 	else
- 		ll = (freq * mfi) + ll;
 -- 
 2.29.2
 
