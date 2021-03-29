@@ -1,77 +1,78 @@
-Delivery-date: Mon, 29 Mar 2021 21:51:57 +0200
+Delivery-date: Tue, 30 Mar 2021 03:18:58 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lQxvZ-0006Iv-V8
-	for lore@lore.pengutronix.de; Mon, 29 Mar 2021 21:51:57 +0200
+	id 1lR322-0006Yn-6y
+	for lore@lore.pengutronix.de; Tue, 30 Mar 2021 03:18:58 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lQxvY-0002TK-OL
-	for lore@pengutronix.de; Mon, 29 Mar 2021 21:51:57 +0200
+	id 1lR320-00076V-6o
+	for lore@pengutronix.de; Tue, 30 Mar 2021 03:18:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=/SgabBN24wBPHCHCJoZmFTre2aEtec9f3t+QnjVWKZg=; b=LXm6zrQeT23EnQVNlxioSNLdSx
-	sIjPdB8DEM5rA26VIuA+Nt3Kiwi+kPba1y8NtRFC6VFaqgwlpbnvSHQCnDEY7J0zkchYHX/KyoCz/
-	wxgyglF+j2Xlw30INFB/hPGzu53gjjSa5C8qhgbgIKgMGrLUGApOmsEXggng40GbRTmb6m4c5xhK2
-	bxiZhWAtZhZB/Nb8mIypdeIw/44qam1aILHzDXBzp8KMRfasAut2xrYZMlMJtZNa1/hEqpFiDlDBg
-	KUc0qk2pUMptKnTcupG1CE8NKKUC6tPIYAe7T00oDGLOU2de13onP6X+O2bfxZyrI/+CRi+JL+BRi
-	p3UtSPPA==;
+	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=HTY95s+1OGHJrZYFPRQmKLM5q+fh16L6njfCRMgZUbU=; b=Dwa/hLSjy0K/KU3CIrEJoS/1p
+	2vV87XreFmKzJEVvqFGsePXpF3q7QLFSxKi33VEm6m7bil+76zd9pLeOoH4rhPX0INSIAqAVnjhXC
+	M/9b1HFhyWsNmBWsNRTnDaLCSJxpQlzEhSeVo0nFV61S3cgudsgEyP9sp7CbF595Tq+rtRz3s3uO8
+	1nMOc/c58cpZhhqA4F2S4W3jS7W0OOpyKIcUzdHcUXsEdry9OGs5HHuy1/OR7LXchFO3vOKOH3yN5
+	663nMCtipKU7GOTWMz6hB0WYLrUdyFtotPJtBU2NAdkGowFqJgOJ+snYEzBcXCY84mCECT4WLOm3o
+	S7vU0xVdA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lQxtn-001JZJ-0R; Mon, 29 Mar 2021 19:50:07 +0000
-Received: from mickerik.phytec.de ([195.145.39.210])
+	id 1lR30D-002KGB-Aq; Tue, 30 Mar 2021 01:17:05 +0000
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lQrfP-000fUN-U0
- for barebox@lists.infradead.org; Mon, 29 Mar 2021 13:10:53 +0000
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a1; c=relaxed/simple;
- q=dns/txt; i=@phytec.de; t=1617023451; x=1619615451;
- h=From:Sender:Reply-To:Subject:Date:Message-Id:To:Cc:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=IQkDaybq0nLKCNgwalxVP9Pwt8mOVycNsioGwrwg7SM=;
- b=eMzX6pI+czwXjyAJNLucSPsDc1J0CdBvTvDAYeOwFGZCrpPFtqpyz/CLfUbl2A9G
- m1UXtLP3bEhTACoqJowprM508WU7hzSczUnxfDyo1yC4BVaK2uTvCbCtwBAwgmqW
- QznuCxWninfvbwpouBqJATUjOl7C0Mgg/m74j3KITU8=;
-X-AuditID: c39127d2-85cb770000001c91-29-6061d1dbb111
-Received: from idefix.phytec.de (Unknown_Domain [172.16.0.10])
- by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 24.6B.07313.BD1D1606;
- Mon, 29 Mar 2021 15:10:51 +0200 (CEST)
-Received: from lws-riedmueller.phytec.de ([172.16.23.108])
- by idefix.phytec.de (IBM Domino Release 9.0.1FP7)
- with ESMTP id 2021032915105134-253878 ;
- Mon, 29 Mar 2021 15:10:51 +0200 
-From: Stefan Riedmueller <s.riedmueller@phytec.de>
+ id 1lR0Pt-001gMf-JM
+ for barebox@lists.infradead.org; Mon, 29 Mar 2021 22:31:27 +0000
+Received: by mail-lj1-x22b.google.com with SMTP id a1so17707332ljp.2
+ for <barebox@lists.infradead.org>; Mon, 29 Mar 2021 15:31:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=N84uOStz4xMH1r0t4zfXwFPUOomemByG5N3AONSAxrw=;
+ b=fbnjkQFU6Cbwik2whG/FUxr6I/qc4Jq7MpTnzm9ooqdpaUXf35viOTUYbzV4agjpti
+ mmDHq8E7ChjUtrlsbXoxfbHiThNrRpb5C47nY9wbsnKxTGBerM/P4J8AMV1K7ALBfQJ0
+ mxOWvQE1B1NAMEgVsuAC+UnMoK8NOSGsZhn2IPKeSYSuzCE6voR8cbpeGcoepwtaKLlJ
+ QcaNh34Jr+AZR0c7OXu7+TU+/8UIYdd/GJs96CgKscTSQNKGcPQ8Ucexr48WcaLX2FRu
+ 89MsokBydwb4woIvlRvTfndvI/Fs1JjqIlkozkkYb1RKK9AR+yNreGCUEc/zC04Y4L4Z
+ 2Vpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=N84uOStz4xMH1r0t4zfXwFPUOomemByG5N3AONSAxrw=;
+ b=YC7Rbfn9h4xvDcgn1Q8eq9/MrziKeTTkHxxM1XJ7BMlJVZAl3YSW5Wn+8S225iLt5Y
+ 7jf1XD4F84NoaKPslp/5SBc6hn0j6Q9Vu1vsz/hna1OUKEYlFoshb4vktbzUnJrLOgvH
+ VEhvsqZlNStS5UR3mIJlz17N/60b23WkUNQBoumJbsfLPpkDs2xZkXM26NAWAXp9qc3f
+ UhHIsz6EebSb6mrRbbawreu8A1krmwgAPOZQ7XrLWFbqnchAqTS7Y5vLLFpUJJEC6Uf5
+ S8gd6viaH3nEyJd2BSy8ks7x4TvwD4raTYDlBoS/VLZI8fQErNMQDNlUEuvLwDm4ijtF
+ wsmw==
+X-Gm-Message-State: AOAM533erzP8nNMWtcLxlarx1EL37lhJtpAgdr7XA2k8B4W8xn1Xj9yq
+ eqbsP6HBUS3RgXqfW3n09GWXqzDP9nw=
+X-Google-Smtp-Source: ABdhPJzJjVGJnSo1FQJN5PITcLYJMibYQsUnI73s9hwV/gSHp8EaZJBN18Jsw5AWEiXScvGupnG1wA==
+X-Received: by 2002:a2e:9f45:: with SMTP id v5mr18889967ljk.183.1617057084699; 
+ Mon, 29 Mar 2021 15:31:24 -0700 (PDT)
+Received: from localhost.localdomain (109-252-203-32.dynamic.spd-mgts.ru.
+ [109.252.203.32])
+ by smtp.gmail.com with ESMTPSA id r9sm691710lfn.247.2021.03.29.15.31.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Mar 2021 15:31:24 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Cc: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Mon, 29 Mar 2021 15:10:48 +0200
-Message-Id: <20210329131048.66199-1-s.riedmueller@phytec.de>
-X-Mailer: git-send-email 2.25.1
+Date: Tue, 30 Mar 2021 01:31:18 +0300
+Message-Id: <20210329223120.442256-2-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210329223120.442256-1-antonynpavlov@gmail.com>
+References: <20210329223120.442256-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-X-MIMETrack: Itemize by SMTP Server on Idefix/Phytec(Release 9.0.1FP7|August
- 17, 2016) at 29.03.2021 15:10:51,
- Serialize by Router on Idefix/Phytec(Release 9.0.1FP7|August  17, 2016) at
- 29.03.2021 15:10:51
-X-TNEFEvaluated: 1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrKJMWRmVeSWpSXmKPExsWyRoCBS/f2xcQEg6XtohYnFvczOzB6bF5S
- H8AYxWWTkpqTWZZapG+XwJWx+SFLwWL+ijmL5zM1MB7h6WLk5JAQMJG4f3kCWxcjF4eQwDZG
- iQ9H77NCONcYJb7v6GMBqWITMJJYMK2RCcQWEZCXmLu/jRXEZhYwkLjesBosLizgJzH71V5m
- EJtFQFXi9ZMORhCbV8BGYsWEL0wQ2+QlZl76zg4RF5Q4OfMJC8gyCYErjBIPzq5mgSgSkji9
- +CwzxAJtiWULXzNPYOSbhaRnFpLUAkamVYxCuZnJ2alFmdl6BRmVJanJeimpmxiBQXN4ovql
- HYx9czwOMTJxMB5ilOBgVhLhFT6QmCDEm5JYWZValB9fVJqTWnyIUZqDRUmcdwNvSZiQQHpi
- SWp2ampBahFMlomDU6qBkTO/z/yZTa1Q3Oa8iuPHZwVMsvy2ZM0k8Yzba99+CbVSFTvqEXnI
- wOrej0ln7zVU6Hi6b+VUCIj8teC3+J/QwH+uoR0ds5iEmbKehR1ptojxV7555E7a/scSOyfL
- /H5laOx+fgWP5NwFSU+zJyp3n/dQmiL4PsuuLZSL4+wCGyPJd9vTJxS4KrEUZyQaajEXFScC
- APS/1E4IAgAA
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210329_141052_121561_648795BB 
-X-CRM114-Status: GOOD (  10.82  )
+X-CRM114-CacheID: sfid-20210329_233125_730705_E0B2BFD5 
+X-CRM114-Status: GOOD (  12.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,83 +84,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-103.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,USER_IN_WELCOMELIST,
-	USER_IN_WHITELIST autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH] net: eth: of_fixup_node: Use reproducible node name for fixup
+X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 1/3] clocksource: timer-riscv: adapt
+ riscv_timer_get_count_rdcycle() for RV32
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-To be able to fixup older devicetrees, prior to v4.15 where leading
-zeros of the unit addresses were removed, use the reproducible name to
-find the corresponding nodes.
-
-Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
----
- net/eth.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/net/eth.c b/net/eth.c
-index 626b35d5cc65..84f99d3aa822 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -304,7 +304,8 @@ static void eth_of_fixup_node(struct device_node *root,
- 			      const char *node_path, int ethid,
- 			      const u8 ethaddr[ETH_ALEN])
- {
--	struct device_node *node;
-+	struct device_node *bb_node, *fixup_node;
-+	char *name;
- 	int ret;
- 
- 	if (!is_valid_ether_addr(ethaddr)) {
-@@ -314,22 +315,25 @@ static void eth_of_fixup_node(struct device_node *root,
- 	}
- 
- 	if (node_path) {
--		node = of_find_node_by_path_from(root, node_path);
-+		bb_node = of_find_node_by_path_from(0, node_path);
-+		name = of_get_reproducible_name(bb_node);
-+		fixup_node = of_find_node_by_reproducible_name(root, name);
-+		free(name);
- 	} else {
- 		char eth[12];
- 		sprintf(eth, "ethernet%d", ethid);
--		node = of_find_node_by_alias(root, eth);
-+		fixup_node = of_find_node_by_alias(root, eth);
- 	}
- 
--	if (!node) {
-+	if (!fixup_node) {
- 		pr_debug("%s: no node to fixup\n", __func__);
- 		return;
- 	}
- 
--	ret = of_set_property(node, "mac-address", ethaddr, ETH_ALEN, 1);
-+	ret = of_set_property(fixup_node, "mac-address", ethaddr, ETH_ALEN, 1);
- 	if (ret)
- 		pr_err("Setting mac-address property of %s failed with: %s\n",
--		       node->full_name, strerror(-ret));
-+		       fixup_node->full_name, strerror(-ret));
- }
- 
- static int eth_of_fixup(struct device_node *root, void *unused)
--- 
-2.25.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gUlY2NCByZGN5Y2xlIGluc3RydWN0aW9uIHJlYWRzIDY0LWJpdCBjb3VudGVyIHdoaWNoIGhv
+bGRzCmEgY291bnQgb2YgdGhlIG51bWJlciBvZiBjbG9jayBjeWNsZXMgZXhlY3V0ZWQgYnkgdGhl
+IHByb2Nlc3Nvcgpjb3JlLgpPbiBSVjMyIHJkY3ljbGUgaW5zdHJ1Y3Rpb24gcmVhZHMgb25seSBi
+aXRzIDMxLTAgb2YgdGhlIHNhbWUKY291bnRlcjsgUkRDWUNMRUggc2hvdWxkIGJlIHVzZWQgdG8g
+cmVhZCBiaXRzIDYz4oCTMzIuCgpUaGUgY29kZSBvZiB0aGlzIHBhdGNoIGlzIGJhc2VkIG9uIEZp
+Z3VyZSAyLjU6ICdTYW1wbGUgY29kZQpmb3IgcmVhZGluZyB0aGUgNjQtYml0IGN5Y2xlIGNvdW50
+ZXIgaW4gUlYzMicgWzFdOgoKICAgIGFnYWluOgogICAgICByZGN5Y2xlaCAgICAgeDMKICAgICAg
+cmRjeWNsZSAgICAgIHgyCiAgICAgIHJkY3ljbGVoICAgICB4NAogICAgICBibmUgICAgICAgICAg
+eDMsIHg0LCBhZ2FpbgoKICBbMV0gVGhlIFJJU0MtViBJbnN0cnVjdGlvbiBTZXQgTWFudWFsLiBW
+b2x1bWUgSToKICAgICAgICBVc2VyLUxldmVsIElTQSwgRG9jdW1lbnQgVmVyc2lvbiAyLjIKClNp
+Z25lZC1vZmYtYnk6IEFudG9ueSBQYXZsb3YgPGFudG9ueW5wYXZsb3ZAZ21haWwuY29tPgotLS0K
+IGRyaXZlcnMvY2xvY2tzb3VyY2UvdGltZXItcmlzY3YuYyB8IDEzICsrKysrKysrKystLS0KIDEg
+ZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvY2xvY2tzb3VyY2UvdGltZXItcmlzY3YuYyBiL2RyaXZlcnMvY2xvY2tzb3Vy
+Y2UvdGltZXItcmlzY3YuYwppbmRleCBlYjViYTJkOGMyLi5lZjY3Y2ZmNDc1IDEwMDY0NAotLS0g
+YS9kcml2ZXJzL2Nsb2Nrc291cmNlL3RpbWVyLXJpc2N2LmMKKysrIGIvZHJpdmVycy9jbG9ja3Nv
+dXJjZS90aW1lci1yaXNjdi5jCkBAIC0zMCwxMCArMzAsMTcgQEAgc3RhdGljIHU2NCBub3RyYWNl
+IHJpc2N2X3RpbWVyX2dldF9jb3VudF9zYmkodm9pZCkKIAogc3RhdGljIHU2NCBub3RyYWNlIHJp
+c2N2X3RpbWVyX2dldF9jb3VudF9yZGN5Y2xlKHZvaWQpCiB7Ci0JdTY0IHRpY2tzOwotCWFzbSB2
+b2xhdGlsZSgicmRjeWNsZSAlMCIgOiAiPXIiICh0aWNrcykpOworCV9fbWF5YmVfdW51c2VkIHUz
+MiBoaSwgbG87CiAKLQlyZXR1cm4gdGlja3M7CisJaWYgKElTX0VOQUJMRUQoQ09ORklHXzY0QklU
+KSkKKwkJcmV0dXJuIGNzcl9yZWFkKENTUl9DWUNMRSk7CisKKwlkbyB7CisJCWhpID0gY3NyX3Jl
+YWQoQ1NSX0NZQ0xFSCk7CisJCWxvID0gY3NyX3JlYWQoQ1NSX0NZQ0xFKTsKKwl9IHdoaWxlICho
+aSAhPSBjc3JfcmVhZChDU1JfQ1lDTEVIKSk7CisKKwlyZXR1cm4gKCh1NjQpaGkgPDwgMzIpIHwg
+bG87CiB9CiAKIHN0YXRpYyB1NjQgbm90cmFjZSByaXNjdl90aW1lcl9nZXRfY291bnQodm9pZCkK
+LS0gCjIuMzAuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
 
