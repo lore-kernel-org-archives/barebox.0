@@ -1,79 +1,76 @@
-Delivery-date: Tue, 30 Mar 2021 03:18:59 +0200
+Delivery-date: Tue, 30 Mar 2021 03:19:00 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lR323-0006Z9-BX
-	for lore@lore.pengutronix.de; Tue, 30 Mar 2021 03:18:59 +0200
+	id 1lR324-0006ZV-3g
+	for lore@lore.pengutronix.de; Tue, 30 Mar 2021 03:19:00 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lR320-000772-Tx
+	id 1lR323-00077Q-Bb
 	for lore@pengutronix.de; Tue, 30 Mar 2021 03:18:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
-	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=HK4PUDL5wPKKnLsbohyPMioCncVIfLJn72RtNffvobo=; b=BS+PSVRiJnOKKXXNM/ne2XJg3
-	jf1PviUcjPuB1lpeBHZTAvpuWM1c2+h+f29G0lmfPbUw2G+tCA5hYr8mVM610HE5LaIyuy4fjsm7T
-	CGCxMpW4PTvTUd61D78t4K9EYDBqaoFB7MRveb8JVzkrcrvcXxxd64HVfKBrdJTueMESQmHr7wLO3
-	KVQLiHCh7feWw/lwmYDhjwJHOlSlBxsPFNGlccYR38RQU/8Ak5pbSJxyNBIt3QNZrQ6n6f92e3xzE
-	bBAhmEVoNNREP1y9iAzxTX64Au6vk92qIdL7b8PTSiucTrOjagORoz7bPdhuPzIy+h5SkEADfqqkl
-	7S9nqXZ3A==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=PKNYj3L4aBmOdOnE8ClGqjGDsgsITPc6noEgmCeVhiE=; b=qpQcFZE35O0/4qlhBJZ/sdVvKl
+	WJnxVfPM1yrhaj/vZ7B/aDBEVxnjIOp5gVim+pf2aYVbCu5MRiBRg64exxFtgzOmyczDSukU0WEjh
+	cV/8C0DJRtI3GClBntkB97e0+xe04oCudI4EraqmnsXX0S/sD9dlIpquiJb/yYo4otpmkRWSMJhEJ
+	VSivmkwZuWeIXfigWy2yGOSeRDsP2crYkSduil3+0r4EklFFBA1hbKnHs7o1V5e76r01lSXH5FIFG
+	BPitvWOjbPOy5eHBg2KozpsIXQmCkBX5vMApMHGuyh4kub+JQr6JSiFIHN4hKHbwWe/E9K8IufHd+
+	wixQru3w==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lR30V-002KHr-6V; Tue, 30 Mar 2021 01:17:23 +0000
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+	id 1lR309-002KEA-4H; Tue, 30 Mar 2021 01:17:01 +0000
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lR0Pu-001gN2-8B
- for barebox@lists.infradead.org; Mon, 29 Mar 2021 22:31:28 +0000
-Received: by mail-lf1-x135.google.com with SMTP id v15so20787417lfq.5
- for <barebox@lists.infradead.org>; Mon, 29 Mar 2021 15:31:26 -0700 (PDT)
+ id 1lR0Pt-001gMa-EG
+ for barebox@lists.infradead.org; Mon, 29 Mar 2021 22:31:27 +0000
+Received: by mail-lj1-x231.google.com with SMTP id y1so17644546ljm.10
+ for <barebox@lists.infradead.org>; Mon, 29 Mar 2021 15:31:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=vM5zK+ZdHEoCsCBv451S8n0xLyYMsU5DhH6zI+hJMKU=;
- b=rFBJwSXc7ZlhLTd5H83kSjEFlim5Bi30drRI98ndHfrscox65fl4HTkFX137QDemhP
- 65yj8vyBSOtl+MGoqgn413ILbmWc8RUSMb0RfklOqFv5CXW7az2x0EHZbuwbga5SMRiK
- mtD0seOYQbmzGoHatF4dC7vK5oDdDtrrBUQElKWpfBHNdT48iniKyBzyQzBNzD1dPJLk
- qDJYgJ4Acw4xugZZ6utXEm4JFe5EeWcy4PUTT9Ik41SeHYbwtSrHl9kU+M+pu0PccFoK
- O6lkGUPMwFNiUB4FvI9kqvIHfvM6iPsPuW49MtxBlbOlP/gns28EExofF+i3VltswVrZ
- IoXA==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Zlgq2CpoYI32qTkP+EX5roxC1aiW1TYV5oWKo5+L8KU=;
+ b=GjqZN7/Xi96hkgGqho4F2/exzTskyP/lXZmLIO6swOGhZkz0P7CopOHYK3866LFtOv
+ Ms2e4wJjDtvM/OG3RNK+ypyior2f3Nx05DcmcTVo3v1TsiXtH6g545DiSG+plOxjDDxf
+ 0bEonlToq1lPpyWUjGifHyvbIgIS8hoA5EtlTZ1EvCIxQ2h2LgrxHFGIlQLDbA5GzwDs
+ 0NUbRNE6lNzfaEsH4rp843bC304TaNHTpD0Msje0l2QkOhZkhSVziYMZf0WH9ewjnZJD
+ OIyNK+EAuNcq43b+yddCSAP5sqdMDZjSifTkKSWDYDqRjT2wbYXIg3h3JkQ+2rdH1D7D
+ 05xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=vM5zK+ZdHEoCsCBv451S8n0xLyYMsU5DhH6zI+hJMKU=;
- b=hhHDNb3KYSW14HAB6WXOGnphPGIbTqykFQuw5P0DxJva/g1UfgH2uLh31lzpS7mKlI
- qPukLiq2yqJM6SWonaZ3/x/auQaSs1sdo9cUqhdQhsu3HZk1b3mnv8sY4IGicWtgaV+m
- xbn6j4aEahlDV/E82LGeCaEi+QLAyi4iq52M1WgtawXzXfftd0EjjL+keCX+DRph/WpW
- XG04cDlTuTXbJ4wa3pbmDvNH/nA6HTyKV2elIeCk6uNm3YUgSl3FjUU4l1YcKt9JcUn7
- Eg+PuuoJtVhr0AgnApNZOElakbKk1gm3Ah/1PMVkcFJImlQiPkQ9sCsgTbs0sOhUOanM
- cHSA==
-X-Gm-Message-State: AOAM531PbZBffxFF/dnyxenXz7dyY1ttKMXaEqwyfMgPHLqzqF+xxIMr
- D3/EFgA0NOY1LKrJYhgVM23epP7YOX0=
-X-Google-Smtp-Source: ABdhPJzADGU0fwiF7RXhinMpQLgGKH18uptprJDMf89GY2BfXyJinlSw5GJzrpfs2F+HjA4/o7S7Qw==
-X-Received: by 2002:a05:6512:2117:: with SMTP id
- q23mr17676620lfr.423.1617057085355; 
- Mon, 29 Mar 2021 15:31:25 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Zlgq2CpoYI32qTkP+EX5roxC1aiW1TYV5oWKo5+L8KU=;
+ b=qpoRjFPPPSqCKZ+ZaNzEhV6WOvGaPMrgPO7KTnLLYVjWoeuXi9G9MXn0yqnqdvJKMe
+ QsqsYiChoSHqqvnAcLcthGX4bzRltF5QqmpkMYTk2vDj7UXm3L+qxuTKJwnBJ8suegsW
+ uWt/Ak35/jzNRFOwVTyWiy61CUJ2j2gPSzN3zeudSTUSkUzSsN1Gi4GF3B7AppTnpwyo
+ pNSPhCRwNxP9nR0tFndElVqauirJW0rz8DjjcU5GJ1pNs5LrQBqSn5j+L6OfNpJoBnsf
+ AkYT7gLV/0MgabVb1PUWtjxKT6k80etY0oQhlrLfG94w+N+7HlSxrUJEK2xX9l4MnS4E
+ ftOw==
+X-Gm-Message-State: AOAM530EfLjrLUMWAyKOdfPQG5PX8n1i8Gu1HrYN3pW5TkKFZwi51SEr
+ aZDSDM36QOLbcMyO0VxsHJe0xjpDAHI=
+X-Google-Smtp-Source: ABdhPJyhcbbg0nSzRzRDsahWxFsnSpwdKYGrNeW9ioUwDIUjC0Syfs0kzQM4A7M8XJx1+u1/3VClsA==
+X-Received: by 2002:a2e:99ce:: with SMTP id l14mr19710102ljj.93.1617057084073; 
+ Mon, 29 Mar 2021 15:31:24 -0700 (PDT)
 Received: from localhost.localdomain (109-252-203-32.dynamic.spd-mgts.ru.
  [109.252.203.32])
- by smtp.gmail.com with ESMTPSA id r9sm691710lfn.247.2021.03.29.15.31.24
+ by smtp.gmail.com with ESMTPSA id r9sm691710lfn.247.2021.03.29.15.31.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Mar 2021 15:31:25 -0700 (PDT)
+ Mon, 29 Mar 2021 15:31:23 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 30 Mar 2021 01:31:19 +0300
-Message-Id: <20210329223120.442256-3-antonynpavlov@gmail.com>
+Date: Tue, 30 Mar 2021 01:31:17 +0300
+Message-Id: <20210329223120.442256-1-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210329223120.442256-1-antonynpavlov@gmail.com>
-References: <20210329223120.442256-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210329_233126_404442_709C9302 
-X-CRM114-Status: UNSURE (   9.93  )
+X-CRM114-CacheID: sfid-20210329_233125_631366_E40D6B65 
+X-CRM114-Status: UNSURE (   7.54  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -95,39 +92,28 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.0 required=4.0 tests=AWL,DKIM_ADSP_CUSTOM_MED,
-	DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH 2/3] RISC-V: erizo.dtsi: set timebase-frequency = <24000000>
+X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 0/3] RISC-V cycle timer fixes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This patch makes it possible to use drivers/clocksource/timer-riscv.c
-with erizo. Without timebase-frequency initialized we have
-this warning at startup:
+Antony Pavlov (3):
+  clocksource: timer-riscv: adapt riscv_timer_get_count_rdcycle() for
+    RV32
+  RISC-V: erizo.dtsi: set timebase-frequency = <24000000>
+  RISC-V: drop old timer handling code
 
-   RISC-V system with no 'timebase-frequency' in DTS
+ arch/riscv/dts/erizo.dtsi         |  2 +
+ arch/riscv/lib/Makefile           |  2 +-
+ arch/riscv/lib/riscv_timer.c      | 63 -------------------------------
+ drivers/clocksource/timer-riscv.c | 13 +++++--
+ 4 files changed, 13 insertions(+), 67 deletions(-)
+ delete mode 100644 arch/riscv/lib/riscv_timer.c
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/riscv/dts/erizo.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/riscv/dts/erizo.dtsi b/arch/riscv/dts/erizo.dtsi
-index e854a48ae5..228711bd69 100644
---- a/arch/riscv/dts/erizo.dtsi
-+++ b/arch/riscv/dts/erizo.dtsi
-@@ -20,6 +20,8 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
-+		timebase-frequency = <24000000>;
-+
- 		cpu@0 {
- 			device_type = "cpu";
- 			compatible = "cliffordwolf,picorv32", "riscv";
 -- 
 2.30.1
 
