@@ -1,78 +1,78 @@
-Delivery-date: Tue, 30 Mar 2021 08:53:11 +0200
+Delivery-date: Tue, 30 Mar 2021 08:53:17 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lR8FT-0002y5-D1
-	for lore@lore.pengutronix.de; Tue, 30 Mar 2021 08:53:11 +0200
+	id 1lR8FZ-0002yR-Co
+	for lore@lore.pengutronix.de; Tue, 30 Mar 2021 08:53:17 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lR8FS-0001hO-Lo
-	for lore@pengutronix.de; Tue, 30 Mar 2021 08:53:11 +0200
+	id 1lR8FY-0001iL-Ka
+	for lore@pengutronix.de; Tue, 30 Mar 2021 08:53:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=U53Ky9NrjhB0YWd5VgoMO34zruQnOryYbio5mTzUY5Q=; b=NOWWVZvTwcAdmAVms7rqzJJUM
-	gxC4DAzwAAVIdIjM0mPNUD8Q5/rJb23mlgpXbFiYaYcqIJIj4fi+fJczrXBDfk0b4AsUXPtDTKWuG
-	FOy/Ndc4WZFYsEvpnDor4VlGk2xsURviemVudH6iBbR/OpVFPLww6mTCiJ3gSS9xxujz9eQ7r1IOm
-	XPrJLFiMDdEKnAH3Gpho1zfrLICIS6qWaZrdZDxfbJvCnxQhvWDp3EJT7aKdWfz/qbh3kb9s9XXaY
-	m1u5KoBA2VunYJkCKoUMaDc8cvOWSku//FTD5EsekNg1SDSTiabJx8xE+UcU9HUfU49/kkvG9F9lu
-	vm9PlpRSg==;
+	 bh=wp1fOoL61esCiRdgbehQKemRvS2Y+bGf+HC/eohC5W4=; b=QOwz5yPZVC/rjQwMDpQWQkQOH
+	frCVg5gbthFsd1Ryw6UA4VsGNFojqjn5aAWAfnpxn1LBm78WF9KK54Saaj185BLSh0gfuM70zifxo
+	999JQv8It0aI8t7c+/O9XvG66/dYg0jWgEdev/nebefnr4QmXfVGmSb2O0tdrgLRMb1WQ092QJbbH
+	NW8ws3zB3DPRtyjPICKomIssp9/A7GMHG8U4KqMpRvgWaihnS+6KW231+P30ljV2C3bMLw5BOJ03d
+	Au16S2ARG3jldhGFe5w5ujlyYHB0p8LUkaf69qHdN2SXJ9Ai4uNrOIowqpxiVaqV18CmQJFCceuIv
+	ZWp0w5w8g==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lR8Eg-002s18-TU; Tue, 30 Mar 2021 06:52:23 +0000
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+	id 1lR8Ej-002s1o-MP; Tue, 30 Mar 2021 06:52:25 +0000
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lR8EX-002ryz-NQ
- for barebox@lists.infradead.org; Tue, 30 Mar 2021 06:52:15 +0000
-Received: by mail-lf1-x135.google.com with SMTP id g8so22130721lfv.12
- for <barebox@lists.infradead.org>; Mon, 29 Mar 2021 23:52:13 -0700 (PDT)
+ id 1lR8EY-002rzT-KY
+ for barebox@lists.infradead.org; Tue, 30 Mar 2021 06:52:17 +0000
+Received: by mail-lf1-x12c.google.com with SMTP id d13so1155758lfg.7
+ for <barebox@lists.infradead.org>; Mon, 29 Mar 2021 23:52:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=dl+rn4P+Pvf8Oyy6Y3wUeplGq9EZ6yQj7K+WqGxTGPc=;
- b=EBPc8Cg6nHwH/1IrXralstj8ZDPpUF95uqElKcZqI35bp7AcurVaUk3VQBSaeWl9M0
- TL7CUC3xJixeC9/zScGWzb2sOkI+zIY+EylUkDRTb0/PFKGX0GPP8Ipjl3C8Pr17npXu
- rN2uuih3bFKe7JH6hMCPvaEEhKm0G2DNjDmONBx3IlVfJN23C41AH7ORnwquSXne6c3E
- ZAbJ/a0zGLDaajsyJrWYlNhWit94tcpfsgD+4Uv3YjOvv1WeaBK6IbBOS2X4jgOU7NCF
- JWs5MXv6FIDVDA+HwQntEXeyRKvofm///lxbG5tQb8LQJ5gy3yWGeXshaVyurraEyGoc
- lMhg==
+ bh=qA5idXD/e3qpdl74opSTZLEgsImGxFVIjM7jbr9JgwA=;
+ b=qgyBmyQWIvRpHb++GZk4gt3P2m7ScE2RNsFBW3IhMGzEgAvLPFOV9s0jpc9ogecBi8
+ n7T/2Dv26MXphtLpRl/WHE7kigfeteDQr9HFffR/YX0YCsAx+UmdJ9+eSYkkcl3myteE
+ UZS32a74BWHYJ0aIWhtDBtpdG/NLcwzQoHFwoAUibam0ZZpnb3A6dJKTcpp2HwNr+dXU
+ RUVZHjzXkx2P05bMpuBbevXn1qNoayiGuSQZJyeAeHUCDpEYYVyLq6ziXo5uSHqOH7F8
+ HLQ8LFLd3sphuVL1V2dyD7Is1TVBgPS0aY1BZVAhDCo6c85SmIKssis906a/nvvM9uMl
+ P/4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=dl+rn4P+Pvf8Oyy6Y3wUeplGq9EZ6yQj7K+WqGxTGPc=;
- b=pn3HOKthDdJJpJI8FXXXTTiUfdBGgVN0v1sJSHccD8u4PWA4oXO5OBrCq+5h5LQUQq
- 3juEg//irOfKuyckSHFA5oeYwn2rLqfNvtvRZ1GpVTngu24O3w3Wym2yFjWCBlqYvm9H
- 7gpd2DLNo+Wqd7oC59KzEGcFwGwJWR94ciYGmL5GNmshLkjmqLv2Cj1ZzQDxshwGq0KQ
- NaAwxUEGp2T0sCdqB+nMh6LYdNNDNjjQel78I4+HDoAgvnON+9ID/hwDHq8FiLAVTQU7
- zxbm/MWV1n+zKCPw8zXrXP1zaXbS8EZapBjC57CbZio2TDAVqdAnPTatYyhuaNKEe6qE
- kb2A==
-X-Gm-Message-State: AOAM533oQ5puf37QwY+JVsVyJAwLYSuGWfP6DkHngXECOTZClCtL1kra
- 7XkagtMzp+VM4uHovPUkBPTM1epqSUw=
-X-Google-Smtp-Source: ABdhPJzu7ldDUlrsoUi2kBtDXqsaLxWl8yCDeue2C41Tde3wa9aPu9e6fTNBTaJWAba40ABx343sLg==
-X-Received: by 2002:ac2:4c85:: with SMTP id d5mr19766982lfl.503.1617087133044; 
+ bh=qA5idXD/e3qpdl74opSTZLEgsImGxFVIjM7jbr9JgwA=;
+ b=Z2vY9nmANKlohx1kWhSM7hPZ/ibTky+hWStEVcORgB6MyJHqsDzk0T5f3J0uImP3lD
+ e0zR4r8npfcs6O+OywkkzIlfl/en01Hvcw8zfwEo07aYCsBPvZyVSaC0/qUg+VDo4rsM
+ akVkYYeF5TiKbM+nO0l/WfX94IZa2g/tLbMfqBb7DSJmKE6xbRxYgfM9McvQa/lXvwEN
+ DVcwDFNblqSdEc07RQDmYfVfr0KMEBNWy972799sHlgcohA2Z2KLeI3sjN+r/YLuknrD
+ Oic4zSctvpphO5vR27pDFfAu5Cm45+DHum6myV/ABD2X03THRl4deV92ZITnT+U+sYK0
+ R8uA==
+X-Gm-Message-State: AOAM533JJrDtJuslG0oVWsPOAczudjwIyvFjVPcBJf4WWfX2VApz7X1t
+ UzdOfnXNCJ9tkCZhHN6h4Vgcavzqn/A=
+X-Google-Smtp-Source: ABdhPJyGNB2HA0vNv23JXkYhouWsAjIVXHQEMc4HNP7S6gKAczBUrUFvWpIblY8mTRok9bHeCf4Ykg==
+X-Received: by 2002:ac2:57c2:: with SMTP id k2mr18135491lfo.511.1617087133758; 
  Mon, 29 Mar 2021 23:52:13 -0700 (PDT)
 Received: from localhost.localdomain (109-252-203-32.dynamic.spd-mgts.ru.
  [109.252.203.32])
- by smtp.gmail.com with ESMTPSA id v9sm2075015lfa.32.2021.03.29.23.52.12
+ by smtp.gmail.com with ESMTPSA id v9sm2075015lfa.32.2021.03.29.23.52.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Mar 2021 23:52:12 -0700 (PDT)
+ Mon, 29 Mar 2021 23:52:13 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 30 Mar 2021 09:52:07 +0300
-Message-Id: <20210330065208.446667-2-antonynpavlov@gmail.com>
+Date: Tue, 30 Mar 2021 09:52:08 +0300
+Message-Id: <20210330065208.446667-3-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210330065208.446667-1-antonynpavlov@gmail.com>
 References: <20210330065208.446667-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210330_075214_004015_1797410A 
-X-CRM114-Status: GOOD (  10.39  )
+X-CRM114-CacheID: sfid-20210330_075214_875703_1EB07805 
+X-CRM114-Status: GOOD (  10.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,12 +97,9 @@ X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] Documentation: dlink-dir-320: update image file name
+Subject: [PATCH 2/2] Documentation: dlink-dir-320: update device links
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
-
-The commit 102676feb218ab59 ("MIPS: port all mach* to multiimage")
-changed D-Link DIR-320 image name so update it in documentation.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
@@ -110,27 +107,20 @@ Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Documentation/boards/mips/dlink-dir-320.rst b/Documentation/boards/mips/dlink-dir-320.rst
-index 7595381f55..b60995489e 100644
+index b60995489e..90de68a9c4 100644
 --- a/Documentation/boards/mips/dlink-dir-320.rst
 +++ b/Documentation/boards/mips/dlink-dir-320.rst
-@@ -21,7 +21,7 @@ Running barebox
- 
- Barebox can be started from CFE using tftp.
- You must setup tftp-server on host 192.168.0.1.
--Put your barebox.bin to tftp-server directory
-+Put your barebox-dlink-dir-320.img to tftp-server directory
- (usual /tftpboot or /srv/tftp).
- Connect your DIR-320 to your tftp-server network via
- one of four <LAN> sockets.
-@@ -31,7 +31,7 @@ Next, setup network on DIR-320 and run barebox.bin, e.g.:
- .. code-block:: console
- 
-   CFE> ifconfig eth0 -addr=192.168.0.99
--  CFE> boot -tftp -addr=a0800000 -raw 192.168.0.1:barebox.bin
-+  CFE> boot -tftp -addr=a0800000 -raw 192.168.0.1:barebox-dlink-dir-320.img
- 
- 
+@@ -37,8 +37,8 @@ Next, setup network on DIR-320 and run barebox.bin, e.g.:
  Links
+ -----
+ 
+-  * http://www.dlink.com.au/products/?pid=768
+-  * http://wiki.openwrt.org/toh/d-link/dir-320
++  * http://web.archive.org/web/20140301070636/http://www.dlink.com.au/products/?pid=768
++  * https://openwrt.org/toh/d-link/dir-320
+ 
+ CFE links:
+ 
 -- 
 2.30.1
 
