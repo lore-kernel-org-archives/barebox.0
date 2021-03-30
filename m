@@ -1,78 +1,77 @@
-Delivery-date: Tue, 30 Mar 2021 08:51:58 +0200
+Delivery-date: Tue, 30 Mar 2021 08:51:59 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lR8EI-0002wH-DG
-	for lore@lore.pengutronix.de; Tue, 30 Mar 2021 08:51:58 +0200
+	id 1lR8EJ-0002wd-5W
+	for lore@lore.pengutronix.de; Tue, 30 Mar 2021 08:51:59 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lR8EH-0001SB-MO
-	for lore@pengutronix.de; Tue, 30 Mar 2021 08:51:58 +0200
+	id 1lR8EI-0001SX-IA
+	for lore@pengutronix.de; Tue, 30 Mar 2021 08:51:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
-	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=PHkCQqXGMtWUd7SUWR01JqOnAm02D+Kwo7wBt0QcLKE=; b=P5VNpRJs+aZpL1n7Xk+bgl7WJ
-	6uVa2GaoznZNt7rZwp5EpQKlkmiKxFwOSKAlBmHaZfwRfgTWxdIgNGJk4WrMx9ZXXV2w+W3gHIJuW
-	BfMfD7ZpCXTKjkMt5c9xlrgbz6XcAhvRqYenAuRsJJh+z7iWwgKbuyaTUZfS05W4RA4re2sPfDO++
-	SMPSWOLxTQavPznky2Fx139Z549svo2606ycnENBBEMA2Pm7ZRcTf0WDtDAFixChnPz/a18sPCcGp
-	MmD6SlXsT2fVXuBP2fLUXt6O/7BcXAlF+r9w1EFVU2oxO7Xp5rsWhCHom6uMQPrC0GySkl7AzT4bk
-	kT4cArPbw==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Y0U2IHJ19hjtp7o2J8S7fRij9sDtx5jC1FSRozyDXG4=; b=FmuI5S+6hMhL94
+	4M3bL10P1yUXRwbb59yD6BY1mhiIIBdhGE1lt284HSA3I870+MY6O1txuiu88lgBjZ60SAcfuKYnj
+	+/7uoDEIrO3kRpn8A4E3KhIVK1f3dziyWnFlA74qWewFG+z32nXLgpQvxx0vpHGi3ZRGBDcYOJe/c
+	4hsIuGwqrkGGS6A1qkJBy9nZFFv9KuqU4buyPrIV2HFVM9GyWsA7FNLDD1vlz5+dJZTCBAxeYHvyL
+	BgI9YrkcPJ94WdKpDDDiuMYRcpq6QGsGIRGY0LyCQ0/CX8ffjF5wXlT1aamuK1PaQGtOX/yYhnGE3
+	qFL90m1ueCDAe1mSfHnA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lR8DE-002rjw-Ex; Tue, 30 Mar 2021 06:50:52 +0000
+	id 1lR8DB-002rjT-P9; Tue, 30 Mar 2021 06:50:49 +0000
 Received: from mickerik.phytec.de ([195.145.39.210])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lR8D6-002ria-71
- for barebox@lists.infradead.org; Tue, 30 Mar 2021 06:50:45 +0000
+ id 1lR8D4-002ria-61
+ for barebox@lists.infradead.org; Tue, 30 Mar 2021 06:50:44 +0000
 DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a1; c=relaxed/simple;
  q=dns/txt; i=@phytec.de; t=1617087040; x=1619679040;
  h=From:Sender:Reply-To:Subject:Date:Message-Id:To:Cc:MIME-Version:Content-Type:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
  List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=aiSAYHwvIEKvrwiJfxjJlufG03bJNiPDpbtMryHwTYU=;
- b=Qd+YrkdynfnTTvUTrbUoYUNpSooarUgSZrMbRwmlHrU9q99kYQgLggtqE0YSjUj9
- 6o4n2NQn7aY/heA5oE6KPEUgtTbt6lyLuvSmyj+u4w292jObQv/FQYvk3+lH/UtT
- XwskEyJds5b2vAYiezoYP3qskezq+LVMPTbD2lyuf9I=;
-X-AuditID: c39127d2-868b870000001c91-e6-6062ca408182
+ bh=0LIoyyXPIo2KqgAU+K4YHtTaU0Kg/8cczk6+7d9jPeA=;
+ b=O1b62zzNBdtA0Zort5BpePL1DQTpxjYoY2t/Ab6onJXytR7B5ljiw7F+67MEjA26
+ 0lnqNLns0qSTcPzWr14FO2Uxf5ITgGqVsp8m9hnEBVo/nBnErCoTUFUGlOVBZBL2
+ dLW4JKnHIDJKzgpDEblLRF0m4R5Og7ToA8FrqjdLzcE=;
+X-AuditID: c39127d2-85cb770000001c91-e5-6062ca40cc52
 Received: from idefix.phytec.de (Unknown_Domain [172.16.0.10])
- by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 5F.23.07313.04AC2606;
+ by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 3F.23.07313.04AC2606;
  Tue, 30 Mar 2021 08:50:40 +0200 (CEST)
 Received: from lws-riedmueller.phytec.de ([172.16.23.108])
  by idefix.phytec.de (IBM Domino Release 9.0.1FP7)
- with ESMTP id 2021033008504075-261342 ;
+ with ESMTP id 2021033008504050-261341 ;
  Tue, 30 Mar 2021 08:50:40 +0200 
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
 To: barebox@lists.infradead.org
-Date: Tue, 30 Mar 2021 08:50:38 +0200
-Message-Id: <20210330065040.5030-2-s.riedmueller@phytec.de>
+Date: Tue, 30 Mar 2021 08:50:37 +0200
+Message-Id: <20210330065040.5030-1-s.riedmueller@phytec.de>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210330065040.5030-1-s.riedmueller@phytec.de>
-References: <20210330065040.5030-1-s.riedmueller@phytec.de>
 MIME-Version: 1.0
 X-MIMETrack: Itemize by SMTP Server on Idefix/Phytec(Release 9.0.1FP7|August
  17, 2016) at 30.03.2021 08:50:40,
  Serialize by Router on Idefix/Phytec(Release 9.0.1FP7|August  17, 2016) at
  30.03.2021 08:50:40
 X-TNEFEvaluated: 1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpkluLIzCtJLcpLzFFi42JZI8DApetwKinB4M1nc4sTi/uZHRg9Ni+p
- D2CM4rJJSc3JLEst0rdL4MpYfewBa8EVjopd+xeyNjBOY+9i5OSQEDCRWLxsL1sXIxeHkMA2
- RomHi1awgiSEBK4xSsxazQdiswkYSSyY1sgEYosIyEvM3d8GViMsECCxouk/WJxFQFVi9oyn
- zCA2r4C1xIfOmYwQC+QlZl76DraMU8BGYveGbWwQ860l/hzazwhRLyhxcuYTFpAjJASuMEqs
- f3INqllI4vTis2BDmQW0JZYtfM08gZF/FpKeWUhSCxiZVjEK5WYmZ6cWZWbrFWRUlqQm66Wk
- bmIEBtPhieqXdjD2zfE4xMjEwXiIUYKDWUmEV/hAYoIQb0piZVVqUX58UWlOavEhRmkOFiVx
- 3g28JWFCAumJJanZqakFqUUwWSYOTqkGxo2fbqzT3XZ7+/tj289XVnmePjD3+TTmSTrTNO4w
- phe/nsK35IP6EaM7X5beVfu3zmZlvLoB9+1FDP8TK2y/bmWfE79pel3Orh/PDiqHm95RE3v/
- Is9yzU2tIOZv2XM/MXrNeZ1+XKpmkoa9m92Vbn1XhrDfZasSL97KkOyY72XIdnCJAWvltgdK
- LMUZiYZazEXFiQC6mUAPFAIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBJMWRmVeSWpSXmKPExsWyRoCBS9fhVFKCweGb2hYnFvczOzB6bF5S
+ H8AYxWWTkpqTWZZapG+XwJWx9KpswQeWisdNX1kaGP8ydzFyckgImEhcX3SFsYuRi0NIYBuj
+ xLXl56Gca4wSV3+fYgSpYhMwklgwrZEJxBYRkJeYu7+NFcQWFvCT6No0gR3EZhFQldjV+YKt
+ i5GDg1fAWmLBRBaIBfISMy99ByvhFRCUODnzCQvIfAmBK4wS659cY4QoEpI4vfgs2EXMAtoS
+ yxa+Zp7AyDsLSc8sJKkFjEyrGIVyM5OzU4sys/UKMipLUpP1UlI3MQJD4/BE9Us7GPvmeBxi
+ ZOJgPMQowcGsJMIrfCAxQYg3JbGyKrUoP76oNCe1+BCjNAeLkjjvBt6SMCGB9MSS1OzU1ILU
+ IpgsEwenVAPj9LD4X6EfneTr1635La+wMs3/7QPpnGVvO7s6lqWzPEyqLf15vfvS09qj+fVt
+ H0qsbCbqrm7LSfEoOqXq+vMRx+71B3wePlufuzn0UN0R60slfJOWKB2JMlavPcn1Z3Lt7adN
+ n4zkLlzp/uvtZvnJLbtAfcN1NsvZx98xGiycuX7u30fHWT8qKLEUZyQaajEXFScCAEBXaIr7
+ AQAA
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210330_075044_367432_893081C2 
-X-CRM114-Status: GOOD (  10.02  )
+X-CRM114-CacheID: sfid-20210330_075042_402097_37617979 
+X-CRM114-Status: UNSURE (   9.07  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,41 +96,30 @@ X-Spam-Status: No, score=-103.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED,
 	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/4] nandtest: Fix status print for NAND which size exceeds 4
- GB
+Subject: [PATCH 1/4] commands: Kconfig: Remove HW ECC dependency from nandtest
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Nandsize can be larger than 4 GB. So during status print the number of
-blocks calculation needs to use 64 bit division.
+NAND_ECC_HW is no longer optional so remove the dependency from
+nandtest. Otherwise nandtest won't be build for HW ECC boards.
 
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
- commands/nandtest.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ commands/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/commands/nandtest.c b/commands/nandtest.c
-index bfe4c4c0ed03..1bb59c7fdba5 100644
---- a/commands/nandtest.c
-+++ b/commands/nandtest.c
-@@ -178,12 +178,14 @@ static int erase_and_write(loff_t ofs, unsigned char *data,
- }
- 
- /* Print stats of nandtest. */
--static void print_stats(int nr_passes, int length)
-+static void print_stats(int nr_passes, loff_t length)
- {
- 	unsigned int i;
-+	uint64_t blocks = (uint64_t)length;
-+
-+	do_div(blocks, meminfo.erasesize);
- 	printf("-------- Summary --------\n");
--	printf("Tested blocks		: %d\n", (length/meminfo.erasesize)
--			* nr_passes);
-+	printf("Tested blocks		: %lld\n", blocks * nr_passes);
- 
- 	for (i = 0; i < MAX_ECC_BITS; i++)
- 		printf("ECC %d bit error(s)	: %u\n", i + 1, ecc_stats[i]);
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 6d84c956e576..8e8b5a926fbb 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1884,7 +1884,6 @@ config CMD_NANDTEST
+ 	tristate
+ 	depends on NAND
+ 	depends on PARTITION
+-	depends on NAND_ECC_HW || NAND_ECC_SOFT
+ 	prompt "nandtest"
+ 	help
+ 	  NAND flash memory test
 -- 
 2.25.1
 
