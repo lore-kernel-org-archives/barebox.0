@@ -1,78 +1,78 @@
-Delivery-date: Tue, 30 Mar 2021 08:51:59 +0200
+Delivery-date: Tue, 30 Mar 2021 08:53:09 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lR8EJ-0002x1-Lg
-	for lore@lore.pengutronix.de; Tue, 30 Mar 2021 08:51:59 +0200
+	id 1lR8FR-0002xj-Sz
+	for lore@lore.pengutronix.de; Tue, 30 Mar 2021 08:53:09 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lR8EI-0001T2-VT
-	for lore@pengutronix.de; Tue, 30 Mar 2021 08:51:59 +0200
+	id 1lR8FR-0001h8-39
+	for lore@pengutronix.de; Tue, 30 Mar 2021 08:53:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
-	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=LJ8lf/C50m582JSptlTSn57AAsB+ZnRyqiYsmYWB0/4=; b=OqqW9V5alzJNiCyfvOAytCwjp
-	WA/ivR8GcOvrPjlvX2MLIHzba+w62wD1p6BwDI+yJe5uBeUPku5qdscjHm4YUrZT/KpV0IrvS/VJ9
-	otWp9RBioF69UtuS4qa7UEx6GE2TkzVovY93eD1UFQ8CoB0Q1Biq8TvIa/vB8fl8q/S6+a41SNwj3
-	GDPW8rNRCkrb3ljXKwjUhcenkb0XOGZyrH0WsW2kCESLwbkAJMl/3ePVz5MaG8P6oF8ABBHgYsB+/
-	EOs837OOkIQrgc5V00RYnc6CwOcxd/7jGil69eArR0Eoe3fg/V4HIN7Jtl5Vsr6s1Kk9CWAYgMBPC
-	YZlofmdTw==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Cy/vdfANjFM42Yly6O6XjQo6bPld4VKKBE95gWS8XWQ=; b=VDrWD0VdW1YBye
+	zvv3lLXX0G1q0hQ8+OjJfZTrlxKoClxvyUUhz9GMz/ZPxIMoUXXHjYqtWn24x22uZZ9PDcx3fDLs6
+	6thYjcKw5+GTfLTseuKodSuZbS9Avf3kVSeT5q9mYX3V8FwUkd9cIF8L7Wi4g7tOduOxOWka/F9tM
+	w959+OjoIMYQu/9xbddxWEecjL1WDmAt7Cq6UzxUUvtNpN/u9aysfot/UytwrotovT7RDL60+4s8Q
+	uBSov+MK3n6Zt5cUl5SU7zsAL5r1Dw9mbUr6PcU4bhcCEnWhAgR+9KyPf7fUlxxhQmsvVfl2HPNxR
+	A5GrRbjI4vfzDEew6/Qw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lR8DJ-002rko-HT; Tue, 30 Mar 2021 06:50:57 +0000
-Received: from mickerik.phytec.de ([195.145.39.210])
+	id 1lR8Ef-002s0E-1e; Tue, 30 Mar 2021 06:52:21 +0000
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lR8DB-002ria-IC
- for barebox@lists.infradead.org; Tue, 30 Mar 2021 06:50:51 +0000
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a1; c=relaxed/simple;
- q=dns/txt; i=@phytec.de; t=1617087041; x=1619679041;
- h=From:Sender:Reply-To:Subject:Date:Message-Id:To:Cc:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=B6mvX0L+k0lYWfTZJdzwLaABrkkRtpHPdqbX2w0+9Bk=;
- b=Hl6dswPNPaG8NKDX5so5CJkYq4mX0+ILsTsq2FVlcbQdjbh2UbSUMYJecsrQPDcU
- JcXx3JoSH+4Lid7VIZmwaZV80lTFPumKd1ewPN8uha9FRBeTuIXeieaysv2+LxHe
- e4AbNdJfk/Dc6HzuZgjVjOyF13LdRfBePpazEckyQMU=;
-X-AuditID: c39127d2-868b870000001c91-e8-6062ca41ba1e
-Received: from idefix.phytec.de (Unknown_Domain [172.16.0.10])
- by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 9F.23.07313.14AC2606;
- Tue, 30 Mar 2021 08:50:41 +0200 (CEST)
-Received: from lws-riedmueller.phytec.de ([172.16.23.108])
- by idefix.phytec.de (IBM Domino Release 9.0.1FP7)
- with ESMTP id 2021033008504125-261344 ;
- Tue, 30 Mar 2021 08:50:41 +0200 
-From: Stefan Riedmueller <s.riedmueller@phytec.de>
+ id 1lR8EX-002ryt-Eh
+ for barebox@lists.infradead.org; Tue, 30 Mar 2021 06:52:15 +0000
+Received: by mail-lf1-x135.google.com with SMTP id d12so1070897lfv.11
+ for <barebox@lists.infradead.org>; Mon, 29 Mar 2021 23:52:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=xFvFB8mQPiSbfcRzzmd+Pf1AWvcs5I2UIN9E322Ne/M=;
+ b=ZdjY2t1e1GtQzKD4tKPu6Xf/2Ngq92oKPLLW+5t3UYOChy4cyzwOGp1RGozISFXgq8
+ O6GkrDAUWpFSm9GcftCe4fHH++FR2Q17sm/REelRRaTxl9Ip3m81jKbu3jI8aEjKL6Gy
+ 2bN6cdJ80ZmBcyqTRBjy7GXfD6/oBhbVrcipFUG6UcUpezVEDpZDSYoBTyxpA+sHGe19
+ mt+O3neHaa/G7bXVvbtbUqXs9vdR8rU08rMLUjcahIRfJMV3zKRurMl6IMpAuMoHDmAz
+ +qVVQfa2+G7EH8PZysU3OlpGXWbDKNVgehdN/a86+rhpXqV1a/otGiBSoxsonCb0Gkio
+ glHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=xFvFB8mQPiSbfcRzzmd+Pf1AWvcs5I2UIN9E322Ne/M=;
+ b=RVUo9AJj0yKAfos3aybtwyedbmxY/xKHZ7srllI/mpuE6+v65SzDrwdAwWLF04c83K
+ WGfmLmnphjvNEApekht0P+D5UjGJw2Aiincl6Y/1VP8KNkOF98goZDEZBjsL7VOocvmt
+ kKodD3yRXQXHyxHnNmffsMcvwMw1ZVOJKk25vdS9qo3lsVGpQFTKRMrKdCimtTMI2osT
+ dnJMYfZMA7vfF9Qv98ArKrqzAqvaA1Cgtt+jOlNPJ2NH16V57bjZVNektoPmv91YzoJ6
+ DCTaEmH1K7de9V0J0PPJpP2DNCdbM4+3a1aXaZL6qdcVSkOt1qkptWFTiUfcxnLVB/x4
+ 0Dhg==
+X-Gm-Message-State: AOAM531Ld3cam7Kgr9FsdXA64rAAAVxDCIOgNixntDFVjHsxiPlRzwS5
+ bZZBcrcbrpOqXJfl804zpwM4vJsBsBQ=
+X-Google-Smtp-Source: ABdhPJzS0pvlxugXhmQ4+wL4lgAtn3etdtUCB6Nk7z9fhflBwiKWGmiJ+Euvozby2mh9Z8H5EpbCXw==
+X-Received: by 2002:a05:6512:238d:: with SMTP id
+ c13mr18407350lfv.32.1617087132508; 
+ Mon, 29 Mar 2021 23:52:12 -0700 (PDT)
+Received: from localhost.localdomain (109-252-203-32.dynamic.spd-mgts.ru.
+ [109.252.203.32])
+ by smtp.gmail.com with ESMTPSA id v9sm2075015lfa.32.2021.03.29.23.52.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Mar 2021 23:52:12 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 30 Mar 2021 08:50:40 +0200
-Message-Id: <20210330065040.5030-4-s.riedmueller@phytec.de>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210330065040.5030-1-s.riedmueller@phytec.de>
-References: <20210330065040.5030-1-s.riedmueller@phytec.de>
+Date: Tue, 30 Mar 2021 09:52:06 +0300
+Message-Id: <20210330065208.446667-1-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-X-MIMETrack: Itemize by SMTP Server on Idefix/Phytec(Release 9.0.1FP7|August
- 17, 2016) at 30.03.2021 08:50:41,
- Serialize by Router on Idefix/Phytec(Release 9.0.1FP7|August  17, 2016) at
- 30.03.2021 08:50:41
-X-TNEFEvaluated: 1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpiluLIzCtJLcpLzFFi42JZI8DApet4KinB4MoyWYsTi/uZHRg9Ni+p
- D2CM4rJJSc3JLEst0rdL4MqYd/cle0GHYMWdJ+8ZGxjb+boYOTkkBEwkNi67zt7FyMUhJLCN
- UaLt2hM2COcao8T+F/PZQarYBIwkFkxrZAKxRQTkJebub2MFsYUFIiSOvL3ACGKzCKhK/Dv8
- jwXE5hWwlujaf4MdYoO8xMxL38FsTgEbid0btrGB2EJANX8O7WeEqBeUODnzCQvIYgmBK4wS
- Ww49hmoWkji9+CwziM0soC2xbOFr5gmM/LOQ9MxCklrAyLSKUSg3Mzk7tSgzW68go7IkNVkv
- JXUTIzCcDk9Uv7SDsW+OxyFGJg7GQ4wSHMxKIrzCBxIThHhTEiurUovy44tKc1KLDzFKc7Ao
- ifNu4C0JExJITyxJzU5NLUgtgskycXBKNTAGH9i0x+F/XfOWiq9l8/t1PCMqDmx+8eN78/bL
- Vh33RKxqlONUFjQZ/bfN+Sui9v+PaYBYuGnW/QnOxdVydzerl/5hPjh/4nW32jOGdxyZnI/o
- 3Ve5cSHzTeie3Xx9rneXTA6KXu3jXbO3KmQue1nmnOrl9nczi5S25SifP/b7woe03w/kMtiV
- WIozEg21mIuKEwF4+3zhFQIAAA==
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210330_075049_697040_84EBDE58 
-X-CRM114-Status: GOOD (  15.11  )
+X-CRM114-CacheID: sfid-20210330_075213_644186_7771FBFB 
+X-CRM114-Status: UNSURE (   6.45  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,69 +92,24 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-103.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED,
-	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
+X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 4/4] imx-bbu-nand-fcb: Inform user if the barebox partition is
- too small
+Subject: [PATCH 0/2] Documentation: MIPS: update dlink-dir-320 board stuff
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Show an error message and return an error code if the barebox partition
-is too small. This can easily happen when having large erasoblocks since
-all four FCB copies need a separate eraseblock.
+Antony Pavlov (2):
+  Documentation: dlink-dir-320: update image file name
+  Documentation: dlink-dir-320: update device links
 
-Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
----
- common/imx-bbu-nand-fcb.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ Documentation/boards/mips/dlink-dir-320.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-index 0e008c6bc2c0..4e680a0a51e7 100644
---- a/common/imx-bbu-nand-fcb.c
-+++ b/common/imx-bbu-nand-fcb.c
-@@ -501,7 +501,8 @@ static int imx_bbu_firmware_start_block(struct mtd_info *mtd, int num)
-  * @num: The slot number (0 or 1)
-  *
-  * This returns the start page for a firmware slot, to be written into the
-- * Firmwaren_startingPage field in the FCB.
-+ * Firmwaren_startingPage field in the FCB or a negative error code in case
-+ * of a failure.
-  */
- static int imx_bbu_firmware_fcb_start_page(struct mtd_info *mtd, int num)
- {
-@@ -512,6 +513,11 @@ static int imx_bbu_firmware_fcb_start_page(struct mtd_info *mtd, int num)
- 
- 	blocksleft = imx_bbu_firmware_max_blocks(mtd);
- 
-+	if (blocksleft <= 0) {
-+		pr_err("partition size too small for both firmwares\n");
-+		return -ENOMEM;
-+	}
-+
- 	/*
- 	 * The ROM only checks for a bad block when advancing the read position,
- 	 * but not if the initial block is good, hence we cannot directly point
-@@ -1258,7 +1264,15 @@ static int imx_bbu_nand_update(struct bbu_handler *handler, struct bbu_data *dat
- 		free(fcb);
- 		fcb = xzalloc(sizeof(*fcb));
- 		fcb->Firmware1_startingPage = imx_bbu_firmware_fcb_start_page(mtd, !used);
-+		if (fcb->Firmware1_startingPage < 0) {
-+			ret = fcb->Firmware1_startingPage;
-+			goto out;
-+		}
- 		fcb->Firmware2_startingPage = imx_bbu_firmware_fcb_start_page(mtd, used);
-+		if (fcb->Firmware2_startingPage < 0) {
-+			ret = fcb->Firmware2_startingPage;
-+			goto out;
-+		}
- 		fcb->PagesInFirmware1 = fw_size / mtd->writesize;
- 		fcb->PagesInFirmware2 = fcb->PagesInFirmware1;
- 
 -- 
-2.25.1
+2.30.1
 
 
 _______________________________________________
