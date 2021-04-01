@@ -1,62 +1,54 @@
-Delivery-date: Thu, 01 Apr 2021 14:30:10 +0200
+Delivery-date: Thu, 01 Apr 2021 15:53:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lRwSg-0006mG-90
-	for lore@lore.pengutronix.de; Thu, 01 Apr 2021 14:30:10 +0200
+	id 1lRxlB-0006q8-Jq
+	for lore@lore.pengutronix.de; Thu, 01 Apr 2021 15:53:21 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lRwSf-0001gI-IN
-	for lore@pengutronix.de; Thu, 01 Apr 2021 14:30:10 +0200
+	id 1lRxlA-0001dC-Sc
+	for lore@pengutronix.de; Thu, 01 Apr 2021 15:53:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
+	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=r/BnzXM40qvejPUz9GwgHCMj99xL4xHLqP+ai6NU2I8=; b=hCCIlAtyrzRvE6dM7XAw4jmbj
-	0d3CQAnzaHhXyRLMFtfUbiAJjnjUSH+2sFXWepNFG3xAYpurftoUPN+wOohEf2XpVcxAWxZsg5bJL
-	kk8P2Rn/HjeV7eXYsAIToRj7jPtrZPGF0lmkz85oMWd+RSvt8CCSWMMXY0oSnTM79TqqsuvlGAhOx
-	yn0fOmd7v8hGvjaaag7sy1wryCDGnKG3Evs7B3PfhR1v0Rvqh3mulz3kcUb6tMFyUbsTGPiGE4yZL
-	IjxrR62QeNzQs8Nvq2WX5fDXXcznMcGAzjaSxIk1rriJVM56Qy+Cb+Ic25zAeDOO+P3eM9iakFLzs
-	uTo46GjoQ==;
+	 bh=clhB3dyHcrK6slZkHPD9E7tjAvmkrshx0eSEwgh3kuo=; b=llhqEJxCb4FbgYt9ErLeCwhX1
+	rTuCrlxmmlNlyAxWNY9t3tg5juBSkV1eK5nljCPBQaeGHXat9FuSixPKHdAEZ0liYvPMUfc4qD5mQ
+	C+Fhsey4kudb2HI0kYneNTY+UvVMYvlEAuTVRPKOHhWWnk5QaFBpX9cufqkdXvIRGHY7+c8TWp1M8
+	jJmKg49jfRDkLUvszDwvX37iNKyx7pOccKjiruzwzXg6yoHvfSPLMNgHabayKkTxl01DXjQlElOio
+	m5GUYPjAIwlMTeLGEIMxziHGnTJNhU0USx5XZjedjIH+J+X9yg8qU+ZuzSRGNQDZ6EH4pMSuM9pP4
+	ukXIZWQ8A==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lRwRU-009aOZ-CJ; Thu, 01 Apr 2021 12:28:56 +0000
+	id 1lRxkC-009juw-OY; Thu, 01 Apr 2021 13:52:20 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lRwQT-009a3O-2S
- for barebox@lists.infradead.org; Thu, 01 Apr 2021 12:27:54 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lRwQR-0001E8-Jr; Thu, 01 Apr 2021 14:27:51 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lRwQR-0001o0-1H; Thu, 01 Apr 2021 14:27:51 +0200
-Date: Thu, 1 Apr 2021 14:27:51 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210401122751.GU609@pengutronix.de>
-References: <20210330065208.446667-1-antonynpavlov@gmail.com>
+ id 1lRxk7-009juO-My
+ for barebox@lists.infradead.org; Thu, 01 Apr 2021 13:52:17 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1lRxk7-0001XM-3z; Thu, 01 Apr 2021 15:52:15 +0200
+To: alex.aring@gmail.com,
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+References: <20140405230029.876959920a802447aeb9720f@gmail.com>
+ <1396724565.786389175@f77.i.mail.ru> <20140405192722.GA2297@omega>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <f29356e1-46ff-6920-f233-b073b93e6b42@pengutronix.de>
+Date: Thu, 1 Apr 2021 15:52:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210330065208.446667-1-antonynpavlov@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 14:27:42 up 42 days, 15:51, 101 users,  load average: 0.22, 0.13,
- 0.13
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20140405192722.GA2297@omega>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210401_132753_177652_65720C5E 
-X-CRM114-Status: GOOD (  15.61  )
+X-CRM114-CacheID: sfid-20210401_145215_832708_0683892B 
+X-CRM114-Status: GOOD (  12.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,25 +68,31 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/2] Documentation: MIPS: update dlink-dir-320 board stuff
+Subject: Re: RFC: barebox-x86 as a coreboot payload
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Mar 30, 2021 at 09:52:06AM +0300, Antony Pavlov wrote:
-> Antony Pavlov (2):
->   Documentation: dlink-dir-320: update image file name
->   Documentation: dlink-dir-320: update device links
+Hi,
+
+On 05.04.14 21:27, alex.aring at gmail.com (Alexander Aring) wrote:
+> On Sat, Apr 05, 2014 at 11:02:45PM +0400, Alexander Shiyan wrote:
+>> Sat, 5 Apr 2014 23:00:29 +0400 ?? Antony Pavlov <antonynpavlov at gmail.com>:
+>> Amused: http://www.coreboot.org/File:Coreboot_libpayload_tint.png
+>> This is a really missing feature in barebox :)
+>>
 > 
->  Documentation/boards/mips/dlink-dir-320.rst | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> We should port doom to barebox. This is the most ported game ever.
+> 
+> - Alex
 
-Applied, thanks
+[x], see the announcement earlier today.
 
-Sascha
+:-),
+Ahmad
 
 -- 
 Pengutronix e.K.                           |                             |
