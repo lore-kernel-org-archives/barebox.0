@@ -1,56 +1,78 @@
-Delivery-date: Sat, 03 Apr 2021 09:10:23 +0200
+Delivery-date: Sat, 03 Apr 2021 10:23:54 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lSaQJ-00018K-ET
-	for lore@lore.pengutronix.de; Sat, 03 Apr 2021 09:10:23 +0200
+	id 1lSbZS-0001Bt-J5
+	for lore@lore.pengutronix.de; Sat, 03 Apr 2021 10:23:54 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lSaQI-0002Vx-Ii
-	for lore@pengutronix.de; Sat, 03 Apr 2021 09:10:23 +0200
+	id 1lSbZR-0000Z5-O6
+	for lore@pengutronix.de; Sat, 03 Apr 2021 10:23:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
-	References:Cc:To:Subject:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:Mime-Version:References:In-Reply-To:Message-Id:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=GlfLdIBeL17G7CuiV/yKO1DnCL/mnqxUUNnxkGSA7C8=; b=fDsrx8IBB2LXNdWn9XMvZj3wW
-	Kv2fvl4LQL2tn0RwWOoopLOLqEOP+/7BBGDPP4PO7vaLXKcA7qBpOudoUIzIZc/JaIoLUmXdNLUPm
-	rUjRfzoqJ2aQO1rkJ3WkV2mTsokaScFbMKKeCqJJIaqtNwu4J6uvESegsiuNWtdglX3/SNEckGw1Q
-	SSuxMF/wlYVY+TL0Ta1ZzwzAgIHJzBXjGosY/AKpt7WVuLGGIhAXcGi5LUEqBOYTA8mBALwjN7qGS
-	z4VpYkJ4l4mQmujrly/18pHxbLX6hejColC3er09E1mf/1UCciBXllm634mHBusjKQIV8P+Smewrw
-	uhkfkB1bw==;
+	 bh=tg5u1lM7j9HsSotYwMYoMESrXJJXsssV0luFBNguG/k=; b=UddMvSC/jvh/hzv42LOAralsz
+	/8LPDS+ucDCCekGiENCvU85MAXpP7CfQrjk5SyfAez6ZJsLEVlLaCGHQ9bphdc6oGWhszsU2YHEXL
+	ZWfav17wSWhv9aLjVAuwwGKDVoau9HUApSIjhSg4psT7xfzfPqa/UZVJ+JeRyTxqNmOqQ6pD/k8rV
+	Wf73aRmJGqU+GXXiQUqe7kFBp5MfPRD9VHiaiabQfxh4vNmPlppJihxiYcOxgknnm18Xk/JkBDOWm
+	NBBvboj8mV1VxV4Dobh6URL4e+EJX8fBKnWHqacUuGLumT+MusW021TOcMJKYSaxeNXsfwYBQyW0l
+	2jFHsUOlQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lSaPN-00EOWg-P5; Sat, 03 Apr 2021 07:09:25 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lSbYK-00ET9U-Hc; Sat, 03 Apr 2021 08:22:44 +0000
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lSaPI-00EOWI-56
- for barebox@lists.infradead.org; Sat, 03 Apr 2021 07:09:22 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1lSaPD-0002QQ-Mm; Sat, 03 Apr 2021 09:09:15 +0200
-To: Antony Pavlov <antonynpavlov@gmail.com>
+ id 1lSbYD-00ET93-6T
+ for barebox@lists.infradead.org; Sat, 03 Apr 2021 08:22:39 +0000
+Received: by mail-lf1-x12e.google.com with SMTP id m12so10420378lfq.10
+ for <barebox@lists.infradead.org>; Sat, 03 Apr 2021 01:22:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=0JzcXeNPxnhPnetx+q8S7RvLU2zH55BOQeKpFhHdebM=;
+ b=PIyb36kr6eyNMxhKuv4pb3IlkZrBajYAM5nsb06mTzsVsTwOH5TmkOeX897t/RquKi
+ Qss+GYMxaXM2l+/0EpxrN0TRv2BcskkQy484nHXcDiuZf+JdEvz6rr++ovFJct34i/ly
+ TvYT0FvqGQrLAWex9TsTzJFCRwkv3euEvWagimCmoeCclD1ge6/hFy0t6htRnxZXu28K
+ 1Kxw0dNVWyErJZc6Js2n2w7ymTf/tgcMkQRm7FePXtiurybrFWkUrrjTwyCxiulbOCwd
+ e3W0ObiY62x3r+pWMGr2DfRnyxi1DTGNPr9ELFirTmSnAx9UjmvVBM7lnmnAgU9QF5fh
+ XuQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=0JzcXeNPxnhPnetx+q8S7RvLU2zH55BOQeKpFhHdebM=;
+ b=SP57I4wKRhC1C5bG7gSOL+MsQp/U9XWNKaZF3fX4+tR4+s0V8RGyc6VaE2tQqm8Kgv
+ ZewQI7m6bfBNmPV99oWzmBBp3kNi5+P7WFEYE+KBg4W+/gVNVIyQrKXeS3s5Qjm/rhwV
+ cPS15KCCTfNmdBxCj6JeWNKiq6X4ZF78dfN7e6oKLFPt3tMggiz8bie0aLlHKYXWaHtd
+ svea0QcfgA5V2626n32P9K0qWwd95FcZfujU4KJbZbHXQ/PXGgtF7Z8ff9JnpiyVxnw6
+ 1k6tPlPUN49q9tnOULA5SwFV6SFLQX0ur95RNRjHsOTtjWqziKDKnlY8WMm5O9S7Ta+3
+ pgeg==
+X-Gm-Message-State: AOAM533/vNbfViLzPs/3PzOjp89c2qqgXARwnLx0RB8JwVBsnbN3/xEl
+ sP2LlBgamr4G3q6v2S1SCGNvAXZgW/E=
+X-Google-Smtp-Source: ABdhPJziXcqUrDci8TKi2KUH761i2Xxt/PXkqztZoJtcppkzZIXA/wn03XbXYt18SrMyLBp/Oxf8Mw==
+X-Received: by 2002:a19:e05d:: with SMTP id g29mr11409252lfj.495.1617438153250; 
+ Sat, 03 Apr 2021 01:22:33 -0700 (PDT)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+ by smtp.gmail.com with ESMTPSA id y14sm1087234lfl.165.2021.04.03.01.22.32
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Sat, 03 Apr 2021 01:22:32 -0700 (PDT)
+Date: Sat, 3 Apr 2021 11:22:31 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
-References: <20210324082304.30858-1-a.fatoum@pengutronix.de>
- <20210402085613.9a8dd5ecb960a47faa3eaa90@gmail.com>
- <c2a98aea-2220-38ca-34e5-78a2a585ce82@pengutronix.de>
- <20210402111348.fcc6384084512f23588aad8f@gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <2cd63d9c-903d-3670-6417-65d1fa324410@pengutronix.de>
-Date: Sat, 3 Apr 2021 09:09:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
-MIME-Version: 1.0
-In-Reply-To: <20210402111348.fcc6384084512f23588aad8f@gmail.com>
-Content-Language: en-US
+Message-Id: <20210403112231.e59203a78be74f94457288b2@gmail.com>
+In-Reply-To: <20210403070332.3642879-1-ahmad@a3f.at>
+References: <20210403070332.3642879-1-ahmad@a3f.at>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; i686-pc-linux-gnu)
+Mime-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210403_080920_284783_A630AE2A 
-X-CRM114-Status: GOOD (  17.56  )
+X-CRM114-CacheID: sfid-20210403_092237_320459_C4A77C35 
+X-CRM114-Status: GOOD (  31.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -62,68 +84,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 1/3] RISC-V: cpu: request stack memory region
+X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH master] RISC-V: boot: uncompress: determine piggy data
+ bounds before relocation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGVsbG8gQW50b255LAoKT24gMDIuMDQuMjEgMTA6MTMsIEFudG9ueSBQYXZsb3Ygd3JvdGU6Cj4+
-IFRoaXMgaXMgc3RyYW5nZS4gQ291bGQgeW91IHByaW50IGdldF9ydW50aW1lX29mZnNldCgpIGF0
-IHRoaXMgbG9jYXRpb24/Cj4+IEl0IHNob3VsZCBiZSB6ZXJvLCBiZWNhdXNlIHJlbG9jYXRlX3Rv
-X2N1cnJlbnRfYWRyKCkgaGFkIHByZXZpb3VzbHkgcnVuLAo+PiBidXQgaXQgc2VlbXMgaXQncyBu
-b3QgZm9yIHlvdT8gSSBkb24ndCBzZWUgaG93IGNvbXBpbGVyIHJlb3JkZXJpbmcgY291bGQgaGF2
-ZQo+PiBvY2N1cnJlZCBnaXZlbiB0aGF0IHdlIGRvbid0IGRvIExUTyBhbmQgcmVsb2NhdGVfdG9f
-Y3VycmVudF9hZHIgaXMgdGh1cwo+PiBhIGNvbXBpbGVyIGJhcnJpZXIuCgpbIE5hw692ZSBtZSB0
-aGlua2luZyB0aGVyZSBhcmUgYW55IGd1YXJhbnRlZXMgZnJvbSBHQ0MgZm9yIHNlbGYtbW9kaWZ5
-aW5nIGNvZGUgXQoKPiArICAgIGVtcHR5X3Nsb3RfaW5pdCgwLCAweGZmZmZmZmZmKTsKClRoYXQn
-cyB0cmVtZW5kb3VzbHkgdXNlZnVsLiBUaGFua3MhIEkgZG9uJ3QgcXVpdGUgdW5kZXJzdGFuZCBo
-b3cgaXQgd29ya3MKdGhvdWdoLiBJdCByZWdpc3RlcnMgYSAiZmFsbC1iYWNrIiBkZXZpY2UgZm9y
-IGFsbCBvZiB0aGUgMzItYml0IGFkZHJlc3MKc3BhY2U/Cgo+IFRoZXJlIGFyZSBlbXB0eV9zbG90
-IHJlYWQgd2FybmluZ3Mgb24gbWFzdGVyOgo+IAo+ICAgICBiYXJlYm94JCBxZW11LXN5c3RlbS1y
-aXNjdjMyIC1ub2dyYXBoaWMgLU0gZXJpem8gLWJpb3MgLi9pbWFnZXMvYmFyZWJveC1lcml6by1n
-ZW5lcmljLmltZyAtc2VyaWFsIHN0ZGlvIC1tb25pdG9yIG5vbmUgLXRyYWNlIGZpbGU9L2Rldi9u
-dWxsIAo+ICAgICA+Z2V0X3J1bnRpbWVfb2Zmc2V0KCk9MHgwMDAwMDAwMAo+ICAgICBlbXB0eV9z
-bG90OiByZWFkIGZyb20gMDAwMDAwMDAwMDAyMmNhZgo+ICAgICBlbXB0eV9zbG90OiByZWFkIGZy
-b20gMDAwMDAwMDAwMDAyMmNhZQo+ICAgICBlbXB0eV9zbG90OiByZWFkIGZyb20gMDAwMDAwMDAw
-MDAyMmNiMAo+ICAgICBlbXB0eV9zbG90OiByZWFkIGZyb20gMDAwMDAwMDAwMDAyMmNiMQo+ICAg
-ICByaXNjdi10aW1lciByaXNjdi10aW1lcjogcnVubmluZyBhdCAyNDAwMDAwMCBIego+ICAgICBT
-d2l0Y2ggdG8gY29uc29sZSBbY3MwXQo+IAo+ICAgICBiYXJlYm94IDIwMjEuMDMuMC0wMDEzNC1n
-YzRhMTY4NGRhOS1kaXJ0eSAjMSBGcmkgQXByIDIgMTA6MzM6NDUgTVNLIDIwMjEKPiAKPiAgICAg
-Qm9hcmQ6IGdlbmVyaWMgRXJpem8gU29DIGJvYXJkCj4gICAgIHJpc2N2LXRpbWVyIHJpc2N2LXRp
-bWVyOiBydW5uaW5nIGF0IDI0MDAwMDAwIEh6Cj4gICAgIG1hbGxvYyBzcGFjZTogMHg4MDRmZmQ4
-MCAtPiAweDgwNWZmZDdmIChzaXplIDEgTWlCKQo+IAo+ICAgICBIaXQgYW55IHRvIHN0b3AgYXV0
-b2Jvb3Q6ICAgIDEKPiAgICAgYm9vdDogZXJyb3IgMgo+ICAgICBiYXJlYm94Oi8gCj4gCj4gCj4g
-VGhlcmUgaXMgbm8gZW1wdHlfc2xvdCB3YXJuaW5nIHdpdGggZmVmMTllMTdmNjUxXiBiYXJlYm94
-Ogo+IAo+ICAgICBiYXJlYm94JCBxZW11LXN5c3RlbS1yaXNjdjMyIC1ub2dyYXBoaWMgLU0gZXJp
-em8gLWJpb3MgLi9pbWFnZXMvYmFyZWJveC1lcml6by1nZW5lcmljLmltZyAtc2VyaWFsIHN0ZGlv
-IC1tb25pdG9yIG5vbmUgLXRyYWNlIGZpbGU9L2Rldi9udWxsIAo+ICAgICA+UklTQy1WIHN5c3Rl
-bSB3aXRoIG5vICd0aW1lYmFzZS1mcmVxdWVuY3knIGluIERUUwo+ICAgICBTd2l0Y2ggdG8gY29u
-c29sZSBbY3MwXQo+IAo+ICAgICBiYXJlYm94IDIwMjEuMDMuMC0wMDEyMi1nNjEwNzIwODU3MyAj
-MSBGcmkgQXByIDIgMTE6MDk6MTYgTVNLIDIwMjEKPiAKPiAgICAgQm9hcmQ6IGdlbmVyaWMgRXJp
-em8gU29DIGJvYXJkCj4gICAgIFJJU0MtViBzeXN0ZW0gd2l0aCBubyAndGltZWJhc2UtZnJlcXVl
-bmN5JyBpbiBEVFMKPiAgICAgbWFsbG9jIHNwYWNlOiAweDgwMmZmZDgwIC0+IDB4ODAzZmZkN2Yg
-KHNpemUgMSBNaUIpCj4gCj4gICAgIEhpdCBhbnkgdG8gc3RvcCBhdXRvYm9vdDogICAgMAo+ICAg
-ICBib290OiBlcnJvciAyCj4gICAgIGJhcmVib3g6LyAKClRoYW5rcy4gSSBpZGVudGlmaWVkIHR3
-byBpc3N1ZXMgYW5kIENDJ2QgeW91IG9uIGEgcGF0Y2ggZml4aW5nIHRoZW0uCkJyZWFraW5nIGVy
-aXpvIGhhcyBiZWVuIGEgYmxlc3NpbmcgdG8gc29ydCBvdXQgdGhpcyBraW5kIG9mIGJ1Z3MgZWFy
-bHkgOkQKCkNoZWVycywKQWhtYWQKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIg
-U3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRl
-LyAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTog
-KzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAg
-ICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+On Sat,  3 Apr 2021 09:03:32 +0200
+Ahmad Fatoum <ahmad@a3f.at> wrote:
+
+Hi Ahmad!
+
+I have just tested this patch on erizo FPGA. Barebox work fine.
+
+-- 
+Best regards,
+  Antony Pavlov
+
+> Like on ARM, the PBL common code does not relocate the piggy data and
+> instead keeps pointers into the old image's location.
+> 
+> For relocate_to_current_adr, this doesn't matter, because both
+> destination and source address are the same, but when running from ROM
+> or flash relocate_to_adr will only copy up to __bss_start, so
+> determining the piggy data bounds _must_ happen before relocation.
+> 
+> We did so, but input_data_len, which references the image end was
+> executed after relocation unearthing two bugs at once:
+> 
+>   - The compiler cached input_data_end from before relocation, so
+>     the runtime offset wasn't being added
+> 
+>   - Even with runtime offset added, we were pointing at the new
+>     address, but the old piggy data wasn't copied there (On erizo,
+>     it's still in ROM)
+> 
+> Fix these by evaluating the bounds before relocation and add a comment,
+> why it needs to be there. The same comment will also be added at the
+> code's origin in the ARM architecture support.
+> 
+> Reported-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+> Please apply to master.
+> ---
+>  arch/riscv/boot/uncompress.c      | 6 +++---
+>  arch/riscv/include/asm/sections.h | 4 +++-
+>  2 files changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/riscv/boot/uncompress.c b/arch/riscv/boot/uncompress.c
+> index 411cefb0e31b..b4e010998a4a 100644
+> --- a/arch/riscv/boot/uncompress.c
+> +++ b/arch/riscv/boot/uncompress.c
+> @@ -32,8 +32,11 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+>  	void *pg_start, *pg_end;
+>  	unsigned long pc = get_pc();
+>  
+> +	/* piggy data is not relocated, so determine the bounds now */
+>  	pg_start = input_data + get_runtime_offset();
+>  	pg_end = input_data_end + get_runtime_offset();
+> +	pg_len = pg_end - pg_start;
+> +	uncompressed_len = input_data_len();
+>  
+>  	/*
+>  	 * If we run from inside the memory just relocate the binary
+> @@ -45,9 +48,6 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+>  	else
+>  		relocate_to_adr(membase);
+>  
+> -	pg_len = pg_end - pg_start;
+> -	uncompressed_len = input_data_len();
+> -
+>  	barebox_base = riscv_mem_barebox_image(membase, endmem,
+>  					       uncompressed_len + MAX_BSS_SIZE);
+>  
+> diff --git a/arch/riscv/include/asm/sections.h b/arch/riscv/include/asm/sections.h
+> index 725fd8db474e..6673648bcd58 100644
+> --- a/arch/riscv/include/asm/sections.h
+> +++ b/arch/riscv/include/asm/sections.h
+> @@ -15,9 +15,11 @@ extern char __dynsym_end[];
+>  extern char input_data[];
+>  extern char input_data_end[];
+>  
+> +unsigned long get_runtime_offset(void);
+> +
+>  static inline unsigned int input_data_len(void)
+>  {
+> -	return get_unaligned((const u32 *)(input_data_end - 4));
+> +	return get_unaligned((const u32 *)(input_data_end + get_runtime_offset() - 4));
+>  }
+>  
+>  #endif
+> -- 
+> 2.30.0
+> 
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
