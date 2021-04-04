@@ -1,80 +1,50 @@
-Delivery-date: Sat, 03 Apr 2021 14:02:13 +0200
+Delivery-date: Sun, 04 Apr 2021 13:35:22 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lSeyj-0001MN-1l
-	for lore@lore.pengutronix.de; Sat, 03 Apr 2021 14:02:13 +0200
+	id 1lT12I-0002ln-MH
+	for lore@lore.pengutronix.de; Sun, 04 Apr 2021 13:35:22 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lSeyi-0002Po-7j
-	for lore@pengutronix.de; Sat, 03 Apr 2021 14:02:12 +0200
+	id 1lT12E-0002SD-Sg
+	for lore@pengutronix.de; Sun, 04 Apr 2021 13:35:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=7F06/H9/6ZTyKnB9NfSxISbEAt9PcMNVcBxvO5CqAXo=; b=EyFIVHppofDCkOF6PP9jPCaju
-	3HvlZT0GxYwOXnoRsFtxvicKq9YjLD75Epl/pO/O6rZ7SKhNLqe8eT+wa6bX6csMWl8MBt2UWxi5z
-	DuZLFZVsuplqxsyhIW2CVcgl7Vzh37qMXsno57IUVSUQnsP3FyDitZn59s5g+FDWAOpvGj3cIxYKZ
-	WUDala4uOK7zc8nYd8rSewcDatNrNm2HWcsKx1U+rxCQ7FRWKTgiwefsuaXbeJep6H7ee4ITqY+sa
-	IxvOP4zvlbCwsXJQjMwPDT4C669MJkPQ1q9YZK6LekckoU1TUQwhhDtbfcfV40neCydsVKtH52HRV
-	z+t2A9PPA==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Gd1du7OcUh+/G5Ybu4PzC7xUXQ70VtkHtDsS0J9JDeM=; b=NaXUyap0Z7ab911WwzCQ4cxBlX
+	5LsoOV42KjPYEdRcvduj4qUwX9OpaisWK5P/vNbASURLnUPbejNvl/W72pUga5lLtZGUexjCa2kWX
+	d7yIaIFdH9yJl/2C8G+D41Jga3kJCO5sW47eSoUvIHuusq88Fft0Ntr6rS5mBnQCQdqu93TSIdBNB
+	CaDIx7iTulLKyFrGjcMfNvD+OZlZemcciiYwtCyTETUaT+eoOYtZhvtymkT4/QAKwM0xexWwYEx3s
+	/XtLskkdaSI1nbg022HVjfNrjq+NkZHi6Wyk5MqhGFDplrsOEZaET1QYk6BlIesd3aGDeNO5oYvyr
+	v95IDx5Q==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lSexX-00EdUf-1R; Sat, 03 Apr 2021 12:00:59 +0000
-Received: from mib.mailinblack.com ([137.74.84.110])
+	id 1lT0ym-00Fg2Y-Nq; Sun, 04 Apr 2021 11:31:44 +0000
+Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lSexP-00EdUH-HC
- for barebox@lists.infradead.org; Sat, 03 Apr 2021 12:00:53 +0000
-Received: from localhost (localhost [127.0.0.1])
- by mib.mailinblack.com (Postfix) with ESMTP id 1CD3B1A6148
- for <barebox@lists.infradead.org>; Sat,  3 Apr 2021 12:00:47 +0000 (UTC)
-Received: from mib.mailinblack.com (localhost [127.0.0.1])
- by mib.mailinblack.com with SMTP (Mib Daemon ) id KN1OPLKY;
- Sat, 03 Apr 2021 12:00:46 +0000 (UTC)
-Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
- by mib.mailinblack.com (Postfix) with ESMTPS id E65E91A6147;
- Sat,  3 Apr 2021 12:00:46 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id BF0BE27E03AE;
- Sat,  3 Apr 2021 14:00:46 +0200 (CEST)
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id Hap2u9gU-53x; Sat,  3 Apr 2021 14:00:46 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 2A05927E0423;
- Sat,  3 Apr 2021 14:00:46 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 2A05927E0423
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1617451246;
- bh=NwKx7aAg4MTELDI2r7aJGT3eXUcTiPOPgnw6UVZ846E=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=Fk8hMdQSKfdpXmXTLAUeuJI4G1oVwt4clp2haqOlkg+61Bu5rMhohrHb/Y6u+qBCH
- /422HuabOgTcBvkmM0LOx7AmnzcX8oIXLO7CK35NMUlxgfxP2YOTGt7rJ/J3B7KhOy
- NjaPXdeQcIyGA2RGD/3lLtLuvkN2WvMRqqQHOB1I=
-X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id gjy4CyqoOH_T; Sat,  3 Apr 2021 14:00:46 +0200 (CEST)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
- by zimbra2.kalray.eu (Postfix) with ESMTPSA id 14D1B27E03AE;
- Sat,  3 Apr 2021 14:00:46 +0200 (CEST)
-Date: Sat, 3 Apr 2021 14:00:37 +0200
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210403120037.GA18977@tellis.lin.mbt.kalray.eu>
-References: <20210403070237.3642189-1-ahmad@a3f.at>
+ id 1lT0mE-00FfBc-5M
+ for barebox@lists.infradead.org; Sun, 04 Apr 2021 11:19:41 +0000
+X-Originating-IP: 83.135.94.104
+Received: from geraet.fritz.box (unknown [83.135.94.104])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 76F8B1BF205;
+ Sun,  4 Apr 2021 11:18:36 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Sun,  4 Apr 2021 13:18:30 +0200
+Message-Id: <20210404111831.592821-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210403070237.3642189-1-ahmad@a3f.at>
-User-Agent: Mutt/1.9.4 (2018-02-28)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210403_130051_720658_24E25CA4 
-X-CRM114-Status: GOOD (  23.36  )
+X-CRM114-CacheID: sfid-20210404_121908_935975_B405A78A 
+X-CRM114-Status: UNSURE (   8.34  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,104 +64,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/4] PBL: fdt: implement fdt_device_get_match_data
+Subject: [PATCH 1/2] sandbox: env: set nv.autoboot=abort to drop to shell
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Ahmad,
+barebox on sandbox defaults to network boot, which fails either due to
+missing TAP support (like not having CAP_NET_ADMIN) or because the files
+couldn't be fetched.
 
-On Sat, Apr 03, 2021 at 09:02:34AM +0200, Ahmad Fatoum wrote:
-> Currently, the generic DT image can't properly have a PBL console,
-> because it's only known at runtime what system we are running on.
-> 
-> As we already parse the FDT in the PBL to get the memory regions, we
-> could extract the board compatible as well and determine which UART to
-> use. Add a helper to achieve this.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  include/pbl.h |  9 +++++++++
->  pbl/fdt.c     | 36 ++++++++++++++++++++++++++++++++++++
->  2 files changed, 45 insertions(+)
-> 
-> diff --git a/include/pbl.h b/include/pbl.h
-> index 194d5e750839..f58daec7351a 100644
-> --- a/include/pbl.h
-> +++ b/include/pbl.h
-> @@ -34,4 +34,13 @@ ssize_t pbl_fat_load(struct pbl_bio *, const char *filename, void *dest, size_t
->  
->  void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsize);
->  
-> +struct fdt_device_id {
-> +	const char *compatible;
-> +	const void *data;
-> +};
-> +
-> +const void *
-> +fdt_device_get_match_data(const void *fdt, const char *nodepath,
-> +			  const struct fdt_device_id ids[]);
-> +
->  #endif /* __PBL_H__ */
-> diff --git a/pbl/fdt.c b/pbl/fdt.c
-> index b4a40a514b8b..03260cb61971 100644
-> --- a/pbl/fdt.c
-> +++ b/pbl/fdt.c
-> @@ -68,3 +68,39 @@ err:
->  	pr_err("No memory, cannot continue\n");
->  	while (1);
->  }
-> +
-> +const void *fdt_device_get_match_data(const void *fdt, const char *nodepath,
-> +				      const struct fdt_device_id ids[])
-> +{
-> +	int node, length;
-> +	const char *list, *end;
-> +	const struct fdt_device_id *id;
-> +
-> +	node = fdt_path_offset(fdt, nodepath);
-> +	if (node < 0)
-> +		return NULL;
-> +
-> +	list = fdt_getprop(fdt, node, "compatible", &length);
-> +	if (!list)
-> +		return NULL;
-> +
-> +	end = list + length;
-> +
-> +	while (list < end) {
-> +		length = strnlen(list, end - list) + 1;
-> +
-> +		/* Abort if the last string isn't properly NUL-terminated. */
-> +		if (list + length > end)
-> +			return NULL;
-> +
-> +		for (id = ids; id->compatible; id++) {
-> +			if (strlen(id->compatible) == length &&
-> +			    !memcmp(list, id->compatible, length))
-> +				return id->data;
-Why not using strcmp, or even strcasecmp as done by of_compat_cmp ?
-If both string doesn't have the same length, strcmp will report a diff.
+Arguably, the most user-friendly thing is to drop to shell. Do so.
+Users can still override nv.autoboot if they want to boot differently.
 
-> +		}
-> +
-> +		list += length;
-> +	}
-> +
-> +	return NULL;
-> +}
-> -- 
-> 2.30.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/sandbox/board/env/nv/autoboot | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 arch/sandbox/board/env/nv/autoboot
+
+diff --git a/arch/sandbox/board/env/nv/autoboot b/arch/sandbox/board/env/nv/autoboot
+new file mode 100644
+index 000000000000..f7d13fd04662
+--- /dev/null
++++ b/arch/sandbox/board/env/nv/autoboot
+@@ -0,0 +1 @@
++abort
+-- 
+2.30.0
 
 
 _______________________________________________
