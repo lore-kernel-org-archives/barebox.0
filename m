@@ -2,49 +2,53 @@ Delivery-date: Sun, 04 Apr 2021 13:35:22 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lT12I-0002ln-MH
+	id 1lT12I-0002lx-QZ
 	for lore@lore.pengutronix.de; Sun, 04 Apr 2021 13:35:22 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lT12E-0002SD-Sg
+	id 1lT12E-0002SB-UJ
 	for lore@pengutronix.de; Sun, 04 Apr 2021 13:35:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Gd1du7OcUh+/G5Ybu4PzC7xUXQ70VtkHtDsS0J9JDeM=; b=NaXUyap0Z7ab911WwzCQ4cxBlX
-	5LsoOV42KjPYEdRcvduj4qUwX9OpaisWK5P/vNbASURLnUPbejNvl/W72pUga5lLtZGUexjCa2kWX
-	d7yIaIFdH9yJl/2C8G+D41Jga3kJCO5sW47eSoUvIHuusq88Fft0Ntr6rS5mBnQCQdqu93TSIdBNB
-	CaDIx7iTulLKyFrGjcMfNvD+OZlZemcciiYwtCyTETUaT+eoOYtZhvtymkT4/QAKwM0xexWwYEx3s
-	/XtLskkdaSI1nbg022HVjfNrjq+NkZHi6Wyk5MqhGFDplrsOEZaET1QYk6BlIesd3aGDeNO5oYvyr
-	v95IDx5Q==;
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
+	References:Cc:To:Subject:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=qTZhyARgnnJLE8wQVhSVxbSLe3fceIJwHJaX/YvdaNc=; b=nAYNjQ1TQAdLDYA6CzaudVBdD
+	TL2SxbENaqy0GcxSyzzr69tZPFGPjtrMBkrpVaPXA9B2G9kmSKA4N0EUot2PPbSN/vvjxvEfpxS1I
+	0n/Ca5xADh6dm/pbfk8eozsxXSy6NQXk34IwTDv33+RY64WnwkOM05KzPIzSrdfgubG8Ozm2WoaAD
+	1EZ1VQhbXyu/ktFkue8GHF4tw+WLkB9WnQGo757Iuf59s2+MLPpLgQIEIq23TiPlhn89PoyLiPS7N
+	sVGVrPu+X3h7dBJlTvPlMd0Ze5hYyHiNvDdoVZMVdwvXyOGa3JhWhp0XP5r0HNdFgFGjr4y08mYHz
+	p50U6EHIg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lT0ym-00Fg2Y-Nq; Sun, 04 Apr 2021 11:31:44 +0000
-Received: from relay8-d.mail.gandi.net ([217.70.183.201])
+	id 1lT0yp-00Fg2g-GX; Sun, 04 Apr 2021 11:31:52 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lT0mE-00FfBc-5M
- for barebox@lists.infradead.org; Sun, 04 Apr 2021 11:19:41 +0000
-X-Originating-IP: 83.135.94.104
-Received: from geraet.fritz.box (unknown [83.135.94.104])
- (Authenticated sender: ahmad@a3f.at)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 76F8B1BF205;
- Sun,  4 Apr 2021 11:18:36 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sun,  4 Apr 2021 13:18:30 +0200
-Message-Id: <20210404111831.592821-1-ahmad@a3f.at>
-X-Mailer: git-send-email 2.30.0
+ id 1lT0qA-00FfU2-Vp
+ for barebox@lists.infradead.org; Sun, 04 Apr 2021 11:23:06 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1lT0q7-0001Xt-Nf; Sun, 04 Apr 2021 13:22:47 +0200
+To: Jules Maselbas <jmaselbas@kalray.eu>, Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
+References: <20210403070237.3642189-1-ahmad@a3f.at>
+ <20210403120037.GA18977@tellis.lin.mbt.kalray.eu>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <742a08f0-5db9-7fed-023c-bddc0500e034@pengutronix.de>
+Date: Sun, 4 Apr 2021 13:22:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
+In-Reply-To: <20210403120037.GA18977@tellis.lin.mbt.kalray.eu>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210404_121908_935975_B405A78A 
-X-CRM114-Status: UNSURE (   8.34  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210404_122304_302444_7A6ABD73 
+X-CRM114-Status: GOOD (  13.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -64,37 +68,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] sandbox: env: set nv.autoboot=abort to drop to shell
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/4] PBL: fdt: implement fdt_device_get_match_data
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-barebox on sandbox defaults to network boot, which fails either due to
-missing TAP support (like not having CAP_NET_ADMIN) or because the files
-couldn't be fetched.
+Hello Jules,
 
-Arguably, the most user-friendly thing is to drop to shell. Do so.
-Users can still override nv.autoboot if they want to boot differently.
+On 03.04.21 14:00, Jules Maselbas wrote:
+>> +		for (id = ids; id->compatible; id++) {
+>> +			if (strlen(id->compatible) == length &&
+>> +			    !memcmp(list, id->compatible, length))
+>> +				return id->data;
+> Why not using strcmp, or even strcasecmp as done by of_compat_cmp ?
+> If both string doesn't have the same length, strcmp will report a diff.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- arch/sandbox/board/env/nv/autoboot | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 arch/sandbox/board/env/nv/autoboot
+The code is based on fdt_stringlist_search. I assume it compared length
+first, because it already computed it, so an early comparison
+saves some cycles. Good point on case-insensitivity. I'll send out a v2.
 
-diff --git a/arch/sandbox/board/env/nv/autoboot b/arch/sandbox/board/env/nv/autoboot
-new file mode 100644
-index 000000000000..f7d13fd04662
---- /dev/null
-+++ b/arch/sandbox/board/env/nv/autoboot
-@@ -0,0 +1 @@
-+abort
+Thanks,
+Ahmad
+
 -- 
-2.30.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
