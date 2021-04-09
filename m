@@ -1,68 +1,91 @@
-Delivery-date: Fri, 09 Apr 2021 15:13:42 +0200
+Delivery-date: Fri, 09 Apr 2021 15:21:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lUqxC-0007t1-BW
-	for lore@lore.pengutronix.de; Fri, 09 Apr 2021 15:13:42 +0200
+	id 1lUr56-0007tk-1N
+	for lore@lore.pengutronix.de; Fri, 09 Apr 2021 15:21:52 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lUqxA-0000kn-3G
-	for lore@pengutronix.de; Fri, 09 Apr 2021 15:13:42 +0200
+	id 1lUr54-0001qa-Gt
+	for lore@pengutronix.de; Fri, 09 Apr 2021 15:21:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
-	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=eI+dGnlQTCfdfGGZ4s40is7x1HbCJKQQ3WQ/xuUaAHA=; b=IABtrd4rUT1Q86+JPL/FzgE98
-	EtDxR+G72o3ROHunA7utb1YjxvwvyIhhwq+ZMTpGR4Gfu5lcJTku4vq3EiLL7559fzMhDgUbsuE0p
-	jmdzzY2vNj4mdGJZauikGcKvhK1EcDX6nVJt+hzSkfyLhAc6hittI8ZI6J6sYETThhJ4smv1y7sfv
-	ppDXc2FbANIyN18Zb1Bo3EG6S6E48GhtbilYnYvAKWIySA6OGyWIZGWa2Ha39j1yo0mjx57TERE/H
-	ssVam1dawO6ZyEz8QXTDLbdHIf0X9pxIB9bUnIeP8CoPlqBxTB4wvLb8iNOMrzX0ZnkdPZVCkPtml
-	s72i0yLDg==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=5qPV0tzHvTt7RufWq78FY7I7R194jXHobH5nOTSz36U=; b=n2AqCdLNRl8SgsfNbtfK+zsUTn
+	kv5Cq9BEGG94LJWUx+6iFBtpsskC81aAsUocMHCXFc6irWk8Hm1c51SMR8Rbf6GbJmjvqY7NghjCw
+	P5VqjpWnUhXevHC8hA3omOvJYWi2sFvBVup9ZJWW+LfTk2f4nnPhwmMJ4AIdhgmpktks1C0/uK9wm
+	eoa222AJ2dCHlHeNqniJNtzu/wnmq3cS/pXO+2840bx6luMLNdjDheGhqp+Afj7QHFy92Q8lPrXzZ
+	sM/pk0Dx6ATzd8d54ZDInlvX5KX0iGB5NElZXhZpORfMmiPJ1M3S+3GHILlVm6oWKZOC09O1yV5q8
+	pVMJZp4Q==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lUqvx-000nkl-GP; Fri, 09 Apr 2021 13:12:25 +0000
+	id 1lUr48-000oim-FP; Fri, 09 Apr 2021 13:20:52 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lUqvZ-000nf6-1B
- for barebox@desiato.infradead.org; Fri, 09 Apr 2021 13:12:02 +0000
+ id 1lUr44-000oiN-SF
+ for barebox@desiato.infradead.org; Fri, 09 Apr 2021 13:20:49 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=NcLP1C+qUO1AyKlQmyBpaPH/77gJrs9oHlzWF+b6M4A=; b=BHdqjFV0+ZqGw0+lq0WDk1hPm/
- DVRTW+e19AyLEXKHVTPdJuXkmI0e2EHnKdhH18tCT3fyOFlQg7poZ9ftWVaOQonTUINLBkAiu5fa2
- ngBs7rtKfQqJN2Ga3uDLnbBoC/UlK8THahqFaQl2A0y7famqzQDcxFs0BE8McraCio8U9rooNisfy
- 6hFfiVuhr2l+12t1Jpv9iRu+6X1RHg9zv1BiM8KjlK/PiwfnUfXrvNO7B4Di+Az6gGp3PjIFbCOuD
- twMNNIxNboxnPlK9Cs5OYH69a5o8H1fVt1XRBmOWULzkmJw1HC4cllv8Hv2/AgFuOkRwoVIdCOePW
- za9058NQ==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=HX80MMHf4VuJgKisNSBFb3oCjSKOukoALFlnZsEJs7A=; b=OrafroBK4rIIH0DTxur5X+kmaN
+ QT4T1q9TYNY0j6JwoqQv2uAKlMEIwFAPYyrVD4jbpUxbDwm4tU42k5+F/TQebwkMPCHwfkrvFJC+s
+ HdB7at8HsgpHWdPp6Ubo7F9CO3CoMZwC8YH20HIR68E8n2L/rZ4SfH+W727f0Q09wxWgpr1llBEaf
+ fwyFSgxOSnRYavcbOAPthHVAG9zrH73+Q22KYP9X28gDC/EJJ8FUkNE1IbpodHWxQ04of9PMkRdtL
+ FHCQHhv54TY3MVGQij7f0MPhMT250wfJelbAiUtfJoQLK5KVjt7oS4e+YBdfPE//IOFM05tI83PNO
+ QqAEAg2Q==;
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lUqvT-004XTv-8H
- for barebox@lists.infradead.org; Fri, 09 Apr 2021 13:11:59 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ore@pengutronix.de>)
- id 1lUqvP-0008Cu-Pm; Fri, 09 Apr 2021 15:11:51 +0200
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <ore@pengutronix.de>)
- id 1lUqvP-000186-Dl; Fri, 09 Apr 2021 15:11:51 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+ id 1lUr41-004Xom-Do
+ for barebox@lists.infradead.org; Fri, 09 Apr 2021 13:20:47 +0000
+Received: by mail-lf1-x135.google.com with SMTP id v140so9694975lfa.4
+ for <barebox@lists.infradead.org>; Fri, 09 Apr 2021 06:20:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HX80MMHf4VuJgKisNSBFb3oCjSKOukoALFlnZsEJs7A=;
+ b=ILzRbipYMQEmdSTdLMVDRcXd4LGML98ctLaQtasYDbJWs1+TMI8+IK8nwdBPzKxht4
+ f+I6d2jFOpT+1NFLKSEpCs2DRsFQtnG6+YVPqQCu8b2im9KMCyfsxR6iVIVZbxsO+MlK
+ FAlipZHCwEFM11c1578LpCW6FSU+ebKTwtyZEfwIuHOs71rULwFA21YbwNDlXE2Sq70/
+ JWa6TlrqSdZ1LQcA8xPGHc1Vu84mzMD4wcu4yM4uRSeleW0/L2s1+v3sIxkifjgbKZvZ
+ 8BEvOqNMiyu59v+D+5oK+riqcvpIAAIo+IpVAIJzcbg+hWAuPPKUoEgnUdiOW2ZkRW2z
+ XWqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HX80MMHf4VuJgKisNSBFb3oCjSKOukoALFlnZsEJs7A=;
+ b=M7Zcvx87Ulw0CmKhZggRZAKN9JOcW1hmdgsMojQRsSjsglqyvFhaMwqZD/vTP6JHls
+ aA9W8qYKBoeemHXPi/EBsoIk/6y5yqxeXYIEyaxYQJorPDGBJs63QyTWsTsvzMzjmULa
+ /1y/rUcZ2zCDlxSXtHrWS0MkvQJv+MqYYDtm28aPXmXRDk/xKgm1ED03TCVFm4SftWMV
+ I8n+bqKpjPu+Qh92AgwRCusBBCsoadEeNF7REqyviRpEAMaTQwef6cu2haJv4rfC6idM
+ TImqRsVAGkJGDWHL3PMGJj33f5dv38VdRUo+6jDVQXjXQtXlcZqk6my9bY7grHsj0EAX
+ Fmug==
+X-Gm-Message-State: AOAM5329c6fVTBNHKurMv9juJKqo4sK0fFU/1oFqpDgIcK7WqQfngd3L
+ mjQljTi6KEbbeWaDHDS7w3guDcrDVG0=
+X-Google-Smtp-Source: ABdhPJy4u1cS2tA6EkhcHM36Do386Hmglf/zq2709Bpa0b1MYVfKoHaovX7jd5LfPDtOFsCrLyOtOg==
+X-Received: by 2002:a05:6512:991:: with SMTP id
+ w17mr10527600lft.85.1617974442666; 
+ Fri, 09 Apr 2021 06:20:42 -0700 (PDT)
+Received: from laped.home ([185.181.22.4])
+ by smtp.googlemail.com with ESMTPSA id z9sm279710lfa.80.2021.04.09.06.20.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 09 Apr 2021 06:20:42 -0700 (PDT)
+From: Lars Pedersen <lapeddk@gmail.com>
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri,  9 Apr 2021 15:11:44 +0200
-Message-Id: <20210409131149.2184-2-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210409131149.2184-1-o.rempel@pengutronix.de>
-References: <20210409131149.2184-1-o.rempel@pengutronix.de>
+Cc: Lars Pedersen <lapeddk@gmail.com>, Bruno Thomsen <bruno.thomsen@gmail.com>
+Date: Fri,  9 Apr 2021 15:20:35 +0200
+Message-Id: <20210409132035.197739-1-lapeddk@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210409_061155_656556_F2CF65CC 
-X-CRM114-Status: GOOD (  23.68  )
+X-CRM114-CacheID: sfid-20210409_062045_496454_B8EE3E86 
+X-CRM114-Status: GOOD (  16.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,1257 +105,400 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v1 1/6] mci: atmel_mci: add PBL support
+X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH] ARM: i.MX: Kamstrup mx7 concentrator board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Move most of the atmel_mci code to atmel_mci_common.c and introduce
-atmel_mci_pbl.c for the PBL part.
+This adds support for Kamstrup mx7 concentrator board
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Lars Pedersen <lapeddk@gmail.com>
+Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
 ---
- arch/arm/mach-at91/include/mach/xload.h |   2 +
- drivers/mci/Kconfig                     |   4 +
- drivers/mci/Makefile                    |   3 +-
- drivers/mci/atmel-mci-regs.h            |  37 ++
- drivers/mci/atmel_mci.c                 | 494 +-----------------------
- drivers/mci/atmel_mci_common.c          | 465 ++++++++++++++++++++++
- drivers/mci/atmel_mci_pbl.c             | 115 ++++++
- 7 files changed, 644 insertions(+), 476 deletions(-)
- create mode 100644 drivers/mci/atmel_mci_common.c
- create mode 100644 drivers/mci/atmel_mci_pbl.c
+ arch/arm/boards/Makefile                      |   1 +
+ .../boards/kamstrup-mx7-concentrator/Makefile |   2 +
+ .../boards/kamstrup-mx7-concentrator/board.c  |  51 +++++++++
+ .../flash-header-tqma7d.imxcfg                |  79 +++++++++++++
+ .../kamstrup-mx7-concentrator/lowlevel.c      |  35 ++++++
+ arch/arm/dts/Makefile                         |   1 +
+ arch/arm/dts/imx7d-flex-concentrator-mfg.dts  | 108 ++++++++++++++++++
+ arch/arm/mach-imx/Kconfig                     |   5 +
+ images/Makefile.imx                           |   5 +
+ 9 files changed, 287 insertions(+)
+ create mode 100644 arch/arm/boards/kamstrup-mx7-concentrator/Makefile
+ create mode 100644 arch/arm/boards/kamstrup-mx7-concentrator/board.c
+ create mode 100644 arch/arm/boards/kamstrup-mx7-concentrator/flash-header-tqma7d.imxcfg
+ create mode 100644 arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c
+ create mode 100644 arch/arm/dts/imx7d-flex-concentrator-mfg.dts
 
-diff --git a/arch/arm/mach-at91/include/mach/xload.h b/arch/arm/mach-at91/include/mach/xload.h
-index 338577c221..9201e7d0b7 100644
---- a/arch/arm/mach-at91/include/mach/xload.h
-+++ b/arch/arm/mach-at91/include/mach/xload.h
-@@ -7,5 +7,7 @@
- void __noreturn sama5d2_sdhci_start_image(u32 r4);
- 
- int at91_sdhci_bio_init(struct pbl_bio *bio, void __iomem *base);
-+int at91_mci_bio_init(struct pbl_bio *bio, void __iomem *base,
-+		      unsigned int clock, unsigned int slot);
- 
- #endif /* __MACH_XLOAD_H */
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index b4c4072596..7d4e72138d 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -210,6 +210,10 @@ config MCI_IMX_ESDHC_PBL
- 	bool
- 	select MCI_SDHCI
- 
-+config MCI_ATMEL_PBL
-+	bool
-+	select MCI_ATMEL
-+
- config MCI_ATMEL_SDHCI_PBL
- 	bool
- 	select MCI_SDHCI
-diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
-index 4a53633674..60dc100c37 100644
---- a/drivers/mci/Makefile
-+++ b/drivers/mci/Makefile
-@@ -1,10 +1,11 @@
- obj-$(CONFIG_MCI)		+= mci-core.o
- obj-$(CONFIG_MCI_ARASAN)	+= arasan-sdhci.o
--obj-$(CONFIG_MCI_ATMEL)		+= atmel_mci.o
-+obj-$(CONFIG_MCI_ATMEL)		+= atmel_mci.o atmel_mci_common.o
- obj-$(CONFIG_MCI_ATMEL_SDHCI)	+= atmel-sdhci.o atmel-sdhci-common.o
- obj-$(CONFIG_MCI_BCM283X)	+= mci-bcm2835.o
- obj-$(CONFIG_MCI_BCM283X_SDHOST)	+= bcm2835-sdhost.o
- obj-$(CONFIG_MCI_DOVE)		+= dove-sdhci.o
-+pbl-$(CONFIG_MCI_ATMEL_PBL)	+= atmel_mci_pbl.o atmel_mci_common.o
- pbl-$(CONFIG_MCI_ATMEL_SDHCI_PBL)	+= atmel-sdhci-pbl.o atmel-sdhci-common.o
- obj-$(CONFIG_MCI_IMX)		+= imx.o
- obj-$(CONFIG_MCI_IMX_ESDHC)	+= imx-esdhc.o imx-esdhc-common.o
-diff --git a/drivers/mci/atmel-mci-regs.h b/drivers/mci/atmel-mci-regs.h
-index 676f419601..045c1a9f38 100644
---- a/drivers/mci/atmel-mci-regs.h
-+++ b/drivers/mci/atmel-mci-regs.h
-@@ -144,6 +144,37 @@
- #	define ATMCI_PDC_CONNECTED	1
- #endif
- 
-+struct atmel_mci_caps {
-+	bool	has_cfg_reg;
-+	bool	has_highspeed;
-+	bool    has_rwproof;
-+	bool	has_odd_clk_div;
-+	bool	need_reset_after_xfer;
-+};
-+
-+struct atmel_mci {
-+	struct mci_host		mci;
-+	void  __iomem		*regs;
-+	struct device_d		*hw_dev;
-+	struct clk		*clk;
-+
-+	u32			datasize;
-+	struct mci_cmd		*cmd;
-+	struct mci_data		*data;
-+	unsigned		slot_b;
-+	int			version;
-+	struct atmel_mci_caps	caps;
-+
-+	unsigned long		bus_hz;
-+	u32			mode_reg;
-+	u32			cfg_reg;
-+	u32			sdc_reg;
-+	bool			need_reset;
-+	int			detect_pin;
-+};
-+
-+#define to_mci_host(mci)	container_of(mci, struct atmel_mci, mci)
-+
- /*
-  * Fix sconfig's burst size according to atmel MCI. We need to convert them as:
-  * 1 -> 0, 4 -> 1, 8 -> 2, 16 -> 3.
-@@ -158,4 +189,10 @@ static inline unsigned int atmci_convert_chksize(unsigned int maxburst)
- 		return 0;
- }
- 
-+void atmci_common_set_ios(struct atmel_mci *host, struct mci_ios *ios);
-+int atmci_reset(struct mci_host *mci, struct device_d *mci_dev);
-+int atmci_common_request(struct atmel_mci *host, struct mci_cmd *cmd,
-+			 struct mci_data *data);
-+void atmci_get_cap(struct atmel_mci *host);
-+
- #endif /* __DRIVERS_MMC_ATMEL_MCI_H__ */
-diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-index 2d51b0e2bc..e676c1bd5c 100644
---- a/drivers/mci/atmel_mci.c
-+++ b/drivers/mci/atmel_mci.c
-@@ -7,460 +7,28 @@
- /* Atmel MCI driver */
- 
- #include <common.h>
--#include <init.h>
--#include <mci.h>
--#include <errno.h>
--#include <clock.h>
- #include <gpio.h>
--#include <io.h>
- #include <linux/clk.h>
--#include <linux/err.h>
--#include <platform_data/atmel-mci.h>
-+#include <mci.h>
- #include <of_gpio.h>
-+#include <platform_data/atmel-mci.h>
- 
- #include "atmel-mci-regs.h"
- 
--struct atmel_mci_caps {
--	bool	has_cfg_reg;
--	bool	has_highspeed;
--	bool    has_rwproof;
--	bool	has_odd_clk_div;
--	bool	need_reset_after_xfer;
--};
--
--struct atmel_mci {
--	struct mci_host		mci;
--	void  __iomem		*regs;
--	struct device_d		*hw_dev;
--	struct clk		*clk;
--
--	u32			datasize;
--	struct mci_cmd		*cmd;
--	struct mci_data		*data;
--	unsigned		slot_b;
--	int			version;
--	struct atmel_mci_caps	caps;
--
--	unsigned long		bus_hz;
--	u32			mode_reg;
--	u32			cfg_reg;
--	u32			sdc_reg;
--	bool			need_reset;
--	int			detect_pin;
--};
--
--#define to_mci_host(mci)	container_of(mci, struct atmel_mci, mci)
--
--#define STATUS_ERROR_MASK	(ATMCI_RINDE  \
--				| ATMCI_RDIRE \
--				| ATMCI_RCRCE \
--				| ATMCI_RENDE \
--				| ATMCI_RTOE  \
--				| ATMCI_DCRCE \
--				| ATMCI_DTOE  \
--				| ATMCI_OVRE  \
--				| ATMCI_UNRE)
--
--static void atmci_set_clk_rate(struct atmel_mci *host,
--			       unsigned int clock_min)
--{
--	unsigned int clkdiv;
--
--	if (!host->mode_reg) {
--		clk_enable(host->clk);
--		atmci_writel(host, ATMCI_CR, ATMCI_CR_MCIEN);
--		if (host->caps.has_cfg_reg)
--			atmci_writel(host, ATMCI_CFG, host->cfg_reg);
--	}
--
--	if (host->caps.has_odd_clk_div) {
--		clkdiv = DIV_ROUND_UP(host->bus_hz, clock_min) - 2;
--		if (clkdiv > 511) {
--			dev_dbg(host->hw_dev,
--			         "clock %u too slow; using %lu\n",
--			         clock_min, host->bus_hz / (511 + 2));
--			clkdiv = 511;
--		}
--		host->mode_reg = ATMCI_MR_CLKDIV(clkdiv >> 1)
--				 | ATMCI_MR_CLKODD(clkdiv & 1);
--	} else {
--		clkdiv = DIV_ROUND_UP(host->bus_hz, 2 * clock_min) - 1;
--		if (clkdiv > 255) {
--			dev_dbg(host->hw_dev,
--				 "clock %u too slow; using %lu\n",
--				 clock_min, host->bus_hz / (2 * 256));
--			clkdiv = 255;
--		}
--		host->mode_reg = ATMCI_MR_CLKDIV(clkdiv);
--	}
--
--	dev_dbg(host->hw_dev, "atmel_set_clk_rate: clkIn=%ld clkIos=%d divider=%d\n",
--		host->bus_hz, clock_min, clkdiv);
--
--	/*
--	 * WRPROOF and RDPROOF prevent overruns/underruns by
--	 * stopping the clock when the FIFO is full/empty.
--	 * This state is not expected to last for long.
--	 */
--	if (host->caps.has_rwproof)
--		host->mode_reg |= ATMCI_MR_RDPROOF | ATMCI_MR_WRPROOF;
--
--	atmci_writel(host, ATMCI_MR, host->mode_reg);
--}
--
--static int atmci_poll_status(struct atmel_mci *host, u32 mask)
--{
--	u32 stat;
--	uint64_t start = get_time_ns();
--
--	do {
--		stat = atmci_readl(host, ATMCI_SR);
--		if (stat & STATUS_ERROR_MASK)
--			return stat;
--		if (is_timeout(start, SECOND)) {
--			dev_err(host->hw_dev, "timeout\n");
--			host->need_reset = true;
--			return ATMCI_RTOE | stat;
--		}
--		if (stat & mask)
--			return 0;
--	} while (1);
--}
--
--static int atmci_pull(struct atmel_mci *host, void *_buf, int bytes)
--{
--	unsigned int stat;
--	u32 *buf = _buf;
--
--	while (bytes > 3) {
--		stat = atmci_poll_status(host, ATMCI_RXRDY);
--		if (stat)
--			return stat;
--
--		*buf++ = atmci_readl(host, ATMCI_RDR);
--		bytes -= 4;
--	}
--
--	if (WARN_ON(bytes))
--		return -EIO;
--
--	return 0;
--}
--
--#ifdef CONFIG_MCI_WRITE
--static int atmci_push(struct atmel_mci *host, const void *_buf, int bytes)
--{
--	unsigned int stat;
--	const u32 *buf = _buf;
--
--	while (bytes > 3) {
--		stat = atmci_poll_status(host, ATMCI_TXRDY);
--		if (stat)
--			return stat;
--
--		atmci_writel(host, ATMCI_TDR, *buf++);
--		bytes -= 4;
--	}
--
--	stat = atmci_poll_status(host, ATMCI_TXRDY);
--	if (stat)
--		return stat;
--
--	if (WARN_ON(bytes))
--		return -EIO;
--
--	return 0;
--}
--#endif /* CONFIG_MCI_WRITE */
--
--static int atmci_transfer_data(struct atmel_mci *host)
--{
--	struct mci_data *data = host->data;
--	int stat;
--	unsigned long length;
--
--	length = data->blocks * data->blocksize;
--	host->datasize = 0;
--
--	if (data->flags & MMC_DATA_READ) {
--		stat = atmci_pull(host, data->dest, length);
--		if (stat)
--			return stat;
--
--		stat = atmci_poll_status(host, ATMCI_NOTBUSY);
--		if (stat)
--			return stat;
--
--		host->datasize += length;
--	} else {
--#ifdef CONFIG_MCI_WRITE
--		stat = atmci_push(host, (const void *)(data->src), length);
--		if (stat)
--			return stat;
--
--		host->datasize += length;
--		stat = atmci_poll_status(host, ATMCI_NOTBUSY);
--		if (stat)
--			return stat;
--#endif /* CONFIG_MCI_WRITE */
--	}
--	return 0;
--}
--
--static void atmci_finish_request(struct atmel_mci *host)
--{
--	host->cmd = NULL;
--	host->data = NULL;
--}
--
--static int atmci_finish_data(struct atmel_mci *host, unsigned int stat)
--{
--	int data_error = 0;
--
--	if (stat & STATUS_ERROR_MASK) {
--		dev_err(host->hw_dev, "request failed (status=0x%08x)\n", stat);
--		if (stat & ATMCI_DCRCE)
--			data_error = -EILSEQ;
--		else if (stat & (ATMCI_RTOE | ATMCI_DTOE))
--			data_error = -ETIMEDOUT;
--		else
--			data_error = -EIO;
--	}
--
--	host->data = NULL;
--
--	return data_error;
--}
--
--static void atmci_setup_data(struct atmel_mci *host, struct mci_data *data)
--{
--	unsigned int nob = data->blocks;
--	unsigned int blksz = data->blocksize;
--	unsigned int datasize = nob * blksz;
--
--	BUG_ON(data->blocksize & 3);
--	BUG_ON(nob == 0);
--
--	host->data = data;
--
--	dev_dbg(host->hw_dev, "atmel_setup_data: nob=%d blksz=%d\n",
--		nob, blksz);
--
--	atmci_writel(host, ATMCI_BLKR, ATMCI_BCNT(nob)
--		| ATMCI_BLKLEN(blksz));
--
--	host->datasize = datasize;
--}
--
--static int atmci_read_response(struct atmel_mci *host, unsigned int stat)
--{
--	struct mci_cmd *cmd = host->cmd;
--	int i;
--	u32 *resp;
--
--	if (!cmd)
--		return 0;
--
--	resp = (u32 *)cmd->response;
--
--	if (stat & (ATMCI_RTOE | ATMCI_DTOE)) {
--		dev_err(host->hw_dev, "command/data timeout\n");
--		return -ETIMEDOUT;
--	} else if ((stat & ATMCI_RCRCE) && (cmd->resp_type & MMC_RSP_CRC)) {
--		dev_err(host->hw_dev, "cmd crc error\n");
--		return -EILSEQ;
--	}
--
--	if (cmd->resp_type & MMC_RSP_PRESENT) {
--		if (cmd->resp_type & MMC_RSP_136) {
--			for (i = 0; i < 4; i++)
--				resp[i] = atmci_readl(host, ATMCI_RSPR);
--		} else {
--			resp[0] = atmci_readl(host, ATMCI_RSPR);
--		}
--	}
--
--	return 0;
--}
--
--static int atmci_cmd_done(struct atmel_mci *host, unsigned int stat)
--{
--	int datastat;
--	int ret;
--
--	ret = atmci_read_response(host, stat);
--
--	if (ret) {
--		atmci_finish_request(host);
--		return ret;
--	}
--
--	if (!host->data) {
--		atmci_finish_request(host);
--		return 0;
--	}
--
--	datastat = atmci_transfer_data(host);
--	ret = atmci_finish_data(host, datastat);
--	atmci_finish_request(host);
--	return ret;
--}
--
--static int atmci_start_cmd(struct atmel_mci *host, struct mci_cmd *cmd,
--			   unsigned int cmdat)
--{
--	unsigned flags = 0;
--	unsigned cmdval = 0;
--
--	if (host->cmd != NULL)
--		dev_err(host->hw_dev, "error!\n");
--
--	if ((atmci_readl(host, ATMCI_SR) & ATMCI_CMDRDY) == 0) {
--		dev_err(host->hw_dev, "mci not ready!\n");
--		return -EBUSY;
--	}
--
--	host->cmd = cmd;
--	cmdval = ATMCI_CMDR_CMDNB_MASK & cmd->cmdidx;
--
--	switch (cmd->resp_type) {
--	case MMC_RSP_R1: /* short CRC, OPCODE */
--	case MMC_RSP_R1b:/* short CRC, OPCODE, BUSY */
--		flags |= ATMCI_CMDR_RSPTYP_48BIT;
--		break;
--	case MMC_RSP_R2: /* long 136 bit + CRC */
--		flags |= ATMCI_CMDR_RSPTYP_136BIT;
--		break;
--	case MMC_RSP_R3: /* short */
--		flags |= ATMCI_CMDR_RSPTYP_48BIT;
--		break;
--	case MMC_RSP_NONE:
--		flags |= ATMCI_CMDR_RSPTYP_NONE;
--		break;
--	default:
--		dev_err(host->hw_dev, "unhandled response type 0x%x\n",
--				cmd->resp_type);
--		return -EINVAL;
--	}
--	cmdval |= ATMCI_CMDR_RSPTYP & flags;
--	cmdval |= cmdat & ~(ATMCI_CMDR_CMDNB_MASK | ATMCI_CMDR_RSPTYP);
--
--	atmci_writel(host, ATMCI_ARGR, cmd->cmdarg);
--	atmci_writel(host, ATMCI_CMDR, cmdval);
--
--	return 0;
--}
--
--static int atmci_card_present(struct mci_host *mci)
--{
--	struct atmel_mci *host = to_mci_host(mci);
--	int ret;
--
--	/* No gpio, assume card is present */
--	if (!gpio_is_valid(host->detect_pin))
--		return 1;
--
--	ret = gpio_get_value(host->detect_pin);
--
--	return ret == 0 ? 1 : 0;
--}
--
--/** init the host interface */
--static int atmci_reset(struct mci_host *mci, struct device_d *mci_dev)
--{
--	struct atmel_mci *host = to_mci_host(mci);
--
--	clk_enable(host->clk);
--	atmci_writel(host, ATMCI_DTOR, 0x7f);
--	clk_disable(host->clk);
--
--	return 0;
--}
--
- /** change host interface settings */
- static void atmci_set_ios(struct mci_host *mci, struct mci_ios *ios)
- {
- 	struct atmel_mci *host = to_mci_host(mci);
- 
--	dev_dbg(host->hw_dev, "atmel_mci_set_ios: bus_width=%d clk=%d\n",
--		ios->bus_width, ios->clock);
--
--	host->sdc_reg &= ~ATMCI_SDCBUS_MASK;
--	switch (ios->bus_width) {
--	case MMC_BUS_WIDTH_4:
--		host->sdc_reg |= ATMCI_SDCBUS_4BIT;
--		break;
--	case MMC_BUS_WIDTH_8:
--		host->sdc_reg |= ATMCI_SDCBUS_8BIT;
--		break;
--	case MMC_BUS_WIDTH_1:
--		host->sdc_reg |= ATMCI_SDCBUS_1BIT;
--		break;
--	default:
--		return;
--	}
--
--	if (ios->clock) {
--		atmci_set_clk_rate(host, ios->clock);
--
--		if (host->caps.has_cfg_reg) {
--			/* setup High Speed mode in relation with card capacity */
--			if (ios->timing == MMC_TIMING_SD_HS)
--				host->cfg_reg |= ATMCI_CFG_HSMODE;
--			else
--				host->cfg_reg &= ~ATMCI_CFG_HSMODE;
--
--			atmci_writel(host, ATMCI_CFG, host->cfg_reg);
--		}
--	} else {
--		atmci_writel(host, ATMCI_CR, ATMCI_CR_MCIDIS);
--		if (host->mode_reg) {
--			atmci_readl(host, ATMCI_MR);
--			clk_disable(host->clk);
--		}
--		host->mode_reg = 0;
--	}
--
--	return;
-+	atmci_common_set_ios(host, ios);
- }
- 
--/** handle a command */
--static int atmci_request(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
-+static int atmci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
-+		  struct mci_data *data)
- {
- 	struct atmel_mci *host = to_mci_host(mci);
--	u32 stat, cmdat = 0;
--	int ret;
--
--	if (host->need_reset || host->caps.need_reset_after_xfer) {
--		atmci_writel(host, ATMCI_CR, ATMCI_CR_SWRST);
--		atmci_writel(host, ATMCI_CR, ATMCI_CR_MCIEN);
--		atmci_writel(host, ATMCI_MR, host->mode_reg);
--		if (host->caps.has_cfg_reg)
--			atmci_writel(host, ATMCI_CFG, host->cfg_reg);
--		host->need_reset = false;
--	}
--	atmci_writel(host, ATMCI_SDCR, host->sdc_reg);
- 
--	if (cmd->resp_type != MMC_RSP_NONE)
--		cmdat |= ATMCI_CMDR_MAXLAT_64CYC;
--
--	if (data) {
--		atmci_setup_data(host, data);
--
--		cmdat |= ATMCI_CMDR_START_XFER | ATMCI_CMDR_MULTI_BLOCK;
--
--		if (data->flags & MMC_DATA_READ)
--			cmdat |= ATMCI_CMDR_TRDIR_READ;
--	}
--
--	ret = atmci_start_cmd(host, cmd, cmdat);
--	if (ret) {
--		atmci_finish_request(host);
--		return ret;
--	}
--
--	stat = atmci_poll_status(host, ATMCI_CMDRDY);
--	return atmci_cmd_done(host, stat);
-+	return atmci_common_request(host, cmd, data);
- }
- 
- static void atmci_info(struct device_d *mci_dev)
-@@ -484,43 +52,19 @@ static void atmci_info(struct device_d *mci_dev)
- 		gpio_is_valid(host->detect_pin) ? "yes" : "no");
- 
- }
--/*
-- * HSMCI (High Speed MCI) module is not fully compatible with MCI module.
-- * HSMCI provides DMA support and a new config register but no more supports
-- * PDC.
-- */
--static void atmci_get_cap(struct atmel_mci *host)
-+
-+static int atmci_card_present(struct mci_host *mci)
- {
--	unsigned int version;
--
--	version = atmci_readl(host, ATMCI_VERSION) & 0x00000fff;
--	host->version = version;
--
--	dev_info(host->hw_dev, "version: 0x%x\n", version);
--
--	host->caps.has_cfg_reg = 0;
--	host->caps.has_highspeed = 0;
--	host->caps.need_reset_after_xfer = 1;
--
--	switch (version & 0xf00) {
--	case 0x600:
--	case 0x500:
--		host->caps.has_odd_clk_div = 1;
--	case 0x400:
--	case 0x300:
--		host->caps.has_cfg_reg = 1;
--		host->caps.has_highspeed = 1;
--	case 0x200:
--		host->caps.has_rwproof = 1;
--	case 0x100:
--		host->caps.need_reset_after_xfer = 0;
--	case 0x0:
--		break;
--	default:
--		dev_warn(host->hw_dev,
--				"Unmanaged mci version, set minimum capabilities\n");
--		break;
--	}
-+	struct atmel_mci *host = to_mci_host(mci);
-+	int ret;
-+
-+	/* No gpio, assume card is present */
-+	if (!gpio_is_valid(host->detect_pin))
-+		return 1;
-+
-+	ret = gpio_get_value(host->detect_pin);
-+
-+	return ret == 0 ? 1 : 0;
- }
- 
- static int atmci_probe(struct device_d *hw_dev)
-@@ -532,7 +76,7 @@ static int atmci_probe(struct device_d *hw_dev)
- 	int ret;
- 
- 	host = xzalloc(sizeof(*host));
--	host->mci.send_cmd = atmci_request;
-+	host->mci.send_cmd = atmci_send_cmd;
- 	host->mci.set_ios = atmci_set_ios;
- 	host->mci.init = atmci_reset;
- 	host->mci.card_present = atmci_card_present;
-diff --git a/drivers/mci/atmel_mci_common.c b/drivers/mci/atmel_mci_common.c
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 9ccb75e27..0e59d6a77 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -63,6 +63,7 @@ obj-$(CONFIG_MACH_HABA_KNX_LITE)		+= haba-knx/
+ obj-$(CONFIG_MACH_IMX21ADS)			+= freescale-mx21-ads/
+ obj-$(CONFIG_MACH_IMX233_OLINUXINO)		+= imx233-olinuxino/
+ obj-$(CONFIG_MACH_IMX27ADS)			+= freescale-mx27-ads/
++obj-$(CONFIG_MACH_KAMSTRUP_MX7_CONCENTRATOR)	+= kamstrup-mx7-concentrator/
+ obj-$(CONFIG_MACH_KINDLE3)			+= kindle3/
+ obj-$(CONFIG_MACH_KONTRON_SAMX6I)		+= kontron-samx6i/
+ obj-$(CONFIG_MACH_LENOVO_IX4_300D)		+= lenovo-ix4-300d/
+diff --git a/arch/arm/boards/kamstrup-mx7-concentrator/Makefile b/arch/arm/boards/kamstrup-mx7-concentrator/Makefile
 new file mode 100644
-index 0000000000..5c9e6f9c4d
+index 000000000..a8b45be12
 --- /dev/null
-+++ b/drivers/mci/atmel_mci_common.c
-@@ -0,0 +1,465 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2011 Hubert Feurstein <h.feurstein@gmail.com>
-+// SPDX-FileCopyrightText: 2009 Ilya Yanok <yanok@emcraft.com>
-+// SPDX-FileCopyrightText: 2008 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+// SPDX-FileCopyrightText: 2006 Pavel Pisa <ppisa@pikron.com>, PiKRON
++++ b/arch/arm/boards/kamstrup-mx7-concentrator/Makefile
+@@ -0,0 +1,2 @@
++obj-y += board.o
++lwl-y += lowlevel.o
+\ No newline at end of file
+diff --git a/arch/arm/boards/kamstrup-mx7-concentrator/board.c b/arch/arm/boards/kamstrup-mx7-concentrator/board.c
+new file mode 100644
+index 000000000..ac32e9b05
+--- /dev/null
++++ b/arch/arm/boards/kamstrup-mx7-concentrator/board.c
+@@ -0,0 +1,51 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-FileCopyrightText: 2021 Kamstrup A/S
++
++/* Author: Lars Pedersen <lapeddk@gmail.com> */
 +
 +#include <common.h>
 +#include <init.h>
-+#include <linux/clk.h>
-+#include <linux/iopoll.h>
-+#include <mci.h>
++#include <io.h>
++#include <gpio.h>
++#include <restart.h>
++#include <mach/imx7-regs.h>
++#include <mach/iomux-mx7.h>
++#include <mach/generic.h>
++#include <mfd/imx7-iomuxc-gpr.h>
 +
-+#include "atmel-mci-regs.h"
++#define BOARD_RESTART_GPIO IMX_GPIO_NR(7, 12)
++#define TPM_RESET_GPIO IMX_GPIO_NR(3, 8)
 +
-+#ifdef __PBL__
-+#define udelay early_udelay
-+#undef  dev_err
-+#define dev_err(d, ...)		pr_err(__VA_ARGS__)
-+#undef  dev_warn
-+#define dev_warn(d, ...)	pr_warn(__VA_ARGS__)
-+#undef  dev_dbg
-+#define dev_dbg(d, ...)		pr_debug(__VA_ARGS__)
-+#undef  dev_info
-+#define dev_info(d, ...)	pr_info(__VA_ARGS__)
-+#undef	clk_enable
-+#define clk_enable(...)
-+#undef	clk_disable
-+#define clk_disable(...)
-+#endif
-+
-+#define STATUS_ERROR_MASK	(ATMCI_RINDE  \
-+				| ATMCI_RDIRE \
-+				| ATMCI_RCRCE \
-+				| ATMCI_RENDE \
-+				| ATMCI_RTOE  \
-+				| ATMCI_DCRCE \
-+				| ATMCI_DTOE  \
-+				| ATMCI_OVRE  \
-+				| ATMCI_UNRE)
-+
-+static void atmci_set_clk_rate(struct atmel_mci *host,
-+			       unsigned int clock_min)
++static void kamstrup_mx7_tpm_reset(void)
 +{
-+	unsigned int clkdiv;
++	imx7_setup_pad(MX7D_PAD_LCD_DATA03__GPIO3_IO8);
 +
-+	if (!host->mode_reg) {
-+		clk_enable(host->clk);
-+		atmci_writel(host, ATMCI_CR, ATMCI_CR_MCIEN);
-+		if (host->caps.has_cfg_reg)
-+			atmci_writel(host, ATMCI_CFG, host->cfg_reg);
-+	}
-+
-+	if (host->caps.has_odd_clk_div) {
-+		clkdiv = DIV_ROUND_UP(host->bus_hz, clock_min) - 2;
-+		if (clkdiv > 511) {
-+			dev_dbg(host->hw_dev,
-+			         "clock %u too slow; using %lu\n",
-+			         clock_min, host->bus_hz / (511 + 2));
-+			clkdiv = 511;
-+		}
-+		host->mode_reg = ATMCI_MR_CLKDIV(clkdiv >> 1)
-+				 | ATMCI_MR_CLKODD(clkdiv & 1);
-+	} else {
-+		clkdiv = DIV_ROUND_UP(host->bus_hz, 2 * clock_min) - 1;
-+		if (clkdiv > 255) {
-+			dev_dbg(host->hw_dev,
-+				 "clock %u too slow; using %lu\n",
-+				 clock_min, host->bus_hz / (2 * 256));
-+			clkdiv = 255;
-+		}
-+		host->mode_reg = ATMCI_MR_CLKDIV(clkdiv);
-+	}
-+
-+	dev_dbg(host->hw_dev, "atmel_set_clk_rate: clkIn=%ld clkIos=%d divider=%d\n",
-+		host->bus_hz, clock_min, clkdiv);
-+
-+	/*
-+	 * WRPROOF and RDPROOF prevent overruns/underruns by
-+	 * stopping the clock when the FIFO is full/empty.
-+	 * This state is not expected to last for long.
-+	 */
-+	if (host->caps.has_rwproof)
-+		host->mode_reg |= ATMCI_MR_RDPROOF | ATMCI_MR_WRPROOF;
-+
-+	atmci_writel(host, ATMCI_MR, host->mode_reg);
++	gpio_request(TPM_RESET_GPIO, "tpm-reset");
++	gpio_direction_output(TPM_RESET_GPIO, 1);
++	mdelay(100);
++	gpio_set_value(TPM_RESET_GPIO, 0);
++	mdelay(100);
++	gpio_set_value(TPM_RESET_GPIO, 1);
++	gpio_free(TPM_RESET_GPIO);
 +}
 +
-+static int atmci_poll_status(struct atmel_mci *host, u32 mask)
++static void __noreturn kamstrup_mx7_board_restart_gpio(struct restart_handler *rst)
 +{
-+	u32 stat;
-+	int ret;
++	imx7_setup_pad(MX7D_PAD_ENET1_TX_CLK__GPIO7_IO12);
 +
-+	ret = read_poll_timeout(atmci_readl, stat, (stat & mask), SECOND, host,
-+				ATMCI_SR);
-+	if (ret < 0) {
-+		dev_err(host->hw_dev, "timeout\n");
-+		host->need_reset = true;
-+		return ATMCI_RTOE | stat;
-+	}
++	gpio_direction_output(BOARD_RESTART_GPIO, 0);
++	mdelay(1);
++	gpio_set_value(BOARD_RESTART_GPIO, 0);
 +
-+	if (stat & STATUS_ERROR_MASK)
-+		return stat;
++	hang();
++}
++
++static int kamstrup_mx7_concentrator_coredevices_init(void)
++{
++	kamstrup_mx7_tpm_reset();
++	restart_handler_register_fn("board", kamstrup_mx7_board_restart_gpio);
++	barebox_set_model("Kamstrup OMNIA Concentrator");
 +
 +	return 0;
 +}
-+
-+static int atmci_pull(struct atmel_mci *host, void *_buf, int bytes)
-+{
-+	unsigned int stat;
-+	u32 *buf = _buf;
-+
-+	while (bytes > 3) {
-+		stat = atmci_poll_status(host, ATMCI_RXRDY);
-+		if (stat)
-+			return stat;
-+
-+		*buf++ = atmci_readl(host, ATMCI_RDR);
-+		bytes -= 4;
-+	}
-+
-+	if (WARN_ON(bytes))
-+		return -EIO;
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_MCI_WRITE
-+static int atmci_push(struct atmel_mci *host, const void *_buf, int bytes)
-+{
-+	unsigned int stat;
-+	const u32 *buf = _buf;
-+
-+	while (bytes > 3) {
-+		stat = atmci_poll_status(host, ATMCI_TXRDY);
-+		if (stat)
-+			return stat;
-+
-+		atmci_writel(host, ATMCI_TDR, *buf++);
-+		bytes -= 4;
-+	}
-+
-+	stat = atmci_poll_status(host, ATMCI_TXRDY);
-+	if (stat)
-+		return stat;
-+
-+	if (WARN_ON(bytes))
-+		return -EIO;
-+
-+	return 0;
-+}
-+#endif /* CONFIG_MCI_WRITE */
-+
-+static int atmci_transfer_data(struct atmel_mci *host)
-+{
-+	struct mci_data *data = host->data;
-+	int stat;
-+	unsigned long length;
-+
-+	length = data->blocks * data->blocksize;
-+	host->datasize = 0;
-+
-+	if (data->flags & MMC_DATA_READ) {
-+		stat = atmci_pull(host, data->dest, length);
-+		if (stat)
-+			return stat;
-+
-+		stat = atmci_poll_status(host, ATMCI_NOTBUSY);
-+		if (stat)
-+			return stat;
-+
-+		host->datasize += length;
-+	} else {
-+#ifdef CONFIG_MCI_WRITE
-+		stat = atmci_push(host, (const void *)(data->src), length);
-+		if (stat)
-+			return stat;
-+
-+		host->datasize += length;
-+		stat = atmci_poll_status(host, ATMCI_NOTBUSY);
-+		if (stat)
-+			return stat;
-+#endif /* CONFIG_MCI_WRITE */
-+	}
-+	return 0;
-+}
-+
-+static void atmci_finish_request(struct atmel_mci *host)
-+{
-+	host->cmd = NULL;
-+	host->data = NULL;
-+}
-+
-+static int atmci_finish_data(struct atmel_mci *host, unsigned int stat)
-+{
-+	int data_error = 0;
-+
-+	if (stat & STATUS_ERROR_MASK) {
-+		dev_err(host->hw_dev, "request failed (status=0x%08x)\n", stat);
-+		if (stat & ATMCI_DCRCE)
-+			data_error = -EILSEQ;
-+		else if (stat & (ATMCI_RTOE | ATMCI_DTOE))
-+			data_error = -ETIMEDOUT;
-+		else
-+			data_error = -EIO;
-+	}
-+
-+	host->data = NULL;
-+
-+	return data_error;
-+}
-+
-+static void atmci_setup_data(struct atmel_mci *host, struct mci_data *data)
-+{
-+	unsigned int nob = data->blocks;
-+	unsigned int blksz = data->blocksize;
-+	unsigned int datasize = nob * blksz;
-+
-+	BUG_ON(data->blocksize & 3);
-+	BUG_ON(nob == 0);
-+
-+	host->data = data;
-+
-+	dev_dbg(host->hw_dev, "atmel_setup_data: nob=%d blksz=%d\n",
-+		nob, blksz);
-+
-+	atmci_writel(host, ATMCI_BLKR, ATMCI_BCNT(nob)
-+		| ATMCI_BLKLEN(blksz));
-+
-+	host->datasize = datasize;
-+}
-+
-+static int atmci_read_response(struct atmel_mci *host, unsigned int stat)
-+{
-+	struct mci_cmd *cmd = host->cmd;
-+	int i;
-+	u32 *resp;
-+
-+	if (!cmd)
-+		return 0;
-+
-+	resp = (u32 *)cmd->response;
-+
-+	if (stat & (ATMCI_RTOE | ATMCI_DTOE)) {
-+		dev_err(host->hw_dev, "command/data timeout\n");
-+		return -ETIMEDOUT;
-+	} else if ((stat & ATMCI_RCRCE) && (cmd->resp_type & MMC_RSP_CRC)) {
-+		dev_err(host->hw_dev, "cmd crc error\n");
-+		return -EILSEQ;
-+	}
-+
-+	if (cmd->resp_type & MMC_RSP_PRESENT) {
-+		if (cmd->resp_type & MMC_RSP_136) {
-+			for (i = 0; i < 4; i++)
-+				resp[i] = atmci_readl(host, ATMCI_RSPR);
-+		} else {
-+			resp[0] = atmci_readl(host, ATMCI_RSPR);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int atmci_cmd_done(struct atmel_mci *host, unsigned int stat)
-+{
-+	int datastat;
-+	int ret;
-+
-+	ret = atmci_read_response(host, stat);
-+
-+	if (ret) {
-+		atmci_finish_request(host);
-+		return ret;
-+	}
-+
-+	if (!host->data) {
-+		atmci_finish_request(host);
-+		return 0;
-+	}
-+
-+	datastat = atmci_transfer_data(host);
-+	ret = atmci_finish_data(host, datastat);
-+	atmci_finish_request(host);
-+	return ret;
-+}
-+
-+static int atmci_start_cmd(struct atmel_mci *host, struct mci_cmd *cmd,
-+			   unsigned int cmdat)
-+{
-+	unsigned flags = 0;
-+	unsigned cmdval = 0;
-+
-+	if (host->cmd != NULL)
-+		dev_err(host->hw_dev, "error!\n");
-+
-+	if ((atmci_readl(host, ATMCI_SR) & ATMCI_CMDRDY) == 0) {
-+		dev_err(host->hw_dev, "mci not ready!\n");
-+		return -EBUSY;
-+	}
-+
-+	host->cmd = cmd;
-+	cmdval = ATMCI_CMDR_CMDNB_MASK & cmd->cmdidx;
-+
-+	switch (cmd->resp_type) {
-+	case MMC_RSP_R1: /* short CRC, OPCODE */
-+	case MMC_RSP_R1b:/* short CRC, OPCODE, BUSY */
-+		flags |= ATMCI_CMDR_RSPTYP_48BIT;
-+		break;
-+	case MMC_RSP_R2: /* long 136 bit + CRC */
-+		flags |= ATMCI_CMDR_RSPTYP_136BIT;
-+		break;
-+	case MMC_RSP_R3: /* short */
-+		flags |= ATMCI_CMDR_RSPTYP_48BIT;
-+		break;
-+	case MMC_RSP_NONE:
-+		flags |= ATMCI_CMDR_RSPTYP_NONE;
-+		break;
-+	default:
-+		dev_err(host->hw_dev, "unhandled response type 0x%x\n",
-+				cmd->resp_type);
-+		return -EINVAL;
-+	}
-+	cmdval |= ATMCI_CMDR_RSPTYP & flags;
-+	cmdval |= cmdat & ~(ATMCI_CMDR_CMDNB_MASK | ATMCI_CMDR_RSPTYP);
-+
-+	atmci_writel(host, ATMCI_ARGR, cmd->cmdarg);
-+	atmci_writel(host, ATMCI_CMDR, cmdval);
-+
-+	return 0;
-+}
-+
-+/** init the host interface */
-+int atmci_reset(struct mci_host *mci, struct device_d *mci_dev)
-+{
-+	struct atmel_mci *host = to_mci_host(mci);
-+
-+	clk_enable(host->clk);
-+	atmci_writel(host, ATMCI_DTOR, 0x7f);
-+	clk_disable(host->clk);
-+
-+	return 0;
-+}
-+
-+/** change host interface settings */
-+void atmci_common_set_ios(struct atmel_mci *host, struct mci_ios *ios)
-+{
-+	dev_dbg(host->hw_dev, "atmel_mci_set_ios: bus_width=%d clk=%d\n",
-+		ios->bus_width, ios->clock);
-+
-+	host->sdc_reg &= ~ATMCI_SDCBUS_MASK;
-+	switch (ios->bus_width) {
-+	case MMC_BUS_WIDTH_4:
-+		host->sdc_reg |= ATMCI_SDCBUS_4BIT;
-+		break;
-+	case MMC_BUS_WIDTH_8:
-+		host->sdc_reg |= ATMCI_SDCBUS_8BIT;
-+		break;
-+	case MMC_BUS_WIDTH_1:
-+		host->sdc_reg |= ATMCI_SDCBUS_1BIT;
-+		break;
-+	default:
-+		return;
-+	}
-+
-+	if (ios->clock) {
-+		atmci_set_clk_rate(host, ios->clock);
-+
-+		if (host->caps.has_cfg_reg) {
-+			/* setup High Speed mode in relation with card capacity */
-+			if (ios->timing == MMC_TIMING_SD_HS)
-+				host->cfg_reg |= ATMCI_CFG_HSMODE;
-+			else
-+				host->cfg_reg &= ~ATMCI_CFG_HSMODE;
-+
-+			atmci_writel(host, ATMCI_CFG, host->cfg_reg);
-+		}
-+	} else {
-+		atmci_writel(host, ATMCI_CR, ATMCI_CR_MCIDIS);
-+		if (host->mode_reg) {
-+			atmci_readl(host, ATMCI_MR);
-+			clk_disable(host->clk);
-+		}
-+		host->mode_reg = 0;
-+	}
-+
-+	return;
-+}
-+
-+/** handle a command */
-+int atmci_common_request(struct atmel_mci *host, struct mci_cmd *cmd,
-+			 struct mci_data *data)
-+{
-+	u32 stat, cmdat = 0;
-+	int ret;
-+
-+	if (host->need_reset || host->caps.need_reset_after_xfer) {
-+		atmci_writel(host, ATMCI_CR, ATMCI_CR_SWRST);
-+		atmci_writel(host, ATMCI_CR, ATMCI_CR_MCIEN);
-+		atmci_writel(host, ATMCI_MR, host->mode_reg);
-+		if (host->caps.has_cfg_reg)
-+			atmci_writel(host, ATMCI_CFG, host->cfg_reg);
-+		host->need_reset = false;
-+	}
-+	atmci_writel(host, ATMCI_SDCR, host->sdc_reg);
-+
-+	if (cmd->resp_type != MMC_RSP_NONE)
-+		cmdat |= ATMCI_CMDR_MAXLAT_64CYC;
-+
-+	if (data) {
-+		atmci_setup_data(host, data);
-+
-+		cmdat |= ATMCI_CMDR_START_XFER | ATMCI_CMDR_MULTI_BLOCK;
-+
-+		if (data->flags & MMC_DATA_READ)
-+			cmdat |= ATMCI_CMDR_TRDIR_READ;
-+	}
-+
-+	ret = atmci_start_cmd(host, cmd, cmdat);
-+	if (ret) {
-+		atmci_finish_request(host);
-+		return ret;
-+	}
-+
-+	stat = atmci_poll_status(host, ATMCI_CMDRDY);
-+	return atmci_cmd_done(host, stat);
-+}
-+
-+
-+/*
-+ * HSMCI (High Speed MCI) module is not fully compatible with MCI module.
-+ * HSMCI provides DMA support and a new config register but no more supports
-+ * PDC.
-+ */
-+void atmci_get_cap(struct atmel_mci *host)
-+{
-+	unsigned int version;
-+
-+	version = atmci_readl(host, ATMCI_VERSION) & 0x00000fff;
-+	host->version = version;
-+
-+	dev_info(host->hw_dev, "version: 0x%x\n", version);
-+
-+	host->caps.has_cfg_reg = 0;
-+	host->caps.has_highspeed = 0;
-+	host->caps.need_reset_after_xfer = 1;
-+
-+	switch (version & 0xf00) {
-+	case 0x600:
-+	case 0x500:
-+		host->caps.has_odd_clk_div = 1;
-+	case 0x400:
-+	case 0x300:
-+		host->caps.has_cfg_reg = 1;
-+		host->caps.has_highspeed = 1;
-+	case 0x200:
-+		host->caps.has_rwproof = 1;
-+	case 0x100:
-+		host->caps.need_reset_after_xfer = 0;
-+	case 0x0:
-+		break;
-+	default:
-+		dev_warn(host->hw_dev,
-+				"Unmanaged mci version, set minimum capabilities\n");
-+		break;
-+	}
-+}
-diff --git a/drivers/mci/atmel_mci_pbl.c b/drivers/mci/atmel_mci_pbl.c
++coredevice_initcall(kamstrup_mx7_concentrator_coredevices_init);
+diff --git a/arch/arm/boards/kamstrup-mx7-concentrator/flash-header-tqma7d.imxcfg b/arch/arm/boards/kamstrup-mx7-concentrator/flash-header-tqma7d.imxcfg
 new file mode 100644
-index 0000000000..ff37dba7ea
+index 000000000..4b3632411
 --- /dev/null
-+++ b/drivers/mci/atmel_mci_pbl.c
-@@ -0,0 +1,115 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/arch/arm/boards/kamstrup-mx7-concentrator/flash-header-tqma7d.imxcfg
+@@ -0,0 +1,79 @@
++soc imx7
++loadaddr 0xbfbff000
++ivtofs 0x400
 +
++#include <mach/imx7-ddr-regs.h>
++
++wm 32 0x30340004 0x4F400005 /* IOMUXC_GPR_GPR1 */
++/* Clear then set bit30 to ensure exit from DDR retention */
++wm 32 0x30360388 0x40000000
++wm 32 0x30360384 0x40000000
++
++/* TQMa7x DRAM Timing REV0100 */
++/* DCD Code i.MX7D/S 528 MHz 1 GByte Samsung K4B4G1646D */
++wm 32 0x30360070 0x0070302C /* CCM_ANALOG_PLL_DDRx */
++wm 32  0x30360090 0x00000000 /* CCM_ANALOG_PLL_NUM */
++wm 32  0x30360070 0x0060302C /* CCM_ANALOG_PLL_DDRx */
++check 32 until_all_bits_set 0x30360070 0x80000000
++wm 32 0x30391000 0x00000002 /* SRC_DDRC_RCR */
++
++wm 32 MX7_DDRC_MSTR 0x01040001
++wm 32 MX7_DDRC_DFIUPD0 0x80400003
++wm 32 MX7_DDRC_DFIUPD1 0x00100020
++wm 32 MX7_DDRC_DFIUPD2 0x80100004
++wm 32 MX7_DDRC_RFSHTMG 0x00200045
++wm 32 MX7_DDRC_MP_PCTRL_0 0x00000001
++wm 32 MX7_DDRC_INIT0 0x00020081
++wm 32 MX7_DDRC_INIT1 0x00680000
++wm 32 MX7_DDRC_INIT3 0x09300004
++wm 32 MX7_DDRC_INIT4 0x00480000
++wm 32 MX7_DDRC_INIT5 0x00100004
++wm 32 MX7_DDRC_RANKCTL 0x0000033F
++wm 32 MX7_DDRC_DRAMTMG0 0x090E0809
++wm 32 MX7_DDRC_DRAMTMG1 0x0007020E
++wm 32 MX7_DDRC_DRAMTMG2 0x03040407
++wm 32 MX7_DDRC_DRAMTMG3 0x00002006
++wm 32 MX7_DDRC_DRAMTMG4 0x04020304
++wm 32 MX7_DDRC_DRAMTMG5 0x03030202
++wm 32 MX7_DDRC_DRAMTMG8 0x00000803
++wm 32 MX7_DDRC_ZQCTL0 0x00800020
++wm 32 MX7_DDRC_DFITMG0 0x02098204
++wm 32 MX7_DDRC_DFITMG1 0x00030303
++wm 32 MX7_DDRC_ADDRMAP0 0x00000016
++wm 32 MX7_DDRC_ADDRMAP1 0x00171717
++wm 32 MX7_DDRC_ADDRMAP4 0x00000F0F
++wm 32 MX7_DDRC_ADDRMAP5 0x04040404
++wm 32 MX7_DDRC_ADDRMAP6 0x0F040404
++wm 32 MX7_DDRC_ODTCFG 0x06000604
++wm 32 MX7_DDRC_ODTMAP 0x00000001
++wm 32 0x30391000 0x00000000 /* SRC_DDRC_RCR */
++wm 32 MX7_DDR_PHY_PHY_CON0 0x17420F40
++wm 32 MX7_DDR_PHY_PHY_CON1 0x10210100
++wm 32 MX7_DDR_PHY_PHY_CON4 0x00060807
++wm 32 MX7_DDR_PHY_MDLL_CON0 0x1010007E
++wm 32 MX7_DDR_PHY_DRVDS_CON0 0x00000924
++/* DDR_PHY_CMD_DESKEW_CON0 not set */
++/* DDR_PHY_CMD_DESKEW_CON1 not set */
++/* DDR_PHY_CMD_DESKEW_CON2 not set */
++/* DDR_PHY_CMD_DESKEW_CON3 not set */
++/* DDR_PHY_LVL_CON0 not set */
++wm 32 MX7_DDR_PHY_OFFSET_RD_CON0 0x0B0B0B0B
++wm 32 MX7_DDR_PHY_OFFSET_WR_CON0 0x06060606
++wm 32 MX7_DDR_PHY_CMD_SDLL_CON0 0x01000010
++wm 32 MX7_DDR_PHY_CMD_SDLL_CON0 0x00000010
++
++wm 32 MX7_DDR_PHY_ZQ_CON0 0x0C407304
++wm 32 MX7_DDR_PHY_ZQ_CON0 0x0C447304
++wm 32 MX7_DDR_PHY_ZQ_CON0 0x0C447306
++check 32 until_all_bits_set MX7_DDR_PHY_ZQ_CON1 0x1 /* ZQ Calibration is finished */
++wm 32 MX7_DDR_PHY_ZQ_CON0 0x0C447304
++wm 32 MX7_DDR_PHY_ZQ_CON0 0x0C407304
++
++wm 32 0x30384130 0x00000000 /* CCM_CCGRn */
++wm 32 0x30340020 0x00000178 /* IOMUXC_GPR_GPR8 */
++wm 32 0x30384130 0x00000002 /* CCM_CCGRn */
++wm 32 0x30790018 0x0000000f /* DDR_PHY_LP_CON0 */
++
++/* DDRC_STAT */
++check 32 until_all_bits_set 0x307a0004 0x1
++
+diff --git a/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c b/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c
+new file mode 100644
+index 000000000..8cd6d67f7
+--- /dev/null
++++ b/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c
+@@ -0,0 +1,35 @@
++#include <debug_ll.h>
++#include <io.h>
 +#include <common.h>
-+#include <mach/xload.h>
-+#include <mci.h>
++#include <linux/sizes.h>
++#include <mach/generic.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/imx7-ccm-regs.h>
++#include <mach/iomux-mx7.h>
++#include <mach/debug_ll.h>
++#include <asm/cache.h>
++#include <mach/esdctl.h>
 +
-+#include "atmel-mci-regs.h"
++extern char __dtb_z_imx7d_flex_concentrator_mfg_start[];
 +
-+#define SECTOR_SIZE			512
-+#define SUPPORT_MAX_BLOCKS		16U
++static inline void setup_uart(void)
++{
++	imx7_early_setup_uart_clock();
 +
-+struct atmel_mci_priv {
-+	struct atmel_mci host;
-+	bool highcapacity_card;
++	imx7_setup_pad(MX7D_PAD_SAI2_TX_BCLK__UART4_DCE_TX);
++
++	imx7_uart_setup_ll();
++
++	putc_ll('>');
++}
++
++ENTRY_FUNCTION(start_kamstrup_mx7_concentrator, r0, r1, r2)
++{
++	imx7_cpu_lowlevel_init();
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
++	imx7d_barebox_entry(__dtb_z_imx7d_flex_concentrator_mfg_start + get_runtime_offset());
++}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index d5f61768a..d66b6db07 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -30,6 +30,7 @@ lwl-$(CONFIG_MACH_GRINN_LITEBOARD) += imx6ul-liteboard.dtb.o
+ lwl-$(CONFIG_MACH_GUF_SANTARO) += imx6q-guf-santaro.dtb.o
+ lwl-$(CONFIG_MACH_GUF_VINCELL) += imx53-guf-vincell.dtb.o imx53-guf-vincell-lt.dtb.o
+ lwl-$(CONFIG_MACH_GW_VENTANA) += imx6q-gw54xx.dtb.o
++lwl-$(CONFIG_MACH_KAMSTRUP_MX7_CONCENTRATOR) += imx7d-flex-concentrator-mfg.dtb.o
+ lwl-$(CONFIG_MACH_KONTRON_SAMX6I) += imx6q-samx6i.dtb.o \
+ 					imx6dl-samx6i.dtb.o
+ lwl-$(CONFIG_MACH_LENOVO_IX4_300D) += armada-xp-lenovo-ix4-300d-bb.dtb.o
+diff --git a/arch/arm/dts/imx7d-flex-concentrator-mfg.dts b/arch/arm/dts/imx7d-flex-concentrator-mfg.dts
+new file mode 100644
+index 000000000..d174ef725
+--- /dev/null
++++ b/arch/arm/dts/imx7d-flex-concentrator-mfg.dts
+@@ -0,0 +1,108 @@
++/*
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++#include <arm/imx7d-flex-concentrator-mfg.dts>
++
++/ {
++	chosen {
++		environment {
++			compatible = "barebox,environment";
++			device-path = &environment_emmc;
++		};
++	};
++
++	aliases {
++		state = &state_emmc;
++	};
++
++	state_emmc: state {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "barebox,state";
++		magic = <0x4b414d31>;
++		backend-type = "raw";
++		backend = <&backend_state_emmc>;
++		backend-stridesize = <0x200>;
++
++		bootstate {
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			system0 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				remaining_attempts@0 {
++					reg = <0x0 0x4>;
++					type = "uint32";
++					default = <10>;
++				};
++
++				priority@4 {
++					reg = <0x4 0x4>;
++					type = "uint32";
++					default = <21>;
++				};
++			};
++
++			system1 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				remaining_attempts@8 {
++					reg = <0x8 0x4>;
++					type = "uint32";
++					default = <0>;
++				};
++
++				priority@c {
++					reg = <0xc 0x4>;
++					type = "uint32";
++					default = <20>;
++				};
++			};
++
++			last_chosen@10 {
++				reg = <0x10 0x4>;
++				type = "uint32";
++			};
++		};
++	};
 +};
 +
-+static struct atmel_mci_priv atmci_sdcard;
++/* eMMC */
++&usdhc3 {
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
 +
-+static int atmel_mci_pbl_stop_transmission(struct atmel_mci_priv *priv)
-+{
-+	struct mci_cmd cmd = {
-+		.cmdidx = MMC_CMD_STOP_TRANSMISSION,
-+		.resp_type = MMC_RSP_R1b,
++		partition@0 {
++			label = "barebox";
++			reg = <0x0 0x100000>;
++		};
++
++		environment_emmc: partition@100000 {
++			label = "barebox-environment";
++			reg = <0x100000 0x100000>;
++		};
++
++		backend_state_emmc: partition@200000 {
++			label = "barebox-state";
++			reg = <0x200000 0x100000>;
++		};
 +	};
++};
 +
-+	return atmci_common_request(&priv->host, &cmd, NULL);
-+}
++/* FIXME: barebox serial is broken when barebox applies requested reparenting */
++&uart4 {
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++};
 +
-+static int at91_mci_sd_cmd_read_multiple_block(struct atmel_mci_priv *priv,
-+				      void *buf,
-+				      unsigned int start,
-+				      unsigned int block_count)
-+{
-+	u16 block_len = SECTOR_SIZE;
-+	struct mci_data data;
-+	struct mci_cmd cmd = {
-+		.cmdidx = MMC_CMD_READ_MULTIPLE_BLOCK,
-+		.resp_type = MMC_RSP_R1,
-+		.cmdarg = start,
-+	};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 3f8012c73..cc73d0a0d 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -526,6 +526,11 @@ config MACH_FREESCALE_MX7_SABRESD
+ 
+ 	  https://goo.gl/6EKGdk
+ 
++config MACH_KAMSTRUP_MX7_CONCENTRATOR
++	bool "Kamstrup i.MX7 Concentrator"
++	select ARCH_IMX7
++	select ARM_USE_COMPRESSED_DTB
 +
-+	if (!priv->highcapacity_card)
-+		cmd.cmdarg *= block_len;
+ config MACH_NXP_IMX6ULL_EVK
+ 	bool "NXP i.MX6ull EVK Board"
+ 	select ARCH_IMX6UL
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index b892ec019..bc5ad1c7c 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -403,6 +403,11 @@ CFG_start_zii_imx7d_dev.pblb.imximg = $(board)/zii-imx7d-dev/flash-header-zii-im
+ FILE_barebox-zii-imx7d-dev.img = start_zii_imx7d_dev.pblb.imximg
+ image-$(CONFIG_MACH_ZII_IMX7D_DEV) += barebox-zii-imx7d-dev.img
+ 
++pblb-$(CONFIG_MACH_KAMSTRUP_MX7_CONCENTRATOR) += start_kamstrup_mx7_concentrator
++CFG_start_kamstrup_mx7_concentrator.pblb.imximg = $(board)/kamstrup-mx7-concentrator/flash-header-tqma7d.imxcfg
++FILE_barebox-kamstrup-mx7-concentrator.img = start_kamstrup_mx7_concentrator.pblb.imximg
++image-$(CONFIG_MACH_KAMSTRUP_MX7_CONCENTRATOR) += barebox-kamstrup-mx7-concentrator.img
 +
-+	data.dest = buf;
-+	data.flags = MMC_DATA_READ;
-+	data.blocksize = block_len;
-+	data.blocks = block_count;
-+
-+	return atmci_common_request(&priv->host, &cmd, &data);
-+}
-+
-+static int at91_mci_bio_read(struct pbl_bio *bio, off_t start,
-+				void *buf, unsigned int nblocks)
-+{
-+	struct atmel_mci_priv *priv = bio->priv;
-+	unsigned int blocks_done = 0;
-+	unsigned int blocks;
-+	unsigned int block_len = SECTOR_SIZE;
-+	unsigned int blocks_read;
-+	int ret;
-+
-+	while (blocks_done < nblocks) {
-+		blocks = min(nblocks - blocks_done, SUPPORT_MAX_BLOCKS);
-+
-+		blocks_read = at91_mci_sd_cmd_read_multiple_block(priv, buf,
-+							 start + blocks_done,
-+							 blocks);
-+
-+		ret = atmel_mci_pbl_stop_transmission(priv);
-+		if (ret)
-+			return ret;
-+
-+		blocks_done += blocks_read;
-+
-+		if (blocks_read != blocks)
-+			break;
-+
-+		buf += blocks * block_len;
-+	}
-+
-+	return blocks_done;
-+}
-+
-+int at91_mci_bio_init(struct pbl_bio *bio, void __iomem *base,
-+		      unsigned int clock, unsigned int slot)
-+{
-+	struct atmel_mci_priv *priv = &atmci_sdcard;
-+	struct atmel_mci *host = &priv->host;
-+	struct mci_ios ios = { .bus_width = MMC_BUS_WIDTH_4, .clock = 25000000 };
-+
-+	bio->priv = priv;
-+	bio->read = at91_mci_bio_read;
-+
-+	host->regs = base;
-+
-+	atmci_get_cap(host);
-+
-+	/* get real HZ */
-+	host->bus_hz = clock;
-+
-+	host->slot_b = slot;
-+	if (host->slot_b)
-+		host->sdc_reg = ATMCI_SDCSEL_SLOT_B;
-+	else
-+		host->sdc_reg = ATMCI_SDCSEL_SLOT_A;
-+
-+	atmci_writel(host, ATMCI_DTOR, 0x7f);
-+
-+	atmci_common_set_ios(host, &ios);
-+
-+	priv->highcapacity_card = 1;
-+
-+	return 0;
-+}
+ # ----------------------- i.MX8mm based boards --------------------------
+ pblb-$(CONFIG_MACH_NXP_IMX8MM_EVK) += start_nxp_imx8mm_evk
+ CFG_start_nxp_imx8mm_evk.pblb.imximg = $(board)/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg
 -- 
-2.29.2
+2.30.2
 
 
 _______________________________________________
