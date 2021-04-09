@@ -1,68 +1,68 @@
-Delivery-date: Fri, 09 Apr 2021 15:13:15 +0200
+Delivery-date: Fri, 09 Apr 2021 15:13:16 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lUqwl-0007rk-5l
-	for lore@lore.pengutronix.de; Fri, 09 Apr 2021 15:13:15 +0200
+	id 1lUqwm-0007sH-3y
+	for lore@lore.pengutronix.de; Fri, 09 Apr 2021 15:13:16 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lUqwk-0000ZV-9F
-	for lore@pengutronix.de; Fri, 09 Apr 2021 15:13:14 +0200
+	id 1lUqwl-0000a1-8A
+	for lore@pengutronix.de; Fri, 09 Apr 2021 15:13:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=cjkrTwsQzUaiXJO5XDy/YjFW7EzodeVUSskbXxyxWr0=; b=AdvyHWCm77KyIXCa9csJpjTOi
-	SMpbSnfViX/PO3Z5leM7O8cSY/7TCDNxsuHAdSEhXzvf7nb3OqIh8Qx0PGjbhiozdDARaVGEdmfTP
-	jMV8s83KhnOIlhtCPmYSxAWLVQPKpYagpFBBnJen4OJwiqun15ed73n4XNoWqjc0schXOavpAzgZA
-	prKRjRNa0rL37nayJeLZ7BeFVGcueE4Wgm8Hl659RUkeWwGYvPeXxtKxTpBVmVE5nTUpQBVGlgAzP
-	+urSMelMHQOMdpcySXPS14aon9dp7W9JKBeoAq+w5rnwBdl5njyUp+Zq2UgcepWM79r6OHXjNXwXe
-	pN+lyJW5Q==;
+	 bh=ilOe1hlByz8hxRDiq1wDPAqvjGCaX+KdS4H5CUNKSac=; b=Npl9ObVHUtuzxA22VRHIJ/tKp
+	K3VtkBzm9tTtKnZ8Sbfo9XzlNpj1EUS7CJWx2nz1Aal7TdBSJmlQyqy5b+JYWCovQP/AlKm0GuNkF
+	sVJnaUHQYoGQbJkl+4toWIuYrlijTGYhNsk+8V6EOHBrc1Tw9bsnFAgIHW4pVHMec6RkvgP9EfSPi
+	eDvR4/hG0Ag7/vVvSTkh8zkX3dU223pnFRA0y1aj6EVwy9g6M29AbQtajyOx294JCOAeBdTqb808b
+	QES4L5KkctkA2pYuhIOnO+cfUTikgNch8gbFyXF14BbWDzzBGrmZ2EnwXjBr6KTl595hVNbG4T0XC
+	atdKVbpYA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lUqvn-000nhK-64; Fri, 09 Apr 2021 13:12:15 +0000
+	id 1lUqvd-000nfX-Ql; Fri, 09 Apr 2021 13:12:05 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lUqvX-000neV-0k
- for barebox@desiato.infradead.org; Fri, 09 Apr 2021 13:11:59 +0000
+ id 1lUqvV-000neN-QJ
+ for barebox@desiato.infradead.org; Fri, 09 Apr 2021 13:11:57 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=orum/7AUhVpFZzLwrJ+v1eb4JkDnaDzaY1XexJeydeY=; b=P/+meFwTlvMGdIImNsEykKC3VY
- eUTKQ6XT/Oi047dz+I99jQs+2afXNBcVqMGVpsZBu8PqEekKBNqiPuEfP3ivxkKuRBguhPJX15/S1
- SWdsPM0YPC+v6tzxKAoCc+p04BY9jaTu0HWgeAwrhYXT5gjS+yEdf5VY/Leg8v+yGBWaqMLEvVNR+
- fssNojhohF06zTFkhmJiqq7ADzNvfuHXinwU9tdGfpGeuclQLgIJa0kS5cbhkAe3Xk/AMLko6V+l+
- JXm1KzRrItzkQNmRIDM8SLIm1jplM3pKd9aIkQJ8IoX6Sc6oGnFrN0SMUVVyiAv8UEU2YQ0PnzwB0
- HK1S1fkw==;
+ bh=RKppIeQjM74MSW9jAmGVhTUihs3zaC3NyHbaw7r3Sbs=; b=k8iif8MsPAjAR8VA79PzuFhN/v
+ QZ9Ngiu40Bl0M+nCZk5V5kR4hyuADIZImeAJ/nqaDmAEZ04bukhU0vdL6CyACiwKCIrNVi2+UJcZL
+ t47wqSy/RCCVespYe2FD+dY/3b7kRAfgyVtpidPpBHEOlnnYYufwfmHbzxxDE8tq3S9EZYz73LQbu
+ RRPmu4iNyJPUefWQaE12N+h0fpmXBk7CWRwIysHlN4nyPwbrwlY8BQ9IMgMa4k7uCt6z/x7ilDfkx
+ 19UzU3eTNYFkZemrF3skVneca0p1NCwrWl5EEAbSV58ULA38i2iRqDO/k+sCPYYPMbxvoAHgS//hY
+ J/oYehGg==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lUqvT-004XTy-AO
- for barebox@lists.infradead.org; Fri, 09 Apr 2021 13:11:57 +0000
+ id 1lUqvT-004XTz-6o
+ for barebox@lists.infradead.org; Fri, 09 Apr 2021 13:11:56 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1lUqvP-0008Cv-ST; Fri, 09 Apr 2021 15:11:51 +0200
+ id 1lUqvP-0008Cy-ST; Fri, 09 Apr 2021 15:11:51 +0200
 Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1lUqvP-00018G-EJ; Fri, 09 Apr 2021 15:11:51 +0200
+ id 1lUqvP-000194-G9; Fri, 09 Apr 2021 15:11:51 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri,  9 Apr 2021 15:11:45 +0200
-Message-Id: <20210409131149.2184-3-o.rempel@pengutronix.de>
+Date: Fri,  9 Apr 2021 15:11:48 +0200
+Message-Id: <20210409131149.2184-6-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210409131149.2184-1-o.rempel@pengutronix.de>
 References: <20210409131149.2184-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210409_061155_393605_00445CF6 
-X-CRM114-Status: GOOD (  13.70  )
+X-CRM114-CacheID: sfid-20210409_061155_272096_FFE7A219 
+X-CRM114-Status: GOOD (  15.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,125 +86,102 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v1 2/6] ARM: at91: xload-mmc: add sama5d3_atmci_start_image()
- helper
+Subject: [PATCH v1 5/6] ARM: at91: add sama5d3_lowlevel_init() helpers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This helper should be called from the xloader
+This code can be potentially reused with other sama5d3 based boards
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/mach-at91/Kconfig              |  2 +
- arch/arm/mach-at91/include/mach/xload.h |  2 +
- arch/arm/mach-at91/xload-mmc.c          | 51 +++++++++++++++++++++++++
- 3 files changed, 55 insertions(+)
+ arch/arm/mach-at91/Makefile                  |  1 +
+ arch/arm/mach-at91/include/mach/sama5d3_ll.h | 24 ++++++++++++++
+ arch/arm/mach-at91/sama5d3_ll.c              | 34 ++++++++++++++++++++
+ 3 files changed, 59 insertions(+)
+ create mode 100644 arch/arm/mach-at91/include/mach/sama5d3_ll.h
+ create mode 100644 arch/arm/mach-at91/sama5d3_ll.c
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 52eefc7361..0fc8d25111 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -45,6 +45,7 @@ config HAVE_AT91_DDRAMC
- 
- config AT91_MCI_PBL
- 	bool
-+	depends on MCI_ATMEL_PBL
- 	depends on MCI_ATMEL_SDHCI_PBL
- 	default y
- 
-@@ -599,6 +600,7 @@ config MACH_MICROCHIP_KSZ9477_EVB
- 	bool "Microchip EVB-KSZ9477 Evaluation Kit"
- 	select SOC_SAMA5D3
- 	select OFDEVICE
-+	select MCI_ATMEL_PBL
- 	select COMMON_CLK_OF_PROVIDER
- 	help
- 	  Select this if you are using Microchip's EVB-KSZ9477 Evaluation Kit.
-diff --git a/arch/arm/mach-at91/include/mach/xload.h b/arch/arm/mach-at91/include/mach/xload.h
-index 9201e7d0b7..bbc70af210 100644
---- a/arch/arm/mach-at91/include/mach/xload.h
-+++ b/arch/arm/mach-at91/include/mach/xload.h
-@@ -5,6 +5,8 @@
- #include <pbl.h>
- 
- void __noreturn sama5d2_sdhci_start_image(u32 r4);
-+void __noreturn sama5d3_atmci_start_image(u32 r4, unsigned int clock,
-+					  unsigned int slot);
- 
- int at91_sdhci_bio_init(struct pbl_bio *bio, void __iomem *base);
- int at91_mci_bio_init(struct pbl_bio *bio, void __iomem *base,
-diff --git a/arch/arm/mach-at91/xload-mmc.c b/arch/arm/mach-at91/xload-mmc.c
-index e9edeccb7f..2e00cfc2a9 100644
---- a/arch/arm/mach-at91/xload-mmc.c
-+++ b/arch/arm/mach-at91/xload-mmc.c
-@@ -3,6 +3,7 @@
- #include <mach/sama5_bootsource.h>
- #include <mach/hardware.h>
- #include <mach/sama5d2_ll.h>
-+#include <mach/sama5d3_ll.h>
- #include <mach/gpio.h>
- #include <linux/sizes.h>
- #include <asm/cache.h>
-@@ -44,6 +45,23 @@ static const struct sdhci_instance {
- 	},
- };
- 
-+static const struct atmci_instance {
-+	void __iomem *base;
-+	unsigned id;
-+	u8 periph;
-+	s8 pins[15];
-+} atmci_instances[] = {
-+	[0] = {
-+		.base = IOMEM(SAMA5D3_BASE_HSMCI0),
-+		.id = SAMA5D3_ID_HSMCI0,
-+		.periph = AT91_MUX_PERIPH_A,
-+		.pins = {
-+			AT91_PIN_PD0, AT91_PIN_PD1, AT91_PIN_PD2, AT91_PIN_PD3,
-+			AT91_PIN_PD4, AT91_PIN_PD5, AT91_PIN_PD6, AT91_PIN_PD7,
-+			AT91_PIN_PD8, AT91_PIN_PD9, -1 }
-+	},
-+};
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 9cfba28fa0..c895af7a2f 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -30,6 +30,7 @@ obj-$(CONFIG_SOC_SAMA5D3)	+= sama5d3.o sama5d3_devices.o
+ endif
+ lwl-$(CONFIG_SOC_SAMA5D2)	+= sama5d2_ll.o
+ obj-$(CONFIG_SOC_SAMA5D2)	+= sama5d2.o
++lwl-$(CONFIG_SOC_SAMA5D3)	+= sama5d3_ll.o
+ obj-$(CONFIG_SOC_AT91SAM9G20) += at91sam9260.o at91sam9260_devices.o
+ obj-$(CONFIG_SOC_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
+ obj-$(CONFIG_SOC_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
+diff --git a/arch/arm/mach-at91/include/mach/sama5d3_ll.h b/arch/arm/mach-at91/include/mach/sama5d3_ll.h
+new file mode 100644
+index 0000000000..b5b6b5d820
+--- /dev/null
++++ b/arch/arm/mach-at91/include/mach/sama5d3_ll.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
- /**
-  * sama5d2_sdhci_start_image - Load and start an image from FAT-formatted SDHCI
-  * @r4: value of r4 passed by BootROM
-@@ -82,3 +100,36 @@ void __noreturn sama5d2_sdhci_start_image(u32 r4)
- out_panic:
- 	panic("FAT chainloading failed\n");
- }
++#ifndef __SAMA5D3_LL_H__
++#define __SAMA5D3_LL_H__
 +
-+void __noreturn sama5d3_atmci_start_image(u32 boot_src, unsigned int clock,
-+					  unsigned int slot)
++#include <mach/at91_pmc_ll.h>
++#include <mach/debug_ll.h>
++#include <mach/early_udelay.h>
++
++void sama5d3_lowlevel_init(void);
++
++static inline void sama5d3_pmc_enable_periph_clock(int clk)
 +{
-+	void *buf = (void *)SAMA5_DDRCS;
-+	const struct atmci_instance *instance;
-+	struct pbl_bio bio;
-+	const s8 *pin;
-+	int ret;
++	at91_pmc_enable_periph_clock(IOMEM(SAMA5D3_BASE_PMC), clk);
++}
 +
-+	ret = sama5_bootsource_instance(boot_src);
-+	if (ret > 1)
-+		panic("Couldn't determine boot MCI instance\n");
++/* requires relocation */
++static inline void sama5d3_udelay_init(unsigned int msc)
++{
++	early_udelay_init(IOMEM(SAMA5D3_BASE_PMC), IOMEM(SAMA5D3_BASE_PIT),
++			  SAMA5D3_ID_PIT, msc, AT91_PMC_LL_SAMA5D3);
++}
 +
-+	instance = &atmci_instances[boot_src];
++#endif /* __SAMA5D3_LL_H__ */
+diff --git a/arch/arm/mach-at91/sama5d3_ll.c b/arch/arm/mach-at91/sama5d3_ll.c
+new file mode 100644
+index 0000000000..4650593699
+--- /dev/null
++++ b/arch/arm/mach-at91/sama5d3_ll.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0-only AND BSD-1-Clause
++// SPDX-FileCopyrightText: 2017, Microchip Corporation
 +
-+	sama5d3_pmc_enable_periph_clock(SAMA5D2_ID_PIOD);
-+	for (pin = instance->pins; *pin >= 0; pin++) {
-+		at91_mux_pio3_pin(IOMEM(SAMA5D3_BASE_PIOD),
-+					 pin_to_mask(*pin), instance->periph, 0);
-+	}
++#include <mach/at91_wdt.h>
++#include <mach/barebox-arm.h>
++#include <mach/sama5d3_ll.h>
 +
-+	sama5d3_pmc_enable_periph_clock(instance->id);
++void sama5d3_lowlevel_init(void)
++{
++	arm_cpu_lowlevel_init();
 +
-+	ret = at91_mci_bio_init(&bio, instance->base, clock, slot);
-+	if (ret)
-+		goto out_panic;
++	at91_wdt_disable(IOMEM(SAMA5D3_BASE_WDT));
++	at91_pmc_init(IOMEM(SAMA5D3_BASE_PMC), AT91_PMC_LL_SAMA5D3);
 +
-+	at91_fat_start_image(&bio, buf, SZ_16M, boot_src);
++	/* At this stage the main oscillator
++	 * is supposed to be enabled PCK = MCK = MOSC
++	 */
 +
-+out_panic:
-+	panic("FAT chainloading failed\n");
++	/* Configure PLLA = MOSC * (PLL_MULA + 1) / PLL_DIVA */
++	at91_pmc_cfg_plla(IOMEM(SAMA5D3_BASE_PMC), AT91_PMC3_MUL_(43)
++			  | AT91_PMC_OUT_0 | AT91_PMC_PLLCOUNT
++			  | AT91_PMC_DIV_BYPASS, AT91_PMC_LL_SAMA5D3);
++
++	/* Initialize PLLA charge pump */
++	at91_pmc_init_pll(IOMEM(SAMA5D3_BASE_PMC), AT91_PMC_IPLLA_3);
++
++	/* Switch PCK/MCK on Main clock output */
++	at91_pmc_cfg_mck(IOMEM(SAMA5D3_BASE_PMC), AT91SAM9_PMC_MDIV_4
++			 | AT91_PMC_CSS_MAIN, AT91_PMC_LL_SAMA5D3);
++
++	/* Switch PCK/MCK on PLLA output */
++	at91_pmc_cfg_mck(IOMEM(SAMA5D3_BASE_PMC), AT91SAM9_PMC_MDIV_4
++			 | AT91_PMC_CSS_PLLA, AT91_PMC_LL_SAMA5D3);
 +}
 -- 
 2.29.2
