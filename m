@@ -1,67 +1,63 @@
-Delivery-date: Sat, 10 Apr 2021 12:44:33 +0200
+Delivery-date: Sat, 10 Apr 2021 12:46:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVB6O-00010F-W1
-	for lore@lore.pengutronix.de; Sat, 10 Apr 2021 12:44:32 +0200
+	id 1lVB89-00010d-Tx
+	for lore@lore.pengutronix.de; Sat, 10 Apr 2021 12:46:21 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVB6O-000841-5x
-	for lore@pengutronix.de; Sat, 10 Apr 2021 12:44:32 +0200
+	id 1lVB88-0008Tk-UV
+	for lore@pengutronix.de; Sat, 10 Apr 2021 12:46:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
-	References:Cc:To:Subject:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=MMirTvOxXktVpu8/vcRJxC9oTGJ4LMgtYj4XyGHezJ8=; b=hSvca5K3bN2bSuRJrDb8Yc0+l
-	G6QPfUHNfjKwK9HLxnwSabdZxCgLe+owEocPh8xHunOnZO+yJzSfO7gKD6knKqDtZ/HKSFER+igXP
-	AEzhQ5TMo2pYa3J3wVBVW6wQzNi3d+y9sy5ZWL8aPvc45Iqdf1bGAtJWxRcL66za3rQqJ0ZH77wYX
-	3kkiuuSiy6Oe0hC7G9WM0TIp6TQWrfSFNKBSSssHhl8xXXMsG3QwzeQI1piuyYczARVdEsARVPbSX
-	5rSh1DixNhfGRQ5ra1HkDaXOBlUq9D/Bdt02OxnHwfdX3PQ2/cl1gW3g7ipR+dglP6Mr09blAmpZt
-	EaG5edr6g==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=KSytf6Mq1m/Dy26n1i97J4kQ6zXMWEqktcV4+NXDel8=; b=jVMNT4crV2kZgKBbxcufIzXEYk
+	5uwK+ckOfm9YTqM5kbUq//jbRRxZxJny6TRr1egGhZO9DXnRjHcMoUqaHRTy62N9swU+zxnYwfOTp
+	N7sV3KLszVgUg3m+6EjIsxCUR769ysc1Xo+n3InRisrLfdD7trKgL3aOnnoXnaYbxRbGhIrEBIcfZ
+	ukh8oRJI3mMa1n+Vjc5E2+jOublHMwAW3Z2qtuEeFXXwMlYuSXRFJkhSuIYyUtSje0QiL0ZeT6Jtc
+	JI/JEBJR3xfohxiI0YksD1qjPjEXoDTTl6yTj9qq9elTrAFggn8tXoWe5csYtXSEU7+Q+duYqBmWq
+	Zy7t2nJg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lVB5I-002gFB-7j; Sat, 10 Apr 2021 10:43:24 +0000
+	id 1lVB7H-002gSd-8d; Sat, 10 Apr 2021 10:45:27 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVB56-002gF0-DY
- for barebox@desiato.infradead.org; Sat, 10 Apr 2021 10:43:13 +0000
+ id 1lVB77-002gSB-Gh
+ for barebox@desiato.infradead.org; Sat, 10 Apr 2021 10:45:17 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
- Subject:Sender:Reply-To:Content-ID:Content-Description;
- bh=UbWgoMS2VTN/Ug62iVo3aGzvYiWmh1rlpwn6yGpbPnQ=; b=p6bKMWj5ewr/G9cCo1mjMyZQdJ
- p2G64leimkPsD8mHcVSva70iOC2s9+gZnmpFgVyJD5uxE7Lh/RprsX3Vm/9/bDHC9qTi/dXw2iJNr
- Cafbabj1FIOkhsHX39haiXkbwk/LVPNPyRW10rNMTKMWaJfO8SOzfTVde9fbSsMc2cj+BntMT0OVw
- eZXAzkqVD5pz0vl0/HjDdtLTrI0Nvye44/jfSgnlNzuGOy114ZfmSo1Eq1f9HZRK9liJ6e9Fu4VJu
- YrvrBBXhhWfClwTWSb//HLHzcDRIu+kYY1vd2MWf51D8AqS5eebnvS+eTHAkOuJDdsBsnJPvVQGVx
- ZVQynsFw==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=69STNS/XLNfaFKPzlxPfjrmG4RbyqjTeP9BUUUSyzSk=; b=aG/1LH6ccgOoPqOIap0Dl+x2gM
+ WxSLhJkJiAgiv+8keJ1SzxAbLvyNHOEUS+0RnWW9tuw2r12mbyUgAk2qeZEyUPBLAYOR/Q5pCuzEX
+ L6SLVn0Kw9gqY4PRZyWZqxdscK2m6+39IcWIPsDlYD6RaShAhJRXAo6GT5+LZ7WoVQIe2ad6I858h
+ hll59WpgtgF7Cup+Tv+KZraCUEfMi7vR73W0HYrzBlFA2PNJ1/0oLrVkcEWdZaPahRM2eXZ2LNklO
+ dyQz1jIbLoN30O/1GCVFloJLrfyOQOkINfqLotT1BO8vL7Rnmf8Z5k//whwhikhIikXKFylm5L8VC
+ 142i3KNQ==;
+Received: from relay12.mail.gandi.net ([217.70.178.232])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVB53-0052cy-Fq
- for barebox@lists.infradead.org; Sat, 10 Apr 2021 10:43:11 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1lVB4x-00081Q-9T; Sat, 10 Apr 2021 12:43:03 +0200
-To: Lars Pedersen <lapeddk@gmail.com>, barebox@lists.infradead.org
-Cc: Bruno Thomsen <bruno.thomsen@gmail.com>
-References: <20210409132035.197739-1-lapeddk@gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <67622809-1252-bfff-d114-ce11f2c7c7dd@pengutronix.de>
-Date: Sat, 10 Apr 2021 12:43:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+ id 1lVB74-0052g5-OK
+ for barebox@lists.infradead.org; Sat, 10 Apr 2021 10:45:16 +0000
+Received: from geraet.fritz.box (unknown [83.135.94.168])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay12.mail.gandi.net (Postfix) with ESMTPSA id 1ECEF200002;
+ Sat, 10 Apr 2021 10:45:08 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Sat, 10 Apr 2021 12:45:05 +0200
+Message-Id: <20210410104505.2076790-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-In-Reply-To: <20210409132035.197739-1-lapeddk@gmail.com>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210410_034309_566985_4CB694CE 
-X-CRM114-Status: GOOD (  21.66  )
+X-CRM114-CacheID: sfid-20210410_034514_951259_A28339E5 
+X-CRM114-Status: UNSURE (   9.43  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,97 +77,106 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX: Kamstrup mx7 concentrator board support
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH] common: add option for shipping KCONFIG_CONFIG as
+ /env/data/config
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Lars,
+Add a new option that enables access to the barebox configuration
+file through /env/data/config. This can be useful in environments
+where a fatter barebox can be tolerated (like on an EFI system
+partition). It could also be used to conditionally skip tests
+on disabled functionality in the future.
 
-On 09.04.21 15:20, Lars Pedersen wrote:
-> diff --git a/arch/arm/boards/kamstrup-mx7-concentrator/board.c b/arch/arm/boards/kamstrup-mx7-concentrator/board.c
-> new file mode 100644
-> index 000000000..ac32e9b05
-> --- /dev/null
-> +++ b/arch/arm/boards/kamstrup-mx7-concentrator/board.c
-> @@ -0,0 +1,51 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +// SPDX-FileCopyrightText: 2021 Kamstrup A/S
-> +
-> +/* Author: Lars Pedersen <lapeddk@gmail.com> */
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <io.h>
-> +#include <gpio.h>
-> +#include <restart.h>
-> +#include <mach/imx7-regs.h>
-> +#include <mach/iomux-mx7.h>
-> +#include <mach/generic.h>
-> +#include <mfd/imx7-iomuxc-gpr.h>
-> +
-> +#define BOARD_RESTART_GPIO IMX_GPIO_NR(7, 12)
-> +#define TPM_RESET_GPIO IMX_GPIO_NR(3, 8)
-> +
-> +static void kamstrup_mx7_tpm_reset(void)
-> +{
-> +	imx7_setup_pad(MX7D_PAD_LCD_DATA03__GPIO3_IO8);
-> +
-> +	gpio_request(TPM_RESET_GPIO, "tpm-reset");
-> +	gpio_direction_output(TPM_RESET_GPIO, 1);
-> +	mdelay(100);
-> +	gpio_set_value(TPM_RESET_GPIO, 0);
-> +	mdelay(100);
-> +	gpio_set_value(TPM_RESET_GPIO, 1);
-> +	gpio_free(TPM_RESET_GPIO);
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ Makefile                | 2 ++
+ common/Kconfig          | 7 +++++++
+ defaultenv/Makefile     | 7 +++++++
+ defaultenv/defaultenv.c | 2 ++
+ scripts/Makefile.lib    | 3 +++
+ 5 files changed, 21 insertions(+)
 
-We are trying to cut down on code that doesn't use the driver model.
-Couldn't this be represented as a gpio-hog in the device tree or
-a reset line for the SPI device?
-
-> +}
-> +
-> +static void __noreturn kamstrup_mx7_board_restart_gpio(struct restart_handler *rst)
-> +{
-> +	imx7_setup_pad(MX7D_PAD_ENET1_TX_CLK__GPIO7_IO12);
-> +
-> +	gpio_direction_output(BOARD_RESTART_GPIO, 0);
-> +	mdelay(1);
-> +	gpio_set_value(BOARD_RESTART_GPIO, 0);
-
-I just sent out a patch[1] with a driver implementing the "gpio-restart" device
-tree binding. Could you test that one and use it here instead?
-
-> +
-> +	hang();
-> +}
-> +
-> +static int kamstrup_mx7_concentrator_coredevices_init(void)
-> +{
-> +	kamstrup_mx7_tpm_reset();
-> +	restart_handler_register_fn("board", kamstrup_mx7_board_restart_gpio);
-> +	barebox_set_model("Kamstrup OMNIA Concentrator");
-
-The default model name is "Kamstrup OMNIA Flex Concentrator".
-If that's too long, you could override /model in the barebox device tree.
-With the changes suggested above, you could drop board.c then altogether.
-
-The rest of the patch looks good to me. With the feedback addressed:
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-[1]: https://lore.pengutronix.de/barebox/20210410103511.2073504-1-ahmad@a3f.at/T/#mc4dbda46e6bd868fc9ecfcfa42f3dbfe943bef47
+diff --git a/Makefile b/Makefile
+index a36608819da5..c13f3274c18c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -358,6 +358,8 @@ endif
  
-Cheers,
-Ahmad
-
+ KCONFIG_CONFIG	?= .config
+ 
++export KCONFIG_CONFIG
++
+ # Default file for 'make defconfig'. This may be overridden by arch-Makefile.
+ export KBUILD_DEFCONFIG := defconfig
+ 
+diff --git a/common/Kconfig b/common/Kconfig
+index 342817bbcbb4..2872c80dbf13 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -941,6 +941,13 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE
+ 	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
+ 	depends on REBOOT_MODE
+ 
++config DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG
++	bool "Ship .config as /env/data/config"
++	help
++	  This option embeds the used barebox Kconfig .config file into the
++	  environment as /env/data/config. This will increases barebox image
++	  size. If unsure, say n here.
++
+ config DEFAULT_ENVIRONMENT_PATH
+ 	string
+ 	depends on DEFAULT_ENVIRONMENT
+diff --git a/defaultenv/Makefile b/defaultenv/Makefile
+index 91293567c0d3..68790321187d 100644
+--- a/defaultenv/Makefile
++++ b/defaultenv/Makefile
+@@ -32,3 +32,10 @@ cmd_env_zero = ($(objtree)/scripts/bareboxenv -z $(CONFIG_DEFAULT_ENVIRONMENT_PA
+ 
+ $(obj)/barebox_zero_env: FORCE
+ 	$(call if_changed,env_zero)
++
++bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG) += defaultenv-2-ikconfig
++
++defaultenv/defaultenv-2-ikconfig.bbenv$(DEFAULT_COMPRESSION_SUFFIX): $(KCONFIG_CONFIG)
++	@mkdir -p defaultenv/defaultenv-2-ikconfig/data
++	@cp $(KCONFIG_CONFIG) defaultenv/defaultenv-2-ikconfig/data/config
++	$(call cmd,envgen,defaultenv/defaultenv-2-ikconfig)
+diff --git a/defaultenv/defaultenv.c b/defaultenv/defaultenv.c
+index d69446c8937a..055475eb4756 100644
+--- a/defaultenv/defaultenv.c
++++ b/defaultenv/defaultenv.c
+@@ -47,6 +47,8 @@ static void defaultenv_add_base(void)
+ 		defaultenv_append_directory(defaultenv_2_dfu);
+ 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE))
+ 		defaultenv_append_directory(defaultenv_2_reboot_mode);
++	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG))
++		defaultenv_append_directory(defaultenv_2_ikconfig);
+ 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
+ 		defaultenv_append_directory(defaultenv_1);
+ }
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 319ac19975ed..80d76b177c0a 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -365,6 +365,9 @@ cmd_env_S =							\
+ $(obj)/%.bbenv$(DEFAULT_COMPRESSION_SUFFIX).S: $(src)/%.bbenv$(DEFAULT_COMPRESSION_SUFFIX) FORCE
+ 	$(call if_changed,env_S)
+ 
++quiet_cmd_envgen = ENVGEN  $@
++cmd_envgen=$(srctree)/scripts/genenv $(objtree) $(objtree) $@ $2
++
+ quiet_cmd_env = ENV     $@
+ cmd_env=$(srctree)/scripts/genenv $(srctree) $(objtree) $@ $<
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.0
+
 
 _______________________________________________
 barebox mailing list
