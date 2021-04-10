@@ -2,13 +2,13 @@ Delivery-date: Sat, 10 Apr 2021 12:36:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVAyy-0000yc-Ji
+	id 1lVAyy-0000yv-Tz
 	for lore@lore.pengutronix.de; Sat, 10 Apr 2021 12:36:52 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVAyx-0007Sf-NK
+	id 1lVAyx-0007T1-UF
 	for lore@pengutronix.de; Sat, 10 Apr 2021 12:36:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
@@ -16,50 +16,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=5l5x0mAS3e5cXjkuYswRwMz7NbkWrowRaUraemZlzUc=; b=qJEtefFjiR5ju03te53Q4sHSF
-	3tILyta+QjdIdztnRG/vVJjB2fRo954tMuu2Gg/n1Q5GByqPM8K27qDNVkU8xVLwyfnFKMPQSo2qg
-	hqmOIGdkzDMP1hCA23eMhNQ2pFqmrRwDPy1/UeUWLfGyRuLftRoSlwD93JWdZnuxP79X6Y6MOfFr5
-	5b19iTV67s2Z+QITapFIpaUOhj4+i8DchQQ4OL57otx42KTYLo4FUoEzmlfuTid4RLeNVkTHJ/jJ2
-	YD1ZuhG269f13zJlK3pg46upZWExvf+PlPWm0VtGU1wnc2jFbBYO8ETLK25inxiFhBCKLe3WyqXbj
-	p+Q35QwJA==;
+	 bh=2vuI6xMiwybcd2oEJ77j4e8VS2WCmN0bP5IUPXLRpTg=; b=BmlbiY0lbkjw1r7lXnOqB6haT
+	tqrV1jFfR6Xnx6+dnKIqt5/mmVgKsUUViigwpQGqAJbKiokfPOcsHsOqgGAL9a+edPxW6LouRoiuz
+	tGjR+NDDFDTrKCZ7VE0Kf0u9d5/2V/QF9xhgqCK0eIPC8EbvGNMGIq1BP3UvKZsVqZpXZKB0J4CqN
+	8T/IMWrhK6hHtgZ58ymGlMvGEiNVWqpC1OAJlf8TGUQIbho/e51+1PifjqZWnUhUclqQOBFITyfGc
+	a5I+8WbbFaAEPTeo3I3spN/TIUdh3pwzSGlgBJExSDTDyhOq5Meqag1libL7JN4+giMdpXb1DFmwI
+	Z6aq1uCIw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lVAxi-002fKk-Dj; Sat, 10 Apr 2021 10:35:34 +0000
+	id 1lVAxw-002fNN-So; Sat, 10 Apr 2021 10:35:49 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVAxZ-002fK0-4y
- for barebox@desiato.infradead.org; Sat, 10 Apr 2021 10:35:25 +0000
+ id 1lVAxb-002fKB-Im
+ for barebox@desiato.infradead.org; Sat, 10 Apr 2021 10:35:27 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=8YvKmnSrqwfnwAvBLEpnB4GIGubDdGygqb0ufE+cuH4=; b=hMnECN+pGaNb3SLQrhGjJcN3SX
- rTKcdKDTB9eEm1M5dP9dw2i0A48tXtijTR6k/MOq0daic5RMR83GIHlND1yZARq0xhPBewov9HpaH
- 8cKSShy5piyRITMLQIMhxoOjGe0i047FqnUkzLl5IkBetyXrWql4X15BolCRfcYnjmVsG30HuFxoz
- hv9WuMb3SsCNCCENAtDP9KVr+1sSf6AfPIcHw5CQHSTWDxPRxI+YTnXqRNiLEhNNDfEEvc+lLPv3N
- HoUzqSSepjJQPMdl829KCz7cajCSqOMCsc+KOV+SI/egGe7HQGdMMlMpfSBpf9jqKaJsJhfVoAurK
- VJ5ba1/Q==;
+ bh=a72QNr/mMvR4NvYj2DQRsM5TatcQt7htHxGHodubIl0=; b=T3xK/6Ypkbfb543df6SZfrGP8X
+ 5nk1FyK/VuRt548V5KECNO2lhNHiHinQKVxiw0rYgvVBVi76OSsT+YQ6U6IynxASIoHxB6aPvxmF3
+ TlcHR4Fg+qjTNDHniv+qICNiTV62u92DNJQkk2JaWnifIMiZhiWviHneyvDB7j4wAiZtW47bCI95s
+ 1UzStZ0mhOf16WzqGIhKf7dZm7YMX5fuzZ37yG9RpdJsriRCrEQWf0pVNbLmi3ba05TXEEs8DaAxg
+ KKJH+VOd66GzYLI983bbKP/T2r/RPbXT/+w4sAOoxP0Dyxjx4Q7eNAYdTvulM3FcLPvN3Ucb08WCl
+ kgW1ja8w==;
 Received: from relay2-d.mail.gandi.net ([217.70.183.194])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVAxW-0052M8-2U
- for barebox@lists.infradead.org; Sat, 10 Apr 2021 10:35:23 +0000
+ id 1lVAxW-0052M6-J2
+ for barebox@lists.infradead.org; Sat, 10 Apr 2021 10:35:26 +0000
 X-Originating-IP: 83.135.94.168
 Received: from geraet.fritz.box (unknown [83.135.94.168])
  (Authenticated sender: ahmad@a3f.at)
- by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id D75F040008;
- Sat, 10 Apr 2021 10:35:17 +0000 (UTC)
+ by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 9225E40007;
+ Sat, 10 Apr 2021 10:35:16 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sat, 10 Apr 2021 12:35:11 +0200
-Message-Id: <20210410103511.2073504-5-ahmad@a3f.at>
+Date: Sat, 10 Apr 2021 12:35:09 +0200
+Message-Id: <20210410103511.2073504-3-ahmad@a3f.at>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210410103511.2073504-1-ahmad@a3f.at>
 References: <20210410103511.2073504-1-ahmad@a3f.at>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210410_033522_405752_7E9C2E61 
-X-CRM114-Status: GOOD (  18.20  )
+X-CRM114-CacheID: sfid-20210410_033522_915957_1A2D08B4 
+X-CRM114-Status: GOOD (  16.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,7 +83,7 @@ X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 5/5] watchdog: add GPIO watchdog driver
+Subject: [PATCH 3/5] power: reset: add GPIO poweroff driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
@@ -91,187 +91,136 @@ This is a straight port from Linux v5.11.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/watchdog/Kconfig    |   7 ++
- drivers/watchdog/Makefile   |   1 +
- drivers/watchdog/gpio_wdt.c | 142 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 150 insertions(+)
- create mode 100644 drivers/watchdog/gpio_wdt.c
+ drivers/power/reset/Kconfig         |  8 +++
+ drivers/power/reset/Makefile        |  1 +
+ drivers/power/reset/gpio-poweroff.c | 93 +++++++++++++++++++++++++++++
+ 3 files changed, 102 insertions(+)
+ create mode 100644 drivers/power/reset/gpio-poweroff.c
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 8750a97d8c50..fb4ea7ffac3c 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -117,6 +117,13 @@ config F71808E_WDT
- 	  F71862FG, F71868, F71869, F71882FG, F71889FG, F81865 and F81866
- 	  Super I/O controllers.
- 
-+config GPIO_WATCHDOG
-+	tristate "Watchdog device controlled through GPIO-line"
+diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
+index e60037a6e637..cadcc0b13f2f 100644
+--- a/drivers/power/reset/Kconfig
++++ b/drivers/power/reset/Kconfig
+@@ -28,3 +28,11 @@ config POWER_RESET_SYSCON_POWEROFF
+ 	select MFD_SYSCON
+ 	help
+ 	  Poweroff support for generic SYSCON mapped register poweroff.
++
++config POWER_RESET_GPIO
++	bool "GPIO power-off driver"
 +	depends on OF_GPIO
 +	help
-+	  If you say yes here you get support for watchdog device
-+	  controlled through GPIO-line.
-+
- config ITCO_WDT
- 	bool "Intel TCO Timer/Watchdog"
- 	depends on X86
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index b55c58cf3cb3..9edb73512903 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -17,3 +17,4 @@ obj-$(CONFIG_STM32_IWDG_WATCHDOG) += stm32_iwdg.o
- obj-$(CONFIG_STPMIC1_WATCHDOG) += stpmic1_wdt.o
- obj-$(CONFIG_F71808E_WDT) += f71808e_wdt.o
- obj-$(CONFIG_ITCO_WDT) += itco_wdt.o
-+obj-$(CONFIG_GPIO_WATCHDOG)	+= gpio_wdt.o
-diff --git a/drivers/watchdog/gpio_wdt.c b/drivers/watchdog/gpio_wdt.c
++	  This driver supports turning off your board via a GPIO line.
++	  If your board needs a GPIO high/low to power down, say Y and
++	  create a binding in your devicetree.
+diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
+index a490dce87333..438c85970028 100644
+--- a/drivers/power/reset/Makefile
++++ b/drivers/power/reset/Makefile
+@@ -3,3 +3,4 @@ obj-$(CONFIG_REBOOT_MODE) += reboot-mode.o
+ obj-$(CONFIG_SYSCON_REBOOT_MODE) += syscon-reboot-mode.o
+ obj-$(CONFIG_POWER_RESET_SYSCON) += syscon-reboot.o
+ obj-$(CONFIG_POWER_RESET_SYSCON_POWEROFF) += syscon-poweroff.o
++obj-$(CONFIG_POWER_RESET_GPIO) += gpio-poweroff.o
+diff --git a/drivers/power/reset/gpio-poweroff.c b/drivers/power/reset/gpio-poweroff.c
 new file mode 100644
-index 000000000000..4de49dcee38a
+index 000000000000..45b0d274e729
 --- /dev/null
-+++ b/drivers/watchdog/gpio_wdt.c
-@@ -0,0 +1,142 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
++++ b/drivers/power/reset/gpio-poweroff.c
+@@ -0,0 +1,93 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Driver for watchdog device controlled through GPIO-line
++ * Toggles a GPIO pin to power down a device
 + *
-+ * Author: 2013, Alexander Shiyan <shc_work@mail.ru>
++ * Jamie Lentin <jm@lentin.co.uk>
++ * Andrew Lunn <andrew@lunn.ch>
++ *
++ * Copyright (C) 2012 Jamie Lentin
 + */
-+
 +#include <common.h>
 +#include <driver.h>
-+#include <watchdog.h>
-+#include <superio.h>
++#include <poweroff.h>
 +#include <gpiod.h>
 +
-+enum {
-+	HW_ALGO_TOGGLE,
-+	HW_ALGO_LEVEL,
-+};
++#define DEFAULT_TIMEOUT_MS 3000
++/*
++ * Hold configuration here, cannot be more than one instance of the driver
++ * since pm_power_off itself is global.
++ */
++static int reset_gpio;
++static u32 timeout = DEFAULT_TIMEOUT_MS;
++static u32 active_delay = 100;
++static u32 inactive_delay = 100;
 +
-+struct gpio_wdt_priv {
-+	int		gpio;
-+	bool		state;
-+	bool		started;
-+	unsigned int	hw_algo;
-+	struct watchdog	wdd;
-+};
-+
-+static inline struct gpio_wdt_priv *to_gpio_wdt_priv(struct watchdog *wdd)
++static void gpio_poweroff_do_poweroff(struct poweroff_handler *handler)
 +{
-+	return container_of(wdd, struct gpio_wdt_priv, wdd);
++	/* drive it active, also inactive->active edge */
++	gpio_direction_active(reset_gpio, true);
++	mdelay(active_delay);
++
++	/* drive inactive, also active->inactive edge */
++	gpio_set_active(reset_gpio, false);
++	mdelay(inactive_delay);
++
++	/* drive it active, also inactive->active edge */
++	gpio_set_active(reset_gpio, true);
++
++	/* give it some time */
++	mdelay(timeout);
++
++	WARN_ON(1);
 +}
 +
-+static void gpio_wdt_disable(struct gpio_wdt_priv *priv)
-+{
-+	/* Eternal ping */
-+	gpio_set_active(priv->gpio, 1);
++static struct poweroff_handler handler;
 +
-+	/* Put GPIO back to tristate */
-+	if (priv->hw_algo == HW_ALGO_TOGGLE)
-+		gpio_direction_input(priv->gpio);
-+
-+	priv->started = false;
-+}
-+
-+static void gpio_wdt_ping(struct gpio_wdt_priv *priv)
-+{
-+	switch (priv->hw_algo) {
-+	case HW_ALGO_TOGGLE:
-+		/* Toggle output pin */
-+		priv->state = !priv->state;
-+		gpio_set_active(priv->gpio, priv->state);
-+		break;
-+	case HW_ALGO_LEVEL:
-+		/* Pulse */
-+		gpio_set_active(priv->gpio, true);
-+		udelay(1);
-+		gpio_set_active(priv->gpio, false);
-+		break;
-+	}
-+}
-+
-+static void gpio_wdt_start(struct gpio_wdt_priv *priv)
-+{
-+	priv->state = false;
-+	gpio_direction_active(priv->gpio, priv->state);
-+	priv->started = true;
-+}
-+
-+static int gpio_wdt_set_timeout(struct watchdog *wdd, unsigned int new_timeout)
-+{
-+	struct gpio_wdt_priv *priv = to_gpio_wdt_priv(wdd);
-+
-+	if (!new_timeout) {
-+		gpio_wdt_disable(priv);
-+		return 0;
-+	}
-+
-+	if (!priv->started)
-+		gpio_wdt_start(priv);
-+
-+	gpio_wdt_ping(priv);
-+	return 0;
-+}
-+
-+static int gpio_wdt_probe(struct device_d *dev)
++static int gpio_poweroff_probe(struct device_d *dev)
 +{
 +	struct device_node *np = dev->device_node;
-+	struct gpio_wdt_priv *priv;
-+	enum gpiod_flags gflags;
-+	unsigned int hw_margin;
-+	const char *algo;
-+	int ret;
++	bool input = false;
++	enum gpiod_flags flags;
 +
-+	priv = xzalloc(sizeof(*priv));
-+
-+	ret = of_property_read_u32(np, "hw_margin_ms", &hw_margin);
-+	if (ret)
-+		return ret;
-+
-+	/* Autoping is fixed at one ping every 500 ms. Round it up to a second */
-+	if (hw_margin < 1000)
-+		return -EINVAL;
-+
-+	ret = of_property_read_string(np, "hw_algo", &algo);
-+	if (ret)
-+		return ret;
-+	if (!strcmp(algo, "toggle")) {
-+		priv->hw_algo = HW_ALGO_TOGGLE;
-+		gflags = GPIOD_IN;
-+	} else if (!strcmp(algo, "level")) {
-+		priv->hw_algo = HW_ALGO_LEVEL;
-+		gflags = GPIOD_OUT_LOW;
-+	} else {
-+		return -EINVAL;
++	if (handler.poweroff != NULL) {
++		dev_err(dev, "%s: pm_power_off function already registered\n", __func__);
++		return -EBUSY;
 +	}
 +
-+	priv->gpio = gpiod_get(dev, NULL, gflags);
-+	if (priv->gpio < 0)
-+		return priv->gpio;
++	input = of_property_read_bool(np, "input");
++	if (input)
++		flags = GPIOD_IN;
++	else
++		flags = GPIOD_OUT_LOW;
 +
-+	priv->wdd.hwdev		= dev;
-+	priv->wdd.timeout_max	= hw_margin / 1000;
-+	priv->wdd.priority	= 129;
-+	priv->wdd.set_timeout	= gpio_wdt_set_timeout;
++	of_property_read_u32(np, "active-delay-ms", &active_delay);
++	of_property_read_u32(np, "inactive-delay-ms", &inactive_delay);
++	of_property_read_u32(np, "timeout-ms", &timeout);
 +
-+	return watchdog_register(&priv->wdd);
++	reset_gpio = gpiod_get(dev, NULL, flags);
++	if (reset_gpio < 0)
++		return reset_gpio;
++
++	handler.name = "gpio-poweroff";
++	handler.poweroff = gpio_poweroff_do_poweroff;
++	handler.priority = 129;
++
++	return poweroff_handler_register(&handler);
 +}
 +
-+static const struct of_device_id gpio_wdt_dt_ids[] = {
-+	{ .compatible = "linux,wdt-gpio", },
-+	{ }
++static const struct of_device_id of_gpio_poweroff_match[] = {
++	{ .compatible = "gpio-poweroff", },
++	{},
 +};
 +
-+static struct driver_d gpio_wdt_driver = {
-+	.name		= "gpio-wdt",
-+	.of_compatible	= gpio_wdt_dt_ids,
-+	.probe	= gpio_wdt_probe,
++static struct driver_d gpio_poweroff_driver = {
++	.name = "poweroff-gpio",
++	.of_compatible = of_gpio_poweroff_match,
++	.probe = gpio_poweroff_probe,
 +};
-+device_platform_driver(gpio_wdt_driver);
++device_platform_driver(gpio_poweroff_driver);
 +
-+MODULE_AUTHOR("Alexander Shiyan <shc_work@mail.ru>");
-+MODULE_DESCRIPTION("GPIO Watchdog");
-+MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Jamie Lentin <jm@lentin.co.uk>");
++MODULE_DESCRIPTION("GPIO poweroff driver");
++MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("platform:poweroff-gpio");
 -- 
 2.30.0
 
