@@ -2,62 +2,64 @@ Delivery-date: Sat, 10 Apr 2021 12:36:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVAyy-0000y5-19
+	id 1lVAyy-0000yc-Ji
 	for lore@lore.pengutronix.de; Sat, 10 Apr 2021 12:36:52 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVAyw-0007SC-FL
-	for lore@pengutronix.de; Sat, 10 Apr 2021 12:36:51 +0200
+	id 1lVAyx-0007Sf-NK
+	for lore@pengutronix.de; Sat, 10 Apr 2021 12:36:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=dMmhQjPMC/qsqXI8qwolyiw/eUdn4sqptUdHW8U0p+o=; b=CYlA8MBNqK1VJdLrjeuXrc89Sd
-	vke5ZgBqrPZp5Dco0oGgL+EB+3pRwhjCoINFQHlBqfcOMRvcXrPgH2OfEuTnJtGjB6YvXLrBroNAB
-	x+GEJZAXlE52jJMKiwCDIwYSB/erTR6gd0D9QNJxXx7jlQFPGY0q8mQEzmK+KrT0NBIt31cysjfiR
-	uDeNT0unaYUWu7mXuahnVIh/tgHF1izOoMODkgsHGIMYIWUVJo7wOqsJmaWIcA5hXtMt+G1y3Kxvm
-	1ogjCkUptOAm4AWvkmpEPzn6WzDgM53nvHmGKbjDo1s647m1DoSqVpR2VCbWSzQYykq73cM+DVQbB
-	T34eYA/g==;
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=5l5x0mAS3e5cXjkuYswRwMz7NbkWrowRaUraemZlzUc=; b=qJEtefFjiR5ju03te53Q4sHSF
+	3tILyta+QjdIdztnRG/vVJjB2fRo954tMuu2Gg/n1Q5GByqPM8K27qDNVkU8xVLwyfnFKMPQSo2qg
+	hqmOIGdkzDMP1hCA23eMhNQ2pFqmrRwDPy1/UeUWLfGyRuLftRoSlwD93JWdZnuxP79X6Y6MOfFr5
+	5b19iTV67s2Z+QITapFIpaUOhj4+i8DchQQ4OL57otx42KTYLo4FUoEzmlfuTid4RLeNVkTHJ/jJ2
+	YD1ZuhG269f13zJlK3pg46upZWExvf+PlPWm0VtGU1wnc2jFbBYO8ETLK25inxiFhBCKLe3WyqXbj
+	p+Q35QwJA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lVAxf-002fKK-HR; Sat, 10 Apr 2021 10:35:31 +0000
+	id 1lVAxi-002fKk-Dj; Sat, 10 Apr 2021 10:35:34 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVAxZ-002fJz-4y
+ id 1lVAxZ-002fK0-4y
  for barebox@desiato.infradead.org; Sat, 10 Apr 2021 10:35:25 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=XXDGsKe42qNkNTvBwIqnOevH/zbLrF6rBQf65AuK51s=; b=PiAh52izUphpeG6CHTxrlP/+Ci
- 6ur3RYRAPn5F1Ndxix6u/z0SeKMavbgrlYEdWLJ6nJC6fNm6Vh7x9IlBNV05wnQLHIWenkuJBvoDI
- GiK0UtlfVRykZuZBF0y9l2tMESlu3iKdEA+fSdMe9aJ9pddPVFLCcJOd8ftmup8e8VnHK6dVNE9n8
- mU9YGAPiii2KrN+4RrWziKwawrZ1IgWE/HkeF+Vs24FlaQDGeZH0muHnoVEiJk4b9o7Wj+bA+XX+H
- 62S1CWReXyd24nnEHfE/3KMPKMrn4lod1zdQQ94hVvbDSJHnqgXl5u5h4HqoAVlcVfG3UjA09tN/Y
- iiHAhy5Q==;
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=8YvKmnSrqwfnwAvBLEpnB4GIGubDdGygqb0ufE+cuH4=; b=hMnECN+pGaNb3SLQrhGjJcN3SX
+ rTKcdKDTB9eEm1M5dP9dw2i0A48tXtijTR6k/MOq0daic5RMR83GIHlND1yZARq0xhPBewov9HpaH
+ 8cKSShy5piyRITMLQIMhxoOjGe0i047FqnUkzLl5IkBetyXrWql4X15BolCRfcYnjmVsG30HuFxoz
+ hv9WuMb3SsCNCCENAtDP9KVr+1sSf6AfPIcHw5CQHSTWDxPRxI+YTnXqRNiLEhNNDfEEvc+lLPv3N
+ HoUzqSSepjJQPMdl829KCz7cajCSqOMCsc+KOV+SI/egGe7HQGdMMlMpfSBpf9jqKaJsJhfVoAurK
+ VJ5ba1/Q==;
 Received: from relay2-d.mail.gandi.net ([217.70.183.194])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVAxW-0052M2-1o
+ id 1lVAxW-0052M8-2U
  for barebox@lists.infradead.org; Sat, 10 Apr 2021 10:35:23 +0000
 X-Originating-IP: 83.135.94.168
 Received: from geraet.fritz.box (unknown [83.135.94.168])
  (Authenticated sender: ahmad@a3f.at)
- by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 3315840003;
- Sat, 10 Apr 2021 10:35:14 +0000 (UTC)
+ by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id D75F040008;
+ Sat, 10 Apr 2021 10:35:17 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sat, 10 Apr 2021 12:35:07 +0200
-Message-Id: <20210410103511.2073504-1-ahmad@a3f.at>
+Date: Sat, 10 Apr 2021 12:35:11 +0200
+Message-Id: <20210410103511.2073504-5-ahmad@a3f.at>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210410103511.2073504-1-ahmad@a3f.at>
+References: <20210410103511.2073504-1-ahmad@a3f.at>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210410_033522_269635_0B966C5F 
-X-CRM114-Status: GOOD (  15.47  )
+X-CRM114-CacheID: sfid-20210410_033522_405752_7E9C2E61 
+X-CRM114-Status: GOOD (  18.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,119 +83,195 @@ X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] gpiolib: add Linux-like gpiod_get() helper
+Subject: [PATCH 5/5] watchdog: add GPIO watchdog driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Many Linux drivers use [devm_]gpiod_get to get appropriately configured
-GPIO descriptors out with little code. Make porting such Linux code
-easier by providing a semi-compatible gpiod_get function. Main
-differences:
-
- - It returns a gpio index, so it can be passed to any gpio_ function
- - It's device-tree only, so it should only be used from drivers
-   that themselves probe from device tree.
+This is a straight port from Linux v5.11.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/gpio/gpiolib.c | 43 ++++++++++++++++++++++++++++++++++++++++++
- include/gpiod.h        | 26 +++++++++++++++++++++++++
- 2 files changed, 69 insertions(+)
- create mode 100644 include/gpiod.h
+ drivers/watchdog/Kconfig    |   7 ++
+ drivers/watchdog/Makefile   |   1 +
+ drivers/watchdog/gpio_wdt.c | 142 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 150 insertions(+)
+ create mode 100644 drivers/watchdog/gpio_wdt.c
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 6088cadd8a18..7b7261d01f24 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -6,6 +6,7 @@
- #include <complete.h>
- #include <gpio.h>
- #include <of_gpio.h>
-+#include <gpiod.h>
- #include <errno.h>
- #include <malloc.h>
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 8750a97d8c50..fb4ea7ffac3c 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -117,6 +117,13 @@ config F71808E_WDT
+ 	  F71862FG, F71868, F71869, F71882FG, F71889FG, F81865 and F81866
+ 	  Super I/O controllers.
  
-@@ -554,6 +555,48 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
- 	return 0;
- }
- 
-+/* Linux compatibility helper: Get a GPIO descriptor from device tree */
-+int gpiod_get(struct device_d *dev, const char *_con_id, enum gpiod_flags flags)
-+{
-+	struct device_node *np = dev->device_node;
-+	enum of_gpio_flags of_flags;
-+	const char *con_id = "gpios", *label = dev_name(dev);
-+	char *buf = NULL;
-+	int gpio;
-+	int ret;
++config GPIO_WATCHDOG
++	tristate "Watchdog device controlled through GPIO-line"
++	depends on OF_GPIO
++	help
++	  If you say yes here you get support for watchdog device
++	  controlled through GPIO-line.
 +
-+	if (!IS_ENABLED(CONFIG_OFDEVICE) || !dev->device_node)
-+		return -ENODEV;
-+
-+	if (_con_id) {
-+		con_id = buf = basprintf("%s-gpios", _con_id);
-+		if (!buf)
-+			return -ENOMEM;
-+	}
-+
-+	gpio = of_get_named_gpio_flags(np, con_id, 0, &of_flags);
-+	free(buf);
-+
-+	if (!gpio_is_valid(gpio))
-+		return gpio < 0 ? gpio : -EINVAL;
-+
-+	if (of_flags & OF_GPIO_ACTIVE_LOW)
-+		flags |= GPIOF_ACTIVE_LOW;
-+
-+	buf = NULL;
-+
-+	if (_con_id) {
-+		label = buf = basprintf("%s-%s", dev_name(dev), _con_id);
-+		if (!label)
-+			return -ENOMEM;
-+	}
-+
-+	ret = gpio_request_one(gpio, flags, label);
-+	free(buf);
-+
-+	return ret ?: gpio;
-+}
-+
- int gpiochip_add(struct gpio_chip *chip)
- {
- 	int base, i;
-diff --git a/include/gpiod.h b/include/gpiod.h
+ config ITCO_WDT
+ 	bool "Intel TCO Timer/Watchdog"
+ 	depends on X86
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index b55c58cf3cb3..9edb73512903 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -17,3 +17,4 @@ obj-$(CONFIG_STM32_IWDG_WATCHDOG) += stm32_iwdg.o
+ obj-$(CONFIG_STPMIC1_WATCHDOG) += stpmic1_wdt.o
+ obj-$(CONFIG_F71808E_WDT) += f71808e_wdt.o
+ obj-$(CONFIG_ITCO_WDT) += itco_wdt.o
++obj-$(CONFIG_GPIO_WATCHDOG)	+= gpio_wdt.o
+diff --git a/drivers/watchdog/gpio_wdt.c b/drivers/watchdog/gpio_wdt.c
 new file mode 100644
-index 000000000000..c8b2cd47a3cb
+index 000000000000..4de49dcee38a
 --- /dev/null
-+++ b/include/gpiod.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __GPIOD_H_
-+#define __GPIOD_H_
-+
-+#include <gpio.h>
-+#include <of_gpio.h>
-+
-+/**
-+ * Optional flags that can be passed to one of gpiod_* to configure direction
-+ * and output value. These values cannot be OR'd.
++++ b/drivers/watchdog/gpio_wdt.c
+@@ -0,0 +1,142 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Driver for watchdog device controlled through GPIO-line
++ *
++ * Author: 2013, Alexander Shiyan <shc_work@mail.ru>
 + */
-+enum gpiod_flags {
-+	GPIOD_ASIS	= 0,
-+	GPIOD_IN	= GPIOF_IN,
-+	/*
-+	 * To change this later to a different logic level (i.e. taking
-+	 * active low into account), use gpio_direction_active()
-+	 */
-+	GPIOD_OUT_LOW	= GPIOF_OUT_INIT_INACTIVE,
-+	GPIOD_OUT_HIGH	= GPIOF_OUT_INIT_ACTIVE,
++
++#include <common.h>
++#include <driver.h>
++#include <watchdog.h>
++#include <superio.h>
++#include <gpiod.h>
++
++enum {
++	HW_ALGO_TOGGLE,
++	HW_ALGO_LEVEL,
 +};
 +
-+/* returned gpio descriptor can be passed to any normal gpio_* function */
-+int gpiod_get(struct device_d *dev, const char *_con_id, enum gpiod_flags flags);
++struct gpio_wdt_priv {
++	int		gpio;
++	bool		state;
++	bool		started;
++	unsigned int	hw_algo;
++	struct watchdog	wdd;
++};
 +
-+#endif
++static inline struct gpio_wdt_priv *to_gpio_wdt_priv(struct watchdog *wdd)
++{
++	return container_of(wdd, struct gpio_wdt_priv, wdd);
++}
++
++static void gpio_wdt_disable(struct gpio_wdt_priv *priv)
++{
++	/* Eternal ping */
++	gpio_set_active(priv->gpio, 1);
++
++	/* Put GPIO back to tristate */
++	if (priv->hw_algo == HW_ALGO_TOGGLE)
++		gpio_direction_input(priv->gpio);
++
++	priv->started = false;
++}
++
++static void gpio_wdt_ping(struct gpio_wdt_priv *priv)
++{
++	switch (priv->hw_algo) {
++	case HW_ALGO_TOGGLE:
++		/* Toggle output pin */
++		priv->state = !priv->state;
++		gpio_set_active(priv->gpio, priv->state);
++		break;
++	case HW_ALGO_LEVEL:
++		/* Pulse */
++		gpio_set_active(priv->gpio, true);
++		udelay(1);
++		gpio_set_active(priv->gpio, false);
++		break;
++	}
++}
++
++static void gpio_wdt_start(struct gpio_wdt_priv *priv)
++{
++	priv->state = false;
++	gpio_direction_active(priv->gpio, priv->state);
++	priv->started = true;
++}
++
++static int gpio_wdt_set_timeout(struct watchdog *wdd, unsigned int new_timeout)
++{
++	struct gpio_wdt_priv *priv = to_gpio_wdt_priv(wdd);
++
++	if (!new_timeout) {
++		gpio_wdt_disable(priv);
++		return 0;
++	}
++
++	if (!priv->started)
++		gpio_wdt_start(priv);
++
++	gpio_wdt_ping(priv);
++	return 0;
++}
++
++static int gpio_wdt_probe(struct device_d *dev)
++{
++	struct device_node *np = dev->device_node;
++	struct gpio_wdt_priv *priv;
++	enum gpiod_flags gflags;
++	unsigned int hw_margin;
++	const char *algo;
++	int ret;
++
++	priv = xzalloc(sizeof(*priv));
++
++	ret = of_property_read_u32(np, "hw_margin_ms", &hw_margin);
++	if (ret)
++		return ret;
++
++	/* Autoping is fixed at one ping every 500 ms. Round it up to a second */
++	if (hw_margin < 1000)
++		return -EINVAL;
++
++	ret = of_property_read_string(np, "hw_algo", &algo);
++	if (ret)
++		return ret;
++	if (!strcmp(algo, "toggle")) {
++		priv->hw_algo = HW_ALGO_TOGGLE;
++		gflags = GPIOD_IN;
++	} else if (!strcmp(algo, "level")) {
++		priv->hw_algo = HW_ALGO_LEVEL;
++		gflags = GPIOD_OUT_LOW;
++	} else {
++		return -EINVAL;
++	}
++
++	priv->gpio = gpiod_get(dev, NULL, gflags);
++	if (priv->gpio < 0)
++		return priv->gpio;
++
++	priv->wdd.hwdev		= dev;
++	priv->wdd.timeout_max	= hw_margin / 1000;
++	priv->wdd.priority	= 129;
++	priv->wdd.set_timeout	= gpio_wdt_set_timeout;
++
++	return watchdog_register(&priv->wdd);
++}
++
++static const struct of_device_id gpio_wdt_dt_ids[] = {
++	{ .compatible = "linux,wdt-gpio", },
++	{ }
++};
++
++static struct driver_d gpio_wdt_driver = {
++	.name		= "gpio-wdt",
++	.of_compatible	= gpio_wdt_dt_ids,
++	.probe	= gpio_wdt_probe,
++};
++device_platform_driver(gpio_wdt_driver);
++
++MODULE_AUTHOR("Alexander Shiyan <shc_work@mail.ru>");
++MODULE_DESCRIPTION("GPIO Watchdog");
++MODULE_LICENSE("GPL");
 -- 
 2.30.0
 
