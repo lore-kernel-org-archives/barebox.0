@@ -1,67 +1,67 @@
-Delivery-date: Mon, 12 Apr 2021 09:19:12 +0200
+Delivery-date: Mon, 12 Apr 2021 09:19:23 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVqqm-0003go-TX
-	for lore@lore.pengutronix.de; Mon, 12 Apr 2021 09:19:12 +0200
+	id 1lVqqx-0003hA-9i
+	for lore@lore.pengutronix.de; Mon, 12 Apr 2021 09:19:23 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVqqi-00051q-OG
-	for lore@pengutronix.de; Mon, 12 Apr 2021 09:19:12 +0200
+	id 1lVqqs-00056M-9c
+	for lore@pengutronix.de; Mon, 12 Apr 2021 09:19:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=Zcxb9CNEZ4b/tfb3BQoduCkbkcMgU8MECQMU7e9KbIE=; b=DcGPwMK39GcirMIeoMeJpBpgU
-	BzgvtEpUL8K07MZXF69R1Hzo43CXSY/1OGqgrldHM3XT3DN8DWI3ua1NqdZmybI70BKezlRHTWHpG
-	+dEaEFObiNakG+jUBuGEPmTAO7zztZ4L5jP5oowDAqvdNs1kJ4v9i8u83jO0sw8RrT4MA2KS5+qDx
-	yRhm8AVa060o8hqmEKzTv3CgLb7Imj76GBMkGl/CTtCdbXLYEWyEYDnyZx4RWJpaFrCQEBwDpmbu+
-	Q+6IAhri2ECcKy+M/XGFXvrGf5FEgR7h/EhJtuP5ay3II24z64UTmN1dkhMh0PQF56Kb7kZ4bj/V9
-	dZ5BxWYGA==;
+	 bh=VkNGMcqJKrNCecbz45i/Oi62+vnLJQnsymR1fHlMdLE=; b=QdoJ8cbhMDXi07oQVVQp/oC9t
+	+eRhCWljFcBBVP5P8PjA8JKX4McMv24hEcFsjt/s8Xbh7O6FBQ41LsO21WFx27JYKl0N+7qr+upSP
+	MSsDv2JWnPq3voun6zxXRxEMNStunV+N9XS4JT0E5DMCSO/ICZD7qgna1OrVcPYtMWosvc9Yz4Uv0
+	IQPEBcn8w6SVF+/REdcbLSdSslVraWIPJiX+l4o4nKdGtHXvVulBmwhFGOpeeC0sKXORWQiIzJJbW
+	YF/X/qpoAftJQIweiOWPKo+sjW0QQ2OQRNoSKqmOV7A0YgS0ynAfBiauOVBq6l9dHUFH9RujpIls1
+	ajEpN0Kvg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lVqpd-005wD2-PL; Mon, 12 Apr 2021 07:18:01 +0000
+	id 1lVqpS-005w7X-Lx; Mon, 12 Apr 2021 07:17:54 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVqoj-005vub-7U
+ id 1lVqoo-005vvg-Hh
  for barebox@desiato.infradead.org; Mon, 12 Apr 2021 07:17:11 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
- To:From:Sender:Reply-To:Content-ID:Content-Description;
- bh=iyGv5cadpGaxjNsDy6E08lKS4wqukLcFPW2Ur4vaWfw=; b=K6gd1+mS7CyEZb+PF9ZZCG4gFv
- Hz4lAN1pPIT5cbSbTj1HJdZYQweBNrUpoUZZpt4Fo7qcQiKAeGtRGwPwxYORWVDm9UHSVSudcBSz1
- 6PMaj4No0K5CPBJ9KqN46kHowSm//hBE5vJzxDacht00ItajGgrrJ/4oiJxurMrZVGmUe7pQEr5lk
- wX5HHDH1DXUAXk9DaA+NSGX4G+ey11RnfJr7/xQBe/ouMzznBsT4EDRLeQ3E3tver0oJW4m5Afa0R
- XTYA+yyvtEfO1Gkgw1SgipXn0sN3ypiW9JBdKKQFPK+MV8BbYCz98jE2yZQ6W/FSiXrjTfJbA0Owp
- PGwM+PhA==;
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=jav0qGIq93tfqTb3lCzFMTeEMXeHkAwDzjtXD71DwDo=; b=gq8bvaFa2WQjVBTrgMGFS1B9wv
+ TDmenBLgsMFzrPwmYHcyuzeupOUaZ5m1bX9CJ+qBMBKizV+zmrpeB3Ig4FaUom8OaNc//+eSP4QDB
+ xU/Hwm/Ikpp/heoP57A3lDwhoSHu+3NsFR9wDSDWjLzp0RzhlWAqKC2kOj0ZcVEmCDUvmpiIJ2tKX
+ daVL6t6ZNVAiZuMXQxxAdG3KjNzsb3l3hEGUPErAzc4I2VzAfhvC4DCV9e/obJVJAhGRpr+zceeko
+ PZ4OAO6gLTCkSM101AS3n1RURUeiSYumB9VHDuEXqoeAt7472rCFjs2WV/GbGykUYsRU62Txz04jW
+ wXCq0VsQ==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVqod-005vEp-Oe
- for barebox@lists.infradead.org; Mon, 12 Apr 2021 07:17:04 +0000
+ id 1lVqoj-005vHB-PU
+ for barebox@lists.infradead.org; Mon, 12 Apr 2021 07:17:09 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lVqoa-0004HM-II; Mon, 12 Apr 2021 09:16:56 +0200
+ id 1lVqoa-0004HQ-F6; Mon, 12 Apr 2021 09:16:56 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lVqoZ-0002fn-B8; Mon, 12 Apr 2021 09:16:55 +0200
+ id 1lVqoZ-0002fz-D3; Mon, 12 Apr 2021 09:16:55 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Mon, 12 Apr 2021 09:16:44 +0200
-Message-Id: <20210412071651.8769-11-a.fatoum@pengutronix.de>
+Date: Mon, 12 Apr 2021 09:16:48 +0200
+Message-Id: <20210412071651.8769-15-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210412071651.8769-1-a.fatoum@pengutronix.de>
 References: <20210412071651.8769-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210412_001700_082193_D2F76AD5 
-X-CRM114-Status: GOOD (  22.75  )
+X-CRM114-CacheID: sfid-20210412_001706_177632_9B3461D6 
+X-CRM114-Status: GOOD (  29.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,8 +74,8 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, rcz@pengutronix.de
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -86,174 +86,626 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 10/17] test: self: port Linux printf kselftest
+Subject: [PATCH 14/17] test: add emulate.pl,
+ a runner for barebox on emulated targets
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-UG9ydCBvdmVyIHRoZSBMaW51eCB2NS4xMSBzZWxmdGVzdCBmb3IgcHJpbnRmIHNhbnMgdGhlIHBh
-cnRzIHdlIGRvbid0CnN1cHBvcnQuIFRoaXMgY2FuIGJlIHVzZWQgdG8gY2F0Y2ggcmVncmVzc2lv
-bnMgaWYgY2hhbmdlcyBhZmZlY3RpbmcgdGhlCnByaW50ZiBjb2RlIGFyZSBtYWRlLgoKU2lnbmVk
-LW9mZi1ieTogQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4KLS0tCiBpbmNs
-dWRlL3N0ZGxpYi5oICAgfCAgIDUgKwogdGVzdC9zZWxmL0tjb25maWcgIHwgICA2ICsKIHRlc3Qv
-c2VsZi9NYWtlZmlsZSB8ICAgMSArCiB0ZXN0L3NlbGYvcHJpbnRmLmMgfCAzMDIgKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiA0IGZpbGVzIGNoYW5nZWQsIDMx
-NCBpbnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdC9zZWxmL3ByaW50Zi5jCgpk
-aWZmIC0tZ2l0IGEvaW5jbHVkZS9zdGRsaWIuaCBiL2luY2x1ZGUvc3RkbGliLmgKaW5kZXggZDQw
-NTYwODcyNDNkLi44ZWI0MTllMTExZjAgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvc3RkbGliLmgKKysr
-IGIvaW5jbHVkZS9zdGRsaWIuaApAQCAtMjUsNCArMjUsOSBAQCBzdGF0aWMgaW5saW5lIHUzMiBy
-YW5kb20zMih2b2lkKQogCXJldHVybiByZXQ7CiB9CiAKK3N0YXRpYyBpbmxpbmUgdTMyIHByYW5k
-b21fdTMyX21heCh1MzIgZXBfcm8pCit7CisJcmV0dXJuICh1MzIpKCgodTY0KSByYW5kb20zMigp
-ICogZXBfcm8pID4+IDMyKTsKK30KKwogI2VuZGlmIC8qIF9fU1RETElCX0ggKi8KZGlmZiAtLWdp
-dCBhL3Rlc3Qvc2VsZi9LY29uZmlnIGIvdGVzdC9zZWxmL0tjb25maWcKaW5kZXggNzIwYWJlZmZj
-NTFiLi43M2RjNmM3YjRmMDMgMTAwNjQ0Ci0tLSBhL3Rlc3Qvc2VsZi9LY29uZmlnCisrKyBiL3Rl
-c3Qvc2VsZi9LY29uZmlnCkBAIC0yNyw3ICsyNywxMyBAQCBjb25maWcgU0VMRlRFU1RfQVVUT1JV
-TgogCiBjb25maWcgU0VMRlRFU1RfRU5BQkxFX0FMTAogCWJvb2wgIkVuYWJsZSBhbGwgc2VsZi10
-ZXN0cyIKKwlzZWxlY3QgU0VMRlRFU1RfUFJJTlRGCiAJaGVscAogCSAgU2VsZWN0cyBhbGwgc2Vs
-Zi10ZXN0cyBjb21wYXRpYmxlIHdpdGggY3VycmVudCBjb25maWd1cmF0aW9uCiAKK2NvbmZpZyBT
-RUxGVEVTVF9QUklOVEYKKwlib29sICJwcmludGYgc2VsZnRlc3QiCisJaGVscAorCSAgVGVzdHMg
-YmFyZWJveCB2c25wcmludGYoKSBmdW5jdGlvbmFsaXR5CisKIGVuZGlmCmRpZmYgLS1naXQgYS90
-ZXN0L3NlbGYvTWFrZWZpbGUgYi90ZXN0L3NlbGYvTWFrZWZpbGUKaW5kZXggNzhmNzM4YzhlMjEw
-Li5iNGFhNDlkNmY4MTcgMTAwNjQ0Ci0tLSBhL3Rlc3Qvc2VsZi9NYWtlZmlsZQorKysgYi90ZXN0
-L3NlbGYvTWFrZWZpbGUKQEAgLTEsMyArMSw0IEBACiAjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVy
-OiBHUEwtMi4wCiAKIG9iai0kKENPTkZJR19TRUxGVEVTVCkgKz0gY29yZS5vCitvYmotJChDT05G
-SUdfU0VMRlRFU1RfUFJJTlRGKSArPSBwcmludGYubwpkaWZmIC0tZ2l0IGEvdGVzdC9zZWxmL3By
-aW50Zi5jIGIvdGVzdC9zZWxmL3ByaW50Zi5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAw
-MDAwMDAwMDAwMC4uNTJmZTZhYzBmYWY5Ci0tLSAvZGV2L251bGwKKysrIGIvdGVzdC9zZWxmL3By
-aW50Zi5jCkBAIC0wLDAgKzEsMzAyIEBACisvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BM
-LTIuMC1vbmx5CisvKgorICogVGVzdCBjYXNlcyBmb3IgcHJpbnRmIGZhY2lsaXR5LgorICovCisK
-KyNkZWZpbmUgcHJfZm10KGZtdCkgS0JVSUxEX01PRE5BTUUgIjogIiBmbXQKKworI2luY2x1ZGUg
-PGNvbW1vbi5oPgorI2luY2x1ZGUgPGJzZWxmdGVzdC5oPgorI2luY2x1ZGUgPGxpbnV4L2tlcm5l
-bC5oPgorI2luY2x1ZGUgPG1vZHVsZS5oPgorI2luY2x1ZGUgPHN0ZGlvLmg+CisjaW5jbHVkZSA8
-c3RkbGliLmg+CisjaW5jbHVkZSA8bGludXgvc3RyaW5nLmg+CisjaW5jbHVkZSA8ZXJybm8uaD4K
-KworI2luY2x1ZGUgPGxpbnV4L2JpdG1hcC5oPgorCisjZGVmaW5lIEJVRl9TSVpFIDI1NgorI2Rl
-ZmluZSBQQURfU0laRSAxNgorI2RlZmluZSBGSUxMX0NIQVIgJyQnCisKK0JTRUxGVEVTVF9HTE9C
-QUxTKCk7CisKK3N0YXRpYyBjaGFyICp0ZXN0X2J1ZmZlciBfX2luaXRkYXRhOworc3RhdGljIGNo
-YXIgKmFsbG9jZWRfYnVmZmVyIF9faW5pdGRhdGE7CisKK3N0YXRpYyBpbnQgX19wcmludGYoNCwg
-MCkgX19pbml0Citkb190ZXN0KGludCBidWZzaXplLCBjb25zdCBjaGFyICpleHBlY3QsIGludCBl
-bGVuLAorCWNvbnN0IGNoYXIgKmZtdCwgdmFfbGlzdCBhcCkKK3sKKwl2YV9saXN0IGFxOworCWlu
-dCByZXQsIHdyaXR0ZW47CisKKwl0b3RhbF90ZXN0cysrOworCisJbWVtc2V0KGFsbG9jZWRfYnVm
-ZmVyLCBGSUxMX0NIQVIsIEJVRl9TSVpFICsgMipQQURfU0laRSk7CisJdmFfY29weShhcSwgYXAp
-OworCXJldCA9IHZzbnByaW50Zih0ZXN0X2J1ZmZlciwgYnVmc2l6ZSwgZm10LCBhcSk7CisJdmFf
-ZW5kKGFxKTsKKworCWlmIChyZXQgIT0gZWxlbikgeworCQlwcl93YXJuKCJ2c25wcmludGYoYnVm
-LCAlZCwgXCIlc1wiLCAuLi4pIHJldHVybmVkICVkLCBleHBlY3RlZCAlZFxuIiwKKwkJCWJ1ZnNp
-emUsIGZtdCwgcmV0LCBlbGVuKTsKKwkJcHJfd2FybigidnNucHJpbnRmKGJ1ZiwgJWQsIFwiJXNc
-IiwgLi4uKSB3cm90ZSAnJXMnLCBleHBlY3RlZCAnJS4qcydcbiIsCisJCQlidWZzaXplLCBmbXQs
-IHRlc3RfYnVmZmVyLCByZXQsIGV4cGVjdCk7CisJCXJldHVybiAxOworCX0KKworCWlmIChtZW1j
-aHJfaW52KGFsbG9jZWRfYnVmZmVyLCBGSUxMX0NIQVIsIFBBRF9TSVpFKSkgeworCQlwcl93YXJu
-KCJ2c25wcmludGYoYnVmLCAlZCwgXCIlc1wiLCAuLi4pIHdyb3RlIGJlZm9yZSBidWZmZXJcbiIs
-IGJ1ZnNpemUsIGZtdCk7CisJCXJldHVybiAxOworCX0KKworCWlmICghYnVmc2l6ZSkgeworCQlp
-ZiAobWVtY2hyX2ludih0ZXN0X2J1ZmZlciwgRklMTF9DSEFSLCBCVUZfU0laRSArIFBBRF9TSVpF
-KSkgeworCQkJcHJfd2FybigidnNucHJpbnRmKGJ1ZiwgMCwgXCIlc1wiLCAuLi4pIHdyb3RlIHRv
-IGJ1ZmZlclxuIiwKKwkJCQlmbXQpOworCQkJcmV0dXJuIDE7CisJCX0KKwkJcmV0dXJuIDA7CisJ
-fQorCisJd3JpdHRlbiA9IG1pbihidWZzaXplLTEsIGVsZW4pOworCWlmICh0ZXN0X2J1ZmZlclt3
-cml0dGVuXSkgeworCQlwcl93YXJuKCJ2c25wcmludGYoYnVmLCAlZCwgXCIlc1wiLCAuLi4pIGRp
-ZCBub3QgbnVsLXRlcm1pbmF0ZSBidWZmZXJcbiIsCisJCQlidWZzaXplLCBmbXQpOworCQlyZXR1
-cm4gMTsKKwl9CisKKwlpZiAobWVtY2hyX2ludih0ZXN0X2J1ZmZlciArIHdyaXR0ZW4gKyAxLCBG
-SUxMX0NIQVIsIEJVRl9TSVpFICsgUEFEX1NJWkUgLSAod3JpdHRlbiArIDEpKSkgeworCQlwcl93
-YXJuKCJ2c25wcmludGYoYnVmLCAlZCwgXCIlc1wiLCAuLi4pIHdyb3RlIGJleW9uZCB0aGUgbnVs
-LXRlcm1pbmF0b3JcbiIsCisJCQlidWZzaXplLCBmbXQpOworCQlyZXR1cm4gMTsKKwl9CisKKwlp
-ZiAobWVtY21wKHRlc3RfYnVmZmVyLCBleHBlY3QsIHdyaXR0ZW4pKSB7CisJCXByX3dhcm4oInZz
-bnByaW50ZihidWYsICVkLCBcIiVzXCIsIC4uLikgd3JvdGUgJyVzJywgZXhwZWN0ZWQgJyUuKnMn
-XG4iLAorCQkJYnVmc2l6ZSwgZm10LCB0ZXN0X2J1ZmZlciwgd3JpdHRlbiwgZXhwZWN0KTsKKwkJ
-cmV0dXJuIDE7CisJfQorCXJldHVybiAwOworfQorCitzdGF0aWMgdm9pZCBfX3ByaW50ZigzLCA0
-KSBfX2luaXQKK19fdGVzdChjb25zdCBjaGFyICpleHBlY3QsIGludCBlbGVuLCBjb25zdCBjaGFy
-ICpmbXQsIC4uLikKK3sKKwl2YV9saXN0IGFwOworCWludCByYW5kOworCWNoYXIgKnA7CisKKwlp
-ZiAoZWxlbiA+PSBCVUZfU0laRSkgeworCQlwcl9lcnIoImVycm9yIGluIHRlc3Qgc3VpdGU6IGV4
-cGVjdGVkIG91dHB1dCBsZW5ndGggJWQgdG9vIGxvbmcuIEZvcm1hdCB3YXMgJyVzJy5cbiIsCisJ
-CSAgICAgICBlbGVuLCBmbXQpOworCQlmYWlsZWRfdGVzdHMrKzsKKwkJcmV0dXJuOworCX0KKwor
-CXZhX3N0YXJ0KGFwLCBmbXQpOworCisJLyoKKwkgKiBFdmVyeSBmbXQrYXJncyBpcyBzdWJqZWN0
-ZWQgdG8gZm91ciB0ZXN0czogVGhyZWUgd2hlcmUgd2UKKwkgKiB0ZWxsIHZzbnByaW50ZiB2YXJ5
-aW5nIGJ1ZmZlciBzaXplcyAocGxlbnR5LCBub3QgcXVpdGUKKwkgKiBlbm91Z2ggYW5kIDApLCBh
-bmQgdGhlbiB3ZSBhbHNvIHRlc3QgdGhhdCBidmFzcHJpbnRmIHdvdWxkCisJICogYmUgYWJsZSB0
-byBwcmludCBpdCBhcyBleHBlY3RlZC4KKwkgKi8KKwlmYWlsZWRfdGVzdHMgKz0gZG9fdGVzdChC
-VUZfU0laRSwgZXhwZWN0LCBlbGVuLCBmbXQsIGFwKTsKKwlyYW5kID0gMSArIHByYW5kb21fdTMy
-X21heChlbGVuKzEpOworCS8qIFNpbmNlIGVsZW4gPCBCVUZfU0laRSwgd2UgaGF2ZSAxIDw9IHJh
-bmQgPD0gQlVGX1NJWkUuICovCisJZmFpbGVkX3Rlc3RzICs9IGRvX3Rlc3QocmFuZCwgZXhwZWN0
-LCBlbGVuLCBmbXQsIGFwKTsKKwlmYWlsZWRfdGVzdHMgKz0gZG9fdGVzdCgwLCBleHBlY3QsIGVs
-ZW4sIGZtdCwgYXApOworCisJcCA9IGJ2YXNwcmludGYoZm10LCBhcCk7CisJaWYgKHApIHsKKwkJ
-dG90YWxfdGVzdHMrKzsKKwkJaWYgKG1lbWNtcChwLCBleHBlY3QsIGVsZW4rMSkpIHsKKwkJCXBy
-X3dhcm4oImJ2YXNwcmludGYoLi4uLCBcIiVzXCIsIC4uLikgcmV0dXJuZWQgJyVzJywgZXhwZWN0
-ZWQgJyVzJ1xuIiwKKwkJCQlmbXQsIHAsIGV4cGVjdCk7CisJCQlmYWlsZWRfdGVzdHMrKzsKKwkJ
-fQorCQlrZnJlZShwKTsKKwl9CisJdmFfZW5kKGFwKTsKK30KKworI2RlZmluZSB0ZXN0KGV4cGVj
-dCwgZm10LCAuLi4pCQkJCQlcCisJX190ZXN0KGV4cGVjdCwgc3RybGVuKGV4cGVjdCksIGZtdCwg
-IyNfX1ZBX0FSR1NfXykKKworc3RhdGljIHZvaWQgX19pbml0Cit0ZXN0X2Jhc2ljKHZvaWQpCit7
-CisJLyogV29yayBhcm91bmQgYW5ub3lpbmcgIndhcm5pbmc6IHplcm8tbGVuZ3RoIGdudV9wcmlu
-dGYgZm9ybWF0IHN0cmluZyIuICovCisJY2hhciBudWwgPSAnXDAnOworCisJdGVzdCgiIiwgJm51
-bCk7CisJdGVzdCgiMTAwJSIsICIxMDAlJSIpOworCXRlc3QoInh4eCV5eXkiLCAieHh4JWN5eXki
-LCAnJScpOworCV9fdGVzdCgieHh4XDB5eXkiLCA3LCAieHh4JWN5eXkiLCAnXDAnKTsKK30KKwor
-c3RhdGljIHZvaWQgX19pbml0Cit0ZXN0X251bWJlcih2b2lkKQoreworCXNpZ25lZCBjaGFyIHZh
-bDsKKworCXRlc3QoIjB4MTIzNGFiY2QgICIsICIlIy0xMngiLCAweDEyMzRhYmNkKTsKKwl0ZXN0
-KCIgIDB4MTIzNGFiY2QiLCAiJSMxMngiLCAweDEyMzRhYmNkKTsKKwl0ZXN0KCIwfDAwMXwgMTJ8
-KzEyM3wgMTIzNHwtMTIzfC0xMjM0IiwgIiVkfCUwM2R8JTNkfCUrZHwlIGR8JStkfCUgZCIsIDAs
-IDEsIDEyLCAxMjMsIDEyMzQsIC0xMjMsIC0xMjM0KTsKKwl0ZXN0KCIwfDF8MXwzMjc2OHw2NTUz
-NSIsICIlaHV8JWh1fCVodXwlaHV8JWh1IiwgMCwgMSwgNjU1MzcsIDMyNzY4LCAtMSk7CisJdGVz
-dCgiMHwxfDF8LTMyNzY4fC0xIiwgIiVoZHwlaGR8JWhkfCVoZHwlaGQiLCAwLCAxLCA2NTUzNywg
-MzI3NjgsIC0xKTsKKwl0ZXN0KCIyMDE1MTIyNDIwMTUxMjI1IiwgIiVobyVobyUjaG8iLCAxMDM3
-LCA1MjgyLCAtMTE2MjcpOworCisJdGVzdCgiMjAxNTEyMjQyMDE1MTIyNSIsICIlaG8laG8lI2hv
-IiwgMTAzNywgNTI4MiwgLTExNjI3KTsKKworCS8qCisJICogUE9TSVgvQzk5OiDCu1RoZSByZXN1
-bHQgb2YgY29udmVydGluZyB6ZXJvIHdpdGggYW4gZXhwbGljaXQKKwkgKiBwcmVjaXNpb24gb2Yg
-emVybyBzaGFsbCBiZSBubyBjaGFyYWN0ZXJzLsKrIEhlbmNlIHRoZSBvdXRwdXQKKwkgKiBmcm9t
-IHRoZSBiZWxvdyB0ZXN0IHNob3VsZCByZWFsbHkgYmUgIjAwfDB8fHwgIi4gSG93ZXZlciwKKwkg
-KiB0aGUga2VybmVsJ3MgcHJpbnRmIGFsc28gcHJvZHVjZXMgYSBzaW5nbGUgMCBpbiB0aGF0CisJ
-ICogY2FzZS4gVGhpcyB0ZXN0IGNhc2Ugc2ltcGx5IGRvY3VtZW50cyB0aGUgY3VycmVudAorCSAq
-IGJlaGF2aW91ci4KKwkgKi8KKwl0ZXN0KCIwMHwwfDB8MHwwIiwgIiUuMmR8JS4xZHwlLjBkfCUu
-KmR8JTEuMGQiLCAwLCAwLCAwLCAwLCAwLCAwKTsKKworCXZhbCA9IC0xNjsKKwl0ZXN0KCIweGZm
-ZmZmZmYwfDB4ZjB8MHhmMCIsICIlIzAyeHwlIzAyeHwlIzAyeCIsIHZhbCwgdmFsICYgMHhmZiwg
-KHU4KXZhbCk7CisKKwkvKiBPbiBzb21lIHBsYXRmb3JtcywgdGVzdCBmYWlsdXJlIGhlcmUgaW5k
-aWNhdGVzIGEgbWlzYWxpZ25lZCBzdGFjayAqLworCXRlc3QoIjB4MDgwNzA2MDUwNDAzMDIwMSIs
-ICIweCUwMTZsbHgiLCAweDA4MDcwNjA1MDQwMzAyMDFVTEwpOworfQorCitzdGF0aWMgdm9pZCBf
-X2luaXQKK3Rlc3Rfc3RyaW5nKHZvaWQpCit7CisJdGVzdCgiIiwgIiVzJS4wcyIsICIiLCAiMTIz
-Iik7CisJdGVzdCgiQUJDRHxhYmN8MTIzIiwgIiVzfCUuM3N8JS4qcyIsICJBQkNEIiwgImFiY2Rl
-ZiIsIDMsICIxMjM0NTYiKTsKKwl0ZXN0KCIxICB8ICAyfDMgIHwgIDR8NSAgIiwgIiUtM3N8JTNz
-fCUtKnN8JSpzfCUqcyIsICIxIiwgIjIiLCAzLCAiMyIsIDMsICI0IiwgLTMsICI1Iik7CisJdGVz
-dCgiMTIzNCAgICAgICIsICIlLTEwLjRzIiwgIjEyMzQ1NiIpOworCXRlc3QoIiAgICAgIDEyMzQi
-LCAiJTEwLjRzIiwgIjEyMzQ1NiIpOworfQorCisjaWYgQklUU19QRVJfTE9ORyA9PSA2NAorCisj
-ZGVmaW5lIFBUUl9XSURUSCAxNgorI2RlZmluZSBQVFIgKCh2b2lkICopMHhmZmZmMDEyMzQ1Njc4
-OWFiVUwpCisjZGVmaW5lIFBUUl9TVFIgImZmZmYwMTIzNDU2Nzg5YWIiCisjZGVmaW5lIFBUUl9W
-QUxfTk9fQ1JORyAiKF9fX19wdHJ2YWxfX19fKSIKKyNkZWZpbmUgWkVST1MgIjAwMDAwMDAwIgkv
-KiBoZXggMzIgemVybyBiaXRzICovCisjZGVmaW5lIE9ORVMgImZmZmZmZmZmIgkJLyogaGV4IDMy
-IG9uZSBiaXRzICovCisKKyNlbHNlCisKKyNkZWZpbmUgUFRSX1dJRFRIIDgKKyNkZWZpbmUgUFRS
-ICgodm9pZCAqKTB4NDU2Nzg5YWIpCisjZGVmaW5lIFBUUl9TVFIgIjQ1Njc4OWFiIgorI2RlZmlu
-ZSBQVFJfVkFMX05PX0NSTkcgIihwdHJ2YWwpIgorI2RlZmluZSBaRVJPUyAiIgorI2RlZmluZSBP
-TkVTICIiCisKKyNlbmRpZgkvKiBCSVRTX1BFUl9MT05HID09IDY0ICovCisKKy8qCisgKiBOVUxM
-IHBvaW50ZXJzIGFyZW4ndCBoYXNoZWQuCisgKi8KK3N0YXRpYyB2b2lkIF9faW5pdAorbnVsbF9w
-b2ludGVyKHZvaWQpCit7CisJdGVzdChaRVJPUyAiMDAwMDAwMDAiLCAiJXAiLCBOVUxMKTsKKwl0
-ZXN0KFpFUk9TICIwMDAwMDAwMCIsICIlcHgiLCBOVUxMKTsKK30KKworLyoKKyAqIEVycm9yIHBv
-aW50ZXJzIGFyZW4ndCBoYXNoZWQuCisgKi8KK3N0YXRpYyB2b2lkIF9faW5pdAorZXJyb3JfcG9p
-bnRlcih2b2lkKQoreworCXRlc3QoT05FUyAiZmZmZmZmZjUiLCAiJXAiLCBFUlJfUFRSKC0xMSkp
-OworCXRlc3QoT05FUyAiZmZmZmZmZjUiLCAiJXB4IiwgRVJSX1BUUigtMTEpKTsKK30KKworI2Rl
-ZmluZSBQVFJfSU5WQUxJRCAoKHZvaWQgKikweDAwMDAwMGFiKQorCitzdGF0aWMgdm9pZCBfX2lu
-aXQKK2ludmFsaWRfcG9pbnRlcih2b2lkKQoreworCXRlc3QoWkVST1MgIjAwMDAwMGFiIiwgIiVw
-eCIsIFBUUl9JTlZBTElEKTsKK30KKworc3RhdGljIHZvaWQgX19pbml0CitpcDQodm9pZCkKK3sK
-KwlJUGFkZHJfdCBpcCA9IGNwdV90b19iZTMyKDB4N2YwMDAwMDEpOworCisJdGVzdCgiMTI3LjAu
-MC4xIiwgIiVwSTQiLCAmaXApOworfQorCitzdGF0aWMgdm9pZCBfX2luaXQKK2lwKHZvaWQpCit7
-CisJaXA0KCk7Cit9CisKK3N0YXRpYyB2b2lkIF9faW5pdAordXVpZCh2b2lkKQoreworCWNvbnN0
-IGNoYXIgdXVpZFsxNl0gPSB7MHgwLCAweDEsIDB4MiwgMHgzLCAweDQsIDB4NSwgMHg2LCAweDcs
-CisJCQkgICAgICAgMHg4LCAweDksIDB4YSwgMHhiLCAweGMsIDB4ZCwgMHhlLCAweGZ9OworCisJ
-aWYgKCFJU19FTkFCTEVEKENPTkZJR19QUklOVEZfVVVJRCkpCisJCXJldHVybjsKKworCXRlc3Qo
-IjAwMDEwMjAzLTA0MDUtMDYwNy0wODA5LTBhMGIwYzBkMGUwZiIsICIlcFViIiwgdXVpZCk7CisJ
-dGVzdCgiMDAwMTAyMDMtMDQwNS0wNjA3LTA4MDktMEEwQjBDMEQwRTBGIiwgIiVwVUIiLCB1dWlk
-KTsKKwl0ZXN0KCIwMzAyMDEwMC0wNTA0LTA3MDYtMDgwOS0wYTBiMGMwZDBlMGYiLCAiJXBVbCIs
-IHV1aWQpOworCXRlc3QoIjAzMDIwMTAwLTA1MDQtMDcwNi0wODA5LTBBMEIwQzBEMEUwRiIsICIl
-cFVMIiwgdXVpZCk7Cit9CisKK3N0YXRpYyB2b2lkIF9faW5pdAorZXJycHRyKHZvaWQpCit7CisJ
-dGVzdCgiZXJyb3IgMTIzNCIsICIlcGUiLCBFUlJfUFRSKC0xMjM0KSk7CisJdGVzdChzaXplb2Yo
-dm9pZCAqKSA9PSA4ID8gIjAwMDAwMDAwMDAwMDA0ZDIiIDogIjAwMDAwNGQyIiwgIiVwZSIsIEVS
-Ul9QVFIoMTIzNCkpOworCisJLyogQ2hlY2sgdGhhdCAlcGUgd2l0aCBhIG5vbi1FUlJfUFRSIGdl
-dHMgdHJlYXRlZCBhcyBvcmRpbmFyeSAlcC4gKi8KKwlCVUlMRF9CVUdfT04oSVNfRVJSKFBUUikp
-OworCisJaWYgKCFJU19FTkFCTEVEKENPTkZJR19FUlJOT19NRVNTQUdFUykpCisJCXJldHVybjsK
-Kwl0ZXN0KCIoT3BlcmF0aW9uIG5vdCBwZXJtaXR0ZWQpIiwgIiglcGUpIiwgRVJSX1BUUigtRVBF
-Uk0pKTsKKwl0ZXN0KCJSZXF1ZXN0ZWQgcHJvYmUgZGVmZXJyYWwiLCAiJXBlIiwgRVJSX1BUUigt
-RVBST0JFX0RFRkVSKSk7Cit9CisKK3N0YXRpYyB2b2lkIF9faW5pdAordGVzdF9wb2ludGVyKHZv
-aWQpCit7CisJbnVsbF9wb2ludGVyKCk7CisJZXJyb3JfcG9pbnRlcigpOworCWludmFsaWRfcG9p
-bnRlcigpOworCWlwKCk7CisJdXVpZCgpOworCWVycnB0cigpOworfQorCitzdGF0aWMgdm9pZCBf
-X2luaXQgdGVzdF9wcmludGYodm9pZCkKK3sKKwlhbGxvY2VkX2J1ZmZlciA9IG1hbGxvYyhCVUZf
-U0laRSArIDIqUEFEX1NJWkUpOworCWlmICghYWxsb2NlZF9idWZmZXIpCisJCXJldHVybjsKKwl0
-ZXN0X2J1ZmZlciA9IGFsbG9jZWRfYnVmZmVyICsgUEFEX1NJWkU7CisKKwl0ZXN0X2Jhc2ljKCk7
-CisJdGVzdF9udW1iZXIoKTsKKwl0ZXN0X3N0cmluZygpOworCXRlc3RfcG9pbnRlcigpOworCisJ
-ZnJlZShhbGxvY2VkX2J1ZmZlcik7Cit9CisKK2JzZWxmdGVzdChjb3JlLCB0ZXN0X3ByaW50Zik7
-CitNT0RVTEVfQVVUSE9SKCJSYXNtdXMgVmlsbGVtb2VzIDxsaW51eEByYXNtdXN2aWxsZW1vZXMu
-ZGs+Iik7CitNT0RVTEVfTElDRU5TRSgiR1BMIik7Ci0tIAoyLjI5LjIKCgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
-YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This script is a wrapper around tuxmake, qemu-system-* and labgrid-pytest.
+
+It parses the same YAML files, labgrid-pytest uses and instructs
+tuxmake to build and collect the needed images.
+
+By default, it will start an interactive emulator session, but with
+--test, it can also run labgrid-pytest instead.
+
+The script has some knowledge of QEMU options to make common tasks like
+passing images straight-forward.
+
+Script is written with both manual use and CI in mind.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/boards/emulated.rst |  70 +++++
+ Makefile                          |   1 +
+ test/emulate.pl                   | 483 ++++++++++++++++++++++++++++++
+ test/kconfig/base.cfg             |   0
+ test/kconfig/full.cfg             |   0
+ 5 files changed, 554 insertions(+)
+ create mode 100644 Documentation/boards/emulated.rst
+ create mode 100755 test/emulate.pl
+ create mode 100644 test/kconfig/base.cfg
+ create mode 100644 test/kconfig/full.cfg
+
+diff --git a/Documentation/boards/emulated.rst b/Documentation/boards/emulated.rst
+new file mode 100644
+index 000000000000..0f6c7dcbbc7b
+--- /dev/null
++++ b/Documentation/boards/emulated.rst
+@@ -0,0 +1,70 @@
++Emulated targets
++================
++
++Some targets barebox runs on are virtualized by emulators like QEMU, which
++allows basic testing of barebox functionality without the actual hardware.
++
++Generic DT image
++----------------
++
++Supported for ARM and RISC-V. It generates a barebox image that can
++be booted with the Linux kernel booting convention, which makes
++it suitable to be passed as argument to the QEMU ``-kernel`` option.
++The device tree is either the QEMU internal device tree or a device
++tree supplied by QEMU's ``-dtb`` option. The former can be very useful
++with :ref:`virtio_sect`, because QEMU will fix up the virtio mmio
++regions into the device tree and barebox will discover the devices
++automatically, analogously to what it does with VirtIO over PCI.
++
++test/emulate.pl
++---------------
++
++The ``emulate.pl`` script shipped with barebox can be used to easily
++start VMs. It reads a number of YAML files in ``test/``, which describe
++some virtualized targets that barebox is known to run on.
++Controlled by command line options, these targets are built with
++tuxmake if available and loaded into the emulator for either interactive
++use or for automated testing with Labgrid ``QEMUDriver``.
++
++.. _tuxmake: https://pypi.org/project/tuxmake/
++.. _Labgrid: https://labgrid.org
++
++Install dependencies for interactive use::
++
++  cpan YAML::Tiny # or use e.g. libyaml-tiny-perl on debian
++  pip3 install tuxmake # optional
++
++Example usage::
++
++  # Switch to barebox source directory
++  cd barebox
++
++  # emulate ARM virt with an image built by vexpress_defconfig
++  ARCH=arm ./test/emulate.pl virt@vexpress_defconfig
++
++  # build all MIPS targets known to emulate.pl and exit
++  ARCH=mips ./test/emulate.pl --no-emulate
++
++The script can also be used from a finished barebox build directory::
++
++  # Switch to build directory
++  cd build
++
++  # run a barebox image built outside tuxmake with an emulated vexpress-ca15
++  ARCH=x86 ./test/emulate.pl efi_defconfig --no-tuxmake
++
++  # run tests instead of starting emulator interactively
++  ARCH=x86 ./test/emulate.pl efi_defconfig --no-tuxmake --test
++
++``emulate.pl`` also has some knowledge on paravirtualized devices::
++
++  # Run target and pass a block device (here /dev/virtioblk0)
++  ARCH=riscv ./test/emulate.pl --blk=rootfs.ext4 virt64_defconfig
++
++``emulate.pl`` if needed command line options can be passed directly
++to the emulator/``labgrid-pytest`` as well by placing them behind ``--``::
++
++  # appends -device ? to the command line. Add -n to see the final result
++  ARCH=riscv ./test/emulate.pl virt64_defconfig -- -device ?
++
++For a complete listing of options run ``./test/emulate.pl -h``.
+diff --git a/Makefile b/Makefile
+index 7db7cb7b4a3a..d65986f8693f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1283,6 +1283,7 @@ ifdef building_out_of_srctree
+ 	@ln -fsn $(abspath $(srctree)/test/py) $(objtree)/test/
+ 	@ln -fsn $(abspath $(srctree)/test/conftest.py) $(objtree)/test/
+ 	@ln -fsn $(abspath $(srctree)/test/__init__.py) $(objtree)/test/
++	@ln -fsn $(abspath $(srctree)/test/emulate.pl) $(objtree)/test/
+ endif
+ 
+ all: symlink_tests
+diff --git a/test/emulate.pl b/test/emulate.pl
+new file mode 100755
+index 000000000000..cf1d2c57c590
+--- /dev/null
++++ b/test/emulate.pl
+@@ -0,0 +1,483 @@
++#!/usr/bin/env perl
++# SPDX-License-Identifier: GPL-2.0
++# Copyright (c) 2021 Ahmad Fatoum
++
++use strict;
++use warnings;
++
++use Cwd;
++use File::Basename;
++use File::Spec;
++use File::Temp 'tempdir';
++use Getopt::Long;
++use List::Util 'first';
++use Pod::Usage;
++use YAML::Tiny;
++
++my @QEMU_INTERACTIVE_OPTS = qw(-serial mon:stdio -trace file=/dev/null);
++
++my %targets;
++
++for my $arch (glob dirname(__FILE__) . "/*/") {
++    for my $cfg (glob "$arch/*.yaml") {
++	my $linkdest = readlink $cfg // '';
++
++	my $yaml = YAML::Tiny->read($cfg);
++
++	defined $yaml && exists $yaml->[0]{targets} && exists $yaml->[0]{targets}{main}
++	    or die "Invalid structure for $cfg\n";
++
++	my $path = File::Spec->abs2rel($cfg, getcwd);
++	$cfg = basename($cfg);
++	$cfg =~ s/\.yaml$//;
++	$linkdest =~ s{^.*?([^/]+)\.yaml$}{$1};
++
++	$targets{basename $arch}{$cfg} = $yaml->[0]{targets}{main};
++	$targets{basename $arch}{$cfg}{path} = $path;
++	$targets{basename $arch}{$cfg}{tools} = $yaml->[0]{tools};
++	$targets{basename $arch}{$cfg}{images} = $yaml->[0]{images};
++	$targets{basename $arch}{$cfg}{alias} = $linkdest if $linkdest && $linkdest ne $cfg;
++    }
++}
++
++my %arch_aliases = (arm64 => 'arm', x86_64 => 'x86', i386 => 'x86', um => 'sandbox');
++
++my ($dryrun, $help, @blks, $rng, $list, $shell, $runtime, @kconfig_add, $artifacts);
++my ($tuxmake, $emulate, $clean, $extraconsoles, $test) = (1, 1, 1, 0, 0);
++my ($kconfig_base, $kconfig_full) = (1, 0);
++
++my @OPTS;
++
++if (defined (my $idx = first { $ARGV[$_] eq '--' } 0 .. @ARGV - 1)) {
++    @OPTS = splice @ARGV, 1 + $idx;
++}
++
++GetOptions(
++	'help|?|h' => \$help,
++	'dryrun|n' => \$dryrun,
++	'list|l' => \$list,
++	'tuxmake!' => \$tuxmake,
++	'artifacts=s' => \$artifacts,
++	'runtime=s' => \$runtime,
++	'blk=s@' => \@blks,
++	'console+' => \$extraconsoles,
++	'rng' => \$rng,
++	'emulate!' => \$emulate,
++	'clean!' => \$clean,
++	'shell' => \$shell,
++	'kconfig-base!' => \$kconfig_base,
++	'kconfig-full!' => \$kconfig_full,
++	'kconfig-add|K=s@' => \@kconfig_add,
++	'test' => \$test,
++) or pod2usage(2);
++pod2usage(1) if $help;
++
++my @ARCH = split /\s/, $ENV{ARCH} // '';
++@ARCH = @ARCH ? @ARCH : keys %targets;
++
++my $success = 0;
++
++for my $arch (@ARCH) {
++	my @targets = @ARGV ? @ARGV : keys %{$targets{$arch}};
++	@targets != 1 && !$tuxmake
++		and die "can't use --no-tuxmake with more than one config\n";
++
++	unless (defined $targets{$arch}) {
++		die "Unknown ARCH=$arch. Supported values:\n",
++		join(', ', keys %targets), "\n";
++	}
++
++	for my $config (@targets) {
++	        $arch = $arch_aliases{$arch} // $arch;
++
++		unless (defined $targets{$arch}{$config}) {
++		    next;
++		}
++
++		if ($list) {
++		    print "ARCH=$arch $config\n";
++		    $success += 1;
++		    next;
++		}
++
++		if (defined $targets{$arch}{$config}{alias}) {
++		    next if grep { /^$targets{$arch}{$config}{alias}$/ } @targets;
++		    $config = $targets{$arch}{$config}{alias};
++		    redo;
++		}
++
++		print "# $config\n" if $dryrun;
++		$success += process($arch, $config);
++	}
++}
++
++$success > 0
++	or die "No suitable config found. $0 -l to list all built-in.\n";
++
++sub process {
++	my ($ARCH, $defconfig, %keys) = @_;
++	my $target = $targets{$ARCH}{$defconfig};
++
++	if (!exists ($target->{runner}{tuxmake_arch})) {
++	    $target->{runner}{tuxmake_arch} = $ARCH;
++	}
++
++	my $dir;
++
++	$dir = tempdir("bareboxbuild-XXXXXXXXXX", TMPDIR => 1, CLEANUP => $clean);
++	report('mkdir', $dir);
++
++	my %opts = (
++	    target => $target, builddir => $tuxmake ? $dir : getcwd,
++	    defconfig => $defconfig,
++	    extra_opts => [map { s/\{config\}/$defconfig/gr  } @OPTS],
++	);
++
++	build(%opts) if $tuxmake;
++
++	while (my ($k, $v) = each %{$target->{runner}{download}}) {
++	    if ($v =~ m{^[/.]}) {
++		symlink_force($v, "$dir/$k");
++	    } else {
++		vsystem('curl', '-L', '--create-dirs', '-o', "$dir/$k", $v) == 0
++		    or die "Failed to download resource `$v': $?\n";
++	    }
++
++	    symlink_force("$dir/$k", "$k") unless $tuxmake;
++	}
++
++	if ($shell) {
++		pushd($dir);
++		system($ENV{SHELL} // "/bin/sh");
++		popd();
++	}
++
++	return 1 unless $emulate;
++
++	pushd($dir) if $tuxmake;
++
++	my $success = $test ? test(%opts) : emulate(%opts);
++
++	if ($tuxmake) {
++	    popd();
++
++	    report("rm", "-rd", $dir) if $clean;
++	}
++	print "\n\n" if $dryrun;
++	return $success;
++}
++
++sub build {
++    my %args = @_;
++    my ($runner, $dir) = ($args{target}{runner}, $args{builddir});
++
++    $args{defconfig} =~ s/[^@]+@//g;
++
++    my @TUXMAKE_ARGS = ('-a', $runner->{tuxmake_arch}, '-k', $args{defconfig});
++
++    if (defined $runner->{kconfig_add}) {
++	for my $cfg (@{$runner->{kconfig_add}}) {
++	    push @TUXMAKE_ARGS, "--kconfig-add=$cfg"
++	}
++    }
++
++    push @TUXMAKE_ARGS, "--kconfig-add=test/kconfig/base.cfg" if $kconfig_base || $kconfig_full;
++    push @TUXMAKE_ARGS, "--kconfig-add=test/kconfig/full.cfg" if $kconfig_full;
++
++    for (@kconfig_add) {
++	push @TUXMAKE_ARGS, "--kconfig-add=$_";
++    }
++
++    push @TUXMAKE_ARGS, "--runtime=$runtime" if $runtime;
++
++    vsystem('tuxmake', @TUXMAKE_ARGS, '-b', $dir, '-o',
++	$artifacts // "$dir/artifacts", 'default') == 0
++	or die "Error building: $?\n";
++}
++
++sub emulate {
++    my %args = @_;
++    my %target = %{$args{target}};
++    my @OPTS = @{$args{extra_opts}};
++
++    if (defined $target{drivers}{QEMUDriver}) {
++	    my %qemu = %{$target{drivers}{QEMUDriver}};
++	    my ($kernel, $bios, $dtb);
++	    my $qemu_virtio;
++	    my $i;
++
++	    $kernel = abs_configpath($qemu{kernel}, $args{target});
++	    $bios   = abs_configpath($qemu{bios},   $args{target});
++	    $dtb    = abs_configpath($qemu{dtb},    $args{target});
++
++	    my @cmdline = ($target{tools}{$qemu{qemu_bin}},
++		'-M', $qemu{machine}, '-cpu', $qemu{cpu}, '-m', $qemu{memory});
++
++	    push @cmdline, '-kernel', $kernel if defined $kernel;
++	    push @cmdline, '-bios', $bios if defined $bios;
++	    push @cmdline, '-dtb',  $dtb if defined $dtb;
++
++	    push @cmdline, @QEMU_INTERACTIVE_OPTS;
++	    for (split /\s/, $qemu{extra_args}) {
++		push @cmdline, $_;
++	    }
++
++	    if (has_feature(\%target, 'virtio-pci')) {
++		    $qemu_virtio = 'pci,disable-legacy=on,disable-modern=off';
++		    push @{$target{features}}, 'pci';
++		    push @{$target{features}}, 'virtio';
++	    } elsif (has_feature(\%target, 'virtio-mmio')) {
++		    $qemu_virtio = 'device';
++		    push @{$target{features}}, 'virtio';
++	    }
++
++	    $i = 0;
++	    for my $blk (@blks) {
++		if (has_feature(\%target, 'virtio')) {
++		    $blk = rel2abs($blk, getcwd);
++		    push @cmdline,
++		    '-drive', "if=none,file=$blk,format=raw,id=hd$i",
++		    '-device', "virtio-blk-$qemu_virtio,drive=hd$i";
++		} else {
++		    die "--blk unsupported for target\n";
++		}
++	    }
++
++	    # note that barebox doesn't yet support multiple virtio consoles
++	    if ($extraconsoles) {
++		$i = 0;
++
++		if (defined $qemu_virtio) {
++		    push @cmdline,
++		    '-device', "virtio-serial-$qemu_virtio",
++		    '-chardev', "pty,id=virtcon$i",
++		    '-device', "virtconsole,chardev=virtcon$i,name=console.virtcon$i";
++
++		    $i++;
++		}
++
++		if ($i < $extraconsoles) {
++		    # ns16550 serial driver only works with x86 so far
++		    if (has_feature(\%target, 'pci')) {
++			for (; $i < $extraconsoles; $i++) {
++			    push @cmdline,
++			    '-chardev', "pty,id=pcicon$i",
++			    '-device', "pci-serial,chardev=pcicon$i";
++			}
++		    } else {
++			warn "barebox currently supports only a single extra virtio console\n";
++		    }
++		}
++	    }
++
++	    if (defined $rng) {
++		if (has_feature(\%target, 'virtio')) {
++		    push @cmdline, '-device', "virtio-rng-$qemu_virtio";
++		} else {
++		    die "--rng unsupported for target\n";
++		}
++	    }
++
++	    vsystem(@cmdline, @OPTS) == 0 or die "Error running emulator: $?\n";
++
++    } elsif (defined $target{drivers}{TinyEMUDriver}) {
++	    my %temu = %{$target{drivers}{TinyEMUDriver}};
++	    my $TEMU_CFG;
++	    my $i = 0;
++
++	    if (exists $temu{config}) {
++		$temu{config} = rel2abs($temu{config}, getcwd . "/source/");
++		open(my $fh, '<', "$temu{config}")
++		    or die "Could not open file '$temu{config}': $!";
++		$TEMU_CFG = do { local $/; <$fh> };
++	    }
++
++	    print ("$temu{config}\n");
++
++	    defined $TEMU_CFG or die "Unknown tinyemu-config\n";
++
++	    open(my $fh, '>', "tinyemu.cfg")
++		or die "Could not create file 'tinyemu.cfg': $!";
++	    print $fh $TEMU_CFG;
++	    print "cat >'tinyemu.cfg' <<EOF\n$TEMU_CFG\nEOF\n" if $dryrun;
++
++	    for my $blk (@blks) {
++		$blk = rel2abs($blk, getcwd);
++		$TEMU_CFG =~ s[\}(?!.*\})][drive$i: { file: "$blk" },\n}]ms
++	    }
++
++	    die "--console unsupported for target\n" if $extraconsoles;
++	    die "--rng unsupported for target\n" if defined $rng;
++
++	    vsystem($temu{temu_bin}, "tinyemu.cfg", @OPTS) == 0
++		or die "Error running emulator: $?\n";
++    } elsif (defined $target{drivers}{NativeExecutableDriver}) {
++	    my %exec = %{$target{drivers}{NativeExecutableDriver}};
++	    vsystem($exec{command}, @OPTS) == 0 or die "Error running emulator: $?\n";
++    }
++
++    return 1;
++}
++
++sub test {
++    my %args = @_;
++    my @OPTS = @{$args{extra_opts}};
++
++    unless (defined $args{target}{drivers}{QEMUDriver}) {
++	warn "$args{target}{path}: Skippig test, no QEMUDriver\n";
++	return 0;
++    }
++
++    vsystem('labgrid-pytest', '--lg-env', "$args{target}{path}", "test/py",
++	'--lg-log', @OPTS) == 0 or die "Error running 'labgrid-pytest': $?\n";
++
++    return 1;
++}
++
++sub has_feature {
++    defined first { lc($_) eq $_[1] } @{$_[0]->{features}}
++}
++
++sub report {
++    print join(' ', map { /\s/ ? "'$_'" : $_  } @_), "\n" if $dryrun;
++    0;
++}
++
++sub vsystem {
++    if ($dryrun) {
++	return report(@_);
++    } else {
++	my $ret = system @_;
++	warn "vsystem: $!\n" if $ret == -1;
++	return $ret >> 8;
++    }
++}
++
++sub rel2abs {
++    File::Spec->rel2abs(@_)
++}
++
++sub abs_configpath {
++    my ($path, $target) = @_;
++
++    return unless defined $path;
++    $path = $target->{images}{$path};
++    return unless defined $path;
++
++    return File::Spec->rel2abs($path, dirname $target->{path});
++}
++
++sub symlink_force {
++    unlink($_[1]);
++    symlink($_[0], $_[1]);
++}
++
++my @oldcwd;
++
++sub pushd {
++	my ($old, $new) = (getcwd, shift);
++	report ("pushd", $new);
++	push @oldcwd, $old;
++	chdir $new;
++	return $old;
++};
++
++sub popd {
++	report("popd");
++	chdir pop(@oldcwd)
++};
++
++__END__
++
++=head1 NAME
++
++emulate.pl - Build and run barebox under an emulator
++
++=head1 SYNOPSIS
++
++[ARCH=arch] emulate.pl [options] [defconfigs...] [--] [qemu/pytest-opts]
++
++=head1 OPTIONS
++
++Must be run from either barebox source or build directory.
++
++=over 8
++
++=item B<-?>, B<-h>, B<--help>
++
++Print a help message and exits
++
++=item B<-n>, B<--dryrun>
++
++Print commands and exit
++
++=item B<-l>, B<--list>
++
++Filter input with list of known targets
++
++=item B<--no-tuxmake>
++
++Don't rerun tuxkmake. Assumes current working directory is finished build directory
++
++=item B<--artifacts>=%s
++
++Destination directory for the tuxmake artifacts. By default, this is
++the artifacts/ subdirectory in the temporary build directory and is
++not persisted (unless --no-clean is specified).
++
++=item B<--blk>=%s
++
++Pass block device to emulated barebox. Can be specified more than once
++
++=item B<--console>
++
++Pass one Virt I/O console to emulated barebox.
++
++=item B<--rng>
++
++instantiate Virt I/O random number generator
++
++=item B<--no-emulate>
++
++Don't emulate anything and exit directly after build
++
++=item B<--no-clean>
++
++Don't delete temporary working directory after
++
++=item B<--shell>
++
++Open shell in temporary working directory, after build, but before emulation
++
++=item B<--test>
++
++Instead of starting emulator interactively, run it under labgrid-pytest with
++the in-tree python tests.
++
++=item B<--runtime>=%s
++
++Runtime to use for the tuxmake builds. By default, builds are
++run natively on the build host.
++Supported: null, podman-local, podman, docker, docker-local.
++
++=item B<--no-kconfig-base>
++
++Don't apply test/kconfig/base.cfg. This may lead to more tests being
++skipped.
++
++=item B<--kconfig-full>
++
++Applies test/kconfig/full.cfg on top of base.cfg. This enables as much as
++possible to avoid skipping tests for disabled functionality.
++
++=item B<--kconfig_add>=%s, B<-K>=%s
++
++Extra kconfig fragments, merged on top of the defconfig and Kconfig
++fragments described by the YAML. In tree configuration fragment
++(e.g. `test/kconfig/virtio-pci.config`), path to local file, URL,
++`CONFIG_*=[y|m|n]`, or `# CONFIG_* is not set` are supported.
++Can be specified multiple times, and will be merged in the order given.
++
++=back
++
++=cut
+diff --git a/test/kconfig/base.cfg b/test/kconfig/base.cfg
+new file mode 100644
+index 000000000000..e69de29bb2d1
+diff --git a/test/kconfig/full.cfg b/test/kconfig/full.cfg
+new file mode 100644
+index 000000000000..e69de29bb2d1
+-- 
+2.29.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
