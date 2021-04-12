@@ -1,91 +1,88 @@
-Delivery-date: Mon, 12 Apr 2021 14:11:32 +0200
+Delivery-date: Mon, 12 Apr 2021 14:16:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVvPg-0005Ae-A9
-	for lore@lore.pengutronix.de; Mon, 12 Apr 2021 14:11:32 +0200
+	id 1lVvUC-0005B9-Cg
+	for lore@lore.pengutronix.de; Mon, 12 Apr 2021 14:16:12 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVvPf-0003BX-DW
-	for lore@pengutronix.de; Mon, 12 Apr 2021 14:11:32 +0200
+	id 1lVvUB-0003nx-9k
+	for lore@pengutronix.de; Mon, 12 Apr 2021 14:16:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:
 	References:MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=Hy9yz2gqWk4h0yssFJPbt6e93RSBL8FQuaG4bBKtGVY=; b=S8go6ikj7ArWFqUrY1YRBStI1
-	dSoedxLrVkhO0NzpQqprAsSaKy4B5q2bEFW67x6Q/Bzh1RPYYHxuzK1RHH7VllcR2p0NwLCF8vuYF
-	IdPTHPKMmMigtzQAH1J2rd5XK2yQ8OWI6Ki4aej+EC6vIGjHAejcLX5YGCQDoPAHaJX+ettpx29tQ
-	pQGtnRGlrKlCjb9MBq4E47IJQAMrYxm8Hpuq07uNCQUFw6W4lyVreU47Cf/psQ3CwX/FQYoOZDaZd
-	OoBXzBVOwm3a5dFr/+D3aL0KB1EeZ0mgzbn4u3kRsociws2OLzTo4CR1LNav4bA1RKBKjrP5Mp+9W
-	ldvlYYPJg==;
+	 bh=pTfSsqirvXNn2d1o+g9QpiQM3oj6fLuHvrUCO4jBzBs=; b=iSRAk8ysDTC3bMJzMwa82oR8q
+	9x0GaZ5LWKgmpSmEsXtuJnl3gBBY+DkXlQzmySZ0JhrXb6Md7lx3Z4hS51ZJKJcxN3Rm02iN+cfCk
+	GP7kU6D374DeRh1+hfzLp+zBFu4TPsMA+ia+dhpFauTE0Qz3i8CCi9fgdSeRVKmT1nexuuPzSZVoI
+	cUqW552QqN9Mm9NP74xtML5uWcOLZbMkauM/42cjVD2pYVNvArdZRIKj1QdU19ulrk2PseFLpeCkz
+	aOL7ilSvqnFmq0+r51cIDoYlpS8o6pa9SWbTsQYCaUNe8XdjBf7rKbMMGHoxnr/hu+X6vm4Wk0Nz3
+	2hXO1w3QA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lVvNb-006e7L-C3; Mon, 12 Apr 2021 12:09:23 +0000
+	id 1lVvSj-006emS-RZ; Mon, 12 Apr 2021 12:14:41 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVvNY-006e7C-5N
- for barebox@desiato.infradead.org; Mon, 12 Apr 2021 12:09:20 +0000
+ id 1lVvSd-006emK-6H
+ for barebox@desiato.infradead.org; Mon, 12 Apr 2021 12:14:35 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Type:Cc:To:Subject:Message-ID
  :Date:From:In-Reply-To:References:MIME-Version:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=7+1Jgsbco8bFXffrYNtqouyfvVL672jIGpetpCjIymI=; b=Xjy4lc7GwMne/Qxw4OuCbkBtZ6
- q8EM4PYZVfukmqc76XmUhnchfwQNrirfvlDl9v+0ORlfCxIRoPbang9RAmCHFFrBb685p5pP9FqxA
- 4Bdc8+q6WMCxRJFtYoyFciH+XMoDdVEravhsXKd0HaNY66FeMOlGTvngtW0h69hclhXY0PE/M8hIW
- 8+xaAiR+WCTOfH3864SBUn/YVwNkxVHHT5yMLFNNh13SyTPjoNjE0SonpLrnnF/YeLelnUXvJznGC
- jXEWDRIZzTJCJqvurHpO2CP6/+fE9TEGXVEVOlxJH5swH9G1/8iOlpMfllGehifjJU4qwu+Cdk9Qq
- dXK+upbQ==;
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+ bh=3aeSpRA2b+SG9NMEJQOi/4ktsUghWrKcKoq05jo0XVw=; b=bN3aIhx8jvr2D0ymV4fi1h5fsO
+ LLmx7ET4h5abm650caQoforWY/eAfwWorIqVdt2IaOBBFAZMtsoxzocCWGUFEJG6J+Or7BunMeSqi
+ 0D/72E3CuQ0l4C7IZwAwaqN2KuV8FQTvUoo+HZVf/vfP4TnfeD8kIEdate+OO6gA2oUbuN8ncIW89
+ 5h8UY/bUM0ZCdA3wlrk1n6z0ruz7gz419zzrYUyjttqXDJ+02Idwc+a+pnSwXjdickDdYhreKvL9p
+ O/T7ErZMoQudTj6fm7jtxqBIWwe84MFWKssE4SgEE5voWMnGx1mFnA3/L+YsPa5GLO6mhnT3NQbCt
+ QkgXIGGQ==;
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVvNV-006Cni-5i
- for barebox@lists.infradead.org; Mon, 12 Apr 2021 12:09:18 +0000
-Received: by mail-ot1-x330.google.com with SMTP id
- k14-20020a9d7dce0000b02901b866632f29so12562220otn.1
- for <barebox@lists.infradead.org>; Mon, 12 Apr 2021 05:09:14 -0700 (PDT)
+ id 1lVvSa-006D5X-6V
+ for barebox@lists.infradead.org; Mon, 12 Apr 2021 12:14:33 +0000
+Received: by mail-oi1-x22c.google.com with SMTP id m13so13152063oiw.13
+ for <barebox@lists.infradead.org>; Mon, 12 Apr 2021 05:14:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=7+1Jgsbco8bFXffrYNtqouyfvVL672jIGpetpCjIymI=;
- b=P8epfj+OmPnRfsyEsLBzvvF5GJb0D0EfjC7zfnan1V139wvogtbDpWyGn/0bzymIOz
- VNA/UluZeqJ85nMBx6JAOhvDw2JfR1L3ATYgoiRheCcuL+6DEfMHipwrCP70QMkkhv9L
- xUI9H0qYqG3ELBWcjL3se/i/jMMZVtzCgLEmcoaq/EoXqSK7vUP5YctSU3WjhjTAKkmB
- RWdg6DluCZrJMjU9XSf0HueqxY2Ao7zR+Wb54XngOMIc0/VuKIM9/Bo28aQI5Z6xWRdA
- u7uUpKaU/f/+J4ryi9VeALde6NgFTkrCPk3PpQgaKvUO+1dvJg/4+atMHnbNcNieUNFA
- WYlQ==
+ :cc; bh=3aeSpRA2b+SG9NMEJQOi/4ktsUghWrKcKoq05jo0XVw=;
+ b=XDyjz668QVj5zs17Eb1noTezZR05VAJPmz6hkDttk5AVHBL910W9anA71yLQyDqo2O
+ wXzvHPKP+5NF4X1M7qI1Kk7j3kvPrs09d5ziJY7ECV0WNiOaYGlWP8fyTQgO0okcvgnf
+ /LLwOzPYDebFFkZDsLTd+7r17zzMa38BPN12WSgi1kOklikA2tbOnUkPNcHk8kj+MyHC
+ skAFq7dEMqtEvFhAvIlPRHpX1x3/aE+i32N5L6ulCvWMsaINLGvIo3KxZR3kqrSSSIDE
+ uKfa4SwhIAxNStSex8UTsMQNoqbFYUMzm/77BcuWf3GmN74eaF8aDKB71ecYs/J+84GT
+ qXig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=7+1Jgsbco8bFXffrYNtqouyfvVL672jIGpetpCjIymI=;
- b=ZRwbqyT7O+JRk+WRcclBmpeBHZA2EaBHRXzcg4g+RDOTTbUyDODLFW7Nk2Kr96kxCz
- 8qBRe751phJCbHWW9nukEhlaFI81oHKocSgOcpvxErP/vuIW53zHiFYUIIwhN18V6tfe
- XzfUksRQAOSao2d+TtDRayILmERZ3E4/coEZCWkY7rm2gm+BCftN013I6db1Edvd2m4R
- zqHZTcAHDKdtopZYSjNLgvlwX+ji3qjvS45EixXjN/dENfD18gBwqPiULqxtDESJAuws
- Mzw8xx8dJ7xFjTJE688Xerc8bty3YrfZehAilwoOsxCPi2XYz1ls5lwWWm8CcdQiEceU
- 5T1A==
-X-Gm-Message-State: AOAM532VrNW65AzN6oHNUtgMeCc2x61xuzKhRpJyDoeqrGjEBiyrH+a/
- omhY8MnGKa5e8ad6SdART45cH3tfHN9oikYDEiI=
-X-Google-Smtp-Source: ABdhPJznYq1KCusZgea9P+7CpBwB8ZB6Zwb8kbfmJNFKUCY5VLeYE69Rth8bZcj6bfoEPMuDbEGEE3n0p6wPekWF+uM=
-X-Received: by 2002:a05:6830:408f:: with SMTP id
- x15mr6799163ott.201.1618229354153; 
- Mon, 12 Apr 2021 05:09:14 -0700 (PDT)
+ bh=3aeSpRA2b+SG9NMEJQOi/4ktsUghWrKcKoq05jo0XVw=;
+ b=CMRSv384bLusv7GqbksNGtJS1gRB52bz2l+WKtpLUNmYMRoFRvlOa8wk3HK5DMhrCA
+ EiM1bhGvyneang+wol/KAR951J/+2oX1kKDSqI10AGM/qDOiKqsqba7EObJJpdiwobj/
+ 3FBklJygBYg5qBULZIQH3JFJJ8uPHehacK+HfLi2RGNVvBCJ2GNv89YNHI6yotOzSHQZ
+ l4KTRSYwepFzT5q5a7YMK0IuzSGQVET+tSoFni4PttXQrCAjnxhINhpeFnCydRJWnnOa
+ jKG+dkMOAufLDj62tr7GTJNuU83voLbDva6ysDH3LQbK9jpYQlfexeBHMpA6YnKEUnR2
+ XvHg==
+X-Gm-Message-State: AOAM532j/hpi1MDWiN6UciNWrj8FTm5hBHtotDGcu8x/Qc7+yjX1sD5m
+ 4GZiZwaVy0vB/TJO7WZ4XohdAkRsE01WgA4cKIlCvAAM2QQ=
+X-Google-Smtp-Source: ABdhPJweg+QT/wPQusxE7nrrwOLRUKIDRWoXzzS+uk7wXxEqDqzMXbpTy/4CG4kIZyA7yZmcii9ROqd6cOUxsSifKvw=
+X-Received: by 2002:aca:37c1:: with SMTP id
+ e184mr13587391oia.136.1618229670831; 
+ Mon, 12 Apr 2021 05:14:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210409132035.197739-1-lapeddk@gmail.com>
- <67622809-1252-bfff-d114-ce11f2c7c7dd@pengutronix.de>
- <CAKd8=GuJnm0Uz7bXOCoy8YhQ_OL_1nB3Cjq_ERrY3Xo=ynhSjw@mail.gmail.com>
- <7551e835-6109-2386-6b4b-7224aae675bb@pengutronix.de>
-In-Reply-To: <7551e835-6109-2386-6b4b-7224aae675bb@pengutronix.de>
+References: <20210410103511.2073504-1-ahmad@a3f.at>
+ <20210410103511.2073504-4-ahmad@a3f.at>
+In-Reply-To: <20210410103511.2073504-4-ahmad@a3f.at>
 From: Lars Pedersen <lapeddk@gmail.com>
-Date: Mon, 12 Apr 2021 14:09:03 +0200
-Message-ID: <CAKd8=GvvoobiudVaRp7qdDU-P4k1herndE-AXoiZkLtoc5R-vw@mail.gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Bruno Thomsen <bruno.thomsen@gmail.com>
+Date: Mon, 12 Apr 2021 14:14:19 +0200
+Message-ID: <CAKd8=GtZKKfQ_DjH8DAoAo85OfHycKVVNKcc1QRgEt95uhgdtg@mail.gmail.com>
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210412_050917_256406_8DE5AA4E 
-X-CRM114-Status: GOOD (  38.73  )
+X-CRM114-CacheID: sfid-20210412_051432_282290_14F81686 
+X-CRM114-Status: GOOD (  27.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -110,124 +107,164 @@ X-Spam-Status: No, score=-2.5 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX: Kamstrup mx7 concentrator board support
+Subject: Re: [PATCH 4/5] power: reset: add GPIO restart driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello again. Thanks for the quick response :)
+On Sat, 10 Apr 2021 at 12:37, Ahmad Fatoum <ahmad@a3f.at> wrote:
+>
+> This is a straight port from Linux v5.11.
+>
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Tested-by: Lars Pedersen <lapeddk@gmail.com>
 
-On Mon, 12 Apr 2021 at 13:24, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->
-> Hello Lars,
->
-> On 12.04.21 12:45, Lars Pedersen wrote:
-> >>> +#define BOARD_RESTART_GPIO IMX_GPIO_NR(7, 12)
-> >>> +#define TPM_RESET_GPIO IMX_GPIO_NR(3, 8)
-> >>> +
-> >>> +static void kamstrup_mx7_tpm_reset(void)
-> >>> +{
-> >>> +     imx7_setup_pad(MX7D_PAD_LCD_DATA03__GPIO3_IO8);
-> >>> +
-> >>> +     gpio_request(TPM_RESET_GPIO, "tpm-reset");
-> >>> +     gpio_direction_output(TPM_RESET_GPIO, 1);
-> >>> +     mdelay(100);
-> >>> +     gpio_set_value(TPM_RESET_GPIO, 0);
-> >>> +     mdelay(100);
-> >>> +     gpio_set_value(TPM_RESET_GPIO, 1);
-> >>> +     gpio_free(TPM_RESET_GPIO);
-> >>
-> >> We are trying to cut down on code that doesn't use the driver model.
-> >> Couldn't this be represented as a gpio-hog in the device tree or
-> >> a reset line for the SPI device?
-> >
-> > I can't find anything in the DT binding for the SPI/TPM driver to use
-> > a reset line.
->
-> Proper way would be for this to be added into Linux then,
-> but that's out of scope for the patch here.
->
-> > Can a DT gpio-hog toggle the pin? Don't you need a
-> > driver for this?
->
-> You can't pulse with a gpio-hog. I assumed the TPM is in reset by
-> default.
->
-> > I see the following options:
-> >
-> > 1) gpio-hog with a label and use new gpiolib in board.c.
-> > 2) gpio-hog and control the pin in a boot script.
->
-> If there's no straight-forward way to do it without board code,
-> it's ok the way it is with one change though: I missed it the first
-> time, but your board breaks multi-image support because you don't
-> check whether the initcall is indeed running on your board (See for
-> example imx_v7_defconfig, which builds over a hundred boards at once).
->
-> Easiest way to get this right is to write a board driver.
-> See arch/arm/boards/lxa-mc1/board.c for an example.
+Tested on imx7-tqma7 platform.
 
-In arch/arm/boards/freescale-mx7-sabresd/board.c they do something like:
-
-if (!of_machine_is_compatible("fsl,imx7d-sdb"))
-  return 0;
-
-Can't I just do the same?
-
-if (!of_machine_is_compatible("kam,imx7d-flex-concentrator-mfg"))
-  return 0;
-
-The board driver in arch/arm/boards/lxa-mc1/board.c seems more complicated.
-
+> ---
+>  drivers/power/reset/Kconfig        |  8 +++
+>  drivers/power/reset/Makefile       |  1 +
+>  drivers/power/reset/gpio-restart.c | 99 ++++++++++++++++++++++++++++++
+>  3 files changed, 108 insertions(+)
+>  create mode 100644 drivers/power/reset/gpio-restart.c
 >
-> >>> +}
-> >>> +
-> >>> +static void __noreturn kamstrup_mx7_board_restart_gpio(struct restart_handler *rst)
-> >>> +{
-> >>> +     imx7_setup_pad(MX7D_PAD_ENET1_TX_CLK__GPIO7_IO12);
-> >>> +
-> >>> +     gpio_direction_output(BOARD_RESTART_GPIO, 0);
-> >>> +     mdelay(1);
-> >>> +     gpio_set_value(BOARD_RESTART_GPIO, 0);
-> >>
-> >> I just sent out a patch[1] with a driver implementing the "gpio-restart" device
-> >> tree binding. Could you test that one and use it here instead?
-> >>
-> >
-> > I have applied the patches on a master branch (Last patch failed to
-> > apply but was only watchdog) and the gpio-restart works perfectly.
->
-> Thanks for testing! You can add your Tested-By on the patch in question
-> if you like.
->
-> >
-> >>> +
-> >>> +     hang();
-> >>> +}
-> >>> +
-> >>> +static int kamstrup_mx7_concentrator_coredevices_init(void)
-> >>> +{
-> >>> +     kamstrup_mx7_tpm_reset();
-> >>> +     restart_handler_register_fn("board", kamstrup_mx7_board_restart_gpio);
-> >>> +     barebox_set_model("Kamstrup OMNIA Concentrator");
-> >>
-> >> The default model name is "Kamstrup OMNIA Flex Concentrator".
-> >> If that's too long, you could override /model in the barebox device tree.
-> >> With the changes suggested above, you could drop board.c then altogether.
-> >>
-> >
-> > I'll move this into the device tree or delete it entirely.
->
-> Great. :-)
->
->
-> Cheers,
-> Ahmad
->
+> diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
+> index cadcc0b13f2f..dec1482ccd0c 100644
+> --- a/drivers/power/reset/Kconfig
+> +++ b/drivers/power/reset/Kconfig
+> @@ -36,3 +36,11 @@ config POWER_RESET_GPIO
+>           This driver supports turning off your board via a GPIO line.
+>           If your board needs a GPIO high/low to power down, say Y and
+>           create a binding in your devicetree.
+> +
+> +config POWER_RESET_GPIO_RESTART
+> +       bool "GPIO restart driver"
+> +       depends on OF_GPIO
+> +       help
+> +         This driver supports restarting your board via a GPIO line.
+> +         If your board needs a GPIO high/low to restart, say Y and
+> +         create a binding in your devicetree.
+> diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
+> index 438c85970028..33d29d2d9546 100644
+> --- a/drivers/power/reset/Makefile
+> +++ b/drivers/power/reset/Makefile
+> @@ -4,3 +4,4 @@ obj-$(CONFIG_SYSCON_REBOOT_MODE) += syscon-reboot-mode.o
+>  obj-$(CONFIG_POWER_RESET_SYSCON) += syscon-reboot.o
+>  obj-$(CONFIG_POWER_RESET_SYSCON_POWEROFF) += syscon-poweroff.o
+>  obj-$(CONFIG_POWER_RESET_GPIO) += gpio-poweroff.o
+> +obj-$(CONFIG_POWER_RESET_GPIO_RESTART) += gpio-restart.o
+> diff --git a/drivers/power/reset/gpio-restart.c b/drivers/power/reset/gpio-restart.c
+> new file mode 100644
+> index 000000000000..72c690a3cf4c
+> --- /dev/null
+> +++ b/drivers/power/reset/gpio-restart.c
+> @@ -0,0 +1,99 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Toggles a GPIO pin to restart a device
+> + *
+> + * Copyright (C) 2014 Google, Inc.
+> + *
+> + * Based on the gpio-poweroff driver.
+> + */
+> +#include <common.h>
+> +#include <driver.h>
+> +#include <restart.h>
+> +#include <gpiod.h>
+> +
+> +struct gpio_restart {
+> +       int reset_gpio;
+> +       struct restart_handler restart_handler;
+> +       u32 active_delay_ms;
+> +       u32 inactive_delay_ms;
+> +       u32 wait_delay_ms;
+> +};
+> +
+> +static void __noreturn gpio_restart_handle(struct restart_handler *this)
+> +{
+> +       struct gpio_restart *gpio_restart =
+> +               container_of(this, struct gpio_restart, restart_handler);
+> +
+> +       /* drive it active, also inactive->active edge */
+> +       gpio_direction_active(gpio_restart->reset_gpio, true);
+> +       mdelay(gpio_restart->active_delay_ms);
+> +
+> +       /* drive inactive, also active->inactive edge */
+> +       gpio_set_active(gpio_restart->reset_gpio, false);
+> +       mdelay(gpio_restart->inactive_delay_ms);
+> +
+> +       /* drive it active, also inactive->active edge */
+> +       gpio_set_active(gpio_restart->reset_gpio, true);
+> +
+> +       /* give it some time */
+> +       mdelay(gpio_restart->wait_delay_ms);
+> +
+> +       mdelay(1000);
+> +
+> +       panic("Unable to restart system\n");
+> +}
+> +
+> +static int gpio_restart_probe(struct device_d *dev)
+> +{
+> +       struct device_node *np = dev->device_node;
+> +       struct gpio_restart *gpio_restart;
+> +       bool open_source = false;
+> +       u32 property;
+> +       int ret;
+> +
+> +       gpio_restart = xzalloc(sizeof(*gpio_restart));
+> +
+> +       open_source = of_property_read_bool(np, "open-source");
+> +
+> +       gpio_restart->reset_gpio = gpiod_get(dev, NULL,
+> +                       open_source ? GPIOD_IN : GPIOD_OUT_LOW);
+> +       ret = gpio_restart->reset_gpio;
+> +       if (ret < 0) {
+> +               if (ret != -EPROBE_DEFER)
+> +                       dev_err(dev, "Could not get reset GPIO\n");
+> +               return ret;
+> +       }
+> +
+> +       gpio_restart->restart_handler.restart = gpio_restart_handle;
+> +       gpio_restart->restart_handler.name = "gpio-restart";
+> +       gpio_restart->restart_handler.priority = 129;
+> +       gpio_restart->active_delay_ms = 100;
+> +       gpio_restart->inactive_delay_ms = 100;
+> +       gpio_restart->wait_delay_ms = 3000;
+> +
+> +       ret = of_property_read_u32(dev->device_node, "priority", &property);
+> +       if (!ret)
+> +               gpio_restart->restart_handler.priority = property;
+> +
+> +       of_property_read_u32(np, "active-delay", &gpio_restart->active_delay_ms);
+> +       of_property_read_u32(np, "inactive-delay", &gpio_restart->inactive_delay_ms);
+> +       of_property_read_u32(np, "wait-delay", &gpio_restart->wait_delay_ms);
+> +
+> +       return restart_handler_register(&gpio_restart->restart_handler);
+> +}
+> +
+> +static const struct of_device_id of_gpio_restart_match[] = {
+> +       { .compatible = "gpio-restart", },
+> +       {},
+> +};
+> +
+> +static struct driver_d gpio_restart_driver = {
+> +       .name = "restart-gpio",
+> +       .of_compatible = of_gpio_restart_match,
+> +       .probe = gpio_restart_probe,
+> +};
+> +device_platform_driver(gpio_restart_driver);
+> +
+> +MODULE_AUTHOR("David Riley <davidriley@chromium.org>");
+> +MODULE_DESCRIPTION("GPIO restart driver");
+> +MODULE_LICENSE("GPL");
 > --
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 2.30.0
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
