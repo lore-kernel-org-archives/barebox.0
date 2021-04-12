@@ -1,67 +1,67 @@
-Delivery-date: Mon, 12 Apr 2021 09:18:48 +0200
+Delivery-date: Mon, 12 Apr 2021 09:18:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVqqO-0003fO-Lq
-	for lore@lore.pengutronix.de; Mon, 12 Apr 2021 09:18:48 +0200
+	id 1lVqqR-0003fk-Nh
+	for lore@lore.pengutronix.de; Mon, 12 Apr 2021 09:18:51 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lVqqM-0004oS-Gn
-	for lore@pengutronix.de; Mon, 12 Apr 2021 09:18:48 +0200
+	id 1lVqqO-0004pm-Rb
+	for lore@pengutronix.de; Mon, 12 Apr 2021 09:18:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=NLaGq8ONpY6tjXav0yVrW1mMjy+rt/Di3R7saR4HIVc=; b=jRYwbM2c18Gv4KNS5gKsx8H+0
-	rrq6+HcRhZJvY8+9ECnKHjvmGeMpFSV86CQvdOlNE0ePy7y/0RKVOoxpVUejeDMipoi0U+cRA827+
-	nugppT8Bf25QW71DGQKaywQ9Jy/3NyaBKpsKYd+7Qr7UhlUgauMbX1wL66gQMOcrO1/8PqPf3hhou
-	PoODu4NgrWcIIuzVPyaRntzVe++71UMTl3Ij8GRrZ8WRzPDwla8ZTLabGJS3eLpRMP/QMgNBuNg2y
-	MB0Di+xh81LmOXONFVWeZzlCCkKHpqXu/GmQUMnhAarzKVEsmFhC5wsGIi0W39wIKzCDsf5oEF9/4
-	7o2Fwwj9Q==;
+	 bh=u9wdDODTQmcVyoa1eaRF722Sp7jcfDs4cYZbQkyCI7M=; b=WNhdO6txOmsmePSYZPp1lYJro
+	qI4zJi6lZGJdLwc8ZTph80bYPylXTGz+VlGRCVofvXV1cxzhtQoXZKFCbG5hWI9ldo+OPG84oa7pJ
+	8cr0suKMXVtDCXiye8msmRJAX5nGmtaTv3TyTqOTRnW0Zd+fyLSTww4Lay9+dKsHOmH1CgkgvAffX
+	9F6wiNCp7ifzxIm8Q3twO0Q9O4CQtZYGidxwbG/0b1e+9GeZkHkeCsFHZtJ7g4ZGrc+mY6MQxue6T
+	ta4blnhcQ/f/F6vhtL0IwICzgpsbqqR/wg1Z4RqQWmWtsWVA+1Ga6cyDRoqsIdGs+/ph78Fbhx93k
+	jGTYBQ1lQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lVqpF-005w3E-D0; Mon, 12 Apr 2021 07:17:37 +0000
+	id 1lVqpJ-005w4c-0w; Mon, 12 Apr 2021 07:17:41 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVqoh-005vuL-TV
+ id 1lVqoh-005vuK-Qe
  for barebox@desiato.infradead.org; Mon, 12 Apr 2021 07:17:04 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=9w6pMGVBdzi2c1OKYBqAxnRGrneTX751N1KDBojIaCY=; b=x0IaKpUbd7aTbZqDeEL400URoh
- SjYgFeO/evTwx3F80uJd4Doy/HYoYYG5ROsc9yHu1NYMTq99i/td0CeN4e/1ZHLK7hFqg4YpMzmTL
- skzvZWQqTcnFLQi/eIrdnCvQ2xRc1tuqsmP3+r2+mtX0a+9p/tqSjJwlfR01YDy+Tm0E2Dbo0yqB1
- OJ0TTrcwWt4fs8RuJt6G0Dxi6yZtvYf/pe75TzKEny0lVeZEQ7QfzExarLthHoMf96M8dbF4bPmrI
- LVVEddYJdwGmBIjbVwHWI7u4MjIowy6PmCXvoi80wx+z1+f3tqMwsKkjEuwlPmOIbR4KQsJ7jY/av
- 9fU1uKKQ==;
+ bh=92BTsuqA/dq7qXqIUA1Tnrn1Z/B4ixuXY4s+3Frrukg=; b=dEAgFkwQPMDcuy6TK2kVCU5MRf
+ BJMJbn/mqcNCO15MZLHiWNcDpgCnk0TnG46VIZnyow37pFz2XIRbrpmcaF0wfer3szdvlCrp/YzwJ
+ k0Hnpsr+0/8oEgnfjW//0oVeU0EdYs5TmSRHUSBWFtkSA4RhE+MjUOfdN20V++XXITsM0bjfjFwVG
+ XxcpXbqaBmo2x7NKBcRfDOhUpP7JeSkE+krDzMs3xgLELXjjIVRrE6fczItZeFbybwmuuT9LrUIGy
+ oyBk9tbMjuqOXTyGJO0ZscUPA7R1ShoQo8Rr99ft3Yv58xSnfypan11zDMsqAtLC2chgx59yWTSdl
+ p8ACZ33Q==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lVqod-005vEn-Rz
+ id 1lVqod-005vEr-TQ
  for barebox@lists.infradead.org; Mon, 12 Apr 2021 07:17:02 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lVqoa-0004HT-G3; Mon, 12 Apr 2021 09:16:56 +0200
+ id 1lVqoa-0004HG-Iu; Mon, 12 Apr 2021 09:16:56 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lVqoZ-0002g8-Ea; Mon, 12 Apr 2021 09:16:55 +0200
+ id 1lVqoZ-0002fV-7y; Mon, 12 Apr 2021 09:16:55 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Mon, 12 Apr 2021 09:16:51 +0200
-Message-Id: <20210412071651.8769-18-a.fatoum@pengutronix.de>
+Date: Mon, 12 Apr 2021 09:16:38 +0200
+Message-Id: <20210412071651.8769-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210412071651.8769-1-a.fatoum@pengutronix.de>
 References: <20210412071651.8769-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210412_001659_971859_EBE15F8F 
-X-CRM114-Status: GOOD (  14.08  )
+X-CRM114-CacheID: sfid-20210412_001700_054929_75BADD26 
+X-CRM114-Status: GOOD (  18.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,167 +86,205 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 17/17] [RFC] test: run ./test/emulate.pl in Github action
+Subject: [PATCH 04/17] MIPS: qemu-malta: generate swapped image as part of
+ multi-image build
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-See https://github.com/a3f/barebox/actions for an example how this could
-look like.
+Having to manually swap the words in the MIPS Malta image for QEMU
+little endian emulation is annoying.
 
+Have the multi-image build for Malta generate a second .swapped
+image that can be readily used if needed.
+
+Cc: Antony Pavlov <antonynpavlov@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .github/workflows/build-configs.yaml | 41 ++++++++++++++++
- .github/workflows/vm-tests.yaml      | 71 ++++++++++++++++++++++++++++
- .gitignore                           |  2 +
- test/kconfig/no-deps.cfg             |  3 ++
- 4 files changed, 117 insertions(+)
- create mode 100644 .github/workflows/build-configs.yaml
- create mode 100644 .github/workflows/vm-tests.yaml
- create mode 100644 test/kconfig/no-deps.cfg
+ Documentation/boards/mips/qemu-malta.rst | 16 ++---
+ images/.gitignore                        |  1 +
+ images/Makefile                          |  2 +-
+ images/Makefile.malta                    |  8 ++-
+ scripts/Makefile                         |  1 +
+ scripts/bswap.c                          | 83 ++++++++++++++++++++++++
+ 6 files changed, 97 insertions(+), 14 deletions(-)
+ create mode 100644 scripts/bswap.c
 
-diff --git a/.github/workflows/build-configs.yaml b/.github/workflows/build-configs.yaml
+diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
+index e188ae8c642a..fd37d5edb229 100644
+--- a/Documentation/boards/mips/qemu-malta.rst
++++ b/Documentation/boards/mips/qemu-malta.rst
+@@ -10,31 +10,23 @@ QEMU run string:
+ 
+   qemu-system-mips -nodefaults -M malta -m 256 \
+       -device VGA -serial stdio -monitor null \
+-      -bios barebox-flash-image
++      -bios ./images/barebox-qemu-malta.img
+ 
+ 
+ Little-endian mode
+ ------------------
+ 
+-Running little-endian Malta is a bit tricky.
+ In little-endian mode the 32bit words in the boot flash image are swapped,
+ a neat trick which allows bi-endian firmware.
+ 
+-You have to swap words of ``zbarebox.bin`` image, e.g.:
+-
+-.. code-block:: sh
+-
+-  echo arch/mips/pbl/zbarebox.bin \
+-      | cpio --create \
+-      | cpio --extract --swap --unconditional
+-
+-QEMU run string:
++The barebox build generates a second ``./images/barebox-qemu-malta.img.swapped``
++image that can be used in this case, e.g.:
+ 
+ .. code-block:: sh
+ 
+   qemu-system-mipsel -nodefaults -M malta -m 256 \
+       -device VGA -serial stdio -monitor null \
+-      -bios barebox-flash-image
++      -bios ./images/barebox-qemu-malta.img.swapped
+ 
+ 
+ Using GXemul
+diff --git a/images/.gitignore b/images/.gitignore
+index eafdb44b5bdd..3a9a77dad16e 100644
+--- a/images/.gitignore
++++ b/images/.gitignore
+@@ -32,3 +32,4 @@ barebox.sum
+ *.mvebu1img
+ *.stm32
+ *.nmon
++*.swapped
+diff --git a/images/Makefile b/images/Makefile
+index c185982c17ed..cc330d957597 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -218,5 +218,5 @@ $(flash-list): $(image-y-path)
+ clean-files := *.pbl *.pblb *.map start_*.imximg *.img barebox.z start_*.kwbimg \
+ 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
+ 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
+-	start_*.simximg start_*.usimximg *.zynqimg *.image
++	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped
+ clean-files += pbl.lds
+diff --git a/images/Makefile.malta b/images/Makefile.malta
+index 5739ec464092..ce7b4424b63b 100644
+--- a/images/Makefile.malta
++++ b/images/Makefile.malta
+@@ -1,3 +1,9 @@
++quiet_cmd_bswap32_image = BSWAP4  $@
++      cmd_bswap32_image = scripts/bswap -B 4 $< > $@
++
++$(obj)/%.img.swapped: $(obj)/%.img FORCE
++	$(call if_changed,bswap32_image)
++
+ pblb-$(CONFIG_BOARD_QEMU_MALTA) += start_qemu_malta
+ FILE_barebox-qemu-malta.img = start_qemu_malta.pblb
+-image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img
++image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img barebox-qemu-malta.img.swapped
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 2d322fd1c923..57861fa9b2f8 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -16,6 +16,7 @@ hostprogs-always-$(CONFIG_KALLSYMS)			+= kallsyms
+ hostprogs-always-$(CONFIG_MIPS)				+= mips-relocs
+ hostprogs-always-$(CONFIG_MVEBU_HOSTTOOLS)		+= kwbimage kwboot mvebuimg
+ hostprogs-always-$(CONFIG_ARCH_OMAP)			+= omap_signGP mk-omap-image
++hostprogs-always-$(CONFIG_BOARD_QEMU_MALTA)		+= bswap
+ hostprogs-always-$(CONFIG_ARCH_S5PCxx)			+= s5p_cksum
+ hostprogs-always-$(CONFIG_ARCH_DAVINCI)			+= mkublheader
+ HOSTCFLAGS_zynq_mkimage.o = -I$(srctree) -I$(srctree)/arch/arm/mach-zynq/include
+diff --git a/scripts/bswap.c b/scripts/bswap.c
 new file mode 100644
-index 000000000000..5025c2e04017
+index 000000000000..e87d30cfe51e
 --- /dev/null
-+++ b/.github/workflows/build-configs.yaml
-@@ -0,0 +1,41 @@
-+name: Build Configs
-+on:
-+  push:
++++ b/scripts/bswap.c
+@@ -0,0 +1,83 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-FileCopyrightText: 2012 Jan Luebbe <j.luebbe@pengutronix.de>
 +
-+jobs:
-+  build:
-+    runs-on: ${{ matrix.os }}
-+    strategy:
-+      fail-fast: false
-+      matrix:
-+        os: ['ubuntu-latest' ]
-+        ARCH: [ 'arm', 'mips', 'riscv' ]
-+    name: ARCH=${{ matrix.ARCH }} Build
-+    steps:
-+    - name: Checkout code
-+      uses: actions/checkout@v2
++#define _BSD_SOURCE
++#define _DEFAULT_SOURCE
 +
-+    - name: Setup Environment
-+      run: |
-+        sudo apt-get update -qq
-+        sudo apt-get install -y --no-install-recommends libyaml-tiny-perl \
-+            lzop libusb-1.0-0-dev
-+        pip3 install tuxmake
++#include <stdio.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <stdint.h>
++#include <limits.h>
++#include <errno.h>
++#include <stdlib.h>
++#include <string.h>
++#include <getopt.h>
++#include <endian.h>
 +
-+    - name: Build Configs
-+      run: |
-+        for cfg in arch/${{ matrix.ARCH }}/configs/*_defconfig; do
-+            cfg=$(basename $cfg)
-+            DESTDIR="./artifacts/${{ matrix.ARCH }}-$cfg"
-+            mkdir -p $DESTDIR
-+            tuxmake -a "${{ matrix.ARCH }}" -k $cfg --runtime=podman -o $DESTDIR default \
-+                    --kconfig-add test/kconfig/no-deps.cfg
-+        done
++static void usage(char *prgname)
++{
++	printf("usage: %s [OPTION] FILE > IMAGE\n"
++	       "\n"
++	       "options:\n"
++	       "  -B           number of bytes to swap each time\n",
++	       prgname);
++}
 +
-+    - name: Publish Build Artifacts
-+      uses: actions/upload-artifact@v2
-+      if: always()
-+      with:
-+        name: Build Logs
-+        path: artifacts/
-+        if-no-files-found: error
-diff --git a/.github/workflows/vm-tests.yaml b/.github/workflows/vm-tests.yaml
-new file mode 100644
-index 000000000000..ac74dec5789b
---- /dev/null
-+++ b/.github/workflows/vm-tests.yaml
-@@ -0,0 +1,71 @@
-+name: VM Tests
-+on:
-+  push:
++int main(int argc, char *argv[])
++{
++	FILE *input;
++	int opt;
++	size_t size;
++	unsigned long bytes = 0;
++	uint32_t temp_u32;
 +
-+jobs:
-+  build:
-+    runs-on: ${{ matrix.os }}
-+    strategy:
-+      fail-fast: false
-+      matrix:
-+        os: ['ubuntu-latest' ]
-+        ARCH: [ 'arm', 'mips', 'x86', 'riscv', 'openrisc' ]
-+    name: ARCH=${{ matrix.ARCH }} Test
-+    steps:
-+    - name: Checkout code
-+      uses: actions/checkout@v2
++	while((opt = getopt(argc, argv, "B:")) != -1) {
++		switch (opt) {
++		case 'B':
++			bytes = strtoul(optarg, NULL, 0);
++			break;
++		}
++	}
 +
-+    - name: Setup Environment
-+      run: |
-+        sudo apt-get update -qq
-+        sudo apt-get install -y --no-install-recommends libyaml-tiny-perl \
-+            qemu-system-arm qemu-system-mips qemu-system-x86 qemu-system-common qemu-system-misc
-+        curl --remote-name --location \
-+            http://ftp.us.debian.org/debian/pool/main/e/edk2/ovmf_2020.11-4_all.deb
-+        sudo dpkg -i ovmf_2020.11-4_all.deb
-+        pushd /tmp
-+        git clone --depth 1 https://github.com/labgrid-project/labgrid
-+        pushd labgrid
-+        pip3 install -r requirements.txt
-+        sudo python3 setup.py install
-+        sudo ln -s $(which pytest) /usr/local/bin/labgrid-pytest
-+        #pip3 install tuxmake
-+        popd
-+        git clone --depth 1 https://gitlab.com/a3f/tuxmake
-+        cd tuxmake
-+        python3 -m pip install flit
-+        flit install
-+        popd
-+        sudo apt install lzop
-+        if [ "${{ matrix.ARCH }}" = "openrisc" ]; then
-+            curl --remote-name --location \
-+                https://github.com/stffrdhrn/gcc/releases/download/or1k-10.0.0-20190723/or1k-linux-10.0.0-20190723.tar.xz
-+            pushd /usr/local
-+            sudo tar -xf $OLDPWD/or1k-linux-10.0.0-20190723.tar.xz --strip 1
-+            popd
-+            sudo ln -s /usr/lib/x86_64-linux-gnu/libmpfr.so.6 /usr/lib/x86_64-linux-gnu/libmpfr.so.4
-+        fi
++	if (optind >= argc) {
++		usage(argv[0]);
++		return 1;
++	}
 +
-+    - name: Build and Run Tests
-+      run: |
-+        NAME=${{ matrix.ARCH }}-{config}
-+        OPTS="--kconfig-full --test -- --junitxml=$PWD/$NAME.tests.xml --lg-log=$PWD/log/$NAME"
-+        if [ "${{ matrix.ARCH }}" != "openrisc" ]; then
-+            OPTS="--runtime=podman $OPTS"
-+        fi
++	if (bytes != 4) {
++		fprintf(stderr, "-B %s unsupported\n", optarg);
++		return 1;
++	}
 +
-+        ARCH=${{ matrix.ARCH }} ./test/emulate.pl $OPTS
++	input = fopen(argv[optind], "r");
++	if (input == NULL) {
++		perror("fopen");
++		return 1;
++	}
 +
-+    - name: Publish Test Results
-+      uses: EnricoMi/publish-unit-test-result-action@v1.11
-+      if: always()
-+      with:
-+        files: ./*.tests.xml
++	for (;;) {
++		size = fread(&temp_u32, 1, sizeof(uint32_t), input);
++		if (!size)
++			break;
++		if (size < 4 && !feof(input)) {
++			perror("fread");
++			return 1;
++		}
 +
-+    - name: Publish Labgrid Log Results
-+      uses: actions/upload-artifact@v2
-+      if: always()
-+      with:
-+        name: Console Logs
-+        path: log/
-+        if-no-files-found: error
-diff --git a/.gitignore b/.gitignore
-index d7a37b3c9b39..ee67c725ba34 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -88,3 +88,5 @@ GTAGS
- /allrandom.config
- /allyes.config
- /compile_commands.json
++		temp_u32 = htobe32(le32toh(temp_u32));
++		if (fwrite(&temp_u32, 1, sizeof(uint32_t), stdout) != 4) {
++			perror("fwrite");
++			return 1;
++		}
++	}
 +
-+!.github/
-diff --git a/test/kconfig/no-deps.cfg b/test/kconfig/no-deps.cfg
-new file mode 100644
-index 000000000000..98ffd398decc
---- /dev/null
-+++ b/test/kconfig/no-deps.cfg
-@@ -0,0 +1,3 @@
-+# CONFIG_ARCH_IMX_USBLOADER is not set
-+# CONFIG_OMAP3_USB_LOADER is not set
-+# CONFIG_OMAP4_HOSTTOOL_USBBOOT is not set
++	if (fclose(input) != 0) {
++		perror("fclose");
++		return 1;
++	}
++
++	return 0;
++}
 -- 
 2.29.2
 
