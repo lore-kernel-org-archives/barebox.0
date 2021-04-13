@@ -1,65 +1,79 @@
-Delivery-date: Tue, 13 Apr 2021 11:06:13 +0200
+Delivery-date: Tue, 13 Apr 2021 11:07:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lWEzt-0007Bm-Py
-	for lore@lore.pengutronix.de; Tue, 13 Apr 2021 11:06:13 +0200
+	id 1lWF0z-0007CA-SX
+	for lore@lore.pengutronix.de; Tue, 13 Apr 2021 11:07:21 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lWEzs-0004Je-N6
-	for lore@pengutronix.de; Tue, 13 Apr 2021 11:06:13 +0200
+	id 1lWF0y-0004Ps-Mz
+	for lore@pengutronix.de; Tue, 13 Apr 2021 11:07:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=fc4f8FtjRkBWEEBkLDhVz46+ZofaGpK7/See21neXI0=; b=goRqY5TMpnsXOE
-	VXDk820UntvZ2kD91yqjf1IxtKbaZbBLiyvpq7pTPrngqFfeES8ypBgX2HttDJ1nnsW5W3GyZq1+F
-	bJ8uWpSCGH9ARHlsC2dCVkCOqEEWmP6T3g87yM7xVb0YgLo4zMHlNktAzgnpCIuJWJnf2DG3BWzkZ
-	edi7+ST4k7QgvmTAx8xMJeV01QjE21hj7WM9FYXgKPdihjHOO8cFR/pskBORVsN4rSYJBvsr2Cnbo
-	/EpUC95W5fVqPnN7E0s1YNGMSfWCZPTaWTK2wkDMet8eKmgAsBsKLqxUI+joKP5Ig/QZKmiAe72C+
-	9bhLJgo11CPIQ+kC2LRQ==;
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=PIqXwGqsvAxY/wRMkA0Ju6XwUxfJHaL/VXiWhqvTMWM=; b=J28wwtsS/q0VAEvQb3WswqsQI
+	xctZk30CF/TwdYndfOe9vUGzxFujCtlC23xwg62I2JktAJTMIwWdwl+fbpGlvCcihyt/eoPfsGu+D
+	AQm5DBHV9hZu9n6tJztgpwfRD9AdRKtmByiamxXadUmVnVgNk4GX4++DHbDRQkN1SGW0sZhEXQ1mO
+	+y5QqGvGUDhAGuoSYGmVSKitMb6ccvQ5tqBs4C+aA9TLKxqxDYXuZnLsGO0FlY603qlfygtDS0rz4
+	kKobI7/jhFNyfilUf/wAp5huBFycBYGh08XXZgct5VFsHvNNRpFqrg5LgNyOCGSiNa1l2qqveeThb
+	/2n4wzfvQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lWEyd-008eD4-IO; Tue, 13 Apr 2021 09:04:55 +0000
+	id 1lWEzU-008eTO-NG; Tue, 13 Apr 2021 09:05:51 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lWEx8-008dkZ-IS
- for barebox@desiato.infradead.org; Tue, 13 Apr 2021 09:03:22 +0000
+ id 1lWEzH-008eS6-Um
+ for barebox@desiato.infradead.org; Tue, 13 Apr 2021 09:05:36 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=fqmn288O0wX3+fYKaR9ix4Hjt+y5ZIKiBw8oanksh9M=; b=UYacymDhed0XKpuY/DfovY3oHD
- sLoLbYD6sO6LcKstG1fdZqT6Z9XxxV+QYvAyGeZjMtbOH1/IFRO8R+VcbXLi6gsByH3gmoTRrV9RY
- zL0ARToU5q/yKYeH2dUtY5LPLwhbZ2GW3v9bR98TIh3CisP20Jh2zKiAlTd95awgEdk9Zp9HKKzCo
- lyjZthhG4iDHahNAqGhDK5/C7Hh0+1SeUHrqyMM6YTt5lMBEjC4Dk0Ax5R6ricRj7gEeqP4UscQL3
- HUeOcw0FdLOPY2uejz3ZmqKLGnhH+rFe3pLqBq7t+CecDE1m4gcw4BakcPgrwqJdzZvrPb1lPHo9U
- RqTya2eA==;
+ d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=9pll/CIbq4R2AD1IrzhZ0oyQOTQSeefVvJ8IAsVJhXM=; b=3tWRzk/tq6dHZ3vkK40TBF8TGC
+ b5f+ILTqmfp+JdLt4lykorqmy1Emfd0QDaKZFlhUDDH52rphCRLTNH6jJs63a2Jw9ILLzLxD2WlfE
+ nzkxWmmmrKJhfH3okFzj90NoYNhfcR23hKzjceu0oRLr3irE+V2SEHbj60DxLUYPXNciiPcFtQfPb
+ 7sF9/6CXHaAsJ+jFmjzfH1VL4+F37NqpWczeIYow7HlJDIBoHaXBNmB/O3gde6bkbsiRJb47wOzGi
+ 1/DvSerkPqdAlErzZ6AQ6sgWnQyWtDCaTa3oDoUWPOZ1xjEMZJw/kNXb0OYsx38a/70u9aClZeuOg
+ 9RZLDDvw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lWEx6-006rAY-6t
- for barebox@lists.infradead.org; Tue, 13 Apr 2021 09:03:21 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ id 1lWEzE-006rIz-Ua
+ for barebox@lists.infradead.org; Tue, 13 Apr 2021 09:05:34 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lWEx5-0003eY-0g; Tue, 13 Apr 2021 11:03:19 +0200
-Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
+ id 1lWEzD-0003zi-MJ; Tue, 13 Apr 2021 11:05:31 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lWEx4-0003l0-Mw; Tue, 13 Apr 2021 11:03:18 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 13 Apr 2021 11:03:18 +0200
-Message-Id: <20210413090318.14105-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
+ id 1lWEzD-000591-CR; Tue, 13 Apr 2021 11:05:31 +0200
+Date: Tue, 13 Apr 2021 11:05:31 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Bastian Krause <bst@pengutronix.de>
+Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Message-ID: <20210413090531.GM19819@pengutronix.de>
+References: <20210409081503.6926-1-bst@pengutronix.de>
+ <20210409081503.6926-2-bst@pengutronix.de>
+ <20210413051613.GG6950@pengutronix.de>
+ <5039de85-c337-6781-eef3-0e8e4ca17fff@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <5039de85-c337-6781-eef3-0e8e4ca17fff@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 11:05:07 up 54 days, 12:29, 101 users,  load average: 0.22, 0.48,
+ 0.50
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210413_020320_264064_211A6D55 
-X-CRM114-Status: GOOD (  10.10  )
+X-CRM114-CacheID: sfid-20210413_020533_006403_22B1DD05 
+X-CRM114-Status: GOOD (  29.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,43 +93,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: i.MX: Add missing braces
+Subject: Re: [PATCH 2/2] of: introduce global.linux.bootargs_overwrite
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Add braces around the definition of imx1_gpio_val and imx31_gpio_val
-to make sure it's evaluated correctly.
+On Tue, Apr 13, 2021 at 10:22:07AM +0200, Bastian Krause wrote:
+> On 4/13/21 7:16 AM, Sascha Hauer wrote:
+> > On Fri, Apr 09, 2021 at 10:15:03AM +0200, Bastian Krause wrote:
+> >> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >>
+> >> By default, barebox overwrites the bootargs in the oftree if it itself
+> >> has any. Make this behavior configurable by adding a new global
+> >> variable. It allows either overwriting the oftree bootargs
+> >> (global.linux.bootargs_overwrite=1) or appending barebox' bootargs to
+> >> the oftree bootargs (global.linux.bootargs_overwrite=0).
+> >>
+> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >> [bst: dropped a new line removal, extend commit message]
+> >> Signed-off-by: Bastian Krause <bst@pengutronix.de>
+> >> ---
+> >>  common/oftree.c | 22 +++++++++++++++++++++-
+> >>  1 file changed, 21 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/common/oftree.c b/common/oftree.c
+> >> index aaeb199a9e..f3a5d9c5d1 100644
+> >> --- a/common/oftree.c
+> >> +++ b/common/oftree.c
+> >> @@ -16,6 +16,7 @@
+> >>  #include <reset_source.h>
+> >>  #include <watchdog.h>
+> >>  #include <globalvar.h>
+> >> +#include <magicvar.h>
+> >>  
+> >>  #define MAX_LEVEL	32		/* how deeply nested we will go */
+> >>  
+> >> @@ -161,9 +162,14 @@ static void watchdog_build_bootargs(struct watchdog *watchdog, struct device_nod
+> >>  	free(buf);
+> >>  }
+> >>  
+> >> +static int bootargs_overwrite = 1;
+> >> +BAREBOX_MAGICVAR(global.linux.bootargs_overwrite, "overwrite original oftree bootargs");
+> > 
+> > How about naming it global.linux.bootargs_append instead? It would make
+> > it more clear that we are deviating from the default by setting the
+> > variable to true.
+> > 
+> 
+> That's fine with me.
+> 
+> Can you change that or should I send a v2?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/include/mach/imx-gpio.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Please send a v2
 
-diff --git a/arch/arm/mach-imx/include/mach/imx-gpio.h b/arch/arm/mach-imx/include/mach/imx-gpio.h
-index 0cfd16f4fa..b9a6acc013 100644
---- a/arch/arm/mach-imx/include/mach/imx-gpio.h
-+++ b/arch/arm/mach-imx/include/mach/imx-gpio.h
-@@ -72,11 +72,11 @@ static inline void imx31_gpio_direction_input(void *base, int gpio)
- #define imx6_gpio_direction_input(base, gpio) imx31_gpio_direction_input(base, gpio)
- #define imx8m_gpio_direction_input(base, gpio) imx31_gpio_direction_input(base, gpio)
- 
--#define imx1_gpio_val(base, gpio) readl(base + 0x1c) & (1 << gpio) ? 1 : 0
-+#define imx1_gpio_val(base, gpio) (readl(base + 0x1c) & (1 << gpio) ? 1 : 0)
- #define imx21_gpio_val(base, gpio) imx1_gpio_val(base, gpio)
- #define imx27_gpio_val(base, gpio) imx1_gpio_val(base, gpio)
- 
--#define imx31_gpio_val(base, gpio) readl(base) & (1 << gpio) ? 1 : 0
-+#define imx31_gpio_val(base, gpio) (readl(base) & (1 << gpio) ? 1 : 0)
- #define imx25_gpio_val(base, gpio) imx31_gpio_val(base, gpio)
- #define imx35_gpio_val(base, gpio) imx31_gpio_val(base, gpio)
- #define imx51_gpio_val(base, gpio) imx31_gpio_val(base, gpio)
+Thanks
+  Sascha
+
 -- 
-2.29.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
