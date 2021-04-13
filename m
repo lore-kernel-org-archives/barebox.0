@@ -1,83 +1,66 @@
-Delivery-date: Tue, 13 Apr 2021 19:09:25 +0200
+Delivery-date: Tue, 13 Apr 2021 21:12:58 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lWMXV-0008FB-9O
-	for lore@lore.pengutronix.de; Tue, 13 Apr 2021 19:09:25 +0200
+	id 1lWOT4-0008Kn-DR
+	for lore@lore.pengutronix.de; Tue, 13 Apr 2021 21:12:58 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lWMXU-0004Rm-L4
-	for lore@pengutronix.de; Tue, 13 Apr 2021 19:09:25 +0200
+	id 1lWOT3-0001IN-LO
+	for lore@pengutronix.de; Tue, 13 Apr 2021 21:12:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:To:Subject:Message-ID:Date:From:MIME-Version:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=POiZ00AUuPVz4qpFww2M4VEVF96X/YaJMt+0OAfNk9I=; b=ery0Mdh4JfNxXq
-	//q1ZXyfpC+EejPd2xq3LuXnzop+yqM3G+QshHsf+qJwU9BKD62ohC/mVdAbBNmzWyJ05mdPv0j2o
-	mqpmNowmGJJ5OPAjxboigc5qoH3/l4MMHvd8T6HctVGWS3CmxwaDnRd+lYcw6zHb5S5im13/G5h71
-	nU2FOuOQSRN3nFbRZpQnMy6o/0PDRWFxv6KK9SV/trcY4O+7LfdfVueNGdjCRHJu1NaJJl3jHtRDP
-	SPXtM0jgHaDZJ2l0BbuC1swZOgD74V6LXQ6rcUW2oMgmLtt8C8pITGqqvRlgnUheuW9elOkpwT4MB
-	IJlWkcYhDQPevDOz4b1g==;
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
+	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=oJ4yI1vz0ysqvp3E5rZJyucoB/wKDQ3AbuKIcKGaOww=; b=TlCL//LSFBRK6JG537uHHMe5I
+	vHSJ47j8wuHaHzYnaW9AU0lfsWOuFgLK6WxVquqV7o/g2rbl74W0xH18rFNx2LlwNEdQqlX5qES8u
+	EYM2rjP8dFjTJQhB7aUMSqxDO78JrI4A/mrIHQ75pkcoKjY+DMG1r/ivg9aqarE18A4stfBRtyxlo
+	+f3PMJU5u+5/osQdEuzdCQZh1p3T5eySk7AQhxvhoAY1lobvpHHV6/9VgYqA6vIztiE6mZaVsONz1
+	C8U9a/c2Na4/12WLpVG6cJtZ3BZNcss4gFHfRMNyoYjEIbnycNMd5V1WHxRMUnL/meeIzOy4+suM0
+	Is7k4oFUQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lWMWA-009uXL-Gd; Tue, 13 Apr 2021 17:08:02 +0000
+	id 1lWORm-00ADpH-6P; Tue, 13 Apr 2021 19:11:38 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lWMVt-009uWJ-Ji
- for barebox@desiato.infradead.org; Tue, 13 Apr 2021 17:07:45 +0000
+ id 1lWONT-00ADGA-2C
+ for barebox@desiato.infradead.org; Tue, 13 Apr 2021 19:07:11 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Type:To:Subject:Message-ID:
- Date:From:MIME-Version:Sender:Reply-To:Cc:Content-Transfer-Encoding:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=2FRZ3Vn55W5EHlEL24GFB2XmYIXiRqQEJH0Lb88vho0=; b=dUhduyJo3cbwlomyWHVSR9H2ls
- Pey7LcKNaftQasxs6tMcArrtKQ7hcNay7qTFq79l8IQbVTRmcnlYor4SgehUR1SOy5Ji7ybD+OHMn
- tHpYFk6CNzcVNmvpzIi9pCKJZW+n+WOKK4/qo3u1yUJqYn2DjLo7RJOfjf94c/z+MZIHoyIIfS2R1
- FNXObzcVLMqr5q8gy26to5KUc3wqlDWRJ9y0YbpAI1biwIj+uvfk3VlHoaCfa/feZ48F1UTQ/I/gk
- 3SuLOlWgmNXeoSfU+3dGRfghjPqN0l/jOycT1iqn7rRitb6s5Jhm1WwgtocLJg49gUOCJ/eZpup54
- 6GOHMgJA==;
-Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:
+ Subject:Sender:Reply-To:Cc:Content-ID:Content-Description;
+ bh=OT5TTva05mwWslJypV8NCFRs47GZiTGSVk35iE84+Lc=; b=w85WfinowWRQfs5E9w/zQTQnqN
+ Uw43nZanc1u8OQALG4fHgpVkxuer0GuBGwyp2COw8iAb2Il8EDr/h1HHAErGRCpha8LYGu/Md04+3
+ +nv68jnojMshoC8iDuzaGgdDZaM5+lBofnBllO6pEyWw3V/eIXsjrD1022LwtL2YKoIDib9L/kupu
+ gRAnDkIYQ7PuPytWZeCherKzUxwATroXGETVzfiR0yy8RtesvgS0GbJ7z/+M304MRHJIltbqJJYLr
+ ISUmCB9aZ/g7KgdcCPeI3yU+cICZxZ7j78oVdOPOg6R2UcDZfEVRBYuFuDsue9tDYE8v3HjCc/5ly
+ rMIX2j4g==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lWMVq-007D0N-Vo
- for barebox@lists.infradead.org; Tue, 13 Apr 2021 17:07:44 +0000
-Received: by mail-qt1-x82e.google.com with SMTP id z15so5209067qtj.7
- for <barebox@lists.infradead.org>; Tue, 13 Apr 2021 10:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:from:date:message-id:subject:to;
- bh=2FRZ3Vn55W5EHlEL24GFB2XmYIXiRqQEJH0Lb88vho0=;
- b=PR0OT42eGJHGQkq44m85ZXBwLrvQAiCxb2P63te4RerJqad0lx5jFYRs8WY+GpNR2z
- ASFBNRoStl7h+/A5U1pa05ox/mWv3kIPt3Dk0IKpqZ0BvuoBvEvJInII3BhzOT2zNIdy
- /YDwoKvOcJAgDfsO0LOLfemGJuD6RHWqJdpwqWzLvw5pdfAJ6Oinljb2GjkWHquirCrm
- Vh14nJCxDXIoAi+aXtP+jyBDc6SuGME6dT8x4bfzIrjxmCrFNqaBhgoKEW1mxpaa0rIQ
- IxYcPF1H8y+5DaEcLczGAAGP074FLRNvzezhL+Erj5j+S95Qttnuud2f9S25Ppp9p4IA
- tSIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
- bh=2FRZ3Vn55W5EHlEL24GFB2XmYIXiRqQEJH0Lb88vho0=;
- b=JN2/L9ZJX69Or8A/R/d5OgKBEalLzHAvQzz4r0qjobHrW2nP3sR9tyq4M3/vq4Usl1
- LdlFGguKeTi8E/2tGyGuw1L/crLSLSTRnXT6hHB/RA2qNP+o0SLb2U7HTp9sHSW6IomX
- 3xlLEvqPeSwDlPLpewozQZe1dE3W8YCpssAOyCKOyKi5Jbqtzs7KyHA+85BD1El/d+q9
- T2PudB43TvA6r0l3H96o04uvNWCbZhf12J25okHS0rU5H8xtcD8aDzAGpwimDrw/8KMc
- /RmoEs2rMrBYd2OYCOEK1Ph/ztUvDAX54+b2PKXaJF0TruG+GqlxQpYa1jw+kt+btQ0k
- v6rw==
-X-Gm-Message-State: AOAM531W6HwWuUtJtWt6qgttXLTEZBXd2ofJAsLKA+Yrb8jIL8o8TYrM
- 0TaHpxSYOqWJcN92t2Pz3o4ZvJt2ETAiyJhKyYqtDAB75Wk=
-X-Google-Smtp-Source: ABdhPJxp+dxzLfAZmI9zbXVFPh9X0eCeDsFs2xa4xasd7YUslSw6RwY4ADD1aN5XX3lMfbvjS39fN10oxq2G50QvrzM=
-X-Received: by 2002:ac8:4e51:: with SMTP id e17mr2365604qtw.386.1618333660503; 
- Tue, 13 Apr 2021 10:07:40 -0700 (PDT)
+ id 1lWONQ-007Gxu-0G
+ for barebox@lists.infradead.org; Tue, 13 Apr 2021 19:07:09 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1lWONO-0000Zu-1w; Tue, 13 Apr 2021 21:07:06 +0200
+To: Neeraj Pal <neerajpal09@gmail.com>, barebox@lists.infradead.org
+References: <CANi4_RVykfmmyPAcDbBAz2O134kB8d7h0nzPr7H1o92jWBe6Ow@mail.gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <acf0a309-ab9c-c082-ccc1-358216a68232@pengutronix.de>
+Date: Tue, 13 Apr 2021 21:07:05 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-From: Neeraj Pal <neerajpal09@gmail.com>
-Date: Tue, 13 Apr 2021 22:37:29 +0530
-Message-ID: <CANi4_RVykfmmyPAcDbBAz2O134kB8d7h0nzPr7H1o92jWBe6Ow@mail.gmail.com>
-To: barebox@lists.infradead.org
+In-Reply-To: <CANi4_RVykfmmyPAcDbBAz2O134kB8d7h0nzPr7H1o92jWBe6Ow@mail.gmail.com>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210413_100743_064573_2663225D 
-X-CRM114-Status: UNSURE (   7.96  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210413_120708_097905_0FDAAC2F 
+X-CRM114-Status: GOOD (  22.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,34 +80,66 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: network configuration setup - dhcp
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: network configuration setup - dhcp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi all,
+Hi,
 
-I read the readme but not able to configure the barebox DHCP network.
-Tried setting up some environment variables like nameserver,
-server.ip, etc but not successful.
+On 13.04.21 19:07, Neeraj Pal wrote:
+> Hi all,
+> 
+> I read the readme but not able to configure the barebox DHCP network.
+> Tried setting up some environment variables like nameserver,
+> server.ip, etc but not successful.
 
-I have compiled and executed the barebox binary with or without root
-(through sudo) on Ubuntu 20.04 focal LTS
+There is more documentation besides the README. For networking see
+https://barebox.org/doc/latest/user/networking.html
 
-I was thinking to configure manually in the sdcard just like uboot
-setup then check for the network but still, this work is in progress.
+> I have compiled and executed the barebox binary with or without root
+> (through sudo) on Ubuntu 20.04 focal LTS
+> 
+> I was thinking to configure manually in the sdcard just like uboot
+> setup then check for the network but still, this work is in progress.
+> 
+> Could someone please point in the correct direction where I just
+> configure the DHCP and it will automatically load the network?
+> So, that I can start using NFS.
 
-Could someone please point in the correct direction where I just
-configure the DHCP and it will automatically load the network?
-So, that I can start using NFS.
+The default barebox boot target is to net boot. It'll try to get
+a DHCP address and then load some predefined files over TFTP
+(If it fails, it'll tell you which ones).
 
+If that didn't work, you'll need to tell more about your setup?
+What board are you using barebox on?
 
-thanks,
-Neeraj
+Part of the question reads like you are using it while Linux is
+running (sandbox) and some other like you'd run it directly as
+bootloader. Also what kind of errors do you get, can you copy them here?
+
+Cheers,
+Ahmad
+
+> 
+> 
+> thanks,
+> Neeraj
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
