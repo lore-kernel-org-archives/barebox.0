@@ -1,68 +1,67 @@
-Delivery-date: Tue, 13 Apr 2021 12:11:34 +0200
+Delivery-date: Tue, 13 Apr 2021 12:15:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lWG18-0007LV-Km
-	for lore@lore.pengutronix.de; Tue, 13 Apr 2021 12:11:34 +0200
+	id 1lWG4y-0007M0-40
+	for lore@lore.pengutronix.de; Tue, 13 Apr 2021 12:15:32 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lWG17-0005iY-Qs
-	for lore@pengutronix.de; Tue, 13 Apr 2021 12:11:34 +0200
+	id 1lWG4x-0006DC-As
+	for lore@pengutronix.de; Tue, 13 Apr 2021 12:15:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
-	References:Cc:To:Subject:Reply-To:Content-ID:Content-Description:Resent-Date:
+	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=vHK95PtwyzDLp+qR9FIPLBsnJQDSDmm9tfA95Bllo3g=; b=PnE5ASwaPbyuHSBnG0jkiDTaJ
-	fUv6iH+dM0ECdvuKZp3i0SXAacOPBPSsw4jqgfeQSCtNWuUStcJCEehAFo/vbUGe6ZA1eLhoCBD9n
-	iI4N7rkFrZ58kS5oRJXPhdDKpFLvSJMi7Ys/6dmjiV6KQGjD1SUkVdpa2nuZWy6ZRi/Ds6hojZ9FE
-	rIiP3pLQWsJLbnkh4AR39pvOia13oMl+IWMYjbIh7hnlRkKiZt40VgUkVkYTYcVe3LVhgtpmZgwFT
-	w9v3ln5KgJd0XGzcoGL4z3DZH99g13w6PR4lhlzWM75mgpjg5nf14h8sRdW/8SjLxPPJfhE6Mo1T4
-	iZfbKbTIQ==;
+	 bh=Eg5itjeaKhlmy8tqPZJqsSEyzk09WRY3L7KCwyoOMs0=; b=IQ+MJF7FaXs6l+sUj1z2VaYlP
+	sL55Wwqk3KUxt+F/fvF1jshzRR7+tQKrBuEUZzTdDRIGhRJ+a98NsczChUk95M52QXGLXfvwqSeha
+	Vf701dzBfC+32UAwm1hsZHHKLa76WhUPz6kxi7OCilDL4uGN9oTfWYxFNsMi28eFVbKLRKmZqF02s
+	etqXJLPKxsXgZZi2l9naqX2bvUQUfQ4NhTnXRBiq1mOVZSYHz2PucwBZIrkx4qqPG5Ty5GKFaWjzl
+	6B/15uxSmx6Fhvb/kQCVeO7bAqS5n602ZgeB4atvBX6XbJfcs0Ahs4MBJVv/4iUN2wXslnLekGk3Q
+	AgKhu3wSQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lWFze-008qFX-0o; Tue, 13 Apr 2021 10:10:02 +0000
+	id 1lWG3g-008qoU-KW; Tue, 13 Apr 2021 10:14:12 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lWFzS-008qDk-BY
- for barebox@desiato.infradead.org; Tue, 13 Apr 2021 10:09:51 +0000
+ id 1lWG3U-008qnZ-53
+ for barebox@desiato.infradead.org; Tue, 13 Apr 2021 10:14:06 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
- Subject:Sender:Reply-To:Content-ID:Content-Description;
- bh=7w+058YuloLfE1cJGiZ6eSTYy9x1ZYK1TclHqhTU1ug=; b=RN3cw8m1RBNVBRrSf6NXXh0aoW
- pLlEJ9ywI27Qlb/5bpgks4oDEaFgBvTsW/O5zJZ3La05U7uN3C6WR5+A2MMLAN5vk9oSmbkxgThMF
- Pk3vkm2Y8F2zIsria+o31RhARqslro22qa+EY2TkVT87GggpAKjmgzt8jggkxGGafhz2PXUAvdBqV
- eXRZDk1c0rrX856cxuw6C2fhG43AwdK8z8VGt4PvlfDlW/qt4eL6PvttKC3e1JRfU65enJl6uyFRN
- W0gnfPSat9ICLFh0BhqbZnn7XrgxyxL7e3IOmCXdSbmYrB2ZdPL90RhClJ/PKqA+5WpvI/ayuWqh0
- bFmIK/Vw==;
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:
+ Subject:Sender:Reply-To:Cc:Content-ID:Content-Description;
+ bh=EBmv6uo6k6iqLwpCH0N9hkOBSE+L3ceK72miAKmBhfE=; b=EaT0Ti9XLcymtkjjr5mLbNDA0W
+ jQr93rZ4OGTlswcl0vFcczYa3zO6+TtvNgo2Zc+CMpLfYrbk8F80aG6xvVEJZQnznWK160V0agInO
+ nJz700ONKM/VApIFdKypw5lV5qMMxwX+oHK8AgsewsrDKXBFc8yF3oQm7OQB822g9OTa827LQzOX/
+ sPfECvgc6TD1KlTO3kZW2m4JI1n1wAJvNksIHBeZgthPEgS3pv3BY5RdVStmV9Yt6CyyHl6zTAzPI
+ zUuX60kk9G+4+CTmLX4ji1i89J2okLwURAzBuMARiSuwn5372r7gL80pNLYumAXR4VK+EdsYnTFnB
+ SMHIlDIg==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lWFzP-006usf-Qx
- for barebox@lists.infradead.org; Tue, 13 Apr 2021 10:09:49 +0000
+ id 1lWG3R-006v3Z-FY
+ for barebox@lists.infradead.org; Tue, 13 Apr 2021 10:13:58 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1lWFzO-0005F5-Le; Tue, 13 Apr 2021 12:09:46 +0200
-To: Lars Pedersen <lapeddk@gmail.com>, barebox@lists.infradead.org
-Cc: Bruno Thomsen <bruno.thomsen@gmail.com>
-References: <20210413061727.186938-1-lapeddk@gmail.com>
- <20210413092340.241337-1-lapeddk@gmail.com>
+ id 1lWG3Q-00065A-2m; Tue, 13 Apr 2021 12:13:56 +0200
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+References: <20210413100753.15094-1-s.hauer@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ffa4e57a-e8b3-a31d-cb93-d0bf8a6b9157@pengutronix.de>
-Date: Tue, 13 Apr 2021 12:09:46 +0200
+Message-ID: <4195408f-c530-68a1-c636-cf10f975d16f@pengutronix.de>
+Date: Tue, 13 Apr 2021 12:13:56 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.0
 MIME-Version: 1.0
-In-Reply-To: <20210413092340.241337-1-lapeddk@gmail.com>
+In-Reply-To: <20210413100753.15094-1-s.hauer@pengutronix.de>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210413_030947_899840_EAB200D0 
-X-CRM114-Status: GOOD (  16.32  )
+X-CRM114-CacheID: sfid-20210413_031357_553879_6F06C82A 
+X-CRM114-Status: GOOD (  18.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,42 +85,57 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX: Fix Kamstrup mx7 concentrator default cfg
+Subject: Re: [PATCH] ARM: i.MX: convert early gpio value accessors to static
+ inline functions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hi,
 
-On 13.04.21 11:23, Lars Pedersen wrote:
-> Select CONFIG_POWER_RESET_GPIO_RESTART for Kamstrup mx7 concentrator
-> board.
+On 13.04.21 12:07, Sascha Hauer wrote:
+> imx1_gpio_val() and imx31_gpio_val() lack various braces. Instead of
+> adding all these convert them to static inline functions.
 > 
-> Signed-off-by: Lars Pedersen <lapeddk@gmail.com>
-> Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
-> Requires patch ARM: i.MX: Kamstrup mx7 concentrator board support
+>  arch/arm/mach-imx/include/mach/imx-gpio.h | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
 > 
->  arch/arm/mach-imx/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index cc73d0a0d..4ee8ffe4b 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -530,6 +530,7 @@ config MACH_KAMSTRUP_MX7_CONCENTRATOR
->  	bool "Kamstrup i.MX7 Concentrator"
->  	select ARCH_IMX7
->  	select ARM_USE_COMPRESSED_DTB
-> +	select CONFIG_POWER_RESET_GPIO_RESTART
-
-Sorry, no CONFIG_ in Kconfig files. ^^
-
-Cheers,
-Ahmad
-
+> diff --git a/arch/arm/mach-imx/include/mach/imx-gpio.h b/arch/arm/mach-imx/include/mach/imx-gpio.h
+> index 0cfd16f4fa..c7b8ccffcb 100644
+> --- a/arch/arm/mach-imx/include/mach/imx-gpio.h
+> +++ b/arch/arm/mach-imx/include/mach/imx-gpio.h
+> @@ -72,11 +72,18 @@ static inline void imx31_gpio_direction_input(void *base, int gpio)
+>  #define imx6_gpio_direction_input(base, gpio) imx31_gpio_direction_input(base, gpio)
+>  #define imx8m_gpio_direction_input(base, gpio) imx31_gpio_direction_input(base, gpio)
 >  
->  config MACH_NXP_IMX6ULL_EVK
->  	bool "NXP i.MX6ull EVK Board"
+> -#define imx1_gpio_val(base, gpio) readl(base + 0x1c) & (1 << gpio) ? 1 : 0
+> +static inline int imx1_gpio_val(void *base, int gpio)
+
+void __iomem *
+
+> +{
+> +	return readl(base + 0x1c) & (1 << gpio) ? 1 : 0;
+> +}
+> +
+> +static inline int imx31_gpio_val(void *base, int gpio)
+
+Same
+
+> +{
+> +	return readl(base) & (1 << gpio) ? 1 : 0;
+> +}
+> +
+
+With this addressed, Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+>  #define imx21_gpio_val(base, gpio) imx1_gpio_val(base, gpio)
+>  #define imx27_gpio_val(base, gpio) imx1_gpio_val(base, gpio)
+> -
+> -#define imx31_gpio_val(base, gpio) readl(base) & (1 << gpio) ? 1 : 0
+>  #define imx25_gpio_val(base, gpio) imx31_gpio_val(base, gpio)
+>  #define imx35_gpio_val(base, gpio) imx31_gpio_val(base, gpio)
+>  #define imx51_gpio_val(base, gpio) imx31_gpio_val(base, gpio)
 > 
 
 -- 
