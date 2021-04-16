@@ -1,67 +1,67 @@
-Delivery-date: Fri, 16 Apr 2021 11:59:27 +0200
+Delivery-date: Fri, 16 Apr 2021 11:59:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lXLG3-0001B4-Qv
-	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 11:59:27 +0200
+	id 1lXLGG-0001BW-TJ
+	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 11:59:40 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lXLG0-0006pB-W7
-	for lore@pengutronix.de; Fri, 16 Apr 2021 11:59:27 +0200
+	id 1lXLGF-0006sv-T7
+	for lore@pengutronix.de; Fri, 16 Apr 2021 11:59:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=dBNJeNnQcK+c4/oblNXRjz+yKpXw1i5DD/chVeUzmtY=; b=CxXjY3N2TJxrNahUGy2P89e3P
-	9lCEkmCm+6FUll7TNlC7Xb4iMonaznR2JFTcckvOSpO4SBfdhn8/YXP/pRt09CiZVvNvE2H1nAPCJ
-	qIgZQH5EnwE4kBUXZP3DgEK84mKUAgZdTv1tdXSZeBuA0RQH6A1XNruQ7ws3tifoBA3bmqAWSnMpV
-	Z5a/c2IYHCUjA3K3N8W+Idlss+3lfhOYBY1hIh3vix/OsaZhw9rgl+pkgTSC7D9AJ8f3/2TtjPQsR
-	dFPloF7fRnujD2VQZ7+U5SBhAZecjcNq/SiOz/2NOg3OaO8FI0tcAQwVB5Hpk2UPhMbpPbsIN6Fvu
-	y3JVIMF5Q==;
+	 bh=0he1gMiLiPwHcN6swA2jQg8XkmnDpooiwSqKYomnSn8=; b=Qk9cu5vNm8L9oAVzGNIySdVmO
+	BeaagaCyn09IB0a0Gys2Uw17IdV6wCbwHtyNHiff11B6bLA18Be8pSCWs3udgOShEdXgaQEx51HJN
+	2y6x7O/1z4kGVLcVsnU9DejHNzl0len02gJv70PE0cRF8q9qfF8DMA02y0XuS5qeu2Ywg9Gpl1a1O
+	fTW15YxyWQ1Dirq1xpDRmbuYiTrnLxqGGRp45nfZnAddmzoy3RBtmgJoWhaISm0ilKO5VtB1JjZKO
+	ajnkW39HGPvraR4dESPQsg+qXiRMV3506GnI7rgg5rZPLw8ESU2n0cR9H/cUFDdX+DMiXOnyZDBjf
+	1ux7P6D/g==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lXLE0-001eA5-7A; Fri, 16 Apr 2021 09:57:20 +0000
+	id 1lXLED-001eF0-Df; Fri, 16 Apr 2021 09:57:33 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lXL7O-001cV3-FP
+ id 1lXL7Q-001cV5-AB
  for barebox@desiato.infradead.org; Fri, 16 Apr 2021 09:50:36 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=f/RRMGotqYVeP/VWwMcBF/qtxLKOtp8GGIZL7E0ioxM=; b=4YeyDj1KjUal2rZk3wLM56yWrO
- ccj5YecwuZiISEtqJM7Q2KNvnlXiO96sm4U2IlfjdguC2yArZzFO3k59335yP9kLfNoJ8uo2cp8K8
- N4TmPWoqQMIuUX6rSXMedhJqUgqDENxxTyrpVhBUWINyEvvszSggbd57JpAiUEGF7PN3+k8hqCLWN
- BO1eNovz+UkRcPFXYRcm8/seFW+27u7zmbkjr8sVMptPUeH1bM+dkmFDxznUC3MDTHtNR4eAAgh/9
- 1RtC3rONfH8zcoruI+9oFuOLtdt4nAv+E2cLlxgFRJVbtGi6S6uS3SD47lv/JbOVSdF/O7dizLy8d
- kdMjaM4g==;
+ bh=BZAORitwfWcvkimC9aUQ4es/npKT5/2Q41/wO79cuwQ=; b=v5tL7urNv8y695nsH1bj5uiUfe
+ GIZZhmmZVw9Iun7TNfnmrxMgulURsj0jUw2KxripNkAFClOXDcxeO/2GGVTRKJNq8XZaJi68rhIP5
+ JLWLVoFBadOnWYPC0SIsylL74iyo+gAKHGYEqzUZ9GjMi0piaAiy9jCi8FRbB5HaxfVQnuq8Quk+B
+ Xiqssc3QbGPcSmOkhlSh1kWkcikTUYxSrecCLa0iUupWcWqPu/CyDurktA59Wik3QWTM/dN/fzlRc
+ e6jAAzoGR9XbC+u7nwEL6eFI4++zUc2BjfWX0JCWCpbX/i6jvw12AZtH/BvfKP6r0UlLzCH5BUFBY
+ WO/zPYsw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lXL7H-009FwH-Ja
- for barebox@lists.infradead.org; Fri, 16 Apr 2021 09:50:29 +0000
+ id 1lXL7N-009Fyb-IE
+ for barebox@lists.infradead.org; Fri, 16 Apr 2021 09:50:31 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lXL7E-00051O-2h; Fri, 16 Apr 2021 11:50:20 +0200
+ id 1lXL7E-00051U-3m; Fri, 16 Apr 2021 11:50:20 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lXL7C-0001Dj-Sf; Fri, 16 Apr 2021 11:50:18 +0200
+ id 1lXL7C-0001E1-VJ; Fri, 16 Apr 2021 11:50:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 16 Apr 2021 11:49:35 +0200
-Message-Id: <20210416094943.3648-10-s.hauer@pengutronix.de>
+Date: Fri, 16 Apr 2021 11:49:41 +0200
+Message-Id: <20210416094943.3648-16-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210416094943.3648-1-s.hauer@pengutronix.de>
 References: <20210416094943.3648-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210416_025024_012201_56D2DFAE 
-X-CRM114-Status: GOOD (  40.63  )
+X-CRM114-CacheID: sfid-20210416_025029_645643_EC46D5FD 
+X-CRM114-Status: GOOD (  12.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,597 +86,87 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 09/17] common: add initial barebox deep-probe support
+Subject: [PATCH 15/17] ARM: boards: mx6-sabrelite: add deep-probe support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 From: Marco Felsch <m.felsch@pengutronix.de>
 
-The barebox 'deep probe' or 'probe on demand' mechanism is the answer of
-unwanted -EPROBE_DEFER failures. The EPROBE_DEFER error code was
-introduced by commit ab3da15bc14c ("base: Introduce deferred probing")
-and since then it causes a few problems.
-
-The error is returned if either the device is not yet present or the
-driver is not yet registered. This makes sense on linux systems where
-modules and hot-plug devices are used very often but not for barebox.
-The module support is rarely used and devices aren't hot pluggable.
-
-The current barebox behaviour populates all devices before the drivers
-are registered so all devices are present during the driver
-registration. So the driver probe() function gets called immediately
-after the driver registration and causes the -EPROBE_DEFER error if this
-driver depends on an other not yet registered driver.
-
-To get rid of the EPROBE_DEFER error code we need to reorder the device
-population and the driver registration. All drivers must be registered
-first. In an ideal world all driver can be registered by the same
-initcall level. Then devices are getting populated which causes calling
-the driver probe() function but this time resources/devices are created
-on demand if not yet available.
-
-Dependencies between devices are normally expressed as references to
-other device nodes. With deep probe barebox provides helper functions
-which take a device node and probe the device behind that node if
-necessary. This means instead of returning -EPROBE_DEFER, we can now
-make the desired resources available once we need them.
-
-If the resource can't be created we are returning -ENODEV since we are
-not supporting hot-plugging. Dropping EPROBE_DEFER is the long-term
-goal, avoid initcall shifting is the short-term goal.
-
-Call it deep-probe since the on-demand device creation can create very
-deep stacks. This commit adds the initial support for: spi, i2c, reset,
-regulator, gpio and clk resource on-demand creation. The deep-probe
-mechanism must be enabled for each board to avoid breaking changes using
-deep_probe_enable(). This can be changed later after all boards are
-converted to the new mechanism.
+Explicit request the required gpio resources instead of relying on their
+existence based on the initcall level.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Link: https://lore.pengutronix.de/20201021115813.31645-8-m.felsch@pengutronix.de
+Link: https://lore.pengutronix.de/20201021115813.31645-11-m.felsch@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Makefile                   |   1 +
- common/deep-probe.c               |  34 +++++++
- drivers/base/driver.c             |  11 +-
- drivers/clk/clk.c                 |   5 +
- drivers/i2c/i2c.c                 |   8 ++
- drivers/of/base.c                 |  13 ++-
- drivers/of/of_gpio.c              |   4 +
- drivers/of/platform.c             | 162 ++++++++++++++++++++++++++++++
- drivers/regulator/core.c          |   6 ++
- drivers/reset/core.c              |   4 +
- drivers/spi/spi.c                 |   2 +
- include/asm-generic/barebox.lds.h |  10 +-
- include/deep-probe.h              |  26 +++++
- include/of.h                      |  26 +++++
- 14 files changed, 309 insertions(+), 3 deletions(-)
- create mode 100644 common/deep-probe.c
- create mode 100644 include/deep-probe.h
+ .../boards/freescale-mx6-sabrelite/board.c    | 24 ++++++++++++-------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/common/Makefile b/common/Makefile
-index c0b45d263e..aa06e6e82e 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -3,6 +3,7 @@ obj-y				+= memory_display.o
- pbl-$(CONFIG_PBL_CONSOLE)	+= memory_display.o
- obj-y				+= clock.o
- obj-y				+= console_common.o
-+obj-y				+= deep-probe.o
- obj-y				+= startup.o
- obj-y				+= misc.o
- obj-pbl-y			+= memsize.o
-diff --git a/common/deep-probe.c b/common/deep-probe.c
-new file mode 100644
-index 0000000000..9fc67f170c
---- /dev/null
-+++ b/common/deep-probe.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <common.h>
-+#include <deep-probe.h>
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index 1b39ef82c6..0a2df391e9 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -13,7 +13,9 @@
+ #include <mach/bbu.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
 +#include <of.h>
-+
-+enum deep_probe_state {
-+	DEEP_PROBE_UNKONWN = -1,
-+	DEEP_PROBE_NOT_SUPPORTED,
-+	DEEP_PROBE_SUPPORTED
-+};
-+
-+static enum deep_probe_state boardstate = DEEP_PROBE_UNKONWN;
-+
-+bool deep_probe_is_supported(void)
-+{
-+	struct deep_probe_entry *board;
-+
-+	if (boardstate > DEEP_PROBE_UNKONWN)
-+		return boardstate;
-+
-+	/* determine boardstate */
-+	for (board = &__barebox_deep_probe_start;
-+	     board != &__barebox_deep_probe_end; board++) {
-+		if (of_machine_is_compatible(board->compatible)) {
-+			boardstate = DEEP_PROBE_SUPPORTED;
-+			return true;
-+		}
-+	}
-+
-+	boardstate = DEEP_PROBE_NOT_SUPPORTED;
-+	return false;
-+}
-+EXPORT_SYMBOL_GPL(deep_probe_is_supported);
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index f60533c59e..ea23884624 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -21,6 +21,7 @@
- 
- #include <common.h>
- #include <command.h>
+ #include <partition.h>
 +#include <deep-probe.h>
- #include <driver.h>
- #include <malloc.h>
- #include <console.h>
-@@ -95,7 +96,15 @@ int device_probe(struct device_d *dev)
- 	if (ret == -EPROBE_DEFER) {
- 		list_del(&dev->active);
- 		list_add(&dev->active, &deferred);
--		dev_dbg(dev, "probe deferred\n");
-+
-+		/*
-+		 * -EPROBE_DEFER should never appear on a deep-probe machine so
-+		 * inform the user immediately.
-+		 */
-+		if (deep_probe_is_supported())
-+			dev_warn(dev, "probe deferred\n");
-+		else
-+			dev_dbg(dev, "probe deferred\n");
- 		return ret;
- 	}
- 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index b04d44593b..e40dfae9ce 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -439,6 +439,11 @@ struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
+ #include <linux/phy.h>
+ #include <asm/io.h>
+ #include <asm/mmu.h>
+@@ -98,10 +100,6 @@ static int sabrelite_ksz9021rn_setup(void)
  {
- 	struct of_clk_provider *provider;
- 	struct clk *clk = ERR_PTR(-EPROBE_DEFER);
-+	int ret;
-+
-+	ret = of_device_ensure_probed(clkspec->np);
-+	if (ret)
-+		return ERR_PTR(ret);
+ 	int ret;
  
- 	/* Check if we have such a provider in our array */
- 	list_for_each_entry(provider, &of_clk_providers, link) {
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 57d8c7017f..12aac42794 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -407,6 +407,9 @@ static struct i2c_client *i2c_new_device(struct i2c_adapter *adapter,
- 	}
- 	client->dev.info = i2c_info;
+-	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
+-	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
+-		return 0;
+-
+ 	mxc_iomux_v3_setup_multiple_pads(sabrelite_enet_gpio_pads,
+ 			ARRAY_SIZE(sabrelite_enet_gpio_pads));
  
-+	if (chip->of_node)
-+		chip->of_node->dev = &client->dev;
-+
- 	return client;
- }
+@@ -118,11 +116,6 @@ static int sabrelite_ksz9021rn_setup(void)
  
-@@ -548,6 +551,11 @@ struct i2c_adapter *i2c_get_adapter(int busnum)
- struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node)
- {
- 	struct i2c_adapter *adap;
-+	int ret;
-+
-+	ret = of_device_ensure_probed(node);
-+	if (ret)
-+		return ERR_PTR(ret);
- 
- 	for_each_i2c_adapter(adap)
- 		if (adap->dev.device_node == node)
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 1e3921f915..00141a394f 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -15,6 +15,7 @@
-  * GNU General Public License for more details.
-  */
- #include <common.h>
-+#include <deep-probe.h>
- #include <of.h>
- #include <of_address.h>
- #include <errno.h>
-@@ -1708,6 +1709,15 @@ int of_set_root_node(struct device_node *node)
  	return 0;
  }
+-/*
+- * Do this before the fec initializes but after our
+- * gpios are available.
+- */
+-fs_initcall(sabrelite_ksz9021rn_setup);
  
-+static int barebox_of_populate(void)
-+{
-+	if (IS_ENABLED(CONFIG_OFDEVICE) && deep_probe_is_supported())
-+		return of_probe();
-+
-+	return 0;
-+}
-+of_populate_initcall(barebox_of_populate);
-+
- void barebox_register_of(struct device_node *root)
+ static void sabrelite_ehci_init(void)
  {
- 	if (root_node)
-@@ -1718,7 +1728,8 @@ void barebox_register_of(struct device_node *root)
+@@ -134,10 +127,20 @@ static void sabrelite_ehci_init(void)
  
- 	if (IS_ENABLED(CONFIG_OFDEVICE)) {
- 		of_clk_init(root, NULL);
--		of_probe();
-+		if (!deep_probe_is_supported())
-+			of_probe();
- 	}
- }
+ static int sabrelite_devices_init(void)
+ {
++	int ret;
++
+ 	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
+ 	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
+ 		return 0;
  
-diff --git a/drivers/of/of_gpio.c b/drivers/of/of_gpio.c
-index 7cbeeaf69e..4d3ded0599 100644
---- a/drivers/of/of_gpio.c
-+++ b/drivers/of/of_gpio.c
-@@ -63,6 +63,10 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
- 		return ret;
- 	}
- 
-+	ret = of_device_ensure_probed(out_args.np);
++	ret = of_devices_ensure_probed_by_property("gpio-controller");
 +	if (ret)
 +		return ret;
 +
- 	dev = of_find_device_by_node(out_args.np);
- 	if (!dev) {
- 		pr_debug("%s: unable to find device of node %s\n",
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 01de6f98af..4b79a9bc10 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -15,6 +15,7 @@
-  * GNU General Public License for more details.
-  */
- #include <common.h>
-+#include <deep-probe.h>
- #include <malloc.h>
- #include <of.h>
- #include <of_address.h>
-@@ -29,6 +30,12 @@
- struct device_d *of_find_device_by_node(struct device_node *np)
- {
- 	struct device_d *dev;
-+	int ret;
-+
-+	ret = of_device_ensure_probed(np);
++	ret = sabrelite_ksz9021rn_setup();
 +	if (ret)
-+		return NULL;
++		return ret;
 +
- 	for_each_device(dev)
- 		if (dev->device_node == np)
- 			return dev;
-@@ -353,3 +360,158 @@ int of_platform_populate(struct device_node *root,
- 	return rc;
- }
- EXPORT_SYMBOL_GPL(of_platform_populate);
-+
-+static struct device_d *of_device_create_on_demand(struct device_node *np)
-+{
-+	struct device_node *parent;
-+	struct device_d *parent_dev, *dev;
-+
-+	parent = of_get_parent(np);
-+	if (!parent)
-+		return NULL;
-+
-+	/* Create all parent devices needed for the requested device */
-+	parent_dev = parent->dev ? : of_device_create_on_demand(parent);
-+	if (IS_ERR(parent_dev))
-+		return parent_dev;
-+
-+	/*
-+	 * Parent devices like i2c/spi controllers are populating their own
-+	 * devices. So it can be that the requested device already exists after
-+	 * the parent device creation.
-+	 */
-+	if (np->dev)
-+		return np->dev;
-+
-+	pr_debug("%s: Create %s (%s) on demand\n", __func__,
-+		 np->name, np->full_name);
-+
-+	if (of_device_is_compatible(np, "arm,primecell"))
-+		dev = of_amba_device_create(np);
-+	else
-+		dev = of_platform_device_create(np, parent_dev);
-+
-+	return dev ? : ERR_PTR(-ENODEV);
-+}
-+
-+/**
-+ * of_device_ensure_probed() - ensures that a device is probed
-+ *
-+ * @np: the device_node handle which should be probed
-+ *
-+ * Ensures that the device is populated and probed so frameworks can make use of
-+ * it.
-+ *
-+ * Return: %0 on success
-+ *	   %-ENODEV if either the device can't be populated, the driver is
-+ *	     missing or the driver probe returns an error.
-+ */
-+int of_device_ensure_probed(struct device_node *np)
-+{
-+	struct device_d *dev;
-+
-+	if (!deep_probe_is_supported())
-+		return 0;
-+
-+	dev = of_device_create_on_demand(np);
-+	if (IS_ERR(dev))
-+		return PTR_ERR(dev);
-+
-+	BUG_ON(!dev);
-+
-+	/*
-+	 * The deep-probe mechanism relies on the fact that all necessary
-+	 * drivers are added before the device creation. Furthermore deep-probe
-+	 * is the answer to the EPROBE_DEFER errno so we must ensure that the
-+	 * driver was probed successfully after the device creation. Both
-+	 * requirements are fulfilled if 'dev->driver' is not NULL.
-+	 */
-+	if (!dev->driver)
-+		return -ENODEV;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(of_device_ensure_probed);
-+
-+/**
-+ * of_device_ensure_probed_by_alias() - ensures that a device is probed
-+ *
-+ * @alias: the alias string to search for a device
-+ *
-+ * The function search for a given alias string and ensures that the device is
-+ * populated and probed if found.
-+ *
-+ * Return: %0 on success
-+ *	   %-ENODEV if either the device can't be populated, the driver is
-+ *	     missing or the driver probe returns an error
-+ *	   %-EINVAL if alias can't be found
-+ */
-+int of_device_ensure_probed_by_alias(const char *alias)
-+{
-+	struct device_node *dev_node;
-+
-+	dev_node = of_find_node_by_alias(NULL, alias);
-+	if (!dev_node)
-+		return -EINVAL;
-+
-+	return of_device_ensure_probed(dev_node);
-+}
-+EXPORT_SYMBOL_GPL(of_device_ensure_probed_by_alias);
-+
-+/**
-+ * of_devices_ensure_probed_by_dev_id() - ensures that devices are probed
-+ *
-+ * @ids: the matching 'struct of_device_id' ids
-+ *
-+ * The function start searching the device tree from @np and populates and
-+ * probes devices which match @ids.
-+ *
-+ * Return: %0 on success
-+ *	   %-ENODEV if either the device wasn't found, can't be populated,
-+ *	     the driver is missing or the driver probe returns an error
-+ */
-+int of_devices_ensure_probed_by_dev_id(const struct of_device_id *ids)
-+{
-+	struct device_node *np;
-+	int err, ret = 0;
-+
-+	for_each_matching_node(np, ids) {
-+		if (!of_device_is_available(np))
-+			continue;
-+
-+		err = of_device_ensure_probed(np);
-+		if (err)
-+			ret = err;
-+	}
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(of_devices_ensure_probed_by_dev_id);
-+
-+/**
-+ * of_devices_ensure_probed_by_property() - ensures that devices are probed
-+ *
-+ * @property_name: The property name to search for
-+ *
-+ * The function starts searching the whole device tree and populates and probes
-+ * devices which matches @property_name.
-+ *
-+ * Return: %0 on success
-+ *	   %-ENODEV if either the device wasn't found, can't be populated,
-+ *	     the driver is missing or the driver probe returns an error
-+ */
-+int of_devices_ensure_probed_by_property(const char *property_name)
-+{
-+	struct device_node *node;
-+
-+	for_each_node_with_property(node, property_name) {
-+		int ret;
-+
-+		ret = of_device_ensure_probed(node);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(of_devices_ensure_probed_by_property);
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index ac3a9b048e..097f7d779b 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -175,6 +175,7 @@ int of_regulator_register(struct regulator_dev *rd, struct device_node *node)
- 		return PTR_ERR(ri);
+ 	sabrelite_ehci_init();
  
- 	ri->node = node;
-+	node->dev = rd->dev;
- 
- 	if (rd->desc->off_on_delay)
- 		ri->enable_time_us = rd->desc->off_on_delay;
-@@ -197,6 +198,7 @@ static struct regulator_internal *of_regulator_get(struct device_d *dev, const c
- 	char *propname;
- 	struct regulator_internal *ri;
- 	struct device_node *node;
-+	int ret;
- 
- 	propname = basprintf("%s-supply", supply);
- 
-@@ -228,6 +230,10 @@ static struct regulator_internal *of_regulator_get(struct device_d *dev, const c
- 		goto out;
- 	}
- 
-+	ret = of_device_ensure_probed(node);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
- 	list_for_each_entry(ri, &regulator_list, list) {
- 		if (ri->node == node) {
- 			dev_dbg(dev, "Using %s regulator from %s\n",
-diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-index 26a54f21df..e2edca6658 100644
---- a/drivers/reset/core.c
-+++ b/drivers/reset/core.c
-@@ -168,6 +168,10 @@ static struct reset_control *of_reset_control_get(struct device_node *node,
- 	if (ret)
- 		return ERR_PTR(ret);
- 
-+	ret = of_device_ensure_probed(args.np);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
- 	rcdev = NULL;
- 	list_for_each_entry(r, &reset_controller_list, list) {
- 		if (args.np == r->of_node) {
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 8421d9d7c1..d1d3bdcc41 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -107,6 +107,8 @@ struct spi_device *spi_new_device(struct spi_controller *ctrl,
- 	if (status)
- 		goto fail;
- 
-+	chip->device_node->dev = &proxy->dev;
-+
- 	return proxy;
- fail:
- 	free(proxy);
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index a7d32160d1..c5f9d97547 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -114,6 +114,13 @@
- 	KEEP(*(.rsa_keys.rodata.*));		\
- 	__rsa_keys_end = .;			\
- 
-+#define BAREBOX_DEEP_PROBE			\
-+	STRUCT_ALIGN();				\
-+	__barebox_deep_probe_start = .;		\
-+	KEEP(*(SORT_BY_NAME(.barebox_deep_probe*)))	\
-+	__barebox_deep_probe_end = .;
-+
-+
- #ifdef CONFIG_CONSTRUCTORS
- #define KERNEL_CTORS()  . = ALIGN(8);                      \
- 			__ctors_start = .;                 \
-@@ -136,7 +143,8 @@
- 	BAREBOX_CLK_TABLE			\
- 	BAREBOX_DTB				\
- 	BAREBOX_RSA_KEYS			\
--	BAREBOX_PCI_FIXUP
-+	BAREBOX_PCI_FIXUP			\
-+	BAREBOX_DEEP_PROBE
- 
- #if defined(CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE) && \
- CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE < CONFIG_BAREBOX_MAX_BARE_INIT_SIZE
-diff --git a/include/deep-probe.h b/include/deep-probe.h
-new file mode 100644
-index 0000000000..a646c10340
---- /dev/null
-+++ b/include/deep-probe.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __DEEP_PROBE_H
-+#define __DEEP_PROBE_H
-+
-+#include <linux/stringify.h>
-+#include <linux/types.h>
-+
-+struct deep_probe_entry {
-+	const char *compatible;
-+};
-+
-+bool deep_probe_is_supported(void);
-+
-+extern struct deep_probe_entry __barebox_deep_probe_start;
-+extern struct deep_probe_entry __barebox_deep_probe_end;
-+
-+#define __BAREBOX_DEEP_PROBE_ENABLE(_entry,_compatible)			\
-+	static const struct deep_probe_entry _entry			\
-+	__attribute__ ((used,section (".barebox_deep_probe_" __stringify(_entry)))) = { \
-+		.compatible = _compatible,				\
-+	}
-+
-+#define BAREBOX_DEEP_PROBE_ENABLE(_compatible)	\
-+	__BAREBOX_DEEP_PROBE_ENABLE(__UNIQUE_ID(deepprobe),_compatible)
-+
-+#endif /* __DEEP_PROBE_H */
-diff --git a/include/of.h b/include/of.h
-index a3527c1afd..78c06ec2c3 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -276,6 +276,11 @@ extern struct device_d *of_device_enable_and_register_by_name(const char *name);
- extern struct device_d *of_device_enable_and_register_by_alias(
- 							const char *alias);
- 
-+extern int of_device_ensure_probed(struct device_node *np);
-+extern int of_device_ensure_probed_by_alias(const char *alias);
-+extern int of_devices_ensure_probed_by_property(const char *property_name);
-+extern int of_devices_ensure_probed_by_dev_id(const struct of_device_id *ids);
-+
- struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node);
- int of_parse_partitions(struct cdev *cdev, struct device_node *node);
- int of_fixup_partitions(struct device_node *np, struct cdev *cdev);
-@@ -359,6 +364,27 @@ static inline struct device_d *of_platform_device_create(struct device_node *np,
- 	return NULL;
- }
- 
-+static inline int of_device_ensure_probed(struct device_node *np)
-+{
-+	return 0;
-+}
-+
-+static inline int of_device_ensure_probed_by_alias(const char *alias)
-+{
-+	return 0;
-+}
-+
-+static inline int of_devices_ensure_probed_by_property(const char *property_name)
-+{
-+	return 0;
-+}
-+
-+static inline int
-+of_devices_ensure_probed_by_dev_id(const struct of_device_id *ids)
-+{
-+	return 0;
-+}
-+
- static inline int of_bus_n_addr_cells(struct device_node *np)
- {
+ 	armlinux_set_architecture(3769);
+@@ -163,3 +166,6 @@ static int sabrelite_coredevices_init(void)
  	return 0;
+ }
+ coredevice_initcall(sabrelite_coredevices_init);
++
++BAREBOX_DEEP_PROBE_ENABLE("fsl,imx6q-sabrelite");
++BAREBOX_DEEP_PROBE_ENABLE("fsl,imx6dl-sabrelite");
 -- 
 2.29.2
 
