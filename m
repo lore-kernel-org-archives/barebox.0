@@ -1,67 +1,67 @@
-Delivery-date: Fri, 16 Apr 2021 11:57:38 +0200
+Delivery-date: Fri, 16 Apr 2021 11:57:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lXLEI-00017g-Bf
-	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 11:57:38 +0200
+	id 1lXLEW-000186-Nb
+	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 11:57:52 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lXLEH-0006Mc-9P
-	for lore@pengutronix.de; Fri, 16 Apr 2021 11:57:38 +0200
+	id 1lXLEV-0006Oj-TX
+	for lore@pengutronix.de; Fri, 16 Apr 2021 11:57:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=VyP1kocxoFr3kEa7EaqznYKgPFpKqjEvUuuU1W+v2Dc=; b=P0gUdc/c9WnlCsPsven9UTiTM
-	hPPHlO1QCYA9Hq3aiTFAVqhlMIxK6pWPALUXiz0PI2T5RqjxGYgw8fSID0c78Y0m0TEjQw/dskHn2
-	LUaop9i1nYMXz0Wnup2J5Et6gLSCdarNaUlG0If2zoxpWKJ1FHpff3sY1lZtbp0Cta58iTNTnyE/4
-	ejkTb2byuWDzoczkFDuM5FDGyW1jPkCK24mnNOU2t8eIpBKGhkhKUpqxKh64Uz8u29LPborCIITEp
-	T+A+zTXVQtXyIUk6GYuSWhlCohS7Z5GU429dvHUBoLVvFZp86qZhJYBAg5VCUw9VrauYMe4/VoUZd
-	4QGRXrrAw==;
+	 bh=5rEYVeTaLq5mIxt4o/WjVrPz2gUKaHuQDwAKd7czxw4=; b=KzlVjfCNQplp6ZPcpcX2jlCVd
+	kBiF6JtDUWqNr8kHrctnMdbkuXLBp/ji4LCo9jEe5a3uDwxUruK6vQiJeUJREajycpu3CnnbNL5CR
+	FfovvLXvDotAHNosEn7gdoaB1l6+/uaRn+zLyqJNz7UeY6gC4MO+jkgU3N8Z2UhfwcOMsQYu73qWD
+	LoWFes0wK+RjRWzFteYu6GSRtT+ng2kE4/ODzjKahtsuKpkXRWmuKQt7F+d6YQisIwvZ/dTbPubuB
+	MQLDtTEPf6kOzyZ7HlN2kn+ZWstXgX86+MMCpTbmC6ToT6bRJT8RUUp11XfIv1jZBttzK4yME3tFS
+	2eRtl9UTQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lXLDE-001dq7-Kn; Fri, 16 Apr 2021 09:56:33 +0000
+	id 1lXLDJ-001dtH-Bn; Fri, 16 Apr 2021 09:56:37 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lXL7K-001cUS-Gu
- for barebox@desiato.infradead.org; Fri, 16 Apr 2021 09:50:31 +0000
+ id 1lXL7L-001cUq-Ln
+ for barebox@desiato.infradead.org; Fri, 16 Apr 2021 09:50:34 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=aXywxOMaA9PzATPCbhHFYSmugcG4kDtppir7WTKNW2I=; b=XFTifXJ65BWq/WDa34lUUOj2uU
- eBVM60x0ayXVIetiOcG8S2DjY53W4KjOITCZIXH98+3d0UtOSCQ+gsyI14WbeZ149GN4NXKyraBTT
- DSmOnJWBsiXtBVqBl46KZ/mkZc3dGjlpuUQBnuev0r7oMmn/fDLvBXa8lY7WkI3MjbfJMdDh6chTu
- bIZ4QQyXNuVjw48CGchbX0JqxHTP8ZDZRgasqrUPk+gBBwxAS0awnXOa8UbLrGmiFkQow/WBqEaBn
- w0m11KZ+ISDh7uy6OlJUNDUVvGCLFGgI3wul/PHyfKVGDmMtuB1FWFoJkN8JKeFYXBGqNF6IEHS2P
- a4+Vjggw==;
+ bh=i6si0jJ1ymQJAy0vzxosFc6nZIOJQDHj6XdnhVOwejo=; b=ZntAb7iydQRMNsrn+y2wakM6Zv
+ +TZ3adUpkSMo9ZeS3XJLROb+qcMGvx3aTvM6ka54/tQqPzbzfkkpqYwTxmnrqTNev0vwdy41uGQBa
+ QzhZqfwJKS0wyQWwfYsK4JsIx0Zc8RfbS6Iro1jjkoGOprMiAHuGNvhDyCbVRg2uhVeqJZuSkll0t
+ UMxC1irADlWNRmtdMiS88pHGncqBLDQ5PLjxFUnPwUWEfkQPbhYNl7ABsqCquOyoe/2jy9qxavc1w
+ WK9y9xMCyXJTqjxBeIc5sGgLguKC3C0b28wupZb7xYQs6If0quMN9pATPCXo96h3+JktzEgCpuYDY
+ dXaaqqEA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lXL7H-009FwJ-Ee
- for barebox@lists.infradead.org; Fri, 16 Apr 2021 09:50:25 +0000
+ id 1lXL7H-009FwF-Nt
+ for barebox@lists.infradead.org; Fri, 16 Apr 2021 09:50:26 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lXL7E-00051P-7B; Fri, 16 Apr 2021 11:50:20 +0200
+ id 1lXL7E-00051M-1i; Fri, 16 Apr 2021 11:50:20 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lXL7C-0001Dm-T5; Fri, 16 Apr 2021 11:50:18 +0200
+ id 1lXL7C-0001Dd-Ro; Fri, 16 Apr 2021 11:50:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 16 Apr 2021 11:49:36 +0200
-Message-Id: <20210416094943.3648-11-s.hauer@pengutronix.de>
+Date: Fri, 16 Apr 2021 11:49:33 +0200
+Message-Id: <20210416094943.3648-8-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210416094943.3648-1-s.hauer@pengutronix.de>
 References: <20210416094943.3648-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210416_025023_505750_AA9E146A 
-X-CRM114-Status: GOOD (  11.98  )
+X-CRM114-CacheID: sfid-20210416_025023_797440_F8917E4D 
+X-CRM114-Status: GOOD (  13.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,42 +85,84 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 10/17] pinctrl: Find controller node first
+Subject: [PATCH 07/17] of: implement of_get_stdoutpath()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The pinctrl controller node is the first parent node that has a compatible
-property. Use that information to find the node without iterating up to
-the root node.
+For deep probe support it will be useful to have a function to
+get the node corresponding to the stdoutpath. of_device_is_stdout_path()
+already has that functionality in it, so make a separate funcion from
+it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pinctrl/pinctrl.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/of/base.c | 15 ++++++++++-----
+ include/of.h      |  6 ++++++
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl.c b/drivers/pinctrl/pinctrl.c
-index b36521ef83..84ac61f2d9 100644
---- a/drivers/pinctrl/pinctrl.c
-+++ b/drivers/pinctrl/pinctrl.c
-@@ -85,12 +85,15 @@ static int pinctrl_config_one(struct device_node *np)
- 		pinctrl_node = pinctrl_node->parent;
- 		if (!pinctrl_node)
- 			return -ENODEV;
--		pdev = find_pinctrl(pinctrl_node);
--		if (pdev)
-+		if (of_get_property(pinctrl_node, "compatible", NULL))
- 			break;
- 	}
- 
--	return pdev->ops->set_state(pdev, np);
-+	pdev = find_pinctrl(pinctrl_node);
-+	if (pdev)
-+		return pdev->ops->set_state(pdev, np);
-+	else
-+		return -ENODEV;
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 1518854d2e..1e3921f915 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2434,16 +2434,13 @@ void of_delete_node(struct device_node *node)
+ 		of_set_root_node(NULL);
  }
  
- int of_pinctrl_select_state(struct device_node *np, const char *name)
+-int of_device_is_stdout_path(struct device_d *dev)
++struct device_node *of_get_stdoutpath(void)
+ {
+ 	struct device_node *dn;
+ 	const char *name;
+ 	const char *p;
+ 	char *q;
+ 
+-	if (!dev->device_node)
+-		return 0;
+-
+ 	name = of_get_property(of_chosen, "stdout-path", NULL);
+ 	if (!name)
+ 		name = of_get_property(of_chosen, "linux,stdout-path", NULL);
+@@ -2462,7 +2459,15 @@ int of_device_is_stdout_path(struct device_d *dev)
+ 
+ 	free(q);
+ 
+-	return dn == dev->device_node;
++	return dn;
++}
++
++int of_device_is_stdout_path(struct device_d *dev)
++{
++	if (!dev->device_node)
++		return 0;
++
++	return dev->device_node == of_get_stdoutpath();
+ }
+ 
+ /**
+diff --git a/include/of.h b/include/of.h
+index 1f68d78b24..a3527c1afd 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -280,6 +280,7 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node);
+ int of_parse_partitions(struct cdev *cdev, struct device_node *node);
+ int of_fixup_partitions(struct device_node *np, struct cdev *cdev);
+ int of_partitions_register_fixup(struct cdev *cdev);
++struct device_node *of_get_stdoutpath(void);
+ int of_device_is_stdout_path(struct device_d *dev);
+ const char *of_get_model(void);
+ void *of_flatten_dtb(struct device_node *node);
+@@ -317,6 +318,11 @@ static inline int of_partitions_register_fixup(struct cdev *cdev)
+ 	return -ENOSYS;
+ }
+ 
++static inline struct device_node *of_get_stdoutpath(void)
++{
++	return NULL;
++}
++
+ static inline int of_device_is_stdout_path(struct device_d *dev)
+ {
+ 	return 0;
 -- 
 2.29.2
 
