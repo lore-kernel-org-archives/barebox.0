@@ -1,69 +1,64 @@
-Delivery-date: Thu, 15 Apr 2021 17:32:13 +0200
+Delivery-date: Fri, 16 Apr 2021 08:27:25 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lX3yX-0007aP-2z
-	for lore@lore.pengutronix.de; Thu, 15 Apr 2021 17:32:13 +0200
+	id 1lXHwr-0000oK-53
+	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 08:27:25 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lX3yW-0001ps-72
-	for lore@pengutronix.de; Thu, 15 Apr 2021 17:32:12 +0200
+	id 1lXHwq-0007eT-CO
+	for lore@pengutronix.de; Fri, 16 Apr 2021 08:27:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Date:Cc:To:From:
-	Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=1khDy7a4BXb7iMXMLb6xaog9oCgI6DHEEXQSqO+yeow=; b=I8VJIHNDnmnRStrBSnNbD2J81
-	vPXnXbgeaLzKfdDSFJsL5hVNyo6NcP8+od7rg466ZiMrh0fO1ALlAKqXf3+Gzrjnmiidudei4iDTb
-	UhttbfuwV8rfufAy7gOfAF0FAD87ibV0qiRuDUFQsguTu+iG4S8ib8F1oMaIboSvMYV3oU66TfqtV
-	q/M6N0OedNete8n5atrL5ep5gES5g+Asr4cTkfPvLyme+G7te1drDJl2e3Mo2Sq8hKDYRdsC896ge
-	uSwP/8sc0YwmZHpThAgK4ShA/n6QMxmlc1v7mKdFDZlbWTLkiVlOumI1402Ht7KuhZ82RS4sRSe9E
-	9Mb3/KRfw==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=w6rsuE/7jYUuJtPHaatKPzXbUuYY9pgAO9s5u8qiwaE=; b=hXQIYccZVLMwQsDvv/pVZg3cE7
+	CC+KbY6Ueg3TiA1Wi3UzSHHs6Ekj44TkJ1p9UxwBFfm36Dfhs5QaaL5IGVuLX3OUL9hGCDrmhA2bh
+	WuOHLHZnxrGRusAb9PVwRQh7InjWGZZ7HTkQDd8Bioiracgy4aWoAomsWxc9QRw8UoL+dDdDTVq/F
+	wHTqUj07RA2mWaRPJClNRzGZ8C5lzRudosT8mDCuVWglJY0PjcChLk+RFL+ybYslHpwsOC79LWjnZ
+	K9bDgiOtwaiMdp9Wywe/YXyhOXY7kZYeqPrnbfZzIQVlYnoUQ5O17H+R+1jwUA0VrGuiaDLUSvZ0R
+	JJAxIFAw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lX3xc-00Gd4r-LH; Thu, 15 Apr 2021 15:31:16 +0000
+	id 1lXHvG-00123s-LW; Fri, 16 Apr 2021 06:25:46 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lX3xZ-00Gd4f-8q
- for barebox@desiato.infradead.org; Thu, 15 Apr 2021 15:31:13 +0000
+ id 1lXHuN-0011ph-Dl
+ for barebox@desiato.infradead.org; Fri, 16 Apr 2021 06:24:51 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:
- Message-ID:Sender:Reply-To:Content-ID:Content-Description;
- bh=UbRftheLfHdlzYffjBRwcd3EiVFKFy4U2ml1SoBgbgE=; b=q6PsJOGFODssJhbZg9RU3W0K9+
- CVjLWxvW4YgRD9CHRxdpAdF8ryh6s9y3++qDVMkFXD5jesZBSGs7Naq2/qfYCJjM6gPllK0qCjE4e
- FKcrDem3GO4eWZLiRcFo5AOdvnl2EBNBcEbzwsmTfJaScSjEyqWjwnVYIAYai+82ozbl1iiObfsk7
- JcICGtyJ0V7XxZqECeM7DX2Pr/JpZ7PXsFoC6OU9vIOpzIo4UnQP/kCmcu9+EdeNHVjmUlDPQGYkM
- J4J1/aOSa1135DGdcSve7njpH1RQ/cb8xEehM627+3AtePELmdcJJmObosf7+cFo6yHuWMql7qgII
- yeKj6m3Q==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=PXEh5Dv+vTcZMwh5zobi9dEiB9vETvVtPQn7Lpmm4VE=; b=kTaogoHCR8WGT2klBkVu2EIedM
+ 7eYpB4Nysm+2ljUtUHkWulqpi3u/D+maHW9hpaadGBtUK7+5pgoHVKnrOHsBj2l7u1sFPOLv+PSyu
+ zW8qV4yMorp6lhGshoKGa1UISIpotkNQJkaDcaGfxjqf54H6stUDpJlfRUoOQ6jEDrHrBmpmnOVfE
+ J1OtUNpZricIs2V9tUtke+GIyUY9dqxvXqQyfU40GpDqqHjqYNlbefur8nqi/9IJ7VH3qDPklyKfF
+ /3Iz9yAO62KhZd5pXVymWewg6yyNChXFuvaEBvj7tQYfSHeJcYgEKZ0oWaD5xfNeXrURq0zgdxH8g
+ 9nVLn2+A==;
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lX3xW-008i7u-Fb
- for barebox@lists.infradead.org; Thu, 15 Apr 2021 15:31:11 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>)
- id 1lX3xU-0001fh-Pt; Thu, 15 Apr 2021 17:31:08 +0200
-Message-ID: <1e17f965a5a60aaba5b092785eb815dd7c4d83a0.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 15 Apr 2021 17:31:08 +0200
-In-Reply-To: <20210415151231.GI19819@pengutronix.de>
-References: <20210415131617.3582-2-s.hauer@pengutronix.de>
- <20210415140313.29161-1-s.hauer@pengutronix.de>
- <ce2af9cf5f8b10a9595a7d5beec2497df0fdb172.camel@pengutronix.de>
- <20210415151231.GI19819@pengutronix.de>
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ id 1lXHuK-0097Eb-85
+ for barebox@lists.infradead.org; Fri, 16 Apr 2021 06:24:50 +0000
+X-Originating-IP: 83.135.94.168
+Received: from geraet.fritz.box (unknown [83.135.94.168])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 43FE31C0004;
+ Fri, 16 Apr 2021 06:24:41 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Fri, 16 Apr 2021 08:24:32 +0200
+Message-Id: <20210416062436.332665-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210415_083110_549312_299FF194 
-X-CRM114-Status: GOOD (  23.12  )
+X-CRM114-CacheID: sfid-20210415_232448_435768_73AB60E7 
+X-CRM114-Status: UNSURE (   9.18  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,67 +78,62 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] ARM: i.MX: sabresd: Add support for i.MX6QP board
- variant
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 0/4] x86: add EFI PCI host and iTCO watchdog support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Am Donnerstag, dem 15.04.2021 um 17:12 +0200 schrieb Sascha Hauer:
-> On Thu, Apr 15, 2021 at 04:59:30PM +0200, Lucas Stach wrote:
-> > Am Donnerstag, dem 15.04.2021 um 16:03 +0200 schrieb Sascha Hauer:
-> > > The SabreSD comes with different SoC variants. This patch adds support
-> > > for the i.MX6QP based board. the DCD data has been taken from U-Boot
-> > > 2021.04
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ---
-> > > 
-> > [...]
-> > > new file mode 100644
-> > > index 0000000000..52cc8aa73b
-> > > --- /dev/null
-> > > +++ b/arch/arm/dts/imx6qp-sabresd.dts
-> > > @@ -0,0 +1,42 @@
-> > > +/*
-> > > + * Copyright 2012 Freescale Semiconductor, Inc.
-> > > + * Copyright 2011 Linaro Ltd.
-> > > + *
-> > > + * The code contained herein is licensed under the GNU General Public
-> > > + * License. You may obtain a copy of the GNU General Public License
-> > > + * Version 2 or later at the following locations:
-> > > + *
-> > > + * http://www.opensource.org/licenses/gpl-license.html
-> > > + * http://www.gnu.org/copyleft/gpl.html
-> > > + */
-> > > +
-> > > +#include <arm/imx6qp-sabresd.dts>
-> > > +
-> > > +/ {
-> > > +	model = "Freescale i.MX6 Quad SABRE Smart Device Board";
-> > > +	compatible = "fsl,imx6q-sabresd", "fsl,imx6q";
-> > 
-> > I'm not sure I like this overwriting of the compatible string. AFAICS
-> > we don't have any instances for "fsl,imx6qp" compatible checks in
-> > either Barebox or Linux kernel, so it shouldn't cause any immediate
-> > damage, but this still feels wrong.
-> 
-> It's overwritten with the same strings as the included upstream dts has.
-> Anyway, as you say overwriting them here seems wrong. I removed it.
+v1 is here:
+https://lore.barebox.org/barebox/20191204125659.22506-1-a.fatoum@pengutronix.de/
 
-You had me confused for bit here, so I just checked and the compatible
-in the included upstream dts is different, as expected:
+Series tested with:
+  * QEMU q35: ns16550 serial, iTCO and virtio-pci
+  * Dell Latitude 7490: Bus enumeration works correctly
 
-compatible = "fsl,imx6qp-sabresd", "fsl,imx6qp";
+v1 -> v2:
+  - add DMA helpers, so the new virtio-pci support is usable on x86 as
+    well
+  - add preassigned bus support, so already running PCI UEFI drivers can
+    continue to function
+  - handle zero size resources correctly
+  - add iTCO watchdog support in new commit
 
-So now that you removed those lines, does you board file need fixing
-for the different compatibles?
+Cheers,
+Ahmad Fatoum (4):
+  x86: add DMA support
+  PCI: support PCI BIOS preassigned buses
+  pci: add EFI PCI root bridge IO protocol driver
+  watchdog: add support for Intel TCO watchdog timer
 
-Regards,
-Lucas
+ arch/arm/include/asm/pci.h     |   7 +
+ arch/mips/include/asm/pci.h    |   7 +
+ arch/x86/Kconfig               |   1 +
+ arch/x86/configs/efi_defconfig |   2 +
+ arch/x86/include/asm/dma.h     |  36 +++-
+ arch/x86/include/asm/pci.h     |   7 +
+ drivers/efi/Kconfig            |   1 +
+ drivers/pci/Kconfig            |   5 +
+ drivers/pci/Makefile           |   1 +
+ drivers/pci/pci-efi.c          | 342 ++++++++++++++++++++++++++++++++
+ drivers/pci/pci-efi.h          | 343 ++++++++++++++++++++++++++++++++
+ drivers/pci/pci.c              | 106 ++++++----
+ drivers/watchdog/Kconfig       |  17 ++
+ drivers/watchdog/Makefile      |   1 +
+ drivers/watchdog/itco_wdt.c    | 346 +++++++++++++++++++++++++++++++++
+ include/linux/pci.h            |   3 +
+ 16 files changed, 1187 insertions(+), 38 deletions(-)
+ create mode 100644 arch/arm/include/asm/pci.h
+ create mode 100644 arch/mips/include/asm/pci.h
+ create mode 100644 arch/x86/include/asm/pci.h
+ create mode 100644 drivers/pci/pci-efi.c
+ create mode 100644 drivers/pci/pci-efi.h
+ create mode 100644 drivers/watchdog/itco_wdt.c
+
+-- 
+2.31.0
 
 
 _______________________________________________
