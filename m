@@ -1,90 +1,67 @@
-Delivery-date: Fri, 16 Apr 2021 11:34:03 +0200
+Delivery-date: Fri, 16 Apr 2021 11:57:36 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lXKrT-00015B-9k
-	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 11:34:03 +0200
+	id 1lXLEG-00017K-Cv
+	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 11:57:36 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lXKrS-0003Gz-Et
-	for lore@pengutronix.de; Fri, 16 Apr 2021 11:34:03 +0200
+	id 1lXLEF-0006Ke-Ed
+	for lore@pengutronix.de; Fri, 16 Apr 2021 11:57:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=QpO5hvAJI+vDI02KsnKDiWRQ2Jdw+UDCETKN7+H4JnU=; b=L5NzUDUft0Px2qrJbAYz6R6lDx
-	wsd/Lu5w6eu72er/kvSPUtYshAcrBP7PsIL08CxLC1ujSDpRfgFFyRg6ebJ41MwJSBpo7UXqvFMOj
-	mzfhz/K2Dw9jlSSeU4lYSX7X8FK6U6prxm58DHKUjdS9/DFmFRMEhPHgI+CxACs8PPf7kytQgLWFq
-	cmGeg7fyoCv1rRlABi2wqJ91jKb3IUs3Tq4QEHMfBYTJ4Ag+FD+huO9IdhRa4ACjOlMuNjr/txdVn
-	Kou35oinI12U42wPwkHEC0sgu7lBgEvir6qFWXlElKH1y9llKRa7eNm01ACUSTVplNA+SqgpBAcS1
-	8zCD/Ugw==;
+	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=ZSOuf2g8uCFTW3Q+YoFmrIA/pWYZxKTqgxTMFbc5Wxk=; b=punpagCrWToj23nh4Vp/9TaqX
+	PubTuGjU6M9QHzskPYgvEhyT6R5RirYxMC5/3pwVdhRyQ7gSllk9kH39x4BtBtqpusLjFX38FcHMl
+	qyMPwAKpLyS1H7kxtjGbDKx8TtR8hSX4nNOGW1FWEHSQzdixmvpqV5Fo82bPTz9myqptvIdIXAITC
+	bwDM/YVXkWQ8KVzc26q1TEy5Xgc3RhyXEG4Qq4fOrE1mpdSlVfQEJRwqwJzd4kJ87xyYgTy4cTb61
+	0SgmU2LoFn54PMUUI7XuH1U6MdrG7iSAz9TCrLaDHeAHNQAb05Jtd1NGrPOZaJNRZvPsb+hAv4zHa
+	4aGlOHz2Q==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lXKmq-001YH6-Ic; Fri, 16 Apr 2021 09:29:16 +0000
+	id 1lXLD2-001dot-U4; Fri, 16 Apr 2021 09:56:21 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lXKYX-001VQV-Dv
- for barebox@desiato.infradead.org; Fri, 16 Apr 2021 09:14:29 +0000
+ id 1lXL7K-001cUR-Gm
+ for barebox@desiato.infradead.org; Fri, 16 Apr 2021 09:50:31 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=ArEhhZqXtbZIQp7vpPIP3DIgC/uwVmATYgasna9vTFM=; b=UCSHtw7zXbdqJTgIp8Ls2rAlYA
- S/bSvWmRgkSW+MtoHNmvhr9zynY9IgKvaic4nLES8owkgHwxijs9L5ItJtKgcbtVnbdYA+9LxFUYN
- SToKRb9k1vUoFISt3VMy/tKOnVea6kN6i34X+SpXDVzUT06PF8AFfb/Yxiy81J/TUHFJd6XnvpObG
- rMx8Ey2ec/IJu/HdR4/b/P04gEI6kJ83bQBndVy7cJLeoVPHQ93qAFDMbGGkKmAv/q6hupRlQWav6
- kmVZNVzGB/TWdvYjQSahtis4Ua/8tbk0Kgx3BYX1zmCyEAz8ORL2z2uEqeXcCWwe8//dK++IV3zA4
- mwjgstWA==;
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=QKajFaerw6vXb9PTV0olpoOFkJtGLdMuL/Z3lFbz8+w=; b=OpC565ABO9wEMxUo8UH+wjoFEc
+ qVlKp/b+BxQI21lEaopeAZd99cXazpMtLm0S47J9MCDhEGIABtoGGOkOKymi9XVl4G75xnJYeNAuZ
+ TTTNq8VvuxV4iX25G/CfdPzhQddx3oI0YfvA1nyCQhCJWbPZ9Rx66ZDeOfMe7sWIy6KfzFRdLUZv+
+ PsPy8J08Pl93/ooXDfmQo2Eg8tsXv6xLuyJCD/XuLxx2/f9bupVQhfwP/mKw5QBHya7OvkAcec3X0
+ TXlJe5vw6P7SzRdzUx8Rq7KCkNL27XqVTASMZOnp5EsYmOi91h0/rXFnWwWPEx8RZYArIXQtvIjI3
+ TodpJ2Xw==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lXKYQ-009EWl-Nk
- for barebox@lists.infradead.org; Fri, 16 Apr 2021 09:14:28 +0000
-Received: by mail-lj1-x22a.google.com with SMTP id a1so30296155ljp.2
- for <barebox@lists.infradead.org>; Fri, 16 Apr 2021 02:14:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=ArEhhZqXtbZIQp7vpPIP3DIgC/uwVmATYgasna9vTFM=;
- b=eHqtLTQz7Xjc7Z3hnd2Fvcf6Ex8O4Tzm9YACJVTIpkG+ecq8ix9axEaNW5AFOA7QEb
- GpKzlizmSvzDpbrjegcCURk5VnP129a9VPJ37U6raYvGMyQziAzn2mj1s2z1js8KMnYo
- e5NPVL5R4AgZXHYFEwf1cSAUttqGtp0wsYCV9ZQIvfzM2q4rrvBMLWfBDuOJ8GtafXC2
- Rk7axRMi0kdr16mOL5ioywQS7Iv8RqKz/x4rwhq2kevxd9QJG1KjV7s/55NaoNdQt83S
- uiPlSjTfHH+ge1P4PiHOqcf1PekFaX470LvSpe1mm9iHAH+mIc6kXPxayH8TMqV6rAFH
- 22+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=ArEhhZqXtbZIQp7vpPIP3DIgC/uwVmATYgasna9vTFM=;
- b=Cdr/zKovoW5WL1PLolLn6e2t7etRxZSfUVOqwjGkgixioki5pWKkIdapE3rzml+g41
- Jyj+JsqYnySbdrI1OUuO0+NfkaHSEgZYVcNFNZEPF73x9xNW6lj/C+oqNTbnokp/FJtN
- 8h94LERHJmM4qp59Hu5ix0fyT/FiRFjpjaTqMln7Y1ZAR3PLLnYyeKinblJCwXJrH1DL
- 7ckK5bJFWH9NZmYbD/hTXHNPQFmGwUQjksJo2r42/HhUc5Rd/p1tLh7V6J2URibr3ubx
- fLeiC/W61TmGCb1kLl5UsaRUgEp/r/yRgIVQMkNR+Do8QNETePjk2+fXishcmpzv6WJZ
- EJYQ==
-X-Gm-Message-State: AOAM533ZluoYv9akbdKMZtJwIxwa0TQqbJl/QNKbA3Iug0YrAQubZtsc
- 3hk11v1mypv60UBP1w1sK41FuxT8KAjY2g==
-X-Google-Smtp-Source: ABdhPJz0EhA8bYJ5akHCbqm5/cr/nBkOTWZyW63LsKjWLP9Hh7ODe0YFzXDeW7SCiHrKe20Q4vLedw==
-X-Received: by 2002:a2e:9908:: with SMTP id v8mr2076254lji.460.1618564460354; 
- Fri, 16 Apr 2021 02:14:20 -0700 (PDT)
-Received: from localhost.localdomain (109-252-203-32.dynamic.spd-mgts.ru.
- [109.252.203.32])
- by smtp.gmail.com with ESMTPSA id p12sm941446lfg.104.2021.04.16.02.14.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Apr 2021 02:14:20 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: barebox@lists.infradead.org
-Date: Fri, 16 Apr 2021 12:14:04 +0300
-Message-Id: <20210416091404.92251-1-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 2.31.0
+ id 1lXL7H-009FwK-L4
+ for barebox@lists.infradead.org; Fri, 16 Apr 2021 09:50:25 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lXL7E-00051R-80; Fri, 16 Apr 2021 11:50:20 +0200
+Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lXL7C-0001Ds-Tu; Fri, 16 Apr 2021 11:50:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Fri, 16 Apr 2021 11:49:38 +0200
+Message-Id: <20210416094943.3648-13-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210416094943.3648-1-s.hauer@pengutronix.de>
+References: <20210416094943.3648-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210416_021422_790716_87BFC8F0 
-X-CRM114-Status: GOOD (  12.80  )
+X-CRM114-CacheID: sfid-20210416_025023_705509_D4252299 
+X-CRM114-Status: GOOD (  12.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,7 +73,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -105,61 +81,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] scripts/spdxcheck.py: Use Python 3
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 12/17] pinctrl: Add deep probe support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Based on this linux kernel commit:
+This adds deep probe support for pinctrl.
 
-> commit d0259c42abff51b586496a0594933e394efefbc5
-> Author: Bert Vermeulen <bert@biot.com>
-> Date:   Thu Jan 21 09:54:12 2021 +0100
->
->    spdxcheck.py: Use Python 3
->
->    Python 2.x has been officially EOL'ed for some time, and in any case
->    the git module for it is hard to come by.
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/checkpatch.pl | 4 ++--
- scripts/spdxcheck.py  | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/pinctrl/pinctrl.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index b8bd4e1a59..36e3d768f3 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -885,10 +885,10 @@ sub is_maintained_obsolete {
- sub is_SPDX_License_valid {
- 	my ($license) = @_;
- 
--	return 1 if (!$tree || which("python") eq "" || !(-e "$root/scripts/spdxcheck.py") || !(-e "$root/.git"));
-+	return 1 if (!$tree || which("python3") eq "" || !(-e "$root/scripts/spdxcheck.py") || !(-e "$root/.git"));
- 
- 	my $root_path = abs_path($root);
--	my $status = `cd "$root_path"; echo "$license" | python scripts/spdxcheck.py -`;
-+	my $status = `cd "$root_path"; echo "$license" | python3 scripts/spdxcheck.py -`;
- 	return 0 if ($status ne "");
- 	return 1;
+diff --git a/drivers/pinctrl/pinctrl.c b/drivers/pinctrl/pinctrl.c
+index 84ac61f2d9..7e88391ff3 100644
+--- a/drivers/pinctrl/pinctrl.c
++++ b/drivers/pinctrl/pinctrl.c
+@@ -76,7 +76,7 @@ static struct pinctrl_device *find_pinctrl(struct device_node *node)
+ 	return NULL;
  }
-diff --git a/scripts/spdxcheck.py b/scripts/spdxcheck.py
-index 6374e078a5..0f81337394 100755
---- a/scripts/spdxcheck.py
-+++ b/scripts/spdxcheck.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/env python3
- # SPDX-License-Identifier: GPL-2.0
- # Copyright Thomas Gleixner <tglx@linutronix.de>
  
+-static int pinctrl_config_one(struct device_node *np)
++static int pinctrl_config_one(struct device_node *for_node, struct device_node *np)
+ {
+ 	struct pinctrl_device *pdev;
+ 	struct device_node *pinctrl_node = np;
+@@ -89,6 +89,9 @@ static int pinctrl_config_one(struct device_node *np)
+ 			break;
+ 	}
+ 
++	if (pinctrl_node != for_node)
++		of_device_ensure_probed(pinctrl_node);
++
+ 	pdev = find_pinctrl(pinctrl_node);
+ 	if (pdev)
+ 		return pdev->ops->set_state(pdev, np);
+@@ -151,7 +154,7 @@ int of_pinctrl_select_state(struct device_node *np, const char *name)
+ 			}
+ 
+ 			/* Parse the node */
+-			ret = pinctrl_config_one(np_config);
++			ret = pinctrl_config_one(np, np_config);
+ 			if (ret < 0)
+ 				goto err;
+ 		}
 -- 
-2.31.0
+2.29.2
 
 
 _______________________________________________
