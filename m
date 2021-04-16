@@ -1,67 +1,67 @@
-Delivery-date: Fri, 16 Apr 2021 12:00:44 +0200
+Delivery-date: Fri, 16 Apr 2021 12:01:08 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lXLHI-0001D3-Qk
-	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 12:00:44 +0200
+	id 1lXLHg-0001DV-Qy
+	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 12:01:08 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lXLHI-0007DQ-33
-	for lore@pengutronix.de; Fri, 16 Apr 2021 12:00:44 +0200
+	id 1lXLHf-0007Rk-VL
+	for lore@pengutronix.de; Fri, 16 Apr 2021 12:01:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=1xHj4zSLVjDh7t3ctS8QLyPq6itI9vVaGyFDl3VjpIo=; b=kcwy+o2nAjI/ysSXBjcasqH4Q
-	491xHLpvzjFVuDIfV8GvLKifs7s/kFAlScd26YmHJHV6UJWmGtTqDjIKKu/BSgqRGXCVszde4ywuR
-	VxaD7mN4v0vPWhw49p63MTNNn3QpUVV03eGfe1pDflplrhgn+XexDphKqjvMXx+FktWRl5sNlep9c
-	SHf+dqdLRKg0Jc1s/sPkZVJEGz9nPSKzy/6BCTk/PjumKyznpQhy7xSn9hycaJnM0dbILdZ1sOdVK
-	U1o8bVkwl6XzL3l1LjgHnZuWJ6p//BbexJHGHwfAwMDKt0Xi97iQxdjH1bvmSenbYOT3jsoufwWh7
-	iA4Hru78A==;
+	 bh=83Qt5zKbiOC3QuuexRnPXQctI4hC1G2WkhUqb4xzxsc=; b=hGYq009T4lY0RFrroMMrqBqAZ
+	Mo0JIAktYMj7EPjxPvZ8BtcZCNzhp7UY7YF1EWchJwuuH56upsnZd0+Dpz3IwbYlCEXXzFYF4p59A
+	He6KxU8zYnVcryWm2dM2v0hChcLimo3O5auPgovlb+b4gXAQ7mdBlmGfqFkKZmhcO5d6GkE6xbHC7
+	TDr8Wcfaqx1x7kaIl1AbWfwVTBSkkGq8iKKLWcFgVFAijpbVTmtlQ/w6YiiMvGlCDhKYo5LpGbSJb
+	IjTiaWEp4J24hq+Kr36re9oAx7uDINTFdt+7qLG7Gc457QaCmxtNNzqPMWBzH1SgDjP6FmR+TMN5z
+	sHRTRCafQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lXLFw-001eeC-O1; Fri, 16 Apr 2021 09:59:21 +0000
+	id 1lXLG5-001eis-1X; Fri, 16 Apr 2021 09:59:29 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lXL7Y-001cVl-3D
+ id 1lXL7Y-001cW6-Eb
  for barebox@desiato.infradead.org; Fri, 16 Apr 2021 09:50:44 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=EzHjne4EzbADfWLqm3nMwG16UyBT0mWm61kisS+Nito=; b=WvI5BiG4GsNQf9C1dp+RpMeOb/
- LAoNf+R5rkqUdVtLGDDcNccCAoAgCFcZL3N32wjnEBAwNmrcEnWE06zW0yaWNiAUmN2149QC2V3CX
- jkue+Wyyf5WdCGf+FHu0QBs86FkV2JCCmruCzg+6bApfoSlFKG157WSpju2rXFo8p0o7MdSGHlnH7
- WQuC5QD/68G7xTrEUzq9jzxZEm8fDEbFU+YGoWfZV4pa0f+Z7SGRk5opZYTRcwjdrebgePcxxsTsR
- ZCjpdztQizScKnxU5QWx438io0gH88YDNgxx2UIBWv+666HLPQDfKbHRh1pcUylNLLb4ZZa+Mt3sG
- T6C0Vuyw==;
+ bh=WIq5rRivSP9k65s6qazNoe1sBhqbACZdV+SKTT64CXs=; b=s+vj+SbcgDyaHjQqw0gzrqMBuB
+ IT6G96fgsyhKbEXCYVxINVTMn4SSTZW3xocclYPQNEuex74LW1PpzhPRUHHOiN79Zlm2iLeYhKxHo
+ RJke2vBbYT0YLOMw2mUR/wG7GjZHpif69vDRylqN3M1zcSXk83fUEY/DE8MSO1Qk8k3CTeLhu9uAP
+ h4yxcgijC7SHOokBrLloAJKmOre5pq2YsqI6C0G0fGta9VG0cw9hyOM3imT0UXwcbp502HrNSpW13
+ AalGg7QytTnkVh7Ela4kR+Oc/0M/rX3LcSP+JKZib1Ql77yiT5HmLLw11XuUtj9hVjygPGEF10Q40
+ 0EprzFgw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lXL7V-009G0A-Fs
- for barebox@lists.infradead.org; Fri, 16 Apr 2021 09:50:38 +0000
+ id 1lXL7V-009G0D-Kg
+ for barebox@lists.infradead.org; Fri, 16 Apr 2021 09:50:39 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lXL7D-00051K-Uq; Fri, 16 Apr 2021 11:50:19 +0200
+ id 1lXL7E-00051I-4p; Fri, 16 Apr 2021 11:50:20 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lXL7C-0001DX-Qv; Fri, 16 Apr 2021 11:50:18 +0200
+ id 1lXL7C-0001DQ-Q4; Fri, 16 Apr 2021 11:50:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 16 Apr 2021 11:49:31 +0200
-Message-Id: <20210416094943.3648-6-s.hauer@pengutronix.de>
+Date: Fri, 16 Apr 2021 11:49:29 +0200
+Message-Id: <20210416094943.3648-4-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210416094943.3648-1-s.hauer@pengutronix.de>
 References: <20210416094943.3648-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210416_025037_547015_626FF60D 
-X-CRM114-Status: GOOD (  11.88  )
+X-CRM114-CacheID: sfid-20210416_025037_707790_0A6977EE 
+X-CRM114-Status: GOOD (  17.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,52 +86,91 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 05/17] of: base: move clock init from of_probe() to
- barebox_register_of()
+Subject: [PATCH 03/17] of: platform: Keep track of populated platform devices
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 From: Marco Felsch <m.felsch@pengutronix.de>
 
-This is required for the new deep-probe mechanism. Barebox deep-probe
-calls of_probe() very late and so clock drivers using the old
-CLK_OF_DECLARE_DRIVER() mechanism are added very late. This would break
-the deep-probe approach.
-
-Move of_clk_init() and call it right before of_probe() should have no
-impact because of_clk_init() depends only on an unflatten dtb.
+Linux does not allow to populate the same of device more than once.
+Linux uses the OF_POPULATED flag for that purpose. Align the logic with
+the current linux state with the exception that we are returning the
+already created device. This is needed for the later added deep-probe
+mechanism.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Link: https://lore.pengutronix.de/20201021115813.31645-6-m.felsch@pengutronix.de
+Link: https://lore.pengutronix.de/20201021115813.31645-4-m.felsch@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/base.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/of/platform.c | 20 +++++++++++++++++++-
+ include/of.h          |  1 +
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 549a0a2c2c..7b3cfa8393 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1707,8 +1707,10 @@ void barebox_register_of(struct device_node *root)
- 	of_set_root_node(root);
- 	of_fix_tree(root);
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 51781798c6..01de6f98af 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -106,6 +106,13 @@ struct device_d *of_platform_device_create(struct device_node *np,
+ 	if (!of_device_is_available(np))
+ 		return NULL;
  
--	if (IS_ENABLED(CONFIG_OFDEVICE))
-+	if (IS_ENABLED(CONFIG_OFDEVICE)) {
-+		of_clk_init(root, NULL);
- 		of_probe();
++	/*
++	 * Linux uses the OF_POPULATED flag to skip already populated/created
++	 * devices.
++	 */
++	if (np->dev)
++		return np->dev;
++
+ 	/* count the io resources */
+ 	if (of_can_translate_address(np))
+ 		while (of_address_to_resource(np, num_reg, &temp_res) == 0)
+@@ -141,8 +148,10 @@ struct device_d *of_platform_device_create(struct device_node *np,
+ 		(num_reg) ? &dev->resource[0].start : &resinval);
+ 
+ 	ret = platform_device_register(dev);
+-	if (!ret)
++	if (!ret) {
++		np->dev = dev;
+ 		return dev;
 +	}
- }
  
- void barebox_register_fdt(const void *dtb)
-@@ -2335,7 +2337,6 @@ int of_probe(void)
+ 	free(dev);
+ 	if (num_reg)
+@@ -223,6 +232,13 @@ static struct device_d *of_amba_device_create(struct device_node *np)
+ 	if (!of_device_is_available(np))
+ 		return NULL;
  
- 	of_platform_device_create_root(root_node);
++	/*
++	 * Linux uses the OF_POPULATED flag to skip already populated/created
++	 * devices.
++	 */
++	if (np->dev)
++		return np->dev;
++
+ 	dev = xzalloc(sizeof(*dev));
  
--	of_clk_init(root_node, NULL);
- 	of_platform_populate(root_node, of_default_bus_match_table, NULL);
+ 	/* setup generic device info */
+@@ -246,6 +262,8 @@ static struct device_d *of_amba_device_create(struct device_node *np)
+ 	if (ret)
+ 		goto amba_err_free;
  
- 	return 0;
++	np->dev = &dev->dev;
++
+ 	return &dev->dev;
+ 
+ amba_err_free:
+diff --git a/include/of.h b/include/of.h
+index 645f429bde..1f68d78b24 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -35,6 +35,7 @@ struct device_node {
+ 	struct list_head parent_list;
+ 	struct list_head list;
+ 	phandle phandle;
++	struct device_d *dev;
+ };
+ 
+ struct of_device_id {
 -- 
 2.29.2
 
