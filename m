@@ -1,67 +1,66 @@
-Delivery-date: Fri, 16 Apr 2021 12:01:13 +0200
+Delivery-date: Fri, 16 Apr 2021 19:28:38 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lXLHl-0001Dr-KV
-	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 12:01:13 +0200
+	id 1lXSGk-0001rh-FS
+	for lore@lore.pengutronix.de; Fri, 16 Apr 2021 19:28:38 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lXLHk-0007Tp-BY
-	for lore@pengutronix.de; Fri, 16 Apr 2021 12:01:13 +0200
+	id 1lXSGj-0000N4-FZ
+	for lore@pengutronix.de; Fri, 16 Apr 2021 19:28:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
-	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=/NyDdiNZn0AxHD7xyW3Ba00m/dVCMDAKKuBtloZPn0g=; b=rWA9rQ8RhKkYE9n5jS8sY0FjR
-	BRKQb/wfbxYicv/MWDUuVTN1Q0rsB8FoGSjVXtw56zxyy7EJC3iDqfmKm8OB/JBVL8tNWu6jfIq19
-	Y34CjWpEjNodCU/5g0mAKo8pBhVDvTEF7ZfRUTTJ/1CmLRl4wV8Bl0UgG3K66BwUDxCaTLSTLagXm
-	wtXfCp9mae0nH+W1AwRy0YWAMvg+7Qy/uKTt6bWrcQonNxHkUYBXZDc1RVZxDrO2rG9rkRYqbvkKs
-	TWUPr+ehqUXUGbKLvdzGGugviPLZzv+71A+Gme6YqvZcZWtvC9JVe9dmYTYlI/iVcVK3wrKimFxrz
-	a3g9caLxA==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ouz/jJDSfwZj6oAhqkqxBKvnMNMyH1OTmDO7vBsNQJM=; b=Fotqimh9qQ6FcZ7C0OLDj1cNAB
+	exuL55B0aosQ2GzMn1DDMN5EAgx7LQy8iotcbsruwG7qQJhOjCPxr4z8SCx+dw0drA1zWP8tPs1I4
+	VE+QmnWtdl04hjHFvg3/R4daiR+GCmdgByU3/Jess2yqXNDshGj9e+K/EDFdj8J3DnV2fkefFpy6W
+	+vsb/HFzMXaq+ENbfmSZKLrt4ebJEv7GQpnbQf/DnzZY9HdRPCtap8irNE90J4IeZPpW/rQ8+Xl6i
+	qVMvQCA5iXkFL0AMygRENibZCTULwGKkrtaJvRvpdrdJ3M5npJ2qUwmsBIew6+ZF7nolW+1U4Z00E
+	qE0UxUqg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lXLGL-001epF-JO; Fri, 16 Apr 2021 09:59:46 +0000
+	id 1lXSFA-002wfA-4G; Fri, 16 Apr 2021 17:27:02 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lXL7Y-001cW7-Kb
- for barebox@desiato.infradead.org; Fri, 16 Apr 2021 09:50:46 +0000
+ id 1lXSF4-002weK-VE
+ for barebox@desiato.infradead.org; Fri, 16 Apr 2021 17:26:55 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=Qaulqb3sfGrgZm2Xg07ddelbXLp5Ict8TtU2+6orMr4=; b=GdXgBZSzCiVc9dQbbuBy6enziw
- 30gV78jkse8NhCAL3BaGzmp5bRsiSqLHyGfVCMSyL8iGTNhJQo9oDctuRhXjCIH8HtuqMtBUu7qh3
- QgXA0pIJHw0lErprb6s1FM9n+uy8W7AFXihjnRjhcda0LDih2lZQkU8YQYdnd/zM5lUi088RZN6Oj
- ZczBvd6HDMOwa8CJErnB9I1G2YhMe35qd4Rq4AuyjxNvugqok4/pdTuZy6ECg0aOimcS4/Ribe6OO
- 2DfOLLPwgHetxLk5KUKPVnqncaMkUVuOxzLoyWzw7IDFETcNi9US7Y8R30SEWdATAsaz9XFZmc7K1
- VUD07U7g==;
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=KXWoifNN8e/sUhXPqZ3KJ1yj7pvp65HKTo25gFLZ3HU=; b=vUgKzFNIhrsSRvKO5qWsaPq+ZL
+ 9xnhMyd1irOtNzXmsTmKR5eUJfVFQ3LJnZIg363HcIm/mK+QI/mLSgrS7lyo338F1fN1LD2uCOcLX
+ 4oX+1tb1VzY+cP8BP6SXl0t6ZJ9Hk4aBI4IrpUYZSq4I35FxPrtkVYPNNO7viU2dU8I+rfoFahVKu
+ 5PlHJTufKMoLi5Mi3yT4g/JBEu+oTkjaHMx2C44BOrkSefau7Wt2GfTXlHKlp3x2yRKP9VaYyIMpp
+ 6uADeP3x7H7yz+N+Ng2w5v8xDrGxwSL/3hfmb6N+u8VAKe6jrX51/o47Sa9OBS0/MqUK6NgjO/EFy
+ Why7J1LA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lXL7V-009G0B-Jh
- for barebox@lists.infradead.org; Fri, 16 Apr 2021 09:50:39 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ id 1lXSF2-009awh-8C
+ for barebox@lists.infradead.org; Fri, 16 Apr 2021 17:26:53 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lXL7E-00051V-6I; Fri, 16 Apr 2021 11:50:20 +0200
-Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lXL7C-0001E4-Vo; Fri, 16 Apr 2021 11:50:18 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 16 Apr 2021 11:49:42 +0200
-Message-Id: <20210416094943.3648-17-s.hauer@pengutronix.de>
+ (envelope-from <afa@pengutronix.de>)
+ id 1lXSEx-0000Gh-9Y; Fri, 16 Apr 2021 19:26:47 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1lXSEx-000751-17; Fri, 16 Apr 2021 19:26:47 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 16 Apr 2021 19:26:46 +0200
+Message-Id: <20210416172646.26834-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210416094943.3648-1-s.hauer@pengutronix.de>
-References: <20210416094943.3648-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210416_025037_833558_DC431634 
-X-CRM114-Status: GOOD (  16.88  )
+X-CRM114-CacheID: sfid-20210416_102652_315546_9B567E65 
+X-CRM114-Status: GOOD (  16.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,240 +80,105 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 16/17] ARM: i.MX Phytec physom: convert to board driver
+Subject: [PATCH v2] usb: storage: retry for up to 10s on lengthy HDD spin up
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Board driver is the new way for board specific fixups and the physom
-board with its many compatible strings can really take profit from it,
-so convert it.
+Some USB disks take notoriously long to spin up. They are seen by a bus
+scan, but they report ready only after a few seconds have passed. This
+is not a problem if vbus is enabled early on, so devices have had a
+chance to spin up. If vbus is first enabled as part of the usb scan,
+not enough time might have passed for the USB disk to be usable.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+This issue was observed on an i.MX6QP with following topology:
+
+  usb: USB: scanning bus for devices...
+  usb: 5 USB Device(s) found
+    1 ID 0000:0000
+    |  u-boot EHCI Host Controller
+    |
+    +-2 ID 0424:2517
+    |
+    +-5 ID 1058:2621
+    |    Western Digital Elements 2621
+    ...
+
+Unplugging and replugging the USB disk and doing a second usb scan
+made the unit ready test succeed. Increasing the retry count
+during initialization has negative consequences for other cases,
+like when a device is unplugged while being probed (which already
+takes way too long).
+
+Instead, just for the case of a detected USB mass storage device that
+couldn't get ready initially: retry for 10s at initialization time
+before giving up.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/phytec-som-imx6/board.c | 150 ++++++++++++++++++------
- 1 file changed, 117 insertions(+), 33 deletions(-)
+v1 -> v2:
+  - don't increase retry count, instead just check time and don't
+    loop longer than 10s at init time.
+---
+ drivers/usb/storage/usb.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
-index bac3e8a8a1..36c4d9a78b 100644
---- a/arch/arm/boards/phytec-som-imx6/board.c
-+++ b/arch/arm/boards/phytec-som-imx6/board.c
-@@ -141,16 +141,26 @@ err_out:
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index b417640186a2..b0f789b42a9f 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -141,20 +141,23 @@ exit:
  	return ret;
  }
  
--static int physom_imx6_devices_init(void)
-+#define IS_PHYFLEX	BIT(0)
-+#define IS_PHYCORE	BIT(1)
-+#define IS_PHYCARD	BIT(2)
-+#define IS_PHYCORE_UL	BIT(3)
-+#define HAS_MMC3	BIT(4)
-+#define HAS_MMC1	BIT(5)
-+
-+struct board_data {
-+	unsigned flags;
-+};
-+
-+static int physom_imx6_probe(struct device_d *dev)
+-static int usb_stor_test_unit_ready(struct us_blk_dev *usb_blkdev)
++static int usb_stor_test_unit_ready(struct us_blk_dev *usb_blkdev, u64 timeout_ns)
  {
++	u64 start;
+ 	u8 cmd[6];
  	int ret;
- 	char *environment_path, *default_environment_path;
- 	char *envdev, *default_envdev;
-+	const struct board_data *brd = device_get_match_data(dev);
-+	unsigned flags = brd->flags;
  
--	if (of_machine_is_compatible("phytec,imx6q-pfla02")
--		|| of_machine_is_compatible("phytec,imx6dl-pfla02")
--		|| of_machine_is_compatible("phytec,imx6s-pfla02")) {
--
-+	if (flags & IS_PHYFLEX) {
- 		phyflex_err006282_workaround();
+ 	memset(cmd, 0, sizeof(cmd));
+ 	cmd[0] = SCSI_TST_U_RDY;
  
- 		pfla02_module_revision = get_module_rev();
-@@ -164,21 +174,14 @@ static int physom_imx6_devices_init(void)
- 		imx6_bbu_internal_mmc_register_handler("mmc2",
- 						"/dev/mmc2", 0);
+-	ret = usb_stor_transport(usb_blkdev, cmd, sizeof(cmd), NULL, 0,
+-				 10, 100);
+-	if (ret < 0)
+-		return -ENODEV;
++	start = get_time_ns();
  
--	} else if (of_machine_is_compatible("phytec,imx6q-pcaaxl3")) {
--
-+	} else if (flags & IS_PHYCARD) {
- 		barebox_set_hostname("phyCARD-i.MX6");
- 		default_environment_path = "/chosen/environment-nand";
- 		default_envdev = "NAND flash";
- 
- 		imx6_bbu_internal_mmc_register_handler("mmc2",
- 						"/dev/mmc2", 0);
--
--	} else if (of_machine_is_compatible("phytec,imx6q-pcm058-nand")
--		|| of_machine_is_compatible("phytec,imx6q-pcm058-emmc")
--		|| of_machine_is_compatible("phytec,imx6dl-pcm058-nand")
--		|| of_machine_is_compatible("phytec,imx6qp-pcm058-nand")
--		|| of_machine_is_compatible("phytec,imx6dl-pcm058-emmc")) {
--
-+	} else if (flags & IS_PHYCORE) {
- 		if (phycore_da9062_setup_buck_mode())
- 			pr_err("Setting PMIC BUCK mode failed\n");
- 
-@@ -189,8 +192,7 @@ static int physom_imx6_devices_init(void)
- 		imx6_bbu_internal_mmc_register_handler("mmc0",
- 						"/dev/mmc0", 0);
- 
--	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-nand")
--		|| of_machine_is_compatible("phytec,imx6ul-pcl063-emmc")) {
-+	} else if (flags & IS_PHYCORE_UL) {
- 		barebox_set_hostname("phyCORE-i.MX6UL");
- 		default_environment_path = "/chosen/environment-nand";
- 		default_envdev = "NAND flash";
-@@ -201,8 +203,9 @@ static int physom_imx6_devices_init(void)
- 		imx6_bbu_internal_mmc_register_handler("mmc0",
- 						"/dev/mmc0", 0);
- 
--	} else
--		return 0;
-+	} else {
-+		return -EINVAL;
-+	}
- 
- 	switch (bootsource_get()) {
- 	case BOOTSOURCE_MMC:
-@@ -234,14 +237,13 @@ static int physom_imx6_devices_init(void)
- 
- 	pr_notice("Using environment in %s\n", envdev);
- 
--	if (of_machine_is_compatible("phytec,imx6q-pcm058-emmc")
--		|| of_machine_is_compatible("phytec,imx6dl-pcm058-emmc")) {
-+	if (flags & HAS_MMC3) {
- 		imx6_bbu_internal_mmc_register_handler("mmc3",
- 						"/dev/mmc3",
- 						BBU_HANDLER_FLAG_DEFAULT);
- 		imx6_bbu_internal_mmcboot_register_handler("mmc3-boot",
- 						"mmc3", 0);
--	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-emmc")) {
-+	} else if (flags & HAS_MMC1) {
- 		imx6_bbu_internal_mmc_register_handler("mmc1",
- 						"/dev/mmc1",
- 						BBU_HANDLER_FLAG_DEFAULT);
-@@ -254,23 +256,105 @@ static int physom_imx6_devices_init(void)
- 	defaultenv_append_directory(defaultenv_physom_imx6);
- 
- 	/* Overwrite file /env/init/automount */
--	if (of_machine_is_compatible("phytec,imx6q-pfla02")
--		|| of_machine_is_compatible("phytec,imx6dl-pfla02")
--		|| of_machine_is_compatible("phytec,imx6s-pfla02")
--		|| of_machine_is_compatible("phytec,imx6q-pcaaxl3")) {
-+	if (flags & IS_PHYCARD || flags & IS_PHYFLEX) {
- 		defaultenv_append_directory(defaultenv_physom_imx6);
--	} else if (of_machine_is_compatible("phytec,imx6qp-pcm058-nand")
--		|| of_machine_is_compatible("phytec,imx6q-pcm058-nand")
--		|| of_machine_is_compatible("phytec,imx6q-pcm058-emmc")
--		|| of_machine_is_compatible("phytec,imx6dl-pcm058-nand")
--		|| of_machine_is_compatible("phytec,imx6dl-pcm058-emmc")) {
-+	} else if (flags & IS_PHYCORE) {
- 		defaultenv_append_directory(defaultenv_physom_imx6);
- 		defaultenv_append_directory(defaultenv_physom_imx6_phycore);
--	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-nand")
--		|| of_machine_is_compatible("phytec,imx6ul-pcl063-emmc")) {
-+	} else if (flags & IS_PHYCORE_UL) {
- 		defaultenv_append_directory(defaultenv_physom_imx6ul_phycore);
- 	}
- 
- 	return 0;
+-	return 0;
++	do {
++		ret = usb_stor_transport(usb_blkdev, cmd, sizeof(cmd), NULL, 0,
++					 10, 100);
++	} while (ret < 0 && !is_timeout(start, timeout_ns));
++
++	return ret ? -ENODEV : 0;
  }
--device_initcall(physom_imx6_devices_init);
-+
-+static struct board_data imx6q_pfla02 = {
-+	.flags = IS_PHYFLEX,
-+};
-+
-+static struct board_data imx6dl_pfla02 = {
-+	.flags = IS_PHYFLEX,
-+};
-+
-+static struct board_data imx6s_pfla02 = {
-+	.flags = IS_PHYFLEX,
-+};
-+
-+static struct board_data imx6q_pcaaxl3 = {
-+	.flags = IS_PHYCARD,
-+};
-+
-+static struct board_data imx6q_pcm058_nand = {
-+	.flags = IS_PHYCORE,
-+};
-+
-+static struct board_data imx6q_pcm058_emmc = {
-+	.flags = IS_PHYCORE | HAS_MMC3,
-+};
-+
-+static struct board_data imx6dl_pcm058_nand = {
-+	.flags = IS_PHYCORE,
-+};
-+
-+static struct board_data imx6qp_pcm058_nand = {
-+	.flags = IS_PHYCORE,
-+};
-+
-+static struct board_data imx6dl_pcm058_emmc = {
-+	.flags = IS_PHYCORE | HAS_MMC3,
-+};
-+
-+static struct board_data imx6ul_pcl063_nand = {
-+	.flags = IS_PHYCORE_UL,
-+};
-+
-+static struct board_data imx6ul_pcl063_emmc = {
-+	.flags = IS_PHYCORE_UL | HAS_MMC1,
-+};
-+
-+
-+static const struct of_device_id physom_imx6_match[] = {
-+	{
-+		.compatible = "phytec,imx6q-pfla02",
-+		.data = &imx6q_pfla02,
-+	}, {
-+		.compatible = "phytec,imx6dl-pfla02",
-+		.data = &imx6dl_pfla02,
-+	}, {
-+		.compatible = "phytec,imx6s-pfla02",
-+		.data = &imx6s_pfla02,
-+	}, {
-+		.compatible = "phytec,imx6q-pcaaxl3",
-+		.data = &imx6q_pcaaxl3,
-+	}, {
-+		.compatible = "phytec,imx6q-pcm058-nand",
-+		.data = &imx6q_pcm058_nand,
-+	}, {
-+		.compatible = "phytec,imx6q-pcm058-emmc",
-+		.data = &imx6q_pcm058_emmc,
-+	}, {
-+		.compatible = "phytec,imx6dl-pcm058-nand",
-+		.data = &imx6dl_pcm058_nand,
-+	}, {
-+		.compatible = "phytec,imx6qp-pcm058-nand",
-+		.data = &imx6qp_pcm058_nand,
-+	}, {
-+		.compatible = "phytec,imx6dl-pcm058-emmc",
-+		.data = &imx6dl_pcm058_emmc,
-+	}, {
-+		.compatible = "phytec,imx6ul-pcl063-nand",
-+		.data = &imx6ul_pcl063_nand,
-+	}, {
-+		.compatible = "phytec,imx6ul-pcl063-emmc",
-+		.data = &imx6ul_pcl063_emmc,
-+	},
-+	{ /* Sentinel */ },
-+};
-+
-+static struct driver_d physom_imx6_driver = {
-+	.name = "physom-imx6",
-+	.probe = physom_imx6_probe,
-+	.of_compatible = physom_imx6_match,
-+};
-+
-+postcore_platform_driver(physom_imx6_driver);
+ 
+ static int read_capacity_16(struct us_blk_dev *usb_blkdev)
+@@ -282,7 +285,7 @@ static int usb_stor_blk_io(struct block_device *disk_dev,
+ 
+ 	/* ensure unit ready */
+ 	dev_dbg(dev, "Testing for unit ready\n");
+-	if (usb_stor_test_unit_ready(pblk_dev)) {
++	if (usb_stor_test_unit_ready(pblk_dev, 0)) {
+ 		dev_dbg(dev, "Device NOT ready\n");
+ 		return -EIO;
+ 	}
+@@ -365,7 +368,8 @@ static int usb_stor_init_blkdev(struct us_blk_dev *pblk_dev)
+ 	/* ensure unit ready */
+ 	dev_dbg(dev, "Testing for unit ready\n");
+ 
+-	result = usb_stor_test_unit_ready(pblk_dev);
++	/* retry a bit longer than usual as some HDDs take longer to spin up */
++	result = usb_stor_test_unit_ready(pblk_dev, 10ULL * NSEC_PER_SEC);
+ 	if (result) {
+ 		dev_dbg(dev, "Device NOT ready\n");
+ 		return result;
 -- 
 2.29.2
 
