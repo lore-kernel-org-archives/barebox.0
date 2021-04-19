@@ -1,67 +1,71 @@
-Delivery-date: Mon, 19 Apr 2021 09:36:25 +0200
+Delivery-date: Mon, 19 Apr 2021 09:47:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lYOSH-0006BV-In
-	for lore@lore.pengutronix.de; Mon, 19 Apr 2021 09:36:25 +0200
+	id 1lYOdI-0006CK-86
+	for lore@lore.pengutronix.de; Mon, 19 Apr 2021 09:47:48 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lYOSG-0001Li-Nm
-	for lore@pengutronix.de; Mon, 19 Apr 2021 09:36:25 +0200
+	id 1lYOdH-0002Xg-6X
+	for lore@pengutronix.de; Mon, 19 Apr 2021 09:47:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
-	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	References:Cc:To:Subject:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=nr5rNxRIhuTEA8JZXCbHGkawdxP15tFVghSdVhdcEeI=; b=FYoaVloqNGo2csKRurwHx1o9d
-	1GgMi4ye8sIGj6qi2T7MIMwt7OYMZzFUZrG733Aa6Nl1rae6Yes+dLA5K3XS2w8jHI6LcF+qwnqHQ
-	wbanZaKdRjLmDpY801TmXeZi9u0B+Wc3PTfBbv8a3MG7kLjKhINeu+C86vx4VYAbkPuw3ArsrJZsN
-	3zRnUk64/pFB79/C3ARDmSxsepllIfzf3RoTqHE05mkJ3obfAWtD/wCFBEmRi9gG3l37tJADiDyM3
-	NczKGw9qlGg/xc7TmSt2yl6xxO1SM7pocktO3+w72g9+rvZQPnU0Cv3d2YvCiKX5kFmaqTJ2gaW6c
-	TBxhPHzbw==;
+	 bh=NGz8K5J0EryeHlFIOEDWawGraYOYZZ6DmH/PccipazE=; b=gaGLoxrOueOsSEN8d6SUnnpKu
+	fjyPPZT4EpeTOGT80FJpZj/aqn6qxQWqDVzLFctnh5nz4i6IvcbfK2ac/ezJiNHv+/ydTzVqoPW9H
+	pCmgl9rRob9oXjFYHklhSnILjxuYO9+p78KloEdVgxVNmtTkM0vQAJzjQJTsbxXOocfoiv7XEqWlw
+	+rRSzeHPfuvi/O6IE0IlSmLBFMq1Lac8Pw1adZeh4x+R9c6/j1S7+BZp/1C2CgRJlXWscOMluxar4
+	Ztj2SFSKxRB3QSF+nxK+kJqCoEwhsrNV+ghUrfrvdr3aS4gbdApl4oO8LBIiHVLwu2NbvAZtHUlHJ
+	KNj4DrImQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lYORF-009M0m-VJ; Mon, 19 Apr 2021 07:35:22 +0000
+	id 1lYOcL-009Nze-P9; Mon, 19 Apr 2021 07:46:50 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lYOR4-009Lwy-Hp
- for barebox@desiato.infradead.org; Mon, 19 Apr 2021 07:35:10 +0000
+ id 1lYOcI-009NzT-Oe
+ for barebox@desiato.infradead.org; Mon, 19 Apr 2021 07:46:47 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:
- Subject:Sender:Reply-To:Cc:Content-ID:Content-Description;
- bh=3h+QEyVYIdF8P7RlF93gaRLB7zQkjEOkUZdFW9jC/7U=; b=XUSmyAOx93RWEg+q93/SIjVH6h
- vqkOYmqPbA+dk7pfAqqKrIEW+/cW3CLT15+OTeyBR8BIRWU6DBggVbMdPacHt/GqRzcqexQ1mav//
- SdkmMni2b73/JsTr8myy6RgPTbawXimShGw9+Rlo0COHL7FDFV7Q+mxss+IoQWF6ILW/U8fNRIDc0
- zdq+hp/du3udzLrvovZ5t/Jz5jW/JLSfZic2Ezw7eIN+MpnuSJPZksMYE9XwzuuODQ/y7oUeI09Tx
- Zr+BD1fjkny1TeO1HdDdk9DYEA/MFKBhH+PVZPIWihFNkS8rF5BrZ4xqDjs/Rfjc0Yo7kyAVzH1SH
- 4ptnwoUQ==;
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+ Subject:Sender:Reply-To:Content-ID:Content-Description;
+ bh=q2RmlXYsJxr9p8y06ID3CVBSb/Z5y44zo29v7sM8fFc=; b=gowGWm5N4Zpk/TRhMW5AYGNCQS
+ NwVDUgkVI9UUBdAeZa0E5iTOiIqcOHE1JIart8Qe8stdo6cZ6X8zfrzETCB1Ji0Da4OV0tGSO4zW8
+ aTx3ews75Eu9p5Mg9qW9lOvpt4GFHTMJsiERCkx6lQ+8SyEPkfq9j20HG8wRD+6dffN0lyiLHDF6d
+ TWnEP22WyVPfe9ZOo2aYUknejA+0YLCuho84vRVc0kkrYpzsWs5+Pp6BN5ia8mnJrc+2eJwQaOBTZ
+ 5TfDIb39YLCoqV9Kpf6eTr26eIZ87OsOwoRrFk+u7NrFUvTifU/Li+AazS+SrvGe02sYrAE1cEobn
+ pCYrB/+Q==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lYOQz-00B8aQ-CC
- for barebox@lists.infradead.org; Mon, 19 Apr 2021 07:35:09 +0000
+ id 1lYOcD-00B9U3-DT
+ for barebox@lists.infradead.org; Mon, 19 Apr 2021 07:46:45 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1lYOQy-0000o6-4e; Mon, 19 Apr 2021 09:35:04 +0200
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20210416094943.3648-1-s.hauer@pengutronix.de>
+ id 1lYOcB-0002TI-RJ; Mon, 19 Apr 2021 09:46:39 +0200
+To: Neeraj Pal <neerajpal09@gmail.com>
+Cc: barebox@lists.infradead.org
+References: <CANi4_RVykfmmyPAcDbBAz2O134kB8d7h0nzPr7H1o92jWBe6Ow@mail.gmail.com>
+ <acf0a309-ab9c-c082-ccc1-358216a68232@pengutronix.de>
+ <CANi4_RW3TxRf+EghmEqfUGH3pBB48=1S5D2+0O00CuAn-279Mg@mail.gmail.com>
+ <CANi4_RU8tUrjPwkHzJ+b93RboLJFqBx2A1vo-c_OYxmq5Vj0Ag@mail.gmail.com>
+ <CANi4_RWFQ3xgdRFVnB5Coi1UAT59w9G19DDL9gesuQsAgsUmng@mail.gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <a9a20e26-3e8f-5969-ce72-76014af4f4fb@pengutronix.de>
-Date: Mon, 19 Apr 2021 09:35:03 +0200
+Message-ID: <59aad651-c09c-2d4d-be4c-aa1cf676c56f@pengutronix.de>
+Date: Mon, 19 Apr 2021 09:46:39 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.0
 MIME-Version: 1.0
-In-Reply-To: <20210416094943.3648-1-s.hauer@pengutronix.de>
+In-Reply-To: <CANi4_RWFQ3xgdRFVnB5Coi1UAT59w9G19DDL9gesuQsAgsUmng@mail.gmail.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210419_003505_450039_5A3C71ED 
-X-CRM114-Status: GOOD (  24.28  )
+X-CRM114-CacheID: sfid-20210419_004641_647857_8131A2BF 
+X-CRM114-Status: GOOD (  30.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,8 +77,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -85,89 +89,129 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v4 00/17] barebox deep probe support
+Subject: Re: network configuration setup - dhcp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
-
-On 16.04.21 11:49, Sascha Hauer wrote:
-> Hi All,
-> 
-> This is the fourth round of patches for barebox deep-probe support.
-
-With feedback addressed,
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-> I picked up the series from Marco, it has the things fixed I mentioned
-> during the last review and some other improvements:
-> 
-> Changes since v3:
->   - Add deep-probe support for pinctrl
->   - Port over Phytec Physom to deep-probe
->   - Make sure console is probed ealier at postconsole_initcall time
->   - Let of_devices_ensure_probed_by_dev_id() probe all matching devices, not
->     only the first one
->   - add GPIO support to the base deep probe patch
-> 
-> Lucas Stach (1):
->   of: base: move memory init from DT to initcall
-> 
-> Marco Felsch (9):
->   imx53: remove unused imx53_add_nand
->   of: platform: remove check of already added devices
->   of: platform: Keep track of populated platform devices
->   of: base: move clock init from of_probe() to barebox_register_of()
->   initcall: add of_populate_initcall
->   common: add initial barebox deep-probe support
->   ARM: i.MX: esdctl: add deep-probe support
->   ARM: stm32mp: ddrctrl: add deep-probe support
->   ARM: boards: mx6-sabrelite: add deep-probe support
-> 
-> Sascha Hauer (7):
->   of: Set of_chosen and of_model earlier
->   of: implement of_get_stdoutpath()
->   pinctrl: Find controller node first
->   common: Explicitly probe consoles earlier with deep probe
->   pinctrl: Add deep probe support
->   ARM: i.MX Phytec physom: convert to board driver
->   ARM: i.MX Phytec physom: Add deep-probe support
-> 
->  .../boards/freescale-mx6-sabrelite/board.c    |  24 +-
->  arch/arm/boards/phytec-som-imx6/board.c       | 169 ++++++++++---
->  arch/arm/mach-imx/esdctl.c                    |  12 +-
->  .../arm/mach-imx/include/mach/devices-imx53.h |  27 --
->  arch/arm/mach-stm32mp/ddrctrl.c               |  12 +-
->  common/Makefile                               |   1 +
->  common/deep-probe.c                           |  34 +++
->  drivers/base/driver.c                         |  11 +-
->  drivers/clk/clk.c                             |   5 +
->  drivers/i2c/i2c.c                             |   8 +
->  drivers/of/base.c                             |  61 +++--
->  drivers/of/of_gpio.c                          |   4 +
->  drivers/of/platform.c                         | 230 +++++++++++++++---
->  drivers/pinctrl/pinctrl.c                     |  16 +-
->  drivers/regulator/core.c                      |   6 +
->  drivers/reset/core.c                          |   4 +
->  drivers/spi/spi.c                             |   2 +
->  include/asm-generic/barebox.lds.h             |  11 +-
->  include/deep-probe.h                          |  26 ++
->  include/init.h                                |  10 +-
->  include/of.h                                  |  33 +++
->  21 files changed, 575 insertions(+), 131 deletions(-)
->  create mode 100644 common/deep-probe.c
->  create mode 100644 include/deep-probe.h
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gTmVlcmFqLAoKT24gMTcuMDQuMjEgMDY6NDEsIE5lZXJhaiBQYWwgd3JvdGU6Cj4gSGks
+Cj4gCj4gSSBzdWNjZXNzZnVsbHkgY29uZmlndXJlZCB0aGUgbmV0d29ya2luZyBvbiBzYW5kYm94
+IGVudi4KPiBTbywgYmVsb3cgYXJlIHRoZSBzdGVwcyBmb3IgYW55b25lIGluIG5lZWQuCj4gCj4g
+T24gaG9zdCAodWJ1bnR1KQo+IC0gaXAgbGluayBzaG93ID0+IGJhcmVib3ggdmlydHVhbCBldGhl
+cm5ldCBkZXZpY2Ugd2lsbCBiZSBsaXN0ZWQKPiAtIHN1ZG8gYnJjdGwgYWRkaWYgdmlyYnIwIGJh
+cmVib3ggPT4gSSBhbHJlYWR5IGhhdmUgdmlydHVhbCBicjAKPiAidmlyYnIwIiBmb3IgUWVtdSBz
+byBJIGhhdmUgdXNlZCB0aGF0IHRvIGJyaWRnZSwgZWxzZSBjcmVhdGUgYSBuZXcKPiBicmlkZ2UK
+PiAtIHN1ZG8gaXAgbGluayBzZXQgYmFyZWJveCBtYXN0ZXIgdmlyYnIwCj4gLSBzdWRvIGRoY2xp
+ZW50IC12IGJhcmVib3gKPiAKPiBPbiBiYXJlYm94Ogo+IC0gZGhjcCBldGgwCgpUaGF0IGNvdWxk
+IGdvIGludG8gdGhlIERvY3VtZW50YXRpb24gdG8gbWFrZSBpdCBlYXNpZXIgZm9yIGZ1dHVyZSB1
+c2Vycy4KV291bGQgeW91IGxpa2UgdG8gc3VibWl0IGEgcGF0Y2g/CgpUaGFua3MgZm9yIHRoZSBi
+dWcgcmVwb3J0cyBidHcsCkFobWFkCgo+IAo+IGxvZ3MgYXJlIGdpdmVuIGJlbG93Ogo+IGJhcmVi
+b3hAU2FuZGJveDovIGRoY3AgZXRoMAo+IFQgVCBldGgwOiBESENQIGNsaWVudCBib3VuZCB0byBh
+ZGRyZXNzIDE5Mi4xNjguMTIyLjIxNgo+IGJhcmVib3hAU2FuZGJveDovIHBpbmcgZ29vZ2xlLmNv
+bQo+IFBJTkcgZ29vZ2xlLmNvbSAoMTcyLjIxNy4xNjYuMjM4KQo+IGhvc3QgZ29vZ2xlLmNvbSBp
+cyBhbGl2ZQo+IGJhcmVib3hAU2FuZGJveDovCj4gCj4gVGhhbmtzIGFuZCByZWdhcmRzLAo+IE5l
+ZXJhago+IAo+IE9uIEZyaSwgQXByIDE2LCAyMDIxIGF0IDExOjM3IFBNIE5lZXJhaiBQYWwgPG5l
+ZXJhanBhbDA5QGdtYWlsLmNvbT4gd3JvdGU6Cj4+Cj4+IFNvcnJ5IG1pc3NlZCwgTmV0d29yayBp
+bmZvOgo+Pgo+PiBiYXJlYm94QFNhbmRib3g6LyBkZXZpbmZvIGV0aDAKPj4gUGFyZW50OiB0YXAw
+Cj4+IFBhcmFtZXRlcnM6Cj4+ICAgZXRoYWRkcjogOWU6NDc6ZTA6MGI6Y2I6YWIgKHR5cGU6IE1B
+QykKPj4gICBnYXRld2F5OiAwLjAuMC4wICh0eXBlOiBpcHY0KQo+PiAgIGlwYWRkcjogMC4wLjAu
+MCAodHlwZTogaXB2NCkKPj4gICBsaW51eC5ib290YXJnczogICh0eXBlOiBzdHJpbmcpCj4+ICAg
+bGludXguZGV2bmFtZTogICh0eXBlOiBzdHJpbmcpCj4+ICAgbW9kZTogZGhjcCAodHlwZTogZW51
+bSkgKHZhbHVlczogImRoY3AiLCAic3RhdGljIiwgImRpc2FibGVkIikKPj4gICBuZXRtYXNrOiAw
+LjAuMC4wICh0eXBlOiBpcHY0KQo+PiAgIHNlcnZlcmlwOiAgKHR5cGU6IHN0cmluZykKPj4gYmFy
+ZWJveEBTYW5kYm94Oi8KPj4KPj4gQWZ0ZXIgaWZ1cCAtYQo+Pgo+PiBiYXJlYm94QFNhbmRib3g6
+LyBkZXZpbmZvIGV0aDAKPj4gUGFyZW50OiB0YXAwCj4+IFBhcmFtZXRlcnM6Cj4+ICAgZXRoYWRk
+cjogODA6ODE6ODI6ODM6ODQ6ODUgKHR5cGU6IE1BQykKPj4gICBnYXRld2F5OiAxNzIuMC4wLjEg
+KHR5cGU6IGlwdjQpCj4+ICAgaXBhZGRyOiAxNzIuMC4wLjIgKHR5cGU6IGlwdjQpCj4+ICAgbGlu
+dXguYm9vdGFyZ3M6IGlwPTE3Mi4wLjAuMjoxNzIuMC4wLjE6MTcyLjAuMC4xOjI1NS4yNTUuMjU1
+LjA6OjoKPj4gKHR5cGU6IHN0cmluZykKPj4gICBsaW51eC5kZXZuYW1lOiAgKHR5cGU6IHN0cmlu
+ZykKPj4gICBtb2RlOiBzdGF0aWMgKHR5cGU6IGVudW0pICh2YWx1ZXM6ICJkaGNwIiwgInN0YXRp
+YyIsICJkaXNhYmxlZCIpCj4+ICAgbmV0bWFzazogMjU1LjI1NS4yNTUuMCAodHlwZTogaXB2NCkK
+Pj4gICBzZXJ2ZXJpcDogMTcyLjAuMC4xICh0eXBlOiBzdHJpbmcpCj4+IGJhcmVib3hAU2FuZGJv
+eDovIHBpbmcgZ29vZ2xlLmNvbQo+PiBFUlJPUjogZG5zOiBubyBuYW1lc2VydmVyIHNwZWNpZmll
+ZCBpbiAkbmV0Lm5hbWVzZXJ2ZXIKPj4gVCBUIFQgVCBUIHBpbmcgZmFpbGVkOiBDb25uZWN0aW9u
+IHRpbWVkIG91dAo+Pgo+PiBJdCBzZWVtcyBsaWtlIGl0IGlzIG5vdCBhYmxlIHRvIGdldCB0aGUg
+SVAgZnJvbSBESENQIHNvIEkgYW0gdHJ5aW5nIHRvCj4+IHNldCB1cCBzdGF0aWMsIG9uY2UuCj4+
+Cj4+IE9uIEZyaSwgQXByIDE2LCAyMDIxIGF0IDExOjI4IFBNIE5lZXJhaiBQYWwgPG5lZXJhanBh
+bDA5QGdtYWlsLmNvbT4gd3JvdGU6Cj4+Pgo+Pj4gSGksCj4+Pgo+Pj4gT24gV2VkLCBBcHIgMTQs
+IDIwMjEgYXQgMTI6MzcgQU0gQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4g
+d3JvdGU6Cj4+Pj4KPj4+PiBUaGVyZSBpcyBtb3JlIGRvY3VtZW50YXRpb24gYmVzaWRlcyB0aGUg
+UkVBRE1FLiBGb3IgbmV0d29ya2luZyBzZWUKPj4+PiBodHRwczovL2JhcmVib3gub3JnL2RvYy9s
+YXRlc3QvdXNlci9uZXR3b3JraW5nLmh0bWwKPj4+Cj4+PiBUaGFuayB5b3UgZm9yIHRoZSBkb2N1
+bWVudGF0aW9uLiBJIHJlYWQgdGhlbSBhbmQgY29uZmlndXJlZCB0aGUgdmFsdWVzCj4+PiBidXQg
+aXQgaXMgbm90IHdvcmtpbmcsIHNvIGl0IG1heSBiZSBwb3NzaWJsZSB0aGF0IEkgYW0gbm90IGRv
+aW5nIGl0Cj4+PiBjb3JyZWN0bHkuCj4+Pgo+Pj4+IFRoZSBkZWZhdWx0IGJhcmVib3ggYm9vdCB0
+YXJnZXQgaXMgdG8gbmV0IGJvb3QuIEl0J2xsIHRyeSB0byBnZXQKPj4+PiBhIERIQ1AgYWRkcmVz
+cyBhbmQgdGhlbiBsb2FkIHNvbWUgcHJlZGVmaW5lZCBmaWxlcyBvdmVyIFRGVFAKPj4+PiAoSWYg
+aXQgZmFpbHMsIGl0J2xsIHRlbGwgeW91IHdoaWNoIG9uZXMpLgo+Pj4+Cj4+Pj4gSWYgdGhhdCBk
+aWRuJ3Qgd29yaywgeW91J2xsIG5lZWQgdG8gdGVsbCBtb3JlIGFib3V0IHlvdXIgc2V0dXA/Cj4+
+Pj4gV2hhdCBib2FyZCBhcmUgeW91IHVzaW5nIGJhcmVib3ggb24/Cj4+Pgo+Pj4gVGhhbmsgeW91
+IGZvciB0aGUgaW5mb3JtYXRpb24uIEF0IHByZXNlbnQsIEkgaGF2ZW4ndCB0cmllZCBpdCBvbiBh
+bnkKPj4+IGJvYXJkIGFzIEkgYW0gdXNpbmcgaXQgYXMgU2FuZGJveCBidXQgSSBoYXZlIEJlYWds
+ZUJvbmUgQmxhY2sgYW5kCj4+PiBSYXNwYmVycnkgUGkgM0IuCj4+Pgo+Pj4+IFBhcnQgb2YgdGhl
+IHF1ZXN0aW9uIHJlYWRzIGxpa2UgeW91IGFyZSB1c2luZyBpdCB3aGlsZSBMaW51eCBpcwo+Pj4+
+IHJ1bm5pbmcgKHNhbmRib3gpIGFuZCBzb21lIG90aGVyIGxpa2UgeW91J2QgcnVuIGl0IGRpcmVj
+dGx5IGFzCj4+Pj4gYm9vdGxvYWRlci4gQWxzbyB3aGF0IGtpbmQgb2YgZXJyb3JzIGRvIHlvdSBn
+ZXQsIGNhbiB5b3UgY29weSB0aGVtIGhlcmU/Cj4+Pgo+Pj4gWWVzLCBJIGFtIHRyeWluZyB0byBl
+eGVjdXRlIGl0IGFzIFNhbmRib3ggYW5kIHdoaWxlIGV4ZWN1dGluZyB0aHJvdWdoCj4+PiBzdWRv
+IHBsZWFzZSBmaW5kIHRoZSBpbmZvcm1hdGlvbiBnaXZlbiBiZWxvdzoKPj4+Cj4+PiBzdWRvIC4v
+YmFyZWJveAo+Pj4KPj4+IGFkZCBzdGlja3lwYWdlIGluaXRpYWxseSB1bmJhY2tlZCBieSBmaWxl
+Cj4+Pgo+Pj4KPj4+IGJhcmVib3ggMjAyMS4wNC4wLTAwMDU2LWdhZjBmMDY4YTYgIzEgRnJpIEFw
+ciAxNiAyMzoxMTowMSBJU1QgMjAyMQo+Pj4KPj4+Cj4+PiBCb2FyZDogU2FuZGJveAo+Pj4gY29u
+c29sZTogcmVnaXN0ZXJlZCBhcyBjczAKPj4+IG5ldGNvbnNvbGU6IHJlZ2lzdGVyZWQgYXMgbmV0
+Y29uc29sZS0xCj4+PiBob3N0ZmlsZSA3ZjQ1NWIwOWEwMDAuc3RpY2t5cGFnZS5vZjogcmVnaXN0
+ZXJlZCBhcyBjaGFyYWN0ZXIgZGV2aWNlCj4+PiBzYW5kYm94LXdhdGNoZG9nIHdhdGNoZG9nLm9m
+OiBwcm9iZWQKPj4+IG1hbGxvYyBzcGFjZTogMHg3ZjQ1NTllMjEwMTAgLT4gMHg3ZjQ1NWFlMjEw
+MGYgKHNpemUgMTYgTWlCKQo+Pj4gc3RhdGU6IE5ldyBzdGF0ZSByZWdpc3RlcmVkICdzdGF0ZScK
+Pj4+IEVSUk9SOiBzdGF0ZTogTm8gbWV0YSBkYXRhIGhlYWRlciBmb3VuZAo+Pj4gRVJST1I6IHN0
+YXRlOiBObyBtZXRhIGRhdGEgaGVhZGVyIGZvdW5kCj4+PiBFUlJPUjogc3RhdGU6IE5vIG1ldGEg
+ZGF0YSBoZWFkZXIgZm91bmQKPj4+IEVSUk9SOiBzdGF0ZTogRmFpbGVkIHRvIGZpbmQgYW55IHZh
+bGlkIHN0YXRlIGNvcHkgaW4gYW55IGJ1Y2tldAo+Pj4gRVJST1I6IHN0YXRlOiBGYWlsZWQgdG8g
+cmVhZCBzdGF0ZSB3aXRoIGZvcm1hdCByYXcsIC0yCj4+PiBXQVJOSU5HOiBzdGF0ZSBzdGF0ZS5v
+ZjogRmFpbGVkIHRvIGxvYWQgcGVyc2lzdGVudCBzdGF0ZSwgY29udGludWluZwo+Pj4gd2l0aCBk
+ZWZhdWx0cywgLTIKPj4+IHN1cGVyOiBKRkZTIHZlcnNpb24gMi4yLiDCqSAyMDAxLTIwMDYgUmVk
+IEhhdCwgSW5jLgo+Pj4gZW52ZnM6IG5vIGVudmZzIChtYWdpYyBtaXNtYXRjaCkgLSBlbnZmcyBu
+ZXZlciB3cml0dGVuPwo+Pj4KPj4+ICoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioKPj4+ICoqKiAgIEluY29uc2lzdGVudCBiYXJlYm94IHN0YXRl
+IGJ1Y2tldHMgZGV0ZWN0ZWQgICAqKioKPj4+ICoqKiAgICAgICAgIFRoaXMgaXMgbm9ybWFsIGZv
+ciBhIGZpcnN0IGJvb3QgICAgICAgICAqKioKPj4+ICoqKiBiYXJlYm94IHdpbGwgcmVwYWlyIHRo
+ZW0gb24gbmV4dCBwb3dlcm9mZi9yZXNldCAqKioKPj4+ICoqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioKPj4+IGJhcmVib3hAU2FuZGJveDovIHBp
+bmcgZ29vZ2xlLmNvbQo+Pj4gRVJST1I6IGRuczogbm8gbmFtZXNlcnZlciBzcGVjaWZpZWQgaW4g
+JG5ldC5uYW1lc2VydmVyCj4+PiBwaW5nIGZhaWxlZDogTm8gcm91dGUgdG8gaG9zdAo+Pj4gYmFy
+ZWJveEBTYW5kYm94Oi8gZGhjcAo+Pj4gV0FSTklORzogZXRoMDogTm8gTUFDIGFkZHJlc3Mgc2V0
+LiBVc2luZyByYW5kb20gYWRkcmVzcyA5ZTo0NzplMDowYjpjYjphYgo+Pj4gVCBUIFQgVCBUIFQg
+VCBUIFQgVCBUIFQgVCBUIFQgVCBUIFQgVCBUIGRoY3A6IENvbm5lY3Rpb24gdGltZWQgb3V0Cj4+
+PiBiYXJlYm94QFNhbmRib3g6LyBwaW5nIGdvb2dsZS5jb20KPj4+IEVSUk9SOiBkbnM6IG5vIG5h
+bWVzZXJ2ZXIgc3BlY2lmaWVkIGluICRuZXQubmFtZXNlcnZlcgo+Pj4gcGluZyBmYWlsZWQ6IE5v
+IHJvdXRlIHRvIGhvc3QKPj4+IGJhcmVib3hAU2FuZGJveDovCj4+Pgo+Pj4gYmFyZWJveEBTYW5k
+Ym94Oi8gZGV2aW5mbwo+Pj4gYC0tIGdsb2JhbAo+Pj4gYC0tIG52Cj4+PiBgLS0gcGxhdGZvcm0K
+Pj4+ICAgIGAtLSBtYWNoaW5lCj4+PiAgICBgLS0gc3RhdGUub2YKPj4+ICAgIGAtLSA3ZjQ1NWIw
+OWEwMDAuc3RpY2t5cGFnZS5vZgo+Pj4gICAgICAgYC0tIDB4MDAwMDAwMDAtMHgwMDAwMGZmZiAo
+ICAgICA0IEtpQik6IC9kZXYvc3RpY2t5cGFnZQo+Pj4gICAgICAgYC0tIDB4MDAwMDA0MDAtMHgw
+MDAwMGJmZiAoICAgICAyIEtpQik6IC9kZXYvc3RpY2t5cGFnZS5lbnYKPj4+ICAgICAgIGAtLSAw
+eDAwMDAwYzAwLTB4MDAwMDBmZmYgKCAgICAgMSBLaUIpOiAvZGV2L3N0aWNreXBhZ2Uuc3RhdGUK
+Pj4+ICAgICAgIGAtLSBibW9kZQo+Pj4gICAgICAgYC0tIDdmNDU1YjA5YTAwMC5zdGlja3lwYWdl
+OnBhcnRpdGlvbnMub2YKPj4+ICAgIGAtLSBwb3dlci5vZgo+Pj4gICAgYC0tIHdhdGNoZG9nLm9m
+Cj4+PiAgICAgICBgLS0gd2RvZzAKPj4+ICAgIGAtLSBzb3VuZC5vZgo+Pj4gICAgYC0tIGxlZC5v
+Zgo+Pj4gICAgYC0tIGNvbnNvbGUwCj4+PiAgICAgICBgLS0gY3MwCj4+PiAgICAgICAgICBgLS0g
+MHgwMDAwMDAwMC0weGZmZmZmZmZmZmZmZmZmZmYgKCAgIDAgQnl0ZXMpOiAvZGV2L2NzMAo+Pj4g
+ICAgYC0tIG1lbTAKPj4+ICAgICAgIGAtLSAweDAwMDAwMDAwLTB4ZmZmZmZmZmZmZmZmZmZmZiAo
+ICAgMCBCeXRlcyk6IC9kZXYvbWVtCj4+PiAgICBgLS0gbmV0Y29uc29sZQo+Pj4gICAgICAgYC0t
+IDB4MDAwMDAwMDAtMHhmZmZmZmZmZmZmZmZmZmZmICggICAwIEJ5dGVzKTogL2Rldi9uZXRjb25z
+b2xlLTEKPj4+ICAgIGAtLSB0YXAwCj4+PiAgICAgICBgLS0gZXRoMAo+Pj4gICAgYC0tIHNkbGZi
+MAo+Pj4gICAgYC0tIGRldnJhbmRvbTAKPj4+ICAgIGAtLSBjaG9zZW46ZW52aXJvbm1lbnQub2YK
+Pj4+IGAtLSBzcGkKPj4+IGAtLSBpMmMKPj4+IGAtLSBmcwo+Pj4gICAgYC0tIHJhbWZzMAo+Pj4g
+ICAgYC0tIGRldmZzMAo+Pj4gICAgYC0tIHBzdG9yZTAKPj4+IGAtLSBzdGF0ZQo+Pj4gYmFyZWJv
+eEBTYW5kYm94Oi8KPj4+Cj4+PiBJIGFtIGRvaW5nIHBpbmcgYnV0IGl0IGRvZXNuJ3QgaGF2ZSBh
+bnkgZG5zIGVudHJ5IGFuZCByb3V0ZSB0byByZXNvbHZlIGl0Lgo+Pj4KPj4+IFBsZWFzZSBsZXQg
+bWUga25vdyBmb3IgYW55IG90aGVyIGluZm9ybWF0aW9uLgo+Pj4KPj4+IFRoYW5rcyBhbmQgcmVn
+YXJkcywKPj4+IE5lZXJhago+IAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ClN0ZXVlcndhbGRlciBT
+dHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUv
+ICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgICB8IFBob25lOiAr
+NDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAg
+ICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
 
