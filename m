@@ -1,71 +1,68 @@
-Delivery-date: Mon, 19 Apr 2021 09:47:48 +0200
+Delivery-date: Mon, 19 Apr 2021 09:59:14 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lYOdI-0006CK-86
-	for lore@lore.pengutronix.de; Mon, 19 Apr 2021 09:47:48 +0200
+	id 1lYOoM-0006D6-TV
+	for lore@lore.pengutronix.de; Mon, 19 Apr 2021 09:59:14 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lYOdH-0002Xg-6X
-	for lore@pengutronix.de; Mon, 19 Apr 2021 09:47:48 +0200
+	id 1lYOoL-0003lI-Tf
+	for lore@pengutronix.de; Mon, 19 Apr 2021 09:59:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
-	References:Cc:To:Subject:Reply-To:Content-ID:Content-Description:Resent-Date:
+	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:References:
+	To:Subject:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=NGz8K5J0EryeHlFIOEDWawGraYOYZZ6DmH/PccipazE=; b=gaGLoxrOueOsSEN8d6SUnnpKu
-	fjyPPZT4EpeTOGT80FJpZj/aqn6qxQWqDVzLFctnh5nz4i6IvcbfK2ac/ezJiNHv+/ydTzVqoPW9H
-	pCmgl9rRob9oXjFYHklhSnILjxuYO9+p78KloEdVgxVNmtTkM0vQAJzjQJTsbxXOocfoiv7XEqWlw
-	+rRSzeHPfuvi/O6IE0IlSmLBFMq1Lac8Pw1adZeh4x+R9c6/j1S7+BZp/1C2CgRJlXWscOMluxar4
-	Ztj2SFSKxRB3QSF+nxK+kJqCoEwhsrNV+ghUrfrvdr3aS4gbdApl4oO8LBIiHVLwu2NbvAZtHUlHJ
-	KNj4DrImQ==;
+	 bh=oVyr3ZEdJZZDhSXoRso2F/s1rwh8RLid1+enAvptqZs=; b=VufBWE0ITGidpxSKDa76WeM44
+	tKRnV1n8f/jJ1z00sXVGhp9rYt35M9nnm3E7T/i/5vGwhz6PXLOjMuTkQxILLCNsSywad0yRSvULO
+	i65aDrMDcxhbDUqzkShCUO6ZHbUAehwFbG1upg5LrAGOnDT8U8gUGGTWlv9UEo2/jVQiqAsiCHlc2
+	vIuCRfPZ+VfrNPSQ5/8JzfiriZknI5q00TZ83zA2TkJ8kfyQiGi2RB5vqfv5kvF42xSlJIg9AJOZy
+	oDtWuLKpWIYUjNC4Puf2FccafwoSqJjFOLq/PgfNebDaOvN+qGcC7P9xWuJlJwImA+iEshwz7kTks
+	fqgGk5k1g==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lYOcL-009Nze-P9; Mon, 19 Apr 2021 07:46:50 +0000
+	id 1lYOnQ-009Opn-6h; Mon, 19 Apr 2021 07:58:16 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lYOcI-009NzT-Oe
- for barebox@desiato.infradead.org; Mon, 19 Apr 2021 07:46:47 +0000
+ id 1lYOnM-009Opc-MC
+ for barebox@desiato.infradead.org; Mon, 19 Apr 2021 07:58:12 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
- Subject:Sender:Reply-To:Content-ID:Content-Description;
- bh=q2RmlXYsJxr9p8y06ID3CVBSb/Z5y44zo29v7sM8fFc=; b=gowGWm5N4Zpk/TRhMW5AYGNCQS
- NwVDUgkVI9UUBdAeZa0E5iTOiIqcOHE1JIart8Qe8stdo6cZ6X8zfrzETCB1Ji0Da4OV0tGSO4zW8
- aTx3ews75Eu9p5Mg9qW9lOvpt4GFHTMJsiERCkx6lQ+8SyEPkfq9j20HG8wRD+6dffN0lyiLHDF6d
- TWnEP22WyVPfe9ZOo2aYUknejA+0YLCuho84vRVc0kkrYpzsWs5+Pp6BN5ia8mnJrc+2eJwQaOBTZ
- 5TfDIb39YLCoqV9Kpf6eTr26eIZ87OsOwoRrFk+u7NrFUvTifU/Li+AazS+SrvGe02sYrAE1cEobn
- pCYrB/+Q==;
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:References:Cc:To:
+ Subject:From:Sender:Reply-To:Content-ID:Content-Description;
+ bh=Kwr7FOo7xLSvDd867cqgy4/Vcart27Z/192DYBwuKT4=; b=QiaQs9Eaf7nWATtdekcFeGjTcP
+ A/qJu608I15ULVHTV9YKsgUT3uar5omAZtB+w6Q0Eh+NgxokjA1ta8RzAPVIvJYbX8SHYs35Sm3CQ
+ 8BqXX491L/Txmh9l9SsRF3m1x/+Qm/Sx8FSlwc4odop6NWZLrMDNuVE3PixRoCvhISztv4fFoLzSd
+ AhuyCTxz5VYCUgjkL6zldNcTxs19eXI/EU6rn2v3GGVUDmjG383obSCkz2fKGt+CFsRQuPjwbqhtF
+ YGHQgfp16Zaduw9sWzCI0jnup5HStCDX3dPQAiNgDrt2sb7X5kRQUxG3w/JEsoYBuPtymk8npClEW
+ kumUz3xw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lYOcD-00B9U3-DT
- for barebox@lists.infradead.org; Mon, 19 Apr 2021 07:46:45 +0000
+ id 1lYOnI-00BA7c-KJ
+ for barebox@lists.infradead.org; Mon, 19 Apr 2021 07:58:10 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1lYOcB-0002TI-RJ; Mon, 19 Apr 2021 09:46:39 +0200
-To: Neeraj Pal <neerajpal09@gmail.com>
-Cc: barebox@lists.infradead.org
-References: <CANi4_RVykfmmyPAcDbBAz2O134kB8d7h0nzPr7H1o92jWBe6Ow@mail.gmail.com>
- <acf0a309-ab9c-c082-ccc1-358216a68232@pengutronix.de>
- <CANi4_RW3TxRf+EghmEqfUGH3pBB48=1S5D2+0O00CuAn-279Mg@mail.gmail.com>
- <CANi4_RU8tUrjPwkHzJ+b93RboLJFqBx2A1vo-c_OYxmq5Vj0Ag@mail.gmail.com>
- <CANi4_RWFQ3xgdRFVnB5Coi1UAT59w9G19DDL9gesuQsAgsUmng@mail.gmail.com>
+ id 1lYOnH-0003f7-5O; Mon, 19 Apr 2021 09:58:07 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <59aad651-c09c-2d4d-be4c-aa1cf676c56f@pengutronix.de>
-Date: Mon, 19 Apr 2021 09:46:39 +0200
+To: Peter Mamonov <pmamonov@gmail.com>
+References: <20200707135608.31901-1-pmamonov@gmail.com>
+ <c50f7807-9bfa-bc70-d771-f798422760e1@pengutronix.de>
+ <20200708210231.GA24761@chr>
+Message-ID: <8868950a-5efc-e46d-2d8d-56c37b15d28b@pengutronix.de>
+Date: Mon, 19 Apr 2021 09:58:06 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.0
 MIME-Version: 1.0
-In-Reply-To: <CANi4_RWFQ3xgdRFVnB5Coi1UAT59w9G19DDL9gesuQsAgsUmng@mail.gmail.com>
+In-Reply-To: <20200708210231.GA24761@chr>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210419_004641_647857_8131A2BF 
-X-CRM114-Status: GOOD (  30.84  )
+X-CRM114-CacheID: sfid-20210419_005808_708595_93883A24 
+X-CRM114-Status: GOOD (  28.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,8 +74,9 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: barebox@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -89,129 +87,101 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: network configuration setup - dhcp
+Subject: Re: RFC: types conflicts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGVsbG8gTmVlcmFqLAoKT24gMTcuMDQuMjEgMDY6NDEsIE5lZXJhaiBQYWwgd3JvdGU6Cj4gSGks
-Cj4gCj4gSSBzdWNjZXNzZnVsbHkgY29uZmlndXJlZCB0aGUgbmV0d29ya2luZyBvbiBzYW5kYm94
-IGVudi4KPiBTbywgYmVsb3cgYXJlIHRoZSBzdGVwcyBmb3IgYW55b25lIGluIG5lZWQuCj4gCj4g
-T24gaG9zdCAodWJ1bnR1KQo+IC0gaXAgbGluayBzaG93ID0+IGJhcmVib3ggdmlydHVhbCBldGhl
-cm5ldCBkZXZpY2Ugd2lsbCBiZSBsaXN0ZWQKPiAtIHN1ZG8gYnJjdGwgYWRkaWYgdmlyYnIwIGJh
-cmVib3ggPT4gSSBhbHJlYWR5IGhhdmUgdmlydHVhbCBicjAKPiAidmlyYnIwIiBmb3IgUWVtdSBz
-byBJIGhhdmUgdXNlZCB0aGF0IHRvIGJyaWRnZSwgZWxzZSBjcmVhdGUgYSBuZXcKPiBicmlkZ2UK
-PiAtIHN1ZG8gaXAgbGluayBzZXQgYmFyZWJveCBtYXN0ZXIgdmlyYnIwCj4gLSBzdWRvIGRoY2xp
-ZW50IC12IGJhcmVib3gKPiAKPiBPbiBiYXJlYm94Ogo+IC0gZGhjcCBldGgwCgpUaGF0IGNvdWxk
-IGdvIGludG8gdGhlIERvY3VtZW50YXRpb24gdG8gbWFrZSBpdCBlYXNpZXIgZm9yIGZ1dHVyZSB1
-c2Vycy4KV291bGQgeW91IGxpa2UgdG8gc3VibWl0IGEgcGF0Y2g/CgpUaGFua3MgZm9yIHRoZSBi
-dWcgcmVwb3J0cyBidHcsCkFobWFkCgo+IAo+IGxvZ3MgYXJlIGdpdmVuIGJlbG93Ogo+IGJhcmVi
-b3hAU2FuZGJveDovIGRoY3AgZXRoMAo+IFQgVCBldGgwOiBESENQIGNsaWVudCBib3VuZCB0byBh
-ZGRyZXNzIDE5Mi4xNjguMTIyLjIxNgo+IGJhcmVib3hAU2FuZGJveDovIHBpbmcgZ29vZ2xlLmNv
-bQo+IFBJTkcgZ29vZ2xlLmNvbSAoMTcyLjIxNy4xNjYuMjM4KQo+IGhvc3QgZ29vZ2xlLmNvbSBp
-cyBhbGl2ZQo+IGJhcmVib3hAU2FuZGJveDovCj4gCj4gVGhhbmtzIGFuZCByZWdhcmRzLAo+IE5l
-ZXJhago+IAo+IE9uIEZyaSwgQXByIDE2LCAyMDIxIGF0IDExOjM3IFBNIE5lZXJhaiBQYWwgPG5l
-ZXJhanBhbDA5QGdtYWlsLmNvbT4gd3JvdGU6Cj4+Cj4+IFNvcnJ5IG1pc3NlZCwgTmV0d29yayBp
-bmZvOgo+Pgo+PiBiYXJlYm94QFNhbmRib3g6LyBkZXZpbmZvIGV0aDAKPj4gUGFyZW50OiB0YXAw
-Cj4+IFBhcmFtZXRlcnM6Cj4+ICAgZXRoYWRkcjogOWU6NDc6ZTA6MGI6Y2I6YWIgKHR5cGU6IE1B
-QykKPj4gICBnYXRld2F5OiAwLjAuMC4wICh0eXBlOiBpcHY0KQo+PiAgIGlwYWRkcjogMC4wLjAu
-MCAodHlwZTogaXB2NCkKPj4gICBsaW51eC5ib290YXJnczogICh0eXBlOiBzdHJpbmcpCj4+ICAg
-bGludXguZGV2bmFtZTogICh0eXBlOiBzdHJpbmcpCj4+ICAgbW9kZTogZGhjcCAodHlwZTogZW51
-bSkgKHZhbHVlczogImRoY3AiLCAic3RhdGljIiwgImRpc2FibGVkIikKPj4gICBuZXRtYXNrOiAw
-LjAuMC4wICh0eXBlOiBpcHY0KQo+PiAgIHNlcnZlcmlwOiAgKHR5cGU6IHN0cmluZykKPj4gYmFy
-ZWJveEBTYW5kYm94Oi8KPj4KPj4gQWZ0ZXIgaWZ1cCAtYQo+Pgo+PiBiYXJlYm94QFNhbmRib3g6
-LyBkZXZpbmZvIGV0aDAKPj4gUGFyZW50OiB0YXAwCj4+IFBhcmFtZXRlcnM6Cj4+ICAgZXRoYWRk
-cjogODA6ODE6ODI6ODM6ODQ6ODUgKHR5cGU6IE1BQykKPj4gICBnYXRld2F5OiAxNzIuMC4wLjEg
-KHR5cGU6IGlwdjQpCj4+ICAgaXBhZGRyOiAxNzIuMC4wLjIgKHR5cGU6IGlwdjQpCj4+ICAgbGlu
-dXguYm9vdGFyZ3M6IGlwPTE3Mi4wLjAuMjoxNzIuMC4wLjE6MTcyLjAuMC4xOjI1NS4yNTUuMjU1
-LjA6OjoKPj4gKHR5cGU6IHN0cmluZykKPj4gICBsaW51eC5kZXZuYW1lOiAgKHR5cGU6IHN0cmlu
-ZykKPj4gICBtb2RlOiBzdGF0aWMgKHR5cGU6IGVudW0pICh2YWx1ZXM6ICJkaGNwIiwgInN0YXRp
-YyIsICJkaXNhYmxlZCIpCj4+ICAgbmV0bWFzazogMjU1LjI1NS4yNTUuMCAodHlwZTogaXB2NCkK
-Pj4gICBzZXJ2ZXJpcDogMTcyLjAuMC4xICh0eXBlOiBzdHJpbmcpCj4+IGJhcmVib3hAU2FuZGJv
-eDovIHBpbmcgZ29vZ2xlLmNvbQo+PiBFUlJPUjogZG5zOiBubyBuYW1lc2VydmVyIHNwZWNpZmll
-ZCBpbiAkbmV0Lm5hbWVzZXJ2ZXIKPj4gVCBUIFQgVCBUIHBpbmcgZmFpbGVkOiBDb25uZWN0aW9u
-IHRpbWVkIG91dAo+Pgo+PiBJdCBzZWVtcyBsaWtlIGl0IGlzIG5vdCBhYmxlIHRvIGdldCB0aGUg
-SVAgZnJvbSBESENQIHNvIEkgYW0gdHJ5aW5nIHRvCj4+IHNldCB1cCBzdGF0aWMsIG9uY2UuCj4+
-Cj4+IE9uIEZyaSwgQXByIDE2LCAyMDIxIGF0IDExOjI4IFBNIE5lZXJhaiBQYWwgPG5lZXJhanBh
-bDA5QGdtYWlsLmNvbT4gd3JvdGU6Cj4+Pgo+Pj4gSGksCj4+Pgo+Pj4gT24gV2VkLCBBcHIgMTQs
-IDIwMjEgYXQgMTI6MzcgQU0gQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4g
-d3JvdGU6Cj4+Pj4KPj4+PiBUaGVyZSBpcyBtb3JlIGRvY3VtZW50YXRpb24gYmVzaWRlcyB0aGUg
-UkVBRE1FLiBGb3IgbmV0d29ya2luZyBzZWUKPj4+PiBodHRwczovL2JhcmVib3gub3JnL2RvYy9s
-YXRlc3QvdXNlci9uZXR3b3JraW5nLmh0bWwKPj4+Cj4+PiBUaGFuayB5b3UgZm9yIHRoZSBkb2N1
-bWVudGF0aW9uLiBJIHJlYWQgdGhlbSBhbmQgY29uZmlndXJlZCB0aGUgdmFsdWVzCj4+PiBidXQg
-aXQgaXMgbm90IHdvcmtpbmcsIHNvIGl0IG1heSBiZSBwb3NzaWJsZSB0aGF0IEkgYW0gbm90IGRv
-aW5nIGl0Cj4+PiBjb3JyZWN0bHkuCj4+Pgo+Pj4+IFRoZSBkZWZhdWx0IGJhcmVib3ggYm9vdCB0
-YXJnZXQgaXMgdG8gbmV0IGJvb3QuIEl0J2xsIHRyeSB0byBnZXQKPj4+PiBhIERIQ1AgYWRkcmVz
-cyBhbmQgdGhlbiBsb2FkIHNvbWUgcHJlZGVmaW5lZCBmaWxlcyBvdmVyIFRGVFAKPj4+PiAoSWYg
-aXQgZmFpbHMsIGl0J2xsIHRlbGwgeW91IHdoaWNoIG9uZXMpLgo+Pj4+Cj4+Pj4gSWYgdGhhdCBk
-aWRuJ3Qgd29yaywgeW91J2xsIG5lZWQgdG8gdGVsbCBtb3JlIGFib3V0IHlvdXIgc2V0dXA/Cj4+
-Pj4gV2hhdCBib2FyZCBhcmUgeW91IHVzaW5nIGJhcmVib3ggb24/Cj4+Pgo+Pj4gVGhhbmsgeW91
-IGZvciB0aGUgaW5mb3JtYXRpb24uIEF0IHByZXNlbnQsIEkgaGF2ZW4ndCB0cmllZCBpdCBvbiBh
-bnkKPj4+IGJvYXJkIGFzIEkgYW0gdXNpbmcgaXQgYXMgU2FuZGJveCBidXQgSSBoYXZlIEJlYWds
-ZUJvbmUgQmxhY2sgYW5kCj4+PiBSYXNwYmVycnkgUGkgM0IuCj4+Pgo+Pj4+IFBhcnQgb2YgdGhl
-IHF1ZXN0aW9uIHJlYWRzIGxpa2UgeW91IGFyZSB1c2luZyBpdCB3aGlsZSBMaW51eCBpcwo+Pj4+
-IHJ1bm5pbmcgKHNhbmRib3gpIGFuZCBzb21lIG90aGVyIGxpa2UgeW91J2QgcnVuIGl0IGRpcmVj
-dGx5IGFzCj4+Pj4gYm9vdGxvYWRlci4gQWxzbyB3aGF0IGtpbmQgb2YgZXJyb3JzIGRvIHlvdSBn
-ZXQsIGNhbiB5b3UgY29weSB0aGVtIGhlcmU/Cj4+Pgo+Pj4gWWVzLCBJIGFtIHRyeWluZyB0byBl
-eGVjdXRlIGl0IGFzIFNhbmRib3ggYW5kIHdoaWxlIGV4ZWN1dGluZyB0aHJvdWdoCj4+PiBzdWRv
-IHBsZWFzZSBmaW5kIHRoZSBpbmZvcm1hdGlvbiBnaXZlbiBiZWxvdzoKPj4+Cj4+PiBzdWRvIC4v
-YmFyZWJveAo+Pj4KPj4+IGFkZCBzdGlja3lwYWdlIGluaXRpYWxseSB1bmJhY2tlZCBieSBmaWxl
-Cj4+Pgo+Pj4KPj4+IGJhcmVib3ggMjAyMS4wNC4wLTAwMDU2LWdhZjBmMDY4YTYgIzEgRnJpIEFw
-ciAxNiAyMzoxMTowMSBJU1QgMjAyMQo+Pj4KPj4+Cj4+PiBCb2FyZDogU2FuZGJveAo+Pj4gY29u
-c29sZTogcmVnaXN0ZXJlZCBhcyBjczAKPj4+IG5ldGNvbnNvbGU6IHJlZ2lzdGVyZWQgYXMgbmV0
-Y29uc29sZS0xCj4+PiBob3N0ZmlsZSA3ZjQ1NWIwOWEwMDAuc3RpY2t5cGFnZS5vZjogcmVnaXN0
-ZXJlZCBhcyBjaGFyYWN0ZXIgZGV2aWNlCj4+PiBzYW5kYm94LXdhdGNoZG9nIHdhdGNoZG9nLm9m
-OiBwcm9iZWQKPj4+IG1hbGxvYyBzcGFjZTogMHg3ZjQ1NTllMjEwMTAgLT4gMHg3ZjQ1NWFlMjEw
-MGYgKHNpemUgMTYgTWlCKQo+Pj4gc3RhdGU6IE5ldyBzdGF0ZSByZWdpc3RlcmVkICdzdGF0ZScK
-Pj4+IEVSUk9SOiBzdGF0ZTogTm8gbWV0YSBkYXRhIGhlYWRlciBmb3VuZAo+Pj4gRVJST1I6IHN0
-YXRlOiBObyBtZXRhIGRhdGEgaGVhZGVyIGZvdW5kCj4+PiBFUlJPUjogc3RhdGU6IE5vIG1ldGEg
-ZGF0YSBoZWFkZXIgZm91bmQKPj4+IEVSUk9SOiBzdGF0ZTogRmFpbGVkIHRvIGZpbmQgYW55IHZh
-bGlkIHN0YXRlIGNvcHkgaW4gYW55IGJ1Y2tldAo+Pj4gRVJST1I6IHN0YXRlOiBGYWlsZWQgdG8g
-cmVhZCBzdGF0ZSB3aXRoIGZvcm1hdCByYXcsIC0yCj4+PiBXQVJOSU5HOiBzdGF0ZSBzdGF0ZS5v
-ZjogRmFpbGVkIHRvIGxvYWQgcGVyc2lzdGVudCBzdGF0ZSwgY29udGludWluZwo+Pj4gd2l0aCBk
-ZWZhdWx0cywgLTIKPj4+IHN1cGVyOiBKRkZTIHZlcnNpb24gMi4yLiDCqSAyMDAxLTIwMDYgUmVk
-IEhhdCwgSW5jLgo+Pj4gZW52ZnM6IG5vIGVudmZzIChtYWdpYyBtaXNtYXRjaCkgLSBlbnZmcyBu
-ZXZlciB3cml0dGVuPwo+Pj4KPj4+ICoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioKPj4+ICoqKiAgIEluY29uc2lzdGVudCBiYXJlYm94IHN0YXRl
-IGJ1Y2tldHMgZGV0ZWN0ZWQgICAqKioKPj4+ICoqKiAgICAgICAgIFRoaXMgaXMgbm9ybWFsIGZv
-ciBhIGZpcnN0IGJvb3QgICAgICAgICAqKioKPj4+ICoqKiBiYXJlYm94IHdpbGwgcmVwYWlyIHRo
-ZW0gb24gbmV4dCBwb3dlcm9mZi9yZXNldCAqKioKPj4+ICoqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioKPj4+IGJhcmVib3hAU2FuZGJveDovIHBp
-bmcgZ29vZ2xlLmNvbQo+Pj4gRVJST1I6IGRuczogbm8gbmFtZXNlcnZlciBzcGVjaWZpZWQgaW4g
-JG5ldC5uYW1lc2VydmVyCj4+PiBwaW5nIGZhaWxlZDogTm8gcm91dGUgdG8gaG9zdAo+Pj4gYmFy
-ZWJveEBTYW5kYm94Oi8gZGhjcAo+Pj4gV0FSTklORzogZXRoMDogTm8gTUFDIGFkZHJlc3Mgc2V0
-LiBVc2luZyByYW5kb20gYWRkcmVzcyA5ZTo0NzplMDowYjpjYjphYgo+Pj4gVCBUIFQgVCBUIFQg
-VCBUIFQgVCBUIFQgVCBUIFQgVCBUIFQgVCBUIGRoY3A6IENvbm5lY3Rpb24gdGltZWQgb3V0Cj4+
-PiBiYXJlYm94QFNhbmRib3g6LyBwaW5nIGdvb2dsZS5jb20KPj4+IEVSUk9SOiBkbnM6IG5vIG5h
-bWVzZXJ2ZXIgc3BlY2lmaWVkIGluICRuZXQubmFtZXNlcnZlcgo+Pj4gcGluZyBmYWlsZWQ6IE5v
-IHJvdXRlIHRvIGhvc3QKPj4+IGJhcmVib3hAU2FuZGJveDovCj4+Pgo+Pj4gYmFyZWJveEBTYW5k
-Ym94Oi8gZGV2aW5mbwo+Pj4gYC0tIGdsb2JhbAo+Pj4gYC0tIG52Cj4+PiBgLS0gcGxhdGZvcm0K
-Pj4+ICAgIGAtLSBtYWNoaW5lCj4+PiAgICBgLS0gc3RhdGUub2YKPj4+ICAgIGAtLSA3ZjQ1NWIw
-OWEwMDAuc3RpY2t5cGFnZS5vZgo+Pj4gICAgICAgYC0tIDB4MDAwMDAwMDAtMHgwMDAwMGZmZiAo
-ICAgICA0IEtpQik6IC9kZXYvc3RpY2t5cGFnZQo+Pj4gICAgICAgYC0tIDB4MDAwMDA0MDAtMHgw
-MDAwMGJmZiAoICAgICAyIEtpQik6IC9kZXYvc3RpY2t5cGFnZS5lbnYKPj4+ICAgICAgIGAtLSAw
-eDAwMDAwYzAwLTB4MDAwMDBmZmYgKCAgICAgMSBLaUIpOiAvZGV2L3N0aWNreXBhZ2Uuc3RhdGUK
-Pj4+ICAgICAgIGAtLSBibW9kZQo+Pj4gICAgICAgYC0tIDdmNDU1YjA5YTAwMC5zdGlja3lwYWdl
-OnBhcnRpdGlvbnMub2YKPj4+ICAgIGAtLSBwb3dlci5vZgo+Pj4gICAgYC0tIHdhdGNoZG9nLm9m
-Cj4+PiAgICAgICBgLS0gd2RvZzAKPj4+ICAgIGAtLSBzb3VuZC5vZgo+Pj4gICAgYC0tIGxlZC5v
-Zgo+Pj4gICAgYC0tIGNvbnNvbGUwCj4+PiAgICAgICBgLS0gY3MwCj4+PiAgICAgICAgICBgLS0g
-MHgwMDAwMDAwMC0weGZmZmZmZmZmZmZmZmZmZmYgKCAgIDAgQnl0ZXMpOiAvZGV2L2NzMAo+Pj4g
-ICAgYC0tIG1lbTAKPj4+ICAgICAgIGAtLSAweDAwMDAwMDAwLTB4ZmZmZmZmZmZmZmZmZmZmZiAo
-ICAgMCBCeXRlcyk6IC9kZXYvbWVtCj4+PiAgICBgLS0gbmV0Y29uc29sZQo+Pj4gICAgICAgYC0t
-IDB4MDAwMDAwMDAtMHhmZmZmZmZmZmZmZmZmZmZmICggICAwIEJ5dGVzKTogL2Rldi9uZXRjb25z
-b2xlLTEKPj4+ICAgIGAtLSB0YXAwCj4+PiAgICAgICBgLS0gZXRoMAo+Pj4gICAgYC0tIHNkbGZi
-MAo+Pj4gICAgYC0tIGRldnJhbmRvbTAKPj4+ICAgIGAtLSBjaG9zZW46ZW52aXJvbm1lbnQub2YK
-Pj4+IGAtLSBzcGkKPj4+IGAtLSBpMmMKPj4+IGAtLSBmcwo+Pj4gICAgYC0tIHJhbWZzMAo+Pj4g
-ICAgYC0tIGRldmZzMAo+Pj4gICAgYC0tIHBzdG9yZTAKPj4+IGAtLSBzdGF0ZQo+Pj4gYmFyZWJv
-eEBTYW5kYm94Oi8KPj4+Cj4+PiBJIGFtIGRvaW5nIHBpbmcgYnV0IGl0IGRvZXNuJ3QgaGF2ZSBh
-bnkgZG5zIGVudHJ5IGFuZCByb3V0ZSB0byByZXNvbHZlIGl0Lgo+Pj4KPj4+IFBsZWFzZSBsZXQg
-bWUga25vdyBmb3IgYW55IG90aGVyIGluZm9ybWF0aW9uLgo+Pj4KPj4+IFRoYW5rcyBhbmQgcmVn
-YXJkcywKPj4+IE5lZXJhago+IAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ClN0ZXVlcndhbGRlciBT
-dHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUv
-ICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgICB8IFBob25lOiAr
-NDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAg
-ICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+Hello Peter,
+
+On 7/8/20 11:02 PM, Peter Mamonov wrote:
+>>> I tried to build MicroPython using barebox toolchain and found a number of
+>>> conflicts between barebox and compiler headers. Below you will find the patch
+>>> which demostrates some of them. In this particular example the problem arises
+>>> due to simultaneous inclusion of some compiler headers along with barebox
+>>> version of `strings.h`, which in turn includes barebox analogs of those headers
+>>> from `include/linux`. I belive there should be a segregation between headers in
+>>> `include` and in `include/linux`, i.e. headers from `include/` should not
+>>> reference <linux/*.h> headers. Yet I understand this is somewhat problematic.
+>>> What do you think?
+>>
+>> barebox code shouldn't make use of any compiler headers at all, except for <stdarg.h>.
+>> The only exception are arch/sandbox/os and scripts/, which reference libc headers.
+>> Everything else should comes out of barebox' include/ directory.
+>>
+>> If you have foreign code that you want to port into barebox, either modify it
+>> to use barebox headers or change the include order when building it to use _local_
+>> versions of the headers it requires.
+> 
+> Ok, I've got your point. Yet I want to point out that addition of *unmodified*
+> code in a form of git submodule would greatly simplify further support of this 
+> port. Unfortunately modifying include order will not help in this case, since, 
+> for example, both `barebox/include/linux/stddef.h` (included from 
+> `barebox/include/string.h` via <linux/string.h>, etc.) and 
+> `/usr/lib/gcc-cross/<ARCH>-linux-gnu/X/include/stdbool.h` define `true`/`false` 
+> macros. On the other hand `/usr/include/linux/stddef.h` and 
+> `/usr/lib/gcc/<ARCH>-linux-gnu/X/include/stdbool.h` coexist in GNU/Linux system 
+> nicely, since no header from `/usr/include/` does reference <linux/*.h> 
+> headers.
+
+Even if our headers didn't clash, our symbols might. You want to use the
+same declaration/prototype everywhere a symbol is used.
+
+If you have external code that uses, say, <string.h>. You write your own string.h,
+and ensure it's first in include path for all the code in the HAL (or w/e) directory
+you have. In that file you could have your wrappers and then #include_next <stdio.h>
+if needed.
+
+If you have global symbols clashing in incompatible ways, you could perhaps
+postprocess the micropython object code with objcopy to give all symbols a
+micropython_ prefix..?
+
+The proper abstraction is probably to have a module, but that seems only supported
+on ARM.
+
+>>> diff --git a/commands/types_conflict.c b/commands/types_conflict.c
+>>> new file mode 100644
+>>> index 0000000000..70fee8d6f4
+>>> --- /dev/null
+>>> +++ b/commands/types_conflict.c
+>>> @@ -0,0 +1,12 @@
+>>> +#include <stdbool.h>
+>>> +#include <stdint.h>
+>>> +#include <stddef.h>
+>>> +
+>>> +#include <string.h>
+>>
+>> barebox (except sandbox) is meant to be compiled with freestanding C implementations
+>> that aren't required to provide a <string.h>. So no barebox code should depend on
+>> compiler-provided <string.h>.
+> 
+> Actually `string.h` comes from barebox's `include/` dir, while `std*.h` come 
+> from compiler's include dir. 
+> 
+> 
+> PS: By the way, do you think Barebox will benefit from importing MicroPython 
+> (https://micropython.org/) and exposing some of Barebox APIs to it?
+
+We have setjmp/longjmp on all architectures now, so it should make porting MicroPython
+easier. I probably wouldn't use it, but I guess it could have some educational value
+for people interested to go from MicroPython + Microcontroller to an
+application processor..?
+
+It'd be cool to have for sure ;)
+
+Cheers,
+Ahmad
+
+> Regards,
+> Peter
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
