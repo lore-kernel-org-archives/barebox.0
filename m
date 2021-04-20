@@ -1,68 +1,68 @@
-Delivery-date: Tue, 20 Apr 2021 12:30:25 +0200
+Delivery-date: Tue, 20 Apr 2021 12:34:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lYneD-0008Q0-UL
-	for lore@lore.pengutronix.de; Tue, 20 Apr 2021 12:30:25 +0200
+	id 1lYni9-0008Qb-OK
+	for lore@lore.pengutronix.de; Tue, 20 Apr 2021 12:34:29 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lYneC-0005VY-Sp
-	for lore@pengutronix.de; Tue, 20 Apr 2021 12:30:25 +0200
+	id 1lYni9-000679-18
+	for lore@pengutronix.de; Tue, 20 Apr 2021 12:34:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
 	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=n6X9oWAzf0ZPtTDRNHGaHJTJ5qSL/fL0vlGYx+Ve0yk=; b=SfMq35re066FGxwrdAXOiqktp
-	jxSDLMaBzqpv568C1AV1jDG5dE80GeojtvWRLNRitu1+emmnRqHAH20xE4S2XdbdLuPRQQR83XbJo
-	Cx9Ap6nvkYl1G9QHSbRPvLyky2/Xg+8rHXXj+5PdQ4q9uXghocb91OL16HWdGyvKttX2BfdZDhPZR
-	HJ0pHgtj0YULkxvbBGf9yPPGVib4KnJnR+GNONs3GJdvJblOfwrtNb8p+xvbNklBz7i76SATH8W2y
-	gnJ4kXDYh+3R+3tVOp1dETraaSVItIxy3uoZ0/fntQRpmjBi60F+eyeO4zlkSpJ7GTqf8DEXeW+Nf
-	Z/+8xO9bg==;
+	 bh=4Sm6FaCB5OqwLagpjJzniJvjkdup5iZPDrRFwTMUvHA=; b=gjxUIUTJ5Rash0WbIbzF3j1ab
+	PdAiQJuf32Dm7i61M3eW3ZT1leZg+4xi+5XO5ILFQnMBcvBfUQV8DFBIB8jOMQBWOGH+Tv4IiR4eV
+	I3Sv8BmXgvsB0jTxnG7bMHGviOehdhHsMUbH1+zDsW2MWxN+atYGt8RsLPKi+/S8bDY8XBmNc9GMc
+	pb7DnCeMZh3paAjuDb0QapN+/fhxwopDb4VaWSjjjqEXSDLzzy0+r6hpfR3NKyc5/wPXUx8UwACeO
+	SjXeHfi1Mhgj61arXTa/T48oDWPKtv4OrJTxDvn3TYVr3ekVpBYKBsj2XgkcqEPWpm/5DFlZBWbex
+	V11cuiCZg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lYnd5-00Bspa-5o; Tue, 20 Apr 2021 10:29:15 +0000
+	id 1lYnhD-00BtJw-TS; Tue, 20 Apr 2021 10:33:32 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lYnd1-00Bsp9-M5
- for barebox@desiato.infradead.org; Tue, 20 Apr 2021 10:29:11 +0000
+ id 1lYnhA-00BtJe-2g
+ for barebox@desiato.infradead.org; Tue, 20 Apr 2021 10:33:28 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:
  Subject:Sender:Reply-To:Cc:Content-ID:Content-Description;
- bh=Fts6CfAYEDxIThAbeXDLR0taALF8vXuzOIif3hLSAHs=; b=Q3gEuXxZbCOGKgy0rDES04W2Sr
- e8gLBZVl60Yhu/Ru3Y5PwjCb3+nbLxTVwXVPSozK0Y2YpcURc68jwy1R6TWeC6BaAiFseYVZ+gno2
- XB9BUhjcNDfRfaxzHXO8pADllVRqIWOw9A4dhhuYofFv0uR6cymrK4ZEOzPWBzHDVVIGfdxGFcK6s
- jdtxa7RTo69izedWlrD7DR4G692RXGgOXqcnLu8N2O1cQcl12ovNJEUZvTy2KjMebAUDhGWHMljqO
- j8MabNR57BQhh72zIiR0SSegpyjKK7YQRAcnZJLTc8899OFHUqOH642kh+Y21GYcO959jEaUR/YOL
- WA2JnI5Q==;
+ bh=9G9/Fnx20AIiVLW4pfIYRSjKIbPM8OvYFkm2OJ9ZlqI=; b=yarAQS+tspGh31dlpn+7/TULi9
+ s0h8RiPuSQ3+mDSHWUGwWP0MnGACKp9/0bPBcRJvkkozQk0iHXAsPKfaXja+SqcccUreGhZlM3X4z
+ D64KgrLZHoCrW2c7CSEO9Qi8ATcFZM1pAVM65l1qiAL9hFkftp0lX+NfS4pH+TrhAZ2EtHtaT31nY
+ MfiCaM25wOaMeUEdAinc2MU6bh4IaKXEsc27e38tFFLLnDIme4a0JTheTunw2pzWntg/b/UUlf7zZ
+ YEIcjeT2l1AOyYWUXPigXECfL7348I56LLtBQs2oISr0UBrkb7o65xeYMVskDZavVxFg20t5ediGl
+ Xe7lp/TA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lYncy-00C1Ry-J4
- for barebox@lists.infradead.org; Tue, 20 Apr 2021 10:29:10 +0000
+ id 1lYnh7-00C1cS-Ht
+ for barebox@lists.infradead.org; Tue, 20 Apr 2021 10:33:26 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1lYncw-0005ML-Sc; Tue, 20 Apr 2021 12:29:06 +0200
+ id 1lYnh6-0005tk-BY; Tue, 20 Apr 2021 12:33:24 +0200
 To: Rouven Czerwinski <r.czerwinski@pengutronix.de>,
  barebox@lists.infradead.org
 References: <20210420075700.246124-1-r.czerwinski@pengutronix.de>
- <20210420075700.246124-6-r.czerwinski@pengutronix.de>
+ <20210420075700.246124-8-r.czerwinski@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <5a8054fc-0ef9-0ef9-35e0-0027527b9566@pengutronix.de>
-Date: Tue, 20 Apr 2021 12:29:06 +0200
+Message-ID: <31b81531-82fe-1407-b87b-93a6e4f31097@pengutronix.de>
+Date: Tue, 20 Apr 2021 12:33:24 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.0
 MIME-Version: 1.0
-In-Reply-To: <20210420075700.246124-6-r.czerwinski@pengutronix.de>
+In-Reply-To: <20210420075700.246124-8-r.czerwinski@pengutronix.de>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210420_032908_668435_06A969A2 
-X-CRM114-Status: GOOD (  27.46  )
+X-CRM114-CacheID: sfid-20210420_033325_622423_57FF4376 
+X-CRM114-Status: GOOD (  18.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,156 +86,41 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 6/8] pbl: fdt: add support to parse reserved mem
+Subject: Re: [PATCH 8/8] PBL: enable LIBFDT for OP-TEE early loading
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 20.04.21 09:56, Rouven Czerwinski wrote:
-> This allows the PBL to fill a reserved memory map which a subsequent
-> commit will use modify the early MMU mapping.
+
+
+On 20.04.21 09:57, Rouven Czerwinski wrote:
+> This allows the OP-TEE early loaded board to add the reserved memory
+> entries for the correct MMU setup. This is done by including pbl/fdt.h
+> and using fdt_fill_reserve_mem().
 > 
 > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > ---
->  include/pbl.h | 15 ++++++++++
->  pbl/fdt.c     | 80 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 95 insertions(+)
+>  common/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/include/pbl.h b/include/pbl.h
-> index 194d5e7508..df0f41ac5b 100644
-> --- a/include/pbl.h
-> +++ b/include/pbl.h
-> @@ -34,4 +34,19 @@ ssize_t pbl_fat_load(struct pbl_bio *, const char *filename, void *dest, size_t
+> diff --git a/common/Kconfig b/common/Kconfig
+> index bddf802d3b..469cc3e06a 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -1088,6 +1088,7 @@ config BOOTM_OPTEE
 >  
->  void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsize);
->  
-> +struct pbl_reserved_memory {
-> +	phys_addr_t			base;
-> +	phys_addr_t			size;
-> +	unsigned int			flag;
+>  config PBL_OPTEE
+>  	bool "Enable OP-TEE early start"
+> +	select LIBFDT
+>  	depends on ARM
+>  	depends on !THUMB2_BAREBOX
 
-flags
+Should this
 
-> +};
-> +
-> +#define MAX_RESERVED_REGIONS	8
-> +
-> +#define FDT_RES_MEM_FLAG_NOMAP		BIT(0)
-> +
-> +void fdt_fill_reserve_mem(const void *fdt);
-> +
-> +struct pbl_reserved_memory* get_pbl_reserved_memory(void);
-> +int get_pbl_reserved_memory_num(void);
-> +
->  #endif /* __PBL_H__ */
-> diff --git a/pbl/fdt.c b/pbl/fdt.c
-> index b4a40a514b..f8e301843f 100644
-> --- a/pbl/fdt.c
-> +++ b/pbl/fdt.c
-> @@ -68,3 +68,83 @@ err:
->  	pr_err("No memory, cannot continue\n");
->  	while (1);
->  }
-> +
-> +struct pbl_reserved_memory reserved_mem[MAX_RESERVED_REGIONS];
-> +int reserved_mem_count;
+depends on !CONFIG_OPTEE_SIZE
 
-Both can be made static.
+?
 
-> +
-> +void fdt_fill_reserve_mem(const void *fdt)
-> +{
-> +	const __be32 *nap, *nsp, *reg;
-> +	uint32_t na, ns;
-> +	int node, size, i, parent;
-> +	const void * prop;
-> +	uint64_t memsize64, membase64;
-> +	bool nomap;
-> +
-> +	/* Make sure FDT blob is sane */
-> +	if (fdt_check_header(fdt) != 0) {
-> +		pr_err("Invalid device tree blob\n");
-> +		return;
-> +	}
-> +
-> +	parent = fdt_path_offset(fdt, "/reserved-memory");
-> +	if (parent < 0) {
-> +		pr_info("Cannot find reserved-memory node\n");
-> +		return;
-> +	}
-> +
-> +	nap = fdt_getprop(fdt, parent, "#address-cells", &size);
-> +	if (!nap || (size != 4)) {
-> +		pr_err("Cannot find #address-cells property");
-> +		return;
-> +	}
-> +	na = fdt32_to_cpu(*nap);
-
-fdt_address_cells?
-
-> +
-> +	nsp = fdt_getprop(fdt, parent, "#size-cells", &size);
-> +	if (!nsp || (size != 4)) {
-> +		pr_err("Cannot find #size-cells property");
-> +		return;
-> +	}
-> +	ns = fdt32_to_cpu(*nap);
-
-fdt_size_cells?
-
-> +
-> +	fdt_for_each_subnode(node, fdt, parent) {
-> +		nomap = true;
-> +		reg = fdt_getprop(fdt, node, "reg", &size);
-> +		if (size < (na + ns) * sizeof(u32)) {
-> +			pr_err("cannot get memory range\n");
-> +			return;
-> +		}
-> +
-> +		membase64 = 0;
-> +		for (i = 0; i < na; i++)
-> +			membase64 = (membase64 << 32) | fdt32_to_cpu(*reg++);
-
-I wondered whether there's a helper for that, but couldn't find anything.
-
-> +
-> +		/* get the memsize and truncate it to under 4G on 32 bit machines */
-> +		memsize64 = 0;
-> +		for (i = 0; i < ns; i++)
-> +			memsize64 = (memsize64 << 32) | fdt32_to_cpu(*reg++);
-> +
-> +		prop = fdt_getprop(fdt, node, "nomap", NULL);
-> +		if (!prop)
-> +			nomap = false;
-> +
-> +		reserved_mem[reserved_mem_count].base = membase64;
-> +		reserved_mem[reserved_mem_count].size = memsize64;
-> +		if (nomap)
-> +			reserved_mem[reserved_mem_count].flag |= FDT_RES_MEM_FLAG_NOMAP;
-> +		reserved_mem_count++;
-> +	}
-> +
-> +	if ((node < 0) && (node != -FDT_ERR_NOTFOUND)) {
-> +		pr_err("Error while parsing reserved-memory nodes: %d\n", node);
-> +		return;
-> +	}
-> +}
-> +
-> +struct pbl_reserved_memory* get_pbl_reserved_memory(void) {
-
-{ on separate line, make it const.
-
-> +	return (struct pbl_reserved_memory*)&reserved_mem;
-
-just return reserved_mem; should work
-
-> +}
-> +
-> +int get_pbl_reserved_memory_num(void) {
-
-Ditto
-
-> +	return reserved_mem_count;
-> +}
+>  	help
 > 
 
 -- 
