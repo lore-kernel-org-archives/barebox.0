@@ -1,87 +1,94 @@
-Delivery-date: Wed, 21 Apr 2021 19:46:58 +0200
+Delivery-date: Wed, 21 Apr 2021 20:11:01 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lZGwE-0002Ut-1I
-	for lore@lore.pengutronix.de; Wed, 21 Apr 2021 19:46:58 +0200
+	id 1lZHJV-0002WR-Cz
+	for lore@lore.pengutronix.de; Wed, 21 Apr 2021 20:11:01 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lZGwD-0003yz-9y
-	for lore@pengutronix.de; Wed, 21 Apr 2021 19:46:57 +0200
+	id 1lZHJU-0006eU-KG
+	for lore@pengutronix.de; Wed, 21 Apr 2021 20:11:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:
-	References:MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=RiQqHip51kVCj44T6UEkJ6BqJA4BhAQeOhwBvbyqeFQ=; b=dZAOwxIxrqHrKXwamoDRZ+sme
-	NLuujFpwcc56jISyvHu62RT9E6RBU0hR3kSjWHLfa+Mdto70JY4cVE80rNmxcW5yLQhDDvj4Bdz1o
-	Bm0bBsoKBZpVxXr2FQvmNxbN0OJcgkRS4iHF8A0gDYMRjuMxkpp/4D/1ZzIDI6ITcimTsRt6927fH
-	qO13oE3h/rGLh6Zpi3kzYy1E7jAr4BzqeMB4nYk3W/5v92SB1zMwmZQ/eMWoxc1wjd9QDwS4QDTYE
-	UKuPMNRjaXmJs8l5YQLwiiyTDiAPMhPZqdalucRctxiZngx4lIcOdwJp4Jc5l6prCeoqBPBt+9SnG
-	EFeEifg5w==;
+	 bh=LLpKbxE7wtcFnjPxmj2tWWglvxJFpGIjJeUr9sig39w=; b=Bdccu8YMKEdPOs6bKFVzOK1JP
+	mJ/ljrkfViY2rCZvY0KnROsy2BF8MQgDxgNvInbWmsy+eeK3OYYd/Y9/+q/jmEZIqwSq+Kt5Vvib5
+	yIQNia7SO18wQxo9TCIlZNl4nNSM9vfqytSDZEgSVdqYuUWq/7WKexlluwOyRdu+/QptgOjf7BOTv
+	r7+TDMRddUo2TmzzS0OdOieMS5BQakXmnP+LTGuDpZZqYat0PPy1S3LhhGp9AYjGd4aTobRclSMD7
+	t9a06YGVp1CCmcHkILLaMsPYpYX1A+w/u6LdxL2xsjc0aNbxpfDW/RnzH3foMCtfd8k4JzoArjx8u
+	64HPYtqUQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lZGv5-00EuCw-Rc; Wed, 21 Apr 2021 17:45:48 +0000
+	id 1lZHIM-00EwiF-BG; Wed, 21 Apr 2021 18:09:51 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lZGv0-00EuCV-Av
- for barebox@desiato.infradead.org; Wed, 21 Apr 2021 17:45:42 +0000
+ id 1lZHIJ-00Ewi8-0e
+ for barebox@desiato.infradead.org; Wed, 21 Apr 2021 18:09:47 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Type:Cc:To:Subject:Message-ID
- :Date:From:In-Reply-To:References:MIME-Version:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=AroR83n2jWIVI1w3T1PgkQMS7HYisgKuBaH4OP8w5ZQ=; b=wnlO9Kr3fWbF1PJHByR+5mgzbq
- SOP/rYDMNmLvQTTUCwMXeDBcf7Hzpr2Ezq6Ygn/rgr/FWlqOEVDMPjc8qnJr4NxKPyQl/6xoeZVn4
- LV+vnWZMiwTS5LNcCCU5ao9wa4aUR6Ezl71IvEN6i2YtHA3k7NbqYjF/ZR1vkct2588WC+NSL2kyJ
- 1i3cj5+SkA2i7Fjcf7X08asexAxGOp4c097dOY3zx/L1Jz102vkajtU+0gF+0DHOcVIKIhavo0FmX
- N7lOzomRDSjMc1pxLJgQO7EDMXIWDaRSivusKERD6OULYkkkOLLWfdzAwM8wOmjHhxedOirUCnoDf
- rS5+z6gA==;
-Received: from mail-qv1-xf2f.google.com ([2607:f8b0:4864:20::f2f])
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=bXMbClJNPl78YMKd2lw4jP1PaAM7wc1WAkqnt/dIkZY=; b=wpiOFSv83hH7wVr0Ho4g8+eI7D
+ pBBDlHikisde3nZFIUyzcxu8WdUkGZT13ExaOBJ6cczKkjRe/61VNh+J2AI4u5udS3qxsNI/6Y6FA
+ JCIUbtBUdFo7L4W2q8zocQHKWjo3Vi2xBtoJWhkZW2CL2O7oh+N5moglyDWX/uABikY85c2zTACog
+ CQucEOhpRuQ41OKUkrgw0qQLX+jf9yfNX5tkd+6iETzau/5wVHvsskyOnv4Zb0K4uYEW+OwiyRRhH
+ 6nfTizJWJAklh8s4MCV8uKESu4Ozgvf+CeW5IKggYAc2pUaLGT6vf9djIW9LfjzCasdYSZbWzaRF+
+ ce9pU6qA==;
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lZGuw-00D4g2-WE
- for barebox@lists.infradead.org; Wed, 21 Apr 2021 17:45:41 +0000
-Received: by mail-qv1-xf2f.google.com with SMTP id ei1so2678222qvb.9
- for <barebox@lists.infradead.org>; Wed, 21 Apr 2021 10:45:38 -0700 (PDT)
+ id 1lZHIG-00D5jq-52
+ for barebox@lists.infradead.org; Wed, 21 Apr 2021 18:09:45 +0000
+Received: by mail-pg1-x52a.google.com with SMTP id d10so30647914pgf.12
+ for <barebox@lists.infradead.org>; Wed, 21 Apr 2021 11:09:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=AroR83n2jWIVI1w3T1PgkQMS7HYisgKuBaH4OP8w5ZQ=;
- b=htjqBRXflVzYp6W+I+Xt7KZOvv3XZj4Y3xEfQYYUjeEMKZ0lOv+b3HHvoR0c/NVqMP
- J5jVg/0rpqXq1UhEMxYd/6BU5uTWUZsq0lCXTbkhkdhc7lPO45Jh4eDbrXey9JO6I/Fu
- tcKg7Ok6uVMmf7dKIxQAqFJ/DaTrZ4wmwpzf1cYSj12Gwc/8wjC8rdJzTJJ2rjQRnMOP
- yyV7EmHcB2NnutfvfUlHzDSnApp8/lr6Rt7yWaP06KxEcAtk+1E2+8/lcSl7Z7EVJG5y
- zQ8GFkprvIm8bpB2eTg8v1QmSKT64n98J/+9k/0YdvIHqcn8wJONCajzcWaksC+C6dZn
- i1jg==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=bXMbClJNPl78YMKd2lw4jP1PaAM7wc1WAkqnt/dIkZY=;
+ b=fto49VUCZPFjG3uTXQEBtC1R6C/1uu5WMMEUJVCgw4crmHHPIN0o33ZhrpKVlmGBfZ
+ LxecdxMYlTL2V5McKT4LghJUCZ4+pxpv/AmduQsaxxvmGa6mEN579dqv2fYQHlXhmGVu
+ jNCOsQTRr0RzN7Dx9NcYeiZaBaIvcifUODsUoas4Z1BwnxV9fZnM0766ZnyoYUmy8vu6
+ 90djWwCiSu+FleosyL/WpLWboN+kyFGVkZD2eiDgsdApDauEnznKIzjPQ7R5YfkzpQ5G
+ NIhRg5/LEezIhXdTqAfZuOgt0ddOoJZdm/z59dIOeviJA1RGnLlriC4OKapEGv7O1s2I
+ YaMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=AroR83n2jWIVI1w3T1PgkQMS7HYisgKuBaH4OP8w5ZQ=;
- b=VZwGEGcGWLNXVDhi20XJxQccs1vfexlvYzkWOD8gj8FAfhShPsQgkknl7E5FsnhtOK
- yieDpLPojUmk7i9Qp9EKBjrxt9YF6CJhRb0NmRVlXu+S8Y/gKkCayk0M18lBpdARyugj
- HCJ5q+oZ9Ut40vOK2zx0genGM1Xql8bxyRKfV8oJauBT1A+oM74w2DdDZVWiKc10vG0A
- EzI1MQ3ML6i+yTPZ8n39krZt4SA/Z/lu2GHEdcAV8ER7p7XWiZc7kl430PSu8nQ1AM9P
- 8pSM6Bnd9JMVIj9AzW0jWBhnqy46UC3aZsVLoGrUSKgJbxwN7vCPvsAJx6Vx8p01nIoy
- DC6g==
-X-Gm-Message-State: AOAM530KTxASo6oXRQbWqdMnYKzJc4cJcOlrvmJo2BSuGtgis2rtmqY0
- wVMSCVS1ePQk7DrHn85cHjOa0MrGSgMi6zFPW5iVTLotDN4=
-X-Google-Smtp-Source: ABdhPJyhexMfl7kUUPfZYPtNcDwHgsJMjHedXmLCdrxtjPPsn8pWwJcCk4VVYaDSvBPx3zMyT4kL2cPrJ9dU3vHceXo=
-X-Received: by 2002:a0c:b410:: with SMTP id u16mr33485687qve.8.1619027137433; 
- Wed, 21 Apr 2021 10:45:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <CANi4_RUeUVWkfLgJZxx_eHoJmXLHLwQ7+eF8+yehNV_CwNQ1yQ@mail.gmail.com>
- <001dcf38-fff0-703a-012b-7cfb826d8899@pengutronix.de>
-In-Reply-To: <001dcf38-fff0-703a-012b-7cfb826d8899@pengutronix.de>
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=bXMbClJNPl78YMKd2lw4jP1PaAM7wc1WAkqnt/dIkZY=;
+ b=bhfT4LMfNw9ZNh/NS+cC/nFMgYw7HoMHfdI+P11xJZtlBNFXOx78MaRcNz88GtCTAA
+ M3+xiYx7oVYowfKxcVZ76GWVJky9+794Vwzg+ZKrOJe13Epz6ycocv6Mgnr1LeUYCWWw
+ PHGAfMDAK7AemlvIOzQGEMy9fewBYpDNM8r53gc8Eu6Ho5+i5mX81WcRcwpeHpYdvoXl
+ jQtfSKQstl+bOcVHZXIZ94eHNK65EuzYZ3ALrma8Ep733eyfZqxmQXhTdqankO9eOlkS
+ gAM0nP1fJTyCfe1k34WPAkl6Uxa6SjdatFDOgSygvERaF9pUBQBNHtZF/63xIhVabqjK
+ 3GtQ==
+X-Gm-Message-State: AOAM533v9rJHBfW+XVrmgq8Qcj1NP9j8OT9lWKYuZ0dboL3uOA7UdJ8Y
+ xOYbMxE888fp0YT9KFaqUNI=
+X-Google-Smtp-Source: ABdhPJyWN8qZFUyKzU7spS6RsGZT5xLTWSfBss/ZvhjzQYK8r8miWVBn855+nui9w+TiGPMTLPRfbQ==
+X-Received: by 2002:a63:4a1a:: with SMTP id x26mr23255517pga.429.1619028583050; 
+ Wed, 21 Apr 2021 11:09:43 -0700 (PDT)
+Received: from localhost.localdomain ([106.207.186.108])
+ by smtp.googlemail.com with ESMTPSA id b3sm2625341pjo.37.2021.04.21.11.09.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Apr 2021 11:09:42 -0700 (PDT)
 From: Neeraj Pal <neerajpal09@gmail.com>
-Date: Wed, 21 Apr 2021 23:15:25 +0530
-Message-ID: <CANi4_RV5d9-FgoJjCebMGn4cjQ_DrqqLs0XdC2wUzn6qFKviHw@mail.gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: a.fatoum@pengutronix.de
+Cc: barebox@lists.infradead.org,
+	Neeraj Pal <neerajpal09@gmail.com>
+Date: Wed, 21 Apr 2021 23:38:00 +0530
+Message-Id: <20210421180759.10957-1-neerajpal09@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <CANi4_RV5d9-FgoJjCebMGn4cjQ_DrqqLs0XdC2wUzn6qFKviHw@mail.gmail.com>
+References: <CANi4_RV5d9-FgoJjCebMGn4cjQ_DrqqLs0XdC2wUzn6qFKviHw@mail.gmail.com>
+MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210421_104539_054840_5204BB8F 
-X-CRM114-Status: GOOD (  19.10  )
+X-CRM114-CacheID: sfid-20210421_110944_234153_0C85A4A3 
+X-CRM114-Status: UNSURE (   9.79  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -106,50 +113,93 @@ X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] Documentation: sandbox.rst: added dhcp network
- configuration
+Subject: [PATCH v2] Documentation: some extra steps requires for DHCP network
+ configuration for sandbox on the host OS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Ahmad,
+Signed-off-by: Neeraj Pal <neerajpal09@gmail.com>
+---
+ Documentation/boards/sandbox.rst | 66 ++++++++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
-On Wed, Apr 21, 2021 at 5:02 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> Please send this as Git patch, i.e. with a commit message. This is most
-> easily done, by using git send-email. Write something in the commit message
-> that explains the change, e.g.:
->
->   Network configuration on sandbox requires some extra steps on the host
->   OS. Document these.
->
-> And don't forget your Signed-off-by. You should also mark the patch as v2
-> (pass -v2 to git send-email if you use that).
+diff --git a/Documentation/boards/sandbox.rst b/Documentation/boards/sandbox.rst
+index e9e518365..925dfc808 100644
+--- a/Documentation/boards/sandbox.rst
++++ b/Documentation/boards/sandbox.rst
+@@ -74,3 +74,69 @@ Available sandbox invocation options include:
+ 
+ To terminate barebox and return to the calling shell, the poweroff command is
+ suitable.
++
++Network configuration
++---------------------
++
++While running the sandbox, the following steps are required
++
++* On host
++
++  * virbr0: virtual bridge interface created by Qemu (easy method)
++
++  * if Qemu virtual bridge (virbr0) is not available then manually create and configure one bridge like "br0"
++
++    .. code-block:: console
++
++        $ ip link show
++        4: virbr0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default qlen 1000
++            link/ether xx:xx:xx:xx:xx:xx brd ff:ff:ff:ff:ff:ff
++        6: barebox: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
++            link/ether xx:xx:xx:xx:xx:xx brd ff:ff:ff:ff:ff:ff
++
++    .. code-block:: console
++
++        $ sudo apt install bridge-utils
++        $ sudo ifconfig barebox up
++        $ sudo brctl addif virbr0 barebox
++        $ sudo ip link set barebox master virbr0
++        $ sudo dhclient -v virbr0
++
++* On Sandbox
++
++    .. code-block:: console
++
++        barebox@Sandbox:/ devinfo eth0
++        Parent: tap0
++        Parameters:
++          ethaddr: 00:00:00:00:00:00 (type: MAC)
++          gateway: 0.0.0.0 (type: ipv4)
++          ipaddr: 0.0.0.0 (type: ipv4)
++          linux.bootargs:  (type: string)
++          linux.devname:  (type: string)
++          mode: dhcp (type: enum) (values: "dhcp", "static", "disabled")
++          netmask: 0.0.0.0 (type: ipv4)
++          serverip:  (type: string)
++
++    .. code-block:: console
++
++        barebox@Sandbox:/ dhcp eth0
++        WARNING: eth0: No MAC address set. Using random address c2:2c:a1:17:b8:47
++        T eth0: DHCP client bound to address 192.168.122.21
++        barebox@Sandbox:/ ping google.com
++        PING google.com (172.217.167.46)
++        host google.com is alive
++
++    .. code-block:: console
++
++        barebox@Sandbox:/ devinfo eth0
++        Parent: tap0
++        Parameters:
++          ethaddr: c2:2c:a1:17:b8:47 (type: MAC)
++          gateway: 192.168.122.1 (type: ipv4)
++          ipaddr: 192.168.122.21 (type: ipv4)
++          linux.bootargs:  (type: string)
++          linux.devname:  (type: string)
++          mode: dhcp (type: enum) (values: "dhcp", "static", "disabled")
++          netmask: 255.255.255.0 (type: ipv4)
++          serverip: 192.168.122.1 (type: string)
+-- 
+2.25.1
 
-Thank you for sharing the information. I didn't use git send-email
-before but good to know about it.
-
->
-> I am not sure Sphinx likes it when the line is longer than the
-> text. Please adjust and while at it you could drop the "for Sandbox"
-> part. The whole file (and resulting page) is about sandbox.
->
-> s/sanbox/sandbox/. Do you do do these steps while sandbox is running?
-> If so, it might be better written as While sandbox is running, ... etc.
->
-> > +through dhcp.
-> > +Following configuration tested on Ubuntu 20.04 focal LTS
->
-> I think you can safely omit this line, but it doesn't hurt.
->
-> The rest looks fine.
->
-> Cheers,
-> Ahmad
-
-I have made the necessary changes as per your suggestions. Sending a
-complete patch through git send-email.
-
-Thanks and regards,
-Neeraj
 
 _______________________________________________
 barebox mailing list
