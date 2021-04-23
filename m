@@ -1,78 +1,69 @@
-Delivery-date: Fri, 23 Apr 2021 16:16:22 +0200
+Delivery-date: Fri, 23 Apr 2021 16:29:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lZwbW-0005up-A7
-	for lore@lore.pengutronix.de; Fri, 23 Apr 2021 16:16:22 +0200
+	id 1lZwoZ-0005vz-Oi
+	for lore@lore.pengutronix.de; Fri, 23 Apr 2021 16:29:51 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lZwbV-0007XD-CM
-	for lore@pengutronix.de; Fri, 23 Apr 2021 16:16:22 +0200
+	id 1lZwoY-0000MI-TY
+	for lore@pengutronix.de; Fri, 23 Apr 2021 16:29:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=oHtihlW8SgoH2X7e2HLLeAGcTVzmXZOgz+/k27IKss8=; b=nw1aqBaAqMaTa1xW7TVrlVTNs
-	mFo5cvp7tVSl+mBHi7nhWUeaEXf4Dd2EEzt7XBAo1xav6pO8J9XQ8gJjxHwKCN8LLc5YRO9A+tdgj
-	2ZO1ztT9ro1Kw8DJsLtOIp2x133PaCwQxsUlQ0QvagPveBLSu/zIeEC80NWiCizvHm02rCiYuo/ul
-	VuOEY7IaOhJzSaORgv5i7yr+cUbY63/q+T1yR2m5tAjOt//clWLeE4VxWYD19nHd1nHMvdA5oLZzb
-	2ID2+ZnhLY+QZIzmrQmLJ5jZkWrTq1x1j7Het5J430t1VzN4vbY1HJnVIis03u1c5F0h56et3H9h2
-	eTyFVOSZA==;
+	 bh=GVix8DLVYKkzZTKwNvK0kh9n1jcsQPadQ/aDc0FzUXE=; b=J2bWNNIm8MSjm5WIOxZL6LeAw
+	Gx6dK0leqXzTJNF+oO06ZZoJR9mvorl03Pz1xutcCjX7ziBm7nxYle5JUAurlwqGQblbjz8F3LeXY
+	3xQ/J0St609RkPEl1V9H1yXLuqFsCJzPS67sg4XJvtyTmxNhsnjL7yLt1KsGAErZPp+bD7PJsxEIt
+	ryMMoyZ+jLmR7JjNNrhmPidoVIiUeOE5Vwn6Nkr2oMzALz8licDNsF6zwT+dhMSwDVOHgcJxJKTyT
+	PuWxvYWGG0t21naFUbne+688dnQrdN+nqg0lR/1wnOpeZ6jlzYXn+oWw0mAOBKzB7p8rQRqfNHKJX
+	56OrUfXow==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lZwaA-001fn7-0s; Fri, 23 Apr 2021 14:14:58 +0000
+	id 1lZwna-001gqd-4c; Fri, 23 Apr 2021 14:28:52 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lZwa1-001fmW-UG
- for barebox@desiato.infradead.org; Fri, 23 Apr 2021 14:14:51 +0000
+ id 1lZwnV-001gps-Jq
+ for barebox@desiato.infradead.org; Fri, 23 Apr 2021 14:28:45 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
- :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
- Sender:Reply-To:Content-ID:Content-Description;
- bh=mNjIDRoPqHgzv4KfL5WLdK07AlLjp/k7IjWk+uxFh+o=; b=wYREwOdvs1NpPEoJKJQvhGu+75
- MoasVG4KvdNLC0zLBl65Eq/yGJl0kiKIypBk4TB4YdaLleP65ayEtbZGoK/CTWd/iURnWhukPPs6z
- dT6aDx1a5OEXmz++Kpwa09Gn8xAiRmjAIWRV8s+fI7SMpOaxHso8HMKi7FckPKoAzYYygNZ4ANjBw
- p4m/7/K+2YZBqT8F4LmXrQqHLZeq1E18ouxV2fZ15y941QSip/8Z24vAiSf9g5U97BXBV8W90rcZd
- rDkpOydysugmR8zsL7iXgDXXp/fPinac8ob8trVg0oByGvAbj5sRPpg4kl3Al8MqJAHN6ki5RLqpz
- M3hPMAeQ==;
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=OMFaKmEzXjZVFzgjSYz7n+DekjHSgRILfIy7T7oYQXw=; b=n078noiQ97FBdcVjn9kp3xQc1u
+ J0USEDryH0hA2VQB8C/63Nqz+esrsCzeTuiw2HncXmhaCqdNmiKTBEbOmRR1FZRphbt/rgJcDv6vI
+ 3ZY79dbPyBT+N4QGh+JWp1FBAy4Pt3J0cu1tBU8p3yI9VaCtJTCOvCC6H2ftCQQXXQUR3BTsRO09X
+ M5N1jnEXXM4x3KQ+/b2/G6vdAbHO0BZ4NBg84sYieiAIdDupZ4eZLoArvJZvMDtgKn3ETbJDHor0h
+ xCzD+Ect16h5DkDpHzGb7VEUfAYddI3Rx+jUy+k8Ov20RD8TP4fShxP/jBaX3YDK0+SV5HyyTlT0z
+ oBFE19VA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lZwZz-00ESla-5D
- for barebox@lists.infradead.org; Fri, 23 Apr 2021 14:14:48 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ id 1lZwnO-00ETBa-U7
+ for barebox@lists.infradead.org; Fri, 23 Apr 2021 14:28:40 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1lZwZw-00075c-In; Fri, 23 Apr 2021 16:14:44 +0200
-Received: from ore by pty.hi.pengutronix.de with local (Exim 4.89)
+ id 1lZwnN-0008WQ-FY; Fri, 23 Apr 2021 16:28:37 +0200
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1lZwZw-00046G-9Y; Fri, 23 Apr 2021 16:14:44 +0200
-Date: Fri, 23 Apr 2021 16:14:44 +0200
+ id 1lZwnN-0007gP-2g; Fri, 23 Apr 2021 16:28:37 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210423141444.weoblw75ooeukowr@pengutronix.de>
-References: <20210409131149.2184-1-o.rempel@pengutronix.de>
- <20210409131149.2184-2-o.rempel@pengutronix.de>
- <20210413045810.GE6950@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 23 Apr 2021 16:28:26 +0200
+Message-Id: <20210423142829.29468-4-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210423142829.29468-1-o.rempel@pengutronix.de>
+References: <20210423142829.29468-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210413045810.GE6950@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 16:13:04 up 142 days,  4:19, 47 users,  load average: 0.03, 0.06,
- 0.01
-User-Agent: NeoMutt/20170113 (1.7.2)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210423_071447_220451_9B4214D8 
-X-CRM114-Status: GOOD (  20.24  )
+X-CRM114-CacheID: sfid-20210423_072839_031216_8712FD67 
+X-CRM114-Status: UNSURE (   9.44  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,53 +87,51 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1 1/6] mci: atmel_mci: add PBL support
+Subject: [PATCH v2 3/6] ARM: at91: ddramc: add sama5d3_barebox_entry() handler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Apr 13, 2021 at 06:58:10AM +0200, Sascha Hauer wrote:
-> On Fri, Apr 09, 2021 at 03:11:44PM +0200, Oleksij Rempel wrote:
-> > +int at91_mci_bio_init(struct pbl_bio *bio, void __iomem *base,
-> > +		      unsigned int clock, unsigned int slot)
-> > +{
-> > +	struct atmel_mci_priv *priv = &atmci_sdcard;
-> > +	struct atmel_mci *host = &priv->host;
-> > +	struct mci_ios ios = { .bus_width = MMC_BUS_WIDTH_4, .clock = 25000000 };
-> > +
-> > +	bio->priv = priv;
-> > +	bio->read = at91_mci_bio_read;
-> > +
-> > +	host->regs = base;
-> > +
-> > +	atmci_get_cap(host);
-> > +
-> > +	/* get real HZ */
-> > +	host->bus_hz = clock;
-> > +
-> > +	host->slot_b = slot;
-> > +	if (host->slot_b)
-> > +		host->sdc_reg = ATMCI_SDCSEL_SLOT_B;
-> > +	else
-> > +		host->sdc_reg = ATMCI_SDCSEL_SLOT_A;
-> > +
-> > +	atmci_writel(host, ATMCI_DTOR, 0x7f);
-> > +
-> > +	atmci_common_set_ios(host, &ios);
-> 
-> Is it necessary to call this? The ROM should have already configured the
-> controller. By relying on this you could drop the controller
-> initialization code from PBL.
+Add sama5d3 specific barebox_entry helper.
 
-We get MCI controller in disabled state. I do not see any way to avoid
-reconfiguration.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/arm/mach-at91/ddramc.c              | 8 ++++++++
+ arch/arm/mach-at91/include/mach/ddramc.h | 1 +
+ 2 files changed, 9 insertions(+)
 
-Regards,
-Oleksij
+diff --git a/arch/arm/mach-at91/ddramc.c b/arch/arm/mach-at91/ddramc.c
+index c3ef6b0090..0aece5345f 100644
+--- a/arch/arm/mach-at91/ddramc.c
++++ b/arch/arm/mach-at91/ddramc.c
+@@ -26,6 +26,14 @@ void __noreturn sama5d2_barebox_entry(unsigned int r4, void *boarddata)
+ 			  boarddata);
+ }
+ 
++void __noreturn sama5d3_barebox_entry(unsigned int r4, void *boarddata)
++{
++	__sama5d3_stashed_bootrom_r4 = r4;
++
++	barebox_arm_entry(SAMA5_DDRCS, at91sama5d3_get_ddram_size(),
++			  boarddata);
++}
++
+ static int sama5_ddr_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+diff --git a/arch/arm/mach-at91/include/mach/ddramc.h b/arch/arm/mach-at91/include/mach/ddramc.h
+index 5d6f3a70b7..7daef17636 100644
+--- a/arch/arm/mach-at91/include/mach/ddramc.h
++++ b/arch/arm/mach-at91/include/mach/ddramc.h
+@@ -33,5 +33,6 @@ void at91_lpddr1_sdram_initialize(void __iomem *base_address,
+ 				  const struct at91_ddramc_register *ddramc_config);
+ 
+ void __noreturn sama5d2_barebox_entry(unsigned int r4, void *boarddata);
++void __noreturn sama5d3_barebox_entry(unsigned int r4, void *boarddata);
+ 
+ #endif /* #ifndef __DDRAMC_H__ */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.2
+
 
 _______________________________________________
 barebox mailing list
