@@ -1,70 +1,91 @@
-Delivery-date: Fri, 23 Apr 2021 17:59:37 +0200
+Delivery-date: Sun, 25 Apr 2021 08:37:07 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lZyDR-0006Z8-49
-	for lore@lore.pengutronix.de; Fri, 23 Apr 2021 17:59:37 +0200
+	id 1laYOB-00013g-Mg
+	for lore@lore.pengutronix.de; Sun, 25 Apr 2021 08:37:07 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lZyDP-0001lF-Vu
-	for lore@pengutronix.de; Fri, 23 Apr 2021 17:59:36 +0200
+	id 1laYOA-0008Mk-QZ
+	for lore@pengutronix.de; Sun, 25 Apr 2021 08:37:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
-	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=qlOfYqyZ2QH2ndjD03HAgSw8VUehdjfafAONUryC06A=; b=pJiw5YWVOCu87iG6z4x2LzYJk
-	VW18xJOh6GwWAYzw2kTOJnKW7lyGEW6etH5Wx423aXhC0fi0CenbtcBj2x0WTs6fW0dsYqzHgIu3v
-	Au6OG+ECyElUpeGmMzxk149ya4Zlb99BYAMxOR+UzCisotRpb2PYLAN7thQifSU+Av5zkIb9Vx6kj
-	3eQobkroiZfrQoKdTD/CpErFFl7LKhREGJjkDml2fyKhQ5OENtHQfMVcKGALlRezDdMOi/RdzyFKC
-	kHcStri7f79r3WB6QHWcU4LRjGEiQKhpx09agHNmCdTLNLzOTlk3akFfXLKXiwCfrBRynXjh5W9Py
-	irGOM2GOA==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Sh4T2CCmHoHtE2sIKyQ84mDe1LZ/+xsSOQAa/coyPCQ=; b=YqEiHgcPErEEXV
+	KIKtn/QLMNHqPjH+JgMMsxpiDKUDsiERncsrM7qh4jLEPsV4Cu3vQOiSb8zgkqh6ABJi9Iy3B8Njv
+	mVVc/egG3Sp+2mQDw6p71AwJumteLNqpTnt5wbRlegskyhN7sebYjossuaOksDoBXkdrMGVlXlANn
+	iFcZjWH85hegFYdRCNkHo02Txo7DvN0yRT3B4Bj13CkLr0hU+r5mLdFX+YGw/Ai5cnNsqEB4E6FmN
+	9hEZu4tBvFVnFdSZlGN1KXXm2IF5s5Hxm/4bQX+i9GJNQoETmlLGJnc1Ba64MZOsNDOVX8bKFGv42
+	cJISDi/syUavYPmNHLBQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lZyCN-001pUp-Ee; Fri, 23 Apr 2021 15:58:31 +0000
+	id 1laYMh-0058bz-37; Sun, 25 Apr 2021 06:35:35 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lZyCG-001pUD-EM
- for barebox@desiato.infradead.org; Fri, 23 Apr 2021 15:58:24 +0000
+ id 1laYMZ-0058bb-LF
+ for barebox@desiato.infradead.org; Sun, 25 Apr 2021 06:35:27 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:
- Subject:Sender:Reply-To:Cc:Content-ID:Content-Description;
- bh=4qa3gxNRGw365UP+5Y03iZOnkWLzhTlRrhk2NLJWxCc=; b=YhY6CXbX44GM+s/5P7mKsShXjD
- dwT0UE+xll9pjtrw6aPCr04+N/b4hIw5Y+I2Cdauwt3hxvpb4ggAoWRivAQe14fZZdfdS7t3NLCsn
- KYS/yNKEaaKJgTCJDMR7LJzrNREiAlOhjADeUGU2nWak7AiD61OXb/4UWrhJpLG6J7toFrygxSITp
- 1hIpWWp9bhLL2VT3y81fehd2EYx7RXMMlVAzC7YRj3a7MnIrV+AwxDXVxawFLFfkRrzS37gYcVHEv
- p7/IYYBHBg0yu/cHcp+eo/n4rx99xGz/eBYUEKWNv7yKR/6FsgsoZc3ALwtPUniyE+RMX5dODiveP
- RGwxeJog==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=H4OJfYNZSpHeBIcZqsue5vBqINDw7YZ+2AOF1xex8h0=; b=hyxUlRDyX3EIlZZyhr/DnNTUaM
+ w25tuRH1VF9MJ20TtfXXvYdnf0lqJkeGwHykYcRITOnqs+jBY+Ry9QIlZrxiRZdPYQD/cCzO9/9sy
+ 73K/tyTobNsf2XuESm/oLfEFtKAJdMzvQWoDC//sAv3mX5sA7+gr12UQGSPNUXy98jUuRLHillN8o
+ blqJGK/3aVuujFRcm29DEBdWyC5ZssyNqlRs/bvClJYorWoIb22Q9dOQ4ScmjP27NbF3DCknaWD7s
+ v5EHdORcYfwRjbg/MS5CA9592p/layNERVswCdAx1GfBI+WhJK6tisryy2fJPgyvMeKmAYhnTEzNo
+ ekHIrz/g==;
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lZyCC-00EWs8-JO
- for barebox@lists.infradead.org; Fri, 23 Apr 2021 15:58:22 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1lZyCB-0001gg-Cs; Fri, 23 Apr 2021 17:58:19 +0200
-To: Oleksij Rempel <linux@rempel-privat.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
-References: <20210423142829.29468-1-o.rempel@pengutronix.de>
- <20210423142829.29468-7-o.rempel@pengutronix.de>
- <1acc5ee3-f55b-c558-ea71-97d8e980b1bf@pengutronix.de>
- <509df559-896c-ab55-1e1d-0000a4698c71@rempel-privat.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <6f7700fc-f93f-874a-4838-949b6769b2cb@pengutronix.de>
-Date: Fri, 23 Apr 2021 17:58:19 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+ id 1laYMW-00FJF2-Vn
+ for barebox@lists.infradead.org; Sun, 25 Apr 2021 06:35:26 +0000
+Received: by mail-lf1-x136.google.com with SMTP id 12so83246486lfq.13
+ for <barebox@lists.infradead.org>; Sat, 24 Apr 2021 23:35:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=H4OJfYNZSpHeBIcZqsue5vBqINDw7YZ+2AOF1xex8h0=;
+ b=T4ZqUvCeyXDpchVGNH8M6Zih0xAatj9HbVHwc/ffZKU0qw+2JEFxiuGxl4NSqKBXtZ
+ 4rB8/sUpX4E1v31/Q5Vh6DJGbyv9u/uYIIpIePrxwxp3nydDwU562ilhJhm6wbh9VU8c
+ 1Bh2tdS1dAii8e5Q8GbGh2Z11GWjoLLBpoh9BZQpo92dGzi/yGYvbE8mgqMk3YgP85z/
+ DkKIN1WIMkcuE/Gw2rNkdAK9rhcdIb8GQ1f/bb42kCB6gdvku1EOi6PmSnb1VVBowsdG
+ 27/3Fc4nv4c5SOATgdGT5zOSXXpYrwpUkX7yXT/7sdf41eHwQLSGKTOiLQLu+GkbYxbi
+ R5Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=H4OJfYNZSpHeBIcZqsue5vBqINDw7YZ+2AOF1xex8h0=;
+ b=qHw75LXshBixyhsWnJAdVM7204PQ2mBY9YUADVL/vGDqLHrQu0SicFTcg4UTpCP9pR
+ TKSBnrP+dGnAOeUqRKtOTkn4motP5liJIIv4Z3F2rQ8COENSlhT/ha4wYIgU78EPbTlO
+ OytQK48UWp3M3olqENLILgKA2ULpvCA8eyQFjpo+9ntDZY/adP5iKSyCbOjSA0OiiodR
+ XuogrWLT9tXptrO2d9RF3Hmfmiz+PKfQ782hJ2aAmQ9LnIaX0/iUFMnyysUgLiKS9aW4
+ 1WOA31biy3MdGb7Ya+o5MTMZL7/aBFMU0G64zkv32yENBTcxml8sdWeQmJhm5FnxEN8K
+ jZ4A==
+X-Gm-Message-State: AOAM531NE34ZlbNFo2OOBMl9qmYtPaEDZ9A7zwhOpDTWI0JQgf6Rjm13
+ tnO6rFnrJ9P9Tlj/gOlE9Ci69Ky/JboIRw==
+X-Google-Smtp-Source: ABdhPJzat9DcmfXkUCdSbgz4cGGn4iV20FHU2wSRZVsDhnB870ZIjGz0MnNb5yI5tMt47c2Ph/mZUA==
+X-Received: by 2002:a05:6512:11c5:: with SMTP id
+ h5mr36922lfr.401.1619332522248; 
+ Sat, 24 Apr 2021 23:35:22 -0700 (PDT)
+Received: from localhost.localdomain (109-252-203-17.dynamic.spd-mgts.ru.
+ [109.252.203.17])
+ by smtp.gmail.com with ESMTPSA id y23sm1019181lfh.3.2021.04.24.23.35.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 24 Apr 2021 23:35:21 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: barebox@lists.infradead.org
+Date: Sun, 25 Apr 2021 09:35:17 +0300
+Message-Id: <20210425063517.120260-1-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <509df559-896c-ab55-1e1d-0000a4698c71@rempel-privat.de>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210423_085820_675065_78D39C0B 
-X-CRM114-Status: GOOD (  19.22  )
+X-CRM114-CacheID: sfid-20210424_233525_060473_2E8C88C5 
+X-CRM114-Status: GOOD (  10.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,171 +105,107 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 6/6] ARM: at91: sama5d3: add multiimage support for the
- microchip-ksz9477-evb
+X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] MIPS: qemu-malta: use generic syscon reset driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/configs/qemu-malta_defconfig |  2 ++
+ arch/mips/dts/qemu-malta.dts           | 13 +++++++++++
+ arch/mips/mach-malta/Makefile          |  1 -
+ arch/mips/mach-malta/reset.c           | 31 --------------------------
+ 4 files changed, 15 insertions(+), 32 deletions(-)
 
-On 23.04.21 17:51, Oleksij Rempel wrote:
-> Am 23.04.21 um 17:29 schrieb Ahmad Fatoum:
->> Hello Oleksij,
->>
->> On 23.04.21 16:28, Oleksij Rempel wrote:
->>> -ENTRY_FUNCTION(start_sama5d3_xplained_ung8071, r0, r1, r2)
->>> +SAMA5_ENTRY_FUNCTION(start_sama5d3_xplained_ung8071, r4)
->>>  {
->>>  	void *fdt;
->>>
->>> -	arm_cpu_lowlevel_init();
->>> -
->>>  	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE);
->>
->> You should be able to drop this as well as the dbgu_init() after,
->> because first stage already did it.
-> 
-> In case first stage was compile with same configs: yes.
-> In case first stage didn't prepared uart, the second stage will freeze
-> and first attempt to put any char.
-
-Hmm, given that they are separate file, they could indeed be mismatched.
-Ok, nothing to change then :)
-
-Thanks for getting this to work!
-Ahmad
-
-> 
->>>
->>>  	if (IS_ENABLED(CONFIG_DEBUG_LL))
->>> diff --git a/arch/arm/mach-at91/include/mach/sama5d3-xplained-ddramc.h b/arch/arm/mach-at91/include/mach/sama5d3-xplained-ddramc.h
->>> new file mode 100644
->>> index 0000000000..6f829282c6
->>> --- /dev/null
->>> +++ b/arch/arm/mach-at91/include/mach/sama5d3-xplained-ddramc.h
->>> @@ -0,0 +1,88 @@
->>> +/* SPDX-License-Identifier: BSD-1-Clause
->>> + *
->>> + * Copyright (C) 2014, Atmel Corporation
->>> + *
->>> + * SAMA5D27 System-in-Package DDRAMC configuration
->>> + */
->>> +
->>> +#include <mach/at91_ddrsdrc.h>
->>> +#include <mach/ddramc.h>
->>> +#include <mach/sama5d3_ll.h>
->>> +
->>> +static inline void sama5d3_xplained_ddrconf(void)
->>> +{
->>> +	const struct at91_ddramc_register conf = {
->>> +		.mdr = AT91_DDRC2_DBW_32_BITS | AT91_DDRC2_MD_DDR2_SDRAM,
->>> +
->>> +		.cr = AT91_DDRC2_NC_DDR10_SDR9
->>> +			| AT91_DDRC2_NR_13
->>> +			| AT91_DDRC2_CAS_3
->>> +			| AT91_DDRC2_DISABLE_RESET_DLL
->>> +			| AT91_DDRC2_ENABLE_DLL
->>> +			| AT91_DDRC2_ENRDM_ENABLE
->>> +			| AT91_DDRC2_NB_BANKS_8
->>> +			| AT91_DDRC2_NDQS_DISABLED
->>> +			| AT91_DDRC2_DECOD_INTERLEAVED
->>> +			| AT91_DDRC2_UNAL_SUPPORTED,
->>> +
->>> +		/*
->>> +		 * The DDR2-SDRAM device requires a refresh every 15.625 us or 7.81 us.
->>> +		 * With a 133 MHz frequency, the refresh timer count register must to be
->>> +		 * set with (15.625 x 133 MHz) ~ 2084 i.e. 0x824
->>> +		 * or (7.81 x 133 MHz) ~ 1039 i.e. 0x40F.
->>> +		 */
->>> +		.rtr = 0x40F,     /* Refresh timer: 7.812us */
->>> +
->>> +		/* One clock cycle @ 133 MHz = 7.5 ns */
->>> +		.t0pr = AT91_DDRC2_TRAS_(6)	/* 6 * 7.5 = 45 ns */
->>> +			| AT91_DDRC2_TRCD_(2)	/* 2 * 7.5 = 22.5 ns */
->>> +			| AT91_DDRC2_TWR_(2)	/* 2 * 7.5 = 15   ns */
->>> +			| AT91_DDRC2_TRC_(8)	/* 8 * 7.5 = 75   ns */
->>> +			| AT91_DDRC2_TRP_(2)	/* 2 * 7.5 = 15   ns */
->>> +			| AT91_DDRC2_TRRD_(2)	/* 2 * 7.5 = 15   ns */
->>> +			| AT91_DDRC2_TWTR_(2)	/* 2 clock cycles min */
->>> +			| AT91_DDRC2_TMRD_(2),	/* 2 clock cycles */
->>> +
->>> +		.t1pr = AT91_DDRC2_TXP_(2)		/* 2 clock cycles */
->>> +			| AT91_DDRC2_TXSRD_(200)	/* 200 clock cycles */
->>> +			| AT91_DDRC2_TXSNR_(19)	/* 19 * 7.5 = 142.5 ns */
->>> +			| AT91_DDRC2_TRFC_(17),	/* 17 * 7.5 = 127.5 ns */
->>> +
->>> +		.t2pr = AT91_DDRC2_TFAW_(6)	/* 6 * 7.5 = 45 ns */
->>> +			| AT91_DDRC2_TRTP_(2)		/* 2 clock cycles min */
->>> +			| AT91_DDRC2_TRPA_(2)		/* 2 * 7.5 = 15 ns */
->>> +			| AT91_DDRC2_TXARDS_(8)	/* = TXARD */
->>> +			| AT91_DDRC2_TXARD_(8),	/* MR12 = 1 */
->>> +	};
->>> +	u32 reg;
->>> +
->>> +	/* enable ddr2 clock */
->>> +	sama5d3_pmc_enable_periph_clock(SAMA5D3_ID_MPDDRC);
->>> +	at91_pmc_enable_system_clock(IOMEM(SAMA5D3_BASE_PMC), AT91CAP9_PMC_DDR);
->>> +
->>> +
->>> +	/* Init the special register for sama5d3x */
->>> +	/* MPDDRC DLL Slave Offset Register: DDR2 configuration */
->>> +	reg = AT91_MPDDRC_S0OFF_1
->>> +		| AT91_MPDDRC_S2OFF_1
->>> +		| AT91_MPDDRC_S3OFF_1;
->>> +	writel(reg, SAMA5D3_BASE_MPDDRC + AT91_MPDDRC_DLL_SOR);
->>> +
->>> +	/* MPDDRC DLL Master Offset Register */
->>> +	/* write master + clk90 offset */
->>> +	reg = AT91_MPDDRC_MOFF_7
->>> +		| AT91_MPDDRC_CLK90OFF_31
->>> +		| AT91_MPDDRC_SELOFF_ENABLED | AT91_MPDDRC_KEY;
->>> +	writel(reg, SAMA5D3_BASE_MPDDRC + AT91_MPDDRC_DLL_MOR);
->>> +
->>> +	/* MPDDRC I/O Calibration Register */
->>> +	/* DDR2 RZQ = 50 Ohm */
->>> +	/* TZQIO = 4 */
->>> +	reg = AT91_MPDDRC_RDIV_DDR2_RZQ_50
->>> +		| AT91_MPDDRC_TZQIO_4;
->>> +	writel(reg, SAMA5D3_BASE_MPDDRC + AT91_MPDDRC_IO_CALIBR);
->>> +
->>> +	/* DDRAM2 Controller initialize */
->>> +	at91_ddram_initialize(IOMEM(SAMA5D3_BASE_MPDDRC), IOMEM(SAMA5_DDRCS),
->>> +			      &conf);
->>> +}
->>> diff --git a/images/Makefile.at91 b/images/Makefile.at91
->>> index 00fa4cab27..7c32049270 100644
->>> --- a/images/Makefile.at91
->>> +++ b/images/Makefile.at91
->>> @@ -14,6 +14,11 @@ pblb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += start_sama5d3_xplained_ung8071
->>>  FILE_barebox-microchip-ksz9477-evb.img = start_sama5d3_xplained_ung8071.pblb
->>>  image-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += barebox-microchip-ksz9477-evb.img
->>>
->>> +pblb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += start_sama5d3_xplained_ung8071_xload_mmc
->>> +MAX_PBL_IMAGE_SIZE_start_sama5d3_xplained_ung8071_xload_mmc = 0xffff
->>> +FILE_barebox-microchip-ksz9477-evb-xload-mmc.img = start_sama5d3_xplained_ung8071_xload_mmc.pblb
->>> +image-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += barebox-microchip-ksz9477-evb-xload-mmc.img
->>> +
->>>  pblb-$(CONFIG_MACH_SAMA5D27_SOM1) += start_sama5d27_som1_ek
->>>  FILE_barebox-sama5d27-som1-ek.img = start_sama5d27_som1_ek.pblb
->>>  image-$(CONFIG_MACH_SAMA5D27_SOM1) += barebox-sama5d27-som1-ek.img
->>>
->>
-> 
-> 
-> --
-> Regards,
-> Oleksij
-> 
-
+diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
+index b9994f392c..ab3abb7a2a 100644
+--- a/arch/mips/configs/qemu-malta_defconfig
++++ b/arch/mips/configs/qemu-malta_defconfig
+@@ -75,6 +75,8 @@ CONFIG_DRIVER_VIDEO_BOCHS_PCI=y
+ CONFIG_GPIO_MALTA_FPGA_I2C=y
+ CONFIG_PCI=y
+ CONFIG_PCI_DEBUG=y
++CONFIG_SYSCON_REBOOT_MODE=y
++CONFIG_POWER_RESET_SYSCON=y
+ CONFIG_FS_CRAMFS=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_FAT=y
+diff --git a/arch/mips/dts/qemu-malta.dts b/arch/mips/dts/qemu-malta.dts
+index 32e473cac0..2d6f4a0ca3 100644
+--- a/arch/mips/dts/qemu-malta.dts
++++ b/arch/mips/dts/qemu-malta.dts
+@@ -27,6 +27,19 @@
+ 		clock-frequency = <1843200>;
+ 	};
+ 
++	fpga_regs: system-controller@1f000000 {
++		compatible = "mti,malta-fpga", "syscon", "simple-mfd";
++		reg = <0x1f000000 0x600>;
++		native-endian;
++
++		reboot {
++			compatible = "syscon-reboot";
++			regmap = <&fpga_regs>;
++			offset = <0x500>;
++			mask = <0x42>;
++		};
++	};
++
+ 	gpio: gpio@1f000b00 {
+ 		compatible = "mti,malta-fpga-i2c-gpio";
+ 		gpio-controller;
+diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
+index 0c5a7018d4..7d56f215b0 100644
+--- a/arch/mips/mach-malta/Makefile
++++ b/arch/mips/mach-malta/Makefile
+@@ -1,2 +1 @@
+-obj-y += reset.o
+ obj-$(CONFIG_PCI) += pci.o
+diff --git a/arch/mips/mach-malta/reset.c b/arch/mips/mach-malta/reset.c
+deleted file mode 100644
+index ad0de2741b..0000000000
+--- a/arch/mips/mach-malta/reset.c
++++ /dev/null
+@@ -1,31 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
+- */
+-
+-/**
+- * @file
+- * @brief Resetting an malta board
+- */
+-
+-#include <common.h>
+-#include <io.h>
+-#include <init.h>
+-#include <restart.h>
+-#include <mach/hardware.h>
+-
+-static void __noreturn malta_restart_soc(struct restart_handler *rst)
+-{
+-	__raw_writel(GORESET, (char *)SOFTRES_REG);
+-
+-	hang();
+-	/*NOTREACHED*/
+-}
+-
+-static int restart_register_feature(void)
+-{
+-	restart_handler_register_fn("soc", malta_restart_soc);
+-
+-	return 0;
+-}
+-coredevice_initcall(restart_register_feature);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.31.1
+
 
 _______________________________________________
 barebox mailing list
