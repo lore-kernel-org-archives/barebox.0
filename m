@@ -1,66 +1,90 @@
-Delivery-date: Mon, 26 Apr 2021 13:35:44 +0200
+Delivery-date: Mon, 26 Apr 2021 16:32:01 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lazWi-00038T-VK
-	for lore@lore.pengutronix.de; Mon, 26 Apr 2021 13:35:44 +0200
+	id 1lb2HJ-0003IT-Pb
+	for lore@lore.pengutronix.de; Mon, 26 Apr 2021 16:32:01 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lazWh-0001YY-Nl
-	for lore@pengutronix.de; Mon, 26 Apr 2021 13:35:44 +0200
+	id 1lb2HJ-0004F4-1h
+	for lore@pengutronix.de; Mon, 26 Apr 2021 16:32:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=xaGR1ly8Jho6KnaSjoDqp0JYNbJEfRmRa8BzajIchIM=; b=ASfkRvPdEhveHDk33pIMIWr/xO
-	LgjdTjEw22Am57tNwXQuZ8esm3S+SCJzIO2xu2Nkpu5MPkP9rk1+Z5Z/1y82AxDovMPS+z7OTSvtm
-	qaq8YeFLpAHY3jcTcn4MQzwAjfaN7Goi789EFO8HrD8jAtDafHsq6LWIu/PJvCzTwmwTu4T4Ldury
-	rTctkVQn7ih0WBdmEBW94psE8IIDrlZC7bEQ59famr3OXoelee6DL5XXqza6wUezoJDt8RMkR5S3S
-	qS+bj5Izk3FVLcEZ2m1LyIrD2shTSoG/hXahaG4U155TWRs0V/AfkQo7NstNgoOKtZs+l3r/avBoZ
-	YcB6f68A==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=a22Iu31uZD6tbvsw3GhfC021PgJ3BVHjfvTDfgxRqWc=; b=WGbcIPdllxQqbo
+	z8FmiZpHaBfyUUmjNvd9UblApTLmMe8PjfOryQfuqpppPa0ocGSeZ1w7PfPSNxdca5llwklzYizLu
+	fXpblHu7X+7HHOO7bVXp7iGKK/J9P2RJGY/6z9HS41jdlojVG66aWK3vOyEm2n2DhKgxrtZegyZyY
+	fi6ZAVR8Yuf6JO9ZzUiZOf40ahQXyC2c6KApU18GU2sjwWRbB141uwacTsI2PX0h2TI4nrAPkyGUI
+	LKY/bli6FyYX+e5KIW0edUVmCa50LTQ+I1VUXwpOyZ6qLanz9nfYB5HxZu9WCgcN74tLX4LcrD5qX
+	oGKPB9LGoURlp2Se1KkA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lazVU-007VXh-BZ; Mon, 26 Apr 2021 11:34:28 +0000
+	id 1lb2GB-007qcF-VE; Mon, 26 Apr 2021 14:30:52 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lazVQ-007VXM-GK
- for barebox@desiato.infradead.org; Mon, 26 Apr 2021 11:34:24 +0000
+ id 1lb2G7-007qc4-9A
+ for barebox@desiato.infradead.org; Mon, 26 Apr 2021 14:30:47 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
  Content-ID:Content-Description:In-Reply-To:References;
- bh=qSb+kGlWWQ9ynr0/MT8RMWBHrD80Hkw253GEtZ2Xe84=; b=1f99KlmBifzk4SPFUGWnUzV3yn
- 2qzHtv+lnIvAfKllcYxYLXn74z2ME4VeMUUt3AnPOBQ7tvx20+xnuTy9uLQPkocFDt2MaMUWucnZm
- eKPjpQH4cPZuIdXH31NYZJfGBwPN3xhYazB5lf66ki7/J1+uIWq6ddkUmPVZChfVqant3SSofehj0
- kKcRaQ2yk8zjbwrgz4DiNnWZ1EAZuSZxAgCncCH3YWQ8jAaOY9gPE6Dn8Jub4TR2pvOGk7C/Ni/T5
- j3TIFEKmGO3M9uGSrwYYPsGx6CO2E8DjYTY8SF31H+ZHyF2BJVRNiAno42RXVt7AcsI4Oogd6DWKP
- +kNsNJpA==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ bh=xRU3u+yKMdH2RoZl0AUbe2R7ZBafHv3/vrheHMnXVkg=; b=ggzEcY/VHEFrUHYqkRK9W01hPb
+ mGyWvppAyL0pBW/F9l9Hkh/05ElbMPmV6NK83hjoroBHz0/mnbUwD9kDYQJq3eJne6Y6xjb187L3t
+ 84vxzvd+SESWHjl8xK0arL1vy5ppPRgSKYROXvNuTKgeIkxjj1MEeVTCzZ46xZQyu0fpBNWJ3xkPw
+ wGUkxs4LBB26F1HnoK4wEqC5NUyafwaeRyHXDgwL3xDg36yrBoQOgbtlfDnl6Deeou9MhYZaO95QV
+ PgShtLFmP+Tzz4ANxuH3QxQzIrTCwtSoIoHpdyb072OXM52GM/QvthzHbTV0K97qsqHRf80c8v0Kk
+ DOOtXHcw==;
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lazVO-00Fvbd-2G
- for barebox@lists.infradead.org; Mon, 26 Apr 2021 11:34:23 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1lazVI-0001Ha-2D; Mon, 26 Apr 2021 13:34:16 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1lazVH-0006Wq-P1; Mon, 26 Apr 2021 13:34:15 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1lb2G4-00G0sW-QX
+ for barebox@lists.infradead.org; Mon, 26 Apr 2021 14:30:46 +0000
+Received: by mail-lf1-x129.google.com with SMTP id 12so88319796lfq.13
+ for <barebox@lists.infradead.org>; Mon, 26 Apr 2021 07:30:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=xRU3u+yKMdH2RoZl0AUbe2R7ZBafHv3/vrheHMnXVkg=;
+ b=urLEtFMUrgjoUvje6Z7xIYYFD017gLLqAk+/c5nv7AKeoSYhRWW+REXseVvmpKLoLy
+ QPX7hotra3FjtOls/RmMP/HVd7RLts3/M8cJNWX204XP15efAMSfZa8YwGVAQTZIjWTD
+ ht2czv+heBnddekcLWgsmItzI0tVoDOezKaPS9HsRIVSpIFBK98oaKBtj7Z+gpEMyneG
+ cipvy0CLF7bhyC3wYb+IrEQAFE4qZGmdcAP5ce+4tphrpCTJ+/zkKXe64XfpzY3e5yEi
+ pMZx+XH29NtB35IFsowbCTsM/wfl5Xp+wvzId7rQdLRZVlqPRx6jelFiJqdHvlQ39J1y
+ TIgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=xRU3u+yKMdH2RoZl0AUbe2R7ZBafHv3/vrheHMnXVkg=;
+ b=QYT8kAzMF/hSmIfVBLnHs9STjYUeT7mJavkl83/MjXB2lycayv2NPPb15lIXxsCrhu
+ 4L9WTRKlO5Pbba4nh5korhokAEGJCRj1qA7g/bcS+C90dgctdjEog3A8l9Ancz7ZyYty
+ XCWSk7uV5yZ5FgLbbt3pVk7t505j4ADP8te3lpJxKU4/X/MWCX7ngoaBWzEfu+5VOoil
+ DaTjVr+5qH05y3APNyPM/lCqN/LTmn1Cyz2i5tcrRzrpMoa6VQa+6vp0MQ3dspXml8rO
+ obopm6lbBDFEu8M+oVWg+h5ngASkVgb4ZhLmrELvL9HtIgTShkplJfRrGjuMbByuImLP
+ UOmg==
+X-Gm-Message-State: AOAM531banxn5INfY59zLk3ty3jVvLlZBclPEhS6/D9E14JIQiMlxaj1
+ qzXAOQV4Kv8kSlUxD8lQF2mHMTrZvnsvDQ==
+X-Google-Smtp-Source: ABdhPJyClLD9HkX8Nym0i0hbbWlu2BtyTysjfPpl7NHXRJgM1HcRmgs5GWU3cMWmy/uDFhY/96IAUQ==
+X-Received: by 2002:a05:6512:6d6:: with SMTP id
+ u22mr12899409lff.386.1619447439552; 
+ Mon, 26 Apr 2021 07:30:39 -0700 (PDT)
+Received: from localhost.localdomain ([193.232.173.109])
+ by smtp.gmail.com with ESMTPSA id y20sm14545ljd.106.2021.04.26.07.30.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Apr 2021 07:30:39 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 26 Apr 2021 13:34:07 +0200
-Message-Id: <20210426113408.24903-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
+Date: Mon, 26 Apr 2021 17:30:25 +0300
+Message-Id: <20210426143025.149717-1-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210426_043422_121930_250F29E7 
-X-CRM114-Status: GOOD (  11.00  )
+X-CRM114-CacheID: sfid-20210426_073044_893374_213F61B7 
+X-CRM114-Status: GOOD (  10.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,48 +104,61 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH master 1/2] sandbox: watchdog: don't return positive values
- from set_timeout
+X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] startup: introduce global.endianness variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-linux_watchdog_set_timeout() does return alarm(), which can never fail
-and returns either zero or a positive value.
+The global.endianness variable makes it possible
+to determine current endian mode from command
+line or from script on bi-endian capable system.
 
-watchdog::set_timeout on the other hand should return either 0 or
-a negative number on error.
-
-Ignore linux_watchdog_set_timeout()'s return value, so
-watchdog_set_timeout propagates the correct value.
-
-This fixes an issue where seconds_to_expire wasn't updated on
-subsequent pings of this watchdog.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/sandbox/board/watchdog.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ common/globalvar.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/sandbox/board/watchdog.c b/arch/sandbox/board/watchdog.c
-index 336451282fd3..e1cff7a0bf0b 100644
---- a/arch/sandbox/board/watchdog.c
-+++ b/arch/sandbox/board/watchdog.c
-@@ -29,7 +29,8 @@ static int sandbox_watchdog_set_timeout(struct watchdog *wdd, unsigned int timeo
- 	if (timeout > wdd->timeout_max)
- 		return -EINVAL;
+diff --git a/common/globalvar.c b/common/globalvar.c
+index a55b38b00f..75ce6331b7 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -641,6 +641,8 @@ int globalvar_add_simple_ip(const char *name, IPaddr_t *ip)
  
--	return linux_watchdog_set_timeout(timeout);
-+	linux_watchdog_set_timeout(timeout);
-+	return 0;
+ static int globalvar_init(void)
+ {
++	const char *endianness;
++
+ 	register_device(&global_device);
+ 
+ 	if (IS_ENABLED(CONFIG_NVVAR))
+@@ -651,6 +653,13 @@ static int globalvar_init(void)
+ 	if (strlen(buildsystem_version_string) > 0)
+ 		globalvar_add_simple("buildsystem.version", buildsystem_version_string);
+ 
++	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
++		endianness = "big";
++	else
++		endianness = "little";
++
++	globalvar_add_simple("endianness", endianness);
++
+ 	return 0;
  }
+ pure_initcall(globalvar_init);
+@@ -658,6 +667,7 @@ pure_initcall(globalvar_init);
+ BAREBOX_MAGICVAR(global.version, "The barebox version");
+ BAREBOX_MAGICVAR(global.buildsystem.version,
+ 		 "version of buildsystem barebox was built with");
++BAREBOX_MAGICVAR(global.endianness, "The barebox endianness");
  
- static int sandbox_watchdog_probe(struct device_d *dev)
+ /**
+  * nvvar_save - save NV variables to persistent environment
 -- 
-2.29.2
+2.31.1
 
 
 _______________________________________________
