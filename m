@@ -1,77 +1,77 @@
-Delivery-date: Mon, 26 Apr 2021 10:16:23 +0200
+Delivery-date: Mon, 26 Apr 2021 11:21:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lawPn-0002qw-EI
-	for lore@lore.pengutronix.de; Mon, 26 Apr 2021 10:16:23 +0200
+	id 1laxRB-0002xA-JV
+	for lore@lore.pengutronix.de; Mon, 26 Apr 2021 11:21:53 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lawPm-0004yo-Le
-	for lore@pengutronix.de; Mon, 26 Apr 2021 10:16:23 +0200
+	id 1laxRA-0003bR-RO
+	for lore@pengutronix.de; Mon, 26 Apr 2021 11:21:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=5TkzoowdLyh8eKfA/ubYQWeF19ilsRZ/2aktzAaKY5I=; b=By37wkfEK2QDIliPMvFq7RDgG
-	Ue7ZGZAdciZzvJNg2QDRZIVUblqg4k3xqVYjp8ifIqyE860ezzU2O6HTERZUtsToEhulZANpL5Lfb
-	K/im7ayFZ16peRV4Z8LqpRejYYwrTUQE4Ja+7gYp3XuDICaPJ8SAsIo4WvrLuumexXtXKrFjz80op
-	4w9uK/OnF0flbaIha3bTGj+cUDCh0iHzQuhpAqmjLyJkBUwRXvc11Y9Nd9ksk46LmF3Cu+Pc/2jE9
-	re4VCAld+oWo95RSJMcXzUNJeD+UGQ9Rm1eAgPJPHVzRKV0ukQcVyqqb/TtdStbn5LbPYG4tBEVMN
-	ye7d8+p2w==;
+	 bh=smGy1AL+l5V1AsaTQpWXnS/JeJwAEKO4XmaR+7xNGHA=; b=D0DKFBRwq3En74t4JfxB369H8
+	F8WMyHgQhAVLtGCf1tQFnAyFwTcn1pswCSFgts1zK5xXHqLViIumXhPZMUX6XupcKvgIQOCBtMwe2
+	LtA5Y74FJImPW8zhLHZ289znCd3TUp9QdqNltmNkIQiy/TDmYfBPPINSyaxoh0Xmy+s60vYwgjZEt
+	GcnOcjq/q3s65NsWGwNPWpC6ueo6s92dzufhNz+gsAJwO8frS6sUvGhYcgJKDzk6FM4jwAshh0dPL
+	3y3bMf30FA03K274nkgizGbzCffRpIkyzaL/VlLoPMf4yF4papyJpaoptqYwTmD3Dr/a9Sz44zyKX
+	79U56V1HQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lawOg-007Bww-QL; Mon, 26 Apr 2021 08:15:15 +0000
+	id 1laxPv-007I7x-75; Mon, 26 Apr 2021 09:20:35 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lawOd-007Bwk-7I
- for barebox@desiato.infradead.org; Mon, 26 Apr 2021 08:15:11 +0000
+ id 1laxPq-007I7s-6D
+ for barebox@desiato.infradead.org; Mon, 26 Apr 2021 09:20:31 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=JLqt4uftWY3P7/VmtU6RiJKvx6qcDJ51rNLL0Bhe7UQ=; b=4BWOYF6PH+QhgzL9fuwbXybhBP
- cOIrcilZl1V94iIw0bhcb0cBnUUFhTp1OAXnMYdElXMGX6G6NFTot0CeV5+3hCdLhx9502RAGPhEq
- jpJsAIgKslBUeJ6pOwkv5NMWwLbcb54pW1lJnEKCKAGN2c9Jb/3LnW4dt9HXDuenRyGxY2Nd1NVnw
- D9XiszV0Pxq8sLl7z00gRlmCIhOSX46l0elFoHZQUbdocuW8XIf9cvNECdDU2u+bQcmd6EOYlaXBi
- uqhpt/1iL1TR2t4kIVuPDZqVMlx4uI51FDchgPbgOvXyGgN4iAsNzTq8GRm0+dyD7FoOiwK8584bv
- kNw5zKZA==;
+ bh=UhnGVsZPP2F+AUgSxQmL+13r87kADbp2MRY569HHVi8=; b=ZniLU0iyBMvDsqpe+DdAycUh6X
+ lzEArKP2WP6l92FMysb+84hVDACGJJxACNT9s8TjCghluNlwmF0lryrQxKrGPZoibcLvXGF/wpAYT
+ VC3WCVrZJxPqKrAPfUQMrOEgs+A4j1b79u6NDDK/g0qR/uwIgo4+To6g29Iazj4sgcAHJzVjAbCV7
+ q6q4kKCOVCxQ/FbpHI+cazKzXqu1jskN6qQa1ruBsKutgyxyHAHI3XslAwhUCGtgW8gCXAFOlGggl
+ +dULIScAKc2ej/UEWBoot3G+ZeKhSRTzgOQG9LIH3TDnNZV/XUQSRg7velquAyLM3TpPnxDZya62B
+ um7Po2Mg==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lawOa-00FpCp-Ma
- for barebox@lists.infradead.org; Mon, 26 Apr 2021 08:15:10 +0000
+ id 1laxPn-00Fr3d-Ev
+ for barebox@lists.infradead.org; Mon, 26 Apr 2021 09:20:28 +0000
 Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <mfe@pengutronix.de>)
- id 1lawOU-0004jZ-T8; Mon, 26 Apr 2021 10:15:02 +0200
+ id 1laxPl-0003IH-Lh; Mon, 26 Apr 2021 11:20:25 +0200
 Received: from mfe by pty.hi.pengutronix.de with local (Exim 4.89)
  (envelope-from <mfe@pengutronix.de>)
- id 1lawOU-0002Es-J7; Mon, 26 Apr 2021 10:15:02 +0200
-Date: Mon, 26 Apr 2021 10:15:02 +0200
+ id 1laxPl-0005IJ-CU; Mon, 26 Apr 2021 11:20:25 +0200
+Date: Mon, 26 Apr 2021 11:20:25 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20210426081502.k6gmgyvqswskvoj7@pengutronix.de>
+Message-ID: <20210426092025.ayufzlgd7hchyngw@pengutronix.de>
 References: <20210416094943.3648-1-s.hauer@pengutronix.de>
- <20210416094943.3648-10-s.hauer@pengutronix.de>
- <fe03da71-5ff0-b09c-62bd-75b4d2ebfde5@pengutronix.de>
+ <20210416094943.3648-18-s.hauer@pengutronix.de>
+ <62d9fd38-fa11-446d-1aee-2165a55f0fd5@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <fe03da71-5ff0-b09c-62bd-75b4d2ebfde5@pengutronix.de>
+In-Reply-To: <62d9fd38-fa11-446d-1aee-2165a55f0fd5@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:12:20 up 144 days, 22:18, 48 users,  load average: 0.31, 0.16,
- 0.09
+X-Uptime: 10:15:37 up 144 days, 22:22, 48 users,  load average: 0.26, 0.15,
+ 0.10
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210426_011508_761887_5EE13BB5 
-X-CRM114-Status: GOOD (  19.21  )
+X-CRM114-CacheID: sfid-20210426_022027_526760_656832AE 
+X-CRM114-Status: GOOD (  24.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,51 +96,77 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 09/17] common: add initial barebox deep-probe support
+Subject: Re: [PATCH 17/17] ARM: i.MX Phytec physom: Add deep-probe support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 21-04-19 09:16, Ahmad Fatoum wrote:
+On 21-04-19 09:12, Ahmad Fatoum wrote:
 > Hi,
 > 
 > On 16.04.21 11:49, Sascha Hauer wrote:
-> > diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> > index f60533c59e..ea23884624 100644
-> > --- a/drivers/base/driver.c
-> > +++ b/drivers/base/driver.c
-> > @@ -21,6 +21,7 @@
-> >  
-> >  #include <common.h>
-> >  #include <command.h>
-> > +#include <deep-probe.h>
-> >  #include <driver.h>
-> >  #include <malloc.h>
-> >  #include <console.h>
-> > @@ -95,7 +96,15 @@ int device_probe(struct device_d *dev)
-> >  	if (ret == -EPROBE_DEFER) {
-> >  		list_del(&dev->active);
-> >  		list_add(&dev->active, &deferred);
-> > -		dev_dbg(dev, "probe deferred\n");
-> > +
-> > +		/*
-> > +		 * -EPROBE_DEFER should never appear on a deep-probe machine so
-> > +		 * inform the user immediately.
-> > +		 */
-> > +		if (deep_probe_is_supported())
-> > +			dev_warn(dev, "probe deferred\n");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6q-pfla02");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6dl-pfla02");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6s-pfla02");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6q-pcaaxl3");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6q-pcm058-nand");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6q-pcm058-emmc");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6dl-pcm058-nand");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6qp-pcm058-nand");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6dl-pcm058-emmc");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6ul-pcl063-nand");
+> > +BAREBOX_DEEP_PROBE_ENABLE("phytec,imx6ul-pcl063-emmc");
 > 
-> Such devices wouldn't ever be retried with deep probe, right?
+> How about changing BAREBOX_DEEP_PROBE_ENABLE so BAREBOX_DEEP_PROBE_ENABLE(physom_imx6_match);
+> works? Updated boards should be using board drivers anyway, so make it easier for them to
+> enable deep probe.
 
-The subsystem needs to support deep probe and if it isn't adapted, right
-now only a few ones are adapted, this could still be possible.
+Hi Ahmad,
 
-> If so, this should be a dev_err, not dev_warn, as it's not a recoverable
-> issue.
+Why do I need to chnage it to board drivers if I only wanna fix a probe
+order issue? But you're right adding the _match table should be possible
+to :)
 
-If all subsystems support it you're right.
+> I'd go even further and require board drivers by having it take a driver_d * as argument
+> and introduce deep_probe_board_driver() that expands to postcore_platform_driver and
+> BAREBOX_DEEP_PROBE_ENABLE.
+
+How about this:
+ 1st) adding a probe_enum like kernel and introduce PROBE_PREFER_DEEP
+ 2nd) adding a deep_probe_enable_board() function to common/deep_probe.c
+ 3th) checking during register_driver() if the flag is set and call the
+      deep_probe_enable_board().
+
+This allows use to still use the macro mechanism and the boards already
+converted to the board driver style can use this simple enum to mark all
+boards as deep-probable.
 
 Regards,
   Marco
+
+> This would prevent having a board driver that's deep probe incompatible in the
+> first place, because it will likely not find the resources it requires that early
+> if it doesn't deep probe.
+> 
+> Cheers,
+> Ahmad
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
