@@ -1,67 +1,67 @@
-Delivery-date: Tue, 27 Apr 2021 22:25:00 +0200
+Delivery-date: Tue, 27 Apr 2021 22:25:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lbUGS-0006Yy-9u
-	for lore@lore.pengutronix.de; Tue, 27 Apr 2021 22:25:00 +0200
+	id 1lbUGq-0006ZK-7B
+	for lore@lore.pengutronix.de; Tue, 27 Apr 2021 22:25:24 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lbUGQ-00067c-Tx
-	for lore@pengutronix.de; Tue, 27 Apr 2021 22:25:00 +0200
+	id 1lbUGo-0006Gd-BB
+	for lore@pengutronix.de; Tue, 27 Apr 2021 22:25:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=Xm7H7+mAzipAXyKavIEb4NkPdo9b0xL7CHSilbzP0rQ=; b=BTrV2V+s3PSef4L0dDNTnabdd
-	1U6y9uHuLpgZBr8VWG+Fje8I8TAt44EJekxxyluaRq6CKI4Vk6urA+MMreaH+H2mnbcc+ZF9mO0e0
-	of/Q5DS/oVKTrbS0YeXJYtGbzfq69Lx4cx7yocsEjMbT8napwUcHM68JPKFbACi1OjYGFtfv+1xcB
-	JVdlkhJj6Q66p9hB/+fmaKwpVO+VJp+ppn7NkskW4uCK8LXiOYTY4yYdphhAnU0o7mtKaLCQ92vg2
-	RL/xqRUgQ1VCSpa2lVMqFELuW8jWH244ylwy2Y6H0ffUFDVUWtWu8S34KxoxOI9DXRgU1hSp7AlIQ
-	cbKme/eNw==;
+	 bh=O+TYpfM3w3GUoJmy2usY3bgBf4jCivjiDVT5Eu+uH8k=; b=ROjAZL1Ud4/Gm/mjvWbjzj8mK
+	kmUBKTsAWrNCLb9TKigR6e0FGGsjMcKqL6dBvgxFDEpa7UkSZoWkh9fHFjcEFGFyaj9aS6lx1dmFB
+	JIS9EBHimsmcnqrHJw1TFIhqt+fzkKlrMUJg2xDI00bYOfpkHtVHNVwPwuLT2xWC+i7PoNDXSfzOG
+	j5Iqv0P4BXlvS0jZKankSl98XACyHNbHMzh+Cm7zM1077sX0EYndrG+D4myy8yv3pZm3NGiuMfomY
+	yrQ0I69j7icd64HQ9AOQIZcwhnqO4EPAWDwYPBqSbm/JnO8YCaUzoP8P06MhvH7Mq3a5khjAsBZYi
+	n6SPPJY1g==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lbUFW-002BxV-I2; Tue, 27 Apr 2021 20:24:03 +0000
+	id 1lbUFm-002C4P-0C; Tue, 27 Apr 2021 20:24:18 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lbUF0-002Br5-Oz
- for barebox@desiato.infradead.org; Tue, 27 Apr 2021 20:23:31 +0000
+ id 1lbUFO-002Bwb-OY
+ for barebox@desiato.infradead.org; Tue, 27 Apr 2021 20:23:55 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=YYxIn7N/1pfZ5UpGyqzYrs7jKOtUVR+EB8iLvwSxEIA=; b=s5sdzCOM9mjHYlle6BvNIMqhoh
- R8rSifk4Re0VVPM8F71CqNHyfd+VumTdTODADkZLJAiKaa250cq8NJMl9iP0MumLTfeI7BWBStEW2
- 1TO0RbKWUjsOyzRJcZtGGIbr9MZNoMvKpkxSq3TDM8eitgZLPBJyrLZTHWPYewTa2fnXvjMJz1yZ6
- MAOwbXRY9TbTC1ARDpZsKCqXR417skUCl8w57VhHJhxqF+SaX4fOPvKCxqQ2q5i4CCANQA7Nad1lx
- 92TAu0ZifwdQw70A8FcxNHUGeNuNGApTg8/EGTjMOT3S1Xka4qB57Jd3u9+1a/UbDKKEhT7pSderZ
- SFPpXO+A==;
+ bh=p+2O8plneVdrCHfpJx7RRkdeKr8Ic79nJNCCydzsPDE=; b=lihSwz0s6d9Sg8KZ5f8kcly6O9
+ RH+X89y8Mg2ss++EWctsPHzknudBBpb1lxGi8ML9jxCovAkuC8ViB/szcoLtYu265t+Jb2Z8eq7zu
+ ix+6cKscpcj8B4nz2d8oqVoikaIvDD1iOE2uKWy0qZX50ATxmvo1y92wGbu8Em/YKvMXw1aMMz7v1
+ KuoWgXLUqk1j2Q6/fKs72SMFUFnZK5LeVONFTIXgMwP/W4deh29pDn/1jeauS6b5NIg9slmMD/ReQ
+ hxgyopMiMwuR4Okl98T0Pw5O/c9b126gQ1CLeGSOVnlMfEBLAPEgXWUkaNEPam/p0yryp8sMOSx7d
+ 8Gu6Kffg==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lbUEy-00GyJO-2l
- for barebox@lists.infradead.org; Tue, 27 Apr 2021 20:23:29 +0000
+ id 1lbUFM-00GyKl-55
+ for barebox@lists.infradead.org; Tue, 27 Apr 2021 20:23:53 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lbUEo-0005XU-Pd; Tue, 27 Apr 2021 22:23:18 +0200
+ id 1lbUEo-0005XW-Pg; Tue, 27 Apr 2021 22:23:18 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lbUEl-00016P-VZ; Tue, 27 Apr 2021 22:23:15 +0200
+ id 1lbUEm-00016V-0S; Tue, 27 Apr 2021 22:23:16 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 27 Apr 2021 22:22:59 +0200
-Message-Id: <20210427202309.32077-2-a.fatoum@pengutronix.de>
+Date: Tue, 27 Apr 2021 22:23:01 +0200
+Message-Id: <20210427202309.32077-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210427202309.32077-1-a.fatoum@pengutronix.de>
 References: <20210427202309.32077-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210427_132328_145574_62D600CA 
-X-CRM114-Status: GOOD (  22.24  )
+X-CRM114-CacheID: sfid-20210427_132352_214577_062523F5 
+X-CRM114-Status: GOOD (  17.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,224 +86,179 @@ X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 02/12] serial: implement SiFive UART support
+Subject: [PATCH 04/12] RISC-V: support multi-image for all machines
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Import serial driver from Linux v5.11.
+We already got rid of arch/riscv/mach-virt. Now do the same for
+arch/riscv/mach-erizo. This will enable us to build images for all
+RISC-V boards at once.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/serial/Kconfig         |   9 ++
- drivers/serial/Makefile        |   1 +
- drivers/serial/serial_sifive.c | 171 +++++++++++++++++++++++++++++++++
- 3 files changed, 181 insertions(+)
- create mode 100644 drivers/serial/serial_sifive.c
+ arch/riscv/Kconfig                         | 31 ++--------------------
+ arch/riscv/Kconfig.socs                    | 24 +++++++++++++++++
+ arch/riscv/Makefile                        |  2 +-
+ arch/riscv/configs/erizo_generic_defconfig |  1 +
+ arch/riscv/configs/virt32_defconfig        |  2 +-
+ arch/riscv/configs/virt64_defconfig        |  2 +-
+ arch/riscv/mach-erizo/Kconfig              | 11 --------
+ 7 files changed, 30 insertions(+), 43 deletions(-)
+ create mode 100644 arch/riscv/Kconfig.socs
+ delete mode 100644 arch/riscv/mach-erizo/Kconfig
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index db924efa02a6..b9750d1774f8 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -164,4 +164,13 @@ config VIRTIO_CONSOLE
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index c0583f31536b..a4aa799acf01 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -19,31 +19,6 @@ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x0
  
- 	  Also serves as a general-purpose serial device for data
- 	  transfer between the guest and host.
+-menu "Machine selection"
+-
+-choice
+-	prompt "System type"
+-	default MACH_ERIZO
+-
+-config MACH_ERIZO
+-	bool "erizo family"
+-	select ARCH_RV32I
+-	select HAS_DEBUG_LL
+-	select HAS_NMON
+-	select USE_COMPRESSED_DTB
+-	select RISCV_M_MODE
+-	select RISCV_TIMER
+-
+-config MACH_VIRT
+-	bool "virt family"
+-	select BOARD_RISCV_GENERIC_DT
+-	select CLINT_TIMER
+-	help
+-	  Generates an image tht can be be booted by QEMU. The image is called
+-	  barebox-dt-2nd.img
+-
+-endchoice
+-
+ choice
+ 	prompt "Base ISA"
+ 	default ARCH_RV32I
+@@ -63,6 +38,8 @@ config ARCH_RV64I
+ 
+ endchoice
+ 
++source "arch/riscv/Kconfig.socs"
 +
-+config SERIAL_SIFIVE
-+	tristate "SiFive UART support"
-+	depends on OFDEVICE
-+	help
-+	  Select this option if you are building barebox for a device that
-+	  contains a SiFive UART IP block.  This type of UART is present on
-+	  SiFive FU540 SoCs, among others.
-+
- endmenu
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 7ff41cd5c744..5120b1737664 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -23,3 +23,4 @@ obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
- obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
- obj-$(CONFIG_DRIVER_SERIAL_LPUART)		+= serial_lpuart.o
- obj-$(CONFIG_VIRTIO_CONSOLE)			+= virtio_console.o
-+obj-$(CONFIG_SERIAL_SIFIVE)			+= serial_sifive.o
-diff --git a/drivers/serial/serial_sifive.c b/drivers/serial/serial_sifive.c
+ config CPU_SUPPORTS_32BIT_KERNEL
+ 	bool
+ 
+@@ -82,8 +59,6 @@ config 64BIT
+ 	select ARCH_DMA_ADDR_T_64BIT
+ 	select PHYS_ADDR_T_64BIT
+ 
+-source "arch/riscv/mach-erizo/Kconfig"
+-
+ config BOARD_RISCV_GENERIC_DT
+ 	select BOARD_GENERIC_DT
+ 	bool "Build generic RISC-V device tree 2nd stage image"
+@@ -93,8 +68,6 @@ config BOARD_RISCV_GENERIC_DT
+ 	  in a1 like the Kernel does, so it could be used anywhere where a Kernel
+ 	  image could be used. The image will be called images/barebox-dt-2nd.img
+ 
+-endmenu
+-
+ menu "RISC-V specific settings"
+ 
+ config RISCV_OPTIMZED_STRING_FUNCTIONS
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
 new file mode 100644
-index 000000000000..45f7c2bc9ace
+index 000000000000..b0e38d8f2cca
 --- /dev/null
-+++ b/drivers/serial/serial_sifive.c
-@@ -0,0 +1,171 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2018 Anup Patel <anup@brainfault.org>
-+ */
++++ b/arch/riscv/Kconfig.socs
+@@ -0,0 +1,24 @@
++menu "SoC selection"
 +
-+#include <common.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <io.h>
-+#include <of.h>
-+#include <linux/err.h>
-+#include <linux/clk.h>
++config SOC_ERIZO
++	bool "Erizo SoC"
++	select ARCH_RV32I
++	select HAS_DEBUG_LL
++	select HAS_NMON
++	select USE_COMPRESSED_DTB
++	select RISCV_M_MODE
++	select RISCV_TIMER
 +
-+#define UART_TXFIFO_FULL	0x80000000
-+#define UART_RXFIFO_EMPTY	0x80000000
-+#define UART_RXFIFO_DATA	0x000000ff
-+#define UART_TXCTRL_TXEN	0x1
-+#define UART_RXCTRL_RXEN	0x1
++config BOARD_ERIZO_GENERIC
++	depends on SOC_ERIZO
++	def_bool y
 +
-+/* IP register */
-+#define UART_IP_RXWM            0x2
++config SOC_VIRT
++	bool "QEMU Virt Machine"
++	select BOARD_RISCV_GENERIC_DT
++	select CLINT_TIMER
++	help
++	  Generates an image tht can be be booted by QEMU. The image is called
++	  barebox-dt-2nd.img
 +
-+struct sifive_serial_regs {
-+	u32 txfifo;
-+	u32 rxfifo;
-+	u32 txctrl;
-+	u32 rxctrl;
-+	u32 ie;
-+	u32 ip;
-+	u32 div;
-+};
-+
-+struct sifive_serial_priv {
-+	unsigned long freq;
-+	struct sifive_serial_regs __iomem *regs;
-+	struct console_device cdev;
-+};
-+
-+#define to_priv(cdev) container_of(cdev, struct sifive_serial_priv, cdev)
-+
-+/**
-+ * Find minimum divisor divides in_freq to max_target_hz;
-+ * Based on uart driver n SiFive FSBL.
-+ *
-+ * f_baud = f_in / (div + 1) => div = (f_in / f_baud) - 1
-+ * The nearest integer solution requires rounding up as to not exceed
-+ * max_target_hz.
-+ * div  = ceil(f_in / f_baud) - 1
-+ *	= floor((f_in - 1 + f_baud) / f_baud) - 1
-+ * This should not overflow as long as (f_in - 1 + f_baud) does not exceed
-+ * 2^32 - 1, which is unlikely since we represent frequencies in kHz.
-+ */
-+static inline unsigned int uart_min_clk_divisor(unsigned long in_freq,
-+						unsigned long max_target_hz)
-+{
-+	unsigned long quotient =
-+			(in_freq + max_target_hz - 1) / (max_target_hz);
-+	/* Avoid underflow */
-+	if (quotient == 0)
-+		return 0;
-+	else
-+		return quotient - 1;
-+}
-+
-+static void sifive_serial_init(struct sifive_serial_regs __iomem *regs)
-+{
-+	writel(UART_TXCTRL_TXEN, &regs->txctrl);
-+	writel(UART_RXCTRL_RXEN, &regs->rxctrl);
-+	writel(0, &regs->ie);
-+}
-+
-+static int sifive_serial_setbrg(struct console_device *cdev, int baudrate)
-+{
-+	struct sifive_serial_priv *priv = to_priv(cdev);
-+
-+	writel((uart_min_clk_divisor(priv->freq, baudrate)), &priv->regs->div);
-+
-+	return 0;
-+}
-+
-+static int sifive_serial_getc(struct console_device *cdev)
-+{
-+	struct sifive_serial_regs __iomem *regs = to_priv(cdev)->regs;
-+	u32 ch;
-+
-+	do {
-+		ch = readl(&regs->rxfifo);
-+	} while (ch & UART_RXFIFO_EMPTY);
-+
-+	return ch & UART_RXFIFO_DATA;
-+}
-+
-+static void sifive_serial_putc(struct console_device *cdev, const char ch)
-+{
-+	struct sifive_serial_regs __iomem *regs = to_priv(cdev)->regs;
-+
-+	// TODO: how to check for !empty to utilize fifo?
-+	while (readl(&regs->txfifo) & UART_TXFIFO_FULL)
-+		;
-+
-+	writel(ch, &regs->txfifo);
-+}
-+
-+static int sifive_serial_tstc(struct console_device *cdev)
-+{
-+	struct sifive_serial_regs __iomem *regs = to_priv(cdev)->regs;
-+
-+	return readl(&regs->ip) & UART_IP_RXWM;
-+}
-+
-+static void sifive_serial_flush(struct console_device *cdev)
-+{
-+	struct sifive_serial_regs __iomem *regs = to_priv(cdev)->regs;
-+
-+	while (readl(&regs->txfifo) & UART_TXFIFO_FULL)
-+		;
-+}
-+
-+static int sifive_serial_probe(struct device_d *dev)
-+{
-+	struct sifive_serial_priv *priv;
-+	struct resource *iores;
-+	struct clk *clk;
-+	u32 freq;
-+	int ret;
-+
-+	clk = clk_get(dev, NULL);
-+	if (!IS_ERR(clk)) {
-+		freq = clk_get_rate(clk);
-+	} else {
-+		dev_dbg(dev, "failed to get clock. Fallback to device tree.\n");
-+
-+		ret = of_property_read_u32(dev->device_node, "clock-frequency", &freq);
-+		if (ret) {
-+			dev_warn(dev, "unknown clock frequency\n");
-+			return ret;
-+		}
-+	}
-+
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+
-+	priv = xzalloc(sizeof(*priv));
-+
-+	priv->freq = freq;
-+	priv->regs = IOMEM(iores->start);
-+
-+	priv->cdev.dev = dev;
-+	priv->cdev.putc = sifive_serial_putc;
-+	priv->cdev.getc = sifive_serial_getc;
-+	priv->cdev.tstc = sifive_serial_tstc;
-+	priv->cdev.flush = sifive_serial_flush;
-+	priv->cdev.setbrg = sifive_serial_setbrg,
-+
-+	sifive_serial_init(priv->regs);
-+
-+	return console_register(&priv->cdev);
-+}
-+
-+static __maybe_unused struct of_device_id sifive_serial_dt_ids[] = {
-+	{ .compatible = "sifive,uart0" },
-+	{ /* sentinel */ }
-+};
-+
-+static struct driver_d serial_sifive_driver = {
-+	.name   = "serial_sifive",
-+	.probe  = sifive_serial_probe,
-+	.of_compatible = sifive_serial_dt_ids,
-+};
-+console_platform_driver(serial_sifive_driver);
++endmenu
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index 1a41d15477b5..09a94d69b220 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -19,7 +19,7 @@ LDFLAGS_pbl += $(riscv-ldflags-y)
+ cflags-y += $(riscv-cflags-y)
+ LDFLAGS_barebox += -nostdlib
+ 
+-machine-$(CONFIG_MACH_ERIZO)	:= erizo
++machine-$(CONFIG_SOC_ERIZO)	:= erizo
+ 
+ LDFLAGS_barebox += $(riscv-ldflags-y)
+ 
+diff --git a/arch/riscv/configs/erizo_generic_defconfig b/arch/riscv/configs/erizo_generic_defconfig
+index 839b652ab53d..247a17913048 100644
+--- a/arch/riscv/configs/erizo_generic_defconfig
++++ b/arch/riscv/configs/erizo_generic_defconfig
+@@ -1,3 +1,4 @@
++CONFIG_SOC_ERIZO=y
+ # CONFIG_GLOBALVAR is not set
+ CONFIG_STACK_SIZE=0x20000
+ CONFIG_MALLOC_SIZE=0x100000
+diff --git a/arch/riscv/configs/virt32_defconfig b/arch/riscv/configs/virt32_defconfig
+index 83e3ca1bade8..218fee57b711 100644
+--- a/arch/riscv/configs/virt32_defconfig
++++ b/arch/riscv/configs/virt32_defconfig
+@@ -1,4 +1,4 @@
+-CONFIG_MACH_VIRT=y
++CONFIG_SOC_VIRT=y
+ CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_STACK_SIZE=0x20000
+ CONFIG_MALLOC_SIZE=0x0
+diff --git a/arch/riscv/configs/virt64_defconfig b/arch/riscv/configs/virt64_defconfig
+index 17ce16637d96..04a4f1e2f4cb 100644
+--- a/arch/riscv/configs/virt64_defconfig
++++ b/arch/riscv/configs/virt64_defconfig
+@@ -1,4 +1,4 @@
+-CONFIG_MACH_VIRT=y
++CONFIG_SOC_VIRT=y
+ CONFIG_ARCH_RV64I=y
+ CONFIG_RISCV_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_STACK_SIZE=0x20000
+diff --git a/arch/riscv/mach-erizo/Kconfig b/arch/riscv/mach-erizo/Kconfig
+deleted file mode 100644
+index 2400b4437b10..000000000000
+--- a/arch/riscv/mach-erizo/Kconfig
++++ /dev/null
+@@ -1,11 +0,0 @@
+-if MACH_ERIZO
+-
+-choice
+-	prompt "Board type"
+-
+-config BOARD_ERIZO_GENERIC
+-	bool "erizo generic board"
+-
+-endchoice
+-
+-endif
 -- 
 2.29.2
 
