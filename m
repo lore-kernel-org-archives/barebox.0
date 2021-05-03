@@ -2,13 +2,13 @@ Delivery-date: Mon, 03 May 2021 13:21:38 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldWdu-0002uX-Ku
+	id 1ldWdu-0002ui-QT
 	for lore@lore.pengutronix.de; Mon, 03 May 2021 13:21:38 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldWdt-0004lZ-RO
+	id 1ldWdt-0004la-Th
 	for lore@pengutronix.de; Mon, 03 May 2021 13:21:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
@@ -16,61 +16,61 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=aGmTBSWSPqqy+GzkKi+fYDeDuXRuvog43++L4yIaPIo=; b=XYNtY9iTNJVq+BFAtwGix5Rf5
-	bJKVGb0V4t9lYMbVvOmupIjtGcwNmU0Rf/RD3SwiEs+qFyY9c6EAsFCp8V+jCiN+UFSdHugENqT/c
-	xZ0pBDRSlwH5MZqn3XnPS6QhceOZ9uoV0NWqaU3l29avtpEjXd6Kpa3eRsr8uwzfFY/QqlsBaKCk8
-	sX2V3X78Enq30pOF6oWNEAw0AFps2X3IvvkYELiR63YodZpzHSXtDDxpFlxKevQsPaIluBi2FMqzY
-	ObU5VGeqSu/DXCrlLu/xdRVazTXaiOQ+CIlOIjsLk0JFY6WS/5wuTzvJxB/Z28U+0zpu/y+gmcIfF
-	HUQRvkNSQ==;
+	 bh=CSvCXn3lqhoWOOn7FaW3fHr1QXvSJtTrz6Unwif1FUg=; b=Pvz/VILiBangUv8g6fVHlHHoL
+	XbI3Jnb6hiDcZeraLQ03CBE7bzdMZr35kfCh4dutq9qIxcDJ0IaucqblFSpOt/ApUE3BoZRS1140V
+	rkp3qkmmLKSWZFOTtBGI9xWnVOCo86RL3683/abh49E7xZMNzVapJVIbbVYu+b/3yjm8jMWQ1OR7V
+	seGuNtlUCRV9v6osFwZqAHtQ6LVTKXv6EJ2jSfE875ShF6Hj8ef9by3akxUk6seCO7AAxqVstSbun
+	6Jl0Ms3Dh71POstUZ2Vq4mFvLq6o2Y+Hs5nmd2oMad6JxTd0n6r11UW6kEqB1zrLBjIxTJUT0K/tz
+	Z8AzfwexQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1ldWcC-00Djn5-22; Mon, 03 May 2021 11:19:52 +0000
+	id 1ldWcJ-00Djox-PX; Mon, 03 May 2021 11:20:00 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldWZE-00Djgd-26
- for barebox@desiato.infradead.org; Mon, 03 May 2021 11:17:27 +0000
+ id 1ldWa8-00Djid-G8
+ for barebox@desiato.infradead.org; Mon, 03 May 2021 11:18:16 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=qZn58WZ6Y0azg7vc9+pduCQibrJAk0QxRXdN32ZvVqo=; b=e885ahCsS3Oxrd7qkgMRWUlrlo
- xDlf5x7KOP/No5cpwnZGmvlVnen0E9LavC3M3hsBob2OskK97iD05q+1imv9C+njyUiXVwjJHGFxF
- 0Kb8S5W0L8UOCEALTYAzW1IOmqRiJRER3kJFEQqRrjAGcJ3gjoTH+KhzQZU0Ja1730ggDid9jzR3h
- gUSF5IrwzKWQrMr+6FdiyH83htXyFxCinglhTfuFWT3gIztGBhrkcSvwsTIepH0ke/7OfYqmPUZk2
- A1xFanD+Mz5Ar7TjJNmV+EDDtzLtWNs9t2OfPWfUohIp4e/MZegGK9ZF6rcXW2MJc+NuIiV91fXhI
- F2Trg+lg==;
+ bh=OtZ0bHMjKVDMy3HEnS2TyqMP0MHMJ8YiZe06YymUFx8=; b=FbT1tk/F6J4uEDC9ophx8n88qi
+ ttLsOXbmgx1+ojyDuYxQ6fj3mwmupuq4ECMAU2VXs/MTP0/ZiE9lrKMcDXXwRTOH/SLIEsrKZmiMa
+ Q78gCnNvRewTokNxtKrx1sEFEuwwKn+xZiQBpdb+TLuNxX2jJtONA7BiPPPP6bwWzRO73Z9b1E+2Q
+ gWFpzFrUcH+fJBi98Mgrc8ZoO/NsXYUF1q2dssp87SGCUO7OXDYALUnsKUP3UiFZExegSxD3rGpN+
+ QkVhLSFIWWvNY53b9fq3dBP+HCxfMj1SHh18lagpP3h3dIo4mK6VeYvkHrj+yxFghKve1grZDaTxK
+ kitVymMw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldWZB-0030N2-7u
- for barebox@lists.infradead.org; Mon, 03 May 2021 11:16:46 +0000
+ id 1ldWa5-0030RT-Os
+ for barebox@lists.infradead.org; Mon, 03 May 2021 11:17:43 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ldWZ9-00049x-Mg; Mon, 03 May 2021 13:16:43 +0200
+ id 1ldWa4-0004Kf-I7; Mon, 03 May 2021 13:17:40 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ldWZ9-0000yo-6S; Mon, 03 May 2021 13:16:43 +0200
-Date: Mon, 3 May 2021 13:16:43 +0200
+ id 1ldWa4-0000zZ-8a; Mon, 03 May 2021 13:17:40 +0200
+Date: Mon, 3 May 2021 13:17:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210503111643.GY19819@pengutronix.de>
-References: <20210426143025.149717-1-antonynpavlov@gmail.com>
+Message-ID: <20210503111740.GZ19819@pengutronix.de>
+References: <20210425063517.120260-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210426143025.149717-1-antonynpavlov@gmail.com>
+In-Reply-To: <20210425063517.120260-1-antonynpavlov@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 12:53:35 up 74 days, 14:17, 101 users,  load average: 0.01, 0.05,
- 0.07
+X-Uptime: 13:17:31 up 74 days, 14:41, 100 users,  load average: 0.11, 0.18,
+ 0.25
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210503_041645_303617_2A825081 
-X-CRM114-Status: GOOD (  23.14  )
+X-CRM114-CacheID: sfid-20210503_041741_830595_C38E6858 
+X-CRM114-Status: GOOD (  23.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,50 +94,109 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] startup: introduce global.endianness variable
+Subject: Re: [PATCH] MIPS: qemu-malta: use generic syscon reset driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Antony,
-
-On Mon, Apr 26, 2021 at 05:30:25PM +0300, Antony Pavlov wrote:
-> The global.endianness variable makes it possible
-> to determine current endian mode from command
-> line or from script on bi-endian capable system.
-> 
+On Sun, Apr 25, 2021 at 09:35:17AM +0300, Antony Pavlov wrote:
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  common/globalvar.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/common/globalvar.c b/common/globalvar.c
-> index a55b38b00f..75ce6331b7 100644
-> --- a/common/globalvar.c
-> +++ b/common/globalvar.c
-> @@ -641,6 +641,8 @@ int globalvar_add_simple_ip(const char *name, IPaddr_t *ip)
->  
->  static int globalvar_init(void)
->  {
-> +	const char *endianness;
-> +
->  	register_device(&global_device);
->  
->  	if (IS_ENABLED(CONFIG_NVVAR))
-> @@ -651,6 +653,13 @@ static int globalvar_init(void)
->  	if (strlen(buildsystem_version_string) > 0)
->  		globalvar_add_simple("buildsystem.version", buildsystem_version_string);
->  
-> +	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
-> +		endianness = "big";
-> +	else
-> +		endianness = "little";
+>  arch/mips/configs/qemu-malta_defconfig |  2 ++
+>  arch/mips/dts/qemu-malta.dts           | 13 +++++++++++
+>  arch/mips/mach-malta/Makefile          |  1 -
+>  arch/mips/mach-malta/reset.c           | 31 --------------------------
+>  4 files changed, 15 insertions(+), 32 deletions(-)
 
-PowerPC is for sure big endian, but doesn't set CONFIG_CPU_BIG_ENDIAN,
-so will be erroneously be identified as little endian with this patch.
-Either you fix that or depend on something like #if __BYTE_ORDER ==
-__LITTLE_ENDIAN
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
+> index b9994f392c..ab3abb7a2a 100644
+> --- a/arch/mips/configs/qemu-malta_defconfig
+> +++ b/arch/mips/configs/qemu-malta_defconfig
+> @@ -75,6 +75,8 @@ CONFIG_DRIVER_VIDEO_BOCHS_PCI=y
+>  CONFIG_GPIO_MALTA_FPGA_I2C=y
+>  CONFIG_PCI=y
+>  CONFIG_PCI_DEBUG=y
+> +CONFIG_SYSCON_REBOOT_MODE=y
+> +CONFIG_POWER_RESET_SYSCON=y
+>  CONFIG_FS_CRAMFS=y
+>  CONFIG_FS_TFTP=y
+>  CONFIG_FS_FAT=y
+> diff --git a/arch/mips/dts/qemu-malta.dts b/arch/mips/dts/qemu-malta.dts
+> index 32e473cac0..2d6f4a0ca3 100644
+> --- a/arch/mips/dts/qemu-malta.dts
+> +++ b/arch/mips/dts/qemu-malta.dts
+> @@ -27,6 +27,19 @@
+>  		clock-frequency = <1843200>;
+>  	};
+>  
+> +	fpga_regs: system-controller@1f000000 {
+> +		compatible = "mti,malta-fpga", "syscon", "simple-mfd";
+> +		reg = <0x1f000000 0x600>;
+> +		native-endian;
+> +
+> +		reboot {
+> +			compatible = "syscon-reboot";
+> +			regmap = <&fpga_regs>;
+> +			offset = <0x500>;
+> +			mask = <0x42>;
+> +		};
+> +	};
+> +
+>  	gpio: gpio@1f000b00 {
+>  		compatible = "mti,malta-fpga-i2c-gpio";
+>  		gpio-controller;
+> diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
+> index 0c5a7018d4..7d56f215b0 100644
+> --- a/arch/mips/mach-malta/Makefile
+> +++ b/arch/mips/mach-malta/Makefile
+> @@ -1,2 +1 @@
+> -obj-y += reset.o
+>  obj-$(CONFIG_PCI) += pci.o
+> diff --git a/arch/mips/mach-malta/reset.c b/arch/mips/mach-malta/reset.c
+> deleted file mode 100644
+> index ad0de2741b..0000000000
+> --- a/arch/mips/mach-malta/reset.c
+> +++ /dev/null
+> @@ -1,31 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0-only
+> -/*
+> - * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
+> - */
+> -
+> -/**
+> - * @file
+> - * @brief Resetting an malta board
+> - */
+> -
+> -#include <common.h>
+> -#include <io.h>
+> -#include <init.h>
+> -#include <restart.h>
+> -#include <mach/hardware.h>
+> -
+> -static void __noreturn malta_restart_soc(struct restart_handler *rst)
+> -{
+> -	__raw_writel(GORESET, (char *)SOFTRES_REG);
+> -
+> -	hang();
+> -	/*NOTREACHED*/
+> -}
+> -
+> -static int restart_register_feature(void)
+> -{
+> -	restart_handler_register_fn("soc", malta_restart_soc);
+> -
+> -	return 0;
+> -}
+> -coredevice_initcall(restart_register_feature);
+> -- 
+> 2.31.1
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
