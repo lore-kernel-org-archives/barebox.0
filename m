@@ -1,68 +1,68 @@
-Delivery-date: Mon, 03 May 2021 14:46:51 +0200
+Delivery-date: Mon, 03 May 2021 14:47:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldXyN-0003DG-IP
-	for lore@lore.pengutronix.de; Mon, 03 May 2021 14:46:51 +0200
+	id 1ldXyb-0003Dj-0x
+	for lore@lore.pengutronix.de; Mon, 03 May 2021 14:47:05 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldXyM-0007UI-QY
-	for lore@pengutronix.de; Mon, 03 May 2021 14:46:51 +0200
+	id 1ldXya-0007eE-6i
+	for lore@pengutronix.de; Mon, 03 May 2021 14:47:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=4m3eITNYbxnrOUb3rBLCrx/dytUvKgDqMbK61HfMPqE=; b=A0U2YZdhqRpOznGEN13f1b4qe
-	0Noe4PYUh1utTrljjX1FPgzrqY+L7tE24LiHBEnwPWlmBnpC2qjnwQggWrneYn9BnkvQ3fPwl8kgM
-	fTPyXUHO+B4RLE6bTWyliB5wO5/SGwHoyK19nU/6vTVhes34rW3kVPLqtTwImdARnOSK15CBlAs5P
-	RG9VTuf4rUem/OZWB5P2dUDnTycWN+18d+CvkBlVYrHgHrXPRNnYoyyfn5MVSE/+iZ2H1id69Qwte
-	A/8+I/vcCIxDVv51hXAFKSe8JsmwtieKyIR7fzio+ej0+3xZpn0xpPgvfXR55kcfBnckUBdUGptWg
-	ZPSRByG2Q==;
+	 bh=fCker/0g5r5ZYXagos/aD7ZWK0dBRk+ysZKla4fUXL4=; b=VlUBaQhC8M5TAUdDcxzP6r1Iq
+	cn51K4dtW2IItJbvTVypUe+TUu+ItqRTsrutnDAhyQDdlp13bju8Lm1CIVmcjNFhNu7veO766AJDz
+	5gtuFWWm+pnHzp9aV2XRqavr9ZZ7jBBzhtKDjxn5QAqMXCmTxopulfbIM+kedY5MAWAd+ihd+qq3o
+	qlInHGhyGE0Y1S+vl8l75+nV8PsG+rQrXdBhZgeHvR0hLg04XUwMDMUz1KIQ6VrX8ibh6R0MRoEu9
+	oIoDPAkxNrfJMagFARpnbDj5xMQ9f2+G1UmxvcoOXRAnQYZ3OATM6mCO/JWhqLq0JRogisv3HnvHi
+	0VQ1x/R/Q==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1ldXxF-00DtDv-Tt; Mon, 03 May 2021 12:45:42 +0000
+	id 1ldXxJ-00DtFN-Sx; Mon, 03 May 2021 12:45:46 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldXwu-00DtC6-7F
+ id 1ldXwv-00DtC9-CU
  for barebox@desiato.infradead.org; Mon, 03 May 2021 12:45:23 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=W06JT4EeD9hIS4K7+c/4712EyA4I3HTionXgUJUdByM=; b=WA6Zhzr7Q1WJ7MHiSC63omeofy
- KTSl3QChRQZkbi2Nticg/qAjonmMM9rneW+SehyiDG5W0V8QDxAvlBCgsHmtR83HXMFjTfQOMoIzO
- 8oCXQ4hUSmnX3Gn2zvHszAQZ+LP6oyAiViG4G92CIO8M+lv/raOUOchrpIgvktDmDe3mM6rAFoDpw
- Z3sQ4H9YOWkWKv/qzKSUvNtW2wJrnVIWHZjDxY7Rfwfl1Tkb9kudoNrUy/3qJXzTvAq+kZJA8fZIc
- WanzKRz7B7Ya/r7dMaM3M8aTryRz8lOJcgqOErJ7Lj4HmL6HBZN4aIf4bHzdI7ZZ47sLDJGP/JqRo
- NmROgBgQ==;
+ bh=eBvFhwQ9yw2eIk43TJl/xhHfsSbJfG4vi2lCvnmzFDg=; b=WNC4jBPwMWtP2okX64ifcexPFB
+ /clBNkb3Ct9MQTuo1ukCqgRKSIPJb9ZbIqzdU6kBlx/J0w8XRuRpDosVy2YHD/LU5RYCoIjoN4EGq
+ TO/Macl7JkSM6BcP2MiAjOvhJk7IqSs+jol+Ich5cbVin92hViY1o/14X1AqqPJTnPdkAbg0fVGE/
+ xrKs2XOFs64OeZB9WR7VhgmT4PKdufEEBAik27I4moLF69TdSP2JNCJal00nV6DuLt3zLUKwwvJV4
+ C+DBf1tvuiW13VAIj+qbhThvfR1CDuJcTnXG9cPKvCHXVwXLZ6/OkeFxtgxSSMvjS7gvX42mHqIo/
+ T0yWwh8w==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldXwr-003417-Qp
- for barebox@lists.infradead.org; Mon, 03 May 2021 12:45:19 +0000
+ id 1ldXwr-003416-Qr
+ for barebox@lists.infradead.org; Mon, 03 May 2021 12:45:20 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1ldXwq-00072G-9x; Mon, 03 May 2021 14:45:16 +0200
+ id 1ldXwq-00072F-AC; Mon, 03 May 2021 14:45:16 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1ldXwp-0000Jy-Mi; Mon, 03 May 2021 14:45:15 +0200
+ id 1ldXwp-0000Ju-MI; Mon, 03 May 2021 14:45:15 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  3 May 2021 14:45:06 +0200
-Message-Id: <20210503124508.856-3-a.fatoum@pengutronix.de>
+Date: Mon,  3 May 2021 14:45:05 +0200
+Message-Id: <20210503124508.856-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210503124508.856-1-a.fatoum@pengutronix.de>
 References: <20210503124508.856-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210503_054517_892147_C13115FA 
-X-CRM114-Status: GOOD (  12.44  )
+X-CRM114-CacheID: sfid-20210503_054517_894347_4F6447AB 
+X-CRM114-Status: GOOD (  14.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,50 +86,83 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 2/4] slice: reschedule bthreads doing File I/O in command
- context
+Subject: [PATCH v3 1/4] bthread: implement basic Linux-like completion API
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Currently, without locks, it's unsafe to do file I/O outside of
-the main thread, be it in pollers or secondary bthreads.
-
-Pollers side step this issue by deferring file I/O to workqueues
-that run in command context: the time when the shell is waiting
-for input.
-
-For bthreads, we can do something similar without involving
-workqueues: We just suspend threads until they are scheduled in
-command context.
-
-This is not a full solution: Not everything that should
-assert_command_context() does so, so you still can't do absolutely
-everything in a secondary bthread. To get there, we will need
-to distribute locks across the code base, but that's a patchset
-for another time.
+So far, completions made sense only in one direction: The main thread
+can wait for pollers, but the other way around didn't work. With the new
+bthread support, any bthread can wait for another to complete().
+Wrap this up using the Linux completion API to make porting threaded
+code easier.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/slice.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/completion.h | 55 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+ create mode 100644 include/linux/completion.h
 
-diff --git a/include/slice.h b/include/slice.h
-index cf684300a809..abe819163d32 100644
---- a/include/slice.h
-+++ b/include/slice.h
-@@ -40,8 +40,10 @@ extern int poller_active;
- #define assert_command_context() do { \
- 	WARN_ONCE(IS_ENABLED(CONFIG_POLLER) && poller_active, \
- 		  "%s called in poller\n", __func__); \
--	WARN_ONCE(IS_ENABLED(CONFIG_BTHREAD) && !bthread_is_main(current), \
--		  "%s called in secondary bthread\n", __func__); \
-+	if (IS_ENABLED(CONFIG_BTHREAD) && !bthread_is_main(current)) { \
-+		while (slice_acquired(&command_slice)) \
-+			bthread_reschedule(); \
-+	} \
- } while (0)
- 
- #endif
+diff --git a/include/linux/completion.h b/include/linux/completion.h
+new file mode 100644
+index 000000000000..e897e4f65b8b
+--- /dev/null
++++ b/include/linux/completion.h
+@@ -0,0 +1,55 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * (C) Copyright 2021 Ahmad Fatoum
++ *
++ * Async wait-for-completion handler data structures.
++ * This allows one bthread to wait for another
++ */
++
++#ifndef __LINUX_COMPLETION_H
++#define __LINUX_COMPLETION_H
++
++#include <stdio.h>
++#include <errno.h>
++#include <bthread.h>
++
++struct completion {
++	unsigned int done;
++};
++
++static inline void init_completion(struct completion *x)
++{
++	x->done = 0;
++}
++
++static inline void reinit_completion(struct completion *x)
++{
++	x->done = 0;
++}
++
++static inline int wait_for_completion_interruptible(struct completion *x)
++{
++	while (!x->done) {
++		switch (bthread_should_stop()) {
++		case -EINTR:
++			if (!ctrlc())
++				continue;
++		case 1:
++			return -ERESTARTSYS;
++		}
++	}
++
++	return 0;
++}
++
++static inline bool completion_done(struct completion *x)
++{
++	return x->done;
++}
++
++static inline void complete(struct completion *x)
++{
++	x->done = 1;
++}
++
++#endif
 -- 
 2.29.2
 
