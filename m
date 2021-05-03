@@ -1,76 +1,76 @@
-Delivery-date: Mon, 03 May 2021 12:40:01 +0200
+Delivery-date: Mon, 03 May 2021 12:53:03 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldVzd-0002rT-Lo
-	for lore@lore.pengutronix.de; Mon, 03 May 2021 12:40:01 +0200
+	id 1ldWCF-0002sS-JM
+	for lore@lore.pengutronix.de; Mon, 03 May 2021 12:53:03 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldVzc-0008UA-QQ
-	for lore@pengutronix.de; Mon, 03 May 2021 12:40:01 +0200
+	id 1ldWCE-0001j5-RV
+	for lore@pengutronix.de; Mon, 03 May 2021 12:53:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=K9BSQH2DAmuPV018MqGaz3HKFEM6d6RRCTxIggmq8yk=; b=Cxd3w8pgE3cBPEkYoZf72EIsV
-	jDjfwDb1fvwwSFoO9qpJtKAuURyOb7q2gyGNdZifnJayw5gC5kIUgQnH63erU8W/SJdwHAVoOTAkj
-	qy9q+HwXJlGwlddNWLS/z5ByxZQk5ES7Z2SdT/5/VMohK5TyRD8NeBlvReb9xVN/zTui90YoGNPYa
-	EJv3s5pbjU09yrYhIa61Mnl9abyz97hn8eYZp2YiUeGvbWhyv2Sbire6ju+zhNapsN1zcZzR8bnIy
-	dnTTNtgRKX6SYNjPxNF9KoOLYoUDsax0d7O8NfWoKv/gh2BusiHBYr5L8Av1lUvQidDM/ZQ+n9GBV
-	B+DUD+FXA==;
+	 bh=ThuefO/xUBrFeJeWs/PKFbmnKH+sFH6Q57A3w000XSU=; b=ZSl9yjbqOK998vyF6H1Ecu8+g
+	agg13ptm/JnEppzew3wxFJiwp/dGCgwMsfD20rxEZzpmN9MckY+gQSJO+aOfgekNGhlnGR9brjl7/
+	dBFzm8dGgsOYzK/kpRtSURYtmzydgFmX9L/PijAQu31NTXuk7X3uHCcBRdT7p5ri1X7yqUBFd9Qnk
+	DNbXtX2DPqiVpZEPkdxiXSs4LMFsROe3qXByD3kJmKEwf2daqo+V3wq1kexxwaX6itFi22Lca6KVE
+	JWC7w8xX3kB0FqfnxkrAHlb3ed31bKMG1i/bDDjRA3ZgT0y21yIe3JRiwa31eSo0vVPCyY8r5WLFl
+	yNyzb7ebw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1ldVyk-00DflB-Qu; Mon, 03 May 2021 10:39:07 +0000
+	id 1ldWBA-00DhmZ-9q; Mon, 03 May 2021 10:51:56 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldVye-00Dfkj-KK
- for barebox@desiato.infradead.org; Mon, 03 May 2021 10:39:00 +0000
+ id 1ldWB5-00DhmE-84
+ for barebox@desiato.infradead.org; Mon, 03 May 2021 10:51:51 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
  MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=fAnG44q/y2PA4IauESA8Dv7pI4qGWpU5QXEPERoRaNI=; b=ChxILu8S9U3EBcf/eU1eG+HZdU
- Lc1rN+9LVZY/LZ6DGZWYBZj4SGMVl6UygfG2iethA1mmOgahcf5BRNPNthukOIllt8PzGlGJJlBTw
- kbwzE+6ovTYrT8vyySMRhYvq1D3HcoFnxOrhR+MNCuiEg7/7lWyeGHvfPo9eSq/kJyD6J9l105HEL
- ztFUumzInAYumW+zsa1YRg8JtmX7itDKTLcvHqAUGIlKZQGlbLau9GdhAQPPQ0wF7nnMfkyODOIpZ
- e1F8fslj2ekO5Gth7lOgalAgm5GJcmjGHejGXzAhY6YenJZkiaCdcPi/AGOWnXFKFW5Oro84Sa0ky
- aTWq2pEQ==;
+ bh=rwPSqHBT94IOeLL6bPI65Me99A+4PgDLSGPOZrvFXpA=; b=FDDyiLalxB169AsuQoWy1x0UDh
+ NqUDsfdW8VsYArpRECQ4hcNeDvQ1nPjsGxYS4/nwNGfpKBcUapOKKQWuRnHCGRuwSyCKM61jSE9Bt
+ hmq25IKNb1FZfHBLTeX0IL75AdRLSq/JHR/8NR+RhdzmGjICQozz7+5mw6JOqLQXYhcYWUMdxzTrz
+ HmJJIcs/tytjG3Tf7KIOKyg5T1JY1t0sQ/DvNYaIBrCDeIJmBbS6Fn21VMBtcEl6yu+P0ogbCMqg+
+ A7HcoAccGNjijOuFWA93dJMGY8rtXAvCqn/RSBV99TLybr4YLZ2zf6R5NpA+Qlp1DXzMSkvZbvSIO
+ tZ7CJyHQ==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldVyb-002yt1-RZ
- for barebox@lists.infradead.org; Mon, 03 May 2021 10:38:59 +0000
+ id 1ldWB2-002zLC-Od
+ for barebox@lists.infradead.org; Mon, 03 May 2021 10:51:50 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ldVya-0008OU-K1; Mon, 03 May 2021 12:38:56 +0200
+ id 1ldWB1-0001Wm-I2; Mon, 03 May 2021 12:51:47 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ldVya-0006Pb-A3; Mon, 03 May 2021 12:38:56 +0200
-Date: Mon, 3 May 2021 12:38:56 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1ldWB1-0006t6-8P; Mon, 03 May 2021 12:51:47 +0200
+Date: Mon, 3 May 2021 12:51:47 +0200
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210503103856.GV19819@pengutronix.de>
-References: <20210426113408.24903-1-a.fatoum@pengutronix.de>
+Message-ID: <20210503105147.GX19819@pengutronix.de>
+References: <20210423142829.29468-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210426113408.24903-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20210423142829.29468-1-o.rempel@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 12:38:42 up 74 days, 14:02, 100 users,  load average: 0.08, 0.10,
- 0.09
+X-Uptime: 12:51:36 up 74 days, 14:15, 103 users,  load average: 0.03, 0.06,
+ 0.08
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210503_033857_911919_B3B738FD 
-X-CRM114-Status: GOOD (  27.05  )
+X-CRM114-CacheID: sfid-20210503_035148_822352_F8AE57D3 
+X-CRM114-Status: GOOD (  21.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,57 +94,37 @@ X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 1/2] sandbox: watchdog: don't return positive
- values from set_timeout
+Subject: Re: [PATCH v2 0/6] add multiimage support for sama5d3 based
+ microchip-ksz9477-evb board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Apr 26, 2021 at 01:34:07PM +0200, Ahmad Fatoum wrote:
-> linux_watchdog_set_timeout() does return alarm(), which can never fail
-> and returns either zero or a positive value.
+On Fri, Apr 23, 2021 at 04:28:23PM +0200, Oleksij Rempel wrote:
+> changes v2:
+> - add proper sanity check for atmci_instances array size
+> - add comment about initial MCI state and reason why reconfiguration is
+>   needed.
 > 
-> watchdog::set_timeout on the other hand should return either 0 or
-> a negative number on error.
+> This patch series provide multiimage support for the microchip-ksz9477-evb.
+> The main work was done to make atmel_mci driver reusable for the
+> pbl/xloader.
 > 
-> Ignore linux_watchdog_set_timeout()'s return value, so
-> watchdog_set_timeout propagates the correct value.
+> With this patches it is possible to build first and second stages in one
+> run with one defconfig.
 > 
-> This fixes an issue where seconds_to_expire wasn't updated on
-> subsequent pings of this watchdog.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/sandbox/board/watchdog.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> Oleksij Rempel (6):
+>   mci: atmel_mci: add PBL support
+>   ARM: at91: xload-mmc: add sama5d3_atmci_start_image() helper
+>   ARM: at91: ddramc: add sama5d3_barebox_entry() handler
+>   ARM: at91: add __sama5d3_stashed_bootrom_r4 helper
+>   ARM: at91: add sama5d3_lowlevel_init() helpers
+>   ARM: at91: sama5d3: add multiimage support for the
+>     microchip-ksz9477-evb
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/arch/sandbox/board/watchdog.c b/arch/sandbox/board/watchdog.c
-> index 336451282fd3..e1cff7a0bf0b 100644
-> --- a/arch/sandbox/board/watchdog.c
-> +++ b/arch/sandbox/board/watchdog.c
-> @@ -29,7 +29,8 @@ static int sandbox_watchdog_set_timeout(struct watchdog *wdd, unsigned int timeo
->  	if (timeout > wdd->timeout_max)
->  		return -EINVAL;
->  
-> -	return linux_watchdog_set_timeout(timeout);
-> +	linux_watchdog_set_timeout(timeout);
-> +	return 0;
->  }
->  
->  static int sandbox_watchdog_probe(struct device_d *dev)
-> -- 
-> 2.29.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
