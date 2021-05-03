@@ -1,77 +1,76 @@
-Delivery-date: Mon, 03 May 2021 14:03:44 +0200
+Delivery-date: Mon, 03 May 2021 14:10:42 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldXIe-00037a-7r
-	for lore@lore.pengutronix.de; Mon, 03 May 2021 14:03:44 +0200
+	id 1ldXPO-00038K-H9
+	for lore@lore.pengutronix.de; Mon, 03 May 2021 14:10:42 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldXId-0002N8-Gt
-	for lore@pengutronix.de; Mon, 03 May 2021 14:03:44 +0200
+	id 1ldXPN-00035A-O1
+	for lore@pengutronix.de; Mon, 03 May 2021 14:10:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=St7XqALYiGvPBZtgSa/6mqqZo5R93TCE5cDZzrAmKt4=; b=gP2as1XmH4CgyCI/B3f5De8YI
-	/WNNqRMIHaUCJX0WRxxPlJ172wqVPAJtq41kjMKQnoyjf+NGN2FezjlQgsHbcEWYHh6kufbOgx5kY
-	/6cFpZDwjJTxDlKyQ31zX0/TMABCXtCZIyU0XkOb1GkMzWxRjuTMlAT3PKQJSCeTaAn5jVPbH/I5L
-	MGgr31vyBGqUFp5Zc3hKNJtkV7aRrYO/Rtu/zPDfhhjLZ/p7VfViZ9WxdTExwbwPQgdIkp/IATmj6
-	OuzEc1ERglI3zXGrkCEq2IYnq2dXldwlIEeterRNPXizRJZjRnnIL9S9kzGWRgX0ISeQGSTruPSvN
-	p/U10T2eg==;
+	 bh=TH5ed43LHKUyAwfWDttngiYLqAK2w9U3/26+Cvh9/Zc=; b=X6QsVDnUweLEUEXyLHOulJvb9
+	vA0sVV0QlKnQOeeQAgoUm5gQJh4sC+hKSblq0k+FpIe0flw3yJIhuZ+ummcDhW+c/hOnVi8JS3UDu
+	8egb9mIIqGMPZBmg+nWYlU1m+Vrg2GOe7QSA5WlrMqG0gLOCL9zm5s4acxm51ioZITtAeHTvp4uh/
+	QA0f570RGdotJtffjix2C4IqqMRLuTWLZ4zD56X4jyvSZjCUAQcEEZeNFsA43wCzFCpoWWNbFo2oq
+	X0Weu7pkRKjJLtOuON4SpPEEhm04NjU86JGLMZj250ObzaIeuSRIuElHi/UYdedU6C9SP0UaGBcB1
+	tP2RPNa3Q==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1ldXHV-00DovB-Gv; Mon, 03 May 2021 12:02:33 +0000
+	id 1ldXOD-00DpPt-8Q; Mon, 03 May 2021 12:09:31 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldXH8-00Doui-IL
- for barebox@desiato.infradead.org; Mon, 03 May 2021 12:02:10 +0000
+ id 1ldXMc-00DpG9-Ix
+ for barebox@desiato.infradead.org; Mon, 03 May 2021 12:07:57 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=UzevDTWN+dwNIJLdYQQ26ktR9XR/E0uzlcQMR1UOLOY=; b=vUWHejOf7XX6MDRaPxUWAzB8MR
- zUZ01YbbSaqeDetk+nmdC1AdFJvrVPpoBzgQbO1UrdZ8AEX0zeFs3MXE7/7Tm4TanUYrmRkCLOWJg
- nO3Q1vNPWwyGyQlSlRCUVhNbvnSv9w3RwrvLbxK/UKoYd42qhlarZA4YqY080WAOXczbgH+KbWP6C
- 3jwdSmlLQrMOb3E1TWVQbbU+lFySLaDml6K77Z6PabSMtc2YWg+YiGV7Q94vFUDBjGSSMFSjBzczm
- bz/vdxkJHHgCgreHRU6TSDP90iOH/gr4ozz+EowafO1dBHWPMNI8bGU64yb0qQ4A8PaWDx6R/TjZQ
- 3314XW4g==;
+ bh=hU8lDaIFoVOd6zLrX2ld9a+WwzfTOtJQ3kdGJZQebLk=; b=LEbUOFlqmLZ1ZN1oJcDCVZygIR
+ bFimFIAgG1y+8aiJg1cVf/mhm6yNeQCqYJJ0AUOxQANMDtG2w9KAglu4xg9VtEis1sx3kOAbVlJwP
+ aKC3uvO0TvFvbC2cxMpDPwaWY4FsQUv2lxerAlH8U29YynbfHmzGoa+y31Jn9xlFIkS8PlBHQN4eV
+ ZEwQWZSHv4OqBvpf8CHbdSTnA5VrzPZyDYM057lC+XKfr3mGhw09UkULJUch/2U9WXW69PW9XtDjY
+ XMsPE/1LTmd/gvsPLeGjaKs3yfsaMy091LnNbLjctSyzD6gN1UW4cGOMKQK3OL8Bxqrp432vUgcII
+ bGgnkGYg==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldXH5-0032PE-V7
- for barebox@lists.infradead.org; Mon, 03 May 2021 12:02:09 +0000
+ id 1ldXMZ-0032av-Sw
+ for barebox@lists.infradead.org; Mon, 03 May 2021 12:07:49 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ldXH4-0002HQ-BJ; Mon, 03 May 2021 14:02:06 +0200
+ id 1ldXMY-0002ud-Fu; Mon, 03 May 2021 14:07:46 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ldXH4-0003SQ-1s; Mon, 03 May 2021 14:02:06 +0200
-Date: Mon, 3 May 2021 14:02:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org,
- Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20210503120206.GH19819@pengutronix.de>
-References: <20210416091404.92251-1-antonynpavlov@gmail.com>
+ id 1ldXMX-0003j9-Ll; Mon, 03 May 2021 14:07:45 +0200
+Date: Mon, 3 May 2021 14:07:45 +0200
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210503120745.GI19819@pengutronix.de>
+References: <20210416062436.332665-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210416091404.92251-1-antonynpavlov@gmail.com>
+In-Reply-To: <20210416062436.332665-1-ahmad@a3f.at>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 14:01:55 up 74 days, 15:25, 100 users,  load average: 0.30, 0.18,
- 0.13
+X-Uptime: 14:07:29 up 74 days, 15:31, 100 users,  load average: 0.08, 0.17,
+ 0.16
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210503_050208_025899_64C5BD8D 
-X-CRM114-Status: GOOD (  20.03  )
+X-CRM114-CacheID: sfid-20210503_050747_956590_667A223F 
+X-CRM114-Status: GOOD (  18.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,35 +90,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] scripts/spdxcheck.py: Use Python 3
+Subject: Re: [PATCH 0/4] x86: add EFI PCI host and iTCO watchdog support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Apr 16, 2021 at 12:14:04PM +0300, Antony Pavlov wrote:
-> Based on this linux kernel commit:
+On Fri, Apr 16, 2021 at 08:24:32AM +0200, Ahmad Fatoum wrote:
+> v1 is here:
+> https://lore.barebox.org/barebox/20191204125659.22506-1-a.fatoum@pengutronix.de/
 > 
-> > commit d0259c42abff51b586496a0594933e394efefbc5
-> > Author: Bert Vermeulen <bert@biot.com>
-> > Date:   Thu Jan 21 09:54:12 2021 +0100
-> >
-> >    spdxcheck.py: Use Python 3
-> >
-> >    Python 2.x has been officially EOL'ed for some time, and in any case
-> >    the git module for it is hard to come by.
+> Series tested with:
+>   * QEMU q35: ns16550 serial, iTCO and virtio-pci
+>   * Dell Latitude 7490: Bus enumeration works correctly
 > 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  scripts/checkpatch.pl | 4 ++--
->  scripts/spdxcheck.py  | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
+> v1 -> v2:
+>   - add DMA helpers, so the new virtio-pci support is usable on x86 as
+>     well
+>   - add preassigned bus support, so already running PCI UEFI drivers can
+>     continue to function
+>   - handle zero size resources correctly
+>   - add iTCO watchdog support in new commit
+> 
+> Cheers,
+> Ahmad Fatoum (4):
+>   x86: add DMA support
+>   PCI: support PCI BIOS preassigned buses
+>   pci: add EFI PCI root bridge IO protocol driver
+>   watchdog: add support for Intel TCO watchdog timer
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
