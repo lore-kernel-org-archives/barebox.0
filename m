@@ -2,13 +2,13 @@ Delivery-date: Mon, 03 May 2021 12:53:03 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldWCF-0002sS-JM
+	id 1ldWCF-0002so-UI
 	for lore@lore.pengutronix.de; Mon, 03 May 2021 12:53:03 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldWCE-0001j5-RV
+	id 1ldWCF-0001j6-19
 	for lore@pengutronix.de; Mon, 03 May 2021 12:53:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
@@ -16,61 +16,62 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=ThuefO/xUBrFeJeWs/PKFbmnKH+sFH6Q57A3w000XSU=; b=ZSl9yjbqOK998vyF6H1Ecu8+g
-	agg13ptm/JnEppzew3wxFJiwp/dGCgwMsfD20rxEZzpmN9MckY+gQSJO+aOfgekNGhlnGR9brjl7/
-	dBFzm8dGgsOYzK/kpRtSURYtmzydgFmX9L/PijAQu31NTXuk7X3uHCcBRdT7p5ri1X7yqUBFd9Qnk
-	DNbXtX2DPqiVpZEPkdxiXSs4LMFsROe3qXByD3kJmKEwf2daqo+V3wq1kexxwaX6itFi22Lca6KVE
-	JWC7w8xX3kB0FqfnxkrAHlb3ed31bKMG1i/bDDjRA3ZgT0y21yIe3JRiwa31eSo0vVPCyY8r5WLFl
-	yNyzb7ebw==;
+	 bh=bQGC67XNklGrxJphkESxwgsjKrJkC8LA/7z+M21JQm0=; b=Bqn355KgAbuGOPXDXKBPcwCts
+	ukX4iAVfJYhzHq7ctnYVJzqOjqmKHVehNOZLw9txzAtzqV2zDaNqmaPG1/dQGBjpGFhP8eG8HuZEn
+	jD8Qo4lmSWgTbTvhqM5Zxoj5gTrDCCDg4sZ6Z2cEWVWDFWNkOJqFTI/SU+B2uxCANCN+ofTtdKlI/
+	9dh19UQwdK2ZH3o923vusDY8FDsN4Qtm5SpIc7rVgYOrfYoDO47tawLSjH77O0DWtkw0uGmk+49ru
+	ab/2IQnSOUunfRD/YFci9iRWVyEH0uaYW+qB6qzYbtvkiKWjLwK4C6O2gty4WgH6P3WAf9ZC4SBOI
+	TYjt6cizg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1ldWBA-00DhmZ-9q; Mon, 03 May 2021 10:51:56 +0000
+	id 1ldWAy-00Dhk1-SW; Mon, 03 May 2021 10:51:44 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldWB5-00DhmE-84
- for barebox@desiato.infradead.org; Mon, 03 May 2021 10:51:51 +0000
+ id 1ldWAt-00Dhjs-Gy
+ for barebox@desiato.infradead.org; Mon, 03 May 2021 10:51:40 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
  MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=rwPSqHBT94IOeLL6bPI65Me99A+4PgDLSGPOZrvFXpA=; b=FDDyiLalxB169AsuQoWy1x0UDh
- NqUDsfdW8VsYArpRECQ4hcNeDvQ1nPjsGxYS4/nwNGfpKBcUapOKKQWuRnHCGRuwSyCKM61jSE9Bt
- hmq25IKNb1FZfHBLTeX0IL75AdRLSq/JHR/8NR+RhdzmGjICQozz7+5mw6JOqLQXYhcYWUMdxzTrz
- HmJJIcs/tytjG3Tf7KIOKyg5T1JY1t0sQ/DvNYaIBrCDeIJmBbS6Fn21VMBtcEl6yu+P0ogbCMqg+
- A7HcoAccGNjijOuFWA93dJMGY8rtXAvCqn/RSBV99TLybr4YLZ2zf6R5NpA+Qlp1DXzMSkvZbvSIO
- tZ7CJyHQ==;
+ bh=ya1AGLTZ3Frb/mRVy1ySfAf8GZh06rqv8SMFZulEY5M=; b=BMcAo8ufLxz1UDmHmBcF+k82Hm
+ Vj9rUm+NmyjMTJkO9VukIevbSxsfMMB6boyQPQEGhxYLJ+UHm4Vs7t+TbMLzyURFn2fAH8xRJbf0K
+ L2Co0wL0pGRf3lg1X3D7xnqxToAcHSRgazG3RKe/DCzmf+h35YAuy/GY0yjiMJNVfS2lkNsFyqqmA
+ kHzReEKC7cw8P1abEAEvqtLW34GRPOqQKLcHokynXfL8GEaagb7berSvHJPxZH1rHfhg9tY4yDAGK
+ CUbKBSF6uSptLFLEnuPKi42oVlsQIv7hDpW90M2UzRxMTbwejKRCzK/XC/3tS3U84HI3OtwiGggve
+ glQ+sD0g==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldWB2-002zLC-Od
- for barebox@lists.infradead.org; Mon, 03 May 2021 10:51:50 +0000
+ id 1ldWAq-002zKn-K0
+ for barebox@lists.infradead.org; Mon, 03 May 2021 10:51:38 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ldWB1-0001Wm-I2; Mon, 03 May 2021 12:51:47 +0200
+ id 1ldWAn-0001Vt-UY; Mon, 03 May 2021 12:51:33 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ldWB1-0006t6-8P; Mon, 03 May 2021 12:51:47 +0200
-Date: Mon, 3 May 2021 12:51:47 +0200
+ id 1ldWAn-0006sw-LE; Mon, 03 May 2021 12:51:33 +0200
+Date: Mon, 3 May 2021 12:51:33 +0200
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210503105147.GX19819@pengutronix.de>
+Message-ID: <20210503105133.GW19819@pengutronix.de>
 References: <20210423142829.29468-1-o.rempel@pengutronix.de>
+ <20210423142829.29468-3-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210423142829.29468-1-o.rempel@pengutronix.de>
+In-Reply-To: <20210423142829.29468-3-o.rempel@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 12:51:36 up 74 days, 14:15, 103 users,  load average: 0.03, 0.06,
+X-Uptime: 12:50:06 up 74 days, 14:13, 103 users,  load average: 0.03, 0.07,
  0.08
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210503_035148_822352_F8AE57D3 
-X-CRM114-Status: GOOD (  21.76  )
+X-CRM114-CacheID: sfid-20210503_035136_685767_60315F33 
+X-CRM114-Status: GOOD (  25.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,37 +95,81 @@ X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 0/6] add multiimage support for sama5d3 based
- microchip-ksz9477-evb board
+Subject: Re: [PATCH v2 2/6] ARM: at91: xload-mmc: add
+ sama5d3_atmci_start_image() helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Apr 23, 2021 at 04:28:23PM +0200, Oleksij Rempel wrote:
-> changes v2:
-> - add proper sanity check for atmci_instances array size
-> - add comment about initial MCI state and reason why reconfiguration is
->   needed.
+On Fri, Apr 23, 2021 at 04:28:25PM +0200, Oleksij Rempel wrote:
+> This helper should be called from the xloader
 > 
-> This patch series provide multiimage support for the microchip-ksz9477-evb.
-> The main work was done to make atmel_mci driver reusable for the
-> pbl/xloader.
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  arch/arm/mach-at91/Kconfig              |  2 +
+>  arch/arm/mach-at91/include/mach/xload.h |  2 +
+>  arch/arm/mach-at91/xload-mmc.c          | 51 +++++++++++++++++++++++++
+>  3 files changed, 55 insertions(+)
 > 
-> With this patches it is possible to build first and second stages in one
-> run with one defconfig.
-> 
-> Oleksij Rempel (6):
->   mci: atmel_mci: add PBL support
->   ARM: at91: xload-mmc: add sama5d3_atmci_start_image() helper
->   ARM: at91: ddramc: add sama5d3_barebox_entry() handler
->   ARM: at91: add __sama5d3_stashed_bootrom_r4 helper
->   ARM: at91: add sama5d3_lowlevel_init() helpers
->   ARM: at91: sama5d3: add multiimage support for the
->     microchip-ksz9477-evb
+> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+> index 52eefc7361..0fc8d25111 100644
+> --- a/arch/arm/mach-at91/Kconfig
+> +++ b/arch/arm/mach-at91/Kconfig
+> @@ -45,6 +45,7 @@ config HAVE_AT91_DDRAMC
+>  
+>  config AT91_MCI_PBL
+>  	bool
+> +	depends on MCI_ATMEL_PBL
+>  	depends on MCI_ATMEL_SDHCI_PBL
+>  	default y
+>  
+> @@ -599,6 +600,7 @@ config MACH_MICROCHIP_KSZ9477_EVB
+>  	bool "Microchip EVB-KSZ9477 Evaluation Kit"
+>  	select SOC_SAMA5D3
+>  	select OFDEVICE
+> +	select MCI_ATMEL_PBL
+>  	select COMMON_CLK_OF_PROVIDER
+>  	help
+>  	  Select this if you are using Microchip's EVB-KSZ9477 Evaluation Kit.
+> diff --git a/arch/arm/mach-at91/include/mach/xload.h b/arch/arm/mach-at91/include/mach/xload.h
+> index 9201e7d0b7..bbc70af210 100644
+> --- a/arch/arm/mach-at91/include/mach/xload.h
+> +++ b/arch/arm/mach-at91/include/mach/xload.h
+> @@ -5,6 +5,8 @@
+>  #include <pbl.h>
+>  
+>  void __noreturn sama5d2_sdhci_start_image(u32 r4);
+> +void __noreturn sama5d3_atmci_start_image(u32 r4, unsigned int clock,
+> +					  unsigned int slot);
+>  
+>  int at91_sdhci_bio_init(struct pbl_bio *bio, void __iomem *base);
+>  int at91_mci_bio_init(struct pbl_bio *bio, void __iomem *base,
+> diff --git a/arch/arm/mach-at91/xload-mmc.c b/arch/arm/mach-at91/xload-mmc.c
+> index e9edeccb7f..e865f237ef 100644
+> --- a/arch/arm/mach-at91/xload-mmc.c
+> +++ b/arch/arm/mach-at91/xload-mmc.c
+> @@ -3,6 +3,7 @@
+>  #include <mach/sama5_bootsource.h>
+>  #include <mach/hardware.h>
+>  #include <mach/sama5d2_ll.h>
+> +#include <mach/sama5d3_ll.h>
+>  #include <mach/gpio.h>
+>  #include <linux/sizes.h>
+>  #include <asm/cache.h>
+> @@ -44,6 +45,23 @@ static const struct sdhci_instance {
+>  	},
+>  };
+>  
+> +static const struct atmci_instance {
+> +	void __iomem *base;
+> +	unsigned id;
+> +	u8 periph;
+> +	s8 pins[15];
+> +} atmci_instances[] = {
 
-Applied, thanks
+Renamed this to sama5d3_atmci_instances while applying as for example
+sama5d4 has different base addresses for the same hardware.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
