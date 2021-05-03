@@ -1,69 +1,76 @@
-Delivery-date: Mon, 03 May 2021 14:32:46 +0200
+Delivery-date: Mon, 03 May 2021 14:34:04 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldXkk-0003A0-1G
-	for lore@lore.pengutronix.de; Mon, 03 May 2021 14:32:46 +0200
+	id 1ldXm0-0003AT-3s
+	for lore@lore.pengutronix.de; Mon, 03 May 2021 14:34:04 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldXkj-0005qo-5r
-	for lore@pengutronix.de; Mon, 03 May 2021 14:32:45 +0200
+	id 1ldXly-0005xK-6N
+	for lore@pengutronix.de; Mon, 03 May 2021 14:34:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
-	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=jzMTVHrXzKmc9rMAR3FknFStvyfHoZqQKa7mhjUmjfk=; b=Hq2xkJPBrxTEPXdCFCHqnmSGW
-	qrfrhe96iagvc5AJEhywNvHGwVjvhUjmhcTNZcvEiFmKkCAFL+Of4pOspf89RDP9HyqHJzxuEXhV4
-	ohsk/b+x7UUC6d9PD50gcajnV86eXlcCUsms16l8Sr54xncm4IY3VUbjzTWFag90v7SlIhfCMCstm
-	R7Mki8STACm5SoLIwZaH6MkGzyr6I/J7UeR0zMYYbaKu7S0xsSOOKooQQfMO4GLskqHfmpKdEeqBn
-	qViwUxbtfnBKMBCSBoOzZnCC3sElwX50E74P97QBGDN4kBJJWPvmgFluNchiBsiQ8J0h9JA8sAj08
-	+nRTUhg5A==;
+	 bh=E7I9r4p2Rfuc0jIvCFuxE7pomRV5ih6OJdJBBZn0T0M=; b=ZRTB6otfFYS4XcotJaWssPwqd
+	lNfJFmi9wiAxmlAky2NuTvxqH/dC3WnyLIbiYooyyubotEOoU1R5pB7rCmQQ7PfnFvVPjBN1CxZF9
+	g7q6EPjdP8n2WW3m84OfMe//kkKISm0OXbXdsxQ/McyikBp6kyqH5628aB7SikCjiwCW3Lb7IvAKL
+	Q2Cxbi2hBKXSY5vOGYi1bwr9abyYmZ3x9KHZzRfopFJttSeueIyrQbzNL/D5jeTxd2K+yiNTp0Jxl
+	QPR1AdEeawWWyqNB2Z04NYcWLv+QFTxCVNIgTCO6hunoCaitsB7/8L1/9Ey/TfYBfg0abzkzRLalk
+	fqfXJggrw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1ldXji-00DrZS-8F; Mon, 03 May 2021 12:31:42 +0000
+	id 1ldXkj-00Drki-TV; Mon, 03 May 2021 12:32:46 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldXiS-00DrTQ-Bo
- for barebox@desiato.infradead.org; Mon, 03 May 2021 12:30:28 +0000
+ id 1ldXkb-00Drk8-Db
+ for barebox@desiato.infradead.org; Mon, 03 May 2021 12:32:37 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=zT4PLI+ohen0eVF7bmP+ChHhOGDjWddIPpaTcljd3pY=; b=PG4Sn17cLdpZyt/TStF01KNcQn
- kTFmuI/f/tMF72ENt1yoyUvhE2bIB5V11TI3UtieBIu0k3acuHh2VfX6rpKKo27fcOYI78ZCcMIBJ
- 4OGV9R6yA0mk54to92udpHmsx6JW4xb2mBUl6ypNJrvFNe1NI99QD2A7DZAe9z5BLMjUg/uPSb1PF
- tJijuO31hnfeDb4eSmkk2YreC/9Q8ZQ0peb2ye+1IJcbbaQc1ZbzfWfpRc1RQT3s6bAEYD+n/wqC6
- jsu5j4GWnBi7zIgYLy6wgkkS0qDT8AmMeGjrMcl1OlLY0BPX9Dw4QtfSBagaIZwsEBFLNRjw1u53g
- VlYGgKHg==;
+ d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=j8OAiHHRD1iRQMpgWBx6FTstRnieQ56fhJgZkEOi8QY=; b=xApy30wBqXFognTEBxEd9S9npx
+ Xv1ISZLyldsPhU4kNcbz3oj5QXqf8mqI8asV4X2+xTgTg03CRnbOIIn2F+JgGzUwuwM+LTZUQeB84
+ c316OXFuuGh4638aLv37vpXjFAarH06KHcYIaNrv8GrQr+2YKjGONV5TPc4xXrTUEmi22dkSdlcUF
+ Bw0Wo4+swELKMdTvG9X267xayIeKB1bzeh3vY4nI5zWN7KkZYXLmiFAsq1tYWTzUZhcfWE9Qg7gUI
+ efTjidTtq8g5kT93almos+lpFRN5/QumhOBtUMEGpLsO+McldRux9xkiBZPezLeIghWnX85/eUjPB
+ lL8wWJhQ==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldXiP-0033Vj-VO
- for barebox@lists.infradead.org; Mon, 03 May 2021 12:30:23 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ id 1ldXkY-0033an-MO
+ for barebox@lists.infradead.org; Mon, 03 May 2021 12:32:36 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1ldXiO-0005R8-Dy; Mon, 03 May 2021 14:30:20 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1ldXiO-0007iU-5G; Mon, 03 May 2021 14:30:20 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  3 May 2021 14:30:19 +0200
-Message-Id: <20210503123019.29571-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210503114901.13095-13-a.fatoum@pengutronix.de>
-References: <20210503114901.13095-13-a.fatoum@pengutronix.de>
+ (envelope-from <sha@pengutronix.de>)
+ id 1ldXkX-0005qE-FI; Mon, 03 May 2021 14:32:33 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1ldXkX-0005LA-1I; Mon, 03 May 2021 14:32:33 +0200
+Date: Mon, 3 May 2021 14:32:33 +0200
+To: "Middelschulte, Leif" <Leif.Middelschulte@klsmartin.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Message-ID: <20210503123232.GJ19819@pengutronix.de>
+References: <78f79375e21e753086868b2212485b488443bcb1.camel@klsmartin.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <78f79375e21e753086868b2212485b488443bcb1.camel@klsmartin.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 14:11:28 up 74 days, 15:35, 100 users,  load average: 0.17, 0.16,
+ 0.15
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210503_053022_025405_19A5B5DE 
-X-CRM114-Status: UNSURE (   9.29  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210503_053234_751891_4C1240B0 
+X-CRM114-Status: GOOD (  23.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,64 +90,53 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! fastboot/dfu: use system partitions as fall back
+Subject: Re: imx6 nand: dbbt version/layout
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We need to maintain the check for whether dfu/fastboot is enabled,
-otherwise usbgadget_register can't differentiate between disabled
-gadget and gadget with default (empty string) function.
+Hi Leif,
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/usbgadget.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+On Thu, Apr 22, 2021 at 12:13:59PM +0000, Middelschulte, Leif wrote:
+> Hi,
+> 
+> I'm in the process of fixing up imx-kobs to support
+> - boot configuration dumps
+> - boot stream extracts/updates
+> on iMX6QDL using the GPMI-NAND interface, as provided by some more
+> "recent" kernels.
+> 
+> I updated barebox on the NAND flash storage using another instance of
+> barebox. Now it turns out that the dbbt version used (i.e. written) by
+> barebox and supported by imx-kobs (as it was) is not documented in the
+> i.MX6 QDL reference manual.
+> Barebox uses[0] DBBT version 0x1000000, while the reference manual
+> describes (i.MX6DQRM Rev 3., section 8.5.2.4) layout version 0x1.
 
-diff --git a/common/usbgadget.c b/common/usbgadget.c
-index b953f8bf771c..d4437b51694a 100644
---- a/common/usbgadget.c
-+++ b/common/usbgadget.c
-@@ -59,20 +59,23 @@ int usbgadget_register(bool dfu, const char *dfu_opts,
- 	opts = xzalloc(sizeof(*opts));
- 	opts->release = usb_multi_opts_release;
- 
--	opts->dfu_opts.files = parse(dfu_opts);
--	if (IS_ENABLED(CONFIG_USB_GADGET_DFU) && file_list_empty(opts->dfu_opts.files)) {
--		file_list_free(opts->dfu_opts.files);
--		opts->dfu_opts.files = get_dfu_function();
-+	if (dfu) {
-+		opts->dfu_opts.files = parse(dfu_opts);
-+		if (IS_ENABLED(CONFIG_USB_GADGET_DFU) && file_list_empty(opts->dfu_opts.files)) {
-+			file_list_free(opts->dfu_opts.files);
-+			opts->dfu_opts.files = get_dfu_function();
-+		}
- 	}
- 
--	opts->fastboot_opts.files = parse(fastboot_opts);
--	if (IS_ENABLED(CONFIG_FASTBOOT_BASE) && file_list_empty(opts->fastboot_opts.files)) {
--		file_list_free(opts->fastboot_opts.files);
--		opts->fastboot_opts.files = get_fastboot_partitions();
--	}
-+	if (fastboot) {
-+		opts->fastboot_opts.files = parse(fastboot_opts);
-+		if (IS_ENABLED(CONFIG_FASTBOOT_BASE) && file_list_empty(opts->fastboot_opts.files)) {
-+			file_list_free(opts->fastboot_opts.files);
-+			opts->fastboot_opts.files = get_fastboot_partitions();
-+		}
- 
--	if (fastboot)
- 		opts->fastboot_opts.export_bbu = export_bbu;
-+	}
- 
- 	opts->create_acm = acm;
- 
+It's stored in big endian. Just endianess swap 0x01000000 and you have
+your 0x00000001.
+
+> 
+> Besides that, the reference manual apparently does not describe the
+> field `BBMarkerPhysicalOffsetInSpareData` at the end of the FCB
+> structure. Yet again, imx-kobs and barebox are reading/writing it.
+
+barebox doesn't actively sets the value to anything else than 0x0. I
+have no idea if and how the ROM interprets this value. Indeed the name
+of the field seems to be inconsistent to the reference manual.
+
+Regards,
+  Sascha
+
+
 -- 
-2.29.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
