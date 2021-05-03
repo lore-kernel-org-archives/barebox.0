@@ -1,68 +1,68 @@
-Delivery-date: Mon, 03 May 2021 13:52:39 +0200
+Delivery-date: Mon, 03 May 2021 13:52:45 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldX7v-00034M-Rc
-	for lore@lore.pengutronix.de; Mon, 03 May 2021 13:52:39 +0200
+	id 1ldX81-00034j-3c
+	for lore@lore.pengutronix.de; Mon, 03 May 2021 13:52:45 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ldX7u-00012F-VN
-	for lore@pengutronix.de; Mon, 03 May 2021 13:52:39 +0200
+	id 1ldX80-00013J-0x
+	for lore@pengutronix.de; Mon, 03 May 2021 13:52:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=YlUX44PURiTUHKGl0ZdVsVyBMbr0vYj2Ilo0FSYvxQI=; b=dftVh6r0jwSkErb8lF5sEMGCv
-	EfR50r0TGhBbBuV7QLQt8E5SNc3hUwKSZrGeqfddirdbEZ19OHoHbVWxEX5wLdKPBCCKkjbMjyQgT
-	YbvyoWsaExnG0aNalaXEsLXrMCdhZHdiUD7VmAUdAamo6Aev2oYdhmH+TR0OBc8lwNwYZU/0FpOB2
-	f1ajrojfOPPfIPXi1ECybk2NJL+E0ZViByrPJREj7fv5KfJehzlReBszll1FQ0GBT15TT4UQFPtmg
-	cWf3j+I1GxFuq7usnJliya2fsB85YWB2gEKfpk5LSDgPBarIkxvvroLC/GNsVn9ko3buJtdeFU4oj
-	yOTRi+TIQ==;
+	 bh=cx+e6epsWEUm8f8jlGwD+Z/vfebSNdRhwshGkxIV/x8=; b=JbRbuM5ATBZQunUveT46VVOB9
+	5ZeTFpV+hf9J5stqx0My3xfO4w4iO5LjwAeradBVBib84vRwNOw7l3xN2YErSJgio4Y4b0aEQoKZ+
+	kTuNpMkDDT4kq1E7m25Xe9MCrPlHJjNWDukYidFlcO6pWZ2UFg6SKO+HG2ukzVTD2cGX36QyzQvJ8
+	6ypjmFb64jN5ho+/oML2NXCpxC2ApSCo0o8/AdaGSTBvGTgAOJcs5bHszg+rXWIPOfWAGyypt14Ur
+	OnaqjGQpU6fS2AJnIzTlTOpa8As/FqbzVCCq3YaTE8Gh4cjRcVNpCPdVXb25vJG1rQ2Mmn3G/I88u
+	GMcrjEstA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1ldX6n-00DnKo-Fx; Mon, 03 May 2021 11:51:33 +0000
+	id 1ldX6i-00DnHf-KR; Mon, 03 May 2021 11:51:25 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldX55-00DmiS-6u
- for barebox@desiato.infradead.org; Mon, 03 May 2021 11:49:43 +0000
+ id 1ldX4y-00Dmhp-Mj
+ for barebox@desiato.infradead.org; Mon, 03 May 2021 11:49:40 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=y2Q21DOr48QXwCFDSv7Drg+yU7h91jdcnbhja9uyQhI=; b=AP2SZW86wFpwB8NhBsSrvJJPZU
- imQCEaqlE2lJms/4f8hH0+Z+zuceJ0udVA/iZeDiC/9ocYbGxFmxEjQliYN/FvsPfVwu9Uua6zTJH
- 6oM7lI6cqLw/0GpAn7YqmiBs+tlzS7iCVP5Pu7hIhOJR69+bVgccs9yAwyQdA0rRIxly4uFQOCF4q
- LVGsizjrrMLlE3ZesjPYAJb0gey5Psd6pIQLRH9quGpot78GHFpmqStzsJGE4UgjVux2Fg4RHa5MB
- yjxWLyiuK7rt6ITiKpwSgt3jQ2cflT29Zl6cAm1gLjr94tBbBnM4hcXF6J+jlXuOboYGSeR91E+X3
- hQdFKmNw==;
+ bh=KI+hYu3zpIAIEd3a072ETAjncZZlR/Xn708S1N1CISs=; b=21eSH/bsgbSumCK5J/9vEdx6oG
+ 5DOuDmJNR+OnAILC5M0Q2NdFDzltmz0Zv+oOVjcXM+SEoRJFjhSxKnVm06jSEQcx3uVVgv+qXa8xM
+ HpwdP0uAMRg5xnG+VDR3sXRZzditoI1yn9KDoJiNReZhIbXE6bCle08MdcJib81XPDCcit4BuOv7q
+ xxQntA4Bg/EaKaduHCXzBfhdaoOOLDH//HDDsnRlDISYfz2Y/wqFIWi7oT2Y0iGfrvt+HjxoEXWEz
+ ZOu3gZm2co4q2hejZktl5Sejm0SkqCccBI/jVrMf5kJMvVzuFPKpgEYO1XdZikZWpLZYLakWSNmNU
+ UsX3MT8w==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ldX52-0031eX-NW
- for barebox@lists.infradead.org; Mon, 03 May 2021 11:49:42 +0000
+ id 1ldX4u-0031db-Rh
+ for barebox@lists.infradead.org; Mon, 03 May 2021 11:49:35 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1ldX4d-0007pf-BK; Mon, 03 May 2021 13:49:15 +0200
+ id 1ldX4d-0007po-Kv; Mon, 03 May 2021 13:49:15 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1ldX4c-0003bI-DP; Mon, 03 May 2021 13:49:14 +0200
+ id 1ldX4c-0003bo-Hn; Mon, 03 May 2021 13:49:14 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  3 May 2021 13:48:48 +0200
-Message-Id: <20210503114901.13095-4-a.fatoum@pengutronix.de>
+Date: Mon,  3 May 2021 13:48:57 +0200
+Message-Id: <20210503114901.13095-13-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210503114901.13095-1-a.fatoum@pengutronix.de>
 References: <20210503114901.13095-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210503_044940_783973_1D6F8A35 
-X-CRM114-Status: GOOD (  10.37  )
+X-CRM114-CacheID: sfid-20210503_044933_078688_2AC94953 
+X-CRM114-Status: GOOD (  22.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,73 +86,277 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 03/16] string: implement strstarts along with strends
+Subject: [PATCH 12/16] fastboot/dfu: use system partitions as fall back
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Both can be useful when parsing file paths. They are added to different
-files, because only one of them is available in upstream
-<linux/string.h>. The other we add to <string.h>, which contains more
-barebox-specific string functions.
+Use the new system partitions infrastructure to have fastboot and DFU
+fall back to using the same partitions if the global.usbgadget.dfu_function
+and global.fastboot_partitions are not set, respectively.
+
+No functional change intended for configurations that have
+SYSTEM_PARTITIONS disabled.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/string.h | 10 ++++++++++
- include/string.h       |  1 +
- lib/string.c           |  9 +++++++++
- 3 files changed, 20 insertions(+)
+ common/fastboot.c          |  9 ++++-
+ common/usbgadget.c         | 76 +++++++++++++++++++++++---------------
+ drivers/usb/gadget/multi.c | 12 ++++++
+ include/fastboot.h         |  6 +--
+ include/file-list.h        |  5 +++
+ include/usb/gadget-multi.h |  1 +
+ net/fastboot.c             |  4 +-
+ 7 files changed, 75 insertions(+), 38 deletions(-)
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index 58e2a4d2ea66..55bc905c0e6b 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -136,4 +136,14 @@ extern int kstrtobool(const char *s, bool *res);
+diff --git a/common/fastboot.c b/common/fastboot.c
+index c8576a8d97c3..dc80b66e6720 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -41,6 +41,7 @@
+ #include <linux/stat.h>
+ #include <linux/mtd/mtd.h>
+ #include <fastboot.h>
++#include <system-partitions.h>
  
- int match_string(const char * const *array, size_t n, const char *string);
+ #define FASTBOOT_VERSION		"0.4"
  
-+/**
-+ * strstarts - does @str start with @prefix?
-+ * @str: string to examine
-+ * @prefix: prefix to look for.
-+ */
-+static inline bool strstarts(const char *str, const char *prefix)
-+{
-+	return strncmp(str, prefix, strlen(prefix)) == 0;
-+}
-+
- #endif /* _LINUX_STRING_H_ */
-diff --git a/include/string.h b/include/string.h
-index ef0b5e199eea..d423bee6fba5 100644
---- a/include/string.h
-+++ b/include/string.h
-@@ -7,6 +7,7 @@
- int strtobool(const char *str, int *val);
- char *strsep_unescaped(char **, const char *);
- char *stpcpy(char *dest, const char *src);
-+bool strends(const char *str, const char *postfix);
- 
- void *__default_memset(void *, int, __kernel_size_t);
- void *__nokasan_default_memset(void *, int, __kernel_size_t);
-diff --git a/lib/string.c b/lib/string.c
-index dbb66fe4d2cc..bad186586fac 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -866,6 +866,15 @@ int strtobool(const char *str, int *val)
+@@ -932,9 +933,13 @@ bool get_fastboot_bbu(void)
+ 	return fastboot_bbu;
  }
- EXPORT_SYMBOL(strtobool);
  
-+bool strends(const char *str, const char *postfix)
+-const char *get_fastboot_partitions(void)
++struct file_list *get_fastboot_partitions(void)
+ {
+-	return fastboot_partitions;
++	if (fastboot_partitions && *fastboot_partitions)
++		return file_list_parse(fastboot_partitions);
++	if (!system_partitions_empty())
++		return system_partitions_get();
++	return NULL;
+ }
+ 
+ static int fastboot_globalvars_init(void)
+diff --git a/common/usbgadget.c b/common/usbgadget.c
+index 009debd93efc..b953f8bf771c 100644
+--- a/common/usbgadget.c
++++ b/common/usbgadget.c
+@@ -17,6 +17,7 @@
+ #include <usb/gadget-multi.h>
+ #include <globalvar.h>
+ #include <magicvar.h>
++#include <system-partitions.h>
+ 
+ static int autostart;
+ static int acm;
+@@ -24,14 +25,29 @@ static char *dfu_function;
+ 
+ static struct file_list *parse(const char *files)
+ {
+-	struct file_list *list = file_list_parse(files);
++	struct file_list *list;
++
++	if (!files)
++		return NULL;
++
++	list = file_list_parse(files);
+ 	if (IS_ERR(list)) {
+ 		pr_err("Parsing file list \"%s\" failed: %pe\n", files, list);
+ 		return NULL;
+ 	}
++
+ 	return list;
+ }
+ 
++static inline struct file_list *get_dfu_function(void)
 +{
-+	if (strlen(str) < strlen(postfix))
-+		return false;
-+
-+	return strcmp(str + strlen(str) - strlen(postfix), postfix) == 0;
++	if (dfu_function && *dfu_function)
++		return file_list_parse(dfu_function);
++	if (!system_partitions_empty())
++		return system_partitions_get();
++	return NULL;
 +}
-+EXPORT_SYMBOL(strends);
 +
- /**
-  * match_string - matches given string in an array
-  * @array:	array of strings
+ int usbgadget_register(bool dfu, const char *dfu_opts,
+ 		       bool fastboot, const char *fastboot_opts,
+ 		       bool acm, bool export_bbu)
+@@ -39,17 +55,32 @@ int usbgadget_register(bool dfu, const char *dfu_opts,
+ 	int ret;
+ 	struct device_d *dev;
+ 	struct f_multi_opts *opts;
+-	const char *fastboot_partitions = get_fastboot_partitions();
+ 
+-	if (dfu && !dfu_opts && dfu_function && *dfu_function)
+-		dfu_opts = dfu_function;
++	opts = xzalloc(sizeof(*opts));
++	opts->release = usb_multi_opts_release;
+ 
+-	if (IS_ENABLED(CONFIG_FASTBOOT_BASE) && fastboot && !fastboot_opts &&
+-	    fastboot_partitions && *fastboot_partitions)
+-		fastboot_opts = fastboot_partitions;
++	opts->dfu_opts.files = parse(dfu_opts);
++	if (IS_ENABLED(CONFIG_USB_GADGET_DFU) && file_list_empty(opts->dfu_opts.files)) {
++		file_list_free(opts->dfu_opts.files);
++		opts->dfu_opts.files = get_dfu_function();
++	}
++
++	opts->fastboot_opts.files = parse(fastboot_opts);
++	if (IS_ENABLED(CONFIG_FASTBOOT_BASE) && file_list_empty(opts->fastboot_opts.files)) {
++		file_list_free(opts->fastboot_opts.files);
++		opts->fastboot_opts.files = get_fastboot_partitions();
++	}
++
++	if (fastboot)
++		opts->fastboot_opts.export_bbu = export_bbu;
+ 
+-	if (!dfu_opts && !fastboot_opts && !acm)
+-		return COMMAND_ERROR_USAGE;
++	opts->create_acm = acm;
++
++	if (usb_multi_count_functions(opts) == 0) {
++		pr_warn("No functions to register\n");
++		ret = COMMAND_ERROR_USAGE;
++		goto err;
++	}
+ 
+ 	/*
+ 	 * Creating a gadget with both DFU and Fastboot may not work.
+@@ -57,35 +88,20 @@ int usbgadget_register(bool dfu, const char *dfu_opts,
+ 	 * seems to assume that the device only has a single configuration
+ 	 * That's not our fault though. Emit a warning and continue
+ 	 */
+-	if (fastboot_opts && dfu_opts)
++	if (!file_list_empty(opts->fastboot_opts.files) && !file_list_empty(opts->dfu_opts.files))
+ 		pr_warn("Both DFU and Fastboot enabled. dfu-util may not like this!\n");
+ 
+-	opts = xzalloc(sizeof(*opts));
+-	opts->release = usb_multi_opts_release;
+-
+-	if (fastboot_opts) {
+-		opts->fastboot_opts.files = parse(fastboot_opts);
+-		opts->fastboot_opts.export_bbu = export_bbu;
+-	}
+-
+-	if (dfu_opts)
+-		opts->dfu_opts.files = parse(dfu_opts);
+-
+-	if (!opts->dfu_opts.files && !opts->fastboot_opts.files && !acm) {
+-		pr_warn("No functions to register\n");
+-		free(opts);
+-		return 0;
+-	}
+-
+-	opts->create_acm = acm;
+-
+ 	dev = get_device_by_name("otg");
+ 	if (dev)
+ 		dev_set_param(dev, "mode", "peripheral");
+ 
+ 	ret = usb_multi_register(opts);
+ 	if (ret)
+-		usb_multi_opts_release(opts);
++		goto err;
++
++	return 0;
++err:
++	usb_multi_opts_release(opts);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/usb/gadget/multi.c b/drivers/usb/gadget/multi.c
+index da4a7591175c..144ac0624be2 100644
+--- a/drivers/usb/gadget/multi.c
++++ b/drivers/usb/gadget/multi.c
+@@ -266,6 +266,18 @@ void usb_multi_unregister(void)
+ 	gadget_multi_opts = NULL;
+ }
+ 
++unsigned usb_multi_count_functions(struct f_multi_opts *opts)
++{
++	unsigned count = 0;
++
++	count += !file_list_empty(opts->fastboot_opts.files) ||
++		opts->fastboot_opts.export_bbu;
++	count += !file_list_empty(opts->dfu_opts.files);
++	count += opts->create_acm;
++
++	return count;
++}
++
+ void usb_multi_opts_release(struct f_multi_opts *opts)
+ {
+ 	file_list_free(opts->fastboot_opts.files);
+diff --git a/include/fastboot.h b/include/fastboot.h
+index 2eab2dfe6ae8..cf8a177bf12c 100644
+--- a/include/fastboot.h
++++ b/include/fastboot.h
+@@ -58,16 +58,16 @@ enum fastboot_msg_type {
+ 
+ #ifdef CONFIG_FASTBOOT_BASE
+ bool get_fastboot_bbu(void);
+-const char *get_fastboot_partitions(void);
++struct file_list *get_fastboot_partitions(void);
+ #else
+ static inline int get_fastboot_bbu(void)
+ {
+ 	return false;
+ }
+ 
+-static inline const char *get_fastboot_partitions(void)
++static inline struct file_list *get_fastboot_partitions(void)
+ {
+-	return NULL;
++	return file_list_parse("");
+ }
+ #endif
+ 
+diff --git a/include/file-list.h b/include/file-list.h
+index 2538883c3659..be97a49b7a2b 100644
+--- a/include/file-list.h
++++ b/include/file-list.h
+@@ -35,4 +35,9 @@ struct file_list_entry *file_list_entry_by_name(struct file_list *files, const c
+ #define file_list_for_each_entry(files, entry) \
+ 	list_for_each_entry(entry, &files->list, list)
+ 
++static inline bool file_list_empty(struct file_list *files)
++{
++	return !files || !files->num_entries;
++}
++
+ #endif /* __FILE_LIST */
+diff --git a/include/usb/gadget-multi.h b/include/usb/gadget-multi.h
+index 9bb6c889f3e9..f30dae5686ae 100644
+--- a/include/usb/gadget-multi.h
++++ b/include/usb/gadget-multi.h
+@@ -15,6 +15,7 @@ struct f_multi_opts {
+ int usb_multi_register(struct f_multi_opts *opts);
+ void usb_multi_unregister(void);
+ void usb_multi_opts_release(struct f_multi_opts *opts);
++unsigned usb_multi_count_functions(struct f_multi_opts *opts);
+ 
+ int usbgadget_register(bool dfu, const char *dfu_opts,
+ 		       bool fastboot, const char *fastboot_opts,
+diff --git a/net/fastboot.c b/net/fastboot.c
+index 9082aa48f6e1..df388adc8995 100644
+--- a/net/fastboot.c
++++ b/net/fastboot.c
+@@ -499,7 +499,6 @@ void fastboot_net_free(struct fastboot_net *fbn)
+ struct fastboot_net *fastboot_net_init(struct fastboot_opts *opts)
+ {
+ 	struct fastboot_net *fbn;
+-	const char *partitions = get_fastboot_partitions();
+ 	bool bbu = get_fastboot_bbu();
+ 	int ret;
+ 
+@@ -513,8 +512,7 @@ struct fastboot_net *fastboot_net_init(struct fastboot_opts *opts)
+ 		fbn->fastboot.cmd_flash = opts->cmd_flash;
+ 		ret = fastboot_generic_init(&fbn->fastboot, opts->export_bbu);
+ 	} else {
+-		fbn->fastboot.files = file_list_parse(partitions ?
+-						      partitions : "");
++		fbn->fastboot.files = get_fastboot_partitions() ?: file_list_parse("");
+ 		ret = fastboot_generic_init(&fbn->fastboot, bbu);
+ 	}
+ 	if (ret)
 -- 
 2.29.2
 
