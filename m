@@ -1,92 +1,91 @@
-Delivery-date: Wed, 05 May 2021 12:10:53 +0200
+Delivery-date: Wed, 05 May 2021 12:11:00 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leEUX-0007aV-Pd
-	for lore@lore.pengutronix.de; Wed, 05 May 2021 12:10:53 +0200
+	id 1leEUe-0007as-MY
+	for lore@lore.pengutronix.de; Wed, 05 May 2021 12:11:00 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leEUW-0005CC-25
-	for lore@pengutronix.de; Wed, 05 May 2021 12:10:53 +0200
+	id 1leEUd-0005Gf-8i
+	for lore@pengutronix.de; Wed, 05 May 2021 12:11:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=2E2w1B0Judq+97wvB/BhNdRl62ac19XCTdQuG5px3ic=; b=Dxpv2re07n/sTQCzp+IHz4irB
-	rmGBEpr6qXCWPtMXat4zyvWV0cFGh6bu6n7A06vfn6053UnK/ouYQ1afvZV+qsPnppTEE7GRbloh0
-	C3Hlylx5D4uKcTOF1wg8weVhrfYt7PLqxzt8gFpqfUZuwMJ2NGYvGb8FDrJxZWlF+XH5tUlvLiCJD
-	K0+CUV8ez4WW13rgS8BJcGg/82rTGHk1ma7exVrl7XvKrv9e3n5DnciIv1uYFcGH2oxbtQV7jd/wB
-	uhVUmTS6TEmJzUKUFmEMgD8n1JCRtOiI3g14NCec+FaFWkuB+ggfx4vKwwAKpLkGpuf8NUN71u9Up
-	b1s/hXDbw==;
+	 bh=iSsNwFp68nDBruml7H4YO+JhBLkDsQks46RGQVHGgoQ=; b=Q/5qhUpOm7AAijO30lAVntPUG
+	6B4P1BMXhZxU7aNiiWFq3lwSBlYsBdaUMfhhMtr8eLWZugm0LeMVTKO7M8pjp8OzlJ/+Jd0mtWj62
+	GQBss8g8pMovcl+8ZxO7UoyzPx0dLE1SEo97AZAwbSpZUT83HraxbWELC47w15GSuQro0a/EqvIGL
+	pvSmdD74B/KtpyA4zIjvwrj/8rH/dEhoyUM89WdjcNEd7FOt0I3gqbfpQemumfb1JawjJPW0UYv2Z
+	9VHRiBvJ9JCdhFWBs5FNIHsL6pxVE9b0SNz/5kNa96KIBt213RTqOpk4XccEPgMl+pZRXNXiuHtv8
+	Nm5BY+0qw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1leETV-000q6z-1s; Wed, 05 May 2021 10:09:49 +0000
+	id 1leETd-000qCM-7P; Wed, 05 May 2021 10:09:57 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leET8-000q1M-Mq
- for barebox@desiato.infradead.org; Wed, 05 May 2021 10:09:27 +0000
+ id 1leETA-000q1h-SU
+ for barebox@desiato.infradead.org; Wed, 05 May 2021 10:09:29 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=dOAKez41jJwWUIsf0BKFhgTzNkY6Crp5ZXuXCTGlOH4=; b=h2KOkRz7imCmYTe7UlwAejNXYa
- B8Wmrplt3xVNN5UrI3aTFM40rOId81ZdeF5abqBdQE9DnU6JrTyUAliNEJ/CatlDxZf/jTKwaaH8W
- HYzGuSD0oRjkJo5fOBhvn+h9IdWA53N8JVRCQQRpdZwjTMZKOZCgwAAXUbbexSAxiR9ViNVueAXQt
- NtmQCtddUSLdjk6BO7CBi43hZ4iaDXSr5cpn7NjsbfBOlkLqOl+cbgbS79Izh3WkNwIt8vDZtKjiu
- orZc5oJ9wCiSdI9OdQ8zvl2G3BXUaC7SDQTVMgqOYYjV8wKLojwrtPPMmc/9l3sITPDoM5DxhthwV
- EqPc+iCA==;
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ bh=98yySZlPSmR0p7qDhryFhEpdLOSuTX0utsPitcmHtKQ=; b=LjR9UuCCXdqx3MKS1IWyJ7bfr3
+ dqoFkey7EBRalCmrKSkWxCV9zUtqR945Pjw604RyVYib9a9M77KMcEv9+052DsuSnPt/zOG0VSOct
+ Uv/Ig/0QJz61ukS0s2Vv1oysWNNLzwQdK1HWXUR7Ta0Rz4sXTU3RDHNThqDLv1/gRe0hQ0B31sJHc
+ Bmpf4G0vpdQpCe/RkFnp3FKUzzd+5RWumCUeicv4zPCNX2xL419IDrGhQLMalKU3WfIqqfU9NMI+j
+ q4MpniUggdEFOZSOwlBzom+fxFFqyB9epN7iWpF17ynCUFemWhYHSFCLm6JbF+6MEoqHIPHZw59mk
+ Ag7YZ8Mw==;
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leET5-004ePI-AJ
- for barebox@lists.infradead.org; Wed, 05 May 2021 10:09:25 +0000
-Received: by mail-lj1-x235.google.com with SMTP id s25so1753393lji.0
- for <barebox@lists.infradead.org>; Wed, 05 May 2021 03:09:22 -0700 (PDT)
+ id 1leET7-004eQQ-US
+ for barebox@lists.infradead.org; Wed, 05 May 2021 10:09:27 +0000
+Received: by mail-lj1-x22d.google.com with SMTP id u25so1702575ljg.7
+ for <barebox@lists.infradead.org>; Wed, 05 May 2021 03:09:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=dOAKez41jJwWUIsf0BKFhgTzNkY6Crp5ZXuXCTGlOH4=;
- b=Ae8CckVB7ermZanAPp7BrbbXtX255HSmtfmEcmzWR0QUgSXJUbAdVmLEOAik7i6WuZ
- nVOI5blt4xtT7wPYw38y25we4ClVMJKbAxfDrFVgKJ1lmjjxqjzMJM6EjdiOznSKfWuX
- 6+GR7+WOgzeCw19XEg4atat77xvkRXxMbYPtTnKaSxT9deptvy9qo7tcX89SwTj4uNTr
- S9t7mYE9U26SdT+flfgjCROzyvaNQyb9Jg+vCBAObepNkJ70KNOXIpxbeO86zmUN4I31
- 4pa/QLeZtvrjTTI5kkCTBRz8dyZgPpG5fucsrqNyb/6Nl1dRqeaaXHYwSH7hAtbe/KNc
- fQQA==
+ bh=98yySZlPSmR0p7qDhryFhEpdLOSuTX0utsPitcmHtKQ=;
+ b=Zkcc+mmcetVEDiddz+k2Ko3rLBFn9fd+rQ9E2nJLi91uWqmtwJpjFIQMm5e/nYNZXH
+ 82yFGDPpyL4TnRp5UijtKIKvHHZTxbP7pmrzMyR/jJculAxlfinwrNJMhYY9pfDc83Vt
+ iI6WIJrnnKzYjoZyufvo4LoQUCbdAw7lU8nVPhWTSJXR9ewfg8jMhYtvnVFzLaFXIXgL
+ IIlC1rbppnNFTJVdAAgSX1w/P7b5a2x9u0CamGpU2F8gHz7Z+oxUqwlitIYV8aiMbkig
+ DMT7b2zAcZQXY+55ZHnFZ2ILFwS1XxU+GNc70G6mU4G867zzqvGH6sgQPeYhREd8CUQZ
+ JDkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=dOAKez41jJwWUIsf0BKFhgTzNkY6Crp5ZXuXCTGlOH4=;
- b=kejoARjbu0WwCEgSvbQmdC/g/Pmx8HKJL/CEBmFpg1SQyIfe38cjJX2ZCF6lJ13KiM
- GM1RdGD087HQrXCpeciK9nSpKy0nzxCX0miK8N/ZyDFExaoJ76Ga0GnPktADhN4xeEcK
- imEL2Nwk1qUQaMxEWTf3vi3buKE4oof1a6orRS1h4bGRyq8q7662P25BbZb4s1i89DlB
- C1rYPYrKiLj1b6QO/r8guLNgmjm/Ib4lXVb7UUAptEd8eQ2wynOJeyXrnGSw0rCvZa0u
- up2F6uU70vi+iddISMPI0gJI3RbfMpLHJqfxhSHFdhVfh44fZn68jxmPPHFE2mKYcLUx
- bdPA==
-X-Gm-Message-State: AOAM530zmARy04Wy+19iIBCd0DOj2Pl96bh2Ko4WzEu+u4ET717N4CV3
- ynmuWIowjzVIfK4dZoOxSVA3E7m4el5oXQ==
-X-Google-Smtp-Source: ABdhPJzEUuVSDTETdQTZ/WR/6gh09Z7e2j4GsYMSt3CBkPIWsfW+n5qsPW7dmu92uFm/TFrOcgWbsA==
-X-Received: by 2002:a05:651c:33a:: with SMTP id
- b26mr21085938ljp.220.1620209361132; 
- Wed, 05 May 2021 03:09:21 -0700 (PDT)
+ bh=98yySZlPSmR0p7qDhryFhEpdLOSuTX0utsPitcmHtKQ=;
+ b=JIR3yuBvgRCQuWo8KXenZw1cd2H6NknOr/SKHwwjPCE2R1AJkWT/oZxxY/TW4eWjN8
+ vkMJ/4hh1uNFYyM1ZirnJEWJ6CvoWyvgraqtH+mqAYxAWKmcnIJDqftgvf5QINtsiUU/
+ aDLSvaKUGmZaEMEr8h1GnuLwNRAJ+kV2MZUsHo3ZvPLd27hFGhWphRa3QNb8UpEc42bj
+ +s6kifQ7PrdAavrVWixftmiva9opjP/w9eA9mMsuVRlLmPMHDrwk3P7aZnpSnP61QdnI
+ NRsR7iMkZUW6BoWKbp4rC07ORu+/acOjYuzImVEbNNO25jieAEogIF7u79MYZCCOr5HX
+ BRQQ==
+X-Gm-Message-State: AOAM533R/+NpyLD0zOGYcx+sudfZXLRlf/32KTGZrTeJ3slA1RJgs9Xn
+ tAce0Xyzip8Co3i90f2sipv5bIUnq5/SQw==
+X-Google-Smtp-Source: ABdhPJzuyPcTPKRIwlqRkEfrm3jc2xCMesM7PO57n5/puFpdvZwnMbAwhIHVMVplj+zRLoZBkNa/ug==
+X-Received: by 2002:a2e:a60c:: with SMTP id v12mr21947213ljp.310.1620209363593; 
+ Wed, 05 May 2021 03:09:23 -0700 (PDT)
 Received: from localhost.localdomain ([176.59.42.245])
- by smtp.gmail.com with ESMTPSA id u8sm497114lfu.284.2021.05.05.03.09.20
+ by smtp.gmail.com with ESMTPSA id u8sm497114lfu.284.2021.05.05.03.09.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 May 2021 03:09:20 -0700 (PDT)
+ Wed, 05 May 2021 03:09:23 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed,  5 May 2021 13:08:56 +0300
-Message-Id: <20210505100900.88141-6-antonynpavlov@gmail.com>
+Date: Wed,  5 May 2021 13:08:58 +0300
+Message-Id: <20210505100900.88141-8-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210505100900.88141-1-antonynpavlov@gmail.com>
 References: <20210505100900.88141-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210505_030923_383492_23851372 
-X-CRM114-Status: GOOD (  21.97  )
+X-CRM114-CacheID: sfid-20210505_030926_004116_121BB678 
+X-CRM114-Status: GOOD (  19.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -112,291 +111,274 @@ X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 5/9] spi: add litex spiflash driver
+Subject: [PATCH 7/9] RISC-V: add initial LiteX SoC support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+LiteX is a Migen-based System on Chip, supporting softcore
+VexRiscv CPU, a 32-bits Linux Capable RISC-V CPU.
+
+See https://github.com/enjoy-digital/litex and
+https://github.com/litex-hub/linux-on-litex-vexriscv
+for details.
+
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/spi/Kconfig          |   3 +
- drivers/spi/Makefile         |   1 +
- drivers/spi/litex_spiflash.c | 242 +++++++++++++++++++++++++++++++++++
- 3 files changed, 246 insertions(+)
+ arch/riscv/Kconfig                            |   9 ++
+ arch/riscv/Makefile                           |   1 +
+ arch/riscv/dts/litex_soc_linux.dtsi           |  49 +++++++
+ arch/riscv/mach-litex/Kconfig                 |   8 ++
+ arch/riscv/mach-litex/Makefile                |   3 +
+ arch/riscv/mach-litex/include/mach/debug_ll.h | 124 ++++++++++++++++++
+ 6 files changed, 194 insertions(+)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 323d93efeb..714d30e909 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -74,6 +74,9 @@ config DRIVER_SPI_IMX_2_3
- 	depends on ARCH_IMX50 || ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6 || ARCH_IMX7 || ARCH_IMX8MQ
- 	default y
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index c0583f3153..40dfd7dd93 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -34,6 +34,14 @@ config MACH_ERIZO
+ 	select RISCV_M_MODE
+ 	select RISCV_TIMER
  
-+config DRIVER_SPI_LITEX_SPIFLASH
-+	bool "Litex SPIFLASH bitbang master driver"
++config MACH_LITEX
++	bool "litex family"
++	select ARCH_RV32I
++	select HAS_DEBUG_LL
++	select HAS_NMON
++	select USE_COMPRESSED_DTB
++	select RISCV_SBI
 +
- config DRIVER_SPI_MXS
- 	bool "i.MX (23,28) SPI Master driver"
- 	depends on ARCH_IMX28
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 908d514a01..ac95ffc1db 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -4,6 +4,7 @@ obj-$(CONFIG_DRIVER_SPI_ATH79) += ath79_spi.o
- obj-$(CONFIG_DRIVER_SPI_GPIO) += gpio_spi.o
- obj-$(CONFIG_DRIVER_SPI_FSL_QUADSPI) += spi-fsl-qspi.o
- obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
-+obj-$(CONFIG_DRIVER_SPI_LITEX_SPIFLASH) += litex_spiflash.o
- obj-$(CONFIG_DRIVER_SPI_MVEBU) += mvebu_spi.o
- obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
- obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
-diff --git a/drivers/spi/litex_spiflash.c b/drivers/spi/litex_spiflash.c
+ config MACH_VIRT
+ 	bool "virt family"
+ 	select BOARD_RISCV_GENERIC_DT
+@@ -83,6 +91,7 @@ config 64BIT
+ 	select PHYS_ADDR_T_64BIT
+ 
+ source "arch/riscv/mach-erizo/Kconfig"
++source "arch/riscv/mach-litex/Kconfig"
+ 
+ config BOARD_RISCV_GENERIC_DT
+ 	select BOARD_GENERIC_DT
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index aba4526bba..bc22786368 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -20,6 +20,7 @@ cflags-y += $(riscv-cflags-y)
+ LDFLAGS_barebox += -nostdlib
+ 
+ machine-$(CONFIG_MACH_ERIZO)	:= erizo
++machine-$(CONFIG_MACH_LITEX)	:= litex
+ machine-$(CONFIG_MACH_VIRT)	:= virt
+ 
+ LDFLAGS_barebox += $(riscv-ldflags-y)
+diff --git a/arch/riscv/dts/litex_soc_linux.dtsi b/arch/riscv/dts/litex_soc_linux.dtsi
 new file mode 100644
-index 0000000000..2d6858c580
+index 0000000000..32382b8dc2
 --- /dev/null
-+++ b/drivers/spi/litex_spiflash.c
-@@ -0,0 +1,242 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
++++ b/arch/riscv/dts/litex_soc_linux.dtsi
+@@ -0,0 +1,49 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/dts-v1/;
++
++/ {
++	compatible = "litex,vexriscv-soc-linux";
++
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		timebase-frequency = <100000000>; // 100 MHz
++
++		cpu@0 {
++			device_type = "cpu";
++			compatible = "spinalhdl,vexriscv", "riscv";
++			reg = <0>;
++		};
++	};
++
++	uart0: serial@f0001000 {
++		compatible = "litex,uart";
++		reg = <0xf0001000 0x18>;
++		status = "disabled";
++	};
++
++	mac0: mac@f0009000 {
++		compatible = "litex,liteeth";
++		reg = <0xf0009000 0x7c /* base */
++			0xf0009800 0x0a /* mdio_base */
++			0xb0000000 0x2000>; /* buf_base */
++		tx-fifo-depth = <2>;
++		rx-fifo-depth = <2>;
++		status = "disabled";
++	};
++
++	spi0: spi@f000b800 {
++		compatible = "litex,spiflash";
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		reg = <0xf000b800 0x100>;
++		status = "disabled";
++	};
++};
+diff --git a/arch/riscv/mach-litex/Kconfig b/arch/riscv/mach-litex/Kconfig
+new file mode 100644
+index 0000000000..19d5927e44
+--- /dev/null
++++ b/arch/riscv/mach-litex/Kconfig
+@@ -0,0 +1,8 @@
++if MACH_LITEX
++
++choice
++	prompt "Board type"
++
++endchoice
++
++endif
+diff --git a/arch/riscv/mach-litex/Makefile b/arch/riscv/mach-litex/Makefile
+new file mode 100644
+index 0000000000..d9c51e74c3
+--- /dev/null
++++ b/arch/riscv/mach-litex/Makefile
+@@ -0,0 +1,3 @@
++# just to build a built-in.o. Otherwise compilation fails when no o-files is
++# created.
++obj- += dummy.o
+diff --git a/arch/riscv/mach-litex/include/mach/debug_ll.h b/arch/riscv/mach-litex/include/mach/debug_ll.h
+new file mode 100644
+index 0000000000..df7032716d
+--- /dev/null
++++ b/arch/riscv/mach-litex/include/mach/debug_ll.h
+@@ -0,0 +1,124 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * Copyright (C) 2020 Antony Pavlov <antonynpavlov@gmail.com>
++ * Copyright (C) 2019 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + *
 + */
 +
-+#include <common.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <spi/spi.h>
-+#include <io.h>
-+#include <clock.h>
++#ifndef __MACH_LITEX_DEBUG_LL__
++#define __MACH_LITEX_DEBUG_LL__
 +
-+struct litex_spiflash_spi {
-+	struct spi_master	master;
-+	void __iomem		*regs;
-+	u32			val;
-+};
++/** @file
++ *  This File contains declaration for early output support
++ */
 +
-+#define SPIFLASH_BITBANG 0x0
-+#define  SPIFLASH_BB_MOSI BIT(0)
-+#define  SPIFLASH_BB_CLK BIT(1)
-+#define  SPIFLASH_BB_CSN BIT(2)
-+#define  SPIFLASH_BB_DIR BIT(3)
++#include <linux/kconfig.h>
 +
-+#define SPIFLASH_MISO 0x4
-+#define SPIFLASH_BITBANG_EN 0x8
++#define DEBUG_LL_UART_ADDR	0xf0001000
++#define UART_RXTX	0x00
++#define UART_TXFULL	0x04
++#define UART_RXEMPTY	0x08
++#define UART_EV_PENDING	0x10
++#define  UART_EV_RX	(1 << 1)
++#define UART_EV_ENABLE	0x14
 +
-+static inline u32 litex_spiflash_spi_rr(struct litex_spiflash_spi *sp, int reg)
++
++#ifndef __ASSEMBLY__
++
++/*
++ * C macros
++ */
++
++#include <asm/io.h>
++
++static inline void PUTC_LL(char ch)
 +{
-+	return readl(sp->regs + reg);
++#ifdef CONFIG_DEBUG_LL
++	/* wait for space */
++	while (__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_TXFULL))
++		;
++
++	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_RXTX);
++#endif /* CONFIG_DEBUG_LL */
 +}
++#else /* __ASSEMBLY__ */
++/*
++ * Macros for use in assembly language code
++ */
 +
-+static inline void litex_spiflash_spi_wr(struct litex_spiflash_spi *sp, u32 val, int reg)
-+{
-+	writel(val, sp->regs + reg);
-+}
++/*
++ * output a character in a0
++ */
++.macro	debug_ll_outc_a0
++#ifdef CONFIG_DEBUG_LL
 +
-+static inline void setbits(struct litex_spiflash_spi *sp, int bits, int on)
-+{
-+	/*
-+	 * We are the only user of SCSPTR so no locking is required.
-+	 * Reading bit 2 and 0 in SCSPTR gives pin state as input.
-+	 * Writing the same bits sets the output value.
-+	 * This makes regular read-modify-write difficult so we
-+	 * use sp->val to keep track of the latest register value.
-+	 */
++	li	t0, DEBUG_LL_UART_ADDR
 +
-+	if (on)
-+		sp->val |= bits;
-+	else
-+		sp->val &= ~bits;
++201:
++	lbu	t1, UART_TXFULL(t0)	/* uart tx full ? */
++	andi	t1, t1, 0xff
++	bnez	t1, 201b		/* try again */
 +
-+	litex_spiflash_spi_wr(sp, sp->val, SPIFLASH_BITBANG);
-+}
++	sb	a0, UART_RXTX(t0)	/* write the character */
 +
-+static inline struct litex_spiflash_spi *litex_spiflash_spidev_to_sp(struct spi_device *spi)
-+{
-+	return container_of(spi->master, struct litex_spiflash_spi, master);
-+}
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+static inline void setsck(struct spi_device *spi, int on)
-+{
-+	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
++/*
++ * output a character
++ */
++.macro	debug_ll_outc chr
++#ifdef CONFIG_DEBUG_LL
++	li	a0, \chr
++	debug_ll_outc_a0
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+	setbits(sc, SPIFLASH_BB_CLK, on);
-+}
++/*
++ * check character in input buffer
++ * return value:
++ *  v0 = 0   no character in input buffer
++ *  v0 != 0  character in input buffer
++ */
++.macro	debug_ll_tstc
++#ifdef CONFIG_DEBUG_LL
++	li	t0, DEBUG_LL_UART_ADDR
 +
-+static inline void setmosi(struct spi_device *spi, int on)
-+{
-+	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
++	/* get line status and check for data present */
++	lbu	s0, UART_RXEMPTY(t0)
++	bnez    s0, 243f
++	li	s0, 1
++	j	244f
++243:	li	s0, 0
++244:	nop
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+	sc->val &= ~SPIFLASH_BB_DIR;
-+	setbits(sc, SPIFLASH_BB_MOSI, on);
-+}
++/*
++ * get character to v0
++ */
++.macro	debug_ll_getc
++#ifdef CONFIG_DEBUG_LL
 +
-+static inline u32 getmiso(struct spi_device *spi)
-+{
-+	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
++204:
++	debug_ll_tstc
 +
-+	setbits(sc, SPIFLASH_BB_DIR, 1);
-+	return !!((litex_spiflash_spi_rr(sc, SPIFLASH_MISO) & 1));
-+}
++	/* try again */
++	beqz	s0, 204b
 +
-+#define spidelay(nsecs) udelay(nsecs/1000)
++	/* read a character */
++	lb	s0, UART_RXTX(t0)
++	li      t1, UART_EV_RX
++	sb	t1, UART_EV_PENDING(t0)
 +
-+#include "spi-bitbang-txrx.h"
++#endif /* CONFIG_DEBUG_LL */
++.endm
++#endif /* __ASSEMBLY__ */
 +
-+static inline void litex_spiflash_spi_chipselect(struct litex_spiflash_spi *sc, int on)
-+{
-+	setbits(sc, SPIFLASH_BB_CSN, on);
-+}
-+
-+static int litex_spiflash_spi_setup(struct spi_device *spi)
-+{
-+	struct spi_master *master = spi->master;
-+	struct device_d spi_dev = spi->dev;
-+
-+	if (spi->bits_per_word != 8) {
-+		dev_err(master->dev, "master doesn't support %d bits per word requested by %s\n",
-+			spi->bits_per_word, spi_dev.name);
-+		return -EINVAL;
-+	}
-+
-+	if ((spi->mode & (SPI_CPHA | SPI_CPOL)) != SPI_MODE_0) {
-+		dev_err(master->dev, "master doesn't support SPI_MODE%d requested by %s\n",
-+			spi->mode & (SPI_CPHA | SPI_CPOL), spi_dev.name);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int litex_spiflash_spi_read(struct spi_device *spi, void *buf, size_t nbyte)
-+{
-+	ssize_t cnt = 0;
-+	u8 *rxf_buf = buf;
-+
-+	while (cnt < nbyte) {
-+		*rxf_buf = bitbang_txrx_be_cpha1(spi, 1000, 1, 0, 8);
-+		rxf_buf++;
-+		cnt++;
-+	}
-+
-+	return cnt;
-+}
-+
-+static int litex_spiflash_spi_write(struct spi_device *spi,
-+				const void *buf, size_t nbyte)
-+{
-+	ssize_t cnt = 0;
-+	const u8 *txf_buf = buf;
-+
-+	while (cnt < nbyte) {
-+		bitbang_txrx_be_cpha1(spi, 1000, 1, (u32)*txf_buf, 8);
-+		txf_buf++;
-+		cnt++;
-+	}
-+
-+	return 0;
-+}
-+
-+static int litex_spiflash_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
-+{
-+	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
-+	struct spi_transfer *t;
-+
-+	mesg->actual_length = 0;
-+
-+	/* activate chip select signal */
-+	litex_spiflash_spi_chipselect(sc, 0);
-+
-+	list_for_each_entry(t, &mesg->transfers, transfer_list) {
-+
-+		if (t->tx_buf)
-+			litex_spiflash_spi_write(spi, t->tx_buf, t->len);
-+
-+		if (t->rx_buf)
-+			litex_spiflash_spi_read(spi, t->rx_buf, t->len);
-+
-+		mesg->actual_length += t->len;
-+	}
-+
-+	/* inactivate chip select signal */
-+	litex_spiflash_spi_chipselect(sc, 1);
-+
-+	return 0;
-+}
-+
-+static void litex_spiflash_spi_enable(struct litex_spiflash_spi *sp)
-+{
-+	u32 val;
-+
-+	/* set SPIFLASH_BB_DIR = 0 */
-+	val = SPIFLASH_BB_CSN | SPIFLASH_BB_CLK | SPIFLASH_BB_MOSI;
-+	litex_spiflash_spi_wr(sp, val, SPIFLASH_BITBANG);
-+
-+	/* enable GPIO mode */
-+	litex_spiflash_spi_wr(sp, 1, SPIFLASH_BITBANG_EN);
-+}
-+
-+static void litex_spiflash_spi_disable(struct litex_spiflash_spi *sp)
-+{
-+	/* disable GPIO mode */
-+	litex_spiflash_spi_wr(sp, 0, SPIFLASH_BITBANG_EN);
-+}
-+
-+static int litex_spiflash_spi_probe(struct device_d *dev)
-+{
-+	struct resource *iores;
-+	struct spi_master *master;
-+	struct litex_spiflash_spi *litex_spiflash_spi;
-+
-+	litex_spiflash_spi = xzalloc(sizeof(*litex_spiflash_spi));
-+	dev->priv = litex_spiflash_spi;
-+
-+	master = &litex_spiflash_spi->master;
-+	master->dev = dev;
-+
-+	master->bus_num = dev->id;
-+	master->setup = litex_spiflash_spi_setup;
-+	master->transfer = litex_spiflash_spi_transfer;
-+	master->num_chipselect = 1;
-+
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+	litex_spiflash_spi->regs = IOMEM(iores->start);
-+
-+	litex_spiflash_spi_enable(litex_spiflash_spi);
-+
-+	/* inactivate chip select signal */
-+	litex_spiflash_spi_chipselect(litex_spiflash_spi, 1);
-+
-+	spi_register_master(master);
-+
-+	return 0;
-+}
-+
-+static void litex_spiflash_spi_remove(struct device_d *dev)
-+{
-+	struct litex_spiflash_spi *sp = dev->priv;
-+
-+	litex_spiflash_spi_disable(sp);
-+}
-+
-+static __maybe_unused struct of_device_id litex_spiflash_spi_dt_ids[] = {
-+	{
-+		.compatible = "litex,spiflash",
-+	},
-+	{
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d litex_spiflash_spi_driver = {
-+	.name  = "litex-spiflash",
-+	.probe = litex_spiflash_spi_probe,
-+	.remove = litex_spiflash_spi_remove,
-+	.of_compatible = DRV_OF_COMPAT(litex_spiflash_spi_dt_ids),
-+};
-+device_platform_driver(litex_spiflash_spi_driver);
++#endif /* __MACH_LITEX_DEBUG_LL__ */
 -- 
 2.31.1
 
