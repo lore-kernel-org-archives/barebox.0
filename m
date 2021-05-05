@@ -1,91 +1,92 @@
-Delivery-date: Wed, 05 May 2021 12:10:40 +0200
+Delivery-date: Wed, 05 May 2021 12:10:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leEUK-0007a8-SY
-	for lore@lore.pengutronix.de; Wed, 05 May 2021 12:10:40 +0200
+	id 1leEUX-0007aV-Pd
+	for lore@lore.pengutronix.de; Wed, 05 May 2021 12:10:53 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leEUJ-00056P-EY
-	for lore@pengutronix.de; Wed, 05 May 2021 12:10:40 +0200
+	id 1leEUW-0005CC-25
+	for lore@pengutronix.de; Wed, 05 May 2021 12:10:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=sCDze0waVvGQ/toQuGlFRLkpGvrvY96/3ZkKvAMEWjc=; b=Pt6079un/iUbw24J/YNS6REYG
-	Xi56gDv6AwEGjxEtl4T6otKF1Oa2X3oyLln+eKJqbuDb2KkX7Js56GwoUTVSToYDepFzlzfyIdtOO
-	jYQmy976fi5ta298q6VKQFcPTPxh4o9cSemh5J9F1obpAJnoe8bi8xYWR6eH/oMXhJ1sOpwG28NFB
-	TknWWszRX99AOnp4ylzXA+TEHDwMk/U2z2fUas2/ZTdwnZgxwBufi2OG27cwa5QrgnkaozPLaaJbm
-	HH6SqidcvfRQQ6Qdhv79rN6s0GApQ6kd9bodRKknh6oFDjxurnT7N+JRBqiSTf1xRAm/Wk+Z292Um
-	Jc1by+30A==;
+	 bh=2E2w1B0Judq+97wvB/BhNdRl62ac19XCTdQuG5px3ic=; b=Dxpv2re07n/sTQCzp+IHz4irB
+	rmGBEpr6qXCWPtMXat4zyvWV0cFGh6bu6n7A06vfn6053UnK/ouYQ1afvZV+qsPnppTEE7GRbloh0
+	C3Hlylx5D4uKcTOF1wg8weVhrfYt7PLqxzt8gFpqfUZuwMJ2NGYvGb8FDrJxZWlF+XH5tUlvLiCJD
+	K0+CUV8ez4WW13rgS8BJcGg/82rTGHk1ma7exVrl7XvKrv9e3n5DnciIv1uYFcGH2oxbtQV7jd/wB
+	uhVUmTS6TEmJzUKUFmEMgD8n1JCRtOiI3g14NCec+FaFWkuB+ggfx4vKwwAKpLkGpuf8NUN71u9Up
+	b1s/hXDbw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1leETP-000q5d-0S; Wed, 05 May 2021 10:09:43 +0000
+	id 1leETV-000q6z-1s; Wed, 05 May 2021 10:09:49 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leET7-000q1G-3F
- for barebox@desiato.infradead.org; Wed, 05 May 2021 10:09:26 +0000
+ id 1leET8-000q1M-Mq
+ for barebox@desiato.infradead.org; Wed, 05 May 2021 10:09:27 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=WoZLWQC87lh7kJOmSFgqwDb6bRGTnaqqMXkTluJJJTw=; b=3m30mVr4hcBVjhp7SGOpBSqnfc
- hFwwQbl03HMMYM2TWyUPDRKjfeX2KfwUkbr4CYRtNZAkY0vC/xRoAf7AHw9aeSMuxYHZAHAVXFybG
- vxDn9GkBeSFs1wWCppoaAQ8i6fcUPhLDBljBaHQgdI5dSz7vU4FcbNWph9wIE9Yrz60Euc8xher5l
- 4pXTV4nn2wUmykOH2u1FTgPf8Xu4MJWeA/438Ci7kyiIYuYNtasskBFILD3tLUatwPSE6mEd6zLwX
- 6ZiFo6N+FN9vR3LywTUHubbv3dOHUAcNf4IA3DiSf4zavb+C2noAP79F+L/LWN0rl9ev+5+/S9s6k
- 4EUpID3A==;
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ bh=dOAKez41jJwWUIsf0BKFhgTzNkY6Crp5ZXuXCTGlOH4=; b=h2KOkRz7imCmYTe7UlwAejNXYa
+ B8Wmrplt3xVNN5UrI3aTFM40rOId81ZdeF5abqBdQE9DnU6JrTyUAliNEJ/CatlDxZf/jTKwaaH8W
+ HYzGuSD0oRjkJo5fOBhvn+h9IdWA53N8JVRCQQRpdZwjTMZKOZCgwAAXUbbexSAxiR9ViNVueAXQt
+ NtmQCtddUSLdjk6BO7CBi43hZ4iaDXSr5cpn7NjsbfBOlkLqOl+cbgbS79Izh3WkNwIt8vDZtKjiu
+ orZc5oJ9wCiSdI9OdQ8zvl2G3BXUaC7SDQTVMgqOYYjV8wKLojwrtPPMmc/9l3sITPDoM5DxhthwV
+ EqPc+iCA==;
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leET4-004eP0-7m
- for barebox@lists.infradead.org; Wed, 05 May 2021 10:09:23 +0000
-Received: by mail-lf1-x132.google.com with SMTP id x19so1791143lfa.2
- for <barebox@lists.infradead.org>; Wed, 05 May 2021 03:09:21 -0700 (PDT)
+ id 1leET5-004ePI-AJ
+ for barebox@lists.infradead.org; Wed, 05 May 2021 10:09:25 +0000
+Received: by mail-lj1-x235.google.com with SMTP id s25so1753393lji.0
+ for <barebox@lists.infradead.org>; Wed, 05 May 2021 03:09:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=WoZLWQC87lh7kJOmSFgqwDb6bRGTnaqqMXkTluJJJTw=;
- b=qNQGvRqLbWzH7tlEJvBcf1VhH4QIC7y3TsRDrcvNRYa7WieA96uLBgJEUl0Bz8dgv7
- RLF+truip5bjxSqFxwMNMiopoVfuRoSR7vCZFaOn285EX2ocn0sB0rp84uSN9F6Mwo8g
- 0GSnYEyI79T5nozhkETocMuZkELJ+xk42bQth+O7jL7H5efFAud5UpryDuAimmPU5Tct
- n+duXuou0i41B4FCKnMLeK7nTosJDlzVtGi6r+4lKSoFQ9NxIE8ww8zn3u5hNeczHSWE
- THSohm/PSkh0ouck3qd0TDs1Ujz2TWnaRceUqvQixgNhU7pszUbeF7MruLMC0Ls6vzyZ
- 4Xdw==
+ bh=dOAKez41jJwWUIsf0BKFhgTzNkY6Crp5ZXuXCTGlOH4=;
+ b=Ae8CckVB7ermZanAPp7BrbbXtX255HSmtfmEcmzWR0QUgSXJUbAdVmLEOAik7i6WuZ
+ nVOI5blt4xtT7wPYw38y25we4ClVMJKbAxfDrFVgKJ1lmjjxqjzMJM6EjdiOznSKfWuX
+ 6+GR7+WOgzeCw19XEg4atat77xvkRXxMbYPtTnKaSxT9deptvy9qo7tcX89SwTj4uNTr
+ S9t7mYE9U26SdT+flfgjCROzyvaNQyb9Jg+vCBAObepNkJ70KNOXIpxbeO86zmUN4I31
+ 4pa/QLeZtvrjTTI5kkCTBRz8dyZgPpG5fucsrqNyb/6Nl1dRqeaaXHYwSH7hAtbe/KNc
+ fQQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=WoZLWQC87lh7kJOmSFgqwDb6bRGTnaqqMXkTluJJJTw=;
- b=kYKGJOGlKMtW5eiXNf0BsKdFtTMPeADIX6/F8K1Yi7PFgyEY79Bun1WGl5l3mpFtli
- kDAl/jnVabI7Kf/4zWQ+AJdObk7q0ZKKeWmKv1XeBl5zh8NCBhZVTXBNB6HsJFQKNLKN
- 0aY+q+UJSfCNDssVlNyP9YOmfDFJLsNdyh2hwC08WtueumqrDVf+EawrlRGV5JKAM/ra
- J3ZdBrCtxi4P2jd3ICozdKdB0KeHFVQNlLlyevMc+nRLmIx5DsuDteWBRNNZgXIcm3N8
- Fpx2v/D9sCBV3YqFiqpWOG6ktLkjDPdGsbetKc3bLXhIainj8keLJ+LOwEMWOywnTAjY
- BgNQ==
-X-Gm-Message-State: AOAM532INcAe9HBd01MzoIRuwMkaaKS0LdygnEx6TzxVasIVsF6abC7f
- DGzPlYwYIgyijEBLnP+QJyAMddulZ7hcEA==
-X-Google-Smtp-Source: ABdhPJxsMzDNFUAYQOSEU3DsSXCCEbZUP1ILRyJ5VCbNfbhFU7etisDIZTpjD5OM9sQXz8L87AwkkQ==
-X-Received: by 2002:ac2:4907:: with SMTP id n7mr5324452lfi.194.1620209359731; 
- Wed, 05 May 2021 03:09:19 -0700 (PDT)
+ bh=dOAKez41jJwWUIsf0BKFhgTzNkY6Crp5ZXuXCTGlOH4=;
+ b=kejoARjbu0WwCEgSvbQmdC/g/Pmx8HKJL/CEBmFpg1SQyIfe38cjJX2ZCF6lJ13KiM
+ GM1RdGD087HQrXCpeciK9nSpKy0nzxCX0miK8N/ZyDFExaoJ76Ga0GnPktADhN4xeEcK
+ imEL2Nwk1qUQaMxEWTf3vi3buKE4oof1a6orRS1h4bGRyq8q7662P25BbZb4s1i89DlB
+ C1rYPYrKiLj1b6QO/r8guLNgmjm/Ib4lXVb7UUAptEd8eQ2wynOJeyXrnGSw0rCvZa0u
+ up2F6uU70vi+iddISMPI0gJI3RbfMpLHJqfxhSHFdhVfh44fZn68jxmPPHFE2mKYcLUx
+ bdPA==
+X-Gm-Message-State: AOAM530zmARy04Wy+19iIBCd0DOj2Pl96bh2Ko4WzEu+u4ET717N4CV3
+ ynmuWIowjzVIfK4dZoOxSVA3E7m4el5oXQ==
+X-Google-Smtp-Source: ABdhPJzEUuVSDTETdQTZ/WR/6gh09Z7e2j4GsYMSt3CBkPIWsfW+n5qsPW7dmu92uFm/TFrOcgWbsA==
+X-Received: by 2002:a05:651c:33a:: with SMTP id
+ b26mr21085938ljp.220.1620209361132; 
+ Wed, 05 May 2021 03:09:21 -0700 (PDT)
 Received: from localhost.localdomain ([176.59.42.245])
- by smtp.gmail.com with ESMTPSA id u8sm497114lfu.284.2021.05.05.03.09.18
+ by smtp.gmail.com with ESMTPSA id u8sm497114lfu.284.2021.05.05.03.09.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 May 2021 03:09:19 -0700 (PDT)
+ Wed, 05 May 2021 03:09:20 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed,  5 May 2021 13:08:55 +0300
-Message-Id: <20210505100900.88141-5-antonynpavlov@gmail.com>
+Date: Wed,  5 May 2021 13:08:56 +0300
+Message-Id: <20210505100900.88141-6-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210505100900.88141-1-antonynpavlov@gmail.com>
 References: <20210505100900.88141-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210505_030922_316868_40B6FA1E 
-X-CRM114-Status: GOOD (  18.81  )
+X-CRM114-CacheID: sfid-20210505_030923_383492_23851372 
+X-CRM114-Status: GOOD (  21.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,7 +98,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Alexander Shiyan <shc_work@mail.ru>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -111,242 +112,291 @@ X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 4/9] gpio: add driver for 74xx-ICs with MMIO access
+Subject: [PATCH 5/9] spi: add litex spiflash driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This patch adds driver to support GPIO functionality
-for 74xx-compatible ICs with MMIO access.
-
-Compatible models include:
-     1 bit:   741G125 (Input), 741G74 (Output)
-     2 bits:  742G125 (Input), 7474 (Output)
-     4 bits:  74125 (Input), 74175 (Output)
-     6 bits:  74365 (Input), 74174 (Output)
-     8 bits:  74244 (Input), 74273 (Output)
-     16 bits: 741624 (Input), 7416374 (Output)
-
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/gpio/Kconfig          |  14 +++
- drivers/gpio/Makefile         |   1 +
- drivers/gpio/gpio-74xx-mmio.c | 170 ++++++++++++++++++++++++++++++++++
- 3 files changed, 185 insertions(+)
+ drivers/spi/Kconfig          |   3 +
+ drivers/spi/Makefile         |   1 +
+ drivers/spi/litex_spiflash.c | 242 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 246 insertions(+)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 261b6e6662..59cb00ff22 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -21,6 +21,20 @@ config GPIO_74164
- 	  shift registers. This driver can be used to provide access
- 	  to more gpio outputs.
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 323d93efeb..714d30e909 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -74,6 +74,9 @@ config DRIVER_SPI_IMX_2_3
+ 	depends on ARCH_IMX50 || ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6 || ARCH_IMX7 || ARCH_IMX8MQ
+ 	default y
  
-+config GPIO_74XX_MMIO
-+	tristate "GPIO driver for 74xx-ICs with MMIO access"
-+	depends on OFDEVICE
-+	select GPIO_GENERIC
-+	help
-+	  Say yes here to support GPIO functionality for 74xx-compatible ICs
-+	  with MMIO access. Compatible models include:
-+	    1 bit:	741G125 (Input), 741G74 (Output)
-+	    2 bits:	742G125 (Input), 7474 (Output)
-+	    4 bits:	74125 (Input), 74175 (Output)
-+	    6 bits:	74365 (Input), 74174 (Output)
-+	    8 bits:	74244 (Input), 74273 (Output)
-+	    16 bits:	741624 (Input), 7416374 (Output)
++config DRIVER_SPI_LITEX_SPIFLASH
++	bool "Litex SPIFLASH bitbang master driver"
 +
- config GPIO_CLPS711X
- 	bool "GPIO support for CLPS711X"
- 	depends on ARCH_CLPS711X || COMPILE_TEST
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 77dcf58f64..7ece8621d2 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -1,6 +1,7 @@
- obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
- 
- obj-$(CONFIG_GPIO_74164)	+= gpio-74164.o
-+obj-$(CONFIG_GPIO_74XX_MMIO)	+= gpio-74xx-mmio.o
- obj-$(CONFIG_MACH_MIPS_ATH79)	+= gpio-ath79.o
- obj-$(CONFIG_GPIO_DAVINCI)	+= gpio-davinci.o
- obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
-diff --git a/drivers/gpio/gpio-74xx-mmio.c b/drivers/gpio/gpio-74xx-mmio.c
+ config DRIVER_SPI_MXS
+ 	bool "i.MX (23,28) SPI Master driver"
+ 	depends on ARCH_IMX28
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 908d514a01..ac95ffc1db 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -4,6 +4,7 @@ obj-$(CONFIG_DRIVER_SPI_ATH79) += ath79_spi.o
+ obj-$(CONFIG_DRIVER_SPI_GPIO) += gpio_spi.o
+ obj-$(CONFIG_DRIVER_SPI_FSL_QUADSPI) += spi-fsl-qspi.o
+ obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
++obj-$(CONFIG_DRIVER_SPI_LITEX_SPIFLASH) += litex_spiflash.o
+ obj-$(CONFIG_DRIVER_SPI_MVEBU) += mvebu_spi.o
+ obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
+ obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
+diff --git a/drivers/spi/litex_spiflash.c b/drivers/spi/litex_spiflash.c
 new file mode 100644
-index 0000000000..2c05d022f1
+index 0000000000..2d6858c580
 --- /dev/null
-+++ b/drivers/gpio/gpio-74xx-mmio.c
-@@ -0,0 +1,170 @@
++++ b/drivers/spi/litex_spiflash.c
+@@ -0,0 +1,242 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * 74xx MMIO GPIO driver
-+ *
-+ *  Copyright (C) 2014 Alexander Shiyan <shc_work@mail.ru>
-+ *
-+ * Ported to barebox from linux-v5.4-rc6
-+ *   Copyright (C) 2019-2021 Antony Pavlov <antonynpavlov@gmail.com>
++ * Copyright (C) 2020 Antony Pavlov <antonynpavlov@gmail.com>
 + *
 + */
 +
 +#include <common.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <gpio.h>
 +#include <init.h>
++#include <driver.h>
++#include <spi/spi.h>
 +#include <io.h>
-+#include <malloc.h>
++#include <clock.h>
 +
-+#include <linux/err.h>
-+#include <linux/basic_mmio_gpio.h>
-+
-+#define MMIO_74XX_DIR_IN	(0 << 8)
-+#define MMIO_74XX_DIR_OUT	(1 << 8)
-+#define MMIO_74XX_BIT_CNT(x)	((x) & 0xff)
-+
-+struct mmio_74xx_gpio_priv {
-+	struct bgpio_chip	bgc;
-+	unsigned int		flags;
++struct litex_spiflash_spi {
++	struct spi_master	master;
++	void __iomem		*regs;
++	u32			val;
 +};
 +
-+static const struct of_device_id mmio_74xx_gpio_ids[] = {
-+	{
-+		.compatible	= "ti,741g125",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 1),
-+	},
-+	{
-+		.compatible	= "ti,742g125",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 2),
-+	},
-+	{
-+		.compatible	= "ti,74125",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 4),
-+	},
-+	{
-+		.compatible	= "ti,74365",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 6),
-+	},
-+	{
-+		.compatible	= "ti,74244",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 8),
-+	},
-+	{
-+		.compatible	= "ti,741624",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 16),
-+	},
-+	{
-+		.compatible	= "ti,741g74",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 1),
-+	},
-+	{
-+		.compatible	= "ti,7474",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 2),
-+	},
-+	{
-+		.compatible	= "ti,74175",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 4),
-+	},
-+	{
-+		.compatible	= "ti,74174",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 6),
-+	},
-+	{
-+		.compatible	= "ti,74273",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 8),
-+	},
-+	{
-+		.compatible	= "ti,7416374",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 16),
-+	},
-+	{ }
-+};
++#define SPIFLASH_BITBANG 0x0
++#define  SPIFLASH_BB_MOSI BIT(0)
++#define  SPIFLASH_BB_CLK BIT(1)
++#define  SPIFLASH_BB_CSN BIT(2)
++#define  SPIFLASH_BB_DIR BIT(3)
 +
-+static inline
-+struct mmio_74xx_gpio_priv *to_mmio_74xx_gpio_priv(struct gpio_chip *gc)
++#define SPIFLASH_MISO 0x4
++#define SPIFLASH_BITBANG_EN 0x8
++
++static inline u32 litex_spiflash_spi_rr(struct litex_spiflash_spi *sp, int reg)
 +{
-+	struct bgpio_chip *bgc =
-+		container_of(gc, struct bgpio_chip, gc);
-+
-+	return container_of(bgc, struct mmio_74xx_gpio_priv, bgc);
++	return readl(sp->regs + reg);
 +}
 +
-+static int mmio_74xx_get_direction(struct gpio_chip *gc, unsigned int offset)
++static inline void litex_spiflash_spi_wr(struct litex_spiflash_spi *sp, u32 val, int reg)
 +{
-+	struct mmio_74xx_gpio_priv *priv = to_mmio_74xx_gpio_priv(gc);
-+
-+	if (priv->flags & MMIO_74XX_DIR_OUT)
-+		return GPIOF_DIR_OUT;
-+
-+	return GPIOF_DIR_IN;
++	writel(val, sp->regs + reg);
 +}
 +
-+static int mmio_74xx_dir_in(struct gpio_chip *gc, unsigned int gpio)
++static inline void setbits(struct litex_spiflash_spi *sp, int bits, int on)
 +{
-+	struct mmio_74xx_gpio_priv *priv = to_mmio_74xx_gpio_priv(gc);
++	/*
++	 * We are the only user of SCSPTR so no locking is required.
++	 * Reading bit 2 and 0 in SCSPTR gives pin state as input.
++	 * Writing the same bits sets the output value.
++	 * This makes regular read-modify-write difficult so we
++	 * use sp->val to keep track of the latest register value.
++	 */
 +
-+	return (priv->flags & MMIO_74XX_DIR_OUT) ? -ENOTSUPP : 0;
++	if (on)
++		sp->val |= bits;
++	else
++		sp->val &= ~bits;
++
++	litex_spiflash_spi_wr(sp, sp->val, SPIFLASH_BITBANG);
 +}
 +
-+static int mmio_74xx_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
++static inline struct litex_spiflash_spi *litex_spiflash_spidev_to_sp(struct spi_device *spi)
 +{
-+	struct mmio_74xx_gpio_priv *priv = to_mmio_74xx_gpio_priv(gc);
++	return container_of(spi->master, struct litex_spiflash_spi, master);
++}
 +
-+	if (priv->flags & MMIO_74XX_DIR_OUT) {
-+		gc->ops->set(gc, gpio, val);
-+		return 0;
++static inline void setsck(struct spi_device *spi, int on)
++{
++	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
++
++	setbits(sc, SPIFLASH_BB_CLK, on);
++}
++
++static inline void setmosi(struct spi_device *spi, int on)
++{
++	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
++
++	sc->val &= ~SPIFLASH_BB_DIR;
++	setbits(sc, SPIFLASH_BB_MOSI, on);
++}
++
++static inline u32 getmiso(struct spi_device *spi)
++{
++	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
++
++	setbits(sc, SPIFLASH_BB_DIR, 1);
++	return !!((litex_spiflash_spi_rr(sc, SPIFLASH_MISO) & 1));
++}
++
++#define spidelay(nsecs) udelay(nsecs/1000)
++
++#include "spi-bitbang-txrx.h"
++
++static inline void litex_spiflash_spi_chipselect(struct litex_spiflash_spi *sc, int on)
++{
++	setbits(sc, SPIFLASH_BB_CSN, on);
++}
++
++static int litex_spiflash_spi_setup(struct spi_device *spi)
++{
++	struct spi_master *master = spi->master;
++	struct device_d spi_dev = spi->dev;
++
++	if (spi->bits_per_word != 8) {
++		dev_err(master->dev, "master doesn't support %d bits per word requested by %s\n",
++			spi->bits_per_word, spi_dev.name);
++		return -EINVAL;
 +	}
 +
-+	return -ENOTSUPP;
++	if ((spi->mode & (SPI_CPHA | SPI_CPOL)) != SPI_MODE_0) {
++		dev_err(master->dev, "master doesn't support SPI_MODE%d requested by %s\n",
++			spi->mode & (SPI_CPHA | SPI_CPOL), spi_dev.name);
++		return -EINVAL;
++	}
++
++	return 0;
 +}
 +
-+static int mmio_74xx_gpio_probe(struct device_d *dev)
++static int litex_spiflash_spi_read(struct spi_device *spi, void *buf, size_t nbyte)
 +{
-+	struct mmio_74xx_gpio_priv *priv;
-+	void __iomem *dat;
-+	int err;
-+	struct gpio_chip *gc;
++	ssize_t cnt = 0;
++	u8 *rxf_buf = buf;
 +
-+	priv = xzalloc(sizeof(*priv));
++	while (cnt < nbyte) {
++		*rxf_buf = bitbang_txrx_be_cpha1(spi, 1000, 1, 0, 8);
++		rxf_buf++;
++		cnt++;
++	}
 +
-+	err = dev_get_drvdata(dev, (const void **)&priv->flags);
-+	if (err)
-+		return err;
-+
-+	dat = dev_request_mem_region(dev, 0);
-+	if (IS_ERR(dat))
-+		return PTR_ERR(dat);
-+
-+	err = bgpio_init(&priv->bgc, dev,
-+			 DIV_ROUND_UP(MMIO_74XX_BIT_CNT(priv->flags), 8),
-+			 dat, NULL, NULL, NULL, NULL, 0);
-+	if (err)
-+		return err;
-+
-+	gc = &priv->bgc.gc;
-+	gc->ops->direction_input = mmio_74xx_dir_in;
-+	gc->ops->direction_output = mmio_74xx_dir_out;
-+	gc->ops->get_direction = mmio_74xx_get_direction;
-+	gc->ngpio = MMIO_74XX_BIT_CNT(priv->flags);
-+
-+	dev->priv = priv;
-+
-+	return gpiochip_add(gc);
++	return cnt;
 +}
 +
-+static struct driver_d mmio_74xx_gpio_driver = {
-+	.name = "74xx-mmio-gpio",
-+	.of_compatible	= DRV_OF_COMPAT(mmio_74xx_gpio_ids),
-+	.probe = mmio_74xx_gpio_probe,
++static int litex_spiflash_spi_write(struct spi_device *spi,
++				const void *buf, size_t nbyte)
++{
++	ssize_t cnt = 0;
++	const u8 *txf_buf = buf;
++
++	while (cnt < nbyte) {
++		bitbang_txrx_be_cpha1(spi, 1000, 1, (u32)*txf_buf, 8);
++		txf_buf++;
++		cnt++;
++	}
++
++	return 0;
++}
++
++static int litex_spiflash_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
++{
++	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
++	struct spi_transfer *t;
++
++	mesg->actual_length = 0;
++
++	/* activate chip select signal */
++	litex_spiflash_spi_chipselect(sc, 0);
++
++	list_for_each_entry(t, &mesg->transfers, transfer_list) {
++
++		if (t->tx_buf)
++			litex_spiflash_spi_write(spi, t->tx_buf, t->len);
++
++		if (t->rx_buf)
++			litex_spiflash_spi_read(spi, t->rx_buf, t->len);
++
++		mesg->actual_length += t->len;
++	}
++
++	/* inactivate chip select signal */
++	litex_spiflash_spi_chipselect(sc, 1);
++
++	return 0;
++}
++
++static void litex_spiflash_spi_enable(struct litex_spiflash_spi *sp)
++{
++	u32 val;
++
++	/* set SPIFLASH_BB_DIR = 0 */
++	val = SPIFLASH_BB_CSN | SPIFLASH_BB_CLK | SPIFLASH_BB_MOSI;
++	litex_spiflash_spi_wr(sp, val, SPIFLASH_BITBANG);
++
++	/* enable GPIO mode */
++	litex_spiflash_spi_wr(sp, 1, SPIFLASH_BITBANG_EN);
++}
++
++static void litex_spiflash_spi_disable(struct litex_spiflash_spi *sp)
++{
++	/* disable GPIO mode */
++	litex_spiflash_spi_wr(sp, 0, SPIFLASH_BITBANG_EN);
++}
++
++static int litex_spiflash_spi_probe(struct device_d *dev)
++{
++	struct resource *iores;
++	struct spi_master *master;
++	struct litex_spiflash_spi *litex_spiflash_spi;
++
++	litex_spiflash_spi = xzalloc(sizeof(*litex_spiflash_spi));
++	dev->priv = litex_spiflash_spi;
++
++	master = &litex_spiflash_spi->master;
++	master->dev = dev;
++
++	master->bus_num = dev->id;
++	master->setup = litex_spiflash_spi_setup;
++	master->transfer = litex_spiflash_spi_transfer;
++	master->num_chipselect = 1;
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++	litex_spiflash_spi->regs = IOMEM(iores->start);
++
++	litex_spiflash_spi_enable(litex_spiflash_spi);
++
++	/* inactivate chip select signal */
++	litex_spiflash_spi_chipselect(litex_spiflash_spi, 1);
++
++	spi_register_master(master);
++
++	return 0;
++}
++
++static void litex_spiflash_spi_remove(struct device_d *dev)
++{
++	struct litex_spiflash_spi *sp = dev->priv;
++
++	litex_spiflash_spi_disable(sp);
++}
++
++static __maybe_unused struct of_device_id litex_spiflash_spi_dt_ids[] = {
++	{
++		.compatible = "litex,spiflash",
++	},
++	{
++		/* sentinel */
++	}
 +};
 +
-+static int mmio_74xx_gpio_init(void)
-+{
-+	return platform_driver_register(&mmio_74xx_gpio_driver);
-+}
-+coredevice_initcall(mmio_74xx_gpio_init);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Alexander Shiyan <shc_work@mail.ru>");
-+MODULE_DESCRIPTION("74xx MMIO GPIO driver");
++static struct driver_d litex_spiflash_spi_driver = {
++	.name  = "litex-spiflash",
++	.probe = litex_spiflash_spi_probe,
++	.remove = litex_spiflash_spi_remove,
++	.of_compatible = DRV_OF_COMPAT(litex_spiflash_spi_dt_ids),
++};
++device_platform_driver(litex_spiflash_spi_driver);
 -- 
 2.31.1
 
