@@ -1,92 +1,90 @@
-Delivery-date: Wed, 05 May 2021 12:10:32 +0200
+Delivery-date: Wed, 05 May 2021 12:10:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leEUC-0007Ye-OA
-	for lore@lore.pengutronix.de; Wed, 05 May 2021 12:10:32 +0200
+	id 1leEUE-0007Z1-TD
+	for lore@lore.pengutronix.de; Wed, 05 May 2021 12:10:34 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leEUB-00052b-T0
-	for lore@pengutronix.de; Wed, 05 May 2021 12:10:32 +0200
+	id 1leEUD-00053V-Su
+	for lore@pengutronix.de; Wed, 05 May 2021 12:10:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
-	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=zYGtwnxsLTmBdvl8M5oJFUS2WOUiwTLewcQ1AfnowX0=; b=nEAoSm2o1tvbKh1Noe+s2MZKN
-	JiK3rvyfYri2lk3GlCSTo+iF7D10X+bU1oBnS14hsg9bJaFv26X5QiF969LGFHpcD+UP88f9+12qi
-	oLabdUphmgn7yb3fshlFugpczkiqQFbNcYh0lmIfqFBg2Gsm+Gvs+SuSP8X6mzfYQhbGBHrwscIFA
-	TmS8EOSRTY4Y8UmWSYY0xa8Hvjzn+aT/aidK+ltIcLCR2ZgFO2d8M+1SRtiP98LsgwTEXumo4tOdK
-	kBM7iRP7uYYIWGMjsew5CYlq0dP+LUECswHVjPttID6bzYL7n7GYemsQXmAsMq4yUNbjdfvzGA8CN
-	ueIKCmVrA==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=QzCKQtp63cSuBdivhFlvgukUKwGOU2GU3naUHKRWC10=; b=U+sZD7/vJhWGJ8fn4Vx2s3T6mH
+	p6lzzKikvsOY5qFvw6BW4t9gfiCee+WWknfMXtH/Zo9dtOkxs62Z3dCGKv4hlZM1FaCZR9J4Yr/BI
+	Z1bw4ABqhueiYl3Ruh0hkdovbqSRFc5VDcL1PLCdnP72NEkNBJhzuKIHB0zKbwmGKIX2UoQKGCgLO
+	SNzqKChH4j3zPFTXFb8LXqkXlWQUPMIYLZs6xA5YmTlZZKkxZdafm+NuROofSaDUCqLN46haOPKYl
+	pYiqCiRbkXn9O5kwhuDx9INXpZUPMR5meuH2kD6e/RE3kYyvB/OVH1njmmXadhK5mvVhwMn17CW8L
+	1/TzuhXQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1leETD-000q1m-E1; Wed, 05 May 2021 10:09:31 +0000
+	id 1leET9-000q14-Ro; Wed, 05 May 2021 10:09:28 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leET3-000q0q-EZ
+ id 1leET3-000q0p-EZ
  for barebox@desiato.infradead.org; Wed, 05 May 2021 10:09:21 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=5YHAZHT/ETqWH5ZqSn4k77TrPRG3Yi64ELW9gjz4wh0=; b=rH1r4LQ98C+ryJ+YiNayf6AnX4
- s8tzqT88RsuW5u/l4e+mkemelEW4sq39/LUcEofLRiITdOtkIE5leg3a5uAGY2Eq1x8jdhtsIO37Z
- 7sB9do4S2q3Jz2gAs7sQGbeCjaM6qPnaiCb/ZDPDFNPbGFDsUdTQrFMoLhIUFzQYF0W3Prc7UUdl7
- 2psuMV4RV4y/mWwzwFig/CmXriAkZZkg/xhg2eiHUgl7a+96kaiw3vs7NZknIcBM9AKkhAl6XYO2H
- lxPLoZcs05uhgrbg+8vse2W2xlc6MGYHyWMGbt0S/RZpqHqmp/IizeWUY65U2Q4/LixHqwrwYBnub
- uHRO5GAg==;
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=auokRHjK0huYhkK4I45xRp5oZdljqhkO6euH0X8l6bM=; b=fqzHlB5klJABVbIY0ZLQSAbNr+
+ 3TvP7qCmWeItrOL5ecZE7Nj4B+o7TBJhUqG0vKXWkMvdv7SGfL3SVr0C84cHmjj4iiKP8OWXnqafW
+ RsCiOpzNkk+BuRsUPScVMuGopPZbk5lGKV3B1LwY6SpuCm3FIPmfleNnRywqD0PG5BlJKXP5JFeg0
+ kD63T8YJhpn4u01UeM9rGhU3of31fodsjuZ0kXUaT7eS9dMf1D6X3GZPRYZJdnLnzBuf1XhazP5K+
+ qYnbKjqeUtZO+Evw438ox79hCVKc9m8+R7zHuAaVWOkZDgsbPwI6GQq1uy9ch6xKXCU59sgcVXF+m
+ L0AKeu9g==;
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leET0-004eNv-KY
+ id 1leET0-004eNs-3V
  for barebox@lists.infradead.org; Wed, 05 May 2021 10:09:20 +0000
-Received: by mail-lf1-x12c.google.com with SMTP id c3so1760451lfs.7
- for <barebox@lists.infradead.org>; Wed, 05 May 2021 03:09:17 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id x20so1775081lfu.6
+ for <barebox@lists.infradead.org>; Wed, 05 May 2021 03:09:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=5YHAZHT/ETqWH5ZqSn4k77TrPRG3Yi64ELW9gjz4wh0=;
- b=Mq8lhxfbhc0uyJ2/j5kzSg/nt2thavE+tJMVFqg8wyarhp53v/UAdLyu9ABgo5qlXo
- LShUKyRfvi4JhEsZRzqMdynU2zhve197MC8oWTxpMNkxx9aWMK4+oxiwN0AXd3axueO4
- GiNN7byLNmVo18/jwoeL84cjWmSbFFi0WzIcLeqb7gKBg+ouga1t0SAKE/UVpaiVhYwC
- arvNclfWm6aOGcDl1gtgK3F3nvuy5mIacFXKKZF9wX/3z+t03WTnH6wz2xeCwY8LCN0X
- d6+REHHZfblhXKcCbkK5AKlmb0c9q+8aK+gNQh8pQfygqkEQXJV6XYcczkHPKVDfGhKe
- FrXg==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=auokRHjK0huYhkK4I45xRp5oZdljqhkO6euH0X8l6bM=;
+ b=r7OC2Flj4eV6F/6bYXpBVNEJ55zcLxErl4tpWWZWXTk7sKYVK8z0xjUEExf11IbhWP
+ BH63U69Cb4XUM995pGJgRXpzU8+kQp3i286EhYcx67rEe4b5CGA5wvBCtH3GNNz5UMJf
+ NefwQJwYi+K8Ez3gP2C4JQve1JNWEX1JweqWmb/mN7XHCSK9sGJYGkvARBfmnk9eqoA/
+ dSzvekhe7gl05G/d7YvQwE/kUNC45sF7OJ+DUqXTtEVcK7e0OKpG2l8RfGcZVd1KratR
+ 82gRGy+AaBeRkdtVdk9Fi1k0sEG+WO1vxxvgTiKd48p9Wvidth9n0TJ5u2NnnLAOaek7
+ jx6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=5YHAZHT/ETqWH5ZqSn4k77TrPRG3Yi64ELW9gjz4wh0=;
- b=q7kd2P8e91fT4y74XoNL7wRcNjeswqpC8oLVccrqeK3whd/6oJ5IUBAhcHI7SqzFgw
- 5X7vevmXdTGNj4aWMiPEoISlXVp94MW9qgMWx8DSXGabkywy4iWU8l9W94IuGRQmU09N
- AvsXduN40aljrrIHUzPoC8ByDSpK19Kmky9lqHvXV1QnJvaNIbGEIIRMN4ubBmeBxOti
- qTugG2VV3A/jYAuScsHPsKY+DL5kmiHqvDtkZRS5X7Uoo9SQgmtU6PIROu4KwP+BHJfk
- C3nKlkOtH59IAhVNjwaB47pAsezyDGEelawI/X2qstmeJUwTVQW2uDEPBb2KhD6eh4Li
- 2SHA==
-X-Gm-Message-State: AOAM533N51KuhKK/tLu4B5pxXvmgSbD4EfKjKqPzrglVklzQ9aK778TR
- mtxG0UnbjSAJn3IDxQZYxYujNVWfhXsnZw==
-X-Google-Smtp-Source: ABdhPJwTBDt2TL6VZp9eZs6PL1ASQWTWquXkQjVMAPHZdcw1gSLGf1Y0phSQCImai/8E96TTYnJF/A==
-X-Received: by 2002:a05:6512:3121:: with SMTP id
- p1mr1766497lfd.320.1620209356302; 
- Wed, 05 May 2021 03:09:16 -0700 (PDT)
-Received: from localhost.localdomain ([176.59.42.245])
- by smtp.gmail.com with ESMTPSA id u8sm497114lfu.284.2021.05.05.03.09.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=auokRHjK0huYhkK4I45xRp5oZdljqhkO6euH0X8l6bM=;
+ b=GDImatLUwIdeeumxgjKoS/InvKXQw2sRRK3Jh3RYZ3HNW46UUjVhdD+VS1gkiuHjLh
+ j3f+QlGqoXfEstGfTEzHZz6WpIBXgchowt+uWRkGKUhOqGf8Ljz4xIeRDHi6x7CviesX
+ M8//+YY9x8O2MkguAaZhQX4bnNKWnMMGakqW4iBjiAPZbeOYyI1RDTbkYSqqV0Qwuv6S
+ ykYTqvhjFizMx0S6fK0GRmAaBEZQpk4U6jclHwZRWUlHyZ4HQA/g1p22OEGkej8IOzdR
+ tca9Z7Nyqjf4WcrBNc74Y4t377Do0nN21VYbK/+Md4RCSqs+4wT5evB193jD2n5IyoRB
+ gC2A==
+X-Gm-Message-State: AOAM533ee3Afz/AwcoT8mFMGjHbpHMF4k+5Z0DF+wdJ9EMy7EI8DPzPy
+ BW119UjSmojH54DaPPOwdv0d+6zzHSo2tw==
+X-Google-Smtp-Source: ABdhPJwXjjj0ixusyKe1+2dUVTpGWCgqTP9c/C+VLr+pa5rhPskRAhu6CSfJtMZ8QV7UsVhlN0EjiA==
+X-Received: by 2002:a05:6512:318f:: with SMTP id
+ i15mr19963114lfe.636.1620209355258; 
  Wed, 05 May 2021 03:09:15 -0700 (PDT)
+Received: from localhost.localdomain ([176.59.42.245])
+ by smtp.gmail.com with ESMTPSA id u8sm497114lfu.284.2021.05.05.03.09.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 May 2021 03:09:14 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed,  5 May 2021 13:08:52 +0300
-Message-Id: <20210505100900.88141-2-antonynpavlov@gmail.com>
+Date: Wed,  5 May 2021 13:08:51 +0300
+Message-Id: <20210505100900.88141-1-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210505100900.88141-1-antonynpavlov@gmail.com>
-References: <20210505100900.88141-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210505_030918_715773_F80CAEEB 
-X-CRM114-Status: GOOD (  12.70  )
+X-CRM114-CacheID: sfid-20210505_030918_715533_52B64072 
+X-CRM114-Status: GOOD (  10.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,7 +96,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Florent Kermarrec <florent@enjoy-digital.fr>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>, Marek Czerski <m.czerski@ap-tech.pl>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -112,151 +111,69 @@ X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/9] RISC-V: make it possible to run nmon from PBL C code
+Subject: [PATCH 0/9] RISC-V: add LiteX SoC support; resurrect nmon
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-After migrating to PBL we can't use nmon assembler macro
-in C code anymore. Some changes are introduced to invoke
-nmon from PBL C code:
+Antony Pavlov (9):
+  RISC-V: make it possible to run nmon from PBL C code
+  RISC-V: boards: erizo: make it possible to use nmon
+  serial: add litex UART driver
+  gpio: add driver for 74xx-ICs with MMIO access
+  spi: add litex spiflash driver
+  net: add LiteEth driver
+  RISC-V: add initial LiteX SoC support
+  RISC-V: add litex-linux board support
+  RISC-V: add litex_linux_defconfig
 
-  * use 'lla' macro instruction instead of 'la';
-  * don't touch the 'ra' register, use 'a2' instead;
-  * add wrapper C function for nmon.
+ arch/riscv/Kconfig                            |   9 +
+ arch/riscv/Makefile                           |   1 +
+ arch/riscv/boards/Makefile                    |   1 +
+ arch/riscv/boards/erizo/lowlevel.c            |   3 +
+ arch/riscv/boards/litex-linux/Makefile        |   3 +
+ arch/riscv/boards/litex-linux/lowlevel.c      |  20 +
+ arch/riscv/boot/Makefile                      |   1 +
+ arch/riscv/boot/nmon_entry.S                  |  13 +
+ arch/riscv/configs/litex_linux_defconfig      |  76 ++++
+ arch/riscv/dts/Makefile                       |   1 +
+ arch/riscv/dts/litex-linux.dts                |  96 +++++
+ arch/riscv/dts/litex_soc_linux.dtsi           |  49 +++
+ arch/riscv/include/asm/riscv_nmon.h           |  33 +-
+ arch/riscv/mach-litex/Kconfig                 |  11 +
+ arch/riscv/mach-litex/Makefile                |   3 +
+ arch/riscv/mach-litex/include/mach/debug_ll.h | 124 ++++++
+ drivers/gpio/Kconfig                          |  14 +
+ drivers/gpio/Makefile                         |   1 +
+ drivers/gpio/gpio-74xx-mmio.c                 | 170 ++++++++
+ drivers/net/Kconfig                           |   8 +
+ drivers/net/Makefile                          |   1 +
+ drivers/net/liteeth.c                         | 376 ++++++++++++++++++
+ drivers/serial/Makefile                       |   1 +
+ drivers/serial/serial_litex.c                 |  96 +++++
+ drivers/spi/Kconfig                           |   3 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/litex_spiflash.c                  | 242 +++++++++++
+ images/Makefile.riscv                         |   4 +
+ 28 files changed, 1344 insertions(+), 17 deletions(-)
+ create mode 100644 arch/riscv/boards/litex-linux/Makefile
+ create mode 100644 arch/riscv/boards/litex-linux/lowlevel.c
+ create mode 100644 arch/riscv/boot/nmon_entry.S
+ create mode 100644 arch/riscv/configs/litex_linux_defconfig
+ create mode 100644 arch/riscv/dts/litex-linux.dts
+ create mode 100644 arch/riscv/dts/litex_soc_linux.dtsi
+ create mode 100644 arch/riscv/mach-litex/Kconfig
+ create mode 100644 arch/riscv/mach-litex/Makefile
+ create mode 100644 arch/riscv/mach-litex/include/mach/debug_ll.h
+ create mode 100644 drivers/gpio/gpio-74xx-mmio.c
+ create mode 100644 drivers/net/liteeth.c
+ create mode 100644 drivers/serial/serial_litex.c
+ create mode 100644 drivers/spi/litex_spiflash.c
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/riscv/boot/Makefile            |  1 +
- arch/riscv/boot/nmon_entry.S        | 13 ++++++++++++
- arch/riscv/include/asm/riscv_nmon.h | 33 ++++++++++++++---------------
- 3 files changed, 30 insertions(+), 17 deletions(-)
-
-diff --git a/arch/riscv/boot/Makefile b/arch/riscv/boot/Makefile
-index 968a826d16..80f63a4a0a 100644
---- a/arch/riscv/boot/Makefile
-+++ b/arch/riscv/boot/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-y += start.o
- pbl-y += entry.o uncompress.o
-+pbl-y += nmon_entry.o
- pbl-$(CONFIG_BOARD_GENERIC_DT) += board-dt-2nd.o
-diff --git a/arch/riscv/boot/nmon_entry.S b/arch/riscv/boot/nmon_entry.S
-new file mode 100644
-index 0000000000..9b30b50627
---- /dev/null
-+++ b/arch/riscv/boot/nmon_entry.S
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#include <linux/linkage.h>
-+#include <asm/sections.h>
-+
-+#include "mach/debug_ll.h"
-+#include "asm/riscv_nmon.h"
-+
-+.section .text_bare_init
-+
-+ENTRY(__barebox_nmon_entry)
-+	riscv_nmon
-+	ret
-+ENDPROC(__barebox_nmon_entry)
-diff --git a/arch/riscv/include/asm/riscv_nmon.h b/arch/riscv/include/asm/riscv_nmon.h
-index caf213cdd8..11b19ab35b 100644
---- a/arch/riscv/include/asm/riscv_nmon.h
-+++ b/arch/riscv/include/asm/riscv_nmon.h
-@@ -20,9 +20,8 @@
- 
- .macro nmon_outs msg
- 
--	la	a1, \msg
--
--	jal	_nmon_outs
-+	lla	a1, \msg
-+	jal	a2, _nmon_outs
- 
- .endm
- 
-@@ -73,7 +72,7 @@ nmon_main:
- 	li	a0, 'q'
- 	bne	s0, a0, 3f
- 
--	jal	_nmon_outc_a0
-+	jal	a2, _nmon_outc_a0
- 
- 	j	nmon_exit
- 
-@@ -90,12 +89,12 @@ nmon_main:
- 	j	nmon_main_help
- 
- nmon_cmd_d:
--	jal	_nmon_outc_a0
-+	jal	a2, _nmon_outc_a0
- 
- 	li	a0, ' '
--	jal	_nmon_outc_a0
-+	jal	a2, _nmon_outc_a0
- 
--	jal	_nmon_gethexw
-+	jal	a2, _nmon_gethexw
- 
- 	nmon_outs	msg_nl
- 
-@@ -105,28 +104,28 @@ nmon_cmd_d:
- 	j	nmon_main
- 
- nmon_cmd_w:
--	jal	_nmon_outc_a0
-+	jal	a2, _nmon_outc_a0
- 
- 	li	a0, ' '
--	jal	_nmon_outc_a0
-+	jal	a2, _nmon_outc_a0
- 
--	jal	_nmon_gethexw
-+	jal	a2, _nmon_gethexw
- 	move	s2, s0
- 
- 	li	a0, ' '
--	jal	_nmon_outc_a0
--	jal	_nmon_gethexw
-+	jal	a2, _nmon_outc_a0
-+	jal	a2, _nmon_gethexw
- 
- 	sw	s0, 0(s2)
- 	j	nmon_main
- 
- nmon_cmd_g:
--	jal	_nmon_outc_a0
-+	jal	a2, _nmon_outc_a0
- 
- 	li	a0, ' '
--	jal	_nmon_outc_a0
-+	jal	a2, _nmon_outc_a0
- 
--	jal	_nmon_gethexw
-+	jal	a2, _nmon_gethexw
- 	move	s2, s0
- 
- 	nmon_outs	msg_nl
-@@ -136,7 +135,7 @@ nmon_cmd_g:
- 
- _nmon_outc_a0:
- 	debug_ll_outc_a0
--	jr	ra
-+	jr	a2
- 
- _nmon_outs:
- 
-@@ -202,7 +201,7 @@ _get_hex_digit:
- 	move	s0, t2
- 
- _nmon_jr_ra_exit:
--	jr	ra
-+	jr	a2
- 
- msg_prompt:
- 	.asciz "\r\nnmon> "
 -- 
+
+Cc: Florent Kermarrec <florent@enjoy-digital.fr>
+Cc: Marek Czerski <m.czerski@ap-tech.pl>
+
 2.31.1
 
 
