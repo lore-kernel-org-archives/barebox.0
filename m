@@ -1,92 +1,92 @@
-Delivery-date: Wed, 05 May 2021 12:11:05 +0200
+Delivery-date: Wed, 05 May 2021 12:11:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leEUj-0007bi-1e
-	for lore@lore.pengutronix.de; Wed, 05 May 2021 12:11:05 +0200
+	id 1leEUq-0007c5-MA
+	for lore@lore.pengutronix.de; Wed, 05 May 2021 12:11:12 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leEUh-0005JE-Mh
-	for lore@pengutronix.de; Wed, 05 May 2021 12:11:04 +0200
+	id 1leEUp-0005Mn-0D
+	for lore@pengutronix.de; Wed, 05 May 2021 12:11:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=OK4lVKU4XhN/Oz/96+E+DPksxfBkk1+vCc9b/NM6svg=; b=GbgvYwlI7Mu26gJSaaLl9wPVs
-	68vG9i5ZVRyjPsZfZTvnQZDJ7k+IGJqU4Xw54WrnfjIjQNPWIu7o4czYeioQLAotfFoPT/mF3fmkS
-	Sw5xEtGxg6YAbboZIKQcZXzNPsDzljpnTR31zj3evH+8DfXe+sv1DoqbKCInwByTeIGdOUHDZyfxb
-	KL3rXjZTtEKVK3sSJemkhUhnDhi0yQkUGxECtXJQu2y0tfLSmG6SlXGboY15yMtWu0BrXC5Q3yhEt
-	GJIIsmUzt8+j6QudTd28RjAXH+gDuvNRWTvXM1YyG/84Low7R/TTJrfxrOC2X539yyIfXmVLEqXlf
-	kbj3yYjVg==;
+	 bh=NWwb75jSLd4/Z1Lmmq6SK4nXNuR6tEZJE0prjdrH2lQ=; b=AlLKiB+kGbIFfQaDY+gRyV7PB
+	7VfXEm+ZnXz/GC5PIouonqutBzAWKiUjFjs2K88o86M4cMeKgu0Qp0vKoceRnN9CegvXjo3BQp9LJ
+	IHh0QGetUuoie76ZI5mf8oBfuWUGL+1Rf3KnbjGYTK2ofZ3lSxmpreGVDpejGZe9ue2NguqB6umTN
+	HhYcfjd1G4+sCR9FupfEmlnLqWU1D6DTEG7j2vJgse3ooN+fgGWjW75lq2a4V4km/kk4oAyv+6vGW
+	YgeDOloCq2hLfTHAHQCekZKvBq7UPmm2YUi03MzsalgFTXyyQ72OChOWBIfe0NyK2Otlt8zACB6eI
+	ArJtIUzFA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1leETg-000qE1-CZ; Wed, 05 May 2021 10:10:00 +0000
+	id 1leETq-000qIj-39; Wed, 05 May 2021 10:10:10 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leETB-000q1w-Py
+ id 1leETC-000q2I-9B
  for barebox@desiato.infradead.org; Wed, 05 May 2021 10:09:30 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=QGxaEppM4hMLZ2PYWzxJ8nlyUIoLMBo5hRrg/eirfFs=; b=qypzh4NFM8tevv0NxGWAJnUOSz
- SAzX5KvsdOLu6NPkLKTWwh+QooSHZhnAT0kxrhVcmNVBD3jJshGsLA9y1DJzJT8YPInWftAM7O1yk
- 60ELcsCpm5hFsUHDGWxa1OzpE4/ArhuhF9pw2krRoNubgF0sueEkKMzCeyJVriR09ka076RBpwFGb
- ekNlLpK57xg9yHg7hnBRsyxvPYsJzCyciPhfGIxApYuNRwy3oUIw0N2L3YHQCVMPPg+RQw0mxZxQv
- ACQjm7WYBnx/9TCtR4RhdViNO0LjPSeYSDRsRz9iP/j1tzOUixaXUI4tZYYYxOfvj4IRRbUssHTx0
- 4wU4/Lrw==;
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ bh=uewo/YBaPMV3XwjOZwBoE+fWBlZ3LUsistm6G5UyysU=; b=A7xxXiLlO4NQ+LZ/cC+251Lan1
+ /wr+DZBSzQlo8h1prMlTk9hPRbl/1cN1OS3gFUeNzMEK943FBmMWMN3St2gTEXyOlpKqL03f5CCpC
+ 7WE0eJxSVr8UnVVzR9QeXCFy4MbfYZrPj+fiuf8PSwGsLWrhWQdgHtD89vE0EYTNq48OOWcvHIAwg
+ mDDhtcs9Y/akoalsnINsBB3KtYr8lyxrtzxxf5O8RWmQFknybr8kBNoZQxZc/+yllIYgx/NqlBWhZ
+ SWmPlMcctSZ+0SVxZ1JwhAHNOtoVqXNm50zdWYw9QVwj0KuX8rsUaqsQSB+q2gyV+DFAGmVVqXu/Z
+ xs6Pen5g==;
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leET9-004eQe-2j
- for barebox@lists.infradead.org; Wed, 05 May 2021 10:09:28 +0000
-Received: by mail-lj1-x236.google.com with SMTP id b21so1684309ljf.11
- for <barebox@lists.infradead.org>; Wed, 05 May 2021 03:09:26 -0700 (PDT)
+ id 1leET9-004eQv-ST
+ for barebox@lists.infradead.org; Wed, 05 May 2021 10:09:29 +0000
+Received: by mail-lj1-x231.google.com with SMTP id v6so1709460ljj.5
+ for <barebox@lists.infradead.org>; Wed, 05 May 2021 03:09:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=QGxaEppM4hMLZ2PYWzxJ8nlyUIoLMBo5hRrg/eirfFs=;
- b=g7r3qnh7GKV60UJXhmAXCgXvBbt4F3mXvoD9aklc6Q0oTiZi4NT3ilxX5FyQciLMYG
- +8fhEy781gc64nVsziaOsWZ5ybsakBEewqIQ4vjgR1ZDRwBeUJblbVD7OfqOXgMWBBvM
- BqtyxOezOqRDfKgdqWT/VX8++ecJQNG3nDDPrwt7ECrsuT+jaK8fezwxccscbbx+gekg
- 0yG63JbSrfegf2DNwJSLVEbxCfqNU+1zy2zjTySKnnPyMpHOM8r/58gLOibr1y4pXibx
- +jibLnF0338eRlgiUWmJYMFL7UxdusmFCVFM3IAePqcPA7uzrEIrAbdKZXFCVU4B6TV6
- CJ7A==
+ bh=uewo/YBaPMV3XwjOZwBoE+fWBlZ3LUsistm6G5UyysU=;
+ b=hxLadPpk62p7YSbIuBSAzQmE8umWonAwaiOUokPxL3CANcqgbE+Set+5gDPyUx6zxV
+ sDQQ7Xguksr3D3wFqHhLIWY2smR3oJtgkzmSkNHML4suAxcZJvyu05IBxbbLTheaEo20
+ e8RbnC+qZaMs0d7AFJLiTllq7sHBQbX7lg3j288ayeDsNgDA7OILgplVCrmHazyXL8/e
+ LDVaIfoSYDZ+EwbrWm0OoMqBy9Kow07gGw+40S7bKQcxZwpDOTbV6juyfbnoAsBfZ3cc
+ zhBRYPHChgdfe0fLPCANEn9khiaLL/tKhmfKIAjqDcNNqHuQUeSH+nBYiguW+3CFHaZr
+ z+LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=QGxaEppM4hMLZ2PYWzxJ8nlyUIoLMBo5hRrg/eirfFs=;
- b=AeRHvs8rbLcMLY2PtN3q5ZAR3h99cQEdFBgUUej5fbRFj2gCDZSXtM90efAZG4vp9V
- jV62y421mI/rqYDMJkZNUI9nG1/GDPq3yM3nCibEdtCbkRyGcb8YsMoypDs136sMlyNy
- MidbfGzmFkPMMRcUfmYvK4J04bP9U55RSVccdE2FZ6kyZOvka8ESLOJTlEgpIPv6gKS8
- HO6s9rsfBeHv5VxCdf6oX7gVViGZg93KlCQTqB08RxO7yay0YIKmcTWbQu/UWXvoq/oz
- iPVgjTHkfB3x5KjtU6vgfMJeiMWpfUyTEWziHwR5GX4kF5ffFDx+cXosdOPeVkC8A35/
- 8imw==
-X-Gm-Message-State: AOAM530ClNm2x4bP8OlDJa+G15uNn1WakW5hXtGKWrdFk4tRkbRSZC0E
- AsEkjz36yMnlWWFKnQxVLWKTBzT6CVfwbg==
-X-Google-Smtp-Source: ABdhPJwx1LArGnpR+TDAqvogiiEWTEXI9Gp8eDh+ebtEnUhuJSZOfPgjKdQp88/blBQrYj8uNoJOEw==
-X-Received: by 2002:a05:651c:cb:: with SMTP id
- 11mr20719404ljr.239.1620209364674; 
- Wed, 05 May 2021 03:09:24 -0700 (PDT)
+ bh=uewo/YBaPMV3XwjOZwBoE+fWBlZ3LUsistm6G5UyysU=;
+ b=oG2AEHiVLltHr3yZl70VXG7D2yEj+AQfZMATFbL9K8014scAfVxfC9RWN7qm1z5aUg
+ K/o4VqaQy11lIZBwjX/qdcyzR1p7TeTI6blXQsDrgxEiSp76SL69wZNDkFKdMchmqzxc
+ i84KcD/38/d+KyEXssnhf6HIp7YlmY0RWBBbBFZDO4Byoem814bsCXVwL0gozBRgedsT
+ ChhGRlKv2gLrWpSc08FgonJanePnY7jlIBnayAHqnC2nF2Yul7K8AqA17WWYGVi7jIuq
+ QUDgUMrFVc394ELGrNaxtdW+Rdu/rFEdsIMSVFck347kU5aa62KQ5XwQa+fGe5NOypm3
+ Mc1g==
+X-Gm-Message-State: AOAM530O+5rSYPziC1/nMPD5eSc3jpQusCWRD8XwOJn6+2bRRtrQJCvi
+ 5VDENV8x/A+9+VYal+YtjOPbms7x9cn30A==
+X-Google-Smtp-Source: ABdhPJzosESPboaxT+rhwJzLA7h9zutK8XWhu66VTyr8uFI0ZS2ZlyjqtZIuxBpzgHehwx8K4CrNGg==
+X-Received: by 2002:a2e:a590:: with SMTP id m16mr20863695ljp.422.1620209365713; 
+ Wed, 05 May 2021 03:09:25 -0700 (PDT)
 Received: from localhost.localdomain ([176.59.42.245])
- by smtp.gmail.com with ESMTPSA id u8sm497114lfu.284.2021.05.05.03.09.23
+ by smtp.gmail.com with ESMTPSA id u8sm497114lfu.284.2021.05.05.03.09.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 May 2021 03:09:24 -0700 (PDT)
+ Wed, 05 May 2021 03:09:25 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed,  5 May 2021 13:08:59 +0300
-Message-Id: <20210505100900.88141-9-antonynpavlov@gmail.com>
+Date: Wed,  5 May 2021 13:09:00 +0300
+Message-Id: <20210505100900.88141-10-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210505100900.88141-1-antonynpavlov@gmail.com>
 References: <20210505100900.88141-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210505_030927_140421_AAC8F047 
-X-CRM114-Status: GOOD (  14.70  )
+X-CRM114-CacheID: sfid-20210505_030927_934968_F24EA258 
+X-CRM114-Status: UNSURE (   9.35  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -110,207 +110,99 @@ X-Spam-Level:
 X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
 	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH 8/9] RISC-V: add litex-linux board support
+	SPF_HELO_NONE,SPF_NONE,TVD_SPACE_RATIO,UPPERCASE_50_75 autolearn=no
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 9/9] RISC-V: add litex_linux_defconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Tested on Digilent Arty FPGA board.
-
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/boards/Makefile               |  1 +
- arch/riscv/boards/litex-linux/Makefile   |  3 +
- arch/riscv/boards/litex-linux/lowlevel.c | 20 +++++
- arch/riscv/dts/Makefile                  |  1 +
- arch/riscv/dts/litex-linux.dts           | 96 ++++++++++++++++++++++++
- arch/riscv/mach-litex/Kconfig            |  3 +
- images/Makefile.riscv                    |  4 +
- 7 files changed, 128 insertions(+)
+ arch/riscv/configs/litex_linux_defconfig | 76 ++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
-diff --git a/arch/riscv/boards/Makefile b/arch/riscv/boards/Makefile
-index 2ce9af41e0..d477cce362 100644
---- a/arch/riscv/boards/Makefile
-+++ b/arch/riscv/boards/Makefile
-@@ -1,2 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_BOARD_ERIZO_GENERIC)	+= erizo/
-+obj-$(CONFIG_BOARD_LITEX_LINUX)	+= litex-linux/
-diff --git a/arch/riscv/boards/litex-linux/Makefile b/arch/riscv/boards/litex-linux/Makefile
+diff --git a/arch/riscv/configs/litex_linux_defconfig b/arch/riscv/configs/litex_linux_defconfig
 new file mode 100644
-index 0000000000..3d217ffe0b
+index 0000000000..ab53df1c78
 --- /dev/null
-+++ b/arch/riscv/boards/litex-linux/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+pbl-y += lowlevel.o
-diff --git a/arch/riscv/boards/litex-linux/lowlevel.c b/arch/riscv/boards/litex-linux/lowlevel.c
-new file mode 100644
-index 0000000000..9ac1a3a42e
---- /dev/null
-+++ b/arch/riscv/boards/litex-linux/lowlevel.c
-@@ -0,0 +1,20 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <common.h>
-+#include <asm/barebox-riscv.h>
-+#include <debug_ll.h>
-+
-+ENTRY_FUNCTION(start_litex_linux, a0, a1, a2)
-+{
-+	extern char __dtb_z_litex_linux_start[];
-+	extern void __barebox_nmon_entry(void);
-+
-+	if (IS_ENABLED(CONFIG_NMON))
-+		__barebox_nmon_entry();
-+	putc_ll('>');
-+
-+	/* On POR, we are running from read-only memory here. */
-+
-+	barebox_riscv_entry(0x40000000, SZ_256M,
-+			    __dtb_z_litex_linux_start + get_runtime_offset());
-+}
-diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
-index 4041c34e0c..dc5237b5bb 100644
---- a/arch/riscv/dts/Makefile
-+++ b/arch/riscv/dts/Makefile
-@@ -5,5 +5,6 @@
- obj- += dummy.o
- 
- pbl-$(CONFIG_BOARD_ERIZO_GENERIC) += erizo-generic.dtb.o
-+pbl-$(CONFIG_BOARD_LITEX_LINUX) += litex-linux.dtb.o
- 
- clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
-diff --git a/arch/riscv/dts/litex-linux.dts b/arch/riscv/dts/litex-linux.dts
-new file mode 100644
-index 0000000000..aa7e072305
---- /dev/null
-+++ b/arch/riscv/dts/litex-linux.dts
-@@ -0,0 +1,96 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include "litex_soc_linux.dtsi"
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+/ {
-+	model = "LiteX VexRiscV-SoC-Linux";
-+	compatible = "litex,vexriscv-soc-linux";
-+
-+	aliases {
-+		rom = &rom;
-+		sram = &sram;
-+	};
-+
-+	/* ARTY board */
-+	rom: rom@00000000 {
-+		compatible = "mmio-sram";
-+		reg = <0x00000000 0x00008000>;
-+		read-only;
-+	};
-+
-+	sram: sram@20000000 {
-+		compatible = "mmio-sram";
-+		reg = <0x20000000 0x00004000>;
-+	};
-+
-+	main_ram: memory@40000000 {
-+		device_type = "memory";
-+		reg = <0x40000000 0x10000000>;
-+	};
-+};
-+
-+&uart0 {
-+	status = "okay";
-+};
-+
-+&mac0 {
-+	status = "okay";
-+};
-+
-+&spi0 {
-+	status = "okay";
-+
-+	spiflash: w25q128@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "winbond,w25q128", "jedec,spi-nor";
-+		spi-max-frequency = <104000000>;
-+		reg = <0>;
-+	};
-+};
-+
-+/ {
-+	ledsgpio: gpio@f0005000 {
-+		compatible = "ti,74175";
-+		reg = <0xf0005000 0x4>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		ld0 {
-+			label = "arty:green:ld0";
-+			gpios = <&ledsgpio 0 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+
-+		ld1 {
-+			label = "arty:green:ld1";
-+			gpios = <&ledsgpio 1 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+
-+		ld2 {
-+			label = "arty:green:ld2";
-+			gpios = <&ledsgpio 2 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+
-+		ld3 {
-+			label = "arty:green:ld3";
-+			gpios = <&ledsgpio 3 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+	};
-+
-+	swgpio: gpio@f0007000 {
-+		compatible = "ti,74125";
-+		reg = <0xf0007000 0x4>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+	};
-+};
-diff --git a/arch/riscv/mach-litex/Kconfig b/arch/riscv/mach-litex/Kconfig
-index 19d5927e44..3ff03b0e02 100644
---- a/arch/riscv/mach-litex/Kconfig
-+++ b/arch/riscv/mach-litex/Kconfig
-@@ -3,6 +3,9 @@ if MACH_LITEX
- choice
- 	prompt "Board type"
- 
-+config BOARD_LITEX_LINUX
-+	bool "litex linux board"
-+
- endchoice
- 
- endif
-diff --git a/images/Makefile.riscv b/images/Makefile.riscv
-index 463c6ce440..831858a54d 100644
---- a/images/Makefile.riscv
-+++ b/images/Makefile.riscv
-@@ -10,3 +10,7 @@ $(obj)/%.nmon: $(obj)/%.img FORCE
- pblb-$(CONFIG_BOARD_ERIZO_GENERIC) += start_erizo_generic
- FILE_barebox-erizo-generic.img = start_erizo_generic.pblb
- image-$(CONFIG_BOARD_ERIZO_GENERIC) += barebox-erizo-generic.img barebox-erizo-generic.nmon
-+
-+pblb-$(CONFIG_BOARD_LITEX_LINUX) += start_litex_linux
-+FILE_barebox-litex-linux.img = start_litex_linux.pblb
-+image-$(CONFIG_BOARD_LITEX_LINUX) += barebox-litex-linux.img
++++ b/arch/riscv/configs/litex_linux_defconfig
+@@ -0,0 +1,76 @@
++CONFIG_MACH_LITEX=y
++CONFIG_STACK_SIZE=0x20000
++CONFIG_MALLOC_SIZE=0xf00000
++CONFIG_MALLOC_TLSF=y
++CONFIG_PANIC_HANG=y
++CONFIG_BAUDRATE=1000000
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++# CONFIG_TIMESTAMP is not set
++CONFIG_BOOTM_SHOW_TYPE=y
++CONFIG_BOOTM_VERBOSE=y
++CONFIG_BOOTM_INITRD=y
++CONFIG_BOOTM_OFTREE=y
++CONFIG_BOOTM_OFTREE_UIMAGE=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEBUG_LL=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_CMP=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_LED_TRIGGER=y
++CONFIG_CMD_OF_DUMP=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_DHRYSTONE=y
++CONFIG_NET=y
++CONFIG_NET_NFS=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_DRIVER_NET_LITEETH=y
++CONFIG_AR8327N_PHY=y
++CONFIG_AT803X_PHY=y
++CONFIG_DAVICOM_PHY=y
++CONFIG_DP83867_PHY=y
++CONFIG_LXT_PHY=y
++CONFIG_MARVELL_PHY=y
++CONFIG_MICREL_PHY=y
++CONFIG_NATIONAL_PHY=y
++CONFIG_REALTEK_PHY=y
++CONFIG_SMSC_PHY=y
++CONFIG_NET_DSA_MV88E6XXX=y
++CONFIG_DRIVER_SPI_LITEX_SPIFLASH=y
++CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_MTD_M25P80=y
++CONFIG_CLOCKSOURCE_DUMMY_RATE=20000
++CONFIG_SRAM=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_GPIO_74XX_MMIO=y
++CONFIG_GPIO_GENERIC_PLATFORM=y
++# CONFIG_PINCTRL is not set
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_DIGEST_CRC32_GENERIC=y
 -- 
 2.31.1
 
