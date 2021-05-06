@@ -1,67 +1,91 @@
-Delivery-date: Thu, 06 May 2021 18:27:59 +0200
+Delivery-date: Fri, 07 May 2021 00:10:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1legr1-0002jU-JD
-	for lore@lore.pengutronix.de; Thu, 06 May 2021 18:27:59 +0200
+	id 1lemCT-00034W-2D
+	for lore@lore.pengutronix.de; Fri, 07 May 2021 00:10:29 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1legr0-00058Q-MG
-	for lore@pengutronix.de; Thu, 06 May 2021 18:27:59 +0200
+	id 1lemCS-000526-3i
+	for lore@pengutronix.de; Fri, 07 May 2021 00:10:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
-	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
+	:Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
-	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=2vRgUMxr4Dj4l2HCc5GbTwun6ATIIvwBy030MYf5rTg=; b=k/rJc7/JlLw4nGZqFt1NBfF0K
-	aEv5hW2Rp1nDnDP+IzRv0vEgAdfWjvS+iUW4PgY37+8ORYjHZUtf0uQrUTLD1Wg44TR67lBdCVNQD
-	nQKj04aYde4d15hJaIJL5rRxhx7pXaYUGIrDz4y/jNkriZ5koALT3q1fPhZEcoJDCzCG2bEUV8yom
-	iuGAnPFujQ1CkbRUVN5sUwjLWMAT3CLPC6j4uGXA1wSn32oLqZAFwf2v+bki5vvM1beXgZU1axw8H
-	741HD2MsJrDz2733j2skPY46u61t13wqXEUfQzveYVXNVUBaJiiCugdHKC/PwbSHW4U387LzUea6j
-	P/y4uTyXw==;
+	 bh=MKWnKfwAqPJ5Bagp14lTggVF2Z4yXEZF60rguaI6bP4=; b=T185dIaHpUa0rQN7Kg4SMkMtb
+	GgcvS0CyAZjyxzG52JoNj70p4EpbKV9/ua6bWBcNkLdnuQ/lXsiPEjnJ2ZTmGuLBvVyt+7hOxrmyq
+	uE8bmu5hqAFXvpNOIMbCYz4Av3M1BOG9u2d4vy4Lxm2E2XMJtzcTUMUFlco9OM/xTOU/FPQjBFkJM
+	i9S7B7PoOyuQ5PQdqe+JQIsQEZgMPerHKUEVCBA4OFD8y9F5rvlgRcgbaBGgZZUFAmZ6j2orvn4Qv
+	h8neGhaG9aUmQ1fUmgHCzbcFq/l8y7v3yXKvJJMeIfBlWnSmjbBRICT7GCZMYq/kZvYlKa+kqP2Cc
+	9D1sR0LYQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1legpa-004nZX-1e; Thu, 06 May 2021 16:26:30 +0000
+	id 1lemBH-005RPr-29; Thu, 06 May 2021 22:09:15 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1legpU-004nYf-Ka
- for barebox@desiato.infradead.org; Thu, 06 May 2021 16:26:24 +0000
+ id 1lemB3-005ROQ-PL
+ for barebox@desiato.infradead.org; Thu, 06 May 2021 22:09:01 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:
- Reply-To:Cc:Content-Type:Content-ID:Content-Description;
- bh=YdvielSOnSyhqz0jlTpDQYdtgEFVmfxsw67UPV6tn3A=; b=z0gKYLu/dylihFCkvzhh8JJBTu
- Pls+9DmqFR7gWT3dBS7+JcgCWHiPkUd/0Mm5N4MyOtdXOEF+SbXxCGQzZQ0TvDRWBwEtVGgPNVwoN
- eX/5KxuJj3Qv0suT5LtzQaY3V5m/CTmZKD96nnh5zpRfp7dYLEUo5eMh4uqWaCvU5zVswrdYP18L6
- dKEEHyg4r2jAIWs/5nYPWMrandAi9L88yWPDuE9pHpiP5HEPbZJ4/PrVAiZce+hm3u7I0YRdfyMsD
- GKM9qP6dXrr0RQLZmCje5YpH9krw3Tx1Qy2z8CO5h6r+BWHQL7wfpOGHrb4e6qHZs2g4c1IrA34Vh
- zyKgmeng==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=8b7kZDN0ANAg4DyKeV2VXzvsMGrcnnb4KrzPVpnbgoc=; b=hjlDpC/TGnt6aZpHMz7fPmY9bo
+ WTo/TBKErwqtbMoHqqOsnyyy0uZAVeGHJ4uuoV2J3Hb38MC8DEGDHow9TzxroGpWNVFlTd6ENlTBh
+ PdDw/ikF5pVIRg3Ft5EbWvJaXUoWomYx00L0HbvME/NCgf5kIJoShPxJNAR1rzE2Z5/2Vkhk9MSFs
+ Smhky/GoJMPW5a+QrlR4F72jtkwiyXcepudtQuurwXKiEgJHd5I9rdqMbyOZNLrBOHGAwsODkF3Ks
+ Uqq5kTAXVUI3si33kG6dwg0dXehoCHAqqzKL0nZpuVqqDR0+eLvZqJMm+lL6Rh3d0a/5qCovvGT+N
+ 2Rs6noUQ==;
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1legpQ-006DJo-BO
- for barebox@lists.infradead.org; Thu, 06 May 2021 16:26:22 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1legpO-0004oi-Sh
- for barebox@lists.infradead.org; Thu, 06 May 2021 18:26:18 +0200
-Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1legpO-0003I6-KA
- for barebox@lists.infradead.org; Thu, 06 May 2021 18:26:18 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
+ id 1lemB1-006QOB-87
+ for barebox@lists.infradead.org; Thu, 06 May 2021 22:09:00 +0000
+Received: by mail-lj1-x230.google.com with SMTP id y9so9041224ljn.6
+ for <barebox@lists.infradead.org>; Thu, 06 May 2021 15:08:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=8b7kZDN0ANAg4DyKeV2VXzvsMGrcnnb4KrzPVpnbgoc=;
+ b=ULjQAOPbVSkzfSzDfRJ4IDyUSt+A33HnoPS93S0RdKJh5wOXbHWUMrR2n8T0qAFE0S
+ rRXKc84JAI/cLOcL2HhrzgQIli9mKKNm5M2yIeRNd3PXhpXus96vXcUZ44KUIYqvLlu0
+ D+pM0oCvXaskBceQ6bx2XIumkXBquewE6A5aBCXXZa0BfbpjVSBEF5Shs6TtDlp5IZEP
+ J3+wE+/r0Acx4ER1GaoyOMOoy0xVp2TV1/4iTfzymvLGb6iXYtsfmuxxVjKIYcgGn1sM
+ p0eyU5pWlR1PY2uKp7LpKKYfW8xJfMZAweX+HHKOgaMTREeNqDMIDNhdHdHGNYdJ7c1u
+ OS4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=8b7kZDN0ANAg4DyKeV2VXzvsMGrcnnb4KrzPVpnbgoc=;
+ b=pUtUF0bSVoNk+KUbK5EyYFmqqkhNQ3MBtJ1HuwWsjjwJ87zarbVdHckvojgD+xiSPF
+ v8dSMyunTVG5+qY/1lfgfOM77YN7FG0eaIAKeopRKFDChw8pS8MQKMln6GEK7HlM8pXR
+ ej4ROZyHeF68P2/dAYBqNSKAm3+TM5m18N94lzq+dzqEuFK+/bp5voSSQSIT4RhRXJYD
+ 0b/FDnCr7PlRt20SuBdRLN2/WVmpuVGEJe8Ht81iMKdJWXPxBdmJ8mpjGQcpP+MwoQXO
+ IuEWgdhVCI9xdVbkhpMK+xEJY5xxLYwCwRbepV+th7EIE4QcZzgmpbHhxLf6O6OdiuYL
+ grHg==
+X-Gm-Message-State: AOAM5316BZXdNQA0MqtLJLr3OXPw+j+q02nMc1uyRSqPE0BIGVBPcDPe
+ aiKyvBpPJ3hCHlC5stVpVy9BycyqLxMYRw==
+X-Google-Smtp-Source: ABdhPJwN8LxnAloImlcK/XOxfgIre3Dv/YomKwvIWLMIKzfy0chAla3AY8OdgioxoHXFwI38MaSzOA==
+X-Received: by 2002:a2e:9b97:: with SMTP id z23mr5123875lji.359.1620338934697; 
+ Thu, 06 May 2021 15:08:54 -0700 (PDT)
+Received: from localhost.localdomain ([176.59.42.245])
+ by smtp.gmail.com with ESMTPSA id b24sm962584lff.207.2021.05.06.15.08.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 May 2021 15:08:54 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Thu,  6 May 2021 18:26:16 +0200
-Message-Id: <20210506162616.11593-3-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210506162616.11593-1-m.felsch@pengutronix.de>
-References: <20210506162616.11593-1-m.felsch@pengutronix.de>
+Date: Fri,  7 May 2021 01:08:25 +0300
+Message-Id: <20210506220834.223350-3-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210506220834.223350-1-antonynpavlov@gmail.com>
+References: <20210506220834.223350-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210506_092620_434578_9333664F 
-X-CRM114-Status: GOOD (  23.03  )
+X-CRM114-CacheID: sfid-20210506_150859_308759_FBA93954 
+X-CRM114-Status: GOOD (  12.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,6 +97,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -81,133 +106,104 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/3] fs: add linux_rootarg 'root=mmcblkXpN' support
+X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH v2 02/11] RISC-V: make RISCV_SBI and RISCV_M_MODE explicitly
+ mutually exclusive
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Since commit fa2d0aa96941 ("mmc: core: Allow setting slot index via
-device tree alias") the linux kernel supports stable mmc device names.
-Barebox has stable names since years so now we can connect both which
-allows us to pass 'root=mmcblkXpN' as argument for the cmdline. Note: it
-is crucial that the kernel device tree and the barebox device tree uses
-the same mmc aliases.
-
-This patch adds the support to store the above cmdline as linux_rootarg
-if enabled. The partuuid is now used as fallback since it is not as
-unique as the mmcblkXpN scheme. It is added as build option since the
-system integrator needs to check if the used kernel contains the above
-commit.
-
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
-v2:
-- improved Kconfig deps
-- improved Kconfig help message
-- minimal get_linux_mmcblkdev() simplifications
+ arch/riscv/Kconfig                         | 22 ++++++++++++----------
+ arch/riscv/Kconfig.socs                    |  4 +++-
+ arch/riscv/configs/erizo_generic_defconfig |  1 +
+ 3 files changed, 16 insertions(+), 11 deletions(-)
 
- common/Kconfig | 21 +++++++++++++++++++++
- fs/fs.c        | 42 ++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 59 insertions(+), 4 deletions(-)
-
-diff --git a/common/Kconfig b/common/Kconfig
-index 6b3c1701be..5815ea06f0 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -700,6 +700,27 @@ config FLEXIBLE_BOOTARGS
- 	  to replace parts of the bootargs string without reconstructing it
- 	  completely.
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index a4aa799acf..dcff00d63f 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -38,6 +38,18 @@ config ARCH_RV64I
  
-+config MMCBLKDEV_ROOTARG
-+	bool
-+	prompt "Support 'root=mmcblkXpN' cmdline appending"
-+	depends on FLEXIBLE_BOOTARGS
-+	depends on MCI
-+	depends on OFTREE
-+	help
-+	  Enable this option to append 'root=mmcblkXpN' to the cmdline instead
-+	  of 'root=PARTUUID=XYZ'. Don't enale this option if your used linux
-+	  kernel don't contain commit [1]. The first linux kernel release
-+	  containing that commit is v5.10-rc1.
-+
-+	  The appending only happen if barebox 'linux.bootargs.bootm.appendroot'
-+	  variable is set or the used blspec entry contains 'linux-appendroot'.
-+
-+	  Note: It is crucial that the kernel device tree and the barebox device
-+	  tree uses the same mmc aliases.
-+
-+	  [1] fa2d0aa96941 ("mmc: core: Allow setting slot index via device tree
-+	      alias")
-+
- config BAREBOX_UPDATE
- 	bool "In-system barebox update infrastructure"
+ endchoice
  
-diff --git a/fs/fs.c b/fs/fs.c
-index 881dc2fca0..91feee03e6 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -2831,6 +2831,33 @@ out:
- }
- EXPORT_SYMBOL(chdir);
++choice
++	prompt "Privilege level"
++	default RISCV_SBI
++
++config RISCV_SBI
++	bool "S-mode (supervisor mode), use SBI calls"
++
++config RISCV_M_MODE
++	bool "M-mode (machine mode)"
++
++endchoice
++
+ source "arch/riscv/Kconfig.socs"
  
-+static char *get_linux_mmcblkdev(struct fs_device_d *fsdev)
-+{
-+	struct cdev *cdevm, *cdev;
-+	int id, partnum;
-+
-+	cdevm = fsdev->cdev->master;
-+	id = of_alias_get_id(cdevm->device_node, "mmc");
-+	if (id < 0)
-+		return NULL;
-+
-+	partnum = 1; /* linux partitions are 1 based */
-+	list_for_each_entry(cdev, &cdevm->partitions, partition_entry) {
-+
-+		/*
-+		 * Partname is not guaranteed but this partition cdev is listed
-+		 * in the partitions list so we need to count it instead of
-+		 * skipping it.
-+		 */
-+		if (cdev->partname &&
-+		    !strcmp(cdev->partname, fsdev->cdev->partname))
-+			return basprintf("root=/dev/mmcblk%dp%d", id, partnum);
-+		partnum++;
-+	}
-+
-+	return NULL;
-+}
-+
- /*
-  * Mount a device to a directory.
-  * We do this by registering a new device on which the filesystem
-@@ -2919,11 +2946,18 @@ int mount(const char *device, const char *fsname, const char *pathname,
+ config CPU_SUPPORTS_32BIT_KERNEL
+@@ -97,14 +109,4 @@ config NMON_HELP
+ 	  Say yes here to get the nmon commands message on
+ 	  every nmon start.
  
- 	fsdev->vfsmount.mnt_root = fsdev->sb.s_root;
+-# set if we run in machine mode, cleared if we run in supervisor mode
+-config RISCV_M_MODE
+-	bool
+-
+-# set if we are running in S-mode and can use SBI calls
+-config RISCV_SBI
+-	bool
+-	depends on !RISCV_M_MODE
+-	default y
+-
+ endmenu
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index c6875738d0..f767942f34 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -3,10 +3,10 @@ menu "SoC selection"
+ config SOC_ERIZO
+ 	bool "Erizo SoC"
+ 	depends on ARCH_RV32I
++	depends on RISCV_M_MODE
+ 	select HAS_ASM_DEBUG_LL
+ 	select HAS_NMON
+ 	select USE_COMPRESSED_DTB
+-	select RISCV_M_MODE
+ 	select RISCV_TIMER
  
--	if (!fsdev->linux_rootarg && fsdev->cdev && fsdev->cdev->partuuid[0] != 0) {
--		char *str = basprintf("root=PARTUUID=%s",
--					fsdev->cdev->partuuid);
-+	if (!fsdev->linux_rootarg && fsdev->cdev) {
-+		char *str = NULL;
-+
-+		if (IS_ENABLED(CONFIG_MMCBLKDEV_ROOTARG) &&
-+		    cdev_is_mci_main_part_dev(fsdev->cdev->master))
-+			str = get_linux_mmcblkdev(fsdev);
-+
-+		if (!str && fsdev->cdev->partuuid[0] != 0)
-+			str = basprintf("root=PARTUUID=%s", fsdev->cdev->partuuid);
+ config BOARD_ERIZO_GENERIC
+@@ -15,6 +15,7 @@ config BOARD_ERIZO_GENERIC
  
--		fsdev_set_linux_rootarg(fsdev, str);
-+		if (str)
-+			fsdev_set_linux_rootarg(fsdev, str);
- 	}
+ config SOC_VIRT
+ 	bool "QEMU Virt Machine"
++	depends on RISCV_SBI
+ 	select BOARD_RISCV_GENERIC_DT
+ 	select CLINT_TIMER
+ 	help
+@@ -23,6 +24,7 @@ config SOC_VIRT
  
- 	path_put(&path);
+ config SOC_SIFIVE
+ 	bool "SiFive SoCs"
++	depends on RISCV_SBI
+ 	select CLK_SIFIVE
+ 	select CLK_SIFIVE_PRCI
+ 	select RISCV_TIMER
+diff --git a/arch/riscv/configs/erizo_generic_defconfig b/arch/riscv/configs/erizo_generic_defconfig
+index 247a179130..16168eef66 100644
+--- a/arch/riscv/configs/erizo_generic_defconfig
++++ b/arch/riscv/configs/erizo_generic_defconfig
+@@ -1,3 +1,4 @@
++CONFIG_RISCV_M_MODE=y
+ CONFIG_SOC_ERIZO=y
+ # CONFIG_GLOBALVAR is not set
+ CONFIG_STACK_SIZE=0x20000
 -- 
-2.29.2
+2.31.1
 
 
 _______________________________________________
