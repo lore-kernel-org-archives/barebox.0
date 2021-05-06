@@ -2,13 +2,13 @@ Delivery-date: Fri, 07 May 2021 00:10:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lemCT-00034W-2D
+	id 1lemCT-00034b-6J
 	for lore@lore.pengutronix.de; Fri, 07 May 2021 00:10:29 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lemCS-000526-3i
+	id 1lemCS-000529-5v
 	for lore@pengutronix.de; Fri, 07 May 2021 00:10:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
@@ -16,76 +16,77 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=MKWnKfwAqPJ5Bagp14lTggVF2Z4yXEZF60rguaI6bP4=; b=T185dIaHpUa0rQN7Kg4SMkMtb
-	GgcvS0CyAZjyxzG52JoNj70p4EpbKV9/ua6bWBcNkLdnuQ/lXsiPEjnJ2ZTmGuLBvVyt+7hOxrmyq
-	uE8bmu5hqAFXvpNOIMbCYz4Av3M1BOG9u2d4vy4Lxm2E2XMJtzcTUMUFlco9OM/xTOU/FPQjBFkJM
-	i9S7B7PoOyuQ5PQdqe+JQIsQEZgMPerHKUEVCBA4OFD8y9F5rvlgRcgbaBGgZZUFAmZ6j2orvn4Qv
-	h8neGhaG9aUmQ1fUmgHCzbcFq/l8y7v3yXKvJJMeIfBlWnSmjbBRICT7GCZMYq/kZvYlKa+kqP2Cc
-	9D1sR0LYQ==;
+	 bh=Mn3gWFDfq5ULybXzWHS0+sUDVonWukZQCZD+hyTD7/o=; b=Q2SVh8jZAIRBfJVbkjSJ8Bb/8
+	TqawOXVUF1cxbI2IS+p830qKgv3heApTaiVIBQ22vhwDKU4E1PVR5KUerYBDsd9HKb+dX9m9jEOYY
+	GJ0f5w3lKUSDqUJm898WmPf9bT03zzSuUY6ZL/15/WsI/Kig1QJJE0WJCNEni6hXeWZPIc8iv9/Er
+	dSL9/aH6KHhlxP+nlaTYJ349Scps2n/i2bMQHY8wh5n+Uzxi8hTBli+3BKrJz0PjKdIvYpyOuIzZi
+	3RZd/njO9mb7Z9350yTpDcmkoGCg6dzscofMwdmI98r2nuRKAGUBWq2sOJuzWQh6DYx+HUhEheFKV
+	0CkQjy3lw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lemBH-005RPr-29; Thu, 06 May 2021 22:09:15 +0000
+	id 1lemBZ-005RUE-PE; Thu, 06 May 2021 22:09:34 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lemB3-005ROQ-PL
- for barebox@desiato.infradead.org; Thu, 06 May 2021 22:09:01 +0000
+ id 1lemB6-005ROj-8Z
+ for barebox@desiato.infradead.org; Thu, 06 May 2021 22:09:07 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=8b7kZDN0ANAg4DyKeV2VXzvsMGrcnnb4KrzPVpnbgoc=; b=hjlDpC/TGnt6aZpHMz7fPmY9bo
- WTo/TBKErwqtbMoHqqOsnyyy0uZAVeGHJ4uuoV2J3Hb38MC8DEGDHow9TzxroGpWNVFlTd6ENlTBh
- PdDw/ikF5pVIRg3Ft5EbWvJaXUoWomYx00L0HbvME/NCgf5kIJoShPxJNAR1rzE2Z5/2Vkhk9MSFs
- Smhky/GoJMPW5a+QrlR4F72jtkwiyXcepudtQuurwXKiEgJHd5I9rdqMbyOZNLrBOHGAwsODkF3Ks
- Uqq5kTAXVUI3si33kG6dwg0dXehoCHAqqzKL0nZpuVqqDR0+eLvZqJMm+lL6Rh3d0a/5qCovvGT+N
- 2Rs6noUQ==;
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ bh=rL2vax35EiCZLYwOtFtekyh5XNCKkWDk/iQ0WORmlB8=; b=IgaFITePO+trDEAeR99TALnK7I
+ 7NMWlB1dvEsDnuzb0Lj33SZaCXxeMSP+lJJG12UgU6uJr+B2bY9ykkkNJ90l2bWC2eZKvY9RV7vJL
+ eucEkPbQmiEuOcBPbZvzUSaJeLAtJzS1NnGyv8GLwahLlw+2HMZRpS8rA0Rj9Hu59wfPrpLSdlFd8
+ bHHUr+tbfq099Cje9Ytv3eG2XQcfwyFyc1jRMZybnlj4O1Wija+KDwxj9qZjHOoARvXAdx0ZuQ9Hk
+ aEHzek/jTtL5acuDJdXDIdHDOfKiRoXJ4tLCjIjKmc4kx7cg5cvzBLzcpskHmvhRiU01OHKcDjZxb
+ xSF5fv/A==;
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lemB1-006QOB-87
- for barebox@lists.infradead.org; Thu, 06 May 2021 22:09:00 +0000
-Received: by mail-lj1-x230.google.com with SMTP id y9so9041224ljn.6
- for <barebox@lists.infradead.org>; Thu, 06 May 2021 15:08:56 -0700 (PDT)
+ id 1lemB3-006QOG-D8
+ for barebox@lists.infradead.org; Thu, 06 May 2021 22:09:02 +0000
+Received: by mail-lj1-x22d.google.com with SMTP id y9so9041350ljn.6
+ for <barebox@lists.infradead.org>; Thu, 06 May 2021 15:08:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=8b7kZDN0ANAg4DyKeV2VXzvsMGrcnnb4KrzPVpnbgoc=;
- b=ULjQAOPbVSkzfSzDfRJ4IDyUSt+A33HnoPS93S0RdKJh5wOXbHWUMrR2n8T0qAFE0S
- rRXKc84JAI/cLOcL2HhrzgQIli9mKKNm5M2yIeRNd3PXhpXus96vXcUZ44KUIYqvLlu0
- D+pM0oCvXaskBceQ6bx2XIumkXBquewE6A5aBCXXZa0BfbpjVSBEF5Shs6TtDlp5IZEP
- J3+wE+/r0Acx4ER1GaoyOMOoy0xVp2TV1/4iTfzymvLGb6iXYtsfmuxxVjKIYcgGn1sM
- p0eyU5pWlR1PY2uKp7LpKKYfW8xJfMZAweX+HHKOgaMTREeNqDMIDNhdHdHGNYdJ7c1u
- OS4g==
+ bh=rL2vax35EiCZLYwOtFtekyh5XNCKkWDk/iQ0WORmlB8=;
+ b=KNHMOIgaOAXsUIbPjoBpxB9yAdD6iOZ4EX58npjxsaHNmuDYNtp4ovckA0458yscGV
+ 5aGIlazXKBosYxGyrfHjLlwWSxuq+2vSS7AY6wsO0Udz5AUUSwkSg2BgZQA3EmRp3FQ6
+ /tkj+2/3gpxGH64+4WYprb3AbdwZD5aAB5mnunSblYRGzy5CAvQ42HTVqBYDXQUQ7SOm
+ rUjbs/j7U3Jm/85bG7AvugBPy2+R5U1+NGxL7/u1+zYa6nrjp4ZhaQQCqfOhk17qpqAe
+ w5dZTO3W0lhoQsIr4f4jkg1bf6i2fn2fZSlPWCkJeGLIlaONFTsnVywWnGSXDApR3TNy
+ Zpxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=8b7kZDN0ANAg4DyKeV2VXzvsMGrcnnb4KrzPVpnbgoc=;
- b=pUtUF0bSVoNk+KUbK5EyYFmqqkhNQ3MBtJ1HuwWsjjwJ87zarbVdHckvojgD+xiSPF
- v8dSMyunTVG5+qY/1lfgfOM77YN7FG0eaIAKeopRKFDChw8pS8MQKMln6GEK7HlM8pXR
- ej4ROZyHeF68P2/dAYBqNSKAm3+TM5m18N94lzq+dzqEuFK+/bp5voSSQSIT4RhRXJYD
- 0b/FDnCr7PlRt20SuBdRLN2/WVmpuVGEJe8Ht81iMKdJWXPxBdmJ8mpjGQcpP+MwoQXO
- IuEWgdhVCI9xdVbkhpMK+xEJY5xxLYwCwRbepV+th7EIE4QcZzgmpbHhxLf6O6OdiuYL
- grHg==
-X-Gm-Message-State: AOAM5316BZXdNQA0MqtLJLr3OXPw+j+q02nMc1uyRSqPE0BIGVBPcDPe
- aiKyvBpPJ3hCHlC5stVpVy9BycyqLxMYRw==
-X-Google-Smtp-Source: ABdhPJwN8LxnAloImlcK/XOxfgIre3Dv/YomKwvIWLMIKzfy0chAla3AY8OdgioxoHXFwI38MaSzOA==
-X-Received: by 2002:a2e:9b97:: with SMTP id z23mr5123875lji.359.1620338934697; 
- Thu, 06 May 2021 15:08:54 -0700 (PDT)
+ bh=rL2vax35EiCZLYwOtFtekyh5XNCKkWDk/iQ0WORmlB8=;
+ b=JA9BZ/4wentS/nGqwOuJAe8hDpA/SrX2oH2K6UsN0FQ1+mov8D23Kk2JkJGHLTQuJE
+ tFRdlMii1d4RGUEZ4toAMQEi2JlYcbi9vhLgTF3rrgQAGgdOmWfFcSWvsI8k5qI2Grsa
+ k86kbL0P9YNRIx0CO7Esm6vhBzJFudPCEcg0G7xvkGyG4TtBqMsFDJVkb+prrImXH2KP
+ tG23f2y9L52KVzo5fiVYza1Ewnp+vV2FJwW/1aFF8IXBAOqc2FYKuPAAouF9ZPbYZeL7
+ CFrSsJsL4UJFX8arGkjv2PGTry7KS/uzQS/OHmP7dnh4MI68NzWXmRR2T+e2ByNG7fvi
+ wrbQ==
+X-Gm-Message-State: AOAM533fZeCWxX4ZMRQxybC2m2pULAxpaO6hDAJgrh1+/r97C/7bbT03
+ r+NfS59DT+1/sXGR49XdWz8boyxVWeMhdQ==
+X-Google-Smtp-Source: ABdhPJyS0kY3bPPSkssiB2JzXOvUTkcZ/7tzTV/BartyKtLMXMieY3M7WxZaUumcsCg//7KcKRm1Ng==
+X-Received: by 2002:a05:651c:21b:: with SMTP id
+ y27mr2846302ljn.72.1620338937590; 
+ Thu, 06 May 2021 15:08:57 -0700 (PDT)
 Received: from localhost.localdomain ([176.59.42.245])
- by smtp.gmail.com with ESMTPSA id b24sm962584lff.207.2021.05.06.15.08.53
+ by smtp.gmail.com with ESMTPSA id b24sm962584lff.207.2021.05.06.15.08.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 May 2021 15:08:54 -0700 (PDT)
+ Thu, 06 May 2021 15:08:57 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Fri,  7 May 2021 01:08:25 +0300
-Message-Id: <20210506220834.223350-3-antonynpavlov@gmail.com>
+Date: Fri,  7 May 2021 01:08:28 +0300
+Message-Id: <20210506220834.223350-6-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210506220834.223350-1-antonynpavlov@gmail.com>
 References: <20210506220834.223350-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210506_150859_308759_FBA93954 
-X-CRM114-Status: GOOD (  12.59  )
+X-CRM114-CacheID: sfid-20210506_150901_463794_E7B5F759 
+X-CRM114-Status: GOOD (  15.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -111,97 +112,127 @@ X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 02/11] RISC-V: make RISCV_SBI and RISCV_M_MODE explicitly
- mutually exclusive
+Subject: [PATCH v2 05/11] serial: add litex UART driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/Kconfig                         | 22 ++++++++++++----------
- arch/riscv/Kconfig.socs                    |  4 +++-
- arch/riscv/configs/erizo_generic_defconfig |  1 +
- 3 files changed, 16 insertions(+), 11 deletions(-)
+ drivers/serial/Makefile       |  1 +
+ drivers/serial/serial_litex.c | 96 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 97 insertions(+)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index a4aa799acf..dcff00d63f 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -38,6 +38,18 @@ config ARCH_RV64I
- 
- endchoice
- 
-+choice
-+	prompt "Privilege level"
-+	default RISCV_SBI
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index 5120b17376..45055371ea 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -24,3 +24,4 @@ obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
+ obj-$(CONFIG_DRIVER_SERIAL_LPUART)		+= serial_lpuart.o
+ obj-$(CONFIG_VIRTIO_CONSOLE)			+= virtio_console.o
+ obj-$(CONFIG_SERIAL_SIFIVE)			+= serial_sifive.o
++obj-$(CONFIG_SOC_LITEX)				+= serial_litex.o
+diff --git a/drivers/serial/serial_litex.c b/drivers/serial/serial_litex.c
+new file mode 100644
+index 0000000000..8562a45ecc
+--- /dev/null
++++ b/drivers/serial/serial_litex.c
+@@ -0,0 +1,96 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2019 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ */
 +
-+config RISCV_SBI
-+	bool "S-mode (supervisor mode), use SBI calls"
++#include <common.h>
++#include <init.h>
++#include <io.h>
 +
-+config RISCV_M_MODE
-+	bool "M-mode (machine mode)"
++#define UART_RXTX	0x00
++#define UART_TXFULL	0x04
++#define UART_RXEMPTY	0x08
++#define UART_EV_PENDING	0x10
++#define  UART_EV_RX	(1 << 1)
 +
-+endchoice
++static inline uint32_t litex_serial_readb(struct console_device *cdev,
++						uint32_t offset)
++{
++	void __iomem *base = cdev->dev->priv;
 +
- source "arch/riscv/Kconfig.socs"
- 
- config CPU_SUPPORTS_32BIT_KERNEL
-@@ -97,14 +109,4 @@ config NMON_HELP
- 	  Say yes here to get the nmon commands message on
- 	  every nmon start.
- 
--# set if we run in machine mode, cleared if we run in supervisor mode
--config RISCV_M_MODE
--	bool
--
--# set if we are running in S-mode and can use SBI calls
--config RISCV_SBI
--	bool
--	depends on !RISCV_M_MODE
--	default y
--
- endmenu
-diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-index c6875738d0..f767942f34 100644
---- a/arch/riscv/Kconfig.socs
-+++ b/arch/riscv/Kconfig.socs
-@@ -3,10 +3,10 @@ menu "SoC selection"
- config SOC_ERIZO
- 	bool "Erizo SoC"
- 	depends on ARCH_RV32I
-+	depends on RISCV_M_MODE
- 	select HAS_ASM_DEBUG_LL
- 	select HAS_NMON
- 	select USE_COMPRESSED_DTB
--	select RISCV_M_MODE
- 	select RISCV_TIMER
- 
- config BOARD_ERIZO_GENERIC
-@@ -15,6 +15,7 @@ config BOARD_ERIZO_GENERIC
- 
- config SOC_VIRT
- 	bool "QEMU Virt Machine"
-+	depends on RISCV_SBI
- 	select BOARD_RISCV_GENERIC_DT
- 	select CLINT_TIMER
- 	help
-@@ -23,6 +24,7 @@ config SOC_VIRT
- 
- config SOC_SIFIVE
- 	bool "SiFive SoCs"
-+	depends on RISCV_SBI
- 	select CLK_SIFIVE
- 	select CLK_SIFIVE_PRCI
- 	select RISCV_TIMER
-diff --git a/arch/riscv/configs/erizo_generic_defconfig b/arch/riscv/configs/erizo_generic_defconfig
-index 247a179130..16168eef66 100644
---- a/arch/riscv/configs/erizo_generic_defconfig
-+++ b/arch/riscv/configs/erizo_generic_defconfig
-@@ -1,3 +1,4 @@
-+CONFIG_RISCV_M_MODE=y
- CONFIG_SOC_ERIZO=y
- # CONFIG_GLOBALVAR is not set
- CONFIG_STACK_SIZE=0x20000
++	return readb(base + offset);
++}
++
++static inline void litex_serial_writeb(struct console_device *cdev,
++					uint32_t value, uint32_t offset)
++{
++	void __iomem *base = cdev->dev->priv;
++
++	writeb(value, base + offset);
++}
++
++static void litex_serial_putc(struct console_device *cdev, char c)
++{
++	while (litex_serial_readb(cdev, UART_TXFULL))
++		;
++
++	litex_serial_writeb(cdev, c, UART_RXTX);
++}
++
++static int litex_serial_getc(struct console_device *cdev)
++{
++	int c;
++
++	while (litex_serial_readb(cdev, UART_RXEMPTY))
++		;
++
++	c = litex_serial_readb(cdev, UART_RXTX);
++
++	/* refresh UART_RXEMPTY by writing UART_EV_RX to UART_EV_PENDING */
++	litex_serial_writeb(cdev, UART_EV_RX, UART_EV_PENDING);
++
++	return c;
++}
++
++static int litex_serial_tstc(struct console_device *cdev)
++{
++	return !litex_serial_readb(cdev, UART_RXEMPTY);
++}
++
++static int litex_serial_probe(struct device_d *dev)
++{
++	struct resource *iores;
++	struct console_device *cdev;
++
++	cdev = xzalloc(sizeof(struct console_device));
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	dev->priv = IOMEM(iores->start);
++	cdev->dev = dev;
++	cdev->tstc = &litex_serial_tstc;
++	cdev->putc = &litex_serial_putc;
++	cdev->getc = &litex_serial_getc;
++	cdev->setbrg = NULL;
++
++	console_register(cdev);
++
++	return 0;
++}
++
++static __maybe_unused struct of_device_id litex_serial_dt_ids[] = {
++	{
++		.compatible = "litex,uart",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d litex_serial_driver = {
++	.name  = "litex-uart",
++	.probe = litex_serial_probe,
++	.of_compatible = DRV_OF_COMPAT(litex_serial_dt_ids),
++};
++console_platform_driver(litex_serial_driver);
 -- 
 2.31.1
 
