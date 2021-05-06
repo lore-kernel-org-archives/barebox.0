@@ -1,77 +1,70 @@
-Delivery-date: Thu, 06 May 2021 15:09:45 +0200
+Delivery-date: Thu, 06 May 2021 15:11:36 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ledlB-00027U-0t
-	for lore@lore.pengutronix.de; Thu, 06 May 2021 15:09:45 +0200
+	id 1ledmy-00027x-Io
+	for lore@lore.pengutronix.de; Thu, 06 May 2021 15:11:36 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ledlA-0002JU-7f
-	for lore@pengutronix.de; Thu, 06 May 2021 15:09:44 +0200
+	id 1ledmx-0002xm-Px
+	for lore@pengutronix.de; Thu, 06 May 2021 15:11:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
+	References:Cc:To:Subject:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=e3fQaQDQWFWiX1wr/w7KI4vfRiVIetCBcNWdxQmJ390=; b=ed0F2Zz4/YDYmhaDqNewTT3E8
-	lTGle/3jkexxJr6zn1iIvtZefK5FJOzhzPnqdN/OVWSF59HtrPGNsKy9Sk9PBba+/G4B8cI7zsqPw
-	ptYO+D+WourambauoOsABHrqLlR/Vyv6oZCh3GFhVbv1Qh3mg1zWPgyg8MkwzLhpeBvu5ChwSHC3t
-	tB/0fJdHbezrb02pH9PGH0VKNGLsS1uUj0aiT2lQGP5+OOQJGYzVtzD7gSXEkbV7j59jgIJ9YH3zE
-	SOv7cI7TiE6XFdMUBj5wuZuaCod0w/JR5D13kNC5XtRoqR/ZSBpjm/luiTYKbKXILtrq1Bu4iDdO1
-	QAp5+XeXQ==;
+	 bh=wAxxfsm6j2y9VqpJ63Zi5vPZiTymiB3NX7kvNowzJ1M=; b=jr+GK1SMilIMGnPbJJ0ta0x6M
+	aazY5v09DBSS0nIRb9U5q79bj5KAm2Yi+smmZleMcS7CS5wXe+RFfMpwtMuI8m9HLanFKkZg6zgHu
+	HnqrvoyRCt1yA4GRFeGtJoFfOfIlIxbo6VShsoJbgQB6Xx4A2Q8lVR1GvZzb5Po+RerKUyV2g/IOd
+	ioCSLLgO3wFCGxdjCnAdJO1wC6wo7U98l6acquMm2Ikq/bfS/SEsEFxBlLl1eBBUG6QXv9L9EwvJm
+	WksiXMIStwb4SM94C5ZtE6L9x7oB6X2DtZ5kCSDYwfZsmsn20zgmPCvg5oVNCgYKHN6VM0pL/YqgG
+	OIWKbrt+g==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1ledkN-004HPt-FS; Thu, 06 May 2021 13:08:55 +0000
+	id 1ledmE-004Hb1-3Z; Thu, 06 May 2021 13:10:50 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ledkI-004HPg-UY
- for barebox@desiato.infradead.org; Thu, 06 May 2021 13:08:51 +0000
+ id 1ledm9-004Hag-RY
+ for barebox@desiato.infradead.org; Thu, 06 May 2021 13:10:45 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=/PHRqYP4XmcdKVWr1XoS3hpP53vli1s6HmhqzcwaS1o=; b=zCupkdwIsm6LyN5h4PM/T4kmxo
- b0k4cQ/Va65STjCt+MtIhpzW9O4IiuRgSF5/KWBTdQ/1EcJcsPVgKNEFitqEHXXjanVsp8EfdWX1k
- o2+UZcT19Bh4wbWcDELngJoT/criHKp0GYeiG7g1uhHUS3hnr3Wd9QHoJ+6ExRD1xd5OlJWfnOHDe
- CQvVQb6/7I6ZRSvLjltoLbQF8VVqnysb2+7v9iNMwSQ6LXO+JI6aSvtLMWoS+I0dr3GuwiQx7Eoqu
- xYgLskrE2xAr+DKAtzAbKUIQa0bCzlg0Fyd44r0kDBCn9oXrHtAaO1lfP9MeHXLgsGFz0dJqoBSFC
- Zz9Mc7wQ==;
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+ Subject:Sender:Reply-To:Content-ID:Content-Description;
+ bh=UN3mN377/DGy4xsZLFIzVYgKBUC7NhPEizWj63w5Ktg=; b=j6z8pHeryjdEVlgPxWsvOTdnB6
+ b7IblwF1S//e1yU7Ex381j3viexmdqqUOtTDqTeWrBFeL+ZovzhVQc1nKbclFCOkIWbPxEskh82FD
+ IVz09p+/cTq9/0cJVITv4sg2TE1KSMhqhzSeOUKzOHSFBgm5AS/n1DLp+hKml3mE5UZC9I4lvXmHo
+ 4rDzRsJed1kVX66SNUw83DWxbA2QRuAOY3OgeBwQUyhP1FRdz40sW+B10oKOb5exvf9tpq72HIQ4w
+ dm5Fdao+tk94RD+TSY5ajT+S4xmQGVGKvmo+bDR6CukfsmhS3pGtcpYQXtEUZ49+20yA5SeQRsJdN
+ UBFNG35w==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ledkG-0062z6-52
- for barebox@lists.infradead.org; Thu, 06 May 2021 13:08:49 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>)
- id 1ledkE-0002Cm-VI; Thu, 06 May 2021 15:08:46 +0200
-Received: from mfe by pty.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <mfe@pengutronix.de>)
- id 1ledkE-0003zd-Lo; Thu, 06 May 2021 15:08:46 +0200
-Date: Thu, 6 May 2021 15:08:46 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210506130846.u3h6gjlugmmasoev@pengutronix.de>
+ id 1ledm7-00633j-61
+ for barebox@lists.infradead.org; Thu, 06 May 2021 13:10:44 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1ledm5-0002Uv-Ti; Thu, 06 May 2021 15:10:41 +0200
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org, Juergen Borleis <jbe@pengutronix.de>
 References: <20210506112219.27114-1-m.felsch@pengutronix.de>
- <c15d0311-c878-29be-2d64-e68ca7535131@pengutronix.de>
+ <20210506112219.27114-2-m.felsch@pengutronix.de>
+ <75ff4a6d-85c3-0229-ec4f-b6b95444e09a@pengutronix.de>
+ <20210506130758.fqatlfegvsnccix5@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <0404c837-136e-93c6-6a72-aa5cd93e13cb@pengutronix.de>
+Date: Thu, 6 May 2021 15:10:41 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <c15d0311-c878-29be-2d64-e68ca7535131@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 15:08:15 up 155 days,  3:14, 49 users,  load average: 0.13, 0.09,
- 0.04
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20210506130758.fqatlfegvsnccix5@pengutronix.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210506_060848_213585_9E1E57B7 
-X-CRM114-Status: GOOD (  25.39  )
+X-CRM114-CacheID: sfid-20210506_061043_255580_EDE77441 
+X-CRM114-Status: GOOD (  19.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,84 +76,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/3] driver: add flag to check if cdev is an mci device
+Subject: Re: [PATCH 2/3] mci: mci-core: set the DEVFS_IS_MCI_DEV flag
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 21-05-06 13:59, Ahmad Fatoum wrote:
-> 
-> 
-> On 06.05.21 13:22, Marco Felsch wrote:
-> > We need this during mount() to check if the cdev is an mmc/mci device.
-> > Later on we add the feature to pass "root=/dev/mmcblk*" as kernel
-> > command line.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  include/driver.h | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/include/driver.h b/include/driver.h
-> > index 0d43b36148..d381aaf78d 100644
-> > --- a/include/driver.h
-> > +++ b/include/driver.h
-> > @@ -496,6 +496,7 @@ int cdev_erase(struct cdev *cdev, loff_t count, loff_t offset);
-> >  #define DEVFS_PARTITION_READONLY	(1U << 1)
-> >  #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
-> >  #define DEVFS_PARTITION_FROM_TABLE	(1U << 4)
-> > +#define DEVFS_IS_MCI_DEV		(1U << 5)
-> >  
-> >  struct cdev *devfs_add_partition(const char *devname, loff_t offset,
-> >  		loff_t size, unsigned int flags, const char *name);
-> > @@ -509,6 +510,11 @@ static inline void cdev_create_default_automount(struct cdev *cdev)
-> >  }
-> >  #endif
-> >  
-> > +static inline bool cdev_is_mci_dev(struct cdev *cdev)
-> > +{
-> > +	return !!(cdev->flags & DEVFS_IS_MCI_DEV);
-> > +}
-> 
-> Nitpick: cast to bool makes !! superfluous.
-
-Right. I will drop it and add you tag.
-
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> 
-> > +
-> >  #define DEVFS_PARTITION_APPEND		0
-> >  
-> >  /**
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMDYuMDUuMjEgMTU6MDcsIE1hcmNvIEZlbHNjaCB3cm90ZToKPiBPbiAyMS0wNS0wNiAxNDow
+NiwgQWhtYWQgRmF0b3VtIHdyb3RlOgo+PiBIZWxsbywKPj4KPj4gT24gMDYuMDUuMjEgMTM6MjIs
+IE1hcmNvIEZlbHNjaCB3cm90ZToKPj4+IFNldCB0aGUgbmV3IGludHJvZHVjZWQgZmxhZyB0byBi
+ZSBhYmxlIHRvIGNoZWNrIGlmIHRoZSBjZGV2IGlzIGFuCj4+PiBtbWMvbWNpIGRldmljZS4KPj4+
+Cj4+PiBTaWduZWQtb2ZmLWJ5OiBNYXJjbyBGZWxzY2ggPG0uZmVsc2NoQHBlbmd1dHJvbml4LmRl
+Pgo+Pj4gLS0tCj4+PiAgZHJpdmVycy9tY2kvbWNpLWNvcmUuYyB8IDEgKwo+Pj4gIDEgZmlsZSBj
+aGFuZ2VkLCAxIGluc2VydGlvbigrKQo+Pj4KPj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL21jaS9t
+Y2ktY29yZS5jIGIvZHJpdmVycy9tY2kvbWNpLWNvcmUuYwo+Pj4gaW5kZXggMDE3ZjI1ZDM1Zi4u
+YzBmYmNiMzg1ZiAxMDA2NDQKPj4+IC0tLSBhL2RyaXZlcnMvbWNpL21jaS1jb3JlLmMKPj4+ICsr
+KyBiL2RyaXZlcnMvbWNpL21jaS1jb3JlLmMKPj4+IEBAIC00MjAsNiArNDIwLDcgQEAgc3RhdGlj
+IHZvaWQgbWNpX3BhcnRfYWRkKHN0cnVjdCBtY2kgKm1jaSwgdWludDY0X3Qgc2l6ZSwKPj4+ICAJ
+cGFydC0+c2l6ZSA9IHNpemU7Cj4+PiAgCXBhcnQtPmJsay5jZGV2Lm5hbWUgPSBuYW1lOwo+Pj4g
+IAlwYXJ0LT5ibGsuY2Rldi5wYXJ0bmFtZSA9IHBhcnRuYW1lOwo+Pj4gKwlwYXJ0LT5ibGsuY2Rl
+di5mbGFncyB8PSBERVZGU19JU19NQ0lfREVWOwo+Pj4gIAlwYXJ0LT5ibGsuYmxvY2tiaXRzID0g
+U0VDVE9SX1NISUZUOwo+Pj4gIAlwYXJ0LT5ibGsubnVtX2Jsb2NrcyA9IG1jaV9jYWxjX2Jsa19j
+bnQoc2l6ZSwgcGFydC0+YmxrLmJsb2NrYml0cyk7Cj4+PiAgCXBhcnQtPmFyZWFfdHlwZSA9IGFy
+ZWFfdHlwZTsKPj4KPj4gVGhpcyBpcyBjYWxsZWQgZm9yIGhhcmR3YXJlIHBhcnRpdGlvbnMsIGxp
+a2UgYm9vdCBhbmQgZ2VuZXJhbAo+PiBwdXJwb3NlIHBhcnRpdGlvbnMuCj4+Cj4+IEZvciBib290
+IHBhcnRpdGlvbnMsIHRoZSBsYXRlciBjb21taXQgaXMgd3JvbmcuIEkgZG9uJ3Qga25vdyB3aGF0
+IHRoZSBkZWZhdWx0Cj4+IGZpbGUgbmFtZSBmb3IgbW1jIEdQUCBibG9jayBwYXJ0aXRpb25zIGlz
+LCBKw7xyZ2VuPwo+IAo+IEFyZyByaWdodCwgdGhlIGJvb3QgcGFydGl0aW9uIG5hbWUgc2NoZW1l
+IGRpZmZlcnMuIEZvciBHUFAgdGhlcmUgc2hvdWxkCj4gYmUgc2VwZXJhdGVkIGRldmljZXMsIGRv
+bid0IGtub3cgdGhhdCBkaXJlY3RseS4KPiAKPiBTaG91bGQgd2UgZmlyc3QgYWRkIHRoZSBzdXBw
+b3J0IGZvciBNTUNfQkxLX0RBVEFfQVJFQV9NQUlOIG9ubHk/IFRoaXMgaXMKPiB0aGUgbW9zdCB0
+ZXN0ZWQgcGF0aC4KCkFjay4KCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3Ry
+LiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAg
+fAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5
+LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAg
+ICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
 
