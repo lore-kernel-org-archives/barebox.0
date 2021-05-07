@@ -1,75 +1,76 @@
-Delivery-date: Fri, 07 May 2021 10:42:23 +0200
+Delivery-date: Fri, 07 May 2021 11:44:45 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lew3z-00048X-4v
-	for lore@lore.pengutronix.de; Fri, 07 May 2021 10:42:23 +0200
+	id 1lex2L-0004CP-22
+	for lore@lore.pengutronix.de; Fri, 07 May 2021 11:44:45 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lew3y-0004T0-3B
-	for lore@pengutronix.de; Fri, 07 May 2021 10:42:22 +0200
+	id 1lex2J-00044A-Vj
+	for lore@pengutronix.de; Fri, 07 May 2021 11:44:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=+Br5Fvy4QDzfYCTQ02RVP/OJEeonOqsC7s2VmsY22+w=; b=rOKWXObL/KP9xXqu+jQvSTOky
-	axREQXVJYR0zJYNYDx+mgDcccG/N662ePo2UzG51tfFsha/6HQonHoGSyZ7rB+IS1WW9VqTexuwH+
-	cmDd2LnH35t/24fnkXfAbtpS8vdMgw/rY70yQvEZ9oKGlkhd1KWBCn6Ak2gFqkfgv74ezIazLUL+D
-	eloDBL5h3CX/DJehl0oJRlBDrqYMjhBPYHkaO/7IJ+ekOa6qs9YIJrF7t6/XBdW0NecLaCOdveXir
-	rcRPyLRjZvRZBrJdsdTpPut3RMoARKsHEW2DAOVMf1NcfmRTjT7RAIc/OqTAo4rKJvvPDD+E82vJ3
-	HsI4boEUA==;
+	 bh=+DIr2W8YehZB0UiY375mfPuW8rMCXK9VontHKzdWebA=; b=ILPijD4huq7G+ndwwP1+PBHEE
+	wTkLDvs35slYkw7hv2ujAPXv2Sv2wDgdobN8ZHjiubr6eOHlBSnpI+UgkLm3sh+3qHsmOXI48Utv6
+	4OCHCsJjWK+n7gW3OKCuGSMLdJvV2kvwZCWHNQjwQVm41Zxwc2bVTeBWjFBLlQXKkIyOzcAjdOmSg
+	sZwVxOxF7AOJC/vAQTmbCD52fUcgttwaGBjB+6Yt1dSKf8V+fDT8AxuetydWv4ijfHm9sqllM1lD7
+	JqsUrF51Fuj1olvsT1Ail7jW1FaRJfI9x3Pwy0gPXIu+4yFzhotpKZZK8mlRIJoWneO54FfNc/NVj
+	y79iK8H8w==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lew2r-006WHk-7Z; Fri, 07 May 2021 08:41:13 +0000
+	id 1lex1E-006hlH-Fx; Fri, 07 May 2021 09:43:36 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lew2m-006WHZ-U2
- for barebox@desiato.infradead.org; Fri, 07 May 2021 08:41:08 +0000
+ id 1lex19-006hkY-RC
+ for barebox@desiato.infradead.org; Fri, 07 May 2021 09:43:32 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
  MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=jv2nZCLMxh08ou/ALkvU7KHIGX+eZ08PihLA/BFAcrg=; b=yjKao2KGmD/noaSmQA3c6KtqRn
- 8wMghVTe2o6aAtfqcBWqWrOlhb+1VzPhVDANfYpRlBFvmbOEzSblxkBWclTsTm4Bm13AtU7bQpRn0
- U2fjFkKgMVtG3wwy+lrJJZMwdcNQDPfjd92zMr9t0PKnDwE4+Xbs/8iwQuiECUeJhVAMNCx/VzLtE
- Q0A0J3+dkGU4re8I6oa7k1Ez10TSoBhOlDCw6rzmaJUiLTt9nOJggEc1oreS/Jr5AK1kId/YlZ55a
- r89Icm24GVqJKMcVBN9qoOUbtlo8J+fbZ+AjzegDBl/hDWuTDSPdRhAC+c58YSkB9UM1zLsNekmmr
- 4LFSvF1Q==;
+ bh=FbMiaHBsFW6XE4hA32CTOI8IXFxWrfFId2Mjxd34b1M=; b=DN0QzJjo0updUayU+Z51F/7wLl
+ RdJnS5aIR521uwj1NYU9yrU+ZAL3BCMEjVqugIgmuVq/xpv8O6KBFbIb8uc57mYbQQYPmWR7+Q1MA
+ CzAG+uJnXExtdoEDBTWqkMWC34ghvt3en/fVUjmQcB+kjETAyisnHYULYqxq72er28+o/98YYair1
+ v5H0YlCrwDg8dFxfrvXwGHGgwZ7osnK4Un02aNRUmKWCOQaW81J4nO5q8rzDPdvZH/1m3CBWyCzz2
+ nEtC3Kmr7u8urvzrXTZH9/FXvjJCJYv7dBGyOJtaEKJ3bkCbgZHpvXHGjpJc6wBSwaLOI1Zvm1YKg
+ fGCudUbw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lew2j-006hbb-Su
- for barebox@lists.infradead.org; Fri, 07 May 2021 08:41:07 +0000
+ id 1lex16-006kR1-7S
+ for barebox@lists.infradead.org; Fri, 07 May 2021 09:43:30 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lew2h-0004IK-Gm; Fri, 07 May 2021 10:41:03 +0200
+ id 1lex12-0003xy-DW; Fri, 07 May 2021 11:43:24 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lew2g-0004I1-T8; Fri, 07 May 2021 10:41:02 +0200
-Date: Fri, 7 May 2021 10:41:02 +0200
+ id 1lex12-0007v5-44; Fri, 07 May 2021 11:43:24 +0200
+Date: Fri, 7 May 2021 11:43:24 +0200
 To: Neeraj Pal <neerajpal09@gmail.com>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210507084102.GU19819@pengutronix.de>
-References: <CANi4_RUhZuWvG+v9R1Ae5BmCtHx-Bz_4Ay0BiuBYCrqXUAOBiw@mail.gmail.com>
+Message-ID: <20210507094324.GV19819@pengutronix.de>
+References: <CANi4_RUqt-U_p_dCMN7CnVgvdk8SAC8ZFoNvd1wCFHE9c=s+ew@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CANi4_RUhZuWvG+v9R1Ae5BmCtHx-Bz_4Ay0BiuBYCrqXUAOBiw@mail.gmail.com>
+In-Reply-To: <CANi4_RUqt-U_p_dCMN7CnVgvdk8SAC8ZFoNvd1wCFHE9c=s+ew@mail.gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:38:43 up 78 days, 12:02, 96 users,  load average: 0.20, 0.14, 0.10
+X-Uptime: 11:41:37 up 78 days, 13:05, 100 users,  load average: 0.37, 0.31,
+ 0.20
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210507_014105_958627_0B9981A0 
-X-CRM114-Status: GOOD (  26.14  )
+X-CRM114-CacheID: sfid-20210507_024328_302328_C86C60E9 
+X-CRM114-Status: GOOD (  24.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,139 +94,135 @@ X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [BUG] Stack buffer overflow WRITE of size 1 in nfs_start function
+Subject: Re: [BUG] Stack buffer overflow WRITE of size 1 in barebox_printf
+ function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hi,
 
-On Sun, Apr 18, 2021 at 12:22:30AM +0530, Neeraj Pal wrote:
+On Sun, Apr 18, 2021 at 12:49:16AM +0530, Neeraj Pal wrote:
 > Hi,
 > 
-> While reviewing the code of barebox-2021.04.0 and git commit
-> af0f068a6edad45b033e772056ac0352e1ba3613  I found a stack buffer
-> overflow WRITE of size 1 in
-> nfs_start() net/nfs.c L664 through strcpy call which furthers crashes at
-> function strcpy in lib/string.c L96.
+> I have found the stack buffer overflow issue with WRITE of size 1 in
+> barebox_printf function common/console_common.c:240 which further goes
+> and crashes into a call vsnprintf lib/vsprintf.c:440
+> 
+> Tested on:
+> - barebox-2021.04.0
+> - git commit af0f068a6edad45b033e772056ac0352e1ba3613
 
-Thanks for reporting this. Indeed the nfs filename is stored in a fixed
-size buffer which can easily overflow with the right input.
+Thanks again for reporting. I can confirm this issue happens here as well.
 
-This patch should fix this issue.
+It happens because we are printing into fixed size buffers without
+checking the length. The following changes this to use (v)snprintf
+instead and should fix this issue.
 
 Regards,
-  Sascha
+ Sascha
 
------------------------------8<---------------------------------
->From 3978396bf88c4ab567ddf36dff1218502e32a94d Mon Sep 17 00:00:00 2001
+-------------------------------8<----------------------------------
+
+>From a4221fe41b8d4a4b49f533e2869719b721416ff4 Mon Sep 17 00:00:00 2001
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 7 May 2021 10:26:51 +0200
-Subject: [PATCH] nfs command: Fix possible buffer overflow
+Date: Fri, 7 May 2021 11:37:27 +0200
+Subject: [PATCH] console: Fix printbuffer overflowing
 
-the nfs command stores the nfs filename in a fixed size buffer without
-checking its length. Instead of using a static buffer use strdup() to
-dynamically allocate a suitably sized buffer.
+The barebox printf functions are not safe against too long strings. The
+pattern is always the same: We (v)sprintf into a fixed size buffer. Use
+(v)snprintf instead to not overwrite the fixed size buffer. We stand
+back from using dynamically sized buffer though, as the barebox printf
+like functions might be called before the malloc pool is initialzed.
 
 Reported-by: Neeraj Pal <neerajpal09@gmail.com>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/nfs.c | 41 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 11 deletions(-)
+ common/console_common.c | 14 +++++++-------
+ pbl/console.c           |  4 ++--
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/nfs.c b/net/nfs.c
-index 591417e0de..440e410a83 100644
---- a/net/nfs.c
-+++ b/net/nfs.c
-@@ -148,7 +148,6 @@ static int	nfs_state;
+diff --git a/common/console_common.c b/common/console_common.c
+index 4c1230464c..2460fb21bd 100644
+--- a/common/console_common.c
++++ b/common/console_common.c
+@@ -126,7 +126,7 @@ int pr_print(int level, const char *fmt, ...)
+ 		return 0;
  
- static char *nfs_filename;
- static char *nfs_path;
--static char nfs_path_buff[2048];
+ 	va_start(args, fmt);
+-	i = vsprintf(printbuffer, fmt, args);
++	i = vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
+ 	va_end(args);
  
- static int net_store_fd;
- static struct net_connection *nfs_con;
-@@ -522,11 +521,26 @@ static int nfs_readlink_reply(unsigned char *pkt, unsigned len)
- 	path = (char *)data;
+ 	pr_puts(level, printbuffer);
+@@ -144,13 +144,13 @@ int dev_printf(int level, const struct device_d *dev, const char *format, ...)
+ 		return 0;
  
- 	if (*path != '/') {
--		strcat(nfs_path, "/");
--		strncat(nfs_path, path, rlen);
-+		char *n;
-+
-+		n = calloc(strlen(nfs_path) + sizeof('/') + rlen + 1, 1);
-+		if (!n)
-+			return -ENOMEM;
-+
-+		strcpy(n, nfs_path);
-+		strcat(n, "/");
-+		strncat(n, path, rlen);
-+
-+		free(nfs_path);
-+		nfs_path = n;
- 	} else {
-+		free(nfs_path);
-+
-+		nfs_path = calloc(rlen + 1, 1);
-+		if (!nfs_path)
-+			return -ENOMEM;
-+
- 		memcpy(nfs_path, path, rlen);
--		nfs_path[rlen] = 0;
- 	}
- 	return 0;
- }
-@@ -655,13 +669,13 @@ err_out:
- 	nfs_err = ret;
- }
+ 	if (dev->driver && dev->driver->name)
+-		ret += sprintf(printbuffer, "%s ", dev->driver->name);
++		ret += snprintf(printbuffer, CFG_PBSIZE - ret, "%s ", dev->driver->name);
  
--static void nfs_start(char *p)
-+static int nfs_start(char *p)
- {
- 	debug("%s\n", __func__);
+-	ret += sprintf(printbuffer + ret, "%s: ", dev_name(dev));
++	ret += snprintf(printbuffer + ret, CFG_PBSIZE - ret, "%s: ", dev_name(dev));
  
--	nfs_path = (char *)nfs_path_buff;
--
--	strcpy(nfs_path, p);
-+	nfs_path = strdup(p);
-+	if (nfs_path)
-+		return -ENOMEM;
+ 	va_start(args, format);
  
- 	nfs_filename = basename (nfs_path);
- 	nfs_path     = dirname (nfs_path);
-@@ -671,6 +685,8 @@ static void nfs_start(char *p)
- 	nfs_state = STATE_PRCLOOKUP_PROG_MOUNT_REQ;
+-	ret += vsprintf(printbuffer + ret, format, args);
++	ret += vsnprintf(printbuffer + ret, CFG_PBSIZE - ret, format, args);
  
- 	nfs_send();
-+
-+	return 0;
- }
+ 	va_end(args);
  
- static int do_nfs(int argc, char *argv[])
-@@ -701,9 +717,9 @@ static int do_nfs(int argc, char *argv[])
- 	}
- 	net_udp_bind(nfs_con, 1000);
+@@ -235,7 +235,7 @@ int printf(const char *fmt, ...)
+ 	 * For this to work, printbuffer must be larger than
+ 	 * anything we ever want to print.
+ 	 */
+-	i = vsprintf (printbuffer, fmt, args);
++	i = vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
+ 	va_end(args);
  
--	nfs_err = 0;
--
--	nfs_start(remotefile);
-+	nfs_err = nfs_start(remotefile);
-+	if (nfs_err)
-+		goto err_udp;
+ 	/* Print the string */
+@@ -254,7 +254,7 @@ int vprintf(const char *fmt, va_list args)
+ 	 * For this to work, printbuffer must be larger than
+ 	 * anything we ever want to print.
+ 	 */
+-	i = vsprintf(printbuffer, fmt, args);
++	i = vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
  
- 	while (nfs_state != STATE_DONE) {
- 		if (ctrlc()) {
-@@ -727,6 +743,9 @@ err_udp:
+ 	/* Print the string */
+ 	puts(printbuffer);
+@@ -342,7 +342,7 @@ int dprintf(int file, const char *fmt, ...)
+ 	 * For this to work, printbuffer must be larger than
+ 	 * anything we ever want to print.
+ 	 */
+-	vsprintf(printbuffer, fmt, args);
++	vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
+ 	va_end(args);
  
- 	printf("\n");
+ 	/* Print the string */
+diff --git a/pbl/console.c b/pbl/console.c
+index 007e4e4b83..ec96b20054 100644
+--- a/pbl/console.c
++++ b/pbl/console.c
+@@ -54,7 +54,7 @@ int printf(const char *fmt, ...)
+ 	char printbuffer[CFG_PBSIZE];
  
-+	free(nfs_path);
-+	nfs_path = NULL;
-+
- 	return nfs_err == 0 ? 0 : 1;
- }
+ 	va_start(args, fmt);
+-	i = vsprintf(printbuffer, fmt, args);
++	i = vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
+ 	va_end(args);
  
+ 	console_puts(CONSOLE_STDOUT, printbuffer);
+@@ -69,7 +69,7 @@ int pr_print(int level, const char *fmt, ...)
+ 	char printbuffer[CFG_PBSIZE];
+ 
+ 	va_start(args, fmt);
+-	i = vsprintf(printbuffer, fmt, args);
++	i = vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
+ 	va_end(args);
+ 
+ 	console_puts(CONSOLE_STDOUT, printbuffer);
 -- 
 2.29.2
+
 
 
 -- 
