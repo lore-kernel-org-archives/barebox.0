@@ -1,95 +1,67 @@
-Delivery-date: Fri, 07 May 2021 13:28:10 +0200
+Delivery-date: Fri, 07 May 2021 13:35:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leyeQ-0004Mp-G5
-	for lore@lore.pengutronix.de; Fri, 07 May 2021 13:28:10 +0200
+	id 1leylY-0004O4-SO
+	for lore@lore.pengutronix.de; Fri, 07 May 2021 13:35:32 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leyeP-0000CQ-Dt
-	for lore@pengutronix.de; Fri, 07 May 2021 13:28:10 +0200
+	id 1leylY-0000sm-01
+	for lore@pengutronix.de; Fri, 07 May 2021 13:35:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:Mime-Version:References:In-Reply-To:Message-Id:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
+	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=J7WqJcgctVUcOZBjZlUi6BkB+mlUvz6YSCg1Cm2p510=; b=jXeKJtPcGEITO0UMekbZyFN2Y
-	NVAj0/yzKlB9f1UseHSv4eJ4ebyj5clNMzC77N3VXZYKRSqG2HM0cIGf4v9QE6d/G/r0m3IVXESUe
-	LPCUaIr7oiFqyvkdd1uCh+/Sv4lOvOA7I3ALFZMTAlcCQ9Hv0qEXnytxfbuEWyKkmIoA+yI9ba3pG
-	yRIgtv6ynWJrcjX3eRU2BBvoCZ92RnjIMe0RHhbAlALg8itRcVAEbK9Ug0gsoqMXsamj0qAHLWgG5
-	A9Vovz6F4UWaqpI1oXM1+EAmAe4kGc7CUi8tJNdd/8i+2kB5BGCPyTRJp4YKgr2Kd1mQqiE46sosp
-	xq59ATJQw==;
+	 bh=Oi90Oo5RcpydBNnhUMTE18Rbr7KlQ08nWrNeRtpwqsg=; b=Em2Vmer0x0Rk8xvh/FgEGDOQw
+	Bzsz8FXFf4mh37n8mABfQu9cNvu9ldx8Uo4Y52tkuzmJYA6JvJAExAjlHP7+B3A5TS9IBr9aqy8jj
+	SLcs5TFECJNWMGoafzZ9rDopm7U7BAie1mQpxt80wNDgNSNtR17Z1rsoawfshYS1fJuh6/k2EdC4v
+	N7o7ak5/35hyfS2mHX3iX/70BEuuzcFsE5r0oEzluoQ0+V5/4biXamKG68tnHh/f3gYSyfwbLJgNw
+	VM+mYpm4jmErXI31AzHztP9zWmUy7dNomFdXqbFKz2FQ3Q2Vyd5Z0LmsD6MxJdDkAKsZy2YLD78bl
+	7HPLT+0eA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1leydX-006x0D-7Y; Fri, 07 May 2021 11:27:16 +0000
+	id 1leyki-006y8z-R5; Fri, 07 May 2021 11:34:40 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leydT-006wzO-Av
- for barebox@desiato.infradead.org; Fri, 07 May 2021 11:27:11 +0000
+ id 1leyke-006y8q-Fb
+ for barebox@desiato.infradead.org; Fri, 07 May 2021 11:34:36 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- Content-Type:Mime-Version:References:In-Reply-To:Message-Id:Subject:Cc:To:
- From:Date:Sender:Reply-To:Content-ID:Content-Description;
- bh=0rcnVpo7r9yScUq2N7R5zOPDlqa6/X3CvZmazoI2dCo=; b=3UIygY1UXif4q8DzITZRfCp/Va
- hhMJwzjAP5CunNQnq6MewokVsp0GmKS91s6e9z2spgllSU1vxTzT42SX8EXXCsRQHQdhHyccDaJ67
- RT2o0k3BDWUebTpBDgs94jD2WA0rDEO0b3wJIgzrN92j7u+3eagEqrkSVXX0xPZyRxfmRTzVXYcnV
- AgEKougG2GjQ36FjX9mBOUy0y+dSgpvijTROSLaWDU17ji0x4podA/Bv52TgodSFqgfDOl7Akiaem
- VM+pXIXbfeZgTHmXQE26leutnZXPrWGNRwr1CZv2lwEhSn1w9j2kn/u3tDSMWtv3tqQO7e3xjHpEq
- i7qQVl6g==;
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+ Subject:Sender:Reply-To:Content-ID:Content-Description;
+ bh=Pmn+6wE6sZOAbpzyIIsSrTPTTj8VrloUIijoHTrk2bs=; b=MvdA1RCI0NkjHHcMRKPDyrnS8u
+ Gbf0RolXont/oOHxB9Sg9IOmr+gPViv66GZkhjIiBoTcYRRu453bTOiV82jSLUCZeA+tuswESY8fL
+ 5pYQPhGIwG8NhRmZ4uVTFDLjWn3UE7zrL0/K2lPkZ9aTjYUhnRcDmMpGnuZU7I6kOkOnxPTZ+4erk
+ 3VF2nExjvO1xDw3XXT7iEtoOCmSy04mq/KoqcwjODVT916sO5c+9NCZceLhqq5mWP8k0RKUoXwK4W
+ jXaJVAu0qg8b5WQVM93MZhuaVXwJukPkKaBm085x+o3XyYt0/vqXGiA/WCHWQVjydtiBVCeJrPyeu
+ ld6SRc5Q==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leydP-006olu-OH
- for barebox@lists.infradead.org; Fri, 07 May 2021 11:27:09 +0000
-Received: by mail-lj1-x236.google.com with SMTP id v6so11113542ljj.5
- for <barebox@lists.infradead.org>; Fri, 07 May 2021 04:27:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=0rcnVpo7r9yScUq2N7R5zOPDlqa6/X3CvZmazoI2dCo=;
- b=RaqnzdrzcJYcBxLqsM6vBEIc6++pzPx1ULOmAWOdwflb0KOrKcv/9em7hRBOpFSQ5I
- yhSrN8OIJ6+HNu+YF01pvbHzCGOA6Nob5kjuC5mwSJr7V84KPfPnAb/O7d4Xh8C7aq8+
- 9Vly83MGmQfbxJqlhZ//AUZw+oO8Mve14XvFWKEnlD61iXEbgl9Sa6603+vOhP2aVNM1
- RmrIu3piHwlgNCJXZfdxc7gqNhgB1WcKQQA6sd69K8Qj0G+eF6EfZ2HLCknpLHkRiUg1
- hDmFFyr7kuL6IlhSD/isNP//5gqLePfQW4pElcHhCC7IKG1csZMXczpk7k9FZnfK7iHj
- L/Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=0rcnVpo7r9yScUq2N7R5zOPDlqa6/X3CvZmazoI2dCo=;
- b=W/UDLV9lHwsPMAVoGQ2niv2gwKR9IYG2G8YLk0eps5gcowdU+Aqb1TJcfp5WWLIjOL
- SG7xZcfM/GTsvHjzZP+XBTa4iRmrMleuo+2CcnujZeEOsoSPnEMXM+Op3ls+bR1cepDj
- SyahJmmDH7PpWhiO09V2XlCb4ooArJf4mHp4UoNaqnHLWLlWdvTeghpVhVVy9ZprEvfx
- 3aFvRXlrXVfw+NorrsG/cn3lDWVZ82myKzvhFXRPuhcHgGtU26vAExNWHTnDy6zDPgJF
- mEys1p1CcpzZSQmBpHcqIxXCVPRZvq1KXGKOwsRpXTebSmQMafKbgHIye+ggs2bAe+Mr
- 3sAQ==
-X-Gm-Message-State: AOAM531cLTDjhCOGJOF8Ooenem4f+DGGB6Xc9/2jLbY7yHL665nGPy0S
- duPNnAurmgWa9ZF2+0YSdQU=
-X-Google-Smtp-Source: ABdhPJzuYvzHlW8aQkuR8QoI+LJns4UmtPtlITLwVGK6/TEpQFbohjjkTwUSbvoslXAJQiCPuWyZ+g==
-X-Received: by 2002:a2e:9ad9:: with SMTP id p25mr7346650ljj.127.1620386826064; 
- Fri, 07 May 2021 04:27:06 -0700 (PDT)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
- by smtp.gmail.com with ESMTPSA id c9sm1832832ljb.22.2021.05.07.04.27.05
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 07 May 2021 04:27:05 -0700 (PDT)
-Date: Fri, 7 May 2021 14:27:03 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-Id: <20210507142703.33e2609ca0598e8050393b8c@gmail.com>
-In-Reply-To: <7e99b38d-ea07-ff00-21b9-6123212b7a4c@pengutronix.de>
-References: <20210427202309.32077-1-a.fatoum@pengutronix.de>
- <20210427202309.32077-6-a.fatoum@pengutronix.de>
- <20210505131801.5568b3337cefb36eda073522@gmail.com>
- <7e99b38d-ea07-ff00-21b9-6123212b7a4c@pengutronix.de>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; i686-pc-linux-gnu)
-Mime-Version: 1.0
+ id 1leyka-006oyr-Gw
+ for barebox@lists.infradead.org; Fri, 07 May 2021 11:34:34 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1leykY-0000nX-OA; Fri, 07 May 2021 13:34:30 +0200
+To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
+References: <20210506220834.223350-1-antonynpavlov@gmail.com>
+ <20210506220834.223350-2-antonynpavlov@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <3683b25f-f736-6447-90f7-f62e1f9ccb64@pengutronix.de>
+Date: Fri, 7 May 2021 13:34:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
+MIME-Version: 1.0
+In-Reply-To: <20210506220834.223350-2-antonynpavlov@gmail.com>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210507_042707_818588_20C527C4 
-X-CRM114-Status: GOOD (  32.86  )
+X-CRM114-CacheID: sfid-20210507_043432_596927_5396911B 
+X-CRM114-Status: GOOD (  28.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,239 +73,167 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 06/12] RISC-V: erizo: drop mach-erizo directory
+X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 01/11] clocksource: timer-riscv: select CSR from device
+ tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, 5 May 2021 12:21:25 +0200
-Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+Hello Antony,
 
-Hi Sascha!
+On 07.05.21 00:08, Antony Pavlov wrote:
+> barebox timer-riscv driver supports one of user counters:
+> 
+>   * 'cycle', counter for RDCYCLE instruction (CSR 0xc00);
+>   * 'time', timer for RDTIME instruction (CSR 0xc01).
+> 
+> At the moment in S-mode timer-riscv uses the 'cycle' counter,
+> and in M-mode timer-riscv uses the 'time' timer.
 
-> Hello Antony,
-> =
+Other way round, right? cycle for M-Mode, time for S-Mode?
 
-> On 05.05.21 12:18, Antony Pavlov wrote:
-> > On Tue, 27 Apr 2021 22:23:03 +0200
-> > Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> > =
+> 
+> Alas picorv32 CPU core supports only the 'cycle' counter.
+> VexRiscV CPU core supports only the 'time' timer.
+> 
+> This patch makes it possible to use the 'time' timer
+> for VexRiscV CPU in M-mode.
 
-> > Hi Ahmad!
-> > =
+Is that allowed by the ISA? To provide time, but not cycle?
+Can VexRiscV boot Linux? If so, how does Linux handle lack
+of this CSR?
+ 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/riscv/cpu/time.c             |  7 +++++++
+>  arch/riscv/dts/erizo.dtsi         |  2 ++
+>  arch/riscv/include/asm/timer.h    |  1 +
+>  drivers/clocksource/timer-riscv.c | 19 ++++++++-----------
+>  4 files changed, 18 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/riscv/cpu/time.c b/arch/riscv/cpu/time.c
+> index 39bb6a5112..59c8ca61d6 100644
+> --- a/arch/riscv/cpu/time.c
+> +++ b/arch/riscv/cpu/time.c
+> @@ -18,6 +18,7 @@
+>  #include <asm/timer.h>
+>  
+>  unsigned long riscv_timebase;
+> +unsigned long riscv_use_csr_cycle;
+>  
+>  int timer_init(void)
+>  {
+> @@ -32,6 +33,12 @@ int timer_init(void)
+>  
+>  	riscv_timebase = prop;
+>  
+> +	if (of_property_read_bool(cpu, "csr-cycle")) {
+> +		riscv_use_csr_cycle = 1;
+> +	} else {
+> +		riscv_use_csr_cycle = 0;
+> +	}
+> +
 
-> > Could you please rebase this patchseries on top of pengutronix next bra=
-nch
-> > and push it to github?
-> > =
+Any reason this couldn't happen in driver probe?
+I'd also prefer another name, e.g. barebox,use-csr-cycle ?
 
-> > My latest LiteX SoC support patchseries introduces mach-litex/include/m=
-ach/debug_ll.h.
-> =
+>  	of_platform_populate(cpu, NULL, NULL);
+>  
+>  	return 0;
+> diff --git a/arch/riscv/dts/erizo.dtsi b/arch/riscv/dts/erizo.dtsi
+> index 228711bd69..b3ccf281f2 100644
+> --- a/arch/riscv/dts/erizo.dtsi
+> +++ b/arch/riscv/dts/erizo.dtsi
+> @@ -22,6 +22,8 @@
+>  
+>  		timebase-frequency = <24000000>;
+>  
+> +		csr-cycle;
+> +
+>  		cpu@0 {
+>  			device_type = "cpu";
+>  			compatible = "cliffordwolf,picorv32", "riscv";
+> diff --git a/arch/riscv/include/asm/timer.h b/arch/riscv/include/asm/timer.h
+> index 1f78ef4c00..555b3f5989 100644
+> --- a/arch/riscv/include/asm/timer.h
+> +++ b/arch/riscv/include/asm/timer.h
+> @@ -5,5 +5,6 @@
+>  
+>  int timer_init(void);
+>  extern unsigned long riscv_timebase;
+> +extern unsigned long riscv_use_csr_cycle;
+>  
+>  #endif /* _ASM_RISCV_DELAY_H */
+> diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+> index ef67cff475..c0deed40eb 100644
+> --- a/drivers/clocksource/timer-riscv.c
+> +++ b/drivers/clocksource/timer-riscv.c
+> @@ -13,7 +13,7 @@
+>  #include <asm/timer.h>
+>  #include <asm/csr.h>
+>  
+> -static u64 notrace riscv_timer_get_count_sbi(void)
+> +static u64 notrace riscv_timer_get_count_time(void)
+>  {
+>  	__maybe_unused u32 hi, lo;
+>  
+> @@ -28,7 +28,7 @@ static u64 notrace riscv_timer_get_count_sbi(void)
+>  	return ((u64)hi << 32) | lo;
+>  }
+>  
+> -static u64 notrace riscv_timer_get_count_rdcycle(void)
+> +static u64 notrace riscv_timer_get_count_cycle(void)
+>  {
+>  	__maybe_unused u32 hi, lo;
+>  
+> @@ -43,16 +43,7 @@ static u64 notrace riscv_timer_get_count_rdcycle(void)
+>  	return ((u64)hi << 32) | lo;
+>  }
+>  
+> -static u64 notrace riscv_timer_get_count(void)
+> -{
+> -	if (IS_ENABLED(CONFIG_RISCV_SBI))
+> -		return riscv_timer_get_count_sbi();
+> -	else
+> -		return riscv_timer_get_count_rdcycle();
+> -}
+> -
+>  static struct clocksource riscv_clocksource = {
+> -	.read		= riscv_timer_get_count,
+>  	.mask		= CLOCKSOURCE_MASK(64),
+>  	.priority	= 100,
+>  };
+> @@ -61,6 +52,12 @@ static int riscv_timer_init(struct device_d* dev)
+>  {
+>  	dev_info(dev, "running at %lu Hz\n", riscv_timebase);
+>  
+> +	if (riscv_use_csr_cycle) {
+> +		riscv_clocksource.read = riscv_timer_get_count_cycle;
+> +	} else {
+> +		riscv_clocksource.read = riscv_timer_get_count_time;
+> +	}
+> +
+>  	riscv_clocksource.mult = clocksource_hz2mult(riscv_timebase, riscv_clocksource.shift);
+>  
+>  	return init_clock(&riscv_clocksource);
+> 
 
-> I just commented that on your series :D
-> next Branch already contains this series.
-> =
-
-> By the way, there's now lore.barebox.org, which allows you
-> to download patch series as mbox via b4 (or a web browser).
-
-Can we add lore.barebox.org link to the main page of https://www.barebox.or=
-g/ ?
-
-I suppose we can add RISC-V to list of computer architectures supported by =
-barebox
-at https://www.barebox.org/.
-
-> Cheers,
-> Ahmad
-> =
-
-> > =
-
-> >> With the recent changes, we can now delete mach-erizo. Do so.
-> >>
-> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >> ---
-> >>  arch/riscv/Kconfig.socs                        |  2 +-
-> >>  arch/riscv/Makefile                            | 13 -------------
-> >>  .../include/mach =3D> include/asm}/debug_ll.h    | 18 +++++++--------=
----
-> >>  arch/riscv/mach-erizo/Makefile                 |  3 ---
-> >>  common/Kconfig                                 |  5 +++++
-> >>  5 files changed, 13 insertions(+), 28 deletions(-)
-> >>  rename arch/riscv/{mach-erizo/include/mach =3D> include/asm}/debug_ll=
-.h (57%)
-> >>  delete mode 100644 arch/riscv/mach-erizo/Makefile
-> >>
-> >> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-> >> index 093bca33806c..ea5ae0a6e9b5 100644
-> >> --- a/arch/riscv/Kconfig.socs
-> >> +++ b/arch/riscv/Kconfig.socs
-> >> @@ -3,7 +3,7 @@ menu "SoC selection"
-> >>  config SOC_ERIZO
-> >>  	bool "Erizo SoC"
-> >>  	depends on ARCH_RV32I
-> >> -	select HAS_DEBUG_LL
-> >> +	select HAS_ASM_DEBUG_LL
-> >>  	select HAS_NMON
-> >>  	select USE_COMPRESSED_DTB
-> >>  	select RISCV_M_MODE
-> >> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-> >> index 09a94d69b220..0b1278936d91 100644
-> >> --- a/arch/riscv/Makefile
-> >> +++ b/arch/riscv/Makefile
-> >> @@ -19,8 +19,6 @@ LDFLAGS_pbl +=3D $(riscv-ldflags-y)
-> >>  cflags-y +=3D $(riscv-cflags-y)
-> >>  LDFLAGS_barebox +=3D -nostdlib
-> >>  =
-
-> >> -machine-$(CONFIG_SOC_ERIZO)	:=3D erizo
-> >> -
-> >>  LDFLAGS_barebox +=3D $(riscv-ldflags-y)
-> >>  =
-
-> >>  ifndef CONFIG_MODULES
-> >> @@ -31,21 +29,10 @@ endif
-> >>  =
-
-> >>  KBUILD_BINARY :=3D barebox.bin
-> >>  =
-
-> >> -machdirs :=3D $(patsubst %,arch/riscv/mach-%/,$(machine-y))
-> >> -
-> >> -KBUILD_CPPFLAGS +=3D $(patsubst %,-I$(srctree)/%include,$(machdirs))
-> >> -
-> >>  archprepare: maketools
-> >>  =
-
-> >>  PHONY +=3D maketools
-> >>  =
-
-> >> -ifneq ($(machine-y),)
-> >> -MACH  :=3D arch/riscv/mach-$(machine-y)/
-> >> -else
-> >> -MACH  :=3D
-> >> -endif
-> >> -
-> >> -common-y +=3D $(MACH)
-> >>  common-y +=3D arch/riscv/boards/
-> >>  common-y +=3D arch/riscv/cpu/
-> >>  common-y +=3D arch/riscv/lib/
-> >> diff --git a/arch/riscv/mach-erizo/include/mach/debug_ll.h b/arch/risc=
-v/include/asm/debug_ll.h
-> >> similarity index 57%
-> >> rename from arch/riscv/mach-erizo/include/mach/debug_ll.h
-> >> rename to arch/riscv/include/asm/debug_ll.h
-> >> index a20acfcdfb79..755ed09786d5 100644
-> >> --- a/arch/riscv/mach-erizo/include/mach/debug_ll.h
-> >> +++ b/arch/riscv/include/asm/debug_ll.h
-> >> @@ -1,18 +1,10 @@
-> >>  /* SPDX-License-Identifier: GPL-2.0-only */
-> >>  /*
-> >>   * Copyright (C) 2017 Antony Pavlov <antonynpavlov@gmail.com>
-> >> - *
-> >> - * This file is part of barebox.
-> >> - *
-> >> - * This program is distributed in the hope that it will be useful,
-> >> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> >> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> >> - * GNU General Public License for more details.
-> >> - *
-> >>   */
-> >>  =
-
-> >> -#ifndef __MACH_ERIZO_DEBUG_LL__
-> >> -#define __MACH_ERIZO_DEBUG_LL__
-> >> +#ifndef __ASM_DEBUG_LL__
-> >> +#define __ASM_DEBUG_LL__
-> >>  =
-
-> >>  /** @file
-> >>   *  This File contains declaration for early output support
-> >> @@ -20,6 +12,8 @@
-> >>  =
-
-> >>  #include <linux/kconfig.h>
-> >>  =
-
-> >> +#ifdef CONFIG_DEBUG_ERIZO
-> >> +
-> >>  #define DEBUG_LL_UART_ADDR	0x90000000
-> >>  #define DEBUG_LL_UART_SHIFT	2
-> >>  #define DEBUG_LL_UART_IOSIZE32
-> >> @@ -30,4 +24,6 @@
-> >>  =
-
-> >>  #include <asm/debug_ll_ns16550.h>
-> >>  =
-
-> >> -#endif /* __MACH_ERIZO_DEBUG_LL__ */
-> >> +#endif
-> >> +
-> >> +#endif /* __ASM_DEBUG_LL__ */
-> >> diff --git a/arch/riscv/mach-erizo/Makefile b/arch/riscv/mach-erizo/Ma=
-kefile
-> >> deleted file mode 100644
-> >> index d9c51e74c379..000000000000
-> >> --- a/arch/riscv/mach-erizo/Makefile
-> >> +++ /dev/null
-> >> @@ -1,3 +0,0 @@
-> >> -# just to build a built-in.o. Otherwise compilation fails when no o-f=
-iles is
-> >> -# created.
-> >> -obj- +=3D dummy.o
-> >> diff --git a/common/Kconfig b/common/Kconfig
-> >> index b10fb45b722d..6d7a1c6b0494 100644
-> >> --- a/common/Kconfig
-> >> +++ b/common/Kconfig
-> >> @@ -1342,6 +1342,11 @@ config DEBUG_RPI3_MINI_UART
-> >>  	help
-> >>  	  Say Y here if you want low-level debugging support on
-> >>  	  RaspberryPi 3 board mini UART.
-> >> +
-> >> +config DEBUG_ERIZO
-> >> +	bool "Erizo ns16550 port"
-> >> +	depends on SOC_ERIZO
-> >> +
-> >>  endchoice
-> >>  =
-
-> >>  config DEBUG_IMX_UART_PORT
-> >> -- =
-
-> >> 2.29.2
-> >>
-> > =
-
-> > =
-
-> =
-
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
