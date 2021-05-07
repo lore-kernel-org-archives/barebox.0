@@ -1,76 +1,66 @@
-Delivery-date: Fri, 07 May 2021 11:44:45 +0200
+Delivery-date: Fri, 07 May 2021 12:28:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lex2L-0004CP-22
-	for lore@lore.pengutronix.de; Fri, 07 May 2021 11:44:45 +0200
+	id 1lexiw-0004F0-12
+	for lore@lore.pengutronix.de; Fri, 07 May 2021 12:28:46 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lex2J-00044A-Vj
-	for lore@pengutronix.de; Fri, 07 May 2021 11:44:44 +0200
+	id 1lexiv-0001Vn-0L
+	for lore@pengutronix.de; Fri, 07 May 2021 12:28:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
+	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=+DIr2W8YehZB0UiY375mfPuW8rMCXK9VontHKzdWebA=; b=ILPijD4huq7G+ndwwP1+PBHEE
-	wTkLDvs35slYkw7hv2ujAPXv2Sv2wDgdobN8ZHjiubr6eOHlBSnpI+UgkLm3sh+3qHsmOXI48Utv6
-	4OCHCsJjWK+n7gW3OKCuGSMLdJvV2kvwZCWHNQjwQVm41Zxwc2bVTeBWjFBLlQXKkIyOzcAjdOmSg
-	sZwVxOxF7AOJC/vAQTmbCD52fUcgttwaGBjB+6Yt1dSKf8V+fDT8AxuetydWv4ijfHm9sqllM1lD7
-	JqsUrF51Fuj1olvsT1Ail7jW1FaRJfI9x3Pwy0gPXIu+4yFzhotpKZZK8mlRIJoWneO54FfNc/NVj
-	y79iK8H8w==;
+	 bh=+XSiV+CKeZCjAzuhcD5hlsI38NCnKOZzJ6XZF1Y7DRo=; b=FH4VeGm3YQlA8XkqEpJCqCvgF
+	hcQnyWPywFPxY8YbzB+5F/pOlCDbf5XOGambboVcZI9KADh9OauqzHHxkkHlw4xOtJ0FgYxHrirQY
+	Q3ICnSdVjs2anIXNFvArzzvJ4JGK6RmIs2lKt+pqLjBnn8tF/TOU6WyXrA9PDKW1TR0BV6MEPfucq
+	1Vxf7ujsaSH1em9wBbF78r67/5i1fBmYtZDs1ttjTWQvBCpxz38cr0kmXwQG4xE0LJW7FRA/iLknL
+	gZAeQWp2N2SVWrGIapafwLbbEpqdI3f0G+A39sg/G6HxXTu5ySzJFhCVeaPwKgLsBfhOGilopS+a0
+	doUfKMYQA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lex1E-006hlH-Fx; Fri, 07 May 2021 09:43:36 +0000
+	id 1lexhq-006p4w-4y; Fri, 07 May 2021 10:27:38 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lex19-006hkY-RC
- for barebox@desiato.infradead.org; Fri, 07 May 2021 09:43:32 +0000
+ id 1lexeC-006ndz-Af
+ for barebox@desiato.infradead.org; Fri, 07 May 2021 10:23:52 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=FbMiaHBsFW6XE4hA32CTOI8IXFxWrfFId2Mjxd34b1M=; b=DN0QzJjo0updUayU+Z51F/7wLl
- RdJnS5aIR521uwj1NYU9yrU+ZAL3BCMEjVqugIgmuVq/xpv8O6KBFbIb8uc57mYbQQYPmWR7+Q1MA
- CzAG+uJnXExtdoEDBTWqkMWC34ghvt3en/fVUjmQcB+kjETAyisnHYULYqxq72er28+o/98YYair1
- v5H0YlCrwDg8dFxfrvXwGHGgwZ7osnK4Un02aNRUmKWCOQaW81J4nO5q8rzDPdvZH/1m3CBWyCzz2
- nEtC3Kmr7u8urvzrXTZH9/FXvjJCJYv7dBGyOJtaEKJ3bkCbgZHpvXHGjpJc6wBSwaLOI1Zvm1YKg
- fGCudUbw==;
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+ Subject:Sender:Reply-To:Content-ID:Content-Description;
+ bh=ZPeqDT6PYSMmOQKdh2Fnl2N7JOHVA6+90hoHQdaG2Fk=; b=uTbdnM+H3w4FdqRrlBlPC3Ck/d
+ 2wyv6rImIBcacb2k4SHv3NLVqEHloMcG371053igWa6byDV0bTzsomqlMQfNpoLO8FqKcFTF4xQb2
+ xGrAFH8GDDVqsp4Pm4pDFnyySaxAhkYsr+lFvGV/1mBEG9bjmmjo1MRcW3nvReXFUzU0G09mB4KjH
+ fInvSo//96+PaarW5jbv2WgGc4sysgmNYHwGgJONtV/Xip+VD2vQAvd+AXPMNNZZIMGAAIgHLHtyw
+ zXRMrLzu0VgkUNfGEBdPq481AK84iCpwkL1+JVW82I4gfgx4rJzd1pDUMQA59Fym1ql8kmrNT/Bdk
+ bBvUAAhQ==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lex16-006kR1-7S
- for barebox@lists.infradead.org; Fri, 07 May 2021 09:43:30 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lex12-0003xy-DW; Fri, 07 May 2021 11:43:24 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lex12-0007v5-44; Fri, 07 May 2021 11:43:24 +0200
-Date: Fri, 7 May 2021 11:43:24 +0200
-To: Neeraj Pal <neerajpal09@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210507094324.GV19819@pengutronix.de>
-References: <CANi4_RUqt-U_p_dCMN7CnVgvdk8SAC8ZFoNvd1wCFHE9c=s+ew@mail.gmail.com>
+ id 1lexe9-006mIp-Ho
+ for barebox@lists.infradead.org; Fri, 07 May 2021 10:23:51 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1lexe7-0000Io-Ts; Fri, 07 May 2021 12:23:47 +0200
+To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
+References: <20210506220834.223350-1-antonynpavlov@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <331e6c41-2ced-22f0-ba69-27d0213897c9@pengutronix.de>
+Date: Fri, 7 May 2021 12:23:47 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CANi4_RUqt-U_p_dCMN7CnVgvdk8SAC8ZFoNvd1wCFHE9c=s+ew@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 11:41:37 up 78 days, 13:05, 100 users,  load average: 0.37, 0.31,
- 0.20
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <20210506220834.223350-1-antonynpavlov@gmail.com>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210507_024328_302328_C86C60E9 
-X-CRM114-Status: GOOD (  24.73  )
+X-CRM114-CacheID: sfid-20210507_032349_629679_D6DFECFC 
+X-CRM114-Status: GOOD (  18.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,140 +80,87 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [BUG] Stack buffer overflow WRITE of size 1 in barebox_printf
- function
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 00/11] RISC-V: add LiteX SoC support; resurrect nmon
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
-
-On Sun, Apr 18, 2021 at 12:49:16AM +0530, Neeraj Pal wrote:
-> Hi,
+On 07.05.21 00:08, Antony Pavlov wrote:
+> Changes since v1:
 > 
-> I have found the stack buffer overflow issue with WRITE of size 1 in
-> barebox_printf function common/console_common.c:240 which further goes
-> and crashes into a call vsnprintf lib/vsprintf.c:440
+>   * rebased on top of next branch;
+>   * new patches are introduced:
+>     * clocksource: timer-riscv: select CSR from device tree
+>     * RISC-V: make RISCV_SBI and RISCV_M_MODE explicitly mutually exclusive
+>     * RISC-V: make it possible to build RV32I multi-image with DEBUG_LL=n
+>   * almost all of Ahmad's notes are fixed (e.g. unused header files inclusions are dropped);
+>   * NOT FIXED: gpio-74xx-mmio still uses dev_get_drvdata(), not device_get_match_data()
+
+Why?
+
 > 
-> Tested on:
-> - barebox-2021.04.0
-> - git commit af0f068a6edad45b033e772056ac0352e1ba3613
-
-Thanks again for reporting. I can confirm this issue happens here as well.
-
-It happens because we are printing into fixed size buffers without
-checking the length. The following changes this to use (v)snprintf
-instead and should fix this issue.
-
-Regards,
- Sascha
-
--------------------------------8<----------------------------------
-
->From a4221fe41b8d4a4b49f533e2869719b721416ff4 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 7 May 2021 11:37:27 +0200
-Subject: [PATCH] console: Fix printbuffer overflowing
-
-The barebox printf functions are not safe against too long strings. The
-pattern is always the same: We (v)sprintf into a fixed size buffer. Use
-(v)snprintf instead to not overwrite the fixed size buffer. We stand
-back from using dynamically sized buffer though, as the barebox printf
-like functions might be called before the malloc pool is initialzed.
-
-Reported-by: Neeraj Pal <neerajpal09@gmail.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/console_common.c | 14 +++++++-------
- pbl/console.c           |  4 ++--
- 2 files changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/common/console_common.c b/common/console_common.c
-index 4c1230464c..2460fb21bd 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -126,7 +126,7 @@ int pr_print(int level, const char *fmt, ...)
- 		return 0;
- 
- 	va_start(args, fmt);
--	i = vsprintf(printbuffer, fmt, args);
-+	i = vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
- 	va_end(args);
- 
- 	pr_puts(level, printbuffer);
-@@ -144,13 +144,13 @@ int dev_printf(int level, const struct device_d *dev, const char *format, ...)
- 		return 0;
- 
- 	if (dev->driver && dev->driver->name)
--		ret += sprintf(printbuffer, "%s ", dev->driver->name);
-+		ret += snprintf(printbuffer, CFG_PBSIZE - ret, "%s ", dev->driver->name);
- 
--	ret += sprintf(printbuffer + ret, "%s: ", dev_name(dev));
-+	ret += snprintf(printbuffer + ret, CFG_PBSIZE - ret, "%s: ", dev_name(dev));
- 
- 	va_start(args, format);
- 
--	ret += vsprintf(printbuffer + ret, format, args);
-+	ret += vsnprintf(printbuffer + ret, CFG_PBSIZE - ret, format, args);
- 
- 	va_end(args);
- 
-@@ -235,7 +235,7 @@ int printf(const char *fmt, ...)
- 	 * For this to work, printbuffer must be larger than
- 	 * anything we ever want to print.
- 	 */
--	i = vsprintf (printbuffer, fmt, args);
-+	i = vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
- 	va_end(args);
- 
- 	/* Print the string */
-@@ -254,7 +254,7 @@ int vprintf(const char *fmt, va_list args)
- 	 * For this to work, printbuffer must be larger than
- 	 * anything we ever want to print.
- 	 */
--	i = vsprintf(printbuffer, fmt, args);
-+	i = vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
- 
- 	/* Print the string */
- 	puts(printbuffer);
-@@ -342,7 +342,7 @@ int dprintf(int file, const char *fmt, ...)
- 	 * For this to work, printbuffer must be larger than
- 	 * anything we ever want to print.
- 	 */
--	vsprintf(printbuffer, fmt, args);
-+	vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
- 	va_end(args);
- 
- 	/* Print the string */
-diff --git a/pbl/console.c b/pbl/console.c
-index 007e4e4b83..ec96b20054 100644
---- a/pbl/console.c
-+++ b/pbl/console.c
-@@ -54,7 +54,7 @@ int printf(const char *fmt, ...)
- 	char printbuffer[CFG_PBSIZE];
- 
- 	va_start(args, fmt);
--	i = vsprintf(printbuffer, fmt, args);
-+	i = vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
- 	va_end(args);
- 
- 	console_puts(CONSOLE_STDOUT, printbuffer);
-@@ -69,7 +69,7 @@ int pr_print(int level, const char *fmt, ...)
- 	char printbuffer[CFG_PBSIZE];
- 
- 	va_start(args, fmt);
--	i = vsprintf(printbuffer, fmt, args);
-+	i = vsnprintf(printbuffer, CFG_PBSIZE, fmt, args);
- 	va_end(args);
- 
- 	console_puts(CONSOLE_STDOUT, printbuffer);
--- 
-2.29.2
-
-
+> Antony Pavlov (11):
+>   clocksource: timer-riscv: select CSR from device tree
+>   RISC-V: make RISCV_SBI and RISCV_M_MODE explicitly mutually exclusive
+>   RISC-V: make it possible to run nmon from PBL C code
+>   RISC-V: boards: erizo: make it possible to use nmon
+>   serial: add litex UART driver
+>   gpio: add driver for 74xx-ICs with MMIO access
+>   spi: add litex spiflash driver
+>   net: add LiteEth driver
+>   RISC-V: add LiteX SoC and linux-on-litex-vexriscv support
+>   RISC-V: add litex_linux_defconfig
+>   RISC-V: make it possible to build RV32I multi-image with DEBUG_LL=n
+> 
+>  arch/riscv/Kconfig                         |  22 +-
+>  arch/riscv/Kconfig.socs                    |  18 +-
+>  arch/riscv/boards/Makefile                 |   1 +
+>  arch/riscv/boards/erizo/lowlevel.c         |   5 +
+>  arch/riscv/boards/litex-linux/Makefile     |   3 +
+>  arch/riscv/boards/litex-linux/lowlevel.c   |  20 ++
+>  arch/riscv/boot/Makefile                   |   1 +
+>  arch/riscv/boot/nmon_entry.S               |  13 +
+>  arch/riscv/configs/erizo_generic_defconfig |   1 +
+>  arch/riscv/configs/litex_linux_defconfig   |  77 +++++
+>  arch/riscv/cpu/time.c                      |   7 +
+>  arch/riscv/dts/Makefile                    |   1 +
+>  arch/riscv/dts/erizo.dtsi                  |   2 +
+>  arch/riscv/dts/litex-linux.dts             |  96 ++++++
+>  arch/riscv/dts/litex_soc_linux.dtsi        |  49 +++
+>  arch/riscv/include/asm/debug_ll.h          |   3 +
+>  arch/riscv/include/asm/debug_ll_litex.h    | 123 +++++++
+>  arch/riscv/include/asm/riscv_nmon.h        |  49 ++-
+>  arch/riscv/include/asm/timer.h             |   1 +
+>  common/Kconfig                             |   4 +
+>  drivers/clocksource/timer-riscv.c          |  19 +-
+>  drivers/gpio/Kconfig                       |  14 +
+>  drivers/gpio/Makefile                      |   1 +
+>  drivers/gpio/gpio-74xx-mmio.c              | 166 +++++++++
+>  drivers/net/Kconfig                        |   8 +
+>  drivers/net/Makefile                       |   1 +
+>  drivers/net/liteeth.c                      | 376 +++++++++++++++++++++
+>  drivers/serial/Makefile                    |   1 +
+>  drivers/serial/serial_litex.c              |  96 ++++++
+>  drivers/spi/Kconfig                        |   3 +
+>  drivers/spi/Makefile                       |   1 +
+>  drivers/spi/litex_spiflash.c               | 241 +++++++++++++
+>  images/Makefile.riscv                      |   4 +
+>  33 files changed, 1388 insertions(+), 39 deletions(-)
+>  create mode 100644 arch/riscv/boards/litex-linux/Makefile
+>  create mode 100644 arch/riscv/boards/litex-linux/lowlevel.c
+>  create mode 100644 arch/riscv/boot/nmon_entry.S
+>  create mode 100644 arch/riscv/configs/litex_linux_defconfig
+>  create mode 100644 arch/riscv/dts/litex-linux.dts
+>  create mode 100644 arch/riscv/dts/litex_soc_linux.dtsi
+>  create mode 100644 arch/riscv/include/asm/debug_ll_litex.h
+>  create mode 100644 drivers/gpio/gpio-74xx-mmio.c
+>  create mode 100644 drivers/net/liteeth.c
+>  create mode 100644 drivers/serial/serial_litex.c
+>  create mode 100644 drivers/spi/litex_spiflash.c
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
