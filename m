@@ -1,90 +1,83 @@
-Delivery-date: Fri, 07 May 2021 09:31:11 +0200
+Delivery-date: Fri, 07 May 2021 09:53:43 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leux5-00041j-31
-	for lore@lore.pengutronix.de; Fri, 07 May 2021 09:31:11 +0200
+	id 1levIt-00043N-Bc
+	for lore@lore.pengutronix.de; Fri, 07 May 2021 09:53:43 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1leux4-00041Z-78
-	for lore@pengutronix.de; Fri, 07 May 2021 09:31:10 +0200
+	id 1levIs-0006mw-LF
+	for lore@pengutronix.de; Fri, 07 May 2021 09:53:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=+fk/AOYlFipEAJW3FhKLYo2XlPjYJmimTKY66kwKV/s=; b=giHbaagSTfbaq0
-	kA3zL/kraUoxfESfC/xGWkHg5g91AktiESYNhjmEDBAZSJpaRk069uaUmyGNSiSoGMrZH5yZn+6xJ
-	JHrKL0lRCyJZsxM5+KrjI1vDi46DIgkCrwLM0M8K9JhviV+0DOE0iDLeJvvLrIQcFop0VX/skmfCj
-	kQPX2E4Q4/SS/vVT2sorBK77p+0gD/0/Lt62+uvW9HplMqG0sn2riybC3IgWIjh9oYaE9MUv7QdHv
-	pMCqVBduK3pfA2eWEIcj+NrUhwPmgSNpoY2psJGgTu2oJyNR4//25zK4kdLlJull72PmLcyL2FlLr
-	YUlPz1Yz3IgKOaM58QeQ==;
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=qZW5SUK+383cTc+6Y1ONNsQ6ImkjaWUpqdvLY+CF+Oc=; b=AOdw6BAElElz9SgoSHyVCQJxv
+	1eq45cbDeBpgiAs1t9C0I30jpyQ2Xh9jYo2dNckmmuFL4UUZYecUQHAk2mfdSuIXG0WOIBBczj4Zx
+	FDRHfJT9IOh11/TNrVUZckWS6o1q0ZHtrFv6ky3NvhlyMvleaMHEIQIDlSNAErqu/3eJ8unPBYw4P
+	TmZxsO5YXx+kC7Lu6xQxnU4YKf1bxgSWxmeu4HpPyM6KPcNbLeS+IuP6SZGEDrtfmCquHOnDH7DAm
+	vO0RVdOZtmezWcwRh4in0u1CzfD27BWkI4Ss7iT1V7odZ+JSBft8oX6YTgDLrvbhAbL6bMMc7dJ/G
+	XjO7VdFYQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1leuwB-006Na1-Rj; Fri, 07 May 2021 07:30:16 +0000
+	id 1levHz-006RZj-Gb; Fri, 07 May 2021 07:52:47 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leuw5-006NZ8-4q
- for barebox@desiato.infradead.org; Fri, 07 May 2021 07:30:09 +0000
+ id 1levHt-006RZK-N9
+ for barebox@desiato.infradead.org; Fri, 07 May 2021 07:52:41 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=MB87hhyESpX0FvKRIbxmJPzvxzZ54NC5hQmeLn6xgvg=; b=jMu8fxAVD+AB93GoJRC7P2uYFu
- r+ihz+jd3uQvxMt+9TQDLlCt2KEq+GOsyHEUWuoNRR95VQLDblwhzl9amikThHeLO+jauz+vgMoHI
- OOSRnAzet7OBN6X587FFN2KGPOgKdsoH7wgvC7gRlH6+njgPV9/psCCtNgBUHXj3BAYl1W8l+uIiB
- kHNoWPXBghlctNZhWfi7RZGjyndyP9muvQ9r9dLRPF4nPrbBVY+pxc/n5XZC/vKYyQ9D8H4Dgq69g
- 0HtAWZkfatmyAfI4qrQlECQcASABOokgMPwJa8hETN/iwry8igIbRClo4MjC6v1oTq5R2GV8HVDqy
- v9ZaEfHg==;
-Received: from mickerik.phytec.de ([195.145.39.210])
+ d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
+ :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+ Sender:Reply-To:Content-ID:Content-Description;
+ bh=stLUPzWldHuUUAiHHweZSYI2loj1nkTsF2h6tiHrfIU=; b=tLdq0d56ZmBT2VCWv6pjZAZSKM
+ hBXGdhkNr4TJ77Tv586jrZIqwwNLUB1yTPXV7GDW2ptqKRABm1/wP3G6fWpIHjaAErAjfTq0bSIwK
+ wEH+TJvGvHB62ezvuwsnOEK7qTJIJ+cGUCViaT7PGscWsDMqnuI/QJOZETk0XdyovoYtjmhsdqK6l
+ RAL5NTYdiL0nBLBBVNC3itG75Kq2DhMrcQo8zQko05eireqMQV9aEfX+mgOZuG8DikUlO8Mku3xKo
+ 6gUF84jrJN1uEhpZpxENw8k0Z2wjhtu0y/dNHyx7twxSlWxWx8xYX0f7Ej4O2bKrhyTAmXjnqEFvB
+ RmVg6FAg==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1leuw2-006eYV-Gi
- for barebox@lists.infradead.org; Fri, 07 May 2021 07:30:07 +0000
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a1; c=relaxed/simple;
- q=dns/txt; i=@phytec.de; t=1620372604; x=1622964604;
- h=From:Sender:Reply-To:Subject:Date:Message-Id:To:Cc:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=4cIFlisPW5sAof+II7zE5ukKt3isVXqepdLk0WOyddM=;
- b=iVMr/MVpQt32PQc+T5VaV+XCaPvmPzC33rn3IZcggPTurC6Z7G4LuBvtT37joo2R
- 9yFoH0sgEAFLVVjyqHewXf1hxWFDWD5uI6sJNP+ZSlLz4FBA6ywRqU3ZrQwOHe8c
- eBlrTlq4Lzx2w7RuQztFHKqR1fOa2FwZ6TFIzWf8sMI=;
-X-AuditID: c39127d2-324b870000001c53-ef-6094ec7c047b
-Received: from idefix.phytec.de (Unknown_Domain [172.16.0.10])
- by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 6F.44.07251.C7CE4906;
- Fri,  7 May 2021 09:30:04 +0200 (CEST)
-Received: from lws-ybas.phytec.de ([172.16.21.122])
- by idefix.phytec.de (IBM Domino Release 9.0.1FP7)
- with ESMTP id 2021050709300476-645987 ;
- Fri, 7 May 2021 09:30:04 +0200 
-From: Yunus Bas <y.bas@phytec.de>
-To: barebox@lists.infradead.org
-Date: Fri, 7 May 2021 09:29:50 +0200
-Message-Id: <20210507072950.2005039-1-y.bas@phytec.de>
-X-Mailer: git-send-email 2.30.0
+ id 1levHr-006fVx-1w
+ for barebox@lists.infradead.org; Fri, 07 May 2021 07:52:40 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1levHo-0006kO-LR; Fri, 07 May 2021 09:52:36 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1levHo-00013X-91; Fri, 07 May 2021 09:52:36 +0200
+Date: Fri, 7 May 2021 09:52:36 +0200
+From: "sha@pengutronix.de" <sha@pengutronix.de>
+To: Stefan =?iso-8859-15?Q?Riedm=FCller?= <S.Riedmueller@phytec.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Message-ID: <20210507075236.GR19819@pengutronix.de>
+References: <20210316123626.25872-1-s.riedmueller@phytec.de>
+ <20210316123626.25872-2-s.riedmueller@phytec.de>
+ <20210317094106.GZ23724@pengutronix.de>
+ <8683628e4ef3f07ea2281e48478f71d81e00729a.camel@phytec.de>
+ <20210322055902.GO23724@pengutronix.de>
+ <51106fd1f5f44d3f4a38acb98eb1eb14f23c4cb8.camel@phytec.de>
+ <d535d198a5eb6a8404020bbd7295e2c2ccf92182.camel@phytec.de>
+ <20210414143605.GX19819@pengutronix.de>
+ <ead66213f63266ca1d3ae36ef55766e7cdd0fc81.camel@phytec.de>
 MIME-Version: 1.0
-X-MIMETrack: Itemize by SMTP Server on Idefix/Phytec(Release 9.0.1FP7|August
- 17, 2016) at 07.05.2021 09:30:04,
- Serialize by Router on Idefix/Phytec(Release 9.0.1FP7|August  17, 2016) at
- 07.05.2021 09:30:04
-X-TNEFEvaluated: 1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBJMWRmVeSWpSXmKPExsWyRoCBS7fmzZQEg9NzTSxOLO5ndmD02Lyk
- PoAxissmJTUnsyy1SN8ugStj5k3Xgj6eipcPNrM3MF7l7GLk5JAQMJFY2HqUsYuRi0NIYBuj
- xJzetWwgCSGBc4wS2w5lgNhsAooS52+/ZQWxRQTkJebubwOzhQVyJeZMuApmswioSPw+sZcR
- xOYVMJM4tXk3M8QCeYmTaw8zQcQFJU7OfMICskxC4AqjxNHZq5kgioQkTi8+C9bALKAtsWzh
- a+YJjLyzkPTMQpJawMi0ilEoNzM5O7UoM1uvIKOyJDVZLyV1EyMwNA5PVL+0g7FvjschRiYO
- xkOMEhzMSiK8pxdNThDiTUmsrEotyo8vKs1JLT7EKM3BoiTOu4G3JExIID2xJDU7NbUgtQgm
- y8TBKdXAWLJyx98LX+6vlG3c3s34+IGX36dnWkfCfk2xbDWOSxcwfhZUN6e1p/Ox0FmB+Ki8
- f4bnOb19AoJuxd3JjXu4lkXGyF2sNSPlgRW33JrKnMvLHeIOtHGcrNbcm6+TO3XOouSfhjdu
- PN4/u8RW4tMisTv+iedfCT1zXX3yvusBu8ybbov01e4pKbEUZyQaajEXFScCAKEvy0v7AQAA
+Content-Disposition: inline
+In-Reply-To: <ead66213f63266ca1d3ae36ef55766e7cdd0fc81.camel@phytec.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:51:46 up 78 days, 11:15, 95 users,  load average: 0.43, 0.29, 0.20
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210507_003006_716582_88B5A344 
-X-CRM114-Status: UNSURE (   9.99  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210507_005239_121960_3BC5CAE1 
+X-CRM114-Status: GOOD (  16.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,80 +89,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2] Revert "ARM: dts: phycore-imx6: change mtd-partition names
- for compatibility with kernel"
+Subject: Re: [PATCH 2/2] mtd: nand_bbt: Skip bad blocks when searching for
+ the BBT in NAND
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This reverts commit 72ba815bf6feaa0a98d2496f52784dd5b4258e73.
+On Tue, Apr 20, 2021 at 06:29:47AM +0000, Stefan Riedm=FCller wrote:
+> Hi Sascha,
+> =
 
-The NVMEM name-clashing has been fixed on Linux-upstream. NVMEM devices
-are now registered with the unique device names instead of the
-MTD-partition names. This fix is no longer needed.
+> unfortunately this Patch has caused a regression on imx27 in Linux and wi=
+ll be
+> reverted for now. I would suggest to do the same here until a proper solu=
+tion
+> is found.
 
-Signed-off-by: Yunus Bas <y.bas@phytec.de>
----
-Changes in v2:
-- Added missing signed-off
----
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Did that.
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index 2fb920945..2c333ce8f 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -29,7 +29,7 @@
- 
- 		environment-spinor {
- 			compatible = "barebox,environment";
--			device-path = &m25p80, "partname:nor.barebox-environment";
-+			device-path = &m25p80, "partname:barebox-environment";
- 			status = "disabled";
- 		};
- 	};
-@@ -86,22 +86,22 @@
- 		#size-cells = <1>;
- 
- 		partition@0 {
--			label = "nor.barebox";
-+			label = "barebox";
- 			reg = <0x0 0x100000>;
- 		};
- 
- 		partition@100000 {
--			label = "nor.barebox-environment";
-+			label = "barebox-environment";
- 			reg = <0x100000 0x20000>;
- 		};
- 
- 		partition@120000 {
--			label = "nor.oftree";
-+			label = "oftree";
- 			reg = <0x120000 0x20000>;
- 		};
- 
- 		partition@140000 {
--			label = "nor.kernel";
-+			label = "kernel";
- 			reg = <0x140000 0x0>;
- 		};
- 	};
--- 
-2.30.0
+> =
 
+> http://lists.infradead.org/pipermail/linux-mtd/2021-April/086124.html
+> =
+
+> Sorry for the trouble!
+
+Don't worry. This is what testing is good for, so let's be glad it was
+caught.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
