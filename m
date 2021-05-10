@@ -1,95 +1,67 @@
-Delivery-date: Mon, 10 May 2021 12:19:34 +0200
+Delivery-date: Mon, 10 May 2021 12:30:38 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lg30e-0002nd-8K
-	for lore@lore.pengutronix.de; Mon, 10 May 2021 12:19:34 +0200
+	id 1lg3BO-0002sq-BJ
+	for lore@lore.pengutronix.de; Mon, 10 May 2021 12:30:38 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lg30d-0003kq-BZ
-	for lore@pengutronix.de; Mon, 10 May 2021 12:19:32 +0200
+	id 1lg3BN-0005gF-EC
+	for lore@pengutronix.de; Mon, 10 May 2021 12:30:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=FAAq1ve2yCeHrbdBA4shunNpRrPRou5R8QnjbTvDdjA=; b=HXV4XLgOyEJ9aZ6yDVoI2myVR
-	Gbt8P8iBcoeexmgSrh6KRLiBSnyklj2PVOB2ULwK3E9XOUifqNAjGyE16Kxx68p/JStpfIB2jfYps
-	skKBHkDyiYON/uxxEOg/RHWDpYy0sntHySupj9NZxPgNyTdrf7y7RJyiXiakh5Zic9HItj7qNp6jo
-	L5J7caBCexcOTNGqvMV9ce4Hva0H/hj5pzVl31Xj27DN1GsW9pKGaVMsSYFfibf3iaeBdSHKv06g4
-	Yoddi3Qu7ibPGfYfMxJd7qXd4/X/qH149bddV0xfWTF3+5GX8g1Zz3Xlg4tVKQhiEbxffutD1zp+0
-	dpLd3i0Kw==;
+	 bh=qCUjATvlTFdXUkKBVFjDF+iCaTCXXAc5iOzNWMtSi7U=; b=b6v6m+ziCOvL+KEZjvWK2GZaI
+	kMmiwYmJILCl6uTER3JjU+3kt7Q3HHBaOciMaJY+AxfNLWyJlBdk8jMx4oR2cGquzrslgNNJ+rhCY
+	e+8AwZ3UAgarIIQGym9JNqv9aiH6OKCtw9cU4YF2ss5POkqbLMM4Y3ncFNXOUjBgC2MLUF0bFMkIr
+	qk1094BjmvY61jzHcR9fxQDRpsuMyrVgPi3JkZPHtXOZPuYENIwsZkRXUiIFHXQ3j5VROQuGA09A8
+	fMNjrz6mb0ZIAA5Kd4kTq/vF7XKdmRWhKSjH9vTmvReqSxjeKYN3fxGxbB2khi/FWMEpmvgSPkPus
+	nvX07WUng==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lg2zf-00DuL6-F3; Mon, 10 May 2021 10:18:31 +0000
+	id 1lg3AB-00DwCn-9d; Mon, 10 May 2021 10:29:23 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lg2zZ-00DuKi-3W
- for barebox@desiato.infradead.org; Mon, 10 May 2021 10:18:25 +0000
+ id 1lg36S-00DvZ5-Ro
+ for barebox@desiato.infradead.org; Mon, 10 May 2021 10:25:32 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=jdka4R+e9VGKqv8uYbC3iyws6d9Yzf4eSXh4GfWiURU=; b=KVXhnw1S+0ceQpmxGnRMMrMbH9
- XxS/keuyGXBHbd0ajgx0f5raZBPSuSRBXR5gkRHnOpkRgwXqHuajp924RQPT8ViSGLi1UhHxqPkbD
- G7NiawocsALl3i9V2bas/Zp74+/wVfkB1k4ZRPoCA+g9tQ8ysLGu0vxCEgSauwkntmGSytBl4oOik
- ZsdFgbsJYGg8e4S565LT5RfF9+JEY3qtG+n2amCtlEP8/Y1wTXt4c6twE3Nj2x0NwdOHbD/a4HldO
- jDXq3eqAG3H2sivL2aFcifSQJHOXStvpQoz40xHrhQezdB+hR5L0S2oFVSNSpeEarWz98yccrhe2s
- OmjEicqA==;
-Received: from mib.mailinblack.com ([137.74.84.110])
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:
+ Reply-To:Cc:Content-Type:Content-ID:Content-Description;
+ bh=fQ1aONZpRKVzLDzKdNkk3cr9L5VFq5Dr78Cdk/Z6+OU=; b=TBuzTyQZ5A+iNkJoYM1LoqUu4L
+ zkvOoAZ12bzjoWxLa3rF2+ZzUYRatw/Na7oWTMbyhPidZ9U5p403qnoYI1/RdaHjwvi9/rc3M+x47
+ XUiveFNFgu+id3eFBILCz8DY9eWOKEBPB+TT1GepXsOGh9vryAO4ICm5hMu+WaH6qBybPldkzBsnK
+ apZtwkaoR8oYr7M45gkQVJP+Au8aXYshMHHcpOj9c7u5yp/15/xfa5WUTCmxlwiJen+stp/qGOwd9
+ FZuNxlrEd6VxHWVkzVFR7e+tOsp3TQhQKQp7dQJ+AXIb9jihmhPM52OxKQ7LKT2laNYPjBKtujrKl
+ YKwOCP6g==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lg2zW-008WD5-8k
- for barebox@lists.infradead.org; Mon, 10 May 2021 10:18:23 +0000
-Received: from localhost (localhost [127.0.0.1])
- by mib.mailinblack.com (Postfix) with ESMTP id E08B41A09AF
- for <barebox@lists.infradead.org>; Mon, 10 May 2021 10:18:15 +0000 (UTC)
-Received: from mib.mailinblack.com (localhost [127.0.0.1])
- by mib.mailinblack.com with SMTP (Mib Daemon ) id KOIGC9YF;
- Mon, 10 May 2021 10:18:15 +0000 (UTC)
-Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
- by mib.mailinblack.com (Postfix) with ESMTPS id B8F751A09AC;
- Mon, 10 May 2021 10:18:15 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 90B7827E063F;
- Mon, 10 May 2021 12:18:15 +0200 (CEST)
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id b477vj4xZhrE; Mon, 10 May 2021 12:18:15 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 44CE827E0720;
- Mon, 10 May 2021 12:18:15 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 44CE827E0720
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1620641895;
- bh=jdka4R+e9VGKqv8uYbC3iyws6d9Yzf4eSXh4GfWiURU=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=i2sQ5mqb2a6u/1er3Q5qA94KQTP2jy4VYWsASpOGskT9XhVSochWWSoUnMOeEkLDM
- q1mT+GxLbSGqhWPgJXx5XMlAeUDAwZsAMv08sPRKhw1UKXtzKUVrPz0xD3l6LDg+KS
- xIxAjP+uZAo4scklqp07bJ7z4obBrNOIeYw7VoV4=
-X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id TZwu0G_2WVaV; Mon, 10 May 2021 12:18:15 +0200 (CEST)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
- by zimbra2.kalray.eu (Postfix) with ESMTPSA id 31A1B27E063F;
- Mon, 10 May 2021 12:18:15 +0200 (CEST)
-Date: Mon, 10 May 2021 12:18:08 +0200
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: Neeraj Pal <neerajpal09@gmail.com>, barebox@lists.infradead.org
-Message-ID: <20210510101742.GA20010@tellis.lin.mbt.kalray.eu>
-References: <CANi4_RU6QrU-ciUTpkLzGxp4fbibn0Dhyo4xP1m0=Mxm5LA74g@mail.gmail.com>
- <20210507105830.GW19819@pengutronix.de>
+ id 1lg36P-008Wgd-PD
+ for barebox@lists.infradead.org; Mon, 10 May 2021 10:25:31 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mfe@pengutronix.de>) id 1lg36L-0004nU-Hv
+ for barebox@lists.infradead.org; Mon, 10 May 2021 12:25:25 +0200
+Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mfe@pengutronix.de>) id 1lg36L-0003f5-5g
+ for barebox@lists.infradead.org; Mon, 10 May 2021 12:25:25 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Mon, 10 May 2021 12:25:23 +0200
+Message-Id: <20210510102523.7147-3-m.felsch@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210510102523.7147-1-m.felsch@pengutronix.de>
+References: <20210510102523.7147-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210507105830.GW19819@pengutronix.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210510_031822_534051_0B8B4C40 
-X-CRM114-Status: GOOD (  14.50  )
+X-CRM114-CacheID: sfid-20210510_032529_844484_2CD0112C 
+X-CRM114-Status: GOOD (  23.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -109,45 +81,138 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [BUG] Out of bound read of size 1 in __d_alloc function which
- further leads to __default_memcpy function
+Subject: [PATCH v3 3/3] fs: add linux_rootarg 'root=mmcblkXpN' support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
+Since commit fa2d0aa96941 ("mmc: core: Allow setting slot index via
+device tree alias") the linux kernel supports stable mmc device names.
+Barebox has stable names since years so now we can connect both which
+allows us to pass 'root=mmcblkXpN' as argument for the cmdline. Note: it
+is crucial that the kernel device tree and the barebox device tree uses
+the same mmc aliases.
 
-On Fri, May 07, 2021 at 12:58:30PM +0200, Sascha Hauer wrote:
-> Hi,
-> 
-> On Sun, Apr 18, 2021 at 01:10:10AM +0530, Neeraj Pal wrote:
-> > Hi,
-> > 
-> > I have found the Out of bound read issue of size 1 when argv[2] is "" in
-> > __d_alloc function fs/fs.c:1254 which further goes
-> > and crashes into  __default_memcpy call lib/string.c:562
-> > 
-> > Tested on:
-> > - barebox-2021.04.0
-> > - git commit af0f068a6edad45b033e772056ac0352e1ba3613
-> 
-> I can reproduce this here. Thanks for reporting it. I just sent out a
-> series fixing this issue, you are on Cc:
-I think this should also be fixed by the patch I've sent:
-(74946415a "fs: Fix link_path_walk to return -ENOENT on empty path")
+This patch adds the support to store the above cmdline as linux_rootarg
+if enabled. The partuuid is now used as fallback since it is not as
+unique as the mmcblkXpN scheme. It is added as build option since the
+system integrator needs to check if the used kernel contains the above
+commit.
 
-This patch might not have fixed this exact case when running the nfs
-command. Have you been able to repoduce this issue with this patch
-applied ?
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+v3:
+- fix Kconfig spelling
+- check if cdev has an master (cdev->master) before accessing it.
 
-I've havn't tried to setup a net interface to debug nfs commandi,
-instead I was using simpler command such as `md5sum ""`.
+v2:
+- improved Kconfig deps
+- improved Kconfig help message
+- minimal get_linux_mmcblkdev() simplifications
 
-Best,
-Jules
+ common/Kconfig | 21 +++++++++++++++++++++
+ fs/fs.c        | 43 +++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 60 insertions(+), 4 deletions(-)
+
+diff --git a/common/Kconfig b/common/Kconfig
+index 6b3c1701be..db7cc6713a 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -700,6 +700,27 @@ config FLEXIBLE_BOOTARGS
+ 	  to replace parts of the bootargs string without reconstructing it
+ 	  completely.
+ 
++config MMCBLKDEV_ROOTARG
++	bool
++	prompt "Support 'root=mmcblkXpN' cmdline appending"
++	depends on FLEXIBLE_BOOTARGS
++	depends on MCI
++	depends on OFTREE
++	help
++	  Enable this option to append 'root=mmcblkXpN' to the cmdline instead
++	  of 'root=PARTUUID=XYZ'. Don't enable this option if your used linux
++	  kernel doesn't contain commit [1]. The first linux kernel release
++	  containing that commit is v5.10-rc1.
++
++	  The appending only happen if barebox 'linux.bootargs.bootm.appendroot'
++	  variable is set or the used blspec entry contains 'linux-appendroot'.
++
++	  Note: It is crucial that the kernel device tree and the barebox device
++	  tree uses the same mmc aliases.
++
++	  [1] fa2d0aa96941 ("mmc: core: Allow setting slot index via device tree
++	      alias")
++
+ config BAREBOX_UPDATE
+ 	bool "In-system barebox update infrastructure"
+ 
+diff --git a/fs/fs.c b/fs/fs.c
+index 881dc2fca0..6d952a18b1 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -2831,6 +2831,33 @@ out:
+ }
+ EXPORT_SYMBOL(chdir);
+ 
++static char *get_linux_mmcblkdev(struct fs_device_d *fsdev)
++{
++	struct cdev *cdevm, *cdev;
++	int id, partnum;
++
++	cdevm = fsdev->cdev->master;
++	id = of_alias_get_id(cdevm->device_node, "mmc");
++	if (id < 0)
++		return NULL;
++
++	partnum = 1; /* linux partitions are 1 based */
++	list_for_each_entry(cdev, &cdevm->partitions, partition_entry) {
++
++		/*
++		 * Partname is not guaranteed but this partition cdev is listed
++		 * in the partitions list so we need to count it instead of
++		 * skipping it.
++		 */
++		if (cdev->partname &&
++		    !strcmp(cdev->partname, fsdev->cdev->partname))
++			return basprintf("root=/dev/mmcblk%dp%d", id, partnum);
++		partnum++;
++	}
++
++	return NULL;
++}
++
+ /*
+  * Mount a device to a directory.
+  * We do this by registering a new device on which the filesystem
+@@ -2919,11 +2946,19 @@ int mount(const char *device, const char *fsname, const char *pathname,
+ 
+ 	fsdev->vfsmount.mnt_root = fsdev->sb.s_root;
+ 
+-	if (!fsdev->linux_rootarg && fsdev->cdev && fsdev->cdev->partuuid[0] != 0) {
+-		char *str = basprintf("root=PARTUUID=%s",
+-					fsdev->cdev->partuuid);
++	if (!fsdev->linux_rootarg && fsdev->cdev) {
++		char *str = NULL;
++
++		if (IS_ENABLED(CONFIG_MMCBLKDEV_ROOTARG) &&
++		    fsdev->cdev->master &&
++		    cdev_is_mci_main_part_dev(fsdev->cdev->master))
++			str = get_linux_mmcblkdev(fsdev);
++
++		if (!str && fsdev->cdev->partuuid[0] != 0)
++			str = basprintf("root=PARTUUID=%s", fsdev->cdev->partuuid);
+ 
+-		fsdev_set_linux_rootarg(fsdev, str);
++		if (str)
++			fsdev_set_linux_rootarg(fsdev, str);
+ 	}
+ 
+ 	path_put(&path);
+-- 
+2.29.2
 
 
 _______________________________________________
