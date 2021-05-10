@@ -1,75 +1,75 @@
-Delivery-date: Mon, 10 May 2021 09:21:17 +0200
+Delivery-date: Mon, 10 May 2021 09:23:11 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lg0E9-0001hm-8K
-	for lore@lore.pengutronix.de; Mon, 10 May 2021 09:21:17 +0200
+	id 1lg0Fz-0001j2-FI
+	for lore@lore.pengutronix.de; Mon, 10 May 2021 09:23:11 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lg0E8-0006wW-Ef
-	for lore@pengutronix.de; Mon, 10 May 2021 09:21:17 +0200
+	id 1lg0Fy-0007I4-K4
+	for lore@pengutronix.de; Mon, 10 May 2021 09:23:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=JuGPe6DIE3dgsNIvb4KNRmkMHU/96dHT9TB7sDDxW0Y=; b=aOXVI+AQI5SbiP0VV4Rpz8bxX
-	lyQuAERdCKJC3O1Utq0cen0Qbpthl8f/SaK0QgrqTcejiQlKc1aQM6yq1z+t84pIpr3tG8bNYpV08
-	l4DHPdj+noFajPrazH2fjRbwOQmWoO1eDfu5Smb+MqXgoFRO+J4caVqzZchKJdGrGMto4q6Dlqz+L
-	x0MBhD1Gt2gHEMfGPPZ1cTeV1bxOVlCoEtq3G413nEftAJvfsE8mAF2FP0XQRx9413FSUs+asaZBw
-	iKcExaOQ+xJtf6kxMCFyU/ZUmmIikN+7K4PGgqa+yzRZcbwZxqR8v/8t5p28Y3aJUxx33x/TzJhgM
-	cPceUn58w==;
+	 bh=B/8U27KmtkGPfXOfNnVqNxtjb/tfv6eny9LDJ/ghODA=; b=Msvf063EwIfPHgGmczuCuDG58
+	UKwxHi8Nl+frsA4y8dNMtzZ1zrSw8aHeFR6LGHOUiijpWxegDgNstBChJisc2uDvEtwVzaq+74tIR
+	fZLJ+I7c9XTG06tYGlCklP8ESyPJ0CCNo4/xyciIFDCKfgxWwj9sDGlzJNVvS0R8pwOAr2dlLx+mz
+	ErVKpQGniWhqb45k8CXMrxOIqYBCBKu8wFzac8uZ6R9sPHjWrgl9Gaf+8Rcn0cQ3NGhzpm4HUsFgf
+	UbcntEvLKMFWD4pqd1ezKlVniPbq++hNsgCIa4b8emN0XfHXewOO24Rk4VHQ63dy50pXMXGT9AbpI
+	8olyOOV/Q==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lg0DB-00DU4O-RH; Mon, 10 May 2021 07:20:17 +0000
+	id 1lg0Ev-00DUOl-PJ; Mon, 10 May 2021 07:22:05 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lg0D7-00DU3z-5Z
- for barebox@desiato.infradead.org; Mon, 10 May 2021 07:20:13 +0000
+ id 1lg0Eq-00DUOO-Vx
+ for barebox@desiato.infradead.org; Mon, 10 May 2021 07:22:01 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
  MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=3pO22jOJ9WfELxN5QTfKZO4VUa3ysdz/HP/NHsomQ58=; b=GeoSdGA/5oB218uIPv8qix7paw
- dneMA+cwvZncJBkwIRVgoJTjybw1SRiXbQtjJc6FA5fvKnemj514n6CVoj/mMu+6F/ck05wrTvOvh
- rgDAOQNBET1jR9bxUkCSJ4WP6LMylG/aSuFb0aM/jAjUW6wuuFaRLY9sf64L5X4Jyf9Ad5tlcndV2
- DEFymrijG1xZ5jDbmFeLT1bfpMy6Q58vZr/AxQBqmqDoYrIUo/096Mu6LUdOc8koIGbOSJ+cG+Fvw
- kUBwf6FZCMpsWnEHHNT7oDvLTE6LBnv7qam8/R0Y8frMQ4D5b5LCGNhiFAooaQe7cgcS3oG8cNgEs
- Jtt8K78A==;
+ bh=giqy42xJ3XAfc/sjSHj4r919h5lrZ73d+hV65T4rOY0=; b=OFWln8P79KXoLxoFSR8jhX1AwP
+ bBR5sBy7keiEO4JIB9xkbflvZRzxnT7MailSJFeneH3300+ge83Obf/JEEYeD8pBR97aPRjO0Cafr
+ c9o5UbZ3h/6hX7QmAZWXSxxINA6jCtqOH9my/KHQdz6ad/SfrZgnkfpDog8K4Ae/g9sQ9gqkBtvAx
+ IeDO2XvBtXkq0dz13mbe795UB8eghj96PKjhI4RyuviE6BzFFJRNCOqIyBmZ4G8HH+0izxn0DdRTb
+ U9X0mhQkdDAL5w/DzgZuu9jqN+SQ1bjDcqg+kN7gMgalr999zOI+3F7tVFq5X3p14gBu1Ie/5kAlp
+ 0nz3GoXA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lg0D4-008Mxf-DM
- for barebox@lists.infradead.org; Mon, 10 May 2021 07:20:11 +0000
+ id 1lg0Eo-008N6T-BT
+ for barebox@lists.infradead.org; Mon, 10 May 2021 07:21:59 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lg0D3-0006b0-5d; Mon, 10 May 2021 09:20:09 +0200
+ id 1lg0En-00074Y-4D; Mon, 10 May 2021 09:21:57 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lg0D2-0008RZ-Qq; Mon, 10 May 2021 09:20:08 +0200
-Date: Mon, 10 May 2021 09:20:08 +0200
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: Barebox Mailing List <barebox@lists.infradead.org>
-Message-ID: <20210510072008.GY19819@pengutronix.de>
-References: <20210507114325.6486-1-rhi@pengutronix.de>
+ id 1lg0Em-0000cN-RV; Mon, 10 May 2021 09:21:56 +0200
+Date: Mon, 10 May 2021 09:21:56 +0200
+To: Neeraj Pal <neerajpal09@gmail.com>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210510072156.GZ19819@pengutronix.de>
+References: <20210508193654.81389-1-neerajpal09@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210507114325.6486-1-rhi@pengutronix.de>
+In-Reply-To: <20210508193654.81389-1-neerajpal09@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 09:20:00 up 81 days, 10:43, 94 users,  load average: 1.11, 1.32, 0.93
+X-Uptime: 09:21:48 up 81 days, 10:45, 94 users,  load average: 2.64, 1.71, 1.10
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210510_002010_478171_F6DB1859 
-X-CRM114-Status: GOOD (  30.52  )
+X-CRM114-CacheID: sfid-20210510_002158_409067_DFC54A2D 
+X-CRM114-Status: GOOD (  20.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,43 +93,36 @@ X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] README: advertise lore.barebox.org instead of
- mail-archive.com
+Subject: Re: [PATCH] Removed Unreachable code: net/net.c: net_handle_arp()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, May 07, 2021 at 01:43:25PM +0200, Roland Hieber wrote:
-> The archived messages at mail-archive.org only contain a few headers,
-> and getting git-am-able patch mails from their HTML pages is quirky at
-> best. Replace the link with the new lore instance, which has a number of
-> advantages, like raw message contents with full headers, cloneable git
-> archives, and interoperability with the b4 command line tool.
-> 
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+On Sun, May 09, 2021 at 01:06:56AM +0530, Neeraj Pal wrote:
+> Signed-off-by: Neeraj Pal <neerajpal09@gmail.com>
 > ---
->  README | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  net/net.c | 2 --
+>  1 file changed, 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/README b/README
-> index 7c5ef9f8187a..37fd80c10280 100644
-> --- a/README
-> +++ b/README
-> @@ -231,7 +231,7 @@ Contributing
->  For any questions regarding barebox, send a mail to the mailing list at
->  <barebox@lists.infradead.org>. The archives for this list are available
->  publicly at <http://lists.infradead.org/pipermail/barebox/> and
-> -<https://www.mail-archive.com/barebox@lists.infradead.org/>.
-> +<https://lore.barebox.org/barebox/>.
+> diff --git a/net/net.c b/net/net.c
+> index 4dffc1bd5..fdb9ab826 100644
+> --- a/net/net.c
+> +++ b/net/net.c
+> @@ -577,8 +577,6 @@ static int net_handle_arp(struct eth_device *edev, unsigned char *pkt, int len)
+>  		return -EINVAL;
+>  	}
 >  
->  The same list should also be used to send patches. barebox uses a similar
->  process as the Linux kernel, so most of the Linux guide for submitting patches
+> -	return 0;
+> -
+>  bad:
+>  	net_bad_packet(pkt, len);
+>  	return -EINVAL;
 > -- 
-> 2.29.2
+> 2.25.1
 > 
 > 
 > _______________________________________________
