@@ -1,84 +1,84 @@
-Delivery-date: Tue, 11 May 2021 13:57:20 +0200
+Delivery-date: Tue, 11 May 2021 14:02:59 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lgR0q-0004la-Ai
-	for lore@lore.pengutronix.de; Tue, 11 May 2021 13:57:20 +0200
+	id 1lgR6J-0004o9-OW
+	for lore@lore.pengutronix.de; Tue, 11 May 2021 14:02:59 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lgR0p-0007RY-Ck
-	for lore@pengutronix.de; Tue, 11 May 2021 13:57:20 +0200
+	id 1lgR6I-0008Lr-Ql
+	for lore@pengutronix.de; Tue, 11 May 2021 14:02:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=sgYHbDfEiwIdHpphSwp1f8wPbJqNsqMnC1eLKAiQmKk=; b=YFVYMuCJZ5mpQoiyi0pBodfFR
-	vOe4EEzofZwmlfbN3JhRGuFcVOEbexYUBDjvtSxqdGeuDTSXPEEiOTkmc6nRQLC1GO93kabnpMJNB
-	1Q1j/1KnUmPMI3FUFE9ZJ5cu85OudDaDFNgVGjnOTZwGb1bfhmQPnxSNdJJAI3kfZOfoTSEWI8MdL
-	SmrkViJDuqnEZ2TD/tkpJWwr6/r/ughVKzGW6X7C6k54QoVtxy0T/IGw2AwPHgco8rZ1Y2zwvHiOy
-	Qcbhb9YQQGhAWqbeXsQyGriG7q+vvFDnL4+7rfmPsfn/HFapHnr6ky75KJoF9DNGD84TvxTJ0E/5F
-	fCCE1tOfg==;
+	 bh=4zG0PqGVG/LqIHYovg7QVsDapXaMSlhVjqST14CpQkM=; b=KBSRAGAGdzEsgE5pbTkM1b2gK
+	rGl2c4GcIAwqAcrd95vOl1/bfcECJMXMVQYwlwzX16trO8S5x4jujoKSb4B56qayKLB3lQXEZUKQ6
+	QQQzGVtG8rQ2bjcu9yENx/btXvTBAT/KoEdKt3rKRQUU4Zbm7gU2doY75MaCF1bneIMNJgeYj8oUB
+	aqsfHt7R0qn7+IyYnzWqqz+3we92UuVwkMjK6BeFGQqk1cUuap9TKWjDVEkEorjXojLqIjAsTwGuK
+	hsljfINnLg3RUT3uAcsQ4UZJMGn9mm2qPb+r2XcCEy0LybSlLgYxjnb9RuMslGdYPqA5mJgUJZ59y
+	/YrLkEd+w==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lgQzj-00HFHf-Po; Tue, 11 May 2021 11:56:11 +0000
+	id 1lgR59-00HGnR-C5; Tue, 11 May 2021 12:01:47 +0000
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lgNBc-00GXwk-PD
- for barebox@desiato.infradead.org; Tue, 11 May 2021 07:52:15 +0000
+ id 1lgNJK-00GYNk-12
+ for barebox@desiato.infradead.org; Tue, 11 May 2021 08:00:13 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=h5vtwquAmTK9WGAYYEl6xrd3ORJcLD15tpiyauAPCtg=; b=BMcV7E/qf+fZXPIJWalLhyn6hS
- 58b51XyhQwaSwduAGOlwMIl7ljtNZql3nPGjZf9ChbJMyCe5rPwMuEIf+3OgLgnvGJ3EaNrS+luqL
- 2ruCC7+/IwZpQtR8hHWdYAOs3vlj5zAtXN/KEaro/AjkmXYx72Xfb9tm54WBHXZkvLo+nzDQLmaJR
- zPm/2ZZmmYhf8rPIbJDbusRkAiEKMZMquraQ1Fxwqm6n3s+McOIqkqDEWyAgdYjLrJudQ3KH5jbkm
- lDy20ovC63tPffDO55vVmODbi2L9DHHsoBKAy3QOuRrKk1sfkOkNcY7IItJbkDV4YxrVumcDPTR3h
- 8gwlOKjQ==;
+ bh=MY/raPtJr7YjuIWQeDK/TgnHH2gpXVui85SPW34IHq0=; b=tZqiiUhOJ52XmmDdP4h1t27g8h
+ 1h5Bx0eUKQjj+Dq8A2TF347PVhPo3KVAHiWMOdwUivvouag5Uj735k367NouU2/UFZqZC/q4sUmAv
+ CkHfpzHPGHz1kdDncMSHr02ahzQZBifgY7CX6oSAQxW0eqqQa2AoGnfLBmAcdAZkzs8eC8AzdTQqN
+ Wsr+5qckDrd1KJHkcGc4xVg5BUFncpbkt40l4dy/BXEIJG/jAVkQOvZS/PiIAxh5Q13IS5xwpHRRT
+ xKmDeznPiTOtwnSZvgw8HVEJZ19FRpNk5g7f/CBSmcYGEkBx2+HnoVl64I6x/Pa0rKPztm0iGwvn4
+ GMYI2/eQ==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lgNBY-009NHO-MA
- for barebox@lists.infradead.org; Tue, 11 May 2021 07:52:10 +0000
+ id 1lgNJH-009NYC-BP
+ for barebox@lists.infradead.org; Tue, 11 May 2021 08:00:08 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lgNBU-0007tu-Th; Tue, 11 May 2021 09:52:04 +0200
+ id 1lgNJE-0000Ov-D7; Tue, 11 May 2021 10:00:04 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lgNBU-0000RQ-8o; Tue, 11 May 2021 09:52:04 +0200
-Date: Tue, 11 May 2021 09:52:04 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210511075204.GE19819@pengutronix.de>
-References: <20210426143025.149717-1-antonynpavlov@gmail.com>
- <20210503111643.GY19819@pengutronix.de>
- <20210511095826.c13f0a0843013f040ac70c49@gmail.com>
+ id 1lgNJD-0000iJ-Kg; Tue, 11 May 2021 10:00:03 +0200
+Date: Tue, 11 May 2021 10:00:03 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: Neeraj Pal <neerajpal09@gmail.com>, barebox@lists.infradead.org
+Message-ID: <20210511080003.GF19819@pengutronix.de>
+References: <CANi4_RU6QrU-ciUTpkLzGxp4fbibn0Dhyo4xP1m0=Mxm5LA74g@mail.gmail.com>
+ <20210507105830.GW19819@pengutronix.de>
+ <20210510101742.GA20010@tellis.lin.mbt.kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210511095826.c13f0a0843013f040ac70c49@gmail.com>
+In-Reply-To: <20210510101742.GA20010@tellis.lin.mbt.kalray.eu>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 09:51:02 up 82 days, 11:14, 104 users,  load average: 0.09, 0.11,
- 0.18
+X-Uptime: 09:58:30 up 82 days, 11:22, 105 users,  load average: 0.09, 0.08,
+ 0.14
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210511_005208_751820_E17E3B28 
-X-CRM114-Status: GOOD (  28.93  )
+X-CRM114-CacheID: sfid-20210511_010007_416470_44EBDF53 
+X-CRM114-Status: GOOD (  27.74  )
 /bin/ln: failed to access
- 'reaver_cache/texts/20210511_005208_751820_E17E3B28': No such file or
+ 'reaver_cache/texts/20210511_010007_416470_44EBDF53': No such file or
  directory
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210511_005208_751820_E17E3B28 
-X-CRM114-Status: GOOD (  26.09  )
+X-CRM114-CacheID: sfid-20210511_010007_416470_44EBDF53 
+X-CRM114-Status: GOOD (  24.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,62 +98,48 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] startup: introduce global.endianness variable
+Subject: Re: [BUG] Out of bound read of size 1 in __d_alloc function which
+ further leads to __default_memcpy function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, May 11, 2021 at 09:58:26AM +0300, Antony Pavlov wrote:
-> On Mon, 3 May 2021 13:16:43 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Mon, May 10, 2021 at 12:18:08PM +0200, Jules Maselbas wrote:
+> Hi,
 > 
-> Hi Sascha!
-> 
-> > On Mon, Apr 26, 2021 at 05:30:25PM +0300, Antony Pavlov wrote:
-> > > The global.endianness variable makes it possible
-> > > to determine current endian mode from command
-> > > line or from script on bi-endian capable system.
-> > > 
-> > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > ---
-> > >  common/globalvar.c | 10 ++++++++++
-> > >  1 file changed, 10 insertions(+)
-> > > 
-> > > diff --git a/common/globalvar.c b/common/globalvar.c
-> > > index a55b38b00f..75ce6331b7 100644
-> > > --- a/common/globalvar.c
-> > > +++ b/common/globalvar.c
-> > > @@ -641,6 +641,8 @@ int globalvar_add_simple_ip(const char *name, IPaddr_t *ip)
-> > >  
-> > >  static int globalvar_init(void)
-> > >  {
-> > > +	const char *endianness;
-> > > +
-> > >  	register_device(&global_device);
-> > >  
-> > >  	if (IS_ENABLED(CONFIG_NVVAR))
-> > > @@ -651,6 +653,13 @@ static int globalvar_init(void)
-> > >  	if (strlen(buildsystem_version_string) > 0)
-> > >  		globalvar_add_simple("buildsystem.version", buildsystem_version_string);
-> > >  
-> > > +	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
-> > > +		endianness = "big";
-> > > +	else
-> > > +		endianness = "little";
+> On Fri, May 07, 2021 at 12:58:30PM +0200, Sascha Hauer wrote:
+> > Hi,
 > > 
-> > PowerPC is for sure big endian, but doesn't set CONFIG_CPU_BIG_ENDIAN,
-> > so will be erroneously be identified as little endian with this patch.
-> > Either you fix that or depend on something like #if __BYTE_ORDER ==
-> > __LITTLE_ENDIAN
+> > On Sun, Apr 18, 2021 at 01:10:10AM +0530, Neeraj Pal wrote:
+> > > Hi,
+> > > 
+> > > I have found the Out of bound read issue of size 1 when argv[2] is "" in
+> > > __d_alloc function fs/fs.c:1254 which further goes
+> > > and crashes into  __default_memcpy call lib/string.c:562
+> > > 
+> > > Tested on:
+> > > - barebox-2021.04.0
+> > > - git commit af0f068a6edad45b033e772056ac0352e1ba3613
+> > 
+> > I can reproduce this here. Thanks for reporting it. I just sent out a
+> > series fixing this issue, you are on Cc:
+> I think this should also be fixed by the patch I've sent:
+> (74946415a "fs: Fix link_path_walk to return -ENOENT on empty path")
 > 
-> Barebox don't use "__BYTE_ORDER == __*_ENDIAN" solution. 
+> This patch might not have fixed this exact case when running the nfs
+> command. Have you been able to repoduce this issue with this patch
+> applied ?
 > 
-> Please see include/envfs.h:
+> I've havn't tried to setup a net interface to debug nfs commandi,
+> instead I was using simpler command such as `md5sum ""`.
 
-Right, then #ifdef __LITTLE_ENDIAN would be correct.
+Indeed I can confirm that 74946415a already fixes the issue, also with a
+'nfs foo ""' command. This renders my patches unnecessary for this
+issue, but still I think they do the right thing, so I tend to keep
+them.
 
 Sascha
 
