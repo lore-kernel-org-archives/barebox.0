@@ -1,84 +1,94 @@
-Delivery-date: Tue, 11 May 2021 14:27:20 +0200
+Delivery-date: Tue, 11 May 2021 15:05:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lgRTs-00050W-Mq
-	for lore@lore.pengutronix.de; Tue, 11 May 2021 14:27:20 +0200
+	id 1lgS4Z-0005Qs-0D
+	for lore@lore.pengutronix.de; Tue, 11 May 2021 15:05:15 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lgRTr-0003ia-Lr
-	for lore@pengutronix.de; Tue, 11 May 2021 14:27:20 +0200
+	id 1lgS4Y-0001Cm-5g
+	for lore@pengutronix.de; Tue, 11 May 2021 15:05:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
+	List-Unsubscribe:List-Id:Mime-Version:References:In-Reply-To:Message-Id:
 	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=BbA28YQ/z8tz1mzIzA0O10UL6bHCanxjVpCDGAWeP7g=; b=b8n2uW+KvD1+/MZNBtvB612eb
-	APIgPpDw8CF2H841LzNM3kKSeiapVXbQSGqSLtkssADvVT/NKaaAJl9nCbK9fSvpZxxOAEE24+wjP
-	AYFIUNOiAGpiWCpSp7660kd67nI9TxFqRLUDBlpypK7saqtaK2b2aSJmbn8sPHwb2IugdLNSzHj8g
-	U7SQ8reV0NXh9d9bbn1hP3CYM9yg4CFCynUh0t1m8I6e3qiitnPy1PZVuoc7T9HyIOO0jtGNBej/g
-	toN6AaYzgi6P1m6GrAQ4WB46wueHaYkGikiCz+wkCV39pY9xTiywubm/aySE89wRSgWNzFxvs6mV8
-	3ugK/gxEQ==;
+	 bh=vzQbGWvBOFzKV6WUrntEA3w9RuBG+b0wdMXuA6uAlZ0=; b=RO9IJtKlvyp2YURf4Ss/mKvMy
+	DAEZ0DQxdinR2q/KeNte69RU5wLKJIyCqew3yVka8wW65zeYSP3z2+G+dXoPicm3PqC+gyQTqR8rV
+	NrsTlGQANMjVb9BnWUDYTT91k3FACGv7rtor/oIDgRwuoHAgjwlre0DMVt9HsZ5bCK3y8FSrSOgB6
+	JC8NiMkjIllrZFTkgXdJ21BcE1zZjAmsM5IFwT1PCU5jsvW1PQKZL6/A5C+PVLgnh7ztZN/gxJFj2
+	NsIEenrSE45AN2MecXVev3xRDsVzvjmOm+lGcyA6otsFvtdknXKgEshZlS6q4Km4iww/LsvDahhmS
+	oe+03RGoA==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lgRSw-00HNVX-Ul; Tue, 11 May 2021 12:26:23 +0000
-Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
+	id 1lgS3K-00HYuR-Eq; Tue, 11 May 2021 13:03:58 +0000
+Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lgOE6-00GdnL-RF
- for barebox@desiato.infradead.org; Tue, 11 May 2021 08:58:54 +0000
+ id 1lgQJ2-00H5AM-4P
+ for barebox@desiato.infradead.org; Tue, 11 May 2021 11:12:04 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=4x5RV+ZUncfUI+qd5Y1r0v+XNVjvKYIBYtsA9/oB8o0=; b=Tao2DzEjn3QWLfPDbTZpIFTpqV
- uBOvJH8kh0vggwkndjJnI9WkWD4smdHok4TDa7168r0CXFaJ4rypmErM+G4PHirXaizQgWYXc3ZK7
- YP5109ERw/WkPhZhxMYtsTmY/mAlkzYKX6fUdem/A7+g1W/bAG/oAksnJ/xPrhyvvLlzcrTdQVGLy
- qBKomZS9w6giAA3rAxTjwVHCPQkQP3m0wniY/kDUiSmHn6v6iIhcxZEFieO3YRkMvBGjqT6GrEcjD
- hJ0KV54f2hHx8hZDqp6CK/gRcjHNw4+XRZnGbNDJNdzl8nShMoMkzAK9TtwvwnpYDtAsy4nTw6G4+
- p9lDHlhg==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ Content-Type:Mime-Version:References:In-Reply-To:Message-Id:Subject:Cc:To:
+ From:Date:Sender:Reply-To:Content-ID:Content-Description;
+ bh=KxGCvlKdQQ8X0BDH14QqcH0RukEH3yCSLaZgleb9Ewc=; b=gV/e9UBAVKChjm8dxqn2HcZsas
+ bIG8SwpPhBMelVN/U8YCLes900X6hI7FMLru3QP72WQwkeJr48JDhOfjOBbqzy+LYJD4WjbKTZ8ey
+ vRpZnF0mE1ZqZKPWnUFcEKqm1qPJwIjPz8oWPRxGTm4V6zp+8BFQHupVIXJPLV8lksliBQR2J6Ttv
+ fjUfBPhvgFyJWn+Dy6XSpgoFKbJDoX8mfEBd/Z4KzDF4c8isK2DwB++el/0opt+qesFmJxNh1a0nb
+ U/ZushO8rhITGK1KdUV0afU4pY38Nb1MJrveP6p6ikpN7uRywa8SJk5sCORDt/P7u7rUtFNz+0fqJ
+ 719ryBtA==;
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lgOE4-009Pl0-2Y
- for barebox@lists.infradead.org; Tue, 11 May 2021 08:58:49 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lgOE2-0008C9-1e; Tue, 11 May 2021 10:58:46 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lgOE1-0004j4-Nb; Tue, 11 May 2021 10:58:45 +0200
-Date: Tue, 11 May 2021 10:58:45 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-To: Neeraj Pal <neerajpal09@gmail.com>
+ id 1lgQIz-009Vcr-En
+ for barebox@lists.infradead.org; Tue, 11 May 2021 11:12:02 +0000
+Received: by mail-lf1-x12a.google.com with SMTP id 2so28055832lft.4
+ for <barebox@lists.infradead.org>; Tue, 11 May 2021 04:12:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=KxGCvlKdQQ8X0BDH14QqcH0RukEH3yCSLaZgleb9Ewc=;
+ b=hsySCGTOWmY5nUEXqGr6Vho3ewYfl0g7OjPkpKQx4sLTlwfwn4JmppS0qdWlMwhJ6n
+ 6Vt6V6vZwvlOcz8So4w90bN5SSBs7Bf+78BXcjNSBp/BkW1BjIQG1Ltihn2ehHB2GvSO
+ 0iolkG6FJWhydbig1gNsB6jYtcYjAg9yfVuaahryJVRJdto7uXRcRl1magU3m0A9ZbrO
+ 9HPW6QGgMzOfU+54HU7NvVsE4wQ8nJ/gXZByr3xymdTlzWBZRf4woSIXjAqCPm97Il3/
+ IgSXYJzXYe/jnKPmgmBB2z2S3WJYgHS6fb7vRUp0yJd4Xn2elhsvKIMQO5iruRwgnDku
+ gwXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=KxGCvlKdQQ8X0BDH14QqcH0RukEH3yCSLaZgleb9Ewc=;
+ b=lxrubo/hlnc8Ih+M2KR0HnAF3GXOyydQSRCPKu5bTYfX6YZ4K/+Rq//tzIYOSMlqeu
+ qk0K1hPY6/TPexXYaKenRjJAE4HlK8iex9lKUC1La8Yspg0NjytZ0bWJmliUYSIPfhi8
+ kJXAbf9X7QOm98IV5KWQqIQVvSB9/peXqo8UGZpZOuefsVNwaPbK1R74lISUiBeebVhS
+ ZjUT/jBj/Yn9+qs0YjQbdRkBiCRAX2JrEXEuTf8r1YGJ0g6G6Dw0IarIoIGGqqAKYAso
+ DhgxeULrxynOmbgDqSyu5h4mKz9wTctFEULMkRBskDmR70mP4vELGK3vRUai6Ty0od/a
+ yTpA==
+X-Gm-Message-State: AOAM533ZRmNTCqxPsgTLjfcRMMPEMdFS1Uzc4Z0rgL6YDEmVwdUIkYFZ
+ MHmI1lZJVtOZ/HkeGdErggN8POLge9eHeA==
+X-Google-Smtp-Source: ABdhPJybRsHhPluRmYWGFosNMyDumZqsh3zTCzTy1r16zYBXGnqiKd8bEuwKd78ggy0fAkBzxfXT+g==
+X-Received: by 2002:a05:6512:3e9:: with SMTP id
+ n9mr20465766lfq.207.1620731519491; 
+ Tue, 11 May 2021 04:11:59 -0700 (PDT)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+ by smtp.gmail.com with ESMTPSA id g15sm2607321lfj.197.2021.05.11.04.11.59
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 11 May 2021 04:11:59 -0700 (PDT)
+Date: Tue, 11 May 2021 14:11:58 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210511085845.GG19819@pengutronix.de>
-References: <CANi4_RUhZuWvG+v9R1Ae5BmCtHx-Bz_4Ay0BiuBYCrqXUAOBiw@mail.gmail.com>
- <20210507084102.GU19819@pengutronix.de>
- <CANi4_RWKvQV68RaZLNBFTJP1z3vObuZYo-HRqfU6r4rL8ZxKoQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CANi4_RWKvQV68RaZLNBFTJP1z3vObuZYo-HRqfU6r4rL8ZxKoQ@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:54:43 up 82 days, 12:18, 106 users,  load average: 0.53, 0.61,
- 0.43
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-Id: <20210511141158.17cebe7b03b888a1a8bea331@gmail.com>
+In-Reply-To: <20210511064144.4930-2-a.fatoum@pengutronix.de>
+References: <20210511064144.4930-1-a.fatoum@pengutronix.de>
+ <20210511064144.4930-2-a.fatoum@pengutronix.de>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; i686-pc-linux-gnu)
+Mime-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210511_015848_141345_5140FC0E 
-X-CRM114-Status: GOOD (  26.35  )
-/bin/ln: failed to access
- 'reaver_cache/texts/20210511_015848_141345_5140FC0E': No such file or
- directory
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210511_015848_141345_5140FC0E 
-X-CRM114-Status: GOOD (  23.32  )
+X-CRM114-CacheID: sfid-20210511_041201_513366_C2A09EEB 
+X-CRM114-Status: GOOD (  13.63  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,65 +100,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2001:8b0:10b:1:d65d:64ff:fe57:4e05
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+X-Spam-Status: No, score=-2.6 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [BUG] Stack buffer overflow WRITE of size 1 in nfs_start function
+Subject: Re: [PATCH 2/2] RISC-V: extend multi-image to support both S- and
+ M-Mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, May 10, 2021 at 04:38:51PM +0530, Neeraj Pal wrote:
-> Hi Sascha,
-> 
-> Thank you for the patches.
-> 
-> I have confirmed it and observed no crashes as reported earlier but I
-> think there is a small typo in the nfs_start() function in
-> net/nfs.c#L677.
-> 
-> 672    static int nfs_start(char *p)
-> 673    {
-> 674        debug("%s\n", __func__);
-> 675
-> 676        nfs_path = strdup(p);
-> 677        if (nfs_path)
-> 678            return -ENOMEM;
-> 679
-> 
-> In line 677, if strdup is successful then it is returning ENOMEM so I
-> think there is a typo, it is supposed to check for NULL so it would be
-> if (!nfs_path) or if (nfs_path == NULL) then it should return ENOMEM.
-> 
-> Please confirm and also sending a small patch.
+On Tue, 11 May 2021 08:41:44 +0200
+Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 
-Ok, so my patch doesn't resolve the whole issue. I just tried the nfs
-command once after a long time now and this really seems to be broken
-in other ways as well. I tend to entirely remove the command instead
-of further trying to fix it. The normal way to handle nfs should be
-to use the NFS filesystem implementation anyway which would be
+> We can't currently mix S-Mode and M-Mode images in the same build
+> and there's no straight-forward way to determine which mode we are in.
+> =
 
-mount -t nfs $server:/path/to/share /foo
+> Move the decision on which mode barebox is targeted at out of Kconfig
+> and into the PBL. PBL code can call either barebox_riscv_supervisor_entry
+> or barebox_riscv_machine_entry to signal to barebox proper which mode
+> it's running in.
 
-I don't think we have the manpower to maintain two NFS implementations,
-so we shouldn't try to.
+It looks like this comment is slightly outdated.
+There is neither barebox_riscv_supervisor_entry nor barebox_riscv_machine_e=
+ntry
+inside the patch.
 
-Sascha
+> Currently the only user of this information is the
+> RISC-V timer clocksource driver.
+
+Please add necessary mode check to the sbi_init() from arch/riscv/lib/sbi.c=
+ too.
+
+> Any new code that does IS_ENABLED(CONFIG_RISCV_SBI) or
+> IS_ENABLED(CONFIG_RISCV_M_MODE) should also be adapted to use riscv_mode(=
+).
+> =
 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
