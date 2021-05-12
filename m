@@ -1,62 +1,75 @@
-Delivery-date: Tue, 11 May 2021 22:19:54 +0200
+Delivery-date: Wed, 12 May 2021 07:19:10 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lgYrC-00016k-3l
-	for lore@lore.pengutronix.de; Tue, 11 May 2021 22:19:54 +0200
+	id 1lghH4-00053q-Uq
+	for lore@lore.pengutronix.de; Wed, 12 May 2021 07:19:10 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lgYrB-0003AI-CX
-	for lore@pengutronix.de; Tue, 11 May 2021 22:19:53 +0200
+	id 1lghH4-0003SU-4A
+	for lore@pengutronix.de; Wed, 12 May 2021 07:19:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=nMmfRzG3eGIRWj/byiclX+cKDUf8x5hw579QgF23gJk=; b=N28jTQo+ZlEiwK
-	Ns33z/MHZNKC1eO66YmzT76d2GaRXsIAlgwykqHVMui5UELVLLh0yLHw/GRgrbsiq2iUGTlo14Xla
-	ZyD0R3gTzkozJy98vC42lz8XRiRmzHVzyy4iFQI9nu4NFyPtfR0HBHwlLvox7xrg9x4uhx/Q68RWJ
-	ekZUP8xoFLn0sPPWS99huUBEGpfhD+ONd1cm/4WmpaNCt3FJryGaQgBoSb4cQD+TUvnIprEjdo3lc
-	+MLV1TxBZSK4xm5QgVLOM1KOa+smZHwTE8SYDJiQqZ2cckDHbVsNa/mG5X1RdfEWTDX8Ui0m6H/fn
-	Zgsmv5QI4/YiVtQjywvQ==;
+	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=Ty+1pX2lC4TxCEOJQ5QUmsldb5PiiEm2CZS4965Q3LI=; b=GKWLewAGs9ZU0oiWAuhc4as6n
+	rW+r5Al3loTfET8KSVeuz6g5Ytg/UGHfqR33mlPHr8Jaiqbmc+ZN1H0P517IivsdKS2Mrkkhparmf
+	0qf2dzwoeevKmGVtoP6hqxToM8JCRHw1llGPV/FUMSmI8qNtK1r6aCoKWdUneOU6pdsb2u9fDfS7v
+	u2Dw+KrIWIZ6YWhfgeThtp8YeI7PxU+36fXJsLPMvjC/wqKpYNrN/2geCy3ZYqg2G7qsJHVFHslTu
+	5T/ckbsgyHp+OiYEuiTDIqu3vAi/CUofCyjJgov/5kfJPrzHi8r6XdAIdWlRM/NLAhvYwK7SxroE1
+	Upzy/2G9Q==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lgYpj-001Fjq-79; Tue, 11 May 2021 20:18:23 +0000
+	id 1lghFu-0022nt-4f; Wed, 12 May 2021 05:17:58 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lgYpa-001FiL-7C
- for barebox@desiato.infradead.org; Tue, 11 May 2021 20:18:14 +0000
+ id 1lghFq-0022ne-PG
+ for barebox@desiato.infradead.org; Wed, 12 May 2021 05:17:54 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=jIiQIoGY/m9qtDRP7/+dBJ8FBkhEuuW0luqlsAIUnpk=; b=1oiXiD/S2pxxKY6HVy5uG8pxDD
- +0s0U+cFJx6IdDGfHjZyTAkedvf+1s9FRo8ZzVMk7i1uMGdulKU4tnflfwDcBAKXQ7DCS6ZouKR34
- hH2hpGf0M7gCiPFZuDfv2RlwyhdqVId3dx6zbvYBFM2uW3TVee8l65ccArTsp6RFyB1o83WHjjB28
- wRtDrrqlWOQGyXIhqWoAHfZFQdAohN6dewpnIHscOUhkgsezMY05SqxkPPLtpQ1cN3+L1xQSoIaeO
- f6yOg6LnKe7Ywj4Q5zl9vNWFAMxzxLecoOshAFzvGmKM0Y8A/jMJ72iv6H0UmO7i1T61OEUj6ZMfY
- qHe6fQaA==;
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
- id 1lgYpW-009tmG-Qx
- for barebox@lists.infradead.org; Tue, 11 May 2021 20:18:13 +0000
-Received: by lynxeye.de (Postfix, from userid 501)
- id 0DBFFE74260; Tue, 11 May 2021 22:17:33 +0200 (CEST)
-Received: from astat.fritz.box (a89-183-95-160.net-htp.de [89.183.95.160])
- by lynxeye.de (Postfix) with ESMTPA id 2727BE74217
- for <barebox@lists.infradead.org>; Tue, 11 May 2021 22:17:33 +0200 (CEST)
-From: Lucas Stach <l.stach@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Tue, 11 May 2021 22:17:29 +0200
-Message-Id: <20210511201729.63076-1-l.stach@pengutronix.de>
-X-Mailer: git-send-email 2.31.1
+ d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=RvkD3t9vT5ucE5P1CjGtf6dKZbsLXxEHm74k7pjTi/A=; b=2O4CI1NpeJ6zNxEV4K30B0kHVs
+ 5b5dK7mWzs0qEThY6CDV6UB2YEW1O6jDg+Xh83JCYuy+GmtqbiXImunRsdYKBF5PjSh5qRi2fP9Yv
+ UF616H4gpNX0dw2M1IVbu3K8XKUzLkm4TauJCLfDXcIoQgUlYM/b/B43KSAua5TBqTwRWRWv5taOL
+ ktTVcW0nBF/STgiWAEOK40EGY0iZkmLkXG9qFzQoS107HmZ+KtkIlOTU7AC+3Y1goU9TTvZp1zUvG
+ YcZVL5OmyqxaFhnc9hxaHqVJ9ettpDBcTKnqxsGAQSSm3+DS2/0W8G2Br9fUmblPokFNW3fMSALOl
+ iqpIZH1Q==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
+ id 1lghFn-00A75O-S6
+ for barebox@lists.infradead.org; Wed, 12 May 2021 05:17:53 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lghFm-0003Nr-Aw; Wed, 12 May 2021 07:17:50 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lghFl-0002id-OB; Wed, 12 May 2021 07:17:49 +0200
+Date: Wed, 12 May 2021 07:17:49 +0200
+To: Yunus Bas <y.bas@phytec.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210512051749.GI19819@pengutronix.de>
+References: <20210507072950.2005039-1-y.bas@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20210507072950.2005039-1-y.bas@phytec.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 07:17:38 up 83 days,  8:41, 79 users,  load average: 0.04, 0.10, 0.15
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210511_131811_041795_C802236F 
-X-CRM114-Status: GOOD (  12.93  )
+X-CRM114-CacheID: sfid-20210511_221751_936497_266D9382 
+X-CRM114-Status: GOOD (  25.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,55 +89,90 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: use new vendor prefix for MNT Reform2
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2] Revert "ARM: dts: phycore-imx6: change mtd-partition
+ names for compatibility with kernel"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Lucas Stach <dev@lynxeye.de>
+On Fri, May 07, 2021 at 09:29:50AM +0200, Yunus Bas wrote:
+> This reverts commit 72ba815bf6feaa0a98d2496f52784dd5b4258e73.
+> 
+> The NVMEM name-clashing has been fixed on Linux-upstream. NVMEM devices
+> are now registered with the unique device names instead of the
+> MTD-partition names. This fix is no longer needed.
+> 
+> Signed-off-by: Yunus Bas <y.bas@phytec.de>
 
-The vendor prefix for MNT Research GmbH in the upstream kernel will be
-mntre (not yet landed, but acked by the maintainer). Switch to this
-prefix in Barebox now to keep bootspec booting working.
+Applied, thanks
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- arch/arm/boards/mnt-reform/board.c  | 2 +-
- arch/arm/dts/imx8mq-mnt-reform2.dts | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Sascha
 
-diff --git a/arch/arm/boards/mnt-reform/board.c b/arch/arm/boards/mnt-reform/board.c
-index e2d628586a50..feb874c0a0ef 100644
---- a/arch/arm/boards/mnt-reform/board.c
-+++ b/arch/arm/boards/mnt-reform/board.c
-@@ -28,7 +28,7 @@ static int mnt_reform_probe(struct device_d *dev)
- }
- 
- static const struct of_device_id mnt_reform_of_match[] = {
--	{ .compatible = "mnt,reform2"},
-+	{ .compatible = "mntre,reform2"},
- 	{ /* sentinel */ },
- };
- 
-diff --git a/arch/arm/dts/imx8mq-mnt-reform2.dts b/arch/arm/dts/imx8mq-mnt-reform2.dts
-index 4e80e00dd143..5a65324b3c75 100644
---- a/arch/arm/dts/imx8mq-mnt-reform2.dts
-+++ b/arch/arm/dts/imx8mq-mnt-reform2.dts
-@@ -12,7 +12,7 @@
- 
- / {
- 	model = "MNT Reform2";
--	compatible = "mnt,reform2", "fsl,imx8mq";
-+	compatible = "mntre,reform2", "fsl,imx8mq";
- 
- 	chosen {
- 		stdout-path = &uart1;
+> ---
+> Changes in v2:
+> - Added missing signed-off
+> ---
+>  arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+> index 2fb920945..2c333ce8f 100644
+> --- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+> +++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+> @@ -29,7 +29,7 @@
+>  
+>  		environment-spinor {
+>  			compatible = "barebox,environment";
+> -			device-path = &m25p80, "partname:nor.barebox-environment";
+> +			device-path = &m25p80, "partname:barebox-environment";
+>  			status = "disabled";
+>  		};
+>  	};
+> @@ -86,22 +86,22 @@
+>  		#size-cells = <1>;
+>  
+>  		partition@0 {
+> -			label = "nor.barebox";
+> +			label = "barebox";
+>  			reg = <0x0 0x100000>;
+>  		};
+>  
+>  		partition@100000 {
+> -			label = "nor.barebox-environment";
+> +			label = "barebox-environment";
+>  			reg = <0x100000 0x20000>;
+>  		};
+>  
+>  		partition@120000 {
+> -			label = "nor.oftree";
+> +			label = "oftree";
+>  			reg = <0x120000 0x20000>;
+>  		};
+>  
+>  		partition@140000 {
+> -			label = "nor.kernel";
+> +			label = "kernel";
+>  			reg = <0x140000 0x0>;
+>  		};
+>  	};
+> -- 
+> 2.30.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.31.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
