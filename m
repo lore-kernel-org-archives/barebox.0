@@ -1,75 +1,75 @@
-Delivery-date: Wed, 12 May 2021 07:26:30 +0200
+Delivery-date: Wed, 12 May 2021 07:36:17 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lghOA-000587-2s
-	for lore@lore.pengutronix.de; Wed, 12 May 2021 07:26:30 +0200
+	id 1lghXd-0005Dq-Pa
+	for lore@lore.pengutronix.de; Wed, 12 May 2021 07:36:17 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lghO9-0004Ed-AS
-	for lore@pengutronix.de; Wed, 12 May 2021 07:26:29 +0200
+	id 1lghXb-00053X-MF
+	for lore@pengutronix.de; Wed, 12 May 2021 07:36:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=PIevt0lntjvRKh7GvQDow7cMBJf/fNih+sBNPwbrdHo=; b=QrWltf8b02lhX0b1ouLD1F9XJ
-	KNvWDtXqCNBQrY6ICntOLI1INJJ4Iq0PePeB95WCSxE+bAHWHmFfQZ9rVvjg2JL5Ksp7VbfGlKiVY
-	VPcEyztm5wIO5/fSAxyNsZEAn68BwLRqFZsGOQ4UWf2JNnL0skm8XeCtVkSiAvKg12L0CgVfVsz7U
-	tTUiPBB7sGXshTRObKlqfO5SkVWcVmaot1seXEyQ+JlZHHAHzilLH9MMHJCpBvTR4WE5gVxuxXjyK
-	hbeCje2FgKZeLnm2Fh/v8QCP0yhPPLSsAR7r7FmHTtcO6MqkfBe/vm3mqzyRn1TY7L2OApCIYGUHs
-	AIOZvkIYg==;
+	 bh=XRrcccyBrzUCAG38IgAPXVnpWZaxVniLNAJh2xfXFmU=; b=LSKMf6uAs6gNb0MvxPhg6BkPM
+	rjzUn7invLk2ToWZqdxf59YxlYV0Iycd/xhTvRIrqGNQR9Qq/xkvbAIQYlx4TLcLb/B9DG+E2xKNU
+	y+Fi8xWIHa3CSpzbBhhMtHT3OxE1JVKHJvbYsSPfZRImnexb473J5FZhnX4nyKiYKKd9ZamLiCuWa
+	5k+dwUeB80PRcPplX+jwGCBO8c2FuhyS8J2pDS8OyiOhpmQoBPAGdn/mdPg9+d2VIGFRBKqyYKdRC
+	OR9MzdU5fYhbMjnR/tNrdRq3MN6DBvhuBTfR++aUnhyGUx0X7k6mCBSyAxLGjwej4IO0nBtb/rtL7
+	Z7CpdSjig==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lghNH-0023sF-Pp; Wed, 12 May 2021 05:25:35 +0000
+	id 1lghWm-0025Rl-Pc; Wed, 12 May 2021 05:35:24 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lghNC-0023s0-TG
- for barebox@desiato.infradead.org; Wed, 12 May 2021 05:25:31 +0000
+ id 1lghWj-0025RS-FP
+ for barebox@desiato.infradead.org; Wed, 12 May 2021 05:35:21 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
  MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=eaVBucQodIM3wwpuQ3Agy5NY3ST/Mw/mkSOyAahmm10=; b=ofQnIUjWPByEll77Y3gLDPpaQU
- OSLK9hOYfGgT63Sy/oSplOVymNVNYhN/R7TMcxQTjCjparxY6mhVVx9eGBIfKlSIJYrFp4BKv7jj1
- s/W7msKegxQ8uDqugMm7tkWdvFtx/dX6NkGJHKv+mJ6vqlmZ0MawTjob3aBPiNn3y14ha/7xRyu5t
- lmZedKYDeZ+LBipCmAF4xGYOU5LUa4l9+rkxw6RiEtAOkeElx8sxGJTZEF43w7GT41IB5q1d/HaM+
- 2JwbkuJRiMxY4b7v/Zu4WJKhCoxDPBMPcD+pfUKgnKOeAMsdQBtDbN6J6hKU+0moJmJfi7wRCdi9f
- 6v3MFoBA==;
+ bh=4VTuPDxGmFscKjIjVUlYdf/kK0sJHc5aUauau0iJELk=; b=PuVwuSLSs0mmBEIi7m2+BcEZIP
+ 3IN9tePoD4gt4BchfbRu2IPJ+EoGTVzcbLTM0vzBx2kP++VuQYWDiIwp7sxAET9DlITmZSvHqDLl7
+ a89rgFs/0oqRSvn0vRYHoeNkD4t5f3h0qA3n+oMxtqlXYYw/KxC1WNnqS7kzoKjpkzl5B9h5P8U47
+ oRWJhxddtYXzvNhjAYlghy2Cz5m3IBrWa34RR1z3Tlltswf8nekJaGLnoiaxKdg4YjRPGpckFds7x
+ L849pTYO9XxkYXk6nn66L38mI6rjx4uV1ZGW0v4WIO7BO2SAd0he6FKaDXMS+3wSabsrQXdo4tV8Z
+ F6gX3YiQ==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lghNA-00A7Ki-4D
- for barebox@lists.infradead.org; Wed, 12 May 2021 05:25:29 +0000
+ id 1lghWg-00A7gf-91
+ for barebox@lists.infradead.org; Wed, 12 May 2021 05:35:19 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lghN8-000402-IH; Wed, 12 May 2021 07:25:26 +0200
+ id 1lghWe-0004rc-ME; Wed, 12 May 2021 07:35:16 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lghN8-00030I-9O; Wed, 12 May 2021 07:25:26 +0200
-Date: Wed, 12 May 2021 07:25:26 +0200
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210512052526.GJ19819@pengutronix.de>
-References: <20210510102523.7147-1-m.felsch@pengutronix.de>
+ id 1lghWd-0003Bi-KM; Wed, 12 May 2021 07:35:15 +0200
+Date: Wed, 12 May 2021 07:35:15 +0200
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: barebox@lists.infradead.org, Neeraj Pal <neerajpal09@gmail.com>
+Message-ID: <20210512053515.GK19819@pengutronix.de>
+References: <20210417211144.26466-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210510102523.7147-1-m.felsch@pengutronix.de>
+In-Reply-To: <20210417211144.26466-1-jmaselbas@kalray.eu>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 07:25:17 up 83 days,  8:49, 78 users,  load average: 0.13, 0.15, 0.15
+X-Uptime: 07:33:26 up 83 days,  8:57, 78 users,  load average: 0.07, 0.11, 0.12
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210511_222528_188667_1B7DD42F 
-X-CRM114-Status: GOOD (  26.38  )
+X-CRM114-CacheID: sfid-20210511_223518_341204_F0EAC98D 
+X-CRM114-Status: GOOD (  26.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,59 +93,95 @@ X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 1/3] driver: add flag to check if cdev is an mci device
+Subject: Re: [PATCH] common: console_common: Replace vsprintf with vsnprintf
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, May 10, 2021 at 12:25:21PM +0200, Marco Felsch wrote:
-> We need this during mount() to check if the cdev is an mmc/mci main|user
-> hardware partition device. Later on we add the feature to pass
-> "root=/dev/mmcblkXpN" as kernel command line.
+Hi Jules,
+
+On Sat, Apr 17, 2021 at 11:11:44PM +0200, Jules Maselbas wrote:
+> Replace the *sprintf to their *snprintf version when printing
+> to the fixed size printbuffer.
 > 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> Reported-by: Neeraj Pal <neerajpal09@gmail.com>
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 > ---
 
-Applied, thanks
+I didn't realize you also created this patch. I like your version better
+because of the sizeof() you used. Replaced my version with yours, but I
+added the pbl/console.c changes from my patch to yours.
 
 Sascha
 
-> v3:
-> - no changes
+>  common/console_common.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
 > 
-> v2:
-> - dropped the !!
-> - renamed the flag due to v1 comments
-> - renamed the function to
-> 
->  include/driver.h | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/include/driver.h b/include/driver.h
-> index 0d43b36148..d84fe35d50 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -496,6 +496,7 @@ int cdev_erase(struct cdev *cdev, loff_t count, loff_t offset);
->  #define DEVFS_PARTITION_READONLY	(1U << 1)
->  #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
->  #define DEVFS_PARTITION_FROM_TABLE	(1U << 4)
-> +#define DEVFS_IS_MCI_MAIN_PART_DEV	(1U << 5)
+> diff --git a/common/console_common.c b/common/console_common.c
+> index 3e0741572..dc3a611e1 100644
+> --- a/common/console_common.c
+> +++ b/common/console_common.c
+> @@ -126,7 +126,7 @@ int pr_print(int level, const char *fmt, ...)
+>  		return 0;
 >  
->  struct cdev *devfs_add_partition(const char *devname, loff_t offset,
->  		loff_t size, unsigned int flags, const char *name);
-> @@ -509,6 +510,11 @@ static inline void cdev_create_default_automount(struct cdev *cdev)
->  }
->  #endif
+>  	va_start(args, fmt);
+> -	i = vsprintf(printbuffer, fmt, args);
+> +	i = vsnprintf(printbuffer, sizeof(printbuffer), fmt, args);
+>  	va_end(args);
 >  
-> +static inline bool cdev_is_mci_main_part_dev(struct cdev *cdev)
-> +{
-> +	return cdev->flags & DEVFS_IS_MCI_MAIN_PART_DEV;
-> +}
-> +
->  #define DEVFS_PARTITION_APPEND		0
+>  	pr_puts(level, printbuffer);
+> @@ -139,18 +139,19 @@ int dev_printf(int level, const struct device_d *dev, const char *format, ...)
+>  	va_list args;
+>  	int ret = 0;
+>  	char printbuffer[CFG_PBSIZE];
+> +	size_t size = sizeof(printbuffer);
 >  
->  /**
+>  	if (!IS_ENABLED(CONFIG_LOGBUF) && level > barebox_loglevel)
+>  		return 0;
+>  
+>  	if (dev->driver && dev->driver->name)
+> -		ret += sprintf(printbuffer, "%s ", dev->driver->name);
+> +		ret += snprintf(printbuffer, size, "%s ", dev->driver->name);
+>  
+> -	ret += sprintf(printbuffer + ret, "%s: ", dev_name(dev));
+> +	ret += snprintf(printbuffer + ret, size - ret, "%s: ", dev_name(dev));
+>  
+>  	va_start(args, format);
+>  
+> -	ret += vsprintf(printbuffer + ret, format, args);
+> +	ret += vsnprintf(printbuffer + ret, size - ret, format, args);
+>  
+>  	va_end(args);
+>  
+> @@ -237,7 +238,7 @@ int printf(const char *fmt, ...)
+>  	 * For this to work, printbuffer must be larger than
+>  	 * anything we ever want to print.
+>  	 */
+> -	i = vsprintf (printbuffer, fmt, args);
+> +	i = vsnprintf(printbuffer, sizeof(printbuffer), fmt, args);
+>  	va_end(args);
+>  
+>  	/* Print the string */
+> @@ -256,7 +257,7 @@ int vprintf(const char *fmt, va_list args)
+>  	 * For this to work, printbuffer must be larger than
+>  	 * anything we ever want to print.
+>  	 */
+> -	i = vsprintf(printbuffer, fmt, args);
+> +	i = vsnprintf(printbuffer, sizeof(printbuffer), fmt, args);
+>  
+>  	/* Print the string */
+>  	puts(printbuffer);
+> @@ -344,7 +345,7 @@ int dprintf(int file, const char *fmt, ...)
+>  	 * For this to work, printbuffer must be larger than
+>  	 * anything we ever want to print.
+>  	 */
+> -	vsprintf(printbuffer, fmt, args);
+> +	vsnprintf(printbuffer, sizeof(printbuffer), fmt, args);
+>  	va_end(args);
+>  
+>  	/* Print the string */
 > -- 
-> 2.29.2
+> 2.30.2
+> 
 > 
 > 
 > _______________________________________________
