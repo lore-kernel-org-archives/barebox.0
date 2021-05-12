@@ -1,75 +1,75 @@
-Delivery-date: Wed, 12 May 2021 07:19:10 +0200
+Delivery-date: Wed, 12 May 2021 07:26:30 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lghH4-00053q-Uq
-	for lore@lore.pengutronix.de; Wed, 12 May 2021 07:19:10 +0200
+	id 1lghOA-000587-2s
+	for lore@lore.pengutronix.de; Wed, 12 May 2021 07:26:30 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lghH4-0003SU-4A
-	for lore@pengutronix.de; Wed, 12 May 2021 07:19:10 +0200
+	id 1lghO9-0004Ed-AS
+	for lore@pengutronix.de; Wed, 12 May 2021 07:26:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
 	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=Ty+1pX2lC4TxCEOJQ5QUmsldb5PiiEm2CZS4965Q3LI=; b=GKWLewAGs9ZU0oiWAuhc4as6n
-	rW+r5Al3loTfET8KSVeuz6g5Ytg/UGHfqR33mlPHr8Jaiqbmc+ZN1H0P517IivsdKS2Mrkkhparmf
-	0qf2dzwoeevKmGVtoP6hqxToM8JCRHw1llGPV/FUMSmI8qNtK1r6aCoKWdUneOU6pdsb2u9fDfS7v
-	u2Dw+KrIWIZ6YWhfgeThtp8YeI7PxU+36fXJsLPMvjC/wqKpYNrN/2geCy3ZYqg2G7qsJHVFHslTu
-	5T/ckbsgyHp+OiYEuiTDIqu3vAi/CUofCyjJgov/5kfJPrzHi8r6XdAIdWlRM/NLAhvYwK7SxroE1
-	Upzy/2G9Q==;
+	 bh=PIevt0lntjvRKh7GvQDow7cMBJf/fNih+sBNPwbrdHo=; b=QrWltf8b02lhX0b1ouLD1F9XJ
+	KNvWDtXqCNBQrY6ICntOLI1INJJ4Iq0PePeB95WCSxE+bAHWHmFfQZ9rVvjg2JL5Ksp7VbfGlKiVY
+	VPcEyztm5wIO5/fSAxyNsZEAn68BwLRqFZsGOQ4UWf2JNnL0skm8XeCtVkSiAvKg12L0CgVfVsz7U
+	tTUiPBB7sGXshTRObKlqfO5SkVWcVmaot1seXEyQ+JlZHHAHzilLH9MMHJCpBvTR4WE5gVxuxXjyK
+	hbeCje2FgKZeLnm2Fh/v8QCP0yhPPLSsAR7r7FmHTtcO6MqkfBe/vm3mqzyRn1TY7L2OApCIYGUHs
+	AIOZvkIYg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lghFu-0022nt-4f; Wed, 12 May 2021 05:17:58 +0000
+	id 1lghNH-0023sF-Pp; Wed, 12 May 2021 05:25:35 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lghFq-0022ne-PG
- for barebox@desiato.infradead.org; Wed, 12 May 2021 05:17:54 +0000
+ id 1lghNC-0023s0-TG
+ for barebox@desiato.infradead.org; Wed, 12 May 2021 05:25:31 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
  MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=RvkD3t9vT5ucE5P1CjGtf6dKZbsLXxEHm74k7pjTi/A=; b=2O4CI1NpeJ6zNxEV4K30B0kHVs
- 5b5dK7mWzs0qEThY6CDV6UB2YEW1O6jDg+Xh83JCYuy+GmtqbiXImunRsdYKBF5PjSh5qRi2fP9Yv
- UF616H4gpNX0dw2M1IVbu3K8XKUzLkm4TauJCLfDXcIoQgUlYM/b/B43KSAua5TBqTwRWRWv5taOL
- ktTVcW0nBF/STgiWAEOK40EGY0iZkmLkXG9qFzQoS107HmZ+KtkIlOTU7AC+3Y1goU9TTvZp1zUvG
- YcZVL5OmyqxaFhnc9hxaHqVJ9ettpDBcTKnqxsGAQSSm3+DS2/0W8G2Br9fUmblPokFNW3fMSALOl
- iqpIZH1Q==;
+ bh=eaVBucQodIM3wwpuQ3Agy5NY3ST/Mw/mkSOyAahmm10=; b=ofQnIUjWPByEll77Y3gLDPpaQU
+ OSLK9hOYfGgT63Sy/oSplOVymNVNYhN/R7TMcxQTjCjparxY6mhVVx9eGBIfKlSIJYrFp4BKv7jj1
+ s/W7msKegxQ8uDqugMm7tkWdvFtx/dX6NkGJHKv+mJ6vqlmZ0MawTjob3aBPiNn3y14ha/7xRyu5t
+ lmZedKYDeZ+LBipCmAF4xGYOU5LUa4l9+rkxw6RiEtAOkeElx8sxGJTZEF43w7GT41IB5q1d/HaM+
+ 2JwbkuJRiMxY4b7v/Zu4WJKhCoxDPBMPcD+pfUKgnKOeAMsdQBtDbN6J6hKU+0moJmJfi7wRCdi9f
+ 6v3MFoBA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lghFn-00A75O-S6
- for barebox@lists.infradead.org; Wed, 12 May 2021 05:17:53 +0000
+ id 1lghNA-00A7Ki-4D
+ for barebox@lists.infradead.org; Wed, 12 May 2021 05:25:29 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lghFm-0003Nr-Aw; Wed, 12 May 2021 07:17:50 +0200
+ id 1lghN8-000402-IH; Wed, 12 May 2021 07:25:26 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lghFl-0002id-OB; Wed, 12 May 2021 07:17:49 +0200
-Date: Wed, 12 May 2021 07:17:49 +0200
-To: Yunus Bas <y.bas@phytec.de>
+ id 1lghN8-00030I-9O; Wed, 12 May 2021 07:25:26 +0200
+Date: Wed, 12 May 2021 07:25:26 +0200
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210512051749.GI19819@pengutronix.de>
-References: <20210507072950.2005039-1-y.bas@phytec.de>
+Message-ID: <20210512052526.GJ19819@pengutronix.de>
+References: <20210510102523.7147-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210507072950.2005039-1-y.bas@phytec.de>
+In-Reply-To: <20210510102523.7147-1-m.felsch@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 07:17:38 up 83 days,  8:41, 79 users,  load average: 0.04, 0.10, 0.15
+X-Uptime: 07:25:17 up 83 days,  8:49, 78 users,  load average: 0.13, 0.15, 0.15
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210511_221751_936497_266D9382 
-X-CRM114-Status: GOOD (  25.46  )
+X-CRM114-CacheID: sfid-20210511_222528_188667_1B7DD42F 
+X-CRM114-Status: GOOD (  26.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,73 +93,59 @@ X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] Revert "ARM: dts: phycore-imx6: change mtd-partition
- names for compatibility with kernel"
+Subject: Re: [PATCH v3 1/3] driver: add flag to check if cdev is an mci device
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, May 07, 2021 at 09:29:50AM +0200, Yunus Bas wrote:
-> This reverts commit 72ba815bf6feaa0a98d2496f52784dd5b4258e73.
+On Mon, May 10, 2021 at 12:25:21PM +0200, Marco Felsch wrote:
+> We need this during mount() to check if the cdev is an mmc/mci main|user
+> hardware partition device. Later on we add the feature to pass
+> "root=/dev/mmcblkXpN" as kernel command line.
 > 
-> The NVMEM name-clashing has been fixed on Linux-upstream. NVMEM devices
-> are now registered with the unique device names instead of the
-> MTD-partition names. This fix is no longer needed.
-> 
-> Signed-off-by: Yunus Bas <y.bas@phytec.de>
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
 
 Applied, thanks
 
 Sascha
 
-> ---
-> Changes in v2:
-> - Added missing signed-off
-> ---
->  arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> v3:
+> - no changes
 > 
-> diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> index 2fb920945..2c333ce8f 100644
-> --- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> +++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> @@ -29,7 +29,7 @@
+> v2:
+> - dropped the !!
+> - renamed the flag due to v1 comments
+> - renamed the function to
+> 
+>  include/driver.h | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/include/driver.h b/include/driver.h
+> index 0d43b36148..d84fe35d50 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -496,6 +496,7 @@ int cdev_erase(struct cdev *cdev, loff_t count, loff_t offset);
+>  #define DEVFS_PARTITION_READONLY	(1U << 1)
+>  #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
+>  #define DEVFS_PARTITION_FROM_TABLE	(1U << 4)
+> +#define DEVFS_IS_MCI_MAIN_PART_DEV	(1U << 5)
 >  
->  		environment-spinor {
->  			compatible = "barebox,environment";
-> -			device-path = &m25p80, "partname:nor.barebox-environment";
-> +			device-path = &m25p80, "partname:barebox-environment";
->  			status = "disabled";
->  		};
->  	};
-> @@ -86,22 +86,22 @@
->  		#size-cells = <1>;
+>  struct cdev *devfs_add_partition(const char *devname, loff_t offset,
+>  		loff_t size, unsigned int flags, const char *name);
+> @@ -509,6 +510,11 @@ static inline void cdev_create_default_automount(struct cdev *cdev)
+>  }
+>  #endif
 >  
->  		partition@0 {
-> -			label = "nor.barebox";
-> +			label = "barebox";
->  			reg = <0x0 0x100000>;
->  		};
+> +static inline bool cdev_is_mci_main_part_dev(struct cdev *cdev)
+> +{
+> +	return cdev->flags & DEVFS_IS_MCI_MAIN_PART_DEV;
+> +}
+> +
+>  #define DEVFS_PARTITION_APPEND		0
 >  
->  		partition@100000 {
-> -			label = "nor.barebox-environment";
-> +			label = "barebox-environment";
->  			reg = <0x100000 0x20000>;
->  		};
->  
->  		partition@120000 {
-> -			label = "nor.oftree";
-> +			label = "oftree";
->  			reg = <0x120000 0x20000>;
->  		};
->  
->  		partition@140000 {
-> -			label = "nor.kernel";
-> +			label = "kernel";
->  			reg = <0x140000 0x0>;
->  		};
->  	};
+>  /**
 > -- 
-> 2.30.0
+> 2.29.2
 > 
 > 
 > _______________________________________________
