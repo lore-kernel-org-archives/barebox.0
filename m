@@ -1,65 +1,96 @@
-Delivery-date: Wed, 12 May 2021 07:52:46 +0200
+Delivery-date: Wed, 12 May 2021 09:19:14 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lghna-0005PD-ST
-	for lore@lore.pengutronix.de; Wed, 12 May 2021 07:52:46 +0200
+	id 1lgj9G-0005zo-G1
+	for lore@lore.pengutronix.de; Wed, 12 May 2021 09:19:14 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lghna-0006vA-5n
-	for lore@pengutronix.de; Wed, 12 May 2021 07:52:46 +0200
+	id 1lgj9F-00070C-QK
+	for lore@pengutronix.de; Wed, 12 May 2021 09:19:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=xaBJDRHx5NzI7ITEsfpaQPXcERZCADSe170DcJVYGZM=; b=WOJNKrCA7I5pQI
-	M0+UwjLH5VpuEt5H5pAdciw/UVQ9A9sssx7qTPYe+/f4XN9jtvIKHWP1BeY5/PBjJSjWtLDx1x73b
-	MGn0t2EWNvx4DElI/2S59iXzuirv+uPuQFrBXHjDXPYSc9pMMFfnorn9QiNDOXEPvlomr59VLYXXy
-	7N/RRmN6c9ILBrB9RPe/YOgUZUjR259ahDUDBWGqlQk209inxY1KkdJbgK4jCrJN03G0nZdICN7da
-	RcChcjj816JUAQEPSfhJuBBlhiSknXljsBbI5M3R55RI06evYSLCqktpuIdYd/AMrBvw+iPTad1md
-	TfOww9z3Iw4pIe5MOTkg==;
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=MtumOjnwm/WG5tyQz+EcM5u+YDbODpZvJNKH/I1HRp4=; b=EYu7BWP4GaOdY1iQuii+ZZuoL
+	FSNTfppm6cup2hnfExgf2X2XjXVgWMJcsT1Df3PQhRN1pyFC4mzl5wHifwLNsbmxL91o2OQoi/MXJ
+	bvBga+yqfw+vXWqSLuZQ8i1VByjB+lXqlMgQnMcVErBV18np3tIB/mos7G03XkXTYT56qS82P28xN
+	xKyazDf/RIWpduuK72LqgkSHmvZk5HZUb+/BIwFqIOVVQh1KEm3wNWcRwFND7VchGFStvQy4o+cvA
+	yRd/jLK6SI9kYFBeptMkN8ANib9kuNAQX4mz7PuN4M+3JJkwg7vtuJYSt0yaiT3M8mxrYnDpBMTq8
+	RE45qFASw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lghmc-0026iv-5k; Wed, 12 May 2021 05:51:46 +0000
+	id 1lgj8D-002E9C-Lz; Wed, 12 May 2021 07:18:09 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lghmY-0026iU-Fe
- for barebox@desiato.infradead.org; Wed, 12 May 2021 05:51:42 +0000
+ id 1lgj89-002E8y-MJ
+ for barebox@desiato.infradead.org; Wed, 12 May 2021 07:18:05 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=WnnHtTmZxHvBCYe+QaLDTW4rVWD+31L8XxhSbGWdLJM=; b=KicJSPDTLECYfqiKDyPz9KMxXs
- Pa7owT6i35vxR8IzcHuUT2zs9rNw12B/6geInZjAMUZbOMkKlw/BIbF9U9MRTrI3bPzZ8xCH/zQ0K
- woa2rjqsBudFf5GIt6R9tYeUUe+e9+IHwFDsUVghQkDFiBYKvYvwX9tCJk8kkFQlj9ZUgSu91gmNs
- x4J0qvHBbCvoVSbU9bd3TWNk/PjZmJf60zO7c7jkoIr+n3ykTlHcMAAZ0KGNYCPVD5rgdYvlLOef+
- 6ykSc5b6nv+3voscZolvQoPZ+4LVLvMYayu8Fr82pWu1+KB0AgzJcmxQG0mJXBU/0s7bEFTPRCvlv
- ioTqVZUQ==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=S5+lWC45dCsrgyDpSufurnwD9yo1bP+Vk6rcb5VZ2nQ=; b=YGx58TnGbTrExXRcqG2Amo+yxr
+ PzyTfMNLEzgBWcQaKgzTIWuHaphd3PTmUtKdVaJHPwHAtMcZJTz+Gzh+n4PRVDmq46tF+YMEXmwtK
+ Xhyv1gDXLTMiwtBxs28wvpUztRTzLbQppKGNWGyLKB1txTWad7LOoCMDBEVsKd3VQK2UkYgFVj9E0
+ ivqxPjBgUfSeP3DEe94Jg6oOfKf1UiOQO7FA5nsZlNoUWAUVFlRXDP9BT46sWhd1RUvlHJKq6rV9C
+ w6GIwB/ioZZbkag1M5Hd86vm5CzUBG913zcocWskCvT0du1MjsL/NWEEHwm2L0eJIJoY2XYr8Kpcf
+ JHiTuZoA==;
+Received: from mib.mailinblack.com ([137.74.84.110])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lghmW-00A88X-45
- for barebox@lists.infradead.org; Wed, 12 May 2021 05:51:41 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lghmU-0006i7-Tl; Wed, 12 May 2021 07:51:38 +0200
-Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lghmU-0007jF-L9; Wed, 12 May 2021 07:51:38 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 12 May 2021 07:51:37 +0200
-Message-Id: <20210512055137.28907-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
+ id 1lgj86-00AAng-PM
+ for barebox@lists.infradead.org; Wed, 12 May 2021 07:18:04 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mib.mailinblack.com (Postfix) with ESMTP id CC74B1A1116
+ for <barebox@lists.infradead.org>; Wed, 12 May 2021 07:17:56 +0000 (UTC)
+Received: from mib.mailinblack.com (localhost [127.0.0.1])
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KOL4S37N;
+ Wed, 12 May 2021 07:17:56 +0000 (UTC)
+Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
+ by mib.mailinblack.com (Postfix) with ESMTPS id 9C1E41A1115;
+ Wed, 12 May 2021 07:17:56 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 6FBE427E042E;
+ Wed, 12 May 2021 09:17:56 +0200 (CEST)
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id ljuWhsTKc_ml; Wed, 12 May 2021 09:17:56 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 2B19727E0A1E;
+ Wed, 12 May 2021 09:17:56 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 2B19727E0A1E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1620803876;
+ bh=S5+lWC45dCsrgyDpSufurnwD9yo1bP+Vk6rcb5VZ2nQ=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=TQpB+U8nFylDCO8bHmTFf0B1aCAav0/+fe2k0FZ1Q7SF0SsxxD/nn3dGCAeAOxxqT
+ kh4d+cOvmLsUNqsXDhGxEPII67gCfGEHwpuCudSuKJ6UfMgiAfGjmUo9RUvT7ssEtK
+ 4z1iVKTGGqX4lWQtEJ36J5HbEc7ea1oT+7qph9Uw=
+X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id k-L7emAh5LBz; Wed, 12 May 2021 09:17:56 +0200 (CEST)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id 184D527E042E;
+ Wed, 12 May 2021 09:17:56 +0200 (CEST)
+Date: Wed, 12 May 2021 09:17:43 +0200
+From: Jules Maselbas <jmaselbas@kalray.eu>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org, Neeraj Pal <neerajpal09@gmail.com>
+Message-ID: <20210512071743.GA7003@tellis.lin.mbt.kalray.eu>
+References: <20210417211144.26466-1-jmaselbas@kalray.eu>
+ <20210512053515.GK19819@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20210512053515.GK19819@pengutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210511_225140_183911_EE903D7B 
-X-CRM114-Status: GOOD (  10.27  )
+X-CRM114-CacheID: sfid-20210512_001803_067606_BAC992CD 
+X-CRM114-Status: UNSURE (   7.65  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,37 +110,24 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] mci: atmel-sdhci: FIx compiler warning
+Subject: Re: [PATCH] common: console_common: Replace vsprintf with vsnprintf
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-gck_rate is tested for negative values. Use a signed type to let this
-work as expected.
+Hi Sascha,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/atmel-sdhci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, May 12, 2021 at 07:35:15AM +0200, Sascha Hauer wrote:
+> Hi Jules,
+> 
+> I didn't realize you also created this patch. I like your version better
+> because of the sizeof() you used. Replaced my version with yours, but I
+> added the pbl/console.c changes from my patch to yours.
+Ok cool
 
-diff --git a/drivers/mci/atmel-sdhci.c b/drivers/mci/atmel-sdhci.c
-index 59cd002aae..380a79d33e 100644
---- a/drivers/mci/atmel-sdhci.c
-+++ b/drivers/mci/atmel-sdhci.c
-@@ -24,7 +24,7 @@ struct at91_sdhci_priv {
- 	struct mci_host mci;
- 	struct clk *hclock, *gck, *mainck;
- 	bool cal_always_on;
--	u32 gck_rate;
-+	int gck_rate;
- };
- 
- #define to_priv(h) container_of(h, struct at91_sdhci_priv, mci)
--- 
-2.29.2
 
 
 _______________________________________________
