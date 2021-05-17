@@ -1,76 +1,66 @@
-Delivery-date: Mon, 17 May 2021 08:59:18 +0200
+Delivery-date: Mon, 17 May 2021 09:34:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1liXDi-0000NI-Vm
-	for lore@lore.pengutronix.de; Mon, 17 May 2021 08:59:18 +0200
+	id 1liXlo-0000bf-IF
+	for lore@lore.pengutronix.de; Mon, 17 May 2021 09:34:32 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1liXDi-0000xM-3N
-	for lore@pengutronix.de; Mon, 17 May 2021 08:59:18 +0200
+	id 1liXln-0005Iy-Qq
+	for lore@pengutronix.de; Mon, 17 May 2021 09:34:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=chRxJxlYvS2EpGV6OjQnFqHM2eOW+X45tswLiKiEZmI=; b=qcWOjAsZE0kYszgsiEhvxxOpM
-	Vkbmu/PbfqRZktQTemhoEkmBd1LPPMfb4oG/86oSOyrpXJaNBodGmPdLVeI1xYcYLXoveyqv/PClj
-	erF3/CFC2Hor+Vxfu2Mu/j7VU5FDpJM+T7snw/r14N0UEbPeo+bHRM925m4lCu3++n5PFaEnHcMjC
-	0IWXhASzKCncxBlbiA/P7o79PpEHHBQTd96oRTrw55LeSRkz8zIaRjNN6yFAKX1RQEjv/RngrjRKH
-	UiC4LhJbWlkzntkyBpylqklNQAZYRoQyE0U2wZG98AhiOkka2JplOC3c2XlcLQUrWev6LY4WF4Qyw
-	AbgnIUZPA==;
+	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=dB01mxgSH+TWjtYJt0/H5eWmDJGheRzUeDLUWC/nlzo=; b=KXYRoexlGUzANK
+	50LBS6uwcb4aRrUgqOtdZY5kHh0d5LdWkxlFgbLmQr/hZn0hHkzT/qDArzUSBwrirBfq4Ujh5nY+v
+	pHP20Ilrv1JfYOnHLr1qFgyVDqAvyjPENO5kZajNFX7IilWrfYJ0ZO6oHrbllwZuJ2HXFU2D/OqDy
+	ytrswhcS10QBm33CZmRQe2ViAhYcbOClZLC5ZSyYogG9LQKawt44EGDYlsxIPSpiz3cAHt4gA1hbc
+	rdP74qzSrEL/oxE2UpbRgYkceJzaUI3wWyZO1gtfIwV5mE0DkPhbrwEL/ZSxxIBiARYCsD1zSwrQE
+	G0lHcYBTEP4SLI9YsbCQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1liXCH-00DyYB-BY; Mon, 17 May 2021 06:57:49 +0000
+	id 1liXkc-00E31Z-Pa; Mon, 17 May 2021 07:33:19 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1liXCC-00DyXL-N5
- for barebox@desiato.infradead.org; Mon, 17 May 2021 06:57:45 +0000
+ id 1liXkP-00E30B-Dg
+ for barebox@desiato.infradead.org; Mon, 17 May 2021 07:33:05 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=h2C1+1r5oNhW0S5gen2x3jPqpasPa/YpDARTENyUwY4=; b=1whB7CHMnHGxyBKcXFO4Y/HjFX
- LdLE5qjzeUvdokcv85caYR2ZhPaXuZz82CO9NqPtDnV//Eo75mqCrtvvVhlSIh4E+Lv6yoCMV9ANT
- hk5o9b5w0j6mfPB/3Jy1kL/40IraOdzkIxx3+3+JpWar9LfKOn9VYw4KBmWh1nIR+E9TmgrKHHTUh
- 17DFaridlBb/LKNOqweUK7OSTrD/ar5Zh/alePodSE4RxcK5OifydEeg5xQ62EVg0P1j85kJds7nz
- nav7uQZhDIoCcV/eoDSWMyI1p1CKFePM0i2nZ30nxcnr5JSDPfKYZZtmBIMuAtcszvH0Ym0aT/Le3
- yzJJlU3w==;
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=pOsg25P5EHGeorJxIu55WjPymFJ6fPqGsLXugb4KfAQ=; b=hmNDjoAo9C/KHnoB7kSf7BhM9c
+ EBEUOpJclRAl2G2NAMOcVVORuvdO2+pfvDW0ZuZalTQiGMyac04pnZ7bocri8nuMw+ib8q2CHbrCA
+ 2lkini1zGKg1r/4S5LDrAXAsbpM20F//ReB+Z3alVizSiCOcr0RGn3MD9LQ0AofxJLaucKSSq0n+u
+ X50ASkdH+JuPxbtCzqf0c8mnoXntNcw9KTFydpKlQ2SBfQCrngZ1u70137fkoRSZjBRodk85rH58c
+ uJ5AbzvYojDX9J7X8CTNORw2ryV4OtpSJmAMto2+yq2C38Y0Zjvi1PskGdHBqmfz0rKUpg0x1oH5i
+ ir5wLQAw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1liXCA-00DWvb-0N
- for barebox@lists.infradead.org; Mon, 17 May 2021 06:57:43 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1liXkN-00DY3J-2I
+ for barebox@lists.infradead.org; Mon, 17 May 2021 07:33:04 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1liXC8-0000qX-DW; Mon, 17 May 2021 08:57:40 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ id 1liXkL-00059f-An; Mon, 17 May 2021 09:33:01 +0200
+Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1liXC8-0002DL-4N; Mon, 17 May 2021 08:57:40 +0200
-Date: Mon, 17 May 2021 08:57:40 +0200
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210517065740.GF31738@pengutronix.de>
-References: <20210511150845.10973-1-masahiroy@kernel.org>
+ id 1liXkL-0007i8-2f; Mon, 17 May 2021 09:33:01 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 17 May 2021 09:32:53 +0200
+Message-Id: <20210517073256.25684-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210511150845.10973-1-masahiroy@kernel.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 08:54:07 up 88 days, 10:17, 101 users,  load average: 0.09, 0.22,
- 0.25
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210516_235742_066523_57080AD7 
-X-CRM114-Status: GOOD (  20.05  )
+X-CRM114-CacheID: sfid-20210517_003303_132066_B2CAD1CF 
+X-CRM114-Status: UNSURE (   8.91  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,57 +80,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] kconfig: update to Linux 5.13-rc1
+Subject: [PATCH 1/3] ARM: Remove delphi-poc20 dead leftover
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Masahiro,
+This directory was merged accidently as part of the Datamodul Realq7
+board support. Remove it.
 
-On Wed, May 12, 2021 at 12:08:45AM +0900, Masahiro Yamada wrote:
-> The previous sync was Linux 5.9-rc2.
-> 
-> Resync scripts/kconfig/ with Linux 5.13-rc1.
-> 
-> Highlights:
-> 
->  - make header names in include/config/ and CONFIG symbols match
->    (scripts/basic/fixdep.c was adjusted)
-> 
->  - remove all 'option' syntax
->    (common/Kconfig was adjusted)
-> 
->  - introduce KCONFIG_DEFCONFIG_LIST instead of 'option defconfig_list'
-> 
->  - bug fixes and cleanups of nconfig
-> 
->  - drop Qt4 support from xconfig
-> 
->  - bug fixes, improvements, cleanups of xconfig
-> 
->  - print a short log for syncconfig
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/delphi-poc20/env/boot/mmc | 5 -----
+ 1 file changed, 5 deletions(-)
+ delete mode 100644 arch/arm/boards/delphi-poc20/env/boot/mmc
 
-This breaks building firmware:
-
-make[1]: *** No rule to make target 'include/config/extra/firmware/dir.h', needed by 'firmware/lpddr4_pmu_train_1d_dmem.bin.gen.S'.  Stop.
-
-This happens on imx_v8_defconfig.
-
-Do we need an adoption of 3470d9eb6387 any maybe more?
-
-Sascha
-
+diff --git a/arch/arm/boards/delphi-poc20/env/boot/mmc b/arch/arm/boards/delphi-poc20/env/boot/mmc
+deleted file mode 100644
+index d5e202f395..0000000000
+--- a/arch/arm/boards/delphi-poc20/env/boot/mmc
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#!/bin/sh
+-
+-global.bootm.image="/mnt/mmc/zImage"
+-global.bootm.oftree="/mnt/mmc/oftree"
+-global.linux.bootargs.dyn.root="root=mmcblk0p2 rootfstype=ext3 rootwait"
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.2
+
 
 _______________________________________________
 barebox mailing list
