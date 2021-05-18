@@ -1,67 +1,67 @@
-Delivery-date: Tue, 18 May 2021 13:45:18 +0200
+Delivery-date: Tue, 18 May 2021 13:45:19 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1liyA2-00049J-4i
-	for lore@lore.pengutronix.de; Tue, 18 May 2021 13:45:18 +0200
+	id 1liyA3-00049g-Ic
+	for lore@lore.pengutronix.de; Tue, 18 May 2021 13:45:19 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1liyA1-0000gt-4X
-	for lore@pengutronix.de; Tue, 18 May 2021 13:45:17 +0200
+	id 1liyA2-0000hU-Mn
+	for lore@pengutronix.de; Tue, 18 May 2021 13:45:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=CjpZollQBWqSrsAP3q/dBSuvZLpNFnxrHRTqhCAxq+Q=; b=QucXuAh3VxUqvwSpXEWzilBsh
-	SQz/nO6IXST9QKrk7xQpxVzlprNzAGzy56r9uJGzHrgVIlWmycsobdT67nqMxzp0NUItQVTfeJRoH
-	0GyWh/NMMf5iQzoAE0+akTJNIKlPdeMNjrMoltyZYw5u8aTx4g+PIbhsPCG2Ry5riUaC3bPTLohpV
-	SF+IuMMppO53oPl5x+pnTk6IZiGCjqbxf5GgAT0ICNxnOeKzXMEjalqAquWQQX4X8YL6YUz/kYPLv
-	NuOPpcCt46Od7qpULjFNp1pcwRxn7C5vQ3NXKvOtWGrhN39PWmlV+YkHVswVPn95fJzWVl/NjO5Gq
-	0KgS6ao2A==;
+	 bh=o/QAL4oZI25RrGyBjymTNgB3txSkeFGfaO2GXptfuXE=; b=iDjj9ldj//5JlBYf5458ezckp
+	kJTr8H/4LtdvgkyTE2xUhCROmfi4bCGOiVdHlsIIOfkw1EaD6esnIpFZ9e/aiR3Y0Ni3xVD5BlnPs
+	zxgXtgrEiutdxAIOjYqKmFUT2mGOBnRcgbD+bReWK9q69ucm1+mAeQfmBo7KqkkiCFJXk2Tg/xtaF
+	zXXHhTT8ImENXt58fgwmLR82CrNIgjJ3P17a6fLaAQY/YjmZCFpYo4tmEWbmu/G6QC8HaY3fPZF6G
+	p1kl5OWKybvp2yAGjpP8fXIlFPQPqkQPubQp71cCgEJmYC8hkdD/EyMJmB3ISe+0bIqhi+dZWjquI
+	Br97BZQ5g==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1liy98-000cK3-9X; Tue, 18 May 2021 11:44:22 +0000
+	id 1liy9E-000cLL-Ax; Tue, 18 May 2021 11:44:28 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1liy8v-000cId-NB
- for barebox@desiato.infradead.org; Tue, 18 May 2021 11:44:09 +0000
+ id 1liy8w-000cIv-UP
+ for barebox@desiato.infradead.org; Tue, 18 May 2021 11:44:11 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=akSaQI2jOfAh1A3PYDrRELFXLFmnxYzpVSveilaTKaM=; b=2LRNtohqm9rUvVPwiodYkp4Gn8
- H2izfsEXzyjLGk3/OnN5nxTDAUKY3/5dLqTKtZF2SOUuYESVxk4XDRqpgVGRafBqcRkB3gy9xffrG
- ZfKVvJAiu6A8jgSdUyashC1bBUkBaF2qr23moJLSEeaMftB7dBiZojQasd08XNJe8DJkmR/pVL4bc
- KgyPe8LLMevTD7XsjvFEVGOXk0ti789T2T4yO2BmcpLMye0fi2Z+0J63+ZpZVHKZRviEppbE7U8J+
- E33txD/4VLPI8KU61bYlu4xbv3HICLZJ+gnJI2w2377ErhjvwSnlCyKmuVlFFfIPUvtfIpNN+jwTI
- CXo8hnwg==;
+ bh=XJlkch2JflVg0IHaPhAG2Ng1ysuCtFMSi1V8gyfUZ+I=; b=q7z3z6LPIhDdJUlFK9ipMMB/cA
+ E/Lxy3EyNEdM6F0o/JFHQo9ikrtDJ7RoIdiaMsaO2AZ80ZVHwfJPLAksWgIoGetP7IwAHD8KuPlxH
+ FrvL1/hfyBqXDQcVl2pTOp+v7nNBoBKmX8n/9S4sAFPhz5Cp4iYwhK7yt0h7wIS3bQHOz3FXQ53Gk
+ 7cuBBhb5MGAwS2lZo/IK+XRIFEHa1hh2xb19ProNDCKYZwyWQT9qcZjXlaDyvzNVP5pxW0/Ne2/Cm
+ qYaD+kn0js33ozOEAnhQKwIa+XZbkMueBJRk4gXVi/v3d4ds1B1lwmC9uW/NZfrVtahj1b65rzMos
+ 9+nxR8ow==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1liy8t-00Ec1g-5O
- for barebox@lists.infradead.org; Tue, 18 May 2021 11:44:08 +0000
+ id 1liy8t-00Ec1f-5C
+ for barebox@lists.infradead.org; Tue, 18 May 2021 11:44:09 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1liy8r-0000VC-VP; Tue, 18 May 2021 13:44:05 +0200
+ id 1liy8r-0000VB-VA; Tue, 18 May 2021 13:44:05 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1liy8r-0001Ng-NA; Tue, 18 May 2021 13:44:05 +0200
+ id 1liy8r-0001Nc-Mk; Tue, 18 May 2021 13:44:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 18 May 2021 13:44:04 +0200
-Message-Id: <20210518114404.5553-4-s.hauer@pengutronix.de>
+Date: Tue, 18 May 2021 13:44:03 +0200
+Message-Id: <20210518114404.5553-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210518114404.5553-1-s.hauer@pengutronix.de>
 References: <20210518114404.5553-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210518_044407_228111_EFD28954 
-X-CRM114-Status: GOOD (  11.22  )
+X-CRM114-CacheID: sfid-20210518_044407_228111_C9FBC923 
+X-CRM114-Status: GOOD (  10.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,79 +81,151 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] ARM: rockchip: radxa-rock: build defaultenv
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,UPPERCASE_50_75,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 2/3] ARM: Rockchip: Merge defconfig files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/radxa-rock/Makefile                            | 1 +
- arch/arm/boards/radxa-rock/board.c                             | 3 +++
- .../radxa-rock/{env => defaultenv-radxa-rock}/boot/mshc1       | 0
- .../radxa-rock/{env => defaultenv-radxa-rock}/boot/mshc1-old   | 0
- .../radxa-rock/{env => defaultenv-radxa-rock}/init/bootsource  | 0
- .../radxa-rock/{env => defaultenv-radxa-rock}/nv/hostname      | 0
- .../{env => defaultenv-radxa-rock}/nv/linux.bootargs.console   | 0
- 7 files changed, 4 insertions(+)
- rename arch/arm/boards/radxa-rock/{env => defaultenv-radxa-rock}/boot/mshc1 (100%)
- rename arch/arm/boards/radxa-rock/{env => defaultenv-radxa-rock}/boot/mshc1-old (100%)
- rename arch/arm/boards/radxa-rock/{env => defaultenv-radxa-rock}/init/bootsource (100%)
- rename arch/arm/boards/radxa-rock/{env => defaultenv-radxa-rock}/nv/hostname (100%)
- rename arch/arm/boards/radxa-rock/{env => defaultenv-radxa-rock}/nv/linux.bootargs.console (100%)
+ arch/arm/configs/rk3188_defconfig             | 98 -------------------
+ .../{rk3288_defconfig => rockchip_defconfig}  |  5 +-
+ 2 files changed, 3 insertions(+), 100 deletions(-)
+ delete mode 100644 arch/arm/configs/rk3188_defconfig
+ rename arch/arm/configs/{rk3288_defconfig => rockchip_defconfig} (96%)
 
-diff --git a/arch/arm/boards/radxa-rock/Makefile b/arch/arm/boards/radxa-rock/Makefile
-index 79c8aec199..ec930bc264 100644
---- a/arch/arm/boards/radxa-rock/Makefile
-+++ b/arch/arm/boards/radxa-rock/Makefile
-@@ -1,2 +1,3 @@
- obj-$(CONFIG_MACH_RADXA_ROCK) += board.o
- lwl-y += lowlevel.o
-+bbenv-y += defaultenv-radxa-rock
-diff --git a/arch/arm/boards/radxa-rock/board.c b/arch/arm/boards/radxa-rock/board.c
-index 5c87f64897..0ada54a849 100644
---- a/arch/arm/boards/radxa-rock/board.c
-+++ b/arch/arm/boards/radxa-rock/board.c
-@@ -4,6 +4,7 @@
- #include <common.h>
- #include <init.h>
- #include <io.h>
-+#include <envfs.h>
- #include <i2c/i2c.h>
- #include <i2c/i2c-gpio.h>
- #include <mach/rk3188-regs.h>
-@@ -51,6 +52,8 @@ static int devices_init(void)
- 	writel((RK_SOC_CON0_REMAP << 16) | RK_SOC_CON0_REMAP,
- 	    RK_GRF_BASE + RK_GRF_SOC_CON0);
- 
-+	defaultenv_append_directory(defaultenv_radxa_rock);
-+
- 	return 0;
- }
- device_initcall(devices_init);
-diff --git a/arch/arm/boards/radxa-rock/env/boot/mshc1 b/arch/arm/boards/radxa-rock/defaultenv-radxa-rock/boot/mshc1
-similarity index 100%
-rename from arch/arm/boards/radxa-rock/env/boot/mshc1
-rename to arch/arm/boards/radxa-rock/defaultenv-radxa-rock/boot/mshc1
-diff --git a/arch/arm/boards/radxa-rock/env/boot/mshc1-old b/arch/arm/boards/radxa-rock/defaultenv-radxa-rock/boot/mshc1-old
-similarity index 100%
-rename from arch/arm/boards/radxa-rock/env/boot/mshc1-old
-rename to arch/arm/boards/radxa-rock/defaultenv-radxa-rock/boot/mshc1-old
-diff --git a/arch/arm/boards/radxa-rock/env/init/bootsource b/arch/arm/boards/radxa-rock/defaultenv-radxa-rock/init/bootsource
-similarity index 100%
-rename from arch/arm/boards/radxa-rock/env/init/bootsource
-rename to arch/arm/boards/radxa-rock/defaultenv-radxa-rock/init/bootsource
-diff --git a/arch/arm/boards/radxa-rock/env/nv/hostname b/arch/arm/boards/radxa-rock/defaultenv-radxa-rock/nv/hostname
-similarity index 100%
-rename from arch/arm/boards/radxa-rock/env/nv/hostname
-rename to arch/arm/boards/radxa-rock/defaultenv-radxa-rock/nv/hostname
-diff --git a/arch/arm/boards/radxa-rock/env/nv/linux.bootargs.console b/arch/arm/boards/radxa-rock/defaultenv-radxa-rock/nv/linux.bootargs.console
-similarity index 100%
-rename from arch/arm/boards/radxa-rock/env/nv/linux.bootargs.console
-rename to arch/arm/boards/radxa-rock/defaultenv-radxa-rock/nv/linux.bootargs.console
+diff --git a/arch/arm/configs/rk3188_defconfig b/arch/arm/configs/rk3188_defconfig
+deleted file mode 100644
+index 318cd9de42..0000000000
+--- a/arch/arm/configs/rk3188_defconfig
++++ /dev/null
+@@ -1,98 +0,0 @@
+-CONFIG_ARCH_ROCKCHIP=y
+-CONFIG_CACHE_L2X0=y
+-CONFIG_MACH_RADXA_ROCK=y
+-CONFIG_THUMB2_BAREBOX=y
+-CONFIG_ARM_BOARD_APPEND_ATAG=y
+-CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-CONFIG_ARM_UNWIND=y
+-CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+-CONFIG_MALLOC_TLSF=y
+-CONFIG_KALLSYMS=y
+-CONFIG_RELOCATABLE=y
+-CONFIG_PROMPT="radxa-rock:"
+-CONFIG_HUSH_FANCY_PROMPT=y
+-CONFIG_CMDLINE_EDITING=y
+-CONFIG_AUTO_COMPLETE=y
+-CONFIG_BOOTM_SHOW_TYPE=y
+-CONFIG_BOOTM_VERBOSE=y
+-CONFIG_BOOTM_INITRD=y
+-CONFIG_BOOTM_OFTREE=y
+-CONFIG_BOOTM_OFTREE_UIMAGE=y
+-CONFIG_BOOTM_AIMAGE=y
+-CONFIG_CONSOLE_ACTIVATE_NONE=y
+-CONFIG_DEFAULT_COMPRESSION_LZO=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/radxa-rock/env"
+-CONFIG_CMD_DMESG=y
+-CONFIG_LONGHELP=y
+-CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_ARM_MMUINFO=y
+-CONFIG_CMD_BOOTZ=y
+-CONFIG_CMD_GO=y
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_UIMAGE=y
+-CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_DEFAULTENV=y
+-CONFIG_CMD_LOADENV=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_MAGICVAR=y
+-CONFIG_CMD_MAGICVAR_HELP=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_FILETYPE=y
+-CONFIG_CMD_LN=y
+-CONFIG_CMD_MD5SUM=y
+-CONFIG_CMD_SHA1SUM=y
+-CONFIG_CMD_SHA224SUM=y
+-CONFIG_CMD_SHA256SUM=y
+-CONFIG_CMD_UNCOMPRESS=y
+-CONFIG_CMD_LET=y
+-CONFIG_CMD_MSLEEP=y
+-CONFIG_CMD_READF=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_MIITOOL=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_TIMEOUT=y
+-CONFIG_CMD_MM=y
+-CONFIG_CMD_CLK=y
+-CONFIG_CMD_DETECT=y
+-CONFIG_CMD_GPIO=y
+-CONFIG_CMD_I2C=y
+-CONFIG_CMD_OF_NODE=y
+-CONFIG_CMD_OF_PROPERTY=y
+-CONFIG_CMD_OF_DISPLAY_TIMINGS=y
+-CONFIG_CMD_OFTREE=y
+-CONFIG_CMD_TIME=y
+-CONFIG_NET=y
+-CONFIG_NET_NFS=y
+-CONFIG_NET_NETCONSOLE=y
+-CONFIG_OFDEVICE=y
+-CONFIG_OF_BAREBOX_DRIVERS=y
+-CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_NET_ARC_EMAC=y
+-CONFIG_SMSC_PHY=y
+-CONFIG_I2C_GPIO=y
+-CONFIG_MCI=y
+-CONFIG_MCI_STARTUP=y
+-CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+-CONFIG_MCI_DW=y
+-CONFIG_MCI_DW_PIO=y
+-CONFIG_LED=y
+-CONFIG_LED_GPIO=y
+-CONFIG_LED_GPIO_OF=y
+-CONFIG_GENERIC_PHY=y
+-CONFIG_FS_CRAMFS=y
+-CONFIG_FS_EXT4=y
+-CONFIG_FS_TFTP=y
+-CONFIG_FS_NFS=y
+-CONFIG_FS_FAT=y
+-CONFIG_FS_BPKFS=y
+-CONFIG_FS_UIMAGEFS=y
+-CONFIG_LZO_DECOMPRESS=y
+diff --git a/arch/arm/configs/rk3288_defconfig b/arch/arm/configs/rockchip_defconfig
+similarity index 96%
+rename from arch/arm/configs/rk3288_defconfig
+rename to arch/arm/configs/rockchip_defconfig
+index 156e07fcb1..41a63d3749 100644
+--- a/arch/arm/configs/rk3288_defconfig
++++ b/arch/arm/configs/rockchip_defconfig
+@@ -1,6 +1,8 @@
+ CONFIG_ARCH_ROCKCHIP=y
+-CONFIG_ARCH_RK3288=y
++CONFIG_CACHE_L2X0=y
++CONFIG_MACH_RADXA_ROCK=y
+ CONFIG_MACH_PHYTEC_SOM_RK3288=y
++CONFIG_BOARD_ARM_GENERIC_DT=y
+ CONFIG_THUMB2_BAREBOX=y
+ CONFIG_ARM_BOARD_APPEND_ATAG=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+@@ -24,7 +26,6 @@ CONFIG_CONSOLE_ACTIVATE_NONE=y
+ CONFIG_DEFAULT_COMPRESSION_LZO=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_RESET_SOURCE=y
+-CONFIG_DEBUG_LL=y
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
 -- 
 2.29.2
 
