@@ -1,89 +1,75 @@
-Delivery-date: Mon, 17 May 2021 22:59:40 +0200
+Delivery-date: Tue, 18 May 2021 08:28:11 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1likKy-0006Jc-6t
-	for lore@lore.pengutronix.de; Mon, 17 May 2021 22:59:40 +0200
+	id 1litD9-0002X9-L6
+	for lore@lore.pengutronix.de; Tue, 18 May 2021 08:28:11 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1likKx-00010U-C8
-	for lore@pengutronix.de; Mon, 17 May 2021 22:59:40 +0200
+	id 1litD8-0007zr-Ri
+	for lore@pengutronix.de; Tue, 18 May 2021 08:28:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:
-	References:MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:References:Message-ID:
+	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=PPkLWtdRsFoiLIE7MwjO1/1vML6x4Cw1PW9w5eU5FB4=; b=laORMaPzooDKKaq7s+vWEbKMC
-	VhifJ7kBYUtgq+JtzpBIVBh37i5SGGcF2qrnCEkJPqpHMPD0gaPokE4gMGkWHLeGBZbmJ+Txj8j8l
-	aTYTvIdjeVsX+yb0bzmmaPyz9hPeRE4U/TYNDudK5uzy4oOTPj8FNb7ftE+R1WaSV59gfmRL/7+Xq
-	Gn/AJu1WcGVqKWrwfLYmnLRZvAJoDwttxJlZn0hCGkL05chY00yfDv0vWNWjmXknZMDio9tLovp6d
-	Izp+eurjsQEbEDniu3AjgQ8ab81z2WgbVAgncEjrxoGGDpP6iyd91NIvmS7NajV7rMmihIBP/cC+F
-	jm9ihnjHg==;
+	 bh=vtf6kfyGGDAkpBvX8jneGY98o/pZrUG5RhfHSZnw0l8=; b=ojynzkNFtXMmf1KZNg7/ifOVg
+	f9t+n4/1SgdLYQdTPcSG4DoietzoJ1DyZGG5SByoWYH8HKQCSb1d7E+5sULnp/7YkkbwLL1JCC5qW
+	R7CuOVlyAb/VAYc4Q2pgsD+bt3SFLnpWTyj+ACeiRF26K/IZaCApRncLYbIr+IIp3anGxcZPK6fZn
+	8Go+1FhuYhameF12nWBna2BaoCYv1aewOob+OspaY2Hse0S/2t2046oY/jTSKKu56IctjdT4GjyeE
+	Zv63uVuADMkEIlq95Vyxz54q0tJcDudKFX3yTrAhsrt2lhGdbc2vZMbFy/bJpZCJ5fjJwycONR+tX
+	2QRFAfDOg==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1likJh-00G9ux-Si; Mon, 17 May 2021 20:58:22 +0000
+	id 1litBw-00H9RK-Ae; Tue, 18 May 2021 06:26:56 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1likJY-00G9ug-NE
- for barebox@desiato.infradead.org; Mon, 17 May 2021 20:58:15 +0000
+ id 1litBs-00H9R2-JD
+ for barebox@desiato.infradead.org; Tue, 18 May 2021 06:26:52 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Type:Cc:To:Subject:Message-ID
- :Date:From:In-Reply-To:References:MIME-Version:Sender:Reply-To:
+ d=infradead.org; s=bombadil.20210309; h=From:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=MsRWfJhxC5LhIDOAWwmG1ApemVPbN3KBLzMeWGDEcEo=; b=PZ2K7IMi7DdzBmoBKGwnmov4yS
- ucW4JmkNhNsCsv7xZZeA2I+qNqyJAgSmephf/wD88GwrEhjSIm5q7CQA0FynXvsojzvEMX/NL8I4T
- PQoUEX0V5d/cATvs242F2g/eZcmP11xCD1ymJFAQ121oeMsNLPkFKl5JDcRtqVF28yDLqn/2cWd1j
- zHUl6Stggsn+6uciA/wz6kovQTM5qTb4GEBhT+P8Nhi10LBszeAWGOXSgvK5gnh7upmlm6v3h5vjd
- zUYrnINwpAtybdpP3SvyMKX9MIgwTEeZ3BlCP0/zF7neNMxdaRO/ShlMkddyE1E4BaovTrEt6mAJZ
- 1WyO5g0Q==;
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ bh=8XeiMnAwVNuI82RCww+/DKyKR2lz4Eh9Ss8IqtHV18U=; b=jnYoobZTMU7dk1tb4+E8tZ2lST
+ m4oxolxqH/qyGrQHcHJXPcDUaloMIKjO9w20ovFP9Ksrzhwwp/5D9X5RE40EHJP4kILo2eWPLjnCG
+ CIpzN7IpJAK2AJCFkSQErECtzPFwuZAVEMay4z0n0IydFNPHDBvf8qCCetC2Mmv+NFeCBp5y/gAse
+ pVtM7bvZeXrzQz2e/giAplM2cohxj6wKFDwDLD8+LpBdGoDGrO1D7+20pDF4SvSwsnaJCCFL70s7t
+ jS+MBi4BmWkm6GLG9L4kUUX1eJlj6jgrCXTzH5kAOUskxxuLGV9fhWkA4FEZnxEfS7zUvuvSntcUb
+ pAQ2XQ+Q==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1likJV-00E9HT-T0
- for barebox@lists.infradead.org; Mon, 17 May 2021 20:58:11 +0000
-Received: by mail-lf1-x129.google.com with SMTP id i22so10728250lfl.10
- for <barebox@lists.infradead.org>; Mon, 17 May 2021 13:58:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igorinstitute-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=MsRWfJhxC5LhIDOAWwmG1ApemVPbN3KBLzMeWGDEcEo=;
- b=H7mRgQ4Erxg6FwXl0YBUoNI9R5V7UCkmRw3/1+b6P7676NimLD3EetzQ3wkkfIQVTE
- dWPwzT5mUaPkzqOUF2Y0zkAZ6Mw866GN0t55kkltI8sIN8fQPYki2hX5S+DLDlbgz4be
- 40gS7kOExztXEU+v6ZAHF+CW3glkX6kcZ9qWvRqKNSZWwBgx4eioz4wASLJEFforIuAz
- AWhGIZ50noVlDNytxMVXOoP/uQG7kzVTKFY/zwR6cfD+JL6TKNh0/rYdJW1ju7Ya7KoS
- KzQuJqe4qXmd5dRZvEUDzPvo+hR6tSgma5bKpL7MYO0a5Cz0vugVl0x5hC1h6DCkKNU1
- W8kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=MsRWfJhxC5LhIDOAWwmG1ApemVPbN3KBLzMeWGDEcEo=;
- b=JXHleeVe377iTCTbIzWo0PA/4ShaQU6AyEuywuWcfUEoostAn0c9VE/IbmSMCYcgRG
- /Jve6DMskEIpd78Nhp6Yj6v9ohVzaykfqJpW0EQtsf+TebTH3eGp7h+taZnBvryYh9qS
- lAFOIXWxeEtP3U9PukefvAKic2jZcQ1KtyiZ0qJvacu+ejFD6NHpFknLLcGk5xs9KWgP
- 0RL+fgss9BsjMSzlnJUA7AnPUxUygfrOEBKya54TXABDW0uQYtogiRDmgCEtfxU6B/1I
- MxXHjrBsrt/I51burL7PZrjWp3f/321qf2mi5kXm0KsxCrMKhjH2UCBvfpID0yZFvf8B
- 01GA==
-X-Gm-Message-State: AOAM5304rfshpWcqoSkHqy3YOOZu8Rf1gmJ0/P1ZlAVuvZ4LQH1tFzX/
- +KhdCGnU/k8DQ4D/aYc9ZXbO64UK9U7ZDwECWWj1zMTsihsWnA==
-X-Google-Smtp-Source: ABdhPJwWSd1cQHqi7NmgJG9vCKbd+j5GjhcRTHxj7/DUih2fwbttFHYg5rVM5srB+yUlIw5c9CkhPvNQ6zbCO8eTpTk=
-X-Received: by 2002:a05:6512:1141:: with SMTP id
- m1mr1181718lfg.28.1621285087454; 
- Mon, 17 May 2021 13:58:07 -0700 (PDT)
+ id 1litBp-00ELoS-Kx
+ for barebox@lists.infradead.org; Tue, 18 May 2021 06:26:51 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1litBl-0007le-IA; Tue, 18 May 2021 08:26:45 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1litBl-0006x4-8p; Tue, 18 May 2021 08:26:45 +0200
+Date: Tue, 18 May 2021 08:26:45 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Message-ID: <20210518062645.GU19819@pengutronix.de>
+References: <ce838b2e-bcb8-d13b-8c49-7ffee194094a@pengutronix.de>
 MIME-Version: 1.0
-References: <CAMHeXxMH8E4ae3HvFtkckJAc_hk1xWBJxMyBxab_OdPRn3y1Vw@mail.gmail.com>
- <20210517073830.GR19819@pengutronix.de>
-In-Reply-To: <20210517073830.GR19819@pengutronix.de>
-From: Trent Piepho <trent.piepho@igorinstitute.com>
-Date: Mon, 17 May 2021 13:57:56 -0700
-Message-ID: <CAMHeXxMZ-ib7TRGs8gON2VeRNbhvKfWbVtDHwT-mNSTtvyYadg@mail.gmail.com>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Content-Disposition: inline
+In-Reply-To: <ce838b2e-bcb8-d13b-8c49-7ffee194094a@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 08:26:23 up 89 days,  9:50, 88 users,  load average: 0.16, 0.10, 0.11
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210517_135810_099152_6341C546 
-X-CRM114-Status: GOOD (  22.64  )
+X-CRM114-CacheID: sfid-20210517_232649_728952_484667D0 
+X-CRM114-Status: GOOD (  21.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -103,55 +89,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: Board specific environments and broken configs
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [BUG] mtd: cfi-flash: comparison of unsigned expression in '>=
+ 0' is always true
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, May 17, 2021 at 12:38 AM Sascha Hauer <sha@pengutronix.de> wrote:
-> On Fri, May 14, 2021 at 11:46:38PM -0700, Trent Piepho wrote:
-> >
-> > An issue with CONFIG_DEFAULT_ENVIRONMENT_PATH is that it applies to
-> > all boards in a config.  If multiple boards are built at once, e.g.
-> > imx_v7_defconfig, then there is no way for each board to have a
-> > different extra env this way.
->
-> Thanks for spotting this. It shows some points that could be cleaned up.
-> Generally I suggest to remove the unused files. When they are unused
-> nobody should miss them. For some boards we could think about removing
+Hi Ahmad,
 
-Maybe the documentation could be improved, as it appears to say that a
-board env dir will automatically included?  I wonder if some boards,
-e.g. skov, thought this too and didnt' realize their env was unused.
+On Mon, May 17, 2021 at 01:29:05PM +0200, Ahmad Fatoum wrote:
+> Hi,
+> 
+> The new warning correctly flags following piece of code in
+> drivers/mtd/nor/cfi_flash.c:
+> 
+> /* loop through the sectors from the highest address
+>  * when the passed address is greater or equal to the sector address
+>  * we have a match
+>  */
+> flash_sect_t find_sector(struct flash_info *info, unsigned long addr)
+> {
+>         flash_sect_t sector;
+> 
+>         for (sector = info->sector_count - 1; sector >= 0; sector--) {
+>                 if (addr >= info->start[sector])
+>                         break;
+>         }
+> 
+>         return sector;
+> }
+> 
+> If addr is indeed unmapped by info->start[*], this would be an infinite
+> loop. I don't know what the correct fix would be though. Any suggestions?
 
-> them as well, like for example the i.MX boards that are still not
-> converted to multiimage support.
+See
+https://lore.barebox.org/20210517185424.32145-7-s.hauer@pengutronix.de
 
-If I understand correctly, with multimage support one puts the env
-directory in the board makefile and then board code will add it.
-Doesn't this mean that every env for a supported board will be in barebox?
+Sascha
 
-I was thinking there might be a way to avoid that and also avoid board
-specific code.
-
-Pass an env overlay, or overlays, in the u-boot dtb that the pbl
-provides.  Do it like a FIT image... e.g:
-bbenv@0 {
-    compatible = "barebox,environment-data";
-    barebox-bbenv-data = (raw data of the .bbenv goes here);
-};
-
-The raw data is injected during build the same way a FIT image puts in
-the data for a kernel, dtb, initramfs, etc. into the FIT.
-
-This way the env is only in the board specific image with the board
-specific barebox dtb.  And common code for barebox's dtb handler can
-trigger on the node and add it to the dtb instead of duplicating that
-in the board code.  One could also pass additional env to a chained
-barebox, though I don't know what one would do with that exactly.
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
