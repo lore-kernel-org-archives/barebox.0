@@ -1,67 +1,67 @@
-Delivery-date: Tue, 18 May 2021 13:23:11 +0200
+Delivery-date: Tue, 18 May 2021 13:35:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lixod-00046T-Jk
-	for lore@lore.pengutronix.de; Tue, 18 May 2021 13:23:11 +0200
+	id 1liy09-00047b-P8
+	for lore@lore.pengutronix.de; Tue, 18 May 2021 13:35:05 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lixoc-0005x9-Av
-	for lore@pengutronix.de; Tue, 18 May 2021 13:23:11 +0200
+	id 1liy08-0007ka-Vv
+	for lore@pengutronix.de; Tue, 18 May 2021 13:35:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
 	References:Cc:To:Subject:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=gVVeIA0SrAvTcBpLzqhNt9cJQrY3dcDUuqoHOTW7PXA=; b=S9fq2bivaAFrNL7UZSn8lpSjy
-	lON7aHaOXAEqA9C7raU4BlnAB7wx3ImfweIAYOyUq8isC6Vkxr9XTFe6YbbsaDbS1zU8dmzLvmOdV
-	w+EjqEWzjHZZArs6SR+HUKUPf0B/KPLoCn/UERAnqoHSe8UiFkaXXMjVJvQE2MdMMshUTnoWRorCJ
-	LgOjlVV4hD6Mk8sG/1nOTxrkH+SqQy+MBUIl6Skw+aetVsVJEwpPJnAnNPTrt4oIQH6FCIpdTkFwI
-	xyVWKCNkRcLiTXoWM9R9B5qMEiNGel/zq7w4T4TDvqt0gTQ57daN/k/yIMzHCGiElvtU2vo/G/VdY
-	3CKuAZQDA==;
+	 bh=49dHlBkGPUf6+pFZsG2JQyHOPkor9U/DQqrQx+JBoHc=; b=U16GjHRO/SuSv1unRXTnLhZKD
+	TfL++HbURVeCLMyPGUBoNAilkWguF0hD0qTknRhGf//CAjBcuFNFVBRaeDYSnBPXqAMGap4ny8eLO
+	btrfg+mKLiodmXRfOvRRhxqF1FQDsMe2vG5EvDrmfEa3C8Skn+tw8X9AZDYXqHP0+WspmPVJyb3TO
+	rP2OM1SNzh38mqq8K1n7aKKRr2migTJ+dSXmJTUv2TJ15jalB+d3I9mO2hZsY6IHSqGkqSovzRWDO
+	25tDgL0hc9oEh379nlXHDBMdLj9dzH5nPEkmj/lLqPBpbenWbXTxUTXBRvd+aJ/CCxksOQQVvMoKv
+	yQdf3jssw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1lixmk-000Wtl-9E; Tue, 18 May 2021 11:21:14 +0000
+	id 1lixz6-000Zow-7I; Tue, 18 May 2021 11:34:00 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lixmd-000Ws6-AN
- for barebox@desiato.infradead.org; Tue, 18 May 2021 11:21:07 +0000
+ id 1lixyt-000Znv-Oq
+ for barebox@desiato.infradead.org; Tue, 18 May 2021 11:33:48 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
  Subject:Sender:Reply-To:Content-ID:Content-Description;
- bh=1vZ8g2ww8mhVw+mtKNhbX5nlXDWWeLMtobEWcmX1UnU=; b=ztEO3TyOtTWcNATDnuvusGrGtj
- ncX7QVIdylLs1jzvhRwPDelf3+sEEya3Toy5q/4VXGEuh3bvsmoGFAwqbemgD0ii6w3HC6M86muCR
- RnKmSRUJ2CcVURL/LuRxQ0MiJQsqOj6O/1+/1ViM+kD/rVEQaWg2138b4AjwX6IQUpoeL1KWdJiiW
- mkqK90JI/q0SHB3TsywO9PZUZLSqGl+fc6bVlMvi4YpRA7X+58X6hn5VOHKTkPzlDwmjlEz//Opfa
- yHluNpNR0rxQERoBVj6OvXwaqIsHBCADbqktaEAK9zryoJgcmE5IXQmxruQjT7PGpjkXPdcjQHhB+
- E0x7f2dA==;
+ bh=Y1huTX/l5xN/wG2HImoMx13ZBG3zr+V0xltjUtIsK8g=; b=ngXuVJQULQPk6iqiyDeJgvi1Pn
+ 9L16j23M+3hkTBufs05Ms2SR+ugQZEjavDoeUdFSKf0XB7y8hW85meIH0tmtNcdg5bDsQuFFVOpxx
+ dA7Pp9F4lnT1vCkQ4Wsx1FMmql8/763TSHycn9Av2gEaprVKuvtZI6WQ71qom7GcXCSePVstQa715
+ qD52wkc1EUr5duui72E5/NJ4P3O/pvuaVFCJZP7c6QrDIhzhKscC2xHmX+qywiO43E67bvCzRGvTd
+ uddkeezFMhJYE5rnYFCOVpBrdM1r8HpgU4fKuprvn9wQFguCuraOcB3m2nW9ynWG5enw5RtI49kQJ
+ MYzab0pQ==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1lixma-00Eb7T-0R
- for barebox@lists.infradead.org; Tue, 18 May 2021 11:21:06 +0000
+ id 1lixyq-00Ebbb-V1
+ for barebox@lists.infradead.org; Tue, 18 May 2021 11:33:46 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1lixmV-0005d1-Qj; Tue, 18 May 2021 13:20:59 +0200
+ id 1lixyp-0007bv-DT; Tue, 18 May 2021 13:33:43 +0200
 To: Holger Assmann <h.assmann@pengutronix.de>, barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 References: <20210518105759.4604-1-h.assmann@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <68ef8394-564a-0715-db0b-d46a155adb14@pengutronix.de>
-Date: Tue, 18 May 2021 13:20:59 +0200
+Message-ID: <9fd00674-7953-f510-f2e5-fe076ef00b9b@pengutronix.de>
+Date: Tue, 18 May 2021 13:33:43 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.0
 MIME-Version: 1.0
 In-Reply-To: <20210518105759.4604-1-h.assmann@pengutronix.de>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210518_042104_257249_D19915E5 
-X-CRM114-Status: GOOD (  29.19  )
+X-CRM114-CacheID: sfid-20210518_043345_034283_D9EA1154 
+X-CRM114-Status: GOOD (  12.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,191 +89,17 @@ Subject: Re: [PATCH v3] ARM: webasto-ccbv2: Add variant with 512MB RAM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello,
 
 On 18.05.21 12:57, Holger Assmann wrote:
-> Add variant for 512MB RAM board.
-> 
-> Two firmware files will be generated - one for 256MB and 512MB
-> respectively; the choice for shipment has to be done and depends on the
-> underlying hardware.
-> 
-> Consequently, the query for memsize in lowlevel.c
-> 
->    ( r0 < MX6_MMDC_P0_BASE_ADDR + X )
-> 
-> could be dropped since we are now running with a hard-coded X == SZ_512.
->
-> However, we keep this part in order to allow for contextual code
-> comprehension.
-
-I don't think this reasoning is correct. The board entry point needs to
-determine whether it is running after POR or was chainloaded by another
-barebox. In the latter case, it needs to avoid loading the OP-TEE again
-as that would fail. Rouven assumed that r0 would never point into SDRAM
-after BootROM, but would do so after chainloading (because arm32 barebox
-always passes along FDT in r0). I don't see why adding a second entry
-point means that code could now be dropped.
-
-(A comment might be in-order if you misunderstood the check's intention).
-
-> Reported-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-
-You can credit people that reviewed your patch under the ---
-line like you did with v1 -> v2. Reported-by is when you fix
-an issue reported about something already in tree.
-
-> Signed-off-by: Holger Assmann <h.assmann@pengutronix.de>
-> ---
-> v2 -> v3:
-> 
->  - keep omitting RAM-size-dependent handling in lowlevel.c
->  - rectify flash header handling in Makefile.imx
-> 
-> v1 -> v2:
-> 
->  by Rouven Czerwinski <r.czerwinski@pengutronix.de>:
->   - just ship one single firmware version, depending on the underlying
->     board variant
-> 
->  by Ahmad Fatoum <a.fatoum@pengutronix.de>:
->   - account for the 512MB variant by hard-coding memsize == SZ_512
-> 
->  ...sh-header-imx6ul-webasto-ccbv2-256.imxcfg} |  0
->  ...ash-header-imx6ul-webasto-ccbv2-512.imxcfg | 88 +++++++++++++++++++
->  arch/arm/boards/webasto-ccbv2/lowlevel.c      |  2 +-
->  images/Makefile.imx                           |  4 +-
->  4 files changed, 92 insertions(+), 2 deletions(-)
->  rename arch/arm/boards/webasto-ccbv2/{flash-header-imx6ul-webasto-ccbv2.imxcfg => flash-header-imx6ul-webasto-ccbv2-256.imxcfg} (100%)
->  create mode 100644 arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-512.imxcfg
-> 
-> diff --git a/arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2.imxcfg b/arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-256.imxcfg
-> similarity index 100%
-> rename from arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2.imxcfg
-> rename to arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-256.imxcfg
-> diff --git a/arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-512.imxcfg b/arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-512.imxcfg
-> new file mode 100644
-> index 0000000000..d438a665f1
-> --- /dev/null
-> +++ b/arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-512.imxcfg
-> @@ -0,0 +1,88 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +loadaddr 0x80000000
-> +soc imx6
-> +ivtofs 0x400
-> +
-> +/* Enable all clocks */
-> +wm 32 0x020c4068 0xffffffff
-> +wm 32 0x020c406c 0xffffffff
-> +wm 32 0x020c4070 0xffffffff
-> +wm 32 0x020c4074 0xffffffff
-> +wm 32 0x020c4078 0xffffffff
-> +wm 32 0x020c407c 0xffffffff
-> +wm 32 0x020c4080 0xffffffff
-> +
-> +/* IOMUX */
-> +/* DDR IO type */
-> +wm 32 0x020E04B4 0x000C0000
-> +wm 32 0x020E04AC 0x00000000
-> +/* Clock */
-> +wm 32 0x020E027C 0x00000028
-> +/* Control */
-> +wm 32 0x020E0250 0x00000028
-> +wm 32 0x020E024C 0x00000028
-> +wm 32 0x020E0490 0x00000028
-> +wm 32 0x020E0288 0x00000028
-> +wm 32 0x020E0270 0x00000000
-> +wm 32 0x020E0260 0x00000028
-> +wm 32 0x020E0264 0x00000028
-> +wm 32 0x020E04A0 0x00000028
-> +/* Data strobe */
-> +wm 32 0x020E0494 0x00020000
-> +wm 32 0x020E0280 0x00000028
-> +wm 32 0x020E0284 0x00000028
-> +/* Data */
-> +wm 32 0x020E04B0 0x00020000
-> +wm 32 0x020E0498 0x00000028
-> +wm 32 0x020E04A4 0x00000028
-> +wm 32 0x020E0244 0x00000028
-> +wm 32 0x020E0248 0x00000028
-> +
-> +/* DDR Controller registers */
-> +wm 32 0x021B001C 0x00008000
-> +wm 32 0x021B0800 0xA1390003
-> +/* Calibration values */
-> +wm 32 0x021B080C 0x00090000
-> +wm 32 0x021B083C 0x01580158
-> +wm 32 0x021B0848 0x40405050
-> +wm 32 0x021B0850 0x4040524C
-> +wm 32 0x021B081C 0x33333333
-> +wm 32 0x021B0820 0x33333333
-> +wm 32 0x021B082C 0xf3333333
-> +wm 32 0x021B0830 0xf3333333
-> +/* END of calibration values */
-> +wm 32 0x021B08C0 0x00921012
-> +wm 32 0x021B08b8 0x00000800
-> +
-> +/* MMDC init */
-> +wm 32 0x021B0004 0x0002002D
-> +wm 32 0x021B0008 0x1b333030
-> +wm 32 0x021B000C 0x676B52F3
-> +wm 32 0x021B0010 0xB66D0B63
-> +wm 32 0x021B0014 0x01FF00DB
-> +/* Consider reducing RALAT (currently set to 5) */
-> +wm 32 0x021B0018 0x00211740
-> +wm 32 0x021B001C 0x00008000
-> +wm 32 0x021B002C 0x000026D2
-> +wm 32 0x021B0030 0x006B1023
-> +wm 32 0x021B0040 0x0000004F
-> +wm 32 0x021B0000 0x84180000
-> +
-> +/* Mode registers writes for CS0 */
-> +wm 32 0x021B001C 0x02008032
-> +wm 32 0x021B001C 0x00008033
-> +wm 32 0x021B001C 0x00048031
-> +wm 32 0x021B001C 0x15208030
-> +wm 32 0x021B001C 0x04008040
-> +
-> +/* Final DDR setup */
-> +wm 32 0x021B0020 0x00007800
-> +wm 32 0x021B0818 0x00000227
-> +wm 32 0x021B0004 0x0002556D
-> +wm 32 0x021B0404 0x00011006
-> +wm 32 0x021B001C 0x00000000
-> +
-> +/* Disable TZASC bypass */
-> +wm 32 0x020E4024 0x00000001
-> +
-> +#include <mach/habv4-imx6-gencsf.h>
-> diff --git a/arch/arm/boards/webasto-ccbv2/lowlevel.c b/arch/arm/boards/webasto-ccbv2/lowlevel.c
-> index 8529ea3735..5b6115bed5 100644
-> --- a/arch/arm/boards/webasto-ccbv2/lowlevel.c
-> +++ b/arch/arm/boards/webasto-ccbv2/lowlevel.c
-> @@ -48,7 +48,7 @@ static void noinline start_ccbv2(u32 r0)
->  	 */
->  	if(IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE)
->  	   && !(r0 > MX6_MMDC_P0_BASE_ADDR
-> -	        &&  r0 < MX6_MMDC_P0_BASE_ADDR + SZ_256M)) {
-> +	        &&  r0 < MX6_MMDC_P0_BASE_ADDR + SZ_512M)) {
->  		get_builtin_firmware(ccbv2_optee_bin, &tee, &tee_size);
->  
->  		memset((void *)OPTEE_OVERLAY_LOCATION, 0, 0x1000);
-> diff --git a/images/Makefile.imx b/images/Makefile.imx
-> index 382493488b..b5e4b3841d 100644
-> --- a/images/Makefile.imx
-> +++ b/images/Makefile.imx
-> @@ -366,7 +366,9 @@ $(call build_imx_habv4img, CONFIG_MACH_TECHNEXION_PICO_HOBBIT, start_imx6ul_pico
->  
->  $(call build_imx_habv4img, CONFIG_MACH_DIGI_CCIMX6ULSBCPRO, start_imx6ul_ccimx6ulsbcpro, digi-ccimx6ulsom/flash-header-imx6ul-ccimx6ulsbcpro, imx6ul-ccimx6ulsbcpro)
->  
 > -$(call build_imx_habv4img, CONFIG_MACH_WEBASTO_CCBV2, start_imx6ul_ccbv2, webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2, imx6ul-webasto-ccbv2)
 > +$(call build_imx_habv4img, CONFIG_MACH_WEBASTO_CCBV2, start_imx6ul_ccbv2, webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-256, imx6ul-webasto-ccbv2-256m)
 > +
 > +$(call build_imx_habv4img, CONFIG_MACH_WEBASTO_CCBV2, start_imx6ul_ccbv2, webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-512, imx6ul-webasto-ccbv2-512m)
->  
->  # ----------------------- vf6xx based boards ---------------------------
->  pblb-$(CONFIG_MACH_VF610_TWR) += start_vf610_twr
-> 
+
+I think this is the first board that uses the exact same entry point, but different
+*.imxcfg. I built the patch to see if this actually does what it should and it
+doesn't seem to be the case: both images/barebox-imx6ul-webasto-ccbv2-256m.img
+and images/barebox-imx6ul-webasto-ccbv2-512m.img are identical..
 
 -- 
 Pengutronix e.K.                           |                             |
