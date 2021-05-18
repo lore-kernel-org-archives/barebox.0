@@ -1,67 +1,67 @@
-Delivery-date: Tue, 18 May 2021 13:51:21 +0200
+Delivery-date: Tue, 18 May 2021 13:51:23 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1liyFt-0004CE-NV
-	for lore@lore.pengutronix.de; Tue, 18 May 2021 13:51:21 +0200
+	id 1liyFu-0004Cb-W6
+	for lore@lore.pengutronix.de; Tue, 18 May 2021 13:51:22 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1liyFr-00020g-Qi
-	for lore@pengutronix.de; Tue, 18 May 2021 13:51:21 +0200
+	id 1liyFs-00021I-TI
+	for lore@pengutronix.de; Tue, 18 May 2021 13:51:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
 	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
 	Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=kjSV4lIcnamfh0QhnPN1NCV5mmapVJ9U9cgwvFDxodI=; b=pC34cCz0kuCgqgX8r2xNVkjDB
-	M5BxVz2z9soc9asuVCenz3E5Wy74WzYuUvymB84ku3WSR40JVsBZNqk9zOJE0gux4XQFTfaZWkrxX
-	Li6Gn7+Z4cdwiUSevtvWQBG0TuZzxEpjCGlRIptdYfNJ4hJOCaVSRh2FmC9gt/2hVmpyr3rFCJBu9
-	gb/fT1n4fB7Wf+z5Qel0484bLRhWJkXSm059Z7lei6EMdp2J5ddhwUDCMNN6fIl9OMK7tQM4l30dB
-	MwhYqdVKmiFTm4oKMApDPOT5et+6tMqqPZB+qwqUUT/pFU9W4iVneRwpzGuDXS7RNtwyJ3tA2l3iT
-	4BID2no+w==;
+	 bh=oubndDRcDzb0hh8s0iJbVGgJrpfhfbVQtYTu8DVZR9c=; b=KICzvdLoS30eukg2CClujaZDF
+	9AlBsyTLdnCnYysfmafOP4TKzKDFOQRtdbECuBNGd9GMvsHB6Z+ks5vv053/+1eOHvjtksm2Tdphu
+	UhJs4ObTOXaIs3SR7DRy34phkMUXlrE2PrE6N7wvNKoc/845yzlrah9h2JpU4fa+iMgzjhaq8XL5H
+	edFHJfxLYmQHb/DE8+CiScbhVcONjEegLui6uSefxctrW/ecg6NhskemR/sfQkfmvOZk1gGo8AEfk
+	ib35h6qPM6VHFNKPfRmmqNrZBBJdDcOj36VmwSQW3bGRDxgRNrpSEo15dplYEaU3w9lOuWkxK+kZe
+	37owYh54w==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1liyEs-000dq2-8B; Tue, 18 May 2021 11:50:18 +0000
+	id 1liyEy-000dsX-7o; Tue, 18 May 2021 11:50:24 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1liyEC-000dcW-Bb
+ id 1liyEC-000dcb-Fe
  for barebox@desiato.infradead.org; Tue, 18 May 2021 11:49:36 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=3kEeUw31POYHuwGaZHX1OyhlhAgAqvKtSKcHCqTQB5c=; b=F5fYb+ff9cSk1at34iAWcR9QGB
- WDnEyoiQ/GpuB330//Xw6WFCMqu29OpskcsfhNgAhwBHYC7+5sgTZ0O5Kjr0Or7+N1gIwMGW0/gTz
- PIHISys1Ph754AKHbdz+cR4Gl3MYpnsbDU4R4ZRKbq16Ld4V1J3mgKBZ48bufOaKDyfG9PdBgcpZf
- mI7mfpyX1+4ifWVbtdFa6mdzlY6uTCNqZ6dP4KxwwIZZPL0hnNYlGLu7VLHE9R+6Fk2LNar06VMMh
- TxEsaW6rFuMqnK7mbRF4Z4sVJR4MhTjfZIYhQkX2TX5KLoE1MTZj3FqPG9DmlvrCnoSpWjc+F6G5E
- t23R3YEg==;
+ bh=XzWZ+qDtMN1vyGBc37TQHvhCmpafrvjYuwfvgqhP1no=; b=pHiQ/yotUxGY+suBsGrXyw9KC5
+ xvVX2ymw9WyoztpKW3eIoHsQmSq6VScs8CfNbcOvLyr2Oin0h/CVLkooWr0kb39dpqemGX4nm+Sbi
+ 8ltsEDEnjdpzA8/Edctad11Gx0CcTzGZP5UEgPrWlPlpMb3QdeFKEiEjL8vDFE24P6zCAgKLnxUVF
+ +nIIM3tUyudGHVptOu8vd0Z6pB88Uua6Qpn9vpDDgIIk0EhwDZEsDsCvth3+ku8RLJa+vk5GTijPG
+ NjfVzePMhTxyv7pboO97zw1CXnYuoyCXR33PRLvXkCkEvOe6YLCSc0VyWK09MRR9bcyzHirik76AD
+ 1R6OUDhw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1liyE8-00EcHd-GS
+ id 1liyE8-00EcHe-Gw
  for barebox@lists.infradead.org; Tue, 18 May 2021 11:49:35 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1liyE7-0001Gr-6R; Tue, 18 May 2021 13:49:31 +0200
+ id 1liyE7-0001Gq-8w; Tue, 18 May 2021 13:49:31 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1liyE6-00015A-CD; Tue, 18 May 2021 13:49:30 +0200
+ id 1liyE6-000157-Bc; Tue, 18 May 2021 13:49:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 18 May 2021 13:49:22 +0200
-Message-Id: <20210518114929.12964-8-s.hauer@pengutronix.de>
+Date: Tue, 18 May 2021 13:49:21 +0200
+Message-Id: <20210518114929.12964-7-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210518114929.12964-1-s.hauer@pengutronix.de>
 References: <20210518114929.12964-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210518_044932_609565_38B893E5 
-X-CRM114-Status: GOOD (  12.45  )
+X-CRM114-CacheID: sfid-20210518_044932_615765_C38BE88B 
+X-CRM114-Status: GOOD (  11.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,77 +85,46 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/14] clk: move fixed_factor to include/linux/clk.h
+Subject: [PATCH 06/14] clk: mux: Add ro ops
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-In Linux struct clk_fixed_factor is known to clk implementors. Do the
-same in barebox.
+The Linux version of the clk muxr exports a clk_mux_ro_ops. Do
+the same for barebox.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/clk-fixed-factor.c | 14 +-------------
- include/linux/clk.h            | 15 +++++++++++++++
- 2 files changed, 16 insertions(+), 13 deletions(-)
+ drivers/clk/clk-mux.c | 4 ++++
+ include/linux/clk.h   | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
-index 506c4aea74..4f1a07c629 100644
---- a/drivers/clk/clk-fixed-factor.c
-+++ b/drivers/clk/clk-fixed-factor.c
-@@ -10,18 +10,6 @@
- #include <linux/clk.h>
- #include <linux/err.h>
+diff --git a/drivers/clk/clk-mux.c b/drivers/clk/clk-mux.c
+index 59bea98578..43d2f70180 100644
+--- a/drivers/clk/clk-mux.c
++++ b/drivers/clk/clk-mux.c
+@@ -49,6 +49,10 @@ struct clk_ops clk_mux_ops = {
+ 	.set_parent = clk_mux_set_parent,
+ };
  
--struct clk_fixed_factor {
--	struct clk_hw hw;
--	int mult;
--	int div;
--	const char *parent;
--};
--
--static inline struct clk_fixed_factor *to_clk_fixed_factor(struct clk_hw *hw)
--{
--	return container_of(hw, struct clk_fixed_factor, hw);
--}
--
- static unsigned long clk_fixed_factor_recalc_rate(struct clk_hw *hw,
- 		unsigned long parent_rate)
- {
-@@ -59,7 +47,7 @@ static int clk_factor_set_rate(struct clk_hw *hw, unsigned long rate,
- 	return 0;
- }
- 
--static struct clk_ops clk_fixed_factor_ops = {
-+struct clk_ops clk_fixed_factor_ops = {
- 	.set_rate = clk_factor_set_rate,
- 	.round_rate = clk_factor_round_rate,
- 	.recalc_rate = clk_fixed_factor_recalc_rate,
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index e68aadb923..1c0fa1f50f 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -480,6 +480,21 @@ struct clk *clk_divider_table(const char *name, const char *parent,
- 			      unsigned clk_flags, void __iomem *reg, u8 shift,
- 			      u8 width, const struct clk_div_table *table,
- 			      unsigned div_flags);
-+
-+struct clk_fixed_factor {
-+	struct clk_hw hw;
-+	int mult;
-+	int div;
-+	const char *parent;
++struct clk_ops clk_mux_ro_ops = {
++	.get_parent = clk_mux_get_parent,
 +};
 +
-+static inline struct clk_fixed_factor *to_clk_fixed_factor(struct clk_hw *hw)
-+{
-+	return container_of(hw, struct clk_fixed_factor, hw);
-+}
-+
-+extern struct clk_ops clk_fixed_factor_ops;
-+
- struct clk *clk_fixed_factor(const char *name,
- 		const char *parent, unsigned int mult, unsigned int div,
- 		unsigned flags);
+ struct clk *clk_mux_alloc(const char *name, unsigned clk_flags, void __iomem *reg,
+ 		u8 shift, u8 width, const char * const *parents, u8 num_parents,
+ 		unsigned mux_flags)
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index d0bcdd7ac3..e68aadb923 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -504,6 +504,7 @@ struct clk_mux {
+ #define to_clk_mux(_hw) container_of(_hw, struct clk_mux, hw)
+ 
+ extern struct clk_ops clk_mux_ops;
++extern struct clk_ops clk_mux_ro_ops;
+ 
+ struct clk *clk_mux_alloc(const char *name, unsigned clk_flags,
+ 			  void __iomem *reg, u8 shift, u8 width,
 -- 
 2.29.2
 
