@@ -1,85 +1,67 @@
-Delivery-date: Wed, 19 May 2021 11:48:55 +0200
+Delivery-date: Wed, 19 May 2021 12:40:30 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ljIox-0003yF-J3
-	for lore@lore.pengutronix.de; Wed, 19 May 2021 11:48:55 +0200
+	id 1ljJcs-000477-JO
+	for lore@lore.pengutronix.de; Wed, 19 May 2021 12:40:30 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ljIov-0003L3-HE
-	for lore@pengutronix.de; Wed, 19 May 2021 11:48:55 +0200
+	id 1ljJcr-0001PQ-Mm
+	for lore@pengutronix.de; Wed, 19 May 2021 12:40:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:To:Subject:Message-ID:Date:From:MIME-Version:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=H/AYFZ8ibH43tf0a6m2k5b5Ggmcc4YJHeDgDnhu1m6A=; b=ZUhOhhqbqP0JB6
-	EVfCqH3dkoksi3RWdmxhWw/xLkhx64AtGy1jdUQoB4/+o48QGTm0Ja51lSw/AyVdTDcEKf+M+olZx
-	5HLECtpjpIyPI6b0Jy7bEjkilbY3myaQ93pA3/bZTdfwb2Xhe18H5sTkhxwKuD/83egZ3KZwNfUyV
-	wnBH9HJSyt6puRuZxfciQ6+7jD++ouUBDO11gWgm3Jb/+t3COWaWagNyl7tTcbcT4k7lOHg9SCZiq
-	ojTB2SC/sEnaUxmLIc9wi9JAl8EmBzsXU224FxIxKBA1W+JJBH1UNzvI/H2unQ1sMk9qhJkQ8t4i7
-	gJHYraMJfhbLyg/brDOQ==;
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
+	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	 bh=y76XZrPyhC1jK2bxOu0GP5IoIeD/T1iEQnn8g6Q554A=; b=SXjnXnLEnsAXDRwnltr4LD+EU
+	fJgsdeHBCYwn00X/4KKJ4FrZYH1Z1dEEz2TdpEKYoCmebRLUolSaFufXLwT+63VbI6Mm4FfO9ZiOz
+	pBc8wfVj9xgPrTzi8LT3hWkNoZ5sLAnHfsrZ3sBei8G5AoDZmcKcWJ5nKwicJNsB7Z4dMCMfAZA5I
+	Fwyq3hYhNcLwhb/ae+mcCC6aI05dde5/hdvmabpoVnGtRk11Gf8x5OUomqvW20bimaLtNM9o22d0a
+	SGrA2I3PkufpCLAFLbag3uUSDuHz1iWsUOJmdBVF7l+qO/97ZTep4G3b2oQecOgvnHbEWT11pMixL
+	3WiCfxkqw==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1ljInm-003UX8-TQ; Wed, 19 May 2021 09:47:43 +0000
+	id 1ljJbq-003bqt-7d; Wed, 19 May 2021 10:39:26 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ljInd-003UVs-VN
- for barebox@desiato.infradead.org; Wed, 19 May 2021 09:47:34 +0000
+ id 1ljJbm-003bqV-Rv
+ for barebox@desiato.infradead.org; Wed, 19 May 2021 10:39:23 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Type:To:Subject:Message-ID:
- Date:From:MIME-Version:Sender:Reply-To:Cc:Content-Transfer-Encoding:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=WoNAuJ9t2j50I4rFeNxgvPjFiV3Vbiq4hDW38d7JGsU=; b=PotJY1DWO3KAWt1gy/OREFeZ7F
- bJzT4b9Fk13qF66FaQzh7I62EgKDc6zRmri3zHxm1LceCuQ2NGZZwOfdHOLtYDavChvwznv2Kmv8D
- pTNJhEeMD/GCnPD53uo8N5BewwyLRBLxN/HtotIodEF8pHrIXcyW/mXHp/artZ9bakg7hd+QPGkqW
- 8VAqPq+QhvsdwXpR2pss1zNVdV2dFXhBI/2pvo4kDF9UeuikPxZ7jZk6R9fGjarNwDfmPG3s4Iuf0
- HPA1paGS7s8SGT9KnUfNh2uC9hHlr+wtmOpH5C9HfGy1Nk8dSoLEVlBO2fjOwZCtp/dAbJn2wMFvZ
- pJ4ETFUA==;
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:
+ Subject:Sender:Reply-To:Cc:Content-ID:Content-Description;
+ bh=P7U1XWOYrL10aQZpb6qghqMIt5Spsrf545CsiuUkjas=; b=aLCUpaF5y7SlRPL3EcCMn3Eq5i
+ 8ySI3R5Vh61G3BmzoT+NJdsFcG9x3DUuCYp9I4KGz+6lmLTEtiQPcGMTssArv7p7ZCO1ZdFPVEwbj
+ x91R3vF+QgoN0gjiQPGAVTN+LQa7k+YBajQR0gonIk5HWuzC259YqP2bKe6p4q5kpeqj6kGBtCKza
+ T3hVfYcUg7DG8yIDv2Wfa27uP6HGrEzmouIsHwh/vdzYs5bLK1hmziJ7v3FNvyTdLL0FxxWpulBHI
+ BHKSHApdBaIC6rhL0CMUDP+FTnFjTOkccaHMzVfZVWYb7RdKdWuRaeIopTZi0+sy8SBIUKQGzYxul
+ L75B0C/w==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ljInb-00FKOL-FJ
- for barebox@lists.infradead.org; Wed, 19 May 2021 09:47:32 +0000
-Received: by mail-lf1-x132.google.com with SMTP id m11so18149069lfg.3
- for <barebox@lists.infradead.org>; Wed, 19 May 2021 02:47:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=native-instruments.de; s=google;
- h=mime-version:from:date:message-id:subject:to;
- bh=WoNAuJ9t2j50I4rFeNxgvPjFiV3Vbiq4hDW38d7JGsU=;
- b=PPiV6MWcs6Fx4AWflR1hKK50ZUBMxfLzcHDo/nyvdLI514P6clrkXeg1gkvMSRl4Mv
- 4KQ3RX7BM4k3y3H/Jlrn7c8/gckmtjjDJiDd5dip6rUt5jrpqAwTyx/ePOnQ7hbMywgh
- Cd+a/hYU1GpQMMKjUbyYMxd0NHwV7LUNYIYaOpKaJuvHbXfwJ6zEyUgqfH3J9dA9Izo5
- C4OnqWjvUPOPGPhR/DJ2OXslY990RrLy53ACoWNa/WowBoPpW1GKAvq/ywmRljp9kpoa
- bbMXOsTgZQ9o0HOsbnnxkuo2nsvzoUWhMSR1NEGglkpwAovqftKjlotutRMNgHy/qZj7
- BycQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
- bh=WoNAuJ9t2j50I4rFeNxgvPjFiV3Vbiq4hDW38d7JGsU=;
- b=helzvoI8vMM+wCJQZUkexAIIby7GdaCjJmFW+O/fTGIM88gpwZWbe+FOyG/TXzeBoG
- HiYzLb18m2sJ/uHfzEyR4poFkPlLSfAxWdxmGHTbu3Wa3Hkc/c3vuc9LiA0Dl1Gjah+A
- TkLnVyUyHJFge8F2q3/WHOq5aeR4anpWmNyr4Hhtk7kdGvE2d+Vj25PsT15zgrqy4dv6
- /p9wNPb1fOnbw1zpL6cOlZHQR6XsvlG0Cs7Z89Spm710UI1Fwg7In/ShWXc1efiRDuTt
- nwD3QVu4pi7ShExoCWWP+MGxJsAyxtApYeeAxy5BKA0OYI8LIwgu2OsGu5Drvqbi+i68
- xCHQ==
-X-Gm-Message-State: AOAM532akUMTM9uG+7V08WU183SazkzaC/XbfvLk+5wu25zCqjm81LC0
- UlXTNJYHXxVNjRNGkyNo5Qa1dUqOB5IUWmoU4bGD2fszz6b58Zuk
-X-Google-Smtp-Source: ABdhPJwpG4FU2jsYt0e1RM2PnHAJKybxPWKW1Ldzj74ZcTefWFF7b4HfKPVY5109g6VeQJN4cT2Xn8b0vWIF5dZT3J8=
-X-Received: by 2002:a05:6512:1303:: with SMTP id
- x3mr7841319lfu.276.1621417649327; 
- Wed, 19 May 2021 02:47:29 -0700 (PDT)
+ id 1ljJbk-00FMNk-24
+ for barebox@lists.infradead.org; Wed, 19 May 2021 10:39:21 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1ljJbh-0001Hv-2H; Wed, 19 May 2021 12:39:17 +0200
+To: Laszlo Sitzer <laszlo.sitzer@native-instruments.de>,
+ barebox@lists.infradead.org
+References: <CACBqSLPEq5gbag1yFs8Sb33B=uJVvYSd3mBj+X6w1vNKqQH-ig@mail.gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <72df0047-e579-8c3b-5a68-0aca241f4456@pengutronix.de>
+Date: Wed, 19 May 2021 12:39:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-From: Laszlo Sitzer <laszlo.sitzer@native-instruments.de>
-Date: Wed, 19 May 2021 11:47:18 +0200
-Message-ID: <CACBqSLPEq5gbag1yFs8Sb33B=uJVvYSd3mBj+X6w1vNKqQH-ig@mail.gmail.com>
-To: barebox@lists.infradead.org
+In-Reply-To: <CACBqSLPEq5gbag1yFs8Sb33B=uJVvYSd3mBj+X6w1vNKqQH-ig@mail.gmail.com>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210519_024731_526139_82A69952 
-X-CRM114-Status: UNSURE (   8.46  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210519_033920_135352_E4CE85B3 
+X-CRM114-Status: GOOD (  26.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,30 +81,92 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: configuring state framework for x86/EFI
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: configuring state framework for x86/EFI
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello,
+Hi Laszlo,
 
-I have a x86/EFI system with barebox running (without state framework).
-I noticed using the nv command persists values but I can't seem to
-understand where these physically get stored. Is there a way I could
-determine that?
+On 19.05.21 11:47, Laszlo Sitzer wrote:
+> Hello,
+> 
+> I have a x86/EFI system with barebox running (without state framework).
+> I noticed using the nv command persists values but I can't seem to
+> understand where these physically get stored. Is there a way I could
+> determine that?
 
-I  would like to use the state framework (in order to be able to use
-barebox-state to reset bootchooser counters). In order to do so I have
-to write my state.dts, but I don't know which backend to choose in
-order to use the same location as nv used before.
+EFI variables; You should see something like:
+environment load /efivars/barebox-env-5b91f69c-8b88-4a2b-9269-5f1d802b5175: No such file or directory
 
-I am not asking to use nv and state at the same time but rather have
-state framework use the location that nv used. Does that make sense?
+first time you boot when you have no environment stored yet.
 
-Best, Lazlo
+> I  would like to use the state framework (in order to be able to use
+> barebox-state to reset bootchooser counters). In order to do so I have
+> to write my state.dts, but I don't know which backend to choose in
+> order to use the same location as nv used before.
+
+If you have atomic EFI variables, you could use those directly for
+next boot slot selection without involving barebox-state.
+
+If they aren't atomic, you will likely not want them as backing
+store for barebox-state either. For such cases you can create a
+partition and use that as backend.
+> I am not asking to use nv and state at the same time but rather have
+> state framework use the location that nv used. Does that make sense?
+
+It does. Here's an example:
+
+/ {
+	aliases {
+		state = &state;
+	};
+
+	state: state {
+		magic = <0xDEADBEEF>;
+         	backend-type = "raw";
+         	backend = <&state_part>;
+         	backend-stridesize = <4096>; /* partition must be at least 3x this */
+		
+		/* your variables */
+	};
+
+	partitions {
+        	compatible = "fixed-partitions";
+
+	        state_part: state {
+                	partuuid = "your-part-uuid";
+        	};
+	};
+};
+
+Adjust your partitioning accordingly, compile the DT, store it
+in /boot/EFI/barebox/state.dtb and use the most recent
+version of the barebox-state userspace utility and you should be good to go.
+
+If you think the documentation here can be improved, patches are always
+welcome :-)
+
+Cheers,
+Ahmad
+
+> 
+> Best, Lazlo
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
