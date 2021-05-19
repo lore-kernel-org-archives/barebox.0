@@ -1,77 +1,74 @@
-Delivery-date: Wed, 19 May 2021 08:56:13 +0200
+Delivery-date: Wed, 19 May 2021 09:40:14 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ljG7p-0003Xa-O8
-	for lore@lore.pengutronix.de; Wed, 19 May 2021 08:56:13 +0200
+	id 1ljGoQ-0003eC-TW
+	for lore@lore.pengutronix.de; Wed, 19 May 2021 09:40:14 +0200
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ljG7p-0006u0-32
-	for lore@pengutronix.de; Wed, 19 May 2021 08:56:13 +0200
+	id 1ljGoQ-0003hy-1Z
+	for lore@pengutronix.de; Wed, 19 May 2021 09:40:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding
 	:Content-Type:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:Message-Id:Date:
+	Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	 bh=0h7IoZ4+FfACUJrZt5fmIKXIAiRyFOHo7Sy+DvE+Wc8=; b=W8wUike0Xwsu/Nqub+N+TDl7I
-	lA9Vx8MDlUbcVBnFc7QnxCtjsSTa+n0QeJBYCaeaTLf09ZeHHrIvVXiCxQZEZZhvNeOZDuB96IB7y
-	SlrG5Bia8WnFmqAAYEAD9rYPmp4i6V6Owcu8r7868nJ4lNX4ZjBHplUfZQ1I5Ap4z4Zu2mGe5wmm0
-	NGik4n+VRfTKYlRlQpoQ8KH+Ay7pF0doD0/GmZ1+g7YxXA6AI8YfsXJ1xeqqawf3MSQHwNRcCGPWI
-	G8cwYqZgIcwew/V/zmeCNiBJ1rLhtFiiLKqf28m5wAQil15loGQwvSsxPTlQPfdXWo55iQOBeW1ta
-	PsFhc0Vfw==;
+	 bh=n7lvh8v4BE4ExkOqAQ4W6+8OV3CFpNUImwxCGo4jCdo=; b=X/nmVkiMbA+EAkcG7DxGADLSb
+	jbrVy06KYPuvutCAEjlvI+36cfeeuIL8ODsxcOg4CNhkJW3wFpKeTEg69tQoRmE4juu5TCREmC+74
+	R+Oxd0xjGkoIiFvj74+SdI3jwrf/iqMfXe5AAzCAtRniXYCvgAigzIFcUV8ibodQL0h/fbtfdzW2y
+	U/lmYJ0Dql2PUD8LpQFR5FJ3jxdDL7uOyV1uJ68aci6jTOUkdZ7mQyiC/1tjJnH7JOJ81G+LIsciZ
+	eEkVQWcdB78bzCH1wyzd3u7KdOyKyKFEGTRwc0jrHY06G8aUHXUb19N3hLUj6OpnifpRzqlq8pYLb
+	qXiV/BrDQ==;
 Received: from localhost ([::1] helo=desiato.infradead.org)
 	by desiato.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1ljG6q-0034AP-Ms; Wed, 19 May 2021 06:55:12 +0000
+	id 1ljGnO-003Chm-4C; Wed, 19 May 2021 07:39:10 +0000
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
  by desiato.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ljG6l-00349l-93
- for barebox@desiato.infradead.org; Wed, 19 May 2021 06:55:07 +0000
+ id 1ljGnH-003ChB-KP
+ for barebox@desiato.infradead.org; Wed, 19 May 2021 07:39:03 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=hLXlkglrBy1u5pOJyE9neonbuIz32gXznpYsuppnHa0=; b=Wy/qZRoFUTU6E2I+BxzqG4PQg2
- v1Y/9RAHVimRJCI6eSi3WYdAxKUvEBB2vFPmZ6MYs6ztsfC+y02WLm3wC3ZI9FrENYOQvDn2dv6Xl
- ILriY5QeTQmFdHZBUIoZqrGfO1muixykwHWAwHpq6nUFE6D0o7bdrcCYM2KALHOyIXHnyCZhEK+iK
- ovP6+OlKUBaIaTkfZeUlNTbJyqeCUCc77IdmtlQdOw5DkXQFILKxBQaxAKesezyK9VJOprpUoR7ss
- fYc+y3ASdGMhSqryhxj334ow6zyjrPZ7c3l14vW6bZbdv6RGDfVPAt5W8959ZiD+O/eK/Yubl+azH
- vZYzOWNA==;
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=f+4AjKzCqonVSvat6x2XtJaFPSZoZkZBfwS7ArmdR84=; b=ItX0XaTDXmQbqzVY/WCFNUYiN0
+ cfmFukg0UxTTDf8EfouNJ29/i7MEdAdNn05qSEs1YEZeBozUcBinZZcswF7oH44dHktdwcQax70SN
+ rtJzWzGNWSN/6OwbnC1X8MkGxvozjdJIX6URctGCKjNN/bLJuV0CkV4V+tnV29O+GX5jO3Eg2LH5R
+ oc1P3VdElWCCxPOVSDT0/rcU7PoMHUDJORcnpZkelopqPsMNi9a8v0VXhLi/VKJBtIGSUNfUsmrLd
+ v4l+kiciNqHiplpqANX5ETuJ9xAsraoSVjGZ/oHDfNWebq06m4QJDjWh5do5/IScTF3Jl+gVihX05
+ PpSyQl7Q==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1ljG6i-00FCK9-ER
- for barebox@lists.infradead.org; Wed, 19 May 2021 06:55:06 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1ljGnE-00FE46-Bs
+ for barebox@lists.infradead.org; Wed, 19 May 2021 07:39:02 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1ljG6f-0006iV-Fp; Wed, 19 May 2021 08:55:01 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1ljG6f-0003LL-71; Wed, 19 May 2021 08:55:01 +0200
-Date: Wed, 19 May 2021 08:55:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20210519065501.GB19819@pengutronix.de>
-References: <20210518114929.12964-1-s.hauer@pengutronix.de>
- <20210518114929.12964-4-s.hauer@pengutronix.de>
- <881f5270-ed71-ed49-bd40-06763ce3394e@pengutronix.de>
+ (envelope-from <mtr@pengutronix.de>)
+ id 1ljGnA-0003bR-Lo; Wed, 19 May 2021 09:38:56 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <mtr@pengutronix.de>)
+ id 1ljGn9-000192-Pf; Wed, 19 May 2021 09:38:55 +0200
+Received: from mtr by dude03.red.stw.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mtr@pengutronix.de>)
+ id 1ljGn9-00BWx9-Mt; Wed, 19 May 2021 09:38:55 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+To: Michael Graichen <michael.graichen@hotmail.com>
+Cc: barebox@lists.infradead.org,
+	m.tretter@pengutronix.de
+Date: Wed, 19 May 2021 09:38:55 +0200
+Message-Id: <20210519073855.2748231-2-m.tretter@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210519073855.2748231-1-m.tretter@pengutronix.de>
+References: <AM9P192MB0870DC1573A4088BB839A208AB2C9@AM9P192MB0870.EURP192.PROD.OUTLOOK.COM>
+ <20210519073855.2748231-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <881f5270-ed71-ed49-bd40-06763ce3394e@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 08:53:28 up 90 days, 10:17, 96 users,  load average: 0.13, 0.29, 0.29
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210518_235504_502888_3F7C5BFC 
-X-CRM114-Status: GOOD (  21.37  )
+X-CRM114-CacheID: sfid-20210519_003900_426920_4E6006AB 
+X-CRM114-Status: GOOD (  11.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,40 +88,50 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 03/14] clk: introduce struct clk_hw
+Subject: [PATCH 2/2] mci: arasan: configure data transfer only if we actually
+ have data
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, May 18, 2021 at 02:17:58PM +0200, Ahmad Fatoum wrote:
-> 
-> 
-> On 18.05.21 13:49, Sascha Hauer wrote:
-> > In Linux the ops in struct clk_ops take a struct clk_hw * argument
-> > instead of a struct clk * argument as in barebox. With this taking
-> > new clk drivers from Linux requires a lot of mechanical conversions.
-> > Instead of doing this over and over again swallow the pill once and
-> > convert the existing barebox code over to clk_hw.
-> > 
-> > The implementation is a little different from Linux. In Linux struct clk
-> > is only known to the core clock code.
-> 
-> s/clk/clk_hw/ ?
+If we don't have any data to transfer, we must not set the block size
+and block count.
 
-No. struct clk or better: the definition thereof is indeed only known by
-the core clock code. struct clk_hw is known to the drivers as well.
+If data is NULL, accessing data to get the block size and block count is
+a NULL pointer dereference.
 
-Sascha
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+ drivers/mci/arasan-sdhci.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-
+diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
+index 399966e8cf10..3d738774e825 100644
+--- a/drivers/mci/arasan-sdhci.c
++++ b/drivers/mci/arasan-sdhci.c
+@@ -283,10 +283,12 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	sdhci_set_cmd_xfer_mode(&host->sdhci, cmd, data, false, &command, &xfer);
+ 
+ 	sdhci_write8(&host->sdhci, SDHCI_TIMEOUT_CONTROL, TIMEOUT_VAL);
+-	sdhci_write16(&host->sdhci, SDHCI_TRANSFER_MODE, xfer);
+-	sdhci_write16(&host->sdhci, SDHCI_BLOCK_SIZE, SDHCI_DMA_BOUNDARY_512K |
+-			    SDHCI_TRANSFER_BLOCK_SIZE(data->blocksize));
+-	sdhci_write16(&host->sdhci, SDHCI_BLOCK_COUNT, data->blocks);
++	if (data) {
++		sdhci_write16(&host->sdhci, SDHCI_TRANSFER_MODE, xfer);
++		sdhci_write16(&host->sdhci, SDHCI_BLOCK_SIZE,
++			      SDHCI_DMA_BOUNDARY_512K | SDHCI_TRANSFER_BLOCK_SIZE(data->blocksize));
++		sdhci_write16(&host->sdhci, SDHCI_BLOCK_COUNT, data->blocks);
++	}
+ 	sdhci_write32(&host->sdhci, SDHCI_ARGUMENT, cmd->cmdarg);
+ 	sdhci_write16(&host->sdhci, SDHCI_COMMAND, command);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.2
+
 
 _______________________________________________
 barebox mailing list
