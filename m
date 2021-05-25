@@ -1,15 +1,15 @@
-Delivery-date: Tue, 25 May 2021 07:00:55 +0200
+Delivery-date: Tue, 25 May 2021 07:16:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llPBX-0006uV-7U
-	for lore@lore.pengutronix.de; Tue, 25 May 2021 07:00:55 +0200
+	id 1llPQu-00073r-41
+	for lore@lore.pengutronix.de; Tue, 25 May 2021 07:16:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llPBW-00049e-AG
-	for lore@pengutronix.de; Tue, 25 May 2021 07:00:55 +0200
+	id 1llPQt-0005or-7d
+	for lore@pengutronix.de; Tue, 25 May 2021 07:16:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,46 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=q89fFv29QFxQLMhw6VATCVd7V6WVKzSUVsOzy7KtSnY=; b=Mll4cicT+ASoZbRhZw62SjvPFw
-	25TmTdJWmqNVluLRQVZI8PJto/rAp1+GRjhJ0p2iA7iiF0uhgXv+TW1agwSzXDHdrKFfcUNRI+5uS
-	ULAZj6DN4w5979wJTQ1y2Y1OO0TuuABwNEsIjWnuoDKApmukN5bqaMI0TV6bbdjSV+cvvo0rDc/GF
-	r8Xa0zeubfirwhMAXm6CsFX56JxNSmoaFlx/VIEIC53nwOHGxsQ9fNqOW/sdhuGSa/bLSQ8SqC4Vg
-	R3I4QnmIXvheH9MTSD+lcNLFqg1IKL/sfIluk5qE67e+VnLt0BAkxGr5vFrjJ+x/S86IeT5CNBlth
-	0NOK3Pyw==;
+	bh=3AoQZZbsmHxo9WH2iC/YgRWCNiw4HqdEaSYcs+GRDSU=; b=VkSIVMCwDTVTztu2OxrYPvLYs4
+	TFWLpeyV913HEDQ5Lnl7lJPcUGH6FHx4sFS6aNvnJshJcgs++Kl+7MK6KUUap08eQQ2uuXdQ2n3Mh
+	uLKk6CnPaq699j6OSRB4AUhU3Fm9LZ78l3LEZuIcCu/Sau5YJNPU4+yC10xcGQ0+gjk16OCd4p8aO
+	ZD6Wl6Axvu539woj7xYX+lIetd4PTsipyCEvBPN8UhKSbVeebl2rf14mo8naqNwod7nTIqjBwhKih
+	jratD5hJqiLYQ7QjhqW3Qx+6zDhyNCcp74YRAjJ/IQhapc6Mxmqnn8Q70vFSNt8W4QZNiRq88uagv
+	C67IODZQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1llPAH-003Njh-5m; Tue, 25 May 2021 04:59:37 +0000
+	id 1llPPb-003PJZ-JL; Tue, 25 May 2021 05:15:27 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1llPAC-003NjB-6i
- for barebox@lists.infradead.org; Tue, 25 May 2021 04:59:33 +0000
+ id 1llPPW-003PIy-Nm
+ for barebox@lists.infradead.org; Tue, 25 May 2021 05:15:24 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1llPAA-0003r1-Vv; Tue, 25 May 2021 06:59:30 +0200
+ id 1llPPV-0005Ze-4g; Tue, 25 May 2021 07:15:21 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1llPAA-0004VZ-C9; Tue, 25 May 2021 06:59:30 +0200
-Date: Tue, 25 May 2021 06:59:30 +0200
-To: Trent Piepho <tpiepho@gmail.com>
+ id 1llPPT-0006Yo-Ta; Tue, 25 May 2021 07:15:19 +0200
+Date: Tue, 25 May 2021 07:15:19 +0200
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210525045930.GJ19819@pengutronix.de>
-References: <20210519060134.2976676-1-tpiepho@gmail.com>
+Message-ID: <20210525051519.GK19819@pengutronix.de>
+References: <20210521163435.17365-1-m.felsch@pengutronix.de>
+ <20210521163435.17365-2-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210519060134.2976676-1-tpiepho@gmail.com>
+In-Reply-To: <20210521163435.17365-2-m.felsch@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 06:58:55 up 96 days,  8:22, 75 users,  load average: 0.16, 0.18, 0.17
+X-Uptime: 07:10:15 up 96 days,  8:34, 75 users,  load average: 0.17, 0.17, 0.18
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210524_215932_271141_A6F4FB7D 
-X-CRM114-Status: GOOD (  18.83  )
+X-CRM114-CacheID: sfid-20210524_221522_799694_7005BD7C 
+X-CRM114-Status: GOOD (  22.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,24 +81,37 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] Documentation: Update env sources documentation
+Subject: Re: [PATCH 1/4] commands: mount: replace printf by pr_info
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, May 18, 2021 at 11:01:34PM -0700, Trent Piepho wrote:
-> Add CONFIG_DEFAULT_ENVIRONMENT_PATH to the list in the proper place.
+On Fri, May 21, 2021 at 06:34:32PM +0200, Marco Felsch wrote:
+> This allows us to control the output behaviour e.g. booting silently
+> to improve boot time.
 > 
-> Update the board env to follow the new pattern for naming and note that,
-> unlike the other directories, one must add code to get this directory in
-> the environment.
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > ---
->  Documentation/user/defaultenv-2.rst | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
+>  commands/mount.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/commands/mount.c b/commands/mount.c
+> index ff1d8bc5e5..bb2d1d60f4 100644
+> --- a/commands/mount.c
+> +++ b/commands/mount.c
+> @@ -74,7 +74,7 @@ static int do_mount(int argc, char *argv[])
+>  		if (IS_ERR(path))
+>  			return PTR_ERR(path);
+>  
+> -		printf("mounted /dev/%s on %s\n", devstr, path);
+> +		pr_info("mounted /dev/%s on %s\n", devstr, path);
 
-Applied, thanks
+Applied all except this one. This is the output from the mount command
+and as such it should be printed with printf.
+
+I have no good idea to quiesce such output as we don't have any output
+redirection. Maybe we need an additional control knob for printf output.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
