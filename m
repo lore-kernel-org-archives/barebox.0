@@ -1,15 +1,15 @@
-Delivery-date: Tue, 25 May 2021 10:56:38 +0200
+Delivery-date: Tue, 25 May 2021 10:56:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llSre-00006R-51
-	for lore@lore.pengutronix.de; Tue, 25 May 2021 10:56:38 +0200
+	id 1llSrs-00006o-IH
+	for lore@lore.pengutronix.de; Tue, 25 May 2021 10:56:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llSrc-0007WF-Pf
-	for lore@pengutronix.de; Tue, 25 May 2021 10:56:37 +0200
+	id 1llSrr-0007Yk-8g
+	for lore@pengutronix.de; Tue, 25 May 2021 10:56:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,38 +17,39 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=+ZAprOLJHNiBt9HRiwjvERw5TrYoLJQ1Jc5kGy6mhyE=; b=VoLiU73aEmDCfufYn0QchdtDdx
-	w13Z/5PszFhfkPs1HUfe3zGAfPWaEUmXkLZX1L9yyjD1SjHu/6RgvMwqT9kqij4NQm1pQv7nQcDlT
-	Z71S0aHTkOQKIB2XqnolgH1rt0BwSv61hNxzmCxYpZ6VM4fw22KbJtDfVRVuwMPXiPmAAwF0Mk6uj
-	9U1u9+SDcgaWXL3wDgiMjuS8cx073qhxUE3sc0ro06/r7YSQNvHeagokSKABH9kWccvJScceROuV3
-	AzyR0y8C+gILE1BX/fk+HooG8XXfUJCwRFXBKlPBNqrQ/G8nxabqX0Rp4bBOKnGbiXjhQ2XQgMewc
-	uxDqTHwA==;
+	bh=Ie1niN59/1G1HEGVUqTOP4m5Rlf66tgsA13xJfIOja4=; b=AkCaVW8TSEfDuO8rUaw8pNIJIh
+	koEf4Tqw5oiLYFUqP4B46hz2o+E2mo7VtB1UBquwH541NZeYZoEF9oENgcYUjxWds7i/SfXzn1nCU
+	beP+U+N2hjn+MOZrrfsca2LQh3Vz+VZbQ/BTuokrv0gEz+qV0bfacbiYGGXChHP7K3pIsjzGiOJvH
+	2G8uR23HFBo0D+EWErJJogNzMJFRJHfoibrvk64CR5C6BrYJQyK/+N9vJaaZFGvW7Bj7TqHgqfO3F
+	S/cJAHBlEZFOj3+heu91eoOqm/ugFbdwy6NJOgQN0k7uKHSwc6m+8WvumGmWoShNaV9N/qFXDJs4s
+	TFHVM3gg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1llSqC-004Cip-Bn; Tue, 25 May 2021 08:55:08 +0000
+	id 1llSqV-004Cqo-8R; Tue, 25 May 2021 08:55:28 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1llSod-004C71-G0
- for barebox@lists.infradead.org; Tue, 25 May 2021 08:53:33 +0000
+ id 1llSov-004CEY-NQ
+ for barebox@lists.infradead.org; Tue, 25 May 2021 08:53:51 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <bst@pengutronix.de>)
- id 1llSoa-0006rG-1x; Tue, 25 May 2021 10:53:28 +0200
+ id 1llSou-0006sk-D1; Tue, 25 May 2021 10:53:48 +0200
 To: barebox@lists.infradead.org
 Cc: a.fatoum@pengutronix.de
 References: <20210414130044.6910-1-bst@pengutronix.de>
+ <20210414130044.6910-2-bst@pengutronix.de>
 From: Bastian Krause <bst@pengutronix.de>
-Message-ID: <b66b5544-ae32-7711-4920-65e63927a876@pengutronix.de>
-Date: Tue, 25 May 2021 10:53:27 +0200
+Message-ID: <0f5aa510-5e65-0897-a212-e08305b8eb1c@pengutronix.de>
+Date: Tue, 25 May 2021 10:53:48 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.9.0
 MIME-Version: 1.0
-In-Reply-To: <20210414130044.6910-1-bst@pengutronix.de>
+In-Reply-To: <20210414130044.6910-2-bst@pengutronix.de>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210525_015331_601277_6C4E8125 
-X-CRM114-Status: GOOD (  24.42  )
+X-CRM114-CacheID: sfid-20210525_015349_818163_9F9204D2 
+X-CRM114-Status: GOOD (  27.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,82 +74,95 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 1/2] of: fix up /chosen node even when there are no
- bootargs
+Subject: Re: [PATCH v2 2/2] of: introduce global.linux.bootargs_append
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 On 4/14/21 3:00 PM, Bastian Krause wrote:
 > From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > 
-> Currently the /chosen fixups of "reset-source",
-> "reset-source-instance", "reset-source-device" and "bootsource" do not
-> happen if no bootargs are available.
+> By default, barebox overwrites the bootargs in the oftree if it itself
+> has any. Make this behavior configurable by adding a new global
+> variable.
 > 
-> Fix that by moving the actual bootargs fixup to a dedicated function
-> of_write_bootargs() and only return there early on empty bootargs, but
-> still perform the /chosen fixups mentioned above.
+> The new global variable allows either appending barebox' bootargs to the
+> original oftree bootargs (global.linux.bootargs_append=1) or overwriting
+> the original oftree bootargs (global.linux.bootargs_append=0) as before.
+> The default is to overwrite the original bootargs.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> [bst: dropped new line deletions and modified string comparison, moved of_write_bootargs() call to original position, add commit message]
+> [bst: dropped a new line removal, extend commit message]
 > Signed-off-by: Bastian Krause <bst@pengutronix.de>
 > ---
-> No changes since (implicit) v1.
+> Changes since (implicit) v1:
+> - use global.linux.bootargs_append instead of
+>   global.linux.bootargs_overwrite
+> - since the meaning is the other way around now, change the default and
+>   the check in of_write_bootargs()
 > ---
->  common/oftree.c | 20 +++++++++++++-------
->  1 file changed, 13 insertions(+), 7 deletions(-)
+>  common/oftree.c | 22 +++++++++++++++++++++-
+>  1 file changed, 21 insertions(+), 1 deletion(-)
 
 Gentle ping.
 
 > 
 > diff --git a/common/oftree.c b/common/oftree.c
-> index 075b9d6b8b..a8e6587a61 100644
+> index a8e6587a61..ad2eff362d 100644
 > --- a/common/oftree.c
 > +++ b/common/oftree.c
-> @@ -161,16 +161,12 @@ static void watchdog_build_bootargs(struct watchdog *watchdog, struct device_nod
+> @@ -16,6 +16,7 @@
+>  #include <reset_source.h>
+>  #include <watchdog.h>
+>  #include <globalvar.h>
+> +#include <magicvar.h>
+>  
+>  #define MAX_LEVEL	32		/* how deeply nested we will go */
+>  
+> @@ -161,9 +162,14 @@ static void watchdog_build_bootargs(struct watchdog *watchdog, struct device_nod
 >  	free(buf);
 >  }
 >  
-> -static int of_fixup_bootargs(struct device_node *root, void *unused)
-> +static int of_write_bootargs(struct device_node *node)
+> +static int bootargs_append = 0;
+> +BAREBOX_MAGICVAR(global.linux.bootargs_append, "append to original oftree bootargs");
+> +
+>  static int of_write_bootargs(struct device_node *node)
 >  {
-> -	struct device_node *node;
 >  	const char *str;
-> -	int err;
-> -	int instance = reset_source_get_instance();
-> -	struct device_d *dev;
+> +	char *buf = NULL;
+> +	int ret;
 >  
 >  	if (IS_ENABLED(CONFIG_SYSTEMD_OF_WATCHDOG))
-> -		watchdog_build_bootargs(boot_get_enabled_watchdog(), root);
-> +		watchdog_build_bootargs(boot_get_enabled_watchdog(), of_get_parent(node));
->  
->  	str = linux_bootargs_get();
->  	if (!str)
-> @@ -180,13 +176,23 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
+>  		watchdog_build_bootargs(boot_get_enabled_watchdog(), of_get_parent(node));
+> @@ -176,7 +182,20 @@ static int of_write_bootargs(struct device_node *node)
 >  	if (strlen(str) == 0)
 >  		return 0;
 >  
-> +	return of_property_write_string(node, "bootargs", str);
-> +}
+> -	return of_property_write_string(node, "bootargs", str);
+> +	if (bootargs_append) {
+> +		const char *oldstr;
 > +
-> +static int of_fixup_bootargs(struct device_node *root, void *unused)
-> +{
-> +	struct device_node *node;
-> +	int err;
-> +	int instance = reset_source_get_instance();
-> +	struct device_d *dev;
+> +		ret = of_property_read_string(node, "bootargs", &oldstr);
+> +		if (!ret) {
+> +			str = buf = basprintf("%s %s", oldstr, str);
+> +			if (!buf)
+> +				return -ENOMEM;
+> +		}
+> +	}
 > +
->  	node = of_create_node(root, "/chosen");
->  	if (!node)
->  		return -ENOMEM;
+> +	ret = of_property_write_string(node, "bootargs", str);
+> +	free(buf);
+> +	return ret;
+>  }
 >  
->  	of_property_write_string(node, "barebox-version", release_string);
+>  static int of_fixup_bootargs(struct device_node *root, void *unused)
+> @@ -218,6 +237,7 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
 >  
-> -	err = of_property_write_string(node, "bootargs", str);
-> +	err = of_write_bootargs(node);
->  	if (err)
->  		return err;
->  
+>  static int of_register_bootargs_fixup(void)
+>  {
+> +	globalvar_add_simple_bool("linux.bootargs_append", &bootargs_append);
+>  	return of_register_fixup(of_fixup_bootargs, NULL);
+>  }
+>  late_initcall(of_register_bootargs_fixup);
 > 
 
 
