@@ -1,49 +1,50 @@
-Delivery-date: Tue, 25 May 2021 21:02:37 +0200
+Delivery-date: Tue, 25 May 2021 21:39:59 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llcK5-0005xf-Nc
-	for lore@lore.pengutronix.de; Tue, 25 May 2021 21:02:37 +0200
+	id 1llcuF-0006KB-Tg
+	for lore@lore.pengutronix.de; Tue, 25 May 2021 21:39:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llcK4-0002gs-9j
-	for lore@pengutronix.de; Tue, 25 May 2021 21:02:37 +0200
+	id 1llcuE-0007Ba-Rn
+	for lore@pengutronix.de; Tue, 25 May 2021 21:39:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=fybUab8iYByl27I6HYcdVvVvS+fy3o7/oYgOZKav1A0=; b=R+xRg2FDglGIJb
-	WNsFo8D0xfPhmrfSgmf8Raw4e9gMstXztojWDM7abc6EeWSbAsGHKfRSNt7wJW8kJrWabwqleaYfY
-	pdoaTT8PNDJ33lVQvvnX3qR+6y7zRzBZyToxQRFQdbRHj+MmicYBmlOUodfoPI9FVwZg9sOvzECly
-	ByhOjkIzwYkx4YQgkrzyex7hW3VANCgaNOvZA7g3yvfL+0BqhwDMdOqj3aEQthZ9bdWCawrMLifaz
-	8FX1pkU5MCUxmBznHrQCOUBem9GcGtvxbuOz4vze34GbEwMYZOwz7xe3XFx3B9oeFQ79eqYI1TZ2U
-	CxW1m0kPrhWJWWR+5nUA==;
+	List-Owner; bh=5XI3MWilK1/2JTeQypIKSa/j3yQZwhSkrxW+JMIK49U=; b=V+5Le/JFADiDl2
+	diz2Mf7rk7PNUVx85gvQM6y5qL3j0/nQ9Ek6Wgg3bVHn4x9/Vt4svt1i2A24A74+mTwre4KHwQtK2
+	4NPFyka5HyNA3o0a1JHG6Nu8n8cQnWOGS7hmBC3BbYqzbCN6MU/1O6roucJ6luIb67jF2Xs7Uopa6
+	knFW+rzI2rtk5OrfStL8BiVmaC50CPJDsm52iRDJVnDAKi2/9e2EoUvK+m8nKzRYk9HSgxn3EsFBy
+	EMwaxtZS+X8/y5rJ5o6+bc4FYkvSweT/XeVAqnM/MXOD1etomo+X9k6yEcbroJBvtkYk2dGGMrz/k
+	T6n7kC4SREeyseupa01A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1llcIW-007VRX-Eb; Tue, 25 May 2021 19:01:03 +0000
+	id 1llcsg-007nGh-GA; Tue, 25 May 2021 19:38:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1llbvu-007K6z-0G
- for barebox@lists.infradead.org; Tue, 25 May 2021 18:37:40 +0000
+ id 1llcqo-007mcK-TH
+ for barebox@lists.infradead.org; Tue, 25 May 2021 19:36:28 +0000
 Received: from dude03.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::39])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1llbvp-0008Bd-Hl
- for barebox@lists.infradead.org; Tue, 25 May 2021 20:37:33 +0200
+ (envelope-from <l.stach@pengutronix.de>) id 1llcqn-0006vM-HB
+ for barebox@lists.infradead.org; Tue, 25 May 2021 21:36:25 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 25 May 2021 20:37:33 +0200
-Message-Id: <20210525183733.3345497-2-l.stach@pengutronix.de>
+Date: Tue, 25 May 2021 21:36:23 +0200
+Message-Id: <20210525193624.3348572-2-l.stach@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210525183733.3345497-1-l.stach@pengutronix.de>
-References: <20210525183733.3345497-1-l.stach@pengutronix.de>
+In-Reply-To: <20210525193624.3348572-1-l.stach@pengutronix.de>
+References: <20210525193624.3348572-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210525_113738_121653_5FD2CF10 
-X-CRM114-Status: GOOD (  15.28  )
+X-CRM114-CacheID: sfid-20210525_123626_983698_0EC45329 
+X-CRM114-Status: UNSURE (   7.38  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,138 +68,26 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] bootm: add support for booting compressed images
+Subject: [PATCH 2/3] ARM: imx_v8_defconfig: enable PRT8MM board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-ARM64 does not have a self extracting image format, but relies on the image
-being externally compressed with one of the standard compression algorithms.
-
-Add support for decompressing the bootm OS image. It is added in common
-code as it may also be useful for other images/architectures.
-
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- common/bootm.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+ arch/arm/configs/imx_v8_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 092116beb94a..2bfb5cb01593 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -12,6 +12,7 @@
- #include <environment.h>
- #include <linux/stat.h>
- #include <magicvar.h>
-+#include <uncompress.h>
- 
- static LIST_HEAD(handler_list);
- 
-@@ -808,6 +809,85 @@ err_out:
- 	return ret;
- }
- 
-+static int do_bootm_compressed(struct image_data *img_data)
-+{
-+	struct bootm_data bootm_data = {
-+		.oftree_file = img_data->oftree_file,
-+		.initrd_file = img_data->initrd_file,
-+		.tee_file = img_data->tee_file,
-+		.verbose = img_data->verbose,
-+		.verify = img_data->verify,
-+		.force = img_data->force,
-+		.dryrun = img_data->dryrun,
-+		.initrd_address = img_data->initrd_address,
-+		.os_address = img_data->os_address,
-+		.os_entry = img_data->os_entry,
-+	};
-+	int from, to, ret;
-+	char *dstpath;
-+
-+	from = open(img_data->os_file, O_RDONLY);
-+	if (from < 0)
-+		return -ENODEV;
-+
-+	dstpath = make_temp("bootm-compressed");
-+	if (!dstpath) {
-+		ret = -ENOMEM;
-+		goto fail_from;
-+	}
-+
-+	to = open(dstpath, O_CREAT | O_WRONLY);
-+	if (to < 0) {
-+		ret = -ENODEV;
-+		goto fail_make_temp;
-+	}
-+
-+	ret = uncompress_fd_to_fd(from, to, uncompress_err_stdout);
-+	if (ret)
-+		goto fail_to;
-+
-+	bootm_data.os_file = dstpath;
-+	return bootm_boot(&bootm_data);
-+
-+fail_to:
-+	close(to);
-+fail_make_temp:
-+	free(dstpath);
-+fail_from:
-+	close(from);
-+	return ret;
-+}
-+
-+static struct image_handler bzip2_bootm_handler = {
-+	.name = "BZIP2 compressed file",
-+	.bootm = do_bootm_compressed,
-+	.filetype = filetype_bzip2,
-+};
-+
-+static struct image_handler gzip_bootm_handler = {
-+	.name = "GZIP compressed file",
-+	.bootm = do_bootm_compressed,
-+	.filetype = filetype_gzip,
-+};
-+
-+static struct image_handler lzo_bootm_handler = {
-+	.name = "LZO compressed file",
-+	.bootm = do_bootm_compressed,
-+	.filetype = filetype_lzo_compressed,
-+};
-+
-+static struct image_handler lz4_bootm_handler = {
-+	.name = "LZ4 compressed file",
-+	.bootm = do_bootm_compressed,
-+	.filetype = filetype_lz4_compressed,
-+};
-+
-+static struct image_handler xz_bootm_handler = {
-+	.name = "XZ compressed file",
-+	.bootm = do_bootm_compressed,
-+	.filetype = filetype_xz_compressed,
-+};
-+
- static int bootm_init(void)
- {
- 	globalvar_add_simple("bootm.image", NULL);
-@@ -830,6 +910,18 @@ static int bootm_init(void)
- 	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
- 				  bootm_verify_names, ARRAY_SIZE(bootm_verify_names));
- 
-+
-+	if (IS_ENABLED(CONFIG_BZLIB))
-+		register_image_handler(&bzip2_bootm_handler);
-+	if (IS_ENABLED(CONFIG_ZLIB))
-+		register_image_handler(&gzip_bootm_handler);
-+	if (IS_ENABLED(CONFIG_LZO_DECOMPRESS))
-+		register_image_handler(&lzo_bootm_handler);
-+	if (IS_ENABLED(CONFIG_LZ4_DECOMPRESS))
-+		register_image_handler(&lz4_bootm_handler);
-+	if (IS_ENABLED(CONFIG_XZ_DECOMPRESS))
-+		register_image_handler(&xz_bootm_handler);
-+
- 	return 0;
- }
- late_initcall(bootm_init);
+diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_defconfig
+index 06d79f594d5b..db097d1675b8 100644
+--- a/arch/arm/configs/imx_v8_defconfig
++++ b/arch/arm/configs/imx_v8_defconfig
+@@ -1,5 +1,6 @@
+ CONFIG_ARCH_IMX=y
+ CONFIG_IMX_MULTI_BOARDS=y
++CONFIG_MACH_PROTONIC_IMX8M=y
+ CONFIG_MACH_ZII_IMX8MQ_DEV=y
+ CONFIG_MACH_NXP_IMX8MM_EVK=y
+ CONFIG_MACH_NXP_IMX8MP_EVK=y
 -- 
 2.29.2
 
