@@ -1,63 +1,62 @@
-Delivery-date: Tue, 25 May 2021 09:22:21 +0200
+Delivery-date: Tue, 25 May 2021 09:22:25 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llROP-0008Da-BP
-	for lore@lore.pengutronix.de; Tue, 25 May 2021 09:22:21 +0200
+	id 1llROT-0008Dx-83
+	for lore@lore.pengutronix.de; Tue, 25 May 2021 09:22:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llRON-0003s0-72
-	for lore@pengutronix.de; Tue, 25 May 2021 09:22:21 +0200
+	id 1llROR-0003tt-Dc
+	for lore@pengutronix.de; Tue, 25 May 2021 09:22:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=/0af8/PLXKfSbNNJ9cw4Liwb777Zn14igQOHC1GQoCA=; b=jyWBvPp7DNtuJ1
-	eoqAxeyiPHGI6RLwWd0mbhM+5DOCppEAGglSck1pEFhNZVlR5BW+GmjQ1IOdHaCC06fOyKxgycxDC
-	8DgMuOOkjyi9o1EkCFWKV0yUY01GvJ/nixeAbgYeUIB+JmpEQwWOB481iAvORW6wyDU4DAnIuPRzT
-	nc4KwvuJIaSOFY190B4YQ4yFWzCQSUzS11rJ18+O1vqCrMHpdtf68f/6Uk4hBR1qWaV+mns+CTtVf
-	7pgCV0UyYRCK7mVWrZnjnmG6jlQuOcE/C24Lo06O+YVw2TNuH6Lj2TEQm6ZJanP2Me6XKcHq+kqId
-	rYxljCD5yrzKLS8mObHw==;
+	List-Owner; bh=Mn3gWFDfq5ULybXzWHS0+sUDVonWukZQCZD+hyTD7/o=; b=WpAkK3WwRcUh1V
+	Q4oQGQzg39IeZTc8feCB1oN0jzKAdYtgcy4wQF67v74KU9JDgjK+pL1OepfQcrFj2EDz0F0ONa7t8
+	UmHhtqfVDFaZaDRiNphZekiTr9Ry5DTy+5DofFN6pnhhrAjXtoTUx6VdbGCryn/EXap+m7+lI0ulH
+	dBbxxdG2t4qHEhaDWolLDJNB5yBCIdK3HWkdNL2BjMeQd3EaSOT7qd4XWiIbywtWOmJuBcNmQLdT6
+	emsno3bO6jdJz6zB+P6ukGMEo4F0d5FY1RHhtzZnxPfhHUBi9fM+GQVWSNBKvs7sm3rHnaK/n9XrA
+	ajFB0r75pPPX9Uf++EPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1llRMx-003q48-OJ; Tue, 25 May 2021 07:20:52 +0000
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+	id 1llRN6-003qAU-Tv; Tue, 25 May 2021 07:21:01 +0000
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1llRMH-003poc-3H
+ id 1llRMG-003po6-Bp
  for barebox@lists.infradead.org; Tue, 25 May 2021 07:20:11 +0000
-Received: by mail-lj1-x229.google.com with SMTP id v5so36781418ljg.12
+Received: by mail-lf1-x133.google.com with SMTP id j6so41796030lfr.11
  for <barebox@lists.infradead.org>; Tue, 25 May 2021 00:20:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=Y+lUHPQNdmPRHyPND+CN3HIkPuEwtwAZWR3NWAHVaZE=;
- b=VNiLUWI9iqLZAxZeZueDuJgPG3ZpT9YXj5ImWY+UJtDiW2ouTMhHBsHgz6Ej0NmJv7
- MCe7cJ2WP76+ikQePgEYDlYVKWp6WE6nZS/j2GviobzwjepS+08fLWpx2Hy6C/+laT6u
- HfHlIi5ULuDAg08GsKoGVRowai865vvvgWKDUVy96++l8FAuEDBRqt/UCcsUtev6ENSu
- nR6oVJ/UEAoqX806DZaqCDiM++c8xSdSxdIotyqWtmsvpIQiJVuEQudpb+1lPPiTOK2P
- L6DbJV2Yp3Y3kAWuDfYAwETw4pCLyVSHCZSeqyL2sF35uLe/EXgGCmNF69A0Igmf9uRT
- afAw==
+ bh=rL2vax35EiCZLYwOtFtekyh5XNCKkWDk/iQ0WORmlB8=;
+ b=OHDaH0V3xxEzN1SUIEGvD3PUVU69kQeOZjIzy4yZy2XHo8TlrF2Rj3uCn9uRH6oOof
+ YS5vksf6+aE0zVQ4X4ijiquIiNAQbkC0JO/7XP/8iynoHDm8CR+fu32aE5kQ4MPChfRY
+ zDCE9VYf30tUCYKDP0Wm2e74Qo10EK2CGAPC7I3ACZesVydIUt6lpAMW3a+wIM/EvWN/
+ 8oGqicP9zvXjqX+Y8QYtRC2PhPG4Wd6PvL8kFwrCIJLLz6YSGiWpbfEPi2r1bjshIYAw
+ 9MBkjiu2mLF9TdR81G8TZR0L8UmU54xEf9kv/eIr0S+61l+ftF2B17CQTovy0FSiyp52
+ LXkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=Y+lUHPQNdmPRHyPND+CN3HIkPuEwtwAZWR3NWAHVaZE=;
- b=Y9FkLdU92NRomvNAT3lfErIE3WAfZJwZcS6FlXCko8wERJY9ZOQrMdKOqaEG/iQ3rO
- GHLttan4ujMALrAwyz1gJAYBOqjTCOV8HqqhUESD9A7Eu4O6q35V2gYIQSZ10btsZD4O
- VfDpLIvGw9jh87sBk4RZ22l/fColaHcVa6gANwce8xsJfEsjX9sq1Hhg55aH435ztvCV
- Kz92alP/Mm2DuTRbugz4cRo9KLAmBa2G3ptrlwXhF+LqXn12h9PXTI3CZDrA2f1Y9JWa
- LHhxVuzoHKx5aafmgv75jsrohtjjvSA5F1iWYPSe0VGMeNNTzOA5QEkZRh4eqLtFGhVv
- 3drw==
-X-Gm-Message-State: AOAM530kITweikfoYrEknHMOt5ssgYfOH6+nV5X1C0hCcqMvynobU68A
- Ob9fs0MM4y33zns/lFbNaqAzokDqN4xQrQ==
-X-Google-Smtp-Source: ABdhPJyhLrIuixZgzaGrQ9ksSSRKV1VI8aEuBwoPq6/DP/IlEmEU8vLuP7kbYH/yF/eBEdKbCduiGQ==
-X-Received: by 2002:a05:651c:1058:: with SMTP id
- x24mr19752545ljm.223.1621927207281; 
- Tue, 25 May 2021 00:20:07 -0700 (PDT)
+ bh=rL2vax35EiCZLYwOtFtekyh5XNCKkWDk/iQ0WORmlB8=;
+ b=FcNc4Dxf8MC+fPYBL6QcmwoX54rEJhs++IfblGjfe/CMs2N4VOLZLvzzYtBi6IMCl5
+ x9E1ZbfgsjtDS1ogVhTFJSSpJqyL6CCgJbk6YER8wwAeQVRBkfwbW8cNHfgg6M2wANK2
+ gjCh/ugtABMOvevDXjLGkMChCx/g65ILQIngPFixyGjEoRpRkHo2tZDhgYwCopGWoeMV
+ v4eU8Iy0qwZglJ5SO3p5h5xAatle9bF+MrD++QKk8hQPdcxGOech29KuMgZdz00woYaA
+ RljqQRK4uFWlro1zrVn0Jx51Zq2Jxhq/djzbmN9In1DhuBaugLjG2QFY5eni10ssGP7f
+ EnAw==
+X-Gm-Message-State: AOAM530MUXjUYNQQCf809nkepc037JJPulTmFOHFwhRpOQjHlDrkfPVw
+ l1dP3m81JdbLjE/mg5Bw7poO+At4U1xwuw==
+X-Google-Smtp-Source: ABdhPJx6CtPVZ8Vw1zMMk8G53tqb4Hr5cy4dXvpv+H0urqLAxzpMVaQ03N3dwpfG1VEge7nsKWIbsg==
+X-Received: by 2002:ac2:4c81:: with SMTP id d1mr13442357lfl.130.1621927206537; 
+ Tue, 25 May 2021 00:20:06 -0700 (PDT)
 Received: from localhost.localdomain (109-252-203-17.dynamic.spd-mgts.ru.
  [109.252.203.17])
  by smtp.gmail.com with ESMTPSA id f36sm1641387lfv.248.2021.05.25.00.20.06
@@ -65,15 +64,15 @@ Received: from localhost.localdomain (109-252-203-17.dynamic.spd-mgts.ru.
  Tue, 25 May 2021 00:20:06 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 25 May 2021 10:19:47 +0300
-Message-Id: <20210525071952.18045-6-antonynpavlov@gmail.com>
+Date: Tue, 25 May 2021 10:19:46 +0300
+Message-Id: <20210525071952.18045-5-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210525071952.18045-1-antonynpavlov@gmail.com>
 References: <20210525071952.18045-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210525_002009_195327_EA5788BC 
-X-CRM114-Status: GOOD (  11.99  )
+X-CRM114-CacheID: sfid-20210525_002008_453632_C53576F7 
+X-CRM114-Status: GOOD (  16.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,8 +84,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Marek Czerski <m.czerski@ap-tech.pl>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -100,46 +98,127 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 05/10] litex serial: add setbrg callback
+Subject: [PATCH v3 04/10] serial: add litex UART driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Marek Czerski <m.czerski@ap-tech.pl>
-
-setbrg callback (set baudrate) is needed by the loadx/loady commands.
-Because litex serial has fixed baudrate the callback only checks if
-the requested baudrate is the same as the CONFIG_BAUDRATE.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/serial/serial_litex.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/serial/Makefile       |  1 +
+ drivers/serial/serial_litex.c | 96 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 97 insertions(+)
 
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index 5120b17376..45055371ea 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -24,3 +24,4 @@ obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
+ obj-$(CONFIG_DRIVER_SERIAL_LPUART)		+= serial_lpuart.o
+ obj-$(CONFIG_VIRTIO_CONSOLE)			+= virtio_console.o
+ obj-$(CONFIG_SERIAL_SIFIVE)			+= serial_sifive.o
++obj-$(CONFIG_SOC_LITEX)				+= serial_litex.o
 diff --git a/drivers/serial/serial_litex.c b/drivers/serial/serial_litex.c
-index 8562a45ecc..9d35a6e44a 100644
---- a/drivers/serial/serial_litex.c
+new file mode 100644
+index 0000000000..8562a45ecc
+--- /dev/null
 +++ b/drivers/serial/serial_litex.c
-@@ -58,6 +58,13 @@ static int litex_serial_tstc(struct console_device *cdev)
- 	return !litex_serial_readb(cdev, UART_RXEMPTY);
- }
- 
-+static int litex_setial_setbaudrate(struct console_device *cdev, int baudrate)
+@@ -0,0 +1,96 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2019 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ */
++
++#include <common.h>
++#include <init.h>
++#include <io.h>
++
++#define UART_RXTX	0x00
++#define UART_TXFULL	0x04
++#define UART_RXEMPTY	0x08
++#define UART_EV_PENDING	0x10
++#define  UART_EV_RX	(1 << 1)
++
++static inline uint32_t litex_serial_readb(struct console_device *cdev,
++						uint32_t offset)
 +{
-+	if (baudrate != CONFIG_BAUDRATE)
-+		return -EINVAL;
++	void __iomem *base = cdev->dev->priv;
++
++	return readb(base + offset);
++}
++
++static inline void litex_serial_writeb(struct console_device *cdev,
++					uint32_t value, uint32_t offset)
++{
++	void __iomem *base = cdev->dev->priv;
++
++	writeb(value, base + offset);
++}
++
++static void litex_serial_putc(struct console_device *cdev, char c)
++{
++	while (litex_serial_readb(cdev, UART_TXFULL))
++		;
++
++	litex_serial_writeb(cdev, c, UART_RXTX);
++}
++
++static int litex_serial_getc(struct console_device *cdev)
++{
++	int c;
++
++	while (litex_serial_readb(cdev, UART_RXEMPTY))
++		;
++
++	c = litex_serial_readb(cdev, UART_RXTX);
++
++	/* refresh UART_RXEMPTY by writing UART_EV_RX to UART_EV_PENDING */
++	litex_serial_writeb(cdev, UART_EV_RX, UART_EV_PENDING);
++
++	return c;
++}
++
++static int litex_serial_tstc(struct console_device *cdev)
++{
++	return !litex_serial_readb(cdev, UART_RXEMPTY);
++}
++
++static int litex_serial_probe(struct device_d *dev)
++{
++	struct resource *iores;
++	struct console_device *cdev;
++
++	cdev = xzalloc(sizeof(struct console_device));
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	dev->priv = IOMEM(iores->start);
++	cdev->dev = dev;
++	cdev->tstc = &litex_serial_tstc;
++	cdev->putc = &litex_serial_putc;
++	cdev->getc = &litex_serial_getc;
++	cdev->setbrg = NULL;
++
++	console_register(cdev);
++
 +	return 0;
 +}
 +
- static int litex_serial_probe(struct device_d *dev)
- {
- 	struct resource *iores;
-@@ -73,7 +80,7 @@ static int litex_serial_probe(struct device_d *dev)
- 	cdev->tstc = &litex_serial_tstc;
- 	cdev->putc = &litex_serial_putc;
- 	cdev->getc = &litex_serial_getc;
--	cdev->setbrg = NULL;
-+	cdev->setbrg = &litex_setial_setbaudrate;
- 
- 	console_register(cdev);
- 
++static __maybe_unused struct of_device_id litex_serial_dt_ids[] = {
++	{
++		.compatible = "litex,uart",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d litex_serial_driver = {
++	.name  = "litex-uart",
++	.probe = litex_serial_probe,
++	.of_compatible = DRV_OF_COMPAT(litex_serial_dt_ids),
++};
++console_platform_driver(litex_serial_driver);
 -- 
 2.31.1
 
