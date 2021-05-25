@@ -1,15 +1,15 @@
-Delivery-date: Tue, 25 May 2021 07:27:56 +0200
+Delivery-date: Tue, 25 May 2021 07:28:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llPbg-0007At-9z
-	for lore@lore.pengutronix.de; Tue, 25 May 2021 07:27:56 +0200
+	id 1llPcX-0007Bk-T9
+	for lore@lore.pengutronix.de; Tue, 25 May 2021 07:28:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llPbf-0006ki-BC
-	for lore@pengutronix.de; Tue, 25 May 2021 07:27:56 +0200
+	id 1llPcW-0006pp-Ti
+	for lore@pengutronix.de; Tue, 25 May 2021 07:28:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,46 +17,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=JrKshPcCE9dq5NvuUa+ZnKzNb9w5djX3cRW8ZcrxlqM=; b=GatMZtkOAo92eo6ml8X8QlT3ag
-	NTOnNh54pmZpdAGnOrTY6rEPuCep9djUj8IepZ0KXnE6rANS8ZqUlb7VaGGiE30ey67X4tvN7SgEY
-	LSxyCqYkjI+SNYrtMFlc65jSSkTDust6Gyrhg9VpTmKQyU1x5evnUKxEFdF8ImY3tKTpjX9sML5Z1
-	dtA4ZuckrO3GdiEa8ajKGpeuoVcyIsRWLIzLZlJfVk2j+4YNOwXGhN2d8zOPadY1wu8jozzLpt0cr
-	/7ieUc8sKymCUFLVExRba5P3vTykSlkrKNwHxfTPi7pFnZTI8NmDzmUyON7MXEriOgXfXhIGTgBSM
-	dIc6Q9Sw==;
+	bh=TEW8sCoNDpTDFt1SWGL7OLTRw6/iHPk5Xu/tUK0xcdY=; b=ElOQ5yOxyM2mkmcDB6zVlhD/gQ
+	sygSb++/zkzj66N3DrBmc1fS2TD0FJiGd5p3n2DbgGebzn/LGnj5jEvGFP8m+AULUMM++LqAnKh5G
+	D19Lr+TtcE5NoxfBn5e/ZQqYkwvM6rr/rTrjsex3CM0rxK90uhZDtbbaoqTkK3D2kXbDKy7JBo2dQ
+	6YPTbvFoDpwBFJPnhhPu/A9wmYoxwXa5xOf7y0Ga0cPKUcw4LdhsXJXpQnj+l19kTwaPOErhfh/Om
+	QjzZEyzXjzLVaLzPGgyBnxBJSkBcLQpPQt/t9WLzfgv7KqEr4k99kCFFijubpfR5VtWGy1Mqv/sRd
+	svsgGvWw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1llPaX-003QXT-2M; Tue, 25 May 2021 05:26:45 +0000
+	id 1llPbP-003Qjt-SF; Tue, 25 May 2021 05:27:39 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1llPaS-003QWc-1c
- for barebox@lists.infradead.org; Tue, 25 May 2021 05:26:41 +0000
+ id 1llPbJ-003Qid-U5
+ for barebox@lists.infradead.org; Tue, 25 May 2021 05:27:35 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1llPaQ-0006di-Fe; Tue, 25 May 2021 07:26:38 +0200
+ id 1llPbI-0006j8-MO; Tue, 25 May 2021 07:27:32 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1llPaQ-000722-6o; Tue, 25 May 2021 07:26:38 +0200
-Date: Tue, 25 May 2021 07:26:38 +0200
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+ id 1llPbI-00076W-Co; Tue, 25 May 2021 07:27:32 +0200
+Date: Tue, 25 May 2021 07:27:32 +0200
+To: Michael Olbrich <m.olbrich@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210525052638.GL19819@pengutronix.de>
-References: <20210522143431.824057-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20210525052732.GM19819@pengutronix.de>
+References: <20210520154929.25131-1-m.olbrich@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210522143431.824057-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20210520154929.25131-1-m.olbrich@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 07:25:28 up 96 days,  8:49, 77 users,  load average: 0.13, 0.12, 0.13
+X-Uptime: 07:27:14 up 96 days,  8:51, 77 users,  load average: 0.10, 0.11, 0.12
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210524_222640_124067_760ABF5A 
-X-CRM114-Status: GOOD (  17.54  )
+X-CRM114-CacheID: sfid-20210524_222734_000049_CCEB3B6D 
+X-CRM114-Status: GOOD (  19.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,8 +68,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -80,54 +80,27 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] arm: imx: Replace license and copyright boilerplate by
- SPDX identifiers
+Subject: Re: [PATCH] mtd: spi-nor: Add support for gd25q16
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sat, May 22, 2021 at 04:34:31PM +0200, Uwe Kleine-K=F6nig wrote:
-> Converts the files that licensecheck can determine to be licensed under
-> GPL-2.0-only or GPL-2.0-or-later and also convert their copyright
-> statements to SPDX.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+On Thu, May 20, 2021 at 05:49:29PM +0200, Michael Olbrich wrote:
+> The entry is imported from Linux v5.12.
+> 
+> It can befound on new versions of the Boundary Devices i.MX6 Quad
+> Nitrogen6x boards.
+> 
+> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 > ---
->  arch/arm/mach-imx/boot.c                  | 13 +------------
->  arch/arm/mach-imx/cpu_init.c              | 15 ++-------------
->  arch/arm/mach-imx/esdctl-v4.c             | 18 ++++--------------
->  arch/arm/mach-imx/esdctl.c                | 18 ++++--------------
->  arch/arm/mach-imx/external-nand-boot.c    | 13 +------------
->  arch/arm/mach-imx/iim.c                   | 13 +++----------
->  arch/arm/mach-imx/imx-bbu-external-nand.c | 14 +++-----------
->  arch/arm/mach-imx/imx-bbu-internal.c      | 14 +++-----------
->  arch/arm/mach-imx/imx.c                   | 13 +------------
->  arch/arm/mach-imx/imx1.c                  | 13 +------------
->  arch/arm/mach-imx/imx21.c                 | 13 +------------
->  arch/arm/mach-imx/imx25.c                 | 13 +------------
->  arch/arm/mach-imx/imx27.c                 | 13 +------------
->  arch/arm/mach-imx/imx31.c                 | 13 +------------
->  arch/arm/mach-imx/imx35.c                 | 13 +------------
->  arch/arm/mach-imx/imx50.c                 | 13 +------------
->  arch/arm/mach-imx/imx51.c                 | 13 +------------
->  arch/arm/mach-imx/imx53.c                 | 13 +------------
->  arch/arm/mach-imx/imx6-mmdc.c             | 16 +++-------------
->  arch/arm/mach-imx/imx6.c                  | 13 +------------
->  arch/arm/mach-imx/imx7.c                  | 13 +------------
->  arch/arm/mach-imx/imx8m.c                 | 13 +------------
->  arch/arm/mach-imx/nand.c                  | 13 +------------
->  arch/arm/mach-imx/src.c                   | 10 ++--------
->  arch/arm/mach-imx/vf610.c                 | 13 +------------
->  arch/arm/mach-imx/xload-gpmi-nand.c       | 11 +----------
->  arch/arm/mach-imx/xload-imx-nand.c        | 14 ++------------
->  27 files changed, 44 insertions(+), 320 deletions(-)
+>  drivers/mtd/spi-nor/spi-nor.c | 1 +
+>  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
 Sascha
 
--- =
 
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
