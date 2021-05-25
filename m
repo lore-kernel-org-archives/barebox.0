@@ -1,66 +1,77 @@
-Delivery-date: Tue, 25 May 2021 09:18:47 +0200
+Delivery-date: Tue, 25 May 2021 09:21:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llRKx-0008BL-DX
-	for lore@lore.pengutronix.de; Tue, 25 May 2021 09:18:47 +0200
+	id 1llRNo-0008By-Gl
+	for lore@lore.pengutronix.de; Tue, 25 May 2021 09:21:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llRKw-0002zG-Ip
-	for lore@pengutronix.de; Tue, 25 May 2021 09:18:47 +0200
+	id 1llRNm-0003hp-Tn
+	for lore@pengutronix.de; Tue, 25 May 2021 09:21:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=0dq2oROAd9P+LKr1H4AKkgGvtbFxrkV7ak0NcJmxhsI=; b=qRYzW0ZKZkC72kbhxm7BtbVgX6
-	cAX1MGFAQotkFkX6514+6h2qCqVgwLv6NgPdi+zMoU7Hkg/q1mFUueglNWmgs5hfJq/haEh166j/j
-	dbS7liT3RHT04avP0Pgtu2yH+9Rb9pS+SlqeAxNjXzk5RlASF/eI6FL6dg4Ko6YuU5E80QhJu9Uuq
-	+9uNBGKgrr0bbyLK5W8gQ3bj2acBP7y4CZRe6mYOaxEoB6ppndpQ4//rcw8FnEj3I7cvuTedcLnAY
-	1e+XMITY5nlKpgthQf0657aVM4yIQIlkYgN3D/Ap222flQCEvjHjLxLmipvsVbkNcy7qAwR9kSy8p
-	K7mpBUpQ==;
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Z6W1MoLzrEaT3MeGYmiJZbrN6HLo3ydRI9pf05HzkuE=; b=i4dRMBH/axkjvn
+	HXHWnxMrqWK4J5GzTV65POD94C3A6x45b624AullNZmQozg1POWj2memffIktcod4CgUhNSMqVWgS
+	iNstfmesJifTo25+JECvyHIebg2666DD27xFzK1T5wvfNe4LF8ZkNQJoYx+/ZucmUvtklC7UC+v9S
+	O1nJtA1WGacRKxwG+8aLODuoDhYqVhX89jjhFk4U44MRVlZTyxuasUkjtFF6iiYm+bdcYBD2SyJDN
+	BRUYkJ/ckCeRFJ5l5StuCDG8HbEf6tSgpXVsEZfOonbB7JCuhPBtgtMr/8abUa80qROm+N0XvaXcO
+	l9jf6ppG0z9liyH3B3Zg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1llRJm-003p2K-DM; Tue, 25 May 2021 07:17:34 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1llRMU-003ppv-4M; Tue, 25 May 2021 07:20:22 +0000
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1llRJh-003p1S-Qd
- for barebox@lists.infradead.org; Tue, 25 May 2021 07:17:31 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1llRJg-0002ss-IR; Tue, 25 May 2021 09:17:28 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1llRJf-0006Cs-Vm; Tue, 25 May 2021 09:17:27 +0200
-Date: Tue, 25 May 2021 09:17:27 +0200
-To: Michael Tretter <m.tretter@pengutronix.de>
-Cc: Michael Graichen <michael.graichen@hotmail.com>,
- barebox@lists.infradead.org
-Message-ID: <20210525071727.GQ19819@pengutronix.de>
-References: <AM9P192MB0870DC1573A4088BB839A208AB2C9@AM9P192MB0870.EURP192.PROD.OUTLOOK.COM>
- <20210519073855.2748231-1-m.tretter@pengutronix.de>
- <20210519073855.2748231-2-m.tretter@pengutronix.de>
+ id 1llRMD-003pmg-IL
+ for barebox@lists.infradead.org; Tue, 25 May 2021 07:20:07 +0000
+Received: by mail-lf1-x12c.google.com with SMTP id f30so7454205lfj.1
+ for <barebox@lists.infradead.org>; Tue, 25 May 2021 00:20:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=BI7ZfECU6bZEWzKjbnxdtrmbr72eq4BDJUhNF5a54yM=;
+ b=s7uM812R3C+KdiTCSjQgsarrs73QGpQwzr8ZJA6jWJL5BDVLEUSNnFYvqqEAq9M/72
+ 9Mw4y84YSX+a6NaoEXlPvYyiU2kF9j6UtIzPPvklrk6jLuxILWzsjCZ3UqL7XN3fRon8
+ TVqsI9DMU9nlTyYb6pVFmpFE4/0j0l7QYiZlDapzAd5HlqR/oghj3snPsnW4m0q2IOya
+ P4ekDn4OC2vbIDXjKMntvBpm05fNSPewm5m7lVz6htsbG27ZdpgJEf5gwOUhzIDmFN9d
+ w2w/YlN4b1R29UxIBESxZYknlk6P/XdIAabfMdgloI7S2VpYUXiGvZedGncTAoeSQqR6
+ l7eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=BI7ZfECU6bZEWzKjbnxdtrmbr72eq4BDJUhNF5a54yM=;
+ b=QNuY5b6GkfuSB/3XX0aYL7y1BpYuAzFxpHk91L4Y65wJNBhMwo/6kJQQEEx7FZnoGG
+ JesQOV689eA+9CfrOBKH+2L2UL6M6mKicK3Wwr02x8NOy4o12hItNQAqV2yu0I4vk5Up
+ pU9n//3WhSfLgWkqJLhm/1wH06plPQpMAGjkElzy5pWPinjKD3zt3yC3xRf2AtWJf8Pk
+ kn/JxQ2ywqb2P5lHvO2qW02k0JQJ1Y9QnplSrybY26NjNSHY2oEJ1lGk02WzZJQAzUA6
+ xiskGGhXeW3kY56kuHPLka42VxZzTq1ZkKNLD8U4HE9zWSWliJfrfXncRHI0fbsUHJgB
+ Ugcw==
+X-Gm-Message-State: AOAM533Dlm92XG3VGjcDWvYnoR+yUP55SjJt4Jre4erwQg2mjr8IOWGV
+ HxNFxExdwGL/GdI/C18umpURE8nDb+YYWw==
+X-Google-Smtp-Source: ABdhPJw+5TmtV0oyUeP9oNzDOcNUpc98+F1NXNs6VcCVTssEt5bhh2UUdAkv3/ryU5jRxPPpUy4DRg==
+X-Received: by 2002:a19:7e8f:: with SMTP id
+ z137mr13120057lfc.466.1621927203714; 
+ Tue, 25 May 2021 00:20:03 -0700 (PDT)
+Received: from localhost.localdomain (109-252-203-17.dynamic.spd-mgts.ru.
+ [109.252.203.17])
+ by smtp.gmail.com with ESMTPSA id f36sm1641387lfv.248.2021.05.25.00.20.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 May 2021 00:20:03 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: barebox@lists.infradead.org
+Date: Tue, 25 May 2021 10:19:42 +0300
+Message-Id: <20210525071952.18045-1-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210519073855.2748231-2-m.tretter@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 09:17:00 up 96 days, 10:40, 105 users,  load average: 1.49, 0.54,
- 0.34
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210525_001729_883412_297240D8 
-X-CRM114-Status: GOOD (  23.76  )
+X-CRM114-CacheID: sfid-20210525_002005_679876_28DBE7D6 
+X-CRM114-Status: GOOD (  12.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,6 +83,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -80,56 +92,95 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] mci: arasan: configure data transfer only if we
- actually have data
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v3 00/10] RISC-V: add LiteX SoC support; resurrect nmon
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, May 19, 2021 at 09:38:55AM +0200, Michael Tretter wrote:
-> If we don't have any data to transfer, we must not set the block size
-> and block count.
-> 
-> If data is NULL, accessing data to get the block size and block count is
-> a NULL pointer dereference.
-> 
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> ---
->  drivers/mci/arasan-sdhci.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-> index 399966e8cf10..3d738774e825 100644
-> --- a/drivers/mci/arasan-sdhci.c
-> +++ b/drivers/mci/arasan-sdhci.c
-> @@ -283,10 +283,12 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
->  	sdhci_set_cmd_xfer_mode(&host->sdhci, cmd, data, false, &command, &xfer);
->  
->  	sdhci_write8(&host->sdhci, SDHCI_TIMEOUT_CONTROL, TIMEOUT_VAL);
-> -	sdhci_write16(&host->sdhci, SDHCI_TRANSFER_MODE, xfer);
-> -	sdhci_write16(&host->sdhci, SDHCI_BLOCK_SIZE, SDHCI_DMA_BOUNDARY_512K |
-> -			    SDHCI_TRANSFER_BLOCK_SIZE(data->blocksize));
-> -	sdhci_write16(&host->sdhci, SDHCI_BLOCK_COUNT, data->blocks);
-> +	if (data) {
-> +		sdhci_write16(&host->sdhci, SDHCI_TRANSFER_MODE, xfer);
-> +		sdhci_write16(&host->sdhci, SDHCI_BLOCK_SIZE,
-> +			      SDHCI_DMA_BOUNDARY_512K | SDHCI_TRANSFER_BLOCK_SIZE(data->blocksize));
-> +		sdhci_write16(&host->sdhci, SDHCI_BLOCK_COUNT, data->blocks);
-> +	}
+Changes since v2:
 
-I also stumbled upon this already. Applied, thanks
+  * rebase on top of master branch (f873c7ff2497) +
+    "RISC-V: extend multi-image to support both S- and M-Mode"
+    (http://lists.infradead.org/pipermail/barebox/2021-May/036086.html).
+  * "litex serial: add setbrg callback" patch by Marek Czerski is added
+    for review;
+  * fix "clocksource: timer-riscv: select CSR from device tree" patch;
+  * change gpio IP-block base addresses in litex dts;
+  * gpio-74xx-mmio uses device_get_match_data() now.
 
-Sascha
+Changes since v1:
 
+  * rebased on top of next branch;
+  * new patches are introduced:
+    * clocksource: timer-riscv: select CSR from device tree
+    * RISC-V: make RISCV_SBI and RISCV_M_MODE explicitly mutually exclusive
+    * RISC-V: make it possible to build RV32I multi-image with DEBUG_LL=n
+  * almost all of Ahmad's notes are fixed (e.g. unused header files inclusions are dropped);
+  * NOT FIXED: gpio-74xx-mmio still uses dev_get_drvdata(), not device_get_match_data()
+
+Antony Pavlov (9):
+  clocksource: timer-riscv: select CSR from device tree
+  RISC-V: make it possible to run nmon from PBL C code
+  RISC-V: boards: erizo: make it possible to use nmon
+  serial: add litex UART driver
+  gpio: add driver for 74xx-ICs with MMIO access
+  spi: add litex spiflash driver
+  net: add LiteEth driver
+  RISC-V: add LiteX SoC and linux-on-litex-vexriscv support
+  RISC-V: add litex_linux_defconfig
+
+Marek Czerski (1):
+  litex serial: add setbrg callback
+
+ arch/riscv/Kconfig.socs                  |  14 +
+ arch/riscv/boards/Makefile               |   1 +
+ arch/riscv/boards/erizo/lowlevel.c       |   4 +
+ arch/riscv/boards/litex-linux/Makefile   |   3 +
+ arch/riscv/boards/litex-linux/lowlevel.c |  22 ++
+ arch/riscv/boot/Makefile                 |   1 +
+ arch/riscv/boot/nmon_entry.S             |  13 +
+ arch/riscv/configs/litex_linux_defconfig |  76 +++++
+ arch/riscv/dts/Makefile                  |   1 +
+ arch/riscv/dts/erizo.dtsi                |   2 +
+ arch/riscv/dts/litex-linux.dts           |  92 ++++++
+ arch/riscv/dts/litex_soc_linux.dtsi      |  49 +++
+ arch/riscv/include/asm/debug_ll.h        |   3 +
+ arch/riscv/include/asm/debug_ll_litex.h  | 123 ++++++++
+ arch/riscv/include/asm/riscv_nmon.h      |  49 ++-
+ common/Kconfig                           |   4 +
+ drivers/clocksource/timer-riscv.c        |  24 +-
+ drivers/gpio/Kconfig                     |  14 +
+ drivers/gpio/Makefile                    |   1 +
+ drivers/gpio/gpio-74xx-mmio.c            | 165 ++++++++++
+ drivers/net/Kconfig                      |   8 +
+ drivers/net/Makefile                     |   1 +
+ drivers/net/liteeth.c                    | 376 +++++++++++++++++++++++
+ drivers/serial/Makefile                  |   1 +
+ drivers/serial/serial_litex.c            | 103 +++++++
+ drivers/spi/Kconfig                      |   3 +
+ drivers/spi/Makefile                     |   1 +
+ drivers/spi/litex_spiflash.c             | 241 +++++++++++++++
+ images/Makefile.riscv                    |   4 +
+ 29 files changed, 1370 insertions(+), 29 deletions(-)
+ create mode 100644 arch/riscv/boards/litex-linux/Makefile
+ create mode 100644 arch/riscv/boards/litex-linux/lowlevel.c
+ create mode 100644 arch/riscv/boot/nmon_entry.S
+ create mode 100644 arch/riscv/configs/litex_linux_defconfig
+ create mode 100644 arch/riscv/dts/litex-linux.dts
+ create mode 100644 arch/riscv/dts/litex_soc_linux.dtsi
+ create mode 100644 arch/riscv/include/asm/debug_ll_litex.h
+ create mode 100644 drivers/gpio/gpio-74xx-mmio.c
+ create mode 100644 drivers/net/liteeth.c
+ create mode 100644 drivers/serial/serial_litex.c
+ create mode 100644 drivers/spi/litex_spiflash.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.31.1
+
 
 _______________________________________________
 barebox mailing list
