@@ -1,15 +1,15 @@
-Delivery-date: Tue, 25 May 2021 07:28:49 +0200
+Delivery-date: Tue, 25 May 2021 07:47:39 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llPcX-0007Bk-T9
-	for lore@lore.pengutronix.de; Tue, 25 May 2021 07:28:49 +0200
+	id 1llPul-0007Mc-UN
+	for lore@lore.pengutronix.de; Tue, 25 May 2021 07:47:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llPcW-0006pp-Ti
-	for lore@pengutronix.de; Tue, 25 May 2021 07:28:49 +0200
+	id 1llPul-0000Tu-2s
+	for lore@pengutronix.de; Tue, 25 May 2021 07:47:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,46 +17,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=TEW8sCoNDpTDFt1SWGL7OLTRw6/iHPk5Xu/tUK0xcdY=; b=ElOQ5yOxyM2mkmcDB6zVlhD/gQ
-	sygSb++/zkzj66N3DrBmc1fS2TD0FJiGd5p3n2DbgGebzn/LGnj5jEvGFP8m+AULUMM++LqAnKh5G
-	D19Lr+TtcE5NoxfBn5e/ZQqYkwvM6rr/rTrjsex3CM0rxK90uhZDtbbaoqTkK3D2kXbDKy7JBo2dQ
-	6YPTbvFoDpwBFJPnhhPu/A9wmYoxwXa5xOf7y0Ga0cPKUcw4LdhsXJXpQnj+l19kTwaPOErhfh/Om
-	QjzZEyzXjzLVaLzPGgyBnxBJSkBcLQpPQt/t9WLzfgv7KqEr4k99kCFFijubpfR5VtWGy1Mqv/sRd
-	svsgGvWw==;
+	bh=1mzWGRo3mlkyB6HBVhdnEpqMfFHdtY8etEsB1O7fumM=; b=ORDTWfobu+AzP7Wi4ATNJP19eg
+	3NMKflgwRVxqH9xeCUB+wgX4iXZV/M/23gvuuOaxBqxOB4sGz109WfTXHfTPwesRDy0kRq5EVpffU
+	vYxOFZgurHxWTIc9hMfZqfqHTReNOwxVAXKDvxiYAhov9vUV8MOlCLpK8xsG/u+PtZ7tjP3Cxar2f
+	Hsid2jMbbJITx8faIoQ+AkNIU8LTdnOttAtlUcTDpJeFPEGO6h+hON6JoRczByCnJxCcukVhLx8dh
+	KDLFk5TGJpF57SOJoH1f2V/E2BpLLeGBKvucAyRSVU2zP55ro7K6FV3OvvMxEmpgQnxUwii5ec2Bd
+	3zN3gPzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1llPbP-003Qjt-SF; Tue, 25 May 2021 05:27:39 +0000
+	id 1llPtX-003T9H-1q; Tue, 25 May 2021 05:46:23 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1llPbJ-003Qid-U5
- for barebox@lists.infradead.org; Tue, 25 May 2021 05:27:35 +0000
+ id 1llPtR-003T8M-Sx
+ for barebox@lists.infradead.org; Tue, 25 May 2021 05:46:19 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1llPbI-0006j8-MO; Tue, 25 May 2021 07:27:32 +0200
+ id 1llPtQ-00005v-7C; Tue, 25 May 2021 07:46:16 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1llPbI-00076W-Co; Tue, 25 May 2021 07:27:32 +0200
-Date: Tue, 25 May 2021 07:27:32 +0200
-To: Michael Olbrich <m.olbrich@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210525052732.GM19819@pengutronix.de>
-References: <20210520154929.25131-1-m.olbrich@pengutronix.de>
+ id 1llPtP-00084V-UQ; Tue, 25 May 2021 07:46:15 +0200
+Date: Tue, 25 May 2021 07:46:15 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Holger Assmann <h.assmann@pengutronix.de>, barebox@lists.infradead.org,
+ Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Message-ID: <20210525054615.GI31738@pengutronix.de>
+References: <20210518105759.4604-1-h.assmann@pengutronix.de>
+ <9fd00674-7953-f510-f2e5-fe076ef00b9b@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210520154929.25131-1-m.olbrich@pengutronix.de>
+In-Reply-To: <9fd00674-7953-f510-f2e5-fe076ef00b9b@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 07:27:14 up 96 days,  8:51, 77 users,  load average: 0.10, 0.11, 0.12
+X-Uptime: 07:39:25 up 96 days,  9:03, 79 users,  load average: 0.02, 0.14, 0.17
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210524_222734_000049_CCEB3B6D 
-X-CRM114-Status: GOOD (  19.00  )
+X-CRM114-CacheID: sfid-20210524_224617_955497_C5166387 
+X-CRM114-Status: GOOD (  20.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,25 +82,36 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mtd: spi-nor: Add support for gd25q16
+Subject: Re: [PATCH v3] ARM: webasto-ccbv2: Add variant with 512MB RAM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, May 20, 2021 at 05:49:29PM +0200, Michael Olbrich wrote:
-> The entry is imported from Linux v5.12.
+On Tue, May 18, 2021 at 01:33:43PM +0200, Ahmad Fatoum wrote:
 > 
-> It can befound on new versions of the Boundary Devices i.MX6 Quad
-> Nitrogen6x boards.
+> On 18.05.21 12:57, Holger Assmann wrote:
+> > -$(call build_imx_habv4img, CONFIG_MACH_WEBASTO_CCBV2, start_imx6ul_ccbv2, webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2, imx6ul-webasto-ccbv2)
+> > +$(call build_imx_habv4img, CONFIG_MACH_WEBASTO_CCBV2, start_imx6ul_ccbv2, webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-256, imx6ul-webasto-ccbv2-256m)
+> > +
+> > +$(call build_imx_habv4img, CONFIG_MACH_WEBASTO_CCBV2, start_imx6ul_ccbv2, webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-512, imx6ul-webasto-ccbv2-512m)
 > 
-> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 1 +
->  1 file changed, 1 insertion(+)
+> I think this is the first board that uses the exact same entry point, but different
+> *.imxcfg. I built the patch to see if this actually does what it should and it
+> doesn't seem to be the case: both images/barebox-imx6ul-webasto-ccbv2-256m.img
+> and images/barebox-imx6ul-webasto-ccbv2-512m.img are identical..
 
-Applied, thanks
+This happens because we intermediately create the file
+images/start_imx6ul_ccbv2.pblb.imximg. We would have to create two
+different imx images, one for each config file. This doesn't fit into
+the build process currently, so let's go with v4 holger has sent.
+
+We could add IMD tags for the memsize like Phytec has done:
+
+BAREBOX_IMD_TAG_STRING(physom_mx6_memsize_SZ_256M, IMD_TYPE_PARAMETER, "memsize=256", 0);
+
+That would at least otherwise justify that we need different entry
+points ;)
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
