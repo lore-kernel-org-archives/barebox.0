@@ -2,46 +2,48 @@ Delivery-date: Tue, 25 May 2021 21:02:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llcK5-0005xM-Eo
+	id 1llcK5-0005xf-Nc
 	for lore@lore.pengutronix.de; Tue, 25 May 2021 21:02:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llcK4-0002gq-5S
+	id 1llcK4-0002gs-9j
 	for lore@pengutronix.de; Tue, 25 May 2021 21:02:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=YWE0V0BhK2+mpeUYiNHUT/MLtr9zTzkdP1j9MEuSj/c=; b=RbLCV6KeTexIzV
-	hyhgUJHJcS+KSaqs7yJ8AAXB8lMcXZzRAXiQqEQC2LaroVkvPzgrls0yBaIbPRiAw/mRqHlg0k70E
-	WosklO1yLC/A1SKYwNKLqC3HVJhuAzoql4GdGX/a8bLQ+RJTl9nDh8l48CmtyyXo4O+/VbaBqVZQ0
-	BaHs7qMNkhD6PfEbKoiQE0qIVnL0EHsUUPUXtnVYLQcCTnUXb8AYb3eaXqZCXRKg3+ZWVvlbdhnN6
-	2QfAwf0HSAg5U/OX2uLX5DPWL+Jb7Yzvi+0QN+pck3AoZ0ZwGuLoyg1/Od5oMjvk27rc34KDqI0SS
-	GKPNYi3ENN/NOJXMyy+w==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=fybUab8iYByl27I6HYcdVvVvS+fy3o7/oYgOZKav1A0=; b=R+xRg2FDglGIJb
+	WNsFo8D0xfPhmrfSgmf8Raw4e9gMstXztojWDM7abc6EeWSbAsGHKfRSNt7wJW8kJrWabwqleaYfY
+	pdoaTT8PNDJ33lVQvvnX3qR+6y7zRzBZyToxQRFQdbRHj+MmicYBmlOUodfoPI9FVwZg9sOvzECly
+	ByhOjkIzwYkx4YQgkrzyex7hW3VANCgaNOvZA7g3yvfL+0BqhwDMdOqj3aEQthZ9bdWCawrMLifaz
+	8FX1pkU5MCUxmBznHrQCOUBem9GcGtvxbuOz4vze34GbEwMYZOwz7xe3XFx3B9oeFQ79eqYI1TZ2U
+	CxW1m0kPrhWJWWR+5nUA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1llcIJ-007VER-Gu; Tue, 25 May 2021 19:00:48 +0000
+	id 1llcIW-007VRX-Eb; Tue, 25 May 2021 19:01:03 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1llbvu-007K6v-07
- for barebox@lists.infradead.org; Tue, 25 May 2021 18:37:39 +0000
+ id 1llbvu-007K6z-0G
+ for barebox@lists.infradead.org; Tue, 25 May 2021 18:37:40 +0000
 Received: from dude03.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::39])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1llbvp-0008Bd-BW
+ (envelope-from <l.stach@pengutronix.de>) id 1llbvp-0008Bd-Hl
  for barebox@lists.infradead.org; Tue, 25 May 2021 20:37:33 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 25 May 2021 20:37:32 +0200
-Message-Id: <20210525183733.3345497-1-l.stach@pengutronix.de>
+Date: Tue, 25 May 2021 20:37:33 +0200
+Message-Id: <20210525183733.3345497-2-l.stach@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210525183733.3345497-1-l.stach@pengutronix.de>
+References: <20210525183733.3345497-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210525_113738_080708_A0A505F2 
-X-CRM114-Status: GOOD (  10.40  )
+X-CRM114-CacheID: sfid-20210525_113738_121653_5FD2CF10 
+X-CRM114-Status: GOOD (  15.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,40 +67,138 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] uncompress: use read_full to fill decompression buffer
+Subject: [PATCH 2/2] bootm: add support for booting compressed images
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The decompression algorithms want all of the requested buffer size
-to be filled and don't cope with less bytes being returned.
-Use read_full to satisfy this requirement.
+ARM64 does not have a self extracting image format, but relies on the image
+being externally compressed with one of the standard compression algorithms.
+
+Add support for decompressing the bootm OS image. It is added in common
+code as it may also be useful for other images/architectures.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- lib/uncompress.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ common/bootm.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
-diff --git a/lib/uncompress.c b/lib/uncompress.c
-index c47d319dbb5f..5c0d1e9f4d66 100644
---- a/lib/uncompress.c
-+++ b/lib/uncompress.c
-@@ -24,6 +24,7 @@
- #include <filetype.h>
- #include <malloc.h>
- #include <fs.h>
-+#include <libfile.h>
+diff --git a/common/bootm.c b/common/bootm.c
+index 092116beb94a..2bfb5cb01593 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -12,6 +12,7 @@
+ #include <environment.h>
+ #include <linux/stat.h>
+ #include <magicvar.h>
++#include <uncompress.h>
  
- static void *uncompress_buf;
- static unsigned int uncompress_size;
-@@ -142,7 +143,7 @@ static int uncompress_infd, uncompress_outfd;
+ static LIST_HEAD(handler_list);
  
- static int fill_fd(void *buf, unsigned int len)
- {
--	return read(uncompress_infd, buf, len);
-+	return read_full(uncompress_infd, buf, len);
+@@ -808,6 +809,85 @@ err_out:
+ 	return ret;
  }
  
- static int flush_fd(void *buf, unsigned int len)
++static int do_bootm_compressed(struct image_data *img_data)
++{
++	struct bootm_data bootm_data = {
++		.oftree_file = img_data->oftree_file,
++		.initrd_file = img_data->initrd_file,
++		.tee_file = img_data->tee_file,
++		.verbose = img_data->verbose,
++		.verify = img_data->verify,
++		.force = img_data->force,
++		.dryrun = img_data->dryrun,
++		.initrd_address = img_data->initrd_address,
++		.os_address = img_data->os_address,
++		.os_entry = img_data->os_entry,
++	};
++	int from, to, ret;
++	char *dstpath;
++
++	from = open(img_data->os_file, O_RDONLY);
++	if (from < 0)
++		return -ENODEV;
++
++	dstpath = make_temp("bootm-compressed");
++	if (!dstpath) {
++		ret = -ENOMEM;
++		goto fail_from;
++	}
++
++	to = open(dstpath, O_CREAT | O_WRONLY);
++	if (to < 0) {
++		ret = -ENODEV;
++		goto fail_make_temp;
++	}
++
++	ret = uncompress_fd_to_fd(from, to, uncompress_err_stdout);
++	if (ret)
++		goto fail_to;
++
++	bootm_data.os_file = dstpath;
++	return bootm_boot(&bootm_data);
++
++fail_to:
++	close(to);
++fail_make_temp:
++	free(dstpath);
++fail_from:
++	close(from);
++	return ret;
++}
++
++static struct image_handler bzip2_bootm_handler = {
++	.name = "BZIP2 compressed file",
++	.bootm = do_bootm_compressed,
++	.filetype = filetype_bzip2,
++};
++
++static struct image_handler gzip_bootm_handler = {
++	.name = "GZIP compressed file",
++	.bootm = do_bootm_compressed,
++	.filetype = filetype_gzip,
++};
++
++static struct image_handler lzo_bootm_handler = {
++	.name = "LZO compressed file",
++	.bootm = do_bootm_compressed,
++	.filetype = filetype_lzo_compressed,
++};
++
++static struct image_handler lz4_bootm_handler = {
++	.name = "LZ4 compressed file",
++	.bootm = do_bootm_compressed,
++	.filetype = filetype_lz4_compressed,
++};
++
++static struct image_handler xz_bootm_handler = {
++	.name = "XZ compressed file",
++	.bootm = do_bootm_compressed,
++	.filetype = filetype_xz_compressed,
++};
++
+ static int bootm_init(void)
+ {
+ 	globalvar_add_simple("bootm.image", NULL);
+@@ -830,6 +910,18 @@ static int bootm_init(void)
+ 	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
+ 				  bootm_verify_names, ARRAY_SIZE(bootm_verify_names));
+ 
++
++	if (IS_ENABLED(CONFIG_BZLIB))
++		register_image_handler(&bzip2_bootm_handler);
++	if (IS_ENABLED(CONFIG_ZLIB))
++		register_image_handler(&gzip_bootm_handler);
++	if (IS_ENABLED(CONFIG_LZO_DECOMPRESS))
++		register_image_handler(&lzo_bootm_handler);
++	if (IS_ENABLED(CONFIG_LZ4_DECOMPRESS))
++		register_image_handler(&lz4_bootm_handler);
++	if (IS_ENABLED(CONFIG_XZ_DECOMPRESS))
++		register_image_handler(&xz_bootm_handler);
++
+ 	return 0;
+ }
+ late_initcall(bootm_init);
 -- 
 2.29.2
 
