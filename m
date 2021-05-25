@@ -1,15 +1,15 @@
-Delivery-date: Tue, 25 May 2021 07:26:22 +0200
+Delivery-date: Tue, 25 May 2021 07:27:56 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llPaA-00079b-Du
-	for lore@lore.pengutronix.de; Tue, 25 May 2021 07:26:22 +0200
+	id 1llPbg-0007At-9z
+	for lore@lore.pengutronix.de; Tue, 25 May 2021 07:27:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llPa9-0006bs-Ix
-	for lore@pengutronix.de; Tue, 25 May 2021 07:26:22 +0200
+	id 1llPbf-0006ki-BC
+	for lore@pengutronix.de; Tue, 25 May 2021 07:27:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=PmOOLbEZOAQLqTuRN7PSPd+UEaSxB5aaGm27MrK3Ujk=; b=hpj3hVV9WiFU1ccflDhXvS5TgH
-	WYMRAe0SJgb3st3GltLKJppjD5OO0LJtAtKsj2+kbFP9QycDUH50YZcvovaTLqr/1fZArIpF3xRnk
-	+gvb+YW2yhxAdEayk+TJ7VrrlrAEx3EDUR3uTX0dR3wHpVFwSj2+vXpQ3rTQwiVkBOBIU5NXLdmsb
-	uOYu1K9ia3ipaFVwqSrme8j1hG8LMpK/pMh6XJfqOn/YZVgYjYG17KbI4u3VXayI9PAhX4qnO4QC4
-	9UgAclLXjSFMtUAB5CyVkXflibEkIiTHYNfK1q46joI262OcPwzbTRNzyKjNHrFp4sVkOJFkszrs4
-	sf2LmGFA==;
+	bh=JrKshPcCE9dq5NvuUa+ZnKzNb9w5djX3cRW8ZcrxlqM=; b=GatMZtkOAo92eo6ml8X8QlT3ag
+	NTOnNh54pmZpdAGnOrTY6rEPuCep9djUj8IepZ0KXnE6rANS8ZqUlb7VaGGiE30ey67X4tvN7SgEY
+	LSxyCqYkjI+SNYrtMFlc65jSSkTDust6Gyrhg9VpTmKQyU1x5evnUKxEFdF8ImY3tKTpjX9sML5Z1
+	dtA4ZuckrO3GdiEa8ajKGpeuoVcyIsRWLIzLZlJfVk2j+4YNOwXGhN2d8zOPadY1wu8jozzLpt0cr
+	/7ieUc8sKymCUFLVExRba5P3vTykSlkrKNwHxfTPi7pFnZTI8NmDzmUyON7MXEriOgXfXhIGTgBSM
+	dIc6Q9Sw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94 #2 (Red Hat Linux))
-	id 1llPYw-003QIc-TM; Tue, 25 May 2021 05:25:06 +0000
+	id 1llPaX-003QXT-2M; Tue, 25 May 2021 05:26:45 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94 #2 (Red Hat Linux))
- id 1llPYs-003QHc-5T
- for barebox@lists.infradead.org; Tue, 25 May 2021 05:25:03 +0000
+ id 1llPaS-003QWc-1c
+ for barebox@lists.infradead.org; Tue, 25 May 2021 05:26:41 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1llPYq-0006GH-8u; Tue, 25 May 2021 07:25:00 +0200
+ id 1llPaQ-0006di-Fe; Tue, 25 May 2021 07:26:38 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1llPYp-0006o5-Ut; Tue, 25 May 2021 07:24:59 +0200
-Date: Tue, 25 May 2021 07:24:59 +0200
+ id 1llPaQ-000722-6o; Tue, 25 May 2021 07:26:38 +0200
+Date: Tue, 25 May 2021 07:26:38 +0200
 To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Marco Felsch <m.felsch@pengutronix.de>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20210525052459.GH31738@pengutronix.de>
-References: <20210305090001.3619780-1-u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210525052638.GL19819@pengutronix.de>
+References: <20210522143431.824057-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210305090001.3619780-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20210522143431.824057-1-u.kleine-koenig@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 07:19:47 up 96 days,  8:43, 76 users,  load average: 0.02, 0.08, 0.13
+X-Uptime: 07:25:28 up 96 days,  8:49, 77 users,  load average: 0.13, 0.12, 0.13
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210524_222502_250972_FE14E4D9 
-X-CRM114-Status: GOOD (  20.65  )
+X-CRM114-CacheID: sfid-20210524_222640_124067_760ABF5A 
+X-CRM114-Status: GOOD (  17.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,32 +80,49 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] usb: i.MX: warn if vbus regulator isn't available
+Subject: Re: [PATCH] arm: imx: Replace license and copyright boilerplate by
+ SPDX identifiers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Mar 05, 2021 at 10:00:01AM +0100, Uwe Kleine-K=F6nig wrote:
-> Instead of just ignoring errors related to getting the vbus regulator
-> yield at least a warning message. This would have saved me some
-> debugging time when trying to understand why USB doesn't work without
-> the right regulator driver enabled.
+On Sat, May 22, 2021 at 04:34:31PM +0200, Uwe Kleine-K=F6nig wrote:
+> Converts the files that licensecheck can determine to be licensed under
+> GPL-2.0-only or GPL-2.0-or-later and also convert their copyright
+> statements to SPDX.
 > =
 
-> Note that machines that don't define a regulator in their device tree
-> don't issue this warning as regulator_get() returns the dummy regulator
-> in this case.
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/boot.c                  | 13 +------------
+>  arch/arm/mach-imx/cpu_init.c              | 15 ++-------------
+>  arch/arm/mach-imx/esdctl-v4.c             | 18 ++++--------------
+>  arch/arm/mach-imx/esdctl.c                | 18 ++++--------------
+>  arch/arm/mach-imx/external-nand-boot.c    | 13 +------------
+>  arch/arm/mach-imx/iim.c                   | 13 +++----------
+>  arch/arm/mach-imx/imx-bbu-external-nand.c | 14 +++-----------
+>  arch/arm/mach-imx/imx-bbu-internal.c      | 14 +++-----------
+>  arch/arm/mach-imx/imx.c                   | 13 +------------
+>  arch/arm/mach-imx/imx1.c                  | 13 +------------
+>  arch/arm/mach-imx/imx21.c                 | 13 +------------
+>  arch/arm/mach-imx/imx25.c                 | 13 +------------
+>  arch/arm/mach-imx/imx27.c                 | 13 +------------
+>  arch/arm/mach-imx/imx31.c                 | 13 +------------
+>  arch/arm/mach-imx/imx35.c                 | 13 +------------
+>  arch/arm/mach-imx/imx50.c                 | 13 +------------
+>  arch/arm/mach-imx/imx51.c                 | 13 +------------
+>  arch/arm/mach-imx/imx53.c                 | 13 +------------
+>  arch/arm/mach-imx/imx6-mmdc.c             | 16 +++-------------
+>  arch/arm/mach-imx/imx6.c                  | 13 +------------
+>  arch/arm/mach-imx/imx7.c                  | 13 +------------
+>  arch/arm/mach-imx/imx8m.c                 | 13 +------------
+>  arch/arm/mach-imx/nand.c                  | 13 +------------
+>  arch/arm/mach-imx/src.c                   | 10 ++--------
+>  arch/arm/mach-imx/vf610.c                 | 13 +------------
+>  arch/arm/mach-imx/xload-gpmi-nand.c       | 11 +----------
+>  arch/arm/mach-imx/xload-imx-nand.c        | 14 ++------------
+>  27 files changed, 44 insertions(+), 320 deletions(-)
 
-Note that this warning appears on machines that do define a regulator in
-their device tree (derived from the kernel upstream dts), but do not
-actually need it as the regulator was enabled by board code.
-Arguably that's the problem of these boards and we'll have to look there
-how we can quiesce the warning. The obvious solution is to implement the
-missing driver, but we could also add some
-add_dummy_regulator_for_this_node() function to tell the regulator core
-that we don't need a specific regulator.
-
-First let's see if somebody is annoyed by this message, so applied,
-thanks
+Applied, thanks
 
 Sascha
 
