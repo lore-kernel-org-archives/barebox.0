@@ -1,51 +1,78 @@
-Delivery-date: Wed, 26 May 2021 08:44:21 +0200
+Delivery-date: Wed, 26 May 2021 08:49:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llnHB-0004Qh-BH
-	for lore@lore.pengutronix.de; Wed, 26 May 2021 08:44:21 +0200
+	id 1llnMS-0004Uj-50
+	for lore@lore.pengutronix.de; Wed, 26 May 2021 08:49:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llnH9-0006cW-S8
-	for lore@pengutronix.de; Wed, 26 May 2021 08:44:21 +0200
+	id 1llnMR-00079e-64
+	for lore@pengutronix.de; Wed, 26 May 2021 08:49:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=B6/8PSQUT1+HPwkFYJUczqJjV14ehP+r8QJDX3Dn1gw=; b=JpgBA4xrKFeckc
-	ePvwdNVAPYOTTTgyALvxENwJri9+qNpZbPIuJCMAQsrnRTf/xYzn8UiUq40vhuAK2eS/DBvJuw5iS
-	xJrRvQf1gmd5LZPXNH1uug0B2eqjSK4uK9KCptVXBz7v3ZjHLefndgbuIR4Q7SvnR5Le5IPv6U5z8
-	evIGlPRJQlq6tWtnAWYGrg35HlK+KwJ58pIdG56PdP4g3BhzjsOHzzea8IQxUmGRMM9wnWhQwKUbV
-	xQVTxfp9nw2O43k5Sg5yXwEv2MvDjw7fZNLeCcwmTCZ3aIgiUWBWnLjVJXthitFd9n/gEhK0RGGw6
-	zs7hFf7IMSq7Lhu0DISw==;
+	List-Owner; bh=G2rBp1Q4KSXwot73mf9JCdCNqUXLkp/hFIPLmTwTzU8=; b=Af9I9nZPoLl5FK
+	JYQKsWPF9IQCCvErwN0ADIh4VYwLbE7YdkzifmJozF9JFSkdGSkcVlDFjsi6wqawq8p5nmWyicCcR
+	+RdKphpJZNmGJCubAKS03IgLWPhYlhbNIQCpocyauzOwqNCaz+20D/ThQmZn6MH2aHhwl6OCgOao0
+	sfz7dgkouZ49JCgNwil8+dBxAAU68m1E6VTu5z2pJaoXpY/O/0h2dGMPArkD0bdJQVntQvijrPHDK
+	PNUEfBPe6LwXoa2B2jH0sm+cKyz6xIp5wbnuuVSKFPHfwNNs2A6Tfr/AyJ7s2Ehm9n20jfmeHOx1/
+	JgUcpiVb2DoPRou3FdiQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1llnFq-00Bi6o-I3; Wed, 26 May 2021 06:42:58 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1llnL4-00Bk3F-7O; Wed, 26 May 2021 06:48:22 +0000
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1llnFj-00Bi4c-V1
- for barebox@lists.infradead.org; Wed, 26 May 2021 06:42:54 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1llnFi-0006Tj-Ew; Wed, 26 May 2021 08:42:50 +0200
-Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1llnFi-0006cB-66; Wed, 26 May 2021 08:42:50 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 26 May 2021 08:42:49 +0200
-Message-Id: <20210526064249.25378-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
+ id 1llnKy-00BjzJ-2N
+ for barebox@lists.infradead.org; Wed, 26 May 2021 06:48:17 +0000
+Received: by mail-pg1-x52f.google.com with SMTP id 27so137488pgy.3
+ for <barebox@lists.infradead.org>; Tue, 25 May 2021 23:48:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=w4T4TjwRGI7Zb4VqcuDme+Bgil83UwGv2gQ1N9/7grg=;
+ b=o45EjnHSfZlntuULKeIXtkAWwpUrT+cFgSQuZ3kyzjnNblZ3TELqp3H5vK0SBWFzZt
+ H+bZNkb6A9MzirQ/khFsdlWoMqgDqQFUTUBSDy8zIaY/uLJ2Ae2qAEP92eDPh7etQZwf
+ RpFeqYflIU0IW1B3OB4XInvurB/4Agk4UC6cptc8bnzz0oIJe50MyoytU4E+5cALa0d2
+ yGgRzqD5pEm2FgTDBeGTktdzY5OBtn1lwQGpBgCgZgteTbE/R06kcLmoNgrJlKnmlVnG
+ A72If575lTopJ7zSovBcUVYNubp8UDE1yoo8AVYvb54wUSla0/p0RYqe/ASB4/E/KbRY
+ 2+0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=w4T4TjwRGI7Zb4VqcuDme+Bgil83UwGv2gQ1N9/7grg=;
+ b=BqlFqlpsyBeWnSCBo4YAhpIfEhg8W936QtdPFboXY1eRewcbtarvdojMovspQHzamy
+ QCuQHOtkQVEZakKhCDOblK8cw7IqkiWDNQnKFEfp8xt1rRDdiO6aR/fHou00ApSDcrGt
+ rEPz9Pb9IqkKY1GOS5GFz9LWh0P2W2gPdawA7bOoEbdgreocV0ZelHDydfiBL9nH2xxE
+ ruTjY/yzbhnzi+Jh1zkkwHf0clN4sikPnWDIMsftExPUSA6JI+uhmmDBu2GeflFU/4VG
+ VqtkDIobkxlr5kAspg6mGYjmxhIZNqnHDOCg9tl4V2HpE8Nk/PngAxKekJhhrePFO03h
+ 4Hcw==
+X-Gm-Message-State: AOAM532NWulFwIqplconjBMwbS1XOK5yS+8TS7VE0XnD+z+DQeJAIEsx
+ TBBHb53qsa6WDhwTZlrbMsb+bPJksIS4tw==
+X-Google-Smtp-Source: ABdhPJxYAyXLjB1Ad+Wq0ILLfcsEwp/wfAd2IF6LzglU8nWWJWRA6vd3AWqH8RLxjeZ8TWyuXz0p8g==
+X-Received: by 2002:a05:6a00:c86:b029:2e9:3041:162f with SMTP id
+ a6-20020a056a000c86b02902e93041162fmr25895pfv.78.1622011690165; 
+ Tue, 25 May 2021 23:48:10 -0700 (PDT)
+Received: from zen.local (97-113-152-155.tukw.qwest.net. [97.113.152.155])
+ by smtp.gmail.com with ESMTPSA id 63sm15070449pfz.26.2021.05.25.23.48.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 May 2021 23:48:09 -0700 (PDT)
+From: Trent Piepho <tpiepho@gmail.com>
+X-Google-Original-From: Trent Piepho <trent.piepho@igorinstitute.com>
+To: barebox@lists.infradead.org
+Cc: Trent Piepho <tpiepho@gmail.com>
+Date: Tue, 25 May 2021 23:48:05 -0700
+Message-Id: <20210526064805.367434-1-trent.piepho@igorinstitute.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210525_234252_193207_AD92BBB7 
-X-CRM114-Status: GOOD (  19.82  )
+X-CRM114-CacheID: sfid-20210525_234816_150895_C99184D4 
+X-CRM114-Status: GOOD (  12.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,270 +92,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3] ARM: i.MX: sabresd: Add support for i.MX6QP board variant
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH] mtd: nand: Add help text for i.MX NAND controllers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The SabreSD comes with different SoC variants. This patch adds support
-for the i.MX6QP based board. the DCD data has been taken from U-Boot
-2021.04
+From: Trent Piepho <tpiepho@gmail.com>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.barebox.org/20210415140313.29161-1-s.hauer@pengutronix.de
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+There are two different NAND drivers, used for different chips in the
+i.MX range.  It's quite confusing as to which to use.  Add some help
+text to clarify.
+
+Signed-off-by: Trent Piepho <tpiepho@gmail.com>
 ---
+ drivers/mtd/nand/Kconfig | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-Changes since v2:
-- Fix board compatible checks to also match "fsl,imx6qp-sabresd"
-
- arch/arm/boards/freescale-mx6-sabresd/board.c |  6 +-
- ...mxcfg => flash-header-mx6q-sabresd.imxcfg} |  0
- .../flash-header-mx6qp-sabresd.imxcfg         | 96 +++++++++++++++++++
- .../boards/freescale-mx6-sabresd/lowlevel.c   | 16 ++++
- arch/arm/dts/Makefile                         |  2 +-
- arch/arm/dts/imx6qp-sabresd.dts               | 42 ++++++++
- images/Makefile.imx                           |  4 +-
- 7 files changed, 162 insertions(+), 4 deletions(-)
- rename arch/arm/boards/freescale-mx6-sabresd/{flash-header-mx6-sabresd.imxcfg => flash-header-mx6q-sabresd.imxcfg} (100%)
- create mode 100644 arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg
- create mode 100644 arch/arm/dts/imx6qp-sabresd.dts
-
-diff --git a/arch/arm/boards/freescale-mx6-sabresd/board.c b/arch/arm/boards/freescale-mx6-sabresd/board.c
-index b710c05a47..4df6663775 100644
---- a/arch/arm/boards/freescale-mx6-sabresd/board.c
-+++ b/arch/arm/boards/freescale-mx6-sabresd/board.c
-@@ -55,7 +55,8 @@ static int ar8031_phy_fixup(struct phy_device *dev)
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 7c9326089..9dd6851f3 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -32,14 +32,25 @@ config NAND_ALLOW_ERASE_BAD
  
- static int sabresd_devices_init(void)
- {
--	if (!of_machine_is_compatible("fsl,imx6q-sabresd"))
-+	if (!of_machine_is_compatible("fsl,imx6q-sabresd") &&
-+	    !of_machine_is_compatible("fsl,imx6q-sabresd"))
- 		return 0;
+ config NAND_IMX
+ 	bool
+-	prompt "i.MX NAND driver"
++	prompt "i.MX NAND driver aka 'mxc'"
+ 	depends on ARCH_IMX
++	help
++	  Support for NAND flash on Freescale/NXP i.MX devices.	 This is for the
++	  "MXC" series:	 i.MX21/25/27/31/35/51/53.  It is not for the "MXS"
++	  series i.MX processors (23 & 28), or i.MX6 and later, which use the
++	  NAND controller from the MSX processors.  See the i.MX 'mxs' driver
++	  for those chips.
  
- 	armlinux_set_architecture(3980);
-@@ -67,7 +68,8 @@ device_initcall(sabresd_devices_init);
+ config NAND_MXS
+ 	bool
+ 	select STMP_DEVICE
+-	prompt "i.MX23/28/6 NAND driver"
++	prompt "i.MX23/28 & 6+ NAND driver aka 'mxs'"
+ 	depends on MXS_APBH_DMA
++	help
++	  Support for NAND flash on Freescale/NXP i.MX devices.	 This is for the
++	  "MXS" series: i.MX23/28 and all i.MX6 and later chips.  It is not for
++	  the "MXC" series of i.MX processors in the i.MX 21 to 53 range.  See
++	  the i.MX "msc" driver for those chips.
  
- static int sabresd_coredevices_init(void)
- {
--	if (!of_machine_is_compatible("fsl,imx6q-sabresd"))
-+	if (!of_machine_is_compatible("fsl,imx6q-sabresd") &&
-+	    !of_machine_is_compatible("fsl,imx6q-sabresd"))
- 		return 0;
- 
- 	phy_register_fixup_for_uid(PHY_ID_AR8031, AR_PHY_ID_MASK,
-diff --git a/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6-sabresd.imxcfg b/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6q-sabresd.imxcfg
-similarity index 100%
-rename from arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6-sabresd.imxcfg
-rename to arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6q-sabresd.imxcfg
-diff --git a/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg b/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg
-new file mode 100644
-index 0000000000..aa52776afb
---- /dev/null
-+++ b/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg
-@@ -0,0 +1,96 @@
-+loadaddr 0x10000000
-+soc imx6
-+ivtofs 0x400
-+wm 32 0x20e0798 0x000c0000
-+wm 32 0x20e0758 0x00000000
-+wm 32 0x20e0588 0x00000030
-+wm 32 0x20e0594 0x00000030
-+wm 32 0x20e056c 0x00000030
-+wm 32 0x20e0578 0x00000030
-+wm 32 0x20e074c 0x00000030
-+wm 32 0x20e057c 0x00000030
-+wm 32 0x20e058c 0x00000000
-+wm 32 0x20e059c 0x00000030
-+wm 32 0x20e05a0 0x00000030
-+wm 32 0x20e078c 0x00000030
-+wm 32 0x20e0750 0x00020000
-+wm 32 0x20e05a8 0x00000030
-+wm 32 0x20e05b0 0x00000030
-+wm 32 0x20e0524 0x00000030
-+wm 32 0x20e051c 0x00000030
-+wm 32 0x20e0518 0x00000030
-+wm 32 0x20e050c 0x00000030
-+wm 32 0x20e05b8 0x00000030
-+wm 32 0x20e05c0 0x00000030
-+wm 32 0x20e0774 0x00020000
-+wm 32 0x20e0784 0x00000030
-+wm 32 0x20e0788 0x00000030
-+wm 32 0x20e0794 0x00000030
-+wm 32 0x20e079c 0x00000030
-+wm 32 0x20e07a0 0x00000030
-+wm 32 0x20e07a4 0x00000030
-+wm 32 0x20e07a8 0x00000030
-+wm 32 0x20e0748 0x00000030
-+wm 32 0x20e05ac 0x00000030
-+wm 32 0x20e05b4 0x00000030
-+wm 32 0x20e0528 0x00000030
-+wm 32 0x20e0520 0x00000030
-+wm 32 0x20e0514 0x00000030
-+wm 32 0x20e0510 0x00000030
-+wm 32 0x20e05bc 0x00000030
-+wm 32 0x20e05c4 0x00000030
-+wm 32 0x21b0800 0xa1390003
-+wm 32 0x21b080c 0x001b001e
-+wm 32 0x21b0810 0x002e0029
-+wm 32 0x21b480c 0x001b002a
-+wm 32 0x21b4810 0x0019002c
-+wm 32 0x21b083c 0x43240334
-+wm 32 0x21b0840 0x0324031a
-+wm 32 0x21b483c 0x43340344
-+wm 32 0x21b4840 0x03280276
-+wm 32 0x21b0848 0x44383A3E
-+wm 32 0x21b4848 0x3C3C3846
-+wm 32 0x21b0850 0x2e303230
-+wm 32 0x21b4850 0x38283E34
-+wm 32 0x21b081c 0x33333333
-+wm 32 0x21b0820 0x33333333
-+wm 32 0x21b0824 0x33333333
-+wm 32 0x21b0828 0x33333333
-+wm 32 0x21b481c 0x33333333
-+wm 32 0x21b4820 0x33333333
-+wm 32 0x21b4824 0x33333333
-+wm 32 0x21b4828 0x33333333
-+wm 32 0x21b08c0 0x24912249
-+wm 32 0x21b48c0 0x24914289
-+wm 32 0x21b08b8 0x00000800
-+wm 32 0x21b48b8 0x00000800
-+wm 32 0x21b0004 0x00020036
-+wm 32 0x21b0008 0x24444040
-+wm 32 0x21b000c 0x555A7955
-+wm 32 0x21b0010 0xFF320F64
-+wm 32 0x21b0014 0x01ff00db
-+wm 32 0x21b0018 0x00001740
-+wm 32 0x21b001c 0x00008000
-+wm 32 0x21b002c 0x000026d2
-+wm 32 0x21b0030 0x005A1023
-+wm 32 0x21b0040 0x00000027
-+wm 32 0x21b0400 0x14420000
-+wm 32 0x21b0000 0x831A0000
-+wm 32 0x21b0890 0x00400C58
-+wm 32 0x0bb0008 0x00000000
-+wm 32 0x0bb000c 0x2891E41A
-+wm 32 0x0bb0038 0x00000564
-+wm 32 0x0bb0014 0x00000040
-+wm 32 0x0bb0028 0x00000020
-+wm 32 0x0bb002c 0x00000020
-+wm 32 0x21b001c 0x04088032
-+wm 32 0x21b001c 0x00008033
-+wm 32 0x21b001c 0x00048031
-+wm 32 0x21b001c 0x09408030
-+wm 32 0x21b001c 0x04008040
-+wm 32 0x21b0020 0x00005800
-+wm 32 0x21b0818 0x00011117
-+wm 32 0x21b4818 0x00011117
-+wm 32 0x21b0004 0x00025576
-+wm 32 0x21b0404 0x00011006
-+wm 32 0x21b001c 0x00000000
-diff --git a/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c b/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c
-index ae847feaa6..7f83366e7a 100644
---- a/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c
-+++ b/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c
-@@ -35,3 +35,19 @@ ENTRY_FUNCTION(start_imx6q_sabresd, r0, r1, r2)
- 
- 	barebox_arm_entry(0x10000000, SZ_1G, fdt);
- }
-+
-+extern char __dtb_imx6qp_sabresd_start[];
-+
-+ENTRY_FUNCTION(start_imx6qp_sabresd, r0, r1, r2)
-+{
-+	void *fdt;
-+
-+	imx6_cpu_lowlevel_init();
-+
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		setup_uart();
-+
-+	fdt = __dtb_imx6qp_sabresd_start + get_runtime_offset();
-+
-+	barebox_arm_entry(0x10000000, SZ_1G, fdt);
-+}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index a637869fb6..795087f41b 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -100,7 +100,7 @@ lwl-$(CONFIG_MACH_RPI2) += bcm2836-rpi-2.dtb.o
- lwl-$(CONFIG_MACH_RPI3) += bcm2837-rpi-3.dtb.o
- lwl-$(CONFIG_MACH_RPI_CM3) += bcm2837-rpi-cm3.dtb.o
- lwl-$(CONFIG_MACH_SABRELITE) += imx6q-sabrelite.dtb.o imx6dl-sabrelite.dtb.o
--lwl-$(CONFIG_MACH_SABRESD) += imx6q-sabresd.dtb.o
-+lwl-$(CONFIG_MACH_SABRESD) += imx6q-sabresd.dtb.o imx6qp-sabresd.dtb.o
- lwl-$(CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB) += imx6sx-sdb.dtb.o
- lwl-$(CONFIG_MACH_SOCFPGA_ALTERA_SOCDK) += socfpga_cyclone5_socdk.dtb.o
- lwl-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += socfpga_cyclone5_socrates.dtb.o
-diff --git a/arch/arm/dts/imx6qp-sabresd.dts b/arch/arm/dts/imx6qp-sabresd.dts
-new file mode 100644
-index 0000000000..1fb20cb0b4
---- /dev/null
-+++ b/arch/arm/dts/imx6qp-sabresd.dts
-@@ -0,0 +1,42 @@
-+/*
-+ * Copyright 2012 Freescale Semiconductor, Inc.
-+ * Copyright 2011 Linaro Ltd.
-+ *
-+ * The code contained herein is licensed under the GNU General Public
-+ * License. You may obtain a copy of the GNU General Public License
-+ * Version 2 or later at the following locations:
-+ *
-+ * http://www.opensource.org/licenses/gpl-license.html
-+ * http://www.gnu.org/copyleft/gpl.html
-+ */
-+
-+#include <arm/imx6qp-sabresd.dts>
-+
-+/ {
-+	model = "Freescale i.MX6 Quad Plus SABRE Smart Device Board";
-+	compatible = "fsl,imx6qp-sabresd", "fsl,imx6qp";
-+
-+	chosen {
-+		stdout-path = &uart1;
-+
-+		environment {
-+			compatible = "barebox,environment";
-+			device-path = &environment_usdhc3;
-+		};
-+	};
-+};
-+
-+&usdhc3 {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	partition@0 {
-+		label = "barebox";
-+		reg = <0x0 0xe0000>;
-+	};
-+
-+	environment_usdhc3: partition@e0000 {
-+		label = "barebox-environment";
-+		reg = <0xe0000 0x20000>;
-+	};
-+};
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index f312712840..0ee12786b5 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -215,7 +215,9 @@ $(call build_imx_habv4img, CONFIG_MACH_SABRELITE, start_imx6q_sabrelite, freesca
- 
- $(call build_imx_habv4img, CONFIG_MACH_SABRELITE, start_imx6dl_sabrelite, freescale-mx6-sabrelite/flash-header-mx6-sabrelite, freescale-imx6dl-sabrelite)
- 
--$(call build_imx_habv4img, CONFIG_MACH_SABRESD, start_imx6q_sabresd, freescale-mx6-sabresd/flash-header-mx6-sabresd, freescale-imx6q-sabresd)
-+$(call build_imx_habv4img, CONFIG_MACH_SABRESD, start_imx6q_sabresd, freescale-mx6-sabresd/flash-header-mx6q-sabresd, freescale-imx6q-sabresd)
-+
-+$(call build_imx_habv4img, CONFIG_MACH_SABRESD, start_imx6qp_sabresd, freescale-mx6-sabresd/flash-header-mx6qp-sabresd, freescale-imx6qp-sabresd)
- 
- $(call build_imx_habv4img, CONFIG_MACH_UDOO_NEO, start_imx6sx_udoo_neo, udoo-neo/flash-header-mx6sx-udoo-neo_full, udoo-neo)
- 
+ config NAND_OMAP_GPMC
+ 	tristate "NAND Flash Support for GPMC based OMAP platforms"
 -- 
-2.29.2
+2.26.2
 
 
 _______________________________________________
