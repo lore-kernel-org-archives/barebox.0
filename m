@@ -1,54 +1,63 @@
-Delivery-date: Wed, 26 May 2021 09:24:07 +0200
+Delivery-date: Wed, 26 May 2021 09:26:20 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llntf-0004sT-1m
-	for lore@lore.pengutronix.de; Wed, 26 May 2021 09:24:07 +0200
+	id 1llnvo-0004uA-Em
+	for lore@lore.pengutronix.de; Wed, 26 May 2021 09:26:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1llntd-0003VB-BB
-	for lore@pengutronix.de; Wed, 26 May 2021 09:24:06 +0200
+	id 1llnvn-0003uP-Bf
+	for lore@pengutronix.de; Wed, 26 May 2021 09:26:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=/Mmrad07ed93GBqiIYuJxG7gpN7I+ZedPJaUF40hdcs=; b=m1QRsmy+cPfhULZ4/V4S6pulQf
-	nn8emjuNInKfPh+4G9HoXXRp9qA5mHBtab0s0tqa87U271L/McjJE81IJ69+Q+q0nrSzIwTlhI/HP
-	pmOVkseJQfTiRh8J1LYqJVXaqLWptULTFiAhCzw5ANKEgEwcHCj9AxORqR5nlgkB2TRm1EzxXEhiB
-	iw6/uE1y+9d97K8g2krNcuD10yQ0pWbUmrICUcFD1ysVwiAJvRYxH1+0b0efHe6Gjfh46uCo6iimG
-	/7mgfvCFX4zO5gP7y+Hp6V1iHWv/qxl2PV4rCi6Z8oHvJAp5dl0i6iZ6dWhbXKQLoPJBUhjkeIHqO
-	Leuoni8g==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=PC1w6syfKvm04KMEhu+2JdyAKnrz4hZkiPktCQ5fXNE=; b=YUSMaxF2ds6aZD
+	9yQ8tdf0UZMnsO1j1PG9f5XFezwxj45IyUHppvbHa6OeqVY9abRn+GUN2pVflZgQ/OAQ2EpHlHoYj
+	uvk/hrkArnHKqVlQD/NvP0XPoaPavDJJlZa9AR8AVKoIlUjHcNplt+3/GGnw8WtG61wEMNDOhOJlX
+	4X4+eMolO32zlYoXNHpODlOMmZ/cceuj8g2ZL51Ar0NBkhrI86RfoXSj3AavV9Ehl6CogNt8aZFb4
+	hnvoGdyAd1vPuyg99mVyXVYXNx1Yejpc8zrOAF9wimEBYdvd8kN2YPqXELULyP66Peqfz4oO/GJ+a
+	fk0G7N10FP5tHwxKnGxw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1llnsP-00C1T6-JX; Wed, 26 May 2021 07:22:49 +0000
+	id 1llnub-00C2TA-PV; Wed, 26 May 2021 07:25:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1llnsJ-00C1Q7-0P
- for barebox@lists.infradead.org; Wed, 26 May 2021 07:22:45 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1llnsH-0003Sd-Nz; Wed, 26 May 2021 09:22:41 +0200
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
+ id 1llnuW-00C2Nm-BH
+ for barebox@lists.infradead.org; Wed, 26 May 2021 07:25:01 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1llnuU-0003YG-ST; Wed, 26 May 2021 09:24:58 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1llnuU-0006yL-JF; Wed, 26 May 2021 09:24:58 +0200
+Date: Wed, 26 May 2021 09:24:58 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20210526072458.GR31738@pengutronix.de>
 References: <20210526064249.25378-1-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <395d50ec-c2b6-94f8-ceff-bf76d3ec497b@pengutronix.de>
-Date: Wed, 26 May 2021 09:22:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ <395d50ec-c2b6-94f8-ceff-bf76d3ec497b@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20210526064249.25378-1-s.hauer@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <395d50ec-c2b6-94f8-ceff-bf76d3ec497b@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:22:50 up 97 days, 10:46, 111 users,  load average: 0.31, 0.38,
+ 0.32
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210526_002243_259898_12E603C3 
-X-CRM114-Status: GOOD (  29.53  )
+X-CRM114-CacheID: sfid-20210526_002500_435502_CA6B69DA 
+X-CRM114-Status: GOOD (  28.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,279 +77,61 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
 Subject: Re: [PATCH v3] ARM: i.MX: sabresd: Add support for i.MX6QP board
  variant
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-
-
-On 26.05.21 08:42, Sascha Hauer wrote:
-> The SabreSD comes with different SoC variants. This patch adds support
-> for the i.MX6QP based board. the DCD data has been taken from U-Boot
-> 2021.04
+On Wed, May 26, 2021 at 09:22:41AM +0200, Ahmad Fatoum wrote:
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Link: https://lore.barebox.org/20210415140313.29161-1-s.hauer@pengutronix.de
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
 > 
-> Changes since v2:
-> - Fix board compatible checks to also match "fsl,imx6qp-sabresd"
+> On 26.05.21 08:42, Sascha Hauer wrote:
+> > The SabreSD comes with different SoC variants. This patch adds support
+> > for the i.MX6QP based board. the DCD data has been taken from U-Boot
+> > 2021.04
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > Link: https://lore.barebox.org/20210415140313.29161-1-s.hauer@pengutronix.de
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> > 
+> > Changes since v2:
+> > - Fix board compatible checks to also match "fsl,imx6qp-sabresd"
+> > 
+> >  arch/arm/boards/freescale-mx6-sabresd/board.c |  6 +-
+> >  ...mxcfg => flash-header-mx6q-sabresd.imxcfg} |  0
+> >  .../flash-header-mx6qp-sabresd.imxcfg         | 96 +++++++++++++++++++
+> >  .../boards/freescale-mx6-sabresd/lowlevel.c   | 16 ++++
+> >  arch/arm/dts/Makefile                         |  2 +-
+> >  arch/arm/dts/imx6qp-sabresd.dts               | 42 ++++++++
+> >  images/Makefile.imx                           |  4 +-
+> >  7 files changed, 162 insertions(+), 4 deletions(-)
+> >  rename arch/arm/boards/freescale-mx6-sabresd/{flash-header-mx6-sabresd.imxcfg => flash-header-mx6q-sabresd.imxcfg} (100%)
+> >  create mode 100644 arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg
+> >  create mode 100644 arch/arm/dts/imx6qp-sabresd.dts
+> > 
+> > diff --git a/arch/arm/boards/freescale-mx6-sabresd/board.c b/arch/arm/boards/freescale-mx6-sabresd/board.c
+> > index b710c05a47..4df6663775 100644
+> > --- a/arch/arm/boards/freescale-mx6-sabresd/board.c
+> > +++ b/arch/arm/boards/freescale-mx6-sabresd/board.c
+> > @@ -55,7 +55,8 @@ static int ar8031_phy_fixup(struct phy_device *dev)
+> >  
+> >  static int sabresd_devices_init(void)
+> >  {
+> > -	if (!of_machine_is_compatible("fsl,imx6q-sabresd"))
+> > +	if (!of_machine_is_compatible("fsl,imx6q-sabresd") &&
+> > +	    !of_machine_is_compatible("fsl,imx6q-sabresd"))
 > 
->  arch/arm/boards/freescale-mx6-sabresd/board.c |  6 +-
->  ...mxcfg => flash-header-mx6q-sabresd.imxcfg} |  0
->  .../flash-header-mx6qp-sabresd.imxcfg         | 96 +++++++++++++++++++
->  .../boards/freescale-mx6-sabresd/lowlevel.c   | 16 ++++
->  arch/arm/dts/Makefile                         |  2 +-
->  arch/arm/dts/imx6qp-sabresd.dts               | 42 ++++++++
->  images/Makefile.imx                           |  4 +-
->  7 files changed, 162 insertions(+), 4 deletions(-)
->  rename arch/arm/boards/freescale-mx6-sabresd/{flash-header-mx6-sabresd.imxcfg => flash-header-mx6q-sabresd.imxcfg} (100%)
->  create mode 100644 arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg
->  create mode 100644 arch/arm/dts/imx6qp-sabresd.dts
-> 
-> diff --git a/arch/arm/boards/freescale-mx6-sabresd/board.c b/arch/arm/boards/freescale-mx6-sabresd/board.c
-> index b710c05a47..4df6663775 100644
-> --- a/arch/arm/boards/freescale-mx6-sabresd/board.c
-> +++ b/arch/arm/boards/freescale-mx6-sabresd/board.c
-> @@ -55,7 +55,8 @@ static int ar8031_phy_fixup(struct phy_device *dev)
->  
->  static int sabresd_devices_init(void)
->  {
-> -	if (!of_machine_is_compatible("fsl,imx6q-sabresd"))
-> +	if (!of_machine_is_compatible("fsl,imx6q-sabresd") &&
-> +	    !of_machine_is_compatible("fsl,imx6q-sabresd"))
+> That's the same compatible string twice.
 
-That's the same compatible string twice.
+Yeah, just realized that as well when I tried to close the editor window and was
+asked to save or discard the changes :). Fixed.
 
->  		return 0;
->  
->  	armlinux_set_architecture(3980);
-> @@ -67,7 +68,8 @@ device_initcall(sabresd_devices_init);
->  
->  static int sabresd_coredevices_init(void)
->  {
-> -	if (!of_machine_is_compatible("fsl,imx6q-sabresd"))
-> +	if (!of_machine_is_compatible("fsl,imx6q-sabresd") &&
-> +	    !of_machine_is_compatible("fsl,imx6q-sabresd"))
-
-Ditto.
-
->  		return 0;
->  
->  	phy_register_fixup_for_uid(PHY_ID_AR8031, AR_PHY_ID_MASK,
-> diff --git a/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6-sabresd.imxcfg b/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6q-sabresd.imxcfg
-> similarity index 100%
-> rename from arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6-sabresd.imxcfg
-> rename to arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6q-sabresd.imxcfg
-> diff --git a/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg b/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg
-> new file mode 100644
-> index 0000000000..aa52776afb
-> --- /dev/null
-> +++ b/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg
-> @@ -0,0 +1,96 @@
-> +loadaddr 0x10000000
-> +soc imx6
-> +ivtofs 0x400
-> +wm 32 0x20e0798 0x000c0000
-> +wm 32 0x20e0758 0x00000000
-> +wm 32 0x20e0588 0x00000030
-> +wm 32 0x20e0594 0x00000030
-> +wm 32 0x20e056c 0x00000030
-> +wm 32 0x20e0578 0x00000030
-> +wm 32 0x20e074c 0x00000030
-> +wm 32 0x20e057c 0x00000030
-> +wm 32 0x20e058c 0x00000000
-> +wm 32 0x20e059c 0x00000030
-> +wm 32 0x20e05a0 0x00000030
-> +wm 32 0x20e078c 0x00000030
-> +wm 32 0x20e0750 0x00020000
-> +wm 32 0x20e05a8 0x00000030
-> +wm 32 0x20e05b0 0x00000030
-> +wm 32 0x20e0524 0x00000030
-> +wm 32 0x20e051c 0x00000030
-> +wm 32 0x20e0518 0x00000030
-> +wm 32 0x20e050c 0x00000030
-> +wm 32 0x20e05b8 0x00000030
-> +wm 32 0x20e05c0 0x00000030
-> +wm 32 0x20e0774 0x00020000
-> +wm 32 0x20e0784 0x00000030
-> +wm 32 0x20e0788 0x00000030
-> +wm 32 0x20e0794 0x00000030
-> +wm 32 0x20e079c 0x00000030
-> +wm 32 0x20e07a0 0x00000030
-> +wm 32 0x20e07a4 0x00000030
-> +wm 32 0x20e07a8 0x00000030
-> +wm 32 0x20e0748 0x00000030
-> +wm 32 0x20e05ac 0x00000030
-> +wm 32 0x20e05b4 0x00000030
-> +wm 32 0x20e0528 0x00000030
-> +wm 32 0x20e0520 0x00000030
-> +wm 32 0x20e0514 0x00000030
-> +wm 32 0x20e0510 0x00000030
-> +wm 32 0x20e05bc 0x00000030
-> +wm 32 0x20e05c4 0x00000030
-> +wm 32 0x21b0800 0xa1390003
-> +wm 32 0x21b080c 0x001b001e
-> +wm 32 0x21b0810 0x002e0029
-> +wm 32 0x21b480c 0x001b002a
-> +wm 32 0x21b4810 0x0019002c
-> +wm 32 0x21b083c 0x43240334
-> +wm 32 0x21b0840 0x0324031a
-> +wm 32 0x21b483c 0x43340344
-> +wm 32 0x21b4840 0x03280276
-> +wm 32 0x21b0848 0x44383A3E
-> +wm 32 0x21b4848 0x3C3C3846
-> +wm 32 0x21b0850 0x2e303230
-> +wm 32 0x21b4850 0x38283E34
-> +wm 32 0x21b081c 0x33333333
-> +wm 32 0x21b0820 0x33333333
-> +wm 32 0x21b0824 0x33333333
-> +wm 32 0x21b0828 0x33333333
-> +wm 32 0x21b481c 0x33333333
-> +wm 32 0x21b4820 0x33333333
-> +wm 32 0x21b4824 0x33333333
-> +wm 32 0x21b4828 0x33333333
-> +wm 32 0x21b08c0 0x24912249
-> +wm 32 0x21b48c0 0x24914289
-> +wm 32 0x21b08b8 0x00000800
-> +wm 32 0x21b48b8 0x00000800
-> +wm 32 0x21b0004 0x00020036
-> +wm 32 0x21b0008 0x24444040
-> +wm 32 0x21b000c 0x555A7955
-> +wm 32 0x21b0010 0xFF320F64
-> +wm 32 0x21b0014 0x01ff00db
-> +wm 32 0x21b0018 0x00001740
-> +wm 32 0x21b001c 0x00008000
-> +wm 32 0x21b002c 0x000026d2
-> +wm 32 0x21b0030 0x005A1023
-> +wm 32 0x21b0040 0x00000027
-> +wm 32 0x21b0400 0x14420000
-> +wm 32 0x21b0000 0x831A0000
-> +wm 32 0x21b0890 0x00400C58
-> +wm 32 0x0bb0008 0x00000000
-> +wm 32 0x0bb000c 0x2891E41A
-> +wm 32 0x0bb0038 0x00000564
-> +wm 32 0x0bb0014 0x00000040
-> +wm 32 0x0bb0028 0x00000020
-> +wm 32 0x0bb002c 0x00000020
-> +wm 32 0x21b001c 0x04088032
-> +wm 32 0x21b001c 0x00008033
-> +wm 32 0x21b001c 0x00048031
-> +wm 32 0x21b001c 0x09408030
-> +wm 32 0x21b001c 0x04008040
-> +wm 32 0x21b0020 0x00005800
-> +wm 32 0x21b0818 0x00011117
-> +wm 32 0x21b4818 0x00011117
-> +wm 32 0x21b0004 0x00025576
-> +wm 32 0x21b0404 0x00011006
-> +wm 32 0x21b001c 0x00000000
-> diff --git a/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c b/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c
-> index ae847feaa6..7f83366e7a 100644
-> --- a/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c
-> +++ b/arch/arm/boards/freescale-mx6-sabresd/lowlevel.c
-> @@ -35,3 +35,19 @@ ENTRY_FUNCTION(start_imx6q_sabresd, r0, r1, r2)
->  
->  	barebox_arm_entry(0x10000000, SZ_1G, fdt);
->  }
-> +
-> +extern char __dtb_imx6qp_sabresd_start[];
-> +
-> +ENTRY_FUNCTION(start_imx6qp_sabresd, r0, r1, r2)
-> +{
-> +	void *fdt;
-> +
-> +	imx6_cpu_lowlevel_init();
-> +
-> +	if (IS_ENABLED(CONFIG_DEBUG_LL))
-> +		setup_uart();
-> +
-> +	fdt = __dtb_imx6qp_sabresd_start + get_runtime_offset();
-> +
-> +	barebox_arm_entry(0x10000000, SZ_1G, fdt);
-> +}
-> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-> index a637869fb6..795087f41b 100644
-> --- a/arch/arm/dts/Makefile
-> +++ b/arch/arm/dts/Makefile
-> @@ -100,7 +100,7 @@ lwl-$(CONFIG_MACH_RPI2) += bcm2836-rpi-2.dtb.o
->  lwl-$(CONFIG_MACH_RPI3) += bcm2837-rpi-3.dtb.o
->  lwl-$(CONFIG_MACH_RPI_CM3) += bcm2837-rpi-cm3.dtb.o
->  lwl-$(CONFIG_MACH_SABRELITE) += imx6q-sabrelite.dtb.o imx6dl-sabrelite.dtb.o
-> -lwl-$(CONFIG_MACH_SABRESD) += imx6q-sabresd.dtb.o
-> +lwl-$(CONFIG_MACH_SABRESD) += imx6q-sabresd.dtb.o imx6qp-sabresd.dtb.o
->  lwl-$(CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB) += imx6sx-sdb.dtb.o
->  lwl-$(CONFIG_MACH_SOCFPGA_ALTERA_SOCDK) += socfpga_cyclone5_socdk.dtb.o
->  lwl-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += socfpga_cyclone5_socrates.dtb.o
-> diff --git a/arch/arm/dts/imx6qp-sabresd.dts b/arch/arm/dts/imx6qp-sabresd.dts
-> new file mode 100644
-> index 0000000000..1fb20cb0b4
-> --- /dev/null
-> +++ b/arch/arm/dts/imx6qp-sabresd.dts
-> @@ -0,0 +1,42 @@
-> +/*
-> + * Copyright 2012 Freescale Semiconductor, Inc.
-> + * Copyright 2011 Linaro Ltd.
-> + *
-> + * The code contained herein is licensed under the GNU General Public
-> + * License. You may obtain a copy of the GNU General Public License
-> + * Version 2 or later at the following locations:
-> + *
-> + * http://www.opensource.org/licenses/gpl-license.html
-> + * http://www.gnu.org/copyleft/gpl.html
-> + */
-> +
-> +#include <arm/imx6qp-sabresd.dts>
-> +
-> +/ {
-> +	model = "Freescale i.MX6 Quad Plus SABRE Smart Device Board";
-> +	compatible = "fsl,imx6qp-sabresd", "fsl,imx6qp";
-> +
-> +	chosen {
-> +		stdout-path = &uart1;
-> +
-> +		environment {
-> +			compatible = "barebox,environment";
-> +			device-path = &environment_usdhc3;
-> +		};
-> +	};
-> +};
-> +
-> +&usdhc3 {
-> +	#address-cells = <1>;
-> +	#size-cells = <1>;
-> +
-> +	partition@0 {
-> +		label = "barebox";
-> +		reg = <0x0 0xe0000>;
-> +	};
-> +
-> +	environment_usdhc3: partition@e0000 {
-> +		label = "barebox-environment";
-> +		reg = <0xe0000 0x20000>;
-> +	};
-> +};
-> diff --git a/images/Makefile.imx b/images/Makefile.imx
-> index f312712840..0ee12786b5 100644
-> --- a/images/Makefile.imx
-> +++ b/images/Makefile.imx
-> @@ -215,7 +215,9 @@ $(call build_imx_habv4img, CONFIG_MACH_SABRELITE, start_imx6q_sabrelite, freesca
->  
->  $(call build_imx_habv4img, CONFIG_MACH_SABRELITE, start_imx6dl_sabrelite, freescale-mx6-sabrelite/flash-header-mx6-sabrelite, freescale-imx6dl-sabrelite)
->  
-> -$(call build_imx_habv4img, CONFIG_MACH_SABRESD, start_imx6q_sabresd, freescale-mx6-sabresd/flash-header-mx6-sabresd, freescale-imx6q-sabresd)
-> +$(call build_imx_habv4img, CONFIG_MACH_SABRESD, start_imx6q_sabresd, freescale-mx6-sabresd/flash-header-mx6q-sabresd, freescale-imx6q-sabresd)
-> +
-> +$(call build_imx_habv4img, CONFIG_MACH_SABRESD, start_imx6qp_sabresd, freescale-mx6-sabresd/flash-header-mx6qp-sabresd, freescale-imx6qp-sabresd)
->  
->  $(call build_imx_habv4img, CONFIG_MACH_UDOO_NEO, start_imx6sx_udoo_neo, udoo-neo/flash-header-mx6sx-udoo-neo_full, udoo-neo)
->  
-> 
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
