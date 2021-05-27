@@ -1,64 +1,52 @@
-Delivery-date: Thu, 27 May 2021 11:23:07 +0200
+Delivery-date: Thu, 27 May 2021 14:46:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lmCEN-0004Fq-Tt
-	for lore@lore.pengutronix.de; Thu, 27 May 2021 11:23:07 +0200
+	id 1lmFOu-0005sM-BZ
+	for lore@lore.pengutronix.de; Thu, 27 May 2021 14:46:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lmCEM-0001Ks-Qc
-	for lore@pengutronix.de; Thu, 27 May 2021 11:23:07 +0200
+	id 1lmFOt-0001nI-9i
+	for lore@pengutronix.de; Thu, 27 May 2021 14:46:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=rGGg0GFXoWFf3odXQB8DXaqeP8GE17tfEoorXC+dQ4M=; b=d8v3bLyNNAX6FX
-	NcHBgKiO0yRlZfhNtVxzA2rRXTBfkNx+b3v8+b8rxwqKholzHLRIhT0CBtJzHCE91X1RUUyPTKWb3
-	DGiRYYyDZGwIWapqTC56zanJc06mlb4xzW/GZcvqxiJaX76yHWh/+UQV8n7QULRN7oYEyCLxcG2t/
-	TrnmpwKoRlBeHJHVCeblVuEd7dT3KzrEpuJT3A9BjvDObchn+n3hzp2krtXLe22PiyOjCpxl+jfyR
-	j9YJubdWrZjNDo88IaNjulbEFAWIgYbVtDcsVk/D2WX/A8UalZcyGwoBFx2nphi1ro3bN9I7c+9Hi
-	E0Q2g9i2mAXbyfPAvlFw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=TPWMNl4rHwqQWsPTiG48YlA4k3WoSDo7qgJio5+FUww=; b=XaHjWZYe9+I7XD
+	AA9z9tNRwufQlwO79XhmNr8rAH0o56STsriCcHY1mM7HNS0JjaEbakpVwujL0hfQD0X2pK3lGdwH8
+	mXrU9+n/rdeJnzcVvh856p37hlLQrIM+GXhIFWxZQKAJyab6Wn6PkqglIup52u9WkBjtLgIjKj36l
+	w7RSVIUsfaPCW9IESv6JIoLzFDb6pbH96FMFVkrDlx+eewfFqBgRgAFX48vM1nfPvLVKIKsN6LhG9
+	R8LDZC/P2Vesl1ELLPfC1cVJovFBzW9+J/hyGuoe7WTn+42iZD8S/8x44daF3Xd/5kXtEle3CQHA/
+	wkvqAq40/oRtyUza8yVQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lmCCp-004HLJ-Ho; Thu, 27 May 2021 09:21:31 +0000
+	id 1lmFNB-005qQp-4F; Thu, 27 May 2021 12:44:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lmCCh-004HIj-7k
- for barebox@lists.infradead.org; Thu, 27 May 2021 09:21:25 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1lmFMy-005qMK-Ru
+ for barebox@lists.infradead.org; Thu, 27 May 2021 12:44:14 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lmCCe-00012b-UJ; Thu, 27 May 2021 11:21:20 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lmCCe-0005Xs-HJ; Thu, 27 May 2021 11:21:20 +0200
-Date: Thu, 27 May 2021 11:21:20 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-To: Trent Piepho <trent.piepho@igorinstitute.com>
-Cc: Trent Piepho <tpiepho@gmail.com>, barebox@lists.infradead.org
-Message-ID: <20210527092120.GH19819@pengutronix.de>
-References: <20210526065856.368345-1-trent.piepho@igorinstitute.com>
- <20210527071105.GC19819@pengutronix.de>
- <CAMHeXxMyahfBYm-sw9zpF105Uc5PCH71D7DvV0BnS+V=PKza3A@mail.gmail.com>
+ (envelope-from <afa@pengutronix.de>)
+ id 1lmFMu-0001O8-1g; Thu, 27 May 2021 14:44:08 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1lmFMt-0005lc-PB; Thu, 27 May 2021 14:44:07 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 27 May 2021 14:44:06 +0200
+Message-Id: <20210527124406.22121-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAMHeXxMyahfBYm-sw9zpF105Uc5PCH71D7DvV0BnS+V=PKza3A@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:50:31 up 98 days, 12:14, 116 users,  load average: 0.02, 0.07,
- 0.11
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210527_022123_324795_490960EC 
-X-CRM114-Status: GOOD (  49.46  )
+X-CRM114-CacheID: sfid-20210527_054412_934133_12FCEC26 
+X-CRM114-Status: GOOD (  14.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,97 +66,116 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] imx-image: Fix uninitialized add_barebox_header
+Subject: [PATCH] commands: of_dump: implement -p for printing properties only
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, May 27, 2021 at 01:13:29AM -0700, Trent Piepho wrote:
-> On Thu, May 27, 2021 at 12:11 AM Sascha Hauer <sha@pengutronix.de> wrote:
-> > On Tue, May 25, 2021 at 11:58:56PM -0700, Trent Piepho wrote:
-> > > Note that ommiting -b, so as to not add a barebox header, still adds a
-> > > 1024 byte header, it's just blank.  I think it would be better if it was
-> > > not added at all.  If flashing to an SD card or eMMC main block, this
-> > > header overlaps the partition table, and so needs to not be flashed.
-> > > It's not part of the imx image.  It's just padding to place the imx
-> > > image at the correct location w.r.t. the start of flash.
-> >
-> > The idea is that you can put the imx image at the beginning of an SD/MMC
-> > card without knowing any offsets. Yes, you'll overwrite the partition
-> > table in that case, but once you know that you can skip/seek 512 bytes
-> > on both the image and the card and be done. Note that with newer i.MX
-> > SoCs like i.MX8 the offset was changed to 33k to support GPT partition
-> > tables. With i.MX8MP they changed the offset again to 32k. I think
-> > Having to know all these offsets is not better than the current
-> > situation.
-> 
-> It's still possible to use GPT with imx6-7.  The GPT table only uses
-> the 2nd sector (bytes 512-1023) as a fixed location.  The rest of the
-> GPT data has pointers to it from that sector and can be anywhere.
-> Convention is to place it immediately after, where it overlaps the imx
-> image, but it doesn't have to be there.  Five years ago I had to add
-> this feature to gptfdisk, but it's the option --move-main-table now.
-> 
-> Speaking of partition tables,it's possible to add the bootloader as a
-> partition.  Then I don't need to know the offset as the partition
-> table handles that.  And it means the bootloader shows up as being on
-> the disk, instead of hiding inside unallocated space, waiting to get
-> wiped out by something that doesn't think unallocated space needs to
-> be preserved.  And the partition has a size, so flashing to it will
-> not go past the end and clobber anything else.  Using unallocated
-> space on the whole disk device involves a much riskier dd command.
-> 
-> And I need to know where the bootloader is to make that partition
-> table.  So adding the padding to the image didn't help me to not need
-> to know where the bootloader goes.
-> 
-> When I make the sd image, I need to add an extra step to the script to
-> strip the padding, so I still need to know the offset there, and keep
-> it correct.  I.e., both the code that strips the padding and the code
-> that places the bootloader into the correct location in the image need
-> to know the size.
-> 
-> U-boot doesn't do this padding with its images, so any script that
-> makes a sd/emmc image for u-boot in buildroot, yocto, etc. needs to be
-> adapted for barebox to strip the header.
-> 
-> When it comes to flashing, I'm not aware of a good way to flash
-> barebox from barebox.  If it was unpadded, I'd just write it to a
-> partition.  But with padding and the default of no partition for
-> barebox, I do this:
-> 
-> # Ugly hack, specify size as 767kB, since we don't know the total file size, and
-> # that's all NXP's chosen env location allows barebox.  We need to use memcpy to
-> # skip the first 1kB, but memcpy has no option to use the source size.
-> echo "Ignore 'ran out of data' message that follows"
-> memcpy -s /mnt/nfs/barebox-nxp-imx6ul-evk.img -d /dev/mmc1 0x400 0x400 0xbfc00
+Some boards rewrite root node properties like compatible and
+serial-number. Checking them can be annoying, because the properties
+have usually long scrolled by, by the time the device tree was
+completely dumped. Add a -p option to print only properties.
 
-You are probably not aware of the barebox_update command which handles
-all these ugly details and does more for you like powerfail safe update
-on devices that support it or checking the image type before flashing
-it.
+-p -n (print only node names AND only properties) is interpreted
+to cancel each other out, so the whole device tree is dumped normally.
 
-Putting the bootloader in a partition has its problems as well, like you
-have to create a very special partition table. Anyway, you made some
-valid arguments. How about adding a Kconfig option that lets you decide
-which images you want to have? That would also be a good place to
-document the differences.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ commands/of_dump.c | 14 ++++++++++----
+ drivers/of/base.c  |  8 ++++++++
+ include/of.h       |  1 +
+ 3 files changed, 19 insertions(+), 4 deletions(-)
 
-Just changing the behaviour of the '-b' option might not be the best
-idea as this was introduced to insert the initial barebox opcode into
-the image, not to prepend another header to the image. I think we should
-introduce a new option for this purpose.
-
-Sascha
-
+diff --git a/commands/of_dump.c b/commands/of_dump.c
+index 6792af3afc31..2089c07ef79b 100644
+--- a/commands/of_dump.c
++++ b/commands/of_dump.c
+@@ -36,9 +36,9 @@ static int do_of_dump(int argc, char *argv[])
+ 	char *dtbfile = NULL;
+ 	size_t size;
+ 	const char *nodename;
+-	int names_only = 0;
++	int names_only = 0, properties_only = 0;
+ 
+-	while ((opt = getopt(argc, argv, "Ff:n")) > 0) {
++	while ((opt = getopt(argc, argv, "Ff:np")) > 0) {
+ 		switch (opt) {
+ 		case 'f':
+ 			dtbfile = optarg;
+@@ -49,6 +49,9 @@ static int do_of_dump(int argc, char *argv[])
+ 		case 'n':
+ 			names_only = 1;
+ 			break;
++		case 'p':
++			properties_only = 1;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -111,8 +114,10 @@ static int do_of_dump(int argc, char *argv[])
+ 		goto out;
+ 	}
+ 
+-	if (names_only)
++	if (names_only && !properties_only)
+ 		of_print_nodenames(node);
++	else if (properties_only && !names_only)
++		of_print_properties(node);
+ 	else
+ 		of_print_nodes(node, 0);
+ 
+@@ -128,12 +133,13 @@ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT  ("-f dtb",  "work on dtb instead of internal devicetree")
+ BAREBOX_CMD_HELP_OPT  ("-F",  "return fixed devicetree")
+ BAREBOX_CMD_HELP_OPT  ("-n",  "Print node names only, no properties")
++BAREBOX_CMD_HELP_OPT  ("-p",  "Print properties only, no child nodes")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(of_dump)
+ 	.cmd		= do_of_dump,
+ 	BAREBOX_CMD_DESC("dump devicetree nodes")
+-	BAREBOX_CMD_OPTS("[-fFn] [NODE]")
++	BAREBOX_CMD_OPTS("[-fFnp] [NODE]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+ 	BAREBOX_CMD_COMPLETE(devicetree_file_complete)
+ 	BAREBOX_CMD_HELP(cmd_of_dump_help)
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 6fe02649ee53..e103eed90af1 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2002,6 +2002,14 @@ static void __of_print_property(struct property *p, int indent)
+ 	printf(";\n");
+ }
+ 
++void of_print_properties(struct device_node *node)
++{
++	struct property *prop;
++
++	list_for_each_entry(prop, &node->properties, list)
++		__of_print_property(prop, 0);
++}
++
+ static int __of_print_parents(struct device_node *node)
+ {
+ 	int indent, i;
+diff --git a/include/of.h b/include/of.h
+index 645f429bdeed..55e6bff8689e 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -105,6 +105,7 @@ void of_print_property(const void *data, int len);
+ void of_print_cmdline(struct device_node *root);
+ 
+ void of_print_nodes(struct device_node *node, int indent);
++void of_print_properties(struct device_node *node);
+ void of_diff(struct device_node *a, struct device_node *b, int indent);
+ int of_probe(void);
+ int of_parse_dtb(struct fdt_header *fdt);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.2
+
 
 _______________________________________________
 barebox mailing list
