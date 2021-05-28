@@ -1,54 +1,81 @@
-Delivery-date: Fri, 28 May 2021 09:08:13 +0200
+Delivery-date: Fri, 28 May 2021 11:31:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lmWbN-0004E3-GM
-	for lore@lore.pengutronix.de; Fri, 28 May 2021 09:08:13 +0200
+	id 1lmYqC-0004iQ-Qn
+	for lore@lore.pengutronix.de; Fri, 28 May 2021 11:31:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lmWbM-0007xS-Ba
-	for lore@pengutronix.de; Fri, 28 May 2021 09:08:13 +0200
+	id 1lmYqB-0000PA-CI
+	for lore@pengutronix.de; Fri, 28 May 2021 11:31:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=d+26DDX0Y5lO2HzicP9hFL+kRu134H9wfWXzhq24W+o=; b=eiatilPixls3KGuP2njgHWh5nK
-	+JvN58yvvtwIcSrCxCxY6S0Cce2p2b96V3XS1Vw1xnnE4mz8PbVGdxf9O5Pez52POtwF+li9CVPIZ
-	63+EJUmZYBbZBzNWCGrgjBOYxjA2ntqwHnPWdbYXkmQm7/PdSmhA7RtyowKOBtWIWOudS6rEO1YAQ
-	VdVA2zunUyZLwPkTFN7z41arkCZYtqV5mS3LXnLGejO4v16Dpme4JdMNV7ArFc0eDbUOfuQy8t0D5
-	0mNIBQTh9irklOfbGmbtTquGv8oxys3JRC80WE/cG82n8JFMdZg8pulfu/8T6F1xyrgikVy/9WlEN
-	IJtviK0A==;
+	List-Archive:List-Unsubscribe:List-Id:Mime-Version:References:In-Reply-To:
+	Message-Id:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=dVnhhq40HfkVLfwhoy99/HRFOr9868XJpdn/LKwGpvI=; b=Sa3DuvuPyvKTgp
+	wucysDCBnlqZJG4nupZz8NA/8BnLQdDeCqH/AADXha0rVXlytTQh9TQydjfeiNZy84zJmKkAmPVoR
+	MMnGBhuuqHxAKqOwabQX05rqgsndhNREu4TBdZaTkhu0aLrOeotAIymio3kLXV8wqydzevzDpNKRs
+	u4RMg143RxH/grtxPQhTnlV9JvoQHUaNl0zjx/f/m1Cnzy/6Ggy8ElmsS4zvcJrKyICOCCoaQWzu+
+	ql2kFWZslZJJ8/1b/V7K+Tr00jI3Bp7wl8q5p0FuvydH02lTDFj7T5AzIZ44bpzdTtWZL3+SEx52h
+	BgY6U66pwF4mrhVRiiew==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lmWZf-00CpgT-4s; Fri, 28 May 2021 07:06:27 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lmYod-00DuWx-58; Fri, 28 May 2021 09:30:03 +0000
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lmWZY-00CpcY-Rr
- for barebox@lists.infradead.org; Fri, 28 May 2021 07:06:22 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1lmWZU-0007pM-5s; Fri, 28 May 2021 09:06:16 +0200
-To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
-References: <20210526090216.4003977-1-l.stach@pengutronix.de>
- <20210526090216.4003977-2-l.stach@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <82f7ab09-4164-3ab2-4f94-455d084952d5@pengutronix.de>
-Date: Fri, 28 May 2021 09:06:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
-MIME-Version: 1.0
-In-Reply-To: <20210526090216.4003977-2-l.stach@pengutronix.de>
-Content-Language: en-US
+ id 1lmYoW-00DuTS-0o
+ for barebox@lists.infradead.org; Fri, 28 May 2021 09:29:57 +0000
+Received: by mail-lj1-x234.google.com with SMTP id 131so4434072ljj.3
+ for <barebox@lists.infradead.org>; Fri, 28 May 2021 02:29:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=4v4B5/v6JO5ICO+Yb1PqVFuniVHlQ93oHRdrdpaU9/s=;
+ b=Yojt04MPvepQTt0V1A8BkM7An5eqG9Zh44Nwk7n9+5kATWR7izkbb76o58MTBAjB0v
+ nQzTQrSxXK+o2ta7D4vvXzKcOOSVywtSCKU9GX+nHD3jMAXVn/lilBa9E9TRttFryjQh
+ UdOl+gRMW7FQSznGbiMuxHA8lDvnRveBP+VIeCVddpq54DB6RdHotPBhAC/sqmeFux7F
+ /Ao+joRCfmeIgaeg+o6oRhvkbFDPK51pHbjlAsn0WDL1B+/Wlj/uId8OlWA/tNJVj9Vt
+ Y2AqR0Ekc4Ws5GJQapreFv1yB1AEkDLYvbUyJCD87f74m3T7H7T4GGEXS7JAa8EW40rh
+ WI5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=4v4B5/v6JO5ICO+Yb1PqVFuniVHlQ93oHRdrdpaU9/s=;
+ b=QKvEKdG2RRj6fOjVfyxBTrDdjQJBgzfFdfv4uArxFqIk/Ew3OezygBIo1MDDDXO9nH
+ gvII383MqSN60sSnRLwU8VQp7P3f2XbynR45LvPe5NTwuQ8tJjj3x0CpT6GaL7mVTWSC
+ wYxOnxT7KRiyGyFlTFl92oQ/g+XkWlfbc0ponksrXRt5UBm1p+7XGSPdL5zGG3+nF04i
+ 8dNHz8/96kZVC+YuAZnT8rNftPtgaoKVpkF7cIER/ziBpIvjcKBt/yTYERiBUzAWm4It
+ h/IVmQsGp5fIxJLNcu7NjlU/Xt2i0G0hwhdqDdgE43PBNNZ71q4NLHRbOUmGO5KLA0BU
+ tFOA==
+X-Gm-Message-State: AOAM531KEcG2msDHNMTJ2yC4iC4ZdQ+InHecXRac21gKBBELH1se/Dlz
+ cgqSBvNYSuoAdmbn2Z6RF4E=
+X-Google-Smtp-Source: ABdhPJyG5d5GbMIH/LCjInJKWJvEue6rgiJaZwqcjRBeXIvozXGfc48puvwqP6/oB+usrZhFvAyHTA==
+X-Received: by 2002:a05:651c:38d:: with SMTP id
+ e13mr5847424ljp.226.1622194193316; 
+ Fri, 28 May 2021 02:29:53 -0700 (PDT)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+ by smtp.gmail.com with ESMTPSA id v30sm426571lfq.102.2021.05.28.02.29.52
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Fri, 28 May 2021 02:29:52 -0700 (PDT)
+Date: Fri, 28 May 2021 12:29:51 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: Gwenhael Goavec-Merou <gwenj@trabucayre.com>, Sascha Hauer
+ <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org, Gwenhael Goavec-Merou
+ <gwenhael.goavec-merou@trabucayre.com>
+Message-Id: <20210528122951.1c0a7b928097c984f500bab5@gmail.com>
+In-Reply-To: <20210527193600.20879-1-gwenj@trabucayre.com>
+References: <20210527193600.20879-1-gwenj@trabucayre.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; i686-pc-linux-gnu)
+Mime-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210528_000621_014843_BD18FD8E 
-X-CRM114-Status: GOOD (  26.43  )
+X-CRM114-CacheID: sfid-20210528_022956_126158_8ADAECE4 
+X-CRM114-Status: GOOD (  20.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,164 +87,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/2] bootm: add support for booting compressed images
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] ARM: SoCFPGA: add Terasic DE10-Nano board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 26.05.21 11:02, Lucas Stach wrote:
-> ARM64 does not have a self extracting image format, but relies on the image
-> being externally compressed with one of the standard compression algorithms.
-> 
-> Add support for decompressing the bootm OS image. It is added in common
-> code as it may also be useful for other images/architectures.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+On Thu, 27 May 2021 21:36:00 +0200
+Gwenhael Goavec-Merou <gwenj@trabucayre.com> wrote:
 
-FWIW: Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de> # RISC-V 64-bit
+> From: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+> =
 
-> ---
-> v2: Add proper error handling if nested bootm fails.
-> ---
->  common/bootm.c | 93 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 93 insertions(+)
-> 
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 092116beb94a..f5c0e5184b0a 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -12,6 +12,7 @@
->  #include <environment.h>
->  #include <linux/stat.h>
->  #include <magicvar.h>
-> +#include <uncompress.h>
->  
->  static LIST_HEAD(handler_list);
->  
-> @@ -808,6 +809,86 @@ err_out:
->  	return ret;
->  }
->  
-> +static int do_bootm_compressed(struct image_data *img_data)
-> +{
-> +	struct bootm_data bootm_data = {
-> +		.oftree_file = img_data->oftree_file,
-> +		.initrd_file = img_data->initrd_file,
-> +		.tee_file = img_data->tee_file,
-> +		.verbose = img_data->verbose,
-> +		.verify = img_data->verify,
-> +		.force = img_data->force,
-> +		.dryrun = img_data->dryrun,
-> +		.initrd_address = img_data->initrd_address,
-> +		.os_address = img_data->os_address,
-> +		.os_entry = img_data->os_entry,
-> +	};
-> +	int from, to, ret;
-> +	char *dstpath;
-> +
-> +	from = open(img_data->os_file, O_RDONLY);
-> +	if (from < 0)
-> +		return -ENODEV;
-> +
-> +	dstpath = make_temp("bootm-compressed");
-> +	if (!dstpath) {
-> +		ret = -ENOMEM;
-> +		goto fail_from;
-> +	}
-> +
-> +	to = open(dstpath, O_CREAT | O_WRONLY);
-> +	if (to < 0) {
-> +		ret = -ENODEV;
-> +		goto fail_make_temp;
-> +	}
-> +
-> +	ret = uncompress_fd_to_fd(from, to, uncompress_err_stdout);
-> +	if (ret)
-> +		goto fail_to;
-> +
-> +	bootm_data.os_file = dstpath;
-> +	ret = bootm_boot(&bootm_data);
-> +
-> +fail_to:
-> +	close(to);
-> +	unlink(dstpath);
-> +fail_make_temp:
-> +	free(dstpath);
-> +fail_from:
-> +	close(from);
-> +	return ret;
-> +}
-> +
-> +static struct image_handler bzip2_bootm_handler = {
-> +	.name = "BZIP2 compressed file",
-> +	.bootm = do_bootm_compressed,
-> +	.filetype = filetype_bzip2,
-> +};
-> +
-> +static struct image_handler gzip_bootm_handler = {
-> +	.name = "GZIP compressed file",
-> +	.bootm = do_bootm_compressed,
-> +	.filetype = filetype_gzip,
-> +};
-> +
-> +static struct image_handler lzo_bootm_handler = {
-> +	.name = "LZO compressed file",
-> +	.bootm = do_bootm_compressed,
-> +	.filetype = filetype_lzo_compressed,
-> +};
-> +
-> +static struct image_handler lz4_bootm_handler = {
-> +	.name = "LZ4 compressed file",
-> +	.bootm = do_bootm_compressed,
-> +	.filetype = filetype_lz4_compressed,
-> +};
-> +
-> +static struct image_handler xz_bootm_handler = {
-> +	.name = "XZ compressed file",
-> +	.bootm = do_bootm_compressed,
-> +	.filetype = filetype_xz_compressed,
-> +};
-> +
->  static int bootm_init(void)
->  {
->  	globalvar_add_simple("bootm.image", NULL);
-> @@ -830,6 +911,18 @@ static int bootm_init(void)
->  	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
->  				  bootm_verify_names, ARRAY_SIZE(bootm_verify_names));
->  
-> +
-> +	if (IS_ENABLED(CONFIG_BZLIB))
-> +		register_image_handler(&bzip2_bootm_handler);
-> +	if (IS_ENABLED(CONFIG_ZLIB))
-> +		register_image_handler(&gzip_bootm_handler);
-> +	if (IS_ENABLED(CONFIG_LZO_DECOMPRESS))
-> +		register_image_handler(&lzo_bootm_handler);
-> +	if (IS_ENABLED(CONFIG_LZ4_DECOMPRESS))
-> +		register_image_handler(&lz4_bootm_handler);
-> +	if (IS_ENABLED(CONFIG_XZ_DECOMPRESS))
-> +		register_image_handler(&xz_bootm_handler);
-> +
->  	return 0;
->  }
->  late_initcall(bootm_init);
-> 
+> The Terasic DE10-Nano board is based on CycloneV SoCFPGA (5CSEBA6) with
+> =
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> What has been tested to work:
+> - SD card
+> - Gigabit network
+
+What is the status of FPGA bitstream loading?
+
+...
+
+> diff --git a/arch/arm/boards/terasic-de10-nano/iocsr_config_cyclone5.c b/=
+arch/arm/boards/terasic-de10-nano/iocsr_config_cyclone5.c
+> new file mode 100644
+> index 000000000..c1291dea4
+> --- /dev/null
+> +++ b/arch/arm/boards/terasic-de10-nano/iocsr_config_cyclone5.c
+> @@ -0,0 +1,678 @@
+> +/* GENERATED FILE - DO NOT EDIT */
+> +/*
+> + * Copyright Altera Corporation (C) 2012-2014. All rights reserved
+> + *
+> + * SPDX-License-Identifier:    BSD-3-Clause
+
+To: Sascha
+Can we add BSD-3-Clause-licensed file into barebox?
+
+...
+
+> diff --git a/arch/arm/dts/socfpga_cyclone5_de10_nano.dts b/arch/arm/dts/s=
+ocfpga_cyclone5_de10_nano.dts
+> new file mode 100644
+> index 000000000..6965e3820
+> --- /dev/null
+> +++ b/arch/arm/dts/socfpga_cyclone5_de10_nano.dts
+> @@ -0,0 +1,34 @@
+> +/*
+> + *  Copyright (C) 2021 Gwenhael Goavec-Merou <gwenhael.goavec-merou@trab=
+ucayre.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+
+Just use SPDX-License-Identifier here.
+
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
