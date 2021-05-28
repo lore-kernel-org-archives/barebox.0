@@ -1,49 +1,47 @@
-Delivery-date: Fri, 28 May 2021 15:54:11 +0200
+Delivery-date: Fri, 28 May 2021 15:54:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lmcwF-0006Yz-Nz
-	for lore@lore.pengutronix.de; Fri, 28 May 2021 15:54:11 +0200
+	id 1lmcwX-0006ZW-Rd
+	for lore@lore.pengutronix.de; Fri, 28 May 2021 15:54:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lmcwD-0007Uq-UE
-	for lore@pengutronix.de; Fri, 28 May 2021 15:54:11 +0200
+	id 1lmcwW-0007cw-HR
+	for lore@pengutronix.de; Fri, 28 May 2021 15:54:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=zSGoFZMIG5LcNXqNK2NjreDtd4sVPLJgxtkQ7vcFzs0=; b=j/PDPjFS42BYNp
-	dyTMeJ/JtQLOpAz4FPEGhprz3Ie7xMmWXqlscnYmspH9S+Xl2gUaOGuCxp3d8BzJCiVU1cyf4sQbJ
-	gd+fOgsD7UMG2+vWhrOJL6yQ7RetcpO8pV7Q+t9KsedlpTQ1VVWUtSxRaBAaflcM7tiq5mX4OODAx
-	OMbWdH4Hs/1zdnwV1dF3/ft0G830PGYeNxV97/5IsQnHzBy2hbCwm/6RGRg1dlo+Z5YQoYYbyW+Qw
-	zA23tKAJlNwyUU31vE3/UANFeO/kxLA6jc5xf4UbqOuemiH6/zkj3Gt47c+9zIX6gavEnS5HRXpTi
-	e5pqOVIA/hxTMoggU4dw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=DGuTS2x1tfvkq/0FQC3+dJ4o8uc0xBFzqNf5qwXETQc=; b=rHiymLL8XdQXIC
+	DSnV8n5szaiZuhEbE/TPCIvXbphP2tl4uoa25ER/YLHANQbfqKRiHx3nTqSnnFs6mtP7WBm3EttYm
+	qeQUqsvCHW2NSllzD5SerSOmTSvmTPBaUptwhivD1I0o9Dhuc3S25U0lVhrYidLglYdpfqTj/SzqE
+	PkZt85pCBSHY2Q4fIJVYPz7tH0cog/juWojsVfaaexoHSUJoBKRS2N9IHUqlDJZLlKX0zCBfiKaEa
+	I7eCp6JU+YRO3VOn9d1Y/04bZ1hMW9hRjHzeaYQoAcgOsFUUXR6AvW+aVX0Mi5YKziKe3wiM6X8bw
+	7d9ZhyyAGcbCAKcNADGw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lmcuf-00Fusx-SL; Fri, 28 May 2021 13:52:34 +0000
+	id 1lmcuz-00Fv3J-Ne; Fri, 28 May 2021 13:52:54 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lmcZZ-00Fn9d-Pf
- for barebox@lists.infradead.org; Fri, 28 May 2021 13:30:47 +0000
+ id 1lmcZZ-00Fn9F-SL
+ for barebox@lists.infradead.org; Fri, 28 May 2021 13:30:48 +0000
 Received: from dude03.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::39])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1lmcZW-0004gW-C0
- for barebox@lists.infradead.org; Fri, 28 May 2021 15:30:42 +0200
+ (envelope-from <l.stach@pengutronix.de>) id 1lmcZV-0004gW-N8
+ for barebox@lists.infradead.org; Fri, 28 May 2021 15:30:41 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 28 May 2021 15:30:41 +0200
-Message-Id: <20210528133041.1109923-4-l.stach@pengutronix.de>
+Date: Fri, 28 May 2021 15:30:38 +0200
+Message-Id: <20210528133041.1109923-1-l.stach@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210528133041.1109923-1-l.stach@pengutronix.de>
-References: <20210528133041.1109923-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210528_063045_885930_06146323 
-X-CRM114-Status: UNSURE (   8.06  )
+X-CRM114-CacheID: sfid-20210528_063045_970309_A9070113 
+X-CRM114-Status: UNSURE (   7.92  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -64,34 +62,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/4] ARM: imx_v8_defconfig: enable EHCI
+Subject: [PATCH v2 1/4] drivers: mci: imx-esdhc-common.c: Add missing dev_dbg
+ define for pbl case
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The i.MX8MM USB host controller uses the standard EHCI interface. Enable
-support in the defconfig to make this work out of the box.
+From: David Jander <david@protonic.nl>
 
+Signed-off-by: David Jander <david@protonic.nl>
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/configs/imx_v8_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mci/imx-esdhc-common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_defconfig
-index db097d1675b8..e1e7b0f91e67 100644
---- a/arch/arm/configs/imx_v8_defconfig
-+++ b/arch/arm/configs/imx_v8_defconfig
-@@ -105,6 +105,7 @@ CONFIG_MTD_DATAFLASH=y
- CONFIG_MTD_M25P80=y
- CONFIG_USB_HOST=y
- CONFIG_USB_IMX_CHIPIDEA=y
-+CONFIG_USB_EHCI=y
- CONFIG_USB_STORAGE=y
- CONFIG_USB_GADGET=y
- CONFIG_USB_GADGET_SERIAL=y
+diff --git a/drivers/mci/imx-esdhc-common.c b/drivers/mci/imx-esdhc-common.c
+index c9d589468f6c..7ee0674b997f 100644
+--- a/drivers/mci/imx-esdhc-common.c
++++ b/drivers/mci/imx-esdhc-common.c
+@@ -156,7 +156,9 @@ static void __udelay(int us)
+ 
+ #define udelay(n)	__udelay(n)
+ #undef  dev_err
++#undef  dev_dbg
+ #define dev_err(d, ...)	pr_err(__VA_ARGS__)
++#define dev_dbg(d, ...)	pr_debug(__VA_ARGS__)
+ 
+ #endif
+ 
 -- 
 2.29.2
 
