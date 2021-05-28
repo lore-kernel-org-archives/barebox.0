@@ -1,49 +1,47 @@
-Delivery-date: Fri, 28 May 2021 15:55:26 +0200
+Delivery-date: Fri, 28 May 2021 21:46:33 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lmcxS-0006a5-K1
-	for lore@lore.pengutronix.de; Fri, 28 May 2021 15:55:26 +0200
+	id 1lmiRF-0000a6-B3
+	for lore@lore.pengutronix.de; Fri, 28 May 2021 21:46:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lmcxO-0007to-7y
-	for lore@pengutronix.de; Fri, 28 May 2021 15:55:26 +0200
+	id 1lmiRB-0002cW-6Q
+	for lore@pengutronix.de; Fri, 28 May 2021 21:46:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=cLdHTkN6KF3tQdru7ZTjWr4ECt78b7MyEcjx2QQO7zo=; b=bMqamgcVnaQ/s4
-	rwrNjtY3bMiw7FEBzdzQRqCEwJnqseGBg2en59SMQw93FXSPar32EsaVWtl64YImT8arZ6/ekTMOe
-	d6XmyiPbrCp4iom2eueIqG//5+o/u1rLQytYEDZUnWwM38reB1kjAaN9PL+C1G6XSmEIIkvhgpm2D
-	D/p9MKkkN2YRlzAatSBeILQFfIPFVlF6bQTHu7Jse0bq++GhNjHK8DFMyLwthjjRwcoWOpIlgtGHc
-	I15lkzkTS3Z0YRp/9dO6194CT9lfRIeqX0jGRmRW2SVG+9GdERj/vjNGLfiQkT1zA5RGhjzV4K8w8
-	WqTLYEqWDPdX7J7JJpLw==;
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=HuQBtDxr8T5J7sDXapDM6ohi/q0EfRNIp7EEVS3pR44=; b=3YEfZBEWxpqgsa
+	maPWzdEy2v9HyBFb2P8a0E4NMl2H0SA1P+9x36ZciWGyu9STWsbMnK5ieImNIqP+FMNyQ/+rp50KS
+	guzDsHo3Y3oUQfoWgeoUUl8kjzKPN07F9kZPp4TK8oxbflMuw0WS5TnwP2T9C+BHVU/072z4HAx9X
+	4W8phK5oML2pSMTS96z4AXHHpAbv/NDwG39pf9uEYMnjGkbk+zIVR0ki9waYaiReppCwpFcYhIDDm
+	lkO+uSZA2vE/sDDYtTuJxMdo2d3TbOuik7hC8W9FkGDM1/9s+2oqTrBzrTOf9E9xSUBzJvPhexLj5
+	wqATURIA6ITNCk2VSGxA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lmcvK-00FvCW-GU; Fri, 28 May 2021 13:53:15 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lmiP9-000hcP-Jz; Fri, 28 May 2021 19:44:23 +0000
+Received: from smtp2-g21.free.fr ([212.27.42.2])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lmcZZ-00Fn9I-TK
- for barebox@lists.infradead.org; Fri, 28 May 2021 13:30:54 +0000
-Received: from dude03.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::39])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1lmcZV-0004gW-Tb
- for barebox@lists.infradead.org; Fri, 28 May 2021 15:30:42 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
+ id 1lmiP0-000hZE-Lc
+ for barebox@lists.infradead.org; Fri, 28 May 2021 19:44:20 +0000
+Received: from x230.trabucayre.com (unknown
+ [IPv6:2a01:e34:efc8:1080:3e97:eff:fe89:644f])
+ by smtp2-g21.free.fr (Postfix) with ESMTP id 2C7C9200390;
+ Fri, 28 May 2021 21:44:07 +0200 (CEST)
+From: Gwenhael Goavec-Merou <gwenj@trabucayre.com>
 To: barebox@lists.infradead.org
-Date: Fri, 28 May 2021 15:30:39 +0200
-Message-Id: <20210528133041.1109923-2-l.stach@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210528133041.1109923-1-l.stach@pengutronix.de>
-References: <20210528133041.1109923-1-l.stach@pengutronix.de>
+Date: Fri, 28 May 2021 21:43:04 +0200
+Message-Id: <20210528194304.13096-1-gwenj@trabucayre.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210528_063046_577978_AA3EE1E0 
-X-CRM114-Status: GOOD (  30.39  )
+X-CRM114-CacheID: sfid-20210528_124415_251097_801CAAB6 
+X-CRM114-Status: GOOD (  20.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -55,6 +53,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -63,2657 +62,2169 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/4] ARM: protonic: add initial support for the Protonic
- PRT8MM family of boards
+Subject: [PATCH v2] ARM: SoCFPGA: add Terasic DE10-Nano board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: David Jander <david@protonic.nl>
+From: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 
-This board is a low-cost 7" touchscreen virtual terminal for
-agricultural applications.
+The Terasic DE10-Nano board is based on CycloneV SoCFPGA (5CSEBA6) with
 
-There is no upstream Linux DT yet, so we add a minimal DT for use with the
-bootloader in this patch.
+What has been tested to work:
+- SD card
+- Gigabit network
+- FPGA (FPPx16 & FPPx32)
 
-Signed-off-by: David Jander <david@protonic.nl>
-[lst: fixed and cleaned up for upstream]
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 ---
- Documentation/boards/imx/protonic-prt8mm.rst  |   10 +
- arch/arm/boards/Makefile                      |    1 +
- arch/arm/boards/protonic-imx8m/Makefile       |    3 +
- arch/arm/boards/protonic-imx8m/board.c        |   84 +
- .../defaultenv-prt8m/boot/prt8mm-default      |    7 +
- .../defaultenv-prt8m/network/eth0-discover    |    4 +
- .../defaultenv-prt8m/nv/boot.default          |    1 +
- .../protonic-imx8m/flash-header-prt8mm.imxcfg |    5 +
- .../boards/protonic-imx8m/lowlevel-prt8mm.c   |  122 +
- .../protonic-imx8m/lpddr4-timing-prt8mm.c     | 1994 +++++++++++++++++
- arch/arm/dts/Makefile                         |    1 +
- arch/arm/dts/imx8mm-prt8mm.dts                |  251 +++
- arch/arm/mach-imx/Kconfig                     |   10 +
- images/Makefile.imx                           |    5 +
- 14 files changed, 2498 insertions(+)
- create mode 100644 Documentation/boards/imx/protonic-prt8mm.rst
- create mode 100644 arch/arm/boards/protonic-imx8m/Makefile
- create mode 100644 arch/arm/boards/protonic-imx8m/board.c
- create mode 100644 arch/arm/boards/protonic-imx8m/defaultenv-prt8m/boot/prt8mm-default
- create mode 100644 arch/arm/boards/protonic-imx8m/defaultenv-prt8m/network/eth0-discover
- create mode 100644 arch/arm/boards/protonic-imx8m/defaultenv-prt8m/nv/boot.default
- create mode 100644 arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg
- create mode 100644 arch/arm/boards/protonic-imx8m/lowlevel-prt8mm.c
- create mode 100644 arch/arm/boards/protonic-imx8m/lpddr4-timing-prt8mm.c
- create mode 100644 arch/arm/dts/imx8mm-prt8mm.dts
+Changes v1 -> v2:
+ - add note about FPGA status in commit message (Antony)
+ - use SPDX in dts file (Antony)
+---
+ arch/arm/boards/Makefile                      |   1 +
+ arch/arm/boards/terasic-de10-nano/Makefile    |   2 +
+ arch/arm/boards/terasic-de10-nano/board.c     |  35 +
+ .../terasic-de10-nano/iocsr_config_cyclone5.c | 678 ++++++++++++++++++
+ arch/arm/boards/terasic-de10-nano/lowlevel.c  |  13 +
+ .../boards/terasic-de10-nano/pinmux_config.c  | 241 +++++++
+ .../arm/boards/terasic-de10-nano/pll_config.h | 107 +++
+ .../boards/terasic-de10-nano/sdram_config.h   | 112 +++
+ .../boards/terasic-de10-nano/sequencer_auto.h | 225 ++++++
+ .../sequencer_auto_ac_init.c                  |  67 ++
+ .../sequencer_auto_inst_init.c                | 158 ++++
+ .../terasic-de10-nano/sequencer_defines.h     | 165 +++++
+ arch/arm/configs/socfpga-xload-2_defconfig    |   1 +
+ arch/arm/configs/socfpga_defconfig            |   1 +
+ arch/arm/dts/Makefile                         |   1 +
+ arch/arm/dts/socfpga_cyclone5_de10_nano.dts   |  24 +
+ arch/arm/mach-socfpga/Kconfig                 |   4 +
+ dts/src/arm/socfpga_cyclone5_de10_nano.dts    | 117 +++
+ images/Makefile.socfpga                       |   8 +
+ 19 files changed, 1960 insertions(+)
+ create mode 100644 arch/arm/boards/terasic-de10-nano/Makefile
+ create mode 100644 arch/arm/boards/terasic-de10-nano/board.c
+ create mode 100644 arch/arm/boards/terasic-de10-nano/iocsr_config_cyclone5.c
+ create mode 100644 arch/arm/boards/terasic-de10-nano/lowlevel.c
+ create mode 100644 arch/arm/boards/terasic-de10-nano/pinmux_config.c
+ create mode 100644 arch/arm/boards/terasic-de10-nano/pll_config.h
+ create mode 100644 arch/arm/boards/terasic-de10-nano/sdram_config.h
+ create mode 100644 arch/arm/boards/terasic-de10-nano/sequencer_auto.h
+ create mode 100644 arch/arm/boards/terasic-de10-nano/sequencer_auto_ac_init.c
+ create mode 100644 arch/arm/boards/terasic-de10-nano/sequencer_auto_inst_init.c
+ create mode 100644 arch/arm/boards/terasic-de10-nano/sequencer_defines.h
+ create mode 100644 arch/arm/dts/socfpga_cyclone5_de10_nano.dts
+ create mode 100644 dts/src/arm/socfpga_cyclone5_de10_nano.dts
 
-diff --git a/Documentation/boards/imx/protonic-prt8mm.rst b/Documentation/boards/imx/protonic-prt8mm.rst
-new file mode 100644
-index 000000000000..f8c8b2c88da0
---- /dev/null
-+++ b/Documentation/boards/imx/protonic-prt8mm.rst
-@@ -0,0 +1,10 @@
-+Protonic Holland PRT8MM board
-+=============================
-+
-+This board is a low-cost 7inch touchscreen virtual terminal for agricultural applications.
-+HW specs:
-+
-+* SoC: i.MX8M mini
-+* RAM: 1GiB LPDDR4
-+* eMMC: 16GiB
-+* Display: 7inch 800x480 with capacitive touchscreen.
 diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 40b0af8d30b6..51f5f60857c2 100644
+index 40b0af8d3..b02a4a4b8 100644
 --- a/arch/arm/boards/Makefile
 +++ b/arch/arm/boards/Makefile
-@@ -105,6 +105,7 @@ obj-$(CONFIG_MACH_PM9261)			+= pm9261/
- obj-$(CONFIG_MACH_PM9263)			+= pm9263/
- obj-$(CONFIG_MACH_PM9G45)			+= pm9g45/
- obj-$(CONFIG_MACH_PROTONIC_IMX6)		+= protonic-imx6/
-+obj-$(CONFIG_MACH_PROTONIC_IMX8M)		+= protonic-imx8m/
- obj-$(CONFIG_MACH_QIL_A9260)			+= qil-a926x/
- obj-$(CONFIG_MACH_QIL_A9G20)			+= qil-a926x/
- obj-$(CONFIG_MACH_RADXA_ROCK)			+= radxa-rock/
-diff --git a/arch/arm/boards/protonic-imx8m/Makefile b/arch/arm/boards/protonic-imx8m/Makefile
+@@ -129,6 +129,7 @@ obj-$(CONFIG_MACH_SOCFPGA_ALTERA_SOCDK)		+= altera-socdk/
+ obj-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES)		+= ebv-socrates/
+ obj-$(CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES)	+= reflex-achilles/
+ obj-$(CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC)	+= terasic-de0-nano-soc/
++obj-$(CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO)	+= terasic-de10-nano/
+ obj-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT)	+= terasic-sockit/
+ obj-$(CONFIG_MACH_SOLIDRUN_CUBOX)		+= solidrun-cubox/
+ obj-$(CONFIG_MACH_SOLIDRUN_MICROSOM)		+= solidrun-microsom/
+diff --git a/arch/arm/boards/terasic-de10-nano/Makefile b/arch/arm/boards/terasic-de10-nano/Makefile
 new file mode 100644
-index 000000000000..51a27f0c2dfd
+index 000000000..8c927fe29
 --- /dev/null
-+++ b/arch/arm/boards/protonic-imx8m/Makefile
-@@ -0,0 +1,3 @@
-+obj-y += board.o
-+lwl-y += lowlevel-prt8mm.o lpddr4-timing-prt8mm.o
-+bbenv-y += defaultenv-prt8m
-diff --git a/arch/arm/boards/protonic-imx8m/board.c b/arch/arm/boards/protonic-imx8m/board.c
++++ b/arch/arm/boards/terasic-de10-nano/Makefile
+@@ -0,0 +1,2 @@
++obj-y += lowlevel.o board.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/terasic-de10-nano/board.c b/arch/arm/boards/terasic-de10-nano/board.c
 new file mode 100644
-index 000000000000..87264f0c9785
+index 000000000..dc0e8967d
 --- /dev/null
-+++ b/arch/arm/boards/protonic-imx8m/board.c
-@@ -0,0 +1,84 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2020 David Jander, Protonic Holland
-+
-+#include <bootsource.h>
++++ b/arch/arm/boards/terasic-de10-nano/board.c
+@@ -0,0 +1,35 @@
 +#include <common.h>
-+#include <envfs.h>
-+#include <environment.h>
-+#include <i2c/i2c.h>
++#include <types.h>
++#include <driver.h>
 +#include <init.h>
-+#include <mach/bbu.h>
++#include <asm/armlinux.h>
++#include <linux/micrel_phy.h>
++#include <linux/phy.h>
++#include <linux/sizes.h>
++#include <fcntl.h>
++#include <fs.h>
++#include <mach/cyclone5-regs.h>
 +
-+static int prt_prt8mm_init_power(void)
++static int phy_fixup(struct phy_device *dev)
 +{
-+	struct i2c_adapter *adapter = NULL;
-+	struct i2c_client client;
-+	int ret;
-+	char buf[2];
-+
-+	client.addr = 0x60;
-+	adapter = i2c_get_adapter(1);
-+	if (!adapter) {
-+		printf("i2c bus not found\n");
-+		return -ENODEV;
-+	}
-+	client.adapter = adapter;
-+
-+	buf[0] = 0xe3;
-+	ret = i2c_write_reg(&client, 0x00, buf, 1); // VSEL0 = 0.95V, force PWM
-+	if (ret < 0) {
-+		printf("i2c write error\n");
-+		return -ENODEV;
-+	}
-+	buf[0] = 0xe0;
-+	ret = i2c_write_reg(&client, 0x01, buf, 1); // VSEL1 = 0.92V, force PWM
-+	if (ret < 0) {
-+		printf("i2c write error\n");
-+		return -ENODEV;
-+	}
++	/*
++	 * min rx data delay, max rx/tx clock delay,
++	 * min rx/tx control delay
++	 */
++	phy_write_mmd_indirect(dev, 4, 2, 0);
++	phy_write_mmd_indirect(dev, 5, 2, 0);
++	phy_write_mmd_indirect(dev, 8, 2, 0x003ff);
 +	return 0;
 +}
 +
-+static int prt_prt8mm_probe(struct device_d *dev)
++static int socfpga_init(void)
 +{
-+	int emmc_bbu_flag = 0;
-+	int sd_bbu_flag = 0;
++	if (!of_machine_is_compatible("terasic,de10-nano"))
++		return 0;
 +
-+	prt_prt8mm_init_power();
-+
-+	barebox_set_hostname("prt8mm");
-+
-+	if (bootsource_get() == BOOTSOURCE_MMC) {
-+		if (bootsource_get_instance() == 2) {
-+			of_device_enable_path("/chosen/environment-emmc");
-+			emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-+		} else {
-+			of_device_enable_path("/chosen/environment-sd");
-+			sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-+		}
-+	} else {
-+		of_device_enable_path("/chosen/environment-emmc");
-+		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-+	}
-+
-+	imx8m_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox",
-+						sd_bbu_flag);
-+	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc2",
-+						    emmc_bbu_flag);
-+
-+	defaultenv_append_directory(defaultenv_prt8m);
++	if (IS_ENABLED(CONFIG_PHYLIB))
++		phy_register_fixup_for_uid(PHY_ID_KSZ9031, MICREL_PHY_ID_MASK, phy_fixup);
 +
 +	return 0;
 +}
-+
-+static const struct of_device_id prt_imx8mm_of_match[] = {
-+	{ .compatible = "prt,prt8mm", },
-+	{ /* sentinel */ },
-+};
-+
-+static struct driver_d prt_prt8mm_board_driver = {
-+	.name = "board-protonic-imx8mm",
-+	.probe = prt_prt8mm_probe,
-+	.of_compatible = DRV_OF_COMPAT(prt_imx8mm_of_match),
-+};
-+device_platform_driver(prt_prt8mm_board_driver);
-diff --git a/arch/arm/boards/protonic-imx8m/defaultenv-prt8m/boot/prt8mm-default b/arch/arm/boards/protonic-imx8m/defaultenv-prt8m/boot/prt8mm-default
++console_initcall(socfpga_init);
+diff --git a/arch/arm/boards/terasic-de10-nano/iocsr_config_cyclone5.c b/arch/arm/boards/terasic-de10-nano/iocsr_config_cyclone5.c
 new file mode 100644
-index 000000000000..ca8bef306d10
+index 000000000..c1291dea4
 --- /dev/null
-+++ b/arch/arm/boards/protonic-imx8m/defaultenv-prt8m/boot/prt8mm-default
-@@ -0,0 +1,7 @@
-+#!/bin/sh
-+
-+if [ "$bootsource_instance" = "2" ]; then
-+	boot mmc2
-+else
-+	boot mmc3
-+fi
-diff --git a/arch/arm/boards/protonic-imx8m/defaultenv-prt8m/network/eth0-discover b/arch/arm/boards/protonic-imx8m/defaultenv-prt8m/network/eth0-discover
-new file mode 100644
-index 000000000000..18f244638741
---- /dev/null
-+++ b/arch/arm/boards/protonic-imx8m/defaultenv-prt8m/network/eth0-discover
-@@ -0,0 +1,4 @@
-+#!/bin/sh
-+
-+# PRT8M doesn't have a ETH port, but may have USB network attached
-+usb
-diff --git a/arch/arm/boards/protonic-imx8m/defaultenv-prt8m/nv/boot.default b/arch/arm/boards/protonic-imx8m/defaultenv-prt8m/nv/boot.default
-new file mode 100644
-index 000000000000..ba8938923af9
---- /dev/null
-+++ b/arch/arm/boards/protonic-imx8m/defaultenv-prt8m/nv/boot.default
-@@ -0,0 +1 @@
-+prt8mm-default
-diff --git a/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg b/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg
-new file mode 100644
-index 000000000000..b013173113e4
---- /dev/null
-+++ b/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg
-@@ -0,0 +1,5 @@
-+soc imx8mm
-+
-+loadaddr 0x007e1000
-+max_load_size 0x3f000
-+ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx8m/lowlevel-prt8mm.c b/arch/arm/boards/protonic-imx8m/lowlevel-prt8mm.c
-new file mode 100644
-index 000000000000..3b8b53b36e20
---- /dev/null
-+++ b/arch/arm/boards/protonic-imx8m/lowlevel-prt8mm.c
-@@ -0,0 +1,122 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <asm/barebox-arm.h>
-+#include <common.h>
-+#include <debug_ll.h>
-+#include <firmware.h>
-+#include <mach/atf.h>
-+#include <mach/esdctl.h>
-+#include <mach/generic.h>
-+#include <mach/imx8m-ccm-regs.h>
-+#include <mach/imx8mm-regs.h>
-+#include <mach/iomux-mx8mm.h>
-+#include <mach/xload.h>
-+#include <soc/fsl/fsl_udc.h>
-+#include <soc/imx8m/ddr.h>
-+
-+extern char __dtb_imx8mm_prt8mm_start[];
-+
-+#define UART_PAD_CTRL	MUX_PAD_CTRL(PAD_CTL_DSE_3P3V_45_OHM)
-+
-+static void setup_uart(void)
-+{
-+	void __iomem *uart = IOMEM(MX8M_UART4_BASE_ADDR);
-+
-+	imx8m_early_setup_uart_clock();
-+
-+	imx8mm_setup_pad(IMX8MM_PAD_UART4_TXD_UART4_TX | UART_PAD_CTRL);
-+	imx8m_uart_setup(uart);
-+
-+	pbl_set_putc(imx_uart_putc, uart);
-+
-+	putc_ll('>');
-+}
-+
-+extern struct dram_timing_info prt8mm_dram_timing;
-+
-+static void start_atf(void)
-+{
-+	size_t bl31_size;
-+	const u8 *bl31;
-+	enum bootsource src;
-+	int instance;
-+
-+	/*
-+	 * If we are in EL3 we are running for the first time and need to
-+	 * initialize the DRAM and run TF-A (BL31). The TF-A will then jump
-+	 * to DRAM in EL2.
-+	 */
-+	if (current_el() != 3)
-+		return;
-+
-+	imx8mm_early_clock_init();
-+
-+	imx8mm_ddr_init(&prt8mm_dram_timing);
-+
-+	imx8mm_get_boot_source(&src, &instance);
-+	switch (src) {
-+	case BOOTSOURCE_MMC:
-+		imx8m_esdhc_load_image(instance, false);
-+		break;
-+	case BOOTSOURCE_SERIAL:
-+		imx8mm_barebox_load_usb((void *)MX8M_ATF_BL33_BASE_ADDR);
-+		break;
-+	default:
-+		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
-+		hang();
-+	}
-+
-+	/*
-+	 * On completion the TF-A will jump to MX8M_ATF_BL33_BASE_ADDR
-+	 * in EL2. Copy the image there, but replace the PBL part of
-+	 * that image with ourselves. On a high assurance boot only the
-+	 * currently running code is validated and contains the checksum
-+	 * for the piggy data, so we need to ensure that we are running
-+	 * the same code in DRAM.
-+	 */
-+	memcpy((void *)MX8MM_ATF_BL33_BASE_ADDR,
-+	       __image_start, barebox_pbl_size);
-+
-+	get_builtin_firmware(imx8mm_bl31_bin, &bl31, &bl31_size);
-+	imx8mm_atf_load_bl31(bl31, bl31_size);
-+
-+	/* not reached */
-+}
-+
++++ b/arch/arm/boards/terasic-de10-nano/iocsr_config_cyclone5.c
+@@ -0,0 +1,678 @@
++/* GENERATED FILE - DO NOT EDIT */
 +/*
-+ * Power-on execution flow of start_prt_prt8mm() might not be
-+ * obvious for a very first read, so here's, hopefully helpful,
-+ * summary:
++ * Copyright Altera Corporation (C) 2012-2014. All rights reserved
 + *
-+ * 1. MaskROM uploads PBL into OCRAM and that's where this function is
-+ *    executed for the first time. At entry the exception level is EL3.
++ * SPDX-License-Identifier:    BSD-3-Clause
 + *
-+ * 2. DDR is initialized and the image is loaded from storage into DRAM. The PBL
-+ *    part is copied from OCRAM to the TF-A return address in DRAM.
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *    * Redistributions of source code must retain the above copyright
++ *      notice, this list of conditions and the following disclaimer.
++ *    * Redistributions in binary form must reproduce the above copyright
++ *      notice, this list of conditions and the following disclaimer in the
++ *      documentation and/or other materials provided with the distribution.
++ *    * Neither the name of Altera Corporation nor the
++ *      names of its contributors may be used to endorse or promote products
++ *      derived from this software without specific prior written permission.
 + *
-+ * 3. TF-A is executed and exits into the PBL code in DRAM. TF-A has taken us
-+ *    from EL3 to EL2.
-+ *
-+ * 4. Standard barebox boot flow continues
-+ */
-+static __noreturn noinline void prt_prt8mm_start(void)
-+{
-+	setup_uart();
-+
-+	start_atf();
-+
-+	/*
-+	 * Standard entry we hit once we initialized both DDR and ATF
-+	 */
-+	imx8mm_barebox_entry(__dtb_imx8mm_prt8mm_start);
-+}
-+
-+ENTRY_FUNCTION(start_prt_prt8mm, r0, r1, r2)
-+{
-+	imx8mm_cpu_lowlevel_init();
-+
-+	relocate_to_current_adr();
-+	setup_c();
-+
-+	prt_prt8mm_start();
-+}
-diff --git a/arch/arm/boards/protonic-imx8m/lpddr4-timing-prt8mm.c b/arch/arm/boards/protonic-imx8m/lpddr4-timing-prt8mm.c
-new file mode 100644
-index 000000000000..2c55e7d45144
---- /dev/null
-+++ b/arch/arm/boards/protonic-imx8m/lpddr4-timing-prt8mm.c
-@@ -0,0 +1,1994 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright 2019 NXP
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
++ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
 +
++#include <mach/cyclone5-scan-manager.h>
++
++static const unsigned long iocsr_scan_chain0_table[((CONFIG_HPS_IOCSR_SCANCHAIN0_LENGTH / 32) + 1)]
++    = {
++	0x00000000,
++	0x00000000,
++	0x0FF00000,
++	0xC0000000,
++	0x0000003F,
++	0x00008000,
++	0x00060180,
++	0x18060000,
++	0x18000000,
++	0x00018060,
++	0x00000000,
++	0x00004000,
++	0x000300C0,
++	0x0C030000,
++	0x0C000000,
++	0x00000030,
++	0x0000C030,
++	0x00002000,
++	0x00020000,
++	0x06018000,
++	0x06000000,
++	0x00000018,
++	0x00006018,
++	0x00001000,
++};
++
++static const unsigned long iocsr_scan_chain1_table[((CONFIG_HPS_IOCSR_SCANCHAIN1_LENGTH / 32) + 1)]
++    = {
++	0x00100000,
++	0x300C0000,
++	0x300000C0,
++	0x000000C0,
++	0x000300C0,
++	0x00008000,
++	0x00060180,
++	0x20000000,
++	0x00000000,
++	0x00000080,
++	0x00020000,
++	0x00004000,
++	0x000300C0,
++	0x10000000,
++	0x0C000000,
++	0x00000030,
++	0x0000C030,
++	0x00002000,
++	0x00020000,
++	0x06018000,
++	0x01FE0000,
++	0xF8000000,
++	0x00000007,
++	0x00001000,
++	0x00010000,
++	0x04000000,
++	0x00000000,
++	0x00000010,
++	0x00004000,
++	0x00000800,
++	0x00000000,
++	0x00000000,
++	0x00000000,
++	0x00000008,
++	0x00002000,
++	0x00000400,
++	0x00000000,
++	0x00C03000,
++	0x00000003,
++	0x00000000,
++	0x00000000,
++	0x00000200,
++	0x00601806,
++	0x00000000,
++	0x80600000,
++	0x80000601,
++	0x00000601,
++	0x00000100,
++	0x00300C03,
++	0xC0300C00,
++	0xC0300000,
++	0xC0000300,
++	0x000C0300,
++	0x00000080,
++};
++
++static const unsigned long iocsr_scan_chain2_table[((CONFIG_HPS_IOCSR_SCANCHAIN2_LENGTH / 32) + 1)]
++    = {
++	0x300C0300,
++	0x00000000,
++	0x0FF00000,
++	0x00000000,
++	0x000300C0,
++	0x00008000,
++	0x00080000,
++	0x18060000,
++	0x18000000,
++	0x00018060,
++	0x00020000,
++	0x00004000,
++	0x200300C0,
++	0x10000000,
++	0x00000000,
++	0x00000040,
++	0x00010000,
++	0x00002000,
++	0x10018060,
++	0x06018000,
++	0x06000000,
++	0x00010018,
++	0x00006018,
++	0x00001000,
++	0x00010000,
++	0x00000000,
++	0x03000000,
++	0x0000800C,
++	0x00C0300C,
++	0x00000800,
++};
++
++static const unsigned long iocsr_scan_chain3_table[((CONFIG_HPS_IOCSR_SCANCHAIN3_LENGTH / 32) + 1)]
++    = {
++	0x0C420D80,
++	0x082000FF,
++	0x0A804001,
++	0x07900000,
++	0x08020000,
++	0x00100000,
++	0x0A800000,
++	0x07900000,
++	0x08020000,
++	0x00100000,
++	0xC8800000,
++	0x00003001,
++	0x00C00722,
++	0x00000000,
++	0x00000021,
++	0x82000004,
++	0x05400000,
++	0x03C80000,
++	0x04010000,
++	0x00080000,
++	0x05400000,
++	0x03C80000,
++	0x05400000,
++	0x03C80000,
++	0xE4400000,
++	0x00001800,
++	0x00600391,
++	0x800E4400,
++	0x00000001,
++	0x40000002,
++	0x02A00000,
++	0x01E40000,
++	0x02A00000,
++	0x01E40000,
++	0x02A00000,
++	0x01E40000,
++	0x02A00000,
++	0x01E40000,
++	0x72200000,
++	0x80000C00,
++	0x003001C8,
++	0xC0072200,
++	0x1C880000,
++	0x20000300,
++	0x00040000,
++	0x50670000,
++	0x00000010,
++	0x24590000,
++	0x00001000,
++	0xA0000034,
++	0x0D000001,
++	0xC0680618,
++	0x45034071,
++	0x0A281A01,
++	0x806180D0,
++	0x34071C06,
++	0x01A034D0,
++	0x180D0000,
++	0x71C06806,
++	0x01450340,
++	0xD000001A,
++	0x0680E380,
++	0x10040000,
++	0x00200000,
++	0x10040000,
++	0x00200000,
++	0x15000000,
++	0x0F200000,
++	0x15000000,
++	0x0F200000,
++	0x01FE0000,
++	0x00000000,
++	0x01800E44,
++	0x00391000,
++	0x007F8006,
++	0x00000000,
++	0x0A800001,
++	0x07900000,
++	0x0A800000,
++	0x07900000,
++	0x0A800000,
++	0x07900000,
++	0x08020000,
++	0x00100000,
++	0xC8800000,
++	0x00003001,
++	0x00C00722,
++	0x00000FF0,
++	0x72200000,
++	0x80000C00,
++	0x05400000,
++	0x02480000,
++	0x04000000,
++	0x00080000,
++	0x05400000,
++	0x03C80000,
++	0x05400000,
++	0x03C80000,
++	0x6A1C0000,
++	0x00001800,
++	0x00600391,
++	0x800E4400,
++	0x1A870001,
++	0x40000600,
++	0x02A00040,
++	0x01E40000,
++	0x02A00000,
++	0x01E40000,
++	0x02A00000,
++	0x01E40000,
++	0x02A00000,
++	0x01E40000,
++	0x72200000,
++	0x80000C00,
++	0x003001C8,
++	0xC0072200,
++	0x1C880000,
++	0x20000300,
++	0x00040000,
++	0x50670000,
++	0x00000010,
++	0x24590000,
++	0x00001000,
++	0xA0000034,
++	0x0D000001,
++	0xC0680618,
++	0x45034071,
++	0x0A281A01,
++	0x806180D0,
++	0x34071C06,
++	0x01A00040,
++	0x180D0002,
++	0x71C06806,
++	0x01450340,
++	0xD00A281A,
++	0x06806180,
++	0x10040000,
++	0x00200000,
++	0x10040000,
++	0x00200000,
++	0x15000000,
++	0x0F200000,
++	0x15000000,
++	0x0F200000,
++	0x01FE0000,
++	0x00000000,
++	0x01800E44,
++	0x00391000,
++	0x007F8006,
++	0x00000000,
++	0x99300001,
++	0x34343400,
++	0xAA0D4000,
++	0x01C3A800,
++	0xAA0D4000,
++	0x01C3A800,
++	0xAA0D4000,
++	0x01C3A800,
++	0x00040100,
++	0x00000800,
++	0x00000000,
++	0x00001208,
++	0x00482000,
++	0x01000000,
++	0x00000000,
++	0x00410482,
++	0x0006A000,
++	0x0001B400,
++	0x00020000,
++	0x00000400,
++	0x0002A000,
++	0x0001E400,
++	0x5506A000,
++	0x00E1D400,
++	0x00000000,
++	0xC880090C,
++	0x00003001,
++	0x90400000,
++	0x00000000,
++	0x2020C243,
++	0x2A835000,
++	0x0070EA00,
++	0x2A835000,
++	0x0070EA00,
++	0x2A835000,
++	0x0070EA00,
++	0x00010040,
++	0x00000200,
++	0x00000000,
++	0x00000482,
++	0x00120800,
++	0x00002000,
++	0x80000000,
++	0x00104120,
++	0x00000200,
++	0xAC0D5F80,
++	0xFFFFFFFF,
++	0x14F3690D,
++	0x1A041414,
++	0x00D00000,
++	0x0C864000,
++	0x79E47A03,
++	0xCAAAA3DD,
++	0xF6D5551E,
++	0x0352D348,
++	0x821A0000,
++	0x0000D000,
++	0x030C0680,
++	0xD559647A,
++	0x1ECAAAA3,
++	0xC8F6D965,
++	0x00034AB2,
++	0x00080200,
++	0x00001000,
++	0x00080200,
++	0x00001000,
++	0x000A8000,
++	0x00075000,
++	0x541A8000,
++	0x03875001,
++	0x10000000,
++	0x00000000,
++	0x0080C000,
++	0x41000000,
++	0x00003FC2,
++	0x00820000,
++	0xAA0D4000,
++	0x01C3A800,
++	0xAA0D4000,
++	0x01C3A800,
++	0xAA0D4000,
++	0x01C3A800,
++	0x00040100,
++	0x00000800,
++	0x00000000,
++	0x00001208,
++	0x00482000,
++	0x00008000,
++	0x00000000,
++	0x00410482,
++	0x0006A000,
++	0x0001B400,
++	0x00020000,
++	0x00000400,
++	0x00020080,
++	0x00000400,
++	0x5506A000,
++	0x00E1D400,
++	0x00000000,
++	0x0000090C,
++	0x00000010,
++	0x90400000,
++	0x00000000,
++	0x2020C243,
++	0x2A835000,
++	0x0070EA00,
++	0x2A835000,
++	0x0070EA00,
++	0x2A835000,
++	0x0070EA00,
++	0x00015000,
++	0x0000F200,
++	0x00000000,
++	0x00000482,
++	0x00120800,
++	0x00600391,
++	0x80000000,
++	0x00104120,
++	0x00000200,
++	0xAC0D5F80,
++	0xFFFFFFFF,
++	0x14F3690D,
++	0x1A041414,
++	0x00D00000,
++	0x0C864000,
++	0x79E47A03,
++	0x8B2CA3DD,
++	0xF6D9651E,
++	0x034AB2C8,
++	0x821A0041,
++	0x0000D000,
++	0x00000680,
++	0xD559647A,
++	0x1E8B2CA3,
++	0xC8F6D965,
++	0x00034AB2,
++	0x00080200,
++	0x00001000,
++	0x00080200,
++	0x00001000,
++	0x000A8000,
++	0x00075000,
++	0x541A8000,
++	0x03875001,
++	0x10000000,
++	0x00000000,
++	0x0080C000,
++	0x41000000,
++	0x04000002,
++	0x00820000,
++	0xAA0D4000,
++	0x01C3A800,
++	0xAA0D4000,
++	0x01C3A800,
++	0xAA0D4000,
++	0x01C3A800,
++	0x00040100,
++	0x00000800,
++	0x00000000,
++	0x00001208,
++	0x00482000,
++	0x00008000,
++	0x00000000,
++	0x00410482,
++	0x0006A000,
++	0x0001B400,
++	0x00020000,
++	0x00000400,
++	0x0002A000,
++	0x0001E400,
++	0x5506A000,
++	0x00E1D400,
++	0x00000000,
++	0xC880090C,
++	0x00003001,
++	0x90400000,
++	0x00000000,
++	0x2020C243,
++	0x2A835000,
++	0x0070EA00,
++	0x2A835000,
++	0x0070EA00,
++	0x2A835000,
++	0x0070EA00,
++	0x00010040,
++	0x00000200,
++	0x00000000,
++	0x00000482,
++	0x00120800,
++	0x00002000,
++	0x80000000,
++	0x00104120,
++	0x00000200,
++	0xAC0D5F80,
++	0xFFFFFFFF,
++	0x14F3690D,
++	0x1A041414,
++	0x00D00000,
++	0x14864000,
++	0x59647A05,
++	0x8AAAA3D5,
++	0xF6D9651E,
++	0x034AB2C8,
++	0x821A0000,
++	0x0000D000,
++	0x00000680,
++	0xD559647A,
++	0x1E8B2CA3,
++	0xC8F6D965,
++	0x00034AB2,
++	0x00080200,
++	0x00001000,
++	0x00080200,
++	0x00001000,
++	0x000A8000,
++	0x00075000,
++	0x541A8000,
++	0x03875001,
++	0x10000000,
++	0x00000000,
++	0x0080C000,
++	0x41000000,
++	0x04000002,
++	0x00820000,
++	0xAA0D4000,
++	0x01C3A800,
++	0xAA0D4000,
++	0x01C3A800,
++	0xAA0D4000,
++	0x01C3A800,
++	0x00040100,
++	0x00000800,
++	0x00000000,
++	0x00001208,
++	0x00482000,
++	0x00008000,
++	0x00000000,
++	0x00410482,
++	0x0006A000,
++	0x0001B400,
++	0x00020000,
++	0x00000400,
++	0x00020080,
++	0x00000400,
++	0x5506A000,
++	0x00E1D400,
++	0x00000000,
++	0x0000090C,
++	0x00000010,
++	0x90400000,
++	0x00000000,
++	0x2020C243,
++	0x2A835000,
++	0x0070EA00,
++	0x2A835000,
++	0x0070EA00,
++	0x2A835000,
++	0x0070EA00,
++	0x00010040,
++	0x00000200,
++	0x00000000,
++	0x00000482,
++	0x00120800,
++	0x00400000,
++	0x80000000,
++	0x00104120,
++	0x00000200,
++	0xAC0D5F80,
++	0xFFFFFFFF,
++	0x14F1690D,
++	0x1A041414,
++	0x00D00000,
++	0x14864000,
++	0x59647A05,
++	0x8B2CA3D5,
++	0xF6D9651E,
++	0x0352D348,
++	0x821A0000,
++	0x0000D000,
++	0x00000680,
++	0xD559647A,
++	0x1E8B2CA3,
++	0x48F6D965,
++	0x000352D3,
++	0x00080200,
++	0x00001000,
++	0x00080200,
++	0x00001000,
++	0x000A8000,
++	0x00075000,
++	0x541A8000,
++	0x03875001,
++	0x10000000,
++	0x00000000,
++	0x0080C000,
++	0x41000000,
++	0x04000002,
++	0x00820000,
++	0x00489800,
++	0x801A1A1A,
++	0x00000200,
++	0x80000004,
++	0x00000200,
++	0x80000004,
++	0x00000200,
++	0x80000004,
++	0x00000200,
++	0x00000004,
++	0x00040000,
++	0x10000000,
++	0x00000000,
++	0x00000040,
++	0x00010000,
++	0x40002000,
++	0x00000100,
++	0x40000002,
++	0x00000100,
++	0x40000002,
++	0x00000100,
++	0x40000002,
++	0x00000100,
++	0x00000002,
++	0x00020000,
++	0x08000000,
++	0x00000000,
++	0x00000020,
++	0x00008000,
++	0x20001000,
++	0x00000080,
++	0x20000001,
++	0x00000080,
++	0x20000001,
++	0x00000080,
++	0x20000001,
++	0x00000080,
++	0x00000001,
++	0x00010000,
++	0x04000000,
++	0x00FF0000,
++	0x00000000,
++	0x00004000,
++	0x00000800,
++	0xC0000001,
++	0x00041419,
++	0x40000000,
++	0x04000816,
++	0x000D0000,
++	0x00006800,
++	0x00000340,
++	0xD000001A,
++	0x06800000,
++	0x00340000,
++	0x0001A000,
++	0x00000D00,
++	0x40000068,
++	0x1A000003,
++	0x00D00000,
++	0x00068000,
++	0x00003400,
++	0x000001A0,
++	0x00000401,
++	0x00000008,
++	0x00000401,
++	0x00000008,
++	0x00000401,
++	0x00000008,
++	0x00000401,
++	0x80000008,
++	0x0000007F,
++	0x20000000,
++	0x00000000,
++	0xE0000080,
++	0x0000001F,
++	0x00004000,
++};
+diff --git a/arch/arm/boards/terasic-de10-nano/lowlevel.c b/arch/arm/boards/terasic-de10-nano/lowlevel.c
+new file mode 100644
+index 000000000..d80cea6f2
+--- /dev/null
++++ b/arch/arm/boards/terasic-de10-nano/lowlevel.c
+@@ -0,0 +1,13 @@
++#include "sdram_config.h"
++#include "pinmux_config.c"
++#include "pll_config.h"
++#include "sequencer_defines.h"
++#include "sequencer_auto.h"
++#include "sequencer_auto_inst_init.c"
++#include "sequencer_auto_ac_init.c"
++#include "iocsr_config_cyclone5.c"
++
++#include <mach/lowlevel.h>
++
++SOCFPGA_C5_ENTRY(start_socfpga_de10_nano, socfpga_cyclone5_de10_nano, SZ_1G);
++SOCFPGA_C5_XLOAD_ENTRY(start_socfpga_de10_nano_xload, SZ_1G);
+diff --git a/arch/arm/boards/terasic-de10-nano/pinmux_config.c b/arch/arm/boards/terasic-de10-nano/pinmux_config.c
+new file mode 100644
+index 000000000..7dbe1c1d1
+--- /dev/null
++++ b/arch/arm/boards/terasic-de10-nano/pinmux_config.c
+@@ -0,0 +1,241 @@
++/* GENERATED FILE - DO NOT EDIT */
++/*
++ * Copyright Altera Corporation (C) 2012-2014. All rights reserved
++ *
++ * SPDX-License-Identifier:    BSD-3-Clause
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *    * Redistributions of source code must retain the above copyright
++ *      notice, this list of conditions and the following disclaimer.
++ *    * Redistributions in binary form must reproduce the above copyright
++ *      notice, this list of conditions and the following disclaimer in the
++ *      documentation and/or other materials provided with the distribution.
++ *    * Neither the name of Altera Corporation nor the
++ *      names of its contributors may be used to endorse or promote products
++ *      derived from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
++ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ */
++
 +#include <common.h>
-+#include <soc/imx8m/ddr.h>
 +
-+#define DDR_ONE_RANK
-+#include <soc/imx8m/lpddr4_define.h>
-+
-+static struct dram_cfg_param lpddr4_ddrc_cfg[] = {
-+	/* Start to config, default 3200mbps */
-+	{ DDRC_DBG1(0),	0x00000001 },
-+	{ DDRC_PWRCTL(0), 0x00000001 },
-+	{ DDRC_MSTR(0),	0xa1080020 },
-+	{ DDRC_RFSHTMG(0), 0x005b0087 },
-+	{ DDRC_INIT0(0), 0xc00305ba },
-+	{ DDRC_INIT1(0), 0x00940000 },
-+	{ DDRC_INIT3(0), 0x00D4002D },
-+	{ DDRC_INIT4(0), (LPDDR4_MR3 << 16) | 0x0000 },
-+	{ DDRC_INIT6(0), 0x0066004d },
-+	{ DDRC_INIT7(0), 0x0016004d },
-+
-+	{ DDRC_DRAMTMG0(0), 0x191e1920 },
-+	{ DDRC_DRAMTMG1(0), 0x00060630 },
-+	{ DDRC_DRAMTMG3(0), 0x00B0B000 },
-+	{ DDRC_DRAMTMG4(0), 0x0e04080e },
-+	{ DDRC_DRAMTMG5(0), 0x02040C0C },
-+	{ DDRC_DRAMTMG6(0), 0x01010007 },
-+	{ DDRC_DRAMTMG7(0), 0x00000401 },
-+	{ DDRC_DRAMTMG12(0), 0x00020600 },
-+	{ DDRC_DRAMTMG13(0), 0x0c100002 },
-+	{ DDRC_DRAMTMG14(0), 0x0000008d },
-+	{ DDRC_DRAMTMG17(0), 0x0090004b },
-+
-+	//{ DDRC_DERATEEN(0), 0x00000203 },
-+	//{ DDRC_DERATEINT(0), 0x0003a980 },
-+
-+	{ DDRC_ZQCTL0(0), 0x02ee0017 },
-+	{ DDRC_ZQCTL1(0), 0x02605b8e },
-+	{ DDRC_ZQCTL2(0), 0x00000000 },
-+
-+	{ DDRC_DFITMG0(0), 0x0497820A },
-+	{ DDRC_DFITMG2(0), 0x0000170A },
-+	{ DDRC_DRAMTMG2(0), 0x070e1617 },
-+	{ DDRC_DBICTL(0), 0x00000001 },
-+
-+	{ DDRC_DFITMG1(0), 0x00080303 },
-+	{ DDRC_DFIUPD0(0), 0xE0400018 },
-+	{ DDRC_DFIUPD1(0), 0x00DF00E4 },
-+	{ DDRC_DFIUPD2(0), 0x80000000 },
-+	{ DDRC_DFIMISC(0), 0x00000011 },
-+
-+	{ DDRC_DFIPHYMSTR(0), 0x00000000 },
-+	{ DDRC_RANKCTL(0), 0x00000c99 },
-+
-+	/* address mapping */
-+	{ DDRC_ADDRMAP0(0), 0x0000001f },
-+	{ DDRC_ADDRMAP1(0), 0x00080808 },
-+	{ DDRC_ADDRMAP2(0), 0x00000000 },
-+	{ DDRC_ADDRMAP3(0), 0x00000000 },
-+	{ DDRC_ADDRMAP4(0), 0x00001f1f },
-+	{ DDRC_ADDRMAP5(0), 0x07070707 },
-+	{ DDRC_ADDRMAP6(0), 0x0F070707 },
-+	{ DDRC_ADDRMAP7(0), 0x00000f0f },
-+
-+	/* performance setting */
-+	{ DDRC_SCHED(0), 0x29001701 },
-+	{ DDRC_SCHED1(0), 0x0000002c },
-+	{ DDRC_PERFHPR1(0), 0x04000030 },
-+	{ DDRC_PERFLPR1(0), 0x900093e7 },
-+	{ DDRC_PERFWR1(0), 0x02005574 },
-+	{ DDRC_PCCFG(0), 0x00000111 },
-+	{ DDRC_PCFGW_0(0), 0x000072ff },
-+	{ DDRC_PCFGQOS0_0(0), 0x02100e07 },
-+	{ DDRC_PCFGQOS1_0(0), 0x00620096 },
-+	{ DDRC_PCFGWQOS0_0(0), 0x01100e07 },
-+	{ DDRC_PCFGWQOS1_0(0), 0x00c8012c },
-+
-+	/* frequency P1&P2 */
-+	/* Frequency 1: 400MHz */
-+	{ DDRC_FREQ1_DRAMTMG0(0), 0x0c080609 },
-+	{ DDRC_FREQ1_DRAMTMG1(0), 0x0003040d },
-+	{ DDRC_FREQ1_DRAMTMG2(0), 0x0305090c },
-+	{ DDRC_FREQ1_DRAMTMG3(0), 0x00505000 },
-+	{ DDRC_FREQ1_DRAMTMG4(0), 0x04040204 },
-+	{ DDRC_FREQ1_DRAMTMG5(0), 0x02030303 },
-+	{ DDRC_FREQ1_DRAMTMG6(0), 0x01010004 },
-+	{ DDRC_FREQ1_DRAMTMG7(0), 0x00000301 },
-+	//{ DDRC_FREQ1_DRAMTMG12(0), 0x00020300 },
-+	//{ DDRC_FREQ1_DRAMTMG13(0), 0x0a100002 },
-+	{ DDRC_FREQ1_DRAMTMG14(0), 0x00000026 },
-+	{ DDRC_FREQ1_DRAMTMG15(0), 0x00000000 },
-+	{ DDRC_FREQ1_DRAMTMG17(0), 0x00280014 },
-+	//{ DDRC_FREQ1_DERATEEN(0), 0x00000001 },
-+	{ DDRC_FREQ1_DERATEINT(0), 0x00007a00 },
-+	//{ DDRC_FREQ1_RFSHCTL0(0), 0x0020d040 },
-+	//{ DDRC_FREQ1_ZQCTL0(0), 0x00c80006 },
-+	{ DDRC_FREQ1_DFITMG0(0), 0x03858202 },
-+	//{ DDRC_FREQ1_DFITMG1(0), 0x00080303 },
-+	{ DDRC_FREQ1_DFITMG2(0), 0x00000502 },
-+	{ DDRC_FREQ1_RFSHTMG(0), 0x00180024 },
-+	{ DDRC_FREQ1_INIT3(0), 0x00940009 },
-+	{ DDRC_FREQ1_INIT4(0), 0x00310000 },
-+	{ DDRC_FREQ1_INIT6(0), 0x0066004d },
-+	{ DDRC_FREQ1_INIT7(0), 0x0016004d },
-+	// { DDRC_FREQ1_RANKCTL(0), 0x00000c99 },
-+
-+	/* Frequency 2: 100MHz */
-+	{ DDRC_FREQ2_DRAMTMG0(0), 0x0a020103 },
-+	{ DDRC_FREQ2_DRAMTMG1(0), 0x00030405 },
-+	{ DDRC_FREQ2_DRAMTMG2(0), 0x0203060b },
-+	{ DDRC_FREQ2_DRAMTMG3(0), 0x00505000 },
-+	{ DDRC_FREQ2_DRAMTMG4(0), 0x02040202 },
-+	{ DDRC_FREQ2_DRAMTMG5(0), 0x02030202 },
-+	{ DDRC_FREQ2_DRAMTMG6(0), 0x01010004 },
-+	{ DDRC_FREQ2_DRAMTMG7(0), 0x00000301 },
-+	//{ DDRC_FREQ2_DRAMTMG12(0), 0x00020300 },
-+	//{ DDRC_FREQ2_DRAMTMG13(0), 0x0a100002 },
-+	{ DDRC_FREQ2_DRAMTMG14(0), 0x0000000a },
-+	{ DDRC_FREQ2_DRAMTMG17(0), 0x000a0005 },
-+	//{ DDRC_FREQ2_DERATEEN(0), 0x00000001 },
-+	{ DDRC_FREQ2_DERATEINT(0), 0x00003e80 },
-+	//{ DDRC_FREQ2_RFSHCTL0(0), 0x0020d040 },
-+	//{ DDRC_FREQ2_ZQCTL0(0), 0x00320004 },
-+	{ DDRC_FREQ2_DFITMG0(0), 0x03818200 },
-+	//{ DDRC_FREQ2_DFITMG1(0), 0x00080303 },
-+	{ DDRC_FREQ2_DFITMG2(0), 0x00000100 },
-+	{ DDRC_FREQ2_RFSHTMG(0), 0x00060009 },
-+	{ DDRC_FREQ2_INIT3(0), 0x00840000 },
-+	{ DDRC_FREQ2_INIT4(0), 0x00310008 },
-+	//{ DDRC_FREQ2_INIT4(0), (LPDDR4_MR3 << 16) | 0x0000 },
-+	{ DDRC_FREQ2_INIT6(0), 0x0066004d },
-+	{ DDRC_FREQ2_INIT7(0), 0x0016004d },
-+	// { DDRC_FREQ2_RANKCTL(0), 0x00000c99 },
-+
-+	/* boot start point */
-+	{ DDRC_MSTR2(0), 0x0 }, //DDRC_MSTR2
++/* pin MUX configuration data */
++static unsigned long sys_mgr_init_table[] = {
++	0,			/* EMACIO0 */
++	2,			/* EMACIO1 */
++	2,			/* EMACIO2 */
++	2,			/* EMACIO3 */
++	2,			/* EMACIO4 */
++	2,			/* EMACIO5 */
++	2,			/* EMACIO6 */
++	2,			/* EMACIO7 */
++	2,			/* EMACIO8 */
++	0,			/* EMACIO9 */
++	2,			/* EMACIO10 */
++	2,			/* EMACIO11 */
++	2,			/* EMACIO12 */
++	2,			/* EMACIO13 */
++	0,			/* EMACIO14 */
++	0,			/* EMACIO15 */
++	0,			/* EMACIO16 */
++	0,			/* EMACIO17 */
++	0,			/* EMACIO18 */
++	0,			/* EMACIO19 */
++	3,			/* FLASHIO0 */
++	0,			/* FLASHIO1 */
++	3,			/* FLASHIO2 */
++	3,			/* FLASHIO3 */
++	0,			/* FLASHIO4 */
++	0,			/* FLASHIO5 */
++	0,			/* FLASHIO6 */
++	0,			/* FLASHIO7 */
++	0,			/* FLASHIO8 */
++	3,			/* FLASHIO9 */
++	3,			/* FLASHIO10 */
++	3,			/* FLASHIO11 */
++	0,			/* GENERALIO0 */
++	1,			/* GENERALIO1 */
++	1,			/* GENERALIO2 */
++	1,			/* GENERALIO3 */
++	1,			/* GENERALIO4 */
++	0,			/* GENERALIO5 */
++	0,			/* GENERALIO6 */
++	1,			/* GENERALIO7 */
++	1,			/* GENERALIO8 */
++	0,			/* GENERALIO9 */
++	0,			/* GENERALIO10 */
++	0,			/* GENERALIO11 */
++	0,			/* GENERALIO12 */
++	0,			/* GENERALIO13 */
++	0,			/* GENERALIO14 */
++	1,			/* GENERALIO15 */
++	1,			/* GENERALIO16 */
++	1,			/* GENERALIO17 */
++	1,			/* GENERALIO18 */
++	0,			/* GENERALIO19 */
++	0,			/* GENERALIO20 */
++	0,			/* GENERALIO21 */
++	0,			/* GENERALIO22 */
++	0,			/* GENERALIO23 */
++	0,			/* GENERALIO24 */
++	0,			/* GENERALIO25 */
++	0,			/* GENERALIO26 */
++	0,			/* GENERALIO27 */
++	0,			/* GENERALIO28 */
++	0,			/* GENERALIO29 */
++	0,			/* GENERALIO30 */
++	0,			/* GENERALIO31 */
++	2,			/* MIXED1IO0 */
++	2,			/* MIXED1IO1 */
++	2,			/* MIXED1IO2 */
++	2,			/* MIXED1IO3 */
++	2,			/* MIXED1IO4 */
++	2,			/* MIXED1IO5 */
++	2,			/* MIXED1IO6 */
++	2,			/* MIXED1IO7 */
++	2,			/* MIXED1IO8 */
++	2,			/* MIXED1IO9 */
++	2,			/* MIXED1IO10 */
++	2,			/* MIXED1IO11 */
++	2,			/* MIXED1IO12 */
++	2,			/* MIXED1IO13 */
++	0,			/* MIXED1IO14 */
++	0,			/* MIXED1IO15 */
++	0,			/* MIXED1IO16 */
++	0,			/* MIXED1IO17 */
++	0,			/* MIXED1IO18 */
++	0,			/* MIXED1IO19 */
++	0,			/* MIXED1IO20 */
++	0,			/* MIXED1IO21 */
++	0,			/* MIXED2IO0 */
++	0,			/* MIXED2IO1 */
++	0,			/* MIXED2IO2 */
++	0,			/* MIXED2IO3 */
++	0,			/* MIXED2IO4 */
++	0,			/* MIXED2IO5 */
++	0,			/* MIXED2IO6 */
++	0,			/* MIXED2IO7 */
++	0,			/* GPLINMUX48 */
++	0,			/* GPLINMUX49 */
++	0,			/* GPLINMUX50 */
++	0,			/* GPLINMUX51 */
++	0,			/* GPLINMUX52 */
++	0,			/* GPLINMUX53 */
++	0,			/* GPLINMUX54 */
++	0,			/* GPLINMUX55 */
++	0,			/* GPLINMUX56 */
++	0,			/* GPLINMUX57 */
++	0,			/* GPLINMUX58 */
++	0,			/* GPLINMUX59 */
++	0,			/* GPLINMUX60 */
++	0,			/* GPLINMUX61 */
++	0,			/* GPLINMUX62 */
++	0,			/* GPLINMUX63 */
++	0,			/* GPLINMUX64 */
++	0,			/* GPLINMUX65 */
++	0,			/* GPLINMUX66 */
++	0,			/* GPLINMUX67 */
++	0,			/* GPLINMUX68 */
++	0,			/* GPLINMUX69 */
++	0,			/* GPLINMUX70 */
++	1,			/* GPLMUX0 */
++	1,			/* GPLMUX1 */
++	1,			/* GPLMUX2 */
++	1,			/* GPLMUX3 */
++	1,			/* GPLMUX4 */
++	1,			/* GPLMUX5 */
++	1,			/* GPLMUX6 */
++	1,			/* GPLMUX7 */
++	1,			/* GPLMUX8 */
++	1,			/* GPLMUX9 */
++	1,			/* GPLMUX10 */
++	1,			/* GPLMUX11 */
++	1,			/* GPLMUX12 */
++	1,			/* GPLMUX13 */
++	1,			/* GPLMUX14 */
++	1,			/* GPLMUX15 */
++	1,			/* GPLMUX16 */
++	1,			/* GPLMUX17 */
++	1,			/* GPLMUX18 */
++	1,			/* GPLMUX19 */
++	1,			/* GPLMUX20 */
++	1,			/* GPLMUX21 */
++	1,			/* GPLMUX22 */
++	1,			/* GPLMUX23 */
++	1,			/* GPLMUX24 */
++	1,			/* GPLMUX25 */
++	1,			/* GPLMUX26 */
++	1,			/* GPLMUX27 */
++	1,			/* GPLMUX28 */
++	1,			/* GPLMUX29 */
++	1,			/* GPLMUX30 */
++	1,			/* GPLMUX31 */
++	1,			/* GPLMUX32 */
++	1,			/* GPLMUX33 */
++	1,			/* GPLMUX34 */
++	1,			/* GPLMUX35 */
++	1,			/* GPLMUX36 */
++	1,			/* GPLMUX37 */
++	1,			/* GPLMUX38 */
++	1,			/* GPLMUX39 */
++	1,			/* GPLMUX40 */
++	1,			/* GPLMUX41 */
++	1,			/* GPLMUX42 */
++	1,			/* GPLMUX43 */
++	1,			/* GPLMUX44 */
++	1,			/* GPLMUX45 */
++	1,			/* GPLMUX46 */
++	1,			/* GPLMUX47 */
++	1,			/* GPLMUX48 */
++	1,			/* GPLMUX49 */
++	1,			/* GPLMUX50 */
++	1,			/* GPLMUX51 */
++	1,			/* GPLMUX52 */
++	1,			/* GPLMUX53 */
++	1,			/* GPLMUX54 */
++	1,			/* GPLMUX55 */
++	1,			/* GPLMUX56 */
++	1,			/* GPLMUX57 */
++	1,			/* GPLMUX58 */
++	1,			/* GPLMUX59 */
++	1,			/* GPLMUX60 */
++	1,			/* GPLMUX61 */
++	1,			/* GPLMUX62 */
++	1,			/* GPLMUX63 */
++	1,			/* GPLMUX64 */
++	1,			/* GPLMUX65 */
++	1,			/* GPLMUX66 */
++	1,			/* GPLMUX67 */
++	1,			/* GPLMUX68 */
++	1,			/* GPLMUX69 */
++	1,			/* GPLMUX70 */
++	0,			/* NANDUSEFPGA */
++	0,			/* UART0USEFPGA */
++	0,			/* RGMII1USEFPGA */
++	0,			/* SPIS0USEFPGA */
++	0,			/* CAN0USEFPGA */
++	0,			/* I2C0USEFPGA */
++	0,			/* SDMMCUSEFPGA */
++	0,			/* QSPIUSEFPGA */
++	0,			/* SPIS1USEFPGA */
++	0,			/* RGMII0USEFPGA */
++	0,			/* UART1USEFPGA */
++	0,			/* CAN1USEFPGA */
++	0,			/* USB1USEFPGA */
++	0,			/* I2C3USEFPGA */
++	0,			/* I2C2USEFPGA */
++	0,			/* I2C1USEFPGA */
++	0,			/* SPIM1USEFPGA */
++	0,			/* USB0USEFPGA */
++	0			/* SPIM0USEFPGA */
 +};
+diff --git a/arch/arm/boards/terasic-de10-nano/pll_config.h b/arch/arm/boards/terasic-de10-nano/pll_config.h
+new file mode 100644
+index 000000000..d78eaae98
+--- /dev/null
++++ b/arch/arm/boards/terasic-de10-nano/pll_config.h
+@@ -0,0 +1,107 @@
++/* GENERATED FILE - DO NOT EDIT */
++/*
++ * Copyright Altera Corporation (C) 2012-2014. All rights reserved
++ *
++ * SPDX-License-Identifier:    BSD-3-Clause
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *    * Redistributions of source code must retain the above copyright
++ *      notice, this list of conditions and the following disclaimer.
++ *    * Redistributions in binary form must reproduce the above copyright
++ *      notice, this list of conditions and the following disclaimer in the
++ *      documentation and/or other materials provided with the distribution.
++ *    * Neither the name of Altera Corporation nor the
++ *      names of its contributors may be used to endorse or promote products
++ *      derived from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
++ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ */
 +
-+/* PHY Initialize Configuration */
-+static struct dram_cfg_param lpddr4_ddrphy_cfg[] = {
-+	{ 0x1005f, 0x1ff },
-+	{ 0x1015f, 0x1ff },
-+	{ 0x1105f, 0x1ff },
-+	{ 0x1115f, 0x1ff },
-+	{ 0x1205f, 0x1ff },
-+	{ 0x1215f, 0x1ff },
-+	{ 0x1305f, 0x1ff },
-+	{ 0x1315f, 0x1ff },
++#ifndef _PRELOADER_PLL_CONFIG_H_
++#define _PRELOADER_PLL_CONFIG_H_
 +
-+	{ 0x11005f, 0x1ff },
-+	{ 0x11015f, 0x1ff },
-+	{ 0x11105f, 0x1ff },
-+	{ 0x11115f, 0x1ff },
-+	{ 0x11205f, 0x1ff },
-+	{ 0x11215f, 0x1ff },
-+	{ 0x11305f, 0x1ff },
-+	{ 0x11315f, 0x1ff },
++#define CONFIG_HPS_DBCTRL_STAYOSC1 (1)
 +
-+	{ 0x21005f, 0x1ff },
-+	{ 0x21015f, 0x1ff },
-+	{ 0x21105f, 0x1ff },
-+	{ 0x21115f, 0x1ff },
-+	{ 0x21205f, 0x1ff },
-+	{ 0x21215f, 0x1ff },
-+	{ 0x21305f, 0x1ff },
-+	{ 0x21315f, 0x1ff },
++#define CONFIG_HPS_MAINPLLGRP_VCO_DENOM (0)
++#define CONFIG_HPS_MAINPLLGRP_VCO_NUMER (63)
++#define CONFIG_HPS_MAINPLLGRP_MPUCLK_CNT (0)
++#define CONFIG_HPS_MAINPLLGRP_MAINCLK_CNT (0)
++#define CONFIG_HPS_MAINPLLGRP_DBGATCLK_CNT (0)
++#define CONFIG_HPS_MAINPLLGRP_MAINQSPICLK_CNT (511)
++#define CONFIG_HPS_MAINPLLGRP_MAINNANDSDMMCCLK_CNT (511)
++#define CONFIG_HPS_MAINPLLGRP_CFGS2FUSER0CLK_CNT (15)
++#define CONFIG_HPS_MAINPLLGRP_MAINDIV_L3MPCLK (1)
++#define CONFIG_HPS_MAINPLLGRP_MAINDIV_L3SPCLK (1)
++#define CONFIG_HPS_MAINPLLGRP_MAINDIV_L4MPCLK (1)
++#define CONFIG_HPS_MAINPLLGRP_MAINDIV_L4SPCLK (1)
++#define CONFIG_HPS_MAINPLLGRP_DBGDIV_DBGATCLK (0)
++#define CONFIG_HPS_MAINPLLGRP_DBGDIV_DBGCLK (1)
++#define CONFIG_HPS_MAINPLLGRP_TRACEDIV_TRACECLK (0)
++#define CONFIG_HPS_MAINPLLGRP_L4SRC_L4MP (1)
++#define CONFIG_HPS_MAINPLLGRP_L4SRC_L4SP (1)
 +
-+	{ 0x55, 0x1ff },
-+	{ 0x1055, 0x1ff },
-+	{ 0x2055, 0x1ff },
-+	{ 0x3055, 0x1ff },
-+	{ 0x4055, 0x1ff },
-+	{ 0x5055, 0x1ff },
-+	{ 0x6055, 0x1ff },
-+	{ 0x7055, 0x1ff },
-+	{ 0x8055, 0x1ff },
-+	{ 0x9055, 0x1ff },
++#define CONFIG_HPS_PERPLLGRP_VCO_DENOM (0)
++#define CONFIG_HPS_PERPLLGRP_VCO_NUMER (39)
++#define CONFIG_HPS_PERPLLGRP_VCO_PSRC (0)
++#define CONFIG_HPS_PERPLLGRP_EMAC0CLK_CNT (511)
++#define CONFIG_HPS_PERPLLGRP_EMAC1CLK_CNT (3)
++#define CONFIG_HPS_PERPLLGRP_PERQSPICLK_CNT (511)
++#define CONFIG_HPS_PERPLLGRP_PERNANDSDMMCCLK_CNT (4)
++#define CONFIG_HPS_PERPLLGRP_PERBASECLK_CNT (4)
++#define CONFIG_HPS_PERPLLGRP_S2FUSER1CLK_CNT (511)
++#define CONFIG_HPS_PERPLLGRP_DIV_USBCLK (0)
++#define CONFIG_HPS_PERPLLGRP_DIV_SPIMCLK (0)
++#define CONFIG_HPS_PERPLLGRP_DIV_CAN0CLK (4)
++#define CONFIG_HPS_PERPLLGRP_DIV_CAN1CLK (4)
++#define CONFIG_HPS_PERPLLGRP_GPIODIV_GPIODBCLK (6249)
++#define CONFIG_HPS_PERPLLGRP_SRC_SDMMC (2)
++#define CONFIG_HPS_PERPLLGRP_SRC_NAND (2)
++#define CONFIG_HPS_PERPLLGRP_SRC_QSPI (1)
 +
-+	{ 0x200c5, 0x19 },
-+	{ 0x1200c5, 0x7 },
-+	{ 0x2200c5, 0x7 },
++#define CONFIG_HPS_SDRPLLGRP_VCO_DENOM (0)
++#define CONFIG_HPS_SDRPLLGRP_VCO_NUMER (31)
++#define CONFIG_HPS_SDRPLLGRP_VCO_SSRC (0)
++#define CONFIG_HPS_SDRPLLGRP_DDRDQSCLK_CNT (1)
++#define CONFIG_HPS_SDRPLLGRP_DDRDQSCLK_PHASE (0)
++#define CONFIG_HPS_SDRPLLGRP_DDR2XDQSCLK_CNT (0)
++#define CONFIG_HPS_SDRPLLGRP_DDR2XDQSCLK_PHASE (0)
++#define CONFIG_HPS_SDRPLLGRP_DDRDQCLK_CNT (1)
++#define CONFIG_HPS_SDRPLLGRP_DDRDQCLK_PHASE (4)
++#define CONFIG_HPS_SDRPLLGRP_S2FUSER2CLK_CNT (4)
++#define CONFIG_HPS_SDRPLLGRP_S2FUSER2CLK_PHASE (0)
 +
-+	{ 0x2002e, 0x2 },
-+	{ 0x12002e, 0x2 },
-+	{ 0x22002e, 0x2 },
++#define CONFIG_HPS_CLK_OSC1_HZ (25000000)
++#define CONFIG_HPS_CLK_OSC2_HZ (25000000)
++#define CONFIG_HPS_CLK_F2S_SDR_REF_HZ (0)
++#define CONFIG_HPS_CLK_F2S_PER_REF_HZ (0)
++#define CONFIG_HPS_CLK_MAINVCO_HZ (1600000000)
++#define CONFIG_HPS_CLK_PERVCO_HZ (1000000000)
++#define CONFIG_HPS_CLK_SDRVCO_HZ (800000000)
++#define CONFIG_HPS_CLK_EMAC0_HZ (1953125)
++#define CONFIG_HPS_CLK_EMAC1_HZ (250000000)
++#define CONFIG_HPS_CLK_USBCLK_HZ (200000000)
++#define CONFIG_HPS_CLK_NAND_HZ (50000000)
++#define CONFIG_HPS_CLK_SDMMC_HZ (200000000)
++#define CONFIG_HPS_CLK_QSPI_HZ (3125000)
++#define CONFIG_HPS_CLK_SPIM_HZ (200000000)
++#define CONFIG_HPS_CLK_CAN0_HZ (12500000)
++#define CONFIG_HPS_CLK_CAN1_HZ (12500000)
++#define CONFIG_HPS_CLK_GPIODB_HZ (32000)
++#define CONFIG_HPS_CLK_L4_MP_HZ (100000000)
++#define CONFIG_HPS_CLK_L4_SP_HZ (100000000)
 +
-+	{ 0x90204, 0x0 },
-+	{ 0x190204, 0x0 },
-+	{ 0x290204, 0x0 },
++#define CONFIG_HPS_ALTERAGRP_MPUCLK (1)
++#define CONFIG_HPS_ALTERAGRP_MAINCLK (3)
++#define CONFIG_HPS_ALTERAGRP_DBGATCLK (3)
 +
-+	{ 0x20024, 0xab },
-+	{ 0x2003a, 0x0 },
++#endif /* _PRELOADER_PLL_CONFIG_H_ */
+diff --git a/arch/arm/boards/terasic-de10-nano/sdram_config.h b/arch/arm/boards/terasic-de10-nano/sdram_config.h
+new file mode 100644
+index 000000000..8f084021d
+--- /dev/null
++++ b/arch/arm/boards/terasic-de10-nano/sdram_config.h
+@@ -0,0 +1,112 @@
++/* GENERATED FILE - DO NOT EDIT */
++/*
++ * Copyright Altera Corporation (C) 2012-2014. All rights reserved
++ *
++ * SPDX-License-Identifier:    BSD-3-Clause
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *    * Redistributions of source code must retain the above copyright
++ *      notice, this list of conditions and the following disclaimer.
++ *    * Redistributions in binary form must reproduce the above copyright
++ *      notice, this list of conditions and the following disclaimer in the
++ *      documentation and/or other materials provided with the distribution.
++ *    * Neither the name of Altera Corporation nor the
++ *      names of its contributors may be used to endorse or promote products
++ *      derived from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
++ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ */
 +
-+	{ 0x120024, 0xab },
-+	{ 0x2003a, 0x0 },
++#ifndef __SDRAM_CONFIG_H
++#define __SDRAM_CONFIG_H
 +
-+	{ 0x220024, 0xab },
-+	{ 0x2003a, 0x0 },
++#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_MEMTYPE			(2)
++#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_MEMBL			(8)
++#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_ADDRORDER		(0)
++#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_ECCEN			(0)
++#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_ECCCORREN		(0)
++#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_REORDEREN		(1)
++#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_STARVELIMIT		(10)
++#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_DQSTRKEN			(0)
++#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_NODMPINS			(0)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TCWL			(7)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_AL			(0)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TCL			(7)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TRRD			(3)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TFAW			(15)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TRFC			(120)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TREFI		(3120)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TRCD		(6)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TRP		(6)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TWR		(6)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TWTR		(4)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRTP			(3)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRAS			(14)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRC			(20)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TMRD			(4)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TCCD			(4)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING4_SELFRFSHEXIT		(512)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING4_PWRDOWNEXIT		(3)
++#define CONFIG_HPS_SDR_CTRLCFG_LOWPWRTIMING_AUTOPDCYCLES	(0)
++#define CONFIG_HPS_SDR_CTRLCFG_LOWPWRTIMING_CLKDISABLECYCLES	(8)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMADDRW_COLBITS		(10)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMADDRW_ROWBITS		(15)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMADDRW_BANKBITS		(3)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMADDRW_CSBITS			(1)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMIFWIDTH_IFWIDTH		(32)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMDEVWIDTH_DEVWIDTH		(8)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMINTR_INTREN			(0)
++#define CONFIG_HPS_SDR_CTRLCFG_LOWPWREQ_SELFRFSHMASK		(3)
++#define CONFIG_HPS_SDR_CTRLCFG_STATICCFG_MEMBL			(2)
++#define CONFIG_HPS_SDR_CTRLCFG_STATICCFG_USEECCASDATA		(0)
++#define CONFIG_HPS_SDR_CTRLCFG_CTRLWIDTH_CTRLWIDTH		(2)
++#define CONFIG_HPS_SDR_CTRLCFG_PORTCFG_AUTOPCHEN		(0)
++#define CONFIG_HPS_SDR_CTRLCFG_FIFOCFG_SYNCMODE			(0)
++#define CONFIG_HPS_SDR_CTRLCFG_FIFOCFG_INCSYNC			(0)
++#define CONFIG_HPS_SDR_CTRLCFG_MPPRIORITY_USERPRIORITY		(0x0)
++#define CONFIG_HPS_SDR_CTRLCFG_MPWIEIGHT_0_STATICWEIGHT_31_0	(0x21084210)
++#define CONFIG_HPS_SDR_CTRLCFG_MPWIEIGHT_1_STATICWEIGHT_49_32	(0x10441)
++#define CONFIG_HPS_SDR_CTRLCFG_MPWIEIGHT_1_SUMOFWEIGHT_13_0	(0x78)
++#define CONFIG_HPS_SDR_CTRLCFG_MPWIEIGHT_2_SUMOFWEIGHT_45_14	(0x0)
++#define CONFIG_HPS_SDR_CTRLCFG_MPWIEIGHT_3_SUMOFWEIGHT_63_46	(0x0)
++#define CONFIG_HPS_SDR_CTRLCFG_PHYCTRL_PHYCTRL_0		(0x200)
 +
-+	{ 0x20056, 0x3 },
-+	{ 0x120056, 0xa },
-+	{ 0x220056, 0xa },
++#define CONFIG_HPS_SDR_CTRLCFG_CPORTWIDTH_CPORTWIDTH		(0x44555)
++#define CONFIG_HPS_SDR_CTRLCFG_CPORTWMAP_CPORTWMAP		(0x2C011000)
++#define CONFIG_HPS_SDR_CTRLCFG_CPORTRMAP_CPORTRMAP		(0xB00088)
++#define CONFIG_HPS_SDR_CTRLCFG_RFIFOCMAP_RFIFOCMAP		(0x760210)
++#define CONFIG_HPS_SDR_CTRLCFG_WFIFOCMAP_WFIFOCMAP		(0x980543)
++#define CONFIG_HPS_SDR_CTRLCFG_CPORTRDWR_CPORTRDWR		(0x5A56A)
++#define CONFIG_HPS_SDR_CTRLCFG_MPPACING_0_THRESHOLD1_31_0	(0x20820820)
++#define CONFIG_HPS_SDR_CTRLCFG_MPPACING_1_THRESHOLD1_59_32	(0x8208208)
++#define CONFIG_HPS_SDR_CTRLCFG_MPPACING_1_THRESHOLD2_3_0	(0)
++#define CONFIG_HPS_SDR_CTRLCFG_MPPACING_2_THRESHOLD2_35_4	(0x41041041)
++#define CONFIG_HPS_SDR_CTRLCFG_MPPACING_3_THRESHOLD2_59_36	(0x410410)
++#define CONFIG_HPS_SDR_CTRLCFG_MPTHRESHOLDRST_0_THRESHOLDRSTCYCLES_31_0 \
++(0x01010101)
++#define CONFIG_HPS_SDR_CTRLCFG_MPTHRESHOLDRST_1_THRESHOLDRSTCYCLES_63_32 \
++(0x01010101)
++#define CONFIG_HPS_SDR_CTRLCFG_MPTHRESHOLDRST_2_THRESHOLDRSTCYCLES_79_64 \
++(0x0101)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMODT_READ			(0)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMODT_WRITE			(1)
++#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_READ_PORT_USED	(0xF)
++#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_WRITE_PORT_USED	(0xF)
++#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_COMMAND_PORT_USED	(0x1)
++#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST			(0x1FF)
 +
-+	{ 0x1004d, 0xe00 },
-+	{ 0x1014d, 0xe00 },
-+	{ 0x1104d, 0xe00 },
-+	{ 0x1114d, 0xe00 },
-+	{ 0x1204d, 0xe00 },
-+	{ 0x1214d, 0xe00 },
-+	{ 0x1304d, 0xe00 },
-+	{ 0x1314d, 0xe00 },
++#define CONFIG_HPS_SDR_CTRLCFG_EXTRATIME1_CFG_EXTRA_CTL_CLK_RD_TO_WR (2)
++#define CONFIG_HPS_SDR_CTRLCFG_EXTRATIME1_CFG_EXTRA_CTL_CLK_RD_TO_WR_BC (2)
++#define CONFIG_HPS_SDR_CTRLCFG_EXTRATIME1_CFG_EXTRA_CTL_CLK_RD_TO_WR_DIFF_CHIP (2)
 +
-+	{ 0x11004d, 0xe00 },
-+	{ 0x11014d, 0xe00 },
-+	{ 0x11104d, 0xe00 },
-+	{ 0x11114d, 0xe00 },
-+	{ 0x11204d, 0xe00 },
-+	{ 0x11214d, 0xe00 },
-+	{ 0x11304d, 0xe00 },
-+	{ 0x11314d, 0xe00 },
++#endif /*#ifndef__SDRAM_CONFIG_H */
+diff --git a/arch/arm/boards/terasic-de10-nano/sequencer_auto.h b/arch/arm/boards/terasic-de10-nano/sequencer_auto.h
+new file mode 100644
+index 000000000..34dc3108a
+--- /dev/null
++++ b/arch/arm/boards/terasic-de10-nano/sequencer_auto.h
+@@ -0,0 +1,225 @@
++/*
++Copyright (C) 2020  Intel Corporation. All rights reserved.
 +
-+	{ 0x21004d, 0xe00 },
-+	{ 0x21014d, 0xe00 },
-+	{ 0x21104d, 0xe00 },
-+	{ 0x21114d, 0xe00 },
-+	{ 0x21204d, 0xe00 },
-+	{ 0x21214d, 0xe00 },
-+	{ 0x21304d, 0xe00 },
-+	{ 0x21314d, 0xe00 },
++SPDX-License-Identifier:    BSD-3-Clause
 +
-+	{ 0x10049, 0xfbe },
-+	{ 0x10149, 0xfbe },
-+	{ 0x11049, 0xfbe },
-+	{ 0x11149, 0xfbe },
-+	{ 0x12049, 0xfbe },
-+	{ 0x12149, 0xfbe },
-+	{ 0x13049, 0xfbe },
-+	{ 0x13149, 0xfbe },
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are met:
++    * Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++    * Redistributions in binary form must reproduce the above copyright
++      notice, this list of conditions and the following disclaimer in the
++      documentation and/or other materials provided with the distribution.
++    * Neither the name of Intel Corporation nor the
++      names of its contributors may be used to endorse or promote products
++      derived from this software without specific prior written permission.
 +
-+	{ 0x110049, 0xfbe },
-+	{ 0x110149, 0xfbe },
-+	{ 0x111049, 0xfbe },
-+	{ 0x111149, 0xfbe },
-+	{ 0x112049, 0xfbe },
-+	{ 0x112149, 0xfbe },
-+	{ 0x113049, 0xfbe },
-+	{ 0x113149, 0xfbe },
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
++DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++*/
++#define __RW_MGR_ac_mrs1 0x04
++#define __RW_MGR_ac_mrs3 0x06
++#define __RW_MGR_ac_write_bank_0_col_0_nodata_wl_1 0x1C
++#define __RW_MGR_ac_act_1 0x11
++#define __RW_MGR_ac_write_postdata 0x1A
++#define __RW_MGR_ac_act_0 0x10
++#define __RW_MGR_ac_des 0x0D
++#define __RW_MGR_ac_init_reset_1_cke_0 0x01
++#define __RW_MGR_ac_write_data 0x19
++#define __RW_MGR_ac_init_reset_0_cke_0 0x00
++#define __RW_MGR_ac_read_bank_0_1_norden 0x22
++#define __RW_MGR_ac_pre_all 0x12
++#define __RW_MGR_ac_mrs0_user 0x02
++#define __RW_MGR_ac_mrs0_dll_reset 0x03
++#define __RW_MGR_ac_read_bank_0_0 0x1D
++#define __RW_MGR_ac_write_bank_0_col_1 0x16
++#define __RW_MGR_ac_read_bank_0_1 0x1F
++#define __RW_MGR_ac_write_bank_1_col_0 0x15
++#define __RW_MGR_ac_write_bank_1_col_1 0x17
++#define __RW_MGR_ac_write_bank_0_col_0 0x14
++#define __RW_MGR_ac_read_bank_1_0 0x1E
++#define __RW_MGR_ac_mrs1_mirr 0x0A
++#define __RW_MGR_ac_read_bank_1_1 0x20
++#define __RW_MGR_ac_des_odt_1 0x0E
++#define __RW_MGR_ac_mrs0_dll_reset_mirr 0x09
++#define __RW_MGR_ac_zqcl 0x07
++#define __RW_MGR_ac_write_predata 0x18
++#define __RW_MGR_ac_mrs0_user_mirr 0x08
++#define __RW_MGR_ac_ref 0x13
++#define __RW_MGR_ac_nop 0x0F
++#define __RW_MGR_ac_rdimm 0x23
++#define __RW_MGR_ac_mrs2_mirr 0x0B
++#define __RW_MGR_ac_write_bank_0_col_0_nodata 0x1B
++#define __RW_MGR_ac_read_en 0x21
++#define __RW_MGR_ac_mrs3_mirr 0x0C
++#define __RW_MGR_ac_mrs2 0x05
++#define __RW_MGR_CONTENT_ac_mrs1 0x10090044
++#define __RW_MGR_CONTENT_ac_mrs3 0x100B0000
++#define __RW_MGR_CONTENT_ac_write_bank_0_col_0_nodata_wl_1 0x18980000
++#define __RW_MGR_CONTENT_ac_act_1 0x106B0000
++#define __RW_MGR_CONTENT_ac_write_postdata 0x38780000
++#define __RW_MGR_CONTENT_ac_act_0 0x10680000
++#define __RW_MGR_CONTENT_ac_des 0x30780000
++#define __RW_MGR_CONTENT_ac_init_reset_1_cke_0 0x20780000
++#define __RW_MGR_CONTENT_ac_write_data 0x3CF80000
++#define __RW_MGR_CONTENT_ac_init_reset_0_cke_0 0x20700000
++#define __RW_MGR_CONTENT_ac_read_bank_0_1_norden 0x10580008
++#define __RW_MGR_CONTENT_ac_pre_all 0x10280400
++#define __RW_MGR_CONTENT_ac_mrs0_user 0x10080431
++#define __RW_MGR_CONTENT_ac_mrs0_dll_reset 0x10080530
++#define __RW_MGR_CONTENT_ac_read_bank_0_0 0x13580000
++#define __RW_MGR_CONTENT_ac_write_bank_0_col_1 0x1C980008
++#define __RW_MGR_CONTENT_ac_read_bank_0_1 0x13580008
++#define __RW_MGR_CONTENT_ac_write_bank_1_col_0 0x1C9B0000
++#define __RW_MGR_CONTENT_ac_write_bank_1_col_1 0x1C9B0008
++#define __RW_MGR_CONTENT_ac_write_bank_0_col_0 0x1C980000
++#define __RW_MGR_CONTENT_ac_read_bank_1_0 0x135B0000
++#define __RW_MGR_CONTENT_ac_mrs1_mirr 0x100A0024
++#define __RW_MGR_CONTENT_ac_read_bank_1_1 0x135B0008
++#define __RW_MGR_CONTENT_ac_des_odt_1 0x38780000
++#define __RW_MGR_CONTENT_ac_mrs0_dll_reset_mirr 0x100804C8
++#define __RW_MGR_CONTENT_ac_zqcl 0x10380400
++#define __RW_MGR_CONTENT_ac_write_predata 0x38F80000
++#define __RW_MGR_CONTENT_ac_mrs0_user_mirr 0x10080449
++#define __RW_MGR_CONTENT_ac_ref 0x10480000
++#define __RW_MGR_CONTENT_ac_nop 0x30780000
++#define __RW_MGR_CONTENT_ac_rdimm 0x10780000
++#define __RW_MGR_CONTENT_ac_mrs2_mirr 0x10090008
++#define __RW_MGR_CONTENT_ac_write_bank_0_col_0_nodata 0x18180000
++#define __RW_MGR_CONTENT_ac_read_en 0x33780000
++#define __RW_MGR_CONTENT_ac_mrs3_mirr 0x100B0000
++#define __RW_MGR_CONTENT_ac_mrs2 0x100A0010
 +
-+	{ 0x210049, 0xfbe },
-+	{ 0x210149, 0xfbe },
-+	{ 0x211049, 0xfbe },
-+	{ 0x211149, 0xfbe },
-+	{ 0x212049, 0xfbe },
-+	{ 0x212149, 0xfbe },
-+	{ 0x213049, 0xfbe },
-+	{ 0x213149, 0xfbe },
++/*
++Copyright (C) 2020  Intel Corporation. All rights reserved.
 +
-+	{ 0x43, 0x63 },
-+	{ 0x1043, 0x63 },
-+	{ 0x2043, 0x63 },
-+	{ 0x3043, 0x63 },
-+	{ 0x4043, 0x63 },
-+	{ 0x5043, 0x63 },
-+	{ 0x6043, 0x63 },
-+	{ 0x7043, 0x63 },
-+	{ 0x8043, 0x63 },
-+	{ 0x9043, 0x63 },
++SPDX-License-Identifier:    BSD-3-Clause
 +
-+	{ 0x20018, 0x3 },
-+	{ 0x20075, 0x4 },
-+	{ 0x20050, 0x0 },
-+	{ 0x20008, 0x2ee },
-+	{ 0x120008, 0x64 },
-+	{ 0x220008, 0x19 },
-+	{ 0x20088, 0x9 },
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are met:
++    * Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++    * Redistributions in binary form must reproduce the above copyright
++      notice, this list of conditions and the following disclaimer in the
++      documentation and/or other materials provided with the distribution.
++    * Neither the name of Intel Corporation nor the
++      names of its contributors may be used to endorse or promote products
++      derived from this software without specific prior written permission.
 +
-+	{ 0x200b2, 0x1d4 },
-+	{ 0x10043, 0x5a1 },
-+	{ 0x10143, 0x5a1 },
-+	{ 0x11043, 0x5a1 },
-+	{ 0x11143, 0x5a1 },
-+	{ 0x12043, 0x5a1 },
-+	{ 0x12143, 0x5a1 },
-+	{ 0x13043, 0x5a1 },
-+	{ 0x13143, 0x5a1 },
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
++DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++*/
++#define __RW_MGR_READ_B2B_WAIT2 0x6B
++#define __RW_MGR_LFSR_WR_RD_BANK_0_WAIT 0x32
++#define __RW_MGR_REFRESH_ALL 0x14
++#define __RW_MGR_ZQCL 0x06
++#define __RW_MGR_LFSR_WR_RD_BANK_0_NOP 0x23
++#define __RW_MGR_LFSR_WR_RD_BANK_0_DQS 0x24
++#define __RW_MGR_ACTIVATE_0_AND_1 0x0D
++#define __RW_MGR_MRS2_MIRR 0x0A
++#define __RW_MGR_INIT_RESET_0_CKE_0 0x6F
++#define __RW_MGR_LFSR_WR_RD_DM_BANK_0_WAIT 0x46
++#define __RW_MGR_ACTIVATE_1 0x0F
++#define __RW_MGR_MRS2 0x04
++#define __RW_MGR_LFSR_WR_RD_DM_BANK_0_WL_1 0x35
++#define __RW_MGR_MRS1 0x03
++#define __RW_MGR_IDLE_LOOP1 0x7B
++#define __RW_MGR_GUARANTEED_WRITE_WAIT2 0x19
++#define __RW_MGR_MRS3 0x05
++#define __RW_MGR_IDLE_LOOP2 0x7A
++#define __RW_MGR_GUARANTEED_WRITE_WAIT1 0x1F
++#define __RW_MGR_LFSR_WR_RD_BANK_0_DATA 0x25
++#define __RW_MGR_GUARANTEED_WRITE_WAIT3 0x1D
++#define __RW_MGR_RDIMM_CMD 0x79
++#define __RW_MGR_LFSR_WR_RD_DM_BANK_0_NOP 0x37
++#define __RW_MGR_GUARANTEED_WRITE_WAIT0 0x1B
++#define __RW_MGR_LFSR_WR_RD_DM_BANK_0_DATA 0x39
++#define __RW_MGR_GUARANTEED_READ_CONT 0x54
++#define __RW_MGR_REFRESH_DELAY 0x15
++#define __RW_MGR_MRS3_MIRR 0x0B
++#define __RW_MGR_IDLE 0x00
++#define __RW_MGR_READ_B2B 0x59
++#define __RW_MGR_LFSR_WR_RD_DM_BANK_0_DQS 0x38
++#define __RW_MGR_GUARANTEED_WRITE 0x18
++#define __RW_MGR_PRECHARGE_ALL 0x12
++#define __RW_MGR_SGLE_READ 0x7D
++#define __RW_MGR_MRS0_USER_MIRR 0x0C
++#define __RW_MGR_RETURN 0x01
++#define __RW_MGR_LFSR_WR_RD_DM_BANK_0 0x36
++#define __RW_MGR_MRS0_USER 0x07
++#define __RW_MGR_GUARANTEED_READ 0x4C
++#define __RW_MGR_MRS0_DLL_RESET_MIRR 0x08
++#define __RW_MGR_INIT_RESET_1_CKE_0 0x74
++#define __RW_MGR_ACTIVATE_0_AND_1_WAIT2 0x10
++#define __RW_MGR_LFSR_WR_RD_BANK_0_WL_1 0x21
++#define __RW_MGR_MRS0_DLL_RESET 0x02
++#define __RW_MGR_ACTIVATE_0_AND_1_WAIT1 0x0E
++#define __RW_MGR_LFSR_WR_RD_BANK_0 0x22
++#define __RW_MGR_CLEAR_DQS_ENABLE 0x49
++#define __RW_MGR_MRS1_MIRR 0x09
++#define __RW_MGR_READ_B2B_WAIT1 0x61
++#define __RW_MGR_CONTENT_READ_B2B_WAIT2 0x00C680
++#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0_WAIT 0x00A680
++#define __RW_MGR_CONTENT_REFRESH_ALL 0x000980
++#define __RW_MGR_CONTENT_ZQCL 0x008380
++#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0_NOP 0x00E700
++#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0_DQS 0x000C00
++#define __RW_MGR_CONTENT_ACTIVATE_0_AND_1 0x000800
++#define __RW_MGR_CONTENT_MRS2_MIRR 0x008580
++#define __RW_MGR_CONTENT_INIT_RESET_0_CKE_0 0x000000
++#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0_WAIT 0x00A680
++#define __RW_MGR_CONTENT_ACTIVATE_1 0x000880
++#define __RW_MGR_CONTENT_MRS2 0x008280
++#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0_WL_1 0x00CE00
++#define __RW_MGR_CONTENT_MRS1 0x008200
++#define __RW_MGR_CONTENT_IDLE_LOOP1 0x00A680
++#define __RW_MGR_CONTENT_GUARANTEED_WRITE_WAIT2 0x00CCE8
++#define __RW_MGR_CONTENT_MRS3 0x008300
++#define __RW_MGR_CONTENT_IDLE_LOOP2 0x008680
++#define __RW_MGR_CONTENT_GUARANTEED_WRITE_WAIT1 0x00AC88
++#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0_DATA 0x020CE0
++#define __RW_MGR_CONTENT_GUARANTEED_WRITE_WAIT3 0x00EC88
++#define __RW_MGR_CONTENT_RDIMM_CMD 0x009180
++#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0_NOP 0x00E700
++#define __RW_MGR_CONTENT_GUARANTEED_WRITE_WAIT0 0x008CE8
++#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0_DATA 0x030CE0
++#define __RW_MGR_CONTENT_GUARANTEED_READ_CONT 0x001168
++#define __RW_MGR_CONTENT_REFRESH_DELAY 0x00A680
++#define __RW_MGR_CONTENT_MRS3_MIRR 0x008600
++#define __RW_MGR_CONTENT_IDLE 0x080000
++#define __RW_MGR_CONTENT_READ_B2B 0x040E88
++#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0_DQS 0x000C00
++#define __RW_MGR_CONTENT_GUARANTEED_WRITE 0x000B68
++#define __RW_MGR_CONTENT_PRECHARGE_ALL 0x000900
++#define __RW_MGR_CONTENT_SGLE_READ 0x040F08
++#define __RW_MGR_CONTENT_MRS0_USER_MIRR 0x008400
++#define __RW_MGR_CONTENT_RETURN 0x080680
++#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0 0x00CD80
++#define __RW_MGR_CONTENT_MRS0_USER 0x008100
++#define __RW_MGR_CONTENT_GUARANTEED_READ 0x001168
++#define __RW_MGR_CONTENT_MRS0_DLL_RESET_MIRR 0x008480
++#define __RW_MGR_CONTENT_INIT_RESET_1_CKE_0 0x000080
++#define __RW_MGR_CONTENT_ACTIVATE_0_AND_1_WAIT2 0x00A680
++#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0_WL_1 0x00CE00
++#define __RW_MGR_CONTENT_MRS0_DLL_RESET 0x008180
++#define __RW_MGR_CONTENT_ACTIVATE_0_AND_1_WAIT1 0x008680
++#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0 0x00CD80
++#define __RW_MGR_CONTENT_CLEAR_DQS_ENABLE 0x001158
++#define __RW_MGR_CONTENT_MRS1_MIRR 0x008500
++#define __RW_MGR_CONTENT_READ_B2B_WAIT1 0x00A680
+diff --git a/arch/arm/boards/terasic-de10-nano/sequencer_auto_ac_init.c b/arch/arm/boards/terasic-de10-nano/sequencer_auto_ac_init.c
+new file mode 100644
+index 000000000..05f160967
+--- /dev/null
++++ b/arch/arm/boards/terasic-de10-nano/sequencer_auto_ac_init.c
+@@ -0,0 +1,67 @@
++/*
++Copyright (C) 2020  Intel Corporation. All rights reserved.
 +
-+	{ 0x1200b2, 0xdc },
-+	{ 0x110043, 0x5a1 },
-+	{ 0x110143, 0x5a1 },
-+	{ 0x111043, 0x5a1 },
-+	{ 0x111143, 0x5a1 },
-+	{ 0x112043, 0x5a1 },
-+	{ 0x112143, 0x5a1 },
-+	{ 0x113043, 0x5a1 },
-+	{ 0x113143, 0x5a1 },
++SPDX-License-Identifier:    BSD-3-Clause
 +
-+	{ 0x2200b2, 0xdc },
-+	{ 0x210043, 0x5a1 },
-+	{ 0x210143, 0x5a1 },
-+	{ 0x211043, 0x5a1 },
-+	{ 0x211143, 0x5a1 },
-+	{ 0x212043, 0x5a1 },
-+	{ 0x212143, 0x5a1 },
-+	{ 0x213043, 0x5a1 },
-+	{ 0x213143, 0x5a1 },
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are met:
++    * Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++    * Redistributions in binary form must reproduce the above copyright
++      notice, this list of conditions and the following disclaimer in the
++      documentation and/or other materials provided with the distribution.
++    * Neither the name of Intel Corporation nor the
++      names of its contributors may be used to endorse or promote products
++      derived from this software without specific prior written permission.
 +
-+	{ 0x200fa, 0x1 },
-+	{ 0x1200fa, 0x1 },
-+	{ 0x2200fa, 0x1 },
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
++DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++*/
 +
-+	{ 0x20019, 0x1 },
-+	{ 0x120019, 0x1 },
-+	{ 0x220019, 0x1 },
-+
-+	{ 0x200f0, 0x660 },
-+	{ 0x200f1, 0x0 },
-+	{ 0x200f2, 0x4444 },
-+	{ 0x200f3, 0x8888 },
-+	{ 0x200f4, 0x5665 },
-+	{ 0x200f5, 0x0 },
-+	{ 0x200f6, 0x0 },
-+	{ 0x200f7, 0xf000 },
-+
-+	{ 0x20025, 0x0 },
-+	{ 0x2002d, LPDDR4_PHY_DMIPinPresent },
-+	{ 0x12002d, LPDDR4_PHY_DMIPinPresent },
-+	{ 0x22002d, LPDDR4_PHY_DMIPinPresent },
-+	{ 0x200c7, 0x21 },
-+	{ 0x200ca, 0x24 },
-+	{ 0x1200c7, 0x21 },
-+	{ 0x1200ca, 0x24 },
-+	{ 0x2200c7, 0x21 },
-+	{ 0x2200ca, 0x24 },
++static const uint32_t ac_rom_init_size = 36;
++static const uint32_t ac_rom_init[36] = {
++	0x20700000,
++	0x20780000,
++	0x10080431,
++	0x10080530,
++	0x10090044,
++	0x100a0010,
++	0x100b0000,
++	0x10380400,
++	0x10080449,
++	0x100804c8,
++	0x100a0024,
++	0x10090008,
++	0x100b0000,
++	0x30780000,
++	0x38780000,
++	0x30780000,
++	0x10680000,
++	0x106b0000,
++	0x10280400,
++	0x10480000,
++	0x1c980000,
++	0x1c9b0000,
++	0x1c980008,
++	0x1c9b0008,
++	0x38f80000,
++	0x3cf80000,
++	0x38780000,
++	0x18180000,
++	0x18980000,
++	0x13580000,
++	0x135b0000,
++	0x13580008,
++	0x135b0008,
++	0x33780000,
++	0x10580008,
++	0x10780000
 +};
+diff --git a/arch/arm/boards/terasic-de10-nano/sequencer_auto_inst_init.c b/arch/arm/boards/terasic-de10-nano/sequencer_auto_inst_init.c
+new file mode 100644
+index 000000000..2ca79c65a
+--- /dev/null
++++ b/arch/arm/boards/terasic-de10-nano/sequencer_auto_inst_init.c
+@@ -0,0 +1,158 @@
++/*
++Copyright (C) 2020  Intel Corporation. All rights reserved.
 +
-+/* ddr phy trained csr */
-+static struct dram_cfg_param lpddr4_ddrphy_trained_csr[] = {
-+	{ 0x200b2, 0x0 },
-+	{ 0x1200b2, 0x0 },
-+	{ 0x2200b2, 0x0 },
-+	{ 0x200cb, 0x0 },
-+	{ 0x10043, 0x0 },
-+	{ 0x110043, 0x0 },
-+	{ 0x210043, 0x0 },
-+	{ 0x10143, 0x0 },
-+	{ 0x110143, 0x0 },
-+	{ 0x210143, 0x0 },
-+	{ 0x11043, 0x0 },
-+	{ 0x111043, 0x0 },
-+	{ 0x211043, 0x0 },
-+	{ 0x11143, 0x0 },
-+	{ 0x111143, 0x0 },
-+	{ 0x211143, 0x0 },
-+	{ 0x12043, 0x0 },
-+	{ 0x112043, 0x0 },
-+	{ 0x212043, 0x0 },
-+	{ 0x12143, 0x0 },
-+	{ 0x112143, 0x0 },
-+	{ 0x212143, 0x0 },
-+	{ 0x13043, 0x0 },
-+	{ 0x113043, 0x0 },
-+	{ 0x213043, 0x0 },
-+	{ 0x13143, 0x0 },
-+	{ 0x113143, 0x0 },
-+	{ 0x213143, 0x0 },
-+	{ 0x80, 0x0 },
-+	{ 0x100080, 0x0 },
-+	{ 0x200080, 0x0 },
-+	{ 0x1080, 0x0 },
-+	{ 0x101080, 0x0 },
-+	{ 0x201080, 0x0 },
-+	{ 0x2080, 0x0 },
-+	{ 0x102080, 0x0 },
-+	{ 0x202080, 0x0 },
-+	{ 0x3080, 0x0 },
-+	{ 0x103080, 0x0 },
-+	{ 0x203080, 0x0 },
-+	{ 0x4080, 0x0 },
-+	{ 0x104080, 0x0 },
-+	{ 0x204080, 0x0 },
-+	{ 0x5080, 0x0 },
-+	{ 0x105080, 0x0 },
-+	{ 0x205080, 0x0 },
-+	{ 0x6080, 0x0 },
-+	{ 0x106080, 0x0 },
-+	{ 0x206080, 0x0 },
-+	{ 0x7080, 0x0 },
-+	{ 0x107080, 0x0 },
-+	{ 0x207080, 0x0 },
-+	{ 0x8080, 0x0 },
-+	{ 0x108080, 0x0 },
-+	{ 0x208080, 0x0 },
-+	{ 0x9080, 0x0 },
-+	{ 0x109080, 0x0 },
-+	{ 0x209080, 0x0 },
-+	{ 0x10080, 0x0 },
-+	{ 0x110080, 0x0 },
-+	{ 0x210080, 0x0 },
-+	{ 0x10180, 0x0 },
-+	{ 0x110180, 0x0 },
-+	{ 0x210180, 0x0 },
-+	{ 0x11080, 0x0 },
-+	{ 0x111080, 0x0 },
-+	{ 0x211080, 0x0 },
-+	{ 0x11180, 0x0 },
-+	{ 0x111180, 0x0 },
-+	{ 0x211180, 0x0 },
-+	{ 0x12080, 0x0 },
-+	{ 0x112080, 0x0 },
-+	{ 0x212080, 0x0 },
-+	{ 0x12180, 0x0 },
-+	{ 0x112180, 0x0 },
-+	{ 0x212180, 0x0 },
-+	{ 0x13080, 0x0 },
-+	{ 0x113080, 0x0 },
-+	{ 0x213080, 0x0 },
-+	{ 0x13180, 0x0 },
-+	{ 0x113180, 0x0 },
-+	{ 0x213180, 0x0 },
-+	{ 0x10081, 0x0 },
-+	{ 0x110081, 0x0 },
-+	{ 0x210081, 0x0 },
-+	{ 0x10181, 0x0 },
-+	{ 0x110181, 0x0 },
-+	{ 0x210181, 0x0 },
-+	{ 0x11081, 0x0 },
-+	{ 0x111081, 0x0 },
-+	{ 0x211081, 0x0 },
-+	{ 0x11181, 0x0 },
-+	{ 0x111181, 0x0 },
-+	{ 0x211181, 0x0 },
-+	{ 0x12081, 0x0 },
-+	{ 0x112081, 0x0 },
-+	{ 0x212081, 0x0 },
-+	{ 0x12181, 0x0 },
-+	{ 0x112181, 0x0 },
-+	{ 0x212181, 0x0 },
-+	{ 0x13081, 0x0 },
-+	{ 0x113081, 0x0 },
-+	{ 0x213081, 0x0 },
-+	{ 0x13181, 0x0 },
-+	{ 0x113181, 0x0 },
-+	{ 0x213181, 0x0 },
-+	{ 0x100d0, 0x0 },
-+	{ 0x1100d0, 0x0 },
-+	{ 0x2100d0, 0x0 },
-+	{ 0x101d0, 0x0 },
-+	{ 0x1101d0, 0x0 },
-+	{ 0x2101d0, 0x0 },
-+	{ 0x110d0, 0x0 },
-+	{ 0x1110d0, 0x0 },
-+	{ 0x2110d0, 0x0 },
-+	{ 0x111d0, 0x0 },
-+	{ 0x1111d0, 0x0 },
-+	{ 0x2111d0, 0x0 },
-+	{ 0x120d0, 0x0 },
-+	{ 0x1120d0, 0x0 },
-+	{ 0x2120d0, 0x0 },
-+	{ 0x121d0, 0x0 },
-+	{ 0x1121d0, 0x0 },
-+	{ 0x2121d0, 0x0 },
-+	{ 0x130d0, 0x0 },
-+	{ 0x1130d0, 0x0 },
-+	{ 0x2130d0, 0x0 },
-+	{ 0x131d0, 0x0 },
-+	{ 0x1131d0, 0x0 },
-+	{ 0x2131d0, 0x0 },
-+	{ 0x100d1, 0x0 },
-+	{ 0x1100d1, 0x0 },
-+	{ 0x2100d1, 0x0 },
-+	{ 0x101d1, 0x0 },
-+	{ 0x1101d1, 0x0 },
-+	{ 0x2101d1, 0x0 },
-+	{ 0x110d1, 0x0 },
-+	{ 0x1110d1, 0x0 },
-+	{ 0x2110d1, 0x0 },
-+	{ 0x111d1, 0x0 },
-+	{ 0x1111d1, 0x0 },
-+	{ 0x2111d1, 0x0 },
-+	{ 0x120d1, 0x0 },
-+	{ 0x1120d1, 0x0 },
-+	{ 0x2120d1, 0x0 },
-+	{ 0x121d1, 0x0 },
-+	{ 0x1121d1, 0x0 },
-+	{ 0x2121d1, 0x0 },
-+	{ 0x130d1, 0x0 },
-+	{ 0x1130d1, 0x0 },
-+	{ 0x2130d1, 0x0 },
-+	{ 0x131d1, 0x0 },
-+	{ 0x1131d1, 0x0 },
-+	{ 0x2131d1, 0x0 },
-+	{ 0x10068, 0x0 },
-+	{ 0x10168, 0x0 },
-+	{ 0x10268, 0x0 },
-+	{ 0x10368, 0x0 },
-+	{ 0x10468, 0x0 },
-+	{ 0x10568, 0x0 },
-+	{ 0x10668, 0x0 },
-+	{ 0x10768, 0x0 },
-+	{ 0x10868, 0x0 },
-+	{ 0x11068, 0x0 },
-+	{ 0x11168, 0x0 },
-+	{ 0x11268, 0x0 },
-+	{ 0x11368, 0x0 },
-+	{ 0x11468, 0x0 },
-+	{ 0x11568, 0x0 },
-+	{ 0x11668, 0x0 },
-+	{ 0x11768, 0x0 },
-+	{ 0x11868, 0x0 },
-+	{ 0x12068, 0x0 },
-+	{ 0x12168, 0x0 },
-+	{ 0x12268, 0x0 },
-+	{ 0x12368, 0x0 },
-+	{ 0x12468, 0x0 },
-+	{ 0x12568, 0x0 },
-+	{ 0x12668, 0x0 },
-+	{ 0x12768, 0x0 },
-+	{ 0x12868, 0x0 },
-+	{ 0x13068, 0x0 },
-+	{ 0x13168, 0x0 },
-+	{ 0x13268, 0x0 },
-+	{ 0x13368, 0x0 },
-+	{ 0x13468, 0x0 },
-+	{ 0x13568, 0x0 },
-+	{ 0x13668, 0x0 },
-+	{ 0x13768, 0x0 },
-+	{ 0x13868, 0x0 },
-+	{ 0x10069, 0x0 },
-+	{ 0x10169, 0x0 },
-+	{ 0x10269, 0x0 },
-+	{ 0x10369, 0x0 },
-+	{ 0x10469, 0x0 },
-+	{ 0x10569, 0x0 },
-+	{ 0x10669, 0x0 },
-+	{ 0x10769, 0x0 },
-+	{ 0x10869, 0x0 },
-+	{ 0x11069, 0x0 },
-+	{ 0x11169, 0x0 },
-+	{ 0x11269, 0x0 },
-+	{ 0x11369, 0x0 },
-+	{ 0x11469, 0x0 },
-+	{ 0x11569, 0x0 },
-+	{ 0x11669, 0x0 },
-+	{ 0x11769, 0x0 },
-+	{ 0x11869, 0x0 },
-+	{ 0x12069, 0x0 },
-+	{ 0x12169, 0x0 },
-+	{ 0x12269, 0x0 },
-+	{ 0x12369, 0x0 },
-+	{ 0x12469, 0x0 },
-+	{ 0x12569, 0x0 },
-+	{ 0x12669, 0x0 },
-+	{ 0x12769, 0x0 },
-+	{ 0x12869, 0x0 },
-+	{ 0x13069, 0x0 },
-+	{ 0x13169, 0x0 },
-+	{ 0x13269, 0x0 },
-+	{ 0x13369, 0x0 },
-+	{ 0x13469, 0x0 },
-+	{ 0x13569, 0x0 },
-+	{ 0x13669, 0x0 },
-+	{ 0x13769, 0x0 },
-+	{ 0x13869, 0x0 },
-+	{ 0x1008c, 0x0 },
-+	{ 0x11008c, 0x0 },
-+	{ 0x21008c, 0x0 },
-+	{ 0x1018c, 0x0 },
-+	{ 0x11018c, 0x0 },
-+	{ 0x21018c, 0x0 },
-+	{ 0x1108c, 0x0 },
-+	{ 0x11108c, 0x0 },
-+	{ 0x21108c, 0x0 },
-+	{ 0x1118c, 0x0 },
-+	{ 0x11118c, 0x0 },
-+	{ 0x21118c, 0x0 },
-+	{ 0x1208c, 0x0 },
-+	{ 0x11208c, 0x0 },
-+	{ 0x21208c, 0x0 },
-+	{ 0x1218c, 0x0 },
-+	{ 0x11218c, 0x0 },
-+	{ 0x21218c, 0x0 },
-+	{ 0x1308c, 0x0 },
-+	{ 0x11308c, 0x0 },
-+	{ 0x21308c, 0x0 },
-+	{ 0x1318c, 0x0 },
-+	{ 0x11318c, 0x0 },
-+	{ 0x21318c, 0x0 },
-+	{ 0x1008d, 0x0 },
-+	{ 0x11008d, 0x0 },
-+	{ 0x21008d, 0x0 },
-+	{ 0x1018d, 0x0 },
-+	{ 0x11018d, 0x0 },
-+	{ 0x21018d, 0x0 },
-+	{ 0x1108d, 0x0 },
-+	{ 0x11108d, 0x0 },
-+	{ 0x21108d, 0x0 },
-+	{ 0x1118d, 0x0 },
-+	{ 0x11118d, 0x0 },
-+	{ 0x21118d, 0x0 },
-+	{ 0x1208d, 0x0 },
-+	{ 0x11208d, 0x0 },
-+	{ 0x21208d, 0x0 },
-+	{ 0x1218d, 0x0 },
-+	{ 0x11218d, 0x0 },
-+	{ 0x21218d, 0x0 },
-+	{ 0x1308d, 0x0 },
-+	{ 0x11308d, 0x0 },
-+	{ 0x21308d, 0x0 },
-+	{ 0x1318d, 0x0 },
-+	{ 0x11318d, 0x0 },
-+	{ 0x21318d, 0x0 },
-+	{ 0x100c0, 0x0 },
-+	{ 0x1100c0, 0x0 },
-+	{ 0x2100c0, 0x0 },
-+	{ 0x101c0, 0x0 },
-+	{ 0x1101c0, 0x0 },
-+	{ 0x2101c0, 0x0 },
-+	{ 0x102c0, 0x0 },
-+	{ 0x1102c0, 0x0 },
-+	{ 0x2102c0, 0x0 },
-+	{ 0x103c0, 0x0 },
-+	{ 0x1103c0, 0x0 },
-+	{ 0x2103c0, 0x0 },
-+	{ 0x104c0, 0x0 },
-+	{ 0x1104c0, 0x0 },
-+	{ 0x2104c0, 0x0 },
-+	{ 0x105c0, 0x0 },
-+	{ 0x1105c0, 0x0 },
-+	{ 0x2105c0, 0x0 },
-+	{ 0x106c0, 0x0 },
-+	{ 0x1106c0, 0x0 },
-+	{ 0x2106c0, 0x0 },
-+	{ 0x107c0, 0x0 },
-+	{ 0x1107c0, 0x0 },
-+	{ 0x2107c0, 0x0 },
-+	{ 0x108c0, 0x0 },
-+	{ 0x1108c0, 0x0 },
-+	{ 0x2108c0, 0x0 },
-+	{ 0x110c0, 0x0 },
-+	{ 0x1110c0, 0x0 },
-+	{ 0x2110c0, 0x0 },
-+	{ 0x111c0, 0x0 },
-+	{ 0x1111c0, 0x0 },
-+	{ 0x2111c0, 0x0 },
-+	{ 0x112c0, 0x0 },
-+	{ 0x1112c0, 0x0 },
-+	{ 0x2112c0, 0x0 },
-+	{ 0x113c0, 0x0 },
-+	{ 0x1113c0, 0x0 },
-+	{ 0x2113c0, 0x0 },
-+	{ 0x114c0, 0x0 },
-+	{ 0x1114c0, 0x0 },
-+	{ 0x2114c0, 0x0 },
-+	{ 0x115c0, 0x0 },
-+	{ 0x1115c0, 0x0 },
-+	{ 0x2115c0, 0x0 },
-+	{ 0x116c0, 0x0 },
-+	{ 0x1116c0, 0x0 },
-+	{ 0x2116c0, 0x0 },
-+	{ 0x117c0, 0x0 },
-+	{ 0x1117c0, 0x0 },
-+	{ 0x2117c0, 0x0 },
-+	{ 0x118c0, 0x0 },
-+	{ 0x1118c0, 0x0 },
-+	{ 0x2118c0, 0x0 },
-+	{ 0x120c0, 0x0 },
-+	{ 0x1120c0, 0x0 },
-+	{ 0x2120c0, 0x0 },
-+	{ 0x121c0, 0x0 },
-+	{ 0x1121c0, 0x0 },
-+	{ 0x2121c0, 0x0 },
-+	{ 0x122c0, 0x0 },
-+	{ 0x1122c0, 0x0 },
-+	{ 0x2122c0, 0x0 },
-+	{ 0x123c0, 0x0 },
-+	{ 0x1123c0, 0x0 },
-+	{ 0x2123c0, 0x0 },
-+	{ 0x124c0, 0x0 },
-+	{ 0x1124c0, 0x0 },
-+	{ 0x2124c0, 0x0 },
-+	{ 0x125c0, 0x0 },
-+	{ 0x1125c0, 0x0 },
-+	{ 0x2125c0, 0x0 },
-+	{ 0x126c0, 0x0 },
-+	{ 0x1126c0, 0x0 },
-+	{ 0x2126c0, 0x0 },
-+	{ 0x127c0, 0x0 },
-+	{ 0x1127c0, 0x0 },
-+	{ 0x2127c0, 0x0 },
-+	{ 0x128c0, 0x0 },
-+	{ 0x1128c0, 0x0 },
-+	{ 0x2128c0, 0x0 },
-+	{ 0x130c0, 0x0 },
-+	{ 0x1130c0, 0x0 },
-+	{ 0x2130c0, 0x0 },
-+	{ 0x131c0, 0x0 },
-+	{ 0x1131c0, 0x0 },
-+	{ 0x2131c0, 0x0 },
-+	{ 0x132c0, 0x0 },
-+	{ 0x1132c0, 0x0 },
-+	{ 0x2132c0, 0x0 },
-+	{ 0x133c0, 0x0 },
-+	{ 0x1133c0, 0x0 },
-+	{ 0x2133c0, 0x0 },
-+	{ 0x134c0, 0x0 },
-+	{ 0x1134c0, 0x0 },
-+	{ 0x2134c0, 0x0 },
-+	{ 0x135c0, 0x0 },
-+	{ 0x1135c0, 0x0 },
-+	{ 0x2135c0, 0x0 },
-+	{ 0x136c0, 0x0 },
-+	{ 0x1136c0, 0x0 },
-+	{ 0x2136c0, 0x0 },
-+	{ 0x137c0, 0x0 },
-+	{ 0x1137c0, 0x0 },
-+	{ 0x2137c0, 0x0 },
-+	{ 0x138c0, 0x0 },
-+	{ 0x1138c0, 0x0 },
-+	{ 0x2138c0, 0x0 },
-+	{ 0x100c1, 0x0 },
-+	{ 0x1100c1, 0x0 },
-+	{ 0x2100c1, 0x0 },
-+	{ 0x101c1, 0x0 },
-+	{ 0x1101c1, 0x0 },
-+	{ 0x2101c1, 0x0 },
-+	{ 0x102c1, 0x0 },
-+	{ 0x1102c1, 0x0 },
-+	{ 0x2102c1, 0x0 },
-+	{ 0x103c1, 0x0 },
-+	{ 0x1103c1, 0x0 },
-+	{ 0x2103c1, 0x0 },
-+	{ 0x104c1, 0x0 },
-+	{ 0x1104c1, 0x0 },
-+	{ 0x2104c1, 0x0 },
-+	{ 0x105c1, 0x0 },
-+	{ 0x1105c1, 0x0 },
-+	{ 0x2105c1, 0x0 },
-+	{ 0x106c1, 0x0 },
-+	{ 0x1106c1, 0x0 },
-+	{ 0x2106c1, 0x0 },
-+	{ 0x107c1, 0x0 },
-+	{ 0x1107c1, 0x0 },
-+	{ 0x2107c1, 0x0 },
-+	{ 0x108c1, 0x0 },
-+	{ 0x1108c1, 0x0 },
-+	{ 0x2108c1, 0x0 },
-+	{ 0x110c1, 0x0 },
-+	{ 0x1110c1, 0x0 },
-+	{ 0x2110c1, 0x0 },
-+	{ 0x111c1, 0x0 },
-+	{ 0x1111c1, 0x0 },
-+	{ 0x2111c1, 0x0 },
-+	{ 0x112c1, 0x0 },
-+	{ 0x1112c1, 0x0 },
-+	{ 0x2112c1, 0x0 },
-+	{ 0x113c1, 0x0 },
-+	{ 0x1113c1, 0x0 },
-+	{ 0x2113c1, 0x0 },
-+	{ 0x114c1, 0x0 },
-+	{ 0x1114c1, 0x0 },
-+	{ 0x2114c1, 0x0 },
-+	{ 0x115c1, 0x0 },
-+	{ 0x1115c1, 0x0 },
-+	{ 0x2115c1, 0x0 },
-+	{ 0x116c1, 0x0 },
-+	{ 0x1116c1, 0x0 },
-+	{ 0x2116c1, 0x0 },
-+	{ 0x117c1, 0x0 },
-+	{ 0x1117c1, 0x0 },
-+	{ 0x2117c1, 0x0 },
-+	{ 0x118c1, 0x0 },
-+	{ 0x1118c1, 0x0 },
-+	{ 0x2118c1, 0x0 },
-+	{ 0x120c1, 0x0 },
-+	{ 0x1120c1, 0x0 },
-+	{ 0x2120c1, 0x0 },
-+	{ 0x121c1, 0x0 },
-+	{ 0x1121c1, 0x0 },
-+	{ 0x2121c1, 0x0 },
-+	{ 0x122c1, 0x0 },
-+	{ 0x1122c1, 0x0 },
-+	{ 0x2122c1, 0x0 },
-+	{ 0x123c1, 0x0 },
-+	{ 0x1123c1, 0x0 },
-+	{ 0x2123c1, 0x0 },
-+	{ 0x124c1, 0x0 },
-+	{ 0x1124c1, 0x0 },
-+	{ 0x2124c1, 0x0 },
-+	{ 0x125c1, 0x0 },
-+	{ 0x1125c1, 0x0 },
-+	{ 0x2125c1, 0x0 },
-+	{ 0x126c1, 0x0 },
-+	{ 0x1126c1, 0x0 },
-+	{ 0x2126c1, 0x0 },
-+	{ 0x127c1, 0x0 },
-+	{ 0x1127c1, 0x0 },
-+	{ 0x2127c1, 0x0 },
-+	{ 0x128c1, 0x0 },
-+	{ 0x1128c1, 0x0 },
-+	{ 0x2128c1, 0x0 },
-+	{ 0x130c1, 0x0 },
-+	{ 0x1130c1, 0x0 },
-+	{ 0x2130c1, 0x0 },
-+	{ 0x131c1, 0x0 },
-+	{ 0x1131c1, 0x0 },
-+	{ 0x2131c1, 0x0 },
-+	{ 0x132c1, 0x0 },
-+	{ 0x1132c1, 0x0 },
-+	{ 0x2132c1, 0x0 },
-+	{ 0x133c1, 0x0 },
-+	{ 0x1133c1, 0x0 },
-+	{ 0x2133c1, 0x0 },
-+	{ 0x134c1, 0x0 },
-+	{ 0x1134c1, 0x0 },
-+	{ 0x2134c1, 0x0 },
-+	{ 0x135c1, 0x0 },
-+	{ 0x1135c1, 0x0 },
-+	{ 0x2135c1, 0x0 },
-+	{ 0x136c1, 0x0 },
-+	{ 0x1136c1, 0x0 },
-+	{ 0x2136c1, 0x0 },
-+	{ 0x137c1, 0x0 },
-+	{ 0x1137c1, 0x0 },
-+	{ 0x2137c1, 0x0 },
-+	{ 0x138c1, 0x0 },
-+	{ 0x1138c1, 0x0 },
-+	{ 0x2138c1, 0x0 },
-+	{ 0x10020, 0x0 },
-+	{ 0x110020, 0x0 },
-+	{ 0x210020, 0x0 },
-+	{ 0x11020, 0x0 },
-+	{ 0x111020, 0x0 },
-+	{ 0x211020, 0x0 },
-+	{ 0x12020, 0x0 },
-+	{ 0x112020, 0x0 },
-+	{ 0x212020, 0x0 },
-+	{ 0x13020, 0x0 },
-+	{ 0x113020, 0x0 },
-+	{ 0x213020, 0x0 },
-+	{ 0x20072, 0x0 },
-+	{ 0x20073, 0x0 },
-+	{ 0x20074, 0x0 },
-+	{ 0x100aa, 0x0 },
-+	{ 0x110aa, 0x0 },
-+	{ 0x120aa, 0x0 },
-+	{ 0x130aa, 0x0 },
-+	{ 0x20010, 0x0 },
-+	{ 0x120010, 0x0 },
-+	{ 0x220010, 0x0 },
-+	{ 0x20011, 0x0 },
-+	{ 0x120011, 0x0 },
-+	{ 0x220011, 0x0 },
-+	{ 0x100ae, 0x0 },
-+	{ 0x1100ae, 0x0 },
-+	{ 0x2100ae, 0x0 },
-+	{ 0x100af, 0x0 },
-+	{ 0x1100af, 0x0 },
-+	{ 0x2100af, 0x0 },
-+	{ 0x110ae, 0x0 },
-+	{ 0x1110ae, 0x0 },
-+	{ 0x2110ae, 0x0 },
-+	{ 0x110af, 0x0 },
-+	{ 0x1110af, 0x0 },
-+	{ 0x2110af, 0x0 },
-+	{ 0x120ae, 0x0 },
-+	{ 0x1120ae, 0x0 },
-+	{ 0x2120ae, 0x0 },
-+	{ 0x120af, 0x0 },
-+	{ 0x1120af, 0x0 },
-+	{ 0x2120af, 0x0 },
-+	{ 0x130ae, 0x0 },
-+	{ 0x1130ae, 0x0 },
-+	{ 0x2130ae, 0x0 },
-+	{ 0x130af, 0x0 },
-+	{ 0x1130af, 0x0 },
-+	{ 0x2130af, 0x0 },
-+	{ 0x20020, 0x0 },
-+	{ 0x120020, 0x0 },
-+	{ 0x220020, 0x0 },
-+	{ 0x100a0, 0x0 },
-+	{ 0x100a1, 0x0 },
-+	{ 0x100a2, 0x0 },
-+	{ 0x100a3, 0x0 },
-+	{ 0x100a4, 0x0 },
-+	{ 0x100a5, 0x0 },
-+	{ 0x100a6, 0x0 },
-+	{ 0x100a7, 0x0 },
-+	{ 0x110a0, 0x0 },
-+	{ 0x110a1, 0x0 },
-+	{ 0x110a2, 0x0 },
-+	{ 0x110a3, 0x0 },
-+	{ 0x110a4, 0x0 },
-+	{ 0x110a5, 0x0 },
-+	{ 0x110a6, 0x0 },
-+	{ 0x110a7, 0x0 },
-+	{ 0x120a0, 0x0 },
-+	{ 0x120a1, 0x0 },
-+	{ 0x120a2, 0x0 },
-+	{ 0x120a3, 0x0 },
-+	{ 0x120a4, 0x0 },
-+	{ 0x120a5, 0x0 },
-+	{ 0x120a6, 0x0 },
-+	{ 0x120a7, 0x0 },
-+	{ 0x130a0, 0x0 },
-+	{ 0x130a1, 0x0 },
-+	{ 0x130a2, 0x0 },
-+	{ 0x130a3, 0x0 },
-+	{ 0x130a4, 0x0 },
-+	{ 0x130a5, 0x0 },
-+	{ 0x130a6, 0x0 },
-+	{ 0x130a7, 0x0 },
-+	{ 0x2007c, 0x0 },
-+	{ 0x12007c, 0x0 },
-+	{ 0x22007c, 0x0 },
-+	{ 0x2007d, 0x0 },
-+	{ 0x12007d, 0x0 },
-+	{ 0x22007d, 0x0 },
-+	{ 0x400fd, 0x0 },
-+	{ 0x400c0, 0x0 },
-+	{ 0x90201, 0x0 },
-+	{ 0x190201, 0x0 },
-+	{ 0x290201, 0x0 },
-+	{ 0x90202, 0x0 },
-+	{ 0x190202, 0x0 },
-+	{ 0x290202, 0x0 },
-+	{ 0x90203, 0x0 },
-+	{ 0x190203, 0x0 },
-+	{ 0x290203, 0x0 },
-+	{ 0x90204, 0x0 },
-+	{ 0x190204, 0x0 },
-+	{ 0x290204, 0x0 },
-+	{ 0x90205, 0x0 },
-+	{ 0x190205, 0x0 },
-+	{ 0x290205, 0x0 },
-+	{ 0x90206, 0x0 },
-+	{ 0x190206, 0x0 },
-+	{ 0x290206, 0x0 },
-+	{ 0x90207, 0x0 },
-+	{ 0x190207, 0x0 },
-+	{ 0x290207, 0x0 },
-+	{ 0x90208, 0x0 },
-+	{ 0x190208, 0x0 },
-+	{ 0x290208, 0x0 },
-+	{ 0x10062, 0x0 },
-+	{ 0x10162, 0x0 },
-+	{ 0x10262, 0x0 },
-+	{ 0x10362, 0x0 },
-+	{ 0x10462, 0x0 },
-+	{ 0x10562, 0x0 },
-+	{ 0x10662, 0x0 },
-+	{ 0x10762, 0x0 },
-+	{ 0x10862, 0x0 },
-+	{ 0x11062, 0x0 },
-+	{ 0x11162, 0x0 },
-+	{ 0x11262, 0x0 },
-+	{ 0x11362, 0x0 },
-+	{ 0x11462, 0x0 },
-+	{ 0x11562, 0x0 },
-+	{ 0x11662, 0x0 },
-+	{ 0x11762, 0x0 },
-+	{ 0x11862, 0x0 },
-+	{ 0x12062, 0x0 },
-+	{ 0x12162, 0x0 },
-+	{ 0x12262, 0x0 },
-+	{ 0x12362, 0x0 },
-+	{ 0x12462, 0x0 },
-+	{ 0x12562, 0x0 },
-+	{ 0x12662, 0x0 },
-+	{ 0x12762, 0x0 },
-+	{ 0x12862, 0x0 },
-+	{ 0x13062, 0x0 },
-+	{ 0x13162, 0x0 },
-+	{ 0x13262, 0x0 },
-+	{ 0x13362, 0x0 },
-+	{ 0x13462, 0x0 },
-+	{ 0x13562, 0x0 },
-+	{ 0x13662, 0x0 },
-+	{ 0x13762, 0x0 },
-+	{ 0x13862, 0x0 },
-+	{ 0x20077, 0x0 },
-+	{ 0x10001, 0x0 },
-+	{ 0x11001, 0x0 },
-+	{ 0x12001, 0x0 },
-+	{ 0x13001, 0x0 },
-+	{ 0x10040, 0x0 },
-+	{ 0x10140, 0x0 },
-+	{ 0x10240, 0x0 },
-+	{ 0x10340, 0x0 },
-+	{ 0x10440, 0x0 },
-+	{ 0x10540, 0x0 },
-+	{ 0x10640, 0x0 },
-+	{ 0x10740, 0x0 },
-+	{ 0x10840, 0x0 },
-+	{ 0x10030, 0x0 },
-+	{ 0x10130, 0x0 },
-+	{ 0x10230, 0x0 },
-+	{ 0x10330, 0x0 },
-+	{ 0x10430, 0x0 },
-+	{ 0x10530, 0x0 },
-+	{ 0x10630, 0x0 },
-+	{ 0x10730, 0x0 },
-+	{ 0x10830, 0x0 },
-+	{ 0x11040, 0x0 },
-+	{ 0x11140, 0x0 },
-+	{ 0x11240, 0x0 },
-+	{ 0x11340, 0x0 },
-+	{ 0x11440, 0x0 },
-+	{ 0x11540, 0x0 },
-+	{ 0x11640, 0x0 },
-+	{ 0x11740, 0x0 },
-+	{ 0x11840, 0x0 },
-+	{ 0x11030, 0x0 },
-+	{ 0x11130, 0x0 },
-+	{ 0x11230, 0x0 },
-+	{ 0x11330, 0x0 },
-+	{ 0x11430, 0x0 },
-+	{ 0x11530, 0x0 },
-+	{ 0x11630, 0x0 },
-+	{ 0x11730, 0x0 },
-+	{ 0x11830, 0x0 },
-+	{ 0x12040, 0x0 },
-+	{ 0x12140, 0x0 },
-+	{ 0x12240, 0x0 },
-+	{ 0x12340, 0x0 },
-+	{ 0x12440, 0x0 },
-+	{ 0x12540, 0x0 },
-+	{ 0x12640, 0x0 },
-+	{ 0x12740, 0x0 },
-+	{ 0x12840, 0x0 },
-+	{ 0x12030, 0x0 },
-+	{ 0x12130, 0x0 },
-+	{ 0x12230, 0x0 },
-+	{ 0x12330, 0x0 },
-+	{ 0x12430, 0x0 },
-+	{ 0x12530, 0x0 },
-+	{ 0x12630, 0x0 },
-+	{ 0x12730, 0x0 },
-+	{ 0x12830, 0x0 },
-+	{ 0x13040, 0x0 },
-+	{ 0x13140, 0x0 },
-+	{ 0x13240, 0x0 },
-+	{ 0x13340, 0x0 },
-+	{ 0x13440, 0x0 },
-+	{ 0x13540, 0x0 },
-+	{ 0x13640, 0x0 },
-+	{ 0x13740, 0x0 },
-+	{ 0x13840, 0x0 },
-+	{ 0x13030, 0x0 },
-+	{ 0x13130, 0x0 },
-+	{ 0x13230, 0x0 },
-+	{ 0x13330, 0x0 },
-+	{ 0x13430, 0x0 },
-+	{ 0x13530, 0x0 },
-+	{ 0x13630, 0x0 },
-+	{ 0x13730, 0x0 },
-+	{ 0x13830, 0x0 },
-+};
++SPDX-License-Identifier:    BSD-3-Clause
 +
-+/* P0 message block paremeter for training firmware */
-+static struct dram_cfg_param lpddr4_fsp0_cfg[] = {
-+	{ 0xd0000, 0x0 },
-+	{ 0x54000, 0x0 },
-+	{ 0x54001, 0x0 },
-+	{ 0x54002, 0x0 },
-+	{ 0x54003, 0xbb8 }, // 3000
-+	{ 0x54004, 0x2 },
-+	{ 0x54005, ((LPDDR4_PHY_RON << 8) | LPDDR4_PHY_RTT) },//PHY Ron/Rtt
-+	{ 0x54006, LPDDR4_PHY_VREF_VALUE },
-+	{ 0x54007, 0x0 },
-+	{ 0x54008, 0x131f },
-+	{ 0x54009, 0xc8 }, // LPDDR4_HDT_CTL_3200_1D
-+	{ 0x5400a, 0x0 },
-+	{ 0x5400b, 0x2 },
-+	{ 0x5400c, 0x0 },
-+	{ 0x5400d, 0x0 },
-+	{ 0x5400e, 0x0 },
-+	{ 0x5400f, 0x0 },
-+	{ 0x54010, 0x0 },
-+	{ 0x54011, 0x0 },
-+	{ 0x54012, (LPDDR4_CS << 8) | (0x110 & 0xff) },
-+	{ 0x54013, 0x0 },
-+	{ 0x54014, 0x0 },
-+	{ 0x54015, 0x0 },
-+	{ 0x54016, 0x0 },
-+	{ 0x54017, 0x0 },
-+	{ 0x54018, 0x0 },
-+	{ 0x54019, 0x2dd4 },
-+	{ 0x5401a, (0x31 & 0xff00) | LPDDR4_MR3 },
-+	{ 0x5401b, 0x4d66 },
-+	{ 0x5401c, 0x4d08 },
-+	{ 0x5401d, 0x0 },
-+	{ 0x5401e, LPDDR4_MR22_RANK0/*0x16*/ },
-+	{ 0x5401f, 0x2dd4 },
-+	{ 0x54020, (0x31 & 0xff00) | LPDDR4_MR3 },
-+	{ 0x54021, 0x4d66 },
-+	{ 0x54022, 0x4d08 },
-+	{ 0x54023, 0x0 },
-+	{ 0x54024, LPDDR4_MR22_RANK1/*0x16*/ },
-+	{ 0x54025, 0x0 },
-+	{ 0x54026, 0x0 },
-+	{ 0x54027, 0x0 },
-+	{ 0x54028, 0x0 },
-+	{ 0x54029, 0x0 },
-+	{ 0x5402a, 0x0 },
-+	{ 0x5402b, 0x1000 },
-+	{ 0x5402c, LPDDR4_CS },
-+	{ 0x5402d, 0x0 },
-+	{ 0x5402e, 0x0 },
-+	{ 0x5402f, 0x0 },
-+	{ 0x54030, 0x0 },
-+	{ 0x54031, 0x0 },
-+	{ 0x54032, 0xd400 },
-+	{ 0x54033, (LPDDR4_MR3 << 8) | (0x312d & 0xff) },
-+	{ 0x54034, 0x6600 },
-+	{ 0x54035, 0x84d },
-+	{ 0x54036, 0x4d },
-+	{ 0x54037, (LPDDR4_MR22_RANK0 << 8)/*0x1600*/ },
-+	{ 0x54038, 0xd400 },
-+	{ 0x54039, (LPDDR4_MR3 << 8) | (0x312d & 0xff) },
-+	{ 0x5403a, 0x6600 },
-+	{ 0x5403b, 0x84d },
-+	{ 0x5403c, 0x4d },
-+	{ 0x5403d, (LPDDR4_MR22_RANK1 << 8)/*0x1600*/ },
-+	{ 0x5403e, 0x0 },
-+	{ 0x5403f, 0x0 },
-+	{ 0x54040, 0x0 },
-+	{ 0x54041, 0x0 },
-+	{ 0x54042, 0x0 },
-+	{ 0x54043, 0x0 },
-+	{ 0x54044, 0x0 },
-+	{ 0xd0000, 0x1 },
-+};
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are met:
++    * Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++    * Redistributions in binary form must reproduce the above copyright
++      notice, this list of conditions and the following disclaimer in the
++      documentation and/or other materials provided with the distribution.
++    * Neither the name of Intel Corporation nor the
++      names of its contributors may be used to endorse or promote products
++      derived from this software without specific prior written permission.
 +
-+/* P1 message block paremeter for training firmware */
-+static struct dram_cfg_param lpddr4_fsp1_cfg[] = {
-+	{ 0xd0000, 0x0 },
-+	{ 0x54000, 0x0 },
-+	{ 0x54001, 0x0 },
-+	{ 0x54002, 0x101 },
-+	{ 0x54003, 0x190 },
-+	{ 0x54004, 0x2 },
-+	{ 0x54005, ((LPDDR4_PHY_RON << 8) | LPDDR4_PHY_RTT) },/* PHY Ron/Rtt */
-+	{ 0x54006, LPDDR4_PHY_VREF_VALUE },
-+	{ 0x54007, 0x0 },
-+	{ 0x54008, 0x121f },
-+	{ 0x54009, 0xc8 },
-+	{ 0x5400a, 0x0 },
-+	{ 0x5400b, 0x2 },
-+	{ 0x5400c, 0x0 },
-+	{ 0x5400d, 0x0 },
-+	{ 0x5400e, 0x0 },
-+	{ 0x5400f, 0x0 },
-+	{ 0x54010, 0x0 },
-+	{ 0x54011, 0x0 },
-+	{ 0x54012, (LPDDR4_CS << 8) | (0x110 & 0xff) },
-+	{ 0x54013, 0x0 },
-+	{ 0x54014, 0x0 },
-+	{ 0x54015, 0x0 },
-+	{ 0x54016, 0x0 },
-+	{ 0x54017, 0x0 },
-+	{ 0x54018, 0x0 },
-+	{ 0x54019, 0x84 },
-+	{ 0x5401a, (0x31 & 0xff00) | LPDDR4_MR3 },
-+	{ 0x5401b, 0x4d66 },
-+	{ 0x5401c, 0x4d08 },
-+	{ 0x5401d, 0x0 },
-+	{ 0x5401e, LPDDR4_MR22_RANK0/*0x16*/ },
-+	{ 0x5401f, 0x84 },
-+	{ 0x54020, (0x31 & 0xff00) | LPDDR4_MR3 },
-+	{ 0x54021, 0x4d66 },
-+	{ 0x54022, 0x4d08 },
-+	{ 0x54023, 0x0 },
-+	{ 0x54024, LPDDR4_MR22_RANK1/*0x16*/ },
-+	{ 0x54025, 0x0 },
-+	{ 0x54026, 0x0 },
-+	{ 0x54027, 0x0 },
-+	{ 0x54028, 0x0 },
-+	{ 0x54029, 0x0 },
-+	{ 0x5402a, 0x0 },
-+	{ 0x5402b, 0x1000 },
-+	{ 0x5402c, LPDDR4_CS },
-+	{ 0x5402d, 0x0 },
-+	{ 0x5402e, 0x0 },
-+	{ 0x5402f, 0x0 },
-+	{ 0x54030, 0x0 },
-+	{ 0x54031, 0x0 },
-+	{ 0x54032, 0x8400 },
-+	{ 0x54033, (LPDDR4_MR3 << 8) | (0x3100 & 0xff) },
-+	{ 0x54034, 0x6600 },
-+	{ 0x54035, 0x84d },
-+	{ 0x54036, 0x4d },
-+	{ 0x54037, (LPDDR4_MR22_RANK0 << 8)/*0x1600*/ },
-+	{ 0x54038, 0x8400 },
-+	{ 0x54039, (LPDDR4_MR3 << 8) | (0x3100 & 0xff) },
-+	{ 0x5403a, 0x6600 },
-+	{ 0x5403b, 0x84d },
-+	{ 0x5403c, 0x4d },
-+	{ 0x5403d, (LPDDR4_MR22_RANK1 << 8)/*0x1600*/ },
-+	{ 0x5403e, 0x0 },
-+	{ 0x5403f, 0x0 },
-+	{ 0x54040, 0x0 },
-+	{ 0x54041, 0x0 },
-+	{ 0x54042, 0x0 },
-+	{ 0x54043, 0x0 },
-+	{ 0x54044, 0x0 },
-+	{ 0xd0000, 0x1 },
-+};
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
++DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++*/
 +
-+/* P1 message block paremeter for training firmware */
-+static struct dram_cfg_param lpddr4_fsp2_cfg[] = {
-+	{ 0xd0000, 0x0 },
-+	{ 0x54000, 0x0 },
-+	{ 0x54001, 0x0 },
-+	{ 0x54002, 0x102 },
-+	{ 0x54003, 0x64 },
-+	{ 0x54004, 0x2 },
-+	{ 0x54005, ((LPDDR4_PHY_RON << 8) | LPDDR4_PHY_RTT) },//PHY Ron/Rtt
-+	{ 0x54006, LPDDR4_PHY_VREF_VALUE },
-+	{ 0x54007, 0x0 },
-+	{ 0x54008, 0x121f },
-+	{ 0x54009, 0xc8 },
-+	{ 0x5400a, 0x0 },
-+	{ 0x5400b, 0x2 },
-+	{ 0x5400c, 0x0 },
-+	{ 0x5400d, 0x0 },
-+	{ 0x5400e, 0x0 },
-+	{ 0x5400f, 0x0 },
-+	{ 0x54010, 0x0 },
-+	{ 0x54011, 0x0 },
-+	{ 0x54012, (LPDDR4_CS << 8) | (0x110 & 0xff) },
-+	{ 0x54013, 0x0 },
-+	{ 0x54014, 0x0 },
-+	{ 0x54015, 0x0 },
-+	{ 0x54016, 0x0 },
-+	{ 0x54017, 0x0 },
-+	{ 0x54018, 0x0 },
-+	{ 0x54019, 0x84 },
-+	{ 0x5401a, (0x31 & 0xff00) | LPDDR4_MR3 },
-+	{ 0x5401b, 0x4d66 },
-+	{ 0x5401c, 0x4d08 },
-+	{ 0x5401d, 0x0 },
-+	{ 0x5401e, LPDDR4_MR22_RANK0/*0x16*/ },
-+	{ 0x5401f, 0x84 },
-+	{ 0x54020, (0x31 & 0xff00) | LPDDR4_MR3 },
-+	{ 0x54021, 0x4d66 },
-+	{ 0x54022, 0x4d08 },
-+	{ 0x54023, 0x0 },
-+	{ 0x54024, LPDDR4_MR22_RANK1/*0x16*/ },
-+	{ 0x54025, 0x0 },
-+	{ 0x54026, 0x0 },
-+	{ 0x54027, 0x0 },
-+	{ 0x54028, 0x0 },
-+	{ 0x54029, 0x0 },
-+	{ 0x5402a, 0x0 },
-+	{ 0x5402b, 0x1000 },
-+	{ 0x5402c, LPDDR4_CS },
-+	{ 0x5402d, 0x0 },
-+	{ 0x5402e, 0x0 },
-+	{ 0x5402f, 0x0 },
-+	{ 0x54030, 0x0 },
-+	{ 0x54031, 0x0 },
-+	{ 0x54032, 0x8400 },
-+	{ 0x54033, (LPDDR4_MR3 << 8) | (0x3100 & 0xff) },
-+	{ 0x54034, 0x6600 },
-+	{ 0x54035, 0x84d },
-+	{ 0x54036, 0x4d },
-+	{ 0x54037, (LPDDR4_MR22_RANK0 << 8)/*0x1600*/ },
-+	{ 0x54038, 0x8400 },
-+	{ 0x54039, (LPDDR4_MR3 << 8) | (0x3100 & 0xff) },
-+	{ 0x5403a, 0x6600 },
-+	{ 0x5403b, 0x84d },
-+	{ 0x5403c, 0x4d },
-+	{ 0x5403d, (LPDDR4_MR22_RANK1 << 8)/*0x1600*/ },
-+	{ 0x5403e, 0x0 },
-+	{ 0x5403f, 0x0 },
-+	{ 0x54040, 0x0 },
-+	{ 0x54041, 0x0 },
-+	{ 0x54042, 0x0 },
-+	{ 0x54043, 0x0 },
-+	{ 0x54044, 0x0 },
-+	{ 0xd0000, 0x1 },
++static const uint32_t inst_rom_init_size = 127;
++static const uint32_t inst_rom_init[127] = {
++	0x80000,
++	0x80680,
++	0x8180,
++	0x8200,
++	0x8280,
++	0x8300,
++	0x8380,
++	0x8100,
++	0x8480,
++	0x8500,
++	0x8580,
++	0x8600,
++	0x8400,
++	0x800,
++	0x8680,
++	0x880,
++	0xa680,
++	0x80680,
++	0x900,
++	0x80680,
++	0x980,
++	0xa680,
++	0x8680,
++	0x80680,
++	0xb68,
++	0xcce8,
++	0xae8,
++	0x8ce8,
++	0xb88,
++	0xec88,
++	0xa08,
++	0xac88,
++	0x80680,
++	0xce00,
++	0xcd80,
++	0xe700,
++	0xc00,
++	0x20ce0,
++	0x20ce0,
++	0x20ce0,
++	0x20ce0,
++	0xd00,
++	0x680,
++	0x680,
++	0x680,
++	0x680,
++	0x60e80,
++	0x61080,
++	0x61080,
++	0x61080,
++	0xa680,
++	0x8680,
++	0x80680,
++	0xce00,
++	0xcd80,
++	0xe700,
++	0xc00,
++	0x30ce0,
++	0x30ce0,
++	0x30ce0,
++	0x30ce0,
++	0xd00,
++	0x680,
++	0x680,
++	0x680,
++	0x680,
++	0x70e80,
++	0x71080,
++	0x71080,
++	0x71080,
++	0xa680,
++	0x8680,
++	0x80680,
++	0x1158,
++	0x6d8,
++	0x80680,
++	0x1168,
++	0x7e8,
++	0x7e8,
++	0x87e8,
++	0x40fe8,
++	0x410e8,
++	0x410e8,
++	0x410e8,
++	0x1168,
++	0x7e8,
++	0x7e8,
++	0xa7e8,
++	0x80680,
++	0x40e88,
++	0x41088,
++	0x41088,
++	0x41088,
++	0x40f68,
++	0x410e8,
++	0x410e8,
++	0x410e8,
++	0xa680,
++	0x40fe8,
++	0x410e8,
++	0x410e8,
++	0x410e8,
++	0x41008,
++	0x41088,
++	0x41088,
++	0x41088,
++	0x1100,
++	0xc680,
++	0x8680,
++	0xe680,
++	0x80680,
++	0x0,
++	0x8000,
++	0xa000,
++	0xc000,
++	0x80000,
++	0x80,
++	0x8080,
++	0xa080,
++	0xc080,
++	0x80080,
++	0x9180,
++	0x8680,
++	0xa680,
++	0x80680,
++	0x40f08,
++	0x80680
 +};
+diff --git a/arch/arm/boards/terasic-de10-nano/sequencer_defines.h b/arch/arm/boards/terasic-de10-nano/sequencer_defines.h
+new file mode 100644
+index 000000000..98d0475cb
+--- /dev/null
++++ b/arch/arm/boards/terasic-de10-nano/sequencer_defines.h
+@@ -0,0 +1,165 @@
++/*
++Copyright (C) 2016 Intel Corporation
++All rights reserved.
 +
-+/* P0 2D message block paremeter for training firmware */
-+static struct dram_cfg_param lpddr4_fsp0_2d_cfg[] = {
-+	{ 0xd0000, 0x0 },
-+	{ 0x54000, 0x0 },
-+	{ 0x54001, 0x0 },
-+	{ 0x54002, 0x0 },
-+	{ 0x54003, 0xbb8 },
-+	{ 0x54004, 0x2 },
-+	{ 0x54005, ((LPDDR4_PHY_RON << 8) | LPDDR4_PHY_RTT) },//PHY Ron/Rtt
-+	{ 0x54006, LPDDR4_PHY_VREF_VALUE },
-+	{ 0x54007, 0x0 },
-+	{ 0x54008, 0x61 },
-+	{ 0x54009, 0xc8 },
-+	{ 0x5400a, 0x0 },
-+	{ 0x5400b, 0x2 },
-+	{ 0x5400c, 0x0 },
-+	{ 0x5400d, 0x0 },
-+	{ 0x5400e, 0x0 },
-+	{ 0x5400f, 0x100 },
-+	{ 0x54010, 0x1f7f },
-+	{ 0x54011, 0x0 },
-+	{ 0x54012, (LPDDR4_CS << 8) | (0x110 & 0xff) },
-+	{ 0x54013, 0x0 },
-+	{ 0x54014, 0x0 },
-+	{ 0x54015, 0x0 },
-+	{ 0x54016, 0x0 },
-+	{ 0x54017, 0x0 },
-+	{ 0x54018, 0x0 },
-+	{ 0x54019, 0x2dd4 },
-+	{ 0x5401a, (0x31 & 0xff00) | LPDDR4_MR3 },
-+	{ 0x5401b, 0x4d66 },
-+	{ 0x5401c, 0x4d08 },
-+	{ 0x5401d, 0x0 },
-+	{ 0x5401e, LPDDR4_MR22_RANK0/*0x16*/ },
-+	{ 0x5401f, 0x2dd4 },
-+	{ 0x54020, (0x31 & 0xff00) | LPDDR4_MR3 },
-+	{ 0x54021, 0x4d66 },
-+	{ 0x54022, 0x4d08 },
-+	{ 0x54023, 0x0 },
-+	{ 0x54024, LPDDR4_MR22_RANK1/*0x16*/ },
-+	{ 0x54025, 0x0 },
-+	{ 0x54026, 0x0 },
-+	{ 0x54027, 0x0 },
-+	{ 0x54028, 0x0 },
-+	{ 0x54029, 0x0 },
-+	{ 0x5402a, 0x0 },
-+	{ 0x5402b, 0x1000 },
-+	{ 0x5402c, LPDDR4_CS },
-+	{ 0x5402d, 0x0 },
-+	{ 0x5402e, 0x0 },
-+	{ 0x5402f, 0x0 },
-+	{ 0x54030, 0x0 },
-+	{ 0x54031, 0x0 },
-+	{ 0x54032, 0xd400 },
-+	{ 0x54033, (LPDDR4_MR3 << 8) | (0x312d & 0xff) },
-+	{ 0x54034, 0x6600 },
-+	{ 0x54035, 0x84d },
-+	{ 0x54036, 0x4d },
-+	{ 0x54037, (LPDDR4_MR22_RANK0 << 8)/*0x1600*/ },
-+	{ 0x54038, 0xd400 },
-+	{ 0x54039, (LPDDR4_MR3 << 8) | (0x312d & 0xff) },
-+	{ 0x5403a, 0x6600 },
-+	{ 0x5403b, 0x84d },
-+	{ 0x5403c, 0x4d },
-+	{ 0x5403d, (LPDDR4_MR22_RANK1 << 8)/*0x1600*/ },
-+	{ 0x5403e, 0x0 },
-+	{ 0x5403f, 0x0 },
-+	{ 0x54040, 0x0 },
-+	{ 0x54041, 0x0 },
-+	{ 0x54042, 0x0 },
-+	{ 0x54043, 0x0 },
-+	{ 0x54044, 0x0 },
-+	{ 0xd0000, 0x1 },
-+};
++SPDX-License-Identifier:    BSD-3-Clause
 +
-+/* DRAM PHY init engine image */
-+static struct dram_cfg_param lpddr4_phy_pie[] = {
-+	{ 0xd0000, 0x0 },
-+	{ 0x90000, 0x10 },
-+	{ 0x90001, 0x400 },
-+	{ 0x90002, 0x10e },
-+	{ 0x90003, 0x0 },
-+	{ 0x90004, 0x0 },
-+	{ 0x90005, 0x8 },
-+	{ 0x90029, 0xb },
-+	{ 0x9002a, 0x480 },
-+	{ 0x9002b, 0x109 },
-+	{ 0x9002c, 0x8 },
-+	{ 0x9002d, 0x448 },
-+	{ 0x9002e, 0x139 },
-+	{ 0x9002f, 0x8 },
-+	{ 0x90030, 0x478 },
-+	{ 0x90031, 0x109 },
-+	{ 0x90032, 0x0 },
-+	{ 0x90033, 0xe8 },
-+	{ 0x90034, 0x109 },
-+	{ 0x90035, 0x2 },
-+	{ 0x90036, 0x10 },
-+	{ 0x90037, 0x139 },
-+	{ 0x90038, 0xf },
-+	{ 0x90039, 0x7c0 },
-+	{ 0x9003a, 0x139 },
-+	{ 0x9003b, 0x44 },
-+	{ 0x9003c, 0x630 },
-+	{ 0x9003d, 0x159 },
-+	{ 0x9003e, 0x14f },
-+	{ 0x9003f, 0x630 },
-+	{ 0x90040, 0x159 },
-+	{ 0x90041, 0x47 },
-+	{ 0x90042, 0x630 },
-+	{ 0x90043, 0x149 },
-+	{ 0x90044, 0x4f },
-+	{ 0x90045, 0x630 },
-+	{ 0x90046, 0x179 },
-+	{ 0x90047, 0x8 },
-+	{ 0x90048, 0xe0 },
-+	{ 0x90049, 0x109 },
-+	{ 0x9004a, 0x0 },
-+	{ 0x9004b, 0x7c8 },
-+	{ 0x9004c, 0x109 },
-+	{ 0x9004d, 0x0 },
-+	{ 0x9004e, 0x1 },
-+	{ 0x9004f, 0x8 },
-+	{ 0x90050, 0x0 },
-+	{ 0x90051, 0x45a },
-+	{ 0x90052, 0x9 },
-+	{ 0x90053, 0x0 },
-+	{ 0x90054, 0x448 },
-+	{ 0x90055, 0x109 },
-+	{ 0x90056, 0x40 },
-+	{ 0x90057, 0x630 },
-+	{ 0x90058, 0x179 },
-+	{ 0x90059, 0x1 },
-+	{ 0x9005a, 0x618 },
-+	{ 0x9005b, 0x109 },
-+	{ 0x9005c, 0x40c0 },
-+	{ 0x9005d, 0x630 },
-+	{ 0x9005e, 0x149 },
-+	{ 0x9005f, 0x8 },
-+	{ 0x90060, 0x4 },
-+	{ 0x90061, 0x48 },
-+	{ 0x90062, 0x4040 },
-+	{ 0x90063, 0x630 },
-+	{ 0x90064, 0x149 },
-+	{ 0x90065, 0x0 },
-+	{ 0x90066, 0x4 },
-+	{ 0x90067, 0x48 },
-+	{ 0x90068, 0x40 },
-+	{ 0x90069, 0x630 },
-+	{ 0x9006a, 0x149 },
-+	{ 0x9006b, 0x10 },
-+	{ 0x9006c, 0x4 },
-+	{ 0x9006d, 0x18 },
-+	{ 0x9006e, 0x0 },
-+	{ 0x9006f, 0x4 },
-+	{ 0x90070, 0x78 },
-+	{ 0x90071, 0x549 },
-+	{ 0x90072, 0x630 },
-+	{ 0x90073, 0x159 },
-+	{ 0x90074, 0xd49 },
-+	{ 0x90075, 0x630 },
-+	{ 0x90076, 0x159 },
-+	{ 0x90077, 0x94a },
-+	{ 0x90078, 0x630 },
-+	{ 0x90079, 0x159 },
-+	{ 0x9007a, 0x441 },
-+	{ 0x9007b, 0x630 },
-+	{ 0x9007c, 0x149 },
-+	{ 0x9007d, 0x42 },
-+	{ 0x9007e, 0x630 },
-+	{ 0x9007f, 0x149 },
-+	{ 0x90080, 0x1 },
-+	{ 0x90081, 0x630 },
-+	{ 0x90082, 0x149 },
-+	{ 0x90083, 0x0 },
-+	{ 0x90084, 0xe0 },
-+	{ 0x90085, 0x109 },
-+	{ 0x90086, 0xa },
-+	{ 0x90087, 0x10 },
-+	{ 0x90088, 0x109 },
-+	{ 0x90089, 0x9 },
-+	{ 0x9008a, 0x3c0 },
-+	{ 0x9008b, 0x149 },
-+	{ 0x9008c, 0x9 },
-+	{ 0x9008d, 0x3c0 },
-+	{ 0x9008e, 0x159 },
-+	{ 0x9008f, 0x18 },
-+	{ 0x90090, 0x10 },
-+	{ 0x90091, 0x109 },
-+	{ 0x90092, 0x0 },
-+	{ 0x90093, 0x3c0 },
-+	{ 0x90094, 0x109 },
-+	{ 0x90095, 0x18 },
-+	{ 0x90096, 0x4 },
-+	{ 0x90097, 0x48 },
-+	{ 0x90098, 0x18 },
-+	{ 0x90099, 0x4 },
-+	{ 0x9009a, 0x58 },
-+	{ 0x9009b, 0xa },
-+	{ 0x9009c, 0x10 },
-+	{ 0x9009d, 0x109 },
-+	{ 0x9009e, 0x2 },
-+	{ 0x9009f, 0x10 },
-+	{ 0x900a0, 0x109 },
-+	{ 0x900a1, 0x5 },
-+	{ 0x900a2, 0x7c0 },
-+	{ 0x900a3, 0x109 },
-+	{ 0x900a4, 0x10 },
-+	{ 0x900a5, 0x10 },
-+	{ 0x900a6, 0x109 },
-+	{ 0x40000, 0x811 },
-+	{ 0x40020, 0x880 },
-+	{ 0x40040, 0x0 },
-+	{ 0x40060, 0x0 },
-+	{ 0x40001, 0x4008 },
-+	{ 0x40021, 0x83 },
-+	{ 0x40041, 0x4f },
-+	{ 0x40061, 0x0 },
-+	{ 0x40002, 0x4040 },
-+	{ 0x40022, 0x83 },
-+	{ 0x40042, 0x51 },
-+	{ 0x40062, 0x0 },
-+	{ 0x40003, 0x811 },
-+	{ 0x40023, 0x880 },
-+	{ 0x40043, 0x0 },
-+	{ 0x40063, 0x0 },
-+	{ 0x40004, 0x720 },
-+	{ 0x40024, 0xf },
-+	{ 0x40044, 0x1740 },
-+	{ 0x40064, 0x0 },
-+	{ 0x40005, 0x16 },
-+	{ 0x40025, 0x83 },
-+	{ 0x40045, 0x4b },
-+	{ 0x40065, 0x0 },
-+	{ 0x40006, 0x716 },
-+	{ 0x40026, 0xf },
-+	{ 0x40046, 0x2001 },
-+	{ 0x40066, 0x0 },
-+	{ 0x40007, 0x716 },
-+	{ 0x40027, 0xf },
-+	{ 0x40047, 0x2800 },
-+	{ 0x40067, 0x0 },
-+	{ 0x40008, 0x716 },
-+	{ 0x40028, 0xf },
-+	{ 0x40048, 0xf00 },
-+	{ 0x40068, 0x0 },
-+	{ 0x40009, 0x720 },
-+	{ 0x40029, 0xf },
-+	{ 0x40049, 0x1400 },
-+	{ 0x40069, 0x0 },
-+	{ 0x4000a, 0xe08 },
-+	{ 0x4002a, 0xc15 },
-+	{ 0x4004a, 0x0 },
-+	{ 0x4006a, 0x0 },
-+	{ 0x4000b, 0x623 },
-+	{ 0x4002b, 0x15 },
-+	{ 0x4004b, 0x0 },
-+	{ 0x4006b, 0x0 },
-+	{ 0x4000c, 0x4028 },
-+	{ 0x4002c, 0x80 },
-+	{ 0x4004c, 0x0 },
-+	{ 0x4006c, 0x0 },
-+	{ 0x4000d, 0xe08 },
-+	{ 0x4002d, 0xc1a },
-+	{ 0x4004d, 0x0 },
-+	{ 0x4006d, 0x0 },
-+	{ 0x4000e, 0x623 },
-+	{ 0x4002e, 0x1a },
-+	{ 0x4004e, 0x0 },
-+	{ 0x4006e, 0x0 },
-+	{ 0x4000f, 0x4040 },
-+	{ 0x4002f, 0x80 },
-+	{ 0x4004f, 0x0 },
-+	{ 0x4006f, 0x0 },
-+	{ 0x40010, 0x2604 },
-+	{ 0x40030, 0x15 },
-+	{ 0x40050, 0x0 },
-+	{ 0x40070, 0x0 },
-+	{ 0x40011, 0x708 },
-+	{ 0x40031, 0x5 },
-+	{ 0x40051, 0x0 },
-+	{ 0x40071, 0x2002 },
-+	{ 0x40012, 0x8 },
-+	{ 0x40032, 0x80 },
-+	{ 0x40052, 0x0 },
-+	{ 0x40072, 0x0 },
-+	{ 0x40013, 0x2604 },
-+	{ 0x40033, 0x1a },
-+	{ 0x40053, 0x0 },
-+	{ 0x40073, 0x0 },
-+	{ 0x40014, 0x708 },
-+	{ 0x40034, 0xa },
-+	{ 0x40054, 0x0 },
-+	{ 0x40074, 0x2002 },
-+	{ 0x40015, 0x4040 },
-+	{ 0x40035, 0x80 },
-+	{ 0x40055, 0x0 },
-+	{ 0x40075, 0x0 },
-+	{ 0x40016, 0x60a },
-+	{ 0x40036, 0x15 },
-+	{ 0x40056, 0x1200 },
-+	{ 0x40076, 0x0 },
-+	{ 0x40017, 0x61a },
-+	{ 0x40037, 0x15 },
-+	{ 0x40057, 0x1300 },
-+	{ 0x40077, 0x0 },
-+	{ 0x40018, 0x60a },
-+	{ 0x40038, 0x1a },
-+	{ 0x40058, 0x1200 },
-+	{ 0x40078, 0x0 },
-+	{ 0x40019, 0x642 },
-+	{ 0x40039, 0x1a },
-+	{ 0x40059, 0x1300 },
-+	{ 0x40079, 0x0 },
-+	{ 0x4001a, 0x4808 },
-+	{ 0x4003a, 0x880 },
-+	{ 0x4005a, 0x0 },
-+	{ 0x4007a, 0x0 },
-+	{ 0x900a7, 0x0 },
-+	{ 0x900a8, 0x790 },
-+	{ 0x900a9, 0x11a },
-+	{ 0x900aa, 0x8 },
-+	{ 0x900ab, 0x7aa },
-+	{ 0x900ac, 0x2a },
-+	{ 0x900ad, 0x10 },
-+	{ 0x900ae, 0x7b2 },
-+	{ 0x900af, 0x2a },
-+	{ 0x900b0, 0x0 },
-+	{ 0x900b1, 0x7c8 },
-+	{ 0x900b2, 0x109 },
-+	{ 0x900b3, 0x10 },
-+	{ 0x900b4, 0x2a8 },
-+	{ 0x900b5, 0x129 },
-+	{ 0x900b6, 0x8 },
-+	{ 0x900b7, 0x370 },
-+	{ 0x900b8, 0x129 },
-+	{ 0x900b9, 0xa },
-+	{ 0x900ba, 0x3c8 },
-+	{ 0x900bb, 0x1a9 },
-+	{ 0x900bc, 0xc },
-+	{ 0x900bd, 0x408 },
-+	{ 0x900be, 0x199 },
-+	{ 0x900bf, 0x14 },
-+	{ 0x900c0, 0x790 },
-+	{ 0x900c1, 0x11a },
-+	{ 0x900c2, 0x8 },
-+	{ 0x900c3, 0x4 },
-+	{ 0x900c4, 0x18 },
-+	{ 0x900c5, 0xe },
-+	{ 0x900c6, 0x408 },
-+	{ 0x900c7, 0x199 },
-+	{ 0x900c8, 0x8 },
-+	{ 0x900c9, 0x8568 },
-+	{ 0x900ca, 0x108 },
-+	{ 0x900cb, 0x18 },
-+	{ 0x900cc, 0x790 },
-+	{ 0x900cd, 0x16a },
-+	{ 0x900ce, 0x8 },
-+	{ 0x900cf, 0x1d8 },
-+	{ 0x900d0, 0x169 },
-+	{ 0x900d1, 0x10 },
-+	{ 0x900d2, 0x8558 },
-+	{ 0x900d3, 0x168 },
-+	{ 0x900d4, 0x70 },
-+	{ 0x900d5, 0x788 },
-+	{ 0x900d6, 0x16a },
-+	{ 0x900d7, 0x1ff8 },
-+	{ 0x900d8, 0x85a8 },
-+	{ 0x900d9, 0x1e8 },
-+	{ 0x900da, 0x50 },
-+	{ 0x900db, 0x798 },
-+	{ 0x900dc, 0x16a },
-+	{ 0x900dd, 0x60 },
-+	{ 0x900de, 0x7a0 },
-+	{ 0x900df, 0x16a },
-+	{ 0x900e0, 0x8 },
-+	{ 0x900e1, 0x8310 },
-+	{ 0x900e2, 0x168 },
-+	{ 0x900e3, 0x8 },
-+	{ 0x900e4, 0xa310 },
-+	{ 0x900e5, 0x168 },
-+	{ 0x900e6, 0xa },
-+	{ 0x900e7, 0x408 },
-+	{ 0x900e8, 0x169 },
-+	{ 0x900e9, 0x6e },
-+	{ 0x900ea, 0x0 },
-+	{ 0x900eb, 0x68 },
-+	{ 0x900ec, 0x0 },
-+	{ 0x900ed, 0x408 },
-+	{ 0x900ee, 0x169 },
-+	{ 0x900ef, 0x0 },
-+	{ 0x900f0, 0x8310 },
-+	{ 0x900f1, 0x168 },
-+	{ 0x900f2, 0x0 },
-+	{ 0x900f3, 0xa310 },
-+	{ 0x900f4, 0x168 },
-+	{ 0x900f5, 0x1ff8 },
-+	{ 0x900f6, 0x85a8 },
-+	{ 0x900f7, 0x1e8 },
-+	{ 0x900f8, 0x68 },
-+	{ 0x900f9, 0x798 },
-+	{ 0x900fa, 0x16a },
-+	{ 0x900fb, 0x78 },
-+	{ 0x900fc, 0x7a0 },
-+	{ 0x900fd, 0x16a },
-+	{ 0x900fe, 0x68 },
-+	{ 0x900ff, 0x790 },
-+	{ 0x90100, 0x16a },
-+	{ 0x90101, 0x8 },
-+	{ 0x90102, 0x8b10 },
-+	{ 0x90103, 0x168 },
-+	{ 0x90104, 0x8 },
-+	{ 0x90105, 0xab10 },
-+	{ 0x90106, 0x168 },
-+	{ 0x90107, 0xa },
-+	{ 0x90108, 0x408 },
-+	{ 0x90109, 0x169 },
-+	{ 0x9010a, 0x58 },
-+	{ 0x9010b, 0x0 },
-+	{ 0x9010c, 0x68 },
-+	{ 0x9010d, 0x0 },
-+	{ 0x9010e, 0x408 },
-+	{ 0x9010f, 0x169 },
-+	{ 0x90110, 0x0 },
-+	{ 0x90111, 0x8b10 },
-+	{ 0x90112, 0x168 },
-+	{ 0x90113, 0x0 },
-+	{ 0x90114, 0xab10 },
-+	{ 0x90115, 0x168 },
-+	{ 0x90116, 0x0 },
-+	{ 0x90117, 0x1d8 },
-+	{ 0x90118, 0x169 },
-+	{ 0x90119, 0x80 },
-+	{ 0x9011a, 0x790 },
-+	{ 0x9011b, 0x16a },
-+	{ 0x9011c, 0x18 },
-+	{ 0x9011d, 0x7aa },
-+	{ 0x9011e, 0x6a },
-+	{ 0x9011f, 0xa },
-+	{ 0x90120, 0x0 },
-+	{ 0x90121, 0x1e9 },
-+	{ 0x90122, 0x8 },
-+	{ 0x90123, 0x8080 },
-+	{ 0x90124, 0x108 },
-+	{ 0x90125, 0xf },
-+	{ 0x90126, 0x408 },
-+	{ 0x90127, 0x169 },
-+	{ 0x90128, 0xc },
-+	{ 0x90129, 0x0 },
-+	{ 0x9012a, 0x68 },
-+	{ 0x9012b, 0x9 },
-+	{ 0x9012c, 0x0 },
-+	{ 0x9012d, 0x1a9 },
-+	{ 0x9012e, 0x0 },
-+	{ 0x9012f, 0x408 },
-+	{ 0x90130, 0x169 },
-+	{ 0x90131, 0x0 },
-+	{ 0x90132, 0x8080 },
-+	{ 0x90133, 0x108 },
-+	{ 0x90134, 0x8 },
-+	{ 0x90135, 0x7aa },
-+	{ 0x90136, 0x6a },
-+	{ 0x90137, 0x0 },
-+	{ 0x90138, 0x8568 },
-+	{ 0x90139, 0x108 },
-+	{ 0x9013a, 0xb7 },
-+	{ 0x9013b, 0x790 },
-+	{ 0x9013c, 0x16a },
-+	{ 0x9013d, 0x1f },
-+	{ 0x9013e, 0x0 },
-+	{ 0x9013f, 0x68 },
-+	{ 0x90140, 0x8 },
-+	{ 0x90141, 0x8558 },
-+	{ 0x90142, 0x168 },
-+	{ 0x90143, 0xf },
-+	{ 0x90144, 0x408 },
-+	{ 0x90145, 0x169 },
-+	{ 0x90146, 0xc },
-+	{ 0x90147, 0x0 },
-+	{ 0x90148, 0x68 },
-+	{ 0x90149, 0x0 },
-+	{ 0x9014a, 0x408 },
-+	{ 0x9014b, 0x169 },
-+	{ 0x9014c, 0x0 },
-+	{ 0x9014d, 0x8558 },
-+	{ 0x9014e, 0x168 },
-+	{ 0x9014f, 0x8 },
-+	{ 0x90150, 0x3c8 },
-+	{ 0x90151, 0x1a9 },
-+	{ 0x90152, 0x3 },
-+	{ 0x90153, 0x370 },
-+	{ 0x90154, 0x129 },
-+	{ 0x90155, 0x20 },
-+	{ 0x90156, 0x2aa },
-+	{ 0x90157, 0x9 },
-+	{ 0x90158, 0x0 },
-+	{ 0x90159, 0x400 },
-+	{ 0x9015a, 0x10e },
-+	{ 0x9015b, 0x8 },
-+	{ 0x9015c, 0xe8 },
-+	{ 0x9015d, 0x109 },
-+	{ 0x9015e, 0x0 },
-+	{ 0x9015f, 0x8140 },
-+	{ 0x90160, 0x10c },
-+	{ 0x90161, 0x10 },
-+	{ 0x90162, 0x8138 },
-+	{ 0x90163, 0x10c },
-+	{ 0x90164, 0x8 },
-+	{ 0x90165, 0x7c8 },
-+	{ 0x90166, 0x101 },
-+	{ 0x90167, 0x8 },
-+	{ 0x90168, 0x0 },
-+	{ 0x90169, 0x8 },
-+	{ 0x9016a, 0x8 },
-+	{ 0x9016b, 0x448 },
-+	{ 0x9016c, 0x109 },
-+	{ 0x9016d, 0xf },
-+	{ 0x9016e, 0x7c0 },
-+	{ 0x9016f, 0x109 },
-+	{ 0x90170, 0x0 },
-+	{ 0x90171, 0xe8 },
-+	{ 0x90172, 0x109 },
-+	{ 0x90173, 0x47 },
-+	{ 0x90174, 0x630 },
-+	{ 0x90175, 0x109 },
-+	{ 0x90176, 0x8 },
-+	{ 0x90177, 0x618 },
-+	{ 0x90178, 0x109 },
-+	{ 0x90179, 0x8 },
-+	{ 0x9017a, 0xe0 },
-+	{ 0x9017b, 0x109 },
-+	{ 0x9017c, 0x0 },
-+	{ 0x9017d, 0x7c8 },
-+	{ 0x9017e, 0x109 },
-+	{ 0x9017f, 0x8 },
-+	{ 0x90180, 0x8140 },
-+	{ 0x90181, 0x10c },
-+	{ 0x90182, 0x0 },
-+	{ 0x90183, 0x1 },
-+	{ 0x90184, 0x8 },
-+	{ 0x90185, 0x8 },
-+	{ 0x90186, 0x4 },
-+	{ 0x90187, 0x8 },
-+	{ 0x90188, 0x8 },
-+	{ 0x90189, 0x7c8 },
-+	{ 0x9018a, 0x101 },
-+	{ 0x90006, 0x0 },
-+	{ 0x90007, 0x0 },
-+	{ 0x90008, 0x8 },
-+	{ 0x90009, 0x0 },
-+	{ 0x9000a, 0x0 },
-+	{ 0x9000b, 0x0 },
-+	{ 0xd00e7, 0x400 },
-+	{ 0x90017, 0x0 },
-+	{ 0x9001f, 0x2a },
-+	{ 0x90026, 0x6a },
-+	{ 0x400d0, 0x0 },
-+	{ 0x400d1, 0x101 },
-+	{ 0x400d2, 0x105 },
-+	{ 0x400d3, 0x107 },
-+	{ 0x400d4, 0x10f },
-+	{ 0x400d5, 0x202 },
-+	{ 0x400d6, 0x20a },
-+	{ 0x400d7, 0x20b },
-+	{ 0x2003a, 0x2 },
-+	{ 0x2000b, 0x5d },
-+	{ 0x2000c, 0xbb },
-+	{ 0x2000d, 0x753 },
-+	{ 0x2000e, 0x2c },
-+	{ 0x12000b, 0xc },
-+	{ 0x12000c, 0x19 },
-+	{ 0x12000d, 0xfa },
-+	{ 0x12000e, 0x10 },
-+	{ 0x22000b, 0x3 },
-+	{ 0x22000c, 0x6 },
-+	{ 0x22000d, 0x3e },
-+	{ 0x22000e, 0x10 },
-+	{ 0x9000c, 0x0 },
-+	{ 0x9000d, 0x173 },
-+	{ 0x9000e, 0x60 },
-+	{ 0x9000f, 0x6110 },
-+	{ 0x90010, 0x2152 },
-+	{ 0x90011, 0xdfbd },
-+	{ 0x90012, 0x60 },
-+	{ 0x90013, 0x6152 },
-+	{ 0x20010, 0x5a },
-+	{ 0x20011, 0x3 },
-+	{ 0x40080, 0xe0 },
-+	{ 0x40081, 0x12 },
-+	{ 0x40082, 0xe0 },
-+	{ 0x40083, 0x12 },
-+	{ 0x40084, 0xe0 },
-+	{ 0x40085, 0x12 },
-+	{ 0x140080, 0xe0 },
-+	{ 0x140081, 0x12 },
-+	{ 0x140082, 0xe0 },
-+	{ 0x140083, 0x12 },
-+	{ 0x140084, 0xe0 },
-+	{ 0x140085, 0x12 },
-+	{ 0x240080, 0xe0 },
-+	{ 0x240081, 0x12 },
-+	{ 0x240082, 0xe0 },
-+	{ 0x240083, 0x12 },
-+	{ 0x240084, 0xe0 },
-+	{ 0x240085, 0x12 },
-+	{ 0x400fd, 0xf },
-+	{ 0x10011, 0x1 },
-+	{ 0x10012, 0x1 },
-+	{ 0x10013, 0x180 },
-+	{ 0x10018, 0x1 },
-+	{ 0x10002, 0x6209 },
-+	{ 0x100b2, 0x1 },
-+	{ 0x101b4, 0x1 },
-+	{ 0x102b4, 0x1 },
-+	{ 0x103b4, 0x1 },
-+	{ 0x104b4, 0x1 },
-+	{ 0x105b4, 0x1 },
-+	{ 0x106b4, 0x1 },
-+	{ 0x107b4, 0x1 },
-+	{ 0x108b4, 0x1 },
-+	{ 0x11011, 0x1 },
-+	{ 0x11012, 0x1 },
-+	{ 0x11013, 0x180 },
-+	{ 0x11018, 0x1 },
-+	{ 0x11002, 0x6209 },
-+	{ 0x110b2, 0x1 },
-+	{ 0x111b4, 0x1 },
-+	{ 0x112b4, 0x1 },
-+	{ 0x113b4, 0x1 },
-+	{ 0x114b4, 0x1 },
-+	{ 0x115b4, 0x1 },
-+	{ 0x116b4, 0x1 },
-+	{ 0x117b4, 0x1 },
-+	{ 0x118b4, 0x1 },
-+	{ 0x12011, 0x1 },
-+	{ 0x12012, 0x1 },
-+	{ 0x12013, 0x180 },
-+	{ 0x12018, 0x1 },
-+	{ 0x12002, 0x6209 },
-+	{ 0x120b2, 0x1 },
-+	{ 0x121b4, 0x1 },
-+	{ 0x122b4, 0x1 },
-+	{ 0x123b4, 0x1 },
-+	{ 0x124b4, 0x1 },
-+	{ 0x125b4, 0x1 },
-+	{ 0x126b4, 0x1 },
-+	{ 0x127b4, 0x1 },
-+	{ 0x128b4, 0x1 },
-+	{ 0x13011, 0x1 },
-+	{ 0x13012, 0x1 },
-+	{ 0x13013, 0x180 },
-+	{ 0x13018, 0x1 },
-+	{ 0x13002, 0x6209 },
-+	{ 0x130b2, 0x1 },
-+	{ 0x131b4, 0x1 },
-+	{ 0x132b4, 0x1 },
-+	{ 0x133b4, 0x1 },
-+	{ 0x134b4, 0x1 },
-+	{ 0x135b4, 0x1 },
-+	{ 0x136b4, 0x1 },
-+	{ 0x137b4, 0x1 },
-+	{ 0x138b4, 0x1 },
-+	{ 0x2003a, 0x2 },
-+	{ 0xc0080, 0x2 },
-+	{ 0xd0000, 0x1 },
-+};
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are met:
++    * Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++    * Redistributions in binary form must reproduce the above copyright
++      notice, this list of conditions and the following disclaimer in the
++      documentation and/or other materials provided with the distribution.
++    * Neither the name of Altera Corporation nor the
++      names of its contributors may be used to endorse or promote products
++      derived from this software without specific prior written permission.
 +
-+static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
-+	{
-+		/* P0 3000mts 1D */
-+		.drate = 3000,
-+		.fw_type = FW_1D_IMAGE,
-+		.fsp_cfg = lpddr4_fsp0_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_cfg),
-+	}, {
-+		/* P1 100mts 1D */
-+		.drate = 100,
-+		.fw_type = FW_1D_IMAGE,
-+		.fsp_cfg = lpddr4_fsp2_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp2_cfg),
-+	}, {
-+		/* P1 400mts 1D */
-+		.drate = 400,
-+		.fw_type = FW_1D_IMAGE,
-+		.fsp_cfg = lpddr4_fsp1_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp1_cfg),
-+	}, {
-+		/* P0 3000mts 2D */
-+		.drate = 3000,
-+		.fw_type = FW_2D_IMAGE,
-+		.fsp_cfg = lpddr4_fsp0_2d_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
-+	},
-+};
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
++DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++*/
++#ifndef _SEQUENCER_DEFINES_H_
++#define _SEQUENCER_DEFINES_H_
 +
-+/* lpddr4 timing config params on EVK board */
-+struct dram_timing_info prt8mm_dram_timing = {
-+	.ddrc_cfg = lpddr4_ddrc_cfg,
-+	.ddrc_cfg_num = ARRAY_SIZE(lpddr4_ddrc_cfg),
-+	.ddrphy_cfg = lpddr4_ddrphy_cfg,
-+	.ddrphy_cfg_num = ARRAY_SIZE(lpddr4_ddrphy_cfg),
-+	.fsp_msg = lpddr4_dram_fsp_msg,
-+	.fsp_msg_num = ARRAY_SIZE(lpddr4_dram_fsp_msg),
-+	.ddrphy_trained_csr = lpddr4_ddrphy_trained_csr,
-+	.ddrphy_trained_csr_num = ARRAY_SIZE(lpddr4_ddrphy_trained_csr),
-+	.ddrphy_pie = lpddr4_phy_pie,
-+	.ddrphy_pie_num = ARRAY_SIZE(lpddr4_phy_pie),
-+};
++#define AC_ROM_MR1_MIRR 0000000100100
++#define AC_ROM_MR1_OCD_ENABLE
++#define AC_ROM_MR2_MIRR 0000000001000
++#define AC_ROM_MR3_MIRR 0000000000000
++#define AC_ROM_MR0_CALIB
++#define AC_ROM_MR0_DLL_RESET_MIRR 0010011001000
++#define AC_ROM_MR0_DLL_RESET 0010100110000
++#define AC_ROM_MR0_MIRR 0010001001001
++#define AC_ROM_MR0 0010000110001
++#define AC_ROM_MR1 0000001000100
++#define AC_ROM_MR2 0000000010000
++#define AC_ROM_MR3 0000000000000
++#define AC_ROM_USER_ADD_0 0_0000_0000_0000
++#define AC_ROM_USER_ADD_1 0_0000_0000_1000
++#define AFI_CLK_FREQ 401
++#define AFI_RATE_RATIO 1
++#define AP_MODE 0
++#define ARRIAVGZ 0
++#define ARRIAV 0
++#define AVL_CLK_FREQ 67
++#define BFM_MODE 0
++#define BURST2 0
++#define CALIBRATE_BIT_SLIPS 0
++#define CALIB_LFIFO_OFFSET 8
++#define CALIB_VFIFO_OFFSET 6
++#define CYCLONEV 1
++#define DDR2 0
++#define DDR3 1
++#define DDRX 1
++#define DM_PINS_ENABLED 1
++#define ENABLE_ASSERT 0
++#define ENABLE_BRINGUP_DEBUGGING 0
++#define ENABLE_DELAY_CHAIN_WRITE 0
++#define ENABLE_DQS_IN_CENTERING 1
++#define ENABLE_DQS_OUT_CENTERING 0
++#define ENABLE_EXPORT_SEQ_DEBUG_BRIDGE 0
++#define ENABLE_INST_ROM_WRITE 1
++#define ENABLE_MARGIN_REPORT_GEN 0
++#define ENABLE_NON_DESTRUCTIVE_CALIB 0
++#define ENABLE_NON_DES_CAL_TEST 0
++#define ENABLE_NON_DES_CAL 0
++#define ENABLE_SUPER_QUICK_CALIBRATION 0
++#define ENABLE_TCL_DEBUG 0
++#define FAKE_CAL_FAIL 0
++#define FIX_READ_LATENCY 8
++#define FULL_RATE 1
++#define GUARANTEED_READ_BRINGUP_TEST 0
++#define HALF_RATE 0
++#define HARD_PHY 1
++#define HARD_VFIFO 1
++#define HCX_COMPAT_MODE 0
++#define HHP_HPS_SIMULATION 0
++#define HHP_HPS_VERIFICATION 0
++#define HHP_HPS 1
++#define HPS_HW 1
++#define HR_DDIO_OUT_HAS_THREE_REGS 0
++#define IO_DELAY_PER_DCHAIN_TAP 25
++#define IO_DELAY_PER_DQS_EN_DCHAIN_TAP 25
++#define IO_DELAY_PER_OPA_TAP 312
++#define IO_DLL_CHAIN_LENGTH 8
++#define IO_DM_OUT_RESERVE 0
++#define IO_DQDQS_OUT_PHASE_MAX 0
++#define IO_DQS_EN_DELAY_MAX 31
++#define IO_DQS_EN_DELAY_OFFSET 0
++#define IO_DQS_EN_PHASE_MAX 7
++#define IO_DQS_IN_DELAY_MAX 31
++#define IO_DQS_IN_RESERVE 4
++#define IO_DQS_OUT_RESERVE 4
++#define IO_DQ_OUT_RESERVE 0
++#define IO_IO_IN_DELAY_MAX 31
++#define IO_IO_OUT1_DELAY_MAX 31
++#define IO_IO_OUT2_DELAY_MAX 0
++#define IO_SHIFT_DQS_EN_WHEN_SHIFT_DQS 0
++#define LPDDR1 0
++#define LPDDR2 0
++#define LRDIMM 0
++#define MARGIN_VARIATION_TEST 0
++#define MAX_LATENCY_COUNT_WIDTH 5
++#define MEM_ADDR_WIDTH 13
++#define MRS_MIRROR_PING_PONG_ATSO 0
++#define MULTIPLE_AFI_WLAT 0
++#define NON_DES_CAL 0
++#define NUM_SHADOW_REGS 1
++#define QDRII 0
++#define QUARTER_RATE 0
++#define RDIMM 0
++#define READ_AFTER_WRITE_CALIBRATION 1
++#define READ_VALID_FIFO_SIZE 16
++#define REG_FILE_INIT_SEQ_SIGNATURE 0x555504c9
++#define RLDRAM3 0
++#define RLDRAMII 0
++#define RLDRAMX 0
++#define RUNTIME_CAL_REPORT 0
++#define RW_MGR_MEM_ADDRESS_MIRRORING 0
++#define RW_MGR_MEM_ADDRESS_WIDTH 15
++#define RW_MGR_MEM_BANK_WIDTH 3
++#define RW_MGR_MEM_CHIP_SELECT_WIDTH 1
++#define RW_MGR_MEM_CLK_EN_WIDTH 1
++#define RW_MGR_MEM_CONTROL_WIDTH 1
++#define RW_MGR_MEM_DATA_MASK_WIDTH 4
++#define RW_MGR_MEM_DATA_WIDTH 32
++#define RW_MGR_MEM_DQ_PER_READ_DQS 8
++#define RW_MGR_MEM_DQ_PER_WRITE_DQS 8
++#define RW_MGR_MEM_IF_READ_DQS_WIDTH 4
++#define RW_MGR_MEM_IF_WRITE_DQS_WIDTH 4
++#define RW_MGR_MEM_NUMBER_OF_CS_PER_DIMM 1
++#define RW_MGR_MEM_NUMBER_OF_RANKS 1
++#define RW_MGR_MEM_ODT_WIDTH 1
++#define RW_MGR_MEM_VIRTUAL_GROUPS_PER_READ_DQS 1
++#define RW_MGR_MEM_VIRTUAL_GROUPS_PER_WRITE_DQS 1
++#define RW_MGR_MR0_BL 1
++#define RW_MGR_MR0_CAS_LATENCY 3
++#define RW_MGR_TRUE_MEM_DATA_MASK_WIDTH 4
++#define RW_MGR_WRITE_TO_DEBUG_READ 1.0
++#define SET_FIX_READ_LATENCY_ENABLE 0
++#define SKEW_CALIBRATION 0
++#define SKIP_PTAP_0_DQS_EN_CAL 1
++#define STATIC_FULL_CALIBRATION 1
++#define STATIC_SIM_FILESET 0
++#define STATIC_SKIP_MEM_INIT 0
++#define STRATIXV 0
++#define TINIT_CNTR1_VAL 32
++#define TINIT_CNTR2_VAL 32
++#define TINIT_CNTR0_VAL 99
++#define TRACKING_ERROR_TEST 0
++#define TRACKING_WATCH_TEST 0
++#define TRESET_CNTR1_VAL 99
++#define TRESET_CNTR2_VAL 10
++#define TRESET_CNTR0_VAL 99
++#define USE_DQS_TRACKING 1
++#define USE_SHADOW_REGS 0
++#define USE_USER_RDIMM_VALUE 0
++
++#endif /* _SEQUENCER_DEFINES_H_ */
+diff --git a/arch/arm/configs/socfpga-xload-2_defconfig b/arch/arm/configs/socfpga-xload-2_defconfig
+index 66cc777a7..78b07aae5 100644
+--- a/arch/arm/configs/socfpga-xload-2_defconfig
++++ b/arch/arm/configs/socfpga-xload-2_defconfig
+@@ -2,6 +2,7 @@ CONFIG_ARCH_SOCFPGA=y
+ CONFIG_ARCH_SOCFPGA_XLOAD=y
+ CONFIG_MACH_SOCFPGA_ALTERA_SOCDK=y
+ CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC=y
++CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO=y
+ CONFIG_THUMB2_BAREBOX=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ # CONFIG_ARM_EXCEPTIONS is not set
+diff --git a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
+index 2509ad0b4..9f39285a9 100644
+--- a/arch/arm/configs/socfpga_defconfig
++++ b/arch/arm/configs/socfpga_defconfig
+@@ -1,6 +1,7 @@
+ CONFIG_ARCH_SOCFPGA=y
+ CONFIG_MACH_SOCFPGA_EBV_SOCRATES=y
+ CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC=y
++CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO=y
+ CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT=y
+ CONFIG_THUMB2_BAREBOX=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index a637869fb67b..0a611b01c704 100644
+index a637869fb..e5c7fa629 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -92,6 +92,7 @@ lwl-$(CONFIG_MACH_PROTONIC_IMX6) += \
- 	imx6qp-prtwd3.dtb.o \
- 	imx6qp-vicutp.dtb.o \
- 	imx6ul-prti6g.dtb.o
-+lwl-$(CONFIG_MACH_PROTONIC_IMX8M) += imx8mm-prt8mm.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
- lwl-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += rk3288-phycore-som.dtb.o
- lwl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
-diff --git a/arch/arm/dts/imx8mm-prt8mm.dts b/arch/arm/dts/imx8mm-prt8mm.dts
+@@ -106,6 +106,7 @@ lwl-$(CONFIG_MACH_SOCFPGA_ALTERA_SOCDK) += socfpga_cyclone5_socdk.dtb.o
+ lwl-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += socfpga_cyclone5_socrates.dtb.o
+ lwl-$(CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES) += socfpga_arria10_achilles.dtb.o
+ lwl-$(CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC) += socfpga_cyclone5_de0_nano_soc.dtb.o
++lwl-$(CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO) += socfpga_cyclone5_de10_nano.dtb.o
+ lwl-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
+ lwl-$(CONFIG_MACH_SOLIDRUN_CUBOX) += dove-cubox-bb.dtb.o
+ lwl-$(CONFIG_MACH_SOLIDRUN_MICROSOM) += imx6dl-hummingboard.dtb.o imx6q-hummingboard.dtb.o \
+diff --git a/arch/arm/dts/socfpga_cyclone5_de10_nano.dts b/arch/arm/dts/socfpga_cyclone5_de10_nano.dts
 new file mode 100644
-index 000000000000..bdcdd0806243
+index 000000000..7043f921d
 --- /dev/null
-+++ b/arch/arm/dts/imx8mm-prt8mm.dts
-@@ -0,0 +1,251 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++++ b/arch/arm/dts/socfpga_cyclone5_de10_nano.dts
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++
 +/*
-+ * Copyright 2020 Protonic Holland
-+ * Copyright 2019 NXP
++ * socfpga_cyclone5_de10_nano.dts - Device Tree File for Terasic DE10-Nano
++ * Copyright (C) 2021 Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 + */
 +
-+/dts-v1/;
-+
-+#include <arm64/freescale/imx8mm.dtsi>
++#include <arm/socfpga_cyclone5_de10_nano.dts>
++#include "socfpga.dtsi"
 +
 +/ {
-+	model = "Protonic PRT8MM";
-+	compatible = "prt,prt8mm", "fsl,imx8mm";
++	model = "Terasic DE10-Nano";
++	compatible = "terasic,de10-nano","altr,socfpga-cyclone5", "altr,socfpga";
 +
 +	chosen {
-+		stdout-path = &uart4;
++		stdout-path = &uart0;
 +
-+		environment-sd {
++		environment {
 +			compatible = "barebox,environment";
-+			device-path = &part_env_sd;
-+			status = "disabled";
++			device-path = &mmc, "partname:1";
++			file-path = "barebox.env";
 +		};
-+		environment-emmc {
-+			compatible = "barebox,environment";
-+			device-path = &part_env_emmc;
-+			status = "disabled";
++	};
++};
+diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
+index 2da875cef..ea2abebaa 100644
+--- a/arch/arm/mach-socfpga/Kconfig
++++ b/arch/arm/mach-socfpga/Kconfig
+@@ -42,6 +42,10 @@ config MACH_SOCFPGA_TERASIC_DE0_NANO_SOC
+ 	select ARCH_SOCFPGA_CYCLONE5
+ 	bool "Terasic DE0-NANO-SoC aka Atlas"
+ 
++config MACH_SOCFPGA_TERASIC_DE10_NANO
++	select ARCH_SOCFPGA_CYCLONE5
++	bool "Terasic DE10-NANO"
++
+ config MACH_SOCFPGA_TERASIC_SOCKIT
+ 	select ARCH_SOCFPGA_CYCLONE5
+ 	bool "Terasic SoCKit"
+diff --git a/dts/src/arm/socfpga_cyclone5_de10_nano.dts b/dts/src/arm/socfpga_cyclone5_de10_nano.dts
+new file mode 100644
+index 000000000..7d8df9b6d
+--- /dev/null
++++ b/dts/src/arm/socfpga_cyclone5_de10_nano.dts
+@@ -0,0 +1,117 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright Altera Corporation (C) 2015. All rights reserved.
++ */
++
++#include "socfpga_cyclone5.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++
++/ {
++	model = "Terasic DE10-Nano";
++	compatible = "terasic,de10-nano", "altr,socfpga-cyclone5", "altr,socfpga";
++
++	chosen {
++		bootargs = "earlyprintk";
++		stdout-path = "serial0:115200n8";
++	};
++
++	memory@0 {
++		name = "memory";
++		device_type = "memory";
++		reg = <0x0 0x40000000>; /* 1GB */
++	};
++
++	aliases {
++		ethernet0 = &gmac1;
++	};
++
++	regulator_3_3v: 3-3-v-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "3.3V";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		hps_hkey0 {
++			label = "HPS_KEY";
++			gpios = <&portb 25 GPIO_ACTIVE_LOW>;
++			linux,code = <BTN_0>;
 +		};
++	};
++
++	leds {
++		compatible = "gpio-leds";
++		hps0 {
++			label = "hps_led0";
++			gpios = <&portb 24 0>;
++			linux,default-trigger = "heartbeat";
++		};
++	};
++};
++
++&gmac1 {
++	status = "okay";
++	phy-mode = "rgmii";
++
++	txd0-skew-ps = <0>; /* -420ps */
++	txd1-skew-ps = <0>; /* -420ps */
++	txd2-skew-ps = <0>; /* -420ps */
++	txd3-skew-ps = <0>; /* -420ps */
++	rxd0-skew-ps = <420>; /* 0ps */
++	rxd1-skew-ps = <420>; /* 0ps */
++	rxd2-skew-ps = <420>; /* 0ps */
++	rxd3-skew-ps = <420>; /* 0ps */
++	txen-skew-ps = <0>; /* -420ps */
++	txc-skew-ps = <1860>; /* 960ps */
++	rxdv-skew-ps = <420>; /* 0ps */
++	rxc-skew-ps = <1680>; /* 780ps */
++
++	max-frame-size = <3800>;
++};
++
++&gpio0 {
++	status = "okay";
++};
++
++&gpio1 {
++	status = "okay";
++};
++
++&gpio2 {
++	status = "okay";
++};
++
++&i2c0 {
++	status = "okay";
++	clock-frequency = <100000>;
++
++	adxl345: adxl345@53 {
++		compatible = "adi,adxl345";
++		reg = <0x53>;
++
++		interrupt-parent = <&portc>;
++		interrupts = <3 2>;
 +	};
 +};
 +
 +&i2c1 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c1>;
 +	status = "okay";
 +};
 +
-+&i2c2 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c2>;
++&mmc0 {
++	vmmc-supply = <&regulator_3_3v>;
++	vqmmc-supply = <&regulator_3_3v>;
 +	status = "okay";
 +};
 +
-+&i2c3 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c3>;
++&uart0 {
 +	status = "okay";
 +};
 +
-+&uart4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart4>;
++&usb1 {
 +	status = "okay";
 +};
-+
-+&usbotg1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usbotg1>;
-+	dr_mode = "host";
-+	power-active-high;
-+	over-current-active-low;
-+	status = "okay";
-+};
-+
-+&usdhc2 {
-+	assigned-clocks = <&clk IMX8MM_CLK_USDHC2>;
-+	assigned-clock-rates = <100000000>;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-+	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-+	bus-width = <4>;
-+	status = "okay";
-+
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	partition@0 {
-+		label = "barebox";
-+		reg = <0x0 0xe0000>;
-+	};
-+
-+	part_env_sd: partition@e0000 {
-+		label = "barebox-environment";
-+		reg = <0xe0000 0x20000>;
-+	};
-+};
-+
-+&usdhc3 {
-+	assigned-clocks = <&clk IMX8MM_CLK_USDHC3_ROOT>;
-+	assigned-clock-rates = <400000000>;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc3>;
-+	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	bus-width = <8>;
-+	non-removable;
-+	no-sdio;
-+	no-sd;
-+	status = "okay";
-+
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	part_env_emmc: partition@e0000 {
-+		label = "barebox-environment";
-+		reg = <0xe0000 0x20000>;
-+	};
-+};
-+
-+&wdog1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_wdog>;
-+	fsl,ext-reset-output;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl-names = "default";
-+
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_I2C1_SCL_I2C1_SCL			0x400000c3
-+			MX8MM_IOMUXC_I2C1_SDA_I2C1_SDA			0x400000c3
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_I2C2_SCL_I2C2_SCL			0x400000c3
-+			MX8MM_IOMUXC_I2C2_SDA_I2C2_SDA			0x400000c3
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_I2C3_SCL_I2C3_SCL			0x400000c3
-+			MX8MM_IOMUXC_I2C3_SDA_I2C3_SDA			0x400000c3
-+		>;
-+	};
-+
-+	pinctrl_uart4: uart4grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_UART4_RXD_UART4_DCE_RX		0x040
-+			MX8MM_IOMUXC_UART4_TXD_UART4_DCE_TX		0x040
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_gpio: usdhc2grpgpio {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x0d4
-+		>;
-+	};
-+
-+	pinctrl_usdhc2: usdhc2grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK			0x190
-+			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD			0x1d0
-+			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d0
-+			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d0
-+			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d0
-+			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d0
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_100mhz: usdhc2grp100mhz {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK			0x194
-+			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD			0x1d4
-+			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4
-+			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4
-+			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4
-+			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_200mhz: usdhc2grp200mhz {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK			0x196
-+			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD			0x1d6
-+			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d6
-+			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d6
-+			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d6
-+			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d6
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK		0x190
-+			MX8MM_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d0
-+			MX8MM_IOMUXC_NAND_DATA04_USDHC3_DATA0		0x1d0
-+			MX8MM_IOMUXC_NAND_DATA05_USDHC3_DATA1		0x1d0
-+			MX8MM_IOMUXC_NAND_DATA06_USDHC3_DATA2		0x1d0
-+			MX8MM_IOMUXC_NAND_DATA07_USDHC3_DATA3		0x1d0
-+			MX8MM_IOMUXC_NAND_RE_B_USDHC3_DATA4		0x1d0
-+			MX8MM_IOMUXC_NAND_CE2_B_USDHC3_DATA5		0x1d0
-+			MX8MM_IOMUXC_NAND_CE3_B_USDHC3_DATA6		0x1d0
-+			MX8MM_IOMUXC_NAND_CLE_USDHC3_DATA7		0x1d0
-+			MX8MM_IOMUXC_NAND_CE1_B_USDHC3_STROBE 		0x190
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK		0x194
-+			MX8MM_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d4
-+			MX8MM_IOMUXC_NAND_DATA04_USDHC3_DATA0		0x1d4
-+			MX8MM_IOMUXC_NAND_DATA05_USDHC3_DATA1		0x1d4
-+			MX8MM_IOMUXC_NAND_DATA06_USDHC3_DATA2		0x1d4
-+			MX8MM_IOMUXC_NAND_DATA07_USDHC3_DATA3		0x1d4
-+			MX8MM_IOMUXC_NAND_RE_B_USDHC3_DATA4		0x1d4
-+			MX8MM_IOMUXC_NAND_CE2_B_USDHC3_DATA5		0x1d4
-+			MX8MM_IOMUXC_NAND_CE3_B_USDHC3_DATA6		0x1d4
-+			MX8MM_IOMUXC_NAND_CLE_USDHC3_DATA7		0x1d4
-+			MX8MM_IOMUXC_NAND_CE1_B_USDHC3_STROBE 		0x194
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK		0x196
-+			MX8MM_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d6
-+			MX8MM_IOMUXC_NAND_DATA04_USDHC3_DATA0		0x1d6
-+			MX8MM_IOMUXC_NAND_DATA05_USDHC3_DATA1		0x1d6
-+			MX8MM_IOMUXC_NAND_DATA06_USDHC3_DATA2		0x1d6
-+			MX8MM_IOMUXC_NAND_DATA07_USDHC3_DATA3		0x1d6
-+			MX8MM_IOMUXC_NAND_RE_B_USDHC3_DATA4		0x1d6
-+			MX8MM_IOMUXC_NAND_CE2_B_USDHC3_DATA5		0x1d6
-+			MX8MM_IOMUXC_NAND_CE3_B_USDHC3_DATA6		0x1d6
-+			MX8MM_IOMUXC_NAND_CLE_USDHC3_DATA7		0x1d6
-+			MX8MM_IOMUXC_NAND_CE1_B_USDHC3_STROBE 		0x196
-+		>;
-+	};
-+
-+	pinctrl_wdog: wdoggrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B		0xc6
-+		>;
-+	};
-+
-+	pinctrl_usbotg1: usbotg1grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_GPIO1_IO12_USB1_OTG_PWR		0x000
-+			MX8MM_IOMUXC_GPIO1_IO13_USB1_OTG_OC		0x000
-+		>;
-+	};
-+};
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 5f5b762ce51a..fa373f9a7cdf 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -345,6 +345,16 @@ config MACH_PROTONIC_IMX6
- 	select ARCH_IMX6UL
- 	select ARM_USE_COMPRESSED_DTB
+diff --git a/images/Makefile.socfpga b/images/Makefile.socfpga
+index b36e2a503..26220178a 100644
+--- a/images/Makefile.socfpga
++++ b/images/Makefile.socfpga
+@@ -30,6 +30,14 @@ pblb-$(CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC) += start_socfpga_de0_nano_soc
+ FILE_barebox-socfpga-de0_nano_soc.img = start_socfpga_de0_nano_soc.pblb
+ socfpga-barebox-$(CONFIG_MACH_SOCFPGA_TERASIC_DE0_NANO_SOC) += barebox-socfpga-de0_nano_soc.img
  
-+config MACH_PROTONIC_IMX8M
-+	bool "Protonic-Holland i.MX8Mx based boards"
-+	select ARCH_IMX8MM
-+	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
-+	select FIRMWARE_IMX8MM_ATF
-+	select ARM_SMCCC
-+	select MCI_IMX_ESDHC_PBL
-+	select IMX8M_DRAM
-+	select USB_GADGET_DRIVER_ARC_PBL
++pblb-$(CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO) += start_socfpga_de10_nano_xload
++FILE_barebox-socfpga-de10_nano-xload.img = start_socfpga_de10_nano_xload.pblb.socfpgaimg
++socfpga-xload-$(CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO) += barebox-socfpga-de10_nano-xload.img
 +
- config MACH_KONTRON_SAMX6I
-         bool "Kontron sAMX6i"
-         select ARCH_IMX6
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 382493488bfc..83c7f9403956 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -416,6 +416,11 @@ CFG_start_nxp_imx8mm_evk.pblb.imximg = $(board)/nxp-imx8mm-evk/flash-header-imx8
- FILE_barebox-nxp-imx8mm-evk.img = start_nxp_imx8mm_evk.pblb.pimximg
- image-$(CONFIG_MACH_NXP_IMX8MM_EVK) += barebox-nxp-imx8mm-evk.img
- 
-+pblb-$(CONFIG_MACH_PROTONIC_IMX8M) += start_prt_prt8mm
-+CFG_start_prt_prt8mm.pblb.imximg = $(board)/protonic-imx8m/flash-header-prt8mm.imxcfg
-+FILE_barebox-prt-prt8mm.img = start_prt_prt8mm.pblb.pimximg
-+image-$(CONFIG_MACH_PROTONIC_IMX8M) += barebox-prt-prt8mm.img
++pblb-$(CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO) += start_socfpga_de10_nano
++FILE_barebox-socfpga-de10_nano.img = start_socfpga_de10_nano.pblb
++socfpga-barebox-$(CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO) += barebox-socfpga-de10_nano.img
 +
- # ----------------------- i.MX8mp based boards --------------------------
- pblb-$(CONFIG_MACH_NXP_IMX8MP_EVK) += start_nxp_imx8mp_evk
- CFG_start_nxp_imx8mp_evk.pblb.imximg = $(board)/nxp-imx8mp-evk/flash-header-imx8mp-evk.imxcfg
+ pblb-$(CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES) += start_socfpga_achilles_xload
+ FILE_barebox-socfpga-achilles-xload.img = start_socfpga_achilles_xload.pblb.socfpgaimg
+ socfpga-barebox-$(CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES) += barebox-socfpga-achilles-xload.img
 -- 
-2.29.2
+2.31.1
 
 
 _______________________________________________
