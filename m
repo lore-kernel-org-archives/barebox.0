@@ -1,54 +1,55 @@
-Delivery-date: Mon, 31 May 2021 09:42:54 +0200
+Delivery-date: Mon, 31 May 2021 09:43:02 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lncZa-0003H7-Bw
-	for lore@lore.pengutronix.de; Mon, 31 May 2021 09:42:54 +0200
+	id 1lncZi-0003HU-SI
+	for lore@lore.pengutronix.de; Mon, 31 May 2021 09:43:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lncZZ-0001ef-3c
-	for lore@pengutronix.de; Mon, 31 May 2021 09:42:54 +0200
+	id 1lncZg-0001hd-VV
+	for lore@pengutronix.de; Mon, 31 May 2021 09:43:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=+98xs+7Eea3bbTiIeb5U7EmX8hLI5W8y/qzvRXhjH08=; b=WdyTraQ91cq25E
-	2dt+m/CpsjRzXi85hGoCKw+YrQDj5qxE8Q7Seup7juzUZfVF84rLhll/PI6AvioACJak33ZNnZV0w
-	5WuvpE1uQ3bm44VG1b9mQMPG42rNXQOLjlpeQO7eY+7w5GpxFttQWoG5b/84r45kq/8d1VdCqIAqs
-	U7DDvv12OFoIBsBsUXUvgSabUtx8Vy3bLUlTdqOv/fEl31C1EohOudEsPUwSJnlb1Zt96oj7gLFwf
-	ZSGqFcT6X3aRng7aGjrDGuxoOQ+33Oajl8/lW9cYYfz7xhhGrhbAcUM04oP1TC8r3Lh6EFy0l65/Q
-	nI+KiEjUnsVUupOusTDA==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:Cc:References:To:Subject:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=BHgeMboMLgIM0eucySrObKVVMoImnzHqeSSe3zoZjPs=; b=gIixSpkWaAczQx9RveMegR3ABN
+	7MFMHNLxZR3LIMIfMp9e6c8JZACy6HopIbZACn//65IIPnHDw4SkF1jyV2AEIip1W9d63WpTr5yYM
+	xSa0rqP6A+MfVg/sXt/tb7ONRB7CHNwS5Koegea90s4eBlxgYsgkI0L1Yd9ymWyhxYF1jriOIRGG1
+	SwuT9iF5CW8gVVAECM7m5STR5a6elTFU5/xJNDJ650yWjObUP6iDsZlGN+1OdZXHI5lF2i5BOUPz4
+	jd5sPnZclpvMqdtsoYSv0znqI/1w32mQ+CcBWnOQTBiKHaKfyYw2F4aJPqUwXx2Eiiu7dyRNyNmHh
+	WTCzIkgA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lncYD-00BEc3-Tg; Mon, 31 May 2021 07:41:30 +0000
+	id 1lncYN-00BEi6-8Q; Mon, 31 May 2021 07:41:39 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lncVd-00BCqE-Sd
- for barebox@lists.infradead.org; Mon, 31 May 2021 07:38:51 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1lncVE-00080J-EL; Mon, 31 May 2021 09:38:24 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1lncVD-00045w-1c; Mon, 31 May 2021 09:38:23 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 31 May 2021 09:38:09 +0200
-Message-Id: <20210531073821.15257-9-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210531073821.15257-1-a.fatoum@pengutronix.de>
+ id 1lncXI-00BE0x-2C
+ for barebox@lists.infradead.org; Mon, 31 May 2021 07:40:35 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1lncXG-0000fb-L6; Mon, 31 May 2021 09:40:30 +0200
+To: Antony Pavlov <antonynpavlov@gmail.com>
 References: <20210531073821.15257-1-a.fatoum@pengutronix.de>
+ <20210531073821.15257-8-a.fatoum@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <d193ad83-21f2-cbc5-a8d9-01ffa6cbe149@pengutronix.de>
+Date: Mon, 31 May 2021 09:40:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.2
 MIME-Version: 1.0
+In-Reply-To: <20210531073821.15257-8-a.fatoum@pengutronix.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210531_003850_144315_58CF533F 
-X-CRM114-Status: GOOD (  23.83  )
+X-CRM114-CacheID: sfid-20210531_004032_271354_25C2C365 
+X-CRM114-Status: GOOD (  24.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,264 +69,149 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 08/20] soc: add support for StarFive JH7100 incoherent
- interconnect
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 07/20] RISC-V: support incoherent I-Cache
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The preproduction JH7100 used in the BeagleV beta does not ensure cache
-coherence between CPU and some DMA masters like the Ethernet MAC.
+Hello Antony,
 
-Fix this for streaming DMA mappings by implementing cache cleaning and
-discarding.  The Flush64 primitive can be used for both as it will
-invalidate after flushing and not write-back clean lines.
+On 31.05.21 09:38, Ahmad Fatoum wrote:
+> SiFive SoCs have separate I-Caches that require self-modifying code
+> like barebox' relocation and PBL extraction code to do cache
+> maintenance. Implement sync_caches_for_execution and use it where
+> appropriate.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/riscv/Kconfig.socs                | 2 ++
+>  arch/riscv/boot/uncompress.c           | 2 ++
+>  arch/riscv/cpu/core.c                  | 7 +++++++
+>  arch/riscv/include/asm/barebox-riscv.h | 2 ++
+>  arch/riscv/lib/reloc.c                 | 8 ++++++++
+>  arch/riscv/lib/setupc.S                | 2 ++
+>  6 files changed, 23 insertions(+)
+> 
+> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+> index 9c82a36fe4bd..d2970ba1d67f 100644
+> --- a/arch/riscv/Kconfig.socs
+> +++ b/arch/riscv/Kconfig.socs
+> @@ -18,6 +18,7 @@ config SOC_VIRT
+>  	select RISCV_S_MODE
+>  	select BOARD_RISCV_GENERIC_DT
+>  	select CLINT_TIMER
+> +	select HAS_CACHE
+>  	help
+>  	  Generates an image tht can be be booted by QEMU. The image is called
+>  	  barebox-dt-2nd.img
+> @@ -30,6 +31,7 @@ config SOC_SIFIVE
+>  	select RISCV_TIMER
+>  	select HAS_MACB
+>  	select HAS_ASM_DEBUG_LL
+> +	select HAS_CACHE
+>  	help
+>  	  This enables support for SiFive SoC platform hardware.
+>  
+> diff --git a/arch/riscv/boot/uncompress.c b/arch/riscv/boot/uncompress.c
+> index 35a91e8cb62a..9f1d25efb59b 100644
+> --- a/arch/riscv/boot/uncompress.c
+> +++ b/arch/riscv/boot/uncompress.c
+> @@ -63,6 +63,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+>  
+>  	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
+>  
+> +	sync_caches_for_execution();
+> +
+>  	barebox = (void *)barebox_base;
+>  
+>  	pr_debug("jumping to uncompressed image at 0x%p. dtb=0x%p\n", barebox, fdt);
+> diff --git a/arch/riscv/cpu/core.c b/arch/riscv/cpu/core.c
+> index 62eb0ca87164..b4727fe7449b 100644
+> --- a/arch/riscv/cpu/core.c
+> +++ b/arch/riscv/cpu/core.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/clk.h>
+>  #include <linux/err.h>
+>  #include <memory.h>
+> +#include <asm/barebox-riscv.h>
+>  #include <asm-generic/memory_layout.h>
+>  #include <globalvar.h>
+>  #include <magicvar.h>
+> @@ -91,3 +92,9 @@ static struct driver_d riscv_driver = {
+>  	.of_compatible = riscv_dt_ids,
+>  };
+>  postcore_platform_driver(riscv_driver);
+> +
+> +static void arch_shutdown(void)
+> +{
+> +	sync_caches_for_execution();
+> +}
+> +archshutdown_exitcall(arch_shutdown);
+> diff --git a/arch/riscv/include/asm/barebox-riscv.h b/arch/riscv/include/asm/barebox-riscv.h
+> index bbe6cd040642..abb320242769 100644
+> --- a/arch/riscv/include/asm/barebox-riscv.h
+> +++ b/arch/riscv/include/asm/barebox-riscv.h
+> @@ -27,6 +27,8 @@ void setup_c(void);
+>  void relocate_to_current_adr(void);
+>  void relocate_to_adr(unsigned long target);
+>  
+> +void sync_caches_for_execution(void);
+> +
+>  void __noreturn __naked barebox_riscv_entry(unsigned long membase, unsigned long memsize,
+>  					    void *boarddata, unsigned int flags);
+>  
+> diff --git a/arch/riscv/lib/reloc.c b/arch/riscv/lib/reloc.c
+> index 2fc8818cd698..165190775361 100644
+> --- a/arch/riscv/lib/reloc.c
+> +++ b/arch/riscv/lib/reloc.c
+> @@ -24,6 +24,12 @@
+>  
+>  #define RISC_R_TYPE(x)	((x) & 0xFF)
+>  
+> +void sync_caches_for_execution(void)
+> +{
+> +	if (IS_ENABLED(CONFIG_HAS_CACHE))
+> +		asm volatile ("fence.i" ::: "memory");
 
-Coherent DMA mapping will be implemented using allocation from uncached
-SRAM in a follow-up commit.
+If Erizo on FPGA chokes on this, we can have it pass
+along a feature flag from PBL that says it doesn't
+need cache maintenance. Please advise.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/riscv/Kconfig.socs              |   5 +
- arch/riscv/include/asm/barrier.h     |  27 ++++++
- drivers/Makefile                     |   2 +-
- drivers/soc/Makefile                 |   4 +
- drivers/soc/sifive/Makefile          |   1 +
- drivers/soc/sifive/sifive_l2_cache.c | 137 +++++++++++++++++++++++++++
- 6 files changed, 175 insertions(+), 1 deletion(-)
- create mode 100644 arch/riscv/include/asm/barrier.h
- create mode 100644 drivers/soc/Makefile
- create mode 100644 drivers/soc/sifive/Makefile
- create mode 100644 drivers/soc/sifive/sifive_l2_cache.c
+> +}
+> +
+>  void relocate_to_current_adr(void)
+>  {
+>  	unsigned long offset;
+> @@ -63,4 +69,6 @@ void relocate_to_current_adr(void)
+>  			panic("");
+>  		}
+>  	}
+> +
+> +	sync_caches_for_execution();
+>  }
+> diff --git a/arch/riscv/lib/setupc.S b/arch/riscv/lib/setupc.S
+> index 5fdd81c2c3ec..d225186c79fd 100644
+> --- a/arch/riscv/lib/setupc.S
+> +++ b/arch/riscv/lib/setupc.S
+> @@ -46,6 +46,8 @@ ENTRY(relocate_to_adr)
+>  
+>  	jal	__memcpy
+>  
+> +	jal	sync_caches_for_execution
+> +
+>  	REG_L	a0, (SZREG * 1)(sp)
+>  	jr	a0 			/* jump to relocated address */
+>  copied:
+> 
 
-diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-index d2970ba1d67f..3e4cd3cdad59 100644
---- a/arch/riscv/Kconfig.socs
-+++ b/arch/riscv/Kconfig.socs
-@@ -37,6 +37,11 @@ config SOC_SIFIVE
- 
- if SOC_SIFIVE
- 
-+config SIFIVE_L2
-+	bool
-+	help
-+	  Selected by SoCs with cache incoherent interconnects
-+
- config BOARD_HIFIVE
- 	bool "HiFive"
- 	depends on ARCH_RV64I
-diff --git a/arch/riscv/include/asm/barrier.h b/arch/riscv/include/asm/barrier.h
-new file mode 100644
-index 000000000000..eff529307a15
---- /dev/null
-+++ b/arch/riscv/include/asm/barrier.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Based on arch/arm/include/asm/barrier.h
-+ *
-+ * Copyright (C) 2012 ARM Ltd.
-+ * Copyright (C) 2013 Regents of the University of California
-+ * Copyright (C) 2017 SiFive
-+ */
-+
-+#ifndef _ASM_RISCV_BARRIER_H
-+#define _ASM_RISCV_BARRIER_H
-+
-+#ifndef __ASSEMBLY__
-+
-+#define nop()		__asm__ __volatile__ ("nop")
-+
-+#define RISCV_FENCE(p, s) \
-+	__asm__ __volatile__ ("fence " #p "," #s : : : "memory")
-+
-+/* These barriers need to enforce ordering on both devices or memory. */
-+#define mb()		RISCV_FENCE(iorw,iorw)
-+#define rmb()		RISCV_FENCE(ir,ir)
-+#define wmb()		RISCV_FENCE(ow,ow)
-+
-+#endif /* __ASSEMBLY__ */
-+
-+#endif /* _ASM_RISCV_BARRIER_H */
-diff --git a/drivers/Makefile b/drivers/Makefile
-index be5b0b3b04c9..aeb097e1f5ff 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -39,7 +39,7 @@ obj-$(CONFIG_HAB) += hab/
- obj-$(CONFIG_CRYPTO_HW) += crypto/
- obj-$(CONFIG_AIODEV) += aiodev/
- obj-y	+= memory/
--obj-y	+= soc/imx/
-+obj-y	+= soc/
- obj-y	+= nvme/
- obj-y	+= ddr/
- obj-y	+= power/
-diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
-new file mode 100644
-index 000000000000..06b8c2a504af
---- /dev/null
-+++ b/drivers/soc/Makefile
-@@ -0,0 +1,4 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+obj-y	+= imx/
-+obj-$(CONFIG_SOC_SIFIVE)	+= sifive/
-diff --git a/drivers/soc/sifive/Makefile b/drivers/soc/sifive/Makefile
-new file mode 100644
-index 000000000000..e8113c66f576
---- /dev/null
-+++ b/drivers/soc/sifive/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_SIFIVE_L2) += sifive_l2_cache.o
-diff --git a/drivers/soc/sifive/sifive_l2_cache.c b/drivers/soc/sifive/sifive_l2_cache.c
-new file mode 100644
-index 000000000000..1ac39c743681
---- /dev/null
-+++ b/drivers/soc/sifive/sifive_l2_cache.c
-@@ -0,0 +1,137 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * SiFive L2 cache controller Driver
-+ *
-+ * Copyright (C) 2018-2019 SiFive, Inc.
-+ *
-+ */
-+
-+#define pr_fmt(fmt) "sifive-l2: " fmt
-+
-+#include <io.h>
-+#include <printk.h>
-+#include <stdio.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <of.h>
-+#include <asm/cache.h>
-+#include <asm/barrier.h>
-+
-+#define SIFIVE_L2_DIRECCFIX_LOW 0x100
-+#define SIFIVE_L2_DIRECCFIX_HIGH 0x104
-+#define SIFIVE_L2_DIRECCFIX_COUNT 0x108
-+
-+#define SIFIVE_L2_DIRECCFAIL_LOW 0x120
-+#define SIFIVE_L2_DIRECCFAIL_HIGH 0x124
-+#define SIFIVE_L2_DIRECCFAIL_COUNT 0x128
-+
-+#define SIFIVE_L2_DATECCFIX_LOW 0x140
-+#define SIFIVE_L2_DATECCFIX_HIGH 0x144
-+#define SIFIVE_L2_DATECCFIX_COUNT 0x148
-+
-+#define SIFIVE_L2_DATECCFAIL_LOW 0x160
-+#define SIFIVE_L2_DATECCFAIL_HIGH 0x164
-+#define SIFIVE_L2_DATECCFAIL_COUNT 0x168
-+
-+#define SIFIVE_L2_FLUSH64 0x200
-+
-+#define SIFIVE_L2_CONFIG 0x00
-+#define SIFIVE_L2_WAYENABLE 0x08
-+#define SIFIVE_L2_ECCINJECTERR 0x40
-+
-+#define SIFIVE_L2_MAX_ECCINTR 4
-+
-+#define SIFIVE_L2_FLUSH64_LINE_LEN 64
-+
-+static void __iomem *l2_base = NULL;
-+
-+static void sifive_l2_config_read(struct device_d *dev)
-+{
-+	u32 regval, val;
-+
-+	printf("Cache configuration:\n");
-+
-+	regval = readl(l2_base + SIFIVE_L2_CONFIG);
-+	val = regval & 0xFF;
-+	printf("  #Banks: %d\n", val);
-+	val = (regval & 0xFF00) >> 8;
-+	printf("  #Ways per bank: %d\n", val);
-+	val = (regval & 0xFF0000) >> 16;
-+	printf("  #Sets per bank: %llu\n", 1llu << val);
-+	val = (regval & 0xFF000000) >> 24;
-+	printf("  #Bytes per cache block: %llu\n", 1llu << val);
-+
-+	regval = readl(l2_base + SIFIVE_L2_WAYENABLE);
-+	printf("  #Index of the largest way enabled: %d\n", regval);
-+}
-+
-+static void sifive_l2_flush64_range(dma_addr_t start, dma_addr_t end)
-+{
-+	unsigned long line;
-+
-+	start = ALIGN_DOWN(start, 64);
-+	end = ALIGN(end, 64);
-+
-+	if (start == end)
-+		return;
-+
-+	mb();
-+	for (line = start; line < end; line += SIFIVE_L2_FLUSH64_LINE_LEN) {
-+		writeq(line, l2_base + SIFIVE_L2_FLUSH64);
-+		mb();
-+	}
-+}
-+
-+struct cache_ops sifive_l2_ops = {
-+	.dma_flush_range = sifive_l2_flush64_range,
-+	.dma_inv_range = sifive_l2_flush64_range,
-+};
-+
-+/* Normally, L2 should be kept coherent between SiFive CPUs and other
-+ * DMA masters on the SoC. If that's not the case, add it to the table
-+ * here, so barebox dma_map_single and co. flush and invalidate as
-+ * necessary.
-+ * Note: If barebox is allocating from cacheable memory, you will
-+ * need a driver to set dma_coherent_ops as well.
-+ */
-+static const struct of_device_id incoherent_soc_dt_ids[] = {
-+	{ "starfive,jh7100" },
-+	{ /* sentinel */ },
-+};
-+
-+static int sifive_l2_probe(struct device_d *dev)
-+{
-+	struct resource *iores;
-+
-+	if (l2_base)
-+		return -EBUSY;
-+
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+
-+	l2_base = IOMEM(iores->start);
-+
-+	dev->info = sifive_l2_config_read;
-+
-+	if (of_match_node(incoherent_soc_dt_ids, of_get_root_node())) {
-+		riscv_cache_set_ops(&sifive_l2_ops);
-+		pr_info("enabling L2 cache ops\n");
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id sifive_l2_ids[] = {
-+	{ .compatible = "sifive,fu540-c000-ccache" },
-+	{ .compatible = "sifive,fu740-c000-ccache" },
-+	{ .compatible = "starfive,ccache0" },
-+	{ /* end of table */ },
-+};
-+
-+static struct driver_d sifive_l2_driver = {
-+	.name = "sfive-l2cache",
-+	.probe = sifive_l2_probe,
-+	.of_compatible = sifive_l2_ids,
-+};
-+postcore_platform_driver(sifive_l2_driver);
 -- 
-2.29.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
