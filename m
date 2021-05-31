@@ -1,54 +1,52 @@
-Delivery-date: Mon, 31 May 2021 08:57:59 +0200
+Delivery-date: Mon, 31 May 2021 08:59:39 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lnbs7-0002km-1d
-	for lore@lore.pengutronix.de; Mon, 31 May 2021 08:57:59 +0200
+	id 1lnbtj-0002la-GX
+	for lore@lore.pengutronix.de; Mon, 31 May 2021 08:59:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lnbs5-0000bd-1V
-	for lore@pengutronix.de; Mon, 31 May 2021 08:57:58 +0200
+	id 1lnbti-0000rI-En
+	for lore@pengutronix.de; Mon, 31 May 2021 08:59:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=VVt7lgaralT5KCjUTPOe7wGY8oWXAJBG1mR4PkYl8ns=; b=Pv4dOPJq53AdVo
-	xCdYZ5dBnZbXKeW54pwVB4kIU/MBRtzsg0bUpc0IhQ+7eqvUl7VXC7U0ihd5tK/V9kNA+VLi6Deod
-	e1p/DA8FLvDUAAJJjjTCUjh0f3jv6ksY5oKiTY5WDMHqmovM7um8Q4I1Y/K3lgoYAO4HEjf7Czn3q
-	Ub/a9QjbrK3LMQP84K9WkGt+n469YIAMxovZnri9KinYiaRK3+K8b5uWlJHMJ+2pdt94/XQtouEA9
-	IyjU4t8WVwsdDEALUu4psLbBy+nsyVT4R7aJ61PNo3GD2cTlBYdoPzO/M4ZM0HBiPJJcCTGRj3SQe
-	9EItbYH7lnizTyMBMDrg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=egcA1P3bNP3xNkYpWMSmwxBL0+d7tH9mUTZkB7TPfDc=; b=uZoQ2SUN19zYZ/
+	qgPqNQ46W+KsAK+I+zZmeL2kvsoKl0XsWyu27q/9TibmrUHU/8uNyUzXfesSCus/q14Yq5SvrSSRc
+	DoxXAFOW5xuseLeLfZFGvo+rvgK7LBO0/dxEpSlHHAAkVWTj7388C06mxdBaBXBjhI8/vJ+mpYvJ7
+	zoxCQx9NgEtAoEXfLDPkkhfNWe7npNYfSpDZzPI45Tz1trA3H4likBqkGKUHUBNaeBfejwOTSNHar
+	xnVc15vdVaY2KxMSNG5A9sP/MLo/tdsJJXftsOYH/7L8y/GoAMRkAHru6fqibwOCbZYbJ4G/75EUY
+	cwNuD3i4xCMqBBizhYaA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lnbqi-00B1DI-E4; Mon, 31 May 2021 06:56:32 +0000
+	id 1lnbsZ-00B2QC-PD; Mon, 31 May 2021 06:58:27 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lnbq0-00B0mJ-3N
- for barebox@lists.infradead.org; Mon, 31 May 2021 06:55:50 +0000
+ id 1lnbsR-00B2NV-65
+ for barebox@lists.infradead.org; Mon, 31 May 2021 06:58:20 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lnbpa-0007yj-Mz; Mon, 31 May 2021 08:55:22 +0200
+ id 1lnbsP-0000kA-V2; Mon, 31 May 2021 08:58:17 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lnbpZ-0003gG-RX; Mon, 31 May 2021 08:55:21 +0200
+ id 1lnbsP-0004rX-MS; Mon, 31 May 2021 08:58:17 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 31 May 2021 08:55:14 +0200
-Message-Id: <20210531065520.12385-8-a.fatoum@pengutronix.de>
+Date: Mon, 31 May 2021 08:58:15 +0200
+Message-Id: <20210531065815.18641-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210531065520.12385-1-a.fatoum@pengutronix.de>
-References: <20210531065520.12385-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210530_235548_357184_98E15E99 
-X-CRM114-Status: GOOD (  26.51  )
+X-CRM114-CacheID: sfid-20210530_235819_266541_156BE268 
+X-CRM114-Status: GOOD (  18.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,369 +70,197 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 07/13] test: add basic barebox self-test infrastructure
+Subject: [PATCH v2] net: macb: add SiFive support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Self tests is code written to run within barebox to exercise
-functionality. They offer flexibility to test specific units of barebox
-instead of the program as a whole. Add a very simple infrastructure
-for registering and executing self-tests. This is based on the Linux
-kselftest modules. We don't utilize modules for this, however, because
-we only have module support on ARM, but we need a generic solution.
+The Ethernet controller on the SiFive SoCs needs some special TX clock
+setup. Port the relevant Linux v5.12 bits to enable it.
 
-Selftests can be enabled individually and even tested without shell
-support to allow tests to happen for size-restricted barebox images
-as well.
+As the macb driver is used for some old at91 boards that aren't yet
+ported to the common clock framework, that new setup code has to be
+in an #ifdef.
+
+Tested on qemu-system-riscv64 -M sifive_u with dhcp.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Kconfig             |  1 +
- Makefile            |  2 +-
- commands/Makefile   |  1 +
- commands/selftest.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
- common/startup.c    |  4 +++
- include/bselftest.h | 74 ++++++++++++++++++++++++++++++++++++++
- test/Kconfig        |  8 +++++
- test/Makefile       |  1 +
- test/self/Kconfig   | 33 +++++++++++++++++
- test/self/Makefile  |  3 ++
- test/self/core.c    | 22 ++++++++++++
- 11 files changed, 236 insertions(+), 1 deletion(-)
- create mode 100644 commands/selftest.c
- create mode 100644 include/bselftest.h
- create mode 100644 test/Kconfig
- create mode 100644 test/Makefile
- create mode 100644 test/self/Kconfig
- create mode 100644 test/self/Makefile
- create mode 100644 test/self/core.c
+v1 -> v2: add common clock code into #ifdef
+---
+ drivers/net/macb.c | 120 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 120 insertions(+)
 
-diff --git a/Kconfig b/Kconfig
-index 29c32463fb43..7c4cf36881b4 100644
---- a/Kconfig
-+++ b/Kconfig
-@@ -15,3 +15,4 @@ source "lib/Kconfig"
- source "crypto/Kconfig"
- source "firmware/Kconfig"
- source "scripts/Kconfig"
-+source "test/Kconfig"
-diff --git a/Makefile b/Makefile
-index a1411386f1b3..e856d8672b71 100644
---- a/Makefile
-+++ b/Makefile
-@@ -581,7 +581,7 @@ endif
- include $(srctree)/scripts/Makefile.lib
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 14a0b45322bf..19ae64d7a5a2 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -52,6 +52,17 @@
+ #define TX_RING_BYTES		(sizeof(struct macb_dma_desc) * TX_RING_SIZE)
+ #define GEM_Q1_DESC_BYTES	(sizeof(struct macb_dma_desc) * GEM_Q1_DESCS)
  
- # Objects we will link into barebox / subdirs we need to visit
--common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/ firmware/
-+common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/ firmware/ test/
- 
- include $(srctree)/arch/$(SRCARCH)/Makefile
- 
-diff --git a/commands/Makefile b/commands/Makefile
-index 447349fd157d..4b45d266fd56 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -130,5 +130,6 @@ obj-$(CONFIG_CMD_SEED)		+= seed.o
- obj-$(CONFIG_CMD_IP_ROUTE_GET)  += ip-route-get.o
- obj-$(CONFIG_CMD_BTHREAD)	+= bthread.o
- obj-$(CONFIG_CMD_UBSAN)		+= ubsan.o
-+obj-$(CONFIG_CMD_SELFTEST)	+= selftest.o
- 
- UBSAN_SANITIZE_ubsan.o := y
-diff --git a/commands/selftest.c b/commands/selftest.c
-new file mode 100644
-index 000000000000..a10f1467fece
---- /dev/null
-+++ b/commands/selftest.c
-@@ -0,0 +1,88 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#define pr_fmt(fmt) "selftest: " fmt
-+
-+#include <common.h>
-+#include <command.h>
-+#include <getopt.h>
-+#include <bselftest.h>
-+#include <complete.h>
-+
-+static int run_selftest(const char *match, bool list)
-+{
-+	struct selftest *test;
-+	int matches = 0;
-+	int err = 0;
-+
-+	list_for_each_entry(test, &selftests, list) {
-+		if (list) {
-+			printf("%s\n", test->name);
-+			matches++;
-+			continue;
-+		}
-+
-+		if (match && strcmp(test->name, match))
-+			continue;
-+
-+		err |= test->func();
-+		matches++;
-+	}
-+
-+	if (!matches) {
-+		if (match) {
-+			printf("No tests matching '%s' found.\n", match);
-+			return -EINVAL;
-+		}
-+
-+		printf("No tests found.\n");
-+	}
-+
-+	return err;
-+}
-+
-+static int do_selftest(int argc, char *argv[])
-+{
-+	bool list = false;
-+	int i, err = 0;
-+	int opt;
-+
-+	while((opt = getopt(argc, argv, "l")) > 0) {
-+		switch(opt) {
-+		case 'l':
-+			list = true;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	if (optind == argc) {
-+		err = run_selftest(NULL, list);
-+	} else {
-+		for (i = optind; i < argc; i++) {
-+			err = run_selftest(argv[i], list);
-+			if (err)
-+				goto out;
-+		}
-+	}
-+
-+out:
-+	return err ? COMMAND_ERROR : COMMAND_SUCCESS;
-+}
-+
-+BAREBOX_CMD_HELP_START(selftest)
-+BAREBOX_CMD_HELP_TEXT("Run enabled barebox self-tests")
-+BAREBOX_CMD_HELP_TEXT("If run without arguments, all tests are run")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-l",     "list available tests")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(selftest)
-+	.cmd		= do_selftest,
-+	BAREBOX_CMD_DESC("Run selftests")
-+	BAREBOX_CMD_OPTS("[-l] [tests..]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_COMPLETE(empty_complete)
-+	BAREBOX_CMD_HELP(cmd_selftest_help)
-+BAREBOX_CMD_END
-diff --git a/common/startup.c b/common/startup.c
-index 080feebf05fd..d170cb8a7c5a 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -37,6 +37,7 @@
- #include <linux/ctype.h>
- #include <watchdog.h>
- #include <glob.h>
-+#include <bselftest.h>
- 
- extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
- 		  __barebox_initcalls_end[];
-@@ -417,6 +418,9 @@ void __noreturn start_barebox(void)
- 
- 	pr_debug("initcalls done\n");
- 
-+	if (IS_ENABLED(CONFIG_SELFTEST_AUTORUN))
-+		selftests_run();
-+
- 	if (barebox_main)
- 		barebox_main();
- 
-diff --git a/include/bselftest.h b/include/bselftest.h
-new file mode 100644
-index 000000000000..21eeba0526ef
---- /dev/null
-+++ b/include/bselftest.h
-@@ -0,0 +1,74 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+#ifndef __BSELFTEST_H
-+#define __BSELFTEST_H
-+
-+#include <linux/compiler.h>
-+#include <linux/list.h>
-+#include <init.h>
-+
-+enum bselftest_group {
-+	BSELFTEST_core
++/* This structure is only used for MACB on SiFive FU540 devices */
++struct sifive_fu540_macb_mgmt {
++	void __iomem *reg;
++	unsigned long rate;
++	struct clk clk;
 +};
 +
-+struct selftest {
-+	enum bselftest_group group;
-+	const char *name;
-+	int (*func)(void);
-+	struct list_head list;
++struct macb_config {
++	int (*txclk_init)(struct device_d *dev, struct clk **tx_clk);
 +};
 +
-+static inline int selftest_report(unsigned int total_tests, unsigned int failed_tests,
-+				  unsigned int skipped_tests)
-+{
-+	if (failed_tests == 0) {
-+		if (skipped_tests) {
-+			pr_info("skipped %u tests\n", skipped_tests);
-+			pr_info("remaining %u tests passed\n", total_tests);
-+		} else
-+			pr_info("all %u tests passed\n", total_tests);
-+	} else
-+		pr_err("failed %u out of %u tests\n", failed_tests, total_tests);
+ struct macb_device {
+ 	void			__iomem *regs;
+ 
+@@ -666,12 +677,108 @@ static void macb_init_rx_buffer_size(struct macb_device *bp, size_t size)
+ 		   size, bp->rx_buffer_size);
+ }
+ 
++#ifdef CONFIG_COMMON_CLK
++static struct sifive_fu540_macb_mgmt *mgmt;
 +
-+	return failed_tests ? -EINVAL : 0;
++static unsigned long fu540_macb_tx_recalc_rate(struct clk *clk,
++					       unsigned long parent_rate)
++{
++	return mgmt->rate;
 +}
 +
-+extern struct list_head selftests;
-+
-+#define BSELFTEST_GLOBALS()			\
-+static unsigned int total_tests __initdata;	\
-+static unsigned int failed_tests __initdata;	\
-+static unsigned int skipped_tests __initdata
-+
-+#ifdef CONFIG_SELFTEST
-+#define __bselftest_initcall(func) late_initcall(func)
-+void selftests_run(void);
-+#else
-+#define __bselftest_initcall(func)
-+static inline void selftests_run(void)
++static long fu540_macb_tx_round_rate(struct clk *clk, unsigned long rate,
++				     unsigned long *parent_rate)
 +{
++	if (WARN_ON(rate < 2500000))
++		return 2500000;
++	else if (rate == 2500000)
++		return 2500000;
++	else if (WARN_ON(rate < 13750000))
++		return 2500000;
++	else if (WARN_ON(rate < 25000000))
++		return 25000000;
++	else if (rate == 25000000)
++		return 25000000;
++	else if (WARN_ON(rate < 75000000))
++		return 25000000;
++	else if (WARN_ON(rate < 125000000))
++		return 125000000;
++	else if (rate == 125000000)
++		return 125000000;
++
++	WARN_ON(rate > 125000000);
++
++	return 125000000;
 +}
-+#endif
 +
-+#define bselftest(_group, _func)				\
-+	static int __bselftest_##_func(void)			\
-+	{							\
-+		total_tests = failed_tests = skipped_tests = 0;	\
-+		_func();					\
-+		return selftest_report(total_tests,		\
-+				failed_tests,			\
-+				skipped_tests);			\
-+	}							\
-+	static __maybe_unused					\
-+	int __init _func##_bselftest_register(void)		\
-+	{							\
-+		static struct selftest this = {			\
-+			.group = BSELFTEST_##_group,		\
-+			.name = KBUILD_MODNAME,			\
-+			.func = __bselftest_##_func,		\
-+		};						\
-+		list_add_tail(&this.list, &selftests);		\
-+		return 0;					\
-+	}							\
-+	__bselftest_initcall(_func##_bselftest_register);
-+
-+#endif
-diff --git a/test/Kconfig b/test/Kconfig
-new file mode 100644
-index 000000000000..eece702e68aa
---- /dev/null
-+++ b/test/Kconfig
-@@ -0,0 +1,8 @@
-+menuconfig TEST
-+	bool "Testing"
-+
-+if TEST
-+
-+source "test/self/Kconfig"
-+
-+endif
-diff --git a/test/Makefile b/test/Makefile
-new file mode 100644
-index 000000000000..1b9eb2171a82
---- /dev/null
-+++ b/test/Makefile
-@@ -0,0 +1 @@
-+obj-y += self/
-diff --git a/test/self/Kconfig b/test/self/Kconfig
-new file mode 100644
-index 000000000000..720abeffc51b
---- /dev/null
-+++ b/test/self/Kconfig
-@@ -0,0 +1,33 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+config SELFTEST
-+	bool "Self-tests"
-+	help
-+	  Configures support for in-barebox testing
-+
-+if SELFTEST
-+
-+config CMD_SELFTEST
-+	bool "selftest command"
-+	depends on COMMAND_SUPPORT
-+	help
-+	  Command to run enabled barebox self-tests.
-+	  If run without arguments, all tests are run
-+
-+	  Usage: selftest [-l] [tests...]
-+
-+	  Options:
-+	    -l     list available tests
-+
-+config SELFTEST_AUTORUN
-+	bool "Run self-tests on startup"
-+	help
-+	  Self tests are run automatically after initcalls are done,
-+	  but before barebox_main (shell or board-specific startup).
-+
-+config SELFTEST_ENABLE_ALL
-+	bool "Enable all self-tests"
-+	help
-+	  Selects all self-tests compatible with current configuration
-+
-+endif
-diff --git a/test/self/Makefile b/test/self/Makefile
-new file mode 100644
-index 000000000000..78f738c8e210
---- /dev/null
-+++ b/test/self/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+obj-$(CONFIG_SELFTEST) += core.o
-diff --git a/test/self/core.c b/test/self/core.c
-new file mode 100644
-index 000000000000..5a309fc8f18d
---- /dev/null
-+++ b/test/self/core.c
-@@ -0,0 +1,22 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#define pr_fmt(fmt) "bselftest: " fmt
-+
-+#include <common.h>
-+#include <bselftest.h>
-+
-+LIST_HEAD(selftests);
-+
-+int selftests_run(void)
++static int fu540_macb_tx_set_rate(struct clk *clk, unsigned long rate,
++				  unsigned long parent_rate)
 +{
-+	struct selftest *test;
++	rate = fu540_macb_tx_round_rate(clk, rate, &parent_rate);
++	if (rate != 125000000)
++		iowrite32(1, mgmt->reg);
++	else
++		iowrite32(0, mgmt->reg);
++	mgmt->rate = rate;
++
++	return 0;
++}
++
++static const struct clk_ops fu540_c000_ops = {
++	.recalc_rate = fu540_macb_tx_recalc_rate,
++	.round_rate = fu540_macb_tx_round_rate,
++	.set_rate = fu540_macb_tx_set_rate,
++};
++
++static int fu540_c000_txclk_init(struct device_d *dev, struct clk **tx_clk)
++{
++	struct clk *clk;
++	struct resource *res;
 +	int err = 0;
 +
-+	pr_notice("Configured tests will run now\n");
++	mgmt = xzalloc(sizeof(*mgmt));
 +
-+	list_for_each_entry(test, &selftests, list)
-+		err |= test->func();
++	res = dev_request_mem_resource(dev, 1);
++	if (IS_ERR(res))
++		return PTR_ERR(res);
 +
++	mgmt->reg = IOMEM(res->start);
++
++	clk = &mgmt->clk;
++
++	clk->name = "sifive-gemgxl-mgmt";
++	clk->ops = &fu540_c000_ops;
++
++	err = clk_register(&mgmt->clk);
 +	if (err)
-+		pr_err("Some selftests failed\n");
++		return err;
++
++	*tx_clk = &mgmt->clk;
++
++	err = clk_enable(*tx_clk);
++	if (err) {
++		dev_err(dev, "failed to enable tx_clk (%u)\n", err);
++		*tx_clk = NULL;
++		return err;
++	}
++
++	dev_info(dev, "Registered clk switch '%s'\n", clk->name);
++	return 0;
 +}
++#else
++static int fu540_c000_txclk_init(struct device_d *dev, struct clk **tx_clk)
++{
++	return -ENOSYS;
++}
++#endif
++
+ static int macb_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+ 	struct eth_device *edev;
+ 	struct macb_device *macb;
+ 	const char *pclk_name, *hclk_name;
++	const struct macb_config *config = NULL;
+ 	u32 ncfgr;
+ 
+ 	macb = xzalloc(sizeof(*macb));
+@@ -725,6 +832,8 @@ static int macb_probe(struct device_d *dev)
+ 		macb->phy_addr = -1;
+ 		pclk_name = "pclk";
+ 		hclk_name = "hclk";
++
++		config = device_get_match_data(dev);
+ 	} else {
+ 		dev_err(dev, "macb: no platform_data\n");
+ 		return -ENODEV;
+@@ -767,6 +876,12 @@ static int macb_probe(struct device_d *dev)
+ 	if (!IS_ERR(macb->rxclk))
+ 		clk_enable(macb->rxclk);
+ 
++	if (config) {
++		int ret = config->txclk_init(dev, &macb->txclk);
++		if (ret)
++			return ret;
++	}
++
+ 	macb->is_gem = read_is_gem(macb);
+ 
+ 	if (macb_is_gem(macb))
+@@ -808,12 +923,17 @@ static void macb_remove(struct device_d *dev)
+ 	macb_halt(&macb->netdev);
+ }
+ 
++static const struct macb_config fu540_c000_config = {
++	.txclk_init = fu540_c000_txclk_init,
++};
++
+ static const struct of_device_id macb_dt_ids[] = {
+ 	{ .compatible = "cdns,at91sam9260-macb",},
+ 	{ .compatible = "atmel,sama5d2-gem",},
+ 	{ .compatible = "atmel,sama5d3-gem",},
+ 	{ .compatible = "cdns,zynq-gem",},
+ 	{ .compatible = "cdns,zynqmp-gem",},
++	{ .compatible = "sifive,fu540-c000-gem", .data = &fu540_c000_config },
+ 	{ /* sentinel */ }
+ };
+ 
 -- 
 2.29.2
 
