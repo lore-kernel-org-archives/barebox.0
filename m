@@ -1,54 +1,62 @@
-Delivery-date: Mon, 31 May 2021 10:43:27 +0200
+Delivery-date: Mon, 31 May 2021 10:49:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lndWB-0003a1-Gf
-	for lore@lore.pengutronix.de; Mon, 31 May 2021 10:43:27 +0200
+	id 1lndbl-0003bc-P6
+	for lore@lore.pengutronix.de; Mon, 31 May 2021 10:49:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lndW8-0002bL-J9
-	for lore@pengutronix.de; Mon, 31 May 2021 10:43:27 +0200
+	id 1lndbk-0003SW-Ly
+	for lore@pengutronix.de; Mon, 31 May 2021 10:49:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=gCvNno0EhP/TvSUufRxgU9mFR6YHggzsiaOtDHXyOYU=; b=GgDJPdK3d1UFkW+vA7jNd0utpH
-	67CabILzZDbT78a+j0NItqlsw0wToEK7a3Uy7LUosudsLlaKawAoP1bSwN8xM4peA4g26OybdEauz
-	T4LVKDV4nA/+7WZqFDHAmmAIVbEAGPedPgyVyu89L47FVigPebn22GExvUTyvtog+geEhCrM3p/T2
-	c3bisL3AZYHdeLZFjyO9yT25LUEeOn8PVyCi4AeGMjXpHrVw/e3HGqegRGvtQgURfmt6gngEcCEaW
-	mPVjHDKDisKftUHGsvSPmVhSBAR/3klg/wXaFeY5T0G32ahnx6Y76YBqmS2s97aFw1GoBWyvNa7Vj
-	hATxeeJw==;
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:To:Date:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=zFNNrTqXmvY5GBgYlTH0HD3kLLTxVtIH+40akKr3/8Y=; b=guNVT5a1yeNbrY
+	N9HQdB4J00TSsaI2+y3QHxqPLKKHTIYWu9vuSbgdAUCGEVAsU28CNlI4HjDe43gpNvamQZihJj/3M
+	vhv21NwXK3lEF2ojBnyONWMj/p6hw+vsqDK9NZU+/u4GxR0jgg7/EeQkG2ZFMj5OK1ZYQcp8uJ/RN
+	lqtMwQA5uu4ilEh6hpxhYGqayMO3Qe7k3uVVcvXaCNUSgPhYnS/Ha6ZtO9CdL/YJFU4qG96bKDxkC
+	rxWmZ1ORPOniiLa5zYGD4MqVi/psq3OxmxgFZpYWnJj0SBo+zcwVSNwY1Opr3VVMw/qXybtdw5avA
+	BzkEI7dd3d6qXlghNOmQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lndUi-00BVSU-8s; Mon, 31 May 2021 08:41:56 +0000
+	id 1lndaV-00BWaB-TC; Mon, 31 May 2021 08:47:56 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lndUZ-00BVQq-54
- for barebox@lists.infradead.org; Mon, 31 May 2021 08:41:51 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1lndUX-0002Tx-I5
- for barebox@lists.infradead.org; Mon, 31 May 2021 10:41:45 +0200
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <20210531073821.15257-1-a.fatoum@pengutronix.de>
- <20210531073821.15257-18-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <149f1b15-3947-4656-cb43-2b353d24a9ce@pengutronix.de>
-Date: Mon, 31 May 2021 10:41:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+ id 1lndZh-00BWHv-FR
+ for barebox@lists.infradead.org; Mon, 31 May 2021 08:47:07 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lndZg-0003B1-4l; Mon, 31 May 2021 10:47:04 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lndZf-0001EA-Nm; Mon, 31 May 2021 10:47:03 +0200
+Date: Mon, 31 May 2021 10:47:03 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <20210531084703.GN5211@pengutronix.de>
+References: <20210527193600.20879-1-gwenj@trabucayre.com>
+ <7e50995d-c3fa-b716-cce5-2ab6bf38f275@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20210531073821.15257-18-a.fatoum@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <7e50995d-c3fa-b716-cce5-2ab6bf38f275@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 10:45:28 up 102 days, 12:09, 133 users,  load average: 0.21, 0.17,
+ 0.21
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210531_014147_618877_88881520 
-X-CRM114-Status: GOOD (  24.07  )
+X-CRM114-CacheID: sfid-20210531_014705_545329_683CCBEE 
+X-CRM114-Status: GOOD (  26.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,6 +68,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: barebox@lists.infradead.org,
+ Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -68,717 +78,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 17/20] clk: add initial StarFive clock support
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] ARM: SoCFPGA: add Terasic DE10-Nano board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 31.05.21 09:38, Ahmad Fatoum wrote:
-> All clocks seem to share a common format:
+On Mon, May 31, 2021 at 10:17:30AM +0200, Ahmad Fatoum wrote:
+> Hello,
 > 
->  struct starfive_clk {
-> 	u32 divisor : 24;
-> 	u32 mux : 6;
-> 	u32 invert : 1;
-> 	u32 enable : 1;
->  };
+> On 27.05.21 21:36, Gwenhael Goavec-Merou wrote:
+> > From: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+> > 
+> > The Terasic DE10-Nano board is based on CycloneV SoCFPGA (5CSEBA6) with
+> > 
+> > What has been tested to work:
+> > - SD card
+> > - Gigabit network
+> > 
+> > Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+> > ---
+> >  arch/arm/boards/Makefile                      |   1 +
+> >  arch/arm/boards/terasic-de10-nano/Makefile    |   2 +
+> >  arch/arm/boards/terasic-de10-nano/board.c     |  35 +
+> >  .../terasic-de10-nano/iocsr_config_cyclone5.c | 678 ++++++++++++++++++
+> >  arch/arm/boards/terasic-de10-nano/lowlevel.c  |  13 +
+> >  .../boards/terasic-de10-nano/pinmux_config.c  | 241 +++++++
+> >  .../arm/boards/terasic-de10-nano/pll_config.h | 107 +++
+> >  .../boards/terasic-de10-nano/sdram_config.h   | 112 +++
+> >  .../boards/terasic-de10-nano/sequencer_auto.h | 225 ++++++
+> >  .../sequencer_auto_ac_init.c                  |  67 ++
+> >  .../sequencer_auto_inst_init.c                | 158 ++++
+> >  .../terasic-de10-nano/sequencer_defines.h     | 165 +++++
+> >  arch/arm/configs/socfpga-xload-2_defconfig    |   1 +
+> >  arch/arm/configs/socfpga_defconfig            |   1 +
+> >  arch/arm/dts/Makefile                         |   1 +
+> >  arch/arm/dts/socfpga_cyclone5_de10_nano.dts   |  34 +
+> >  arch/arm/mach-socfpga/Kconfig                 |   4 +
+> >  dts/src/arm/socfpga_cyclone5_de10_nano.dts    | 117 +++
 > 
-> There is no documentation, what the acceptable divisor values are, but
-> we could already register gates and muxes, do so for now until
-> documentation is available.
+> Please place this file in arch/arm/dts. dts/ is synchronized
+> with the upstream device tree repository from Linux.
 > 
-> The bulk of this code has been machine-generated by parsing the macros
-> in the vendor U-Boot <asm/arch-vic7100/clkgen_ctrl_macro.h>.
+> If you want to keep the device trees separate, you can make
+> this one into a dtsi, which can then be dropped from arch/arm/dts
+> as soon as the device tree is upstreamed and appears in barebox dts/
 
-If someone's curious:
-https://gist.github.com/a3f/085ea5d58e3bf3e5536e441b1a45f0ce
+Indeed. I was about to merge dts/src/arm/socfpga_cyclone5_de10_nano.dts
+into arch/arm/dts/socfpga_cyclone5_de10_nano.dts, but I stopped when I
+realized that they are licensed differently. Please resend once again.
 
-Advising to rinse your eyes afterwards.
+Sascha
 
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/clk/Makefile                        |   1 +
->  drivers/clk/starfive/Makefile               |   3 +
->  drivers/clk/starfive/clk.h                  |  64 ++++
->  drivers/clk/starfive/jh7100-clkgen.c        | 363 ++++++++++++++++++++
->  include/dt-bindings/clock/starfive-jh7100.h | 203 +++++++++++
->  5 files changed, 634 insertions(+)
->  create mode 100644 drivers/clk/starfive/Makefile
->  create mode 100644 drivers/clk/starfive/clk.h
->  create mode 100644 drivers/clk/starfive/jh7100-clkgen.c
->  create mode 100644 include/dt-bindings/clock/starfive-jh7100.h
-> 
-> diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-> index b0be8d1bd89a..499df2fe392b 100644
-> --- a/drivers/clk/Makefile
-> +++ b/drivers/clk/Makefile
-> @@ -23,3 +23,4 @@ obj-$(CONFIG_MACH_MIPS_LOONGSON)+= loongson/
->  obj-$(CONFIG_ARCH_LAYERSCAPE)	+= clk-qoric.o
->  obj-y				+= analogbits/
->  obj-$(CONFIG_CLK_SIFIVE)	+= sifive/
-> +obj-$(CONFIG_SOC_STARFIVE)	+= starfive/
-> diff --git a/drivers/clk/starfive/Makefile b/drivers/clk/starfive/Makefile
-> new file mode 100644
-> index 000000000000..7e4104993580
-> --- /dev/null
-> +++ b/drivers/clk/starfive/Makefile
-> @@ -0,0 +1,3 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +
-> +obj-$(CONFIG_SOC_STARFIVE_JH7100) += jh7100-clkgen.o
-> diff --git a/drivers/clk/starfive/clk.h b/drivers/clk/starfive/clk.h
-> new file mode 100644
-> index 000000000000..cfbf116dcb78
-> --- /dev/null
-> +++ b/drivers/clk/starfive/clk.h
-> @@ -0,0 +1,64 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright 2021 Ahmad Fatoum, Pengutronix
-> + */
-> +
-> +#ifndef STARFIVE_CLK_H_
-> +#define STARFIVE_CLK_H_
-> +
-> +#include <linux/clk.h>
-> +
-> +#define STARFIVE_CLK_ENABLE_SHIFT	31
-> +#define STARFIVE_CLK_INVERT_SHIFT	30
-> +#define STARFIVE_CLK_MUX_SHIFT		24
-> +
-> +static inline struct clk *starfive_clk_underspecifid(const char *name, const char *parent)
-> +{
-> +	/*
-> +	 * TODO With documentation available, all users of this functions can be
-> +	 * migrated to one of the above or to a clk_fixed_factor with
-> +	 * appropriate factor
-> +	 */
-> +	return clk_fixed_factor(name, parent, 1, 1, 0);
-> +}
-> +
-> +static inline struct clk *starfive_clk_divider(const char *name, const char *parent,
-> +		void __iomem *reg, u8 width)
-> +{
-> +	return starfive_clk_underspecifid(name, parent);
-> +}
-> +
-> +static inline struct clk *starfive_clk_gate(const char *name, const char *parent,
-> +		void __iomem *reg)
-> +{
-> +	return clk_gate(name, parent, reg, STARFIVE_CLK_ENABLE_SHIFT, CLK_SET_RATE_PARENT, 0);
-> +}
-> +
-> +static inline struct clk *starfive_clk_divider_table(const char *name,
-> +		const char *parent, void __iomem *reg, u8 width,
-> +		const struct clk_div_table *table)
-> +{
-> +	return clk_divider_table(name, parent, CLK_SET_RATE_PARENT, reg, 0,
-> +				 width, table, 0);
-> +}
-> +
-> +static inline struct clk *starfive_clk_gated_divider(const char *name,
-> +		const char *parent, void __iomem *reg, u8 width)
-> +{
-> +	/* TODO divider part */
-> +	return clk_gate(name, parent, reg, STARFIVE_CLK_ENABLE_SHIFT, CLK_SET_RATE_PARENT, 0);
-> +}
-> +
-> +static inline struct clk *starfive_clk_gate_dis(const char *name, const char *parent,
-> +		void __iomem *reg)
-> +{
-> +	return clk_gate_inverted(name, parent, reg, STARFIVE_CLK_INVERT_SHIFT, CLK_SET_RATE_PARENT);
-> +}
-> +
-> +static inline struct clk *starfive_clk_mux(const char *name, void __iomem *reg,
-> +		u8 width, const char * const *parents, u8 num_parents)
-> +{
-> +	return clk_mux(name, 0, reg, STARFIVE_CLK_MUX_SHIFT, width, parents, num_parents, 0);
-> +}
-> +
-> +#endif
-> diff --git a/drivers/clk/starfive/jh7100-clkgen.c b/drivers/clk/starfive/jh7100-clkgen.c
-> new file mode 100644
-> index 000000000000..df5353e8e624
-> --- /dev/null
-> +++ b/drivers/clk/starfive/jh7100-clkgen.c
-> @@ -0,0 +1,363 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright 2021 Ahmad Fatoum, Pengutronix
-> + */
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <driver.h>
-> +#include <linux/clk.h>
-> +#include <io.h>
-> +#include <of.h>
-> +#include <linux/clkdev.h>
-> +#include <linux/err.h>
-> +#include <dt-bindings/clock/starfive-jh7100.h>
-> +
-> +#include "clk.h"
-> +
-> +
-> +static const char *cpundbus_root_sels[4] = {
-> +	[0] = "osc_sys",
-> +	[1] = "pll0_out",
-> +	[2] = "pll1_out",
-> +	[3] = "pll2_out",
-> +};
-> +
-> +static const char *dla_root_sels[4] = {
-> +	[0] = "osc_sys",
-> +	[1] = "pll1_out",
-> +	[2] = "pll2_out",
-> +	[3] = "dummy",
-> +};
-> +
-> +static const char *dsp_root_sels[4] = {
-> +	[0] = "osc_sys",
-> +	[1] = "pll0_out",
-> +	[2] = "pll1_out",
-> +	[3] = "pll2_out",
-> +};
-> +
-> +static const char *gmacusb_root_sels[4] = {
-> +	[0] = "osc_sys",
-> +	[1] = "pll0_out",
-> +	[2] = "pll2_out",
-> +	[3] = "dummy",
-> +};
-> +
-> +static const char *perh0_root_sels[2] = {
-> +	[0] = "osc_sys",
-> +	[1] = "pll0_out",
-> +};
-> +
-> +static const char *perh1_root_sels[2] = {
-> +	[0] = "osc_sys",
-> +	[1] = "pll2_out",
-> +};
-> +
-> +static const char *vin_root_sels[4] = {
-> +	[0] = "osc_sys",
-> +	[1] = "pll1_out",
-> +	[2] = "pll2_out",
-> +	[3] = "dummy",
-> +};
-> +
-> +static const char *vout_root_sels[4] = {
-> +	[0] = "osc_aud",
-> +	[1] = "pll0_out",
-> +	[2] = "pll2_out",
-> +	[3] = "dummy",
-> +};
-> +
-> +static const char *cdechifi4_root_sels[4] = {
-> +	[0] = "osc_sys",
-> +	[1] = "pll1_out",
-> +	[2] = "pll2_out",
-> +	[3] = "dummy",
-> +};
-> +
-> +static const char *cdec_root_sels[4] = {
-> +	[0] = "osc_sys",
-> +	[1] = "pll0_out",
-> +	[2] = "pll1_out",
-> +	[3] = "dummy",
-> +};
-> +
-> +static const char *voutbus_root_sels[4] = {
-> +	[0] = "osc_aud",
-> +	[1] = "pll0_out",
-> +	[2] = "pll2_out",
-> +	[3] = "dummy",
-> +};
-> +
-> +static const char *pll2_refclk_sels[2] = {
-> +	[0] = "osc_sys",
-> +	[1] = "osc_aud",
-> +};
-> +
-> +static const char *ddrc0_sels[4] = {
-> +	[0] = "ddrosc_div2",
-> +	[1] = "ddrpll_div2",
-> +	[2] = "ddrpll_div4",
-> +	[3] = "ddrpll_div8",
-> +};
-> +
-> +static const char *ddrc1_sels[4] = {
-> +	[0] = "ddrosc_div2",
-> +	[1] = "ddrpll_div2",
-> +	[2] = "ddrpll_div4",
-> +	[3] = "ddrpll_div8",
-> +};
-> +
-> +static const char *nne_bus_sels[2] = {
-> +	[0] = "cpu_axi",
-> +	[1] = "nnebus_src1",
-> +};
-> +
-> +static const char *usbphy_25m_sels[2] = {
-> +	[0] = "osc_sys",
-> +	[1] = "usbphy_plldiv25m",
-> +};
-> +
-> +static const char *gmac_tx_sels[4] = {
-> +	[0] = "gmac_gtxclk",
-> +	[1] = "gmac_mii_txclk",
-> +	[2] = "gmac_rmii_txclk",
-> +	[3] = "dummy",
-> +};
-> +
-> +static const char *gmac_rx_pre_sels[2] = {
-> +	[0] = "gmac_gr_mii_rxclk",
-> +	[1] = "gmac_rmii_rxclk",
-> +};
-> +
-> +static struct clk *clks[CLK_END];
-> +
-> +/* assume osc_sys as direct parent for clocks of yet unknown lineage */
-> +#define UNKNOWN "osc_sys"
-> +
-> +static void starfive_clkgen_init(struct device_node *np, void __iomem *base)
-> +{
-> +	clks[CLK_OSC_SYS]		= of_clk_get_by_name(np, "osc_sys");
-> +	clks[CLK_OSC_AUD]		= of_clk_get_by_name(np, "osc_aud");
-> +	clks[CLK_PLL0_OUT]		= starfive_clk_underspecifid("pll0_out", "osc_sys");
-> +	clks[CLK_PLL1_OUT]		= starfive_clk_underspecifid("pll1_out", "osc_sys");
-> +	clks[CLK_PLL2_OUT]		= starfive_clk_underspecifid("pll2_out", "pll2_refclk");
-> +	clks[CLK_CPUNDBUS_ROOT]		= starfive_clk_mux("cpundbus_root", base + 0x0, 2, cpundbus_root_sels, ARRAY_SIZE(cpundbus_root_sels));
-> +	clks[CLK_DLA_ROOT]		= starfive_clk_mux("dla_root",	base + 0x4, 2, dla_root_sels, ARRAY_SIZE(dla_root_sels));
-> +	clks[CLK_DSP_ROOT]		= starfive_clk_mux("dsp_root",	base + 0x8, 2, dsp_root_sels, ARRAY_SIZE(dsp_root_sels));
-> +	clks[CLK_GMACUSB_ROOT]		= starfive_clk_mux("gmacusb_root",	base + 0xC, 2, gmacusb_root_sels, ARRAY_SIZE(gmacusb_root_sels));
-> +	clks[CLK_PERH0_ROOT]		= starfive_clk_mux("perh0_root",	base + 0x10, 1, perh0_root_sels, ARRAY_SIZE(perh0_root_sels));
-> +	clks[CLK_PERH1_ROOT]		= starfive_clk_mux("perh1_root",	base + 0x14, 1, perh1_root_sels, ARRAY_SIZE(perh1_root_sels));
-> +	clks[CLK_VIN_ROOT]		= starfive_clk_mux("vin_root",	base + 0x18, 2, vin_root_sels, ARRAY_SIZE(vin_root_sels));
-> +	clks[CLK_VOUT_ROOT]		= starfive_clk_mux("vout_root",	base + 0x1C, 2, vout_root_sels, ARRAY_SIZE(vout_root_sels));
-> +	clks[CLK_AUDIO_ROOT]		= starfive_clk_gated_divider("audio_root",		UNKNOWN,	base + 0x20, 4);
-> +	clks[CLK_CDECHIFI4_ROOT]	= starfive_clk_mux("cdechifi4_root",	base + 0x24, 2, cdechifi4_root_sels, ARRAY_SIZE(cdechifi4_root_sels));
-> +	clks[CLK_CDEC_ROOT]		= starfive_clk_mux("cdec_root",	base + 0x28, 2, cdec_root_sels, ARRAY_SIZE(cdec_root_sels));
-> +	clks[CLK_VOUTBUS_ROOT]		= starfive_clk_mux("voutbus_root",	base + 0x2C, 2, voutbus_root_sels, ARRAY_SIZE(voutbus_root_sels));
-> +	clks[CLK_CPUNBUS_ROOT_DIV]	= starfive_clk_divider("cpunbus_root_div",		"cpunbus_root",	base + 0x30, 2);
-> +	clks[CLK_DSP_ROOT_DIV]		= starfive_clk_divider("dsp_root_div",		"dsp_root",	base + 0x34, 3);
-> +	clks[CLK_PERH0_SRC]		= starfive_clk_divider("perh0_src",		"perh0_root",	base + 0x38, 3);
-> +	clks[CLK_PERH1_SRC]		= starfive_clk_divider("perh1_src",		"perh1_root",	base + 0x3C, 3);
-> +	clks[CLK_PLL0_TESTOUT]		= starfive_clk_gated_divider("pll0_testout",		"pll0_out",	base + 0x40, 5);
-> +	clks[CLK_PLL1_TESTOUT]		= starfive_clk_gated_divider("pll1_testout",		"pll1_out",	base + 0x44, 5);
-> +	clks[CLK_PLL2_TESTOUT]		= starfive_clk_gated_divider("pll2_testout",		"pll2_out",	base + 0x48, 5);
-> +	clks[CLK_PLL2_REF]		= starfive_clk_mux("pll2_refclk",	base + 0x4C, 1, pll2_refclk_sels, ARRAY_SIZE(pll2_refclk_sels));
-> +	clks[CLK_CPU_CORE]		= starfive_clk_divider("cpu_core",		UNKNOWN,	base + 0x50, 4);
-> +	clks[CLK_CPU_AXI]		= starfive_clk_divider("cpu_axi",		UNKNOWN,	base + 0x54, 4);
-> +	clks[CLK_AHB_BUS]		= starfive_clk_divider("ahb_bus",		UNKNOWN,	base + 0x58, 4);
-> +	clks[CLK_APB1_BUS]		= starfive_clk_divider("apb1_bus",		UNKNOWN,	base + 0x5C, 4);
-> +	clks[CLK_APB2_BUS]		= starfive_clk_divider("apb2_bus",		UNKNOWN,	base + 0x60, 4);
-> +	clks[CLK_DOM3AHB_BUS]		= starfive_clk_gate("dom3ahb_bus",		UNKNOWN,	base + 0x64);
-> +	clks[CLK_DOM7AHB_BUS]		= starfive_clk_gate("dom7ahb_bus",		UNKNOWN,	base + 0x68);
-> +	clks[CLK_U74_CORE0]		= starfive_clk_gate("u74_core0",		UNKNOWN,	base + 0x6C);
-> +	clks[CLK_U74_CORE1]		= starfive_clk_gated_divider("u74_core1",		"",	base + 0x70, 4);
-> +	clks[CLK_U74_AXI]		= starfive_clk_gate("u74_axi",		UNKNOWN,	base + 0x74);
-> +	clks[CLK_U74RTC_TOGGLE]		= starfive_clk_gate("u74rtc_toggle",		UNKNOWN,	base + 0x78);
-> +	clks[CLK_SGDMA2P_AXI]		= starfive_clk_gate("sgdma2p_axi",		UNKNOWN,	base + 0x7C);
-> +	clks[CLK_DMA2PNOC_AXI]		= starfive_clk_gate("dma2pnoc_axi",		UNKNOWN,	base + 0x80);
-> +	clks[CLK_SGDMA2P_AHB]		= starfive_clk_gate("sgdma2p_ahb",		UNKNOWN,	base + 0x84);
-> +	clks[CLK_DLA_BUS]		= starfive_clk_divider("dla_bus",		UNKNOWN,	base + 0x88, 3);
-> +	clks[CLK_DLA_AXI]		= starfive_clk_gate("dla_axi",		UNKNOWN,	base + 0x8C);
-> +	clks[CLK_DLANOC_AXI]		= starfive_clk_gate("dlanoc_axi",		UNKNOWN,	base + 0x90);
-> +	clks[CLK_DLA_APB]		= starfive_clk_gate("dla_apb",		UNKNOWN,	base + 0x94);
-> +	clks[CLK_VP6_CORE]		= starfive_clk_gated_divider("vp6_core",		UNKNOWN,	base + 0x98, 3);
-> +	clks[CLK_VP6BUS_SRC]		= starfive_clk_divider("vp6bus_src",		UNKNOWN,	base + 0x9C, 3);
-> +	clks[CLK_VP6_AXI]		= starfive_clk_gated_divider("vp6_axi",		UNKNOWN,	base + 0xA0, 3);
-> +	clks[CLK_VCDECBUS_SRC]		= starfive_clk_divider("vcdecbus_src",		UNKNOWN,	base + 0xA4, 3);
-> +	clks[CLK_VDEC_BUS]		= starfive_clk_divider("vdec_bus",		UNKNOWN,	base + 0xA8, 4);
-> +	clks[CLK_VDEC_AXI]		= starfive_clk_gate("vdec_axi",		UNKNOWN,	base + 0xAC);
-> +	clks[CLK_VDECBRG_MAIN]		= starfive_clk_gate("vdecbrg_mainclk",		UNKNOWN,	base + 0xB0);
-> +	clks[CLK_VDEC_BCLK]		= starfive_clk_gated_divider("vdec_bclk",		UNKNOWN,	base + 0xB4, 4);
-> +	clks[CLK_VDEC_CCLK]		= starfive_clk_gated_divider("vdec_cclk",		UNKNOWN,	base + 0xB8, 4);
-> +	clks[CLK_VDEC_APB]		= starfive_clk_gate("vdec_apb",		UNKNOWN,	base + 0xBC);
-> +	clks[CLK_JPEG_AXI]		= starfive_clk_gated_divider("jpeg_axi",		UNKNOWN,	base + 0xC0, 4);
-> +	clks[CLK_JPEG_CCLK]		= starfive_clk_gated_divider("jpeg_cclk",		UNKNOWN,	base + 0xC4, 4);
-> +	clks[CLK_JPEG_APB]		= starfive_clk_gate("jpeg_apb",		UNKNOWN,	base + 0xC8);
-> +	clks[CLK_GC300_2X]		= starfive_clk_gated_divider("gc300_2x",		UNKNOWN,	base + 0xCC, 4);
-> +	clks[CLK_GC300_AHB]		= starfive_clk_gate("gc300_ahb",		UNKNOWN,	base + 0xD0);
-> +	clks[CLK_JPCGC300_AXIBUS]	= starfive_clk_divider("jpcgc300_axibus",		UNKNOWN,	base + 0xD4, 4);
-> +	clks[CLK_GC300_AXI]		= starfive_clk_gate("gc300_axi",		UNKNOWN,	base + 0xD8);
-> +	clks[CLK_JPCGC300_MAIN]		= starfive_clk_gate("jpcgc300_mainclk",		UNKNOWN,	base + 0xDC);
-> +	clks[CLK_VENC_BUS]		= starfive_clk_divider("venc_bus",		UNKNOWN,	base + 0xE0, 4);
-> +	clks[CLK_VENC_AXI]		= starfive_clk_gate("venc_axi",		UNKNOWN,	base + 0xE4);
-> +	clks[CLK_VENCBRG_MAIN]		= starfive_clk_gate("vencbrg_mainclk",		UNKNOWN,	base + 0xE8);
-> +	clks[CLK_VENC_BCLK]		= starfive_clk_gated_divider("venc_bclk",		UNKNOWN,	base + 0xEC, 4);
-> +	clks[CLK_VENC_CCLK]		= starfive_clk_gated_divider("venc_cclk",		UNKNOWN,	base + 0xF0, 4);
-> +	clks[CLK_VENC_APB]		= starfive_clk_gate("venc_apb",		UNKNOWN,	base + 0xF4);
-> +	clks[CLK_DDRPLL_DIV2]		= starfive_clk_gated_divider("ddrpll_div2",		UNKNOWN,	base + 0xF8, 2);
-> +	clks[CLK_DDRPLL_DIV4]		= starfive_clk_gated_divider("ddrpll_div4",		UNKNOWN,	base + 0xFC, 2);
-> +	clks[CLK_DDRPLL_DIV8]		= starfive_clk_gated_divider("ddrpll_div8",		UNKNOWN,	base + 0x100, 2);
-> +	clks[CLK_DDROSC_DIV2]		= starfive_clk_gated_divider("ddrosc_div2",		UNKNOWN,	base + 0x104, 2);
-> +	clks[CLK_DDRC0]			= starfive_clk_mux("ddrc0",	base + 0x108, 2, ddrc0_sels, ARRAY_SIZE(ddrc0_sels));
-> +	clks[CLK_DDRC1]			= starfive_clk_mux("ddrc1",	base + 0x10C, 2, ddrc1_sels, ARRAY_SIZE(ddrc1_sels));
-> +	clks[CLK_DDRPHY_APB]		= starfive_clk_gate("ddrphy_apb",		UNKNOWN,	base + 0x110);
-> +	clks[CLK_NOC_ROB]		= starfive_clk_divider("noc_rob",		UNKNOWN,	base + 0x114, 4);
-> +	clks[CLK_NOC_COG]		= starfive_clk_divider("noc_cog",		UNKNOWN,	base + 0x118, 4);
-> +	clks[CLK_NNE_AHB]		= starfive_clk_gate("nne_ahb",		UNKNOWN,	base + 0x11C);
-> +	clks[CLK_NNEBUS_SRC1]		= starfive_clk_divider("nnebus_src1",		UNKNOWN,	base + 0x120, 3);
-> +	clks[CLK_NNE_BUS]		= starfive_clk_mux("nne_bus",	base + 0x124, 2, nne_bus_sels, ARRAY_SIZE(nne_bus_sels));
-> +	clks[CLK_NNE_AXI]		= starfive_clk_gate("nne_axi",	UNKNOWN, base + 0x128);
-> +	clks[CLK_NNENOC_AXI]		= starfive_clk_gate("nnenoc_axi",		UNKNOWN,	base + 0x12C);
-> +	clks[CLK_DLASLV_AXI]		= starfive_clk_gate("dlaslv_axi",		UNKNOWN,	base + 0x130);
-> +	clks[CLK_DSPX2C_AXI]		= starfive_clk_gate("dspx2c_axi",		UNKNOWN,	base + 0x134);
-> +	clks[CLK_HIFI4_SRC]		= starfive_clk_divider("hifi4_src",		UNKNOWN,	base + 0x138, 3);
-> +	clks[CLK_HIFI4_COREFREE]	= starfive_clk_divider("hifi4_corefree",		UNKNOWN,	base + 0x13C, 4);
-> +	clks[CLK_HIFI4_CORE]		= starfive_clk_gate("hifi4_core",		UNKNOWN,	base + 0x140);
-> +	clks[CLK_HIFI4_BUS]		= starfive_clk_divider("hifi4_bus",		UNKNOWN,	base + 0x144, 4);
-> +	clks[CLK_HIFI4_AXI]		= starfive_clk_gate("hifi4_axi",		UNKNOWN,	base + 0x148);
-> +	clks[CLK_HIFI4NOC_AXI]		= starfive_clk_gate("hifi4noc_axi",		UNKNOWN,	base + 0x14C);
-> +	clks[CLK_SGDMA1P_BUS]		= starfive_clk_divider("sgdma1p_bus",		UNKNOWN,	base + 0x150, 4);
-> +	clks[CLK_SGDMA1P_AXI]		= starfive_clk_gate("sgdma1p_axi",		UNKNOWN,	base + 0x154);
-> +	clks[CLK_DMA1P_AXI]		= starfive_clk_gate("dma1p_axi",		UNKNOWN,	base + 0x158);
-> +	clks[CLK_X2C_AXI]		= starfive_clk_gated_divider("x2c_axi",		UNKNOWN,	base + 0x15C, 4);
-> +	clks[CLK_USB_BUS]		= starfive_clk_divider("usb_bus",		UNKNOWN,	base + 0x160, 4);
-> +	clks[CLK_USB_AXI]		= starfive_clk_gate("usb_axi",		UNKNOWN,	base + 0x164);
-> +	clks[CLK_USBNOC_AXI]		= starfive_clk_gate("usbnoc_axi",		UNKNOWN,	base + 0x168);
-> +	clks[CLK_USBPHY_ROOTDIV]	= starfive_clk_divider("usbphy_rootdiv",		UNKNOWN,	base + 0x16C, 3);
-> +	clks[CLK_USBPHY_125M]		= starfive_clk_gated_divider("usbphy_125m",		UNKNOWN,	base + 0x170, 4);
-> +	clks[CLK_USBPHY_PLLDIV25M]	= starfive_clk_gated_divider("usbphy_plldiv25m",		UNKNOWN,	base + 0x174, 6);
-> +	clks[CLK_USBPHY_25M]		= starfive_clk_mux("usbphy_25m",	base + 0x178, 1, usbphy_25m_sels, ARRAY_SIZE(usbphy_25m_sels));
-> +	clks[CLK_AUDIO_DIV]		= starfive_clk_divider("audio_div",		UNKNOWN,	base + 0x17C, 18);
-> +	clks[CLK_AUDIO_SRC]		= starfive_clk_gate("audio_src",		UNKNOWN,	base + 0x180);
-> +	clks[CLK_AUDIO_12288]		= starfive_clk_gate("audio_12288",		UNKNOWN,	base + 0x184);
-> +	clks[CLK_VIN_SRC]		= starfive_clk_gated_divider("vin_src",		UNKNOWN,	base + 0x188, 3);
-> +	clks[CLK_ISP0_BUS]		= starfive_clk_divider("isp0_bus",		UNKNOWN,	base + 0x18C, 4);
-> +	clks[CLK_ISP0_AXI]		= starfive_clk_gate("isp0_axi",		UNKNOWN,	base + 0x190);
-> +	clks[CLK_ISP0NOC_AXI]		= starfive_clk_gate("isp0noc_axi",		UNKNOWN,	base + 0x194);
-> +	clks[CLK_ISPSLV_AXI]		= starfive_clk_gate("ispslv_axi",		UNKNOWN,	base + 0x198);
-> +	clks[CLK_ISP1_BUS]		= starfive_clk_divider("isp1_bus",		UNKNOWN,	base + 0x19C, 4);
-> +	clks[CLK_ISP1_AXI]		= starfive_clk_gate("isp1_axi",		UNKNOWN,	base + 0x1A0);
-> +	clks[CLK_ISP1NOC_AXI]		= starfive_clk_gate("isp1noc_axi",		UNKNOWN,	base + 0x1A4);
-> +	clks[CLK_VIN_BUS]		= starfive_clk_divider("vin_bus",		UNKNOWN,	base + 0x1A8, 4);
-> +	clks[CLK_VIN_AXI]		= starfive_clk_gate("vin_axi",		UNKNOWN,	base + 0x1AC);
-> +	clks[CLK_VINNOC_AXI]		= starfive_clk_gate("vinnoc_axi",		UNKNOWN,	base + 0x1B0);
-> +	clks[CLK_VOUT_SRC]		= starfive_clk_gated_divider("vout_src",		UNKNOWN,	base + 0x1B4, 3);
-> +	clks[CLK_DISPBUS_SRC]		= starfive_clk_divider("dispbus_src",		UNKNOWN,	base + 0x1B8, 3);
-> +	clks[CLK_DISP_BUS]		= starfive_clk_divider("disp_bus",		UNKNOWN,	base + 0x1BC, 3);
-> +	clks[CLK_DISP_AXI]		= starfive_clk_gate("disp_axi",		UNKNOWN,	base + 0x1C0);
-> +	clks[CLK_DISPNOC_AXI]		= starfive_clk_gate("dispnoc_axi",		UNKNOWN,	base + 0x1C4);
-> +	clks[CLK_SDIO0_AHB]		= starfive_clk_gate("sdio0_ahb",		UNKNOWN,	base + 0x1C8);
-> +	clks[CLK_SDIO0_CCLKINT]		= starfive_clk_gated_divider("sdio0_cclkint",		UNKNOWN,	base + 0x1CC, 5);
-> +	clks[CLK_SDIO0_CCLKINT_INV]	= starfive_clk_gate_dis("sdio0_cclkint_inv",		UNKNOWN,	base + 0x1D0);
-> +	clks[CLK_SDIO1_AHB]		= starfive_clk_gate("sdio1_ahb",		UNKNOWN,	base + 0x1D4);
-> +	clks[CLK_SDIO1_CCLKINT]		= starfive_clk_gated_divider("sdio1_cclkint",		UNKNOWN,	base + 0x1D8, 5);
-> +	clks[CLK_SDIO1_CCLKINT_INV]	= starfive_clk_gate_dis("sdio1_cclkint_inv",		UNKNOWN,	base + 0x1DC);
-> +	clks[CLK_GMAC_AHB]		= starfive_clk_gate("gmac_ahb",		UNKNOWN,	base + 0x1E0);
-> +	clks[CLK_GMAC_ROOT_DIV]		= starfive_clk_divider("gmac_root_div",		UNKNOWN,	base + 0x1E4, 4);
-> +	clks[CLK_GMAC_PTP_REF]		= starfive_clk_gated_divider("gmac_ptp_refclk",		UNKNOWN,	base + 0x1E8, 5);
-> +	clks[CLK_GMAC_GTX]		= starfive_clk_gated_divider("gmac_gtxclk",		UNKNOWN,	base + 0x1EC, 8);
-> +	clks[CLK_GMAC_RMII_TX]		= starfive_clk_gated_divider("gmac_rmii_txclk",		UNKNOWN,	base + 0x1F0, 4);
-> +	clks[CLK_GMAC_RMII_RX]		= starfive_clk_gated_divider("gmac_rmii_rxclk",		UNKNOWN,	base + 0x1F4, 4);
-> +	clks[CLK_GMAC_TX]		= starfive_clk_mux("gmac_tx",	base + 0x1F8, 2, gmac_tx_sels, ARRAY_SIZE(gmac_tx_sels));
-> +	clks[CLK_GMAC_TX_INV]		= starfive_clk_gate_dis("gmac_tx_inv",		UNKNOWN,	base + 0x1FC);
-> +	clks[CLK_GMAC_RX_PRE]		= starfive_clk_mux("gmac_rx_pre",	base + 0x200, 1, gmac_rx_pre_sels, ARRAY_SIZE(gmac_rx_pre_sels));
-> +	clks[CLK_GMAC_RX_INV]		= starfive_clk_gate_dis("gmac_rx_inv",		UNKNOWN,	base + 0x204);
-> +	clks[CLK_GMAC_RMII]		= starfive_clk_gate("gmac_rmii",		UNKNOWN,	base + 0x208);
-> +	clks[CLK_GMAC_TOPHYREF]		= starfive_clk_gated_divider("gmac_tophyref",		UNKNOWN,	base + 0x20C, 7);
-> +	clks[CLK_SPI2AHB_AHB]		= starfive_clk_gate("spi2ahb_ahb",		UNKNOWN,	base + 0x210);
-> +	clks[CLK_SPI2AHB_CORE]		= starfive_clk_gated_divider("spi2ahb_core",		UNKNOWN,	base + 0x214, 5);
-> +	clks[CLK_EZMASTER_AHB]		= starfive_clk_gate("ezmaster_ahb",		UNKNOWN,	base + 0x218);
-> +	clks[CLK_E24_AHB]		= starfive_clk_gate("e24_ahb",		UNKNOWN,	base + 0x21C);
-> +	clks[CLK_E24RTC_TOGGLE]		= starfive_clk_gate("e24rtc_toggle",		UNKNOWN,	base + 0x220);
-> +	clks[CLK_QSPI_AHB]		= starfive_clk_gate("qspi_ahb",		UNKNOWN,	base + 0x224);
-> +	clks[CLK_QSPI_APB]		= starfive_clk_gate("qspi_apb",		UNKNOWN,	base + 0x228);
-> +	clks[CLK_QSPI_REF]		= starfive_clk_gated_divider("qspi_refclk",		UNKNOWN,	base + 0x22C, 5);
-> +	clks[CLK_SEC_AHB]		= starfive_clk_gate("sec_ahb",		UNKNOWN,	base + 0x230);
-> +	clks[CLK_AES]			= starfive_clk_gate("aes_clk",		UNKNOWN,	base + 0x234);
-> +	clks[CLK_SHA]			= starfive_clk_gate("sha_clk",		UNKNOWN,	base + 0x238);
-> +	clks[CLK_PKA]			= starfive_clk_gate("pka_clk",		UNKNOWN,	base + 0x23C);
-> +	clks[CLK_TRNG_APB]		= starfive_clk_gate("trng_apb",		UNKNOWN,	base + 0x240);
-> +	clks[CLK_OTP_APB]		= starfive_clk_gate("otp_apb",		UNKNOWN,	base + 0x244);
-> +	clks[CLK_UART0_APB]		= starfive_clk_gate("uart0_apb",		UNKNOWN,	base + 0x248);
-> +	clks[CLK_UART0_CORE]		= starfive_clk_gated_divider("uart0_core",		UNKNOWN,	base + 0x24C, 6);
-> +	clks[CLK_UART1_APB]		= starfive_clk_gate("uart1_apb",		UNKNOWN,	base + 0x250);
-> +	clks[CLK_UART1_CORE]		= starfive_clk_gated_divider("uart1_core",		UNKNOWN,	base + 0x254, 6);
-> +	clks[CLK_SPI0_APB]		= starfive_clk_gate("spi0_apb",		UNKNOWN,	base + 0x258);
-> +	clks[CLK_SPI0_CORE]		= starfive_clk_gated_divider("spi0_core",		UNKNOWN,	base + 0x25C, 6);
-> +	clks[CLK_SPI1_APB]		= starfive_clk_gate("spi1_apb",		UNKNOWN,	base + 0x260);
-> +	clks[CLK_SPI1_CORE]		= starfive_clk_gated_divider("spi1_core",		UNKNOWN,	base + 0x264, 6);
-> +	clks[CLK_I2C0_APB]		= starfive_clk_gate("i2c0_apb",		UNKNOWN,	base + 0x268);
-> +	clks[CLK_I2C0_CORE]		= starfive_clk_gated_divider("i2c0_core",		UNKNOWN,	base + 0x26C, 6);
-> +	clks[CLK_I2C1_APB]		= starfive_clk_gate("i2c1_apb",		UNKNOWN,	base + 0x270);
-> +	clks[CLK_I2C1_CORE]		= starfive_clk_gated_divider("i2c1_core",		UNKNOWN,	base + 0x274, 6);
-> +	clks[CLK_GPIO_APB]		= starfive_clk_gate("gpio_apb",		UNKNOWN,	base + 0x278);
-> +	clks[CLK_UART2_APB]		= starfive_clk_gate("uart2_apb",		UNKNOWN,	base + 0x27C);
-> +	clks[CLK_UART2_CORE]		= starfive_clk_gated_divider("uart2_core",		UNKNOWN,	base + 0x280, 6);
-> +	clks[CLK_UART3_APB]		= starfive_clk_gate("uart3_apb",		UNKNOWN,	base + 0x284);
-> +	clks[CLK_UART3_CORE]		= starfive_clk_gated_divider("uart3_core",		UNKNOWN,	base + 0x288, 6);
-> +	clks[CLK_SPI2_APB]		= starfive_clk_gate("spi2_apb",		UNKNOWN,	base + 0x28C);
-> +	clks[CLK_SPI2_CORE]		= starfive_clk_gated_divider("spi2_core",		UNKNOWN,	base + 0x290, 6);
-> +	clks[CLK_SPI3_APB]		= starfive_clk_gate("spi3_apb",		UNKNOWN,	base + 0x294);
-> +	clks[CLK_SPI3_CORE]		= starfive_clk_gated_divider("spi3_core",		UNKNOWN,	base + 0x298, 6);
-> +	clks[CLK_I2C2_APB]		= starfive_clk_gate("i2c2_apb",		UNKNOWN,	base + 0x29C);
-> +	clks[CLK_I2C2_CORE]		= starfive_clk_gated_divider("i2c2_core",		UNKNOWN,	base + 0x2A0, 6);
-> +	clks[CLK_I2C3_APB]		= starfive_clk_gate("i2c3_apb",		UNKNOWN,	base + 0x2A4);
-> +	clks[CLK_I2C3_CORE]		= starfive_clk_gated_divider("i2c3_core",		UNKNOWN,	base + 0x2A8, 6);
-> +	clks[CLK_WDTIMER_APB]		= starfive_clk_gate("wdtimer_apb",		UNKNOWN,	base + 0x2AC);
-> +	clks[CLK_WDT_CORE]		= starfive_clk_gated_divider("wdt_coreclk",		UNKNOWN,	base + 0x2B0, 6);
-> +	clks[CLK_TIMER0_CORE]		= starfive_clk_gated_divider("timer0_coreclk",		UNKNOWN,	base + 0x2B4, 6);
-> +	clks[CLK_TIMER1_CORE]		= starfive_clk_gated_divider("timer1_coreclk",		UNKNOWN,	base + 0x2B8, 6);
-> +	clks[CLK_TIMER2_CORE]		= starfive_clk_gated_divider("timer2_coreclk",		UNKNOWN,	base + 0x2BC, 6);
-> +	clks[CLK_TIMER3_CORE]		= starfive_clk_gated_divider("timer3_coreclk",		UNKNOWN,	base + 0x2C0, 6);
-> +	clks[CLK_TIMER4_CORE]		= starfive_clk_gated_divider("timer4_coreclk",		UNKNOWN,	base + 0x2C4, 6);
-> +	clks[CLK_TIMER5_CORE]		= starfive_clk_gated_divider("timer5_coreclk",		UNKNOWN,	base + 0x2C8, 6);
-> +	clks[CLK_TIMER6_CORE]		= starfive_clk_gated_divider("timer6_coreclk",		UNKNOWN,	base + 0x2CC, 6);
-> +	clks[CLK_VP6INTC_APB]		= starfive_clk_gate("vp6intc_apb",		UNKNOWN,	base + 0x2D0);
-> +	clks[CLK_PWM_APB]		= starfive_clk_gate("pwm_apb",		UNKNOWN,	base + 0x2D4);
-> +	clks[CLK_MSI_APB]		= starfive_clk_gate("msi_apb",		UNKNOWN,	base + 0x2D8);
-> +	clks[CLK_TEMP_APB]		= starfive_clk_gate("temp_apb",		UNKNOWN,	base + 0x2DC);
-> +	clks[CLK_TEMP_SENSE]		= starfive_clk_gated_divider("temp_sense",		UNKNOWN,	base + 0x2E0, 5);
-> +	clks[CLK_SYSERR_APB]		= starfive_clk_gate("syserr_apb",		UNKNOWN,	base + 0x2E4);
-> +}
-> +
-> +static struct clk_onecell_data clk_data;
-> +
-> +static int starfive_clkgen_clk_probe(struct device_d *dev)
-> +{
-> +	struct resource *iores;
-> +
-> +	iores = dev_request_mem_resource(dev, 0);
-> +	if (IS_ERR(iores))
-> +		return PTR_ERR(iores);
-> +
-> +	starfive_clkgen_init(dev->device_node, IOMEM(iores->start));
-> +
-> +	clk_data.clks = clks;
-> +	clk_data.clk_num = ARRAY_SIZE(clks);
-> +	of_clk_add_provider(dev->device_node, of_clk_src_onecell_get,
-> +			    &clk_data);
-> +
-> +	return 0;
-> +}
-> +
-> +static __maybe_unused struct of_device_id starfive_clkgen_clk_dt_ids[] = {
-> +	{ .compatible = "starfive,jh7100-clkgen" },
-> +	{ /* sentinel */ }
-> +};
-> +
-> +static struct driver_d starfive_clkgen_clk_driver = {
-> +	.probe	= starfive_clkgen_clk_probe,
-> +	.name	= "starfive-clkgen",
-> +	.of_compatible = starfive_clkgen_clk_dt_ids,
-> +};
-> +core_platform_driver(starfive_clkgen_clk_driver);
-> diff --git a/include/dt-bindings/clock/starfive-jh7100.h b/include/dt-bindings/clock/starfive-jh7100.h
-> new file mode 100644
-> index 000000000000..9ad5e7f9bfd5
-> --- /dev/null
-> +++ b/include/dt-bindings/clock/starfive-jh7100.h
-> @@ -0,0 +1,203 @@
-> +/* SPDX-License-Identifier: GPL-2.0 OR X11 */
-> +/*
-> + * Copyright (C) 2021 Ahmad Fatoum, Pengutronix
-> + */
-> +
-> +#ifndef __DT_BINDINGS_CLOCK_STARFIVE_JH7100_H
-> +#define __DT_BINDINGS_CLOCK_STARFIVE_JH7100_H
-> +
-> +#define	CLK_OSC_SYS		0
-> +#define	CLK_OSC_AUD		1
-> +#define	CLK_PLL0_OUT		2
-> +#define	CLK_PLL1_OUT		3
-> +#define	CLK_PLL2_OUT		4
-> +#define CLK_CPUNDBUS_ROOT	5
-> +#define CLK_DLA_ROOT		6
-> +#define CLK_DSP_ROOT		7
-> +#define CLK_GMACUSB_ROOT	8
-> +#define CLK_PERH0_ROOT		9
-> +#define CLK_PERH1_ROOT		10
-> +#define CLK_VIN_ROOT		11
-> +#define CLK_VOUT_ROOT		12
-> +#define CLK_AUDIO_ROOT		13
-> +#define CLK_CDECHIFI4_ROOT	14
-> +#define CLK_CDEC_ROOT		15
-> +#define CLK_VOUTBUS_ROOT	16
-> +#define CLK_CPUNBUS_ROOT_DIV	17
-> +#define CLK_DSP_ROOT_DIV	18
-> +#define CLK_PERH0_SRC		19
-> +#define CLK_PERH1_SRC		20
-> +#define CLK_PLL0_TESTOUT	21
-> +#define CLK_PLL1_TESTOUT	22
-> +#define CLK_PLL2_TESTOUT	23
-> +#define CLK_PLL2_REF		24
-> +#define CLK_CPU_CORE		25
-> +#define CLK_CPU_AXI		26
-> +#define CLK_AHB_BUS		27
-> +#define CLK_APB1_BUS		28
-> +#define CLK_APB2_BUS		29
-> +#define CLK_DOM3AHB_BUS		30
-> +#define CLK_DOM7AHB_BUS		31
-> +#define CLK_U74_CORE0		32
-> +#define CLK_U74_CORE1		33
-> +#define CLK_U74_AXI		34
-> +#define CLK_U74RTC_TOGGLE	35
-> +#define CLK_SGDMA2P_AXI		35
-> +#define CLK_DMA2PNOC_AXI	37
-> +#define CLK_SGDMA2P_AHB		37
-> +#define CLK_DLA_BUS		39
-> +#define CLK_DLA_AXI		40
-> +#define CLK_DLANOC_AXI		41
-> +#define CLK_DLA_APB		42
-> +#define CLK_VP6_CORE		43
-> +#define CLK_VP6BUS_SRC		44
-> +#define CLK_VP6_AXI		45
-> +#define CLK_VCDECBUS_SRC	46
-> +#define CLK_VDEC_BUS		47
-> +#define CLK_VDEC_AXI		48
-> +#define CLK_VDECBRG_MAIN	49
-> +#define CLK_VDEC_BCLK		50
-> +#define CLK_VDEC_CCLK		51
-> +#define CLK_VDEC_APB		52
-> +#define CLK_JPEG_AXI		53
-> +#define CLK_JPEG_CCLK		54
-> +#define CLK_JPEG_APB		55
-> +#define CLK_GC300_2X		56
-> +#define CLK_GC300_AHB		57
-> +#define CLK_JPCGC300_AXIBUS	58
-> +#define CLK_GC300_AXI		59
-> +#define CLK_JPCGC300_MAIN	60
-> +#define CLK_VENC_BUS		61
-> +#define CLK_VENC_AXI		62
-> +#define CLK_VENCBRG_MAIN	63
-> +#define CLK_VENC_BCLK		64
-> +#define CLK_VENC_CCLK		65
-> +#define CLK_VENC_APB		66
-> +#define CLK_DDRPLL_DIV2		67
-> +#define CLK_DDRPLL_DIV4		68
-> +#define CLK_DDRPLL_DIV8		69
-> +#define CLK_DDROSC_DIV2		70
-> +#define CLK_DDRC0		71
-> +#define CLK_DDRC1		72
-> +#define CLK_DDRPHY_APB		73
-> +#define CLK_NOC_ROB		74
-> +#define CLK_NOC_COG		75
-> +#define CLK_NNE_AHB		76
-> +#define CLK_NNEBUS_SRC1		77
-> +#define CLK_NNE_BUS		78
-> +#define CLK_NNE_AXI		79
-> +#define CLK_NNENOC_AXI		80
-> +#define CLK_DLASLV_AXI		81
-> +#define CLK_DSPX2C_AXI		82
-> +#define CLK_HIFI4_SRC		83
-> +#define CLK_HIFI4_COREFREE	84
-> +#define CLK_HIFI4_CORE		85
-> +#define CLK_HIFI4_BUS		86
-> +#define CLK_HIFI4_AXI		87
-> +#define CLK_HIFI4NOC_AXI	88
-> +#define CLK_SGDMA1P_BUS		89
-> +#define CLK_SGDMA1P_AXI		90
-> +#define CLK_DMA1P_AXI		91
-> +#define CLK_X2C_AXI		92
-> +#define CLK_USB_BUS		93
-> +#define CLK_USB_AXI		94
-> +#define CLK_USBNOC_AXI		95
-> +#define CLK_USBPHY_ROOTDIV	96
-> +#define CLK_USBPHY_125M		97
-> +#define CLK_USBPHY_PLLDIV25M	98
-> +#define CLK_USBPHY_25M		99
-> +#define CLK_AUDIO_DIV		100
-> +#define CLK_AUDIO_SRC		101
-> +#define CLK_AUDIO_12288		102
-> +#define CLK_VIN_SRC		103
-> +#define CLK_ISP0_BUS		104
-> +#define CLK_ISP0_AXI		105
-> +#define CLK_ISP0NOC_AXI		106
-> +#define CLK_ISPSLV_AXI		107
-> +#define CLK_ISP1_BUS		108
-> +#define CLK_ISP1_AXI		109
-> +#define CLK_ISP1NOC_AXI		110
-> +#define CLK_VIN_BUS		111
-> +#define CLK_VIN_AXI		112
-> +#define CLK_VINNOC_AXI		113
-> +#define CLK_VOUT_SRC		114
-> +#define CLK_DISPBUS_SRC		115
-> +#define CLK_DISP_BUS		116
-> +#define CLK_DISP_AXI		117
-> +#define CLK_DISPNOC_AXI		118
-> +#define CLK_SDIO0_AHB		119
-> +#define CLK_SDIO0_CCLKINT	120
-> +#define CLK_SDIO0_CCLKINT_INV	121
-> +#define CLK_SDIO1_AHB		122
-> +#define CLK_SDIO1_CCLKINT	123
-> +#define CLK_SDIO1_CCLKINT_INV	124
-> +#define CLK_GMAC_AHB		125
-> +#define CLK_GMAC_ROOT_DIV	126
-> +#define CLK_GMAC_PTP_REF	127
-> +#define CLK_GMAC_GTX		128
-> +#define CLK_GMAC_RMII_TX	129
-> +#define CLK_GMAC_RMII_RX	130
-> +#define CLK_GMAC_TX		131
-> +#define CLK_GMAC_TX_INV		132
-> +#define CLK_GMAC_RX_PRE		133
-> +#define CLK_GMAC_RX_INV		134
-> +#define CLK_GMAC_RMII		135
-> +#define CLK_GMAC_TOPHYREF	136
-> +#define CLK_SPI2AHB_AHB		137
-> +#define CLK_SPI2AHB_CORE	138
-> +#define CLK_EZMASTER_AHB	139
-> +#define CLK_E24_AHB		140
-> +#define CLK_E24RTC_TOGGLE	141
-> +#define CLK_QSPI_AHB		142
-> +#define CLK_QSPI_APB		143
-> +#define CLK_QSPI_REF		144
-> +#define CLK_SEC_AHB		145
-> +#define CLK_AES			146
-> +#define CLK_SHA			147
-> +#define CLK_PKA			148
-> +#define CLK_TRNG_APB		149
-> +#define CLK_OTP_APB		150
-> +#define CLK_UART0_APB		151
-> +#define CLK_UART0_CORE		152
-> +#define CLK_UART1_APB		153
-> +#define CLK_UART1_CORE		154
-> +#define CLK_SPI0_APB		155
-> +#define CLK_SPI0_CORE		156
-> +#define CLK_SPI1_APB		157
-> +#define CLK_SPI1_CORE		158
-> +#define CLK_I2C0_APB		159
-> +#define CLK_I2C0_CORE		160
-> +#define CLK_I2C1_APB		161
-> +#define CLK_I2C1_CORE		162
-> +#define CLK_GPIO_APB		163
-> +#define CLK_UART2_APB		164
-> +#define CLK_UART2_CORE		165
-> +#define CLK_UART3_APB		166
-> +#define CLK_UART3_CORE		167
-> +#define CLK_SPI2_APB		168
-> +#define CLK_SPI2_CORE		169
-> +#define CLK_SPI3_APB		170
-> +#define CLK_SPI3_CORE		171
-> +#define CLK_I2C2_APB		172
-> +#define CLK_I2C2_CORE		173
-> +#define CLK_I2C3_APB		174
-> +#define CLK_I2C3_CORE		175
-> +#define CLK_WDTIMER_APB		176
-> +#define CLK_WDT_CORE		177
-> +#define CLK_TIMER0_CORE		178
-> +#define CLK_TIMER1_CORE		179
-> +#define CLK_TIMER2_CORE		180
-> +#define CLK_TIMER3_CORE		181
-> +#define CLK_TIMER4_CORE		182
-> +#define CLK_TIMER5_CORE		183
-> +#define CLK_TIMER6_CORE		184
-> +#define CLK_VP6INTC_APB		185
-> +#define CLK_PWM_APB		186
-> +#define CLK_MSI_APB		187
-> +#define CLK_TEMP_APB		188
-> +#define CLK_TEMP_SENSE		189
-> +#define CLK_SYSERR_APB		190
-> +
-> +#define CLK_END			191
-> +
-> +#endif
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
