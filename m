@@ -1,55 +1,54 @@
-Delivery-date: Mon, 31 May 2021 08:57:08 +0200
+Delivery-date: Mon, 31 May 2021 08:57:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lnbrI-0002hA-9C
-	for lore@lore.pengutronix.de; Mon, 31 May 2021 08:57:08 +0200
+	id 1lnbrN-0002hY-57
+	for lore@lore.pengutronix.de; Mon, 31 May 2021 08:57:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lnbrH-0000Dq-4f
-	for lore@pengutronix.de; Mon, 31 May 2021 08:57:08 +0200
+	id 1lnbrL-0000FX-O0
+	for lore@pengutronix.de; Mon, 31 May 2021 08:57:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=kMKoP7Zs4jfkbjrFJPebDSRkHeJDg2P0kJV9lMHMgeY=; b=vZTaiDF+Qbe3YQ
-	8ER/RCMLgQQxtx3OkZcslW64B9BJ2NWCC9C+jbm1RCyOZOllCOBNwceA2Ht3hc0Xu1sSY+WCoF+Sn
-	2Z6mJ0w4WunsKAFUWzdwcCCRMhYazD3eqpgy09ILCW1cSiuYS/hawqLJcolm1g5Zw+x/YigdH9ACZ
-	LBrYKLKiFtWBlGCrMybBYYn+6owB/qS7IvECrnUe2URxNYxavgqWw5M5zm9aXZx+imMPOc3NtHmuX
-	DqkwrEqo80nxcLKXnoPAQ+4bn7QNH2mGptGsTb5csHYwch0iIXB7CQf4r9ujmhDAqzSW6Vaj987Mh
-	hyenm8JRoeArPZ3O6HRg==;
+	List-Owner; bh=wWdxDlUimRzLxVj6J3T+57XUQqXFtZOd3XG3vK9JHss=; b=TRW/61oO7QKqYC
+	124YReacZkU6/QI+oLB9WsLZR7u/URchvpYut/98aJhmCI/6MCiKXPCQNWz8HeZwmx2cJdhWj08S8
+	x12VBqlEwxHw970+8qHC37iK/QANceP0eVkE/ZMxvmOyGT4vavEZkuQS46sOBq8DFvKoxuUSo2+4o
+	SVW8TO2WURhREy5/rd/xcS+S6NmiwIXfBtOXMJR/2VC0Zhg78O5S5EXe/a/TuR5BuMu2r0O5Wwg+j
+	15nWpRTakwYgnOTx9j7096urgCKxweQ4/NP2n0nHuyPNjS1YnYoaJ+LHOTUHJ5tNBgnxxWcJ7F+ys
+	97FiGIxsouwnpgJqjcfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lnbq4-00B0me-MT; Mon, 31 May 2021 06:55:52 +0000
+	id 1lnbpj-00B0fR-GV; Mon, 31 May 2021 06:55:31 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lnbpk-00B0fg-1T
- for barebox@lists.infradead.org; Mon, 31 May 2021 06:55:33 +0000
+ id 1lnbpd-00B0d6-Qd
+ for barebox@lists.infradead.org; Mon, 31 May 2021 06:55:27 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lnbpa-0007yf-Mt; Mon, 31 May 2021 08:55:22 +0200
+ id 1lnbpa-0007yg-Lh; Mon, 31 May 2021 08:55:22 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lnbpZ-0003fy-Pn; Mon, 31 May 2021 08:55:21 +0200
+ id 1lnbpZ-0003g1-QD; Mon, 31 May 2021 08:55:21 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 31 May 2021 08:55:10 +0200
-Message-Id: <20210531065520.12385-4-a.fatoum@pengutronix.de>
+Date: Mon, 31 May 2021 08:55:11 +0200
+Message-Id: <20210531065520.12385-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210531065520.12385-1-a.fatoum@pengutronix.de>
 References: <20210531065520.12385-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210530_235532_149564_26473F1F 
-X-CRM114-Status: UNSURE (   8.33  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210530_235525_902416_33A0FE06 
+X-CRM114-Status: GOOD (  11.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,34 +72,102 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 03/13] kbuild: add ARCH=um alias for sandbox
+Subject: [PATCH v2 04/13] MIPS: qemu-malta: generate swapped image as part of
+ multi-image build
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-ARCH=um (User Mode) is the Linux kernel counterpart to our sandbox
-architecture. Add um as an alias, so we can interoperate with tools that
-handle ARCH=um specially.
+Having to manually swap the words in the MIPS Malta image for QEMU
+little endian emulation is annoying.
+
+Have the multi-image build for Malta generate a second .swapped
+image that can be readily used if needed.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/boards/mips/qemu-malta.rst | 16 ++++------------
+ images/.gitignore                        |  1 +
+ images/Makefile                          |  2 +-
+ images/Makefile.malta                    | 10 +++++++++-
+ 4 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 3b7dbd4c772d..a1411386f1b3 100644
---- a/Makefile
-+++ b/Makefile
-@@ -356,6 +356,10 @@ ifeq ($(ARCH),ppc)
-        SRCARCH := powerpc
- endif
+diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
+index e188ae8c642a..fd37d5edb229 100644
+--- a/Documentation/boards/mips/qemu-malta.rst
++++ b/Documentation/boards/mips/qemu-malta.rst
+@@ -10,31 +10,23 @@ QEMU run string:
  
-+ifeq ($(ARCH),um)
-+       SRCARCH := sandbox
-+endif
+   qemu-system-mips -nodefaults -M malta -m 256 \
+       -device VGA -serial stdio -monitor null \
+-      -bios barebox-flash-image
++      -bios ./images/barebox-qemu-malta.img
+ 
+ 
+ Little-endian mode
+ ------------------
+ 
+-Running little-endian Malta is a bit tricky.
+ In little-endian mode the 32bit words in the boot flash image are swapped,
+ a neat trick which allows bi-endian firmware.
+ 
+-You have to swap words of ``zbarebox.bin`` image, e.g.:
+-
+-.. code-block:: sh
+-
+-  echo arch/mips/pbl/zbarebox.bin \
+-      | cpio --create \
+-      | cpio --extract --swap --unconditional
+-
+-QEMU run string:
++The barebox build generates a second ``./images/barebox-qemu-malta.img.swapped``
++image that can be used in this case, e.g.:
+ 
+ .. code-block:: sh
+ 
+   qemu-system-mipsel -nodefaults -M malta -m 256 \
+       -device VGA -serial stdio -monitor null \
+-      -bios barebox-flash-image
++      -bios ./images/barebox-qemu-malta.img.swapped
+ 
+ 
+ Using GXemul
+diff --git a/images/.gitignore b/images/.gitignore
+index eafdb44b5bdd..3a9a77dad16e 100644
+--- a/images/.gitignore
++++ b/images/.gitignore
+@@ -32,3 +32,4 @@ barebox.sum
+ *.mvebu1img
+ *.stm32
+ *.nmon
++*.swapped
+diff --git a/images/Makefile b/images/Makefile
+index c185982c17ed..cc330d957597 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -218,5 +218,5 @@ $(flash-list): $(image-y-path)
+ clean-files := *.pbl *.pblb *.map start_*.imximg *.img barebox.z start_*.kwbimg \
+ 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
+ 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
+-	start_*.simximg start_*.usimximg *.zynqimg *.image
++	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped
+ clean-files += pbl.lds
+diff --git a/images/Makefile.malta b/images/Makefile.malta
+index 5739ec464092..96d7b86b1187 100644
+--- a/images/Makefile.malta
++++ b/images/Makefile.malta
+@@ -1,3 +1,11 @@
++quiet_cmd_bswap32_image = BSWAP4  $@
++      cmd_bswap32_image = cp $< $@ && \
++			  truncate -s %4 $@ && \
++			  objcopy -I binary --reverse-byte=4 $@
 +
- KCONFIG_CONFIG	?= .config
- 
- export KCONFIG_CONFIG
++$(obj)/%.img.swapped: $(obj)/%.img FORCE
++	$(call if_changed,bswap32_image)
++
+ pblb-$(CONFIG_BOARD_QEMU_MALTA) += start_qemu_malta
+ FILE_barebox-qemu-malta.img = start_qemu_malta.pblb
+-image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img
++image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img barebox-qemu-malta.img.swapped
 -- 
 2.29.2
 
