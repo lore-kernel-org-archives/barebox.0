@@ -1,55 +1,55 @@
-Delivery-date: Mon, 31 May 2021 09:14:23 +0200
+Delivery-date: Mon, 31 May 2021 09:14:31 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lnc7z-0002uk-Ng
-	for lore@lore.pengutronix.de; Mon, 31 May 2021 09:14:23 +0200
+	id 1lnc87-0002v9-NO
+	for lore@lore.pengutronix.de; Mon, 31 May 2021 09:14:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lnc7x-0003i7-Nt
-	for lore@pengutronix.de; Mon, 31 May 2021 09:14:23 +0200
+	id 1lnc84-0003kv-Pi
+	for lore@pengutronix.de; Mon, 31 May 2021 09:14:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=6kBGYxXnak8OTJIcS3dA3kd4s8pkp+H1eLOzL8vmTe0=; b=aVrQGXPca+x3Zy
-	F2WiosrIkgLCkXUQZu4BnMQLxef0o5xwZwyHGRIhy/1gLzkLM7jSx4WcQuglA0Xi7jJHT4wmJtCmi
-	QcORy7pjL8bmUSbcXVsJYUsZbzg5KNC090jEVo0MxQ3VDa7dp/KjADhEpHGEjZ4Q6iP+WmzWHCiFK
-	P6br0KixRsyFeh/qYQlGFH5S/CIuPCwiQSkC587VOJjH3TAN5wqsTrAuXfCk7BnDtdMfZcRMp7ZX9
-	yofap/kMWAG8krUe161QmQ4uTdg1FBUy3cIqSAxql8oyQYf6BYtiCnLGwFFoLzortS3b/dvTyqYQV
-	3gXiWNjk5TELtfNi0qgA==;
+	List-Owner; bh=xl6CdboaBw3kFI/683kcgHMjS2G1iZuZHSdIoftxXPs=; b=20qbNnHOgp5N9q
+	xscn2Sm379Exv5EkrNc0LW8n5tQEbof0/EaDefL8I6Dmll4byAAm4Du9W+v9ixpz8fLk/lpo8AAxy
+	VCNTzGuqAq9+QjaPrMdpxLhpwoql9wLMdKCU52oQLxTadtANNAJyuL85G7b+oiQSQDv0a1NMArO5M
+	9xbO6ytEZOu+FRSHXy1HH0C23Rb38HrCNOC+dqBtnrAg236wJ0MdXgxAwoW2yzwYIWklE7uDwPuFA
+	BQPAjr04ULkMtuZdzkCaKhVo8ZqriCH7yHhAS3DmGXr4E7nKWg3Oxy4eZLNBPiXK4nOMuHbwHHEl5
+	c9EH9cCPQWEk0obekI9A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lnc6j-00B7hH-Vo; Mon, 31 May 2021 07:13:06 +0000
+	id 1lnc6o-00B7kR-MC; Mon, 31 May 2021 07:13:10 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lnc6U-00B7aq-2A
- for barebox@lists.infradead.org; Mon, 31 May 2021 07:12:51 +0000
+ id 1lnc6U-00B7ar-4D
+ for barebox@lists.infradead.org; Mon, 31 May 2021 07:12:52 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lnc6K-0003Dr-Q5; Mon, 31 May 2021 09:12:40 +0200
+ id 1lnc6K-0003Du-Sn; Mon, 31 May 2021 09:12:40 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lnc6K-000801-DG; Mon, 31 May 2021 09:12:40 +0200
+ id 1lnc6K-00080B-Eg; Mon, 31 May 2021 09:12:40 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: mol@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 31 May 2021 09:12:36 +0200
-Message-Id: <20210531071239.30653-4-a.fatoum@pengutronix.de>
+Date: Mon, 31 May 2021 09:12:39 +0200
+Message-Id: <20210531071239.30653-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210531071239.30653-1-a.fatoum@pengutronix.de>
 References: <20210531071239.30653-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210531_001250_136562_CFA51651 
-X-CRM114-Status: GOOD (  15.51  )
+X-CRM114-CacheID: sfid-20210531_001250_356787_F2E62CAB 
+X-CRM114-Status: GOOD (  15.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,205 +73,222 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/6] of: propagate errors inside barebox_register_{of,
- fdt} into initcalls
+Subject: [PATCH 6/6] ARM: report probe error at arm_add_mem_device() callsites
+ on failure
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Errors during device tree registration, while uncommon, are really
-annoying, because the system may limp along and it's not clear where
-the misbehavior originates from.
-
-Failing the initcall of the device tree would improve user experience in
-that error case. There is intentionally no early exit on error cases
-to give barebox a chance to probe the serial driver to actually report
-errors when DEBUG_LL is disabled.
+Failure to add one memory bank shouldn't prevent the driver from trying
+to add other memory banks, but the user should be informed as this
+points at a misconfiguration. Have the probe functions eventually fail
+with -EBUSY in such a case.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/qemu-virt/board.c |  3 +--
- arch/arm/cpu/dtb.c                |  4 +---
- arch/kvx/lib/dtb.c                |  4 +---
- arch/mips/boot/dtb.c              |  4 +---
- arch/openrisc/lib/dtb.c           |  4 +---
- arch/riscv/lib/dtb.c              |  5 +++--
- arch/sandbox/board/dtb.c          |  4 +---
- drivers/of/base.c                 | 16 +++++++++-------
- include/of.h                      |  4 ++--
- 9 files changed, 20 insertions(+), 28 deletions(-)
+ arch/arm/mach-at91/ddramc.c      |  4 +--
+ arch/arm/mach-imx/esdctl.c       | 56 ++++++++++++++++----------------
+ arch/arm/mach-omap/am33xx_scrm.c |  4 +--
+ arch/arm/mach-stm32mp/ddrctrl.c  |  4 +--
+ 4 files changed, 31 insertions(+), 37 deletions(-)
 
-diff --git a/arch/arm/boards/qemu-virt/board.c b/arch/arm/boards/qemu-virt/board.c
-index d0a7e3da4ff3..5ce1ecfc2461 100644
---- a/arch/arm/boards/qemu-virt/board.c
-+++ b/arch/arm/boards/qemu-virt/board.c
-@@ -40,9 +40,8 @@ static int replace_dtb(void) {
+diff --git a/arch/arm/mach-at91/ddramc.c b/arch/arm/mach-at91/ddramc.c
+index 0aece5345f72..8f70b4ada2a1 100644
+--- a/arch/arm/mach-at91/ddramc.c
++++ b/arch/arm/mach-at91/ddramc.c
+@@ -44,9 +44,7 @@ static int sama5_ddr_probe(struct device_d *dev)
+ 		return PTR_ERR(iores);
+ 	base = IOMEM(iores->start);
  
- 	overlay = of_unflatten_dtb(__dtb_overlay_of_flash_start);
- 	of_overlay_apply_tree(root, overlay);
--	barebox_register_of(root);
- 
--	return 0;
-+	return barebox_register_of(root);
- }
- 
- pure_initcall(replace_dtb);
-diff --git a/arch/arm/cpu/dtb.c b/arch/arm/cpu/dtb.c
-index 35f251d99a35..9aa979ca081c 100644
---- a/arch/arm/cpu/dtb.c
-+++ b/arch/arm/cpu/dtb.c
-@@ -26,8 +26,6 @@ static int of_arm_init(void)
- 		return 0;
- 	}
- 
--	barebox_register_fdt(fdt);
+-	arm_add_mem_device("ram0", SAMA5_DDRCS, sama5_ramsize(base));
 -
 -	return 0;
-+	return barebox_register_fdt(fdt);
++	return arm_add_mem_device("ram0", SAMA5_DDRCS, sama5_ramsize(base));
  }
- core_initcall(of_arm_init);
-diff --git a/arch/kvx/lib/dtb.c b/arch/kvx/lib/dtb.c
-index 09898017c9b5..3d65bd7bd45f 100644
---- a/arch/kvx/lib/dtb.c
-+++ b/arch/kvx/lib/dtb.c
-@@ -9,8 +9,6 @@
  
- static int of_kvx_init(void)
+ static struct of_device_id sama5_ddr_dt_ids[] = {
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index f297cd35d540..5355f55c6f33 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -32,7 +32,7 @@
+ struct imx_esdctl_data {
+ 	unsigned long base0;
+ 	unsigned long base1;
+-	void (*add_mem)(void *esdctlbase, struct imx_esdctl_data *);
++	int (*add_mem)(void *esdctlbase, struct imx_esdctl_data *);
+ };
+ 
+ static int imx_esdctl_disabled;
+@@ -182,9 +182,11 @@ static inline u64 __imx6_mmdc_sdram_size(void __iomem *mmdcbase, int cs)
+ 	return memory_sdram_size(cols, rows, banks, width);
+ }
+ 
+-static void add_mem(unsigned long base0, unsigned long size0,
++static int add_mem(unsigned long base0, unsigned long size0,
+ 		unsigned long base1, unsigned long size1)
  {
--	barebox_register_fdt(boot_dtb);
--
--	return 0;
-+	return barebox_register_fdt(boot_dtb);
- }
- core_initcall(of_kvx_init);
-diff --git a/arch/mips/boot/dtb.c b/arch/mips/boot/dtb.c
-index 6fce4700cc9e..dbb6315d1f05 100644
---- a/arch/mips/boot/dtb.c
-+++ b/arch/mips/boot/dtb.c
-@@ -41,8 +41,6 @@ static int of_mips_init(void)
- 	if (!fdt)
- 		fdt = __dtb_start;
- 
--	barebox_register_fdt(fdt);
--
--	return 0;
-+	return barebox_register_fdt(fdt);
- }
- core_initcall(of_mips_init);
-diff --git a/arch/openrisc/lib/dtb.c b/arch/openrisc/lib/dtb.c
-index 61cf35ddf362..0507eed1d75b 100644
---- a/arch/openrisc/lib/dtb.c
-+++ b/arch/openrisc/lib/dtb.c
-@@ -28,8 +28,6 @@ static int of_openrisc_init(void)
- 	if (root)
- 		return 0;
- 
--	barebox_register_fdt(__dtb_start);
--
--	return 0;
-+	return barebox_register_fdt(__dtb_start);
- }
- core_initcall(of_openrisc_init);
-diff --git a/arch/riscv/lib/dtb.c b/arch/riscv/lib/dtb.c
-index 8c2f5b251883..aa287953870a 100644
---- a/arch/riscv/lib/dtb.c
-+++ b/arch/riscv/lib/dtb.c
-@@ -9,6 +9,7 @@
- static int of_riscv_init(void)
- {
- 	void *fdt;
-+	int ret;
- 
- 	/* See if we are provided a dtb in boarddata */
- 	fdt = barebox_riscv_boot_dtb();
-@@ -20,11 +21,11 @@ static int of_riscv_init(void)
- 	pr_debug("using boarddata provided DTB\n");
- 
- 
--	barebox_register_fdt(fdt);
-+	ret = barebox_register_fdt(fdt);
- 
- 	/* do it now, before clocksource drivers run postcore */
- 	timer_init();
- 
--	return 0;
-+	return ret;
- }
- core_initcall(of_riscv_init);
-diff --git a/arch/sandbox/board/dtb.c b/arch/sandbox/board/dtb.c
-index 4a8cbfb26f32..98d2e774b89a 100644
---- a/arch/sandbox/board/dtb.c
-+++ b/arch/sandbox/board/dtb.c
-@@ -39,8 +39,6 @@ static int of_sandbox_init(void)
- 	if (!dtb)
- 		dtb = __dtb_sandbox_start;
- 
--	barebox_register_fdt(dtb);
--
--	return 0;
-+	return barebox_register_fdt(dtb);
- }
- core_initcall(of_sandbox_init);
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 6fe02649ee53..b99201a50fd5 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1699,32 +1699,34 @@ int of_set_root_node(struct device_node *node)
- 	return 0;
- }
- 
--void barebox_register_of(struct device_node *root)
-+int barebox_register_of(struct device_node *root)
- {
- 	if (root_node)
--		return;
-+		return -EBUSY;
- 
- 	of_set_root_node(root);
- 	of_fix_tree(root);
- 
- 	if (IS_ENABLED(CONFIG_OFDEVICE))
--		of_probe();
-+		return of_probe();
++	int ret0 = 0, ret1 = 0;
 +
-+	return 0;
- }
+ 	debug("%s: cs0 base: 0x%08lx cs0 size: 0x%08lx\n", __func__, base0, size0);
+ 	debug("%s: cs1 base: 0x%08lx cs1 size: 0x%08lx\n", __func__, base1, size1);
  
--void barebox_register_fdt(const void *dtb)
-+int barebox_register_fdt(const void *dtb)
- {
- 	struct device_node *root;
- 
- 	if (root_node)
+@@ -192,16 +194,16 @@ static void add_mem(unsigned long base0, unsigned long size0,
+ 		/*
+ 		 * concatenate both chip selects to a single bank
+ 		 */
+-		arm_add_mem_device("ram0", base0, size0 + size1);
+-
 -		return;
-+		return -EBUSY;
- 
- 	root = of_unflatten_dtb(dtb);
- 	if (IS_ERR(root)) {
- 		pr_err("Cannot unflatten dtb: %pe\n", root);
--		return;
-+		return PTR_ERR(root);
++		return arm_add_mem_device("ram0", base0, size0 + size1);
  	}
  
--	barebox_register_of(root);
-+	return barebox_register_of(root);
+ 	if (size0)
+-		arm_add_mem_device("ram0", base0, size0);
++		ret0 = arm_add_mem_device("ram0", base0, size0);
+ 
+ 	if (size1)
+-		arm_add_mem_device(size0 ? "ram1" : "ram0", base1, size1);
++		ret1 = arm_add_mem_device(size0 ? "ram1" : "ram0", base1, size1);
++
++	return ret0 ? ret0 : ret1;
  }
  
- /**
-diff --git a/include/of.h b/include/of.h
-index 645f429bdeed..66d1edcc5c0d 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -261,8 +261,8 @@ extern int of_modalias_node(struct device_node *node, char *modalias, int len);
+ /*
+@@ -224,35 +226,35 @@ static inline void imx_esdctl_v2_disable_default(void __iomem *esdctlbase)
+ 	}
+ }
  
- extern struct device_node *of_get_root_node(void);
- extern int of_set_root_node(struct device_node *node);
--extern void barebox_register_of(struct device_node *root);
--extern void barebox_register_fdt(const void *dtb);
-+extern int barebox_register_of(struct device_node *root);
-+extern int barebox_register_fdt(const void *dtb);
+-static void imx_esdctl_v1_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
++static int imx_esdctl_v1_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
+ {
+-	add_mem(data->base0, imx_v1_sdram_size(esdctlbase, 0),
++	return add_mem(data->base0, imx_v1_sdram_size(esdctlbase, 0),
+ 			data->base1, imx_v1_sdram_size(esdctlbase, 1));
+ }
  
- extern struct device_d *of_platform_device_create(struct device_node *np,
- 						struct device_d *parent);
+-static void imx_esdctl_v2_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
++static int imx_esdctl_v2_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
+ {
+-	add_mem(data->base0, imx_v2_sdram_size(esdctlbase, 0),
++	return add_mem(data->base0, imx_v2_sdram_size(esdctlbase, 0),
+ 			data->base1, imx_v2_sdram_size(esdctlbase, 1));
+ }
+ 
+-static void imx_esdctl_v2_bug_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
++static int imx_esdctl_v2_bug_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
+ {
+ 	imx_esdctl_v2_disable_default(esdctlbase);
+ 
+-	add_mem(data->base0, imx_v2_sdram_size(esdctlbase, 0),
++	return add_mem(data->base0, imx_v2_sdram_size(esdctlbase, 0),
+ 			data->base1, imx_v2_sdram_size(esdctlbase, 1));
+ }
+ 
+-static void imx_esdctl_v3_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
++static int imx_esdctl_v3_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
+ {
+-	add_mem(data->base0, imx_v3_sdram_size(esdctlbase, 0),
++	return add_mem(data->base0, imx_v3_sdram_size(esdctlbase, 0),
+ 			data->base1, imx_v3_sdram_size(esdctlbase, 1));
+ }
+ 
+-static void imx_esdctl_v4_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
++static int imx_esdctl_v4_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
+ {
+-	add_mem(data->base0, imx_v4_sdram_size(esdctlbase, 0),
++	return add_mem(data->base0, imx_v4_sdram_size(esdctlbase, 0),
+ 			data->base1, imx_v4_sdram_size(esdctlbase, 1));
+ }
+ 
+@@ -281,9 +283,9 @@ static inline resource_size_t imx6_mmdc_sdram_size(void __iomem *mmdcbase)
+ 	return size;
+ }
+ 
+-static void imx6_mmdc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static int imx6_mmdc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+ {
+-	arm_add_mem_device("ram0", data->base0,
++	return arm_add_mem_device("ram0", data->base0,
+ 			   imx6_mmdc_sdram_size(mmdcbase));
+ }
+ 
+@@ -303,9 +305,9 @@ static inline resource_size_t vf610_ddrmc_sdram_size(void __iomem *ddrmc)
+ 	return memory_sdram_size(cols, rows, banks, width);
+ }
+ 
+-static void vf610_ddrmc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static int vf610_ddrmc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+ {
+-	arm_add_mem_device("ram0", data->base0,
++	return arm_add_mem_device("ram0", data->base0,
+ 			   vf610_ddrmc_sdram_size(mmdcbase));
+ }
+ 
+@@ -467,9 +469,9 @@ static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc)
+ 				   reduced_adress_space);
+ }
+ 
+-static void imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static int imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+ {
+-	arm_add_mem_device("ram0", data->base0,
++	return arm_add_mem_device("ram0", data->base0,
+ 			   imx8m_ddrc_sdram_size(mmdcbase));
+ }
+ 
+@@ -509,9 +511,9 @@ static resource_size_t imx7d_ddrc_sdram_size(void __iomem *ddrc)
+ 				   reduced_adress_space);
+ }
+ 
+-static void imx7d_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static int imx7d_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+ {
+-	arm_add_mem_device("ram0", data->base0,
++	return arm_add_mem_device("ram0", data->base0,
+ 			   imx7d_ddrc_sdram_size(mmdcbase));
+ }
+ 
+@@ -534,9 +536,7 @@ static int imx_esdctl_probe(struct device_d *dev)
+ 	if (imx_esdctl_disabled)
+ 		return 0;
+ 
+-	data->add_mem(base, data);
+-
+-	return 0;
++	return data->add_mem(base, data);
+ }
+ 
+ static __maybe_unused struct imx_esdctl_data imx1_data = {
+diff --git a/arch/arm/mach-omap/am33xx_scrm.c b/arch/arm/mach-omap/am33xx_scrm.c
+index 80510cf5b423..0f13a9deb6af 100644
+--- a/arch/arm/mach-omap/am33xx_scrm.c
++++ b/arch/arm/mach-omap/am33xx_scrm.c
+@@ -24,9 +24,7 @@
+ 
+ static int am33xx_scrm_probe(struct device_d *dev)
+ {
+-	arm_add_mem_device("ram0", 0x80000000, am335x_sdram_size());
+-
+-	return 0;
++	return arm_add_mem_device("ram0", 0x80000000, am335x_sdram_size());
+ }
+ 
+ static __maybe_unused struct of_device_id am33xx_scrm_dt_ids[] = {
+diff --git a/arch/arm/mach-stm32mp/ddrctrl.c b/arch/arm/mach-stm32mp/ddrctrl.c
+index 646fe4401acf..43486c57c56a 100644
+--- a/arch/arm/mach-stm32mp/ddrctrl.c
++++ b/arch/arm/mach-stm32mp/ddrctrl.c
+@@ -132,9 +132,7 @@ static int stm32mp1_ddr_probe(struct device_d *dev)
+ 		return PTR_ERR(iores);
+ 	base = IOMEM(iores->start);
+ 
+-	arm_add_mem_device("ram0", STM32_DDR_BASE, ddrctrl_ramsize(base));
+-
+-	return 0;
++	return arm_add_mem_device("ram0", STM32_DDR_BASE, ddrctrl_ramsize(base));
+ }
+ 
+ static __maybe_unused struct of_device_id stm32mp1_ddr_dt_ids[] = {
 -- 
 2.29.2
 
