@@ -1,15 +1,15 @@
-Delivery-date: Mon, 31 May 2021 09:23:14 +0200
+Delivery-date: Mon, 31 May 2021 09:25:04 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lncGY-00030G-OF
-	for lore@lore.pengutronix.de; Mon, 31 May 2021 09:23:14 +0200
+	id 1lncIK-00031h-Fm
+	for lore@lore.pengutronix.de; Mon, 31 May 2021 09:25:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lncGX-0005Fy-Mt
-	for lore@pengutronix.de; Mon, 31 May 2021 09:23:14 +0200
+	id 1lncIJ-0005sO-H2
+	for lore@pengutronix.de; Mon, 31 May 2021 09:25:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=5WCSg3rLkHIJY+/kknxaotq32ZK4+CUS9/geeAX0JB8=; b=0JY3/xQBVJ+LJwCqIXpYT8Rg6A
-	7cdVVqTi7uZRZsDJSnh+VPBp+iFEsBlVLDoUOvFet7YOWBaxmtnPJ6q+33+WVGllFtMApreNlgtjx
-	ghh931pJYsyxxfpKmbfuFhnadpPLMdio6JiIEWnnRhqOy043CSfnOaS0HYOXDLPKCdupchw06T5oH
-	Ko509H6CvL8CErN1fEEqwVwXeamQn1TX1e9tI8UIb++61lI1W0azxSsIzd1vhnJ2Wa+rMnnEM0rKM
-	+loTM4SdpyO7T8ZOmceCIYxW6u6yZNd2TmjvxOnXcTnRC5hOBfhIBcnh1IWPsSZ6o1I1zsvFe+hWD
-	0L5W9xaw==;
+	bh=rKuYv0hJzQ6oSl1yy8AOcmSaiWGfmjACRZEdjoE2edA=; b=YnDVNxJo96JzjE1mxhh/q288uV
+	5Jfk7o5VQkjDiXl3CY/rJSHfUF/884lhLBvBMqggKmWH4hRE31xcIGpPkhTfHywYx3c+6/6j6VkT3
+	ilt2Xfv1n0JhxqbP7G9Hz1RYbGE/E7Rs+vmNqhqyRntLkBDQ2vprHlWu1NOj9dDQgVjsGsk+yMn4z
+	MSF6624ETAAZmAiPG6p71V6yEz7JuqKFtteQUEWvZIdnKOwrmU2gfvHyBQtK4QXstYk/tQn7WGtqR
+	76uTKRwrmtdf3esWX7+uA0lJWylB9YNsAhCw4tqYWphz25jDmAmgen2uFkI3gGWwlaHKzo9y54YHR
+	Xjg+bQow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lncFV-00BATY-KR; Mon, 31 May 2021 07:22:09 +0000
+	id 1lncHD-00BAmB-U3; Mon, 31 May 2021 07:23:56 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lncFR-00BASW-B2
- for barebox@lists.infradead.org; Mon, 31 May 2021 07:22:06 +0000
+ id 1lncH9-00BAlM-9U
+ for barebox@lists.infradead.org; Mon, 31 May 2021 07:23:52 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lncFQ-0005B7-3s; Mon, 31 May 2021 09:22:04 +0200
+ id 1lncH8-0005L0-2J; Mon, 31 May 2021 09:23:50 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lncFP-0003e5-EQ; Mon, 31 May 2021 09:22:03 +0200
-Date: Mon, 31 May 2021 09:22:03 +0200
-To: Ahmad Fatoum <ahmad@a3f.at>
+ id 1lncH7-0003nr-G7; Mon, 31 May 2021 09:23:49 +0200
+Date: Mon, 31 May 2021 09:23:49 +0200
+To: Trent Piepho <tpiepho@gmail.com>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210531072203.GG5211@pengutronix.de>
-References: <20210529082953.2034104-1-ahmad@a3f.at>
+Message-ID: <20210531072349.GH5211@pengutronix.de>
+References: <20210529062541.1123023-1-tpiepho@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210529082953.2034104-1-ahmad@a3f.at>
+In-Reply-To: <20210529062541.1123023-1-tpiepho@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 09:21:45 up 102 days, 10:45, 123 users,  load average: 0.50, 0.46,
- 0.36
+X-Uptime: 09:23:38 up 102 days, 10:47, 123 users,  load average: 0.97, 0.68,
+ 0.45
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210531_002205_398662_4E1E1715 
-X-CRM114-Status: GOOD (  23.86  )
+X-CRM114-CacheID: sfid-20210531_002351_354092_A3FD417F 
+X-CRM114-Status: GOOD (  24.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,42 +81,90 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] driver: have dev_set_name() return 0 on success
+Subject: Re: [PATCH] of: base: constify some property pointers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sat, May 29, 2021 at 10:29:53AM +0200, Ahmad Fatoum wrote:
-> Align the return code with Linux, where the function returns 0, not the
-> device name length on success. No functional change, as no one checks
-> the error code anyway.
+On Fri, May 28, 2021 at 11:25:41PM -0700, Trent Piepho wrote:
+> Make the propery pointers in a few OF functions that read data const.
+> They don't modify the property.
 > 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> Signed-off-by: Trent Piepho <tpiepho@gmail.com>
 > ---
->  drivers/base/driver.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  drivers/of/base.c |  4 ++--
+>  include/of.h      | 10 +++++-----
+>  2 files changed, 7 insertions(+), 7 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index f60533c59eb1..1fa3f6c6fac0 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -480,9 +480,7 @@ int dev_set_name(struct device_d *dev, const char *fmt, ...)
->  	 */
->  	free(oldname);
->  
-> -	WARN_ON(err < 0);
-> -
-> -	return err;
-> +	return WARN_ON(err < 0) ? err : 0;
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 6fe02649e..04814c8f7 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -1048,7 +1048,7 @@ int of_property_match_string(struct device_node *np, const char *propname,
 >  }
->  EXPORT_SYMBOL_GPL(dev_set_name);
+>  EXPORT_SYMBOL_GPL(of_property_match_string);
 >  
+> -const __be32 *of_prop_next_u32(struct property *prop, const __be32 *cur,
+> +const __be32 *of_prop_next_u32(const struct property *prop, const __be32 *cur,
+>  			u32 *pu)
+>  {
+>  	const void *curv = cur;
+> @@ -1074,7 +1074,7 @@ out_val:
+>  }
+>  EXPORT_SYMBOL_GPL(of_prop_next_u32);
+>  
+> -const char *of_prop_next_string(struct property *prop, const char *cur)
+> +const char *of_prop_next_string(const struct property *prop, const char *cur)
+>  {
+>  	const void *curv = cur;
+>  	const void *value;
+> diff --git a/include/of.h b/include/of.h
+> index 645f429bd..4adbb7d54 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -95,7 +95,7 @@ static inline void of_write_number(void *__cell, u64 val, int size)
+>  	}
+>  }
+>  
+> -static inline const void *of_property_get_value(struct property *pp)
+> +static inline const void *of_property_get_value(const struct property *pp)
+>  {
+>  	return pp->value ? pp->value : pp->value_const;
+>  }
+> @@ -216,9 +216,9 @@ extern int of_property_read_string_helper(const struct device_node *np,
+>  					      const char *propname,
+>  					      const char **out_strs, size_t sz, int index);
+>  
+> -extern const __be32 *of_prop_next_u32(struct property *prop,
+> +extern const __be32 *of_prop_next_u32(const struct property *prop,
+>  				const __be32 *cur, u32 *pu);
+> -extern const char *of_prop_next_string(struct property *prop, const char *cur);
+> +extern const char *of_prop_next_string(const struct property *prop, const char *cur);
+>  
+>  extern int of_property_write_bool(struct device_node *np,
+>  				const char *propname, const bool value);
+> @@ -520,13 +520,13 @@ static inline int of_property_read_string_helper(const struct device_node *np,
+>  	return -ENOSYS;
+>  }
+>  
+> -static inline const __be32 *of_prop_next_u32(struct property *prop,
+> +static inline const __be32 *of_prop_next_u32(const struct property *prop,
+>  					const __be32 *cur, u32 *pu)
+>  {
+>  	return 0;
+>  }
+>  
+> -static inline const char *of_prop_next_string(struct property *prop,
+> +static inline const char *of_prop_next_string(const struct property *prop,
+>  					const char *cur)
+>  {
+>  	return NULL;
 > -- 
-> 2.31.1
+> 2.26.2
 > 
 > 
 > _______________________________________________
