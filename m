@@ -1,57 +1,52 @@
-Delivery-date: Wed, 02 Jun 2021 13:29:19 +0200
+Delivery-date: Wed, 02 Jun 2021 13:55:17 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loP3n-0001o6-O5
-	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 13:29:19 +0200
+	id 1loPSv-00021S-Bk
+	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 13:55:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loP3k-0007Bz-5K
-	for lore@pengutronix.de; Wed, 02 Jun 2021 13:29:19 +0200
+	id 1loPSr-0001mJ-Fi
+	for lore@pengutronix.de; Wed, 02 Jun 2021 13:55:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=He1XJvgtwYWv/HmTvdQQZHbTCVQ6f6ZYYM4NLFIp+Vk=; b=QG/+UdZmRecsxsT3sP1b6mDEcm
-	fKiKSxVuE5PeH3fKAZU8Se0/T3HKHCnOhCtXiElmFj5Ps1Czi413LRCgig6abwXEudQXH2QgIo9gu
-	XmF1idje7HV/IMp5NWaHjZE2eEeCe0S+XxiX0B6HF5m6u0Kbg9UtZ/CzPS+rUxXzlhsWQZi41Uq24
-	tnmJE+LX7vXJK/4IlAntX5JJ/SP2YxY56Rp7zj2r3mXxpyUbdpb4mwfcHqvE9qbDpOlfnqnWouTfD
-	ObHw1gZ5iG5xhiOztBOmG+6R5CEudBjKyw79KjZVQI6ARfjxBjpAyiz2hyHzeZjBfd9DeT81I72Cv
-	I1EgLnTA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Date:To:From:Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=2qtg3Mn8SNYPhL7Wz0k1U/6ruXs2VAaG2evmPfNyIJQ=; b=ytrXukZMdezFXJ
+	xEBPMsKj2eWbSa6c0gbqRH24GDvmTHV7KbUgE61E927iv+Xdb3USXvtrIkyMaAqtmtgDHKgqgjWzf
+	v5QHAA0vZiEyYW6DyYzsYP0HR4An+FMYUMHUwVaOPh9fQBmtdHGwsMp+pR1po93URhTZ2Loq2FZd9
+	XLnEp1Fsj6ruKpqjNWf0XFZezHgAuqq2LCmqWs2Z/rBV3YYhUXu3EZsFoFHq1COPCBitPwIv2Tl5k
+	2b+TDohbsCo/LWOlQGzEC8/N/sMF0gcVWn/ICF2+rpc9WJKM7Cs9tGSCx1ka9GJ24XjQwpR5+HTCz
+	twwE9S83s6TIyvM8CWFw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1loP1s-003jeZ-Ud; Wed, 02 Jun 2021 11:27:21 +0000
+	id 1loPQz-003qHx-So; Wed, 02 Jun 2021 11:53:18 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loOwO-003hdV-Kn
- for barebox@lists.infradead.org; Wed, 02 Jun 2021 11:21:44 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1loOwN-00060s-5K; Wed, 02 Jun 2021 13:21:39 +0200
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: Jules Maselbas <jmaselbas@kalray.eu>, barebox@lists.infradead.org
-References: <20210421072704.520-1-a.fatoum@pengutronix.de>
- <20210421084729.GD21066@tellis.lin.mbt.kalray.eu>
- <27969059-7cfb-cb4a-cd49-52c03c156799@pengutronix.de>
- <20210507080722.GS19819@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <043c037e-f423-c13a-8209-8c569106aed6@pengutronix.de>
-Date: Wed, 2 Jun 2021 13:21:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+ id 1loP2F-003jsj-OY
+ for barebox@lists.infradead.org; Wed, 02 Jun 2021 11:27:48 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ helo=[IPv6:::1]) by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <r.czerwinski@pengutronix.de>)
+ id 1loP2C-00071F-JZ; Wed, 02 Jun 2021 13:27:40 +0200
+Message-ID: <112a757cb42502e98b32afdcef02a08f6bad0613.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Date: Wed, 02 Jun 2021 13:27:39 +0200
+In-Reply-To: <20210531065520.12385-10-a.fatoum@pengutronix.de>
+References: <20210531065520.12385-1-a.fatoum@pengutronix.de>
+ <20210531065520.12385-10-a.fatoum@pengutronix.de>
+Organization: Pengutronix e.K.
+User-Agent: Evolution 3.40.1 
 MIME-Version: 1.0
-In-Reply-To: <20210507080722.GS19819@pengutronix.de>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210602_042140_747493_E516041A 
-X-CRM114-Status: GOOD (  25.69  )
+X-CRM114-CacheID: sfid-20210602_042744_192344_FA4A47CC 
+X-CRM114-Status: GOOD (  20.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,70 +68,659 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] usb: dwc2: increase timeout for waiting on host
- mode
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 09/13] test: add labgrid configs for some emulated
+ targets
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 07.05.21 10:07, Sascha Hauer wrote:
-> Instead of applying two patches I suggest we go with the following
-> oneliner which is fine for master.
-
-I'd have preferred two patches, because then I've more time to
-procrastinate before testing the second one. ;)
-
-FTR: I just tested v2021.05.0 and USB now works (tested by DHCP
-over the USB-Ethernet controller).
-
-Thanks,
-Ahmad
-
+On Mon, 2021-05-31 at 08:55 +0200, Ahmad Fatoum wrote:
+> There are various ways barebox can run under emulation, some of them are
+> described in the documentation and some more in the git history.
 > 
-> Sascha
+> Make running the emulators more convenient to use by collecting some
+> known-good emulator invocations in a machine readable format.
 > 
-> ------------------------------8<--------------------------------
+> These YAML files can be parsed by labgrid for running tests or executed
+> by a new test/emulate.pl runner script that will be added in a follow-up
+> commit.
 > 
-> From 9fc2b0364c4b686d110b772be2245be3a513407d Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Fri, 7 May 2021 09:58:43 +0200
-> Subject: [PATCH] usb: dwc2: Fix wait for mode timeout
+> Using labgrid for this will allow using the same test suite for physical
+> targets as well in future.
 > 
-> The timeout waiting for host mode should be 110ms instead of 110us.
-> The timeout is the same as in Linux now and the same it was before
-> fdd30cc251. It takes 49ms to go to host mode on the Raspberry Pi 3b,
-> so host mode stopped working with 26459ab780 which removed an additional
-> 100ms delay before dwc2_wait_for_mode() was actually called.
-> 
-> Fixes: fdd30cc251 ("usb: dwc2: Rework dwc2_wait_for_mode to use wait_on_timeout")
-> Fixes: 26459ab780 ("usb: dwc2: Rework wait for host mode during core reset")
-> Reported-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/usb/dwc2/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  test/arm/a15@vexpress_defconfig.yaml     | 23 ++++++++++++++++
+>  test/arm/a9@vexpress_defconfig.yaml      | 23 ++++++++++++++++
+>  test/arm/qemu_virt64_defconfig.yaml      | 27 ++++++++++++++++++
+>  test/arm/vexpress_defconfig.yaml         |  1 +
+>  test/arm/virt@vexpress_defconfig.yaml    | 25 +++++++++++++++++
+>  test/kconfig/virtio-pci.cfg              |  6 ++++
+>  test/mips/be@qemu-malta_defconfig.yaml   | 25 +++++++++++++++++
+>  test/mips/le@qemu-malta_defconfig.yaml   | 28 +++++++++++++++++++
+>  test/mips/qemu-malta_defconfig.yaml      |  1 +
+>  test/openrisc/generic_defconfig.yaml     | 23 ++++++++++++++++
+>  test/riscv/qemu@virt32_defconfig.yaml    | 30 ++++++++++++++++++++
+>  test/riscv/qemu@virt64_defconfig.yaml    | 30 ++++++++++++++++++++
+>  test/riscv/sifive_defconfig.yaml         | 28 +++++++++++++++++++
+>  test/riscv/tinyemu@virt32_defconfig.yaml | 25 +++++++++++++++++
+>  test/riscv/tinyemu@virt64_defconfig.yaml | 25 +++++++++++++++++
+>  test/riscv/virt32_defconfig.yaml         |  1 +
+>  test/riscv/virt64_defconfig.yaml         |  1 +
+>  test/sandbox/sandbox_defconfig.yaml      | 12 ++++++++
+>  test/x86/efi_defconfig.yaml              |  1 +
+>  test/x86/pc@efi_defconfig.yaml           | 34 +++++++++++++++++++++++
+>  test/x86/q35@efi_defconfig.yaml          | 34 +++++++++++++++++++++++
+>  test/x86/virtio@efi_defconfig.yaml       | 35 ++++++++++++++++++++++++
+>  22 files changed, 438 insertions(+)
+>  create mode 100644 test/arm/a15@vexpress_defconfig.yaml
+>  create mode 100644 test/arm/a9@vexpress_defconfig.yaml
+>  create mode 100644 test/arm/qemu_virt64_defconfig.yaml
+>  create mode 120000 test/arm/vexpress_defconfig.yaml
+>  create mode 100644 test/arm/virt@vexpress_defconfig.yaml
+>  create mode 100644 test/kconfig/virtio-pci.cfg
+>  create mode 100644 test/mips/be@qemu-malta_defconfig.yaml
+>  create mode 100644 test/mips/le@qemu-malta_defconfig.yaml
+>  create mode 120000 test/mips/qemu-malta_defconfig.yaml
+>  create mode 100644 test/openrisc/generic_defconfig.yaml
+>  create mode 100644 test/riscv/qemu@virt32_defconfig.yaml
+>  create mode 100644 test/riscv/qemu@virt64_defconfig.yaml
+>  create mode 100644 test/riscv/sifive_defconfig.yaml
+>  create mode 100644 test/riscv/tinyemu@virt32_defconfig.yaml
+>  create mode 100644 test/riscv/tinyemu@virt64_defconfig.yaml
+>  create mode 120000 test/riscv/virt32_defconfig.yaml
+>  create mode 120000 test/riscv/virt64_defconfig.yaml
+>  create mode 100644 test/sandbox/sandbox_defconfig.yaml
+>  create mode 120000 test/x86/efi_defconfig.yaml
+>  create mode 100644 test/x86/pc@efi_defconfig.yaml
+>  create mode 100644 test/x86/q35@efi_defconfig.yaml
+>  create mode 100644 test/x86/virtio@efi_defconfig.yaml
 > 
-> diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
-> index 5d04a07b03..8a78d8199e 100644
-> --- a/drivers/usb/dwc2/core.c
-> +++ b/drivers/usb/dwc2/core.c
-> @@ -688,7 +688,7 @@ int dwc2_get_dr_mode(struct dwc2 *dwc2)
->   */
->  void dwc2_wait_for_mode(struct dwc2 *dwc2, bool host_mode)
->  {
-> -	unsigned int timeout = 110 * USECOND;
-> +	unsigned int timeout = 110 * MSECOND;
->  	int ret;
->  
->  	dev_vdbg(dwc2->dev, "Waiting for %s mode\n",
-> 
+> diff --git a/test/arm/a15@vexpress_defconfig.yaml b/test/arm/a15@vexpress_defconfig.yaml
+> new file mode 100644
+> index 000000000000..7ed93ba0a19f
+> --- /dev/null
+> +++ b/test/arm/a15@vexpress_defconfig.yaml
+> @@ -0,0 +1,23 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: vexpress-a15
+> +        cpu: cortex-a15
+> +        memory: 1024M
+> +        bios: barebox-vexpress-ca15.img
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+All of these targets use a Shelldriver, but it is used only to satisfy
+the BareboxStrategy. Scrap the ShellDriver and write a short strategy
+or scrap the strategy as well or wholesale remove strategy usage
+alltogether. Since all thats done is activating the BareboxDriver, this
+should be doable without a strategy.
+
+> +      BareboxStrategy: {}
+> +images:
+> +  barebox-vexpress-ca15.img: $LG_BUILDDIR/images/barebox-vexpress-ca15.img
+> +tools:
+> +  qemu: /usr/bin/qemu-system-arm
+> diff --git a/test/arm/a9@vexpress_defconfig.yaml b/test/arm/a9@vexpress_defconfig.yaml
+> new file mode 100644
+> index 000000000000..88e09ca052e6
+> --- /dev/null
+> +++ b/test/arm/a9@vexpress_defconfig.yaml
+> @@ -0,0 +1,23 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: vexpress-a9
+> +        cpu: cortex-a9
+> +        memory: 1024M
+> +        bios: barebox-vexpress-ca9.img
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +images:
+> +  barebox-vexpress-ca9.img: $LG_BUILDDIR/images/barebox-vexpress-ca9.img
+> +tools:
+> +  qemu: /usr/bin/qemu-system-arm
+> diff --git a/test/arm/qemu_virt64_defconfig.yaml b/test/arm/qemu_virt64_defconfig.yaml
+> new file mode 100644
+> index 000000000000..2dfaaedef61a
+> --- /dev/null
+> +++ b/test/arm/qemu_virt64_defconfig.yaml
+> @@ -0,0 +1,27 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: virt
+> +        cpu: cortex-a57
+> +        memory: 1024M
+> +        kernel: barebox-dt-2nd.img
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - virtio-mmio
+> +    runner:
+> +      tuxmake_arch: arm64
+> +images:
+> +  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
+> +tools:
+> +  qemu: /usr/bin/qemu-system-aarch64
+> diff --git a/test/arm/vexpress_defconfig.yaml b/test/arm/vexpress_defconfig.yaml
+> new file mode 120000
+> index 000000000000..732f51b19dc9
+> --- /dev/null
+> +++ b/test/arm/vexpress_defconfig.yaml
+> @@ -0,0 +1 @@
+> +a9@vexpress_defconfig.yaml
+> \ No newline at end of file
+> diff --git a/test/arm/virt@vexpress_defconfig.yaml b/test/arm/virt@vexpress_defconfig.yaml
+> new file mode 100644
+> index 000000000000..9c2e727c9cb5
+> --- /dev/null
+> +++ b/test/arm/virt@vexpress_defconfig.yaml
+> @@ -0,0 +1,25 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: virt
+> +        cpu: cortex-a7
+> +        memory: 1024M
+> +        kernel: barebox-dt-2nd.img
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - virtio-mmio
+> +images:
+> +  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
+> +tools:
+> +  qemu: /usr/bin/qemu-system-arm
+> diff --git a/test/kconfig/virtio-pci.cfg b/test/kconfig/virtio-pci.cfg
+> new file mode 100644
+> index 000000000000..78237b8fca26
+> --- /dev/null
+> +++ b/test/kconfig/virtio-pci.cfg
+> @@ -0,0 +1,6 @@
+> +CONFIG_VIRTIO_MENU=y
+> +CONFIG_VIRTIO_PCI=y
+> +CONFIG_VIRTIO_CONSOLE=y
+> +CONFIG_VIRTIO_BLK=y
+> +CONFIG_HWRNG=y
+> +CONFIG_HW_RANDOM_VIRTIO=y
+> diff --git a/test/mips/be@qemu-malta_defconfig.yaml b/test/mips/be@qemu-malta_defconfig.yaml
+> new file mode 100644
+> index 000000000000..5217a6ec2a13
+> --- /dev/null
+> +++ b/test/mips/be@qemu-malta_defconfig.yaml
+> @@ -0,0 +1,25 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: malta
+> +        cpu: M14Kc
+> +        memory: 256M
+> +        bios: barebox-qemu-malta.img
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - virtio-pci
+> +images:
+> +  barebox-qemu-malta.img: $LG_BUILDDIR/images/barebox-qemu-malta.img
+> +tools:
+> +  qemu: /usr/bin/qemu-system-mips
+> diff --git a/test/mips/le@qemu-malta_defconfig.yaml b/test/mips/le@qemu-malta_defconfig.yaml
+> new file mode 100644
+> index 000000000000..3b0f557dde5b
+> --- /dev/null
+> +++ b/test/mips/le@qemu-malta_defconfig.yaml
+> @@ -0,0 +1,28 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: malta
+> +        cpu: M14Kc
+> +        memory: 256M
+> +        bios: barebox-qemu-malta.img.swapped
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - virtio-pci
+> +    runner:
+> +      kconfig_add:
+> +        - CONFIG_CPU_LITTLE_ENDIAN=y
+> +images:
+> +  barebox-qemu-malta.img.swapped: $LG_BUILDDIR/images/barebox-qemu-malta.img.swapped
+> +tools:
+> +  qemu: /usr/bin/qemu-system-mipsel
+> diff --git a/test/mips/qemu-malta_defconfig.yaml b/test/mips/qemu-malta_defconfig.yaml
+> new file mode 120000
+> index 000000000000..481b6e547782
+> --- /dev/null
+> +++ b/test/mips/qemu-malta_defconfig.yaml
+> @@ -0,0 +1 @@
+> +be@qemu-malta_defconfig.yaml
+> \ No newline at end of file
+> diff --git a/test/openrisc/generic_defconfig.yaml b/test/openrisc/generic_defconfig.yaml
+> new file mode 100644
+> index 000000000000..ece54da1c191
+> --- /dev/null
+> +++ b/test/openrisc/generic_defconfig.yaml
+> @@ -0,0 +1,23 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: or1k-sim
+> +        cpu: or1200
+> +        memory: 256M
+> +        kernel: barebox
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +images:
+> +  barebox: $LG_BUILDDIR/barebox
+> +tools:
+> +  qemu: /usr/bin/qemu-system-or1k
+> diff --git a/test/riscv/qemu@virt32_defconfig.yaml b/test/riscv/qemu@virt32_defconfig.yaml
+> new file mode 100644
+> index 000000000000..d879ac6880a7
+> --- /dev/null
+> +++ b/test/riscv/qemu@virt32_defconfig.yaml
+> @@ -0,0 +1,30 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: virt
+> +        cpu: rv32
+> +        memory: 256M
+> +        kernel: barebox-dt-2nd.img
+> +        bios: opensbi-riscv32-generic-fw_dynamic.bin
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - virtio-mmio
+> +    runner:
+> +      download:
+> +        opensbi-riscv32-generic-fw_dynamic.bin: https://github.com/qemu/qemu/blob/v5.2.0/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin?raw=true
+> +images:
+> +  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
+> +  opensbi-riscv32-generic-fw_dynamic.bin: $LG_BUILDDIR/opensbi-riscv32-generic-fw_dynamic.bin
+> +tools:
+> +  qemu: /usr/bin/qemu-system-riscv32
+> diff --git a/test/riscv/qemu@virt64_defconfig.yaml b/test/riscv/qemu@virt64_defconfig.yaml
+> new file mode 100644
+> index 000000000000..5102f9067e1b
+> --- /dev/null
+> +++ b/test/riscv/qemu@virt64_defconfig.yaml
+> @@ -0,0 +1,30 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: virt
+> +        cpu: rv64
+> +        memory: 256M
+> +        kernel: barebox-dt-2nd.img
+> +        bios: opensbi-riscv64-generic-fw_dynamic.bin
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - virtio-mmio
+> +    runner:
+> +      download:
+> +        opensbi-riscv64-generic-fw_dynamic.bin: https://github.com/qemu/qemu/blob/v5.2.0/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin?raw=true
+> +images:
+> +  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
+> +  opensbi-riscv64-generic-fw_dynamic.bin: $LG_BUILDDIR/opensbi-riscv64-generic-fw_dynamic.bin
+> +tools:
+> +  qemu: /usr/bin/qemu-system-riscv64
+> diff --git a/test/riscv/sifive_defconfig.yaml b/test/riscv/sifive_defconfig.yaml
+> new file mode 100644
+> index 000000000000..534d7b8b044a
+> --- /dev/null
+> +++ b/test/riscv/sifive_defconfig.yaml
+> @@ -0,0 +1,28 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: sifive_u
+> +        cpu: sifive-u54
+> +        memory: 256M
+> +        kernel: barebox-hifive-unleashed.img
+> +        bios: opensbi-riscv64-generic-fw_dynamic.bin
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    runner:
+> +      download:
+> +        opensbi-riscv64-generic-fw_dynamic.bin: https://github.com/qemu/qemu/blob/v5.2.0/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin?raw=true
+> +images:
+> +  barebox-hifive-unleashed.img: $LG_BUILDDIR/images/barebox-hifive-unleashed.img
+> +  opensbi-riscv64-generic-fw_dynamic.bin: $LG_BUILDDIR/opensbi-riscv64-generic-fw_dynamic.bin
+> +tools:
+> +  qemu: /usr/bin/qemu-system-riscv64
+> diff --git a/test/riscv/tinyemu@virt32_defconfig.yaml b/test/riscv/tinyemu@virt32_defconfig.yaml
+> new file mode 100644
+> index 000000000000..807a8ce47145
+> --- /dev/null
+> +++ b/test/riscv/tinyemu@virt32_defconfig.yaml
+> @@ -0,0 +1,25 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      TinyEMUDriver:
+> +        temu_bin: temu
+> +        config: ./Documentation/boards/riscv/barebox-virt32.cfg
+> +        image: barebox-dt-2nd.img
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - virtio-mmio
+> +    runner:
+> +      download:
+> +        bbl32.bin: https://barebox.org/jsbarebox/bbl32.bin
+> +images:
+> +  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
+> +tools:
+> +  temu: /usr/local/bin/temu
+> diff --git a/test/riscv/tinyemu@virt64_defconfig.yaml b/test/riscv/tinyemu@virt64_defconfig.yaml
+> new file mode 100644
+> index 000000000000..58277d1ce0dc
+> --- /dev/null
+> +++ b/test/riscv/tinyemu@virt64_defconfig.yaml
+> @@ -0,0 +1,25 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      TinyEMUDriver:
+> +        temu_bin: temu
+> +        config: ./Documentation/boards/riscv/barebox-virt64.cfg
+> +        image: barebox-dt-2nd.img
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - virtio-mmio
+> +    runner:
+> +      download:
+> +        bbl64.bin: https://barebox.org/jsbarebox/bbl64.bin
+> +images:
+> +  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
+> +tools:
+> +  temu: /usr/local/bin/temu
+> diff --git a/test/riscv/virt32_defconfig.yaml b/test/riscv/virt32_defconfig.yaml
+> new file mode 120000
+> index 000000000000..e9d7237f5339
+> --- /dev/null
+> +++ b/test/riscv/virt32_defconfig.yaml
+> @@ -0,0 +1 @@
+> +qemu@virt32_defconfig.yaml
+> \ No newline at end of file
+> diff --git a/test/riscv/virt64_defconfig.yaml b/test/riscv/virt64_defconfig.yaml
+> new file mode 120000
+> index 000000000000..ab419d5e7fb4
+> --- /dev/null
+> +++ b/test/riscv/virt64_defconfig.yaml
+> @@ -0,0 +1 @@
+> +qemu@virt64_defconfig.yaml
+> \ No newline at end of file
+> diff --git a/test/sandbox/sandbox_defconfig.yaml b/test/sandbox/sandbox_defconfig.yaml
+> new file mode 100644
+> index 000000000000..68826e8b5830
+> --- /dev/null
+> +++ b/test/sandbox/sandbox_defconfig.yaml
+> @@ -0,0 +1,12 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      NativeExecutableDriver:
+> +        command: ./barebox
+> +        image: barebox
+> +    runner:
+> +      tuxmake_arch: um
+> +images:
+> +  barebox: $LG_BUILDDIR/barebox
+> +tools:
+> +  qemu: /usr/local/bin/temu
+> diff --git a/test/x86/efi_defconfig.yaml b/test/x86/efi_defconfig.yaml
+> new file mode 120000
+> index 000000000000..942dc259d56b
+> --- /dev/null
+> +++ b/test/x86/efi_defconfig.yaml
+> @@ -0,0 +1 @@
+> +pc@efi_defconfig.yaml
+> \ No newline at end of file
+> diff --git a/test/x86/pc@efi_defconfig.yaml b/test/x86/pc@efi_defconfig.yaml
+> new file mode 100644
+> index 000000000000..923b0680fff2
+> --- /dev/null
+> +++ b/test/x86/pc@efi_defconfig.yaml
+> @@ -0,0 +1,34 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: pc
+> +        cpu: Nehalem
+> +        memory: 1024M
+> +        kernel: barebox.efi
+> +        bios: OVMF.fd
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - pci
+> +    runner:
+> +      tuxmake_arch: x86_64
+> +      kconfig_add:
+> +        - CONFIG_DRIVER_SERIAL_NS16550=y
+> +        - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
+> +      download:
+> +        OVMF.fd: /usr/share/qemu/OVMF.fd
+> +images:
+> +  barebox.efi: $LG_BUILDDIR/barebox.efi
+> +  OVMF.fd: $LG_BUILDDIR/OVMF.fd
+> +tools:
+> +  qemu: /usr/bin/qemu-system-x86_64
+> diff --git a/test/x86/q35@efi_defconfig.yaml b/test/x86/q35@efi_defconfig.yaml
+> new file mode 100644
+> index 000000000000..1cfbd9fd88e3
+> --- /dev/null
+> +++ b/test/x86/q35@efi_defconfig.yaml
+> @@ -0,0 +1,34 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: q35
+> +        cpu: Nehalem
+> +        memory: 1024M
+> +        kernel: barebox.efi
+> +        bios: OVMF.fd
+> +        extra_args: -global ICH9-LPC.noreboot=false
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - pci
+> +    runner:
+> +        tuxmake_arch: x86_64
+> +        kconfig_add:
+> +            - CONFIG_DRIVER_SERIAL_NS16550=y
+> +            - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
+> +        download:
+> +            OVMF.fd: /usr/share/qemu/OVMF.fd
+> +images:
+> +  barebox.efi: $LG_BUILDDIR/barebox.efi
+> +  OVMF.fd: $LG_BUILDDIR/OVMF.fd
+> +tools:
+> +  qemu: /usr/bin/qemu-system-x86_64
+> diff --git a/test/x86/virtio@efi_defconfig.yaml b/test/x86/virtio@efi_defconfig.yaml
+> new file mode 100644
+> index 000000000000..3c9a9ae51e23
+> --- /dev/null
+> +++ b/test/x86/virtio@efi_defconfig.yaml
+> @@ -0,0 +1,35 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu
+> +        machine: pc
+> +        cpu: Nehalem
+> +        memory: 1024M
+> +        kernel: barebox.efi
+> +        bios: OVMF.fd
+> +        extra_args: ''
+> +      BareboxDriver:
+> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> +        bootstring: 'commandline:'
+> +      ShellDriver:
+> +        prompt: 'root@\w+:[^ ]+ '
+> +        login_prompt: ' login: '
+> +        login_timeout: 90
+> +        username: 'root'
+> +      BareboxStrategy: {}
+> +    features:
+> +      - virtio-pci
+> +    runner:
+> +      tuxmake_arch: x86_64
+> +      kconfig_add:
+> +        - test/kconfig/virtio-pci.cfg
+> +        - CONFIG_DRIVER_SERIAL_NS16550=y
+> +        - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
+> +      download:
+> +        OVMF.fd: /usr/share/qemu/OVMF.fd
+> +images:
+> +  barebox.efi: $LG_BUILDDIR/barebox.efi
+> +  OVMF.fd: $LG_BUILDDIR/OVMF.fd
+> +tools:
+> +  qemu: /usr/bin/qemu-system-x86_64
+
+
 
 _______________________________________________
 barebox mailing list
