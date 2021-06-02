@@ -1,53 +1,53 @@
-Delivery-date: Wed, 02 Jun 2021 12:01:18 +0200
+Delivery-date: Wed, 02 Jun 2021 12:01:26 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loNgc-0000gC-KK
-	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 12:01:18 +0200
+	id 1loNgk-0000gr-Ab
+	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 12:01:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loNgW-0001Wf-HZ
-	for lore@pengutronix.de; Wed, 02 Jun 2021 12:01:18 +0200
+	id 1loNgf-0001da-Bh
+	for lore@pengutronix.de; Wed, 02 Jun 2021 12:01:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
+	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=2osvao7dQLAtvnDATXdGRnR1tjv+XqgACfWI/vjPFI8=; b=oxtRX8ACl05nJ0
-	2LdT5kVxSzfhVX1HsnkSUKuVbUM3T8X3/2UZ+jEC/98xwwBhpD24YRQRSooZPtTBWzHD/7c8sNHzJ
-	TsybPeKfFVGDF7o9wWiITLsf3bphIuWHVfQBBC8RWt2BGrAGUrJrCp53Uap4ED/UKJpagVLhQDman
-	FpWt84aI9vsBnqwTsYlg/ZUA5XdIcNY5YhYn45KR+KX1KqTfcLkQqB6ovyIjhJxvBHn0ek5FteodW
-	avYKQjgVi078l/XPsUtB/lJJ0GLlMoDjuaD2Kz6XJ6T3wEhdykanU4bWBghpRS1lRdzWQRSHird02
-	spzgvGTIlJowZ5OcSTsg==;
+	List-Owner; bh=+4Z73nkjbioWyJ7tHg9Z+DEg5VYIxokqGWKLenyCFrY=; b=xVYFwcd6q1oNjb
+	fEgMtbWtWyKFDDnV84T7QLQhU2XV72FIBioEc2OL/I3OBn0l1lkNfJalw1HlEqWKlK6EwsYj12fc0
+	eeSRKDD4B8QxmAGmAcOTzm22PRHiN76AlXa4P+84py4CWAJAdFWbsHMilH4s2jsbhG4wbnSJA7IE1
+	cQ1QRtX2kUJiVdRf8+yXxJp4WbBZNjJubfDdPh0U+++dEtOsJrG9+iO5WSCjfagdFGpi1RTSt5Ogi
+	XFVAT6qnt85cUY9FUaZGA5IQA/42efISFny/DNK+vo1Kg+feirxWTvHHYmIgAT/JJPHbSSCZF2Mff
+	fbHavHVAjj2dVHQpgHcw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1loNem-0037Ww-GO; Wed, 02 Jun 2021 09:59:24 +0000
+	id 1loNez-0037dK-GA; Wed, 02 Jun 2021 09:59:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loNal-0036Fd-Bo
- for barebox@lists.infradead.org; Wed, 02 Jun 2021 09:55:18 +0000
+ id 1loNal-0036Fb-Bc
+ for barebox@lists.infradead.org; Wed, 02 Jun 2021 09:55:19 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1loNai-0000MP-Nk; Wed, 02 Jun 2021 11:55:12 +0200
+ id 1loNai-0000M8-C6; Wed, 02 Jun 2021 11:55:12 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1loNah-0003AJ-0d; Wed, 02 Jun 2021 11:55:11 +0200
+ id 1loNag-00039M-QB; Wed, 02 Jun 2021 11:55:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed,  2 Jun 2021 11:55:05 +0200
-Message-Id: <20210602095507.24609-23-s.hauer@pengutronix.de>
+Date: Wed,  2 Jun 2021 11:54:48 +0200
+Message-Id: <20210602095507.24609-6-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210602095507.24609-1-s.hauer@pengutronix.de>
 References: <20210602095507.24609-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210602_025515_506941_4AB7921C 
-X-CRM114-Status: GOOD (  12.61  )
+X-CRM114-CacheID: sfid-20210602_025515_597907_1D7EDBCB 
+X-CRM114-Status: GOOD (  14.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -59,6 +59,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -71,48 +72,89 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 22/24] regmap: Add regmap_read_poll_timeout
+Subject: [PATCH 05/24] clk: introduce clk_register()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/regmap.h | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+This introduces a clk_register() with the same semantics as in Linux.
+This also adds a struct clk_init_data. With this it becomes easier to
+port over new clock drivers from Linux.
 
-diff --git a/include/regmap.h b/include/regmap.h
-index b43cd936fa..057370afc7 100644
---- a/include/regmap.h
-+++ b/include/regmap.h
-@@ -116,4 +116,28 @@ int regmap_write_bits(struct regmap *map, unsigned int reg,
- int regmap_update_bits(struct regmap *map, unsigned int reg,
- 		       unsigned int mask, unsigned int val);
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/clk/clk.c   | 37 +++++++++++++++++++++++++++++++++++++
+ include/linux/clk.h |  2 ++
+ 2 files changed, 39 insertions(+)
+
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 73682126bf..74e2f5d783 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -345,6 +345,43 @@ out:
+ 	return ret;
+ }
  
-+/**
-+ * regmap_read_poll_timeout - Poll until a condition is met or a timeout occurs
-+ *
-+ * @map: Regmap to read from
-+ * @addr: Address to poll
-+ * @val: Unsigned integer variable to read the value into
-+ * @cond: Break condition (usually involving @val)
-+ * @timeout_us: Timeout in us, 0 means never timeout
-+ *
-+ * Returns 0 on success and -ETIMEDOUT upon a timeout or the regmap_read
-+ * error return value in case of a error read. In the two former cases,
-+ * the last read value at @addr is stored in @val. Must not be called
-+ * from atomic context if sleep_us or timeout_us are used.
-+ *
-+ * This is modelled after the readx_poll_timeout macros in linux/iopoll.h.
-+ */
-+#define regmap_read_poll_timeout(map, addr, val, cond, timeout_us) \
-+({ \
-+	int __ret, __tmp; \
-+	__tmp = read_poll_timeout(regmap_read, __ret, __ret || (cond), \
-+			timeout_us, (map), (addr), &(val)); \
-+	__ret ?: __tmp; \
-+})
++struct clk *clk_register(struct device_d *dev, struct clk_hw *hw)
++{
++	struct clk *clk;
++	const struct clk_init_data *init = hw->init;
++	char **parent_names;
++	int i, ret;
 +
- #endif /* __REGMAP_H */
++	if (!hw->init)
++		return ERR_PTR(-EINVAL);
++
++	clk = clk_hw_to_clk(hw);
++
++	memset(clk, 0, sizeof(*clk));
++
++	clk->name = xstrdup(init->name);
++	clk->ops = init->ops;
++	clk->num_parents = init->num_parents;
++	parent_names = xzalloc(init->num_parents * sizeof(char *));
++
++	for (i = 0; i < init->num_parents; i++)
++		parent_names[i] = xstrdup(init->parent_names[i]);
++
++	clk->parent_names = (const char *const*)parent_names;
++
++	clk->flags = init->flags;
++
++	ret = bclk_register(clk);
++	if (ret) {
++		for (i = 0; i < init->num_parents; i++)
++			free(parent_names[i]);
++		free(parent_names);
++		return ERR_PTR(ret);
++	}
++
++	return clk;
++}
++
+ int clk_is_enabled(struct clk *clk)
+ {
+ 	int enabled;
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 66ac6a9f14..654845023a 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -399,6 +399,7 @@ struct clk {
+  */
+ struct clk_hw {
+ 	struct clk clk;
++	const struct clk_init_data *init;
+ };
+ 
+ static inline struct clk *clk_hw_to_clk(struct clk_hw *hw)
+@@ -547,6 +548,7 @@ int clk_parent_set_rate(struct clk_hw *hw, unsigned long rate,
+ 				unsigned long parent_rate);
+ 
+ int bclk_register(struct clk *clk);
++struct clk *clk_register(struct device_d *dev, struct clk_hw *hw);
+ 
+ struct clk *clk_lookup(const char *name);
+ 
 -- 
 2.29.2
 
