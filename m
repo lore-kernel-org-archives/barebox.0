@@ -1,61 +1,63 @@
-Delivery-date: Wed, 02 Jun 2021 08:45:10 +0200
+Delivery-date: Wed, 02 Jun 2021 08:46:36 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loKco-0006sD-An
-	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 08:45:10 +0200
+	id 1loKeC-0006to-Th
+	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 08:46:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loKcn-00088z-EL
-	for lore@pengutronix.de; Wed, 02 Jun 2021 08:45:10 +0200
+	id 1loKeB-0008T9-TI
+	for lore@pengutronix.de; Wed, 02 Jun 2021 08:46:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=If0o+I7fCP7Mte3X/SjxJ/ta6+Z1nx5d7K2Q5uTlTDg=; b=374vMWUBoQu6Dt
-	sa94v/uMS9HrIysIE1wJ2ScvBv4dHxssN4hGfXT36sMdhSab+N3f3O55RaJf1w64z1YfiOdBNsLMx
-	zFAHQz++W+kRIQ9u3NOHw2EpVSA5WCkMVgL+Cy6WQqjZE1S6BcmM4f+PwnMvlK1RfAM93zEcBOlb7
-	JZYNO67vyrM3Mg7C6zFTMpyPschzm6dOQJDVYslJUDt0GstN7oy42NYs86TGK/Dm04TtHTwDjzp2G
-	7Hyaa5w5Rx5gajALeq2LyaDQDsd3VptB2kNUbe57BWZuGzKUU72k+9IKdujcM6WElScCL4PVYOo5g
-	GnPha4ndMyqtTujd/EtQ==;
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=8CQVEny4WWdPi+lXw2CWtmXjL76Z0IY8kOdsfbUptKI=; b=DjRRZhuG+1ELg+vtQk+y0ldNJ4
+	f+H+gH7VOAkyI8P02NS7ZZ71HAfj/bzyDs0faL285AWw0wAcE3hGg4apY9di1RmuLe8wI0B+coKTf
+	m5dP8Q90S87UJnzKbb8/VHutX9lJr0jHAin7QksGUPij077i8x53fHlH1G94Zqemr+iccj/bBS+Jc
+	OEfRKeZ9pe3fpzkne/23qsK97TISHlRfoJooSHWJYC17QbIvU33+z1/i9HuwsHd7gJbTsLnXqqfc+
+	xJ54UJ1B/qYyFJsU9COCxQ5HM/7Ll0sSmaDOBTP7npEDVJ+HgoM9HlckBoJpFUW3wD258ebVrM1/w
+	dMOSUl+Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1loKbc-0024CS-Eb; Wed, 02 Jun 2021 06:43:56 +0000
+	id 1loKcx-0024Sc-Jn; Wed, 02 Jun 2021 06:45:19 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loKbX-00249z-AU
- for barebox@lists.infradead.org; Wed, 02 Jun 2021 06:43:52 +0000
+ id 1loKcs-0024Rm-Br
+ for barebox@lists.infradead.org; Wed, 02 Jun 2021 06:45:15 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1loKbW-0007yP-2V; Wed, 02 Jun 2021 08:43:50 +0200
+ id 1loKcr-0008Ad-4y; Wed, 02 Jun 2021 08:45:13 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1loKbV-0008FV-Fk; Wed, 02 Jun 2021 08:43:49 +0200
-Date: Wed, 2 Jun 2021 08:43:49 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-To: Gwenhael Goavec-Merou <gwenj@trabucayre.com>
-Message-ID: <20210602064349.GX5211@pengutronix.de>
-References: <20210531194019.951-1-gwenj@trabucayre.com>
+ id 1loKcq-0008Ld-Qp; Wed, 02 Jun 2021 08:45:12 +0200
+Date: Wed, 2 Jun 2021 08:45:12 +0200
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210602064512.GY5211@pengutronix.de>
+References: <20210601084233.7948-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210531194019.951-1-gwenj@trabucayre.com>
+In-Reply-To: <20210601084233.7948-1-o.rempel@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 08:43:32 up 104 days, 10:07, 110 users,  load average: 0.02, 0.06,
- 0.08
+X-Uptime: 08:45:01 up 104 days, 10:08, 110 users,  load average: 0.00, 0.04,
+ 0.07
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210601_234351_387718_845B944F 
-X-CRM114-Status: GOOD (  16.80  )
+X-CRM114-CacheID: sfid-20210601_234514_428605_DFE783AB 
+X-CRM114-Status: GOOD (  18.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,9 +69,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org,
- Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -82,27 +81,22 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3] ARM: SoCFPGA: add Terasic DE10-Nano board support
+Subject: Re: [PATCH v1] ARM: at91: xload-mmc: fix typo in
+ sama5d3_atmci_start_image()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, May 31, 2021 at 09:40:19PM +0200, Gwenhael Goavec-Merou wrote:
-> From: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+On Tue, Jun 01, 2021 at 10:42:33AM +0200, Oleksij Rempel wrote:
+> Use SAMA5D3_ID_PIOD instead of SAMA5D2_ID_PIOD
 > 
-> The Terasic DE10-Nano board is based on CycloneV SoCFPGA (5CSEBA6) with
-> 
-> What has been tested to work:
-> - SD card
-> - Gigabit network
-> - FPGA (FPPx16 & FPPx32)
-> 
-> Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
+>  arch/arm/mach-at91/xload-mmc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
