@@ -1,53 +1,53 @@
-Delivery-date: Wed, 02 Jun 2021 12:04:07 +0200
+Delivery-date: Wed, 02 Jun 2021 12:04:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loNjL-0000ki-EA
-	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 12:04:07 +0200
+	id 1loNjk-0000lN-4F
+	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 12:04:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loNjF-0002GM-P3
-	for lore@pengutronix.de; Wed, 02 Jun 2021 12:04:07 +0200
+	id 1loNje-0002Ko-GF
+	for lore@pengutronix.de; Wed, 02 Jun 2021 12:04:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=/p1Sr6hhCoCl7eqtwpxvYtHAdRrdaHQMskRPBNTEjis=; b=jXXsVWSrLPX5mH
-	MR20dPBRn5+tyt8w6Qk456Ec93kBqgbIcn6FYye5xL1xIrcSOy0VKrcRMGp4rDAL5fRcyYBxPFZiT
-	AePhO9VCoxdV+dZSM2DlgZ0GEAcWV4VOEFrm86mAUTtLm9/7VW/GTk2NZNi6ZwO4mJQYbDge71a9g
-	Ca8ACfwg9r5ashTnB5w8thU3Pv7UbYseBIygIkdLm5Kerwj3d07+06FwLjS8zTMjMfce+BpOvKZLU
-	MNlrooWCiR6a/9WtxLF4Z40l0s6yj2ZIaIXUpQpblXN22UbTLKBtJFmoK9BijQlqB6h56ZNPydKjO
-	U5DHVtT+y7FScr8QiguQ==;
+	List-Owner; bh=TAFAldUP4DvaZK7ZtB01BaDn4X1u390MRH7KoRdchIg=; b=NaOOPp1mBsZzkG
+	9ItBA95OTS+CYO/5P3LM/MReKvzTC686Jev6nvHHda0utWHfsHSxoBa10mRvKK81Fug57oaKemQjk
+	LIGv0quCdAFOiiaEPx4u6V6J6dds99Q0zzHrQ3Ns5W+ct7vEWsfUucKJtiXNB9azPahsaeOut3iC5
+	yDhsTRmDvDOK0phLAaDxt+UkZkIg+JV6UN56qZyklukPfNaCJ4bBJAiaOdoiVXSHE/fOPMrChhYug
+	jpQD0IS17XZgMUVTD6QLv7OLc0OGUDuACAZF8TT51htJvQcZAbMpycY+P2ktFxJXaLubqOhTBG/52
+	VvWoYModxqszeKtfKERA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1loNhS-0038e2-Ql; Wed, 02 Jun 2021 10:02:11 +0000
+	id 1loNhr-0038rK-A2; Wed, 02 Jun 2021 10:02:35 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loNas-0036KR-2W
- for barebox@lists.infradead.org; Wed, 02 Jun 2021 09:55:24 +0000
+ id 1loNas-0036KX-5t
+ for barebox@lists.infradead.org; Wed, 02 Jun 2021 09:55:25 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1loNai-0000MK-Ev; Wed, 02 Jun 2021 11:55:12 +0200
+ id 1loNai-0000M9-F4; Wed, 02 Jun 2021 11:55:12 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1loNag-0003A4-Ux; Wed, 02 Jun 2021 11:55:10 +0200
+ id 1loNag-00039R-Qa; Wed, 02 Jun 2021 11:55:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed,  2 Jun 2021 11:55:00 +0200
-Message-Id: <20210602095507.24609-18-s.hauer@pengutronix.de>
+Date: Wed,  2 Jun 2021 11:54:49 +0200
+Message-Id: <20210602095507.24609-7-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210602095507.24609-1-s.hauer@pengutronix.de>
 References: <20210602095507.24609-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210602_025522_284972_647215CE 
-X-CRM114-Status: GOOD (  10.98  )
+X-CRM114-CacheID: sfid-20210602_025522_332070_21018057 
+X-CRM114-Status: GOOD (  13.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,53 +71,44 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 17/24] clk: Add Linux functions to register a mux
+Subject: [PATCH 06/24] clk: divider: Make clk_divider_ops const
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Linux has clk_register_mux(). Add the same function with the same
-prototype for barebox to ease code porting from Linux.
+clk_divider_ops shouldn't be changed, so make it const.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/clk-mux.c | 10 ++++++++++
- include/linux/clk.h   |  5 +++++
- 2 files changed, 15 insertions(+)
+ drivers/clk/clk-divider.c | 2 +-
+ include/linux/clk.h       | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/clk-mux.c b/drivers/clk/clk-mux.c
-index 464593b619..e7e4369ce0 100644
---- a/drivers/clk/clk-mux.c
-+++ b/drivers/clk/clk-mux.c
-@@ -98,3 +98,13 @@ struct clk *clk_mux(const char *name, unsigned clk_flags, void __iomem *reg,
- 
- 	return m;
+diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
+index edbba941b7..446b35e1ed 100644
+--- a/drivers/clk/clk-divider.c
++++ b/drivers/clk/clk-divider.c
+@@ -296,7 +296,7 @@ static int clk_divider_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	return 0;
  }
-+
-+struct clk *clk_register_mux(struct device_d *dev, const char *name,
-+		const char * const *parent_names, u8 num_parents,
-+		unsigned long flags,
-+		void __iomem *reg, u8 shift, u8 width,
-+		u8 clk_mux_flags, spinlock_t *lock)
-+{
-+	return clk_mux(name, flags, reg, shift, width, parent_names,
-+		       num_parents, clk_mux_flags);
-+}
+ 
+-struct clk_ops clk_divider_ops = {
++const struct clk_ops clk_divider_ops = {
+ 	.set_rate = clk_divider_set_rate,
+ 	.recalc_rate = clk_divider_recalc_rate,
+ 	.round_rate = clk_divider_round_rate,
 diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 950fecd7e0..0d2fb488bc 100644
+index 654845023a..b8674973fa 100644
 --- a/include/linux/clk.h
 +++ b/include/linux/clk.h
-@@ -589,6 +589,11 @@ void clk_mux_free(struct clk *clk_mux);
- struct clk *clk_mux(const char *name, unsigned clk_flags, void __iomem *reg,
- 		    u8 shift, u8 width, const char * const *parents,
- 		    u8 num_parents, unsigned mux_flags);
-+struct clk *clk_register_mux(struct device_d *dev, const char *name,
-+		const char * const *parent_names, u8 num_parents,
-+		unsigned long flags,
-+		void __iomem *reg, u8 shift, u8 width,
-+		u8 clk_mux_flags, spinlock_t *lock);
+@@ -450,7 +450,7 @@ struct clk_divider {
+ #define CLK_MUX_HIWORD_MASK		(1 << 2)
+ #define CLK_MUX_READ_ONLY		(1 << 3) /* mux can't be changed */
  
- struct clk_gate {
- 	struct clk_hw hw;
+-extern struct clk_ops clk_divider_ops;
++extern const struct clk_ops clk_divider_ops;
+ 
+ unsigned long divider_recalc_rate(struct clk *clk, unsigned long parent_rate,
+ 		unsigned int val,
 -- 
 2.29.2
 
