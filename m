@@ -1,54 +1,55 @@
-Delivery-date: Wed, 02 Jun 2021 16:39:52 +0200
+Delivery-date: Wed, 02 Jun 2021 16:40:16 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loS2C-00041h-9D
-	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 16:39:52 +0200
+	id 1loS2a-00043A-BK
+	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 16:40:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loS26-0008GD-1l
-	for lore@pengutronix.de; Wed, 02 Jun 2021 16:39:52 +0200
+	id 1loS2U-0008VB-1e
+	for lore@pengutronix.de; Wed, 02 Jun 2021 16:40:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=wWdxDlUimRzLxVj6J3T+57XUQqXFtZOd3XG3vK9JHss=; b=b4/BveLUkXP5Bm
-	P+Ocykozmo2r8/mIR7SxWX5ZwwNHA8G2pUd8Z2htWJgc2n/R7Xm/l1OgoY3DhtdCgGPLG6OxxX+ch
-	lUVC53LcD8lNno/vfEuo0V3eaEvTxh9lfqy1+JtzcWyVgzOL3zvcbX6Ml2dldTklgmqNEtYPbxcbT
-	jp+COAWlxKvH7Upe4ENvLnKsIfbkJvOGbtNws5xb6uHWZI3nKb3AUgqmWEP8niBG59ZWTfe94aFLL
-	ggkVOyaX4hJeMkt5d7xxwiCO3ix3Na4Mp8TdWyIX7LqWOqAhESiiK5BEHyyfEnNhLYWBzqh9U76Rj
-	VdRBQhAiSVE6yPEYJYNw==;
+	List-Owner; bh=qSZbrf0clvBumfZDu0ZDgtoF+NdT9UVZmL3wNbjJZxY=; b=qC/klv5aoJ/BJJ
+	qUlUtku4P+kLUbe6EYnCPx196JaARZ3om/yuR9anDNu2VHfOmjcLTqPzBylZeSEfZZE207IbQi1/d
+	sA1TUB94r0LlSPOq+ORrR1Hrj46voAQtPammw4OcHvuM/N+PyDQYddyGsVz2dEAwUaQBbbuWGn3ah
+	MSz60etZaHR8O0mX/k9ron1T+Y6nxOYqmMbQv3JkFfEuyYzPvHIUCabVXhsoDv3m4AUiTz1JePVdo
+	pecKbBW3/m0S0Girg66f5L+nJqpxTbPB7ASbtR8lro7sG4JKHzwR6JjTbNInJdnUBdgwdNWRtPOFh
+	jhWUUgRFDUYWbRgJ8ORg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1loS0P-004cQh-Jh; Wed, 02 Jun 2021 14:38:01 +0000
+	id 1loS0d-004cao-KI; Wed, 02 Jun 2021 14:38:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loRxY-004ayD-V3
- for barebox@lists.infradead.org; Wed, 02 Jun 2021 14:35:11 +0000
+ id 1loRxY-004ayK-Uz
+ for barebox@lists.infradead.org; Wed, 02 Jun 2021 14:35:12 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1loRxW-0006tP-Gx; Wed, 02 Jun 2021 16:35:02 +0200
+ id 1loRxW-0006tV-Gx; Wed, 02 Jun 2021 16:35:02 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1loRxV-0006hT-ME; Wed, 02 Jun 2021 16:35:01 +0200
+ id 1loRxV-0006iF-Pf; Wed, 02 Jun 2021 16:35:01 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  2 Jun 2021 16:34:44 +0200
-Message-Id: <20210602143453.23097-5-a.fatoum@pengutronix.de>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  2 Jun 2021 16:34:50 +0200
+Message-Id: <20210602143453.23097-11-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210602143453.23097-1-a.fatoum@pengutronix.de>
 References: <20210602143453.23097-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210602_073505_229049_0BF0A67C 
-X-CRM114-Status: GOOD (  11.83  )
+X-CRM114-CacheID: sfid-20210602_073505_236933_116C9F49 
+X-CRM114-Status: GOOD (  16.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,102 +73,224 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 04/13] MIPS: qemu-malta: generate swapped image as part of
- multi-image build
+Subject: [PATCH v3 10/13] test: add first sample tests
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Having to manually swap the words in the MIPS Malta image for QEMU
-little endian emulation is annoying.
+The test can be run manually with e.g.
 
-Have the multi-image build for Malta generate a second .swapped
-image that can be readily used if needed.
+  labgrid-pytest --lg-env test/arm/qemu_virt64_defconfig.yaml test/py
 
+Acked-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/mips/qemu-malta.rst | 16 ++++------------
- images/.gitignore                        |  1 +
- images/Makefile                          |  2 +-
- images/Makefile.malta                    | 10 +++++++++-
- 4 files changed, 15 insertions(+), 14 deletions(-)
+ test/.gitignore       |  1 +
+ test/__init__.py      |  0
+ test/conftest.py      | 27 ++++++++++++++++++++++
+ test/py/__init__.py   |  0
+ test/py/helper.py     | 38 +++++++++++++++++++++++++++++++
+ test/py/test_shell.py | 36 +++++++++++++++++++++++++++++
+ test/strategy.py      | 53 +++++++++++++++++++++++++++++++++++++++++++
+ 7 files changed, 155 insertions(+)
+ create mode 100644 test/.gitignore
+ create mode 100644 test/__init__.py
+ create mode 100644 test/conftest.py
+ create mode 100644 test/py/__init__.py
+ create mode 100644 test/py/helper.py
+ create mode 100644 test/py/test_shell.py
+ create mode 100644 test/strategy.py
 
-diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
-index e188ae8c642a..fd37d5edb229 100644
---- a/Documentation/boards/mips/qemu-malta.rst
-+++ b/Documentation/boards/mips/qemu-malta.rst
-@@ -10,31 +10,23 @@ QEMU run string:
- 
-   qemu-system-mips -nodefaults -M malta -m 256 \
-       -device VGA -serial stdio -monitor null \
--      -bios barebox-flash-image
-+      -bios ./images/barebox-qemu-malta.img
- 
- 
- Little-endian mode
- ------------------
- 
--Running little-endian Malta is a bit tricky.
- In little-endian mode the 32bit words in the boot flash image are swapped,
- a neat trick which allows bi-endian firmware.
- 
--You have to swap words of ``zbarebox.bin`` image, e.g.:
--
--.. code-block:: sh
--
--  echo arch/mips/pbl/zbarebox.bin \
--      | cpio --create \
--      | cpio --extract --swap --unconditional
--
--QEMU run string:
-+The barebox build generates a second ``./images/barebox-qemu-malta.img.swapped``
-+image that can be used in this case, e.g.:
- 
- .. code-block:: sh
- 
-   qemu-system-mipsel -nodefaults -M malta -m 256 \
-       -device VGA -serial stdio -monitor null \
--      -bios barebox-flash-image
-+      -bios ./images/barebox-qemu-malta.img.swapped
- 
- 
- Using GXemul
-diff --git a/images/.gitignore b/images/.gitignore
-index eafdb44b5bdd..3a9a77dad16e 100644
---- a/images/.gitignore
-+++ b/images/.gitignore
-@@ -32,3 +32,4 @@ barebox.sum
- *.mvebu1img
- *.stm32
- *.nmon
-+*.swapped
-diff --git a/images/Makefile b/images/Makefile
-index c185982c17ed..cc330d957597 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -218,5 +218,5 @@ $(flash-list): $(image-y-path)
- clean-files := *.pbl *.pblb *.map start_*.imximg *.img barebox.z start_*.kwbimg \
- 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
- 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
--	start_*.simximg start_*.usimximg *.zynqimg *.image
-+	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped
- clean-files += pbl.lds
-diff --git a/images/Makefile.malta b/images/Makefile.malta
-index 5739ec464092..96d7b86b1187 100644
---- a/images/Makefile.malta
-+++ b/images/Makefile.malta
-@@ -1,3 +1,11 @@
-+quiet_cmd_bswap32_image = BSWAP4  $@
-+      cmd_bswap32_image = cp $< $@ && \
-+			  truncate -s %4 $@ && \
-+			  objcopy -I binary --reverse-byte=4 $@
+diff --git a/test/.gitignore b/test/.gitignore
+new file mode 100644
+index 000000000000..bee8a64b79a9
+--- /dev/null
++++ b/test/.gitignore
+@@ -0,0 +1 @@
++__pycache__
+diff --git a/test/__init__.py b/test/__init__.py
+new file mode 100644
+index 000000000000..e69de29bb2d1
+diff --git a/test/conftest.py b/test/conftest.py
+new file mode 100644
+index 000000000000..1a043a91fa78
+--- /dev/null
++++ b/test/conftest.py
+@@ -0,0 +1,27 @@
++import pytest
++import os
++from .py import helper
 +
-+$(obj)/%.img.swapped: $(obj)/%.img FORCE
-+	$(call if_changed,bswap32_image)
 +
- pblb-$(CONFIG_BOARD_QEMU_MALTA) += start_qemu_malta
- FILE_barebox-qemu-malta.img = start_qemu_malta.pblb
--image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img
-+image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img barebox-qemu-malta.img.swapped
++@pytest.fixture(scope='function')
++def barebox(strategy, target):
++    strategy.transition('barebox')
++    return target.get_driver('BareboxDriver')
++
++@pytest.fixture(scope="session")
++def barebox_config(strategy, target):
++    strategy.transition('barebox')
++    command = target.get_driver("BareboxDriver")
++    return helper.get_config(command)
++
++def pytest_configure(config):
++    if 'LG_BUILDDIR' not in os.environ:
++        if 'KBUILD_OUTPUT' in os.environ:
++            os.environ['LG_BUILDDIR'] = os.environ['KBUILD_OUTPUT']
++        elif os.path.isdir('build'):
++            os.environ['LG_BUILDDIR'] = os.path.realpath('build')
++        else:
++            os.environ['LG_BUILDDIR'] = os.getcwd()
++
++    if os.environ['LG_BUILDDIR'] is not None:
++        os.environ['LG_BUILDDIR'] = os.path.realpath(os.environ['LG_BUILDDIR'])
+diff --git a/test/py/__init__.py b/test/py/__init__.py
+new file mode 100644
+index 000000000000..e69de29bb2d1
+diff --git a/test/py/helper.py b/test/py/helper.py
+new file mode 100644
+index 000000000000..4a68e83669ba
+--- /dev/null
++++ b/test/py/helper.py
+@@ -0,0 +1,38 @@
++from labgrid.driver import BareboxDriver
++import pytest
++import os
++from itertools import filterfalse
++
++
++def get_config(command):
++    """Returns the enabled config options of barebox, either from
++    a running instance if supported or by looking into .config
++    in the build directory.
++    Args:
++        command (BareboxDriver): An instance of the BareboxDriver
++    Returns:
++        list: list of the enabled config options
++    """
++    assert isinstance(command, BareboxDriver)
++
++    out, err, returncode = command.run("cat /env/data/config")
++    if returncode != 0:
++        try:
++            with open(os.environ['LG_BUILDDIR'] + "/.config") as f:
++                out = f.read().splitlines()
++        except OSError:
++            return set()
++
++    options = set()
++    for line in out:
++        if line and line.startswith("CONFIG_"):
++            options.add(line.split('=')[0])
++    return options
++
++
++def skip_disabled(config, *options):
++    if bool(config):
++        undefined = list(filterfalse(config.__contains__, options))
++
++        if bool(undefined):
++            pytest.skip("skipping test due to disabled " + (",".join(undefined)) + " dependency")
+diff --git a/test/py/test_shell.py b/test/py/test_shell.py
+new file mode 100644
+index 000000000000..1af7d597a175
+--- /dev/null
++++ b/test/py/test_shell.py
+@@ -0,0 +1,36 @@
++import pytest
++from .helper import *
++
++
++def test_barebox_true(barebox, barebox_config):
++    skip_disabled(barebox_config, "CONFIG_CMD_TRUE")
++
++    _, _, returncode = barebox.run('true')
++    assert returncode == 0
++
++def test_barebox_false(barebox, barebox_config):
++    skip_disabled(barebox_config, "CONFIG_CMD_FALSE")
++
++    _, _, returncode = barebox.run('false')
++    assert returncode == 1
++
++def test_barebox_md5sum(barebox, barebox_config):
++    skip_disabled(barebox_config, "CONFIG_CMD_MD5SUM", "CONFIG_CMD_ECHO")
++
++    barebox.run_check("echo -o md5 test")
++    out = barebox.run_check("md5sum md5")
++    assert out == ["d8e8fca2dc0f896fd7cb4cb0031ba249  md5"]
++
++def test_barebox_version(barebox, barebox_config):
++    skip_disabled(barebox_config, "CONFIG_CMD_VERSION")
++
++    stdout, _, returncode = barebox.run('version')
++    assert 'barebox' in stdout[1]
++    assert returncode == 0
++
++def test_barebox_no_err(barebox, barebox_config):
++    skip_disabled(barebox_config, "CONFIG_CMD_DMESG")
++
++    # TODO extend by err once all qemu platforms conform
++    stdout, _, _ = barebox.run('dmesg -l crit,alert,emerg')
++    assert stdout == []
+diff --git a/test/strategy.py b/test/strategy.py
+new file mode 100644
+index 000000000000..1fe1b7d818e9
+--- /dev/null
++++ b/test/strategy.py
+@@ -0,0 +1,53 @@
++import enum
++
++import attr
++
++from labgrid import target_factory, step
++from labgrid.strategy import Strategy, StrategyError
++
++class Status(enum.Enum):
++    unknown = 0
++    off = 1
++    barebox = 2
++
++@target_factory.reg_driver
++@attr.s(eq=False)
++class BareboxTestStrategy(Strategy):
++    """BareboxTestStrategy - Strategy to switch to barebox"""
++    bindings = {
++        "power": "PowerProtocol",
++        "console": "ConsoleProtocol",
++        "barebox": "BareboxDriver",
++    }
++
++    status = attr.ib(default=Status.unknown)
++
++    def __attrs_post_init__(self):
++        super().__attrs_post_init__()
++
++    @step(args=['status'])
++    def transition(self, status, *, step):
++        if not isinstance(status, Status):
++            status = Status[status]
++        if status == Status.unknown:
++            raise StrategyError("can not transition to {}".format(status))
++        elif status == self.status:
++            step.skip("nothing to do")
++            return  # nothing to do
++        elif status == Status.off:
++            self.target.deactivate(self.console)
++            self.target.activate(self.power)
++            self.power.off()
++        elif status == Status.barebox:
++            self.transition(Status.off)  # pylint: disable=missing-kwoa
++            self.target.activate(self.console)
++            # cycle power
++            self.power.cycle()
++            # interrupt barebox
++            self.target.activate(self.barebox)
++        else:
++            raise StrategyError(
++                "no transition found from {} to {}".
++                format(self.status, status)
++            )
++        self.status = status
 -- 
 2.29.2
 
