@@ -1,55 +1,55 @@
-Delivery-date: Wed, 02 Jun 2021 16:41:33 +0200
+Delivery-date: Wed, 02 Jun 2021 16:41:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loS3p-00048s-SA
-	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 16:41:33 +0200
+	id 1loS44-00049z-MG
+	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 16:41:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loS3j-0000bk-W0
-	for lore@pengutronix.de; Wed, 02 Jun 2021 16:41:33 +0200
+	id 1loS40-0000iv-13
+	for lore@pengutronix.de; Wed, 02 Jun 2021 16:41:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=iTi4j06Hm5cY27g61ht/1DdAAT+H0FsV3RxCKR2rsaU=; b=1wviOjb6UUWm3L
-	TTRAlltvn4haZ32UBGQqE+g23WTSAvwRYPZgBQCuNoyRj9848lDWpURqwG7PuD4oVDS/hz6bx1pcf
-	dbWQB3BmXVNxvRY6BOzqSEahyoTWNwZ7N/rqOgxTkoyH8VQTDH5o9+qv8A3RNFCOOzjQiiRogJEQm
-	5SF/ID+loiDwL+AwbIUN+ZQoY4zm54xiWCd2YqLdANIPLMpDc28KamLI1n88BDwWf5kVyFjVSmitN
-	h01swEczTifikEHmGUMxB5GAqlKkTVlAifui94Oll72D9MQ+TMShdFnhIxS8dQN4is8Q+dGcUHtzX
-	M+6QemO/nINQV2zofAOw==;
+	List-Owner; bh=udq69/8ogF4t6FQtCWx6u5khvzyMbJ23xha5Heh9obw=; b=4XK/TPQ+753zEK
+	AmlYglPxA20XxTG6yXRUstzbB2dvg5EzJqaO/nxkcOOCwUyKKyRR2dccVXNeEeoyuH+D28lrhqiO6
+	QgxKVYicF7yz2fNOEF8M9ia4LgSkOHBLlawfnPO39udPTn1PSJf4Nmazdr4FaJZwrwZ79PzsuHuaG
+	jkeodp+PJjjL/bsose2FKsGmQlovAlcIE8E0fiCyxzv3zoGosw/HJfS3In3R2Wo56jF3rsaWeYE49
+	9sHmrpIQzPCrerFnpFPMvazb2TXSFnG0GDs9XHsuv/UU6fHIma8TyqHa0zkjZmSqz1i9Hsi0xM8tc
+	VR6l/eeetYWwSi7qyZTQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1loS1n-004d9u-LU; Wed, 02 Jun 2021 14:39:27 +0000
+	id 1loS2E-004dMs-5q; Wed, 02 Jun 2021 14:39:55 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loRxY-004ayM-Ua
+ id 1loRxg-004b3p-2r
  for barebox@lists.infradead.org; Wed, 02 Jun 2021 14:35:14 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1loRxW-0006tU-Oe; Wed, 02 Jun 2021 16:35:02 +0200
+ id 1loRxW-0006tT-NV; Wed, 02 Jun 2021 16:35:02 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1loRxV-0006iC-PC; Wed, 02 Jun 2021 16:35:01 +0200
+ id 1loRxV-0006i9-OY; Wed, 02 Jun 2021 16:35:01 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>,
  Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  2 Jun 2021 16:34:49 +0200
-Message-Id: <20210602143453.23097-10-a.fatoum@pengutronix.de>
+Date: Wed,  2 Jun 2021 16:34:48 +0200
+Message-Id: <20210602143453.23097-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210602143453.23097-1-a.fatoum@pengutronix.de>
 References: <20210602143453.23097-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210602_073505_437503_4FB41CD7 
-X-CRM114-Status: GOOD (  14.26  )
+X-CRM114-CacheID: sfid-20210602_073512_345128_9BFD1F0A 
+X-CRM114-Status: GOOD (  24.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,8 +61,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -73,608 +73,180 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 09/13] test: add labgrid configs for some emulated targets
+Subject: [PATCH v3 08/13] test: self: port Linux printf kselftest
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-There are various ways barebox can run under emulation, some of them are
-described in the documentation and some more in the git history.
-
-Make running the emulators more convenient to use by collecting some
-known-good emulator invocations in a machine readable format.
-
-These YAML files can be parsed by labgrid for running tests or executed
-by a new test/emulate.pl runner script that will be added in a follow-up
-commit.
-
-Using labgrid for this will allow using the same test suite for physical
-targets as well in future.
-
-Acked-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- test/arm/a15@vexpress_defconfig.yaml     | 20 +++++++++++++++
- test/arm/a9@vexpress_defconfig.yaml      | 20 +++++++++++++++
- test/arm/qemu_virt64_defconfig.yaml      | 24 ++++++++++++++++++
- test/arm/vexpress_defconfig.yaml         |  1 +
- test/arm/virt@vexpress_defconfig.yaml    | 22 ++++++++++++++++
- test/kconfig/virtio-pci.cfg              |  6 +++++
- test/mips/be@qemu-malta_defconfig.yaml   | 22 ++++++++++++++++
- test/mips/le@qemu-malta_defconfig.yaml   | 25 ++++++++++++++++++
- test/mips/qemu-malta_defconfig.yaml      |  1 +
- test/openrisc/generic_defconfig.yaml     | 20 +++++++++++++++
- test/riscv/qemu@virt32_defconfig.yaml    | 27 ++++++++++++++++++++
- test/riscv/qemu@virt64_defconfig.yaml    | 27 ++++++++++++++++++++
- test/riscv/sifive_defconfig.yaml         | 25 ++++++++++++++++++
- test/riscv/tinyemu@virt32_defconfig.yaml | 22 ++++++++++++++++
- test/riscv/tinyemu@virt64_defconfig.yaml | 22 ++++++++++++++++
- test/riscv/virt32_defconfig.yaml         |  1 +
- test/riscv/virt64_defconfig.yaml         |  1 +
- test/sandbox/sandbox_defconfig.yaml      | 12 +++++++++
- test/x86/efi_defconfig.yaml              |  1 +
- test/x86/pc@efi_defconfig.yaml           | 31 +++++++++++++++++++++++
- test/x86/q35@efi_defconfig.yaml          | 31 +++++++++++++++++++++++
- test/x86/virtio@efi_defconfig.yaml       | 32 ++++++++++++++++++++++++
- 22 files changed, 393 insertions(+)
- create mode 100644 test/arm/a15@vexpress_defconfig.yaml
- create mode 100644 test/arm/a9@vexpress_defconfig.yaml
- create mode 100644 test/arm/qemu_virt64_defconfig.yaml
- create mode 120000 test/arm/vexpress_defconfig.yaml
- create mode 100644 test/arm/virt@vexpress_defconfig.yaml
- create mode 100644 test/kconfig/virtio-pci.cfg
- create mode 100644 test/mips/be@qemu-malta_defconfig.yaml
- create mode 100644 test/mips/le@qemu-malta_defconfig.yaml
- create mode 120000 test/mips/qemu-malta_defconfig.yaml
- create mode 100644 test/openrisc/generic_defconfig.yaml
- create mode 100644 test/riscv/qemu@virt32_defconfig.yaml
- create mode 100644 test/riscv/qemu@virt64_defconfig.yaml
- create mode 100644 test/riscv/sifive_defconfig.yaml
- create mode 100644 test/riscv/tinyemu@virt32_defconfig.yaml
- create mode 100644 test/riscv/tinyemu@virt64_defconfig.yaml
- create mode 120000 test/riscv/virt32_defconfig.yaml
- create mode 120000 test/riscv/virt64_defconfig.yaml
- create mode 100644 test/sandbox/sandbox_defconfig.yaml
- create mode 120000 test/x86/efi_defconfig.yaml
- create mode 100644 test/x86/pc@efi_defconfig.yaml
- create mode 100644 test/x86/q35@efi_defconfig.yaml
- create mode 100644 test/x86/virtio@efi_defconfig.yaml
-
-diff --git a/test/arm/a15@vexpress_defconfig.yaml b/test/arm/a15@vexpress_defconfig.yaml
-new file mode 100644
-index 000000000000..70141df800dc
---- /dev/null
-+++ b/test/arm/a15@vexpress_defconfig.yaml
-@@ -0,0 +1,20 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: vexpress-a15
-+        cpu: cortex-a15
-+        memory: 1024M
-+        bios: barebox-vexpress-ca15.img
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+images:
-+  barebox-vexpress-ca15.img: $LG_BUILDDIR/images/barebox-vexpress-ca15.img
-+tools:
-+  qemu: /usr/bin/qemu-system-arm
-+imports:
-+  -  ../strategy.py
-diff --git a/test/arm/a9@vexpress_defconfig.yaml b/test/arm/a9@vexpress_defconfig.yaml
-new file mode 100644
-index 000000000000..0d4faf86904e
---- /dev/null
-+++ b/test/arm/a9@vexpress_defconfig.yaml
-@@ -0,0 +1,20 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: vexpress-a9
-+        cpu: cortex-a9
-+        memory: 1024M
-+        bios: barebox-vexpress-ca9.img
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+images:
-+  barebox-vexpress-ca9.img: $LG_BUILDDIR/images/barebox-vexpress-ca9.img
-+tools:
-+  qemu: /usr/bin/qemu-system-arm
-+imports:
-+  -  ../strategy.py
-diff --git a/test/arm/qemu_virt64_defconfig.yaml b/test/arm/qemu_virt64_defconfig.yaml
-new file mode 100644
-index 000000000000..0098ebc93aa9
---- /dev/null
-+++ b/test/arm/qemu_virt64_defconfig.yaml
-@@ -0,0 +1,24 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: virt
-+        cpu: cortex-a57
-+        memory: 1024M
-+        kernel: barebox-dt-2nd.img
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - virtio-mmio
-+    runner:
-+      tuxmake_arch: arm64
-+images:
-+  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
-+tools:
-+  qemu: /usr/bin/qemu-system-aarch64
-+imports:
-+  -  ../strategy.py
-diff --git a/test/arm/vexpress_defconfig.yaml b/test/arm/vexpress_defconfig.yaml
-new file mode 120000
-index 000000000000..732f51b19dc9
---- /dev/null
-+++ b/test/arm/vexpress_defconfig.yaml
-@@ -0,0 +1 @@
-+a9@vexpress_defconfig.yaml
-\ No newline at end of file
-diff --git a/test/arm/virt@vexpress_defconfig.yaml b/test/arm/virt@vexpress_defconfig.yaml
-new file mode 100644
-index 000000000000..1e0d92a7cc01
---- /dev/null
-+++ b/test/arm/virt@vexpress_defconfig.yaml
-@@ -0,0 +1,22 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: virt
-+        cpu: cortex-a7
-+        memory: 1024M
-+        kernel: barebox-dt-2nd.img
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - virtio-mmio
-+images:
-+  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
-+tools:
-+  qemu: /usr/bin/qemu-system-arm
-+imports:
-+  -  ../strategy.py
-diff --git a/test/kconfig/virtio-pci.cfg b/test/kconfig/virtio-pci.cfg
-new file mode 100644
-index 000000000000..78237b8fca26
---- /dev/null
-+++ b/test/kconfig/virtio-pci.cfg
-@@ -0,0 +1,6 @@
-+CONFIG_VIRTIO_MENU=y
-+CONFIG_VIRTIO_PCI=y
-+CONFIG_VIRTIO_CONSOLE=y
-+CONFIG_VIRTIO_BLK=y
-+CONFIG_HWRNG=y
-+CONFIG_HW_RANDOM_VIRTIO=y
-diff --git a/test/mips/be@qemu-malta_defconfig.yaml b/test/mips/be@qemu-malta_defconfig.yaml
-new file mode 100644
-index 000000000000..aebd404c17b0
---- /dev/null
-+++ b/test/mips/be@qemu-malta_defconfig.yaml
-@@ -0,0 +1,22 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: malta
-+        cpu: M14Kc
-+        memory: 256M
-+        bios: barebox-qemu-malta.img
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - virtio-pci
-+images:
-+  barebox-qemu-malta.img: $LG_BUILDDIR/images/barebox-qemu-malta.img
-+tools:
-+  qemu: /usr/bin/qemu-system-mips
-+imports:
-+  -  ../strategy.py
-diff --git a/test/mips/le@qemu-malta_defconfig.yaml b/test/mips/le@qemu-malta_defconfig.yaml
-new file mode 100644
-index 000000000000..d8288ec0a27f
---- /dev/null
-+++ b/test/mips/le@qemu-malta_defconfig.yaml
-@@ -0,0 +1,25 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: malta
-+        cpu: M14Kc
-+        memory: 256M
-+        bios: barebox-qemu-malta.img.swapped
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - virtio-pci
-+    runner:
-+      kconfig_add:
-+        - CONFIG_CPU_LITTLE_ENDIAN=y
-+images:
-+  barebox-qemu-malta.img.swapped: $LG_BUILDDIR/images/barebox-qemu-malta.img.swapped
-+tools:
-+  qemu: /usr/bin/qemu-system-mipsel
-+imports:
-+  -  ../strategy.py
-diff --git a/test/mips/qemu-malta_defconfig.yaml b/test/mips/qemu-malta_defconfig.yaml
-new file mode 120000
-index 000000000000..481b6e547782
---- /dev/null
-+++ b/test/mips/qemu-malta_defconfig.yaml
-@@ -0,0 +1 @@
-+be@qemu-malta_defconfig.yaml
-\ No newline at end of file
-diff --git a/test/openrisc/generic_defconfig.yaml b/test/openrisc/generic_defconfig.yaml
-new file mode 100644
-index 000000000000..bb2bbe826d97
---- /dev/null
-+++ b/test/openrisc/generic_defconfig.yaml
-@@ -0,0 +1,20 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: or1k-sim
-+        cpu: or1200
-+        memory: 256M
-+        kernel: barebox
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+images:
-+  barebox: $LG_BUILDDIR/barebox
-+tools:
-+  qemu: /usr/bin/qemu-system-or1k
-+imports:
-+  -  ../strategy.py
-diff --git a/test/riscv/qemu@virt32_defconfig.yaml b/test/riscv/qemu@virt32_defconfig.yaml
-new file mode 100644
-index 000000000000..95d932ae93cc
---- /dev/null
-+++ b/test/riscv/qemu@virt32_defconfig.yaml
-@@ -0,0 +1,27 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: virt
-+        cpu: rv32
-+        memory: 256M
-+        kernel: barebox-dt-2nd.img
-+        bios: opensbi-riscv32-generic-fw_dynamic.bin
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - virtio-mmio
-+    runner:
-+      download:
-+        opensbi-riscv32-generic-fw_dynamic.bin: https://github.com/qemu/qemu/blob/v5.2.0/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin?raw=true
-+images:
-+  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
-+  opensbi-riscv32-generic-fw_dynamic.bin: $LG_BUILDDIR/opensbi-riscv32-generic-fw_dynamic.bin
-+tools:
-+  qemu: /usr/bin/qemu-system-riscv32
-+imports:
-+  -  ../strategy.py
-diff --git a/test/riscv/qemu@virt64_defconfig.yaml b/test/riscv/qemu@virt64_defconfig.yaml
-new file mode 100644
-index 000000000000..300351df5b19
---- /dev/null
-+++ b/test/riscv/qemu@virt64_defconfig.yaml
-@@ -0,0 +1,27 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: virt
-+        cpu: rv64
-+        memory: 256M
-+        kernel: barebox-dt-2nd.img
-+        bios: opensbi-riscv64-generic-fw_dynamic.bin
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - virtio-mmio
-+    runner:
-+      download:
-+        opensbi-riscv64-generic-fw_dynamic.bin: https://github.com/qemu/qemu/blob/v5.2.0/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin?raw=true
-+images:
-+  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
-+  opensbi-riscv64-generic-fw_dynamic.bin: $LG_BUILDDIR/opensbi-riscv64-generic-fw_dynamic.bin
-+tools:
-+  qemu: /usr/bin/qemu-system-riscv64
-+imports:
-+  -  ../strategy.py
-diff --git a/test/riscv/sifive_defconfig.yaml b/test/riscv/sifive_defconfig.yaml
-new file mode 100644
-index 000000000000..728f99348160
---- /dev/null
-+++ b/test/riscv/sifive_defconfig.yaml
-@@ -0,0 +1,25 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: sifive_u
-+        cpu: sifive-u54
-+        memory: 256M
-+        kernel: barebox-hifive-unleashed.img
-+        bios: opensbi-riscv64-generic-fw_dynamic.bin
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    runner:
-+      download:
-+        opensbi-riscv64-generic-fw_dynamic.bin: https://github.com/qemu/qemu/blob/v5.2.0/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin?raw=true
-+images:
-+  barebox-hifive-unleashed.img: $LG_BUILDDIR/images/barebox-hifive-unleashed.img
-+  opensbi-riscv64-generic-fw_dynamic.bin: $LG_BUILDDIR/opensbi-riscv64-generic-fw_dynamic.bin
-+tools:
-+  qemu: /usr/bin/qemu-system-riscv64
-+imports:
-+  -  ../strategy.py
-diff --git a/test/riscv/tinyemu@virt32_defconfig.yaml b/test/riscv/tinyemu@virt32_defconfig.yaml
-new file mode 100644
-index 000000000000..a5c8f96af682
---- /dev/null
-+++ b/test/riscv/tinyemu@virt32_defconfig.yaml
-@@ -0,0 +1,22 @@
-+targets:
-+  main:
-+    drivers:
-+      TinyEMUDriver:
-+        temu_bin: temu
-+        config: ./Documentation/boards/riscv/barebox-virt32.cfg
-+        image: barebox-dt-2nd.img
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - virtio-mmio
-+    runner:
-+      download:
-+        bbl32.bin: https://barebox.org/jsbarebox/bbl32.bin
-+images:
-+  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
-+tools:
-+  temu: /usr/local/bin/temu
-+imports:
-+  -  ../strategy.py
-diff --git a/test/riscv/tinyemu@virt64_defconfig.yaml b/test/riscv/tinyemu@virt64_defconfig.yaml
-new file mode 100644
-index 000000000000..565b4d3ee995
---- /dev/null
-+++ b/test/riscv/tinyemu@virt64_defconfig.yaml
-@@ -0,0 +1,22 @@
-+targets:
-+  main:
-+    drivers:
-+      TinyEMUDriver:
-+        temu_bin: temu
-+        config: ./Documentation/boards/riscv/barebox-virt64.cfg
-+        image: barebox-dt-2nd.img
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - virtio-mmio
-+    runner:
-+      download:
-+        bbl64.bin: https://barebox.org/jsbarebox/bbl64.bin
-+images:
-+  barebox-dt-2nd.img: $LG_BUILDDIR/images/barebox-dt-2nd.img
-+tools:
-+  temu: /usr/local/bin/temu
-+imports:
-+  -  ../strategy.py
-diff --git a/test/riscv/virt32_defconfig.yaml b/test/riscv/virt32_defconfig.yaml
-new file mode 120000
-index 000000000000..e9d7237f5339
---- /dev/null
-+++ b/test/riscv/virt32_defconfig.yaml
-@@ -0,0 +1 @@
-+qemu@virt32_defconfig.yaml
-\ No newline at end of file
-diff --git a/test/riscv/virt64_defconfig.yaml b/test/riscv/virt64_defconfig.yaml
-new file mode 120000
-index 000000000000..ab419d5e7fb4
---- /dev/null
-+++ b/test/riscv/virt64_defconfig.yaml
-@@ -0,0 +1 @@
-+qemu@virt64_defconfig.yaml
-\ No newline at end of file
-diff --git a/test/sandbox/sandbox_defconfig.yaml b/test/sandbox/sandbox_defconfig.yaml
-new file mode 100644
-index 000000000000..68826e8b5830
---- /dev/null
-+++ b/test/sandbox/sandbox_defconfig.yaml
-@@ -0,0 +1,12 @@
-+targets:
-+  main:
-+    drivers:
-+      NativeExecutableDriver:
-+        command: ./barebox
-+        image: barebox
-+    runner:
-+      tuxmake_arch: um
-+images:
-+  barebox: $LG_BUILDDIR/barebox
-+tools:
-+  qemu: /usr/local/bin/temu
-diff --git a/test/x86/efi_defconfig.yaml b/test/x86/efi_defconfig.yaml
-new file mode 120000
-index 000000000000..942dc259d56b
---- /dev/null
-+++ b/test/x86/efi_defconfig.yaml
-@@ -0,0 +1 @@
-+pc@efi_defconfig.yaml
-\ No newline at end of file
-diff --git a/test/x86/pc@efi_defconfig.yaml b/test/x86/pc@efi_defconfig.yaml
-new file mode 100644
-index 000000000000..2cd27ed672f7
---- /dev/null
-+++ b/test/x86/pc@efi_defconfig.yaml
-@@ -0,0 +1,31 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: pc
-+        cpu: Nehalem
-+        memory: 1024M
-+        kernel: barebox.efi
-+        bios: OVMF.fd
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - pci
-+    runner:
-+      tuxmake_arch: x86_64
-+      kconfig_add:
-+        - CONFIG_DRIVER_SERIAL_NS16550=y
-+        - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
-+      download:
-+        OVMF.fd: /usr/share/qemu/OVMF.fd
-+images:
-+  barebox.efi: $LG_BUILDDIR/barebox.efi
-+  OVMF.fd: $LG_BUILDDIR/OVMF.fd
-+tools:
-+  qemu: /usr/bin/qemu-system-x86_64
-+imports:
-+  -  ../strategy.py
-diff --git a/test/x86/q35@efi_defconfig.yaml b/test/x86/q35@efi_defconfig.yaml
-new file mode 100644
-index 000000000000..4c5e36c9ffe3
---- /dev/null
-+++ b/test/x86/q35@efi_defconfig.yaml
-@@ -0,0 +1,31 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: q35
-+        cpu: Nehalem
-+        memory: 1024M
-+        kernel: barebox.efi
-+        bios: OVMF.fd
-+        extra_args: -global ICH9-LPC.noreboot=false
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - pci
-+    runner:
-+        tuxmake_arch: x86_64
-+        kconfig_add:
-+            - CONFIG_DRIVER_SERIAL_NS16550=y
-+            - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
-+        download:
-+            OVMF.fd: /usr/share/qemu/OVMF.fd
-+images:
-+  barebox.efi: $LG_BUILDDIR/barebox.efi
-+  OVMF.fd: $LG_BUILDDIR/OVMF.fd
-+tools:
-+  qemu: /usr/bin/qemu-system-x86_64
-+imports:
-+  -  ../strategy.py
-diff --git a/test/x86/virtio@efi_defconfig.yaml b/test/x86/virtio@efi_defconfig.yaml
-new file mode 100644
-index 000000000000..6e112e4baad5
---- /dev/null
-+++ b/test/x86/virtio@efi_defconfig.yaml
-@@ -0,0 +1,32 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu
-+        machine: pc
-+        cpu: Nehalem
-+        memory: 1024M
-+        kernel: barebox.efi
-+        bios: OVMF.fd
-+        extra_args: ''
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - virtio-pci
-+    runner:
-+      tuxmake_arch: x86_64
-+      kconfig_add:
-+        - test/kconfig/virtio-pci.cfg
-+        - CONFIG_DRIVER_SERIAL_NS16550=y
-+        - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
-+      download:
-+        OVMF.fd: /usr/share/qemu/OVMF.fd
-+images:
-+  barebox.efi: $LG_BUILDDIR/barebox.efi
-+  OVMF.fd: $LG_BUILDDIR/OVMF.fd
-+tools:
-+  qemu: /usr/bin/qemu-system-x86_64
-+imports:
-+  -  ../strategy.py
--- 
-2.29.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UG9ydCBvdmVyIHRoZSBMaW51eCB2NS4xMSBzZWxmdGVzdCBmb3IgcHJpbnRmIHNhbnMgdGhlIHBh
+cnRzIHdlIGRvbid0CnN1cHBvcnQuIFRoaXMgY2FuIGJlIHVzZWQgdG8gY2F0Y2ggcmVncmVzc2lv
+bnMgaWYgY2hhbmdlcyBhZmZlY3RpbmcgdGhlCnByaW50ZiBjb2RlIGFyZSBtYWRlLgoKQWNrZWQt
+Ynk6IFJvdXZlbiBDemVyd2luc2tpIDxyLmN6ZXJ3aW5za2lAcGVuZ3V0cm9uaXguZGU+ClNpZ25l
+ZC1vZmYtYnk6IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Ci0tLQogaW5j
+bHVkZS9zdGRsaWIuaCAgIHwgICA1ICsKIHRlc3Qvc2VsZi9LY29uZmlnICB8ICAgNiArCiB0ZXN0
+L3NlbGYvTWFrZWZpbGUgfCAgIDEgKwogdGVzdC9zZWxmL2NvcmUuYyAgIHwgICAyICstCiB0ZXN0
+L3NlbGYvcHJpbnRmLmMgfCAzMDIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrCiA1IGZpbGVzIGNoYW5nZWQsIDMxNSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9u
+KC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdC9zZWxmL3ByaW50Zi5jCgpkaWZmIC0tZ2l0IGEv
+aW5jbHVkZS9zdGRsaWIuaCBiL2luY2x1ZGUvc3RkbGliLmgKaW5kZXggZDQwNTYwODcyNDNkLi44
+ZWI0MTllMTExZjAgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvc3RkbGliLmgKKysrIGIvaW5jbHVkZS9z
+dGRsaWIuaApAQCAtMjUsNCArMjUsOSBAQCBzdGF0aWMgaW5saW5lIHUzMiByYW5kb20zMih2b2lk
+KQogCXJldHVybiByZXQ7CiB9CiAKK3N0YXRpYyBpbmxpbmUgdTMyIHByYW5kb21fdTMyX21heCh1
+MzIgZXBfcm8pCit7CisJcmV0dXJuICh1MzIpKCgodTY0KSByYW5kb20zMigpICogZXBfcm8pID4+
+IDMyKTsKK30KKwogI2VuZGlmIC8qIF9fU1RETElCX0ggKi8KZGlmZiAtLWdpdCBhL3Rlc3Qvc2Vs
+Zi9LY29uZmlnIGIvdGVzdC9zZWxmL0tjb25maWcKaW5kZXggNzIwYWJlZmZjNTFiLi43M2RjNmM3
+YjRmMDMgMTAwNjQ0Ci0tLSBhL3Rlc3Qvc2VsZi9LY29uZmlnCisrKyBiL3Rlc3Qvc2VsZi9LY29u
+ZmlnCkBAIC0yNyw3ICsyNywxMyBAQCBjb25maWcgU0VMRlRFU1RfQVVUT1JVTgogCiBjb25maWcg
+U0VMRlRFU1RfRU5BQkxFX0FMTAogCWJvb2wgIkVuYWJsZSBhbGwgc2VsZi10ZXN0cyIKKwlzZWxl
+Y3QgU0VMRlRFU1RfUFJJTlRGCiAJaGVscAogCSAgU2VsZWN0cyBhbGwgc2VsZi10ZXN0cyBjb21w
+YXRpYmxlIHdpdGggY3VycmVudCBjb25maWd1cmF0aW9uCiAKK2NvbmZpZyBTRUxGVEVTVF9QUklO
+VEYKKwlib29sICJwcmludGYgc2VsZnRlc3QiCisJaGVscAorCSAgVGVzdHMgYmFyZWJveCB2c25w
+cmludGYoKSBmdW5jdGlvbmFsaXR5CisKIGVuZGlmCmRpZmYgLS1naXQgYS90ZXN0L3NlbGYvTWFr
+ZWZpbGUgYi90ZXN0L3NlbGYvTWFrZWZpbGUKaW5kZXggNzhmNzM4YzhlMjEwLi5iNGFhNDlkNmY4
+MTcgMTAwNjQ0Ci0tLSBhL3Rlc3Qvc2VsZi9NYWtlZmlsZQorKysgYi90ZXN0L3NlbGYvTWFrZWZp
+bGUKQEAgLTEsMyArMSw0IEBACiAjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wCiAK
+IG9iai0kKENPTkZJR19TRUxGVEVTVCkgKz0gY29yZS5vCitvYmotJChDT05GSUdfU0VMRlRFU1Rf
+UFJJTlRGKSArPSBwcmludGYubwpkaWZmIC0tZ2l0IGEvdGVzdC9zZWxmL2NvcmUuYyBiL3Rlc3Qv
+c2VsZi9jb3JlLmMKaW5kZXggNWEzMDlmYzhmMThkLi5jYWE0YzI3ZjZkZWYgMTAwNjQ0Ci0tLSBh
+L3Rlc3Qvc2VsZi9jb3JlLmMKKysrIGIvdGVzdC9zZWxmL2NvcmUuYwpAQCAtNyw3ICs3LDcgQEAK
+IAogTElTVF9IRUFEKHNlbGZ0ZXN0cyk7CiAKLWludCBzZWxmdGVzdHNfcnVuKHZvaWQpCit2b2lk
+IHNlbGZ0ZXN0c19ydW4odm9pZCkKIHsKIAlzdHJ1Y3Qgc2VsZnRlc3QgKnRlc3Q7CiAJaW50IGVy
+ciA9IDA7CmRpZmYgLS1naXQgYS90ZXN0L3NlbGYvcHJpbnRmLmMgYi90ZXN0L3NlbGYvcHJpbnRm
+LmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi41MmZlNmFjMGZhZjkK
+LS0tIC9kZXYvbnVsbAorKysgYi90ZXN0L3NlbGYvcHJpbnRmLmMKQEAgLTAsMCArMSwzMDIgQEAK
+Ky8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKKy8qCisgKiBUZXN0IGNh
+c2VzIGZvciBwcmludGYgZmFjaWxpdHkuCisgKi8KKworI2RlZmluZSBwcl9mbXQoZm10KSBLQlVJ
+TERfTU9ETkFNRSAiOiAiIGZtdAorCisjaW5jbHVkZSA8Y29tbW9uLmg+CisjaW5jbHVkZSA8YnNl
+bGZ0ZXN0Lmg+CisjaW5jbHVkZSA8bGludXgva2VybmVsLmg+CisjaW5jbHVkZSA8bW9kdWxlLmg+
+CisjaW5jbHVkZSA8c3RkaW8uaD4KKyNpbmNsdWRlIDxzdGRsaWIuaD4KKyNpbmNsdWRlIDxsaW51
+eC9zdHJpbmcuaD4KKyNpbmNsdWRlIDxlcnJuby5oPgorCisjaW5jbHVkZSA8bGludXgvYml0bWFw
+Lmg+CisKKyNkZWZpbmUgQlVGX1NJWkUgMjU2CisjZGVmaW5lIFBBRF9TSVpFIDE2CisjZGVmaW5l
+IEZJTExfQ0hBUiAnJCcKKworQlNFTEZURVNUX0dMT0JBTFMoKTsKKworc3RhdGljIGNoYXIgKnRl
+c3RfYnVmZmVyIF9faW5pdGRhdGE7CitzdGF0aWMgY2hhciAqYWxsb2NlZF9idWZmZXIgX19pbml0
+ZGF0YTsKKworc3RhdGljIGludCBfX3ByaW50Zig0LCAwKSBfX2luaXQKK2RvX3Rlc3QoaW50IGJ1
+ZnNpemUsIGNvbnN0IGNoYXIgKmV4cGVjdCwgaW50IGVsZW4sCisJY29uc3QgY2hhciAqZm10LCB2
+YV9saXN0IGFwKQoreworCXZhX2xpc3QgYXE7CisJaW50IHJldCwgd3JpdHRlbjsKKworCXRvdGFs
+X3Rlc3RzKys7CisKKwltZW1zZXQoYWxsb2NlZF9idWZmZXIsIEZJTExfQ0hBUiwgQlVGX1NJWkUg
+KyAyKlBBRF9TSVpFKTsKKwl2YV9jb3B5KGFxLCBhcCk7CisJcmV0ID0gdnNucHJpbnRmKHRlc3Rf
+YnVmZmVyLCBidWZzaXplLCBmbXQsIGFxKTsKKwl2YV9lbmQoYXEpOworCisJaWYgKHJldCAhPSBl
+bGVuKSB7CisJCXByX3dhcm4oInZzbnByaW50ZihidWYsICVkLCBcIiVzXCIsIC4uLikgcmV0dXJu
+ZWQgJWQsIGV4cGVjdGVkICVkXG4iLAorCQkJYnVmc2l6ZSwgZm10LCByZXQsIGVsZW4pOworCQlw
+cl93YXJuKCJ2c25wcmludGYoYnVmLCAlZCwgXCIlc1wiLCAuLi4pIHdyb3RlICclcycsIGV4cGVj
+dGVkICclLipzJ1xuIiwKKwkJCWJ1ZnNpemUsIGZtdCwgdGVzdF9idWZmZXIsIHJldCwgZXhwZWN0
+KTsKKwkJcmV0dXJuIDE7CisJfQorCisJaWYgKG1lbWNocl9pbnYoYWxsb2NlZF9idWZmZXIsIEZJ
+TExfQ0hBUiwgUEFEX1NJWkUpKSB7CisJCXByX3dhcm4oInZzbnByaW50ZihidWYsICVkLCBcIiVz
+XCIsIC4uLikgd3JvdGUgYmVmb3JlIGJ1ZmZlclxuIiwgYnVmc2l6ZSwgZm10KTsKKwkJcmV0dXJu
+IDE7CisJfQorCisJaWYgKCFidWZzaXplKSB7CisJCWlmIChtZW1jaHJfaW52KHRlc3RfYnVmZmVy
+LCBGSUxMX0NIQVIsIEJVRl9TSVpFICsgUEFEX1NJWkUpKSB7CisJCQlwcl93YXJuKCJ2c25wcmlu
+dGYoYnVmLCAwLCBcIiVzXCIsIC4uLikgd3JvdGUgdG8gYnVmZmVyXG4iLAorCQkJCWZtdCk7CisJ
+CQlyZXR1cm4gMTsKKwkJfQorCQlyZXR1cm4gMDsKKwl9CisKKwl3cml0dGVuID0gbWluKGJ1ZnNp
+emUtMSwgZWxlbik7CisJaWYgKHRlc3RfYnVmZmVyW3dyaXR0ZW5dKSB7CisJCXByX3dhcm4oInZz
+bnByaW50ZihidWYsICVkLCBcIiVzXCIsIC4uLikgZGlkIG5vdCBudWwtdGVybWluYXRlIGJ1ZmZl
+clxuIiwKKwkJCWJ1ZnNpemUsIGZtdCk7CisJCXJldHVybiAxOworCX0KKworCWlmIChtZW1jaHJf
+aW52KHRlc3RfYnVmZmVyICsgd3JpdHRlbiArIDEsIEZJTExfQ0hBUiwgQlVGX1NJWkUgKyBQQURf
+U0laRSAtICh3cml0dGVuICsgMSkpKSB7CisJCXByX3dhcm4oInZzbnByaW50ZihidWYsICVkLCBc
+IiVzXCIsIC4uLikgd3JvdGUgYmV5b25kIHRoZSBudWwtdGVybWluYXRvclxuIiwKKwkJCWJ1ZnNp
+emUsIGZtdCk7CisJCXJldHVybiAxOworCX0KKworCWlmIChtZW1jbXAodGVzdF9idWZmZXIsIGV4
+cGVjdCwgd3JpdHRlbikpIHsKKwkJcHJfd2FybigidnNucHJpbnRmKGJ1ZiwgJWQsIFwiJXNcIiwg
+Li4uKSB3cm90ZSAnJXMnLCBleHBlY3RlZCAnJS4qcydcbiIsCisJCQlidWZzaXplLCBmbXQsIHRl
+c3RfYnVmZmVyLCB3cml0dGVuLCBleHBlY3QpOworCQlyZXR1cm4gMTsKKwl9CisJcmV0dXJuIDA7
+Cit9CisKK3N0YXRpYyB2b2lkIF9fcHJpbnRmKDMsIDQpIF9faW5pdAorX190ZXN0KGNvbnN0IGNo
+YXIgKmV4cGVjdCwgaW50IGVsZW4sIGNvbnN0IGNoYXIgKmZtdCwgLi4uKQoreworCXZhX2xpc3Qg
+YXA7CisJaW50IHJhbmQ7CisJY2hhciAqcDsKKworCWlmIChlbGVuID49IEJVRl9TSVpFKSB7CisJ
+CXByX2VycigiZXJyb3IgaW4gdGVzdCBzdWl0ZTogZXhwZWN0ZWQgb3V0cHV0IGxlbmd0aCAlZCB0
+b28gbG9uZy4gRm9ybWF0IHdhcyAnJXMnLlxuIiwKKwkJICAgICAgIGVsZW4sIGZtdCk7CisJCWZh
+aWxlZF90ZXN0cysrOworCQlyZXR1cm47CisJfQorCisJdmFfc3RhcnQoYXAsIGZtdCk7CisKKwkv
+KgorCSAqIEV2ZXJ5IGZtdCthcmdzIGlzIHN1YmplY3RlZCB0byBmb3VyIHRlc3RzOiBUaHJlZSB3
+aGVyZSB3ZQorCSAqIHRlbGwgdnNucHJpbnRmIHZhcnlpbmcgYnVmZmVyIHNpemVzIChwbGVudHks
+IG5vdCBxdWl0ZQorCSAqIGVub3VnaCBhbmQgMCksIGFuZCB0aGVuIHdlIGFsc28gdGVzdCB0aGF0
+IGJ2YXNwcmludGYgd291bGQKKwkgKiBiZSBhYmxlIHRvIHByaW50IGl0IGFzIGV4cGVjdGVkLgor
+CSAqLworCWZhaWxlZF90ZXN0cyArPSBkb190ZXN0KEJVRl9TSVpFLCBleHBlY3QsIGVsZW4sIGZt
+dCwgYXApOworCXJhbmQgPSAxICsgcHJhbmRvbV91MzJfbWF4KGVsZW4rMSk7CisJLyogU2luY2Ug
+ZWxlbiA8IEJVRl9TSVpFLCB3ZSBoYXZlIDEgPD0gcmFuZCA8PSBCVUZfU0laRS4gKi8KKwlmYWls
+ZWRfdGVzdHMgKz0gZG9fdGVzdChyYW5kLCBleHBlY3QsIGVsZW4sIGZtdCwgYXApOworCWZhaWxl
+ZF90ZXN0cyArPSBkb190ZXN0KDAsIGV4cGVjdCwgZWxlbiwgZm10LCBhcCk7CisKKwlwID0gYnZh
+c3ByaW50ZihmbXQsIGFwKTsKKwlpZiAocCkgeworCQl0b3RhbF90ZXN0cysrOworCQlpZiAobWVt
+Y21wKHAsIGV4cGVjdCwgZWxlbisxKSkgeworCQkJcHJfd2FybigiYnZhc3ByaW50ZiguLi4sIFwi
+JXNcIiwgLi4uKSByZXR1cm5lZCAnJXMnLCBleHBlY3RlZCAnJXMnXG4iLAorCQkJCWZtdCwgcCwg
+ZXhwZWN0KTsKKwkJCWZhaWxlZF90ZXN0cysrOworCQl9CisJCWtmcmVlKHApOworCX0KKwl2YV9l
+bmQoYXApOworfQorCisjZGVmaW5lIHRlc3QoZXhwZWN0LCBmbXQsIC4uLikJCQkJCVwKKwlfX3Rl
+c3QoZXhwZWN0LCBzdHJsZW4oZXhwZWN0KSwgZm10LCAjI19fVkFfQVJHU19fKQorCitzdGF0aWMg
+dm9pZCBfX2luaXQKK3Rlc3RfYmFzaWModm9pZCkKK3sKKwkvKiBXb3JrIGFyb3VuZCBhbm5veWlu
+ZyAid2FybmluZzogemVyby1sZW5ndGggZ251X3ByaW50ZiBmb3JtYXQgc3RyaW5nIi4gKi8KKwlj
+aGFyIG51bCA9ICdcMCc7CisKKwl0ZXN0KCIiLCAmbnVsKTsKKwl0ZXN0KCIxMDAlIiwgIjEwMCUl
+Iik7CisJdGVzdCgieHh4JXl5eSIsICJ4eHglY3l5eSIsICclJyk7CisJX190ZXN0KCJ4eHhcMHl5
+eSIsIDcsICJ4eHglY3l5eSIsICdcMCcpOworfQorCitzdGF0aWMgdm9pZCBfX2luaXQKK3Rlc3Rf
+bnVtYmVyKHZvaWQpCit7CisJc2lnbmVkIGNoYXIgdmFsOworCisJdGVzdCgiMHgxMjM0YWJjZCAg
+IiwgIiUjLTEyeCIsIDB4MTIzNGFiY2QpOworCXRlc3QoIiAgMHgxMjM0YWJjZCIsICIlIzEyeCIs
+IDB4MTIzNGFiY2QpOworCXRlc3QoIjB8MDAxfCAxMnwrMTIzfCAxMjM0fC0xMjN8LTEyMzQiLCAi
+JWR8JTAzZHwlM2R8JStkfCUgZHwlK2R8JSBkIiwgMCwgMSwgMTIsIDEyMywgMTIzNCwgLTEyMywg
+LTEyMzQpOworCXRlc3QoIjB8MXwxfDMyNzY4fDY1NTM1IiwgIiVodXwlaHV8JWh1fCVodXwlaHUi
+LCAwLCAxLCA2NTUzNywgMzI3NjgsIC0xKTsKKwl0ZXN0KCIwfDF8MXwtMzI3Njh8LTEiLCAiJWhk
+fCVoZHwlaGR8JWhkfCVoZCIsIDAsIDEsIDY1NTM3LCAzMjc2OCwgLTEpOworCXRlc3QoIjIwMTUx
+MjI0MjAxNTEyMjUiLCAiJWhvJWhvJSNobyIsIDEwMzcsIDUyODIsIC0xMTYyNyk7CisKKwl0ZXN0
+KCIyMDE1MTIyNDIwMTUxMjI1IiwgIiVobyVobyUjaG8iLCAxMDM3LCA1MjgyLCAtMTE2MjcpOwor
+CisJLyoKKwkgKiBQT1NJWC9DOTk6IMK7VGhlIHJlc3VsdCBvZiBjb252ZXJ0aW5nIHplcm8gd2l0
+aCBhbiBleHBsaWNpdAorCSAqIHByZWNpc2lvbiBvZiB6ZXJvIHNoYWxsIGJlIG5vIGNoYXJhY3Rl
+cnMuwqsgSGVuY2UgdGhlIG91dHB1dAorCSAqIGZyb20gdGhlIGJlbG93IHRlc3Qgc2hvdWxkIHJl
+YWxseSBiZSAiMDB8MHx8fCAiLiBIb3dldmVyLAorCSAqIHRoZSBrZXJuZWwncyBwcmludGYgYWxz
+byBwcm9kdWNlcyBhIHNpbmdsZSAwIGluIHRoYXQKKwkgKiBjYXNlLiBUaGlzIHRlc3QgY2FzZSBz
+aW1wbHkgZG9jdW1lbnRzIHRoZSBjdXJyZW50CisJICogYmVoYXZpb3VyLgorCSAqLworCXRlc3Qo
+IjAwfDB8MHwwfDAiLCAiJS4yZHwlLjFkfCUuMGR8JS4qZHwlMS4wZCIsIDAsIDAsIDAsIDAsIDAs
+IDApOworCisJdmFsID0gLTE2OworCXRlc3QoIjB4ZmZmZmZmZjB8MHhmMHwweGYwIiwgIiUjMDJ4
+fCUjMDJ4fCUjMDJ4IiwgdmFsLCB2YWwgJiAweGZmLCAodTgpdmFsKTsKKworCS8qIE9uIHNvbWUg
+cGxhdGZvcm1zLCB0ZXN0IGZhaWx1cmUgaGVyZSBpbmRpY2F0ZXMgYSBtaXNhbGlnbmVkIHN0YWNr
+ICovCisJdGVzdCgiMHgwODA3MDYwNTA0MDMwMjAxIiwgIjB4JTAxNmxseCIsIDB4MDgwNzA2MDUw
+NDAzMDIwMVVMTCk7Cit9CisKK3N0YXRpYyB2b2lkIF9faW5pdAordGVzdF9zdHJpbmcodm9pZCkK
+K3sKKwl0ZXN0KCIiLCAiJXMlLjBzIiwgIiIsICIxMjMiKTsKKwl0ZXN0KCJBQkNEfGFiY3wxMjMi
+LCAiJXN8JS4zc3wlLipzIiwgIkFCQ0QiLCAiYWJjZGVmIiwgMywgIjEyMzQ1NiIpOworCXRlc3Qo
+IjEgIHwgIDJ8MyAgfCAgNHw1ICAiLCAiJS0zc3wlM3N8JS0qc3wlKnN8JSpzIiwgIjEiLCAiMiIs
+IDMsICIzIiwgMywgIjQiLCAtMywgIjUiKTsKKwl0ZXN0KCIxMjM0ICAgICAgIiwgIiUtMTAuNHMi
+LCAiMTIzNDU2Iik7CisJdGVzdCgiICAgICAgMTIzNCIsICIlMTAuNHMiLCAiMTIzNDU2Iik7Cit9
+CisKKyNpZiBCSVRTX1BFUl9MT05HID09IDY0CisKKyNkZWZpbmUgUFRSX1dJRFRIIDE2CisjZGVm
+aW5lIFBUUiAoKHZvaWQgKikweGZmZmYwMTIzNDU2Nzg5YWJVTCkKKyNkZWZpbmUgUFRSX1NUUiAi
+ZmZmZjAxMjM0NTY3ODlhYiIKKyNkZWZpbmUgUFRSX1ZBTF9OT19DUk5HICIoX19fX3B0cnZhbF9f
+X18pIgorI2RlZmluZSBaRVJPUyAiMDAwMDAwMDAiCS8qIGhleCAzMiB6ZXJvIGJpdHMgKi8KKyNk
+ZWZpbmUgT05FUyAiZmZmZmZmZmYiCQkvKiBoZXggMzIgb25lIGJpdHMgKi8KKworI2Vsc2UKKwor
+I2RlZmluZSBQVFJfV0lEVEggOAorI2RlZmluZSBQVFIgKCh2b2lkICopMHg0NTY3ODlhYikKKyNk
+ZWZpbmUgUFRSX1NUUiAiNDU2Nzg5YWIiCisjZGVmaW5lIFBUUl9WQUxfTk9fQ1JORyAiKHB0cnZh
+bCkiCisjZGVmaW5lIFpFUk9TICIiCisjZGVmaW5lIE9ORVMgIiIKKworI2VuZGlmCS8qIEJJVFNf
+UEVSX0xPTkcgPT0gNjQgKi8KKworLyoKKyAqIE5VTEwgcG9pbnRlcnMgYXJlbid0IGhhc2hlZC4K
+KyAqLworc3RhdGljIHZvaWQgX19pbml0CitudWxsX3BvaW50ZXIodm9pZCkKK3sKKwl0ZXN0KFpF
+Uk9TICIwMDAwMDAwMCIsICIlcCIsIE5VTEwpOworCXRlc3QoWkVST1MgIjAwMDAwMDAwIiwgIiVw
+eCIsIE5VTEwpOworfQorCisvKgorICogRXJyb3IgcG9pbnRlcnMgYXJlbid0IGhhc2hlZC4KKyAq
+Lworc3RhdGljIHZvaWQgX19pbml0CitlcnJvcl9wb2ludGVyKHZvaWQpCit7CisJdGVzdChPTkVT
+ICJmZmZmZmZmNSIsICIlcCIsIEVSUl9QVFIoLTExKSk7CisJdGVzdChPTkVTICJmZmZmZmZmNSIs
+ICIlcHgiLCBFUlJfUFRSKC0xMSkpOworfQorCisjZGVmaW5lIFBUUl9JTlZBTElEICgodm9pZCAq
+KTB4MDAwMDAwYWIpCisKK3N0YXRpYyB2b2lkIF9faW5pdAoraW52YWxpZF9wb2ludGVyKHZvaWQp
+Cit7CisJdGVzdChaRVJPUyAiMDAwMDAwYWIiLCAiJXB4IiwgUFRSX0lOVkFMSUQpOworfQorCitz
+dGF0aWMgdm9pZCBfX2luaXQKK2lwNCh2b2lkKQoreworCUlQYWRkcl90IGlwID0gY3B1X3RvX2Jl
+MzIoMHg3ZjAwMDAwMSk7CisKKwl0ZXN0KCIxMjcuMC4wLjEiLCAiJXBJNCIsICZpcCk7Cit9CisK
+K3N0YXRpYyB2b2lkIF9faW5pdAoraXAodm9pZCkKK3sKKwlpcDQoKTsKK30KKworc3RhdGljIHZv
+aWQgX19pbml0Cit1dWlkKHZvaWQpCit7CisJY29uc3QgY2hhciB1dWlkWzE2XSA9IHsweDAsIDB4
+MSwgMHgyLCAweDMsIDB4NCwgMHg1LCAweDYsIDB4NywKKwkJCSAgICAgICAweDgsIDB4OSwgMHhh
+LCAweGIsIDB4YywgMHhkLCAweGUsIDB4Zn07CisKKwlpZiAoIUlTX0VOQUJMRUQoQ09ORklHX1BS
+SU5URl9VVUlEKSkKKwkJcmV0dXJuOworCisJdGVzdCgiMDAwMTAyMDMtMDQwNS0wNjA3LTA4MDkt
+MGEwYjBjMGQwZTBmIiwgIiVwVWIiLCB1dWlkKTsKKwl0ZXN0KCIwMDAxMDIwMy0wNDA1LTA2MDct
+MDgwOS0wQTBCMEMwRDBFMEYiLCAiJXBVQiIsIHV1aWQpOworCXRlc3QoIjAzMDIwMTAwLTA1MDQt
+MDcwNi0wODA5LTBhMGIwYzBkMGUwZiIsICIlcFVsIiwgdXVpZCk7CisJdGVzdCgiMDMwMjAxMDAt
+MDUwNC0wNzA2LTA4MDktMEEwQjBDMEQwRTBGIiwgIiVwVUwiLCB1dWlkKTsKK30KKworc3RhdGlj
+IHZvaWQgX19pbml0CitlcnJwdHIodm9pZCkKK3sKKwl0ZXN0KCJlcnJvciAxMjM0IiwgIiVwZSIs
+IEVSUl9QVFIoLTEyMzQpKTsKKwl0ZXN0KHNpemVvZih2b2lkICopID09IDggPyAiMDAwMDAwMDAw
+MDAwMDRkMiIgOiAiMDAwMDA0ZDIiLCAiJXBlIiwgRVJSX1BUUigxMjM0KSk7CisKKwkvKiBDaGVj
+ayB0aGF0ICVwZSB3aXRoIGEgbm9uLUVSUl9QVFIgZ2V0cyB0cmVhdGVkIGFzIG9yZGluYXJ5ICVw
+LiAqLworCUJVSUxEX0JVR19PTihJU19FUlIoUFRSKSk7CisKKwlpZiAoIUlTX0VOQUJMRUQoQ09O
+RklHX0VSUk5PX01FU1NBR0VTKSkKKwkJcmV0dXJuOworCXRlc3QoIihPcGVyYXRpb24gbm90IHBl
+cm1pdHRlZCkiLCAiKCVwZSkiLCBFUlJfUFRSKC1FUEVSTSkpOworCXRlc3QoIlJlcXVlc3RlZCBw
+cm9iZSBkZWZlcnJhbCIsICIlcGUiLCBFUlJfUFRSKC1FUFJPQkVfREVGRVIpKTsKK30KKworc3Rh
+dGljIHZvaWQgX19pbml0Cit0ZXN0X3BvaW50ZXIodm9pZCkKK3sKKwludWxsX3BvaW50ZXIoKTsK
+KwllcnJvcl9wb2ludGVyKCk7CisJaW52YWxpZF9wb2ludGVyKCk7CisJaXAoKTsKKwl1dWlkKCk7
+CisJZXJycHRyKCk7Cit9CisKK3N0YXRpYyB2b2lkIF9faW5pdCB0ZXN0X3ByaW50Zih2b2lkKQor
+eworCWFsbG9jZWRfYnVmZmVyID0gbWFsbG9jKEJVRl9TSVpFICsgMipQQURfU0laRSk7CisJaWYg
+KCFhbGxvY2VkX2J1ZmZlcikKKwkJcmV0dXJuOworCXRlc3RfYnVmZmVyID0gYWxsb2NlZF9idWZm
+ZXIgKyBQQURfU0laRTsKKworCXRlc3RfYmFzaWMoKTsKKwl0ZXN0X251bWJlcigpOworCXRlc3Rf
+c3RyaW5nKCk7CisJdGVzdF9wb2ludGVyKCk7CisKKwlmcmVlKGFsbG9jZWRfYnVmZmVyKTsKK30K
+KworYnNlbGZ0ZXN0KGNvcmUsIHRlc3RfcHJpbnRmKTsKK01PRFVMRV9BVVRIT1IoIlJhc211cyBW
+aWxsZW1vZXMgPGxpbnV4QHJhc211c3ZpbGxlbW9lcy5kaz4iKTsKK01PRFVMRV9MSUNFTlNFKCJH
+UEwiKTsKLS0gCjIuMjkuMgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
+ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
 
