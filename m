@@ -1,54 +1,53 @@
-Delivery-date: Wed, 02 Jun 2021 11:22:34 +0200
+Delivery-date: Wed, 02 Jun 2021 12:00:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loN58-0000L1-85
-	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 11:22:34 +0200
+	id 1loNfx-0000ek-9R
+	for lore@lore.pengutronix.de; Wed, 02 Jun 2021 12:00:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1loN53-0003b4-Pl
-	for lore@pengutronix.de; Wed, 02 Jun 2021 11:22:34 +0200
+	id 1loNfs-0001HQ-7B
+	for lore@pengutronix.de; Wed, 02 Jun 2021 12:00:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=m/+DjNRyCCRp5RJPVmL0sXifWDjdxEyGetuPv//l1jk=; b=IQw8OWYvkYRm9pPeJvtTz1q4MG
-	w337wQzMB+bJfWQKFowOgKIN6PuVlOhn7nv+3YKzZKki6Xx1QLOLqSUd53MiXLIpri7jZEQXvSooR
-	F9UK2bW2ApJUNjlI5jjqmzKNgJQSUobH1ZENluBdy7tbwnH6pEdUxKI+py6RI1XK4MczKkxi5i1C0
-	bg8MKpo0fxQV/zXVzaj5OJ4iaVjVet0PDgcWZrVWkRz3y8qsOxz6EMFF7QOqiB2qeNS8LFM1gis6a
-	q/h78rPwKmvroreq1NamuPVHy9p3cm8HenDCcXOHmRvyVU9uW1U3y7oJMiDY5g237ZKXXhRFjAOG5
-	pwI4okZw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=BiWn2/R3Ojs7a0r29K6JLIGGvVmiDiYPYTLBFQffl/g=; b=i6fogv+DNQe0EW
+	8dcp498orWBvffWzb7n5nk8f5sO0ybCHJCw8FgETQHYa1CXw/rVTVcxrV64S1RbLQBcTJArp6+hUd
+	B4IJsxee3R30Rm6ExKS6WBSv6yXAL7gU/eF0E5YliQrMJoKuHtIrsw02jX/+gZAiwUsTCvDYpCwsR
+	co/SBP9LxoJwcnxWDYzTbdvkbIHjqRn0n79RpQs4KIMPCw+8GkoBNKToxwLbmSE1XsROJUXnlOIQH
+	VI/RdFT9lzG5+hBuR7DJS0ENVZgQfiQtlZ6FbmkaGvOq8VVxlimMnVTPueFUoifzmnXe3f+ilqdRb
+	Au6q+IbTqQDFJfcRjWcg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1loN3M-002wFs-Hw; Wed, 02 Jun 2021 09:20:44 +0000
+	id 1loNe9-0037Ir-Jp; Wed, 02 Jun 2021 09:58:45 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loN3E-002wEw-TS
- for barebox@lists.infradead.org; Wed, 02 Jun 2021 09:20:40 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1loN3D-0003LQ-MY; Wed, 02 Jun 2021 11:20:35 +0200
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20210602071533.10093-1-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ffbe48a3-94cc-aa79-98d7-38d152a26c4e@pengutronix.de>
-Date: Wed, 2 Jun 2021 11:20:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+ id 1loNal-0036FP-BN
+ for barebox@lists.infradead.org; Wed, 02 Jun 2021 09:55:17 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1loNai-0000MC-8r; Wed, 02 Jun 2021 11:55:12 +0200
+Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1loNag-00039a-Rp; Wed, 02 Jun 2021 11:55:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Wed,  2 Jun 2021 11:54:52 +0200
+Message-Id: <20210602095507.24609-10-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210602095507.24609-1-s.hauer@pengutronix.de>
+References: <20210602095507.24609-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20210602071533.10093-1-s.hauer@pengutronix.de>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210602_022036_985860_77803E74 
-X-CRM114-Status: GOOD (  20.86  )
+X-CRM114-CacheID: sfid-20210602_025515_445362_089B9B9A 
+X-CRM114-Status: GOOD (  12.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,51 +67,53 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] partitions: Increase MAX_PARTITION to 128
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 09/24] clk: mux: Add ro ops
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 02.06.21 09:15, Sascha Hauer wrote:
-> Having MAX_PARTITION defined to 8 is enough for a DOS partition table,
-> but not for GPT. Increase it to the maximum GPT supports. It might be
-> even better to allocate the partitions dynamically, but for nor take the
-> easy way out.
+The Linux version of the clk muxr exports a clk_mux_ro_ops. Do
+the same for barebox.
 
-Given that struct partition_desc is only ever dynamically allocated, I think
-that's ok.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/clk-mux.c | 4 ++++
+ include/linux/clk.h   | 1 +
+ 2 files changed, 5 insertions(+)
 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-Reviwed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-> ---
->  common/partitions/parser.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/common/partitions/parser.h b/common/partitions/parser.h
-> index 8ad134a9aa..69508932b3 100644
-> --- a/common/partitions/parser.h
-> +++ b/common/partitions/parser.h
-> @@ -11,7 +11,7 @@
->  #include <filetype.h>
->  #include <linux/list.h>
->  
-> -#define MAX_PARTITION		8
-> +#define MAX_PARTITION		128
->  #define MAX_PARTITION_NAME	38
->  
->  struct partition {
-> 
-
+diff --git a/drivers/clk/clk-mux.c b/drivers/clk/clk-mux.c
+index bd5b50ad18..464593b619 100644
+--- a/drivers/clk/clk-mux.c
++++ b/drivers/clk/clk-mux.c
+@@ -48,6 +48,10 @@ const struct clk_ops clk_mux_ops = {
+ 	.set_parent = clk_mux_set_parent,
+ };
+ 
++const struct clk_ops clk_mux_ro_ops = {
++	.get_parent = clk_mux_get_parent,
++};
++
+ struct clk *clk_mux_alloc(const char *name, unsigned clk_flags, void __iomem *reg,
+ 		u8 shift, u8 width, const char * const *parents, u8 num_parents,
+ 		unsigned mux_flags)
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index ede2b676fe..edf64cd9aa 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -504,6 +504,7 @@ struct clk_mux {
+ #define to_clk_mux(_hw) container_of(_hw, struct clk_mux, hw)
+ 
+ extern const struct clk_ops clk_mux_ops;
++extern const struct clk_ops clk_mux_ro_ops;
+ 
+ struct clk *clk_mux_alloc(const char *name, unsigned clk_flags,
+ 			  void __iomem *reg, u8 shift, u8 width,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.2
+
 
 _______________________________________________
 barebox mailing list
