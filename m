@@ -1,53 +1,51 @@
-Delivery-date: Fri, 04 Jun 2021 10:33:49 +0200
+Delivery-date: Fri, 04 Jun 2021 10:33:50 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5H3-00053f-O3
-	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:33:49 +0200
+	id 1lp5H4-000542-Dj
+	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:33:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5Gw-0007OK-Cc
-	for lore@pengutronix.de; Fri, 04 Jun 2021 10:33:49 +0200
+	id 1lp5Gv-0007Ng-Hc
+	for lore@pengutronix.de; Fri, 04 Jun 2021 10:33:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ViLrbVQswzUCo7qECll1XWb+W5PiTDOG5PKbQhmIBL4=; b=Qd40V9A2OMAfZ5
-	+cbj4uTfTVErKWYsBTJXBjocGEJyjC6vDXPixLV4TpRa24DZmYOncsNPpDq5+Y3eHR0mM/q8vMkxX
-	kAdO7fauCpvjQ/I/YxxhzkVkDLdNqm1+KvN/6AVyg2i9gYwZN6itzB/jsKlAxgkGchzYtFbF1TBYm
-	/lDWBiN2Kr4JSNyNj1oymPvi3tE5FdXWtfpTguwZaRsynRG7hJYXwh7+/6y219xwxru44QtAjq1zV
-	64euvAOzdak/OD8YSgME2KVUSdU0yKaEpPlD1GRQPt8dBF/CKvIQbDwNuFArFoQy3kLVu2YDoVUI2
-	QEnCYK3XNyibPsnaFQew==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Oq9cf7H5Ey6wXUQC4jK83+xRcPZMZf9D1zON6BkfWE4=; b=G48jlbpcULfN92
+	1ayqFrhtx1TtVJkNlJghXR+yftfjp3gOMht8trjqJtHhSkJ59LgzQuEB3ylbuZPK6ZAZE1RKuB4d3
+	lcoSEuQgyD8d7Vfvms4zqoHwuPZkNksYizWqMwZHiFBMHjxjiT2veRLvW4sGOVG197dqkQAFcDPqk
+	omAa/iYmTMLLCEiZeBh+/TvEtAVa+9B87FwLvUdUv3egAukA1PmtdNhI/7etcLB+HTLVmOD5AfWkn
+	+sxqyzvBVwejga1qu0JNiNe/yFjmLRzaEPXJ8f0kd8rn3EmfdtFECcBmWbe5EnqHj1zzILvi+WQb0
+	5lRA7BW/YVwcJdlM+fDw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lp5FK-00CJAZ-Jk; Fri, 04 Jun 2021 08:32:02 +0000
+	id 1lp5F0-00CJ07-N4; Fri, 04 Jun 2021 08:31:42 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lp5F2-00CJ12-G0
- for barebox@lists.infradead.org; Fri, 04 Jun 2021 08:31:45 +0000
+ id 1lp5Ek-00CIvm-49
+ for barebox@lists.infradead.org; Fri, 04 Jun 2021 08:31:32 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5El-0006kF-7n; Fri, 04 Jun 2021 10:31:27 +0200
+ id 1lp5Eg-0006k2-95; Fri, 04 Jun 2021 10:31:22 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5Ef-0002mv-HX; Fri, 04 Jun 2021 10:31:21 +0200
+ id 1lp5Ef-0002lo-92; Fri, 04 Jun 2021 10:31:21 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri,  4 Jun 2021 10:31:09 +0200
-Message-Id: <20210604083109.10581-14-a.fatoum@pengutronix.de>
+Date: Fri,  4 Jun 2021 10:30:56 +0200
+Message-Id: <20210604083109.10581-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210604083109.10581-1-a.fatoum@pengutronix.de>
-References: <20210604083109.10581-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210604_013144_556399_1B848DF9 
-X-CRM114-Status: GOOD (  12.07  )
+X-CRM114-CacheID: sfid-20210604_013126_357476_6320DB33 
+X-CRM114-Status: GOOD (  15.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -59,8 +57,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: jmaselbas@kalray.eu, Ahmad Fatoum <a.fatoum@pengutronix.de>,
- rcz@pengutronix.de
+Cc: jmaselbas@kalray.eu, rcz@pengutronix.de
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -73,58 +70,162 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 13/13] test: add bthread test
+Subject: [PATCH v4 00/13] add barebox in-tree testing infrastructure
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The bthread -v command already returns an appropriate exit code if
-threads can't be scheduled. Have it spawn 16 threads and switch between
-them for a second and verify that all of these threads were indeed
-terminated.
+v3 -> v4:
+  - Make it clearer in commit message and comments that some YAML
+    configs can't be tested by labgrid, because they use emulators
+    beside QEMU (Jan)
+  - Use !template "$LG_BUILDDIR/..." to have labgrid do the
+    substitution. Previously, it was seemingly done being substituted
+    by pyyaml. (Jan)
+  - Use YAML::XS (libyaml binding) instead of YAML::Tiny to support
+    !template
+  - Exit with error when mixing specification of virtual devices on
+    emulate.pl command-line with --test. They are only supported
+    when running QEMU directly for interactive use
+  - Fix some inaccuracies in docs and help text
+  - Add new --verbosity option to control both tuxmake and pytest.
+    Default value is 1 for both, so tuxmake default output stays
+    unchanged, but pytest now prints a line per test run.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- test/kconfig/full.cfg   |  2 ++
- test/py/test_bthread.py | 23 +++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+v2 -> v3:
+  - Added own BareboxTestStrategy instead of reusing labgrid's.
+    This affords us flexibility in future and lets us get rid
+    of unused ShellDriver boilerplate in YAML/conftest (Rouven)
+  - Make selftest timeout of 30 seconds explicit (Rouven)
+    This can be increased as needed in future.
+  - Print out barebox output when selftest assertion fails (Rouven)
+  - Collected Rouven's off-list Acked-by's
+
+v1 -> v2:
+  - drop already merged patches
+  - use objcopy to swap image byte order instead of writing something new (Jules)
+  - always run tests from source directory, not build directory when
+    building out-of-tree (honour KBUILD_OUTPUT, build symlink in that case)
+  - add some more sample tests
+  - add test/riscv/sifive_defconfig.yaml
+
+Ahmad Fatoum (13):
+  kbuild: add install target
+  kbuild: add ARCH={i386, x86_64} as aliases for x86
+  kbuild: add ARCH=um alias for sandbox
+  MIPS: qemu-malta: generate swapped image as part of multi-image build
+  openrisc: set default KBUILD_IMAGE
+  Documentation: boards: RISC-V: update TinyEMU support
+  test: add basic barebox self-test infrastructure
+  test: self: port Linux printf kselftest
+  test: add labgrid-style configs for some emulated targets
+  test: add first sample tests
+  test: add emulate.pl, a runner for barebox on emulated targets
+  test: self: run selftests as part of the pytest suite
+  test: add bthread test
+
+ Documentation/boards/emulated.rst             |  75 +++
+ Documentation/boards/mips/qemu-malta.rst      |  16 +-
+ Documentation/boards/riscv.rst                |  20 +-
+ Documentation/boards/riscv/barebox-virt32.cfg |   7 +
+ Documentation/boards/riscv/barebox-virt64.cfg |   7 +
+ Kconfig                                       |   1 +
+ Makefile                                      |  28 +-
+ arch/openrisc/Makefile                        |   2 +
+ commands/Makefile                             |   1 +
+ commands/selftest.c                           |  88 +++
+ common/startup.c                              |   4 +
+ images/.gitignore                             |   1 +
+ images/Makefile                               |   7 +-
+ images/Makefile.malta                         |  10 +-
+ include/bselftest.h                           |  74 +++
+ include/stdlib.h                              |   5 +
+ test/.gitignore                               |   1 +
+ test/Kconfig                                  |   8 +
+ test/Makefile                                 |   1 +
+ test/__init__.py                              |   0
+ test/arm/a15@vexpress_defconfig.yaml          |  20 +
+ test/arm/a9@vexpress_defconfig.yaml           |  20 +
+ test/arm/qemu_virt64_defconfig.yaml           |  24 +
+ test/arm/vexpress_defconfig.yaml              |   1 +
+ test/arm/virt@vexpress_defconfig.yaml         |  22 +
+ test/conftest.py                              |  27 +
+ test/emulate.pl                               | 528 ++++++++++++++++++
+ test/kconfig/base.cfg                         |   4 +
+ test/kconfig/full.cfg                         |   2 +
+ test/kconfig/virtio-pci.cfg                   |   6 +
+ test/mips/be@qemu-malta_defconfig.yaml        |  22 +
+ test/mips/le@qemu-malta_defconfig.yaml        |  25 +
+ test/mips/qemu-malta_defconfig.yaml           |   1 +
+ test/openrisc/generic_defconfig.yaml          |  20 +
+ test/py/__init__.py                           |   0
+ test/py/helper.py                             |  38 ++
+ test/py/test_bselftests.py                    |   8 +
+ test/py/test_bthread.py                       |  23 +
+ test/py/test_shell.py                         |  36 ++
+ test/riscv/qemu@virt32_defconfig.yaml         |  27 +
+ test/riscv/qemu@virt64_defconfig.yaml         |  27 +
+ test/riscv/sifive_defconfig.yaml              |  25 +
+ test/riscv/tinyemu@virt32_defconfig.yaml      |  22 +
+ test/riscv/tinyemu@virt64_defconfig.yaml      |  22 +
+ test/riscv/virt32_defconfig.yaml              |   1 +
+ test/riscv/virt64_defconfig.yaml              |   1 +
+ test/sandbox/sandbox_defconfig.yaml           |  12 +
+ test/self/Kconfig                             |  39 ++
+ test/self/Makefile                            |   4 +
+ test/self/core.c                              |  22 +
+ test/self/printf.c                            | 302 ++++++++++
+ test/strategy.py                              |  53 ++
+ test/x86/efi_defconfig.yaml                   |   1 +
+ test/x86/pc@efi_defconfig.yaml                |  31 +
+ test/x86/q35@efi_defconfig.yaml               |  31 +
+ test/x86/virtio@efi_defconfig.yaml            |  32 ++
+ 56 files changed, 1810 insertions(+), 25 deletions(-)
+ create mode 100644 Documentation/boards/emulated.rst
+ create mode 100644 Documentation/boards/riscv/barebox-virt32.cfg
+ create mode 100644 Documentation/boards/riscv/barebox-virt64.cfg
+ create mode 100644 commands/selftest.c
+ create mode 100644 include/bselftest.h
+ create mode 100644 test/.gitignore
+ create mode 100644 test/Kconfig
+ create mode 100644 test/Makefile
+ create mode 100644 test/__init__.py
+ create mode 100644 test/arm/a15@vexpress_defconfig.yaml
+ create mode 100644 test/arm/a9@vexpress_defconfig.yaml
+ create mode 100644 test/arm/qemu_virt64_defconfig.yaml
+ create mode 120000 test/arm/vexpress_defconfig.yaml
+ create mode 100644 test/arm/virt@vexpress_defconfig.yaml
+ create mode 100644 test/conftest.py
+ create mode 100755 test/emulate.pl
+ create mode 100644 test/kconfig/base.cfg
+ create mode 100644 test/kconfig/full.cfg
+ create mode 100644 test/kconfig/virtio-pci.cfg
+ create mode 100644 test/mips/be@qemu-malta_defconfig.yaml
+ create mode 100644 test/mips/le@qemu-malta_defconfig.yaml
+ create mode 120000 test/mips/qemu-malta_defconfig.yaml
+ create mode 100644 test/openrisc/generic_defconfig.yaml
+ create mode 100644 test/py/__init__.py
+ create mode 100644 test/py/helper.py
+ create mode 100644 test/py/test_bselftests.py
  create mode 100644 test/py/test_bthread.py
+ create mode 100644 test/py/test_shell.py
+ create mode 100644 test/riscv/qemu@virt32_defconfig.yaml
+ create mode 100644 test/riscv/qemu@virt64_defconfig.yaml
+ create mode 100644 test/riscv/sifive_defconfig.yaml
+ create mode 100644 test/riscv/tinyemu@virt32_defconfig.yaml
+ create mode 100644 test/riscv/tinyemu@virt64_defconfig.yaml
+ create mode 120000 test/riscv/virt32_defconfig.yaml
+ create mode 120000 test/riscv/virt64_defconfig.yaml
+ create mode 100644 test/sandbox/sandbox_defconfig.yaml
+ create mode 100644 test/self/Kconfig
+ create mode 100644 test/self/Makefile
+ create mode 100644 test/self/core.c
+ create mode 100644 test/self/printf.c
+ create mode 100644 test/strategy.py
+ create mode 120000 test/x86/efi_defconfig.yaml
+ create mode 100644 test/x86/pc@efi_defconfig.yaml
+ create mode 100644 test/x86/q35@efi_defconfig.yaml
+ create mode 100644 test/x86/virtio@efi_defconfig.yaml
 
-diff --git a/test/kconfig/full.cfg b/test/kconfig/full.cfg
-index e69de29bb2d1..39275768ea1f 100644
---- a/test/kconfig/full.cfg
-+++ b/test/kconfig/full.cfg
-@@ -0,0 +1,2 @@
-+CONFIG_BTHREAD=y
-+CONFIG_CMD_BTHREAD=y
-diff --git a/test/py/test_bthread.py b/test/py/test_bthread.py
-new file mode 100644
-index 000000000000..6e7b4ba5007e
---- /dev/null
-+++ b/test/py/test_bthread.py
-@@ -0,0 +1,23 @@
-+import pytest
-+from .helper import *
-+
-+def stale_spawners(barebox):
-+    threads = barebox.run_check("bthread -i")
-+    if len(threads) == 0:
-+        return False
-+    return len([t for t in threads if t.startswith('spawner')]) > 0
-+
-+def test_bthread(barebox, barebox_config):
-+    skip_disabled(barebox_config, "CONFIG_CMD_BTHREAD")
-+
-+    assert not stale_spawners(barebox)
-+
-+    _, _, returncode = barebox.run('bthread -vvvv')
-+    assert returncode == 0
-+
-+    assert not stale_spawners(barebox)
-+
-+    switches = int(barebox.run_check("bthread -c")[0].split()[0])
-+    yields   = int(barebox.run_check("bthread -t")[0].split()[0])
-+
-+    assert yields < switches
 -- 
 2.29.2
 
