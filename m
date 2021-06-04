@@ -1,53 +1,51 @@
-Delivery-date: Fri, 04 Jun 2021 10:49:39 +0200
+Delivery-date: Fri, 04 Jun 2021 10:49:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5WN-0005LB-Jg
-	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:49:39 +0200
+	id 1lp5Wb-0005Ls-Or
+	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:49:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5WG-0001Pi-H9
-	for lore@pengutronix.de; Fri, 04 Jun 2021 10:49:39 +0200
+	id 1lp5WT-0001TG-1Y
+	for lore@pengutronix.de; Fri, 04 Jun 2021 10:49:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=H1JI2oilLics6v8CkagxOOG9vO5b0GIDh+e/kApioQA=; b=vnVRb6r3bHGBZv
-	gC2/KlOSGPLaL7OMu77y24omW7dwQWXqNalaEZT3cmow0OEMczG+/JU2gpH6eCk7+2amq6npW+iNa
-	JiKDq1Wpd7sCCWbEANhiUV4DB0e9Hpu9uIbQQPZagRYsG8vTjnAmJtpgXSKgPe1/ooe0fpDYLAlu/
-	2rTri0sv9Jqh/0p+oLxIQKwKLo7RZgFceBlha9mUyBk/OEsuo/COW6jruTzJiDEER6Cq8tdUc/IuA
-	qEl26DDeYx5Ntyp/ZkdpOlReC3R6c6ru2ilFgYXbzX+pZNVqRgSNflWJfjcBgjl4CB3960oRw1jZV
-	Xz/EIN9HpEdtPDlab1NA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=ZdCZ9E5c0iKaLgWsw8ljPLdmSTSzRxCd0hmajChpz6Y=; b=LMm+lnSctlMLnI
+	TCle+TAfA+sX4vmfVLvA/w6dG/HG2LYAeThYtSKPTEIiS8pXzzrt8SzXeJ9CEVrc2Wp89Y8zc6qqz
+	TaOaDMAA14rO51JTVBl7UDzDmVl3z6yA7Zw/jqtVYHq7GWxveQamnGCn0ZxGWN0qGrGSfwDlMHpVx
+	hQtSNBCmy2KbFfe4QnFGsKSEX+70DIDMxJLfeN0uuhWdymsoDq/sbJV/U8gpKUhR1154cKu306I/Q
+	ziikT6H4oTt2xmzj4CqKppnO8kmn9qkXTLpGCJrd2CLUtctfyC0sXMp1x5Uq4Ik4ZEk4R+NaBucq3
+	M2/39zt4eOtXF+s6tBCw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lp5Ui-00CMMA-4J; Fri, 04 Jun 2021 08:47:56 +0000
+	id 1lp5Um-00CMOr-JX; Fri, 04 Jun 2021 08:48:00 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lp5UA-00CM96-Ca
- for barebox@lists.infradead.org; Fri, 04 Jun 2021 08:47:27 +0000
+ id 1lp5UA-00CM8y-2A
+ for barebox@lists.infradead.org; Fri, 04 Jun 2021 08:47:28 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5U8-0000iZ-QS; Fri, 04 Jun 2021 10:47:20 +0200
+ id 1lp5U8-0000iQ-Gt; Fri, 04 Jun 2021 10:47:20 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5U7-00053H-MV; Fri, 04 Jun 2021 10:47:19 +0200
+ id 1lp5U7-00052P-IX; Fri, 04 Jun 2021 10:47:19 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri,  4 Jun 2021 10:46:59 +0200
-Message-Id: <20210604084704.17410-9-a.fatoum@pengutronix.de>
+Date: Fri,  4 Jun 2021 10:46:51 +0200
+Message-Id: <20210604084704.17410-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210604084704.17410-1-a.fatoum@pengutronix.de>
-References: <20210604084704.17410-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210604_014722_656629_38F437E5 
-X-CRM114-Status: GOOD (  22.62  )
+X-CRM114-CacheID: sfid-20210604_014722_369978_4368D1A8 
+X-CRM114-Status: GOOD (  15.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -59,10 +57,9 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: jmaselbas@kalray.eu, Ahmad Fatoum <a.fatoum@pengutronix.de>,
- Rouven Czerwinski <r.czerwinski@pengutronix.de>, rcz@pengutronix.de
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: jmaselbas@kalray.eu, rcz@pengutronix.de
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -73,175 +70,172 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH RESEND v4 08/13] test: self: port Linux printf kselftest
+Subject: [PATCH RESEND v4 00/13] add barebox in-tree testing infrastructure
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-UG9ydCBvdmVyIHRoZSBMaW51eCB2NS4xMSBzZWxmdGVzdCBmb3IgcHJpbnRmIHNhbnMgdGhlIHBh
-cnRzIHdlIGRvbid0CnN1cHBvcnQuIFRoaXMgY2FuIGJlIHVzZWQgdG8gY2F0Y2ggcmVncmVzc2lv
-bnMgaWYgY2hhbmdlcyBhZmZlY3RpbmcgdGhlCnByaW50ZiBjb2RlIGFyZSBtYWRlLgoKQWNrZWQt
-Ynk6IFJvdXZlbiBDemVyd2luc2tpIDxyLmN6ZXJ3aW5za2lAcGVuZ3V0cm9uaXguZGU+ClNpZ25l
-ZC1vZmYtYnk6IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Ci0tLQogaW5j
-bHVkZS9zdGRsaWIuaCAgIHwgICA1ICsKIHRlc3Qvc2VsZi9LY29uZmlnICB8ICAgNiArCiB0ZXN0
-L3NlbGYvTWFrZWZpbGUgfCAgIDEgKwogdGVzdC9zZWxmL3ByaW50Zi5jIHwgMzAyICsrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogNCBmaWxlcyBjaGFuZ2VkLCAz
-MTQgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3Qvc2VsZi9wcmludGYuYwoK
-ZGlmZiAtLWdpdCBhL2luY2x1ZGUvc3RkbGliLmggYi9pbmNsdWRlL3N0ZGxpYi5oCmluZGV4IGQ0
-MDU2MDg3MjQzZC4uOGViNDE5ZTExMWYwIDEwMDY0NAotLS0gYS9pbmNsdWRlL3N0ZGxpYi5oCisr
-KyBiL2luY2x1ZGUvc3RkbGliLmgKQEAgLTI1LDQgKzI1LDkgQEAgc3RhdGljIGlubGluZSB1MzIg
-cmFuZG9tMzIodm9pZCkKIAlyZXR1cm4gcmV0OwogfQogCitzdGF0aWMgaW5saW5lIHUzMiBwcmFu
-ZG9tX3UzMl9tYXgodTMyIGVwX3JvKQoreworCXJldHVybiAodTMyKSgoKHU2NCkgcmFuZG9tMzIo
-KSAqIGVwX3JvKSA+PiAzMik7Cit9CisKICNlbmRpZiAvKiBfX1NURExJQl9IICovCmRpZmYgLS1n
-aXQgYS90ZXN0L3NlbGYvS2NvbmZpZyBiL3Rlc3Qvc2VsZi9LY29uZmlnCmluZGV4IDcyMGFiZWZm
-YzUxYi4uNzNkYzZjN2I0ZjAzIDEwMDY0NAotLS0gYS90ZXN0L3NlbGYvS2NvbmZpZworKysgYi90
-ZXN0L3NlbGYvS2NvbmZpZwpAQCAtMjcsNyArMjcsMTMgQEAgY29uZmlnIFNFTEZURVNUX0FVVE9S
-VU4KIAogY29uZmlnIFNFTEZURVNUX0VOQUJMRV9BTEwKIAlib29sICJFbmFibGUgYWxsIHNlbGYt
-dGVzdHMiCisJc2VsZWN0IFNFTEZURVNUX1BSSU5URgogCWhlbHAKIAkgIFNlbGVjdHMgYWxsIHNl
-bGYtdGVzdHMgY29tcGF0aWJsZSB3aXRoIGN1cnJlbnQgY29uZmlndXJhdGlvbgogCitjb25maWcg
-U0VMRlRFU1RfUFJJTlRGCisJYm9vbCAicHJpbnRmIHNlbGZ0ZXN0IgorCWhlbHAKKwkgIFRlc3Rz
-IGJhcmVib3ggdnNucHJpbnRmKCkgZnVuY3Rpb25hbGl0eQorCiBlbmRpZgpkaWZmIC0tZ2l0IGEv
-dGVzdC9zZWxmL01ha2VmaWxlIGIvdGVzdC9zZWxmL01ha2VmaWxlCmluZGV4IDc4ZjczOGM4ZTIx
-MC4uYjRhYTQ5ZDZmODE3IDEwMDY0NAotLS0gYS90ZXN0L3NlbGYvTWFrZWZpbGUKKysrIGIvdGVz
-dC9zZWxmL01ha2VmaWxlCkBAIC0xLDMgKzEsNCBAQAogIyBTUERYLUxpY2Vuc2UtSWRlbnRpZmll
-cjogR1BMLTIuMAogCiBvYmotJChDT05GSUdfU0VMRlRFU1QpICs9IGNvcmUubworb2JqLSQoQ09O
-RklHX1NFTEZURVNUX1BSSU5URikgKz0gcHJpbnRmLm8KZGlmZiAtLWdpdCBhL3Rlc3Qvc2VsZi9w
-cmludGYuYyBiL3Rlc3Qvc2VsZi9wcmludGYuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAw
-MDAwMDAwMDAwMDAuLjUyZmU2YWMwZmFmOQotLS0gL2Rldi9udWxsCisrKyBiL3Rlc3Qvc2VsZi9w
-cmludGYuYwpAQCAtMCwwICsxLDMwMiBAQAorLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQ
-TC0yLjAtb25seQorLyoKKyAqIFRlc3QgY2FzZXMgZm9yIHByaW50ZiBmYWNpbGl0eS4KKyAqLwor
-CisjZGVmaW5lIHByX2ZtdChmbXQpIEtCVUlMRF9NT0ROQU1FICI6ICIgZm10CisKKyNpbmNsdWRl
-IDxjb21tb24uaD4KKyNpbmNsdWRlIDxic2VsZnRlc3QuaD4KKyNpbmNsdWRlIDxsaW51eC9rZXJu
-ZWwuaD4KKyNpbmNsdWRlIDxtb2R1bGUuaD4KKyNpbmNsdWRlIDxzdGRpby5oPgorI2luY2x1ZGUg
-PHN0ZGxpYi5oPgorI2luY2x1ZGUgPGxpbnV4L3N0cmluZy5oPgorI2luY2x1ZGUgPGVycm5vLmg+
-CisKKyNpbmNsdWRlIDxsaW51eC9iaXRtYXAuaD4KKworI2RlZmluZSBCVUZfU0laRSAyNTYKKyNk
-ZWZpbmUgUEFEX1NJWkUgMTYKKyNkZWZpbmUgRklMTF9DSEFSICckJworCitCU0VMRlRFU1RfR0xP
-QkFMUygpOworCitzdGF0aWMgY2hhciAqdGVzdF9idWZmZXIgX19pbml0ZGF0YTsKK3N0YXRpYyBj
-aGFyICphbGxvY2VkX2J1ZmZlciBfX2luaXRkYXRhOworCitzdGF0aWMgaW50IF9fcHJpbnRmKDQs
-IDApIF9faW5pdAorZG9fdGVzdChpbnQgYnVmc2l6ZSwgY29uc3QgY2hhciAqZXhwZWN0LCBpbnQg
-ZWxlbiwKKwljb25zdCBjaGFyICpmbXQsIHZhX2xpc3QgYXApCit7CisJdmFfbGlzdCBhcTsKKwlp
-bnQgcmV0LCB3cml0dGVuOworCisJdG90YWxfdGVzdHMrKzsKKworCW1lbXNldChhbGxvY2VkX2J1
-ZmZlciwgRklMTF9DSEFSLCBCVUZfU0laRSArIDIqUEFEX1NJWkUpOworCXZhX2NvcHkoYXEsIGFw
-KTsKKwlyZXQgPSB2c25wcmludGYodGVzdF9idWZmZXIsIGJ1ZnNpemUsIGZtdCwgYXEpOworCXZh
-X2VuZChhcSk7CisKKwlpZiAocmV0ICE9IGVsZW4pIHsKKwkJcHJfd2FybigidnNucHJpbnRmKGJ1
-ZiwgJWQsIFwiJXNcIiwgLi4uKSByZXR1cm5lZCAlZCwgZXhwZWN0ZWQgJWRcbiIsCisJCQlidWZz
-aXplLCBmbXQsIHJldCwgZWxlbik7CisJCXByX3dhcm4oInZzbnByaW50ZihidWYsICVkLCBcIiVz
-XCIsIC4uLikgd3JvdGUgJyVzJywgZXhwZWN0ZWQgJyUuKnMnXG4iLAorCQkJYnVmc2l6ZSwgZm10
-LCB0ZXN0X2J1ZmZlciwgcmV0LCBleHBlY3QpOworCQlyZXR1cm4gMTsKKwl9CisKKwlpZiAobWVt
-Y2hyX2ludihhbGxvY2VkX2J1ZmZlciwgRklMTF9DSEFSLCBQQURfU0laRSkpIHsKKwkJcHJfd2Fy
-bigidnNucHJpbnRmKGJ1ZiwgJWQsIFwiJXNcIiwgLi4uKSB3cm90ZSBiZWZvcmUgYnVmZmVyXG4i
-LCBidWZzaXplLCBmbXQpOworCQlyZXR1cm4gMTsKKwl9CisKKwlpZiAoIWJ1ZnNpemUpIHsKKwkJ
-aWYgKG1lbWNocl9pbnYodGVzdF9idWZmZXIsIEZJTExfQ0hBUiwgQlVGX1NJWkUgKyBQQURfU0la
-RSkpIHsKKwkJCXByX3dhcm4oInZzbnByaW50ZihidWYsIDAsIFwiJXNcIiwgLi4uKSB3cm90ZSB0
-byBidWZmZXJcbiIsCisJCQkJZm10KTsKKwkJCXJldHVybiAxOworCQl9CisJCXJldHVybiAwOwor
-CX0KKworCXdyaXR0ZW4gPSBtaW4oYnVmc2l6ZS0xLCBlbGVuKTsKKwlpZiAodGVzdF9idWZmZXJb
-d3JpdHRlbl0pIHsKKwkJcHJfd2FybigidnNucHJpbnRmKGJ1ZiwgJWQsIFwiJXNcIiwgLi4uKSBk
-aWQgbm90IG51bC10ZXJtaW5hdGUgYnVmZmVyXG4iLAorCQkJYnVmc2l6ZSwgZm10KTsKKwkJcmV0
-dXJuIDE7CisJfQorCisJaWYgKG1lbWNocl9pbnYodGVzdF9idWZmZXIgKyB3cml0dGVuICsgMSwg
-RklMTF9DSEFSLCBCVUZfU0laRSArIFBBRF9TSVpFIC0gKHdyaXR0ZW4gKyAxKSkpIHsKKwkJcHJf
-d2FybigidnNucHJpbnRmKGJ1ZiwgJWQsIFwiJXNcIiwgLi4uKSB3cm90ZSBiZXlvbmQgdGhlIG51
-bC10ZXJtaW5hdG9yXG4iLAorCQkJYnVmc2l6ZSwgZm10KTsKKwkJcmV0dXJuIDE7CisJfQorCisJ
-aWYgKG1lbWNtcCh0ZXN0X2J1ZmZlciwgZXhwZWN0LCB3cml0dGVuKSkgeworCQlwcl93YXJuKCJ2
-c25wcmludGYoYnVmLCAlZCwgXCIlc1wiLCAuLi4pIHdyb3RlICclcycsIGV4cGVjdGVkICclLipz
-J1xuIiwKKwkJCWJ1ZnNpemUsIGZtdCwgdGVzdF9idWZmZXIsIHdyaXR0ZW4sIGV4cGVjdCk7CisJ
-CXJldHVybiAxOworCX0KKwlyZXR1cm4gMDsKK30KKworc3RhdGljIHZvaWQgX19wcmludGYoMywg
-NCkgX19pbml0CitfX3Rlc3QoY29uc3QgY2hhciAqZXhwZWN0LCBpbnQgZWxlbiwgY29uc3QgY2hh
-ciAqZm10LCAuLi4pCit7CisJdmFfbGlzdCBhcDsKKwlpbnQgcmFuZDsKKwljaGFyICpwOworCisJ
-aWYgKGVsZW4gPj0gQlVGX1NJWkUpIHsKKwkJcHJfZXJyKCJlcnJvciBpbiB0ZXN0IHN1aXRlOiBl
-eHBlY3RlZCBvdXRwdXQgbGVuZ3RoICVkIHRvbyBsb25nLiBGb3JtYXQgd2FzICclcycuXG4iLAor
-CQkgICAgICAgZWxlbiwgZm10KTsKKwkJZmFpbGVkX3Rlc3RzKys7CisJCXJldHVybjsKKwl9CisK
-Kwl2YV9zdGFydChhcCwgZm10KTsKKworCS8qCisJICogRXZlcnkgZm10K2FyZ3MgaXMgc3ViamVj
-dGVkIHRvIGZvdXIgdGVzdHM6IFRocmVlIHdoZXJlIHdlCisJICogdGVsbCB2c25wcmludGYgdmFy
-eWluZyBidWZmZXIgc2l6ZXMgKHBsZW50eSwgbm90IHF1aXRlCisJICogZW5vdWdoIGFuZCAwKSwg
-YW5kIHRoZW4gd2UgYWxzbyB0ZXN0IHRoYXQgYnZhc3ByaW50ZiB3b3VsZAorCSAqIGJlIGFibGUg
-dG8gcHJpbnQgaXQgYXMgZXhwZWN0ZWQuCisJICovCisJZmFpbGVkX3Rlc3RzICs9IGRvX3Rlc3Qo
-QlVGX1NJWkUsIGV4cGVjdCwgZWxlbiwgZm10LCBhcCk7CisJcmFuZCA9IDEgKyBwcmFuZG9tX3Uz
-Ml9tYXgoZWxlbisxKTsKKwkvKiBTaW5jZSBlbGVuIDwgQlVGX1NJWkUsIHdlIGhhdmUgMSA8PSBy
-YW5kIDw9IEJVRl9TSVpFLiAqLworCWZhaWxlZF90ZXN0cyArPSBkb190ZXN0KHJhbmQsIGV4cGVj
-dCwgZWxlbiwgZm10LCBhcCk7CisJZmFpbGVkX3Rlc3RzICs9IGRvX3Rlc3QoMCwgZXhwZWN0LCBl
-bGVuLCBmbXQsIGFwKTsKKworCXAgPSBidmFzcHJpbnRmKGZtdCwgYXApOworCWlmIChwKSB7CisJ
-CXRvdGFsX3Rlc3RzKys7CisJCWlmIChtZW1jbXAocCwgZXhwZWN0LCBlbGVuKzEpKSB7CisJCQlw
-cl93YXJuKCJidmFzcHJpbnRmKC4uLiwgXCIlc1wiLCAuLi4pIHJldHVybmVkICclcycsIGV4cGVj
-dGVkICclcydcbiIsCisJCQkJZm10LCBwLCBleHBlY3QpOworCQkJZmFpbGVkX3Rlc3RzKys7CisJ
-CX0KKwkJa2ZyZWUocCk7CisJfQorCXZhX2VuZChhcCk7Cit9CisKKyNkZWZpbmUgdGVzdChleHBl
-Y3QsIGZtdCwgLi4uKQkJCQkJXAorCV9fdGVzdChleHBlY3QsIHN0cmxlbihleHBlY3QpLCBmbXQs
-ICMjX19WQV9BUkdTX18pCisKK3N0YXRpYyB2b2lkIF9faW5pdAordGVzdF9iYXNpYyh2b2lkKQor
-eworCS8qIFdvcmsgYXJvdW5kIGFubm95aW5nICJ3YXJuaW5nOiB6ZXJvLWxlbmd0aCBnbnVfcHJp
-bnRmIGZvcm1hdCBzdHJpbmciLiAqLworCWNoYXIgbnVsID0gJ1wwJzsKKworCXRlc3QoIiIsICZu
-dWwpOworCXRlc3QoIjEwMCUiLCAiMTAwJSUiKTsKKwl0ZXN0KCJ4eHgleXl5IiwgInh4eCVjeXl5
-IiwgJyUnKTsKKwlfX3Rlc3QoInh4eFwweXl5IiwgNywgInh4eCVjeXl5IiwgJ1wwJyk7Cit9CisK
-K3N0YXRpYyB2b2lkIF9faW5pdAordGVzdF9udW1iZXIodm9pZCkKK3sKKwlzaWduZWQgY2hhciB2
-YWw7CisKKwl0ZXN0KCIweDEyMzRhYmNkICAiLCAiJSMtMTJ4IiwgMHgxMjM0YWJjZCk7CisJdGVz
-dCgiICAweDEyMzRhYmNkIiwgIiUjMTJ4IiwgMHgxMjM0YWJjZCk7CisJdGVzdCgiMHwwMDF8IDEy
-fCsxMjN8IDEyMzR8LTEyM3wtMTIzNCIsICIlZHwlMDNkfCUzZHwlK2R8JSBkfCUrZHwlIGQiLCAw
-LCAxLCAxMiwgMTIzLCAxMjM0LCAtMTIzLCAtMTIzNCk7CisJdGVzdCgiMHwxfDF8MzI3Njh8NjU1
-MzUiLCAiJWh1fCVodXwlaHV8JWh1fCVodSIsIDAsIDEsIDY1NTM3LCAzMjc2OCwgLTEpOworCXRl
-c3QoIjB8MXwxfC0zMjc2OHwtMSIsICIlaGR8JWhkfCVoZHwlaGR8JWhkIiwgMCwgMSwgNjU1Mzcs
-IDMyNzY4LCAtMSk7CisJdGVzdCgiMjAxNTEyMjQyMDE1MTIyNSIsICIlaG8laG8lI2hvIiwgMTAz
-NywgNTI4MiwgLTExNjI3KTsKKworCXRlc3QoIjIwMTUxMjI0MjAxNTEyMjUiLCAiJWhvJWhvJSNo
-byIsIDEwMzcsIDUyODIsIC0xMTYyNyk7CisKKwkvKgorCSAqIFBPU0lYL0M5OTogwrtUaGUgcmVz
-dWx0IG9mIGNvbnZlcnRpbmcgemVybyB3aXRoIGFuIGV4cGxpY2l0CisJICogcHJlY2lzaW9uIG9m
-IHplcm8gc2hhbGwgYmUgbm8gY2hhcmFjdGVycy7CqyBIZW5jZSB0aGUgb3V0cHV0CisJICogZnJv
-bSB0aGUgYmVsb3cgdGVzdCBzaG91bGQgcmVhbGx5IGJlICIwMHwwfHx8ICIuIEhvd2V2ZXIsCisJ
-ICogdGhlIGtlcm5lbCdzIHByaW50ZiBhbHNvIHByb2R1Y2VzIGEgc2luZ2xlIDAgaW4gdGhhdAor
-CSAqIGNhc2UuIFRoaXMgdGVzdCBjYXNlIHNpbXBseSBkb2N1bWVudHMgdGhlIGN1cnJlbnQKKwkg
-KiBiZWhhdmlvdXIuCisJICovCisJdGVzdCgiMDB8MHwwfDB8MCIsICIlLjJkfCUuMWR8JS4wZHwl
-LipkfCUxLjBkIiwgMCwgMCwgMCwgMCwgMCwgMCk7CisKKwl2YWwgPSAtMTY7CisJdGVzdCgiMHhm
-ZmZmZmZmMHwweGYwfDB4ZjAiLCAiJSMwMnh8JSMwMnh8JSMwMngiLCB2YWwsIHZhbCAmIDB4ZmYs
-ICh1OCl2YWwpOworCisJLyogT24gc29tZSBwbGF0Zm9ybXMsIHRlc3QgZmFpbHVyZSBoZXJlIGlu
-ZGljYXRlcyBhIG1pc2FsaWduZWQgc3RhY2sgKi8KKwl0ZXN0KCIweDA4MDcwNjA1MDQwMzAyMDEi
-LCAiMHglMDE2bGx4IiwgMHgwODA3MDYwNTA0MDMwMjAxVUxMKTsKK30KKworc3RhdGljIHZvaWQg
-X19pbml0Cit0ZXN0X3N0cmluZyh2b2lkKQoreworCXRlc3QoIiIsICIlcyUuMHMiLCAiIiwgIjEy
-MyIpOworCXRlc3QoIkFCQ0R8YWJjfDEyMyIsICIlc3wlLjNzfCUuKnMiLCAiQUJDRCIsICJhYmNk
-ZWYiLCAzLCAiMTIzNDU2Iik7CisJdGVzdCgiMSAgfCAgMnwzICB8ICA0fDUgICIsICIlLTNzfCUz
-c3wlLSpzfCUqc3wlKnMiLCAiMSIsICIyIiwgMywgIjMiLCAzLCAiNCIsIC0zLCAiNSIpOworCXRl
-c3QoIjEyMzQgICAgICAiLCAiJS0xMC40cyIsICIxMjM0NTYiKTsKKwl0ZXN0KCIgICAgICAxMjM0
-IiwgIiUxMC40cyIsICIxMjM0NTYiKTsKK30KKworI2lmIEJJVFNfUEVSX0xPTkcgPT0gNjQKKwor
-I2RlZmluZSBQVFJfV0lEVEggMTYKKyNkZWZpbmUgUFRSICgodm9pZCAqKTB4ZmZmZjAxMjM0NTY3
-ODlhYlVMKQorI2RlZmluZSBQVFJfU1RSICJmZmZmMDEyMzQ1Njc4OWFiIgorI2RlZmluZSBQVFJf
-VkFMX05PX0NSTkcgIihfX19fcHRydmFsX19fXykiCisjZGVmaW5lIFpFUk9TICIwMDAwMDAwMCIJ
-LyogaGV4IDMyIHplcm8gYml0cyAqLworI2RlZmluZSBPTkVTICJmZmZmZmZmZiIJCS8qIGhleCAz
-MiBvbmUgYml0cyAqLworCisjZWxzZQorCisjZGVmaW5lIFBUUl9XSURUSCA4CisjZGVmaW5lIFBU
-UiAoKHZvaWQgKikweDQ1Njc4OWFiKQorI2RlZmluZSBQVFJfU1RSICI0NTY3ODlhYiIKKyNkZWZp
-bmUgUFRSX1ZBTF9OT19DUk5HICIocHRydmFsKSIKKyNkZWZpbmUgWkVST1MgIiIKKyNkZWZpbmUg
-T05FUyAiIgorCisjZW5kaWYJLyogQklUU19QRVJfTE9ORyA9PSA2NCAqLworCisvKgorICogTlVM
-TCBwb2ludGVycyBhcmVuJ3QgaGFzaGVkLgorICovCitzdGF0aWMgdm9pZCBfX2luaXQKK251bGxf
-cG9pbnRlcih2b2lkKQoreworCXRlc3QoWkVST1MgIjAwMDAwMDAwIiwgIiVwIiwgTlVMTCk7CisJ
-dGVzdChaRVJPUyAiMDAwMDAwMDAiLCAiJXB4IiwgTlVMTCk7Cit9CisKKy8qCisgKiBFcnJvciBw
-b2ludGVycyBhcmVuJ3QgaGFzaGVkLgorICovCitzdGF0aWMgdm9pZCBfX2luaXQKK2Vycm9yX3Bv
-aW50ZXIodm9pZCkKK3sKKwl0ZXN0KE9ORVMgImZmZmZmZmY1IiwgIiVwIiwgRVJSX1BUUigtMTEp
-KTsKKwl0ZXN0KE9ORVMgImZmZmZmZmY1IiwgIiVweCIsIEVSUl9QVFIoLTExKSk7Cit9CisKKyNk
-ZWZpbmUgUFRSX0lOVkFMSUQgKCh2b2lkICopMHgwMDAwMDBhYikKKworc3RhdGljIHZvaWQgX19p
-bml0CitpbnZhbGlkX3BvaW50ZXIodm9pZCkKK3sKKwl0ZXN0KFpFUk9TICIwMDAwMDBhYiIsICIl
-cHgiLCBQVFJfSU5WQUxJRCk7Cit9CisKK3N0YXRpYyB2b2lkIF9faW5pdAoraXA0KHZvaWQpCit7
-CisJSVBhZGRyX3QgaXAgPSBjcHVfdG9fYmUzMigweDdmMDAwMDAxKTsKKworCXRlc3QoIjEyNy4w
-LjAuMSIsICIlcEk0IiwgJmlwKTsKK30KKworc3RhdGljIHZvaWQgX19pbml0CitpcCh2b2lkKQor
-eworCWlwNCgpOworfQorCitzdGF0aWMgdm9pZCBfX2luaXQKK3V1aWQodm9pZCkKK3sKKwljb25z
-dCBjaGFyIHV1aWRbMTZdID0gezB4MCwgMHgxLCAweDIsIDB4MywgMHg0LCAweDUsIDB4NiwgMHg3
-LAorCQkJICAgICAgIDB4OCwgMHg5LCAweGEsIDB4YiwgMHhjLCAweGQsIDB4ZSwgMHhmfTsKKwor
-CWlmICghSVNfRU5BQkxFRChDT05GSUdfUFJJTlRGX1VVSUQpKQorCQlyZXR1cm47CisKKwl0ZXN0
-KCIwMDAxMDIwMy0wNDA1LTA2MDctMDgwOS0wYTBiMGMwZDBlMGYiLCAiJXBVYiIsIHV1aWQpOwor
-CXRlc3QoIjAwMDEwMjAzLTA0MDUtMDYwNy0wODA5LTBBMEIwQzBEMEUwRiIsICIlcFVCIiwgdXVp
-ZCk7CisJdGVzdCgiMDMwMjAxMDAtMDUwNC0wNzA2LTA4MDktMGEwYjBjMGQwZTBmIiwgIiVwVWwi
-LCB1dWlkKTsKKwl0ZXN0KCIwMzAyMDEwMC0wNTA0LTA3MDYtMDgwOS0wQTBCMEMwRDBFMEYiLCAi
-JXBVTCIsIHV1aWQpOworfQorCitzdGF0aWMgdm9pZCBfX2luaXQKK2VycnB0cih2b2lkKQorewor
-CXRlc3QoImVycm9yIDEyMzQiLCAiJXBlIiwgRVJSX1BUUigtMTIzNCkpOworCXRlc3Qoc2l6ZW9m
-KHZvaWQgKikgPT0gOCA/ICIwMDAwMDAwMDAwMDAwNGQyIiA6ICIwMDAwMDRkMiIsICIlcGUiLCBF
-UlJfUFRSKDEyMzQpKTsKKworCS8qIENoZWNrIHRoYXQgJXBlIHdpdGggYSBub24tRVJSX1BUUiBn
-ZXRzIHRyZWF0ZWQgYXMgb3JkaW5hcnkgJXAuICovCisJQlVJTERfQlVHX09OKElTX0VSUihQVFIp
-KTsKKworCWlmICghSVNfRU5BQkxFRChDT05GSUdfRVJSTk9fTUVTU0FHRVMpKQorCQlyZXR1cm47
-CisJdGVzdCgiKE9wZXJhdGlvbiBub3QgcGVybWl0dGVkKSIsICIoJXBlKSIsIEVSUl9QVFIoLUVQ
-RVJNKSk7CisJdGVzdCgiUmVxdWVzdGVkIHByb2JlIGRlZmVycmFsIiwgIiVwZSIsIEVSUl9QVFIo
-LUVQUk9CRV9ERUZFUikpOworfQorCitzdGF0aWMgdm9pZCBfX2luaXQKK3Rlc3RfcG9pbnRlcih2
-b2lkKQoreworCW51bGxfcG9pbnRlcigpOworCWVycm9yX3BvaW50ZXIoKTsKKwlpbnZhbGlkX3Bv
-aW50ZXIoKTsKKwlpcCgpOworCXV1aWQoKTsKKwllcnJwdHIoKTsKK30KKworc3RhdGljIHZvaWQg
-X19pbml0IHRlc3RfcHJpbnRmKHZvaWQpCit7CisJYWxsb2NlZF9idWZmZXIgPSBtYWxsb2MoQlVG
-X1NJWkUgKyAyKlBBRF9TSVpFKTsKKwlpZiAoIWFsbG9jZWRfYnVmZmVyKQorCQlyZXR1cm47CisJ
-dGVzdF9idWZmZXIgPSBhbGxvY2VkX2J1ZmZlciArIFBBRF9TSVpFOworCisJdGVzdF9iYXNpYygp
-OworCXRlc3RfbnVtYmVyKCk7CisJdGVzdF9zdHJpbmcoKTsKKwl0ZXN0X3BvaW50ZXIoKTsKKwor
-CWZyZWUoYWxsb2NlZF9idWZmZXIpOworfQorCitic2VsZnRlc3QoY29yZSwgdGVzdF9wcmludGYp
-OworTU9EVUxFX0FVVEhPUigiUmFzbXVzIFZpbGxlbW9lcyA8bGludXhAcmFzbXVzdmlsbGVtb2Vz
-LmRrPiIpOworTU9EVUxFX0xJQ0VOU0UoIkdQTCIpOwotLSAKMi4yOS4yCgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+v4 -> v4 (RESEND):
+  - Readd lost Acked-by's (Sorry for the noise)
+
+v3 -> v4:
+  - Make it clearer in commit message and comments that some YAML
+    configs can't be tested by labgrid, because they use emulators
+    beside QEMU (Jan)
+  - Use !template "$LG_BUILDDIR/..." to have labgrid do the
+    substitution. Previously, it was seemingly done being substituted
+    by pyyaml. (Jan)
+  - Use YAML::XS (libyaml binding) instead of YAML::Tiny to support
+    !template
+  - Exit with error when mixing specification of virtual devices on
+    emulate.pl command-line with --test. They are only supported
+    when running QEMU directly for interactive use
+  - Fix some inaccuracies in docs and help text
+  - Add new --verbosity option to control both tuxmake and pytest.
+    Default value is 1 for both, so tuxmake default output stays
+    unchanged, but pytest now prints a line per test run.
+  - Squashed stray hunk into original selftest commit
+
+v2 -> v3:
+  - Added own BareboxTestStrategy instead of reusing labgrid's.
+    This affords us flexibility in future and lets us get rid
+    of unused ShellDriver boilerplate in YAML/conftest (Rouven)
+  - Make selftest timeout of 30 seconds explicit (Rouven)
+    This can be increased as needed in future.
+  - Print out barebox output when selftest assertion fails (Rouven)
+  - Collected Rouven's off-list Acked-by's
+
+v1 -> v2:
+  - drop already merged patches
+  - use objcopy to swap image byte order instead of writing something new (Jules)
+  - always run tests from source directory, not build directory when
+    building out-of-tree (honour KBUILD_OUTPUT, build symlink in that case)
+  - add some more sample tests
+  - add test/riscv/sifive_defconfig.yaml
+
+Ahmad Fatoum (13):
+  kbuild: add install target
+  kbuild: add ARCH={i386, x86_64} as aliases for x86
+  kbuild: add ARCH=um alias for sandbox
+  MIPS: qemu-malta: generate swapped image as part of multi-image build
+  openrisc: set default KBUILD_IMAGE
+  Documentation: boards: RISC-V: update TinyEMU support
+  test: add basic barebox self-test infrastructure
+  test: self: port Linux printf kselftest
+  test: add labgrid-style configs for some emulated targets
+  test: add first sample tests
+  test: add emulate.pl, a runner for barebox on emulated targets
+  test: self: run selftests as part of the pytest suite
+  test: add bthread test
+
+ Documentation/boards/emulated.rst             |  75 +++
+ Documentation/boards/mips/qemu-malta.rst      |  16 +-
+ Documentation/boards/riscv.rst                |  20 +-
+ Documentation/boards/riscv/barebox-virt32.cfg |   7 +
+ Documentation/boards/riscv/barebox-virt64.cfg |   7 +
+ Kconfig                                       |   1 +
+ Makefile                                      |  28 +-
+ arch/openrisc/Makefile                        |   2 +
+ commands/Makefile                             |   1 +
+ commands/selftest.c                           |  88 +++
+ common/startup.c                              |   4 +
+ images/.gitignore                             |   1 +
+ images/Makefile                               |   7 +-
+ images/Makefile.malta                         |  10 +-
+ include/bselftest.h                           |  74 +++
+ include/stdlib.h                              |   5 +
+ test/.gitignore                               |   1 +
+ test/Kconfig                                  |   8 +
+ test/Makefile                                 |   1 +
+ test/__init__.py                              |   0
+ test/arm/a15@vexpress_defconfig.yaml          |  20 +
+ test/arm/a9@vexpress_defconfig.yaml           |  20 +
+ test/arm/qemu_virt64_defconfig.yaml           |  24 +
+ test/arm/vexpress_defconfig.yaml              |   1 +
+ test/arm/virt@vexpress_defconfig.yaml         |  22 +
+ test/conftest.py                              |  27 +
+ test/emulate.pl                               | 528 ++++++++++++++++++
+ test/kconfig/base.cfg                         |   4 +
+ test/kconfig/full.cfg                         |   2 +
+ test/kconfig/virtio-pci.cfg                   |   6 +
+ test/mips/be@qemu-malta_defconfig.yaml        |  22 +
+ test/mips/le@qemu-malta_defconfig.yaml        |  25 +
+ test/mips/qemu-malta_defconfig.yaml           |   1 +
+ test/openrisc/generic_defconfig.yaml          |  20 +
+ test/py/__init__.py                           |   0
+ test/py/helper.py                             |  38 ++
+ test/py/test_bselftests.py                    |   8 +
+ test/py/test_bthread.py                       |  23 +
+ test/py/test_shell.py                         |  36 ++
+ test/riscv/qemu@virt32_defconfig.yaml         |  27 +
+ test/riscv/qemu@virt64_defconfig.yaml         |  27 +
+ test/riscv/sifive_defconfig.yaml              |  25 +
+ test/riscv/tinyemu@virt32_defconfig.yaml      |  22 +
+ test/riscv/tinyemu@virt64_defconfig.yaml      |  22 +
+ test/riscv/virt32_defconfig.yaml              |   1 +
+ test/riscv/virt64_defconfig.yaml              |   1 +
+ test/sandbox/sandbox_defconfig.yaml           |  12 +
+ test/self/Kconfig                             |  39 ++
+ test/self/Makefile                            |   4 +
+ test/self/core.c                              |  22 +
+ test/self/printf.c                            | 302 ++++++++++
+ test/strategy.py                              |  53 ++
+ test/x86/efi_defconfig.yaml                   |   1 +
+ test/x86/pc@efi_defconfig.yaml                |  31 +
+ test/x86/q35@efi_defconfig.yaml               |  31 +
+ test/x86/virtio@efi_defconfig.yaml            |  32 ++
+ 56 files changed, 1810 insertions(+), 25 deletions(-)
+ create mode 100644 Documentation/boards/emulated.rst
+ create mode 100644 Documentation/boards/riscv/barebox-virt32.cfg
+ create mode 100644 Documentation/boards/riscv/barebox-virt64.cfg
+ create mode 100644 commands/selftest.c
+ create mode 100644 include/bselftest.h
+ create mode 100644 test/.gitignore
+ create mode 100644 test/Kconfig
+ create mode 100644 test/Makefile
+ create mode 100644 test/__init__.py
+ create mode 100644 test/arm/a15@vexpress_defconfig.yaml
+ create mode 100644 test/arm/a9@vexpress_defconfig.yaml
+ create mode 100644 test/arm/qemu_virt64_defconfig.yaml
+ create mode 120000 test/arm/vexpress_defconfig.yaml
+ create mode 100644 test/arm/virt@vexpress_defconfig.yaml
+ create mode 100644 test/conftest.py
+ create mode 100755 test/emulate.pl
+ create mode 100644 test/kconfig/base.cfg
+ create mode 100644 test/kconfig/full.cfg
+ create mode 100644 test/kconfig/virtio-pci.cfg
+ create mode 100644 test/mips/be@qemu-malta_defconfig.yaml
+ create mode 100644 test/mips/le@qemu-malta_defconfig.yaml
+ create mode 120000 test/mips/qemu-malta_defconfig.yaml
+ create mode 100644 test/openrisc/generic_defconfig.yaml
+ create mode 100644 test/py/__init__.py
+ create mode 100644 test/py/helper.py
+ create mode 100644 test/py/test_bselftests.py
+ create mode 100644 test/py/test_bthread.py
+ create mode 100644 test/py/test_shell.py
+ create mode 100644 test/riscv/qemu@virt32_defconfig.yaml
+ create mode 100644 test/riscv/qemu@virt64_defconfig.yaml
+ create mode 100644 test/riscv/sifive_defconfig.yaml
+ create mode 100644 test/riscv/tinyemu@virt32_defconfig.yaml
+ create mode 100644 test/riscv/tinyemu@virt64_defconfig.yaml
+ create mode 120000 test/riscv/virt32_defconfig.yaml
+ create mode 120000 test/riscv/virt64_defconfig.yaml
+ create mode 100644 test/sandbox/sandbox_defconfig.yaml
+ create mode 100644 test/self/Kconfig
+ create mode 100644 test/self/Makefile
+ create mode 100644 test/self/core.c
+ create mode 100644 test/self/printf.c
+ create mode 100644 test/strategy.py
+ create mode 120000 test/x86/efi_defconfig.yaml
+ create mode 100644 test/x86/pc@efi_defconfig.yaml
+ create mode 100644 test/x86/q35@efi_defconfig.yaml
+ create mode 100644 test/x86/virtio@efi_defconfig.yaml
+
+-- 
+2.29.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
