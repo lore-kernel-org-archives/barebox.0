@@ -1,53 +1,53 @@
-Delivery-date: Fri, 04 Jun 2021 10:33:34 +0200
+Delivery-date: Fri, 04 Jun 2021 10:33:43 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5Go-00051E-5S
-	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:33:34 +0200
+	id 1lp5Gx-00051l-K8
+	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:33:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5Gh-0007Jd-KC
-	for lore@pengutronix.de; Fri, 04 Jun 2021 10:33:33 +0200
+	id 1lp5Gn-0007LO-Ls
+	for lore@pengutronix.de; Fri, 04 Jun 2021 10:33:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=wWdxDlUimRzLxVj6J3T+57XUQqXFtZOd3XG3vK9JHss=; b=Z7q4IleEm+nhed
-	lSdEqDJGcI3kFGOUu35tSO5YyaxxnAOFD5FScMC6EYE2lzVNnwv6gmKPAQB11JefPC1QhhKBdPOsc
-	GOE9/O3dAE7kYpQtHIIB6cWjOHKK4iHOAsYjLm3IaoFRZRLeat6VZypi7aVlPTM160XzFEH7ESaiM
-	w3teZHJ/eWJUqTsKUM5+j6hSVj1fdoBjz2YaliG0YTQtH2RyIbPCO+mpSUocsHNgK9D4LkUQ2Wh/D
-	VTYc29nA1HF13AsKd5yUWlLIg9DXNwiXcQd5N0u1VpZ+5XEAil42//RZUoJAi48kfKQtqEogHvR42
-	BfzW51QmZLju7WJllDUw==;
+	List-Owner; bh=a19JVRAZ1wmWfOWsTSrRZrkRMUdYJSeJxIagpfpl2UA=; b=PiX1GVxhAbaJVu
+	9BbbFtbsiO4H2pnLHYAsUO+T/rKxb3y5Vrd0NHmxabErxYrtM7P2HL7Hm2ZvJsTCtg46YecGii2Bz
+	oWpKqORfYjfPQbUliTuLKUOajH5itjzN2iwFMGewnFswAmk6T66k2fqFQ9c0r1g2DdKkGTXCyed2l
+	Hz79Zxie9/cTOgnSzyKNiqdnzAZjAQ7AoxOSCLLf7X1ISoyLPHsFj0dxOObK6DWNYAmD1L6VkD3f7
+	iA9TASJ2rTTHmvFvpl8w+XWOQe9fCTzM5dBaZw23n2fRsuahS0+PAnyS/WOUkDWHdFgCui4yMFyIp
+	wh+IWGaSqLIM6cKEgGOA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lp5Ev-00CIyW-2b; Fri, 04 Jun 2021 08:31:37 +0000
+	id 1lp5Ex-00CIzK-MZ; Fri, 04 Jun 2021 08:31:39 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lp5Ek-00CIvp-4t
+ id 1lp5Em-00CIwt-Ew
  for barebox@lists.infradead.org; Fri, 04 Jun 2021 08:31:30 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5Eg-0006k6-9F; Fri, 04 Jun 2021 10:31:22 +0200
+ id 1lp5El-0006k9-7b; Fri, 04 Jun 2021 10:31:27 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5Ef-0002lz-BK; Fri, 04 Jun 2021 10:31:21 +0200
+ id 1lp5Ef-0002mc-Cn; Fri, 04 Jun 2021 10:31:21 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri,  4 Jun 2021 10:31:00 +0200
-Message-Id: <20210604083109.10581-5-a.fatoum@pengutronix.de>
+Date: Fri,  4 Jun 2021 10:31:03 +0200
+Message-Id: <20210604083109.10581-8-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210604083109.10581-1-a.fatoum@pengutronix.de>
 References: <20210604083109.10581-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210604_013126_233047_8BF2CBA6 
-X-CRM114-Status: GOOD (  11.21  )
+X-CRM114-CacheID: sfid-20210604_013128_690929_8B8106FB 
+X-CRM114-Status: GOOD (  25.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,102 +73,369 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 04/13] MIPS: qemu-malta: generate swapped image as part of
- multi-image build
+Subject: [PATCH v4 07/13] test: add basic barebox self-test infrastructure
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Having to manually swap the words in the MIPS Malta image for QEMU
-little endian emulation is annoying.
+Self tests is code written to run within barebox to exercise
+functionality. They offer flexibility to test specific units of barebox
+instead of the program as a whole. Add a very simple infrastructure
+for registering and executing self-tests. This is based on the Linux
+kselftest modules. We don't utilize modules for this, however, because
+we only have module support on ARM, but we need a generic solution.
 
-Have the multi-image build for Malta generate a second .swapped
-image that can be readily used if needed.
+Selftests can be enabled individually and even tested without shell
+support to allow tests to happen for size-restricted barebox images
+as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/mips/qemu-malta.rst | 16 ++++------------
- images/.gitignore                        |  1 +
- images/Makefile                          |  2 +-
- images/Makefile.malta                    | 10 +++++++++-
- 4 files changed, 15 insertions(+), 14 deletions(-)
+ Kconfig             |  1 +
+ Makefile            |  2 +-
+ commands/Makefile   |  1 +
+ commands/selftest.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
+ common/startup.c    |  4 +++
+ include/bselftest.h | 74 ++++++++++++++++++++++++++++++++++++++
+ test/Kconfig        |  8 +++++
+ test/Makefile       |  1 +
+ test/self/Kconfig   | 33 +++++++++++++++++
+ test/self/Makefile  |  3 ++
+ test/self/core.c    | 22 ++++++++++++
+ 11 files changed, 236 insertions(+), 1 deletion(-)
+ create mode 100644 commands/selftest.c
+ create mode 100644 include/bselftest.h
+ create mode 100644 test/Kconfig
+ create mode 100644 test/Makefile
+ create mode 100644 test/self/Kconfig
+ create mode 100644 test/self/Makefile
+ create mode 100644 test/self/core.c
 
-diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
-index e188ae8c642a..fd37d5edb229 100644
---- a/Documentation/boards/mips/qemu-malta.rst
-+++ b/Documentation/boards/mips/qemu-malta.rst
-@@ -10,31 +10,23 @@ QEMU run string:
+diff --git a/Kconfig b/Kconfig
+index 29c32463fb43..7c4cf36881b4 100644
+--- a/Kconfig
++++ b/Kconfig
+@@ -15,3 +15,4 @@ source "lib/Kconfig"
+ source "crypto/Kconfig"
+ source "firmware/Kconfig"
+ source "scripts/Kconfig"
++source "test/Kconfig"
+diff --git a/Makefile b/Makefile
+index 6cccfe9708c8..374f3c2aab74 100644
+--- a/Makefile
++++ b/Makefile
+@@ -578,7 +578,7 @@ endif
+ include $(srctree)/scripts/Makefile.lib
  
-   qemu-system-mips -nodefaults -M malta -m 256 \
-       -device VGA -serial stdio -monitor null \
--      -bios barebox-flash-image
-+      -bios ./images/barebox-qemu-malta.img
+ # Objects we will link into barebox / subdirs we need to visit
+-common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/ firmware/
++common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/ firmware/ test/
  
+ include $(srctree)/arch/$(SRCARCH)/Makefile
  
- Little-endian mode
- ------------------
+diff --git a/commands/Makefile b/commands/Makefile
+index 447349fd157d..4b45d266fd56 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -130,5 +130,6 @@ obj-$(CONFIG_CMD_SEED)		+= seed.o
+ obj-$(CONFIG_CMD_IP_ROUTE_GET)  += ip-route-get.o
+ obj-$(CONFIG_CMD_BTHREAD)	+= bthread.o
+ obj-$(CONFIG_CMD_UBSAN)		+= ubsan.o
++obj-$(CONFIG_CMD_SELFTEST)	+= selftest.o
  
--Running little-endian Malta is a bit tricky.
- In little-endian mode the 32bit words in the boot flash image are swapped,
- a neat trick which allows bi-endian firmware.
- 
--You have to swap words of ``zbarebox.bin`` image, e.g.:
--
--.. code-block:: sh
--
--  echo arch/mips/pbl/zbarebox.bin \
--      | cpio --create \
--      | cpio --extract --swap --unconditional
--
--QEMU run string:
-+The barebox build generates a second ``./images/barebox-qemu-malta.img.swapped``
-+image that can be used in this case, e.g.:
- 
- .. code-block:: sh
- 
-   qemu-system-mipsel -nodefaults -M malta -m 256 \
-       -device VGA -serial stdio -monitor null \
--      -bios barebox-flash-image
-+      -bios ./images/barebox-qemu-malta.img.swapped
- 
- 
- Using GXemul
-diff --git a/images/.gitignore b/images/.gitignore
-index eafdb44b5bdd..3a9a77dad16e 100644
---- a/images/.gitignore
-+++ b/images/.gitignore
-@@ -32,3 +32,4 @@ barebox.sum
- *.mvebu1img
- *.stm32
- *.nmon
-+*.swapped
-diff --git a/images/Makefile b/images/Makefile
-index c185982c17ed..cc330d957597 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -218,5 +218,5 @@ $(flash-list): $(image-y-path)
- clean-files := *.pbl *.pblb *.map start_*.imximg *.img barebox.z start_*.kwbimg \
- 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
- 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
--	start_*.simximg start_*.usimximg *.zynqimg *.image
-+	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped
- clean-files += pbl.lds
-diff --git a/images/Makefile.malta b/images/Makefile.malta
-index 5739ec464092..96d7b86b1187 100644
---- a/images/Makefile.malta
-+++ b/images/Makefile.malta
-@@ -1,3 +1,11 @@
-+quiet_cmd_bswap32_image = BSWAP4  $@
-+      cmd_bswap32_image = cp $< $@ && \
-+			  truncate -s %4 $@ && \
-+			  objcopy -I binary --reverse-byte=4 $@
+ UBSAN_SANITIZE_ubsan.o := y
+diff --git a/commands/selftest.c b/commands/selftest.c
+new file mode 100644
+index 000000000000..a10f1467fece
+--- /dev/null
++++ b/commands/selftest.c
+@@ -0,0 +1,88 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +
-+$(obj)/%.img.swapped: $(obj)/%.img FORCE
-+	$(call if_changed,bswap32_image)
++#define pr_fmt(fmt) "selftest: " fmt
 +
- pblb-$(CONFIG_BOARD_QEMU_MALTA) += start_qemu_malta
- FILE_barebox-qemu-malta.img = start_qemu_malta.pblb
--image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img
-+image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img barebox-qemu-malta.img.swapped
++#include <common.h>
++#include <command.h>
++#include <getopt.h>
++#include <bselftest.h>
++#include <complete.h>
++
++static int run_selftest(const char *match, bool list)
++{
++	struct selftest *test;
++	int matches = 0;
++	int err = 0;
++
++	list_for_each_entry(test, &selftests, list) {
++		if (list) {
++			printf("%s\n", test->name);
++			matches++;
++			continue;
++		}
++
++		if (match && strcmp(test->name, match))
++			continue;
++
++		err |= test->func();
++		matches++;
++	}
++
++	if (!matches) {
++		if (match) {
++			printf("No tests matching '%s' found.\n", match);
++			return -EINVAL;
++		}
++
++		printf("No tests found.\n");
++	}
++
++	return err;
++}
++
++static int do_selftest(int argc, char *argv[])
++{
++	bool list = false;
++	int i, err = 0;
++	int opt;
++
++	while((opt = getopt(argc, argv, "l")) > 0) {
++		switch(opt) {
++		case 'l':
++			list = true;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	if (optind == argc) {
++		err = run_selftest(NULL, list);
++	} else {
++		for (i = optind; i < argc; i++) {
++			err = run_selftest(argv[i], list);
++			if (err)
++				goto out;
++		}
++	}
++
++out:
++	return err ? COMMAND_ERROR : COMMAND_SUCCESS;
++}
++
++BAREBOX_CMD_HELP_START(selftest)
++BAREBOX_CMD_HELP_TEXT("Run enabled barebox self-tests")
++BAREBOX_CMD_HELP_TEXT("If run without arguments, all tests are run")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-l",     "list available tests")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(selftest)
++	.cmd		= do_selftest,
++	BAREBOX_CMD_DESC("Run selftests")
++	BAREBOX_CMD_OPTS("[-l] [tests..]")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_COMPLETE(empty_complete)
++	BAREBOX_CMD_HELP(cmd_selftest_help)
++BAREBOX_CMD_END
+diff --git a/common/startup.c b/common/startup.c
+index 080feebf05fd..d170cb8a7c5a 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -37,6 +37,7 @@
+ #include <linux/ctype.h>
+ #include <watchdog.h>
+ #include <glob.h>
++#include <bselftest.h>
+ 
+ extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
+ 		  __barebox_initcalls_end[];
+@@ -417,6 +418,9 @@ void __noreturn start_barebox(void)
+ 
+ 	pr_debug("initcalls done\n");
+ 
++	if (IS_ENABLED(CONFIG_SELFTEST_AUTORUN))
++		selftests_run();
++
+ 	if (barebox_main)
+ 		barebox_main();
+ 
+diff --git a/include/bselftest.h b/include/bselftest.h
+new file mode 100644
+index 000000000000..21eeba0526ef
+--- /dev/null
++++ b/include/bselftest.h
+@@ -0,0 +1,74 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++#ifndef __BSELFTEST_H
++#define __BSELFTEST_H
++
++#include <linux/compiler.h>
++#include <linux/list.h>
++#include <init.h>
++
++enum bselftest_group {
++	BSELFTEST_core
++};
++
++struct selftest {
++	enum bselftest_group group;
++	const char *name;
++	int (*func)(void);
++	struct list_head list;
++};
++
++static inline int selftest_report(unsigned int total_tests, unsigned int failed_tests,
++				  unsigned int skipped_tests)
++{
++	if (failed_tests == 0) {
++		if (skipped_tests) {
++			pr_info("skipped %u tests\n", skipped_tests);
++			pr_info("remaining %u tests passed\n", total_tests);
++		} else
++			pr_info("all %u tests passed\n", total_tests);
++	} else
++		pr_err("failed %u out of %u tests\n", failed_tests, total_tests);
++
++	return failed_tests ? -EINVAL : 0;
++}
++
++extern struct list_head selftests;
++
++#define BSELFTEST_GLOBALS()			\
++static unsigned int total_tests __initdata;	\
++static unsigned int failed_tests __initdata;	\
++static unsigned int skipped_tests __initdata
++
++#ifdef CONFIG_SELFTEST
++#define __bselftest_initcall(func) late_initcall(func)
++void selftests_run(void);
++#else
++#define __bselftest_initcall(func)
++static inline void selftests_run(void)
++{
++}
++#endif
++
++#define bselftest(_group, _func)				\
++	static int __bselftest_##_func(void)			\
++	{							\
++		total_tests = failed_tests = skipped_tests = 0;	\
++		_func();					\
++		return selftest_report(total_tests,		\
++				failed_tests,			\
++				skipped_tests);			\
++	}							\
++	static __maybe_unused					\
++	int __init _func##_bselftest_register(void)		\
++	{							\
++		static struct selftest this = {			\
++			.group = BSELFTEST_##_group,		\
++			.name = KBUILD_MODNAME,			\
++			.func = __bselftest_##_func,		\
++		};						\
++		list_add_tail(&this.list, &selftests);		\
++		return 0;					\
++	}							\
++	__bselftest_initcall(_func##_bselftest_register);
++
++#endif
+diff --git a/test/Kconfig b/test/Kconfig
+new file mode 100644
+index 000000000000..eece702e68aa
+--- /dev/null
++++ b/test/Kconfig
+@@ -0,0 +1,8 @@
++menuconfig TEST
++	bool "Testing"
++
++if TEST
++
++source "test/self/Kconfig"
++
++endif
+diff --git a/test/Makefile b/test/Makefile
+new file mode 100644
+index 000000000000..1b9eb2171a82
+--- /dev/null
++++ b/test/Makefile
+@@ -0,0 +1 @@
++obj-y += self/
+diff --git a/test/self/Kconfig b/test/self/Kconfig
+new file mode 100644
+index 000000000000..720abeffc51b
+--- /dev/null
++++ b/test/self/Kconfig
+@@ -0,0 +1,33 @@
++# SPDX-License-Identifier: GPL-2.0
++
++config SELFTEST
++	bool "Self-tests"
++	help
++	  Configures support for in-barebox testing
++
++if SELFTEST
++
++config CMD_SELFTEST
++	bool "selftest command"
++	depends on COMMAND_SUPPORT
++	help
++	  Command to run enabled barebox self-tests.
++	  If run without arguments, all tests are run
++
++	  Usage: selftest [-l] [tests...]
++
++	  Options:
++	    -l     list available tests
++
++config SELFTEST_AUTORUN
++	bool "Run self-tests on startup"
++	help
++	  Self tests are run automatically after initcalls are done,
++	  but before barebox_main (shell or board-specific startup).
++
++config SELFTEST_ENABLE_ALL
++	bool "Enable all self-tests"
++	help
++	  Selects all self-tests compatible with current configuration
++
++endif
+diff --git a/test/self/Makefile b/test/self/Makefile
+new file mode 100644
+index 000000000000..78f738c8e210
+--- /dev/null
++++ b/test/self/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
++
++obj-$(CONFIG_SELFTEST) += core.o
+diff --git a/test/self/core.c b/test/self/core.c
+new file mode 100644
+index 000000000000..caa4c27f6def
+--- /dev/null
++++ b/test/self/core.c
+@@ -0,0 +1,22 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#define pr_fmt(fmt) "bselftest: " fmt
++
++#include <common.h>
++#include <bselftest.h>
++
++LIST_HEAD(selftests);
++
++void selftests_run(void)
++{
++	struct selftest *test;
++	int err = 0;
++
++	pr_notice("Configured tests will run now\n");
++
++	list_for_each_entry(test, &selftests, list)
++		err |= test->func();
++
++	if (err)
++		pr_err("Some selftests failed\n");
++}
 -- 
 2.29.2
 
