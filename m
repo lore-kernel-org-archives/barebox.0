@@ -1,53 +1,53 @@
-Delivery-date: Fri, 04 Jun 2021 10:50:17 +0200
+Delivery-date: Fri, 04 Jun 2021 10:50:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5Wz-0005NC-7r
-	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:50:17 +0200
+	id 1lp5X0-0005Nc-AO
+	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:50:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5Wm-0001fx-Mw
-	for lore@pengutronix.de; Fri, 04 Jun 2021 10:50:17 +0200
+	id 1lp5Wp-0001gy-97
+	for lore@pengutronix.de; Fri, 04 Jun 2021 10:50:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=gDQ/0PmsG4/m6ti4zDOP6AmqJkb6YqinvoY5Bxm5Lsk=; b=wz7PyQ+rIPD250
-	/WFnUQEql5yHaqGli4bH2STqbswID5LdZ8zs5vpDyfKkTu1RiQ0JoojoRn85ygG2jTHgcnXjhmLOH
-	xO/+++va13jvjAprpJcyQ+XoYb2BdpTuPuAfAzUKg0pK87R59VvzIWt77WsqTN5Xx9wMGudQLIWhR
-	WQtZKl5YcEP2C34Lek8/ErYnVDWbl9nrJBe0iALDdTp/E7oEDpDivT9ijfbZq7jedx5YnjykCfTRa
-	72pUuub3lFt2xEDzUleH6qKWl4a16u/oDkOyOQoYRezG7z2UipWdOS+MdsMdGyLwzjzbTOfeM7L6n
-	o4JtnnlztUMZ3Ppam8Mg==;
+	List-Owner; bh=wWdxDlUimRzLxVj6J3T+57XUQqXFtZOd3XG3vK9JHss=; b=h36Y/XiIA+VaEe
+	zoOySAUANvQgy1nXlF0zmxIYqKNT4GSxEK2yVrlsAPUnzl0AsT97tNlfMSNrjvkDVRX4NXw0wpYNV
+	WINVCaMWu+ETfTEjw1vGBAyUHfQlCRTLIbTt8uw3sls9jJqGHPreKg2u1IlLnEn8Ui7/jS652Gm5O
+	GF/DKqok9Kx5N2c1vrkd+qPgV7Gj1S4LmIZGBzq3XhN9In/VNiBIDxviwWtA4VwW688HEyR2t1xN4
+	MPg4HRYwJoCFXHmQXuwZlDg1P9C8ZAILpIMwJY8JMi3GmrEm3EUhoI8jF8/WlLp9bf+dJ9z6ang04
+	d8bjqd1wVtNEGcx9+rpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lp5V6-00CMb8-4B; Fri, 04 Jun 2021 08:48:20 +0000
+	id 1lp5VA-00CMfe-Qy; Fri, 04 Jun 2021 08:48:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lp5UH-00CMCQ-WC
- for barebox@lists.infradead.org; Fri, 04 Jun 2021 08:47:33 +0000
+ id 1lp5UH-00CMCP-TB
+ for barebox@lists.infradead.org; Fri, 04 Jun 2021 08:47:34 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5U8-0000iX-IU; Fri, 04 Jun 2021 10:47:20 +0200
+ id 1lp5U8-0000iV-Gw; Fri, 04 Jun 2021 10:47:20 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5U7-00052h-LS; Fri, 04 Jun 2021 10:47:19 +0200
+ id 1lp5U7-00052a-KR; Fri, 04 Jun 2021 10:47:19 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri,  4 Jun 2021 10:46:57 +0200
-Message-Id: <20210604084704.17410-7-a.fatoum@pengutronix.de>
+Date: Fri,  4 Jun 2021 10:46:55 +0200
+Message-Id: <20210604084704.17410-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210604084704.17410-1-a.fatoum@pengutronix.de>
 References: <20210604084704.17410-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210604_014730_042574_F730FEDA 
-X-CRM114-Status: GOOD (  12.40  )
+X-CRM114-CacheID: sfid-20210604_014729_967934_D5B25BFB 
+X-CRM114-Status: GOOD (  11.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,91 +73,102 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH RESEND v4 06/13] Documentation: boards: RISC-V: update TinyEMU
- support
+Subject: [PATCH RESEND v4 04/13] MIPS: qemu-malta: generate swapped image as
+ part of multi-image build
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Adding the tinyemu files as separate files and including them has the
-nice benefit that temu users can just use these files directly instead
-of copy pasting. While at it, update the section as input, as support
-was added meanwhile.
+Having to manually swap the words in the MIPS Malta image for QEMU
+little endian emulation is annoying.
+
+Have the multi-image build for Malta generate a second .swapped
+image that can be readily used if needed.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/riscv.rst                | 20 +++++++++----------
- Documentation/boards/riscv/barebox-virt32.cfg |  7 +++++++
- Documentation/boards/riscv/barebox-virt64.cfg |  7 +++++++
- 3 files changed, 24 insertions(+), 10 deletions(-)
- create mode 100644 Documentation/boards/riscv/barebox-virt32.cfg
- create mode 100644 Documentation/boards/riscv/barebox-virt64.cfg
+ Documentation/boards/mips/qemu-malta.rst | 16 ++++------------
+ images/.gitignore                        |  1 +
+ images/Makefile                          |  2 +-
+ images/Makefile.malta                    | 10 +++++++++-
+ 4 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/boards/riscv.rst b/Documentation/boards/riscv.rst
-index 59cdc00a99e6..955a6fbb6bd1 100644
---- a/Documentation/boards/riscv.rst
-+++ b/Documentation/boards/riscv.rst
-@@ -41,25 +41,25 @@ TinyEMU
- -------
+diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
+index e188ae8c642a..fd37d5edb229 100644
+--- a/Documentation/boards/mips/qemu-malta.rst
++++ b/Documentation/boards/mips/qemu-malta.rst
+@@ -10,31 +10,23 @@ QEMU run string:
  
- TinyEMU can emulate a qemu-virt like machine with a RISC-V 32-, 64-
--and 128-bit CPU. It can run barebox with this sample configuration::
-+and 128-bit CPU. It can run 32-bit barebox with this sample configuration:
+   qemu-system-mips -nodefaults -M malta -m 256 \
+       -device VGA -serial stdio -monitor null \
+-      -bios barebox-flash-image
++      -bios ./images/barebox-qemu-malta.img
  
--  /* temu barebox-virt64.cfg */
--  {
--      version: 1,
--      machine: "riscv64",
--      memory_size: 256,
--      bios: "bbl64.bin",
--      kernel: "./images/barebox-dt-2nd.img",
--  }
-+.. literalinclude:: riscv/barebox-virt32.cfg
+ 
+ Little-endian mode
+ ------------------
+ 
+-Running little-endian Malta is a bit tricky.
+ In little-endian mode the 32bit words in the boot flash image are swapped,
+ a neat trick which allows bi-endian firmware.
+ 
+-You have to swap words of ``zbarebox.bin`` image, e.g.:
+-
+-.. code-block:: sh
+-
+-  echo arch/mips/pbl/zbarebox.bin \
+-      | cpio --create \
+-      | cpio --extract --swap --unconditional
+-
+-QEMU run string:
++The barebox build generates a second ``./images/barebox-qemu-malta.img.swapped``
++image that can be used in this case, e.g.:
+ 
+ .. code-block:: sh
+ 
+   qemu-system-mipsel -nodefaults -M malta -m 256 \
+       -device VGA -serial stdio -monitor null \
+-      -bios barebox-flash-image
++      -bios ./images/barebox-qemu-malta.img.swapped
+ 
+ 
+ Using GXemul
+diff --git a/images/.gitignore b/images/.gitignore
+index eafdb44b5bdd..3a9a77dad16e 100644
+--- a/images/.gitignore
++++ b/images/.gitignore
+@@ -32,3 +32,4 @@ barebox.sum
+ *.mvebu1img
+ *.stm32
+ *.nmon
++*.swapped
+diff --git a/images/Makefile b/images/Makefile
+index c185982c17ed..cc330d957597 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -218,5 +218,5 @@ $(flash-list): $(image-y-path)
+ clean-files := *.pbl *.pblb *.map start_*.imximg *.img barebox.z start_*.kwbimg \
+ 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
+ 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
+-	start_*.simximg start_*.usimximg *.zynqimg *.image
++	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped
+ clean-files += pbl.lds
+diff --git a/images/Makefile.malta b/images/Makefile.malta
+index 5739ec464092..96d7b86b1187 100644
+--- a/images/Makefile.malta
++++ b/images/Makefile.malta
+@@ -1,3 +1,11 @@
++quiet_cmd_bswap32_image = BSWAP4  $@
++      cmd_bswap32_image = cp $< $@ && \
++			  truncate -s %4 $@ && \
++			  objcopy -I binary --reverse-byte=4 $@
 +
-+as well as 64-bit barebox with this configuration:
++$(obj)/%.img.swapped: $(obj)/%.img FORCE
++	$(call if_changed,bswap32_image)
 +
-+.. literalinclude:: riscv/barebox-virt64.cfg
- 
- ``barebox-dt-2nd.img`` can be generated like with Qemu. Graphical
--output is also supported, but virtio input support is still missing.
-+output and input are also supported.
- To activate add::
- 
-     display0: { device: "simplefb", width: 800, height: 600 },
-+    input_device: "virtio",
- 
- into the config file.
- 
-+See https://barebox.org/jsbarebox/?graphic=1 for a live example.
-+
- Erizo
- -----
- 
-diff --git a/Documentation/boards/riscv/barebox-virt32.cfg b/Documentation/boards/riscv/barebox-virt32.cfg
-new file mode 100644
-index 000000000000..5f0eb34eee9c
---- /dev/null
-+++ b/Documentation/boards/riscv/barebox-virt32.cfg
-@@ -0,0 +1,7 @@
-+{
-+    version: 1,
-+    machine: "riscv32",
-+    memory_size: 256,
-+    bios: "bbl32.bin",
-+    kernel: "images/barebox-dt-2nd.img",
-+}
-diff --git a/Documentation/boards/riscv/barebox-virt64.cfg b/Documentation/boards/riscv/barebox-virt64.cfg
-new file mode 100644
-index 000000000000..45e1cd830802
---- /dev/null
-+++ b/Documentation/boards/riscv/barebox-virt64.cfg
-@@ -0,0 +1,7 @@
-+{
-+    version: 1,
-+    machine: "riscv64",
-+    memory_size: 256,
-+    bios: "bbl64.bin",
-+    kernel: "images/barebox-dt-2nd.img",
-+}
+ pblb-$(CONFIG_BOARD_QEMU_MALTA) += start_qemu_malta
+ FILE_barebox-qemu-malta.img = start_qemu_malta.pblb
+-image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img
++image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img barebox-qemu-malta.img.swapped
 -- 
 2.29.2
 
