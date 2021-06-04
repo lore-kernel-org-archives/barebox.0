@@ -1,53 +1,53 @@
-Delivery-date: Fri, 04 Jun 2021 10:50:05 +0200
+Delivery-date: Fri, 04 Jun 2021 10:50:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5Wn-0005MP-4B
-	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:50:05 +0200
+	id 1lp5Wu-0005Mp-14
+	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:50:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5Wa-0001Vd-Ub
-	for lore@pengutronix.de; Fri, 04 Jun 2021 10:50:04 +0200
+	id 1lp5Wh-0001XE-22
+	for lore@pengutronix.de; Fri, 04 Jun 2021 10:50:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=SJg2TPqGVZRxqFoTFdI3y76jkT3deFPmNxjpgYxIY7U=; b=1wArSt5vT4BHXa
-	ObmrF19h+X5P4jXDxCGVoCZ50pSIJtufJKt2joy0v2Q08SP245Xtjth0KOkcisT8tb7VFUkmDCUOB
-	5kKWjT4cTKa3RgWXKRlrpWWZEZzSG2N41hxhtn2GKtUTAU7jMMfAJjnYJvA5ARibXDo7hP2O3sWPt
-	fpJnwDbV88lvpzgoPzd3znalfgzxXEe3UpWDOtmtd4t8Ao5MP+AJ/4CKmIeF02qCfjHYaz9ZhklCE
-	eJb2vA1hznla9Yx3FV8t9OWJ26YG8HeGkIHTqW8zwbcG4b+Qbt6p5kSqDGQFNffTzRDWhdB2Dmwhr
-	t5p2MtFTx03zHCF/7k7A==;
+	List-Owner; bh=TqcentexO7Vrmhl01OD4SCBssJpX9O33PUJJ09Pxp9o=; b=2B5UB4s2D6tcr4
+	pUeDvxedMSQtjztQ+7QRZtAVBBpFIbi5yzUIfrbbkc+ey4c727dy+rbb3cQruW1jxyW4nHqPgHS6/
+	fl6mHI8Lz64+e197gdnHYkjS0U4bzsBekzkni7QsAKD++dR0o4Yiug3pQspQEy4o7V328h923VKtO
+	MSGJGdf9Mgny+VhRIyeSBZ0BnYWqMj/Dnh97oXxEQ13CZDOon09TZqhnwS1z/va2WYWFyZrCpir2e
+	Nrv3PExJwQ8YQRsczvwL6WDqkafBZ0ONtpyWDfkIunuLqBtSFrZag4APlbTza0XmfEl/++aj+5cl0
+	ADcelJSpj7iPCqcJvuiw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lp5Us-00CMS4-8R; Fri, 04 Jun 2021 08:48:06 +0000
+	id 1lp5Uy-00CMW2-It; Fri, 04 Jun 2021 08:48:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lp5UA-00CM95-Cl
+ id 1lp5UA-00CM94-Bc
  for barebox@lists.infradead.org; Fri, 04 Jun 2021 08:47:29 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5U8-0000ic-QD; Fri, 04 Jun 2021 10:47:20 +0200
+ id 1lp5U8-0000ia-NZ; Fri, 04 Jun 2021 10:47:20 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5U7-00053u-O5; Fri, 04 Jun 2021 10:47:19 +0200
+ id 1lp5U7-00053K-N3; Fri, 04 Jun 2021 10:47:19 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri,  4 Jun 2021 10:47:02 +0200
-Message-Id: <20210604084704.17410-12-a.fatoum@pengutronix.de>
+Date: Fri,  4 Jun 2021 10:47:00 +0200
+Message-Id: <20210604084704.17410-10-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210604084704.17410-1-a.fatoum@pengutronix.de>
 References: <20210604084704.17410-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210604_014722_805754_04DE4E2C 
-X-CRM114-Status: GOOD (  27.56  )
+X-CRM114-CacheID: sfid-20210604_014722_836736_6AC181D4 
+X-CRM114-Status: GOOD (  14.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,7 +60,7 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Cc: jmaselbas@kalray.eu, Ahmad Fatoum <a.fatoum@pengutronix.de>,
- rcz@pengutronix.de
+ Rouven Czerwinski <r.czerwinski@pengutronix.de>, rcz@pengutronix.de
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -73,657 +73,604 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH RESEND v4 11/13] test: add emulate.pl,
- a runner for barebox on emulated targets
+Subject: [PATCH RESEND v4 09/13] test: add labgrid-style configs for some
+ emulated targets
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This script is a wrapper around tuxmake, qemu and labgrid-pytest.
+There are various ways barebox can run under emulation, some of them are
+described in the documentation and some more in the git history.
 
-It parses the same YAML files, labgrid-pytest uses and instructs
-tuxmake to build and collect the needed images.
+Make running the emulators more convenient to use by collecting some
+known-good emulator invocations in a machine readable format.
 
-By default, it will start an interactive emulator session, but with
---test, it can also run labgrid-pytest instead.
+These files can be processed by a test/emulate.pl script added in a
+follow-up commit. They contain enough information to configure, build
+and run barebox inside an emulator. Those YAML files utilizing QEMUDriver
+can also be directly parsed by labgrid for running tests.
 
-The script has some knowledge of QEMU options to make common tasks like
-passing images straight-forward.
+Utilizing labgrid for this will allow using the same test suite for
+physical targets as well in future.
 
-Script is written with both manual use and CI in mind.
-
+Acked-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/emulated.rst |  75 +++++
- test/emulate.pl                   | 528 ++++++++++++++++++++++++++++++
- test/kconfig/base.cfg             |   0
- test/kconfig/full.cfg             |   0
- 4 files changed, 603 insertions(+)
- create mode 100644 Documentation/boards/emulated.rst
- create mode 100755 test/emulate.pl
- create mode 100644 test/kconfig/base.cfg
- create mode 100644 test/kconfig/full.cfg
+ test/arm/a15@vexpress_defconfig.yaml     | 20 +++++++++++++++
+ test/arm/a9@vexpress_defconfig.yaml      | 20 +++++++++++++++
+ test/arm/qemu_virt64_defconfig.yaml      | 24 ++++++++++++++++++
+ test/arm/vexpress_defconfig.yaml         |  1 +
+ test/arm/virt@vexpress_defconfig.yaml    | 22 ++++++++++++++++
+ test/kconfig/virtio-pci.cfg              |  6 +++++
+ test/mips/be@qemu-malta_defconfig.yaml   | 22 ++++++++++++++++
+ test/mips/le@qemu-malta_defconfig.yaml   | 25 ++++++++++++++++++
+ test/mips/qemu-malta_defconfig.yaml      |  1 +
+ test/openrisc/generic_defconfig.yaml     | 20 +++++++++++++++
+ test/riscv/qemu@virt32_defconfig.yaml    | 27 ++++++++++++++++++++
+ test/riscv/qemu@virt64_defconfig.yaml    | 27 ++++++++++++++++++++
+ test/riscv/sifive_defconfig.yaml         | 25 ++++++++++++++++++
+ test/riscv/tinyemu@virt32_defconfig.yaml | 22 ++++++++++++++++
+ test/riscv/tinyemu@virt64_defconfig.yaml | 22 ++++++++++++++++
+ test/riscv/virt32_defconfig.yaml         |  1 +
+ test/riscv/virt64_defconfig.yaml         |  1 +
+ test/sandbox/sandbox_defconfig.yaml      | 12 +++++++++
+ test/x86/efi_defconfig.yaml              |  1 +
+ test/x86/pc@efi_defconfig.yaml           | 31 +++++++++++++++++++++++
+ test/x86/q35@efi_defconfig.yaml          | 31 +++++++++++++++++++++++
+ test/x86/virtio@efi_defconfig.yaml       | 32 ++++++++++++++++++++++++
+ 22 files changed, 393 insertions(+)
+ create mode 100644 test/arm/a15@vexpress_defconfig.yaml
+ create mode 100644 test/arm/a9@vexpress_defconfig.yaml
+ create mode 100644 test/arm/qemu_virt64_defconfig.yaml
+ create mode 120000 test/arm/vexpress_defconfig.yaml
+ create mode 100644 test/arm/virt@vexpress_defconfig.yaml
+ create mode 100644 test/kconfig/virtio-pci.cfg
+ create mode 100644 test/mips/be@qemu-malta_defconfig.yaml
+ create mode 100644 test/mips/le@qemu-malta_defconfig.yaml
+ create mode 120000 test/mips/qemu-malta_defconfig.yaml
+ create mode 100644 test/openrisc/generic_defconfig.yaml
+ create mode 100644 test/riscv/qemu@virt32_defconfig.yaml
+ create mode 100644 test/riscv/qemu@virt64_defconfig.yaml
+ create mode 100644 test/riscv/sifive_defconfig.yaml
+ create mode 100644 test/riscv/tinyemu@virt32_defconfig.yaml
+ create mode 100644 test/riscv/tinyemu@virt64_defconfig.yaml
+ create mode 120000 test/riscv/virt32_defconfig.yaml
+ create mode 120000 test/riscv/virt64_defconfig.yaml
+ create mode 100644 test/sandbox/sandbox_defconfig.yaml
+ create mode 120000 test/x86/efi_defconfig.yaml
+ create mode 100644 test/x86/pc@efi_defconfig.yaml
+ create mode 100644 test/x86/q35@efi_defconfig.yaml
+ create mode 100644 test/x86/virtio@efi_defconfig.yaml
 
-diff --git a/Documentation/boards/emulated.rst b/Documentation/boards/emulated.rst
+diff --git a/test/arm/a15@vexpress_defconfig.yaml b/test/arm/a15@vexpress_defconfig.yaml
 new file mode 100644
-index 000000000000..584883d6efe4
+index 000000000000..941e914ab2d6
 --- /dev/null
-+++ b/Documentation/boards/emulated.rst
-@@ -0,0 +1,75 @@
-+Emulated targets
-+================
-+
-+Some targets barebox runs on are virtualized by emulators like QEMU, which
-+allows basic testing of barebox functionality without the actual hardware.
-+
-+Generic DT image
-+----------------
-+
-+Supported for ARM and RISC-V. It generates a barebox image that can
-+be booted with the Linux kernel booting convention, which makes
-+it suitable to be passed as argument to the QEMU ``-kernel`` option
-+(as well as booted just like Linux from barebox or other bootloaders).
-+
-+The device tree can be passed externally via QEMU's ``-dtb`` option, but
-+also the QEMU internal device tree can be used.
-+
-+The latter can be very useful with :ref:`virtio_sect`, because QEMU will
-+fix up the virtio mmio regions into the device tree and barebox will
-+discover the devices automatically, analogously to what it does with
-+VirtIO over PCI.
-+
-+test/emulate.pl
-+---------------
-+
-+The ``emulate.pl`` script shipped with barebox can be used to easily
-+start VMs. It reads a number of YAML files in ``test/$ARCH``, which
-+describe some virtualized targets that barebox is known to run on.
-+
-+Controlled by command line options, these targets are built with
-+tuxmake if available and loaded into the emulator for either interactive
-+use or for automated testing with Labgrid ``QEMUDriver``.
-+
-+.. _tuxmake: https://pypi.org/project/tuxmake/
-+.. _Labgrid: https://labgrid.org
-+
-+Install dependencies for interactive use::
-+
-+  cpan YAML::XS # or use e.g. libyaml-libyaml-perl on Debian
-+  pip3 install tuxmake # optional
-+
-+Example usage::
-+
-+  # Switch to barebox source directory
-+  cd barebox
-+
-+  # emulate x86 VM runnig the EFI payload from efi_defconfig
-+  ARCH=x86 ./test/emulate.pl efi_defconfig
-+
-+  # build all MIPS targets known to emulate.pl and exit
-+  ARCH=mips ./test/emulate.pl --no-emulate
-+
-+The script can also be used with a precompiled barebox tree::
-+
-+  # Switch to build directory
-+  export KBUILD_OUTPUT=build
-+
-+  # run a barebox image built outside tuxmake on an ARM virt machine
-+  ARCH=arm ./test/emulate.pl virt@vexpress_defconfig --no-tuxmake
-+
-+  # run tests instead of starting emulator interactively
-+  ARCH=arm ./test/emulate.pl virt@vexpress_defconfig --no-tuxmake --test
-+
-+``emulate.pl`` also has some knowledge on paravirtualized devices::
-+
-+  # Run target and pass a block device (here /dev/virtioblk0)
-+  ARCH=riscv ./test/emulate.pl --blk=rootfs.ext4 virt64_defconfig
-+
-+Needed command line options can be passed directly to the
-+emulator/``pytest`` as well by placing them behind ``--``::
-+
-+  # appends -device ? to the command line. Add -n to see the final result
-+  ARCH=riscv ./test/emulate.pl virt64_defconfig -- -device ?
-+
-+For a complete listing of options run ``./test/emulate.pl -h``.
-diff --git a/test/emulate.pl b/test/emulate.pl
-new file mode 100755
-index 000000000000..78c2815884b3
++++ b/test/arm/a15@vexpress_defconfig.yaml
+@@ -0,0 +1,20 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: vexpress-a15
++        cpu: cortex-a15
++        memory: 1024M
++        bios: barebox-vexpress-ca15.img
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++images:
++  barebox-vexpress-ca15.img: !template "$LG_BUILDDIR/images/barebox-vexpress-ca15.img"
++tools:
++  qemu: /usr/bin/qemu-system-arm
++imports:
++  -  ../strategy.py
+diff --git a/test/arm/a9@vexpress_defconfig.yaml b/test/arm/a9@vexpress_defconfig.yaml
+new file mode 100644
+index 000000000000..fefee153cf91
 --- /dev/null
-+++ b/test/emulate.pl
-@@ -0,0 +1,528 @@
-+#!/usr/bin/env perl
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (c) 2021 Ahmad Fatoum
-+
-+use strict;
-+use warnings;
-+
-+use Cwd;
-+use File::Basename;
-+use File::Spec;
-+use File::Temp 'tempdir';
-+use Getopt::Long;
-+use List::Util 'first';
-+use Pod::Usage;
-+use YAML::XS 'LoadFile';
-+
-+my @QEMU_INTERACTIVE_OPTS = qw(-serial mon:stdio -trace file=/dev/null);
-+
-+my %targets;
-+
-+for my $arch (glob dirname(__FILE__) . "/*/") {
-+    for my $cfg (glob "$arch/*.yaml") {
-+	my $linkdest = readlink $cfg // '';
-+
-+	my $yaml = LoadFile($cfg);
-+
-+	defined $yaml && exists $yaml->{targets} && exists $yaml->{targets}{main}
-+	    or die "Invalid structure for $cfg\n";
-+
-+	my $path = File::Spec->abs2rel($cfg, getcwd);
-+	$cfg = basename($cfg);
-+	$cfg =~ s/\.yaml$//;
-+	$linkdest =~ s{^.*?([^/]+)\.yaml$}{$1};
-+
-+	$targets{basename $arch}{$cfg} = $yaml->{targets}{main};
-+	$targets{basename $arch}{$cfg}{path} = $path;
-+	$targets{basename $arch}{$cfg}{tools} = $yaml->{tools};
-+	$targets{basename $arch}{$cfg}{images} = $yaml->{images};
-+	$targets{basename $arch}{$cfg}{alias} = $linkdest if $linkdest && $linkdest ne $cfg;
-+    }
-+}
-+
-+my %arch_aliases = (arm64 => 'arm', x86_64 => 'x86', i386 => 'x86', um => 'sandbox');
-+
-+my ($dryrun, $help, @blks, $rng, $list, $shell, $runtime, @kconfig_add, $artifacts);
-+my ($tuxmake, $emulate, $clean, $extraconsoles, $test, $verbosity) = (1, 1, 1, 0, 0, 1);
-+my ($kconfig_base, $kconfig_full) = (1, 0);
-+
-+my @OPTS;
-+
-+if (defined (my $idx = first { $ARGV[$_] eq '--' } 0 .. @ARGV - 1)) {
-+    @OPTS = splice @ARGV, 1 + $idx;
-+}
-+
-+my @emulate_only = qw/blk console rng/;
-+
-+GetOptions(
-+	'help|?|h' => \$help,
-+	'dryrun|n' => \$dryrun,
-+	'list|l' => \$list,
-+	'tuxmake!' => \$tuxmake,
-+	'verbosity=i' => \$verbosity,
-+	'artifacts=s' => \$artifacts,
-+	'runtime=s' => \$runtime,
-+	'blk=s@' => \@blks,
-+	'console+' => \$extraconsoles,
-+	'rng' => \$rng,
-+	'emulate!' => \$emulate,
-+	'clean!' => \$clean,
-+	'shell' => \$shell,
-+	'kconfig-base!' => \$kconfig_base,
-+	'kconfig-full!' => \$kconfig_full,
-+	'kconfig-add|K=s@' => \@kconfig_add,
-+	'test' => \$test,
-+) or pod2usage(2);
-+pod2usage(1) if $help;
-+
-+if ($test && (@blks || $extraconsoles || $rng)) {
-+    die "Virtual devices on command-line not supported with --test\n";
-+}
-+
-+my @ARCH = split /\s/, $ENV{ARCH} // '';
-+@ARCH = @ARCH ? @ARCH : keys %targets;
-+
-+my $success = 0;
-+
-+for my $arch (@ARCH) {
-+	my @targets = @ARGV ? @ARGV : keys %{$targets{$arch}};
-+	@targets != 1 && !$tuxmake
-+		and die "can't use --no-tuxmake with more than one config\n";
-+
-+	unless (defined $targets{$arch}) {
-+		die "Unknown ARCH=$arch. Supported values:\n",
-+		join(', ', keys %targets), "\n";
-+	}
-+
-+	for my $config (@targets) {
-+	        $arch = $arch_aliases{$arch} // $arch;
-+
-+		$config = fileparse($config, ".yaml");
-+
-+		unless (defined $targets{$arch}{$config}) {
-+		    next;
-+		}
-+
-+		if ($list) {
-+		    print "ARCH=$arch $config\n";
-+		    $success += 1;
-+		    next;
-+		}
-+
-+		if (defined $targets{$arch}{$config}{alias}) {
-+		    next if grep { /^$targets{$arch}{$config}{alias}$/ } @targets;
-+		    $config = $targets{$arch}{$config}{alias};
-+		    redo;
-+		}
-+
-+		print "# $config\n" if $dryrun;
-+		$success += process($arch, $config);
-+	}
-+}
-+
-+$success > 0
-+	or die "No suitable config found. $0 -l to list all built-in.\n";
-+
-+sub process {
-+	my ($ARCH, $defconfig, %keys) = @_;
-+	my $target = $targets{$ARCH}{$defconfig};
-+
-+	if (!exists ($target->{runner}{tuxmake_arch})) {
-+	    $target->{runner}{tuxmake_arch} = $ARCH;
-+	}
-+
-+	my $dir;
-+
-+	$dir = tempdir("bareboxbuild-XXXXXXXXXX", TMPDIR => 1, CLEANUP => $clean);
-+	report('mkdir', $dir);
-+
-+	my %opts = (
-+	    target => $target, builddir => $tuxmake ? $dir : getcwd,
-+	    defconfig => $defconfig,
-+	    extra_opts => [map { s/\{config\}/$defconfig/gr  } @OPTS],
-+	);
-+
-+	build(%opts) if $tuxmake;
-+
-+	while (my ($k, $v) = each %{$target->{runner}{download}}) {
-+	    if ($v =~ m{^[/.]}) {
-+		symlink_force($v, "$dir/$k");
-+	    } else {
-+		vsystem('curl', '-L', '--create-dirs', '-o', "$dir/$k", $v) == 0
-+		    or die "Failed to download resource `$v': $?\n";
-+	    }
-+
-+	    symlink_force("$dir/$k", "$k") unless $tuxmake;
-+	}
-+
-+	if ($shell) {
-+		pushd($dir);
-+		system($ENV{SHELL} // "/bin/sh");
-+		popd();
-+	}
-+
-+	return 1 unless $emulate;
-+
-+	if ($tuxmake) {
-+	    $ENV{KBUILD_OUTPUT} = $dir;
-+	    print "export KBUILD_OUTPUT=$ENV{KBUILD_OUTPUT}\n" if $dryrun;
-+	}
-+
-+	my $success = $test ? test(%opts) : emulate(%opts);
-+
-+        report("rm", "-rd", $dir) if $clean && $tuxmake;
-+
-+	print "\n\n" if $dryrun;
-+	return $success;
-+}
-+
-+sub build {
-+    my %args = @_;
-+    my ($runner, $dir) = ($args{target}{runner}, $args{builddir});
-+
-+    $args{defconfig} =~ s/[^@]+@//g;
-+
-+    my @TUXMAKE_ARGS = ('-a', $runner->{tuxmake_arch}, '-k', $args{defconfig});
-+
-+    if (defined $runner->{kconfig_add}) {
-+	for my $cfg (@{$runner->{kconfig_add}}) {
-+	    push @TUXMAKE_ARGS, "--kconfig-add=$cfg"
-+	}
-+    }
-+
-+    push @TUXMAKE_ARGS, "--kconfig-add=test/kconfig/base.cfg" if $kconfig_base || $kconfig_full;
-+    push @TUXMAKE_ARGS, "--kconfig-add=test/kconfig/full.cfg" if $kconfig_full;
-+
-+    for (@kconfig_add) {
-+	push @TUXMAKE_ARGS, "--kconfig-add=$_";
-+    }
-+
-+    push @TUXMAKE_ARGS, "--runtime=$runtime" if $runtime;
-+
-+    push @TUXMAKE_ARGS, '-q' if $verbosity == 0;
-+    push @TUXMAKE_ARGS, '-v' if $verbosity == 2;
-+
-+    vsystem('tuxmake', @TUXMAKE_ARGS, '-b', $dir, '-o',
-+	$artifacts // "$dir/artifacts", 'default') == 0
-+	or die "Error building: $?\n";
-+}
-+
-+sub emulate {
-+    my %args = @_;
-+    my %target = %{$args{target}};
-+    my @OPTS = @{$args{extra_opts}};
-+
-+    if (defined $target{drivers}{QEMUDriver}) {
-+	    my %qemu = %{$target{drivers}{QEMUDriver}};
-+	    my ($kernel, $bios, $dtb);
-+	    my $qemu_virtio;
-+	    my $i;
-+
-+	    $kernel = abs_configpath($qemu{kernel}, \%args);
-+	    $bios   = abs_configpath($qemu{bios},   \%args);
-+	    $dtb    = abs_configpath($qemu{dtb},    \%args);
-+
-+	    my @cmdline = ($target{tools}{$qemu{qemu_bin}},
-+		'-M', $qemu{machine}, '-cpu', $qemu{cpu}, '-m', $qemu{memory});
-+
-+	    push @cmdline, '-kernel', $kernel if defined $kernel;
-+	    push @cmdline, '-bios', $bios if defined $bios;
-+	    push @cmdline, '-dtb',  $dtb if defined $dtb;
-+
-+	    push @cmdline, @QEMU_INTERACTIVE_OPTS;
-+	    for (split /\s/, $qemu{extra_args}) {
-+		push @cmdline, $_;
-+	    }
-+
-+	    if (has_feature(\%target, 'virtio-pci')) {
-+		    $qemu_virtio = 'pci,disable-legacy=on,disable-modern=off';
-+		    push @{$target{features}}, 'pci';
-+		    push @{$target{features}}, 'virtio';
-+	    } elsif (has_feature(\%target, 'virtio-mmio')) {
-+		    $qemu_virtio = 'device';
-+		    push @{$target{features}}, 'virtio';
-+	    }
-+
-+	    $i = 0;
-+	    for my $blk (@blks) {
-+		if (has_feature(\%target, 'virtio')) {
-+		    $blk = rel2abs($blk);
-+		    push @cmdline,
-+		    '-drive', "if=none,file=$blk,format=raw,id=hd$i",
-+		    '-device', "virtio-blk-$qemu_virtio,drive=hd$i";
-+		} else {
-+		    die "--blk unsupported for target\n";
-+		}
-+	    }
-+
-+	    # note that barebox doesn't yet support multiple virtio consoles
-+	    if ($extraconsoles) {
-+		$i = 0;
-+
-+		if (defined $qemu_virtio) {
-+		    push @cmdline,
-+		    '-device', "virtio-serial-$qemu_virtio",
-+		    '-chardev', "pty,id=virtcon$i",
-+		    '-device', "virtconsole,chardev=virtcon$i,name=console.virtcon$i";
-+
-+		    $i++;
-+		}
-+
-+		if ($i < $extraconsoles) {
-+		    # ns16550 serial driver only works with x86 so far
-+		    if (has_feature(\%target, 'pci')) {
-+			for (; $i < $extraconsoles; $i++) {
-+			    push @cmdline,
-+			    '-chardev', "pty,id=pcicon$i",
-+			    '-device', "pci-serial,chardev=pcicon$i";
-+			}
-+		    } else {
-+			warn "barebox currently supports only a single extra virtio console\n";
-+		    }
-+		}
-+	    }
-+
-+	    if (defined $rng) {
-+		if (has_feature(\%target, 'virtio')) {
-+		    push @cmdline, '-device', "virtio-rng-$qemu_virtio";
-+		} else {
-+		    die "--rng unsupported for target\n";
-+		}
-+	    }
-+
-+	    pushd($args{builddir}) if $tuxmake;
-+
-+	    vsystem(@cmdline, @OPTS) == 0 or die "Error running emulator: $?\n";
-+
-+    } elsif (defined $target{drivers}{TinyEMUDriver}) {
-+	    my %temu = %{$target{drivers}{TinyEMUDriver}};
-+	    my $TEMU_CFG;
-+	    my $i = 0;
-+
-+	    if (exists $temu{config}) {
-+		$temu{config} = rel2abs($temu{config});
-+		open(my $fh, '<', "$temu{config}")
-+		    or die "Could not open file '$temu{config}': $!";
-+		$TEMU_CFG = do { local $/; <$fh> };
-+	    }
-+
-+	    print ("$temu{config}\n");
-+
-+	    defined $TEMU_CFG or die "Unknown tinyemu-config\n";
-+
-+	    open(my $fh, '>', "$args{builddir}/tinyemu.cfg")
-+		or die "Could not create file 'tinyemu.cfg': $!";
-+	    print $fh $TEMU_CFG;
-+	    print "cat >'tinyemu.cfg' <<EOF\n$TEMU_CFG\nEOF\n" if $dryrun;
-+
-+	    for my $blk (@blks) {
-+		$blk = rel2abs($blk);
-+		$TEMU_CFG =~ s[\}(?!.*\})][drive$i: { file: "$blk" },\n}]ms
-+	    }
-+
-+	    die "--console unsupported for target\n" if $extraconsoles;
-+	    die "--rng unsupported for target\n" if defined $rng;
-+
-+	    pushd($args{builddir}) if $tuxmake;
-+
-+	    vsystem($temu{temu_bin}, "tinyemu.cfg", @OPTS) == 0
-+		or die "Error running emulator: $?\n";
-+    } elsif (defined $target{drivers}{NativeExecutableDriver}) {
-+	    my %exec = %{$target{drivers}{NativeExecutableDriver}};
-+
-+	    pushd($args{builddir}) if $tuxmake;
-+
-+	    vsystem($exec{command}, @OPTS) == 0 or die "Error running emulator: $?\n";
-+    }
-+
-+    popd() if $tuxmake;
-+
-+    return 1;
-+}
-+
-+sub test {
-+    my %args = @_;
-+    my @OPTS = @{$args{extra_opts}};
-+    my $pytest;
-+    my $dir;
-+
-+    unless (defined $args{target}{drivers}{QEMUDriver}) {
-+	warn "$args{target}{path}: Skipping test, no QEMUDriver\n";
-+	return 0;
-+    }
-+
-+    $pytest = `sh -c 'command -v labgrid-pytest'` ? 'labgrid-pytest' : 'pytest';
-+
-+    unshift @OPTS, "--verbosity=$verbosity";
-+
-+    vsystem($pytest, '--lg-env', "$args{target}{path}", "test/py", "--verbosity=1",
-+	'--lg-log', @OPTS) == 0 or die "Error running 'labgrid-pytest': $?\n";
-+
-+    return 1;
-+}
-+
-+sub has_feature {
-+    defined first { lc($_) eq $_[1] } @{$_[0]->{features}}
-+}
-+
-+sub report {
-+    print join(' ', map { /\s/ ? "'$_'" : $_  } @_), "\n" if $dryrun;
-+    0;
-+}
-+
-+sub vsystem {
-+    if ($dryrun) {
-+	return report(@_);
-+    } else {
-+	my $ret = system @_;
-+	warn "vsystem: $!\n" if $ret == -1;
-+	return $ret >> 8;
-+    }
-+}
-+
-+sub rel2abs {
-+    File::Spec->rel2abs(@_)
-+}
-+
-+sub abs_configpath {
-+    my ($path, $args) = @_;
-+    my $LG_BUILDDIR;
-+
-+    return unless defined $path;
-+    $path = $args->{target}{images}{$path};
-+    return unless defined $path;
-+
-+    if (exists $ENV{KBUILD_OUTPUT}) {
-+	$LG_BUILDDIR = $ENV{KBUILD_OUTPUT};
-+    } elsif (-d 'build') {
-+	$LG_BUILDDIR = 'build';
-+    } else {
-+	$LG_BUILDDIR = getcwd();
-+    }
-+
-+    $path =~ s/\$LG_BUILDDIR\b/$LG_BUILDDIR/g;
-+
-+    return rel2abs($path, $args->{builddir})
-+}
-+
-+sub symlink_force {
-+    unlink($_[1]);
-+    symlink($_[0], $_[1]);
-+}
-+
-+my @oldcwd;
-+
-+sub pushd {
-+	my ($old, $new) = (getcwd, shift);
-+	report ("pushd", $new);
-+	push @oldcwd, $old;
-+	chdir $new;
-+	return $old;
-+};
-+
-+sub popd {
-+	report("popd");
-+	chdir pop(@oldcwd)
-+};
-+
-+__END__
-+
-+=head1 NAME
-+
-+emulate.pl - Build and run barebox under an emulator
-+
-+=head1 SYNOPSIS
-+
-+[ARCH=arch] emulate.pl [options] [defconfigs...] [--] [qemu/pytest-opts]
-+
-+=head1 OPTIONS
-+
-+Must be run from barebox source directory. If building out-of-tree,
-+either set C<KBUILD_OUTPUT> or ensure the out-of-tree directory
-+can be reached from a C<build> symlink in the current working
-+directory.
-+
-+=over 8
-+
-+=item B<-?>, B<-h>, B<--help>
-+
-+Print this help message and exit
-+
-+=item B<-n>, B<--dryrun>
-+
-+Print commands and exit
-+
-+=item B<-l>, B<--list>
-+
-+Filter input with list of known targets
-+
-+=item B<--verbosity>=%u
-+
-+Specify output verbosity level for both tuxmake and pytest. Default value is 1.
-+
-+=item B<--no-tuxmake>
-+
-+Don't rerun tuxkmake. Assumes current working directory is finished build directory
-+
-+=item B<--artifacts>=%s
-+
-+Destination directory for the tuxmake artifacts. By default, this is
-+the artifacts/ subdirectory in the temporary build directory and is
-+not persisted (unless --no-clean is specified).
-+
-+=item B<--blk>=%s
-+
-+Pass block device to emulated barebox. Can be specified more than once
-+
-+=item B<--console>
-+
-+Pass one Virt I/O console to emulated barebox.
-+
-+=item B<--rng>
-+
-+instantiate Virt I/O random number generator
-+
-+=item B<--no-emulate>
-+
-+Don't emulate anything and exit directly after build
-+
-+=item B<--no-clean>
-+
-+Don't delete temporary working directory after
-+
-+=item B<--shell>
-+
-+Open shell in temporary working directory, after build, but before emulation
-+
-+=item B<--test>
-+
-+Instead of starting emulator interactively, run it under labgrid-pytest with
-+the in-tree python tests.
-+
-+=item B<--runtime>=%s
-+
-+Runtime to use for the tuxmake builds. By default, builds are
-+run natively on the build host.
-+Supported: null, podman-local, podman, docker, docker-local.
-+
-+=item B<--no-kconfig-base>
-+
-+Don't apply test/kconfig/base.cfg. This may lead to more tests being
-+skipped.
-+
-+=item B<--kconfig-full>
-+
-+Applies test/kconfig/full.cfg on top of base.cfg. This enables as much as
-+possible to avoid skipping tests for disabled functionality.
-+
-+=item B<--kconfig_add>=%s, B<-K>=%s
-+
-+Extra kconfig fragments, merged on top of the defconfig and Kconfig
-+fragments described by the YAML. In tree configuration fragment
-+(e.g. `test/kconfig/virtio-pci.config`), path to local file, URL,
-+`CONFIG_*=[y|m|n]`, or `# CONFIG_* is not set` are supported.
-+Can be specified multiple times, and will be merged in the order given.
-+
-+=back
-+
-+=cut
-diff --git a/test/kconfig/base.cfg b/test/kconfig/base.cfg
++++ b/test/arm/a9@vexpress_defconfig.yaml
+@@ -0,0 +1,20 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: vexpress-a9
++        cpu: cortex-a9
++        memory: 1024M
++        bios: barebox-vexpress-ca9.img
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++images:
++  barebox-vexpress-ca9.img: !template "$LG_BUILDDIR/images/barebox-vexpress-ca9.img"
++tools:
++  qemu: /usr/bin/qemu-system-arm
++imports:
++  -  ../strategy.py
+diff --git a/test/arm/qemu_virt64_defconfig.yaml b/test/arm/qemu_virt64_defconfig.yaml
 new file mode 100644
-index 000000000000..e69de29bb2d1
-diff --git a/test/kconfig/full.cfg b/test/kconfig/full.cfg
+index 000000000000..ed308591da53
+--- /dev/null
++++ b/test/arm/qemu_virt64_defconfig.yaml
+@@ -0,0 +1,24 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: virt
++        cpu: cortex-a57
++        memory: 1024M
++        kernel: barebox-dt-2nd.img
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - virtio-mmio
++    runner:
++      tuxmake_arch: arm64
++images:
++  barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
++tools:
++  qemu: /usr/bin/qemu-system-aarch64
++imports:
++  -  ../strategy.py
+diff --git a/test/arm/vexpress_defconfig.yaml b/test/arm/vexpress_defconfig.yaml
+new file mode 120000
+index 000000000000..732f51b19dc9
+--- /dev/null
++++ b/test/arm/vexpress_defconfig.yaml
+@@ -0,0 +1 @@
++a9@vexpress_defconfig.yaml
+\ No newline at end of file
+diff --git a/test/arm/virt@vexpress_defconfig.yaml b/test/arm/virt@vexpress_defconfig.yaml
 new file mode 100644
-index 000000000000..e69de29bb2d1
+index 000000000000..66ecf20690d1
+--- /dev/null
++++ b/test/arm/virt@vexpress_defconfig.yaml
+@@ -0,0 +1,22 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: virt
++        cpu: cortex-a7
++        memory: 1024M
++        kernel: barebox-dt-2nd.img
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - virtio-mmio
++images:
++  barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
++tools:
++  qemu: /usr/bin/qemu-system-arm
++imports:
++  -  ../strategy.py
+diff --git a/test/kconfig/virtio-pci.cfg b/test/kconfig/virtio-pci.cfg
+new file mode 100644
+index 000000000000..78237b8fca26
+--- /dev/null
++++ b/test/kconfig/virtio-pci.cfg
+@@ -0,0 +1,6 @@
++CONFIG_VIRTIO_MENU=y
++CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_CONSOLE=y
++CONFIG_VIRTIO_BLK=y
++CONFIG_HWRNG=y
++CONFIG_HW_RANDOM_VIRTIO=y
+diff --git a/test/mips/be@qemu-malta_defconfig.yaml b/test/mips/be@qemu-malta_defconfig.yaml
+new file mode 100644
+index 000000000000..774023cd8451
+--- /dev/null
++++ b/test/mips/be@qemu-malta_defconfig.yaml
+@@ -0,0 +1,22 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: malta
++        cpu: M14Kc
++        memory: 256M
++        bios: barebox-qemu-malta.img
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - virtio-pci
++images:
++  barebox-qemu-malta.img: !template "$LG_BUILDDIR/images/barebox-qemu-malta.img"
++tools:
++  qemu: /usr/bin/qemu-system-mips
++imports:
++  -  ../strategy.py
+diff --git a/test/mips/le@qemu-malta_defconfig.yaml b/test/mips/le@qemu-malta_defconfig.yaml
+new file mode 100644
+index 000000000000..8fc8c4dae925
+--- /dev/null
++++ b/test/mips/le@qemu-malta_defconfig.yaml
+@@ -0,0 +1,25 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: malta
++        cpu: M14Kc
++        memory: 256M
++        bios: barebox-qemu-malta.img.swapped
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - virtio-pci
++    runner:
++      kconfig_add:
++        - CONFIG_CPU_LITTLE_ENDIAN=y
++images:
++  barebox-qemu-malta.img.swapped: !template "$LG_BUILDDIR/images/barebox-qemu-malta.img.swapped"
++tools:
++  qemu: /usr/bin/qemu-system-mipsel
++imports:
++  -  ../strategy.py
+diff --git a/test/mips/qemu-malta_defconfig.yaml b/test/mips/qemu-malta_defconfig.yaml
+new file mode 120000
+index 000000000000..481b6e547782
+--- /dev/null
++++ b/test/mips/qemu-malta_defconfig.yaml
+@@ -0,0 +1 @@
++be@qemu-malta_defconfig.yaml
+\ No newline at end of file
+diff --git a/test/openrisc/generic_defconfig.yaml b/test/openrisc/generic_defconfig.yaml
+new file mode 100644
+index 000000000000..0a2d4a7a18a0
+--- /dev/null
++++ b/test/openrisc/generic_defconfig.yaml
+@@ -0,0 +1,20 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: or1k-sim
++        cpu: or1200
++        memory: 256M
++        kernel: barebox
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++images:
++  barebox: !template "$LG_BUILDDIR/barebox"
++tools:
++  qemu: /usr/bin/qemu-system-or1k
++imports:
++  -  ../strategy.py
+diff --git a/test/riscv/qemu@virt32_defconfig.yaml b/test/riscv/qemu@virt32_defconfig.yaml
+new file mode 100644
+index 000000000000..5c602635d4c5
+--- /dev/null
++++ b/test/riscv/qemu@virt32_defconfig.yaml
+@@ -0,0 +1,27 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: virt
++        cpu: rv32
++        memory: 256M
++        kernel: barebox-dt-2nd.img
++        bios: opensbi-riscv32-generic-fw_dynamic.bin
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - virtio-mmio
++    runner:
++      download:
++        opensbi-riscv32-generic-fw_dynamic.bin: https://github.com/qemu/qemu/blob/v5.2.0/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin?raw=true
++images:
++  barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
++  opensbi-riscv32-generic-fw_dynamic.bin: !template "$LG_BUILDDIR/opensbi-riscv32-generic-fw_dynamic.bin"
++tools:
++  qemu: /usr/bin/qemu-system-riscv32
++imports:
++  -  ../strategy.py
+diff --git a/test/riscv/qemu@virt64_defconfig.yaml b/test/riscv/qemu@virt64_defconfig.yaml
+new file mode 100644
+index 000000000000..fefbd20e5c99
+--- /dev/null
++++ b/test/riscv/qemu@virt64_defconfig.yaml
+@@ -0,0 +1,27 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: virt
++        cpu: rv64
++        memory: 256M
++        kernel: barebox-dt-2nd.img
++        bios: opensbi-riscv64-generic-fw_dynamic.bin
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - virtio-mmio
++    runner:
++      download:
++        opensbi-riscv64-generic-fw_dynamic.bin: https://github.com/qemu/qemu/blob/v5.2.0/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin?raw=true
++images:
++  barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
++  opensbi-riscv64-generic-fw_dynamic.bin: !template "$LG_BUILDDIR/opensbi-riscv64-generic-fw_dynamic.bin"
++tools:
++  qemu: /usr/bin/qemu-system-riscv64
++imports:
++  -  ../strategy.py
+diff --git a/test/riscv/sifive_defconfig.yaml b/test/riscv/sifive_defconfig.yaml
+new file mode 100644
+index 000000000000..f7299453a499
+--- /dev/null
++++ b/test/riscv/sifive_defconfig.yaml
+@@ -0,0 +1,25 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: sifive_u
++        cpu: sifive-u54
++        memory: 256M
++        kernel: barebox-hifive-unleashed.img
++        bios: opensbi-riscv64-generic-fw_dynamic.bin
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    runner:
++      download:
++        opensbi-riscv64-generic-fw_dynamic.bin: https://github.com/qemu/qemu/blob/v5.2.0/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin?raw=true
++images:
++  barebox-hifive-unleashed.img: !template "$LG_BUILDDIR/images/barebox-hifive-unleashed.img"
++  opensbi-riscv64-generic-fw_dynamic.bin: !template "$LG_BUILDDIR/opensbi-riscv64-generic-fw_dynamic.bin"
++tools:
++  qemu: /usr/bin/qemu-system-riscv64
++imports:
++  -  ../strategy.py
+diff --git a/test/riscv/tinyemu@virt32_defconfig.yaml b/test/riscv/tinyemu@virt32_defconfig.yaml
+new file mode 100644
+index 000000000000..1102f36aca2b
+--- /dev/null
++++ b/test/riscv/tinyemu@virt32_defconfig.yaml
+@@ -0,0 +1,22 @@
++targets:
++  main:
++    drivers:
++      TinyEMUDriver: # not yet supported by labgrid, only for interactive use
++        temu_bin: temu
++        config: ./Documentation/boards/riscv/barebox-virt32.cfg
++        image: barebox-dt-2nd.img
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - virtio-mmio
++    runner:
++      download:
++        bbl32.bin: https://barebox.org/jsbarebox/bbl32.bin
++images:
++  barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
++tools:
++  temu: /usr/local/bin/temu
++imports:
++  -  ../strategy.py
+diff --git a/test/riscv/tinyemu@virt64_defconfig.yaml b/test/riscv/tinyemu@virt64_defconfig.yaml
+new file mode 100644
+index 000000000000..e9624160ef0a
+--- /dev/null
++++ b/test/riscv/tinyemu@virt64_defconfig.yaml
+@@ -0,0 +1,22 @@
++targets:
++  main:
++    drivers:
++      TinyEMUDriver: # not yet supported by labgrid, only for interactive use
++        temu_bin: temu
++        config: ./Documentation/boards/riscv/barebox-virt64.cfg
++        image: barebox-dt-2nd.img
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - virtio-mmio
++    runner:
++      download:
++        bbl64.bin: https://barebox.org/jsbarebox/bbl64.bin
++images:
++  barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
++tools:
++  temu: /usr/local/bin/temu
++imports:
++  -  ../strategy.py
+diff --git a/test/riscv/virt32_defconfig.yaml b/test/riscv/virt32_defconfig.yaml
+new file mode 120000
+index 000000000000..e9d7237f5339
+--- /dev/null
++++ b/test/riscv/virt32_defconfig.yaml
+@@ -0,0 +1 @@
++qemu@virt32_defconfig.yaml
+\ No newline at end of file
+diff --git a/test/riscv/virt64_defconfig.yaml b/test/riscv/virt64_defconfig.yaml
+new file mode 120000
+index 000000000000..ab419d5e7fb4
+--- /dev/null
++++ b/test/riscv/virt64_defconfig.yaml
+@@ -0,0 +1 @@
++qemu@virt64_defconfig.yaml
+\ No newline at end of file
+diff --git a/test/sandbox/sandbox_defconfig.yaml b/test/sandbox/sandbox_defconfig.yaml
+new file mode 100644
+index 000000000000..784f49146605
+--- /dev/null
++++ b/test/sandbox/sandbox_defconfig.yaml
+@@ -0,0 +1,12 @@
++targets:
++  main:
++    drivers:
++      NativeExecutableDriver: # not yet supported by labgrid, only for interactive use
++        command: ./barebox
++        image: barebox
++    runner:
++      tuxmake_arch: um
++images:
++  barebox: !template "$LG_BUILDDIR/barebox"
++tools:
++  qemu: /usr/local/bin/temu
+diff --git a/test/x86/efi_defconfig.yaml b/test/x86/efi_defconfig.yaml
+new file mode 120000
+index 000000000000..942dc259d56b
+--- /dev/null
++++ b/test/x86/efi_defconfig.yaml
+@@ -0,0 +1 @@
++pc@efi_defconfig.yaml
+\ No newline at end of file
+diff --git a/test/x86/pc@efi_defconfig.yaml b/test/x86/pc@efi_defconfig.yaml
+new file mode 100644
+index 000000000000..280f5dcee9a6
+--- /dev/null
++++ b/test/x86/pc@efi_defconfig.yaml
+@@ -0,0 +1,31 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: pc
++        cpu: Nehalem
++        memory: 1024M
++        kernel: barebox.efi
++        bios: OVMF.fd
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - pci
++    runner:
++      tuxmake_arch: x86_64
++      kconfig_add:
++        - CONFIG_DRIVER_SERIAL_NS16550=y
++        - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
++      download:
++        OVMF.fd: /usr/share/qemu/OVMF.fd
++images:
++  barebox.efi: !template "$LG_BUILDDIR/barebox.efi"
++  OVMF.fd: !template "$LG_BUILDDIR/OVMF.fd"
++tools:
++  qemu: /usr/bin/qemu-system-x86_64
++imports:
++  -  ../strategy.py
+diff --git a/test/x86/q35@efi_defconfig.yaml b/test/x86/q35@efi_defconfig.yaml
+new file mode 100644
+index 000000000000..dcb3f604c0ac
+--- /dev/null
++++ b/test/x86/q35@efi_defconfig.yaml
+@@ -0,0 +1,31 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: q35
++        cpu: Nehalem
++        memory: 1024M
++        kernel: barebox.efi
++        bios: OVMF.fd
++        extra_args: -global ICH9-LPC.noreboot=false
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - pci
++    runner:
++      tuxmake_arch: x86_64
++      kconfig_add:
++        - CONFIG_DRIVER_SERIAL_NS16550=y
++        - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
++      download:
++        OVMF.fd: /usr/share/qemu/OVMF.fd
++images:
++  barebox.efi: !template "$LG_BUILDDIR/barebox.efi"
++  OVMF.fd: !template "$LG_BUILDDIR/OVMF.fd"
++tools:
++  qemu: /usr/bin/qemu-system-x86_64
++imports:
++  -  ../strategy.py
+diff --git a/test/x86/virtio@efi_defconfig.yaml b/test/x86/virtio@efi_defconfig.yaml
+new file mode 100644
+index 000000000000..326fcbc68999
+--- /dev/null
++++ b/test/x86/virtio@efi_defconfig.yaml
+@@ -0,0 +1,32 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu
++        machine: pc
++        cpu: Nehalem
++        memory: 1024M
++        kernel: barebox.efi
++        bios: OVMF.fd
++        extra_args: ''
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - virtio-pci
++    runner:
++      tuxmake_arch: x86_64
++      kconfig_add:
++        - test/kconfig/virtio-pci.cfg
++        - CONFIG_DRIVER_SERIAL_NS16550=y
++        - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
++      download:
++        OVMF.fd: /usr/share/qemu/OVMF.fd
++images:
++  barebox.efi: !template "$LG_BUILDDIR/barebox.efi"
++  OVMF.fd: !template "$LG_BUILDDIR/OVMF.fd"
++tools:
++  qemu: /usr/bin/qemu-system-x86_64
++imports:
++  -  ../strategy.py
 -- 
 2.29.2
 
