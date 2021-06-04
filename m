@@ -1,53 +1,53 @@
-Delivery-date: Fri, 04 Jun 2021 10:50:18 +0200
+Delivery-date: Fri, 04 Jun 2021 10:50:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5X0-0005Nc-AO
-	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:50:18 +0200
+	id 1lp5XJ-0005O8-99
+	for lore@lore.pengutronix.de; Fri, 04 Jun 2021 10:50:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lp5Wp-0001gy-97
-	for lore@pengutronix.de; Fri, 04 Jun 2021 10:50:18 +0200
+	id 1lp5X5-0001pG-8E
+	for lore@pengutronix.de; Fri, 04 Jun 2021 10:50:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=wWdxDlUimRzLxVj6J3T+57XUQqXFtZOd3XG3vK9JHss=; b=h36Y/XiIA+VaEe
-	zoOySAUANvQgy1nXlF0zmxIYqKNT4GSxEK2yVrlsAPUnzl0AsT97tNlfMSNrjvkDVRX4NXw0wpYNV
-	WINVCaMWu+ETfTEjw1vGBAyUHfQlCRTLIbTt8uw3sls9jJqGHPreKg2u1IlLnEn8Ui7/jS652Gm5O
-	GF/DKqok9Kx5N2c1vrkd+qPgV7Gj1S4LmIZGBzq3XhN9In/VNiBIDxviwWtA4VwW688HEyR2t1xN4
-	MPg4HRYwJoCFXHmQXuwZlDg1P9C8ZAILpIMwJY8JMi3GmrEm3EUhoI8jF8/WlLp9bf+dJ9z6ang04
-	d8bjqd1wVtNEGcx9+rpw==;
+	List-Owner; bh=fYRJdz7OrGHhmaJdQpABbMxgKvIgGbwcYZBnahBwoGM=; b=IcOvKZpycmNkqw
+	r2Ec9RTR/z4qQgob4xAoiagCe2sFY+Ttf1VhBk7k60vy/giBpp3iQViEpUz9W2WvNC0SqVKneZmmX
+	wSAEp0/Xxwe4LoaPNHgoA/zZO5MeSeO2F3i5yR8aBzweckb2huQ2YtbxNU7wgUBvBsNjSjha/Sbuo
+	AGMBNCSuKP4aoX2w4idXjGt2fBFf2WP53UjpaR+RX7dG59ojRhbdGyLMUtoM+NlsHsYFjVkVC5Hyy
+	r9qw4Xxmp6MH4XaonmwhbikK5etkPEu6nWCKc+JRVMT2EBlwhepdss+DRYv1Td8zdojuRY44bycay
+	p7YsAgecqp2la0t/DVkg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lp5VA-00CMfe-Qy; Fri, 04 Jun 2021 08:48:25 +0000
+	id 1lp5VK-00CMjq-W7; Fri, 04 Jun 2021 08:48:35 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lp5UH-00CMCP-TB
- for barebox@lists.infradead.org; Fri, 04 Jun 2021 08:47:34 +0000
+ id 1lp5UI-00CMCS-2i
+ for barebox@lists.infradead.org; Fri, 04 Jun 2021 08:47:35 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5U8-0000iV-Gw; Fri, 04 Jun 2021 10:47:20 +0200
+ id 1lp5U8-0000id-Ky; Fri, 04 Jun 2021 10:47:20 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lp5U7-00052a-KR; Fri, 04 Jun 2021 10:47:19 +0200
+ id 1lp5U7-00053y-Oc; Fri, 04 Jun 2021 10:47:19 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri,  4 Jun 2021 10:46:55 +0200
-Message-Id: <20210604084704.17410-5-a.fatoum@pengutronix.de>
+Date: Fri,  4 Jun 2021 10:47:03 +0200
+Message-Id: <20210604084704.17410-13-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210604084704.17410-1-a.fatoum@pengutronix.de>
 References: <20210604084704.17410-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210604_014729_967934_D5B25BFB 
-X-CRM114-Status: GOOD (  11.11  )
+X-CRM114-CacheID: sfid-20210604_014730_181682_B5B6D172 
+X-CRM114-Status: GOOD (  13.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,7 +60,7 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Cc: jmaselbas@kalray.eu, Ahmad Fatoum <a.fatoum@pengutronix.de>,
- rcz@pengutronix.de
+ Rouven Czerwinski <r.czerwinski@pengutronix.de>, rcz@pengutronix.de
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -73,102 +73,52 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH RESEND v4 04/13] MIPS: qemu-malta: generate swapped image as
- part of multi-image build
+Subject: [PATCH RESEND v4 12/13] test: self: run selftests as part of the
+ pytest suite
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Having to manually swap the words in the MIPS Malta image for QEMU
-little endian emulation is annoying.
+We don't want to enable self tests in the normal configs as they may,
+in future, bloat size needlessly. Enable it instead in the base.cfg
+fragment and add a test that verifies the selftest command
+runs without errors.
 
-Have the multi-image build for Malta generate a second .swapped
-image that can be readily used if needed.
+Selftests can be run on startup for CONFIG_SHELL_NONE systems. This is
+not implemented here. For such systems the test will be skipped
+as CONFIG_CMD_SELFTEST won't be defined. To manually skip with
+emulate.pl, add --no-kconfig-base.
 
+Acked-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/mips/qemu-malta.rst | 16 ++++------------
- images/.gitignore                        |  1 +
- images/Makefile                          |  2 +-
- images/Makefile.malta                    | 10 +++++++++-
- 4 files changed, 15 insertions(+), 14 deletions(-)
+ test/kconfig/base.cfg      | 4 ++++
+ test/py/test_bselftests.py | 8 ++++++++
+ 2 files changed, 12 insertions(+)
+ create mode 100644 test/py/test_bselftests.py
 
-diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
-index e188ae8c642a..fd37d5edb229 100644
---- a/Documentation/boards/mips/qemu-malta.rst
-+++ b/Documentation/boards/mips/qemu-malta.rst
-@@ -10,31 +10,23 @@ QEMU run string:
- 
-   qemu-system-mips -nodefaults -M malta -m 256 \
-       -device VGA -serial stdio -monitor null \
--      -bios barebox-flash-image
-+      -bios ./images/barebox-qemu-malta.img
- 
- 
- Little-endian mode
- ------------------
- 
--Running little-endian Malta is a bit tricky.
- In little-endian mode the 32bit words in the boot flash image are swapped,
- a neat trick which allows bi-endian firmware.
- 
--You have to swap words of ``zbarebox.bin`` image, e.g.:
--
--.. code-block:: sh
--
--  echo arch/mips/pbl/zbarebox.bin \
--      | cpio --create \
--      | cpio --extract --swap --unconditional
--
--QEMU run string:
-+The barebox build generates a second ``./images/barebox-qemu-malta.img.swapped``
-+image that can be used in this case, e.g.:
- 
- .. code-block:: sh
- 
-   qemu-system-mipsel -nodefaults -M malta -m 256 \
-       -device VGA -serial stdio -monitor null \
--      -bios barebox-flash-image
-+      -bios ./images/barebox-qemu-malta.img.swapped
- 
- 
- Using GXemul
-diff --git a/images/.gitignore b/images/.gitignore
-index eafdb44b5bdd..3a9a77dad16e 100644
---- a/images/.gitignore
-+++ b/images/.gitignore
-@@ -32,3 +32,4 @@ barebox.sum
- *.mvebu1img
- *.stm32
- *.nmon
-+*.swapped
-diff --git a/images/Makefile b/images/Makefile
-index c185982c17ed..cc330d957597 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -218,5 +218,5 @@ $(flash-list): $(image-y-path)
- clean-files := *.pbl *.pblb *.map start_*.imximg *.img barebox.z start_*.kwbimg \
- 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
- 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
--	start_*.simximg start_*.usimximg *.zynqimg *.image
-+	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped
- clean-files += pbl.lds
-diff --git a/images/Makefile.malta b/images/Makefile.malta
-index 5739ec464092..96d7b86b1187 100644
---- a/images/Makefile.malta
-+++ b/images/Makefile.malta
-@@ -1,3 +1,11 @@
-+quiet_cmd_bswap32_image = BSWAP4  $@
-+      cmd_bswap32_image = cp $< $@ && \
-+			  truncate -s %4 $@ && \
-+			  objcopy -I binary --reverse-byte=4 $@
+diff --git a/test/kconfig/base.cfg b/test/kconfig/base.cfg
+index e69de29bb2d1..6a9f68349816 100644
+--- a/test/kconfig/base.cfg
++++ b/test/kconfig/base.cfg
+@@ -0,0 +1,4 @@
++CONFIG_TEST=y
++CONFIG_SELFTEST=y
++CONFIG_CMD_SELFTEST=y
++CONFIG_SELFTEST_ENABLE_ALL=y
+diff --git a/test/py/test_bselftests.py b/test/py/test_bselftests.py
+new file mode 100644
+index 000000000000..7417e7434916
+--- /dev/null
++++ b/test/py/test_bselftests.py
+@@ -0,0 +1,8 @@
++import pytest
++from .helper import *
 +
-+$(obj)/%.img.swapped: $(obj)/%.img FORCE
-+	$(call if_changed,bswap32_image)
++def test_bselftest(barebox, barebox_config):
++    skip_disabled(barebox_config, "CONFIG_CMD_SELFTEST")
 +
- pblb-$(CONFIG_BOARD_QEMU_MALTA) += start_qemu_malta
- FILE_barebox-qemu-malta.img = start_qemu_malta.pblb
--image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img
-+image-$(CONFIG_BOARD_QEMU_MALTA) += barebox-qemu-malta.img barebox-qemu-malta.img.swapped
++    stdout, _, returncode = barebox.run('selftest', timeout=30)
++    assert returncode == 0, "selftest failed:\n{}\n".format("\n".join(stdout))
 -- 
 2.29.2
 
