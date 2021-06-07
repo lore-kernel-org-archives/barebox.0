@@ -1,53 +1,53 @@
-Delivery-date: Mon, 07 Jun 2021 12:55:03 +0200
+Delivery-date: Mon, 07 Jun 2021 12:55:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqCuN-0006DP-JN
-	for lore@lore.pengutronix.de; Mon, 07 Jun 2021 12:55:03 +0200
+	id 1lqCv4-0006ER-64
+	for lore@lore.pengutronix.de; Mon, 07 Jun 2021 12:55:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqCuI-0002ud-FQ
-	for lore@pengutronix.de; Mon, 07 Jun 2021 12:55:03 +0200
+	id 1lqCuz-0003Bg-Fq
+	for lore@pengutronix.de; Mon, 07 Jun 2021 12:55:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=uN1qSAVqilmjjEQmRFD7Tiw6ampYqSyKwjXQDyIh4DA=; b=ZOtsv9Mc0BpdoQ
-	4jz4BdUJ87WwXJs3xXHZFhKGF5uHsbwPbmiO5URd77a1S1AphuCTAUJrCvJv8Pnfqz88ME70UnsjX
-	LfC7udzaMhFjXrOLjwbt0VrOzDd0H6pDgqKDgQ2meCyoGtP/T16r7NNc7ANuAhkeeGfkigALzEcJD
-	yNzwwnw76eJ/BN/TvSr5ZYrzUIcCyhNaxfDCp0ITpiwpmpOssUjmbY2g7JqkmwdZBfRLi+dzysxGp
-	oA5m6FvL9fKMX94v57MTE+GBwZlE3HlkecNuvGrQoVQGisDHl/twNAQRAcdNjX7hmx6ntZg7SioX8
-	hXXYDqkaFRzwGVaFAJYQ==;
+	List-Owner; bh=9c07CA9mgYZOwiUSto7qSOqAybjYnIZUsW8E/v7WgxE=; b=OHWdlEt9g3Z6R1
+	RJ8HYM9TUn24xh3a2vDDSXuf1W6HM2PPBNRBP9UYee4vWchYbT3ArQFGU7+1CHC9VZZ7h4DBm6ra3
+	uxqHf2bgjl6M/T7n0QOWijMfD+lC7OuMsyLg+8lp0rYsbycQNLuNLbSNofG+zxZA+dyitXaHr+y2C
+	ggxVXCqrrQPDNkGLwddc6fMrVFv7MOYQhSUPncY0eXY7yUNOnFILNLseoZulkZVFwi0sAR2qeSosi
+	8cIrEHrFc8ZoHg0EGdB8TtE1SnRCyR7z7t15lMM9aaLfdvfxoiQc8TmvQW88uPS8oM6Ez3Ky2sTMD
+	jOelSTEY1AkMRM6tvjjQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lqCse-0035Es-1m; Mon, 07 Jun 2021 10:53:16 +0000
+	id 1lqCtB-0035SB-5C; Mon, 07 Jun 2021 10:53:50 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqCk4-00326Z-GZ
+ id 1lqCk4-00326W-7C
  for barebox@lists.infradead.org; Mon, 07 Jun 2021 10:44:27 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lqCju-0000dm-Rl; Mon, 07 Jun 2021 12:44:14 +0200
+ id 1lqCju-0000di-PG; Mon, 07 Jun 2021 12:44:14 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lqCju-0008Lu-2F; Mon, 07 Jun 2021 12:44:14 +0200
+ id 1lqCju-0008Kq-07; Mon, 07 Jun 2021 12:44:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon,  7 Jun 2021 12:44:09 +0200
-Message-Id: <20210607104411.23071-11-s.hauer@pengutronix.de>
+Date: Mon,  7 Jun 2021 12:44:05 +0200
+Message-Id: <20210607104411.23071-7-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210607104411.23071-1-s.hauer@pengutronix.de>
 References: <20210607104411.23071-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210607_034424_633474_EBF08F66 
-X-CRM114-Status: GOOD (  12.35  )
+X-CRM114-CacheID: sfid-20210607_034424_397166_A59F20B3 
+X-CRM114-Status: GOOD (  12.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,75 +71,156 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 10/12] mci: sdhci: arasan: Use sdhci_set_clock()
+Subject: [PATCH 06/12] mci: sdhci: Use Linux defines for SDHCI_HOST_CONTROL
+ register
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We now have a function to calculate the clock divider. Use it.
+To ease porting and comparing of Linux code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/arasan-sdhci.c | 40 ++------------------------------------
- 1 file changed, 2 insertions(+), 38 deletions(-)
+ drivers/mci/arasan-sdhci.c       | 12 ++++++------
+ drivers/mci/atmel-sdhci-common.c | 14 +++++++-------
+ drivers/mci/dove-sdhci.c         | 10 +++++-----
+ drivers/mci/sdhci.h              | 17 ++++++++++++-----
+ 4 files changed, 30 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-index 180f0042bf..8a5e85109c 100644
+index e22db4cfa3..e02f222345 100644
 --- a/drivers/mci/arasan-sdhci.c
 +++ b/drivers/mci/arasan-sdhci.c
-@@ -152,21 +152,6 @@ static int arasan_sdhci_init(struct mci_host *mci, struct device_d *dev)
- 	return 0;
+@@ -124,7 +124,7 @@ static int arasan_sdhci_reset(struct arasan_sdhci_host *host, u8 mask)
+ 		u8 ctrl;
+ 
+ 		ctrl = sdhci_read8(&host->sdhci, SDHCI_HOST_CONTROL);
+-		ctrl |= SDHCI_CARD_DETECT_TEST_LEVEL | SDHCI_CARD_DETECT_SIGNAL_SELECTION;
++		ctrl |= SDHCI_CTRL_CDTEST_INS | SDHCI_CTRL_CDTEST_INS;
+ 		sdhci_write8(&host->sdhci, ctrl, SDHCI_HOST_CONTROL);
+ 	}
+ 
+@@ -200,21 +200,21 @@ static void arasan_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
+ 	}
+ 
+ 	val = sdhci_read8(&host->sdhci, SDHCI_HOST_CONTROL) &
+-			~(SDHCI_DATA_WIDTH_4BIT | SDHCI_DATA_WIDTH_8BIT);
++			~(SDHCI_CTRL_8BITBUS | SDHCI_CTRL_8BITBUS);
+ 
+ 	switch (ios->bus_width) {
+ 	case MMC_BUS_WIDTH_8:
+-		val |= SDHCI_DATA_WIDTH_8BIT;
++		val |= SDHCI_CTRL_8BITBUS;
+ 		break;
+ 	case MMC_BUS_WIDTH_4:
+-		val |= SDHCI_DATA_WIDTH_4BIT;
++		val |= SDHCI_CTRL_8BITBUS;
+ 		break;
+ 	}
+ 
+ 	if (ios->clock > 26000000)
+-		val |= SDHCI_HIGHSPEED_EN;
++		val |= SDHCI_CTRL_HISPD;
+ 	else
+-		val &= ~SDHCI_HIGHSPEED_EN;
++		val &= ~SDHCI_CTRL_HISPD;
+ 
+ 	sdhci_write8(&host->sdhci, SDHCI_HOST_CONTROL, val);
  }
+diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
+index b391775b00..d2b777a93c 100644
+--- a/drivers/mci/atmel-sdhci-common.c
++++ b/drivers/mci/atmel-sdhci-common.c
+@@ -279,9 +279,9 @@ static int at91_sdhci_set_clock(struct at91_sdhci *host, unsigned clock)
  
--static u16 arasan_sdhci_get_clock_divider(struct arasan_sdhci_host *host,
--					  unsigned int reqclk)
--{
--	u16 div;
--
--	for (div = 1; div < SDHCI_MAX_DIV_SPEC_300; div += 2)
--		if ((host->mci.f_max / div) <= reqclk)
--			break;
--	div /= 2;
--
--	return div;
--}
--
--#define SDHCI_FREQ_SEL_10_BIT(x)	(((x) & 0x300) >> 2)
--
- static void arasan_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
- {
- 	struct arasan_sdhci_host *host = to_arasan_sdhci_host(mci);
-@@ -175,29 +160,8 @@ static void arasan_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
- 	/* stop clock */
- 	sdhci_write16(&host->sdhci, SDHCI_CLOCK_CONTROL, 0);
+ 	reg = sdhci_read8(sdhci, SDHCI_HOST_CONTROL);
+ 	if (clock > 26000000)
+-		reg |= SDHCI_HIGHSPEED_EN;
++		reg |= SDHCI_CTRL_HISPD;
+ 	else
+-		reg &= ~SDHCI_HIGHSPEED_EN;
++		reg &= ~SDHCI_CTRL_HISPD;
  
--	if (ios->clock) {
--		u64 start;
--
--		/* set & start clock */
--		val = arasan_sdhci_get_clock_divider(host, ios->clock);
--		/* Bit 6 & 7 are upperbits of 10bit divider */
--		val = SDHCI_FREQ_SEL(val) | SDHCI_FREQ_SEL_10_BIT(val);
--		val |= SDHCI_CLOCK_INT_EN;
--		sdhci_write16(&host->sdhci, SDHCI_CLOCK_CONTROL, val);
--
--		start = get_time_ns();
--		while (!(sdhci_read16(&host->sdhci, SDHCI_CLOCK_CONTROL) &
--			SDHCI_CLOCK_INT_STABLE)) {
--			if (is_timeout(start, 20 * MSECOND)) {
--				dev_err(host->mci.hw_dev,
--						"SDHCI clock stable timeout\n");
--				return;
--			}
--		}
--		/* enable bus clock */
--		sdhci_write16(&host->sdhci, SDHCI_CLOCK_CONTROL,
--				    val | SDHCI_CLOCK_CARD_EN);
--	}
-+	if (ios->clock)
-+		sdhci_set_clock(&host->sdhci, ios->clock, host->sdhci.max_clk);
+ 	sdhci_write8(sdhci, SDHCI_HOST_CONTROL, reg);
  
- 	sdhci_set_bus_width(&host->sdhci, ios->bus_width);
+@@ -297,15 +297,15 @@ static int at91_sdhci_set_bus_width(struct at91_sdhci *host, unsigned bus_width)
  
+ 	switch(bus_width) {
+ 	case MMC_BUS_WIDTH_8:
+-		reg |= SDHCI_DATA_WIDTH_8BIT;
++		reg |= SDHCI_CTRL_8BITBUS;
+ 		break;
+ 	case MMC_BUS_WIDTH_4:
+-		reg &= ~SDHCI_DATA_WIDTH_8BIT;
+-		reg |= SDHCI_DATA_WIDTH_4BIT;
++		reg &= ~SDHCI_CTRL_8BITBUS;
++		reg |= SDHCI_CTRL_8BITBUS;
+ 		break;
+ 	default:
+-		reg &= ~SDHCI_DATA_WIDTH_8BIT;
+-		reg &= ~SDHCI_DATA_WIDTH_4BIT;
++		reg &= ~SDHCI_CTRL_8BITBUS;
++		reg &= ~SDHCI_CTRL_8BITBUS;
+ 	}
+ 
+ 	sdhci_write8(sdhci, SDHCI_HOST_CONTROL, reg);
+diff --git a/drivers/mci/dove-sdhci.c b/drivers/mci/dove-sdhci.c
+index 9c10e67eb8..cafc9dc579 100644
+--- a/drivers/mci/dove-sdhci.c
++++ b/drivers/mci/dove-sdhci.c
+@@ -224,20 +224,20 @@ static void dove_sdhci_mci_set_ios(struct mci_host *mci, struct mci_ios *ios)
+ 
+ 	/* set bus width */
+ 	val = sdhci_read8(&host->sdhci, SDHCI_HOST_CONTROL) &
+-		~(SDHCI_DATA_WIDTH_4BIT | SDHCI_DATA_WIDTH_8BIT);
++		~(SDHCI_CTRL_8BITBUS | SDHCI_CTRL_8BITBUS);
+ 	switch (ios->bus_width) {
+ 	case MMC_BUS_WIDTH_8:
+-		val |= SDHCI_DATA_WIDTH_8BIT;
++		val |= SDHCI_CTRL_8BITBUS;
+ 		break;
+ 	case MMC_BUS_WIDTH_4:
+-		val |= SDHCI_DATA_WIDTH_4BIT;
++		val |= SDHCI_CTRL_8BITBUS;
+ 		break;
+ 	}
+ 
+ 	if (ios->clock > 26000000)
+-		val |= SDHCI_HIGHSPEED_EN;
++		val |= SDHCI_CTRL_HISPD;
+ 	else
+-		val &= ~SDHCI_HIGHSPEED_EN;
++		val &= ~SDHCI_CTRL_HISPD;
+ 
+ 	sdhci_write8(&host->sdhci, SDHCI_HOST_CONTROL, val);
+ 
+diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
+index 872caabde5..0b436d3aa2 100644
+--- a/drivers/mci/sdhci.h
++++ b/drivers/mci/sdhci.h
+@@ -54,11 +54,18 @@
+ #define SDHCI_PRESENT_STATE1					0x26
+ #define SDHCI_HOST_CONTROL__POWER_CONTROL__BLOCK_GAP_CONTROL	0x28
+ #define SDHCI_HOST_CONTROL					0x28
+-#define  SDHCI_CARD_DETECT_SIGNAL_SELECTION	BIT(7)
+-#define  SDHCI_CARD_DETECT_TEST_LEVEL		BIT(6)
+-#define  SDHCI_DATA_WIDTH_8BIT			BIT(5)
+-#define  SDHCI_HIGHSPEED_EN			BIT(2)
+-#define  SDHCI_DATA_WIDTH_4BIT			BIT(1)
++#define  SDHCI_CTRL_LED         BIT(0)
++#define  SDHCI_CTRL_4BITBUS     BIT(1)
++#define  SDHCI_CTRL_HISPD       BIT(2)
++#define  SDHCI_CTRL_DMA_MASK    0x18
++#define   SDHCI_CTRL_SDMA       0x00
++#define   SDHCI_CTRL_ADMA1      0x08
++#define   SDHCI_CTRL_ADMA32     0x10
++#define   SDHCI_CTRL_ADMA64     0x18
++#define   SDHCI_CTRL_ADMA3      0x18
++#define  SDHCI_CTRL_8BITBUS     BIT(5)
++#define  SDHCI_CTRL_CDTEST_INS  BIT(6)
++#define  SDHCI_CTRL_CDTEST_EN   BIT(7)
+ #define SDHCI_POWER_CONTROL					0x29
+ #define  SDHCI_POWER_ON				0x01
+ #define  SDHCI_POWER_180			0x0A
 -- 
 2.29.2
 
