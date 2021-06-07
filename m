@@ -1,53 +1,53 @@
-Delivery-date: Mon, 07 Jun 2021 12:51:17 +0200
+Delivery-date: Mon, 07 Jun 2021 12:51:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqCqj-000673-Gj
-	for lore@lore.pengutronix.de; Mon, 07 Jun 2021 12:51:17 +0200
+	id 1lqCrC-00067q-89
+	for lore@lore.pengutronix.de; Mon, 07 Jun 2021 12:51:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqCqd-0001uO-Fr
-	for lore@pengutronix.de; Mon, 07 Jun 2021 12:51:17 +0200
+	id 1lqCr6-000287-R9
+	for lore@pengutronix.de; Mon, 07 Jun 2021 12:51:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=xyh8wIsM/Ano8BabVS/H2X//iyHB88Y3vXB7beq7H7M=; b=qXCeS3DGs4Aebn
-	K2DU6Jn+JMU9eCTNgGCqUEOG3mrWsg3OaQ4Ia0bX4EXL0cZD6ZCJ6SdmwGKOHjo/1D/HJsCz5aMgj
-	0/gNjsjniqF9RovgjupOG8YMnms5YtMwwIm1SDAl1Li9ukgY5IGJzBeXYiKR/k7qY/uBebsQhctr3
-	oXgau/aXo4DxeZqYUuhp4GBqsvEmHV/j4TRhRAOQRzWf4daXBZuHbQlrs6jjOk7s48n2jWk1WB1cc
-	vHOeFT9IsLo60fANWfP/R6hetCz425f5FsFwc9atZUe+0VvkEyU9Lph2tpjSAFaZj1xxAOKwMbsMI
-	xVeBDMCh0oCSeac0Ox2A==;
+	List-Owner; bh=NwWsHrQhBa+1vZB7o40HpcU1fG3lF4JrCBpBKrOpeBc=; b=cqgyW2yO+TTBSk
+	ACsnTp2rftc6vRMdLCJCjdXHwqh97kebTAhlWpLut01IuKbbDd7fcYEKU2nPCvfZNw1gRtmQaqeU1
+	75V9D0lgcJLW0voEShisY0F6+fJwZvKymw3PVYRa0M/Fh6JQUWNqDhp63cwRzGtzWO36YvR4VOj3O
+	oX6bhtHbvbltLfJp2yRcZBXiBdqGmK7hKpkGDWtObVQRglhhH73ftd5eTvouTlnGmyntzABvnjPzb
+	hsfifjMhzSrEUXtqpZXfqsePVEAr/6x69HkcI8PdwTwDtOM5J7FZzbwI7y6a2iL/FcN+QQD5pq28j
+	t0ArGbHF8qtHJtJlYRwA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lqCoy-0033o4-N3; Mon, 07 Jun 2021 10:49:29 +0000
+	id 1lqCpI-0033rN-EA; Mon, 07 Jun 2021 10:49:49 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqCjx-00322K-Fh
+ id 1lqCjx-00322A-FA
  for barebox@lists.infradead.org; Mon, 07 Jun 2021 10:44:19 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lqCju-0000dj-RL; Mon, 07 Jun 2021 12:44:14 +0200
+ id 1lqCju-0000de-Gj; Mon, 07 Jun 2021 12:44:14 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lqCju-0008L4-0c; Mon, 07 Jun 2021 12:44:14 +0200
+ id 1lqCjt-0008Jr-Tz; Mon, 07 Jun 2021 12:44:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon,  7 Jun 2021 12:44:06 +0200
-Message-Id: <20210607104411.23071-8-s.hauer@pengutronix.de>
+Date: Mon,  7 Jun 2021 12:44:01 +0200
+Message-Id: <20210607104411.23071-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210607104411.23071-1-s.hauer@pengutronix.de>
 References: <20210607104411.23071-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210607_034417_651462_B75E459F 
-X-CRM114-Status: GOOD (  12.04  )
+X-CRM114-CacheID: sfid-20210607_034417_588829_BF4A1348 
+X-CRM114-Status: GOOD (  12.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,74 +71,70 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/12] mci: sdhci: arasan: Use sdhci_setup_host()
+Subject: [PATCH 02/12] mci: sdhci: Add and use SDHCI_CAPABILITIES_1 defines
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Use common code instead of duplicating it in the driver.
+Linux has defines for the SDHCI_CAPABILITIES_1 register at offset 0x44.
+Add these and convert the only user so far to use the defines.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/arasan-sdhci.c | 32 +++++---------------------------
- 1 file changed, 5 insertions(+), 27 deletions(-)
+ drivers/mci/atmel-sdhci-common.c |  6 ++----
+ drivers/mci/sdhci.h              | 15 ++++++++++++++-
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-index e02f222345..acc2827f1d 100644
---- a/drivers/mci/arasan-sdhci.c
-+++ b/drivers/mci/arasan-sdhci.c
-@@ -311,32 +311,6 @@ error:
- 	return ret;
- }
+diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
+index 92013feb95..b391775b00 100644
+--- a/drivers/mci/atmel-sdhci-common.c
++++ b/drivers/mci/atmel-sdhci-common.c
+@@ -24,8 +24,6 @@
  
--
--static void arasan_sdhci_set_mci_caps(struct arasan_sdhci_host *host)
--{
--	u32 caps = sdhci_read32(&host->sdhci, SDHCI_CAPABILITIES);
--
--	if ((caps & SDHCI_CAN_VDD_180) &&
--	    !(host->quirks & SDHCI_ARASAN_QUIRK_NO_1_8_V))
--		host->mci.voltages |= MMC_VDD_165_195;
--	if (caps & SDHCI_CAN_VDD_300)
--		host->mci.voltages |= MMC_VDD_29_30 | MMC_VDD_30_31;
--	if (caps & SDHCI_CAN_VDD_330)
--		host->mci.voltages |= MMC_VDD_32_33 | MMC_VDD_33_34;
--
--	if (caps & SDHCI_CAN_DO_HISPD)
--		host->mci.host_caps |= (MMC_CAP_MMC_HIGHSPEED_52MHZ |
--					MMC_CAP_MMC_HIGHSPEED |
--					MMC_CAP_SD_HIGHSPEED);
--
--	/* parse board supported bus width capabilities */
--	mci_of_parse(&host->mci);
--
--	/* limit bus widths to controller capabilities */
--	if (!(caps & SDHCI_CAN_DO_8BIT))
--		host->mci.host_caps &= ~MMC_CAP_8_BIT_DATA;
--}
--
- static int arasan_sdhci_probe(struct device_d *dev)
- {
- 	struct device_node *np = dev->device_node;
-@@ -391,6 +365,7 @@ static int arasan_sdhci_probe(struct device_d *dev)
- 	arasan_sdhci->sdhci.write32 = arasan_sdhci_writel;
- 	arasan_sdhci->sdhci.write16 = arasan_sdhci_writew;
- 	arasan_sdhci->sdhci.write8 = arasan_sdhci_writeb;
-+	arasan_sdhci->sdhci.mci = mci;
- 	mci->send_cmd = arasan_sdhci_send_cmd;
- 	mci->set_ios = arasan_sdhci_set_ios;
- 	mci->init = arasan_sdhci_init;
-@@ -401,7 +376,10 @@ static int arasan_sdhci_probe(struct device_d *dev)
- 	mci->f_max = clk_get_rate(clk_xin);
- 	mci->f_min = 50000000 / 256;
+ #include "atmel-sdhci.h"
  
--	arasan_sdhci_set_mci_caps(arasan_sdhci);
-+	/* parse board supported bus width capabilities */
-+	mci_of_parse(&arasan_sdhci->mci);
+-#define AT91_SDHCI_CA1R		0x44	/* Capabilities 1 Register */
+-
+ #define AT91_SDHCI_MC1R		0x204
+ #define		AT91_SDHCI_MC1_FCD		BIT(7)
+ #define AT91_SDHCI_CALCR	0x240
+@@ -237,9 +235,9 @@ static int at91_sdhci_set_clock(struct at91_sdhci *host, unsigned clock)
+ 	if (clock == 0)
+ 		return 0;
+ 
+-	caps = sdhci_read32(sdhci, AT91_SDHCI_CA1R);
++	caps = sdhci_read32(sdhci, SDHCI_CAPABILITIES_1);
+ 
+-	caps_clk_mult = (caps & SDHCI_CLOCK_MUL_MASK) >> SDHCI_CLOCK_MUL_SHIFT;
++	caps_clk_mult = FIELD_GET(SDHCI_CLOCK_MUL_MASK, caps);
+ 
+ 	if (caps_clk_mult) {
+ 		for (clk_div = 1; clk_div <= 1024; clk_div++) {
+diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
+index 9bd9749dd6..fd63cd84de 100644
+--- a/drivers/mci/sdhci.h
++++ b/drivers/mci/sdhci.h
+@@ -123,7 +123,20 @@
+ #define  SDHCI_CAN_64BIT_V4			0x08000000
+ #define  SDHCI_CAN_64BIT			0x10000000
+ 
+-#define  SDHCI_CLOCK_MUL_MASK	0x00FF0000
++#define SDHCI_CAPABILITIES_1			0x44
++#define  SDHCI_SUPPORT_SDR50			0x00000001
++#define  SDHCI_SUPPORT_SDR104			0x00000002
++#define  SDHCI_SUPPORT_DDR50			0x00000004
++#define  SDHCI_DRIVER_TYPE_A			0x00000010
++#define  SDHCI_DRIVER_TYPE_C			0x00000020
++#define  SDHCI_DRIVER_TYPE_D			0x00000040
++#define  SDHCI_RETUNING_TIMER_COUNT_MASK	GENMASK(11, 8)
++#define  SDHCI_USE_SDR50_TUNING			0x00002000
++#define  SDHCI_RETUNING_MODE_MASK		GENMASK(15, 14)
++#define  SDHCI_CLOCK_MUL_MASK			GENMASK(23, 16)
++#define  SDHCI_CAN_DO_ADMA3			0x08000000
++#define  SDHCI_SUPPORT_HS400			0x80000000 /* Non-standard */
 +
-+	sdhci_setup_host(&arasan_sdhci->sdhci);
+ #define  SDHCI_CLOCK_MUL_SHIFT	16
  
- 	dev->priv = arasan_sdhci;
- 
+ #define SDHCI_SPEC_200_MAX_CLK_DIVIDER	256
 -- 
 2.29.2
 
