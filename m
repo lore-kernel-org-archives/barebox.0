@@ -1,64 +1,74 @@
-Delivery-date: Mon, 07 Jun 2021 10:02:57 +0200
+Delivery-date: Mon, 07 Jun 2021 11:32:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqADp-0001gC-HN
-	for lore@lore.pengutronix.de; Mon, 07 Jun 2021 10:02:57 +0200
+	id 1lqBcI-0004Pi-Fh
+	for lore@lore.pengutronix.de; Mon, 07 Jun 2021 11:32:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqADl-00010K-VC
-	for lore@pengutronix.de; Mon, 07 Jun 2021 10:02:57 +0200
+	id 1lqBcD-0007GP-UE
+	for lore@pengutronix.de; Mon, 07 Jun 2021 11:32:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=gpAOt6OupZ1m+04yUxHawhDf7YFNzC9VAIf/j6JyqR8=; b=a2jzNd7b7BI8rxKS5qKUYyJ8de
-	62jkH2i2x5Z+nNPPaEkdkhUudLbA29iDONPWv4v6y6bmnLfyIHtkPvKDpa3clJPMiDNSFiQiVJTFn
-	AaV1SnRZYpixe6WxTsyRRlmqW/Cb75fYvjWjhgkoOCTM+6dQ20G3eIz2RNiw2taqJ3GZEeOIyjggh
-	SMLB/Cz8/1LJuPktTusoI88I0bU97Bfywz7sOcHm3mlPS6ks/RXX73cX3h4JcJB9bVrM1GSiEBHok
-	/FQycD1wi+84o0MuG+PW/JzpNCSUYFRIx1YAoEx3o7MT6gDB+sW4MrUAmtx5khPykdxCsJn1p7pFr
-	hPPeGI2w==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=rVh2BAmCDI5+GHVF5kTtjvWQlUMZJ2kzcE8wHukTtmQ=; b=kWjdjbAfR7xMAt
+	Emmkboq8fEiTU+tPH3s5Vtn3HFwq+zCjS89tGhJsRMFzetuSKekM+3Y78F6vj1GZzYDUuocf2LjSe
+	dszAQcTb9KS3k2m5F51D3QvcHOhgcYXWXZU9qcQtkS3zg9osrJTqjI8O5iX0Kpkh3RerVRd5QVFyp
+	0SgbNXVNAzZX2W/3n13Kc6czo+q40R7pPlPxUcDt7697m70QX88MIW29tZSvlURcW4IYoiVGAjoHL
+	peG+9e3WUpAOqlOyk0flXvtUdk6Wqb7WQcGqfTdlZJhKEK9KdGgFcF6Pn92XmSN0OI+TzNifPtjfn
+	k3J9ZdIHeccOmDrW6vsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lqAC5-002ASe-Fj; Mon, 07 Jun 2021 08:01:09 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lqBa9-002bZ4-T6; Mon, 07 Jun 2021 09:30:06 +0000
+Received: from cpanel.siel.si ([46.19.9.99])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqABl-002AOk-Np
- for barebox@lists.infradead.org; Mon, 07 Jun 2021 08:00:55 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lqABj-0000aE-W2; Mon, 07 Jun 2021 10:00:47 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lqABj-000313-NL; Mon, 07 Jun 2021 10:00:47 +0200
-Date: Mon, 7 Jun 2021 10:00:47 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210607080047.GG26174@pengutronix.de>
-References: <20210531073821.15257-1-a.fatoum@pengutronix.de>
- <20210531073821.15257-19-a.fatoum@pengutronix.de>
+ id 1lqBHU-002V2a-0M
+ for barebox@lists.infradead.org; Mon, 07 Jun 2021 09:10:52 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com; 
+ s=default;
+ h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+ To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=+1dhXgoqF+9YlzGPDvnpwLfkIwJLhr8iirJAC4TQUBA=; b=pT7D92+GpNwiJGpxztK+UUE3wF
+ WsLeluBxP0Dsisob7G6kWdGVN/ata2oovr25qXe0Ey4B96Zjza9ZBsDQTjwkF0+iEb5tH+j3CZg0V
+ 8xvg2yX84zkASuU+ZtgcjIyE0FgD4qrjeh3FMx3iqBINw6oH689J84WXl0nHqxbN0kYfpUqWoyddN
+ oaJsZrjo/XkZWGHyUHz2N75q7HdWBzHpAvmMN1HCpApllb5uQpIohj6u1cIQVumJNxArsNWld9P9D
+ eiai8zfa9zUreZGHIrdWh0ZfsT18qPCUo1Nqz6jycEhEWxRTw2ha2f6GfjhfEmm0SvvJMj1X9HCZK
+ e5Csu6Gw==;
+Received: from [89.212.21.243] (port=44534 helo=localhost.localdomain)
+ by cpanel.siel.si with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <andrej.picej@norik.com>) id 1lqBHD-00FlZg-Dn
+ for barebox@lists.infradead.org; Mon, 07 Jun 2021 11:10:39 +0200
+From: Andrej Picej <andrej.picej@norik.com>
+To: barebox@lists.infradead.org
+Date: Mon,  7 Jun 2021 11:09:50 +0200
+Message-Id: <20210607090951.107269-1-andrej.picej@norik.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210531073821.15257-19-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 09:55:17 up 109 days, 11:19, 115 users,  load average: 0.45, 0.42,
- 0.53
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.infradead.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id:
+ andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210607_010049_974871_933A65D2 
-X-CRM114-Status: GOOD (  34.65  )
+X-CRM114-CacheID: sfid-20210607_021048_274958_A8F53446 
+X-CRM114-Status: UNSURE (   9.37  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,216 +88,91 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 18/20] reset: add StarFive reset controller driver
+Subject: [PATCH 1/2] ARM: i.MX: xload-gpmi-nand: fix bad block mark swapping
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, May 31, 2021 at 09:38:19AM +0200, Ahmad Fatoum wrote:
-> The StarFive SoC has a single reset controller, which seems to control
-> reset of all clocks and peripherals. It differs from the ones supported
-> by the Linux reset-simple driver in that it has a dedicated status
-> registers that needs to be polled to verify the reset has completed.
-> 
-> Also special is that most resets (> 70) are synchronous. As the reset
-> status poll would just time out without the clock, have the reset
-> controller enable the clock as part of the reset. OS can decide later,
-> which clocks to disable again.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/riscv/Kconfig.socs                       |   1 +
->  drivers/reset/Kconfig                         |   6 +
->  drivers/reset/Makefile                        |   1 +
->  drivers/reset/reset-starfive-vic.c            | 204 ++++++++++++++++++
->  .../reset-controller/starfive-jh7100.h        | 126 +++++++++++
->  include/soc/starfive/rstgen.h                 |  41 ++++
->  6 files changed, 379 insertions(+)
->  create mode 100644 drivers/reset/reset-starfive-vic.c
->  create mode 100644 include/dt-bindings/reset-controller/starfive-jh7100.h
->  create mode 100644 include/soc/starfive/rstgen.h
-> 
-> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-> index 3e4cd3cdad59..d2b4a955d1c4 100644
-> --- a/arch/riscv/Kconfig.socs
-> +++ b/arch/riscv/Kconfig.socs
-> @@ -52,6 +52,7 @@ endif
->  config SOC_STARFIVE
->  	bool "StarFive SoCs"
->  	select CLINT_TIMER
-> +	select ARCH_HAS_RESET_CONTROLLER
->  	help
->  	  This enables support for SiFive SoC platform hardware.
->  
-> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-> index 316ece9e7176..9429f107bb67 100644
-> --- a/drivers/reset/Kconfig
-> +++ b/drivers/reset/Kconfig
-> @@ -27,4 +27,10 @@ config RESET_STM32
->  	help
->  	  This enables the reset controller driver for STM32MP and STM32 MCUs.
->  
-> +config RESET_STARFIVE
-> +	bool "StarFive Controller Driver" if COMPILE_TEST
-> +	default SOC_STARFIVE
-> +	help
-> +	  This enables the reset controller driver for the StarFive JH7100.
-> +
->  endif
-> diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-> index 8460c4b154f5..ce494baae58e 100644
-> --- a/drivers/reset/Makefile
-> +++ b/drivers/reset/Makefile
-> @@ -2,3 +2,4 @@ obj-$(CONFIG_RESET_CONTROLLER) += core.o
->  obj-$(CONFIG_ARCH_SOCFPGA) += reset-socfpga.o
->  obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
->  obj-$(CONFIG_RESET_STM32) += reset-stm32.o
-> +obj-$(CONFIG_RESET_STARFIVE) += reset-starfive-vic.o
-> diff --git a/drivers/reset/reset-starfive-vic.c b/drivers/reset/reset-starfive-vic.c
-> new file mode 100644
-> index 000000000000..d6a8d0138ab2
-> --- /dev/null
-> +++ b/drivers/reset/reset-starfive-vic.c
-> @@ -0,0 +1,204 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) 2021 Ahmad Fatoum, Pengutronix
-> + *
-> + * StarFive Reset Controller driver
-> + */
-> +#define pr_fmt(fmt) "reset-starfive: " fmt
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <linux/clk.h>
-> +#include <linux/err.h>
-> +#include <linux/reset-controller.h>
-> +#include <soc/starfive/rstgen.h>
-> +#include <dt-bindings/reset-controller/starfive-jh7100.h>
-> +#include <dt-bindings/clock/starfive-jh7100.h>
-> +
-> +struct starfive_rstgen {
-> +	void __iomem *base;
-> +	struct reset_controller_dev rcdev;
-> +	const struct starfive_rstgen_ops *ops;
-> +	struct device_node *clknp;
-> +	const int *sync_resets;
-> +};
-> +
-> +static struct starfive_rstgen *to_starfive_rstgen(struct reset_controller_dev *rcdev)
-> +{
-> +	return container_of(rcdev, struct starfive_rstgen, rcdev);
-> +}
-> +
-> +static const int jh7110_rstgen_sync_resets[RSTN_END] = {
-> +	[RSTN_SGDMA2P_AHB]   = CLK_SGDMA2P_AHB,
-> +	[RSTN_SGDMA2P_AXI]   = CLK_SGDMA2P_AXI,
-> +	[RSTN_DMA2PNOC_AXI]  = CLK_DMA2PNOC_AXI,
-> +	[RSTN_DLA_AXI]       = CLK_DLA_AXI,
-> +	[RSTN_DLANOC_AXI]    = CLK_DLANOC_AXI,
-> +	[RSTN_DLA_APB]       = CLK_DLA_APB,
-> +	[RSTN_VDECBRG_MAIN]  = CLK_VDECBRG_MAIN,
-> +	[RSTN_VDEC_AXI]      = CLK_VDEC_AXI,
-> +	[RSTN_VDEC_BCLK]     = CLK_VDEC_BCLK,
-> +	[RSTN_VDEC_CCLK]     = CLK_VDEC_CCLK,
-> +	[RSTN_VDEC_APB]      = CLK_VDEC_APB,
-> +	[RSTN_JPEG_AXI]      = CLK_JPEG_AXI,
-> +	[RSTN_JPEG_CCLK]      = CLK_JPEG_CCLK,
-> +	[RSTN_JPEG_APB]      = CLK_JPEG_APB,
-> +	[RSTN_JPCGC300_MAIN] = CLK_JPCGC300_MAIN,
-> +	[RSTN_GC300_2X]      = CLK_GC300_2X,
-> +	[RSTN_GC300_AXI]     = CLK_GC300_AXI,
-> +	[RSTN_GC300_AHB]     = CLK_GC300_AHB,
-> +	[RSTN_VENC_AXI]      = CLK_VENC_AXI,
-> +	[RSTN_VENCBRG_MAIN]  = CLK_VENCBRG_MAIN,
-> +	[RSTN_VENC_BCLK]     = CLK_VENC_BCLK,
-> +	[RSTN_VENC_CCLK]     = CLK_VENC_CCLK,
-> +	[RSTN_VENC_APB]      = CLK_VENC_APB,
-> +	[RSTN_DDRPHY_APB]    = CLK_DDRPHY_APB,
-> +	[RSTN_USB_AXI]       = CLK_USB_AXI,
-> +	[RSTN_SGDMA1P_AXI]   = CLK_SGDMA1P_AXI,
-> +	[RSTN_DMA1P_AXI]     = CLK_DMA1P_AXI,
-> +	[RSTN_NNE_AHB]       = CLK_NNE_AHB,
-> +	[RSTN_NNE_AXI]       = CLK_NNE_AXI,
-> +	[RSTN_NNENOC_AXI]    = CLK_NNENOC_AXI,
-> +	[RSTN_DLASLV_AXI]    = CLK_DLASLV_AXI,
-> +	[RSTN_VOUT_SRC]      = CLK_VOUT_SRC,
-> +	[RSTN_DISP_AXI]      = CLK_DISP_AXI,
-> +	[RSTN_DISPNOC_AXI]   = CLK_DISPNOC_AXI,
-> +	[RSTN_SDIO0_AHB]     = CLK_SDIO0_AHB,
-> +	[RSTN_SDIO1_AHB]     = CLK_SDIO1_AHB,
-> +	[RSTN_GMAC_AHB]      = CLK_GMAC_AHB,
-> +	[RSTN_SPI2AHB_AHB]   = CLK_SPI2AHB_AHB,
-> +	[RSTN_SPI2AHB_CORE]  = CLK_SPI2AHB_CORE,
-> +	[RSTN_EZMASTER_AHB]  = CLK_EZMASTER_AHB,
-> +	[RSTN_SEC_AHB]       = CLK_SEC_AHB,
-> +	[RSTN_AES]           = CLK_AES,
-> +	[RSTN_PKA]           = CLK_PKA,
-> +	[RSTN_SHA]           = CLK_SHA,
-> +	[RSTN_TRNG_APB]      = CLK_TRNG_APB,
-> +	[RSTN_OTP_APB]       = CLK_OTP_APB,
-> +	[RSTN_UART0_APB]     = CLK_UART0_APB,
-> +	[RSTN_UART0_CORE]    = CLK_UART0_CORE,
-> +	[RSTN_UART1_APB]     = CLK_UART1_APB,
-> +	[RSTN_UART1_CORE]    = CLK_UART1_CORE,
-> +	[RSTN_SPI0_APB]      = CLK_SPI0_APB,
-> +	[RSTN_SPI0_CORE]     = CLK_SPI0_CORE,
-> +	[RSTN_SPI1_APB]      = CLK_SPI1_APB,
-> +	[RSTN_SPI1_CORE]     = CLK_SPI1_CORE,
-> +	[RSTN_I2C0_APB]      = CLK_I2C0_APB,
-> +	[RSTN_I2C0_CORE]     = CLK_I2C0_CORE,
-> +	[RSTN_I2C1_APB]      = CLK_I2C1_APB,
-> +	[RSTN_I2C1_CORE]     = CLK_I2C1_CORE,
-> +	[RSTN_GPIO_APB]      = CLK_GPIO_APB,
-> +	[RSTN_UART2_APB]     = CLK_UART2_APB,
-> +	[RSTN_UART2_CORE]    = CLK_UART2_CORE,
-> +	[RSTN_UART3_APB]     = CLK_UART3_APB,
-> +	[RSTN_UART3_CORE]    = CLK_UART3_CORE,
-> +	[RSTN_SPI2_APB]      = CLK_SPI2_APB,
-> +	[RSTN_SPI2_CORE]     = CLK_SPI2_CORE,
-> +	[RSTN_SPI3_APB]      = CLK_SPI3_APB,
-> +	[RSTN_SPI3_CORE]     = CLK_SPI3_CORE,
-> +	[RSTN_I2C2_APB]      = CLK_I2C2_APB,
-> +	[RSTN_I2C2_CORE]     = CLK_I2C2_CORE,
-> +	[RSTN_I2C3_APB]      = CLK_I2C3_APB,
-> +	[RSTN_I2C3_CORE]     = CLK_I2C3_CORE,
-> +	[RSTN_WDTIMER_APB]   = CLK_WDTIMER_APB,
-> +	[RSTN_WDT]           = CLK_WDT_CORE,
-> +	[RSTN_VP6INTC_APB]   = CLK_VP6INTC_APB,
-> +	[RSTN_TEMP_APB]      = CLK_TEMP_APB,
-> +	[RSTN_TEMP_SENSE]    = CLK_TEMP_SENSE,
-> +};
-> +
-> +static int starfive_reset_clk_enable(struct starfive_rstgen *priv, unsigned id)
-> +{
-> +	struct of_phandle_args clkspec = {
-> +		.np = priv->clknp,
-> +		.args_count = 1,
-> +	};
-> +
-> +	if (!priv->sync_resets || !priv->sync_resets[id])
-> +		return 0;
-> +
-> +	clkspec.args[0] = priv->sync_resets[id];
-> +
-> +	pr_debug("synchronous reset=%u clk=%u\n", id, priv->sync_resets[id]);
-> +
-> +	return clk_enable(of_clk_get_from_provider(&clkspec));
+Until now GPMI NAND xloader assumed NAND bad block marker start bit was
+always 0! This is not true for every NAND chip out there. Thus make
+xloader more robust and port NAND bad block marker swapping
+functionality from the nand_mxs driver and make use of it in PBL.
 
-This clock is enabled twice per reset cycle and never disabled. It
-should be balanced or enabled only once.
+This patch was tested on a PHYTEC phyCARD i.MX6Q board with next NANDs:
+ - Spansion S34ML08G201FI00,
+ - Samsung K9K8G08U0E and
+ - Winbond W29N08GVSIAA.
 
-Sascha
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+---
+ arch/arm/mach-imx/xload-gpmi-nand.c | 41 +++++++++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 2 deletions(-)
 
-
+diff --git a/arch/arm/mach-imx/xload-gpmi-nand.c b/arch/arm/mach-imx/xload-gpmi-nand.c
+index b3fd479cb..661302762 100644
+--- a/arch/arm/mach-imx/xload-gpmi-nand.c
++++ b/arch/arm/mach-imx/xload-gpmi-nand.c
+@@ -1086,6 +1086,43 @@ static int block_is_bad(struct mxs_nand_info *info, int blocknum)
+ 	return 0;
+ }
+ 
++/* Function ported from nand_mxs driver -> mxs_nand_swap_block_mark() */
++static void bad_block_marker_swap(struct mxs_nand_info *info,
++		uint8_t *data_buf, uint8_t *oob_buf)
++{
++	struct fcb_block *fcb = &info->fcb;
++
++	uint32_t bit_offset;
++	uint32_t buf_offset;
++
++	uint32_t src;
++	uint32_t dst;
++
++	/* Location of bad block marker is specified in FCB. */
++	bit_offset = fcb->BadBlockMarkerStartBit;
++	buf_offset = fcb->BadBlockMarkerByte;
++
++	/*
++	 * Get the byte from the data area that overlays the block mark. Since
++	 * the ECC engine applies its own view to the bits in the page, the
++	 * physical block mark won't (in general) appear on a byte boundary in
++	 * the data.
++	 */
++
++	src = data_buf[buf_offset] >> bit_offset;
++	src |= data_buf[buf_offset + 1] << (8 - bit_offset);
++
++	dst = oob_buf[0];
++
++	oob_buf[0] = src;
++
++	data_buf[buf_offset] &= ~(0xff << bit_offset);
++	data_buf[buf_offset + 1] &= 0xff << bit_offset;
++
++	data_buf[buf_offset] |= dst << bit_offset;
++	data_buf[buf_offset + 1] |= dst >> (8 - bit_offset);
++}
++
+ static int read_firmware(struct mxs_nand_info *info, int startpage,
+ 	void *dest, int len)
+ {
+@@ -1121,8 +1158,8 @@ static int read_firmware(struct mxs_nand_info *info, int startpage,
+ 			return ret;
+ 		}
+ 
+-		*((u8 *)dest + fcb->BadBlockMarkerByte) =
+-			*(u8 *)(dest + pagesize);
++		/* Read DMA completed, now swap the bad block marker. */
++		bad_block_marker_swap(info, dest, dest + pagesize);
+ 
+ 		numpages--;
+ 		dest += pagesize;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.1
+
 
 _______________________________________________
 barebox mailing list
