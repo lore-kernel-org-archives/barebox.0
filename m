@@ -1,80 +1,56 @@
-Delivery-date: Tue, 08 Jun 2021 09:25:33 +0200
+Delivery-date: Tue, 08 Jun 2021 09:32:35 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqW7B-0000wz-HY
-	for lore@lore.pengutronix.de; Tue, 08 Jun 2021 09:25:33 +0200
+	id 1lqWDz-00010J-K7
+	for lore@lore.pengutronix.de; Tue, 08 Jun 2021 09:32:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqW7A-0007cg-Cj
-	for lore@pengutronix.de; Tue, 08 Jun 2021 09:25:33 +0200
+	id 1lqWDy-0008W1-Kk
+	for lore@pengutronix.de; Tue, 08 Jun 2021 09:32:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Content-Type:
-	Content-Transfer-Encoding:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
-	References:Cc:To:Subject:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JZqpqD67fL/vTPl5OR9wkvJSPQafE4X+/B6A5jsheEg=; b=1y3JY7dz4T7AxKmt8B4/GemwfW
-	XrIryaYpWClJOFq7U2mwx8w1565mU88q9tRJ+92RbBK2w8Oxn6966CtC+pJ6OUO0NpTdbM/yD7rQt
-	lB89J1+4uO1Ang0jP/jpSFB+VBYY7yutKrPpCL5KhQZSQl9ydGbx2CwI6OL625g8yG4yROR/Dx+9t
-	v1UWuwpoB1yEFA5Z1rqemr/qN1eeA8AUwrXwOcPMSnjZSI+0jmye+iA/bzgKc1qoYJ+KNjyu59gaD
-	Hq+gUm1XygFKqEFBX5DX6pWycD2xx6+/M0ZG8p9nvXI/LJBZndvjYenfDjOU9J0H638/r2CDOVD2Z
-	Jz33WMvA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=fb6jaUYBVDYcNFJD3OL3CwhvpTFgmj2tUnFfYmU98Z8=; b=j+UrLZlkFCalB0sz56RRPhccj8
+	xV7JmUVPbpaKk8YC05k9ZN+rMKkiXdR0IwZF8OqvRcoLEFk+/ZWJE0uvr0cwESM/2dnQ+vWe3JC3A
+	0aVy+qW55t00i225J53iAtxL+MtN4s8jVyNvVNkClrfIAvmTL0PaT/cfSHs30Z7A141Lqx6/NCuLk
+	Si3CFUfl5rb/8PIQrVd89RebmiAnlFHOl8uj5raEK0VsO4kd5NwRoefxlk5GVIXUI2MaeKzZ3NFmL
+	sfSkohrUDgpz9AJmE1JDv38eqtIJRUmiTjY9UjMUCHUlthTGkD+/SmwshG7egkSGn5KwPjNNgulEI
+	1XBfB4ag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lqW5X-006qau-Kp; Tue, 08 Jun 2021 07:23:51 +0000
-Received: from cpanel.siel.si ([46.19.9.99])
+	id 1lqWCc-006rbH-E3; Tue, 08 Jun 2021 07:31:10 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqW5Q-006qaY-C7
- for barebox@lists.infradead.org; Tue, 08 Jun 2021 07:23:46 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com; 
- s=default;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
- Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=0SfT9queKhivOzowXp+ONGm454MT5/ElzGYFLBbyb9M=; b=LoQaVB4SV510NmVoxV4WlhUusW
- Qu/ZQOFl/qo2d9zl//n5D12m3mtnY9zrXcOBpX1D392pP1IrRSpYvfeVngE79nS+C6HfMYZH9mnrt
- P9dPDwOBTmzaJK/oEzbGq5udAqTv+oZtvSpc2thYROh8DWFkAQvE1g7+BRZxq1ff0fZcBA5FKtXes
- 7DZdmyMgSvilYnEuWGnU9LtP1Ub39gmoyIOJHAozm7mka2Oe7FTs7sRFuUnd4M7rZKCZIFdaxKAoy
- Ln2zZYjk33OQ4p68lShknwwDn9vu+ukRCXQBlnssspKOBM+qKr9fy6KtoBch1RJjWjPbOMcY4XF2o
- PGXP4kuQ==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:56322
- helo=[192.168.69.215]) by cpanel.siel.si with esmtpsa (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <andrej.picej@norik.com>)
- id 1lqW5C-003NOJ-Mi; Tue, 08 Jun 2021 09:23:37 +0200
-To: Trent Piepho <trent.piepho@igorinstitute.com>
+ id 1lqWCX-006rac-7P
+ for barebox@lists.infradead.org; Tue, 08 Jun 2021 07:31:07 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1lqWCV-0008J0-O3; Tue, 08 Jun 2021 09:31:03 +0200
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
-References: <20210607090951.107269-1-andrej.picej@norik.com>
- <20210607090951.107269-2-andrej.picej@norik.com>
- <CAMHeXxNtHQdWBZdDc0fXJ1Q2Fj-=H2anmFGosKGrV12Ux1cncg@mail.gmail.com>
-From: Andrej Picej <andrej.picej@norik.com>
-Message-ID: <60b1751e-8409-a2a5-a5f8-ef4107d6db9d@norik.com>
-Date: Tue, 8 Jun 2021 09:23:39 +0200
+References: <20210607141057.23255-1-s.hauer@pengutronix.de>
+ <e787566e-33cc-0b9e-73e3-74ab23812646@pengutronix.de>
+ <20210607222233.GB5267@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <2166dc52-64da-14bb-987c-7000c31c6882@pengutronix.de>
+Date: Tue, 8 Jun 2021 09:31:03 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ Thunderbird/78.10.2
 MIME-Version: 1.0
-In-Reply-To: <CAMHeXxNtHQdWBZdDc0fXJ1Q2Fj-=H2anmFGosKGrV12Ux1cncg@mail.gmail.com>
+In-Reply-To: <20210607222233.GB5267@pengutronix.de>
 Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.infradead.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id:
- andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210608_002344_639846_26104A66 
-X-CRM114-Status: GOOD (  45.11  )
+X-CRM114-CacheID: sfid-20210608_003105_310265_FEB7BAAB 
+X-CRM114-Status: GOOD (  31.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,139 +62,163 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 2/2] ARM: i.MX: xload: consider ECC strength when reading
- page
+Subject: Re: [PATCH 1/2] net: designware: eqos: reset phy
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Trent,
+Hello Sascha,
 
-firstly thanks for your input. Please find my comments bellow.
-
-On 7. 06. 21 22:03, Trent Piepho wrote:
-> On Mon, Jun 7, 2021 at 2:32 AM Andrej Picej <andrej.picej@norik.com> wrote:
->> Some NAND update tools/flashers do not take the full advantage of NAND's
->> entire page area for ECC purposes. For example, they might only use 2112
->> bytes of available 2176 bytes. In this case, ECC parameters have to be
->> read from the FCB table and taken into account in GPMI NAND xloader to
->> properly calculate page data length so DMA chain can be executed
->> correctly.
+On 08.06.21 00:22, Sascha Hauer wrote:
+> On Mon, Jun 07, 2021 at 05:59:02PM +0200, Ahmad Fatoum wrote:
+>> Hello Sascha,
 >>
->> Tested on PHYTEC phyCARD i.MX6Q board with following NANDs:
->> - Samsung K9K8G08U0E (pagesize: 0x800, oobsize: 0x40)
->> - Winbond W29N08GVSIAA (pagesize: 0x800, oobsize: 0x40) and
->> - Spansion S34ML08G201FI00 (pagesize: 0x800, oobsize: 0x80).
+>> On 07.06.21 16:10, Sascha Hauer wrote:
+>>> The designware eqos DT binding has support for specifying reset GPIOs.
+>>> Add support for them.
+>>>
+>>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+>>> ---
+>>>  drivers/net/designware_eqos.c | 33 +++++++++++++++++++++++++++++++++
+>>>  drivers/of/of_gpio.c          |  7 +++++++
+>>>  2 files changed, 40 insertions(+)
+>>>
+>>> diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
+>>> index d2baaeaf63..0321024169 100644
+>>> --- a/drivers/net/designware_eqos.c
+>>> +++ b/drivers/net/designware_eqos.c
+>>> @@ -8,9 +8,11 @@
+>>>  
+>>>  #include <common.h>
+>>>  #include <init.h>
+>>> +#include <gpio.h>
+>>>  #include <dma.h>
+>>>  #include <net.h>
+>>>  #include <of_net.h>
+>>> +#include <of_gpio.h>
+>>>  #include <linux/iopoll.h>
+>>>  #include <linux/time.h>
+>>>  #include <linux/sizes.h>
+>>> @@ -189,6 +191,33 @@ struct eqos_desc {
+>>>  
+>>>  #define MII_BUSY		(1 << 0)
+>>>  
+>>> +static int eqos_phy_reset(struct device_d *dev, struct eqos *eqos)
+>>> +{
+>>> +	int phy_reset;
+>>> +	int ret;
+>>> +	u32 delays[3] = { 0, 0, 0 };
+>>> +
+>>> +	phy_reset = of_get_named_gpio(dev->device_node, "snps,reset-gpio", 0);
+>>> +
+>>> +        if (!gpio_is_valid(phy_reset))
+>>> +		return 0;
 >>
->> All NANDs having set ECC strength to 4 (13 bytes) despite Spansion NAND
->> chip supporting ECC strength of 9 (29 bytes).
+>> Whitespace is wrong.
+>>
+>>> +
+>>> +	ret = gpio_request(phy_reset, "phy-reset");
+>>> +	if (ret)
+>>> +		return ret;
+>>
+>> Can you use gpiod_get instead? This would reduce the boilerplate here.
 > 
-> There is a bug in NXP's latest imx kernel, lf-5.10.y-1.0.0, that
-> results in the kernel driver incorrectly using the minimum ECC
-> specified in the ONFI nand specs instead of calculating a maximal ecc
-> value and using that, which is what prior kernels and the upstream
-> kernel use.  It was caused by incorrectly resolving a conflict when
-> they rebased one of their old patches to 5.10.
+> Sure. I didn't realize I don't honour the active high/low flags the way
+> I did it.
 > 
-> The common pagesize 0x800, oobsize 0x40 should use 8-bit ECC.  That's
-> what the uboot, barebox, and linux drivers would do since the first
-> mxs nand support years ago.  It's only the recent kernel bug in nxp's
-> kernel that will choose 4.
+>>
+>>> +
+>>> +	of_property_read_u32_array(dev->device_node,
+>>> +				   "snps,reset-delays-us",
+>>> +				   delays, ARRAY_SIZE(delays));
+>>> +
+>>
+>> Looks strange to read out a delay and not act on it. I'd prefer
+>> waiting delays[0] here.
+> 
+> Yes, it looks strange, but that's because the binding doesn't make much
+> sense. Why should I insert a delay before doing anything?
 
-OK, I wasn't aware of this kernel bug, but this is not what we are 
-trying to fix here. Our use-case for this, is migration from eboot (some 
-old WinCE version) to barebox with some proprietary flasher tool. This 
-tool uses NAND settings used by eboot, which are hardcoded to fixed 
-pagesize of 0x800 bytes and oobsize of 0x40 bytes (8 ECC bits). If for 
-example some other NAND is used with different page size (e.g. pagesize 
-of 0x800 bytes with oobsize of 0x80 bytes) the BCH ECC page organization 
-will only use 0x840 bytes.
+                   .--------.
+
+     POR --------->|R  flip |---- Regulator ----> PHY VDD
+
+                .->|S  flop |
+
+                |  `--------'
+
+                |   
+
+                |   
+
+                |
+
+RESET GPIO -----'`-------------------------------> PHY Reset
+
+(active low)
+
+It's stupid, but it works with Linux and wouldn't with barebox
+(if PHY VDD takes too long to stabilize)... ^^'
+
+> I can a delay here, it wouldn't make much difference as all users except
+> one specify zero delay here anyway. For the one exception I would bet
+> someone has inserted the first delay without a good reason, they are all
+> 10000.
+
+That's probably true. I still think mimicking Linux' interpretation
+of bindings is a good general rule to follow.
+
+>>
+>>> +	gpio_direction_active(phy_reset, 0);
+>>
+>> This always sets logical zero, because gpio_request above doesn't
+>> accept a flag telling it otherwise. You'll need of_get_named_gpio_flags
+>> here, at which point, you'll have basically open-coded gpiod_get(), so
+>> you could use that.
+> 
+> Right.
+> 
+>>
+>>> +	udelay(delays[1]);
+>>
+>> Linux rounds up to 1 msec granularity here. We should do likewise.
+> 
+> I don't see a good reason for that. The Linux driver used udelay()
+> initially, that was changed to msleep as the times were too long for
+> busy waiting. I have no clue why the author didn't use usleep_range
+> instead.
+
+Same reason: Device trees are tested with Linux. They've a better chance
+of just working when we round up wait times the same way.
 
 > 
-> So rather than switch to 4-bit, it would be better to fix these boards
-> to use 8-bit like they should.  More reliable ECC, and it will work
-> correctly on barebox, u-boot, old imx kernels, current upstream
-> kernels, and hopefully future imx kernels.
-
-I agree that it would be better to use all of the space available, but 
-if flasher used wrong settings to copy barebox binary to NAND these 
-settings (although not optimal) should be used to make booting even 
-possible.
-
+>>
+>>> +	gpio_set_active(phy_reset, 1);
+>>
+>> Nitpick: true/false.
 > 
-> Using the FCB data here might not be such a good idea.  While it seems
-> like the right thing, there are some issues:
-> The barebox main gpmi nand driver doesn't use the FCB
-> U-boot doesn't use the FCB
-> No Linux kernel uses the FCB
-
-The main reason why I think we should use FCB here for this is because 
-i.MX6's ROM already uses these values for booting into pre-bootloader. 
-That's why we try to act in xloader like ROM does (reading NAND 
-parameters from FCB). Nevertheless flasher tools should be responsible 
-to match the BCH ECC page with what it is written into FCB. If that is 
-not the case then we can only presume that the flasher used the optimal 
-size for ECC.
-
+> Ok.
 > 
-> If you try to read/write nand from any of those places, it won't work.
-> The only way to make it work, is to have the FCB match what those
-> drivers do.
-
-In our case the described proprietary flasher tool only flashes barebox 
-so only NAND pages with barebox binary are using not optimal ECC 
-settings. If for example kernel, devicetree and rootfs would be flashed 
-from barebox the NAND pages there would use correct ECC size and booting 
-into linux and updating those NAND pages from linux works. Updating 
-barebox from barebox itself (using barebox_update) would mean that the 
-barebox binary will be overwritten in NAND with optimal ECC settings and 
-FCB will be updated accordingly.
-
-> 
-> I think it would have been better if the original design had been for
-> the bootloader to read the FCB, use that to load the kernel, and then
-> fixup the ECC config into the device tree for the kernel to use too.
-> One source, the FCB, which is propagated to all users.  Everyone will
-> agree on the ECC and there are no independent settings to keep in
-> sync.
-> 
-> But they didn't do that.  Each driver figures it out on it's own and
-> hopefully they use matching algorithms that arrive at the same answer.
-> But of course this fails, like with nxp's lf-5.10.y-1.0.0 kernel.
-> This isn't the first time, this same type of bug appeared back in 2013
-> in 2febcdf84b and was fixed in 031e2777e.
-> 
-> So while your commit will allow these boards using poorly chosen FCB
-> values to work with the xloader, they will be corrupted if nand is
-> written to from barebox non-xload or from linux.
+> Sascha
 > 
 
-We are only using this ECC values to read barebox binary from NAND and 
-copy it to RAM. If other NAND pages will be using different ECC values 
-that doesn't break anything, I think. Only problem that I can see here 
-is barebox or linux reading NAND pages occupied by barebox binary, this 
-will most likely fail, but I don't see why that would be necessary anyway.
-
-I don't think we are braking anything here, we are just fixing booting 
-barebox from NAND whit not optimal ECC settings.
-
-Please correct me if I'm wrong or if I'm missing something here?
-
-BR,
-
-Andrej
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
