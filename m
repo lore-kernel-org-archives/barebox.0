@@ -1,53 +1,53 @@
-Delivery-date: Tue, 08 Jun 2021 11:38:30 +0200
+Delivery-date: Tue, 08 Jun 2021 11:38:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqYBq-0003jO-P9
-	for lore@lore.pengutronix.de; Tue, 08 Jun 2021 11:38:30 +0200
+	id 1lqYBs-0003kK-Et
+	for lore@lore.pengutronix.de; Tue, 08 Jun 2021 11:38:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqYBm-0000eA-9T
-	for lore@pengutronix.de; Tue, 08 Jun 2021 11:38:30 +0200
+	id 1lqYBn-0000eS-3r
+	for lore@pengutronix.de; Tue, 08 Jun 2021 11:38:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Q3muo4VedFBeF+ms6vPzKmIz2tGZKqvsYYRl97E0bGI=; b=QcDQmXMEPaiHeN
-	PQY79zN3FcM+yOnLrOW96ZoXH4Hmhp/HxwF9zt93tHh0jyNjwI/yGulo3NG8dkx2Q+8SdKZcOBoAq
-	jA1lfyxXwJlQ89hxw5TrIpSzRhsqosHCZHOP+6290kpLMsExRP/OQ8RH3yB3CPp1mjTu7baEXNT8N
-	RNq2Krn6SMpKJ+iCFAOwTbNDUnLUDI2KpTXTLp2aRAXDXhYjgoUc8Cd3ccpehHNAqUNeumcZ92tcH
-	ibD4d7Nr9ovSsDl8o6GVqh7KjVMV34Wu0CCNz+Pns4GrEuC9q9gWK57EiZY6WzTbBmXa8GzLMs6Xo
-	rRLTy16wC3meHiioT2TQ==;
+	List-Owner; bh=BSlEiMIJe+FYwv/54mD/TQxtx/BrGmVkkWgx+kEbYE4=; b=IfmMz1ISeJ5cP8
+	gzP3j3VcgxysFa6+Ko2pWAvptEYiMaRW0nUmZWVOCQDwPELzBufHueIleEdKfsM/PFqiOgt5FcyZD
+	4Vn02UJqWLbZKDV4CkXEUeKtdT6n7cAZ82s061ZUcDkfOdxQpGIgzDcCWT/wz6TTSosw/HOyC0DFe
+	vXxhrp+sjP26280wp91HuXPqkyMjNe38SpzM3KLUhsYFMS/QXrNRFSc3xqhsnjQI96WeOKUayc8Kz
+	WnOr373XzRvj0ewAM9NJ7if+OKLFP4XlBLql493vd+5Npf5S8LDNiaaGCF2JfbRRup+5XzSEh5clc
+	r8sOge74RPJ3Ldel4Fqg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lqYA8-007SC4-5I; Tue, 08 Jun 2021 09:36:44 +0000
+	id 1lqYAD-007SDV-Uf; Tue, 08 Jun 2021 09:36:50 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqYA2-007SAU-Tm
- for barebox@lists.infradead.org; Tue, 08 Jun 2021 09:36:40 +0000
+ id 1lqYA2-007SAa-Tn
+ for barebox@lists.infradead.org; Tue, 08 Jun 2021 09:36:41 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lqYA1-0000Qa-5t; Tue, 08 Jun 2021 11:36:37 +0200
+ id 1lqYA1-0000Qc-CB; Tue, 08 Jun 2021 11:36:37 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lqYA0-0004kt-SR; Tue, 08 Jun 2021 11:36:36 +0200
+ id 1lqYA1-0004oH-0I; Tue, 08 Jun 2021 11:36:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  8 Jun 2021 11:36:32 +0200
-Message-Id: <20210608093635.5749-2-s.hauer@pengutronix.de>
+Date: Tue,  8 Jun 2021 11:36:34 +0200
+Message-Id: <20210608093635.5749-4-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210608093635.5749-1-s.hauer@pengutronix.de>
 References: <20210608093635.5749-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210608_023639_015488_69B4F504 
-X-CRM114-Status: GOOD (  14.77  )
+X-CRM114-CacheID: sfid-20210608_023639_020550_A4C4C9D3 
+X-CRM114-Status: GOOD (  10.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,71 +71,31 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/4] gpio: allow -gpio suffix for gpio property names
+Subject: [PATCH 3/4] net: designware: eqos: set mdio bus device node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-GPIO properties in the device tree can have a -gpios suffix or a -gpio
-suffix. The latter was not handled, this patch changes that.
+When the device node of the ethernet device has a mdio subnode then
+attach it to the registered mdio bus. This allows the mdio driver
+to handle the reset-gpios propertie in the phy nodes.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/gpio/gpiolib.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ drivers/net/designware_eqos.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 7b7261d01f..387b410f12 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -555,27 +555,39 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
- 	return 0;
- }
+diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
+index e6248d408e..f83ec12714 100644
+--- a/drivers/net/designware_eqos.c
++++ b/drivers/net/designware_eqos.c
+@@ -862,6 +862,7 @@ int eqos_probe(struct device_d *dev, const struct eqos_ops *ops, void *priv)
+ 	miibus->read = eqos_mdio_read;
+ 	miibus->write = eqos_mdio_write;
+ 	miibus->priv = eqos;
++	miibus->dev.device_node = of_get_child_by_name(dev->device_node, "mdio");
  
-+static const char *gpio_suffixes[] = {
-+	"gpios",
-+	"gpio",
-+};
-+
- /* Linux compatibility helper: Get a GPIO descriptor from device tree */
- int gpiod_get(struct device_d *dev, const char *_con_id, enum gpiod_flags flags)
- {
- 	struct device_node *np = dev->device_node;
- 	enum of_gpio_flags of_flags;
--	const char *con_id = "gpios", *label = dev_name(dev);
--	char *buf = NULL;
-+	const char *label = dev_name(dev);
-+	char *buf = NULL, *con_id;
- 	int gpio;
--	int ret;
-+	int ret, i;
- 
- 	if (!IS_ENABLED(CONFIG_OFDEVICE) || !dev->device_node)
- 		return -ENODEV;
- 
--	if (_con_id) {
--		con_id = buf = basprintf("%s-gpios", _con_id);
--		if (!buf)
-+	for (i = 0; i < ARRAY_SIZE(gpio_suffixes); i++) {
-+		if (_con_id)
-+			con_id = basprintf("%s-%s", _con_id, gpio_suffixes[i]);
-+		else
-+			con_id = basprintf("%s", gpio_suffixes[i]);
-+
-+		if (!con_id)
- 			return -ENOMEM;
--	}
- 
--	gpio = of_get_named_gpio_flags(np, con_id, 0, &of_flags);
--	free(buf);
-+		gpio = of_get_named_gpio_flags(np, con_id, 0, &of_flags);
-+		free(con_id);
-+
-+		if (gpio_is_valid(gpio))
-+			break;
-+	}
- 
- 	if (!gpio_is_valid(gpio))
- 		return gpio < 0 ? gpio : -EINVAL;
+ 	ret = eqos_init(dev, eqos);
+ 	if (ret)
 -- 
 2.29.2
 
