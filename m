@@ -1,53 +1,53 @@
-Delivery-date: Tue, 08 Jun 2021 16:07:30 +0200
+Delivery-date: Tue, 08 Jun 2021 16:07:39 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqcOA-0007Hv-95
-	for lore@lore.pengutronix.de; Tue, 08 Jun 2021 16:07:30 +0200
+	id 1lqcOJ-0007IQ-Co
+	for lore@lore.pengutronix.de; Tue, 08 Jun 2021 16:07:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqcO9-0001jm-4a
-	for lore@pengutronix.de; Tue, 08 Jun 2021 16:07:30 +0200
+	id 1lqcOH-0001mq-Fl
+	for lore@pengutronix.de; Tue, 08 Jun 2021 16:07:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=E1rA8wzZeRovbtq5ff2Ct59ZWaMIAQspp/dxKLq9r/Q=; b=Nna0kgIIs9x4YO
-	PX1m5ks43oK0udAiYVzN6bPddeapqXq+Jsnnp/ZKruFLUtTU0ZUgclpNKT8Lm2HDXcH2XBXp9eqXE
-	E3DfD14mxnAZFum4s9YnZ3teoQh+m+ZTsELbRGYjb3chajZ6qPee03rpiZq0+De5zTMXvqaF2XWnQ
-	QYYr5sHCRzeFOWUF6Y/yg4x7Eq6rqKp5QEp3j7xm6CwtMn+Csymw579f2qXZvKlKV2Qx+fWIyzEzi
-	pdXdK+SqeBexl7ua5D/GUvF3tPIrYUK7crcgmSKRCuuxvTKCV0/mkxt4lCcbLEyFteGBiwUlcaDWO
-	G5O/lia5eFYpYbBoLrUw==;
+	List-Owner; bh=J3kgKFuxg+HXlT3GQSMCblK2hGFKz8jN0LQsQgMtnrE=; b=3zZYa3dDtdpoo7
+	jipa29uhyw1nDcTCtDtSuVFVM8mNNFG5MiA0s5Z0UG5qkyJ5DX1q+YVngy0K02gG9YZjouzdbQSyJ
+	3O9yTL3XWIqkrqz80YmiEnoR4qrkSoTztfb3qvX5RZr4wawQ6uXaqnz1eRya1CjhjDyUHseD86tFj
+	MprgOaDhBAU4rQ+o0uZDUggmFrzNfRemtwTFRjqyNMXXqYtRivaVJw05QrO/+im82bS2vsK1AjEvl
+	HivVSnnSFa6vHt1SpU98BZROekdbOJC++6dZLRL/xYAsFXLKJ0e9roQ068BYVWrFhpscyInTbbZPy
+	cq4MSSYAADJkPKJvYbpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lqcMq-008kYg-W5; Tue, 08 Jun 2021 14:06:09 +0000
+	id 1lqcMv-008kjG-Gz; Tue, 08 Jun 2021 14:06:13 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqcMW-008k4S-S4
- for barebox@lists.infradead.org; Tue, 08 Jun 2021 14:05:52 +0000
+ id 1lqcMW-008k4Q-S2
+ for barebox@lists.infradead.org; Tue, 08 Jun 2021 14:05:54 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lqcMU-0001HJ-QK; Tue, 08 Jun 2021 16:05:46 +0200
+ id 1lqcMU-0001HK-OO; Tue, 08 Jun 2021 16:05:46 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lqcMU-00005S-AU; Tue, 08 Jun 2021 16:05:46 +0200
+ id 1lqcMU-00005b-B0; Tue, 08 Jun 2021 16:05:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  8 Jun 2021 16:05:44 +0200
-Message-Id: <20210608140545.30696-5-s.hauer@pengutronix.de>
+Date: Tue,  8 Jun 2021 16:05:45 +0200
+Message-Id: <20210608140545.30696-6-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210608140545.30696-1-s.hauer@pengutronix.de>
 References: <20210608140545.30696-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210608_070549_059452_4EAF4918 
-X-CRM114-Status: GOOD (  21.76  )
+X-CRM114-CacheID: sfid-20210608_070549_294335_C71D59D1 
+X-CRM114-Status: GOOD (  22.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,182 +71,466 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/5] pinctrl: Rockchip: implement drive strength setting
+Subject: [PATCH 5/5] pinctrl: Rockchip: Add RK3568 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Newer SoCs support a drive strength setting per pin. This patch adds
-support for it. Currently a no-op as no currently supported SoC in the
-driver has support for this.
+This adds support for the RK3568 SoC to the Rockchip pinctrl driver.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 126 ++++++++++++++++++++++++++++-
- 1 file changed, 125 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-rockchip.c | 354 ++++++++++++++++++++++++++++-
+ 1 file changed, 347 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 4b69d0d069..3bdae5c229 100644
+index 3bdae5c229..cee496a85a 100644
 --- a/drivers/pinctrl/pinctrl-rockchip.c
 +++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -186,6 +186,8 @@ struct rockchip_pin_ctrl {
- 	u32				niomux_routes;
- 	void	(*pull_calc_reg)(struct rockchip_pin_bank *bank, int pin_num,
- 				 void __iomem **reg, u8 *bit);
-+	void	(*drv_calc_reg)(struct rockchip_pin_bank *bank,
-+				    int pin_num, void __iomem **reg, u8 *bit);
+@@ -37,6 +37,7 @@ enum rockchip_pinctrl_type {
+ 	RK2928,
+ 	RK3066B,
+ 	RK3188,
++	RK3568,
  };
  
- struct rockchip_pinctrl {
-@@ -468,12 +470,129 @@ static int rockchip_pinctrl_set_pull(struct rockchip_pin_bank *bank,
- 	return 0;
- }
+ enum rockchip_pin_bank_type {
+@@ -44,6 +45,13 @@ enum rockchip_pin_bank_type {
+ 	RK3188_BANK0,
+ };
  
-+static int rockchip_perpin_drv_list[DRV_TYPE_MAX][8] = {
-+	{ 2, 4, 8, 12, -1, -1, -1, -1 },
-+	{ 3, 6, 9, 12, -1, -1, -1, -1 },
-+	{ 5, 10, 15, 20, -1, -1, -1, -1 },
-+	{ 4, 6, 8, 10, 12, 14, 16, 18 },
-+	{ 4, 7, 10, 13, 16, 19, 22, 26 }
++/**
++ * Generate a bitmask for setting a value (v) with a write mask bit in hiword
++ * register 31:16 area.
++ */
++#define WRITE_MASK_VAL(h, l, v) \
++	(GENMASK(((h) + 16), ((l) + 16)) | (((v) << (l)) & GENMASK((h), (l))))
++
+ /*
+  * Encode variants of iomux registers into a type variable
+  */
+@@ -78,6 +86,15 @@ enum rockchip_pin_drv_type {
+ 	DRV_TYPE_MAX
+ };
+ 
++/*
++ * enum type index corresponding to rockchip_pull_list arrays index.
++ */
++enum rockchip_pin_pull_type {
++	PULL_TYPE_IO_DEFAULT = 0,
++	PULL_TYPE_IO_1V8_ONLY,
++	PULL_TYPE_MAX
 +};
 +
-+#define RK3288_DRV_BITS_PER_PIN		2
-+#define RK3399_DRV_3BITS_PER_PIN	3
+ /**
+  * struct rockchip_drv
+  * @drv_type: drive strength variant using rockchip_perpin_drv_type
+@@ -211,6 +228,110 @@ enum {
+ 	RK_GPIO_EXT_PORT	= 0x50,
+ };
+ 
++/* GPIO registers */
++enum {
++	RK_GPIOV2_DR_L	= 0x00,
++	RK_GPIOV2_DR_H	= 0x04,
++	RK_GPIOV2_DDR_L	= 0x08,
++	RK_GPIOV2_DDR_H	= 0x0c,
++};
 +
-+static int rockchip_set_drive_perpin(struct rockchip_pin_bank *bank,
-+				     int pin_num, int strength)
++static struct rockchip_pin_bank *gc_to_rockchip_pinctrl(struct gpio_chip *gc)
 +{
-+	struct rockchip_pinctrl *info = bank->drvdata;
-+	struct rockchip_pin_ctrl *ctrl = info->ctrl;
-+	int ret, i;
-+	void __iomem *reg;
-+	u32 data, rmask, rmask_bits, temp, val;
-+	u8 bit;
-+	int drv_type = bank->drv[pin_num / 8].drv_type;
++	struct bgpio_chip *bgc = to_bgpio_chip(gc);
 +
-+	if (!ctrl->drv_calc_reg)
-+		return -ENOTSUPP;
-+
-+	dev_dbg(info->pctl_dev.dev, "setting drive of GPIO%d-%d to %d\n",
-+		bank->bank_num, pin_num, strength);
-+
-+	ctrl->drv_calc_reg(bank, pin_num, &reg, &bit);
-+
-+	ret = -EINVAL;
-+	for (i = 0; i < ARRAY_SIZE(rockchip_perpin_drv_list[drv_type]); i++) {
-+		if (rockchip_perpin_drv_list[drv_type][i] == strength) {
-+			ret = i;
-+			break;
-+		} else if (rockchip_perpin_drv_list[drv_type][i] < 0) {
-+			ret = rockchip_perpin_drv_list[drv_type][i];
-+			break;
-+		}
-+	}
-+
-+	if (ret < 0) {
-+		dev_err(info->pctl_dev.dev, "unsupported driver strength %d\n",
-+			strength);
-+		return ret;
-+	}
-+
-+	switch (drv_type) {
-+	case DRV_TYPE_IO_1V8_3V0_AUTO:
-+	case DRV_TYPE_IO_3V3_ONLY:
-+		rmask_bits = RK3399_DRV_3BITS_PER_PIN;
-+		switch (bit) {
-+		case 0 ... 12:
-+			/* regular case, nothing to do */
-+			break;
-+		case 15:
-+			/*
-+			 * drive-strength offset is special, as it is spread
-+			 * over 2 registers, the bit data[15] contains bit 0
-+			 * of the value while temp[1:0] contains bits 2 and 1
-+			 */
-+			data = (ret & 0x1) << 15;
-+			temp = (ret >> 0x1) & 0x3;
-+
-+			rmask = BIT(15) | BIT(31);
-+			data |= BIT(31);
-+
-+			val = readl(reg);
-+			val &= ~rmask;
-+			val |= data & rmask;
-+			writel(val, reg);
-+
-+			rmask = 0x3 | (0x3 << 16);
-+			temp |= (0x3 << 16);
-+			reg += 0x4;
-+
-+			val = readl(reg);
-+			val &= ~rmask;
-+			val |= temp & rmask;
-+			writel(val, reg);
-+
-+			return ret;
-+		case 18 ... 21:
-+			/* setting fully enclosed in the second register */
-+			reg += 4;
-+			bit -= 16;
-+			break;
-+		default:
-+			dev_err(info->pctl_dev.dev, "unsupported bit: %d for pinctrl drive type: %d\n",
-+				bit, drv_type);
-+			return -EINVAL;
-+		}
-+		break;
-+	case DRV_TYPE_IO_DEFAULT:
-+	case DRV_TYPE_IO_1V8_OR_3V0:
-+	case DRV_TYPE_IO_1V8_ONLY:
-+		rmask_bits = RK3288_DRV_BITS_PER_PIN;
-+		break;
-+	default:
-+		dev_err(info->pctl_dev.dev, "unsupported pinctrl drive type: %d\n",
-+			drv_type);
-+		return -EINVAL;
-+	}
-+
-+	/* enable the write to the equivalent lower bits */
-+	data = ((1 << rmask_bits) - 1) << (bit + 16);
-+	rmask = data | (data >> 16);
-+	data |= (ret << bit);
-+
-+	val = readl(reg);
-+	val &= ~rmask;
-+	val |= data & rmask;
-+	writel(val, reg);
-+
-+	return ret;
++	return container_of(bgc, struct rockchip_pin_bank, bgpio_chip);
 +}
 +
- static int rockchip_pinctrl_set_state(struct pinctrl_device *pdev,
- 				      struct device_node *np)
- {
- 	struct rockchip_pinctrl *info = to_rockchip_pinctrl(pdev);
- 	const __be32 *list;
--	int i, size;
-+	int i, size, ret;
- 	int bank_num, pin_num, func;
- 
- 	/*
-@@ -492,6 +611,7 @@ static int rockchip_pinctrl_set_state(struct pinctrl_device *pdev,
- 		const __be32 *phandle;
- 		struct device_node *np_config;
- 		struct rockchip_pin_bank *bank;
-+		u32 drive_strength;
- 
- 		bank_num = be32_to_cpu(*list++);
- 		pin_num = be32_to_cpu(*list++);
-@@ -506,6 +626,10 @@ static int rockchip_pinctrl_set_state(struct pinctrl_device *pdev,
- 		rockchip_pinctrl_set_func(bank, pin_num, func);
- 		rockchip_pinctrl_set_pull(bank, pin_num,
- 					  parse_bias_config(np_config));
++static int rockchip_gpiov2_direction_input(struct gpio_chip *gc, unsigned int gpio)
++{
++	struct rockchip_pin_bank *bank = gc_to_rockchip_pinctrl(gc);
++	u32 mask;
 +
-+		ret = of_property_read_u32(np_config, "drive-strength", &drive_strength);
-+		if (!ret)
-+			rockchip_set_drive_perpin(bank, pin_num, drive_strength);
++	mask = 1 << (16 + (gpio % 16));
++
++	if (gpio < 16)
++		writel(mask, bank->reg_base + RK_GPIOV2_DDR_L);
++	else
++		writel(mask, bank->reg_base + RK_GPIOV2_DDR_H);
++
++	return 0;
++}
++
++static int rockchip_gpiov2_get_direction(struct gpio_chip *gc, unsigned int gpio)
++{
++	struct rockchip_pin_bank *bank = gc_to_rockchip_pinctrl(gc);
++	u32 r;
++
++	if (gpio < 16)
++		r = readl(bank->reg_base + RK_GPIOV2_DDR_L);
++	else
++		r = readl(bank->reg_base + RK_GPIOV2_DDR_H);
++
++	return r & BIT(gpio % 16) ? GPIOF_DIR_OUT : GPIOF_DIR_IN;
++}
++
++static void rockchip_gpiov2_set_value(struct gpio_chip *gc, unsigned int gpio,
++				      int val)
++{
++	struct rockchip_pin_bank *bank = gc_to_rockchip_pinctrl(gc);
++	u32 mask, vval = 0;
++
++	mask = 1 << (16 + (gpio % 16));
++	if (val)
++		vval = 1 << (gpio % 16);
++
++	if (gpio < 16)
++		writel(mask | vval, bank->reg_base + RK_GPIOV2_DR_L);
++	else
++		writel(mask | vval, bank->reg_base + RK_GPIOV2_DR_H);
++}
++
++static int rockchip_gpiov2_direction_output(struct gpio_chip *gc,
++					    unsigned int gpio, int val)
++{
++	struct rockchip_pin_bank *bank = gc_to_rockchip_pinctrl(gc);
++	u32 mask, out, vval = 0;
++
++	mask = 1 << (16 + (gpio % 16));
++	out = 1 << (gpio % 16);
++	if (val)
++		vval = 1 << (gpio % 16);
++
++	if (gpio < 16) {
++		writel(mask | vval, bank->reg_base + RK_GPIOV2_DR_L);
++		writel(mask | out, bank->reg_base + RK_GPIOV2_DDR_L);
++	} else {
++		writel(mask | vval, bank->reg_base + RK_GPIOV2_DR_H);
++		writel(mask | out, bank->reg_base + RK_GPIOV2_DDR_H);
++	}
++
++	return 0;
++}
++
++static int rockchip_gpiov2_get_value(struct gpio_chip *gc, unsigned int gpio)
++{
++	struct rockchip_pin_bank *bank = gc_to_rockchip_pinctrl(gc);
++	u32 mask, r;
++
++	mask = 1 << (gpio % 16);
++
++	if (gpio < 16)
++		r = readl(bank->reg_base + RK_GPIOV2_DR_L);
++	else
++		r = readl(bank->reg_base + RK_GPIOV2_DR_L);
++
++	return r & mask ? 1 : 0;
++}
++
++static struct gpio_ops rockchip_gpio_ops = {
++	.direction_input = rockchip_gpiov2_direction_input,
++	.direction_output = rockchip_gpiov2_direction_output,
++	.get = rockchip_gpiov2_get_value,
++	.set = rockchip_gpiov2_set_value,
++	.get_direction = rockchip_gpiov2_get_direction,
++};
++
+ static int rockchip_gpiolib_register(struct device_d *dev,
+ 				     struct rockchip_pinctrl *info)
+ {
+@@ -221,6 +342,8 @@ static int rockchip_gpiolib_register(struct device_d *dev,
+ 	int i;
+ 
+ 	for (i = 0; i < ctrl->nr_banks; ++i, ++bank) {
++		struct gpio_chip *gpio = &bank->bgpio_chip.gc;
++
+ 		if (!bank->valid) {
+ 			dev_warn(dev, "bank %s is not valid\n", bank->name);
+ 			continue;
+@@ -228,12 +351,24 @@ static int rockchip_gpiolib_register(struct device_d *dev,
+ 
+ 		reg_base = bank->reg_base;
+ 
+-		ret = bgpio_init(&bank->bgpio_chip, dev, 4,
+-				 reg_base + RK_GPIO_EXT_PORT,
+-				 reg_base + RK_GPIO_SWPORT_DR, NULL,
+-				 reg_base + RK_GPIO_SWPORT_DDR, NULL, 0);
+-		if (ret)
+-			goto fail;
++		if (ctrl->type == RK3568) {
++			gpio->ngpio = 32;
++			gpio->dev = dev;
++			gpio->ops = &rockchip_gpio_ops;
++			gpio->base = of_alias_get_id(bank->of_node, "gpio");
++			if (gpio->base < 0)
++				return -EINVAL;
++			gpio->base *= 32;
++		} else {
++			ret = bgpio_init(&bank->bgpio_chip, dev, 4,
++					 reg_base + RK_GPIO_EXT_PORT,
++					 reg_base + RK_GPIO_SWPORT_DR, NULL,
++					 reg_base + RK_GPIO_SWPORT_DDR, NULL, 0);
++			if (ret)
++				goto fail;
++		}
++
++		bank->bgpio_chip.gc.dev = of_find_device_by_node(bank->of_node);
+ 
+ 		bank->bgpio_chip.gc.ngpio = bank->nr_pins;
+ 		ret = gpiochip_add(&bank->bgpio_chip.gc);
+@@ -340,6 +475,63 @@ static void rk3188_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
+ 	}
+ }
+ 
++#define RK3568_PULL_PMU_OFFSET		0x20
++#define RK3568_PULL_GRF_OFFSET		0x80
++#define RK3568_PULL_BITS_PER_PIN	2
++#define RK3568_PULL_PINS_PER_REG	8
++#define RK3568_PULL_BANK_STRIDE		0x10
++
++static void rk3568_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					 int pin_num, void __iomem **reg,
++					 u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	if (bank->bank_num == 0) {
++		*reg = info->reg_pmu + RK3568_PULL_PMU_OFFSET;
++		*reg += bank->bank_num * RK3568_PULL_BANK_STRIDE;
++		*reg += ((pin_num / RK3568_PULL_PINS_PER_REG) * 4);
++
++		*bit = pin_num % RK3568_PULL_PINS_PER_REG;
++		*bit *= RK3568_PULL_BITS_PER_PIN;
++	} else {
++		*reg = info->reg_base + RK3568_PULL_GRF_OFFSET;
++		*reg += (bank->bank_num - 1) * RK3568_PULL_BANK_STRIDE;
++		*reg += ((pin_num / RK3568_PULL_PINS_PER_REG) * 4);
++
++		*bit = (pin_num % RK3568_PULL_PINS_PER_REG);
++		*bit *= RK3568_PULL_BITS_PER_PIN;
++	}
++}
++
++#define RK3568_DRV_PMU_OFFSET		0x70
++#define RK3568_DRV_GRF_OFFSET		0x200
++#define RK3568_DRV_BITS_PER_PIN		8
++#define RK3568_DRV_PINS_PER_REG		2
++#define RK3568_DRV_BANK_STRIDE		0x40
++
++static void rk3568_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, void __iomem **reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	/* The first 32 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		*reg = info->reg_pmu + RK3568_DRV_PMU_OFFSET;
++		*reg += ((pin_num / RK3568_DRV_PINS_PER_REG) * 4);
++
++		*bit = pin_num % RK3568_DRV_PINS_PER_REG;
++		*bit *= RK3568_DRV_BITS_PER_PIN;
++	} else {
++		*reg = info->reg_base + RK3568_DRV_GRF_OFFSET;
++		*reg += (bank->bank_num - 1) * RK3568_DRV_BANK_STRIDE;
++		*reg += ((pin_num / RK3568_DRV_PINS_PER_REG) * 4);
++
++		*bit = (pin_num % RK3568_DRV_PINS_PER_REG);
++		*bit *= RK3568_DRV_BITS_PER_PIN;
++	}
++}
++
+ static struct rockchip_mux_route_data rk3188_mux_route_data[] = {
+ 	RK_MUXROUTE_SAME(0, RK_PD0, 1, 0xa0, BIT(16 + 11)), /* non-iomuxed emmc/flash pins on flash-dqs */
+ 	RK_MUXROUTE_SAME(0, RK_PD0, 2, 0xa0, BIT(16 + 11) | BIT(11)), /* non-iomuxed emmc/flash pins on emmc-clk */
+@@ -458,6 +650,7 @@ static int rockchip_pinctrl_set_pull(struct rockchip_pin_bank *bank,
+ 		writel(data, reg);
+ 		break;
+ 	case RK3188:
++	case RK3568:
+ 		data = ((1 << RK3188_PULL_BITS_PER_PIN) - 1) << (bit + 16);
+ 		data |= pull << bit;
+ 		writel(data, reg);
+@@ -499,6 +692,11 @@ static int rockchip_set_drive_perpin(struct rockchip_pin_bank *bank,
+ 		bank->bank_num, pin_num, strength);
+ 
+ 	ctrl->drv_calc_reg(bank, pin_num, &reg, &bit);
++	if (ctrl->type == RK3568) {
++		rmask_bits = RK3568_DRV_BITS_PER_PIN;
++		ret = (1 << (strength + 1)) - 1;
++		goto config;
++	}
+ 
+ 	ret = -EINVAL;
+ 	for (i = 0; i < ARRAY_SIZE(rockchip_perpin_drv_list[drv_type]); i++) {
+@@ -574,6 +772,7 @@ static int rockchip_set_drive_perpin(struct rockchip_pin_bank *bank,
+ 		return -EINVAL;
  	}
  
- 	return 0;
++config:
+ 	/* enable the write to the equivalent lower bits */
+ 	data = ((1 << rmask_bits) - 1) << (bit + 16);
+ 	rmask = data | (data >> 16);
+@@ -800,6 +999,8 @@ static int rockchip_pinctrl_probe(struct device_d *dev)
+ 	struct rockchip_pin_ctrl *ctrl;
+ 	int ret;
+ 
++	of_platform_populate(dev->device_node, NULL, NULL);
++
+ 	info = xzalloc(sizeof(struct rockchip_pinctrl));
+ 
+ 	ctrl = rockchip_pinctrl_get_soc_data(info, dev);
+@@ -903,6 +1104,140 @@ static struct rockchip_pin_ctrl rk3188_pin_ctrl = {
+ 	.pull_calc_reg	= rk3188_calc_pull_reg_and_bit,
+ };
+ 
++static struct rockchip_mux_route_data rk3568_mux_route_data[] = {
++	RK_MUXROUTE_PMU(0, RK_PB7, 1, 0x0110, WRITE_MASK_VAL(1, 0, 0)), /* PWM0 IO mux M0 */
++	RK_MUXROUTE_PMU(0, RK_PC7, 2, 0x0110, WRITE_MASK_VAL(1, 0, 1)), /* PWM0 IO mux M1 */
++	RK_MUXROUTE_PMU(0, RK_PC0, 1, 0x0110, WRITE_MASK_VAL(3, 2, 0)), /* PWM1 IO mux M0 */
++	RK_MUXROUTE_PMU(0, RK_PB5, 4, 0x0110, WRITE_MASK_VAL(3, 2, 1)), /* PWM1 IO mux M1 */
++	RK_MUXROUTE_PMU(0, RK_PC1, 1, 0x0110, WRITE_MASK_VAL(5, 4, 0)), /* PWM2 IO mux M0 */
++	RK_MUXROUTE_PMU(0, RK_PB6, 4, 0x0110, WRITE_MASK_VAL(5, 4, 1)), /* PWM2 IO mux M1 */
++	RK_MUXROUTE_PMU(0, RK_PB3, 2, 0x0300, WRITE_MASK_VAL(0, 0, 0)), /* CAN0 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PA1, 4, 0x0300, WRITE_MASK_VAL(0, 0, 1)), /* CAN0 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA1, 3, 0x0300, WRITE_MASK_VAL(2, 2, 0)), /* CAN1 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC3, 3, 0x0300, WRITE_MASK_VAL(2, 2, 1)), /* CAN1 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PB5, 3, 0x0300, WRITE_MASK_VAL(4, 4, 0)), /* CAN2 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PB2, 4, 0x0300, WRITE_MASK_VAL(4, 4, 1)), /* CAN2 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PC4, 1, 0x0300, WRITE_MASK_VAL(6, 6, 0)), /* HPDIN IO mux M0 */
++	RK_MUXROUTE_PMU(0, RK_PC2, 2, 0x0300, WRITE_MASK_VAL(6, 6, 1)), /* HPDIN IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB1, 3, 0x0300, WRITE_MASK_VAL(8, 8, 0)), /* GMAC1 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PA7, 3, 0x0300, WRITE_MASK_VAL(8, 8, 1)), /* GMAC1 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PD1, 1, 0x0300, WRITE_MASK_VAL(10, 10, 0)), /* HDMITX IO mux M0 */
++	RK_MUXROUTE_PMU(0, RK_PC7, 1, 0x0300, WRITE_MASK_VAL(10, 10, 1)), /* HDMITX IO mux M1 */
++	RK_MUXROUTE_PMU(0, RK_PB6, 1, 0x0300, WRITE_MASK_VAL(14, 14, 0)), /* I2C2 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PB4, 1, 0x0300, WRITE_MASK_VAL(14, 14, 1)), /* I2C2 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA0, 1, 0x0304, WRITE_MASK_VAL(0, 0, 0)), /* I2C3 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PB6, 4, 0x0304, WRITE_MASK_VAL(0, 0, 1)), /* I2C3 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PB2, 1, 0x0304, WRITE_MASK_VAL(2, 2, 0)), /* I2C4 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PB1, 2, 0x0304, WRITE_MASK_VAL(2, 2, 1)), /* I2C4 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB4, 4, 0x0304, WRITE_MASK_VAL(4, 4, 0)), /* I2C5 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PD0, 2, 0x0304, WRITE_MASK_VAL(4, 4, 1)), /* I2C5 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB1, 5, 0x0304, WRITE_MASK_VAL(14, 14, 0)), /* PWM8 IO mux M0 */
++	RK_MUXROUTE_GRF(1, RK_PD5, 4, 0x0304, WRITE_MASK_VAL(14, 14, 1)), /* PWM8 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB2, 5, 0x0308, WRITE_MASK_VAL(0, 0, 0)), /* PWM9 IO mux M0 */
++	RK_MUXROUTE_GRF(1, RK_PD6, 4, 0x0308, WRITE_MASK_VAL(0, 0, 1)), /* PWM9 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB5, 5, 0x0308, WRITE_MASK_VAL(2, 2, 0)), /* PWM10 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PA1, 2, 0x0308, WRITE_MASK_VAL(2, 2, 1)), /* PWM10 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB6, 5, 0x0308, WRITE_MASK_VAL(4, 4, 0)), /* PWM11 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC0, 3, 0x0308, WRITE_MASK_VAL(4, 4, 1)), /* PWM11 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB7, 2, 0x0308, WRITE_MASK_VAL(6, 6, 0)), /* PWM12 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC5, 1, 0x0308, WRITE_MASK_VAL(6, 6, 1)), /* PWM12 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PC0, 2, 0x0308, WRITE_MASK_VAL(8, 8, 0)), /* PWM13 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC6, 1, 0x0308, WRITE_MASK_VAL(8, 8, 1)), /* PWM13 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PC4, 1, 0x0308, WRITE_MASK_VAL(10, 10, 0)), /* PWM14 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC2, 1, 0x0308, WRITE_MASK_VAL(10, 10, 1)), /* PWM14 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PC5, 1, 0x0308, WRITE_MASK_VAL(12, 12, 0)), /* PWM15 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC3, 1, 0x0308, WRITE_MASK_VAL(12, 12, 1)), /* PWM15 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PD2, 3, 0x0308, WRITE_MASK_VAL(14, 14, 0)), /* SDMMC2 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PA5, 5, 0x0308, WRITE_MASK_VAL(14, 14, 1)), /* SDMMC2 IO mux M1 */
++	RK_MUXROUTE_PMU(0, RK_PB5, 2, 0x030c, WRITE_MASK_VAL(0, 0, 0)), /* SPI0 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PD3, 3, 0x030c, WRITE_MASK_VAL(0, 0, 1)), /* SPI0 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PB5, 3, 0x030c, WRITE_MASK_VAL(2, 2, 0)), /* SPI1 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PC3, 3, 0x030c, WRITE_MASK_VAL(2, 2, 1)), /* SPI1 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PC1, 4, 0x030c, WRITE_MASK_VAL(4, 4, 0)), /* SPI2 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PA0, 3, 0x030c, WRITE_MASK_VAL(4, 4, 1)), /* SPI2 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PB3, 4, 0x030c, WRITE_MASK_VAL(6, 6, 0)), /* SPI3 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC2, 2, 0x030c, WRITE_MASK_VAL(6, 6, 1)), /* SPI3 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PB4, 2, 0x030c, WRITE_MASK_VAL(8, 8, 0)), /* UART1 IO mux M0 */
++	RK_MUXROUTE_PMU(0, RK_PD1, 1, 0x030c, WRITE_MASK_VAL(8, 8, 1)), /* UART1 IO mux M1 */
++	RK_MUXROUTE_PMU(0, RK_PD1, 1, 0x030c, WRITE_MASK_VAL(10, 10, 0)), /* UART2 IO mux M0 */
++	RK_MUXROUTE_GRF(1, RK_PD5, 2, 0x030c, WRITE_MASK_VAL(10, 10, 1)), /* UART2 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA1, 2, 0x030c, WRITE_MASK_VAL(12, 12, 0)), /* UART3 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PB7, 4, 0x030c, WRITE_MASK_VAL(12, 12, 1)), /* UART3 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA6, 2, 0x030c, WRITE_MASK_VAL(14, 14, 0)), /* UART4 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PB2, 4, 0x030c, WRITE_MASK_VAL(14, 14, 1)), /* UART4 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PA2, 3, 0x0310, WRITE_MASK_VAL(0, 0, 0)), /* UART5 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PC2, 4, 0x0310, WRITE_MASK_VAL(0, 0, 1)), /* UART5 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PA4, 3, 0x0310, WRITE_MASK_VAL(2, 2, 0)), /* UART6 IO mux M0 */
++	RK_MUXROUTE_GRF(1, RK_PD5, 3, 0x0310, WRITE_MASK_VAL(2, 2, 1)), /* UART6 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PA6, 3, 0x0310, WRITE_MASK_VAL(5, 4, 0)), /* UART7 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PC4, 4, 0x0310, WRITE_MASK_VAL(5, 4, 1)), /* UART7 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PA2, 4, 0x0310, WRITE_MASK_VAL(5, 4, 2)), /* UART7 IO mux M2 */
++	RK_MUXROUTE_GRF(2, RK_PC5, 3, 0x0310, WRITE_MASK_VAL(6, 6, 0)), /* UART8 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PD7, 4, 0x0310, WRITE_MASK_VAL(6, 6, 1)), /* UART8 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PB0, 3, 0x0310, WRITE_MASK_VAL(9, 8, 0)), /* UART9 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC5, 4, 0x0310, WRITE_MASK_VAL(9, 8, 1)), /* UART9 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PA4, 4, 0x0310, WRITE_MASK_VAL(9, 8, 2)), /* UART9 IO mux M2 */
++	RK_MUXROUTE_GRF(1, RK_PA2, 1, 0x0310, WRITE_MASK_VAL(11, 10, 0)), /* I2S1 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PC6, 4, 0x0310, WRITE_MASK_VAL(11, 10, 1)), /* I2S1 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PD0, 5, 0x0310, WRITE_MASK_VAL(11, 10, 2)), /* I2S1 IO mux M2 */
++	RK_MUXROUTE_GRF(2, RK_PC1, 1, 0x0310, WRITE_MASK_VAL(12, 12, 0)), /* I2S2 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PB6, 5, 0x0310, WRITE_MASK_VAL(12, 12, 1)), /* I2S2 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PA2, 4, 0x0310, WRITE_MASK_VAL(14, 14, 0)), /* I2S3 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC2, 5, 0x0310, WRITE_MASK_VAL(14, 14, 1)), /* I2S3 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA4, 3, 0x0314, WRITE_MASK_VAL(1, 0, 0)), /* PDM IO mux M0 */
++	RK_MUXROUTE_GRF(1, RK_PA6, 3, 0x0314, WRITE_MASK_VAL(1, 0, 0)), /* PDM IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PD6, 5, 0x0314, WRITE_MASK_VAL(1, 0, 1)), /* PDM IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PA0, 4, 0x0314, WRITE_MASK_VAL(1, 0, 1)), /* PDM IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PC4, 5, 0x0314, WRITE_MASK_VAL(1, 0, 2)), /* PDM IO mux M2 */
++	RK_MUXROUTE_PMU(0, RK_PA5, 3, 0x0314, WRITE_MASK_VAL(3, 2, 0)), /* PCIE20 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PD0, 4, 0x0314, WRITE_MASK_VAL(3, 2, 1)), /* PCIE20 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PB0, 4, 0x0314, WRITE_MASK_VAL(3, 2, 2)), /* PCIE20 IO mux M2 */
++	RK_MUXROUTE_PMU(0, RK_PA4, 3, 0x0314, WRITE_MASK_VAL(5, 4, 0)), /* PCIE30X1 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PD2, 4, 0x0314, WRITE_MASK_VAL(5, 4, 1)), /* PCIE30X1 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA5, 4, 0x0314, WRITE_MASK_VAL(5, 4, 2)), /* PCIE30X1 IO mux M2 */
++	RK_MUXROUTE_PMU(0, RK_PA6, 2, 0x0314, WRITE_MASK_VAL(7, 6, 0)), /* PCIE30X2 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PD4, 4, 0x0314, WRITE_MASK_VAL(7, 6, 1)), /* PCIE30X2 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PC2, 4, 0x0314, WRITE_MASK_VAL(7, 6, 2)), /* PCIE30X2 IO mux M2 */
++};
++
++static struct rockchip_pin_bank rk3568_pin_banks[] = {
++	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", IOMUX_SOURCE_PMU | IOMUX_WIDTH_4BIT,
++					     IOMUX_SOURCE_PMU | IOMUX_WIDTH_4BIT,
++					     IOMUX_SOURCE_PMU | IOMUX_WIDTH_4BIT,
++					     IOMUX_SOURCE_PMU | IOMUX_WIDTH_4BIT),
++	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT),
++	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT),
++	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3", IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT),
++	PIN_BANK_IOMUX_FLAGS(4, 32, "gpio4", IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT),
++};
++
++static struct rockchip_pin_ctrl rk3568_pin_ctrl = {
++	.pin_banks		= rk3568_pin_banks,
++	.nr_banks		= ARRAY_SIZE(rk3568_pin_banks),
++	.label			= "RK3568-GPIO",
++	.type			= RK3568,
++	.grf_mux_offset		= 0x0,
++	.pmu_mux_offset		= 0x0,
++	.grf_drv_offset		= 0x0200,
++	.pmu_drv_offset		= 0x0070,
++	.iomux_routes		= rk3568_mux_route_data,
++	.niomux_routes		= ARRAY_SIZE(rk3568_mux_route_data),
++	.pull_calc_reg		= rk3568_calc_pull_reg_and_bit,
++	.drv_calc_reg		= rk3568_calc_drv_reg_and_bit,
++};
++
+ static struct of_device_id rockchip_pinctrl_dt_match[] = {
+ 	{
+ 		.compatible = "rockchip,rk2928-pinctrl",
+@@ -919,7 +1254,12 @@ static struct of_device_id rockchip_pinctrl_dt_match[] = {
+ 	{
+ 		.compatible = "rockchip,rk3188-pinctrl",
+ 		.data = &rk3188_pin_ctrl,
+-	}, {
++	},
++	{
++		.compatible = "rockchip,rk3568-pinctrl",
++		.data = &rk3568_pin_ctrl
++	},
++	{
+ 		/* sentinel */
+ 	}
+ };
 -- 
 2.29.2
 
