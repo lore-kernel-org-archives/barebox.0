@@ -1,53 +1,82 @@
-Delivery-date: Tue, 08 Jun 2021 16:07:41 +0200
+Delivery-date: Wed, 09 Jun 2021 08:36:30 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqcOL-0007In-95
-	for lore@lore.pengutronix.de; Tue, 08 Jun 2021 16:07:41 +0200
+	id 1lqrpG-0002Dn-Fc
+	for lore@lore.pengutronix.de; Wed, 09 Jun 2021 08:36:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lqcOJ-0001ne-EU
-	for lore@pengutronix.de; Tue, 08 Jun 2021 16:07:41 +0200
+	id 1lqrpF-0005F9-1h
+	for lore@pengutronix.de; Wed, 09 Jun 2021 08:36:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=QW4cUDdGiFUvJBGLk/PX5ZacH8Kvzci58QhTDqvhDUg=; b=wQZ4mYpoPIE19O
-	9a/duNsEEHyQqCmwTPz1/1DKrOUa0m8TRV8UPHbhkouwRYsfCbM8zOYoS73N0hoMbdD9brrieB/+N
-	YIAx2sVY8292B5GetSKHffLZXdNWbWIA/XSexmAKu0FPX17dNjRg7nzj5db0jn9USYAjTTqUmlqso
-	sRNXKw6FVhS4XKxNZd3CfJSpddS+5xNj+B45C02gqoJ2C6BG0DVKkT0+rhx/dIgmRZrsdLk5s4nmi
-	2GHEPY9eTjtVE6GuCADZw7chxeQsR3M7qSVBoHaEnYRkRF9jIl3ykdNZkoFGdS3XNt0kiizCOvl+o
-	K31Gdh4OZdz3WGZoXtdw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Content-Type:
+	Content-Transfer-Encoding:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:References:
+	Cc:To:Subject:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=GiJdQuOoA5BwIS5PH31YntlDSPtg9CeeB64RAL52DSU=; b=IkZ0YyPUe+gpB7NodaQBhEIFJC
+	xTdb2SCsI7WqvSpkNjTlHAVcL4DtmOcP9qjR/na+8AeFCw+Pcb0vPwLQW+XXWvOGGDw/X6l4XaFaV
+	yTY3G9GeaNmGppn3Rnd5eTXXEY4czTZ+tr3pyDlgnCiUywT7FkMlzopqT/lzWyEXaILqy22NIeB+b
+	UtUgxGqi1PHiZcto4/s9BLBkShQ22fSqXTLv5NpSbOpNPKoBughguoq9dA0c1f6+oPewwzjAxo9rb
+	H0GQPmD6Ljp34GP7RdCjyJGewacyvhhwl1SHN/VYCZDyV0080RD+x1HjkAliKHbs34NslasxcQZMK
+	u/XbYQaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lqcMz-008klf-Vs; Tue, 08 Jun 2021 14:06:18 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lqrna-00BvMG-Ls; Wed, 09 Jun 2021 06:34:46 +0000
+Received: from cpanel.siel.si ([46.19.9.99])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqcMW-008k4L-S2
- for barebox@lists.infradead.org; Tue, 08 Jun 2021 14:05:53 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lqcMU-0001HI-KV; Tue, 08 Jun 2021 16:05:46 +0200
-Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lqcMU-00005K-A2; Tue, 08 Jun 2021 16:05:46 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  8 Jun 2021 16:05:43 +0200
-Message-Id: <20210608140545.30696-4-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210608140545.30696-1-s.hauer@pengutronix.de>
-References: <20210608140545.30696-1-s.hauer@pengutronix.de>
+ id 1lqrnU-00BvLW-6h
+ for barebox@lists.infradead.org; Wed, 09 Jun 2021 06:34:42 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com; 
+ s=default;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
+ Date:Message-ID:References:Cc:To:Subject:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=+wS77llRqDG+HIGhJXVg9N6C10ecbedfik2v3PH3Dpc=; b=NOcYgUt8/zc+Tmh02Dnx9AtM8Y
+ xo9y2F7xXjj6cIRiLYYAQp7h4z+NZ9rXK2Xq0qiuHVTiz7o5/FOE/ov/AXaMRPsUG4uNXktjDRQv/
+ hPsTz7ScKPMg8Lx5oJtxqGRL0MOS+4FOXtRsmW9gg1iWSrTBjuOIDBtY39hzcYPH6FQnW82acfhyG
+ FqUT539TRDwR4ug/X40t2lZ+vq1bloFYi45pSh793kVtxIIfZBeN01MIedoeqqIY+O+/PU/uSIJIV
+ gJAiiQWEw26CCcqPfY2zG8edrv34fab/X7wDVv+GTqkHtbZXm977Y8NsM8IU94hrbNKuyzCDctBA3
+ KMt5RhMQ==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:55900
+ helo=[192.168.69.215]) by cpanel.siel.si with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <andrej.picej@norik.com>)
+ id 1lqrnE-008idA-Ii; Wed, 09 Jun 2021 08:34:31 +0200
+From: Andrej Picej <andrej.picej@norik.com>
+To: Trent Piepho <trent.piepho@igorinstitute.com>
+Cc: Barebox List <barebox@lists.infradead.org>
+References: <20210607090951.107269-1-andrej.picej@norik.com>
+ <20210607090951.107269-2-andrej.picej@norik.com>
+ <CAMHeXxNtHQdWBZdDc0fXJ1Q2Fj-=H2anmFGosKGrV12Ux1cncg@mail.gmail.com>
+ <60b1751e-8409-a2a5-a5f8-ef4107d6db9d@norik.com>
+ <CAMHeXxPNjNYmBdvob3LnAN36ccq8nT0UOjPtV0PGUeFO-PwDxw@mail.gmail.com>
+Message-ID: <79d8549e-fa99-6412-cbb0-dfce46083060@norik.com>
+Date: Wed, 9 Jun 2021 08:34:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
+In-Reply-To: <CAMHeXxPNjNYmBdvob3LnAN36ccq8nT0UOjPtV0PGUeFO-PwDxw@mail.gmail.com>
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.infradead.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id:
+ andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210608_070549_150911_08F632E8 
-X-CRM114-Status: GOOD (  26.92  )
+X-CRM114-CacheID: sfid-20210608_233440_467865_37374F1E 
+X-CRM114-Status: GOOD (  56.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -59,407 +88,204 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/5] pinctrl: Rockchip: Update from Linux
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 2/2] ARM: i.MX: xload: consider ECC strength when reading
+ page
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The Linux Rockchip pinctrl driver is more flexible when it comes
-to register offsets which are different between SoCs. This patch
-updates different pieces of the driver to prepare merging support
-for newer SoCs.
+On 8. 06. 21 14:38, Trent Piepho wrote:
+> On Tue, Jun 8, 2021 at 12:23 AM Andrej Picej <andrej.picej@norik.com> wrote:
+>> On 7. 06. 21 22:03, Trent Piepho wrote:
+>>> On Mon, Jun 7, 2021 at 2:32 AM Andrej Picej <andrej.picej@norik.com> wrote:
+>>>> - Samsung K9K8G08U0E (pagesize: 0x800, oobsize: 0x40)
+>>>> - Winbond W29N08GVSIAA (pagesize: 0x800, oobsize: 0x40) and
+>>>> - Spansion S34ML08G201FI00 (pagesize: 0x800, oobsize: 0x80).
+>>>>
+>>>> All NANDs having set ECC strength to 4 (13 bytes) despite Spansion NAND
+>>>> chip supporting ECC strength of 9 (29 bytes).
+> 
+>> tool uses NAND settings used by eboot, which are hardcoded to fixed
+>> pagesize of 0x800 bytes and oobsize of 0x40 bytes (8 ECC bits). If for
+> 
+> Ok, so 4 ecc bits was used for testing, but your actual use case is
+> for flash that uses 8 bits when NAND has 128 OOB bytes, which the
+> current code uses a value different than 8?  My calculation is that
+> 0x800+0x80 would use 18 bit ECC.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/pinctrl/pinctrl-rockchip.c | 283 ++++++++++++++++++++++++++++-
- 1 file changed, 275 insertions(+), 8 deletions(-)
+Actually 8 ECC bits was used for testing. Maybe it was wrong that I 
+named EccBlockNEccType (from i.MX 6Dual/6Quad Applications Processor 
+Reference Manual) as ECC strength (in commit message) as it gets shifted 
+to the left for one bit to get ECC size in bits. So yes, we agree, 8 bit 
+ECC for 0x800+0x80 (4<<1 = 8) and 18 bit ECC for 0x800+0x80 (9<<1 = 18).
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 3b44847afb..4b69d0d069 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -27,6 +27,7 @@
- #include <of.h>
- #include <of_address.h>
- #include <pinctrl.h>
-+#include <dt-bindings/pinctrl/rockchip.h>
- 
- #include <linux/basic_mmio_gpio.h>
- #include <linux/clk.h>
-@@ -43,6 +44,54 @@ enum rockchip_pin_bank_type {
- 	RK3188_BANK0,
- };
- 
-+/*
-+ * Encode variants of iomux registers into a type variable
-+ */
-+#define IOMUX_GPIO_ONLY		BIT(0)
-+#define IOMUX_WIDTH_4BIT	BIT(1)
-+#define IOMUX_SOURCE_PMU	BIT(2)
-+#define IOMUX_UNROUTED		BIT(3)
-+#define IOMUX_WIDTH_3BIT	BIT(4)
-+#define IOMUX_WIDTH_2BIT	BIT(5)
-+
-+/**
-+ * struct rockchip_iomux
-+ * @type: iomux variant using IOMUX_* constants
-+ * @offset: if initialized to -1 it will be autocalculated, by specifying
-+ *	    an initial offset value the relevant source offset can be reset
-+ *	    to a new value for autocalculating the following iomux registers.
-+ */
-+struct rockchip_iomux {
-+	int				type;
-+	int				offset;
-+};
-+
-+/*
-+ * enum type index corresponding to rockchip_perpin_drv_list arrays index.
-+ */
-+enum rockchip_pin_drv_type {
-+	DRV_TYPE_IO_DEFAULT = 0,
-+	DRV_TYPE_IO_1V8_OR_3V0,
-+	DRV_TYPE_IO_1V8_ONLY,
-+	DRV_TYPE_IO_1V8_3V0_AUTO,
-+	DRV_TYPE_IO_3V3_ONLY,
-+	DRV_TYPE_MAX
-+};
-+
-+/**
-+ * struct rockchip_drv
-+ * @drv_type: drive strength variant using rockchip_perpin_drv_type
-+ * @offset: if initialized to -1 it will be autocalculated, by specifying
-+ *	    an initial offset value the relevant source offset can be reset
-+ *	    to a new value for autocalculating the following drive strength
-+ *	    registers. if used chips own cal_drv func instead to calculate
-+ *	    registers offset, the variant could be ignored.
-+ */
-+struct rockchip_drv {
-+	enum rockchip_pin_drv_type	drv_type;
-+	int				offset;
-+};
-+
- struct rockchip_pin_bank {
- 	void __iomem			*reg_base;
- 	struct clk			*clk;
-@@ -50,11 +99,14 @@ struct rockchip_pin_bank {
- 	u8				nr_pins;
- 	char				*name;
- 	u8				bank_num;
-+	struct rockchip_iomux		iomux[4];
-+	struct rockchip_drv		drv[4];
- 	enum rockchip_pin_bank_type	bank_type;
- 	bool				valid;
- 	struct device_node		*of_node;
- 	struct rockchip_pinctrl		*drvdata;
- 	struct bgpio_chip		bgpio_chip;
-+	u32				route_mask;
- };
- 
- #define PIN_BANK(id, pins, label)			\
-@@ -64,6 +116,62 @@ struct rockchip_pin_bank {
- 		.name		= label,		\
- 	}
- 
-+#define PIN_BANK_IOMUX_FLAGS(id, pins, label, iom0, iom1, iom2, iom3)	\
-+	{								\
-+		.bank_num	= id,					\
-+		.nr_pins	= pins,					\
-+		.name		= label,				\
-+		.iomux		= {					\
-+			{ .type = iom0, .offset = -1 },			\
-+			{ .type = iom1, .offset = -1 },			\
-+			{ .type = iom2, .offset = -1 },			\
-+			{ .type = iom3, .offset = -1 },			\
-+		},							\
-+	}
-+
-+#define PIN_BANK_MUX_ROUTE_FLAGS(ID, PIN, FUNC, REG, VAL, FLAG)		\
-+	{								\
-+		.bank_num	= ID,					\
-+		.pin		= PIN,					\
-+		.func		= FUNC,					\
-+		.route_offset	= REG,					\
-+		.route_val	= VAL,					\
-+		.route_location	= FLAG,					\
-+	}
-+
-+#define RK_MUXROUTE_SAME(ID, PIN, FUNC, REG, VAL)	\
-+	PIN_BANK_MUX_ROUTE_FLAGS(ID, PIN, FUNC, REG, VAL, ROCKCHIP_ROUTE_SAME)
-+
-+#define RK_MUXROUTE_GRF(ID, PIN, FUNC, REG, VAL)	\
-+	PIN_BANK_MUX_ROUTE_FLAGS(ID, PIN, FUNC, REG, VAL, ROCKCHIP_ROUTE_GRF)
-+
-+#define RK_MUXROUTE_PMU(ID, PIN, FUNC, REG, VAL)	\
-+	PIN_BANK_MUX_ROUTE_FLAGS(ID, PIN, FUNC, REG, VAL, ROCKCHIP_ROUTE_PMU)
-+
-+enum rockchip_mux_route_location {
-+	ROCKCHIP_ROUTE_SAME = 0,
-+	ROCKCHIP_ROUTE_PMU,
-+	ROCKCHIP_ROUTE_GRF,
-+};
-+
-+/**
-+ * struct rockchip_mux_recalced_data: represent a pin iomux data.
-+ * @bank_num: bank number.
-+ * @pin: index at register or used to calc index.
-+ * @func: the min pin.
-+ * @route_location: the mux route location (same, pmu, grf).
-+ * @route_offset: the max pin.
-+ * @route_val: the register offset.
-+ */
-+struct rockchip_mux_route_data {
-+	u8 bank_num;
-+	u8 pin;
-+	u8 func;
-+	enum rockchip_mux_route_location route_location;
-+	u32 route_offset;
-+	u32 route_val;
-+};
-+
- struct rockchip_pin_ctrl {
- 	struct rockchip_pin_bank	*pin_banks;
- 	u32				nr_banks;
-@@ -71,6 +179,11 @@ struct rockchip_pin_ctrl {
- 	char				*label;
- 	enum rockchip_pinctrl_type	type;
- 	int				grf_mux_offset;
-+	int				pmu_mux_offset;
-+	int				grf_drv_offset;
-+	int				pmu_drv_offset;
-+	struct rockchip_mux_route_data *iomux_routes;
-+	u32				niomux_routes;
- 	void	(*pull_calc_reg)(struct rockchip_pin_bank *bank, int pin_num,
- 				 void __iomem **reg, u8 *bit);
- };
-@@ -225,18 +338,90 @@ static void rk3188_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
- 	}
- }
- 
-+static struct rockchip_mux_route_data rk3188_mux_route_data[] = {
-+	RK_MUXROUTE_SAME(0, RK_PD0, 1, 0xa0, BIT(16 + 11)), /* non-iomuxed emmc/flash pins on flash-dqs */
-+	RK_MUXROUTE_SAME(0, RK_PD0, 2, 0xa0, BIT(16 + 11) | BIT(11)), /* non-iomuxed emmc/flash pins on emmc-clk */
-+};
-+
-+static bool rockchip_get_mux_route(struct rockchip_pin_bank *bank, int pin,
-+				   int mux, u32 *loc, u32 *reg, u32 *value)
-+{
-+	struct rockchip_pinctrl *info = bank->drvdata;
-+	struct rockchip_pin_ctrl *ctrl = info->ctrl;
-+	struct rockchip_mux_route_data *data;
-+	int i;
-+
-+	for (i = 0; i < ctrl->niomux_routes; i++) {
-+		data = &ctrl->iomux_routes[i];
-+		if ((data->bank_num == bank->bank_num) &&
-+		    (data->pin == pin) && (data->func == mux))
-+			break;
-+	}
-+
-+	if (i >= ctrl->niomux_routes)
-+		return false;
-+
-+	*loc = data->route_location;
-+	*reg = data->route_offset;
-+	*value = data->route_val;
-+
-+	return true;
-+}
-+
- static int rockchip_pinctrl_set_func(struct rockchip_pin_bank *bank, int pin,
- 				     int mux)
- {
- 	struct rockchip_pinctrl *info = bank->drvdata;
--	void __iomem *reg = info->reg_base + info->ctrl->grf_mux_offset;
-+	void __iomem *reg;
- 	u8 bit;
--	u32 data;
-+	u32 data, route_location, route_reg, route_val;
-+	int iomux_num = (pin / 8);
-+	int mux_type;
-+	int mask;
-+
-+	reg = (bank->iomux[iomux_num].type & IOMUX_SOURCE_PMU)
-+				? info->reg_pmu : info->reg_base;
-+
-+	/* get basic quadrupel of mux registers and the correct reg inside */
-+	mux_type = bank->iomux[iomux_num].type;
-+	reg += bank->iomux[iomux_num].offset;
-+
-+	dev_dbg(info->pctl_dev.dev, "setting func of GPIO%d-%d to %d\n",
-+		 bank->bank_num, pin, mux);
-+
-+	if (mux_type & IOMUX_WIDTH_4BIT) {
-+		if ((pin % 8) >= 4)
-+			reg += 0x4;
-+		bit = (pin % 4) * 4;
-+		mask = 0xf;
-+	} else if (mux_type & IOMUX_WIDTH_3BIT) {
-+		if ((pin % 8) >= 5)
-+			reg += 0x4;
-+		bit = (pin % 8 % 5) * 3;
-+		mask = 0x7;
-+	} else {
-+		bit = (pin % 8) * 2;
-+		mask = 0x3;
-+	}
-+
-+	if (bank->route_mask & BIT(pin)) {
-+		if (rockchip_get_mux_route(bank, pin, mux, &route_location,
-+					   &route_reg, &route_val)) {
-+			void __iomem  *route = reg;
-+
-+			/* handle special locations */
-+			switch (route_location) {
-+			case ROCKCHIP_ROUTE_PMU:
-+				route = info->reg_pmu;
-+				break;
-+			case ROCKCHIP_ROUTE_GRF:
-+				route = info->reg_base;
-+				break;
-+			}
- 
--	/* get basic quadruple of mux registers and the correct reg inside */
--	reg += bank->bank_num * 0x10;
--	reg += (pin / 8) * 4;
--	bit = (pin % 8) * 2;
-+			writel(route_val, route + route_reg);
-+		}
-+	}
- 
- 	data = 3 << (bit + 16);
- 	data |= (mux & 3) << bit;
-@@ -373,7 +558,7 @@ static struct rockchip_pin_ctrl *rockchip_pinctrl_get_soc_data(
- 	struct rockchip_pin_ctrl *ctrl;
- 	struct rockchip_pin_bank *bank;
- 	char *name;
--	int i;
-+	int grf_offs, pmu_offs, drv_grf_offs, drv_pmu_offs, i, j;
- 
- 	match = of_match_node(rockchip_pinctrl_dt_match, node);
- 	ctrl = (struct rockchip_pin_ctrl *)match->data;
-@@ -395,11 +580,91 @@ static struct rockchip_pin_ctrl *rockchip_pinctrl_get_soc_data(
- 		}
- 	}
- 
-+	grf_offs = ctrl->grf_mux_offset;
-+	pmu_offs = ctrl->pmu_mux_offset;
-+	drv_pmu_offs = ctrl->pmu_drv_offset;
-+	drv_grf_offs = ctrl->grf_drv_offset;
- 	bank = ctrl->pin_banks;
- 	for (i = 0; i < ctrl->nr_banks; ++i, ++bank) {
-+		int bank_pins = 0;
-+
- 		bank->drvdata = d;
- 		bank->pin_base = ctrl->nr_pins;
- 		ctrl->nr_pins += bank->nr_pins;
-+
-+		/* calculate iomux and drv offsets */
-+		for (j = 0; j < 4; j++) {
-+			struct rockchip_iomux *iom = &bank->iomux[j];
-+			struct rockchip_drv *drv = &bank->drv[j];
-+			int inc;
-+
-+			if (bank_pins >= bank->nr_pins)
-+				break;
-+
-+			/* preset iomux offset value, set new start value */
-+			if (iom->offset >= 0) {
-+				if (iom->type & IOMUX_SOURCE_PMU)
-+					pmu_offs = iom->offset;
-+				else
-+					grf_offs = iom->offset;
-+			} else { /* set current iomux offset */
-+				iom->offset = (iom->type & IOMUX_SOURCE_PMU) ?
-+							pmu_offs : grf_offs;
-+			}
-+
-+			/* preset drv offset value, set new start value */
-+			if (drv->offset >= 0) {
-+				if (iom->type & IOMUX_SOURCE_PMU)
-+					drv_pmu_offs = drv->offset;
-+				else
-+					drv_grf_offs = drv->offset;
-+			} else { /* set current drv offset */
-+				drv->offset = (iom->type & IOMUX_SOURCE_PMU) ?
-+						drv_pmu_offs : drv_grf_offs;
-+			}
-+
-+			dev_dbg(dev, "bank %d, iomux %d has iom_offset 0x%x drv_offset 0x%x\n",
-+				i, j, iom->offset, drv->offset);
-+
-+			/*
-+			 * Increase offset according to iomux width.
-+			 * 4bit iomux'es are spread over two registers.
-+			 */
-+			inc = (iom->type & (IOMUX_WIDTH_4BIT |
-+					    IOMUX_WIDTH_3BIT |
-+					    IOMUX_WIDTH_2BIT)) ? 8 : 4;
-+			if (iom->type & IOMUX_SOURCE_PMU)
-+				pmu_offs += inc;
-+			else
-+				grf_offs += inc;
-+
-+			/*
-+			 * Increase offset according to drv width.
-+			 * 3bit drive-strenth'es are spread over two registers.
-+			 */
-+			if ((drv->drv_type == DRV_TYPE_IO_1V8_3V0_AUTO) ||
-+			    (drv->drv_type == DRV_TYPE_IO_3V3_ONLY))
-+				inc = 8;
-+			else
-+				inc = 4;
-+
-+			if (iom->type & IOMUX_SOURCE_PMU)
-+				drv_pmu_offs += inc;
-+			else
-+				drv_grf_offs += inc;
-+
-+			bank_pins += 8;
-+		}
-+
-+		/* calculate the per-bank route_mask */
-+		for (j = 0; j < ctrl->niomux_routes; j++) {
-+			int pin = 0;
-+
-+			if (ctrl->iomux_routes[j].bank_num == bank->bank_num) {
-+				pin = ctrl->iomux_routes[j].pin;
-+				bank->route_mask |= BIT(pin);
-+			}
-+		}
- 	}
- 
- 	return ctrl;
-@@ -498,7 +763,7 @@ static struct rockchip_pin_ctrl rk3066b_pin_ctrl = {
- };
- 
- static struct rockchip_pin_bank rk3188_pin_banks[] = {
--	PIN_BANK(0, 32, "gpio0"),
-+	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", IOMUX_GPIO_ONLY, 0, 0, 0),
- 	PIN_BANK(1, 32, "gpio1"),
- 	PIN_BANK(2, 32, "gpio2"),
- 	PIN_BANK(3, 32, "gpio3"),
-@@ -509,6 +774,8 @@ static struct rockchip_pin_ctrl rk3188_pin_ctrl = {
- 	.nr_banks	= ARRAY_SIZE(rk3188_pin_banks),
- 	.type		= RK3188,
- 	.grf_mux_offset	= 0x60,
-+	.iomux_routes	= rk3188_mux_route_data,
-+	.niomux_routes	= ARRAY_SIZE(rk3188_mux_route_data),
- 	.pull_calc_reg	= rk3188_calc_pull_reg_and_bit,
- };
- 
--- 
-2.29.2
+> 
+> But really, the exact numbers don't matter.  Just that your nand flash
+> tool, barebox xload, barebox main, uboot, uboot spl, linux, kobs-ng,
+> etc. don't all agree on ECC values.
+> 
+>> I agree that it would be better to use all of the space available, but
+>> if flasher used wrong settings to copy barebox binary to NAND these
+>> settings (although not optimal) should be used to make booting even
+>> possible.
+> 
+> But, how does one know 2nd stage barebox is flashed with the same ECC
+> as 1st stage xload?  See below.
+> 
+>>
+>> The main reason why I think we should use FCB here for this is because
+>> i.MX6's ROM already uses these values for booting into pre-bootloader.
+>> That's why we try to act in xloader like ROM does (reading NAND
+>> parameters from FCB). Nevertheless flasher tools should be responsible
+>> to match the BCH ECC page with what it is written into FCB. If that is
+> 
+> I think it's fair to assume that the barebox xload is using the ECC
+> from the FCB, otherwise it would not boot.  But does barebox 2nd stage
+> use same ECC as xload?  In your case, the answer is currently yes.
+> But is this always the case?
+> 
+> I don't know of a specific board where it is not, but I do know this:
+> It is common that a Linux based software update system will not update
+> the bootloader.  It might just do rootfs, or rootfs+kernel, but
+> bootloader is less common.  In two a stage system, xload + main, maybe
+> the xload is not updated.  It is a pain from Linux, with different
+> versions of kobs and/or kobs-ng, which are poorly maintained and
+> documented, a special attribute in sysfs that old Freescale kernels
+> had and that isn't around anymore that is sometimes needed and
+> sometimes not, etc.  And as I have just discovered, iMX6UL and iMX6ULL
+> use a different encoding of FCB that all other iMX and of course some
+> kobs-ng versions don't know this and create a broken FCB.
+> 
+> I even made a system that did this: barebox-xload had A/B support for
+> 2nd stage and 2nd stage was updated, but the xload wasn't, since it
+> wasn't fail-safe.  But this was for CycloneV and doesn't apply here.
+> 
+> So, suppose we have updated barebox 2nd stage from Linux (or barebox)?
+>   Now it uses "common" ECC values (IMHO, "optimal" is not an accurate
+> term here) from Linux kernel.  Barebox-xload current works to boot
+> this, but your change will break that.
+
+OK, I see. This is a valid point. Didn't really understand that updating 
+only 2nd stage barebox is a common practice. Do you know of any imx6 
+board that does that, because this xloader is imx6 specific?
+
+> 
+> It is a difficult problem, either choice of a ECC values could be the
+> correct one.
+
+Yes I agree, either way we break booting in one of our use cases. In my 
+case pre-bootloader wouldn't get correctly read and in your case main 
+bootloader wouldn't get correctly read.
+
+> 
+>> In our case the described proprietary flasher tool only flashes barebox
+>> so only NAND pages with barebox binary are using not optimal ECC
+>> settings. If for example kernel, devicetree and rootfs would be flashed
+>> from barebox the NAND pages there would use correct ECC size and booting
+>> into linux and updating those NAND pages from linux works. Updating
+>> barebox from barebox itself (using barebox_update) would mean that the
+>> barebox binary will be overwritten in NAND with optimal ECC settings and
+>> FCB will be updated accordingly.
+> 
+> Does barebox_update run in 2nd stage barebox update both 2nd stage
+> barebox and barebox-xload + FCB?
+
+Yes, it does.
+
+> 
+> Consider what happens if barebox 2nd stage is updated from Linux.
+> Usually software update systems run on Linux, e.g. rauc or mender.  In
+> this case it will use Linux ECC settings, not FCB settings.
+> 
+> You've got boards with barebox-xload and barebox using different ECC
+> settings than kernel and rootfs.  And not just two different settings,
+> but also 2nd stage barebox and Linux don't know this.  I predict this
+> will be a source of much future pain.
+> 
+> 
+>> We are only using this ECC values to read barebox binary from NAND and
+>> copy it to RAM. If other NAND pages will be using different ECC values
+>> that doesn't break anything, I think. Only problem that I can see here
+>> is barebox or linux reading NAND pages occupied by barebox binary, this
+>> will most likely fail, but I don't see why that would be necessary anyway.
+>>
+>> I don't think we are braking anything here, we are just fixing booting
+>> barebox from NAND whit not optimal ECC settings.
+>>
+>> Please correct me if I'm wrong or if I'm missing something here?
+> 
+> You've got ECC settings for:
+> (xload barebox) (kernel rootfs)
+> But if someone had this:
+> (xload) (barebox kernel rootfs)
+> Then it breaks.
+
+Yes I agree, as i already wrote above, I didn't know this is common way 
+of doing bootloader update.
+
+> 
+> Why would they have that?  As I describe above, everything in the 2nd
+> set is updated from Linux using some software update system.
+> 
+> Of course, the most common way is this:
+> (xload barebox kernel rootfs)
+> 
+> With just one set, when the xload has two choices, FCB vs common
+> values, both are the same, so even if barebox is updated from Linux it
+> still works.
+> 
+> A solution that works for boths cases, but is also ugly and difficult,
+> is to try both.  If xload sees FCB values != calculated values, then
+> just try both settings.  One is virtually assured that the incorrect
+> settings will produce massive numbers of errors from BCH.  Read a
+> couple pages and the settings which result in uncorrectable ECC errors
+> on all pages are the wrong ones.
+> 
+
+Yes that would be an ugly fix for this.
+
+But I see one problem. If different ECC values are used for 
+pre-bootloader and main bootloader (like it is the case in example that 
+you provided) we would have to read pre-bootloader and main bootloader 
+with different ECC settings.
+
+So the xload would look something like:
+- read a couple of pages from pre-bootloader and select appropriate 
+"readtotal_pbl"
+- copy pre-bootloader to RAM with selected "readtotal_pbl"
+- read a couple of pages from main-bootloader and select appropriate 
+"readtotal_main"
+- copy the remaining pages (main barebox) to RAM with selected 
+"readtotal_main"
+
+Now for this we would need to find out where PBL ends and main barebox 
+starts (probably from boot data?).
+
+This would solve all of the problems right?
+
+But is this all needed for such extreme use case?
+
+As I said, I don't know how common it is for user to update only 2nd 
+stage barebox, and how common it is to use flasher tools which would use 
+different ECC settings than barebox and kernel for example. Both of 
+these are needed to get ECC mismatch. And I can't think of other cases 
+where a mismatch between ECC settings between pre-bootloader and 2nd 
+stage barebox would happen.
+
+BR,
+Andrej
+
 
 
 _______________________________________________
