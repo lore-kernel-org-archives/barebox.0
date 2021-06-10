@@ -1,54 +1,51 @@
-Delivery-date: Thu, 10 Jun 2021 16:10:43 +0200
+Delivery-date: Thu, 10 Jun 2021 16:48:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lrLON-0000xj-89
-	for lore@lore.pengutronix.de; Thu, 10 Jun 2021 16:10:43 +0200
+	id 1lrLzE-0001J8-N4
+	for lore@lore.pengutronix.de; Thu, 10 Jun 2021 16:48:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lrLOM-000683-Cy
-	for lore@pengutronix.de; Thu, 10 Jun 2021 16:10:43 +0200
+	id 1lrLzD-000281-T2
+	for lore@pengutronix.de; Thu, 10 Jun 2021 16:48:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=Z1dgvCjdFKe15EuIE50tj4mvyBhPvrdxPGAS3sxY2Po=; b=Sjy1sTS8qbM+f0YtUJHpjFUhv4
-	octDqUGGgL/XbGX+I/9E50bZZxrNKsRCcU6fpLL3hY+LkF/ma91K4OYDrdC/G9zCc+vyGZrnrc9Rt
-	BCX3CNib4Nvm+WOcmT6jd0qvbxHD/dAtrnhX5SMoaEpi5r1hXpA7fNbN2qhEHnLP7FjBBe8u5NeX7
-	E5d/zdWavggPzx949t4A+Q+3jnWXGGuTb7it4M+/vMAyi1jaWuhBfKJ9OYDBe5DVM4mzXUfYvzWtv
-	1tWW0q8D8fNUpeKsnww+MXVCl3Kcvl6MJfAvMYr02IcGC0avRPKR5ZmR0IoKvVxBM7DEkI8/xc5uB
-	NNLFV6rQ==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=8JAK/5tzCejhsNcZNfFIHjrkcKZSEl+7SQZ/yfZub5I=; b=n4IlLE+LsdoScy
+	6t5d4EnVrA2kkI4EoAosr7cGYPwzNtnjdKnwwJz1eWg7LKlGktCxn9jU+tyZvoaRmeHw6wN9aqwga
+	OYFCbS/9RDyG+E/EPWiHBQYbmJ9SSF7nPFk2/pzC1nOsmVADiOqZQjT8G1XNPVPY3cAQPrVnNwaQC
+	wwEmSVmaAIcjOKM7w+WgeGmScOFHy0nIGIYhL6U0AGR7TUX9i05lpnqQgTePFqEAkSlS2eGLKL6Nj
+	7zt/WMMdKY60Ptr7r14F8yVrMUA2+MObBWDytR2fo9SNNpGO98yDzT6yc1Jh/7z6CG8KBQ2ZZ7/x6
+	SIBsnB8EF0KieNw3KNpA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lrLMr-00157M-8e; Thu, 10 Jun 2021 14:09:09 +0000
+	id 1lrLy4-001Cak-0e; Thu, 10 Jun 2021 14:47:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lrLMl-00155W-Kf
- for barebox@lists.infradead.org; Thu, 10 Jun 2021 14:09:05 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1lrLMi-0005ms-Fo; Thu, 10 Jun 2021 16:09:00 +0200
-To: "Barbier, Renaud" <renaud.barbier@abaco.com>,
- Barebox List <barebox@lists.infradead.org>
-References: <MN2PR16MB31351CB3C8DDCAA07DB9E25591359@MN2PR16MB3135.namprd16.prod.outlook.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ad0091c0-2919-de80-01d5-41cea68d5550@pengutronix.de>
-Date: Thu, 10 Jun 2021 16:09:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+ id 1lrLxz-001Ca1-68
+ for barebox@lists.infradead.org; Thu, 10 Jun 2021 14:47:32 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lrLxp-0001yC-V2; Thu, 10 Jun 2021 16:47:21 +0200
+Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lrLxp-0004Un-Ll; Thu, 10 Jun 2021 16:47:21 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu, 10 Jun 2021 16:47:17 +0200
+Message-Id: <20210610144720.25620-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <MN2PR16MB31351CB3C8DDCAA07DB9E25591359@MN2PR16MB3135.namprd16.prod.outlook.com>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210610_070903_731731_E7F829FC 
-X-CRM114-Status: GOOD (  21.09  )
+X-CRM114-CacheID: sfid-20210610_074731_251719_489A9745 
+X-CRM114-Status: GOOD (  10.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,67 +65,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: NXP Layerscape
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 0/3] MMC: SDHCI: Add and use common DMA helpers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Barbier,
+So far the SDHCI common code can only do PIO data transfers. This series
+pimps that up to allow DMA data transfers. The imx-esdhc driver is
+converted to use these new helpers and also the new Rockchip SDHCI
+support which I resend here converted to use the helpers.
 
-On 10.06.21 15:49, Barbier, Renaud wrote:
-> I received a NXP  LS1046A-RDB
+Sascha
 
-It doesn't reboot cleanly with a USB serial adapter attached!
-Jfyi, gave me a scare first time, when I thought I broke something ^^.
+Sascha Hauer (3):
+  mci: sdhci: Add DMA transfer helpers
+  mci: Add support for Rockchip variant of the dwcmshc
+  mci: imx-esdhc: Use common DMA helpers
 
-> 
-> I built barebox for the LS1046A and got the image barebox-ls1046ardb-qspi.image.
-> I programmed the image in the alternative SPI bank as per NXP instructions:
-> =>	tftp $load_addr
-> =>	sf erase 0 +$filesize && sf write $load_addr 0 $filesize
-> 
-> Barebox does not boot.
-> 
-> I did notice that u-boot is at address 0x40100000 while the RCW is at 0x40000000.
-> My understanding is that barebox is one image and shall be programmed at offset 0 of the SPI (0x40000000)
-
-Can't comment on that. Sascha did the integration.
-
-> At present I cannot connect my I.C.E. due a pin stuck in my MIPI connector.
-> 
-> Any return on experience is welcome.
-
-Can comment on that: Last time I did this, I wrote some documentation:
-https://www.barebox.org/doc/latest/boards/layerscape.html
-
-There I flashed barebox from another barebox booted from SD-Card.
-I'd assume that should still work. I can't recall how the CPLD
-needed to be tickled, but it would be helpful to know whether doing
-it like described in the documentation doesn't work for you.
-
-Cheers,
-Ahmad
-
-> 
-> Cheers,
-> Renaud
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+ drivers/mci/Kconfig                  |   7 +
+ drivers/mci/Makefile                 |   1 +
+ drivers/mci/arasan-sdhci.c           |   2 +-
+ drivers/mci/atmel-sdhci-common.c     |   2 +-
+ drivers/mci/imx-esdhc-common.c       |  88 ++-----
+ drivers/mci/mci-bcm2835.c            |   2 +-
+ drivers/mci/rockchip-dwcmshc-sdhci.c | 377 +++++++++++++++++++++++++++
+ drivers/mci/sdhci.c                  | 118 ++++++++-
+ drivers/mci/sdhci.h                  |  10 +-
+ 9 files changed, 538 insertions(+), 69 deletions(-)
+ create mode 100644 drivers/mci/rockchip-dwcmshc-sdhci.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.2
+
 
 _______________________________________________
 barebox mailing list
