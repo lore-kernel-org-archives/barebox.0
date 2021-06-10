@@ -1,51 +1,124 @@
-Delivery-date: Thu, 10 Jun 2021 15:12:04 +0200
+Delivery-date: Thu, 10 Jun 2021 15:51:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lrKTc-0000Zc-9Y
-	for lore@lore.pengutronix.de; Thu, 10 Jun 2021 15:12:04 +0200
+	id 1lrL5U-0000fA-7h
+	for lore@lore.pengutronix.de; Thu, 10 Jun 2021 15:51:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lrKTa-0006NG-IO
-	for lore@pengutronix.de; Thu, 10 Jun 2021 15:12:04 +0200
+	id 1lrL5P-0003j5-BZ
+	for lore@pengutronix.de; Thu, 10 Jun 2021 15:51:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-ID:Date:Subject:To
 	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=wzPnd0ZlAs/M8JiKIWzCUXecnsgD+sxNH997xbHh1UI=; b=YAEBOh4Qp1+O2w
-	vvIj9tgaEujaacCCW0W3NT+la4DusDHV4p2q0UI9OOHGmb6Fd/c2OwHaVmzpYyNZbSDltLCrNm8jQ
-	4A9V7KN7Jj5okVNQTmyPIAuPk+tGSX1pkybIcSX8YNq+n81/fag2jYJEcLO/6tcr9gBhmGbb6vNP+
-	GboJuTwXH7pk62o8vGr+jeGLaqQdDTdTehsRO/w/OGIFv7SKgE5rK8djQntoSZCGDWk1dIAAKTeeq
-	/nVGjvDYoLfe/6O4vdFVFB4twU+WTZ0SsIEjOkWEAH3hXV/qQ/WsPsdrAAt7E3Uyf5Bf4mOXa1/9F
-	FcYTIG/TMnr0HFTR9ydw==;
+	List-Owner; bh=o9Qw9XhlCWrQ/V6JIvdutdhl8dvR3pVc6QiJKJxe44o=; b=xEOKgAB2ivAS1S
+	WI+plqTF2aaeYCYxHJbZA3YwYQEX9pDZ8DTnqk62xMKNGFNpPKZCLxSpPGs+pny2eWCXt06clvRFl
+	CnLHaRyTKkB986uhfEAyoQhz4nsPjj/lcMJadUwbUy7CAkBp1hJnr1HCgbMhwTp6Xp5gSZa70vmnz
+	TWR77olnoStPeScYCqhN0mHb3SRXbfdsPTLmempmBvmRJWwYi7yrzNZ7iPlARm9B7LzSGCoCKJhTZ
+	RFmceSb4JaNgZQZ0onZAke+0hdc+Ev9HmSvuQELsdCFIuaTjR72JLJw+srMO9CCnj7xB3eHSN/Iwq
+	2kxpXIukQE4ScLTh0jkg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lrKSG-000qZ8-Pp; Thu, 10 Jun 2021 13:10:40 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lrL3e-000yUK-16; Thu, 10 Jun 2021 13:49:19 +0000
+Received: from mail-bn8nam11on2118.outbound.protection.outlook.com
+ ([40.107.236.118] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lrKSB-000qY8-2H
- for barebox@lists.infradead.org; Thu, 10 Jun 2021 13:10:36 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lrKS9-00069u-RI; Thu, 10 Jun 2021 15:10:33 +0200
-Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lrKS9-0001u0-I9; Thu, 10 Jun 2021 15:10:33 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
+ id 1lrL3S-000yT5-As
+ for barebox@lists.infradead.org; Thu, 10 Jun 2021 13:49:07 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cWCdzG5DC+NAUUnaHeAH8/h6LPgVfOjZOfUBUb1yEQKZd577obc8I5BE5mhzy1VzUBojacu3QM0gvbHXNY2wz9wvEz5wB6DFNei7HmaNrUYd14z3QlKKN71RQ1qeExo2pcI3tHWOdGEQwOQPllQmOouL4NcXDtz8hooLC7R5BvPVS2p30lnGaPpZvxcrIk54v4s8SaOHtp01AWtLQ2Lv1V9Cu8DhGszzfgF8aHcubcB60YP/w5CjizL+Bjt7TUzwSIbvQ8BFoA+wr6s8qAQiLBZdoVvLhnyXWSl9Q2yBPFjK8vMzGLv5QyeQGbANQ9KCN57qGfxMfnaVFzzjzFcxow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aMXyXO5ixJZFr6FI+uKsan63qBI2zxBN2rRKT2n0nIs=;
+ b=DT6mkQKkhCOWoQeU78L3RwLrTT7bBInRDPvVKddcpQRnnGMQWYr+segkBgfKcrOvwigHH5T0VGX15viPrDs1ft/5yQkjb0gJrgdj0B8UuYlwhTbrRtzXGolUfDNqtaF/ROQosU1FhU/SyZhCCQOHXqN59oGXYc41YuZwfLQGwMONKrX6DXoYJY6Pt8Awgioj5avQxYGqPz+xcSs94nuoDognyV56pTfPvF/zNpxxAO9joW3nmjZH6foH9XgFAE0wX8ccvPt4sVYCsWmPv25dlbJ0ZkmnWm0BzxqtQhzjfZMaYicTc6ABxm/RMUw8Y8jy8F6JflkPkecZ3fjkFiKLLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=abaco.com; dmarc=pass action=none header.from=abaco.com;
+ dkim=pass header.d=abaco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=abaco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aMXyXO5ixJZFr6FI+uKsan63qBI2zxBN2rRKT2n0nIs=;
+ b=c5jq9Y/pTT9WtOIOqkLmNUZ0QInL79GAnSz0l/7x8SzaVeTJmC2FyqAqtMvtBy8FYGWZjyI6x0vivGOdurmqHJ7wFz0fM6Zu2Bdnm2hVeu5FZKOuORtz2XUR9J9wS4mbkXo0nxXAOAYYs8dgPMtuHbeopLFsbbzAVLRFufiqbDiakGhA6k6j176Q2mPRxL9+aonf7GlZ6VDrtZQQiH0S+iIATgad+Qd7moCmBxGZZsKCkkBzoZibiURl3JMUh4Xpm0Hx0NkKN7dXd/W5qE8zW3xhM5xaEjDNQewSO2lQBsnSJtFRzNt1Uuv3fhSUpS9KmlaNdFOGsKpAamGd/9ZQOQ==
+Received: from MN2PR16MB3135.namprd16.prod.outlook.com (2603:10b6:208:153::31)
+ by MN2PR16MB2751.namprd16.prod.outlook.com (2603:10b6:208:e3::24)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.27; Thu, 10 Jun
+ 2021 13:49:03 +0000
+Received: from MN2PR16MB3135.namprd16.prod.outlook.com
+ ([fe80::81cd:8060:64e:57c4]) by MN2PR16MB3135.namprd16.prod.outlook.com
+ ([fe80::81cd:8060:64e:57c4%6]) with mapi id 15.20.4219.021; Thu, 10 Jun 2021
+ 13:49:03 +0000
+From: "Barbier, Renaud" <renaud.barbier@abaco.com>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 10 Jun 2021 15:10:32 +0200
-Message-Id: <20210610131032.6645-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
+Thread-Topic: NXP Layerscape
+Thread-Index: Addd/MoIpx587SOMTFWl0TiwuVIYLg==
+Date: Thu, 10 Jun 2021 13:49:03 +0000
+Message-ID: <MN2PR16MB31351CB3C8DDCAA07DB9E25591359@MN2PR16MB3135.namprd16.prod.outlook.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: lists.infradead.org; dkim=none (message not signed)
+ header.d=none;lists.infradead.org; dmarc=none action=none
+ header.from=abaco.com;
+x-originating-ip: [167.98.226.2]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 239a16ee-d978-4467-f4cf-08d92c168231
+x-ms-traffictypediagnostic: MN2PR16MB2751:
+x-microsoft-antispam-prvs: <MN2PR16MB2751EE3EA225EC826AEC814691359@MN2PR16MB2751.namprd16.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6108;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: k+2gI9TLw/hr1QDrq5aLAFtfV9XnOZD+TgptK86ddIk3B/oYtlN2KUKyqrySvEHaH9+bpzfXlGsh3H3V3NsfxqJB5rclJmN5OGM0cVTon5uyukvUxJUD5tNCco59BMy4BzvfUV5FwuKycYZATlqea12G0hc8LOFP2/TdCiJymzk57gW46U1JRddpC8pmOFecik9NiZ+YHZBDNu8CNHPDMi9faaG4ZqtuAGUPd9KTpH/JKcM8TFB9o+KULtuNG7r3GX5LPmmt0MfM06/K8lD4tVvIV2VEBe1mHw/V0NjOlHfJgMzBhqTWmJvwe0mmI/M2LIcRM3MozspaNOQu/SEBLGtlKCCVrpedjSV8+xV2veSU+/FRuCCaaNcIRGrNeAnnAS3D7lex5fCLQKK3W216C7AbFh1mbcNdUTleWQSLxaRyZilcpmV30iadZGV19ENn0vLd/zwtPneIDl1xswCzC443i4BXlKOk9n0NhmIO87p2LeFuXAM+RFyQfd0M4JiepxAEWR4QCop+/jy4w7A8buayt88EY3EjF+kUGlqzSsTfQsbRD4cVbBv+THarf/mfwN2wUGbHChsPOGajRtlQZr5v74omaRtDpcqa1GS7iD8=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MN2PR16MB3135.namprd16.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(136003)(376002)(346002)(396003)(39840400004)(366004)(66446008)(66946007)(3480700007)(76116006)(66476007)(8676002)(9686003)(4744005)(7116003)(8936002)(186003)(26005)(6506007)(6916009)(33656002)(122000001)(71200400001)(38100700002)(316002)(7696005)(5660300002)(478600001)(52536014)(83380400001)(64756008)(2906002)(66556008)(55016002)(86362001);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?VSzMtc92tFYEsAD5SG5+9xw0opCJ7BjZ7NZD4KXL0qgB8GkutaW9spNOPGQ0?=
+ =?us-ascii?Q?gUoM8pmSFfdKljL3XQpAiLtUy+QDjfUijnZP48tUmHRHGdcG2Ao/Q2+ObZVX?=
+ =?us-ascii?Q?Zb4olMph41ZivWhgNMtgBXwVMbx386UaJErKv8tyiPj2mWpWRR6v+h+dQ+f/?=
+ =?us-ascii?Q?EWq9DqaJxc8SKh+EXDe6lAzRe54m5IfSo/nUqzMppQQxRlmAvob5GNZHklJm?=
+ =?us-ascii?Q?bpYCHsugg5akSkku86kbN0NVNPFA0iPB95TR84hZfePc/Kta2Pio3uN8MlAs?=
+ =?us-ascii?Q?UomNJfZEakKlfHUn3eJLg89p97dHJgN3wtpem+3DFrfzSuxZLsDN9Zkv2CI6?=
+ =?us-ascii?Q?WL20636PgCeGlfJo6Txls9FezT6cWl+sxzOIwtiZTzjA8CPikz/GTMyXpV6p?=
+ =?us-ascii?Q?SsuMQJpQwHbLcdCHQhV9qVTPnQoFm62J/L0JUvZIXqGTds+wHBUoJfhuICdw?=
+ =?us-ascii?Q?kk4H6XKEDeCum7sCM7Z2P1k7ydRvh7G2a/K6+jDq2BEIYh/dLn86dp4GniAe?=
+ =?us-ascii?Q?/ZcMwqTitK7iusIYNPZtU0ukEDRA9FjctKyMigZO7fO5un9nZzUuwsV01xVg?=
+ =?us-ascii?Q?7QHCXzgHJeBp2tzPdZP3QCtQYy8Y8MA1YUJEYsh3R6KuYwFeY7AHF89DnWk3?=
+ =?us-ascii?Q?0fz3+MB4UXpxU0Mv2nAmQnZYj1z/cJjpGWGrF97HDhhW8mBAHcdwO0K2VkS0?=
+ =?us-ascii?Q?8O+ekG/xZgGr21ABu7Is0zZQ0/ouyFUJoDWqXk0ZjjojRNS5J/S/+gwff2Sb?=
+ =?us-ascii?Q?u6mX/8NMahyIEjZXISS8RVVcu3bzUFEnEg+vbe/eySzFlAnqHGU5GrPUzrt6?=
+ =?us-ascii?Q?6nTgJ43VnHGNI8LcKNtig5sGQ9dklvUnvm+Fn/CUItolQGkVorlyms7dNkYg?=
+ =?us-ascii?Q?PsE6822ji/GkYxzS3slclihsSG8IKV5wUjw0DDR3eXwKhjg28qOZhnB8sUUo?=
+ =?us-ascii?Q?W6KIcqXFAW/H1oGmVQABbIYVcpk5p93meGGNxVJ6YsmOeyX55YIZ42dugXhA?=
+ =?us-ascii?Q?3uc2cborUnE3PEXpNKzipyL8SXQXmoO4XuYkP2xeqNxB9uL7ca3FM0rN6e6U?=
+ =?us-ascii?Q?WiOgECc7jkN4JzLYJmM60A2c03CCijNnl4pYDdKO2gS1F0PUcXk/deSOdo4N?=
+ =?us-ascii?Q?2S9elGKOm5ccSUCLSOoUVRpuK+HMV9P7cQKkU07lRMDMxSNnYexHD15gpCyF?=
+ =?us-ascii?Q?v+QJxwljUTwoZ9t+nL65PszhigMxAR/nRbagSktupHVpOEwj0Gej4fFal16W?=
+ =?us-ascii?Q?hHo9/sLR7cp5lKEKMOy6KnPjlY7makrEPWIdemHUvpVXCBxlGouSWvGgRY09?=
+ =?us-ascii?Q?CNOz7bg08kBU/Y/Af9yEfxhm?=
+x-ms-exchange-transport-forked: True
 MIME-Version: 1.0
+X-OriginatorOrg: abaco.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR16MB3135.namprd16.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 239a16ee-d978-4467-f4cf-08d92c168231
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2021 13:49:03.2661 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: e6f27451-899d-4d0d-b8fa-88baafa551a7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MPOOCCfjU6/LURLTdk020MkZINFz7SLdiLZxI0xqKMmZY2OfsAwGMLgLpGk1D+nCySSQWzTAWQrhARfCVaaePsHMzmWaXQYEqb23cLj7HGQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR16MB2751
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210610_061035_126798_C73CCD9B 
-X-CRM114-Status: GOOD (  14.70  )
+X-CRM114-CacheID: sfid-20210610_064906_411766_0242AED0 
+X-CRM114-Status: UNSURE (   4.87  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,175 +138,33 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] mci: dw_mmc: set dma mask to work correctly on 64bit platforms
+Subject: NXP Layerscape
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The variant we support currently can only do 32bit DMA. Adjust dma mask
-accordingly. Also use dma_map_single() rather than dma_sync_single() to
-actually get errors when the mapping fails.
+I received a NXP  LS1046A-RDB
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/dw_mmc.c | 53 ++++++++++++++++++++++++++------------------
- 1 file changed, 31 insertions(+), 22 deletions(-)
+I built barebox for the LS1046A and got the image barebox-ls1046ardb-qspi.image.
+I programmed the image in the alternative SPI bank as per NXP instructions:
+=>	tftp $load_addr
+=>	sf erase 0 +$filesize && sf write $load_addr 0 $filesize
 
-diff --git a/drivers/mci/dw_mmc.c b/drivers/mci/dw_mmc.c
-index 7979568841..139193ccf5 100644
---- a/drivers/mci/dw_mmc.c
-+++ b/drivers/mci/dw_mmc.c
-@@ -25,6 +25,7 @@
- 
- struct dwmci_host {
- 	struct mci_host mci;
-+	struct device_d *dev;
- 	struct clk *clk_biu, *clk_ciu;
- 	void *ioaddr;
- 	unsigned int fifo_size_bytes;
-@@ -34,6 +35,7 @@ struct dwmci_host {
- 	int ciu_div;
- 	u32 fifoth_val;
- 	u32 pwren_value;
-+	dma_addr_t idmac_dma;
- };
- 
- struct dwmci_idmac {
-@@ -110,12 +112,12 @@ static int dwmci_prepare_data_pio(struct dwmci_host *host,
- }
- 
- static int dwmci_prepare_data_dma(struct dwmci_host *host,
--		struct mci_data *data)
-+		struct mci_data *data, dma_addr_t dma)
- {
- 	unsigned long ctrl;
- 	unsigned int i = 0, flags, cnt, blk_cnt;
--	unsigned start_addr;
- 	struct dwmci_idmac *desc = host->idmac;
-+	dma_addr_t desc_dma = host->idmac_dma;
- 
- 	blk_cnt = data->blocks;
- 
-@@ -124,12 +126,7 @@ static int dwmci_prepare_data_dma(struct dwmci_host *host,
- 
- 	dwmci_wait_reset(host, DWMCI_CTRL_FIFO_RESET);
- 
--	dwmci_writel(host, DWMCI_DBADDR, (uint32_t)desc);
--
--	if (data->flags & MMC_DATA_READ)
--		start_addr = (uint32_t)data->dest;
--	else
--		start_addr = (uint32_t)data->src;
-+	dwmci_writel(host, DWMCI_DBADDR, desc_dma);
- 
- 	do {
- 		flags = DWMCI_IDMAC_OWN | DWMCI_IDMAC_CH;
-@@ -142,10 +139,12 @@ static int dwmci_prepare_data_dma(struct dwmci_host *host,
- 			cnt = data->blocksize * 8;
- 		}
- 
-+		desc_dma += sizeof(*desc);
-+
- 		desc->flags = flags;
- 		desc->cnt = cnt;
--		desc->addr = start_addr + (i * PAGE_SIZE);
--		desc->next_addr = (uint32_t)(desc + 1);
-+		desc->addr = dma + (i * PAGE_SIZE);
-+		desc->next_addr = desc_dma;
- 
- 		dev_dbg(host->mci.hw_dev, "desc@ 0x%p 0x%08x 0x%08x 0x%08x 0x%08x\n",
- 				desc, flags, cnt, desc->addr, desc->next_addr);
-@@ -172,12 +171,12 @@ static int dwmci_prepare_data_dma(struct dwmci_host *host,
- }
- 
- static int dwmci_prepare_data(struct dwmci_host *host,
--		struct mci_data *data)
-+		struct mci_data *data, dma_addr_t dma)
- {
- 	if (dwmci_use_pio(host))
- 		return dwmci_prepare_data_pio(host, data);
- 	else
--		return dwmci_prepare_data_dma(host, data);
-+		return dwmci_prepare_data_dma(host, data, dma);
- }
- 
- static int dwmci_set_transfer_mode(struct dwmci_host *host,
-@@ -272,6 +271,7 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	uint64_t start;
- 	int ret;
- 	unsigned int num_bytes = 0;
-+	dma_addr_t dma = 0;
- 
- 	start = get_time_ns();
- 	while (1) {
-@@ -287,16 +287,20 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	dwmci_writel(host, DWMCI_RINTSTS, DWMCI_INTMSK_ALL);
- 
- 	if (data) {
-+
- 		num_bytes = data->blocks * data->blocksize;
- 
- 		if (data->flags & MMC_DATA_WRITE)
--			dma_sync_single_for_device((unsigned long)data->src,
--						   num_bytes, DMA_TO_DEVICE);
-+			dma = dma_map_single(host->dev, (void *)data->src, num_bytes,
-+					     DMA_TO_DEVICE);
- 		else
--			dma_sync_single_for_device((unsigned long)data->dest,
--						   num_bytes, DMA_FROM_DEVICE);
-+			dma = dma_map_single(host->dev, data->dest, num_bytes,
-+					     DMA_FROM_DEVICE);
- 
--		ret = dwmci_prepare_data(host, data);
-+		if (dma_mapping_error(host->dev, dma))
-+			return -EFAULT;
-+
-+		ret = dwmci_prepare_data(host, data, dma);
- 		if (ret)
- 			return ret;
- 	}
-@@ -400,11 +404,11 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 			dwmci_writel(host, DWMCI_CTRL, ctrl);
- 
- 			if (data->flags & MMC_DATA_WRITE)
--				dma_sync_single_for_cpu((unsigned long)data->src,
--							num_bytes, DMA_TO_DEVICE);
-+				dma_unmap_single(host->dev, dma, num_bytes,
-+						 DMA_TO_DEVICE);
- 			else
--				dma_sync_single_for_cpu((unsigned long)data->dest,
--							num_bytes, DMA_FROM_DEVICE);
-+				dma_unmap_single(host->dev, dma, num_bytes,
-+						 DMA_FROM_DEVICE);
- 		}
- 	}
- 
-@@ -550,6 +554,9 @@ static int dw_mmc_probe(struct device_d *dev)
- 
- 	host = xzalloc(sizeof(*host));
- 
-+	dma_set_mask(dev, DMA_BIT_MASK(32));
-+	host->dev = dev;
-+
- 	host->clk_biu = clk_get(dev, "biu");
- 	if (IS_ERR(host->clk_biu))
- 		return PTR_ERR(host->clk_biu);
-@@ -567,7 +574,9 @@ static int dw_mmc_probe(struct device_d *dev)
- 	host->ioaddr = IOMEM(iores->start);
- 
- 	host->idmac = dma_alloc_coherent(sizeof(*host->idmac) * DW_MMC_NUM_IDMACS,
--					 DMA_ADDRESS_BROKEN);
-+					 &host->idmac_dma);
-+	if (!host->idmac)
-+		return PTR_ERR(-ENOMEM);
- 
- 	host->mci.send_cmd = dwmci_cmd;
- 	host->mci.set_ios = dwmci_set_ios;
--- 
-2.29.2
+Barebox does not boot.
+
+I did notice that u-boot is at address 0x40100000 while the RCW is at 0x40000000.
+My understanding is that barebox is one image and shall be programmed at offset 0 of the SPI (0x40000000)
+
+
+At present I cannot connect my I.C.E. due a pin stuck in my MIPI connector.
+
+Any return on experience is welcome.
+
+Cheers,
+Renaud
 
 
 _______________________________________________
