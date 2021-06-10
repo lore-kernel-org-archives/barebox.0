@@ -1,52 +1,51 @@
-Delivery-date: Wed, 09 Jun 2021 19:54:17 +0200
+Delivery-date: Thu, 10 Jun 2021 15:08:07 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lr2PB-0004b5-Th
-	for lore@lore.pengutronix.de; Wed, 09 Jun 2021 19:54:17 +0200
+	id 1lrKPn-0000Xg-Bx
+	for lore@lore.pengutronix.de; Thu, 10 Jun 2021 15:08:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lr2PA-0004iw-Nr
-	for lore@pengutronix.de; Wed, 09 Jun 2021 19:54:17 +0200
+	id 1lrKPj-0005hK-Al
+	for lore@pengutronix.de; Thu, 10 Jun 2021 15:08:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=SCrrZLvVf5cQEFMOfkxlBgjCGtR57MWlPracjGQ6Wnw=; b=qHTNs0w3fSgGCp
-	knnYFenDmErCSyo4usZajlaxAcdseXfTKYgtM+kpC50QsukIKyn9TVMNz4hZCyLRjlV1GhVVfkKvR
-	hBCdVIwXFgCu6/nc2BGMhWMVJAe1wZKL63EfHLT3ez93Zkn+Q3O6IU/YRNtrA4Rs1x6OM6TMAMkk5
-	e0nqiu5Gr3ByuWYWeS6RY5gO3tjOC9slXgxidfdlhq8sJH8/+cDORZmp9fA1cfBg5BV+LctrNGCNX
-	/Ttv87KeV+6gJImnWe+7bRXcxTMGHtJOV8nuzUOUPqUH3EXVJ/FkVQ6xchSuTsqH1NB9kLuHYeGVt
-	7Ifdc+skN+9u++TB2FXA==;
+	List-Owner; bh=dAqySIC2eGc9Lfs4qA9PovVbUVG4PfWJHbBkdm/J8IU=; b=i3EaNstLP6e30F
+	MmC+jsShgaebuKbbAAHOfo0FdC7O5OD86kQzNiKXh+ZnmCzAHWPDQlfOkFok1qDn9Mrx4i6/8/ms2
+	6BYyK0gcuLQGiBeYHEnBZjRBDOjEmwlvf1wzEbcJw2HQ6FJ9he6A8vrnkfyUwtn3+eR2WbeeKmdjY
+	y0dj4KtyDvKXD6IDc4OFd9JAmFmFbxdG7Mf33ZumvXQ2OAtMRBi1jmX0GYdM3MtDtBbZ3ON2+ehi8
+	7hFULt7LV3T61DQZEKqH6dVrQ8hKHB1/miKD2142Zlh9od6UyP9jdaX+E4JpuQiTnl3PJVkWMR6f/
+	OkiYlZO9lsOfYyZUo2lg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lr2NU-00FRt9-KY; Wed, 09 Jun 2021 17:52:33 +0000
+	id 1lrKOI-000pGC-Aw; Thu, 10 Jun 2021 13:06:34 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lr2KL-00FQ0P-De
- for barebox@lists.infradead.org; Wed, 09 Jun 2021 17:49:19 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ id 1lrKO7-000pDU-Oj
+ for barebox@lists.infradead.org; Thu, 10 Jun 2021 13:06:24 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1lr2KJ-00047I-Ez; Wed, 09 Jun 2021 19:49:15 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1lr2KJ-00075T-6S; Wed, 09 Jun 2021 19:49:15 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  9 Jun 2021 19:49:13 +0200
-Message-Id: <20210609174913.27194-1-a.fatoum@pengutronix.de>
+ (envelope-from <sha@pengutronix.de>)
+ id 1lrKNy-0005Hy-Ht; Thu, 10 Jun 2021 15:06:14 +0200
+Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lrKNy-0007IC-5k; Thu, 10 Jun 2021 15:06:14 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu, 10 Jun 2021 15:06:10 +0200
+Message-Id: <20210610130613.27983-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210609_104917_489337_C432201A 
-X-CRM114-Status: GOOD (  11.44  )
+X-CRM114-CacheID: sfid-20210610_060623_824607_200A774D 
+X-CRM114-Status: GOOD (  10.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,62 +65,39 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! pinctrl: Rockchip: Update from Linux
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 1/4] watchdog: dw_wdt: Write counter restart register
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The original code uses regmap for the base address and reg for the
-offset to add onto it. The barebox port combines both into one pointer
-named reg. In rockchip_pinctrl_set_func(), two different offsets are
-used with the same base address. The code erroneously uses
-reg (base + offset) in place of base, leading to memory writes into
-the wrong registers. Fix this.
+At least some variants of the dwc watchdog controllers need the
+value 0x76 written to the counter restart register to actually
+take the value written to the Timeout range register. Happened
+on Rockchip RK3568, without this the watchdog immediately resets
+the system.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/watchdog/dw_wdt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index c3d89938943c..df702fbb6164 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -715,19 +715,19 @@ static int rockchip_pinctrl_set_func(struct rockchip_pin_bank *bank, int pin,
- 				     int mux)
- {
- 	struct rockchip_pinctrl *info = bank->drvdata;
--	void __iomem *reg;
-+	void __iomem *base, *reg;
- 	u8 bit;
- 	u32 data, route_location, route_reg, route_val;
- 	int iomux_num = (pin / 8);
- 	int mux_type;
- 	int mask;
+diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
+index 17771c7126..bc5d4a889a 100644
+--- a/drivers/watchdog/dw_wdt.c
++++ b/drivers/watchdog/dw_wdt.c
+@@ -111,6 +111,9 @@ static int dw_wdt_set_timeout(struct watchdog *wdd, unsigned int top_s)
+ 	writel(top_val | top_val << WDOG_TIMEOUT_RANGE_TOPINIT_SHIFT,
+ 	       dw_wdt->regs + WDOG_TIMEOUT_RANGE_REG_OFFSET);
  
--	reg = (bank->iomux[iomux_num].type & IOMUX_SOURCE_PMU)
-+	base = (bank->iomux[iomux_num].type & IOMUX_SOURCE_PMU)
- 				? info->reg_pmu : info->reg_base;
++	writel(WDOG_COUNTER_RESTART_KICK_VALUE,
++	       dw_wdt->regs + WDOG_COUNTER_RESTART_REG_OFFSET);
++
+ 	dw_wdt_start(wdd);
  
- 	/* get basic quadrupel of mux registers and the correct reg inside */
- 	mux_type = bank->iomux[iomux_num].type;
--	reg += bank->iomux[iomux_num].offset;
-+	reg = base + bank->iomux[iomux_num].offset;
- 
- 	dev_dbg(info->pctl_dev.dev, "setting func of GPIO%d-%d to %d\n",
- 		 bank->bank_num, pin, mux);
-@@ -750,7 +750,7 @@ static int rockchip_pinctrl_set_func(struct rockchip_pin_bank *bank, int pin,
- 	if (bank->route_mask & BIT(pin)) {
- 		if (rockchip_get_mux_route(bank, pin, mux, &route_location,
- 					   &route_reg, &route_val)) {
--			void __iomem  *route = reg;
-+			void __iomem  *route = base;
- 
- 			/* handle special locations */
- 			switch (route_location) {
+ 	return 0;
 -- 
 2.29.2
 
