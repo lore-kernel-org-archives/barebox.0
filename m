@@ -1,58 +1,64 @@
-Delivery-date: Fri, 11 Jun 2021 10:31:18 +0200
+Delivery-date: Fri, 11 Jun 2021 10:42:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lrcZS-0002TY-Jp
-	for lore@lore.pengutronix.de; Fri, 11 Jun 2021 10:31:18 +0200
+	id 1lrckf-0002eh-9J
+	for lore@lore.pengutronix.de; Fri, 11 Jun 2021 10:42:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lrcZR-0002Ue-4O
-	for lore@pengutronix.de; Fri, 11 Jun 2021 10:31:18 +0200
+	id 1lrckd-0003f9-Nm
+	for lore@pengutronix.de; Fri, 11 Jun 2021 10:42:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:Cc:References:To:Subject:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=UBShZhp7WVhbe7i+9cvQ41nYso/H+3R2D20pyCtDBtM=; b=jsS84mFMX4nN3Mf2sr3bGt5cI7
-	i6qR2PxB3yAzVpPM7f+gjaHzeggs3+GY7gn3OuzAOZo1Wk94ssWKTGoeNQVFGJhLTbwIko6m6Ojk3
-	Reeh6PiY/md0g13rOfm4DvtKuD5hXicKnOSSjAybznJ8FBO+duh6ZZikfs8NJaRRMLUkdbuXMMFhq
-	6soXQXe5ZMqCZjuk/bt0epe8hENfQERutPZERrp1K1Q4FnPSdEArD0NoFEH7qcl0apeUWO5pdo0ec
-	ruwZWO2v5cz6vc7e2C9SAMh1Bv9Mevift/+cCHGKFKeoEZanvW3AKTsP6juQ15dEs23e2Rgv98jhi
-	Id5FLscA==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=Lyh9HgNPTgLjEnto2Ren5I1Hk7Feb2NY5TCRb3EVmc0=; b=FDYsFXT4FpjfKG
+	ktSJ3zXBP3eJ5lQp+8MZ2jkrzNf7HKLVqBwIYx6jnTrEd8ZG1lgx8VFMuuY0IbKHXG0VPPVHvWBIJ
+	sir6sfzwqWrVYmwVI0PcbkP93/hqHWfHGxz0Frmn9IbSbT6doW5dj+eYGz9nVK3fLwglHTGlrO35d
+	/Paw53hgK79VROU9zi9Ilv5GMUsTjw86iPoL+WrbJWtgejzSC/SBCSUtaUysiLyjN3qSqBwV3qaHU
+	NRKCSFRjZH707R4xXst7LXq30qa3Bkl74O2tPdwwgKwP4wCl6hGw+FvF+wETVtgu9IIJR8LgTsIi1
+	disgMDVv37OJZsRqyIcQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lrcYA-004Ktx-7I; Fri, 11 Jun 2021 08:29:58 +0000
+	id 1lrcj5-004M1z-H6; Fri, 11 Jun 2021 08:41:15 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lrcY5-004KtX-Ex
- for barebox@lists.infradead.org; Fri, 11 Jun 2021 08:29:55 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1lrcY4-00022F-19; Fri, 11 Jun 2021 10:29:52 +0200
-To: "Barbier, Renaud" <renaud.barbier@abaco.com>
-References: <MN2PR16MB31351CB3C8DDCAA07DB9E25591359@MN2PR16MB3135.namprd16.prod.outlook.com>
- <ad0091c0-2919-de80-01d5-41cea68d5550@pengutronix.de>
- <MN2PR16MB31359FACA75C0F54E7672C5691359@MN2PR16MB3135.namprd16.prod.outlook.com>
- <33d59215-cd45-71cc-5f0b-e26d0a43e9d1@pengutronix.de>
- <MN2PR16MB3135787D6B3FCF98CAA0F53591359@MN2PR16MB3135.namprd16.prod.outlook.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <1f9d84ee-5ec8-a2d7-1424-d73d6916d6b1@pengutronix.de>
-Date: Fri, 11 Jun 2021 10:29:51 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+ id 1lrciz-004M1R-UX
+ for barebox@lists.infradead.org; Fri, 11 Jun 2021 08:41:12 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lrciy-0003Qe-B6; Fri, 11 Jun 2021 10:41:08 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1lrcix-0002P8-39; Fri, 11 Jun 2021 10:41:07 +0200
+Date: Fri, 11 Jun 2021 10:41:07 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20210611084107.GC22904@pengutronix.de>
+References: <20210602095507.24609-1-s.hauer@pengutronix.de>
+ <20210602095507.24609-5-s.hauer@pengutronix.de>
+ <6dde4130-1f96-d925-9e53-9f8c74d89a1f@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <MN2PR16MB3135787D6B3FCF98CAA0F53591359@MN2PR16MB3135.namprd16.prod.outlook.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <6dde4130-1f96-d925-9e53-9f8c74d89a1f@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 10:20:04 up 113 days, 11:43, 117 users,  load average: 0.27, 0.20,
+ 0.18
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210611_012953_543411_B3CC4AB9 
-X-CRM114-Status: GOOD (  32.45  )
+X-CRM114-CacheID: sfid-20210611_014110_189931_0BC16E74 
+X-CRM114-Status: GOOD (  42.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,156 +78,254 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: NXP Layerscape
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 04/24] clk: introduce struct clk_hw
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Barbier,
+On Fri, Jun 11, 2021 at 09:55:36AM +0200, Ahmad Fatoum wrote:
+> Hello Sascha,
+> 
+> On 02.06.21 11:54, Sascha Hauer wrote:
+> 
+> > In Linux the ops in struct clk_ops take a struct clk_hw * argument
+> 
+> > instead of a struct clk * argument as in barebox. With this taking
+> 
+> > new clk drivers from Linux requires a lot of mechanical conversions.
+> 
+> > Instead of doing this over and over again swallow the pill once and
+> 
+> > convert the existing barebox code over to clk_hw.
+> 
+> > 
+> 
+> > The implementation is a little different from Linux. In Linux struct clk
+> 
+> > is only known to the core clock code. In barebox struct clk is
+> 
+> > publically known and it is embedded into struct clk_hw. This allows
+> 
+> > us to still use struct clk members in the clock drivers which we
+> 
+> > currently still need, because otherwise this patch would be even
+> 
+> > bigger.
+> 
+> > 
+> 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> drivers/clk/sifive, which was added recently doesn't have these changes
+> and thus the build fails. To reproduce, without installed RISC-V toolchain, try:
+> 
+>    ./test/emulate.pl --runtime=podman sifive_defconfig
 
-On 10.06.21 18:40, Barbier, Renaud wrote:
-> I did find a barebox handler for the tqmls1046a but not the ls1046a.
+Can't exec "tuxmake": No such file or directory at ./test/emulate.pl line 377.
 
-Oh, I see.
-
-> I guess they would work the same.
-> It references /dev/qspiflash0.barebox
-> 
-> Then I just found arch/arm64/dts/fsl-ls1046a-rdb.dts. It does reference barebox in to esdhc not in qspi
-
-This would explain why barebox_update -l doesn't list qspi, but you aren't getting
-that far, apparently.
-
-> I am programming barebox into the QSPI with barebox-ls1046ardb-qspi.image Could that be why it is not running, having  no QSPI node enabled?
-> I guess I need to augment arch/arm64/dts/fsl-ls1046a-rdb.dts to have QSPI support.
-> Not too familiar with the use of DTB in barebox at present.
-
-That shouldn't matter. barebox header should contain the necessary bits for muxing/clocks.
-
-Device-Tree only becomes relevant later, when barebox itself needs to read/write the flash. 
-
-I'd postpone QSPI for now and check whether SD-Card boot works at all.
-
-Cheers,
-Ahmad
+Where do I get this from?
 
 > 
-> -----Original Message-----
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de> 
-> Sent: 10 June 2021 17:14
-> To: Barbier, Renaud <renaud.barbier@abaco.com>
-> Subject: Re: NXP Layerscape
-> 
-> 
-> 
-> [**EXTERNAL SOURCE**]:Please verify the source before clicking link or opening attachment.
-> 
-> Hi Renaud,
-> 
-> (please keep mailing list CC'd)
-> 
-> On 10.06.21 16:53, Barbier, Renaud wrote:
->>  I am not using a USB serial adapter. Currently I have a RJ-45 to RS232 to my laptop.
->>
->> Should not BOOTLOCPTR be set I the PBI. I see 0x40100000 for U-boot and 0x10000000 for barebox. Unless it does not apply for PPA boot flow.
-> 
-> I don't know about the specifics of the first stage boot on the Layerscape, I just wanted to point you at the docs and ask if the steps I had documented there work for you or not.
-> 
-> Cheers,
-> Ahmad
-> 
->>
->> -----Original Message-----
->> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> Sent: 10 June 2021 15:09
->> To: Barbier, Renaud <renaud.barbier@abaco.com>; Barebox List 
->> <barebox@lists.infradead.org>
->> Subject: Re: NXP Layerscape
->>
->>
->>
->> [**EXTERNAL SOURCE**]:Please verify the source before clicking link or opening attachment.
->>
->> Hello Barbier,
->>
->> On 10.06.21 15:49, Barbier, Renaud wrote:
->>> I received a NXP  LS1046A-RDB
->>
->> It doesn't reboot cleanly with a USB serial adapter attached!
->> Jfyi, gave me a scare first time, when I thought I broke something ^^.
->>
->>>
->>> I built barebox for the LS1046A and got the image barebox-ls1046ardb-qspi.image.
->>> I programmed the image in the alternative SPI bank as per NXP instructions:
->>> =>    tftp $load_addr
->>> =>    sf erase 0 +$filesize && sf write $load_addr 0 $filesize
->>>
->>> Barebox does not boot.
->>>
->>> I did notice that u-boot is at address 0x40100000 while the RCW is at 0x40000000.
->>> My understanding is that barebox is one image and shall be programmed 
->>> at offset 0 of the SPI (0x40000000)
->>
->> Can't comment on that. Sascha did the integration.
->>
->>> At present I cannot connect my I.C.E. due a pin stuck in my MIPI connector.
->>>
->>> Any return on experience is welcome.
->>
->> Can comment on that: Last time I did this, I wrote some documentation:
->> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.
->> barebox.org%2Fdoc%2Flatest%2Fboards%2Flayerscape.html&amp;data=04%7C01
->> %7Crenaud.barbier%40abaco.com%7C0e00e06c3236419cae1108d92c2acefe%7Ce6f
->> 27451899d4d0db8fa88baafa551a7%7C0%7C0%7C637589384654589155%7CUnknown%7
->> CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXV
->> CI6Mn0%3D%7C1000&amp;sdata=OUk8SFTmrlH0U%2F8aiXZonQHxLplyEjlMtc7Y5JHx%
->> 2BUk%3D&amp;reserved=0
->>
->> There I flashed barebox from another barebox booted from SD-Card.
->> I'd assume that should still work. I can't recall how the CPLD needed to be tickled, but it would be helpful to know whether doing it like described in the documentation doesn't work for you.
->>
->> Cheers,
->> Ahmad
->>
->>>
->>> Cheers,
->>> Renaud
->>>
->>>
->>> _______________________________________________
->>> barebox mailing list
->>> barebox@lists.infradead.org
->>> https://nam11.safelinks.protection.outlook.com/?url=http%3A%2F%2Flist
->>> s 
->>> .infradead.org%2Fmailman%2Flistinfo%2Fbarebox&amp;data=04%7C01%7Crena
->>> u
->>> d.barbier%40abaco.com%7Cdf668f5e5f2d497d54cb08d92c194c3e%7Ce6f2745189
->>> 9 
->>> d4d0db8fa88baafa551a7%7C0%7C0%7C637589309423989184%7CUnknown%7CTWFpbG
->>> Z
->>> sb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%
->>> 3
->>> D%7C1000&amp;sdata=ORpVZlyPk2o7%2FyVYOkJPeAWNnq2%2FkxKauxep7gvDJ%2Bo%
->>> 3
->>> D&amp;reserved=0
->>>
->>
->> --
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | https://nam11.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwww.pengutronix.de%2F&amp;data=04%7C01%7Crenaud.barbier%40abaco.com%7C0e00e06c3236419cae1108d92c2acefe%7Ce6f27451899d4d0db8fa88baafa551a7%7C0%7C0%7C637589384654589155%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=Ru7cLRTSk3qfVNgAjscSXxOw4hj2j3dHbFSqsTL8sic%3D&amp;reserved=0  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
-> 
-> --
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | https://nam11.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwww.pengutronix.de%2F&amp;data=04%7C01%7Crenaud.barbier%40abaco.com%7C0e00e06c3236419cae1108d92c2acefe%7Ce6f27451899d4d0db8fa88baafa551a7%7C0%7C0%7C637589384654589155%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=Ru7cLRTSk3qfVNgAjscSXxOw4hj2j3dHbFSqsTL8sic%3D&amp;reserved=0  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+> Doing the conversions aren't completely trivial to me, as there are no
+> clkdev clk_hw helpers ported and I still need to figure out how to use them.
+> Given that your caches are still hot, could you take a look?
+
+Here we go. I added the following to next.
+
+Sascha
+
+---------------------------8<--------------------------------
+
+>From 61da1fea5d3c516d7f2609daebfc19e035a4c485 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 11 Jun 2021 10:38:27 +0200
+Subject: [PATCH] clk: sifive: Fix missing conversion to struct clk_hw
+
+Sifive was not converted to the recent struct clk_hw changes. Add these.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/sifive/sifive-prci.c | 42 +++++++++++++++++---------------
+ drivers/clk/sifive/sifive-prci.h | 18 +++++++-------
+ 2 files changed, 32 insertions(+), 28 deletions(-)
+
+diff --git a/drivers/clk/sifive/sifive-prci.c b/drivers/clk/sifive/sifive-prci.c
+index b452bbf8cc..1701a2c5a0 100644
+--- a/drivers/clk/sifive/sifive-prci.c
++++ b/drivers/clk/sifive/sifive-prci.c
+@@ -185,7 +185,7 @@ static void __prci_wrpll_write_cfg1(struct __prci_data *pd,
+  * these functions.
+  */
+ 
+-unsigned long sifive_prci_wrpll_recalc_rate(struct clk *hw,
++unsigned long sifive_prci_wrpll_recalc_rate(struct clk_hw *hw,
+ 					    unsigned long parent_rate)
+ {
+ 	struct __prci_clock *pc = clk_hw_to_prci_clock(hw);
+@@ -194,7 +194,7 @@ unsigned long sifive_prci_wrpll_recalc_rate(struct clk *hw,
+ 	return wrpll_calc_output_rate(&pwd->c, parent_rate);
+ }
+ 
+-long sifive_prci_wrpll_round_rate(struct clk *hw,
++long sifive_prci_wrpll_round_rate(struct clk_hw *hw,
+ 				  unsigned long rate,
+ 				  unsigned long *parent_rate)
+ {
+@@ -209,7 +209,7 @@ long sifive_prci_wrpll_round_rate(struct clk *hw,
+ 	return wrpll_calc_output_rate(&c, *parent_rate);
+ }
+ 
+-int sifive_prci_wrpll_set_rate(struct clk *hw,
++int sifive_prci_wrpll_set_rate(struct clk_hw *hw,
+ 			       unsigned long rate, unsigned long parent_rate)
+ {
+ 	struct __prci_clock *pc = clk_hw_to_prci_clock(hw);
+@@ -231,7 +231,7 @@ int sifive_prci_wrpll_set_rate(struct clk *hw,
+ 	return 0;
+ }
+ 
+-int sifive_clk_is_enabled(struct clk *hw)
++int sifive_clk_is_enabled(struct clk_hw *hw)
+ {
+ 	struct __prci_clock *pc = clk_hw_to_prci_clock(hw);
+ 	struct __prci_wrpll_data *pwd = pc->pwd;
+@@ -246,7 +246,7 @@ int sifive_clk_is_enabled(struct clk *hw)
+ 		return 0;
+ }
+ 
+-int sifive_prci_clock_enable(struct clk *hw)
++int sifive_prci_clock_enable(struct clk_hw *hw)
+ {
+ 	struct __prci_clock *pc = clk_hw_to_prci_clock(hw);
+ 	struct __prci_wrpll_data *pwd = pc->pwd;
+@@ -263,7 +263,7 @@ int sifive_prci_clock_enable(struct clk *hw)
+ 	return 0;
+ }
+ 
+-void sifive_prci_clock_disable(struct clk *hw)
++void sifive_prci_clock_disable(struct clk_hw *hw)
+ {
+ 	struct __prci_clock *pc = clk_hw_to_prci_clock(hw);
+ 	struct __prci_wrpll_data *pwd = pc->pwd;
+@@ -281,7 +281,7 @@ void sifive_prci_clock_disable(struct clk *hw)
+ 
+ /* TLCLKSEL clock integration */
+ 
+-unsigned long sifive_prci_tlclksel_recalc_rate(struct clk *hw,
++unsigned long sifive_prci_tlclksel_recalc_rate(struct clk_hw *hw,
+ 					       unsigned long parent_rate)
+ {
+ 	struct __prci_clock *pc = clk_hw_to_prci_clock(hw);
+@@ -298,7 +298,7 @@ unsigned long sifive_prci_tlclksel_recalc_rate(struct clk *hw,
+ 
+ /* HFPCLK clock integration */
+ 
+-unsigned long sifive_prci_hfpclkplldiv_recalc_rate(struct clk *hw,
++unsigned long sifive_prci_hfpclkplldiv_recalc_rate(struct clk_hw *hw,
+ 						   unsigned long parent_rate)
+ {
+ 	struct __prci_clock *pc = clk_hw_to_prci_clock(hw);
+@@ -473,6 +473,7 @@ void sifive_prci_hfpclkpllsel_use_hfpclkpll(struct __prci_data *pd)
+ static int __prci_register_clocks(struct device_d *dev, struct __prci_data *pd,
+ 				  const struct prci_clk_desc *desc)
+ {
++	struct clk_init_data init = { };
+ 	struct __prci_clock *pic;
+ 	int parent_count, i, r;
+ 
+@@ -485,33 +486,36 @@ static int __prci_register_clocks(struct device_d *dev, struct __prci_data *pd,
+ 
+ 	/* Register PLLs */
+ 	for (i = 0; i < desc->num_clks; ++i) {
++		struct clk *clk;
++
+ 		pic = &(desc->clks[i]);
+ 
+-		pic->hw.name = pic->name;
+-		pic->hw.parent_names = &pic->parent_name;
+-		pic->hw.num_parents = 1;
+-		pic->hw.ops = pic->ops;
++		init.name = pic->name;
++		init.parent_names = &pic->parent_name;
++		init.num_parents = 1;
++		init.ops = pic->ops;
++		pic->hw.init = &init;
+ 
+ 		pic->pd = pd;
+ 
+ 		if (pic->pwd)
+ 			__prci_wrpll_read_cfg0(pd, pic->pwd);
+ 
+-		r = clk_register(&pic->hw);
+-		if (r) {
++		clk = clk_register(dev, &pic->hw);
++		if (IS_ERR(clk)) {
+ 			dev_warn(dev, "Failed to register clock %s: %d\n",
+-				 pic->hw.name, r);
+-			return r;
++				 clk_hw_get_name(&pic->hw), r);
++			return PTR_ERR(clk);
+ 		}
+ 
+-		r = clk_register_clkdev(&pic->hw, pic->name, dev_name(dev));
++		r = clk_register_clkdev(clk, pic->name, dev_name(dev));
+ 		if (r) {
+ 			dev_warn(dev, "Failed to register clkdev for %s: %d\n",
+-				 pic->hw.name, r);
++				 clk_hw_get_name(&pic->hw), r);
+ 			return r;
+ 		}
+ 
+-		pd->hw_clks.clks[i] = &pic->hw;
++		pd->hw_clks.clks[i] = clk;
+ 	}
+ 
+ 	pd->hw_clks.clk_num = i;
+diff --git a/drivers/clk/sifive/sifive-prci.h b/drivers/clk/sifive/sifive-prci.h
+index d851553818..e7a04ae790 100644
+--- a/drivers/clk/sifive/sifive-prci.h
++++ b/drivers/clk/sifive/sifive-prci.h
+@@ -254,7 +254,7 @@ struct __prci_clock {
+ 	const char *name;
+ 	const char *parent_name;
+ 	const struct clk_ops *ops;
+-	struct clk hw;
++	struct clk_hw hw;
+ 	struct __prci_wrpll_data *pwd;
+ 	struct __prci_data *pd;
+ };
+@@ -281,18 +281,18 @@ void sifive_prci_hfpclkpllsel_use_hfclk(struct __prci_data *pd);
+ void sifive_prci_hfpclkpllsel_use_hfpclkpll(struct __prci_data *pd);
+ 
+ /* Linux clock framework integration */
+-long sifive_prci_wrpll_round_rate(struct clk *hw, unsigned long rate,
++long sifive_prci_wrpll_round_rate(struct clk_hw *hw, unsigned long rate,
+ 				  unsigned long *parent_rate);
+-int sifive_prci_wrpll_set_rate(struct clk *hw, unsigned long rate,
++int sifive_prci_wrpll_set_rate(struct clk_hw *hw, unsigned long rate,
+ 			       unsigned long parent_rate);
+-int sifive_clk_is_enabled(struct clk *hw);
+-int sifive_prci_clock_enable(struct clk *hw);
+-void sifive_prci_clock_disable(struct clk *hw);
+-unsigned long sifive_prci_wrpll_recalc_rate(struct clk *hw,
++int sifive_clk_is_enabled(struct clk_hw *hw);
++int sifive_prci_clock_enable(struct clk_hw *hw);
++void sifive_prci_clock_disable(struct clk_hw *hw);
++unsigned long sifive_prci_wrpll_recalc_rate(struct clk_hw *hw,
+ 					    unsigned long parent_rate);
+-unsigned long sifive_prci_tlclksel_recalc_rate(struct clk *hw,
++unsigned long sifive_prci_tlclksel_recalc_rate(struct clk_hw *hw,
+ 					       unsigned long parent_rate);
+-unsigned long sifive_prci_hfpclkplldiv_recalc_rate(struct clk *hw,
++unsigned long sifive_prci_hfpclkplldiv_recalc_rate(struct clk_hw *hw,
+ 						   unsigned long parent_rate);
+ 
+ #endif /* __SIFIVE_CLK_SIFIVE_PRCI_H */
+-- 
+2.29.2
 
 -- 
 Pengutronix e.K.                           |                             |
