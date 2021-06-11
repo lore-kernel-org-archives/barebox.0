@@ -1,51 +1,54 @@
-Delivery-date: Fri, 11 Jun 2021 10:04:00 +0200
+Delivery-date: Fri, 11 Jun 2021 10:24:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lrc92-0001to-Bo
-	for lore@lore.pengutronix.de; Fri, 11 Jun 2021 10:04:00 +0200
+	id 1lrcTB-0002Bu-K0
+	for lore@lore.pengutronix.de; Fri, 11 Jun 2021 10:24:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lrc91-0007Tc-26
-	for lore@pengutronix.de; Fri, 11 Jun 2021 10:04:00 +0200
+	id 1lrcTA-0001TC-Hh
+	for lore@pengutronix.de; Fri, 11 Jun 2021 10:24:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=NG2gIfxLND3c59YeeKIyHI4ypMu57vHano1qHvt3i9U=; b=Z5F7BviQKBbgih
-	xqgOk9HC15LJipoavv/AtspBaGwB43rGzlpcnJv2SwzzBt8U6B2f7P/Z6RNp08L7MGF9bGcYp5XX7
-	nFt4G4PqINAeCdby/zKAMRbAlylV3HcrANOu+Gtlne5p15osKOkHLotitpWqE5AZVvDbjANRKDM8g
-	iEubJOxVJL6iFNKnxfk59aXeWemrxMJQGyjf2pvXMwbdsHwtnM3VeykPAdAczwQuKBGKGtNSKgTrB
-	ejZ31p1iEQjYVGfXFWMvDJGQh2hLgRSjicGf0kx1dODmlDhHASh5p/LgftYaCJCj31+LHlZ1DOzGa
-	36kenOboV79HJ3CzqOkA==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=mEKdzJ0M0GEPeDB2yoH+ExXLWT9eJH/2ERZIBuj4U/4=; b=Ae4gexRKFNIyoxjAPNRn4dh+94
+	FvlvVhmW1neJkfiP4q159VADueCQa+OpU4kKVyF71O3KtxJtDkSLLmuzdilKobHZ9bxCfFVe/9DZH
+	k6ptxGFNhGPHLaIk49K8qGH1ZmT4Bj8U0s6iAeQeVm1sqo5FUD7lTwbHn3VmOZMtQ9B0I/0AdYc/M
+	SYV01t4b2rwa6C0omwdiQSbvDBV2scNxPZzvdwSLO0r+ByNjFCXT738iDAVcKXngLCenUJxfGR42d
+	Yrk3hL8fvI+LHZDLgvJ4CRvus37FQ4Zhwx+BplhT0L9jhJ6l1T5jTES6P9zuMSJ301JGpJX4rD8PQ
+	JCNayQYg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lrc7s-004HQ1-Kg; Fri, 11 Jun 2021 08:02:48 +0000
+	id 1lrcRx-004JrR-4X; Fri, 11 Jun 2021 08:23:33 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lrc7n-004HOD-FT
- for barebox@lists.infradead.org; Fri, 11 Jun 2021 08:02:45 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1lrc7k-0007OH-Gh
- for barebox@lists.infradead.org; Fri, 11 Jun 2021 10:02:40 +0200
-Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1lrc7k-0001e6-7x
- for barebox@lists.infradead.org; Fri, 11 Jun 2021 10:02:40 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 11 Jun 2021 10:02:33 +0200
-Message-Id: <20210611080233.15141-1-s.trumtrar@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
+ id 1lrcRs-004Jqs-Bl
+ for barebox@lists.infradead.org; Fri, 11 Jun 2021 08:23:29 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1lrcRp-0001Oy-Ku; Fri, 11 Jun 2021 10:23:25 +0200
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+References: <20210610131032.6645-1-s.hauer@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <a08e527d-7557-a2fa-1bef-c3875a4c9072@pengutronix.de>
+Date: Fri, 11 Jun 2021 10:23:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.2
 MIME-Version: 1.0
+In-Reply-To: <20210610131032.6645-1-s.hauer@pengutronix.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210611_010243_552281_6147E1A0 
-X-CRM114-Status: GOOD (  10.95  )
+X-CRM114-CacheID: sfid-20210611_012328_430743_EB9A696D 
+X-CRM114-Status: GOOD (  15.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,157 +68,56 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] scripts: socfpga_import_preloader: make sdk optional
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] mci: dw_mmc: set dma mask to work correctly on 64bit
+ platforms
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The commit a9b2e6089d82686564220013f14e9f0ffcc725e2 allowed generating
-everything needed in one step. This was however a bit too ambitious.
-The script now requires that the Altera Embedded SDK is always
-installed. There are situations where this is unwanted.
+Hello Sascha,
 
-Beef up the code a little bit to allow having the SDK as an optional
-argument and make the other input parameters location independent.
+On 10.06.21 15:10, Sascha Hauer wrote:
+> The variant we support currently can only do 32bit DMA. Adjust dma mask
+> accordingly. Also use dma_map_single() rather than dma_sync_single() to
+> actually get errors when the mapping fails.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- Documentation/boards/socfpga.rst |  2 +-
- scripts/socfpga_import_preloader | 88 ++++++++++++++++++++++++++++----
- 2 files changed, 78 insertions(+), 12 deletions(-)
+Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-diff --git a/Documentation/boards/socfpga.rst b/Documentation/boards/socfpga.rst
-index 19d606030003..7e7f0619ea01 100644
---- a/Documentation/boards/socfpga.rst
-+++ b/Documentation/boards/socfpga.rst
-@@ -121,7 +121,7 @@ Now run the command:
- 
- .. code-block:: sh
- 
--  scripts/socfpga_import_preloader <EMBEDDED_SDK> <ISW_HANDOFF> <BOARD_DIRECTORY>
-+  scripts/socfpga_import_preloader -e <EMBEDDED_SDK> -i <ISW_HANDOFF> -b <BOARD_DIRECTORY>
- 
- where `<SPL_GENERATED_DIR>` is the directory where the bsp-editor generated the files,
- `<ISW_HANDOFF>` is the directory where Quartus generated the handoff files, and
-diff --git a/scripts/socfpga_import_preloader b/scripts/socfpga_import_preloader
-index 23e3c380db12..2bec9f2d2173 100755
---- a/scripts/socfpga_import_preloader
-+++ b/scripts/socfpga_import_preloader
-@@ -1,16 +1,70 @@
- #!/usr/bin/env bash
- 
--if [ "$#" -lt "2" ]
--then
--	echo "USAGE: $0 <EMBEDDED_SDK> <ISW_HANDOFF> <BOARD_DIRECTORY>"
--	echo "EXAMPLE: $0 ~/altera-embedded-sdk/ ~/cv_soc_devkit_ghrd/hps_isw_handoff/soc_system_hps_0/ arch/arm/boards/altera-socdk"
-+usage() {
-+	echo "USAGE: $0
-+	parameters:
-+	  -s|--spl-dir <SPL_GENERATED_DIR>
-+	  -i|--isw-handoff <ISW_HANDOFF>
-+	  -b|--board <BOARD_DIRECTORY>
-+	optional:
-+	  -e|--embedded-sdk <ALTERA_EMBEDDED_SDK>"
-+	echo "EXAMPLE: $0 -i ~/cv_soc_devkit_ghrd/hps_isw_handoff/soc_system_hps_0/ -b arch/arm/boards/altera-socdk -e ~/altera-embedded-sdk/" 
- 	exit 1
--fi
-+}
-+
-+die() {
-+	printf '%s\n' "$1" >&2
-+	exit 1
-+}
-+
-+generate=
-+splroot=
-+embeddedsw=
-+handoff=
-+boardroot=
-+
-+while :; do
-+	case $1 in
-+	-e|--embedded-sdk)
-+		if [ "$2" ]; then
-+			generate=1
-+			splroot="$(mktemp -d)"
-+			embeddedsw=${2}
-+			shift
-+		else
-+			die 'ERROR: "--embedded-sdk" requires a non-empty option argument.'
-+		fi
-+		;;
-+	-s|--spl-dir)
-+		if [ "$2" ]; then
-+			splroot="$2"
-+			shift
-+		else
-+			die 'ERROR: "--spl-dir" requires a non-empty option argument.'
-+		fi
-+		;;
-+	-i|--isw-handoff)
-+		if [ "$2" ]; then
-+			handoff="$2"
-+			shift
-+		else
-+			die 'ERROR: "--isw-handoff" requires a non-empty option argument.'
-+		fi
-+		;;
-+	-b|--board)
-+		if [ "$2" ]; then
-+			boardroot="$2"
-+			shift
-+		else
-+			die 'ERROR: "--board" requires a non-empty option argument.'
-+		fi
-+		;;
-+	*)
-+		break
-+	esac
-+	shift
-+done
- 
--splroot="$(mktemp -d)"
--embeddedsw=$1
--handoff=$2
--boardroot=$3
- bareboxsrc=.
- 
- cd ${bareboxsrc}
-@@ -57,7 +111,17 @@ copy_source() {
- 	sed -i 's/ $//g' $tgt
- }
- 
--python2.7 ${embeddedsw}/embedded/ip/altera/preloader/scripts/iswgen.py -i ${handoff} -o ${splroot}/
-+generate_spl() {
-+	python2.7 ${embeddedsw}/embedded/ip/altera/preloader/scripts/iswgen.py -i ${handoff} -o ${splroot}/
-+}
-+
-+if [ -z $splroot ] || [ -z $boardroot ] || [ -z $handoff ]; then
-+	usage
-+fi
-+
-+if [ $generate ]; then
-+	generate_spl
-+fi
- 
- copy_source ${splroot}/iocsr_config_cyclone5.c ${boardroot}/iocsr_config_cyclone5.c
- copy_source ${splroot}/pinmux_config_cyclone5.c ${boardroot}/pinmux_config.c
-@@ -69,6 +133,8 @@ copy_source ${handoff}/sequencer_auto_ac_init.c ${boardroot}/sequencer_auto_ac_i
- copy_source ${handoff}/sequencer_auto_inst_init.c ${boardroot}/sequencer_auto_inst_init.c
- copy_source ${handoff}/sequencer_defines.h ${boardroot}/sequencer_defines.h
- 
--rm -r ${splroot}
-+if [ $generate ]; then
-+	rm -r ${splroot}
-+fi
- 
- echo "DONE"
+On a StarFive JH7100 (64-bit CPU, 32-bit MMC controller, non-1:1 mapping for
+coherent DMA).
+
+>  	host->idmac = dma_alloc_coherent(sizeof(*host->idmac) * DW_MMC_NUM_IDMACS,
+> -					 DMA_ADDRESS_BROKEN);
+> +					 &host->idmac_dma);
+> +	if (!host->idmac)
+
+That works for Linux, but not for barebox: barebox dma_alloc_coherent doesn't have
+
+a dev parameter, so it can't check for dma_mapping_error() internally.
+
+dma_alloc_coherent also never returns NULL in barebox, all implementations, except
+
+for kvx, abort if no memory could be allocated.
+
+> +		return PTR_ERR(-ENOMEM);
+
+-ENOMEM is no pointer.
+
+>  
+>  	host->mci.send_cmd = dwmci_cmd;
+>  	host->mci.set_ios = dwmci_set_ios;
+> 
+
 -- 
-2.29.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
