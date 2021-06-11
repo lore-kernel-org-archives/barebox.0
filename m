@@ -1,57 +1,54 @@
-Delivery-date: Fri, 11 Jun 2021 12:44:21 +0200
+Delivery-date: Fri, 11 Jun 2021 13:02:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lreeD-0004hK-DD
-	for lore@lore.pengutronix.de; Fri, 11 Jun 2021 12:44:21 +0200
+	id 1lrevo-0004w4-Rh
+	for lore@lore.pengutronix.de; Fri, 11 Jun 2021 13:02:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lreeC-0002K1-9z
-	for lore@pengutronix.de; Fri, 11 Jun 2021 12:44:21 +0200
+	id 1lrevn-0004wF-Kr
+	for lore@pengutronix.de; Fri, 11 Jun 2021 13:02:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=Biml2+Mb82WeAvQ8rkpK8qjdmTzVppzHL0/KsTudQNM=; b=2uPYtpLJbVK5NfnhYvS51f8QPP
-	XznJYONEU1PVArOZk973Xh5w+36IAf8wwD2SJsbxrpm0r3zpTMZdA47FNZxdxLKerrOzcUV2FiGA6
-	R0mCiW1RPdDt5bL8sXYJM2Rw3Lcrpf4+SZipvMAwvQYjshxQxP49HI5d7ZH5/xP9d4/8Kc41msQ8V
-	YJO0iUlGGah47BEJnEgdX6J7P+82n8Brr7x0iNzCjYotszxd+bvuV4XqzarWSPwx5bpXmKhfUi8Mc
-	dlhnxFECqa3Q+S7dBEitsWoxGMJ7g9MZCzQeKeb98l5qRLL1xjUJjKSAV/Z+nbk3F4bovPrex9UTB
-	t1/bgH3A==;
+	bh=G2oVxMq2BIpBcJ6n6tfNPRnqT6FnlSaAyfv4VS3cO/A=; b=Ad/psXAYgB3XRXI8jJtK3/PUkg
+	rkKOEi1g/dDT4UJtie303NnQhQxYUr6iEXHbpqF9txrRetvqV5mvZtz30AGZ5ZI501swRnwMcGh2D
+	PTrAtscSfFjSsoGWkw9BKwjNz8SWxub2mt62o5sx+AJwUDFt1P1s34FV6g4jfkaSuxNrsN/MEBihT
+	9Vay19dQzVm8/kEeMm1jQ39riXSYshYyWQ0mzjFjwCE62MOhm55TBUlep1Gn6w1qluP/rffW32EKk
+	SKP7Q8HupTPB7C8vZUEJY/diWY4sJLJj9qWn9tHFKWrLwNUV66c15dPDLVMJRayhIULnxdmL7oKKc
+	dqtnOYLA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lred0-004msL-Cv; Fri, 11 Jun 2021 10:43:06 +0000
+	id 1lreuF-004sEn-Va; Fri, 11 Jun 2021 11:00:56 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lrecu-004mrP-Q4
- for barebox@lists.infradead.org; Fri, 11 Jun 2021 10:43:02 +0000
+ id 1lrepD-004ovP-4w
+ for barebox@lists.infradead.org; Fri, 11 Jun 2021 10:55:45 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1lrect-0002H6-Hf; Fri, 11 Jun 2021 12:42:59 +0200
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
-References: <20210611063914.155796-1-antonynpavlov@gmail.com>
- <20210611063914.155796-2-antonynpavlov@gmail.com>
- <20210611102356.GE22904@pengutronix.de>
+ id 1lrepB-0003eu-RR; Fri, 11 Jun 2021 12:55:41 +0200
+To: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>,
+ barebox@lists.infradead.org
+References: <97CB9693-C624-4014-8E73-6FDCA035BD62@inside-m2m.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <a0eda784-966d-b919-4342-f29ba1133d1b@pengutronix.de>
-Date: Fri, 11 Jun 2021 12:42:58 +0200
+Message-ID: <e61ce67f-57ba-a593-d624-97ab7d28fb73@pengutronix.de>
+Date: Fri, 11 Jun 2021 12:55:41 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.2
 MIME-Version: 1.0
-In-Reply-To: <20210611102356.GE22904@pengutronix.de>
+In-Reply-To: <97CB9693-C624-4014-8E73-6FDCA035BD62@inside-m2m.de>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210611_034300_877701_DE23F668 
-X-CRM114-Status: GOOD (  20.38  )
+X-CRM114-CacheID: sfid-20210611_035543_235759_57FADCA8 
+X-CRM114-Status: GOOD (  21.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -63,8 +60,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -75,67 +72,69 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] mtd: core: fix use of uninitialized struct member
+Subject: Re: Beaglebone Black defconfigs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 11.06.21 12:23, Sascha Hauer wrote:
-> Hi Antony,
-> 
-> On Fri, Jun 11, 2021 at 09:39:13AM +0300, Antony Pavlov wrote:
->> E.g. mtd_read() calls mtd_read_oob(), mtd_read_oob()
->> can check uninitialized ops->oobbuf. As a result
->> mtd_read_oob() can return -EOPNOTSUPP.
->>
->> Found on a MIPS board during /dev/m25p0 read, e.g.
->>
->>   barebox:/ md -s /dev/m25p0
->>   read: error 95
->>
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> ---
->>  drivers/mtd/core.c | 18 ++++++++++--------
->>  1 file changed, 10 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
->> index 37fccda6be..98820dfb4f 100644
->> --- a/drivers/mtd/core.c
->> +++ b/drivers/mtd/core.c
->> @@ -379,12 +379,13 @@ int mtd_block_markgood(struct mtd_info *mtd, loff_t ofs)
->>  int mtd_read(struct mtd_info *mtd, loff_t from, size_t len, size_t *retlen,
->>               u_char *buf)
->>  {
->> -	struct mtd_oob_ops ops = {
->> -		.len = len,
->> -		.datbuf = buf,
->> -	};
->> +	struct mtd_oob_ops ops;
->>  	int ret;
->>  
->> +	memset(&ops, 0, sizeof(ops));
->> +	ops.len = len;
->> +	ops.datbuf = buf;
-> 
-> If this fixes something for you then you have severe problems with your
-> compiler. Omitted fields are implicitly initialized to zero, often you
-> can even find the corresponding call to memset in the objdump.
-
-Perhaps elsewhere something is interpreting the padding, which may
-not be zeroed when using an initializer list. This warrants further investigation
-for sure.
-
-Cheers,
-Ahmad
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpPbiAxMS4wNi4yMSAxMjowNSwgS29uc3RhbnRpbiBLbGV0c2Noa2Ugd3JvdGU6Cj4gSGVs
+bG8sCj4gCj4gSSBhbSBjdXJyZW50bHkgdHJ5aW5nIHRvIGJyaW5nIHVwIGJhcmVib3ggZm9yIG15
+IEJlYWdsZWJvbmUgQmxhY2sgZGV2aWNlcy4KPiAKPiBJIGRpZCBhbiAiQVJDSD1hcm0gQ1JPU1Nf
+Q09NUElMRT1hcm0tYnVpbGRyb290LWxpbnV4LWdudWVhYmloZi0gbWFrZSBhbTMzNXhfbWxvX2Rl
+ZmNvbmZpZ+KAnSwgbWFrZSBhbmQKPiBjb3BpZWQgcmVzdWx0aW5nIGJhcmVib3gtYW0zM3h4LWJl
+YWdsZWJvbmUtbWxvLmltZyB0byBNTE8gaW50byBteSBGQVQgYm9vdCBwYXJ0aXRpb24uCj4gCj4g
+VGhlbiBJIGRpZCAiQVJDSD1hcm0gQ1JPU1NfQ09NUElMRT1hcm0tYnVpbGRyb290LWxpbnV4LWdu
+dWVhYmloZi0gbWFrZSBvbWFwMzUzMF9iZWFnbGVfZGVmY29uZmln4oCdLCBtYWtlIAo+IGFuZCBj
+b3BpZWQgcmVzdWx0aW5nIGJhcmVib3gtYmVhZ2xlYm9hcmQuaW1nIHRvIGJhcmVib3guYmluIGlu
+dG8gbXkgYm9vdCBGQVQuCgpUaGUgZG9jcyAoaHR0cHM6Ly93d3cuYmFyZWJveC5vcmcvZG9jL2xh
+dGVzdC9ib2FyZHMvYW0zMzV4Lmh0bWwpIHNheSB0aGUgc2Vjb25kIHN0YWdlCmRlZmNvbmZpZyBp
+cyBvbWFwX2RlZmNvbmZpZy4KIAo+IElzIHRoZSB0aGUgZGlmZmVyZW50IHByZWZpeCBpbiB0aGUg
+ZGVmY29uZmlncyAoYW0zM+KApiB2cy4gb21hcDM14oCmKSByZWFzb25hYmxlPwoKU2Vjb25kIHN0
+YWdlIGlzIG11Y2ggbGVzcyBzaXplIGxpbWl0ZWQsIGJlY2F1c2UgaXQgcnVucyBmcm9tIGV4dGVy
+bmFsIFNEUkFNLiBUaGlzIGFsbG93cwpoYXZpbmcgYSBjb25maWcgdGhhdCBidWlsZHMgaW1hZ2Vz
+IGZvciBtdWx0aXBsZSBkaWZmZXJlbnQgYm9hcmRzIGFuZCBTb0NzLgoKRmlyc3Qgc3RhZ2UgcnVu
+cyBmcm9tIHNtYWxsIFNSQU0sIHNvIGltYWdlcyB1c3VhbGx5IGNvbnRhaW4gb25seSBjb2RlIGZv
+ciBhIHNpbmdsZQpTb0MuIEkgaGF2ZW4ndCBjaGVja2VkLCBidXQgdGhpcyBtYXkgZXhwbGFpbiB0
+aGUgZGlmZmVyZW50IG5hbWluZy4KCj4gSXMgdGhpcyBhcHByb2FjaCBnZW5lcmFsbHkgcmVhc29u
+YWJsZT8KPiAKPiBNYW55IHJlZmVyZW5jZXMgaW4gaW50ZXJuZXQgdG8gbWF0Y2hpbmcKPiBkZWZj
+b25maWdzIEkgZm91bmQgcmVmZXIgdG8gbm9uIGV4aXN0aW5nIG9uZXMsIHRoZXJlIHNlZW1zIHRv
+IGhhcHBlbiBncmVhdCBvdmVyaGF1bCBtZWFud2hpbGUuCgpJIGhhdmVuJ3QgYmVlbiB1c2luZyBi
+YXJlYm94IGxvbmcgZW5vdWdoLCBidXQgSSBhc3N1bWUgeW91IGZvdW5kIHJlZmVyZW5jZXMKdG8g
+b2xkIG5vbi1tdWx0aS1pbWFnZSBlbmFibGVkIE9NQVAgc3VwcG9ydC4gTW9kZXJuIGJhcmVib3gg
+cGxhdGZvcm1zIGJ1aWxkCm11bHRpcGxlIGltYWdlcyBmb3IgZGlmZmVyZW50IGJvYXJkcyBpbiBv
+bmUgZ28gYW5kIHRodXMgdGhlcmUgYXJlIGxlc3MKZGVmY29uZmlncy4KCj4gSSBhbSBhbHNvIGFz
+a2luZyBiZWNhdXNlLCB3ZWxsLCBpdCBkb2VzIG5vdCB3b3JrOgo+IAo+IGJhcmVib3ggMjAyMS4w
+NS4wLTAwMDkzLWc3Njg5MDU1YTggIzIgRnJpIEp1biAxMSAwOTowMTozNiBDRVNUIDIwMjEKPiAK
+PiAKPiBCb2FyZDogVEkgQU0zMzV4IEJlYWdsZUJvbmUKPiBkZXRlY3RlZCAnQmVhZ2xlQm9uZSBC
+bGFjaycKPiBvbWFwLWhzbW1jIDQ4MDYwMDAwLm1tY0AwLm9mOiByZWdpc3RlcmVkIGFzIG1tYzAK
+PiBvbWFwLWhzbW1jIDQ4MWQ4MDAwLm1tY0AwLm9mOiByZWdpc3RlcmVkIGFzIG1tYzEKPiBib290
+aW5nIGZyb20gTU1DCj4gbW1jMTogZGV0ZWN0ZWQgTU1DIGNhcmQgdmVyc2lvbiA1LjEKPiBtbWMx
+OiByZWdpc3RlcmVkIG1tYzEKPiB1bmFibGUgdG8gaGFuZGxlIHBhZ2luZyByZXF1ZXN0IGF0IGFk
+ZHJlc3MgMHg0MDIwZjAxMAo+IHBjIDogWzw4ZmZiYmQ1YT5dICAgIGxyIDogWzw4ZmZiYmQ4OT5d
+Cj4gc3AgOiA5ZmZlZmZiMCAgaXAgOiAwMDAwMDAwMCAgZnAgOiAwMDAxNGUyYwo+IHIxMDogMDAx
+MjU5MjAgIHI5IDogOGZmYmJjZTUgIHI4IDogOWZmZTQwMDAKPiByNyA6IDgwMDAwMDAwICByNiA6
+IDlmZTFhNDZlICByNSA6IDQwMmYwNDAwICByNCA6IDhmZmJiY2RjCj4gcjMgOiAwMDAwMDYwYSAg
+cjIgOiA0MDIwZjAxMCAgcjEgOiBhYmU3NDJjMyAgcjAgOiA4MDAwMDAwMAo+IEZsYWdzOiBuekN2
+ICBJUlFzIG9mZiAgRklRcyBvbiAgTW9kZSBTVkNfMzIKPiAKPiBubyBzdGFjayBkYXRhIGF2YWls
+YWJsZQo+IAo+IFRoaXMgcmVwZWF0cyBlbmRsZXNzbHkuIEkgaW52ZXN0aWdhdGVkIHRoZSBkYXRh
+IHNoZWV0IGFuZCBpZiBJIGFtIGNvcnJlY3QgMHg0MDIwZjAxMCBzZWVtcyB0byBiZSBhIHJlc2Vy
+dmVkPiBhcmVhIGluIEwzIG1lbW9yeSBtYXAuCgpDb21waWxpbmcgYmFyZWJveCBmb3Igb25lIFNv
+QyBhbmQgcnVubmluZyBpdCBvbiBhbm90aGVyIGNhbiBsZWFkCnRvIGZ1bm55IGVmZmVjdHMuCgpD
+aGVlcnMsCkFobWFkCgo+IAo+IEtpbmQgUmVnYXJkcwo+IEtvbnN0aQo+IAo+IElOU0lERSBNMk0g
+R21iSAo+IEtvbnN0YW50aW4gS2xldHNjaGtlCj4gQmVyZW5ib3N0ZWxlciBTdHJhw59lIDc2IEIK
+PiAzMDgyMyBHYXJic2VuCj4gCj4gVGVsZWZvbjogKzQ5ICgwKSA1MTM3IDkwOTUwMTM2Cj4gTW9i
+aWw6ICs0OSAoMCkgMTUxIDE1MjU2MjM4Cj4gRmF4OiArNDkgKDApIDUxMzcgOTA5NTAxMAo+IAo+
+IGtvbnN0YW50aW4ua2xldHNjaGtlQGluc2lkZS1tMm0uZGUKPiBodHRwOi8vd3d3Lmluc2lkZS1t
+Mm0uZGUgCj4gCj4gR2VzY2jDpGZ0c2bDvGhydW5nOiBNaWNoYWVsIEVtbWVydCwgSW5nbyBIYWFz
+ZSwgRHIuIEZyZWQgS8O2bmVtYW5uLCBEZXJlayBVaGxpZwo+IEhSQjogMTExMjA0LCBBRyBIYW5u
+b3Zlcgo+IAo+IAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
+PiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPiAK
+Ci0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAg
+ICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWlt
+LCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAg
+fApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5
+LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
 
