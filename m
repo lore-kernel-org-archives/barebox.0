@@ -1,94 +1,50 @@
-Delivery-date: Mon, 14 Jun 2021 00:30:31 +0200
+Delivery-date: Mon, 14 Jun 2021 10:05:10 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lsYch-0002bu-Df
-	for lore@lore.pengutronix.de; Mon, 14 Jun 2021 00:30:31 +0200
+	id 1lshao-0006Yq-NZ
+	for lore@lore.pengutronix.de; Mon, 14 Jun 2021 10:05:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lsYcg-0001wv-H9
-	for lore@pengutronix.de; Mon, 14 Jun 2021 00:30:31 +0200
+	id 1lsham-0005Y7-82
+	for lore@pengutronix.de; Mon, 14 Jun 2021 10:05:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=jYdxpMMGLdEN9vBrKuQHOwynkUU2Fac/p1Ktf92uppU=; b=QC2Rjr7R3VW1c7
-	43gaTyWrMgOMLmLiP8k+mmA7EhVvBTpA0FOqC8U5flEtqdREEHPaHHJaZXnhRTXB/LkGZE1VFgHfP
-	Z3qL1C3gA7N8+7wu2p5O4SXv4Ya5WLIsDEf0HgPbWg53XJciufnX+C+IXLJd/hYf2q/nCrQGISndC
-	MXTfV63+iVDjEo9mjo9g42v/TKrX7JIIR5X2ci2RIJoo+VaAT8234LMud+PDH1PnuStu+ot5BpyOo
-	MLbtydLDo7Ds+07ZpU5X52OYu3sIuLbZaN4SrnPTqZSVbxwi+dSZCnyOtU7mj1J5Q/UN+Xkjgt5AI
-	5Loubw6KIxAx1J9lHteg==;
+	List-Owner; bh=6/6zOVVRWpnrEh4A0NgVz8rYRqM/Mm3l96+5Wka+EOQ=; b=X6WzX8qNdkWhUN
+	L2hyiUYxq9xyQf06tyyHzuAvUAgvRkzMvOsFE2XZn2uuH/C3DDqOPOw9cYqpJg0zaXqo8SxqK8Rlk
+	/BKEraxGuLPhN5hr1WBcBxp5XVjP0ZzSi856fx4jeL2xRd1aM7bntyukXHHRuEX09ltSIuQmjAaHX
+	L4R7Rb1d8/PkMOTUhwnvl/PP8+r1sAN/YoxyqFzUvPci6WuYeIWNLYZTXj8Rl4DAjG9969D3wqfzV
+	1+0rpPRHm7nBNYFWpHvGSNdAfCGW+4SzGNmJNWON8Srhy1e+wgK9yUfQe3sAkUks4xnHM1nV//AEy
+	IZp1PECwkGE+I3VkGyQQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lsYbS-00BUc8-Vz; Sun, 13 Jun 2021 22:29:15 +0000
-Received: from vmse01.mailcluster.com.au ([2401:fc00:2:13f::6])
+	id 1lshYq-00D2Rz-3m; Mon, 14 Jun 2021 08:03:08 +0000
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lsYbL-00BUVO-2y
- for barebox@lists.infradead.org; Sun, 13 Jun 2021 22:29:08 +0000
-Received: from vmcp03.web-servers.com.au ([116.90.56.28])
- by vmse01.mailcluster.com.au with esmtps (TLSv1.2:AES128-GCM-SHA256:128)
- (Exim 4.92) (envelope-from <marc@cpdesign.com.au>)
- id 1lsYaL-00058K-Ve
- for barebox@lists.infradead.org; Mon, 14 Jun 2021 08:28:15 +1000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=cpdesign.com.au; s=default; h=Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=4/Me48j8kNsoMWNWvVtYWZQZrEzpYWRzAzC65ajJbx8=; b=Sw6otbqOEiv+3o2EYx1q8WDkfT
- 6hmOzWtXjGTQT3OKTvA15AMBUNELfmsTt4h/+ulDxXAiFwF1rtgifs2kqGTrbN3ks/E9mO5+30NKL
- qQtv3kUPWP6htp61PpQ3TLTnrTeIMy9eG9+YiIBJd6Rc37Q5w6sq5hzBNj2VsCu2jw/kUXWEdpedx
- cbFwczZBMe2QLKipdeyNKH8fUzujaIms8GGbF4YDQKOrzK5abMBA+Eq+o36Ev8v7flhY+5BkGtbeP
- UK4+OIZNdcyOfPhLC8rA4Pmxy10ssDaigsuOIhNuO+K1CBrK2hdIkGLr6cDrKupvpG3ndkLTq7sM+
- aH7Dsa9A==;
-Received: from 60-242-242-93.static.tpgi.com.au ([60.242.242.93]:52578
- helo=linux.local)
- by vmcp03.web-servers.com.au with esmtpsa (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <marc@cpdesign.com.au>)
- id 1lsYZZ-00Fwoa-S2; Mon, 14 Jun 2021 08:27:17 +1000
-From: Marc Reilly <marc@cpdesign.com.au>
+ id 1lshYg-00D2OD-Bs
+ for barebox@lists.infradead.org; Mon, 14 Jun 2021 08:03:03 +0000
+Received: by magratgarlick.emantor.de (Postfix, from userid 114)
+ id 9C7448578D; Mon, 14 Jun 2021 10:02:52 +0200 (CEST)
+Received: from localhost (unknown
+ [IPv6:2001:9e8:2167:4f02:c0d3:dbff:fefe:ff70])
+ by magratgarlick.emantor.de (Postfix) with ESMTPSA id ECA0885780;
+ Mon, 14 Jun 2021 10:02:48 +0200 (CEST)
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Mon, 14 Jun 2021 08:26:36 +1000
-Message-Id: <20210613222639.13190-1-marc@cpdesign.com.au>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon, 14 Jun 2021 10:02:46 +0200
+Message-Id: <20210614080246.176023-1-r.czerwinski@pengutronix.de>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-Authenticated-User: marc@cpdesign.com.au
-X-Authenticator: dovecot_plain
-X-Originating-IP: 116.90.56.28
-X-SpamExperts-Domain: panthur-sh-outbound0.mailcluster.com.au
-X-SpamExperts-Username: 116.90.56.28
-Authentication-Results: mailcluster.com.au; auth=pass
- smtp.auth=116.90.56.28@panthur-sh-outbound0.mailcluster.com.au
-X-SpamExperts-Outgoing-Class: ham
-X-SpamExperts-Outgoing-Evidence: Combined (0.01)
-X-Recommended-Action: accept
-X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT+Ok1RULMClHm7/aAv3qgF4PUtbdvnXkggZ
- 3YnVId/Y5jcf0yeVQAvfjHznO7+bT5zzRQC/PIR0ZeIYukWs6zeuXFWCX8oNdggW7HE9XDTdSavp
- k7Vp2UXVHEQMIct0liKDBl0yavj2ELRCGoHdhiquswKQDamPN66SYe4XX4xmgJvmHZIaOCPnuqIf
- UsnKQndaIN+MTJ88TTpoG8fQ5knApuGXed8VjoeeEKguXydrkRh+lS1IZOmkeVqtBBDwWUaGKpfT
- IF8fSxNC0LttVkKWCvX50FqPnOjxx3ysNl11MvsDcLC0U2KR6OWH3DJPpNlNxaypTbp28NxghjNo
- pU/Oaqj4KISIRSJ5MfjE8OaunZEyYYf7TmlI3iEcqXK4A61ChHMQHCMEWTX9HEhwSP4/MSl+mev0
- M9cO0xP2892D0Uv5/hXXQF+f2WAemEBBH0NsVeB41VPmQWlT6X4HxPATUHn+gnmsNLchHhymY5JU
- 63hy/sIYQHSrltYx0aSLXraWI9Hfbk2V6Si1LAtE8G+At7lfBxMo7ZYPIM8LGtwRU7//0qljMckk
- ipEhs0fF+lrm+ifPs2yIXVaS7j1CpD4sbMC/K6klzbRMjzrXH/SDfWiH1Wgh6RAenBR+licROGa2
- y7RIACgYjJZuZM6wBXM782kDy537ciJIrbP3wi1dyJZNrNJoSO0VY2N1QBafT1ESpE1sG6Z94/Ge
- Q0UKItQafpoooFY4M7RjQ1QYeOer6qdM2kmVq603aW6BgyLXzkUCzsKWYWuwCKXNznpmdv1dr1sQ
- za9mle7ev8IXG78l81nBVGLnTSkhP+UMfpx5k0cIcEzBS9XWuA2AJ7ruQe/xdxE1HNlbIAOwWm9U
- lm0UI1FfEoXm0/FPF8PR0w363lk4pUScEZHFruLkqAqUpQ92YnNGFdRN3CtPPBjSHkIxZRCWOxjY
- AJtzLXrvWkpeAoeqbx9cPcGR31mI6M1Ucaz2oSyaA1TzQpMNBxbB7RLiYIrYRweYGhtvVN66c5GC
- nah0CDG0r+34QtTJiEdfiY7uePQ44lqMDpyryPGheI8wLqPdSBUkH1KMRs8VVbvpdorZT2Gmbldn
- DEeqRkf38YRFrK8flN6a4n79d1I47GmMvA==
-X-Report-Abuse-To: spam@vmse01.mailcluster.com.au
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210613_152907_185815_216ED3F5 
-X-CRM114-Status: UNSURE (   7.90  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210614_010258_788142_041B6184 
+X-CRM114-Status: GOOD (  22.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -108,34 +64,982 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/4] common: boot: don't return too early in bootscript dryrun
+Subject: [PATCH] ARM: imx: add support for TQMa6UL SoM on MBa6ulxl
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-A dryrun boot will now run the boot script and a then a
-dryrun of the bootm.
+Add support for a TQMA6UL2L SoM on top of a MBa6ulxl baseboard. The
+imxcfg header is for the LGA variant, the downstream U-Boot has an ifdef
+for another "standard" variant, however this is not included here since
+I don't have hardware to test.
 
-Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- common/boot.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/boards/Makefile                      |   1 +
+ arch/arm/boards/tqma6ulx/Makefile             |   2 +
+ arch/arm/boards/tqma6ulx/board.c              |  34 ++
+ .../flash-header-imx6ul-tqma6ulx.imxcfg       | 102 ++++++
+ arch/arm/boards/tqma6ulx/lowlevel.c           |  58 +++
+ arch/arm/dts/Makefile                         |   1 +
+ arch/arm/dts/imx6ul-mba6ulx.dts               | 339 ++++++++++++++++++
+ arch/arm/dts/imx6ul-tqma6ulx.dtsi             |  80 +++++
+ arch/arm/dts/tqma6ul-common.dtsi              | 196 ++++++++++
+ arch/arm/dts/tqma6ulx-common.dtsi             |  28 ++
+ arch/arm/mach-imx/Kconfig                     |   4 +
+ images/Makefile.imx                           |   2 +
+ 12 files changed, 847 insertions(+)
+ create mode 100644 arch/arm/boards/tqma6ulx/Makefile
+ create mode 100644 arch/arm/boards/tqma6ulx/board.c
+ create mode 100644 arch/arm/boards/tqma6ulx/flash-header-imx6ul-tqma6ulx.imxcfg
+ create mode 100644 arch/arm/boards/tqma6ulx/lowlevel.c
+ create mode 100644 arch/arm/dts/imx6ul-mba6ulx.dts
+ create mode 100644 arch/arm/dts/imx6ul-tqma6ulx.dtsi
+ create mode 100644 arch/arm/dts/tqma6ul-common.dtsi
+ create mode 100644 arch/arm/dts/tqma6ulx-common.dtsi
 
-diff --git a/common/boot.c b/common/boot.c
-index 07b67734d..183e6bb43 100644
---- a/common/boot.c
-+++ b/common/boot.c
-@@ -77,7 +77,6 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 40b0af8d30..5075771dd1 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -144,6 +144,7 @@ obj-$(CONFIG_MACH_KINDLE_MX50)			+= kindle-mx50/
+ obj-$(CONFIG_MACH_TORADEX_COLIBRI_T20)		+= toradex-colibri-t20/
+ obj-$(CONFIG_MACH_TOSHIBA_AC100)		+= toshiba-ac100/
+ obj-$(CONFIG_MACH_TQMA53)			+= tqma53/
++obj-$(CONFIG_MACH_TQMA6UL)			+= tqma6ulx/
+ obj-$(CONFIG_MACH_TQMA6X)			+= tqma6x/
+ obj-$(CONFIG_MACH_TURRIS_OMNIA)			+= turris-omnia/
+ obj-$(CONFIG_MACH_TX25)				+= karo-tx25/
+diff --git a/arch/arm/boards/tqma6ulx/Makefile b/arch/arm/boards/tqma6ulx/Makefile
+new file mode 100644
+index 0000000000..01c7a259e9
+--- /dev/null
++++ b/arch/arm/boards/tqma6ulx/Makefile
+@@ -0,0 +1,2 @@
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/tqma6ulx/board.c b/arch/arm/boards/tqma6ulx/board.c
+new file mode 100644
+index 0000000000..018dc17d01
+--- /dev/null
++++ b/arch/arm/boards/tqma6ulx/board.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2021 Rouven Czerwinski, Pengutronix
++ */
++
++#include <common.h>
++#include <init.h>
++#include <mach/generic.h>
++#include <mach/bbu.h>
++#include <of.h>
++#include <string.h>
++
++static int mba6ulxl_probe(struct device_d *dev)
++{
++	/* the bootloader is stored in one of the two boot partitions */
++	imx6_bbu_internal_mmcboot_register_handler("emmc", "/dev/mmc1",
++			BBU_HANDLER_FLAG_DEFAULT);
++
++	barebox_set_hostname("mba6ulxl");
++
++	return 0;
++}
++
++static const struct of_device_id mba6ulxl_of_match[] = {
++	{ .compatible = "tq,mba6ulxl" },
++	{ /* sentinel */ },
++};
++
++static struct driver_d mba6ulxl_board_driver = {
++	.name = "board-mba6ulxl",
++	.probe = mba6ulxl_probe,
++	.of_compatible = mba6ulxl_of_match,
++};
++postcore_platform_driver(mba6ulxl_board_driver);
+diff --git a/arch/arm/boards/tqma6ulx/flash-header-imx6ul-tqma6ulx.imxcfg b/arch/arm/boards/tqma6ulx/flash-header-imx6ul-tqma6ulx.imxcfg
+new file mode 100644
+index 0000000000..4f71136149
+--- /dev/null
++++ b/arch/arm/boards/tqma6ulx/flash-header-imx6ul-tqma6ulx.imxcfg
+@@ -0,0 +1,102 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++loadaddr 0x80000000
++soc imx6
++ivtofs 0x400
++
++/* Enable all clocks */
++wm 32 0x020c4068 0xffffffff
++wm 32 0x020c406c 0xffffffff
++wm 32 0x020c4070 0xffffffff
++wm 32 0x020c4074 0xffffffff
++wm 32 0x020c4078 0xffffffff
++wm 32 0x020c407c 0xffffffff
++wm 32 0x020c4080 0xffffffff
++
++/* This flash header contains support for the LGA Variant */
++/*
++ * =====================================================================
++ * IOMUX
++ * =====================================================================
++ */
++/* DDR IO TYPE: */
++wm 32 0x020E04B4 0x000C0000	/* IOMUXC_SW_PAD_CTL_GRP_DDR_TYPE */
++wm 32 0x020E04AC 0x00000000	/* IOMUXC_SW_PAD_CTL_GRP_DDRPKE */
++/* CLOCK: */
++wm 32 0x020E027C 0x00000030	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_SDCLK0_P */
++/* Control: */
++wm 32 0x020E0250 0x00000030	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_CAS */
++wm 32 0x020E024C 0x00000030	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_RAS */
++wm 32 0x020E0490 0x00000030	/* IOMUXC_SW_PAD_CTL_GRP_ADDDS */
++wm 32 0x020E0288 0x00000030	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_RESET */
++wm 32 0x020E0270 0x00000000	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_SDBA2 - DSE can be configured using Group Control Register: IOMUXC_SW_PAD_CTL_GRP_CTLDS */
++wm 32 0x020E0260 0x00000030	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_ODT0 */
++wm 32 0x020E0264 0x00000030	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_ODT1 */
++wm 32 0x020E04A0 0x00000030	/* IOMUXC_SW_PAD_CTL_GRP_CTLDS */
++/* Data Strobes: */
++wm 32 0x020E0494 0x00020000	/* IOMUXC_SW_PAD_CTL_GRP_DDRMODE_CTL */
++wm 32 0x020E0280 0x00000030	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0_P */
++wm 32 0x020E0284 0x00000030	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1_P */
++/* Data: */
++wm 32 0x020E04B0 0x00020000	/* IOMUXC_SW_PAD_CTL_GRP_DDRMODE */
++wm 32 0x020E0498 0x00000030	/* IOMUXC_SW_PAD_CTL_GRP_B0DS */
++wm 32 0x020E04A4 0x00000030	/* IOMUXC_SW_PAD_CTL_GRP_B1DS */
++wm 32 0x020E0244 0x00000030	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_DQM0 */
++wm 32 0x020E0248 0x00000030	/* IOMUXC_SW_PAD_CTL_PAD_DRAM_DQM1 */
++/*
++ * =====================================================================
++ * DDR Controller Registers
++ * =====================================================================
++ */
++wm 32 0x021B001C 0x00008000	/* MMDC_MDSCR - MMDC Core Special Command Register */
++/*
++ * ======================================================
++ * Calibrations:
++ * ======================================================
++ */
++wm 32 0x021B0800 0xA1390003	/* DDR_PHY_P0_MPZQHWCTRL , enable both one-time & periodic HW ZQ calibration. */
++
++wm 32 0x021B080C 0x00130003	/* MMDC_MPWLDECTRL0 */
++wm 32 0x021B083C 0x41540154	/* MMDC_MPDGCTRL0 */
++wm 32 0x021B0848 0x40405050	/* MMDC_MPRDDLCTL */
++wm 32 0x021B0850 0x40404E4C	/* MMDC_MPWRDLCTL */
++wm 32 0x021B081C 0x33333333	/* MMDC_MPRDDQBY0DL */
++wm 32 0x021B0820 0x33333333	/* MMDC_MPRDDQBY1DL */
++wm 32 0x021B082C 0xf3333333	/* MMDC_MPWRDQBY0DL */
++wm 32 0x021B0830 0xf3333333	/* MMDC_MPWRDQBY1DL */
++wm 32 0x021B08C0 0x00921012	/* MMDC_MPDCCR */
++
++/* Complete calibration by forced measurement: */
++wm 32 0x021B08b8 0x00000800	/* DDR_PHY_P0_MPMUR0, frc_msr */
++
++/*
++ * =====================================================================
++ * MMDC init:
++ * =====================================================================
++ */
++wm 32 0x021B0004 0x0002002D	/* MMDC0_MDPDC */
++wm 32 0x021B0008 0x00333030	/* MMDC0_MDOTC */
++wm 32 0x021B000C 0x676B52F3	/* MMDC0_MDCFG0 */
++wm 32 0x021B0010 0xB66D8B63	/* MMDC0_MDCFG1 */
++wm 32 0x021B0014 0x01FF00DB	/* MMDC0_MDCFG2 */
++wm 32 0x021B0018 0x00201740	/* MMDC0_MDMISC */
++/* TODO: set configuration request again, also done by NXP */
++wm 32 0x021B001C 0x00008000	/* MMDC_MDSCR */
++wm 32 0x021B002C 0x000026D2	/* MMDC0_MDRWD; recommend to maintain the default values */
++wm 32 0x021B0030 0x006B1023	/* MMDC0_MDOR */
++wm 32 0x021B0040 0x00000047	/* CS0_END */
++wm 32 0x021B0000 0x83180000	/* MMDC0_MDCTL */
++/* Mode register writes for CS0 */
++wm 32 0x021B001C 0x02008032	/* MMDC0_MDSCR, MR2 write, CS0 */
++wm 32 0x021B001C 0x00008033	/* MMDC0_MDSCR, MR3 write, CS0 */
++wm 32 0x021B001C 0x00048031	/* MMDC0_MDSCR, MR1 write, CS0 */
++wm 32 0x021B001C 0x15208030	/* MMDC0_MDSCR, MR0 write, CS0 */
++wm 32 0x021B001C 0x04008040	/* MMDC0_MDSCR, ZQ calibration command sent to device on CS0 */
++/* Mode register writes for CS1, not used / needed */
++/* final DDR setup, before operation start: */
++wm 32 0x021B0020 0x00000800	/* MMDC0_MDREF */
++wm 32 0x021B0818 0x00000227	/* DDR_PHY_P0_MPODTCTRL */
++wm 32 0x021B0004 0x0002552D	/* MMDC0_MDPDC now SDCTL power down enabled */
++wm 32 0x021B0404 0x00011006	/* MMDC0_MAPSR ADOPT power down enabled */
++wm 32 0x021B001C 0x00000000	/* MMDC0_MDSCR, clear this register (especially the configuration bit as initialization is complete) */
++
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/tqma6ulx/lowlevel.c b/arch/arm/boards/tqma6ulx/lowlevel.c
+new file mode 100644
+index 0000000000..79b95171c4
+--- /dev/null
++++ b/arch/arm/boards/tqma6ulx/lowlevel.c
+@@ -0,0 +1,58 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2019 Rouven Czerwinski, Pengutronix
++ */
++
++#include <common.h>
++#include <debug_ll.h>
++#include <firmware.h>
++#include <mach/generic.h>
++#include <asm/barebox-arm.h>
++#include <mach/esdctl.h>
++#include <mach/iomux-mx6ul.h>
++#include <asm/cache.h>
++
++extern char __dtb_imx6ul_mba6ulx_start[];
++
++static void setup_uart(void)
++{
++	void __iomem *iomuxbase = (void *)MX6_IOMUXC_BASE_ADDR;
++
++	imx6_ungate_all_peripherals();
++
++	imx_setup_pad(iomuxbase, MX6_PAD_UART1_TX_DATA__UART1_DCE_TX);
++	imx_setup_pad(iomuxbase, MX6_PAD_UART1_RX_DATA__UART1_DCE_RX);
++
++	imx6_uart_setup((void *)MX6_UART1_BASE_ADDR);
++	pbl_set_putc(imx_uart_putc, (void *)MX6_UART1_BASE_ADDR);
++
++	pr_debug("\n");
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
++		imx6_uart_setup_ll();
++
++		putc_ll('>');
++	}
++
++}
++
++static void noinline start_mba6ulxl(void)
++{
++	setup_uart();
++
++	imx6ul_barebox_entry(__dtb_imx6ul_mba6ulx_start);
++}
++
++ENTRY_FUNCTION(start_imx6ul_mba6ulxl, r0, r1, r2)
++{
++
++	imx6ul_cpu_lowlevel_init();
++
++	arm_setup_stack(0x00910000);
++
++	relocate_to_current_adr();
++	setup_c();
++	barrier();
++
++	start_mba6ulxl();
++}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index a637869fb6..d5ac4f535e 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -127,6 +127,7 @@ lwl-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += imx8mq-evk.dtb.o
+ lwl-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
+ lwl-$(CONFIG_MACH_TOSHIBA_AC100) += tegra20-paz00.dtb.o
+ lwl-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
++lwl-$(CONFIG_MACH_TQMA6UL) += imx6ul-mba6ulx.dtb.o
+ lwl-$(CONFIG_MACH_TQMA6X) += imx6dl-mba6x.dtb.o imx6q-mba6x.dtb.o
+ lwl-$(CONFIG_MACH_TX25) += imx25-karo-tx25.dtb.o
+ lwl-$(CONFIG_MACH_TX6X) += imx6dl-tx6u.dtb.o
+diff --git a/arch/arm/dts/imx6ul-mba6ulx.dts b/arch/arm/dts/imx6ul-mba6ulx.dts
+new file mode 100644
+index 0000000000..3f8479ae85
+--- /dev/null
++++ b/arch/arm/dts/imx6ul-mba6ulx.dts
+@@ -0,0 +1,339 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++/*
++ * Copyright 2016 TQ Systems GmbH
++ * Author: Marco Felsch
++ */
++
++/dts-v1/;
++
++#include <dt-bindings/input/input.h>
++#include "imx6ul-tqma6ulx.dtsi"
++
++/ {
++	model = "TQ TQMa6ULx SoM on MBa6ULxL";
++	compatible = "tq,mba6ulxl", "tq,imx6ul-tqma6ul2l", "fsl,imx6ul";
++
++	aliases {
++		mmc1 = &usdhc1; /* SD-card */
++		mmc0 = &usdhc2; /* eMMC */
++	};
++
++	chosen {
++		stdout-path = &uart1;
++	};
++
++	reg_mba6ul_3v3: regulator-mba6ul-3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "supply-mba6ul-3v3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-always-on;
++	};
++
++	reg_mba6ul_5v0: regulator-mba6ul-5v0 {
++		compatible = "regulator-fixed";
++		regulator-name = "supply-mba6ul-5v0";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++	};
++
++	reg_otg2vbus_5v0: regulator-otg2-vbus-5v0 {
++		compatible = "regulator-fixed";
++		gpio = <&gpio3 21 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++		regulator-name = "otg2-vbus-supply-5v0";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&reg_mba6ul_5v0>;
++	};
++
++	reg_otg1vbus_5v0: regulator-otg1-vbus-5v0 {
++		compatible = "regulator-fixed";
++		gpio = <&gpio1 4 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++		regulator-name = "otg1-vbus-supply-5v0";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&reg_mba6ul_5v0>;
++	};
++
++	reg_fec_3v3: regulator-fec-3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "fec-3v3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-always-on;
++		vin-supply = <&reg_mba6ul_3v3>;
++	};
++
++	reg_mpcie: regulator-mpcie-1v5 {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		regulator-name = "mpcie-1v5";
++		/* gpio = <&gpio1 3 GPIO_ACTIVE_HIGH>; */
++		enable-active-high;
++		regulator-min-microvolt = <1500000>;
++		regulator-max-microvolt = <1500000>;
++		vin-supply = <&reg_mba6ul_3v3>;
++	};
++};
++
++&fec1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_enet1>;
++	phy-mode = "rmii";
++	phy-handle = <&ethphy0>;
++	phy-supply = <&reg_fec_3v3>;
++	phy-reset-gpios = <&gpio3 9 GPIO_ACTIVE_LOW>;
++	phy-reset-duration = <26>;
++	status = "okay";
++};
++
++&fec2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_enet2>;
++	phy-mode = "rmii";
++	phy-handle = <&ethphy1>;
++	phy-supply = <&reg_fec_3v3>;
++	phy-reset-gpios = <&gpio3 10 GPIO_ACTIVE_HIGH>;
++	phy-reset-duration = <26>;
++	status = "okay";
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy0: ethernet-phy@0 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			max-speed = <100>;
++			reg = <0>;
++			/* ToDo: check if following 2 lines are required */
++			clocks = <&clks IMX6UL_CLK_ENET_REF>;
++			clock-names = "rmii-ref";
++		};
++
++		ethphy1: ethernet-phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			max-speed = <100>;
++			reg = <1>;
++			/* ToDo: check if following 2 lines are required */
++			clocks = <&clks IMX6UL_CLK_ENET2_REF>;
++			clock-names = "rmii-ref";
++		};
++	};
++};
++
++&i2c3 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c3>;
++	status = "okay";
++
++	expander_io: gpio-expander@20 {
++		compatible = "nxp,pca9554";
++		reg = <0x20>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		status = "okay";
++	};
++
++	expander_in: gpio-expander@21 {
++		compatible = "nxp,pca9554";
++		reg = <0x21>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_expander_irq>;
++		interrupt-parent = <&gpio5>;
++		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		status = "okay";
++	};
++
++	expander_out: gpio-expander@22 {
++		compatible = "nxp,pca9554";
++		reg = <0x22>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		status = "okay";
++	};
++
++
++	/* NXP SE97BTP with temperature sensor + eeprom */
++	jc42_1b: eeprom-temperature-sensor@1b {
++		compatible = "nxp,se97", "jedec,jc-42.4-temp";
++		reg = <0x1b>;
++		status = "okay";
++	};
++
++	se97_53: eeprom-temperature-sensor@53 {
++		compatible = "nxp,spd";
++		reg = <0x53>;
++		pagesize = <16>;
++		status = "okay";
++	};
++
++};
++
++
++&iomuxc {
++	pinctrl-names = "default";
++
++	pinctrl_i2c3: i2c3grp {
++		fsl,pins = <
++			MX6UL_PAD_LCD_DATA00__I2C3_SDA	0x4001b8b0
++			MX6UL_PAD_LCD_DATA01__I2C3_SCL	0x4001b8b0
++		>;
++	};
++
++	pinctrl_enet1: enet1grp {
++		fsl,pins = <
++			MX6UL_PAD_ENET1_RX_EN__ENET1_RX_EN	0x1b0b0
++			MX6UL_PAD_ENET1_RX_ER__ENET1_RX_ER	0x1b0b0
++			MX6UL_PAD_ENET1_RX_DATA0__ENET1_RDATA00	0x1b0b0
++			MX6UL_PAD_ENET1_RX_DATA1__ENET1_RDATA01	0x1b0b0
++			MX6UL_PAD_ENET1_TX_DATA0__ENET1_TDATA00	0x1b0b0
++			MX6UL_PAD_ENET1_TX_DATA1__ENET1_TDATA01	0x1b0b0
++			MX6UL_PAD_ENET1_TX_EN__ENET1_TX_EN	0x1b0b0
++			MX6UL_PAD_ENET1_TX_CLK__ENET1_REF_CLK1	0x4001b0a8
++		>;
++	};
++
++	pinctrl_enet2: enet2grp {
++		fsl,pins = <
++			MX6UL_PAD_ENET2_RX_EN__ENET2_RX_EN	0x1b0b0
++			MX6UL_PAD_ENET2_RX_ER__ENET2_RX_ER	0x1b0b0
++			MX6UL_PAD_ENET2_RX_DATA0__ENET2_RDATA00	0x1b0b0
++			MX6UL_PAD_ENET2_RX_DATA1__ENET2_RDATA01	0x1b0b0
++			MX6UL_PAD_ENET2_TX_DATA0__ENET2_TDATA00	0x1b0a0
++			MX6UL_PAD_ENET2_TX_DATA1__ENET2_TDATA01	0x1b0a0
++			MX6UL_PAD_ENET2_TX_EN__ENET2_TX_EN	0x1b0b0
++			MX6UL_PAD_ENET2_TX_CLK__ENET2_REF_CLK2	0x4001b0a8
++			/* mdio */
++			MX6UL_PAD_GPIO1_IO07__ENET2_MDC		0x1b0b0
++			MX6UL_PAD_GPIO1_IO06__ENET2_MDIO	0x1b0b0
++		>;
++	};
++
++	pinctrl_expander_irq: expanderirqgrp {
++		fsl,pins = <
++			MX6UL_PAD_SNVS_TAMPER8__GPIO5_IO08	0x1b0b1
++		>;
++	};
++
++	pinctrl_uart1: uart1grp {
++		fsl,pins = <
++			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
++			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
++		>;
++	};
++
++	pinctrl_usb_otg1: usbotg1grp {
++		fsl,pins = <
++			MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID	0x00017059
++			MX6UL_PAD_GPIO1_IO01__USB_OTG1_OC	0x0001b0b0
++			/* PWR */
++			MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0x0001b099
++		>;
++	};
++
++	pinctrl_usb_otg2: usbotg2grp {
++		fsl,pins = <
++			/* reset */
++			MX6UL_PAD_LCD_DATA16__GPIO3_IO21	0x0001b099
++		>;
++	};
++
++	pinctrl_usdhc1: usdhc1grp {
++		fsl,pins = <
++			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x00017069
++			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x00017059
++			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x00017059
++			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x00017059
++			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x00017059
++			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x00017059
++			/* CD */
++			MX6UL_PAD_UART1_RTS_B__GPIO1_IO19		0x0001b099
++		>;
++	};
++
++	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
++		fsl,pins = <
++			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x00017069
++			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x000170b9
++			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x000170b9
++			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x000170b9
++			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x000170b9
++			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x000170b9
++			/* CD */
++			MX6UL_PAD_UART1_RTS_B__GPIO1_IO19		0x0001b099
++		>;
++	};
++
++	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
++		fsl,pins = <
++			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x00017069
++			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x000170f9
++			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x000170f9
++			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x000170f9
++			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x000170f9
++			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x000170f9
++			/* CD */
++			MX6UL_PAD_UART1_RTS_B__GPIO1_IO19		0x0001b099
++		>;
++	};
++
++	pinctrl_wdog1: wdog1grp {
++		fsl,pins = <
++			MX6UL_PAD_GPIO1_IO08__WDOG1_WDOG_B	0x0001b099
++		>;
++	};
++};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1>;
++	status = "okay";
++};
++
++/* otg-port */
++&usbotg1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usb_otg1>;
++	vbus-supply = <&reg_otg1vbus_5v0>;
++	dr_mode = "otg";
++	status = "okay";
++};
++
++/* 7-port usb hub */
++/* id, pwr, oc pins not connected */
++&usbotg2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usb_otg2>;
++	disable-over-current;
++	vbus-supply = <&reg_otg2vbus_5v0>;
++	dr_mode = "host";
++	status = "okay";
++};
++
++&usdhc1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc1>;
++	cd-gpios = <&gpio1 19 GPIO_ACTIVE_LOW>;
++	disable-wp;
++	bus-width = <4>;
++	vmmc-supply = <&reg_mba6ul_3v3>;
++	vqmmc-supply = <&reg_vccsd>;
++	no-1-8-v;
++	status = "okay";
++};
++
++&wdog1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_wdog1>;
++	fsl,wdog_b;
++	status = "okay";
++};
++
+diff --git a/arch/arm/dts/imx6ul-tqma6ulx.dtsi b/arch/arm/dts/imx6ul-tqma6ulx.dtsi
+new file mode 100644
+index 0000000000..77112e1974
+--- /dev/null
++++ b/arch/arm/dts/imx6ul-tqma6ulx.dtsi
+@@ -0,0 +1,80 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++/*
++ * Copyright 2018 TQ Systems GmbH
++ * Author: Markus Niebel <Markus.Niebel@tq-group.com>
++ */
++
++#include <arm/imx6ul.dtsi>
++#include "tqma6ul-common.dtsi"
++#include "tqma6ulx-common.dtsi"
++
++/ {
++	model = "TQMa6ULx SOM";
++};
++
++&cpu0 {
++	cooling-min-level = <0>;
++	cooling-max-level = <3>;
++	#cooling-cells = <2>;
++};
++
++&iomuxc {
++	pinctrl_usdhc2: usdhc2grp {
++		fsl,pins = <
++			MX6UL_PAD_NAND_RE_B__USDHC2_CLK		0x00017051
++			MX6UL_PAD_NAND_WE_B__USDHC2_CMD		0x00017051
++			MX6UL_PAD_NAND_DATA00__USDHC2_DATA0	0x00017051
++			MX6UL_PAD_NAND_DATA01__USDHC2_DATA1	0x00017051
++			MX6UL_PAD_NAND_DATA02__USDHC2_DATA2	0x00017051
++			MX6UL_PAD_NAND_DATA03__USDHC2_DATA3	0x00017051
++			MX6UL_PAD_NAND_DATA04__USDHC2_DATA4	0x00017051
++			MX6UL_PAD_NAND_DATA05__USDHC2_DATA5	0x00017051
++			MX6UL_PAD_NAND_DATA06__USDHC2_DATA6	0x00017051
++			MX6UL_PAD_NAND_DATA07__USDHC2_DATA7	0x00017051
++			/* rst */
++			MX6UL_PAD_NAND_ALE__GPIO4_IO10		0x0001b051
++		>;
++	};
++
++	pinctrl_usdhc2_100mhz: usdhc2grp_100mhz {
++		fsl,pins = <
++			MX6UL_PAD_NAND_RE_B__USDHC2_CLK		0x000170e1
++			MX6UL_PAD_NAND_WE_B__USDHC2_CMD		0x000170f1
++			MX6UL_PAD_NAND_DATA00__USDHC2_DATA0	0x000170f1
++			MX6UL_PAD_NAND_DATA01__USDHC2_DATA1	0x000170f1
++			MX6UL_PAD_NAND_DATA02__USDHC2_DATA2	0x000170f1
++			MX6UL_PAD_NAND_DATA03__USDHC2_DATA3	0x000170f1
++			MX6UL_PAD_NAND_DATA04__USDHC2_DATA4	0x000170f1
++			MX6UL_PAD_NAND_DATA05__USDHC2_DATA5	0x000170f1
++			MX6UL_PAD_NAND_DATA06__USDHC2_DATA6	0x000170f1
++			MX6UL_PAD_NAND_DATA07__USDHC2_DATA7	0x000170f1
++			/* rst */
++			MX6UL_PAD_NAND_ALE__GPIO4_IO10		0x0001b051
++		>;
++	};
++
++	pinctrl_usdhc2_200mhz: usdhc2grp_200mhz {
++		fsl,pins = <
++			MX6UL_PAD_NAND_RE_B__USDHC2_CLK		0x000170f1
++			MX6UL_PAD_NAND_WE_B__USDHC2_CMD		0x000170e1
++			MX6UL_PAD_NAND_DATA00__USDHC2_DATA0	0x000170e1
++			MX6UL_PAD_NAND_DATA01__USDHC2_DATA1	0x000170e1
++			MX6UL_PAD_NAND_DATA02__USDHC2_DATA2	0x000170e1
++			MX6UL_PAD_NAND_DATA03__USDHC2_DATA3	0x000170e1
++			MX6UL_PAD_NAND_DATA04__USDHC2_DATA4	0x000170e1
++			MX6UL_PAD_NAND_DATA05__USDHC2_DATA5	0x000170e1
++			MX6UL_PAD_NAND_DATA06__USDHC2_DATA6	0x000170e1
++			MX6UL_PAD_NAND_DATA07__USDHC2_DATA7	0x000170e1
++			/* rst */
++			MX6UL_PAD_NAND_ALE__GPIO4_IO10		0x0001b051
++		>;
++	};
++};
++
++&usdhc2 {
++	fsl,tuning-step= <6>;
++	max-frequency = <99000000>;
++	assigned-clocks = <&clks IMX6UL_CLK_USDHC2_SEL>, <&clks IMX6UL_CLK_USDHC2>;
++	assigned-clock-parents = <&clks IMX6UL_CLK_PLL2_PFD2>;
++	assigned-clock-rates = <0>, <198000000>;
++};
+diff --git a/arch/arm/dts/tqma6ul-common.dtsi b/arch/arm/dts/tqma6ul-common.dtsi
+new file mode 100644
+index 0000000000..7d6a321034
+--- /dev/null
++++ b/arch/arm/dts/tqma6ul-common.dtsi
+@@ -0,0 +1,196 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++/*
++ * Copyright 2018 TQ Systems GmbH
++ * Author: Markus Niebel <Markus.Niebel@tq-group.com>
++ */
++
++&cpu0 {
++	arm-supply = <&reg_arm>;
++	soc-supply = <&reg_soc>;
++	fsl,arm-soc-shared = <0>;
++};
++
++&gpc {
++	fsl,ldo-bypass = <0>;
++};
++
++&i2c4 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c4>;
++	status = "okay";
++
++	pfuze3000: pmic@8 {
++		compatible = "fsl,pfuze3000";
++		reg = <0x08>;
++
++		regulators {
++			reg_sw1a: sw1a {
++				regulator-min-microvolt = <700000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++				regulator-ramp-delay = <6250>;
++				/* not used */
++			};
++
++			reg_sw1b_core: sw1b {
++				regulator-min-microvolt = <700000>;
++				regulator-max-microvolt = <1475000>;
++				regulator-boot-on;
++				regulator-always-on;
++				regulator-ramp-delay = <6250>;
++			};
++
++			reg_sw2: sw2 {
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++			};
++
++			reg_sw3_ddr: sw3 {
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <1650000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			reg_swbst: swbst {
++				regulator-min-microvolt = <5000000>;
++				regulator-max-microvolt = <5150000>;
++				/* not used */
++			};
++
++			reg_snvs_3v0: vsnvs {
++				regulator-min-microvolt = <1000000>;
++				regulator-max-microvolt = <3000000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			reg_vrefddr: vrefddr {
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			reg_vccsd: vccsd {
++				regulator-min-microvolt = <2850000>;
++				regulator-max-microvolt = <3300000>;
++			};
++
++			reg_v33_3v3: v33 {
++				regulator-min-microvolt = <2850000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++			};
++
++			reg_vldo1_3v3: vldo1 {
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++				/* not used */
++			};
++
++			reg_vldo2: vldo2 {
++				regulator-min-microvolt = <800000>;
++				regulator-max-microvolt = <1550000>;
++				regulator-boot-on;
++				/* not used */
++			};
++
++			reg_vldo3: vldo3 {
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++				/* not used */
++			};
++
++			reg_vldo4: vldo4 {
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-fixed;
++				regulator-always-on;
++			};
++		};
++	};
++
++	jc42_1a: eeprom-temperature-sensor@1a {
++		compatible = "nxp,se97", "jedec,jc-42.4-temp";
++		reg = <0x1a>;
++		status = "okay";
++	};
++
++	m24c64_50: eeprom@50 {
++		compatible = "atmel,24c64";
++		reg = <0x50>;
++		pagesize = <32>;
++		status = "okay";
++	};
++
++	m24c02_52: eeprom@52 {
++		compatible = "atmel,24c02";
++		reg = <0x52>;
++		pagesize = <16>;
++		status = "okay";
++	};
++
++	rtc1: rtc@68 {
++		compatible = "dallas,ds1339";
++		reg = <0x68>;
++		status = "okay";
++	};
++};
++
++&iomuxc {
++	pinctrl_i2c4: i2c4grp {
++		fsl,pins = <
++			MX6UL_PAD_UART2_TX_DATA__I2C4_SCL	0x4001b8b0
++			MX6UL_PAD_UART2_RX_DATA__I2C4_SDA	0x4001b8b0
++		>;
++	};
++
++	/*
++	 * currently not used, potentially dangerous if used on
++	 * baseboard
++	 */
++	pinctrl_pmic: pmic {
++		fsl,pins = <
++			/* PMIC irq */
++			MX6UL_PAD_CSI_DATA03__GPIO4_IO24	0x1b099
++		>;
++	};
++};
++
++&qspi {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_qspi>;
++	status = "okay";
++
++	flash0: spinor@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "jedec,spi-nor";
++		spi-max-frequency = <33000000>;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
++		reg = <0>;
++	};
++};
++
++&snvs_rtc {
++	status = "disabled";
++};
++
++/* eMMC */
++&usdhc2 {
++	pinctrl-names = "default", "state_100mhz" , "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc2>;
++	pinctrl-1 = <&pinctrl_usdhc2_100mhz>;
++	pinctrl-2 = <&pinctrl_usdhc2_200mhz>;
++
++	bus-width = <8>;
++	disable-wp;
++	non-removable;
++	no-sdio;
++	no-sd;
++	status = "okay";
++};
+diff --git a/arch/arm/dts/tqma6ulx-common.dtsi b/arch/arm/dts/tqma6ulx-common.dtsi
+new file mode 100644
+index 0000000000..3e398d25ad
+--- /dev/null
++++ b/arch/arm/dts/tqma6ulx-common.dtsi
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++/*
++ * Copyright 2018 TQ Systems GmbH
++ * Author: Markus Niebel <Markus.Niebel@tq-group.com>
++ */
++
++&iomuxc {
++	pinctrl_qspi: qspigrp {
++		fsl,pins = <
++			MX6UL_PAD_NAND_WP_B__QSPI_A_SCLK      0x70b9
++			MX6UL_PAD_NAND_READY_B__QSPI_A_DATA00 0x70b9
++			MX6UL_PAD_NAND_CE0_B__QSPI_A_DATA01   0x70b9
++			MX6UL_PAD_NAND_CE1_B__QSPI_A_DATA02   0x70b9
++			MX6UL_PAD_NAND_CLE__QSPI_A_DATA03     0x70b9
++			MX6UL_PAD_NAND_DQS__QSPI_A_SS0_B      0x70a1
++		>;
++	};
++};
++
++&reg_sw2 {
++	regulator-always-on;
++};
++
++/* eMMC */
++&usdhc2 {
++	vmmc-supply = <&reg_sw2>;
++	vqmmc-supply = <&reg_vldo4>;
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 5f5b762ce5..02d87ee2fe 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -375,6 +375,10 @@ config MACH_TQMA6X
+ 	bool "TQ tqma6x on mba6x"
+ 	select ARCH_IMX6
  
- 	if (dryrun) {
- 		printf("Would run %s\n", bs->scriptpath);
--		return 0;
- 	}
++config MACH_TQMA6UL
++	bool "TQ tqma6ul on mba6ulxl"
++	select ARCH_IMX6UL
++
+ config MACH_TX6X
+ 	bool "Karo TX6x"
+ 	select ARCH_IMX6
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 382493488b..7f25026b9f 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -179,6 +179,8 @@ $(call build_imx_habv4img, CONFIG_MACH_TQMA6X, start_imx6dl_mba6x, tqma6x/flash-
  
- 	globalvar_add_simple("linux.bootargs.dyn.ip", NULL);
+ $(call build_imx_habv4img, CONFIG_MACH_TQMA6X, start_imx6q_mba6x, tqma6x/flash-header-tqma6q, tq-tqma6q-mba6x)
+ 
++$(call build_imx_habv4img, CONFIG_MACH_TQMA6UL, start_imx6ul_mba6ulxl, tqma6ulx/flash-header-imx6ul-tqma6ulx, tq-tqma6ul-mba6ulx)
++
+ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_pbab01_4gib, phytec-som-imx6/flash-header-phytec-pfla02-4gib, phytec-pbab01-4gib)
+ 
+ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_pbab01_2gib, phytec-som-imx6/flash-header-phytec-pfla02-2gib, phytec-pbab01-2gib)
 -- 
 2.31.1
 
