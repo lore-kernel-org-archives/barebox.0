@@ -1,51 +1,51 @@
-Delivery-date: Tue, 15 Jun 2021 21:50:10 +0200
+Delivery-date: Tue, 15 Jun 2021 23:10:59 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltF4c-0005Mw-HJ
-	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 21:50:10 +0200
+	id 1ltGKp-0007gI-1e
+	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 23:10:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltF4a-00021E-U3
-	for lore@pengutronix.de; Tue, 15 Jun 2021 21:50:10 +0200
+	id 1ltGKn-0003Zw-Uz
+	for lore@pengutronix.de; Tue, 15 Jun 2021 23:10:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
 	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=/sxdw1Vhv5TTkmDVaLoqvZEg78lG2CQoRWTSBx46xxQ=; b=FCaSzSVyO4i1iP
-	SyVMkxOzdERtUpjRx75pdQSEnOossLlMHPNpL/GNZ0nBmN+kfNdCHGplfOcna7sYZM9gJ0iIwZ/jT
-	bLP2ICynuqsMczfJcFrskWNwP9e1N4ihG5i0nczLq5qVCeqIGJ+pFDSFLsl3/inLWBXzBj0jIxdzb
-	NK+PiEObUx71ooeUN3GIBUPdXmHDha93gCXeORhMKFrXJPfOGZBhKbGybNEmyAzR7XMrv68hayTgB
-	G7AB2koJ304MjFWfGS4eF93twtL0Yc8Tjs+lq6v2AHTZbYVzbHy6+uCmalZrp+mgKxJs8/9/G8nhO
-	UPkoPcQggFBoZbMNIgtQ==;
+	List-Owner; bh=NDwue6xmDCj39hAlmq/Zvdfi3Suc/c37Iryxc2czV4k=; b=GBBjXpl+32NbcX
+	sD+yy875TW6xtHbAkIBsvnom5pLDPcZ76z3wJgoNgT/KjoeWrwMEcpAFaZrD/AHpDylEzIHI1m599
+	ElfiKdb9X+/Y6CPblmWyiewLFmLvUSg1UbsEDpxZD+Ybyc0m4h5AZal2bqpkb5WJAdV2HEnDFV8am
+	pPe/xbOOAkXRyrEXSRARonRrYumX/0aj7UmLsQ4UgOnwQ7iCsiDIZnPCluTL8c3gZypvNMxKGerT5
+	naSMOPhqqp7vVo4GXQRq/v346qYXUVmztF52wbAJxHTdCEj5zNaSX9G2r1pwe655V6YeJJH9C7e2h
+	i86C9Y4qfANLqscgFrBQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ltF33-002ZRN-Ii; Tue, 15 Jun 2021 19:48:34 +0000
+	id 1ltGJC-0031c6-8k; Tue, 15 Jun 2021 21:09:18 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ltB3P-000zfq-Vj
- for barebox@lists.infradead.org; Tue, 15 Jun 2021 15:32:41 +0000
+ id 1ltCgy-001fTm-C3
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 17:17:37 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1ltB3B-0002IU-2G
- for barebox@lists.infradead.org; Tue, 15 Jun 2021 17:32:25 +0200
+ (envelope-from <mgr@pengutronix.de>) id 1ltCgw-0000M2-GB
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 19:17:34 +0200
 Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1ltB3A-0002RN-Q1
- for barebox@lists.infradead.org; Tue, 15 Jun 2021 17:32:24 +0200
+ (envelope-from <mgr@pengutronix.de>) id 1ltCgw-0000Wd-7X
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 19:17:34 +0200
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 15 Jun 2021 17:32:23 +0200
-Message-Id: <20210615153223.9329-1-m.grzeschik@pengutronix.de>
+Date: Tue, 15 Jun 2021 19:17:33 +0200
+Message-Id: <20210615171733.1973-1-m.grzeschik@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210615_083240_070377_F75CBE0B 
-X-CRM114-Status: UNSURE (   9.31  )
+X-CRM114-CacheID: sfid-20210615_101736_449588_9B349750 
+X-CRM114-Status: UNSURE (   9.42  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -74,7 +74,7 @@ Subject: [PATCH] net/eth: read default mac-address default from dts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Since we have the functino of_get_mac_address we can
+Since we have the function of_get_mac_address we can
 use it to set the default mac address vom the dts.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
