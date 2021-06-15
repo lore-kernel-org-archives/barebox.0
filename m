@@ -1,67 +1,67 @@
-Delivery-date: Tue, 15 Jun 2021 18:48:15 +0200
+Delivery-date: Tue, 15 Jun 2021 18:48:19 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltCEZ-0002SB-75
-	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 18:48:15 +0200
+	id 1ltCEd-0002Sc-D6
+	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 18:48:19 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltCEX-0004d6-6K
-	for lore@pengutronix.de; Tue, 15 Jun 2021 18:48:15 +0200
+	id 1ltCEb-0004dS-U9
+	for lore@pengutronix.de; Tue, 15 Jun 2021 18:48:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=BC051F65rQryNLxEmo+UvnFGYMabQVFWfdBRjF3KBPU=; b=caB+N42yMtPCZV
-	jGSE4/fAPKPJjnKCo57O6qx8a0u0nvj9Pb/oXR5sU8fKSS1dKHud3Nrciwa0i5GRGAUzziUYfERJ5
-	Pcxh7i7Ltp2GSS5cf0iVfgQCweOQfWXf85PWnlJUvAEeDsqmrw1DOiVEiTHWLKjOuugzAsXFOESFa
-	cmaNTgvMYtxsUH5V1xNCZTtOiTfvuEwBGcs9+7IaCIen1VvcqPXVLYoz00YbvPty+jC/qqJqDeqP1
-	EHDC2nwY8hs4dj6W0hFr0Bjcz6vljN2zh239VWB3RldBE8MDwkwyWP5vAFuBtoH4sTMEzSAucazC3
-	A/rtY7Txqr5/7YZ8Vfow==;
+	List-Owner; bh=2TeWpBAAfcxqzi/naqNM4NShAvhSZtWkVm9RbK/wF+w=; b=ctYgrZnCP6AvyC
+	oi7yIbOWOALY/KRCV0zpTj54aSZyJ0C5/k/fzFvVrHiyCx8KOzGYLKZqxOQJoofjyCmMq+66pO50X
+	CRT9PiyRYUw2ZmHIvCMhAEZ0IHdlClwOh3oHWZAmN1dz4QTxwuNlTIPSpevTtRcp+jZayel48sFVD
+	nxSg1aYnowDTXnRT4P9Scykf9FUixc5heUMbflIZobTAp3lPhDZHoiNlIbTVZjSl5pLNxqeb/cATD
+	iHlcL/WYxJPxvu7xR4Uz2K2ZKD22DNzxiGLRRHJaoBBOBkP+zqbMlYfcun+e52WRAWMMjZ5iHQAMu
+	1gNgg01aanmoDKOjubRQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ltC8L-001RJB-2V; Tue, 15 Jun 2021 16:41:49 +0000
+	id 1ltC8y-001RWm-QA; Tue, 15 Jun 2021 16:42:29 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt9s1-000WKQ-HD
- for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 14:16:49 +0000
+ id 1lt9s2-000WL0-GQ
+ for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 14:16:50 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=ZGRaB1BMH20xm/9SiyogbOCJ/+hAvpqExJnZxa2Ln+s=; b=h/RuJeWhdbByr0JiVahYElLflx
- tP7qp29QQ8LFJEpU/ZQ0Jop87LZ5SvHxjlu28k2YWQsN9QTn3DaCMJ/LmT9dq5i6+BFMrYVtQzVOy
- RH7jpd0Cl8nXTrmJAATv/8QOrf/X/RpF3UW18sIV0Od4G0+hiss44ZPNzGozn/U/9kmmE60xYcS++
- YKumPSbllD8KJoYpFmJw9Ydab2On76uBKtI99JAKRstMWxFjf3DeSy7W7p/8PR50Pu89Fy4rZo6GS
- VJMi1R+gTJD54Mz5f7NCLbyacToVoj+wHUbLa/XLLTtEM2PtfBrL8I5ox2W+1IGD02tPaQ7kkf4zz
- MR0NBhfA==;
+ bh=tKq+df0ecXAVvPc2eAjhr2DAEB75cElfn0UCgepGV2Q=; b=iZcItX7IOw7QmKwPmhJ4k/ant5
+ u1eUCEKOatu1C4rAh3yvH29xmnv5CRgGVOj76YMjqRI2eTC4pHl3F19IrH0TBFfi+0P9Hto+y/HXU
+ JN6xfFRxnJmDjjKVb/yHMQCC5rJq9f+vZITeU/i1dx4gEDsrTZVIsZm/tyqxW1qPMhozHdqDwEcUE
+ zDSdfq2FDVL8/z1Tpxw8pkSXK7FLDgOJfUlwg6fPUsZoa37WLeIbrIfQfSB8P1YYc4ncmhg53nnDh
+ O7cMKoVmsenoiFX2EYow+M9FBMjhl7U30hLnEYnGBg5VTm+9qM2A8zM8g0kNz2EGv2/LOX24g1qGH
+ lkpsgisw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt9rp-007zs7-3r
- for barebox@lists.infradead.org; Tue, 15 Jun 2021 14:16:48 +0000
+ id 1lt9rp-007zsA-5c
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 14:16:49 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lt9rv-0000uI-Ef; Tue, 15 Jun 2021 16:16:43 +0200
+ id 1lt9rv-0000uM-H5; Tue, 15 Jun 2021 16:16:43 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lt9ru-0001IA-PL; Tue, 15 Jun 2021 16:16:42 +0200
+ id 1lt9ru-0001Kj-T8; Tue, 15 Jun 2021 16:16:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 15 Jun 2021 16:16:38 +0200
-Message-Id: <20210615141641.31577-9-s.hauer@pengutronix.de>
+Date: Tue, 15 Jun 2021 16:16:41 +0200
+Message-Id: <20210615141641.31577-12-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210615141641.31577-1-s.hauer@pengutronix.de>
 References: <20210615141641.31577-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210615_151644_155483_777BEB49 
-X-CRM114-Status: GOOD (  28.33  )
+X-CRM114-CacheID: sfid-20210615_151645_263111_7FF3A324 
+X-CRM114-Status: GOOD (  11.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,305 +85,146 @@ X-Spam-Level:
 X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 08/11] ARM: Add atf common support
+	UPPERCASE_75_100,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 11/11] Add rockchip_v8_defconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-ARM trusted firmware has some common data structures passed to bl31.
-This patch imports the code supporting this taken from U-Boot.
-The defines and data structures are taken directly from U-Boot,
-the support code is heavily modified for the sake of readability.
+Add a defconfig for the arm64 based Rockchip SoCs, currently only RK3568
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                  |   3 +
- arch/arm/cpu/Makefile             |   1 +
- arch/arm/cpu/atf.c                |  80 +++++++++++++++
- arch/arm/include/asm/atf_common.h | 163 ++++++++++++++++++++++++++++++
- 4 files changed, 247 insertions(+)
- create mode 100644 arch/arm/cpu/atf.c
- create mode 100644 arch/arm/include/asm/atf_common.h
+ arch/arm/configs/rockchip_v8_defconfig | 120 +++++++++++++++++++++++++
+ 1 file changed, 120 insertions(+)
+ create mode 100644 arch/arm/configs/rockchip_v8_defconfig
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 0740039309..c7ab166888 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -496,4 +496,7 @@ config ARM_MODULE_PLTS
- 	  Say y if your memory configuration puts the heap to far away from the
- 	  barebox image, causing relocation out of range errors
- 
-+config ARM_ATF
-+	bool
-+
- endmenu
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index e7a6e3e6fb..6344ab5066 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -50,6 +50,7 @@ AFLAGS-cache-armv8.pbl.o   :=-Wa,-march=armv8-a
- 
- pbl-y += entry.o entry_ll$(S64).o
- pbl-y += uncompress.o
-+pbl-$(CONFIG_ARM_ATF) += atf.o
- 
- obj-pbl-y += common.o sections.o
- KASAN_SANITIZE_common.o := n
-diff --git a/arch/arm/cpu/atf.c b/arch/arm/cpu/atf.c
+diff --git a/arch/arm/configs/rockchip_v8_defconfig b/arch/arm/configs/rockchip_v8_defconfig
 new file mode 100644
-index 0000000000..4753a8a559
+index 0000000000..eb23a67588
 --- /dev/null
-+++ b/arch/arm/cpu/atf.c
-@@ -0,0 +1,80 @@
-+#include <common.h>
-+#include <asm/atf_common.h>
-+#include <asm/system.h>
-+
-+static inline void raw_write_daif(unsigned int daif)
-+{
-+	__asm__ __volatile__("msr DAIF, %0\n\t" : : "r" (daif) : "memory");
-+}
-+
-+void bl31_entry(uintptr_t bl31_entry, uintptr_t bl32_entry,
-+		uintptr_t bl33_entry, uintptr_t fdt_addr)
-+{
-+	struct atf_image_info bl31_image_info = {
-+		.h = {
-+			.type = ATF_PARAM_IMAGE_BINARY,
-+			.version = ATF_VERSION_1,
-+			.size = sizeof(bl31_image_info),
-+		},
-+	};
-+	struct atf_image_info bl32_image_info = {
-+		.h = {
-+			.type = ATF_PARAM_IMAGE_BINARY,
-+			.version = ATF_VERSION_1,
-+			.size = sizeof(bl32_image_info),
-+		},
-+	};
-+	struct entry_point_info bl32_ep_info = {
-+		.h = {
-+			.type = ATF_PARAM_EP,
-+			.version = ATF_VERSION_1,
-+			.attr = ATF_EP_SECURE,
-+			.size = sizeof(bl32_ep_info),
-+		},
-+		.pc = bl32_entry,
-+		.spsr = SPSR_64(MODE_EL1, MODE_SP_ELX, DISABLE_ALL_EXECPTIONS),
-+		.args = {
-+			.arg3 = fdt_addr,
-+		},
-+	};
-+	struct atf_image_info bl33_image_info = {
-+		.h = {
-+			.type = ATF_PARAM_IMAGE_BINARY,
-+			.version = ATF_VERSION_1,
-+			.size = sizeof(bl33_image_info),
-+		},
-+	};
-+	struct entry_point_info bl33_ep_info = {
-+		.h = {
-+			.type = ATF_PARAM_EP,
-+			.version = ATF_VERSION_1,
-+			.attr = ATF_EP_NON_SECURE,
-+			.size = sizeof(bl33_ep_info),
-+		},
-+		.pc = bl33_entry,
-+		.spsr = SPSR_64(MODE_EL2, MODE_SP_ELX, DISABLE_ALL_EXECPTIONS),
-+		.args = {
-+			/* BL33 expects to receive the primary CPU MPID (through x0) */
-+			.arg0 = 0xffff & read_mpidr(),
-+		},
-+	};
-+	struct bl31_params bl31_params = {
-+		.h = {
-+			.type = ATF_PARAM_BL31,
-+			.version = ATF_VERSION_1,
-+			.size = sizeof(bl31_params),
-+		},
-+		.bl31_image_info = &bl31_image_info,
-+		.bl32_ep_info = &bl32_ep_info,
-+		.bl32_image_info = &bl32_image_info,
-+		.bl33_ep_info = &bl33_ep_info,
-+		.bl33_image_info = &bl33_image_info,
-+	};
-+	void (*atf_entry)(struct bl31_params *params, uintptr_t plat_params);
-+
-+	raw_write_daif(SPSR_EXCEPTION_MASK);
-+
-+	atf_entry = (void *)bl31_entry;
-+
-+	atf_entry(&bl31_params, fdt_addr);
-+}
-diff --git a/arch/arm/include/asm/atf_common.h b/arch/arm/include/asm/atf_common.h
-new file mode 100644
-index 0000000000..56e2d3ffaa
---- /dev/null
-+++ b/arch/arm/include/asm/atf_common.h
-@@ -0,0 +1,163 @@
-+/* SPDX-License-Identifier: BSD-3-Clause */
-+/*
-+ * This is from the ARM TF Project,
-+ * Repository: https://github.com/ARM-software/arm-trusted-firmware.git
-+ * File: include/common/bl_common.h
-+ * Portions copyright (c) 2013-2016, ARM Limited and Contributors. All rights
-+ * reserved.
-+ * Copyright (C) 2016-2017 Rockchip Electronic Co.,Ltd
-+ */
-+
-+#ifndef __BL_COMMON_H__
-+#define __BL_COMMON_H__
-+
-+#define ATF_PARAM_EP		0x01
-+#define ATF_PARAM_IMAGE_BINARY	0x02
-+#define ATF_PARAM_BL31		0x03
-+
-+#define ATF_VERSION_1	0x01
-+
-+#define ATF_EP_SECURE	0x0
-+#define ATF_EP_NON_SECURE	0x1
-+
-+#define MODE_RW_SHIFT	0x4
-+#define MODE_RW_MASK	0x1
-+#define MODE_RW_64	0x0
-+#define MODE_RW_32	0x1
-+
-+#define MODE_EL_SHIFT	0x2
-+#define MODE_EL_MASK	0x3
-+#define MODE_EL3	0x3
-+#define MODE_EL2	0x2
-+#define MODE_EL1	0x1
-+#define MODE_EL0	0x0
-+
-+#define MODE_SP_SHIFT	0x0
-+#define MODE_SP_MASK	0x1
-+#define MODE_SP_EL0	0x0
-+#define MODE_SP_ELX	0x1
-+
-+#define SPSR_DAIF_SHIFT	6
-+#define SPSR_DAIF_MASK	0x0f
-+
-+#define SPSR_64(el, sp, daif)		\
-+	(MODE_RW_64 << MODE_RW_SHIFT |	\
-+	 ((el) & MODE_EL_MASK) << MODE_EL_SHIFT |	\
-+	 ((sp) & MODE_SP_MASK) << MODE_SP_SHIFT |	\
-+	 ((daif) & SPSR_DAIF_MASK) << SPSR_DAIF_SHIFT)
-+
-+#define SPSR_FIQ             (1 << 6)
-+#define SPSR_IRQ             (1 << 7)
-+#define SPSR_SERROR          (1 << 8)
-+#define SPSR_DEBUG           (1 << 9)
-+#define SPSR_EXCEPTION_MASK  (SPSR_FIQ | SPSR_IRQ | SPSR_SERROR | SPSR_DEBUG)
-+
-+#define DAIF_FIQ_BIT (1<<0)
-+#define DAIF_IRQ_BIT (1<<1)
-+#define DAIF_ABT_BIT (1<<2)
-+#define DAIF_DBG_BIT (1<<3)
-+#define DISABLE_ALL_EXECPTIONS	\
-+	(DAIF_FIQ_BIT | DAIF_IRQ_BIT | DAIF_ABT_BIT | DAIF_DBG_BIT)
-+
-+#ifndef __ASSEMBLY__
-+
-+/*******************************************************************************
-+ * Structure used for telling the next BL how much of a particular type of
-+ * memory is available for its use and how much is already used.
-+ ******************************************************************************/
-+struct aapcs64_params {
-+	unsigned long arg0;
-+	unsigned long arg1;
-+	unsigned long arg2;
-+	unsigned long arg3;
-+	unsigned long arg4;
-+	unsigned long arg5;
-+	unsigned long arg6;
-+	unsigned long arg7;
-+};
-+
-+/***************************************************************************
-+ * This structure provides version information and the size of the
-+ * structure, attributes for the structure it represents
-+ ***************************************************************************/
-+struct param_header {
-+	uint8_t type;		/* type of the structure */
-+	uint8_t version;    /* version of this structure */
-+	uint16_t size;      /* size of this structure in bytes */
-+	uint32_t attr;      /* attributes: unused bits SBZ */
-+};
-+
-+/*****************************************************************************
-+ * This structure represents the superset of information needed while
-+ * switching exception levels. The only two mechanisms to do so are
-+ * ERET & SMC. Security state is indicated using bit zero of header
-+ * attribute
-+ * NOTE: BL1 expects entrypoint followed by spsr at an offset from the start
-+ * of this structure defined by the macro `ENTRY_POINT_INFO_PC_OFFSET` while
-+ * processing SMC to jump to BL31.
-+ *****************************************************************************/
-+struct entry_point_info {
-+	struct param_header h;
-+	uintptr_t pc;
-+	uint32_t spsr;
-+	struct aapcs64_params args;
-+};
-+
-+/*****************************************************************************
-+ * Image info binary provides information from the image loader that
-+ * can be used by the firmware to manage available trusted RAM.
-+ * More advanced firmware image formats can provide additional
-+ * information that enables optimization or greater flexibility in the
-+ * common firmware code
-+ *****************************************************************************/
-+struct atf_image_info {
-+	struct param_header h;
-+	uintptr_t image_base;   /* physical address of base of image */
-+	uint32_t image_size;    /* bytes read from image file */
-+};
-+
-+/*****************************************************************************
-+ * The image descriptor struct definition.
-+ *****************************************************************************/
-+struct image_desc {
-+	/* Contains unique image id for the image. */
-+	unsigned int image_id;
-+	/*
-+	 * This member contains Image state information.
-+	 * Refer IMAGE_STATE_XXX defined above.
-+	 */
-+	unsigned int state;
-+	uint32_t copied_size;	/* image size copied in blocks */
-+	struct atf_image_info atf_image_info;
-+	struct entry_point_info ep_info;
-+};
-+
-+/*******************************************************************************
-+ * This structure represents the superset of information that can be passed to
-+ * BL31 e.g. while passing control to it from BL2. The BL32 parameters will be
-+ * populated only if BL2 detects its presence. A pointer to a structure of this
-+ * type should be passed in X0 to BL31's cold boot entrypoint.
-+ *
-+ * Use of this structure and the X0 parameter is not mandatory: the BL31
-+ * platform code can use other mechanisms to provide the necessary information
-+ * about BL32 and BL33 to the common and SPD code.
-+ *
-+ * BL31 image information is mandatory if this structure is used. If either of
-+ * the optional BL32 and BL33 image information is not provided, this is
-+ * indicated by the respective image_info pointers being zero.
-+ ******************************************************************************/
-+struct bl31_params {
-+	struct param_header h;
-+	struct atf_image_info *bl31_image_info;
-+	struct entry_point_info *bl32_ep_info;
-+	struct atf_image_info *bl32_image_info;
-+	struct entry_point_info *bl33_ep_info;
-+	struct atf_image_info *bl33_image_info;
-+};
-+
-+void bl31_entry(uintptr_t bl31_entry, uintptr_t bl32_entry,
-+		uintptr_t bl33_entry, uintptr_t fdt_addr);
-+
-+#endif /*__ASSEMBLY__ */
-+
-+#endif /* __BL_COMMON_H__ */
++++ b/arch/arm/configs/rockchip_v8_defconfig
+@@ -0,0 +1,120 @@
++CONFIG_ARCH_ROCKCHIP=y
++CONFIG_MACH_RK3568_EVB=y
++CONFIG_BOARD_ARM_GENERIC_DT=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ARM_PSCI_CLIENT=y
++CONFIG_MMU=y
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_RELOCATABLE=y
++CONFIG_PROMPT="barebox> "
++CONFIG_BAUDRATE=1500000
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_BOOTM_SHOW_TYPE=y
++CONFIG_BOOTM_VERBOSE=y
++CONFIG_BOOTM_INITRD=y
++CONFIG_BOOTM_OFTREE=y
++CONFIG_BOOTM_OFTREE_UIMAGE=y
++CONFIG_BOOTM_AIMAGE=y
++CONFIG_BLSPEC=y
++CONFIG_SYSTEM_PARTITIONS=y
++CONFIG_CONSOLE_ACTIVATE_NONE=y
++CONFIG_CONSOLE_ALLOW_COLOR=y
++CONFIG_PBL_CONSOLE=y
++CONFIG_PARTITION_DISK_EFI=y
++CONFIG_DEFAULT_COMPRESSION_LZO=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_STATE=y
++CONFIG_BOOTCHOOSER=y
++CONFIG_RESET_SOURCE=y
++CONFIG_DEBUG_LL=y
++CONFIG_CMD_DMESG=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_UIMAGE=y
++CONFIG_CMD_BOOTCHOOSER=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_DEFAULTENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA224SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_READF=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_SMC=y
++CONFIG_CMD_BAREBOX_UPDATE=y
++CONFIG_CMD_OF_DIFF=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_NET=y
++CONFIG_NET_NFS=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_NET_ARC_EMAC=y
++CONFIG_DRIVER_NET_DESIGNWARE_EQOS=y
++CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP=y
++CONFIG_SMSC_PHY=y
++CONFIG_I2C=y
++CONFIG_I2C_GPIO=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_MMC_BOOT_PARTITIONS=y
++CONFIG_MCI_DW=y
++CONFIG_MCI_DW_PIO=y
++CONFIG_MCI_ROCKCHIP_DWCMSHC=y
++CONFIG_MCI_ARASAN=y
++CONFIG_MFD_ACT8846=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
++CONFIG_WATCHDOG=y
++CONFIG_WATCHDOG_POLLER=y
++CONFIG_WATCHDOG_DW=y
++CONFIG_GENERIC_PHY=y
++# CONFIG_VIRTIO_MENU is not set
++CONFIG_FS_CRAMFS=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_FS_BPKFS=y
++CONFIG_FS_UIMAGEFS=y
++CONFIG_LZO_DECOMPRESS=y
 -- 
 2.29.2
 
