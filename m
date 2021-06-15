@@ -1,76 +1,67 @@
-Delivery-date: Tue, 15 Jun 2021 17:52:07 +0200
+Delivery-date: Tue, 15 Jun 2021 18:38:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltBMF-0001IW-NI
-	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 17:52:07 +0200
+	id 1ltC5F-0002EX-15
+	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 18:38:37 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltBME-0005Kw-5u
-	for lore@pengutronix.de; Tue, 15 Jun 2021 17:52:07 +0200
+	id 1ltC5D-000369-5N
+	for lore@pengutronix.de; Tue, 15 Jun 2021 18:38:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=e+V8sDRPbPPyUZdINBs+6RAHe3jUVRuo/UHxIpnT+g0=; b=yqkqs4Z8/yXTxo
-	ftp+pAp3sWEq1r5kyRyCrTWRGswwUMRPI6FaeHDKJo8c+H8kky9eSYAE9wkV5hCR5eoTkIkoI2eRk
-	M8KYlPXS/IuzS1tl1wiOVhOMgl2ZAA2FkFmg5DHAIaJkiitZnnCyGtO41uU3TM8PLZEhPqYPVWd36
-	RM9ZTX/2spcKJzdbOvIId9NrhEfnQBFXYBrSKW4pYDHaYMWpaXHw9u2nYK7G2nif0lztxqczeEMYM
-	IKnc+SvhnKZXUfFtoTCYlat5rb5/LIutUD60Sni0G+qogum9xMgiqaTbspdeaKOMPCh3ZsxwnVCU+
-	AFMNHL9hOMZXQOXk7bcg==;
+	List-Owner; bh=GNtQqDpk626zzEnLh/PkZf5KelgQnSPnflFbbLMyvb4=; b=e0EpUpkjGM9F/J
+	k1O0N3V+5fAG7XC2+s4p/osP1sQ2xxw+PS6dqDnXrfafwtZN+oCwrJJ656qVuQNE+qekScbASff4e
+	NhrldCTg1ela4UkmCxQPMC2hG175A65+F0kIMb4nx/H8UBw1wUVpoKIOKOfjd7ab+Yq/vt/ItZVMG
+	tRPEkV8kmAzMuqaCFd+PQshBMKUAqtS0ynGRvZLbqLpQ425yvW+eQGHIBAOFMgDIfvZBLvz2U4bTO
+	o0bZwYuMqGmYbdcRChESs3ityZH6Ne4w7A42K2EQEbifLxrkthNY+c5vu2l08ywDJ6iWARioR9rGI
+	z20A/os/h+5+qjq28uZQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ltBFB-0014Bz-7s; Tue, 15 Jun 2021 15:44:49 +0000
+	id 1ltBxR-001MoT-0C; Tue, 15 Jun 2021 16:30:34 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt9IB-000E8e-9k
- for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 13:39:47 +0000
+ id 1lt9Fl-000ByJ-RW
+ for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 13:37:18 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=BzzrqpwsYKHZ6O4HhoLF53TDON0hWySfOXd1/1tfBQw=; b=pmDqxXdyvy6455OZwqncZ2gmwc
- y6iEDpHgaOr/aq/nuSLw9PAc3teA8Kb6hwrV24sAoIzTxnHWfFABnAzySUjZlIJjLvJS62oRGrYlH
- DNGKEhebphqVBewxz00PqrEB2+nArOMvS0I4r9ZGq8FnVAXtR0n5TiFv2+XDUeWZTyPm6sDxeUq7/
- W21oH90K6eov2nKN/YoIm9BNtNRI4uO7evYTNbMrzOI+AcQWH7yDSo8WBpJKJoOa9466sFAm4bVsb
- suwAkhabjCejMN6/Eu2Kq+2DsXZCSUbCGIp3cjQuQDa0tnyt2EHfXCnx+C2jDqsSUr+tdFv3hI6tt
- zEds9+LA==;
+ d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+ :References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description;
+ bh=R3V2QWKwomKONrb7mnRz4lpl7WtolqZcqXAexgYeDP8=; b=pY3wai/GhbQMv1PmK/Un15LKog
+ AUI5a06Cd2ddL/17HamRDiH5uVkrk/D6Oy0sZPAXy1BT3ULdMDzuE3jhEFWKVOqt1i3JQ6eIXJGzj
+ 1dCkCDlrWmvJy1kp3jIkT5NBo/GZWxgvso75ZnPdgJVOXvxAyiYHUwy5OtWUxxR8X91+owurVJotE
+ CU6bnkHZebpVlupiZlxrQ5sdvLvo2XFHVrrJP+m4kEHSzUTuLnM71dkXnkFgZLiEZc4qG3fBBV3l4
+ nSTXIb3cDRwxoRsAKQqypf4hPvDiDS4ihT33dEGKYLQ4rc/6LtLSwMDlOqNlP22l8Dv3oqc0ovyM3
+ m0ColJhA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt5Gq-007YqK-Bq
- for barebox@lists.infradead.org; Tue, 15 Jun 2021 09:22:16 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1lt7Bs-007lvo-QQ
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 11:25:19 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lt5Gw-0006SC-ED; Tue, 15 Jun 2021 11:22:14 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1lt5Gv-0007RA-RQ; Tue, 15 Jun 2021 11:22:13 +0200
-Date: Tue, 15 Jun 2021 11:22:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210615092213.GH9782@pengutronix.de>
-References: <20210614142833.86544-1-antonynpavlov@gmail.com>
+ (envelope-from <str@pengutronix.de>) id 1lt7Bw-0003Zw-Fr
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 13:25:12 +0200
+Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1lt7Bv-000178-Qx
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 13:25:11 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue, 15 Jun 2021 13:25:03 +0200
+Message-Id: <20210615112508.5489-5-s.trumtrar@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210615112508.5489-1-s.trumtrar@pengutronix.de>
+References: <20210615112508.5489-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210614142833.86544-1-antonynpavlov@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 11:19:35 up 117 days, 12:43, 119 users,  load average: 0.08, 0.12,
- 0.14
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210615_102215_277626_97FF8B74 
-X-CRM114-Status: GOOD (  19.50  )
+X-CRM114-CacheID: sfid-20210615_122516_001534_E302B6EB 
+X-CRM114-Status: GOOD (  24.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,43 +86,171 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] drivers: drop unused usb_gadget_{map,unmap}_request()
+Subject: [PATCH v3 05/10] firmware: import fpga-mgr.h from linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jun 14, 2021 at 05:28:33PM +0300, Antony Pavlov wrote:
-> There is no code that is dependent on
-> usb_gadget_{map,unmap}_request().
+Instead of defining the fpga-mgr structure in the socfpga driver, import
+the fpga-mgr.h file from linux v4.13.
 
-My first reaction was: But maybe there *should* be code depending on
-that, but
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ drivers/firmware/socfpga.c |   9 +---
+ include/firmware.h         |   1 +
+ include/fpga-mgr.h         | 102 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 104 insertions(+), 8 deletions(-)
+ create mode 100644 include/fpga-mgr.h
 
-> -#ifdef	CONFIG_KERNEL_HAS_DMA
-> -
-> -int usb_gadget_map_request(struct usb_gadget *gadget,
-> -		struct usb_request *req, int is_in)
-> -{
-> -	if (req->length == 0)
-> -		return 0;
-> -
-> -	if (req->num_sgs) {
-> -		int     mapped;
-> -
-> -		mapped = dma_map_sg(&gadget->dev, req->sg, req->num_sgs,
-> -				is_in ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
-
-Trying to use it would at least fail when trying to link this. We don't
-have any implementation for dma_map_sg().
-
-So ok to remove this nonfunctional code.
-
-Sascha
-
+diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
+index 14875214b1aa..605c931604c9 100644
+--- a/drivers/firmware/socfpga.c
++++ b/drivers/firmware/socfpga.c
+@@ -27,6 +27,7 @@
+  */
+ 
+ #include <firmware.h>
++#include <fpga-mgr.h>
+ #include <command.h>
+ #include <common.h>
+ #include <malloc.h>
+@@ -83,14 +84,6 @@
+ extern void socfpga_sdram_apply_static_cfg(void __iomem *sdrctrlgrp);
+ extern void socfpga_sdram_apply_static_cfg_end(void *);
+ 
+-struct fpgamgr {
+-	struct firmware_handler fh;
+-	struct device_d dev;
+-	void __iomem *regs;
+-	void __iomem *regs_data;
+-	int programmed;
+-};
+-
+ /* Get the FPGA mode */
+ static uint32_t socfpga_fpgamgr_get_mode(struct fpgamgr *mgr)
+ {
+diff --git a/include/firmware.h b/include/firmware.h
+index 19777d9bf711..2fef97a48f56 100644
+--- a/include/firmware.h
++++ b/include/firmware.h
+@@ -13,6 +13,7 @@ struct firmware_handler {
+ 	char *id; /* unique identifier for this firmware device */
+ 	char *model; /* description for this device */
+ 	struct device_d *dev;
++	void *priv;
+ 	/* called once to prepare the firmware's programming cycle */
+ 	int (*open)(struct firmware_handler*);
+ 	/* called multiple times to program the firmware with the given data */
+diff --git a/include/fpga-mgr.h b/include/fpga-mgr.h
+new file mode 100644
+index 000000000000..a120b3918990
+--- /dev/null
++++ b/include/fpga-mgr.h
+@@ -0,0 +1,102 @@
++/*
++ * FPGA Framework
++ *
++ *  Copyright (C) 2013-2015 Altera Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++#ifndef _LINUX_FPGA_MGR_H
++#define _LINUX_FPGA_MGR_H
++
++#include <firmware.h>
++
++struct fpga_manager;
++
++/**
++ * enum fpga_mgr_states - fpga framework states
++ * @FPGA_MGR_STATE_UNKNOWN: can't determine state
++ * @FPGA_MGR_STATE_POWER_OFF: FPGA power is off
++ * @FPGA_MGR_STATE_POWER_UP: FPGA reports power is up
++ * @FPGA_MGR_STATE_RESET: FPGA in reset state
++ * @FPGA_MGR_STATE_FIRMWARE_REQ: firmware request in progress
++ * @FPGA_MGR_STATE_FIRMWARE_REQ_ERR: firmware request failed
++ * @FPGA_MGR_STATE_WRITE_INIT: preparing FPGA for programming
++ * @FPGA_MGR_STATE_WRITE_INIT_ERR: Error during WRITE_INIT stage
++ * @FPGA_MGR_STATE_WRITE: writing image to FPGA
++ * @FPGA_MGR_STATE_WRITE_ERR: Error while writing FPGA
++ * @FPGA_MGR_STATE_WRITE_COMPLETE: Doing post programming steps
++ * @FPGA_MGR_STATE_WRITE_COMPLETE_ERR: Error during WRITE_COMPLETE
++ * @FPGA_MGR_STATE_OPERATING: FPGA is programmed and operating
++ */
++enum fpga_mgr_states {
++	/* default FPGA states */
++	FPGA_MGR_STATE_UNKNOWN,
++	FPGA_MGR_STATE_POWER_OFF,
++	FPGA_MGR_STATE_POWER_UP,
++	FPGA_MGR_STATE_RESET,
++
++	/* getting an image for loading */
++	FPGA_MGR_STATE_FIRMWARE_REQ,
++	FPGA_MGR_STATE_FIRMWARE_REQ_ERR,
++
++	/* write sequence: init, write, complete */
++	FPGA_MGR_STATE_WRITE_INIT,
++	FPGA_MGR_STATE_WRITE_INIT_ERR,
++	FPGA_MGR_STATE_WRITE,
++	FPGA_MGR_STATE_WRITE_ERR,
++	FPGA_MGR_STATE_WRITE_COMPLETE,
++	FPGA_MGR_STATE_WRITE_COMPLETE_ERR,
++
++	/* fpga is programmed and operating */
++	FPGA_MGR_STATE_OPERATING,
++};
++
++/*
++ * FPGA Manager flags
++ * FPGA_MGR_PARTIAL_RECONFIG: do partial reconfiguration if supported
++ * FPGA_MGR_EXTERNAL_CONFIG: FPGA has been configured prior to Linux booting
++ * FPGA_MGR_BITSTREAM_LSB_FIRST: SPI bitstream bit order is LSB first
++ * FPGA_MGR_COMPRESSED_BITSTREAM: FPGA bitstream is compressed
++ */
++#define FPGA_MGR_PARTIAL_RECONFIG	BIT(0)
++#define FPGA_MGR_EXTERNAL_CONFIG	BIT(1)
++#define FPGA_MGR_ENCRYPTED_BITSTREAM	BIT(2)
++#define FPGA_MGR_BITSTREAM_LSB_FIRST	BIT(3)
++#define FPGA_MGR_COMPRESSED_BITSTREAM	BIT(4)
++
++/**
++ * struct fpga_image_info - information specific to a FPGA image
++ * @flags: boolean flags as defined above
++ * @enable_timeout_us: maximum time to enable traffic through bridge (uSec)
++ * @disable_timeout_us: maximum time to disable traffic through bridge (uSec)
++ * @config_complete_timeout_us: maximum time for FPGA to switch to operating
++ *	   status in the write_complete op.
++ */
++struct fpga_image_info {
++	u32 flags;
++	u32 enable_timeout_us;
++	u32 disable_timeout_us;
++	u32 config_complete_timeout_us;
++};
++
++struct fpgamgr {
++	struct firmware_handler fh;
++	struct device_d dev;
++	void *priv;
++	void __iomem *regs;
++	void __iomem *regs_data;
++	int programmed;
++};
++
++
++#endif /*_LINUX_FPGA_MGR_H */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.2
+
 
 _______________________________________________
 barebox mailing list
