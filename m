@@ -1,67 +1,67 @@
-Delivery-date: Tue, 15 Jun 2021 15:57:24 +0200
+Delivery-date: Tue, 15 Jun 2021 15:58:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lt9ZE-0008Kf-BN
-	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 15:57:24 +0200
+	id 1lt9a6-0008Ld-Qv
+	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 15:58:18 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lt9ZA-0005ed-19
-	for lore@pengutronix.de; Tue, 15 Jun 2021 15:57:24 +0200
+	id 1lt9a2-0005om-9k
+	for lore@pengutronix.de; Tue, 15 Jun 2021 15:58:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=1t5k3T9HMHLF/V+sbnCMu7jLl88uYalQuf77fX4LUMs=; b=0d4C7qrAV9cwra
-	py3+K7ePoMWTBlha9uiBpUsLodlZikoqVixvVbk6yCfjy861DEQ3WgUOnc6SCF8gEtJvNAcOOsPW7
-	i+4ipyAvEugojf9ssRlOClWqGk08kXaYzBfyuGBj2rwQFF0ajrqhkXpEIy74MgFtwXye6vWmfj1kr
-	pCo49EyY11S7An2RH/KUamWDy49Sai9BzsT1dFqkFmza/xLn/CYo18emJRhhJKp2Nx8Av8IPkZLnz
-	vGXU6J69Aa3hdjmjvQ3fRx5cFB5VjAYzQDSZX1VyMNG4QzQFyqjid+5pj8sKaE2iXaSksGSwzQlLg
-	dtEYQ5U+Em4f4MNV0ciA==;
+	List-Owner; bh=o7+oVOkOSKV5dgweBkYZOOahVGbkG3vcgb2wCwrVTKY=; b=Kr4+jjAikj6IH6
+	4omCT5pChpI6wb0c87ntwDzB6An84ALEvArD0fNXAA221cbqktjbWXoiC7UWENCPC0BP72ugm/14H
+	zQN/8vSQhsKc5mDKif0+BngGrQ5pSqARqVhjAuaPyO3FE8G8VgtMXsHukvCP+ClH1QzGtEIhL9YGV
+	zsGUL2zG4jq1qlua7IaHH3FLk7G5IIQmMgNL8UpMADkZ38Bz3DWbYsyFFcWeXWkjOYTobaOwpMAPS
+	OsECuxnSfvF9QPikUqufb+TBCDJOaUU61azHkUufJteE7dqXXpHmdlWuRGYhJXKM4VXgkOLL6tvAl
+	HQB+D0f5Dpbmd5BIJn+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lt9RQ-000JJo-4m; Tue, 15 Jun 2021 13:49:20 +0000
+	id 1lt9SJ-000JgL-86; Tue, 15 Jun 2021 13:50:15 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt9Fl-000DDm-Qr
- for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 13:37:18 +0000
+ id 1lt9Fm-000DEY-VP
+ for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 13:37:19 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description;
- bh=b06X4rZiSUX/W7qbQDUi4I66XFsUXz2a2AnA/SNDuWI=; b=AgDbBzWNCLdosrgmKtKPRDmWt4
- hxmgxch13SHmqrCZXKItf7iz/QigfBwSlHUD0ohtOaAC0df4NBCwuJ0WlJiRKbcy4b3jjsdw/Hq/Y
- 19R7bf3/UzthvbsG1m6ClMWElcjV0vWUjDNrrFSzAEdeimLa8ozZjDXDjCAW2SBEbTAXLe/QqVTkk
- Y/N/p3WCnhNP/skCUlvJ6uCAMA54mxgpQOKG0A5IfmarljPVbHisiZXBzLSsbwFptCm6qU68yYyB7
- tTthQlgy5ahbcKAQjKDybvjakA/LaHpyEZerhdmdWCGIcoKNH/LfXdgi8nkkblEJ0i243CzhMnEeB
- Ejieqd3A==;
+ bh=vG7W5h9L5zOdP8aulHscNm4TDMq7tWUUMP8ZdB4pyD0=; b=lMdizOXzXWu7/00wm8slHmxMEZ
+ R93/RpnEw9+W3Qx9dYBiVL6Bn0CfjbwxXohcK+cGSZawuyZ/KnItbGm+fkXFsNda6/eW58QQven7L
+ GS2kE3IjkBWZN2DJb6iXBqkTwsD2VJrOMVT0g1O3axqeZGVbXAM0lN9qZoVbJ2oNFdn8mzXiBrdZ+
+ 11ZlkRTWjqsJyYVchlBh3OVq9lKH/iMWKbRxs5T93AAwvd65TBzM8U8O2ijCWLUORz0e0u8UCHPeU
+ E4Kwf5IM+mhLoz7Xb++NRv5lKVHn/T8BO5m3hMlD+xLce95ytVUEhKp7E75wch29zFxtA40hXO+tI
+ WedMuBgA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt7Bs-007lvv-Iy
- for barebox@lists.infradead.org; Tue, 15 Jun 2021 11:25:19 +0000
+ id 1lt7Bs-007lvp-9W
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 11:25:17 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1lt7Bw-0003Zy-KR
+ (envelope-from <str@pengutronix.de>) id 1lt7Bw-0003Zv-Fr
  for barebox@lists.infradead.org; Tue, 15 Jun 2021 13:25:12 +0200
 Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1lt7Bv-00018l-TC
+ (envelope-from <str@pengutronix.de>) id 1lt7Bv-00016Q-Py
  for barebox@lists.infradead.org; Tue, 15 Jun 2021 13:25:11 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 15 Jun 2021 13:25:05 +0200
-Message-Id: <20210615112508.5489-7-s.trumtrar@pengutronix.de>
+Date: Tue, 15 Jun 2021 13:25:02 +0200
+Message-Id: <20210615112508.5489-4-s.trumtrar@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210615112508.5489-1-s.trumtrar@pengutronix.de>
 References: <20210615112508.5489-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210615_122515_999873_174FB962 
-X-CRM114-Status: GOOD (  21.90  )
+X-CRM114-CacheID: sfid-20210615_122515_290877_33AEDF17 
+X-CRM114-Status: GOOD (  17.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,264 +86,231 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 07/10] of: of_firmware: add support for fpga bridges
+Subject: [PATCH v3 04/10] firmware: socfpga: change function prefixes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Add support for potentially defined FPGA-bridges in the overlay.
-
-While at it also add support for loading the firmware directly via a
-path instead of 'needing' an overlay for that.
-The direct loading will be done with the existent firmwareload command.
+Since there is now a fpgamgr framework in barebox, the function names are
+misleading. Change that to be SoCFPGA specific.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-
 ---
+ drivers/firmware/socfpga.c | 58 +++++++++++++++++++-------------------
+ 1 file changed, 29 insertions(+), 29 deletions(-)
 
-v2->v3 - basprintf -> plain 'compatible = "fpga-region"'
-       - assign root in if-clause
----
- drivers/of/Makefile      |   3 +-
- drivers/of/of_firmware.c | 129 +++++++++++++++++++++++++++++++++++++--
- include/of.h             |  23 +++++--
- 3 files changed, 142 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index b6847752d247..6199c9791f52 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -6,4 +6,5 @@ obj-y += partition.o
- obj-y += of_net.o
- obj-$(CONFIG_MTD) += of_mtd.o
- obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o
--obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o of_firmware.o
-+obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o
-+obj-$(CONFIG_FIRMWARE) += of_firmware.o
-diff --git a/drivers/of/of_firmware.c b/drivers/of/of_firmware.c
-index 096f84572e63..26864a6a13ef 100644
---- a/drivers/of/of_firmware.c
-+++ b/drivers/of/of_firmware.c
-@@ -4,12 +4,52 @@
-  */
- #include <common.h>
- #include <firmware.h>
-+#include <fpga-bridge.h>
- #include <of.h>
- 
- struct overlay_info {
- 	const char *firmware_path;
+diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
+index c468c743720f..14875214b1aa 100644
+--- a/drivers/firmware/socfpga.c
++++ b/drivers/firmware/socfpga.c
+@@ -92,12 +92,12 @@ struct fpgamgr {
  };
  
-+#ifdef CONFIG_FPGA_BRIDGE
-+static int of_get_bridges(struct device_node *region, struct list_head *bridges)
-+{
-+	struct device_node *br, *parent_br = NULL;
-+	int i, ret;
-+
-+	/* If parent is a bridge, add to list */
-+	ret = fpga_bridge_get_to_list(region->parent, bridges);
-+	if (!ret) {
-+		parent_br = region->parent;
-+		pr_debug("Add %s to list of bridges\n", parent_br->name);
-+	}
-+
-+	for (i = 0; ; i++) {
-+		br = of_parse_phandle(region, "fpga-bridges", i);
-+		if (!br)
-+			break;
-+
-+		/* If parent bridge is in list, skip it. */
-+		if (br == parent_br)
-+			continue;
-+
-+		/* If node is a bridge, get it and add to list */
-+		ret = fpga_bridge_get_to_list(br, bridges);
-+		if (ret)
-+			return ret;
-+
-+		pr_debug("Add %s to list of bridges\n", br->name);
-+	}
-+
-+	return 0;
-+}
-+#else
-+static int of_get_bridges(struct device_node *np, struct list_head *br)
-+{
-+	return 0;
-+}
-+#endif
-+
- static struct firmware_mgr *of_node_get_mgr(struct device_node *np)
+ /* Get the FPGA mode */
+-static uint32_t fpgamgr_get_mode(struct fpgamgr *mgr)
++static uint32_t socfpga_fpgamgr_get_mode(struct fpgamgr *mgr)
  {
- 	struct device_node *mgr_node;
-@@ -25,6 +65,35 @@ static struct firmware_mgr *of_node_get_mgr(struct device_node *np)
- 	return NULL;
+ 	return readl(mgr->regs + FPGAMGRREGS_STAT) & FPGAMGRREGS_STAT_MODE_MASK;
  }
  
-+static int of_load_firmware(struct device_node *target, const char *path)
-+{
-+	struct list_head bridge_list;
-+	struct firmware_mgr *mgr;
-+	int err;
-+
-+	mgr = of_node_get_mgr(target);
-+	if (!mgr)
-+		return -EINVAL;
-+
-+	pr_debug("Found firmware manager @%s\n", target->name);
-+
-+	INIT_LIST_HEAD(&bridge_list);
-+
-+	of_get_bridges(target, &bridge_list);
-+
-+	fpga_bridges_disable(&bridge_list);
-+
-+	pr_debug("Loading %s to %s\n", path, target->name);
-+
-+	err = firmwaremgr_load_file(mgr, path);
-+
-+	fpga_bridges_enable(&bridge_list);
-+
-+	fpga_bridges_put(&bridge_list);
-+
-+	return err;
-+}
-+
- static int load_firmware(struct device_node *target,
- 			 struct device_node *fragment, void *data)
+-static int fpgamgr_dclkcnt_set(struct fpgamgr *mgr, unsigned long cnt)
++static int socfpga_fpgamgr_dclkcnt_set(struct fpgamgr *mgr, unsigned long cnt)
  {
-@@ -33,7 +102,6 @@ static int load_firmware(struct device_node *target,
- 	const char *firmware_path = info->firmware_path;
- 	char *firmware;
- 	int err;
--	struct firmware_mgr *mgr;
+ 	uint64_t start;
  
- 	err = of_property_read_string(fragment,
- 				      "firmware-name", &firmware_name);
-@@ -46,21 +114,70 @@ static int load_firmware(struct device_node *target,
- 	if (!target)
- 		return -EINVAL;
- 
--	mgr = of_node_get_mgr(target);
--	if (!mgr)
--		return -EINVAL;
--
- 	firmware = basprintf("%s/%s", firmware_path, firmware_name);
- 	if (!firmware)
- 		return -ENOMEM;
- 
--	err = firmwaremgr_load_file(mgr, firmware);
-+	err = of_load_firmware(target, firmware);
- 
- 	free(firmware);
- 
- 	return err;
+@@ -121,7 +121,7 @@ static int fpgamgr_dclkcnt_set(struct fpgamgr *mgr, unsigned long cnt)
  }
  
-+int of_firmware_load_file(const char *path, const char *compatible,
-+			  const char *search_path, const char *firmware)
-+{
-+	struct overlay_info info = {
-+		.firmware_path = search_path,
-+	};
-+	struct device_node *target;
-+	struct device_node *node;
-+	struct device_node *root;
-+
-+	if (!compatible)
-+		compatible = "fpga-region";
-+
-+	/*
-+	 * firmware-name not specified. Use load_firmware function to get it from
-+	 * the devicetree. This allows loading firmware to multiple devices.
-+	 */
-+	if (!firmware && !path) {
-+		int err;
-+
-+		pr_debug("No firmware specified. Searching devicetree for %s\n", compatible);
-+		for_each_compatible_node(node, NULL, compatible) {
-+			pr_debug("Load firmware from %s\n", node->name);
-+			err = load_firmware(node, node, &info);
-+			if (err == -ENOMEM)
-+				return err;
-+		}
-+
-+		return 0;
-+	}
-+
-+	if (path) {
-+		root = of_get_root_node();
-+
-+		target = of_find_node_by_path_or_alias(root, path);
-+		if (!target) {
-+			pr_debug("Cannot find nodepath %s\n", path);
-+			return -ENOENT;
-+		}
-+	} else {
-+		target = of_find_compatible_node(NULL, NULL, compatible);
-+		if (!target) {
-+			pr_debug("No node matching %s found\n", compatible);
-+			return -ENOSYS;
-+		}
-+	}
-+	
-+	if (!firmware)
-+		return load_firmware(target, target, &info);
-+
-+	return of_load_firmware(target, firmware);
-+}
-+
- int of_firmware_load_overlay(struct device_node *overlay, const char *path)
+ /* Start the FPGA programming by initialize the FPGA Manager */
+-static int fpgamgr_program_init(struct fpgamgr *mgr)
++static int socfpga_fpgamgr_program_init(struct fpgamgr *mgr)
  {
- 	struct overlay_info info = {
-diff --git a/include/of.h b/include/of.h
-index 645f429bdeed..3c922bdb1414 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -1020,6 +1020,23 @@ static inline struct device_node *of_find_root_node(struct device_node *node)
- 	return node;
+ 	unsigned long reg;
+ 	uint32_t ctrl = 0, ratio;
+@@ -170,7 +170,7 @@ static int fpgamgr_program_init(struct fpgamgr *mgr)
+ 	/* (1) wait until FPGA enter reset phase */
+ 	start = get_time_ns();
+ 	while (1) {
+-		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_RESETPHASE)
++		if (socfpga_fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_RESETPHASE)
+ 			break;
+ 		if (is_timeout(start, 100 * MSECOND))
+ 			return -ETIMEDOUT;
+@@ -184,7 +184,7 @@ static int fpgamgr_program_init(struct fpgamgr *mgr)
+ 	/* (2) wait until FPGA enter configuration phase */
+ 	start = get_time_ns();
+ 	while (1) {
+-		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_CFGPHASE)
++		if (socfpga_fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_CFGPHASE)
+ 			break;
+ 		if (is_timeout(start, 100 * MSECOND))
+ 			return -ETIMEDOUT;
+@@ -202,7 +202,7 @@ static int fpgamgr_program_init(struct fpgamgr *mgr)
  }
  
-+#ifdef CONFIG_FIRMWARE
-+int of_firmware_load_file(const char *path, const char *compatible,
-+			  const char *search_path, const char *firmware);
-+int of_firmware_load_overlay(struct device_node *overlay, const char *path);
-+#else
-+static inline int of_firmware_load_file(const char *path, const char *compatible,
-+					const char *search_path, const char *firmware)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_firmware_load_overlay(const char *path)
-+{
-+	return -ENOSYS;
-+}
-+#endif
-+
- #ifdef CONFIG_OF_OVERLAY
- struct device_node *of_resolve_phandles(struct device_node *root,
- 					const struct device_node *overlay);
-@@ -1032,7 +1049,6 @@ int of_process_overlay(struct device_node *root,
- 				   struct device_node *overlay, void *data),
- 		    void *data);
- 
--int of_firmware_load_overlay(struct device_node *overlay, const char *path);
- #else
- static inline struct device_node *of_resolve_phandles(struct device_node *root,
- 					const struct device_node *overlay)
-@@ -1059,11 +1075,6 @@ static inline int of_process_overlay(struct device_node *root,
+ /* Ensure the FPGA entering config done */
+-static int fpgamgr_program_poll_cd(struct fpgamgr *mgr)
++static int socfpga_fpgamgr_program_poll_cd(struct fpgamgr *mgr)
  {
- 	return -ENOSYS;
+ 	unsigned long reg;
+ 	uint32_t val;
+@@ -236,18 +236,18 @@ static int fpgamgr_program_poll_cd(struct fpgamgr *mgr)
  }
--
--static inline int of_firmware_load_overlay(struct device_node *overlay, const char *path)
--{
--	return -ENOSYS;
--}
- #endif
  
- #endif /* __OF_H */
+ /* Ensure the FPGA entering init phase */
+-static int fpgamgr_program_poll_initphase(struct fpgamgr *mgr)
++static int socfpga_fpgamgr_program_poll_initphase(struct fpgamgr *mgr)
+ {
+ 	uint64_t start;
+ 
+ 	/* additional clocks for the CB to enter initialization phase */
+-	if (fpgamgr_dclkcnt_set(mgr, 0x4) != 0)
++	if (socfpga_fpgamgr_dclkcnt_set(mgr, 0x4) != 0)
+ 		return -5;
+ 
+ 	/* (4) wait until FPGA enter init phase or user mode */
+ 	start = get_time_ns();
+ 	while (1) {
+-		int mode = fpgamgr_get_mode(mgr);
++		int mode = socfpga_fpgamgr_get_mode(mgr);
+ 
+ 		if (mode == FPGAMGRREGS_MODE_INITPHASE ||
+ 				mode == FPGAMGRREGS_MODE_USERMODE)
+@@ -261,19 +261,19 @@ static int fpgamgr_program_poll_initphase(struct fpgamgr *mgr)
+ }
+ 
+ /* Ensure the FPGA entering user mode */
+-static int fpgamgr_program_poll_usermode(struct fpgamgr *mgr)
++static int socfpga_fpgamgr_program_poll_usermode(struct fpgamgr *mgr)
+ {
+ 	uint32_t val;
+ 	uint64_t start;
+ 
+ 	/* additional clocks for the CB to exit initialization phase */
+-	if (fpgamgr_dclkcnt_set(mgr, 0x5000) != 0)
++	if (socfpga_fpgamgr_dclkcnt_set(mgr, 0x5000) != 0)
+ 		return -7;
+ 
+ 	/* (5) wait until FPGA enter user mode */
+ 	start = get_time_ns();
+ 	while (1) {
+-		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE)
++		if (socfpga_fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE)
+ 			break;
+ 		if (is_timeout(start, 100 * MSECOND))
+ 			return -ETIMEDOUT;
+@@ -291,7 +291,7 @@ static int fpgamgr_program_poll_usermode(struct fpgamgr *mgr)
+  * Using FPGA Manager to program the FPGA
+  * Return 0 for sucess
+  */
+-static int fpgamgr_program_start(struct firmware_handler *fh)
++static int socfpga_fpgamgr_program_start(struct firmware_handler *fh)
+ {
+ 	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
+ 	int status;
+@@ -313,7 +313,7 @@ static int fpgamgr_program_start(struct firmware_handler *fh)
+ 	dev_dbg(&mgr->dev, "start programming...\n");
+ 
+ 	/* initialize the FPGA Manager */
+-	status = fpgamgr_program_init(mgr);
++	status = socfpga_fpgamgr_program_init(mgr);
+ 	if (status) {
+ 		dev_err(&mgr->dev, "program init failed with: %s\n",
+ 				strerror(-status));
+@@ -324,7 +324,7 @@ static int fpgamgr_program_start(struct firmware_handler *fh)
+ }
+ 
+ /* Write the RBF data to FPGA Manager */
+-static int fpgamgr_program_write_buf(struct firmware_handler *fh, const void *buf,
++static int socfpga_fpgamgr_program_write_buf(struct firmware_handler *fh, const void *buf,
+ 		size_t size)
+ {
+ 	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
+@@ -355,7 +355,7 @@ static int fpgamgr_program_write_buf(struct firmware_handler *fh, const void *bu
+ 	return 0;
+ }
+ 
+-static int fpgamgr_program_finish(struct firmware_handler *fh)
++static int socfpga_fpgamgr_program_finish(struct firmware_handler *fh)
+ {
+ 	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
+ 	int status;
+@@ -364,7 +364,7 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
+ 	void (*ocram_func)(void __iomem *ocram_base);
+ 
+ 	/* Ensure the FPGA entering config done */
+-	status = fpgamgr_program_poll_cd(mgr);
++	status = socfpga_fpgamgr_program_poll_cd(mgr);
+ 	if (status) {
+ 		dev_err(&mgr->dev, "poll for config done failed with: %s\n",
+ 				strerror(-status));
+@@ -374,7 +374,7 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
+ 	dev_dbg(&mgr->dev, "waiting for init phase...\n");
+ 
+ 	/* Ensure the FPGA entering init phase */
+-	status = fpgamgr_program_poll_initphase(mgr);
++	status = socfpga_fpgamgr_program_poll_initphase(mgr);
+ 	if (status) {
+ 		dev_err(&mgr->dev, "poll for init phase failed with: %s\n",
+ 				strerror(-status));
+@@ -384,7 +384,7 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
+ 	dev_dbg(&mgr->dev, "waiting for user mode...\n");
+ 
+ 	/* Ensure the FPGA entering user mode */
+-	status = fpgamgr_program_poll_usermode(mgr);
++	status = socfpga_fpgamgr_program_poll_usermode(mgr);
+ 	if (status) {
+ 		dev_err(&mgr->dev, "poll for user mode with: %s\n",
+ 				strerror(-status));
+@@ -410,11 +410,11 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
+ static int programmed_get(struct param_d *p, void *priv)
+ {
+ 	struct fpgamgr *mgr = priv;
+-	mgr->programmed = fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE;
++	mgr->programmed = socfpga_fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE;
+ 	return 0;
+ }
+ 
+-static int fpgamgr_probe(struct device_d *dev)
++static int socfpga_fpgamgr_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+ 	struct fpgamgr *mgr;
+@@ -448,9 +448,9 @@ static int fpgamgr_probe(struct device_d *dev)
+ 	else
+ 		fh->id = xstrdup("socfpga-fpga");
+ 
+-	fh->open = fpgamgr_program_start;
+-	fh->write = fpgamgr_program_write_buf;
+-	fh->close = fpgamgr_program_finish;
++	fh->open = socfpga_fpgamgr_program_start;
++	fh->write = socfpga_fpgamgr_program_write_buf;
++	fh->close = socfpga_fpgamgr_program_finish;
+ 	of_property_read_string(dev->device_node, "compatible", &model);
+ 	if (model)
+ 		fh->model = xstrdup(model);
+@@ -488,7 +488,7 @@ static int fpgamgr_probe(struct device_d *dev)
+ 	return ret;
+ }
+ 
+-static struct of_device_id fpgamgr_id_table[] = {
++static struct of_device_id socfpga_fpgamgr_id_table[] = {
+ 	{
+ 		.compatible = "altr,socfpga-fpga-mgr",
+ 	},
+@@ -498,9 +498,9 @@ static struct of_device_id fpgamgr_id_table[] = {
+ 	{ /* sentinel */ }
+ };
+ 
+-static struct driver_d fpgamgr_driver = {
++static struct driver_d socfpga_fpgamgr_driver = {
+ 	.name = "socfpa-fpgamgr",
+-	.of_compatible = DRV_OF_COMPAT(fpgamgr_id_table),
+-	.probe = fpgamgr_probe,
++	.of_compatible = DRV_OF_COMPAT(socfpga_fpgamgr_id_table),
++	.probe = socfpga_fpgamgr_probe,
+ };
+-device_platform_driver(fpgamgr_driver);
++device_platform_driver(socfpga_fpgamgr_driver);
 -- 
 2.29.2
 
