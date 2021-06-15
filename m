@@ -1,67 +1,67 @@
-Delivery-date: Tue, 15 Jun 2021 18:46:41 +0200
+Delivery-date: Tue, 15 Jun 2021 18:46:50 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltCD3-0002Oc-7l
-	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 18:46:41 +0200
+	id 1ltCDC-0002PA-Oj
+	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 18:46:50 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltCD0-0004PB-JU
-	for lore@pengutronix.de; Tue, 15 Jun 2021 18:46:41 +0200
+	id 1ltCDA-0004RV-NF
+	for lore@pengutronix.de; Tue, 15 Jun 2021 18:46:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=SjOmpzeJHqph1qepaBffyOj+/T/CTB+dsmRUlHhElbs=; b=ssCU5xvNuBgReF
-	Wtew04ZR35bvnYPaH3zvvwe+XknawkNPfNg53aILwIsm5I+7dMlqeHW7QV+TGAZIKkF6PVnWzrA+h
-	QtI4GYysmYGxslCT1ik39jFpESPRVQvBXkqu/uThIGpvvji5oLh0iz3t3ZH0kKoGZcHAGiPafGWhw
-	UVP/uLPAtPIl3r7nLdypMWrs17DWhvTprVc1f+FHTNGVFMpl8rmmb2DekpphcW3HY5ZFzVcJm44MJ
-	PkdyJeSnxjZpNpRmPSD9bguzGTvz6uSKMo+9GJ6DTOjPG2JjNUydkt3MM/ZO088SHj+rI4RzMuwJz
-	+C4y23J2Q8yVGj7ls2KA==;
+	List-Owner; bh=+dJaSvsjJ/7Qbzexgl3ZXrTI47j36utD13spBxmmtUk=; b=dtZMJ8zih5tRGa
+	ogGG40bSLGz76wOR3nQpatim+JOGOUu5I1MgeQpC4Uy20HJ5KhBBaYbg7U/OEDKsVU18wep2x3S4d
+	ClGEb076yV3T/8o7XhOCBQOUASYQBgto8C4jbrIfDLBJPA/JDKW3szWP6LVrxucAucEFoBjybKBiS
+	dUAgo8cqrbIRmFm9k8TM/3KsnbH4rxNZ4DndmozG02PKawRfkixhbOmM32IF2uIW0HGGTgRRIi56i
+	b9qtEcCoM3jNjOQEszraxQfttYwCGL9pL3FV4EkSMy6//871UzEmdTpPUbNDUI/f0Pa4w70mJ4UQY
+	nDtwd4N1kf51Q0flkjsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ltC7H-001Qsp-64; Tue, 15 Jun 2021 16:40:44 +0000
+	id 1ltC7w-001R6p-Tn; Tue, 15 Jun 2021 16:41:25 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt9s0-000WK3-V1
- for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 14:16:49 +0000
+ id 1lt9s0-000WK1-Qg
+ for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 14:16:48 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=KCZmyKyR1gvHncA0ujz66LrKHi7VRCXXIQEVl7+N69M=; b=FtOIkevQMmSqi3GdHxJ7M3A1QS
- bZwd0sNuzreqRRokPm4UmCI8EbgZTAAjR8LaSDSMLZqR4UdFpMIuqbf2CdO98dHdNRqsOP5uctvtf
- LhcGOd677FLPSBY5GW6VrKreeAFcWbyv/673V+GSb3fP+an5R1wa6+Stye2tSE7OTthpLohQprOEi
- HVWXjcmT7yIJoi5+ihs3nSdyF+45fuPDPXACfRgAXi20aSJ4iPU6e9YV0Cjyq8tSO2nOkpDyWlWQS
- u/fCETO0f1Y+nDRTdBP8ZvsJe7MrazOYHjfGNyWmoshQClaGW3vKbgolyD3MHSc/gXV8q2CY2oxmu
- VXVlK+Hg==;
+ bh=Qt/zYpQxzxdWPXN4VGWXgwMP6RXrdPnN8eSKCAspYLI=; b=DhrO/0N3c6oktoWbt+RZsMCCiA
+ c1jo4PMBTMgI+7gW43FBL+oavNXEwsJE6HgiFKuz89JOvfMa90poZtCkJru4Fsg7IRbFz9rWxw93X
+ i3HDXQU1SOgj163NVVhMDLz6iXZ7Xylms+85jFB7cjtdcAr+ohxVH/Fj9kzO9Cd6GLZ+1t6g+do/E
+ DxkWjdQvLRAEY188AiwL0jHzo6kbJAL8S5r0gpwbH0RtpbyFMhkWL2wKD/BEZniah9IDOVChVxTIc
+ 4SNY2NMp/8ZYIJ0YyqU1SYUaywEX2m1FVw73XBgDqL7eKieKC0GZhYka2pcplsdkhNKyD1S4HYojA
+ PoCXhk6w==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt9rp-007zs6-1C
+ id 1lt9rp-007zs9-5W
  for barebox@lists.infradead.org; Tue, 15 Jun 2021 14:16:47 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lt9rv-0000uE-Bd; Tue, 15 Jun 2021 16:16:43 +0200
+ id 1lt9rv-0000uJ-Go; Tue, 15 Jun 2021 16:16:43 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lt9ru-0001E8-Je; Tue, 15 Jun 2021 16:16:42 +0200
+ id 1lt9ru-0001J3-Q7; Tue, 15 Jun 2021 16:16:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 15 Jun 2021 16:16:34 +0200
-Message-Id: <20210615141641.31577-5-s.hauer@pengutronix.de>
+Date: Tue, 15 Jun 2021 16:16:39 +0200
+Message-Id: <20210615141641.31577-10-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210615141641.31577-1-s.hauer@pengutronix.de>
 References: <20210615141641.31577-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210615_151644_144806_6872927A 
-X-CRM114-Status: GOOD (  22.82  )
+X-CRM114-CacheID: sfid-20210615_151644_142816_E7D109A6 
+X-CRM114-Status: GOOD (  20.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,78 +86,41 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 04/11] ARM: Rockchip: Add rkimage tool
+Subject: [PATCH 09/11] ARM: rockchip: Add bootm handler for RKNS images
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This adds a tool for generating "RKNS" type booting image for newer
-Rockchip SoCs. This image format is supported starting at least with
-RK3568. Older image types are not (yet) supported.
+The rk3568 utilizes boot images starting with the magic 'RKNS'. Add a
+bootm handler for these to allow them to be chainloaded.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/Makefile  |   3 +
- scripts/rkimage.c | 260 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 263 insertions(+)
- create mode 100644 scripts/rkimage.c
+ arch/arm/mach-rockchip/Makefile |   1 +
+ arch/arm/mach-rockchip/bootm.c  | 116 ++++++++++++++++++++++++++++++++
+ 2 files changed, 117 insertions(+)
+ create mode 100644 arch/arm/mach-rockchip/bootm.c
 
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 2d322fd1c9..eb0f5c5805 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -25,6 +25,9 @@ hostprogs-always-$(CONFIG_ARCH_MXS)			+= mxsimage mxsboot
- hostprogs-always-$(CONFIG_ARCH_LAYERSCAPE)		+= pblimage
- hostprogs-always-$(CONFIG_ARCH_STM32MP)			+= stm32image
- hostprogs-always-$(CONFIG_RISCV)			+= prelink-riscv
-+hostprogs-always-$(CONFIG_ARCH_ROCKCHIP)		+= rkimage
-+HOSTCFLAGS_rkimage = `pkg-config --cflags openssl`
-+HOSTLDLIBS_rkimage = `pkg-config --libs openssl`
- KBUILD_HOSTCFLAGS += -I$(srctree)/scripts/include/
- HOSTLDLIBS_mxsimage  = `pkg-config --libs openssl`
- HOSTCFLAGS_omap3-usb-loader.o = `pkg-config --cflags libusb-1.0`
-diff --git a/scripts/rkimage.c b/scripts/rkimage.c
+diff --git a/arch/arm/mach-rockchip/Makefile b/arch/arm/mach-rockchip/Makefile
+index b7bab1fb73..9c9b3778bf 100644
+--- a/arch/arm/mach-rockchip/Makefile
++++ b/arch/arm/mach-rockchip/Makefile
+@@ -3,3 +3,4 @@ pbl-y += atf.o
+ obj-$(CONFIG_ARCH_RK3188) += rk3188.o
+ obj-$(CONFIG_ARCH_RK3288) += rk3288.o
+ obj-pbl-$(CONFIG_ARCH_RK3568) += rk3568.o
++obj-$(CONFIG_ARCH_RK3568) += bootm.o
+diff --git a/arch/arm/mach-rockchip/bootm.c b/arch/arm/mach-rockchip/bootm.c
 new file mode 100644
-index 0000000000..dde9724886
+index 0000000000..5d6181ebd7
 --- /dev/null
-+++ b/scripts/rkimage.c
-@@ -0,0 +1,260 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <stdio.h>
-+#include <unistd.h>
-+#include <getopt.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+#include <stdlib.h>
-+#include <stdint.h>
-+#include <string.h>
-+#include <time.h>
-+#include <openssl/sha.h>
-+#include <errno.h>
-+#include <stdbool.h>
++++ b/arch/arm/mach-rockchip/bootm.c
+@@ -0,0 +1,116 @@
++#define pr_fmt(fmt) "rockchip-bootm-barebox: " fmt
 +
-+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
-+#define ALIGN(x, a)        (((x) + (a) - 1) & ~((a) - 1))
-+
-+static void sha256(const void *buf, int len, void *out)
-+{
-+	SHA256_CTX sha256;
-+
-+	SHA256_Init(&sha256);
-+	SHA256_Update(&sha256, buf, len);
-+	SHA256_Final(out, &sha256);
-+}
-+
-+static void sha512(const void *buf, int len, void *out)
-+{
-+	SHA512_CTX sha512;
-+
-+	SHA512_Init(&sha512);
-+	SHA512_Update(&sha512, buf, len);
-+	SHA512_Final(out, &sha512);
-+}
-+
-+#define NEWIDB_MAGIC 0x534e4b52 /* 'RKNS' */
++#include <bootm.h>
++#include <common.h>
++#include <init.h>
++#include <memory.h>
 +
 +struct newidb_entry {
 +	uint32_t sector;
@@ -186,201 +149,88 @@ index 0000000000..dde9724886
 +};
 +
 +#define SECTOR_SIZE 512
-+#define PAGE_SIZE 2048
 +
-+typedef enum {
-+	HASH_TYPE_SHA256 = 1,
-+	HASH_TYPE_SHA512 = 2,
-+} hash_type_t;
-+
-+struct rkcode {
-+	const char *path;
-+	size_t size;
++static int do_bootm_rkns_barebox_image(struct image_data *data)
++{
++	void (*barebox)(unsigned long x0, unsigned long x1, unsigned long x2,
++			unsigned long x3);
++	resource_size_t start, end;
++	struct newidb *idb;
++	int ret, i, n_files;
 +	void *buf;
-+};
++	resource_size_t image_size;
 +
-+static int n_code;
-+struct rkcode *code;
++	ret = memory_bank_first_find_space(&start, &end);
++	if (ret)
++		return ret;
 +
-+static int create_newidb(struct newidb *idb)
-+{
-+	hash_type_t hash_type = HASH_TYPE_SHA256;
-+	bool keep_cert = false;
-+	int image_offset;
-+	int i;
-+	unsigned char *idbu8 = (void *)idb;
++	ret = bootm_load_os(data, start);
++	if (ret)
++		return ret;
 +
-+	idb->magic = NEWIDB_MAGIC;
-+	idb->n_files = (n_code << 16) | (1 << 7) | (1 << 8);
++	idb = (void *)data->os_res->start;
++	buf = (void *)data->os_res->start;
 +
-+	if (hash_type == HASH_TYPE_SHA256)
-+		idb->hashtype = (1 << 0);
-+	else if (hash_type == HASH_TYPE_SHA512)
-+		idb->hashtype = (1 << 1);
++	image_size = resource_size(data->os_res);
 +
-+	if (!keep_cert)
-+		image_offset = 4;
-+	else
-+		image_offset = 8;
++	if (image_size < SECTOR_SIZE)
++		return -EINVAL;
 +
-+	for (i = 0; i < n_code; i++) {
++	n_files = idb->n_files >> 16;
++	if (n_files > 4)
++		n_files = 4;
++
++	if (data->verbose)
++		printf("RKNS image contains %d binaries:\n", n_files);
++
++	for (i = 0; i < n_files; i++) {
 +		struct newidb_entry *entry = &idb->entries[i];
-+		struct rkcode *c = &code[i];
-+		unsigned int image_sector;
++		unsigned int entry_size = (entry->sector >> 16) * SECTOR_SIZE;
++		unsigned int entry_start = (entry->sector & 0xffff) * SECTOR_SIZE;
++		enum filetype filetype;
 +
-+		image_sector = c->size / SECTOR_SIZE;
++		filetype = file_detect_type(buf + entry_start, SECTOR_SIZE);
 +
-+		entry->sector  = (image_sector << 16) + image_offset;
-+		entry->unknown_ffffffff = 0xffffffff;
-+		entry->image_number = i + 1;
++		if (entry_start + entry_size > image_size) {
++			printf("image %d expands outside the image\n", i);
++			continue;
++		}
 +
-+		if (hash_type == HASH_TYPE_SHA256)
-+			sha256(c->buf, c->size, entry->hash); /* File size padded to sector size */
-+		else if (hash_type == HASH_TYPE_SHA512)
-+			sha512(c->buf, c->size, entry->hash);
++		if (data->verbose)
++			printf("image %d: size: %d offset: %d type: %s\n",
++				i, entry_size, entry_start,
++				file_type_to_string(filetype));
 +
-+		image_offset += image_sector;
-+
++		if (filetype == filetype_arm_barebox) {
++			barebox = buf + entry_start;
++			goto found;
++		}
 +	}
 +
-+	if (hash_type == HASH_TYPE_SHA256)
-+		sha256(idbu8, 1535, idbu8 + 1536);
-+	else if (hash_type == HASH_TYPE_SHA512)
-+		sha512(idbu8, 1535, idbu8 + 1536);
++	return -EIO;
 +
-+	return 0;
++found:
++
++	printf("Starting barebox image at 0x%p\n", barebox);
++
++	shutdown_barebox();
++
++	barebox(0, 0, 0, 0);
++
++	return -EINVAL;
 +}
 +
-+struct option cbootcmd[] = {
-+	{"help", 0, NULL, 'h'},
-+	{"o", 1, NULL, 'o'},
-+	{0, 0, 0, 0},
++static struct image_handler image_handler_rkns_barebox_image = {
++	.name = "Rockchip RKNS barebox image",
++	.bootm = do_bootm_rkns_barebox_image,
++	.filetype = filetype_rockchip_rkns_image,
 +};
 +
-+static void usage(const char *prgname)
++static int rockchip_register_barebox_image_handler(void)
 +{
-+	printf(
-+"Usage: %s [OPTIONS] <FILES>\n"
-+"\n"
-+"Generate a Rockchip boot image from <FILES>\n"
-+"This tool is suitable for SoCs beginning with rk3568. Older SoCs\n"
-+"have a different image format.\n"
-+"\n"
-+"Options:\n"
-+"  -o <file>   Output image to <file>\n"
-+"  -h          This help\n",
-+	prgname);
++	return register_image_handler(&image_handler_rkns_barebox_image);
 +}
-+
-+static int read_full(int fd, void *buf, size_t size)
-+{
-+	size_t insize = size;
-+	int now;
-+	int total = 0;
-+
-+	while (size) {
-+		now = read(fd, buf, size);
-+		if (now == 0)
-+			return total;
-+		if (now < 0)
-+			return now;
-+		total += now;
-+		size -= now;
-+		buf += now;
-+	}
-+
-+	return insize;
-+}
-+
-+static int write_full(int fd, void *buf, size_t size)
-+{
-+	size_t insize = size;
-+	int now;
-+
-+	while (size) {
-+		now = write(fd, buf, size);
-+		if (now <= 0)
-+			return now;
-+		size -= now;
-+		buf += now;
-+	}
-+
-+	return insize;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int opt, i, fd;
-+	const char *outfile = NULL;
-+	struct newidb idb = {};
-+
-+	while ((opt = getopt_long(argc, argv, "ho:", cbootcmd, NULL)) > 0) {
-+		switch (opt) {
-+		case 'o':
-+			outfile = optarg;
-+			break;
-+		case 'h':
-+			usage(argv[0]);
-+			exit(0);
-+		}
-+	}
-+
-+	n_code = argc - optind;
-+	if (!n_code) {
-+		usage(argv[0]);
-+		exit(1);
-+	}
-+
-+	code = calloc(n_code, sizeof(*code));
-+	if (!code)
-+		exit(1);
-+
-+	for (i = 0; i < n_code; i++) {
-+		struct stat s;
-+		int fd, ret;
-+		struct rkcode *c = &code[i];
-+		const char *path = argv[i + optind];
-+
-+		fd = open(path, O_RDONLY);
-+		if (fd < 0) {
-+			fprintf(stderr, "Cannot open %s: %s\n", path, strerror(errno));
-+			exit(1);
-+		}
-+
-+		ret = fstat(fd, &s);
-+		if (ret)
-+			exit(1);
-+
-+		c->path = path;
-+		c->size = ALIGN(s.st_size, PAGE_SIZE);
-+		c->buf = calloc(c->size, 1);
-+		if (!c->buf)
-+			exit(1);
-+
-+		read_full(fd, c->buf, s.st_size);
-+		close(fd);
-+	}
-+
-+	create_newidb(&idb);
-+
-+	fd = creat(outfile, 0644);
-+	if (fd < 0) {
-+		fprintf(stderr, "Cannot open %s: %s\n", outfile, strerror(errno));
-+		exit(1);
-+	}
-+
-+	write_full(fd, &idb, sizeof(idb));
-+
-+	for (i = 0; i < n_code; i++) {
-+		struct rkcode *c = &code[i];
-+
-+		write_full(fd, c->buf, c->size);
-+	}
-+
-+	close(fd);
-+
-+	return 0;
-+}
++late_initcall(rockchip_register_barebox_image_handler);
 -- 
 2.29.2
 
