@@ -1,67 +1,67 @@
-Delivery-date: Tue, 15 Jun 2021 15:57:14 +0200
+Delivery-date: Tue, 15 Jun 2021 15:57:17 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lt9Z4-0008JQ-5v
-	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 15:57:14 +0200
+	id 1lt9Z7-0008Jv-21
+	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 15:57:17 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lt9Yz-0005cs-Qp
-	for lore@pengutronix.de; Tue, 15 Jun 2021 15:57:14 +0200
+	id 1lt9Z4-0005de-QR
+	for lore@pengutronix.de; Tue, 15 Jun 2021 15:57:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=8CFDjhoCvubzsyhm+GFGVraXUnsfiT8/k38G8xk8yRU=; b=DZEhF02aOUAkMv
-	AqVpNe1jXzN0SkHxFukY92dlZBTCZka4NVVIgbIb0/PN9YHjp3/hJwckv6aiz4hdnetMzm6Jayw40
-	1zbvDYI+hOMMU9isd8Tb3wBJI9WXMjB/1IORD8G15r0u78tCIY8nHjq84HFcwwKfyusMALBv8fLRs
-	l8C3UUofSCK5XCUpZGnZha+fs6mATLNNHOIm+gPEU/Q6SfvI3mK3YpjJ5faktz/AJ36VeKOYYy1YY
-	McmDd9MimiH0n3s8s7SefEcWDOif0vr3PpwINB3knwJApTecuZQb+e6OhJhb5bswe5HqxFE6soWxx
-	Xv+2zIh24aTa4JEY9O4Q==;
+	List-Owner; bh=7jfaPt4cre9LOMJhLAiQ9VivBHTyeKXoDODQPfYB05g=; b=Hu3DhJ97F1xRuG
+	WssbwbaQL8f3e0ydr6gnhETxBFwCvRgYFIC24sNHFlko77phco4le0GljsawwbG8UtEKmWcKOGcMi
+	5SihmtNXVzLp3fXyVguy4RIe6umpS7iScAsliNi+9dkk6uqYpqGbZM/Ao7776RqTSX2TTSQNeFOT+
+	qSdgQfnotgAZQyo5Dqdj7dhQ229Nr7sUrIsqgo2TmfL9Btd4h1DdHkJY9v4EWtLuCtk+9SCDksLBN
+	z5kAh/MEJaj45t1nPpMTOESebd3IQL5R/S12RFThd8OWZqh4j7D541KUG+aZsnVjEnmrGOXPQe9AJ
+	YWlRhRfVKN0wh3pYP3Rg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lt9R3-000J9I-2y; Tue, 15 Jun 2021 13:48:57 +0000
+	id 1lt9Rf-000JQO-Bs; Tue, 15 Jun 2021 13:49:35 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt9Fl-000DEY-9e
- for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 13:37:17 +0000
+ id 1lt9Fl-000DEY-PJ
+ for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 13:37:18 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description;
- bh=wvjH0QJdMC23y/OM/SNKH9LYSZ/0ypKlXjMxcWxU080=; b=i0Pgn8+thCT4NA4Rr3xlt9Zkzg
- chXrUkIl+bPRTdL5hCMtwZZ2wVn9n0FFltUK13Foco4XZBHLgUU2nQN64c3QPy+XpLEfnt0x6svI2
- VkoqVUzwK3Gnd5vzlm0Pr9mzZzpJJfrrotZhSrMDUmzbxF0vEWrgG1U9OguPCfT2a8au9LgZnL0dH
- 1ngDPhn3WgAH/7J0Z58lOzHjulk1UgJGPRnyGA2QauHI+eYbRUg63ozn1Ndsc5UKB+KXT2jzoV4hd
- CtnVA5hYEbZShsM8JtWtPv/99iLOPPS7RBVi77AXPHs5ha4T4dG3T0Y5ifGsCTK+zNu5OB9di6RyS
- NbbeT7Wg==;
+ bh=n8YHkIwX2mAdBi2VgZ8lwUNejw0EvSi8isoH7rw3je4=; b=VkU4iLqmwd/Y3IPE/5kHfwHKc9
+ xSnN5EBhubCHxgEYE++UwVNYzhDNjHCFvmSG7V2PiZ5lf+xQGhAu/Z98OKoAuZkCBzZ2EcZmxkvG4
+ 19t83X8v+EisYSmFVEGTGlIFtB37YBy2dmXJYoS71OoTIE5FNFuyqU03BWZm8iSKHCtt9Km678wNW
+ pEbXED80y7WdgdpvN9JV98FtQ92Zw/pmEZSgyJDHneCvj7Dp9NJRVu9AONPuY1GTbLdkgJoBIA+cn
+ CAXQaiENx8kEXq+o1H4DrHMnyZoSU2KvCqabIou9FQeNI7lFQpnG4BEB3ljCKAdmv9qowlYVuan/o
+ z+WV+lkQ==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt7Bt-007lvw-61
- for barebox@lists.infradead.org; Tue, 15 Jun 2021 11:25:20 +0000
+ id 1lt7Bs-007lvr-BC
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 11:25:19 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1lt7Bw-0003a1-MF
+ (envelope-from <str@pengutronix.de>) id 1lt7Bw-0003Zs-Fs
  for barebox@lists.infradead.org; Tue, 15 Jun 2021 13:25:12 +0200
 Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1lt7Bw-0001BK-1o
- for barebox@lists.infradead.org; Tue, 15 Jun 2021 13:25:12 +0200
+ (envelope-from <str@pengutronix.de>) id 1lt7Bv-00014I-O6
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 13:25:11 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 15 Jun 2021 13:25:08 +0200
-Message-Id: <20210615112508.5489-10-s.trumtrar@pengutronix.de>
+Date: Tue, 15 Jun 2021 13:25:00 +0200
+Message-Id: <20210615112508.5489-2-s.trumtrar@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210615112508.5489-1-s.trumtrar@pengutronix.de>
 References: <20210615112508.5489-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210615_122516_070004_02F1D6F8 
-X-CRM114-Status: GOOD (  15.12  )
+X-CRM114-CacheID: sfid-20210615_122515_615885_D144A736 
+X-CRM114-Status: GOOD (  31.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,101 +86,462 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 10/10] firmware: add support for compressed images
+Subject: [PATCH v3 02/10] drivers: add fpga bridge framework
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-At least bitstreams for FPGAs can consist of a lot of zeros depending on
-device utilization. These bitstreams can be compressed very effectively.
+Import the fpga bridge framework from linux v4.10-rc2.
 
-Let the firmware code accept these images and decompress them before
-handing it to the firmware-manager in question.
+Description from the initial commit adding this to linux:
+21aeda950c5f84a8351b862816d832120b217a9b
+
+    fpga: add fpga bridge framework
+
+    This framework adds API functions for enabling/
+    disabling FPGA bridges under kernel control.
+
+    This allows the Linux kernel to disable FPGA bridges
+    during FPGA reprogramming and to enable FPGA bridges
+    when FPGA reprogramming is done.  This framework is
+    be manufacturer-agnostic, allowing it to be used in
+    interfaces that use the FPGA Manager Framework to
+    reprogram FPGA's.
+
+    The functions are:
+    * of_fpga_bridge_get
+    * fpga_bridge_put
+       Get/put an exclusive reference to a FPGA bridge.
+
+    * fpga_bridge_enable
+    * fpga_bridge_disable
+       Enable/Disable traffic through a bridge.
+
+    * fpga_bridge_register
+    * fpga_bridge_unregister
+       Register/unregister a device-specific low level FPGA
+       Bridge driver.
+
+    Get an exclusive reference to a bridge and add it to a list:
+    * fpga_bridge_get_to_list
+
+    To enable/disable/put a set of bridges that are on a list:
+    * fpga_bridges_enable
+    * fpga_bridges_disable
+    * fpga_bridges_put
+
+    Signed-off-by: Alan Tull <atull@opensource.altera.com>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 ---
 
-v2->v3 - better error handling
-       - fix free'ing and close'ing
-       - remove O_CREAT for devicefd. Destination is always a device
-         that shall be written with a firmware (FPGA etc). If it doesn't
-         exist, creating it is useless.
+v2->v3: add fpga_bridges_put function to deallocate bridge list
 ---
- common/firmware.c | 52 +++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 48 insertions(+), 4 deletions(-)
+ drivers/Kconfig            |   1 +
+ drivers/Makefile           |   1 +
+ drivers/fpga/Kconfig       |  22 ++++
+ drivers/fpga/Makefile      |   6 +
+ drivers/fpga/fpga-bridge.c | 243 +++++++++++++++++++++++++++++++++++++
+ include/fpga-bridge.h      |  74 +++++++++++
+ 6 files changed, 347 insertions(+)
+ create mode 100644 drivers/fpga/Kconfig
+ create mode 100644 drivers/fpga/Makefile
+ create mode 100644 drivers/fpga/fpga-bridge.c
+ create mode 100644 include/fpga-bridge.h
 
-diff --git a/common/firmware.c b/common/firmware.c
-index 58509d5da615..47defbd739ca 100644
---- a/common/firmware.c
-+++ b/common/firmware.c
-@@ -14,6 +14,8 @@
- #include <linux/list.h>
- #include <linux/stat.h>
- #include <linux/err.h>
-+#include <uncompress.h>
-+#include <filetype.h>
- 
- #define BUFSIZ 4096
- 
-@@ -211,12 +213,54 @@ int firmwaremgr_register(struct firmware_handler *fh)
-  */
- int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
- {
--	int ret;
--	char *name = basprintf("/dev/%s", mgr->handler->id);
-+	char *dst;
-+	enum filetype type;
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 787d36693309..670e0a9f4c95 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -37,6 +37,7 @@ source "drivers/reset/Kconfig"
+ source "drivers/pci/Kconfig"
+ source "drivers/rtc/Kconfig"
+ source "drivers/firmware/Kconfig"
++source "drivers/fpga/Kconfig"
+ source "drivers/phy/Kconfig"
+ source "drivers/crypto/Kconfig"
+ source "drivers/memory/Kconfig"
+diff --git a/drivers/Makefile b/drivers/Makefile
+index be5b0b3b04c9..e21ac7095c6c 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -34,6 +34,7 @@ obj-$(CONFIG_RESET_CONTROLLER) += reset/
+ obj-$(CONFIG_PCI) += pci/
+ obj-y += rtc/
+ obj-$(CONFIG_FIRMWARE) += firmware/
++obj-$(CONFIG_FPGA) += fpga/
+ obj-$(CONFIG_GENERIC_PHY) += phy/
+ obj-$(CONFIG_HAB) += hab/
+ obj-$(CONFIG_CRYPTO_HW) += crypto/
+diff --git a/drivers/fpga/Kconfig b/drivers/fpga/Kconfig
+new file mode 100644
+index 000000000000..fccdbff6eb3f
+--- /dev/null
++++ b/drivers/fpga/Kconfig
+@@ -0,0 +1,22 @@
++#
++# FPGA framework configuration
++#
++
++menu "FPGA Configuration Support"
++
++config FPGA
++	tristate "FPGA Configuration Framework"
++	help
++	  Say Y here if you want support for configuring FPGAs from barebox.
++
++if FPGA
++
++config FPGA_BRIDGE
++	tristate "FPGA Bridge Framework"
++	help
++	  Say Y here if you want to support bridges connected between host
++	  processors and FPGAs or between FPGAs.
++
++endif # FPGA
++
++endmenu
+diff --git a/drivers/fpga/Makefile b/drivers/fpga/Makefile
+new file mode 100644
+index 000000000000..fc71a29d3b33
+--- /dev/null
++++ b/drivers/fpga/Makefile
+@@ -0,0 +1,6 @@
++#
++# Makefile for the fpga framework and fpga manager drivers.
++#
++
++# FPGA Bridge Drivers
++obj-$(CONFIG_FPGA_BRIDGE)		+= fpga-bridge.o
+diff --git a/drivers/fpga/fpga-bridge.c b/drivers/fpga/fpga-bridge.c
+new file mode 100644
+index 000000000000..6e8dcbfc0d16
+--- /dev/null
++++ b/drivers/fpga/fpga-bridge.c
+@@ -0,0 +1,243 @@
++/*
++ * FPGA Bridge Framework Driver
++ *
++ *  Copyright (C) 2013-2016 Altera Corporation, All Rights Reserved.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++#include <common.h>
++#include <fpga-bridge.h>
++
++/**
++ * fpga_bridge_enable - Enable transactions on the bridge
++ *
++ * @bridge: FPGA bridge
++ *
++ * Return: 0 for success, error code otherwise.
++ */
++int fpga_bridge_enable(struct fpga_bridge *bridge)
++{
++	dev_dbg(&bridge->dev, "enable\n");
++
++	if (bridge->br_ops && bridge->br_ops->enable_set)
++		return bridge->br_ops->enable_set(bridge, 1);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(fpga_bridge_enable);
++
++/**
++ * fpga_bridge_disable - Disable transactions on the bridge
++ *
++ * @bridge: FPGA bridge
++ *
++ * Return: 0 for success, error code otherwise.
++ */
++int fpga_bridge_disable(struct fpga_bridge *bridge)
++{
++	dev_dbg(&bridge->dev, "disable\n");
++
++	if (bridge->br_ops && bridge->br_ops->enable_set)
++		return bridge->br_ops->enable_set(bridge, 0);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(fpga_bridge_disable);
++
++/**
++ * of_fpga_bridge_get - get an exclusive reference to a fpga bridge
++ *
++ * @np: node pointer of a FPGA bridge
++ *
++ * Return fpga_bridge struct if successful.
++ * Return -EBUSY if someone already has a reference to the bridge.
++ * Return -ENODEV if @np is not a FPGA Bridge.
++ */
++struct fpga_bridge *of_fpga_bridge_get(struct device_node *np)
++
++{
++	struct device_d *dev;
++	struct fpga_bridge *bridge;
++	int ret = -ENODEV;
++
++	dev = of_find_device_by_node(np);
++	if (!dev || !dev->priv)
++		return ERR_PTR(ret);
++
++	bridge = dev->priv;
++
++	return bridge;
++}
++EXPORT_SYMBOL_GPL(of_fpga_bridge_get);
++
++/**
++ * fpga_bridges_enable - enable bridges in a list
++ * @bridge_list: list of FPGA bridges
++ *
++ * Enable each bridge in the list.  If list is empty, do nothing.
++ *
++ * Return 0 for success or empty bridge list; return error code otherwise.
++ */
++int fpga_bridges_enable(struct list_head *bridge_list)
++{
++	struct fpga_bridge *bridge;
++	int ret;
++
++	list_for_each_entry(bridge, bridge_list, node) {
++		ret = fpga_bridge_enable(bridge);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(fpga_bridges_enable);
++
++/**
++ * fpga_bridges_disable - disable bridges in a list
++ *
++ * @bridge_list: list of FPGA bridges
++ *
++ * Disable each bridge in the list.  If list is empty, do nothing.
++ *
++ * Return 0 for success or empty bridge list; return error code otherwise.
++ */
++int fpga_bridges_disable(struct list_head *bridge_list)
++{
++	struct fpga_bridge *bridge;
++	int ret;
++
++	list_for_each_entry(bridge, bridge_list, node) {
++		ret = fpga_bridge_disable(bridge);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(fpga_bridges_disable);
++
++/**
++ * fpga_bridges_put - put bridges
++ *
++ * @bridge_list: list of FPGA bridges
++ *
++ * For each bridge in the list, put the bridge and remove it from the list.
++ * If list is empty, do nothing.
++ */
++void fpga_bridges_put(struct list_head *bridge_list)
++{
++	struct fpga_bridge *bridge, *next;
++
++	list_for_each_entry_safe(bridge, next, bridge_list, node)
++		list_del(&bridge->node);
++}
++EXPORT_SYMBOL_GPL(fpga_bridges_put);
++
++/**
++ * fpga_bridges_get_to_list - get a bridge, add it to a list
++ *
++ * @np: node pointer of a FPGA bridge
++ * @bridge_list: list of FPGA bridges
++ *
++ * Get an exclusive reference to the bridge and and it to the list.
++ *
++ * Return 0 for success, error code from of_fpga_bridge_get() othewise.
++ */
++int fpga_bridge_get_to_list(struct device_node *np,
++			    struct list_head *bridge_list)
++{
++	struct fpga_bridge *bridge;
++
++	bridge = of_fpga_bridge_get(np);
++	if (IS_ERR(bridge))
++		return PTR_ERR(bridge);
++	list_add(&bridge->node, bridge_list);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(fpga_bridge_get_to_list);
++
++static int set_enable(struct param_d *p, void *priv)
++{
++	struct fpga_bridge *bridge = priv;
++
++	if (bridge->enable)
++		fpga_bridge_enable(bridge);
++	else
++		fpga_bridge_disable(bridge);
++
++	return 0;
++}
++
++/**
++ * fpga_bridge_register - register a fpga bridge driver
++ * @dev:	FPGA bridge device from pdev
++ * @name:	FPGA bridge name
++ * @br_ops:	pointer to structure of fpga bridge ops
++ * @priv:	FPGA bridge private data
++ *
++ * Return: 0 for success, error code otherwise.
++ */
++int fpga_bridge_register(struct device_d *dev, const char *name,
++			 const struct fpga_bridge_ops *br_ops, void *priv)
++{
++	struct fpga_bridge *bridge;
++	struct param_d *p;
 +	int ret = 0;
-+	int firmwarefd = 0;
-+	int devicefd = 0;
 +
-+	if (!firmware)
++	if (!name || !strlen(name)) {
++		dev_err(dev, "Attempt to register with no name!\n");
 +		return -EINVAL;
-+
-+	if (!mgr->handler->id) {
-+		pr_err("id not defined for handler\n");
-+		return -ENODEV;
 +	}
 +
-+	dst = basprintf("/dev/%s", mgr->handler->id);
++	bridge = xzalloc(sizeof(*bridge));
++	if (!bridge)
++		return -ENOMEM;
 +
-+	type = file_name_detect_type(firmware);
++	INIT_LIST_HEAD(&bridge->node);
 +
-+	if (type == filetype_unknown) {
-+		ret = copy_file(firmware, dst, 0);
-+	} else {
-+		firmwarefd = open(firmware, O_RDONLY);
-+		if (firmwarefd < 0) {
-+			printf("could not open %s: %s\n", firmwarefd,
-+			       errno_str());
-+			ret = firmwarefd;
-+			goto out;
-+		}
- 
--	ret = copy_file(firmware, name, 0);
-+		devicefd = open(dst, O_WRONLY);
++	bridge->br_ops = br_ops;
++	bridge->priv = priv;
 +
-+		if (devicefd < 0) {
-+			printf("could not open %s: %s\n", dst, errno_str());
-+			ret = devicefd;
-+			goto out;
-+		}
++	bridge->dev.parent = dev;
++	bridge->dev.device_node = dev->device_node;
++	bridge->dev.id = DEVICE_ID_DYNAMIC;
 +
-+		ret = uncompress_fd_to_fd(firmwarefd, devicefd,
-+					  uncompress_err_stdout);
-+	}
++	bridge->dev.name = xstrdup(name);
++
++	ret = register_device(&bridge->dev);
++	if (ret)
++		goto out;
++
++	dev->priv = bridge;
++
++	bridge->enable = 0;
++	p = dev_add_param_bool(&bridge->dev, "enable", set_enable,
++			       NULL, &bridge->enable, bridge);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
++	of_platform_populate(dev->device_node, NULL, dev);
++
++	dev_info(bridge->dev.parent, "fpga bridge [%s] registered\n",
++		 bridge->dev.name);
++
++	return 0;
 +
 +out:
-+	free(dst);
- 
--	free(name);
-+	if (firmwarefd > 0)
-+		close(firmwarefd);
-+	if (devicefd > 0)
-+		close(devicefd);
- 
- 	return ret;
- }
++	kfree(bridge);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(fpga_bridge_register);
+diff --git a/include/fpga-bridge.h b/include/fpga-bridge.h
+new file mode 100644
+index 000000000000..fef2a9ccbbd3
+--- /dev/null
++++ b/include/fpga-bridge.h
+@@ -0,0 +1,74 @@
++#include <common.h>
++
++#ifndef _LINUX_FPGA_BRIDGE_H
++#define _LINUX_FPGA_BRIDGE_H
++
++struct fpga_bridge;
++
++/**
++ * struct fpga_bridge_ops - ops for low level FPGA bridge drivers
++ * @enable_show: returns the FPGA bridge's status
++ * @enable_set: set a FPGA bridge as enabled or disabled
++ * @fpga_bridge_remove: set FPGA into a specific state during driver remove
++ */
++struct fpga_bridge_ops {
++	int (*enable_show)(struct fpga_bridge *bridge);
++	int (*enable_set)(struct fpga_bridge *bridge, bool enable);
++	void (*fpga_bridge_remove)(struct fpga_bridge *bridge);
++};
++
++/**
++ * struct fpga_bridge - FPGA bridge structure
++ * @name: name of low level FPGA bridge
++ * @dev: FPGA bridge device
++ * @mutex: enforces exclusive reference to bridge
++ * @br_ops: pointer to struct of FPGA bridge ops
++ * @info: fpga image specific information
++ * @node: FPGA bridge list node
++ * @priv: low level driver private date
++ */
++struct fpga_bridge {
++	struct device_d dev;
++	const struct fpga_bridge_ops *br_ops;
++	struct list_head node;
++	unsigned int enable;
++	void *priv;
++};
++
++#define to_fpga_bridge(d) container_of(d, struct fpga_bridge, dev)
++
++struct fpga_bridge *of_fpga_bridge_get(struct device_node *node);
++void fpga_bridge_put(struct fpga_bridge *bridge);
++int fpga_bridge_enable(struct fpga_bridge *bridge);
++int fpga_bridge_disable(struct fpga_bridge *bridge);
++
++#ifdef CONFIG_FPGA_BRIDGE
++int fpga_bridges_enable(struct list_head *bridge_list);
++int fpga_bridges_disable(struct list_head *bridge_list);
++int fpga_bridge_get_to_list(struct device_node *np,
++			    struct list_head *bridge_list);
++void fpga_bridges_put(struct list_head *bridge_list);
++#else
++static inline int fpga_bridges_enable(struct list_head *bridge_list)
++{
++	return -ENOSYS;
++};
++static inline int fpga_bridges_disable(struct list_head *bridge_list)
++{
++	return -ENOSYS;
++};
++static inline int fpga_bridge_get_to_list(struct device_node *np,
++			    struct list_head *bridge_list)
++{
++	return -ENOSYS;
++};
++static inline void fpga_bridges_put(struct list_head *bridge_list)
++{
++	return;
++};
++#endif
++
++int fpga_bridge_register(struct device_d *dev, const char *name,
++			 const struct fpga_bridge_ops *br_ops, void *priv);
++
++#endif /* _LINUX_FPGA_BRIDGE_H */
 -- 
 2.29.2
 
