@@ -1,67 +1,66 @@
-Delivery-date: Tue, 15 Jun 2021 15:58:18 +0200
+Delivery-date: Tue, 15 Jun 2021 15:58:22 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lt9a6-0008Ld-Qv
-	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 15:58:18 +0200
+	id 1lt9aA-0008M0-Jj
+	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 15:58:22 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lt9a2-0005om-9k
-	for lore@pengutronix.de; Tue, 15 Jun 2021 15:58:18 +0200
+	id 1lt9a3-0005qI-RP
+	for lore@pengutronix.de; Tue, 15 Jun 2021 15:58:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=o7+oVOkOSKV5dgweBkYZOOahVGbkG3vcgb2wCwrVTKY=; b=Kr4+jjAikj6IH6
-	4omCT5pChpI6wb0c87ntwDzB6An84ALEvArD0fNXAA221cbqktjbWXoiC7UWENCPC0BP72ugm/14H
-	zQN/8vSQhsKc5mDKif0+BngGrQ5pSqARqVhjAuaPyO3FE8G8VgtMXsHukvCP+ClH1QzGtEIhL9YGV
-	zsGUL2zG4jq1qlua7IaHH3FLk7G5IIQmMgNL8UpMADkZ38Bz3DWbYsyFFcWeXWkjOYTobaOwpMAPS
-	OsECuxnSfvF9QPikUqufb+TBCDJOaUU61azHkUufJteE7dqXXpHmdlWuRGYhJXKM4VXgkOLL6tvAl
-	HQB+D0f5Dpbmd5BIJn+w==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=whjptQAXy1ToXqb5r0E3HCrMFQqa4Evjfliu5r93eQM=; b=oAphc8S1TlATH9
+	841sXAplNSteSKjSvFPLDM5S4WTTd/J6WNc8Oz4NdQ8sBUi7+F+y36nuE7ExNE4lilGySRLO+K3zI
+	BVVN+rdaXxgmmbYkz9YzOD67EwfeDBhsbuFCm8drF+MOxb7yqFfD5TRyQOt7aDxDRDTOe6yrh/O6b
+	NoSS6izEquoJuMRDIA6svQ+dwITCrtY1l9N7l+TBxkBqwELCAKi3JDsa7LfYqqqiXIT29NXLRaq/+
+	FnWW6KZDVJNw1r32eoD4735L8dU4TLRGtvxE1yUzLv5Xkbyod/aPE9omXXuoaxS/tNRK/urVvJz1a
+	Q38IQNzKqeZrn94jfAXg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lt9SJ-000JgL-86; Tue, 15 Jun 2021 13:50:15 +0000
+	id 1lt9ST-000Jtr-Vx; Tue, 15 Jun 2021 13:50:26 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt9Fm-000DEY-VP
+ id 1lt9Fm-000DDm-Vy
  for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 13:37:19 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
- :References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description;
- bh=vG7W5h9L5zOdP8aulHscNm4TDMq7tWUUMP8ZdB4pyD0=; b=lMdizOXzXWu7/00wm8slHmxMEZ
- R93/RpnEw9+W3Qx9dYBiVL6Bn0CfjbwxXohcK+cGSZawuyZ/KnItbGm+fkXFsNda6/eW58QQven7L
- GS2kE3IjkBWZN2DJb6iXBqkTwsD2VJrOMVT0g1O3axqeZGVbXAM0lN9qZoVbJ2oNFdn8mzXiBrdZ+
- 11ZlkRTWjqsJyYVchlBh3OVq9lKH/iMWKbRxs5T93AAwvd65TBzM8U8O2ijCWLUORz0e0u8UCHPeU
- E4Kwf5IM+mhLoz7Xb++NRv5lKVHn/T8BO5m3hMlD+xLce95ytVUEhKp7E75wch29zFxtA40hXO+tI
- WedMuBgA==;
+ :Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=U5VFyGkS4yTUJG3ybfVaKdRjOKtMQBIT+eApJySIx/4=; b=fRACKgNxUEdnqZFDC6mWfw+Y/z
+ 8FSohYnpF/ltqotwX0SxHMUO2aKi6PVbO14NlR1hI+AuIonCidLqjEUc60/zrvzzB0X/9SmT/dbhU
+ pRthNbI6HC4Czj9T/J9yNt1JcguiWGgd0nM5G09XX2pzTfUT35H1Bm7MB1ljTMqrqIQRTKHvROkk+
+ ieAUsUuf0uHT/ZEB/SepZvvnJogr2SsV0mGRW2KOq51NToSjHKwTebDzmks3/zhqI6zX49Ry4tLFd
+ 2u6lP72+kXTwdq8ZTTUd1w0Y8rL8MJ0HDoUgR2egHlg1O06UhhL7Modhqoy32F/wr9yRAzy0l/dyU
+ VYIpk2QA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt7Bs-007lvp-9W
+ id 1lt7Bs-007lvn-Eo
  for barebox@lists.infradead.org; Tue, 15 Jun 2021 11:25:17 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1lt7Bw-0003Zv-Fr
+ (envelope-from <str@pengutronix.de>) id 1lt7Bw-0003Zr-Ft
  for barebox@lists.infradead.org; Tue, 15 Jun 2021 13:25:12 +0200
 Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1lt7Bv-00016Q-Py
+ (envelope-from <str@pengutronix.de>) id 1lt7Bv-00013q-Nc
  for barebox@lists.infradead.org; Tue, 15 Jun 2021 13:25:11 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 15 Jun 2021 13:25:02 +0200
-Message-Id: <20210615112508.5489-4-s.trumtrar@pengutronix.de>
+Date: Tue, 15 Jun 2021 13:24:59 +0200
+Message-Id: <20210615112508.5489-1-s.trumtrar@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210615112508.5489-1-s.trumtrar@pengutronix.de>
-References: <20210615112508.5489-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210615_122515_290877_33AEDF17 
-X-CRM114-Status: GOOD (  17.40  )
+X-CRM114-CacheID: sfid-20210615_122515_611644_490D66E0 
+X-CRM114-Status: UNSURE (   9.33  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,231 +85,42 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 04/10] firmware: socfpga: change function prefixes
+Subject: [PATCH v3 01/10] reset: add of_reset_control_get to header
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Since there is now a fpgamgr framework in barebox, the function names are
-misleading. Change that to be SoCFPGA specific.
-
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/firmware/socfpga.c | 58 +++++++++++++++++++-------------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+ drivers/reset/core.c  | 2 +-
+ include/linux/reset.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
-index c468c743720f..14875214b1aa 100644
---- a/drivers/firmware/socfpga.c
-+++ b/drivers/firmware/socfpga.c
-@@ -92,12 +92,12 @@ struct fpgamgr {
- };
- 
- /* Get the FPGA mode */
--static uint32_t fpgamgr_get_mode(struct fpgamgr *mgr)
-+static uint32_t socfpga_fpgamgr_get_mode(struct fpgamgr *mgr)
- {
- 	return readl(mgr->regs + FPGAMGRREGS_STAT) & FPGAMGRREGS_STAT_MODE_MASK;
- }
- 
--static int fpgamgr_dclkcnt_set(struct fpgamgr *mgr, unsigned long cnt)
-+static int socfpga_fpgamgr_dclkcnt_set(struct fpgamgr *mgr, unsigned long cnt)
- {
- 	uint64_t start;
- 
-@@ -121,7 +121,7 @@ static int fpgamgr_dclkcnt_set(struct fpgamgr *mgr, unsigned long cnt)
- }
- 
- /* Start the FPGA programming by initialize the FPGA Manager */
--static int fpgamgr_program_init(struct fpgamgr *mgr)
-+static int socfpga_fpgamgr_program_init(struct fpgamgr *mgr)
- {
- 	unsigned long reg;
- 	uint32_t ctrl = 0, ratio;
-@@ -170,7 +170,7 @@ static int fpgamgr_program_init(struct fpgamgr *mgr)
- 	/* (1) wait until FPGA enter reset phase */
- 	start = get_time_ns();
- 	while (1) {
--		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_RESETPHASE)
-+		if (socfpga_fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_RESETPHASE)
- 			break;
- 		if (is_timeout(start, 100 * MSECOND))
- 			return -ETIMEDOUT;
-@@ -184,7 +184,7 @@ static int fpgamgr_program_init(struct fpgamgr *mgr)
- 	/* (2) wait until FPGA enter configuration phase */
- 	start = get_time_ns();
- 	while (1) {
--		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_CFGPHASE)
-+		if (socfpga_fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_CFGPHASE)
- 			break;
- 		if (is_timeout(start, 100 * MSECOND))
- 			return -ETIMEDOUT;
-@@ -202,7 +202,7 @@ static int fpgamgr_program_init(struct fpgamgr *mgr)
- }
- 
- /* Ensure the FPGA entering config done */
--static int fpgamgr_program_poll_cd(struct fpgamgr *mgr)
-+static int socfpga_fpgamgr_program_poll_cd(struct fpgamgr *mgr)
- {
- 	unsigned long reg;
- 	uint32_t val;
-@@ -236,18 +236,18 @@ static int fpgamgr_program_poll_cd(struct fpgamgr *mgr)
- }
- 
- /* Ensure the FPGA entering init phase */
--static int fpgamgr_program_poll_initphase(struct fpgamgr *mgr)
-+static int socfpga_fpgamgr_program_poll_initphase(struct fpgamgr *mgr)
- {
- 	uint64_t start;
- 
- 	/* additional clocks for the CB to enter initialization phase */
--	if (fpgamgr_dclkcnt_set(mgr, 0x4) != 0)
-+	if (socfpga_fpgamgr_dclkcnt_set(mgr, 0x4) != 0)
- 		return -5;
- 
- 	/* (4) wait until FPGA enter init phase or user mode */
- 	start = get_time_ns();
- 	while (1) {
--		int mode = fpgamgr_get_mode(mgr);
-+		int mode = socfpga_fpgamgr_get_mode(mgr);
- 
- 		if (mode == FPGAMGRREGS_MODE_INITPHASE ||
- 				mode == FPGAMGRREGS_MODE_USERMODE)
-@@ -261,19 +261,19 @@ static int fpgamgr_program_poll_initphase(struct fpgamgr *mgr)
- }
- 
- /* Ensure the FPGA entering user mode */
--static int fpgamgr_program_poll_usermode(struct fpgamgr *mgr)
-+static int socfpga_fpgamgr_program_poll_usermode(struct fpgamgr *mgr)
- {
- 	uint32_t val;
- 	uint64_t start;
- 
- 	/* additional clocks for the CB to exit initialization phase */
--	if (fpgamgr_dclkcnt_set(mgr, 0x5000) != 0)
-+	if (socfpga_fpgamgr_dclkcnt_set(mgr, 0x5000) != 0)
- 		return -7;
- 
- 	/* (5) wait until FPGA enter user mode */
- 	start = get_time_ns();
- 	while (1) {
--		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE)
-+		if (socfpga_fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE)
- 			break;
- 		if (is_timeout(start, 100 * MSECOND))
- 			return -ETIMEDOUT;
-@@ -291,7 +291,7 @@ static int fpgamgr_program_poll_usermode(struct fpgamgr *mgr)
-  * Using FPGA Manager to program the FPGA
-  * Return 0 for sucess
+diff --git a/drivers/reset/core.c b/drivers/reset/core.c
+index 26a54f21dff0..1c9eeaec5491 100644
+--- a/drivers/reset/core.c
++++ b/drivers/reset/core.c
+@@ -147,7 +147,7 @@ EXPORT_SYMBOL_GPL(reset_control_deassert);
+  *
+  * Use of id names is optional.
   */
--static int fpgamgr_program_start(struct firmware_handler *fh)
-+static int socfpga_fpgamgr_program_start(struct firmware_handler *fh)
+-static struct reset_control *of_reset_control_get(struct device_node *node,
++struct reset_control *of_reset_control_get(struct device_node *node,
+ 						  const char *id)
  {
- 	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
- 	int status;
-@@ -313,7 +313,7 @@ static int fpgamgr_program_start(struct firmware_handler *fh)
- 	dev_dbg(&mgr->dev, "start programming...\n");
+ 	struct reset_control *rstc;
+diff --git a/include/linux/reset.h b/include/linux/reset.h
+index a166fe1cfe04..726cb5c2057d 100644
+--- a/include/linux/reset.h
++++ b/include/linux/reset.h
+@@ -11,6 +11,8 @@ int reset_control_assert(struct reset_control *rstc);
+ int reset_control_deassert(struct reset_control *rstc);
  
- 	/* initialize the FPGA Manager */
--	status = fpgamgr_program_init(mgr);
-+	status = socfpga_fpgamgr_program_init(mgr);
- 	if (status) {
- 		dev_err(&mgr->dev, "program init failed with: %s\n",
- 				strerror(-status));
-@@ -324,7 +324,7 @@ static int fpgamgr_program_start(struct firmware_handler *fh)
- }
+ struct reset_control *reset_control_get(struct device_d *dev, const char *id);
++struct reset_control *of_reset_control_get(struct device_node *node,
++					   const char *id);
+ void reset_control_put(struct reset_control *rstc);
  
- /* Write the RBF data to FPGA Manager */
--static int fpgamgr_program_write_buf(struct firmware_handler *fh, const void *buf,
-+static int socfpga_fpgamgr_program_write_buf(struct firmware_handler *fh, const void *buf,
- 		size_t size)
- {
- 	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-@@ -355,7 +355,7 @@ static int fpgamgr_program_write_buf(struct firmware_handler *fh, const void *bu
- 	return 0;
- }
- 
--static int fpgamgr_program_finish(struct firmware_handler *fh)
-+static int socfpga_fpgamgr_program_finish(struct firmware_handler *fh)
- {
- 	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
- 	int status;
-@@ -364,7 +364,7 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
- 	void (*ocram_func)(void __iomem *ocram_base);
- 
- 	/* Ensure the FPGA entering config done */
--	status = fpgamgr_program_poll_cd(mgr);
-+	status = socfpga_fpgamgr_program_poll_cd(mgr);
- 	if (status) {
- 		dev_err(&mgr->dev, "poll for config done failed with: %s\n",
- 				strerror(-status));
-@@ -374,7 +374,7 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
- 	dev_dbg(&mgr->dev, "waiting for init phase...\n");
- 
- 	/* Ensure the FPGA entering init phase */
--	status = fpgamgr_program_poll_initphase(mgr);
-+	status = socfpga_fpgamgr_program_poll_initphase(mgr);
- 	if (status) {
- 		dev_err(&mgr->dev, "poll for init phase failed with: %s\n",
- 				strerror(-status));
-@@ -384,7 +384,7 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
- 	dev_dbg(&mgr->dev, "waiting for user mode...\n");
- 
- 	/* Ensure the FPGA entering user mode */
--	status = fpgamgr_program_poll_usermode(mgr);
-+	status = socfpga_fpgamgr_program_poll_usermode(mgr);
- 	if (status) {
- 		dev_err(&mgr->dev, "poll for user mode with: %s\n",
- 				strerror(-status));
-@@ -410,11 +410,11 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
- static int programmed_get(struct param_d *p, void *priv)
- {
- 	struct fpgamgr *mgr = priv;
--	mgr->programmed = fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE;
-+	mgr->programmed = socfpga_fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE;
- 	return 0;
- }
- 
--static int fpgamgr_probe(struct device_d *dev)
-+static int socfpga_fpgamgr_probe(struct device_d *dev)
- {
- 	struct resource *iores;
- 	struct fpgamgr *mgr;
-@@ -448,9 +448,9 @@ static int fpgamgr_probe(struct device_d *dev)
- 	else
- 		fh->id = xstrdup("socfpga-fpga");
- 
--	fh->open = fpgamgr_program_start;
--	fh->write = fpgamgr_program_write_buf;
--	fh->close = fpgamgr_program_finish;
-+	fh->open = socfpga_fpgamgr_program_start;
-+	fh->write = socfpga_fpgamgr_program_write_buf;
-+	fh->close = socfpga_fpgamgr_program_finish;
- 	of_property_read_string(dev->device_node, "compatible", &model);
- 	if (model)
- 		fh->model = xstrdup(model);
-@@ -488,7 +488,7 @@ static int fpgamgr_probe(struct device_d *dev)
- 	return ret;
- }
- 
--static struct of_device_id fpgamgr_id_table[] = {
-+static struct of_device_id socfpga_fpgamgr_id_table[] = {
- 	{
- 		.compatible = "altr,socfpga-fpga-mgr",
- 	},
-@@ -498,9 +498,9 @@ static struct of_device_id fpgamgr_id_table[] = {
- 	{ /* sentinel */ }
- };
- 
--static struct driver_d fpgamgr_driver = {
-+static struct driver_d socfpga_fpgamgr_driver = {
- 	.name = "socfpa-fpgamgr",
--	.of_compatible = DRV_OF_COMPAT(fpgamgr_id_table),
--	.probe = fpgamgr_probe,
-+	.of_compatible = DRV_OF_COMPAT(socfpga_fpgamgr_id_table),
-+	.probe = socfpga_fpgamgr_probe,
- };
--device_platform_driver(fpgamgr_driver);
-+device_platform_driver(socfpga_fpgamgr_driver);
+ int __must_check device_reset(struct device_d *dev);
 -- 
 2.29.2
 
