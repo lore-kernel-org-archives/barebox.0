@@ -1,67 +1,67 @@
-Delivery-date: Tue, 15 Jun 2021 18:48:09 +0200
+Delivery-date: Tue, 15 Jun 2021 18:48:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltCET-0002Rl-0W
-	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 18:48:09 +0200
+	id 1ltCEZ-0002SB-75
+	for lore@lore.pengutronix.de; Tue, 15 Jun 2021 18:48:15 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltCEQ-0004bc-G4
-	for lore@pengutronix.de; Tue, 15 Jun 2021 18:48:08 +0200
+	id 1ltCEX-0004d6-6K
+	for lore@pengutronix.de; Tue, 15 Jun 2021 18:48:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=RNet2jsb9ztw9D0+oS1J3N5W7v6qH5Hvc/MbqPxkzOM=; b=GuxAXjTgi0j1iu
-	MZHi/M0ysATD49KE918G8h3fFAnTh9tJagTSRDTmVyQOkmpH/m3trec8mKDcjLAgkY8YPrMddVeVn
-	K3qp3oX2KCkrfsHqmTTjRO1oQI8AM0mIbRVZuQUIyoy1I/jJ7Hr8TZ0iLiVwG+OgRDJ5Gbe0yuCAC
-	YkAhISMEsl5fsD/WKV2pDQ5RURNrfZOeYch2kigD6GABaemLmBtl79m2S4Y1BamfcWZL6FA+2hmte
-	xNZbKAUukuS/Si9fshI5hxMwIIbA1ahjoNOHTI+SJ/CEXnoAJGOjzxcDoSZXoU+yQy8pUrEvdC/Mf
-	LMpTFHo+urXDJZrJtJuA==;
+	List-Owner; bh=BC051F65rQryNLxEmo+UvnFGYMabQVFWfdBRjF3KBPU=; b=caB+N42yMtPCZV
+	jGSE4/fAPKPJjnKCo57O6qx8a0u0nvj9Pb/oXR5sU8fKSS1dKHud3Nrciwa0i5GRGAUzziUYfERJ5
+	Pcxh7i7Ltp2GSS5cf0iVfgQCweOQfWXf85PWnlJUvAEeDsqmrw1DOiVEiTHWLKjOuugzAsXFOESFa
+	cmaNTgvMYtxsUH5V1xNCZTtOiTfvuEwBGcs9+7IaCIen1VvcqPXVLYoz00YbvPty+jC/qqJqDeqP1
+	EHDC2nwY8hs4dj6W0hFr0Bjcz6vljN2zh239VWB3RldBE8MDwkwyWP5vAFuBtoH4sTMEzSAucazC3
+	A/rtY7Txqr5/7YZ8Vfow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ltC9G-001RfX-A8; Tue, 15 Jun 2021 16:42:46 +0000
+	id 1ltC8L-001RJB-2V; Tue, 15 Jun 2021 16:41:49 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt9s3-000WLh-Qa
- for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 14:16:52 +0000
+ id 1lt9s1-000WKQ-HD
+ for barebox@bombadil.infradead.org; Tue, 15 Jun 2021 14:16:49 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=PnHOqZMDo+hhesw1RpYG9z0ZwCIi6v1AhciFQD720Zc=; b=YPpZqx//aI6zOZ1+EEP0fUryO9
- H2JqgQlc4++o3KQhhxp2WlsrmAp9dZGLATw9oYny7AyxBMjiu6a+AOOx8DaDB8TLp7nu9JXYmPfvw
- V4N6cGlc4M37ETJ8AZ8ak4zruz6lIe1UzcmDPFwG4V1/lIHfYbzER3ZjyMl4335gPfj2VDGPeE2un
- LSk9D2zeKSl5+NJMx7EAYZ7jXhSAoHPuishpra2Le+WC6/cUvdudss9Tv7EFXtIcKS02YTC7qZbYk
- zhFzcrNfHewHq/dhQ59cMqEJva9pgRRGDr4Lgpxrw3Zx8lZUetnkspx+dtddObC3GYr+Opo/1J5Ha
- luaUFT8w==;
+ bh=ZGRaB1BMH20xm/9SiyogbOCJ/+hAvpqExJnZxa2Ln+s=; b=h/RuJeWhdbByr0JiVahYElLflx
+ tP7qp29QQ8LFJEpU/ZQ0Jop87LZ5SvHxjlu28k2YWQsN9QTn3DaCMJ/LmT9dq5i6+BFMrYVtQzVOy
+ RH7jpd0Cl8nXTrmJAATv/8QOrf/X/RpF3UW18sIV0Od4G0+hiss44ZPNzGozn/U/9kmmE60xYcS++
+ YKumPSbllD8KJoYpFmJw9Ydab2On76uBKtI99JAKRstMWxFjf3DeSy7W7p/8PR50Pu89Fy4rZo6GS
+ VJMi1R+gTJD54Mz5f7NCLbyacToVoj+wHUbLa/XLLTtEM2PtfBrL8I5ox2W+1IGD02tPaQ7kkf4zz
+ MR0NBhfA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt9ro-007zs4-VM
- for barebox@lists.infradead.org; Tue, 15 Jun 2021 14:16:50 +0000
+ id 1lt9rp-007zs7-3r
+ for barebox@lists.infradead.org; Tue, 15 Jun 2021 14:16:48 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lt9rv-0000uH-8z; Tue, 15 Jun 2021 16:16:43 +0200
+ id 1lt9rv-0000uI-Ef; Tue, 15 Jun 2021 16:16:43 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lt9ru-0001HD-Nk; Tue, 15 Jun 2021 16:16:42 +0200
+ id 1lt9ru-0001IA-PL; Tue, 15 Jun 2021 16:16:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 15 Jun 2021 16:16:37 +0200
-Message-Id: <20210615141641.31577-8-s.hauer@pengutronix.de>
+Date: Tue, 15 Jun 2021 16:16:38 +0200
+Message-Id: <20210615141641.31577-9-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210615141641.31577-1-s.hauer@pengutronix.de>
 References: <20210615141641.31577-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210615_151645_254264_84E29BC5 
-X-CRM114-Status: GOOD (  28.44  )
+X-CRM114-CacheID: sfid-20210615_151644_155483_777BEB49 
+X-CRM114-Status: GOOD (  28.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,520 +86,304 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/11] ARM: Rockchip: Add rk3568 support
+Subject: [PATCH 08/11] ARM: Add atf common support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This adds basic support for the Rockchip rk3568 SoC.
+ARM trusted firmware has some common data structures passed to bl31.
+This patch imports the code supporting this taken from U-Boot.
+The defines and data structures are taken directly from U-Boot,
+the support code is heavily modified for the sake of readability.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                              |   3 -
- arch/arm/mach-rockchip/Kconfig                |  12 ++
- arch/arm/mach-rockchip/Makefile               |   4 +-
- arch/arm/mach-rockchip/atf.c                  |  57 ++++++
- arch/arm/mach-rockchip/include/mach/atf.h     |  18 ++
- arch/arm/mach-rockchip/include/mach/bbu.h     |  14 ++
- .../arm/mach-rockchip/include/mach/debug_ll.h |   8 +
- .../mach-rockchip/include/mach/rk3568-regs.h  |  18 ++
- .../arm/mach-rockchip/include/mach/rockchip.h |  11 ++
- arch/arm/mach-rockchip/rk3568.c               | 176 ++++++++++++++++++
- arch/arm/mach-rockchip/rockchip.c             |   2 +
- common/Kconfig                                |  10 +-
- firmware/Makefile                             |   2 +-
- include/bootsource.h                          |   1 +
- 14 files changed, 330 insertions(+), 6 deletions(-)
- create mode 100644 arch/arm/mach-rockchip/atf.c
- create mode 100644 arch/arm/mach-rockchip/include/mach/atf.h
- create mode 100644 arch/arm/mach-rockchip/include/mach/bbu.h
- create mode 100644 arch/arm/mach-rockchip/include/mach/rk3568-regs.h
- create mode 100644 arch/arm/mach-rockchip/rk3568.c
+ arch/arm/Kconfig                  |   3 +
+ arch/arm/cpu/Makefile             |   1 +
+ arch/arm/cpu/atf.c                |  80 +++++++++++++++
+ arch/arm/include/asm/atf_common.h | 163 ++++++++++++++++++++++++++++++
+ 4 files changed, 247 insertions(+)
+ create mode 100644 arch/arm/cpu/atf.c
+ create mode 100644 arch/arm/include/asm/atf_common.h
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 6f28e1ec10..0740039309 100644
+index 0740039309..c7ab166888 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -145,8 +145,6 @@ config ARCH_PXA
+@@ -496,4 +496,7 @@ config ARM_MODULE_PLTS
+ 	  Say y if your memory configuration puts the heap to far away from the
+ 	  barebox image, causing relocation out of range errors
  
- config ARCH_ROCKCHIP
- 	bool "Rockchip RX3xxx"
--	select CPU_V7
--	select ARM_SMP_TWD
- 	select COMMON_CLK
- 	select CLKDEV_LOOKUP
- 	select COMMON_CLK_OF_PROVIDER
-@@ -156,7 +154,6 @@ config ARCH_ROCKCHIP
- 	select OFTREE
- 	select HAVE_PBL_MULTI_IMAGES
- 	select HAS_DEBUG_LL
--	select ARCH_HAS_L2X0
- 
- config ARCH_SOCFPGA
- 	bool "Altera SOCFPGA"
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 65bcbcac96..0bfb4d2c5b 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -13,11 +13,23 @@ config RK_TIMER
- 
- config ARCH_RK3188
- 	bool
-+	select CPU_V7
-+	select ARM_SMP_TWD
-+	select ARCH_HAS_L2X0
- 
- config ARCH_RK3288
- 	bool
-+	select CPU_V7
-+	select ARM_SMP_TWD
-+	select ARCH_HAS_L2X0
- 	select CLOCKSOURCE_ROCKCHIP
- 
-+config ARCH_RK3568
++config ARM_ATF
 +	bool
-+	select CPU_V8
-+	select ARM_ATF
-+	select SYS_SUPPORTS_64BIT_KERNEL
 +
- comment "select Rockchip boards:"
+ endmenu
+diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+index e7a6e3e6fb..6344ab5066 100644
+--- a/arch/arm/cpu/Makefile
++++ b/arch/arm/cpu/Makefile
+@@ -50,6 +50,7 @@ AFLAGS-cache-armv8.pbl.o   :=-Wa,-march=armv8-a
  
- config MACH_RADXA_ROCK
-diff --git a/arch/arm/mach-rockchip/Makefile b/arch/arm/mach-rockchip/Makefile
-index 0188d0252f..b7bab1fb73 100644
---- a/arch/arm/mach-rockchip/Makefile
-+++ b/arch/arm/mach-rockchip/Makefile
-@@ -1,3 +1,5 @@
--obj-y += rockchip.o
-+obj-y += rockchip.o atf.o
-+pbl-y += atf.o
- obj-$(CONFIG_ARCH_RK3188) += rk3188.o
- obj-$(CONFIG_ARCH_RK3288) += rk3288.o
-+obj-pbl-$(CONFIG_ARCH_RK3568) += rk3568.o
-diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
+ pbl-y += entry.o entry_ll$(S64).o
+ pbl-y += uncompress.o
++pbl-$(CONFIG_ARM_ATF) += atf.o
+ 
+ obj-pbl-y += common.o sections.o
+ KASAN_SANITIZE_common.o := n
+diff --git a/arch/arm/cpu/atf.c b/arch/arm/cpu/atf.c
 new file mode 100644
-index 0000000000..999876e49e
+index 0000000000..4753a8a559
 --- /dev/null
-+++ b/arch/arm/mach-rockchip/atf.c
-@@ -0,0 +1,57 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/arch/arm/cpu/atf.c
+@@ -0,0 +1,80 @@
 +#include <common.h>
-+#include <firmware.h>
-+#include <asm/system.h>
-+#include <mach/atf.h>
-+#include <elf.h>
 +#include <asm/atf_common.h>
++#include <asm/system.h>
 +
-+static unsigned long load_elf64_image_phdr(const void *elf)
++static inline void raw_write_daif(unsigned int daif)
 +{
-+	const Elf64_Ehdr *ehdr; /* Elf header structure pointer */
-+	const Elf64_Phdr *phdr; /* Program header structure pointer */
-+	int i;
-+
-+	ehdr = elf;
-+	phdr = elf + ehdr->e_phoff;
-+
-+	/* Load each program header */
-+	for (i = 0; i < ehdr->e_phnum; ++i) {
-+		void *dst = (void *)(ulong)phdr->p_paddr;
-+		const void *src = elf + phdr->p_offset;
-+
-+		pr_debug("Loading phdr %i to 0x%p (%lu bytes)\n",
-+			 i, dst, (ulong)phdr->p_filesz);
-+		if (phdr->p_filesz)
-+			memcpy(dst, src, phdr->p_filesz);
-+		if (phdr->p_filesz != phdr->p_memsz)
-+			memset(dst + phdr->p_filesz, 0x00,
-+				phdr->p_memsz - phdr->p_filesz);
-+		++phdr;
-+	}
-+
-+	return ehdr->e_entry;
++	__asm__ __volatile__("msr DAIF, %0\n\t" : : "r" (daif) : "memory");
 +}
 +
-+void rk3568_atf_load_bl31(void *fdt)
++void bl31_entry(uintptr_t bl31_entry, uintptr_t bl32_entry,
++		uintptr_t bl33_entry, uintptr_t fdt_addr)
 +{
-+	const void *bl31_elf, *optee;
-+	unsigned long bl31;
-+	size_t bl31_elf_size, optee_size;
++	struct atf_image_info bl31_image_info = {
++		.h = {
++			.type = ATF_PARAM_IMAGE_BINARY,
++			.version = ATF_VERSION_1,
++			.size = sizeof(bl31_image_info),
++		},
++	};
++	struct atf_image_info bl32_image_info = {
++		.h = {
++			.type = ATF_PARAM_IMAGE_BINARY,
++			.version = ATF_VERSION_1,
++			.size = sizeof(bl32_image_info),
++		},
++	};
++	struct entry_point_info bl32_ep_info = {
++		.h = {
++			.type = ATF_PARAM_EP,
++			.version = ATF_VERSION_1,
++			.attr = ATF_EP_SECURE,
++			.size = sizeof(bl32_ep_info),
++		},
++		.pc = bl32_entry,
++		.spsr = SPSR_64(MODE_EL1, MODE_SP_ELX, DISABLE_ALL_EXECPTIONS),
++		.args = {
++			.arg3 = fdt_addr,
++		},
++	};
++	struct atf_image_info bl33_image_info = {
++		.h = {
++			.type = ATF_PARAM_IMAGE_BINARY,
++			.version = ATF_VERSION_1,
++			.size = sizeof(bl33_image_info),
++		},
++	};
++	struct entry_point_info bl33_ep_info = {
++		.h = {
++			.type = ATF_PARAM_EP,
++			.version = ATF_VERSION_1,
++			.attr = ATF_EP_NON_SECURE,
++			.size = sizeof(bl33_ep_info),
++		},
++		.pc = bl33_entry,
++		.spsr = SPSR_64(MODE_EL2, MODE_SP_ELX, DISABLE_ALL_EXECPTIONS),
++		.args = {
++			/* BL33 expects to receive the primary CPU MPID (through x0) */
++			.arg0 = 0xffff & read_mpidr(),
++		},
++	};
++	struct bl31_params bl31_params = {
++		.h = {
++			.type = ATF_PARAM_BL31,
++			.version = ATF_VERSION_1,
++			.size = sizeof(bl31_params),
++		},
++		.bl31_image_info = &bl31_image_info,
++		.bl32_ep_info = &bl32_ep_info,
++		.bl32_image_info = &bl32_image_info,
++		.bl33_ep_info = &bl33_ep_info,
++		.bl33_image_info = &bl33_image_info,
++	};
++	void (*atf_entry)(struct bl31_params *params, uintptr_t plat_params);
 +
-+	get_builtin_firmware(rk3568_bl31_bin, &bl31_elf, &bl31_elf_size);
++	raw_write_daif(SPSR_EXCEPTION_MASK);
 +
-+	bl31 = load_elf64_image_phdr(bl31_elf);
++	atf_entry = (void *)bl31_entry;
 +
-+	get_builtin_firmware(rk3568_op_tee_bin, &optee, &optee_size);
-+
-+	memcpy((void *)RK3568_OPTEE_LOAD_ADDRESS, optee, optee_size);
-+
-+	/* Setup an initial stack for EL2 */
-+	asm volatile("msr sp_el2, %0" : :
-+			"r" (RK3568_BAREBOX_LOAD_ADDRESS - 16) :
-+			"cc");
-+
-+	bl31_entry(bl31, RK3568_OPTEE_LOAD_ADDRESS,
-+		   RK3568_BAREBOX_LOAD_ADDRESS, (uintptr_t)fdt);
++	atf_entry(&bl31_params, fdt_addr);
 +}
-diff --git a/arch/arm/mach-rockchip/include/mach/atf.h b/arch/arm/mach-rockchip/include/mach/atf.h
+diff --git a/arch/arm/include/asm/atf_common.h b/arch/arm/include/asm/atf_common.h
 new file mode 100644
-index 0000000000..337a8261c8
+index 0000000000..56e2d3ffaa
 --- /dev/null
-+++ b/arch/arm/mach-rockchip/include/mach/atf.h
-@@ -0,0 +1,18 @@
-+#ifndef __MACH_ATF_H
-+#define __MACH_ATF_H
-+
-+/* First usable DRAM address. Lower mem is used for ATF and OP-TEE */
-+#define RK3568_DRAM_BOTTOM		0xa00000
-+
-+/* OP-TEE expects to be loaded here */
-+#define RK3568_OPTEE_LOAD_ADDRESS	0x200000
-+
++++ b/arch/arm/include/asm/atf_common.h
+@@ -0,0 +1,163 @@
++/* SPDX-License-Identifier: BSD-3-Clause */
 +/*
-+ * board lowlevel code should relocate barebox here. This is where
-+ * OP-TEE jumps to after initialization.
++ * This is from the ARM TF Project,
++ * Repository: https://github.com/ARM-software/arm-trusted-firmware.git
++ * File: include/common/bl_common.h
++ * Portions copyright (c) 2013-2016, ARM Limited and Contributors. All rights
++ * reserved.
++ * Copyright (C) 2016-2017 Rockchip Electronic Co.,Ltd
 + */
-+#define RK3568_BAREBOX_LOAD_ADDRESS	(RK3568_DRAM_BOTTOM + 1024*1024)
 +
-+void rk3568_atf_load_bl31(void *fdt);
++#ifndef __BL_COMMON_H__
++#define __BL_COMMON_H__
 +
-+#endif /* __MACH_ATF_H */
-diff --git a/arch/arm/mach-rockchip/include/mach/bbu.h b/arch/arm/mach-rockchip/include/mach/bbu.h
-new file mode 100644
-index 0000000000..e61e0615e2
---- /dev/null
-+++ b/arch/arm/mach-rockchip/include/mach/bbu.h
-@@ -0,0 +1,14 @@
-+#ifndef __MACH_ROCKCHIP_BBU_H
-+#define __MACH_ROCKCHIP_BBU_H
++#define ATF_PARAM_EP		0x01
++#define ATF_PARAM_IMAGE_BINARY	0x02
++#define ATF_PARAM_BL31		0x03
 +
-+#include <bbu.h>
++#define ATF_VERSION_1	0x01
 +
-+static inline int rk3568_bbu_mmc_register(const char *name, unsigned long flags,
-+                const char *devicefile)
-+{
-+	return bbu_register_std_file_update(name, flags,
-+                devicefile, filetype_rockchip_rkns_image);
++#define ATF_EP_SECURE	0x0
++#define ATF_EP_NON_SECURE	0x1
 +
-+}
++#define MODE_RW_SHIFT	0x4
++#define MODE_RW_MASK	0x1
++#define MODE_RW_64	0x0
++#define MODE_RW_32	0x1
 +
-+# endif /* __MACH_ROCKCHIP_BBU_H */
-diff --git a/arch/arm/mach-rockchip/include/mach/debug_ll.h b/arch/arm/mach-rockchip/include/mach/debug_ll.h
-index 7806aab8bb..af6257a674 100644
---- a/arch/arm/mach-rockchip/include/mach/debug_ll.h
-+++ b/arch/arm/mach-rockchip/include/mach/debug_ll.h
-@@ -5,6 +5,7 @@
- #include <io.h>
- #include <mach/rk3188-regs.h>
- #include <mach/rk3288-regs.h>
-+#include <mach/rk3568-regs.h>
- 
- #ifdef CONFIG_DEBUG_LL
- 
-@@ -22,6 +23,13 @@
- #define serial_out(a, v)	writel(v, a)
- #define serial_in(a)		readl(a)
- 
-+#elif defined CONFIG_DEBUG_ROCKCHIP_RK3568_UART
++#define MODE_EL_SHIFT	0x2
++#define MODE_EL_MASK	0x3
++#define MODE_EL3	0x3
++#define MODE_EL2	0x2
++#define MODE_EL1	0x1
++#define MODE_EL0	0x0
 +
-+#define UART_CLOCK		24000000
-+#define RK_DEBUG_SOC		RK3568
-+#define serial_out(a, v)	writel(v, a)
-+#define serial_in(a)		readl(a)
++#define MODE_SP_SHIFT	0x0
++#define MODE_SP_MASK	0x1
++#define MODE_SP_EL0	0x0
++#define MODE_SP_ELX	0x1
 +
- #endif
- 
- #define __RK_UART_BASE(soc, num) soc##_UART##num##_BASE
-diff --git a/arch/arm/mach-rockchip/include/mach/rk3568-regs.h b/arch/arm/mach-rockchip/include/mach/rk3568-regs.h
-new file mode 100644
-index 0000000000..bb2ca7bd90
---- /dev/null
-+++ b/arch/arm/mach-rockchip/include/mach/rk3568-regs.h
-@@ -0,0 +1,18 @@
-+#ifndef __MACH_RK3568_REGS_H
-+#define __MACH_RK3568_REGS_H
++#define SPSR_DAIF_SHIFT	6
++#define SPSR_DAIF_MASK	0x0f
 +
-+/* UART */
-+#define RK3568_UART0_BASE	0xfdd50000
-+#define RK3568_UART1_BASE	0xfe650000
-+#define RK3568_UART2_BASE	0xfe660000
-+#define RK3568_UART3_BASE	0xfe670000
-+#define RK3568_UART4_BASE	0xfe680000
-+#define RK3568_UART5_BASE	0xfe690000
-+#define RK3568_UART6_BASE	0xfe6a0000
-+#define RK3568_UART7_BASE	0xfe6b0000
-+#define RK3568_UART8_BASE	0xfe6c0000
-+#define RK3568_UART9_BASE	0xfe6d0000
++#define SPSR_64(el, sp, daif)		\
++	(MODE_RW_64 << MODE_RW_SHIFT |	\
++	 ((el) & MODE_EL_MASK) << MODE_EL_SHIFT |	\
++	 ((sp) & MODE_SP_MASK) << MODE_SP_SHIFT |	\
++	 ((daif) & SPSR_DAIF_MASK) << SPSR_DAIF_SHIFT)
 +
-+#define RK3568_IRAM_BASE	0xfdcc0000
++#define SPSR_FIQ             (1 << 6)
++#define SPSR_IRQ             (1 << 7)
++#define SPSR_SERROR          (1 << 8)
++#define SPSR_DEBUG           (1 << 9)
++#define SPSR_EXCEPTION_MASK  (SPSR_FIQ | SPSR_IRQ | SPSR_SERROR | SPSR_DEBUG)
 +
-+#endif /* __MACH_RK3568_REGS_H */
-diff --git a/arch/arm/mach-rockchip/include/mach/rockchip.h b/arch/arm/mach-rockchip/include/mach/rockchip.h
-index 8d37c67d4f..722b73d6f8 100644
---- a/arch/arm/mach-rockchip/include/mach/rockchip.h
-+++ b/arch/arm/mach-rockchip/include/mach/rockchip.h
-@@ -19,4 +19,15 @@ static inline int rk3288_init(void)
- }
- #endif
- 
-+#ifdef CONFIG_ARCH_RK3568
-+int rk3568_init(void);
-+#else
-+static inline int rk3568_init(void)
-+{
-+	return -ENOTSUPP;
-+}
-+#endif
++#define DAIF_FIQ_BIT (1<<0)
++#define DAIF_IRQ_BIT (1<<1)
++#define DAIF_ABT_BIT (1<<2)
++#define DAIF_DBG_BIT (1<<3)
++#define DISABLE_ALL_EXECPTIONS	\
++	(DAIF_FIQ_BIT | DAIF_IRQ_BIT | DAIF_ABT_BIT | DAIF_DBG_BIT)
 +
-+int rk3568_lowlevel_init(void);
++#ifndef __ASSEMBLY__
 +
- #endif /* __MACH_ROCKCHIP_H */
-diff --git a/arch/arm/mach-rockchip/rk3568.c b/arch/arm/mach-rockchip/rk3568.c
-new file mode 100644
-index 0000000000..fcf3cb7053
---- /dev/null
-+++ b/arch/arm/mach-rockchip/rk3568.c
-@@ -0,0 +1,176 @@
-+// SPDX-License-Identifier:     GPL-2.0+
-+#include <common.h>
-+#include <io.h>
-+#include <bootsource.h>
-+#include <mach/rk3568-regs.h>
-+#include <mach/rockchip.h>
-+
-+#define GRF_BASE		0xfdc60000
-+#define GRF_GPIO1B_DS_2		0x218
-+#define GRF_GPIO1B_DS_3		0x21c
-+#define GRF_GPIO1C_DS_0		0x220
-+#define GRF_GPIO1C_DS_1		0x224
-+#define GRF_GPIO1C_DS_2		0x228
-+#define GRF_GPIO1C_DS_3		0x22c
-+#define GRF_GPIO1D_DS_0		0x230
-+#define GRF_GPIO1D_DS_1		0x234
-+#define GRF_SOC_CON4		0x510
-+#define EDP_PHY_GRF_BASE	0xfdcb0000
-+#define EDP_PHY_GRF_CON0	(EDP_PHY_GRF_BASE + 0x00)
-+#define EDP_PHY_GRF_CON10	(EDP_PHY_GRF_BASE + 0x28)
-+#define PMU_BASE_ADDR		0xfdd90000
-+#define PMU_NOC_AUTO_CON0	0x70
-+#define PMU_NOC_AUTO_CON1	0x74
-+#define CRU_BASE		0xfdd20000
-+#define CRU_SOFTRST_CON26	0x468
-+#define CRU_SOFTRST_CON28	0x470
-+#define SGRF_BASE		0xFDD18000
-+#define SGRF_SOC_CON3		0xC
-+#define SGRF_SOC_CON4		0x10
-+#define PMUGRF_SOC_CON15	0xfdc20100
-+#define CPU_GRF_BASE		0xfdc30000
-+#define GRF_CORE_PVTPLL_CON0	0x10
-+#define USBPHY_U3_GRF		0xfdca0000
-+#define USBPHY_U3_GRF_CON1	(USBPHY_U3_GRF + 0x04)
-+#define USBPHY_U2_GRF		0xfdca8000
-+#define USBPHY_U2_GRF_CON0	(USBPHY_U2_GRF + 0x00)
-+#define USBPHY_U2_GRF_CON1	(USBPHY_U2_GRF + 0x04)
-+
-+#define PMU_PWR_GATE_SFTCON	0xA0
-+#define PMU_PWR_DWN_ST		0x98
-+#define PMU_BUS_IDLE_SFTCON0	0x50
-+#define PMU_BUS_IDLE_ST		0x68
-+#define PMU_BUS_IDLE_ACK	0x60
-+
-+#define EBC_PRIORITY_REG	0xfe158008
-+
-+static void qos_priority_init(void)
-+{
-+	u32 delay;
-+
-+	/* enable all pd except npu and gpu */
-+	writel(0xffff0000 & ~(BIT(0 + 16) | BIT(1 + 16)),
-+	       PMU_BASE_ADDR + PMU_PWR_GATE_SFTCON);
-+	delay = 1000;
-+	do {
-+		udelay(1);
-+		delay--;
-+		if (delay == 0) {
-+			printf("Fail to set domain.");
-+			hang();
-+		}
-+	} while (readl(PMU_BASE_ADDR + PMU_PWR_DWN_ST) & ~(BIT(0) | BIT(1)));
-+
-+	/* release all idle request except npu and gpu */
-+	writel(0xffff0000 & ~(BIT(1 + 16) | BIT(2 + 16)),
-+	       PMU_BASE_ADDR + PMU_BUS_IDLE_SFTCON0);
-+
-+	delay = 1000;
-+	/* wait ack status */
-+	do {
-+		udelay(1);
-+		delay--;
-+		if (delay == 0) {
-+			printf("Fail to get ack on domain.\n");
-+			hang();
-+		}
-+	} while (readl(PMU_BASE_ADDR + PMU_BUS_IDLE_ACK) & ~(BIT(1) | BIT(2)));
-+
-+	delay = 1000;
-+	/* wait idle status */
-+	do {
-+		udelay(1);
-+		delay--;
-+		if (delay == 0) {
-+			printf("Fail to set idle on domain.\n");
-+			hang();
-+		}
-+	} while (readl(PMU_BASE_ADDR + PMU_BUS_IDLE_ST) & ~(BIT(1) | BIT(2)));
-+
-+	writel(0x303, EBC_PRIORITY_REG);
-+}
-+
-+int rk3568_lowlevel_init(void)
-+{
-+	/*
-+	 * When perform idle operation, corresponding clock can
-+	 * be opened or gated automatically.
-+	 */
-+	writel(0xffffffff, PMU_BASE_ADDR + PMU_NOC_AUTO_CON0);
-+	writel(0x000f000f, PMU_BASE_ADDR + PMU_NOC_AUTO_CON1);
-+
-+	/* Set the emmc sdmmc0 to secure */
-+	writel(((0x3 << 11 | 0x1 << 4) << 16), SGRF_BASE + SGRF_SOC_CON4);
-+	/* set the emmc ds to level 2 */
-+	writel(0x3f3f0707, GRF_BASE + GRF_GPIO1B_DS_2);
-+	writel(0x3f3f0707, GRF_BASE + GRF_GPIO1B_DS_3);
-+	writel(0x3f3f0707, GRF_BASE + GRF_GPIO1C_DS_0);
-+	writel(0x3f3f0707, GRF_BASE + GRF_GPIO1C_DS_1);
-+	writel(0x3f3f0707, GRF_BASE + GRF_GPIO1C_DS_2);
-+	writel(0x3f3f0707, GRF_BASE + GRF_GPIO1C_DS_3);
-+
-+	/* Set the fspi to secure */
-+	writel(((0x1 << 14) << 16) | (0x0 << 14), SGRF_BASE + SGRF_SOC_CON3);
-+
-+	/* Disable eDP phy by default */
-+	writel(0x00070007, EDP_PHY_GRF_CON10);
-+	writel(0x0ff10ff1, EDP_PHY_GRF_CON0);
-+
-+	/* Set core pvtpll ring length */
-+	writel(0x00ff002b, CPU_GRF_BASE + GRF_CORE_PVTPLL_CON0);
-+
-+	/*
-+	 * Assert reset the pipephy0, pipephy1 and pipephy2,
-+	 * and de-assert reset them in Kernel combphy driver.
-+	 */
-+	writel(0x02a002a0, CRU_BASE + CRU_SOFTRST_CON28);
-+
-+	/*
-+	 * Set USB 2.0 PHY0 port1 and PHY1 port0 and port1
-+	 * enter suspend mode to to save power. And USB 2.0
-+	 * PHY0 port0 for OTG interface still in normal mode.
-+	 */
-+	writel(0x01ff01d1, USBPHY_U3_GRF_CON1);
-+	writel(0x01ff01d1, USBPHY_U2_GRF_CON0);
-+	writel(0x01ff01d1, USBPHY_U2_GRF_CON1);
-+
-+	qos_priority_init();
-+
-+	return 0;
-+}
-+
-+struct rk_bootsource {
-+	enum bootsource src;
-+	int instance;
++/*******************************************************************************
++ * Structure used for telling the next BL how much of a particular type of
++ * memory is available for its use and how much is already used.
++ ******************************************************************************/
++struct aapcs64_params {
++	unsigned long arg0;
++	unsigned long arg1;
++	unsigned long arg2;
++	unsigned long arg3;
++	unsigned long arg4;
++	unsigned long arg5;
++	unsigned long arg6;
++	unsigned long arg7;
 +};
 +
-+static struct rk_bootsource bootdev_map[] = {
-+	{ .src = BOOTSOURCE_UNKNOWN, .instance = 0 },
-+	{ .src = BOOTSOURCE_NAND, .instance = 0 },
-+	{ .src = BOOTSOURCE_MMC, .instance = 0 },
-+	{ .src = BOOTSOURCE_SPI_NOR, .instance = 0 },
-+	{ .src = BOOTSOURCE_SPI_NAND, .instance = 0 },
-+	{ .src = BOOTSOURCE_MMC, .instance = 1 },
++/***************************************************************************
++ * This structure provides version information and the size of the
++ * structure, attributes for the structure it represents
++ ***************************************************************************/
++struct param_header {
++	uint8_t type;		/* type of the structure */
++	uint8_t version;    /* version of this structure */
++	uint16_t size;      /* size of this structure in bytes */
++	uint32_t attr;      /* attributes: unused bits SBZ */
 +};
 +
-+static enum bootsource rk3568_bootsource(void)
-+{
-+	u32 v;
++/*****************************************************************************
++ * This structure represents the superset of information needed while
++ * switching exception levels. The only two mechanisms to do so are
++ * ERET & SMC. Security state is indicated using bit zero of header
++ * attribute
++ * NOTE: BL1 expects entrypoint followed by spsr at an offset from the start
++ * of this structure defined by the macro `ENTRY_POINT_INFO_PC_OFFSET` while
++ * processing SMC to jump to BL31.
++ *****************************************************************************/
++struct entry_point_info {
++	struct param_header h;
++	uintptr_t pc;
++	uint32_t spsr;
++	struct aapcs64_params args;
++};
 +
-+	v = readl(RK3568_IRAM_BASE + 0x10);
++/*****************************************************************************
++ * Image info binary provides information from the image loader that
++ * can be used by the firmware to manage available trusted RAM.
++ * More advanced firmware image formats can provide additional
++ * information that enables optimization or greater flexibility in the
++ * common firmware code
++ *****************************************************************************/
++struct atf_image_info {
++	struct param_header h;
++	uintptr_t image_base;   /* physical address of base of image */
++	uint32_t image_size;    /* bytes read from image file */
++};
 +
-+	if (v >= ARRAY_SIZE(bootdev_map))
-+		return BOOTSOURCE_UNKNOWN;
++/*****************************************************************************
++ * The image descriptor struct definition.
++ *****************************************************************************/
++struct image_desc {
++	/* Contains unique image id for the image. */
++	unsigned int image_id;
++	/*
++	 * This member contains Image state information.
++	 * Refer IMAGE_STATE_XXX defined above.
++	 */
++	unsigned int state;
++	uint32_t copied_size;	/* image size copied in blocks */
++	struct atf_image_info atf_image_info;
++	struct entry_point_info ep_info;
++};
 +
-+	bootsource_set(bootdev_map[v].src);
-+	bootsource_set_instance(bootdev_map[v].instance);
++/*******************************************************************************
++ * This structure represents the superset of information that can be passed to
++ * BL31 e.g. while passing control to it from BL2. The BL32 parameters will be
++ * populated only if BL2 detects its presence. A pointer to a structure of this
++ * type should be passed in X0 to BL31's cold boot entrypoint.
++ *
++ * Use of this structure and the X0 parameter is not mandatory: the BL31
++ * platform code can use other mechanisms to provide the necessary information
++ * about BL32 and BL33 to the common and SPD code.
++ *
++ * BL31 image information is mandatory if this structure is used. If either of
++ * the optional BL32 and BL33 image information is not provided, this is
++ * indicated by the respective image_info pointers being zero.
++ ******************************************************************************/
++struct bl31_params {
++	struct param_header h;
++	struct atf_image_info *bl31_image_info;
++	struct entry_point_info *bl32_ep_info;
++	struct atf_image_info *bl32_image_info;
++	struct entry_point_info *bl33_ep_info;
++	struct atf_image_info *bl33_image_info;
++};
 +
-+	return bootdev_map[v].src;
-+}
++void bl31_entry(uintptr_t bl31_entry, uintptr_t bl32_entry,
++		uintptr_t bl33_entry, uintptr_t fdt_addr);
 +
-+int rk3568_init(void)
-+{
-+	rk3568_bootsource();
++#endif /*__ASSEMBLY__ */
 +
-+	return 0;
-+}
-diff --git a/arch/arm/mach-rockchip/rockchip.c b/arch/arm/mach-rockchip/rockchip.c
-index b0fbb49457..f0b2484c68 100644
---- a/arch/arm/mach-rockchip/rockchip.c
-+++ b/arch/arm/mach-rockchip/rockchip.c
-@@ -9,6 +9,8 @@ static int rockchip_init(void)
- 		rk3188_init();
- 	else if (of_machine_is_compatible("rockchip,rk3288"))
- 		rk3288_init();
-+	else if (of_machine_is_compatible("rockchip,rk3568"))
-+		rk3568_init();
- 	else
- 		pr_err("Unknown rockchip SoC\n");
- 
-diff --git a/common/Kconfig b/common/Kconfig
-index 8b8f80bbb3..273186c5fa 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1331,6 +1331,13 @@ config DEBUG_ROCKCHIP_RK3288_UART
- 	  Say Y here if you want kernel low-level debugging support
- 	  on RK3288.
- 
-+config DEBUG_ROCKCHIP_RK3568_UART
-+	bool "RK3568 Debug UART"
-+	depends on ARCH_RK3568
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on RK3568.
-+
- config DEBUG_SOCFPGA_UART0
- 	bool "Use SOCFPGA UART0 for low-level debug"
- 	depends on ARCH_SOCFPGA
-@@ -1417,7 +1424,8 @@ config DEBUG_OMAP_UART_PORT
- 
- config DEBUG_ROCKCHIP_UART_PORT
- 	int "RK3xxx UART debug port" if DEBUG_ROCKCHIP_RK3188_UART || \
--				DEBUG_ROCKCHIP_RK3288_UART
-+				DEBUG_ROCKCHIP_RK3288_UART || \
-+				DEBUG_ROCKCHIP_RK3568_UART
- 	default 2
- 	depends on ARCH_ROCKCHIP
- 	help
-diff --git a/firmware/Makefile b/firmware/Makefile
-index 3a38c40079..de01ffe7a8 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -9,7 +9,7 @@ firmware-$(CONFIG_FIRMWARE_IMX_LPDDR4_PMU_TRAIN) += \
- firmware-$(CONFIG_FIRMWARE_IMX8MM_ATF) += imx8mm-bl31.bin
- firmware-$(CONFIG_FIRMWARE_IMX8MP_ATF) += imx8mp-bl31.bin
- firmware-$(CONFIG_FIRMWARE_IMX8MQ_ATF) += imx8mq-bl31.bin
--
-+firmware-$(CONFIG_ARCH_RK3568) += rk3568-bl31.bin rk3568-op-tee.bin
- firmware-$(CONFIG_DRIVER_NET_FSL_FMAN) += fsl_fman_ucode_ls1046_r1.0_106_4_18.bin
- 
- firmware-$(CONFIG_ARCH_LAYERSCAPE_PPA) += ppa-ls1046a.bin
-diff --git a/include/bootsource.h b/include/bootsource.h
-index 32295ddd96..646b0e91c1 100644
---- a/include/bootsource.h
-+++ b/include/bootsource.h
-@@ -12,6 +12,7 @@ enum bootsource {
- 	BOOTSOURCE_SPI,
- 	BOOTSOURCE_SPI_EEPROM,
- 	BOOTSOURCE_SPI_NOR,
-+	BOOTSOURCE_SPI_NAND,
- 	BOOTSOURCE_SERIAL,
- 	BOOTSOURCE_ONENAND,
- 	BOOTSOURCE_HD,
++#endif /* __BL_COMMON_H__ */
 -- 
 2.29.2
 
