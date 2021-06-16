@@ -1,53 +1,53 @@
-Delivery-date: Wed, 16 Jun 2021 08:34:51 +0200
+Delivery-date: Wed, 16 Jun 2021 08:34:55 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltP8V-0000FZ-I1
-	for lore@lore.pengutronix.de; Wed, 16 Jun 2021 08:34:51 +0200
+	id 1ltP8Z-0000G9-HA
+	for lore@lore.pengutronix.de; Wed, 16 Jun 2021 08:34:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ltP8T-0000Es-60
-	for lore@pengutronix.de; Wed, 16 Jun 2021 08:34:51 +0200
+	id 1ltP8X-0000G5-Ns
+	for lore@pengutronix.de; Wed, 16 Jun 2021 08:34:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=1t5k3T9HMHLF/V+sbnCMu7jLl88uYalQuf77fX4LUMs=; b=A2Tzg+1qlMAwna
-	bNdfyzlq5sj04zFJUQeGpdLCPfAquNjrFs7Z+PYy8qeQnMj1/2Gh1FrT11/IZEyt60PToOeubhwQR
-	9Qhs0cqQb1OROu9eDiFomfoqwhFbMSSnuV4cSTJBcSNmTAnQALz35KugNIjtxE75yFmu9YTqoZ1+e
-	Xt+u04Mxko2vuMPCdD4DWZeMDuUQZa4AlUveX15hsbNx6H3pTeh89+esxU03j9A/nlXaFzHD9QKrF
-	ScDwe7w7VyfxZkdWMtC18WmVqlxu4z0USKqaquY6wivfz7jDLPTRBMkZbrUKAf3RVQRzXCcdSHuop
-	zsbVLNmwjesNPqtgacrg==;
+	List-Owner; bh=GNtQqDpk626zzEnLh/PkZf5KelgQnSPnflFbbLMyvb4=; b=tUIyanQ3SUvC9w
+	SrlXFUiCE4bKV8HdiaZKtCocgHuO8kuSqXwXeY4/NYU5BPE++NtDZu1TNA8FVFkzR1v8eERU1s1eR
+	W0C/Grt7T4WGLrE5lP6MjdzjYaIQ1rjDSINSiEAncT+/UFWeFJ8pf8jj/OB+5j/uveENs7GAvGpl4
+	Fvvnn1Jm6a4ekn0mII4siEQyIg0YuAlHrW5o0jXDzLDFX+9IufNDe9xx4tabBJBPYIIv4ENADT2ib
+	fPekT1JVZe34ZIT3Q//GHzh76mA9mvu+DX1IfJFQNorl/inaH/lGONXfAoDm/v9+kMgdjuYGoYsC6
+	HrYysz2z+Y0GtGllupAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ltP7B-0055xZ-3a; Wed, 16 Jun 2021 06:33:29 +0000
+	id 1ltP7G-00560B-2Q; Wed, 16 Jun 2021 06:33:34 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ltP6m-0055oA-65
+ id 1ltP6m-0055o7-66
  for barebox@lists.infradead.org; Wed, 16 Jun 2021 06:33:07 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1ltP6i-0008Ie-AJ
+ (envelope-from <str@pengutronix.de>) id 1ltP6i-0008Ic-AE
  for barebox@lists.infradead.org; Wed, 16 Jun 2021 08:33:00 +0200
 Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1ltP6h-00049p-L2
+ (envelope-from <str@pengutronix.de>) id 1ltP6h-00049j-KG
  for barebox@lists.infradead.org; Wed, 16 Jun 2021 08:32:59 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 16 Jun 2021 08:32:43 +0200
-Message-Id: <20210616063246.14900-7-s.trumtrar@pengutronix.de>
+Date: Wed, 16 Jun 2021 08:32:41 +0200
+Message-Id: <20210616063246.14900-5-s.trumtrar@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210616063246.14900-1-s.trumtrar@pengutronix.de>
 References: <20210616063246.14900-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210615_233304_479442_FC778788 
-X-CRM114-Status: GOOD (  21.66  )
+X-CRM114-CacheID: sfid-20210615_233304_345601_EAE3BDAD 
+X-CRM114-Status: GOOD (  24.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,264 +71,168 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 07/10] of: of_firmware: add support for fpga bridges
+Subject: [PATCH v4 05/10] firmware: import fpga-mgr.h from linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Add support for potentially defined FPGA-bridges in the overlay.
-
-While at it also add support for loading the firmware directly via a
-path instead of 'needing' an overlay for that.
-The direct loading will be done with the existent firmwareload command.
+Instead of defining the fpga-mgr structure in the socfpga driver, import
+the fpga-mgr.h file from linux v4.13.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-
 ---
+ drivers/firmware/socfpga.c |   9 +---
+ include/firmware.h         |   1 +
+ include/fpga-mgr.h         | 102 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 104 insertions(+), 8 deletions(-)
+ create mode 100644 include/fpga-mgr.h
 
-v2->v3 - basprintf -> plain 'compatible = "fpga-region"'
-       - assign root in if-clause
----
- drivers/of/Makefile      |   3 +-
- drivers/of/of_firmware.c | 129 +++++++++++++++++++++++++++++++++++++--
- include/of.h             |  23 +++++--
- 3 files changed, 142 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index b6847752d247..6199c9791f52 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -6,4 +6,5 @@ obj-y += partition.o
- obj-y += of_net.o
- obj-$(CONFIG_MTD) += of_mtd.o
- obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o
--obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o of_firmware.o
-+obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o
-+obj-$(CONFIG_FIRMWARE) += of_firmware.o
-diff --git a/drivers/of/of_firmware.c b/drivers/of/of_firmware.c
-index 096f84572e63..26864a6a13ef 100644
---- a/drivers/of/of_firmware.c
-+++ b/drivers/of/of_firmware.c
-@@ -4,12 +4,52 @@
+diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
+index 14875214b1aa..605c931604c9 100644
+--- a/drivers/firmware/socfpga.c
++++ b/drivers/firmware/socfpga.c
+@@ -27,6 +27,7 @@
   */
- #include <common.h>
+ 
  #include <firmware.h>
-+#include <fpga-bridge.h>
- #include <of.h>
++#include <fpga-mgr.h>
+ #include <command.h>
+ #include <common.h>
+ #include <malloc.h>
+@@ -83,14 +84,6 @@
+ extern void socfpga_sdram_apply_static_cfg(void __iomem *sdrctrlgrp);
+ extern void socfpga_sdram_apply_static_cfg_end(void *);
  
- struct overlay_info {
- 	const char *firmware_path;
- };
- 
-+#ifdef CONFIG_FPGA_BRIDGE
-+static int of_get_bridges(struct device_node *region, struct list_head *bridges)
-+{
-+	struct device_node *br, *parent_br = NULL;
-+	int i, ret;
-+
-+	/* If parent is a bridge, add to list */
-+	ret = fpga_bridge_get_to_list(region->parent, bridges);
-+	if (!ret) {
-+		parent_br = region->parent;
-+		pr_debug("Add %s to list of bridges\n", parent_br->name);
-+	}
-+
-+	for (i = 0; ; i++) {
-+		br = of_parse_phandle(region, "fpga-bridges", i);
-+		if (!br)
-+			break;
-+
-+		/* If parent bridge is in list, skip it. */
-+		if (br == parent_br)
-+			continue;
-+
-+		/* If node is a bridge, get it and add to list */
-+		ret = fpga_bridge_get_to_list(br, bridges);
-+		if (ret)
-+			return ret;
-+
-+		pr_debug("Add %s to list of bridges\n", br->name);
-+	}
-+
-+	return 0;
-+}
-+#else
-+static int of_get_bridges(struct device_node *np, struct list_head *br)
-+{
-+	return 0;
-+}
-+#endif
-+
- static struct firmware_mgr *of_node_get_mgr(struct device_node *np)
- {
- 	struct device_node *mgr_node;
-@@ -25,6 +65,35 @@ static struct firmware_mgr *of_node_get_mgr(struct device_node *np)
- 	return NULL;
- }
- 
-+static int of_load_firmware(struct device_node *target, const char *path)
-+{
-+	struct list_head bridge_list;
-+	struct firmware_mgr *mgr;
-+	int err;
-+
-+	mgr = of_node_get_mgr(target);
-+	if (!mgr)
-+		return -EINVAL;
-+
-+	pr_debug("Found firmware manager @%s\n", target->name);
-+
-+	INIT_LIST_HEAD(&bridge_list);
-+
-+	of_get_bridges(target, &bridge_list);
-+
-+	fpga_bridges_disable(&bridge_list);
-+
-+	pr_debug("Loading %s to %s\n", path, target->name);
-+
-+	err = firmwaremgr_load_file(mgr, path);
-+
-+	fpga_bridges_enable(&bridge_list);
-+
-+	fpga_bridges_put(&bridge_list);
-+
-+	return err;
-+}
-+
- static int load_firmware(struct device_node *target,
- 			 struct device_node *fragment, void *data)
- {
-@@ -33,7 +102,6 @@ static int load_firmware(struct device_node *target,
- 	const char *firmware_path = info->firmware_path;
- 	char *firmware;
- 	int err;
--	struct firmware_mgr *mgr;
- 
- 	err = of_property_read_string(fragment,
- 				      "firmware-name", &firmware_name);
-@@ -46,21 +114,70 @@ static int load_firmware(struct device_node *target,
- 	if (!target)
- 		return -EINVAL;
- 
--	mgr = of_node_get_mgr(target);
--	if (!mgr)
--		return -EINVAL;
+-struct fpgamgr {
+-	struct firmware_handler fh;
+-	struct device_d dev;
+-	void __iomem *regs;
+-	void __iomem *regs_data;
+-	int programmed;
+-};
 -
- 	firmware = basprintf("%s/%s", firmware_path, firmware_name);
- 	if (!firmware)
- 		return -ENOMEM;
- 
--	err = firmwaremgr_load_file(mgr, firmware);
-+	err = of_load_firmware(target, firmware);
- 
- 	free(firmware);
- 
- 	return err;
- }
- 
-+int of_firmware_load_file(const char *path, const char *compatible,
-+			  const char *search_path, const char *firmware)
-+{
-+	struct overlay_info info = {
-+		.firmware_path = search_path,
-+	};
-+	struct device_node *target;
-+	struct device_node *node;
-+	struct device_node *root;
-+
-+	if (!compatible)
-+		compatible = "fpga-region";
-+
-+	/*
-+	 * firmware-name not specified. Use load_firmware function to get it from
-+	 * the devicetree. This allows loading firmware to multiple devices.
-+	 */
-+	if (!firmware && !path) {
-+		int err;
-+
-+		pr_debug("No firmware specified. Searching devicetree for %s\n", compatible);
-+		for_each_compatible_node(node, NULL, compatible) {
-+			pr_debug("Load firmware from %s\n", node->name);
-+			err = load_firmware(node, node, &info);
-+			if (err == -ENOMEM)
-+				return err;
-+		}
-+
-+		return 0;
-+	}
-+
-+	if (path) {
-+		root = of_get_root_node();
-+
-+		target = of_find_node_by_path_or_alias(root, path);
-+		if (!target) {
-+			pr_debug("Cannot find nodepath %s\n", path);
-+			return -ENOENT;
-+		}
-+	} else {
-+		target = of_find_compatible_node(NULL, NULL, compatible);
-+		if (!target) {
-+			pr_debug("No node matching %s found\n", compatible);
-+			return -ENOSYS;
-+		}
-+	}
-+	
-+	if (!firmware)
-+		return load_firmware(target, target, &info);
-+
-+	return of_load_firmware(target, firmware);
-+}
-+
- int of_firmware_load_overlay(struct device_node *overlay, const char *path)
+ /* Get the FPGA mode */
+ static uint32_t socfpga_fpgamgr_get_mode(struct fpgamgr *mgr)
  {
- 	struct overlay_info info = {
-diff --git a/include/of.h b/include/of.h
-index 645f429bdeed..3c922bdb1414 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -1020,6 +1020,23 @@ static inline struct device_node *of_find_root_node(struct device_node *node)
- 	return node;
- }
- 
-+#ifdef CONFIG_FIRMWARE
-+int of_firmware_load_file(const char *path, const char *compatible,
-+			  const char *search_path, const char *firmware);
-+int of_firmware_load_overlay(struct device_node *overlay, const char *path);
-+#else
-+static inline int of_firmware_load_file(const char *path, const char *compatible,
-+					const char *search_path, const char *firmware)
-+{
-+	return -ENOSYS;
-+}
+diff --git a/include/firmware.h b/include/firmware.h
+index 19777d9bf711..2fef97a48f56 100644
+--- a/include/firmware.h
++++ b/include/firmware.h
+@@ -13,6 +13,7 @@ struct firmware_handler {
+ 	char *id; /* unique identifier for this firmware device */
+ 	char *model; /* description for this device */
+ 	struct device_d *dev;
++	void *priv;
+ 	/* called once to prepare the firmware's programming cycle */
+ 	int (*open)(struct firmware_handler*);
+ 	/* called multiple times to program the firmware with the given data */
+diff --git a/include/fpga-mgr.h b/include/fpga-mgr.h
+new file mode 100644
+index 000000000000..a120b3918990
+--- /dev/null
++++ b/include/fpga-mgr.h
+@@ -0,0 +1,102 @@
++/*
++ * FPGA Framework
++ *
++ *  Copyright (C) 2013-2015 Altera Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++#ifndef _LINUX_FPGA_MGR_H
++#define _LINUX_FPGA_MGR_H
 +
-+static inline int of_firmware_load_overlay(const char *path)
-+{
-+	return -ENOSYS;
-+}
-+#endif
++#include <firmware.h>
 +
- #ifdef CONFIG_OF_OVERLAY
- struct device_node *of_resolve_phandles(struct device_node *root,
- 					const struct device_node *overlay);
-@@ -1032,7 +1049,6 @@ int of_process_overlay(struct device_node *root,
- 				   struct device_node *overlay, void *data),
- 		    void *data);
- 
--int of_firmware_load_overlay(struct device_node *overlay, const char *path);
- #else
- static inline struct device_node *of_resolve_phandles(struct device_node *root,
- 					const struct device_node *overlay)
-@@ -1059,11 +1075,6 @@ static inline int of_process_overlay(struct device_node *root,
- {
- 	return -ENOSYS;
- }
--
--static inline int of_firmware_load_overlay(struct device_node *overlay, const char *path)
--{
--	return -ENOSYS;
--}
- #endif
- 
- #endif /* __OF_H */
++struct fpga_manager;
++
++/**
++ * enum fpga_mgr_states - fpga framework states
++ * @FPGA_MGR_STATE_UNKNOWN: can't determine state
++ * @FPGA_MGR_STATE_POWER_OFF: FPGA power is off
++ * @FPGA_MGR_STATE_POWER_UP: FPGA reports power is up
++ * @FPGA_MGR_STATE_RESET: FPGA in reset state
++ * @FPGA_MGR_STATE_FIRMWARE_REQ: firmware request in progress
++ * @FPGA_MGR_STATE_FIRMWARE_REQ_ERR: firmware request failed
++ * @FPGA_MGR_STATE_WRITE_INIT: preparing FPGA for programming
++ * @FPGA_MGR_STATE_WRITE_INIT_ERR: Error during WRITE_INIT stage
++ * @FPGA_MGR_STATE_WRITE: writing image to FPGA
++ * @FPGA_MGR_STATE_WRITE_ERR: Error while writing FPGA
++ * @FPGA_MGR_STATE_WRITE_COMPLETE: Doing post programming steps
++ * @FPGA_MGR_STATE_WRITE_COMPLETE_ERR: Error during WRITE_COMPLETE
++ * @FPGA_MGR_STATE_OPERATING: FPGA is programmed and operating
++ */
++enum fpga_mgr_states {
++	/* default FPGA states */
++	FPGA_MGR_STATE_UNKNOWN,
++	FPGA_MGR_STATE_POWER_OFF,
++	FPGA_MGR_STATE_POWER_UP,
++	FPGA_MGR_STATE_RESET,
++
++	/* getting an image for loading */
++	FPGA_MGR_STATE_FIRMWARE_REQ,
++	FPGA_MGR_STATE_FIRMWARE_REQ_ERR,
++
++	/* write sequence: init, write, complete */
++	FPGA_MGR_STATE_WRITE_INIT,
++	FPGA_MGR_STATE_WRITE_INIT_ERR,
++	FPGA_MGR_STATE_WRITE,
++	FPGA_MGR_STATE_WRITE_ERR,
++	FPGA_MGR_STATE_WRITE_COMPLETE,
++	FPGA_MGR_STATE_WRITE_COMPLETE_ERR,
++
++	/* fpga is programmed and operating */
++	FPGA_MGR_STATE_OPERATING,
++};
++
++/*
++ * FPGA Manager flags
++ * FPGA_MGR_PARTIAL_RECONFIG: do partial reconfiguration if supported
++ * FPGA_MGR_EXTERNAL_CONFIG: FPGA has been configured prior to Linux booting
++ * FPGA_MGR_BITSTREAM_LSB_FIRST: SPI bitstream bit order is LSB first
++ * FPGA_MGR_COMPRESSED_BITSTREAM: FPGA bitstream is compressed
++ */
++#define FPGA_MGR_PARTIAL_RECONFIG	BIT(0)
++#define FPGA_MGR_EXTERNAL_CONFIG	BIT(1)
++#define FPGA_MGR_ENCRYPTED_BITSTREAM	BIT(2)
++#define FPGA_MGR_BITSTREAM_LSB_FIRST	BIT(3)
++#define FPGA_MGR_COMPRESSED_BITSTREAM	BIT(4)
++
++/**
++ * struct fpga_image_info - information specific to a FPGA image
++ * @flags: boolean flags as defined above
++ * @enable_timeout_us: maximum time to enable traffic through bridge (uSec)
++ * @disable_timeout_us: maximum time to disable traffic through bridge (uSec)
++ * @config_complete_timeout_us: maximum time for FPGA to switch to operating
++ *	   status in the write_complete op.
++ */
++struct fpga_image_info {
++	u32 flags;
++	u32 enable_timeout_us;
++	u32 disable_timeout_us;
++	u32 config_complete_timeout_us;
++};
++
++struct fpgamgr {
++	struct firmware_handler fh;
++	struct device_d dev;
++	void *priv;
++	void __iomem *regs;
++	void __iomem *regs_data;
++	int programmed;
++};
++
++
++#endif /*_LINUX_FPGA_MGR_H */
 -- 
 2.29.2
 
