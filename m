@@ -1,81 +1,78 @@
-Delivery-date: Fri, 18 Jun 2021 14:46:05 +0200
+Delivery-date: Fri, 18 Jun 2021 15:21:26 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1luDsr-000489-LF
-	for lore@lore.pengutronix.de; Fri, 18 Jun 2021 14:46:05 +0200
+	id 1luER4-0006DG-7Z
+	for lore@lore.pengutronix.de; Fri, 18 Jun 2021 15:21:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1luDsq-0001J4-KG
-	for lore@pengutronix.de; Fri, 18 Jun 2021 14:46:05 +0200
+	id 1luER2-0006Nd-Nq
+	for lore@pengutronix.de; Fri, 18 Jun 2021 15:21:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Content-Type:
 	List-Subscribe:List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	References:To:Cc:In-Reply-To:Date:Subject:Mime-Version:Message-Id:From:
 	Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date
 	:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KcXcmJ0+8NMZBuJJD13y2yVkEl5cCze46pLwOtxLeN0=; b=Ir3u+fJi3laAZFONUmEpn1gQxt
-	+FacQWFzES+aQQXfPEyeeTXj0Nv/4ixif9weOqqarJEA0bM7X6Mb+Wg9zLuB41EhlNul4JVQyZMX3
-	tzc1llaLX5wXz2hqjsNjqW8KkdoCT/2AMsSdoA7IIdgHPeWKXVwYPOxgb427gl4PQ3p8j3XlVuiPE
-	ReZWIKn6Xehz4XI5jIuelC3Yz6GqwTbZQf7SBgkv+2gXlhQu1/7QnZLMY+SI45fRStjAEzaCEY4Ft
-	JJsx/AK1R3Yuz96p9kRYwMhyDnWQlqgYTXUioadKAtRYCL1SK7peE+pHUkgpTIjFEb8g6wr2EhBHe
-	I3+aY5dQ==;
+	bh=NJ+9B5afRuveNgTI83IFytnbKSupTXjRHbjOxdI7ybw=; b=GCqgeD/0X12lRhACGYbIS3zqDS
+	T/MEYrCzYcsKwaFiJE16+eEVKD1Z7pR+dqGqwHe2vgOGx7hJi+YPrInJy8YDSQIs1kdeksRcu9jHE
+	hpjFbD/l6W/Fi3q6znqT2ivG2Zv751xduGYncsZxddNQLBuoEk9N8UvQBwO73Dd4QpjROE+l042WB
+	DruVKKpbiOPR15NvvFgHFwp0uLbQLe88l75dmIIhggAqLN8ThXeMnI6ZPhfLVbdlYSKr0zFs4fCVF
+	evSA3iZpKjAqoBn6E3YKOOz9rxpFd0J02XglZI9pB033nj9mVst8k1Y0f4J30rjhr3oUZA/PQ9cTT
+	6Y0Gquvg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1luDrP-00E4R6-1t; Fri, 18 Jun 2021 12:44:35 +0000
+	id 1luEPT-00EAp9-4t; Fri, 18 Jun 2021 13:19:47 +0000
 Received: from mail.inside-m2m.de ([188.68.57.244])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1luDrJ-00E4QI-1j
- for barebox@lists.infradead.org; Fri, 18 Jun 2021 12:44:31 +0000
+ id 1luEMC-00E8uB-OI
+ for barebox@lists.infradead.org; Fri, 18 Jun 2021 13:16:27 +0000
 Received: from localhost (localhost [127.0.0.1])
- by mail.inside-m2m.de (Postfix) with ESMTP id 69E9340082;
- Fri, 18 Jun 2021 14:43:54 +0200 (CEST)
+ by mail.inside-m2m.de (Postfix) with ESMTP id 653ED40097;
+ Fri, 18 Jun 2021 15:16:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
- s=default; t=1624020234;
- bh=c5BueAQqKJQgE19m1feqPCkOlWoT3jnsO+71LxB/OhE=;
+ s=default; t=1624022183;
+ bh=1UiZJ1DTSiz13XOSorwyH+jkTfY+CudSPSvzHuDHM50=;
  h=From:Subject:Date:In-Reply-To:Cc:To:References:From;
- b=a4secz88ghoa6XBseEBZG8EgIAP4+RQqGYvwvH74hjVKq9WlRK3JtfdRlh8XTN4Yg
- uokdXMbwshz4IvLTZKv4MqtVdHk+BLN3FcVGvg+EEs84eSOrIB7hUygVcN9TOh3gat
- 0SCBF21kH99mHLIa5Umh/wOedtgulE7PPllnmluJzbYrDDNiwZUsFjnKwVRugQl1lS
- b7hrMVIuSeYLTff1h8X+GU8wiM08oEWyGy1IR6ZvaYd3UpfPOAl22Syxt3Zuz/2TSu
- LTcQqnrDTy8XBUNeRjrS+Qh3I5Yvtdze4d5+k/SRUi7VsKFX6GLQVB3LhCSdqAksvs
- Si0hNrqcVZV8A==
+ b=n5AMICenCc5PAtfmBqiz2h/lO4c9MbZ5ZI2UJP1gZxKObl0P5cFMx997JFbawNUVs
+ QPUGjG6NvgYEenhZ2s3gXLEkDXhmS9JQL+L/8RlicEWzNtOZ04UYqDnXk0D1buAWpA
+ OKEA1PMJMEmd1KGwwy7ztBCvd7NgC+EAURZpuY7Lw33xhobUUe1O9ykMzhfuL3FuN+
+ U8iw1ruY+276ZltO4X90+xacvUxApFKqmv3jVrrh0ohioBSiqKGxt9eFYIWPkmk7ug
+ 0nXkn81d8aX1wznvdyy5UcVFuiM7bP35jQM0EjMibCM/mWoVp8ALHXNUovOeLr+zkw
+ irqFQOqEYwoXw==
 X-Virus-Scanned: Debian amavisd-new at mail.inside-m2m.de
 Received: from mail.inside-m2m.de ([127.0.0.1])
  by localhost (mail.inside-m2m.de [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id k8-gIeZKGuI1; Fri, 18 Jun 2021 14:43:53 +0200 (CEST)
+ with ESMTP id i41RJ1-eNPl6; Fri, 18 Jun 2021 15:16:23 +0200 (CEST)
 Received: from smtpclient.apple (pd95bb737.dip0.t-ipconnect.de [217.91.183.55])
  (Authenticated sender: konstantin.kletschke@inside-m2m.de)
- by mail.inside-m2m.de (Postfix) with ESMTPSA id BF4714007B;
- Fri, 18 Jun 2021 14:43:53 +0200 (CEST)
+ by mail.inside-m2m.de (Postfix) with ESMTPSA id C973840082;
+ Fri, 18 Jun 2021 15:16:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
- s=default; t=1624020233;
- bh=c5BueAQqKJQgE19m1feqPCkOlWoT3jnsO+71LxB/OhE=;
+ s=default; t=1624022183;
+ bh=1UiZJ1DTSiz13XOSorwyH+jkTfY+CudSPSvzHuDHM50=;
  h=From:Subject:Date:In-Reply-To:Cc:To:References:From;
- b=ZRzRDqtDWoT15+AilEoFu6eQSf2i1CaKQ5nU4f073fljgwKXyJHh6LoJoipj94qre
- dloSdxLXn3ygfY6a8KWq6SkGPlRD3QOHFNJGmoGt3MhddYFQYakOH+N88cG+Fuig3l
- o767pYeQ9o5Gyfy/40W/CXHDqxZE2pEJMpSMGH3rTQsGD5IBdup3RNHIDoTYmFLSh9
- kEdwM6ue1M3CJruBGBi1oXhIQosrPxPr+O+LvpDWTIfKS3SFVFLyWSju1/0v/DsGP3
- 2XlIArOffYtmddbGT5XLwZcOe39VFRyc/jgb1WyW/hw3r/THioIhpSUWzp4/dHyGtj
- GNTzNXOjcLRBA==
+ b=n5AMICenCc5PAtfmBqiz2h/lO4c9MbZ5ZI2UJP1gZxKObl0P5cFMx997JFbawNUVs
+ QPUGjG6NvgYEenhZ2s3gXLEkDXhmS9JQL+L/8RlicEWzNtOZ04UYqDnXk0D1buAWpA
+ OKEA1PMJMEmd1KGwwy7ztBCvd7NgC+EAURZpuY7Lw33xhobUUe1O9ykMzhfuL3FuN+
+ U8iw1ruY+276ZltO4X90+xacvUxApFKqmv3jVrrh0ohioBSiqKGxt9eFYIWPkmk7ug
+ 0nXkn81d8aX1wznvdyy5UcVFuiM7bP35jQM0EjMibCM/mWoVp8ALHXNUovOeLr+zkw
+ irqFQOqEYwoXw==
 From: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
-Message-Id: <4361CE26-ADC3-4B0B-9CA2-1BF8DBDFBF13@inside-m2m.de>
+Message-Id: <96DD1592-58B3-4F7A-B085-3861409197D4@inside-m2m.de>
 Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.1\))
-Date: Fri, 18 Jun 2021 14:43:53 +0200
-In-Reply-To: <CAMHeXxMF7uGBTtL0mJNzXUuJQUABKOAkC3YPV5Lsc7JzB0Ms5A@mail.gmail.com>
-Cc: Sascha Hauer <sha@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-To: Trent Piepho <trent.piepho@igorinstitute.com>
+Date: Fri, 18 Jun 2021 15:16:22 +0200
+In-Reply-To: <391fd504-14b8-6278-cbfe-25a5dd32ed42@pengutronix.de>
+Cc: barebox@lists.infradead.org
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 References: <FA60DA2B-8C76-4460-8009-88EAB94A0F2C@inside-m2m.de>
- <20210616123403.GW9782@pengutronix.de>
- <D8E37CF9-C7A1-40AE-B747-69E000D1B727@inside-m2m.de>
- <CAMHeXxMF7uGBTtL0mJNzXUuJQUABKOAkC3YPV5Lsc7JzB0Ms5A@mail.gmail.com>
+ <391fd504-14b8-6278-cbfe-25a5dd32ed42@pengutronix.de>
 X-Mailer: Apple Mail (2.3654.120.0.1.1)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210618_054429_607530_848B2D1A 
-X-CRM114-Status: GOOD (  24.26  )
+X-CRM114-CacheID: sfid-20210618_061625_162639_802C52B3 
+X-CRM114-Status: GOOD (  13.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,7 +84,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0719754680176258858=="
+Content-Type: multipart/mixed; boundary="===============1032198806981619502=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -103,47 +100,33 @@ X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 
---===============0719754680176258858==
+--===============1032198806981619502==
 Content-Type: multipart/signed;
-	boundary="Apple-Mail=_4E1D406D-CC8B-44F6-9292-49E232C99E0B";
+	boundary="Apple-Mail=_BA4333F3-6F83-496E-A1D3-D4D772F1B218";
 	protocol="application/pkcs7-signature";
 	micalg=sha-256
 
 
---Apple-Mail=_4E1D406D-CC8B-44F6-9292-49E232C99E0B
+--Apple-Mail=_BA4333F3-6F83-496E-A1D3-D4D772F1B218
 Content-Transfer-Encoding: 7bit
 Content-Type: text/plain;
 	charset=us-ascii
 
-> While I have not yet used overlays in barebox, and don't know what is
-> wrong here, the order of loading is not what you think.
 
-I think I got your point.
-Setting those parameters are not really loading stuff. 
-So the setting order has nothing to do with load order, the booting itself
-loads the stuff and the kernel gets a prepared list of addresses where each
-part was located from the bootloader.
+> You could add a bootspec file with
+> 
+> devicetree-overlay BB-UART1-00A0.dtbo BB-UART4-00A0.dtbo
+> 
+> If you want the overlay application to happen in the bootloader, but
+> decide the overlay selection policy in userspace.
 
-> the file name, so the file is loaded when of_overlay is run.  Looks
-> like that fixup process run by bootm didn't work for some reason and
-> this is the source of the errors.
-
-I will prepare another mail to this list replying to Sascha what I found out
-about that error meanwhile. It is not much but probably the problem is not
-barebox related I suppose.
-
-> To be more consistent with the rest of bootm, there should probably be
-> variables "global.bootm.ofoverlay.*" and bootm will load the files in
-> those variables as overlays.  Those improvements Sascha alluded to are
-> probably something like this.
-
-Thanks for the information.
+Thanks for the information, I will definitely check this out!
 
 Kind Regards
 Konsti
 
 
---Apple-Mail=_4E1D406D-CC8B-44F6-9292-49E232C99E0B
+--Apple-Mail=_BA4333F3-6F83-496E-A1D3-D4D772F1B218
 Content-Disposition: attachment;
 	filename=smime.p7s
 Content-Type: application/pkcs7-signature;
@@ -209,24 +192,24 @@ IteAAh7lbybJszYnMYIDxzCCA8MCAQEwgawwgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVh
 dGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRl
 ZDE+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUg
 RW1haWwgQ0ECEQCMwTbYVm+tjZPaShMqdgsfMA0GCWCGSAFlAwQCAQUAoIIB6zAYBgkqhkiG9w0B
-CQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMTA2MTgxMjQzNTNaMC8GCSqGSIb3DQEJ
-BDEiBCCmsC93vo8vVWqf2dBurhz/RIwRcscFwjXDDpjS2M0+djCBvQYJKwYBBAGCNxAEMYGvMIGs
+CQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMTA2MTgxMzE2MjJaMC8GCSqGSIb3DQEJ
+BDEiBCC0tOvN/o81yTNPwIOGeJ10f/N4b2tIz+UIhFudLZzDODCBvQYJKwYBBAGCNxAEMYGvMIGs
 MIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdT
 YWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENs
 aWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAjME22FZvrY2T2koTKnYL
 HzCBvwYLKoZIhvcNAQkQAgsxga+ggawwgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVy
 IE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+
 MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1h
-aWwgQ0ECEQCMwTbYVm+tjZPaShMqdgsfMA0GCSqGSIb3DQEBCwUABIIBADsFAkPYJjE5WEVotVR4
-XpEyNyEYZewzU7km/VF6sP7s9FaDgbuoy1e3OZqySroPUTYpplThR0jAaCiWcqXv86MKLHR+kRtV
-DUcQYq0K+AJcdGKKtT8LW1VlS2IdhDFGgredgOPIAg30OEgVlG2kf5TPY1B57dH71R9486PkpE2K
-pKESyiXKiAOAmvZtgBC80JEYvllv6pFHR8DX0EbWiW3JFgo/g5vE460n19ld636DXZ5t+AUnK2uM
-4cEh9OuODmGmvVF9F3TKRqEjQpuX8KsLBeCXwL9hdHgWg4xYfrxYCXRycnop2pCdxSp7N81aERn0
-evHGM8VSiYyw0p0So9cAAAAAAAA=
---Apple-Mail=_4E1D406D-CC8B-44F6-9292-49E232C99E0B--
+aWwgQ0ECEQCMwTbYVm+tjZPaShMqdgsfMA0GCSqGSIb3DQEBCwUABIIBAGHS+mFImaE4TH991Lfg
+t215rGStM6/4fubWel4Zr/qMBe5PCSqdYiH7JnVdK8LcIMGJo58c5eSt2oo7nrA1jZGGy9voGpdE
+WYAgtRoxm6AhPUZ48TtKiH8PlySZn/GhHUuBOB3/tzCgwetKYSqOvkKlaR3HzYI2Ld7O/dASjLqB
+UGSmaP9jdHz51+LTclg02+NaNJtCtrpVzMt5xK6xJ7m04rKkPW5T40/mDcS6IDqGtY+4DUfYtRVx
+erMnB3eTgDXeUhLiMLGm8k5ZRCzRWinYkfEjrAke+p8E2swhChmZvZEEQ9equPX3aP+99wAu2jDG
+cnK+SGR+ptBgSUnd9nwAAAAAAAA=
+--Apple-Mail=_BA4333F3-6F83-496E-A1D3-D4D772F1B218--
 
 
---===============0719754680176258858==
+--===============1032198806981619502==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -237,6 +220,6 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============0719754680176258858==--
+--===============1032198806981619502==--
 
 
