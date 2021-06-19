@@ -1,53 +1,53 @@
-Delivery-date: Sat, 19 Jun 2021 06:56:26 +0200
+Delivery-date: Sat, 19 Jun 2021 06:56:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1luT1u-0004db-3y
-	for lore@lore.pengutronix.de; Sat, 19 Jun 2021 06:56:26 +0200
+	id 1luT2C-0004eA-7r
+	for lore@lore.pengutronix.de; Sat, 19 Jun 2021 06:56:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1luT1s-00025n-4Y
-	for lore@pengutronix.de; Sat, 19 Jun 2021 06:56:25 +0200
+	id 1luT29-0002Bp-Ne
+	for lore@pengutronix.de; Sat, 19 Jun 2021 06:56:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=3J1ZgZXwjmten+PfC/2otmYy/w4D1zDJ1aI6aLZcsvc=; b=N8wn/wbf76MnVq
-	XPaBND74y5cAU0gQi4R3lEzJj1FQwInbbauEl5uLhTQ0v4SOrb26jcGU+reW7QkoQSs0U4+CRiCBR
-	fe8lpTNiE+jsNtn1I+kvHbRMO9Oo2KO0nyzYjrSQUO0m0D1C0sqwG5kWDmTJj/3IlbAQNaJUwRF6c
-	5mBEJyF33Hc6DD3dmXNrtxdaWUKUgKegS6RNhmD+7VXt9kfEjrGrhqkluTzc94fIDYYjJAAPWmg/A
-	cLKLM/UKis8iFq0aVNoJTr5mkpdkrWXWw/hP2qEk04EZrbMJF5udszSolvhguAsfJqqL1eLlEbHtH
-	nOAx7xYEp+R0EZfFyFWA==;
+	List-Owner; bh=0xIA/NCKFoGJtunqqz484VzEUsu6vqSl6DDAHmezLfY=; b=Je6K13YqXH+oMO
+	Yg2riTWpp3mgOv4oPOu8VNcmZHs09mAz6zo9XvOJOvoEk54thq68/1wb3BXVId9CyCmGEW35vROgq
+	NpbwTOwToGe2r6d51djlNl41nWYKTHpB6o5CvuCM6HuVTNlQU3kNl8740LcqZBGXsN99PpZ7+sSk7
+	LtnVlpZ7MdPq9YFJDAqWRgjO5Gqqeg9qb1yOcKTMlGdwMC05cWFLZ/SePjeBX3hT07nlX9Dwz9ixc
+	gGKGj2Kt08XoIEjF5qPpRfVVCcoZoMnwfG/jO7oT0ihs+Er7TvPJ8RQ2vcbBX0TMHnI2ODLGCsOD+
+	nrfGgCfEHA3ghhvyjH3w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1luT0L-00GJuV-IV; Sat, 19 Jun 2021 04:54:50 +0000
+	id 1luT0d-00GK63-PI; Sat, 19 Jun 2021 04:55:08 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1luSwy-00GHoX-RX
- for barebox@lists.infradead.org; Sat, 19 Jun 2021 04:51:23 +0000
+ id 1luSwy-00GHoZ-Tj
+ for barebox@lists.infradead.org; Sat, 19 Jun 2021 04:51:24 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1luSwh-0008MO-EZ; Sat, 19 Jun 2021 06:51:03 +0200
+ id 1luSwh-0008MK-EX; Sat, 19 Jun 2021 06:51:03 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1luSwb-0001Lk-1c; Sat, 19 Jun 2021 06:50:57 +0200
+ id 1luSwa-0001LY-Vj; Sat, 19 Jun 2021 06:50:56 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Sat, 19 Jun 2021 06:50:53 +0200
-Message-Id: <20210619045055.779-28-a.fatoum@pengutronix.de>
+Date: Sat, 19 Jun 2021 06:50:49 +0200
+Message-Id: <20210619045055.779-24-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210619045055.779-1-a.fatoum@pengutronix.de>
 References: <20210619045055.779-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210618_215121_118861_50BC05B9 
-X-CRM114-Status: GOOD (  23.29  )
+X-CRM114-CacheID: sfid-20210618_215121_348323_4CF52176 
+X-CRM114-Status: GOOD (  22.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,280 +72,488 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 27/29] gpio: add support for StarFive GPIO controller
+Subject: [PATCH v2 23/29] reset: add StarFive reset controller driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This imports support for the StarFive GPIO controller from the vendor's
-kernel tree.
+The StarFive SoC has a single reset controller, which seems to control
+reset of all clocks and peripherals. It differs from the ones supported
+by the Linux reset-simple driver in that it has a dedicated status
+registers that needs to be polled to verify the reset has completed.
+
+Also special is that most resets (> 70) are synchronous. As the reset
+status poll would just time out without the clock, have the reset
+controller enable the clock as part of the reset. OS can decide later,
+which clocks to disable again.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/gpio/Kconfig             |   8 ++
- drivers/gpio/Makefile            |   1 +
- drivers/gpio/gpio-starfive-vic.c | 177 +++++++++++++++++++++++++++++++
- drivers/pinctrl/pinctrl-single.c |   4 +-
- include/pinctrl.h                |   6 ++
- 5 files changed, 194 insertions(+), 2 deletions(-)
- create mode 100644 drivers/gpio/gpio-starfive-vic.c
+ arch/riscv/Kconfig.socs                       |   1 +
+ drivers/reset/Kconfig                         |   6 +
+ drivers/reset/Makefile                        |   1 +
+ drivers/reset/reset-starfive-vic.c            | 234 ++++++++++++++++++
+ .../reset-controller/starfive-jh7100.h        | 126 ++++++++++
+ include/soc/starfive/rstgen.h                 |  41 +++
+ 6 files changed, 409 insertions(+)
+ create mode 100644 drivers/reset/reset-starfive-vic.c
+ create mode 100644 include/dt-bindings/reset-controller/starfive-jh7100.h
+ create mode 100644 include/soc/starfive/rstgen.h
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index a8ee9e58b84e..98a44fbbb578 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -171,6 +171,14 @@ config GPIO_SIFIVE
- 	help
- 	  Say yes here to support the GPIO device on SiFive SoCs.
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index c112fcc82e1a..e5603b001c74 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -49,6 +49,7 @@ endif
  
-+config GPIO_STARFIVE
-+	bool "StarFive GPIO support"
-+	depends on SOC_STARFIVE || CROSS_COMPILE
-+	depends on OF_GPIO
-+	select GPIO_GENERIC
+ config SOC_STARFIVE
+ 	bool "StarFive SoCs"
++	select ARCH_HAS_RESET_CONTROLLER
+ 	help
+ 	  This enables support for SiFive SoC platform hardware.
+ 
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index 316ece9e7176..9429f107bb67 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -27,4 +27,10 @@ config RESET_STM32
+ 	help
+ 	  This enables the reset controller driver for STM32MP and STM32 MCUs.
+ 
++config RESET_STARFIVE
++	bool "StarFive Controller Driver" if COMPILE_TEST
++	default SOC_STARFIVE
 +	help
-+	  Say yes here to support the GPIO device on StarFive SoCs.
++	  This enables the reset controller driver for the StarFive JH7100.
 +
- config GPIO_LIBFTDI1
- 	bool "libftdi1 driver"
- 	depends on SANDBOX
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 25e12105d83d..638cbb19a328 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -24,3 +24,4 @@ obj-$(CONFIG_GPIO_SX150X)	+= gpio-sx150x.o
- obj-$(CONFIG_GPIO_VF610)	+= gpio-vf610.o
- obj-$(CONFIG_GPIO_RASPBERRYPI_EXP) += gpio-raspberrypi-exp.o
- obj-$(CONFIG_GPIO_SIFIVE)	+= gpio-sifive.o
-+obj-$(CONFIG_GPIO_STARFIVE)	+= gpio-starfive-vic.o
-diff --git a/drivers/gpio/gpio-starfive-vic.c b/drivers/gpio/gpio-starfive-vic.c
+ endif
+diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+index 8460c4b154f5..ce494baae58e 100644
+--- a/drivers/reset/Makefile
++++ b/drivers/reset/Makefile
+@@ -2,3 +2,4 @@ obj-$(CONFIG_RESET_CONTROLLER) += core.o
+ obj-$(CONFIG_ARCH_SOCFPGA) += reset-socfpga.o
+ obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
+ obj-$(CONFIG_RESET_STM32) += reset-stm32.o
++obj-$(CONFIG_RESET_STARFIVE) += reset-starfive-vic.o
+diff --git a/drivers/reset/reset-starfive-vic.c b/drivers/reset/reset-starfive-vic.c
 new file mode 100644
-index 000000000000..baa4f584d5e8
+index 000000000000..bcf615da0a13
 --- /dev/null
-+++ b/drivers/gpio/gpio-starfive-vic.c
-@@ -0,0 +1,177 @@
++++ b/drivers/reset/reset-starfive-vic.c
+@@ -0,0 +1,234 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * COPYRIGHT 2020 Shanghai StarFive Technology Co., Ltd.
++ * Copyright (c) 2021 Ahmad Fatoum, Pengutronix
++ *
++ * StarFive Reset Controller driver
 + */
++#define pr_fmt(fmt) "reset-starfive: " fmt
 +
-+#include <linux/basic_mmio_gpio.h>
-+#include <linux/reset.h>
++#include <common.h>
++#include <init.h>
 +#include <linux/clk.h>
-+#include <printk.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <pinctrl.h>
++#include <linux/err.h>
++#include <linux/reset-controller.h>
++#include <soc/starfive/rstgen.h>
++#include <dt-bindings/reset-controller/starfive-jh7100.h>
++#include <dt-bindings/clock/starfive-jh7100.h>
 +
-+#define GPIO_EN		0x0
-+#define GPIO_IS_LOW	0x10
-+#define GPIO_IS_HIGH	0x14
-+#define GPIO_IBE_LOW	0x18
-+#define GPIO_IBE_HIGH	0x1c
-+#define GPIO_IEV_LOW	0x20
-+#define GPIO_IEV_HIGH	0x24
-+#define GPIO_IE_LOW	0x28
-+#define GPIO_IE_HIGH	0x2c
-+#define GPIO_IC_LOW	0x30
-+#define GPIO_IC_HIGH	0x34
-+//read only
-+#define GPIO_RIS_LOW	0x38
-+#define GPIO_RIS_HIGH	0x3c
-+#define GPIO_MIS_LOW	0x40
-+#define GPIO_MIS_HIGH	0x44
-+#define GPIO_DIN_LOW	0x48
-+#define GPIO_DIN_HIGH	0x4c
-+
-+#define GPIO_DOUT_X_REG	0x50
-+#define GPIO_DOEN_X_REG	0x54
-+
-+#define MAX_GPIO	 64
-+
-+struct starfive_gpio {
-+	void __iomem		*base;
-+	struct gpio_chip	gc;
++struct starfive_rstgen {
++	void __iomem *base;
++	struct reset_controller_dev rcdev;
++	const struct starfive_rstgen_ops *ops;
++	struct device_node *clknp;
++	const int *sync_resets;
 +};
 +
-+#define to_starfive_gpio(gc) container_of(gc, struct starfive_gpio, gc)
-+
-+static int starfive_direction_input(struct gpio_chip *gc, unsigned offset)
++static struct starfive_rstgen *to_starfive_rstgen(struct reset_controller_dev *rcdev)
 +{
-+	struct starfive_gpio *chip = to_starfive_gpio(gc);
-+
-+	if (offset >= gc->ngpio)
-+		return -EINVAL;
-+
-+	writel(0x1, chip->base + GPIO_DOEN_X_REG + offset * 8);
-+
-+	return 0;
++	return container_of(rcdev, struct starfive_rstgen, rcdev);
 +}
 +
-+static int starfive_direction_output(struct gpio_chip *gc, unsigned offset, int value)
-+{
-+	struct starfive_gpio *chip = to_starfive_gpio(gc);
-+
-+	if (offset >= gc->ngpio)
-+		return -EINVAL;
-+	writel(0x0, chip->base + GPIO_DOEN_X_REG + offset * 8);
-+	writel(value, chip->base + GPIO_DOUT_X_REG + offset * 8);
-+
-+	return 0;
-+}
-+
-+static int starfive_get_direction(struct gpio_chip *gc, unsigned offset)
-+{
-+	struct starfive_gpio *chip = to_starfive_gpio(gc);
-+
-+	if (offset >= gc->ngpio)
-+		return -EINVAL;
-+
-+	return readl(chip->base + GPIO_DOEN_X_REG + offset * 8) & 0x1;
-+}
-+
-+static int starfive_get_value(struct gpio_chip *gc, unsigned offset)
-+{
-+	struct starfive_gpio *chip = to_starfive_gpio(gc);
-+	int value;
-+
-+	if (offset >= gc->ngpio)
-+		return -EINVAL;
-+
-+	if(offset < 32){
-+		value = readl(chip->base + GPIO_DIN_LOW);
-+		return (value >> offset) & 0x1;
-+	} else {
-+		value = readl(chip->base + GPIO_DIN_HIGH);
-+		return (value >> (offset - 32)) & 0x1;
-+	}
-+}
-+
-+static void starfive_set_value(struct gpio_chip *gc, unsigned offset, int value)
-+{
-+	struct starfive_gpio *chip = to_starfive_gpio(gc);
-+
-+	if (offset >= gc->ngpio)
-+		return;
-+
-+	writel(value, chip->base + GPIO_DOUT_X_REG + offset * 8);
-+}
-+
-+static struct gpio_ops starfive_gpio_ops = {
-+	.direction_input = starfive_direction_input,
-+	.direction_output = starfive_direction_output,
-+	.get_direction = starfive_get_direction,
-+	.get = starfive_get_value,
-+	.set = starfive_set_value,
++static const int jh7110_rstgen_sync_resets[RSTN_END] = {
++	[RSTN_SGDMA2P_AHB]   = CLK_SGDMA2P_AHB,
++	[RSTN_SGDMA2P_AXI]   = CLK_SGDMA2P_AXI,
++	[RSTN_DMA2PNOC_AXI]  = CLK_DMA2PNOC_AXI,
++	[RSTN_DLA_AXI]       = CLK_DLA_AXI,
++	[RSTN_DLANOC_AXI]    = CLK_DLANOC_AXI,
++	[RSTN_DLA_APB]       = CLK_DLA_APB,
++	[RSTN_VDECBRG_MAIN]  = CLK_VDECBRG_MAIN,
++	[RSTN_VDEC_AXI]      = CLK_VDEC_AXI,
++	[RSTN_VDEC_BCLK]     = CLK_VDEC_BCLK,
++	[RSTN_VDEC_CCLK]     = CLK_VDEC_CCLK,
++	[RSTN_VDEC_APB]      = CLK_VDEC_APB,
++	[RSTN_JPEG_AXI]      = CLK_JPEG_AXI,
++	[RSTN_JPEG_CCLK]     = CLK_JPEG_CCLK,
++	[RSTN_JPEG_APB]      = CLK_JPEG_APB,
++	[RSTN_JPCGC300_MAIN] = CLK_JPCGC300_MAIN,
++	[RSTN_GC300_2X]      = CLK_GC300_2X,
++	[RSTN_GC300_AXI]     = CLK_GC300_AXI,
++	[RSTN_GC300_AHB]     = CLK_GC300_AHB,
++	[RSTN_VENC_AXI]      = CLK_VENC_AXI,
++	[RSTN_VENCBRG_MAIN]  = CLK_VENCBRG_MAIN,
++	[RSTN_VENC_BCLK]     = CLK_VENC_BCLK,
++	[RSTN_VENC_CCLK]     = CLK_VENC_CCLK,
++	[RSTN_VENC_APB]      = CLK_VENC_APB,
++	[RSTN_DDRPHY_APB]    = CLK_DDRPHY_APB,
++	[RSTN_USB_AXI]       = CLK_USB_AXI,
++	[RSTN_SGDMA1P_AXI]   = CLK_SGDMA1P_AXI,
++	[RSTN_DMA1P_AXI]     = CLK_DMA1P_AXI,
++	[RSTN_NNE_AHB]       = CLK_NNE_AHB,
++	[RSTN_NNE_AXI]       = CLK_NNE_AXI,
++	[RSTN_NNENOC_AXI]    = CLK_NNENOC_AXI,
++	[RSTN_DLASLV_AXI]    = CLK_DLASLV_AXI,
++	[RSTN_VOUT_SRC]      = CLK_VOUT_SRC,
++	[RSTN_DISP_AXI]      = CLK_DISP_AXI,
++	[RSTN_DISPNOC_AXI]   = CLK_DISPNOC_AXI,
++	[RSTN_SDIO0_AHB]     = CLK_SDIO0_AHB,
++	[RSTN_SDIO1_AHB]     = CLK_SDIO1_AHB,
++	[RSTN_GMAC_AHB]      = CLK_GMAC_AHB,
++	[RSTN_SPI2AHB_AHB]   = CLK_SPI2AHB_AHB,
++	[RSTN_SPI2AHB_CORE]  = CLK_SPI2AHB_CORE,
++	[RSTN_EZMASTER_AHB]  = CLK_EZMASTER_AHB,
++	[RSTN_SEC_AHB]       = CLK_SEC_AHB,
++	[RSTN_AES]           = CLK_AES,
++	[RSTN_PKA]           = CLK_PKA,
++	[RSTN_SHA]           = CLK_SHA,
++	[RSTN_TRNG_APB]      = CLK_TRNG_APB,
++	[RSTN_OTP_APB]       = CLK_OTP_APB,
++	[RSTN_UART0_APB]     = CLK_UART0_APB,
++	[RSTN_UART0_CORE]    = CLK_UART0_CORE,
++	[RSTN_UART1_APB]     = CLK_UART1_APB,
++	[RSTN_UART1_CORE]    = CLK_UART1_CORE,
++	[RSTN_SPI0_APB]      = CLK_SPI0_APB,
++	[RSTN_SPI0_CORE]     = CLK_SPI0_CORE,
++	[RSTN_SPI1_APB]      = CLK_SPI1_APB,
++	[RSTN_SPI1_CORE]     = CLK_SPI1_CORE,
++	[RSTN_I2C0_APB]      = CLK_I2C0_APB,
++	[RSTN_I2C0_CORE]     = CLK_I2C0_CORE,
++	[RSTN_I2C1_APB]      = CLK_I2C1_APB,
++	[RSTN_I2C1_CORE]     = CLK_I2C1_CORE,
++	[RSTN_GPIO_APB]      = CLK_GPIO_APB,
++	[RSTN_UART2_APB]     = CLK_UART2_APB,
++	[RSTN_UART2_CORE]    = CLK_UART2_CORE,
++	[RSTN_UART3_APB]     = CLK_UART3_APB,
++	[RSTN_UART3_CORE]    = CLK_UART3_CORE,
++	[RSTN_SPI2_APB]      = CLK_SPI2_APB,
++	[RSTN_SPI2_CORE]     = CLK_SPI2_CORE,
++	[RSTN_SPI3_APB]      = CLK_SPI3_APB,
++	[RSTN_SPI3_CORE]     = CLK_SPI3_CORE,
++	[RSTN_I2C2_APB]      = CLK_I2C2_APB,
++	[RSTN_I2C2_CORE]     = CLK_I2C2_CORE,
++	[RSTN_I2C3_APB]      = CLK_I2C3_APB,
++	[RSTN_I2C3_CORE]     = CLK_I2C3_CORE,
++	[RSTN_WDTIMER_APB]   = CLK_WDTIMER_APB,
++	[RSTN_WDT]           = CLK_WDT_CORE,
++	[RSTN_VP6INTC_APB]   = CLK_VP6INTC_APB,
++	[RSTN_TEMP_APB]      = CLK_TEMP_APB,
++	[RSTN_TEMP_SENSE]    = CLK_TEMP_SENSE,
 +};
 +
-+static int starfive_gpio_probe(struct device_d *dev)
++static struct clk *starfive_reset_clk_get(struct starfive_rstgen *priv, unsigned id)
 +{
-+	struct starfive_gpio *chip;
-+	struct resource *res;
-+	struct clk *clk;
++	struct of_phandle_args clkspec = {
++		.np = priv->clknp,
++		.args_count = 1,
++	};
++
++	if (!priv->sync_resets || !priv->sync_resets[id])
++		return 0;
++
++	clkspec.args[0] = priv->sync_resets[id];
++
++	pr_debug("synchronous reset=%u clk=%u\n", id, priv->sync_resets[id]);
++
++	return of_clk_get_from_provider(&clkspec);
++}
++
++static int starfive_reset_clk_enable(struct starfive_rstgen *priv, unsigned id)
++{
++	return clk_enable(starfive_reset_clk_get(priv, id));
++}
++
++static void starfive_reset_clk_disable(struct starfive_rstgen *priv, unsigned id)
++{
++	clk_disable(starfive_reset_clk_get(priv, id));
++}
++
++static int starfive_rstgen(struct starfive_rstgen *priv, unsigned id, bool assert)
++{
++	void __iomem *base = priv->base;
++
++	__starfive_rstgen(base, id, assert);
++
++	return wait_on_timeout(NSEC_PER_MSEC, __starfive_rstgen_asserted(base, id) == assert);
++}
++
++static int starfive_rstgen_assert(struct reset_controller_dev *rcdev,
++			      unsigned long id)
++{
++	struct starfive_rstgen *priv = to_starfive_rstgen(rcdev);
 +	int ret;
 +
-+	clk = clk_get(dev, NULL);
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
++	starfive_reset_clk_enable(priv, id);
++	ret = starfive_rstgen(priv, id, true);
++	starfive_reset_clk_disable(priv, id);
 +
-+	clk_enable(clk);
++	return ret;
++}
 +
-+	ret = device_reset(dev);
++static int starfive_rstgen_deassert(struct reset_controller_dev *rcdev,
++			      unsigned long id)
++{
++	struct starfive_rstgen *priv = to_starfive_rstgen(rcdev);
++	int ret;
++
++	starfive_reset_clk_enable(priv, id);
++	ret = starfive_rstgen(priv, id, false);
++	starfive_reset_clk_disable(priv, id);
++
++	return ret;
++}
++
++static int starfive_reset(struct reset_controller_dev *rcdev, unsigned long id)
++{
++	struct starfive_rstgen *priv = to_starfive_rstgen(rcdev);
++	int ret;
++
++	starfive_reset_clk_enable(priv, id);
++
++	ret = starfive_rstgen(priv, id, true);
 +	if (ret)
-+		return ret;
++		goto out;
 +
-+	ret = pinctrl_single_probe(dev);
-+	if (ret)
-+		return ret;
++	udelay(2);
 +
-+	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
-+	if (IS_ERR(res))
-+		return PTR_ERR(res);
++	ret = starfive_rstgen(priv, id, false);
 +
-+	chip = xzalloc(sizeof(*chip));
-+	chip->base = IOMEM(res->start);
++out:
++	starfive_reset_clk_disable(priv, id);
 +
-+	chip->gc.base = -1;
-+	chip->gc.ngpio = MAX_GPIO;
-+	chip->gc.dev = dev;
-+	chip->gc.ops = &starfive_gpio_ops;
++	return ret;
++}
 +
-+	/* Disable all GPIO interrupts */
-+	iowrite32(0, chip->base + GPIO_IE_HIGH);
-+	iowrite32(0, chip->base + GPIO_IE_LOW);
++static const struct reset_control_ops starfive_rstgen_ops = {
++	.assert		= starfive_rstgen_assert,
++	.deassert	= starfive_rstgen_deassert,
++	.reset		= starfive_reset,
++};
 +
-+	ret = gpiochip_add(&chip->gc);
-+	if (ret) {
-+		dev_err(dev, "could not add gpiochip\n");
-+		gpiochip_remove(&chip->gc);
-+		return ret;
++static int starfive_rstgen_probe(struct device_d *dev)
++{
++	struct starfive_rstgen *priv;
++	struct resource *iores;
++
++	priv = xzalloc(sizeof(*priv));
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	if ((priv->sync_resets = device_get_match_data(dev))) {
++		priv->clknp = of_find_compatible_node(NULL, NULL, "starfive,jh7100-clkgen");
++		if (!priv->clknp)
++			return -ENODEV;
 +	}
 +
-+	writel(1, chip->base + GPIO_EN);
++	priv->base = IOMEM(iores->start);
++	priv->rcdev.nr_resets = RSTN_END;
++	priv->rcdev.ops = &starfive_rstgen_ops;
++	priv->rcdev.of_node = dev->device_node;
 +
-+	return 0;
++	return reset_controller_register(&priv->rcdev);
 +}
 +
-+static const struct of_device_id starfive_gpio_match[] = {
-+	{ .compatible = "starfive,gpio0", },
-+	{ },
++static const struct of_device_id starfive_rstgen_reset_dt_ids[] = {
++	{ .compatible = "starfive,jh7100-rstgen", .data = jh7110_rstgen_sync_resets },
++	{ /* sentinel */ },
 +};
 +
-+static struct driver_d starfive_gpio_driver = {
-+	.probe	= starfive_gpio_probe,
-+	.name		= "starfive_gpio",
-+	.of_compatible	= starfive_gpio_match,
++static struct driver_d starfive_rstgen_reset_driver = {
++	.name = "starfive_rstgen",
++	.probe = starfive_rstgen_probe,
++	.of_compatible = starfive_rstgen_reset_dt_ids,
 +};
-+postcore_platform_driver(starfive_gpio_driver);
++core_platform_driver(starfive_rstgen_reset_driver);
+diff --git a/include/dt-bindings/reset-controller/starfive-jh7100.h b/include/dt-bindings/reset-controller/starfive-jh7100.h
+new file mode 100644
+index 000000000000..390a528576b9
+--- /dev/null
++++ b/include/dt-bindings/reset-controller/starfive-jh7100.h
+@@ -0,0 +1,126 @@
++/* SPDX-License-Identifier: GPL-2.0 OR X11 */
++/*
++ * Copyright (c) 2021 Ahmad Fatoum, Pengutronix
++ */
 +
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Huan Feng <huan.feng@starfivetech.com>");
-+MODULE_DESCRIPTION("Starfive VIC GPIO generator driver");
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index c77466023216..cf2f724d187d 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -128,7 +128,7 @@ static struct pinctrl_ops pcs_ops = {
- 	.set_state = pcs_set_state,
- };
- 
--static int pcs_probe(struct device_d *dev)
-+int pinctrl_single_probe(struct device_d *dev)
- {
- 	struct resource *iores;
- 	struct pinctrl_single *pcs;
-@@ -215,7 +215,7 @@ static __maybe_unused struct of_device_id pcs_dt_ids[] = {
- 
- static struct driver_d pcs_driver = {
- 	.name		= "pinctrl-single",
--	.probe		= pcs_probe,
-+	.probe		= pinctrl_single_probe,
- 	.of_compatible	= DRV_OF_COMPAT(pcs_dt_ids),
- };
- 
-diff --git a/include/pinctrl.h b/include/pinctrl.h
-index 0fd7f491189c..a628c3aac95b 100644
---- a/include/pinctrl.h
-+++ b/include/pinctrl.h
-@@ -29,6 +29,7 @@ int of_pinctrl_select_state_default(struct device_node *np);
- int pinctrl_gpio_direction_input(unsigned pin);
- int pinctrl_gpio_direction_output(unsigned int pin);
- int pinctrl_gpio_get_direction(unsigned pin);
-+int pinctrl_single_probe(struct device_d *dev);
- #else
- static inline int pinctrl_select_state(struct device_d *dev, const char *state)
- {
-@@ -64,6 +65,11 @@ static inline int pinctrl_gpio_get_direction(unsigned pin)
- {
- 	return -ENOTSUPP;
- }
++#ifndef _DT_BINDINGS_RESET_CONTROLLER_STARFIVE_JH7100
++#define _DT_BINDINGS_RESET_CONTROLLER_STARFIVE_JH7100
 +
-+static inline int pinctrl_single_probe(struct device_d *dev)
++#define RSTN_DOM3AHB_BUS	0
++#define RSTN_DOM7AHB_BUS	1
++#define RST_U74			2
++#define RSTN_U74_AXI		3
++#define RSTN_SGDMA2P_AHB	4
++#define RSTN_SGDMA2P_AXI	5
++#define RSTN_DMA2PNOC_AXI	6
++#define RSTN_DLA_AXI		7
++#define RSTN_DLANOC_AXI		8
++#define RSTN_DLA_APB		9
++#define RST_VP6_DRESET		10
++#define RST_VP6_BRESET		11
++#define RSTN_VP6_AXI		12
++#define RSTN_VDECBRG_MAIN	13
++#define RSTN_VDEC_AXI		14
++#define RSTN_VDEC_BCLK		15
++#define RSTN_VDEC_CCLK		16
++#define RSTN_VDEC_APB		17
++#define RSTN_JPEG_AXI		18
++#define RSTN_JPEG_CCLK		19
++#define RSTN_JPEG_APB		20
++#define RSTN_JPCGC300_MAIN	21
++#define RSTN_GC300_2X		22
++#define RSTN_GC300_AXI		23
++#define RSTN_GC300_AHB		24
++#define RSTN_VENC_AXI		25
++#define RSTN_VENCBRG_MAIN	26
++#define RSTN_VENC_BCLK		27
++#define RSTN_VENC_CCLK		28
++#define RSTN_VENC_APB		29
++#define RSTN_DDRPHY_APB		30
++#define RSTN_NOC_ROB		31
++#define RSTN_NOC_COG		32
++#define RSTN_HIFI4_AXI		33
++#define RSTN_HIFI4NOC_AXI	34
++#define RST_HIFI4_drESET	35
++#define RST_HIFI4_bRESET	36
++#define RSTN_USB_AXI		37
++#define RSTN_USBNOC_AXI		38
++#define RSTN_SGDMA1P_AXI	39
++#define RSTN_DMA1P_AXI		40
++#define RSTN_X2C_AXI		41
++#define RSTN_NNE_AHB		42
++#define RSTN_NNE_AXI		43
++#define RSTN_NNENOC_AXI		44
++#define RSTN_DLASLV_AXI		45
++#define RSTN_DSPX2C_AXI		46
++#define RSTN_VIN_SRC		47
++#define RSTN_ISPSLV_AXI		48
++#define RSTN_VIN_AXI		49
++#define RSTN_VINNOC_AXI		50
++#define RSTN_ISP0_AXI		51
++#define RSTN_ISP0NOC_AXI	52
++#define RSTN_ISP1_AXI		53
++#define RSTN_ISP1NOC_AXI	54
++#define RSTN_VOUT_SRC		55
++#define RSTN_DISP_AXI		56
++#define RSTN_DISPNOC_AXI	57
++#define RSTN_SDIO0_AHB		58
++#define RSTN_SDIO1_AHB		59
++#define RSTN_GMAC_AHB		60
++#define RSTN_SPI2AHB_AHB	61
++#define RSTN_SPI2AHB_CORE	62
++#define RSTN_EZMASTER_AHB	63
++#define RST_E24			64
++#define RSTN_QSPI_AHB		65
++#define RSTN_QSPI_CORE		66
++#define RSTN_QSPI_APB		67
++#define RSTN_SEC_AHB		68
++#define RSTN_AES		69
++#define RSTN_PKA		70
++#define RSTN_SHA		71
++#define RSTN_TRNG_APB		72
++#define RSTN_OTP_APB		73
++#define RSTN_UART0_APB		74
++#define RSTN_UART0_CORE		75
++#define RSTN_UART1_APB		76
++#define RSTN_UART1_CORE		77
++#define RSTN_SPI0_APB		78
++#define RSTN_SPI0_CORE		79
++#define RSTN_SPI1_APB		80
++#define RSTN_SPI1_CORE		81
++#define RSTN_I2C0_APB		82
++#define RSTN_I2C0_CORE		83
++#define RSTN_I2C1_APB		84
++#define RSTN_I2C1_CORE		85
++#define RSTN_GPIO_APB		86
++#define RSTN_UART2_APB		87
++#define RSTN_UART2_CORE		88
++#define RSTN_UART3_APB		89
++#define RSTN_UART3_CORE		90
++#define RSTN_SPI2_APB		91
++#define RSTN_SPI2_CORE		92
++#define RSTN_SPI3_APB		93
++#define RSTN_SPI3_CORE		94
++#define RSTN_I2C2_APB		95
++#define RSTN_I2C2_CORE		96
++#define RSTN_I2C3_APB		97
++#define RSTN_I2C3_CORE		98
++#define RSTN_WDTIMER_APB	99
++#define RSTN_WDT		100
++#define RSTN_TIMER0		101
++#define RSTN_TIMER1		102
++#define RSTN_TIMER2		103
++#define RSTN_TIMER3		104
++#define RSTN_TIMER4		105
++#define RSTN_TIMER5		106
++#define RSTN_TIMER6		107
++#define RSTN_VP6INTC_APB	108
++#define RSTN_PWM_APB		109
++#define RSTN_MSI_APB		110
++#define RSTN_TEMP_APB		111
++#define RSTN_TEMP_SENSE		112
++#define RSTN_SYSERR_APB		113
++
++#define RSTN_END		114
++
++#endif
+diff --git a/include/soc/starfive/rstgen.h b/include/soc/starfive/rstgen.h
+new file mode 100644
+index 000000000000..7a674aabe9f2
+--- /dev/null
++++ b/include/soc/starfive/rstgen.h
+@@ -0,0 +1,41 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef __SOC_STARFIVE_RSTGEN_H_
++#define __SOC_STARFIVE_RSTGEN_H_
++
++#include <dt-bindings/reset-controller/starfive-jh7100.h>
++#include <linux/bitops.h>
++#include <linux/types.h>
++
++#define STARFIVE_RSTGEN_STATUS	0x10
++
++static inline void __iomem *starfive_rstgen_bank(void __iomem *base, unsigned long *id)
 +{
-+	return -ENOSYS;
++	void __iomem *bank = base + *id / (4 * BITS_PER_BYTE) * 4;
++	*id %= 4 * BITS_PER_BYTE;
++	return bank;
 +}
- #endif
- 
- #endif /* PINCTRL_H */
++
++static inline void __starfive_rstgen(void __iomem *base, unsigned long id, bool assert)
++{
++	void __iomem *bank = starfive_rstgen_bank(base, &id);
++	u32 val;
++
++	val = readl(bank);
++
++	if (assert)
++		val |= BIT(id);
++	else
++		val &= ~BIT(id);
++
++	writel(val, bank);
++}
++
++static bool __starfive_rstgen_asserted(void __iomem *base, unsigned long id)
++{
++	void __iomem *bank = starfive_rstgen_bank(base, &id);
++
++	return !(readl(bank + STARFIVE_RSTGEN_STATUS) & BIT(id));
++}
++
++#endif
 -- 
 2.29.2
 
