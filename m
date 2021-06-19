@@ -1,53 +1,53 @@
-Delivery-date: Sat, 19 Jun 2021 06:52:46 +0200
+Delivery-date: Sat, 19 Jun 2021 06:52:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1luSyM-0004Sj-3Y
-	for lore@lore.pengutronix.de; Sat, 19 Jun 2021 06:52:46 +0200
+	id 1luSyO-0004TA-EV
+	for lore@lore.pengutronix.de; Sat, 19 Jun 2021 06:52:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1luSyK-0000Z1-EM
-	for lore@pengutronix.de; Sat, 19 Jun 2021 06:52:45 +0200
+	id 1luSyL-0000Zc-GG
+	for lore@pengutronix.de; Sat, 19 Jun 2021 06:52:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=aomiGTHvIe4XFqr91SHw03nQpts/jwlS9tscFbael8Q=; b=ffc1vVYO6o0ioy
-	0UmXVuGJibDHTAab1elLQYsIfQ4Xc4inHyaaeJXzSO7b9H/u2vZTfRfy3GoKOu5R9QTh67t8iHd2w
-	BZMDeJEBEmio4Ta/dmUg2rRr6WZP8v1JaGNsdMtV1UaZoFEqZTLn33H8sW+64v+2EvZ0EoKO7s87K
-	HHlEXhpO7TfddptNvXvn2/u51JhiYQLlwpqLYeQGJxjMbXuY6H8/0IO99NX5pmQg1se9ZdMZvB9VD
-	iQnE1NwdePS9L8xA/uWR9X31Q/DkLU80sxEbyvzxhwnP/fxJAUjwhPurwtTHDAHTPErGJsIDeyHpI
-	RukHU+N7xGQ4qsonX3xw==;
+	List-Owner; bh=rKRrkRugwMQvGYZSSEDgSSotgl8Yi8WPFBw9UWYXxvQ=; b=Bts7O61D5Wk1Lc
+	FLh8YZeyzNp5/0T66AhHOn6KVgr5yYizkh/5Z4NAFEl3HeRug5YRbkchuWIzcsyFm8Bj+b+YQjkHL
+	6BUaB0sorQbOkmT2tzIAg1Qq0vrKvzmStp0fPDSrW6D6zvp6yXbgHCYeUg/5D6TCCcjYC3Mm+6sdq
+	WqKJre5Nz+WTTFGMoLevBaMLyjJOjRCdYoBpwCrVocuRWU2LXwskds3eQCnjgqq95Ke7EvSKs3Nry
+	UzX+Kg2oUnZF6q3giE3t/qZEbgSoVj0i68LfqXLfUHPtzqbN/xtTcBf+j8ZOw/DJiufYUV8jcFUTR
+	uUD0dVyil0uTJNOW0Arg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1luSwv-00GHld-Ch; Sat, 19 Jun 2021 04:51:17 +0000
+	id 1luSwn-00GHhw-OF; Sat, 19 Jun 2021 04:51:09 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1luSwi-00GHfk-Ks
- for barebox@lists.infradead.org; Sat, 19 Jun 2021 04:51:06 +0000
+ id 1luSwe-00GHek-Kb
+ for barebox@lists.infradead.org; Sat, 19 Jun 2021 04:51:01 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1luSwh-0008MF-9v; Sat, 19 Jun 2021 06:51:03 +0200
+ id 1luSwc-0008M3-Sa; Sat, 19 Jun 2021 06:50:58 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1luSwa-0001LJ-TI; Sat, 19 Jun 2021 06:50:56 +0200
+ id 1luSwa-0001Kj-Nn; Sat, 19 Jun 2021 06:50:56 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Sat, 19 Jun 2021 06:50:44 +0200
-Message-Id: <20210619045055.779-19-a.fatoum@pengutronix.de>
+Date: Sat, 19 Jun 2021 06:50:32 +0200
+Message-Id: <20210619045055.779-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210619045055.779-1-a.fatoum@pengutronix.de>
 References: <20210619045055.779-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210618_215104_727199_671E7D40 
-X-CRM114-Status: GOOD (  12.28  )
+X-CRM114-CacheID: sfid-20210618_215100_724615_BBE00A2C 
+X-CRM114-Status: GOOD (  10.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,57 +72,69 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 18/29] mci: allocate sector_buf on demand
+Subject: [PATCH v2 06/29] RISC-V: erizo: make it easier to reuse ns16550
+ debug_ll
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The MCI core uses a common bounce buffer for unaligned block
-reads/writes as well as sd_change_freq. This buffer is allocated at
-device initcall level, same as the MMC drivers themselves.
-
-For CONFIG_MCI_STARTUP=y configurations this seems to imply that
-sd_change_freq could attempt writing the NULL page. Avoid this
-by just allocating the buffer when the first MMC device is registered.
-
-This doesn't solve all issues; so add a comment noting that.
+Incoming StarFive support also uses ns16550 compatibles as UART IP.
+Make reuse easier by making the two most likely parameters to change
+SoC-specific (base address and baud clock frequency) and move the rest
+behind the new CONFIG_DEBUG_LL_NS16550.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/mci-core.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ arch/riscv/include/asm/debug_ll.h | 7 +++++--
+ common/Kconfig                    | 6 ++++++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index b174067a7fbc..92a73c8f1dfe 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1790,6 +1790,11 @@ static int mci_card_probe(struct mci *mci)
- 		mci->cdevname = basprintf("disk%d", disknum);
- 	}
+diff --git a/arch/riscv/include/asm/debug_ll.h b/arch/riscv/include/asm/debug_ll.h
+index 6904460af98f..13609d25c559 100644
+--- a/arch/riscv/include/asm/debug_ll.h
++++ b/arch/riscv/include/asm/debug_ll.h
+@@ -12,13 +12,16 @@
  
-+	if (!sector_buf)
-+		sector_buf = dma_alloc(SECTOR_SIZE);
-+
-+	/* FIXME we don't check sector_buf against the device dma mask here */
-+
- 	rc = mci_startup(mci);
- 	if (rc) {
- 		dev_warn(&mci->dev, "Card's startup fails with %d\n", rc);
-@@ -1851,15 +1856,6 @@ static int mci_set_probe(struct param_d *param, void *priv)
- 	return 0;
- }
+ #include <linux/kconfig.h>
  
--static int mci_init(void)
--{
--	sector_buf = dma_alloc(SECTOR_SIZE);
--
--	return 0;
--}
--
--device_initcall(mci_init);
--
- int mci_detect_card(struct mci_host *host)
- {
- 	int rc;
+-#ifdef CONFIG_DEBUG_ERIZO
++#ifdef CONFIG_DEBUG_LL_NS16550
+ 
++#if defined CONFIG_DEBUG_ERIZO
+ #define DEBUG_LL_UART_ADDR	0x90000000
++#define DEBUG_LL_UART_CLK       (24000000 / 16)
++#endif
++
+ #define DEBUG_LL_UART_SHIFT	2
+ #define DEBUG_LL_UART_IOSIZE32
+ 
+-#define DEBUG_LL_UART_CLK       (24000000 / 16)
+ #define DEBUG_LL_UART_BPS       CONFIG_BAUDRATE
+ #define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
+ 
+diff --git a/common/Kconfig b/common/Kconfig
+index 8b8f80bbb3ba..98be9b58abce 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1376,6 +1376,7 @@ config DEBUG_RPI3_MINI_UART
+ config DEBUG_ERIZO
+ 	bool "Erizo ns16550 port"
+ 	depends on SOC_ERIZO
++	select DEBUG_LL_NS16550
+ 
+ config DEBUG_SIFIVE
+ 	bool "SiFive serial0 port"
+@@ -1383,6 +1384,11 @@ config DEBUG_SIFIVE
+ 
+ endchoice
+ 
++config DEBUG_LL_NS16550
++	bool
++	help
++	  Selected by RISC-V platforms that use ns16550 for debug_ll
++
+ config DEBUG_IMX_UART_PORT
+ 	int "i.MX Debug UART Port Selection" if DEBUG_IMX1_UART || \
+ 						DEBUG_IMX21_UART || \
 -- 
 2.29.2
 
