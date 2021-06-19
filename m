@@ -1,51 +1,53 @@
-Delivery-date: Sat, 19 Jun 2021 06:52:50 +0200
+Delivery-date: Sat, 19 Jun 2021 06:52:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1luSyQ-0004Tu-Gb
-	for lore@lore.pengutronix.de; Sat, 19 Jun 2021 06:52:50 +0200
+	id 1luSyR-0004UH-NF
+	for lore@lore.pengutronix.de; Sat, 19 Jun 2021 06:52:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1luSyN-0000ad-LX
-	for lore@pengutronix.de; Sat, 19 Jun 2021 06:52:50 +0200
+	id 1luSyP-0000bv-U3
+	for lore@pengutronix.de; Sat, 19 Jun 2021 06:52:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=VZ+D3EKFC55qFUMnp+erQa/+WEq99bUDRrWmX+40/bo=; b=2Zm7MQegADRqBO
-	3biMgLphduCZYkp14/pTQsxPoq5blIl2M5RzMh1GBIvYtQhP/Ov3IfmTN/E37iUSI0puJ1aJSTqku
-	GSXoj3QUReBhRMie3lE0Foxoo8YCwF9QcxpDEx8riuQL2BGjW2XFiJg1jXRfAbwwlvBlV3wdIxg54
-	TxKVebUEizQQLJ6vEXN71BnCpbbO8tUidY7minjpgA3HWjKCKu6h4e5dNvL5kXmZbvTJphgyK2Qie
-	vECRvyl6fDB1Q+z4Qb77Xc3RYvmzcDeki6S/ACpE7222JUaF/GF7atpDNvFIytdcdpoQzvaAyJhC0
-	sWJ3gs1PqqeMNnP3FcSw==;
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=fP93paK6ADPekeZeReIXqs+NQGeQCg5G8UwZw/AHnAk=; b=NWNzphfqZJqKsj
+	afdxwLcazJ4SFGeQkg8ieRGmV0pJTVRWXTPUosPDZC97LRi4gTlaxZgfrRYdwT+MP+3RwvBwmhel7
+	Td4C2qmtmXBYPg1Rt/w1jqEi6wehHEyzcO3lUrmfcbpxItBenQ2zWYzn6z6Yk1MjNqiUHlIBZwpZo
+	r5WSRu9w14g4LrqVJs4tO2ISJEQgLvafMcqY2AOrXeayShKzzat0O151laB7zLY8d+hqhrf5qnnG+
+	1lm0RBijG51eggKXdVfNYeniAB3f7Vh8F0NnEo9t52eOzmU4/C5BdMpdl7h0BsQu0FWWPMlpSWCBf
+	Ia4AZl2KqvrThcDplmaQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1luSwr-00GHjO-Bv; Sat, 19 Jun 2021 04:51:13 +0000
+	id 1luSwz-00GHnC-TE; Sat, 19 Jun 2021 04:51:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1luSwe-00GHej-Ka
- for barebox@lists.infradead.org; Sat, 19 Jun 2021 04:51:03 +0000
+ id 1luSwi-00GHfm-OO
+ for barebox@lists.infradead.org; Sat, 19 Jun 2021 04:51:06 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1luSwc-0008Lw-SX; Sat, 19 Jun 2021 06:50:58 +0200
+ id 1luSwh-0008M9-BW; Sat, 19 Jun 2021 06:51:03 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1luSwa-0001KS-L2; Sat, 19 Jun 2021 06:50:56 +0200
+ id 1luSwa-0001L1-Qa; Sat, 19 Jun 2021 06:50:56 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Sat, 19 Jun 2021 06:50:26 +0200
-Message-Id: <20210619045055.779-1-a.fatoum@pengutronix.de>
+Date: Sat, 19 Jun 2021 06:50:38 +0200
+Message-Id: <20210619045055.779-13-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210619045055.779-1-a.fatoum@pengutronix.de>
+References: <20210619045055.779-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210618_215101_046944_6EA05AD8 
-X-CRM114-Status: GOOD (  26.24  )
+X-CRM114-CacheID: sfid-20210618_215104_887382_5AD641B6 
+X-CRM114-Status: GOOD (  22.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -57,6 +59,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -69,253 +72,251 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 00/29] RISC-V: add BeagleV Beta board support
+Subject: [PATCH v2 12/29] drivers: soc: sifive: add basic L2 cache controller
+ driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The changes allow barebox to run second stage (after ddrinit and second
-boot) on the BeagleV beta board. It does everything necessary to support
-Ethernet, MMC, GPIO, pinmux, pinconf, clock, reset, watchdog, HWRNG and
-DMA between CPU and the cache-incoherent DMA masters.
+SiFive SoCs are cache coherent with respect to other DMA masters,
+so there is no need to explicitly flush cache lines.
+Incoming StarFive SoC uses SiFive CPU and L2 cache controller,
+but is cache-incoherent and thus needs the maintenance for DMA.
 
-The current vendor kernel doesn't care much for low-level
-initialization, depending on pinmux, pinconf, clock and reset to happen
-completely in the bootloader. This makes an initial bootloader port
-much more complex, because you need not only care about the peripherals
-you use yourself, but those that Linux may want to access to.
+Add a basic driver that exports the cache flush function for
+SoC-specific drivers to use.
 
-For this reason, there is a starfive-pwrseq driver that binds against
-some nodes like the neural network accelerator, which we will probably
-never support, but at least tickles it resets and enables its clocks.
-
-Some peripherals require writing magic values into registers, which
-this series doesn't do. If your boot hangs, consider checking out:
-
-https://github.com/a3f/barebox/tree/beaglev
-
-instead, which imports some vendor boot code to support more
-peripherals. This series is sufficient to have barebox boot kernels that
-do their own initialization though. Problem is there are no such kernels
-yet ^^.
-
-Candidates for further steps:
-
- - Support more peripherals in starfive-pwrseq
- - Get Designware i2c controller working, so we can use PMIC for reset
- - Get Cadence QSPI working, so barebox can flash itself and use
-   environment on flash
- - Figure out the ticket lottery stuff, so we can boot multi-core
- - Replace ddrinit and secondboot with PBL, load from there opensbi
-   and then return to barebox proper
- - Complete missing clock tree info when Documentation is available
-
-I can use a hand impementing these, so patches are most certainly
-welcome (Antony, I am looking at you ;-).
-
-v1 was here:
-	https://lore.barebox.org/barebox/20210531073821.15257-1-a.fatoum@pengutronix.de/
-
-v1 -> v2:
-  - Dropped untested PMIC and flash chip commits. i2c and qspi controller
-    drivers in tree don't yet work for BeagleV
-  - remove clocksource clutter from console
-  - import S-/M-Mode multi-image series, so we can build all images for
-    the same ISA in one go
-  - Drop barebox,provide-mac-address from OTP driver. This is now done
-    via nvmem-cells reference
-  - Replace coherent memory from SRAM allocator with non-1:1 mapping:
-    Give devices the cached <= 32 bit address, as they are
-    cache-incoherent anyway, and use the > 32 bit uncached address from
-    CPU side. Works beautifully
-  - Drop 64-bit-conversion for dw_mmc. Sascha did it for rk3568 and it
-    works for BeagleV too
-  - Check Designware ETH coherent memory allocation against mask
-  - Rebase on newest clock changes
-  - Disable clocks after resets (Sascha)
-  - Move repsonsibility of keeping reset-synchronous clocks needed
-    for normal operation enabled to drivers (Sascha, off-list)
-  - Handle fence.i trap in exception handler to support SoCs without
-    Zifencei ISA extension
-  - Add some static clock initialization to starfive-pwrseq driver
-  - Add pinctrl driver support
-  - Add GPIO driver support
-  - Add board support
-
-
-Ahmad Fatoum (29):
-  clocksource: RISC-V: demote probe success messages to debug level
-  RISC-V: virt: select only one timer
-  RISC-V: extend multi-image to support both S- and M-Mode
-  RISC-V: cpuinfo: return some output for non-SBI systems as well
-  RISC-V: S-Mode: propagate Hart ID
-  RISC-V: erizo: make it easier to reuse ns16550 debug_ll
-  RISC-V: socs: add Kconfig entry for StarFive JH7100
-  nvmem: add StarFive OTP support
-  RISC-V: dma: support multiple dma_alloc_coherent backends
-  RISC-V: add exception support
-  RISC-V: support incoherent I-Cache
-  drivers: soc: sifive: add basic L2 cache controller driver
-  soc: starfive: add support for JH7100 incoherent interconnect
-  soc: sifive: l2_cache: enable maximum available cache ways
-  net: designware: fix non-1:1 mapped 64-bit systems
-  net: designware: add support for IP integrated into StarFive SoC
-  mci: allocate DMA-able memory
-  mci: allocate sector_buf on demand
-  dma: allocate 32-byte aligned buffers by default
-  mci: dw_mmc: add optional reset line
-  mci: dw_mmc: match against StarFive MMC compatibles
-  clk: add initial StarFive clock support
-  reset: add StarFive reset controller driver
-  watchdog: add StarFive watchdog driver
-  hw_random: add driver for RNG on StarFive SoC
-  reset: add device_reset_all helper
-  gpio: add support for StarFive GPIO controller
-  misc: add power sequencing driver for initializing StarFive
-    peripherals
-  RISC-V: StarFive: add board support for BeagleV Starlight
-
- Documentation/boards/riscv.rst                |  37 +
- arch/riscv/Kconfig                            |  19 +-
- arch/riscv/Kconfig.socs                       |  56 +-
- arch/riscv/boards/Makefile                    |   1 +
- arch/riscv/boards/beaglev/Makefile            |   5 +
- arch/riscv/boards/beaglev/board.c             |  30 +
- .../beaglev/defaultenv-beaglev/boot/buildroot |  13 +
- .../beaglev/defaultenv-beaglev/boot/fedora    |  16 +
- .../defaultenv-beaglev/nv/boot.default        |   1 +
- arch/riscv/boards/beaglev/lowlevel.c          |  18 +
- arch/riscv/boards/erizo/lowlevel.c            |   6 +-
- arch/riscv/boards/hifive/lowlevel.c           |  17 +-
- arch/riscv/boot/board-dt-2nd.c                |   4 +-
- arch/riscv/boot/entry.c                       |   5 +-
- arch/riscv/boot/entry.h                       |   6 +-
- arch/riscv/boot/start.c                       |  15 +-
- arch/riscv/boot/uncompress.c                  |  11 +-
- arch/riscv/configs/starfive_defconfig         | 131 +++
- arch/riscv/cpu/Makefile                       |   4 +
- arch/riscv/cpu/core.c                         |  40 +-
- arch/riscv/cpu/dma.c                          |  74 ++
- arch/riscv/cpu/interrupts.c                   | 139 +++
- arch/riscv/cpu/mtrap.S                        |  30 +
- arch/riscv/cpu/strap.S                        |  30 +
- arch/riscv/dts/Makefile                       |   1 +
- arch/riscv/dts/jh7100-beaglev-starlight.dts   |  54 ++
- arch/riscv/dts/jh7100-beaglev-starlight.dtsi  | 369 ++++++++
- arch/riscv/dts/jh7100.dtsi                    | 798 ++++++++++++++++++
- arch/riscv/include/asm/asm-offsets.h          |   1 +
- arch/riscv/include/asm/barebox-riscv.h        |  14 +-
- arch/riscv/include/asm/barrier.h              |  27 +
- arch/riscv/include/asm/cacheflush.h           |  16 +
- arch/riscv/include/asm/debug_ll.h             |  10 +-
- arch/riscv/include/asm/dma.h                  |  48 +-
- arch/riscv/include/asm/io.h                   |  10 +
- arch/riscv/include/asm/irq.h                  | 107 +++
- arch/riscv/include/asm/ptrace.h               | 143 ++++
- arch/riscv/include/asm/sbi.h                  |   8 +-
- arch/riscv/include/asm/system.h               |  61 ++
- arch/riscv/include/asm/unwind.h               |   9 +
- arch/riscv/lib/asm-offsets.c                  |  46 +
- arch/riscv/lib/bootm.c                        |   4 +-
- arch/riscv/lib/cpuinfo.c                      |  56 +-
- arch/riscv/lib/reloc.c                        |   8 +
- arch/riscv/lib/sbi.c                          |   4 +
- arch/riscv/lib/setupc.S                       |   2 +
- commands/Kconfig                              |   4 +-
- common/Kconfig                                |  11 +
- common/globalvar.c                            |  21 +
- common/oftree.c                               |  19 +-
- drivers/Makefile                              |   2 +-
- drivers/clk/Makefile                          |   1 +
- drivers/clk/starfive/Makefile                 |   3 +
- drivers/clk/starfive/clk.h                    |  64 ++
- drivers/clk/starfive/jh7100-clkgen.c          | 363 ++++++++
- drivers/clocksource/timer-clint.c             |   7 +-
- drivers/clocksource/timer-riscv.c             |   5 +-
- drivers/gpio/Kconfig                          |   8 +
- drivers/gpio/Makefile                         |   1 +
- drivers/gpio/gpio-starfive-vic.c              | 177 ++++
- drivers/hw_random/Kconfig                     |   7 +
- drivers/hw_random/Makefile                    |   1 +
- drivers/hw_random/starfive-vic-rng.c          | 208 +++++
- drivers/mci/dw_mmc.c                          |  23 +-
- drivers/mci/mci-core.c                        |  15 +-
- drivers/misc/Kconfig                          |  10 +
- drivers/misc/Makefile                         |   1 +
- drivers/misc/starfive-pwrseq.c                |  92 ++
- drivers/net/Kconfig                           |   8 +
- drivers/net/Makefile                          |   1 +
- drivers/net/designware.c                      |  64 +-
- drivers/net/designware.h                      |  29 +-
- drivers/net/designware_starfive.c             | 110 +++
- drivers/nvmem/Kconfig                         |   8 +
- drivers/nvmem/Makefile                        |   2 +
- drivers/nvmem/starfive-otp.c                  | 201 +++++
- drivers/pinctrl/pinctrl-single.c              |   4 +-
- drivers/reset/Kconfig                         |   6 +
- drivers/reset/Makefile                        |   1 +
- drivers/reset/core.c                          |  78 +-
- drivers/reset/reset-starfive-vic.c            | 234 +++++
- drivers/soc/Makefile                          |   5 +
- drivers/soc/sifive/Makefile                   |   1 +
- drivers/soc/sifive/sifive_l2_cache.c          | 136 +++
- drivers/soc/starfive/Makefile                 |   1 +
- drivers/soc/starfive/jh7100_dma.c             |  55 ++
- drivers/watchdog/Kconfig                      |   7 +
- drivers/watchdog/Makefile                     |   1 +
- drivers/watchdog/starfive_wdt.c               | 106 +++
- images/Makefile.riscv                         |   4 +
- include/dma.h                                 |   7 +-
- include/dt-bindings/clock/starfive-jh7100.h   | 203 +++++
- .../reset-controller/starfive-jh7100.h        | 126 +++
- include/globalvar.h                           |   8 +
- include/linux/reset.h                         |   7 +
- include/pinctrl.h                             |   6 +
- include/soc/sifive/l2_cache.h                 |  10 +
- include/soc/starfive/rstgen.h                 |  41 +
- include/soc/starfive/sysmain.h                |  15 +
- 99 files changed, 4878 insertions(+), 154 deletions(-)
- create mode 100644 arch/riscv/boards/beaglev/Makefile
- create mode 100644 arch/riscv/boards/beaglev/board.c
- create mode 100755 arch/riscv/boards/beaglev/defaultenv-beaglev/boot/buildroot
- create mode 100755 arch/riscv/boards/beaglev/defaultenv-beaglev/boot/fedora
- create mode 100644 arch/riscv/boards/beaglev/defaultenv-beaglev/nv/boot.default
- create mode 100644 arch/riscv/boards/beaglev/lowlevel.c
- create mode 100644 arch/riscv/configs/starfive_defconfig
- create mode 100644 arch/riscv/cpu/dma.c
- create mode 100644 arch/riscv/cpu/interrupts.c
- create mode 100644 arch/riscv/cpu/mtrap.S
- create mode 100644 arch/riscv/cpu/strap.S
- create mode 100644 arch/riscv/dts/jh7100-beaglev-starlight.dts
- create mode 100644 arch/riscv/dts/jh7100-beaglev-starlight.dtsi
- create mode 100644 arch/riscv/dts/jh7100.dtsi
- create mode 100644 arch/riscv/include/asm/asm-offsets.h
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/riscv/Kconfig.socs              |   5 ++
+ arch/riscv/include/asm/barrier.h     |  27 +++++++
+ drivers/Makefile                     |   2 +-
+ drivers/soc/Makefile                 |   4 +
+ drivers/soc/sifive/Makefile          |   1 +
+ drivers/soc/sifive/sifive_l2_cache.c | 116 +++++++++++++++++++++++++++
+ include/soc/sifive/l2_cache.h        |  10 +++
+ 7 files changed, 164 insertions(+), 1 deletion(-)
  create mode 100644 arch/riscv/include/asm/barrier.h
- create mode 100644 arch/riscv/include/asm/cacheflush.h
- create mode 100644 arch/riscv/include/asm/irq.h
- create mode 100644 arch/riscv/include/asm/ptrace.h
- create mode 100644 arch/riscv/include/asm/system.h
- create mode 100644 arch/riscv/include/asm/unwind.h
- create mode 100644 drivers/clk/starfive/Makefile
- create mode 100644 drivers/clk/starfive/clk.h
- create mode 100644 drivers/clk/starfive/jh7100-clkgen.c
- create mode 100644 drivers/gpio/gpio-starfive-vic.c
- create mode 100644 drivers/hw_random/starfive-vic-rng.c
- create mode 100644 drivers/misc/starfive-pwrseq.c
- create mode 100644 drivers/net/designware_starfive.c
- create mode 100644 drivers/nvmem/starfive-otp.c
- create mode 100644 drivers/reset/reset-starfive-vic.c
  create mode 100644 drivers/soc/Makefile
  create mode 100644 drivers/soc/sifive/Makefile
  create mode 100644 drivers/soc/sifive/sifive_l2_cache.c
- create mode 100644 drivers/soc/starfive/Makefile
- create mode 100644 drivers/soc/starfive/jh7100_dma.c
- create mode 100644 drivers/watchdog/starfive_wdt.c
- create mode 100644 include/dt-bindings/clock/starfive-jh7100.h
- create mode 100644 include/dt-bindings/reset-controller/starfive-jh7100.h
  create mode 100644 include/soc/sifive/l2_cache.h
- create mode 100644 include/soc/starfive/rstgen.h
- create mode 100644 include/soc/starfive/sysmain.h
 
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index 6ec2315d4e70..b4fdfd9741cd 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -64,5 +64,10 @@ config SOC_STARFIVE_JH7100
+ 
+ endif
+ 
++comment "CPU features"
++
++config SIFIVE_L2
++	bool "SiFive L2 cache controller"
++	depends on CPU_SIFIVE
+ 
+ endmenu
+diff --git a/arch/riscv/include/asm/barrier.h b/arch/riscv/include/asm/barrier.h
+new file mode 100644
+index 000000000000..eff529307a15
+--- /dev/null
++++ b/arch/riscv/include/asm/barrier.h
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Based on arch/arm/include/asm/barrier.h
++ *
++ * Copyright (C) 2012 ARM Ltd.
++ * Copyright (C) 2013 Regents of the University of California
++ * Copyright (C) 2017 SiFive
++ */
++
++#ifndef _ASM_RISCV_BARRIER_H
++#define _ASM_RISCV_BARRIER_H
++
++#ifndef __ASSEMBLY__
++
++#define nop()		__asm__ __volatile__ ("nop")
++
++#define RISCV_FENCE(p, s) \
++	__asm__ __volatile__ ("fence " #p "," #s : : : "memory")
++
++/* These barriers need to enforce ordering on both devices or memory. */
++#define mb()		RISCV_FENCE(iorw,iorw)
++#define rmb()		RISCV_FENCE(ir,ir)
++#define wmb()		RISCV_FENCE(ow,ow)
++
++#endif /* __ASSEMBLY__ */
++
++#endif /* _ASM_RISCV_BARRIER_H */
+diff --git a/drivers/Makefile b/drivers/Makefile
+index be5b0b3b04c9..aeb097e1f5ff 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -39,7 +39,7 @@ obj-$(CONFIG_HAB) += hab/
+ obj-$(CONFIG_CRYPTO_HW) += crypto/
+ obj-$(CONFIG_AIODEV) += aiodev/
+ obj-y	+= memory/
+-obj-y	+= soc/imx/
++obj-y	+= soc/
+ obj-y	+= nvme/
+ obj-y	+= ddr/
+ obj-y	+= power/
+diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
+new file mode 100644
+index 000000000000..b787379586ae
+--- /dev/null
++++ b/drivers/soc/Makefile
+@@ -0,0 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0
++
++obj-y	+= imx/
++obj-$(CONFIG_CPU_SIFIVE)	+= sifive/
+diff --git a/drivers/soc/sifive/Makefile b/drivers/soc/sifive/Makefile
+new file mode 100644
+index 000000000000..e8113c66f576
+--- /dev/null
++++ b/drivers/soc/sifive/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_SIFIVE_L2) += sifive_l2_cache.o
+diff --git a/drivers/soc/sifive/sifive_l2_cache.c b/drivers/soc/sifive/sifive_l2_cache.c
+new file mode 100644
+index 000000000000..96d6d4ec4773
+--- /dev/null
++++ b/drivers/soc/sifive/sifive_l2_cache.c
+@@ -0,0 +1,116 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * SiFive L2 cache controller Driver
++ *
++ * Copyright (C) 2018-2019 SiFive, Inc.
++ *
++ */
++
++#define pr_fmt(fmt) "sifive-l2: " fmt
++
++#include <io.h>
++#include <printk.h>
++#include <stdio.h>
++#include <driver.h>
++#include <init.h>
++#include <soc/sifive/l2_cache.h>
++#include <asm/barrier.h>
++
++#define SIFIVE_L2_DIRECCFIX_LOW 0x100
++#define SIFIVE_L2_DIRECCFIX_HIGH 0x104
++#define SIFIVE_L2_DIRECCFIX_COUNT 0x108
++
++#define SIFIVE_L2_DIRECCFAIL_LOW 0x120
++#define SIFIVE_L2_DIRECCFAIL_HIGH 0x124
++#define SIFIVE_L2_DIRECCFAIL_COUNT 0x128
++
++#define SIFIVE_L2_DATECCFIX_LOW 0x140
++#define SIFIVE_L2_DATECCFIX_HIGH 0x144
++#define SIFIVE_L2_DATECCFIX_COUNT 0x148
++
++#define SIFIVE_L2_DATECCFAIL_LOW 0x160
++#define SIFIVE_L2_DATECCFAIL_HIGH 0x164
++#define SIFIVE_L2_DATECCFAIL_COUNT 0x168
++
++#define SIFIVE_L2_FLUSH64 0x200
++
++#define SIFIVE_L2_CONFIG 0x00
++#define SIFIVE_L2_WAYENABLE 0x08
++#define SIFIVE_L2_ECCINJECTERR 0x40
++
++#define SIFIVE_L2_MAX_ECCINTR 4
++
++#define SIFIVE_L2_FLUSH64_LINE_LEN 64
++
++static void __iomem *l2_base = NULL;
++
++static void sifive_l2_config_read(struct device_d *dev)
++{
++	u32 regval, val;
++
++	printf("Cache configuration:\n");
++
++	regval = readl(l2_base + SIFIVE_L2_CONFIG);
++	val = regval & 0xFF;
++	printf("  #Banks: %d\n", val);
++	val = (regval & 0xFF00) >> 8;
++	printf("  #Ways per bank: %d\n", val);
++	val = (regval & 0xFF0000) >> 16;
++	printf("  #Sets per bank: %llu\n", 1llu << val);
++	val = (regval & 0xFF000000) >> 24;
++	printf("  #Bytes per cache block: %llu\n", 1llu << val);
++
++	regval = readl(l2_base + SIFIVE_L2_WAYENABLE);
++	printf("  #Index of the largest way enabled: %d\n", regval);
++}
++
++void sifive_l2_flush64_range(dma_addr_t start, dma_addr_t end)
++{
++	unsigned long line;
++
++	start = ALIGN_DOWN(start, 64);
++	end = ALIGN(end, 64);
++
++	if (WARN_ON(!l2_base))
++		return;
++
++	if (start == end)
++		return;
++
++	mb();
++	for (line = start; line < end; line += SIFIVE_L2_FLUSH64_LINE_LEN) {
++		writeq(line, l2_base + SIFIVE_L2_FLUSH64);
++		mb();
++	}
++}
++
++static int sifive_l2_probe(struct device_d *dev)
++{
++	struct resource *iores;
++
++	if (l2_base)
++		return -EBUSY;
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	l2_base = IOMEM(iores->start);
++
++	dev->info = sifive_l2_config_read;
++
++	return 0;
++}
++
++static const struct of_device_id sifive_l2_ids[] = {
++	{ .compatible = "sifive,fu540-c000-ccache" },
++	{ .compatible = "sifive,fu740-c000-ccache" },
++	{ /* end of table */ },
++};
++
++static struct driver_d sifive_l2_driver = {
++	.name = "sfive-l2cache",
++	.probe = sifive_l2_probe,
++	.of_compatible = sifive_l2_ids,
++};
++postcore_platform_driver(sifive_l2_driver);
+diff --git a/include/soc/sifive/l2_cache.h b/include/soc/sifive/l2_cache.h
+new file mode 100644
+index 000000000000..0da655cd4e30
+--- /dev/null
++++ b/include/soc/sifive/l2_cache.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef __SOC_SIFIVE_L2_CACHE_H_
++#define __SOC_SIFIVE_L2_CACHE_H_
++
++#include <linux/types.h>
++
++void sifive_l2_flush64_range(dma_addr_t start, dma_addr_t end);
++
++#endif
 -- 
 2.29.2
 
