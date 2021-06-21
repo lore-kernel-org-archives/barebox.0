@@ -1,141 +1,82 @@
-Delivery-date: Mon, 21 Jun 2021 13:29:06 +0200
+Delivery-date: Mon, 21 Jun 2021 16:23:01 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvI70-00029C-6f
-	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 13:29:06 +0200
+	id 1lvKpJ-0004wd-4n
+	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 16:23:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvI6y-0007nH-TV
-	for lore@pengutronix.de; Mon, 21 Jun 2021 13:29:06 +0200
+	id 1lvKpH-0003Ly-Ti
+	for lore@pengutronix.de; Mon, 21 Jun 2021 16:23:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:In-Reply-To:Date:
-	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=hh9TQN+aDMEq4ilHOy1YZUZWLb7bi6Zlkid4s9VBg60=; b=ezUSpeCoyV2U1RFxkhrWo1P2Fu
-	vm9qnBQITTMvkx9q4V/PF7FiZ9HPq4mS23lANd0X3BeOhu6qXN6FoMdNioNedX0/iR9+vWxvexmWv
-	yDXNenJo6LH3WYZjDRnbcT2ul2zjwM7Td2fMqZjecVAw2SIuLYvTPx01ZvDVWmgTtIJMNN8Sv4dmN
-	HeHvMv+k6Dhz68qS+mFRBbiWl8jdhIeWxNWdErnZvXA99/T5e7G2tsj+0BlZ/yC4XKfok3OvVaNV4
-	Roal2bwB20FkRDSDHqcBd8zfu/rqchQpHtY28chctfBXIvTDNfgMsXf8hcxedzaNYk4OfHUh+6niq
-	qJYkTjPQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Content-Type:
+	List-Subscribe:List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	References:To:Cc:In-Reply-To:Date:Subject:Mime-Version:Message-Id:From:
+	Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date
+	:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=2Gp0WI/Qcqc1n0gDHuot8jZ6Y2cnzxNJK4iibI2V0Mg=; b=4Oc4SUfs9Wft95qOvgb2atafAi
+	TT3T9spkpYBiNbMcFEyIoWxF+jkXAYDAsGhvGi6/uS8grMcaNCrAfKCnImS+r21WZbLZm/HXBCz8c
+	UmvneWdvGC5DY3G/ufHuSRQIHL048/G9ff+ByHe6B9dv6vkmvMAlC4s+8K42gZOhRUF03IFioW7Ml
+	eY1ZkhFbKEeRbktPBksdr7cjjw2xTDfDWP+lqznlwFDAqzJkd2jYeiAYoN8s0DIYFaMw5C/e/LAkc
+	MIEaTtnmdqtBi1oxkGb6zHT93xAk9BsFpACAql+gN+48tU955xRoWUl5vwCej7aekA94kHGBFmpB2
+	bMxEz5UA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvI5P-003JOC-GP; Mon, 21 Jun 2021 11:27:27 +0000
-Received: from mail-eopbgr00049.outbound.protection.outlook.com ([40.107.0.49]
- helo=EUR02-AM5-obe.outbound.protection.outlook.com)
+	id 1lvKne-003jbz-Cv; Mon, 21 Jun 2021 14:21:18 +0000
+Received: from mail.inside-m2m.de ([188.68.57.244])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvI5J-003JMu-Em
- for barebox@lists.infradead.org; Mon, 21 Jun 2021 11:27:23 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jCscFuf/Xve9aLrLAsMDSl5PbHP31rl4pFaj+xLt6a2qHx2OiQ7qLobLWzB2KMGvBt1U7V91ht8S8aDh+uFftNkZX/BKBR8/NdpDpZfLs/4htOOI0FVBxgL3vE+EZu4EaR/fTmxjFvw50Vr7t7LK/LiyZJPoPEMuLzDPS+jTD4OFFobPxECODQn2l1jJltGCWRnz3H3S5X6/5BYbLtLTVN8DSk6smbWMVFWYS78cJzaVuiJxBXxkvDWlbFdXVSXkrGMqnkaOQX3Kg4fLLAfa5j0gOZ9Hv8hdQrAdmSK3UcAx1hcueRTxxVqbW4JDgM/wDW7Ni7FaJ0H4YHZ5ZWhUyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PReza/kfMB0CO44LkyiPfLwW07AJ0+7q8/4By+kvAT0=;
- b=IaC4VCdKyYu9KAaBOIbwLtJbnwP7QcaaM4TSwLHafguz2p/iulWb4raJBedeFpibr1CETMY1qHIVHmIBc5d2yHkX9B5bVc254xSNbfAfIvKjQbNFYshYrvl4whsm10wK6u3CqhuWU0wPqdhEgclPsgZG4gGXBEx+OsOsXmmDtWb6zQmoNh6p7cptYubLRb27cKBRefNs3UZVm1ZjcQPKHlUN3APTARMUDSq23fQWWDXPWwNeAYe8bRzjauYHiNeGmiaRDrYiWStqCo5lec1QH9QMyh//uqx5mtAUOTAmlD7CjGaYFJ0XQSRhHS7YWmlOjSNihj5xu6rhxA8ltIly8g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wolfvision.net; dmarc=pass action=none
- header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PReza/kfMB0CO44LkyiPfLwW07AJ0+7q8/4By+kvAT0=;
- b=nwHj7uJkxcI+Oe16wkDv11IC77MsxhW4vf3QEh4WBdEpIXIbrPTgIrFt5QwH3Cxcd0CO+EGRo6lOIWqUUFmvwtyagLQNdbh83XJ920DbbHSVo22mX5WvQTNqt0LsOeMHjmbERlopVDcb5uPV1nlBXk6+BtsVR4/qUdg2seOSZAg=
-Authentication-Results: lists.infradead.org; dkim=none (message not signed)
- header.d=none;lists.infradead.org; dmarc=none action=none
- header.from=wolfvision.net;
-Received: from DBBPR08MB4523.eurprd08.prod.outlook.com (2603:10a6:10:c8::19)
- by DBBPR08MB5222.eurprd08.prod.outlook.com (2603:10a6:10:dc::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.15; Mon, 21 Jun
- 2021 11:27:13 +0000
-Received: from DBBPR08MB4523.eurprd08.prod.outlook.com
- ([fe80::7067:f3cb:b0c4:25dd]) by DBBPR08MB4523.eurprd08.prod.outlook.com
- ([fe80::7067:f3cb:b0c4:25dd%7]) with mapi id 15.20.4242.023; Mon, 21 Jun 2021
- 11:27:13 +0000
-To: Sascha Hauer <sha@pengutronix.de>
+ id 1lvKnY-003jak-6q
+ for barebox@lists.infradead.org; Mon, 21 Jun 2021 14:21:14 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mail.inside-m2m.de (Postfix) with ESMTP id 62101400DD;
+ Mon, 21 Jun 2021 16:21:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
+ s=default; t=1624285268;
+ bh=IzYK5maGj/OK076nryLNqqTnPvGkWKwayCd/cXINu8M=;
+ h=From:Subject:Date:In-Reply-To:Cc:To:References:From;
+ b=Tz4cRKvLGQn8epBHKTX4WXEfy2Ma8to+D7dRJ45+mu7XPSM6iFO3OqSMOxlL65I8T
+ KEyvjMQPRX1zJ0CKzAznqhqP8pTxG8rB1jYMjn246fFWv/ud9iKkykHydR9uLUR8MV
+ CDzXvx5U2nSfvkUHaH1UmDKfGmqTsccu+aZ19dlO+mHEY53Lzs98s8RN1wXMD1mG22
+ yp0GfNeKIazDblKVjz70ZR+XUhlGc3lVL9zKHksFqTmd6KvMsD0/6cPumJwUIZUy22
+ vtdIIG95Hnz+WtP2B2Z1zvBCRHvwXcaPDDu/i6CERXRM7B9JC5paauJKTdENEUpORk
+ Fll+CpdT/bP9A==
+X-Virus-Scanned: Debian amavisd-new at mail.inside-m2m.de
+Received: from mail.inside-m2m.de ([127.0.0.1])
+ by localhost (mail.inside-m2m.de [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Jf9iTHv_C_4s; Mon, 21 Jun 2021 16:21:08 +0200 (CEST)
+Received: from smtpclient.apple (pd95bb737.dip0.t-ipconnect.de [217.91.183.55])
+ (Authenticated sender: konstantin.kletschke@inside-m2m.de)
+ by mail.inside-m2m.de (Postfix) with ESMTPSA id C18944005A;
+ Mon, 21 Jun 2021 16:21:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
+ s=default; t=1624285268;
+ bh=IzYK5maGj/OK076nryLNqqTnPvGkWKwayCd/cXINu8M=;
+ h=From:Subject:Date:In-Reply-To:Cc:To:References:From;
+ b=Tz4cRKvLGQn8epBHKTX4WXEfy2Ma8to+D7dRJ45+mu7XPSM6iFO3OqSMOxlL65I8T
+ KEyvjMQPRX1zJ0CKzAznqhqP8pTxG8rB1jYMjn246fFWv/ud9iKkykHydR9uLUR8MV
+ CDzXvx5U2nSfvkUHaH1UmDKfGmqTsccu+aZ19dlO+mHEY53Lzs98s8RN1wXMD1mG22
+ yp0GfNeKIazDblKVjz70ZR+XUhlGc3lVL9zKHksFqTmd6KvMsD0/6cPumJwUIZUy22
+ vtdIIG95Hnz+WtP2B2Z1zvBCRHvwXcaPDDu/i6CERXRM7B9JC5paauJKTdENEUpORk
+ Fll+CpdT/bP9A==
+From: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
+Message-Id: <D71BFF12-5C4D-4C41-B15F-2D53376F5669@inside-m2m.de>
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.1\))
+Date: Mon, 21 Jun 2021 16:21:06 +0200
+In-Reply-To: <20210621040155.GD9782@pengutronix.de>
 Cc: barebox@lists.infradead.org
-References: <20210617143654.32616-1-michael.riesch@wolfvision.net>
- <20210621043036.GE9782@pengutronix.de>
-From: Michael Riesch <michael.riesch@wolfvision.net>
-Organization: WolfVision GmbH
-Message-ID: <fd3e7d9f-bb78-1cb4-d5af-9dce76f9ea3d@wolfvision.net>
-Date: Mon, 21 Jun 2021 13:27:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
-In-Reply-To: <20210621043036.GE9782@pengutronix.de>
-Content-Language: en-US
-X-Originating-IP: [91.118.163.37]
-X-ClientProxiedBy: VI1PR07CA0227.eurprd07.prod.outlook.com
- (2603:10a6:802:58::30) To DBBPR08MB4523.eurprd08.prod.outlook.com
- (2603:10a6:10:c8::19)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.100.125] (91.118.163.37) by
- VI1PR07CA0227.eurprd07.prod.outlook.com (2603:10a6:802:58::30) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4264.7 via Frontend Transport; Mon, 21 Jun 2021 11:27:13 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b94ce0d4-c744-4f98-13f2-08d934a7846f
-X-MS-TrafficTypeDiagnostic: DBBPR08MB5222:
-X-Microsoft-Antispam-PRVS: <DBBPR08MB52222E9326765DF6DDDFD9D6F20A9@DBBPR08MB5222.eurprd08.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: QuUbMI9XO7tqL+cwYahATICFj3HdBwk2iChPgz0MDxM8ySV7Zd2H/zQCy0jvd6SRqGJxiKWUrgQ2JhTpBe+jgo21PQB82xZDJKZP8qBGj9hhbDynEo5bf1v9u3jBmlWbFSh8yFFsYBYD9TqKShENMUt3nzE/B365DvHbERLMB8N2KjWSSCgvNJwgrbRVa+4Yt87BfqvyvUr47qV1KRMvyEQzKYH6WGXhCpzQzjeO2fqNQNk0xqHM1YBxvHVKSwCnV+DtW6ybi5JAdxeoLJomYJMiNSlAT5VLkpnW2Po2PDqpQq2+XTIMWVXh6gPIrdTgomQUfaHqKf6/kouGDWEG38vZRXAcxhhUdX0PVht41kXHusHiYeZUduqShmY7WGfbqsYrtBa8Tkx+7KUP2p12VEJLE/RLVFt02BTSKBb1FhpEfXV5K9AhMwZNKDBn2tKh9Vzqrg7Jfy6Y08CJHxpUWjl2jD5aRAaP227iA0jcDbocSnlyvc2PEwllko5dt3hyJk/TxSfRWf+EnTnP87Ht/eR15R7wTRvQ6fXmSqIIeUzCEte7OftP0chrvpaAlbVxfhyMrMI98cG82ZsiTZKLA1GemVuPuVV83XQN3pwyYFVblbDWSr1urGaPy1BHJNbnGgFxBtmMxQBMgm1Dt8S2h5yrWjMZUHGLX6OVQ9gGNPp+y3X3XIScnFFvvWOdiWeeW/wtKe223HIJzYhFhXESYeLTOpDDtgm2Oi1ihBhsiGg=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DBBPR08MB4523.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(136003)(396003)(366004)(39840400004)(376002)(346002)(16526019)(36756003)(66476007)(478600001)(8936002)(38350700002)(5660300002)(86362001)(44832011)(83380400001)(6666004)(52116002)(66946007)(16576012)(186003)(38100700002)(36916002)(31686004)(26005)(31696002)(6486002)(956004)(6916009)(8676002)(4326008)(2906002)(316002)(53546011)(66556008)(2616005)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eGY4K3pncGlhMkc1NmxBUHRjTnA0bVZ5ZGRGelBHcFdkcXo3UVNlYjhTYmwr?=
- =?utf-8?B?YlZFeEpkTEdwdTNJb1NZTUdYSDZITWU4L2YvV0JIVEc5VEV5enUyRWlndjg2?=
- =?utf-8?B?NWQvZjlzUnMvU1JZVHRaa3NHV0xuWmZJT1NsUUJyWFdHVERiMWdtV05Xb1U5?=
- =?utf-8?B?cnlPS29ienZNcC9SK1lrT1NWQzEwZlYzWGVOM3pMMUlZQ2xtdHJCQzlBa0t6?=
- =?utf-8?B?T1dtekM2NXUzL013VUVybEYvM3lIZ2l6b1FFd2MrV0IrYktranVrMXV3NllN?=
- =?utf-8?B?OEpwMEtIcWdPNGtoOGU4SDAzWlVqOVFVejg2R2VEcGdyR2ZMSDEyV0xuVk9u?=
- =?utf-8?B?b0xHelJUbzAzcmhJWmdWZGdsNTBGZ2trRUplR3p3bXY4aFBxR2lwTnN0WXNv?=
- =?utf-8?B?ZFo1d3NNOTdZN0J0MEw4MGc2cCtBTzVOcThDMytNand1aVhkc3pTYlpUM3dL?=
- =?utf-8?B?QVVWM1dQSnlNZWZCb2ZxTWtRSmNKVVkraFFaL0Z5TzdPRW0zL0hHdTFJbmll?=
- =?utf-8?B?clZVQ3NrMmFSR3RrTE40R2FkQ0R4WWlDQnNrUEhTWE5BQVBtNDJINlpMbzhk?=
- =?utf-8?B?M2NCTmFYZU9FR21YOXR6OXhSWUl5dnBPdHlKUHJVYkUrODVHUWFvem82NUor?=
- =?utf-8?B?ZmlzMHJkbCtNQlRFOThWQzJFV0NzSk56a3gzYjlKNUlIT0V6NW0xT3pZbU1J?=
- =?utf-8?B?QmFOeG1WZkhKb2grdm5OTEhtbEdpVmlWTndYQlAwYmFybXltdHZOeUNqNXdE?=
- =?utf-8?B?b09NRUVMeVNUWmptSlF2QzJ3QUFGdVkwZEtYcGZsQ1FiNTRzejJBSzlrQkhm?=
- =?utf-8?B?VmJVVTZxL3E3NWFRUnUwM3JRVUFsbSs3SmFBRmJMTWppaml2UEo5SjNVMTB2?=
- =?utf-8?B?aDBoSGE0TFBHY1lrdlUyUmVOOVR4ZFVvdzhvZWJTdFlIVWRDcEY0RU1JajdW?=
- =?utf-8?B?UEZuUTVjOXE2bG5NN0RPSlZVTytnL09pNE43V1p0Ry84VlFGcW4zTno0cmVF?=
- =?utf-8?B?U0pGelI2ZkNqUlNQWXdlSUJ0eDRmeFVZNFNMcEdFRkhiam1ldkJJSTJIMHRQ?=
- =?utf-8?B?VVkrbndzc0REOWZucTJSQ0gyYVBPaDcwSW96WVZIRTEwM1hFMlBYKythQURz?=
- =?utf-8?B?aEc2U3dOWnJZeTkwRjJiYmNLWTliSVlyOThFNHFjSVNNOEk2Q21HOERXNGpZ?=
- =?utf-8?B?T0pXOXFOQmgrYXR3RHhWVUgrV0c1aTJpVWtvUXdsVjlBU00vRDQ5enZkYzN1?=
- =?utf-8?B?SzQxN3NHN1ZGaTRpcU1LRkdKMERzUVVTWVdqbFJHZXpkUERTV3REVjkrY1U5?=
- =?utf-8?B?VWxkaVRqeEluM3dwbWN3eGN5RWwyMFEwZURialFvdW9tWGhBVGxMZnBNZlRO?=
- =?utf-8?B?ZklKZWE5U1Nndm92NkdCcnBQdkhlSjk0VkMzcnM0eXJkS21RNHA5bWFxUnBQ?=
- =?utf-8?B?WE93QitLWFJ0NzUyYzNOenpyVU9tUDdhM21rRnZKZ29GWjU4QklOcGVrbWxN?=
- =?utf-8?B?SmZrTERGZXJLR0dSa1dIeURxWmVZU1NzZHRVdFR2dml2RkFPSXR5Ty9oRUY3?=
- =?utf-8?B?d3I5UXQxQ01TdEdOaEtxZERsNnJaK2s4eG4rdlFUL0RJeGZUMEpHeExCRWxF?=
- =?utf-8?B?OElNbVNaNW9oRHlKMmRxaml1M1MzZWVEVEUwdUx3UGFQMzVFd0FJK1hla2dF?=
- =?utf-8?B?ZUVxdjZwd1UrVnFIbG1sWHpmMmJFaml2dU1YNE1SZUJYZ3AwSTZmeXZ6Q01J?=
- =?utf-8?Q?pCEaT5OA5HAVO2iVH5Z8JEwCn/6WmnwDAv5399Y?=
-X-OriginatorOrg: wolfvision.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: b94ce0d4-c744-4f98-13f2-08d934a7846f
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR08MB4523.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2021 11:27:13.7399 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hZ/uWhhNbkIAzhvTnBwwEeLn9Uo8FQfs/wr9Uv2v4aoE1cN8EBXhZ8r9yNGEeMChaC3smXuFVMPHlgA5GtaPt/yg56d4ln9pUgMcxRP3K+w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB5222
+To: Sascha Hauer <sha@pengutronix.de>
+References: <FA60DA2B-8C76-4460-8009-88EAB94A0F2C@inside-m2m.de>
+ <20210616123403.GW9782@pengutronix.de>
+ <D8E37CF9-C7A1-40AE-B747-69E000D1B727@inside-m2m.de>
+ <20210617064144.GZ9782@pengutronix.de>
+ <A4554499-51AF-4180-9D58-625A8CA58C97@inside-m2m.de>
+ <20210621040155.GD9782@pengutronix.de>
+X-Mailer: Apple Mail (2.3654.120.0.1.1)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210621_042721_635339_4F58A14E 
-X-CRM114-Status: GOOD (  26.67  )
+X-CRM114-CacheID: sfid-20210621_072112_754185_34554B38 
+X-CRM114-Status: GOOD (  25.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -147,133 +88,208 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7041209858752187122=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] aiodev: add driver for Rockchip SARADC
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: Compiled in boot environment and dtbo files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Sascha,
 
-thanks for the review, I'll prepare a v2.
+--===============7041209858752187122==
+Content-Type: multipart/signed;
+	boundary="Apple-Mail=_4772038E-6314-4DEA-B887-CBC3E30EB3E9";
+	protocol="application/pkcs7-signature";
+	micalg=sha-256
 
-On 6/21/21 6:30 AM, Sascha Hauer wrote:
-> Hi Michael,
-> 
-> On Thu, Jun 17, 2021 at 04:36:54PM +0200, Michael Riesch wrote:
->> +static int rockchip_saradc_read(struct aiochannel *chan, int *val)
->> +{
->> +	struct rockchip_saradc_data *data;
->> +	int timeout = SARADC_TIMEOUT;
->> +	u32 value = 0;
->> +	u32 control = 0;
->> +	u32 mask;
->> +
->> +	if (!chan || !val)
->> +		return -EINVAL;
->> +
->> +	data = container_of(chan->aiodev, struct rockchip_saradc_data, aiodev);
->> +	if (!data)
->> +		return -EINVAL;
->> +
->> +	rockchip_saradc_reg_wr(data, 8, SARADC_DLY_PU_SOC);
->> +	rockchip_saradc_reg_wr(data,
->> +			       (chan->index & SARADC_CTRL_CHN_MASK) |
->> +				       SARADC_CTRL_IRQ_ENABLE |
->> +				       SARADC_CTRL_POWER_CTRL,
->> +			       SARADC_CTRL);
->> +
->> +	do {
->> +		control = rockchip_saradc_reg_rd(data, SARADC_CTRL);
->> +
->> +		if (--timeout == 0)
->> +			return -ETIMEDOUT;
->> +		mdelay(1);
->> +	} while (!(control & SARADC_CTRL_IRQ_STATUS));
-> 
-> You should do a timeout loop with
-> 
-> 	u64 start = get_time_ns();
-> 
-> 	do {
-> 		if (is_timeout(start, 100 * MSECOND)
-> 			return -ETIMEDOUT;
-> 	} while(bar);
-> 
-> We don't have any way nor need to put the CPU into idle, so we can poll
-> as fast as we can.
 
-OK, will replace that.
+--Apple-Mail=_4772038E-6314-4DEA-B887-CBC3E30EB3E9
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
->> +
->> +	mask = (1 << data->config->num_bits) - 1;
->> +	value = rockchip_saradc_reg_rd(data, SARADC_DATA) & mask;
->> +	rockchip_saradc_reg_wr(data, 0, SARADC_CTRL);
->> +
->> +	printf("Raw value: %d\n", value);
-> 
-> Debugging leftover.
+Dear community, dear Sascha,
 
-D'oh!
+an accident happened on my side. I totally overlooked that after my =
+initial mail with the=20
+initial quoted error message the message changed.
 
->> +fail_channels:
->> +	kfree(data->channels);
->> +	kfree(data->aiodev.channels);
->> +
->> +fail_data:
->> +	kfree(data);
->> +	return ret;
->> +}
->> +
->> +static const struct rockchip_saradc_cfg rk3568_saradc_cfg = {
->> +	.ref_voltage_mv = 1800,
-> 
-> From looking at the downstream dts files this doesn't seem to be SoC
-> specific:
-> 
-> 	&saradc {
->         	status = "okay";
-> 		vref-supply = <&vcca_1v8>;
-> 	};
-> 
-> I suggest doing the same here.
-> 
->> +	.num_bits = 10,
->> +	.num_channels = 8,
->> +};
->> +
->> +static const struct of_device_id of_rockchip_saradc_match[] = {
->> +	{ .compatible = "rockchip,rk3568-saradc", .data = &rk3568_saradc_cfg },
-> 
-> The device nodes in the downstream Kernel also contain some clocks.
-> These should be handled in the driver.
+Probably either the change of compiling the dtb file (make dtbs =
+DTC_FLAGS=3D-@) got
+me a __symbols__ node or another thing was sorted out by me on accident =
+meanwhile
+since still I am trying to get used to device tree handling.
 
-I'll see what I can do :-)
+In detail, this messages are not valid any more:
 
-Just had a look over the mainstream Kernel device tree. Resets,
-interrupts and number of io-channels are also provided there. Now I
-think that the interrupts are quite irrelevant for barebox, but should
-the resets be addressed as well?
+>>>> Loading ARM Linux zImage '/boot/uImage'
+>>>> Loading devicetree from '/boot/am335x-boneblack.dtb'
+>>>> ERROR: of_resolver: __symbols__ missing from base devicetree
+>>>> WARNING: Failed to fixup node in of_overlay_fixup+0x1/0x4: Invalid =
+argument
+>>>> ERROR: of_resolver: __symbols__ missing from base devicetree
+>>>> WARNING: Failed to fixup node in of_overlay_fixup+0x1/0x4: Invalid =
+argument
 
-As to the number of iochannels, I think the maximum number should be
-provided in the SoC specific struct. Not sure what the value of
-specifying the actual number of channels in the device tree is, though.
+but I get a different set of errors. Probably since including Friday and =
+I overlooked this.
+How embarassing, sorry!
 
-Regards, Michael
+Now I get:
+
+ERROR: of_resolver: cannot find node ocp in base devicetree
+WARNING: Failed to fixup node in of_overlay_fixup+0x1/0x4: Invalid =
+argument
+ERROR: of_resolver: cannot find node ocp in base devicetree
+WARNING: Failed to fixup node in of_overlay_fixup+0x1/0x4: Invalid =
+argument
+
+which is very reasonable:=20
+
+> Have a look at the generated dtb file with 'dtc -I dtb -O dts <file>'.
+> It should contain a __symbols__ node.
+
+The decompiled result of =E2=80=9Cmy=E2=80=9D dtb has a __symbols__ note =
+at the bottom of the file, yes!
+I suppose each =E2=80=9Cfragment@n {target =3D XYZ =E2=80=A6=E2=80=9D) =
+in a overlay has to have a matching=20
+counterpart XYZ in the __symbols__ node in the base file, right? Because =
+in my overlay
+there is an "target =3D <&ocp>!" without a matching counterpart in the =
+base dtb.
+Two other entries (uart1, am33xx_pinmux) have a matching entry.=20
+
+> BTW do you have a good reason to use overlays? Overlays only have a
+
+No indeed I don=E2=80=99t necessarily - I realized meanwhile by myself.
+
+Additionally I relaized the overlays I have here in question only do =
+some GPIO
+multiplexing I can do by hand/script in the /sys gpio section anyway. =
+Only interesting
+for serial line availability at boot. May be later it=E2=80=99s =
+interesting for us for different
+variante, I hope I am used to this stuff then.=20
+
+> value when you have different hardware variants in which different
+> overlays are loaded. If that's not the case I'd just go with a static
+> devicetree and be done with it.
+
+For now I agree and I try to understand how to enable the UART1 and =
+UART4
+in a static dtb way and I currently search the vanille device tree on =
+how to do=20
+this and how this currently this is done at least with the working UART0 =
+:-)
+
+Sadly not barebox related :-)
+
+Kind Regards
+Konsti
+
+
+--Apple-Mail=_4772038E-6314-4DEA-B887-CBC3E30EB3E9
+Content-Disposition: attachment;
+	filename=smime.p7s
+Content-Type: application/pkcs7-signature;
+	name=smime.p7s
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCDBMw
+ggX7MIIE46ADAgECAhEAjME22FZvrY2T2koTKnYLHzANBgkqhkiG9w0BAQsFADCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQTAeFw0yMTA1MjEwMDAwMDBaFw0yNDA1MjAyMzU5
+NTlaMIH7MQswCQYDVQQGEwJERTEWMBQGA1UECBMNTmllZGVyc2FjaHNlbjEQMA4GA1UEBxMHR2Fy
+YnNlbjEYMBYGA1UEChMPSU5TSURFIE0yTSBHbWJIMTUwMwYDVQQLEyxJc3N1ZWQgdGhyb3VnaCBJ
+TlNJREUgTTJNIEdtYkggRS1QS0kgTWFuYWdlcjEfMB0GA1UECxMWQ29ycG9yYXRlIFNlY3VyZSBF
+bWFpbDEdMBsGA1UEAxMUS29uc3RhbnRpbiBLbGV0c2Noa2UxMTAvBgkqhkiG9w0BCQEWImtvbnN0
+YW50aW4ua2xldHNjaGtlQGluc2lkZS1tMm0uZGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+AoIBAQCq0vwXwa88PUodDzujRRiO2R6HI+4Z5RTdFLL7azDWeKXNw/4fFwRSbi6x9yNXv6FMAHZ5
+1xjH2Qt3VmyBcIuYGDIidvW4XozjU6/aWIz/BviKnYuUEs4/eXPMSabB9ZHqyVZowTPg0kRElWUJ
+O7VbSBovTZj4JBgoO6gdVBqycyAdpW1CD0cciUaLVav6dldZlZiznhJexe9b6zOEMURxaDNTxTgn
+dc5HKA8kFKCDT4Uf1A6mFkdUIK27whZnCDHkvRLyWEJwau8VYbKTQn8UhwcANqO5n6AOY5ieb1zr
+r5SgtLRn4olfMvyjLWOPMu6bkMcBtYGnS1Ryx9mvqiGjAgMBAAGjggHbMIIB1zAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUsRGEL6z900tpR9BBhRWeFUq29TUwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wLQYDVR0RBCYwJIEia29uc3RhbnRpbi5rbGV0c2Noa2VAaW5zaWRlLW0y
+bS5kZTANBgkqhkiG9w0BAQsFAAOCAQEAHeviKoZgN7sZ2rAu58d3ogKPl+QDpxVQVVjT83dcHT3i
+ix+gY3EQZWKxzr1BWNjxckcop0MHLuOIvDrJp26S06It3XcXx3q60cTq7mvU9N2gOVhYKOnDJRIc
+4LLUXJK2BmFgJYMuVnQqWpibiuSKBXHDnl2V1V5KEu9jLhUWy7kOVRMIKh535wNLHAgGt3ackqxA
+t09lt8aEKwijx8WsZCKJ5AhLUjUXxO+hRLQG+1pd7btepFDoFqkb7Xj1uyy/2GTSqiYqxF0Evd38
+Vglq4dsVQSX/mWRTIkIzCKw7IRhFEJFXfrcrHWdFO2zXz6kiPuBRuUew76sRhmsQiNKQOzCCBhAw
+ggP4oAMCAQICEE2ULBDUO+CUCcWBLTorBk8wDQYJKoZIhvcNAQEMBQAwgYgxCzAJBgNVBAYTAlVT
+MRMwEQYDVQQIEwpOZXcgSmVyc2V5MRQwEgYDVQQHEwtKZXJzZXkgQ2l0eTEeMBwGA1UEChMVVGhl
+IFVTRVJUUlVTVCBOZXR3b3JrMS4wLAYDVQQDEyVVU0VSVHJ1c3QgUlNBIENlcnRpZmljYXRpb24g
+QXV0aG9yaXR5MB4XDTE4MTEwMjAwMDAwMFoXDTMwMTIzMTIzNTk1OVowgZYxCzAJBgNVBAYTAkdC
+MRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoT
+D1NlY3RpZ28gTGltaXRlZDE+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0
+aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDK
+PO2UCkH/3vlGuejWO+bakr8rEE6qGryCvb4mHCkqKtLNnFCBP22ULvOXqGfV9eNKjkypdR8i0yW2
+sxpepwRIm4rx20rno0JKuriIMpoqr03E5cWapdfbM3wccaNDZvZe/S/Uvk2TUxA8oDX3F5ZBykYQ
+YVRR3SQ36gejH4v1pXWuN82IKPdsmTqQlo49ps+LbnTeef8hNfl7xZ8+cbDhW5nv0qGPVgGt/biT
+kR7WwtMewu2mIr06MbiJBEF2rpn9OVXH+EYB7PmHfpsEkzGp0cul3AhSROpPyx7d53Q97ANyH/yQ
+c+jl9mXm7UHR5ymr+wM3/mwIbnYOz5BTk7kTAgMBAAGjggFkMIIBYDAfBgNVHSMEGDAWgBRTeb9a
+qitKz1SA4dibwJ3ysgNmyzAdBgNVHQ4EFgQUCcDy/AvalNtf/ivfqJlCz8ngrQAwDgYDVR0PAQH/
+BAQDAgGGMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwME
+MBEGA1UdIAQKMAgwBgYEVR0gADBQBgNVHR8ESTBHMEWgQ6BBhj9odHRwOi8vY3JsLnVzZXJ0cnVz
+dC5jb20vVVNFUlRydXN0UlNBQ2VydGlmaWNhdGlvbkF1dGhvcml0eS5jcmwwdgYIKwYBBQUHAQEE
+ajBoMD8GCCsGAQUFBzAChjNodHRwOi8vY3J0LnVzZXJ0cnVzdC5jb20vVVNFUlRydXN0UlNBQWRk
+VHJ1c3RDQS5jcnQwJQYIKwYBBQUHMAGGGWh0dHA6Ly9vY3NwLnVzZXJ0cnVzdC5jb20wDQYJKoZI
+hvcNAQEMBQADggIBAEFEdQCrOcIV9d6OlW0ycWiMAN0X13ocEDiQyOOxvRcxkfO244K0oX7GzCGH
+YaqRbklCszzNWVT4DZU/vYrLaeVEDUbCYg+Ci7vhNn9dNqscbzN0xKBoOuRVjPPWDechU70geT3p
+XCxpwi8EXwl+oiz7xpYfY99JSs3E/piztTSxljHitcPr5yoWr9lbkFR8KU3+uGTZ11BfKfuSSaRr
+ZFBv133SeY0d2AqvB9Dj2ZDaFZA0OQkkhfAqNgDpVRH99lQV4JSKx0N7/QAEtMj6OF5dRXV6hhXu
+U3A0Eql4d0247oBpxvnfcmV95QfG8HP059hZSJe7T2wwC+IzXVDQO4xnnvrQJ07ZWemxc/grFpgi
+G+o+pQxapF1bKftysi02Rl6uhdp5wbTeLeYzt2SI9oKSChwGDQQFixtkNnxuwbdrTwvASwvViDPd
+IGzIQJrTBqriE5/9nzkXbDZmld8/7DyriJ/A73RIZllX4dH8mHqsRpU8NEX8IQZWpHWGK5A5nVgv
+l7MxNfRlIvCvKZQTSnCL8oNqJgHXm6zCB4gBwDonM8V/2kuQAUVazVA3I376eIWGwzjuqh3H88v7
+mNHzubLHm5h0ERCSQNz6UoHVZy3q5xeqbYSaxpDQz3lCNObL6sNaOQNh3DcyzqZJYTcGfuLlmC3A
+IteAAh7lbybJszYnMYIDxzCCA8MCAQEwgawwgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVh
+dGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRl
+ZDE+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUg
+RW1haWwgQ0ECEQCMwTbYVm+tjZPaShMqdgsfMA0GCWCGSAFlAwQCAQUAoIIB6zAYBgkqhkiG9w0B
+CQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMTA2MjExNDIxMDZaMC8GCSqGSIb3DQEJ
+BDEiBCCMeW58FCuReQ4ElGQu66iCWtDcKb/eKAqoR1C4jjUiKTCBvQYJKwYBBAGCNxAEMYGvMIGs
+MIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdT
+YWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENs
+aWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAjME22FZvrY2T2koTKnYL
+HzCBvwYLKoZIhvcNAQkQAgsxga+ggawwgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVy
+IE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+
+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1h
+aWwgQ0ECEQCMwTbYVm+tjZPaShMqdgsfMA0GCSqGSIb3DQEBCwUABIIBAAEnTubsS4L+fNeW4Y8/
+fjeyMzNEmB+GFqRImbQkWe5gIitch9oqAQUIRVBvTBFQgOkl+b8BNjgJo+sJe+i2uuU9im+0ATHU
+zTMj+fideqhg9mJJwQSw5lAVJB4Zhytrm8t+UnK3XsXngIrDJbsLMxmRC/JIxi8YznqA8jdzt1wS
+8O5gM5HpvKVrHvqg/F66EleLfNocWDs0SsVymWqSyJLTZPUB0gA5VxsRZP2WYlCi99uvq6e1Qh4M
+VCq8gUWYAgID30ib5Pw31TJ0AbH8Fm2Y6YpWfdyWkebugYzFFL08rkfOaFrUWr8vkdKJSWQ+A3Bt
+nC5DdghCW6seCJtaFCQAAAAAAAA=
+--Apple-Mail=_4772038E-6314-4DEA-B887-CBC3E30EB3E9--
+
+
+--===============7041209858752187122==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7041209858752187122==--
+
 
