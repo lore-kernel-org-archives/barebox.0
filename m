@@ -1,15 +1,15 @@
-Delivery-date: Mon, 21 Jun 2021 09:58:21 +0200
+Delivery-date: Mon, 21 Jun 2021 09:59:25 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvEp3-0007j1-Qb
-	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 09:58:21 +0200
+	id 1lvEq5-0007le-NI
+	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 09:59:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvEp2-0004Yk-Rw
-	for lore@pengutronix.de; Mon, 21 Jun 2021 09:58:21 +0200
+	id 1lvEq4-0004eH-RZ
+	for lore@pengutronix.de; Mon, 21 Jun 2021 09:59:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=cWc2M/jLYaGobhFtISE7g2HhvLdGKaXm7voFQT3N1Pk=; b=TOXsGzFlPOvYrRrrIRFBRxamgS
-	lAWgsrTDKnigoGUUzwJbIz2ne5BXsgr+WMYLdaw0edU2+0IY/FudXJGfSdd3ShQCv/PRhSZAcyNCB
-	lNJ6wOPOJHJBijjon6gVmemEqt8hqPT5e6lVNf8dyUE2jubPsM50YhMKI+nmsnBn7Bb7ehKShjsPT
-	56eEWS4bkHiSC7HGF20XXWKtfiKaBtXBACFcibVuqWVcvN1I+nsh3S8yzVOLhhacj3YLz+31HUaIY
-	xxhMf77T4qzeIttGDCsyG66H+ahqus9briNsidx5fS+xzYFPYUgVSeH6c23qQLEpJp07JwAoWxD0T
-	B5ghn/1w==;
+	bh=PlPAMxOY1ycQQmlnVsd1u8sURehbzMa97gQSOROdOlQ=; b=jnRMx+jOVBYAdKRRSNVgP/c+ki
+	CGOftpUDbjibm8tPWUFoqr+VpwzmQah6xZ0dBUTf0WoYhTZWjW26MgMBlkPtVFq8bquzoUSqI90Xd
+	OaJi7htcAB7C8GB+eqz9iIYzV7R+WB2ZnKd6aKnEYKHN05VtmRk2X+KpHRLc1qlkFmIrz7PmKEZbV
+	mwoD8mwJ1F5YL3NHSRH5MVxydvYvQFVb3IViP7XDHgULels5jhGR6c0n+4F6k8gh0Dsqr3p9Pa7Hi
+	BP+TqiZ5snq0KTcyry0KZ9GogsIAd9dyeSKzqCpZiLkyz+TCOjNlArB63NgUY7kwLbEe3M23Dh+0E
+	wQgQ5lwg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvEnw-002cIx-FW; Mon, 21 Jun 2021 07:57:12 +0000
+	id 1lvEoz-002cTa-30; Mon, 21 Jun 2021 07:58:17 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvEnr-002cIT-4e
- for barebox@lists.infradead.org; Mon, 21 Jun 2021 07:57:08 +0000
+ id 1lvEot-002cSS-Vb
+ for barebox@lists.infradead.org; Mon, 21 Jun 2021 07:58:13 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvEnp-0004QG-Tc; Mon, 21 Jun 2021 09:57:05 +0200
+ id 1lvEos-0004Wh-PN; Mon, 21 Jun 2021 09:58:10 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvEnp-0002RP-Jp; Mon, 21 Jun 2021 09:57:05 +0200
-Date: Mon, 21 Jun 2021 09:57:05 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1lvEor-0002SA-IG; Mon, 21 Jun 2021 09:58:09 +0200
+Date: Mon, 21 Jun 2021 09:58:09 +0200
+To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210621075705.GO9782@pengutronix.de>
-References: <20210621064719.19246-1-a.fatoum@pengutronix.de>
+Message-ID: <20210621075809.GP9782@pengutronix.de>
+References: <20210619054217.499815-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210621064719.19246-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20210619054217.499815-1-ahmad@a3f.at>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 09:56:56 up 123 days, 11:20, 120 users,  load average: 0.21, 0.19,
+X-Uptime: 09:57:59 up 123 days, 11:21, 120 users,  load average: 0.15, 0.18,
  0.23
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210621_005707_231842_41F54764 
-X-CRM114-Status: GOOD (  24.45  )
+X-CRM114-CacheID: sfid-20210621_005812_058645_29ECFBE6 
+X-CRM114-Status: GOOD (  26.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,44 +81,52 @@ X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] watchdog: dw_wdt: fix resource reservation error
- check
+Subject: Re: [PATCH] commands: md: don't leak heap memory with unaligned
+ accesses
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jun 21, 2021 at 08:47:19AM +0200, Ahmad Fatoum wrote:
-> dev_request_mem_resource returns a possible error pointer. If it
-> succeeds mem->start will always be valid. Rectify the confusion.
+On Sat, Jun 19, 2021 at 07:42:17AM +0200, Ahmad Fatoum wrote:
+> Doing unaligned near file end returns bogus results:
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> 	barebox@Sandbox:/ md -s /dev/stickypage 4095
+> 	00000fff: 959ff8ff                                           .
+> 
+> That 0x959ff8 is heap memory next to the buffer md had allocated.
+> Fix this by adding some zeroed padding after the buffer, so it instead
+> reads:
+> 
+> 	00000fff: 000000ff                                           .
+> 
+> This is arguably better user experience.
+> This only applies to non-mappable fd's. For e.g. /dev/mem, unaligned
+> accesses will still be passed as-is.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 > ---
->  drivers/watchdog/dw_wdt.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  commands/md.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
-> index 70d6f0cced72..774d211a5f90 100644
-> --- a/drivers/watchdog/dw_wdt.c
-> +++ b/drivers/watchdog/dw_wdt.c
-> @@ -143,9 +143,10 @@ static int dw_wdt_drv_probe(struct device_d *dev)
->  	dw_wdt = xzalloc(sizeof(*dw_wdt));
+> diff --git a/commands/md.c b/commands/md.c
+> index ef6a1e1bc0b1..d80c7cca0ce4 100644
+> --- a/commands/md.c
+> +++ b/commands/md.c
+> @@ -59,7 +59,7 @@ static int do_mem_md(int argc, char *argv[])
+>  		goto out;
+>  	}
 >  
->  	mem = dev_request_mem_resource(dev, 0);
-> +	if (IS_ERR(mem))
-> +		return PTR_ERR(mem);
-> +
->  	dw_wdt->regs = IOMEM(mem->start);
-> -	if (IS_ERR(dw_wdt->regs))
-> -		return PTR_ERR(dw_wdt->regs);
+> -	buf = xmalloc(RW_BUF_SIZE);
+> +	buf = xzalloc(RW_BUF_SIZE + 7);
 >  
->  	clk = clk_get(dev, NULL);
->  	if (IS_ERR(clk))
+>  	do {
+>  		now = min(size, (loff_t)RW_BUF_SIZE);
 > -- 
-> 2.29.2
+> 2.32.0.rc0
 > 
 > 
 > _______________________________________________
