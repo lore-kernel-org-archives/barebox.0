@@ -1,15 +1,15 @@
-Delivery-date: Mon, 21 Jun 2021 06:53:40 +0200
+Delivery-date: Mon, 21 Jun 2021 07:01:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvBwK-0003x2-P8
-	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 06:53:40 +0200
+	id 1lvC3i-000439-JN
+	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 07:01:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvBwI-0001tM-Ib
-	for lore@pengutronix.de; Mon, 21 Jun 2021 06:53:40 +0200
+	id 1lvC3h-0002fc-NQ
+	for lore@pengutronix.de; Mon, 21 Jun 2021 07:01:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=aWW2o17vRtfcPTC8lcC5RwQxu6VCrKrDrevliK8H6oQ=; b=OIERE1kbGn4Af1/2m8mO8Ah6rH
-	+MVB5eJawnxphrNpf+SOk1MhfN4igtvReLMLMsSsjt95wu8nOziSslY5jDmyIsDT91cQY7mNqs9Vx
-	rXFMFF5uu/kVhQF/1IVC7bQ16Dr75hgqNKZsNF9q2/oeYPJUXG0jCJ1VqU0+5VKVrUMpQhH2vryCX
-	urNj/miCT1G8I/+HoUPnDNJdr3iHA2Jp2nsYBHGCo0iwLcrAOtOXnz1CDurRycCODUzYMfUW5xbCw
-	bcwb5HxgkWTU0mBVAENz+PizjwUwZJkAxeRd7q9UbwLXhPTeVARU+EUwZ6LOf7L2md/OLsj0ZOD3H
-	/me7mQkg==;
+	bh=4QHsuQqSDgWmO5ucIsCl37gSbYjKBjZ1jFJ2CaNnPRM=; b=Ez7GL7HBKh6Q62QsI0P40BG4Wm
+	KDe6qBd0zDJ83qrVSa1FdQlf4ermYd2ibydRk5UEMxw1l1Gwkj1+8yaLvaehqEyW7LSVfSgmH1zfk
+	sejQAS8NlsYmO7jdqtyuL+JX+twhChbN8Q+G2FkgC4Re7JCRheC9g/EE9WqJGBckLjNYHm1QHbRcB
+	rEnk8+TF9ocNSYR4qS9r1KINaVUKS//29m7FAyZ7ARe7PYcdN/SjJUgWJZvFH18ewlOpYy1pDQWGj
+	0cVSzjMAIPGJL+B87hNjjYCDAULKl93Tf5QVDTR1M79NJobxQiMk1r+9qTvH7QkDUHKD1eGF4xdRe
+	0IYx6lsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvBuu-002566-0e; Mon, 21 Jun 2021 04:52:12 +0000
+	id 1lvC2T-0025dx-Er; Mon, 21 Jun 2021 05:00:01 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvBup-00255O-4B
- for barebox@lists.infradead.org; Mon, 21 Jun 2021 04:52:08 +0000
+ id 1lvC2N-0025ca-Pf
+ for barebox@lists.infradead.org; Mon, 21 Jun 2021 04:59:57 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvBun-0001qT-Gl; Mon, 21 Jun 2021 06:52:05 +0200
+ id 1lvC2M-0002IR-50; Mon, 21 Jun 2021 06:59:54 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvBum-0007O7-Qp; Mon, 21 Jun 2021 06:52:04 +0200
-Date: Mon, 21 Jun 2021 06:52:04 +0200
+ id 1lvC2L-0007YM-Pe; Mon, 21 Jun 2021 06:59:53 +0200
+Date: Mon, 21 Jun 2021 06:59:53 +0200
 To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210621045204.GI9782@pengutronix.de>
+Message-ID: <20210621045953.GJ9782@pengutronix.de>
 References: <20210619032654.455801-1-ahmad@a3f.at>
+ <20210619032654.455801-2-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210619032654.455801-1-ahmad@a3f.at>
+In-Reply-To: <20210619032654.455801-2-ahmad@a3f.at>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 06:50:37 up 123 days,  8:14, 90 users,  load average: 0.08, 0.11,
- 0.09
+X-Uptime: 06:52:07 up 123 days,  8:16, 90 users,  load average: 0.14, 0.13,
+ 0.10
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210620_215207_209024_445B07B4 
-X-CRM114-Status: GOOD (  18.05  )
+X-CRM114-CacheID: sfid-20210620_215955_876592_EB50077F 
+X-CRM114-Status: GOOD (  20.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,26 +82,64 @@ X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] string: implement strchrnul
+Subject: Re: [PATCH 2/2] console: respect baudrate specified in device-tree
+ stdout-path
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hi Ahmad,
 
-On Sat, Jun 19, 2021 at 05:26:53AM +0200, Ahmad Fatoum wrote:
-> -}
-> -
->  static int sscanf_two_digits(char *s, int *res)
+On Sat, Jun 19, 2021 at 05:26:54AM +0200, Ahmad Fatoum wrote:
+> -static void console_set_stdoutpath(struct console_device *cdev)
+> +static void console_set_stdoutpath(struct console_device *cdev, unsigned baudrate)
 >  {
->  	char buf[3];
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 6e716fcdcf27..f375fcd67572 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2479,10 +2479,7 @@ struct device_node *of_get_stdoutpath(void)
+>  	int id;
+>  	char *str;
+> @@ -232,8 +232,7 @@ static void console_set_stdoutpath(struct console_device *cdev)
+>  	if (id < 0)
+>  		return;
+>  
+> -	str = basprintf("console=%s%d,%dn8", cdev->linux_console_name, id,
+> -			  cdev->baudrate);
+> +	str = basprintf("console=%s%d,%dn8", cdev->linux_console_name, id, baudrate);
+>  
+>  	globalvar_add_simple("linux.bootargs.console", str);
+>  
+> @@ -297,6 +296,7 @@ int console_register(struct console_device *newcdev)
+>  	struct device_node *serdev_node = console_is_serdev_node(newcdev);
+>  	struct device_d *dev = &newcdev->class_dev;
+>  	int activate = 0, ret;
+> +	unsigned baudrate = CONFIG_BAUDRATE;
 
-There seems to be a patch missing in this series. I don't have
-of_get_stdoutpath() in my tree.
+You initialize baudrate to CONFIG_BAUDRATE here in order to use that as
+a default, ...
+
+>  
+>  	if (!serdev_node && initialized == CONSOLE_UNINITIALIZED)
+>  		console_init_early();
+> @@ -327,11 +327,16 @@ int console_register(struct console_device *newcdev)
+>  	if (serdev_node)
+>  		return of_platform_populate(serdev_node, NULL, dev);
+>  
+> +	if (newcdev->dev && of_device_is_stdout_path(newcdev->dev, &baudrate)) {
+
+...but of_device_is_stdout_path() unconditionally overwrites &baudrate...
+
+> -int of_device_is_stdout_path(struct device_d *dev)
+> +int of_device_is_stdout_path(struct device_d *dev, unsigned int *baudrate)
+>  {
+> -	if (!dev->device_node)
+> -		return 0;
+> +	unsigned int tmp;
+> +
+> +	if (!dev || !dev->device_node || dev->device_node != of_get_stdoutpath(&tmp))
+> +		return false;
+>  
+> -	return dev->device_node == of_get_stdoutpath();
+> +	*baudrate = tmp;
+
+...here. This would break boards which don't have the baudrate given in
+the devicetree.
 
 Sascha
 
