@@ -2,50 +2,53 @@ Delivery-date: Mon, 21 Jun 2021 11:29:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvGFU-0000hU-LZ
+	id 1lvGFU-0000hV-Tq
 	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 11:29:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvGFT-0007rh-F9
+	id 1lvGFS-0007rf-To
 	for lore@pengutronix.de; Mon, 21 Jun 2021 11:29:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=UVd1XsgNuh9KtjzptBlYIWHog56/GJFedW6PlQtABfk=; b=GOCg7uU2I5C2tg
-	JEzC8cQeF914Ud+0JzqGBmsgUwyrCcDhX6y7Q4EVh1S4XehmhCreaHuRwfjv9brSuWQ4rqlS14dQ4
-	f/0JF4j2nmZZCVH1zlCDkH71Hp3y9qswc5ahPkuNZeXzSzXGq6D7TdRHT9dB1YOS8RMOjkzm+0o09
-	SeqGotNC3GmKnACMfQn+PQV9nGT6jBMjL3t/oG2bgfpK7TWfxohJtQ6hy+mwK2aWdxYc8ilQR/whZ
-	aUwtpwzYwyp9xZWNvBpTHZ2A0DoMoGCBzB2CvDBSdV9ZS+YgrzYePHu73hi2Nssx0QBN9R30GwIZa
-	DRmghVIvroDaTh53nx3g==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=ODhhuGrDXCrtLdZhMLoiyJAhSbM4BVI9l64aaroEJ2o=; b=KTZ1PzFNW4xfqb
+	uEOUKUX6fQlSxGx9SE2ce7C3b/Rbq801wS4xWROMaWvXoK1nqABip7uJlg7ejzGfaS4qDtiEeEGVd
+	BZXS/MTSi8oI8ybaSNuGwx+FimePnWoWgPZojpfAhuZW18aSs4RGG7PtTYZETW6ijtERmpSNYgwc2
+	LGYMS9YSO+cICIYsdMm3TW+u01znJFVEOO69X7jaX6x4B2tD80Z9B/FlxIMCuJgNAxu8rUDuCy4Lp
+	QEwrV047kRky46pMLr3SCQZtAtr8XVU0IJw9vCAd9o4Cs1JViWyjxJQYr0HDDB2vSJI4WuO0yST6Z
+	kKo0ySESAtVX4Arxxy6Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvGED-002tQ9-EW; Mon, 21 Jun 2021 09:28:25 +0000
+	id 1lvGE7-002tKr-On; Mon, 21 Jun 2021 09:28:19 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvGDt-002tGU-IW
+ id 1lvGDt-002tGX-IZ
  for barebox@lists.infradead.org; Mon, 21 Jun 2021 09:28:07 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvGDs-0007Zd-28; Mon, 21 Jun 2021 11:28:04 +0200
+ id 1lvGDs-0007Zg-5Q; Mon, 21 Jun 2021 11:28:04 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvGDr-0003dP-If; Mon, 21 Jun 2021 11:28:03 +0200
+ id 1lvGDr-0003dU-Ja; Mon, 21 Jun 2021 11:28:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 21 Jun 2021 11:27:50 +0200
-Message-Id: <20210621092802.27275-1-s.hauer@pengutronix.de>
+Date: Mon, 21 Jun 2021 11:27:52 +0200
+Message-Id: <20210621092802.27275-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210621092802.27275-1-s.hauer@pengutronix.de>
+References: <20210621092802.27275-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210621_022805_684837_E7031ABE 
-X-CRM114-Status: GOOD (  12.25  )
+X-CRM114-CacheID: sfid-20210621_022805_679430_9D2384BA 
+X-CRM114-Status: UNSURE (   8.94  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,93 +72,66 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 00/12] Rockchip RK3568 support
+Subject: [PATCH 02/12] clk: rockchip rk3568: Initialize clocks
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Again the RK3568 support with some updates
+This initializes the rk3568 clocks in the way U-Boot initializes them as
+well.
 
-Changes since v1:
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.barebox.org/20210615141641.31577-3-s.hauer@pengutronix.de
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/rockchip/clk-rk3568.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-- move clk_name_* prototypes to correct location
-- register softrst handlers
-- rk3568 EVB: Fix 2nd stage booting, need to relocate to current addr
-  then
-- Make OP-TEE firmware optional
-
-Sascha Hauer (12):
-  clk: Add clk_name_* functions
-  clk: rockchip rk3568: Initialize clocks
-  filetype: Add Rockchip boot image type
-  ARM: Rockchip: Add rkimage tool
-  ARM: Add relocate_to_adr_full()
-  ARM: Rockchip: Add rk3568 dtsi files
-  ARM: Rockchip: Add rk3568 support
-  ARM: Add atf common support
-  ARM: rockchip: Add bootm handler for RKNS images
-  ARM: Rockchip: Add rk3568 evb board support
-  Add rockchip_v8_defconfig
-  fixup! clk: Rockchip: Add rk3568 clk support
-
- Documentation/boards/rockchip.rst             |   39 +
- arch/arm/Kconfig                              |    6 +-
- arch/arm/boards/Makefile                      |    1 +
- arch/arm/boards/rockchip-rk3568-evb/Makefile  |    2 +
- arch/arm/boards/rockchip-rk3568-evb/board.c   |   36 +
- .../arm/boards/rockchip-rk3568-evb/lowlevel.c |   49 +
- arch/arm/configs/rockchip_v8_defconfig        |  120 +
- arch/arm/cpu/Makefile                         |    1 +
- arch/arm/cpu/atf.c                            |   80 +
- arch/arm/cpu/setupc_64.S                      |   13 +-
- arch/arm/dts/Makefile                         |    1 +
- arch/arm/dts/rk3568-evb1-v10.dts              |  487 +++
- arch/arm/dts/rk3568-pinctrl.dtsi              | 3111 +++++++++++++++++
- arch/arm/dts/rk3568.dtsi                      |  885 +++++
- arch/arm/dts/rockchip-pinconf.dtsi            |  344 ++
- arch/arm/include/asm/atf_common.h             |  163 +
- arch/arm/include/asm/barebox-arm.h            |    1 +
- arch/arm/mach-rockchip/Kconfig                |   24 +
- arch/arm/mach-rockchip/Makefile               |    5 +-
- arch/arm/mach-rockchip/atf.c                  |   62 +
- arch/arm/mach-rockchip/bootm.c                |  116 +
- arch/arm/mach-rockchip/include/mach/atf.h     |   18 +
- arch/arm/mach-rockchip/include/mach/bbu.h     |   14 +
- .../arm/mach-rockchip/include/mach/debug_ll.h |    8 +
- .../mach-rockchip/include/mach/rk3568-regs.h  |   18 +
- .../arm/mach-rockchip/include/mach/rockchip.h |   11 +
- arch/arm/mach-rockchip/rk3568.c               |  176 +
- arch/arm/mach-rockchip/rockchip.c             |    2 +
- commands/clk.c                                |   18 +-
- common/Kconfig                                |   10 +-
- common/filetype.c                             |    3 +
- drivers/clk/clk.c                             |   22 +
- drivers/clk/rockchip/clk-rk3568.c             |   34 +
- firmware/Makefile                             |    3 +-
- images/Makefile.rockchip                      |   10 +
- include/bootsource.h                          |    1 +
- include/filetype.h                            |    1 +
- include/linux/clk.h                           |    4 +
- scripts/Makefile                              |    3 +
- scripts/rkimage.c                             |  260 ++
- 40 files changed, 6137 insertions(+), 25 deletions(-)
- create mode 100644 arch/arm/boards/rockchip-rk3568-evb/Makefile
- create mode 100644 arch/arm/boards/rockchip-rk3568-evb/board.c
- create mode 100644 arch/arm/boards/rockchip-rk3568-evb/lowlevel.c
- create mode 100644 arch/arm/configs/rockchip_v8_defconfig
- create mode 100644 arch/arm/cpu/atf.c
- create mode 100644 arch/arm/dts/rk3568-evb1-v10.dts
- create mode 100644 arch/arm/dts/rk3568-pinctrl.dtsi
- create mode 100644 arch/arm/dts/rk3568.dtsi
- create mode 100644 arch/arm/dts/rockchip-pinconf.dtsi
- create mode 100644 arch/arm/include/asm/atf_common.h
- create mode 100644 arch/arm/mach-rockchip/atf.c
- create mode 100644 arch/arm/mach-rockchip/bootm.c
- create mode 100644 arch/arm/mach-rockchip/include/mach/atf.h
- create mode 100644 arch/arm/mach-rockchip/include/mach/bbu.h
- create mode 100644 arch/arm/mach-rockchip/include/mach/rk3568-regs.h
- create mode 100644 arch/arm/mach-rockchip/rk3568.c
- create mode 100644 scripts/rkimage.c
-
+diff --git a/drivers/clk/rockchip/clk-rk3568.c b/drivers/clk/rockchip/clk-rk3568.c
+index 4605158500..620d932a09 100644
+--- a/drivers/clk/rockchip/clk-rk3568.c
++++ b/drivers/clk/rockchip/clk-rk3568.c
+@@ -1623,6 +1623,12 @@ static void __init rk3568_pmu_clk_init(struct device_node *np)
+ 				      ARRAY_SIZE(rk3568_pmucru_critical_clocks));
+ 
+ 	rockchip_clk_of_add_provider(np, ctx);
++
++	clk_name_set_parent("ppll", "pll_ppll");
++	clk_name_set_parent("clk_rtc_32k", "clk_rtc32k_frac");
++	clk_name_set_rate("clk_rtc_32k", 32768);
++	clk_name_set_rate("pclk_pmu", 100000000);
++	clk_name_set_rate("pll_ppll", 200000000);
+ }
+ 
+ static void __init rk3568_clk_init(struct device_node *np)
+@@ -1660,6 +1666,28 @@ static void __init rk3568_clk_init(struct device_node *np)
+ 				      ARRAY_SIZE(rk3568_cru_critical_clocks));
+ 
+ 	rockchip_clk_of_add_provider(np, ctx);
++
++	clk_name_set_parent("npll", "pll_npll");
++	clk_name_set_parent("vpll", "pll_vpll");
++	clk_name_set_parent("pclk_bus", "gpll_100m");
++	clk_name_set_parent("clk_sdmmc0", "cpll_50m");
++	clk_name_set_parent("cclk_emmc", "gpll_200m");
++
++	clk_name_set_rate("pll_cpll", 1000000000);
++	clk_name_set_rate("pll_gpll", 1188000000);
++	clk_name_set_rate("armclk", 600000000);
++	clk_name_set_rate("aclk_bus", 150000000);
++	clk_name_set_rate("pclk_bus", 100000000);
++	clk_name_set_rate("aclk_top_high", 300000000);
++	clk_name_set_rate("aclk_top_low", 200000000);
++	clk_name_set_rate("hclk_top", 150000000);
++	clk_name_set_rate("pclk_top", 100000000);
++	clk_name_set_rate("aclk_perimid", 300000000);
++	clk_name_set_rate("hclk_perimid", 150000000);
++	clk_name_set_rate("pll_npll", 1200000000);
++	clk_name_set_rate("pll_apll", 816000000);
++
++	clk_name_set_parent("pclk_top", "gpll_100m");
+ }
+ 
+ struct clk_rk3568_inits {
 -- 
 2.29.2
 
