@@ -1,63 +1,51 @@
-Delivery-date: Mon, 21 Jun 2021 11:13:13 +0200
+Delivery-date: Mon, 21 Jun 2021 11:29:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvFzV-0000eP-4d
-	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 11:13:13 +0200
+	id 1lvGFU-0000hU-LZ
+	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 11:29:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvFzU-0005aX-1f
-	for lore@pengutronix.de; Mon, 21 Jun 2021 11:13:12 +0200
+	id 1lvGFT-0007rh-F9
+	for lore@pengutronix.de; Mon, 21 Jun 2021 11:29:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=RmpzWrFJV3nHeHR/BW/hgCZzLXDn1NkpcBSne7KEHi4=; b=cQCAczF6ThDyf1ph70dBpNnCMa
-	sGL3F1hr+ibdpbns+x9RSAmVKorRP3EvFT66LF5MJR0jG3KFR8/uzXDYJmAI2IyRcmHw9OPEKeOOo
-	Q4zHRI9vuN42j4SXgMxIcjtPH3eQg0hvXe6f2+koAhPm/p66JsUMBqF4E5Gvth7vKdsvA3N/D9d7y
-	diVXNLtrqjsffzsZRfVejddYHO6EbEYSE6G9zWzhWlGMY9G7mTIznLB5SW8mRLet1WJamLgS3KuUf
-	gvlQJHyYrpfkaZ9TnZsldGx3OymMmTPpVtC1eZXbFZXBZV6QXW7nUDCg+4KlpIYzIXg1Tmht1fWtB
-	D2eNwUHA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=UVd1XsgNuh9KtjzptBlYIWHog56/GJFedW6PlQtABfk=; b=GOCg7uU2I5C2tg
+	JEzC8cQeF914Ud+0JzqGBmsgUwyrCcDhX6y7Q4EVh1S4XehmhCreaHuRwfjv9brSuWQ4rqlS14dQ4
+	f/0JF4j2nmZZCVH1zlCDkH71Hp3y9qswc5ahPkuNZeXzSzXGq6D7TdRHT9dB1YOS8RMOjkzm+0o09
+	SeqGotNC3GmKnACMfQn+PQV9nGT6jBMjL3t/oG2bgfpK7TWfxohJtQ6hy+mwK2aWdxYc8ilQR/whZ
+	aUwtpwzYwyp9xZWNvBpTHZ2A0DoMoGCBzB2CvDBSdV9ZS+YgrzYePHu73hi2Nssx0QBN9R30GwIZa
+	DRmghVIvroDaTh53nx3g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvFy6-002q1s-DL; Mon, 21 Jun 2021 09:11:46 +0000
+	id 1lvGED-002tQ9-EW; Mon, 21 Jun 2021 09:28:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvFy1-002q1F-RG
- for barebox@lists.infradead.org; Mon, 21 Jun 2021 09:11:43 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1lvGDt-002tGU-IW
+ for barebox@lists.infradead.org; Mon, 21 Jun 2021 09:28:07 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvFy0-0005Gu-8A; Mon, 21 Jun 2021 11:11:40 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ id 1lvGDs-0007Zd-28; Mon, 21 Jun 2021 11:28:04 +0200
+Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvFxz-0008OV-Va; Mon, 21 Jun 2021 11:11:39 +0200
-Date: Mon, 21 Jun 2021 11:11:39 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210621091139.GR9782@pengutronix.de>
-References: <20210619045055.779-1-a.fatoum@pengutronix.de>
+ id 1lvGDr-0003dP-If; Mon, 21 Jun 2021 11:28:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 21 Jun 2021 11:27:50 +0200
+Message-Id: <20210621092802.27275-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210619045055.779-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 11:10:48 up 123 days, 12:34, 127 users,  load average: 1.86, 0.98,
- 0.55
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210621_021141_960917_F02AAF9E 
-X-CRM114-Status: GOOD (  42.56  )
+X-CRM114-CacheID: sfid-20210621_022805_684837_E7031ABE 
+X-CRM114-Status: GOOD (  12.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,125 +65,100 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 00/29] RISC-V: add BeagleV Beta board support
+Subject: [PATCH v2 00/12] Rockchip RK3568 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sat, Jun 19, 2021 at 06:50:26AM +0200, Ahmad Fatoum wrote:
-> The changes allow barebox to run second stage (after ddrinit and second
-> boot) on the BeagleV beta board. It does everything necessary to support
-> Ethernet, MMC, GPIO, pinmux, pinconf, clock, reset, watchdog, HWRNG and
-> DMA between CPU and the cache-incoherent DMA masters.
-> 
-> The current vendor kernel doesn't care much for low-level
-> initialization, depending on pinmux, pinconf, clock and reset to happen
-> completely in the bootloader. This makes an initial bootloader port
-> much more complex, because you need not only care about the peripherals
-> you use yourself, but those that Linux may want to access to.
-> 
-> For this reason, there is a starfive-pwrseq driver that binds against
-> some nodes like the neural network accelerator, which we will probably
-> never support, but at least tickles it resets and enables its clocks.
-> 
-> Some peripherals require writing magic values into registers, which
-> this series doesn't do. If your boot hangs, consider checking out:
-> 
-> https://github.com/a3f/barebox/tree/beaglev
-> 
-> instead, which imports some vendor boot code to support more
-> peripherals. This series is sufficient to have barebox boot kernels that
-> do their own initialization though. Problem is there are no such kernels
-> yet ^^.
-> 
-> Candidates for further steps:
-> 
->  - Support more peripherals in starfive-pwrseq
->  - Get Designware i2c controller working, so we can use PMIC for reset
->  - Get Cadence QSPI working, so barebox can flash itself and use
->    environment on flash
->  - Figure out the ticket lottery stuff, so we can boot multi-core
->  - Replace ddrinit and secondboot with PBL, load from there opensbi
->    and then return to barebox proper
->  - Complete missing clock tree info when Documentation is available
-> 
-> I can use a hand impementing these, so patches are most certainly
-> welcome (Antony, I am looking at you ;-).
-> 
-> v1 was here:
-> 	https://lore.barebox.org/barebox/20210531073821.15257-1-a.fatoum@pengutronix.de/
-> 
-> v1 -> v2:
->   - Dropped untested PMIC and flash chip commits. i2c and qspi controller
->     drivers in tree don't yet work for BeagleV
->   - remove clocksource clutter from console
->   - import S-/M-Mode multi-image series, so we can build all images for
->     the same ISA in one go
->   - Drop barebox,provide-mac-address from OTP driver. This is now done
->     via nvmem-cells reference
->   - Replace coherent memory from SRAM allocator with non-1:1 mapping:
->     Give devices the cached <= 32 bit address, as they are
->     cache-incoherent anyway, and use the > 32 bit uncached address from
->     CPU side. Works beautifully
->   - Drop 64-bit-conversion for dw_mmc. Sascha did it for rk3568 and it
->     works for BeagleV too
->   - Check Designware ETH coherent memory allocation against mask
->   - Rebase on newest clock changes
->   - Disable clocks after resets (Sascha)
->   - Move repsonsibility of keeping reset-synchronous clocks needed
->     for normal operation enabled to drivers (Sascha, off-list)
->   - Handle fence.i trap in exception handler to support SoCs without
->     Zifencei ISA extension
->   - Add some static clock initialization to starfive-pwrseq driver
->   - Add pinctrl driver support
->   - Add GPIO driver support
->   - Add board support
-> 
-> 
-> Ahmad Fatoum (29):
->   clocksource: RISC-V: demote probe success messages to debug level
->   RISC-V: virt: select only one timer
->   RISC-V: extend multi-image to support both S- and M-Mode
->   RISC-V: cpuinfo: return some output for non-SBI systems as well
->   RISC-V: S-Mode: propagate Hart ID
->   RISC-V: erizo: make it easier to reuse ns16550 debug_ll
->   RISC-V: socs: add Kconfig entry for StarFive JH7100
->   nvmem: add StarFive OTP support
->   RISC-V: dma: support multiple dma_alloc_coherent backends
->   RISC-V: add exception support
->   RISC-V: support incoherent I-Cache
->   drivers: soc: sifive: add basic L2 cache controller driver
->   soc: starfive: add support for JH7100 incoherent interconnect
->   soc: sifive: l2_cache: enable maximum available cache ways
->   net: designware: fix non-1:1 mapped 64-bit systems
->   net: designware: add support for IP integrated into StarFive SoC
->   mci: allocate DMA-able memory
->   mci: allocate sector_buf on demand
->   dma: allocate 32-byte aligned buffers by default
->   mci: dw_mmc: add optional reset line
->   mci: dw_mmc: match against StarFive MMC compatibles
->   clk: add initial StarFive clock support
->   reset: add StarFive reset controller driver
->   watchdog: add StarFive watchdog driver
->   hw_random: add driver for RNG on StarFive SoC
->   reset: add device_reset_all helper
->   gpio: add support for StarFive GPIO controller
->   misc: add power sequencing driver for initializing StarFive
->     peripherals
->   RISC-V: StarFive: add board support for BeagleV Starlight
+Again the RK3568 support with some updates
 
-Applied, thanks
+Changes since v1:
 
-Sascha
+- move clk_name_* prototypes to correct location
+- register softrst handlers
+- rk3568 EVB: Fix 2nd stage booting, need to relocate to current addr
+  then
+- Make OP-TEE firmware optional
+
+Sascha Hauer (12):
+  clk: Add clk_name_* functions
+  clk: rockchip rk3568: Initialize clocks
+  filetype: Add Rockchip boot image type
+  ARM: Rockchip: Add rkimage tool
+  ARM: Add relocate_to_adr_full()
+  ARM: Rockchip: Add rk3568 dtsi files
+  ARM: Rockchip: Add rk3568 support
+  ARM: Add atf common support
+  ARM: rockchip: Add bootm handler for RKNS images
+  ARM: Rockchip: Add rk3568 evb board support
+  Add rockchip_v8_defconfig
+  fixup! clk: Rockchip: Add rk3568 clk support
+
+ Documentation/boards/rockchip.rst             |   39 +
+ arch/arm/Kconfig                              |    6 +-
+ arch/arm/boards/Makefile                      |    1 +
+ arch/arm/boards/rockchip-rk3568-evb/Makefile  |    2 +
+ arch/arm/boards/rockchip-rk3568-evb/board.c   |   36 +
+ .../arm/boards/rockchip-rk3568-evb/lowlevel.c |   49 +
+ arch/arm/configs/rockchip_v8_defconfig        |  120 +
+ arch/arm/cpu/Makefile                         |    1 +
+ arch/arm/cpu/atf.c                            |   80 +
+ arch/arm/cpu/setupc_64.S                      |   13 +-
+ arch/arm/dts/Makefile                         |    1 +
+ arch/arm/dts/rk3568-evb1-v10.dts              |  487 +++
+ arch/arm/dts/rk3568-pinctrl.dtsi              | 3111 +++++++++++++++++
+ arch/arm/dts/rk3568.dtsi                      |  885 +++++
+ arch/arm/dts/rockchip-pinconf.dtsi            |  344 ++
+ arch/arm/include/asm/atf_common.h             |  163 +
+ arch/arm/include/asm/barebox-arm.h            |    1 +
+ arch/arm/mach-rockchip/Kconfig                |   24 +
+ arch/arm/mach-rockchip/Makefile               |    5 +-
+ arch/arm/mach-rockchip/atf.c                  |   62 +
+ arch/arm/mach-rockchip/bootm.c                |  116 +
+ arch/arm/mach-rockchip/include/mach/atf.h     |   18 +
+ arch/arm/mach-rockchip/include/mach/bbu.h     |   14 +
+ .../arm/mach-rockchip/include/mach/debug_ll.h |    8 +
+ .../mach-rockchip/include/mach/rk3568-regs.h  |   18 +
+ .../arm/mach-rockchip/include/mach/rockchip.h |   11 +
+ arch/arm/mach-rockchip/rk3568.c               |  176 +
+ arch/arm/mach-rockchip/rockchip.c             |    2 +
+ commands/clk.c                                |   18 +-
+ common/Kconfig                                |   10 +-
+ common/filetype.c                             |    3 +
+ drivers/clk/clk.c                             |   22 +
+ drivers/clk/rockchip/clk-rk3568.c             |   34 +
+ firmware/Makefile                             |    3 +-
+ images/Makefile.rockchip                      |   10 +
+ include/bootsource.h                          |    1 +
+ include/filetype.h                            |    1 +
+ include/linux/clk.h                           |    4 +
+ scripts/Makefile                              |    3 +
+ scripts/rkimage.c                             |  260 ++
+ 40 files changed, 6137 insertions(+), 25 deletions(-)
+ create mode 100644 arch/arm/boards/rockchip-rk3568-evb/Makefile
+ create mode 100644 arch/arm/boards/rockchip-rk3568-evb/board.c
+ create mode 100644 arch/arm/boards/rockchip-rk3568-evb/lowlevel.c
+ create mode 100644 arch/arm/configs/rockchip_v8_defconfig
+ create mode 100644 arch/arm/cpu/atf.c
+ create mode 100644 arch/arm/dts/rk3568-evb1-v10.dts
+ create mode 100644 arch/arm/dts/rk3568-pinctrl.dtsi
+ create mode 100644 arch/arm/dts/rk3568.dtsi
+ create mode 100644 arch/arm/dts/rockchip-pinconf.dtsi
+ create mode 100644 arch/arm/include/asm/atf_common.h
+ create mode 100644 arch/arm/mach-rockchip/atf.c
+ create mode 100644 arch/arm/mach-rockchip/bootm.c
+ create mode 100644 arch/arm/mach-rockchip/include/mach/atf.h
+ create mode 100644 arch/arm/mach-rockchip/include/mach/bbu.h
+ create mode 100644 arch/arm/mach-rockchip/include/mach/rk3568-regs.h
+ create mode 100644 arch/arm/mach-rockchip/rk3568.c
+ create mode 100644 scripts/rkimage.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.2
+
 
 _______________________________________________
 barebox mailing list
