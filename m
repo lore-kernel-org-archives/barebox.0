@@ -1,53 +1,53 @@
-Delivery-date: Mon, 21 Jun 2021 11:31:38 +0200
+Delivery-date: Mon, 21 Jun 2021 11:31:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvGHK-0000l4-SD
-	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 11:31:38 +0200
+	id 1lvGHS-0000lW-UV
+	for lore@lore.pengutronix.de; Mon, 21 Jun 2021 11:31:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvGHJ-0000Gu-Ii
-	for lore@pengutronix.de; Mon, 21 Jun 2021 11:31:38 +0200
+	id 1lvGHR-0000Ia-IQ
+	for lore@pengutronix.de; Mon, 21 Jun 2021 11:31:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ZbG4k7CmoJYLBUbX5ECTWbhFOOIAPGZtgj/oa7NvmG4=; b=vi1DzliVZFVIJV
-	QXM+M8RwzYWEm0Q8J0r+40qL9Qu41gjKYckZcad/uLcPdSiZBsLNzXXBqRXM3b6QeBeWF9mtl8y7h
-	wyEjoXI5QkiZf2TSUQu+F+GEqRuT+K6OmLRnZPitytd2AlZ98WRCNyWasR6tufIftYjQLmMV7FQcL
-	Vs/S5tZ55rqfpvk7qRzJTtFLQ5qVn1KC2mSKMWCiS6/6tFfbXQz4pXyS/+nq5jGWz53KvEijq/MU3
-	OrUYl6zu5iGVvJ7J43KuRLHEZXqh2mcDQE7LCuj9UQ4J9mVMNsp8ccWOuL5ddbyOb7/u4dJxCPLkQ
-	EMiKkqxRdl9WNq0/lZNQ==;
+	List-Owner; bh=kITAMtTMuHf+Mq34teSC/OByXlxpv79Uo8vfX/oatFw=; b=kNIqSbkg1NcWLZ
+	ljghjBsmiuh//fCEeJkphA+5SpffOjT8n5U1+9iAfeY9xo4COFLm81k1OltMgwF/TeqHBG3VLzkBD
+	gvN6vwuya+Iv+cZE+bWaiKeKkT1NdRGYTj9pe0RA5tjeGPHWhu2NRJ3ajYn6r4BK1mZXCz8WCoVUf
+	GhGUSZFm/pdCRgwLetfRp/Z5DXpJsZzp7/aZZicSIv4n90RwzZWSBbkEoXiLVpCGPH0hi5TIwqCUo
+	sVTk/rrZM3AUpHQ5siMO6OFhQnqD6QEX5cIFF2JdUlbXtwtsO23Ffjd4fXYF+CS2bIYMD5xdmhYG2
+	1KlfUAd8t3Z1laDmBBfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvGFm-002uD6-KO; Mon, 21 Jun 2021 09:30:03 +0000
+	id 1lvGFz-002uPy-OQ; Mon, 21 Jun 2021 09:30:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvGE1-002tLm-OX
+ id 1lvGE1-002tLh-R7
  for barebox@lists.infradead.org; Mon, 21 Jun 2021 09:28:16 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvGDs-0007Zp-FA; Mon, 21 Jun 2021 11:28:04 +0200
+ id 1lvGDs-0007Zn-Bm; Mon, 21 Jun 2021 11:28:04 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvGDr-0003dv-Nu; Mon, 21 Jun 2021 11:28:03 +0200
+ id 1lvGDr-0003dp-N7; Mon, 21 Jun 2021 11:28:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 21 Jun 2021 11:28:01 +0200
-Message-Id: <20210621092802.27275-12-s.hauer@pengutronix.de>
+Date: Mon, 21 Jun 2021 11:27:59 +0200
+Message-Id: <20210621092802.27275-10-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210621092802.27275-1-s.hauer@pengutronix.de>
 References: <20210621092802.27275-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210621_022813_866225_919C95F9 
-X-CRM114-Status: GOOD (  11.07  )
+X-CRM114-CacheID: sfid-20210621_022813_997881_B38E5C2A 
+X-CRM114-Status: GOOD (  20.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,148 +69,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 11/12] Add rockchip_v8_defconfig
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 09/12] ARM: rockchip: Add bootm handler for RKNS images
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Add a defconfig for the arm64 based Rockchip SoCs, currently only RK3568
+The rk3568 utilizes boot images starting with the magic 'RKNS'. Add a
+bootm handler for these to allow them to be chainloaded.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.barebox.org/20210615141641.31577-12-s.hauer@pengutronix.de
+Link: https://lore.barebox.org/20210615141641.31577-10-s.hauer@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/rockchip_v8_defconfig | 120 +++++++++++++++++++++++++
- 1 file changed, 120 insertions(+)
- create mode 100644 arch/arm/configs/rockchip_v8_defconfig
+ arch/arm/mach-rockchip/Makefile |   1 +
+ arch/arm/mach-rockchip/bootm.c  | 116 ++++++++++++++++++++++++++++++++
+ 2 files changed, 117 insertions(+)
+ create mode 100644 arch/arm/mach-rockchip/bootm.c
 
-diff --git a/arch/arm/configs/rockchip_v8_defconfig b/arch/arm/configs/rockchip_v8_defconfig
+diff --git a/arch/arm/mach-rockchip/Makefile b/arch/arm/mach-rockchip/Makefile
+index b7bab1fb73..9c9b3778bf 100644
+--- a/arch/arm/mach-rockchip/Makefile
++++ b/arch/arm/mach-rockchip/Makefile
+@@ -3,3 +3,4 @@ pbl-y += atf.o
+ obj-$(CONFIG_ARCH_RK3188) += rk3188.o
+ obj-$(CONFIG_ARCH_RK3288) += rk3288.o
+ obj-pbl-$(CONFIG_ARCH_RK3568) += rk3568.o
++obj-$(CONFIG_ARCH_RK3568) += bootm.o
+diff --git a/arch/arm/mach-rockchip/bootm.c b/arch/arm/mach-rockchip/bootm.c
 new file mode 100644
-index 0000000000..eb23a67588
+index 0000000000..5d6181ebd7
 --- /dev/null
-+++ b/arch/arm/configs/rockchip_v8_defconfig
-@@ -0,0 +1,120 @@
-+CONFIG_ARCH_ROCKCHIP=y
-+CONFIG_MACH_RK3568_EVB=y
-+CONFIG_BOARD_ARM_GENERIC_DT=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_ARM_PSCI_CLIENT=y
-+CONFIG_MMU=y
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
-+CONFIG_PROMPT="barebox> "
-+CONFIG_BAUDRATE=1500000
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_BOOTM_SHOW_TYPE=y
-+CONFIG_BOOTM_VERBOSE=y
-+CONFIG_BOOTM_INITRD=y
-+CONFIG_BOOTM_OFTREE=y
-+CONFIG_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_BOOTM_AIMAGE=y
-+CONFIG_BLSPEC=y
-+CONFIG_SYSTEM_PARTITIONS=y
-+CONFIG_CONSOLE_ACTIVATE_NONE=y
-+CONFIG_CONSOLE_ALLOW_COLOR=y
-+CONFIG_PBL_CONSOLE=y
-+CONFIG_PARTITION_DISK_EFI=y
-+CONFIG_DEFAULT_COMPRESSION_LZO=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_STATE=y
-+CONFIG_BOOTCHOOSER=y
-+CONFIG_RESET_SOURCE=y
-+CONFIG_DEBUG_LL=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_UIMAGE=y
-+CONFIG_CMD_BOOTCHOOSER=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_DEFAULTENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_SHA224SUM=y
-+CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_SMC=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_OF_DIFF=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_DISPLAY_TIMINGS=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_NET=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_NET_ARC_EMAC=y
-+CONFIG_DRIVER_NET_DESIGNWARE_EQOS=y
-+CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP=y
-+CONFIG_SMSC_PHY=y
-+CONFIG_I2C=y
-+CONFIG_I2C_GPIO=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_MMC_BOOT_PARTITIONS=y
-+CONFIG_MCI_DW=y
-+CONFIG_MCI_DW_PIO=y
-+CONFIG_MCI_ROCKCHIP_DWCMSHC=y
-+CONFIG_MCI_ARASAN=y
-+CONFIG_MFD_ACT8846=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_GPIO_OF=y
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_POLLER=y
-+CONFIG_WATCHDOG_DW=y
-+CONFIG_GENERIC_PHY=y
-+# CONFIG_VIRTIO_MENU is not set
-+CONFIG_FS_CRAMFS=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_FS_BPKFS=y
-+CONFIG_FS_UIMAGEFS=y
-+CONFIG_LZO_DECOMPRESS=y
++++ b/arch/arm/mach-rockchip/bootm.c
+@@ -0,0 +1,116 @@
++#define pr_fmt(fmt) "rockchip-bootm-barebox: " fmt
++
++#include <bootm.h>
++#include <common.h>
++#include <init.h>
++#include <memory.h>
++
++struct newidb_entry {
++	uint32_t sector;
++	uint32_t unknown_ffffffff;
++	uint32_t unknown1;
++	uint32_t image_number;
++	unsigned char unknown2[8];
++	unsigned char hash[64];
++};
++
++struct newidb {
++	uint32_t magic;
++	unsigned char unknown1[4];
++	uint32_t n_files;
++	uint32_t hashtype;
++	unsigned char unknown2[8];
++	unsigned char unknown3[8];
++	unsigned char unknown4[88];
++	struct newidb_entry entries[4];
++	unsigned char unknown5[40];
++	unsigned char unknown6[512];
++	unsigned char unknown7[16];
++	unsigned char unknown8[32];
++	unsigned char unknown9[464];
++	unsigned char hash[512];
++};
++
++#define SECTOR_SIZE 512
++
++static int do_bootm_rkns_barebox_image(struct image_data *data)
++{
++	void (*barebox)(unsigned long x0, unsigned long x1, unsigned long x2,
++			unsigned long x3);
++	resource_size_t start, end;
++	struct newidb *idb;
++	int ret, i, n_files;
++	void *buf;
++	resource_size_t image_size;
++
++	ret = memory_bank_first_find_space(&start, &end);
++	if (ret)
++		return ret;
++
++	ret = bootm_load_os(data, start);
++	if (ret)
++		return ret;
++
++	idb = (void *)data->os_res->start;
++	buf = (void *)data->os_res->start;
++
++	image_size = resource_size(data->os_res);
++
++	if (image_size < SECTOR_SIZE)
++		return -EINVAL;
++
++	n_files = idb->n_files >> 16;
++	if (n_files > 4)
++		n_files = 4;
++
++	if (data->verbose)
++		printf("RKNS image contains %d binaries:\n", n_files);
++
++	for (i = 0; i < n_files; i++) {
++		struct newidb_entry *entry = &idb->entries[i];
++		unsigned int entry_size = (entry->sector >> 16) * SECTOR_SIZE;
++		unsigned int entry_start = (entry->sector & 0xffff) * SECTOR_SIZE;
++		enum filetype filetype;
++
++		filetype = file_detect_type(buf + entry_start, SECTOR_SIZE);
++
++		if (entry_start + entry_size > image_size) {
++			printf("image %d expands outside the image\n", i);
++			continue;
++		}
++
++		if (data->verbose)
++			printf("image %d: size: %d offset: %d type: %s\n",
++				i, entry_size, entry_start,
++				file_type_to_string(filetype));
++
++		if (filetype == filetype_arm_barebox) {
++			barebox = buf + entry_start;
++			goto found;
++		}
++	}
++
++	return -EIO;
++
++found:
++
++	printf("Starting barebox image at 0x%p\n", barebox);
++
++	shutdown_barebox();
++
++	barebox(0, 0, 0, 0);
++
++	return -EINVAL;
++}
++
++static struct image_handler image_handler_rkns_barebox_image = {
++	.name = "Rockchip RKNS barebox image",
++	.bootm = do_bootm_rkns_barebox_image,
++	.filetype = filetype_rockchip_rkns_image,
++};
++
++static int rockchip_register_barebox_image_handler(void)
++{
++	return register_image_handler(&image_handler_rkns_barebox_image);
++}
++late_initcall(rockchip_register_barebox_image_handler);
 -- 
 2.29.2
 
