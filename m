@@ -1,54 +1,54 @@
-Delivery-date: Tue, 22 Jun 2021 10:27:58 +0200
+Delivery-date: Tue, 22 Jun 2021 10:28:03 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvblG-00088N-IQ
-	for lore@lore.pengutronix.de; Tue, 22 Jun 2021 10:27:58 +0200
+	id 1lvblL-00088s-5u
+	for lore@lore.pengutronix.de; Tue, 22 Jun 2021 10:28:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvblF-000383-Gc
-	for lore@pengutronix.de; Tue, 22 Jun 2021 10:27:58 +0200
+	id 1lvblK-0003AU-6n
+	for lore@pengutronix.de; Tue, 22 Jun 2021 10:28:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=59lgm2tzMB2Ztrj7kQuZw50oUfcqUxk0+8p60xitTw8=; b=jJ4scyNNZoztBY
-	IfvFhq3S4oDbjTw83koL1NPJOJDtOLAONPRk/jP+xGINZ77y8512MMj2MBd1OhIvCyK14utbAAo6H
-	zsRNhKWfXojd5fYr58QgPPW2cWGR91ZbJAD64XaurkfdLBIMkqRygNBq1CfUZPoKeBn4mK0OUQc/s
-	EYT9Le8DWtSTgfjoXpU4v00H0dumWcqoJeUfGSRB6RHiMPBBD08hP1yLAMLjRkqXgj4WF0LBIGG0s
-	64bM80qRZSPG3rXtZPClxAwb3Ta/kpqkCxaKDVZoBStXD0Inftva/XTsdH4aMh/GIp6HBUiVQraOM
-	laFrm3u43z9OOmVoVxEw==;
+	List-Owner; bh=DBaIG6Dm++F9FSg8E2sNekXXkbADI1kDeSUwBHVTZ0Y=; b=bN+0eggevXWY2w
+	u3DJ9WtiXfWQpRrsuVfIqRgtiW90Ffx8Rm8+Hi5txSdBcb1ZE6aQ2J/uJw0oEIWk0o08GOcgRjBWn
+	06MPHVQcsCBMiyJTtOA+omi7cm8dPF/QKVYZd4BrNUov+GZ5a+I1dJXsoxR8ijbOrKsL6QM3EgbVd
+	vgPt8EGJrrAinvIyGUJ/sMzY70d/fNA8R3+mZnS6OZT3tXmg9zhH48r9TQ1fkRtoV55s21tGw4x3X
+	0ArBmuBn+eSEGcwSmDK4XUXkAU44ro/3yyqDe/jAiVdP3/pWC1uDVfEKUaLYdrcxqc6shQnGm14R+
+	JIcT/PVgRBXyS0I6vbUw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvbk3-006E8h-FM; Tue, 22 Jun 2021 08:26:43 +0000
+	id 1lvbkB-006EEA-Jd; Tue, 22 Jun 2021 08:26:51 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvbji-006E15-ME
- for barebox@lists.infradead.org; Tue, 22 Jun 2021 08:26:25 +0000
+ id 1lvbjq-006E44-ML
+ for barebox@lists.infradead.org; Tue, 22 Jun 2021 08:26:32 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lvbjh-0002ie-GD; Tue, 22 Jun 2021 10:26:21 +0200
+ id 1lvbjh-0002ic-Ch; Tue, 22 Jun 2021 10:26:21 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lvbjh-0005ho-0x; Tue, 22 Jun 2021 10:26:21 +0200
+ id 1lvbjg-0005hi-W7; Tue, 22 Jun 2021 10:26:20 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 22 Jun 2021 10:26:12 +0200
-Message-Id: <20210622082617.18011-4-a.fatoum@pengutronix.de>
+Date: Tue, 22 Jun 2021 10:26:10 +0200
+Message-Id: <20210622082617.18011-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210622082617.18011-1-a.fatoum@pengutronix.de>
 References: <20210622082617.18011-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210622_012622_754407_D99F2F92 
-X-CRM114-Status: GOOD (  19.05  )
+X-CRM114-CacheID: sfid-20210622_012630_775175_3410835B 
+X-CRM114-Status: GOOD (  15.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,222 +72,139 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 3/8] common: move workqueue handling from poller_call() to
- sched()
+Subject: [PATCH v4 1/8] input: virtio: poll from poller, not bthread
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Workqueues are run out of poller_call, not because of a dependency, but
-because when they were added, poller_call was directly called from
-is_timeout.
-
-With the addition of bthreads, there is now a general resched() function
-that runs pollers and switches between bthreads. It makes sense to move
-workqueue handling there as well to keep scheduling matter contained in
-a single function. Do so.
+With the upcoming move of bthreads to be scheduled only in command
+context, long running tasks (i.e. bareDOOM) may no longer process
+VirtIO input in a timely manner. Move the input polling into a poller,
+so input can once again be processed between frames.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/Kconfig   |  5 +++++
- common/Makefile  |  1 +
- common/poller.c  | 23 ++++++++---------------
- common/sched.c   | 26 ++++++++++++++++++++++++++
- include/poller.h |  8 ++++++--
- include/sched.h  | 10 ++++------
- include/slice.h  |  6 ++----
- 7 files changed, 52 insertions(+), 27 deletions(-)
- create mode 100644 common/sched.c
+ drivers/input/Kconfig        |  3 ++-
+ drivers/input/virtio_input.c | 45 ++++++++++++++++--------------------
+ 2 files changed, 22 insertions(+), 26 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index c7826f591a79..54f1eb633a32 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -997,11 +997,16 @@ config BAREBOXCRC32_TARGET
- 	  'bareboxcrc32' is a userspacetool to generate the crc32 checksums the same way
- 	  barebox does. Say yes here to build it for the target.
+diff --git a/drivers/input/Kconfig b/drivers/input/Kconfig
+index ff3e9d33f6d7..ba9fa25a3dec 100644
+--- a/drivers/input/Kconfig
++++ b/drivers/input/Kconfig
+@@ -73,7 +73,8 @@ config INPUT_SPECIALKEYS
  
-+config HAS_SCHED
-+	bool
-+
- config POLLER
- 	bool "generic polling infrastructure"
-+	select HAS_SCHED
- 
- config BTHREAD
- 	bool "barebox co-operative (green) thread infrastructure"
-+	select HAS_SCHED
- 	depends on HAS_ARCH_SJLJ
+ config VIRTIO_INPUT
+ 	bool "Virtio input driver"
+-	depends on VIRTIO && BTHREAD
++	depends on VIRTIO
++	select POLLER
+ 	select INPUT
  	help
- 	 barebox threads are lightweight cooperative (green) threads that are
-diff --git a/common/Makefile b/common/Makefile
-index 382a4f661f67..16582534ec47 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -50,6 +50,7 @@ extra-$(CONFIG_MODULES)		+= module.lds
- obj-$(CONFIG_OFTREE)		+= oftree.o
- obj-$(CONFIG_PARTITION_DISK)	+= partitions.o partitions/
- obj-$(CONFIG_PASSWORD)		+= password.o
-+obj-$(CONFIG_HAS_SCHED)		+= sched.o
- obj-$(CONFIG_POLLER)		+= poller.o
- obj-$(CONFIG_BTHREAD)		+= bthread.o
- obj-$(CONFIG_RESET_SOURCE)	+= reset_source.o
-diff --git a/common/poller.c b/common/poller.c
-index 61da5698d225..0409d3cf8111 100644
---- a/common/poller.c
-+++ b/common/poller.c
-@@ -10,11 +10,14 @@
- #include <param.h>
- #include <poller.h>
- #include <clock.h>
--#include <work.h>
--#include <slice.h>
+ 	 This driver supports virtio keyboard input devices.
+diff --git a/drivers/input/virtio_input.c b/drivers/input/virtio_input.c
+index 9c2e4d923f8d..b354933209fc 100644
+--- a/drivers/input/virtio_input.c
++++ b/drivers/input/virtio_input.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
- static LIST_HEAD(poller_list);
--int poller_active;
-+static int __poller_active;
-+
-+bool poller_active(void)
-+{
-+	return __poller_active;
-+}
- 
- int poller_register(struct poller_struct *poller, const char *name)
- {
-@@ -110,23 +113,13 @@ int poller_async_unregister(struct poller_async *pa)
- void poller_call(void)
- {
- 	struct poller_struct *poller, *tmp;
--	bool run_workqueues = !slice_acquired(&command_slice);
--
--	if (poller_active)
--		return;
--
--	command_slice_acquire();
--
--	if (run_workqueues)
--		wq_do_all_works();
- 
--	poller_active = 1;
-+	__poller_active = 1;
- 
- 	list_for_each_entry_safe(poller, tmp, &poller_list, list)
- 		poller->func(poller);
- 
--	command_slice_release();
--	poller_active = 0;
-+	__poller_active = 0;
- }
- 
- #if defined CONFIG_CMD_POLLER
-diff --git a/common/sched.c b/common/sched.c
-new file mode 100644
-index 000000000000..dcf6522ac058
---- /dev/null
-+++ b/common/sched.c
-@@ -0,0 +1,26 @@
-+/* SPDX License Identifier: GPL-2.0 */
-+
-+#include <bthread.h>
-+#include <poller.h>
-+#include <work.h>
-+#include <slice.h>
-+#include <sched.h>
-+
-+void resched(void)
-+{
-+	bool run_workqueues = !slice_acquired(&command_slice);
-+
-+	if (poller_active())
-+		return;
-+
-+	command_slice_acquire();
-+
-+	if (run_workqueues)
-+		wq_do_all_works();
-+
-+	poller_call();
-+
-+	command_slice_release();
-+
-+	bthread_reschedule();
-+}
-diff --git a/include/poller.h b/include/poller.h
-index 371dafc6f8b8..6e51a0613356 100644
---- a/include/poller.h
-+++ b/include/poller.h
-@@ -7,6 +7,7 @@
- #define POLLER_H
- 
- #include <linux/list.h>
-+#include <linux/types.h>
- 
- struct poller_struct {
- 	void (*func)(struct poller_struct *poller);
-@@ -39,11 +40,14 @@ static inline bool poller_async_active(struct poller_async *pa)
- 	return pa->active;
- }
- 
--extern int poller_active;
--
- #ifdef CONFIG_POLLER
-+bool poller_active(void);
- void poller_call(void);
- #else
-+static inline bool poller_active(void)
-+{
-+	return false;
-+}
- static inline void poller_call(void)
- {
- }
-diff --git a/include/sched.h b/include/sched.h
-index 57be1678fdaa..4dadff20696e 100644
---- a/include/sched.h
-+++ b/include/sched.h
-@@ -2,14 +2,12 @@
- #ifndef __BAREBOX_SCHED_H_
- #define __BAREBOX_SCHED_H_
- 
+ #include <common.h>
 -#include <bthread.h>
--#include <poller.h>
--
-+#ifdef CONFIG_HAS_SCHED
-+void resched(void);
-+#else
- static inline void resched(void)
- {
--	poller_call();
--	if (!IS_ENABLED(CONFIG_POLLER) || !poller_active)
--		bthread_reschedule();
- }
-+#endif
- 
- #endif
-diff --git a/include/slice.h b/include/slice.h
-index cf684300a809..67d47b9082e6 100644
---- a/include/slice.h
-+++ b/include/slice.h
-@@ -2,6 +2,7 @@
- #define __SLICE_H
- 
- #include <bthread.h>
 +#include <poller.h>
+ #include <linux/virtio.h>
+ #include <linux/virtio_config.h>
+ #include <linux/virtio_ring.h>
+@@ -17,7 +17,7 @@ struct virtio_input {
+ 	struct virtio_device       *vdev;
+ 	struct virtqueue           *evt, *sts;
+ 	struct virtio_input_event  evts[64];
+-	struct bthread             *bthread;
++	struct poller_struct       poller;
+ 	struct sound_card          beeper;
+ 	unsigned long              sndbit[BITS_TO_LONGS(SND_CNT)];
+ };
+@@ -100,21 +100,17 @@ static int virtinput_recv_status(struct virtio_input *vi)
+ 	return i;
+ }
  
- enum slice_action {
- 	SLICE_ACQUIRE = 1,
-@@ -35,11 +36,8 @@ extern struct slice command_slice;
- void command_slice_acquire(void);
- void command_slice_release(void);
+-static int virtinput_poll_vqs(void *_vi)
++static void virtinput_poll_vqs(struct poller_struct *poller)
+ {
+-	struct virtio_input *vi = _vi;
++	struct virtio_input *vi = container_of(poller, struct virtio_input, poller);
  
--extern int poller_active;
+-	while (!bthread_should_stop()) {
+-		int bufs = 0;
++	int bufs = 0;
+ 
+-		bufs += virtinput_recv_events(vi);
+-		bufs += virtinput_recv_status(vi);
++	bufs += virtinput_recv_events(vi);
++	bufs += virtinput_recv_status(vi);
+ 
+-		if (bufs)
+-			virtqueue_kick(vi->evt);
+-	}
 -
- #define assert_command_context() do { \
--	WARN_ONCE(IS_ENABLED(CONFIG_POLLER) && poller_active, \
--		  "%s called in poller\n", __func__); \
-+	WARN_ONCE(poller_active(), "%s called in poller\n", __func__); \
- 	WARN_ONCE(IS_ENABLED(CONFIG_BTHREAD) && !bthread_is_main(current), \
- 		  "%s called in secondary bthread\n", __func__); \
- } while (0)
+-	return 0;
++	if (bufs)
++		virtqueue_kick(vi->evt);
+ }
+ 
+ static u8 virtinput_cfg_select(struct virtio_input *vi,
+@@ -213,6 +209,8 @@ static int virtinput_probe(struct virtio_device *vdev)
+ 			   name, min(size, sizeof(name)));
+ 	name[size] = '\0';
+ 
++	dev_info(&vdev->dev, "'%s' detected\n", name);
++
+ 	virtinput_cfg_bits(vi, VIRTIO_INPUT_CFG_EV_BITS, EV_SND,
+ 			   vi->sndbit, SND_CNT);
+ 
+@@ -224,12 +222,12 @@ static int virtinput_probe(struct virtio_device *vdev)
+ 
+ 	virtinput_fill_evt(vi);
+ 
+-	vi->bthread = bthread_run(virtinput_poll_vqs, vi,
+-				  "%s/input0", dev_name(&vdev->dev));
+-	if (!vi->bthread) {
+-		err = -ENOMEM;
+-		goto err_bthread_run;
+-	}
++	vi->poller.func = virtinput_poll_vqs;
++	snprintf(name, sizeof(name), "%s/input0", dev_name(&vdev->dev));
++
++	err = poller_register(&vi->poller, name);
++	if (err)
++		goto err_poller_register;
+ 
+ 	if (IS_ENABLED(CONFIG_SOUND) &&
+ 	    (vi->sndbit[0] & (BIT_MASK(SND_BELL) | BIT_MASK(SND_TONE)))) {
+@@ -246,12 +244,10 @@ static int virtinput_probe(struct virtio_device *vdev)
+ 			dev_info(&vdev->dev, "bell registered\n");
+ 	}
+ 
+-	dev_info(&vdev->dev, "'%s' probed\n", name);
+-
+ 	return 0;
+ 
+-err_bthread_run:
+-	bthread_free(vi->bthread);
++err_poller_register:
++	input_device_unregister(&vi->idev);
+ err_input_register:
+ 	vdev->config->del_vqs(vdev);
+ err_init_vq:
+@@ -263,8 +259,7 @@ static void virtinput_remove(struct virtio_device *vdev)
+ {
+ 	struct virtio_input *vi = vdev->priv;
+ 
+-	bthread_stop(vi->bthread);
+-	bthread_free(vi->bthread);
++	poller_unregister(&vi->poller);
+ 
+ 	vdev->config->reset(vdev);
+ 	vdev->config->del_vqs(vdev);
 -- 
 2.29.2
 
