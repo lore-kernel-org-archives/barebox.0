@@ -1,54 +1,53 @@
-Delivery-date: Tue, 22 Jun 2021 11:09:04 +0200
+Delivery-date: Tue, 22 Jun 2021 11:09:56 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvcP2-0000Xu-3M
-	for lore@lore.pengutronix.de; Tue, 22 Jun 2021 11:09:04 +0200
+	id 1lvcPs-0000Yv-4p
+	for lore@lore.pengutronix.de; Tue, 22 Jun 2021 11:09:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvcP1-0008HQ-09
-	for lore@pengutronix.de; Tue, 22 Jun 2021 11:09:03 +0200
+	id 1lvcPr-0008P8-28
+	for lore@pengutronix.de; Tue, 22 Jun 2021 11:09:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=AH737DOTwNHHC1Ux+rBYR4LtSMqleiQPYxOfrcy6mdc=; b=HhQH2Q3SxT9xvvbOUedD+NiX89
-	xlAfgata+RZ8rpMFOGabtJQcMhWDY/QgA7+lLgZjfFLwdL9i0oYNUpsqIb++CsF4Q5Wcvpx9ZwhfV
-	ZYKykHU4x/1Iyf8dRRazG48uuUWHHv6AsWQvTM1clGIzFucoQCxt/wygp30fAa8CSZ46Au2ygZPq0
-	8kXJ4o+0m1EL1IaZPJlW5a0RHkJPZSZjc9TLHYnNKLZjihqaKxNmOPnidcX9FpTVop+JWrWU8X8bO
-	rjvT6yJeoqGh8Js7JDwStPUQUEJmeI8vB0H3CkdwrHZlk/YvvuHnB8N1WAziUKY+i8lDbCSak5mOS
-	KwfVnrWw==;
+	Message-ID:From:References:To:Subject:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=bA/GxaMtYkjJ7xlWYuUJhE1ENkGAWV59exOK1ocr5U8=; b=aeXKmQjvbXYfPI
+	QbechYFQVgDfiz8w1GufeBCYQLZ5EXIhmAoF/yb3SWtii1C198sXLi6cNmBe6jjI4kqH8B6We1RmM
+	isB09BQihmTwGkgC7yLlojLneRU13cdWR83sYr6Bq2NbEYe+i84rDO2wCAlfpqWAfR1t4HLrTes2u
+	FGTgXHBVv9Hr5WUdRSjD4Nn/nEoZ2fyFMXbJxkRIU2Mvp6qVH9KKwizsiayreN1ZiG5FtL3KM3x3p
+	/qMhX+ne3l3ShCmdy+B1dF9fcEO+WCgrEaPPOl9+CmK+/2fuxK6NAP9FNHtSUYtK5BwQ69FHfdfqK
+	zX4F37uZqTMxLcIeHP0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvcNZ-006MBL-Ig; Tue, 22 Jun 2021 09:07:33 +0000
+	id 1lvcOg-006MTJ-DH; Tue, 22 Jun 2021 09:08:42 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvcNS-006M8p-Ap
- for barebox@lists.infradead.org; Tue, 22 Jun 2021 09:07:29 +0000
+ id 1lvcOZ-006MRx-Qb
+ for barebox@lists.infradead.org; Tue, 22 Jun 2021 09:08:37 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1lvcNQ-00088e-8U
- for barebox@lists.infradead.org; Tue, 22 Jun 2021 11:07:24 +0200
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1lvcOY-0008Dw-Gb; Tue, 22 Jun 2021 11:08:34 +0200
 To: barebox@lists.infradead.org
-References: <20210622080811.28335-1-a.fatoum@pengutronix.de>
- <YNGgvKY3xNdMGPey@ada.ifak-system.com>
+References: <20210622082617.18011-1-a.fatoum@pengutronix.de>
+ <20210622082617.18011-5-a.fatoum@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <42009e22-baf5-6b93-88f7-b62eaf4ae604@pengutronix.de>
-Date: Tue, 22 Jun 2021 11:07:17 +0200
+Message-ID: <7d45e6d7-0649-7b4b-3744-ee01e3f34bea@pengutronix.de>
+Date: Tue, 22 Jun 2021 11:08:28 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.2
 MIME-Version: 1.0
-In-Reply-To: <YNGgvKY3xNdMGPey@ada.ifak-system.com>
+In-Reply-To: <20210622082617.18011-5-a.fatoum@pengutronix.de>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210622_020726_436078_311B08CC 
-X-CRM114-Status: GOOD (  39.49  )
+X-CRM114-CacheID: sfid-20210622_020835_942679_E82FB6B3 
+X-CRM114-Status: GOOD (  24.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,6 +59,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Jan Luebbe <j.luebbe@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -73,146 +73,100 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] ARM: at91: sama5d27_som1_ek: populate MAC address from
- EEPROM
+Subject: Re: [PATCH v4 4/8] common: bthread: schedule only in command context
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
-
-On 22.06.21 10:35, Alexander Dahl wrote:
-> Hei hei,
+On 22.06.21 10:26, Ahmad Fatoum wrote:
+> Originally, I envisioned bthreads as replacement for pollers and
+> workqueues. But even without preemption, having functions you call
+> possibly accessing structures you are iterating over can corrupt
+> memory. This problem exists with pollers as well, but because of their
+> limited scope, it's harder to shoot your foot with them, as you
+> don't keep implicit state between poller activations unlike bthreads,
+> which maintain their stack across context switches.
 > 
-> Am Tue, Jun 22, 2021 at 10:08:11AM +0200 schrieb Ahmad Fatoum:
->> With the latest NVMEM enhancements merged, barebox networking core now
->> always consults NVMEM cells referenced in the network controller
->> device tree node before it falls back to randomizing a new address.
->>
->> The SAM5D27-SOM1 has a 256 byte EEPROM, which holds a MAC address in its
->> last 6 bytes. Describe this in the device tree, so boards using the SoM
->> will get an unique MAC address assigned and fixed up into the kernel
->> device tree. 
+> Limit bthread scope instead to be a replacement for workqueues. This
+> still allows us to port some classes of state-machine-in-kthread kernel
+> code, while avoding the aforementioned pitfalls.
 > 
-> I have access to such a device, but I can not promise I have time to
-> test this currently. :-/
+> Cc: Jan Luebbe <j.luebbe@pengutronix.de>
+> Cc: Sascha Hauer <a.hauer@pengutronix.de>
 
-No worries, I've an EK1 myself and tested it before sending it out.
+Mailer daemon just told me the first character of Sascha is not an a.
 
->> This change can be dropped again when/if the change is
->> submitted and applied upstream.
+Please fixup on apply (or I do with v5)
+
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  commands/bthread.c | 5 +++++
+>  common/sched.c     | 6 +++---
+>  include/slice.h    | 2 --
+>  3 files changed, 8 insertions(+), 5 deletions(-)
 > 
-> What do you mean with "upstream" here? Linux kernel?
-
-Yes. The dts/ directory in barebox is regularly synchronized with the
-upstream Device Tree repository, which is still hosted in the Linux
-repository.
-
-> I just had a short look into u-boot for that board, there's the i2c
-> eeprom set in dts only, and dts is still the old u-boot way, not dts
-> from kernel plus fixups in a separate file. The mac is set in
-> board/atmel/sama5d27_som1_ek/sama5d27_som1_ek.c like this:
-> 
->  87 #define MAC24AA_MAC_OFFSET      0xfa
->  88
->  89 #ifdef CONFIG_MISC_INIT_R
->  90 int misc_init_r(void)
->  91 {
->  92 #ifdef CONFIG_I2C_EEPROM
->  93         at91_set_ethaddr(MAC24AA_MAC_OFFSET);
->  94 #endif
->  95         return 0;
->  96 }
->  97 #endif
-> 
-> What would be the right way for kernel, u-boot, and barebox? Have i2c
-> eeprom defined in dts and an nvmem cell on top like you proposed for
-> barebox now?
-
-Many Linux network drivers already call of_get_mac_address and thus would
-read out a NVMEM cell if available. There aren't too many device trees
-making use of it, but that seems the preferred way going forward.
-(MAC addressed fixed up by bootloader is higher priority though).
-
-In general, I think Linux should not rely more than necessary on firmware.
-
-> Not sure if u-boot can do that (already)?
-
-No idea. grepping "mac-address" shows no nvmem related C code though.
-
-> But it would
-> still work if only Linux and barebox did it that way, right?
-
-So far, either board code set it, similar to your snippet above:
-eth_register_ethaddr(if_index, mac_addr);
-
-Or NVMEM drivers had a barebox,provide-mac-address = <&phandle_to_netdev ...>
-property and they called eth_register_ethaddr.
-
-The NVMEM binding is the upstream way, so after a device tree sync, even existing
-boards may find themselves with the correct address instead of randomization without
-having to do anything (nvmem cells doesn't override other methods, so no brekage).
-
-Cheers,
-Ahmad
-
-> 
-> Greets
-> Alex
-> 
->>
->> Reported-by: Alexander Dahl <ada@thorsis.com>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  arch/arm/dts/at91-sama5d27_som1.dtsi   | 18 ++++++++++++++++++
->>  arch/arm/dts/at91-sama5d27_som1_ek.dts |  2 +-
->>  2 files changed, 19 insertions(+), 1 deletion(-)
->>  create mode 100644 arch/arm/dts/at91-sama5d27_som1.dtsi
->>
->> diff --git a/arch/arm/dts/at91-sama5d27_som1.dtsi b/arch/arm/dts/at91-sama5d27_som1.dtsi
->> new file mode 100644
->> index 000000000000..0d84c45f9263
->> --- /dev/null
->> +++ b/arch/arm/dts/at91-sama5d27_som1.dtsi
->> @@ -0,0 +1,18 @@
->> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->> +
->> +#include "sama5d2.dtsi"
->> +
->> +&macb0 {
->> +	nvmem-cells = <&macaddr>;
->> +	nvmem-cell-names = "mac-address";
->> +};
->> +
->> +&{/ahb/apb/i2c@f8028000/at24@50} {
->> +	#address-cells = <1>;
->> +	#size-cells = <1>;
->> +
->> +	macaddr: mac-address@fa {
->> +		reg = <0xfa 6>;
->> +		label = "mac-address";
->> +	};
->> +};
->> diff --git a/arch/arm/dts/at91-sama5d27_som1_ek.dts b/arch/arm/dts/at91-sama5d27_som1_ek.dts
->> index 97a326dd2b26..1a704b42680f 100644
->> --- a/arch/arm/dts/at91-sama5d27_som1_ek.dts
->> +++ b/arch/arm/dts/at91-sama5d27_som1_ek.dts
->> @@ -4,7 +4,7 @@
->>   */
->>  
->>  #include <arm/at91-sama5d27_som1_ek.dts>
->> -#include "sama5d2.dtsi"
->> +#include "at91-sama5d27_som1.dtsi"
->>  
->>  / {
->>  	chosen {
->> -- 
->> 2.29.2
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
+> diff --git a/commands/bthread.c b/commands/bthread.c
+> index 964a1044c58b..0c9c221884e8 100644
+> --- a/commands/bthread.c
+> +++ b/commands/bthread.c
+> @@ -10,12 +10,15 @@
+>  #include <command.h>
+>  #include <getopt.h>
+>  #include <clock.h>
+> +#include <slice.h>
+>  
+>  static int bthread_time(void)
+>  {
+>  	uint64_t start = get_time_ns();
+>  	int i = 0;
+>  
+> +	slice_release(&command_slice);
+> +
+>  	/*
+>  	 * How many background tasks can we have in one second?
+>  	 *
+> @@ -25,6 +28,8 @@ static int bthread_time(void)
+>  	while (!is_timeout(start, SECOND))
+>  		i++;
+>  
+> +	slice_acquire(&command_slice);
+> +
+>  	return i;
+>  }
+>  
+> diff --git a/common/sched.c b/common/sched.c
+> index dcf6522ac058..02582b2c5e4d 100644
+> --- a/common/sched.c
+> +++ b/common/sched.c
+> @@ -15,12 +15,12 @@ void resched(void)
+>  
+>  	command_slice_acquire();
+>  
+> -	if (run_workqueues)
+> +	if (run_workqueues) {
+>  		wq_do_all_works();
+> +		bthread_reschedule();
+> +	}
+>  
+>  	poller_call();
+>  
+>  	command_slice_release();
+> -
+> -	bthread_reschedule();
+>  }
+> diff --git a/include/slice.h b/include/slice.h
+> index 67d47b9082e6..6c4688e308fa 100644
+> --- a/include/slice.h
+> +++ b/include/slice.h
+> @@ -38,8 +38,6 @@ void command_slice_release(void);
+>  
+>  #define assert_command_context() do { \
+>  	WARN_ONCE(poller_active(), "%s called in poller\n", __func__); \
+> -	WARN_ONCE(IS_ENABLED(CONFIG_BTHREAD) && !bthread_is_main(current), \
+> -		  "%s called in secondary bthread\n", __func__); \
+>  } while (0)
+>  
+>  #endif
 > 
 
 -- 
