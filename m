@@ -1,53 +1,54 @@
-Delivery-date: Wed, 23 Jun 2021 06:35:45 +0200
+Delivery-date: Wed, 23 Jun 2021 06:35:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvuc5-000415-4S
-	for lore@lore.pengutronix.de; Wed, 23 Jun 2021 06:35:45 +0200
+	id 1lvuc6-00041S-Ep
+	for lore@lore.pengutronix.de; Wed, 23 Jun 2021 06:35:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvuc4-0002uP-5y
-	for lore@pengutronix.de; Wed, 23 Jun 2021 06:35:44 +0200
+	id 1lvuc5-0002ut-IP
+	for lore@pengutronix.de; Wed, 23 Jun 2021 06:35:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=5eWqVDaCNlS1XbdueglnpDNVQN1GM9zYhO7JK+1ofIM=; b=Q7s9eh/Xk9Mbkj
-	R9RRVexXZibEZ2VERZtE3u/w0uUZXlxbPLoJCCJfZbZ9pN9PFeIYMEjfrhyoUL9mjPum9OxsVynye
-	KvvYvKM8WL/PsRGUXprr3pGmlp3J8olq4gRU7iTz4ykkxrkaUAZrG6BWe7z/FGkG2gdi+my1UI+Mj
-	a7MddhG/AcQXNgBYEKG3m3e2w75/1tbdOFUb0c6jmbv01s7eRXqIYrrOKEImDvqkuEC4pCcCMF31z
-	BNz/xwh/zpZtbYCcf/SICL2Ju5/UEGaSfAWUS8Qjo1Fqx4HPV6BXjtpc7hwbfvqfX2yGyKclqD5h1
-	cHdqS37+NkcbCZYOpl+w==;
+	List-Owner; bh=gD9EeVfYsKD1WcA6zZzD2HTX/QzN9Yqp2+tlONK5TnM=; b=Y6sSlt/FKVZOg9
+	P26oS3OPv+EjYKJD1053or6Q8FWc5acABkKznxKMa9Xxy+oYB6Qd0+/sO7/7viravUC1NjsYUmcqt
+	134S5eY464wk4/B6oEo7po96pAQraPsNnOQShln/vqVrHDkp95mw0eZFF/06cvVtRNUdgzIdV9liC
+	ZMcOaT1jKphjSTxzIcpW98QY4CVGSERIwM/ZuFkNQYAkusuSO7TqdlcY2ottNyRk5t85O1FwJy0JX
+	AVA29ttsW+2cDbiTb8tshe0agyVq6oe9mmop0KDVV6ZoxLBaA0X5qWe8qGcX3ZLQ17umqYcFN8ifm
+	f0EuRxgaLx0mgO6rP1TA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvuae-009Gt7-6w; Wed, 23 Jun 2021 04:34:16 +0000
+	id 1lvuam-009Gxk-Dk; Wed, 23 Jun 2021 04:34:24 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvuaY-009Grr-O2
- for barebox@lists.infradead.org; Wed, 23 Jun 2021 04:34:11 +0000
+ id 1lvuag-009Gx8-Oe
+ for barebox@lists.infradead.org; Wed, 23 Jun 2021 04:34:19 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvuaP-0002Zk-Hp; Wed, 23 Jun 2021 06:34:01 +0200
+ id 1lvuaP-0002Zj-IA; Wed, 23 Jun 2021 06:34:01 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvuaP-0002A6-9b; Wed, 23 Jun 2021 06:34:01 +0200
+ id 1lvuaP-00029y-9F; Wed, 23 Jun 2021 06:34:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 23 Jun 2021 06:33:58 +0200
-Message-Id: <20210623043359.18391-3-s.hauer@pengutronix.de>
+Date: Wed, 23 Jun 2021 06:33:57 +0200
+Message-Id: <20210623043359.18391-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210623043359.18391-1-s.hauer@pengutronix.de>
 References: <20210623043359.18391-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210622_213410_822176_0568ECE1 
-X-CRM114-Status: GOOD (  13.18  )
+X-CRM114-CacheID: sfid-20210622_213418_840139_8F7ED7FF 
+X-CRM114-Status: UNSURE (   9.46  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,73 +72,41 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] libfile: Add copy_fd()
+Subject: [PATCH 1/3] filetype: Add function to check if a filetype is a
+ compressed file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/libfile.h |  1 +
- lib/libfile.c     | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
+ include/filetype.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/include/libfile.h b/include/libfile.h
-index 350ddddf70..3c2fe1714d 100644
---- a/include/libfile.h
-+++ b/include/libfile.h
-@@ -5,6 +5,7 @@
- int pwrite_full(int fd, const void *buf, size_t size, loff_t offset);
- int write_full(int fd, const void *buf, size_t size);
- int read_full(int fd, void *buf, size_t size);
-+int copy_fd(int in, int out);
+diff --git a/include/filetype.h b/include/filetype.h
+index fd339f9564..ae0920320e 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -70,6 +70,20 @@ enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec)
+ int is_fat_boot_sector(const void *_buf);
+ bool filetype_is_barebox_image(enum filetype ft);
  
- char *read_file_line(const char *fmt, ...);
- 
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 4ab8db11ad..e42126017d 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -100,6 +100,40 @@ int read_full(int fd, void *buf, size_t size)
- }
- EXPORT_SYMBOL(read_full);
- 
-+int copy_fd(int in, int out)
++static inline bool file_is_compressed_file(enum filetype ft)
 +{
-+	int bs = 4096, ret;
-+	void *buf = malloc(bs);
-+
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	while (1) {
-+		int now, wr;
-+
-+		now = read(in, buf, bs);
-+		if (now < 0) {
-+			ret = now;
-+			goto err;
-+		}
-+
-+		if (!now)
-+			break;
-+
-+		wr = write_full(out, buf, now);
-+		if (wr < 0) {
-+			ret = wr;
-+			goto err;
-+		}
++	switch (ft) {
++	case filetype_lzo_compressed:
++	case filetype_lz4_compressed:
++	case filetype_gzip:
++	case filetype_bzip2:
++	case filetype_xz_compressed:
++		return true;
++	default:
++		return false;
 +	}
-+
-+	ret = 0;
-+err:
-+        free(buf);
-+
-+	return ret;
 +}
 +
- /*
-  * read_file_line - read a line from a file
-  *
+ #define ARM_HEAD_SIZE			0x30
+ #define ARM_HEAD_MAGICWORD_OFFSET	0x20
+ #define ARM_HEAD_SIZE_OFFSET		0x2C
 -- 
 2.29.2
 
