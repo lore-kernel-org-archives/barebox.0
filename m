@@ -1,52 +1,53 @@
-Delivery-date: Wed, 23 Jun 2021 06:35:44 +0200
+Delivery-date: Wed, 23 Jun 2021 06:35:45 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvuc4-00040i-OL
-	for lore@lore.pengutronix.de; Wed, 23 Jun 2021 06:35:44 +0200
+	id 1lvuc5-000415-4S
+	for lore@lore.pengutronix.de; Wed, 23 Jun 2021 06:35:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvuc3-0002tx-Te
+	id 1lvuc4-0002uP-5y
 	for lore@pengutronix.de; Wed, 23 Jun 2021 06:35:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=ebHZGUPsikmE2FVJy4BVjc+Tlf7yso9Q+6YO17en3mM=; b=SpqakGv3hSkQf9
-	5xRI0WShBrR6+FCR+hwT2zhzWcMXwlWv0LsJZ4lfaEAzp8o/oy69pfZ90xDiABvCFPjDP9nObVmRD
-	bRRSAQjSzZQ7sE/aaeN8IAh3QVzGm8KqNKMBvH94AMHRpkrqQArNyWV9bGRT36haJUHdw3Pzqo07v
-	5nPmxKdA6XedR0zoJbMNK7/PH6U24SQQkJEQpnnVQLt1GcYFmY21Gn5zHx4SvzCUlxGwmhuYLaVSF
-	7/dg8BybTRmHBsm29hun7SSkEZR0JEXTSsDkUFIvpnuTZqxykDaNUbz5taM2nV4xXFXaPqMmTUafw
-	knl6Y5N/UFoXva/snmyw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=5eWqVDaCNlS1XbdueglnpDNVQN1GM9zYhO7JK+1ofIM=; b=Q7s9eh/Xk9Mbkj
+	R9RRVexXZibEZ2VERZtE3u/w0uUZXlxbPLoJCCJfZbZ9pN9PFeIYMEjfrhyoUL9mjPum9OxsVynye
+	KvvYvKM8WL/PsRGUXprr3pGmlp3J8olq4gRU7iTz4ykkxrkaUAZrG6BWe7z/FGkG2gdi+my1UI+Mj
+	a7MddhG/AcQXNgBYEKG3m3e2w75/1tbdOFUb0c6jmbv01s7eRXqIYrrOKEImDvqkuEC4pCcCMF31z
+	BNz/xwh/zpZtbYCcf/SICL2Ju5/UEGaSfAWUS8Qjo1Fqx4HPV6BXjtpc7hwbfvqfX2yGyKclqD5h1
+	cHdqS37+NkcbCZYOpl+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvuaY-009GrA-0e; Wed, 23 Jun 2021 04:34:10 +0000
+	id 1lvuae-009Gt7-6w; Wed, 23 Jun 2021 04:34:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvuaR-009GpW-LO
- for barebox@lists.infradead.org; Wed, 23 Jun 2021 04:34:06 +0000
+ id 1lvuaY-009Grr-O2
+ for barebox@lists.infradead.org; Wed, 23 Jun 2021 04:34:11 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvuaP-0002Zi-Hr; Wed, 23 Jun 2021 06:34:01 +0200
+ id 1lvuaP-0002Zk-Hp; Wed, 23 Jun 2021 06:34:01 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvuaP-00029r-8n; Wed, 23 Jun 2021 06:34:01 +0200
+ id 1lvuaP-0002A6-9b; Wed, 23 Jun 2021 06:34:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 23 Jun 2021 06:33:56 +0200
-Message-Id: <20210623043359.18391-1-s.hauer@pengutronix.de>
+Date: Wed, 23 Jun 2021 06:33:58 +0200
+Message-Id: <20210623043359.18391-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210623043359.18391-1-s.hauer@pengutronix.de>
+References: <20210623043359.18391-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210622_213403_771250_E92EB23C 
-X-CRM114-Status: UNSURE (   8.51  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210622_213410_822176_0568ECE1 
+X-CRM114-Status: GOOD (  13.18  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,27 +71,73 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/3] firmware: Add support for compressed images
+Subject: [PATCH 2/3] libfile: Add copy_fd()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Steffen already sent this. This version has some improvements like
-better error reporting. Also we uncompress only files we detect as
-compressed files, not just everything we do not detect as unknown file.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/libfile.h |  1 +
+ lib/libfile.c     | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
 
-Sascha Hauer (2):
-  filetype: Add function to check if a filetype is a compressed file
-  libfile: Add copy_fd()
-
-Steffen Trumtrar (1):
-  firmware: add support for compressed images
-
- common/firmware.c  | 50 ++++++++++++++++++++++++++++++++++++++++++----
- include/filetype.h | 14 +++++++++++++
- include/libfile.h  |  1 +
- lib/libfile.c      | 34 +++++++++++++++++++++++++++++++
- 4 files changed, 95 insertions(+), 4 deletions(-)
-
+diff --git a/include/libfile.h b/include/libfile.h
+index 350ddddf70..3c2fe1714d 100644
+--- a/include/libfile.h
++++ b/include/libfile.h
+@@ -5,6 +5,7 @@
+ int pwrite_full(int fd, const void *buf, size_t size, loff_t offset);
+ int write_full(int fd, const void *buf, size_t size);
+ int read_full(int fd, void *buf, size_t size);
++int copy_fd(int in, int out);
+ 
+ char *read_file_line(const char *fmt, ...);
+ 
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 4ab8db11ad..e42126017d 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -100,6 +100,40 @@ int read_full(int fd, void *buf, size_t size)
+ }
+ EXPORT_SYMBOL(read_full);
+ 
++int copy_fd(int in, int out)
++{
++	int bs = 4096, ret;
++	void *buf = malloc(bs);
++
++	if (!buf)
++		return -ENOMEM;
++
++	while (1) {
++		int now, wr;
++
++		now = read(in, buf, bs);
++		if (now < 0) {
++			ret = now;
++			goto err;
++		}
++
++		if (!now)
++			break;
++
++		wr = write_full(out, buf, now);
++		if (wr < 0) {
++			ret = wr;
++			goto err;
++		}
++	}
++
++	ret = 0;
++err:
++        free(buf);
++
++	return ret;
++}
++
+ /*
+  * read_file_line - read a line from a file
+  *
 -- 
 2.29.2
 
