@@ -1,64 +1,63 @@
-Delivery-date: Wed, 23 Jun 2021 08:44:58 +0200
+Delivery-date: Wed, 23 Jun 2021 08:52:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvwd8-0006ke-5s
-	for lore@lore.pengutronix.de; Wed, 23 Jun 2021 08:44:58 +0200
+	id 1lvwki-0006rX-5Q
+	for lore@lore.pengutronix.de; Wed, 23 Jun 2021 08:52:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvwd7-0008Bj-6K
-	for lore@pengutronix.de; Wed, 23 Jun 2021 08:44:58 +0200
+	id 1lvwkh-0000lg-5y
+	for lore@pengutronix.de; Wed, 23 Jun 2021 08:52:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=06+5gXFBPwD8Y+aorAuYZgCVWDJYc5Ux7CSiKb3tHrU=; b=Rpi5RIEMZNz17v
-	gGWBX1V7xlMOiLm03A0SUo9UzDU3qlXOAPiNy0+26v/X3mR4jwoiWTvzGrMaRn42hhPTz7GDwNO/v
-	taOGwDiPAw63vmEiBcm3PtT8/4oEb3Rl5+H4Xmq97MUVkPvhVbw/ojQCu9YtEAkmwmnm5qJAy02PV
-	XfABbwv9eiDDceOoCcdea3g/pGbaCXta4jQhpsydMOVKgO0IodE84CtF5Zdpc5XBvzG/OBnraGHuY
-	U0QSL/fpqEfKLYnwR2F3b+KFYXFyLZ1dOO2+aSDJr7nRz7qjM24tVh9x6p42NXB+FIs4Br5oYb+aZ
-	Bc/HvZ2WZpvCLWgR6deQ==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=GXNTNqRe0UBpZD4QAXPK3exQZfNHItBIj0jY6xflcEQ=; b=Eh4Uv6BmDYcUDMXgoeJssi6zpE
+	OBjVhLbpNvnJ/TCxmrH5+opzjTnkRRQ9RKlSgusiqBtIvNllZ6xIXdN1bgX0UPltMtyGIdIGF25P3
+	BDcDWKoMWOxuP8jW38dr3LtwzqLj9KZ5+3hhRpyoqnnFUvbXvQTcLUrUWqj95c3M+X1YKuz0L5Xwq
+	LxaHi6ttR1Lw1a7S4rjk1ATIe1hdKZIkKdPGrzXv41+TDinRN07MPVY7Zr5rfYDa9NLEicMGBYq0a
+	IYdRXGdZhtIVsTTq7GCpQbTyfytpTQMoNaekkkUwvL3f2gPezYwL6BKAbcwdAKVmkADOFsOadtoTZ
+	QNoHB8WA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvwbs-009dGm-B6; Wed, 23 Jun 2021 06:43:40 +0000
+	id 1lvwjK-009eYr-Lg; Wed, 23 Jun 2021 06:51:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvwbn-009dFt-0m
- for barebox@lists.infradead.org; Wed, 23 Jun 2021 06:43:36 +0000
+ id 1lvwjC-009eYG-D7
+ for barebox@lists.infradead.org; Wed, 23 Jun 2021 06:51:17 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvwbl-00081d-Nn; Wed, 23 Jun 2021 08:43:33 +0200
+ id 1lvwj9-0000gl-3q; Wed, 23 Jun 2021 08:51:11 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvwbl-0004UN-4p; Wed, 23 Jun 2021 08:43:33 +0200
-Date: Wed, 23 Jun 2021 08:43:33 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Trent Piepho <trent.piepho@igorinstitute.com>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20210623064333.GS9782@pengutronix.de>
-References: <20210623043359.18391-1-s.hauer@pengutronix.de>
- <20210623043359.18391-3-s.hauer@pengutronix.de>
- <CAMHeXxM61PR2HMzZiDG5SFQ7exLPwhMsQFCtqznsfdiadwaZvQ@mail.gmail.com>
+ id 1lvwj8-0004lh-R8; Wed, 23 Jun 2021 08:51:10 +0200
+Date: Wed, 23 Jun 2021 08:51:10 +0200
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210623065110.GT9782@pengutronix.de>
+References: <20210621102706.586345-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAMHeXxM61PR2HMzZiDG5SFQ7exLPwhMsQFCtqznsfdiadwaZvQ@mail.gmail.com>
+In-Reply-To: <20210621102706.586345-1-r.czerwinski@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 08:43:07 up 125 days, 10:07, 107 users,  load average: 0.02, 0.07,
- 0.15
+X-Uptime: 08:50:57 up 125 days, 10:14, 109 users,  load average: 0.28, 0.15,
+ 0.14
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210622_234335_103616_A29AAD2E 
-X-CRM114-Status: GOOD (  19.80  )
+X-CRM114-CacheID: sfid-20210622_235114_486085_4CB31691 
+X-CRM114-Status: GOOD (  18.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,57 +77,30 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/3] libfile: Add copy_fd()
+Subject: Re: [PATCH] image-sparse: remove unused define
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Jun 22, 2021 at 11:24:57PM -0700, Trent Piepho wrote:
-> On Tue, Jun 22, 2021 at 9:34 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > +       while (1) {
-> > +               int now, wr;
-> > +
-> > +               now = read(in, buf, bs);
-> > +               if (now < 0) {
-> > +                       ret = now;
-> > +                       goto err;
-> > +               }
-> > +
-> > +               if (!now)
-> > +                       break;
-> > +
-> > +               wr = write_full(out, buf, now);
-> > +               if (wr < 0) {
-> > +                       ret = wr;
-> > +                       goto err;
-> > +               }
-> > +       }
-> > +
-> > +       ret = 0;
-> > +err:
-> > +        free(buf);
-> > +
-> > +       return ret;
+On Mon, Jun 21, 2021 at 12:27:07PM +0200, Rouven Czerwinski wrote:
+> CONFIG_FASTBOOT_FLASH_FILLBUF_SIZE is present since the very first
+> addition of sparse image support. However its not used anywhere in the
+> code, so remove it.
 > 
-> This can be quite a bit shorter:
+> Fixes: 13f649a4f960 ("Add support for fastboot sparse images")
 > 
-> while (1) {
->        ret = read(in, buf, bs);
->        if (ret <= 0)
->                break;
->        ret = write_full(out, buf, ret);
->        if (ret < 0)
->                break;
-> }
-> free(buf)
-> return ret;
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  lib/image-sparse.c | 4 ----
+>  1 file changed, 4 deletions(-)
 
-Indeed, thanks. I'll change it like that.
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
