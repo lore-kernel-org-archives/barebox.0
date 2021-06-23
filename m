@@ -1,53 +1,51 @@
-Delivery-date: Wed, 23 Jun 2021 07:18:28 +0200
+Delivery-date: Wed, 23 Jun 2021 07:18:39 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvvHQ-0005G0-GV
-	for lore@lore.pengutronix.de; Wed, 23 Jun 2021 07:18:28 +0200
+	id 1lvvHb-0005GZ-7W
+	for lore@lore.pengutronix.de; Wed, 23 Jun 2021 07:18:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvvHO-0007Sy-Vy
-	for lore@pengutronix.de; Wed, 23 Jun 2021 07:18:28 +0200
+	id 1lvvHZ-0007Ya-N3
+	for lore@pengutronix.de; Wed, 23 Jun 2021 07:18:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=SWviBRPvmOtsY/k+wj9OUdpU8W4WkP53oAyGZ2v3h3A=; b=0vaRhLc58tAizX
-	4LfiOtVMZQW0zoIW2i9QLGmJAiEHNMmrOkvSB1b/GppvKDNOJbVJ/XrWBGaj29wpUwn/wmMmB1/7b
-	pEw+LK2A6nKan9CuQkUIEBWHFEhJOWKiRhH72lUxC6mUZOGkX9P9HDVzDpHROfGbDK9t84Q6N3Fg0
-	KD9UmhbqTwy/ezDtcSXMFD/F8g6nieoAGsf/nQL7zVvhOjlekrSwK86QCU4CGlMh9SKIlpoZPS0nY
-	RNoDkaih4BiH/hVsyvNbjWhabp1wj2dqKyUOOEc+N2DZybrIspJdWSfguZm5CBRrZeGZwuIZImASR
-	iq03O7xbLR7qRdmMYISw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=BlW0DNCNIgd1EN5ce9jOV90+cQaQwFYHfibEznBGFxE=; b=u0w7hJv3O+tg2c
+	bvUUBfJ+FY5ZHwimT68KWCLPg/qj2eF8FiW0WO5LdXBzGz8dnuft0UUS9oCr5uRd17BR3uvyQwZDi
+	E81SGsps4ImNnr6pNnXz9HAyc4UmAxOYWyH0mr70fP+Yzf29GggccFHHWgbfElAfWwoVfrOSsdj5a
+	c8eFwFVxPi4hKKlXBsXS+mNBkImCCDTFttmmrM/7Q3tsHXR3GY66S1q/05jX1rH35chKRjkTHZ1fv
+	OGXTmg1tPVR9HH/T8Zm8DERsNnvkXDGSrbwG/lN+MOl7W5VjdzcjnljrILqH39yQ+54FUN5lkKplo
+	p5S9lZcCLps/5M+Eefcw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvvGC-009Mhw-KN; Wed, 23 Jun 2021 05:17:12 +0000
+	id 1lvvGI-009Mlv-2z; Wed, 23 Jun 2021 05:17:18 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvvFd-009MQ6-E5
+ id 1lvvFd-009MQ3-E4
  for barebox@lists.infradead.org; Wed, 23 Jun 2021 05:16:42 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvvFb-0006rE-RR; Wed, 23 Jun 2021 07:16:35 +0200
+ id 1lvvFb-0006rB-JL; Wed, 23 Jun 2021 07:16:35 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lvvFa-0000Pq-Qo; Wed, 23 Jun 2021 07:16:34 +0200
+ id 1lvvFa-0000MS-Nt; Wed, 23 Jun 2021 07:16:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 23 Jun 2021 07:16:18 +0200
-Message-Id: <20210623051632.30253-4-s.hauer@pengutronix.de>
+Date: Wed, 23 Jun 2021 07:16:15 +0200
+Message-Id: <20210623051632.30253-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210623051632.30253-1-s.hauer@pengutronix.de>
-References: <20210623051632.30253-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210622_221637_660454_8019C00E 
-X-CRM114-Status: GOOD (  15.79  )
+X-CRM114-CacheID: sfid-20210622_221637_628042_87511CBE 
+X-CRM114-Status: GOOD (  15.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,117 +69,91 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 03/17] libbb: Add find_path function
+Subject: [PATCH v2 00/17] Apply device tree overlays to kernel tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-libbb contains a find_execable() function to find an executable in a
-colon separated path. The code can be reused by making the environment
-variable name and the is-executable test parameters. Do this and add
-a find_path()
+With this series barebox gains the capability to apply device tree
+overlays to the kernel device tree before starting the kernel with it.
+Which overlays are applied can be controlled with a set of globavars,
+for details see the documentation patch in this series.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/libbb.h |  4 +++-
- lib/libbb.c     | 58 ++++++++++++++++++++++++++++++++-----------------
- 2 files changed, 41 insertions(+), 21 deletions(-)
+The particular usecase we have in mind with this series is that the
+rootfs has a bunch of device tree overlays in it which shall be applied
+based on bootloader knowledge. For example information of the exact
+board type might be stored in an EEPROM. Based on that information
+barebox can now pick the right overlays for that board from the rootfs.
+Interpreting the EEPROM content is board specific and not part of this
+series, for now the the globalvars must be set manually.
 
-diff --git a/include/libbb.h b/include/libbb.h
-index a3a13b41ce..e191874052 100644
---- a/include/libbb.h
-+++ b/include/libbb.h
-@@ -8,8 +8,10 @@
- 
- char *concat_path_file(const char *path, const char *filename);
- char *concat_subpath_file(const char *path, const char *f);
--int execable_file(const char *name);
-+bool execable_file(const char *name);
- char *find_execable(const char *filename);
-+char *find_path(const char *path, const char *filename,
-+				bool (*filter)(const char *));
- char* last_char_is(const char *s, int c);
- 
- enum {
-diff --git a/lib/libbb.c b/lib/libbb.c
-index d0c9bf4d80..642e54d78f 100644
---- a/lib/libbb.c
-+++ b/lib/libbb.c
-@@ -49,11 +49,47 @@ char *concat_subpath_file(const char *path, const char *f)
- }
- EXPORT_SYMBOL(concat_subpath_file);
- 
-+/**
-+ * find_path - find a file in a colon separated path
-+ * @path: The search path, colon separated
-+ * @filename: The filename to search for
-+ * @filter: filter function
-+ *
-+ * searches for @filename in a colon separated list of directories given in
-+ * @path. @filter should return true when the current file matches the expectations,
-+ * false otherwise. @filter should check for existence of the file, but could also
-+ * check for additional flags.
-+ */
-+char *find_path(const char *path, const char *filename,
-+		bool (*filter)(const char *))
-+{
-+	char *p, *n, *freep;
-+
-+	freep = p = strdup(path);
-+	while (p) {
-+		n = strchr(p, ':');
-+		if (n)
-+			*n++ = '\0';
-+		if (*p != '\0') { /* it's not a PATH="foo::bar" situation */
-+			p = concat_path_file(p, filename);
-+			if (filter(p)) {
-+				free(freep);
-+				return p;
-+			}
-+			free(p);
-+		}
-+		p = n;
-+	}
-+	free(freep);
-+	return NULL;
-+}
-+EXPORT_SYMBOL(find_path);
-+
- /* check if path points to an executable file;
-  * return 1 if found;
-  * return 0 otherwise;
-  */
--int execable_file(const char *name)
-+bool execable_file(const char *name)
- {
- 	struct stat s;
- 	return (!stat(name, &s) && S_ISREG(s.st_mode));
-@@ -67,25 +103,7 @@ EXPORT_SYMBOL(execable_file);
-  */
- char *find_execable(const char *filename)
- {
--	char *path, *p, *n;
--
--	p = path = strdup(getenv("PATH"));
--	while (p) {
--		n = strchr(p, ':');
--		if (n)
--			*n++ = '\0';
--		if (*p != '\0') { /* it's not a PATH="foo::bar" situation */
--			p = concat_path_file(p, filename);
--			if (execable_file(p)) {
--				free(path);
--				return p;
--			}
--			free(p);
--		}
--		p = n;
--	}
--	free(path);
--	return NULL;
-+	return find_path(getenv("PATH"), filename, execable_file);
- }
- EXPORT_SYMBOL(find_execable);
- 
+The previous series had the problem that each time a of_fix_tree() was
+executed all firmwares were reloaded. This is solved in this series.
+Instead of loading the firmware files directly when applying an overlay,
+they are collected to a list. Only when we are booting the Kernel we
+explicitly load the firmwares we have previously collected.
+
+Changes since v1:
+
+- Do not (re-)load firmware on each of_fix_tree()
+- handle empty strings returned from strsep gracefully
+- Drop -S option from of_overlay command instead of ignoring it
+
+Sascha Hauer (17):
+  fdt: Check blob size during unflattening
+  firmware: make device_node argument non const
+  libbb: Add find_path function
+  firmware: consolidate ifdefs
+  firmware: Add search path
+  firmware: Fix device_node matching
+  firmware: recognize by reproducible name
+  blspec: Set firmware searchpath
+  overlay: only apply compatible trees
+  overlay: Add of_overlay_apply_file()
+  firmware: Load from global search path
+  blspec: Rework firmware load
+  of_overlay: apply overlays during booting
+  blspec: Apply overlays from rootfs
+  doc: devicetree: Refer to internal device tree also as live tree
+  Documentation: Add documentation for device tree overlays
+  of_firmware: Fix handling of firmware-name property
+
+ Documentation/user/devicetree.rst         |  39 +++++-
+ arch/arm/boards/qemu-virt/board.c         |   4 +-
+ arch/arm/boards/raspberry-pi/rpi-common.c |   2 +-
+ arch/arm/boards/webasto-ccbv2/board.c     |   2 +-
+ arch/arm/lib32/bootm.c                    |   6 +-
+ arch/arm/lib32/bootu.c                    |   5 +-
+ arch/arm/lib32/bootz.c                    |   3 +
+ arch/arm/lib64/armlinux.c                 |   4 +
+ arch/kvx/lib/bootm.c                      |   6 +
+ arch/mips/lib/bootm.c                     |   4 +
+ arch/powerpc/lib/ppclinux.c               |   4 +
+ arch/riscv/lib/bootm.c                    |   5 +
+ commands/of_diff.c                        |   2 +-
+ commands/of_display_timings.c             |   2 +-
+ commands/of_dump.c                        |   4 +-
+ commands/of_overlay.c                     |  34 +----
+ commands/oftree.c                         |   2 +-
+ common/blspec.c                           | 102 ++++++---------
+ common/bootm.c                            |   4 +-
+ common/efi/efi.c                          |   2 +-
+ common/firmware.c                         |  59 ++++++++-
+ common/image-fit.c                        |   2 +-
+ common/oftree.c                           |   2 +
+ common/state/backend_format_dtb.c         |   2 +-
+ drivers/firmware/altera_serial.c          |   1 +
+ drivers/firmware/socfpga.c                |   2 +
+ drivers/firmware/zynqmp-fpga.c            |   2 +
+ drivers/of/base.c                         |   2 +-
+ drivers/of/fdt.c                          |  17 ++-
+ drivers/of/of_firmware.c                  | 137 ++++++++++++-------
+ drivers/of/overlay.c                      | 152 ++++++++++++++++++++++
+ include/firmware.h                        |  26 ++--
+ include/libbb.h                           |   4 +-
+ include/of.h                              |  45 ++++++-
+ lib/libbb.c                               |  58 ++++++---
+ 35 files changed, 552 insertions(+), 195 deletions(-)
+
 -- 
 2.29.2
 
