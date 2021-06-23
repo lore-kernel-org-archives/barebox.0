@@ -1,55 +1,75 @@
-Delivery-date: Wed, 23 Jun 2021 08:15:02 +0200
+Delivery-date: Wed, 23 Jun 2021 08:26:35 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvwAA-0006HW-O4
-	for lore@lore.pengutronix.de; Wed, 23 Jun 2021 08:15:02 +0200
+	id 1lvwLL-0006Sn-MM
+	for lore@lore.pengutronix.de; Wed, 23 Jun 2021 08:26:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lvwA9-0005EV-VA
-	for lore@pengutronix.de; Wed, 23 Jun 2021 08:15:02 +0200
+	id 1lvwLK-0006UZ-SY
+	for lore@pengutronix.de; Wed, 23 Jun 2021 08:26:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=3db2FcV8Yx7Eer1VHHVZ2guK4hxBTOZXTVXGBksaZN0=; b=fil8OIe7MLqrwx1KwvS+H3e12o
-	lJFIqXXQGjbvD5MrVWMp6BUoplc9BB2CnkijV/5ccxgxTiyIGdNOP9+lvas4I8WmI9ViazL7qCTqu
-	X3SP2vlWVHliv1MJD2Pv7rYbmtq/M7AvInUTNeYYbYV7faNeWP/lyYu/1SeQCMZYo0lAK5sbPAmX5
-	ueMdcTLEK4N9wIQ7SKaV5IYpWRykwvMtPfxFQVQn6nezFgZ2z0VzT+cZg7pQTktO4gFiYgSwMguFb
-	XIgnAMP47vPBBmt24Fh2BXJxmo829INMUl8BcCuDTzUZGReqVb1ViD6t66CEQ0bLs+a/gUJ4KvhI4
-	BuskDybg==;
+	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
+	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=b2451rKwicEak/VPGJjUO6ba7xGMVnVHLcagxHSRUTs=; b=kFTnmO6K5Y8wC1
+	bgjqaAIqwRi8O07hI8t+77kNuhNpFkuqCRJeCVZdaemwbxDI9J8Wc8Jriwch0L7BZbJwIMmR0WmIx
+	f4VeChDk2DSr8+lLhyRO80BC3kj8aF6K262+nj3qCIzZ5s8sHKS+/pBDWUEpvQMXa2WQE4APyhzIq
+	CrwToJyGAtHhKoM+Ash29/P8cSTOFS3NjeOmcvymDzOniLcK2QJD3aE+YiEmL9XHEoz1HtS/Epul8
+	s26iXcoQMnPxw0TqGOhjAvGVgV+UDZxgduj22W8ZO4VJoWgRvJ7c/fCSsAtkZ4IiBnJp7JM3ivJgF
+	icmKIhPVLp7G/9Pb0uzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvw8o-009WtI-81; Wed, 23 Jun 2021 06:13:38 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lvwK5-009YuP-Cj; Wed, 23 Jun 2021 06:25:17 +0000
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lvw8i-009Wrb-05
- for barebox@lists.infradead.org; Wed, 23 Jun 2021 06:13:33 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1lvw8g-00054X-2c; Wed, 23 Jun 2021 08:13:30 +0200
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20210623051632.30253-1-s.hauer@pengutronix.de>
- <20210623051632.30253-17-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <cf7b8b42-7c58-f1b7-ff25-0e0e32b46b74@pengutronix.de>
-Date: Wed, 23 Jun 2021 08:13:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+ id 1lvwJz-009YtH-ID
+ for barebox@lists.infradead.org; Wed, 23 Jun 2021 06:25:12 +0000
+Received: by mail-lj1-x234.google.com with SMTP id c11so1430345ljd.6
+ for <barebox@lists.infradead.org>; Tue, 22 Jun 2021 23:25:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=igorinstitute-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=txYdd2l1sWa/lQeLW7hnct5OZg7TwSC/oo2x/uNRaj8=;
+ b=iikFhvrcfzrGrO90c+Bc2mGiS4TRTr+W9Z49CqU0Z7bgMhQ8fnD1uVhcY/odzFf3jV
+ hT5UOgb7iXffVmTVS+5bkvoOaRxX7aZzpHjlra9VDqZnJ0Qjg55APLOFHPlBbBV0Ud59
+ /GBlbM5OdyiXroGKhR6E74CxicbX3t5cdZcrkIaocSBA5RDOjY1tnVStQgHLoZrLQcMV
+ 9nMMSmHdhCXAnmV4lgV42ZMF/Vr5Ri8Trzx/PPjxutsqjiqJPwyD7FDhpvdbPnpHmNCg
+ kw0TEI38DkGG73mw4Dz/VPJIkArGudNRety2q4nhVPbxvH2/ONCdHx/j9Xe/ahw+zAXk
+ PCUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=txYdd2l1sWa/lQeLW7hnct5OZg7TwSC/oo2x/uNRaj8=;
+ b=AyEWDL92f1G3dbUbBzwkoB3VkWQFCYRR9Flnv0Dpfd5vKcFx8pz1zBcJi7wi0ucvSA
+ 802GripJ6P/bZY4//F3w8cpeFHoPhFjjDDfuoaGc2Ag0hZQW9Mzpf32l+FHPSaXXm0s9
+ cXlepLu+hZwxSkY6z3V/0iVy4kQmJqvQpFTh4AG9nnTGu6w7hPyclO8ypeTLYf0IsiYN
+ 1YMZPu7Yj8FVMEkTSZCPDCQAtaq9KwO8g5kfr+LMuI18N1Uc/8CxCH7wu6ZMECJXI3ex
+ ckSKUus5yuipETgdITZxeh6SG0vLpJMeIf0h/FmdeauBbQd6gto/qEY30BGU1frN6V5v
+ S8QA==
+X-Gm-Message-State: AOAM531Kesysnh92g7Vl5zkxC8UpLwJsketyeVFdv/r86CblVZzqJnNo
+ wfre/JcA+ssNrqcOuBPSzzNw9qBFiMV5muUQLUlwZA==
+X-Google-Smtp-Source: ABdhPJyCBg+jI2F5KEEE4mWMbAFiCsN7v2HNDIRWcth0wBnklnetlLR7AOloaFmXHEp0lyY+ye1d1YRTqTnCFgdi8YI=
+X-Received: by 2002:a2e:894e:: with SMTP id b14mr6680021ljk.112.1624429507891; 
+ Tue, 22 Jun 2021 23:25:07 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210623051632.30253-17-s.hauer@pengutronix.de>
-Content-Language: en-US
+References: <20210623043359.18391-1-s.hauer@pengutronix.de>
+ <20210623043359.18391-3-s.hauer@pengutronix.de>
+In-Reply-To: <20210623043359.18391-3-s.hauer@pengutronix.de>
+From: Trent Piepho <trent.piepho@igorinstitute.com>
+Date: Tue, 22 Jun 2021 23:24:57 -0700
+Message-ID: <CAMHeXxM61PR2HMzZiDG5SFQ7exLPwhMsQFCtqznsfdiadwaZvQ@mail.gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210622_231332_121289_8F6D0EBE 
-X-CRM114-Status: GOOD (  36.20  )
+X-CRM114-CacheID: sfid-20210622_232511_792393_B92AB375 
+X-CRM114-Status: UNSURE (   9.88  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,105 +86,55 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 16/17] Documentation: Add documentation for device tree
- overlays
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
+	metis.ext.pengutronix.de
+X-Spam-Level: 
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 2/3] libfile: Add copy_fd()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); Unknown failure
+X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
-
-some bikeshedding incoming.
-
-On 23.06.21 07:16, Sascha Hauer wrote:
-> Document the recently gained device tree overlay features.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  Documentation/user/devicetree.rst | 37 +++++++++++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
-> 
-> diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
-> index 4be6a1e703..d78394b7aa 100644
-> --- a/Documentation/user/devicetree.rst
-> +++ b/Documentation/user/devicetree.rst
-> @@ -75,3 +75,40 @@ It is important to know that these commands normally work on the internal
->  devicetree. If you want to modify the devicetree the kernel is started with
->  see the -f options to of_property and of_node. This option will register the
->  operation for later execution on the Kernel devicetree.
+On Tue, Jun 22, 2021 at 9:34 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> +       while (1) {
+> +               int now, wr;
 > +
-> +Device tree overlays
-> +--------------------
+> +               now = read(in, buf, bs);
+> +               if (now < 0) {
+> +                       ret = now;
+> +                       goto err;
+> +               }
 > +
-> +barebox has support for device tree overlays. barebox knows two different trees,
-> +the live tree and the device tree the kernel is started with. Both can be applied
-> +overlays to.
+> +               if (!now)
+> +                       break;
 > +
-> +Device tree overlays on the live tree
-> +.....................................
+> +               wr = write_full(out, buf, now);
+> +               if (wr < 0) {
+> +                       ret = wr;
+> +                       goto err;
+> +               }
+> +       }
 > +
-> +While the live tree can be patched by board code, barebox does not
-> +detect any changes to the live tree. To let the overlays have any effect, board
-> +code must make sure the live tree is patched before the devices are instanciated
-> +from it.
+> +       ret = 0;
+> +err:
+> +        free(buf);
 > +
-> +Device tree overlays on the kernel device tree
-> +..............................................
-> +
-> +Overlays can be applied to the kernel device tree before it is handed over to
-> +the kernel. The behaviour is controlled by different variables:
-> +
-> +``global.of_overlay_dir``
+> +       return ret;
 
-Convention seems to be that attributes of the same thing are preceded by a `.', e.g.:
+This can be quite a bit shorter:
 
-global.of.overlay.dir
-global.of.overlay.compatible
-global.of.overlay.filepattern
-
-(I think the `.' between of and overlay is not a bad idea, as we may decide to have e.g.
- global.of.compatible in future)
-
-> +  Overlays are read from this directory. barebox will try to apply all overlays
-> +  found here if not limited by one of the other variables below. When using
-> +  bootloader spec this variable will be temporarily overwritten with
-> +  ``$mountpoint/overlays`` where ``$mountpoint`` is the path where the filesystem
-> +  containing the bootloader spec entries are located.
-
-Couldn't paths be interpreted relative to the $mountpoint? That way you can make
-overlays the default always and have the user override it if they prefer something else? 
-
-> +``global.of_overlay_compatible``
-> +  This is a space separated list of compatibles. Only overlays matching one of
-> +  these compatibles will be applied. When this list is empty then all overlays
-> +  will be applied. Overlays that don't have a compatible are considered being
-> +  always compatible.
-
-Makes sense.
-
-> +``global.of_overlay_filepattern``
-> +  This is a space separated list of file patterns. An overlay is only applied
-> +  when its filename matches one of the patterns. The patterns can contain
-> +  ``*`` and ``?`` as wildcards. When empty, all files are applied.
-
-Similarly, we could have ``*`` as a default.
-
-
-In future, I think we will want to have $global.of.overlay.filters. Board code
-can register filters that do more than look into compatibles and file patterns,
-e.g. compare a property with a value in EEPROM. If a user wants to make use of
-it, they can add the name of the filter into $global.of.overlay.filters. But
-this can be retrofitted: The variable will have filepattern and compatible
-filters as default, so no breakage.
-
-Cheers,
-Ahmad
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+while (1) {
+       ret = read(in, buf, bs);
+       if (ret <= 0)
+               break;
+       ret = write_full(out, buf, ret);
+       if (ret < 0)
+               break;
+}
+free(buf)
+return ret;
 
 _______________________________________________
 barebox mailing list
