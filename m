@@ -1,53 +1,63 @@
-Delivery-date: Thu, 24 Jun 2021 10:57:30 +0200
+Delivery-date: Thu, 24 Jun 2021 10:57:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwLAw-0007Nb-FO
-	for lore@lore.pengutronix.de; Thu, 24 Jun 2021 10:57:30 +0200
+	id 1lwLBJ-0007OO-91
+	for lore@lore.pengutronix.de; Thu, 24 Jun 2021 10:57:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwLAv-0002v6-Ez
-	for lore@pengutronix.de; Thu, 24 Jun 2021 10:57:30 +0200
+	id 1lwLBI-0002yy-BV
+	for lore@pengutronix.de; Thu, 24 Jun 2021 10:57:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=KzUsV045Mm6zHrZqEFG/YGfqvdH9iGAMWsgxNJO3hUI=; b=PQGLADlmO7qT2I
-	L+QhwCuHzffLmpkLa0J7YR11GL4iLyxZxWXSt4zAmpLQE+opLV7lIv00Nf9vol73/QBQpPANWTpBj
-	jd4FI+Jk9szkA3+lelH5J27uNzh+2O3+tbuipnsmLxUT+PyhiQ7e4WHNxUS8MKL0gp2lvDc6I9edz
-	+t2NotxUzUlgY7nVJBWbQ2+BUqEe5O0O/rOqyJuwHBcUsVzJ52ncgSLr+SPZtx5wO8YOuna+2qpYL
-	W/T/hhZs91KIEuS3HllRXZUjrNygwB4uDQgLoO74JW+k7tnClF3YcgF1dwHwpeYdBhJs89HZb3bJu
-	6NuHIv6I9OWCvF8c0Oig==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=xh/dkG++twVW/B9ukVGxQGPJ6xl3m9b+hJarbt3Qd3s=; b=jIqnSCmtXWoDGX2Rh1xeE8lGEt
+	JYZVW5H/PVT0WpQbv9etX050mFzgb/2NmMHgtiCZE72oxCA0mkkofWJ27SfP0kZjYLHO2Eds5IxuG
+	K1VsUNd0yoKIJlGntJHfrBma/NZijBPTtDmfrLnKbqIxHE/wM6lAb6rKnia9/+jV6Mw2HTEgZyg7y
+	IcmAbdg5P11ryx2YXTgOsYzHKeakVv96kcLhN6DWgh9RA60Ssy2JDEIEGUdUVRU/IvYS9Ak3oAoPd
+	q8GAoYqYDetoGE0DkLeFZrbgGNua5mkMb/gDmAr5T2wGzocOLmuBUtZnLyE0tdfD68CsA8OamHnXx
+	9zHOWf2w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwL9W-00DZPQ-BE; Thu, 24 Jun 2021 08:56:03 +0000
+	id 1lwL9p-00DZf3-E4; Thu, 24 Jun 2021 08:56:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwL6Y-00DXZp-QT
- for barebox@lists.infradead.org; Thu, 24 Jun 2021 08:53:00 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ id 1lwL6a-00DXbM-Pe
+ for barebox@lists.infradead.org; Thu, 24 Jun 2021 08:53:02 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwL61-0000sP-Dx; Thu, 24 Jun 2021 10:52:25 +0200
-Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
+ id 1lwL6Z-000173-69; Thu, 24 Jun 2021 10:52:59 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwL60-0000bo-BQ; Thu, 24 Jun 2021 10:52:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 24 Jun 2021 10:52:16 +0200
-Message-Id: <20210624085223.14616-12-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210624085223.14616-1-s.hauer@pengutronix.de>
-References: <20210624085223.14616-1-s.hauer@pengutronix.de>
+ id 1lwL6Y-0004Y1-Sd; Thu, 24 Jun 2021 10:52:58 +0200
+Date: Thu, 24 Jun 2021 10:52:58 +0200
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210624085258.GX9782@pengutronix.de>
+References: <20210622161811.146333-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20210622161811.146333-1-u.kleine-koenig@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 10:52:43 up 126 days, 12:16, 126 users,  load average: 0.10, 0.14,
+ 0.15
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210624_015258_904934_4BB54C83 
-X-CRM114-Status: GOOD (  12.63  )
+X-CRM114-CacheID: sfid-20210624_015300_870137_9F6C2325 
+X-CRM114-Status: GOOD (  16.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -59,115 +69,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 11/18] overlay: Add of_overlay_apply_file()
+Subject: Re: [PATCH] w1: Replace license and copyright boilerplate by SPDX
+ identifiers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-A shortcut to of_overlay_apply_tree() which takes a filename rather than
-an unflattened device tree.
+On Tue, Jun 22, 2021 at 06:18:11PM +0200, Uwe Kleine-K=F6nig wrote:
+> Converts the files that licensecheck can determine to be licensed under
+> GPL-2.0-only or GPL-2.0-or-later and also convert their copyright
+> statements to SPDX.
+> =
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/of/overlay.c | 38 ++++++++++++++++++++++++++++++++++++++
- include/of.h         |  7 +++++++
- 2 files changed, 45 insertions(+)
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/w1/masters/w1-gpio.c  | 15 +++++----------
+>  drivers/w1/slaves/w1_ds2431.c | 10 ++++------
+>  drivers/w1/slaves/w1_ds2433.c | 12 ++++--------
+>  3 files changed, 13 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index 8f4ee3f0a2..f238b39ff1 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -11,6 +11,11 @@
- #include <common.h>
- #include <of.h>
- #include <errno.h>
-+#include <globalvar.h>
-+#include <magicvar.h>
-+#include <string.h>
-+#include <libfile.h>
-+#include <fs.h>
- 
- static struct device_node *find_target(struct device_node *root,
- 				       struct device_node *fragment)
-@@ -191,6 +196,39 @@ int of_overlay_apply_tree(struct device_node *root,
- 	return err;
- }
- 
-+int of_overlay_apply_file(struct device_node *root, const char *filename)
-+{
-+	void *fdt;
-+	struct device_node *ovl;
-+	size_t size;
-+	int ret;
-+
-+	ret = read_file_2(filename, &size, &fdt, FILESIZE_MAX);
-+	if (ret)
-+		return ret;
-+
-+	ovl = of_unflatten_dtb(fdt, size);
-+
-+	free(fdt);
-+
-+	if (IS_ERR(ovl)) {
-+		pr_err("Failed to unflatten %s: %pe\n", filename, ovl);
-+		return PTR_ERR(ovl);
-+	}
-+
-+	ret = of_overlay_apply_tree(root, ovl);
-+	if (ret == -ENODEV)
-+		pr_debug("Not applied %s (not compatible)\n", filename);
-+	else if (ret)
-+		pr_err("Cannot apply %s: %s\n", filename, strerror(-ret));
-+	else
-+		pr_info("Applied %s\n", filename);
-+
-+	of_delete_node(ovl);
-+
-+	return ret;
-+}
-+
- static int of_overlay_fixup(struct device_node *root, void *data)
- {
- 	struct device_node *overlay = data;
-diff --git a/include/of.h b/include/of.h
-index b22996901f..9213d4165b 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -1027,6 +1027,7 @@ struct device_node *of_resolve_phandles(struct device_node *root,
- 					const struct device_node *overlay);
- int of_overlay_apply_tree(struct device_node *root,
- 			  struct device_node *overlay);
-+int of_overlay_apply_file(struct device_node *root, const char *filename);
- int of_register_overlay(struct device_node *overlay);
- int of_process_overlay(struct device_node *root,
- 		    struct device_node *overlay,
-@@ -1048,6 +1049,12 @@ static inline int of_overlay_apply_tree(struct device_node *root,
- 	return -ENOSYS;
- }
- 
-+static inline int of_overlay_apply_file(struct device_node *root,
-+					const char *filename)
-+{
-+	return -ENOSYS;
-+}
-+
- static inline int of_register_overlay(struct device_node *overlay)
- {
- 	return -ENOSYS;
--- 
-2.29.2
+Applied, thanks
 
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
