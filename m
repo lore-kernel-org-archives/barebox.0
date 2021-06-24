@@ -1,15 +1,15 @@
-Delivery-date: Thu, 24 Jun 2021 15:31:48 +0200
+Delivery-date: Thu, 24 Jun 2021 15:36:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwPSO-0003K6-6N
-	for lore@lore.pengutronix.de; Thu, 24 Jun 2021 15:31:48 +0200
+	id 1lwPWX-0003OX-JH
+	for lore@lore.pengutronix.de; Thu, 24 Jun 2021 15:36:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwPSN-0004qS-44
-	for lore@pengutronix.de; Thu, 24 Jun 2021 15:31:48 +0200
+	id 1lwPWW-0005YY-Do
+	for lore@pengutronix.de; Thu, 24 Jun 2021 15:36:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,41 +17,41 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=Nl06GW3v8T42R2azSqPOa6P9FBQpPyLRdmumj0ANghw=; b=jFQ4g4WMgm4t3nfDdGZ81QR5eM
-	QcBorBnzn06yRwyAZnzjGIdx6IHG8j31Nduj2tXSS8KJ2jtWdHT0eFUfj6dytzuQ2p+b5u7QeBWSK
-	pUEMwiU6wDaxZb1CoeQAJAK2ZZQPu91b6cKlvnBLd4U3FwRn0UVz/jeYIzQsUylceTG6JiIMABXdO
-	geyBi/bkXVhYyHZ2feMDEBzBQs512LWf0vTV7uhWnG7gGYEsqUrSvZw2eAY49FifMNtZESN7dssHD
-	on31fWSHlZbWm3D3dBq+W2CTKLUrgLwRURmKlixEC7fYxpkosaqsQWlpPgOVmExQQu3WOdc6tkj0r
-	QjKhphWw==;
+	bh=5cYHhmxWncGDbe2W7L9zIUBzjkpjuBpOgc2kJuT695g=; b=4OvvnsyclLc3bjxXIV7c8WavIe
+	TXyuJJ4WWID8i201eUzzPutJ6cQCVNAaiyW0l3NhEtXpU9w/QKAKl+HYJN/+iLQ8XVMlZQgiNxcm1
+	X3JcOAcIf1NhHoixzZkBUq6a9yRbvCeSZLh+w1tNGO3fvmk77Wyw5F7iJGtOh9oZ6Q+XMI5YSsPxf
+	/TCgtkH9g+o9GZQubWLo3g5rZr5i669ZCV/fwE9JEue3179tV0m339HcaL9rZUPcc9K94triInqPc
+	vhFR7ONR7DQ2XZHO64gBfTJ83lMTg+hsBSO545POSxsrKpeYANps9cN340DaTkduOl7wVrV5gsKZp
+	qhDmGY7g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwPRC-00EoVV-M1; Thu, 24 Jun 2021 13:30:34 +0000
+	id 1lwPVI-00EpQm-EL; Thu, 24 Jun 2021 13:34:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwPR7-00EoUL-R4
- for barebox@lists.infradead.org; Thu, 24 Jun 2021 13:30:31 +0000
+ id 1lwPVB-00EpP0-4V
+ for barebox@lists.infradead.org; Thu, 24 Jun 2021 13:34:44 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1lwPR6-0004Zt-IY; Thu, 24 Jun 2021 15:30:28 +0200
+ id 1lwPV9-00055s-Sn; Thu, 24 Jun 2021 15:34:39 +0200
 To: Michael Tretter <m.tretter@pengutronix.de>
 Cc: barebox@lists.infradead.org
 References: <20210624102342.269363-1-m.tretter@pengutronix.de>
- <20210624102342.269363-2-m.tretter@pengutronix.de>
- <d4c75885-e160-c875-3370-484e8c9a7739@pengutronix.de>
- <20210624132044.GC28030@pengutronix.de>
+ <20210624102342.269363-5-m.tretter@pengutronix.de>
+ <c06d88d6-db66-0a43-a4d8-3717c329c928@pengutronix.de>
+ <20210624132423.GD28030@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <317d2eff-4245-7cbf-9c1f-e1dc8f35664f@pengutronix.de>
-Date: Thu, 24 Jun 2021 15:30:22 +0200
+Message-ID: <b638d4fe-d6bb-5551-9ea2-443db13dcb97@pengutronix.de>
+Date: Thu, 24 Jun 2021 15:34:33 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.2
 MIME-Version: 1.0
-In-Reply-To: <20210624132044.GC28030@pengutronix.de>
+In-Reply-To: <20210624132423.GD28030@pengutronix.de>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210624_063029_939132_BFD7E874 
-X-CRM114-Status: GOOD (  31.51  )
+X-CRM114-CacheID: sfid-20210624_063441_304109_CD65D1BA 
+X-CRM114-Status: GOOD (  28.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,163 +75,148 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/7] ARM: zynqmp: set reset source
+Subject: Re: [PATCH 4/7] ARM: zynqmp: add update handler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 
 
-On 24.06.21 15:20, Michael Tretter wrote:
-> On Thu, 24 Jun 2021 12:48:44 +0200, Ahmad Fatoum wrote:
+On 24.06.21 15:24, Michael Tretter wrote:
+> On Thu, 24 Jun 2021 12:52:58 +0200, Ahmad Fatoum wrote:
 >> On 24.06.21 12:23, Michael Tretter wrote:
->>> The reset reason is available in the APB register set on the ZynqMP.
->>> Read the reset reason and set the reset source accordingly.
+>>> The ZynqMP boots from an SDHCI device by reading a boot.bin file from
+>>> the FAT16/32 partition, which is the first partition in the MBR.
 >>>
->>> There might be multiple bits set in the APB register. Use the MSB for
->>> determining the actual reset source.
+>>> The update handler copies a boot.bin image to this partition, which
+>>> might be board specific.
 >>
->> APB is usually the AMBA Advanced Peripheral Bus. Perhaps CRL is the
->> actual name of the register and APB just tells that it's mapped there?
+>> Is barebox the boot.bin or is that a separate first stage bootloader?
 > 
-> Ack. The data sheet calls it "Clock and Reset control registers for LPD." I
-> will fix it in v2.
+> Both. The boot.bin contains at least the first stage bootloader, TF-A, and
+> Barebox. You cannot boot a "standalone" Barebox image on the ZynqMP.
+> 
+> I also documented this in the zynqmp documentation as part of this patch
+> series.
+
+I saw that after writing the mail here. Thanks for clarifying.
+
+> 
+> Michael
 > 
 >>
 >>>
 >>> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 >>> ---
->>>  arch/arm/mach-zynqmp/Makefile              |  1 +
->>>  arch/arm/mach-zynqmp/include/mach/zynqmp.h |  6 ++
->>>  arch/arm/mach-zynqmp/zynqmp.c              | 74 ++++++++++++++++++++++
->>>  3 files changed, 81 insertions(+)
->>>  create mode 100644 arch/arm/mach-zynqmp/include/mach/zynqmp.h
->>>  create mode 100644 arch/arm/mach-zynqmp/zynqmp.c
+>>>  arch/arm/mach-zynqmp/Makefile                 |  1 +
+>>>  .../arm/mach-zynqmp/include/mach/zynqmp-bbu.h | 21 ++++++++
+>>>  arch/arm/mach-zynqmp/zynqmp-bbu.c             | 48 +++++++++++++++++++
+>>>  3 files changed, 70 insertions(+)
+>>>  create mode 100644 arch/arm/mach-zynqmp/include/mach/zynqmp-bbu.h
+>>>  create mode 100644 arch/arm/mach-zynqmp/zynqmp-bbu.c
 >>>
 >>> diff --git a/arch/arm/mach-zynqmp/Makefile b/arch/arm/mach-zynqmp/Makefile
->>> index 021efc94afaf..14b8a4e46b87 100644
+>>> index 14b8a4e46b87..e24a43c0d59f 100644
 >>> --- a/arch/arm/mach-zynqmp/Makefile
 >>> +++ b/arch/arm/mach-zynqmp/Makefile
->>> @@ -1,2 +1,3 @@
+>>> @@ -1,3 +1,4 @@
 >>>  # SPDX-License-Identifier: GPL-2.0-or-later
 >>>  obj-y += firmware-zynqmp.o
->>> +obj-y += zynqmp.o
->>> diff --git a/arch/arm/mach-zynqmp/include/mach/zynqmp.h b/arch/arm/mach-zynqmp/include/mach/zynqmp.h
+>>>  obj-y += zynqmp.o
+>>> +obj-$(CONFIG_BAREBOX_UPDATE) += zynqmp-bbu.o
+>>> diff --git a/arch/arm/mach-zynqmp/include/mach/zynqmp-bbu.h b/arch/arm/mach-zynqmp/include/mach/zynqmp-bbu.h
 >>> new file mode 100644
->>> index 000000000000..f6c05f35a470
+>>> index 000000000000..8502791ee0f7
 >>> --- /dev/null
->>> +++ b/arch/arm/mach-zynqmp/include/mach/zynqmp.h
->>
->> Nitpick: revision.h sounds more self-describing.
-> 
-> Ok. I thought there might be some more soc specific function instead of
-> revision specific functions here, but revision.h is fine for me as well.
-> 
->>
->>> @@ -0,0 +1,6 @@
->>> +#ifndef __MACH_ZYNQMP_H
->>> +#define __MACH_ZYNQMP_H
+>>> +++ b/arch/arm/mach-zynqmp/include/mach/zynqmp-bbu.h
+>>> @@ -0,0 +1,21 @@
+>>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>>> +/*
+>>> + * Copyright (C) 2020 Michael Tretter <m.tretter@pengutronix.de>
+>>> + */
+>>> +#ifndef __MACH_ZYNQMP_BBU_H
+>>> +#define __MACH_ZYNQMP_BBU_H
 >>> +
->>> +int zynqmp_soc_revision(void);
+>>> +#include <bbu.h>
 >>> +
->>> +#endif /* __MACH_ZYNQMP_H */
->>> diff --git a/arch/arm/mach-zynqmp/zynqmp.c b/arch/arm/mach-zynqmp/zynqmp.c
+>>> +#ifdef CONFIG_BAREBOX_UPDATE
+>>> +int zynqmp_bbu_register_handler(const char *name, char *devicefile,
+>>> +				unsigned long flags);
+>>> +#else
+>>> +static int zynqmp_bbu_register_handler(const char *name, char *devicefile,
+>>> +				       unsigned long flags)
+>>> +{
+>>> +	return 0;
+>>> +};
+>>> +#endif
+>>> +
+>>> +#endif /* __MACH_ZYNQMP_BBU_H */
+>>> diff --git a/arch/arm/mach-zynqmp/zynqmp-bbu.c b/arch/arm/mach-zynqmp/zynqmp-bbu.c
 >>> new file mode 100644
->>> index 000000000000..2b3bd8406ce9
+>>> index 000000000000..d1197c01dc41
 >>> --- /dev/null
->>> +++ b/arch/arm/mach-zynqmp/zynqmp.c
->>> @@ -0,0 +1,74 @@
+>>> +++ b/arch/arm/mach-zynqmp/zynqmp-bbu.c
+>>> @@ -0,0 +1,48 @@
 >>> +// SPDX-License-Identifier: GPL-2.0-only
 >>> +/*
 >>> + * Copyright (C) 2020 Michael Tretter <m.tretter@pengutronix.de>
 >>> + */
 >>> +
 >>> +#include <common.h>
->>> +#include <init.h>
->>> +#include <linux/types.h>
->>> +#include <reset_source.h>
+>>> +#include <libfile.h>
+>>> +#include <mach/zynqmp-bbu.h>
 >>> +
->>> +#include <mach/zynqmp.h>
->>> +
->>> +#define ZYNQMP_CRL_APB_BASE		0xff5e0000
->>> +#define ZYNQMP_CRL_APB_RESET_REASON	(ZYNQMP_CRL_APB_BASE + 0x220)
->>> +
->>> +/* External POR: The PS_POR_B reset signal pin was asserted. */
->>> +#define ZYNQMP_CRL_APB_RESET_REASON_EXTERNAL   BIT(0)
->>> +/* Internal POR: A system error triggered a POR reset. */
->>> +#define ZYNQMP_CRL_APB_RESET_REASON_INTERNAL   BIT(1)
->>> +/* Internal system reset; A system error triggered a system reset. */
->>> +#define ZYNQMP_CRL_APB_RESET_REASON_PMU        BIT(2)
->>> +/* PS-only reset: Write to PMU_GLOBAL.GLOBAL_RESET [PS_ONLY_RST]. */
->>> +#define ZYNQMP_CRL_APB_RESET_REASON_PSONLY     BIT(3)
->>> +/* External system reset: The PS_SRST_B reset signal pin was asserted. */
->>> +#define ZYNQMP_CRL_APB_RESET_REASON_SRST       BIT(4)
->>> +/* Software system reset: Write to RESET_CTRL [soft_reset]. */
->>> +#define ZYNQMP_CRL_APB_RESET_REASON_SOFT       BIT(5)
->>> +/* Software debugger reset: Write to BLOCKONLY_RST [debug_only]. */
->>> +#define ZYNQMP_CRL_APB_RESET_REASON_DEBUG_SYS  BIT(6)
->>> +
->>> +struct zynqmp_reset_reason {
->>> +	u32 mask;
->>> +	enum reset_src_type type;
->>> +};
->>> +
->>> +static const struct zynqmp_reset_reason reset_reasons[] = {
->>> +	{ ZYNQMP_CRL_APB_RESET_REASON_DEBUG_SYS,	RESET_UKWN },
->>
->> RESET_JTAG?
-> 
-> I am not sure, if I understand RESET_JTAG correctly. The reference manual says
-> that it is like a soft reset while preserving the debug logic and originates
-> in the DAP controller. Is this RESET_JTAG?
-
-Yes. DAP may be used with SWD as well, but as far as barebox reset reasons are
-concerned, every debugger related reset should be RESET_JTAG.
-
-> 
->>
->>> +	{ ZYNQMP_CRL_APB_RESET_REASON_SOFT,		RESET_RST },
->>> +	{ ZYNQMP_CRL_APB_RESET_REASON_SRST,		RESET_POR },
->>> +	{ ZYNQMP_CRL_APB_RESET_REASON_PSONLY,		RESET_POR },
->>> +	{ ZYNQMP_CRL_APB_RESET_REASON_PMU,		RESET_POR },
->>> +	{ ZYNQMP_CRL_APB_RESET_REASON_INTERNAL,		RESET_POR },
->>> +	{ ZYNQMP_CRL_APB_RESET_REASON_EXTERNAL,		RESET_POR },
->>
->> RESET_EXT?
-> 
-> This bit is set for a normal POR, too.
-> 
->>
->>> +	{ /* sentinel */ }
->>> +};
->>> +
->>> +static enum reset_src_type zynqmp_get_reset_src(void)
+>>> +static int zynqmp_bbu_handler(struct bbu_handler *handler,
+>>> +		struct bbu_data *data)
 >>> +{
->>> +	enum reset_src_type type = RESET_UKWN;
->>> +	unsigned int i;
->>> +	u32 val;
+>>> +	int ret = 0;
 >>> +
->>> +	val = readl(ZYNQMP_CRL_APB_RESET_REASON);
+>>> +	ret = bbu_confirm(data);
+>>> +	if (ret)
+>>> +		return ret;
 >>> +
->>> +	for (i = 0; i < ARRAY_SIZE(reset_reasons); i++) {
->>> +		if (val & reset_reasons[i].mask) {
->>> +			type = reset_reasons[i].type;
->>> +			break;
->>> +		}
+>>> +	ret = copy_file(data->imagefile, data->devicefile, 1);
+>>> +	if (ret < 0) {
+>>> +		pr_err("update failed: %s", strerror(-ret));
+>>> +		return ret;
 >>> +	}
+
+EFI also registers an barebox update handler for a file: /boot/EFI/BOOT/BOOTx64.EFI,
+but there apparently bbu_register_std_file_update suffices.
+
+Did you check if that would work for you as well?
+
+It's still a good idea to have a zynqmp specific wrapper for bbu_register_std_file_update,
+but I am not sure you need to duplicate the copy_file stuff.
+
+Also, this seems SD-specific. I assume eMMC would boot from boot partitions?
+If so, zynqmp_bbu_register_sd_handler may be a more apt name.
+
+
 >>> +
->>> +	pr_info("ZynqMP reset reason %s (ZYNQMP_CRL_APB_RESET_REASON: 0x%08x)\n",
->>> +		reset_source_to_string(type), val);
->>> +
->>> +	return type;
+>>> +	return ret;
 >>> +}
 >>> +
->>> +static int zynqmp_init(void)
+>>> +int zynqmp_bbu_register_handler(const char *name, char *devicefile,
+>>> +		unsigned long flags)
 >>> +{
->>> +	reset_source_set(zynqmp_get_reset_src());
+>>> +	struct bbu_handler *handler;
+>>> +	int ret = 0;
 >>> +
->>> +	return 0;
+>>> +	if (!name || !devicefile)
+>>> +		return -EINVAL;
+>>> +
+>>> +	handler = xzalloc(sizeof(*handler));
+>>> +	handler->name = name;
+>>> +	handler->devicefile = devicefile;
+>>> +	handler->flags = flags;
+>>> +	handler->handler = zynqmp_bbu_handler;
+>>> +
+>>> +	ret = bbu_register_handler(handler);
+>>> +	if (ret)
+>>> +		free(handler);
+>>> +
+>>> +	return ret;
 >>> +}
->>> +postcore_initcall(zynqmp_init);
 >>>
 > 
 
