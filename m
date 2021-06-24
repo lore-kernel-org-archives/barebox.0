@@ -1,58 +1,54 @@
-Delivery-date: Thu, 24 Jun 2021 12:28:05 +0200
+Delivery-date: Thu, 24 Jun 2021 12:50:25 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwMab-0000Lc-4V
-	for lore@lore.pengutronix.de; Thu, 24 Jun 2021 12:28:05 +0200
+	id 1lwMwD-0000hR-68
+	for lore@lore.pengutronix.de; Thu, 24 Jun 2021 12:50:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwMaZ-0006qJ-6c
-	for lore@pengutronix.de; Thu, 24 Jun 2021 12:28:04 +0200
+	id 1lwMwB-0001G1-PX
+	for lore@pengutronix.de; Thu, 24 Jun 2021 12:50:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=tmxDgLKMySSlE8Lmag3B72mi7jsut7mT0uG9vGF/br4=; b=VF8ddX+Etdg8Vo
-	lQYK4OpzzRh8t30edjMbB5MCoiH4yWvJ6FrHOObZdHxNa5zqcrM2D5BGs04AhSkxGUQZL5TTGttoy
-	jnVph9Rh/68uhwDJGnbg+t0NItvA6H1fZGZfOxS5yPTiLzY8U6cFfCE4eGcxHYu1JywF/heWfY5w8
-	xtMqb39JVVoPvkp7jaksz/Hsi+xxWpQ0mP5stKh7PZzaM1lYOJ+WEoFSuGy07J2v5d9v0qnjUU2Q3
-	bzrmZ3lx1ZG/KB/v/4bzbKwS6p5dCx9/XJvyjGhdSGstPNJTLJ/Ddrf+Ryi9Q38xuFi3Iu2HDtzD1
-	QKJ1AAhEX+g/NsaD7jFg==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=MjtvrTCjKFdQgy3PnXPhqTzbEhlNf+vspT3fvnTK1OQ=; b=zerzdqbz0j+SiUtLUyMrnu0eT5
+	E2WeFKF+apVerL/mxx640o7+ju1QucUvzyMpTH1toHoqeZSI8kJ2E4n8buIwjY/MOy9zpPna6q9Gc
+	9LqxkB7fSzX3oQ2RWfZbxg0T2ApoG4qahwk2qAsRjYQx9AfjfndAWZ6vUWGe8NN3vLIhWhzqqeSyL
+	u+9/VqHKcfxFWKH46032KcLt4z9gAdX3qPMVtzXbvo6lHi8OxhijhSbgVgKXFdQVDSW3tBaoO/klN
+	g8Mhvc3i1b0+zYXwRU2yJ4qrufdSzUB/bgRqzkQ5nCknfNtdpe1oWKx2AT4oG8xnZG0DJTGxpzRmQ
+	H9nVGSug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwMYh-00E4Uz-Dv; Thu, 24 Jun 2021 10:26:09 +0000
+	id 1lwMup-00EEeu-NG; Thu, 24 Jun 2021 10:48:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwMWR-00E3cp-NZ
- for barebox@lists.infradead.org; Thu, 24 Jun 2021 10:23:51 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mtr@pengutronix.de>) id 1lwMWQ-0005qH-45
- for barebox@lists.infradead.org; Thu, 24 Jun 2021 12:23:46 +0200
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <mtr@pengutronix.de>) id 1lwMWP-0001jS-Id
- for barebox@lists.infradead.org; Thu, 24 Jun 2021 12:23:45 +0200
-Received: from mtr by dude03.red.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <mtr@pengutronix.de>) id 1lwMWM-00185d-HG
- for barebox@lists.infradead.org; Thu, 24 Jun 2021 12:23:42 +0200
-From: Michael Tretter <m.tretter@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Thu, 24 Jun 2021 12:23:41 +0200
-Message-Id: <20210624102342.269363-7-m.tretter@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210624102342.269363-1-m.tretter@pengutronix.de>
+ id 1lwMuj-00EEcv-RF
+ for barebox@lists.infradead.org; Thu, 24 Jun 2021 10:48:55 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1lwMug-0000z5-Qx; Thu, 24 Jun 2021 12:48:50 +0200
+To: Michael Tretter <m.tretter@pengutronix.de>, barebox@lists.infradead.org
 References: <20210624102342.269363-1-m.tretter@pengutronix.de>
+ <20210624102342.269363-2-m.tretter@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <d4c75885-e160-c875-3370-484e8c9a7739@pengutronix.de>
+Date: Thu, 24 Jun 2021 12:48:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.2
 MIME-Version: 1.0
+In-Reply-To: <20210624102342.269363-2-m.tretter@pengutronix.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210624_032347_842933_1793186F 
-X-CRM114-Status: UNSURE (   8.66  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210624_034853_943886_B85908E7 
+X-CRM114-Status: GOOD (  30.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,91 +68,150 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 6/7] ARM: zynqmp: defconfig: enable more features
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/7] ARM: zynqmp: set reset source
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Enable network, file system, and PSCI support in the defconfig to get a
-Barebox with a useful feature set when building the ZynqMP defconfig.
+On 24.06.21 12:23, Michael Tretter wrote:
+> The reset reason is available in the APB register set on the ZynqMP.
+> Read the reset reason and set the reset source accordingly.
+> 
+> There might be multiple bits set in the APB register. Use the MSB for
+> determining the actual reset source.
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
----
- arch/arm/configs/zynqmp_defconfig | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+APB is usually the AMBA Advanced Peripheral Bus. Perhaps CRL is the
+actual name of the register and APB just tells that it's mapped there?
 
-diff --git a/arch/arm/configs/zynqmp_defconfig b/arch/arm/configs/zynqmp_defconfig
-index 6f5612fa92a0..2cd878133223 100644
---- a/arch/arm/configs/zynqmp_defconfig
-+++ b/arch/arm/configs/zynqmp_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_ZYNQMP=y
- CONFIG_MACH_XILINX_ZCU104=y
-+CONFIG_ARM_PSCI_CLIENT=y
- CONFIG_MMU=y
- CONFIG_MALLOC_SIZE=0x0
- CONFIG_MALLOC_TLSF=y
-@@ -12,32 +13,54 @@ CONFIG_BOOTM_SHOW_TYPE=y
- CONFIG_BOOTM_VERBOSE=y
- CONFIG_BOOTM_INITRD=y
- CONFIG_BOOTM_OFTREE=y
-+CONFIG_BLSPEC=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_RESET_SOURCE=y
- CONFIG_LONGHELP=y
- CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_DEFAULTENV=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_MAGICVAR=y
- CONFIG_CMD_MAGICVAR_HELP=y
- CONFIG_CMD_SAVEENV=y
- CONFIG_CMD_LN=y
- CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_MENU=y
- CONFIG_CMD_MENU_MANAGEMENT=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_FIRMWARELOAD=y
-+CONFIG_CMD_OF_OVERLAY=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIME=y
- CONFIG_NET=y
-+CONFIG_NET_NFS=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_OF_BAREBOX_ENV_IN_FS=y
-+CONFIG_OF_OVERLAY_LIVE=y
- CONFIG_DRIVER_SERIAL_CADENCE=y
- CONFIG_DRIVER_NET_MACB=y
-+CONFIG_DP83867_PHY=y
- # CONFIG_SPI is not set
- CONFIG_MCI=y
- CONFIG_MCI_ARASAN=y
- CONFIG_FIRMWARE_ZYNQMP_FPGA=y
-+# CONFIG_VIRTIO_MENU is not set
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
- CONFIG_DIGEST=y
+> 
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> ---
+>  arch/arm/mach-zynqmp/Makefile              |  1 +
+>  arch/arm/mach-zynqmp/include/mach/zynqmp.h |  6 ++
+>  arch/arm/mach-zynqmp/zynqmp.c              | 74 ++++++++++++++++++++++
+>  3 files changed, 81 insertions(+)
+>  create mode 100644 arch/arm/mach-zynqmp/include/mach/zynqmp.h
+>  create mode 100644 arch/arm/mach-zynqmp/zynqmp.c
+> 
+> diff --git a/arch/arm/mach-zynqmp/Makefile b/arch/arm/mach-zynqmp/Makefile
+> index 021efc94afaf..14b8a4e46b87 100644
+> --- a/arch/arm/mach-zynqmp/Makefile
+> +++ b/arch/arm/mach-zynqmp/Makefile
+> @@ -1,2 +1,3 @@
+>  # SPDX-License-Identifier: GPL-2.0-or-later
+>  obj-y += firmware-zynqmp.o
+> +obj-y += zynqmp.o
+> diff --git a/arch/arm/mach-zynqmp/include/mach/zynqmp.h b/arch/arm/mach-zynqmp/include/mach/zynqmp.h
+> new file mode 100644
+> index 000000000000..f6c05f35a470
+> --- /dev/null
+> +++ b/arch/arm/mach-zynqmp/include/mach/zynqmp.h
+
+Nitpick: revision.h sounds more self-describing.
+
+> @@ -0,0 +1,6 @@
+> +#ifndef __MACH_ZYNQMP_H
+> +#define __MACH_ZYNQMP_H
+> +
+> +int zynqmp_soc_revision(void);
+> +
+> +#endif /* __MACH_ZYNQMP_H */
+> diff --git a/arch/arm/mach-zynqmp/zynqmp.c b/arch/arm/mach-zynqmp/zynqmp.c
+> new file mode 100644
+> index 000000000000..2b3bd8406ce9
+> --- /dev/null
+> +++ b/arch/arm/mach-zynqmp/zynqmp.c
+> @@ -0,0 +1,74 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2020 Michael Tretter <m.tretter@pengutronix.de>
+> + */
+> +
+> +#include <common.h>
+> +#include <init.h>
+> +#include <linux/types.h>
+> +#include <reset_source.h>
+> +
+> +#include <mach/zynqmp.h>
+> +
+> +#define ZYNQMP_CRL_APB_BASE		0xff5e0000
+> +#define ZYNQMP_CRL_APB_RESET_REASON	(ZYNQMP_CRL_APB_BASE + 0x220)
+> +
+> +/* External POR: The PS_POR_B reset signal pin was asserted. */
+> +#define ZYNQMP_CRL_APB_RESET_REASON_EXTERNAL   BIT(0)
+> +/* Internal POR: A system error triggered a POR reset. */
+> +#define ZYNQMP_CRL_APB_RESET_REASON_INTERNAL   BIT(1)
+> +/* Internal system reset; A system error triggered a system reset. */
+> +#define ZYNQMP_CRL_APB_RESET_REASON_PMU        BIT(2)
+> +/* PS-only reset: Write to PMU_GLOBAL.GLOBAL_RESET [PS_ONLY_RST]. */
+> +#define ZYNQMP_CRL_APB_RESET_REASON_PSONLY     BIT(3)
+> +/* External system reset: The PS_SRST_B reset signal pin was asserted. */
+> +#define ZYNQMP_CRL_APB_RESET_REASON_SRST       BIT(4)
+> +/* Software system reset: Write to RESET_CTRL [soft_reset]. */
+> +#define ZYNQMP_CRL_APB_RESET_REASON_SOFT       BIT(5)
+> +/* Software debugger reset: Write to BLOCKONLY_RST [debug_only]. */
+> +#define ZYNQMP_CRL_APB_RESET_REASON_DEBUG_SYS  BIT(6)
+> +
+> +struct zynqmp_reset_reason {
+> +	u32 mask;
+> +	enum reset_src_type type;
+> +};
+> +
+> +static const struct zynqmp_reset_reason reset_reasons[] = {
+> +	{ ZYNQMP_CRL_APB_RESET_REASON_DEBUG_SYS,	RESET_UKWN },
+
+RESET_JTAG?
+
+> +	{ ZYNQMP_CRL_APB_RESET_REASON_SOFT,		RESET_RST },
+> +	{ ZYNQMP_CRL_APB_RESET_REASON_SRST,		RESET_POR },
+> +	{ ZYNQMP_CRL_APB_RESET_REASON_PSONLY,		RESET_POR },
+> +	{ ZYNQMP_CRL_APB_RESET_REASON_PMU,		RESET_POR },
+> +	{ ZYNQMP_CRL_APB_RESET_REASON_INTERNAL,		RESET_POR },
+> +	{ ZYNQMP_CRL_APB_RESET_REASON_EXTERNAL,		RESET_POR },
+
+RESET_EXT?
+
+> +	{ /* sentinel */ }
+> +};
+> +
+> +static enum reset_src_type zynqmp_get_reset_src(void)
+> +{
+> +	enum reset_src_type type = RESET_UKWN;
+> +	unsigned int i;
+> +	u32 val;
+> +
+> +	val = readl(ZYNQMP_CRL_APB_RESET_REASON);
+> +
+> +	for (i = 0; i < ARRAY_SIZE(reset_reasons); i++) {
+> +		if (val & reset_reasons[i].mask) {
+> +			type = reset_reasons[i].type;
+> +			break;
+> +		}
+> +	}
+> +
+> +	pr_info("ZynqMP reset reason %s (ZYNQMP_CRL_APB_RESET_REASON: 0x%08x)\n",
+> +		reset_source_to_string(type), val);
+> +
+> +	return type;
+> +}
+> +
+> +static int zynqmp_init(void)
+> +{
+> +	reset_source_set(zynqmp_get_reset_src());
+> +
+> +	return 0;
+> +}
+> +postcore_initcall(zynqmp_init);
+> 
+
 -- 
-2.29.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
