@@ -1,53 +1,53 @@
-Delivery-date: Thu, 24 Jun 2021 10:54:11 +0200
+Delivery-date: Thu, 24 Jun 2021 10:54:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwL7j-0007Ep-3Y
-	for lore@lore.pengutronix.de; Thu, 24 Jun 2021 10:54:11 +0200
+	id 1lwL7t-0007FK-2C
+	for lore@lore.pengutronix.de; Thu, 24 Jun 2021 10:54:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwL7h-0001U0-NI
-	for lore@pengutronix.de; Thu, 24 Jun 2021 10:54:10 +0200
+	id 1lwL7q-0001Y1-L7
+	for lore@pengutronix.de; Thu, 24 Jun 2021 10:54:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=SWviBRPvmOtsY/k+wj9OUdpU8W4WkP53oAyGZ2v3h3A=; b=vle2OP+3ryD67V
-	CD/blYkywWHqOW5MqijpsIgvCbosYdZXS1moiEBAsyRsx4N/SSpr7BnXwCTuFG677CfTMSLg0Ks7n
-	wWUum5vWE1kP0U+JL5N5QcNoHcw7y6nlV/qybbyB2CuUciJ/OKtuakVEBPUjXOG2gH7vPVPTezdyN
-	9Kf2jMqocF91ngHn3mL2LWIt4V8MrOde6MfKsTjmKPRpTudXVCB0fSvSx9i8utbbYd0aJdG9kee68
-	wOnsHYMpQCbS7LKwQt/CnpqNf36yrnrxUmtg+584eEY642UzTCBq5IiYoLcqa3Zd9NAUeK5FA04C5
-	UvAHUAcxzlvK03fiq9vg==;
+	List-Owner; bh=30ks9vmZ4ynRLdgyNw8Kpw/29dBFL+XVqkcBMpBDUvA=; b=XTBlZpLJypbqEb
+	qbAzwi219JAY18/Vo91zvpfoUrp2zhE3aTw13E1J84mORBku7HYpsW3IYhlSBsllJIbyb/x6htpwO
+	tSD9eSfj5n5NaKF9KZFegYnAWX/ZtawFZmIdfC7SetUQ7nbdtY02ZQ5ErwTOqVP9FhwRitLL7jdmb
+	E5EWfEg8oAb8yJ3cZoJJQNVipXOf2C8kcsK1lMLAiUP2rnJdjX+oJAGxGwgLc8W6ATwYct2mji3fv
+	IAhJaUrOv1C0b3KOSqfhst2Ip60WTkdYzW8kU/eeh/Vvez7cyLM5+zAGRckxU//NVqygkowrYznW4
+	qCF119Yda2tB1Dhbfybg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwL6V-00DXUs-34; Thu, 24 Jun 2021 08:52:55 +0000
+	id 1lwL6Z-00DXY4-IO; Thu, 24 Jun 2021 08:52:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwL63-00DXFH-8U
- for barebox@lists.infradead.org; Thu, 24 Jun 2021 08:52:29 +0000
+ id 1lwL63-00DXFX-8d
+ for barebox@lists.infradead.org; Thu, 24 Jun 2021 08:52:31 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwL61-0000sJ-5p; Thu, 24 Jun 2021 10:52:25 +0200
+ id 1lwL61-0000sV-Hv; Thu, 24 Jun 2021 10:52:25 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwL60-0000b9-8q; Thu, 24 Jun 2021 10:52:24 +0200
+ id 1lwL60-0000cT-E0; Thu, 24 Jun 2021 10:52:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 24 Jun 2021 10:52:10 +0200
-Message-Id: <20210624085223.14616-6-s.hauer@pengutronix.de>
+Date: Thu, 24 Jun 2021 10:52:22 +0200
+Message-Id: <20210624085223.14616-18-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210624085223.14616-1-s.hauer@pengutronix.de>
 References: <20210624085223.14616-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210624_015227_448464_FE2BD2A9 
-X-CRM114-Status: GOOD (  15.46  )
+X-CRM114-CacheID: sfid-20210624_015227_472846_B97B34EE 
+X-CRM114-Status: GOOD (  18.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,117 +71,69 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 05/18] libbb: Add find_path function
+Subject: [PATCH 17/18] Documentation: Add documentation for device tree
+ overlays
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-libbb contains a find_execable() function to find an executable in a
-colon separated path. The code can be reused by making the environment
-variable name and the is-executable test parameters. Do this and add
-a find_path()
+Document the recently gained device tree overlay features.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/libbb.h |  4 +++-
- lib/libbb.c     | 58 ++++++++++++++++++++++++++++++++-----------------
- 2 files changed, 41 insertions(+), 21 deletions(-)
+ Documentation/user/devicetree.rst | 43 +++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/include/libbb.h b/include/libbb.h
-index a3a13b41ce..e191874052 100644
---- a/include/libbb.h
-+++ b/include/libbb.h
-@@ -8,8 +8,10 @@
- 
- char *concat_path_file(const char *path, const char *filename);
- char *concat_subpath_file(const char *path, const char *f);
--int execable_file(const char *name);
-+bool execable_file(const char *name);
- char *find_execable(const char *filename);
-+char *find_path(const char *path, const char *filename,
-+				bool (*filter)(const char *));
- char* last_char_is(const char *s, int c);
- 
- enum {
-diff --git a/lib/libbb.c b/lib/libbb.c
-index d0c9bf4d80..642e54d78f 100644
---- a/lib/libbb.c
-+++ b/lib/libbb.c
-@@ -49,11 +49,47 @@ char *concat_subpath_file(const char *path, const char *f)
- }
- EXPORT_SYMBOL(concat_subpath_file);
- 
-+/**
-+ * find_path - find a file in a colon separated path
-+ * @path: The search path, colon separated
-+ * @filename: The filename to search for
-+ * @filter: filter function
-+ *
-+ * searches for @filename in a colon separated list of directories given in
-+ * @path. @filter should return true when the current file matches the expectations,
-+ * false otherwise. @filter should check for existence of the file, but could also
-+ * check for additional flags.
-+ */
-+char *find_path(const char *path, const char *filename,
-+		bool (*filter)(const char *))
-+{
-+	char *p, *n, *freep;
+diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
+index 4be6a1e703..91afffdcda 100644
+--- a/Documentation/user/devicetree.rst
++++ b/Documentation/user/devicetree.rst
+@@ -75,3 +75,46 @@ It is important to know that these commands normally work on the internal
+ devicetree. If you want to modify the devicetree the kernel is started with
+ see the -f options to of_property and of_node. This option will register the
+ operation for later execution on the Kernel devicetree.
 +
-+	freep = p = strdup(path);
-+	while (p) {
-+		n = strchr(p, ':');
-+		if (n)
-+			*n++ = '\0';
-+		if (*p != '\0') { /* it's not a PATH="foo::bar" situation */
-+			p = concat_path_file(p, filename);
-+			if (filter(p)) {
-+				free(freep);
-+				return p;
-+			}
-+			free(p);
-+		}
-+		p = n;
-+	}
-+	free(freep);
-+	return NULL;
-+}
-+EXPORT_SYMBOL(find_path);
++Device tree overlays
++--------------------
 +
- /* check if path points to an executable file;
-  * return 1 if found;
-  * return 0 otherwise;
-  */
--int execable_file(const char *name)
-+bool execable_file(const char *name)
- {
- 	struct stat s;
- 	return (!stat(name, &s) && S_ISREG(s.st_mode));
-@@ -67,25 +103,7 @@ EXPORT_SYMBOL(execable_file);
-  */
- char *find_execable(const char *filename)
- {
--	char *path, *p, *n;
--
--	p = path = strdup(getenv("PATH"));
--	while (p) {
--		n = strchr(p, ':');
--		if (n)
--			*n++ = '\0';
--		if (*p != '\0') { /* it's not a PATH="foo::bar" situation */
--			p = concat_path_file(p, filename);
--			if (execable_file(p)) {
--				free(path);
--				return p;
--			}
--			free(p);
--		}
--		p = n;
--	}
--	free(path);
--	return NULL;
-+	return find_path(getenv("PATH"), filename, execable_file);
- }
- EXPORT_SYMBOL(find_execable);
- 
++barebox has support for device tree overlays. barebox knows two different trees,
++the live tree and the device tree the kernel is started with. Both can be applied
++overlays to.
++
++Device tree overlays on the live tree
++.....................................
++
++While the live tree can be patched by board code, barebox does not
++detect any changes to the live tree. To let the overlays have any effect, board
++code must make sure the live tree is patched before the devices are instanciated
++from it.
++
++Device tree overlays on the kernel device tree
++..............................................
++
++Overlays can be applied to the kernel device tree before it is handed over to
++the kernel. The behaviour is controlled by different variables:
++
++``global.of.overlay.dir``
++  Overlays are read from this directory. barebox will try to apply all overlays
++  found here if not limited by one of the other variables below. When the path
++  given here is an absolute path it is used as is. A relative path is relative
++  to ``/`` or relative to the rootfs when using bootloader spec.
++``global.of.overlay.compatible``
++  This is a space separated list of compatibles. Only overlays matching one of
++  these compatibles will be applied. When this list is empty then all overlays
++  will be applied. Overlays that don't have a compatible are considered being
++  always compatible.
++``global.of.overlay.filepattern``
++  This is a space separated list of file patterns. An overlay is only applied
++  when its filename matches one of the patterns. The patterns can contain
++  ``*`` and ``?`` as wildcards. The default is ``*`` which means all files are
++  applied.
++``global.of.overlay.filter``
++  This is a space separated list of filters to apply. There are two generic filters:
++  ``filepattern`` matches ``global.of.overlay.filepattern`` above, ``compatible`` matches
++  ``global.of.overlay.compatible`` above. The default is ``filepattern compatible``
++  which means the two generic filters are active. This list may be replaced or
++  supplemented by board specific filters.
 -- 
 2.29.2
 
