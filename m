@@ -1,141 +1,75 @@
-Delivery-date: Thu, 24 Jun 2021 17:15:11 +0200
+Delivery-date: Thu, 24 Jun 2021 17:30:00 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwR4R-0005Ig-GD
-	for lore@lore.pengutronix.de; Thu, 24 Jun 2021 17:15:11 +0200
+	id 1lwRIm-0005T7-9H
+	for lore@lore.pengutronix.de; Thu, 24 Jun 2021 17:30:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwR4Q-0003p7-Aa
-	for lore@pengutronix.de; Thu, 24 Jun 2021 17:15:11 +0200
+	id 1lwRIl-0005HN-16
+	for lore@pengutronix.de; Thu, 24 Jun 2021 17:30:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:In-Reply-To:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=K84G57fu9TBD5sqAfg38RJay8Ou7zShuXIEb/z+h3vY=; b=qBkTc54MhLjoZ5dqgnOp+abmZr
-	/OTD0VJFbGIYEvGhyQiLtqiuSyQ13BkwMQ3QESetvQivl8gBKfrxF0H8hBjbrhlCzMjlp7yg8XBLf
-	TlIjI2UpjvCFBZCM0D9Gm64RcT/ZzHAWePM3HS2qgtPLR2dX6GCMqMVPvx+Yo08IRNmOK2vXffl9j
-	o2/lOakibXuwEmAgZDjpFo6OLo2lnQI3LNil2VPB1PTF3f/bY8COmUw8FiHKqNuA416ccNr1QUiRO
-	xM9blkvimnSjFFGg5BfGD4VTxaCMq4jOwJIVAx4fGwwVaqV2h4G8F8/kDYKgeAHdEH2HrlzUOQJ6c
-	A5PCMaUA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=1W9K50blnZgkQz19rzNUtE+DN5Wdj+715iclIh1iIKQ=; b=k7OrZ05b0GLROb
+	ZempBZk8p/M2yqbTGHfd/8zTUL0oRXZxNoZP9VDQF1/3HrEkZRCj/DT7NiotmcizdENpITHtMmO79
+	u1wY3NLpotpxyghat77QtD8/XIVMUnbZInyI17Fu+o7AdJp/28tVw9xXBdRh18siiGzI5eyDjaA5Q
+	wLFpqwDh/rhY4B5c0Hawm7DaPrp/+Ptrlv5Y2oj4zt3ecd05VwkVwxkc7G5LXKWQspDg2fnnoHjz+
+	3H4R0zoedw/53D5XQPINr46JwdMFJrUjh4SEJid3okmHUV/YMv2bZ4VDIN3zLFO4to6w3iYGkd16w
+	8DmxqvxcdHp2wVJxayKg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwR2v-00FDOM-43; Thu, 24 Jun 2021 15:13:37 +0000
-Received: from mail-eopbgr70050.outbound.protection.outlook.com ([40.107.7.50]
- helo=EUR04-HE1-obe.outbound.protection.outlook.com)
+	id 1lwRHK-00FFLs-Is; Thu, 24 Jun 2021 15:28:30 +0000
+Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwR2p-00FDMt-Vj
- for barebox@lists.infradead.org; Thu, 24 Jun 2021 15:13:33 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NTsVfP88oapJQy3R/1hf7sWkCHCPBFDoVSyoidINha1k5VS19QVsLEcQ4I64Tk7Rm2AH23ISLN8+KHOPNyY2VtkHRWL1RIoVOls+dIdOeOcE8n73nEm07Tj711i25J+6lKu13LVRnxOegU/SjjciNuuKTB+URcnDuLWrkHirCxR3nsaZzwFoByODNFjLCHJSPisly7zBk3XphDLO/b/IUYm4/rYWv87Xlf6KM0TCVOmhd9krozwr5gCByZJr10GM66f7mmtrBZLozorOaIcBQx+6RG9BlJw1v0wawqtg6iF5IvXMAghH8aFbRQZSh4w5bSte24yfEu02kIoRqMRXWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GO/cx6JQbHP8biuFsnXx9mvNYmfk/Rvr1pOhcivhsho=;
- b=JWTnFYsEXl2UHYl3fxE1Nyvtm2l1//YUXmkqb64pkNGK/OJqKTa5Vwn3towjNbVnZjbTqPMbcBFuahKqbcmNCzWRibBBcB0V1IOJEZ3G2Edy4btwU60JlMhWgYQ9owdLF+lQBg7YRvrW9RTfInLZ91nb0rX1/7N5CgnS1RUkMDyzCxg9ivwB/FDNcgyFCNXXmhC51DOxRVpwWN9LC+LtU4o016sE7cmkQTwmcxE/I/G+QPwJcuWeqIPyjcZuDZf/l8YJDriXJrlCf6y6wdzILzOjdWwfuxiWr2t47Gbtz1peWn+5nUysnWSKtc9c13l2xiIuC3dLtm94+oUtZkIM/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wolfvision.net; dmarc=pass action=none
- header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GO/cx6JQbHP8biuFsnXx9mvNYmfk/Rvr1pOhcivhsho=;
- b=SyhIt39SQNjzjM82BXHIIjmrIWrc/Mxg3tiotHc76htFl6wA6Uv3C/tHe+zOToJmcIuAeCYDfBQbi/9TZPBbrW6O4Le986WRHCJbzR5cQ3c6ln0idk74RQuOfQtELpk00xsXim6NAVMvRBFirDPnDqUC9iLRw49sOUM7uOla1sQ=
-Authentication-Results: lists.infradead.org; dkim=none (message not signed)
- header.d=none;lists.infradead.org; dmarc=none action=none
- header.from=wolfvision.net;
-Received: from DBBPR08MB4523.eurprd08.prod.outlook.com (2603:10a6:10:c8::19)
- by DB9PR08MB7005.eurprd08.prod.outlook.com (2603:10a6:10:2c5::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4264.18; Thu, 24 Jun
- 2021 15:13:26 +0000
-Received: from DBBPR08MB4523.eurprd08.prod.outlook.com
- ([fe80::7067:f3cb:b0c4:25dd]) by DBBPR08MB4523.eurprd08.prod.outlook.com
- ([fe80::7067:f3cb:b0c4:25dd%7]) with mapi id 15.20.4242.024; Thu, 24 Jun 2021
- 15:13:26 +0000
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-References: <20210623075201.5328-1-michael.riesch@wolfvision.net>
- <20210623075201.5328-3-michael.riesch@wolfvision.net>
- <d65e99bc-b934-8dd2-0040-e9843a206099@pengutronix.de>
-From: Michael Riesch <michael.riesch@wolfvision.net>
-Organization: WolfVision GmbH
-Message-ID: <fc9a8498-c6b5-14c9-c906-6f2199cbe517@wolfvision.net>
-Date: Thu, 24 Jun 2021 17:13:24 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
-In-Reply-To: <d65e99bc-b934-8dd2-0040-e9843a206099@pengutronix.de>
-Content-Language: en-US
-X-Originating-IP: [91.118.163.37]
-X-ClientProxiedBy: VI1PR08CA0100.eurprd08.prod.outlook.com
- (2603:10a6:800:d3::26) To DBBPR08MB4523.eurprd08.prod.outlook.com
- (2603:10a6:10:c8::19)
+ id 1lwRHD-00FFKO-OG
+ for barebox@lists.infradead.org; Thu, 24 Jun 2021 15:28:26 +0000
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a1; c=relaxed/simple;
+ q=dns/txt; i=@phytec.de; t=1624548497; x=1627140497;
+ h=From:Sender:Reply-To:Subject:Date:Message-Id:To:Cc:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=5aqKZOKOTcsQHBWUHVbgxIbTyChpJtWhvhkLEM8f57Y=;
+ b=nMdQTQQwj6FAJNbBh3kaN5EU4GMkeoEi9t9rt4YEk4FRmxh8HHFr+yfgZR6YUxjP
+ zxlOjJfug8JKfmx3Slbb5Oi2Xw6ujcHrFGwDLRHACBj+ngzjQniy2K8sFb78d83B
+ Ut6ORnklmFLJae6dpTpd0Tj55Gkvx1QLXrAegxOiJ3w=;
+X-AuditID: c39127d2-a77bc70000001c5e-5d-60d4a4911eec
+Received: from idefix.phytec.de (Unknown_Domain [172.16.0.10])
+ by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 23.28.07262.194A4D06;
+ Thu, 24 Jun 2021 17:28:17 +0200 (CEST)
+Received: from lws-ybas.phytec.de ([172.16.21.122])
+ by idefix.phytec.de (IBM Domino Release 9.0.1FP7)
+ with ESMTP id 2021062417281703-1034636 ;
+ Thu, 24 Jun 2021 17:28:17 +0200 
+From: Yunus Bas <y.bas@phytec.de>
+To: barebox@lists.infradead.org
+Date: Thu, 24 Jun 2021 17:28:10 +0200
+Message-Id: <20210624152810.3385526-1-y.bas@phytec.de>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.100.125] (91.118.163.37) by
- VI1PR08CA0100.eurprd08.prod.outlook.com (2603:10a6:800:d3::26) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4264.19 via Frontend Transport; Thu, 24 Jun 2021 15:13:25 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a2f5e852-18fd-415f-c00a-08d937229d81
-X-MS-TrafficTypeDiagnostic: DB9PR08MB7005:
-X-Microsoft-Antispam-PRVS: <DB9PR08MB70054E2F5102A7590B7DC8DCF2079@DB9PR08MB7005.eurprd08.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4125;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: twewNmCm5zWWvxQFY75jInxibNoEjcBq/JqUZGZ3fuJiWiXAj/rotqUQGFN4lRq1LCS3/WgTc0ux4Kgvl2ukzW1CRh6WMWTjuRBiCyb8zuTxkgVOFxu73Sah5anjaFVz7aBCDF/PSVh055EXFAz9zuLeFh7DHyC42kCS7/0B1azBkBgVk9exLpYDh0EZYqOIU8AKpRJJ9ReaRq2ClDIduHiRrmLBLdwfZ4loWW/NNTDV2EHe7aCp4QXpvdp7DB7ZWJtqKYHoAltTQDfX9vBUnlsuo6IdGmT4RlWmwN+g1LqkZcRnkYyH7ssswQ7mhPcujY/fv0FA3AUNEBJJ22pzi0jey14Hw7F0HdoAsQ74CB3O9Z5kme8GkVmn66uNih8xtmCHQi/vxtKsx7kL1ZgDG4WyE/jFeeeCiqN7L8xiUOp8myN5Mk0DB9+8be9Y1pJO9Djcr7e5q0BIOdsR8ZQz2t9slB415VECwi2DclivRNAV3MNmyDQzeczyvITXN/LPxSwbNM0od9U4zaTXC/oAEaxOaZnwur0FYBi00dKHNUnZCyuxtQbO4SldZ65KpserP8Mu6ulUDimvv/TaoSqlXa+Qy4YsQhdmoqk+E247H3CFl+OyJaFGPh2JRZiRYjWZBTmd+Vx94okvXQI1UkrLnuxeCWVFJDQnfVW9fm8yRADg07qkw5q8BL05OvwFgDGFiCEGKDXt+vpASfNj99m+/xNKtT1aGu1B6DpH0CgWogPLnZXL1zKmFbfOm3vmqR6617JlpCFhVEpXBURGW1FwZf+h0BXXkXK46MrxgkYOTfa1cm9ps9B3gb/IebIzpL3R3jy0xQb7sEsdlzN4fmM001Cb8jLdG+l9rePMsPdCaA4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DBBPR08MB4523.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(396003)(376002)(136003)(39830400003)(346002)(66946007)(53546011)(66476007)(66556008)(16526019)(186003)(36916002)(86362001)(52116002)(16576012)(8676002)(316002)(83380400001)(8936002)(26005)(31686004)(19273905006)(6486002)(2616005)(966005)(478600001)(956004)(2906002)(44832011)(36756003)(5660300002)(38100700002)(38350700002)(31696002)(43740500002)(45980500001)(563064011);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Yk9hZXlCSDM3QktiQkZuaUUzQWlqSWo3bVlteXlGSUhsNVBwOCtKV1NCT0w4?=
- =?utf-8?B?N2liTkZVaUVmcFh1cHEyM2dhYVI2Z0trdURwZ25DdDZpRTU2QzQwS00vVEo3?=
- =?utf-8?B?N3d2ajM0QXVETVY4NlFOYU1jbmRScTdxVERxZTBRWU5jekdIWVFwbTB1VGx3?=
- =?utf-8?B?RnhsWEdTSEowOWw0QzE4aFV4NU5RWXNBNmVDbFN1dmI1djdDbmtDd2pITnBR?=
- =?utf-8?B?R1QwTUpOVmJWYnJQM2d5eFA2Q2xBZG91aVppd25mR1NjSmZDRkFaK3I3K0NP?=
- =?utf-8?B?TWxHYkpaOHB6WjRKdEZEeENocVdnV0p4dTNmRzZCa09pb25ram8wRzk5UlVS?=
- =?utf-8?B?OXJzNHZzWjlKaDcxdHA2UjNaRk1XVVV2V1dNQmdubjdzckxQQTNEZmNsQTVn?=
- =?utf-8?B?RHBzVjBYTWtEcnJnZ3RwbkZHT3FNK3ozS0pWQW50QVIrRTNZZ2dwZFcyMmxE?=
- =?utf-8?B?VHlsaUEvRUdXVmJnc2R3T3dqelcxMHZYcU43NTlSSElZamxuaTJkZkQ1WHp0?=
- =?utf-8?B?Z21Ga1ZlNmE5SmRpdmhFenp5WlNTNHh2OWZyZk9MSjJ6ekx0WkVRT2R3SUVV?=
- =?utf-8?B?ZTkyWXNYNVFoakZwaW4xRW16N1VOazFRWTUvSFlNMnNlWEl3cmZFWWFiU3NY?=
- =?utf-8?B?S0JXRFVmRDRpeWtocGkyZUYvZ1ZSVlBybHpud044bG9NQ3pHVTMrc2V4UlVY?=
- =?utf-8?B?bnV3Ym4wODJqSW1uWC9ZQ29zN1l0TmxIdmdFQWhrOFloWklGaFhPQ2g5T1Qz?=
- =?utf-8?B?S2F1UjQxT0w3TmROTHVYWW8xYUtsd0k1ay83ZGg3YjJVMmI2U3lCRHI2QVBS?=
- =?utf-8?B?SkVmVXlWdEZuZDQrS0dxSDBtNlpoK3plV0w4VlBVK3Ird0Q2NDgyV1pKVDdK?=
- =?utf-8?B?YWpIVFM4RlF4STd5bnBGU2VIUjhSd1J2dXFTWlVwa0NPQmNFeG80dWV2SXFG?=
- =?utf-8?B?WGNIaUcrUGM2d1dMUThjeDRFZ3NVUzd6bkZXZlpjNklVRE9mL3B6MjJmSEZ0?=
- =?utf-8?B?cmhYNkZSS1lqbUx0OTI0TmFqWk9wOTFjdytoM3lIcFNvQTRaUXd0bmNSRCtX?=
- =?utf-8?B?K051SnRlT0xIQUloYzJJdU9LTDcxaktpcndnLzhPWnVmYjBOVTFDemRnK1c4?=
- =?utf-8?B?a0U5SDQrNUNQd1dTMmQ2UlhyRHZWbVU0c2tUL1dTYU1yL0hCV2tvWWN0RDRU?=
- =?utf-8?B?RW81OTRUSVNzbXBjYyszMkcrdUwvSTFrODN6b0R4K3VVcW1WblQ1bTFkZmI0?=
- =?utf-8?B?Q21NOXlWV1J4UzhldHRRS1RhZkZlNWVEMXNwa3VNUVpGaElJc09TNGlnakxE?=
- =?utf-8?B?djNoNFV6aks0bHQrNlRVSXFzYjRaTXRwRXVOK3dkTzd0WDhHU1VDM3doNXZM?=
- =?utf-8?B?QUpQRjRMbmRKbmZRd1hwK2UxZzd6ZDhEaFRHYXJNbnR1N2JkN20yRGxzMExQ?=
- =?utf-8?B?bE8wRlFSTlNYa1NQanRsSW93WmpYSTlYRWxrSHllOFgrNmdqcDYzNjZ1NENT?=
- =?utf-8?B?K0ZjbWh6ZFhuNXpsd29LMjRtSUZlOEMzMytHMFlmM1ZjRXdNNUFpYUlhOVpE?=
- =?utf-8?B?NUt5SWpjT3BlLzlQbkZST3hnazdvRHRmYlVubTZqcDZXcnd0YU5QMndVUXZS?=
- =?utf-8?B?K0tIbjBaeEZWMm9JMjQ1Wk1weWtJUkhpVTVtT2pWWG9VNUZFMHZSYk5SbkVG?=
- =?utf-8?B?S3UrVmtzclQ3M3hNYWd5Mlg5TVU3QzdWL1l6d1ZwbW5PVzl6bTliVFBkMUtC?=
- =?utf-8?Q?1YYrr3WRF8MnMWLICoKTlgDvfCDN2VZ1OBpFU3f?=
-X-OriginatorOrg: wolfvision.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2f5e852-18fd-415f-c00a-08d937229d81
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR08MB4523.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2021 15:13:26.2166 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EsWx/VuYo4ckRRzj3KW+14pHcY39gZ2mkR4CDu2H7fHtG9qdnAAMsEFJsTcAq5T7UmDO0f2GR0NFVX/b+94BX/GVC5SU2Oe+o3QAmIyRmiA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB7005
+X-MIMETrack: Itemize by SMTP Server on Idefix/Phytec(Release 9.0.1FP7|August
+ 17, 2016) at 24.06.2021 17:28:17,
+ Serialize by Router on Idefix/Phytec(Release 9.0.1FP7|August  17, 2016) at
+ 24.06.2021 17:28:17
+X-TNEFEvaluated: 1
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrJJMWRmVeSWpSXmKPExsWyRoCBS3fikisJBruvc1mcWNzP7MDosXlJ
+ fQBjFJdNSmpOZllqkb5dAlfG0rbjzAW/DCteXlZsYFyq0cXIySEhYCKx/NJKxi5GLg4hgW2M
+ Esf/HGWDcC4wSiy+N58RpIpNQFHi/O23rCC2iIC8xNz9bWC2sICPxMIPL8FsFgFViT9njzCD
+ 2LwCZhIXlt5lgdggL3Fy7WEmiLigxMmZT1hAFkgIXGGU2DBvOytEkZDE6cVnwZqZBbQlli18
+ zTyBkXcWkp5ZSFILGJlWMQrlZiZnpxZlZusVZFSWpCbrpaRuYgQGx+GJ6pd2MPbN8TjEyMTB
+ eIhRgoNZSYT3UculBCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8G3hLwoQE0hNLUrNTUwtSi2Cy
+ TBycUg2ME6r8/f5tWJfvGXfwsx7Hg36rbcb/H0TINSZ2fXj0TzFt+xWO3vNMU6bME/8iztip
+ 67/rReTk4ux7zGdesTZOeW0ozJy59c29cIX4v5IRal5H5s3Iex6s0l9fcnhm5Pw6X8W5icVd
+ C5rcXoVeftisKtyUPqF+Sc7T1P9Ms7bN3cfUZ7DV6+dsJZbijERDLeai4kQAzx8wrfwBAAA=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210624_081332_165308_2ED9817F 
-X-CRM114-Status: GOOD (  13.20  )
+X-CRM114-CacheID: sfid-20210624_082824_137137_B299BF41 
+X-CRM114-Status: GOOD (  19.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -155,87 +89,207 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/2] arm: rk3568-evb1: add support for Rockchip SARADC
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] commands: of_property: Extend command usage on external dtb
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Ahmad,
+The scope of the of_property command is limited to the internal devicetree
+only. There is the possibility to add fixtures to postpone the operation
+until boot and after the kernel DTB is already loaded, but this does not
+cover the case when the property value needs to be phandle adresses
+defined in the external DTB, since assigned values are evaluated
+immediatly.
 
-Thanks for your review, I'll prepare a v3 as soon as I have time.
+This patch extends the of_property-command to use it on external DTB's as
+well. In case fixup is not used, the changes will also affect the original
+data.
 
-On 6/23/21 10:24 AM, Ahmad Fatoum wrote:
-> 
-> 
-> On 23.06.21 09:52, Michael Riesch wrote:
->> Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
->> ---
->> v2:
->> - add initial version
->>
->>  arch/arm/dts/rk3568-evb1-v10.dts |  5 +++++
->>  arch/arm/dts/rk3568.dtsi         | 12 ++++++++++++
->>  2 files changed, 17 insertions(+)
->>
->> diff --git a/arch/arm/dts/rk3568-evb1-v10.dts b/arch/arm/dts/rk3568-evb1-v10.dts
->> index ca6f9c280..b8b4c85bf 100644
->> --- a/arch/arm/dts/rk3568-evb1-v10.dts
->> +++ b/arch/arm/dts/rk3568-evb1-v10.dts
->> @@ -485,3 +485,8 @@
->>  &uart2 {
->>  	status = "okay";
->>  };
->> +
->> +&saradc {
->> +	vref-supply = <&vcca_1v8>;
->> +	status = "okay";
->> +};
->> diff --git a/arch/arm/dts/rk3568.dtsi b/arch/arm/dts/rk3568.dtsi
->> index 34d0b8a08..8a75a7e96 100644
->> --- a/arch/arm/dts/rk3568.dtsi
->> +++ b/arch/arm/dts/rk3568.dtsi
->> @@ -817,6 +817,18 @@
->>  		status = "disabled";
->>  	};
->>
->> +	saradc: saradc@fe720000 {
->> +		compatible = "rockchip,rk3568-saradc";
->> +		reg = <0x0 0xfe720000 0x0 0x100>;
->> +		interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
->> +		clocks = <&cru CLK_SARADC>, <&cru PCLK_SARADC>;
->> +		clock-names = "saradc", "apb_pclk";
->> +		resets = <&cru SRST_P_SARADC>;
->> +		reset-names = "saradc-apb";
-> 
-> Keep in mind the driver you added does _not_ trigger this reset.
+Signed-off-by: Yunus Bas <y.bas@phytec.de>
+---
+ commands/of_property.c | 74 ++++++++++++++++++++++++++++++++----------
+ 1 file changed, 57 insertions(+), 17 deletions(-)
 
-Duly noted. I considered implementing the reset in the driver (see
-v1-thread) but did not arrive at the conclusion that the reset is really
-required here.
+diff --git a/commands/of_property.c b/commands/of_property.c
+index 3d5097165..a3f948aeb 100644
+--- a/commands/of_property.c
++++ b/commands/of_property.c
+@@ -4,6 +4,7 @@
+ /* of_property.c - device tree property handling support */
+ 
+ #include <common.h>
++#include <libfile.h>
+ #include <environment.h>
+ #include <fdt.h>
+ #include <of.h>
+@@ -18,7 +19,7 @@
+ #include <init.h>
+ #include <xfuncs.h>
+ 
+-static int of_parse_prop_cells(char * const *newval, int count, char *data, int *len)
++static int of_parse_prop_cells(struct device_node *root, char * const *newval, int count, char *data, int *len)
+ {
+ 	char *cp;
+ 	unsigned long tmp;	/* holds converted values */
+@@ -60,7 +61,7 @@ static int of_parse_prop_cells(char * const *newval, int count, char *data, int
+ 			str = xzalloc(len + 1);
+ 			strncpy(str, cp, len);
+ 
+-			n = of_find_node_by_path_or_alias(NULL, str);
++			n = of_find_node_by_path_or_alias(root, str);
+ 			if (!n)
+ 				printf("Cannot find node '%s'\n", str);
+ 
+@@ -164,7 +165,7 @@ static int of_parse_prop_string(char * const *newval, int count, char *data, int
+  * data: A bytestream to be placed in the property
+  * len: The length of the resulting bytestream
+  */
+-static int of_parse_prop(char * const *newval, int count, char *data, int *len)
++static int of_parse_prop(struct device_node *root, char * const *newval, int count, char *data, int *len)
+ {
+ 	char *newp;		/* temporary newval char pointer */
+ 
+@@ -177,7 +178,7 @@ static int of_parse_prop(char * const *newval, int count, char *data, int *len)
+ 
+ 	switch (*newp) {
+ 	case '<':
+-		return of_parse_prop_cells(newval, count, data, len);
++		return of_parse_prop_cells(root, newval, count, data, len);
+ 	case '[':
+ 		return of_parse_prop_stream(newval, count, data, len);
+ 	default:
+@@ -302,8 +303,13 @@ static int do_of_property(int argc, char *argv[])
+ 	int set = 0;
+ 	int fixup = 0;
+ 	char *path, *propname;
++	char *dtbfile = NULL;
++	int ret = 0;
++	size_t size;
++	struct fdt_header *fdt = NULL;
++	struct device_node *root = NULL;
+ 
+-	while ((opt = getopt(argc, argv, "dsf")) > 0) {
++	while ((opt = getopt(argc, argv, "dsfe:")) > 0) {
+ 		switch (opt) {
+ 		case 'd':
+ 			delete = 1;
+@@ -314,6 +320,9 @@ static int do_of_property(int argc, char *argv[])
+ 		case 'f':
+ 			fixup = 1;
+ 			break;
++		case 'e':
++			dtbfile = optarg;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -327,8 +336,22 @@ static int do_of_property(int argc, char *argv[])
+ 
+ 	debug("path: %s propname: %s\n", path, propname);
+ 
++	if ( !(set || delete))
++		return COMMAND_ERROR_USAGE;
++
++	if (dtbfile) {
++		fdt = read_file(dtbfile, &size);
++		if (!fdt) {
++			printf("unable to read %s: %s\n", dtbfile, strerror(errno));
++			return -errno;
++		}
++
++		root = of_unflatten_dtb(fdt);
++
++		free(fdt);
++	}
++
+ 	if (set) {
+-		int ret;
+ 		int len;
+ 		void *data;
+ 
+@@ -340,10 +363,10 @@ static int do_of_property(int argc, char *argv[])
+ 		if (!data)
+ 			return -ENOMEM;
+ 
+-		ret = of_parse_prop(&argv[optind + 2], argc - optind - 2, data, &len);
++		ret = of_parse_prop(root, &argv[optind + 2], argc - optind - 2, data, &len);
+ 		if (ret) {
+ 			free(data);
+-			return ret;
++			goto out;
+ 		}
+ 
+ 		if (fixup) {
+@@ -351,21 +374,37 @@ static int do_of_property(int argc, char *argv[])
+ 			if (ret)
+ 				free(data);
+ 		} else {
+-			ret = do_of_property_set_now(NULL, path, propname, data, len);
++			ret = do_of_property_set_now(root, path, propname, data, len);
+ 			free(data);
+ 		}
+ 
+-		return ret;
+-	}
++		if (ret)
++			goto out;
+ 
+-	if (delete) {
++	} else if (delete) {
+ 		if (fixup)
+-			return do_of_property_delete_fixup(path, propname);
++			ret = do_of_property_delete_fixup(path, propname);
+ 		else
+-			return do_of_property_delete_now(NULL, path, propname);
++			ret = do_of_property_delete_now(root, path, propname);
++
++		if (ret)
++			goto out;
++	}
++
++	if (root && !fixup) {
++		fdt = of_get_fixed_tree(root);
++
++		ret = write_file(dtbfile, fdt, fdt32_to_cpu(fdt->totalsize));
++
++		free(fdt);
+ 	}
+ 
+-	return COMMAND_ERROR_USAGE;
++out:
++
++	if (root)
++		of_delete_node(root);
++
++	return ret;
+ }
+ 
+ BAREBOX_CMD_HELP_START(of_property)
+@@ -373,6 +412,7 @@ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT ("-s",  "set property to value")
+ BAREBOX_CMD_HELP_OPT ("-d",  "delete property")
+ BAREBOX_CMD_HELP_OPT ("-f",  "set/delete as a fixup (defer the action until booting)")
++BAREBOX_CMD_HELP_OPT ("-e dtb",  "set/delete/fixup from external dtb")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Valid formats for values:")
+ BAREBOX_CMD_HELP_TEXT("<0x00112233 4 05> - an array of cells. cells not beginning with a digit are")
+@@ -384,8 +424,8 @@ BAREBOX_CMD_HELP_END
+ BAREBOX_CMD_START(of_property)
+ 	.cmd		= do_of_property,
+ 	BAREBOX_CMD_DESC("handle device tree properties")
+-	BAREBOX_CMD_OPTS("[-sd] [-f] NODE [PROPERTY] [VALUES]")
++	BAREBOX_CMD_OPTS("[-sd] [-e] [-f] NODE [PROPERTY] [VALUES]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+-	BAREBOX_CMD_COMPLETE(devicetree_complete)
++	BAREBOX_CMD_COMPLETE(devicetree_file_complete)
+ 	BAREBOX_CMD_HELP(cmd_of_property_help)
+ BAREBOX_CMD_END
+-- 
+2.30.0
 
-Regards, Michael
-
-> 
->> +		#io-channel-cells = <1>;
->> +		status = "disabled";
->> +	};
->> +
->>  	pinctrl: pinctrl {
->>  		compatible = "rockchip,rk3568-pinctrl";
->>  		rockchip,grf = <&grf>;
->> --
->> 2.20.1
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
-> 
 
 _______________________________________________
 barebox mailing list
