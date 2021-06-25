@@ -1,15 +1,15 @@
-Delivery-date: Fri, 25 Jun 2021 10:02:16 +0200
+Delivery-date: Fri, 25 Jun 2021 10:15:43 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwgn2-0008GP-Si
-	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 10:02:16 +0200
+	id 1lwh03-0008Us-Hg
+	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 10:15:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwgn1-0000NH-FH
-	for lore@pengutronix.de; Fri, 25 Jun 2021 10:02:16 +0200
+	id 1lwh02-0002Un-3y
+	for lore@pengutronix.de; Fri, 25 Jun 2021 10:15:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=GfZY9ue97bDGyEhKhgTNibblCJH3wE0UDGUqVakmttg=; b=Oy2dWOBMR36fFj20P5fzdnMHJr
-	qc65PWUx4yfY8ZP8CbwqFjn7bDwkby0acMBk5Gks/1FSRgbG88DnKLNpKoGGaWRtlt5FHu1cfLYrq
-	xOMOOL0EbgR2Ae8bPQB1yf1y/3nOIkMD/H31iliZMMndqzK+vmn2420m3S2pGWMX3p7tl10t1Y6K4
-	H0m3xNAu9WFCySYCK2KmcInWlENkB31EHnu4yWca+Y4p2YzVcyJz4+dpqB2Y8/zk5cStboXqb1V5Y
-	188tS54O5thhioLbBvsgFlui9allQp53YsB68jJ2KJmA8kjntgsBFhqL5bqMbjj+Y7t6PVZSqx0h/
-	3JfLvAjg==;
+	bh=V3Piabn/vOcNmYgQ5pPZSoDF/yexRxtiG3iHOJ4jFVw=; b=f6EA+DPP+JxqU0PbAxIKbCgZSz
+	WsLDQwmCzTYa04oISER1FsIBmm1ea5ZA/caCe3pxW6xDESalc6ivc2Hn+d+zjq09soZ1I2x2RfR0Z
+	INpaATNWCnhHJARElDj5LturVI/grWyxe3gqxgcvWDpyBEkKLEqLSoRq0VG8WCrbDryoF5ZsirWg6
+	NoXc3qM0djELEL5BTXH3Yto6I9Pf+4hETh3+QSq+if8Tld7dy1G38jg8RCRd8IR8s9AlTqpxNk6vj
+	9OdSKBC5Jq7DYhKG8RXD5NZxdL3JfeJXjk1ujvJNpImJjyBSSs7glJR+jrqstcXiUd8VhnJC8rVu9
+	o715wJ3w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwgla-000BHy-4d; Fri, 25 Jun 2021 08:00:46 +0000
+	id 1lwgye-000FKx-6b; Fri, 25 Jun 2021 08:14:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwgSK-0003un-Cm
- for barebox@lists.infradead.org; Fri, 25 Jun 2021 07:40:53 +0000
+ id 1lwgbW-0008OM-Ko
+ for barebox@lists.infradead.org; Fri, 25 Jun 2021 07:50:27 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwgSJ-0004Od-15; Fri, 25 Jun 2021 09:40:51 +0200
+ id 1lwgbV-0006UB-2B; Fri, 25 Jun 2021 09:50:21 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwgSH-0002j3-R7; Fri, 25 Jun 2021 09:40:49 +0200
-Date: Fri, 25 Jun 2021 09:40:49 +0200
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <20210625074049.GD9782@pengutronix.de>
-References: <20210624150931.891123-1-geert@linux-m68k.org>
+ id 1lwgbU-00034Q-Or; Fri, 25 Jun 2021 09:50:20 +0200
+Date: Fri, 25 Jun 2021 09:50:20 +0200
+To: Yunus Bas <y.bas@phytec.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210625075020.GE9782@pengutronix.de>
+References: <20210624152810.3385526-1-y.bas@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210624150931.891123-1-geert@linux-m68k.org>
+In-Reply-To: <20210624152810.3385526-1-y.bas@phytec.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 09:40:41 up 127 days, 11:04, 118 users,  load average: 0.37, 0.41,
- 0.27
+X-Uptime: 09:44:05 up 127 days, 11:07, 118 users,  load average: 0.16, 0.29,
+ 0.25
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210625_004052_491754_A6016811 
-X-CRM114-Status: GOOD (  20.51  )
+X-CRM114-CacheID: sfid-20210625_005022_744120_1F75CCEC 
+X-CRM114-Status: GOOD (  23.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,42 +81,82 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] clk: starfive-jh7100: Fix duplicate numbers
+Subject: Re: [PATCH] commands: of_property: Extend command usage on external
+ dtb
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Jun 24, 2021 at 05:09:31PM +0200, Geert Uytterhoeven wrote:
-> Fixes: 6f92e74e5b94d8e6 ("clk: add initial StarFive clock support")
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> ---
-> Completely untested.
-> 
->  include/dt-bindings/clock/starfive-jh7100.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Hi,
 
-Applied, thanks
+On Thu, Jun 24, 2021 at 05:28:10PM +0200, Yunus Bas wrote:
+> @@ -314,6 +320,9 @@ static int do_of_property(int argc, char *argv[])
+>  		case 'f':
+>  			fixup = 1;
+>  			break;
+> +		case 'e':
+> +			dtbfile = optarg;
+> +			break;
+>  		default:
+>  			return COMMAND_ERROR_USAGE;
+>  		}
+> @@ -327,8 +336,22 @@ static int do_of_property(int argc, char *argv[])
+>  
+>  	debug("path: %s propname: %s\n", path, propname);
+>  
+> +	if ( !(set || delete))
+> +		return COMMAND_ERROR_USAGE;
+> +
+> +	if (dtbfile) {
+> +		fdt = read_file(dtbfile, &size);
+> +		if (!fdt) {
+> +			printf("unable to read %s: %s\n", dtbfile, strerror(errno));
 
-Sascha
+We have %m now as a shortcut for "%s", strerror(errno) and you could be
+the first user ;)
 
-> 
-> diff --git a/include/dt-bindings/clock/starfive-jh7100.h b/include/dt-bindings/clock/starfive-jh7100.h
-> index 9ad5e7f9bfd5f655..2512bb810ec45c8b 100644
-> --- a/include/dt-bindings/clock/starfive-jh7100.h
-> +++ b/include/dt-bindings/clock/starfive-jh7100.h
-> @@ -42,9 +42,9 @@
->  #define CLK_U74_CORE1		33
->  #define CLK_U74_AXI		34
->  #define CLK_U74RTC_TOGGLE	35
-> -#define CLK_SGDMA2P_AXI		35
-> +#define CLK_SGDMA2P_AXI		36
->  #define CLK_DMA2PNOC_AXI	37
-> -#define CLK_SGDMA2P_AHB		37
-> +#define CLK_SGDMA2P_AHB		38
->  #define CLK_DLA_BUS		39
->  #define CLK_DLA_AXI		40
->  #define CLK_DLANOC_AXI		41
+> +	if (root && !fixup) {
+> +		fdt = of_get_fixed_tree(root);
+> +
+> +		ret = write_file(dtbfile, fdt, fdt32_to_cpu(fdt->totalsize));
+> +
+> +		free(fdt);
+>  	}
+
+Are you sure you want to save the fixed tree? I would rather expect that
+the saved tree has only the desired property changed.
+
+>  
+> -	return COMMAND_ERROR_USAGE;
+> +out:
+> +
+> +	if (root)
+> +		of_delete_node(root);
+> +
+> +	return ret;
+>  }
+>  
+>  BAREBOX_CMD_HELP_START(of_property)
+> @@ -373,6 +412,7 @@ BAREBOX_CMD_HELP_TEXT("Options:")
+>  BAREBOX_CMD_HELP_OPT ("-s",  "set property to value")
+>  BAREBOX_CMD_HELP_OPT ("-d",  "delete property")
+>  BAREBOX_CMD_HELP_OPT ("-f",  "set/delete as a fixup (defer the action until booting)")
+> +BAREBOX_CMD_HELP_OPT ("-e dtb",  "set/delete/fixup from external dtb")
+>  BAREBOX_CMD_HELP_TEXT("")
+>  BAREBOX_CMD_HELP_TEXT("Valid formats for values:")
+>  BAREBOX_CMD_HELP_TEXT("<0x00112233 4 05> - an array of cells. cells not beginning with a digit are")
+> @@ -384,8 +424,8 @@ BAREBOX_CMD_HELP_END
+>  BAREBOX_CMD_START(of_property)
+>  	.cmd		= do_of_property,
+>  	BAREBOX_CMD_DESC("handle device tree properties")
+> -	BAREBOX_CMD_OPTS("[-sd] [-f] NODE [PROPERTY] [VALUES]")
+> +	BAREBOX_CMD_OPTS("[-sd] [-e] [-f] NODE [PROPERTY] [VALUES]")
+>  	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+> -	BAREBOX_CMD_COMPLETE(devicetree_complete)
+> +	BAREBOX_CMD_COMPLETE(devicetree_file_complete)
+>  	BAREBOX_CMD_HELP(cmd_of_property_help)
+>  BAREBOX_CMD_END
 > -- 
-> 2.25.1
+> 2.30.0
 > 
 > 
 > _______________________________________________
