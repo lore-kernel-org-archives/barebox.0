@@ -1,53 +1,53 @@
-Delivery-date: Fri, 25 Jun 2021 09:49:54 +0200
+Delivery-date: Fri, 25 Jun 2021 09:50:23 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwgb4-0007yd-Ua
-	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 09:49:54 +0200
+	id 1lwgbX-0007za-S6
+	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 09:50:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwgb1-0006MA-DJ
-	for lore@pengutronix.de; Fri, 25 Jun 2021 09:49:54 +0200
+	id 1lwgbT-0006T1-Pi
+	for lore@pengutronix.de; Fri, 25 Jun 2021 09:50:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=kfn1fIFL8danY5CEcT35oUsCvcoGTFxSN2+6vFrFolg=; b=YtcHAPhKoll6h6
-	lEyNNCIAKOgZxWJf5hTROpxVlse5CwlpNy22wO9jnrt0ZYXBZ33/odlGxQy7zJYwoCmIV7vrYuynt
-	kQNRdeQJM43SQcoS0ypEWJNk3tx6/8KjDNWfZEzXtZbzvycsL97gLiU2dCxT4Yc07zainam3eIBJs
-	PLy3mvEwSHvWs0fe2ndalTV81WFkfh2iWiQnUrII25W69Qs3XkUtmsJrOak4qHsQ0E5evJzY2sCsc
-	AqEv3SaIhYBY49tezFlgnlImUGPY1N6LXPsy2DMe+wm7gtWbbE6h0xyDGsxafBCvC6ELL7BWDX1GW
-	PlEzOh30HknvjTAoP85g==;
+	List-Owner; bh=B2DdtGP4vcJfUlhrTrUXkP3kgOEg8TqhJ83WcWbv86Q=; b=xOnHKDWci7poZm
+	a1GbGaURdKL323AXPmG9QVgRKInax0/Dgy/rJvAwlTYePGLqdPRrer9Vf0eP9zG7HZJmYQx3Nz6Xp
+	5L2hJr3oavSHmkC6aYLeAKUZOoSWF+epRJ9gI3GkxfA4XMIFZND1A3pq1H3Td88w5M3cz1APfdSj1
+	GWn6OoRx6ZMTIy/434DxgbxIObaSj7jKCxxtcYNOx4oYaH9jMokNQ2ImS4Wy4JQLnznytvLQZXHbj
+	u+iPVeer//hgE+ueQ3uTzhtqj34Abp2UW7+v770/GCGL2/7RNYw7Sb9oW5dM2CgmX2WhmuOVdPQNf
+	DTVYy7EuHwXUhsvLnkmg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwgZQ-0007O9-Qs; Fri, 25 Jun 2021 07:48:14 +0000
+	id 1lwgZu-0007Xp-1W; Fri, 25 Jun 2021 07:48:42 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwgDo-00HZ73-3h
+ id 1lwgDo-00HZ6z-3z
  for barebox@lists.infradead.org; Fri, 25 Jun 2021 07:25:54 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwgDe-0002Qk-L1; Fri, 25 Jun 2021 09:25:42 +0200
+ id 1lwgDe-0002Ql-Hf; Fri, 25 Jun 2021 09:25:42 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwgDd-0000dc-G7; Fri, 25 Jun 2021 09:25:41 +0200
+ id 1lwgDd-0000df-Gg; Fri, 25 Jun 2021 09:25:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 25 Jun 2021 09:25:36 +0200
-Message-Id: <20210625072540.32717-16-s.hauer@pengutronix.de>
+Date: Fri, 25 Jun 2021 09:25:37 +0200
+Message-Id: <20210625072540.32717-17-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210625072540.32717-1-s.hauer@pengutronix.de>
 References: <20210625072540.32717-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210625_002552_272589_51005CEB 
-X-CRM114-Status: GOOD (  12.07  )
+X-CRM114-CacheID: sfid-20210625_002552_363140_5B21DE77 
+X-CRM114-Status: GOOD (  14.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,42 +72,122 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 15/19] ARM: stm32mp: ddrctrl: add deep-probe support
+Subject: [PATCH 16/19] ARM: boards: mx6-sabrelite: add deep-probe support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 From: Marco Felsch <m.felsch@pengutronix.de>
 
-In case of deep-probe we have to ensure that the memory device is
-available after the mem_initcall().
+Convert to board driver and explicitly request the required gpio
+resources instead of relying on their existence based on the initcall
+level.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Link: https://lore.pengutronix.de/20201021115813.31645-10-m.felsch@pengutronix.de
+Link: https://lore.pengutronix.de/20201021115813.31645-11-m.felsch@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-stm32mp/ddrctrl.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ .../boards/freescale-mx6-sabrelite/board.c    | 58 ++++++++++---------
+ 1 file changed, 32 insertions(+), 26 deletions(-)
 
-diff --git a/arch/arm/mach-stm32mp/ddrctrl.c b/arch/arm/mach-stm32mp/ddrctrl.c
-index 43486c57c5..7f2013c22d 100644
---- a/arch/arm/mach-stm32mp/ddrctrl.c
-+++ b/arch/arm/mach-stm32mp/ddrctrl.c
-@@ -146,4 +146,14 @@ static struct driver_d stm32mp1_ddr_driver = {
- 	.of_compatible = DRV_OF_COMPAT(stm32mp1_ddr_dt_ids),
- };
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index 1b39ef82c6..f6eac4c0f3 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -13,7 +13,9 @@
+ #include <mach/bbu.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
++#include <of.h>
+ #include <partition.h>
++#include <deep-probe.h>
+ #include <linux/phy.h>
+ #include <asm/io.h>
+ #include <asm/mmu.h>
+@@ -98,10 +100,6 @@ static int sabrelite_ksz9021rn_setup(void)
+ {
+ 	int ret;
  
--mem_platform_driver(stm32mp1_ddr_driver);
-+static int stm32mp1_ddr_init(void)
-+{
+-	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
+-	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
+-		return 0;
+-
+ 	mxc_iomux_v3_setup_multiple_pads(sabrelite_enet_gpio_pads,
+ 			ARRAY_SIZE(sabrelite_enet_gpio_pads));
+ 
+@@ -118,11 +116,6 @@ static int sabrelite_ksz9021rn_setup(void)
+ 
+ 	return 0;
+ }
+-/*
+- * Do this before the fec initializes but after our
+- * gpios are available.
+- */
+-fs_initcall(sabrelite_ksz9021rn_setup);
+ 
+ static void sabrelite_ehci_init(void)
+ {
+@@ -132,11 +125,22 @@ static void sabrelite_ehci_init(void)
+ 	gpio_set_value(IMX_GPIO_NR(7, 12), 1);
+ }
+ 
+-static int sabrelite_devices_init(void)
++static int sabrelite_probe(struct device_d *dev)
+ {
+-	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
+-	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
+-		return 0;
 +	int ret;
 +
-+	ret = platform_driver_register(&stm32mp1_ddr_driver);
++	phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
++					   ksz9021rn_phy_fixup);
++
++	barebox_set_hostname("sabrelite");
++
++	ret = of_devices_ensure_probed_by_property("gpio-controller");
 +	if (ret)
 +		return ret;
 +
-+	return of_devices_ensure_probed_by_dev_id(stm32mp1_ddr_dt_ids);
-+}
-+mem_initcall(stm32mp1_ddr_init);
++	ret = sabrelite_ksz9021rn_setup();
++	if (ret)
++		return ret;
+ 
+ 	sabrelite_ehci_init();
+ 
+@@ -147,19 +151,21 @@ static int sabrelite_devices_init(void)
+ 
+ 	return 0;
+ }
+-device_initcall(sabrelite_devices_init);
+-
+-static int sabrelite_coredevices_init(void)
+-{
+-	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
+-	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
+-		return 0;
++static const struct of_device_id sabrelite_match[] = {
++	{
++		.compatible = "fsl,imx6q-sabrelite",
++	}, {
++		.compatible = "fsl,imx6dl-sabrelite",
++	},
++	{ /* Sentinel */ },
++};
+ 
+-	phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
+-					   ksz9021rn_phy_fixup);
++static struct driver_d sabrelite_driver = {
++	.name = "physom-imx6",
++	.probe = sabrelite_probe,
++	.of_compatible = sabrelite_match,
++};
+ 
+-	barebox_set_hostname("sabrelite");
++postcore_platform_driver(sabrelite_driver);
+ 
+-	return 0;
+-}
+-coredevice_initcall(sabrelite_coredevices_init);
++BAREBOX_DEEP_PROBE_ENABLE(sabrelite_match);
 -- 
 2.29.2
 
