@@ -1,53 +1,53 @@
-Delivery-date: Fri, 25 Jun 2021 09:43:50 +0200
+Delivery-date: Fri, 25 Jun 2021 09:44:02 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwgVC-0007mT-O3
-	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 09:43:50 +0200
+	id 1lwgVO-0007n7-Mw
+	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 09:44:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwgVB-0004wK-7K
-	for lore@pengutronix.de; Fri, 25 Jun 2021 09:43:50 +0200
+	id 1lwgVN-0004yb-9H
+	for lore@pengutronix.de; Fri, 25 Jun 2021 09:44:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=pSTJI4nF7iHeVtzayCGEGcKcGRF9DV+PBMxJXTFQBMc=; b=hDyUxLnFCyoqOZ
-	i6wl+KbLcD9+qIYUP3xVZkdLhjL37LmIvcQlC2MqYNFAbVMzUnEPzEmciB1MyWCfjNbqM77bNrCU/
-	nxDDU8O4yx3ZWA3uZ1LF6lUWz1J94ooRN5/NW+KUx8xP7vLbjiZtB5YqnI871RUSwF3aobbF2PTg0
-	5bUJo2OShjWTRa5UZym5+nXMvqtiq/RnfeRFFrJLyQ9yrzIdL4hj0+K5a/Gp954+t3us27VLD/Stz
-	cOO5Bfnoo+mPJFnLa8+FslPKIy7ejrGEdt/UveT8RIQURAMHdKeZ7EjfH5dnX8PfCy6bypo2V7GWx
-	4+O0RHcS7c5cVDq6uElw==;
+	List-Owner; bh=GWB7/0UtJda2PjQ1yhNJ8526JAMycmdGhfy/R31COxs=; b=Su4jqWJq47MMiw
+	iHrzRovZTuEkRZQ4qPRP6NFuQLWHz1NApFiHgLt1OKarEAlWIvI8J1ss42KhmhcilGEHwfrhmLJEI
+	ZqS4hlPc/+CzIRiVHZ92BmBoVou7/DfS+kJedADYwkRiS3nQs2oa9yEkfgm1Lu0DFYTvnIMUY52ZU
+	bqEqSqfxWGjwRA5T0uw2Gs2oWSTQk3Ugzg9/ZHfrUqJIUruC3FOsRyxkJ+Y4mgb0ticz3SMIunKV+
+	SbPpxXRGDc8ZVbCVnqup9FQVn/S8CztMZYZHWB4R/trmaGv9x0W7kIK6sq2VauC+zgfsRXprdJV/l
+	OH98TBGq+dB4PZBcgYzg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwgTm-0004VF-B6; Fri, 25 Jun 2021 07:42:22 +0000
+	id 1lwgU6-0004eg-BC; Fri, 25 Jun 2021 07:42:43 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwgDg-00HZ1c-4O
+ id 1lwgDg-00HZ1e-4I
  for barebox@lists.infradead.org; Fri, 25 Jun 2021 07:25:45 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwgDe-0002Qc-Cu; Fri, 25 Jun 2021 09:25:42 +0200
+ id 1lwgDe-0002Qb-Er; Fri, 25 Jun 2021 09:25:42 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwgDd-0000dE-CU; Fri, 25 Jun 2021 09:25:41 +0200
+ id 1lwgDd-0000dB-C2; Fri, 25 Jun 2021 09:25:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 25 Jun 2021 09:25:28 +0200
-Message-Id: <20210625072540.32717-8-s.hauer@pengutronix.de>
+Date: Fri, 25 Jun 2021 09:25:27 +0200
+Message-Id: <20210625072540.32717-7-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210625072540.32717-1-s.hauer@pengutronix.de>
 References: <20210625072540.32717-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210625_002544_309569_CE517701 
-X-CRM114-Status: GOOD (  13.08  )
+X-CRM114-CacheID: sfid-20210625_002544_279199_7CC70567 
+X-CRM114-Status: GOOD (  11.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,84 +71,68 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/19] of: implement of_get_stdoutpath()
+Subject: [PATCH 06/19] of: Set of_chosen and of_model earlier
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-For deep probe support it will be useful to have a function to
-get the node corresponding to the stdoutpath. of_device_is_stdout_path()
-already has that functionality in it, so make a separate funcion from
-it.
+of_chosen and of_model can be set once we have the device tree root node,
+no need to wait until we probe the tree.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/base.c | 15 ++++++++++-----
- include/of.h      |  6 ++++++
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ drivers/of/base.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 83c9d5fb6b..b40bffe922 100644
+index 723b1fae47..83c9d5fb6b 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -2453,16 +2453,13 @@ void of_delete_node(struct device_node *node)
- 		of_set_root_node(NULL);
+@@ -1682,6 +1682,9 @@ int of_modalias_node(struct device_node *node, char *modalias, int len)
  }
+ EXPORT_SYMBOL_GPL(of_modalias_node);
  
--int of_device_is_stdout_path(struct device_d *dev)
-+struct device_node *of_get_stdoutpath(void)
++static struct device_node *of_chosen;
++static const char *of_model;
++
+ struct device_node *of_get_root_node(void)
  {
- 	struct device_node *dn;
- 	const char *name;
- 	const char *p;
- 	char *q;
+ 	return root_node;
+@@ -1694,6 +1697,12 @@ int of_set_root_node(struct device_node *node)
  
--	if (!dev->device_node)
--		return 0;
--
- 	name = of_get_property(of_chosen, "stdout-path", NULL);
- 	if (!name)
- 		name = of_get_property(of_chosen, "linux,stdout-path", NULL);
-@@ -2481,7 +2478,15 @@ int of_device_is_stdout_path(struct device_d *dev)
+ 	root_node = node;
  
- 	free(q);
- 
--	return dn == dev->device_node;
-+	return dn;
-+}
++	of_chosen = of_find_node_by_path("/chosen");
++	of_property_read_string(root_node, "model", &of_model);
 +
-+int of_device_is_stdout_path(struct device_d *dev)
-+{
-+	if (!dev->device_node)
-+		return 0;
++	if (of_model)
++		barebox_set_model(of_model);
 +
-+	return dev->device_node == of_get_stdoutpath();
- }
+ 	of_alias_scan();
  
- /**
-diff --git a/include/of.h b/include/of.h
-index 84d6e9b682..3bce92e848 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -281,6 +281,7 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node);
- int of_parse_partitions(struct cdev *cdev, struct device_node *node);
- int of_fixup_partitions(struct device_node *np, struct cdev *cdev);
- int of_partitions_register_fixup(struct cdev *cdev);
-+struct device_node *of_get_stdoutpath(void);
- int of_device_is_stdout_path(struct device_d *dev);
- const char *of_get_model(void);
- void *of_flatten_dtb(struct device_node *node);
-@@ -318,6 +319,11 @@ static inline int of_partitions_register_fixup(struct cdev *cdev)
- 	return -ENOSYS;
- }
- 
-+static inline struct device_node *of_get_stdoutpath(void)
-+{
-+	return NULL;
-+}
-+
- static inline int of_device_is_stdout_path(struct device_d *dev)
- {
  	return 0;
+@@ -2277,9 +2286,6 @@ int of_add_memory(struct device_node *node, bool dump)
+ 	return ret;
+ }
+ 
+-static struct device_node *of_chosen;
+-static const char *of_model;
+-
+ const char *of_get_model(void)
+ {
+ 	return of_model;
+@@ -2344,12 +2350,6 @@ int of_probe(void)
+ 	if(!root_node)
+ 		return -ENODEV;
+ 
+-	of_chosen = of_find_node_by_path("/chosen");
+-	of_property_read_string(root_node, "model", &of_model);
+-
+-	if (of_model)
+-		barebox_set_model(of_model);
+-
+ 	firmware = of_find_node_by_path("/firmware");
+ 	if (firmware)
+ 		of_platform_populate(firmware, NULL, NULL);
 -- 
 2.29.2
 
