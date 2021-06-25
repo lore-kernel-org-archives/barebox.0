@@ -1,53 +1,63 @@
-Delivery-date: Fri, 25 Jun 2021 09:52:25 +0200
+Delivery-date: Fri, 25 Jun 2021 09:53:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwgdV-00083s-Kt
-	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 09:52:25 +0200
+	id 1lwgeM-000857-7f
+	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 09:53:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwgdR-00079u-5c
-	for lore@pengutronix.de; Fri, 25 Jun 2021 09:52:25 +0200
+	id 1lwgeH-0007IB-4v
+	for lore@pengutronix.de; Fri, 25 Jun 2021 09:53:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=VyP1kocxoFr3kEa7EaqznYKgPFpKqjEvUuuU1W+v2Dc=; b=I32CsfVWCDzTu4
-	Miweg/U6xkfX3O7TZPmZzmO+RoxAG2UlizzMNv9uu6ZlMtRFw/7+fjJbOSOwNrYUnz2fAxuWFg4Df
-	ERZe78wbiB9RLqh0PvOa545iy2swaWigLyhhu65MPO/p8MJ4ALeFA/O+xKrIesCZSmbkCVr8STCWh
-	L8BtnnfZ5tJaJs2iYZRIgTWkuFqU8+w4o98keUmPMwXJ2ec9zJPMJqR9LYl3oWUCwDxtnavUlwSey
-	I2iU343ttaMmUz/azzuToigG8X8cxPonfbIlrBVmoE3UVM66zdGngkKvMXoYXxoq/dNq64bfI6u+6
-	5TMgOPF9rX9twEA0XP3Q==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=5uKv9JvngHNKkJPPEfDktbh5/BbSEbzkAxbeg0XKMzM=; b=3qQJzUOC1H7kYN/cpRml32t2R7
+	huGh34ww/6VVbH4njBMpiBHpIox1CL7BICgcxuI7J0U/ryDyR7AyepBC495vgslBK5uKzMOLXIpHX
+	sOmX3Je/SA+eoN3Ja4WyaxjMDJkJ+wYEl8BLCcFGWmWYw6DaPRdmlZPKGiomuVlErwM9c51ONN46v
+	lJxLjAXJFQuEo/Ci+cCCZAYvht3V/Or6QEuv3qm12TfN0DpKFGbOA5f8OEexWpGCzKWvAgwDkRInb
+	/I8wEPVGrV2Fd8JtU+NYQrjGOl+dQcgUyhoMgXJpR5P8JN9NtLvA5FRfLjAzcZPtR+Quy/z12KUOd
+	kgnQUv/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwgbn-0008MZ-D2; Fri, 25 Jun 2021 07:50:40 +0000
+	id 1lwgcY-0008gR-Pw; Fri, 25 Jun 2021 07:51:26 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwgEC-00HZGA-2W
- for barebox@lists.infradead.org; Fri, 25 Jun 2021 07:26:17 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ id 1lwgLn-00014f-CI
+ for barebox@lists.infradead.org; Fri, 25 Jun 2021 07:34:08 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwgDe-0002Qf-Kb; Fri, 25 Jun 2021 09:25:42 +0200
-Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
+ id 1lwgLl-0003Ur-MS; Fri, 25 Jun 2021 09:34:05 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwgDd-0000dN-Dm; Fri, 25 Jun 2021 09:25:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 25 Jun 2021 09:25:31 +0200
-Message-Id: <20210625072540.32717-11-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210625072540.32717-1-s.hauer@pengutronix.de>
-References: <20210625072540.32717-1-s.hauer@pengutronix.de>
+ id 1lwgLl-0002Nf-D1; Fri, 25 Jun 2021 09:34:05 +0200
+Date: Fri, 25 Jun 2021 09:34:05 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210625073405.GB9782@pengutronix.de>
+References: <20210622082617.18011-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20210622082617.18011-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:33:47 up 127 days, 10:57, 118 users,  load average: 0.12, 0.13,
+ 0.10
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210625_002616_196515_CCC5397C 
-X-CRM114-Status: GOOD (  12.01  )
+X-CRM114-CacheID: sfid-20210625_003407_504259_D36554A0 
+X-CRM114-Status: GOOD (  19.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,49 +77,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 10/19] pinctrl: Find controller node first
+Subject: Re: [PATCH v4 0/8] usbgadget: add support for USB mass storage gadget
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The pinctrl controller node is the first parent node that has a compatible
-property. Use that information to find the node without iterating up to
-the root node.
+On Tue, Jun 22, 2021 at 10:26:09AM +0200, Ahmad Fatoum wrote:
+> v3 -> v4:
+>   - change bthreads to be scheduled like workqueues instead of pollers
+>   - change virtio input from bthread to poller
+>   - add useful bthread debug print
+> 
+> v2 -> v3:
+>   - rebase on v3 of the preparatory system partitions series
+>   - have usbgadget -S '' fallback to use $global.system.partitions
+>   - do file_list_detect_all at gadget instantiation time
+> 
+> v1 -> v2:
+> 
+>   - rebase on top of new bthread API
+>   - drop blocking fallback implementation; we now have bthreads
+>     everywhere
+>   - reuse $global.system.partitions instead of creating even
+>     more autostart variables
+>   - fix assert_command_context to actually do what the
+>     commit message said
+> 
+> 
+> Ahmad Fatoum (8):
+>   input: virtio: poll from poller, not bthread
+>   bthread: add debug print for scheduler context switches
+>   common: move workqueue handling from poller_call() to sched()
+>   common: bthread: schedule only in command context
+>   bthread: implement basic Linux-like completion API
+>   Documentation: devel: background-execution: update bthread docs
+>   usbgadget: refactor usbgadget_register to accept array
+>   usbgadget: add support for USB mass storage gadget
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/pinctrl/pinctrl.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+Applied, thanks
 
-diff --git a/drivers/pinctrl/pinctrl.c b/drivers/pinctrl/pinctrl.c
-index b36521ef83..84ac61f2d9 100644
---- a/drivers/pinctrl/pinctrl.c
-+++ b/drivers/pinctrl/pinctrl.c
-@@ -85,12 +85,15 @@ static int pinctrl_config_one(struct device_node *np)
- 		pinctrl_node = pinctrl_node->parent;
- 		if (!pinctrl_node)
- 			return -ENODEV;
--		pdev = find_pinctrl(pinctrl_node);
--		if (pdev)
-+		if (of_get_property(pinctrl_node, "compatible", NULL))
- 			break;
- 	}
- 
--	return pdev->ops->set_state(pdev, np);
-+	pdev = find_pinctrl(pinctrl_node);
-+	if (pdev)
-+		return pdev->ops->set_state(pdev, np);
-+	else
-+		return -ENODEV;
- }
- 
- int of_pinctrl_select_state(struct device_node *np, const char *name)
+Sascha
+
 -- 
-2.29.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
