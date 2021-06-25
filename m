@@ -1,53 +1,53 @@
-Delivery-date: Fri, 25 Jun 2021 09:47:09 +0200
+Delivery-date: Fri, 25 Jun 2021 09:47:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwgYP-0007tD-NN
-	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 09:47:09 +0200
+	id 1lwgYu-0007uG-Q9
+	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 09:47:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwgYN-0005q1-5k
-	for lore@pengutronix.de; Fri, 25 Jun 2021 09:47:09 +0200
+	id 1lwgYs-0005w4-P7
+	for lore@pengutronix.de; Fri, 25 Jun 2021 09:47:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=O5awCNXC8YXwr+aNiC3PesnWOG7KtDBAepciwtWYoxQ=; b=N2cr4RnqY1s3HH
-	qEuyCzsF/nHbALOUjfDzojELmuoDXvRSLG9b/7wk+Tr9LaskNgxpd8iTSaFAY0ZkE4EWCGHkOeyvC
-	m09+x8a0ow7KwpRlB4immXPaayEwuX/7FVxbtTe2UtX23HZklMZDW+KBqUEpcAE1Rw7V8saq6ZB3y
-	uZUq5iPZGq0W4x1hsb1yrozVox6/L/Lxz0GoiOJjEtw0fdpzBWHtLMedXKCco2am2AXv2NU8EXCiT
-	1d63KfJnsoleJHqgdtcWZ6whOw6AH8maSFhZEcOAkFuQRIh4nHw88bVS5Edz8dXznRIeU5IZoydh/
-	WnhQg8LiSpL9bpEEY3Pg==;
+	List-Owner; bh=/NyDdiNZn0AxHD7xyW3Ba00m/dVCMDAKKuBtloZPn0g=; b=qnJZWHOOFlM7VE
+	4SdhUiLE+3S87+qbAXiOADKHIAEcRiTVZ+hiUOzLNFLFJYdm7oYsHt0RWbZ1q0JLOvT6r6dALoVzi
+	9vLrsn+J8UGCRcPtS9W4+Yw1o8UuNUVASsbfiOUS8i1p/1sfcvPAS0MMG5s61Yx55XUQpyXjMjjvK
+	tG3QXmqLdFGqKeJBiUl0R6ErBXOcQevOKtjFTApV0IfJp1JNpnyZthu94+nJjj5n3H58ladeqxDDD
+	nWKWuHX8+siieD0seGLNmrq3Cmh4HHcG6Q+I/eqxwda5I89C+yd0OEo878tifvet8sNSddRsYGOCz
+	Ebo9v4IYbn+gfG091IWQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwgWr-00068K-Tu; Fri, 25 Jun 2021 07:45:34 +0000
+	id 1lwgXH-0006Jq-Dj; Fri, 25 Jun 2021 07:46:00 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwgDg-00HZ1m-4W
- for barebox@lists.infradead.org; Fri, 25 Jun 2021 07:25:49 +0000
+ id 1lwgDg-00HZ1k-4D
+ for barebox@lists.infradead.org; Fri, 25 Jun 2021 07:25:50 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwgDe-0002Qn-Ok; Fri, 25 Jun 2021 09:25:42 +0200
+ id 1lwgDe-0002Qm-Kb; Fri, 25 Jun 2021 09:25:42 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lwgDd-0000dl-HS; Fri, 25 Jun 2021 09:25:41 +0200
+ id 1lwgDd-0000di-H4; Fri, 25 Jun 2021 09:25:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 25 Jun 2021 09:25:39 +0200
-Message-Id: <20210625072540.32717-19-s.hauer@pengutronix.de>
+Date: Fri, 25 Jun 2021 09:25:38 +0200
+Message-Id: <20210625072540.32717-18-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210625072540.32717-1-s.hauer@pengutronix.de>
 References: <20210625072540.32717-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210625_002544_472123_94F70B3E 
-X-CRM114-Status: GOOD (  12.49  )
+X-CRM114-CacheID: sfid-20210625_002544_531329_8BD633CE 
+X-CRM114-Status: GOOD (  17.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,55 +71,236 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 18/19] ARM: i.MX Phytec physom: Add deep-probe support
+Subject: [PATCH 17/19] ARM: i.MX Phytec physom: convert to board driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+Board driver is the new way for board specific fixups and the physom
+board with its many compatible strings can really take profit from it,
+so convert it.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/phytec-som-imx6/board.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/boards/phytec-som-imx6/board.c | 150 ++++++++++++++++++------
+ 1 file changed, 117 insertions(+), 33 deletions(-)
 
 diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
-index 36c4d9a78b..1e515a093a 100644
+index bac3e8a8a1..36c4d9a78b 100644
 --- a/arch/arm/boards/phytec-som-imx6/board.c
 +++ b/arch/arm/boards/phytec-som-imx6/board.c
-@@ -14,6 +14,7 @@
- #include <gpio.h>
- #include <init.h>
- #include <of.h>
-+#include <deep-probe.h>
- #include <i2c/i2c.h>
- #include <mach/bbu.h>
- #include <platform_data/eth-fec.h>
-@@ -110,6 +111,10 @@ static int phycore_da9062_setup_buck_mode(void)
- 	if (!pmic_np)
- 		return -ENODEV;
+@@ -141,16 +141,26 @@ err_out:
+ 	return ret;
+ }
  
-+	ret = of_device_ensure_probed(pmic_np);
-+	if (ret)
-+		return ret;
+-static int physom_imx6_devices_init(void)
++#define IS_PHYFLEX	BIT(0)
++#define IS_PHYCORE	BIT(1)
++#define IS_PHYCARD	BIT(2)
++#define IS_PHYCORE_UL	BIT(3)
++#define HAS_MMC3	BIT(4)
++#define HAS_MMC1	BIT(5)
 +
- 	adapter = of_find_i2c_adapter_by_node(pmic_np->parent);
- 	if (!adapter)
- 		return -ENODEV;
-@@ -161,6 +166,10 @@ static int physom_imx6_probe(struct device_d *dev)
- 	unsigned flags = brd->flags;
++struct board_data {
++	unsigned flags;
++};
++
++static int physom_imx6_probe(struct device_d *dev)
+ {
+ 	int ret;
+ 	char *environment_path, *default_environment_path;
+ 	char *envdev, *default_envdev;
++	const struct board_data *brd = device_get_match_data(dev);
++	unsigned flags = brd->flags;
  
- 	if (flags & IS_PHYFLEX) {
-+		ret = of_devices_ensure_probed_by_property("gpio-controller");
-+		if (ret)
-+			return ret;
-+
+-	if (of_machine_is_compatible("phytec,imx6q-pfla02")
+-		|| of_machine_is_compatible("phytec,imx6dl-pfla02")
+-		|| of_machine_is_compatible("phytec,imx6s-pfla02")) {
+-
++	if (flags & IS_PHYFLEX) {
  		phyflex_err006282_workaround();
  
  		pfla02_module_revision = get_module_rev();
-@@ -358,3 +367,5 @@ static struct driver_d physom_imx6_driver = {
- };
+@@ -164,21 +174,14 @@ static int physom_imx6_devices_init(void)
+ 		imx6_bbu_internal_mmc_register_handler("mmc2",
+ 						"/dev/mmc2", 0);
  
- postcore_platform_driver(physom_imx6_driver);
+-	} else if (of_machine_is_compatible("phytec,imx6q-pcaaxl3")) {
+-
++	} else if (flags & IS_PHYCARD) {
+ 		barebox_set_hostname("phyCARD-i.MX6");
+ 		default_environment_path = "/chosen/environment-nand";
+ 		default_envdev = "NAND flash";
+ 
+ 		imx6_bbu_internal_mmc_register_handler("mmc2",
+ 						"/dev/mmc2", 0);
+-
+-	} else if (of_machine_is_compatible("phytec,imx6q-pcm058-nand")
+-		|| of_machine_is_compatible("phytec,imx6q-pcm058-emmc")
+-		|| of_machine_is_compatible("phytec,imx6dl-pcm058-nand")
+-		|| of_machine_is_compatible("phytec,imx6qp-pcm058-nand")
+-		|| of_machine_is_compatible("phytec,imx6dl-pcm058-emmc")) {
+-
++	} else if (flags & IS_PHYCORE) {
+ 		if (phycore_da9062_setup_buck_mode())
+ 			pr_err("Setting PMIC BUCK mode failed\n");
+ 
+@@ -189,8 +192,7 @@ static int physom_imx6_devices_init(void)
+ 		imx6_bbu_internal_mmc_register_handler("mmc0",
+ 						"/dev/mmc0", 0);
+ 
+-	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-nand")
+-		|| of_machine_is_compatible("phytec,imx6ul-pcl063-emmc")) {
++	} else if (flags & IS_PHYCORE_UL) {
+ 		barebox_set_hostname("phyCORE-i.MX6UL");
+ 		default_environment_path = "/chosen/environment-nand";
+ 		default_envdev = "NAND flash";
+@@ -201,8 +203,9 @@ static int physom_imx6_devices_init(void)
+ 		imx6_bbu_internal_mmc_register_handler("mmc0",
+ 						"/dev/mmc0", 0);
+ 
+-	} else
+-		return 0;
++	} else {
++		return -EINVAL;
++	}
+ 
+ 	switch (bootsource_get()) {
+ 	case BOOTSOURCE_MMC:
+@@ -234,14 +237,13 @@ static int physom_imx6_devices_init(void)
+ 
+ 	pr_notice("Using environment in %s\n", envdev);
+ 
+-	if (of_machine_is_compatible("phytec,imx6q-pcm058-emmc")
+-		|| of_machine_is_compatible("phytec,imx6dl-pcm058-emmc")) {
++	if (flags & HAS_MMC3) {
+ 		imx6_bbu_internal_mmc_register_handler("mmc3",
+ 						"/dev/mmc3",
+ 						BBU_HANDLER_FLAG_DEFAULT);
+ 		imx6_bbu_internal_mmcboot_register_handler("mmc3-boot",
+ 						"mmc3", 0);
+-	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-emmc")) {
++	} else if (flags & HAS_MMC1) {
+ 		imx6_bbu_internal_mmc_register_handler("mmc1",
+ 						"/dev/mmc1",
+ 						BBU_HANDLER_FLAG_DEFAULT);
+@@ -254,23 +256,105 @@ static int physom_imx6_devices_init(void)
+ 	defaultenv_append_directory(defaultenv_physom_imx6);
+ 
+ 	/* Overwrite file /env/init/automount */
+-	if (of_machine_is_compatible("phytec,imx6q-pfla02")
+-		|| of_machine_is_compatible("phytec,imx6dl-pfla02")
+-		|| of_machine_is_compatible("phytec,imx6s-pfla02")
+-		|| of_machine_is_compatible("phytec,imx6q-pcaaxl3")) {
++	if (flags & IS_PHYCARD || flags & IS_PHYFLEX) {
+ 		defaultenv_append_directory(defaultenv_physom_imx6);
+-	} else if (of_machine_is_compatible("phytec,imx6qp-pcm058-nand")
+-		|| of_machine_is_compatible("phytec,imx6q-pcm058-nand")
+-		|| of_machine_is_compatible("phytec,imx6q-pcm058-emmc")
+-		|| of_machine_is_compatible("phytec,imx6dl-pcm058-nand")
+-		|| of_machine_is_compatible("phytec,imx6dl-pcm058-emmc")) {
++	} else if (flags & IS_PHYCORE) {
+ 		defaultenv_append_directory(defaultenv_physom_imx6);
+ 		defaultenv_append_directory(defaultenv_physom_imx6_phycore);
+-	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-nand")
+-		|| of_machine_is_compatible("phytec,imx6ul-pcl063-emmc")) {
++	} else if (flags & IS_PHYCORE_UL) {
+ 		defaultenv_append_directory(defaultenv_physom_imx6ul_phycore);
+ 	}
+ 
+ 	return 0;
+ }
+-device_initcall(physom_imx6_devices_init);
 +
-+BAREBOX_DEEP_PROBE_ENABLE(physom_imx6_match);
++static struct board_data imx6q_pfla02 = {
++	.flags = IS_PHYFLEX,
++};
++
++static struct board_data imx6dl_pfla02 = {
++	.flags = IS_PHYFLEX,
++};
++
++static struct board_data imx6s_pfla02 = {
++	.flags = IS_PHYFLEX,
++};
++
++static struct board_data imx6q_pcaaxl3 = {
++	.flags = IS_PHYCARD,
++};
++
++static struct board_data imx6q_pcm058_nand = {
++	.flags = IS_PHYCORE,
++};
++
++static struct board_data imx6q_pcm058_emmc = {
++	.flags = IS_PHYCORE | HAS_MMC3,
++};
++
++static struct board_data imx6dl_pcm058_nand = {
++	.flags = IS_PHYCORE,
++};
++
++static struct board_data imx6qp_pcm058_nand = {
++	.flags = IS_PHYCORE,
++};
++
++static struct board_data imx6dl_pcm058_emmc = {
++	.flags = IS_PHYCORE | HAS_MMC3,
++};
++
++static struct board_data imx6ul_pcl063_nand = {
++	.flags = IS_PHYCORE_UL,
++};
++
++static struct board_data imx6ul_pcl063_emmc = {
++	.flags = IS_PHYCORE_UL | HAS_MMC1,
++};
++
++
++static const struct of_device_id physom_imx6_match[] = {
++	{
++		.compatible = "phytec,imx6q-pfla02",
++		.data = &imx6q_pfla02,
++	}, {
++		.compatible = "phytec,imx6dl-pfla02",
++		.data = &imx6dl_pfla02,
++	}, {
++		.compatible = "phytec,imx6s-pfla02",
++		.data = &imx6s_pfla02,
++	}, {
++		.compatible = "phytec,imx6q-pcaaxl3",
++		.data = &imx6q_pcaaxl3,
++	}, {
++		.compatible = "phytec,imx6q-pcm058-nand",
++		.data = &imx6q_pcm058_nand,
++	}, {
++		.compatible = "phytec,imx6q-pcm058-emmc",
++		.data = &imx6q_pcm058_emmc,
++	}, {
++		.compatible = "phytec,imx6dl-pcm058-nand",
++		.data = &imx6dl_pcm058_nand,
++	}, {
++		.compatible = "phytec,imx6qp-pcm058-nand",
++		.data = &imx6qp_pcm058_nand,
++	}, {
++		.compatible = "phytec,imx6dl-pcm058-emmc",
++		.data = &imx6dl_pcm058_emmc,
++	}, {
++		.compatible = "phytec,imx6ul-pcl063-nand",
++		.data = &imx6ul_pcl063_nand,
++	}, {
++		.compatible = "phytec,imx6ul-pcl063-emmc",
++		.data = &imx6ul_pcl063_emmc,
++	},
++	{ /* Sentinel */ },
++};
++
++static struct driver_d physom_imx6_driver = {
++	.name = "physom-imx6",
++	.probe = physom_imx6_probe,
++	.of_compatible = physom_imx6_match,
++};
++
++postcore_platform_driver(physom_imx6_driver);
 -- 
 2.29.2
 
