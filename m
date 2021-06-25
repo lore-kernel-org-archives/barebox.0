@@ -1,51 +1,66 @@
-Delivery-date: Fri, 25 Jun 2021 12:01:57 +0200
+Delivery-date: Fri, 25 Jun 2021 12:05:31 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwier-0001zD-73
-	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 12:01:57 +0200
+	id 1lwiiJ-00022b-FT
+	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 12:05:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwiep-0001cw-GG
-	for lore@pengutronix.de; Fri, 25 Jun 2021 12:01:57 +0200
+	id 1lwiiH-0001zn-SC
+	for lore@pengutronix.de; Fri, 25 Jun 2021 12:05:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=5e5NY7vDu/NafDfEdU3XamJNcZDMZLUKvT69z+kRh14=; b=AxxvteMoqOC0bY
-	O+wnjiALCX9XyFtHNdd7lsLCGZwPSg4sEaOcpqCbcUSfqlWyvW/YodH1cQOQalAxqmSNd4XoXmzFf
-	zYxVWli6+tz//K9yUlPJyviahoHp98iCsDntJjTO6K71ZPaATljSTwgVcVto6t/SoNld9/tsDXbV2
-	JTJgkATn84JMO0mdse53Cn0MPiN/ieWMpfEfpCm4ifWoiuBHtgePJh60+zLqyFC+TVez5fAJB+XP+
-	qc70opYsDOMu6HOwiR3R6NN7QLX1Mhgid9TyWmhCkTZBPxBIVSS1etO4BcKkUG6dqtjY5F6EI0qO8
-	1oKjZyXItvQ6Y7DR4Rmw==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=OBkOjQf3KX8QUjwU6U73WZZk+N8jqXyJssF/FDygjPw=; b=JjnaW5bD3vT9tC
+	VUjAijX5mq492oWzHHOpr18TD5epujza1cyz5W0YTYcf6MRz5n/uGs1CDa1fYvmxGysyqeNPA9cHx
+	/LpzNR7AreXKX2j2fuKOBm+qh9wQsGVBrR6WN0Qy8ZgmujqZSMoYqto7nlzMk258EzboF0IXOUFe8
+	AjuZvtMyrFLNh4geILLzTLeZc0hPYYBYgMRIJmqPT40+UIJ1qWdADOlN9ZrBYWtJHDAAg5VsR/0bf
+	rPFji8jHMdAIU6pkECdpaYCDS0XwvpEA4mamzxmN1NxyVZlgn3TKbcwsEVhvyyjxV/CvaGE//8kbk
+	63WDJhmAPrSe+DT+YDHw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwics-000oii-Vs; Fri, 25 Jun 2021 09:59:55 +0000
+	id 1lwigl-000pwn-BJ; Fri, 25 Jun 2021 10:03:55 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwhgn-000XcA-1t
- for barebox@lists.infradead.org; Fri, 25 Jun 2021 08:59:55 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ id 1lwhm3-000Z0F-La
+ for barebox@lists.infradead.org; Fri, 25 Jun 2021 09:05:21 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1lwhgj-0001aU-Cu
- for barebox@lists.infradead.org; Fri, 25 Jun 2021 10:59:49 +0200
-Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1lwhgj-0006W2-2k
- for barebox@lists.infradead.org; Fri, 25 Jun 2021 10:59:49 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 25 Jun 2021 10:59:44 +0200
-Message-Id: <20210625085944.11260-1-s.trumtrar@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+ (envelope-from <mtr@pengutronix.de>)
+ id 1lwhm2-0002Ki-5n; Fri, 25 Jun 2021 11:05:18 +0200
+Received: from mtr by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mtr@pengutronix.de>)
+ id 1lwhm1-0008SV-Sv; Fri, 25 Jun 2021 11:05:17 +0200
+Date: Fri, 25 Jun 2021 11:05:17 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210625090517.GA23960@pengutronix.de>
+References: <20210624102342.269363-1-m.tretter@pengutronix.de>
+ <20210624102342.269363-5-m.tretter@pengutronix.de>
+ <c06d88d6-db66-0a43-a4d8-3717c329c928@pengutronix.de>
+ <20210624132423.GD28030@pengutronix.de>
+ <b638d4fe-d6bb-5551-9ea2-443db13dcb97@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <b638d4fe-d6bb-5551-9ea2-443db13dcb97@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 10:41:06 up 127 days, 12:04, 123 users,  load average: 0.26, 0.14,
+ 0.11
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210625_015953_174679_D6A5AAA4 
-X-CRM114-Status: GOOD (  18.10  )
+X-CRM114-CacheID: sfid-20210625_020519_779291_634A5750 
+X-CRM114-Status: GOOD (  36.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,137 +80,162 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2] firmware: socfpga: set APPLYCFG after loading bitstream
+Subject: Re: [PATCH 4/7] ARM: zynqmp: add update handler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-To make changes to the SDRAM controller effective, the APPLYCFG bit must
-be set after programming the bitstream to the FPGA. This has to be done
-without any SDRAM usage. Therefore copy the function to execute to the
-OCRAM and execute it from there.
+On Thu, 24 Jun 2021 15:34:33 +0200, Ahmad Fatoum wrote:
+> On 24.06.21 15:24, Michael Tretter wrote:
+> > On Thu, 24 Jun 2021 12:52:58 +0200, Ahmad Fatoum wrote:
+> >> On 24.06.21 12:23, Michael Tretter wrote:
+> >>> The ZynqMP boots from an SDHCI device by reading a boot.bin file from
+> >>> the FAT16/32 partition, which is the first partition in the MBR.
+> >>>
+> >>> The update handler copies a boot.bin image to this partition, which
+> >>> might be board specific.
+> >>
+> >> Is barebox the boot.bin or is that a separate first stage bootloader?
+> > 
+> > Both. The boot.bin contains at least the first stage bootloader, TF-A, and
+> > Barebox. You cannot boot a "standalone" Barebox image on the ZynqMP.
+> > 
+> > I also documented this in the zynqmp documentation as part of this patch
+> > series.
+> 
+> I saw that after writing the mail here. Thanks for clarifying.
+> 
+> > 
+> > Michael
+> > 
+> >>
+> >>>
+> >>> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> >>> ---
+> >>>  arch/arm/mach-zynqmp/Makefile                 |  1 +
+> >>>  .../arm/mach-zynqmp/include/mach/zynqmp-bbu.h | 21 ++++++++
+> >>>  arch/arm/mach-zynqmp/zynqmp-bbu.c             | 48 +++++++++++++++++++
+> >>>  3 files changed, 70 insertions(+)
+> >>>  create mode 100644 arch/arm/mach-zynqmp/include/mach/zynqmp-bbu.h
+> >>>  create mode 100644 arch/arm/mach-zynqmp/zynqmp-bbu.c
+> >>>
+> >>> diff --git a/arch/arm/mach-zynqmp/Makefile b/arch/arm/mach-zynqmp/Makefile
+> >>> index 14b8a4e46b87..e24a43c0d59f 100644
+> >>> --- a/arch/arm/mach-zynqmp/Makefile
+> >>> +++ b/arch/arm/mach-zynqmp/Makefile
+> >>> @@ -1,3 +1,4 @@
+> >>>  # SPDX-License-Identifier: GPL-2.0-or-later
+> >>>  obj-y += firmware-zynqmp.o
+> >>>  obj-y += zynqmp.o
+> >>> +obj-$(CONFIG_BAREBOX_UPDATE) += zynqmp-bbu.o
+> >>> diff --git a/arch/arm/mach-zynqmp/include/mach/zynqmp-bbu.h b/arch/arm/mach-zynqmp/include/mach/zynqmp-bbu.h
+> >>> new file mode 100644
+> >>> index 000000000000..8502791ee0f7
+> >>> --- /dev/null
+> >>> +++ b/arch/arm/mach-zynqmp/include/mach/zynqmp-bbu.h
+> >>> @@ -0,0 +1,21 @@
+> >>> +/* SPDX-License-Identifier: GPL-2.0-only */
+> >>> +/*
+> >>> + * Copyright (C) 2020 Michael Tretter <m.tretter@pengutronix.de>
+> >>> + */
+> >>> +#ifndef __MACH_ZYNQMP_BBU_H
+> >>> +#define __MACH_ZYNQMP_BBU_H
+> >>> +
+> >>> +#include <bbu.h>
+> >>> +
+> >>> +#ifdef CONFIG_BAREBOX_UPDATE
+> >>> +int zynqmp_bbu_register_handler(const char *name, char *devicefile,
+> >>> +				unsigned long flags);
+> >>> +#else
+> >>> +static int zynqmp_bbu_register_handler(const char *name, char *devicefile,
+> >>> +				       unsigned long flags)
+> >>> +{
+> >>> +	return 0;
+> >>> +};
+> >>> +#endif
+> >>> +
+> >>> +#endif /* __MACH_ZYNQMP_BBU_H */
+> >>> diff --git a/arch/arm/mach-zynqmp/zynqmp-bbu.c b/arch/arm/mach-zynqmp/zynqmp-bbu.c
+> >>> new file mode 100644
+> >>> index 000000000000..d1197c01dc41
+> >>> --- /dev/null
+> >>> +++ b/arch/arm/mach-zynqmp/zynqmp-bbu.c
+> >>> @@ -0,0 +1,48 @@
+> >>> +// SPDX-License-Identifier: GPL-2.0-only
+> >>> +/*
+> >>> + * Copyright (C) 2020 Michael Tretter <m.tretter@pengutronix.de>
+> >>> + */
+> >>> +
+> >>> +#include <common.h>
+> >>> +#include <libfile.h>
+> >>> +#include <mach/zynqmp-bbu.h>
+> >>> +
+> >>> +static int zynqmp_bbu_handler(struct bbu_handler *handler,
+> >>> +		struct bbu_data *data)
+> >>> +{
+> >>> +	int ret = 0;
+> >>> +
+> >>> +	ret = bbu_confirm(data);
+> >>> +	if (ret)
+> >>> +		return ret;
+> >>> +
+> >>> +	ret = copy_file(data->imagefile, data->devicefile, 1);
+> >>> +	if (ret < 0) {
+> >>> +		pr_err("update failed: %s", strerror(-ret));
+> >>> +		return ret;
+> >>> +	}
+> 
+> EFI also registers an barebox update handler for a file: /boot/EFI/BOOT/BOOTx64.EFI,
+> but there apparently bbu_register_std_file_update suffices.
+> 
+> Did you check if that would work for you as well?
+> 
+> It's still a good idea to have a zynqmp specific wrapper for bbu_register_std_file_update,
+> but I am not sure you need to duplicate the copy_file stuff.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
+I didn't know about the handler and haven't checked this. If this can work,
+I'll sent another patch to replace the copy_file stuff with use of the
+existing functions.
 
-Notes:
-    v1: Link: https://lore.barebox.org/20210618080939.15343-2-s.trumtrar@pengutronix.de
-    
-    Changes since v1:
-      - include feedback from Ahmad
+> 
+> Also, this seems SD-specific. I assume eMMC would boot from boot partitions?
+> If so, zynqmp_bbu_register_sd_handler may be a more apt name.
 
- .../mach-socfpga/include/mach/cyclone5-regs.h |  1 +
- drivers/firmware/Makefile                     |  2 +-
- drivers/firmware/socfpga.c                    | 21 +++++++++++++++++++
- drivers/firmware/socfpga_sdr.S                | 20 ++++++++++++++++++
- 4 files changed, 43 insertions(+), 1 deletion(-)
- create mode 100644 drivers/firmware/socfpga_sdr.S
+No, eMMC boot partitions are not supported by the ROM code. The handler is the
+same for SD and eMMC.
 
-diff --git a/arch/arm/mach-socfpga/include/mach/cyclone5-regs.h b/arch/arm/mach-socfpga/include/mach/cyclone5-regs.h
-index e88daf718917..1a7d787a27bf 100644
---- a/arch/arm/mach-socfpga/include/mach/cyclone5-regs.h
-+++ b/arch/arm/mach-socfpga/include/mach/cyclone5-regs.h
-@@ -18,5 +18,6 @@
- #define CYCLONE5_SYSMGR_ADDRESS		0xffd08000
- #define CYCLONE5_SCANMGR_ADDRESS	0xfff02000
- #define CYCLONE5_SMP_TWD_ADDRESS	0xfffec600
-+#define CYCLONE5_OCRAM_ADDRESS		0xffff0000
- 
- #endif /* __MACH_SOCFPGA_REGS_H */
-diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
-index b162b08b0a80..bbd2bcda9780 100644
---- a/drivers/firmware/Makefile
-+++ b/drivers/firmware/Makefile
-@@ -1,3 +1,3 @@
- obj-$(CONFIG_FIRMWARE_ALTERA_SERIAL) += altera_serial.o
--obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o
-+obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o socfpga_sdr.o
- obj-$(CONFIG_FIRMWARE_ZYNQMP_FPGA) += zynqmp-fpga.o
-diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
-index 61c2b02eca42..b16bd33de408 100644
---- a/drivers/firmware/socfpga.c
-+++ b/drivers/firmware/socfpga.c
-@@ -39,6 +39,9 @@
- #include <mach/cyclone5-reset-manager.h>
- #include <mach/cyclone5-regs.h>
- #include <mach/cyclone5-sdram.h>
-+#include <asm/fncpy.h>
-+#include <mmu.h>
-+#include <asm/cache.h>
- 
- #define FPGAMGRREGS_STAT			0x0
- #define FPGAMGRREGS_CTRL			0x4
-@@ -78,6 +81,10 @@
- #define CDRATIO_x4	0x2
- #define CDRATIO_x8	0x3
- 
-+extern void socfpga_sdram_apply_static_cfg(void __iomem *sdrctrlgrp);
-+extern void socfpga_sdram_apply_static_cfg_end(void *);
-+extern const u32 socfpga_sdram_apply_static_cfg_sz;
-+
- struct fpgamgr {
- 	struct firmware_handler fh;
- 	struct device_d dev;
-@@ -345,6 +352,7 @@ static int socfpga_fpgamgr_program_finish(struct firmware_handler *fh)
- {
- 	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
- 	int status;
-+	void (*ocram_func)(void __iomem *ocram_base);
- 
- 	/* Ensure the FPGA entering config done */
- 	status = socfpga_fpgamgr_program_poll_cd(mgr);
-@@ -374,6 +382,19 @@ static int socfpga_fpgamgr_program_finish(struct firmware_handler *fh)
- 		return status;
- 	}
- 
-+	remap_range((void *)CYCLONE5_OCRAM_ADDRESS, PAGE_SIZE, MAP_CACHED);
-+
-+	dev_dbg(&mgr->dev, "Setting APPLYCFG bit...\n");
-+
-+	ocram_func = fncpy((void __iomem *)CYCLONE5_OCRAM_ADDRESS,
-+			   &socfpga_sdram_apply_static_cfg,
-+			   socfpga_sdram_apply_static_cfg_sz);
-+
-+	sync_caches_for_execution();
-+
-+	ocram_func((void __iomem *) (CYCLONE5_SDR_ADDRESS +
-+				     SDR_CTRLGRP_STATICCFG_ADDRESS));
-+
- 	return 0;
- }
- 
-diff --git a/drivers/firmware/socfpga_sdr.S b/drivers/firmware/socfpga_sdr.S
-new file mode 100644
-index 000000000000..b895fb293cbd
---- /dev/null
-+++ b/drivers/firmware/socfpga_sdr.S
-@@ -0,0 +1,20 @@
-+#include <linux/linkage.h>
-+
-+	.arch	armv7-a
-+	.arm
-+
-+/*
-+ * r0 : sdram controller staticcfg
-+ */
-+
-+ENTRY(socfpga_sdram_apply_static_cfg)
-+	push {ip,lr}
-+	ldr r1, [r0]
-+	orr r1, r1, #8
-+	str r1, [r0]
-+	pop {ip,pc}
-+	.align
-+ENDPROC(socfpga_sdram_apply_static_cfg)
-+
-+ENTRY(socfpga_sdram_apply_static_cfg_sz)
-+	.word . - socfpga_sdram_apply_static_cfg;
--- 
-2.30.2
+Michael
 
+> 
+> 
+> >>> +
+> >>> +	return ret;
+> >>> +}
+> >>> +
+> >>> +int zynqmp_bbu_register_handler(const char *name, char *devicefile,
+> >>> +		unsigned long flags)
+> >>> +{
+> >>> +	struct bbu_handler *handler;
+> >>> +	int ret = 0;
+> >>> +
+> >>> +	if (!name || !devicefile)
+> >>> +		return -EINVAL;
+> >>> +
+> >>> +	handler = xzalloc(sizeof(*handler));
+> >>> +	handler->name = name;
+> >>> +	handler->devicefile = devicefile;
+> >>> +	handler->flags = flags;
+> >>> +	handler->handler = zynqmp_bbu_handler;
+> >>> +
+> >>> +	ret = bbu_register_handler(handler);
+> >>> +	if (ret)
+> >>> +		free(handler);
+> >>> +
+> >>> +	return ret;
+> >>> +}
 
 _______________________________________________
 barebox mailing list
