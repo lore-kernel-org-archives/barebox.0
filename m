@@ -1,55 +1,55 @@
-Delivery-date: Mon, 28 Jun 2021 12:12:48 +0200
+Delivery-date: Mon, 28 Jun 2021 12:13:38 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lxoFz-0005V9-Vs
-	for lore@lore.pengutronix.de; Mon, 28 Jun 2021 12:12:48 +0200
+	id 1lxoGo-0005VZ-8r
+	for lore@lore.pengutronix.de; Mon, 28 Jun 2021 12:13:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lxoFy-0003dR-Gw
-	for lore@pengutronix.de; Mon, 28 Jun 2021 12:12:47 +0200
+	id 1lxoGn-0003hs-4r
+	for lore@pengutronix.de; Mon, 28 Jun 2021 12:13:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=cGldkdw2P6OcNgTqtZviYXCBmlOivKu7woiB4EvDwVc=; b=x7Q+ER9WNZxuW7LrliRftz1QMe
-	MFX8FPPDQ8hVIlH58M5ocJjPCZKA0Rr0H50AYGkEhltAa/UeuUn/2/v8dZ1z9VUiI1G+9+W3tnZg/
-	yS2CQu6rGOfRYaNCq86B3vGwTehdb65rePuWyU3M+LoOQTZVccawy4Qfpvz1LEokXVl/EqEsawUch
-	YzhPz+sTL49ih5k7Ze6U1Xf0QxY9GkyzR3yPwaacihvAq8xO3TTiNn9XBT9bqy+vPCmlzJ8K/U2z1
-	KMPemoCzZ3Ju/pIUe4Q9w4naM3Og0amGDF75qOUaKPJhlPh20ngNpYWVkQ+yGRgI2NP6/EOws7NEB
-	8yIEVT5A==;
+	bh=OR2+zV+SwXDbKoqTV1A8ml/HTsu2UhRecR6Dr2aEPyk=; b=WtMnbP2pqe9E3wc2y22t1xHdrx
+	lx85esVkwTsUwpYSxdza1UgOjBjj8W2UUeVwhm+Tcf5aUfuQnmSemXsQ/zQiwLJBTJW6nKg/cZERn
+	l5BMk45Ljmbfu+jmidiNeg7cmkGDQQlk/zL8F86Kvia99Ut2GyB3j3aMgJa3M4W6emiZPb8fCT98F
+	Ufp8ipDnSmyftxP28LKWx6S/0TGRZ2xU/4IDOnbOln7mpGaUMC2kDKddaTBUOenMSuZ3vBKpKVl0a
+	mtIVHQ6sB8dZV/ue+1JAaj1W4+rE7rbpu7XE8JluUbw4dSWNYPCmS4akRcY8/0xfnwtUDBNfO/ais
+	RgNZjZPg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lxoEX-007a0k-1t; Mon, 28 Jun 2021 10:11:17 +0000
+	id 1lxoFV-007aJy-E4; Mon, 28 Jun 2021 10:12:17 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lxoEQ-007ZzE-Nr
- for barebox@lists.infradead.org; Mon, 28 Jun 2021 10:11:13 +0000
+ id 1lxoFO-007aHh-MV
+ for barebox@lists.infradead.org; Mon, 28 Jun 2021 10:12:12 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1lxoEP-0002st-4C; Mon, 28 Jun 2021 12:11:09 +0200
+ id 1lxoFN-0003C9-H6; Mon, 28 Jun 2021 12:12:09 +0200
 To: Bastian Krause <bst@pengutronix.de>, barebox@lists.infradead.org
-Cc: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <ukl@pengutronix.de>
 References: <20210628064036.25991-1-a.fatoum@pengutronix.de>
- <52d74c00-f249-b87f-bbe9-0dbeb78ba1e0@pengutronix.de>
+ <20210628064036.25991-3-a.fatoum@pengutronix.de>
+ <bea1987e-8336-6593-0666-e263f4078c58@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <777bf87b-0315-ce59-7581-fbc6ed671cd2@pengutronix.de>
-Date: Mon, 28 Jun 2021 12:11:09 +0200
+Message-ID: <dd09dcde-f249-ff19-0266-fb2b0ce8058c@pengutronix.de>
+Date: Mon, 28 Jun 2021 12:12:09 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.2
 MIME-Version: 1.0
-In-Reply-To: <52d74c00-f249-b87f-bbe9-0dbeb78ba1e0@pengutronix.de>
+In-Reply-To: <bea1987e-8336-6593-0666-e263f4078c58@pengutronix.de>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210628_031110_988948_A490834F 
-X-CRM114-Status: GOOD (  36.17  )
+X-CRM114-CacheID: sfid-20210628_031210_778100_27644B4B 
+X-CRM114-Status: GOOD (  34.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,8 +61,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -73,193 +73,206 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/5] common: machine_id: support /chosen/barebox,
- machine-id-path override
+Subject: Re: [PATCH 3/5] common: machine_id: deprecate machine_id_set_hashable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGVsbG8gQmFzdGksCgpPbiAyOC4wNi4yMSAxMTozNSwgQmFzdGlhbiBLcmF1c2Ugd3JvdGU6Cj4g
-T24gNi8yOC8yMSA4OjQwIEFNLCBBaG1hZCBGYXRvdW0gd3JvdGU6Cj4+IFRoZSBLY29uZmlnIG9w
-dGlvbiBhbHJlYWR5IHdhcm5zIHRoYXQgdGhlIGN1cnJlbnQgYmVoYXZpb3Igb2YKPj4gbWFjaGlu
-ZV9pZF9zZXRfaGFzaGFibGUoKSBvdmVycmlkaW5nIHByZXZpb3VzIGNhbGxzIGNhbiBsZWFkIHRv
-IHRoZQo+PiBtYWNoaW5lLWlkIGNoYW5naW5nIG92ZXIgdXBkYXRlcy4gV2UgZG9uJ3QgeWV0IGhh
-dmUgdGhpcyBwcm9ibGVtIGluCj4+IHByYWN0aWNlLCBiZWNhdXNlIHRoZSBvbmx5IHR3byB1cHN0
-cmVhbSB1c2VycyBhcmUgZm9yIGJzZWMgYW5kIG9jb3RwLAo+PiB3aGljaCBhcmUgZWZ1c2UgZHJp
-dmVycyBmb3IgZGlmZmVyZW50IFNvQ3MuIE9uIHRoZSBvdGhlciBoYW5kLCB1c2Vycwo+PiBtYXkg
-d2FudCB0byBnZXQgdGhlIHVuaXF1ZSBJRCBmcm9tIGFuIEVFUFJPTSBhbmQgd2l0aCBkZWVwIHBy
-b2JlCj4+IHN1cHBvcnQsIHRoZSBpbml0Y2FsbCBvcmRlcmluZyB3aWxsIGJlIGluZGVwZW5kZW50
-IG9mIHRoZSBhY3R1YWwgcHJvYmUKPj4gb3JkZXIuCj4+Cj4+IFdvcmsgYXJvdW5kIHRoaXMgaXNz
-dWUgYnkgaW50cm9kdWNpbmcgYSB3YXkgZm9yIGVhY2ggYm9hcmQgdG8gZXhwbGljaXRseQo+PiBy
-ZWZlcmVuY2UgYSBudm1lbSBjZWxsIHRoYXQgc2hvdWxkIGJlIGhhc2hlZCB0byBwcm9kdWNlIHRo
-ZSBtYWNoaW5lLWlkLgo+Pgo+PiBJZiBubyBzdWNoIGRldmljZSB0cmVlIHByb3BlcnR5IGlzIHN1
-cHBsaWVkLCB0aGUgbGFzdCBjYWxsIHRvCj4+IG1hY2hpbmVfaWRfc2V0X2hhc2hhYmxlKCkgd2ls
-bCBiZSB1c2VkIGFzIGJlZm9yZS4KPj4KPj4gQ2M6IEJhc3RpYW4gS3JhdXNlIDxic3RAcGVuZ3V0
-cm9uaXguZGU+Cj4+IENjOiBVd2UgS2xlaW5lLUvDtm5pZyA8dWtsQHBlbmd1dHJvbml4LmRlPgo+
-PiBTaWduZWQtb2ZmLWJ5OiBBaG1hZCBGYXRvdW0gPGEuZmF0b3VtQHBlbmd1dHJvbml4LmRlPgo+
-PiAtLS0KPj4gIGNvbW1vbi9LY29uZmlnICAgICAgICAgICAgICAgICB8IDEzICsrKysrKy0tLS0K
-Pj4gIGNvbW1vbi9tYWNoaW5lX2lkLmMgICAgICAgICAgICB8IDQxICsrKysrKysrKysrKysrKysr
-KysrKysrKysrKystLS0KPj4gIGRyaXZlcnMvbnZtZW0vY29yZS5jICAgICAgICAgICB8IDQ0ICsr
-KysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0KPj4gIGRyaXZlcnMvb2YvYmFzZS5jICAg
-ICAgICAgICAgICB8IDExICsrKysrKysrKwo+PiAgaW5jbHVkZS9saW51eC9udm1lbS1jb25zdW1l
-ci5oIHwgIDUgKysrKwo+PiAgaW5jbHVkZS9vZi5oICAgICAgICAgICAgICAgICAgIHwgIDYgKysr
-KysKPj4gIDYgZmlsZXMgY2hhbmdlZCwgOTkgaW5zZXJ0aW9ucygrKSwgMjEgZGVsZXRpb25zKC0p
-Cj4+Cj4+IGRpZmYgLS1naXQgYS9jb21tb24vS2NvbmZpZyBiL2NvbW1vbi9LY29uZmlnCj4+IGlu
-ZGV4IDU0ZjFlYjYzM2EzMi4uYTRhMTA5ZjA0ZjA4IDEwMDY0NAo+PiAtLS0gYS9jb21tb24vS2Nv
-bmZpZwo+PiArKysgYi9jb21tb24vS2NvbmZpZwo+PiBAQCAtMTA2NiwxMyArMTA2NiwxNiBAQCBj
-b25maWcgTUFDSElORV9JRAo+PiAgCWJvb2wgImNvbXB1dGUgdW5pcXVlIG1hY2hpbmUtaWQiCj4+
-ICAJZGVwZW5kcyBvbiBGTEVYSUJMRV9CT09UQVJHUwo+PiAgCWRlcGVuZHMgb24gU0hBMQo+PiAr
-CXNlbGVjdCBOVk1FTQo+PiAgCWhlbHAKPj4gIAkgIENvbXB1dGUgYSBwZXJzaXN0ZW50IG1hY2hp
-bmUtc3BlY2lmaWMgaWQgYW5kIHN0b3JlIGl0IHRvICRnbG9iYWwubWFjaGluZV9pZC4KPj4gLQkg
-IFRoZSBpZCBpcyBhIGhhc2ggb2YgZGV2aWNlLXNwZWNpZmljIGluZm9ybWF0aW9uIGFkZGVkIHZp
-YQo+PiAtCSAgbWFjaGluZV9pZF9zZXRfaGFzaGFibGUoKS4gSWYgbXVsdGlwbGUgc291cmNlcyBh
-cmUgYXZhaWxhYmxlLCB0aGUKPj4gLQkgIGluZm9ybWF0aW9uIHByb3ZpZGVkIGJ5IHRoZSBsYXN0
-IGNhbGwgcHJpb3IgdG8gdGhlIGxhdGUgaW5pdGNhbGwKPj4gLQkgIHNldF9tYWNoaW5lX2lkKCkg
-aXMgdXNlZCB0byBnZW5lcmF0ZSB0aGUgbWFjaGluZSBpZCBmcm9tLiBUaHVzIHdoZW4KPj4gLQkg
-IHVwZGF0aW5nIGJhcmVib3ggdGhlIG1hY2hpbmUgaWQgbWlnaHQgY2hhbmdlLgo+PiArCSAgVGhl
-IGlkIGlzIGEgaGFzaCBvZiBkZXZpY2Utc3BlY2lmaWMgaW5mb3JtYXRpb24gYWRkZWQgZWl0aGVy
-IHZpYQo+PiArCSAgbWFjaGluZV9pZF9zZXRfaGFzaGFibGUoKSBvciBieSBoYXNoaW5nIHRoZSBu
-dm1lbSBjZWxsIHJlZmVyZW5jZWQgYnkgdGhlCj4+ICsJICAvY2hvc2VuL2JhcmVib3gsbWFjaGlu
-ZS1pZCBkZXZpY2UgdHJlZSBwcm9wZXJ0eS4KPj4gKwo+PiArCSAgV2l0aCBtYWNoaW5lX2lkX3Nl
-dF9oYXNoYWJsZSgpLCB0aGUgbGFzdCBjYWxsIHByaW9yIHRvIHRoZSBsYXRlIGluaXRjYWxsCj4+
-ICsJICBzZXRfbWFjaGluZV9pZCgpIHdpbGxsIGJlIHVzZWQgdG8gZ2VuZXJhdGUgdGhlIG1hY2hp
-bmUgaWQuIFRoaXMgbWVhbnMKPj4gKwkgIHVwZGF0aW5nIGJhcmVib3ggbWF5IGNoYW5nZSB0aGUg
-bWFjaGluZSBpZCEKPj4gIAo+PiAgCSAgZ2xvYmFsLmJvb3RtLnByb3ZpZGVfbWFjaGluZV9pZCBt
-YXkgYmUgdXNlZCB0byBhdXRvbWF0aWNhbGx5IHNldAo+PiAgCSAgdGhlIGxpbnV4LmJvb3Rhcmdz
-Lm1hY2hpbmVfaWQgZ2xvYmFsIHZhcmlhYmxlIHdpdGggYSB2YWx1ZSBvZgo+PiBkaWZmIC0tZ2l0
-IGEvY29tbW9uL21hY2hpbmVfaWQuYyBiL2NvbW1vbi9tYWNoaW5lX2lkLmMKPj4gaW5kZXggNjQ4
-MDgwNmNkMjg3Li5mZDJmMDg4OGE2Y2QgMTAwNjQ0Cj4+IC0tLSBhL2NvbW1vbi9tYWNoaW5lX2lk
-LmMKPj4gKysrIGIvY29tbW9uL21hY2hpbmVfaWQuYwo+PiBAQCAtMTAsNiArMTAsOSBAQAo+PiAg
-I2luY2x1ZGUgPG1hZ2ljdmFyLmg+Cj4+ICAjaW5jbHVkZSA8Y3J5cHRvL3NoYS5oPgo+PiAgI2lu
-Y2x1ZGUgPG1hY2hpbmVfaWQuaD4KPj4gKyNpbmNsdWRlIDxsaW51eC9lcnIuaD4KPj4gKyNpbmNs
-dWRlIDxsaW51eC9udm1lbS1jb25zdW1lci5oPgo+PiArI2luY2x1ZGUgPG9mLmg+Cj4+ICAKPj4g
-ICNkZWZpbmUgTUFDSElORV9JRF9MRU5HVEggMzIKPj4gIAo+PiBAQCAtMjQsMTYgKzI3LDQ5IEBA
-IHZvaWQgbWFjaGluZV9pZF9zZXRfaGFzaGFibGUoY29uc3Qgdm9pZCAqaGFzaGFibGUsIHNpemVf
-dCBsZW4pCj4+ICAJX19tYWNoaW5lX2lkX2hhc2hhYmxlX2xlbmd0aCA9IGxlbjsKPj4gIH0KPj4g
-IAo+PiArc3RhdGljIGNvbnN0IHZvaWQgKm1hY2hpbmVfaWRfZ2V0X2hhc2hhYmxlKHNpemVfdCAq
-bGVuKQo+PiArewo+PiArCXN0cnVjdCBkZXZpY2Vfbm9kZSAqbnAgPSBvZl9nZXRfbWFjaGluZWlk
-cGF0aCgpOwo+PiArCXN0cnVjdCBudm1lbV9jZWxsICpjZWxsOwo+PiArCXZvaWQgKnJldDsKPj4g
-Kwo+PiArCWlmICghbnApCj4+ICsJCWdvdG8gbm9fY2VsbDsKPj4gKwo+PiArCWNlbGwgPSBvZl9u
-dm1lbV9jZWxsX2dldF9mcm9tX25vZGUobnApOwo+PiArCWlmIChJU19FUlIoY2VsbCkpIHsKPj4g
-KwkJcHJfZXJyKCJJbnZhbGlkIGJhcmVib3gsbWFjaGluZS1pZC1wYXRoOiAlcGVcbiIsIGNlbGwp
-Owo+PiArCQlnb3RvIG5vX2NlbGw7Cj4+ICsJfQo+PiArCj4+ICsJcmV0ID0gbnZtZW1fY2VsbF9y
-ZWFkKGNlbGwsIGxlbik7Cj4+ICsJbnZtZW1fY2VsbF9wdXQoY2VsbCk7Cj4+ICsJaWYgKElTX0VS
-UihyZXQpKSB7Cj4+ICsJCXByX2VycigiQ291bGRuJ3QgcmVhZCBmcm9tIGJhcmVib3gsbWFjaGlu
-ZS1pZC1wYXRoOiAlcGVcbiIsIHJldCk7Cj4+ICsJCWdvdG8gbm9fY2VsbDsKPj4gKwl9Cj4+ICsK
-Pj4gKwlyZXR1cm4gcmV0Owo+PiArCj4+ICtub19jZWxsOgo+PiArCSpsZW4gPSBfX21hY2hpbmVf
-aWRfaGFzaGFibGVfbGVuZ3RoOwo+PiArCXJldHVybiBfX21hY2hpbmVfaWRfaGFzaGFibGU7Cj4+
-ICt9Cj4+ICsKPj4gIHN0YXRpYyBpbnQgbWFjaGluZV9pZF9zZXRfZ2xvYmFsdmFyKHZvaWQpCj4+
-ICB7Cj4+ICAJc3RydWN0IGRpZ2VzdCAqZGlnZXN0ID0gTlVMTDsKPj4gIAl1bnNpZ25lZCBjaGFy
-IG1hY2hpbmVfaWRbU0hBMV9ESUdFU1RfU0laRV07Cj4+ICAJY2hhciBoZXhfbWFjaGluZV9pZFtN
-QUNISU5FX0lEX0xFTkdUSF07Cj4+ICAJY2hhciAqZW52X21hY2hpbmVfaWQ7Cj4+ICsJY29uc3Qg
-dm9pZCAqaGFzaGFibGU7Cj4+ICsJc2l6ZV90IGxlbmd0aDsKPj4gIAlpbnQgcmV0ID0gMDsKPj4g
-IAo+PiArCWhhc2hhYmxlID0gbWFjaGluZV9pZF9nZXRfaGFzaGFibGUoJmxlbmd0aCk7Cj4+ICsK
-Pj4gIAkvKiBub3RoaW5nIHRvIGRvIGlmIG5vIGhhc2hhYmxlIGluZm9ybWF0aW9uIHByb3ZpZGVk
-ICovCj4+IC0JaWYgKCFfX21hY2hpbmVfaWRfaGFzaGFibGUpCj4+ICsJaWYgKCFoYXNoYWJsZSkK
-Pj4gIAkJZ290byBvdXQ7Cj4+ICAKPj4gIAlkaWdlc3QgPSBkaWdlc3RfYWxsb2NfYnlfYWxnbyhI
-QVNIX0FMR09fU0hBMSk7Cj4+IEBAIC00MSw4ICs3Nyw3IEBAIHN0YXRpYyBpbnQgbWFjaGluZV9p
-ZF9zZXRfZ2xvYmFsdmFyKHZvaWQpCj4+ICAJaWYgKHJldCkKPj4gIAkJZ290byBvdXQ7Cj4+ICAK
-Pj4gLQlyZXQgPSBkaWdlc3RfdXBkYXRlKGRpZ2VzdCwgX19tYWNoaW5lX2lkX2hhc2hhYmxlLAo+
-PiAtCQkJICAgIF9fbWFjaGluZV9pZF9oYXNoYWJsZV9sZW5ndGgpOwo+PiArCXJldCA9IGRpZ2Vz
-dF91cGRhdGUoZGlnZXN0LCBoYXNoYWJsZSwgbGVuZ3RoKTsKPj4gIAlpZiAocmV0KQo+PiAgCQln
-b3RvIG91dDsKPj4gIAo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9udm1lbS9jb3JlLmMgYi9kcml2
-ZXJzL252bWVtL2NvcmUuYwo+PiBpbmRleCA0ZTU1OGUxNjUwNjMuLjk4MDMwNGE4MDc4YiAxMDA2
-NDQKPj4gLS0tIGEvZHJpdmVycy9udm1lbS9jb3JlLmMKPj4gKysrIGIvZHJpdmVycy9udm1lbS9j
-b3JlLmMKPj4gQEAgLTM2MSwyOSArMzYxLDIxIEBAIHN0YXRpYyBzdHJ1Y3QgbnZtZW1fY2VsbCAq
-bnZtZW1fY2VsbF9nZXRfZnJvbV9saXN0KGNvbnN0IGNoYXIgKmNlbGxfaWQpCj4+ICAKPj4gICNp
-ZiBJU19FTkFCTEVEKENPTkZJR19OVk1FTSkgJiYgSVNfRU5BQkxFRChDT05GSUdfT0ZUUkVFKQo+
-PiAgLyoqCj4+IC0gKiBvZl9udm1lbV9jZWxsX2dldCgpIC0gR2V0IGEgbnZtZW0gY2VsbCBmcm9t
-IGdpdmVuIGRldmljZSBub2RlIGFuZCBjZWxsIGlkCj4+ICsgKiBvZl9udm1lbV9jZWxsX2dldF9m
-cm9tX25vZGUoKSAtIEdldCBhIG52bWVtIGNlbGwgZnJvbSBjZWxsIGRldmljZSBub2RlCj4+ICAg
-Kgo+PiAtICogQGRldiBub2RlOiBEZXZpY2UgdHJlZSBub2RlIHRoYXQgdXNlcyB0aGUgbnZtZW0g
-Y2VsbAo+PiAtICogQGlkOiBudm1lbSBjZWxsIG5hbWUgZnJvbSBudm1lbS1jZWxsLW5hbWVzIHBy
-b3BlcnR5Lgo+PiArICogQGNlbGxfbnA6IERldmljZSB0cmVlIG5vZGUgb2YgdGhlIG52bWVtIGNl
-bGwKPj4gICAqCj4+ICAgKiBSZXR1cm46IFdpbGwgYmUgYW4gRVJSX1BUUigpIG9uIGVycm9yIG9y
-IGEgdmFsaWQgcG9pbnRlcgo+PiAgICogdG8gYSBzdHJ1Y3QgbnZtZW1fY2VsbC4gIFRoZSBudm1l
-bV9jZWxsIHdpbGwgYmUgZnJlZWQgYnkgdGhlCj4+ICAgKiBudm1lbV9jZWxsX3B1dCgpLgo+PiAg
-ICovCj4+IC1zdHJ1Y3QgbnZtZW1fY2VsbCAqb2ZfbnZtZW1fY2VsbF9nZXQoc3RydWN0IGRldmlj
-ZV9ub2RlICpucCwKPj4gLQkJCQkJICAgIGNvbnN0IGNoYXIgKm5hbWUpCj4+ICtzdHJ1Y3QgbnZt
-ZW1fY2VsbCAqb2ZfbnZtZW1fY2VsbF9nZXRfZnJvbV9ub2RlKHN0cnVjdCBkZXZpY2Vfbm9kZSAq
-Y2VsbF9ucCkKPj4gIHsKPj4gLQlzdHJ1Y3QgZGV2aWNlX25vZGUgKmNlbGxfbnAsICpudm1lbV9u
-cDsKPj4gKwlzdHJ1Y3QgZGV2aWNlX25vZGUgKm52bWVtX25wOwo+PiAgCXN0cnVjdCBudm1lbV9j
-ZWxsICpjZWxsOwo+PiAgCXN0cnVjdCBudm1lbV9kZXZpY2UgKm52bWVtOwo+PiAgCWNvbnN0IF9f
-YmUzMiAqYWRkcjsKPj4gLQlpbnQgcnZhbCwgbGVuLCBpbmRleDsKPj4gLQo+PiAtCWluZGV4ID0g
-b2ZfcHJvcGVydHlfbWF0Y2hfc3RyaW5nKG5wLCAibnZtZW0tY2VsbC1uYW1lcyIsIG5hbWUpOwo+
-PiAtCj4+IC0JY2VsbF9ucCA9IG9mX3BhcnNlX3BoYW5kbGUobnAsICJudm1lbS1jZWxscyIsIGlu
-ZGV4KTsKPj4gLQlpZiAoIWNlbGxfbnApCj4+IC0JCXJldHVybiBFUlJfUFRSKC1FSU5WQUwpOwo+
-PiArCWludCBydmFsLCBsZW47Cj4+ICAKPj4gIAludm1lbV9ucCA9IG9mX2dldF9wYXJlbnQoY2Vs
-bF9ucCk7Cj4+ICAJaWYgKCFudm1lbV9ucCkKPj4gQEAgLTQ0NSw2ICs0MzcsMzIgQEAgZXJyX21l
-bToKPj4gIAo+PiAgCXJldHVybiBFUlJfUFRSKHJ2YWwpOwo+PiAgfQo+PiArRVhQT1JUX1NZTUJP
-TF9HUEwob2ZfbnZtZW1fY2VsbF9nZXRfZnJvbV9ub2RlKTsKPj4gKwo+PiArLyoqCj4+ICsgKiBv
-Zl9udm1lbV9jZWxsX2dldCgpIC0gR2V0IGEgbnZtZW0gY2VsbCBmcm9tIGdpdmVuIGRldmljZSBu
-b2RlIGFuZCBjZWxsIGlkCj4+ICsgKgo+PiArICogQGRldiBub2RlOiBEZXZpY2UgdHJlZSBub2Rl
-IHRoYXQgdXNlcyB0aGUgbnZtZW0gY2VsbAo+PiArICogQGlkOiBudm1lbSBjZWxsIG5hbWUgZnJv
-bSBudm1lbS1jZWxsLW5hbWVzIHByb3BlcnR5Lgo+PiArICoKPj4gKyAqIFJldHVybjogV2lsbCBi
-ZSBhbiBFUlJfUFRSKCkgb24gZXJyb3Igb3IgYSB2YWxpZCBwb2ludGVyCj4+ICsgKiB0byBhIHN0
-cnVjdCBudm1lbV9jZWxsLiAgVGhlIG52bWVtX2NlbGwgd2lsbCBiZSBmcmVlZCBieSB0aGUKPj4g
-KyAqIG52bWVtX2NlbGxfcHV0KCkuCj4+ICsgKi8KPj4gK3N0cnVjdCBudm1lbV9jZWxsICpvZl9u
-dm1lbV9jZWxsX2dldChzdHJ1Y3QgZGV2aWNlX25vZGUgKm5wLAo+PiArCQkJCQkgICAgY29uc3Qg
-Y2hhciAqbmFtZSkKPj4gK3sKPj4gKwlzdHJ1Y3QgZGV2aWNlX25vZGUgKmNlbGxfbnA7Cj4+ICsJ
-aW50IGluZGV4Owo+PiArCj4+ICsJaW5kZXggPSBvZl9wcm9wZXJ0eV9tYXRjaF9zdHJpbmcobnAs
-ICJudm1lbS1jZWxsLW5hbWVzIiwgbmFtZSk7Cj4+ICsKPj4gKwljZWxsX25wID0gb2ZfcGFyc2Vf
-cGhhbmRsZShucCwgIm52bWVtLWNlbGxzIiwgaW5kZXgpOwo+PiArCWlmICghY2VsbF9ucCkKPj4g
-KwkJcmV0dXJuIEVSUl9QVFIoLUVJTlZBTCk7Cj4+ICsKPj4gKwlyZXR1cm4gb2ZfbnZtZW1fY2Vs
-bF9nZXRfZnJvbV9ub2RlKGNlbGxfbnApOwo+PiArfQo+PiAgRVhQT1JUX1NZTUJPTF9HUEwob2Zf
-bnZtZW1fY2VsbF9nZXQpOwo+PiAgI2VuZGlmCj4gCj4gU2hvdWxkbid0IHRoZXNlIGNoYW5nZXMg
-YmUgcGFydCBvZiBhIHNlcGFyYXRlIHBhdGNoPwoKRm9yIGJhcmVib3gsIEkgdXN1YWxseSBmb2xk
-IHNtYWxsZXIgY2hhbmdlcyBpbnRvIHRoZSBjb21taXQgdGhhdCBkZXBlbmRzIG9uIHRoZW0uClNh
-c2NoYSB3YXMgb2sgd2l0aCBpdCBzbyBmYXIuIFdoZW4gdGhlIGNoYW5nZXMgZ2V0IGJpZ2dlciwg
-SSBzcGxpdCB0aGVtIHVwLApidXQgaGVyZSBJIGRpZG4ndCBkZWVtIHRoaXMgbmVjZXNzYXJ5LgoK
-PiAKPiBSZWdhcmRzLAo+IEJhc3RpYW4KPiAKPj4gIAo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9v
-Zi9iYXNlLmMgYi9kcml2ZXJzL29mL2Jhc2UuYwo+PiBpbmRleCA0MTA0ZDc1ODkzMDUuLmE1Yjc0
-NzA3ZmM0ZiAxMDA2NDQKPj4gLS0tIGEvZHJpdmVycy9vZi9iYXNlLmMKPj4gKysrIGIvZHJpdmVy
-cy9vZi9iYXNlLmMKPj4gQEAgLTI1MjUsNiArMjUyNSwxNyBAQCBpbnQgb2ZfZGV2aWNlX2lzX3N0
-ZG91dF9wYXRoKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCB1bnNpZ25lZCBpbnQgKmJhdWRyYXRlKQo+
-PiAgCXJldHVybiB0cnVlOwo+PiAgfQo+PiAgCj4+ICtzdHJ1Y3QgZGV2aWNlX25vZGUgKm9mX2dl
-dF9tYWNoaW5laWRwYXRoKHZvaWQpCj4+ICt7Cj4+ICsJY29uc3QgY2hhciAqbmFtZTsKPj4gKwo+
-PiArCW5hbWUgPSBvZl9nZXRfcHJvcGVydHkob2ZfY2hvc2VuLCAiYmFyZWJveCxtYWNoaW5lLWlk
-LXBhdGgiLCBOVUxMKTsKPj4gKwlpZiAoIW5hbWUpCj4+ICsJCXJldHVybiBOVUxMOwo+PiArCj4+
-ICsJcmV0dXJuIG9mX2ZpbmRfbm9kZV9ieV9wYXRoX29yX2FsaWFzKE5VTEwsIG5hbWUpOwo+PiAr
-fQo+PiArCj4+ICAvKioKPj4gICAqIG9mX2FkZF9pbml0cmQgLSBhZGQgaW5pdHJkIHByb3BlcnRp
-ZXMgdG8gdGhlIGRldmljZXRyZWUKPj4gICAqIEByb290IC0gdGhlIHJvb3Qgbm9kZSBvZiB0aGUg
-dHJlZQo+PiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9udm1lbS1jb25zdW1lci5oIGIvaW5j
-bHVkZS9saW51eC9udm1lbS1jb25zdW1lci5oCj4+IGluZGV4IGI5NzlmMjMzNzJhNi4uNjM5YTdl
-YmJhYmFlIDEwMDY0NAo+PiAtLS0gYS9pbmNsdWRlL2xpbnV4L252bWVtLWNvbnN1bWVyLmgKPj4g
-KysrIGIvaW5jbHVkZS9saW51eC9udm1lbS1jb25zdW1lci5oCj4+IEBAIC0xMjIsMTEgKzEyMiwx
-NiBAQCBzdGF0aWMgaW5saW5lIGludCBudm1lbV9kZXZpY2Vfd3JpdGUoc3RydWN0IG52bWVtX2Rl
-dmljZSAqbnZtZW0sCj4+ICAjZW5kaWYgLyogQ09ORklHX05WTUVNICovCj4+ICAKPj4gICNpZiBJ
-U19FTkFCTEVEKENPTkZJR19OVk1FTSkgJiYgSVNfRU5BQkxFRChDT05GSUdfT0ZUUkVFKQo+PiAr
-c3RydWN0IG52bWVtX2NlbGwgKm9mX252bWVtX2NlbGxfZ2V0X2Zyb21fbm9kZShzdHJ1Y3QgZGV2
-aWNlX25vZGUgKmNlbGxfbnApOwo+PiAgc3RydWN0IG52bWVtX2NlbGwgKm9mX252bWVtX2NlbGxf
-Z2V0KHN0cnVjdCBkZXZpY2Vfbm9kZSAqbnAsCj4+ICAJCQkJICAgICBjb25zdCBjaGFyICpuYW1l
-KTsKPj4gIHN0cnVjdCBudm1lbV9kZXZpY2UgKm9mX252bWVtX2RldmljZV9nZXQoc3RydWN0IGRl
-dmljZV9ub2RlICpucCwKPj4gIAkJCQkJIGNvbnN0IGNoYXIgKm5hbWUpOwo+PiAgI2Vsc2UKPj4g
-K3N0YXRpYyBpbmxpbmUgc3RydWN0IG52bWVtX2NlbGwgKm9mX252bWVtX2NlbGxfZ2V0X2Zyb21f
-bm9kZShzdHJ1Y3QgZGV2aWNlX25vZGUgKmNlbGxfbnApCj4+ICt7Cj4+ICsJcmV0dXJuIEVSUl9Q
-VFIoLUVOT1NZUyk7Cj4+ICt9Cj4+ICBzdGF0aWMgaW5saW5lIHN0cnVjdCBudm1lbV9jZWxsICpv
-Zl9udm1lbV9jZWxsX2dldChzdHJ1Y3QgZGV2aWNlX25vZGUgKm5wLAo+PiAgCQkJCSAgICAgY29u
-c3QgY2hhciAqbmFtZSkKPj4gIHsKPj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvb2YuaCBiL2luY2x1
-ZGUvb2YuaAo+PiBpbmRleCBkODI3OTBjMDUyM2UuLjY3N2Y0OGQwYWJhMSAxMDA2NDQKPj4gLS0t
-IGEvaW5jbHVkZS9vZi5oCj4+ICsrKyBiL2luY2x1ZGUvb2YuaAo+PiBAQCAtMjkwLDYgKzI5MCw3
-IEBAIGludCBvZl9maXh1cF9wYXJ0aXRpb25zKHN0cnVjdCBkZXZpY2Vfbm9kZSAqbnAsIHN0cnVj
-dCBjZGV2ICpjZGV2KTsKPj4gIGludCBvZl9wYXJ0aXRpb25zX3JlZ2lzdGVyX2ZpeHVwKHN0cnVj
-dCBjZGV2ICpjZGV2KTsKPj4gIHN0cnVjdCBkZXZpY2Vfbm9kZSAqb2ZfZ2V0X3N0ZG91dHBhdGgo
-dW5zaWduZWQgaW50ICopOwo+PiAgaW50IG9mX2RldmljZV9pc19zdGRvdXRfcGF0aChzdHJ1Y3Qg
-ZGV2aWNlX2QgKmRldiwgdW5zaWduZWQgaW50ICpiYXVkcmF0ZSk7Cj4+ICtzdHJ1Y3QgZGV2aWNl
-X25vZGUgKm9mX2dldF9tYWNoaW5laWRwYXRoKHZvaWQpOwo+PiAgY29uc3QgY2hhciAqb2ZfZ2V0
-X21vZGVsKHZvaWQpOwo+PiAgdm9pZCAqb2ZfZmxhdHRlbl9kdGIoc3RydWN0IGRldmljZV9ub2Rl
-ICpub2RlKTsKPj4gIGludCBvZl9hZGRfbWVtb3J5KHN0cnVjdCBkZXZpY2Vfbm9kZSAqbm9kZSwg
-Ym9vbCBkdW1wKTsKPj4gQEAgLTMzNiw2ICszMzcsMTEgQEAgc3RhdGljIGlubGluZSBpbnQgb2Zf
-ZGV2aWNlX2lzX3N0ZG91dF9wYXRoKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCB1bnNpZ25lZCBpbnQg
-KmIKPj4gIAlyZXR1cm4gMDsKPj4gIH0KPj4gIAo+PiArc3RhdGljIGlubGluZSBzdHJ1Y3QgZGV2
-aWNlX25vZGUgKm9mX2dldF9tYWNoaW5laWRwYXRoKHZvaWQpCj4+ICt7Cj4+ICsJcmV0dXJuIE5V
-TEw7Cj4+ICt9Cj4+ICsKPj4gIHN0YXRpYyBpbmxpbmUgY29uc3QgY2hhciAqb2ZfZ2V0X21vZGVs
-KHZvaWQpCj4+ICB7Cj4+ICAJcmV0dXJuIE5VTEw7Cj4+Cj4gCj4gCgotLSAKUGVuZ3V0cm9uaXgg
-ZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDov
-L3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAg
-ICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGls
-ZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1
-IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+
+
+On 28.06.21 11:50, Bastian Krause wrote:
+> On 6/28/21 8:40 AM, Ahmad Fatoum wrote:
+>> The Kconfig symbol already warns users that barebox updates
+>> that add new instances of machine_id_set_hashable may cause the machine
+>> ID to change making the future less useful. Recent changes allow the
+>> board DT to identify a specific nvmem cell to use for supplying a machine
+>> ID, making the old way of drivers providing machine IDs and possibly
+>> overriding each other no longer necessary or recommended.
+> 
+> I cannot parse the first sentence of the commit message.
+
+There should've been a comma at the end of the first line.
+
+Cheers,
+Ahmad
+
+> 
+> Regards,
+> Bastian
+> 
+>>
+>> Make this explicit by allowing the old code to be disabled. As we only
+>> have a single user now and won't accept any new ones, we can remove the
+>> warning about it possibly changing after update.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  common/Kconfig        | 18 +++++++++++-------
+>>  common/machine_id.c   | 11 ++++++++---
+>>  drivers/nvmem/Kconfig |  1 +
+>>  drivers/nvmem/ocotp.c |  7 ++++++-
+>>  include/machine_id.h  | 16 ----------------
+>>  5 files changed, 26 insertions(+), 27 deletions(-)
+>>  delete mode 100644 include/machine_id.h
+>>
+>> diff --git a/common/Kconfig b/common/Kconfig
+>> index a4a109f04f08..a2aa0b2568de 100644
+>> --- a/common/Kconfig
+>> +++ b/common/Kconfig
+>> @@ -1069,13 +1069,11 @@ config MACHINE_ID
+>>  	select NVMEM
+>>  	help
+>>  	  Compute a persistent machine-specific id and store it to $global.machine_id.
+>> -	  The id is a hash of device-specific information added either via
+>> -	  machine_id_set_hashable() or by hashing the nvmem cell referenced by the
+>> -	  /chosen/barebox,machine-id device tree property.
+>> -
+>> -	  With machine_id_set_hashable(), the last call prior to the late initcall
+>> -	  set_machine_id() willl be used to generate the machine id. This means
+>> -	  updating barebox may change the machine id!
+>> +	  The id is a hash of device-specific information. This information
+>> +	  comes from the nvmem cell device tree node path described by the
+>> +	  /chosen/barebox,machine-id-path property. As a special case, the i.MX6 OCOTP
+>> +	  driver supplies the SoC UID as hashable for when /chosen/barebox,machine-id-path
+>> +	  is not specified.
+>>  
+>>  	  global.bootm.provide_machine_id may be used to automatically set
+>>  	  the linux.bootargs.machine_id global variable with a value of
+>> @@ -1084,6 +1082,12 @@ config MACHINE_ID
+>>  	  Note: if no hashable information is available no machine id will be passed
+>>  	  to the kernel.
+>>  
+>> +config MACHINE_ID_LEGACY
+>> +	bool
+>> +	help
+>> +	  Selected by i.MX OCOTP driver, so it can set the SoC UID as hashable.
+>> +	  New platforms should use /chosen/barebox,machine-id-path instead.
+>> +
+>>  config SYSTEMD_OF_WATCHDOG
+>>  	bool "inform devicetree-enabled kernel of used watchdog"
+>>  	depends on WATCHDOG && OFTREE && FLEXIBLE_BOOTARGS
+>> diff --git a/common/machine_id.c b/common/machine_id.c
+>> index fd2f0888a6cd..8303c0b7aa87 100644
+>> --- a/common/machine_id.c
+>> +++ b/common/machine_id.c
+>> @@ -9,23 +9,24 @@
+>>  #include <globalvar.h>
+>>  #include <magicvar.h>
+>>  #include <crypto/sha.h>
+>> -#include <machine_id.h>
+>>  #include <linux/err.h>
+>>  #include <linux/nvmem-consumer.h>
+>>  #include <of.h>
+>>  
+>>  #define MACHINE_ID_LENGTH 32
+>>  
+>> +#ifdef CONFIG_MACHINE_ID_LEGACY
+>>  static void *__machine_id_hashable;
+>>  static size_t __machine_id_hashable_length;
+>>  
+>> -
+>> +/* Shouldn't be called from new code */
+>> +void machine_id_set_hashable(const void *hashable, size_t len);
+>>  void machine_id_set_hashable(const void *hashable, size_t len)
+>>  {
+>> -
+>>  	__machine_id_hashable = xmemdup(hashable, len);
+>>  	__machine_id_hashable_length = len;
+>>  }
+>> +#endif
+>>  
+>>  static const void *machine_id_get_hashable(size_t *len)
+>>  {
+>> @@ -52,8 +53,12 @@ static const void *machine_id_get_hashable(size_t *len)
+>>  	return ret;
+>>  
+>>  no_cell:
+>> +#ifdef CONFIG_MACHINE_ID_LEGACY
+>>  	*len = __machine_id_hashable_length;
+>>  	return __machine_id_hashable;
+>> +#else
+>> +	return NULL;
+>> +#endif
+>>  }
+>>  
+>>  static int machine_id_set_globalvar(void)
+>> diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+>> index 3781f7a839fc..08a5765573a8 100644
+>> --- a/drivers/nvmem/Kconfig
+>> +++ b/drivers/nvmem/Kconfig
+>> @@ -25,6 +25,7 @@ config NVMEM_SNVS_LPGPR
+>>  config IMX_OCOTP
+>>  	tristate "i.MX6 On Chip OTP controller"
+>>  	depends on ARCH_IMX6 || ARCH_VF610 || ARCH_IMX8M || ARCH_IMX7
+>> +	select MACHINE_ID_LEGACY
+>>  	depends on OFDEVICE
+>>  	help
+>>  	  This adds support for the i.MX6 On-Chip OTP controller. Currently the
+>> diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+>> index b2fad3c68770..0b10e52a86ba 100644
+>> --- a/drivers/nvmem/ocotp.c
+>> +++ b/drivers/nvmem/ocotp.c
+>> @@ -29,7 +29,6 @@
+>>  #include <regmap.h>
+>>  #include <linux/clk.h>
+>>  #include <mach/ocotp.h>
+>> -#include <machine_id.h>
+>>  #include <mach/ocotp-fusemap.h>
+>>  #include <linux/nvmem-provider.h>
+>>  
+>> @@ -689,6 +688,7 @@ static int imx_ocotp_read(void *ctx, unsigned offset, void *val, size_t bytes)
+>>  
+>>  static void imx_ocotp_set_unique_machine_id(void)
+>>  {
+>> +	extern void machine_id_set_hashable(const void *hashable, size_t len);
+>>  	uint32_t unique_id_parts[UNIQUE_ID_NUM];
+>>  	int i;
+>>  
+>> @@ -785,6 +785,11 @@ static int imx_ocotp_probe(struct device_d *dev)
+>>  				  ethaddr->value, ethaddr);
+>>  	}
+>>  
+>> +	/* Special case: new machine id providers should provide a nvmem cell
+>> +	 * and reference its path via /chosen/barebox,machine-id-path.
+>> +	 * For i.MX, we support the legacy way of the driver supplying the
+>> +	 * hash instead
+>> +	 */
+>>  	if (IS_ENABLED(CONFIG_MACHINE_ID))
+>>  		imx_ocotp_set_unique_machine_id();
+>>  
+>> diff --git a/include/machine_id.h b/include/machine_id.h
+>> deleted file mode 100644
+>> index 31d5e0bb2851..000000000000
+>> --- a/include/machine_id.h
+>> +++ /dev/null
+>> @@ -1,16 +0,0 @@
+>> -#ifndef __MACHINE_ID_H__
+>> -#define __MACHINE_ID_H__
+>> -
+>> -#if IS_ENABLED(CONFIG_MACHINE_ID)
+>> -
+>> -void machine_id_set_hashable(const void *hashable, size_t len);
+>> -
+>> -#else
+>> -
+>> -static inline void machine_id_set_hashable(const void *hashable, size_t len)
+>> -{
+>> -}
+>> -
+>> -#endif /* CONFIG_MACHINE_ID */
+>> -
+>> -#endif  /* __MACHINE_ID_H__ */
+>>
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
