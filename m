@@ -1,54 +1,52 @@
-Delivery-date: Mon, 28 Jun 2021 09:10:59 +0200
+Delivery-date: Mon, 28 Jun 2021 09:11:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lxlQ3-0002Nl-2w
-	for lore@lore.pengutronix.de; Mon, 28 Jun 2021 09:10:59 +0200
+	id 1lxlQH-0002OZ-2K
+	for lore@lore.pengutronix.de; Mon, 28 Jun 2021 09:11:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lxlQ1-0007bW-Go
-	for lore@pengutronix.de; Mon, 28 Jun 2021 09:10:58 +0200
+	id 1lxlQE-0007fo-J5
+	for lore@pengutronix.de; Mon, 28 Jun 2021 09:11:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=sO7lVLnp6HEKiPSFE+V73kKJlf+4AUyILcEAIwOWT/0=; b=GPbfpAYJmcVvtF
-	cmaPqrLqKnTZGVs8moEge3JhuumiFk/SLpjgeDvTZBXc/YBUzpocSMv7EtaAYb80dVb24z9dt6JKO
-	2bipq3jesdxATWyXme6pbyjI/SyN6oTRKCDR5BkG4jhz6j1OwrvBtEo1KMajprR509vkBzR+aH46p
-	ij+fhG4mVEBYiFc1kJeVywnempEMbS1UvlRA8X3NJ+lnwIuMAFCRqC3qegSIijhW0LUJqJJ5WZvya
-	aUNUtf+kuBzm5F2bkB3RS06I55AnVcNh7neZd5MMjApzbzUlCi+1hjaqV60+c8IvRESxe24FyvZr8
-	1YemIbV+bkWabTJ8/j1A==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=nsYVv9ZtvsTVmQQS08dOSfuWdU3nDwlNjWXBpgCg5sY=; b=JIjly4daTwRgAN
+	uGAe0nkmM5WmVu9Hp4KaEOc4YgJIwukZ9nbhjeqIdIvR5K/gG7S54RnhGUt7A8ZTPqvvuarzjomCR
+	MIqTpWrMWh/gX4vbeaVFbtZIhem9lVxkPmog+UNFe2ie8ipQk6/8WouXWvVoudQhQaPZAEdNiOk+J
+	Tcnjv1IuaBRNxHKZBI0CcWxZWEsGn8aCg2qaPkicQeUK3TDe6Ss8Rz0/UsouFXbNipV7qe+o7ZRMV
+	Sk1qjvV0pPnuCJGo9wM96PFB7c2iwlkCK05HpuBTO9B0Ix5oT3vxU+yAIbPm5HZJsx17Hw/nwqfyF
+	fowbDnyNUnSEr/4xL8FA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lxlOf-007Ae5-Jm; Mon, 28 Jun 2021 07:09:34 +0000
+	id 1lxlOr-007Ak4-J4; Mon, 28 Jun 2021 07:09:46 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lxlMl-0079zE-IT
- for barebox@lists.infradead.org; Mon, 28 Jun 2021 07:07:37 +0000
+ id 1lxlMl-0079zH-IO
+ for barebox@lists.infradead.org; Mon, 28 Jun 2021 07:07:38 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lxlMk-00074B-7f; Mon, 28 Jun 2021 09:07:34 +0200
+ id 1lxlMk-00074A-9R; Mon, 28 Jun 2021 09:07:34 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1lxlMj-0004O4-VB; Mon, 28 Jun 2021 09:07:33 +0200
+ id 1lxlMj-0004O2-Uj; Mon, 28 Jun 2021 09:07:33 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Jun 2021 09:07:31 +0200
-Message-Id: <20210628070732.16812-2-a.fatoum@pengutronix.de>
+Date: Mon, 28 Jun 2021 09:07:30 +0200
+Message-Id: <20210628070732.16812-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210628070732.16812-1-a.fatoum@pengutronix.de>
-References: <20210628070732.16812-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210628_000735_888448_CC80AB57 
-X-CRM114-Status: GOOD (  24.31  )
+X-CRM114-CacheID: sfid-20210628_000735_958232_891C4C29 
+X-CRM114-Status: GOOD (  18.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,285 +70,293 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] bthread: replace blocking bthread_stop with nonblocking
- bthread_cancel
+Subject: [PATCH 1/3] bthread: remove thread exit codes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-When bthread were first merged, they could be scheduled in any context
-and bthread_stop could just keep rescheduling until the bthread in
-question exits after which it would return the exit code.
+Follow-up commit will replace blocking bthread_stop with non-blocking
+bthread_cancel. Prepare for this by dropping exit codes. This is not
+much of a loss, because most users of bthreads will only call
+bthread_stop at cleanup time. bthread command is an exception, so have
+it take manual care of passing around exit codes.
 
-Now that bthreads are only scheduled in command context, bthread_stop
-also can only be scheduled in command context, making it much less
-useful and easier to shoot yourself in the foot with.
-
-Avoid this by introducing a bthread_cancel function instead that will
-asynchronously terminate the thread. For most purposes that should be
-fine, because bthread_stop is used to synchronize cleanup and we can
-move the cleanup into the thread instead.
-
-The only exception is the bthread command, which relies on being able to
-wait on bthreads to complete. For these __bthread_stop remains available,
-but should not be used in new code.
-
-This fixes a hang that is encountered when the usb mass storage gadget
-unbind is called from a poller leading barebox to wait indefinitely.
+As we touch the bthread_stop prototype anyway, rename it to
+__bthread_stop. This will make it clearer in the future, that it's not
+meant for driver use.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/bthread.c                  |  3 --
- common/bthread.c                    | 44 ++++++++++++++++++-------
- drivers/usb/gadget/f_mass_storage.c | 51 +++++++++++++----------------
- include/bthread.h                   |  2 +-
- 4 files changed, 56 insertions(+), 44 deletions(-)
+ commands/bthread.c                  | 48 ++++++++++++++++++-----------
+ common/bthread.c                    | 20 ++++++------
+ drivers/usb/gadget/f_mass_storage.c | 12 +++-----
+ include/bthread.h                   |  5 +--
+ 4 files changed, 47 insertions(+), 38 deletions(-)
 
 diff --git a/commands/bthread.c b/commands/bthread.c
-index 446fe9c37ac3..ce3db2d3d292 100644
+index 0c9c221884e8..446fe9c37ac3 100644
 --- a/commands/bthread.c
 +++ b/commands/bthread.c
-@@ -61,7 +61,6 @@ static int bthread_isolated_time(void)
+@@ -33,12 +33,10 @@ static int bthread_time(void)
+ 	return i;
+ }
+ 
+-static int bthread_infinite(void *data)
++static void bthread_infinite(void *data)
+ {
+ 	while (!bthread_should_stop())
+ 		;
+-
+-	return 0;
+ }
+ 
+ static int bthread_isolated_time(void)
+@@ -62,14 +60,20 @@ static int bthread_isolated_time(void)
+ 		i += 2;
  	}
  
- 	__bthread_stop(bthread);
--	bthread_free(bthread);
+-	bthread_stop(bthread);
++	__bthread_stop(bthread);
+ 	bthread_free(bthread);
  
  	return i;
  }
-@@ -120,7 +119,6 @@ cleanup:
- 	while (i--) {
- 		arg = bthread_data(bthread[i]);
- 		__bthread_stop(bthread[i]);
--		bthread_free(bthread[i]);
  
- 		if (!ret && (arg->out != 4 || yields < arg->out))
+-static int bthread_printer(void *arg)
++struct arg {
++	unsigned long in;
++	long out;
++};
++
++static void bthread_printer(void *_arg)
+ {
++	struct arg *arg = _arg;
+ 	volatile u64 start;
+ 	volatile unsigned long i = 0;
+ 	start = get_time_ns();
+@@ -78,28 +82,30 @@ static int bthread_printer(void *arg)
+ 		if (!is_timeout_non_interruptible(start, 225 * MSECOND))
+ 			continue;
+ 
+-		if ((unsigned long)arg == i++)
++		if (arg->in == i++)
+ 			printf("%s yield #%lu\n", bthread_name(current), i);
+ 		start = get_time_ns();
+ 	}
+ 
+-	return i;
++	arg->out = i;
+ }
+ 
+ static int yields;
+ 
+-static int bthread_spawner(void *arg)
++static void bthread_spawner(void *_spawner_arg)
+ {
++	struct arg *arg, *spawner_arg = _spawner_arg;
+ 	struct bthread *bthread[4];
+ 	volatile u64 start;
+ 	volatile unsigned long i = 0;
+ 	int ret = 0;
+-	int ecode;
+ 
+ 	start = get_time_ns();
+ 
+ 	for (i = 0; i < ARRAY_SIZE(bthread); i++) {
+-		bthread[i] = bthread_run(bthread_printer, (void *)(long)i,
++		arg = malloc(sizeof(*arg));
++		arg->in = i;
++		bthread[i] = bthread_run(bthread_printer, arg,
+ 					 "%s-bthread%u", bthread_name(current), i+1);
+ 		if (!bthread[i]) {
+ 			ret = -ENOMEM;
+@@ -112,14 +118,16 @@ static int bthread_spawner(void *arg)
+ 
+ cleanup:
+ 	while (i--) {
+-		ecode = bthread_stop(bthread[i]);
++		arg = bthread_data(bthread[i]);
++		__bthread_stop(bthread[i]);
+ 		bthread_free(bthread[i]);
+ 
+-		if (!ret && (ecode != 4 || yields < ecode))
++		if (!ret && (arg->out != 4 || yields < arg->out))
  			ret = -EIO;
-@@ -184,7 +182,6 @@ cleanup:
++		free(arg);
+ 	}
+ 
+-	return ret;
++	spawner_arg->out = ret;
+ }
+ 
+ struct spawn {
+@@ -132,8 +140,9 @@ static int do_bthread(int argc, char *argv[])
+ 	LIST_HEAD(spawners);
+ 	struct spawn *spawner, *tmp;
+ 	int ret = 0;
+-	int ecode, opt, i = 0;
++	int opt, i = 0;
+ 	bool time = false;
++	struct arg *arg;
+ 
+ 	while ((opt = getopt(argc, argv, "itcv")) > 0) {
+ 		switch (opt) {
+@@ -146,7 +155,8 @@ static int do_bthread(int argc, char *argv[])
+ 			break;
+ 		case 'v':
+ 			spawner = xzalloc(sizeof(*spawner));
+-			spawner->bthread = bthread_run(bthread_spawner, NULL,
++			arg = malloc(sizeof(*arg));
++			spawner->bthread = bthread_run(bthread_spawner, arg,
+ 						       "spawner%u", ++i);
+ 			if (!spawner->bthread) {
+ 				free(spawner);
+@@ -172,10 +182,12 @@ static int do_bthread(int argc, char *argv[])
+ 
+ cleanup:
  	list_for_each_entry_safe(spawner, tmp, &spawners, list) {
- 		arg = bthread_data(spawner->bthread);
- 		__bthread_stop(spawner->bthread);
--		bthread_free(spawner->bthread);
- 		if (!ret && arg->out)
- 			ret = arg->out;
- 		free(arg);
+-		ecode = bthread_stop(spawner->bthread);
++		arg = bthread_data(spawner->bthread);
++		__bthread_stop(spawner->bthread);
+ 		bthread_free(spawner->bthread);
+-		if (!ret && ecode)
+-			ret = ecode;
++		if (!ret && arg->out)
++			ret = arg->out;
++		free(arg);
+ 		free(spawner);
+ 	}
+ 
 diff --git a/common/bthread.c b/common/bthread.c
-index 48248dfad41a..46e6987149bb 100644
+index 80651344da64..48248dfad41a 100644
 --- a/common/bthread.c
 +++ b/common/bthread.c
-@@ -32,10 +32,12 @@ static struct bthread {
+@@ -20,11 +20,8 @@
  #endif
- 	u8 awake :1;
- 	u8 should_stop :1;
-+	u8 should_clean :1;
- 	u8 has_stopped :1;
- } main_thread = {
- 	.list = LIST_HEAD_INIT(main_thread.list),
- 	.name = "main",
-+	.awake = true,
- };
  
- struct bthread *current = &main_thread;
-@@ -66,7 +68,7 @@ bool bthread_is_main(struct bthread *bthread)
- 	return bthread == &main_thread;
+ static struct bthread {
+-	int (*threadfn)(void *);
+-	union {
+-		void *data;
+-		int ret;
+-	};
++	void (*threadfn)(void *);
++	void *data;
+ 	char *name;
+ 	jmp_buf jmp_buf;
+ 	void *stack;
+@@ -54,7 +51,7 @@ static void __noreturn bthread_trampoline(void)
+ 	finish_switch_fiber(current);
+ 	bthread_reschedule();
+ 
+-	current->ret = current->threadfn(current->data);
++	current->threadfn(current->data);
+ 
+ 	bthread_suspend(current);
+ 	current->has_stopped = true;
+@@ -81,7 +78,7 @@ const char *bthread_name(struct bthread *bthread)
+ 	return bthread->name;
  }
  
--void bthread_free(struct bthread *bthread)
-+static void bthread_free(struct bthread *bthread)
+-struct bthread *bthread_create(int (*threadfn)(void *), void *data,
++struct bthread *bthread_create(void (*threadfn)(void *), void *data,
+ 			       const char *namefmt, ...)
  {
- 	free(bthread->stack);
- 	free(bthread->name);
-@@ -104,6 +106,8 @@ struct bthread *bthread_create(void (*threadfn)(void *), void *data,
- 	if (len < 0)
- 		goto err;
- 
-+	list_add_tail(&bthread->list, &current->list);
-+
- 	/* set up bthread context with the new stack */
- 	initjmp(bthread->jmp_buf, bthread_trampoline,
- 		bthread->stack + CONFIG_STACK_SIZE);
-@@ -121,26 +125,31 @@ void *bthread_data(struct bthread *bthread)
- 
- void bthread_wake(struct bthread *bthread)
- {
--	if (bthread->awake)
--		return;
--	list_add_tail(&bthread->list, &current->list);
- 	bthread->awake = true;
+ 	struct bthread *bthread;
+@@ -117,6 +114,11 @@ err:
+ 	return NULL;
  }
  
- void bthread_suspend(struct bthread *bthread)
- {
--	if (!bthread->awake)
--		return;
- 	bthread->awake = false;
--	list_del(&bthread->list);
++void *bthread_data(struct bthread *bthread)
++{
++	return bthread->data;
 +}
 +
-+void bthread_cancel(struct bthread *bthread)
-+{
-+	bthread->should_stop = true;
-+	bthread->should_clean = true;
+ void bthread_wake(struct bthread *bthread)
+ {
+ 	if (bthread->awake)
+@@ -133,14 +135,12 @@ void bthread_suspend(struct bthread *bthread)
+ 	list_del(&bthread->list);
  }
  
- void __bthread_stop(struct bthread *bthread)
+-int bthread_stop(struct bthread *bthread)
++void __bthread_stop(struct bthread *bthread)
  {
  	bthread->should_stop = true;
  
-+	pr_debug("waiting for %s to stop\n", bthread->name);
-+
  	while (!bthread->has_stopped)
  		bthread_reschedule();
-+
-+	list_del(&bthread->list);
-+	bthread_free(bthread);
+-
+-	return bthread->ret;
  }
  
  int bthread_should_stop(void)
-@@ -163,10 +172,23 @@ void bthread_info(void)
- 
- void bthread_reschedule(void)
- {
--	struct bthread *next = list_next_entry(current, list);
--	if (current != next)
--		pr_debug("switch %s -> %s\n", current->name, next->name);
--	bthread_schedule(next);
-+	struct bthread *next, *tmp;
-+
-+	if (current == list_next_entry(current, list))
-+		return;
-+
-+	list_for_each_entry_safe(next, tmp, &current->list, list) {
-+		if (next->awake) {
-+			pr_debug("switch %s -> %s\n", current->name, next->name);
-+			bthread_schedule(next);
-+			return;
-+		}
-+		if (next->has_stopped && next->should_clean) {
-+			pr_debug("deleting %s\n", next->name);
-+			list_del(&next->list);
-+			bthread_free(next);
-+		}
-+	}
- }
- 
- void bthread_schedule(struct bthread *to)
 diff --git a/drivers/usb/gadget/f_mass_storage.c b/drivers/usb/gadget/f_mass_storage.c
-index 0033a95f68f3..753042125d14 100644
+index 4894f91fa6ef..0033a95f68f3 100644
 --- a/drivers/usb/gadget/f_mass_storage.c
 +++ b/drivers/usb/gadget/f_mass_storage.c
-@@ -2335,9 +2335,12 @@ static void handle_exception(struct fsg_common *common)
+@@ -2335,7 +2335,7 @@ static void handle_exception(struct fsg_common *common)
  
  /*-------------------------------------------------------------------------*/
  
--static void fsg_main_thread(void *common_)
-+static void fsg_main_thread(void *fsg_)
+-static int fsg_main_thread(void *common_)
++static void fsg_main_thread(void *common_)
  {
--	struct fsg_common	*common = common_;
-+	struct fsg_dev *fsg = fsg_;
-+	struct fsg_common *common = fsg->common;
-+	struct fsg_buffhd *bh;
-+	unsigned i;
+ 	struct fsg_common	*common = common_;
  	int ret = 0;
+@@ -2374,12 +2374,8 @@ static int fsg_main_thread(void *common_)
+ 			common->state = FSG_STATE_IDLE;
+ 	}
  
- 	/* The main loop */
-@@ -2376,6 +2379,21 @@ static void fsg_main_thread(void *common_)
- 
- 	if (ret && ret != -ERESTARTSYS)
+-	if (ret && ret != -ERESTARTSYS) {
++	if (ret && ret != -ERESTARTSYS)
  		pr_warn("%s: error %pe\n", __func__, ERR_PTR(ret));
-+
-+	usb_free_all_descriptors(&fsg->function);
-+
-+	for (i = 0; i < ums_count; i++)
-+		close(ums[i].fd);
-+
-+	bh = common->buffhds;
-+	i = FSG_NUM_BUFFERS;
-+
-+	do {
-+		dma_free(bh->buf);
-+	} while (++bh, --i);
-+
-+	ums_count = 0;
-+	ums_files = NULL;
+-		return ret;
+-	}
+-
+-	return 0;
  }
  
  static void fsg_common_release(struct fsg_common *common);
-@@ -2409,7 +2427,7 @@ static int fsg_common_init(struct fsg_common *common,
- 	common->ep0 = gadget->ep0;
- 	common->ep0req = cdev->req;
- 
--	thread_task = bthread_run(fsg_main_thread, common, "mass-storage-gadget");
-+	thread_task = bthread_run(fsg_main_thread, common->fsg, "mass-storage-gadget");
- 	if (IS_ERR(thread_task))
- 		return PTR_ERR(thread_task);
- 
-@@ -2531,52 +2549,27 @@ close:
- 
- static void fsg_common_release(struct fsg_common *common)
- {
--	struct fsg_buffhd *bh;
--	unsigned i;
--
+@@ -2541,7 +2537,7 @@ static void fsg_common_release(struct fsg_common *common)
  	/* If the thread isn't already dead, tell it to exit now */
  	if (common->state != FSG_STATE_TERMINATED) {
  		raise_exception(common, FSG_STATE_EXIT);
--		__bthread_stop(thread_task);
--		bthread_free(thread_task);
+-		bthread_stop(thread_task);
++		__bthread_stop(thread_task);
+ 		bthread_free(thread_task);
  	}
  
--	bh = common->buffhds;
--	i = FSG_NUM_BUFFERS;
--
--	do {
--		dma_free(bh->buf);
--	} while (++bh, --i);
--
--	ums_count = 0;
-+	bthread_cancel(thread_task);
- }
- 
- 
- static void fsg_unbind(struct usb_configuration *c, struct usb_function *f)
- {
- 	struct fsg_dev		*fsg = fsg_from_func(f);
--	struct fsg_common	*common = fsg->common;
--	int i;
- 
- 	DBG(fsg, "unbind\n");
- 
- 	if (fsg->common->fsg == fsg) {
+@@ -2568,7 +2564,7 @@ static void fsg_unbind(struct usb_configuration *c, struct usb_function *f)
  		fsg->common->new_fsg = NULL;
  		raise_exception(fsg->common, FSG_STATE_CONFIG_CHANGE);
--
--		__bthread_stop(thread_task);
--		while (common->fsg == fsg)
--			bthread_reschedule();
+ 
+-		bthread_stop(thread_task);
++		__bthread_stop(thread_task);
+ 		while (common->fsg == fsg)
+ 			bthread_reschedule();
  	}
- 
--	usb_free_all_descriptors(&fsg->function);
--
--	for (i = 0; i < ums_count; i++)
--		close(ums[i].fd);
--
- 	fsg_common_release(fsg->common);
--
--	ums_files = NULL;
- }
- 
- static int fsg_bind(struct usb_configuration *c, struct usb_function *f)
 diff --git a/include/bthread.h b/include/bthread.h
-index 407aa830a835..4441b53696fb 100644
+index e3871fb11555..407aa830a835 100644
 --- a/include/bthread.h
 +++ b/include/bthread.h
-@@ -13,7 +13,7 @@ struct bthread;
+@@ -12,14 +12,15 @@ struct bthread;
+ 
  extern struct bthread *current;
  
- struct bthread *bthread_create(void (*threadfn)(void *), void *data, const char *namefmt, ...);
--void bthread_free(struct bthread *bthread);
-+void bthread_cancel(struct bthread *bthread);
+-struct bthread *bthread_create(int (*threadfn)(void *), void *data, const char *namefmt, ...);
++struct bthread *bthread_create(void (*threadfn)(void *), void *data, const char *namefmt, ...);
+ void bthread_free(struct bthread *bthread);
  
  void bthread_schedule(struct bthread *);
  void bthread_wake(struct bthread *bthread);
+ void bthread_suspend(struct bthread *bthread);
+ int bthread_should_stop(void);
+-int bthread_stop(struct bthread *bthread);
++void __bthread_stop(struct bthread *bthread);
++void *bthread_data(struct bthread *bthread);
+ void bthread_info(void);
+ const char *bthread_name(struct bthread *bthread);
+ bool bthread_is_main(struct bthread *bthread);
 -- 
 2.30.2
 
