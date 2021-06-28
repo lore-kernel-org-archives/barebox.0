@@ -1,15 +1,15 @@
-Delivery-date: Mon, 28 Jun 2021 14:43:36 +0200
+Delivery-date: Mon, 28 Jun 2021 14:44:09 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lxqbw-0007j3-Rj
-	for lore@lore.pengutronix.de; Mon, 28 Jun 2021 14:43:36 +0200
+	id 1lxqcT-0007jp-NP
+	for lore@lore.pengutronix.de; Mon, 28 Jun 2021 14:44:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lxqbw-0004Fx-2V
-	for lore@pengutronix.de; Mon, 28 Jun 2021 14:43:36 +0200
+	id 1lxqcS-0004KU-TZ
+	for lore@pengutronix.de; Mon, 28 Jun 2021 14:44:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=fXvN8YRJsT82c+YuXt89mBRS8+Qm5lh/Hl7XO0SFjcg=; b=iYQIIDGd33jJaT6RNpkz6tid1r
-	vFH/JN0HdIt/nVaxadTAgeS8IDcldvsoC0cLre25IFAN6G56/9NQtNpWRgQQMonrcDMqloCMxBST5
-	r8RmtSUKd9fuB/9dwbQqdFRriFHC3C6RRgm1LAdGTnTKH3leI1dRK2yCeG72/50agpV72Cw1Cd2ee
-	qvWpMMx0haLc0vJdNWNg+vgWEBqlPL7X9FyCr2AwLPtsmKTmztRF8sN3vAOiUBPDLzL/Iddmk0Dj9
-	8aW1THCKooxuKr9kr4bnnUhn4AB8sD4pF1bihZ8azlj1vN4LkHjBXOvHEoDRP0iL9UUK5jjEvznWg
-	KyXN15bQ==;
+	bh=FCupjqB/rWaPwu/1MJGyZKzmgAFSGrZU08l+u3EySc4=; b=3e/ARu2757ifm8ODYdBullHWf+
+	09OsicX2EtrB7eCdZu65eyO5ILm0L73BoygeI0G8xkCMfGA/rru9jR+we5r2XKBg6UxHGQ+fOaogL
+	YU5xuxs5UzqVrKPsekOTjokG8nEAUqMwo3/D9XOTaXegTxiTrN2f55UN+HiXrmUYQfaVXsFtPUNOC
+	siVuR3lI5XdvxTZFCkQ1vTiHowflPwAouVsBam5qR40EjucSdfaAoQ07y8owZhItn4JjK1t3BvVgN
+	Tg9h/8EbIOpg2XaevuaAdQ7siJIxg1dA+t64FUaIvDSSpIJtwFsKSSNaC+qBvlj8Or1dvoc8hYfHy
+	VD/y7b/w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lxqaR-0081JN-OD; Mon, 28 Jun 2021 12:42:03 +0000
+	id 1lxqbK-0081Zl-FQ; Mon, 28 Jun 2021 12:42:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lxqaM-0081Hg-4C
- for barebox@lists.infradead.org; Mon, 28 Jun 2021 12:41:59 +0000
+ id 1lxqbF-0081YU-2w
+ for barebox@lists.infradead.org; Mon, 28 Jun 2021 12:42:54 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lxqaK-0003x8-4H; Mon, 28 Jun 2021 14:41:56 +0200
+ id 1lxqbD-00047E-R1; Mon, 28 Jun 2021 14:42:51 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1lxqaJ-0000qB-Hj; Mon, 28 Jun 2021 14:41:55 +0200
-Date: Mon, 28 Jun 2021 14:41:55 +0200
-To: Michael Riesch <michael.riesch@wolfvision.net>
+ id 1lxqbD-0000rE-HL; Mon, 28 Jun 2021 14:42:51 +0200
+Date: Mon, 28 Jun 2021 14:42:51 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210628124155.GI9782@pengutronix.de>
-References: <20210624160915.21897-1-michael.riesch@wolfvision.net>
+Message-ID: <20210628124251.GJ9782@pengutronix.de>
+References: <20210624081558.29488-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210624160915.21897-1-michael.riesch@wolfvision.net>
+In-Reply-To: <20210624081558.29488-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 14:41:42 up 130 days, 16:05, 120 users,  load average: 0.24, 0.16,
+X-Uptime: 14:42:39 up 130 days, 16:06, 120 users,  load average: 0.25, 0.18,
  0.11
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210628_054158_266782_2F015872 
-X-CRM114-Status: GOOD (  18.91  )
+X-CRM114-CacheID: sfid-20210628_054253_200727_55D5C6F5 
+X-CRM114-Status: GOOD (  19.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,22 +81,21 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 0/2] add support for Rockchip SARADC
+Subject: Re: [PATCH] spi: imx: enable use for i.MX8MM and i.MX8MP
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Jun 24, 2021 at 06:09:13PM +0200, Michael Riesch wrote:
-> Michael Riesch (2):
->   aiodev: add driver for Rockchip SARADC
->   arm: rk3568-evb1: add support for Rockchip SARADC
+On Thu, Jun 24, 2021 at 10:15:58AM +0200, Ahmad Fatoum wrote:
+> All i.MX8M variants so far are compatible with the eCSPI peripheral of
+> the i.MX51, which corresponds to the CONFIG_DRIVER_SPI_IMX_2_3 symbol.
+> This symbol was so far only selected for the i.MX8MQ.
 > 
->  arch/arm/dts/rk3568-evb1-v10.dts |   6 +-
->  arch/arm/dts/rk3568.dtsi         |  12 ++
->  drivers/aiodev/Kconfig           |   8 ++
->  drivers/aiodev/Makefile          |   1 +
->  drivers/aiodev/rockchip_saradc.c | 197 +++++++++++++++++++++++++++++++
->  5 files changed, 223 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/aiodev/rockchip_saradc.c
+> Enable it for the other i.MX8M variants as well.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/spi/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
