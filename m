@@ -1,52 +1,48 @@
-Delivery-date: Mon, 28 Jun 2021 07:45:50 +0200
+Delivery-date: Mon, 28 Jun 2021 08:41:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lxk5e-0000Dq-OU
-	for lore@lore.pengutronix.de; Mon, 28 Jun 2021 07:45:50 +0200
+	id 1lxkxF-0001QK-TE
+	for lore@lore.pengutronix.de; Mon, 28 Jun 2021 08:41:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lxk5d-0004d9-To
-	for lore@pengutronix.de; Mon, 28 Jun 2021 07:45:50 +0200
+	id 1lxkxE-0002wS-M2
+	for lore@pengutronix.de; Mon, 28 Jun 2021 08:41:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
 	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=szaCbUD7eO87JhWCv9DPfZnM1DRG6eGnUGHd7RB0RDw=; b=rWYk3feCs0ynyZ
-	F7uAyLMSk6xPznMWlUFjMURf/MbGOr8XwdOpCGj0yEsr+ewcAT7tSlYRQ0S7E22/cQ+7xdfCiuiGi
-	MeR6Wvys4V7OMwdI5F3RGz0fjl3Fz2UPHLq+KpLxXoULBaEylLTpPrdsIsrJGXmJeWsVFHcxb8EKM
-	bqh6bZ6l1uqlbgOnD6R31ys4CisCOr5ItII1ublu4WPHvey+Mt2yczuotbGYXVkg1AgPQ6ngwUfym
-	SYGhl090tV/CWNM/Bw7cLJzR+jEHp407yLVcH1p6atVTJNP7ntW0iju+FsJZOFDCaF8sVPiL/kJ3X
-	KjM/U+NKgBa1CPnmS3TQ==;
+	List-Owner; bh=lAhFe4BOY89M8XV1pA0drpjUXxbXCkGeXbcSm/hkQF8=; b=ugNno7isXZWhou
+	HBlU+l04GhZ7pd/CRp2JEjL4rMdJ1od2bEIvtvi59EQPfSaTfxKSxq1kj3q9CkX7W9FEXc0kIYxlX
+	OEYjBknzKog2PnvrE6RClmZ+fOANi9Ew+97AJuzHbtdyj5o8wvi9o1TwrQOBwxxAUocB2cIgnsw6H
+	FK8gjYBsR5ASf0oWo7NUnidG00HcWepDdrOc+N5hAiTpAebZVhO8KJpWHwCEOai1DrouFWsZTpSWJ
+	qkjT3PoGiaYZ30jWVp5AnfD4s3ufPEKd3Eqt+6XBQ2sVLL92YVX/nkXBIJq1iM7zGfP4hElvRilYm
+	sOLmJvDUQ0oaTRGUdxLQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lxk4M-006t2D-Cb; Mon, 28 Jun 2021 05:44:30 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1lxkvp-0072vs-JD; Mon, 28 Jun 2021 06:39:45 +0000
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lxk4F-006t0t-FO
- for barebox@lists.infradead.org; Mon, 28 Jun 2021 05:44:25 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1lxk4D-0004Qs-Ro; Mon, 28 Jun 2021 07:44:21 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1lxk4D-00085g-Hz; Mon, 28 Jun 2021 07:44:21 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1lxkvk-0072u8-Hk
+ for barebox@lists.infradead.org; Mon, 28 Jun 2021 06:39:42 +0000
+Received: (Authenticated sender: ahmad@a3f.at)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 792B41C0004;
+ Mon, 28 Jun 2021 06:39:33 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Jun 2021 07:44:20 +0200
-Message-Id: <20210628054420.31051-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 28 Jun 2021 08:39:28 +0200
+Message-Id: <20210628063928.1083081-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210627_224423_556921_1C81EAF5 
-X-CRM114-Status: GOOD (  10.04  )
+X-CRM114-CacheID: sfid-20210627_233940_756753_9445B299 
+X-CRM114-Status: UNSURE (   7.96  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,37 +62,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] nvmem: fix dev_dbg(unregistered_device, ...)
+Subject: [PATCH] fixup! sandbox: ship sample environment
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The format string already prints the future name of the NVMEM device, so
-use the parent name as qualifier for the dev_dbg call.
+The sample environment contained a new line as its 4K+1th byte, when it
+should have been only 4K big. Drop the new line. No functional change.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/nvmem/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ --- old
+ +++ new
+ @@ -254,4 +254,3 @@
+  00000fd0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+  00000fe0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+  00000ff0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+ -00001000: 0a                                       .
+---
+ arch/sandbox/board/stickypage.bin | Bin 4097 -> 4096 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index ae9c965c25e2..4e558e165063 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -224,7 +224,7 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
- 	dev_set_name(&nvmem->dev, config->name);
- 	nvmem->dev.id = DEVICE_ID_DYNAMIC;
- 
--	dev_dbg(&nvmem->dev, "Registering nvmem device %s\n", config->name);
-+	dev_dbg(nvmem->dev.parent, "Registering nvmem device %s\n", config->name);
- 
- 	rval = register_device(&nvmem->dev);
- 	if (rval) {
+diff --git a/arch/sandbox/board/stickypage.bin b/arch/sandbox/board/stickypage.bin
+index e507ca656e6488ff5cebbdda8169f1ab153abb19..12d3aa4035d3c22459317e74a5a94bc35a12a7b7 100644
+GIT binary patch
+delta 6
+NcmZovXi!)n000ME0rCI<
+
+delta 8
+PcmZorXjE7rz{mvv3rYd~
+
 -- 
-2.30.2
+2.32.0
 
 
 _______________________________________________
