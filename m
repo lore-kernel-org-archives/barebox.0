@@ -1,75 +1,52 @@
-Delivery-date: Fri, 25 Jun 2021 18:08:00 +0200
+Delivery-date: Mon, 28 Jun 2021 07:24:43 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwoN6-0008Mt-P9
-	for lore@lore.pengutronix.de; Fri, 25 Jun 2021 18:08:00 +0200
+	id 1lxjlD-0008HV-52
+	for lore@lore.pengutronix.de; Mon, 28 Jun 2021 07:24:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lwoN5-0003kC-Gw
-	for lore@pengutronix.de; Fri, 25 Jun 2021 18:08:00 +0200
+	id 1lxjlB-0002pY-PW
+	for lore@pengutronix.de; Mon, 28 Jun 2021 07:24:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=Gew3Uqc0SxgTi+s2790IJnJRz9f7G9ZfzSiZUpNFcnk=; b=cWaon6X+3hzRza
-	6LQfver5yFLaLDAcTNYLCp/84OzWZgOqW7yzn/05aV0Hh3hzaYcdOz6UCUpUGn85MhHKS5oT+d8cw
-	8REpzh/W3hIAZOsCw3pRa6A91T8d/Pzfdo5NpxOYiF0SJpKxderPsCNjeobxIzL+lGdtqmCuIXunA
-	cEdsofGmSSAAfnUkN0VUJF6KznIBkcHP13GDPMv78EFw/Hi8G82ASy9+mzrGS1Khu0OihaDfXYLVX
-	1EJxW3DPbVYOjF2ViKS0MVSiiVDmBhQi0vshXdXFvKrYUxqhwkF52p10yE0jU5Dmg9CKdm6iCtsUM
-	LBmJqvAywFwd+CQLk7eA==;
+	List-Owner; bh=aY5ULftD73hqLmL581al/DsptHbnPK6ZdHGHs/NzjZI=; b=c0t+CznGnDbHtb
+	67ilHalM1poDSa1+7MAszFvf9w1lZ59NdunPYhaNLgyi565r7velk7jlG6JfUQ31wBtdonCs/UMgB
+	Sig7qDKMS4rVcpyG37jLLac4Fpbj549iH9/0KXB1qL8zIEF8d3B9VHXKZg38Mb8RVjCqLoJdcrCYd
+	9Ld3u4maTWyJ+5a0qYaMA3pGwfUPTsp6wo2mWImqpI0syqEoUsE+aL0Ddqcg439/lWixw7E8JtnTd
+	AWtek90AToaJZ35apSIM4lYzdGAADIwhfJ84ue8/0GVg4BODuvCr7tCW6JvN8vW5gd8HUdd6fUKT0
+	K4TVgbGTVZhHZSFuJBFg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lwoLM-002FVL-Rg; Fri, 25 Jun 2021 16:06:12 +0000
-Received: from mickerik.phytec.de ([195.145.39.210])
+	id 1lxjjO-006o5W-3G; Mon, 28 Jun 2021 05:22:50 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwoLH-002FUP-Il
- for barebox@lists.infradead.org; Fri, 25 Jun 2021 16:06:09 +0000
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a1; c=relaxed/simple;
- q=dns/txt; i=@phytec.de; t=1624637162; x=1627229162;
- h=From:Sender:Reply-To:Subject:Date:Message-Id:To:Cc:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=5lyaoGKkJV6UNdauvjroVYPM6Oxf/MHQTC5kPL80CQM=;
- b=gYcDgRTS7veyzZk5re/ESvMs9tFex/Lo2odH0yAdIu2UW2znnUSK3+5rdyUJB1Ao
- vln9/A0Jkbi7nxhyQSp+IqLm4VKNsGVO2CGU1c9Ew3eXvuMrtZf6ZGQki1hsjbVL
- stzqqOc4HlOXv669fFG03+3+E71rEV5k9/8APfy2LXQ=;
-X-AuditID: c39127d2-a77bc70000001c5e-58-60d5feea829b
-Received: from idefix.phytec.de (Unknown_Domain [172.16.0.10])
- by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 14.62.07262.AEEF5D06;
- Fri, 25 Jun 2021 18:06:02 +0200 (CEST)
-Received: from lws-ybas.phytec.de ([172.16.21.122])
- by idefix.phytec.de (IBM Domino Release 9.0.1FP7)
- with ESMTP id 2021062518060252-1043464 ;
- Fri, 25 Jun 2021 18:06:02 +0200 
-From: Yunus Bas <y.bas@phytec.de>
+ id 1lxjgK-006nZy-57
+ for barebox@lists.infradead.org; Mon, 28 Jun 2021 05:19:41 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1lxjgF-0002Mu-IE; Mon, 28 Jun 2021 07:19:35 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1lxjgF-0002Vm-9h; Mon, 28 Jun 2021 07:19:35 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 25 Jun 2021 18:05:55 +0200
-Message-Id: <20210625160555.3699702-1-y.bas@phytec.de>
-X-Mailer: git-send-email 2.30.0
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 28 Jun 2021 07:19:33 +0200
+Message-Id: <20210628051934.9604-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-MIMETrack: Itemize by SMTP Server on Idefix/Phytec(Release 9.0.1FP7|August
- 17, 2016) at 25.06.2021 18:06:02,
- Serialize by Router on Idefix/Phytec(Release 9.0.1FP7|August  17, 2016) at
- 25.06.2021 18:06:02
-X-TNEFEvaluated: 1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrJJMWRmVeSWpSXmKPExsWyRoCBS/fVv6sJBl3dahYnFvczOzB6bF5S
- H8AYxWWTkpqTWZZapG+XwJVx/nwfY8FFo4p/7ZfZGhifa3QxcnJICJhIrJk0nRnEFhLYxihx
- 9qhnFyMXkH2BUeL44/0sIAk2AUWJ87ffsoLYIgLyEnP3t4HZwgL+Er3/TjOC2CwCqhJz3swG
- G8QrYCZxvWclK8QCeYmTaw8zQcQFJU7OfMICskBC4AqjxOoj26CKhCROLz4L1swsoC2xbOFr
- 5gmMvLOQ9MxCklrAyLSKUSg3Mzk7tSgzW68go7IkNVkvJXUTIzA4Dk9Uv7SDsW+OxyFGJg7G
- Q4wSHMxKIryPWi4lCPGmJFZWpRblxxeV5qQWH2KU5mBREufdwFsSJiSQnliSmp2aWpBaBJNl
- 4uCUamCc7rxiCeN/zzSvxe4Sb96FbrkuYhX4UOH/iyXOs649eKsuI8TyzUAtsOTc6feJJy53
- FH7Z5RhUrGT9f+0cY8W1N2aUHHkpYM/hIFfX1eDiJhwyd9ux+0lcdXLmRZwrPxR3e8SzX+ZY
- apJ4R/a/+arUg45ZCiLr/L43zPecOP+ZBO83Bpb4zColluKMREMt5qLiRACk3Ve4/AEAAA==
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210625_090607_968074_8067EC14 
-X-CRM114-Status: GOOD (  20.89  )
+X-CRM114-CacheID: sfid-20210627_221940_295560_AEEA128F 
+X-CRM114-Status: GOOD (  13.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,210 +66,110 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2] commands: of_property: Extend command usage on external dtb
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v2 1/2] string: implement strchrnul
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The scope of the of_property command is limited to the internal devicetree
-only. There is the possibility to add fixtures to postpone the operation
-until boot and after the kernel DTB is already loaded, but this does not
-cover the case when the property value needs to be phandle adresses
-defined in the external DTB, since assigned values are evaluated
-immediatly.
+We have at least two places opencoding strchrnul, one of them needlessly
+iterating twice instead of once over the string. Replace both by calling
+a common single pass implementation.
 
-This patch extends the of_property-command to use it on external DTB's as
-well. In case fixup is not used, the changes will also affect the original
-data.
-
-Signed-off-by: Yunus Bas <y.bas@phytec.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Changes in v2:
-- Use %m instead of "%s", strerror(errno)
-- Not fixing devicetree anymore before save
+v1 -> v2:
+  no change
 ---
- commands/of_property.c | 74 ++++++++++++++++++++++++++++++++----------
- 1 file changed, 57 insertions(+), 17 deletions(-)
+ commands/hwclock.c     |  8 --------
+ drivers/of/base.c      |  5 +----
+ include/linux/string.h |  4 ++++
+ lib/string.c           | 18 ++++++++++++++++++
+ 4 files changed, 23 insertions(+), 12 deletions(-)
 
-diff --git a/commands/of_property.c b/commands/of_property.c
-index 3d5097165..41bb5f71b 100644
---- a/commands/of_property.c
-+++ b/commands/of_property.c
-@@ -4,6 +4,7 @@
- /* of_property.c - device tree property handling support */
- 
- #include <common.h>
-+#include <libfile.h>
+diff --git a/commands/hwclock.c b/commands/hwclock.c
+index 1b5c2cd100ca..7a5600c456c9 100644
+--- a/commands/hwclock.c
++++ b/commands/hwclock.c
+@@ -9,14 +9,6 @@
+ #include <string.h>
  #include <environment.h>
- #include <fdt.h>
- #include <of.h>
-@@ -18,7 +19,7 @@
- #include <init.h>
- #include <xfuncs.h>
  
--static int of_parse_prop_cells(char * const *newval, int count, char *data, int *len)
-+static int of_parse_prop_cells(struct device_node *root, char * const *newval, int count, char *data, int *len)
+-static char *strchrnul(const char *s, int c)
+-{
+-	while (*s != '\0' && *s != c)
+-		s++;
+-
+-	return (char *)s;
+-}
+-
+ static int sscanf_two_digits(char *s, int *res)
  {
- 	char *cp;
- 	unsigned long tmp;	/* holds converted values */
-@@ -60,7 +61,7 @@ static int of_parse_prop_cells(char * const *newval, int count, char *data, int
- 			str = xzalloc(len + 1);
- 			strncpy(str, cp, len);
+ 	char buf[3];
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index f962159597df..1a1265bdd689 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2497,10 +2497,7 @@ struct device_node *of_get_stdoutpath(void)
+ 	if (!name)
+ 		return 0;
  
--			n = of_find_node_by_path_or_alias(NULL, str);
-+			n = of_find_node_by_path_or_alias(root, str);
- 			if (!n)
- 				printf("Cannot find node '%s'\n", str);
+-	/* This could make use of strchrnul if it were available */
+-	p = strchr(name, ':');
+-	if (!p)
+-		p = name + strlen(name);
++	p = strchrnul(name, ':');
  
-@@ -164,7 +165,7 @@ static int of_parse_prop_string(char * const *newval, int count, char *data, int
-  * data: A bytestream to be placed in the property
-  * len: The length of the resulting bytestream
+ 	q = xstrndup(name, p - name);
+ 
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 55bc905c0e6b..47a27a391f0b 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -25,6 +25,10 @@ extern __kernel_size_t strspn(const char *,const char *);
+ 	(typeof(&(s1)[0]))(_strstr((s1), (s2))); \
+ 	})
+ 
++#ifndef __HAVE_ARCH_STRCHRNUL
++extern char * strchrnul(const char *,int);
++#endif
++
+ /*
+  * Include machine specific inline routines
   */
--static int of_parse_prop(char * const *newval, int count, char *data, int *len)
-+static int of_parse_prop(struct device_node *root, char * const *newval, int count, char *data, int *len)
- {
- 	char *newp;		/* temporary newval char pointer */
+diff --git a/lib/string.c b/lib/string.c
+index bad186586fac..9aeb1d883022 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -274,6 +274,24 @@ char * _strchr(const char * s, int c)
+ #endif
+ EXPORT_SYMBOL(_strchr);
  
-@@ -177,7 +178,7 @@ static int of_parse_prop(char * const *newval, int count, char *data, int *len)
- 
- 	switch (*newp) {
- 	case '<':
--		return of_parse_prop_cells(newval, count, data, len);
-+		return of_parse_prop_cells(root, newval, count, data, len);
- 	case '[':
- 		return of_parse_prop_stream(newval, count, data, len);
- 	default:
-@@ -302,8 +303,13 @@ static int do_of_property(int argc, char *argv[])
- 	int set = 0;
- 	int fixup = 0;
- 	char *path, *propname;
-+	char *dtbfile = NULL;
-+	int ret = 0;
-+	size_t size;
-+	struct fdt_header *fdt = NULL;
-+	struct device_node *root = NULL;
- 
--	while ((opt = getopt(argc, argv, "dsf")) > 0) {
-+	while ((opt = getopt(argc, argv, "dsfe:")) > 0) {
- 		switch (opt) {
- 		case 'd':
- 			delete = 1;
-@@ -314,6 +320,9 @@ static int do_of_property(int argc, char *argv[])
- 		case 'f':
- 			fixup = 1;
- 			break;
-+		case 'e':
-+			dtbfile = optarg;
-+			break;
- 		default:
- 			return COMMAND_ERROR_USAGE;
- 		}
-@@ -327,8 +336,22 @@ static int do_of_property(int argc, char *argv[])
- 
- 	debug("path: %s propname: %s\n", path, propname);
- 
-+	if ( !(set || delete))
-+		return COMMAND_ERROR_USAGE;
++#ifndef __HAVE_ARCH_STRCHRNUL
++/**
++ * strchrnul - Find and return a character in a string, or end of string
++ * @s: The string to be searched
++ * @c: The character to search for
++ *
++ * Returns pointer to first occurrence of 'c' in s. If c is not found, then
++ * return a pointer to the null byte at the end of s.
++ */
++char *strchrnul(const char *s, int c)
++{
++	while (*s && *s != (char)c)
++		s++;
++	return (char *)s;
++}
++EXPORT_SYMBOL(strchrnul);
++#endif
 +
-+	if (dtbfile) {
-+		fdt = read_file(dtbfile, &size);
-+		if (!fdt) {
-+			printf("unable to read %s: %m\n", dtbfile);
-+			return -errno;
-+		}
-+
-+		root = of_unflatten_dtb(fdt);
-+
-+		free(fdt);
-+	}
-+
- 	if (set) {
--		int ret;
- 		int len;
- 		void *data;
- 
-@@ -340,10 +363,10 @@ static int do_of_property(int argc, char *argv[])
- 		if (!data)
- 			return -ENOMEM;
- 
--		ret = of_parse_prop(&argv[optind + 2], argc - optind - 2, data, &len);
-+		ret = of_parse_prop(root, &argv[optind + 2], argc - optind - 2, data, &len);
- 		if (ret) {
- 			free(data);
--			return ret;
-+			goto out;
- 		}
- 
- 		if (fixup) {
-@@ -351,21 +374,37 @@ static int do_of_property(int argc, char *argv[])
- 			if (ret)
- 				free(data);
- 		} else {
--			ret = do_of_property_set_now(NULL, path, propname, data, len);
-+			ret = do_of_property_set_now(root, path, propname, data, len);
- 			free(data);
- 		}
- 
--		return ret;
--	}
-+		if (ret)
-+			goto out;
- 
--	if (delete) {
-+	} else if (delete) {
- 		if (fixup)
--			return do_of_property_delete_fixup(path, propname);
-+			ret = do_of_property_delete_fixup(path, propname);
- 		else
--			return do_of_property_delete_now(NULL, path, propname);
-+			ret = do_of_property_delete_now(root, path, propname);
-+
-+		if (ret)
-+			goto out;
-+	}
-+
-+	if (root && !fixup) {
-+		fdt = of_flatten_dtb(root);
-+
-+		ret = write_file(dtbfile, fdt, fdt32_to_cpu(fdt->totalsize));
-+
-+		free(fdt);
- 	}
- 
--	return COMMAND_ERROR_USAGE;
-+out:
-+
-+	if (root)
-+		of_delete_node(root);
-+
-+	return ret;
- }
- 
- BAREBOX_CMD_HELP_START(of_property)
-@@ -373,6 +412,7 @@ BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-s",  "set property to value")
- BAREBOX_CMD_HELP_OPT ("-d",  "delete property")
- BAREBOX_CMD_HELP_OPT ("-f",  "set/delete as a fixup (defer the action until booting)")
-+BAREBOX_CMD_HELP_OPT ("-e dtb",  "set/delete/fixup from external dtb")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Valid formats for values:")
- BAREBOX_CMD_HELP_TEXT("<0x00112233 4 05> - an array of cells. cells not beginning with a digit are")
-@@ -384,8 +424,8 @@ BAREBOX_CMD_HELP_END
- BAREBOX_CMD_START(of_property)
- 	.cmd		= do_of_property,
- 	BAREBOX_CMD_DESC("handle device tree properties")
--	BAREBOX_CMD_OPTS("[-sd] [-f] NODE [PROPERTY] [VALUES]")
-+	BAREBOX_CMD_OPTS("[-sd] [-e] [-f] NODE [PROPERTY] [VALUES]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
--	BAREBOX_CMD_COMPLETE(devicetree_complete)
-+	BAREBOX_CMD_COMPLETE(devicetree_file_complete)
- 	BAREBOX_CMD_HELP(cmd_of_property_help)
- BAREBOX_CMD_END
+ #ifndef __HAVE_ARCH_STRRCHR
+ /**
+  * strrchr - Find the last occurrence of a character in a string
 -- 
-2.30.0
+2.30.2
 
 
 _______________________________________________
