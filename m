@@ -1,92 +1,132 @@
-Delivery-date: Tue, 29 Jun 2021 13:35:56 +0200
+Delivery-date: Tue, 29 Jun 2021 14:06:43 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lyC20-00045b-5u
-	for lore@lore.pengutronix.de; Tue, 29 Jun 2021 13:35:56 +0200
+	id 1lyCVn-0004cP-EC
+	for lore@lore.pengutronix.de; Tue, 29 Jun 2021 14:06:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lyC1z-0003Ev-5i
-	for lore@pengutronix.de; Tue, 29 Jun 2021 13:35:56 +0200
+	id 1lyCVm-0006pE-Cb
+	for lore@pengutronix.de; Tue, 29 Jun 2021 14:06:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Content-ID:In-Reply-To:
-	References:Message-ID:Date:Subject:CC:To:From:Reply-To:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=EEUp1x3Tj7g4LB2kfVMatjkJZpozmTslMbYqNs4UlSA=; b=l4o0VQeJJ8Hmk+
-	dMPl/oZVih01Rhg2m6AM0T2vovswqwiIsAZwOLjjngLTWfyv/TZ4or6B1p12zAQHpK3A54v6oAspE
-	yptSt8RaEWjN0cvcMfAhlKa29Kf3JM+LINgRrQ02ygX4AO42frh2razVIjh0Yr0JUEQ70paCaYKN1
-	fjN9vo7Sj6ukSQtDW1WzJm8/IITgeecI17oEV4+b0e0k95+6FYb5PFow5vsWtyuNavKQrffAaaiP6
-	DhjMCHnXJOM1jkoxzS9GTX8RTOpVUaFH8n4cti6+9jxc2Ro/m/d+pZJrlcWU3Qj2gtl3p1ytHirSY
-	qPffTQoA0Io7vagNc5TQ==;
+	List-Owner; bh=fClRVnx4Aw/NP3Sh5DspNWFIi6rfaWTF7IOEo1VgVXE=; b=KXnuaWwHKyzNYt
+	pKyHY1q7VfOlpOzagFrL0KpZFzSdcqS9JEhRW0CcatN3oFcnwSGTyS+pdRwBTZiXC8AZPHLeBcEkA
+	q4AlIy5p5JirNWi2cC9uZoDqf1vAlbUczMU0wFdQwVYcqH/QBXSvomb0yLDs7plJxlGhc5fnKR+j4
+	TtJo18oCKoEM/EG0RSq2tPPU/4Ed+b14sbcHq5i7Yzb0A0MtFhid/GKvq6sRdVhfNcK4XPY1G8lI6
+	9hi33Em52V5pjQl42aK9ABl/cBPrDaimAFbbYkm/5oB9JmH8An2Fl3+rBcgrrrrtMPB+ixVkWu5O1
+	KhxVJg4z8eBCXaGvpp4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lyC06-00Ag2m-0f; Tue, 29 Jun 2021 11:33:58 +0000
-Received: from mickerik.phytec.de ([195.145.39.210])
+	id 1lyCUE-00AlMt-8m; Tue, 29 Jun 2021 12:05:06 +0000
+Received: from mail-vi1eur05on2088.outbound.protection.outlook.com
+ ([40.107.21.88] helo=EUR05-VI1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lyC00-00Ag24-Ki
- for barebox@lists.infradead.org; Tue, 29 Jun 2021 11:33:54 +0000
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a1; c=relaxed/simple;
- q=dns/txt; i=@phytec.de; t=1624966427; x=1627558427;
- h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=u4DWWZlwgL5J7Y1UHD2aSUeRL6PAK+NByCV440fGVzY=;
- b=PYFSGqrQeazULOwnOBmH/gWuvwl0xnXaZyZNrW2Y1twCUkPoZfoZB7QPiOyiwkav
- VLIc2hbqbGU9v018nHo8+occVNusfVTijDkFpFIxgZIqye0AYL8rBQ4nI8tYZ+GM
- I57i1YihNMN9Ho2l4ceZT4OsKYVaV9jCJkI4mW8nHGY=;
-X-AuditID: c39127d2-a9fbd70000001c5e-b5-60db051b22c4
-Received: from florix.phytec.de (florix.phytec.de [172.16.0.118])
- (using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (Client did not present a certificate)
- by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id C6.97.07262.B150BD06;
- Tue, 29 Jun 2021 13:33:47 +0200 (CEST)
-Received: from Berlix.phytec.de (172.16.0.117) by Florix.phytec.de
- (172.16.0.118) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 29 Jun
- 2021 13:33:47 +0200
-Received: from Berlix.phytec.de ([fe80::343f:7618:c7ce:97c9]) by
- berlix.phytec.de ([fe80::343f:7618:c7ce:97c9%3]) with mapi id 15.01.2176.009; 
- Tue, 29 Jun 2021 13:33:47 +0200
-From: Yunus Bas <Y.Bas@phytec.de>
-To: "michael.riesch@wolfvision.net" <michael.riesch@wolfvision.net>,
- "sha@pengutronix.de" <sha@pengutronix.de>
-CC: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: [PATCH v2] commands: of_property: Extend command usage on
- external dtb
-Thread-Index: AQHXadxSG7cm2QpWw0qxhf3nqz06JaspwZgAgADabYCAACP2gA==
-Date: Tue, 29 Jun 2021 11:33:47 +0000
-Message-ID: <d9f643320cc9af6c1ad3fb8170cdd8f6de0dcfb6.camel@phytec.de>
-References: <20210625160555.3699702-1-y.bas@phytec.de>
- <20210628202314.GR9782@pengutronix.de>
- <f692a44f-e182-0091-3c73-5d4191ce7d62@wolfvision.net>
-In-Reply-To: <f692a44f-e182-0091-3c73-5d4191ce7d62@wolfvision.net>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.0.116]
-Content-ID: <80D8B739DE6E0A498118B03F7211AA7F@phytec.de>
+ id 1lyCU9-00AlM8-0c
+ for barebox@lists.infradead.org; Tue, 29 Jun 2021 12:05:02 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=h2G7oo7ap4dRZCsLmaff75ozDurqt1I/ItFz0gOyq0ONwte40JujdirNwcOhmlBExompE3qkhaSEeWIZhvke6ZYv41BnSrmzfriB4slxOh3rulP3PCHPnY5ApT93sDZyiHkCdTz25r6nqSSiGmy8PoSKQjuVzK85WXT0VmQgzjla1roQmG+5Jqh+stc0vLkkTYObP0qlF89A3rxuZD6twk358Ko4B950tzihJORS5xe8ixzzK2o1lr8Hq4RDs3yvJ/j7FL2xz/bk9lt21TXhcJcu92S2Al4IxoKClR6DyO5M9qh/CHacgo0z5YBD4QbfqCbN10gR1LEWH6li1O2Z4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PoVaFavuASQ0AtcR2Uzn1MJBD7hinimv+gzq9Kdzpwk=;
+ b=G/ajA3+mOMHize5Iu3q9u41u4Ghr8mmqn84nwxNKIqV2uKh7TKtuArZBEfyIsF+CyAMGzWvTTr1TwrgZwkClnHSLaX7DnKGUrv0lSX/vNKA3yLnUyxHKEPKkhzFVmF3wBJUmNrRqGTWBf2YcUxTl0XQyiXmJQooC4lCxhquUfIkmSWNRwmRxijVOLxH7gr9PxH905j7NWec0WwwMPuz1xz4d+WsLHjsbfVnITlHeDRvx4t1uPk+GS6Q9609c5T/PgxwfeVDOKrjRyhLizgHmvij3fSt7QTujkyLGgUn9XL8PI78MIth/SHQ9WAmQXtDgWd7oQwlwluOFn9PuOYX0EA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wolfvision.net; dmarc=pass action=none
+ header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PoVaFavuASQ0AtcR2Uzn1MJBD7hinimv+gzq9Kdzpwk=;
+ b=aY9AyyVeVCtru7WdZXO1VBCc88vzwDS9khfYU2oVSxeLPPFQ3jaPgk8QGn5GTYrpMD7T7Zv/naiY5P/zFSb+g02itPRdygNoB0qHe4YJBgy0rGSTeK8/2r/t2O83HaXPs99XLc8Yw267h+BAxEQ/d8585MOpZabZSF0/zKLJ3Uc=
+Authentication-Results: lists.infradead.org; dkim=none (message not signed)
+ header.d=none;lists.infradead.org; dmarc=none action=none
+ header.from=wolfvision.net;
+Received: from DBBPR08MB4523.eurprd08.prod.outlook.com (2603:10a6:10:c8::19)
+ by DBBPR08MB6171.eurprd08.prod.outlook.com (2603:10a6:10:20f::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4264.23; Tue, 29 Jun
+ 2021 12:04:57 +0000
+Received: from DBBPR08MB4523.eurprd08.prod.outlook.com
+ ([fe80::ade3:93e2:735c:c10b]) by DBBPR08MB4523.eurprd08.prod.outlook.com
+ ([fe80::ade3:93e2:735c:c10b%7]) with mapi id 15.20.4264.026; Tue, 29 Jun 2021
+ 12:04:57 +0000
+From: Michael Riesch <michael.riesch@wolfvision.net>
+To: barebox@lists.infradead.org
+Cc: Michael Riesch <michael.riesch@wolfvision.net>
+Date: Tue, 29 Jun 2021 14:04:45 +0200
+Message-Id: <20210629120445.10441-1-michael.riesch@wolfvision.net>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <d9f643320cc9af6c1ad3fb8170cdd8f6de0dcfb6.camel@phytec.de>
+References: <d9f643320cc9af6c1ad3fb8170cdd8f6de0dcfb6.camel@phytec.de>
+X-Originating-IP: [91.118.163.37]
+X-ClientProxiedBy: VI1PR0502CA0007.eurprd05.prod.outlook.com
+ (2603:10a6:803:1::20) To DBBPR08MB4523.eurprd08.prod.outlook.com
+ (2603:10a6:10:c8::19)
 MIME-Version: 1.0
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCIsWRmVeSWpSXmKPExsWyRoChTFea9XaCwbN/ahYnFvczWxxcqGLx
- aPMsVgdmj81L6j36/xp4zP/9mDGAOYrLJiU1J7MstUjfLoEr42TnHuaCF1IVHRdWsTYwTpDq
- YuTkkBAwkei9fJeti5GLQ0hgOZPE0QPH2EESQgIPGSUe/JaHSGxilNhy4BpQFQcHm4CixJVb
- +SA1IgIFEpMm/2ECCTML2Eus6JAFCQsLhEp0rmphhigJk/jfexzKdpJonnQVbDyLgKrE1nn/
- wWxeATeJ6/f3sEOsmsko8X3ucbAEJ1DDhr3HmEBsRgFZiQ0bzoMNYhYQl9j07DsrxAMCEkv2
- QMQlBEQlXj7+BxVXkGjr6YS6TVNi/S59iFYLib6WTnYIW1FiSvdDqBsEJU7OfMIygVF8FpIN
- sxC6ZyHpnoWkexaS7gWMrKsYhXIzk7NTizKz9QoyKktSk/VSUjcxAmPu8ET1SzsY++Z4HGJk
- 4mA8xCjBwawkwvs271aCEG9KYmVValF+fFFpTmrxIUZpDhYlcd4NvCVhQgLpiSWp2ampBalF
- MFkmDk6pBsaKrU93i9y0s5R6zXn/kMhOrvRozfxHtcczz653WyGYv/zH6t9Gqe/m11/Pv5/6
- uXhJyjfTAwtZWuv/5qvI+0Udn7Lwud6jdTPq5ZsqHqb8l1l+y2Zj1Ur7a8veO36Y3RWaky28
- 5kDlH83YumDVV91CTH2bpy3Z1sVmFmP2gId1i9oVZhaem5pKLMUZiYZazEXFiQA/Ru6EpwIA
- AA==
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from carlos.wolfvision-at.intra (91.118.163.37) by
+ VI1PR0502CA0007.eurprd05.prod.outlook.com (2603:10a6:803:1::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4287.21 via Frontend
+ Transport; Tue, 29 Jun 2021 12:04:56 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: f119878c-cc33-4fae-225b-08d93af61cb2
+X-MS-TrafficTypeDiagnostic: DBBPR08MB6171:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DBBPR08MB617117180BC3B8E892A763CFF2029@DBBPR08MB6171.eurprd08.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1148;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: smYFTaHFNBsQmAKqm1UooUcudjijNmN0tUOWTre7jS+fk+vLg5KTqv2M2IDOEZfTN7bEw/UVxj4bfyIbTQydjHrkXm0eCQRZjmgFa6XBt0jvfqcUpvyXKOZgyS8FczTcndIuaYxgrmJbxoBvo4trR3L2O8i9m0/8/z5/hZXA1GEBGOQWl/pI7wdZrkn9wWZhMISFYgxxcLWFC6vziL+4HbTl5CFLfMFtRu0SlgxV0rOONCSkuDIbZ05rT8LY8PeZh9FZPpCYkt5u//iqJ4hLURN8zoBCGC7bBDkxrVHfq9rEKRECUgw5AEUDyyGhZ4qfwOdy2hiYStQ28jyWqP+6aGHYMr5CZrD6TtKQKoSTzjBpCAIcT7evDokcv/jFPYq4ZwtA9ATf22Dd4W8SqQJTDUpqyAiz4Fyy1LVCUwLLdsdVEpvBy7gBZFqAuzix335aWjstu7u1DUP297KIrJlSgSG8nmEUyM4H3Up+9Rt2s1f+x5cVtqpN5PXJNjSeqQ/Y0TvZYMxpAYL0+SgPKrAB2HnxCMazuNuwo7xW0YGfeQDlKUGN/aA3GO0OKSelQSWNm19NTs0zhjwbn9Y/q5Lx0srS2ztmJe2Ipouo54jM3Up09Mm5dodEa/zMzgkpoYPtqLfyZ4Tc/JPY1gAZ6h7RKGUIcvUMTDiszyncC2u7StkVcHyG9gQz2/ALZaPMrCd6P6NTD8GVAyk0tpOobliEQQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DBBPR08MB4523.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(396003)(366004)(136003)(346002)(39830400003)(376002)(38100700002)(44832011)(52116002)(186003)(107886003)(86362001)(4326008)(2616005)(6666004)(6916009)(16526019)(6512007)(4744005)(956004)(8936002)(38350700002)(8676002)(26005)(6506007)(36756003)(6486002)(1076003)(66556008)(66476007)(66946007)(2906002)(5660300002)(83380400001)(478600001)(316002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?qbScjryGDFO/6Gw3ah5xWZg8dLR48fZixBIsFDYkrUmnk75xVcudUXo9iMjJ?=
+ =?us-ascii?Q?aW8RpOEs7TieFoH+Vbs43gQMg+oybRFMQg0L1z1ebNhxS4PifgyvJHhWf60s?=
+ =?us-ascii?Q?nWF2dWyD/BQ10gat67Hxsk4bX76Yh/VqXHOOjpQYe0XY1OI3cm3QlSWWHLPy?=
+ =?us-ascii?Q?XSJSb3eFixeGC6jmfAo2WH5f/Vs+YSKsp86qn4gSif0TH9bgo/oBBu82C4/r?=
+ =?us-ascii?Q?Lz7IhjS4wEU/TpMeADOJKZmGCpFk+S8eaU6L5bAfk8wKBFfGH2WAg51GFjX7?=
+ =?us-ascii?Q?tppEu1TMvICgeRILq6QZ+1rL6BMKa1nvhJjqJZ92tChFVljO03Suhdp0lo1e?=
+ =?us-ascii?Q?KMk7XQN0iLo15gxe1fLUf9lYjwErU7emZtp1qSizz8sVavSqGiEqwlKE1ske?=
+ =?us-ascii?Q?FixIr5kfgafItPv3mJB1qrVLSOzbmwIqK79uxa93t2T9w6v4jy4yaGPMwZr+?=
+ =?us-ascii?Q?qbQEz9o1czf0VJRdC/MFcqR/vhKw9Vnem8P2XeI4uJA1QMrkX3kc7L0J3xge?=
+ =?us-ascii?Q?jO2y91R1pyZwXefNn2zX9La903yFrzX9Ab4F4mqKwV5jp6MXPkbehKZJRVwG?=
+ =?us-ascii?Q?BPSpb5lT8M9+1YB8Co+uO/BkjIIHR2hkrDtUpz/PLFN5kWixMZ9OKpC4zblk?=
+ =?us-ascii?Q?zLt3q5AhbdyDlvgo5gamAutdK4FfLajtHpLvmldLmheYJQwsljRLgUl6I9p6?=
+ =?us-ascii?Q?JqnIPhQMi7uQStrX6txNbReKzCUkbTuDiHJSkrijJUj6iG4tzH1KAJB61Dnh?=
+ =?us-ascii?Q?b2yQY8VcZSgCL3QsRagVu+WDO1s0KDH3TtBQQnvZZifp9aMNd4vxA3J5ztRR?=
+ =?us-ascii?Q?ptOFYQv2uPrs71pVD/LQIMhlEd3eqSTr5AflaqOje4bWpu7SnEZ3PJ9CIGlu?=
+ =?us-ascii?Q?UY5Ys/GCHZruIbczRLk+lXNJokmtrm9DMGDAjFjG2ATIc2SWDDIGDFV+ggfz?=
+ =?us-ascii?Q?/67Xx/BMPKk/vOEqU3SucC/a9rQ8tXcSEGVIGrN2djD6N/nFNhMraGP0ZYQb?=
+ =?us-ascii?Q?KPcpCeGrlCmwftvgpgNYctB2lDQT6G0H+NmmlgIs/YrLLYU1aBbaAw0rLUcl?=
+ =?us-ascii?Q?nrr2QmiPDbVIaHBKvBYBRE1ZglmbIk2nusuuYfxkUYrtGYynDKMh1vnnAzr2?=
+ =?us-ascii?Q?9aSEppj9jMB6p/zCNbJ8QyI2sD9rryRVPiZYeoxUFiO/ZLj+9ZgfTlCKz8Ww?=
+ =?us-ascii?Q?CbHKztL2HStBoG3+IIHiUvYDLp7SMk6nXZ7Xlu5Io/9vvJkC/8t2xpAzCqSY?=
+ =?us-ascii?Q?7urwc9xyCfrkuyNPZy9rt0hTTujxGE1FGilRu7hOerpC3vVsJybO4QGpgeAy?=
+ =?us-ascii?Q?/FI0bOASEBXAVECE3EygS0Jg?=
+X-OriginatorOrg: wolfvision.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: f119878c-cc33-4fae-225b-08d93af61cb2
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR08MB4523.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2021 12:04:57.0376 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ARUPSfZnej5h/C45il+dRGg2QblVrENsMdIY4jXh7zwgOCXLh/K7MQlrVhljPt0M4y4+Hzwwej8xm+oYlRU7koSq8Z/JAGlXEOrh9bjrbHs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB6171
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210629_043352_866363_4820B7E4 
-X-CRM114-Status: GOOD (  31.61  )
+X-CRM114-CacheID: sfid-20210629_050501_162963_599B118C 
+X-CRM114-Status: UNSURE (   8.92  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,68 +138,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] commands: of_property: Extend command usage on
+	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH] fixup! commands: of_property: Extend command usage on
  external dtb
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGkgTWljaGFlbCwNCg0KQW0gRGllbnN0YWcsIGRlbSAyOS4wNi4yMDIxIHVtIDExOjI1ICswMjAw
-IHNjaHJpZWIgTWljaGFlbCBSaWVzY2g6DQo+IEhlbGxvIFNhc2NoYSwNCj4gDQo+IE9uIDYvMjgv
-MjEgMTA6MjMgUE0sIFNhc2NoYSBIYXVlciB3cm90ZToNCj4gPiBPbiBGcmksIEp1biAyNSwgMjAy
-MSBhdCAwNjowNTo1NVBNICswMjAwLCBZdW51cyBCYXMgd3JvdGU6DQo+ID4gPiBUaGUgc2NvcGUg
-b2YgdGhlIG9mX3Byb3BlcnR5IGNvbW1hbmQgaXMgbGltaXRlZCB0byB0aGUgaW50ZXJuYWwNCj4g
-PiA+IGRldmljZXRyZWUNCj4gPiA+IG9ubHkuIFRoZXJlIGlzIHRoZSBwb3NzaWJpbGl0eSB0byBh
-ZGQgZml4dHVyZXMgdG8gcG9zdHBvbmUgdGhlDQo+ID4gPiBvcGVyYXRpb24NCj4gPiA+IHVudGls
-IGJvb3QgYW5kIGFmdGVyIHRoZSBrZXJuZWwgRFRCIGlzIGFscmVhZHkgbG9hZGVkLCBidXQgdGhp
-cw0KPiA+ID4gZG9lcyBub3QNCj4gPiA+IGNvdmVyIHRoZSBjYXNlIHdoZW4gdGhlIHByb3BlcnR5
-IHZhbHVlIG5lZWRzIHRvIGJlIHBoYW5kbGUNCj4gPiA+IGFkcmVzc2VzDQo+ID4gPiBkZWZpbmVk
-IGluIHRoZSBleHRlcm5hbCBEVEIsIHNpbmNlIGFzc2lnbmVkIHZhbHVlcyBhcmUgZXZhbHVhdGVk
-DQo+ID4gPiBpbW1lZGlhdGx5Lg0KPiA+ID4gDQo+ID4gPiBUaGlzIHBhdGNoIGV4dGVuZHMgdGhl
-IG9mX3Byb3BlcnR5LWNvbW1hbmQgdG8gdXNlIGl0IG9uIGV4dGVybmFsDQo+ID4gPiBEVEIncyBh
-cw0KPiA+ID4gd2VsbC4gSW4gY2FzZSBmaXh1cCBpcyBub3QgdXNlZCwgdGhlIGNoYW5nZXMgd2ls
-bCBhbHNvIGFmZmVjdCB0aGUNCj4gPiA+IG9yaWdpbmFsDQo+ID4gPiBkYXRhLg0KPiA+ID4gDQo+
-ID4gPiBTaWduZWQtb2ZmLWJ5OiBZdW51cyBCYXMgPHkuYmFzQHBoeXRlYy5kZT4NCj4gPiA+IC0t
-LQ0KPiA+ID4gQ2hhbmdlcyBpbiB2MjoNCj4gPiA+IC0gVXNlICVtIGluc3RlYWQgb2YgIiVzIiwg
-c3RyZXJyb3IoZXJybm8pDQo+ID4gPiAtIE5vdCBmaXhpbmcgZGV2aWNldHJlZSBhbnltb3JlIGJl
-Zm9yZSBzYXZlDQo+ID4gPiAtLS0NCj4gPiA+IMKgY29tbWFuZHMvb2ZfcHJvcGVydHkuYyB8IDc0
-ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLQ0KPiA+ID4gLS0tLS0tDQo+ID4g
-PiDCoDEgZmlsZSBjaGFuZ2VkLCA1NyBpbnNlcnRpb25zKCspLCAxNyBkZWxldGlvbnMoLSkNCj4g
-PiANCj4gPiBBcHBsaWVkLCB0aGFua3MNCj4gPiANCj4gPiBTYXNjaGENCj4gDQo+IG9uIHRoZSBj
-dXJyZW50IG5leHQgdGhpcyBwYXRjaCBjb2xsaWRlcyB3aXRoICJmZHQ6IENoZWNrIGJsb2Igc2l6
-ZQ0KPiBkdXJpbmcgdW5mbGF0dGVuaW5nIiBhcyB0aGUgY2FsbA0KPiANCj4gPiA+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByb290ID0gb2ZfdW5mbGF0dGVuX2R0YihmZHQpOw0KPiAN
-Cj4gcmVxdWlyZXMgbm93IGFuIGV4dHJhIHNpemUgYXJndW1lbnQuDQo+IA0KPiBUaGVyZSBpcyBh
-IHZhcmlhYmxlICJzaXplIiBiZWZvcmUgdGhlIGNhbGwuIElzIGl0IHNhZmUgdG8gdXNlIGl0Pw0K
-DQpUaGUgc2l6ZSB2YXJpYWJsZSBpcyByZWFkIGZyb20gdGhlIGR0Yiwgc28gSSB0aGluayBpdCdz
-IGFsc28gaW50ZW5kZWQNCnRvIHVzZSBpdC4gU2hhbGwgSSBzZW5kIGEgdjMgb3IgY2FuIHlvdSBh
-cHBseSB0aGUgY2hhbmdlPw0KDQpSZWdhcmRzLCBZdW51cw0KDQo+IA0KPiBSZWdhcmRzLCBNaWNo
-YWVsDQoNCi0tIA0KTWl0IGZyZXVuZGxpY2hlbiBHcsO8w59lbg0KWXVudXMgQmFzDQoNCi1Tb2Z0
-d2FyZSBFbmdpbmVlci0NClBIWVRFQyBNZXNzdGVjaG5payBHbWJIDQpSb2JlcnQtS29jaC1TdHIu
-IDM5DQo1NTEyOSBNYWlueg0KR2VybWFueQ0KVGVsLjogKzQ5ICgwKTYxMzEgOTIyMS0gNDY2DQpX
-ZWI6IHd3dy5waHl0ZWMuZGUNCg0KU2llIGZpbmRlbiB1bnMgYXVjaCBhdWY6IEZhY2Vib29rLCBM
-aW5rZWRJbiwgWGluZywgWW91VHViZQ0KDQpQSFlURUMgTWVzc3RlY2huaWsgR21iSCB8IFJvYmVy
-dC1Lb2NoLVN0ci4gMzkgfCA1NTEyOSBNYWlueiwgR2VybWFueQ0KR2VzY2jDpGZ0c2bDvGhyZXI6
-IERpcGwuLUluZy4gTWljaGFlbCBNaXRlemtpLCBEaXBsLi1JbmcuIEJvZG8gSHViZXIgfA0KSGFu
-ZGVsc3JlZ2lzdGVyIE1haW56IEhSQiA0NjU2IHwgRmluYW56YW10IE1haW56IHwgU3QuTnIuIDI2
-NjUwMDYwOCwgREUNCjE0OTA1OTg1NQ0KVGhpcyBFLU1haWwgbWF5IGNvbnRhaW4gY29uZmlkZW50
-aWFsIG9yIHByaXZpbGVnZWQgaW5mb3JtYXRpb24uIElmIHlvdQ0KYXJlIG5vdCB0aGUgaW50ZW5k
-ZWQgcmVjaXBpZW50IChvciBoYXZlIHJlY2VpdmVkIHRoaXMgRS1NYWlsIGluIGVycm9yKQ0KcGxl
-YXNlIG5vdGlmeSB0aGUgc2VuZGVyIGltbWVkaWF0ZWx5IGFuZCBkZXN0cm95IHRoaXMgRS1NYWls
-LiBBbnkNCnVuYXV0aG9yaXplZCBjb3B5aW5nLCBkaXNjbG9zdXJlIG9yIGRpc3RyaWJ1dGlvbiBv
-ZiB0aGUgbWF0ZXJpYWwgaW4NCnRoaXMgRS1NYWlsIGlzIHN0cmljdGx5IGZvcmJpZGRlbi4NCg0K
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+---
+ commands/of_property.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/commands/of_property.c b/commands/of_property.c
+index 41bb5f71b..063e97775 100644
+--- a/commands/of_property.c
++++ b/commands/of_property.c
+@@ -346,7 +346,7 @@ static int do_of_property(int argc, char *argv[])
+ 			return -errno;
+ 		}
+ 
+-		root = of_unflatten_dtb(fdt);
++		root = of_unflatten_dtb(fdt, size);
+ 
+ 		free(fdt);
+ 	}
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
