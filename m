@@ -1,15 +1,15 @@
-Delivery-date: Wed, 30 Jun 2021 12:19:41 +0200
+Delivery-date: Wed, 30 Jun 2021 12:28:56 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lyXJl-0008P2-86
-	for lore@lore.pengutronix.de; Wed, 30 Jun 2021 12:19:41 +0200
+	id 1lyXSi-00007M-6w
+	for lore@lore.pengutronix.de; Wed, 30 Jun 2021 12:28:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lyXJj-0001nP-Vx
-	for lore@pengutronix.de; Wed, 30 Jun 2021 12:19:41 +0200
+	id 1lyXSg-0002tu-TW
+	for lore@pengutronix.de; Wed, 30 Jun 2021 12:28:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,38 +17,39 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=k6dF1HuaM/OU1v9T9KBvR2Uft+3+17sbkERTkmYvq/0=; b=IcLTjF520gFovRCWoXq4V7+mUt
-	e2ZgxitrJeJoiZNSDZdFztS21oksrlvWbMI4jj0YjxJNFMKwWITSaN7Twq+9RYZY007RSYGyc3kc3
-	hoDVRnq0orBfz0Po8n4O1k1+K8s4REHTHrVtOq5+tWRaw/vG8Zp31misSpslfD80HyC6zKzILh91m
-	aUJ+VPY7Ic0rYLHQSeXhzs9UAHiAZdBJXymvdCVxK6uTCnjUJUEPN0D4KpCaMH6nPzJVxHdJZVnjd
-	phKvODYvRQat2KWpZfcqGVkcmE4NsMxEDcoO/TJp5O+kXW5S4bPV0abEmhrekhr/b6CWk9Ry9WPh0
-	Y8W6A/yw==;
+	bh=KCWw3Ekp0eTjFiXxn/x3KHY+vdunHIaJNTZORL9WTM8=; b=r2BL/W23IcX/50gyhZPZIxycHn
+	VYGWSAdIZnIlll9TazfabB31tGaKPwC6nIkGmgAlZrA6fGMfuh3dLCEq2PiYhyX2V/XXQtgKc2ORo
+	/SMt4wckVUAAEaUENoT6/u1bnzC6XsceQsh/lLcn5bYAVrYR0ps0OJn8eGD2e1k/rrtYG2b4nfxTp
+	uDKq7fTi46g1iazmk59X5ruwbNCnCaY5EuzOHgWHgsj7MNNFChfvp58M8UhtAqSf4wb0A2hD0AbLE
+	npKNVmicG158wa5J+oq9BXQbYTF9U9eGcmYRqcrUBipIrue5fpqxGQ2LPo4+I+OC0RV07f5HgBCJS
+	REsgP4HA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lyXII-00DaPE-3Q; Wed, 30 Jun 2021 10:18:10 +0000
+	id 1lyXRD-00DbZc-Rn; Wed, 30 Jun 2021 10:27:23 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lyXIC-00DaOC-WA
- for barebox@lists.infradead.org; Wed, 30 Jun 2021 10:18:06 +0000
+ id 1lyXR8-00DbZ4-Ud
+ for barebox@lists.infradead.org; Wed, 30 Jun 2021 10:27:20 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1lyXI8-0001ju-7l; Wed, 30 Jun 2021 12:18:00 +0200
-To: Michael Riesch <michael.riesch@wolfvision.net>, barebox@lists.infradead.org
-References: <20210629123104.13818-1-michael.riesch@wolfvision.net>
- <20210629123104.13818-2-michael.riesch@wolfvision.net>
+ id 1lyXR7-0002ge-EJ; Wed, 30 Jun 2021 12:27:17 +0200
+To: Trent Piepho <trent.piepho@igorinstitute.com>,
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+References: <20210628064036.25991-1-a.fatoum@pengutronix.de>
+ <CAMHeXxOT__KBUKG6GkNAEkqz4tMBBzuZ7OgnKa0_OX5hz-JEig@mail.gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <d230f623-b7e8-faee-98c8-1526e2840425@pengutronix.de>
-Date: Wed, 30 Jun 2021 12:17:59 +0200
+Message-ID: <dad3cc59-5a25-9889-88a5-58467f576d8e@pengutronix.de>
+Date: Wed, 30 Jun 2021 12:27:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210629123104.13818-2-michael.riesch@wolfvision.net>
+In-Reply-To: <CAMHeXxOT__KBUKG6GkNAEkqz4tMBBzuZ7OgnKa0_OX5hz-JEig@mail.gmail.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210630_031805_094570_8ECB8C78 
-X-CRM114-Status: GOOD (  31.55  )
+X-CRM114-CacheID: sfid-20210630_032719_064153_F75E2663 
+X-CRM114-Status: GOOD (  42.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,8 +61,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -72,129 +73,95 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [RFC PATCH 1/2] arm: rockchip-rk3568-evb: add hardware id
- detection
+Subject: Re: [PATCH 1/5] common: machine_id: support /chosen/barebox,
+ machine-id-path override
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Michael,
-
-Trent already commented on the device tree overlay part.
-This commit here seems applicable regardless,
-so in case you want to resend it for upstream inclusion,
-some comments are inline.
-
-
-On 29.06.21 14:31, Michael Riesch wrote:
-> Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
-
-A short commit message here would be nice, e.g.:
-
-The rk3568 EVB uses a voltage divider to ... etc.
-
-> ---
->  arch/arm/boards/rockchip-rk3568-evb/board.c | 36 +++++++++++++++++++++
->  1 file changed, 36 insertions(+)
-> 
-> diff --git a/arch/arm/boards/rockchip-rk3568-evb/board.c b/arch/arm/boards/rockchip-rk3568-evb/board.c
-> index 57c24ed3c..ee8e1b979 100644
-> --- a/arch/arm/boards/rockchip-rk3568-evb/board.c
-> +++ b/arch/arm/boards/rockchip-rk3568-evb/board.c
-> @@ -2,6 +2,7 @@
->  #include <common.h>
->  #include <init.h>
->  #include <mach/bbu.h>
-> +#include <aiodev.h>
->  #include <bootsource.h>
->  
->  static int rk3568_evb_probe(struct device_d *dev)
-> @@ -34,3 +35,38 @@ static struct driver_d rk3568_evb_board_driver = {
->  	.of_compatible = rk3568_evb_of_match,
->  };
->  coredevice_platform_driver(rk3568_evb_board_driver);
-> +
-> +static int rk3568_evb_detect_version(void)
-> +{
-
-Once more 64-bit rockchip boards are added, they would all execute this
-initcall if this board is enabled. For this reason, you need a compatible
-check here.
-
-> +	int ret = 0;
-> +	int evb_hw_id = 0;
-
-Nitpick: Initializing variables with values that are never read risks introducing
-silent bugs once the code that uses it later on changes. If you leave
-it uninitialized you get a compiler warning if it's referenced without
-initialization.
-
-> +	int evb_hw_id_voltage = 1800;
-
-I am not sure it's a good idea to report the EVB is v1 when the
-driver isn't enabled.
-
-> +	struct aiochannel *evb_hw_id_chan;
-> +
-> +	evb_hw_id_chan = aiochannel_by_name("aiodev0.in_value1_mV");
-> +	if (!IS_ERR(evb_hw_id_chan))
-
-In the error case it makes no sense to continue here, you should early exit.
-
-> +		ret = aiochannel_get_value(evb_hw_id_chan, &evb_hw_id_voltage);
-> +	if (ret || IS_ERR(evb_hw_id_chan))
-> +		pr_warn("couldn't retrieve hardware ID");
-
-early exit
-
-> +
-> +	if (evb_hw_id_voltage > 1650) {
-> +		evb_hw_id = 1;
-> +	} else if (evb_hw_id_voltage > 1350) {
-> +		evb_hw_id = 2;
-> +	} else if (evb_hw_id_voltage > 1050) {
-> +		evb_hw_id = 3;
-> +	} else if (evb_hw_id_voltage > 750) {
-> +		evb_hw_id = 4;
-> +	} else if (evb_hw_id_voltage > 450) {
-> +		evb_hw_id = 5;
-> +	} else if (evb_hw_id_voltage > 150) {
-> +		evb_hw_id = 6;
-> +	} else {
-> +		evb_hw_id = 7;
-> +	}
-> +
-> +	pr_info("Detected RK3568 EVB%d\n", evb_hw_id);
-
-You could populate a variable, e.g. global.board.revision
-here. That would allow using this info in scripts as Trent has described.
-
-> +
-> +	return 0;
-> +}
-> +late_initcall(rk3568_evb_detect_version);
-
-Optimally, you would call the function from the board driver probe above.
-At postcore initcall, you wouldn't find the ADC yet, but if you
-return EPROBE_DEFER on error from the probe, the probe will be retried
-later on at which time it will succeed.
-
-With the deep probe patches Sascha just merged, it is possible to directly
-probe dependencies instead of retrying later and hoping it was probed
-in-between. It's still not enabled for the EVB here though and it also
-needs some code added to aiodev, so for now you could go the EPROBE_DEFER
-route (or add a compatible check).
-
-Cheers,
-Ahmad
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gVHJlbnQsCgooQ2MnaW5nIG1haWxpbmcgbGlzdCkKCk9uIDI4LjA2LjIxIDIxOjUwLCBU
+cmVudCBQaWVwaG8gd3JvdGU6Cj4gT24gU3VuLCBKdW4gMjcsIDIwMjEgYXQgMTE6NDEgUE0gQWht
+YWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4+IFRoZSBLY29uZmln
+IG9wdGlvbiBhbHJlYWR5IHdhcm5zIHRoYXQgdGhlIGN1cnJlbnQgYmVoYXZpb3Igb2YKPj4gbWFj
+aGluZV9pZF9zZXRfaGFzaGFibGUoKSBvdmVycmlkaW5nIHByZXZpb3VzIGNhbGxzIGNhbiBsZWFk
+IHRvIHRoZQo+PiBtYWNoaW5lLWlkIGNoYW5naW5nIG92ZXIgdXBkYXRlcy4gV2UgZG9uJ3QgeWV0
+IGhhdmUgdGhpcyBwcm9ibGVtIGluCj4+IHByYWN0aWNlLCBiZWNhdXNlIHRoZSBvbmx5IHR3byB1
+cHN0cmVhbSB1c2VycyBhcmUgZm9yIGJzZWMgYW5kIG9jb3RwLAo+PiB3aGljaCBhcmUgZWZ1c2Ug
+ZHJpdmVycyBmb3IgZGlmZmVyZW50IFNvQ3MuIE9uIHRoZSBvdGhlciBoYW5kLCB1c2Vycwo+PiBt
+YXkgd2FudCB0byBnZXQgdGhlIHVuaXF1ZSBJRCBmcm9tIGFuIEVFUFJPTSBhbmQgd2l0aCBkZWVw
+IHByb2JlCj4+IHN1cHBvcnQsIHRoZSBpbml0Y2FsbCBvcmRlcmluZyB3aWxsIGJlIGluZGVwZW5k
+ZW50IG9mIHRoZSBhY3R1YWwgcHJvYmUKPj4gb3JkZXIuCj4gCj4gT24gYSBib2FyZCBJIGRpZCBi
+ZWZvcmUgQmFyZWJveCBoYWQgbWFjaGluZS1pZCBzdXBwb3J0LCB3ZSB1c2VkIHR3bwo+IHNvdXJj
+ZXMgb2Ygc2VyaWFsIG51bWJlciB0byBnZW5lcmF0ZSB0aGUgbWFjaGluZSBpZC4gIE9uZSB3YXMg
+dGhlIGlteDcKPiB1bmlxdWUgaWQgYW5kIHRoZSBvdGhlciB3YXMgYSBzZXJpYWwgbnVtYmVyIGlu
+IGEgaTJjIHNlY3VyaXR5IGNoaXAuCj4gCj4gVGhlIGlteCBpZCBpcyBwcmVkaWN0YWJsZSwgc28g
+ZXZlbiBoYXNoZWQgb25lIGNhbiBwcmVkaWN0IHRoZQo+IG1hY2hpbmUtaWQgZXhhY3RseS4gCgpX
+ZSBoYXBwZW4gdG8gaGF2ZSBzdG0zMm1wMSB0d2lucyB3aXRoIGNvbnNlY3V0aXZlIE1BQyBhZGRy
+ZXNzZXMuCkkgY29tcGFyZWQgdGhlaXIgc2VyaWFsIG51bWJlcnMgYW5kIHdoaWxlIHRoZXkgY2xl
+YXJseSBkaWRuJ3Qgc3RhcnQKYXQgemVybywgYWxsIGJ5dGVzIHdlcmUgdGhlIHNhbWUsIGV4Y2Vw
+dCBmb3IgdHdvIG5pYmJsZXMgdGhhdCB3ZXJlCm9uZSBhcGFydC4gU28geWVzLCBpZiB0aGUgaS5N
+WCBVSUQgZm9sbG93cyBhIHNpbWlsYXIgc2NoZW1lLCB5b3UKbWF5IGJlIGFibGUgdG8gZ3Vlc3Mg
+dGhlIG1hY2hpbmUtaWQgb2Ygb3RoZXIgZGV2aWNlcyBpbiB0aGUgc2FtZQpiYXRjaCBpZiB5b3Ug
+YWxyZWFkeSBoYXZlIHRoZSBtYWNoaW5lLWlkIG9mIG9uZSBvZiB0aGVtLgoKPiBXZSBkaWRuJ3Qg
+cmVhbGx5IGxpa2UgdGhhdCwgc28gd2UgY29tYmluZWQgdHdvCiBzb3VyY2VzLgoKSXMgeW91ciBp
+c3N1ZSBvbmUgb2YgcHJpdmFjeSBvciBzZWN1cml0eT8KCk15IHVuZGVyc3RhbmRpbmcgaXMgdGhh
+dCB0aGUgbWFjaGluZSBpZCBpcyBub3QgZGlzY2xvc2VkIGFzIG1hdHRlcgpvZiBwcml2YWN5LCBz
+byBpdCdzIGhhcmRlciB0byB0cmFjayBhIGRldmljZSBieSBtYW5uZXIgb2YgdGhlIHVuaXF1ZQpJ
+RHMgZW1iZWRkZWQgaW4gaXRzIG91dGdvaW5nIGNvbW11bmljYXRpb24uCgo+IEl0IHNlZW1zIGxp
+a2UgdGhlcmUgaXMgbm8gd2F5IHRvIGRvIHRoYXQgd2l0aCB0aGlzIGRlc2lnbj8KCllvdSBjYW4g
+d3JpdGUgYSBkcml2ZXIgdGhhdCBjb2xsZWN0cyBtdWx0aXBsZSBzb3VyY2VzIGFuZCBvZmZlcnMK
+YSBzaW5nbGUgTlZNRU0gY2VsbCBmb3IgY29uc3VtcHRpb24uCgo+IEkgdGhpbmsgaXQgY291bGQg
+YmUgZG9uZSBpZiB0aGVyZSB3YXMgYSBmdW5jdGlvbiB0byBhZGQgaGFzaCBpbnB1dCwKPiB3aGlj
+aCBib2FyZCBjb2RlIGNvdWxkIGNhbGwuICBLZWVwIHRoZSBwb29scyBzZXBhcmF0ZSBhbmQgaGF2
+ZSBhCj4gZGVmaW5lZCBvcmRlci4gIEkuZS4sIC9jaG9zZW4vYmFyZWJveCxtYWNoaW5lLWlkIGlz
+IGZpcnN0LCB0aGVuCj4gbWFjaGluZV9pZF9hZGRfaGFzaGFibGUoKSBpcyBuZXh0LgoKSWYgd2Ug
+cmVzdHJpY3QgdGhlIG5ldyBtYWNoaW5lX2lkX2FkZF9oYXNoYWJsZSgpIGZvciBib2FyZCB1c2Ug
+dGhhdAp3b3VsZCB3b3JrLCB5ZXMuIEkgZG9uJ3QgbGlrZSBpdCBmcm9tIGEgZGVzaWduIHBlcnNw
+ZWN0aXZlIHRob3VnaDoKQSB1c2VyIHdvdWxkIGV4cGVjdCBhIG1hY2hpbmUtaWQtcGF0aCBwcm9w
+ZXJ0eSB0byBwb2ludCBhdCBhbGwgaW5mbwp1c2VkIGZvciBkZXRlcm1pbmluZyB0aGUgbWFjaGlu
+ZS1pZCwgbm90IHNvbWUgb2YgdGhlbS4KCj4gT3IgL2Nob3Nlbi9iYXJlYm94LG1hY2hpbmUtaWQg
+Y291bGQgYmUgYSBfbGlzdF8gb2YgcGF0aHMsIHRvIGJlIHVzZWQKPiBpbiBvcmRlci4gIEJ1dCB0
+aGF0IHJlcXVpcmVzIGEgbnZtZW0gZHJpdmVyIGZvciBlYWNoIHNvdXJjZS4gCgpUaGF0J3MgZmlu
+ZSBieSBtZSBhbmQgY291bGQgYmUgYWRkZWQgaW4gZnV0dXJlLiBJIGNhbiBhZGQgYSBwcm9wZXJ0
+eQpzaXplIGNoZWNrLCBzbyB3ZSBsZWF2ZSBvcGVuIHRoaXMgYXZlbnVlIHdpdGhvdXQgYnJlYWtp
+bmcgdXNlcnMuCgpUaGUgcm9vdCBkZXZpY2UgdHJlZSBub2RlIGFscmVhZHkgaGFzIGEgZGV2aWNl
+IGluIGJhcmVib3gsIHNvIGJvYXJkCmNvdWxkIHVzZSB0aGF0IHRvIG9mZmVyIGN1c3RvbSBpbmZv
+LgoKPiBUaGUgc2VjdXJpdHkgY2hpcCB3b3VsZG4ndCBoYXZlIHdvcmtlZCBmb3IgYSBudm1lbSBk
+cml2ZXIuCgpXaHkgbm90PyBDaGVjayBvdXQgbnZtZW0tcm1lbSB3aXRoIGp1c3QgZXhwb3J0cyBh
+IG1lbW9yeSByZWdpb24KYXMgcmVhZC1vbmx5IG52bWVtIGRldmljZS4gWW91IGNhbiBkbyBsaWtl
+d2lzZS4gVGhlcmUgYXJlIGFsc28KaGVscGVycyB0byBnZXQgYSBudm1lbSBkZXZpY2Ugb3V0IG9m
+IGEgKGkyYykgcmVnbWFwLgoKPiBJJ2xsIGFsc28gcG9pbnQgb3V0IHRoYXQganVzdCBoYXNoaW5n
+IHRoZSBkYXRhIGlzIG5vdCBhIGdvb2QgaWRlYSB0bwo+IG1ha2UgYSBVVUlELiAgQW55b25lIHdo
+byBoYXNoZXMgdGhlIGlteCB1bmlxdWUgaWQgd2lsbCBnZXQgdGhlIGV4YWN0Cj4gc2FtZSBVVUlE
+LiAgU28gaXQgaXMgbm90IHZlcnkgdW5pdmVyc2FsbHkgdW5pcXVlIQoKVGhlIGkuTVggdW5pcXVl
+IElEIGlzIHVuaXF1ZSBhY3Jvc3MgaS5NWCBwcm9jZXNzb3JzLiBZZXMsIGl0IHdvdWxkCmNvbGxp
+ZGUgd2l0aCBhbiBhdHRhY2tlciB0aGF0IGd1ZXNzIHRoZSBJRCwgYnV0IGlzIHRoYXQgcmVhbGx5
+CmEgdGhyZWF0PyBBbnlob3csIHRoZXJlIGFyZSBib2FyZHMgdXNpbmcgaXQgbGlrZSB0aGlzIGFs
+cmVhZHkgaW4gdGhlCmZpZWxkLiBTbyB0aGlzIHdvbid0IGNoYW5nZSwgYnV0IGZvciB0aGUgbmV3
+IGJpbmRpbmcgaW50cm9kdWNlZCBoZXJlLApJIGNhbiBhZGRyZXNzIGlzc3VlcyB0aGF0IGFyZSBy
+YWlzZWQuCj4gQWxzbyBjb25zaWRlciBpZiBJIGdpdmUgZXZlcnkgYm9hcmQgYSB1bmlxdWUgc2Vx
+dWVudGlhbCBzZXJpYWwgbnVtYmVyCj4gZnJvbSBlZXByb20gYW5kIHVzZSB0aGF0LiAgVGhlbiBz
+b21lb25lIGVsc2UgbWFrZXMgYSBjb21wbGV0ZWx5Cj4gZGlmZmVyZW50IGJvYXJkIGFuZCB0aGV5
+IGFsc28gdXNlIHNlcXVlbnRpYWwgc2VyaWFsIG51bWJlcnMgdW5pcXVlIGZvcgo+IHRoZWlyIGJv
+YXJkcy4gIEJ1dCBvdXIgc2VyaWFsIG51bWJlcnMgYXJlIHRoZSBzYW1lIGFzIHRoZWlycywgc28g
+d2UKPiBoYXZlIGEgVVVJRCBjb2xsaXNpb24uCj4gCj4gVGhpcyBpcyBhbHJlYWR5IGEga25vd24g
+aXNzdWUgd2hlbiBnZW5lcmF0aW5nIFVVSURzIHRoYXQgYXJlIG5vdAo+IHB1cmVseSByYW5kb20u
+ICBTZWUgUkZDNDEyMiDCpzQuMyBmb3IgZ2VuZXJhdGluZyBVVUlEcyBpbiBhIG5hbWVzcGFjZS4K
+PiBUaGlzIGlzIHdoYXQgSSB1c2VkLiAgVGhlIG5hbWVzcGFjZSB3b3VsZCBiZSBiYXJlYm94ICsg
+Ym9hcmQgdHlwZSwgc28KPiB0aGF0IHVuaXF1ZSBVVUlEcyBhcmUgY3JlYXRlZCB3aGVuIGRpZmZl
+cmVudCB0eXBlcyBvZiBib2FyZHMgdXNlIHRoZQo+IHNhbWUgc2VyaWFsIG51bWJlciBhbmQgYWxz
+byAiYmFyZWJveCIsIHNvIHdoZW4gYSBzaW5nbGUgYm9hcmQgY3JlYXRlcwo+IGRpZmZlcmVudCBV
+VUlEcyBmb3IgZGlmZmVyZW50IHJlYXNvbnMgYnV0IHRoZXkgYXJlIGFsbCBiYXNlZCBvbiB0aGUK
+PiBzZXJpYWwgbnVtYmVyIHRoZXkgVVVJRHMgYWxzbyBzdGlsbCB1bmlxdWUKVXNlcnMgY2FuIGRv
+IHRoYXQsIGJhcmVib3ggd2lsbCBoYXNoaCBpdCB0byBnZXQgdGhlIGZvcm1hdCB0aGUgT1MgZXhw
+ZWN0cy4KSXQncyBwcm9iYWJseSBhIGdvb2QgaWRlYSB0byBoaW50IGF0IFJGQzQxMjIgZm9yIHVz
+ZXJzIGludGVyZXN0ZWQgaW4KZ2VuZXJhdGluZyB0aGVpciBvd24gbWF0ZXJpYWwgZm9yIHVzZSB3
+aXRoIHRoZSBtYWNoaW5lLWlkLgoKQ2hlZXJzLApBaG1hZAoKCi0tIApQZW5ndXRyb25peCBlLksu
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+fApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
+LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAg
+ICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNo
+ZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
 
