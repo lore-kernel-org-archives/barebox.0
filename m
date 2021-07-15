@@ -1,53 +1,53 @@
-Delivery-date: Wed, 14 Jul 2021 11:37:34 +0200
+Delivery-date: Thu, 15 Jul 2021 14:36:17 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1m3bKg-0001os-In
-	for lore@lore.pengutronix.de; Wed, 14 Jul 2021 11:37:34 +0200
+	id 1m40bB-0006sO-9Q
+	for lore@lore.pengutronix.de; Thu, 15 Jul 2021 14:36:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1m3bKf-0000za-3E
-	for lore@pengutronix.de; Wed, 14 Jul 2021 11:37:34 +0200
+	id 1m40bA-00040l-DI
+	for lore@pengutronix.de; Thu, 15 Jul 2021 14:36:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=pMs0OmtF0V/z9y+PnyBXaD/IvbLHRsVk/Zxd4VI5+k4=; b=YJJHo37Vrvyo14fjZ/DzfoEGoh
-	lZxJQxyCDN0XBcyZgheX0AMtF9LqaiNHibKc5A1G9jls7vFWxD9mrV90i9fKsXzVGAyib91QZkXbF
-	sPADxSiCawGEl9WWXUw0vwrkd7oCOCjKcv5yFGsW8u9DB66Ri0FOuMg32OXQdnMpqTC4U5zVo2Uca
-	g1mkIf2gt1cmpOio4LoqCcs4/GgDcLJKTLldLVao0Qc/qePovqlNySrXXs6xTwdnlwkaJOefyFg+p
-	SEu44o/d5z5vjcXmYY8AfH2uXfczgddIjP7n2Hkn9CA7qm3e1kt7ROrST+0w5FvvZkHOfCI3BFm8a
-	4Yn78cbA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=3SCSKF0KtiabnzR1gyU3q0nbHfR+Z5oYP8TSg7AyRog=; b=qDMfadV/ETLd8r
+	asxlASyo46IR6yZt/WkGtLbXG6NkZGlSjpwAoLHFSYq4gV3TQqNIVd1E2rUzioEvV+6Y9Jnx4zLWK
+	RDUAUoOKpcONRXbb/Y29tbnEVrk0x3yDVEXTAi0cxychx3mcYicJaPvOtrzoquSzp21VcL4iNOMAN
+	nDw4X4OdC5Cu5RasrODVXgWIHySl0wqRFS+tbzN48KPO4xJOZcY4yZR0HkGHMOdAgKJPIVxlnWuPE
+	4nQ5rj9SnYwGQc7c99XL3OE37QPdzavdO7h/a65OC2Vu8s5o9+NlMOIxrRi7zBKfMHHbzujYr2xPR
+	Gg7j4otVOiEcUl4dqJeg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1m3bJE-00CwEX-UF; Wed, 14 Jul 2021 09:36:05 +0000
+	id 1m40ZV-000q3c-BS; Thu, 15 Jul 2021 12:34:33 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1m3bJ9-00CwCV-0j
- for barebox@lists.infradead.org; Wed, 14 Jul 2021 09:36:01 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1m3bJ7-0000fx-DS; Wed, 14 Jul 2021 11:35:57 +0200
-To: Juergen Borleis <jbe@pengutronix.de>, barebox@lists.infradead.org
-References: <20210714091423.16081-1-jbe@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <af73903a-6933-35c7-0d43-205320c9b091@pengutronix.de>
-Date: Wed, 14 Jul 2021 11:35:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ id 1m40ZM-000q1i-Lb
+ for barebox@lists.infradead.org; Thu, 15 Jul 2021 12:34:25 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ore@pengutronix.de>)
+ id 1m40ZJ-0003Z0-Nx; Thu, 15 Jul 2021 14:34:21 +0200
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <ore@pengutronix.de>)
+ id 1m40ZJ-0006rd-47; Thu, 15 Jul 2021 14:34:21 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org,
+	david@protonic.nl
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu, 15 Jul 2021 14:34:18 +0200
+Message-Id: <20210715123418.26339-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20210714091423.16081-1-jbe@pengutronix.de>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210714_023559_255136_9271EC8E 
-X-CRM114-Status: GOOD (  35.57  )
+X-CRM114-CacheID: sfid-20210715_053424_758341_7B71E28B 
+X-CRM114-Status: GOOD (  11.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -59,145 +59,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] led: Add a 74273 led driver
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v1] ARM: protonic-imx6: do not expose RFID not to the kernel
+ dts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGVsbG8gSsO8cmdlbiwKCk9uIDE0LjA3LjIxIDExOjE0LCBKdWVyZ2VuIEJvcmxlaXMgd3JvdGU6
-Cj4gRnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgo+IAo+IFNpZ25l
-ZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KPiBTaWduZWQt
-b2ZmLWJ5OiBKdWVyZ2VuIEJvcmxlaXMgPGpiZUBwZW5ndXRyb25peC5kZT4KPiAtLS0KPiAgZHJp
-dmVycy9sZWQvS2NvbmZpZyAgICAgICAgICB8ICAgMiArCj4gIGRyaXZlcnMvbGVkL01ha2VmaWxl
-ICAgICAgICAgfCAgIDEgKwo+ICBkcml2ZXJzL2xlZC9sZWQtNzQyNzMtZ3Bpby5jIHwgMTc2ICsr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCj4gIDMgZmlsZXMgY2hhbmdlZCwgMTc5
-IGluc2VydGlvbnMoKykKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbGVkL2xlZC03NDI3
-My1ncGlvLmMKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9sZWQvS2NvbmZpZyBiL2RyaXZlcnMv
-bGVkL0tjb25maWcKPiBpbmRleCAyYTU5MjBhLi44NzZhYTMxIDEwMDY0NAo+IC0tLSBhL2RyaXZl
-cnMvbGVkL0tjb25maWcKPiArKysgYi9kcml2ZXJzL2xlZC9LY29uZmlnCj4gQEAgLTM5LDUgKzM5
-LDcgQEAgY29uZmlnIExFRF9QQ0E5NTVYCj4gIAkgIExFRCBkcml2ZXIgY2hpcHMgYWNjZXNzZWQg
-dmlhIHRoZSBJMkMgYnVzLiAgU3VwcG9ydGVkCj4gIAkgIGRldmljZXMgaW5jbHVkZSBQQ0E5NTUw
-LCBQQ0E5NTUxLCBQQ0E5NTUyLCBhbmQgUENBOTU1My4KPiAgCj4gK2NvbmZpZyBMRURfNzQyNzNf
-R1BJTwo+ICsJYm9vbCAiU3VwcG9ydCBmb3IgTEVEcyBjb25uZWN0ZWQgdGhyb3VnaCBhIDc0Mjcz
-IgoKSSB0YWxrZWQgdGhpcyBvdmVyIHdpdGggU2FzY2hhIGJlZm9yZToKaHR0cHM6Ly9sb3JlLmJh
-cmVib3gub3JnL2JhcmVib3gvMGYwMzlkODktMmI2NC1hZTkxLWEwYzMtMzBjMTBjNDYxYzM0QHBl
-bmd1dHJvbml4LmRlLwoKVGhlIDc0MjczIGlzIHJhdGhlciBhbiBvdXRwdXQtb25seSBHUElPIGNv
-bnRyb2xsZXIsIHNvIGEgTEVEIGRyaXZlciBpc24ndCB0aGUgY29ycmVjdAphYnN0cmFjdGlvbi4K
-CkkgaW1wbGVtZW50ZWQgYSBHUElPIGRyaXZlciBmb3IgdGhpcyBiZWZvcmUgKHNlZSBhYm92ZSBs
-aW5rKSwgYnV0IFNhc2NoYSdzIG9waW5pb24KaXMgdGhhdCB0aGlzIHNob3VsZCBhdCBsZWFzdCBo
-YXZlIGFuIHVwc3RyZWFtIGJpbmRpbmcgZmlyc3QuCgpDaGVlcnMsCkFobWFkCgo+ICAKPiAgZW5k
-aWYKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9sZWQvTWFrZWZpbGUgYi9kcml2ZXJzL2xlZC9NYWtl
-ZmlsZQo+IGluZGV4IDM1NjkzYTcuLjU3MzJmMjcgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9sZWQv
-TWFrZWZpbGUKPiArKysgYi9kcml2ZXJzL2xlZC9NYWtlZmlsZQo+IEBAIC0xLDUgKzEsNiBAQAo+
-ICBvYmotJChDT05GSUdfTEVEKSArPSBjb3JlLm8KPiAgb2JqLSQoQ09ORklHX0xFRF9HUElPKSAr
-PSBsZWQtZ3Bpby5vCj4gIG9iai0kKENPTkZJR19MRURfUFdNKSArPSBsZWQtcHdtLm8KPiArb2Jq
-LSQoQ09ORklHX0xFRF83NDI3M19HUElPKSArPSBsZWQtNzQyNzMtZ3Bpby5vCj4gIG9iai0kKENP
-TkZJR19MRURfVFJJR0dFUlMpICs9IGxlZC10cmlnZ2Vycy5vCj4gIG9iai0kKENPTkZJR19MRURf
-UENBOTU1WCkgKz0gbGVkLXBjYTk1NXgubwo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2xlZC9sZWQt
-NzQyNzMtZ3Bpby5jIGIvZHJpdmVycy9sZWQvbGVkLTc0MjczLWdwaW8uYwo+IG5ldyBmaWxlIG1v
-ZGUgMTAwNjQ0Cj4gaW5kZXggMDAwMDAwMC4uMWQ2MmUzMgo+IC0tLSAvZGV2L251bGwKPiArKysg
-Yi9kcml2ZXJzL2xlZC9sZWQtNzQyNzMtZ3Bpby5jCj4gQEAgLTAsMCArMSwxNzYgQEAKPiArLyoK
-PiArICogQ29weXJpZ2h0IChjKSAyMDE3IFNhc2NoYSBIYXVlciwgUGVuZ3V0cm9uaXgKPiArICoK
-PiArICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRl
-IGl0IGFuZC9vcgo+ICsgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2Vu
-ZXJhbCBQdWJsaWMgTGljZW5zZSBhcwo+ICsgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdh
-cmUgRm91bmRhdGlvbjsgdmVyc2lvbiAyLgo+ICsgKgo+ICsgKiBUaGlzIHByb2dyYW0gaXMgZGlz
-dHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKPiArICogYnV0IFdJ
-VEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YK
-PiArICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NF
-LiBTZWUgdGhlIEdOVQo+ICsgKiBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFp
-bHMuCj4gKyAqLwo+ICsKPiArI2luY2x1ZGUgPGNvbW1vbi5oPgo+ICsjaW5jbHVkZSA8aW5pdC5o
-Pgo+ICsjaW5jbHVkZSA8bGVkLmg+Cj4gKyNpbmNsdWRlIDxtYWxsb2MuaD4KPiArI2luY2x1ZGUg
-PGdwaW8uaD4KPiArI2luY2x1ZGUgPG9mX2dwaW8uaD4KPiArCj4gK3N0cnVjdCBzbjc0MjczOwo+
-ICsKPiArc3RydWN0IHNuNzQyNzNfbGVkIHsKPiArCXN0cnVjdCBsZWQgbGVkOwo+ICsJc3RydWN0
-IHNuNzQyNzMgKnNuNzQyNzM7Cj4gKwlpbnQgcG9ydDsKPiArCWludCBwaW47Cj4gK307Cj4gKwo+
-ICtzdHJ1Y3Qgc243NDI3MyB7Cj4gKwlzdHJ1Y3Qgc243NDI3M19sZWQgKmxlZHM7Cj4gKwlpbnQg
-KmNsa19ncGlvczsKPiArCWludCAqZGF0YV9ncGlvczsKPiArCXU4ICpzaGFkb3c7Cj4gKwlpbnQg
-bl9wb3J0czsKPiArCWludCBuX3BpbnM7Cj4gKwlpbnQgbl9sZWRzOwo+ICt9Owo+ICsKPiArc3Rh
-dGljIHZvaWQgc243NDI3M19sZWRfc2V0KHN0cnVjdCBsZWQgKmxlZCwgdW5zaWduZWQgaW50IGJy
-aWdodG5lc3MpCj4gK3sKPiArCXN0cnVjdCBzbjc0MjczX2xlZCAqc2xlZCA9IGNvbnRhaW5lcl9v
-ZihsZWQsIHN0cnVjdCBzbjc0MjczX2xlZCwgbGVkKTsKPiArCXN0cnVjdCBzbjc0MjczICpzbjc0
-MjczID0gc2xlZC0+c243NDI3MzsKPiArCWludCBpLCBqOwo+ICsJdTggdmFsOwo+ICsKPiArCXZh
-bCA9IHNuNzQyNzMtPnNoYWRvd1tzbGVkLT5wb3J0XTsKPiArCWlmIChicmlnaHRuZXNzKQo+ICsJ
-CXZhbCB8PSAxIDw8IHNsZWQtPnBpbjsKPiArCWVsc2UKPiArCQl2YWwgJj0gfigxIDw8IHNsZWQt
-PnBpbik7Cj4gKwlzbjc0MjczLT5zaGFkb3dbc2xlZC0+cG9ydF0gPSB2YWw7Cj4gKwo+ICsJZm9y
-IChpID0gMDsgaSA8IHNuNzQyNzMtPm5fcG9ydHM7IGkrKykgewo+ICsJCWZvciAoaiA9IDA7IGog
-PCBzbjc0MjczLT5uX3BpbnM7IGorKykgewo+ICsJCQlncGlvX3NldF9hY3RpdmUoc243NDI3My0+
-ZGF0YV9ncGlvc1tqXSwKPiArCQkJCXNuNzQyNzMtPnNoYWRvd1tpXSAmICgxIDw8IGopKTsKPiAr
-CQl9Cj4gKwo+ICsJCWdwaW9fc2V0X2FjdGl2ZShzbjc0MjczLT5jbGtfZ3Bpb3NbaV0sIDEpOwo+
-ICsJCWdwaW9fc2V0X2FjdGl2ZShzbjc0MjczLT5jbGtfZ3Bpb3NbaV0sIDApOwo+ICsJfQo+ICt9
-Cj4gKwo+ICtzdGF0aWMgaW50IHNuNzQyNzNfbGVkX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2
-KQo+ICt7Cj4gKwlzdHJ1Y3QgZGV2aWNlX25vZGUgKm5wID0gZGV2LT5kZXZpY2Vfbm9kZTsKPiAr
-CXN0cnVjdCBzbjc0MjczICpzbjc0MjczOwo+ICsJaW50IGksIHJldDsKPiArCWVudW0gb2ZfZ3Bp
-b19mbGFncyBmbGFnczsKPiArCj4gKwlzbjc0MjczID0geHphbGxvYyhzaXplb2YoKnNuNzQyNzMp
-KTsKPiArCj4gKwlzbjc0MjczLT5uX3BvcnRzID0gb2ZfZ3Bpb19uYW1lZF9jb3VudChucCwgImNs
-ay1ncGlvcyIpOwo+ICsJaWYgKHNuNzQyNzMtPm5fcG9ydHMgPCAwKSB7Cj4gKwkJZGV2X2Vycihk
-ZXYsICJpbnZhbGlkIG9yIG1pc3NpbmcgY2xrLWdwaW9zIik7Cj4gKwkJcmV0ID0gLUVJTlZBTDsK
-PiArCQlnb3RvIGVycl9ncGlvOwo+ICsJfQo+ICsKPiArCXNuNzQyNzMtPm5fcGlucyA9IG9mX2dw
-aW9fbmFtZWRfY291bnQobnAsICJkYXRhLWdwaW9zIik7Cj4gKwlpZiAoc243NDI3My0+bl9waW5z
-IDwgMCkgewo+ICsJCWRldl9lcnIoZGV2LCAiaW52YWxpZCBvciBtaXNzaW5nIGRhdGEtZ3Bpb3Mi
-KTsKPiArCQlyZXQgPSAtRUlOVkFMOwo+ICsJCWdvdG8gZXJyX2dwaW87Cj4gKwl9Cj4gKwo+ICsJ
-c243NDI3My0+bl9sZWRzID0gc243NDI3My0+bl9wb3J0cyAqIHNuNzQyNzMtPm5fcGluczsKPiAr
-Cj4gKwlzbjc0MjczLT5jbGtfZ3Bpb3MgPSB4emFsbG9jKHNpemVvZihpbnQpICogc243NDI3My0+
-bl9wb3J0cyk7Cj4gKwlzbjc0MjczLT5kYXRhX2dwaW9zID0geHphbGxvYyhzaXplb2YoaW50KSAq
-IHNuNzQyNzMtPm5fcGlucyk7Cj4gKwo+ICsJZm9yIChpID0gMDsgaSA8IHNuNzQyNzMtPm5fcG9y
-dHM7IGkrKykgewo+ICsJCXNuNzQyNzMtPmNsa19ncGlvc1tpXSA9IG9mX2dldF9uYW1lZF9ncGlv
-X2ZsYWdzKG5wLCAiY2xrLWdwaW9zIiwKPiArCQkJCQkJCQlpLCAmZmxhZ3MpOwo+ICsJCXJldCA9
-IGdwaW9fcmVxdWVzdF9vbmUoc243NDI3My0+Y2xrX2dwaW9zW2ldLAo+ICsJCQkJIGZsYWdzICYg
-T0ZfR1BJT19BQ1RJVkVfTE9XID8gR1BJT0ZfQUNUSVZFX0xPVyA6IDAsCj4gKwkJCQkgZGV2X25h
-bWUoZGV2KSk7Cj4gKwkJaWYgKHJldCkgewo+ICsJCQlkZXZfZXJyKGRldiwgIkNhbm5vdCByZXF1
-ZXN0IGdwaW8gJWQ6ICVzXG4iLCBzbjc0MjczLT5jbGtfZ3Bpb3NbaV0sCj4gKwkJCQlzdHJlcnJv
-cigtcmV0KSk7Cj4gKwkJCWdvdG8gZXJyX2dwaW87Cj4gKwkJfQo+ICsKPiArCQlncGlvX2RpcmVj
-dGlvbl9vdXRwdXQoc243NDI3My0+Y2xrX2dwaW9zW2ldLCAwKTsKPiArCX0KPiArCj4gKwlmb3Ig
-KGkgPSAwOyBpIDwgc243NDI3My0+bl9waW5zOyBpKyspIHsKPiArCQlzbjc0MjczLT5kYXRhX2dw
-aW9zW2ldID0gb2ZfZ2V0X25hbWVkX2dwaW9fZmxhZ3MobnAsICJkYXRhLWdwaW9zIiwKPiArCQkJ
-CQkJCQkgaSwgJmZsYWdzKTsKPiArCQlyZXQgPSBncGlvX3JlcXVlc3Rfb25lKHNuNzQyNzMtPmRh
-dGFfZ3Bpb3NbaV0sCj4gKwkJCQkgZmxhZ3MgJiBPRl9HUElPX0FDVElWRV9MT1cgPyBHUElPRl9B
-Q1RJVkVfTE9XIDogMCwKPiArCQkJCSBkZXZfbmFtZShkZXYpKTsKPiArCQlpZiAocmV0KSB7Cj4g
-KwkJCWRldl9lcnIoZGV2LCAiQ2Fubm90IHJlcXVlc3QgZ3BpbyAlZDogJXNcbiIsIHNuNzQyNzMt
-PmRhdGFfZ3Bpb3NbaV0sCj4gKwkJCQlzdHJlcnJvcigtcmV0KSk7Cj4gKwkJCWdvdG8gZXJyX2dw
-aW87Cj4gKwkJfQo+ICsKPiArCQlncGlvX2RpcmVjdGlvbl9vdXRwdXQoc243NDI3My0+ZGF0YV9n
-cGlvc1tpXSwgMCk7Cj4gKwl9Cj4gKwo+ICsJc243NDI3My0+c2hhZG93ID0geHphbGxvYyhzaXpl
-b2YodTgpICogc243NDI3My0+bl9wb3J0cyk7Cj4gKwlzbjc0MjczLT5sZWRzID0geHphbGxvYyhz
-aXplb2YoKnNuNzQyNzMtPmxlZHMpICogc243NDI3My0+bl9sZWRzKTsKPiArCj4gKwlmb3IgKGkg
-PSAwOyBpIDwgc243NDI3My0+bl9sZWRzOyBpKyspIHsKPiArCQlzdHJ1Y3Qgc243NDI3M19sZWQg
-KmxlZCA9ICZzbjc0MjczLT5sZWRzW2ldOwo+ICsJCWNvbnN0IGNoYXIgKm5hbWU7Cj4gKwo+ICsJ
-CWxlZC0+cG9ydCA9IGkgLyBzbjc0MjczLT5uX3BpbnM7Cj4gKwkJbGVkLT5waW4gPSBpICUgc243
-NDI3My0+bl9waW5zOwo+ICsKPiArCQlyZXQgPSBvZl9wcm9wZXJ0eV9yZWFkX3N0cmluZ19pbmRl
-eChucCwgImxhYmVscyIsIGksICZuYW1lKTsKPiArCQlpZiAocmV0KQo+ICsJCQlsZWQtPmxlZC5u
-YW1lID0gYmFzcHJpbnRmKCIlcy0lZCIsIGRldl9uYW1lKGRldiksIGkpOwo+ICsJCWVsc2UKPiAr
-CQkJbGVkLT5sZWQubmFtZSA9IHhzdHJkdXAobmFtZSk7Cj4gKwo+ICsJCWxlZC0+bGVkLnNldCA9
-IHNuNzQyNzNfbGVkX3NldDsKPiArCQlsZWQtPmxlZC5tYXhfdmFsdWUgPSAxOwo+ICsJCWxlZC0+
-c243NDI3MyA9IHNuNzQyNzM7Cj4gKwo+ICsJCXJldCA9IGxlZF9yZWdpc3RlcigmbGVkLT5sZWQp
-Owo+ICsJCWlmIChyZXQpIHsKPiArCQkJZGV2X2VycihkZXYsICJGYWlsZWQgdG8gcmVnaXN0ZXIg
-bGVkICVkXG4iLCBpKTsKPiArCQkJZ290byBlcnJfcmVnaXN0ZXI7Cj4gKwkJfQo+ICsJfQo+ICsK
-PiArCXJldHVybiAwOwo+ICsKPiArZXJyX3JlZ2lzdGVyOgo+ICsJZm9yIChpID0gaSAtIDE7IGkg
-Pj0gMDsgaS0tKSB7Cj4gKwkJc3RydWN0IHNuNzQyNzNfbGVkICpsZWQgPSAmc243NDI3My0+bGVk
-c1tpXTsKPiArCj4gKwkJbGVkX3VucmVnaXN0ZXIoJmxlZC0+bGVkKTsKPiArCX0KPiArCj4gK2Vy
-cl9ncGlvOgo+ICsJcmV0dXJuIHJldDsKPiArfQo+ICsKPiArc3RhdGljIGNvbnN0IHN0cnVjdCBv
-Zl9kZXZpY2VfaWQgb2Zfc243NDI3M19ncGlvX2xlZHNfbWF0Y2hbXSA9IHsKPiArCXsKPiArCQku
-Y29tcGF0aWJsZSA9ICI3NDI3My1ncGlvLWxlZHMiLAo+ICsJfSwgewo+ICsJfSwKPiArfTsKPiAr
-Cj4gK3N0YXRpYyBzdHJ1Y3QgZHJpdmVyX2Qgc243NDI3M19sZWRfZHJpdmVyID0gewo+ICsJLm5h
-bWUJCT0gIjc0MjczLWdwaW8tbGVkcyIsCj4gKwkub2ZfY29tcGF0aWJsZQk9IG9mX3NuNzQyNzNf
-Z3Bpb19sZWRzX21hdGNoLAo+ICsJLnByb2JlCQk9IHNuNzQyNzNfbGVkX3Byb2JlLAo+ICt9Owo+
-ICsKPiArZGV2aWNlX3BsYXRmb3JtX2RyaXZlcihzbjc0MjczX2xlZF9kcml2ZXIpOwo+IAoKCi0t
-IApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAg
-ICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWltLCBH
-ZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApB
-bXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUx
-MjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+RFID not is not used and should not be used by kernel, so remove the
+fixup.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/arm/boards/protonic-imx6/board.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/arch/arm/boards/protonic-imx6/board.c b/arch/arm/boards/protonic-imx6/board.c
+index a718d54df4..6eb31a4bc4 100644
+--- a/arch/arm/boards/protonic-imx6/board.c
++++ b/arch/arm/boards/protonic-imx6/board.c
+@@ -794,12 +794,6 @@ static int prt_imx6_probe(struct device_d *dev)
+ 	if (ret)
+ 		goto free_priv;
+ 
+-	ret = of_register_fixup(prt_imx6_of_fixup, priv);
+-	if (ret) {
+-		dev_err(dev, "Failed to register fixup\n");
+-		goto free_priv;
+-	}
+-
+ 	prt_priv = priv;
+ 
+ 	return 0;
+-- 
+2.30.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
