@@ -1,15 +1,15 @@
-Delivery-date: Sun, 18 Jul 2021 07:10:29 +0200
+Delivery-date: Sun, 18 Jul 2021 07:15:57 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1m4z4P-0000gs-QP
-	for lore@lore.pengutronix.de; Sun, 18 Jul 2021 07:10:29 +0200
+	id 1m4z9h-0000mN-Fu
+	for lore@lore.pengutronix.de; Sun, 18 Jul 2021 07:15:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1m4z4O-00061V-TJ
-	for lore@pengutronix.de; Sun, 18 Jul 2021 07:10:29 +0200
+	id 1m4z9g-0006lt-LS
+	for lore@pengutronix.de; Sun, 18 Jul 2021 07:15:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=MS2ZRhpxv/WDrZvexgnjdrnQ+XoMhhn0vnKZsdpWvdI=; b=bbw3m6qq8TLnBI8yMOyQjHhcEC
-	WFqzQEhszKok0+DvciVc+1vv6iv7YwvI70PD8eMXfS8dzZDfoq79nZmjTQ6WRrqSxPCxRWr8IXuab
-	7IBhx0g+OgD1sEb+Nh7OyIdgOy+OWk7g9lEVsc5dICQdirLb/+22Jljbi55+YXRObcQnRS7RCcybO
-	hZVyhiVyapAK1cxuHsTmVA8AoDV8eIoFFSjzDo/Fg3mX4/Hz5mtuX6e0OJmqrBx5qjw1GnNqF+Qys
-	JgMeQa5jTuy0Z+0pWrA0Xha4wKCe9Ru4LQtgkKApDs+cqiZweEHWfrFuh8gifZSqeTuu9uzNI17ru
-	C9zolUmQ==;
+	bh=vGfrIsBvMJ5mGDeYniwMkeyxlkCR6JbNENP91ZocAPY=; b=URPIYiPPp9ROLI+rJaWdOEId3p
+	Wrif9CJI+qSoLPP7Mrb8znV7vcl+HUVBoj99lzprI5k2I8FssHJV6KZ90ksrKjIuFs49D6bFvsiIA
+	ec0zA957WF/fqdCANVIC/Llr36AWUusI7tGNEt9BU4Y7ZjB8tYuq/KkgcI9XzIpv4aXytGbp5Pzxv
+	bGoifSnf1OYLxw6GPIILVfEeEpgr1iDRaFEx5G9afXt//QxgqJiLj+X3+GUElegY/gAYcLjvh1vAX
+	vVU38++HjKmaynV66ZEZqFg69d2SLi/VNF2TJQpRSnmu1w83w64y3qgx7QtZ5UgkvYEdMz7cy2fqV
+	97hlKCWg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1m4z39-007Lgu-EN; Sun, 18 Jul 2021 05:09:11 +0000
+	id 1m4z8O-007Lwz-89; Sun, 18 Jul 2021 05:14:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1m4z34-007LgR-Ez
- for barebox@lists.infradead.org; Sun, 18 Jul 2021 05:09:07 +0000
+ id 1m4z8J-007LwB-Fk
+ for barebox@lists.infradead.org; Sun, 18 Jul 2021 05:14:32 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1m4z32-0005oV-MT; Sun, 18 Jul 2021 07:09:04 +0200
+ id 1m4z8H-0006V6-SP; Sun, 18 Jul 2021 07:14:29 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1m4z32-00062y-DT; Sun, 18 Jul 2021 07:09:04 +0200
-Date: Sun, 18 Jul 2021 07:09:04 +0200
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org, Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20210718050904.GG9782@pengutronix.de>
-References: <20210716122110.4022409-1-mkl@pengutronix.de>
+ id 1m4z8H-0006eS-JV; Sun, 18 Jul 2021 07:14:29 +0200
+Date: Sun, 18 Jul 2021 07:14:29 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210718051429.GH9782@pengutronix.de>
+References: <20210628064517.28636-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210716122110.4022409-1-mkl@pengutronix.de>
+In-Reply-To: <20210628064517.28636-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 07:08:53 up 150 days,  8:32, 75 users,  load average: 0.04, 0.20,
+X-Uptime: 07:14:17 up 150 days,  8:38, 75 users,  load average: 0.09, 0.20,
  0.18
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210717_220906_549493_E127F600 
-X-CRM114-Status: GOOD (  25.52  )
+X-CRM114-CacheID: sfid-20210717_221431_570808_BDAF171D 
+X-CRM114-Status: GOOD (  14.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,57 +81,24 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] habv4: habv4_get_status(): do not print HAB error event
- in case of known RNG self test failure
+Subject: Re: [PATCH 0/7] sandbox: turn into deep probe platform
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jul 16, 2021 at 02:21:10PM +0200, Marc Kleine-Budde wrote:
-> In commit
-> 
-> | 655e085e3a22 ("crypto: caam - Always do rng selftest")
-> 
-> the kconfig option CONFIG_CRYPTO_DEV_FSL_CAAM_RNG_SELF_TEST was
-> removed, which resulted in the pr_debug() never being executed. Remove
-> the IS_ENABLED() to restore the original behavior, i.e. to not print
-> the HAB error Event if it is the known RNG self-test failure.
-> 
-> Fixes: 655e085e3a22 ("crypto: caam - Always do rng selftest")
-> Reported-by: Roland Hieber <rhi@pengutronix.de>
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
->  drivers/hab/habv4.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+On Mon, Jun 28, 2021 at 08:45:10AM +0200, Ahmad Fatoum wrote:
+> Ahmad Fatoum (7):
+>   sandbox: power: set $global.system.reset=POR on poweroff
+>   sandbox: fix probe order dependency between watchdog and power
+>   of: partition: implement of_partition_ensure_probed
+>   state: support deep probe
+>   nvmem: support deep probe
+>   sandbox: turn into deep probe platform
+>   Revert "sandbox: hostfile: move initcall to earlier postcore level"
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-> index c2acb81369d8..d58768fa5481 100644
-> --- a/drivers/hab/habv4.c
-> +++ b/drivers/hab/habv4.c
-> @@ -553,8 +553,7 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
->  			break;
->  
->  		/* suppress RNG self-test fail events if they can be handled in software */
-> -		if (IS_ENABLED(CONFIG_CRYPTO_DEV_FSL_CAAM_RNG_SELF_TEST) &&
-> -		    is_known_rng_fail_event(data, len)) {
-> +		if (is_known_rng_fail_event(data, len)) {
->  			pr_debug("RNG self-test failure detected, will run software self-test\n");
->  		} else {
->  			pr_err("-------- HAB Event %d --------\n", i);
-> -- 
-> 2.30.2
-> 
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
