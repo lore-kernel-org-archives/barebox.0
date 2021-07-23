@@ -1,54 +1,75 @@
-Delivery-date: Thu, 22 Jul 2021 15:31:23 +0200
+Delivery-date: Fri, 23 Jul 2021 12:20:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1m6YnL-0002N9-8W
-	for lore@lore.pengutronix.de; Thu, 22 Jul 2021 15:31:23 +0200
+	id 1m6sIS-0002IB-6s
+	for lore@lore.pengutronix.de; Fri, 23 Jul 2021 12:20:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1m6YnK-0006bG-17
-	for lore@pengutronix.de; Thu, 22 Jul 2021 15:31:23 +0200
+	id 1m6sIR-0007in-Ax
+	for lore@pengutronix.de; Fri, 23 Jul 2021 12:20:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Content-Type:
+	Content-Transfer-Encoding:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:MIME-Version:Date:Message-ID:To:Subject:From:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=OoNXnc3cJ1m4xJJUw7IimICBisHYIoow5psSihn4XJE=; b=WBzdW0pd2LhZe0
-	HUXUmnnJUswOycjVvqI8P2Z4Embg6KTWjnn0WZix+tcw65jK6NS4VeMFAGcHSMFTJImCI8WLO8ZuR
-	4xORNUr6xaf6HOYtOT/jZr8SHAVg8by6KH3Ssw8Y7sngENX/zyYXA1Ll9It320+i7neSIBrZgvcsF
-	2GfN9S35fFc+8BYJgELTCmU3fdCAsF1uo0pJL3XjZN+uzy15mV/kShhxU/rOXWz9SxQ4gstIecgQa
-	FNaMWo3U/vbU8Uzg3F9tvn7dYCg18LIi2gFfbmpcbmBOHoKEX1VIUnnP0McBdUJ/EFSB8/EgMzSSy
-	nf82GPKBFt0M5X4y7exQ==;
+	List-Owner; bh=T4xWFItNwEoLnXZrvTxkcybvupdUiTbHmsrGVhXjGOA=; b=yC6BZO2sEUIV1t
+	Zj5mXZ01XXyRCJlQjvYL3MPuUT7qNtkoWWmnk9c1TsSt8W9bfiY3dUXwj2qpnryYwcIWbHIzrA8oL
+	vNM2UleZOAFz3YJMdw8FhZpKV3Lf6ZvWzRCw13B4RBDHvRFt4MEkXBhpNbsKJfapVdTXBh2eErRKF
+	xTblJ7nZ9aXpuq9I76ZHiMWElRbTsHBXag9g14ftvwQOKMVuF+LGdmbO/9UPZ+numpp67VM8d3OpF
+	0fcUnr7FWrTA7gLXz6u7074nk3FMXOjotp60SirewHfHAwbBw/4hwhhSDn94YCc7QHIGEJoxLY0GK
+	WbWtQxnEtIYZCEylF1EQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1m6YlN-001fE6-72; Thu, 22 Jul 2021 13:29:21 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1m6sGe-004Km5-Q8; Fri, 23 Jul 2021 10:18:56 +0000
+Received: from cpanel.siel.si ([46.19.9.99])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1m6Y1E-001WC1-Nl
- for barebox@lists.infradead.org; Thu, 22 Jul 2021 12:41:42 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1m6Y1C-0000ad-Nn; Thu, 22 Jul 2021 14:41:38 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1m6Y1C-0003gS-C5; Thu, 22 Jul 2021 14:41:38 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: ore@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 22 Jul 2021 14:41:37 +0200
-Message-Id: <20210722124137.7431-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+ id 1m6sGZ-004Kji-5X
+ for barebox@lists.infradead.org; Fri, 23 Jul 2021 10:18:53 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com; 
+ s=default;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+ Message-ID:To:Subject:From:Sender:Reply-To:Cc:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=fBNoe/TnGpNogKqqwi4fUTjrFNy1yswQqLb/16ffdsw=; b=qZbw8ExERVQbiyEo7XYnkM6n0c
+ imDB/IFX/nQK7AecS2rqUCp1yo61doidJi8z9DcbRf6Z89Jr5d9JI/k9Ci5jE1STEoDfZ6I/brX/I
+ tia5DRjtjy4J6YNKycYMPDGTnHqUn7pkwYGjiJ6XKKknsnt7hFTNtUHR4stB5F/HnKxXJ1DkjWpZv
+ /FOsri+Qa/lH0LQFZ64eQgzy22e416ilaYamNcQ+GuDJ3FMig9O2upigJj40oy4p9bewKGQLg1HOn
+ DmVl2G3EWksZW7GugHTbwFV6azzXksRODcmSISrtO/I8jQBV8ApEGcCUcf8OTXA/r4ssg3MS1cXUy
+ UEtzWIkQ==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:53724
+ helo=[192.168.69.215]) by cpanel.siel.si with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <andrej.picej@norik.com>) id 1m6sGO-00EV7x-Vk
+ for barebox@lists.infradead.org; Fri, 23 Jul 2021 12:18:41 +0200
+From: Andrej Picej <andrej.picej@norik.com>
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <4e1aa199-a5fa-2ad5-80cb-ef3cf86fd174@norik.com>
+Date: Fri, 23 Jul 2021 12:18:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+Content-Language: en-GB
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.infradead.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id:
+ andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210722_054140_835177_6EB49528 
-X-CRM114-Status: UNSURE (   9.34  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210723_031851_598470_E2533D73 
+X-CRM114-Status: GOOD (  13.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,52 +81,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] ARM: at91: fix building samad2 images without sama5d3
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Not successful if statements returning error code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Addition of first stage support for SAMA5D3 added a dependency
-between sama5d2 and sama5d3 first stages: They both needed to be
-enabled to generate images for either. Break up this dependency
-to fix build failures for configs that e.g. only build one SoC.
+Hi all,
 
-Fixes: e30fb46597d3 ("ARM: at91: xload-mmc: add sama5d3_atmci_start_image() helper")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-at91/Kconfig | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+I have a question about Hush shell and the use of its conditional 
+statements.
+We have come upon an interesting behaviour with its return values.
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 28a82c1a9351..290178706a40 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -44,10 +44,7 @@ config HAVE_AT91_DDRAMC
- 	bool
- 
- config AT91_MCI_PBL
--	bool
--	depends on MCI_ATMEL_PBL
--	depends on MCI_ATMEL_SDHCI_PBL
--	default y
-+	def_bool MCI_ATMEL_PBL || MCI_ATMEL_SDHCI_PBL
- 
- # Select if board uses the common at91sam926x_board_init
- config AT91SAM926X_BOARD_INIT
--- 
-2.30.2
+If the condition of the if statement is not true then the return value 
+is 1 (error code), and if the condition is true the return value is 0 
+(success).
 
+Simple test:
+> #!/bin/sh
+> if [ 0 -gt 1 ]; then
+>   echo "0 gt 1, Ret: $?"
+> fi
+> echo "Ret: $?"
+> 
+> if [ 2 -gt 1 ]; then
+>   echo "2 gt 1, Ret: $?"
+> fi
+> echo "Ret: $?"
+
+Output:
+> Ret: 1
+> 2 gt 1, Ret: 0
+> Ret: 0
+
+This means that if, for example the first if statement (where condition 
+is not met) would be at the end of a script the return value of that 
+whole script would be 1 (error code).
+I don't think this follows standard shell behaviour. If if statement 
+condition is not met this doesn't mean that the return value should be 
+an error code, right?
+Using other shells (bash for example) we can see that the returned value 
+in both cases is 0, which is expected (IMO).
+
+This behaviour is not new to the Hush or barebox as I could reproduce it 
+on various previous barebox versions (2013.08.0, 2017.12.0 and 2019.11.0).
+
+Of course, this problem can be easily avoided if at the end of every 
+script we use explicit exit 0. This is doable, but a little annoying.
+
+Although this is not a deal-breaker for us, I was wondering what is the 
+reason behind this? How do you get around this and are there any plans 
+to fix/modify this in the future so it follows the behaviour of other 
+shells?
+
+Thank you for your answer.
+
+Best regards,
+Andrej
 
 _______________________________________________
 barebox mailing list
