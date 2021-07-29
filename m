@@ -1,15 +1,15 @@
-Delivery-date: Thu, 29 Jul 2021 12:13:34 +0200
+Delivery-date: Thu, 29 Jul 2021 12:15:20 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1m932k-00082j-V7
-	for lore@lore.pengutronix.de; Thu, 29 Jul 2021 12:13:34 +0200
+	id 1m934S-00087i-Fl
+	for lore@lore.pengutronix.de; Thu, 29 Jul 2021 12:15:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1m932k-000369-0u
-	for lore@pengutronix.de; Thu, 29 Jul 2021 12:13:34 +0200
+	id 1m934R-0003HI-Gp
+	for lore@pengutronix.de; Thu, 29 Jul 2021 12:15:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,38 +17,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=D3gj8+EAgNEeolmYNf+H9beAYOuSf83eLnA0UwHqxZU=; b=tj0xEOwz84oJI4Oh8WltoQuMOH
-	hnpbw8I7hf/NQZ9vYL6J46esKq1bi7qoaEX+LPWulPKym2qH9r12CeH2YJddpfBIRO92au/3cjo9b
-	GwUPmPsg5nXr8dcF+ZtH0TkqhIm+Di5WAvOSIGfdPbv11nF3lEzRoc56mp51oxhpuJGRNHqdP0MHm
-	cPFni4dyL7Bd3q60vK7KmPtjC3c9MAMaglC0R1q3rLN8P/p9KOMFuCVcQf9YsTYGrJpfmlAvYSOtp
-	nGROjaRKkPNjMgYahhGBbyRWC+mWgWefsaytDEQp6ZxO1fOX6NKcHak4DdcXi6PQrSdUE2MeFI3L1
-	66z0+wrw==;
+	bh=CQ8pU4PJjq6yfEErJrZBSx6f9JnumU/dsPHrmRmBXnk=; b=FipXLKMGVT5fsRTO6xQCHaD2Gg
+	RloMqBUEl2wzMIWQ2o5JNtSX7uziPhx0G0G0HA67rNvie2wySVAs4MdIR+NL38sSAZUjOuORq4Ql8
+	eTgK7v6kHv9zL2tzTWWDWZw/nXHOczF2W99Px/YZC0+ZayPG23gxmP+jY64jrf0FtDbhwaHBoLMC/
+	fBMhVpAyDLOEtsbffBRhYp976QwUd8yHWZX445PBhGC19rHI/lNlCZzV1m+QJtGyUTChPVQob86aA
+	dSGRvo6uiMSBoMT9nmC7X6aRE2flPwtLbnG/tTC4chQkSc1ciRp7auntIU2Fn7mCZ2YaxiuJKLULx
+	/eRzKZbw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1m931F-003nkD-I6; Thu, 29 Jul 2021 10:12:01 +0000
+	id 1m933C-003o3l-Ft; Thu, 29 Jul 2021 10:14:02 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1m931A-003njq-Cf
- for barebox@lists.infradead.org; Thu, 29 Jul 2021 10:11:58 +0000
+ id 1m9338-003o2O-5g
+ for barebox@lists.infradead.org; Thu, 29 Jul 2021 10:13:59 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1m9318-0002mO-QV; Thu, 29 Jul 2021 12:11:54 +0200
+ id 1m9336-00037z-Ux; Thu, 29 Jul 2021 12:13:57 +0200
 To: Renaud Barbier <renaud.barbier@abaco.com>, barebox@lists.infradead.org
 References: <1627476428-16318-1-git-send-email-renaud.barbier@abaco.com>
- <1627476428-16318-4-git-send-email-renaud.barbier@abaco.com>
+ <1627476428-16318-5-git-send-email-renaud.barbier@abaco.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <2b7ebb39-c70a-b02e-767d-cedb90494d7a@pengutronix.de>
-Date: Thu, 29 Jul 2021 12:11:54 +0200
+Message-ID: <83f012a3-a035-2d4c-e5b9-a1719914de76@pengutronix.de>
+Date: Thu, 29 Jul 2021 12:13:56 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <1627476428-16318-4-git-send-email-renaud.barbier@abaco.com>
+In-Reply-To: <1627476428-16318-5-git-send-email-renaud.barbier@abaco.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210729_031156_486919_6B24C176 
-X-CRM114-Status: GOOD (  26.47  )
+X-CRM114-CacheID: sfid-20210729_031358_278316_AB65BC3C 
+X-CRM114-Status: GOOD (  22.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,89 +73,71 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 3/4] nand: add NXP IFC nand driver
+Subject: Re: [PATCH 4/4] ls1046ardb: enable IFC NAND.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+Hi,
+
 On 28.07.21 14:47, Renaud Barbier wrote:
-> Add the NXP IFC nand driver support. This driver
-> can be used with the NXP QorIQ cores.
+> Set the NAND timings and enable the IFC NAND driver.
 > 
 > Signed-off-by: Renaud Barbier <renaud.barbier@abaco.com>
 > ---
->  .../mach-layerscape/include/mach/fsl_ifc.h    |   16 +
->  .../mach-layerscape/include/mach/layerscape.h |    3 +
->  drivers/mtd/nand/Kconfig                      |    6 +
->  drivers/mtd/nand/Makefile                     |    1 +
->  drivers/mtd/nand/fsl_ifc.h                    |  116 ++
->  drivers/mtd/nand/nand_fsl_ifc.c               | 1037 +++++++++++++++++
->  include/linux/fsl_ifc.h                       |  306 +++++
->  7 files changed, 1485 insertions(+)
->  create mode 100644 arch/arm/mach-layerscape/include/mach/fsl_ifc.h
->  create mode 100644 drivers/mtd/nand/fsl_ifc.h
->  create mode 100644 drivers/mtd/nand/nand_fsl_ifc.c
->  create mode 100644 include/linux/fsl_ifc.h
+>  arch/arm/boards/ls1046ardb/board.c    | 26 ++++++++++++++++++++++++++
+>  arch/arm/configs/layerscape_defconfig | 12 ++++++++++++
+>  2 files changed, 38 insertions(+)
 > 
-> diff --git a/arch/arm/mach-layerscape/include/mach/fsl_ifc.h b/arch/arm/mach-layerscape/include/mach/fsl_ifc.h
-> new file mode 100644
-> index 0000000000..385d07cb1f
-> --- /dev/null
-> +++ b/arch/arm/mach-layerscape/include/mach/fsl_ifc.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier:     GPL-2.0+ */
-> +/*
-> + * Copyright 2021 Abaco Systems, Inc
-> + */
-> +
-> +#ifndef __MACH_MTD_FSL_IFC
-> +#define __MACH_MTD_FSL_IFC
-> +
-> +#include <mach/layerscape.h>
+> diff --git a/arch/arm/boards/ls1046ardb/board.c b/arch/arm/boards/ls1046ardb/board.c
+> index ef68e9c7f9..5573d5b486 100644
+> --- a/arch/arm/boards/ls1046ardb/board.c
+> +++ b/arch/arm/boards/ls1046ardb/board.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/sizes.h>
+>  #include <linux/clk.h>
+>  #include <linux/clkdev.h>
 > +#include <linux/fsl_ifc.h>
-> +
-> +
-> +struct fsl_ifc_data {
-> +	uint32_t cs;
-> +};
-> +#endif
-
-Header can be dropped as the Layerscape support is DT-only.
-
-> diff --git a/arch/arm/mach-layerscape/include/mach/layerscape.h b/arch/arm/mach-layerscape/include/mach/layerscape.h
-> index 1f1da0f66e..cb7bbc56b0 100644
-> --- a/arch/arm/mach-layerscape/include/mach/layerscape.h
-> +++ b/arch/arm/mach-layerscape/include/mach/layerscape.h
-> @@ -3,6 +3,9 @@
+>  #include <asm/system.h>
+>  #include <mach/layerscape.h>
+>  #include <mach/bbu.h>
+> @@ -147,6 +148,31 @@ static int rdb_mem_init(void)
+>  }
+>  mem_initcall(rdb_mem_init);
 >  
->  #define LS1046A_DDR_SDRAM_BASE	0x80000000
->  #define LS1046A_DDR_FREQ	2100000000
-> +#define LS10146A_IFC_ADDR	0x01530000
-> +
-> +#define IFC_ADDR	LS10146A_IFC_ADDR
-
-That's a too generic macro name. You should retrieve the base address
-from device tree in the driver. Otherwise, if a new Layerscape SoC
-is added, you won't be able to have a multi-image barebox build
-that supports both.
-
-
-> +static int fsl_ifc_nand_probe(struct device_d *dev)
+> +static int rdb_nand_init(void)
 > +{
-> +	struct device_node *np = dev->device_node;
-> +	struct fsl_ifc_data *pdata = dev->platform_data;
-> +	struct fsl_ifc_mtd *priv;
-> +	struct resource *iores;
-> +	struct mtd_info *mtd;
-> +	int ret = 0;
-> +
-> +	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	priv->dev = dev;
-> +	if (!np) {
 
-I'd remove the PPC non-DT support. It doesn't compile now anyway.
+You should check against board compatible here.
+
+> +	/* NAND mapping and timings. Only for Linux use. */
+
+Why is this only for Linux use? You use the driver in barebox, don't you?
+
+> +	set_ifc_cspr(IFC_CS0, CSPR_PHYS_ADDR(0x7e800000) | CSPR_PORT_SIZE_8 |
+> +				CSPR_MSEL_NAND | CSPR_V);
+> +	set_ifc_csor(IFC_CS0, CSOR_NAND_ECC_ENC_EN | CSOR_NAND_ECC_DEC_EN |
+> +			CSOR_NAND_ECC_MODE_8 |
+> +			CSOR_NAND_RAL_3 | CSOR_NAND_PGS_4K |
+> +			CSOR_NAND_SPRZ_224 |  CSOR_NAND_PB(64) |
+> +			CSOR_NAND_TRHZ_20);
+> +	set_ifc_amask(IFC_CS0, IFC_AMASK(64*1024));
+> +	set_ifc_ftim(IFC_CS0, IFC_FTIM0, FTIM0_NAND_TCCST(0x07) |
+> +			FTIM0_NAND_TWP(0x18) | FTIM0_NAND_TWCHT(0x07) |
+> +			FTIM0_NAND_TWH(0x0a));
+> +	set_ifc_ftim(IFC_CS0, IFC_FTIM1, FTIM1_NAND_TADLE(0x32) |
+> +			FTIM1_NAND_TWBE(0x39) | FTIM1_NAND_TRR(0x0e)|
+> +			FTIM1_NAND_TRP(0x18));
+> +	set_ifc_ftim(IFC_CS0, IFC_FTIM2, FTIM2_NAND_TRAD(0xf) |
+> +			FTIM2_NAND_TREH(0xa) | FTIM2_NAND_TWHRE(0x1e));
+> +	set_ifc_ftim(IFC_CS0, IFC_FTIM3, 0);
+
+I assume there are no DT bindings describing these parameters for the
+IFC driver to consume?
+
+> +
+> +	return 0;
+> +}
+> +core_initcall(rdb_nand_init);
 
 Cheers,
 Ahmad
