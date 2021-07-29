@@ -1,75 +1,54 @@
-Delivery-date: Thu, 29 Jul 2021 11:49:57 +0200
+Delivery-date: Thu, 29 Jul 2021 11:59:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1m92ft-0007KU-Lf
-	for lore@lore.pengutronix.de; Thu, 29 Jul 2021 11:49:57 +0200
+	id 1m92pR-0007XA-Kh
+	for lore@lore.pengutronix.de; Thu, 29 Jul 2021 11:59:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1m92fs-0008K7-HK
-	for lore@pengutronix.de; Thu, 29 Jul 2021 11:49:57 +0200
+	id 1m92pQ-0001GU-Lw
+	for lore@pengutronix.de; Thu, 29 Jul 2021 11:59:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Content-ID:In-Reply-To:
-	References:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=0I9qY+HKwU1QoeMF2lx+EoUXotOwizSf9KdcOQFsgx4=; b=Lp6O1MJQeMT6uN
-	dxfPc7/Z3XhKtfsd1JsJaYb8uP4b7zyJuBazGjezBnFdcCfipOlpd4g+Ox8XrXfWnMnj84lp5G409
-	GR0h5s1P7tXnolVoOLyqsEIOhz5naPb0BNlpzNgXRruWtJblNkE+vlfFRecF2J9/SVyFMhHQD1akk
-	H/WbQ6EWBd3Dbi0aOFUvDCJLcBRZId6o/5z47rYZz/zjDQR6K4F7+pg8JX84WhQrbd5ThSvLI0aDW
-	kRkw/bzmYJjXj/uMWNtBGr9V80MTddfctwh41m6Oxky9N7tAUTeQm82KnIA5dri+LG5RRw1IRh+fi
-	IVEBcABGb4LiUBPUDaeQ==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=5flF+5ZAHj9Ib5aztvmU79d3cUQK0UuD1CQ11vfGzwc=; b=BsIYC87mazIvp+/eV5Mj0xlcUr
+	O9EDZvBtybLklpqAPtQBmoVtb1Bv5Obh/SjDAjnmAT2chtp5el+Vo68f8/gzir+2jXhZins+fUolg
+	Ov7fZ9aYU5zq52v51dTXjpLEJ6mpWpwP1ptLqSDzII8W/+R1C7GsrWt5NCG1JA/IAwXaK3/Rc3JvD
+	qAIpHSX5J90tqX1eRyEO10j4cXPeWxyfyRA+cxRx6T3xToCduH7IMXXz2LISm2UgyW4RbYbw3hjMI
+	LCtM6PVNx/A6vKsV+hzUb4vOOdygwt3eXhTuJqIROzUtgvpAv/DDKQtgRxq3bj1QRXQwZqoeORjUf
+	KBHR027g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1m92eQ-003hqx-Oc; Thu, 29 Jul 2021 09:48:26 +0000
-Received: from enterprise01.smtp.diehl.com ([193.201.238.219])
+	id 1m92o6-003kEN-DI; Thu, 29 Jul 2021 09:58:26 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1m92eK-003hpa-H3
- for barebox@lists.infradead.org; Thu, 29 Jul 2021 09:48:22 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=diehl.com; i=@diehl.com; q=dns/txt; s=default;
- t=1627552100; x=1659088100;
- h=from:to:subject:date:message-id:references:in-reply-to:
- content-id:content-transfer-encoding:mime-version;
- bh=2v7zKiEJcBaFdRYu/rfOo8uzafwY7mw5fxIchtFxQR0=;
- b=c/6ImDTGVcyjlXHBxMbYnB4imXUMEdLnXjJdzvBETZrBnO1tpOWecmvw
- h78gP6nH1IXtATvXFOCdrylcAz36rSf+ymWTFLxQMY1DU1T5rQQesDM4D
- zmnP4iSPGBOnjtY+HoVX7okfGjUf4xds0R7usYF1wNudXF7R953t1Rgad
- QkT4HjaeAIuAgS8nTOd7dvBA9zolLhRg4+VeP7RZdJwdsoEnkR8TNbO7m
- lB0Tivh9NgGFzqq+5L43DYOzIrYvL5HidqSCc/HyzZyaH1wWIS02tjJ6X
- tlMBojn6mdGAKc4dexQ86UPPnIOhEcDsHBBmi8sExqEO8b0xGepoRdueA A==;
-IronPort-HdrOrdr: A9a23:rjcrUK3zNFfBwyb+TltGXgqjBLAkLtp133Aq2lEZdPWaSKylfq
- GV7Y0mPHDP5wr5NEtPpTnEAtjjfZq+z/JICOsqTNOftWDd0QPCRuxfBMnZsljd8kbFh41gPM
- lbEpSWROeAa2ST3a7BkW6FL+o=
-X-IronPort-AV: E=Sophos;i="5.84,278,1620684000"; d="scan'208";a="13659127"
-From: Denis Osterland-Heim <denis.osterland@diehl.com>
-To: "a.fatoum@pengutronix.de" <a.fatoum@pengutronix.de>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: Not successful if statements returning error code
-Thread-Index: AQHXf6xx3QyEL2rbSU67bamFUdtLMKtX/B6AgAALxACAAY3WgIAABxgA
-Date: Thu, 29 Jul 2021 09:48:13 +0000
-Message-ID: <d5905da7db8e8f867e0a9e2c0a3c58e48eea7a8f.camel@diehl.com>
-References: <4e1aa199-a5fa-2ad5-80cb-ef3cf86fd174@norik.com>
- <2c7807b2-e709-8042-1945-bf4d06f77f28@pengutronix.de>
- <eb2c7cc52d5a68cccaa64642ca909acf7cf25c94.camel@diehl.com>
- <1e471a43-3b6c-f632-1359-6f44a06f8c54@pengutronix.de>
-In-Reply-To: <1e471a43-3b6c-f632-1359-6f44a06f8c54@pengutronix.de>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-disclaimerprocessed: True
-Content-ID: <527ADF30C741394199F638BD35B9672A@diehl.internal>
+ id 1m92o0-003kCa-In
+ for barebox@lists.infradead.org; Thu, 29 Jul 2021 09:58:22 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1m92nz-00016U-9v; Thu, 29 Jul 2021 11:58:19 +0200
+To: Renaud Barbier <renaud.barbier@abaco.com>, barebox@lists.infradead.org
+References: <1627476428-16318-1-git-send-email-renaud.barbier@abaco.com>
+ <1627476428-16318-2-git-send-email-renaud.barbier@abaco.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <138a77fb-5f88-3a94-1385-4adb743f91a7@pengutronix.de>
+Date: Thu, 29 Jul 2021 11:58:18 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-X-GBS-PROC: 415AWy8o668fDtCxszluzxRqcn/3rsmC4Tfyym/jeLpWUJ4hLyDY4dYE8eNIQqsb
+In-Reply-To: <1627476428-16318-2-git-send-email-renaud.barbier@abaco.com>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210729_024821_064693_E78C374D 
-X-CRM114-Status: GOOD (  24.43  )
+X-CRM114-CacheID: sfid-20210729_025820_687230_35EAE775 
+X-CRM114-Status: GOOD (  21.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,108 +60,136 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED,USER_IN_WELCOMELIST,USER_IN_WHITELIST
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Not successful if statements returning error code
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 1/4] ARM: atomic.h: add 64-bit counter support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGksDQoNCkFtIERvbm5lcnN0YWcsIGRlbiAyOS4wNy4yMDIxLCAxMToyMiArMDIwMCBzY2hyaWVi
-IEFobWFkIEZhdG91bToNCj4gT24gMjguMDcuMjEgMTE6MzgsIERlbmlzIE9zdGVybGFuZC1IZWlt
-IHdyb3RlOg0KPiA+IEhpLA0KPiA+DQo+ID4gQW0gTWl0dHdvY2gsIGRlbiAyOC4wNy4yMDIxLCAx
-MDo1NiArMDIwMCBzY2hyaWViIEFobWFkIEZhdG91bToNCj4gPg0KPiA+ID4gSSB0YWxrZWQgd2l0
-aCBTYXNjaGEgb25jZSBiZWZvcmUgKG9mZi1saXN0KSBhYm91dCBhIHNpbWlsYXIgaXNzdWUuIE1p
-c3NpbmcgZXJyb3IgaGFuZGxpbmcNCj4gPiA+IHJlc3VsdHMgaW4NCj4gPiA+DQo+ID4gPiAgIFsg
-eDEgLWVxIHgyIF0gJiYgZWNobyB5ZXMgfHwgZWNobyBubw0KPiA+ID4NCj4gPiA+IHByaW50aW5n
-IHllcy4NCj4gPiA+DQo+ID4gPiBXZSBhZ3JlZWQgdGhhdCBpdCdzIG9rIHRvIGJyZWFrIHNjcmlw
-dHMgcmVseWluZyBvbiBjbGVhciBodXNoIGJ1Z3MgbGlrZSB0aGlzLg0KPiA+ID4NCj4gPiA+IEkn
-ZCB0aHVzIHJlY29tbWVuZCB5b3UgdG8gc2VuZCBhIHBhdGNoIHRvIGZpeCBodXNoIGluc3RlYWQg
-b2Ygd29ya2luZyBhcm91bmQgaXQuDQo+ID4NCj4gPiBzaGVsbGNoZWNrIHNheXM6DQo+ID4NCj4g
-PiBTQzIwMTU6IE5vdGUgdGhhdCBBICYmIEIgfHwgQyBpcyBub3QgaWYtdGhlbi1lbHNlLiBDIG1h
-eSBydW4gd2hlbiBBIGlzIHRydWUuDQo+ID4NCj4gPiBTbyBJIHdvdWxkIHRoaW5rIHRoYXQgQiBp
-cyBtYXliZSBhbGxvd2VkIHRvIHJ1biBiZWZvcmUgQSwgdG9vLg0KPiA+IEJ1dCwgSSBkbyBub3Qg
-a25vdyBpZiBIdXNoIHNwZWNpZmllcyBleGVjdXRpb24gb3JkZXIgaGVyZS4NCj4NCj4gQW4gb3B0
-aW9uLWxlc3MgYmFyZWJveCBlY2hvIGNhbid0IGZhaWwsIHNvIGl0IHNob3VsZCBuZXZlcg0KPiBw
-cmludCBib3RoIHllcyBhbmQgbm8sIGJ1dCB0aGFua3MgZm9yIHRoZSByZWZlcmVuY2UuIEknbGwg
-a2VlcA0KPiBhbiBleWUgb24gaXQgaW4gZnV0dXJlIHNoZWxsIGNvZGUuDQo+DQo+IFRoaXMgd2Fz
-bid0IHdoYXQgSSBtZWFudCB0byBzaG93IHRob3VnaCwgSSBtZWFudCB0aGF0IHgxIGFuZCB4Mg0K
-PiBhcmUgYm90aCBub24taW50ZWdlcnMgYW5kIC1lcSB3aGljaCBjb21wYXJlcyBpbnRlZ2VycyBy
-ZXR1cm5zDQo+IHRydWUgd2hlbiBjb21wYXJpbmcgdGhlbSB1bmxpa2Ugd2hhdCBhIFBPU0lYIHNo
-ZWxsIGRvZXMuDQpPaC4gTm93IEkgZ290IHlvdXIgcG9pbnQgOy0pDQoNCmh0dHBzOi8vZ2l0LnBl
-bmd1dHJvbml4LmRlL2NnaXQvYmFyZWJveC90cmVlL2NvbW1hbmRzL3Rlc3QuYyNuMTgyDQplcnJv
-ciBoYW5kbGluZyBpcyBtaXNzaW5nIGhlcmUuDQpJdCBpcyB2ZXJ5IGxpa2VseSB0aGF0IHNpbXBs
-ZV9zdHJ0b2woKSByZXR1cm5zIHRoZSBzYW1lIHZhbHVlIGluIGNhc2Ugb2YgZXJyb3IsDQp3aGlj
-aCByZXN1bHRzIGluIGEgc3VjY2Vzc2Z1bGx5IGNvbXBhcmUuDQoNClJlZ2FyZHMsIERlbmlzDQoN
-Cj4NCj4gQ2hlZXJzLA0KPiBBaG1hZA0KPg0KPg0KPiA+DQo+ID4gUmVnYXJkcywgRGVuaXMNCj4g
-Pg0KPiA+ID4NCj4gPiA+IENoZWVycywNCj4gPiA+IEFobWFkDQo+ID4gPg0KPiA+ID4gPg0KPiA+
-ID4gPiBUaGFuayB5b3UgZm9yIHlvdXIgYW5zd2VyLg0KPiA+ID4gPg0KPiA+ID4gPiBCZXN0IHJl
-Z2FyZHMsDQo+ID4gPiA+IEFuZHJlag0KPiA+ID4gPg0KPiA+ID4gPiBfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KPiA+ID4gPiBiYXJlYm94IG1haWxpbmcg
-bGlzdA0KPiA+ID4gPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gPiA+ID4gaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94DQo+ID4gPiA+DQo+
-ID4gPg0KPiA+ID4NCj4gPg0KPiA+IERpZWhsIENvbm5lY3Rpdml0eSBTb2x1dGlvbnMgR21iSA0K
-PiA+IEdlc2Now6RmdHNmw7xocnVuZzogSG9yc3QgTGVvbmJlcmdlcg0KPiA+IFNpdHogZGVyIEdl
-c2VsbHNjaGFmdDogTsO8cm5iZXJnIC0gUmVnaXN0ZXJnZXJpY2h0OiBBbXRzZ2VyaWNodA0KPiA+
-IE7DvHJuYmVyZzogSFJCIDMyMzE1DQo+ID4NCj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXw0KPiA+DQo+ID4gRGVyIEluaGFsdCBkZXIgdm9yc3RlaGVuZGVuIEUtTWFpbCBpc3Qg
-bmljaHQgcmVjaHRsaWNoIGJpbmRlbmQuIERpZXNlIEUtTWFpbCBlbnRoYWVsdCB2ZXJ0cmF1bGlj
-aGUgdW5kL29kZXIgcmVjaHRsaWNoIGdlc2NodWV0enRlIEluZm9ybWF0aW9uZW4uDQo+ID4gSW5m
-b3JtaWVyZW4gU2llIHVucyBiaXR0ZSwgd2VubiBTaWUgZGllc2UgRS1NYWlsIGZhZWxzY2hsaWNo
-ZXJ3ZWlzZSBlcmhhbHRlbiBoYWJlbi4gQml0dGUgbG9lc2NoZW4gU2llIGluIGRpZXNlbSBGYWxs
-IGRpZSBOYWNocmljaHQuDQo+ID4gSmVkZSB1bmVybGF1YnRlIEZvcm0gZGVyIFJlcHJvZHVrdGlv
-biwgQmVrYW5udGdhYmUsIEFlbmRlcnVuZywgVmVydGVpbHVuZyB1bmQvb2RlciBQdWJsaWthdGlv
-biBkaWVzZXIgRS1NYWlsIGlzdCBzdHJlbmdzdGVucyB1bnRlcnNhZ3QuDQo+ID4NCj4gPiAtIElu
-Zm9ybWF0aW9uZW4genVtIERhdGVuc2NodXR6LCBpbnNiZXNvbmRlcmUgenUgSWhyZW4gUmVjaHRl
-biwgZXJoYWx0ZW4gU2llIHVudGVyOg0KPiA+DQo+ID4gaHR0cHM6Ly93d3cuZGllaGwuY29tL2dy
-b3VwL2RlL3RyYW5zcGFyZW56LXVuZC1pbmZvcm1hdGlvbnNwZmxpY2h0ZW4vDQo+ID4NCj4gPiBU
-aGUgY29udGVudHMgb2YgdGhlIGFib3ZlIG1lbnRpb25lZCBlLW1haWwgaXMgbm90IGxlZ2FsbHkg
-YmluZGluZy4gVGhpcyBlLW1haWwgY29udGFpbnMgY29uZmlkZW50aWFsIGFuZC9vciBsZWdhbGx5
-IHByb3RlY3RlZCBpbmZvcm1hdGlvbi4gUGxlYXNlIGluZm9ybSB1cyBpZiB5b3UgaGF2ZSByZWNl
-aXZlZCB0aGlzIGUtbWFpbCBieQ0KPiA+IG1pc3Rha2UgYW5kIGRlbGV0ZSBpdCBpbiBzdWNoIGEg
-Y2FzZS4gRWFjaCB1bmF1dGhvcml6ZWQgcmVwcm9kdWN0aW9uLCBkaXNjbG9zdXJlLCBhbHRlcmF0
-aW9uLCBkaXN0cmlidXRpb24gYW5kL29yIHB1YmxpY2F0aW9uIG9mIHRoaXMgZS1tYWlsIGlzIHN0
-cmljdGx5IHByb2hpYml0ZWQuDQo+ID4NCj4gPiAtIEZvciBnZW5lcmFsIGluZm9ybWF0aW9uIG9u
-IGRhdGEgcHJvdGVjdGlvbiBhbmQgeW91ciByZXNwZWN0aXZlIHJpZ2h0cyBwbGVhc2UgdmlzaXQ6
-DQo+ID4NCj4gPiBodHRwczovL3d3dy5kaWVobC5jb20vZ3JvdXAvZW4vdHJhbnNwYXJlbmN5LWFu
-ZC1pbmZvcm1hdGlvbi1vYmxpZ2F0aW9ucy8NCj4gPg0KPiA+DQo+ID4gX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCj4gPiBiYXJlYm94IG1haWxpbmcgbGlz
-dA0KPiA+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZw0KPiA+IGh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveA0KPiA+DQo+DQo+DQpEaWVobCBDb25u
-ZWN0aXZpdHkgU29sdXRpb25zIEdtYkgNCkdlc2Now6RmdHNmw7xocnVuZzogSG9yc3QgTGVvbmJl
-cmdlcg0KU2l0eiBkZXIgR2VzZWxsc2NoYWZ0OiBOw7xybmJlcmcgLSBSZWdpc3RlcmdlcmljaHQ6
-IEFtdHNnZXJpY2h0DQpOw7xybmJlcmc6IEhSQiAzMjMxNQ0KDQpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXw0KDQpEZXIgSW5oYWx0IGRlciB2b3JzdGVoZW5kZW4gRS1NYWlsIGlzdCBu
-aWNodCByZWNodGxpY2ggYmluZGVuZC4gRGllc2UgRS1NYWlsIGVudGhhZWx0IHZlcnRyYXVsaWNo
-ZSB1bmQvb2RlciByZWNodGxpY2ggZ2VzY2h1ZXR6dGUgSW5mb3JtYXRpb25lbi4NCkluZm9ybWll
-cmVuIFNpZSB1bnMgYml0dGUsIHdlbm4gU2llIGRpZXNlIEUtTWFpbCBmYWVsc2NobGljaGVyd2Vp
-c2UgZXJoYWx0ZW4gaGFiZW4uIEJpdHRlIGxvZXNjaGVuIFNpZSBpbiBkaWVzZW0gRmFsbCBkaWUg
-TmFjaHJpY2h0Lg0KSmVkZSB1bmVybGF1YnRlIEZvcm0gZGVyIFJlcHJvZHVrdGlvbiwgQmVrYW5u
-dGdhYmUsIEFlbmRlcnVuZywgVmVydGVpbHVuZyB1bmQvb2RlciBQdWJsaWthdGlvbiBkaWVzZXIg
-RS1NYWlsIGlzdCBzdHJlbmdzdGVucyB1bnRlcnNhZ3QuDQoNCi0gSW5mb3JtYXRpb25lbiB6dW0g
-RGF0ZW5zY2h1dHosIGluc2Jlc29uZGVyZSB6dSBJaHJlbiBSZWNodGVuLCBlcmhhbHRlbiBTaWUg
-dW50ZXI6DQoNCmh0dHBzOi8vd3d3LmRpZWhsLmNvbS9ncm91cC9kZS90cmFuc3BhcmVuei11bmQt
-aW5mb3JtYXRpb25zcGZsaWNodGVuLw0KDQpUaGUgY29udGVudHMgb2YgdGhlIGFib3ZlIG1lbnRp
-b25lZCBlLW1haWwgaXMgbm90IGxlZ2FsbHkgYmluZGluZy4gVGhpcyBlLW1haWwgY29udGFpbnMg
-Y29uZmlkZW50aWFsIGFuZC9vciBsZWdhbGx5IHByb3RlY3RlZCBpbmZvcm1hdGlvbi4gUGxlYXNl
-IGluZm9ybSB1cyBpZiB5b3UgaGF2ZSByZWNlaXZlZCB0aGlzIGUtbWFpbCBieQ0KbWlzdGFrZSBh
-bmQgZGVsZXRlIGl0IGluIHN1Y2ggYSBjYXNlLiBFYWNoIHVuYXV0aG9yaXplZCByZXByb2R1Y3Rp
-b24sIGRpc2Nsb3N1cmUsIGFsdGVyYXRpb24sIGRpc3RyaWJ1dGlvbiBhbmQvb3IgcHVibGljYXRp
-b24gb2YgdGhpcyBlLW1haWwgaXMgc3RyaWN0bHkgcHJvaGliaXRlZC4NCg0KLSBGb3IgZ2VuZXJh
-bCBpbmZvcm1hdGlvbiBvbiBkYXRhIHByb3RlY3Rpb24gYW5kIHlvdXIgcmVzcGVjdGl2ZSByaWdo
-dHMgcGxlYXNlIHZpc2l0Og0KDQpodHRwczovL3d3dy5kaWVobC5jb20vZ3JvdXAvZW4vdHJhbnNw
-YXJlbmN5LWFuZC1pbmZvcm1hdGlvbi1vYmxpZ2F0aW9ucy8NCg0KDQpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+On 28.07.21 14:47, Renaud Barbier wrote:
+> In preparation for the introduction of the FSL IFC nand driver
+> for the layerscape CPU, add 64-bit counter support.
+> 
+> Signed-off-by: Renaud Barbier <renaud.barbier@abaco.com>
+> ---
+>  include/asm-generic/atomic-long.h |  3 +-
+>  include/asm-generic/atomic.h      | 49 +++++++++++++++++++++++++++++++
+>  2 files changed, 51 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/asm-generic/atomic-long.h b/include/asm-generic/atomic-long.h
+> index 322d510f38..dbb503e758 100644
+> --- a/include/asm-generic/atomic-long.h
+> +++ b/include/asm-generic/atomic-long.h
+> @@ -65,7 +65,7 @@ static inline void atomic_long_sub(long i, atomic_long_t *l)
+>  
+>  	atomic64_sub(i, v);
+>  }
+> -
+> +#if 0
+>  static inline int atomic_long_sub_and_test(long i, atomic_long_t *l)
+>  {
+>  	atomic64_t *v = (atomic64_t *)l;
+> @@ -128,6 +128,7 @@ static inline long atomic_long_add_unless(atomic_long_t *l, long a, long u)
+>  
+>  	return (long)atomic64_add_unless(v, a, u);
+>  }
+> +#endif
+
+Why comment these out?
+
+>  
+>  #define atomic_long_inc_not_zero(l) atomic64_inc_not_zero((atomic64_t *)(l))
+>  
+> diff --git a/include/asm-generic/atomic.h b/include/asm-generic/atomic.h
+> index 449cecaabc..6e63b8e8e7 100644
+> --- a/include/asm-generic/atomic.h
+> +++ b/include/asm-generic/atomic.h
+> @@ -11,7 +11,55 @@
+>  #ifdef CONFIG_SMP
+>  #error SMP not supported
+>  #endif
+> +#define ATOMIC_INIT(i)	{ (i) }
+> +
+> +#ifdef CONFIG_64BIT
+> +typedef struct { s64 counter; } atomic64_t;
+> +
+> +#define atomic64_read(v)	((v)->counter)
+> +#define atomic64_set(v, i)	(((v)->counter) = (i))
+> +
+> +static inline void atomic64_add(s64 i, volatile atomic64_t *v)
+> +{
+> +	v->counter += i;
+> +}
+> +
+> +static inline void atomic64_sub(s64 i, volatile atomic64_t *v)
+> +{
+> +	v->counter -= i;
+> +}
+> +
+> +static inline void atomic64_inc(volatile atomic64_t *v)
+> +{
+> +	v->counter += 1;
+> +}
+> +
+> +static inline void atomic64_dec(volatile atomic64_t *v)
+> +{
+> +	v->counter -= 1;
+> +}
+> +
+> +static inline int atomic64_dec_and_test(volatile atomic64_t *v)
+> +{
+> +	s64 val;
+> +
+> +	val = v->counter;
+> +	v->counter = val -= 1;
+> +
+> +	return val == 0;
+> +}
+>  
+> +static inline int atomic64_add_negative(s64 i, volatile atomic64_t *v)
+> +{
+> +	s64 val;
+> +
+> +	val = v->counter;
+> +	v->counter = val += i;
+> +
+> +	return val < 0;
+> +}
+> +
+> +#else
+>  typedef struct { volatile int counter; } atomic_t;
+>  
+>  #define ATOMIC_INIT(i)	{ (i) }
+> @@ -63,6 +111,7 @@ static inline void atomic_clear_mask(unsigned long mask, unsigned long *addr)
+>  {
+>  	*addr &= ~mask;
+>  }
+> +#endif
+>  
+>  /* Atomic operations are already serializing on ARM */
+>  #define smp_mb__before_atomic_dec()	barrier()
+> 
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
