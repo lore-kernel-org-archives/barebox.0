@@ -1,53 +1,56 @@
-Delivery-date: Tue, 03 Aug 2021 19:01:27 +0200
+Delivery-date: Thu, 05 Aug 2021 10:28:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mAxnD-0008GP-Bu
-	for lore@lore.pengutronix.de; Tue, 03 Aug 2021 19:01:27 +0200
+	id 1mBYjV-0007xa-2l
+	for lore@lore.pengutronix.de; Thu, 05 Aug 2021 10:28:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mAxnC-0002Q9-CO
-	for lore@pengutronix.de; Tue, 03 Aug 2021 19:01:27 +0200
+	id 1mBYjS-0003Ug-Mj
+	for lore@pengutronix.de; Thu, 05 Aug 2021 10:28:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=+x5grnKDtE80CYofDQ8cu0KJR4OmmluokxcrxwLJrdQ=; b=wGIpuE8KKdh0Lw
-	/4AjObUxQIfon4AV2QovF2GDosDnWoD2UCVG9wJ2A5UGEgKztPPQ2Y9BpBLa3EvoVbtPRwxs4YN6+
-	oxhan4khUMEjiMxEddv5Y1ipzLGzl6uIP4cH2US48wRAqGPWkeOEJy7+GVY2CQWQEXkCF/Wo/4Xl5
-	D07ZxyBJX6+29DtsiQL1zXD0d3RFj3ggQe7kxRkJgdnC0eVBvDiVBS7MLojfVdVxfHOwTXAOwPD63
-	MSrPfZs+DlTnodOXW9Sh6m4EeYwmG/3Nh0fCtrkuWbfkHyfZXqKmzklaLkbUQ8z+TUbzV5byYyNJ6
-	BN3rKtYAAxbzdrj6ImHw==;
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=FTlnH/9i7e1zfgvDdb3fow59DXJYMfNylfHMP6ePYzk=; b=je0/o0H08yTU6N
+	YIY6em+zB9lHXNNty+jo96cKzKFrZDTaIfno0jcP2k8YjXm3TB2miNz1CPNIopWqiiULOf3jcOcKH
+	yri0xHDActMbaYi+wROLxLt/xDRPFL6aDDPtOpE5yVuSa687X1eB1rADBN3Yx9P3923hAytOBkao1
+	Zd+G2wFi3tawsmF8fbKCFlld5UGRPDClQpi9KTJm6AKPA2W/FuI31mVxJQzLpmNnKhKqVce69TwTg
+	7zePdKmvEWMY1zomOImXrxnCIy0llwUknC96WLhjoQY4NcdTWU33aS8Xi9w02YZU4Ebcf6iNdFDaF
+	mGd+GMAr1g0XsCIU7Aiw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mAxlf-003hxD-Ki; Tue, 03 Aug 2021 16:59:51 +0000
+	id 1mBYhy-008fF5-2I; Thu, 05 Aug 2021 08:26:30 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mAxlY-003hv7-NS
- for barebox@lists.infradead.org; Tue, 03 Aug 2021 16:59:46 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ id 1mBYhs-008fEK-Q8
+ for barebox@lists.infradead.org; Thu, 05 Aug 2021 08:26:26 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1mAxlS-0001zM-Qy; Tue, 03 Aug 2021 18:59:38 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1mAxlS-0008FQ-FG; Tue, 03 Aug 2021 18:59:38 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ (envelope-from <rcz@pengutronix.de>)
+ id 1mBYho-0003HI-2H; Thu, 05 Aug 2021 10:26:20 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <rcz@pengutronix.de>)
+ id 1mBYhn-0002Xl-IY; Thu, 05 Aug 2021 10:26:19 +0200
+Received: from rcz by dude03.red.stw.pengutronix.de with local (Exim 4.92)
+ (envelope-from <rcz@pengutronix.de>)
+ id 1mBYhn-007N4n-HR; Thu, 05 Aug 2021 10:26:19 +0200
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue,  3 Aug 2021 18:59:37 +0200
-Message-Id: <20210803165937.31608-2-a.fatoum@pengutronix.de>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Thu,  5 Aug 2021 10:26:07 +0200
+Message-Id: <20210805082607.1698733-1-r.czerwinski@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210803165937.31608-1-a.fatoum@pengutronix.de>
-References: <20210803165937.31608-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210803_095944_803896_624809F1 
-X-CRM114-Status: GOOD (  15.87  )
+X-CRM114-CacheID: sfid-20210805_012624_892939_04C2FD77 
+X-CRM114-Status: GOOD (  12.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -59,7 +62,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, David Jander <david@protonic.nl>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -68,132 +70,68 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] ARM: i.MX8MM: add reboot to serial download mode
+Subject: [PATCH] mci: imx-esdhc-pbl: initialize fsl_esdhc_host
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The i.MX8MM reference manual follows long established tradition in not
-documenting BootROM magic reboot codes. For older i.MX variants, the
-values can be seen in the bmode tables of Freescale's U-Boot patches.
+Since commit 56ca2c197e71 ("mci: sdhci: Get rid of many register ops")
+the core checks whether there is an explicit write function for the
+host. If the struct is not zero initialized, a bogus value is taken as
+the function, resulting in an unbootable board. Zero initialize the
+structs properly to let the PBL correctly load images. Fixes booting on
+the i.MX8M* board, tested on i.MX8MP EVK.
 
-There are no such patches for the i.MX8M, but testing shows that
+Fixes: 56ca2c197e71 ("mci: sdhci: Get rid of many register ops")
 
-	mw 0x30390094 0x10 ; mw 0x30390098 0x40000000
-
-is one of the configurations that trigger serial download on next warm
-reset on an i.MX8MM. Describe this in the device tree, so
-
-	gpr.reboot_mode.next=serial reset -r imxwd-warm
-
-does the right thing for that SoC.
-
-This all might work for other i.MX8M variants as well, but the dtsi
-can be genericized later on when tested.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
-Cc: David Jander <david@protonic.nl>
-Cc: Lucas Stach <l.stach@pengutronix.de>
----
- Documentation/boards/imx.rst   | 29 +++++++++++++++++++++++++++++
- arch/arm/dts/imx8mm-evk.dts    |  1 +
- arch/arm/dts/imx8mm-prt8mm.dts |  1 +
- arch/arm/dts/imx8mm.dtsi       | 18 ++++++++++++++++++
- 4 files changed, 49 insertions(+)
- create mode 100644 arch/arm/dts/imx8mm.dtsi
+ drivers/mci/imx-esdhc-pbl.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-index 887b45c70881..4ce9d9808cc1 100644
---- a/Documentation/boards/imx.rst
-+++ b/Documentation/boards/imx.rst
-@@ -83,6 +83,35 @@ The images can also always be started as second stage on the target:
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index c3a8b377e..2e04c78fd 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -233,7 +233,7 @@ static int imx8m_esdhc_init(struct fsl_esdhc_host *host,
+ int imx6_esdhc_start_image(int instance)
+ {
+ 	struct esdhc_soc_data data;
+-	struct fsl_esdhc_host host;
++	struct fsl_esdhc_host host = { 0 };
  
-   barebox@Board Name:/ bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
+ 	switch (instance) {
+ 	case 0:
+@@ -272,7 +272,7 @@ int imx6_esdhc_start_image(int instance)
+ int imx7_esdhc_start_image(int instance)
+ {
+ 	struct esdhc_soc_data data;
+-	struct fsl_esdhc_host host;
++	struct fsl_esdhc_host host = { 0 };
  
-+BootROM Reboot mode codes (bmode)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+For select SoCs, barebox supports communicating an alternative boot medium
-+that BootROM should select after a warm reset::
-+
-+  barebox@FSL i.MX8MM EVK board:/ devinfo gpr.reboot_mode
-+  Driver: syscon-reboot-mode
-+  Bus: platform
-+  Parent: 30390000.reset-controller@30390000.of
-+  Parameters:
-+    next: normal (type: enum) (values: "normal", "serial")
-+    prev: normal (type: enum) (values: "normal", "serial")
-+  Device node: /soc@0/bus@30000000/reset-controller@30390000/reboot-mode
-+  reboot-mode {
-+          compatible = "barebox,syscon-reboot-mode";
-+          offset = <0x94 0x98>;
-+          mask = <0xffffffff 0x40000000>;
-+          mode-normal = <0x0 0x0>;
-+          mode-serial = <0x10 0x40000000>;
-+  };
-+
-+  barebox@FSL i.MX8MM EVK board:/ gpr.reboot_mode.next=serial reset -r imxwd-warm
-+
-+This will cause barebox to fall into serial download mode on an i.MX8MM.
-+
-+Different SoCs may have more possible reboot modes available.
-+See the section on :ref:`Reboot modes<reboot_mode>` for more information.
-+
- High Assurance Boot
- ^^^^^^^^^^^^^^^^^^^
+ 	switch (instance) {
+ 	case 0:
+@@ -309,7 +309,7 @@ int imx7_esdhc_start_image(int instance)
+ int imx8m_esdhc_load_image(int instance, bool start)
+ {
+ 	struct esdhc_soc_data data;
+-	struct fsl_esdhc_host host;
++	struct fsl_esdhc_host host = { 0 };
+ 	int ret;
  
-diff --git a/arch/arm/dts/imx8mm-evk.dts b/arch/arm/dts/imx8mm-evk.dts
-index 1e8619ccf584..304f150307a3 100644
---- a/arch/arm/dts/imx8mm-evk.dts
-+++ b/arch/arm/dts/imx8mm-evk.dts
-@@ -7,6 +7,7 @@
- /dts-v1/;
+ 	ret = imx8m_esdhc_init(&host, &data, instance);
+@@ -337,7 +337,7 @@ int imx8m_esdhc_load_image(int instance, bool start)
+ int imx8mp_esdhc_load_image(int instance, bool start)
+ {
+ 	struct esdhc_soc_data data;
+-	struct fsl_esdhc_host host;
++	struct fsl_esdhc_host host = { 0 };
+ 	int ret;
  
- #include <arm64/freescale/imx8mm-evk.dts>
-+#include "imx8mm.dtsi"
- 
- / {
- 	chosen {
-diff --git a/arch/arm/dts/imx8mm-prt8mm.dts b/arch/arm/dts/imx8mm-prt8mm.dts
-index bdcdd0806243..abd758f2856e 100644
---- a/arch/arm/dts/imx8mm-prt8mm.dts
-+++ b/arch/arm/dts/imx8mm-prt8mm.dts
-@@ -7,6 +7,7 @@
- /dts-v1/;
- 
- #include <arm64/freescale/imx8mm.dtsi>
-+#include "imx8mm.dtsi"
- 
- / {
- 	model = "Protonic PRT8MM";
-diff --git a/arch/arm/dts/imx8mm.dtsi b/arch/arm/dts/imx8mm.dtsi
-new file mode 100644
-index 000000000000..78bbacb2b1b2
---- /dev/null
-+++ b/arch/arm/dts/imx8mm.dtsi
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/ {
-+	aliases {
-+		gpr.reboot_mode = &reboot_mode_gpr;
-+	};
-+};
-+
-+&src {
-+	compatible = "fsl,imx8mm-src", "fsl,imx8mq-src", "syscon", "simple-mfd";
-+
-+	reboot_mode_gpr: reboot-mode {
-+		compatible = "barebox,syscon-reboot-mode";
-+		offset = <0x94>, <0x98>; /* SRC_GPR{9,10} */
-+		mask = <0xffffffff>, <0x40000000>;
-+		mode-normal = <0>, <0>;
-+		mode-serial = <0x00000010>, <0x40000000>;
-+	};
-+};
+ 	ret = imx8m_esdhc_init(&host, &data, instance);
 -- 
 2.30.2
 
