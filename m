@@ -1,15 +1,15 @@
-Delivery-date: Mon, 09 Aug 2021 20:50:28 +0200
+Delivery-date: Mon, 09 Aug 2021 20:52:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mDAM0-0002oF-HF
-	for lore@lore.pengutronix.de; Mon, 09 Aug 2021 20:50:28 +0200
+	id 1mDAOG-0002wK-MP
+	for lore@lore.pengutronix.de; Mon, 09 Aug 2021 20:52:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mDALv-0001vG-10
-	for lore@pengutronix.de; Mon, 09 Aug 2021 20:50:27 +0200
+	id 1mDAOC-0002FO-Eu
+	for lore@pengutronix.de; Mon, 09 Aug 2021 20:52:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,49 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=KgFHuyPP4FtXLctMn5WmHkxPRtt3LC467lytkmotV/E=; b=KxqNHD/Jk4SQg13IcxDRRjohuI
-	lnFIhlA7TPRWSrxhY7ZGQZ4JCRhVttfh4DbPLDYhejvghTssHzwqYvYwYNmX04lNGDp/JVZbpZbiE
-	Jg1BTrOaYEY+qrMjNqmWEYfEhKn6nuq/CFSLGKMplKk6+Ssin+5K2Wdbw1iWEyIoyuVO9lqvPIi6L
-	/Mk9tqHUm4xE221Botsj1pg088/a8R3XC9b9S0GpKf7pWIrFpEl8+xgB2VHlONFf8rKf7fIB5Ahe4
-	5aLQQvNu4kuAA658oQZcCBcCxWvEnojJj+lD/iz19oawH/oINNAX85ZR4t/kXqHvZuz6W5lmir3Ab
-	B5ZWkgrw==;
+	bh=o4VtCqgBGKZWkyOjR+QibJIr1aydgouuoSfyGWEA/OY=; b=uNWneIY8A60RzemsUa3c0PFpH/
+	o660aY3kW3oojAfMX+OjH4hgq/KTujY39AyF1dQQvvRdJ1vj+HDsXrLFAFSF4iG0x9Cs0EWxxKtu1
+	UXhXxUU2WWRESHgcNOgRy3k0JJHUSQlluNz2NJQmv6QXt2mYS2u3+mok9+OWASdM/4Ua3qP2zZ2B1
+	m1RCkoOWiDuOTo5NemTQbPFx1TwBia3TooMV+65r9vlsnNHE4OfpWYPemV3KcO9yJco2LufxX3En9
+	rjCvNlvAGLog/z1vHTLUj7H3BewkWnG/i2OaRn2U+X+22P5sYvLVRC4JwL2FQ0+nwKRWsxTKAQ2Qn
+	eYSYdNZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mDAKJ-001lDC-S3; Mon, 09 Aug 2021 18:48:43 +0000
+	id 1mDAMh-001lTl-7v; Mon, 09 Aug 2021 18:51:11 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mDAKC-001lCW-3K
- for barebox@lists.infradead.org; Mon, 09 Aug 2021 18:48:40 +0000
+ id 1mDAMZ-001lT9-Mk
+ for barebox@lists.infradead.org; Mon, 09 Aug 2021 18:51:07 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mDAKA-0001gw-G0; Mon, 09 Aug 2021 20:48:34 +0200
+ id 1mDAMY-00022J-GO; Mon, 09 Aug 2021 20:51:02 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mDAKA-0006Jx-6f; Mon, 09 Aug 2021 20:48:34 +0200
-Date: Mon, 9 Aug 2021 20:48:34 +0200
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+ id 1mDAMY-0006SE-2e; Mon, 09 Aug 2021 20:51:02 +0200
+Date: Mon, 9 Aug 2021 20:51:02 +0200
+To: Michael Riesch <michael.riesch@wolfvision.net>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210809184834.GJ11515@pengutronix.de>
-References: <20210721084017.401081-1-r.czerwinski@pengutronix.de>
- <20210721084017.401081-2-r.czerwinski@pengutronix.de>
- <7938608bfc1f8ec8f460de95d065b6352f50eff8.camel@pengutronix.de>
+Message-ID: <20210809185102.GK11515@pengutronix.de>
+References: <20210705160457.7346-1-michael.riesch@wolfvision.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <7938608bfc1f8ec8f460de95d065b6352f50eff8.camel@pengutronix.de>
+In-Reply-To: <20210705160457.7346-1-michael.riesch@wolfvision.net>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 20:47:25 up 172 days, 22:11, 81 users,  load average: 0.10, 0.09,
+X-Uptime: 20:50:35 up 172 days, 22:14, 81 users,  load average: 0.14, 0.09,
  0.08
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210809_114836_191801_AA0ACB84 
-X-CRM114-Status: GOOD (  31.40  )
+X-CRM114-CacheID: sfid-20210809_115103_784918_DC309022 
+X-CRM114-Status: GOOD (  20.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,69 +81,27 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] fastboot: use file_list_parse_null()
+Subject: Re: [PATCH v2] arm: rockchip-rk3568-evb: add hardware id detection
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jul 21, 2021 at 10:43:04AM +0200, Rouven Czerwinski wrote:
-> On Wed, 2021-07-21 at 10:40 +0200, Rouven Czerwinski wrote:
-> > In case an invalid file list is passed to file_list_parse(), it will
-> > return an error, i.e. by passing "/dev/mmc1(emmc) /dev/mmc1.1(root)",
-> > the error here being that the entries are not comma separated and
-> > file_list_parse will try to parse ' ' as a flag. The fastboot code
-> > didn't handle this, leading to the following error:
-> > 
-> >   ERROR: file_list: Unknown flag ' '
-> >   ERROR: file_list: parse error
-> >   unable to handle paging request at address 0xfffffff2
-> >   pc : [<8fe26a20>]    lr : [<8fe0f965>]
-> >   sp : 8ffeff50  ip : 8ffef714  fp : 00079bda
-> >   r10: 001b9ff8  r9 : 8fea7eec  r8 : 00000001
-> >   r7 : 00000000  r6 : 00000001  r5 : 00000000  r4 : 8813eab0
-> >   r3 : ffffffea  r2 : 00020000  r1 : 00000001  r0 : 8813eab0
-> >   Flags: nzCv  IRQs off  FIQs off  Mode SVC_32
-> >   WARNING: [<8fe26a20>] (usb_multi_count_functions+0xc/0x2a) from [<8fe0f965>] (usbgadget_register+0x79/0xf4)
-> >   WARNING: [<8fe0f965>] (usbgadget_register+0x79/0xf4) from [<8fe0fa13>] (usbgadget_autostart_set+0x33/0x4c)
-> >   WARNING: [<8fe0fa13>] (usbgadget_autostart_set+0x33/0x4c) from [<8fe4d437>] (param_int_set+0x4b/0xb0)
-> >   WARNING: [<8fe4d437>] (param_int_set+0x4b/0xb0) from [<8fe4d899>] (dev_set_param+0x4d/0x64)
-> >   WARNING: [<8fe4d899>] (dev_set_param+0x4d/0x64) from [<8fe066f1>] (globalvar_add_bool+0x49/0x54)
-> >   WARNING: [<8fe066f1>] (globalvar_add_bool+0x49/0x54) from [<8fe0f8dd>] (usbgadget_autostart_init+0x15/0x24)
-> >   WARNING: [<8fe0f8dd>] (usbgadget_autostart_init+0x15/0x24) from [<8fe01081>] (start_barebox+0x35/0x6c)
-> >   WARNING: [<8fe01081>] (start_barebox+0x35/0x6c) from [<8fe62ed9>] (barebox_non_pbl_start+0x121/0x164)
-> >   WARNING: [<8fe62ed9>] (barebox_non_pbl_start+0x121/0x164) from [<8fe00005>] (__bare_init_start+0x1/0xc)
-> > 
-> >   WARNING: [<8fe64e3d>] (unwind_backtrace+0x1/0x78) from [<8fe01385>] (panic+0x1d/0x34)
-> >   WARNING: [<8fe01385>] (panic+0x1d/0x34) from [<8fe62723>] (do_exception+0xf/0x14)
-> >   WARNING: [<8fe62723>] (do_exception+0xf/0x14) from [<8fe62791>] (do_data_abort+0x21/0x34)
-> >   WARNING: [<8fe62791>] (do_data_abort+0x21/0x34) from [<8fe624d4>] (do_abort_6+0x48/0x54)
-> > 
-> > Use file_list_parse_null instead of file_list_parse to get a NULL
-> > pointer if there is a parse error.
-> > 
-> > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> > ---
-> >  common/fastboot.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/common/fastboot.c b/common/fastboot.c
-> > index 75f6691b08..00a50813a7 100644
-> > --- a/common/fastboot.c
-> > +++ b/common/fastboot.c
-> > @@ -918,8 +918,9 @@ bool get_fastboot_bbu(void)
-> >  
-> >  struct file_list *get_fastboot_partitions(void)
-> >  {
-> > -	if (fastboot_partitions && *fastboot_partitions)
-> > -		return file_list_parse(fastboot_partitions);
-> > +	if (fastboot_partitions && *fastboot_partitions) {
-> > +		return file_list_parse_null(fastboot_partitions);
-> > +	}
+On Mon, Jul 05, 2021 at 06:04:57PM +0200, Michael Riesch wrote:
+> The RK3568 EVB uses a voltage divider to determine the hardware ID of
+> the board. At the moment, the voltage levels for seven EVB variants are
+> defined. This commit adds a late_initcall to the board code that reads
+> out the voltage and populates the hardware ID as environment variable.
 > 
-> I missed the no longer required braces, do you want to fixup locally or
-> should I send a v2?
+> Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
+> ---
+> v2:
+> - add compatible check
+> - return early in case the voltage cannot be read
+> - populate hardware ID as environment variable
+> 
+>  arch/arm/boards/rockchip-rk3568-evb/board.c | 56 +++++++++++++++++++++
+>  1 file changed, 56 insertions(+)
 
-I would clean this up locally, but the series doesn't apply on current
-master, so could you resend a v2?
+Applied with Ahmads fixup, thanks
 
 Sascha
 
