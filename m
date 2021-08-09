@@ -1,55 +1,54 @@
-Delivery-date: Mon, 09 Aug 2021 12:42:38 +0200
+Delivery-date: Mon, 09 Aug 2021 12:51:16 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mD2ju-00020J-Oe
-	for lore@lore.pengutronix.de; Mon, 09 Aug 2021 12:42:38 +0200
+	id 1mD2sG-0002MS-QT
+	for lore@lore.pengutronix.de; Mon, 09 Aug 2021 12:51:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mD2jt-0000yk-El
-	for lore@pengutronix.de; Mon, 09 Aug 2021 12:42:38 +0200
+	id 1mD2sF-0002Af-DP
+	for lore@pengutronix.de; Mon, 09 Aug 2021 12:51:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:References:To:From:Subject:Reply-To:Cc:Content-ID:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=DYX1ErqY7+nG7dWLeXVUXsiVf+CKgPASpR6AKmovAqk=; b=FvSTy/8BWz6W1s0ziQfDoRDYCQ
-	VX+gP1VivYuD2fI7oDTCQzVtlEzWX10cP8vP6q6Pc9vt7A3OkPNASGzZZjitX3nAy6yyoDKAmVzNn
-	Z6pRgZpZnfGuLyzPb1qCdBcDTJQYOsQM/Y1sHGRxAlvZzs5KNJmRFv/1MiiK1Gww6/E1uAPDgsa/W
-	f/2E99tLb1AMTnFeQZDKHZ1YuD3hq44dzCXtKj8KhT/iA2j+Oz/bR670VntIDUH1bSYprHgF0D+/z
-	hwwxN7mnGFYp2p5ksJxRd5NKN1NZjqJMnbELjrCgSz85vlWIAFwAj7Fm+Inv49qBWqPN1QxFCY7sQ
-	b7v2vh2Q==;
+	bh=eVLJNWAkn//Yq4bJqq0imqoARg35xr26c2aaogA0XKo=; b=AW/7L689oUks7jfSp8pyAe1kFr
+	c6NXnhk4qxLIbqrwGDYxjqSAvmhaplqMK6O5SFMc1tmTsx/CnJlXR8j8XpHpo/TuP7Mh8DMx0DWWZ
+	yzNbqgNqf6n115hXCxr+dcCDb9e4D1s87/CAEOFCL/xb/oIN1u+6f9HnEarnLqqwGz3TRYbHFSBBr
+	9vvNfSodDh6/Rtsz00jW7qpyrHNC9ZJTwLupN0VPpajmbCdXWCftQahmBNjMYu5dcQpfy3nHTwR2G
+	cwR1Ma8U3lmcz73zeyRN+DIUeczkq+dVDJd2jw0JInAapcDLengsL8Kru9lbfIjkfsdTAMZ7HHdc4
+	5ilxyIzg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mD2i1-000Csq-RX; Mon, 09 Aug 2021 10:40:41 +0000
+	id 1mD2qm-000EsO-PF; Mon, 09 Aug 2021 10:49:44 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mD2hw-000CsR-Hq
- for barebox@lists.infradead.org; Mon, 09 Aug 2021 10:40:38 +0000
+ id 1mD2qh-000ErJ-7X
+ for barebox@lists.infradead.org; Mon, 09 Aug 2021 10:49:40 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1mD2ht-0000lA-49; Mon, 09 Aug 2021 12:40:33 +0200
+ id 1mD2qf-0001nB-UE; Mon, 09 Aug 2021 12:49:37 +0200
+To: Renaud Barbier <renaud.barbier@abaco.com>, barebox@lists.infradead.org
+References: <1627900804-15814-1-git-send-email-renaud.barbier@abaco.com>
+ <1627900804-15814-4-git-send-email-renaud.barbier@abaco.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org, Uwe Kleine-Koenig <ukl@pengutronix.de>
-References: <20210803165937.31608-1-a.fatoum@pengutronix.de>
- <20210803165937.31608-2-a.fatoum@pengutronix.de>
- <7a0b3298-2fe4-13d3-e6ef-28814a8831c2@pengutronix.de>
-Message-ID: <aa57423e-2141-12a9-cc9d-845730e0190b@pengutronix.de>
-Date: Mon, 9 Aug 2021 12:40:31 +0200
+Message-ID: <471e6659-459f-f6e6-7abf-9b6141e6c7a3@pengutronix.de>
+Date: Mon, 9 Aug 2021 12:49:37 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <7a0b3298-2fe4-13d3-e6ef-28814a8831c2@pengutronix.de>
+In-Reply-To: <1627900804-15814-4-git-send-email-renaud.barbier@abaco.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210809_034036_654946_1418483E 
-X-CRM114-Status: GOOD (  28.77  )
+X-CRM114-CacheID: sfid-20210809_034939_334805_942B0B40 
+X-CRM114-Status: GOOD (  26.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,151 +72,147 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] ARM: i.MX8MM: add reboot to serial download mode
+Subject: Re: [PATCH 3/3] ls1046ardb: enable IFC NAND.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 05.08.21 17:32, Ahmad Fatoum wrote:
-> On 03.08.21 18:59, Ahmad Fatoum wrote:
->> The i.MX8MM reference manual follows long established tradition in not
->> documenting BootROM magic reboot codes. For older i.MX variants, the
->> values can be seen in the bmode tables of Freescale's U-Boot patches.
->>
->> There are no such patches for the i.MX8M, but testing shows that
->>
->> 	mw 0x30390094 0x10 ; mw 0x30390098 0x40000000
->>
->> is one of the configurations that trigger serial download on next warm
->> reset on an i.MX8MM. Describe this in the device tree, so
->>
->> 	gpr.reboot_mode.next=serial reset -r imxwd-warm
->>
->> does the right thing for that SoC.
-> 
-> As you are currently doing i.MX8MP serial boot work, could you apply this
-> series, boot barebox containing it (and the i.MX watchdog driver)
-> from eMMC and try out:
-> 
-> 	mw 0x30390094 0x10 ; mw 0x30390098 0x40000000
-> 	reset -r imxwd-warm
-> 
-> If the 8MP is similar enough to the 8MM in this respect, the BootROM
-> should fall into serial download mode despite being strapped for
-> eMMC.
+Hello Renaud,
 
-FTR: The same sequence doesn't work on a 8MP.
+On 02.08.21 12:40, Renaud Barbier wrote:
+> Set the NAND timings and enable the IFC NAND driver.
+> 
+> Signed-off-by: Renaud Barbier <renaud.barbier@abaco.com>
+> ---
+>  arch/arm/boards/ls1046ardb/board.c    | 42 +++++++++++++++++++++++++++
+>  arch/arm/configs/layerscape_defconfig | 11 +++++++
+>  2 files changed, 53 insertions(+)
+> 
+> diff --git a/arch/arm/boards/ls1046ardb/board.c b/arch/arm/boards/ls1046ardb/board.c
+> index ef68e9c7f9..b2cfba58a8 100644
+> --- a/arch/arm/boards/ls1046ardb/board.c
+> +++ b/arch/arm/boards/ls1046ardb/board.c
+> @@ -8,10 +8,12 @@
+>  #include <fs.h>
+>  #include <envfs.h>
+>  #include <libfile.h>
+> +#include <of_address.h>
+>  #include <asm/memory.h>
+>  #include <linux/sizes.h>
+>  #include <linux/clk.h>
+>  #include <linux/clkdev.h>
+> +#include <linux/fsl_ifc.h>
+>  #include <asm/system.h>
+>  #include <mach/layerscape.h>
+>  #include <mach/bbu.h>
+> @@ -35,6 +37,11 @@ struct nxid {
+>  	u32 crc;          /* 0xfc - 0xff CRC32 checksum */
+>  } __packed;
+>  
+> +static const struct of_device_id fsl_ifc_of_ids[] = {
+> +	{ .compatible = "fsl,ifc", },
+> +	{ },
+> +};
+> +
+>  static int nxid_is_valid(struct nxid *nxid)
+>  {
+>  	unsigned char id[] = { 'N', 'X', 'I', 'D' };
+> @@ -161,3 +168,38 @@ static int rdb_postcore_init(void)
+>  }
+>  
+>  postcore_initcall(rdb_postcore_init);
+> +
+> +static int rdb_nand_init(void)
+> +{
+> +	struct device_node *np;
+> +	void __iomem *ifc;
+> +
 
-> 
-> Thanks!
-> Ahmad
-> 
-> 
->>
->> This all might work for other i.MX8M variants as well, but the dtsi
->> can be genericized later on when tested.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->> Cc: David Jander <david@protonic.nl>
->> Cc: Lucas Stach <l.stach@pengutronix.de>
->> ---
->>  Documentation/boards/imx.rst   | 29 +++++++++++++++++++++++++++++
->>  arch/arm/dts/imx8mm-evk.dts    |  1 +
->>  arch/arm/dts/imx8mm-prt8mm.dts |  1 +
->>  arch/arm/dts/imx8mm.dtsi       | 18 ++++++++++++++++++
->>  4 files changed, 49 insertions(+)
->>  create mode 100644 arch/arm/dts/imx8mm.dtsi
->>
->> diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
->> index 887b45c70881..4ce9d9808cc1 100644
->> --- a/Documentation/boards/imx.rst
->> +++ b/Documentation/boards/imx.rst
->> @@ -83,6 +83,35 @@ The images can also always be started as second stage on the target:
->>  
->>    barebox@Board Name:/ bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
->>  
->> +BootROM Reboot mode codes (bmode)
->> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->> +
->> +For select SoCs, barebox supports communicating an alternative boot medium
->> +that BootROM should select after a warm reset::
->> +
->> +  barebox@FSL i.MX8MM EVK board:/ devinfo gpr.reboot_mode
->> +  Driver: syscon-reboot-mode
->> +  Bus: platform
->> +  Parent: 30390000.reset-controller@30390000.of
->> +  Parameters:
->> +    next: normal (type: enum) (values: "normal", "serial")
->> +    prev: normal (type: enum) (values: "normal", "serial")
->> +  Device node: /soc@0/bus@30000000/reset-controller@30390000/reboot-mode
->> +  reboot-mode {
->> +          compatible = "barebox,syscon-reboot-mode";
->> +          offset = <0x94 0x98>;
->> +          mask = <0xffffffff 0x40000000>;
->> +          mode-normal = <0x0 0x0>;
->> +          mode-serial = <0x10 0x40000000>;
->> +  };
->> +
->> +  barebox@FSL i.MX8MM EVK board:/ gpr.reboot_mode.next=serial reset -r imxwd-warm
->> +
->> +This will cause barebox to fall into serial download mode on an i.MX8MM.
->> +
->> +Different SoCs may have more possible reboot modes available.
->> +See the section on :ref:`Reboot modes<reboot_mode>` for more information.
->> +
->>  High Assurance Boot
->>  ^^^^^^^^^^^^^^^^^^^
->>  
->> diff --git a/arch/arm/dts/imx8mm-evk.dts b/arch/arm/dts/imx8mm-evk.dts
->> index 1e8619ccf584..304f150307a3 100644
->> --- a/arch/arm/dts/imx8mm-evk.dts
->> +++ b/arch/arm/dts/imx8mm-evk.dts
->> @@ -7,6 +7,7 @@
->>  /dts-v1/;
->>  
->>  #include <arm64/freescale/imx8mm-evk.dts>
->> +#include "imx8mm.dtsi"
->>  
->>  / {
->>  	chosen {
->> diff --git a/arch/arm/dts/imx8mm-prt8mm.dts b/arch/arm/dts/imx8mm-prt8mm.dts
->> index bdcdd0806243..abd758f2856e 100644
->> --- a/arch/arm/dts/imx8mm-prt8mm.dts
->> +++ b/arch/arm/dts/imx8mm-prt8mm.dts
->> @@ -7,6 +7,7 @@
->>  /dts-v1/;
->>  
->>  #include <arm64/freescale/imx8mm.dtsi>
->> +#include "imx8mm.dtsi"
->>  
->>  / {
->>  	model = "Protonic PRT8MM";
->> diff --git a/arch/arm/dts/imx8mm.dtsi b/arch/arm/dts/imx8mm.dtsi
->> new file mode 100644
->> index 000000000000..78bbacb2b1b2
->> --- /dev/null
->> +++ b/arch/arm/dts/imx8mm.dtsi
->> @@ -0,0 +1,18 @@
->> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->> +/ {
->> +	aliases {
->> +		gpr.reboot_mode = &reboot_mode_gpr;
->> +	};
->> +};
->> +
->> +&src {
->> +	compatible = "fsl,imx8mm-src", "fsl,imx8mq-src", "syscon", "simple-mfd";
->> +
->> +	reboot_mode_gpr: reboot-mode {
->> +		compatible = "barebox,syscon-reboot-mode";
->> +		offset = <0x94>, <0x98>; /* SRC_GPR{9,10} */
->> +		mask = <0xffffffff>, <0x40000000>;
->> +		mode-normal = <0>, <0>;
->> +		mode-serial = <0x00000010>, <0x40000000>;
->> +	};
->> +};
->>
-> 
+If you think this configuration should be done for _all_ boards,
+you should move it to arch/arm/mach-layerscape. If you intend it
+to be done only for this specific board, you should check the
+board compatible, otherwise this function is called even for
+boards that don't have NAND physically. Throwing an error
+there is inappropriate. If this is board-specific, please add:
+
+
+	if (!of_machine_is_compatible("fsl,ls1046a-rdb"))
+
+		return 0;
+
+> +	np = of_find_matching_node(NULL, fsl_ifc_of_ids);
+
+You can use of_find_compatible_node, which lets you drop the struct.
+
+> +	if (!np)
+> +		return -EINVAL;
+> +
+> +	ifc = of_iomap(np, 0);
+> +	if (!ifc)
+> +		return -EINVAL;
+> +
+> +	set_ifc_cspr(ifc, IFC_CS0, CSPR_PHYS_ADDR(0x7e800000) |
+> +			CSPR_PORT_SIZE_8 | CSPR_MSEL_NAND | CSPR_V);
+> +	set_ifc_csor(ifc, IFC_CS0, CSOR_NAND_ECC_ENC_EN | CSOR_NAND_ECC_DEC_EN |
+> +			CSOR_NAND_ECC_MODE_8 |
+> +			CSOR_NAND_RAL_3 | CSOR_NAND_PGS_4K |
+> +			CSOR_NAND_SPRZ_224 |  CSOR_NAND_PB(64) |
+> +			CSOR_NAND_TRHZ_20);
+> +	set_ifc_amask(ifc, IFC_CS0, IFC_AMASK(64*1024));
+> +	set_ifc_ftim(ifc, IFC_CS0, IFC_FTIM0, FTIM0_NAND_TCCST(0x07) |
+> +			FTIM0_NAND_TWP(0x18) | FTIM0_NAND_TWCHT(0x07) |
+> +			FTIM0_NAND_TWH(0x0a));
+> +	set_ifc_ftim(ifc, IFC_CS0, IFC_FTIM1, FTIM1_NAND_TADLE(0x32) |
+> +			FTIM1_NAND_TWBE(0x39) | FTIM1_NAND_TRR(0x0e)|
+> +			FTIM1_NAND_TRP(0x18));
+> +	set_ifc_ftim(ifc, IFC_CS0, IFC_FTIM2, FTIM2_NAND_TRAD(0xf) |
+> +			FTIM2_NAND_TREH(0xa) | FTIM2_NAND_TWHRE(0x1e));
+> +	set_ifc_ftim(ifc, IFC_CS0, IFC_FTIM3, 0);
+> +
+> +	return 0;
+> +}
+> +postcore_initcall(rdb_nand_init);
+> diff --git a/arch/arm/configs/layerscape_defconfig b/arch/arm/configs/layerscape_defconfig
+> index 394cd95c98..fb8e885353 100644
+> --- a/arch/arm/configs/layerscape_defconfig
+> +++ b/arch/arm/configs/layerscape_defconfig
+> @@ -34,6 +34,10 @@ CONFIG_CMD_GO=y
+>  CONFIG_CMD_RESET=y
+>  CONFIG_CMD_UIMAGE=y
+>  CONFIG_CMD_PARTITION=y
+> +CONFIG_CMD_MOUNT=y
+> +CONFIG_CMD_UBI=y
+> +CONFIG_CMD_UBIFORMAT=y
+> +CONFIG_CMD_UMOUNT=y
+>  CONFIG_CMD_EXPORT=y
+>  CONFIG_CMD_LOADENV=y
+>  CONFIG_CMD_PRINTENV=y
+> @@ -69,6 +73,7 @@ CONFIG_CMD_GPIO=y
+>  CONFIG_CMD_I2C=y
+>  CONFIG_CMD_LED=y
+>  CONFIG_CMD_SPI=y
+> +CONFIG_CMD_NAND=y
+>  CONFIG_CMD_LED_TRIGGER=y
+>  CONFIG_CMD_WD=y
+>  CONFIG_CMD_BAREBOX_UPDATE=y
+> @@ -85,6 +90,10 @@ CONFIG_DP83867_PHY=y
+>  CONFIG_REALTEK_PHY=y
+>  CONFIG_NET_DSA_MV88E6XXX=y
+>  CONFIG_DRIVER_SPI_FSL_QUADSPI=y
+> +CONFIG_NAND=y
+> +CONFIG_NAND_FSL_IFC=y
+> +CONFIG_MTD_UBI=y
+> +CONFIG_MTD_UBI_BEB_LIMIT=20
+>  CONFIG_I2C=y
+>  CONFIG_I2C_IMX=y
+>  CONFIG_I2C_MUX=y
+> @@ -112,5 +121,7 @@ CONFIG_FS_NFS=y
+>  CONFIG_FS_FAT=y
+>  CONFIG_FS_FAT_WRITE=y
+>  CONFIG_FS_FAT_LFN=y
+> +CONFIG_FS_UBIFS=y
+> +CONFIG_FS_UBIFS_COMPRESSION_LZO=y
+>  CONFIG_ZLIB=y
+>  CONFIG_LZO_DECOMPRESS=y
 > 
 
 
