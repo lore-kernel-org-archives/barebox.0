@@ -1,15 +1,15 @@
-Delivery-date: Mon, 09 Aug 2021 12:56:22 +0200
+Delivery-date: Mon, 09 Aug 2021 13:02:38 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mD2xC-0002bH-D5
-	for lore@lore.pengutronix.de; Mon, 09 Aug 2021 12:56:22 +0200
+	id 1mD33G-0002tl-CH
+	for lore@lore.pengutronix.de; Mon, 09 Aug 2021 13:02:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mD2xB-0002rS-0e
-	for lore@pengutronix.de; Mon, 09 Aug 2021 12:56:22 +0200
+	id 1mD33F-0003ZO-C4
+	for lore@pengutronix.de; Mon, 09 Aug 2021 13:02:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,42 +17,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=UcsMeGHfAyMPv8qUZUWHUzng6rXVu6Er+BLbyGFsDGA=; b=trsHihKVr0oepcSeO4U82F9vM0
-	WOqdvC6IZL/66p1ESATn5px0DhSNzOjwWCqM6GLFT2tGeEu23b0TpOBrrcHtlcWyv01Icg9hIZruR
-	gLSclnXjNLq1YipBeAHkMgiOyaQVpFfL8pDeZE75VPYYGKx4qAHmfkqCQ6iZDPqJyT+SqhIFdp0qk
-	oca4+QyjNif2mqYsGy+t6p3ASR3RYS06E5typzZByHgOIXjWp4qyjXNOsCpSLBzBHeq++0yY8PWFK
-	ske5Vf6HRhWfEjIRvc/4/2UZb9q+eykixWjS0jhOCq5Cn2kF7XzZteV9V8mavA7PQsTNz01zcTItn
-	MXOZAqVQ==;
+	bh=9N6qj8GFMxpELvXTZDkFymmMFJ78jpR2Pn/5PgF7OyA=; b=YpTWO7381VVUuDEstBfIduwHmt
+	Bnt3rpGJnpRdnMXElJcAAodlEHDTYG9RlEDkvxdEUq4/Dy7BXE4+Ytr26vdP5AVJq/19plqVjtFGb
+	6GGeZjuqr59AuJJx8K7KNXsQXLBvGhwT/ONr9B978QKtW8GcmJbjF72WxlaQm9PV+u73cWZS5MNTC
+	zIE4Q+4rTa18E6jR4NNzJt07XiXX30GyJetYIUI/LMzMdAwy8hCEYsLjW/hUZK6ji48QDSvbNNMmr
+	dPwZ7SqsNZG14jyN1NUhOk7zRAYpWBb9H9XmWTJpBCsrleInJFihunzRG+IkTGeGekwJLx8uQ4/jq
+	K1hem2Bw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mD2vm-000G0t-6s; Mon, 09 Aug 2021 10:54:54 +0000
+	id 1mD31u-000HAe-2P; Mon, 09 Aug 2021 11:01:14 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mD2vg-000Fzw-Qg
- for barebox@lists.infradead.org; Mon, 09 Aug 2021 10:54:50 +0000
+ id 1mD31o-000H9W-RN
+ for barebox@lists.infradead.org; Mon, 09 Aug 2021 11:01:10 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1mD2vf-0002No-I9; Mon, 09 Aug 2021 12:54:47 +0200
-To: Denis Osterland-Heim <denis.osterland@diehl.com>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <4e1aa199-a5fa-2ad5-80cb-ef3cf86fd174@norik.com>
- <2c7807b2-e709-8042-1945-bf4d06f77f28@pengutronix.de>
- <eb2c7cc52d5a68cccaa64642ca909acf7cf25c94.camel@diehl.com>
- <1e471a43-3b6c-f632-1359-6f44a06f8c54@pengutronix.de>
- <d5905da7db8e8f867e0a9e2c0a3c58e48eea7a8f.camel@diehl.com>
+ id 1mD31n-0003Lt-FM; Mon, 09 Aug 2021 13:01:07 +0200
+To: Renaud Barbier <renaud.barbier@abaco.com>, barebox@lists.infradead.org
+References: <1627900804-15814-1-git-send-email-renaud.barbier@abaco.com>
+ <1627900804-15814-2-git-send-email-renaud.barbier@abaco.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <11ebc3d6-33d7-baaa-e3f5-bffccde285f7@pengutronix.de>
-Date: Mon, 9 Aug 2021 12:54:47 +0200
+Message-ID: <5f511429-45c0-0a69-0690-24562bd93f69@pengutronix.de>
+Date: Mon, 9 Aug 2021 13:01:07 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <d5905da7db8e8f867e0a9e2c0a3c58e48eea7a8f.camel@diehl.com>
+In-Reply-To: <1627900804-15814-2-git-send-email-renaud.barbier@abaco.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210809_035448_916487_5F0B198E 
-X-CRM114-Status: GOOD (  24.25  )
+X-CRM114-CacheID: sfid-20210809_040108_948588_AF0BDB44 
+X-CRM114-Status: GOOD (  23.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -64,8 +60,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -76,103 +72,187 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Not successful if statements returning error code
+Subject: Re: [PATCH 1/3] ARM: atomic.h: add 64-bit counter support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGksCgpPbiAyOS4wNy4yMSAxMTo0OCwgRGVuaXMgT3N0ZXJsYW5kLUhlaW0gd3JvdGU6Cj4gSGks
-Cj4gCj4gQW0gRG9ubmVyc3RhZywgZGVuIDI5LjA3LjIwMjEsIDExOjIyICswMjAwIHNjaHJpZWIg
-QWhtYWQgRmF0b3VtOgo+PiBPbiAyOC4wNy4yMSAxMTozOCwgRGVuaXMgT3N0ZXJsYW5kLUhlaW0g
-d3JvdGU6Cj4+PiBIaSwKPj4+Cj4+PiBBbSBNaXR0d29jaCwgZGVuIDI4LjA3LjIwMjEsIDEwOjU2
-ICswMjAwIHNjaHJpZWIgQWhtYWQgRmF0b3VtOgo+Pj4KPj4+PiBJIHRhbGtlZCB3aXRoIFNhc2No
-YSBvbmNlIGJlZm9yZSAob2ZmLWxpc3QpIGFib3V0IGEgc2ltaWxhciBpc3N1ZS4gTWlzc2luZyBl
-cnJvciBoYW5kbGluZwo+Pj4+IHJlc3VsdHMgaW4KPj4+Pgo+Pj4+ICAgWyB4MSAtZXEgeDIgXSAm
-JiBlY2hvIHllcyB8fCBlY2hvIG5vCj4+Pj4KPj4+PiBwcmludGluZyB5ZXMuCj4+Pj4KPj4+PiBX
-ZSBhZ3JlZWQgdGhhdCBpdCdzIG9rIHRvIGJyZWFrIHNjcmlwdHMgcmVseWluZyBvbiBjbGVhciBo
-dXNoIGJ1Z3MgbGlrZSB0aGlzLgo+Pj4+Cj4+Pj4gSSdkIHRodXMgcmVjb21tZW5kIHlvdSB0byBz
-ZW5kIGEgcGF0Y2ggdG8gZml4IGh1c2ggaW5zdGVhZCBvZiB3b3JraW5nIGFyb3VuZCBpdC4KPj4+
-Cj4+PiBzaGVsbGNoZWNrIHNheXM6Cj4+Pgo+Pj4gU0MyMDE1OiBOb3RlIHRoYXQgQSAmJiBCIHx8
-IEMgaXMgbm90IGlmLXRoZW4tZWxzZS4gQyBtYXkgcnVuIHdoZW4gQSBpcyB0cnVlLgo+Pj4KPj4+
-IFNvIEkgd291bGQgdGhpbmsgdGhhdCBCIGlzIG1heWJlIGFsbG93ZWQgdG8gcnVuIGJlZm9yZSBB
-LCB0b28uCj4+PiBCdXQsIEkgZG8gbm90IGtub3cgaWYgSHVzaCBzcGVjaWZpZXMgZXhlY3V0aW9u
-IG9yZGVyIGhlcmUuCj4+Cj4+IEFuIG9wdGlvbi1sZXNzIGJhcmVib3ggZWNobyBjYW4ndCBmYWls
-LCBzbyBpdCBzaG91bGQgbmV2ZXIKPj4gcHJpbnQgYm90aCB5ZXMgYW5kIG5vLCBidXQgdGhhbmtz
-IGZvciB0aGUgcmVmZXJlbmNlLiBJJ2xsIGtlZXAKPj4gYW4gZXllIG9uIGl0IGluIGZ1dHVyZSBz
-aGVsbCBjb2RlLgo+Pgo+PiBUaGlzIHdhc24ndCB3aGF0IEkgbWVhbnQgdG8gc2hvdyB0aG91Z2gs
-IEkgbWVhbnQgdGhhdCB4MSBhbmQgeDIKPj4gYXJlIGJvdGggbm9uLWludGVnZXJzIGFuZCAtZXEg
-d2hpY2ggY29tcGFyZXMgaW50ZWdlcnMgcmV0dXJucwo+PiB0cnVlIHdoZW4gY29tcGFyaW5nIHRo
-ZW0gdW5saWtlIHdoYXQgYSBQT1NJWCBzaGVsbCBkb2VzLgo+IE9oLiBOb3cgSSBnb3QgeW91ciBw
-b2ludCA7LSkKPiAKPiBodHRwczovL2dpdC5wZW5ndXRyb25peC5kZS9jZ2l0L2JhcmVib3gvdHJl
-ZS9jb21tYW5kcy90ZXN0LmMjbjE4Mgo+IGVycm9yIGhhbmRsaW5nIGlzIG1pc3NpbmcgaGVyZS4K
-PiBJdCBpcyB2ZXJ5IGxpa2VseSB0aGF0IHNpbXBsZV9zdHJ0b2woKSByZXR1cm5zIHRoZSBzYW1l
-IHZhbHVlIGluIGNhc2Ugb2YgZXJyb3IsCj4gd2hpY2ggcmVzdWx0cyBpbiBhIHN1Y2Nlc3NmdWxs
-eSBjb21wYXJlLgoKWWVzLiBJIG5vdGVkIHRoaXMgYmVjYXVzZSBvZiB0aGUgc2ltaWxhcml0eSB0
-byBBbmRyZWoncyBwcm9ibGVtOgpBIGJ1ZyBsZWFkcyB0byBjbGVhcmx5IGJvZ3VzIHNoZWxsIGJl
-aGF2aW9yLiBJdCBjYW4gYmUgb2sgdG8gZml4IHN1Y2ggYnVncwpkZXNwaXRlIHRoZW0gbm90IGJl
-aW5nIDEwMCUgYmFja3dhcmRzIGNvbXBhdGlibGUuCgo+IAo+IFJlZ2FyZHMsIERlbmlzCj4gCj4+
-Cj4+IENoZWVycywKPj4gQWhtYWQKPj4KPj4KPj4+Cj4+PiBSZWdhcmRzLCBEZW5pcwo+Pj4KPj4+
-Pgo+Pj4+IENoZWVycywKPj4+PiBBaG1hZAo+Pj4+Cj4+Pj4+Cj4+Pj4+IFRoYW5rIHlvdSBmb3Ig
-eW91ciBhbnN3ZXIuCj4+Pj4+Cj4+Pj4+IEJlc3QgcmVnYXJkcywKPj4+Pj4gQW5kcmVqCj4+Pj4+
-Cj4+Pj4+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4+
-Pj4+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4+Pj4+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-Zwo+Pj4+PiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gKPj4+Pj4KPj4+Pgo+Pj4+Cj4+Pgo+Pj4gRGllaGwgQ29ubmVjdGl2aXR5IFNvbHV0aW9ucyBH
-bWJICj4+PiBHZXNjaMOkZnRzZsO8aHJ1bmc6IEhvcnN0IExlb25iZXJnZXIKPj4+IFNpdHogZGVy
-IEdlc2VsbHNjaGFmdDogTsO8cm5iZXJnIC0gUmVnaXN0ZXJnZXJpY2h0OiBBbXRzZ2VyaWNodAo+
-Pj4gTsO8cm5iZXJnOiBIUkIgMzIzMTUKPj4+Cj4+PiBfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwo+Pj4KPj4+IERlciBJbmhhbHQgZGVyIHZvcnN0ZWhlbmRlbiBFLU1haWwgaXN0IG5p
-Y2h0IHJlY2h0bGljaCBiaW5kZW5kLiBEaWVzZSBFLU1haWwgZW50aGFlbHQgdmVydHJhdWxpY2hl
-IHVuZC9vZGVyIHJlY2h0bGljaCBnZXNjaHVldHp0ZSBJbmZvcm1hdGlvbmVuLgo+Pj4gSW5mb3Jt
-aWVyZW4gU2llIHVucyBiaXR0ZSwgd2VubiBTaWUgZGllc2UgRS1NYWlsIGZhZWxzY2hsaWNoZXJ3
-ZWlzZSBlcmhhbHRlbiBoYWJlbi4gQml0dGUgbG9lc2NoZW4gU2llIGluIGRpZXNlbSBGYWxsIGRp
-ZSBOYWNocmljaHQuCj4+PiBKZWRlIHVuZXJsYXVidGUgRm9ybSBkZXIgUmVwcm9kdWt0aW9uLCBC
-ZWthbm50Z2FiZSwgQWVuZGVydW5nLCBWZXJ0ZWlsdW5nIHVuZC9vZGVyIFB1Ymxpa2F0aW9uIGRp
-ZXNlciBFLU1haWwgaXN0IHN0cmVuZ3N0ZW5zIHVudGVyc2FndC4KPj4+Cj4+PiAtIEluZm9ybWF0
-aW9uZW4genVtIERhdGVuc2NodXR6LCBpbnNiZXNvbmRlcmUgenUgSWhyZW4gUmVjaHRlbiwgZXJo
-YWx0ZW4gU2llIHVudGVyOgo+Pj4KPj4+IGh0dHBzOi8vd3d3LmRpZWhsLmNvbS9ncm91cC9kZS90
-cmFuc3BhcmVuei11bmQtaW5mb3JtYXRpb25zcGZsaWNodGVuLwo+Pj4KPj4+IFRoZSBjb250ZW50
-cyBvZiB0aGUgYWJvdmUgbWVudGlvbmVkIGUtbWFpbCBpcyBub3QgbGVnYWxseSBiaW5kaW5nLiBU
-aGlzIGUtbWFpbCBjb250YWlucyBjb25maWRlbnRpYWwgYW5kL29yIGxlZ2FsbHkgcHJvdGVjdGVk
-IGluZm9ybWF0aW9uLiBQbGVhc2UgaW5mb3JtIHVzIGlmIHlvdSBoYXZlIHJlY2VpdmVkIHRoaXMg
-ZS1tYWlsIGJ5Cj4+PiBtaXN0YWtlIGFuZCBkZWxldGUgaXQgaW4gc3VjaCBhIGNhc2UuIEVhY2gg
-dW5hdXRob3JpemVkIHJlcHJvZHVjdGlvbiwgZGlzY2xvc3VyZSwgYWx0ZXJhdGlvbiwgZGlzdHJp
-YnV0aW9uIGFuZC9vciBwdWJsaWNhdGlvbiBvZiB0aGlzIGUtbWFpbCBpcyBzdHJpY3RseSBwcm9o
-aWJpdGVkLgo+Pj4KPj4+IC0gRm9yIGdlbmVyYWwgaW5mb3JtYXRpb24gb24gZGF0YSBwcm90ZWN0
-aW9uIGFuZCB5b3VyIHJlc3BlY3RpdmUgcmlnaHRzIHBsZWFzZSB2aXNpdDoKPj4+Cj4+PiBodHRw
-czovL3d3dy5kaWVobC5jb20vZ3JvdXAvZW4vdHJhbnNwYXJlbmN5LWFuZC1pbmZvcm1hdGlvbi1v
-YmxpZ2F0aW9ucy8KPj4+Cj4+Pgo+Pj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KPj4+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4+PiBiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKPj4+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo+Pj4KPj4KPj4KPiBEaWVobCBDb25uZWN0aXZpdHkgU29sdXRpb25zIEdt
-YkgKPiBHZXNjaMOkZnRzZsO8aHJ1bmc6IEhvcnN0IExlb25iZXJnZXIKPiBTaXR6IGRlciBHZXNl
-bGxzY2hhZnQ6IE7DvHJuYmVyZyAtIFJlZ2lzdGVyZ2VyaWNodDogQW10c2dlcmljaHQKPiBOw7xy
-bmJlcmc6IEhSQiAzMjMxNQo+IAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4g
-Cj4gRGVyIEluaGFsdCBkZXIgdm9yc3RlaGVuZGVuIEUtTWFpbCBpc3QgbmljaHQgcmVjaHRsaWNo
-IGJpbmRlbmQuIERpZXNlIEUtTWFpbCBlbnRoYWVsdCB2ZXJ0cmF1bGljaGUgdW5kL29kZXIgcmVj
-aHRsaWNoIGdlc2NodWV0enRlIEluZm9ybWF0aW9uZW4uCj4gSW5mb3JtaWVyZW4gU2llIHVucyBi
-aXR0ZSwgd2VubiBTaWUgZGllc2UgRS1NYWlsIGZhZWxzY2hsaWNoZXJ3ZWlzZSBlcmhhbHRlbiBo
-YWJlbi4gQml0dGUgbG9lc2NoZW4gU2llIGluIGRpZXNlbSBGYWxsIGRpZSBOYWNocmljaHQuCj4g
-SmVkZSB1bmVybGF1YnRlIEZvcm0gZGVyIFJlcHJvZHVrdGlvbiwgQmVrYW5udGdhYmUsIEFlbmRl
-cnVuZywgVmVydGVpbHVuZyB1bmQvb2RlciBQdWJsaWthdGlvbiBkaWVzZXIgRS1NYWlsIGlzdCBz
-dHJlbmdzdGVucyB1bnRlcnNhZ3QuCj4gCj4gLSBJbmZvcm1hdGlvbmVuIHp1bSBEYXRlbnNjaHV0
-eiwgaW5zYmVzb25kZXJlIHp1IElocmVuIFJlY2h0ZW4sIGVyaGFsdGVuIFNpZSB1bnRlcjoKPiAK
-PiBodHRwczovL3d3dy5kaWVobC5jb20vZ3JvdXAvZGUvdHJhbnNwYXJlbnotdW5kLWluZm9ybWF0
-aW9uc3BmbGljaHRlbi8KPiAKPiBUaGUgY29udGVudHMgb2YgdGhlIGFib3ZlIG1lbnRpb25lZCBl
-LW1haWwgaXMgbm90IGxlZ2FsbHkgYmluZGluZy4gVGhpcyBlLW1haWwgY29udGFpbnMgY29uZmlk
-ZW50aWFsIGFuZC9vciBsZWdhbGx5IHByb3RlY3RlZCBpbmZvcm1hdGlvbi4gUGxlYXNlIGluZm9y
-bSB1cyBpZiB5b3UgaGF2ZSByZWNlaXZlZCB0aGlzIGUtbWFpbCBieQo+IG1pc3Rha2UgYW5kIGRl
-bGV0ZSBpdCBpbiBzdWNoIGEgY2FzZS4gRWFjaCB1bmF1dGhvcml6ZWQgcmVwcm9kdWN0aW9uLCBk
-aXNjbG9zdXJlLCBhbHRlcmF0aW9uLCBkaXN0cmlidXRpb24gYW5kL29yIHB1YmxpY2F0aW9uIG9m
-IHRoaXMgZS1tYWlsIGlzIHN0cmljdGx5IHByb2hpYml0ZWQuCj4gCj4gLSBGb3IgZ2VuZXJhbCBp
-bmZvcm1hdGlvbiBvbiBkYXRhIHByb3RlY3Rpb24gYW5kIHlvdXIgcmVzcGVjdGl2ZSByaWdodHMg
-cGxlYXNlIHZpc2l0Ogo+IAo+IGh0dHBzOi8vd3d3LmRpZWhsLmNvbS9ncm91cC9lbi90cmFuc3Bh
-cmVuY3ktYW5kLWluZm9ybWF0aW9uLW9ibGlnYXRpb25zLwo+IAo+IAoKCi0tIApQZW5ndXRyb25p
-eCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRw
-Oi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAg
-ICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBI
-aWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1
-NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On 02.08.21 12:40, Renaud Barbier wrote:
+> In preparation for the introduction of the FSL IFC nand driver
+> for the layerscape CPU, add 64-bit counter support.
+> 
+> Remove functions calling undefined functions.
+> 
+> Signed-off-by: Renaud Barbier <renaud.barbier@abaco.com>
+> ---
+>  include/asm-generic/atomic-long.h | 63 -------------------------------
+>  include/asm-generic/atomic.h      | 49 ++++++++++++++++++++++++
+>  2 files changed, 49 insertions(+), 63 deletions(-)
+> 
+> diff --git a/include/asm-generic/atomic-long.h b/include/asm-generic/atomic-long.h
+> index 322d510f38..fd1fdad20f 100644
+> --- a/include/asm-generic/atomic-long.h
+> +++ b/include/asm-generic/atomic-long.h
+> @@ -66,69 +66,6 @@ static inline void atomic_long_sub(long i, atomic_long_t *l)
+>  	atomic64_sub(i, v);
+>  }
+>  
+> -static inline int atomic_long_sub_and_test(long i, atomic_long_t *l)
+> -{
+> -	atomic64_t *v = (atomic64_t *)l;
+> -
+> -	return atomic64_sub_and_test(i, v);
+> -}
+> -
+> -static inline int atomic_long_dec_and_test(atomic_long_t *l)
+> -{
+> -	atomic64_t *v = (atomic64_t *)l;
+> -
+> -	return atomic64_dec_and_test(v);
+> -}
+> -
+> -static inline int atomic_long_inc_and_test(atomic_long_t *l)
+> -{
+> -	atomic64_t *v = (atomic64_t *)l;
+> -
+> -	return atomic64_inc_and_test(v);
+> -}
+> -
+> -static inline int atomic_long_add_negative(long i, atomic_long_t *l)
+> -{
+> -	atomic64_t *v = (atomic64_t *)l;
+> -
+> -	return atomic64_add_negative(i, v);
+> -}
+> -
+> -static inline long atomic_long_add_return(long i, atomic_long_t *l)
+> -{
+> -	atomic64_t *v = (atomic64_t *)l;
+> -
+> -	return (long)atomic64_add_return(i, v);
+> -}
+> -
+> -static inline long atomic_long_sub_return(long i, atomic_long_t *l)
+> -{
+> -	atomic64_t *v = (atomic64_t *)l;
+> -
+> -	return (long)atomic64_sub_return(i, v);
+> -}
+> -
+> -static inline long atomic_long_inc_return(atomic_long_t *l)
+> -{
+> -	atomic64_t *v = (atomic64_t *)l;
+> -
+> -	return (long)atomic64_inc_return(v);
+> -}
+> -
+> -static inline long atomic_long_dec_return(atomic_long_t *l)
+> -{
+> -	atomic64_t *v = (atomic64_t *)l;
+> -
+> -	return (long)atomic64_dec_return(v);
+> -}
+> -
+> -static inline long atomic_long_add_unless(atomic_long_t *l, long a, long u)
+> -{
+> -	atomic64_t *v = (atomic64_t *)l;
+> -
+> -	return (long)atomic64_add_unless(v, a, u);
+> -}
+> -
+
+No one is using the deleted atomic_long_ functions. So that's ok.
+
+>  #define atomic_long_inc_not_zero(l) atomic64_inc_not_zero((atomic64_t *)(l))
+>  
+>  #define atomic_long_cmpxchg(l, old, new) \
+> diff --git a/include/asm-generic/atomic.h b/include/asm-generic/atomic.h
+> index 449cecaabc..6e63b8e8e7 100644
+> --- a/include/asm-generic/atomic.h
+> +++ b/include/asm-generic/atomic.h
+> @@ -11,7 +11,55 @@
+>  #ifdef CONFIG_SMP
+>  #error SMP not supported
+>  #endif
+> +#define ATOMIC_INIT(i)	{ (i) }
+> +
+> +#ifdef CONFIG_64BIT
+> +typedef struct { s64 counter; } atomic64_t;
+> +
+> +#define atomic64_read(v)	((v)->counter)
+> +#define atomic64_set(v, i)	(((v)->counter) = (i))
+> +
+> +static inline void atomic64_add(s64 i, volatile atomic64_t *v)
+> +{
+> +	v->counter += i;
+> +}
+> +
+> +static inline void atomic64_sub(s64 i, volatile atomic64_t *v)
+> +{
+> +	v->counter -= i;
+> +}
+> +
+> +static inline void atomic64_inc(volatile atomic64_t *v)
+> +{
+> +	v->counter += 1;
+> +}
+> +
+> +static inline void atomic64_dec(volatile atomic64_t *v)
+> +{
+> +	v->counter -= 1;
+> +}
+> +
+> +static inline int atomic64_dec_and_test(volatile atomic64_t *v)
+> +{
+> +	s64 val;
+> +
+> +	val = v->counter;
+> +	v->counter = val -= 1;
+> +
+> +	return val == 0;
+
+That's a very awkward way to write
+
+return --v->counter == 0;
+
+But I see you just copied the 32 bit variants, so:
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> +}
+>  
+> +static inline int atomic64_add_negative(s64 i, volatile atomic64_t *v)
+> +{
+> +	s64 val;
+> +
+> +	val = v->counter;
+> +	v->counter = val += i;
+> +
+> +	return val < 0;
+> +}
+> +
+> +#else
+>  typedef struct { volatile int counter; } atomic_t;
+>  
+>  #define ATOMIC_INIT(i)	{ (i) }
+> @@ -63,6 +111,7 @@ static inline void atomic_clear_mask(unsigned long mask, unsigned long *addr)
+>  {
+>  	*addr &= ~mask;
+>  }
+> +#endif
+>  
+>  /* Atomic operations are already serializing on ARM */
+>  #define smp_mb__before_atomic_dec()	barrier()
+> 
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
