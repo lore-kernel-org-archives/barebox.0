@@ -1,15 +1,15 @@
-Delivery-date: Mon, 09 Aug 2021 20:38:25 +0200
+Delivery-date: Mon, 09 Aug 2021 20:39:10 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mDAAL-0002Fi-9d
-	for lore@lore.pengutronix.de; Mon, 09 Aug 2021 20:38:25 +0200
+	id 1mDAB4-0002H0-Bv
+	for lore@lore.pengutronix.de; Mon, 09 Aug 2021 20:39:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mDAAG-0000U1-Pc
-	for lore@pengutronix.de; Mon, 09 Aug 2021 20:38:25 +0200
+	id 1mDAB3-0000Z4-Hr
+	for lore@pengutronix.de; Mon, 09 Aug 2021 20:39:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,48 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=6Vg3pRDjn6AgBP73jBiJgSyqE1wO2TPqawPpZChqiJs=; b=tVD24jJlRKEXwehAok9V/ClPh1
-	ZTSFb8PxfF+sB5DuGETk8HC3n8F2tbHyNOV6wpxCwqqekqHlvaMLm9/gBq1mLIV35Lkj+mZXS2WyO
-	pMki3TsiNVDpZwEgAfXNss2EU+fLD9nEQ086J0XLh51ANL7F3mquCuV0nOUi7Yu57PilT1R5BmtZV
-	1xEMR0AKGEjqz0wN5m3a+0WTbZNk6bm1mcNeXybqdv/nFUxWIFMSb36vGjqif8nlCQHxdvgjGfwOa
-	8eqA5hu0wYMxMLWvF6XChi69DnEQCvEaB5RpGh8vIPfhiY72yPsGosGTFw4C1lybSy0IF67c5fN+u
-	XX4XQj+g==;
+	bh=r0XIVwZeIwsR9JF/uGCrcHLzoV0wbwCxT69OcirHiy8=; b=FWkFb3FgjQA4niEwkn9Z5ACjg1
+	Li8ROuTQsrSh0K/xNcP3m8DOTmxXS7a1czM1wU0vfiHenqmUHrTa0kIL6mNs4qst16fOjEabweDxV
+	felnLubctxp7LaHRmiv5+p+B087VPSDVZtokJ2PrMDK066jSBCGcH7heLKf4JfOAakStvZWr9oQLy
+	KvBbKi4fXkf0MBA2Xx2GTuUYGtVZDdHIXtkVv1IlZqg7rGDO7ZPGvMNOvDzXKUNancBBzG8CY8fSZ
+	ofJUsmhF7Fl+96zYzYE4d9f3qluT89F3fbhmVKIKoYmlnl4n51+pD0cKaPtoCLzlK36X58JG3Vu/1
+	P5gcy11g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mDA8p-001jbG-Gh; Mon, 09 Aug 2021 18:36:51 +0000
+	id 1mDA9Y-001joP-FO; Mon, 09 Aug 2021 18:37:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mDA8a-001jYO-B0
- for barebox@lists.infradead.org; Mon, 09 Aug 2021 18:36:41 +0000
+ id 1mDA9Q-001jly-KQ
+ for barebox@lists.infradead.org; Mon, 09 Aug 2021 18:37:32 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mDA8Y-0000Eq-QG; Mon, 09 Aug 2021 20:36:34 +0200
+ id 1mDA9P-0000Mh-Br; Mon, 09 Aug 2021 20:37:27 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mDA8Y-0005x2-Gh; Mon, 09 Aug 2021 20:36:34 +0200
-Date: Mon, 9 Aug 2021 20:36:34 +0200
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>,
- Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20210809183634.GH11515@pengutronix.de>
-References: <20210730192802.1457345-1-u.kleine-koenig@pengutronix.de>
+ id 1mDA9P-00060G-0u; Mon, 09 Aug 2021 20:37:27 +0200
+Date: Mon, 9 Aug 2021 20:37:27 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, ore@pengutronix.de
+Message-ID: <20210809183726.GI11515@pengutronix.de>
+References: <20210722124137.7431-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210730192802.1457345-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20210722124137.7431-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 20:36:18 up 172 days, 22:00, 81 users,  load average: 0.06, 0.08,
- 0.09
+X-Uptime: 20:37:14 up 172 days, 22:01, 81 users,  load average: 0.02, 0.06,
+ 0.08
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210809_113636_416735_A843FDC5 
-X-CRM114-Status: GOOD (  15.29  )
+X-CRM114-CacheID: sfid-20210809_113728_732346_78978F3A 
+X-CRM114-Status: GOOD (  18.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,8 +69,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -82,27 +81,28 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] arm: mxs: Replace license and copyright boilerplate by
- SPDX identifiers
+Subject: Re: [PATCH master] ARM: at91: fix building samad2 images without
+ sama5d3
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jul 30, 2021 at 09:28:02PM +0200, Uwe Kleine-K=F6nig wrote:
-> Converts the files that licensecheck can determine to be licensed under
-> GPL-2.0-only or GPL-2.0-or-later and also convert their copyright
-> statements to SPDX.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+On Thu, Jul 22, 2021 at 02:41:37PM +0200, Ahmad Fatoum wrote:
+> Addition of first stage support for SAMA5D3 added a dependency
+> between sama5d2 and sama5d3 first stages: They both needed to be
+> enabled to generate images for either. Break up this dependency
+> to fix build failures for configs that e.g. only build one SoC.
+> 
+> Fixes: e30fb46597d3 ("ARM: at91: xload-mmc: add sama5d3_atmci_start_image() helper")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
+>  arch/arm/mach-at91/Kconfig | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 
 Applied, thanks
 
 Sascha
 
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
