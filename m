@@ -1,15 +1,15 @@
-Delivery-date: Mon, 09 Aug 2021 20:39:10 +0200
+Delivery-date: Mon, 09 Aug 2021 20:50:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mDAB4-0002H0-Bv
-	for lore@lore.pengutronix.de; Mon, 09 Aug 2021 20:39:10 +0200
+	id 1mDAM0-0002oF-HF
+	for lore@lore.pengutronix.de; Mon, 09 Aug 2021 20:50:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mDAB3-0000Z4-Hr
-	for lore@pengutronix.de; Mon, 09 Aug 2021 20:39:10 +0200
+	id 1mDALv-0001vG-10
+	for lore@pengutronix.de; Mon, 09 Aug 2021 20:50:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=r0XIVwZeIwsR9JF/uGCrcHLzoV0wbwCxT69OcirHiy8=; b=FWkFb3FgjQA4niEwkn9Z5ACjg1
-	Li8ROuTQsrSh0K/xNcP3m8DOTmxXS7a1czM1wU0vfiHenqmUHrTa0kIL6mNs4qst16fOjEabweDxV
-	felnLubctxp7LaHRmiv5+p+B087VPSDVZtokJ2PrMDK066jSBCGcH7heLKf4JfOAakStvZWr9oQLy
-	KvBbKi4fXkf0MBA2Xx2GTuUYGtVZDdHIXtkVv1IlZqg7rGDO7ZPGvMNOvDzXKUNancBBzG8CY8fSZ
-	ofJUsmhF7Fl+96zYzYE4d9f3qluT89F3fbhmVKIKoYmlnl4n51+pD0cKaPtoCLzlK36X58JG3Vu/1
-	P5gcy11g==;
+	bh=KgFHuyPP4FtXLctMn5WmHkxPRtt3LC467lytkmotV/E=; b=KxqNHD/Jk4SQg13IcxDRRjohuI
+	lnFIhlA7TPRWSrxhY7ZGQZ4JCRhVttfh4DbPLDYhejvghTssHzwqYvYwYNmX04lNGDp/JVZbpZbiE
+	Jg1BTrOaYEY+qrMjNqmWEYfEhKn6nuq/CFSLGKMplKk6+Ssin+5K2Wdbw1iWEyIoyuVO9lqvPIi6L
+	/Mk9tqHUm4xE221Botsj1pg088/a8R3XC9b9S0GpKf7pWIrFpEl8+xgB2VHlONFf8rKf7fIB5Ahe4
+	5aLQQvNu4kuAA658oQZcCBcCxWvEnojJj+lD/iz19oawH/oINNAX85ZR4t/kXqHvZuz6W5lmir3Ab
+	B5ZWkgrw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mDA9Y-001joP-FO; Mon, 09 Aug 2021 18:37:36 +0000
+	id 1mDAKJ-001lDC-S3; Mon, 09 Aug 2021 18:48:43 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mDA9Q-001jly-KQ
- for barebox@lists.infradead.org; Mon, 09 Aug 2021 18:37:32 +0000
+ id 1mDAKC-001lCW-3K
+ for barebox@lists.infradead.org; Mon, 09 Aug 2021 18:48:40 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mDA9P-0000Mh-Br; Mon, 09 Aug 2021 20:37:27 +0200
+ id 1mDAKA-0001gw-G0; Mon, 09 Aug 2021 20:48:34 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mDA9P-00060G-0u; Mon, 09 Aug 2021 20:37:27 +0200
-Date: Mon, 9 Aug 2021 20:37:27 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, ore@pengutronix.de
-Message-ID: <20210809183726.GI11515@pengutronix.de>
-References: <20210722124137.7431-1-a.fatoum@pengutronix.de>
+ id 1mDAKA-0006Jx-6f; Mon, 09 Aug 2021 20:48:34 +0200
+Date: Mon, 9 Aug 2021 20:48:34 +0200
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20210809184834.GJ11515@pengutronix.de>
+References: <20210721084017.401081-1-r.czerwinski@pengutronix.de>
+ <20210721084017.401081-2-r.czerwinski@pengutronix.de>
+ <7938608bfc1f8ec8f460de95d065b6352f50eff8.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210722124137.7431-1-a.fatoum@pengutronix.de>
+In-Reply-To: <7938608bfc1f8ec8f460de95d065b6352f50eff8.camel@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 20:37:14 up 172 days, 22:01, 81 users,  load average: 0.02, 0.06,
+X-Uptime: 20:47:25 up 172 days, 22:11, 81 users,  load average: 0.10, 0.09,
  0.08
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210809_113728_732346_78978F3A 
-X-CRM114-Status: GOOD (  18.05  )
+X-CRM114-CacheID: sfid-20210809_114836_191801_AA0ACB84 
+X-CRM114-Status: GOOD (  31.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,24 +83,69 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] ARM: at91: fix building samad2 images without
- sama5d3
+Subject: Re: [PATCH 2/2] fastboot: use file_list_parse_null()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Jul 22, 2021 at 02:41:37PM +0200, Ahmad Fatoum wrote:
-> Addition of first stage support for SAMA5D3 added a dependency
-> between sama5d2 and sama5d3 first stages: They both needed to be
-> enabled to generate images for either. Break up this dependency
-> to fix build failures for configs that e.g. only build one SoC.
+On Wed, Jul 21, 2021 at 10:43:04AM +0200, Rouven Czerwinski wrote:
+> On Wed, 2021-07-21 at 10:40 +0200, Rouven Czerwinski wrote:
+> > In case an invalid file list is passed to file_list_parse(), it will
+> > return an error, i.e. by passing "/dev/mmc1(emmc) /dev/mmc1.1(root)",
+> > the error here being that the entries are not comma separated and
+> > file_list_parse will try to parse ' ' as a flag. The fastboot code
+> > didn't handle this, leading to the following error:
+> > 
+> >   ERROR: file_list: Unknown flag ' '
+> >   ERROR: file_list: parse error
+> >   unable to handle paging request at address 0xfffffff2
+> >   pc : [<8fe26a20>]    lr : [<8fe0f965>]
+> >   sp : 8ffeff50  ip : 8ffef714  fp : 00079bda
+> >   r10: 001b9ff8  r9 : 8fea7eec  r8 : 00000001
+> >   r7 : 00000000  r6 : 00000001  r5 : 00000000  r4 : 8813eab0
+> >   r3 : ffffffea  r2 : 00020000  r1 : 00000001  r0 : 8813eab0
+> >   Flags: nzCv  IRQs off  FIQs off  Mode SVC_32
+> >   WARNING: [<8fe26a20>] (usb_multi_count_functions+0xc/0x2a) from [<8fe0f965>] (usbgadget_register+0x79/0xf4)
+> >   WARNING: [<8fe0f965>] (usbgadget_register+0x79/0xf4) from [<8fe0fa13>] (usbgadget_autostart_set+0x33/0x4c)
+> >   WARNING: [<8fe0fa13>] (usbgadget_autostart_set+0x33/0x4c) from [<8fe4d437>] (param_int_set+0x4b/0xb0)
+> >   WARNING: [<8fe4d437>] (param_int_set+0x4b/0xb0) from [<8fe4d899>] (dev_set_param+0x4d/0x64)
+> >   WARNING: [<8fe4d899>] (dev_set_param+0x4d/0x64) from [<8fe066f1>] (globalvar_add_bool+0x49/0x54)
+> >   WARNING: [<8fe066f1>] (globalvar_add_bool+0x49/0x54) from [<8fe0f8dd>] (usbgadget_autostart_init+0x15/0x24)
+> >   WARNING: [<8fe0f8dd>] (usbgadget_autostart_init+0x15/0x24) from [<8fe01081>] (start_barebox+0x35/0x6c)
+> >   WARNING: [<8fe01081>] (start_barebox+0x35/0x6c) from [<8fe62ed9>] (barebox_non_pbl_start+0x121/0x164)
+> >   WARNING: [<8fe62ed9>] (barebox_non_pbl_start+0x121/0x164) from [<8fe00005>] (__bare_init_start+0x1/0xc)
+> > 
+> >   WARNING: [<8fe64e3d>] (unwind_backtrace+0x1/0x78) from [<8fe01385>] (panic+0x1d/0x34)
+> >   WARNING: [<8fe01385>] (panic+0x1d/0x34) from [<8fe62723>] (do_exception+0xf/0x14)
+> >   WARNING: [<8fe62723>] (do_exception+0xf/0x14) from [<8fe62791>] (do_data_abort+0x21/0x34)
+> >   WARNING: [<8fe62791>] (do_data_abort+0x21/0x34) from [<8fe624d4>] (do_abort_6+0x48/0x54)
+> > 
+> > Use file_list_parse_null instead of file_list_parse to get a NULL
+> > pointer if there is a parse error.
+> > 
+> > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> > ---
+> >  common/fastboot.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/common/fastboot.c b/common/fastboot.c
+> > index 75f6691b08..00a50813a7 100644
+> > --- a/common/fastboot.c
+> > +++ b/common/fastboot.c
+> > @@ -918,8 +918,9 @@ bool get_fastboot_bbu(void)
+> >  
+> >  struct file_list *get_fastboot_partitions(void)
+> >  {
+> > -	if (fastboot_partitions && *fastboot_partitions)
+> > -		return file_list_parse(fastboot_partitions);
+> > +	if (fastboot_partitions && *fastboot_partitions) {
+> > +		return file_list_parse_null(fastboot_partitions);
+> > +	}
 > 
-> Fixes: e30fb46597d3 ("ARM: at91: xload-mmc: add sama5d3_atmci_start_image() helper")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/mach-at91/Kconfig | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+> I missed the no longer required braces, do you want to fixup locally or
+> should I send a v2?
 
-Applied, thanks
+I would clean this up locally, but the series doesn't apply on current
+master, so could you resend a v2?
 
 Sascha
 
