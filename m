@@ -1,51 +1,56 @@
-Delivery-date: Thu, 12 Aug 2021 10:38:54 +0200
+Delivery-date: Thu, 12 Aug 2021 10:56:42 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mE6Eo-0006io-16
-	for lore@lore.pengutronix.de; Thu, 12 Aug 2021 10:38:54 +0200
+	id 1mE6W2-0006uj-9w
+	for lore@lore.pengutronix.de; Thu, 12 Aug 2021 10:56:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mE6Em-0005Ka-2m
-	for lore@pengutronix.de; Thu, 12 Aug 2021 10:38:53 +0200
+	id 1mE6Vy-0007UK-2r
+	for lore@pengutronix.de; Thu, 12 Aug 2021 10:56:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=uk9lMeA93Z3jRtAzbTSryc9PkYS+9tAhuZ2N4n6Yv6s=; b=iHwoVl1HkcDVtK
-	UegucRHtTdB2dRdgnpo1tWvFU+S2gJia0Lt2XpA9Fu4Aiw4C3cfF7jp6Ydm0SBfB/seqy1lwvufBc
-	4WVfI3uGwGCPCmyyYXpxc/OJ46dFC3CTLCsm1oEegt9zf0fR6ZvszUjM+Yy77IhhkLyK6EUk9lZke
-	xFWtb7X8stA+7GMY7sAK53fWDq3cuCUsdb91Z3TZ4EZuiVSHdNiZztc3mvU4BSKKTht0/ADOJTqkd
-	oNpu1bSTQCE0j0XCRGqNDIFDD0Yx+C08HHSp6zmj54Trrnse16g7lMZQF7jIgejI9APRrAdoOIc0i
-	BjpN/KT6aax6YBmQ1PIQ==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=rDOiIsP26knxMDFXjaOUCS4JWn3vD85WSXX53sEAIpw=; b=tsoGSuNlzrftseUxu8DacwLJ48
+	hEQo4kMPT5EsIsliavafqof6i6FH/PcRLtGcav+NtOBahJg8K7SqJwG0zpbi9pPLP3n1MphgR2TK6
+	qLYplgVVGJ1wvFEWlFTaeYSaGwutsAXN4SCucNlY4s3Y9UIwpjFzwtdP5CjPS2ljbBVKYq3+mrFOb
+	LcubBRDSW3iT/KEoFQaEkVWkSpZ6NZIa7A9SYjuwmbvYByfYxRvaqRlpXrfMFt9SH3Kk6frs7hD1w
+	aNAUYU+qCUaKWQhx6C+O/QA4Ff6rmtkW/yRY3RskVRPu1A78K+2Yj6cF7RWoYd69ELTTXIZlrn52p
+	2y2AlAPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mE6D1-009BIB-3E; Thu, 12 Aug 2021 08:37:03 +0000
+	id 1mE6UB-009EVC-P4; Thu, 12 Aug 2021 08:54:47 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mE6Ct-009BGI-70
- for barebox@lists.infradead.org; Thu, 12 Aug 2021 08:36:59 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1mE6Cr-0005Aj-5P
- for barebox@lists.infradead.org; Thu, 12 Aug 2021 10:36:53 +0200
-Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1mE6Cq-0000wY-Sr
- for barebox@lists.infradead.org; Thu, 12 Aug 2021 10:36:52 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Thu, 12 Aug 2021 10:36:51 +0200
-Message-Id: <20210812083651.3576-1-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+ id 1mE6U4-009ETX-6I
+ for barebox@lists.infradead.org; Thu, 12 Aug 2021 08:54:44 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1mE6U0-00073H-Se; Thu, 12 Aug 2021 10:54:36 +0200
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20210811172504.11396-1-m.felsch@pengutronix.de>
+ <9e266302-92a1-a577-d38c-fc240177b169@pengutronix.de>
+ <20210812073534.fg5f2cucub4rr3kv@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <89bf6b5f-8a05-5dc6-f08f-0e9f4d7b865f@pengutronix.de>
+Date: Thu, 12 Aug 2021 10:54:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
+In-Reply-To: <20210812073534.fg5f2cucub4rr3kv@pengutronix.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210812_013655_297311_C514A127 
-X-CRM114-Status: GOOD (  20.47  )
+X-CRM114-CacheID: sfid-20210812_015440_289900_BEC85DB1 
+X-CRM114-Status: GOOD (  29.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,155 +70,132 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2] ARM: i.MX6: boot: detect USB serial downloader more
- reliable
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] fastboot net: add global.fastboot.net.autostart early
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The problem with the BootROM is that the SRC registers are not set
-accordingly in case of a failed primary boot. E.g. if the device is
-configured to boot from an eMMC and the eMMC is empty or image is
-corrupt, the BootROM goes into 'recovery boot mode' (reference manual
-Figure 8-1) and the last possible recovery option is the serial
-downloader. In such case the SRC registers still indicate that the
-device was booted from an eMMC instead of serial-download.
+Hello Marco,
 
-This commit ports the U-Boot commit [1] with slightly adaptions suggested
-by Ahmad to Barebox. Also we need to reorder the imx6_init() else we
-reset the otg-controller to early.
+On 12.08.21 09:35, Marco Felsch wrote:
+> Hi Ahmad,
+> 
+> On 21-08-11 20:22, Ahmad Fatoum wrote:
+>> On 11.08.21 19:25, Marco Felsch wrote:
+>>> Split adding the fastboot.net.autostart to the global device and make
+>>> use of it. With this change it is possible to set it e.g. during
+>>> environment_initcall() and the later on followed fastboot_on_boot() can
+>>> use it to start fastboot it automatically during boot.
+>>
+>> So what you fix here is use of global fastboot.net.autostart from within
+>> init scripts, or what is your use case?
+> 
+> Yes something like this. I have a custom board which calls
+> sentenv("global.fastboot.net.autostart", "1") during the
+> environment_initcall step.
+> 
+> But also I didn't get the logic behind: adding a global var in the same
+> function which checks that var to start the network interface.
 
-[1] https://source.denx.de/u-boot/u-boot/-/commit/e203dcf23e9eabc2e4f3d0b079457cd1516f2081
+Global variables are synced with nv on creation, so they can be
+added postenvironment and still have a different value from
+the default.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-imx/boot.c  | 27 +++++++++++++++++++++++++++
- arch/arm/mach-imx/imx6.c  |  9 +++++++--
- include/soc/fsl/fsl_udc.h | 11 +++++++++++
- 3 files changed, 45 insertions(+), 2 deletions(-)
+I was asking because I had earlier moved global.usbgadget.autostart in
+common/usbgadget.c to postenvironment, so I wondered what use case that
+might have broken. To recap:
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 2b66bbf71e..fcb3c10064 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -8,6 +8,7 @@
- #include <magicvar.h>
- 
- #include <io.h>
-+#include <mach/clock-imx6.h>
- #include <mach/generic.h>
- #include <mach/imx25-regs.h>
- #include <mach/imx27-regs.h>
-@@ -23,6 +24,7 @@
- #include <mach/imx8mq.h>
- #include <mach/imx6.h>
- 
-+#include <soc/fsl/fsl_udc.h>
- 
- static void
- imx_boot_save_loc(void (*get_boot_source)(enum bootsource *, int *))
-@@ -397,6 +399,11 @@ static u32 imx6_get_src_boot_mode(void __iomem *src_base)
- 	return readl(src_base + IMX6_SRC_SBMR1);
- }
- 
-+static inline bool imx6_usboh3_clk_active(void)
-+{
-+	return (readl(MXC_CCM_CCGR6) & 0x3) == 0x3;
-+}
-+
- void imx6_get_boot_source(enum bootsource *src, int *instance)
- {
- 	void __iomem *src_base = IOMEM(MX6_SRC_BASE_ADDR);
-@@ -410,6 +417,26 @@ void imx6_get_boot_source(enum bootsource *src, int *instance)
- 
- 	bootsrc = imx53_bootsource_internal(bootmode);
- 
-+	/*
-+	 * imx6_bootsource_serial() can't detect cases where the boot ROM
-+	 * decided to use the serial downloader as a fall back (primary
-+	 * boot source failed).
-+	 *
-+	 * Infer that the boot ROM used the USB serial downloader by
-+	 * checking whether both the UDC and the clock enabling access
-+	 * to its MMIO region are currently active...
-+	 * This assumes:
-+	 * - On fresh boots, PBL doesn't itself start a stopped UDC
-+	 * - In barebox proper, boot source is saved before the UDC driver
-+	 *   may enable the UDC
-+	 */
-+
-+	if (imx6_usboh3_clk_active() &&
-+	    is_chipidea_udc_running(IOMEM(MX6_OTG_BASE_ADDR))) {
-+		*src = BOOTSOURCE_SERIAL;
-+		return;
-+	}
-+
- 	if (imx6_bootsource_serial(sbmr2) ||
- 	    imx6_bootsource_serial_forced(bootsrc)) {
- 		*src = BOOTSOURCE_SERIAL;
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index 9ccb391384..3ee42fd966 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -43,6 +43,11 @@ static void imx6_init_lowlevel(void)
- 	uint32_t periph_sel_2;
- 	uint32_t reg;
- 
-+	/*
-+	 * Before reset the controller imx6_boot_save_loc() must be called to
-+	 * detect serial-downloader fall back boots. For further information
-+	 * check the comment in imx6_get_boot_source().
-+	 */
- 	if ((readl(MXC_CCM_CCGR6) & 0x3))
- 		imx_reset_otg_controller(IOMEM(MX6_OTG_BASE_ADDR));
- 
-@@ -205,10 +210,10 @@ int imx6_init(void)
- 	void __iomem *src = IOMEM(MX6_SRC_BASE_ADDR);
- 	u64 mx6_uid;
- 
--	imx6_init_lowlevel();
--
- 	imx6_boot_save_loc();
- 
-+	imx6_init_lowlevel();
-+
- 	mx6_silicon_revision = imx6_cpu_revision();
- 	mx6_uid = imx6_uid();
- 
-diff --git a/include/soc/fsl/fsl_udc.h b/include/soc/fsl/fsl_udc.h
-index b983f714c5..0b409a9f6b 100644
---- a/include/soc/fsl/fsl_udc.h
-+++ b/include/soc/fsl/fsl_udc.h
-@@ -1,6 +1,9 @@
- #ifndef __FSL_UDC_H
- #define __FSL_UDC_H
- 
-+#include <linux/types.h>
-+#include <io.h>
-+
- /* USB DR device mode registers (Little Endian) */
- struct usb_dr_device {
- 	/* Capability register */
-@@ -380,4 +383,12 @@ int imx_barebox_start_usb(void __iomem *dr, void *dest);
- int imx8mm_barebox_load_usb(void *dest);
- int imx8mm_barebox_start_usb(void *dest);
- 
-+static inline bool is_chipidea_udc_running(void __iomem *dr)
-+{
-+	struct usb_dr_device __iomem *dr_regs = dr;
-+
-+	return (readl(&dr_regs->usbmode) & USB_MODE_CTRL_MODE_DEVICE)
-+		&& (readl(&dr_regs->usbcmd) & USB_CMD_RUN_STOP);
-+}
-+
- #endif /* __FSL_UDC_H */
+ - nv works with and without your change, because sync happens
+   at globalvar add time
+
+ - setting the variable from an environment_initcall won't work,
+   without your change, as they are not registered yet that early
+
+ - init scripts setting won't work with or without your change,
+
+   because no one cares about fastboot_net_autostart after the
+
+   initcalls are over
+
+
+I think you should turn fastboot.net.autostart into a non
+simple globalvar and enable it in the setter, just like is done
+for global.usbgadget.autostart.
+
+This allows you to set it an arbitrary time after postenvironment
+and it would work. You can use it from late_initcall, in an init
+script depending on whether a variable is set or from the
+interactive shell.
+
+(Maybe you could even turn the conditional in your board code into
+ an init script that way)
+
+Cheers,
+Ahmad
+
+
+> 
+> Regards,
+>   Marco
+> 
+>>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+>>> ---
+>>>  net/fastboot.c | 11 ++++++++---
+>>>  1 file changed, 8 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/net/fastboot.c b/net/fastboot.c
+>>> index df388adc89..a5a7caf526 100644
+>>> --- a/net/fastboot.c
+>>> +++ b/net/fastboot.c
+>>> @@ -547,12 +547,16 @@ fail_generic_init:
+>>>  static struct fastboot_net *fastboot_net_obj;
+>>>  static int fastboot_net_autostart;
+>>>  
+>>> -static int fastboot_on_boot(void)
+>>> +static int fastboot_net_globalvars_init(void)
+>>>  {
+>>> -	struct fastboot_net *fbn;
+>>> -
+>>>  	globalvar_add_simple_bool("fastboot.net.autostart",
+>>>  				  &fastboot_net_autostart);
+>>> +	return 0;
+>>> +}
+>>> +
+>>> +static int fastboot_on_boot(void)
+>>> +{
+>>> +	struct fastboot_net *fbn;
+>>>  
+>>>  	if (!fastboot_net_autostart)
+>>>  		return 0;
+>>> @@ -573,6 +577,7 @@ static void fastboot_net_exit(void)
+>>>  		fastboot_net_free(fastboot_net_obj);
+>>>  }
+>>>  
+>>> +device_initcall(fastboot_net_globalvars_init);
+>>>  postenvironment_initcall(fastboot_on_boot);
+>>>  predevshutdown_exitcall(fastboot_net_exit);
+>>>  
+>>>
+>>
+>>
+>> -- 
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>
+> 
+
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
