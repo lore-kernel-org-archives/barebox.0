@@ -1,69 +1,55 @@
-Delivery-date: Fri, 13 Aug 2021 17:34:19 +0200
+Delivery-date: Fri, 13 Aug 2021 21:29:43 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mEZCN-0006Dp-Bt
-	for lore@lore.pengutronix.de; Fri, 13 Aug 2021 17:34:19 +0200
+	id 1mEcsB-0001SC-Ay
+	for lore@lore.pengutronix.de; Fri, 13 Aug 2021 21:29:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mEZCJ-00065M-5r
-	for lore@pengutronix.de; Fri, 13 Aug 2021 17:34:19 +0200
+	id 1mEcs6-0004rl-R7
+	for lore@pengutronix.de; Fri, 13 Aug 2021 21:29:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=jvWW/zDVPzWjBxZ2F4bXd91mhtPl5ADTT+blbBAmxrg=; b=iFP2ZbcOS80Aql
-	Cwb0D6Z8xdFeDkmFJ1s1ss/pcRzyok8pCyTOj2rMBA8kxm+lP3oddyxx70dh6iubUvICbw4bQVBD1
-	yqb5epoMpsxDUHhsP2Y3F/0yh/9xTDGzNazQLeQ0gL60uiad1u0y00nZGUjpgWNiEaQn2dyQqY8EK
-	LEdMbw/VIcreGsKQg0yzvmt2MknpVYySSHuKNRl3WaMrAx2WaI3bjiPcic1MGOXgo1uPhwjN5g6Sd
-	LbcDTo/tqEVWIJqSM9R2dLdChILZqS3bNRqN/UFb5NYEJKZvNXdgLVCRIaE96ALgOAvMIzrZ1LPZv
-	vh/mYQfnqMq7YHioV53g==;
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=IvGJNhkzCmuaPugx2+XPuK/N2e4v9ZmnLO9hXPyTXno=; b=tm5vgK57MEhMbME0XIK/SWhHnW
+	+rmmTHODAi4OAqfwD4Gb7GMdgek2E4h+eQYJ25pTjKJ+9+MaZNwmImR8bzR1o0RIVKicOudw4vWGJ
+	5Qo0B5udn+bKuK0AmK/ImTKiVLq23u0UWBZ8aW2Q/iKWamrbZG8Laoq1NUI7P/87878VKoMygjEUZ
+	Z/gFm+oJ7v3s23JJikIkQfMj83k3IDARnNSTiAkkuzXTZPqJ4fMWURIdtjVIK27EI8F644BQi0k5b
+	NNviJCEkAJJl1fu1mBRM7TLBzFlQMMXX/n36t13B/qMLN3haEOu4ey/Pwr+sKTYiZXjFaVPJACMEF
+	Nfb2PLfQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mEZAk-00CyNV-Bj; Fri, 13 Aug 2021 15:32:38 +0000
+	id 1mEcpY-00DStx-3L; Fri, 13 Aug 2021 19:27:00 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mEZAa-00CyL7-Ll
- for barebox@lists.infradead.org; Fri, 13 Aug 2021 15:32:31 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mEZAZ-0005uR-2r; Fri, 13 Aug 2021 17:32:27 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mEZAY-0006VG-JL; Fri, 13 Aug 2021 17:32:26 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mEZAY-0003DI-Ia; Fri, 13 Aug 2021 17:32:26 +0200
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Fri, 13 Aug 2021 17:22:44 +0200
-Message-Id: <20210813152245.15841-3-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210813152245.15841-1-u.kleine-koenig@pengutronix.de>
+ id 1mEcpQ-00DSsM-8M
+ for barebox@lists.infradead.org; Fri, 13 Aug 2021 19:26:56 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1mEcpL-0004nn-Rg; Fri, 13 Aug 2021 21:26:47 +0200
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ barebox@lists.infradead.org, Rouven Czerwinski <rcz@pengutronix.de>
 References: <20210813152245.15841-1-u.kleine-koenig@pengutronix.de>
+ <20210813152245.15841-2-u.kleine-koenig@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <af0950b3-33fc-b36a-ad70-055e9af7acf2@pengutronix.de>
+Date: Fri, 13 Aug 2021 21:26:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-X-Patch-Hashes: v=1; h=sha256; i=Dnvj56IbSWuDnLAWgsxSllEShYcHwMWEZYECxuxFqhg=;
- m=b1JhiGCNKwY1/aTscIwUZcKhQbpwLK5WEJFFdleTZhU=;
- p=NLYS2jmoyeqvAYj6RPjyPy9awuZLPpNwT+i4KkgNYsY=;
- g=ccc74d439524a9cc5806d39056f1a55a1d8e488a
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de;
- s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6;
- b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmEWjj4ACgkQwfwUeK3K7Aks5Qf+Kwy
- mPDflKUfiWtxU9dkarMOIPCCy7Pa++3vf2DqJsiy5m75YEoyUHzi4ZAtGl7mnuMUJnGo/PbsC06LH
- oW3+5HFMocZ+YCsHqFpXEFv3e8TWYMrvr9HffJ3aa5SufpzPMfbHGfzmTVIXHdKzmF6jB0JGqWKDY
- JkUu8mcrYG16b7bRIHJRY084tpdrrie+U+rSG95Pi99Vu2hwNoelQKYjIN8LjG2snvDZV79p+ontL
- 2S2XY6mKza2ziJCvI2PQJE0Wi0PYmhSiwBAi1jS+l8ZwPWu+e3+IMzkH3qU87F7Sexp0iUzqs8MFu
- uSD38UYQ86q4MUGf79/fKwcPba046og==
+In-Reply-To: <20210813152245.15841-2-u.kleine-koenig@pengutronix.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210813_083228_929166_A59BB01E 
-X-CRM114-Status: GOOD (  15.79  )
+X-CRM114-CacheID: sfid-20210813_122652_346262_52393C0C 
+X-CRM114-Status: GOOD (  27.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,226 +61,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>, rcz@pengutronix.de,
- Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/3] imx-usb-loader: Drop nearly unused struct usb_id
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 1/3] imx8mp-evk: Add support for booting via USB
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Only one of the two members of struct usb_id is actually used. So
-replace struct usb_id by a struct mach_id.
-
-Signed-off-by: Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>
----
- scripts/imx/imx-usb-loader.c | 51 ++++++++++++------------------------
- 1 file changed, 17 insertions(+), 34 deletions(-)
-
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index cff77f27f264..3e96c86f2f29 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -52,7 +52,7 @@
- 
- int verbose;
- static struct libusb_device_handle *usb_dev_handle;
--static struct usb_id *usb_id;
-+static const struct mach_id *mach_id;
- 
- struct mach_id {
- 	struct mach_id * next;
-@@ -79,11 +79,6 @@ struct usb_work {
- 	unsigned char plug;
- };
- 
--struct usb_id {
--	const struct mach_id *mach_id;
--	struct usb_work *work;
--};
--
- static const struct mach_id imx_ids[] = {
- 	{
- 		.vid = 0x066f,
-@@ -507,8 +502,8 @@ static int read_file(const char *name, unsigned char **buffer, unsigned *size)
- static int transfer(int report, unsigned char *p, unsigned cnt, int *last_trans)
- {
- 	int err;
--	if (cnt > usb_id->mach_id->max_transfer)
--		cnt = usb_id->mach_id->max_transfer;
-+	if (cnt > mach_id->max_transfer)
-+		cnt = mach_id->max_transfer;
- 
- 	if (verbose > 4) {
- 		printf("report=%i\n", report);
-@@ -516,7 +511,7 @@ static int transfer(int report, unsigned char *p, unsigned cnt, int *last_trans)
- 			dump_bytes(p, cnt, 0);
- 	}
- 
--	if (usb_id->mach_id->mode == MODE_BULK) {
-+	if (mach_id->mode == MODE_BULK) {
- 		*last_trans = 0;
- 		err = libusb_bulk_transfer(usb_dev_handle,
- 					   (report < 3) ? 1 : 2 + EP_IN, p, cnt, last_trans, 1000);
-@@ -602,7 +597,7 @@ static int do_status(void)
- 			break;
- 	}
- 
--	if (usb_id->mach_id->mode == MODE_HID) {
-+	if (mach_id->mode == MODE_HID) {
- 		err = transfer(4, tmp, sizeof(tmp), &last_trans);
- 		if (err)
- 			printf("4 in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
-@@ -810,7 +805,7 @@ static int load_file(void *buf, unsigned len, unsigned dladdr,
- 
- 	retry = 0;
- 
--	if (usb_id->mach_id->mode == MODE_BULK) {
-+	if (mach_id->mode == MODE_BULK) {
- 		err = transfer(3, tmp, sizeof(tmp), &last_trans);
- 		if (err)
- 			printf("in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
-@@ -821,7 +816,7 @@ static int load_file(void *buf, unsigned len, unsigned dladdr,
- 	cnt = len;
- 
- 	while (1) {
--		int now = get_min(cnt, usb_id->mach_id->max_transfer);
-+		int now = get_min(cnt, mach_id->max_transfer);
- 
- 		if (!now)
- 			break;
-@@ -839,7 +834,7 @@ static int load_file(void *buf, unsigned len, unsigned dladdr,
- 	if (mode_barebox)
- 		return transfer_size;
- 
--	if (usb_id->mach_id->mode == MODE_HID) {
-+	if (mach_id->mode == MODE_HID) {
- 		err = transfer(3, tmp, sizeof(tmp), &last_trans);
- 		if (err)
- 			printf("3 in err=%i, last_trans=%i  %02x %02x %02x %02x\n",
-@@ -1233,7 +1228,7 @@ static int is_header(const unsigned char *p)
- 	const struct imx_flash_header_v2 *hdr =
- 		(const struct imx_flash_header_v2 *)p;
- 
--	switch (usb_id->mach_id->header_type) {
-+	switch (mach_id->header_type) {
- 	case HDR_MX51:
- 		if (ohdr->app_code_barker == 0xb1)
- 			return 1;
-@@ -1253,7 +1248,7 @@ static int perform_dcd(unsigned char *p, const unsigned char *file_start,
- 	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
- 	int ret = 0;
- 
--	switch (usb_id->mach_id->header_type) {
-+	switch (mach_id->header_type) {
- 	case HDR_MX51:
- 		ret = write_dcd_table_old(ohdr, file_start, cnt);
- 		ohdr->dcd_block_len = 0;
-@@ -1274,7 +1269,7 @@ static int get_dl_start(const unsigned char *p, const unsigned char *file_start,
- 		unsigned *header_addr)
- {
- 	const unsigned char *file_end = file_start + cnt;
--	switch (usb_id->mach_id->header_type) {
-+	switch (mach_id->header_type) {
- 	case HDR_MX51:
- 	{
- 		struct imx_flash_header *ohdr = (struct imx_flash_header *)p;
-@@ -1315,7 +1310,7 @@ static int get_payload_start(const unsigned char *p, uint32_t *ofs)
- {
- 	struct imx_flash_header_v2 *hdr = (struct imx_flash_header_v2 *)p;
- 
--	switch (usb_id->mach_id->header_type) {
-+	switch (mach_id->header_type) {
- 	case HDR_MX51:
- 		return -EINVAL;
- 
-@@ -1430,7 +1425,7 @@ static int do_irom_download(struct usb_work *curr, int verify)
- 
- 		memcpy(verify_buffer, image, 64);
- 
--		if ((type == FT_APP) && (usb_id->mach_id->mode != MODE_HID)) {
-+		if ((type == FT_APP) && (mach_id->mode != MODE_HID)) {
- 			type = FT_LOAD_ONLY;
- 			verify = 2;
- 		}
-@@ -1469,7 +1464,7 @@ static int do_irom_download(struct usb_work *curr, int verify)
- 		}
- 	}
- 
--	if (usb_id->mach_id->mode == MODE_HID && type == FT_APP) {
-+	if (mach_id->mode == MODE_HID && type == FT_APP) {
- 		printf("jumping to 0x%08x\n", header_addr);
- 
- 		ret = sdp_jump_address(header_addr);
-@@ -1532,7 +1527,7 @@ static int mxs_load_file(libusb_device_handle *dev, uint8_t *data, int size)
- 	cnt = size;
- 
- 	while (1) {
--		int now = get_min(cnt, usb_id->mach_id->max_transfer);
-+		int now = get_min(cnt, mach_id->max_transfer);
- 
- 		if (!now)
- 			break;
-@@ -1591,7 +1586,6 @@ static void usage(const char *prgname)
- 
- int main(int argc, char *argv[])
- {
--	const struct mach_id *mach;
- 	libusb_device **devs;
- 	libusb_device *dev;
- 	int r;
-@@ -1663,7 +1657,7 @@ int main(int argc, char *argv[])
- 		goto out;
- 	}
- 
--	dev = find_imx_dev(devs, &mach, devpath, devtype);
-+	dev = find_imx_dev(devs, &mach_id, devpath, devtype);
- 	if (!dev) {
- 		fprintf(stderr, "no supported device found\n");
- 		goto out;
-@@ -1682,15 +1676,7 @@ int main(int argc, char *argv[])
- 		goto out;
- 	}
- 
--	usb_id = malloc(sizeof(*usb_id));
--	if (!usb_id) {
--		perror("malloc");
--		exit(1);
--	}
--
--	usb_id->mach_id = mach;
--
--	if (mach->dev_type == DEV_MXS) {
-+	if (mach_id->dev_type == DEV_MXS) {
- 		ret = mxs_work(&w);
- 		goto out;
- 	}
-@@ -1715,9 +1701,6 @@ int main(int argc, char *argv[])
- 
- 	ret = 0;
- out:
--	if (usb_id)
--		free(usb_id);
--
- 	if (usb_dev_handle)
- 		libusb_close(usb_dev_handle);
- 
--- 
-2.30.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMTMuMDguMjEgMTc6MjIsIFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3RlOgoKUy1vLWIgbWlzc2lu
+Zy4KCj4gLS0tCj4gIGFyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1wLWV2ay9sb3dsZXZlbC5jIHwg
+MjcgKysrKysrKysrKysrKysrKysrKysrKysKPiAgYXJjaC9hcm0vbWFjaC1pbXgvYm9vdC5jICAg
+ICAgICAgICAgICAgICAgfCAgNCArKystCj4gIGluY2x1ZGUvYXNtLWdlbmVyaWMvc2VjdGlvbnMu
+aCAgICAgICAgICAgIHwgIDEgKwo+ICAzIGZpbGVzIGNoYW5nZWQsIDMxIGluc2VydGlvbnMoKyks
+IDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL254cC1pbXg4
+bXAtZXZrL2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvbnhwLWlteDhtcC1ldmsvbG93bGV2
+ZWwuYwo+IGluZGV4IDMyOThkZWQ1ODY2ZC4uMWZiNzg5OTE5OGQ2IDEwMDY0NAo+IC0tLSBhL2Fy
+Y2gvYXJtL2JvYXJkcy9ueHAtaW14OG1wLWV2ay9sb3dsZXZlbC5jCj4gKysrIGIvYXJjaC9hcm0v
+Ym9hcmRzL254cC1pbXg4bXAtZXZrL2xvd2xldmVsLmMKPiBAQCAtOTksNiArOTksMzAgQEAgc3Rh
+dGljIGludCBwb3dlcl9pbml0X2JvYXJkKHZvaWQpCj4gIAlyZXR1cm4gMDsKPiAgfQo+ICAKPiAr
+LyogcmVhZCBwaWdneWRhdGEgdmlhIGEgYm9vdHJvbSBjYWxsYmFjayBhbmQgcGxhY2UgaXQgYmVo
+aW5kIG91ciBjb3B5IGluIFNEUkFNICovCj4gK3N0YXRpYyBpbnQgaW14OG1fYm9vdHJvbV9sb2Fk
+X2ltYWdlKHZvaWQpCj4gK3sKPiArCWludCAoKmRvd25sb2FkX2ltYWdlKSh1OCAqZGVzdCwgdTMy
+IG9mZnNldCwgdTMyIHNpemUsIHUzMiB4b3IpID0gKih2b2lkICoqKTB4OTg4OwoKV291bGQgYmUg
+bmljZSB0byBoYXZlIHRoaXMgaW4gYSBoZWFkZXIsIGUuZy4KCmV4dGVybiBzdHJ1Y3QgaW14OG1w
+X2Jvb3Ryb21fb3BzIHsKCS8qIC4uLiAqLwoJaW50ICgqZG93bmxvYWRfaW1hZ2UpKHU4ICpkZXN0
+LCB1MzIgb2Zmc2V0LCB1MzIgc2l6ZSwgdTMyIHhvcik7Cn0gKmlteDhtcF9ib290cm9tX29wcyA9
+ICh2b2lkICopMHg5ODg7Cgo+ICsJc2l6ZV90IGNvdW50ID0gX19waWdneWRhdGFfZW5kIC0gX19w
+aWdneWRhdGFfc3RhcnQ7Cj4gKwljaGFyICpwID0gKGNoYXIgKilNWDhNX0FURl9CTDMzX0JBU0Vf
+QUREUiArIChfX3BpZ2d5ZGF0YV9zdGFydCAtIF9faW1hZ2Vfc3RhcnQpOwo+ICsKPiArCXdoaWxl
+IChjb3VudCkgewo+ICsJCXNpemVfdCBjaHVua3NpemUgPSBtaW4oY291bnQsIChzaXplX3QpMTAy
+NCk7Cj4gKwkJaW50IHJldDsKPiArCj4gKwkJcmV0ID0gZG93bmxvYWRfaW1hZ2UocCwgMCwgY2h1
+bmtzaXplLCAodWludHB0cl90KXAgXiBjaHVua3NpemUpOwo+ICsJCWlmIChyZXQgIT0gMHhmMCkg
+ewo+ICsJCQlwcl9lcnIoIkZhaWxlZCB0byBsb2FkIHBpZ2d5IGRhdGEgKHJldCA9ICV4KVxuIiwg
+cmV0KTsKPiArCQkJcmV0dXJuIC1FSU87Cj4gKwkJfQo+ICsKPiArCQlwICs9IGNodW5rc2l6ZTsK
+PiArCQljb3VudCAtPSBjaHVua3NpemU7Cj4gKwl9Cj4gKwo+ICsJcmV0dXJuIDA7Cj4gK30KPiAr
+Cj4gIGV4dGVybiBzdHJ1Y3QgZHJhbV90aW1pbmdfaW5mbyBpbXg4bXBfZXZrX2RyYW1fdGltaW5n
+Owo+ICAKPiAgc3RhdGljIHZvaWQgc3RhcnRfYXRmKHZvaWQpCj4gQEAgLTEyNSw2ICsxNDksOSBA
+QCBzdGF0aWMgdm9pZCBzdGFydF9hdGYodm9pZCkKPiAgCWNhc2UgQk9PVFNPVVJDRV9NTUM6Cj4g
+IAkJaW14OG1wX2VzZGhjX2xvYWRfaW1hZ2UoaW5zdGFuY2UsIGZhbHNlKTsKPiAgCQlicmVhazsK
+PiArCWNhc2UgQk9PVFNPVVJDRV9TRVJJQUw6Cj4gKwkJaW14OG1fYm9vdHJvbV9sb2FkX2ltYWdl
+KCk7Cj4gKwkJYnJlYWs7Cj4gIAlkZWZhdWx0Ogo+ICAJCXByaW50ZigiVW5oYW5kbGVkIGJvb3Rz
+b3VyY2UgQk9PVFNPVVJDRV8lZFxuIiwgc3JjKTsKPiAgCQloYW5nKCk7Cj4gZGlmZiAtLWdpdCBh
+L2FyY2gvYXJtL21hY2gtaW14L2Jvb3QuYyBiL2FyY2gvYXJtL21hY2gtaW14L2Jvb3QuYwo+IGlu
+ZGV4IDJiNjZiYmY3MWViMS4uN2MxZDQ5MjkxMDQ1IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL21h
+Y2gtaW14L2Jvb3QuYwo+ICsrKyBiL2FyY2gvYXJtL21hY2gtaW14L2Jvb3QuYwo+IEBAIC00OTUs
+MTAgKzQ5NSwxMiBAQCBzdGF0aWMgdm9pZCBfX2lteDdfZ2V0X2Jvb3Rfc291cmNlKGVudW0gYm9v
+dHNvdXJjZSAqc3JjLCBpbnQgKmluc3RhbmNlLAo+ICAJY2FzZSA1Ogo+ICAJCSpzcmMgPSBCT09U
+U09VUkNFX05PUjsKPiAgCQlicmVhazsKPiAtCWNhc2UgMTU6Cj4gKwljYXNlIDE0OiAvKiBvYnNl
+cnZlZCBvbiBpLk1YOE1QIGZvciBVU0IgInNlcmlhbCIgYm9vdGluZyAqLwo+ICsJY2FzZSAxNTog
+Lyogb2JzZXJ2ZWQgb24gaS5NWDhNTSBmb3IgVVNCICJzZXJpYWwiIGJvb3RpbmcgKi8KPiAgCQkq
+c3JjID0gQk9PVFNPVVJDRV9TRVJJQUw7Cj4gIAkJYnJlYWs7Cj4gIAlkZWZhdWx0Ogo+ICsJCSpz
+cmMgPSBCT09UU09VUkNFX1VOS05PV047Cj4gIAkJYnJlYWs7Cj4gIAl9Cj4gIH0KPiBkaWZmIC0t
+Z2l0IGEvaW5jbHVkZS9hc20tZ2VuZXJpYy9zZWN0aW9ucy5oIGIvaW5jbHVkZS9hc20tZ2VuZXJp
+Yy9zZWN0aW9ucy5oCj4gaW5kZXggODcwYmZmMjFmNjY4Li41OTdjNDk1MWVhNWUgMTAwNjQ0Cj4g
+LS0tIGEvaW5jbHVkZS9hc20tZ2VuZXJpYy9zZWN0aW9ucy5oCj4gKysrIGIvaW5jbHVkZS9hc20t
+Z2VuZXJpYy9zZWN0aW9ucy5oCj4gQEAgLTksNiArOSw3IEBAIGV4dGVybiBjaGFyIF9lbmRbXTsK
+PiAgZXh0ZXJuIGNoYXIgX19pbWFnZV9zdGFydFtdOwo+ICBleHRlcm4gY2hhciBfX2ltYWdlX2Vu
+ZFtdOwo+ICBleHRlcm4gY2hhciBfX3BpZ2d5ZGF0YV9zdGFydFtdOwo+ICtleHRlcm4gY2hhciBf
+X3BpZ2d5ZGF0YV9lbmRbXTsKCk90aGVyIGNvZGUgbm9ybWFsbHkgdXNlcyBfX2ltYWdlX2VuZCwg
+YnV0IGl0IHNlZW1zIF9fcGlnZ3lkYXRhX2VuZCBzaG91bGQgYmUKZXF1YWwgdG8gaXQuIEknZCBw
+cmVmZXIgX19pbWFnZV9lbmQsIGJlY2F1c2UgY29uY2VwdHVhbGx5LCB5b3Ugd2FudCB0byBjb3B5
+Cm9mZiB0aGUgcmVzdCBvZiB0aGUgaW1hZ2UgKHdoaWNoIGhhcHBlbnMgdG8gYmUganVzdCB0aGUg
+cGlnZ3kgZGF0YSkKCkBSb3V2ZW4sIFRoZSBzaGEgc3VtIGlzIGF0IHRoZSBlbmQgb2YgdGhlIGlt
+YWdlLCByaWdodD8KV291bGQgdGhpcyBiZSBpbmNsdWRlZCB0aGlzIHdheT8KCj4gIGV4dGVybiB2
+b2lkICpfYmFyZWJveF9pbWFnZV9zaXplOwo+ICBleHRlcm4gdm9pZCAqX2JhcmVib3hfYmFyZV9p
+bml0X3NpemU7Cj4gIGV4dGVybiB2b2lkICpfYmFyZWJveF9wYmxfc2l6ZTsKPiAKCgotLSAKUGVu
+Z3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAg
+IHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFu
+eSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dl
+cmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIw
+NjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
 
