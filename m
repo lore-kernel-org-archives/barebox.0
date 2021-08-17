@@ -1,79 +1,79 @@
-Delivery-date: Tue, 17 Aug 2021 12:07:11 +0200
+Delivery-date: Tue, 17 Aug 2021 12:07:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mFvzz-0005hO-FW
-	for lore@lore.pengutronix.de; Tue, 17 Aug 2021 12:07:11 +0200
+	id 1mFw0F-0005ip-W9
+	for lore@lore.pengutronix.de; Tue, 17 Aug 2021 12:07:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mFvzt-0001vi-Da
-	for lore@pengutronix.de; Tue, 17 Aug 2021 12:07:11 +0200
+	id 1mFw0A-0001zN-EP
+	for lore@pengutronix.de; Tue, 17 Aug 2021 12:07:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=EzB2GXwzhYiihsSMYwkfErMeoVtq/SnIKtdKaoLelHQ=; b=XUbxbLaXNbnvxp
-	mO1V8WjcyOFwsHaqBtwy61rB1oNbrmw0uf+j2wocYZU5eawg7MERQ8fx0KW9Bo/sA9kzUO23lZJW1
-	UwnRSrBqWfgTwI3C9/bhXyWKyJBGMVQWKQ7uUY2TOqsGzJif7QWXvxYsx5t0Rw+i4I17oizZXbDYR
-	pHb17jdaF4PEB61s3QYCWHmYip7yjVF0Q3FXFSV9nwHWnwqhyOktwgMii5xcjLYFvSYGS1a5vkZL0
-	ZTCa7bBSpYL/7GQUZ53ZSOsEZrm6YDEmJRvcDTHdngJ6Bc1Gw22cE4b1ZGKMzZ+pu+hSQnvjiOGPW
-	EdA9fNHFTRPvBRi3PQJw==;
+	List-Owner; bh=sYQKDPlI9O/K76Cqhm+5bIROqfiKLrlw/yQmSr3nkm4=; b=Ztty5W78siWNp+
+	jIgteSDELmdQvpOCznpg05h8xCCY3Ep3n27kdNBINxWGMZ47EJ6Y9kDPC5jTlUnUR4uuduCfuw8q3
+	8ZZvJnqqlXCiXJIIJ5XkkWQRq53Pbs1WGQn/oWNTjo1zHgbBlBIooG9VI7G+LJ9WG2zLHVimFe3/8
+	kU+br0oqiJ5rlxrj3UhCUN74eUSLuVomsCwS7qdCCfrMBrNEzeHr5bfYrT//sp1JHDbPZ2g7/illr
+	lMxEpZnJNhFZ3DGbCzzPi5mPPP5ASwEX/w5FginiWkbeCSVsd31V/3IRHNhRCuRTvFZQxs0uD3XXI
+	7/XO7KyRUav5AIO2nMfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mFvxw-001z3z-Dg; Tue, 17 Aug 2021 10:05:04 +0000
+	id 1mFvyJ-001zD5-RK; Tue, 17 Aug 2021 10:05:28 +0000
 Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mFvxj-001yyC-KG
- for barebox@lists.infradead.org; Tue, 17 Aug 2021 10:04:55 +0000
-Received: by mail-lf1-x12b.google.com with SMTP id i9so19568166lfg.10
- for <barebox@lists.infradead.org>; Tue, 17 Aug 2021 03:04:50 -0700 (PDT)
+ id 1mFvxl-001yzq-Vm
+ for barebox@lists.infradead.org; Tue, 17 Aug 2021 10:04:58 +0000
+Received: by mail-lf1-x12b.google.com with SMTP id r9so30880700lfn.3
+ for <barebox@lists.infradead.org>; Tue, 17 Aug 2021 03:04:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=zvUEXO1NARnIBnPiYsCIxJ5G4OEU+FKYc16BQylhrsk=;
- b=n1es6HNUE6QTb+c+i1HZRY851V05Be6cOy9WSD24c1Rx4TM5GdOp332Rc8inAblIqJ
- 7lAOJr8gGeUiwRj9w4nIFF3maoLNDG31n5Ginj0rzIAjmWk9BDD6EQixWjNY3Mx0kAnC
- JOlZHT1sh75yPqGKBMdfdEym24mlxCCovTAlerTkRfkFhYIBjo4S1wV5flDpSI6Hmxql
- GT2bFF6N0ZgXceCnWPTww7lVrx3i1iL6ZHQLmgqYS0RAOXss+fzvsFAkb3Fu93ESE1fy
- Rr5seDfNp2NE3rDv1Er/MvaoexUsG333w5bbp965+dIXTEICLk9TuoZdaoFX171Hr0Bp
- Razw==
+ bh=uMECzGU3kv0hXykM2InkBjlKq7JGmwUWZWbdQD4SpxI=;
+ b=ADVIOVF8o8cT/fBwzJ9t+aUrPoFHLEoyBvbmo2vXKRtTydZ2gJOOvFBnZwDSBUjgOa
+ GA7OFlSK9IJHLFqQVTV5F1vnd5f1UcFprTyKEQM8/U67xh4xyoieB9a15H+Jd+cJOSDc
+ y8KO0XadHoPQfw5SqOHaHdd+E7RgT6eQ42/XcHze3IRKVBi73HYRBPF9GTSg3QQ6+8rM
+ T4Z7Gua8esTbWTkRzou/g8IXjw/GxttNQv5pWbOSvwAMLZRohkurgd9EclSsb41AJuec
+ 067cCG44/jF1JxyY7MyQTiGVk9UARoggn3Q3RUUT7PazH2hbhp64yzuD9i+yRnN0Fjo+
+ N9jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=zvUEXO1NARnIBnPiYsCIxJ5G4OEU+FKYc16BQylhrsk=;
- b=dP2U+0OOm/OkiD69p0zzmiTnAReCwME3iZ5QelJH7VG0SuVvo/6D3g1ODhz/EhMGSi
- wtCFBvs/dTjnuJA6Edpon1C+GjjufhjEDMYL63aNOuOgwHJKTnVFJcolNbt7KHOa4kje
- eN+Oc6g8BzJUhXf7HDDHwZ4gJZEk7dQt/9lTGwXAF7ni6uQ5QNNEkKyTW+sRC7n6d7dc
- 6SVWMIF92NhLo+FBCPt1N0Ae6WzaogPOPCJ0Ij0tcro2rw+NsGjb/HxAnQOwcRlxjeaX
- tLPbDixYFRcVL25cgtAa5v/xlujTpVki9Yt9TJWGgp6QovRL6K4/iyfCzikP4KZaKBKA
- bn4w==
-X-Gm-Message-State: AOAM533lbvWHa4m+0uSeAFggxyQlCkz4dFoFki65Ms/c1s/yLnMzAFVD
- ebarSO5BiyD3u91C4N8gyJ+i4LKp+aI=
-X-Google-Smtp-Source: ABdhPJzvp8KmgpHetKlym9sXRy/N7gB58gTDXqfhb5MYzvYe1RbHkmjISU2KB0gdbZIUaaqLj/ZM3Q==
-X-Received: by 2002:a05:6512:519:: with SMTP id
- o25mr1786106lfb.590.1629194688710; 
- Tue, 17 Aug 2021 03:04:48 -0700 (PDT)
+ bh=uMECzGU3kv0hXykM2InkBjlKq7JGmwUWZWbdQD4SpxI=;
+ b=h0RyI9qh412Ps+NcaEO+p1Dq5vxpuWI5yNzgTOE5PNaJ0+WtQwL+P+96N/6osNj67M
+ CreO17uIp+kbeOkLBcUJJUTExOyJKXqQzkPqZC5zv1GyENySHHDYcyEJBjlAgtLIlx6Z
+ Ujh4RT3GDpcOkV42d/2oWe5C6J7VOqLZlaKOpqunoaihNPEoFvz0dqX/zIOIXkhZVBIa
+ wThhkpJbmTaPRx8Xcq3jrcB476iS4bRnOP2TnnFB88L2NnuLGnGTxpXbvsFlGr+uo3bg
+ 77tTLAAWOJMKCXSg7nev0QRAAQoIJDDoPbka9gMww8fx8C8sBLq/26M8qxRuBi4xNK56
+ s/Nw==
+X-Gm-Message-State: AOAM533WpiFQCPIY+RptvTMPPqaU/sXLYDVHpWuiXOUDKzKHrII+VvCU
+ GwqOluhdpbB4l1kAh+Cggo/sH8G2m6Q=
+X-Google-Smtp-Source: ABdhPJyO2ZNtKrG7n1PVye7czlqeFCGNve70ip99KTv3hGLDSbw6DLy9oAJwgd3CPc3zWUnPyzcgzA==
+X-Received: by 2002:a05:6512:3c9a:: with SMTP id
+ h26mr1782398lfv.300.1629194692371; 
+ Tue, 17 Aug 2021 03:04:52 -0700 (PDT)
 Received: from localhost.localdomain (109-252-203-80.dynamic.spd-mgts.ru.
  [109.252.203.80])
- by smtp.gmail.com with ESMTPSA id e20sm179795ljn.13.2021.08.17.03.04.48
+ by smtp.gmail.com with ESMTPSA id e20sm179795ljn.13.2021.08.17.03.04.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Aug 2021 03:04:48 -0700 (PDT)
+ Tue, 17 Aug 2021 03:04:52 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 17 Aug 2021 13:04:28 +0300
-Message-Id: <20210817100435.114756-2-antonynpavlov@gmail.com>
+Date: Tue, 17 Aug 2021 13:04:33 +0300
+Message-Id: <20210817100435.114756-7-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210817100435.114756-1-antonynpavlov@gmail.com>
 References: <20210817100435.114756-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210817_030451_711774_336C268C 
-X-CRM114-Status: GOOD (  14.82  )
+X-CRM114-CacheID: sfid-20210817_030454_144780_E5F543FD 
+X-CRM114-Status: GOOD (  22.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,7 +85,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Marek Czerski <m.czerski@ap-tech.pl>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -99,104 +100,441 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/8] clocksource: timer-riscv: select CSR from device tree
+Subject: [PATCH 6/8] net: add LiteEth driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-barebox timer-riscv driver supports one of user counters:
+LiteEth provides a small footprint and configurable Ethernet core.
 
-  * 'cycle', counter for RDCYCLE instruction (CSR 0xc00);
-  * 'time', timer for RDTIME instruction (CSR 0xc01).
+LiteEth is part of LiteX libraries whose aims are to lower entry level of
+complex FPGA cores by providing simple, elegant and efficient implementations
+of components used in today's SoC such as Ethernet, SATA, PCIe, SDRAM Controller...
 
-At the moment in M-mode timer-riscv uses the 'cycle' counter,
-and in S-mode timer-riscv uses the 'time' timer.
+Using Migen to describe the HDL allows the core to be highly and easily configurable.
 
-Alas picorv32 CPU core supports only the 'cycle' counter.
-VexRiscV CPU core in M-mode supports only the 'time' timer.
+LiteEth can be used as LiteX library or can be integrated with your standard
+design flow by generating the verilog rtl that you will use as a standard core.
 
-This patch makes it possible to use the 'time' timer
-for VexRiscV CPU in M-mode.
-
-See also http://lists.infradead.org/pipermail/barebox/2021-May/036067.html
+See https://github.com/enjoy-digital/liteeth for details.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Marek Czerski <m.czerski@ap-tech.pl>
 ---
- arch/riscv/dts/erizo.dtsi         |  2 ++
- drivers/clocksource/timer-riscv.c | 24 ++++++++++++------------
- 2 files changed, 14 insertions(+), 12 deletions(-)
+ drivers/net/Kconfig   |   8 +
+ drivers/net/Makefile  |   1 +
+ drivers/net/liteeth.c | 376 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 385 insertions(+)
 
-diff --git a/arch/riscv/dts/erizo.dtsi b/arch/riscv/dts/erizo.dtsi
-index 228711bd69..4eb92ae6f1 100644
---- a/arch/riscv/dts/erizo.dtsi
-+++ b/arch/riscv/dts/erizo.dtsi
-@@ -22,6 +22,8 @@
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 802169a86e..781c7e69db 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -285,6 +285,14 @@ config TSE_USE_DEDICATED_DESC_MEM
+ 	  reserved with a malloc but directly mapped to the memory
+ 	  address (defined in config.h)
  
- 		timebase-frequency = <24000000>;
- 
-+		barebox,csr-cycle;
++config DRIVER_NET_LITEETH
++	bool "LiteX ethernet driver"
++	select PHYLIB
++	select MDIO_BITBANG
++	help
++	  This option enables support for the LiteX LiteEth
++	  ethernet IP core.
 +
- 		cpu@0 {
- 			device_type = "cpu";
- 			compatible = "cliffordwolf,picorv32", "riscv";
-diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
-index 5a517fe6b4..96637f988a 100644
---- a/drivers/clocksource/timer-riscv.c
-+++ b/drivers/clocksource/timer-riscv.c
-@@ -12,9 +12,8 @@
- #include <clock.h>
- #include <asm/timer.h>
- #include <asm/csr.h>
--#include <asm/system.h>
+ source "drivers/net/phy/Kconfig"
+ source "drivers/net/usb/Kconfig"
  
--static u64 notrace riscv_timer_get_count_sbi(void)
-+static u64 notrace riscv_timer_get_count_time(void)
- {
- 	__maybe_unused u32 hi, lo;
- 
-@@ -29,7 +28,7 @@ static u64 notrace riscv_timer_get_count_sbi(void)
- 	return ((u64)hi << 32) | lo;
- }
- 
--static u64 notrace riscv_timer_get_count_rdcycle(void)
-+static u64 notrace riscv_timer_get_count_cycle(void)
- {
- 	__maybe_unused u32 hi, lo;
- 
-@@ -44,24 +43,25 @@ static u64 notrace riscv_timer_get_count_rdcycle(void)
- 	return ((u64)hi << 32) | lo;
- }
- 
--static u64 notrace riscv_timer_get_count(void)
--{
--	if (riscv_mode() == RISCV_S_MODE)
--		return riscv_timer_get_count_sbi();
--	else
--		return riscv_timer_get_count_rdcycle();
--}
--
- static struct clocksource riscv_clocksource = {
--	.read		= riscv_timer_get_count,
- 	.mask		= CLOCKSOURCE_MASK(64),
- 	.priority	= 100,
- };
- 
- static int riscv_timer_init(struct device_d* dev)
- {
-+	struct device_node *cpu;
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index fb3e3bdee4..466c910b3e 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -38,3 +38,4 @@ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
+ obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
+ obj-$(CONFIG_DRIVER_NET_EFI_SNP)	+= efi-snp.o
+ obj-$(CONFIG_DRIVER_NET_AG71XX)		+= ag71xx.o
++obj-$(CONFIG_DRIVER_NET_LITEETH)	+= liteeth.o
+diff --git a/drivers/net/liteeth.c b/drivers/net/liteeth.c
+new file mode 100644
+index 0000000000..137cb854c5
+--- /dev/null
++++ b/drivers/net/liteeth.c
+@@ -0,0 +1,376 @@
++/*
++ * LiteX Liteeth Ethernet
++ *
++ * Copyright 2017 Joel Stanley <joel@jms.id.au>
++ *
++ * Ported to barebox from linux kernel
++ *   Copyright (C) 2019-2021 Antony Pavlov <antonynpavlov@gmail.com>
++ *   Copyright (C) 2021 Marek Czerski <m.czerski@ap-tech.pl>
++ *
++ */
 +
- 	dev_dbg(dev, "running at %lu Hz\n", riscv_timebase);
- 
-+	cpu = of_find_node_by_path("/cpus");
++#include <common.h>
++#include <io.h>
++#include <linux/iopoll.h>
++#include <malloc.h>
++#include <net.h>
++#include <init.h>
++#include <of_net.h>
++#include <linux/phy.h>
++#include <linux/mdio-bitbang.h>
 +
-+	if (of_property_read_bool(cpu, "barebox,csr-cycle")) {
-+		riscv_clocksource.read = riscv_timer_get_count_cycle;
-+	} else {
-+		riscv_clocksource.read = riscv_timer_get_count_time;
++#define DRV_NAME	"liteeth"
++
++#define LITEETH_WRITER_SLOT		0x00
++#define LITEETH_WRITER_LENGTH		0x04
++#define LITEETH_WRITER_ERRORS		0x08
++#define LITEETH_WRITER_EV_STATUS	0x0c
++#define LITEETH_WRITER_EV_PENDING	0x10
++#define LITEETH_WRITER_EV_ENABLE	0x14
++#define LITEETH_READER_START		0x18
++#define LITEETH_READER_READY		0x1c
++#define LITEETH_READER_LEVEL		0x20
++#define LITEETH_READER_SLOT		0x24
++#define LITEETH_READER_LENGTH		0x28
++#define LITEETH_READER_EV_STATUS	0x2c
++#define LITEETH_READER_EV_PENDING	0x30
++#define LITEETH_READER_EV_ENABLE	0x34
++#define LITEETH_PREAMBLE_CRC		0x38
++#define LITEETH_PREAMBLE_ERRORS		0x3c
++#define LITEETH_CRC_ERRORS		0x40
++
++#define LITEETH_PHY_CRG_RESET		0x00
++#define LITEETH_MDIO_W			0x04
++#define  MDIO_W_CLK			BIT(0)
++#define  MDIO_W_OE			BIT(1)
++#define  MDIO_W_DO			BIT(2)
++
++#define LITEETH_MDIO_R			0x08
++#define  MDIO_R_DI			BIT(0)
++
++#define LITEETH_BUFFER_SIZE		0x800
++#define MAX_PKT_SIZE			LITEETH_BUFFER_SIZE
++
++struct liteeth {
++	struct device_d *dev;
++	struct eth_device edev;
++	void __iomem *base;
++	void __iomem *mdio_base;
++	struct mii_bus *mii_bus;
++	struct mdiobb_ctrl mdiobb;
++
++	/* Link management */
++	int cur_duplex;
++	int cur_speed;
++
++	/* Tx */
++	int tx_slot;
++	int num_tx_slots;
++	void __iomem *tx_base;
++
++	/* Rx */
++	int rx_slot;
++	int num_rx_slots;
++	void __iomem *rx_base;
++};
++
++static inline void litex_write8(void __iomem *addr, u8 val)
++{
++	writeb(val, addr);
++}
++
++static inline void litex_write16(void __iomem *addr, u16 val)
++{
++	writew(val, addr);
++}
++
++static inline u8 litex_read8(void __iomem *addr)
++{
++	return readb(addr);
++}
++
++static inline u32 litex_read32(void __iomem *addr)
++{
++	return readl(addr);
++}
++
++static void liteeth_mdio_w_modify(struct liteeth *priv, u8 clear, u8 set)
++{
++	void __iomem *mdio_w = priv->mdio_base + LITEETH_MDIO_W;
++
++	litex_write8(mdio_w, (litex_read8(mdio_w) & ~clear) | set);
++}
++
++static void liteeth_mdio_ctrl(struct mdiobb_ctrl *ctrl, u8 mask, int set)
++{
++	struct liteeth *priv = container_of(ctrl, struct liteeth, mdiobb);
++
++	liteeth_mdio_w_modify(priv, mask, set ? mask : 0);
++}
++
++/* MDC pin control */
++static void liteeth_set_mdc(struct mdiobb_ctrl *ctrl, int level)
++{
++	liteeth_mdio_ctrl(ctrl, MDIO_W_CLK, level);
++}
++
++/* Data I/O pin control */
++static void liteeth_set_mdio_dir(struct mdiobb_ctrl *ctrl, int output)
++{
++	liteeth_mdio_ctrl(ctrl, MDIO_W_OE, output);
++}
++
++/* Set data bit */
++static void liteeth_set_mdio_data(struct mdiobb_ctrl *ctrl, int value)
++{
++	liteeth_mdio_ctrl(ctrl, MDIO_W_DO, value);
++}
++
++/* Get data bit */
++static int liteeth_get_mdio_data(struct mdiobb_ctrl *ctrl)
++{
++	struct liteeth *priv = container_of(ctrl, struct liteeth, mdiobb);
++
++	return (litex_read8(priv->mdio_base + LITEETH_MDIO_R) & MDIO_R_DI) != 0;
++}
++
++/* MDIO bus control struct */
++static struct mdiobb_ops bb_ops = {
++	.set_mdc = liteeth_set_mdc,
++	.set_mdio_dir = liteeth_set_mdio_dir,
++	.set_mdio_data = liteeth_set_mdio_data,
++	.get_mdio_data = liteeth_get_mdio_data,
++};
++
++static int liteeth_init_dev(struct eth_device *edev)
++{
++	return 0;
++}
++
++static int liteeth_eth_open(struct eth_device *edev)
++{
++	struct liteeth *priv = edev->priv;
++	int ret;
++
++	/* Disable events */
++	litex_write8(priv->base + LITEETH_WRITER_EV_ENABLE, 0);
++	litex_write8(priv->base + LITEETH_READER_EV_ENABLE, 0);
++
++	/* Clear pending events? */
++	litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, 1);
++	litex_write8(priv->base + LITEETH_READER_EV_PENDING, 1);
++
++	ret = phy_device_connect(edev, priv->mii_bus, -1, NULL, 0, -1);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int liteeth_eth_send(struct eth_device *edev, void *packet,
++				int packet_length)
++{
++	struct liteeth *priv = edev->priv;
++	void *txbuffer;
++	int ret;
++	u8 val;
++	u8 reg;
++
++	reg = litex_read8(priv->base + LITEETH_READER_EV_PENDING);
++	if (reg) {
++		litex_write8(priv->base + LITEETH_READER_EV_PENDING, reg);
 +	}
 +
- 	riscv_clocksource.mult = clocksource_hz2mult(riscv_timebase, riscv_clocksource.shift);
- 
- 	return init_clock(&riscv_clocksource);
++	/* Reject oversize packets */
++	if (unlikely(packet_length > MAX_PKT_SIZE)) {
++		dev_err(priv->dev, "tx packet too big\n");
++		goto drop;
++	}
++
++	txbuffer = priv->tx_base + priv->tx_slot * LITEETH_BUFFER_SIZE;
++	memcpy(txbuffer, packet, packet_length);
++	litex_write8(priv->base + LITEETH_READER_SLOT, priv->tx_slot);
++	litex_write16(priv->base + LITEETH_READER_LENGTH, packet_length);
++
++	ret = readb_poll_timeout(priv->base + LITEETH_READER_READY,
++			val, val, 1000);
++	if (ret == -ETIMEDOUT) {
++		dev_err(priv->dev, "LITEETH_READER_READY timed out\n");
++		goto drop;
++	}
++
++	litex_write8(priv->base + LITEETH_READER_START, 1);
++
++	priv->tx_slot = (priv->tx_slot + 1) % priv->num_tx_slots;
++
++drop:
++	return 0;
++}
++
++static int liteeth_eth_rx(struct eth_device *edev)
++{
++	struct liteeth *priv = edev->priv;
++	u8 rx_slot;
++	int len = 0;
++	u8 reg;
++
++	reg = litex_read8(priv->base + LITEETH_WRITER_EV_PENDING);
++	if (!reg) {
++		goto done;
++	}
++
++	len = litex_read32(priv->base + LITEETH_WRITER_LENGTH);
++	if (len == 0 || len > 2048) {
++		len = 0;
++		dev_err(priv->dev, "%s: invalid len %d\n", __func__, len);
++		litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, reg);
++		goto done;
++	}
++
++	rx_slot = litex_read8(priv->base + LITEETH_WRITER_SLOT);
++
++	memcpy(NetRxPackets[0], priv->rx_base + rx_slot * LITEETH_BUFFER_SIZE, len);
++
++	net_receive(edev, NetRxPackets[0], len);
++
++	litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, reg);
++
++done:
++	return len;
++}
++
++static void liteeth_eth_halt(struct eth_device *edev)
++{
++	struct liteeth *priv = edev->priv;
++
++	litex_write8(priv->base + LITEETH_WRITER_EV_ENABLE, 0);
++	litex_write8(priv->base + LITEETH_READER_EV_ENABLE, 0);
++}
++
++static void liteeth_reset_hw(struct liteeth *priv)
++{
++	/* Reset, twice */
++	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 0);
++	udelay(10);
++	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 1);
++	udelay(10);
++	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 0);
++	udelay(10);
++}
++
++static int liteeth_get_ethaddr(struct eth_device *edev, unsigned char *m)
++{
++	return 0;
++}
++
++static int liteeth_set_ethaddr(struct eth_device *edev,
++					const unsigned char *mac_addr)
++{
++	return 0;
++}
++
++static int liteeth_probe(struct device_d *dev)
++{
++	struct device_node *np = dev->device_node;
++	struct eth_device *edev;
++	void __iomem *buf_base;
++	struct liteeth *priv;
++	int err;
++
++	priv = xzalloc(sizeof(struct liteeth));
++	edev = &priv->edev;
++	edev->priv = priv;
++	priv->dev = dev;
++
++	priv->base = dev_request_mem_region(dev, 0);
++	if (IS_ERR(priv->base)) {
++		err = PTR_ERR(priv->base);
++		goto err;
++	}
++
++	priv->mdio_base = dev_request_mem_region(dev, 1);
++	if (IS_ERR(priv->mdio_base)) {
++		err = PTR_ERR(priv->mdio_base);
++		goto err;
++	}
++
++	buf_base = dev_request_mem_region(dev, 2);
++	if (IS_ERR(buf_base)) {
++		err = PTR_ERR(buf_base);
++		goto err;
++	}
++
++	err = of_property_read_u32(np, "rx-fifo-depth",
++			&priv->num_rx_slots);
++	if (err) {
++		dev_err(dev, "unable to get rx-fifo-depth\n");
++		goto err;
++	}
++
++	err = of_property_read_u32(np, "tx-fifo-depth",
++			&priv->num_tx_slots);
++	if (err) {
++		dev_err(dev, "unable to get tx-fifo-depth\n");
++		goto err;
++	}
++
++	/* Rx slots */
++	priv->rx_base = buf_base;
++	priv->rx_slot = 0;
++
++	/* Tx slots come after Rx slots */
++	priv->tx_base = buf_base + priv->num_rx_slots * LITEETH_BUFFER_SIZE;
++	priv->tx_slot = 0;
++
++	edev->init = liteeth_init_dev;
++	edev->open = liteeth_eth_open;
++	edev->send = liteeth_eth_send;
++	edev->recv = liteeth_eth_rx;
++	edev->get_ethaddr = liteeth_get_ethaddr;
++	edev->set_ethaddr = liteeth_set_ethaddr;
++	edev->halt = liteeth_eth_halt;
++	edev->parent = dev;
++
++	priv->mdiobb.ops = &bb_ops;
++
++	priv->mii_bus = alloc_mdio_bitbang(&priv->mdiobb);
++	priv->mii_bus->parent = dev;
++
++	liteeth_reset_hw(priv);
++
++	err = eth_register(edev);
++	if (err) {
++		dev_err(dev, "failed to register edev\n");
++		goto err;
++	}
++
++	err = mdiobus_register(priv->mii_bus);
++	if (err) {
++		dev_err(dev, "failed to register mii_bus\n");
++		goto err;
++	}
++
++	dev_info(dev, DRV_NAME " driver registered\n");
++
++	return 0;
++
++err:
++	return err;
++}
++
++static const struct of_device_id liteeth_dt_ids[] = {
++	{
++		.compatible = "litex,liteeth"
++	}, {
++	}
++};
++
++static struct driver_d liteeth_driver = {
++	.name = DRV_NAME,
++	.probe = liteeth_probe,
++	.of_compatible = DRV_OF_COMPAT(liteeth_dt_ids),
++};
++device_platform_driver(liteeth_driver);
++
++MODULE_AUTHOR("Joel Stanley <joel@jms.id.au>");
++MODULE_LICENSE("GPL");
 -- 
 2.32.0
 
