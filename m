@@ -1,79 +1,79 @@
-Delivery-date: Tue, 17 Aug 2021 12:07:28 +0200
+Delivery-date: Tue, 17 Aug 2021 12:07:38 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mFw0F-0005ip-W9
-	for lore@lore.pengutronix.de; Tue, 17 Aug 2021 12:07:28 +0200
+	id 1mFw0Q-0005jK-F3
+	for lore@lore.pengutronix.de; Tue, 17 Aug 2021 12:07:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mFw0A-0001zN-EP
-	for lore@pengutronix.de; Tue, 17 Aug 2021 12:07:27 +0200
+	id 1mFw0L-00022D-M2
+	for lore@pengutronix.de; Tue, 17 Aug 2021 12:07:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=sYQKDPlI9O/K76Cqhm+5bIROqfiKLrlw/yQmSr3nkm4=; b=Ztty5W78siWNp+
-	jIgteSDELmdQvpOCznpg05h8xCCY3Ep3n27kdNBINxWGMZ47EJ6Y9kDPC5jTlUnUR4uuduCfuw8q3
-	8ZZvJnqqlXCiXJIIJ5XkkWQRq53Pbs1WGQn/oWNTjo1zHgbBlBIooG9VI7G+LJ9WG2zLHVimFe3/8
-	kU+br0oqiJ5rlxrj3UhCUN74eUSLuVomsCwS7qdCCfrMBrNEzeHr5bfYrT//sp1JHDbPZ2g7/illr
-	lMxEpZnJNhFZ3DGbCzzPi5mPPP5ASwEX/w5FginiWkbeCSVsd31V/3IRHNhRCuRTvFZQxs0uD3XXI
-	7/XO7KyRUav5AIO2nMfA==;
+	List-Owner; bh=jLJqDG/4lrEmdo+EdwGylBwHrNVVpK4gRGRNsJvm+yg=; b=fQ8RZkxghTk2eo
+	zkBbU6Xb15lz1SuhPHt5N/RFpdQVCoIhpDTMGfLj0+riVhYAHT0Lw2677PoF+S+UvEsQLtSbfjZ2t
+	bVjqsF2/49LRLVLuXfqvv7/e8OuFy3raexQJf7WwTKoJyJWKyUlYfwiL5Vm5vsFxTPRKM6Q97ThEp
+	6Qd6LPy+ICwq7iZFDSP8ALB/kpUUWbezmn/7pxQHgFIlFWBYnzahdvpBvDmsRhdYZAr4I1TAb65yr
+	x+C4KqTzf/SrA4UcU/8eKvAvn7OH/iT4iE0y85f0icdBXYUcgw3Cc0EWhUC07vzDsaC6wlM0rUbZG
+	lbJSAtDEUjV4JTlj+uBw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mFvyJ-001zD5-RK; Tue, 17 Aug 2021 10:05:28 +0000
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+	id 1mFvya-001zH4-0a; Tue, 17 Aug 2021 10:05:45 +0000
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mFvxl-001yzq-Vm
+ id 1mFvxn-001z0X-9C
  for barebox@lists.infradead.org; Tue, 17 Aug 2021 10:04:58 +0000
-Received: by mail-lf1-x12b.google.com with SMTP id r9so30880700lfn.3
- for <barebox@lists.infradead.org>; Tue, 17 Aug 2021 03:04:53 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id y6so15267321lje.2
+ for <barebox@lists.infradead.org>; Tue, 17 Aug 2021 03:04:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=uMECzGU3kv0hXykM2InkBjlKq7JGmwUWZWbdQD4SpxI=;
- b=ADVIOVF8o8cT/fBwzJ9t+aUrPoFHLEoyBvbmo2vXKRtTydZ2gJOOvFBnZwDSBUjgOa
- GA7OFlSK9IJHLFqQVTV5F1vnd5f1UcFprTyKEQM8/U67xh4xyoieB9a15H+Jd+cJOSDc
- y8KO0XadHoPQfw5SqOHaHdd+E7RgT6eQ42/XcHze3IRKVBi73HYRBPF9GTSg3QQ6+8rM
- T4Z7Gua8esTbWTkRzou/g8IXjw/GxttNQv5pWbOSvwAMLZRohkurgd9EclSsb41AJuec
- 067cCG44/jF1JxyY7MyQTiGVk9UARoggn3Q3RUUT7PazH2hbhp64yzuD9i+yRnN0Fjo+
- N9jA==
+ bh=gSVmMv/dDq4T0EsOLwvMowJ7oiBNyQrjDtWY3jVnLfg=;
+ b=Wth04R+5YLK2EYE05RCzQ1F0Bg68LkSNVA5HFXNa0WyTVGm6kqujdgID2I8dGEYFz1
+ aGlfKTIS9KTaHuKJ7dFEjK93dAG/J1vfZhtUQ5qIg5CDDyeWFZDtn11MyoQo3SMqfkX+
+ DW7ztJzOOy9jzTCQmy050V9tEZf9M1hYJxvI5THHdf3o7Mv/wxMeyzX5ymgXf36XLLtV
+ aKNmm3dlj9ttdHMhius2IBMtwfvtQe0pWGXR4LXO9tcSawCDCZcKIPWRjtGIO6JqB5db
+ 5CmCousrGlL99J9o/kZs3+swGzOtV4LvevObqdAc9BUuhCvIk8SMpSQbBlRm8bqCqRH9
+ aOzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=uMECzGU3kv0hXykM2InkBjlKq7JGmwUWZWbdQD4SpxI=;
- b=h0RyI9qh412Ps+NcaEO+p1Dq5vxpuWI5yNzgTOE5PNaJ0+WtQwL+P+96N/6osNj67M
- CreO17uIp+kbeOkLBcUJJUTExOyJKXqQzkPqZC5zv1GyENySHHDYcyEJBjlAgtLIlx6Z
- Ujh4RT3GDpcOkV42d/2oWe5C6J7VOqLZlaKOpqunoaihNPEoFvz0dqX/zIOIXkhZVBIa
- wThhkpJbmTaPRx8Xcq3jrcB476iS4bRnOP2TnnFB88L2NnuLGnGTxpXbvsFlGr+uo3bg
- 77tTLAAWOJMKCXSg7nev0QRAAQoIJDDoPbka9gMww8fx8C8sBLq/26M8qxRuBi4xNK56
- s/Nw==
-X-Gm-Message-State: AOAM533WpiFQCPIY+RptvTMPPqaU/sXLYDVHpWuiXOUDKzKHrII+VvCU
- GwqOluhdpbB4l1kAh+Cggo/sH8G2m6Q=
-X-Google-Smtp-Source: ABdhPJyO2ZNtKrG7n1PVye7czlqeFCGNve70ip99KTv3hGLDSbw6DLy9oAJwgd3CPc3zWUnPyzcgzA==
-X-Received: by 2002:a05:6512:3c9a:: with SMTP id
- h26mr1782398lfv.300.1629194692371; 
- Tue, 17 Aug 2021 03:04:52 -0700 (PDT)
+ bh=gSVmMv/dDq4T0EsOLwvMowJ7oiBNyQrjDtWY3jVnLfg=;
+ b=EOu6Ar81PAjM5oadWtpO4gxbPUONBnSscN3fu/SXN85GJLSaP0/zsb7zB+dQCh6194
+ 2DJkPcdKOeWKFuKqrqyOcbYiHywiJ+w9q34uX+3uMN3fa6nHsk/9kJCS7bCKRG5koFHb
+ qct9Tx22WP++R4mZocb+0fxOPb7rv+0DXhtBgHiDVunpxJMNkV8AS9qRSLrmBcXPDx0e
+ cCGAMQK+2Dzzm4whaoT5Exy0HS/gOkJSDVc1aEwuneDBdQvSu3bKa1Oi7ODG9/9UHKSb
+ XcS/v42QECpkpNZIOloVmi1JLy1Ne9eB/tEuMgBHn06HRx011Msae8TYPoxn92z7CG6h
+ bQTg==
+X-Gm-Message-State: AOAM532pmdmrupHlxRynfLEvMGnbG3PDkW3U7KWstc8t0VQOXE2vzUgl
+ kjsMXO5G9a+R/xu2neZUNQozH3+NjPk=
+X-Google-Smtp-Source: ABdhPJzNfO56eWbebsBBhopomuQynX+xrMV9V8Whc5Yp/AMJfiWplak310OJ0qYlkq75vxQhvTPi2w==
+X-Received: by 2002:a05:651c:883:: with SMTP id
+ d3mr2438303ljq.17.1629194693027; 
+ Tue, 17 Aug 2021 03:04:53 -0700 (PDT)
 Received: from localhost.localdomain (109-252-203-80.dynamic.spd-mgts.ru.
  [109.252.203.80])
- by smtp.gmail.com with ESMTPSA id e20sm179795ljn.13.2021.08.17.03.04.51
+ by smtp.gmail.com with ESMTPSA id e20sm179795ljn.13.2021.08.17.03.04.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 17 Aug 2021 03:04:52 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 17 Aug 2021 13:04:33 +0300
-Message-Id: <20210817100435.114756-7-antonynpavlov@gmail.com>
+Date: Tue, 17 Aug 2021 13:04:34 +0300
+Message-Id: <20210817100435.114756-8-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210817100435.114756-1-antonynpavlov@gmail.com>
 References: <20210817100435.114756-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210817_030454_144780_E5F543FD 
-X-CRM114-Status: GOOD (  22.49  )
+X-CRM114-CacheID: sfid-20210817_030455_391686_1C285A71 
+X-CRM114-Status: GOOD (  21.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,8 +85,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Marek Czerski <m.czerski@ap-tech.pl>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -100,441 +99,435 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 6/8] net: add LiteEth driver
+Subject: [PATCH 7/8] RISC-V: add LiteX SoC and linux-on-litex-vexriscv support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-LiteEth provides a small footprint and configurable Ethernet core.
+LiteX is a Migen-based System on Chip, supporting softcore
+VexRiscv CPU, a 32-bits Linux Capable RISC-V CPU.
 
-LiteEth is part of LiteX libraries whose aims are to lower entry level of
-complex FPGA cores by providing simple, elegant and efficient implementations
-of components used in today's SoC such as Ethernet, SATA, PCIe, SDRAM Controller...
-
-Using Migen to describe the HDL allows the core to be highly and easily configurable.
-
-LiteEth can be used as LiteX library or can be integrated with your standard
-design flow by generating the verilog rtl that you will use as a standard core.
-
-See https://github.com/enjoy-digital/liteeth for details.
+See https://github.com/enjoy-digital/litex and
+https://github.com/litex-hub/linux-on-litex-vexriscv
+for details.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Signed-off-by: Marek Czerski <m.czerski@ap-tech.pl>
 ---
- drivers/net/Kconfig   |   8 +
- drivers/net/Makefile  |   1 +
- drivers/net/liteeth.c | 376 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 385 insertions(+)
+ arch/riscv/Kconfig.socs                  |  14 +++
+ arch/riscv/boards/Makefile               |   1 +
+ arch/riscv/boards/litex-linux/Makefile   |   3 +
+ arch/riscv/boards/litex-linux/lowlevel.c |  22 ++++
+ arch/riscv/dts/Makefile                  |   1 +
+ arch/riscv/dts/litex-linux.dts           |  92 +++++++++++++++++
+ arch/riscv/dts/litex_soc_linux.dtsi      |  49 +++++++++
+ arch/riscv/include/asm/debug_ll.h        |   3 +
+ arch/riscv/include/asm/debug_ll_litex.h  | 123 +++++++++++++++++++++++
+ common/Kconfig                           |   4 +
+ images/Makefile.riscv                    |   4 +
+ 11 files changed, 316 insertions(+)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 802169a86e..781c7e69db 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -285,6 +285,14 @@ config TSE_USE_DEDICATED_DESC_MEM
- 	  reserved with a malloc but directly mapped to the memory
- 	  address (defined in config.h)
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index 221ea133d4..5c281918d5 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -95,4 +95,18 @@ config SIFIVE_L2
+ 	bool "SiFive L2 cache controller"
+ 	depends on CPU_SIFIVE
  
-+config DRIVER_NET_LITEETH
-+	bool "LiteX ethernet driver"
-+	select PHYLIB
-+	select MDIO_BITBANG
-+	help
-+	  This option enables support for the LiteX LiteEth
-+	  ethernet IP core.
++config SOC_LITEX
++	bool "LiteX SoCs"
++	depends on ARCH_RV32I
++	select HAS_ASM_DEBUG_LL
++	select HAS_NMON
++	select USE_COMPRESSED_DTB
++	select RISCV_TIMER
 +
- source "drivers/net/phy/Kconfig"
- source "drivers/net/usb/Kconfig"
- 
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index fb3e3bdee4..466c910b3e 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -38,3 +38,4 @@ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
- obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
- obj-$(CONFIG_DRIVER_NET_EFI_SNP)	+= efi-snp.o
- obj-$(CONFIG_DRIVER_NET_AG71XX)		+= ag71xx.o
-+obj-$(CONFIG_DRIVER_NET_LITEETH)	+= liteeth.o
-diff --git a/drivers/net/liteeth.c b/drivers/net/liteeth.c
++config BOARD_LITEX_LINUX
++	bool "litex linux board"
++	depends on SOC_LITEX
++	select RISCV_M_MODE
++	def_bool y
++
+ endmenu
+diff --git a/arch/riscv/boards/Makefile b/arch/riscv/boards/Makefile
+index cb28a25d8b..8d5d9d4fc6 100644
+--- a/arch/riscv/boards/Makefile
++++ b/arch/riscv/boards/Makefile
+@@ -2,3 +2,4 @@
+ obj-$(CONFIG_BOARD_ERIZO_GENERIC)	+= erizo/
+ obj-$(CONFIG_BOARD_HIFIVE)		+= hifive/
+ obj-$(CONFIG_BOARD_BEAGLEV)		+= beaglev/
++obj-$(CONFIG_BOARD_LITEX_LINUX)		+= litex-linux/
+diff --git a/arch/riscv/boards/litex-linux/Makefile b/arch/riscv/boards/litex-linux/Makefile
 new file mode 100644
-index 0000000000..137cb854c5
+index 0000000000..3d217ffe0b
 --- /dev/null
-+++ b/drivers/net/liteeth.c
-@@ -0,0 +1,376 @@
++++ b/arch/riscv/boards/litex-linux/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
++
++pbl-y += lowlevel.o
+diff --git a/arch/riscv/boards/litex-linux/lowlevel.c b/arch/riscv/boards/litex-linux/lowlevel.c
+new file mode 100644
+index 0000000000..da23ef5633
+--- /dev/null
++++ b/arch/riscv/boards/litex-linux/lowlevel.c
+@@ -0,0 +1,22 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <common.h>
++#include <asm/barebox-riscv.h>
++#include <debug_ll.h>
++#include <asm/riscv_nmon.h>
++
++ENTRY_FUNCTION(start_litex_linux, a0, a1, a2)
++{
++	extern char __dtb_z_litex_linux_start[];
++	void *fdt;
++
++	barebox_nmon_entry();
++
++	putc_ll('>');
++
++	/* On POR, we are running from read-only memory here. */
++
++	fdt = __dtb_z_litex_linux_start + get_runtime_offset();
++
++	barebox_riscv_machine_entry(0x40000000, SZ_256M, fdt);
++}
+diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
+index 4a15423b7f..17d7d249e4 100644
+--- a/arch/riscv/dts/Makefile
++++ b/arch/riscv/dts/Makefile
+@@ -8,5 +8,6 @@ pbl-$(CONFIG_BOARD_ERIZO_GENERIC) += erizo-generic.dtb.o
+ pbl-$(CONFIG_BOARD_HIFIVE) += hifive-unmatched-a00.dtb.o \
+                               hifive-unleashed-a00.dtb.o
+ pbl-$(CONFIG_BOARD_BEAGLEV) += jh7100-beaglev-starlight.dtb.o
++pbl-$(CONFIG_BOARD_LITEX_LINUX) += litex-linux.dtb.o
+ 
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
+diff --git a/arch/riscv/dts/litex-linux.dts b/arch/riscv/dts/litex-linux.dts
+new file mode 100644
+index 0000000000..d21fa57e30
+--- /dev/null
++++ b/arch/riscv/dts/litex-linux.dts
+@@ -0,0 +1,92 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include "litex_soc_linux.dtsi"
++
++#include <dt-bindings/gpio/gpio.h>
++
++/ {
++	model = "LiteX VexRiscV-SoC-Linux";
++	compatible = "litex,vexriscv-soc-linux";
++
++	aliases {
++		rom = &rom;
++		sram = &sram;
++	};
++
++	/* ARTY board */
++	rom: rom@00000000 {
++		compatible = "mmio-sram";
++		reg = <0x00000000 0x00008000>;
++		read-only;
++	};
++
++	sram: sram@20000000 {
++		compatible = "mmio-sram";
++		reg = <0x20000000 0x00004000>;
++	};
++
++	main_ram: memory@40000000 {
++		device_type = "memory";
++		reg = <0x40000000 0x10000000>;
++	};
++};
++
++&uart0 {
++	status = "okay";
++};
++
++&mac0 {
++	status = "okay";
++};
++
++&spi0 {
++	status = "okay";
++
++	spiflash: w25q128@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "winbond,w25q128", "jedec,spi-nor";
++		spi-max-frequency = <104000000>;
++		reg = <0>;
++	};
++};
++
++/ {
++	ledsgpio: gpio@f000a800 {
++		compatible = "ti,74175";
++		reg = <0xf000a800 0x4>;
++		gpio-controller;
++		#gpio-cells = <2>;
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		ld0 {
++			label = "arty:green:ld0";
++			gpios = <&ledsgpio 0 GPIO_ACTIVE_HIGH>;
++		};
++
++		ld1 {
++			label = "arty:green:ld1";
++			gpios = <&ledsgpio 1 GPIO_ACTIVE_HIGH>;
++		};
++
++		ld2 {
++			label = "arty:green:ld2";
++			gpios = <&ledsgpio 2 GPIO_ACTIVE_HIGH>;
++		};
++
++		ld3 {
++			label = "arty:green:ld3";
++			gpios = <&ledsgpio 3 GPIO_ACTIVE_HIGH>;
++		};
++	};
++
++	swgpio: gpio@f0006000 {
++		compatible = "ti,74125";
++		reg = <0xf0006000 0x4>;
++		gpio-controller;
++		#gpio-cells = <2>;
++	};
++};
+diff --git a/arch/riscv/dts/litex_soc_linux.dtsi b/arch/riscv/dts/litex_soc_linux.dtsi
+new file mode 100644
+index 0000000000..94a0ba29da
+--- /dev/null
++++ b/arch/riscv/dts/litex_soc_linux.dtsi
+@@ -0,0 +1,49 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/dts-v1/;
++
++/ {
++	compatible = "litex,vexriscv-soc-linux";
++
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		timebase-frequency = <100000000>; // 100 MHz
++
++		cpu@0 {
++			device_type = "cpu";
++			compatible = "spinalhdl,vexriscv", "riscv";
++			reg = <0>;
++		};
++	};
++
++	uart0: serial@f0001000 {
++		compatible = "litex,uart";
++		reg = <0xf0001000 0x18>;
++		status = "disabled";
++	};
++
++	mac0: mac@f0006800 {
++		compatible = "litex,liteeth";
++		reg = <0xf0006800 0x7c /* base */
++			0xf0007000 0x0a /* mdio_base */
++			0xb0000000 0x2000>; /* buf_base */
++		tx-fifo-depth = <2>;
++		rx-fifo-depth = <2>;
++		status = "disabled";
++	};
++
++	spi0: spi@f000b800 {
++		compatible = "litex,spiflash";
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		reg = <0xf000b800 0x100>;
++		status = "disabled";
++	};
++};
+diff --git a/arch/riscv/include/asm/debug_ll.h b/arch/riscv/include/asm/debug_ll.h
+index b4caa0597a..a3b9c1c4bc 100644
+--- a/arch/riscv/include/asm/debug_ll.h
++++ b/arch/riscv/include/asm/debug_ll.h
+@@ -43,6 +43,9 @@ static inline void PUTC_LL(char ch)
+ 
+ 	writel(ch, uart0);
+ }
++#elif defined CONFIG_DEBUG_LITEX
++
++#include <asm/debug_ll_litex.h>
+ 
+ #endif
+ 
+diff --git a/arch/riscv/include/asm/debug_ll_litex.h b/arch/riscv/include/asm/debug_ll_litex.h
+new file mode 100644
+index 0000000000..2fcdd9b0ec
+--- /dev/null
++++ b/arch/riscv/include/asm/debug_ll_litex.h
+@@ -0,0 +1,123 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * LiteX Liteeth Ethernet
++ * Copyright (C) 2019 Antony Pavlov <antonynpavlov@gmail.com>
 + *
-+ * Copyright 2017 Joel Stanley <joel@jms.id.au>
++ * This file is part of barebox.
 + *
-+ * Ported to barebox from linux kernel
-+ *   Copyright (C) 2019-2021 Antony Pavlov <antonynpavlov@gmail.com>
-+ *   Copyright (C) 2021 Marek Czerski <m.czerski@ap-tech.pl>
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + *
 + */
 +
-+#include <common.h>
-+#include <io.h>
-+#include <linux/iopoll.h>
-+#include <malloc.h>
-+#include <net.h>
-+#include <init.h>
-+#include <of_net.h>
-+#include <linux/phy.h>
-+#include <linux/mdio-bitbang.h>
++#ifndef __ASM_DEBUG_LL_LITEX__
++#define __ASM_DEBUG_LL_LITEX__
 +
-+#define DRV_NAME	"liteeth"
++/** @file
++ *  This File contains declaration for early output support
++ */
 +
-+#define LITEETH_WRITER_SLOT		0x00
-+#define LITEETH_WRITER_LENGTH		0x04
-+#define LITEETH_WRITER_ERRORS		0x08
-+#define LITEETH_WRITER_EV_STATUS	0x0c
-+#define LITEETH_WRITER_EV_PENDING	0x10
-+#define LITEETH_WRITER_EV_ENABLE	0x14
-+#define LITEETH_READER_START		0x18
-+#define LITEETH_READER_READY		0x1c
-+#define LITEETH_READER_LEVEL		0x20
-+#define LITEETH_READER_SLOT		0x24
-+#define LITEETH_READER_LENGTH		0x28
-+#define LITEETH_READER_EV_STATUS	0x2c
-+#define LITEETH_READER_EV_PENDING	0x30
-+#define LITEETH_READER_EV_ENABLE	0x34
-+#define LITEETH_PREAMBLE_CRC		0x38
-+#define LITEETH_PREAMBLE_ERRORS		0x3c
-+#define LITEETH_CRC_ERRORS		0x40
++#include <linux/kconfig.h>
 +
-+#define LITEETH_PHY_CRG_RESET		0x00
-+#define LITEETH_MDIO_W			0x04
-+#define  MDIO_W_CLK			BIT(0)
-+#define  MDIO_W_OE			BIT(1)
-+#define  MDIO_W_DO			BIT(2)
++#define DEBUG_LL_UART_ADDR	0xf0001000
++#define UART_RXTX	0x00
++#define UART_TXFULL	0x04
++#define UART_RXEMPTY	0x08
++#define UART_EV_PENDING	0x10
++#define  UART_EV_RX	(1 << 1)
 +
-+#define LITEETH_MDIO_R			0x08
-+#define  MDIO_R_DI			BIT(0)
 +
-+#define LITEETH_BUFFER_SIZE		0x800
-+#define MAX_PKT_SIZE			LITEETH_BUFFER_SIZE
++#ifndef __ASSEMBLY__
 +
-+struct liteeth {
-+	struct device_d *dev;
-+	struct eth_device edev;
-+	void __iomem *base;
-+	void __iomem *mdio_base;
-+	struct mii_bus *mii_bus;
-+	struct mdiobb_ctrl mdiobb;
++/*
++ * C macros
++ */
 +
-+	/* Link management */
-+	int cur_duplex;
-+	int cur_speed;
++#include <asm/io.h>
 +
-+	/* Tx */
-+	int tx_slot;
-+	int num_tx_slots;
-+	void __iomem *tx_base;
-+
-+	/* Rx */
-+	int rx_slot;
-+	int num_rx_slots;
-+	void __iomem *rx_base;
-+};
-+
-+static inline void litex_write8(void __iomem *addr, u8 val)
++static inline void PUTC_LL(char ch)
 +{
-+	writeb(val, addr);
++#ifdef CONFIG_DEBUG_LL
++	/* wait for space */
++	while (__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_TXFULL))
++		;
++
++	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_RXTX);
++#endif /* CONFIG_DEBUG_LL */
 +}
++#else /* __ASSEMBLY__ */
++/*
++ * Macros for use in assembly language code
++ */
 +
-+static inline void litex_write16(void __iomem *addr, u16 val)
-+{
-+	writew(val, addr);
-+}
++/*
++ * output a character in a0
++ */
++.macro	debug_ll_outc_a0
++#ifdef CONFIG_DEBUG_LL
 +
-+static inline u8 litex_read8(void __iomem *addr)
-+{
-+	return readb(addr);
-+}
++	li	t0, DEBUG_LL_UART_ADDR
 +
-+static inline u32 litex_read32(void __iomem *addr)
-+{
-+	return readl(addr);
-+}
++201:
++	lbu	t1, UART_TXFULL(t0)	/* uart tx full ? */
++	andi	t1, t1, 0xff
++	bnez	t1, 201b		/* try again */
 +
-+static void liteeth_mdio_w_modify(struct liteeth *priv, u8 clear, u8 set)
-+{
-+	void __iomem *mdio_w = priv->mdio_base + LITEETH_MDIO_W;
++	sb	a0, UART_RXTX(t0)	/* write the character */
 +
-+	litex_write8(mdio_w, (litex_read8(mdio_w) & ~clear) | set);
-+}
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+static void liteeth_mdio_ctrl(struct mdiobb_ctrl *ctrl, u8 mask, int set)
-+{
-+	struct liteeth *priv = container_of(ctrl, struct liteeth, mdiobb);
++/*
++ * output a character
++ */
++.macro	debug_ll_outc chr
++#ifdef CONFIG_DEBUG_LL
++	li	a0, \chr
++	debug_ll_outc_a0
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+	liteeth_mdio_w_modify(priv, mask, set ? mask : 0);
-+}
++/*
++ * check character in input buffer
++ * return value:
++ *  v0 = 0   no character in input buffer
++ *  v0 != 0  character in input buffer
++ */
++.macro	debug_ll_tstc
++#ifdef CONFIG_DEBUG_LL
++	li	t0, DEBUG_LL_UART_ADDR
 +
-+/* MDC pin control */
-+static void liteeth_set_mdc(struct mdiobb_ctrl *ctrl, int level)
-+{
-+	liteeth_mdio_ctrl(ctrl, MDIO_W_CLK, level);
-+}
++	/* get line status and check for data present */
++	lbu	s0, UART_RXEMPTY(t0)
++	bnez    s0, 243f
++	li	s0, 1
++	j	244f
++243:	li	s0, 0
++244:	nop
++#endif /* CONFIG_DEBUG_LL */
++.endm
 +
-+/* Data I/O pin control */
-+static void liteeth_set_mdio_dir(struct mdiobb_ctrl *ctrl, int output)
-+{
-+	liteeth_mdio_ctrl(ctrl, MDIO_W_OE, output);
-+}
++/*
++ * get character to v0
++ */
++.macro	debug_ll_getc
++#ifdef CONFIG_DEBUG_LL
 +
-+/* Set data bit */
-+static void liteeth_set_mdio_data(struct mdiobb_ctrl *ctrl, int value)
-+{
-+	liteeth_mdio_ctrl(ctrl, MDIO_W_DO, value);
-+}
++204:
++	debug_ll_tstc
 +
-+/* Get data bit */
-+static int liteeth_get_mdio_data(struct mdiobb_ctrl *ctrl)
-+{
-+	struct liteeth *priv = container_of(ctrl, struct liteeth, mdiobb);
++	/* try again */
++	beqz	s0, 204b
 +
-+	return (litex_read8(priv->mdio_base + LITEETH_MDIO_R) & MDIO_R_DI) != 0;
-+}
++	/* read a character */
++	lb	s0, UART_RXTX(t0)
++	li      t1, UART_EV_RX
++	sb	t1, UART_EV_PENDING(t0)
 +
-+/* MDIO bus control struct */
-+static struct mdiobb_ops bb_ops = {
-+	.set_mdc = liteeth_set_mdc,
-+	.set_mdio_dir = liteeth_set_mdio_dir,
-+	.set_mdio_data = liteeth_set_mdio_data,
-+	.get_mdio_data = liteeth_get_mdio_data,
-+};
++#endif /* CONFIG_DEBUG_LL */
++.endm
++#endif /* __ASSEMBLY__ */
 +
-+static int liteeth_init_dev(struct eth_device *edev)
-+{
-+	return 0;
-+}
++#endif /* __ASM_DEBUG_LL_LITEX__ */
+diff --git a/common/Kconfig b/common/Kconfig
+index a9feae2ae8..cb8bd8b2bf 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1399,6 +1399,10 @@ config DEBUG_SIFIVE
+ 	bool "SiFive serial0 port"
+ 	depends on SOC_SIFIVE
+ 
++config DEBUG_LITEX
++	bool "LiteX serial port"
++	depends on SOC_LITEX
 +
-+static int liteeth_eth_open(struct eth_device *edev)
-+{
-+	struct liteeth *priv = edev->priv;
-+	int ret;
+ endchoice
+ 
+ config DEBUG_LL_NS16550
+diff --git a/images/Makefile.riscv b/images/Makefile.riscv
+index 4410765cf6..0645238c43 100644
+--- a/images/Makefile.riscv
++++ b/images/Makefile.riscv
+@@ -19,3 +19,7 @@ image-$(CONFIG_BOARD_HIFIVE) += barebox-hifive-unmatched.img barebox-hifive-unle
+ pblb-$(CONFIG_BOARD_BEAGLEV) += start_beaglev_starlight
+ FILE_barebox-beaglev-starlight.img = start_beaglev_starlight.pblb
+ image-$(CONFIG_BOARD_BEAGLEV) += barebox-beaglev-starlight.img
 +
-+	/* Disable events */
-+	litex_write8(priv->base + LITEETH_WRITER_EV_ENABLE, 0);
-+	litex_write8(priv->base + LITEETH_READER_EV_ENABLE, 0);
-+
-+	/* Clear pending events? */
-+	litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, 1);
-+	litex_write8(priv->base + LITEETH_READER_EV_PENDING, 1);
-+
-+	ret = phy_device_connect(edev, priv->mii_bus, -1, NULL, 0, -1);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int liteeth_eth_send(struct eth_device *edev, void *packet,
-+				int packet_length)
-+{
-+	struct liteeth *priv = edev->priv;
-+	void *txbuffer;
-+	int ret;
-+	u8 val;
-+	u8 reg;
-+
-+	reg = litex_read8(priv->base + LITEETH_READER_EV_PENDING);
-+	if (reg) {
-+		litex_write8(priv->base + LITEETH_READER_EV_PENDING, reg);
-+	}
-+
-+	/* Reject oversize packets */
-+	if (unlikely(packet_length > MAX_PKT_SIZE)) {
-+		dev_err(priv->dev, "tx packet too big\n");
-+		goto drop;
-+	}
-+
-+	txbuffer = priv->tx_base + priv->tx_slot * LITEETH_BUFFER_SIZE;
-+	memcpy(txbuffer, packet, packet_length);
-+	litex_write8(priv->base + LITEETH_READER_SLOT, priv->tx_slot);
-+	litex_write16(priv->base + LITEETH_READER_LENGTH, packet_length);
-+
-+	ret = readb_poll_timeout(priv->base + LITEETH_READER_READY,
-+			val, val, 1000);
-+	if (ret == -ETIMEDOUT) {
-+		dev_err(priv->dev, "LITEETH_READER_READY timed out\n");
-+		goto drop;
-+	}
-+
-+	litex_write8(priv->base + LITEETH_READER_START, 1);
-+
-+	priv->tx_slot = (priv->tx_slot + 1) % priv->num_tx_slots;
-+
-+drop:
-+	return 0;
-+}
-+
-+static int liteeth_eth_rx(struct eth_device *edev)
-+{
-+	struct liteeth *priv = edev->priv;
-+	u8 rx_slot;
-+	int len = 0;
-+	u8 reg;
-+
-+	reg = litex_read8(priv->base + LITEETH_WRITER_EV_PENDING);
-+	if (!reg) {
-+		goto done;
-+	}
-+
-+	len = litex_read32(priv->base + LITEETH_WRITER_LENGTH);
-+	if (len == 0 || len > 2048) {
-+		len = 0;
-+		dev_err(priv->dev, "%s: invalid len %d\n", __func__, len);
-+		litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, reg);
-+		goto done;
-+	}
-+
-+	rx_slot = litex_read8(priv->base + LITEETH_WRITER_SLOT);
-+
-+	memcpy(NetRxPackets[0], priv->rx_base + rx_slot * LITEETH_BUFFER_SIZE, len);
-+
-+	net_receive(edev, NetRxPackets[0], len);
-+
-+	litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, reg);
-+
-+done:
-+	return len;
-+}
-+
-+static void liteeth_eth_halt(struct eth_device *edev)
-+{
-+	struct liteeth *priv = edev->priv;
-+
-+	litex_write8(priv->base + LITEETH_WRITER_EV_ENABLE, 0);
-+	litex_write8(priv->base + LITEETH_READER_EV_ENABLE, 0);
-+}
-+
-+static void liteeth_reset_hw(struct liteeth *priv)
-+{
-+	/* Reset, twice */
-+	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 0);
-+	udelay(10);
-+	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 1);
-+	udelay(10);
-+	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 0);
-+	udelay(10);
-+}
-+
-+static int liteeth_get_ethaddr(struct eth_device *edev, unsigned char *m)
-+{
-+	return 0;
-+}
-+
-+static int liteeth_set_ethaddr(struct eth_device *edev,
-+					const unsigned char *mac_addr)
-+{
-+	return 0;
-+}
-+
-+static int liteeth_probe(struct device_d *dev)
-+{
-+	struct device_node *np = dev->device_node;
-+	struct eth_device *edev;
-+	void __iomem *buf_base;
-+	struct liteeth *priv;
-+	int err;
-+
-+	priv = xzalloc(sizeof(struct liteeth));
-+	edev = &priv->edev;
-+	edev->priv = priv;
-+	priv->dev = dev;
-+
-+	priv->base = dev_request_mem_region(dev, 0);
-+	if (IS_ERR(priv->base)) {
-+		err = PTR_ERR(priv->base);
-+		goto err;
-+	}
-+
-+	priv->mdio_base = dev_request_mem_region(dev, 1);
-+	if (IS_ERR(priv->mdio_base)) {
-+		err = PTR_ERR(priv->mdio_base);
-+		goto err;
-+	}
-+
-+	buf_base = dev_request_mem_region(dev, 2);
-+	if (IS_ERR(buf_base)) {
-+		err = PTR_ERR(buf_base);
-+		goto err;
-+	}
-+
-+	err = of_property_read_u32(np, "rx-fifo-depth",
-+			&priv->num_rx_slots);
-+	if (err) {
-+		dev_err(dev, "unable to get rx-fifo-depth\n");
-+		goto err;
-+	}
-+
-+	err = of_property_read_u32(np, "tx-fifo-depth",
-+			&priv->num_tx_slots);
-+	if (err) {
-+		dev_err(dev, "unable to get tx-fifo-depth\n");
-+		goto err;
-+	}
-+
-+	/* Rx slots */
-+	priv->rx_base = buf_base;
-+	priv->rx_slot = 0;
-+
-+	/* Tx slots come after Rx slots */
-+	priv->tx_base = buf_base + priv->num_rx_slots * LITEETH_BUFFER_SIZE;
-+	priv->tx_slot = 0;
-+
-+	edev->init = liteeth_init_dev;
-+	edev->open = liteeth_eth_open;
-+	edev->send = liteeth_eth_send;
-+	edev->recv = liteeth_eth_rx;
-+	edev->get_ethaddr = liteeth_get_ethaddr;
-+	edev->set_ethaddr = liteeth_set_ethaddr;
-+	edev->halt = liteeth_eth_halt;
-+	edev->parent = dev;
-+
-+	priv->mdiobb.ops = &bb_ops;
-+
-+	priv->mii_bus = alloc_mdio_bitbang(&priv->mdiobb);
-+	priv->mii_bus->parent = dev;
-+
-+	liteeth_reset_hw(priv);
-+
-+	err = eth_register(edev);
-+	if (err) {
-+		dev_err(dev, "failed to register edev\n");
-+		goto err;
-+	}
-+
-+	err = mdiobus_register(priv->mii_bus);
-+	if (err) {
-+		dev_err(dev, "failed to register mii_bus\n");
-+		goto err;
-+	}
-+
-+	dev_info(dev, DRV_NAME " driver registered\n");
-+
-+	return 0;
-+
-+err:
-+	return err;
-+}
-+
-+static const struct of_device_id liteeth_dt_ids[] = {
-+	{
-+		.compatible = "litex,liteeth"
-+	}, {
-+	}
-+};
-+
-+static struct driver_d liteeth_driver = {
-+	.name = DRV_NAME,
-+	.probe = liteeth_probe,
-+	.of_compatible = DRV_OF_COMPAT(liteeth_dt_ids),
-+};
-+device_platform_driver(liteeth_driver);
-+
-+MODULE_AUTHOR("Joel Stanley <joel@jms.id.au>");
-+MODULE_LICENSE("GPL");
++pblb-$(CONFIG_BOARD_LITEX_LINUX) += start_litex_linux
++FILE_barebox-litex-linux.img = start_litex_linux.pblb
++image-$(CONFIG_BOARD_LITEX_LINUX) += barebox-litex-linux.img
 -- 
 2.32.0
 
