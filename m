@@ -1,78 +1,79 @@
-Delivery-date: Tue, 17 Aug 2021 12:13:22 +0200
+Delivery-date: Tue, 17 Aug 2021 12:13:39 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mFw5y-0005up-UH
-	for lore@lore.pengutronix.de; Tue, 17 Aug 2021 12:13:22 +0200
+	id 1mFw6F-0005vS-7W
+	for lore@lore.pengutronix.de; Tue, 17 Aug 2021 12:13:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mFw5u-0003bn-55
-	for lore@pengutronix.de; Tue, 17 Aug 2021 12:13:22 +0200
+	id 1mFw6B-0003g1-4C
+	for lore@pengutronix.de; Tue, 17 Aug 2021 12:13:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=sOnW7WIBQ7YxpkktF3YMdpCE0byNjbHzd2GHyYTmJvc=; b=n+Y/NQ/FoiADNV
-	XM8KEKxVUPHpb9cTtgJjDyn0OPhLJ1bCHDe+93OJ2aPvzTlIVVy0QWWbC8exSORIgn1qHNk49rzlE
-	REH8lxhRf4EJuEOabDJlf9BOkW6EOTFYWsZlvCFSm8AGuoa0l+7DZg3CqrXN5C4Kbs+/SoZCUWKIp
-	J7tj59AEZIDhVcQgIHBvF0nORbmmPhJuDmnR2YDKCd6C7/9uZBV3fNde4L4slF15qOVND4pnuqTPx
-	70yfjg7aNHMD+tq01yTP7KDymtkl4Jc/oFPmh/RPUJiNAO769ZW1SK+wlrZBfIPRG3MN7BfZyfGfo
-	buNoLJAYVdXhrZAdaJZA==;
+	List-Owner; bh=nBkiKsqPddz621deQSGB9GvuqoaDqicA7PTAB3+GvmA=; b=Uab0TKEC8UpUw6
+	pUikavEQZy3LbYoBDY6CVIfT6aN4BjSRFqrJsYPrndupYQh7W6Hf3Hy4R5PzxcuF+QLSTDB2R7zqh
+	Cc6Ybq1utRkdhyNeqAnXSP/HgphamIOwgR7Tvi60gB4vN0PNoEZygFZDV8SizwQ1AUZTX+oI2U96d
+	oFD6v8K6LGy0AWIObm+X+mz7OJmx18U8uQSxqdD1YK8QAW5K+faZ6DjNQ6WbYkSh9KsK5zKJSiOqs
+	lZ3rGLfqLA32pfgu5k6Y3BQRq+rK1/PrgY4kOCvACBtwLbkjsNNramTDVQmmTsrM6PPUmIt3a7JvI
+	nJiiFkxVpt621rEKrDww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mFw4I-0021ih-JK; Tue, 17 Aug 2021 10:11:39 +0000
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+	id 1mFw4V-0021oU-Ez; Tue, 17 Aug 2021 10:11:51 +0000
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mFw3z-0021bu-2Q
- for barebox@lists.infradead.org; Tue, 17 Aug 2021 10:11:22 +0000
-Received: by mail-lj1-x22e.google.com with SMTP id x7so32071979ljn.10
- for <barebox@lists.infradead.org>; Tue, 17 Aug 2021 03:11:18 -0700 (PDT)
+ id 1mFw41-0021dJ-Kv
+ for barebox@lists.infradead.org; Tue, 17 Aug 2021 10:11:24 +0000
+Received: by mail-lf1-x12c.google.com with SMTP id g13so40285162lfj.12
+ for <barebox@lists.infradead.org>; Tue, 17 Aug 2021 03:11:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=DCRCP9mKS/rTzV+0PAEEhtcx2MyvOg02IpqWcz/Dbmk=;
- b=QIYx0qWdnhEMpEqiEuKcCysPgjojlT+g7lnos1GyGKRY7YqtAfbh41jMxXgYHilW2a
- QqvKEauDsXXFfz57Dh4USa1IWljs1AYIzDbdufStBErqbizOyR9w6PwepJIg3ClcFrOT
- OlvUc+kQpo5Ie4CqSWx2HCLb9XGBmPjFwO4aBBy4TuGF8XEN0ZodTZmtGPQp2EbHmNrr
- xwkEZYT8DW7fUIVwB3K2/yKlft3B6nqPY74TqyZtj35vmGMFHE+9wZKoLW1UulYIYBua
- T2lMvACqzWdCNlIxH4hxQGhOc3doQ05b/3tbMNr8Ccf11L/k2sEshr+VWCkSi7S5T52E
- GS3A==
+ bh=d7BnU7atGjxq+vOhHPa0SNdnw/0wBFs8rR3aL11iSng=;
+ b=pcCZ5stwgGWYi8IlSNlpubfQ4J55RbMeXyIQxbISLwFa6MpKmggJ1qEvMF7VoOhZzX
+ ijx6gm4oeLuXoZoZAJ0a1fHEYrnzZT71OEG3JNJ1Oyaz+S/EtKLD69efflpywCSlbv2+
+ xFpTyzZJ8LzsWn6ILBwaFJ1mvw5IMig+L0/gbvvT2rD/E48XZMj7l8dvwVWN7uXHI8Fq
+ k+2MRkmPT07mxyC7mKGZotc9rCIk+OiVc7sOy3GQJbb9Fmbw1IjoN/9z+EmcCJfEoJBf
+ 2RjQSym5QpSK+6O9pBnYRbQ5Fqx9hwzt4U7jbJZoh3/O72lbGXB7XjGKpUr7Bv/ygOZE
+ du5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=DCRCP9mKS/rTzV+0PAEEhtcx2MyvOg02IpqWcz/Dbmk=;
- b=NajbtrlITXID4JCDtnYgHIgozWzogMjXcgHirk2nTy9EBJrYxqZtZlgfLkekgjtBJb
- QZKfKfZMBum4+kXN5F+Grwmd4RN7ttlIlDN8UduMjYfMHRi5O1C5OK+h42sW5PpKXUMU
- exF3POf3NWFhc/SnywmtR6Zpxd7eNwyVKWDOxA1hydCw6j3jCJaVRN/PDdpz6n4oC0jO
- YwK0xh82D82wc9OHzHktpjPKOQ8+MG20HioRjzTzp3ZC4ZSFuzs8SgaFJV2VN+MYaKV6
- TZCUqd8CYeTy1cB7gpMRXU8sMTNrK8jdMzBJE0RvdSJYOotE+oOZ5egAEuaaLwv0IoAz
- 4Dew==
-X-Gm-Message-State: AOAM533RG17pDxAXSOZm6HCMvC3SrjDFekS2EwMAFSEHDSbEfnLZqqZY
- qG8n4jcXyl1ArCX2zmvIDrFsDiJmRVA=
-X-Google-Smtp-Source: ABdhPJwl3yFCHFq7UDQZLgmr8KMgmToy6/JAvfB0XEsvpIo5VFYm4LyURLTpwgU5s4MEL2/TnGTHew==
-X-Received: by 2002:a2e:a887:: with SMTP id m7mr2428052ljq.263.1629195077356; 
- Tue, 17 Aug 2021 03:11:17 -0700 (PDT)
+ bh=d7BnU7atGjxq+vOhHPa0SNdnw/0wBFs8rR3aL11iSng=;
+ b=F/OQrATzoNbLHR5tfwzpKkL/A23JAUZWDec/s5xruEHGH0f8eH3KbQ1v8H94n/MMAD
+ /za+7RBdkUWjPD5pt/5tMvU+dMD4QCJZghNXO/dkzLzE+7/6X9k/7U9kMwUa19H/YDTU
+ jywuajkr4SS/IG0ZA5RMsGyok8LRLYOYZkrbW5txt3vdhTzc6VSc8Nfpcp5CcKe+vUxl
+ 34TQC+BSurZF37gbTMe4OAK7gcaUXBg45G4mqIGXb0c/CI5vL3f82IxhJMcS8sYhkgkX
+ 6lCtgWLBIBfZRj8+cZNjdU9TfvRPLJEOTRWDG5BCgt+1Lqn1GSHddB3f44wjC4fpv/3G
+ T3JA==
+X-Gm-Message-State: AOAM533H95sCbYcKSBfQZtaCzmoCDy2F8aGLtQXgvlXRsg42d+RAEWaM
+ 1gFv81KTaml7BYADk3n4XQigfyCULfg=
+X-Google-Smtp-Source: ABdhPJyroBco9t47GyCIdF/30Apl6pSHA1DFPFIVeRFzfD1gnhm/4GR9uVNpUo+7MecJlPpcy1WGSg==
+X-Received: by 2002:ac2:4c2f:: with SMTP id u15mr1837676lfq.294.1629195080175; 
+ Tue, 17 Aug 2021 03:11:20 -0700 (PDT)
 Received: from localhost.localdomain (109-252-203-80.dynamic.spd-mgts.ru.
  [109.252.203.80])
- by smtp.gmail.com with ESMTPSA id x16sm144412lfa.244.2021.08.17.03.11.16
+ by smtp.gmail.com with ESMTPSA id x16sm144412lfa.244.2021.08.17.03.11.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Aug 2021 03:11:17 -0700 (PDT)
+ Tue, 17 Aug 2021 03:11:19 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 17 Aug 2021 13:11:00 +0300
-Message-Id: <20210817101104.114945-5-antonynpavlov@gmail.com>
+Date: Tue, 17 Aug 2021 13:11:04 +0300
+Message-Id: <20210817101104.114945-9-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210817101104.114945-1-antonynpavlov@gmail.com>
 References: <20210817101104.114945-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210817_031119_141384_84A03FAB 
-X-CRM114-Status: GOOD (  18.63  )
+X-CRM114-CacheID: sfid-20210817_031121_744106_36E441F6 
+X-CRM114-Status: UNSURE (   9.25  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,7 +85,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Alexander Shiyan <shc_work@mail.ru>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -96,239 +97,98 @@ X-Spam-Level:
 X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,
 	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH RESEND v4 4/8] gpio: add driver for 74xx-ICs with MMIO access
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,UPPERCASE_50_75
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH RESEND v4 8/8] RISC-V: add litex_linux_defconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This patch adds driver to support GPIO functionality
-for 74xx-compatible ICs with MMIO access.
-
-Compatible models include:
-     1 bit:   741G125 (Input), 741G74 (Output)
-     2 bits:  742G125 (Input), 7474 (Output)
-     4 bits:  74125 (Input), 74175 (Output)
-     6 bits:  74365 (Input), 74174 (Output)
-     8 bits:  74244 (Input), 74273 (Output)
-     16 bits: 741624 (Input), 7416374 (Output)
-
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/gpio/Kconfig          |  14 +++
- drivers/gpio/Makefile         |   1 +
- drivers/gpio/gpio-74xx-mmio.c | 165 ++++++++++++++++++++++++++++++++++
- 3 files changed, 180 insertions(+)
+ arch/riscv/configs/litex_linux_defconfig | 75 ++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 98a44fbbb5..f79c9ea67d 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -21,6 +21,20 @@ config GPIO_74164
- 	  shift registers. This driver can be used to provide access
- 	  to more gpio outputs.
- 
-+config GPIO_74XX_MMIO
-+	tristate "GPIO driver for 74xx-ICs with MMIO access"
-+	depends on OFDEVICE
-+	select GPIO_GENERIC
-+	help
-+	  Say yes here to support GPIO functionality for 74xx-compatible ICs
-+	  with MMIO access. Compatible models include:
-+	    1 bit:	741G125 (Input), 741G74 (Output)
-+	    2 bits:	742G125 (Input), 7474 (Output)
-+	    4 bits:	74125 (Input), 74175 (Output)
-+	    6 bits:	74365 (Input), 74174 (Output)
-+	    8 bits:	74244 (Input), 74273 (Output)
-+	    16 bits:	741624 (Input), 7416374 (Output)
-+
- config GPIO_CLPS711X
- 	bool "GPIO support for CLPS711X"
- 	depends on ARCH_CLPS711X || COMPILE_TEST
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 638cbb19a3..023973cb63 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -1,6 +1,7 @@
- obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
- 
- obj-$(CONFIG_GPIO_74164)	+= gpio-74164.o
-+obj-$(CONFIG_GPIO_74XX_MMIO)	+= gpio-74xx-mmio.o
- obj-$(CONFIG_MACH_MIPS_ATH79)	+= gpio-ath79.o
- obj-$(CONFIG_GPIO_DAVINCI)	+= gpio-davinci.o
- obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
-diff --git a/drivers/gpio/gpio-74xx-mmio.c b/drivers/gpio/gpio-74xx-mmio.c
+diff --git a/arch/riscv/configs/litex_linux_defconfig b/arch/riscv/configs/litex_linux_defconfig
 new file mode 100644
-index 0000000000..5b688f4766
+index 0000000000..8e19964890
 --- /dev/null
-+++ b/drivers/gpio/gpio-74xx-mmio.c
-@@ -0,0 +1,165 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * 74xx MMIO GPIO driver
-+ *
-+ *  Copyright (C) 2014 Alexander Shiyan <shc_work@mail.ru>
-+ *
-+ * Ported to barebox from linux-v5.4-rc6
-+ *   Copyright (C) 2019-2021 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <gpio.h>
-+#include <init.h>
-+#include <io.h>
-+#include <malloc.h>
-+#include <of_device.h>
-+
-+#include <linux/err.h>
-+#include <linux/basic_mmio_gpio.h>
-+
-+#define MMIO_74XX_DIR_IN	(0 << 8)
-+#define MMIO_74XX_DIR_OUT	(1 << 8)
-+#define MMIO_74XX_BIT_CNT(x)	((x) & 0xff)
-+
-+struct mmio_74xx_gpio_priv {
-+	struct bgpio_chip	bgc;
-+	unsigned int		flags;
-+};
-+
-+static const struct of_device_id mmio_74xx_gpio_ids[] = {
-+	{
-+		.compatible	= "ti,741g125",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 1),
-+	},
-+	{
-+		.compatible	= "ti,742g125",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 2),
-+	},
-+	{
-+		.compatible	= "ti,74125",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 4),
-+	},
-+	{
-+		.compatible	= "ti,74365",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 6),
-+	},
-+	{
-+		.compatible	= "ti,74244",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 8),
-+	},
-+	{
-+		.compatible	= "ti,741624",
-+		.data		= (const void *)(MMIO_74XX_DIR_IN | 16),
-+	},
-+	{
-+		.compatible	= "ti,741g74",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 1),
-+	},
-+	{
-+		.compatible	= "ti,7474",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 2),
-+	},
-+	{
-+		.compatible	= "ti,74175",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 4),
-+	},
-+	{
-+		.compatible	= "ti,74174",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 6),
-+	},
-+	{
-+		.compatible	= "ti,74273",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 8),
-+	},
-+	{
-+		.compatible	= "ti,7416374",
-+		.data		= (const void *)(MMIO_74XX_DIR_OUT | 16),
-+	},
-+	{ }
-+};
-+
-+static inline
-+struct mmio_74xx_gpio_priv *to_mmio_74xx_gpio_priv(struct gpio_chip *gc)
-+{
-+	struct bgpio_chip *bgc =
-+		container_of(gc, struct bgpio_chip, gc);
-+
-+	return container_of(bgc, struct mmio_74xx_gpio_priv, bgc);
-+}
-+
-+static int mmio_74xx_get_direction(struct gpio_chip *gc, unsigned int offset)
-+{
-+	struct mmio_74xx_gpio_priv *priv = to_mmio_74xx_gpio_priv(gc);
-+
-+	if (priv->flags & MMIO_74XX_DIR_OUT)
-+		return GPIOF_DIR_OUT;
-+
-+	return GPIOF_DIR_IN;
-+}
-+
-+static int mmio_74xx_dir_in(struct gpio_chip *gc, unsigned int gpio)
-+{
-+	struct mmio_74xx_gpio_priv *priv = to_mmio_74xx_gpio_priv(gc);
-+
-+	return (priv->flags & MMIO_74XX_DIR_OUT) ? -ENOTSUPP : 0;
-+}
-+
-+static int mmio_74xx_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
-+{
-+	struct mmio_74xx_gpio_priv *priv = to_mmio_74xx_gpio_priv(gc);
-+
-+	if (priv->flags & MMIO_74XX_DIR_OUT) {
-+		gc->ops->set(gc, gpio, val);
-+		return 0;
-+	}
-+
-+	return -ENOTSUPP;
-+}
-+
-+static int mmio_74xx_gpio_probe(struct device_d *dev)
-+{
-+	struct mmio_74xx_gpio_priv *priv;
-+	void __iomem *dat;
-+	int err;
-+	struct gpio_chip *gc;
-+
-+	priv = xzalloc(sizeof(*priv));
-+
-+	priv->flags = (uintptr_t)of_device_get_match_data(dev);
-+
-+	dat = dev_request_mem_region(dev, 0);
-+	if (IS_ERR(dat))
-+		return PTR_ERR(dat);
-+
-+	err = bgpio_init(&priv->bgc, dev,
-+			 DIV_ROUND_UP(MMIO_74XX_BIT_CNT(priv->flags), 8),
-+			 dat, NULL, NULL, NULL, NULL, 0);
-+	if (err)
-+		return err;
-+
-+	gc = &priv->bgc.gc;
-+	gc->ops->direction_input = mmio_74xx_dir_in;
-+	gc->ops->direction_output = mmio_74xx_dir_out;
-+	gc->ops->get_direction = mmio_74xx_get_direction;
-+	gc->ngpio = MMIO_74XX_BIT_CNT(priv->flags);
-+
-+	dev->priv = priv;
-+
-+	return gpiochip_add(gc);
-+}
-+
-+static struct driver_d mmio_74xx_gpio_driver = {
-+	.name = "74xx-mmio-gpio",
-+	.of_compatible	= DRV_OF_COMPAT(mmio_74xx_gpio_ids),
-+	.probe = mmio_74xx_gpio_probe,
-+};
-+
-+coredevice_platform_driver(mmio_74xx_gpio_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Alexander Shiyan <shc_work@mail.ru>");
-+MODULE_DESCRIPTION("74xx MMIO GPIO driver");
++++ b/arch/riscv/configs/litex_linux_defconfig
+@@ -0,0 +1,75 @@
++CONFIG_SOC_LITEX=y
++CONFIG_STACK_SIZE=0x20000
++CONFIG_MALLOC_SIZE=0xf00000
++CONFIG_MALLOC_TLSF=y
++CONFIG_PANIC_HANG=y
++CONFIG_BAUDRATE=1000000
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++# CONFIG_TIMESTAMP is not set
++CONFIG_BOOTM_SHOW_TYPE=y
++CONFIG_BOOTM_VERBOSE=y
++CONFIG_BOOTM_INITRD=y
++CONFIG_BOOTM_OFTREE=y
++CONFIG_BOOTM_OFTREE_UIMAGE=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEBUG_LL=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_CMP=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_LED_TRIGGER=y
++CONFIG_CMD_OF_DUMP=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_DHRYSTONE=y
++CONFIG_NET=y
++CONFIG_NET_NFS=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_DRIVER_NET_LITEETH=y
++CONFIG_AR8327N_PHY=y
++CONFIG_AT803X_PHY=y
++CONFIG_DAVICOM_PHY=y
++CONFIG_DP83867_PHY=y
++CONFIG_LXT_PHY=y
++CONFIG_MARVELL_PHY=y
++CONFIG_MICREL_PHY=y
++CONFIG_NATIONAL_PHY=y
++CONFIG_REALTEK_PHY=y
++CONFIG_SMSC_PHY=y
++CONFIG_DRIVER_SPI_LITEX_SPIFLASH=y
++CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_MTD_M25P80=y
++CONFIG_CLOCKSOURCE_DUMMY_RATE=20000
++CONFIG_SRAM=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_GPIO_74XX_MMIO=y
++CONFIG_GPIO_GENERIC_PLATFORM=y
++# CONFIG_PINCTRL is not set
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_DIGEST_CRC32_GENERIC=y
 -- 
 2.32.0
 
