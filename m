@@ -1,15 +1,15 @@
-Delivery-date: Mon, 23 Aug 2021 16:05:46 +0200
+Delivery-date: Mon, 23 Aug 2021 16:12:59 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mIAaA-0000CD-FF
-	for lore@lore.pengutronix.de; Mon, 23 Aug 2021 16:05:46 +0200
+	id 1mIAh9-0000Mv-Pm
+	for lore@lore.pengutronix.de; Mon, 23 Aug 2021 16:12:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mIAa8-0002U0-6s
-	for lore@pengutronix.de; Mon, 23 Aug 2021 16:05:46 +0200
+	id 1mIAh5-0003R0-AW
+	for lore@pengutronix.de; Mon, 23 Aug 2021 16:12:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,48 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=oPnxFgeTETI/yqfvqnuRVP4Eok3YyK9U48iFoZ0lu5o=; b=ymMdCdc8tDwTqIPGGg9srlCiVA
-	JtB5+mxo1dIZtvMfiRA08k+MZJPjOSZz0BAfwYV8QDXkXLxr3ahovAEzq7/hmKLvsHUvJavAR4wdf
-	9/340qdo6ovYIZGaWqAEucwLWHnH9flR9LVULAkvo0jeT9ZmyamuGb2+fstAuE57rNtq9iw70czNj
-	MVoot3i3pkvw4kLErlUVlDfcoF9XqVnL5K0NvZsJ+VzsdJ1NxYU8aQoFFaCXfgHSRsNzNc9f2OGCa
-	mv0ovKm6bWkJ+4gV4EgYB8VeO7bj8ApVEqcA3X57uzxbZUL44Jj+0I2zdu9Boc6g7v9RAzV8VrDbU
-	YPxeH0cA==;
+	bh=YbbGRvnR7ViKykk6xcEAwk/2I5ibDXObGXv4+EErF5A=; b=gHWUIC7fDK/myHaEONF+Q/MlLq
+	y2S0t0EMurhSThWm+88MBxRYawkk+xa0vbNBy05P1TUhFMF2hrT5IJ39NOHRS3QEpU4ESFE0yN5dR
+	AXoOFu2qhpBmN9AWLc7dwyWw0USSidk7NVzHwr6XlAwwkxuClbBdf/b3zP/t50xmaCm+98WbF1rrL
+	a0q5Ndd2mPqq3VuJvgkdrEX2JWBdBIIuB6wmAwtGLWWYon8MfE0mFmKaqofe4F38W6/PZsXF5vuLl
+	m51r5kPbstVB4CxDNMexpJ+/vvjA7krFJdN3XSe2I8h/sr//BMXZONO+P8Z35iZctqANJOWl5bNxC
+	KFMi9wdg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mIAYT-00HB2z-TH; Mon, 23 Aug 2021 14:04:01 +0000
+	id 1mIAfN-00HBu8-Du; Mon, 23 Aug 2021 14:11:09 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mIAYM-00HB19-7B
- for barebox@lists.infradead.org; Mon, 23 Aug 2021 14:03:58 +0000
+ id 1mIAfG-00HBth-FU
+ for barebox@lists.infradead.org; Mon, 23 Aug 2021 14:11:06 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mIAYK-0002BN-Hh; Mon, 23 Aug 2021 16:03:52 +0200
+ id 1mIAfE-00031m-UL; Mon, 23 Aug 2021 16:11:00 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mIAYJ-0007Op-VI; Mon, 23 Aug 2021 16:03:51 +0200
-Date: Mon, 23 Aug 2021 16:03:51 +0200
-To: Renaud Barbier <renaud.barbier@abaco.com>
+ id 1mIAfE-0007zu-Fs; Mon, 23 Aug 2021 16:11:00 +0200
+Date: Mon, 23 Aug 2021 16:11:00 +0200
+To: Michael Riesch <michael.riesch@wolfvision.net>
 Cc: barebox@lists.infradead.org
-Message-ID: <20210823140351.GN24834@pengutronix.de>
-References: <1628842608-17031-1-git-send-email-renaud.barbier@abaco.com>
- <1628842608-17031-4-git-send-email-renaud.barbier@abaco.com>
+Message-ID: <20210823141100.GB31210@pengutronix.de>
+References: <20210705160457.7346-1-michael.riesch@wolfvision.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1628842608-17031-4-git-send-email-renaud.barbier@abaco.com>
+In-Reply-To: <20210705160457.7346-1-michael.riesch@wolfvision.net>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 16:00:29 up 186 days, 17:24, 113 users,  load average: 0.55, 0.20,
- 0.17
+X-Uptime: 16:10:04 up 186 days, 17:33, 113 users,  load average: 0.35, 0.20,
+ 0.18
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210823_070354_307846_0CB8FCF5 
-X-CRM114-Status: GOOD (  25.48  )
+X-CRM114-CacheID: sfid-20210823_071102_561955_3BE14548 
+X-CRM114-Status: GOOD (  29.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,104 +81,73 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/3] ls1046ardb: enable IFC NAND.
+Subject: Re: [PATCH v2] arm: rockchip-rk3568-evb: add hardware id detection
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Aug 13, 2021 at 09:16:48AM +0100, Renaud Barbier wrote:
-> Set the NAND timings and enable the IFC NAND driver.
+On Mon, Jul 05, 2021 at 06:04:57PM +0200, Michael Riesch wrote:
+> The RK3568 EVB uses a voltage divider to determine the hardware ID of
+> the board. At the moment, the voltage levels for seven EVB variants are
+> defined. This commit adds a late_initcall to the board code that reads
+> out the voltage and populates the hardware ID as environment variable.
 > 
-> Signed-off-by: Renaud Barbier <renaud.barbier@abaco.com>
+> Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
 > ---
->  arch/arm/configs/layerscape_defconfig | 11 +++++++
->  arch/arm/mach-layerscape/Makefile     |  1 +
->  arch/arm/mach-layerscape/nand.c       | 44 +++++++++++++++++++++++++++
->  3 files changed, 56 insertions(+)
->  create mode 100644 arch/arm/mach-layerscape/nand.c
+> v2:
+> - add compatible check
+> - return early in case the voltage cannot be read
+> - populate hardware ID as environment variable
 > 
-> diff --git a/arch/arm/configs/layerscape_defconfig b/arch/arm/configs/layerscape_defconfig
-> index 394cd95c98..fb8e885353 100644
-> --- a/arch/arm/configs/layerscape_defconfig
-> +++ b/arch/arm/configs/layerscape_defconfig
-> @@ -34,6 +34,10 @@ CONFIG_CMD_GO=y
->  CONFIG_CMD_RESET=y
->  CONFIG_CMD_UIMAGE=y
->  CONFIG_CMD_PARTITION=y
-> +CONFIG_CMD_MOUNT=y
-> +CONFIG_CMD_UBI=y
-> +CONFIG_CMD_UBIFORMAT=y
-> +CONFIG_CMD_UMOUNT=y
->  CONFIG_CMD_EXPORT=y
->  CONFIG_CMD_LOADENV=y
->  CONFIG_CMD_PRINTENV=y
-> @@ -69,6 +73,7 @@ CONFIG_CMD_GPIO=y
->  CONFIG_CMD_I2C=y
->  CONFIG_CMD_LED=y
->  CONFIG_CMD_SPI=y
-> +CONFIG_CMD_NAND=y
->  CONFIG_CMD_LED_TRIGGER=y
->  CONFIG_CMD_WD=y
->  CONFIG_CMD_BAREBOX_UPDATE=y
-> @@ -85,6 +90,10 @@ CONFIG_DP83867_PHY=y
->  CONFIG_REALTEK_PHY=y
->  CONFIG_NET_DSA_MV88E6XXX=y
->  CONFIG_DRIVER_SPI_FSL_QUADSPI=y
-> +CONFIG_NAND=y
-> +CONFIG_NAND_FSL_IFC=y
-> +CONFIG_MTD_UBI=y
-> +CONFIG_MTD_UBI_BEB_LIMIT=20
->  CONFIG_I2C=y
->  CONFIG_I2C_IMX=y
->  CONFIG_I2C_MUX=y
-> @@ -112,5 +121,7 @@ CONFIG_FS_NFS=y
->  CONFIG_FS_FAT=y
->  CONFIG_FS_FAT_WRITE=y
->  CONFIG_FS_FAT_LFN=y
-> +CONFIG_FS_UBIFS=y
-> +CONFIG_FS_UBIFS_COMPRESSION_LZO=y
->  CONFIG_ZLIB=y
->  CONFIG_LZO_DECOMPRESS=y
-> diff --git a/arch/arm/mach-layerscape/Makefile b/arch/arm/mach-layerscape/Makefile
-> index 854a327c91..99da7b2af0 100644
-> --- a/arch/arm/mach-layerscape/Makefile
-> +++ b/arch/arm/mach-layerscape/Makefile
-> @@ -6,3 +6,4 @@ obj-pbl-y += boot.o
->  pbl-y += xload-qspi.o xload.o
->  obj-$(CONFIG_ARCH_LAYERSCAPE_PPA) += ppa.o ppa-entry.o
->  obj-$(CONFIG_BOOTM) += pblimage.o
-> +obj-$(CONFIG_NAND_FSL_IFC) += nand.o
-> diff --git a/arch/arm/mach-layerscape/nand.c b/arch/arm/mach-layerscape/nand.c
-> new file mode 100644
-> index 0000000000..b36c6b3c46
-> --- /dev/null
-> +++ b/arch/arm/mach-layerscape/nand.c
-> @@ -0,0 +1,44 @@
-> +// SPDX-License-Identifier: GPL-2.0+
+>  arch/arm/boards/rockchip-rk3568-evb/board.c | 56 +++++++++++++++++++++
+>  1 file changed, 56 insertions(+)
+> 
+> diff --git a/arch/arm/boards/rockchip-rk3568-evb/board.c b/arch/arm/boards/rockchip-rk3568-evb/board.c
+> index 57c24ed3c..f8b257e57 100644
+> --- a/arch/arm/boards/rockchip-rk3568-evb/board.c
+> +++ b/arch/arm/boards/rockchip-rk3568-evb/board.c
+> @@ -2,7 +2,13 @@
+>  #include <common.h>
+>  #include <init.h>
+>  #include <mach/bbu.h>
+> +#include <aiodev.h>
+>  #include <bootsource.h>
+> +#include <environment.h>
+> +#include <globalvar.h>
+> +#include <magicvar.h>
 > +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <of_address.h>
-> +#include <linux/fsl_ifc.h>
+> +static bool machine_is_rk3568_evb = false;
+>  
+>  static int rk3568_evb_probe(struct device_d *dev)
+>  {
+> @@ -11,6 +17,7 @@ static int rk3568_evb_probe(struct device_d *dev)
+>  
+>  	barebox_set_model("Rockchip RK3568 EVB");
+>  	barebox_set_hostname("rk3568-evb");
+> +	machine_is_rk3568_evb = true;
+>  
+>  	if (bootsource == BOOTSOURCE_MMC && instance == 1)
+>  		of_device_enable_path("/chosen/environment-sd");
+> @@ -34,3 +41,52 @@ static struct driver_d rk3568_evb_board_driver = {
+>  	.of_compatible = rk3568_evb_of_match,
+>  };
+>  coredevice_platform_driver(rk3568_evb_board_driver);
 > +
-> +static int rdb_nand_init(void)
+> +static int rk3568_evb_detect_hwid(void)
 > +{
-> +	struct device_node *np;
-> +	void __iomem *ifc;
+> +	int ret;
+> +	int evb_hwid_voltage;
+> +	struct aiochannel *evb_hwid_chan;
+> +	char *evb_hwid;
 > +
-> +	if (!of_machine_is_compatible("fsl,ls1046a-rdb"))
+> +	if (!machine_is_rk3568_evb)
 > +		return 0;
+> +
+> +	evb_hwid_chan = aiochannel_by_name("aiodev0.in_value1_mV");
 
-The code as such is board specific and thus should be in
-arch/arm/boards/ls1046ardb/. We could make a architecture specific
-helper function from it which is then called by the board code, but the
-values written to the registers below are probably very board specific
-anyway, so with a generic helper function we wouldn't win that much.
+This fails to link when CONFIG_AIODEV is disabled. I added an early
+return at the top of this function to fix that.
 
-I moved rdb_nand_init() to the board code while applying.
-
-Thanks
- Sascha
-
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
