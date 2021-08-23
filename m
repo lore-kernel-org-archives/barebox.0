@@ -1,15 +1,15 @@
-Delivery-date: Mon, 23 Aug 2021 14:08:30 +0200
+Delivery-date: Mon, 23 Aug 2021 14:10:57 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mI8kg-0005Q9-Qw
-	for lore@lore.pengutronix.de; Mon, 23 Aug 2021 14:08:30 +0200
+	id 1mI8n3-0005VD-FU
+	for lore@lore.pengutronix.de; Mon, 23 Aug 2021 14:10:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mI8kb-0003g8-KS
-	for lore@pengutronix.de; Mon, 23 Aug 2021 14:08:30 +0200
+	id 1mI8n1-000482-6k
+	for lore@pengutronix.de; Mon, 23 Aug 2021 14:10:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,38 +17,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=fgZZX53czL/tpIbLp49OEWuX9dAh9EGsQKSizTYWuzc=; b=T1+iXRlKoWjwfPnLommMH7g3uC
-	w+jBhUkbskF0/B3yUAXmzN67YEgvtfrDGG1VmbM3/2FVc3/XtyhtivnxUHxitm7Kcbypn8KJZnkhZ
-	b5ARZVVW8jvvY+LpSybOci9XtlihIGOcgiEvoR/CtDmmaa/+Fpp7XgoEWmAU3uZir0rIOdaCfvqK3
-	VKRsUOPiHcf79bXHIYQyd7bf7MjqIo5tQc73biOPlyE8NdV9rpl1yzfLz9u247LKX8Jo64GYUJ8gr
-	dI+SGJIls2sVRzxpqxmX1mJe2yUESfrUBiqnWk+Tp7T1cFGsInRkVkL/Kus0x4gc1zTaco0GFtE0y
-	U9xe/hzA==;
+	bh=mrBJLhcpicUD0n7c3JoBFGawwA3JMT8RFB8sMiHo0B0=; b=l1n6U15eQLD685jcyqIoHrdS/M
+	hQbJ09vedZLj1+oXz+0Lv8/HN63m/VQR1jvdY29m3/5sI5HMAaj3BXWWHaOO5VmiaQeNDwaAJ/5aC
+	Wi0Qy63+HyQ+FFYpKXZEyvoc2Nfc6+dKNv3mQ7EaVRssP+4lWcdEpxbPkCVMXXkmFgmUW+xF67MpW
+	S7iHPg2QKlU4NM2M+EojZ0s4EUhKe60qldFU2a0jiupvKjzJ/X8zhkGLxzeZWWSwW5otKqZrW2Nlj
+	pKaMOqf3/thVCSUKauHXjWhSoZrDzIt+o2/W0dHqxUuxqQ6WQuuHBVyHyZzLbMzQKwoN4EApZpoan
+	SSnrj9zA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mI8ij-00Gg4C-LK; Mon, 23 Aug 2021 12:06:29 +0000
+	id 1mI8lO-00Ggs8-EX; Mon, 23 Aug 2021 12:09:14 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mI8ib-00Gg0T-41
- for barebox@lists.infradead.org; Mon, 23 Aug 2021 12:06:25 +0000
+ id 1mI8lE-00Ggjl-1J
+ for barebox@lists.infradead.org; Mon, 23 Aug 2021 12:09:08 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1mI8iP-0003SW-U4; Mon, 23 Aug 2021 14:06:09 +0200
+ id 1mI8l2-0003iX-Q9; Mon, 23 Aug 2021 14:08:52 +0200
 To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
 References: <20210817101104.114945-1-antonynpavlov@gmail.com>
- <20210817101104.114945-8-antonynpavlov@gmail.com>
+ <20210817101104.114945-2-antonynpavlov@gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <f234164a-64b9-63ae-8ecc-97336d5c695c@pengutronix.de>
-Date: Mon, 23 Aug 2021 14:06:09 +0200
+Message-ID: <ce1667b1-e42f-3836-9747-393a5fd8afc7@pengutronix.de>
+Date: Mon, 23 Aug 2021 14:08:52 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20210817101104.114945-8-antonynpavlov@gmail.com>
+In-Reply-To: <20210817101104.114945-2-antonynpavlov@gmail.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210823_050621_547301_C24DC20D 
-X-CRM114-Status: GOOD (  36.11  )
+X-CRM114-CacheID: sfid-20210823_050904_117414_A4163A8E 
+X-CRM114-Status: GOOD (  28.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,447 +72,117 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH RESEND v4 7/8] RISC-V: add LiteX SoC and
- linux-on-litex-vexriscv support
+Subject: Re: [PATCH RESEND v4 1/8] clocksource: timer-riscv: select CSR from
+ device tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 17.08.21 12:11, Antony Pavlov wrote:
-> LiteX is a Migen-based System on Chip, supporting softcore
-> VexRiscv CPU, a 32-bits Linux Capable RISC-V CPU.
+On 17.08.21 12:10, Antony Pavlov wrote:
+> barebox timer-riscv driver supports one of user counters:
 > 
-> See https://github.com/enjoy-digital/litex and
-> https://github.com/litex-hub/linux-on-litex-vexriscv
-> for details.
+>   * 'cycle', counter for RDCYCLE instruction (CSR 0xc00);
+>   * 'time', timer for RDTIME instruction (CSR 0xc01).
+> 
+> At the moment in M-mode timer-riscv uses the 'cycle' counter,
+> and in S-mode timer-riscv uses the 'time' timer.
+> 
+> Alas picorv32 CPU core supports only the 'cycle' counter.
+> VexRiscV CPU core in M-mode supports only the 'time' timer.
+> 
+> This patch makes it possible to use the 'time' timer
+> for VexRiscV CPU in M-mode.
+> 
+> See also http://lists.infradead.org/pipermail/barebox/2021-May/036067.html
+
+Comment from earlier series:
+
+"It also changes the default for M-Mode from cycle to time.
+
+I can't comment on whether this is ok, I just copied the logic
+
+from Linux."
+
+Can you say why this is ok?
+
 > 
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  arch/riscv/Kconfig.socs                  |  14 +++
->  arch/riscv/boards/Makefile               |   1 +
->  arch/riscv/boards/litex-linux/Makefile   |   3 +
->  arch/riscv/boards/litex-linux/lowlevel.c |  22 ++++
->  arch/riscv/dts/Makefile                  |   1 +
->  arch/riscv/dts/litex-linux.dts           |  92 +++++++++++++++++
->  arch/riscv/dts/litex_soc_linux.dtsi      |  49 +++++++++
->  arch/riscv/include/asm/debug_ll.h        |   3 +
->  arch/riscv/include/asm/debug_ll_litex.h  | 123 +++++++++++++++++++++++
->  common/Kconfig                           |   4 +
->  images/Makefile.riscv                    |   4 +
->  11 files changed, 316 insertions(+)
+>  arch/riscv/dts/erizo.dtsi         |  2 ++
+>  drivers/clocksource/timer-riscv.c | 24 ++++++++++++------------
+>  2 files changed, 14 insertions(+), 12 deletions(-)
 > 
-> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-> index 221ea133d4..5c281918d5 100644
-> --- a/arch/riscv/Kconfig.socs
-> +++ b/arch/riscv/Kconfig.socs
-> @@ -95,4 +95,18 @@ config SIFIVE_L2
->  	bool "SiFive L2 cache controller"
->  	depends on CPU_SIFIVE
+> diff --git a/arch/riscv/dts/erizo.dtsi b/arch/riscv/dts/erizo.dtsi
+> index 228711bd69..4eb92ae6f1 100644
+> --- a/arch/riscv/dts/erizo.dtsi
+> +++ b/arch/riscv/dts/erizo.dtsi
+> @@ -22,6 +22,8 @@
 >  
-> +config SOC_LITEX
-> +	bool "LiteX SoCs"
-> +	depends on ARCH_RV32I
-> +	select HAS_ASM_DEBUG_LL
-> +	select HAS_NMON
-> +	select USE_COMPRESSED_DTB
-> +	select RISCV_TIMER
-> +
-> +config BOARD_LITEX_LINUX
-> +	bool "litex linux board"
-> +	depends on SOC_LITEX
-> +	select RISCV_M_MODE
-> +	def_bool y
-> +
->  endmenu
-> diff --git a/arch/riscv/boards/Makefile b/arch/riscv/boards/Makefile
-> index cb28a25d8b..8d5d9d4fc6 100644
-> --- a/arch/riscv/boards/Makefile
-> +++ b/arch/riscv/boards/Makefile
-> @@ -2,3 +2,4 @@
->  obj-$(CONFIG_BOARD_ERIZO_GENERIC)	+= erizo/
->  obj-$(CONFIG_BOARD_HIFIVE)		+= hifive/
->  obj-$(CONFIG_BOARD_BEAGLEV)		+= beaglev/
-> +obj-$(CONFIG_BOARD_LITEX_LINUX)		+= litex-linux/
-> diff --git a/arch/riscv/boards/litex-linux/Makefile b/arch/riscv/boards/litex-linux/Makefile
-> new file mode 100644
-> index 0000000000..3d217ffe0b
-> --- /dev/null
-> +++ b/arch/riscv/boards/litex-linux/Makefile
-> @@ -0,0 +1,3 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +
-> +pbl-y += lowlevel.o
-> diff --git a/arch/riscv/boards/litex-linux/lowlevel.c b/arch/riscv/boards/litex-linux/lowlevel.c
-> new file mode 100644
-> index 0000000000..da23ef5633
-> --- /dev/null
-> +++ b/arch/riscv/boards/litex-linux/lowlevel.c
-> @@ -0,0 +1,22 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include <common.h>
-> +#include <asm/barebox-riscv.h>
-> +#include <debug_ll.h>
-> +#include <asm/riscv_nmon.h>
-> +
-> +ENTRY_FUNCTION(start_litex_linux, a0, a1, a2)
-> +{
-> +	extern char __dtb_z_litex_linux_start[];
-> +	void *fdt;
-> +
-> +	barebox_nmon_entry();
-> +
-> +	putc_ll('>');
-> +
-> +	/* On POR, we are running from read-only memory here. */
-
-Do we? I thought BIOS loads barebox to RAM first?
-
-> +
-> +	fdt = __dtb_z_litex_linux_start + get_runtime_offset();
-> +
-> +	barebox_riscv_machine_entry(0x40000000, SZ_256M, fdt);
-> +}
-> diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
-> index 4a15423b7f..17d7d249e4 100644
-> --- a/arch/riscv/dts/Makefile
-> +++ b/arch/riscv/dts/Makefile
-> @@ -8,5 +8,6 @@ pbl-$(CONFIG_BOARD_ERIZO_GENERIC) += erizo-generic.dtb.o
->  pbl-$(CONFIG_BOARD_HIFIVE) += hifive-unmatched-a00.dtb.o \
->                                hifive-unleashed-a00.dtb.o
->  pbl-$(CONFIG_BOARD_BEAGLEV) += jh7100-beaglev-starlight.dtb.o
-> +pbl-$(CONFIG_BOARD_LITEX_LINUX) += litex-linux.dtb.o
+>  		timebase-frequency = <24000000>;
 >  
->  clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
-> diff --git a/arch/riscv/dts/litex-linux.dts b/arch/riscv/dts/litex-linux.dts
-> new file mode 100644
-> index 0000000000..d21fa57e30
-> --- /dev/null
-> +++ b/arch/riscv/dts/litex-linux.dts
-> @@ -0,0 +1,92 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
+> +		barebox,csr-cycle;
 > +
-> +#include "litex_soc_linux.dtsi"
-> +
-> +#include <dt-bindings/gpio/gpio.h>
-> +
-> +/ {
-> +	model = "LiteX VexRiscV-SoC-Linux";
-> +	compatible = "litex,vexriscv-soc-linux";
-> +
-> +	aliases {
-> +		rom = &rom;
-> +		sram = &sram;
-> +	};
-> +
-> +	/* ARTY board */
-> +	rom: rom@00000000 {
-
-I can see why RAM is specific to ARTY, but why ROM?
-
-> +		compatible = "mmio-sram";
-> +		reg = <0x00000000 0x00008000>;
-> +		read-only;
-> +	};
-> +
-> +	sram: sram@20000000 {
-> +		compatible = "mmio-sram";
-> +		reg = <0x20000000 0x00004000>;
-> +	};
-> +
-> +	main_ram: memory@40000000 {
-> +		device_type = "memory";
-> +		reg = <0x40000000 0x10000000>;
-> +	};
-> +};
-> +
-> +&uart0 {
-> +	status = "okay";
-> +};
-> +
-> +&mac0 {
-> +	status = "okay";
-> +};
-> +
-> +&spi0 {
-> +	status = "okay";
-> +
-> +	spiflash: w25q128@0 {
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		compatible = "winbond,w25q128", "jedec,spi-nor";
-> +		spi-max-frequency = <104000000>;
-> +		reg = <0>;
-> +	};
-> +};
-> +
-> +/ {
-> +	ledsgpio: gpio@f000a800 {
-> +		compatible = "ti,74175";
-> +		reg = <0xf000a800 0x4>;
-> +		gpio-controller;
-> +		#gpio-cells = <2>;
-> +	};
-> +
-> +	leds {
-> +		compatible = "gpio-leds";
-> +
-> +		ld0 {
-> +			label = "arty:green:ld0";
-> +			gpios = <&ledsgpio 0 GPIO_ACTIVE_HIGH>;
-> +		};
-> +
-> +		ld1 {
-> +			label = "arty:green:ld1";
-> +			gpios = <&ledsgpio 1 GPIO_ACTIVE_HIGH>;
-> +		};
-> +
-> +		ld2 {
-> +			label = "arty:green:ld2";
-> +			gpios = <&ledsgpio 2 GPIO_ACTIVE_HIGH>;
-> +		};
-> +
-> +		ld3 {
-> +			label = "arty:green:ld3";
-> +			gpios = <&ledsgpio 3 GPIO_ACTIVE_HIGH>;
-> +		};
-> +	};
-> +
-> +	swgpio: gpio@f0006000 {
-> +		compatible = "ti,74125";
-> +		reg = <0xf0006000 0x4>;
-> +		gpio-controller;
-> +		#gpio-cells = <2>;
-> +	};
-> +};
-> diff --git a/arch/riscv/dts/litex_soc_linux.dtsi b/arch/riscv/dts/litex_soc_linux.dtsi
-> new file mode 100644
-> index 0000000000..94a0ba29da
-> --- /dev/null
-> +++ b/arch/riscv/dts/litex_soc_linux.dtsi
-> @@ -0,0 +1,49 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +/dts-v1/;
-> +
-> +/ {
-> +	compatible = "litex,vexriscv-soc-linux";
-> +
-> +	#address-cells = <1>;
-> +	#size-cells = <1>;
-> +
-> +	cpus {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		timebase-frequency = <100000000>; // 100 MHz
-> +
-> +		cpu@0 {
-> +			device_type = "cpu";
-> +			compatible = "spinalhdl,vexriscv", "riscv";
-> +			reg = <0>;
-> +		};
-> +	};
-> +
-> +	uart0: serial@f0001000 {
-> +		compatible = "litex,uart";
-> +		reg = <0xf0001000 0x18>;
-> +		status = "disabled";
-> +	};
-> +
-> +	mac0: mac@f0006800 {
-> +		compatible = "litex,liteeth";
-> +		reg = <0xf0006800 0x7c /* base */
-> +			0xf0007000 0x0a /* mdio_base */
-> +			0xb0000000 0x2000>; /* buf_base */
-> +		tx-fifo-depth = <2>;
-> +		rx-fifo-depth = <2>;
-> +		status = "disabled";
-> +	};
-> +
-> +	spi0: spi@f000b800 {
-> +		compatible = "litex,spiflash";
-> +
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		reg = <0xf000b800 0x100>;
-> +		status = "disabled";
-> +	};
-> +};
-> diff --git a/arch/riscv/include/asm/debug_ll.h b/arch/riscv/include/asm/debug_ll.h
-> index b4caa0597a..a3b9c1c4bc 100644
-> --- a/arch/riscv/include/asm/debug_ll.h
-> +++ b/arch/riscv/include/asm/debug_ll.h
-> @@ -43,6 +43,9 @@ static inline void PUTC_LL(char ch)
+>  		cpu@0 {
+>  			device_type = "cpu";
+>  			compatible = "cliffordwolf,picorv32", "riscv";
+> diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+> index 5a517fe6b4..96637f988a 100644
+> --- a/drivers/clocksource/timer-riscv.c
+> +++ b/drivers/clocksource/timer-riscv.c
+> @@ -12,9 +12,8 @@
+>  #include <clock.h>
+>  #include <asm/timer.h>
+>  #include <asm/csr.h>
+> -#include <asm/system.h>
 >  
->  	writel(ch, uart0);
+> -static u64 notrace riscv_timer_get_count_sbi(void)
+> +static u64 notrace riscv_timer_get_count_time(void)
+>  {
+>  	__maybe_unused u32 hi, lo;
+>  
+> @@ -29,7 +28,7 @@ static u64 notrace riscv_timer_get_count_sbi(void)
+>  	return ((u64)hi << 32) | lo;
 >  }
-> +#elif defined CONFIG_DEBUG_LITEX
-> +
-> +#include <asm/debug_ll_litex.h>
 >  
->  #endif
+> -static u64 notrace riscv_timer_get_count_rdcycle(void)
+> +static u64 notrace riscv_timer_get_count_cycle(void)
+>  {
+>  	__maybe_unused u32 hi, lo;
 >  
-> diff --git a/arch/riscv/include/asm/debug_ll_litex.h b/arch/riscv/include/asm/debug_ll_litex.h
-> new file mode 100644
-> index 0000000000..2fcdd9b0ec
-> --- /dev/null
-> +++ b/arch/riscv/include/asm/debug_ll_litex.h
-> @@ -0,0 +1,123 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (C) 2019 Antony Pavlov <antonynpavlov@gmail.com>
-> + *
-> + * This file is part of barebox.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-
-Nitpick: That part could be dropped as the SPDX-License-Identifier
-above says as much.
-
-> + *
-> + */
-> +
-> +#ifndef __ASM_DEBUG_LL_LITEX__
-> +#define __ASM_DEBUG_LL_LITEX__
-> +
-> +/** @file
-> + *  This File contains declaration for early output support
-> + */
-> +
-> +#include <linux/kconfig.h>
-> +
-> +#define DEBUG_LL_UART_ADDR	0xf0001000
-> +#define UART_RXTX	0x00
-> +#define UART_TXFULL	0x04
-> +#define UART_RXEMPTY	0x08
-> +#define UART_EV_PENDING	0x10
-> +#define  UART_EV_RX	(1 << 1)
-> +
-> +
-> +#ifndef __ASSEMBLY__
-> +
-> +/*
-> + * C macros
-> + */
-> +
-> +#include <asm/io.h>
-> +
-> +static inline void PUTC_LL(char ch)
-> +{
-> +#ifdef CONFIG_DEBUG_LL
-> +	/* wait for space */
-> +	while (__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_TXFULL))
-> +		;
-> +
-> +	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_RXTX);
-> +#endif /* CONFIG_DEBUG_LL */
-> +}
-> +#else /* __ASSEMBLY__ */
-> +/*
-> + * Macros for use in assembly language code
-> + */
-> +
-> +/*
-> + * output a character in a0
-> + */
-> +.macro	debug_ll_outc_a0
-> +#ifdef CONFIG_DEBUG_LL
-> +
-> +	li	t0, DEBUG_LL_UART_ADDR
-> +
-> +201:
-> +	lbu	t1, UART_TXFULL(t0)	/* uart tx full ? */
-> +	andi	t1, t1, 0xff
-> +	bnez	t1, 201b		/* try again */
-> +
-> +	sb	a0, UART_RXTX(t0)	/* write the character */
-> +
-> +#endif /* CONFIG_DEBUG_LL */
-> +.endm
-> +
-> +/*
-> + * output a character
-> + */
-> +.macro	debug_ll_outc chr
-> +#ifdef CONFIG_DEBUG_LL
-> +	li	a0, \chr
-> +	debug_ll_outc_a0
-> +#endif /* CONFIG_DEBUG_LL */
-> +.endm
-> +
-> +/*
-> + * check character in input buffer
-> + * return value:
-> + *  v0 = 0   no character in input buffer
-> + *  v0 != 0  character in input buffer
-> + */
-> +.macro	debug_ll_tstc
-> +#ifdef CONFIG_DEBUG_LL
-> +	li	t0, DEBUG_LL_UART_ADDR
-> +
-> +	/* get line status and check for data present */
-> +	lbu	s0, UART_RXEMPTY(t0)
-> +	bnez    s0, 243f
-> +	li	s0, 1
-> +	j	244f
-> +243:	li	s0, 0
-> +244:	nop
-> +#endif /* CONFIG_DEBUG_LL */
-> +.endm
-> +
-> +/*
-> + * get character to v0
-> + */
-> +.macro	debug_ll_getc
-> +#ifdef CONFIG_DEBUG_LL
-> +
-> +204:
-> +	debug_ll_tstc
-> +
-> +	/* try again */
-> +	beqz	s0, 204b
-> +
-> +	/* read a character */
-> +	lb	s0, UART_RXTX(t0)
-> +	li      t1, UART_EV_RX
-> +	sb	t1, UART_EV_PENDING(t0)
-> +
-> +#endif /* CONFIG_DEBUG_LL */
-> +.endm
-> +#endif /* __ASSEMBLY__ */
-> +
-> +#endif /* __ASM_DEBUG_LL_LITEX__ */
-> diff --git a/common/Kconfig b/common/Kconfig
-> index a9feae2ae8..cb8bd8b2bf 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -1399,6 +1399,10 @@ config DEBUG_SIFIVE
->  	bool "SiFive serial0 port"
->  	depends on SOC_SIFIVE
+> @@ -44,24 +43,25 @@ static u64 notrace riscv_timer_get_count_rdcycle(void)
+>  	return ((u64)hi << 32) | lo;
+>  }
 >  
-> +config DEBUG_LITEX
-> +	bool "LiteX serial port"
-> +	depends on SOC_LITEX
-> +
->  endchoice
+> -static u64 notrace riscv_timer_get_count(void)
+> -{
+> -	if (riscv_mode() == RISCV_S_MODE)
+> -		return riscv_timer_get_count_sbi();
+> -	else
+> -		return riscv_timer_get_count_rdcycle();
+> -}
+> -
+>  static struct clocksource riscv_clocksource = {
+> -	.read		= riscv_timer_get_count,
+>  	.mask		= CLOCKSOURCE_MASK(64),
+>  	.priority	= 100,
+>  };
 >  
->  config DEBUG_LL_NS16550
-> diff --git a/images/Makefile.riscv b/images/Makefile.riscv
-> index 4410765cf6..0645238c43 100644
-> --- a/images/Makefile.riscv
-> +++ b/images/Makefile.riscv
-> @@ -19,3 +19,7 @@ image-$(CONFIG_BOARD_HIFIVE) += barebox-hifive-unmatched.img barebox-hifive-unle
->  pblb-$(CONFIG_BOARD_BEAGLEV) += start_beaglev_starlight
->  FILE_barebox-beaglev-starlight.img = start_beaglev_starlight.pblb
->  image-$(CONFIG_BOARD_BEAGLEV) += barebox-beaglev-starlight.img
+>  static int riscv_timer_init(struct device_d* dev)
+>  {
+> +	struct device_node *cpu;
 > +
-> +pblb-$(CONFIG_BOARD_LITEX_LINUX) += start_litex_linux
-> +FILE_barebox-litex-linux.img = start_litex_linux.pblb
-> +image-$(CONFIG_BOARD_LITEX_LINUX) += barebox-litex-linux.img
+>  	dev_dbg(dev, "running at %lu Hz\n", riscv_timebase);
+>  
+> +	cpu = of_find_node_by_path("/cpus");
+> +
+> +	if (of_property_read_bool(cpu, "barebox,csr-cycle")) {
+> +		riscv_clocksource.read = riscv_timer_get_count_cycle;
+> +	} else {
+> +		riscv_clocksource.read = riscv_timer_get_count_time;
+> +	}
+> +
+>  	riscv_clocksource.mult = clocksource_hz2mult(riscv_timebase, riscv_clocksource.shift);
+>  
+>  	return init_clock(&riscv_clocksource);
 > 
 
 
