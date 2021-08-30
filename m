@@ -1,55 +1,53 @@
-Delivery-date: Mon, 30 Aug 2021 13:54:12 +0200
+Delivery-date: Mon, 30 Aug 2021 13:54:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mKfrg-00048o-Ui
-	for lore@lore.pengutronix.de; Mon, 30 Aug 2021 13:54:12 +0200
+	id 1mKfrh-00049D-Le
+	for lore@lore.pengutronix.de; Mon, 30 Aug 2021 13:54:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mKfrd-0006a9-15
-	for lore@pengutronix.de; Mon, 30 Aug 2021 13:54:12 +0200
+	id 1mKfrd-0006aA-5D
+	for lore@pengutronix.de; Mon, 30 Aug 2021 13:54:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=1XajxlmWfnznoKM/EJ6IFQfjmeRezeCR9OjGyKv9Z0o=; b=wr4CAcumDCfl+3
-	Y2ahAMo8s8PvnAdHQHVHHkO6sffd5gTOEZZeBbhq8YsuyZgx4o6MSDekhnHo6vA9k3xLWwcA4dApR
-	4AoBLcLFK1bI1vVUjuoCHf1terqiqGPbAYdU6hIGkIeWhCPjUpHzFTUnGJNNhlvWbAR+LMHshOpaI
-	hylct09Ylg3R+gsZ8Z/abzKa83KKsJRMlSoi4DsLCxOgWKXU9gT2HB0FncugNiQ6k5/CRXkFZKwsI
-	fryt+F476VQLjgawPU0Lz3ttqXBF/Fk/AGe1hFCsPie4BpoEsfzrVpJv+EFXStPtXKicu2svJukFT
-	EehmuY+nDusB4yYpZubw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=p3Ohmk998vfya/XcpDNdvt+NPkbY+5Mb4GtNYWc/Se8=; b=FBRDIMGS0j9kpX
+	Q/DP1aTzm9EgAgAd2w3jz0v4mHM7pDm7pIqO0dBtDQholilYfmQGV6J7p2fCP0jSl/AQ2ts6xfrpk
+	Vy7/TwSGl12CDZ+FhsSSA+3d4DJXgrBATSbXjsGKjQN/1kfxFPEymseZKMY0oua8YcFMCD50y3D7x
+	P8NRpcJsA/8J4wj8RRtXvmI7+8pF+wWBvw5PUu0VJOxMF0E6CE6xaewufqnt08WjVYtn9DpippjpV
+	CSGyOREKA+HiN16fBJHmeOS+Zbs0e8+GErHLa3CI9UKEO7QAWiDZuKz+q/Wlr1EchDWCvGEjTH9pI
+	Tx/4C2pA4QukqxSyaJng==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mKfpl-00H8Mz-QH; Mon, 30 Aug 2021 11:52:13 +0000
+	id 1mKfpi-00H8MX-PW; Mon, 30 Aug 2021 11:52:10 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mKfpa-00H8KH-VO
- for barebox@lists.infradead.org; Mon, 30 Aug 2021 11:52:08 +0000
+ id 1mKfpa-00H8KF-Ui
+ for barebox@lists.infradead.org; Mon, 30 Aug 2021 11:52:04 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mKfpV-0006Oo-JE; Mon, 30 Aug 2021 13:51:57 +0200
+ id 1mKfpV-0006On-Il; Mon, 30 Aug 2021 13:51:57 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mKfpV-0006FV-AU; Mon, 30 Aug 2021 13:51:57 +0200
+ id 1mKfpV-0006FS-9r; Mon, 30 Aug 2021 13:51:57 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: lst@pengutronix.de, ukl@pengutronix.de, rcz@pengutronix.de,
  Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 30 Aug 2021 13:51:55 +0200
-Message-Id: <20210830115156.21907-2-a.fatoum@pengutronix.de>
+Date: Mon, 30 Aug 2021 13:51:54 +0200
+Message-Id: <20210830115156.21907-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210830115156.21907-1-a.fatoum@pengutronix.de>
-References: <20210830115156.21907-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210830_045203_081101_978EA77B 
-X-CRM114-Status: GOOD (  14.73  )
+X-CRM114-CacheID: sfid-20210830_045203_075311_0D24CE4F 
+X-CRM114-Status: GOOD (  14.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,94 +71,66 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/3] mci: imx-esdhc-pbl: support eMMC boot partitions on
- i.MX8MP
+Subject: [PATCH v2 1/3] ARM: i.MX8MP: bbu: fix wrong flash header offset for
+ eMMC boot partition
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The i.MX header for SD/MMC starts at an offset to allow for a partition
-table at offset 0. i.MX8MN/P bootrom did away with the offset for eMMC
-boot partitions, which usually lack on-disk partition tables, but kept a
-32-byte offset for SD and eMMC user partitions.
+According to the reference manual of the i.MX8MP, the bootrom expects
+the bootloader to sit directly at the start of the eMMC boot partition.
 
-The i.MX8MN/P also introduced a ROM API that allows chainloading from
-boot medium by calling back into ROM. This likely handles that
-difference for us, but as we don't support it yet and we already have
-the PBL eSDHC driver, teach it to detect whether boot is from eMMC boot
-partition or not and use the appropriate offset.
+The 32K offset is only valid for eMMC user partitions and SD.
+Tell barebox_update about this, so it can strip away the first 32K
+when writing to an eMMC boot partition.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - new patch. Without, barebox can be written, but not booted.
-    Tested on i.MX8MN.
----
- drivers/mci/imx-esdhc-pbl.c | 39 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+  - fix wrong use of flash header offset: This refers to offset in file,
+    but we want to change offset on disk. There is a knob for that
+    (IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER), so use that instead
 
-diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
-index e649eb8bbafb..66df4f6dfc74 100644
---- a/drivers/mci/imx-esdhc-pbl.c
-+++ b/drivers/mci/imx-esdhc-pbl.c
-@@ -25,6 +25,40 @@
- 
- #define esdhc_send_cmd	__esdhc_send_cmd
- 
-+static u8 ext_csd[512] __aligned(64);
-+
-+static int esdhc_send_ext_csd(struct fsl_esdhc_host *host)
-+{
-+	struct mci_cmd cmd;
-+	struct mci_data data;
-+
-+	cmd.cmdidx = MMC_CMD_SEND_EXT_CSD;
-+	cmd.cmdarg = 0;
-+	cmd.resp_type = MMC_RSP_R1;
-+
-+	data.dest = ext_csd;
-+	data.blocks = 1;
-+	data.blocksize = sizeof(ext_csd);
-+	data.flags = MMC_DATA_READ;
-+
-+	return esdhc_send_cmd(host, &cmd, &data);
-+}
-+
-+static bool esdhc_bootpart_active(struct fsl_esdhc_host *host)
-+{
-+	unsigned bootpart;
-+
-+	int ret = esdhc_send_ext_csd(host);
-+	if (ret)
-+		return false;
-+
-+	bootpart = (ext_csd[EXT_CSD_PARTITION_CONFIG] >> 3) & 0x7;
-+	if (bootpart == 1 || bootpart == 2)
-+		return true;
-+
-+	return false;
-+}
-+
- static int esdhc_read_blocks(struct fsl_esdhc_host *host, void *dst, size_t len)
- {
- 	struct mci_cmd cmd;
-@@ -338,14 +372,17 @@ int imx8mp_esdhc_load_image(int instance, bool start)
- {
- 	struct esdhc_soc_data data;
- 	struct fsl_esdhc_host host = { 0 };
-+	u32 offset;
- 	int ret;
- 
- 	ret = imx8m_esdhc_init(&host, &data, instance);
- 	if (ret)
- 		return ret;
- 
-+	offset = esdhc_bootpart_active(&host)? 0 : SZ_32K;
-+
- 	return esdhc_load_image(&host, MX8M_DDR_CSD1_BASE_ADDR,
--				MX8MQ_ATF_BL33_BASE_ADDR, SZ_32K, 0, start);
-+				MX8MQ_ATF_BL33_BASE_ADDR, offset, 0, start);
+Tested on i.MX8MN.
+---
+ arch/arm/mach-imx/imx-bbu-internal.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index 880f8b249642..91e1785d18e0 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -393,6 +393,18 @@ static unsigned long imx_bbu_flash_header_offset_mmc(void)
+ 	return SZ_1K;
  }
- #endif
+ 
++static unsigned long imx_bbu_flash_header_offset_mmcboot(unsigned long *flags)
++{
++	/*
++	 * i.MX8MP places IVT directly at start of eMMC boot partition. IVT
++	 * in eMMC user partition and SD is at 32K offset.
++	 */
++	if (cpu_is_mx8mp())
++		*flags |= IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER;
++
++	return imx_bbu_flash_header_offset_mmc();
++}
++
+ static int imx_bbu_update(struct bbu_handler *handler, struct bbu_data *data)
+ {
+ 	struct imx_internal_bbu_handler *imx_handler =
+@@ -606,9 +618,12 @@ static int imx_bbu_internal_mmcboot_register_handler(const char *name,
+ 						     unsigned long flags)
+ {
+ 	struct imx_internal_bbu_handler *imx_handler;
++	unsigned long flash_header_offset;
++
++	flash_header_offset = imx_bbu_flash_header_offset_mmcboot(&flags);
+ 
+ 	imx_handler = __init_handler(name, devicefile, flags);
+-	imx_handler->flash_header_offset = imx_bbu_flash_header_offset_mmc();
++	imx_handler->flash_header_offset = flash_header_offset;
+ 
+ 	imx_handler->handler.handler = imx_bbu_internal_mmcboot_update;
  
 -- 
 2.30.2
