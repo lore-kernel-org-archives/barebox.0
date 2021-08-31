@@ -1,84 +1,80 @@
-Delivery-date: Mon, 30 Aug 2021 16:50:59 +0200
+Delivery-date: Tue, 31 Aug 2021 06:09:45 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mKicl-00035H-Rl
-	for lore@lore.pengutronix.de; Mon, 30 Aug 2021 16:50:59 +0200
+	id 1mKv5k-0000zb-1D
+	for lore@lore.pengutronix.de; Tue, 31 Aug 2021 06:09:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mKich-0001xA-K6
-	for lore@pengutronix.de; Mon, 30 Aug 2021 16:50:59 +0200
+	id 1mKv5f-0000ZZ-LD
+	for lore@pengutronix.de; Tue, 31 Aug 2021 06:09:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:List-Subscribe:List-Help:
-	List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:Subject:Cc:To
-	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=aMd+jzn+Tquy8cQaPUdAlZD/UkOwE/N2DQuxXb/Hxb8=; b=RhNoPbuWNMHEXO
-	AXi9L2c9a1k/6WtXLXuOcNV5g5d3qrrQhhI+QOWwVniIK1jA8pcWl+jNDleokvksjudgnNaCRJ7vf
-	YL4BYP0W++7Qc1jgAVlYy/oE2AQ7qLvxUvVwq5VCU3GSkCSY7ZWO7YpJiSIAjqhTEwLWJK9DYnV0m
-	V45DYTnC0sEqOYv9TzS8OwhESb07UUUj0NTmnvNATyA40XAbvjLpMQS989N2nU3ZGjcVD9QYd/9Yg
-	RHSLEC1IcCAFXnoL/Yo/A/HAJ+sxYQppcgWeJNr/ILVjitZnQAvM/kJNnp7BY1GqqFu4B1+sRzOyl
-	rJRDfPhSR6cW2SetfOeA==;
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:Mime-Version:References:In-Reply-To:
+	Message-Id:Subject:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=vnrExexCsFxMf+QbRD5lJ29h5UOodlqa3d5oi80xeT8=; b=bSLmCCD8AIyKYE
+	DnNcci/RN/9e/TjRW43EQpxh/aaOlVn7Gyntw9lAdBBJ13gsjHNo3G2Xt8kVbU352yrbnq7RcPWjJ
+	6sUza7GdwL3JKaZnFQuocHXASsvvgaXY3eJQhmWjE5lh22Edd2U5aeuPmWd82FStlj9oYujW8r+iz
+	Hcpurehtnu6arrsC/792uaxIKNe3SRXITYE44SRRUqLl6c5bBqqWTpK4IFq6hXVh5Y80X+dUkALLO
+	ylI2wju2mxmUs/O/JE97Xlt9rMa5bbV6GUU7Q9obIG9yS9ADX9QAsvP+9MTnmBb4KnbD3U3Fqf61F
+	cgpDgtwPRKHvVfSKDM/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mKian-00HSyq-7b; Mon, 30 Aug 2021 14:48:57 +0000
-Received: from smtpout140.security-mail.net ([85.31.212.143]
- helo=fx403.security-mail.net)
+	id 1mKv3T-001JMH-B8; Tue, 31 Aug 2021 04:07:23 +0000
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mKiae-00HSxs-V9
- for barebox@lists.infradead.org; Mon, 30 Aug 2021 14:48:53 +0000
-Received: from localhost (localhost [127.0.0.1])
- by fx403.security-mail.net (Postfix) with ESMTP id 722EB412501
- for <barebox@lists.infradead.org>; Mon, 30 Aug 2021 16:48:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
- s=sec-sig-email; t=1630334923;
- bh=qhyQ+xJd7EJgyeKml+fBSfBQJkiQyR9qbS9DKtIHjOc=;
- h=From:To:Cc:Subject:Date;
- b=bUHGF6tiGyAH2DrbhfJEAE/CpJ2fWqofJI3GaIhr6/bGTWHxcMRGAO7QxPkIWy0ut
- vdms0Ze/gDIwdl8dscKHWNJ5G97AI2SYBsJ+3aNkcQ617RpIf+1spJf27iaEmgjCBb
- 9c2et4ih9cLBaT92id7NZ9wDo7bU8VaZx1XiNLXc=
-Received: from fx403 (localhost [127.0.0.1])
- by fx403.security-mail.net (Postfix) with ESMTP id A40464124B2;
- Mon, 30 Aug 2021 16:48:42 +0200 (CEST)
-X-Virus-Scanned: E-securemail
-Secumail-id: <dc3d.612cefca.3c099.0>
-Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
- by fx403.security-mail.net (Postfix) with ESMTPS id 3E4CC412483;
- Mon, 30 Aug 2021 16:48:42 +0200 (CEST)
-Received: from zimbra2.kalray.eu (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTPS id 2781027E02EB;
- Mon, 30 Aug 2021 16:48:42 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 11A2527E02E8;
- Mon, 30 Aug 2021 16:48:42 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 11A2527E02E8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1630334922;
- bh=NmUxc0lgNOcyHxeUmHy0fKBl8tbJ4bEftvkQS0FWkRQ=;
- h=From:To:Date:Message-Id;
- b=OpR1s+1gosirxW8bm2cd+jN+n/tWIjpiN5JnEYLvZHHlyAFwRps5ie1A6SpmsbWOJ
- iqui8muwa+R9XK5J2N8OdRpLa5RG4V5Qw93VaoBtnq7r1MJ6lC65LBdD/1CLl7Nw1O
- aCrCz//kM/Rs8nwbOWR2XF7jLjA41Y1PVxw6egkI=
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id l2rKdpRP_f61; Mon, 30 Aug 2021 16:48:42 +0200 (CEST)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
- by zimbra2.kalray.eu (Postfix) with ESMTPSA id E889B27E02A8;
- Mon, 30 Aug 2021 16:48:41 +0200 (CEST)
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- Jules Maselbas <jmaselbas@kalray.eu>
-Date: Mon, 30 Aug 2021 16:48:35 +0200
-Message-Id: <20210830144835.27458-1-jmaselbas@kalray.eu>
-X-Mailer: git-send-email 2.17.1
-X-Virus-Scanned: by Secumail
+ id 1mKv3L-001JLt-DB
+ for barebox@lists.infradead.org; Tue, 31 Aug 2021 04:07:19 +0000
+Received: by mail-lf1-x136.google.com with SMTP id g13so35617995lfj.12
+ for <barebox@lists.infradead.org>; Mon, 30 Aug 2021 21:07:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=yVDtrP2SfZo02wcfDMytZN+WLdEq9vHzW3wy0/kNMV8=;
+ b=YZ36CPJXth/lTiKSwmDZq6G+azrzEJoCPRUKiO3tkRUrxs1bVNCgubbYpJDp999Tzd
+ yCyBWYTbJuF42sEhn43piK26tp4G+txQg0cFTPYmIXx+PRZ8DoTwKcwCtawS/Kl0gQo0
+ HJFgyfj8eZAgMOSm2Qu8OjnaW3Gq8ajzD7p5FB//GzD4Ol7LJGxoVbtME4cQv8/bLNTt
+ lfaQ4qzaw3Od8vP3eg0OQB79qG7bwtdnEk2MRYhDTigeJjwEwHV2MsOa1BjAsHjwJQiM
+ 977Ewn6B/epkDpnpsDd0C44XTiXQIsVArTlFig+cE1NYFySigGNryx1lnn9YO8kmfC8y
+ MI6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=yVDtrP2SfZo02wcfDMytZN+WLdEq9vHzW3wy0/kNMV8=;
+ b=asR4mMMTaZg01DUETsoMLVWQfzNmgnwu0BzJ8Kl9JabvFbHAY6cLx0rLWu21O/ozX+
+ UIFRITxiLu31TsKErdP97/n9lQV/mPjL3mq9BH5XnYHzVoaZw7PixpKwZjA9DO0m0hiL
+ 2dB6DLnigqfMGSvkfe2NvZgpfUsC4ywW/+SRaCGHVC2JQGDmOqeCnbnwSO23IAUuSyTd
+ /plK2nujSQPSLqqg4BZiqKtCeSCJxjHDda5Ojr9VDl74zsmn4xLkCAsLaXHsp1idjiUt
+ XS+7CzXHQXh+0L4zdQGAuHnOko23yFpNUedRkJqEkFKpi8MVDh2g45v9vWZCrnTtZsaP
+ 9EMQ==
+X-Gm-Message-State: AOAM531K7rHzM3LskzAsTakv1+OB7u1UYFYFneLxOHnUGgTd2fJgTmEr
+ zePgZP1ecPb8a/mExMpsrw0bZQVxKgA=
+X-Google-Smtp-Source: ABdhPJytcjohvnxXHkiJQcg5Z2vLUG+b6kL9kmLbYt1SG28tprCBKj8sngjJyg6rSmITuyEc7PMiOg==
+X-Received: by 2002:a19:c7c8:: with SMTP id
+ x191mr15671796lff.652.1630382832658; 
+ Mon, 30 Aug 2021 21:07:12 -0700 (PDT)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+ by smtp.gmail.com with ESMTPSA id s9sm2028219ljp.34.2021.08.30.21.07.11
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 30 Aug 2021 21:07:12 -0700 (PDT)
+Date: Tue, 31 Aug 2021 07:07:10 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-Id: <20210831070710.3b6200eff8e7adb22bdf1454@gmail.com>
+In-Reply-To: <ce1667b1-e42f-3836-9747-393a5fd8afc7@pengutronix.de>
+References: <20210817101104.114945-1-antonynpavlov@gmail.com>
+ <20210817101104.114945-2-antonynpavlov@gmail.com>
+ <ce1667b1-e42f-3836-9747-393a5fd8afc7@pengutronix.de>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; i686-pc-linux-gnu)
+Mime-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210830_074849_525840_01D3A4D2 
-X-CRM114-Status: GOOD (  20.40  )
+X-CRM114-CacheID: sfid-20210830_210715_500332_FB1581DF 
+X-CRM114-Status: GOOD (  32.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,283 +86,190 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: barebox@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [RFC PATCH] usb: gadget: dfu: Rework dfu command to use usbgadget
+Subject: Re: [PATCH RESEND v4 1/8] clocksource: timer-riscv: select CSR from
+ device tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The dfu command now uses the composite multi gadget to register the usb
-functionality. This allows the removal of the usb composite driver from
-dfu.c
+On Mon, 23 Aug 2021 14:08:52 +0200
+Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 
-As the dfu command is blocking the command slice must be released while
-the dfu gadget is running in order to do operations on the file system.
+Hi Ahmad!
 
-The usb_dfu_register() function is replaced with usb_dfu_detached() for
-the dfu command to return a different value depending on if it has been
-interrupted with CTRL-C or if the gadget has been detached.
+> On 17.08.21 12:10, Antony Pavlov wrote:
+> > barebox timer-riscv driver supports one of user counters:
+> > =
 
-Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
----
- commands/dfu.c           |  24 +++---
- drivers/usb/gadget/dfu.c | 163 +--------------------------------------
- include/usb/dfu.h        |   2 +-
- 3 files changed, 15 insertions(+), 174 deletions(-)
+> >   * 'cycle', counter for RDCYCLE instruction (CSR 0xc00);
+> >   * 'time', timer for RDTIME instruction (CSR 0xc01).
+> > =
 
-diff --git a/commands/dfu.c b/commands/dfu.c
-index 3132a7479d..0d8a703300 100644
---- a/commands/dfu.c
-+++ b/commands/dfu.c
-@@ -11,6 +11,7 @@
- #include <fs.h>
- #include <xfuncs.h>
- #include <usb/dfu.h>
-+#include <usb/gadget-multi.h>
- #include <linux/err.h>
- 
- /* dfu /dev/self0(bootloader)sr,/dev/nand0.root.bb(root)
-@@ -20,28 +21,27 @@
-  */
- static int do_dfu(int argc, char *argv[])
- {
--	struct f_dfu_opts opts;
- 	char *argstr;
--	struct usb_dfu_dev *dfu_alts = NULL;
- 	int ret;
- 
- 	if (argc != optind + 1)
- 		return COMMAND_ERROR_USAGE;
- 
- 	argstr = argv[optind];
-+	ret = usbgadget_register(true, argstr, false, NULL, false, false);
-+	if (ret)
-+		return ret;
- 
--	opts.files = file_list_parse(argstr);
--	if (IS_ERR(opts.files)) {
--		ret = PTR_ERR(opts.files);
--		goto out;
-+	command_slice_release();
-+	while (!usb_dfu_detached()) {
-+		if (ctrlc()) {
-+			ret = -EINTR;
-+			break;
-+		}
- 	}
-+	command_slice_acquire();
- 
--	ret = usb_dfu_register(&opts);
--
--	file_list_free(opts.files);
--out:
--
--	free(dfu_alts);
-+	usb_multi_unregister();
- 
- 	return ret;
- }
-diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-index fd0ec505dc..ba5fdd5b74 100644
---- a/drivers/usb/gadget/dfu.c
-+++ b/drivers/usb/gadget/dfu.c
-@@ -817,168 +817,9 @@ static void dfu_disable(struct usb_function *f)
- 	dfu_abort(dfu);
- }
- 
--#define STRING_MANUFACTURER_IDX		0
--#define STRING_PRODUCT_IDX		1
--#define STRING_DESCRIPTION_IDX		2
--
--static struct usb_string strings_dev[] = {
--	[STRING_MANUFACTURER_IDX].s = NULL,
--	[STRING_PRODUCT_IDX].s = NULL,
--	[STRING_DESCRIPTION_IDX].s = "USB Device Firmware Upgrade",
--	{  } /* end of list */
--};
--
--static struct usb_gadget_strings stringtab_dev = {
--	.language	= 0x0409,	/* en-us */
--	.strings	= strings_dev,
--};
--
--static struct usb_gadget_strings *dev_strings[] = {
--	&stringtab_dev,
--	NULL,
--};
--
--static void dfu_unbind_config(struct usb_configuration *c)
--{
--	free(dfu_string_defs);
--}
--
--static struct usb_configuration dfu_config_driver = {
--	.label			= "USB DFU",
--	.unbind			= dfu_unbind_config,
--	.bConfigurationValue	= 1,
--	.bmAttributes		= USB_CONFIG_ATT_SELFPOWER,
--};
--
--static struct usb_device_descriptor dfu_dev_descriptor = {
--	.bLength		= USB_DT_DEVICE_SIZE,
--	.bDescriptorType	= USB_DT_DEVICE,
--	.bcdUSB			= 0x0100,
--	.bDeviceClass		= 0x00,
--	.bDeviceSubClass	= 0x00,
--	.bDeviceProtocol	= 0x00,
--/*	.idVendor		= dynamic */
--/*	.idProduct		= dynamic */
--	.bcdDevice		= 0x0000,
--	.bNumConfigurations	= 0x01,
--};
--
--static struct usb_function_instance *fi_dfu;
--static struct usb_function *f_dfu;
--
--static int dfu_driver_bind(struct usb_composite_dev *cdev)
-+int usb_dfu_detached(void)
- {
--	struct usb_gadget *gadget = cdev->gadget;
--	int status;
--
--	if (gadget->vendor_id && gadget->product_id) {
--		dfu_dev_descriptor.idVendor = cpu_to_le16(gadget->vendor_id);
--		dfu_dev_descriptor.idProduct = cpu_to_le16(gadget->product_id);
--	} else {
--		dfu_dev_descriptor.idVendor = cpu_to_le16(0x1d50); /* Openmoko, Inc */
--		dfu_dev_descriptor.idProduct = cpu_to_le16(0x60a2); /* barebox bootloader USB DFU Mode */
--	}
--
--	strings_dev[STRING_MANUFACTURER_IDX].s = gadget->manufacturer;
--	strings_dev[STRING_PRODUCT_IDX].s = gadget->productname;
--
--	status = usb_string_id(cdev);
--	if (status < 0)
--		goto fail;
--	strings_dev[STRING_MANUFACTURER_IDX].id = status;
--	dfu_dev_descriptor.iManufacturer = status;
--
--	status = usb_string_id(cdev);
--	if (status < 0)
--		goto fail;
--	strings_dev[STRING_PRODUCT_IDX].id = status;
--	dfu_dev_descriptor.iProduct = status;
--
--	/* config description */
--	status = usb_string_id(cdev);
--	if (status < 0)
--		goto fail;
--	strings_dev[STRING_DESCRIPTION_IDX].id = status;
--	dfu_config_driver.iConfiguration = status;
--
--	status = usb_add_config_only(cdev, &dfu_config_driver);
--	if (status < 0)
--		goto fail;
--
--	fi_dfu = usb_get_function_instance("dfu");
--	if (IS_ERR(fi_dfu)) {
--		status = PTR_ERR(fi_dfu);
--		goto fail;
--	}
--
--	f_dfu = usb_get_function(fi_dfu);
--	if (IS_ERR(f_dfu)) {
--		status = PTR_ERR(f_dfu);
--		goto fail;
--	}
--
--	status = usb_add_function(&dfu_config_driver, f_dfu);
--	if (status)
--		goto fail;
--
--	return 0;
--fail:
--	return status;
--}
--
--static int dfu_driver_unbind(struct usb_composite_dev *cdev)
--{
--	usb_put_function(f_dfu);
--	usb_put_function_instance(fi_dfu);
--
--	return 0;
--}
--
--static struct usb_composite_driver dfu_driver = {
--	.name		= "g_dfu",
--	.dev		= &dfu_dev_descriptor,
--	.strings	= dev_strings,
--	.max_speed	= USB_SPEED_HIGH,
--	.bind		= dfu_driver_bind,
--	.unbind		= dfu_driver_unbind,
--};
--
--int usb_dfu_register(struct f_dfu_opts *opts)
--{
--	int ret;
--
--	if (dfu_files)
--		return -EBUSY;
--
--	dfu_files = opts->files;
--
--	ret = usb_composite_probe(&dfu_driver);
--	if (ret)
--		goto out;
--
--	while (1) {
--		ret = usb_gadget_poll();
--		if (ret < 0)
--			goto out1;
--
--		if (dfudetach) {
--			ret = 0;
--			goto out1;
--		}
--
--		if (ctrlc()) {
--			ret = -EINTR;
--			goto out1;
--		}
--	}
--
--out1:
--	dfudetach = 0;
--	usb_composite_unregister(&dfu_driver);
--out:
--	dfu_files = NULL;
--
--	return ret;
-+	return dfudetach;
- }
- 
- static void dfu_free_func(struct usb_function *f)
-diff --git a/include/usb/dfu.h b/include/usb/dfu.h
-index 560a0318fe..81425f7c62 100644
---- a/include/usb/dfu.h
-+++ b/include/usb/dfu.h
-@@ -29,6 +29,6 @@ struct f_dfu_opts {
- 	struct file_list *files;
- };
- 
--int usb_dfu_register(struct f_dfu_opts *);
-+int usb_dfu_detached(void);
- 
- #endif /* _USB_DFU_H */
--- 
-2.17.1
+> > At the moment in M-mode timer-riscv uses the 'cycle' counter,
+> > and in S-mode timer-riscv uses the 'time' timer.
+> > =
 
+> > Alas picorv32 CPU core supports only the 'cycle' counter.
+> > VexRiscV CPU core in M-mode supports only the 'time' timer.
+> > =
+
+> > This patch makes it possible to use the 'time' timer
+> > for VexRiscV CPU in M-mode.
+> > =
+
+> > See also http://lists.infradead.org/pipermail/barebox/2021-May/036067.h=
+tml
+> =
+
+> Comment from earlier series:
+> =
+
+> "It also changes the default for M-Mode from cycle to time.
+> =
+
+> I can't comment on whether this is ok, I just copied the logic
+> =
+
+> from Linux."
+> =
+
+> Can you say why this is ok?
+
+v4 patch removes riscv_mode() mention from timer-riscv code
+so timer-riscv uses the 'time' timer by default disregarding
+M-mode or S-mode is used.
+
+I suppose that the 'time' timer is "more popular" than
+the 'cycle' counter.
+So IMHO it is ok to use "more popular" feature by default.
+
+> =
+
+> > =
+
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> >  arch/riscv/dts/erizo.dtsi         |  2 ++
+> >  drivers/clocksource/timer-riscv.c | 24 ++++++++++++------------
+> >  2 files changed, 14 insertions(+), 12 deletions(-)
+> > =
+
+> > diff --git a/arch/riscv/dts/erizo.dtsi b/arch/riscv/dts/erizo.dtsi
+> > index 228711bd69..4eb92ae6f1 100644
+> > --- a/arch/riscv/dts/erizo.dtsi
+> > +++ b/arch/riscv/dts/erizo.dtsi
+> > @@ -22,6 +22,8 @@
+> >  =
+
+> >  		timebase-frequency =3D <24000000>;
+> >  =
+
+> > +		barebox,csr-cycle;
+> > +
+> >  		cpu@0 {
+> >  			device_type =3D "cpu";
+> >  			compatible =3D "cliffordwolf,picorv32", "riscv";
+> > diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/ti=
+mer-riscv.c
+> > index 5a517fe6b4..96637f988a 100644
+> > --- a/drivers/clocksource/timer-riscv.c
+> > +++ b/drivers/clocksource/timer-riscv.c
+> > @@ -12,9 +12,8 @@
+> >  #include <clock.h>
+> >  #include <asm/timer.h>
+> >  #include <asm/csr.h>
+> > -#include <asm/system.h>
+> >  =
+
+> > -static u64 notrace riscv_timer_get_count_sbi(void)
+> > +static u64 notrace riscv_timer_get_count_time(void)
+> >  {
+> >  	__maybe_unused u32 hi, lo;
+> >  =
+
+> > @@ -29,7 +28,7 @@ static u64 notrace riscv_timer_get_count_sbi(void)
+> >  	return ((u64)hi << 32) | lo;
+> >  }
+> >  =
+
+> > -static u64 notrace riscv_timer_get_count_rdcycle(void)
+> > +static u64 notrace riscv_timer_get_count_cycle(void)
+> >  {
+> >  	__maybe_unused u32 hi, lo;
+> >  =
+
+> > @@ -44,24 +43,25 @@ static u64 notrace riscv_timer_get_count_rdcycle(vo=
+id)
+> >  	return ((u64)hi << 32) | lo;
+> >  }
+> >  =
+
+> > -static u64 notrace riscv_timer_get_count(void)
+> > -{
+> > -	if (riscv_mode() =3D=3D RISCV_S_MODE)
+> > -		return riscv_timer_get_count_sbi();
+> > -	else
+> > -		return riscv_timer_get_count_rdcycle();
+> > -}
+> > -
+> >  static struct clocksource riscv_clocksource =3D {
+> > -	.read		=3D riscv_timer_get_count,
+> >  	.mask		=3D CLOCKSOURCE_MASK(64),
+> >  	.priority	=3D 100,
+> >  };
+> >  =
+
+> >  static int riscv_timer_init(struct device_d* dev)
+> >  {
+> > +	struct device_node *cpu;
+> > +
+> >  	dev_dbg(dev, "running at %lu Hz\n", riscv_timebase);
+> >  =
+
+> > +	cpu =3D of_find_node_by_path("/cpus");
+> > +
+> > +	if (of_property_read_bool(cpu, "barebox,csr-cycle")) {
+> > +		riscv_clocksource.read =3D riscv_timer_get_count_cycle;
+> > +	} else {
+> > +		riscv_clocksource.read =3D riscv_timer_get_count_time;
+> > +	}
+> > +
+> >  	riscv_clocksource.mult =3D clocksource_hz2mult(riscv_timebase, riscv_=
+clocksource.shift);
+> >  =
+
+> >  	return init_clock(&riscv_clocksource);
+> > =
+
+> =
+
+> =
+
+> -- =
+
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
