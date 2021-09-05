@@ -1,51 +1,54 @@
-Delivery-date: Thu, 02 Sep 2021 09:02:57 +0200
+Delivery-date: Sun, 05 Sep 2021 15:53:31 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mLgkT-0000cZ-KX
-	for lore@lore.pengutronix.de; Thu, 02 Sep 2021 09:02:57 +0200
+	id 1mMsaR-0007F6-0O
+	for lore@lore.pengutronix.de; Sun, 05 Sep 2021 15:53:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mLgkQ-00071G-Bl
-	for lore@pengutronix.de; Thu, 02 Sep 2021 09:02:57 +0200
+	id 1mMsaQ-0002Pm-0e
+	for lore@pengutronix.de; Sun, 05 Sep 2021 15:53:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Date:To:From:Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=RktUXGIbIpfL8rQ1rNpmYMiNQF7W006Z3omqRHuvv6c=; b=NTXWh7/2E62ihY
-	4O2dH+o4UjvJ0vXuJbvwMA6oi2DPvK7anNiKd35y2gqYaSoIAwD5+lY3/SpmR78D4vu51D6mbEYIR
-	ACzxbDkQg5A/vy5i6pMFPNydwwqoJhtTBi7Kw8K/Fp9TU1gJROAbJAFzamUEtKpB8gvlHmk77Tcmx
-	l006hZm7htIl/VrgUmAGsuYbQSfSOyRqNHv7G02aFtpZRJeHU07dMOTluM2R6r6PHS5i0vFn1jVac
-	hiahtZ1YehJjbVPSuErMm+Jnf6htwjDW9kVCaVyOnlqMVDyENRfjgzwFeerSQD0Wn4opVBqis4Emx
-	yTgNNKOrQhZ5xC+sHFIA==;
+	List-Owner; bh=6PO8OhSIUs0GXBXRzXBKbciqwqmJAY5Ijk0lx1o60ms=; b=BUfLjqYFNPc3NO
+	+OY+vuqeP/WkIfdroMX8/LhXMFFoJQCMQRPXJp0OLJpT4Lq7lSB0D652PRPMvJt49MgXeabwK3rvH
+	PmFGWD43nAs6Mk+0q2Vu6DREile5kaN3PM3uXsoQG1yDrTBdG9a4/NPr9TKkPkU0Jeqj70nyzZNJs
+	twEGqs+YiHFNHJtafUaBnrsplfkZc/R5AZ2lFbBj5x1n94AEk5e8bnIzy9TXKe0loYZuAm8YTgZ1L
+	xFsLBHJpEE+7QoK5ZJbU0MtDECKrpZPwU6zplRT8z6MkIZIhwRYtOkp3YO5/OhAeMeMPCUh76QpZr
+	Zpsowye7uDQXv4v0jh9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mLgi8-008lJw-NR; Thu, 02 Sep 2021 07:00:32 +0000
+	id 1mMsYe-00FqZo-Mv; Sun, 05 Sep 2021 13:51:40 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mLgi3-008lJ0-8w
- for barebox@lists.infradead.org; Thu, 02 Sep 2021 07:00:29 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
- helo=[IPv6:::1]) by metis.ext.pengutronix.de with esmtps
+ id 1mMsYY-00FqWq-Lm
+ for barebox@lists.infradead.org; Sun, 05 Sep 2021 13:51:36 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <r.czerwinski@pengutronix.de>)
- id 1mLghy-0006m1-Pk; Thu, 02 Sep 2021 09:00:22 +0200
-Message-ID: <d16712b5c668cf598663dbcbfb5c428e726055d6.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Date: Thu, 02 Sep 2021 09:00:22 +0200
-In-Reply-To: <20210831153214.31047-1-a.fatoum@pengutronix.de>
-References: <20210831153214.31047-1-a.fatoum@pengutronix.de>
-Organization: Pengutronix e.K.
-User-Agent: Evolution 3.40.3 
+ (envelope-from <afa@pengutronix.de>) id 1mMsYU-00024D-Vi
+ for barebox@lists.infradead.org; Sun, 05 Sep 2021 15:51:30 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1mMsYU-00026h-9a
+ for barebox@lists.infradead.org; Sun, 05 Sep 2021 15:51:30 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Sun,  5 Sep 2021 15:51:21 +0200
+Message-Id: <20210905135122.7038-9-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210905135122.7038-1-a.fatoum@pengutronix.de>
+References: <20210905135122.7038-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210902_000027_378932_DD3CFFA7 
-X-CRM114-Status: GOOD (  16.80  )
+X-CRM114-CacheID: sfid-20210905_065134_778146_003D1EE8 
+X-CRM114-Status: UNSURE (   8.82  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,59 +68,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] net: designware: eqos: fix MDIO regression for
- STM32MP1 boards
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 8/9] scripts: imx: add i.MX8MN support to imx-image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
+While soc imx8mm in the imxcfg would work too, it's less surprising to
+just tell imx-image about the new SoC.
 
-On Tue, 2021-08-31 at 17:32 +0200, Ahmad Fatoum wrote:
-> The STM32MP1 boards call their mdio subnode mdio0, which is now skipped
-> since ed8c7bdf8592 ("net: designware: eqos: set mdio bus device node").
-> 
-> Fix networking for them by only falling back to the mdio node name when a
-> child node with the correct compatible could not be found.
-> 
-> Fixes: ed8c7bdf8592 ("net: designware: eqos: set mdio bus device node")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/net/designware_eqos.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
-> index f83ec127143c..5eee844e289a 100644
-> --- a/drivers/net/designware_eqos.c
-> +++ b/drivers/net/designware_eqos.c
-> @@ -824,6 +824,7 @@ static void eqos_probe_dt(struct device_d *dev, struct eqos *eqos)
->  
->  int eqos_probe(struct device_d *dev, const struct eqos_ops *ops, void *priv)
->  {
-> +	struct device_node *np = dev->device_node;
->  	struct mii_bus *miibus;
->  	struct resource *iores;
->  	struct eqos *eqos;
-> @@ -862,7 +863,10 @@ int eqos_probe(struct device_d *dev, const struct eqos_ops *ops, void *priv)
->  	miibus->read = eqos_mdio_read;
->  	miibus->write = eqos_mdio_write;
->  	miibus->priv = eqos;
-> -	miibus->dev.device_node = of_get_child_by_name(dev->device_node, "mdio");
-> +
-> +	miibus->dev.device_node = of_get_compatible_child(np, "snps,dwmac-mdio");
-> +	if (!miibus->dev.device_node)
-> +		miibus->dev.device_node = of_get_child_by_name(np, "mdio");
->  
->  	ret = eqos_init(dev, eqos);
->  	if (ret)
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ scripts/imx/imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Reviewed-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-
-Regards,
-Rouven
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index ce18778f5400..87560ad27de1 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -234,6 +234,7 @@ static struct soc_type socs[] = {
+ 	{ .name = "imx6",   .header_version = 2, .cpu_type = IMX_CPU_IMX6,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
+ 	{ .name = "imx7",   .header_version = 2, .cpu_type = IMX_CPU_IMX7,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
+ 	{ .name = "imx8mm", .header_version = 2, .cpu_type = IMX_CPU_IMX8MM, .header_gap = SZ_32K, .first_opcode = 0x14000000 /* b 0x0000 (offset computed) */},
++	{ .name = "imx8mn", .header_version = 2, .cpu_type = IMX_CPU_IMX8MN, .header_gap = SZ_32K, .first_opcode = 0x14000000 /* b 0x0000 (offset computed) */},
+ 	{ .name = "imx8mp", .header_version = 2, .cpu_type = IMX_CPU_IMX8MP, .header_gap = SZ_32K, .first_opcode = 0x14000000 /* b 0x0000 (offset computed) */},
+ 	{ .name = "imx8mq", .header_version = 2, .cpu_type = IMX_CPU_IMX8MQ, .header_gap = SZ_32K, .first_opcode = 0x14000000 /* b 0x0000 (offset computed) */},
+ 	{ .name = "vf610",  .header_version = 2, .cpu_type = IMX_CPU_VF610,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
+-- 
+2.30.2
 
 
 _______________________________________________
