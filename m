@@ -1,78 +1,84 @@
-Delivery-date: Tue, 07 Sep 2021 09:31:21 +0200
+Delivery-date: Tue, 07 Sep 2021 14:47:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mNVZf-0007Cc-MK
-	for lore@lore.pengutronix.de; Tue, 07 Sep 2021 09:31:21 +0200
+	id 1mNaVg-0006mo-E4
+	for lore@lore.pengutronix.de; Tue, 07 Sep 2021 14:47:32 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mNVZe-0001k9-PQ
-	for lore@pengutronix.de; Tue, 07 Sep 2021 09:31:19 +0200
+	id 1mNaVf-0007Ri-Fg
+	for lore@pengutronix.de; Tue, 07 Sep 2021 14:47:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:List-Subscribe:List-Help:
+	List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:Subject:Cc:To
+	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=k561wqx9zrM4sLki+63XOprLbijzNicUdvUTp63TjJA=; b=DZ3xL2uQiQtxr4
-	yvwE3Recxg+u8imLTPX+soK7nOIA19dm9dsY90pz4av2w5kRICNBfD1YKdoOmEXypfAj7EwJm7MaP
-	0kDlX7OjWgHDfuXbolqhcGNHyske5YFIm60X6rctT0t9dzTJzhA7POJPPFeU0P4PZrdJhb67VIYVo
-	z6O3CW9019hAh4z0+/lN9lOaQRssHvTXUEo3EE6qjbbVZ83Oot+JdD/cTnAVnLe/u+ezZ94OawreG
-	ANxJOHsovsRzfwdKPMUyAt3P9oiXIS5yAxW9O1LePPKy/0c0vxndEgpWGuE+0ta+vg6RdASSFgBNn
-	XlEgpgaFCULaAbiYSj0w==;
+	List-Owner; bh=9v40EddNxu8CSSy+RL2md3m+vDr6GY95QLyIhgsMwl8=; b=nIbzqs5s7iiP1d
+	l6iUdSBa+X/sGsCkg4jGvZ/1jnWmL/gzj+eZEw1eE9uIJakN0LDAPO1vJYWLIaC+sRfTABqmobibn
+	Am/WcVcitT/FB1/3VJvO7ubFYx9qO2KnLtpCFHpWAoGUNHhZ3M8hzywOlNamtlq8t1j0X4a1r4qV/
+	24Mu7XvegsXv66ayduJURoQJvUP/ZAG2Zlm2QtREsJ4llWfFOBqj5yEke96rn24OvqpfPtb3j2kSf
+	8ZXGxTuIuGORsievPMsrH0u4RccCw/2Y8++Yo6pxULWRnwcb2b5Kew9jrc5Erp9ZcoJG4p0U7lzbL
+	WC9mkfI//1JfKxNTjBZg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mNVXs-002jPs-QO; Tue, 07 Sep 2021 07:29:28 +0000
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+	id 1mNaTx-003iTs-7X; Tue, 07 Sep 2021 12:45:45 +0000
+Received: from smtpout140.security-mail.net ([85.31.212.145]
+ helo=fx405.security-mail.net)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mNVXm-002jOC-N7
- for barebox@lists.infradead.org; Tue, 07 Sep 2021 07:29:24 +0000
-Received: by mail-ej1-x62a.google.com with SMTP id i21so17870738ejd.2
- for <barebox@lists.infradead.org>; Tue, 07 Sep 2021 00:29:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=81J11Jsh9ALPj81zXc8ltFWDTl/LXQX46GHv3hUPT84=;
- b=eY6IO9zgiAxzE5E0w5Vzh+v7yESejeHkh3P5oJ8j6+AHDoC+ENeGa1XjNeVCgkQ2Ra
- dBf4NUapuCT36ZqLFVl6CUmJcsgoqbJaypu8BbZZlj26ziqPJod95lSwIuEnHPG0RFd1
- Loh/nBjDLdpSy8L3evHFPXrJNkJmMMsCcd3BrZmHypk0y6SDTEyzvVep5zRifSaQqhQS
- Bc0sDSQ4p2Xc4+TifcnDGcGXjGB+AHsL3qFmnCRFHrp7kKz1pIrTg5IzDGO/rtjfSBOy
- scFG7R/LNImkoSMySjkDpdW6ZBeC2OLxJiguP8rHmYJEZzSXqAAJIZlfyopzcCd4/fJX
- /xQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=81J11Jsh9ALPj81zXc8ltFWDTl/LXQX46GHv3hUPT84=;
- b=J13eX/jD7Rp5R46ECTzeXeZ4PdHWIB1twDhriy1ruBNgSceTrYh6Z/BToWwa+lkKIv
- XkeRhrK+Oxcm32QonbWnwVNHSE4d6u5bkZCt+RzF+1Ehmk3Ydj030Ow/Oz7BW5/ikZVq
- qVQNKikY8Gd4hSER189vnK0ahQVyLxjDNUPBna/vYInHz32HhYzeT4jmP6Loh379wTT9
- 5OBjzxi6SjEVdrTM4CQMnrUj4lbmc7nXKUZKy2AP5sb2n+ufgK9+pFBq5Z4AnXrJZtTp
- EQQ4Q01bjqd1Ao8t6knjvfCalFqsijMwVVBbsbn4Tb082+1z6JwBedVRsXMpslIdDrav
- 4mOA==
-X-Gm-Message-State: AOAM530smn8JdQcM1QkXRFf8jmoVEOETTOvHbamqCclaORV0fuA0JTUH
- 51vw1n68Hv6+Mv+D/i2p/WZHEZTNje8=
-X-Google-Smtp-Source: ABdhPJxtuas6ZDskUuD3bAh2vFE+fRpb65z6WISHbTCIOA0I9LuVSCAn6x9CR67JeK0eK8YFymqEIA==
-X-Received: by 2002:a17:906:1350:: with SMTP id
- x16mr17547598ejb.391.1630999757893; 
- Tue, 07 Sep 2021 00:29:17 -0700 (PDT)
-Received: from DESKTOP-KJS3OJ9.localdomain (ip-78-45-54-3.net.upcbroadband.cz.
- [78.45.54.3])
- by smtp.gmail.com with ESMTPSA id n18sm4994564ejg.36.2021.09.07.00.29.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Sep 2021 00:29:17 -0700 (PDT)
-From: =?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>
+ id 1mNaTq-003iSF-UU
+ for barebox@lists.infradead.org; Tue, 07 Sep 2021 12:45:40 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by fx405.security-mail.net (Postfix) with ESMTP id 9846D323606
+ for <barebox@lists.infradead.org>; Tue,  7 Sep 2021 14:45:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
+ s=sec-sig-email; t=1631018727;
+ bh=blQM6HWUpxucl8KdwyanPuqdSCJDXWm4z6IosHFgFjI=;
+ h=From:To:Cc:Subject:Date;
+ b=BEOY0eRGlwMOip3eBNyCujP0q7AYu/hn/1IlCKm9OHt2tWgYdDafPONQmq6ASb4mu
+ pzFFwCFp+iJMyFRmInXXd0gxbZUTFAm7EIUkeVQvvjpOUyXagrP3EO96eW2S3uypV6
+ ss9yTlzgn/5tbqexxr4Yo4ubAt99LhRoXctHqcMg=
+Received: from fx405 (localhost [127.0.0.1])
+ by fx405.security-mail.net (Postfix) with ESMTP id 363FE3235EF
+ for <barebox@lists.infradead.org>; Tue,  7 Sep 2021 14:45:27 +0200 (CEST)
+X-Virus-Scanned: E-securemail
+Secumail-id: <2a1b.61375ee6.cfbe4.0>
+Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
+ by fx405.security-mail.net (Postfix) with ESMTPS id D1D093235B2
+ for <barebox@lists.infradead.org>; Tue,  7 Sep 2021 14:45:26 +0200 (CEST)
+Received: from zimbra2.kalray.eu (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTPS id B986827E02DE;
+ Tue,  7 Sep 2021 14:45:26 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id A497C27E02DB;
+ Tue,  7 Sep 2021 14:45:26 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu A497C27E02DB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1631018726;
+ bh=1bvm6JCqeNX+kn8s7hVzOJ27l1P3SsSgFaH+Epq5jyA=;
+ h=From:To:Date:Message-Id;
+ b=TbenZdbd1qQ75j37iPi5HqvYVbRWwxKHlPYRnQXjSHU1K9qJg6NgLpWQVJ9PQJg2h
+ WnD8Lw65R+NQS3FHPMZW6Hc0pdiO/t7t6mUF3dB08WWVeHBHX/5uOKBcij575ceUKl
+ eixi4IALzhqWuWm2gcFwlUARYSQY+WoPV1vV8MoI=
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id 05xnnVIMcphg; Tue,  7 Sep 2021 14:45:26 +0200 (CEST)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id 8A77227E02DA;
+ Tue,  7 Sep 2021 14:45:26 +0200 (CEST)
+From: Jules Maselbas <jmaselbas@kalray.eu>
 To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>
-Date: Tue,  7 Sep 2021 09:29:15 +0200
-Message-Id: <20210907072915.18451-1-danek.brat@gmail.com>
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Tue,  7 Sep 2021 14:45:20 +0200
+Message-Id: <20210907124520.24581-1-jmaselbas@kalray.eu>
 X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
+X-Virus-Scanned: by Secumail
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210907_002922_796385_0FE3B62C 
-X-CRM114-Status: GOOD (  14.08  )
+X-CRM114-CacheID: sfid-20210907_054539_219454_41D104F0 
+X-CRM114-Status: UNSURE (   5.64  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,8 +90,9 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:7c80:54:e::133 (failed)
 X-Broken-Reverse-DNS: no host name for IP address 2607:7c80:54:e::133
@@ -94,57 +101,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.9 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	PTX_BROKEN_RDNS,RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,SPF_NONE
-	autolearn=no autolearn_force=no version=3.4.2
-Subject: [PATCH] video: Fix broken bcm2835 fb driver
+X-Spam-Status: No, score=-2.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,PTX_BROKEN_RDNS,RCVD_IN_DNSWL_MED,RDNS_NONE,
+	SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.2
+Subject: [PATCH] common: Select CRC32 dependency for DEFAULT_ENVIRONMENT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-VGhlIGJjbTI4MzUgZnJhbWVidWZmZXIgZHJpdmVyIHdhcyBicm9rZW4sIGJlY2F1c2UgdGhlIGFk
-ZHJlc3Mgb2YgdmlkZW8KYnVmZmVyIGFsbG9jYXRlZCBmb3IgdXMgYnkgdGhlIEdQVSBhbmQgcmV0
-dXJuZWQgdGhyb3VnaCBtYWlsYm94IHdhcwp1c2VkIHdpdGhvdXQgY29udmVydGluZyBpdCBiYWNr
-IHRvIEFSTSBhZGRyZXNzIHNwYWNlLiBUaGF0IHVuY29udmVydGVkCmFkZHJlc3Mgd2FzIGFsc28g
-aW4gdGhlIHJhbmdlIG9mIHBlcmlwaGVyYWwgYWRkcmVzc2VzLCB3aGljaCBjYXVzZWQKb3RoZXIg
-aXNzdWVzIGxhdGVyIG9uIGR1ZSB0byBpdCBiZWluZyBmaWxsZWQgd2l0aCBnYXJiYWdlIGRhdGEu
-ClRoZSBvZmZzZXQgYnkgd2hpY2ggdG8gY29udmVydCB0aGUgYWRkcmVzcyBiYWNrIGNhbiB2YXJ5
-IGJ5IGRldmljZSwKc28gdGhlIHZhbHVlIGlzIHJlYWQgZnJvbSBkZXZpY2V0cmVlICdkbWEtcmFu
-Z2VzJyBmb3Igc29tZXdoYXQgcG9ydGFibGUKb3BlcmF0aW9uLgpUaGlzIGZpeCB3YXMgdGVzdGVk
-IG9uIFJhc3BiZXJyeSBQSSBCKyBhbmQgUmFzcGJlcnJ5IFBJIDNCKy4KClNpZ25lZC1vZmYtYnk6
-IERhbmllbCBCcsOhdCA8ZGFuZWsuYnJhdEBnbWFpbC5jb20+Ci0tLQogZHJpdmVycy92aWRlby9i
-Y20yODM1LmMgfCAyMSArKysrKysrKysrKysrKysrKysrLS0KIDEgZmlsZSBjaGFuZ2VkLCAxOSBp
-bnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvdmlkZW8v
-YmNtMjgzNS5jIGIvZHJpdmVycy92aWRlby9iY20yODM1LmMKaW5kZXggZDgwOGJjNWM5Li4yZWJl
-OTEyZDAgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvdmlkZW8vYmNtMjgzNS5jCisrKyBiL2RyaXZlcnMv
-dmlkZW8vYmNtMjgzNS5jCkBAIC0xNCw2ICsxNCw3IEBACiAjaW5jbHVkZSA8bWFsbG9jLmg+CiAj
-aW5jbHVkZSA8eGZ1bmNzLmg+CiAKKyNpbmNsdWRlIDxvZl9hZGRyZXNzLmg+CiAjaW5jbHVkZSA8
-bWFjaC9tYm94Lmg+CiAKIHN0cnVjdCBiY20yODM1ZmJfaW5mbyB7CkBAIC01OCw5ICs1OSwyNCBA
-QCBzdGF0aWMgaW50IGJjbTI4MzVmYl9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIAlCQ00y
-ODM1X01CT1hfU1RBQ0tfQUxJR04oc3RydWN0IG1zZ19mYl9xdWVyeSwgbXNnX3F1ZXJ5KTsKIAlC
-Q00yODM1X01CT1hfU1RBQ0tfQUxJR04oc3RydWN0IG1zZ19mYl9zZXR1cCwgbXNnX3NldHVwKTsK
-IAlzdHJ1Y3QgYmNtMjgzNWZiX2luZm8gKmluZm87CisJc3RydWN0IGRldmljZV9ub2RlICpzb2M7
-CiAJdTMyIHcsIGg7CisJdTY0IGRtYV9hZGRyLCBjcHVfYWRkciwgX3JlZ2lvbl9zaXplOworCXBo
-eXNfYWRkcl90IGJ1ZmZlcl9hZGRyOwogCWludCByZXQ7CiAKKwlzb2MgPSBvZl9maW5kX25vZGVf
-YnlfcGF0aCgiL3NvYyIpOworCWlmICghc29jKSB7CisJCWRldl9lcnIoZGV2LCAiY291bGQgbm90
-IGZpbmQgcmVxdWlyZWQgb2Ygbm9kZSAvc29jXG4iKTsKKwkJcmV0dXJuIC1FTk9ERVY7CisJfQor
-CisJcmV0ID0gb2ZfZG1hX2dldF9yYW5nZShzb2MsICZkbWFfYWRkciwgJmNwdV9hZGRyLCAmX3Jl
-Z2lvbl9zaXplKTsKKwlpZiAocmV0KSB7CisJCWRldl9lcnIoZGV2LCAib2Ygbm9kZSAvc29jIGhh
-cyBubyBkbWEtcmFuZ2VzXG4iKTsKKwkJcmV0dXJuIHJldDsKKwl9CisKIAlCQ00yODM1X01CT1hf
-SU5JVF9IRFIobXNnX3F1ZXJ5KTsKIAlCQ00yODM1X01CT1hfSU5JVF9UQUdfTk9fUkVRKCZtc2df
-cXVlcnktPnBoeXNpY2FsX3dfaCwKIAkJCQkJR0VUX1BIWVNJQ0FMX1dfSCk7CkBAIC05OSwxMCAr
-MTE1LDExIEBAIHN0YXRpYyBpbnQgYmNtMjgzNWZiX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2
-KQogCQlyZXR1cm4gcmV0OwogCX0KIAorCWJ1ZmZlcl9hZGRyID0gKG1zZ19zZXR1cC0+YWxsb2Nh
-dGVfYnVmZmVyLmJvZHkucmVzcC5mYl9hZGRyZXNzICYgfmRtYV9hZGRyKSArIGNwdV9hZGRyOwor
-CiAJaW5mbyA9IHh6YWxsb2Moc2l6ZW9mICppbmZvKTsKIAlpbmZvLT5mYmkuZmJvcHMgPSAmYmNt
-MjgzNWZiX29wczsKLQlpbmZvLT5mYmkuc2NyZWVuX2Jhc2UgPQotCSAgICh2b2lkICopbXNnX3Nl
-dHVwLT5hbGxvY2F0ZV9idWZmZXIuYm9keS5yZXNwLmZiX2FkZHJlc3M7CisJaW5mby0+ZmJpLnNj
-cmVlbl9iYXNlID0gcGh5c190b192aXJ0KGJ1ZmZlcl9hZGRyKTsKIAlpbmZvLT5mYmkueHJlcyA9
-IG1zZ19zZXR1cC0+cGh5c2ljYWxfd19oLmJvZHkucmVzcC53aWR0aDsKIAlpbmZvLT5mYmkueXJl
-cyA9IG1zZ19zZXR1cC0+cGh5c2ljYWxfd19oLmJvZHkucmVzcC5oZWlnaHQ7CiAJaW5mby0+ZmJp
-LmJpdHNfcGVyX3BpeGVsID0gMTY7Ci0tIAoyLjE3LjEKCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+The DEFAULT_ENVIRONMENT config enable the compilation of envfs-core.c
+which depends on CRC32.
+
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+---
+ common/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/common/Kconfig b/common/Kconfig
+index a9feae2ae8..c19c693580 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -842,6 +842,7 @@ config ENV_HANDLING
+ 	  startup) will bring them back. If unsure, say yes.
+ 
+ config DEFAULT_ENVIRONMENT
++	select CRC32
+ 	bool
+ 	default y if ENV_HANDLING
+ 	prompt "Compile in default environment"
+-- 
+2.17.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
