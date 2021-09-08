@@ -1,55 +1,77 @@
-Delivery-date: Wed, 08 Sep 2021 20:38:29 +0200
+Delivery-date: Wed, 08 Sep 2021 21:01:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mO2Sr-0007xH-1Y
-	for lore@lore.pengutronix.de; Wed, 08 Sep 2021 20:38:29 +0200
+	id 1mO2p6-0000TD-IV
+	for lore@lore.pengutronix.de; Wed, 08 Sep 2021 21:01:28 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mO2Sq-0002Kb-1e
-	for lore@pengutronix.de; Wed, 08 Sep 2021 20:38:28 +0200
+	id 1mO2p5-0004RK-Go
+	for lore@pengutronix.de; Wed, 08 Sep 2021 21:01:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=AmC7MWKkk2l0XfiLSv6iakm5WVPoWyO17iAENc1P0+U=; b=sk2vN3bmskssVZ
-	HUbsWtjTnlGXAU/Ariy4NYDXL1vejWjTYqU5pexrmi1aqANFisD9AN0g60/nZBpNxQc8luhxok/jR
-	cwrPCZHzUqWJuD1Y6atJDoimCDEUv4L5+qiI+r8CDo+TWlikZpbMzBYyUP//EZpbkYd7IBsk+5J+x
-	Fy6JB0sLs0d355w6K/cuPt5P4SrDDd4MEcDRglAAVHpelyAtVE3YtuRC9dP+R+IM1mWil8F52RBQo
-	2B2g7rCN63SoaW/8Ld7qAnvWSZ9PAtpZFBp0lgeyDq+ZybHvxpYAl0I6mgxZsqqWeMhxXnROilRUx
-	l1rCnVsD/B5lTn5TVjZQ==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=WlWjTXEgn0KgVy013wjwOWDRjTVZKU2KGVptMLdrw8U=; b=4eQWOy7RDg8N+F
+	wgY8aaWR/hcyNxNIYddxx+x15t3lHWFbPOYj/utqdDkvHsjQ+QiwehHZiUgPRfV//A3Gvr6Wi6Lnt
+	m+Husul50OXdluM0lyIggEtANqS/YJuyxxoCttFvnlTismmRR/8zpZ8+9ckTQoHEGXBSI1pzpZ5E9
+	qNXt+WcKbTT0WTkRYMgylXz+sHtwL83gTokMeDSeIQS8BtY6lJlO6qchItQfZjyaJA6ukGJPECqFW
+	MbWIpr1NX5291CyHl3zCDsl72rCxyXmJ45xDdDwK1Bp8HjiDku9sT217cEn6Sc4wG5sqErynXFTUR
+	A84gRZPPr0SObS7L9/HA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mO2R6-007Pbm-3f; Wed, 08 Sep 2021 18:36:40 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mO2nc-007RGt-Jz; Wed, 08 Sep 2021 18:59:56 +0000
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mO2R0-007Pab-C9
- for barebox@lists.infradead.org; Wed, 08 Sep 2021 18:36:36 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <rhi@pengutronix.de>)
- id 1mO2Qw-0002Gf-Au; Wed, 08 Sep 2021 20:36:30 +0200
-Received: from rhi by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <rhi@pengutronix.de>)
- id 1mO2Qv-0000E6-PM; Wed, 08 Sep 2021 20:36:29 +0200
-Date: Wed, 8 Sep 2021 20:36:29 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-To: Daniel =?utf-8?B?QnLDoXQ=?= <danek.brat@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20210908183629.at6ib34yrkbcykvi@pengutronix.de>
-References: <20210907072915.18451-1-danek.brat@gmail.com>
+ id 1mO2nX-007RGH-Ud
+ for barebox@lists.infradead.org; Wed, 08 Sep 2021 18:59:53 +0000
+Received: by mail-pf1-x434.google.com with SMTP id x7so2857805pfa.8
+ for <barebox@lists.infradead.org>; Wed, 08 Sep 2021 11:59:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=CMFTddvwbJQ0FM68fZJuYORNS6VEseRXNudKRMz4mC4=;
+ b=KXxz039NPlROI/USRjpmyKQurNq0rlhzExcCleCgJpltTfpAExEmf8iM+O9+h8+hvd
+ KVCqtT+rH3s3VbzmY0qMnJ2IWMabukbvVkyuHtLez2xevdpYFuBuFDcjVMnAySlxe+Qg
+ UBtKdYN/dm+5tzQbjAzIelXRGOTi3297xADYVpjfoTWl8tfz+Rfrl2H3pNV3mcDeXNhs
+ YdRt9pAuxLt0aeP36dnrEk2bQjozb4nsW5COfoEFYXFMr/7G3SgttZWPjVamaGIXMbSW
+ IsOmTm0HGs/uFCjAoeiE8fidlwL8Jm2aS1IFKLjESeFSb1ToeBILeMwNieByHapdWSBY
+ ES7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=CMFTddvwbJQ0FM68fZJuYORNS6VEseRXNudKRMz4mC4=;
+ b=kn+fdTg4fyn5K7minwHo/YiApUbmmwT4MqvsWwj0CEbpnCY8D3OBZyfmI6l7O22Ax7
+ JjTkicZYy7V/Exy4dO3cqAps/kPOXB8c2LCR0d7X1iIFQKj4USaPIaiPU8hVgtTw/vXI
+ kAWsfouGd4MGe5YWSHdMgMrI1aXCBjCAl6Xt3xgOVNz/ZxqJvh7CAqg3M+U/JMepUlQ+
+ 5nGqlfEnMt7hsDX9D/MefjPCkHoncBop1VMGLSHxIWlVHdx7xzFFHjcC1vmM0BdByzj2
+ hVWe5xAi53K138hQOLQ8zFmv5ggrjfhAGcShErU++IlTbDEAH8onnf2R8L4jY6zW9QZX
+ w2sg==
+X-Gm-Message-State: AOAM5338vI1psdB/9zxYxfpch0B5Mc1kHjg/ij189Xoym8jHQnX1NP6U
+ hyjWTMlr15u83B68n8/QA+8Ix0xSf9w=
+X-Google-Smtp-Source: ABdhPJxIfy6r2fPIVCE826hZjgN3gjyk0CBlmLBtX13IioAqIXXU0+xZR2gN44PGvvAhkSsDOSzhVg==
+X-Received: by 2002:a63:9d06:: with SMTP id i6mr5119248pgd.419.1631127589641; 
+ Wed, 08 Sep 2021 11:59:49 -0700 (PDT)
+Received: from zen.local (97-126-32-173.tukw.qwest.net. [97.126.32.173])
+ by smtp.gmail.com with ESMTPSA id a10sm3337461pfg.20.2021.09.08.11.59.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 Sep 2021 11:59:49 -0700 (PDT)
+From: Trent Piepho <tpiepho@gmail.com>
+X-Google-Original-From: Trent Piepho <trent.piepho@igorinstitute.com>
+To: barebox@lists.infradead.org
+Cc: Trent Piepho <trent.piepho@igorinstitute.com>
+Date: Wed,  8 Sep 2021 11:59:46 -0700
+Message-Id: <20210908185946.638301-1-trent.piepho@igorinstitute.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210907072915.18451-1-danek.brat@gmail.com>
-User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210908_113634_479620_6AE2E707 
-X-CRM114-Status: GOOD (  27.24  )
+X-CRM114-CacheID: sfid-20210908_115952_050731_CC655518 
+X-CRM114-Status: GOOD (  18.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,8 +83,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:7c80:54:e::133 (failed)
 X-Broken-Reverse-DNS: no host name for IP address 2607:7c80:54:e::133
@@ -71,70 +93,111 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,PTX_BROKEN_RDNS,RCVD_IN_DNSWL_MED,RDNS_NONE,
-	SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] video: Fix broken bcm2835 fb driver
+X-Spam-Status: No, score=-1.0 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	PTX_BROKEN_RDNS,RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,SPF_NONE
+	autolearn=no autolearn_force=no version=3.4.2
+Subject: [PATCH] kbuild: dtc: Allow adding device tree fragments via config
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-T24gVHVlLCBTZXAgMDcsIDIwMjEgYXQgMDk6Mjk6MTVBTSArMDIwMCwgRGFuaWVsIEJyw6F0IHdy
-b3RlOgo+IFRoZSBiY20yODM1IGZyYW1lYnVmZmVyIGRyaXZlciB3YXMgYnJva2VuLCBiZWNhdXNl
-IHRoZSBhZGRyZXNzIG9mIHZpZGVvCj4gYnVmZmVyIGFsbG9jYXRlZCBmb3IgdXMgYnkgdGhlIEdQ
-VSBhbmQgcmV0dXJuZWQgdGhyb3VnaCBtYWlsYm94IHdhcwo+IHVzZWQgd2l0aG91dCBjb252ZXJ0
-aW5nIGl0IGJhY2sgdG8gQVJNIGFkZHJlc3Mgc3BhY2UuIFRoYXQgdW5jb252ZXJ0ZWQKPiBhZGRy
-ZXNzIHdhcyBhbHNvIGluIHRoZSByYW5nZSBvZiBwZXJpcGhlcmFsIGFkZHJlc3Nlcywgd2hpY2gg
-Y2F1c2VkCj4gb3RoZXIgaXNzdWVzIGxhdGVyIG9uIGR1ZSB0byBpdCBiZWluZyBmaWxsZWQgd2l0
-aCBnYXJiYWdlIGRhdGEuCj4gVGhlIG9mZnNldCBieSB3aGljaCB0byBjb252ZXJ0IHRoZSBhZGRy
-ZXNzIGJhY2sgY2FuIHZhcnkgYnkgZGV2aWNlLAo+IHNvIHRoZSB2YWx1ZSBpcyByZWFkIGZyb20g
-ZGV2aWNldHJlZSAnZG1hLXJhbmdlcycgZm9yIHNvbWV3aGF0IHBvcnRhYmxlCj4gb3BlcmF0aW9u
-Lgo+IFRoaXMgZml4IHdhcyB0ZXN0ZWQgb24gUmFzcGJlcnJ5IFBJIEIrIGFuZCBSYXNwYmVycnkg
-UEkgM0IrLgo+IAo+IFNpZ25lZC1vZmYtYnk6IERhbmllbCBCcsOhdCA8ZGFuZWsuYnJhdEBnbWFp
-bC5jb20+Cj4gLS0tCj4gIGRyaXZlcnMvdmlkZW8vYmNtMjgzNS5jIHwgMjEgKysrKysrKysrKysr
-KysrKysrKy0tCj4gIDEgZmlsZSBjaGFuZ2VkLCAxOSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9u
-cygtKQo+IAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3ZpZGVvL2JjbTI4MzUuYyBiL2RyaXZlcnMv
-dmlkZW8vYmNtMjgzNS5jCj4gaW5kZXggZDgwOGJjNWM5Li4yZWJlOTEyZDAgMTAwNjQ0Cj4gLS0t
-IGEvZHJpdmVycy92aWRlby9iY20yODM1LmMKPiArKysgYi9kcml2ZXJzL3ZpZGVvL2JjbTI4MzUu
-Ywo+IEBAIC0xNCw2ICsxNCw3IEBACj4gICNpbmNsdWRlIDxtYWxsb2MuaD4KPiAgI2luY2x1ZGUg
-PHhmdW5jcy5oPgo+ICAKPiArI2luY2x1ZGUgPG9mX2FkZHJlc3MuaD4KPiAgI2luY2x1ZGUgPG1h
-Y2gvbWJveC5oPgo+ICAKPiAgc3RydWN0IGJjbTI4MzVmYl9pbmZvIHsKPiBAQCAtNTgsOSArNTks
-MjQgQEAgc3RhdGljIGludCBiY20yODM1ZmJfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCj4g
-IAlCQ00yODM1X01CT1hfU1RBQ0tfQUxJR04oc3RydWN0IG1zZ19mYl9xdWVyeSwgbXNnX3F1ZXJ5
-KTsKPiAgCUJDTTI4MzVfTUJPWF9TVEFDS19BTElHTihzdHJ1Y3QgbXNnX2ZiX3NldHVwLCBtc2df
-c2V0dXApOwo+ICAJc3RydWN0IGJjbTI4MzVmYl9pbmZvICppbmZvOwo+ICsJc3RydWN0IGRldmlj
-ZV9ub2RlICpzb2M7Cj4gIAl1MzIgdywgaDsKPiArCXU2NCBkbWFfYWRkciwgY3B1X2FkZHIsIF9y
-ZWdpb25fc2l6ZTsKPiArCXBoeXNfYWRkcl90IGJ1ZmZlcl9hZGRyOwo+ICAJaW50IHJldDsKPiAg
-Cj4gKwlzb2MgPSBvZl9maW5kX25vZGVfYnlfcGF0aCgiL3NvYyIpOwo+ICsJaWYgKCFzb2MpIHsK
-PiArCQlkZXZfZXJyKGRldiwgImNvdWxkIG5vdCBmaW5kIHJlcXVpcmVkIG9mIG5vZGUgL3NvY1xu
-Iik7CgpOaXQ6IEknZCB1c2UgIk9GIiBpbiBjYXBpdGFscyB0byBlYXNlIGh1bWFuIHBhcnNpbmcg
-YW5kIHByZXZlbnQKY29uZnVzaW5nIHdpdGggdGhlIEVuZ2xpc2ggcHJlcG9zaXRpb24uCgo+ICsJ
-CXJldHVybiAtRU5PREVWOwo+ICsJfQo+ICsKPiArCXJldCA9IG9mX2RtYV9nZXRfcmFuZ2Uoc29j
-LCAmZG1hX2FkZHIsICZjcHVfYWRkciwgJl9yZWdpb25fc2l6ZSk7Cj4gKwlpZiAocmV0KSB7Cj4g
-KwkJZGV2X2VycihkZXYsICJvZiBub2RlIC9zb2MgaGFzIG5vIGRtYS1yYW5nZXNcbiIpOwoKSGVy
-ZSB0b28uCgogLSBSb2xhbmQKCj4gKwkJcmV0dXJuIHJldDsKPiArCX0KPiArCj4gIAlCQ00yODM1
-X01CT1hfSU5JVF9IRFIobXNnX3F1ZXJ5KTsKPiAgCUJDTTI4MzVfTUJPWF9JTklUX1RBR19OT19S
-RVEoJm1zZ19xdWVyeS0+cGh5c2ljYWxfd19oLAo+ICAJCQkJCUdFVF9QSFlTSUNBTF9XX0gpOwo+
-IEBAIC05OSwxMCArMTE1LDExIEBAIHN0YXRpYyBpbnQgYmNtMjgzNWZiX3Byb2JlKHN0cnVjdCBk
-ZXZpY2VfZCAqZGV2KQo+ICAJCXJldHVybiByZXQ7Cj4gIAl9Cj4gIAo+ICsJYnVmZmVyX2FkZHIg
-PSAobXNnX3NldHVwLT5hbGxvY2F0ZV9idWZmZXIuYm9keS5yZXNwLmZiX2FkZHJlc3MgJiB+ZG1h
-X2FkZHIpICsgY3B1X2FkZHI7Cj4gKwo+ICAJaW5mbyA9IHh6YWxsb2Moc2l6ZW9mICppbmZvKTsK
-PiAgCWluZm8tPmZiaS5mYm9wcyA9ICZiY20yODM1ZmJfb3BzOwo+IC0JaW5mby0+ZmJpLnNjcmVl
-bl9iYXNlID0KPiAtCSAgICh2b2lkICopbXNnX3NldHVwLT5hbGxvY2F0ZV9idWZmZXIuYm9keS5y
-ZXNwLmZiX2FkZHJlc3M7Cj4gKwlpbmZvLT5mYmkuc2NyZWVuX2Jhc2UgPSBwaHlzX3RvX3ZpcnQo
-YnVmZmVyX2FkZHIpOwo+ICAJaW5mby0+ZmJpLnhyZXMgPSBtc2dfc2V0dXAtPnBoeXNpY2FsX3df
-aC5ib2R5LnJlc3Aud2lkdGg7Cj4gIAlpbmZvLT5mYmkueXJlcyA9IG1zZ19zZXR1cC0+cGh5c2lj
-YWxfd19oLmJvZHkucmVzcC5oZWlnaHQ7Cj4gIAlpbmZvLT5mYmkuYml0c19wZXJfcGl4ZWwgPSAx
-NjsKPiAtLSAKPiAyLjE3LjEKPiAKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5p
-bmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9iYXJlYm94CgotLSAKUm9sYW5kIEhpZWJlciwgUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICB8
-IHIuaGllYmVyQHBlbmd1dHJvbml4LmRlICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAg
-ICAgICAgICAgICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8gfAozMTEzNyBIaWxk
-ZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0w
-ICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICB8IEZheDogICAr
-NDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cg==
+This introduces config variables that allow adding additional fragments
+to the Barbox device tree(s).
+
+Example uses are adjusting the flash partition layout, adding barebox
+state varibles, or adding an I2C device.  These can be now be done with
+build configuration only, without needing to patch the existing dts
+files in the Barebox source.
+
+The advantage is greater when an external build system, such as Yocto or
+Buildroot, is being used to build Barebox.  The build system can drop in
+a dts fragment to partition flash and build from unaltered Barebox
+source.  This avoids the need for cumbersome maintenance of patch files
+to modify Barebox's source for each flash partition layout.
+
+Two variables are added, which function identically.  The idea is that
+one can be used in Barebox in-tree or out-of-tree defconfig files and
+the other injected by an external build system.  Injecting the latter
+variable will not clobber the value of the former.
+
+Preprocessing the dts file gains another layer, where a generated dts
+source consisting of an include directive for the original dts source is
+followed by more includes for each fragment.  This is piped to the
+existing preprocessor call on stdin to avoid another temporary file.
+cpp/dtc will correctly identify errors in the source files they occur
+in.  The -MT option is used so the cpp auto-dependencies reference the
+original dts source and not the generated code passed on stdin.
+
+Signed-off-by: Trent Piepho <trent.piepho@igorinstitute.com>
+---
+ common/Kconfig       | 20 ++++++++++++++++++++
+ scripts/Makefile.lib |  7 ++++++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
+
+diff --git a/common/Kconfig b/common/Kconfig
+index a9feae2ae..1b95ded87 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1091,6 +1091,26 @@ config SYSTEMD_OF_WATCHDOG
+ 	  in the kernel device tree. If the kernel is booted without a device
+ 	  tree or with one that lacks aliases, nothing is added.
+ 
++config EXTRA_DTS_FRAGMENTS
++	string "additional dts file fragments"
++	depends on OFTREE
++	help
++	  List of dts fragment files that will be appended to Barebox's device
++	  tree(s) source when building the dtb file(s).  If multiple files are
++	  listed, they will be appended in order.  Relative filenames will use
++	  the dtc include search path.
++
++config EXTERNAL_DTS_FRAGMENTS
++	string "external dts file fragments"
++	depends on OFTREE
++	help
++	  This is like EXTRA_DTS_FRAGMENTS, but it's intended that it not be put
++	  into Barebox defconfig files and instead used by an external build
++	  system, like Yocto or buildroot, to add dts fragments from outside the
++	  Barebox source tree into the Barebox build.  The build system can
++	  override this variable without modifying anything set by the Barebox
++	  defconfig.
++
+ menu "OP-TEE loading"
+ 
+ config OPTEE_SIZE
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 80d76b177..093dd3cdd 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -201,6 +201,7 @@ cpp_flags      = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(__cpp_flags)
+ ld_flags       = $(KBUILD_LDFLAGS) $(ldflags-y)
+ 
+ dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
++		 -Wp,-MT,$(basename $(notdir $@)).o                      \
+ 		 -I$(srctree)/arch/$(SRCARCH)/dts/include		 \
+ 		 -I$(srctree)/dts/include                                \
+ 		 -I$(srctree)/include                                    \
+@@ -335,8 +336,12 @@ cmd_dt_S_dtb = $(srctree)/scripts/gen-dtb-s $(subst -,_,$(*F)) $< $(CONFIG_IMD)
+ $(obj)/%.dtb.S: $(obj)/%.dtb $(srctree)/scripts/gen-dtb-s FORCE
+ 	$(call if_changed,dt_S_dtb)
+ 
++dts-frags = $(subst $(quote),,$(CONFIG_EXTRA_DTS_FRAGMENTS) $(CONFIG_EXTERNAL_DTS_FRAGMENTS))
+ quiet_cmd_dtc = DTC     $@
+-cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
++# For compatibility between make 4.2 and 4.3
++H := \#
++cmd_dtc = /bin/echo -e $(foreach f,$< $(dts-frags),'$(H)include "$(f)"\n') | \
++	$(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) - ; \
+ 	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
+ 		-i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
+ 		-i $(srctree)/dts/src/$(SRCARCH) \
+-- 
+2.31.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
