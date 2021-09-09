@@ -1,55 +1,70 @@
-Delivery-date: Thu, 09 Sep 2021 12:38:31 +0200
+Delivery-date: Thu, 09 Sep 2021 15:21:09 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mOHRv-0006M3-Ef
-	for lore@lore.pengutronix.de; Thu, 09 Sep 2021 12:38:31 +0200
+	id 1mOJzJ-0001IH-VX
+	for lore@lore.pengutronix.de; Thu, 09 Sep 2021 15:21:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mOHRu-0006wA-9V
-	for lore@pengutronix.de; Thu, 09 Sep 2021 12:38:31 +0200
+	id 1mOJzF-0003Jc-CV
+	for lore@pengutronix.de; Thu, 09 Sep 2021 15:21:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Date:To:From:Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=RmkEEFhr9zldCZfa1jr+6yO2rfk1vAaKGQxVb/m2hCw=; b=Vpyx3aSFCnOr3H
-	a4GyrESlMj+5hipl+RmIjSlfgFM5a3oYlcUYFSnrzj6u/hMYSTU96lP92JELuue0NnWCOtBNcTHEt
-	xKgdza7sCzUWRvz7k+YIJGrgWoDTnDdRuK9sdcFjX5yXSpS3u782lZeH808GMtFCMHDVswdE8opDv
-	jaPaif4f9jCQXp/BXim9dzLRnGqYS/m8iMVL4AYsHdl27j9A291M2oRAzXPbDv26gAELLDGDZH4uX
-	hfCmqeXvDCtn4Y092bfdkAIRJ/YR2Dkv8ZtG2dWRWDMKp6fs9OQd5TyEFzVoj+aw3h6Wc25Gr0tK9
-	Ft+3aYUD9q6yXi2hxnsA==;
+	List-Archive:List-Unsubscribe:List-Id:To:Subject:Message-ID:Date:From:
+	MIME-Version:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+	References:List-Owner; bh=mj8K2SVXFUfPCquR7NiIy9MvWUz32MPPrv7rJTvGphw=; b=AWj
+	nREGnEYeyMoiNuiCumxXmTFSlSlbS4k50c1VuNIxI7bTVS/Lka5L+mIEl5CJ5s5KVaxc2SMoe/FqK
+	ANwK1z3pIy93kN5QZAqXzjZydqxV+C3YfUOMYUyClMiGIY+FZZHh0PZmcnjp78OeuR87avT7DLQ8z
+	5YoXFEfBznIaX/dPqe7V5kmWFB+gmYy1u5lyIRRr8dQpP0xKw5Eq872U+daZkBdbML1Iq5+RUr+CI
+	fhbW7x6XDyndtRB+SlM+WlcXzQNErrjrb2wDlbfvdaf0svjL50IH+E49SpKtXXBAlQGo4YAayDoDY
+	J70091T5twfRXNnbgpjKpq0x1lAqJdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mOHQT-008w5y-FT; Thu, 09 Sep 2021 10:37:01 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mOJx6-009nE5-QK; Thu, 09 Sep 2021 13:18:53 +0000
+Received: from mail-io1-xd2a.google.com ([2607:f8b0:4864:20::d2a])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mOHQL-008w4i-Is
- for barebox@lists.infradead.org; Thu, 09 Sep 2021 10:36:57 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>)
- id 1mOHQJ-0006rY-Pj; Thu, 09 Sep 2021 12:36:51 +0200
-Message-ID: <4d2d9969fef304fd82f5f3b894f5bbbf6a1d6bc7.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Oleksij Rempel <linux@rempel-privat.de>, Oleksij Rempel
- <o.rempel@pengutronix.de>, barebox@lists.infradead.org
-Date: Thu, 09 Sep 2021 12:36:50 +0200
-In-Reply-To: <0acb3e18-4016-fb18-087b-58eafb8b84ff@rempel-privat.de>
-References: <20210909091349.9446-1-o.rempel@pengutronix.de>
- <20210909091349.9446-8-o.rempel@pengutronix.de>
- <045b22f231bdec7a513a36f7044d13e8b224b9d4.camel@pengutronix.de>
- <0acb3e18-4016-fb18-087b-58eafb8b84ff@rempel-privat.de>
-User-Agent: Evolution 3.40.4 (3.40.4-1.fc34) 
+ id 1mOIhY-009Crg-0P
+ for barebox@lists.infradead.org; Thu, 09 Sep 2021 11:58:45 +0000
+Received: by mail-io1-xd2a.google.com with SMTP id b7so1905069iob.4
+ for <barebox@lists.infradead.org>; Thu, 09 Sep 2021 04:58:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:from:date:message-id:subject:to;
+ bh=23lamoFV9i7NK0qHZKR4pZB0JfP37z6d2H+TN3+lS6U=;
+ b=mjNJQaiTqr0+rM8QDEvhiY6YazWDP0dhpChtVeP4vp8KfgUW9funWohKIrBJyEMA0/
+ LCgcgjObkqe4QMEdjJCCPe9CL1CmPmZ/9ohgCx+jhsIkDzHOVFw99olr/u3khbI0Hrcd
+ w+5/q2xQp9L3UkDANgTYnZJJ7M2DhDLW6HgArcoZ708MyW1amtoY7k8vnOZKVLXnFMSd
+ Jrdu1av+gvglFCs26Q0B6Zp/2Mpl3SW1ZYJ20pxhDZ8Kq8RF339n9ej1dK5Qm3Vg7k+O
+ oCboZTuT4Wv9yPorNqZGFBP0Jlc2QuFX6bXC6sRt4INdmkEvn5+O3J35XwNkc5jLl1D1
+ GK+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+ bh=23lamoFV9i7NK0qHZKR4pZB0JfP37z6d2H+TN3+lS6U=;
+ b=QjYY1iEaHhmtwac/Bun/4Vn2zFzeFPXGK9hjQSiFFVnzHIdaUR8Y0RnTdovfGOz5wk
+ zw7g1rxFnaMGgWOwJ3iX82fcJA6QWMUvTgR/HUbsEFjaILP2RpDld2reyrMeNC6APVT+
+ 6K9xN05JhLbon+lxL0i+a+Y+YsRd3bKWh17d1HVd+oLUb4S82XfMkSTD84rH3nIjzAvr
+ BYE6UZWjr5lEFplnArnlzxAm1mg4oPI5gDZQ2kMTnanmfqGRnbjmYzYg59arigdvglYO
+ Pc+unf1KRBAdN+RAsyajlk9moavP6J8VkANW+h0I1cLC72qL8YK8MVeJ5sTPdb8JuCKT
+ 8ICw==
+X-Gm-Message-State: AOAM531oCVYD3J2cjOFq091xwk967/b1+RLSf6RFHWhB0bh3rZV5+WKG
+ eWPVh2anUiq65IzUNtRphM5nqIK+DbIxN/T2wiy2FsLuofU=
+X-Google-Smtp-Source: ABdhPJxkwO/P7c0F6yQtYT6i6J5AR6u7gHPv9yE/aafSDkM9belgKj+sxjuHvUVS/t2vpsMStkqHRIFuDKsNAOhh4Tk=
+X-Received: by 2002:a05:6638:14cf:: with SMTP id
+ l15mr2474657jak.8.1631188719327; 
+ Thu, 09 Sep 2021 04:58:39 -0700 (PDT)
 MIME-Version: 1.0
+From: Dusan Radic <dusrad@gmail.com>
+Date: Thu, 9 Sep 2021 13:58:28 +0200
+Message-ID: <CAFe1xey4MRgd8YhKePm-L9SEf2sqefcWieft9GHspvE20TZbZg@mail.gmail.com>
+To: barebox@lists.infradead.org
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210909_033653_687640_31939C1F 
-X-CRM114-Status: GOOD (  31.85  )
+X-CRM114-CacheID: sfid-20210909_045844_136305_383955B3 
+X-CRM114-Status: UNSURE (   9.31  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,186 +84,43 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1 8/8] ifup: optimize net boot time for USB ethernet
- adapters
+X-Spam-Status: No, score=-4.7 required=4.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+	DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: barebox environment early loading
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Am Donnerstag, dem 09.09.2021 um 12:24 +0200 schrieb Oleksij Rempel:
-> Am 09.09.21 um 11:28 schrieb Lucas Stach:
-> > Am Donnerstag, dem 09.09.2021 um 11:13 +0200 schrieb Oleksij Rempel:
-> > > On some boards, forcing detection of all device will take noticeable more
-> > > time. To reduce this time, we need to scan only for USB devices.
-> > > 
-> > > So, provide option do ifup by forcing only USB scan.
-> > 
-> > Why is this force detection even necessary? Is there a reason you can't
-> > just put a eth-discover script in /env/network/ in the defaultenv of
-> > this board to do the right thing when Barebox tries to bring up the
-> > network interfaces?
-> 
-> This is board specific decision. The flag which indicate if board should
-> do this is provided by the board code. So, if board code should set some
-> flags anyway, why not to interpret this flags by some common code aswell?
-> 
-A force detect should never be necessary for any board to bring up the
-interfaces needed for a standard boot target. The force detection is
-something you would do manually when hacking on a board.
+Hello there,
 
-You can still make the USB scan conditional on some board specifics,
-like the status of the eth0 interface, in the discover script.
+is there a possibility  to read an environment variable as soon as in
+ipufb.c?
+To be more accurate, before the frame buffer is initalised I need set
+the bus_format manually and the correct value is stored in a non
+volatile environment variable.
+I have tried the following
 
-Regards,
-Lucas
+const char* value;
 
-> > Regards,
-> > Lucas
-> > 
-> > > 
-> > > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > > ---
-> > >  Documentation/user/networking.rst |  3 +++
-> > >  arch/arm/boards/skov-imx6/board.c |  2 +-
-> > >  include/net.h                     |  1 +
-> > >  net/ifup.c                        | 16 ++++++++++++++--
-> > >  4 files changed, 19 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
-> > > index 9231ebde56..18936ff169 100644
-> > > --- a/Documentation/user/networking.rst
-> > > +++ b/Documentation/user/networking.rst
-> > > @@ -55,6 +55,9 @@ device:
-> > >  |                              |              | detected automatically during start (i.e. for  |
-> > >  |                              |              | USB network adapters)                          |
-> > >  +------------------------------+--------------+------------------------------------------------+
-> > > +| global.net.ifup_detect_usb   | boolean      | Set to true if you use USB network adapter     |
-> > > +|                              |              | and global.net.ifup_force_detect is too slow.  |
-> > > ++------------------------------+--------------+------------------------------------------------+
-> > > 
-> > >  The first step for networking is configuring the network device. The network
-> > >  device is usually ``eth0``. The current configuration can be viewed with the
-> > > diff --git a/arch/arm/boards/skov-imx6/board.c b/arch/arm/boards/skov-imx6/board.c
-> > > index 9a32e68f21..bd00c16157 100644
-> > > --- a/arch/arm/boards/skov-imx6/board.c
-> > > +++ b/arch/arm/boards/skov-imx6/board.c
-> > > @@ -626,7 +626,7 @@ no_switch:
-> > >  		pr_warn("Can't disable eth0\n");
-> > >  	}
-> > > 
-> > > -	globalvar_set("net.ifup_force_detect", "true");
-> > > +	globalvar_set("net.ifup_detect_usb", "true");
-> > > 
-> > >  	return 0;
-> > >  }
-> > > diff --git a/include/net.h b/include/net.h
-> > > index aad28e4f4c..15cd921f56 100644
-> > > --- a/include/net.h
-> > > +++ b/include/net.h
-> > > @@ -488,6 +488,7 @@ int net_icmp_send(struct net_connection *con, int len);
-> > >  void led_trigger_network(enum led_trigger trigger);
-> > > 
-> > >  #define IFUP_FLAG_FORCE		(1 << 0)
-> > > +#define IFUP_FLAG_USB		(1 << 1)
-> > > 
-> > >  int ifup_edev(struct eth_device *edev, unsigned flags);
-> > >  int ifup(const char *name, unsigned flags);
-> > > diff --git a/net/ifup.c b/net/ifup.c
-> > > index 1870f74017..5cb2b52716 100644
-> > > --- a/net/ifup.c
-> > > +++ b/net/ifup.c
-> > > @@ -20,6 +20,7 @@
-> > >  #include <globalvar.h>
-> > >  #include <magicvar.h>
-> > >  #include <linux/stat.h>
-> > > +#include <usb/usb.h>
-> > > 
-> > >  static int eth_discover(char *file)
-> > >  {
-> > > @@ -260,6 +261,7 @@ int ifdown(const char *ethname)
-> > >  }
-> > > 
-> > >  static int net_ifup_force_detect;
-> > > +static int net_ifup_detect_usb;
-> > > 
-> > >  int ifup_all(unsigned flags)
-> > >  {
-> > > @@ -282,6 +284,9 @@ int ifup_all(unsigned flags)
-> > > 
-> > >  	closedir(dir);
-> > > 
-> > > +	if ((flags & IFUP_FLAG_USB) || net_ifup_detect_usb)
-> > > +		usb_rescan();
-> > > +
-> > >  	if ((flags & IFUP_FLAG_FORCE) || net_ifup_force_detect ||
-> > >  	    list_empty(&netdev_list))
-> > >  		device_detect_all();
-> > > @@ -303,6 +308,7 @@ void ifdown_all(void)
-> > >  static int ifup_all_init(void)
-> > >  {
-> > >  	globalvar_add_simple_bool("net.ifup_force_detect", &net_ifup_force_detect);
-> > > +	globalvar_add_simple_bool("net.ifup_detect_usb", &net_ifup_detect_usb);
-> > > 
-> > >  	return 0;
-> > >  }
-> > > @@ -310,6 +316,8 @@ late_initcall(ifup_all_init);
-> > > 
-> > >  BAREBOX_MAGICVAR(global.net.ifup_force_detect,
-> > >                   "net: force detection of devices on ifup -a");
-> > > +BAREBOX_MAGICVAR(global.net.ifup_detect_usb,
-> > > +                 "net: scan usb without forcing detection of all devices on ifup -a");
-> > > 
-> > >  #if IS_ENABLED(CONFIG_NET_CMD_IFUP)
-> > > 
-> > > @@ -319,11 +327,14 @@ static int do_ifup(int argc, char *argv[])
-> > >  	unsigned flags = 0;
-> > >  	int all = 0;
-> > > 
-> > > -	while ((opt = getopt(argc, argv, "af")) > 0) {
-> > > +	while ((opt = getopt(argc, argv, "afu")) > 0) {
-> > >  		switch (opt) {
-> > >  		case 'f':
-> > >  			flags |= IFUP_FLAG_FORCE;
-> > >  			break;
-> > > +		case 'u':
-> > > +			flags |= IFUP_FLAG_USB;
-> > > +			break;
-> > >  		case 'a':
-> > >  			all = 1;
-> > >  			break;
-> > > @@ -348,12 +359,13 @@ BAREBOX_CMD_HELP_TEXT("")
-> > >  BAREBOX_CMD_HELP_TEXT("Options:")
-> > >  BAREBOX_CMD_HELP_OPT ("-a",  "bring up all interfaces")
-> > >  BAREBOX_CMD_HELP_OPT ("-f",  "Force. Configure even if ip already set")
-> > > +BAREBOX_CMD_HELP_OPT ("-u",  "Probe USB ")
-> > >  BAREBOX_CMD_HELP_END
-> > > 
-> > >  BAREBOX_CMD_START(ifup)
-> > >  	.cmd		= do_ifup,
-> > >  	BAREBOX_CMD_DESC("bring a network interface up")
-> > > -	BAREBOX_CMD_OPTS("[-af] [INTF]")
-> > > +	BAREBOX_CMD_OPTS("[-afu] [INTF]")
-> > >  	BAREBOX_CMD_GROUP(CMD_GRP_NET)
-> > >  	BAREBOX_CMD_COMPLETE(eth_complete)
-> > >  	BAREBOX_CMD_HELP(cmd_ifup_help)
-> > 
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > 
-> 
-> 
-> --
-> Regards,
-> Oleksij
+value = getenv("nv.dataval");
 
+However the result is always NULL.
 
+If I try the same somewhere in board.c then I get the correct value,
+but that ist too late to configure the frame buffer.
+
+Has anyone managed to read the environment early, and if yes how? Do I
+have to somehow manually load the environment path?  I have tried this
+default_environment_path_set(default_environment_path); but it doesn't
+seem to work.
+
+I am using barebox 2017.12.0
+
+Help would be appreciated.
+Best regards,
+Dule
 
 _______________________________________________
 barebox mailing list
