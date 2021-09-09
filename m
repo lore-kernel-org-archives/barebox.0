@@ -1,54 +1,54 @@
-Delivery-date: Thu, 09 Sep 2021 15:32:08 +0200
+Delivery-date: Thu, 09 Sep 2021 15:32:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mOK9w-0001Xf-6C
-	for lore@lore.pengutronix.de; Thu, 09 Sep 2021 15:32:08 +0200
+	id 1mOKA9-0001YI-Pe
+	for lore@lore.pengutronix.de; Thu, 09 Sep 2021 15:32:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mOK9u-0004vn-JN
-	for lore@pengutronix.de; Thu, 09 Sep 2021 15:32:08 +0200
+	id 1mOKA8-0004yx-DT
+	for lore@pengutronix.de; Thu, 09 Sep 2021 15:32:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=QDdnMPOrlZJMUkeIv9Qjl3VwErM4gZKQGLPHtCGroAg=; b=WkLBvR/vE3r6uk
-	JkeFVj0dfig5Gn8o/fM1fpAKidZ/aARXuKFaUNzHHuuVawVNNBwAMGgomJ17pxsgacjihJh9e7HjH
-	vfNvgJv6RBN4UqAvaL6L7hI+RxSPTW2Hnb0Ry5KfFhb4BZkuLmo+/h4/HwnnjsPPpzqdftkHkwzEk
-	CuZxIZ6imrviRynAHkWmiswgK1kSvzmGpX9c1RYc7fkGplbpAvMhSOPvRuwmiKzupw3CwyynmC8Fr
-	nkzCnpKzBol5/Bo8UM3y9T66CwRRyzz+D2SSsqsTFoRKPHjVSGuboeHum9A+sFBBm5JQ2P8l6s3/g
-	zdGxoXIi/LUMYBQCnzPA==;
+	List-Owner; bh=bC6RaP0hJIZsbf/Anvpk1ybLB9RpHsr9+hZYgFHBRko=; b=CeoPOXwnGg+tCE
+	WPHe0SuidfrTaTPHXTQVA/Yo+OhbTLUaAS3nD5FtxhuNrUAoAWnJc6GNA57SPO273H9I6MED77isC
+	esA9ml9vih4zHJDmc9CErn3Ya3SmDZXQ24P9BHZ3YLawCj7FGAMMiYUNuiJ9z2QLVI5D0zF9Fqfh+
+	QCfhKQ8Z2Ok+ym0hH71FFsfnGiFasWnYEXPNgC6YimLW1s6CSv1nfbM04izE/C6PM+jYYT2KlFSql
+	6SWYka8T0cEakBToh8cTcQE9DsA9/3BbPQQrAIGGhBkxRoWV8x0/sL0MfudnBe2cICh/Og8SqueND
+	gkemHZC5cJ1oqsq9A4zg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mOK8I-009sfP-KK; Thu, 09 Sep 2021 13:30:26 +0000
+	id 1mOK8e-009smO-Db; Thu, 09 Sep 2021 13:30:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mOIrm-009I90-Vw
- for barebox@lists.infradead.org; Thu, 09 Sep 2021 12:09:20 +0000
+ id 1mOIrn-009I94-04
+ for barebox@lists.infradead.org; Thu, 09 Sep 2021 12:09:22 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1mOIrl-0004e3-0F; Thu, 09 Sep 2021 14:09:17 +0200
+ id 1mOIrl-0004e6-2j; Thu, 09 Sep 2021 14:09:17 +0200
 Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1mOIrk-00021q-Ik; Thu, 09 Sep 2021 14:09:16 +0200
+ id 1mOIrk-00021z-Jv; Thu, 09 Sep 2021 14:09:16 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu,  9 Sep 2021 14:09:05 +0200
-Message-Id: <20210909120909.7744-3-o.rempel@pengutronix.de>
+Date: Thu,  9 Sep 2021 14:09:08 +0200
+Message-Id: <20210909120909.7744-6-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210909120909.7744-1-o.rempel@pengutronix.de>
 References: <20210909120909.7744-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210909_050919_114375_D5A3BA21 
-X-CRM114-Status: GOOD (  22.69  )
+X-CRM114-CacheID: sfid-20210909_050919_270397_FB9A3A06 
+X-CRM114-Status: GOOD (  13.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,227 +72,73 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/7] ARM: boards: skov-imx6: add switch detection
+Subject: [PATCH v2 6/7] ARM: boards: skov-imx6: start using deep-probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-There are board variants with same board ID but not switch. Detect this
-variants.
+Port Skov boards to the deep-propbe and reduce boot time by 100msec.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/boards/skov-imx6/board.c | 159 +++++++++++++++++++++++++-----
- 1 file changed, 135 insertions(+), 24 deletions(-)
+ arch/arm/boards/skov-imx6/board.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm/boards/skov-imx6/board.c b/arch/arm/boards/skov-imx6/board.c
-index 030ac62c52..2bd21adaeb 100644
+index fea840aa33..6cdfc8f24d 100644
 --- a/arch/arm/boards/skov-imx6/board.c
 +++ b/arch/arm/boards/skov-imx6/board.c
-@@ -11,6 +11,7 @@
- #include <net.h>
- #include <of_gpio.h>
+@@ -2,16 +2,17 @@
+ 
+ #define pr_fmt(fmt) "skov-imx6: " fmt
+ 
++#include <bootsource.h>
+ #include <common.h>
+-#include <init.h>
+-#include <mach/bbu.h>
++#include <deep-probe.h>
+ #include <environment.h>
+-#include <bootsource.h>
+ #include <globalvar.h>
+-#include <net.h>
+-#include <of_gpio.h>
  #include <gpio.h>
-+#include <linux/micrel_phy.h>
++#include <init.h>
+ #include <linux/micrel_phy.h>
++#include <mach/bbu.h>
++#include <net.h>
++#include <of_gpio.h>
  
  #include "version.h"
  
-@@ -130,6 +131,9 @@ copy_mac_from_eth0:
- 	return eth_of_fixup_node_from_eth_device(root, node_path, ethname);
- }
- 
-+#define SKOV_GPIO_MDIO_BUS	0
-+#define SKOV_LAN1_PHY_ADDR	1
-+
- #define MAX_V_GPIO 8
- 
- struct board_description {
-@@ -303,20 +307,121 @@ static const struct board_description imx6_variants[] = {
- };
- 
- static int skov_board_no = -1;
-+static bool skov_no_switch = false;
-+static const char *no_switch_suffix = "-noswitch";
- 
--static int skov_imx6_fixup(struct device_node *root, void *unused)
-+static void fixup_machine_compatible(const char *compat,
-+				     struct device_node *root)
+@@ -499,10 +500,20 @@ static int skov_imx6_fixup(struct device_node *root, void *unused)
+  */
+ static void skov_init_board(const struct board_description *variant)
  {
-+	int cclen = 0, clen = strlen(compat) + 1;
-+	const char *curcompat;
-+	void *buf;
-+
-+	if (!root) {
-+		root = of_get_root_node();
-+		if (!root)
-+			return;
-+	}
-+
-+	curcompat = of_get_property(root, "compatible", &cclen);
-+
-+	buf = xzalloc(cclen + clen);
-+
-+	memcpy(buf, compat, clen);
-+	memcpy(buf + clen, curcompat, cclen);
-+
-+	/*
-+	 * Prepend the compatible from board entry to the machine compatible.
-+	 * Used to match bootspec entries against it.
-+	 */
-+	of_set_property(root, "compatible", buf, cclen + clen, true);
-+
-+	free(buf);
-+}
-+
-+static void fixup_noswitch_machine_compatible(struct device_node *root)
-+{
-+	const char *compat = imx6_variants[skov_board_no].dts_compatible;
-+	const char *generic = "skov,imx6";
-+	size_t size, size_generic;
-+	char *buf;
++	struct device_node *gpio_np = NULL;
+ 	struct device_node *np;
+ 	char *environment_path, *envdev;
  	int ret;
--	const char *val;
--	uint32_t brightness;
-+
-+	size = strlen(compat) + strlen(no_switch_suffix) + 1;
-+	size_generic = strlen(generic) + strlen(no_switch_suffix) + 1;
-+	size = max(size, size_generic);
-+	buf = xzalloc(size);
-+	if (!buf) {
-+		pr_warn("Can't allocate buffer\n");
-+		return;
-+	}
-+
-+	/* add generic compatible, so systemd&co can make right decisions */
-+	ret = snprintf(buf, size, "%s%s", generic, no_switch_suffix);
-+	if (ret >= 0)
-+		fixup_machine_compatible(buf, root);
-+	else
-+		pr_warn("Can't prepare generic compatible string\n");
-+
-+	/* add specific compatible as fallback, in case this board has new
-+	 * challenges.
-+	 */
-+	ret = snprintf(buf, size, "%s%s", compat, no_switch_suffix);
-+	if (ret >= 0)
-+		fixup_machine_compatible(buf, root);
-+	else
-+		pr_warn("Can't prepare specific compatible string\n");
-+
-+	free(buf);
-+}
-+
-+static void skov_imx6_no_switch(struct device_node *root)
-+{
- 	struct device_node *node;
--	struct device_node *chosen = of_create_node(root, "/chosen");
-+	int ret;
-+
-+	fixup_noswitch_machine_compatible(root);
  
-+	node = of_find_node_by_path_from(root, "/soc/bus@2100000/ethernet@2188000");
-+	if (!node) {
-+		pr_warn("Did not find node to disable it\n");
-+	} else {
-+		ret = of_device_disable(node);
++	gpio_np = of_find_node_by_name(NULL, "gpio@20b4000");
++	if (gpio_np) {
++		ret = of_device_ensure_probed(gpio_np);
 +		if (ret)
-+			pr_warn("Can't disable ethernet node\n");
++			pr_warn("Can't probe GPIO node\n");
++	} else {
++		pr_warn("Can't get GPIO node\n");
 +	}
 +
-+	node = of_find_node_by_alias(root, "mdio-gpio0");
-+	if (node) {
-+		ret = of_device_disable(node);
-+		if (ret)
-+			pr_warn("Can't disable mdio-gpio0 node\n");
-+	} else {
-+		pr_warn("Can't find mdio-gpio0 node\n");
-+	}
-+}
-+
-+static void skov_imx6_switch(struct device_node *root)
-+{
- 	eth_of_fixup_node_from_eth_device(root,
- 			"/mdio-gpio/ksz8873@3/ports/ports@0", "eth0");
- 	eth2_of_fixup_node_individually(root,
- 		"/mdio-gpio/ksz8873@3/ports/ports@1", "eth0",
- 		"state.ethaddr.eth2", "/state/ethaddr/eth2");
-+}
-+
-+static int skov_imx6_fixup(struct device_node *root, void *unused)
-+{
-+	struct device_node *chosen = of_create_node(root, "/chosen");
-+	struct device_node *node;
-+	uint32_t brightness;
-+	const char *val;
-+	int ret;
-+
-+	if (skov_no_switch)
-+		skov_imx6_no_switch(root);
-+	else
-+		skov_imx6_switch(root);
+ 	imx6_bbu_internal_spi_i2c_register_handler("spiflash", "/dev/m25p0.barebox",
+ 		BBU_HANDLER_FLAG_DEFAULT);
  
- 	switch (bootsource_get()) {
- 	case BOOTSOURCE_MMC:
-@@ -432,34 +537,40 @@ static void skov_init_board(const struct board_description *variant)
+@@ -661,6 +672,7 @@ static __maybe_unused struct of_device_id skov_version_ids[] = {
+ 		/* sentinel */
  	}
- }
+ };
++BAREBOX_DEEP_PROBE_ENABLE(skov_version_ids);
  
--static void fixup_machine_compatible(const char *compat,
--				     struct device_node *root)
-+static int skov_switch_test(void)
- {
--	const char *curcompat;
--	int cclen = 0, clen = strlen(compat) + 1;
--	void *buf;
-+	struct phy_device *phydev;
-+	struct mii_bus *mii;
-+	int ret;
- 
--	if (!root) {
--		root = of_get_root_node();
--		if (!root)
--			return;
--	}
-+	if (skov_board_no < 0)
-+		return 0;
- 
--	curcompat = of_get_property(root, "compatible", &cclen);
-+	/* On this boards, we have only one MDIO bus. So, it is enough to take
-+	 * the first one.
-+	 */
-+	mii = mdiobus_get_bus(SKOV_GPIO_MDIO_BUS);
-+	/* We can't read the switch ID, but we get get ID of the first PHY,
-+	 * which is enough to test if the switch is attached.
-+	 */
-+	phydev = get_phy_device(mii, SKOV_LAN1_PHY_ADDR);
-+	if (IS_ERR(phydev))
-+		goto no_switch;
- 
--	buf = xzalloc(cclen + clen);
-+	if (phydev->phy_id != PHY_ID_KSZ886X)
-+		goto no_switch;
- 
--	memcpy(buf, compat, clen);
--	memcpy(buf + clen, curcompat, cclen);
-+	return 0;
- 
--	/*
--	 * Prepend the compatible from board entry to the machine compatible.
--	 * Used to match bootspec entries against it.
--	 */
--	of_set_property(root, "compatible", buf, cclen + clen, true);
-+no_switch:
-+	skov_no_switch = true;
-+	fixup_noswitch_machine_compatible(NULL);
- 
--	free(buf);
-+	pr_notice("No-switch variant is detected\n");
-+
-+	return 0;
- }
-+late_initcall(skov_switch_test);
- 
- static int skov_imx6_probe(struct device_d *dev)
- {
+ static struct driver_d skov_version_driver = {
+ 	.name = "skov-imx6",
 -- 
 2.30.2
 
