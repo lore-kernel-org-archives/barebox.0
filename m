@@ -1,15 +1,15 @@
-Delivery-date: Wed, 15 Sep 2021 12:38:33 +0200
+Delivery-date: Wed, 15 Sep 2021 12:41:25 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mQSJF-0004Ie-8z
-	for lore@lore.pengutronix.de; Wed, 15 Sep 2021 12:38:33 +0200
+	id 1mQSM1-0004ML-Mk
+	for lore@lore.pengutronix.de; Wed, 15 Sep 2021 12:41:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mQSJE-0003Ip-Bg
-	for lore@pengutronix.de; Wed, 15 Sep 2021 12:38:33 +0200
+	id 1mQSM0-0003lL-OX
+	for lore@pengutronix.de; Wed, 15 Sep 2021 12:41:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,41 +17,41 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=bYHQX6Unl4gK2gnBAO9/+9Qa39GPSEUX3U/sfStFQ5U=; b=g+i0n9jQ/FAF4Jqihjhxm4wKQ+
-	lD7Iljbz/3VgJ+IHtmoLfFEVqO9kVcxveVXuT8zl0A4R5+yIwUPK9Cv03a/ecSActq5AYZ2+5yoGM
-	aEI2ah6wYk/jAHlswvsjq2E1jrcVSn9qzTkL5YaK/mV6DvDLL1QTzwdEFsRzjhhBmTeMGK04PqQ9X
-	vo0UGhn8ZJ8OoLghpftn0Cx0cTbt2FmS4CWslL4QYHBkjXiPqk1YiOyymmq8yo6EzVlUhSIRZbzFd
-	ZVrx9048QAa044R+gc1SEFgaiOG7O8ecR721mW8UMQ1km6a6nesJ9+gK0347Rdx0diWG/cg+rb2uQ
-	GCJcC/og==;
+	bh=9HKlbsdL8PyxmIZygm7LSVIvLYarevkxe3P4C4Hx+Xc=; b=4n7IoFPLzhgYTmRKRsFMONNi5V
+	Scv3Ooc2AZS6RAsW/EwBG6s0ilUjfHgErz9GqAN6dp7cbWRJyx1IHHr4Hp+FsN3PkLgCGsNrFfk67
+	Kj6yYSqOrdcxa/yoaunsgOuGnmUq5UMLBq8tX/jgb37YgoPNGkx9cyWQoMxscHL/9UuIhRN/jJno9
+	+pyUx5xNUIW0A9JagjLW75aQt+RqirPINva99pqiV8fapa3L0yek+wxtGgOcLNEuZgXSAdIocm2q/
+	m9y7oEvpXsjlE+qonblcJLnc5cFZZEmK0ahMy0Sff29ExShVIt8gzsDm/PQVoEJsptPZ2H10etrku
+	LerYijOA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mQSHn-008ozT-GW; Wed, 15 Sep 2021 10:37:03 +0000
+	id 1mQSKg-008pEF-TT; Wed, 15 Sep 2021 10:40:02 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mQSHh-008oya-Ub
- for barebox@lists.infradead.org; Wed, 15 Sep 2021 10:36:59 +0000
+ id 1mQSKb-008pDo-8V
+ for barebox@lists.infradead.org; Wed, 15 Sep 2021 10:39:58 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1mQSHg-0003Dp-DU; Wed, 15 Sep 2021 12:36:56 +0200
+ id 1mQSKa-0003Sb-1m; Wed, 15 Sep 2021 12:39:56 +0200
 To: Trent Piepho <trent.piepho@igorinstitute.com>,
  Barebox List <barebox@lists.infradead.org>
 References: <20210905135122.7038-1-a.fatoum@pengutronix.de>
- <20210905135122.7038-5-a.fatoum@pengutronix.de>
- <CAMHeXxN_P3pVSAStL2Z=8La_ioGHNu2hw9qQyFYAJ1VNA8hiEQ@mail.gmail.com>
- <CAMHeXxP7Zg9r7fXYCzSYF-AZZAKmnxXMeG9uQqz5abP3BYiH8A@mail.gmail.com>
+ <20210905135122.7038-6-a.fatoum@pengutronix.de>
+ <CAMHeXxPV_5mzAH3gbpy4WrL16kSstkLhJvx-VUQqbmy9C1r6WQ@mail.gmail.com>
+ <CAMHeXxOmYuM9+ucqiXEzSSJ7z_0xgRLSE4BYG7GVNCFT0PR3xg@mail.gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <626fde06-86e7-662b-7a84-8e162a7f12a3@pengutronix.de>
-Date: Wed, 15 Sep 2021 12:36:55 +0200
+Message-ID: <2d727028-03bb-9b19-3c1d-1c430c793889@pengutronix.de>
+Date: Wed, 15 Sep 2021 12:39:55 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <CAMHeXxP7Zg9r7fXYCzSYF-AZZAKmnxXMeG9uQqz5abP3BYiH8A@mail.gmail.com>
+In-Reply-To: <CAMHeXxOmYuM9+ucqiXEzSSJ7z_0xgRLSE4BYG7GVNCFT0PR3xg@mail.gmail.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210915_033658_046377_54DB6DCB 
-X-CRM114-Status: GOOD (  27.71  )
+X-CRM114-CacheID: sfid-20210915_033957_361791_48CAF47E 
+X-CRM114-Status: GOOD (  28.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,51 +75,62 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 4/9] ARM: i.MX: extend drivers for i.MX8MN (Nano) support
+Subject: Re: [PATCH 5/9] ARM: i.MX8MM: correct unrecognized fracpll frequency
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 08.09.21 21:01, Trent Piepho wrote:
+Hi,
+
+On 08.09.21 21:00, Trent Piepho wrote:
 > On Sun, Sep 5, 2021 at 6:52 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 >>
->> Extend match tables and function definitions for i.MX USB, ATF,
->> MCI, NVMEM, pinctrl and serial drivers for the i.MX8M Nano.
->>
->> There is no special handling required for those, compared with
->> the mini.
+>> Correct the value in imx8mm_fracpll_tbl to match the one expanded by
+>> MHZ(266) macro, rounding it down to MHz range only.
 > 
-> It shouldn't be necessary to add them when there is no special
-> handling.  The device tree should list the earlier type they are
-> compatible with as well.  For example, every fsl,imx8*-usdhc I see in
-> a device tree then lists fsl,imx7d-usdhc additionally.
-
-I agree. I just searched for imx8mm and replicated the lines.
-
-> Though the Barebox driver does NOT list fsl,imx7d-usdhc.  It works on
-> the fsl,imx7d-usdhc because that is compatible with the
-> fsl,imx6sl-usdhc.
+> It's not really "correcting" the value, since the value is wrong.
 > 
-> Really, the error would seem to be the NXP devicetrees only listing
-> imx7d as a compatible instead of going back to imx6sl.
+> 24 MHz / 9 * 400 / 2^2 = 266666666.6 Hz
+> 
+> Maybe it would be better to say, "make the value in imx8mm_facpll_tbl
+> incorrect so it matches another incorrect value used elsewhere."
+> 
+> In which case, one has to wonder why it would not be better to use the
+> correct value everywhere?
 
-The upstream device trees could be extended, but that's out of scope
-for barebox support. I don't think we should hardcode this into
-the barebox device tree.
+Fair point. I just ported the patch and called it a day.
+Looking further into it, the rounding is strange as well.
+166.75 MHz is rounded to 167, but 266.6 is rounded to 267.
+It would be cleaner to just use MHz values through out and don't use
+Hz values at all and always round up. This makes the code diverge
+from U-Boot, but I guess that's acceptable. Works for you?
 
-> It is also interesting that in Barebox, the imx7d uses the imx6sl
-> compat entry, and that entry includes ESDHC_FLAG_ERR004536.  While the
-> imx8* is supposedly imx7d compatible, it uses the imx6sx entry that
-> lacks that flag.  I think the error here is that imx7d does not have
-> this erratum.
-
-But barebox doesn't seem to do anything different respective to that
-flag.
-
-What would you suggest we do here (in barebox)?
+Thanks for the reviews by the way!
 
 Cheers,
 Ahmad
 
+> 
+>>
+>> Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
+>> [afa: ported from U-Boot 6ac4d4480663]
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  drivers/ddr/imx8m/ddrphy_utils.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/ddr/imx8m/ddrphy_utils.c b/drivers/ddr/imx8m/ddrphy_utils.c
+>> index 9a4e1a22ee5e..6836e7d4b351 100644
+>> --- a/drivers/ddr/imx8m/ddrphy_utils.c
+>> +++ b/drivers/ddr/imx8m/ddrphy_utils.c
+>> @@ -198,7 +198,7 @@ static struct imx_int_pll_rate_table imx8mm_fracpll_tbl[] = {
+>>         { .rate = 600000000U,  .r1 = MDIV(300) | PDIV(3) | SDIV(2), .r2 = 0 },
+>>         { .rate = 594000000U,  .r1 = MDIV( 99) | PDIV(1) | SDIV(2), .r2 = 0 },
+>>         { .rate = 400000000U,  .r1 = MDIV(300) | PDIV(9) | SDIV(1), .r2 = 0 },
+>> -       { .rate = 266666667U,  .r1 = MDIV(400) | PDIV(9) | SDIV(2), .r2 = 0 },
+>> +       { .rate = 266000000U,  .r1 = MDIV(400) | PDIV(9) | SDIV(2), .r2 = 0 },
+>>         { .rate = 167000000U,  .r1 = MDIV(334) | PDIV(3) | SDIV(4), .r2 = 0 },
+>>         { .rate = 100000000U,  .r1 = MDIV(300) | PDIV(9) | SDIV(3), .r2 = 0 },
+>>  };
 > 
 > _______________________________________________
 > barebox mailing list
