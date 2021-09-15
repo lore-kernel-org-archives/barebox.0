@@ -1,15 +1,15 @@
-Delivery-date: Wed, 15 Sep 2021 12:57:05 +0200
+Delivery-date: Wed, 15 Sep 2021 13:44:10 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mQSbB-0004aH-Gz
-	for lore@lore.pengutronix.de; Wed, 15 Sep 2021 12:57:05 +0200
+	id 1mQTKk-0005Is-2R
+	for lore@lore.pengutronix.de; Wed, 15 Sep 2021 13:44:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mQSb9-0005T5-Vj
-	for lore@pengutronix.de; Wed, 15 Sep 2021 12:57:05 +0200
+	id 1mQTKi-0001XW-Uo
+	for lore@pengutronix.de; Wed, 15 Sep 2021 13:44:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,41 +17,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=tCW/imn94Gzv/Q96rG0tVGpfVoP3yfoQH2TKVQFaoF4=; b=X3npHcWqI/0SyLPSXedbUzLmwn
-	rihwZCH56hhJTrw6unGZ7wP/pCdt/9FVKJFRpVCerO6JHSqdxsep5knPCUaLWSKdQIXo54E812OX+
-	O7nSeXhED7ol/JoNYwF6AhK86OJxegVXPqjrz2br4qfFbcombj1c8XQFzRu7lu9Ok7WYe5d/eK+e1
-	sfZLgLpronGrZX5ccGO7pxMjFfjBm7u42Kgtgdecpvz3HDIka4iIb8x2HSgKxW7c55gbuaZETMnAV
-	OI/aEdewJ+hdvLtRboMHTB/8gcChBlSGHk8lR1VKqIVByOmflqs/x28Iv4qozW0a+mdFFQjiPTEfd
-	ZJ5xbPJw==;
+	bh=307hxwggi+t7mJby0qBgR1bgIVdwDemeDCg2m7AA42w=; b=zYd52biDbYXK+pfYgyU8JcJ8FT
+	0GDeIZM+WYuf7CDmM0s4jknvFYRqZwDeyp8AUCflEIBH1ixt7/pYQZbtY9Y+X8OPP9EWuWxrpL5N5
+	/XRAAvXQdGt2kb0IqN6+pcV3j7TuN5QZ0W+U1FM0Mo9S2nV1F8loUpt2MLow0tO/BrxbMzCyAoQc6
+	uA1kXB8JDsRlIQf/cyg7TBgOw9z1cPsjW4EHIqzk5nkeaa2+mHc1dXW17SFrZO8At30BL6cPh4HV2
+	PY4VB65K45zmppttHcsp4iAl2MS6xRfThC7KVhbwnmgyqOH38Z/Qvmj2by9Amrli94EElypTdU7lX
+	rxOIOosg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mQSZh-008rPH-13; Wed, 15 Sep 2021 10:55:33 +0000
+	id 1mQTJ9-008uYn-Io; Wed, 15 Sep 2021 11:42:31 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mQSZb-008rOa-Fr
- for barebox@lists.infradead.org; Wed, 15 Sep 2021 10:55:29 +0000
+ id 1mQTJ4-008uYT-F6
+ for barebox@lists.infradead.org; Wed, 15 Sep 2021 11:42:28 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1mQSZZ-0005GL-SV; Wed, 15 Sep 2021 12:55:25 +0200
-To: Trent Piepho <trent.piepho@igorinstitute.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <20210628064036.25991-1-a.fatoum@pengutronix.de>
- <CAMHeXxOT__KBUKG6GkNAEkqz4tMBBzuZ7OgnKa0_OX5hz-JEig@mail.gmail.com>
- <dad3cc59-5a25-9889-88a5-58467f576d8e@pengutronix.de>
- <CAMHeXxMyCUfcoriS--bLCeqAkOWjG_0nRZmh_nREfJGKbgfbXQ@mail.gmail.com>
+ id 1mQTJ2-0001Un-9c; Wed, 15 Sep 2021 13:42:24 +0200
+To: Trent Piepho <tpiepho@gmail.com>, barebox@lists.infradead.org
+Cc: Trent Piepho <trent.piepho@igorinstitute.com>
+References: <20210908185946.638301-1-trent.piepho@igorinstitute.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <68fd60fe-cc3c-c015-b6dd-48e9d93e179a@pengutronix.de>
-Date: Wed, 15 Sep 2021 12:55:25 +0200
+Message-ID: <b70fcd46-c1ef-9aa8-9810-cb9af6bf0966@pengutronix.de>
+Date: Wed, 15 Sep 2021 13:42:22 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <CAMHeXxMyCUfcoriS--bLCeqAkOWjG_0nRZmh_nREfJGKbgfbXQ@mail.gmail.com>
+In-Reply-To: <20210908185946.638301-1-trent.piepho@igorinstitute.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210915_035527_578153_33B1BB6A 
-X-CRM114-Status: GOOD (  51.56  )
+X-CRM114-CacheID: sfid-20210915_044226_569642_232A3FD0 
+X-CRM114-Status: GOOD (  39.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -63,8 +60,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -75,122 +72,127 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/5] common: machine_id: support /chosen/barebox,
- machine-id-path override
+Subject: Re: [PATCH] kbuild: dtc: Allow adding device tree fragments via config
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGksCgpPbiAzMC4wNi4yMSAyMjoxMywgVHJlbnQgUGllcGhvIHdyb3RlOgo+IE9uIFdlZCwgSnVu
-IDMwLCAyMDIxIGF0IDM6MjcgQU0gQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5k
-ZT4gd3JvdGU6Cj4+IE9uIDI4LjA2LjIxIDIxOjUwLCBUcmVudCBQaWVwaG8gd3JvdGU6Cj4+PiBP
-biBTdW4sIEp1biAyNywgMjAyMSBhdCAxMTo0MSBQTSBBaG1hZCBGYXRvdW0gPGEuZmF0b3VtQHBl
-bmd1dHJvbml4LmRlPiB3cm90ZToKPj4+Cj4+PiBPbiBhIGJvYXJkIEkgZGlkIGJlZm9yZSBCYXJl
-Ym94IGhhZCBtYWNoaW5lLWlkIHN1cHBvcnQsIHdlIHVzZWQgdHdvCj4+PiBzb3VyY2VzIG9mIHNl
-cmlhbCBudW1iZXIgdG8gZ2VuZXJhdGUgdGhlIG1hY2hpbmUgaWQuICBPbmUgd2FzIHRoZSBpbXg3
-Cj4+PiB1bmlxdWUgaWQgYW5kIHRoZSBvdGhlciB3YXMgYSBzZXJpYWwgbnVtYmVyIGluIGEgaTJj
-IHNlY3VyaXR5IGNoaXAuCj4+Pgo+Pj4gVGhlIGlteCBpZCBpcyBwcmVkaWN0YWJsZSwgc28gZXZl
-biBoYXNoZWQgb25lIGNhbiBwcmVkaWN0IHRoZQo+Pj4gbWFjaGluZS1pZCBleGFjdGx5Lgo+Pgo+
-PiBXZSBoYXBwZW4gdG8gaGF2ZSBzdG0zMm1wMSB0d2lucyB3aXRoIGNvbnNlY3V0aXZlIE1BQyBh
-ZGRyZXNzZXMuCj4+IEkgY29tcGFyZWQgdGhlaXIgc2VyaWFsIG51bWJlcnMgYW5kIHdoaWxlIHRo
-ZXkgY2xlYXJseSBkaWRuJ3Qgc3RhcnQKPj4gYXQgemVybywgYWxsIGJ5dGVzIHdlcmUgdGhlIHNh
-bWUsIGV4Y2VwdCBmb3IgdHdvIG5pYmJsZXMgdGhhdCB3ZXJlCj4+IG9uZSBhcGFydC4gU28geWVz
-LCBpZiB0aGUgaS5NWCBVSUQgZm9sbG93cyBhIHNpbWlsYXIgc2NoZW1lLCB5b3UKPj4gbWF5IGJl
-IGFibGUgdG8gZ3Vlc3MgdGhlIG1hY2hpbmUtaWQgb2Ygb3RoZXIgZGV2aWNlcyBpbiB0aGUgc2Ft
-ZQo+PiBiYXRjaCBpZiB5b3UgYWxyZWFkeSBoYXZlIHRoZSBtYWNoaW5lLWlkIG9mIG9uZSBvZiB0
-aGVtLgo+Pgo+Pj4gV2UgZGlkbid0IHJlYWxseSBsaWtlIHRoYXQsIHNvIHdlIGNvbWJpbmVkIHR3
-bwo+PiAgc291cmNlcy4KPj4KPj4gSXMgeW91ciBpc3N1ZSBvbmUgb2YgcHJpdmFjeSBvciBzZWN1
-cml0eT8KPiAKPiBCb3RoLiAgV2UgZGlkbid0IGxpa2UgaXQgYmVpbmcgZ3Vlc3NhYmxlIGZvciBm
-aXNoaW5nIGF0dGVtcHRzLgo+IFNlY3VyaXR5IHdhcyBtb3JlIG9uIHRoZSBjbG91ZCBzaWRlLCBo
-YXZpbmcgdGhlIG1hY2hpbmUtaWRzIGd1ZXNzYWJsZQo+IHdhcyBub3QgYSBnb29kIGlkZWEuICBZ
-ZXMsIG1hY2hpbmUgaWQgaXMgbm90IHRvIGJlIHVzZWQgZm9yIGFjY2Vzcwo+IGNvbnRyb2wsIGl0
-IGlzIG5vdCBhIHBhc3N3b3JkLiAgQnV0IG9uZSBkb2VzIG5vdCB3YW50IGFuIGF0dGFja2VyIHRv
-Cj4gaGF2ZSBhIGxpc3Qgb2YgZXZlcnkgdmFsaWQgdXNlcm5hbWUgZXZlbiBpZiB0aGUgcGFzc3dv
-cmQgaXMgc3RpbGwKPiBzZWNyZXQuCgpGYWlyIGVub3VnaC4KCj4+IE15IHVuZGVyc3RhbmRpbmcg
-aXMgdGhhdCB0aGUgbWFjaGluZSBpZCBpcyBub3QgZGlzY2xvc2VkIGFzIG1hdHRlcgo+PiBvZiBw
-cml2YWN5LCBzbyBpdCdzIGhhcmRlciB0byB0cmFjayBhIGRldmljZSBieSBtYW5uZXIgb2YgdGhl
-IHVuaXF1ZQo+PiBJRHMgZW1iZWRkZWQgaW4gaXRzIG91dGdvaW5nIGNvbW11bmljYXRpb24uCj4+
-Cj4+PiBJdCBzZWVtcyBsaWtlIHRoZXJlIGlzIG5vIHdheSB0byBkbyB0aGF0IHdpdGggdGhpcyBk
-ZXNpZ24/Cj4+Cj4+IFlvdSBjYW4gd3JpdGUgYSBkcml2ZXIgdGhhdCBjb2xsZWN0cyBtdWx0aXBs
-ZSBzb3VyY2VzIGFuZCBvZmZlcnMKPj4gYSBzaW5nbGUgTlZNRU0gY2VsbCBmb3IgY29uc3VtcHRp
-b24uCj4gCj4gSSBzdXBwb3NlIHRoaXMgY291bGQgYmUgZG9uZSwgYnV0IGl0IGNlcnRhaW5seSBz
-ZWVtcyBjb21wbGV4LiAgSSB0aGluawo+IG9uZSB3b3VsZCBuZWVkOgo+IFdyaXRlIGNvZGUgaW4g
-Ym9hcmQgaW5pdCBmdW5jdGlvbiB0byBnZXQgaW14IGlkLCBkYXRhIGZyb20gYWRkaXRpb25hbAo+
-IGNoaXAsIHB1dCBpbiBnbG9iYWwgYnVmZmVyLgo+IEFkZCBiYXJlYm94IHNwZWNpZmljIGRldmlj
-ZSB0cmVlIG5vZGUsIGNvbXBhdGlibGUgPQo+ICJteWNvbXBhbnksbXlib2FyZC11bmlxdWUtZGF0
-YSIKPiBXcml0ZSBzbWFsbCBudm1lbSBkcml2ZXIgdGhhdCBleHBvcnRzIHRoZSBnbG9iYWwgYnVm
-ZmVyIGFzIG52bWVtIGRldmljZS4KPiAKPiBJIHN1cHBvc2UgdGhlIGxhdHRlciBkcml2ZXIgY291
-bGQgYmUgY29tbW9uIGlmIG5lZWRpbmcgdG8gY3JlYXRlIG52bWVtCj4gZGV2aWNlcyB0byBob2xk
-IGRhdGEgYmVjb21lcyBjb21tb25seSBuZWVkZWQuCgpZZXMuIEkgdGhpbmsgdXNpbmcgYSBudm1l
-bSBjZWxsIGFzIGFuIGludGVyZmFjZSBoZXJlIGlzIGEgZ29vZAp0cmFkZSBvZmYuIEl0IHdvcmtz
-IGZvciBtb3N0IGFuZCBpdCdzIHN0cmFpZ2h0IGZvcndhcmQgdG8gZXh0ZW5kCmluIGZ1dHVyZS4K
-IAo+PiBBIHVzZXIgd291bGQgZXhwZWN0IGEgbWFjaGluZS1pZC1wYXRoIHByb3BlcnR5IHRvIHBv
-aW50IGF0IGFsbCBpbmZvCj4+IHVzZWQgZm9yIGRldGVybWluaW5nIHRoZSBtYWNoaW5lLWlkLCBu
-b3Qgc29tZSBvZiB0aGVtLgo+IAo+IE9uZSBjb3VsZCBoYXZlIGEgc3BlY2lhbCBuYW1lIGluIHRo
-ZSBwYXRoLCAiaW50ZXJuYWwiIG9yIHNvbWV0aGluZywKPiB0aGF0IGluZGljYXRlcyBkYXRhIHRo
-YXQgY29kZSBpbiBCYXJlYm94IHdpbGwgY3JlYXRlLgo+IAo+Pj4gT3IgL2Nob3Nlbi9iYXJlYm94
-LG1hY2hpbmUtaWQgY291bGQgYmUgYSBfbGlzdF8gb2YgcGF0aHMsIHRvIGJlIHVzZWQKPj4+IGlu
-IG9yZGVyLiAgQnV0IHRoYXQgcmVxdWlyZXMgYSBudm1lbSBkcml2ZXIgZm9yIGVhY2ggc291cmNl
-Lgo+Pgo+PiBUaGF0J3MgZmluZSBieSBtZSBhbmQgY291bGQgYmUgYWRkZWQgaW4gZnV0dXJlLiBJ
-IGNhbiBhZGQgYSBwcm9wZXJ0eQo+PiBzaXplIGNoZWNrLCBzbyB3ZSBsZWF2ZSBvcGVuIHRoaXMg
-YXZlbnVlIHdpdGhvdXQgYnJlYWtpbmcgdXNlcnMuCj4+Cj4+IFRoZSByb290IGRldmljZSB0cmVl
-IG5vZGUgYWxyZWFkeSBoYXMgYSBkZXZpY2UgaW4gYmFyZWJveCwgc28gYm9hcmQKPj4gY291bGQg
-dXNlIHRoYXQgdG8gb2ZmZXIgY3VzdG9tIGluZm8uCj4gCj4gSWYgYSBwcm9wZXJ0eSB3YXMgY3Jl
-YXRlZCB0aGF0IHNpbXBseSBjb250YWluZWQgdGhlIGRhdGEgZGlyZWN0bHksCj4gSS5lLiBvZl9z
-ZXRfcHJvcGVydHkocm9vdCwgImV4dHJhLWlkLWRhdGEiLCBkYXRhLCA4KSwKPiB3b3VsZCB0aGVy
-ZSBiZSBhIHdheSBmb3IgYmFyZWJveCxtYWNoaW5lLWlkIHRvIHBvaW50IHRvIGl0PwoKTm9wZS4g
-QnV0IHdobyB3b3VsZCBmaXggdXAgc3VjaCBhIHByb3BlcnR5PyBJZiB5b3UgZ2V0IGRhdGEKZnJv
-bSBhIHByZXZpb3VzIGJvb3Qgc3RhZ2UsIHlvdSBjb3VsZCBwdXQgYSBudm1lbS1yb21lbSBvbiB0
-b3AuCgo+Pj4gVGhlIHNlY3VyaXR5IGNoaXAgd291bGRuJ3QgaGF2ZSB3b3JrZWQgZm9yIGEgbnZt
-ZW0gZHJpdmVyLgo+Pgo+PiBXaHkgbm90PyBDaGVjayBvdXQgbnZtZW0tcm1lbSB3aXRoIGp1c3Qg
-ZXhwb3J0cyBhIG1lbW9yeSByZWdpb24KPj4gYXMgcmVhZC1vbmx5IG52bWVtIGRldmljZS4gWW91
-IGNhbiBkbyBsaWtld2lzZS4gVGhlcmUgYXJlIGFsc28KPj4gaGVscGVycyB0byBnZXQgYSBudm1l
-bSBkZXZpY2Ugb3V0IG9mIGEgKGkyYykgcmVnbWFwLgo+IAo+IFRvIGdldCB0aGUgaWQsIG9uZSBu
-ZWVkcyB0byBjb25zdHJ1Y3QgYSBjb21tYW5kIGFuZCB0aGVuIHBhcnNlIHRoZQo+IHJlc3BvbnNl
-IGZvcm1hdCB0byBleHRyYWN0IHRoZSBkYXRhLiAgSXQgaXMgbm90IGFzIHNpbXBsZSBhcyBzb21l
-Cj4gcmVnaXN0ZXIgY29udGVudHMuCj4gCj4+PiBJJ2xsIGFsc28gcG9pbnQgb3V0IHRoYXQganVz
-dCBoYXNoaW5nIHRoZSBkYXRhIGlzIG5vdCBhIGdvb2QgaWRlYSB0bwo+Pj4gbWFrZSBhIFVVSUQu
-ICBBbnlvbmUgd2hvIGhhc2hlcyB0aGUgaW14IHVuaXF1ZSBpZCB3aWxsIGdldCB0aGUgZXhhY3QK
-Pj4+IHNhbWUgVVVJRC4gIFNvIGl0IGlzIG5vdCB2ZXJ5IHVuaXZlcnNhbGx5IHVuaXF1ZSEKPj4K
-Pj4gVGhlIGkuTVggdW5pcXVlIElEIGlzIHVuaXF1ZSBhY3Jvc3MgaS5NWCBwcm9jZXNzb3JzLiBZ
-ZXMsIGl0IHdvdWxkCj4+IGNvbGxpZGUgd2l0aCBhbiBhdHRhY2tlciB0aGF0IGd1ZXNzIHRoZSBJ
-RCwgYnV0IGlzIHRoYXQgcmVhbGx5Cj4+IGEgdGhyZWF0PyBBbnlob3csIHRoZXJlIGFyZSBib2Fy
-ZHMgdXNpbmcgaXQgbGlrZSB0aGlzIGFscmVhZHkgaW4gdGhlCj4gCj4gSXQgY29tZXMgdXAgaWYg
-c29tZSBvdGhlciBzb2Z0d2FyZSBvbiB0aGUgc2FtZSBib2FyZCBjcmVhdGVzIGEgVVVJRCBieQo+
-IGhhc2hpbmcgdGhlIGlteCBpZC4gIEFueXRoaW5nIHRoYXQgZG9lcyB0aGlzIHdpbGwgZ2V0IHRo
-ZSBzYW1lIFVVSUQuCj4gU3VwcG9zZSB0aGUgYm9hcmQgaXMgbm90IGlteCBhbmQgaGFzIG5vIHVu
-aXF1ZSBidWlsdC1pbiBpZCBvdGhlciB0aGFuCj4gYSBNQUMgYWRkcmVzcy4gIEFueW9uZSB3aG8g
-aGFzaGVzIHRoZSBtYWMgYWRkcmVzcyBnZXRzIHRoZSBzYW1lIFVVSUQKPiBhbmQgdGhleSBjb2xs
-aWRlLiAgSXQgaXMgbm90IGEgc2VjdXJpdHkgaXNzdWUgZXhhY3RseSwgYnV0IGEgZmFpbHVyZQo+
-IG9mIHRoZSB1bml2ZXJzYWxseSB1bmlxdWUgcHJvcGVydHkgb2YgdGhlIFVVSUQuCgpUaGUgYWx0
-ZXJuYXRpdmUgaXMgbm90IHRvIGhhdmUgYSBkZWZhdWx0IGF0IGFsbC4gU28gd2UgcHJvdmlkZQph
-IGRlZmF1bHQgdGhhdCB3b3JrcyBmb3IgbW9zdCBhbmQgaWYgeW91IG5lZWQgbW9yZSB0aGFuIHRo
-YXQsCnlvdSBjYW4gZXh0ZW5kIGl0LgoKPj4gZmllbGQuIFNvIHRoaXMgd29uJ3QgY2hhbmdlLCBi
-dXQgZm9yIHRoZSBuZXcgYmluZGluZyBpbnRyb2R1Y2VkIGhlcmUsCj4+IEkgY2FuIGFkZHJlc3Mg
-aXNzdWVzIHRoYXQgYXJlIHJhaXNlZC4KPiAKPj4+IFRoaXMgaXMgYWxyZWFkeSBhIGtub3duIGlz
-c3VlIHdoZW4gZ2VuZXJhdGluZyBVVUlEcyB0aGF0IGFyZSBub3QKPj4+IHB1cmVseSByYW5kb20u
-ICBTZWUgUkZDNDEyMiDCpzQuMyBmb3IgZ2VuZXJhdGluZyBVVUlEcyBpbiBhIG5hbWVzcGFjZS4K
-PiAKPj4gVXNlcnMgY2FuIGRvIHRoYXQsIGJhcmVib3ggd2lsbCBoYXNoaCBpdCB0byBnZXQgdGhl
-IGZvcm1hdCB0aGUgT1MgZXhwZWN0cy4KPj4gSXQncyBwcm9iYWJseSBhIGdvb2QgaWRlYSB0byBo
-aW50IGF0IFJGQzQxMjIgZm9yIHVzZXJzIGludGVyZXN0ZWQgaW4KPj4gZ2VuZXJhdGluZyB0aGVp
-ciBvd24gbWF0ZXJpYWwgZm9yIHVzZSB3aXRoIHRoZSBtYWNoaW5lLWlkLgo+IAo+IEkgZG9uJ3Qg
-a25vdyB3aGF0IHlvdSBtZWFuIGJ5IHRoZSBmb3JtYXQgdGhlIE9TIGV4cGVjdHMuICBUaGUgb3V0
-cHV0Cj4gb2YgdGhlIMKnNC4zIGFsZ29yaXRobSBpcyBhIHN0YW5kYXJkIFVVSUQuICBJdCB3b3Jr
-cyBwZXJmZWN0bHkgd2VsbCB0bwo+IHBhc3MgaXQgYXMgYSBtYWNoaW5lIGlkIGFuZCB0aGVuIHN5
-c3RlbWQgd2lsbCB1c2UgaXQgYXMgaXQgaXMuICBTaW5jZQo+IDIwMTEsIHdoZW4gc3lzdGVtZCBn
-ZW5lcmF0ZXMgYSBtYWNoaW5lIGlkIGl0IGZvbGxvd3MgUkZDNDQyMiDCpzQuNCBmb3IKPiByYW5k
-b20gVVVJRHMuCgpzeXN0ZW1kIGV4cGVjdHMgYSAzMiBjaGFyYWN0ZXIgbG93ZXIgY2FzZSBJRCB0
-aGF0J3Mgbm90IGFsbCB6ZXJvZXMuCk5ld2VyIHN5c3RlbWQgdmVyc2lvbnMgYXBwYXJlbnRseSBn
-ZW5lcmF0ZSBtYWNoaW5lIElEcyB0aGF0IHF1YWxpZnkKYXMgdjQgVVVJRHMsIGJ1dCBiYXJlYm94
-IGRvZXNuJ3QgYW5kIEkganVzdCB3YW50IHRvIHN0cmVhbWxpbmUgdGhlCmV4aXN0aW5nIGltcGxl
-bWVudGF0aW9uIGhlcmUuIEkgZG9uJ3QgaW50ZW5kIHRvIG1ha2UgdGhlIG1hY2hpbmUtaWQKVVVJ
-RC1jb21wYXRpYmxlIChhbHRob3VnaCBJIGRvbid0IG1pbmQgZXh0ZW5kaW5nIHRoZSBmdW5jdGlv
-bmFsaXR5CmludG8gdGhhdCBkaXJlY3Rpb24pLgoKQ2hlZXJzLApBaG1hZCAKCi0tIApQZW5ndXRy
-b25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBo
-dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAg
-ICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNo
-dCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3
-LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hello Trent,
+
+On 08.09.21 20:59, Trent Piepho wrote:
+> This introduces config variables that allow adding additional fragments
+> to the Barbox device tree(s).
+> 
+> Example uses are adjusting the flash partition layout, adding barebox
+> state varibles, or adding an I2C device.  These can be now be done with
+> build configuration only, without needing to patch the existing dts
+> files in the Barebox source.
+> 
+> The advantage is greater when an external build system, such as Yocto or
+> Buildroot, is being used to build Barebox.  The build system can drop in
+> a dts fragment to partition flash and build from unaltered Barebox
+> source.  This avoids the need for cumbersome maintenance of patch files
+> to modify Barebox's source for each flash partition layout.> 
+> Two variables are added, which function identically.  The idea is that
+> one can be used in Barebox in-tree or out-of-tree defconfig files and
+> the other injected by an external build system.  Injecting the latter
+> variable will not clobber the value of the former.
+
+I don't see the utility of using this new mechanism for in-tree boards.
+I suggest dropping EXTRA_DTS_FRAGMENTS.
+ 
+> Preprocessing the dts file gains another layer, where a generated dts
+> source consisting of an include directive for the original dts source is
+> followed by more includes for each fragment.  This is piped to the
+> existing preprocessor call on stdin to avoid another temporary file.
+> cpp/dtc will correctly identify errors in the source files they occur
+> in.  The -MT option is used so the cpp auto-dependencies reference the
+> original dts source and not the generated code passed on stdin.
+
+If you go this route wouldn't you want to apply device tree overlays?
+Blindly applying fragments doesn't mesh well with multi-image.
+I assume with overlays, you could skip an overlay if it has a differing
+compatible. If we don't use overlays, you should at least define
+a symbol with the name of the device tree file, so fragments have
+a chance of being multi-image compatible via preprocessor logic.
+
+Cheers,
+Ahmad
+
+> 
+> Signed-off-by: Trent Piepho <trent.piepho@igorinstitute.com>
+> ---
+>  common/Kconfig       | 20 ++++++++++++++++++++
+>  scripts/Makefile.lib |  7 ++++++-
+>  2 files changed, 26 insertions(+), 1 deletion(-)
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index a9feae2ae..1b95ded87 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -1091,6 +1091,26 @@ config SYSTEMD_OF_WATCHDOG
+>  	  in the kernel device tree. If the kernel is booted without a device
+>  	  tree or with one that lacks aliases, nothing is added.
+>  
+> +config EXTRA_DTS_FRAGMENTS
+> +	string "additional dts file fragments"
+> +	depends on OFTREE
+> +	help
+> +	  List of dts fragment files that will be appended to Barebox's device
+> +	  tree(s) source when building the dtb file(s).  If multiple files are
+> +	  listed, they will be appended in order.  Relative filenames will use
+> +	  the dtc include search path.
+> +
+> +config EXTERNAL_DTS_FRAGMENTS
+> +	string "external dts file fragments"
+> +	depends on OFTREE
+> +	help
+> +	  This is like EXTRA_DTS_FRAGMENTS, but it's intended that it not be put
+> +	  into Barebox defconfig files and instead used by an external build
+> +	  system, like Yocto or buildroot, to add dts fragments from outside the
+> +	  Barebox source tree into the Barebox build.  The build system can
+> +	  override this variable without modifying anything set by the Barebox
+> +	  defconfig.
+> +
+>  menu "OP-TEE loading"
+>  
+>  config OPTEE_SIZE
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index 80d76b177..093dd3cdd 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -201,6 +201,7 @@ cpp_flags      = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(__cpp_flags)
+>  ld_flags       = $(KBUILD_LDFLAGS) $(ldflags-y)
+>  
+>  dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
+> +		 -Wp,-MT,$(basename $(notdir $@)).o                      \
+>  		 -I$(srctree)/arch/$(SRCARCH)/dts/include		 \
+>  		 -I$(srctree)/dts/include                                \
+>  		 -I$(srctree)/include                                    \
+> @@ -335,8 +336,12 @@ cmd_dt_S_dtb = $(srctree)/scripts/gen-dtb-s $(subst -,_,$(*F)) $< $(CONFIG_IMD)
+>  $(obj)/%.dtb.S: $(obj)/%.dtb $(srctree)/scripts/gen-dtb-s FORCE
+>  	$(call if_changed,dt_S_dtb)
+>  
+> +dts-frags = $(subst $(quote),,$(CONFIG_EXTRA_DTS_FRAGMENTS) $(CONFIG_EXTERNAL_DTS_FRAGMENTS))
+>  quiet_cmd_dtc = DTC     $@
+> -cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
+> +# For compatibility between make 4.2 and 4.3
+> +H := \#
+> +cmd_dtc = /bin/echo -e $(foreach f,$< $(dts-frags),'$(H)include "$(f)"\n') | \
+> +	$(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) - ; \
+>  	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
+>  		-i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
+>  		-i $(srctree)/dts/src/$(SRCARCH) \
+> 
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
