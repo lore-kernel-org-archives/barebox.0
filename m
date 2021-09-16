@@ -1,68 +1,52 @@
-Delivery-date: Thu, 16 Sep 2021 11:35:51 +0200
+Delivery-date: Thu, 16 Sep 2021 11:36:25 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mQno7-0006a3-NQ
-	for lore@lore.pengutronix.de; Thu, 16 Sep 2021 11:35:51 +0200
+	id 1mQnof-0006bS-Mx
+	for lore@lore.pengutronix.de; Thu, 16 Sep 2021 11:36:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mQno6-0006yh-QT
-	for lore@pengutronix.de; Thu, 16 Sep 2021 11:35:51 +0200
+	id 1mQnoe-0007AW-KA
+	for lore@pengutronix.de; Thu, 16 Sep 2021 11:36:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
 	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=kjA5vSTMW8ZiiDf6lTpS+ldfuOzrlnboSFhAtvl9em8=; b=2qgTk1InrhL1dy
-	Xz0y9xYEXTeEV1BI6J+QuNjmhdbd4c6lB3sdFZChawFH48CVp56h/0WPpWnxjYYxIMJ0F10rpzdsl
-	Udim5rD3UUQkBzxUXFH0Ho93UD2Eu7ECdotokfgZ9UZMGLezoapdxGYDDgMEhZU1iy2iKn1AV0M39
-	e3dScfzwsD6o3UJmQ7bUH1ZeC16Ehc51Te0rlQjiBsCiKRTi35LN3Vo7W5FpU837te8QcRaDqVoK0
-	Fa3L78IYB5CoeQXgzJWwsViFLCWKr0SSXifZuFubeAaGe9MTB/PR6Lc8aM5uCiz7n9huG3ED/mVPV
-	Uaig9hO4diDuAYsmNaYA==;
+	List-Owner; bh=kngOV4P14WQKst7TFp3qbYPnw/OiyhboW5/0v60jVKQ=; b=IXrTtFpI9vOOqK
+	xf60ydeInic+WchNq7JZSANL/k36VRPmBmVpSOxzeycCgzXdHKFgvY2ALiwRlpjq0mu3ipffcXWXg
+	mld0hs69/2F876j3V/QKVstZHuKqU6uR8k8BCHfZRdRgJiO6/d7v+6plRyJ90WOh7C8wtiDHcbyOl
+	G5/80kdBqDUzr4dq6EB6h9QNIYphNxik+E6Xsvi0uvRVpaw4zyOwXH4GU8JgfTYmSFwUens117+dB
+	G2GWQCMwNeaxInNyksiplpM2uViUZEnrt+JUhFm+aiazTdQ67bWv4+2nUKD30bvXy1YrZLxaeOFO7
+	UrcP5gYdG4FR6IZuBl3A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mQnmU-00AiMQ-Vn; Thu, 16 Sep 2021 09:34:11 +0000
+	id 1mQnnP-00AiZm-CH; Thu, 16 Sep 2021 09:35:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mQnmP-00AiLD-FR
- for barebox@lists.infradead.org; Thu, 16 Sep 2021 09:34:06 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ id 1mQnnK-00AiYS-8D
+ for barebox@lists.infradead.org; Thu, 16 Sep 2021 09:35:03 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mQnmM-0006e2-GN; Thu, 16 Sep 2021 11:34:02 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mQnmK-0003gI-Lu; Thu, 16 Sep 2021 11:34:00 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mQnmK-0007yv-Kd; Thu, 16 Sep 2021 11:34:00 +0200
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+ (envelope-from <afa@pengutronix.de>)
+ id 1mQnnJ-0006jk-05; Thu, 16 Sep 2021 11:35:01 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1mQnnI-0005VK-OA; Thu, 16 Sep 2021 11:35:00 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Thu, 16 Sep 2021 11:33:56 +0200
-Message-Id: <20210916093356.173149-1-u.kleine-koenig@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 16 Sep 2021 11:34:58 +0200
+Message-Id: <20210916093458.21102-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-Patch-Hashes: v=1; h=sha256; i=Vf6KsCVpL6G4+5QHGC3z/XErvdxg3ToSSlogl9nN/R0=;
- m=a/C5+Iq7/jVsMdRd7A1FlP/CM6bNnIUm081IfLNb6L0=;
- p=a+LMfOMzbQ87q86MBtK1C/iALUtr3I4dWo6mH2rI/8c=;
- g=9475b4a3dc1341510d884d822910186c8f6cf8e1
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de;
- s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6;
- b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFDD4EACgkQwfwUeK3K7Am1Ggf/UQj
- RuF4n9mtEHM01G9+utnLq7aiNfdggXgM4BEfoiKHMJEduxo1YzI4Q0QM1K5ViwqZHxqu4Wrjpu18x
- nU/IKW+IkfzdRFjhisVmyOd2E+7fSjIm5fogmc9Q1Nj2eUU+RS9Yuk2zsWqf4qIM07e0R2U4ASfM4
- 0OIkxbXaQyE4C2d2CIQ49gp9b/GgLNvjgYhlk/7c7mW85KEq111G5TTanYgE1OKGCJqMCuuKv1qw+
- zuYdMFOuNPMVeRXnnH3s3au8GwgBlPxC3X/oYM4TE46TfPXc8GaHLPNdv7iVm+1GSlvT4MEVWro9h
- Sh1kWRv8GBpIeco7+w9bhuC3JKoSbnQ==
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210916_023405_570186_D2315982 
-X-CRM114-Status: GOOD (  11.29  )
+X-CRM114-CacheID: sfid-20210916_023502_349935_2EAECB2B 
+X-CRM114-Status: GOOD (  15.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,50 +58,193 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] arm64: Don't truncate upper 32 bits in ENTRY_FUNCTION arg
- registers
+Subject: [PATCH master] virtio: implement remove callbacks
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-RnJvbTogQWhtYWQgRmF0b3VtIDxhaG1hZEBhM2YuYXQ+CgpVc2UgYSBsb25nIGluc3RlYWQgb2Yg
-YW4gdTMyLiBGb3IgMzItYml0IGFybSB0aGVyZSBpcyBubyBkaWZmZXJlbmNlLCBmb3IKYXJtNjQg
-dGhpcyByZXN1bHRzIGluIGJlaW5nIGFibGUgdG8gdXNlIHRoZSB3aG9sZSByZWdpc3RlciBzaXpl
-IG9mIDY0CmJpdHMuCgpTaWduZWQtb2ZmLWJ5OiBBaG1hZCBGYXRvdW0gPGFobWFkQGEzZi5hdD4K
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9iYXJlYm94LWFybS5oIHwgOCArKysr
-LS0tLQogMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKCmRp
-ZmYgLS1naXQgYS9hcmNoL2FybS9pbmNsdWRlL2FzbS9iYXJlYm94LWFybS5oIGIvYXJjaC9hcm0v
-aW5jbHVkZS9hc20vYmFyZWJveC1hcm0uaAppbmRleCAyNGY5YmNlMmVmN2EuLmNmYjU5NDNmMzNk
-NiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vaW5jbHVkZS9hc20vYmFyZWJveC1hcm0uaAorKysgYi9h
-cmNoL2FybS9pbmNsdWRlL2FzbS9iYXJlYm94LWFybS5oCkBAIC0xNjIsMTggKzE2MiwxOCBAQCBz
-dGF0aWMgaW5saW5lIHVuc2lnbmVkIGxvbmcgYXJtX21lbV9iYXJlYm94X2ltYWdlKHVuc2lnbmVk
-IGxvbmcgbWVtYmFzZSwKIH0KIAogI2RlZmluZSBFTlRSWV9GVU5DVElPTihuYW1lLCBhcmcwLCBh
-cmcxLCBhcmcyKQkJCQlcCi0Jdm9pZCBuYW1lICh1aW50MzJfdCByMCwgdWludDMyX3QgcjEsIHVp
-bnQzMl90IHIyKTsJCVwKKwl2b2lkIG5hbWUodWxvbmcgcjAsIHVsb25nIHIxLCB1bG9uZyByMik7
-CQkJXAogCQkJCQkJCQkJXAotCXN0YXRpYyB2b2lkIF9fIyNuYW1lKHVpbnQzMl90LCB1aW50MzJf
-dCwgdWludDMyX3QpOwkJXAorCXN0YXRpYyB2b2lkIF9fIyNuYW1lKHVsb25nLCB1bG9uZywgdWxv
-bmcpOwkJCVwKIAkJCQkJCQkJCVwKIAl2b2lkIE5BS0VEIF9fc2VjdGlvbigudGV4dF9oZWFkX2Vu
-dHJ5XyMjbmFtZSkJbmFtZQkJXAotCQkJCSh1aW50MzJfdCByMCwgdWludDMyX3QgcjEsIHVpbnQz
-Ml90IHIyKQlcCisJCQkJKHVsb25nIHIwLCB1bG9uZyByMSwgdWxvbmcgcjIpCQlcCiAJCXsJCQkJ
-CQkJXAogCQkJX19iYXJlYm94X2FybV9oZWFkKCk7CQkJCVwKIAkJCV9fIyNuYW1lKHIwLCByMSwg
-cjIpOwkJCQlcCiAJCX0JCQkJCQkJXAogCQlzdGF0aWMgdm9pZCBOQUtFRCBub2lubGluZSBfXyMj
-bmFtZQkJCVwKLQkJCSh1aW50MzJfdCBhcmcwLCB1aW50MzJfdCBhcmcxLCB1aW50MzJfdCBhcmcy
-KQorCQkJKHVsb25nIGFyZzAsIHVsb25nIGFyZzEsIHVsb25nIGFyZzIpCiAKIC8qCiAgKiBXaGVu
-IHVzaW5nIGNvbXByZXNzZWQgaW1hZ2VzIGluIGNvbmp1bmN0aW9uIHdpdGggcmVsb2NhdGFibGUg
-aW1hZ2VzCgpiYXNlLWNvbW1pdDogYzk0NWQyNGVjNWRhZDY5MTBiMDI2OTdlNGQxZGYwOWY4OWQy
-Yjk1MAotLSAKMi4zMC4yCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+virtio parent device drivers (e.g. PCI and MMIO) create child devices
+and free them on remove. The virtio drivers for the child devices (e.g.
+block and console) however don't unregister with their respective
+subsystems in the remove callbacks. So these subsystems may have stale
+pointers pointing at removed devices. This is especially problematic for
+the console driver, because the virtio console device_d will be removed,
+but the console itself remains registered leading to a use-after-free
+as soon as printf is invoked for the previously active console.
+
+This leads to a crash when typing reset in
+
+  https://www.barebox.org/jsbarebox/?graphic=0
+
+Fix this for all virtio drivers.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/block/virtio_blk.c      |  6 ++++++
+ drivers/hw_random/core.c        | 12 ++++++++++++
+ drivers/hw_random/virtio-rng.c  |  6 ++++++
+ drivers/input/virtio_input.c    |  5 +++--
+ drivers/serial/virtio_console.c | 14 ++++++++++++++
+ include/linux/hw_random.h       |  2 ++
+ 6 files changed, 43 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index b7a83cf686c1..87ab505f8326 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -95,6 +95,7 @@ static int virtio_blk_probe(struct virtio_device *vdev)
+ 		return ret;
+ 
+ 	priv->vdev = vdev;
++	vdev->priv = priv;
+ 
+ 	devnum = cdev_find_free_index("virtioblk");
+ 	priv->blk.cdev.name = xasprintf("virtioblk%d", devnum);
+@@ -115,8 +116,13 @@ static int virtio_blk_probe(struct virtio_device *vdev)
+ 
+ static void virtio_blk_remove(struct virtio_device *vdev)
+ {
++	struct virtio_blk_priv *priv = vdev->priv;
++
+ 	vdev->config->reset(vdev);
++	blockdevice_unregister(&priv->blk);
+ 	vdev->config->del_vqs(vdev);
++
++	free(priv);
+ }
+ 
+ static const struct virtio_device_id id_table[] = {
+diff --git a/drivers/hw_random/core.c b/drivers/hw_random/core.c
+index ee3d5a52ddf3..86214dc8bae7 100644
+--- a/drivers/hw_random/core.c
++++ b/drivers/hw_random/core.c
+@@ -92,6 +92,12 @@ static int hwrng_register_cdev(struct hwrng *rng)
+ 	return devfs_create(&rng->cdev);
+ }
+ 
++static void hwrng_unregister_cdev(struct hwrng *rng)
++{
++	devfs_remove(&rng->cdev);
++	free(rng->cdev.name);
++}
++
+ struct hwrng *hwrng_get_first(void)
+ {
+ 	if (list_empty(&hwrngs))
+@@ -122,3 +128,9 @@ int hwrng_register(struct device_d *dev, struct hwrng *rng)
+ 
+ 	return err;
+ }
++
++void hwrng_unregister(struct hwrng *rng)
++{
++	hwrng_unregister_cdev(rng);
++	free(rng->buf);
++}
+diff --git a/drivers/hw_random/virtio-rng.c b/drivers/hw_random/virtio-rng.c
+index 7bdacc976e72..f0a3d3cb74e7 100644
+--- a/drivers/hw_random/virtio-rng.c
++++ b/drivers/hw_random/virtio-rng.c
+@@ -78,8 +78,14 @@ static int virtrng_probe(struct virtio_device *vdev)
+ 
+ static void virtrng_remove(struct virtio_device *vdev)
+ {
++	struct virtrng_info *vi = vdev->priv;
++
+ 	vdev->config->reset(vdev);
++	if (vi->hwrng_register_done)
++		hwrng_unregister(&vi->hwrng);
+ 	vdev->config->del_vqs(vdev);
++
++	kfree(vi);
+ }
+ 
+ static void virtrng_scan(struct virtio_device *vdev)
+diff --git a/drivers/input/virtio_input.c b/drivers/input/virtio_input.c
+index b354933209fc..b5430886ab84 100644
+--- a/drivers/input/virtio_input.c
++++ b/drivers/input/virtio_input.c
+@@ -259,10 +259,11 @@ static void virtinput_remove(struct virtio_device *vdev)
+ {
+ 	struct virtio_input *vi = vdev->priv;
+ 
+-	poller_unregister(&vi->poller);
+-
+ 	vdev->config->reset(vdev);
++	poller_unregister(&vi->poller);
++	input_device_unregister(&vi->idev);
+ 	vdev->config->del_vqs(vdev);
++
+ 	kfree(vi);
+ }
+ 
+diff --git a/drivers/serial/virtio_console.c b/drivers/serial/virtio_console.c
+index a1331035d9ef..a4adb77610f6 100644
+--- a/drivers/serial/virtio_console.c
++++ b/drivers/serial/virtio_console.c
+@@ -134,6 +134,8 @@ static int virtcons_probe(struct virtio_device *vdev)
+ 
+ 	virtcons = xzalloc(sizeof(*virtcons));
+ 
++	vdev->priv = virtcons;
++
+ 	virtcons->in_vq = vqs[0];
+ 	virtcons->out_vq = vqs[1];
+ 
+@@ -150,6 +152,17 @@ static int virtcons_probe(struct virtio_device *vdev)
+ 	return console_register(&virtcons->cdev);
+ }
+ 
++static void virtcons_remove(struct virtio_device *vdev)
++{
++	struct virtio_console *virtcons = vdev->priv;
++
++	vdev->config->reset(vdev);
++	console_unregister(&virtcons->cdev);
++	vdev->config->del_vqs(vdev);
++
++	free(virtcons);
++}
++
+ static struct virtio_device_id id_table[] = {
+ 	{ VIRTIO_ID_CONSOLE, VIRTIO_DEV_ANY_ID },
+ 	{ 0 },
+@@ -159,6 +172,7 @@ static struct virtio_driver virtio_console = {
+ 	.driver.name =	"virtio_console",
+ 	.id_table =	id_table,
+ 	.probe =	virtcons_probe,
++	.remove =	virtcons_remove,
+ };
+ device_virtio_driver(virtio_console);
+ 
+diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
+index bae442166c10..116afd9721e5 100644
+--- a/include/linux/hw_random.h
++++ b/include/linux/hw_random.h
+@@ -44,4 +44,6 @@ struct hwrng *hwrng_get_first(void);
+ static inline struct hwrng *hwrng_get_first(void) { return ERR_PTR(-ENODEV); };
+ #endif
+ 
++void hwrng_unregister(struct hwrng *rng);
++
+ #endif /* LINUX_HWRANDOM_H_ */
+-- 
+2.30.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
