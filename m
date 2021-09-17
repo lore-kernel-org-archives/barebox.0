@@ -1,55 +1,137 @@
-Delivery-date: Fri, 17 Sep 2021 19:43:30 +0200
+Delivery-date: Sat, 18 Sep 2021 00:39:45 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mRHta-0001OW-0j
-	for lore@lore.pengutronix.de; Fri, 17 Sep 2021 19:43:30 +0200
+	id 1mRMWH-0001ct-9k
+	for lore@lore.pengutronix.de; Sat, 18 Sep 2021 00:39:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mRHtY-00070C-EK
-	for lore@pengutronix.de; Fri, 17 Sep 2021 19:43:29 +0200
+	id 1mRMWF-0007xR-Vy
+	for lore@pengutronix.de; Sat, 18 Sep 2021 00:39:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=yCC41HXRMRZX6juga2KJwZEWvo3KiNSmh97OJj/WGVE=; b=OpkYjM27Itvpwg
-	BMIFssQ3IHZtrN7jFR5JkqfoRcZ29rUiHv7LpbExLIsQSbU8wRjAJxwvTcbmWYdqstUolsdCKdla7
-	A8PM2i+PmgPICcP4mVtOoxwvvkSnMP1bZ/W1hXV9Y56WJajSbqO//uHkdNB/KOAN/FhM+NSpDj+Zd
-	cVhWIoSn8BDG3gldAImIpbOd5Dgkz/Mp3/YK4oKOdLQGT6O40eIQj/j5IzPy9IgEY0EUT8DM2XdOB
-	rrFNtdIMyeTubIMMtjbpC45KQ2LPr/ZNGsYDq6+sxvvMNWpxHR6NPvB1xyoAUJUIAHgNcY3gCUjJJ
-	BFBgrIoBx6yu9cemRBRA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Date:Message-ID:Cc:Subject
+	:From:To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=IlsIHsBmWxdh9vnS/NFjbF37R293AIVKALUe5QGAmh0=; b=m8b1vWNiV9oaqW
+	mqNGPt4NOMZQlXZms6Vhala47LC0eWXl22Lxb6G0Ra8Zx0nvKQvGDxrOM24Ld5dKIkpT5cJ0xXLvH
+	xsmRDpD/yVtNaWUDHvDHxogoEF1Tk0wSlSjuMlCKkEu0EJsxu+TOfYq95JUcrKmLFn0VayAWUbDIN
+	enSiUZM9M+HcgCICXOVtDel1pncnZBnq6LyuPc0TJ4V0DIUBWXxCaDg2AM28YgVbQQkesodcbKMeK
+	1hvti+tnqZ1KZWKF963mg0J8/qvbBsdHCZNwisxVv1zMZRYpmnfRjuWBN+BqRyxiiSzZ3HJbetWbI
+	rtIjRoOD80OnSTtw66ug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mRHrq-00Ekc9-IL; Fri, 17 Sep 2021 17:41:42 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mRMUT-00F5Rz-AS; Fri, 17 Sep 2021 22:37:53 +0000
+Received: from mail-eopbgr80130.outbound.protection.outlook.com
+ ([40.107.8.130] helo=EUR04-VI1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mRHrj-00EkbO-RC
- for barebox@lists.infradead.org; Fri, 17 Sep 2021 17:41:38 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1mRHrh-0006g4-G8; Fri, 17 Sep 2021 19:41:33 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1mRHrh-0006p1-07; Fri, 17 Sep 2021 19:41:33 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: ejo@pengutronix.de, Trent Piepho <trent.piepho@igorinstitute.com>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 17 Sep 2021 19:41:27 +0200
-Message-Id: <20210917174127.23345-4-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210917174127.23345-1-a.fatoum@pengutronix.de>
-References: <20210917174127.23345-1-a.fatoum@pengutronix.de>
+ id 1mRMUN-00F5R2-Pz
+ for barebox@lists.infradead.org; Fri, 17 Sep 2021 22:37:49 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=foGluhhZomkk4mYFUlXizl6Tj7vP9htGY9KKOP3FAlwb0ihndpHiR6tWdslua5mocoyqdvWFXmbCejGAM6LN8TuwYxg4iq2uqlvVbgfLnkxRJINNn5Q7T+sMQ0Ei/QGKygIeCHgurcD9UIKWCdNP4J6rc7tmA8u59tqr8Xl/D1HJ2Ph04FcCYnguLGYf/ki1w3eYGMr9pyzCVSsp6NtPco+RKpv8AWviCQG1ofbrHRnGxWH/3OyannOgzO2OsT+FloOIm2C9xmmek3FlhfKTLCKo9MfbrD7T03pLt5o6aRcgz1ChlYdz9BAVzrTcYvzaEhfWITTtl4+g+CV8g0RjIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version; 
+ bh=nMX9sNuPlUwvHrruikPDpYC6BP+4VSnUCApYnVQcRcw=;
+ b=ZRpseA6qCcnjw3A1Yyj6dLgu0CKXYf0cJZTZLrrqzFTZXC++pN/C1VmlyckwVakl7BRe9iNmfTvjkPb9VeOdYLPFOmqTZC5XphKaxqXR4GJHfcswXs4aKOkV50Todx3yH2b4050CJi+sdjzsq5n1I3J7hOcO4AOdLDDRkAJlaJS3EP4IjhDCHgL7e9f7pAhkhks11nEM/EDrmnaHaqJpEFPIQrS9eEpbkofXpC3sLIgLO8f0OmqLTl5Qqs9qpm8T4ihRmf7+59WVffHV8RFEpvN5zcHpt1MBFwUPKMlmAAkGuKBlMpr5FDMqmvBhylFNT/xkQzAR5taGdFBIG006rg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
+ dkim=pass header.d=axentia.se; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nMX9sNuPlUwvHrruikPDpYC6BP+4VSnUCApYnVQcRcw=;
+ b=M1pHQjI/es7F+fE/6FlLIXlbSzxJEIwngBsTwfP35q8pBH+LJ3vmsMUp/ccM9e9wvp6rInbbwFUc4aP3YvB3X7jGrYbnATKbDPatCeQLzVYuNwGBYAkkjsbQyqVoS+eOFp3xsjMDx+O16wRTnxlCO+HKqvKQsaDHcrCiNVSuH3I=
+Authentication-Results: lists.infradead.org; dkim=none (message not signed)
+ header.d=none;lists.infradead.org; dmarc=none action=none
+ header.from=axentia.se;
+Received: from DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
+ by DB9PR02MB7259.eurprd02.prod.outlook.com (2603:10a6:10:24a::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.16; Fri, 17 Sep
+ 2021 22:37:42 +0000
+Received: from DB8PR02MB5482.eurprd02.prod.outlook.com
+ ([fe80::35c9:1008:f5af:55a]) by DB8PR02MB5482.eurprd02.prod.outlook.com
+ ([fe80::35c9:1008:f5af:55a%4]) with mapi id 15.20.4500.019; Fri, 17 Sep 2021
+ 22:37:42 +0000
+To: Sascha Hauer <s.hauer@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
+From: Peter Rosin <peda@axentia.se>
+Organization: Axentia Technologies AB
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <781e128b-14f3-3577-e433-f6a13fff8159@axentia.se>
+Date: Sat, 18 Sep 2021 00:37:39 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
+Content-Language: en-US
+X-ClientProxiedBy: HE1PR0501CA0007.eurprd05.prod.outlook.com
+ (2603:10a6:3:1a::17) To DB8PR02MB5482.eurprd02.prod.outlook.com
+ (2603:10a6:10:eb::29)
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.13.3] (185.178.140.238) by
+ HE1PR0501CA0007.eurprd05.prod.outlook.com (2603:10a6:3:1a::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4523.16 via Frontend Transport; Fri, 17 Sep 2021 22:37:41 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c8556cbc-978f-48ca-4487-08d97a2bc318
+X-MS-TrafficTypeDiagnostic: DB9PR02MB7259:
+X-Microsoft-Antispam-PRVS: <DB9PR02MB725955977D81AA1B70908002BCDD9@DB9PR02MB7259.eurprd02.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: +6rGTIJtCWy4MZpxSNT5+BBnZPQsIFi5xmLbZbFtAmBqJKSYymJaEdDlP0B3/aXGHowuNFxZZystcn4zK8Uirn2Cwaw+NGMFWZ4SmjJprOk1l3k9faR8lCGc5SyZOyOxGdiD373Hm+nVaQDkJGA9tShqii7ih9FUwDk8cq9ojtxXi2Zz8sx77rm+rrujiJ3d4ubbyBNnI8aLXyu//Dzt6TyCL0n8rB2zWksBenP5oZdct4fFbOoMU5+jMh/ASziCn2OIYKHhc9ey4FqQ8jDmzY9y7pl6i+DWOle8VMnxmKlC5zf4UR0GTUmHOyleNpQgEafGF68mCbSu/bj5rBW1NwY0KBhE/nBYCG+2JvNJ3F50TSk4/0QMUJlISoro//q4li0yzSp7GSiRxQ75A4Hh9W8jtICgWB5+dVy8QwCqjk/xKrdqfnFzi6YafekvANY1aMdMOlsJhMlug8W7q0/PTAljrFv39csblw4SM4QqGDNoVRsVCxtluYl5flC1BVxraPSy76/wxHHtNtboHv1x2LK4pw1eBr/FNr6BbDtJM2KhYqvWYzOaQc80d3Gmwjmw4ReA/nXwGJ2/QBChlhZJn1hDuFMPOzsIvCO/zfUnEp2XMCukCVyNpc0AOXHptlXYTK4DpsL/yUlYotQICnVVwLneQuCovSD1xTPRapAaDjr45XFV161nDPL/tQTxpc4uFxvkqgMCqIY8LQpxYSIHXUiWEolo2OyuVVbiDDa16RmifC3zolYm5JGaa7nkACUv
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DB8PR02MB5482.eurprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(396003)(346002)(39840400004)(136003)(366004)(376002)(186003)(38100700002)(8936002)(8676002)(83380400001)(26005)(2616005)(956004)(2906002)(16576012)(31696002)(5660300002)(66556008)(66946007)(66476007)(31686004)(86362001)(110136005)(316002)(36756003)(4326008)(36916002)(6486002)(508600001)(45980500001)(43740500002)(554374003);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T1dsUzNPZTd0VU5VejI3cmFsWldnK1l2dnhnYXFSQ3FybE91K1lKdHlGRDNS?=
+ =?utf-8?B?bFR6MFdoRjdma2JYa2lFeSt2OTkwRlhqR2grVFVwVXBBWE1lOEhUV3p6ZG84?=
+ =?utf-8?B?cVpVV0JiRFlMY1FHY0MybFVJczZPODVCUGNtcUo5ZjE2eC9RWm1lUFN4aVor?=
+ =?utf-8?B?ZlQxQmVSK1VNWGxRL29RWi93TWFQOHZyZmNIb3Z2WjFxUmpLZjNWS1BRaDdh?=
+ =?utf-8?B?VEFhWWpKa1RSZHlHcktaWTBFNkNESVRLaGNhZlNJdUQrN0R5L2tsSDZFakRE?=
+ =?utf-8?B?Z0xNY20wK2RyVG91NytiUU10M0k0Vnk2aW1QQWpNY0xJTTQ1ekZMaGE4M1Jq?=
+ =?utf-8?B?akJtZzZqc1c5bjhNV3NobG90d1U5UUJ0SU4wYktPN0YwN1JmVjJsbEJaYVBj?=
+ =?utf-8?B?MmJnUHNnMUIzeGFOdlkvTm9tNlExVDFKTEhmWEM1V2IzUFowM0ZUcWhXZm9o?=
+ =?utf-8?B?anBoYXlRT1d2T0dlWXB6YnBrbTY5RkkrcGxuWkRKd3RnTm42YnFpdHlCemJL?=
+ =?utf-8?B?c1BPY2FSTEFJV09MRFYrcmV2SVUwQmJIdnpTY2JibFEwREdEbXZ0TFI3a0JK?=
+ =?utf-8?B?TnYzSzJ5cThrL0lIaUNBelZQc09rRWFURGdiRUVhQkZOdHRMMHFZVGI1TDRp?=
+ =?utf-8?B?STZ3ZERrYklHWVJMYzNNWjNlQzc4cjVkN1lBTmxYcTJMa2lOV2hxaDliWnFL?=
+ =?utf-8?B?Q1ZOL3l4YW5CVXhWejFVOTRGakl4WVNCVExlbkJZNkdjeEpKOEpQVU40eG5M?=
+ =?utf-8?B?bnkwWWNIcGFraEhvSkU1K0JtcVlwQ1hDNG9qRUtnM09OVXBqSHdBZ2FLRHl0?=
+ =?utf-8?B?TFo5R0xsOElGOEFnOTlmUTVMSWtpcEY1SVlZZEZuNnZWQTBvNTZPR0ZiR2I1?=
+ =?utf-8?B?ODlYQjRkbkUzbEtaVGJSODlDSDFEbCtsL29ReUdCL2E2cnVBTklhZ0JVQTR4?=
+ =?utf-8?B?V3lZQ0JKVkR5VTVpdm0wUmpFNU8wU3djK1pmR0ZaQXNBbXZPQkVPWmJvdVp0?=
+ =?utf-8?B?WXZyaE5iNk9oR3k2OEIyaDRGWEdyQ1cvYVdIL2dwejVXNzZkWUpOdlpYWEtQ?=
+ =?utf-8?B?TldDeTc5SUVBSGJ3MENkdDhkeE93VG5wQXlubDJDSFJQRWtOQ3c2TEwxb0VR?=
+ =?utf-8?B?d2hHSUhBYkFDdHNYbXhjSlhVMkF0TnF4MjE0enRucGg0c0tOOFJJMUxIY0kw?=
+ =?utf-8?B?cmR1cllxYXFNaEdwUEZtVUg2Q0VaT2RiM0FhQ1YxOStydkVCY21IWkY2T0Vw?=
+ =?utf-8?B?MWNheGovMnY1VnBzQm9tMi9MbHdnQTd1aWx0RmdPWDdMTHNySXpsODhmREo0?=
+ =?utf-8?B?L0puT2tqQVlnR3UzU3o0eUNwdlQrbVdDRCt2MjhSNnIzcEJKajhDYkhwQVdB?=
+ =?utf-8?B?R2ZiSk5Pa28vd0dIdlFOWk0vNXdMMjB3Um5OSXQ5c0NuMUNrVGVBd3VHa2oz?=
+ =?utf-8?B?Ty83U21QQ1dnekxGRFlmUHVHSTQ3UEsyRFBNQkpiZWFNK3d6NzNZUnlSMXpv?=
+ =?utf-8?B?czN5R0F3a25leVI0R04raGdmZEFFSDlrdG5jSEtXVlJCYlhNd3BmZVc5K3lD?=
+ =?utf-8?B?SGlOTCtmRzFCT3RvNUF2a2RaRGtnOHpibUFQRlN4aWdnWWJNUmZJUm1ub0hO?=
+ =?utf-8?B?OTMrNWhwc0M0aWRtSStFUC9teEhwdFlXcEZWK0xFMWs2Z0xKM2VqR0FCd2tC?=
+ =?utf-8?B?aHEwVllMN0dMZ2JDWHpXakJvQ0xBMXZ1RmVJK3VHNVRLOUphZFB5QldkUzZU?=
+ =?utf-8?Q?Znk5OhARFhhHpYihmGkeU7EF2uHZVb6kbiTmHsX?=
+X-OriginatorOrg: axentia.se
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8556cbc-978f-48ca-4487-08d97a2bc318
+X-MS-Exchange-CrossTenant-AuthSource: DB8PR02MB5482.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2021 22:37:42.6255 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 81vDGCr5N5PEAD7Wzcs0hnFIFHvRBueb7cX3xJdftcy2IWT4LPL0leoeiqQiEdka
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR02MB7259
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210917_104136_255361_0A431ADC 
-X-CRM114-Status: GOOD (  25.68  )
+X-CRM114-CacheID: sfid-20210917_153748_116078_2BF8AB52 
+X-CRM114-Status: GOOD (  10.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,326 +151,83 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/4] scripts: allow building USB loader tools for target as
- well
+	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: at91 sama5d3 "regressions"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We currently build the USB loader tools only for the host (build) system,
-but it can be useful to cross compile them as well for the target.
+Hi!
 
-We already have some target tools, but support for those is easier,
-because they don't link against libraries. We use pkg-config to get
-cc and ld flags, but we always assume that pkg-config is for the host
-system and there is no well-defined way to request pkg-config for the
-target system.
+I have old boards that I'm trying to get up to current
+revisions of various pieces of software, and I'm running
+into a couple of problems with barebox. After bisecting
+and sorting though git history for a couple of days,
+these are my findings...
 
-Support this by introducing a new CROSS_PKG_CONFIG. This will be
-consulted only for target tools and default to
-$(CROSS_COMPILE)pkgconfig.
 
-Users can override it as necessary, for example, with Yocto, pkg-config
-will be for the cross environment, so target tools can now be built
-with:
+1st problematic patch:
 
-  export ARCH=sandbox CROSS_COMPILE=aarch64-linux-gnu-
-  export CROSS_PKG_CONFIG=pkg-config scripts
-  make targettools_defconfig
-  make scripts
+070de908da ("ARM: remove PBL_FORCE_PIGGYDATA_COPY")
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - add kwboot target tool (Enrico)
-  - fix CONFIG_CONFIG_ option (Enrico)
-  - remove unneeded CONFIG_COMPILE_HOSTTOOLS in targettools_defconfig
-  - use correct target Kconfig symbol in Makefile
----
- Documentation/user/barebox.rst             | 45 ++++++++++++++++++++++
- Makefile                                   |  9 ++++-
- arch/sandbox/configs/targettools_defconfig |  9 +++++
- scripts/.gitignore                         |  3 ++
- scripts/Kconfig                            | 35 +++++++++++++++++
- scripts/Makefile                           | 10 ++++-
- scripts/imx/.gitignore                     |  1 +
- scripts/imx/Makefile                       | 10 +++++
- scripts/imx/imx-target.c                   |  1 +
- scripts/imx/imx-usb-loader-target.c        |  1 +
- scripts/kwboot-target.c                    |  1 +
- scripts/omap3-usb-loader-target.c          |  1 +
- scripts/omap4_usbboot-target.c             |  1 +
- 13 files changed, 125 insertions(+), 2 deletions(-)
- create mode 100644 arch/sandbox/configs/targettools_defconfig
- create mode 100644 scripts/imx/imx-target.c
- create mode 100644 scripts/imx/imx-usb-loader-target.c
- create mode 100644 scripts/kwboot-target.c
- create mode 100644 scripts/omap3-usb-loader-target.c
- create mode 100644 scripts/omap4_usbboot-target.c
+This patch claims to remove an option, but it also kills a region
+overlap test that I appear to need on my board. This gets further
+complicated by patches
+81ca755487 ("common.h: remove unused region_overlap()")
+04e2aa516e ("common.h: move and rename lregion_overlap()")
+that first removes the needed but unused function, and then
+repurposes its name, and by patch
+0be48260b8 ("ARM: Merge single pbl with multi pbl")
+which merges the old single pbl function into the multi pbl case.
 
-diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
-index 503f0b979777..b6b7a57af300 100644
---- a/Documentation/user/barebox.rst
-+++ b/Documentation/user/barebox.rst
-@@ -262,3 +262,48 @@ the usage for a particular command. barebox has tab completion which will comple
- your command. Arguments to commands are also completed depending on the command. If
- a command expects a file argument only files will be offered as completion. Other
- commands will only complete devices or devicetree nodes.
-+
-+Building barebox tools
-+----------------------
-+
-+The normal barebox build results in one or more barebox images (cf. :ref:`multi_image`)
-+and a number of tools built from its ``scripts/`` directory.
-+
-+Most tools are used for the barebox build itself: e.g. the device tree compiler,
-+the Kconfig machinery and the different image formatting tools that wrap barebox,
-+so it may be loaded by the boot ROM of the relevant SoCs.
-+
-+In addition to these barebox also builds host and target tools that are useful
-+outside of barebox build: e.g. to manipulate the environment or to load an
-+image over a boot ROM's USB recovery protocol.
-+
-+There are two ``ARCH=sandbox`` to make this more straight forward:
-+
-+Host Tools
-+^^^^^^^^^^
-+
-+The ``hosttools_defconfig`` will compile standalone host tools for the
-+host (build) system. To build the USB loaders, ``pkg-config`` needs to know
-+about ``libusb-1.0``.
-+
-+.. code-block:: console
-+
-+  export ARCH=sandbox
-+  make hosttools_defconfig
-+  make scripts
-+
-+Target Tools
-+^^^^^^^^^^^^
-+
-+The ``targettools_defconfig`` will cross-compile standalone target tools for the
-+target system.  To build the USB loaders, ``CROSS_PKG_CONFIG`` needs to know
-+about ``libusb-1.0``. This config won't built any host tools, so it's ok to
-+set ``CROSS_PKG_CONFIG=pkg-config`` if ``pkg-config`` is primed for target
-+use. The default is ``CROSS_PKG_CONFIG=$(CROSS_COMPILE)pkg-config``. Example:
-+
-+.. code-block:: console
-+
-+  export ARCH=sandbox CROSS_COMPILE=aarch64-linux-gnu-
-+  export CROSS_PKG_CONFIG=pkg-config
-+  make targettools_defconfig
-+  make scripts
-diff --git a/Makefile b/Makefile
-index 74e4893f02c8..bb00cfbe08ed 100644
---- a/Makefile
-+++ b/Makefile
-@@ -362,6 +362,8 @@ endif
- 
- KCONFIG_CONFIG	?= .config
- 
-+CROSS_PKG_CONFIG ?= $(CROSS_COMPILE)pkg-config
-+
- export KCONFIG_CONFIG
- 
- # SHELL used by kbuild
-@@ -1126,11 +1128,16 @@ CLEAN_DIRS  += $(MODVERDIR)
- CLEAN_FILES +=	barebox System.map stickypage.bin include/generated/barebox_default_env.h \
-                 .tmp_version .tmp_barebox* barebox.bin barebox.map \
- 		.tmp_kallsyms* barebox.ldr compile_commands.json \
--		scripts/bareboxenv-target barebox-flash-image \
-+		barebox-flash-image \
- 		barebox.srec barebox.s5p barebox.ubl barebox.zynq \
- 		barebox.uimage barebox.spi barebox.kwb barebox.kwbuart \
- 		barebox.efi barebox.canon-a1100.bin
- 
-+CLEAN_FILES +=	scripts/bareboxenv-target scripts/kernel-install-target \
-+		scripts/bareboxcrc32-target scripts/bareboximd-target \
-+		scripts/omap3-usb-loader-target scripts/omap4_usbboot-target \
-+		scripts/imx-usb-loader-target scripts/kwboot-target
-+
- # Directories & files removed with 'make mrproper'
- MRPROPER_DIRS  += include/config usr/include include/generated Documentation/commands
- MRPROPER_FILES += .config .config.old .version .old_version \
-diff --git a/arch/sandbox/configs/targettools_defconfig b/arch/sandbox/configs/targettools_defconfig
-new file mode 100644
-index 000000000000..d06074790c02
---- /dev/null
-+++ b/arch/sandbox/configs/targettools_defconfig
-@@ -0,0 +1,9 @@
-+CONFIG_IMD=y
-+CONFIG_IMD_TARGET=y
-+CONFIG_KERNEL_INSTALL_TARGET=y
-+CONFIG_BAREBOXENV_TARGET=y
-+CONFIG_BAREBOXCRC32_TARGET=y
-+CONFIG_MVEBU_KWBOOT_TARGET=y
-+CONFIG_ARCH_IMX_USBLOADER_TARGET=y
-+CONFIG_OMAP3_USB_LOADER_TARGET=y
-+CONFIG_OMAP4_USBBOOT_TARGET=y
-diff --git a/scripts/.gitignore b/scripts/.gitignore
-index 9577d568edd0..cf645ec74661 100644
---- a/scripts/.gitignore
-+++ b/scripts/.gitignore
-@@ -8,6 +8,7 @@ bareboximd
- kallsyms
- kwbimage
- kwboot
-+kwboot-target
- gen_netx_image
- omap_signGP
- mk-omap-image
-@@ -27,7 +28,9 @@ mxsboot
- mxs-usb-loader
- /omap3-usb-loader
- omap4_usbboot
-+omap4_usbboot-target
- omap3-usb-loader
-+omap3-usb-loader-target
- mips-relocs
- rsatoc
- stm32image
-diff --git a/scripts/Kconfig b/scripts/Kconfig
-index f7ed775fbc66..a490aaa44ebb 100644
---- a/scripts/Kconfig
-+++ b/scripts/Kconfig
-@@ -69,4 +69,39 @@ config BAREBOXCRC32_TARGET
- 	  'bareboxcrc32' is a userspacetool to generate the crc32 checksums the same way
- 	  barebox does. Say yes here to build it for the target.
- 
-+config HAS_TARGET_LIBUSB_1_0
-+	def_bool $(success,$(CROSS_PKG_CONFIG) --exists libusb-1.0)
-+	help
-+	  Ensure $(CROSS_PKG_CONFIG) is set to a valid pkg-config
-+	  binary that knows about libusb-1.0 compiled for the
-+	  target architecture.
-+
-+config MVEBU_KWBOOT_TARGET
-+	bool "kwboot target tool"
-+	help
-+	  Say Y here to build the kwboot tool for the target
-+	  to bootstrap over UART.
-+
-+config ARCH_IMX_USBLOADER_TARGET
-+	depends on HAS_TARGET_LIBUSB_1_0
-+	bool "imx-usb-loader for target"
-+	help
-+	  Say Y here to build the imx-usb-loader tool for the target.
-+	  The cross toolchain needs libusb-1.0 to compile this tool.
-+
-+config OMAP3_USB_LOADER_TARGET
-+	bool "omap3 USB loader for target"
-+	depends on HAS_TARGET_LIBUSB_1_0
-+	help
-+	  Say Y here to build the omap3 usb loader tool for the target.
-+	  The cross toolchain needs libusb-1.0 to compile this tool.
-+
-+
-+config OMAP4_USBBOOT_TARGET
-+	bool "omap4 usbboot for target"
-+	depends on HAS_TARGET_LIBUSB_1_0
-+	help
-+	  Say Y here to build the omap4 usb loader tool for the target.
-+	  The cross toolchain needs libusb-1.0 to compile this tool.
-+
- endmenu
-diff --git a/scripts/Makefile b/scripts/Makefile
-index eb0f5c5805bb..1527b07d4723 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -41,8 +41,16 @@ userprogs-always-$(CONFIG_BAREBOXENV_TARGET)		+= bareboxenv-target
- userprogs-always-$(CONFIG_KERNEL_INSTALL_TARGET)	+= kernel-install-target
- userprogs-always-$(CONFIG_BAREBOXCRC32_TARGET)		+= bareboxcrc32-target
- userprogs-always-$(CONFIG_IMD_TARGET)			+= bareboximd-target
-+userprogs-always-$(CONFIG_OMAP3_USB_LOADER_TARGET)	+= omap3-usb-loader-target
-+userprogs-always-$(CONFIG_OMAP4_USBBOOT_TARGET)		+= omap4_usbboot-target
-+userprogs-always-$(CONFIG_MVEBU_KWBOOT_TARGET)		+= kwboot-target
- 
--userccflags += -I $(srctree)/$(src)/include
-+omap3-usb-loader-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0`
-+omap3-usb-loader-target-userldlibs += `$(CROSS_PKG_CONFIG) --libs libusb-1.0`
-+omap4_usbboot-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0`
-+omap4_usbboot-target-userldlibs += -lpthread `$(CROSS_PKG_CONFIG) --libs libusb-1.0`
-+
-+userccflags += -I $(srctree)/$(src)/include -isystem $(srctree)/scripts/include
- 
- subdir-y			+= mod
- subdir-y			+= imx
-diff --git a/scripts/imx/.gitignore b/scripts/imx/.gitignore
-index 84e6f2b40617..341aec9ee435 100644
---- a/scripts/imx/.gitignore
-+++ b/scripts/imx/.gitignore
-@@ -1,2 +1,3 @@
- imx-usb-loader
-+imx-usb-loader-target
- imx-image
-diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
-index 029f9ca9f8af..a7f487a0452c 100644
---- a/scripts/imx/Makefile
-+++ b/scripts/imx/Makefile
-@@ -4,13 +4,23 @@ hostprogs-always-$(CONFIG_ARCH_IMX_USBLOADER)	+= imx-usb-loader
- HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0`
- HOSTLDLIBS_imx-usb-loader  = `pkg-config --libs libusb-1.0`
- 
-+imx-usb-loader-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0`
-+imx-usb-loader-target-userldlibs += `$(CROSS_PKG_CONFIG) --libs libusb-1.0`
-+
- HOSTCFLAGS_imx.o = -I$(srctree)/arch/arm/mach-imx/include
-+imx-target-userccflags += -I$(srctree)/arch/arm/mach-imx/include
- HOSTCFLAGS_imx-image.o = -I$(srctree) -I$(srctree)/arch/arm/mach-imx/include
- HOSTCFLAGS_imx-usb-loader.o += -I$(srctree) -I$(srctree)/arch/arm/mach-imx/include
-+imx-usb-loader-target-userccflags += -I$(srctree) -I$(srctree)/arch/arm/mach-imx/include
- ifdef CONFIG_ARCH_IMX_IMXIMAGE_SSL_SUPPORT
- HOSTCFLAGS_imx-image.o += -DIMXIMAGE_SSL_SUPPORT
- HOSTLDLIBS_imx-image  = `pkg-config --libs openssl`
- endif
- 
- imx-usb-loader-objs := imx-usb-loader.o imx.o
-+imx-usb-loader-target-objs := imx-usb-loader-target.o imx-target.o
- imx-image-objs := imx-image.o imx.o
-+
-+userprogs-always-$(CONFIG_ARCH_IMX_USBLOADER_TARGET)	+= imx-usb-loader-target
-+
-+userccflags += -I $(srctree)/$(src)/include -isystem $(srctree)/scripts/include
-diff --git a/scripts/imx/imx-target.c b/scripts/imx/imx-target.c
-new file mode 100644
-index 000000000000..4062eed6f60f
---- /dev/null
-+++ b/scripts/imx/imx-target.c
-@@ -0,0 +1 @@
-+#include "imx.c"
-diff --git a/scripts/imx/imx-usb-loader-target.c b/scripts/imx/imx-usb-loader-target.c
-new file mode 100644
-index 000000000000..f2050aec1791
---- /dev/null
-+++ b/scripts/imx/imx-usb-loader-target.c
-@@ -0,0 +1 @@
-+#include "imx-usb-loader.c"
-diff --git a/scripts/kwboot-target.c b/scripts/kwboot-target.c
-new file mode 100644
-index 000000000000..68cde2d24ca2
---- /dev/null
-+++ b/scripts/kwboot-target.c
-@@ -0,0 +1 @@
-+#include "kwboot.c"
-diff --git a/scripts/omap3-usb-loader-target.c b/scripts/omap3-usb-loader-target.c
-new file mode 100644
-index 000000000000..c99c261a0253
---- /dev/null
-+++ b/scripts/omap3-usb-loader-target.c
-@@ -0,0 +1 @@
-+#include "omap3-usb-loader.c"
-diff --git a/scripts/omap4_usbboot-target.c b/scripts/omap4_usbboot-target.c
-new file mode 100644
-index 000000000000..3dd606533749
---- /dev/null
-+++ b/scripts/omap4_usbboot-target.c
-@@ -0,0 +1 @@
-+#include "omap4_usbboot.c"
+
+2nd problematic patch
+
+3e4a040545 ("ARM: mmu: use client domain permissions to support ARMv7 eXecute Never")
+
+This just doesn't work for my boards, and I need to revert it.
+
+
+3rd problematic patch
+
+c5d38e9201 ("lds: Add and use RO_DATA_SECTION macro")
+
+Again, just doesn't work on my board. I'm doing a partial revert, but
+that gets further complicated by patch
+cd23b6facf ("common: add initial barebox deep-probe support")
+which piles in one more entry in the non-functional RO_DATA_SECTION
+macro.
+
+
+I'm going to follow up with patches. I very much realize that
+these patches are most likely not acceptable as-is, but I do
+include them since they are probably the best description of
+where the problems are.
+
+Cheers,
+Peter
+
+Peter Rosin (4):
+  common.h: reintroduce region_overlap() as old_region_overlap()
+  ARM: copy data if there is a region overlap
+  Revert "ARM: mmu: use client domain permissions to support ARMv7
+    eXecute Never"
+  lds: the RO_DATA_SECTION macro does not work on my SAMA5D3 board
+
+ arch/arm/cpu/mmu-early.c     |  7 +------
+ arch/arm/cpu/mmu.c           |  7 +------
+ arch/arm/cpu/mmu.h           |  1 -
+ arch/arm/cpu/uncompress.c    | 12 ++++++++++++
+ arch/arm/lib32/barebox.lds.S | 15 +++++++++++----
+ include/common.h             | 14 ++++++++++++++
+ 6 files changed, 39 insertions(+), 17 deletions(-)
+
 -- 
-2.30.2
+2.20.1
+
 
 
 _______________________________________________
