@@ -1,53 +1,55 @@
-Delivery-date: Fri, 17 Sep 2021 14:28:15 +0200
+Delivery-date: Fri, 17 Sep 2021 19:43:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mRCyV-0000i0-Nl
-	for lore@lore.pengutronix.de; Fri, 17 Sep 2021 14:28:15 +0200
-Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
+	id 1mRHtU-0001NI-9F
+	for lore@lore.pengutronix.de; Fri, 17 Sep 2021 19:43:24 +0200
+Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mRCyU-0005S9-D3
-	for lore@pengutronix.de; Fri, 17 Sep 2021 14:28:15 +0200
+	id 1mRHtT-0006yw-AW
+	for lore@pengutronix.de; Fri, 17 Sep 2021 19:43:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=+MzwkiRu8BcRpaVa9irvGLi0RXP/YpIUl3kPwpZKvEQ=; b=FErC7K3lumqFTj
-	nx4jhar2RZIex4LUMK99N22eXmEZh1ORy7GB7F45ajAZnydnz3PoX5rl9ybrsqIVLy0uFV55zBkyT
-	ITsXrh5pJkmzcJz3pF6woXVeKgNrQodf8teMs6UOwZyrGtjdqy4/5Tbi34meoo0xOrzuN/4C2Mo2Z
-	C7oPsfN83H6f9k0CH4xj276MOSuhCxc3yh2RInJozC/0/0ypb3Xdplmb+wch7ZRCOp1HdXdyUUNtA
-	j3gt14Et5RuhyFZys47h9978RxPCT8nh67+ouxcod9c8bZRglRwS8Udeop/bodDs8boqc1uwOTiZO
-	jhka/EF+0VGoEm1+/t3w==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=UPCWFq+0SPclNmiqwI4xKEdp5tFrX0hQG5AktwcUnSI=; b=lOSL7Zzf0QjVGQ
+	Iy/O7301i3pWJz+sTh3wW09uJHpsoxGhyWpv+SQmbQbIkKeyDVUOPt0lwvd2Sfb3+1C4DHv0v9xrq
+	PNnW2zCDq8B+H64VQAkfVFrolsNlJAMX1NwGZfLXz+3LmTB+0VbaYLFtwQM7hoBSjHq9RmJPJ/ktv
+	FJ0G9xtz81jtsaE0mlrXPtgw4qCWkfL+2IFrxW/8+UueSrpFwdIYP21DR4+sIJjlYHIvFEg98v/Kl
+	VsmoiOGNLmn0u7VkDk3pN4tXCZpUNzfzq/ex3kDcRsW+QyEZi3vnry6nMtZK+J34SyShPpSAmMaLc
+	kCRVZMovsjO84TbNbUiA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mRCwj-00E3f5-7k; Fri, 17 Sep 2021 12:26:25 +0000
+	id 1mRHrv-00EkdK-ID; Fri, 17 Sep 2021 17:41:47 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mRCip-00DyOI-Vf
- for barebox@lists.infradead.org; Fri, 17 Sep 2021 12:12:05 +0000
+ id 1mRHrq-00EkcN-Nn
+ for barebox@lists.infradead.org; Fri, 17 Sep 2021 17:41:44 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mRCim-000339-Qk; Fri, 17 Sep 2021 14:12:00 +0200
+ id 1mRHrh-0006g3-G5; Fri, 17 Sep 2021 19:41:33 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mRCil-0004EY-Hn; Fri, 17 Sep 2021 14:11:59 +0200
+ id 1mRHrg-0006oy-Vu; Fri, 17 Sep 2021 19:41:32 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- Jules Maselbas <jmaselbas@kalray.eu>
-Date: Fri, 17 Sep 2021 14:11:52 +0200
-Message-Id: <20210917121152.16033-1-a.fatoum@pengutronix.de>
+Cc: ejo@pengutronix.de, Trent Piepho <trent.piepho@igorinstitute.com>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 17 Sep 2021 19:41:26 +0200
+Message-Id: <20210917174127.23345-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210917174127.23345-1-a.fatoum@pengutronix.de>
+References: <20210917174127.23345-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210917_051204_075501_61BF9FE3 
-X-CRM114-Status: GOOD (  18.40  )
+X-CRM114-CacheID: sfid-20210917_104142_833986_43E0BA89 
+X-CRM114-Status: GOOD (  13.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -62,122 +64,50 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:7c80:54:e::133 (failed)
-X-Broken-Reverse-DNS: no host name for IP address 2607:7c80:54:e::133
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,PTX_BROKEN_RDNS,RCVD_IN_DNSWL_MED,RDNS_NONE,
-	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.2
-Subject: [PATCH v3] ARM: document arm_setup_stack() pitfalls
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v2 3/4] scripts: omap3-usb-loader: make proper use of
+ pkg-config --cflags
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Many arm32 board entry points use arm_setup_stack() to set up
-the stack from C code. This necessitates using __naked, which
-probably has been our most frequent cause of misscompiled C code.
-
-GCC is quite clear that:
-
-  Only basic asm statements can safely be included in naked functions
-  While using extended asm or a mixture of basic asm and C code may
-  appear to work, they cannot be depended upon to work reliably and
-  are not supported.
-
-But some boards use it anyway, because it's nice to avoid writing
-assembly. Reading generated assembly to spot compiler miscompilation
-isn't that nice though, so add some documentation, comments
-and compiler diagnostics to hopefully reduce future porting effort.
+pkg-config --cflags libusb-1.0 should ensure <libusb.h> would be found.
+Command's output is used to compile omap3-usb-loader.c, but because the
+file does #include <libusb-1.0/libusb.h>, it will probably not find the
+header in the directory added to search path by pkg-config and depend on
+other directories in the search path. Fix this. We already expect users
+to have proper pkg-config files, so linking works, so it's not too much
+to ask to expect the pkg-config file that should already exist to yield
+proper --cflags as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v2 -> v3:
-  - fix typos (Uwe)
-  - use better matching CONFIG_CPU_64 instead of CONFIG_CPU_V8
-  - clarify 'bad' stack manipulation
 v1 -> v2:
-  - fix commit message title
-
-Cc: Jules Maselbas <jmaselbas@kalray.eu>
+  - new alternate commit after Trent's feedback
 ---
- Documentation/devel/porting.rst | 21 +++++++++++++++++++++
- arch/arm/include/asm/common.h   | 17 +++++++++++++++++
- 2 files changed, 38 insertions(+)
+ scripts/omap3-usb-loader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devel/porting.rst b/Documentation/devel/porting.rst
-index 97b787327c9a..1abaabc03ae1 100644
---- a/Documentation/devel/porting.rst
-+++ b/Documentation/devel/porting.rst
-@@ -169,6 +169,27 @@ Looking at other boards you might see some different patterns:
-    needs to be done at start. If a board similar to yours does this, you probably
-    want to do likewise.
+diff --git a/scripts/omap3-usb-loader.c b/scripts/omap3-usb-loader.c
+index 599a93856ac3..0f352c8453fc 100644
+--- a/scripts/omap3-usb-loader.c
++++ b/scripts/omap3-usb-loader.c
+@@ -28,7 +28,7 @@
+ #include <errno.h>
+ #include <libgen.h>		/* for basename */
  
-+ - ``__naked``: All functions called before stack is correctly initialized must be
-+   marked with this attribute. Otherwise, function prologue and epilogue may access
-+   the uninitialized stack. If the compiler for the target architecture doesn't
-+   support the attribute, stack must be set up in non-inline assembly:
-+   Either a barebox assembly entry point or in earlier firmware.
-+   The compiler may still spill excess local C variables used in a naked function
-+   to the stack before it was initialized.
-+   A naked function should thus preferably only contain inline assembly, set up a
-+   stack and jump directly after to a ``noinline`` non naked function where the
-+   stack is then normally usable.
-+
-+ - ``noinline``: Compiler code inlining is oblivious to stack manipulation in
-+   inline assembly. If you want to ensure a new function has its own stack frame
-+   (e.g. after setting up the stack in a ``__naked`` function), you must jump to
-+   a ``__noreturn noinline`` function.
-+
-+ - ``arm_setup_stack``: For 32-bit ARM, ``arm_setup_stack`` initializes the stack
-+   top when called from a naked C function, which allows to write the entry point
-+   directly in C. The stack pointer will be decremented before pushing values.
-+   Avoid interleaving with C-code. See ``__naked`` above for more details.
-+
-  - ``__dtb_z_my_board_start[];``: Because the PBL normally doesn't parse anything out
-    of the device tree blob, boards can benefit from keeping the device tree blob
-    compressed and only unpack it in barebox proper. Such LZO-compressed device trees
-diff --git a/arch/arm/include/asm/common.h b/arch/arm/include/asm/common.h
-index d03ee6273fe5..1e2729d521ae 100644
---- a/arch/arm/include/asm/common.h
-+++ b/arch/arm/include/asm/common.h
-@@ -1,6 +1,8 @@
- #ifndef __ASM_ARM_COMMON_H
- #define __ASM_ARM_COMMON_H
+-#include <libusb-1.0/libusb.h>		/* the main event */
++#include <libusb.h>		/* the main event */
  
-+#include <linux/compiler.h>
-+
- static inline unsigned long get_pc(void)
- {
- 	unsigned long pc;
-@@ -46,8 +48,23 @@ static inline unsigned long get_sp(void)
- 	return sp;
- }
- 
-+extern void __compiletime_error(
-+	"arm_setup_stack() called outside of naked function. On ARM64, "
-+	"stack should be setup in non-inline assembly before branching to C entry point."
-+) __unsafe_setup_stack(void);
-+
-+/*
-+ * Sets up new stack growing down from top within a naked C function.
-+ * The first stack word will be top - sizeof(word).
-+ *
-+ * Avoid interleaving with C code as much as possible and jump
-+ * ASAP to a noinline function.
-+ */
- static inline void arm_setup_stack(unsigned long top)
- {
-+	if (IS_ENABLED(CONFIG_CPU_64))
-+		__unsafe_setup_stack();
-+
- 	__asm__ __volatile__("mov sp, %0"
- 			     :
- 			     : "r"(top));
+ /* Device specific defines (OMAP)
+  * Primary source: http://www.ti.com/lit/pdf/sprugn4
 -- 
 2.30.2
 
