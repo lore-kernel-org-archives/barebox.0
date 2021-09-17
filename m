@@ -2,13 +2,13 @@ Delivery-date: Fri, 17 Sep 2021 19:43:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mRHtU-0001NI-9F
+	id 1mRHtU-0001NH-9E
 	for lore@lore.pengutronix.de; Fri, 17 Sep 2021 19:43:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mRHtT-0006yw-AW
+	id 1mRHtT-0006yp-82
 	for lore@pengutronix.de; Fri, 17 Sep 2021 19:43:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
@@ -16,40 +16,40 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=UPCWFq+0SPclNmiqwI4xKEdp5tFrX0hQG5AktwcUnSI=; b=lOSL7Zzf0QjVGQ
-	Iy/O7301i3pWJz+sTh3wW09uJHpsoxGhyWpv+SQmbQbIkKeyDVUOPt0lwvd2Sfb3+1C4DHv0v9xrq
-	PNnW2zCDq8B+H64VQAkfVFrolsNlJAMX1NwGZfLXz+3LmTB+0VbaYLFtwQM7hoBSjHq9RmJPJ/ktv
-	FJ0G9xtz81jtsaE0mlrXPtgw4qCWkfL+2IFrxW/8+UueSrpFwdIYP21DR4+sIJjlYHIvFEg98v/Kl
-	VsmoiOGNLmn0u7VkDk3pN4tXCZpUNzfzq/ex3kDcRsW+QyEZi3vnry6nMtZK+J34SyShPpSAmMaLc
-	kCRVZMovsjO84TbNbUiA==;
+	List-Owner; bh=Lo6winIoP8Uv+4MSk9whW16RKc/g4dOHplXFxGqUxh4=; b=Bj/Y0eqSha8p/S
+	LRSesZhOpSiiKwZsldczT9MlzS12w1QpawnBXz6Zziz9wii0zXk3kgjgw3YJq2ZRLuz7nSiBvwW8D
+	qX5aAvNM14M1s5+de/grsVQ1tusx04sNtk1BKhM1TguFu2xFUBzB0BzStJ0RLfCmdkPLvr3+atHX8
+	Mbwt1P/f8OnQt4blDeRJ/Lk9DdEWCWe9j2vmHQe+UIkfhbIyDndH44MGRKP3ovw7GQP7lCTi7X1qM
+	RpQflzkwindJHEeP9fT3nawUDu8jKJvpq8iZ1a6rDHgN1FSY1NWGapnkyTi9s37OjyEoYDD7D1DHj
+	cpxy37lcAyq44Q8nHNQA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mRHrv-00EkdK-ID; Fri, 17 Sep 2021 17:41:47 +0000
+	id 1mRHs3-00Eked-Ct; Fri, 17 Sep 2021 17:41:55 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mRHrq-00EkcN-Nn
- for barebox@lists.infradead.org; Fri, 17 Sep 2021 17:41:44 +0000
+ id 1mRHry-00EkeE-Oy
+ for barebox@lists.infradead.org; Fri, 17 Sep 2021 17:41:52 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mRHrh-0006g3-G5; Fri, 17 Sep 2021 19:41:33 +0200
+ id 1mRHrh-0006g2-G6; Fri, 17 Sep 2021 19:41:33 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mRHrg-0006oy-Vu; Fri, 17 Sep 2021 19:41:32 +0200
+ id 1mRHrg-0006ov-VU; Fri, 17 Sep 2021 19:41:32 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: ejo@pengutronix.de, Trent Piepho <trent.piepho@igorinstitute.com>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 17 Sep 2021 19:41:26 +0200
-Message-Id: <20210917174127.23345-3-a.fatoum@pengutronix.de>
+ Roland Hieber <rhi@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 17 Sep 2021 19:41:25 +0200
+Message-Id: <20210917174127.23345-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210917174127.23345-1-a.fatoum@pengutronix.de>
 References: <20210917174127.23345-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210917_104142_833986_43E0BA89 
-X-CRM114-Status: GOOD (  13.20  )
+X-CRM114-CacheID: sfid-20210917_104150_852787_D70B3383 
+X-CRM114-Status: GOOD (  13.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,41 +73,105 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/4] scripts: omap3-usb-loader: make proper use of
- pkg-config --cflags
+Subject: [PATCH v2 2/4] common: add new menu for target tools
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-pkg-config --cflags libusb-1.0 should ensure <libusb.h> would be found.
-Command's output is used to compile omap3-usb-loader.c, but because the
-file does #include <libusb-1.0/libusb.h>, it will probably not find the
-header in the directory added to search path by pkg-config and depend on
-other directories in the search path. Fix this. We already expect users
-to have proper pkg-config files, so linking works, so it's not too much
-to ask to expect the pkg-config file that should already exist to yield
-proper --cflags as well.
+We have four target tools and will add 3 more in a follow up commit.
+Add a new menu to collect them.
 
+Acked-by: Roland Hieber <rhi@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - new alternate commit after Trent's feedback
+  - no change
 ---
- scripts/omap3-usb-loader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/Kconfig  | 26 --------------------------
+ scripts/Kconfig | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 26 deletions(-)
 
-diff --git a/scripts/omap3-usb-loader.c b/scripts/omap3-usb-loader.c
-index 599a93856ac3..0f352c8453fc 100644
---- a/scripts/omap3-usb-loader.c
-+++ b/scripts/omap3-usb-loader.c
-@@ -28,7 +28,7 @@
- #include <errno.h>
- #include <libgen.h>		/* for basename */
+diff --git a/common/Kconfig b/common/Kconfig
+index 222a438ee545..9dab7532e15e 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -734,18 +734,6 @@ config IMD
+ 	select CRC32
+ 	bool "barebox metadata support"
  
--#include <libusb-1.0/libusb.h>		/* the main event */
-+#include <libusb.h>		/* the main event */
+-config IMD_TARGET
+-	bool "build bareboximd target tool"
+-	depends on IMD
+-
+-config KERNEL_INSTALL_TARGET
+-	bool
+-	prompt "Build kernel-install utility for the target"
+-	help
+-	  Enable this to compile the kernel-install script using the cross
+-	  compiler. The utility for the target will be under
+-	  scripts/kernel-install-target
+-
+ choice
+ 	prompt "console support"
+ 	default CONSOLE_FULL
+@@ -980,20 +968,6 @@ config DEFAULT_ENVIRONMENT_PATH
+ 	  be taken. Relative paths will be relative to the barebox top-level
+ 	  directory, but absolute paths are fine as well.
  
- /* Device specific defines (OMAP)
-  * Primary source: http://www.ti.com/lit/pdf/sprugn4
+-config BAREBOXENV_TARGET
+-	bool
+-	prompt "build bareboxenv tool for target"
+-	help
+-	  'bareboxenv' is a tool to access the barebox environment from a running Linux
+-	  system. Say yes here to build it for the target.
+-
+-config BAREBOXCRC32_TARGET
+-	bool
+-	prompt "build bareboxcrc32 tool for target"
+-	help
+-	  'bareboxcrc32' is a userspacetool to generate the crc32 checksums the same way
+-	  barebox does. Say yes here to build it for the target.
+-
+ config HAS_SCHED
+ 	bool
+ 
+diff --git a/scripts/Kconfig b/scripts/Kconfig
+index b903486ecd8f..f7ed775fbc66 100644
+--- a/scripts/Kconfig
++++ b/scripts/Kconfig
+@@ -40,3 +40,33 @@ config OMAP4_HOSTTOOL_USBBOOT
+ 	  You need libusb-1.0 to compile this tool.
+ 
+ endmenu
++
++menu "Target Tools"
++
++config IMD_TARGET
++	bool "build bareboximd target tool"
++	depends on IMD
++
++config KERNEL_INSTALL_TARGET
++	bool
++	prompt "Build kernel-install utility for the target"
++	help
++	  Enable this to compile the kernel-install script using the cross
++	  compiler. The utility for the target will be under
++	  scripts/kernel-install-target
++
++config BAREBOXENV_TARGET
++	bool
++	prompt "build bareboxenv tool for target"
++	help
++	  'bareboxenv' is a tool to access the barebox environment from a running Linux
++	  system. Say yes here to build it for the target.
++
++config BAREBOXCRC32_TARGET
++	bool
++	prompt "build bareboxcrc32 tool for target"
++	help
++	  'bareboxcrc32' is a userspacetool to generate the crc32 checksums the same way
++	  barebox does. Say yes here to build it for the target.
++
++endmenu
 -- 
 2.30.2
 
