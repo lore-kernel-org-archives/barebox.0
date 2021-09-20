@@ -1,54 +1,55 @@
-Delivery-date: Mon, 20 Sep 2021 13:17:09 +0200
+Delivery-date: Mon, 20 Sep 2021 13:17:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mSHIL-0002qy-D7
-	for lore@lore.pengutronix.de; Mon, 20 Sep 2021 13:17:09 +0200
+	id 1mSHIP-0002rS-4s
+	for lore@lore.pengutronix.de; Mon, 20 Sep 2021 13:17:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mSHIK-00061o-9D
-	for lore@pengutronix.de; Mon, 20 Sep 2021 13:17:09 +0200
+	id 1mSHIO-000639-8s
+	for lore@pengutronix.de; Mon, 20 Sep 2021 13:17:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=BvhdhsMdUofZcGOmRNRoKlOOc1vGJ/1Z5jYlkuJ/bUk=; b=giBKIdee5dFMvR
-	V9N1pziwR6nv7B93S84FEwfZB4s+gyedpMJ8FtndgM8XnBBF+T1dsmoTyl+Sljm0VAxo6k99SSXON
-	F2Ckp0193R4Vlscrhyqb3pkiu21+uxKeX4hUvwnXk2uFc1YdfqNrGIQSooPpQiOtrAcT9ds5Syv3/
-	D2x9BTnmxAsPbVxNGUjOAJS8H7oTZWBtsq7HgNKGG7rhsHezEFwKCMsEIvd8WXdKpemevxKg0JArt
-	3rHvBlgVOdgcsxpO9LjL4ZZDTijFAjSE/SMfgaIsThtBD1zvwdMRl6fFyl8Aj9kUet/l/7479SnpR
-	H5ydnTn1nw99o/EkatPQ==;
+	List-Owner; bh=ddN9LI6hX9+vPu2X3HVhaPid3NmNShE7UQIhIfaR/Gs=; b=lO4bLzABb+OBNM
+	4CulfONVsRKa3/S8AiX7dNFB/u8hHh/l0f8h6AoSqbvrTFQArr5vde86MCtueKogwc2hpfeAccgAE
+	Vq4AFGL23gdWKW5puOJ2k3+Vu/6l0GrFfzO5ekZqqI2G5QmfyUK4HrKtA5CSeiD/umxqTp8VZacOf
+	NgEovCj3HJJRqQgYtHWSNvQivK/GfRaRVClOncJEx9X3L5q8XyKrJgyE9wTJy0cu7viM1bZ66aVVu
+	bTj3wVZeUaBeIsgpF1RhLhI4rzcDg92oDRxsQXG/LqqOVt4ADtxO5l4z6IeuiXHUtUP2V3sUbq4GS
+	/jKyPeooFkG4DN8OPvKA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mSHH1-001Nye-Du; Mon, 20 Sep 2021 11:15:47 +0000
+	id 1mSHH7-001O0s-NW; Mon, 20 Sep 2021 11:15:53 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mSHGq-001Ntp-C9
- for barebox@lists.infradead.org; Mon, 20 Sep 2021 11:15:38 +0000
+ id 1mSHGq-001Ntk-EN
+ for barebox@lists.infradead.org; Mon, 20 Sep 2021 11:15:39 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1mSHGm-0005S9-DD; Mon, 20 Sep 2021 13:15:32 +0200
+ id 1mSHGm-0005S3-9b; Mon, 20 Sep 2021 13:15:32 +0200
 Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1mSHGl-0004A7-TA; Mon, 20 Sep 2021 13:15:31 +0200
+ id 1mSHGl-00049P-Qo; Mon, 20 Sep 2021 13:15:31 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 20 Sep 2021 13:15:27 +0200
-Message-Id: <20210920111528.14575-7-o.rempel@pengutronix.de>
+Date: Mon, 20 Sep 2021 13:15:22 +0200
+Message-Id: <20210920111528.14575-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210920111528.14575-1-o.rempel@pengutronix.de>
 References: <20210920111528.14575-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210920_041536_579612_31D140BD 
-X-CRM114-Status: GOOD (  14.07  )
+X-CRM114-CacheID: sfid-20210920_041536_611582_98172226 
+X-CRM114-Status: UNSURE (   9.75  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,73 +73,48 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 6/7] ARM: boards: skov-imx6: start using deep-probe
+Subject: [PATCH v3 1/7] ARM: dts: skov-imx6: add USB nodes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Port Skov boards to the deep-propbe and reduce boot time by 100msec.
+We need USB working to make use of USB ethernet adapters.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/boards/skov-imx6/board.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ arch/arm/dts/imx6qdl-skov-imx6.dtsi | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/arch/arm/boards/skov-imx6/board.c b/arch/arm/boards/skov-imx6/board.c
-index 44c776f9cf..6a9055757c 100644
---- a/arch/arm/boards/skov-imx6/board.c
-+++ b/arch/arm/boards/skov-imx6/board.c
-@@ -2,16 +2,17 @@
- 
- #define pr_fmt(fmt) "skov-imx6: " fmt
- 
-+#include <bootsource.h>
- #include <common.h>
--#include <init.h>
--#include <mach/bbu.h>
-+#include <deep-probe.h>
- #include <environment.h>
--#include <bootsource.h>
- #include <globalvar.h>
--#include <net.h>
--#include <of_gpio.h>
- #include <gpio.h>
-+#include <init.h>
- #include <linux/micrel_phy.h>
-+#include <mach/bbu.h>
-+#include <net.h>
-+#include <of_gpio.h>
- 
- #include "version.h"
- 
-@@ -500,10 +501,20 @@ static int skov_imx6_fixup(struct device_node *root, void *unused)
-  */
- static void skov_init_board(const struct board_description *variant)
- {
-+	struct device_node *gpio_np = NULL;
- 	struct device_node *np;
- 	char *environment_path, *envdev;
- 	int ret;
- 
-+	gpio_np = of_find_node_by_name(NULL, "gpio@20b4000");
-+	if (gpio_np) {
-+		ret = of_device_ensure_probed(gpio_np);
-+		if (ret)
-+			pr_warn("Can't probe GPIO node\n");
-+	} else {
-+		pr_warn("Can't get GPIO node\n");
-+	}
-+
- 	imx6_bbu_internal_spi_i2c_register_handler("spiflash", "/dev/m25p0.barebox",
- 		BBU_HANDLER_FLAG_DEFAULT);
- 
-@@ -661,6 +672,7 @@ static __maybe_unused struct of_device_id skov_version_ids[] = {
- 		/* sentinel */
- 	}
+diff --git a/arch/arm/dts/imx6qdl-skov-imx6.dtsi b/arch/arm/dts/imx6qdl-skov-imx6.dtsi
+index 03f3cb02fc..371a931e53 100644
+--- a/arch/arm/dts/imx6qdl-skov-imx6.dtsi
++++ b/arch/arm/dts/imx6qdl-skov-imx6.dtsi
+@@ -273,6 +273,26 @@
+ 	remote-endpoint = <&display0_in>;
  };
-+BAREBOX_DEEP_PROBE_ENABLE(skov_version_ids);
  
- static struct driver_d skov_version_driver = {
- 	.name = "skov-imx6",
++&usbh1 {
++	disable-over-current;
++	status = "okay";
++};
++
++/* no usbh2 */
++&usbphynop1 {
++	status = "disabled";
++};
++
++/* no usbh3 */
++&usbphynop2 {
++	status = "disabled";
++};
++
++&usbotg {
++	disable-over-current;
++	status = "okay";
++};
++
+ &iomuxc {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_hog>;
 -- 
 2.30.2
 
