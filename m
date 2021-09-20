@@ -2,54 +2,53 @@ Delivery-date: Mon, 20 Sep 2021 13:17:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mSHIP-0002rS-4s
+	id 1mSHIP-0002ro-Gh
 	for lore@lore.pengutronix.de; Mon, 20 Sep 2021 13:17:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mSHIO-000639-8s
-	for lore@pengutronix.de; Mon, 20 Sep 2021 13:17:12 +0200
+	id 1mSHIO-00063B-Fz
+	for lore@pengutronix.de; Mon, 20 Sep 2021 13:17:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ddN9LI6hX9+vPu2X3HVhaPid3NmNShE7UQIhIfaR/Gs=; b=lO4bLzABb+OBNM
-	4CulfONVsRKa3/S8AiX7dNFB/u8hHh/l0f8h6AoSqbvrTFQArr5vde86MCtueKogwc2hpfeAccgAE
-	Vq4AFGL23gdWKW5puOJ2k3+Vu/6l0GrFfzO5ekZqqI2G5QmfyUK4HrKtA5CSeiD/umxqTp8VZacOf
-	NgEovCj3HJJRqQgYtHWSNvQivK/GfRaRVClOncJEx9X3L5q8XyKrJgyE9wTJy0cu7viM1bZ66aVVu
-	bTj3wVZeUaBeIsgpF1RhLhI4rzcDg92oDRxsQXG/LqqOVt4ADtxO5l4z6IeuiXHUtUP2V3sUbq4GS
-	/jKyPeooFkG4DN8OPvKA==;
+	List-Owner; bh=vQ2Y5Rki3iJtoCnoRqNoC/bFfyhOQW2hlvKTC96pmTM=; b=0ju6R1/5eiPx5b
+	mElSY03haqCm1NU1kXnaCClfuvw1jibvg5u7YpIRtHiH6vlqvfvlOhGMd069pln+u9211/bVVdXeP
+	D9FIyjD66ucFrVPQZp2NVvefDK8LmRsYLlSNmA9CzO6gXxWKH9Sd0019XziqUxiSwmL3zxDQKh4cH
+	F97Fe8pQiinYs+KjEukcJosYCoiM4kD5bMr6EnwOjmP2wF8TNETkGodx9pRzo/jubHXukMyku32dO
+	mVl5v32NCB87FGkDVFG6NIQriTHe+rbSHLG3W3iJnbfS6hGcx3qQ2Wyv7HHE/Rtg+AIHVs7SloAmJ
+	U0RTzKiB6rSZsKTNHxJQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mSHH7-001O0s-NW; Mon, 20 Sep 2021 11:15:53 +0000
+	id 1mSHGv-001NxG-Qo; Mon, 20 Sep 2021 11:15:41 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mSHGq-001Ntk-EN
- for barebox@lists.infradead.org; Mon, 20 Sep 2021 11:15:39 +0000
+ id 1mSHGq-001Nto-8y
+ for barebox@lists.infradead.org; Mon, 20 Sep 2021 11:15:37 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1mSHGm-0005S3-9b; Mon, 20 Sep 2021 13:15:32 +0200
+ id 1mSHGm-0005SA-D4; Mon, 20 Sep 2021 13:15:32 +0200
 Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1mSHGl-00049P-Qo; Mon, 20 Sep 2021 13:15:31 +0200
+ id 1mSHGl-0004AD-Tb; Mon, 20 Sep 2021 13:15:31 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 20 Sep 2021 13:15:22 +0200
-Message-Id: <20210920111528.14575-2-o.rempel@pengutronix.de>
+Date: Mon, 20 Sep 2021 13:15:28 +0200
+Message-Id: <20210920111528.14575-8-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210920111528.14575-1-o.rempel@pengutronix.de>
 References: <20210920111528.14575-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210920_041536_611582_98172226 
-X-CRM114-Status: UNSURE (   9.75  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20210920_041536_358113_2A780A76 
+X-CRM114-Status: GOOD (  16.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,48 +72,67 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 1/7] ARM: dts: skov-imx6: add USB nodes
+Subject: [PATCH v3 7/7] ARM: boards: skov-imx6: add defaultenv with
+ eth1-discover script
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We need USB working to make use of USB ethernet adapters.
+Add eth1-discover script to run USB detection if eth0 is disabled. The
+eth0 will be automatically disabled if the no on-board switch is
+detected.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/dts/imx6qdl-skov-imx6.dtsi | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/arm/boards/skov-imx6/Makefile                        | 1 +
+ arch/arm/boards/skov-imx6/board.c                         | 3 +++
+ .../skov-imx6/defaultenv-skov-imx6/network/eth1-discover  | 8 ++++++++
+ 3 files changed, 12 insertions(+)
+ create mode 100644 arch/arm/boards/skov-imx6/defaultenv-skov-imx6/network/eth1-discover
 
-diff --git a/arch/arm/dts/imx6qdl-skov-imx6.dtsi b/arch/arm/dts/imx6qdl-skov-imx6.dtsi
-index 03f3cb02fc..371a931e53 100644
---- a/arch/arm/dts/imx6qdl-skov-imx6.dtsi
-+++ b/arch/arm/dts/imx6qdl-skov-imx6.dtsi
-@@ -273,6 +273,26 @@
- 	remote-endpoint = <&display0_in>;
- };
+diff --git a/arch/arm/boards/skov-imx6/Makefile b/arch/arm/boards/skov-imx6/Makefile
+index a5e85bc1e1..07b87ff11d 100644
+--- a/arch/arm/boards/skov-imx6/Makefile
++++ b/arch/arm/boards/skov-imx6/Makefile
+@@ -1,3 +1,4 @@
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ obj-pbl-y += version.o
++bbenv-y += defaultenv-skov-imx6
+diff --git a/arch/arm/boards/skov-imx6/board.c b/arch/arm/boards/skov-imx6/board.c
+index 6a9055757c..8881c10ab2 100644
+--- a/arch/arm/boards/skov-imx6/board.c
++++ b/arch/arm/boards/skov-imx6/board.c
+@@ -5,6 +5,7 @@
+ #include <bootsource.h>
+ #include <common.h>
+ #include <deep-probe.h>
++#include <envfs.h>
+ #include <environment.h>
+ #include <globalvar.h>
+ #include <gpio.h>
+@@ -662,6 +663,8 @@ static int skov_imx6_probe(struct device_d *dev)
  
-+&usbh1 {
-+	disable-over-current;
-+	status = "okay";
-+};
+ 	skov_init_board(variant);
+ 
++	defaultenv_append_directory(defaultenv_skov_imx6);
 +
-+/* no usbh2 */
-+&usbphynop1 {
-+	status = "disabled";
-+};
+ 	return 0;
+ }
+ 
+diff --git a/arch/arm/boards/skov-imx6/defaultenv-skov-imx6/network/eth1-discover b/arch/arm/boards/skov-imx6/defaultenv-skov-imx6/network/eth1-discover
+new file mode 100644
+index 0000000000..e11a3f9006
+--- /dev/null
++++ b/arch/arm/boards/skov-imx6/defaultenv-skov-imx6/network/eth1-discover
+@@ -0,0 +1,8 @@
++#!/bin/sh
 +
-+/* no usbh3 */
-+&usbphynop2 {
-+	status = "disabled";
-+};
++# Some boards doesn't have a ETH port, but may have USB network attached
++if [ "$eth0.mode" != "disabled" ]; then
++	exit 0;
++fi
 +
-+&usbotg {
-+	disable-over-current;
-+	status = "okay";
-+};
-+
- &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
++usb
 -- 
 2.30.2
 
