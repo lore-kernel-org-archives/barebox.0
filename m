@@ -1,76 +1,85 @@
-Delivery-date: Mon, 20 Sep 2021 22:45:51 +0200
+Delivery-date: Tue, 21 Sep 2021 16:12:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mSQAh-0003Pn-Jl
-	for lore@lore.pengutronix.de; Mon, 20 Sep 2021 22:45:51 +0200
+	id 1mSgVf-0001vK-CL
+	for lore@lore.pengutronix.de; Tue, 21 Sep 2021 16:12:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mSQAg-0005Lp-66
-	for lore@pengutronix.de; Mon, 20 Sep 2021 22:45:51 +0200
+	id 1mSgVe-0006rP-BE
+	for lore@pengutronix.de; Tue, 21 Sep 2021 16:12:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
-	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=yW52h/VYe9mho0Iqsq/MXVwcCDq4zejLc1u85aAftys=; b=f6Od7xdN5RCcqK
-	4BzY7PqAWsvyZltY2thrD3dRtL0KWH5Eii+F+r2gAsT2djBXbhBYPj81t/TkYW6jcPd8O1q1OvFl2
-	aaK5K06QoQpF9YD2YO8gZME4lY9LMnYuu2dzsCpE9UtnUeQgDyWfCDfukWodT4mLjVqhd6L/D12yv
-	j4e+9bXce5Aiz7Unr6KIlen+V6AdU/wWOHkZPH/U1FOgZiIAYdJTyR5WaW0m3qZ4bxwCc3XPb+Pbp
-	XWaBO+yQK5cBlMQ1FVjuoOr6EN48aARfVPs4AEnnRRIuTvpqHdrES1cBRARwMnk6V0m7ck18Ixg4a
-	oONCZols5BEU1Gsrigrw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Content-ID:Message-ID:Date
+	:Subject:To:From:Reply-To:Cc:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=GfISIT9KobDSgxNO20XRIASiAZxVFf0CsgvIsVePq2M=; b=2Gx5ls1h9M0yqR
+	ei+rmCDHKxgL9JkFb/nLyrbDNPrsc0AyXGcfHm34qoxaZeGnDtcvCthB33+RJGSLsGo2wIwfKsLBI
+	jOBIsfM4HXq+WM7rE3y2kvh696qmvydsKnPi0eHcluMUbjHfdLDGsQFiPaXdxpdx383muaGHQUi43
+	gwi66BdaIAcd1xM10tbbpfFFUgDfdGaid8I60CvRw0cOQyJLXY08maEic/WBQDoGOriA06rrXyZ3j
+	imVBMfpkZWo5dQoJW4qYmb7zjCuUawIM2131DK3mLP4I67okmMJO6KaRNfqLGI3jevOfu9XOmZtSI
+	lHj9Kab/j0RlgX5R0qNw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mSQ95-0033zK-9X; Mon, 20 Sep 2021 20:44:11 +0000
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+	id 1mSgTr-004kab-4D; Tue, 21 Sep 2021 14:10:43 +0000
+Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mSQ8z-0033yq-KI
- for barebox@lists.infradead.org; Mon, 20 Sep 2021 20:44:07 +0000
-Received: by mail-lf1-x12a.google.com with SMTP id g41so40245466lfv.1
- for <barebox@lists.infradead.org>; Mon, 20 Sep 2021 13:44:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igorinstitute-com.20210112.gappssmtp.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=uj323tdWnTogS72pP1FW6/CLWxe0EXGvL2tb7PwM5DQ=;
- b=EopxX8WyqCehsaEAU007DwkTkIyi1AupHeOA6+X+RDWamYKwM+j6poG9B1/5ehI7Ck
- MCWj4MEfeI1Byy8kJHkLpcnVmJDv9QoPsqdfWTUEvB9Luq0JD+4Wr2HWfXpiHP8Z516b
- p3ZwJLF5pditjXp8FoT9Hpil4c60RcshOWcw+GKjCbMcR64/tIFSnma7CDF4Ub1asC8I
- 4mZCIWrfpa7aX3CcjklYNq6ZVZIdp6IrpzSI8hxi7smTdwD9apMnwsMQQ9c2FF3zLn9q
- 8y/Zw3Pl0B5fDqS3XQIzvLPaU/yCqGYStoeWU3Z8hQcpeCBiyTihl/WsFMOtiMwgwzgn
- luYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=uj323tdWnTogS72pP1FW6/CLWxe0EXGvL2tb7PwM5DQ=;
- b=lHwtScrdfgLeozDsdCjsMvb2rshw42dQLf9wCYeHl7JXW3kqHBoXy26bq0pVpIunXE
- eH5p6mMhPOLNSLEMphQdydQQTtoLb7vHmtgVH5iNoLEledwdZ/M2JwwwlarwL4Pfvn39
- /9lhG4odjAP7kwbJli1ZWoQPzDZxLFo5/m5r1tTJGf3IJMQhL3wPQR4aulAZnpHO+WpG
- uy71uK7cpxDLiZjUD/q7mAjzYgjAnd9Xf3JUwtuFLVZlAMX6Z7kyI7+ODT+UO1AgCY+H
- +w1mbyz9KjsH5Wk2t8Cmcm2GxSP9sm9M1oTCY+HnUNU/dPwzRsKRD919MQ4baoJdih30
- 20AA==
-X-Gm-Message-State: AOAM530D2h4siziqt8TV4PGmxmcewqsoNZpXmPt5iJ/pguUIDejPmzQd
- wLIZZFvtS4L29LxriLe/+hzfH68EAwGu7i0WHd6xOIm0U+Y=
-X-Google-Smtp-Source: ABdhPJzm4WRUaBZTbFL0f1XKVMb4Bk4PFcbYBDm2G4esJSVqC7BNcaxFAevzm3Hg4Yt1z2rWUxcSum5VoEN/c5QeA1s=
-X-Received: by 2002:a2e:7311:: with SMTP id o17mr12892519ljc.488.1632170643255; 
- Mon, 20 Sep 2021 13:44:03 -0700 (PDT)
+ id 1mSgTm-004kYh-0b
+ for barebox@lists.infradead.org; Tue, 21 Sep 2021 14:10:40 +0000
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+ q=dns/txt; i=@phytec.de; t=1632233427; x=1634825427;
+ h=From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=CD4FXiFqdT0Y0rzM51xhHnZojyZxQm0OYeFjpoMhpts=;
+ b=lCKFYaZEiwhwDQ7nnhO9y8PhBaIOb1/Lej1ofULhHMYoMj7Ir/qH3hKpD2DGKpGO
+ 0rD5zD2m6zl+0WLYNtCbUSL80VP6PO85b5SVgmEVY+X8WyNYQE6chRM2GIzYslU0
+ y5tQQeKoIePxi4UKY79O3q20p7LBQ7CfybExmhDPV2s=;
+X-AuditID: c39127d2-c275470000001d24-41-6149e7d3e0bd
+Received: from Diagnostix.phytec.de (Diagnostix.phytec.de [172.16.0.119])
+ (using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (Client did not present a certificate)
+ by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 78.1B.07460.3D7E9416;
+ Tue, 21 Sep 2021 16:10:27 +0200 (CEST)
+Received: from Berlix.phytec.de (172.16.0.117) by Diagnostix.phytec.de
+ (172.16.0.119) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Tue, 21 Sep
+ 2021 16:10:27 +0200
+Received: from Berlix.phytec.de ([fe80::6d58:38d4:5df2:e4ad]) by
+ berlix.phytec.de ([fe80::6d58:38d4:5df2:e4ad%3]) with mapi id 15.01.2308.014; 
+ Tue, 21 Sep 2021 16:10:27 +0200
+From: Yunus Bas <Y.Bas@phytec.de>
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>,
+ "sha@pengutronix.de" <sha@pengutronix.de>
+Thread-Topic: CRC32 verification on NAND flash
+Thread-Index: AQHXrvJtEhOkL4prukyQJH6AGgPETw==
+Date: Tue, 21 Sep 2021 14:10:27 +0000
+Message-ID: <3ea5144d940ac48701809c7e28061d76495a66fa.camel@phytec.de>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.0.116]
+Content-ID: <6BB5EC927B7554469C23048941710C61@phytec.de>
 MIME-Version: 1.0
-References: <20210908185946.638301-1-trent.piepho@igorinstitute.com>
- <b70fcd46-c1ef-9aa8-9810-cb9af6bf0966@pengutronix.de>
- <CAMHeXxP9fYd9tDdyURJo50MOFwDf+gQyf8jcy4yuwhxB_cKrQw@mail.gmail.com>
- <a2ed83cd-102d-a3f1-1b28-89199d8f2a06@pengutronix.de>
-In-Reply-To: <a2ed83cd-102d-a3f1-1b28-89199d8f2a06@pengutronix.de>
-From: Trent Piepho <trent.piepho@igorinstitute.com>
-Date: Mon, 20 Sep 2021 13:43:52 -0700
-Message-ID: <CAMHeXxPZ9on3rZu92H1EeNQj79rUFBRbs5Qre=AS3U7_y=UueQ@mail.gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrOLMWRmVeSWpSXmKPExsWyRoChXPfyc89Eg0XXzC1OLO5ntni0eRar
+ A5PH5iX1Hv1/DQKYorhsUlJzMstSi/TtErgy/q54wlzwQrpiVdt1xgbGHukuRk4OCQETiaWP
+ 5jN1MXJxCAmsZ5KYPXMmM4TzjFHi9frT7BDOJkaJBYf+ADkcHGwCihJXbuWDdIsI5EisvniQ
+ BcQWFtCUmLHrNgtEXE+ic/4xZpByEHvx2TqQMIuAqsSvTduZQWxeATeJFxd/g5UzCshKbNhw
+ HizOLCAusenZd1aI4wQkluyBiEsIiEq8fPwPKq4g0dbTyQQynhlo7fpd+hCtFhL/rx9khbAV
+ JaZ0P2SHWCUocXLmE5YJjCKzkGyYhdA9C0n3LCTds5B0L2BkXcUolJuZnJ1alJmtV5BRWZKa
+ rJeSuokRGBmHJ6pf2sHYN8fjECMTB+MhRgkOZiUR3tQnbolCvCmJlVWpRfnxRaU5qcWHGKU5
+ WJTEee/3MCUKCaQnlqRmp6YWpBbBZJk4OKUaGJec265S/at4prNgSZ+zR03tYu1Yyx2mkc4a
+ 4smHpL9f5O8/EK62LjCzxK3c6WqeqWyFgOmmVzLGNbOnFARuEY0sjss1M5nY9ynQUJqt+e+d
+ uytc7vTYv7JdzHtld0WJfkrgqXxx40J7OeGSFKPAl2lLV7zQ8n//ICA2dX2h3+UIvrd+orlK
+ LMUZiYZazEXFiQA11PtYegIAAA==
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210920_134405_926060_EB5DB4AF 
-X-CRM114-Status: GOOD (  44.92  )
+X-CRM114-CacheID: sfid-20210921_071038_401269_085CE70C 
+X-CRM114-Status: GOOD (  18.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,145 +91,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] kbuild: dtc: Allow adding device tree fragments via config
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: CRC32 verification on NAND flash
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Sep 20, 2021 at 2:02 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->
-> >>> Preprocessing the dts file gains another layer, where a generated dts
-> >>> source consisting of an include directive for the original dts source is
-> >>> followed by more includes for each fragment.  This is piped to the
-> >>> existing preprocessor call on stdin to avoid another temporary file.
-> >>> cpp/dtc will correctly identify errors in the source files they occur
-> >>> in.  The -MT option is used so the cpp auto-dependencies reference the
-> >>> original dts source and not the generated code passed on stdin.
-> >>
-> >> If you go this route wouldn't you want to apply device tree overlays?
-> >
-> > Can the Barebox apply overlays to the *Barebox dtb* when it starts?
->
-> I meant overlay application at compile time. I have no experience with
-> that and was interested to hear your opinion on it.
-
-This could be done, but I think overall it is worse.  Additional
-fragments can be made into dtbo files and then fdtoverlay from dtc
-package can apply them to the main dtb at compile time.  But there are
-drawbacks:
-dtb must be compiled with symbols, which makes it larger.  And
-non-fragment users get a different dtb than before for no reason.
-One can not use the preprocessor to control overlays per board.  Such
-as changing a node name from <&nand> to <&emmc> based on board or
-enabling/disable the entire fragment.
-The overlay can not delete nodes or properties, i.e. /delete-property/
-and /delete-node/ are not useful.
-
-A possible benefit of overlays is if an overlay is used in many
-different images, then it could be compiled only once.  But dtc is not
-any slower to compile a dts fragment append to the main dts than
-fdoverlay is to apply an already compiled dtbo to the main dtb, so
-there is not even a build time improvement here.
-
-So, I can see only disadvantages and not advantages for compile time overlays.
-
-Maybe one could ship a firmware update with a pool of overlays, then
-firmware update installation could construct a final dtb from hardware
-variant appropriate overlays.  That would be a way to make use of
-non-dynamic overlays.  Otherwise I think there is no advantage to
-non-runtime applied overlays over appended dts fragments.
-
->
-> There is an easy way out, define the (sanitized) board name as a macro
-> and let users worry about it.
-
-Ok, I can add that.  I think the same identifier as constructed for
-the C symbol of the compiled in dtb bytes will work.
-
-
-> >
-> > That is the use case here. So I can use rauc with just the standard
-> > Barebox source without needing to patch it.
->
-> I see the utility when using e.g. evaluation kits barebox already
-> supports. Could be useful for DistroKit if RAUC support were to
-> be added.
-
-I used this originally for a devkit.  But it is Variscite's DART-6UL,
-which is not supported in Barebox.  So I added support.  But not just
-support for the one thing my FW does, support as a proper Barebox
-devkit target.
-
-Now I want to change the flash partitions for my specific FW design
-and also want RAUC and barebox-state.  Should I include this in my
-Barebox devkit support?  No one else wants it, at least not as I have
-implemented it.   Should other users submit patches to Barebox to
-change the partitions to what they want?  Of course not.
-
-My answer is I should not have to patch Barebox to do this.  I do not
-patch Barebox to change the defconfig I'm building with.  I do not
-patch RAUC to configure it.  I do not patch wic to change my SD card
-partitions.
-
-Now we have made a custom board for the next phase and I have added a
-new board to Barebox for this.  But still I use external dts fragments
-despite having my FW specific Barebox git repo.  Because I do not want
-FW system configuration to be done inside the bootloader codebase.  It
-is much better if it is part of my FW git repo that configures
-everything else in the system too.
-
-In the old days, we had to patch a header in U-Boot to change *any*
-bootloader configuration. Yuck! Then we had Barebox and it used the
-kernel config system and we could have an external defconfig.  So much
-better!  And Linux had board code with compiled in driver
-configuration data, but then we got OF device trees and it was much
-better.
-
-So I want external dts files with Barebox.  Complete external dts is
-really hard to do with the way Barebox images work.  But really, I
-never write a complete dts from scatch. It is always a modification of
-a base dts.  This patch to Barebox is not very complex and it lets me
-do anything I have ever wanted to do with external Linux dts files in
-Barebox.
-
->
-> > If I was building two different
-> > boards under yocto, I would have a machine specific override in my
-> > barebox bbappend to add the only dts fragment for board I was building
-> > for.  Yocto builds a different copy of barebox for each
-> > target/machine.  I do not need barebox to use the preprocessor to turn
-> > off the fragment I am not using.  I would not have yocto give it the
-> > unused fragment in the first place.
->
-> I usually avoid Yocto MACHINEs for board variants. Build same rootfs
-> for both variants, ship two device trees and reference them either
-> from FIT configurations or bootloader specs and let the bootloader worry
-> about selecting the correct DT to boot.
-
-When I have done one FW for multiple boards, I've always been able to
-use the same bootloader and have it, or a preloader, determine board,
-usually by resistor strapping on a GPIO or ADC, so it is easy to use
-without drivers and to keep consistent on each board variant.  But if
-one simply could not do that, then I see that multiple images from a
-single Barebox machine target would be useful.  Also useful for
-Buildroot, which is not as sophisticated as Yocto when it comes to
-building a package in different ways.  One gets one target or one
-host.  Not target-arm, target-arm-machineA, target-arm-machineB, etc.
-like Yocto.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gZXZlcnlvbmUsDQoNCkkgaGF2ZSBhIHF1ZXN0aW9uIHJlZ2FyZGluZyB0aGUgQmFyZWJv
+eCBjaGVja3N1bSB2ZXJpZmljYXRpb24gb24gTkFORC0NCnBhcnRpdGlvbnMuIFRvIHZlcmlmaWNh
+dGUgdGhhdCB0aGUgQmFyZWJveCBoYXMgYmVlbiBmbGFzaGVkIGNvcnJlY3RseSwNCndlIGRvIGEg
+Y3JjMzIgY2hlY2sgb24gdGhlIG5hbmQuYmItcGFydGl0aW9uLiBUaGUgb2Zmc2V0cyBmb3IgdGhl
+IHNsb3RzDQphcmUgZGVyaXZlZCBmcm9tIHRoZSBtYXggcGFydGl0aW9uLCBzbyB0aGF0IHRoZSBz
+bG90cyBhcmUgZXF1YWxseQ0Kc2l6ZWQuIFRoZSBiYi1wYXJ0aXRpb25zIGFyZSBiYWRibG9jay1h
+d2FyZSBwYXJ0aXRpb25zLCBtZWFuaW5nIHRoYXQNCnRoZSBiYWQtbWFya2VkIGJsb2NrcyBhcmUg
+anVzdCBza2lwcGVkLiBUaGlzIG1lYW5zLCB0aGF0IHRoZSBvdmVyYWxsDQpzaXplIG9mIHRoZSBi
+Yi1wYXJ0aXRpb24gYWxzbyBkZWNyZWFzZXMgcmVsYXRpdmUgdG8gdGhlIG51bWJlciBvZiBiYWQt
+DQpibG9ja3MuIE91ciBwcm9ibGVtIGhlcmUgaXMsIGluIGNhc2UgYSBiYWRibG9jayBvY2N1cnMg
+b24gYSBibG9jayBwcmlvcg0KdG8gdGhlIHNsb3RzLCB0aGUgb2Zmc2V0IHRvIHRoZSBzbG90cyB3
+aGVyZSB0aGUgQmFyZWJveC1jb2RlIHJlc2lkZXMgaW4NCnRoZSBiYi1wYXJ0aXRpb24gYWxzbyBj
+aGFuZ2VzLg0KDQpIZXJlIGFuIGV4YW1wbGU6DQpUaGUgc3RhcnRwYWdlIG9mIHNsb3QxIGlzIDB4
+MjQwMDAwLiBUaGlzIGlzIHRoZSByZWFsIGFkZHJlc3MsIHdoZXJlDQpCYXJlYm94IGlzIGZsYXNo
+ZWQgaW50byBhbmQgY2FuIGFsc28gYmUgZHVtcGVkIHVzaW5nIHRoZSBvcmlnaW5hbA0KbmFuZDAt
+cGFydGl0aW9uLiBOb3csIHdoZW4gYSBiYWQtYmxvY2sgb2NjdXJzIHByaW9yIHRvIHRoZSBzdGFy
+dHBhZ2Ugb2YNCnNsb3QxLCBsZXQncyB0YWtlIGZvciBleGFtcGxlIHRoZSBibG9jayBhdCAweDE0
+MDAwMCwgdGhlbiBvZmZzZXQgb2YNCnNsb3QxIGNoYW5nZXMgYWxzbyBpbiB0aGUgbmFuZDAuYmIg
+cGFydGl0aW9uLiBJbiB0aGUgb3JpZ2luYWwgcGFydGl0aW9uDQpuYW5kMCwgc2xvdDEgaXMgc3Rp
+bGwgYXQgMHgyNDAwMDAsIGJ1dCBvbiBuYW5kMC5iYiwgc2xvdDEgaGFzIGJlZW4NCm1vdmVkIG9u
+ZSBibG9jayBwcmlvciB0byB0aGUgb3JpZ2luYWwgb2Zmc2V0IGFuZCBjaGFuZ2VkIHRvIDB4MjIw
+MDAwLg0KDQpUYWtpbmcgaW50byBhY2NvdW50IHRoYXQgd2l0aCB0aW1lIHRoZSBOQU5EIGNlbGxz
+IHdpbGwgd29ybiBvdXQgYW5kDQpkZWdyYXRlIGV2ZW4gbW9yZSwgd2UgbmVlZCB0byBjYWxjdWxh
+dGUgdGhlIG9mZnNldCBmb3IgZXZlcnkgYm9hcmQgdG8tDQpiZSB0ZXN0ZWQgYW5kIHBlcmZvcm0g
+dGhlIGNyYzMyIGNoZWNrIGFmdGVyIHRoYXQuDQpVc2luZyB0aGUgb3JpZ2luYWwgbmFuZDAtcGFy
+dGl0aW9uIGlzIGFsc28gb3V0IG9mIG9wdGlvbiwgc2luY2UgdGhlDQp2ZXJpZmljYXRpb24gd291
+bGQgYWxzbyBmYWlsIHdoZW4gYSBiYWRibG9jayB3b3VsZCBvY2N1ciBzb21ld2hlcmUgaW4NCnRo
+ZSBzbG90LWFyZWEgKGluIGNhc2Ugb2YgdGhlIGFib3ZlIGV4YW1wbGUsIDB4MjYwMDAwKS4NCg0K
+SXMgdGhlcmUgYSBwcm9wZXIgd2F5IHRvIGRvIGEgY2hlY2tzdW0gdmVyaWZpY2F0aW9uIG9uIE5B
+TkQtZmxhc2gsDQp3aGljaCBJJ20gbm90IGZhbWlsaWFyIHdpdGg/IENhbiB0aGUgc2l6ZSBvZiB0
+aGUgcGFydGl0aW9ucyBiZSBzb21laG93DQpkZXRlcm1pbmVkIGR5bmFtaWNhbGx5PyBIb3cgZG8g
+dGhlIGV4cGVydHMgaGFuZGxlIHRoaXM/DQoNClRoYW5rIHlvdSBpbiBhZHZhbmNlLg0KLS0gDQpX
+aXRoIFJlZ2FyZHMsDQpZdW51cyBCYXMNCg0KLVNvZnR3YXJlIEVuZ2luZWVyLQ0KUEhZVEVDIE1l
+c3N0ZWNobmlrIEdtYkgNClJvYmVydC1Lb2NoLVN0ci4gMzkNCjU1MTI5IE1haW56DQpHZXJtYW55
+DQpUZWwuOiArNDkgKDApNjEzMSA5MjIxLcKgNDY2DQpXZWI6wqB3d3cucGh5dGVjLmRlDQoNClNp
+ZSBmaW5kZW4gdW5zIGF1Y2ggYXVmOsKgRmFjZWJvb2sswqBMaW5rZWRJbizCoFhpbmcswqBZb3VU
+dWJlDQoNClBIWVRFQyBNZXNzdGVjaG5payBHbWJIIHwgUm9iZXJ0LUtvY2gtU3RyLiAzOSB8IDU1
+MTI5IE1haW56LCBHZXJtYW55DQpHZXNjaMOkZnRzZsO8aHJlcjogRGlwbC4tSW5nLiBNaWNoYWVs
+IE1pdGV6a2ksIERpcGwuLUluZy4gQm9kbyBIdWJlciB8DQpIYW5kZWxzcmVnaXN0ZXIgTWFpbnog
+SFJCIDQ2NTYgfCBGaW5hbnphbXQgTWFpbnogfCBTdC5Oci4gMjY2NTAwNjA4LCBERQ0KMTQ5MDU5
+ODU1DQpUaGlzIEUtTWFpbCBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgb3IgcHJpdmlsZWdlZCBp
+bmZvcm1hdGlvbi4gSWYgeW91DQphcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQgKG9yIGhh
+dmUgcmVjZWl2ZWQgdGhpcyBFLU1haWwgaW4gZXJyb3IpDQpwbGVhc2Ugbm90aWZ5IHRoZSBzZW5k
+ZXIgaW1tZWRpYXRlbHkgYW5kIGRlc3Ryb3kgdGhpcyBFLU1haWwuIEFueQ0KdW5hdXRob3JpemVk
+IGNvcHlpbmcsIGRpc2Nsb3N1cmUgb3IgZGlzdHJpYnV0aW9uIG9mIHRoZSBtYXRlcmlhbCBpbg0K
+dGhpcyBFLU1haWwgaXMgc3RyaWN0bHkgZm9yYmlkZGVuLg0KX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
 
