@@ -1,77 +1,75 @@
-Delivery-date: Wed, 22 Sep 2021 20:15:33 +0200
+Delivery-date: Thu, 23 Sep 2021 11:57:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mT6mL-0008SG-Mb
-	for lore@lore.pengutronix.de; Wed, 22 Sep 2021 20:15:33 +0200
+	id 1mTLUA-0005Xg-4Z
+	for lore@lore.pengutronix.de; Thu, 23 Sep 2021 11:57:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mT6mK-0001WJ-Jm
-	for lore@pengutronix.de; Wed, 22 Sep 2021 20:15:33 +0200
+	id 1mTLU8-0006qw-V6
+	for lore@pengutronix.de; Thu, 23 Sep 2021 11:57:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=cmMQg9T3XdzuaGw9pwzUWXZAsR2YJn9oPOcLWUmq+Ng=; b=mBFDiJ+D+rJp9g
-	G19sG+ZdRwK3tA1JVAK/CoXkwqK44/YuJedWWJzMNxX2pfhRGH9Q8t2dH4sCS1W65W7yA/TaJdF81
-	cHHI8Siname8bestOnzjpxwz0oMdDXxXsKgLVCfeP4PnmsfPR6lYRqM1PIllPAKJLmWjNAw7r6Px5
-	LK+brg0QeSuD9UfO6AxBZD4ZcWkJobE7cEYbgCm/XaZ8HyxkgTrwvEL1N6pespR/n4mtdFlmxI2vJ
-	o/JVZz5kSAkIZMDoA+nq7mn3Jyq2x2s+qvehljwT7j41dVKVFUSq9wyZeJ09cE3BGnDivIiUcGCoO
-	D1zqlLp4Oc5oyg5eYwqA==;
+	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
+	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=pfRZG+D4iKzd4oIMXBqe1GsRq+fKorLjzyph1rppyp0=; b=ZmwkXD4hra9u3c
+	gk4Cx+oLdlh7EoASCcAFvvz0vZobZZQssfuNxtY1zbqoLYLoOHaeOajRW2NTqDg07QxlDGgccFnnW
+	c5IZly1UbNBv48XtuEFazL3ZI6yDWIURySLfnuEXwUZ5hPeAGS7x2QSbgHY5uYB+yuoxK8ycok8s+
+	7rFvwS1o+Fd7V/vCr5TjR+LTSv6Z1gvg+4X8GQBuuuY5UVZKTErcySEX8ru8hCSEC8AcNpo4ef5De
+	NY9OBtYjVLxBhrFycOz4NgBKuzqPrhpwRUuvb3gnW10Lk+BdmBWMqM+Hqg2P/pKJ3dwsvwpKPGKyy
+	VUHn05svd+5OikU1GSWg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mT6kf-009Pln-Jy; Wed, 22 Sep 2021 18:13:49 +0000
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+	id 1mTLSR-00AqwP-6r; Thu, 23 Sep 2021 09:55:59 +0000
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mT6ka-009PlU-AN
- for barebox@lists.infradead.org; Wed, 22 Sep 2021 18:13:45 +0000
-Received: by mail-pf1-x434.google.com with SMTP id m26so3437662pff.3
- for <barebox@lists.infradead.org>; Wed, 22 Sep 2021 11:13:42 -0700 (PDT)
+ id 1mTLSM-00Aqvg-1N
+ for barebox@lists.infradead.org; Thu, 23 Sep 2021 09:55:55 +0000
+Received: by mail-lf1-x12f.google.com with SMTP id t10so24440680lfd.8
+ for <barebox@lists.infradead.org>; Thu, 23 Sep 2021 02:55:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=igorinstitute-com.20210112.gappssmtp.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=IeuXgG1JFYMcH+T1Xi/6UVYErpbSSnWx/r58sJUVBgY=;
- b=p1nYgAWXTjlP1UUVhTgUneRIbZe6amNElfkdzWZTRGHHp8JO9sy15ZkTwKsk54jAex
- nH5MJQzncHWXFsoI4YnC5ndelH2p4vFhRlyBGwKOBJmsrx6XZGHuSefaFLrodnCkUdWj
- m9cTVmiDG/48xrKP/b7SgMvTIBAnxGtMsXY3Vt9qiXjDu1wV3SlM90uGnf7p4vWdbusf
- 7WR2tVtVBCQe/3UKRFFyf8s+/l22PnPujV//WFvk0rtAmodjm0G3OjFvoy8vF8Gxduq0
- 4rxnswyfkEqSsCS3HFGmIsbhA51Iv8cxTGSlGU0wi93g4Ot1j1xfLb+awH4SrJWHlap4
- 6xhw==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=pErvGvw4XvJYY9KevFVBJyKTHn0Hf/1K8V1SJ2AV+yw=;
+ b=5nivd67deCTPeIee85fYcRThccq9s18S2C3SXrUOYXBB4Hqu74GkZMltn5SzrEcuxV
+ oQfpwSO6dePWN8Yhp+iJaQG+No1DaiaOz1yXnw9S0nHR2Ragegc8MSrwadqeRGj+mfpz
+ 3/+ivgC852hyR49NGZV2F+8F0WG/rlubYeLI7YI243kV81NSksUTNhlq6Q04ov1cVk6Q
+ G7up5zxComJggd99P2k0PLr73PKNKVIBMHmm3BCBVoGT3Fc18fCSwMHW5dwinhh1eUSA
+ IQXQpYNKhQDqW83/dzPoJs5O4pdNqMncU0N8HsMRUl15YcwcP8GoM4huaXNwc8/62oIA
+ xJkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=IeuXgG1JFYMcH+T1Xi/6UVYErpbSSnWx/r58sJUVBgY=;
- b=L7eRxV5UNUwheKmBlCZhjZacHvpJAsh9oHqQGWXhcnT9RGdF+fouaDBtgRUGANN/28
- JkhYOqsyggjjwPYsNIGLmoIT2zXVrooyf2o4EPsffCrHQhWJGklwCRj8onooLHBYBj1t
- 5dc1aGx6PsCxH6c7/YuKD2T1NiiVTTly8b0EQyLm8u0HSPtskTxBZPBaW/9BzJszi1nK
- 3F5fYFukG4AEENxSODeEeceJAQxWj8+VnNh7XUHoLxvvUBiPx21l2RIBO1fhWxRFc0zR
- 2339XwsVvD6MzSGlSY05w9A2OH51fe9Mu73VAeGvhCtFLIEm1QbV+Hiwh7/LSO70MIBg
- NcjQ==
-X-Gm-Message-State: AOAM530Qn8GB1ZlOBz9763Nd5MJdADDk5AczHJklm9yviZAytpMjAkmI
- NrttCComJI3SDZy7WwcTQfk1I0fz4vxRX1ek
-X-Google-Smtp-Source: ABdhPJyKPqo9F7eTfr93ubo7ltJwzhsmqfcfA563WESqSFA3e3Y43WQhe41szCbZCrsVjKZiFLhSzA==
-X-Received: by 2002:a63:fb49:: with SMTP id w9mr253052pgj.156.1632334421342;
- Wed, 22 Sep 2021 11:13:41 -0700 (PDT)
-Received: from zen.local (97-113-90-42.tukw.qwest.net. [97.113.90.42])
- by smtp.gmail.com with ESMTPSA id u9sm3537845pgp.83.2021.09.22.11.13.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Sep 2021 11:13:40 -0700 (PDT)
-From: Trent Piepho <trent.piepho@igorinstitute.com>
-To: barebox@lists.infradead.org
-Cc: Trent Piepho <trent.piepho@igorinstitute.com>
-Date: Wed, 22 Sep 2021 11:13:36 -0700
-Message-Id: <20210922181336.1350460-1-trent.piepho@igorinstitute.com>
-X-Mailer: git-send-email 2.31.1
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=pErvGvw4XvJYY9KevFVBJyKTHn0Hf/1K8V1SJ2AV+yw=;
+ b=3Md/r5Gl9u3q4IOHFps0N2HRBMJt11DFpLZj5kuYq6FH0iFZntRuR8yrB1Vq6UF3R4
+ UK/kHsWDqoIC8XhNvq3HrgQEvU+No0MC1QWNnA0a9XOmCgHq60fCaVmEAMENm+zS6WW5
+ w2yKck2VhfAVMtebgPrwpWrcnjfk0e/Tgyze6g0bZxp+kNDFvnNsMkxImIojGRLd6Y50
+ QhSfrZFk6ikhE93FvTnSr9oJoSX6CFhtVzlB5U02bYnScdgzsgHyY4xvRr/9urEoz30g
+ r6ZH7sqcEQtO9L25XPbdKsubEnSHUOgu5R5QEsu5SHO6x7PLw5DEN5qhHMQyvGKm4OCq
+ mFgA==
+X-Gm-Message-State: AOAM530o6Jg8L4KBw1xFqvgyIXcrVHoDju4Ua0AF3yNZqldKWJKF7Jrw
+ XVEpaIi1jvFUVpr3shJPDL1xcilnqMOL5QmPXl79ZQ==
+X-Google-Smtp-Source: ABdhPJwej72dBdvpSdzGwTA5kIRN7ZkubBlkghmzXQwvTJfKUJvBxyUiqSM3AHd33vIMhNAkYlf9yl6655quCADuO8A=
+X-Received: by 2002:a05:6512:3886:: with SMTP id
+ n6mr3461902lft.279.1632390951370; 
+ Thu, 23 Sep 2021 02:55:51 -0700 (PDT)
 MIME-Version: 1.0
+References: <3ea5144d940ac48701809c7e28061d76495a66fa.camel@phytec.de>
+In-Reply-To: <3ea5144d940ac48701809c7e28061d76495a66fa.camel@phytec.de>
+From: Trent Piepho <trent.piepho@igorinstitute.com>
+Date: Thu, 23 Sep 2021 02:55:40 -0700
+Message-ID: <CAMHeXxPsULguR1icV9cEz5v_Vb6pNsuuWiG0PgJ62ONFwFRB+g@mail.gmail.com>
+To: Yunus Bas <Y.Bas@phytec.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>,
+ "sha@pengutronix.de" <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210922_111344_587769_4B08225C 
-X-CRM114-Status: GOOD (  18.22  )
+X-CRM114-CacheID: sfid-20210923_025554_334789_402F6D52 
+X-CRM114-Status: GOOD (  18.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,109 +89,58 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.4 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/1] kbuild: dtc: Allow adding device tree fragments via
- config
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: CRC32 verification on NAND flash
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This introduces a config variable that allows adding additional fragments
-to the Barebox device tree(s).
+On Tue, Sep 21, 2021 at 7:11 AM Yunus Bas <Y.Bas@phytec.de> wrote:
+> Here an example:
+> The startpage of slot1 is 0x240000. This is the real address, where
+> Barebox is flashed into and can also be dumped using the original
+> nand0-partition. Now, when a bad-block occurs prior to the startpage of
+> slot1, let's take for example the block at 0x140000, then offset of
+> slot1 changes also in the nand0.bb partition. In the original partition
+> nand0, slot1 is still at 0x240000, but on nand0.bb, slot1 has been
+> moved one block prior to the original offset and changed to 0x220000.
 
-Example uses are adjusting the flash partition layout, adding barebox
-state variables, or adding an I2C device.  These can be now be done with
-build configuration only, without needing to patch the existing dts
-files in the Barebox source.
+If you partition nand, via e.g. device tree entries, those partition
+start offsets are non-BB aware, so do not move.
 
-The advantage is greater when an external build system, such as Yocto or
-Buildroot, is being used to build Barebox.  The build system can drop in
-a dts fragment to partition flash and build from unaltered Barebox
-source.  This avoids the need for cumbersome maintenance of patch files
-to modify Barebox's source for each flash partition layout.
+So if I write X pages to partition 0 BB and read back X pages, I will
+know the crc.  And the same for partition 1, even if some blocks in
+partition 0 are bad.
 
-Preprocessing the dts file gains another layer, where a generated dts
-source consisting of an include directive for the original dts source is
-followed by more includes for each fragment.  This is piped to the
-existing preprocessor call on stdin to avoid another temporary file.
-cpp/dtc will correctly identify errors in the source files they occur
-in.  The -MT option is used so the cpp auto-dependencies reference the
-original dts source and not the generated code passed on stdin.
+But these "slots" you talk about, I think these are not nand
+partitions.  Maybe more like the two bootloader slots in an IMX boot
+image?
 
-A preprocessor macro named after the base dts file, e.g. foo-bar.dts
-will define foo_bar_dts, will be defined so that the fragments can
-possibly operate differently based on which image's dts is being built.
+If the position of the slots is determined dynamically at flash time,
+then I think your answer is you must also determine it when you check
+CRC.  For instance, on imx one could create a command that queries the
+FCB to find the two bootloader slot start addresses.  Code is already
+there in the imx bbu handler, it just needs an interface.  Or,
+something had to determine this dynamic address of the slot, so have
+that process also tell you what it determined.  For example, have the
+imx bbu code set env variables with the address of the bootloader
+slots that it calculates when it flashes barebox.
 
-Signed-off-by: Trent Piepho <trent.piepho@igorinstitute.com>
----
-Changes from v1:
-  - Remove 2nd config variable for in-tree fragments.
-  - Add macro to preproccessed dts
+If you want to calculate one CRC value for all of NAND, then I think
+you can not do that.  Because the contents of the entire nand flash
+chip are not constant.  Instead have a list of CRCs and lengths for
+the parts you have actually flashed.  Most of flash is usually blank
+anyway, why even flash blank space?  It just slows down manufacturing.
 
- common/Kconfig       | 18 ++++++++++++++++++
- scripts/Makefile.lib |  8 +++++++-
- 2 files changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/common/Kconfig b/common/Kconfig
-index a9feae2ae..6fdc14148 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1091,6 +1091,24 @@ config SYSTEMD_OF_WATCHDOG
- 	  in the kernel device tree. If the kernel is booted without a device
- 	  tree or with one that lacks aliases, nothing is added.
- 
-+config EXTERNAL_DTS_FRAGMENTS
-+	string "external dts file fragments"
-+	depends on OFTREE
-+	help
-+	  List of dts fragment files that will be appended to Barebox's device
-+	  tree(s) source when building the dtb file(s).  If multiple files are
-+	  listed, they will be appended in order.  Relative filenames will use
-+	  the dtc include search path.
-+
-+	  A preprocessor macro based on the name of the main dts will be
-+	  defined, which allows the dts fragments to based on which image of a
-+	  multi image build they are being used in.
-+
-+	  It not intended that this be put into into Barebox defconfig files.
-+	  Instead, it's an external build system, like Yocto or buildroot, to
-+	  add dts fragments from outside the Barebox source tree into the
-+	  Barebox build.
-+
- menu "OP-TEE loading"
- 
- config OPTEE_SIZE
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 80d76b177..4496f1a70 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -201,6 +201,7 @@ cpp_flags      = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(__cpp_flags)
- ld_flags       = $(KBUILD_LDFLAGS) $(ldflags-y)
- 
- dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
-+		 -Wp,-MT,$(basename $(notdir $@)).o                      \
- 		 -I$(srctree)/arch/$(SRCARCH)/dts/include		 \
- 		 -I$(srctree)/dts/include                                \
- 		 -I$(srctree)/include                                    \
-@@ -335,8 +336,13 @@ cmd_dt_S_dtb = $(srctree)/scripts/gen-dtb-s $(subst -,_,$(*F)) $< $(CONFIG_IMD)
- $(obj)/%.dtb.S: $(obj)/%.dtb $(srctree)/scripts/gen-dtb-s FORCE
- 	$(call if_changed,dt_S_dtb)
- 
-+dts-frags = $(subst $(quote),,$(CONFIG_EXTERNAL_DTS_FRAGMENTS))
- quiet_cmd_dtc = DTC     $@
--cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
-+# For compatibility between make 4.2 and 4.3
-+H := \#
-+cmd_dtc = /bin/echo -e '$(H)define $(subst -,_,$(*F))_dts 1\n'$(foreach f,$< $(dts-frags),'$(H)include "$(f)"\n') | \
-+	$(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) - ; \
- 	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
- 		-i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
- 		-i $(srctree)/dts/src/$(SRCARCH) \
--- 
-2.31.1
-
+You must just find the start location for these lengths of data that
+have CRCs.  As above, nand partitions start at a constant location, so
+this is easy.  Dynamically determined locations one would need to:
+query location if it is stored somewhere, have code that determined
+the location also provide the value to the verification code, or
+repeat the calculation by which the location was determined in the
+first place to independently arrive at the same answer.
 
 _______________________________________________
 barebox mailing list
