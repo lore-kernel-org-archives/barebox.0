@@ -1,55 +1,53 @@
-Delivery-date: Fri, 01 Oct 2021 12:13:48 +0200
+Delivery-date: Fri, 01 Oct 2021 12:14:27 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFY4-0002jL-0c
-	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:13:48 +0200
+	id 1mWFYh-0002lw-L5
+	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:14:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFY2-0007GZ-Vt
-	for lore@pengutronix.de; Fri, 01 Oct 2021 12:13:47 +0200
+	id 1mWFYg-0007Kx-9D
+	for lore@pengutronix.de; Fri, 01 Oct 2021 12:14:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
 	Message-ID:From:References:To:Subject:Reply-To:Content-ID:Content-Description
 	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=/BfGiiiT2TCdCJYBfifcahYXJFFnGNuH8NiecPlaX7w=; b=SyYNxhPyRA91T5
-	yK8Gp+6iihp3RSUvV+hgzv0+OjwV7P2erQ0s0lfwrpxLtcMKYD5XMt/yPaYbjbOylSX6HIeaytvW+
-	bCiEmR3uca6gUZiO/j1nbfUrnBvBUFU2T4i2naLvYF41DnsqcPMHlGv46Db+aEKBK7C91luaFTd9K
-	EY6zlQZlLQKNQ6PvrphZKeHjDPZQs0JVRynm0/rgOQtIi/OPWQlCIXV77qXamAou1o9eYOmgsVx5g
-	7RxiPAFWwehYsXC7TIox24i5+grESaAFxqq41um5KHAxtXhtH+ZLCuKLPlH70t8JPCwqjyaw1x4C8
-	MNV/1ofMPkxcIOQL94Gg==;
+	List-Owner; bh=mMY4aFaQO4GlyWcAfHEVxIoiBZqYv7hN7UJBmU0oz9U=; b=MBHzTYgfJ7ESC3
+	sIpa0/pruogcdFedIjV1n9JgJ+VyOWXM4ZkT38Kj3fQNfFJr5P4j/i0dqjMEVKNBkOXP4uk9jemyQ
+	mf2rY4XN+Db+OI9q+dUmJywe3zeVfINUGLF233rb3RigwTD5K7udWU1NYYdJBQ8u+AnnOOAxQegR4
+	MbyKJYvscxuhA3VB0PywKEQhHtf0a69ef/3m65WO9n9jnaPB1yyL7rbPhY8mu/Sv7f86SrZIzmS9H
+	+FDZpcrazlLEfuvR80nd6HJT/am7r2hw/fRZsbhqDMOcAsI1yZkhmunI7Ezg1tMoaibF0ebpzKQOX
+	N0BPIdYFFTVK3jKZ3XUw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mWFWi-00HS42-MP; Fri, 01 Oct 2021 10:12:24 +0000
+	id 1mWFXQ-00HSHS-9X; Fri, 01 Oct 2021 10:13:08 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mWFWc-00HS0y-7H
- for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:12:19 +0000
+ id 1mWFXL-00HSGS-8E
+ for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:13:05 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1mWFWZ-0006h6-2z; Fri, 01 Oct 2021 12:12:15 +0200
-To: Antony Pavlov <antonynpavlov@gmail.com>
+ id 1mWFXK-0007Ae-0q; Fri, 01 Oct 2021 12:13:02 +0200
+To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
 References: <20210817101104.114945-1-antonynpavlov@gmail.com>
- <20210817101104.114945-2-antonynpavlov@gmail.com>
- <ce1667b1-e42f-3836-9747-393a5fd8afc7@pengutronix.de>
- <20210831070710.3b6200eff8e7adb22bdf1454@gmail.com>
+ <20210817101104.114945-5-antonynpavlov@gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <f58fa974-16f3-e2cd-ce01-cb3ee7ba1833@pengutronix.de>
-Date: Fri, 1 Oct 2021 12:12:14 +0200
+Message-ID: <6d5f6568-a43d-2643-53c6-f13e1c57cb98@pengutronix.de>
+Date: Fri, 1 Oct 2021 12:13:00 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20210831070710.3b6200eff8e7adb22bdf1454@gmail.com>
+In-Reply-To: <20210817101104.114945-5-antonynpavlov@gmail.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211001_031218_319795_A106B530 
-X-CRM114-Status: GOOD (  26.52  )
+X-CRM114-CacheID: sfid-20211001_031303_497291_7F2AD63E 
+X-CRM114-Status: GOOD (  31.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,7 +59,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org
+Cc: Alexander Shiyan <shc_work@mail.ru>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -74,144 +72,242 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH RESEND v4 1/8] clocksource: timer-riscv: select CSR from
- device tree
+Subject: Re: [PATCH RESEND v4 4/8] gpio: add driver for 74xx-ICs with MMIO
+ access
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 31.08.21 06:07, Antony Pavlov wrote:
-> On Mon, 23 Aug 2021 14:08:52 +0200
-> Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+On 17.08.21 12:11, Antony Pavlov wrote:
+> This patch adds driver to support GPIO functionality
+> for 74xx-compatible ICs with MMIO access.
 > 
-> Hi Ahmad!
+> Compatible models include:
+>      1 bit:   741G125 (Input), 741G74 (Output)
+>      2 bits:  742G125 (Input), 7474 (Output)
+>      4 bits:  74125 (Input), 74175 (Output)
+>      6 bits:  74365 (Input), 74174 (Output)
+>      8 bits:  74244 (Input), 74273 (Output)
+>      16 bits: 741624 (Input), 7416374 (Output)
 > 
->> On 17.08.21 12:10, Antony Pavlov wrote:
->>> barebox timer-riscv driver supports one of user counters:
->>>
->>>   * 'cycle', counter for RDCYCLE instruction (CSR 0xc00);
->>>   * 'time', timer for RDTIME instruction (CSR 0xc01).
->>>
->>> At the moment in M-mode timer-riscv uses the 'cycle' counter,
->>> and in S-mode timer-riscv uses the 'time' timer.
->>>
->>> Alas picorv32 CPU core supports only the 'cycle' counter.
->>> VexRiscV CPU core in M-mode supports only the 'time' timer.
->>>
->>> This patch makes it possible to use the 'time' timer
->>> for VexRiscV CPU in M-mode.
->>>
->>> See also http://lists.infradead.org/pipermail/barebox/2021-May/036067.html
->>
->> Comment from earlier series:
->>
->> "It also changes the default for M-Mode from cycle to time.
->>
->> I can't comment on whether this is ok, I just copied the logic
->>
->> from Linux."
->>
->> Can you say why this is ok?
-> 
-> v4 patch removes riscv_mode() mention from timer-riscv code
-> so timer-riscv uses the 'time' timer by default disregarding
-> M-mode or S-mode is used.
-> 
-> I suppose that the 'time' timer is "more popular" than
-> the 'cycle' counter.
-> So IMHO it is ok to use "more popular" feature by default.
-
-Ok. We'll see if something breaks.
-
->>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Cc: Alexander Shiyan <shc_work@mail.ru>
 
 Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
->>> ---
->>>  arch/riscv/dts/erizo.dtsi         |  2 ++
->>>  drivers/clocksource/timer-riscv.c | 24 ++++++++++++------------
->>>  2 files changed, 14 insertions(+), 12 deletions(-)
->>>
->>> diff --git a/arch/riscv/dts/erizo.dtsi b/arch/riscv/dts/erizo.dtsi
->>> index 228711bd69..4eb92ae6f1 100644
->>> --- a/arch/riscv/dts/erizo.dtsi
->>> +++ b/arch/riscv/dts/erizo.dtsi
->>> @@ -22,6 +22,8 @@
->>>  
->>>  		timebase-frequency = <24000000>;
->>>  
->>> +		barebox,csr-cycle;
->>> +
->>>  		cpu@0 {
->>>  			device_type = "cpu";
->>>  			compatible = "cliffordwolf,picorv32", "riscv";
->>> diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
->>> index 5a517fe6b4..96637f988a 100644
->>> --- a/drivers/clocksource/timer-riscv.c
->>> +++ b/drivers/clocksource/timer-riscv.c
->>> @@ -12,9 +12,8 @@
->>>  #include <clock.h>
->>>  #include <asm/timer.h>
->>>  #include <asm/csr.h>
->>> -#include <asm/system.h>
->>>  
->>> -static u64 notrace riscv_timer_get_count_sbi(void)
->>> +static u64 notrace riscv_timer_get_count_time(void)
->>>  {
->>>  	__maybe_unused u32 hi, lo;
->>>  
->>> @@ -29,7 +28,7 @@ static u64 notrace riscv_timer_get_count_sbi(void)
->>>  	return ((u64)hi << 32) | lo;
->>>  }
->>>  
->>> -static u64 notrace riscv_timer_get_count_rdcycle(void)
->>> +static u64 notrace riscv_timer_get_count_cycle(void)
->>>  {
->>>  	__maybe_unused u32 hi, lo;
->>>  
->>> @@ -44,24 +43,25 @@ static u64 notrace riscv_timer_get_count_rdcycle(void)
->>>  	return ((u64)hi << 32) | lo;
->>>  }
->>>  
->>> -static u64 notrace riscv_timer_get_count(void)
->>> -{
->>> -	if (riscv_mode() == RISCV_S_MODE)
->>> -		return riscv_timer_get_count_sbi();
->>> -	else
->>> -		return riscv_timer_get_count_rdcycle();
->>> -}
->>> -
->>>  static struct clocksource riscv_clocksource = {
->>> -	.read		= riscv_timer_get_count,
->>>  	.mask		= CLOCKSOURCE_MASK(64),
->>>  	.priority	= 100,
->>>  };
->>>  
->>>  static int riscv_timer_init(struct device_d* dev)
->>>  {
->>> +	struct device_node *cpu;
->>> +
->>>  	dev_dbg(dev, "running at %lu Hz\n", riscv_timebase);
->>>  
->>> +	cpu = of_find_node_by_path("/cpus");
->>> +
->>> +	if (of_property_read_bool(cpu, "barebox,csr-cycle")) {
->>> +		riscv_clocksource.read = riscv_timer_get_count_cycle;
->>> +	} else {
->>> +		riscv_clocksource.read = riscv_timer_get_count_time;
->>> +	}
->>> +
->>>  	riscv_clocksource.mult = clocksource_hz2mult(riscv_timebase, riscv_clocksource.shift);
->>>  
->>>  	return init_clock(&riscv_clocksource);
->>>
->>
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> ---
+>  drivers/gpio/Kconfig          |  14 +++
+>  drivers/gpio/Makefile         |   1 +
+>  drivers/gpio/gpio-74xx-mmio.c | 165 ++++++++++++++++++++++++++++++++++
+>  3 files changed, 180 insertions(+)
 > 
+> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+> index 98a44fbbb5..f79c9ea67d 100644
+> --- a/drivers/gpio/Kconfig
+> +++ b/drivers/gpio/Kconfig
+> @@ -21,6 +21,20 @@ config GPIO_74164
+>  	  shift registers. This driver can be used to provide access
+>  	  to more gpio outputs.
+>  
+> +config GPIO_74XX_MMIO
+> +	tristate "GPIO driver for 74xx-ICs with MMIO access"
+> +	depends on OFDEVICE
+> +	select GPIO_GENERIC
+> +	help
+> +	  Say yes here to support GPIO functionality for 74xx-compatible ICs
+> +	  with MMIO access. Compatible models include:
+> +	    1 bit:	741G125 (Input), 741G74 (Output)
+> +	    2 bits:	742G125 (Input), 7474 (Output)
+> +	    4 bits:	74125 (Input), 74175 (Output)
+> +	    6 bits:	74365 (Input), 74174 (Output)
+> +	    8 bits:	74244 (Input), 74273 (Output)
+> +	    16 bits:	741624 (Input), 7416374 (Output)
+> +
+>  config GPIO_CLPS711X
+>  	bool "GPIO support for CLPS711X"
+>  	depends on ARCH_CLPS711X || COMPILE_TEST
+> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+> index 638cbb19a3..023973cb63 100644
+> --- a/drivers/gpio/Makefile
+> +++ b/drivers/gpio/Makefile
+> @@ -1,6 +1,7 @@
+>  obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
+>  
+>  obj-$(CONFIG_GPIO_74164)	+= gpio-74164.o
+> +obj-$(CONFIG_GPIO_74XX_MMIO)	+= gpio-74xx-mmio.o
+>  obj-$(CONFIG_MACH_MIPS_ATH79)	+= gpio-ath79.o
+>  obj-$(CONFIG_GPIO_DAVINCI)	+= gpio-davinci.o
+>  obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
+> diff --git a/drivers/gpio/gpio-74xx-mmio.c b/drivers/gpio/gpio-74xx-mmio.c
+> new file mode 100644
+> index 0000000000..5b688f4766
+> --- /dev/null
+> +++ b/drivers/gpio/gpio-74xx-mmio.c
+> @@ -0,0 +1,165 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * 74xx MMIO GPIO driver
+> + *
+> + *  Copyright (C) 2014 Alexander Shiyan <shc_work@mail.ru>
+> + *
+> + * Ported to barebox from linux-v5.4-rc6
+> + *   Copyright (C) 2019-2021 Antony Pavlov <antonynpavlov@gmail.com>
+> + *
+> + */
+> +
+> +#include <common.h>
+> +#include <driver.h>
+> +#include <errno.h>
+> +#include <gpio.h>
+> +#include <init.h>
+> +#include <io.h>
+> +#include <malloc.h>
+> +#include <of_device.h>
+> +
+> +#include <linux/err.h>
+> +#include <linux/basic_mmio_gpio.h>
+> +
+> +#define MMIO_74XX_DIR_IN	(0 << 8)
+> +#define MMIO_74XX_DIR_OUT	(1 << 8)
+> +#define MMIO_74XX_BIT_CNT(x)	((x) & 0xff)
+> +
+> +struct mmio_74xx_gpio_priv {
+> +	struct bgpio_chip	bgc;
+> +	unsigned int		flags;
+> +};
+> +
+> +static const struct of_device_id mmio_74xx_gpio_ids[] = {
+> +	{
+> +		.compatible	= "ti,741g125",
+> +		.data		= (const void *)(MMIO_74XX_DIR_IN | 1),
+> +	},
+> +	{
+> +		.compatible	= "ti,742g125",
+> +		.data		= (const void *)(MMIO_74XX_DIR_IN | 2),
+> +	},
+> +	{
+> +		.compatible	= "ti,74125",
+> +		.data		= (const void *)(MMIO_74XX_DIR_IN | 4),
+> +	},
+> +	{
+> +		.compatible	= "ti,74365",
+> +		.data		= (const void *)(MMIO_74XX_DIR_IN | 6),
+> +	},
+> +	{
+> +		.compatible	= "ti,74244",
+> +		.data		= (const void *)(MMIO_74XX_DIR_IN | 8),
+> +	},
+> +	{
+> +		.compatible	= "ti,741624",
+> +		.data		= (const void *)(MMIO_74XX_DIR_IN | 16),
+> +	},
+> +	{
+> +		.compatible	= "ti,741g74",
+> +		.data		= (const void *)(MMIO_74XX_DIR_OUT | 1),
+> +	},
+> +	{
+> +		.compatible	= "ti,7474",
+> +		.data		= (const void *)(MMIO_74XX_DIR_OUT | 2),
+> +	},
+> +	{
+> +		.compatible	= "ti,74175",
+> +		.data		= (const void *)(MMIO_74XX_DIR_OUT | 4),
+> +	},
+> +	{
+> +		.compatible	= "ti,74174",
+> +		.data		= (const void *)(MMIO_74XX_DIR_OUT | 6),
+> +	},
+> +	{
+> +		.compatible	= "ti,74273",
+> +		.data		= (const void *)(MMIO_74XX_DIR_OUT | 8),
+> +	},
+> +	{
+> +		.compatible	= "ti,7416374",
+> +		.data		= (const void *)(MMIO_74XX_DIR_OUT | 16),
+> +	},
+> +	{ }
+> +};
+> +
+> +static inline
+> +struct mmio_74xx_gpio_priv *to_mmio_74xx_gpio_priv(struct gpio_chip *gc)
+> +{
+> +	struct bgpio_chip *bgc =
+> +		container_of(gc, struct bgpio_chip, gc);
+> +
+> +	return container_of(bgc, struct mmio_74xx_gpio_priv, bgc);
+> +}
+> +
+> +static int mmio_74xx_get_direction(struct gpio_chip *gc, unsigned int offset)
+> +{
+> +	struct mmio_74xx_gpio_priv *priv = to_mmio_74xx_gpio_priv(gc);
+> +
+> +	if (priv->flags & MMIO_74XX_DIR_OUT)
+> +		return GPIOF_DIR_OUT;
+> +
+> +	return GPIOF_DIR_IN;
+> +}
+> +
+> +static int mmio_74xx_dir_in(struct gpio_chip *gc, unsigned int gpio)
+> +{
+> +	struct mmio_74xx_gpio_priv *priv = to_mmio_74xx_gpio_priv(gc);
+> +
+> +	return (priv->flags & MMIO_74XX_DIR_OUT) ? -ENOTSUPP : 0;
+> +}
+> +
+> +static int mmio_74xx_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
+> +{
+> +	struct mmio_74xx_gpio_priv *priv = to_mmio_74xx_gpio_priv(gc);
+> +
+> +	if (priv->flags & MMIO_74XX_DIR_OUT) {
+> +		gc->ops->set(gc, gpio, val);
+> +		return 0;
+> +	}
+> +
+> +	return -ENOTSUPP;
+> +}
+> +
+> +static int mmio_74xx_gpio_probe(struct device_d *dev)
+> +{
+> +	struct mmio_74xx_gpio_priv *priv;
+> +	void __iomem *dat;
+> +	int err;
+> +	struct gpio_chip *gc;
+> +
+> +	priv = xzalloc(sizeof(*priv));
+> +
+> +	priv->flags = (uintptr_t)of_device_get_match_data(dev);
+> +
+> +	dat = dev_request_mem_region(dev, 0);
+> +	if (IS_ERR(dat))
+> +		return PTR_ERR(dat);
+> +
+> +	err = bgpio_init(&priv->bgc, dev,
+> +			 DIV_ROUND_UP(MMIO_74XX_BIT_CNT(priv->flags), 8),
+> +			 dat, NULL, NULL, NULL, NULL, 0);
+> +	if (err)
+> +		return err;
+> +
+> +	gc = &priv->bgc.gc;
+> +	gc->ops->direction_input = mmio_74xx_dir_in;
+> +	gc->ops->direction_output = mmio_74xx_dir_out;
+> +	gc->ops->get_direction = mmio_74xx_get_direction;
+> +	gc->ngpio = MMIO_74XX_BIT_CNT(priv->flags);
+> +
+> +	dev->priv = priv;
+> +
+> +	return gpiochip_add(gc);
+> +}
+> +
+> +static struct driver_d mmio_74xx_gpio_driver = {
+> +	.name = "74xx-mmio-gpio",
+> +	.of_compatible	= DRV_OF_COMPAT(mmio_74xx_gpio_ids),
+> +	.probe = mmio_74xx_gpio_probe,
+> +};
+> +
+> +coredevice_platform_driver(mmio_74xx_gpio_driver);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_AUTHOR("Alexander Shiyan <shc_work@mail.ru>");
+> +MODULE_DESCRIPTION("74xx MMIO GPIO driver");
 > 
 
 
