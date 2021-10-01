@@ -1,56 +1,55 @@
-Delivery-date: Fri, 01 Oct 2021 12:11:37 +0200
+Delivery-date: Fri, 01 Oct 2021 12:11:38 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFVx-0002Yq-TN
-	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:11:37 +0200
+	id 1mWFVy-0002ZQ-Qp
+	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:11:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFVw-0006PY-8S
-	for lore@pengutronix.de; Fri, 01 Oct 2021 12:11:37 +0200
+	id 1mWFVx-0006Q0-Ln
+	for lore@pengutronix.de; Fri, 01 Oct 2021 12:11:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=6PO8OhSIUs0GXBXRzXBKbciqwqmJAY5Ijk0lx1o60ms=; b=UqF7cUGn+mz3VW
-	kiyHQ2CnbD+oee6ZFGrtuiJhfQCEptja65DnQyS/VRNZZhuBGK75goRY1yHM9FrKXDkd0o8cs4TYg
-	k7cj7+FNIyw2mdU0iIDac8ZT0hnXyrs1rYvTmKmFrletDCzjYYiPDu07IIbRt1ytBxeGvsgL4XPln
-	CCUBFLFy/vqRxCBHkftS9dCy/LywQOQhYxRh4lwFcnyyuS4CCJUwh8HBSuQbDKSTDE8Rw0HTRmXBu
-	h0gkQIxvKxxNGKGg2UVesXhSUyKuNU1l1orl5NOWdTZOBnzp1tpmluM9JzJHsJOB7q7YhYIxD8UNc
-	Kt6BdgqkrtLZjUvY24yg==;
+	List-Owner; bh=rMJ5XSGgMhzfpbAqQMozHe2DqdpR4E9R0jHz5gRqS2o=; b=sZx67cV4Ksz2aR
+	bRkSDrgL4eeRs9eLWHhK78ZdULlj8usCZ1Sb353Kuw6WX4ts5p5A0343XiFEfDQTAEvfKT+SEb3Wz
+	6jzRHhXsbD8OVSZrEeocyEC4aiRK2+doCMmqm0NFPnBZjoAYMVm2yJ4/u6BRwCWQjtiiG9i33ZPjR
+	MjG5Z0o1PD3AtmmZzklEwHgkxfxoMp1oduuMTOJurtkOk/lU5qxpONveRC8UegzuZ90o1o+tpu2tZ
+	gnqsw3xRUwz3PqHGz+j7mLwQwppxcI0t3uPXBibS7nolXGqLMvDHh126JtippX3sFy/SgDIPEJtI7
+	QROf1nCgNGnxIKw9Oatw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mWFUU-00HQny-Ko; Fri, 01 Oct 2021 10:10:06 +0000
+	id 1mWFUh-00HQvB-JV; Fri, 01 Oct 2021 10:10:19 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mWFUJ-00HQjc-18
- for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:09:57 +0000
+ id 1mWFUO-00HQlY-EX
+ for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:10:02 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mWFUF-0005kv-6W; Fri, 01 Oct 2021 12:09:51 +0200
+ id 1mWFUF-0005kr-6z; Fri, 01 Oct 2021 12:09:51 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mWFUE-0001pj-Gq; Fri, 01 Oct 2021 12:09:50 +0200
+ id 1mWFUE-0001pX-F6; Fri, 01 Oct 2021 12:09:50 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Trent Piepho <tpiepho@gmail.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  1 Oct 2021 12:09:48 +0200
-Message-Id: <20211001100949.6891-8-a.fatoum@pengutronix.de>
+Date: Fri,  1 Oct 2021 12:09:44 +0200
+Message-Id: <20211001100949.6891-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211001100949.6891-1-a.fatoum@pengutronix.de>
 References: <20211001100949.6891-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211001_030955_154114_BEB50496 
-X-CRM114-Status: UNSURE (   9.43  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20211001_031000_587250_C0C88870 
+X-CRM114-Status: GOOD (  11.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,30 +73,76 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 7/8] scripts: imx: add i.MX8MN support to imx-image
+Subject: [PATCH v2 3/8] ARM: i.MX8MN: adapt early clock support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-While soc imx8mm in the imxcfg would work too, it's less surprising to
-just tell imx-image about the new SoC.
+PBL runs fine when doing the same early clock setup as for the i.MX8MM:
+i2c communication works, copying to DRAM works, but boot hangs in
+barebox proper. Vendor patches for U-Boot configure SYS_PLL3 as 600MHz
+for i.MX8MP and i.MX8MN. barebox i.MX8MP port evidently can do without,
+but for i.MX8MN, reducing PLL frequency to 600MHz was required to boot.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/imx/imx.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-imx/imx8m.c                       | 16 +++++++++++++---
+ arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h |  1 +
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index ce18778f5400..87560ad27de1 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -234,6 +234,7 @@ static struct soc_type socs[] = {
- 	{ .name = "imx6",   .header_version = 2, .cpu_type = IMX_CPU_IMX6,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
- 	{ .name = "imx7",   .header_version = 2, .cpu_type = IMX_CPU_IMX7,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
- 	{ .name = "imx8mm", .header_version = 2, .cpu_type = IMX_CPU_IMX8MM, .header_gap = SZ_32K, .first_opcode = 0x14000000 /* b 0x0000 (offset computed) */},
-+	{ .name = "imx8mn", .header_version = 2, .cpu_type = IMX_CPU_IMX8MN, .header_gap = SZ_32K, .first_opcode = 0x14000000 /* b 0x0000 (offset computed) */},
- 	{ .name = "imx8mp", .header_version = 2, .cpu_type = IMX_CPU_IMX8MP, .header_gap = SZ_32K, .first_opcode = 0x14000000 /* b 0x0000 (offset computed) */},
- 	{ .name = "imx8mq", .header_version = 2, .cpu_type = IMX_CPU_IMX8MQ, .header_gap = SZ_32K, .first_opcode = 0x14000000 /* b 0x0000 (offset computed) */},
- 	{ .name = "vf610",  .header_version = 2, .cpu_type = IMX_CPU_VF610,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
+diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
+index ac48e7aa0ab1..6b7cdac54145 100644
+--- a/arch/arm/mach-imx/imx8m.c
++++ b/arch/arm/mach-imx/imx8m.c
+@@ -181,7 +181,7 @@ int imx8mq_init(void)
+ #define IMX8MM_CCM_ANALOG_SYS_PLL2_GEN_CTRL	0x104
+ #define IMX8MM_CCM_ANALOG_SYS_PLL3_GEN_CTRL	0x114
+ 
+-void imx8mm_early_clock_init(void)
++static void __imx8mm_early_clock_init(unsigned long pll3_freq) /* and later */
+ {
+ 	void __iomem *ana = IOMEM(MX8M_ANATOP_BASE_ADDR);
+ 	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
+@@ -224,9 +224,9 @@ void imx8mm_early_clock_init(void)
+ 				   IMX8M_CCM_TARGET_ROOTn_MUX(3));
+ 	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_GIC);
+ 
+-	/* Configure SYS_PLL3 to 750MHz */
++	/* Configure SYS_PLL3 */
+ 	clk_pll1416x_early_set_rate(ana + IMX8MM_CCM_ANALOG_SYS_PLL3_GEN_CTRL,
+-				    750000000UL, 25000000UL);
++				    pll3_freq, 25000000UL);
+ 
+ 	clrsetbits_le32(ccm + IMX8M_CCM_TARGET_ROOTn(IMX8M_ARM_A53_CLK_ROOT),
+ 			IMX8M_CCM_TARGET_ROOTn_MUX(7),
+@@ -249,6 +249,16 @@ void imx8mm_early_clock_init(void)
+ 			FIELD_PREP(CCM_TARGET_ROOT0_DIV, 0));
+ }
+ 
++void imx8mm_early_clock_init(void)
++{
++	__imx8mm_early_clock_init(750000000UL);
++}
++
++void imx8mn_early_clock_init(void)
++{
++	__imx8mm_early_clock_init(600000000UL);
++}
++
+ #define KEEP_ALIVE			0x18
+ #define VER_L				0x1c
+ #define VER_H				0x20
+diff --git a/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
+index 743ed6cda0d2..985391f31ac1 100644
+--- a/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
+@@ -50,6 +50,7 @@
+ 
+ void imx8m_early_setup_uart_clock(void);
+ void imx8mm_early_clock_init(void);
++void imx8mn_early_clock_init(void);
+ void imx8m_clock_set_target_val(int clock_id, u32 val);
+ void imx8m_ccgr_clock_enable(int index);
+ void imx8m_ccgr_clock_disable(int index);
 -- 
 2.30.2
 
