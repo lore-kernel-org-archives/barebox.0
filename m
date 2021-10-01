@@ -1,55 +1,55 @@
-Delivery-date: Fri, 01 Oct 2021 12:11:56 +0200
+Delivery-date: Fri, 01 Oct 2021 12:12:35 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFWG-0002be-Ry
-	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:11:56 +0200
+	id 1mWFWt-0002eL-HP
+	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:12:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFWD-0006YY-3L
-	for lore@pengutronix.de; Fri, 01 Oct 2021 12:11:56 +0200
+	id 1mWFWm-0006mX-KY
+	for lore@pengutronix.de; Fri, 01 Oct 2021 12:12:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=fbQEcGifoNW3pBMfuLbYDlEVkF7+Rk14kPHk9YUrSGs=; b=fEGd11ufJjcCM5
-	StNdp+2yeYFaaTuytd58UBsC1CKrA5lLInscEb2x/7yJnO7tUn7x/e8SM0jNZEUMnQxJBi29vRApm
-	f8cbAgOttlisY9t9nQhwuBIdIeRPbTPAuOD+6sj2y3a4q3X9rtJMi8qXQ+1V9XEnO4X9bPRE0ODGS
-	YgR+QyoObVqSKyS05Hby6ANWf8lAFUAzVNf+5T/5g7mcbQp47penNORtxSz4L4GutftgdCFUEJmei
-	ZWWWF+GK62eb03gimA32o1jpap3xryc3nH8bSxXFa0C0P/DfYER1yvlXrG5CFpOGsswi6sge5nraT
-	cbSNCEDBDA6NQFSyR5xQ==;
+	List-Owner; bh=IU9aKCKtpMsNy/H6jnshyqaYQf9/ZilVAiH+zVjlN6M=; b=BB/F8QRQk0ozM2
+	qjOwQp7m7Tl2yu0QHA4/z3m3gJdHJS1aPTsduCvTpYeUwLi8OWvR+CRx6sBkbaBk1NnCifiKJTir+
+	MvI1jsLQO8TaiezlLFr9eCPmLH+9Df16rYbQXY/isVv7ujlQ6ueL9zKf6whlapsTqGrpIXlSmV4Lp
+	0zIxgXM44KeRHY9gDwrDcXpRTMcfNSvWIaDUTTBVRRj8yl5+1TO0JoI70FLWyWQ2R3yD4PcOO7qx7
+	Gzru+8Xe4Y+v7mhcMYMdQkA4SYLjbYHTl1vBSQbUG1XLUWq2OTvuO/OKAgDEDNQrzhs6ChFe9IvBR
+	Au7TLHvOtTNySf1hA0ZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mWFUa-00HQqF-73; Fri, 01 Oct 2021 10:10:12 +0000
+	id 1mWFUo-00HQy8-J5; Fri, 01 Oct 2021 10:10:26 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mWFUI-00HQjY-W0
- for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:10:00 +0000
+ id 1mWFUI-00HQjd-UT
+ for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:10:02 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mWFUF-0005kq-3K; Fri, 01 Oct 2021 12:09:51 +0200
+ id 1mWFUF-0005kw-8F; Fri, 01 Oct 2021 12:09:51 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mWFUE-0001pU-Eh; Fri, 01 Oct 2021 12:09:50 +0200
+ id 1mWFUE-0001pn-Hb; Fri, 01 Oct 2021 12:09:50 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Trent Piepho <tpiepho@gmail.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  1 Oct 2021 12:09:43 +0200
-Message-Id: <20211001100949.6891-3-a.fatoum@pengutronix.de>
+Date: Fri,  1 Oct 2021 12:09:49 +0200
+Message-Id: <20211001100949.6891-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211001100949.6891-1-a.fatoum@pengutronix.de>
 References: <20211001100949.6891-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211001_030955_612176_7AA21E40 
-X-CRM114-Status: GOOD (  12.64  )
+X-CRM114-CacheID: sfid-20211001_030955_600700_73676272 
+X-CRM114-Status: GOOD (  23.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,601 +73,3253 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/8] clk: imx: add i.MX8MN (Nano) support
+Subject: [PATCH v2 8/8] ARM: i.MX8MN: add i.MX8MN-EVK support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Import the Linux v5.14-rc2 state of the clock driver. Some abstractions
-used there were not yet added to barebox, so previous equivalent
-versions were taken instead. This makes the code more in-line with the
-i.MX8MM.
+With driver support in place, we can now build and run barebox in the
+i.MX8MN. Following tested working:
+
+  - Setting up DDR4 SDRAM
+  - Booting from SD-Card
+  - Booting from eMMC
+  - Updating barebox in SD-Card/eMMC boot partition
+  - USB Fastboot, ACM gadgets
+  - UART
+  - Early I2C with bd71837
+  - Ethernet
+  - Loading and communicating with TF-A
+
+The resulting image supports both DDR4 and LPDDR4. They use different
+PMICs, so probing the i2c addresses of them indicates what DRAM type
+to setup. I have only tested this on a DDR4 EVK, but the LPDDR4 code
+is equivalent to what's already used in barebox with i.MX8M Mini
+and Plus, so it should work(tm).
+
+Notably missing:
+
+  - boot from USB SDP doesn't work. early debug_ll doesn't indicate
+    that barebox PBL was actually entered.
+
+This can follow later though.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/clk/imx/Makefile     |   2 +
- drivers/clk/imx/clk-imx8mn.c | 558 +++++++++++++++++++++++++++++++++++
- 2 files changed, 560 insertions(+)
- create mode 100644 drivers/clk/imx/clk-imx8mn.c
+ Documentation/boards/imx/nxp-imx8mn-evk.rst   |   60 +
+ arch/arm/boards/Makefile                      |    1 +
+ arch/arm/boards/nxp-imx8mn-evk/Makefile       |    2 +
+ arch/arm/boards/nxp-imx8mn-evk/board.c        |   62 +
+ arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c  | 1055 +++++++++++
+ .../flash-header-imx8mn-evk.imxcfg            |    5 +
+ arch/arm/boards/nxp-imx8mn-evk/lowlevel.c     |  231 +++
+ .../arm/boards/nxp-imx8mn-evk/lpddr4-timing.c | 1591 +++++++++++++++++
+ arch/arm/configs/imx_v8_defconfig             |    1 +
+ arch/arm/dts/Makefile                         |    1 +
+ arch/arm/dts/imx8mn-evk.dts                   |   62 +
+ arch/arm/mach-imx/Kconfig                     |   12 +
+ images/Makefile.imx                           |    6 +
+ 13 files changed, 3089 insertions(+)
+ create mode 100644 Documentation/boards/imx/nxp-imx8mn-evk.rst
+ create mode 100644 arch/arm/boards/nxp-imx8mn-evk/Makefile
+ create mode 100644 arch/arm/boards/nxp-imx8mn-evk/board.c
+ create mode 100644 arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c
+ create mode 100644 arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
+ create mode 100644 arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
+ create mode 100644 arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c
+ create mode 100644 arch/arm/dts/imx8mn-evk.dts
 
-diff --git a/drivers/clk/imx/Makefile b/drivers/clk/imx/Makefile
-index bb6635d5e4d3..4a792422d534 100644
---- a/drivers/clk/imx/Makefile
-+++ b/drivers/clk/imx/Makefile
-@@ -28,8 +28,10 @@ obj-$(CONFIG_ARCH_IMX6SL) += clk-imx6sl.o
- obj-$(CONFIG_ARCH_IMX6UL) += clk-imx6ul.o
- obj-$(CONFIG_ARCH_IMX7) += clk-imx7.o
- pbl-$(CONFIG_ARCH_IMX8MM) += clk-pll14xx.o
-+pbl-$(CONFIG_ARCH_IMX8MN) += clk-pll14xx.o
- pbl-$(CONFIG_ARCH_IMX8MP) += clk-pll14xx.o
- obj-$(CONFIG_ARCH_IMX8MM) += clk-imx8mm.o
-+obj-$(CONFIG_ARCH_IMX8MN) += clk-imx8mn.o
- obj-$(CONFIG_ARCH_IMX8MP) += clk-imx8mp.o
- obj-$(CONFIG_ARCH_IMX8MQ) += clk-imx8mq.o
- obj-$(CONFIG_ARCH_VF610)  += clk-vf610.o
-diff --git a/drivers/clk/imx/clk-imx8mn.c b/drivers/clk/imx/clk-imx8mn.c
+diff --git a/Documentation/boards/imx/nxp-imx8mn-evk.rst b/Documentation/boards/imx/nxp-imx8mn-evk.rst
 new file mode 100644
-index 000000000000..ffce907781ac
+index 000000000000..44cd0c68e4d9
 --- /dev/null
-+++ b/drivers/clk/imx/clk-imx8mn.c
-@@ -0,0 +1,558 @@
++++ b/Documentation/boards/imx/nxp-imx8mn-evk.rst
+@@ -0,0 +1,60 @@
++NXP i.MX8MN EVK Evaluation Board
++================================
++
++Board comes with either:
++
++* 2GiB of LPDDR4 RAM
++* 2GiB of DDR4 RAM
++
++barebox supports both variants with the same image.
++
++Downloading DDR PHY Firmware
++----------------------------
++
++As a part of DDR intialization routine NXP i.MX8MN EVK requires and
++uses several binary firmware blobs that are distributed under a
++separate EULA and cannot be included in Barebox. In order to obtain
++them do the following::
++
++ wget https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.12.bin
++ chmod +x firmware-imx-8.12.bin
++ ./firmware-imx-8.12.bin
++
++Executing that file should produce a EULA acceptance dialog as well as
++result in the following files:
++
++- lpddr4_pmu_train_1d_dmem.bin
++- lpddr4_pmu_train_1d_imem.bin
++- lpddr4_pmu_train_2d_dmem.bin
++- lpddr4_pmu_train_2d_imem.bin
++- ddr4_dmem_1d_201810.bin
++- ddr4_imem_1d_201810.bin
++- ddr4_dmem_2d_201810.bin
++- ddr4_imem_2d_201810.bin
++
++As a last step of this process those files need to be placed in
++"firmware/"::
++
++  for f in lpddr4_pmu_train_1d_dmem.bin  \
++           lpddr4_pmu_train_1d_imem.bin  \
++	   lpddr4_pmu_train_2d_dmem.bin  \
++	   lpddr4_pmu_train_2d_imem.bin; \
++  do \
++	   cp firmware-imx-8.0/firmware/ddr/synopsys/${f} \
++	      firmware/${f}; \
++  done
++
++  for f in ddr4_dmem_1d_201810.bin  \
++           ddr4_imem_1d_201810.bin  \
++           ddr4_dmem_2d_201810.bin  \
++           ddr4_imem_2d_201810.bin; \
++  do \
++	   cp firmware-imx-8.0/firmware/ddr/synopsys/${f} \
++	      firmware/${f%_201810.bin}.bin; \
++  done
++
++Build barebox
++=============
++
++ make imx_v8_defconfig
++ make
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 5aac64fce584..810d94b7f0d7 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -84,6 +84,7 @@ obj-$(CONFIG_MACH_NVIDIA_JETSON)		+= nvidia-jetson-tk1/
+ obj-$(CONFIG_MACH_NXP_IMX6ULL_EVK)		+= nxp-imx6ull-evk/
+ obj-$(CONFIG_MACH_NXP_IMX8MQ_EVK)		+= nxp-imx8mq-evk/
+ obj-$(CONFIG_MACH_NXP_IMX8MM_EVK)		+= nxp-imx8mm-evk/
++obj-$(CONFIG_MACH_NXP_IMX8MN_EVK)		+= nxp-imx8mn-evk/
+ obj-$(CONFIG_MACH_NXP_IMX8MP_EVK)		+= nxp-imx8mp-evk/
+ obj-$(CONFIG_MACH_OMAP343xSDP)			+= omap343xdsp/
+ obj-$(CONFIG_MACH_OMAP3EVM)			+= omap3evm/
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/Makefile b/arch/arm/boards/nxp-imx8mn-evk/Makefile
+new file mode 100644
+index 000000000000..4b13ff3b94e4
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mn-evk/Makefile
+@@ -0,0 +1,2 @@
++obj-y += board.o
++lwl-y += lowlevel.o ddr4-timing.o lpddr4-timing.o
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/board.c b/arch/arm/boards/nxp-imx8mn-evk/board.c
+new file mode 100644
+index 000000000000..3c478d5f7088
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mn-evk/board.c
+@@ -0,0 +1,62 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Copyright 2018-2019 NXP.
++ * Copyright (C) 2021 Ahmad Fatoum, Pengutronix
 + */
 +
-+#include <dt-bindings/clock/imx8mn-clock.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/types.h>
-+#include <of_address.h>
-+
-+#include "clk.h"
-+
-+static const char * const pll_ref_sels[] = { "osc_24m", "dummy", "dummy", "dummy", };
-+static const char * const audio_pll1_bypass_sels[] = {"audio_pll1", "audio_pll1_ref_sel", };
-+static const char * const audio_pll2_bypass_sels[] = {"audio_pll2", "audio_pll2_ref_sel", };
-+static const char * const video_pll1_bypass_sels[] = {"video_pll1", "video_pll1_ref_sel", };
-+static const char * const dram_pll_bypass_sels[] = {"dram_pll", "dram_pll_ref_sel", };
-+static const char * const gpu_pll_bypass_sels[] = {"gpu_pll", "gpu_pll_ref_sel", };
-+static const char * const vpu_pll_bypass_sels[] = {"vpu_pll", "vpu_pll_ref_sel", };
-+static const char * const arm_pll_bypass_sels[] = {"arm_pll", "arm_pll_ref_sel", };
-+static const char * const sys_pll3_bypass_sels[] = {"sys_pll3", "sys_pll3_ref_sel", };
-+
-+static const char * const imx8mn_a53_sels[] = {"osc_24m", "arm_pll_out", "sys_pll2_500m",
-+					       "sys_pll2_1000m", "sys_pll1_800m", "sys_pll1_400m",
-+					       "audio_pll1_out", "sys_pll3_out", };
-+
-+static const char * const imx8mn_a53_core_sels[] = {"arm_a53_div", "arm_pll_out", };
-+
-+static const char * const imx8mn_gpu_core_sels[] = {"osc_24m", "gpu_pll_out", "sys_pll1_800m",
-+						    "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						    "video_pll1_out", "audio_pll2_out", };
-+
-+static const char * const imx8mn_gpu_shader_sels[] = {"osc_24m", "gpu_pll_out", "sys_pll1_800m",
-+						      "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						      "video_pll1_out", "audio_pll2_out", };
-+
-+static const char * const imx8mn_main_axi_sels[] = {"osc_24m", "sys_pll2_333m", "sys_pll1_800m",
-+						    "sys_pll2_250m", "sys_pll2_1000m", "audio_pll1_out",
-+						    "video_pll1_out", "sys_pll1_100m",};
-+
-+static const char * const imx8mn_enet_axi_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll1_800m",
-+						    "sys_pll2_250m", "sys_pll2_200m", "audio_pll1_out",
-+						    "video_pll1_out", "sys_pll3_out", };
-+
-+static const char * const imx8mn_nand_usdhc_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll1_800m",
-+						      "sys_pll2_200m", "sys_pll1_133m", "sys_pll3_out",
-+						      "sys_pll2_250m", "audio_pll1_out", };
-+
-+static const char * const imx8mn_disp_axi_sels[] = {"osc_24m", "sys_pll2_1000m", "sys_pll1_800m",
-+						    "sys_pll3_out", "sys_pll1_40m", "audio_pll2_out",
-+						    "clk_ext1", "clk_ext4", };
-+
-+static const char * const imx8mn_disp_apb_sels[] = {"osc_24m", "sys_pll2_125m", "sys_pll1_800m",
-+						    "sys_pll3_out", "sys_pll1_40m", "audio_pll2_out",
-+						    "clk_ext1", "clk_ext3", };
-+
-+static const char * const imx8mn_usb_bus_sels[] = {"osc_24m", "sys_pll2_500m", "sys_pll1_800m",
-+						   "sys_pll2_100m", "sys_pll2_200m", "clk_ext2",
-+						   "clk_ext4", "audio_pll2_out", };
-+
-+static const char * const imx8mn_gpu_axi_sels[] = {"osc_24m", "sys_pll1_800m", "gpu_pll_out",
-+						   "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						   "video_pll1_out", "audio_pll2_out", };
-+
-+static const char * const imx8mn_gpu_ahb_sels[] = {"osc_24m", "sys_pll1_800m", "gpu_pll_out",
-+						   "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						   "video_pll1_out", "audio_pll2_out", };
-+
-+static const char * const imx8mn_noc_sels[] = {"osc_24m", "sys_pll1_800m", "sys_pll3_out",
-+					       "sys_pll2_1000m", "sys_pll2_500m", "audio_pll1_out",
-+					       "video_pll1_out", "audio_pll2_out", };
-+
-+static const char * const imx8mn_ahb_sels[] = {"osc_24m", "sys_pll1_133m", "sys_pll1_800m",
-+					       "sys_pll1_400m", "sys_pll2_125m", "sys_pll3_out",
-+					       "audio_pll1_out", "video_pll1_out", };
-+
-+static const char * const imx8mn_audio_ahb_sels[] = {"osc_24m", "sys_pll2_500m", "sys_pll1_800m",
-+						     "sys_pll2_1000m", "sys_pll2_166m", "sys_pll3_out",
-+						     "audio_pll1_out", "video_pll1_out", };
-+
-+static const char * const imx8mn_dram_alt_sels[] = {"osc_24m", "sys_pll1_800m", "sys_pll1_100m",
-+						    "sys_pll2_500m", "sys_pll2_1000m", "sys_pll3_out",
-+						    "audio_pll1_out", "sys_pll1_266m", };
-+
-+static const char * const imx8mn_dram_apb_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+						    "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
-+						    "sys_pll2_250m", "audio_pll2_out", };
-+
-+static const char * const imx8mn_disp_pixel_sels[] = {"osc_24m", "video_pll1_out", "audio_pll2_out",
-+						      "audio_pll1_out", "sys_pll1_800m", "sys_pll2_1000m",
-+						      "sys_pll3_out", "clk_ext4", };
-+
-+static const char * const imx8mn_sai2_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext3", "clk_ext4", };
-+
-+static const char * const imx8mn_sai3_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext3", "clk_ext4", };
-+
-+static const char * const imx8mn_sai5_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext2", "clk_ext3", };
-+
-+static const char * const imx8mn_sai6_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext3", "clk_ext4", };
-+
-+static const char * const imx8mn_sai7_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext3", "clk_ext4", };
-+
-+static const char * const imx8mn_spdif1_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						  "video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						  "clk_ext2", "clk_ext3", };
-+
-+static const char * const imx8mn_enet_ref_sels[] = {"osc_24m", "sys_pll2_125m", "sys_pll2_50m",
-+						    "sys_pll2_100m", "sys_pll1_160m", "audio_pll1_out",
-+						    "video_pll1_out", "clk_ext4", };
-+
-+static const char * const imx8mn_enet_timer_sels[] = {"osc_24m", "sys_pll2_100m", "audio_pll1_out",
-+						      "clk_ext1", "clk_ext2", "clk_ext3",
-+						      "clk_ext4", "video_pll1_out", };
-+
-+static const char * const imx8mn_enet_phy_sels[] = {"osc_24m", "sys_pll2_50m", "sys_pll2_125m",
-+						    "sys_pll2_200m", "sys_pll2_500m", "video_pll1_out",
-+						    "audio_pll2_out", };
-+
-+static const char * const imx8mn_nand_sels[] = {"osc_24m", "sys_pll2_500m", "audio_pll1_out",
-+						"sys_pll1_400m", "audio_pll2_out", "sys_pll3_out",
-+						"sys_pll2_250m", "video_pll1_out", };
-+
-+static const char * const imx8mn_qspi_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll2_333m",
-+						"sys_pll2_500m", "audio_pll2_out", "sys_pll1_266m",
-+						"sys_pll3_out", "sys_pll1_100m", };
-+
-+static const char * const imx8mn_usdhc1_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll1_800m",
-+						  "sys_pll2_500m", "sys_pll3_out", "sys_pll1_266m",
-+						  "audio_pll2_out", "sys_pll1_100m", };
-+
-+static const char * const imx8mn_usdhc2_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll1_800m",
-+						  "sys_pll2_500m", "sys_pll3_out", "sys_pll1_266m",
-+						  "audio_pll2_out", "sys_pll1_100m", };
-+
-+static const char * const imx8mn_i2c1_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						"audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char * const imx8mn_i2c2_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						"audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char * const imx8mn_i2c3_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						"audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char * const imx8mn_i2c4_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						"sys_pll3_out",	"audio_pll1_out", "video_pll1_out",
-+						"audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char * const imx8mn_uart1_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
-+						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
-+						 "clk_ext4", "audio_pll2_out", };
-+
-+static const char * const imx8mn_uart2_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
-+						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
-+						 "clk_ext3", "audio_pll2_out", };
-+
-+static const char * const imx8mn_uart3_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
-+						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
-+						 "clk_ext4", "audio_pll2_out", };
-+
-+static const char * const imx8mn_uart4_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
-+						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
-+						 "clk_ext3", "audio_pll2_out", };
-+
-+static const char * const imx8mn_usb_core_sels[] = {"osc_24m", "sys_pll1_100m", "sys_pll1_40m",
-+						    "sys_pll2_100m", "sys_pll2_200m", "clk_ext2",
-+						    "clk_ext3", "audio_pll2_out", };
-+
-+static const char * const imx8mn_usb_phy_sels[] = {"osc_24m", "sys_pll1_100m", "sys_pll1_40m",
-+						   "sys_pll2_100m", "sys_pll2_200m", "clk_ext2",
-+						   "clk_ext3", "audio_pll2_out", };
-+
-+static const char * const imx8mn_gic_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+					"sys_pll2_100m", "sys_pll1_800m", "clk_ext2",
-+					"clk_ext4", "audio_pll2_out" };
-+
-+static const char * const imx8mn_ecspi1_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+						  "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
-+						  "sys_pll2_250m", "audio_pll2_out", };
-+
-+static const char * const imx8mn_ecspi2_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+						  "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
-+						  "sys_pll2_250m", "audio_pll2_out", };
-+
-+static const char * const imx8mn_pwm1_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
-+						"sys_pll1_40m", "sys_pll3_out", "clk_ext1",
-+						"sys_pll1_80m", "video_pll1_out", };
-+
-+static const char * const imx8mn_pwm2_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
-+						"sys_pll1_40m", "sys_pll3_out", "clk_ext1",
-+						"sys_pll1_80m", "video_pll1_out", };
-+
-+static const char * const imx8mn_pwm3_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
-+						"sys_pll1_40m", "sys_pll3_out", "clk_ext2",
-+						"sys_pll1_80m", "video_pll1_out", };
-+
-+static const char * const imx8mn_pwm4_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
-+						"sys_pll1_40m", "sys_pll3_out", "clk_ext2",
-+						"sys_pll1_80m", "video_pll1_out", };
-+
-+static const char * const imx8mn_wdog_sels[] = {"osc_24m", "sys_pll1_133m", "sys_pll1_160m",
-+						"vpu_pll_out", "sys_pll2_125m", "sys_pll3_out",
-+						"sys_pll1_80m", "sys_pll2_166m", };
-+
-+static const char * const imx8mn_wrclk_sels[] = {"osc_24m", "sys_pll1_40m", "vpu_pll_out",
-+						 "sys_pll3_out", "sys_pll2_200m", "sys_pll1_266m",
-+						 "sys_pll2_500m", "sys_pll1_100m", };
-+
-+static const char * const imx8mn_dsi_core_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll2_250m",
-+						    "sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
-+						    "audio_pll2_out", "video_pll1_out", };
-+
-+static const char * const imx8mn_dsi_phy_sels[] = {"osc_24m", "sys_pll2_125m", "sys_pll2_100m",
-+						   "sys_pll1_800m", "sys_pll2_1000m", "clk_ext2",
-+						   "audio_pll2_out", "video_pll1_out", };
-+
-+static const char * const imx8mn_dsi_dbi_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll2_100m",
-+						   "sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
-+						   "audio_pll2_out", "video_pll1_out", };
-+
-+static const char * const imx8mn_usdhc3_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll1_800m",
-+						  "sys_pll2_500m", "sys_pll3_out", "sys_pll1_266m",
-+						  "audio_pll2_out", "sys_pll1_100m", };
-+
-+static const char * const imx8mn_camera_pixel_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll2_250m",
-+							"sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
-+							"audio_pll2_out", "video_pll1_out", };
-+
-+static const char * const imx8mn_csi1_phy_sels[] = {"osc_24m", "sys_pll2_333m", "sys_pll2_100m",
-+						    "sys_pll1_800m", "sys_pll2_1000m", "clk_ext2",
-+						    "audio_pll2_out", "video_pll1_out", };
-+
-+static const char * const imx8mn_csi2_phy_sels[] = {"osc_24m", "sys_pll2_333m", "sys_pll2_100m",
-+						    "sys_pll1_800m", "sys_pll2_1000m", "clk_ext2",
-+						    "audio_pll2_out", "video_pll1_out", };
-+
-+static const char * const imx8mn_csi2_esc_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_80m",
-+						    "sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
-+						    "clk_ext3", "audio_pll2_out", };
-+
-+static const char * const imx8mn_ecspi3_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+						  "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
-+						  "sys_pll2_250m", "audio_pll2_out", };
-+
-+static const char * const imx8mn_pdm_sels[] = {"osc_24m", "sys_pll2_100m", "audio_pll1_out",
-+					       "sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
-+					       "clk_ext3", "audio_pll2_out", };
-+
-+static const char * const imx8mn_dram_core_sels[] = {"dram_pll_out", "dram_alt_root", };
-+
-+static const char * const imx8mn_clko1_sels[] = {"osc_24m", "sys_pll1_800m", "osc_27m",
-+						 "sys_pll1_200m", "audio_pll2_out", "vpu_pll",
-+						 "sys_pll1_80m", };
-+static const char * const imx8mn_clko2_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_400m",
-+						 "sys_pll2_166m", "sys_pll3_out", "audio_pll1_out",
-+						 "video_pll1_out", "osc_32k", };
-+
-+static const char * const clkout_sels[] = {"audio_pll1_out", "audio_pll2_out", "video_pll1_out",
-+					   "dummy", "dummy", "gpu_pll_out", "dummy",
-+					   "arm_pll_out", "sys_pll1", "sys_pll2", "sys_pll3",
-+					   "dummy", "dummy", "osc_24m", "dummy", "osc_32k"};
-+
-+static struct clk *clks[IMX8MN_CLK_END];
-+static struct clk_onecell_data clk_data;
-+
-+static int imx8mn_clocks_init(struct device_node *ccm_np)
++#include <bootsource.h>
++#include <common.h>
++#include <init.h>
++#include <linux/phy.h>
++#include <linux/sizes.h>
++#include <mach/bbu.h>
++#include <envfs.h>
++
++#define PHY_ID_AR8031	0x004dd074
++#define AR_PHY_ID_MASK	0xffffffff
++
++static int ar8031_phy_fixup(struct phy_device *phydev)
 +{
-+	struct device_node *anatop_np;
-+	void __iomem *ccm, *ana;
++	/*
++	 * Enable 1.8V(SEL_1P5_1P8_POS_REG) on
++	 * Phy control debug reg 0
++	 */
++	phy_write(phydev, 0x1d, 0x1f);
++	phy_write(phydev, 0x1e, 0x8);
++
++	/* rgmii tx clock delay enable */
++	phy_write(phydev, 0x1d, 0x05);
++	phy_write(phydev, 0x1e, 0x100);
++
++	return 0;
++}
++
++static int nxp_imx8mn_evk_init(void)
++{
++	int emmc_bbu_flag = 0;
++	int sd_bbu_flag = 0;
++
++	if (!of_machine_is_compatible("fsl,imx8mn-evk"))
++		return 0;
++
++	if (bootsource_get() == BOOTSOURCE_MMC) {
++		if (bootsource_get_instance() == 2) {
++			of_device_enable_path("/chosen/environment-emmc");
++			emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
++		} else {
++			of_device_enable_path("/chosen/environment-sd");
++			sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
++		}
++	} else {
++		of_device_enable_path("/chosen/environment-emmc");
++		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
++	}
++
++	imx8m_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox", sd_bbu_flag);
++	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc2", emmc_bbu_flag);
++
++	phy_register_fixup_for_uid(PHY_ID_AR8031, AR_PHY_ID_MASK,
++				   ar8031_phy_fixup);
++
++	return 0;
++}
++coredevice_initcall(nxp_imx8mn_evk_init);
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c b/arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c
+new file mode 100644
+index 000000000000..7ce371384ea7
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c
+@@ -0,0 +1,1055 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2019 NXP
++ *
++ * Generated code from MX8M_DDR_tool
++ * Align with uboot version:
++ * imx_v2018.03_4.14.78_1.0.0_ga ~ imx_v2018.04_4.19.35_1.0.0_ga
++ */
++
++#include <common.h>
++#include <soc/imx8m/ddr.h>
++
++static struct dram_cfg_param ddr_ddrc_cfg[] = {
++	/** Initialize DDRC registers **/
++	{ 0x3d400000, 0x81040010 },
++	{ 0x3d400030, 0x20 },
++	{ 0x3d400034, 0x221306 },
++	{ 0x3d400050, 0x210070 },
++	{ 0x3d400054, 0x10008 },
++	{ 0x3d400060, 0x0 },
++	{ 0x3d400064, 0x92014a },
++	{ 0x3d4000c0, 0x0 },
++	{ 0x3d4000c4, 0x1000 },
++	{ 0x3d4000d0, 0xc0030126 },
++	{ 0x3d4000d4, 0x770000 },
++	{ 0x3d4000dc, 0x8340105 },
++	{ 0x3d4000e0, 0x180200 },
++	{ 0x3d4000e4, 0x110000 },
++	{ 0x3d4000e8, 0x2000600 },
++	{ 0x3d4000ec, 0x810 },
++	{ 0x3d4000f0, 0x20 },
++	{ 0x3d4000f4, 0xec7 },
++	{ 0x3d400100, 0x11122914 },
++	{ 0x3d400104, 0x4051c },
++	{ 0x3d400108, 0x608050d },
++	{ 0x3d40010c, 0x400c },
++	{ 0x3d400110, 0x8030409 },
++	{ 0x3d400114, 0x6060403 },
++	{ 0x3d40011c, 0x606 },
++	{ 0x3d400120, 0x7070d0c },
++	{ 0x3d400124, 0x2040a },
++	{ 0x3d40012c, 0x1809010e },
++	{ 0x3d400130, 0x8 },
++	{ 0x3d40013c, 0x0 },
++	{ 0x3d400180, 0x1000040 },
++	{ 0x3d400184, 0x493e },
++	{ 0x3d400190, 0x38b8207 },
++	{ 0x3d400194, 0x2020303 },
++	{ 0x3d400198, 0x7f04011 },
++	{ 0x3d40019c, 0xb0 },
++	{ 0x3d4001a0, 0xe0400018 },
++	{ 0x3d4001a4, 0x48005a },
++	{ 0x3d4001a8, 0x80000000 },
++	{ 0x3d4001b0, 0x1 },
++	{ 0x3d4001b4, 0xb07 },
++	{ 0x3d4001b8, 0x4 },
++	{ 0x3d4001c0, 0x1 },
++	{ 0x3d4001c4, 0x0 },
++	{ 0x3d400200, 0x3f1f },
++	{ 0x3d400204, 0x3f0909 },
++	{ 0x3d400208, 0x700 },
++	{ 0x3d40020c, 0x0 },
++	{ 0x3d400210, 0x1f1f },
++	{ 0x3d400214, 0x7070707 },
++	{ 0x3d400218, 0x7070707 },
++	{ 0x3d40021c, 0xf07 },
++	{ 0x3d400220, 0x3f01 },
++	{ 0x3d400240, 0x6000610 },
++	{ 0x3d400244, 0x1323 },
++	{ 0x3d400400, 0x100 },
++
++	/* performance setting */
++	{ 0x3d400250, 0x00001f05 },
++	{ 0x3d400254, 0x1f },
++	{ 0x3d400264, 0x900003ff },
++	{ 0x3d40026c, 0x200003ff },
++	{ 0x3d400494, 0x01000e00 },
++	{ 0x3d400498, 0x03ff0000 },
++	{ 0x3d40049c, 0x01000e00 },
++	{ 0x3d4004a0, 0x03ff0000 },
++
++	{ 0x3d402050, 0x210070 },
++	{ 0x3d402064, 0x400093 },
++	{ 0x3d4020dc, 0x105 },
++	{ 0x3d4020e0, 0x0 },
++	{ 0x3d4020e8, 0x2000600 },
++	{ 0x3d4020ec, 0x10 },
++	{ 0x3d402100, 0xb081209 },
++	{ 0x3d402104, 0x2020d },
++	{ 0x3d402108, 0x5050309 },
++	{ 0x3d40210c, 0x400c },
++	{ 0x3d402110, 0x5030206 },
++	{ 0x3d402114, 0x3030202 },
++	{ 0x3d40211c, 0x303 },
++	{ 0x3d402120, 0x4040d06 },
++	{ 0x3d402124, 0x20208 },
++	{ 0x3d40212c, 0x1205010e },
++	{ 0x3d402130, 0x8 },
++	{ 0x3d40213c, 0x0 },
++	{ 0x3d402180, 0x1000040 },
++	{ 0x3d402190, 0x3848204 },
++	{ 0x3d402194, 0x2020303 },
++	{ 0x3d4021b4, 0x404 },
++	{ 0x3d4021b8, 0x4 },
++	{ 0x3d402240, 0x6000600 },
++	{ 0x3d4020f4, 0xec7 },
++};
++
++/* PHY Initialize Configuration */
++static struct dram_cfg_param ddr_ddrphy_cfg[] = {
++	{ 0x1005f, 0x2fd },
++	{ 0x1015f, 0x2fd },
++	{ 0x1105f, 0x2fd },
++	{ 0x1115f, 0x2fd },
++	{ 0x11005f, 0x2fd },
++	{ 0x11015f, 0x2fd },
++	{ 0x11105f, 0x2fd },
++	{ 0x11115f, 0x2fd },
++	{ 0x55, 0x355 },
++	{ 0x1055, 0x355 },
++	{ 0x2055, 0x355 },
++	{ 0x3055, 0x355 },
++	{ 0x4055, 0x55 },
++	{ 0x5055, 0x55 },
++	{ 0x6055, 0x355 },
++	{ 0x7055, 0x355 },
++	{ 0x8055, 0x355 },
++	{ 0x9055, 0x355 },
++	{ 0x200c5, 0xa },
++	{ 0x1200c5, 0x6 },
++	{ 0x2002e, 0x2 },
++	{ 0x12002e, 0x1 },
++	{ 0x20024, 0x8 },
++	{ 0x2003a, 0x2 },
++	{ 0x120024, 0x8 },
++	{ 0x2003a, 0x2 },
++	{ 0x20056, 0x6 },
++	{ 0x120056, 0xa },
++	{ 0x1004d, 0x1a },
++	{ 0x1014d, 0x1a },
++	{ 0x1104d, 0x1a },
++	{ 0x1114d, 0x1a },
++	{ 0x11004d, 0x1a },
++	{ 0x11014d, 0x1a },
++	{ 0x11104d, 0x1a },
++	{ 0x11114d, 0x1a },
++	{ 0x10049, 0xe38 },
++	{ 0x10149, 0xe38 },
++	{ 0x11049, 0xe38 },
++	{ 0x11149, 0xe38 },
++	{ 0x110049, 0xe38 },
++	{ 0x110149, 0xe38 },
++	{ 0x111049, 0xe38 },
++	{ 0x111149, 0xe38 },
++	{ 0x43, 0x63 },
++	{ 0x1043, 0x63 },
++	{ 0x2043, 0x63 },
++	{ 0x3043, 0x63 },
++	{ 0x4043, 0x63 },
++	{ 0x5043, 0x63 },
++	{ 0x6043, 0x63 },
++	{ 0x7043, 0x63 },
++	{ 0x8043, 0x63 },
++	{ 0x9043, 0x63 },
++	{ 0x20018, 0x1 },
++	{ 0x20075, 0x2 },
++	{ 0x20050, 0x0 },
++	{ 0x20008, 0x258 },
++	{ 0x120008, 0x10a },
++	{ 0x20088, 0x9 },
++	{ 0x200b2, 0x268 },
++	{ 0x10043, 0x5b1 },
++	{ 0x10143, 0x5b1 },
++	{ 0x11043, 0x5b1 },
++	{ 0x11143, 0x5b1 },
++	{ 0x1200b2, 0x268 },
++	{ 0x110043, 0x5b1 },
++	{ 0x110143, 0x5b1 },
++	{ 0x111043, 0x5b1 },
++	{ 0x111143, 0x5b1 },
++	{ 0x200fa, 0x1 },
++	{ 0x1200fa, 0x1 },
++	{ 0x20019, 0x5 },
++	{ 0x120019, 0x5 },
++	{ 0x200f0, 0x5555 },
++	{ 0x200f1, 0x5555 },
++	{ 0x200f2, 0x5555 },
++	{ 0x200f3, 0x5555 },
++	{ 0x200f4, 0x5555 },
++	{ 0x200f5, 0x5555 },
++	{ 0x200f6, 0x5555 },
++	{ 0x200f7, 0xf000 },
++	{ 0x20025, 0x0 },
++	{ 0x2002d, 0x0 },
++	{ 0x12002d, 0x0 },
++	{ 0x2005b, 0x7529 },
++	{ 0x2005c, 0x0 },
++	{ 0x200c7, 0x21 },
++	{ 0x200ca, 0x24 },
++	{ 0x200cc, 0x1f7 },
++	{ 0x1200c7, 0x21 },
++	{ 0x1200ca, 0x24 },
++	{ 0x1200cc, 0x1f7 },
++	{ 0x2007d, 0x212 },
++	{ 0x12007d, 0x212 },
++	{ 0x2007c, 0x61 },
++	{ 0x12007c, 0x61 },
++	{ 0x1004a, 0x500 },
++	{ 0x1104a, 0x500 },
++	{ 0x2002c, 0x0 },
++};
++
++/* ddr phy trained csr */
++static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
++	{0x0200b2, 0x0},
++	{0x1200b2, 0x0},
++	{0x2200b2, 0x0},
++	{0x0200cb, 0x0},
++	{0x010043, 0x0},
++	{0x110043, 0x0},
++	{0x210043, 0x0},
++	{0x010143, 0x0},
++	{0x110143, 0x0},
++	{0x210143, 0x0},
++	{0x011043, 0x0},
++	{0x111043, 0x0},
++	{0x211043, 0x0},
++	{0x011143, 0x0},
++	{0x111143, 0x0},
++	{0x211143, 0x0},
++	{0x000080, 0x0},
++	{0x100080, 0x0},
++	{0x200080, 0x0},
++	{0x001080, 0x0},
++	{0x101080, 0x0},
++	{0x201080, 0x0},
++	{0x002080, 0x0},
++	{0x102080, 0x0},
++	{0x202080, 0x0},
++	{0x003080, 0x0},
++	{0x103080, 0x0},
++	{0x203080, 0x0},
++	{0x004080, 0x0},
++	{0x104080, 0x0},
++	{0x204080, 0x0},
++	{0x005080, 0x0},
++	{0x105080, 0x0},
++	{0x205080, 0x0},
++	{0x006080, 0x0},
++	{0x106080, 0x0},
++	{0x206080, 0x0},
++	{0x007080, 0x0},
++	{0x107080, 0x0},
++	{0x207080, 0x0},
++	{0x008080, 0x0},
++	{0x108080, 0x0},
++	{0x208080, 0x0},
++	{0x009080, 0x0},
++	{0x109080, 0x0},
++	{0x209080, 0x0},
++	{0x010080, 0x0},
++	{0x110080, 0x0},
++	{0x210080, 0x0},
++	{0x010180, 0x0},
++	{0x110180, 0x0},
++	{0x210180, 0x0},
++	{0x010081, 0x0},
++	{0x110081, 0x0},
++	{0x210081, 0x0},
++	{0x010181, 0x0},
++	{0x110181, 0x0},
++	{0x210181, 0x0},
++	{0x010082, 0x0},
++	{0x110082, 0x0},
++	{0x210082, 0x0},
++	{0x010182, 0x0},
++	{0x110182, 0x0},
++	{0x210182, 0x0},
++	{0x010083, 0x0},
++	{0x110083, 0x0},
++	{0x210083, 0x0},
++	{0x010183, 0x0},
++	{0x110183, 0x0},
++	{0x210183, 0x0},
++	{0x011080, 0x0},
++	{0x111080, 0x0},
++	{0x211080, 0x0},
++	{0x011180, 0x0},
++	{0x111180, 0x0},
++	{0x211180, 0x0},
++	{0x011081, 0x0},
++	{0x111081, 0x0},
++	{0x211081, 0x0},
++	{0x011181, 0x0},
++	{0x111181, 0x0},
++	{0x211181, 0x0},
++	{0x011082, 0x0},
++	{0x111082, 0x0},
++	{0x211082, 0x0},
++	{0x011182, 0x0},
++	{0x111182, 0x0},
++	{0x211182, 0x0},
++	{0x011083, 0x0},
++	{0x111083, 0x0},
++	{0x211083, 0x0},
++	{0x011183, 0x0},
++	{0x111183, 0x0},
++	{0x211183, 0x0},
++	{0x0100d0, 0x0},
++	{0x1100d0, 0x0},
++	{0x2100d0, 0x0},
++	{0x0101d0, 0x0},
++	{0x1101d0, 0x0},
++	{0x2101d0, 0x0},
++	{0x0100d1, 0x0},
++	{0x1100d1, 0x0},
++	{0x2100d1, 0x0},
++	{0x0101d1, 0x0},
++	{0x1101d1, 0x0},
++	{0x2101d1, 0x0},
++	{0x0100d2, 0x0},
++	{0x1100d2, 0x0},
++	{0x2100d2, 0x0},
++	{0x0101d2, 0x0},
++	{0x1101d2, 0x0},
++	{0x2101d2, 0x0},
++	{0x0100d3, 0x0},
++	{0x1100d3, 0x0},
++	{0x2100d3, 0x0},
++	{0x0101d3, 0x0},
++	{0x1101d3, 0x0},
++	{0x2101d3, 0x0},
++	{0x0110d0, 0x0},
++	{0x1110d0, 0x0},
++	{0x2110d0, 0x0},
++	{0x0111d0, 0x0},
++	{0x1111d0, 0x0},
++	{0x2111d0, 0x0},
++	{0x0110d1, 0x0},
++	{0x1110d1, 0x0},
++	{0x2110d1, 0x0},
++	{0x0111d1, 0x0},
++	{0x1111d1, 0x0},
++	{0x2111d1, 0x0},
++	{0x0110d2, 0x0},
++	{0x1110d2, 0x0},
++	{0x2110d2, 0x0},
++	{0x0111d2, 0x0},
++	{0x1111d2, 0x0},
++	{0x2111d2, 0x0},
++	{0x0110d3, 0x0},
++	{0x1110d3, 0x0},
++	{0x2110d3, 0x0},
++	{0x0111d3, 0x0},
++	{0x1111d3, 0x0},
++	{0x2111d3, 0x0},
++	{0x010068, 0x0},
++	{0x010168, 0x0},
++	{0x010268, 0x0},
++	{0x010368, 0x0},
++	{0x010468, 0x0},
++	{0x010568, 0x0},
++	{0x010668, 0x0},
++	{0x010768, 0x0},
++	{0x010868, 0x0},
++	{0x010069, 0x0},
++	{0x010169, 0x0},
++	{0x010269, 0x0},
++	{0x010369, 0x0},
++	{0x010469, 0x0},
++	{0x010569, 0x0},
++	{0x010669, 0x0},
++	{0x010769, 0x0},
++	{0x010869, 0x0},
++	{0x01006a, 0x0},
++	{0x01016a, 0x0},
++	{0x01026a, 0x0},
++	{0x01036a, 0x0},
++	{0x01046a, 0x0},
++	{0x01056a, 0x0},
++	{0x01066a, 0x0},
++	{0x01076a, 0x0},
++	{0x01086a, 0x0},
++	{0x01006b, 0x0},
++	{0x01016b, 0x0},
++	{0x01026b, 0x0},
++	{0x01036b, 0x0},
++	{0x01046b, 0x0},
++	{0x01056b, 0x0},
++	{0x01066b, 0x0},
++	{0x01076b, 0x0},
++	{0x01086b, 0x0},
++	{0x011068, 0x0},
++	{0x011168, 0x0},
++	{0x011268, 0x0},
++	{0x011368, 0x0},
++	{0x011468, 0x0},
++	{0x011568, 0x0},
++	{0x011668, 0x0},
++	{0x011768, 0x0},
++	{0x011868, 0x0},
++	{0x011069, 0x0},
++	{0x011169, 0x0},
++	{0x011269, 0x0},
++	{0x011369, 0x0},
++	{0x011469, 0x0},
++	{0x011569, 0x0},
++	{0x011669, 0x0},
++	{0x011769, 0x0},
++	{0x011869, 0x0},
++	{0x01106a, 0x0},
++	{0x01116a, 0x0},
++	{0x01126a, 0x0},
++	{0x01136a, 0x0},
++	{0x01146a, 0x0},
++	{0x01156a, 0x0},
++	{0x01166a, 0x0},
++	{0x01176a, 0x0},
++	{0x01186a, 0x0},
++	{0x01106b, 0x0},
++	{0x01116b, 0x0},
++	{0x01126b, 0x0},
++	{0x01136b, 0x0},
++	{0x01146b, 0x0},
++	{0x01156b, 0x0},
++	{0x01166b, 0x0},
++	{0x01176b, 0x0},
++	{0x01186b, 0x0},
++	{0x01008c, 0x0},
++	{0x11008c, 0x0},
++	{0x21008c, 0x0},
++	{0x01018c, 0x0},
++	{0x11018c, 0x0},
++	{0x21018c, 0x0},
++	{0x01008d, 0x0},
++	{0x11008d, 0x0},
++	{0x21008d, 0x0},
++	{0x01018d, 0x0},
++	{0x11018d, 0x0},
++	{0x21018d, 0x0},
++	{0x01008e, 0x0},
++	{0x11008e, 0x0},
++	{0x21008e, 0x0},
++	{0x01018e, 0x0},
++	{0x11018e, 0x0},
++	{0x21018e, 0x0},
++	{0x01008f, 0x0},
++	{0x11008f, 0x0},
++	{0x21008f, 0x0},
++	{0x01018f, 0x0},
++	{0x11018f, 0x0},
++	{0x21018f, 0x0},
++	{0x01108c, 0x0},
++	{0x11108c, 0x0},
++	{0x21108c, 0x0},
++	{0x01118c, 0x0},
++	{0x11118c, 0x0},
++	{0x21118c, 0x0},
++	{0x01108d, 0x0},
++	{0x11108d, 0x0},
++	{0x21108d, 0x0},
++	{0x01118d, 0x0},
++	{0x11118d, 0x0},
++	{0x21118d, 0x0},
++	{0x01108e, 0x0},
++	{0x11108e, 0x0},
++	{0x21108e, 0x0},
++	{0x01118e, 0x0},
++	{0x11118e, 0x0},
++	{0x21118e, 0x0},
++	{0x01108f, 0x0},
++	{0x11108f, 0x0},
++	{0x21108f, 0x0},
++	{0x01118f, 0x0},
++	{0x11118f, 0x0},
++	{0x21118f, 0x0},
++	{0x0100c0, 0x0},
++	{0x1100c0, 0x0},
++	{0x2100c0, 0x0},
++	{0x0101c0, 0x0},
++	{0x1101c0, 0x0},
++	{0x2101c0, 0x0},
++	{0x0102c0, 0x0},
++	{0x1102c0, 0x0},
++	{0x2102c0, 0x0},
++	{0x0103c0, 0x0},
++	{0x1103c0, 0x0},
++	{0x2103c0, 0x0},
++	{0x0104c0, 0x0},
++	{0x1104c0, 0x0},
++	{0x2104c0, 0x0},
++	{0x0105c0, 0x0},
++	{0x1105c0, 0x0},
++	{0x2105c0, 0x0},
++	{0x0106c0, 0x0},
++	{0x1106c0, 0x0},
++	{0x2106c0, 0x0},
++	{0x0107c0, 0x0},
++	{0x1107c0, 0x0},
++	{0x2107c0, 0x0},
++	{0x0108c0, 0x0},
++	{0x1108c0, 0x0},
++	{0x2108c0, 0x0},
++	{0x0100c1, 0x0},
++	{0x1100c1, 0x0},
++	{0x2100c1, 0x0},
++	{0x0101c1, 0x0},
++	{0x1101c1, 0x0},
++	{0x2101c1, 0x0},
++	{0x0102c1, 0x0},
++	{0x1102c1, 0x0},
++	{0x2102c1, 0x0},
++	{0x0103c1, 0x0},
++	{0x1103c1, 0x0},
++	{0x2103c1, 0x0},
++	{0x0104c1, 0x0},
++	{0x1104c1, 0x0},
++	{0x2104c1, 0x0},
++	{0x0105c1, 0x0},
++	{0x1105c1, 0x0},
++	{0x2105c1, 0x0},
++	{0x0106c1, 0x0},
++	{0x1106c1, 0x0},
++	{0x2106c1, 0x0},
++	{0x0107c1, 0x0},
++	{0x1107c1, 0x0},
++	{0x2107c1, 0x0},
++	{0x0108c1, 0x0},
++	{0x1108c1, 0x0},
++	{0x2108c1, 0x0},
++	{0x0100c2, 0x0},
++	{0x1100c2, 0x0},
++	{0x2100c2, 0x0},
++	{0x0101c2, 0x0},
++	{0x1101c2, 0x0},
++	{0x2101c2, 0x0},
++	{0x0102c2, 0x0},
++	{0x1102c2, 0x0},
++	{0x2102c2, 0x0},
++	{0x0103c2, 0x0},
++	{0x1103c2, 0x0},
++	{0x2103c2, 0x0},
++	{0x0104c2, 0x0},
++	{0x1104c2, 0x0},
++	{0x2104c2, 0x0},
++	{0x0105c2, 0x0},
++	{0x1105c2, 0x0},
++	{0x2105c2, 0x0},
++	{0x0106c2, 0x0},
++	{0x1106c2, 0x0},
++	{0x2106c2, 0x0},
++	{0x0107c2, 0x0},
++	{0x1107c2, 0x0},
++	{0x2107c2, 0x0},
++	{0x0108c2, 0x0},
++	{0x1108c2, 0x0},
++	{0x2108c2, 0x0},
++	{0x0100c3, 0x0},
++	{0x1100c3, 0x0},
++	{0x2100c3, 0x0},
++	{0x0101c3, 0x0},
++	{0x1101c3, 0x0},
++	{0x2101c3, 0x0},
++	{0x0102c3, 0x0},
++	{0x1102c3, 0x0},
++	{0x2102c3, 0x0},
++	{0x0103c3, 0x0},
++	{0x1103c3, 0x0},
++	{0x2103c3, 0x0},
++	{0x0104c3, 0x0},
++	{0x1104c3, 0x0},
++	{0x2104c3, 0x0},
++	{0x0105c3, 0x0},
++	{0x1105c3, 0x0},
++	{0x2105c3, 0x0},
++	{0x0106c3, 0x0},
++	{0x1106c3, 0x0},
++	{0x2106c3, 0x0},
++	{0x0107c3, 0x0},
++	{0x1107c3, 0x0},
++	{0x2107c3, 0x0},
++	{0x0108c3, 0x0},
++	{0x1108c3, 0x0},
++	{0x2108c3, 0x0},
++	{0x0110c0, 0x0},
++	{0x1110c0, 0x0},
++	{0x2110c0, 0x0},
++	{0x0111c0, 0x0},
++	{0x1111c0, 0x0},
++	{0x2111c0, 0x0},
++	{0x0112c0, 0x0},
++	{0x1112c0, 0x0},
++	{0x2112c0, 0x0},
++	{0x0113c0, 0x0},
++	{0x1113c0, 0x0},
++	{0x2113c0, 0x0},
++	{0x0114c0, 0x0},
++	{0x1114c0, 0x0},
++	{0x2114c0, 0x0},
++	{0x0115c0, 0x0},
++	{0x1115c0, 0x0},
++	{0x2115c0, 0x0},
++	{0x0116c0, 0x0},
++	{0x1116c0, 0x0},
++	{0x2116c0, 0x0},
++	{0x0117c0, 0x0},
++	{0x1117c0, 0x0},
++	{0x2117c0, 0x0},
++	{0x0118c0, 0x0},
++	{0x1118c0, 0x0},
++	{0x2118c0, 0x0},
++	{0x0110c1, 0x0},
++	{0x1110c1, 0x0},
++	{0x2110c1, 0x0},
++	{0x0111c1, 0x0},
++	{0x1111c1, 0x0},
++	{0x2111c1, 0x0},
++	{0x0112c1, 0x0},
++	{0x1112c1, 0x0},
++	{0x2112c1, 0x0},
++	{0x0113c1, 0x0},
++	{0x1113c1, 0x0},
++	{0x2113c1, 0x0},
++	{0x0114c1, 0x0},
++	{0x1114c1, 0x0},
++	{0x2114c1, 0x0},
++	{0x0115c1, 0x0},
++	{0x1115c1, 0x0},
++	{0x2115c1, 0x0},
++	{0x0116c1, 0x0},
++	{0x1116c1, 0x0},
++	{0x2116c1, 0x0},
++	{0x0117c1, 0x0},
++	{0x1117c1, 0x0},
++	{0x2117c1, 0x0},
++	{0x0118c1, 0x0},
++	{0x1118c1, 0x0},
++	{0x2118c1, 0x0},
++	{0x0110c2, 0x0},
++	{0x1110c2, 0x0},
++	{0x2110c2, 0x0},
++	{0x0111c2, 0x0},
++	{0x1111c2, 0x0},
++	{0x2111c2, 0x0},
++	{0x0112c2, 0x0},
++	{0x1112c2, 0x0},
++	{0x2112c2, 0x0},
++	{0x0113c2, 0x0},
++	{0x1113c2, 0x0},
++	{0x2113c2, 0x0},
++	{0x0114c2, 0x0},
++	{0x1114c2, 0x0},
++	{0x2114c2, 0x0},
++	{0x0115c2, 0x0},
++	{0x1115c2, 0x0},
++	{0x2115c2, 0x0},
++	{0x0116c2, 0x0},
++	{0x1116c2, 0x0},
++	{0x2116c2, 0x0},
++	{0x0117c2, 0x0},
++	{0x1117c2, 0x0},
++	{0x2117c2, 0x0},
++	{0x0118c2, 0x0},
++	{0x1118c2, 0x0},
++	{0x2118c2, 0x0},
++	{0x0110c3, 0x0},
++	{0x1110c3, 0x0},
++	{0x2110c3, 0x0},
++	{0x0111c3, 0x0},
++	{0x1111c3, 0x0},
++	{0x2111c3, 0x0},
++	{0x0112c3, 0x0},
++	{0x1112c3, 0x0},
++	{0x2112c3, 0x0},
++	{0x0113c3, 0x0},
++	{0x1113c3, 0x0},
++	{0x2113c3, 0x0},
++	{0x0114c3, 0x0},
++	{0x1114c3, 0x0},
++	{0x2114c3, 0x0},
++	{0x0115c3, 0x0},
++	{0x1115c3, 0x0},
++	{0x2115c3, 0x0},
++	{0x0116c3, 0x0},
++	{0x1116c3, 0x0},
++	{0x2116c3, 0x0},
++	{0x0117c3, 0x0},
++	{0x1117c3, 0x0},
++	{0x2117c3, 0x0},
++	{0x0118c3, 0x0},
++	{0x1118c3, 0x0},
++	{0x2118c3, 0x0},
++	{0x010020, 0x0},
++	{0x110020, 0x0},
++	{0x210020, 0x0},
++	{0x011020, 0x0},
++	{0x111020, 0x0},
++	{0x211020, 0x0},
++	{0x02007d, 0x0},
++	{0x12007d, 0x0},
++	{0x22007d, 0x0},
++	{0x010040, 0x0},
++	{0x010140, 0x0},
++	{0x010240, 0x0},
++	{0x010340, 0x0},
++	{0x010440, 0x0},
++	{0x010540, 0x0},
++	{0x010640, 0x0},
++	{0x010740, 0x0},
++	{0x010840, 0x0},
++	{0x010030, 0x0},
++	{0x010130, 0x0},
++	{0x010230, 0x0},
++	{0x010330, 0x0},
++	{0x010430, 0x0},
++	{0x010530, 0x0},
++	{0x010630, 0x0},
++	{0x010730, 0x0},
++	{0x010830, 0x0},
++	{0x011040, 0x0},
++	{0x011140, 0x0},
++	{0x011240, 0x0},
++	{0x011340, 0x0},
++	{0x011440, 0x0},
++	{0x011540, 0x0},
++	{0x011640, 0x0},
++	{0x011740, 0x0},
++	{0x011840, 0x0},
++	{0x011030, 0x0},
++	{0x011130, 0x0},
++	{0x011230, 0x0},
++	{0x011330, 0x0},
++	{0x011430, 0x0},
++	{0x011530, 0x0},
++	{0x011630, 0x0},
++	{0x011730, 0x0},
++	{0x011830, 0x0},
++};
++
++/* P0 message block paremeter for training firmware */
++static struct dram_cfg_param ddr_fsp0_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54003, 0x960 },
++	{ 0x54004, 0x2 },
++	{ 0x54005, 0x2830 },
++	{ 0x54006, 0x25e },
++	{ 0x54007, 0x1000 },
++	{ 0x54008, 0x101 },
++	{ 0x5400b, 0x31f },
++	{ 0x5400c, 0xc8 },
++	{ 0x5400d, 0x100 },
++	{ 0x54012, 0x1 },
++	{ 0x5402f, 0x834 },
++	{ 0x54030, 0x105 },
++	{ 0x54031, 0x18 },
++	{ 0x54032, 0x200 },
++	{ 0x54033, 0x200 },
++	{ 0x54034, 0x600 },
++	{ 0x54035, 0x810 },
++	{ 0x54036, 0x101 },
++	{ 0x5403f, 0x1221 },
++	{ 0x541fc, 0x100 },
++	{ 0xd0000, 0x1 },
++};
++
++/* P1 message block paremeter for training firmware */
++static struct dram_cfg_param ddr_fsp1_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54002, 0x1 },
++	{ 0x54003, 0x42a },
++	{ 0x54004, 0x2 },
++	{ 0x54005, 0x2830 },
++	{ 0x54006, 0x25e },
++	{ 0x54007, 0x1000 },
++	{ 0x54008, 0x101 },
++	{ 0x5400b, 0x21f },
++	{ 0x5400c, 0xc8 },
++	{ 0x5400d, 0x100 },
++	{ 0x54012, 0x1 },
++	{ 0x54030, 0x105 },
++	{ 0x54033, 0x200 },
++	{ 0x54034, 0x600 },
++	{ 0x54035, 0x10 },
++	{ 0x54036, 0x101 },
++	{ 0x5403f, 0x1221 },
++	{ 0x541fc, 0x100 },
++	{ 0xd0000, 0x1 },
++};
++
++
++/* P0 2D message block paremeter for training firmware */
++static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54003, 0x960 },
++	{ 0x54004, 0x2 },
++	{ 0x54005, 0x2830 },
++	{ 0x54006, 0x25e },
++	{ 0x54007, 0x1000 },
++	{ 0x54008, 0x101 },
++	{ 0x5400b, 0x61 },
++	{ 0x5400c, 0xc8 },
++	{ 0x5400d, 0x100 },
++	{ 0x5400e, 0x1f7f },
++	{ 0x54012, 0x1 },
++	{ 0x5402f, 0x834 },
++	{ 0x54030, 0x105 },
++	{ 0x54031, 0x18 },
++	{ 0x54032, 0x200 },
++	{ 0x54033, 0x200 },
++	{ 0x54034, 0x600 },
++	{ 0x54035, 0x810 },
++	{ 0x54036, 0x101 },
++	{ 0x5403f, 0x1221 },
++	{ 0x541fc, 0x100 },
++	{ 0xd0000, 0x1 },
++};
++
++/* DRAM PHY init engine image */
++static struct dram_cfg_param ddr_phy_pie[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x90000, 0x10 },
++	{ 0x90001, 0x400 },
++	{ 0x90002, 0x10e },
++	{ 0x90003, 0x0 },
++	{ 0x90004, 0x0 },
++	{ 0x90005, 0x8 },
++	{ 0x90029, 0xb },
++	{ 0x9002a, 0x480 },
++	{ 0x9002b, 0x109 },
++	{ 0x9002c, 0x8 },
++	{ 0x9002d, 0x448 },
++	{ 0x9002e, 0x139 },
++	{ 0x9002f, 0x8 },
++	{ 0x90030, 0x478 },
++	{ 0x90031, 0x109 },
++	{ 0x90032, 0x2 },
++	{ 0x90033, 0x10 },
++	{ 0x90034, 0x139 },
++	{ 0x90035, 0xb },
++	{ 0x90036, 0x7c0 },
++	{ 0x90037, 0x139 },
++	{ 0x90038, 0x44 },
++	{ 0x90039, 0x633 },
++	{ 0x9003a, 0x159 },
++	{ 0x9003b, 0x14f },
++	{ 0x9003c, 0x630 },
++	{ 0x9003d, 0x159 },
++	{ 0x9003e, 0x47 },
++	{ 0x9003f, 0x633 },
++	{ 0x90040, 0x149 },
++	{ 0x90041, 0x4f },
++	{ 0x90042, 0x633 },
++	{ 0x90043, 0x179 },
++	{ 0x90044, 0x8 },
++	{ 0x90045, 0xe0 },
++	{ 0x90046, 0x109 },
++	{ 0x90047, 0x0 },
++	{ 0x90048, 0x7c8 },
++	{ 0x90049, 0x109 },
++	{ 0x9004a, 0x0 },
++	{ 0x9004b, 0x1 },
++	{ 0x9004c, 0x8 },
++	{ 0x9004d, 0x0 },
++	{ 0x9004e, 0x45a },
++	{ 0x9004f, 0x9 },
++	{ 0x90050, 0x0 },
++	{ 0x90051, 0x448 },
++	{ 0x90052, 0x109 },
++	{ 0x90053, 0x40 },
++	{ 0x90054, 0x633 },
++	{ 0x90055, 0x179 },
++	{ 0x90056, 0x1 },
++	{ 0x90057, 0x618 },
++	{ 0x90058, 0x109 },
++	{ 0x90059, 0x40c0 },
++	{ 0x9005a, 0x633 },
++	{ 0x9005b, 0x149 },
++	{ 0x9005c, 0x8 },
++	{ 0x9005d, 0x4 },
++	{ 0x9005e, 0x48 },
++	{ 0x9005f, 0x4040 },
++	{ 0x90060, 0x633 },
++	{ 0x90061, 0x149 },
++	{ 0x90062, 0x0 },
++	{ 0x90063, 0x4 },
++	{ 0x90064, 0x48 },
++	{ 0x90065, 0x40 },
++	{ 0x90066, 0x633 },
++	{ 0x90067, 0x149 },
++	{ 0x90068, 0x10 },
++	{ 0x90069, 0x4 },
++	{ 0x9006a, 0x18 },
++	{ 0x9006b, 0x0 },
++	{ 0x9006c, 0x4 },
++	{ 0x9006d, 0x78 },
++	{ 0x9006e, 0x549 },
++	{ 0x9006f, 0x633 },
++	{ 0x90070, 0x159 },
++	{ 0x90071, 0xd49 },
++	{ 0x90072, 0x633 },
++	{ 0x90073, 0x159 },
++	{ 0x90074, 0x94a },
++	{ 0x90075, 0x633 },
++	{ 0x90076, 0x159 },
++	{ 0x90077, 0x441 },
++	{ 0x90078, 0x633 },
++	{ 0x90079, 0x149 },
++	{ 0x9007a, 0x42 },
++	{ 0x9007b, 0x633 },
++	{ 0x9007c, 0x149 },
++	{ 0x9007d, 0x1 },
++	{ 0x9007e, 0x633 },
++	{ 0x9007f, 0x149 },
++	{ 0x90080, 0x0 },
++	{ 0x90081, 0xe0 },
++	{ 0x90082, 0x109 },
++	{ 0x90083, 0xa },
++	{ 0x90084, 0x10 },
++	{ 0x90085, 0x109 },
++	{ 0x90086, 0x9 },
++	{ 0x90087, 0x3c0 },
++	{ 0x90088, 0x149 },
++	{ 0x90089, 0x9 },
++	{ 0x9008a, 0x3c0 },
++	{ 0x9008b, 0x159 },
++	{ 0x9008c, 0x18 },
++	{ 0x9008d, 0x10 },
++	{ 0x9008e, 0x109 },
++	{ 0x9008f, 0x0 },
++	{ 0x90090, 0x3c0 },
++	{ 0x90091, 0x109 },
++	{ 0x90092, 0x18 },
++	{ 0x90093, 0x4 },
++	{ 0x90094, 0x48 },
++	{ 0x90095, 0x18 },
++	{ 0x90096, 0x4 },
++	{ 0x90097, 0x58 },
++	{ 0x90098, 0xb },
++	{ 0x90099, 0x10 },
++	{ 0x9009a, 0x109 },
++	{ 0x9009b, 0x1 },
++	{ 0x9009c, 0x10 },
++	{ 0x9009d, 0x109 },
++	{ 0x9009e, 0x5 },
++	{ 0x9009f, 0x7c0 },
++	{ 0x900a0, 0x109 },
++	{ 0x900a1, 0x0 },
++	{ 0x900a2, 0x8140 },
++	{ 0x900a3, 0x10c },
++	{ 0x900a4, 0x10 },
++	{ 0x900a5, 0x8138 },
++	{ 0x900a6, 0x10c },
++	{ 0x900a7, 0x8 },
++	{ 0x900a8, 0x7c8 },
++	{ 0x900a9, 0x101 },
++	{ 0x900aa, 0x8 },
++	{ 0x900ab, 0x448 },
++	{ 0x900ac, 0x109 },
++	{ 0x900ad, 0xf },
++	{ 0x900ae, 0x7c0 },
++	{ 0x900af, 0x109 },
++	{ 0x900b0, 0x47 },
++	{ 0x900b1, 0x630 },
++	{ 0x900b2, 0x109 },
++	{ 0x900b3, 0x8 },
++	{ 0x900b4, 0x618 },
++	{ 0x900b5, 0x109 },
++	{ 0x900b6, 0x8 },
++	{ 0x900b7, 0xe0 },
++	{ 0x900b8, 0x109 },
++	{ 0x900b9, 0x0 },
++	{ 0x900ba, 0x7c8 },
++	{ 0x900bb, 0x109 },
++	{ 0x900bc, 0x8 },
++	{ 0x900bd, 0x8140 },
++	{ 0x900be, 0x10c },
++	{ 0x900bf, 0x0 },
++	{ 0x900c0, 0x1 },
++	{ 0x900c1, 0x8 },
++	{ 0x900c2, 0x8 },
++	{ 0x900c3, 0x4 },
++	{ 0x900c4, 0x8 },
++	{ 0x900c5, 0x8 },
++	{ 0x900c6, 0x7c8 },
++	{ 0x900c7, 0x101 },
++	{ 0x90006, 0x0 },
++	{ 0x90007, 0x0 },
++	{ 0x90008, 0x8 },
++	{ 0x90009, 0x0 },
++	{ 0x9000a, 0x0 },
++	{ 0x9000b, 0x0 },
++	{ 0xd00e7, 0x400 },
++	{ 0x90017, 0x0 },
++	{ 0x90026, 0x2b },
++	{ 0x2000b, 0x4b },
++	{ 0x2000c, 0x96 },
++	{ 0x2000d, 0x5dc },
++	{ 0x2000e, 0x2c },
++	{ 0x12000b, 0x21 },
++	{ 0x12000c, 0x42 },
++	{ 0x12000d, 0x29a },
++	{ 0x12000e, 0x21 },
++	{ 0x9000c, 0x0 },
++	{ 0x9000d, 0x173 },
++	{ 0x9000e, 0x60 },
++	{ 0x9000f, 0x6110 },
++	{ 0x90010, 0x2152 },
++	{ 0x90011, 0xdfbd },
++	{ 0x90012, 0xffff },
++	{ 0x90013, 0x6152 },
++	{ 0x20089, 0x1 },
++	{ 0x20088, 0x19 },
++	{ 0xc0080, 0x0 },
++	{ 0xd0000, 0x1 }
++};
++
++static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
++	{
++		/* P0 2400mts 1D */
++		.drate = 2400,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp0_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_cfg),
++	},
++	{
++		/* P1 1066mts 1D */
++		.drate = 1066,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp1_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp1_cfg),
++	},
++	{
++		/* P0 2400mts 2D */
++		.drate = 2400,
++		.fw_type = FW_2D_IMAGE,
++		.fsp_cfg = ddr_fsp0_2d_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_cfg),
++	},
++};
++
++/* ddr timing config params */
++struct dram_timing_info imx8mn_evk_ddr4_timing = {
++	.dram_type = DRAM_TYPE_DDR4,
++	.ddrc_cfg = ddr_ddrc_cfg,
++	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
++	.ddrphy_cfg = ddr_ddrphy_cfg,
++	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
++	.fsp_msg = ddr_dram_fsp_msg,
++	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg),
++	.ddrphy_trained_csr = ddr_ddrphy_trained_csr,
++	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
++	.ddrphy_pie = ddr_phy_pie,
++	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
++	.fsp_table = { 2400, 1066, },
++};
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg b/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
+new file mode 100644
+index 000000000000..a768874d4076
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
+@@ -0,0 +1,5 @@
++soc imx8mn
++
++loadaddr 0x912000
++max_load_size 0x3f000
++ivtofs 0x0
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
+new file mode 100644
+index 000000000000..bac632aa431b
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
+@@ -0,0 +1,231 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <io.h>
++#include <common.h>
++#include <debug_ll.h>
++#include <firmware.h>
++#include <asm/mmu.h>
++#include <asm/cache.h>
++#include <asm/sections.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++#include <i2c/i2c-early.h>
++#include <linux/sizes.h>
++#include <mach/atf.h>
++#include <mach/xload.h>
++#include <mach/esdctl.h>
++#include <mach/generic.h>
++#include <mach/imx8mn-regs.h>
++#include <mach/iomux-mx8mn.h>
++#include <mach/imx8m-ccm-regs.h>
++#include <mfd/pca9450.h>
++#include <mfd/bd71837.h>
++#include <soc/imx8m/ddr.h>
++
++extern char __dtb_z_imx8mn_evk_start[];
++
++static void setup_uart(void)
++{
++	void __iomem *uart = IOMEM(MX8M_UART2_BASE_ADDR);
++
++	imx8m_early_setup_uart_clock();
++
++	imx8mn_setup_pad(IMX8MN_PAD_UART2_TXD__UART2_DCE_TX);
++	imx8m_uart_setup(uart);
++
++	pbl_set_putc(imx_uart_putc, uart);
++
++	putc_ll('>');
++}
++
++static void pmic_reg_write(void *i2c, int addr, int reg, uint8_t val)
++{
 +	int ret;
++	u8 buf[32];
++	struct i2c_msg msgs[] = {
++		{
++			.addr = addr,
++			.buf = buf,
++		},
++	};
 +
-+	anatop_np = of_find_compatible_node(NULL, NULL, "fsl,imx8mn-anatop");
-+	ana = of_iomap(anatop_np, 0);
-+	if (WARN_ON(!ana))
-+		return -ENOMEM;
++	buf[0] = reg;
++	buf[1] = val;
 +
-+	ccm = of_iomap(ccm_np, 0);
-+	if (WARN_ON(!ccm))
-+		return -ENOMEM;
++	msgs[0].len = 2;
 +
-+	clks[IMX8MN_CLK_DUMMY] = clk_fixed("dummy", 0);
-+	clks[IMX8MN_CLK_24M] = of_clk_get_by_name(ccm_np, "osc_24m");
-+	clks[IMX8MN_CLK_32K] = of_clk_get_by_name(ccm_np, "osc_32k");
-+	clks[IMX8MN_CLK_EXT1] = of_clk_get_by_name(ccm_np, "clk_ext1");
-+	clks[IMX8MN_CLK_EXT2] = of_clk_get_by_name(ccm_np, "clk_ext2");
-+	clks[IMX8MN_CLK_EXT3] = of_clk_get_by_name(ccm_np, "clk_ext3");
-+	clks[IMX8MN_CLK_EXT4] = of_clk_get_by_name(ccm_np, "clk_ext4");
++	ret = i2c_fsl_xfer(i2c, msgs, ARRAY_SIZE(msgs));
++	if (ret != 1)
++		pr_err("Failed to write to pmic %d\n", ret);
++}
 +
-+	clks[IMX8MN_AUDIO_PLL1_REF_SEL] = imx_clk_mux("audio_pll1_ref_sel", ana + 0x0, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MN_AUDIO_PLL2_REF_SEL] = imx_clk_mux("audio_pll2_ref_sel", ana + 0x14, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MN_VIDEO_PLL1_REF_SEL] = imx_clk_mux("video_pll1_ref_sel", ana + 0x28, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MN_DRAM_PLL_REF_SEL] = imx_clk_mux("dram_pll_ref_sel", ana + 0x50, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MN_GPU_PLL_REF_SEL] = imx_clk_mux("gpu_pll_ref_sel", ana + 0x64, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MN_VPU_PLL_REF_SEL] = imx_clk_mux("vpu_pll_ref_sel", ana + 0x74, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MN_ARM_PLL_REF_SEL] = imx_clk_mux("arm_pll_ref_sel", ana + 0x84, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MN_SYS_PLL3_REF_SEL] = imx_clk_mux("sys_pll3_ref_sel", ana + 0x114, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
++static int power_init_board_pca9450(void *i2c, int addr)
++{
++	u8 buf[1];
++	struct i2c_msg msgs[] = {
++		{
++			.addr = addr,
++			.buf = buf,
++			.flags = I2C_M_RD
++		},
++	};
 +
-+	clks[IMX8MN_AUDIO_PLL1] = imx_clk_pll14xx("audio_pll1", "audio_pll1_ref_sel", ana, &imx_1443x_pll);
-+	clks[IMX8MN_AUDIO_PLL2] = imx_clk_pll14xx("audio_pll2", "audio_pll2_ref_sel", ana + 0x14, &imx_1443x_pll);
-+	clks[IMX8MN_VIDEO_PLL1] = imx_clk_pll14xx("video_pll1", "video_pll1_ref_sel", ana + 0x28, &imx_1443x_pll);
-+	clks[IMX8MN_DRAM_PLL] = imx_clk_pll14xx("dram_pll", "dram_pll_ref_sel", ana + 0x50, &imx_1443x_pll);
-+	clks[IMX8MN_GPU_PLL] = imx_clk_pll14xx("gpu_pll", "gpu_pll_ref_sel", ana + 0x64, &imx_1416x_pll);
-+	clks[IMX8MN_VPU_PLL] = imx_clk_pll14xx("vpu_pll", "vpu_pll_ref_sel", ana + 0x74, &imx_1416x_pll);
-+	clks[IMX8MN_ARM_PLL] = imx_clk_pll14xx("arm_pll", "arm_pll_ref_sel", ana + 0x84, &imx_1416x_pll);
-+	clks[IMX8MN_SYS_PLL1] = clk_fixed("sys_pll1", 800000000);
-+	clks[IMX8MN_SYS_PLL2] = clk_fixed("sys_pll2", 1000000000);
-+	clks[IMX8MN_SYS_PLL3] = imx_clk_pll14xx("sys_pll3", "sys_pll3_ref_sel", ana + 0x114, &imx_1416x_pll);
++	if (i2c_fsl_xfer(i2c, msgs, 1) != 1)
++		return -ENODEV;
 +
-+	/* PLL bypass out */
-+	clks[IMX8MN_AUDIO_PLL1_BYPASS] = imx_clk_mux_flags("audio_pll1_bypass", ana, 16, 1, audio_pll1_bypass_sels, ARRAY_SIZE(audio_pll1_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MN_AUDIO_PLL2_BYPASS] = imx_clk_mux_flags("audio_pll2_bypass", ana + 0x14, 16, 1, audio_pll2_bypass_sels, ARRAY_SIZE(audio_pll2_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MN_VIDEO_PLL1_BYPASS] = imx_clk_mux_flags("video_pll1_bypass", ana + 0x28, 16, 1, video_pll1_bypass_sels, ARRAY_SIZE(video_pll1_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MN_DRAM_PLL_BYPASS] = imx_clk_mux_flags("dram_pll_bypass", ana + 0x50, 16, 1, dram_pll_bypass_sels, ARRAY_SIZE(dram_pll_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MN_GPU_PLL_BYPASS] = imx_clk_mux_flags("gpu_pll_bypass", ana + 0x64, 28, 1, gpu_pll_bypass_sels, ARRAY_SIZE(gpu_pll_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MN_VPU_PLL_BYPASS] = imx_clk_mux_flags("vpu_pll_bypass", ana + 0x74, 28, 1, vpu_pll_bypass_sels, ARRAY_SIZE(vpu_pll_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MN_ARM_PLL_BYPASS] = imx_clk_mux_flags("arm_pll_bypass", ana + 0x84, 28, 1, arm_pll_bypass_sels, ARRAY_SIZE(arm_pll_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MN_SYS_PLL3_BYPASS] = imx_clk_mux_flags("sys_pll3_bypass", ana + 0x114, 28, 1, sys_pll3_bypass_sels, ARRAY_SIZE(sys_pll3_bypass_sels), CLK_SET_RATE_PARENT);
-+
-+	/* PLL out gate */
-+	clks[IMX8MN_AUDIO_PLL1_OUT] = imx_clk_gate("audio_pll1_out", "audio_pll1_bypass", ana, 13);
-+	clks[IMX8MN_AUDIO_PLL2_OUT] = imx_clk_gate("audio_pll2_out", "audio_pll2_bypass", ana + 0x14, 13);
-+	clks[IMX8MN_VIDEO_PLL1_OUT] = imx_clk_gate("video_pll1_out", "video_pll1_bypass", ana + 0x28, 13);
-+	clks[IMX8MN_DRAM_PLL_OUT] = imx_clk_gate("dram_pll_out", "dram_pll_bypass", ana + 0x50, 13);
-+	clks[IMX8MN_GPU_PLL_OUT] = imx_clk_gate("gpu_pll_out", "gpu_pll_bypass", ana + 0x64, 11);
-+	clks[IMX8MN_VPU_PLL_OUT] = imx_clk_gate("vpu_pll_out", "vpu_pll_bypass", ana + 0x74, 11);
-+	clks[IMX8MN_ARM_PLL_OUT] = imx_clk_gate("arm_pll_out", "arm_pll_bypass", ana + 0x84, 11);
-+	clks[IMX8MN_SYS_PLL3_OUT] = imx_clk_gate("sys_pll3_out", "sys_pll3_bypass", ana + 0x114, 11);
-+
-+	/* SYS PLL1 fixed output */
-+	clks[IMX8MN_SYS_PLL1_40M_CG] = imx_clk_gate("sys_pll1_40m_cg", "sys_pll1", ana + 0x94, 27);
-+	clks[IMX8MN_SYS_PLL1_80M_CG] = imx_clk_gate("sys_pll1_80m_cg", "sys_pll1", ana + 0x94, 25);
-+	clks[IMX8MN_SYS_PLL1_100M_CG] = imx_clk_gate("sys_pll1_100m_cg", "sys_pll1", ana + 0x94, 23);
-+	clks[IMX8MN_SYS_PLL1_133M_CG] = imx_clk_gate("sys_pll1_133m_cg", "sys_pll1", ana + 0x94, 21);
-+	clks[IMX8MN_SYS_PLL1_160M_CG] = imx_clk_gate("sys_pll1_160m_cg", "sys_pll1", ana + 0x94, 19);
-+	clks[IMX8MN_SYS_PLL1_200M_CG] = imx_clk_gate("sys_pll1_200m_cg", "sys_pll1", ana + 0x94, 17);
-+	clks[IMX8MN_SYS_PLL1_266M_CG] = imx_clk_gate("sys_pll1_266m_cg", "sys_pll1", ana + 0x94, 15);
-+	clks[IMX8MN_SYS_PLL1_400M_CG] = imx_clk_gate("sys_pll1_400m_cg", "sys_pll1", ana + 0x94, 13);
-+	clks[IMX8MN_SYS_PLL1_OUT] = imx_clk_gate("sys_pll1_out", "sys_pll1", ana + 0x94, 11);
-+
-+	clks[IMX8MN_SYS_PLL1_40M] = imx_clk_fixed_factor("sys_pll1_40m", "sys_pll1_40m_cg", 1, 20);
-+	clks[IMX8MN_SYS_PLL1_80M] = imx_clk_fixed_factor("sys_pll1_80m", "sys_pll1_80m_cg", 1, 10);
-+	clks[IMX8MN_SYS_PLL1_100M] = imx_clk_fixed_factor("sys_pll1_100m", "sys_pll1_100m_cg", 1, 8);
-+	clks[IMX8MN_SYS_PLL1_133M] = imx_clk_fixed_factor("sys_pll1_133m", "sys_pll1_133m_cg", 1, 6);
-+	clks[IMX8MN_SYS_PLL1_160M] = imx_clk_fixed_factor("sys_pll1_160m", "sys_pll1_160m_cg", 1, 5);
-+	clks[IMX8MN_SYS_PLL1_200M] = imx_clk_fixed_factor("sys_pll1_200m", "sys_pll1_200m_cg", 1, 4);
-+	clks[IMX8MN_SYS_PLL1_266M] = imx_clk_fixed_factor("sys_pll1_266m", "sys_pll1_266m_cg", 1, 3);
-+	clks[IMX8MN_SYS_PLL1_400M] = imx_clk_fixed_factor("sys_pll1_400m", "sys_pll1_400m_cg", 1, 2);
-+	clks[IMX8MN_SYS_PLL1_800M] = imx_clk_fixed_factor("sys_pll1_800m", "sys_pll1_out", 1, 1);
-+
-+	/* SYS PLL2 fixed output */
-+	clks[IMX8MN_SYS_PLL2_50M_CG] = imx_clk_gate("sys_pll2_50m_cg", "sys_pll2", ana + 0x104, 27);
-+	clks[IMX8MN_SYS_PLL2_100M_CG] = imx_clk_gate("sys_pll2_100m_cg", "sys_pll2", ana + 0x104, 25);
-+	clks[IMX8MN_SYS_PLL2_125M_CG] = imx_clk_gate("sys_pll2_125m_cg", "sys_pll2", ana + 0x104, 23);
-+	clks[IMX8MN_SYS_PLL2_166M_CG] = imx_clk_gate("sys_pll2_166m_cg", "sys_pll2", ana + 0x104, 21);
-+	clks[IMX8MN_SYS_PLL2_200M_CG] = imx_clk_gate("sys_pll2_200m_cg", "sys_pll2", ana + 0x104, 19);
-+	clks[IMX8MN_SYS_PLL2_250M_CG] = imx_clk_gate("sys_pll2_250m_cg", "sys_pll2", ana + 0x104, 17);
-+	clks[IMX8MN_SYS_PLL2_333M_CG] = imx_clk_gate("sys_pll2_333m_cg", "sys_pll2", ana + 0x104, 15);
-+	clks[IMX8MN_SYS_PLL2_500M_CG] = imx_clk_gate("sys_pll2_500m_cg", "sys_pll2", ana + 0x104, 13);
-+	clks[IMX8MN_SYS_PLL2_OUT] = imx_clk_gate("sys_pll2_out", "sys_pll2", ana + 0x104, 11);
-+
-+	clks[IMX8MN_SYS_PLL2_50M] = imx_clk_fixed_factor("sys_pll2_50m", "sys_pll2_50m_cg", 1, 20);
-+	clks[IMX8MN_SYS_PLL2_100M] = imx_clk_fixed_factor("sys_pll2_100m", "sys_pll2_100m_cg", 1, 10);
-+	clks[IMX8MN_SYS_PLL2_125M] = imx_clk_fixed_factor("sys_pll2_125m", "sys_pll2_125m_cg", 1, 8);
-+	clks[IMX8MN_SYS_PLL2_166M] = imx_clk_fixed_factor("sys_pll2_166m", "sys_pll2_166m_cg", 1, 6);
-+	clks[IMX8MN_SYS_PLL2_200M] = imx_clk_fixed_factor("sys_pll2_200m", "sys_pll2_200m_cg", 1, 5);
-+	clks[IMX8MN_SYS_PLL2_250M] = imx_clk_fixed_factor("sys_pll2_250m", "sys_pll2_250m_cg", 1, 4);
-+	clks[IMX8MN_SYS_PLL2_333M] = imx_clk_fixed_factor("sys_pll2_333m", "sys_pll2_333m_cg", 1, 3);
-+	clks[IMX8MN_SYS_PLL2_500M] = imx_clk_fixed_factor("sys_pll2_500m", "sys_pll2_500m_cg", 1, 2);
-+	clks[IMX8MN_SYS_PLL2_1000M] = imx_clk_fixed_factor("sys_pll2_1000m", "sys_pll2_out", 1, 1);
-+
-+	clks[IMX8MN_CLK_CLKOUT1_SEL] = imx_clk_mux("clkout1_sel", ana + 0x128, 4, 4, clkout_sels, ARRAY_SIZE(clkout_sels));
-+	clks[IMX8MN_CLK_CLKOUT1_DIV] = imx_clk_divider("clkout1_div", "clkout1_sel", ana + 0x128, 0, 4);
-+	clks[IMX8MN_CLK_CLKOUT1] = imx_clk_gate("clkout1", "clkout1_div", ana + 0x128, 8);
-+	clks[IMX8MN_CLK_CLKOUT2_SEL] = imx_clk_mux("clkout2_sel", ana + 0x128, 20, 4, clkout_sels, ARRAY_SIZE(clkout_sels));
-+	clks[IMX8MN_CLK_CLKOUT2_DIV] = imx_clk_divider("clkout2_div", "clkout2_sel", ana + 0x128, 16, 4);
-+	clks[IMX8MN_CLK_CLKOUT2] = imx_clk_gate("clkout2", "clkout2_div", ana + 0x128, 24);
-+
-+	/* CORE */
-+	clks[IMX8MN_CLK_A53_SRC] = imx_clk_mux2("arm_a53_src", ccm + 0x8000, 24, 3, imx8mn_a53_sels, ARRAY_SIZE(imx8mn_a53_sels));
-+	clks[IMX8MN_CLK_GPU_CORE_SRC] = imx_clk_mux2("gpu_core_src", ccm + 0x8180, 24, 3, imx8mn_gpu_core_sels, ARRAY_SIZE(imx8mn_gpu_core_sels));
-+	clks[IMX8MN_CLK_GPU_SHADER_SRC] = imx_clk_mux2("gpu_shader_src", ccm + 0x8200, 24, 3, imx8mn_gpu_shader_sels,  ARRAY_SIZE(imx8mn_gpu_shader_sels));
-+	clks[IMX8MN_CLK_A53_CG] = imx_clk_gate3("arm_a53_cg", "arm_a53_src", ccm + 0x8000, 28);
-+	clks[IMX8MN_CLK_GPU_CORE_CG] = imx_clk_gate3("gpu_core_cg", "gpu_core_src", ccm + 0x8180, 28);
-+	clks[IMX8MN_CLK_GPU_SHADER_CG] = imx_clk_gate3("gpu_shader_cg", "gpu_shader_src", ccm + 0x8200, 28);
-+
-+	clks[IMX8MN_CLK_A53_DIV] = imx_clk_divider2("arm_a53_div", "arm_a53_cg", ccm + 0x8000, 0, 3);
-+	clks[IMX8MN_CLK_GPU_CORE_DIV] = imx_clk_divider2("gpu_core_div", "gpu_core_cg", ccm + 0x8180, 0, 3);
-+	clks[IMX8MN_CLK_GPU_SHADER_DIV] = imx_clk_divider2("gpu_shader_div", "gpu_shader_cg", ccm + 0x8200, 0, 3);
-+
-+	/* CORE SEL */
-+	clks[IMX8MN_CLK_A53_CORE] = imx_clk_mux2("arm_a53_core", ccm + 0x9880, 24, 1, imx8mn_a53_core_sels, ARRAY_SIZE(imx8mn_a53_core_sels));
-+
-+	/* BUS */
-+	clks[IMX8MN_CLK_MAIN_AXI] = imx8m_clk_composite_critical("main_axi", imx8mn_main_axi_sels, ccm + 0x8800);
-+	clks[IMX8MN_CLK_ENET_AXI] = imx8m_clk_composite("enet_axi", imx8mn_enet_axi_sels, ccm + 0x8880);
-+	clks[IMX8MN_CLK_NAND_USDHC_BUS] = imx8m_clk_composite("nand_usdhc_bus", imx8mn_nand_usdhc_sels, ccm + 0x8900);
-+	clks[IMX8MN_CLK_DISP_AXI] = imx8m_clk_composite("disp_axi", imx8mn_disp_axi_sels, ccm + 0x8a00);
-+	clks[IMX8MN_CLK_DISP_APB] = imx8m_clk_composite("disp_apb", imx8mn_disp_apb_sels, ccm + 0x8a80);
-+	clks[IMX8MN_CLK_USB_BUS] = imx8m_clk_composite("usb_bus", imx8mn_usb_bus_sels, ccm + 0x8b80);
-+	clks[IMX8MN_CLK_GPU_AXI] = imx8m_clk_composite("gpu_axi", imx8mn_gpu_axi_sels, ccm + 0x8c00);
-+	clks[IMX8MN_CLK_GPU_AHB] = imx8m_clk_composite("gpu_ahb", imx8mn_gpu_ahb_sels, ccm + 0x8c80);
-+	clks[IMX8MN_CLK_NOC] = imx8m_clk_composite_critical("noc", imx8mn_noc_sels, ccm + 0x8d00);
-+
-+	clks[IMX8MN_CLK_AHB] = imx8m_clk_composite_critical("ahb", imx8mn_ahb_sels, ccm + 0x9000);
-+	clks[IMX8MN_CLK_AUDIO_AHB] = imx8m_clk_composite("audio_ahb", imx8mn_audio_ahb_sels, ccm + 0x9100);
-+	clks[IMX8MN_CLK_IPG_ROOT] = imx_clk_divider2("ipg_root", "ahb", ccm + 0x9080, 0, 1);
-+	clks[IMX8MN_CLK_IPG_AUDIO_ROOT] = imx_clk_divider2("ipg_audio_root", "audio_ahb", ccm + 0x9180, 0, 1);
-+	clks[IMX8MN_CLK_DRAM_CORE] = imx_clk_mux2_flags("dram_core_clk", ccm + 0x9800, 24, 1, imx8mn_dram_core_sels, ARRAY_SIZE(imx8mn_dram_core_sels), CLK_IS_CRITICAL);
++	/* BUCKxOUT_DVS0/1 control BUCK123 output */
++	pmic_reg_write(i2c, addr, PCA9450_BUCK123_DVS, 0x29);
 +
 +	/*
-+	 * DRAM clocks are manipulated from TF-A outside clock framework.
-+	 * Mark with GET_RATE_NOCACHE to always read div value from hardware
++	 * increase VDD_SOC to typical value 0.95V before first
++	 * DRAM access, set DVS1 to 0.85v for suspend.
++	 * Enable DVS control through PMIC_STBY_REQ and
++	 * set B1_ENMODE=1 (ON by PMIC_ON_REQ=H)
 +	 */
-+	clks[IMX8MN_CLK_DRAM_ALT] = __imx8m_clk_composite("dram_alt", imx8mn_dram_alt_sels, ccm + 0xa000, CLK_GET_RATE_NOCACHE);
-+	clks[IMX8MN_CLK_DRAM_APB] = __imx8m_clk_composite("dram_apb", imx8mn_dram_apb_sels, ccm + 0xa080, CLK_IS_CRITICAL | CLK_GET_RATE_NOCACHE);
++	pmic_reg_write(i2c, addr, PCA9450_BUCK1OUT_DVS0, 0x1C);
 +
-+	clks[IMX8MN_CLK_DISP_PIXEL] = imx8m_clk_composite("disp_pixel", imx8mn_disp_pixel_sels, ccm + 0xa500);
-+	clks[IMX8MN_CLK_SAI2] = imx8m_clk_composite("sai2", imx8mn_sai2_sels, ccm + 0xa600);
-+	clks[IMX8MN_CLK_SAI3] = imx8m_clk_composite("sai3", imx8mn_sai3_sels, ccm + 0xa680);
-+	clks[IMX8MN_CLK_SAI5] = imx8m_clk_composite("sai5", imx8mn_sai5_sels, ccm + 0xa780);
-+	clks[IMX8MN_CLK_SAI6] = imx8m_clk_composite("sai6", imx8mn_sai6_sels, ccm + 0xa800);
-+	clks[IMX8MN_CLK_SPDIF1] = imx8m_clk_composite("spdif1", imx8mn_spdif1_sels, ccm + 0xa880);
-+	clks[IMX8MN_CLK_ENET_REF] = imx8m_clk_composite("enet_ref", imx8mn_enet_ref_sels, ccm + 0xa980);
-+	clks[IMX8MN_CLK_ENET_TIMER] = imx8m_clk_composite("enet_timer", imx8mn_enet_timer_sels, ccm + 0xaa00);
-+	clks[IMX8MN_CLK_ENET_PHY_REF] = imx8m_clk_composite("enet_phy", imx8mn_enet_phy_sels, ccm + 0xaa80);
-+	clks[IMX8MN_CLK_NAND] = imx8m_clk_composite("nand", imx8mn_nand_sels, ccm + 0xab00);
-+	clks[IMX8MN_CLK_QSPI] = imx8m_clk_composite("qspi", imx8mn_qspi_sels, ccm + 0xab80);
-+	clks[IMX8MN_CLK_USDHC1] = imx8m_clk_composite("usdhc1", imx8mn_usdhc1_sels, ccm + 0xac00);
-+	clks[IMX8MN_CLK_USDHC2] = imx8m_clk_composite("usdhc2", imx8mn_usdhc2_sels, ccm + 0xac80);
-+	clks[IMX8MN_CLK_I2C1] = imx8m_clk_composite("i2c1", imx8mn_i2c1_sels, ccm + 0xad00);
-+	clks[IMX8MN_CLK_I2C2] = imx8m_clk_composite("i2c2", imx8mn_i2c2_sels, ccm + 0xad80);
-+	clks[IMX8MN_CLK_I2C3] = imx8m_clk_composite("i2c3", imx8mn_i2c3_sels, ccm + 0xae00);
-+	clks[IMX8MN_CLK_I2C4] = imx8m_clk_composite("i2c4", imx8mn_i2c4_sels, ccm + 0xae80);
-+	clks[IMX8MN_CLK_UART1] = imx8m_clk_composite("uart1", imx8mn_uart1_sels, ccm + 0xaf00);
-+	clks[IMX8MN_CLK_UART2] = imx8m_clk_composite("uart2", imx8mn_uart2_sels, ccm + 0xaf80);
-+	clks[IMX8MN_CLK_UART3] = imx8m_clk_composite("uart3", imx8mn_uart3_sels, ccm + 0xb000);
-+	clks[IMX8MN_CLK_UART4] = imx8m_clk_composite("uart4", imx8mn_uart4_sels, ccm + 0xb080);
-+	clks[IMX8MN_CLK_USB_CORE_REF] = imx8m_clk_composite("usb_core_ref", imx8mn_usb_core_sels, ccm + 0xb100);
-+	clks[IMX8MN_CLK_USB_PHY_REF] = imx8m_clk_composite("usb_phy_ref", imx8mn_usb_phy_sels, ccm + 0xb180);
-+	clks[IMX8MN_CLK_GIC] = imx8m_clk_composite_critical("gic", imx8mn_gic_sels, ccm + 0xb200);
-+	clks[IMX8MN_CLK_ECSPI1] = imx8m_clk_composite("ecspi1", imx8mn_ecspi1_sels, ccm + 0xb280);
-+	clks[IMX8MN_CLK_ECSPI2] = imx8m_clk_composite("ecspi2", imx8mn_ecspi2_sels, ccm + 0xb300);
-+	clks[IMX8MN_CLK_PWM1] = imx8m_clk_composite("pwm1", imx8mn_pwm1_sels, ccm + 0xb380);
-+	clks[IMX8MN_CLK_PWM2] = imx8m_clk_composite("pwm2", imx8mn_pwm2_sels, ccm + 0xb400);
-+	clks[IMX8MN_CLK_PWM3] = imx8m_clk_composite("pwm3", imx8mn_pwm3_sels, ccm + 0xb480);
-+	clks[IMX8MN_CLK_PWM4] = imx8m_clk_composite("pwm4", imx8mn_pwm4_sels, ccm + 0xb500);
-+	clks[IMX8MN_CLK_WDOG] = imx8m_clk_composite("wdog", imx8mn_wdog_sels, ccm + 0xb900);
-+	clks[IMX8MN_CLK_WRCLK] = imx8m_clk_composite("wrclk", imx8mn_wrclk_sels, ccm + 0xb980);
-+	clks[IMX8MN_CLK_CLKO1] = imx8m_clk_composite("clko1", imx8mn_clko1_sels, ccm + 0xba00);
-+	clks[IMX8MN_CLK_CLKO2] = imx8m_clk_composite("clko2", imx8mn_clko2_sels, ccm + 0xba80);
-+	clks[IMX8MN_CLK_DSI_CORE] = imx8m_clk_composite("dsi_core", imx8mn_dsi_core_sels, ccm + 0xbb00);
-+	clks[IMX8MN_CLK_DSI_PHY_REF] = imx8m_clk_composite("dsi_phy_ref", imx8mn_dsi_phy_sels, ccm + 0xbb80);
-+	clks[IMX8MN_CLK_DSI_DBI] = imx8m_clk_composite("dsi_dbi", imx8mn_dsi_dbi_sels, ccm + 0xbc00);
-+	clks[IMX8MN_CLK_USDHC3] = imx8m_clk_composite("usdhc3", imx8mn_usdhc3_sels, ccm + 0xbc80);
-+	clks[IMX8MN_CLK_CAMERA_PIXEL] = imx8m_clk_composite("camera_pixel", imx8mn_camera_pixel_sels, ccm + 0xbd00);
-+	clks[IMX8MN_CLK_CSI1_PHY_REF] = imx8m_clk_composite("csi1_phy_ref", imx8mn_csi1_phy_sels, ccm + 0xbd80);
-+	clks[IMX8MN_CLK_CSI2_PHY_REF] = imx8m_clk_composite("csi2_phy_ref", imx8mn_csi2_phy_sels, ccm + 0xbf00);
-+	clks[IMX8MN_CLK_CSI2_ESC] = imx8m_clk_composite("csi2_esc", imx8mn_csi2_esc_sels, ccm + 0xbf80);
-+	clks[IMX8MN_CLK_ECSPI3] = imx8m_clk_composite("ecspi3", imx8mn_ecspi3_sels, ccm + 0xc180);
-+	clks[IMX8MN_CLK_PDM] = imx8m_clk_composite("pdm", imx8mn_pdm_sels, ccm + 0xc200);
-+	clks[IMX8MN_CLK_SAI7] = imx8m_clk_composite("sai7", imx8mn_sai7_sels, ccm + 0xc300);
++	/* Set DVS1 to 0.85v for suspend */
++	/* Enable DVS control through PMIC_STBY_REQ and set B1_ENMODE=1 (ON by PMIC_ON_REQ=H) */
++	pmic_reg_write(i2c, addr, PCA9450_BUCK1OUT_DVS1, 0x14);
++	pmic_reg_write(i2c, addr, PCA9450_BUCK1CTRL, 0x59);
 +
-+	clks[IMX8MN_CLK_ECSPI1_ROOT] = imx_clk_gate4("ecspi1_root_clk", "ecspi1", ccm + 0x4070, 0);
-+	clks[IMX8MN_CLK_ECSPI2_ROOT] = imx_clk_gate4("ecspi2_root_clk", "ecspi2", ccm + 0x4080, 0);
-+	clks[IMX8MN_CLK_ECSPI3_ROOT] = imx_clk_gate4("ecspi3_root_clk", "ecspi3", ccm + 0x4090, 0);
-+	clks[IMX8MN_CLK_ENET1_ROOT] = imx_clk_gate4("enet1_root_clk", "enet_axi", ccm + 0x40a0, 0);
-+	clks[IMX8MN_CLK_GPIO1_ROOT] = imx_clk_gate4("gpio1_root_clk", "ipg_root", ccm + 0x40b0, 0);
-+	clks[IMX8MN_CLK_GPIO2_ROOT] = imx_clk_gate4("gpio2_root_clk", "ipg_root", ccm + 0x40c0, 0);
-+	clks[IMX8MN_CLK_GPIO3_ROOT] = imx_clk_gate4("gpio3_root_clk", "ipg_root", ccm + 0x40d0, 0);
-+	clks[IMX8MN_CLK_GPIO4_ROOT] = imx_clk_gate4("gpio4_root_clk", "ipg_root", ccm + 0x40e0, 0);
-+	clks[IMX8MN_CLK_GPIO5_ROOT] = imx_clk_gate4("gpio5_root_clk", "ipg_root", ccm + 0x40f0, 0);
-+	clks[IMX8MN_CLK_I2C1_ROOT] = imx_clk_gate4("i2c1_root_clk", "i2c1", ccm + 0x4170, 0);
-+	clks[IMX8MN_CLK_I2C2_ROOT] = imx_clk_gate4("i2c2_root_clk", "i2c2", ccm + 0x4180, 0);
-+	clks[IMX8MN_CLK_I2C3_ROOT] = imx_clk_gate4("i2c3_root_clk", "i2c3", ccm + 0x4190, 0);
-+	clks[IMX8MN_CLK_I2C4_ROOT] = imx_clk_gate4("i2c4_root_clk", "i2c4", ccm + 0x41a0, 0);
-+	clks[IMX8MN_CLK_MU_ROOT] = imx_clk_gate4("mu_root_clk", "ipg_root", ccm + 0x4210, 0);
-+	clks[IMX8MN_CLK_OCOTP_ROOT] = imx_clk_gate4("ocotp_root_clk", "ipg_root", ccm + 0x4220, 0);
-+	clks[IMX8MN_CLK_PWM1_ROOT] = imx_clk_gate4("pwm1_root_clk", "pwm1", ccm + 0x4280, 0);
-+	clks[IMX8MN_CLK_PWM2_ROOT] = imx_clk_gate4("pwm2_root_clk", "pwm2", ccm + 0x4290, 0);
-+	clks[IMX8MN_CLK_PWM3_ROOT] = imx_clk_gate4("pwm3_root_clk", "pwm3", ccm + 0x42a0, 0);
-+	clks[IMX8MN_CLK_PWM4_ROOT] = imx_clk_gate4("pwm4_root_clk", "pwm4", ccm + 0x42b0, 0);
-+	clks[IMX8MN_CLK_QSPI_ROOT] = imx_clk_gate4("qspi_root_clk", "qspi", ccm + 0x42f0, 0);
-+	clks[IMX8MN_CLK_NAND_ROOT] = imx_clk_gate2_shared2("nand_root_clk", "nand", ccm + 0x4300, 0);
-+	clks[IMX8MN_CLK_NAND_USDHC_BUS_RAWNAND_CLK] = imx_clk_gate2_shared2("nand_usdhc_rawnand_clk", "nand_usdhc_bus", ccm + 0x4300, 0);
-+	clks[IMX8MN_CLK_SAI2_ROOT] = imx_clk_gate2_shared2("sai2_root_clk", "sai2", ccm + 0x4340, 0);
-+	clks[IMX8MN_CLK_SAI2_IPG] = imx_clk_gate2_shared2("sai2_ipg_clk", "ipg_audio_root", ccm + 0x4340, 0);
-+	clks[IMX8MN_CLK_SAI3_ROOT] = imx_clk_gate2_shared2("sai3_root_clk", "sai3", ccm + 0x4350, 0);
-+	clks[IMX8MN_CLK_SAI3_IPG] = imx_clk_gate2_shared2("sai3_ipg_clk", "ipg_audio_root", ccm + 0x4350, 0);
-+	clks[IMX8MN_CLK_SAI5_ROOT] = imx_clk_gate2_shared2("sai5_root_clk", "sai5", ccm + 0x4370, 0);
-+	clks[IMX8MN_CLK_SAI5_IPG] = imx_clk_gate2_shared2("sai5_ipg_clk", "ipg_audio_root", ccm + 0x4370, 0);
-+	clks[IMX8MN_CLK_SAI6_ROOT] = imx_clk_gate2_shared2("sai6_root_clk", "sai6", ccm + 0x4380, 0);
-+	clks[IMX8MN_CLK_SAI6_IPG] = imx_clk_gate2_shared2("sai6_ipg_clk", "ipg_audio_root", ccm + 0x4380, 0);
-+	clks[IMX8MN_CLK_SNVS_ROOT] = imx_clk_gate4("snvs_root_clk", "ipg_root", ccm + 0x4470, 0);
-+	clks[IMX8MN_CLK_UART1_ROOT] = imx_clk_gate4("uart1_root_clk", "uart1", ccm + 0x4490, 0);
-+	clks[IMX8MN_CLK_UART2_ROOT] = imx_clk_gate4("uart2_root_clk", "uart2", ccm + 0x44a0, 0);
-+	clks[IMX8MN_CLK_UART3_ROOT] = imx_clk_gate4("uart3_root_clk", "uart3", ccm + 0x44b0, 0);
-+	clks[IMX8MN_CLK_UART4_ROOT] = imx_clk_gate4("uart4_root_clk", "uart4", ccm + 0x44c0, 0);
-+	clks[IMX8MN_CLK_USB1_CTRL_ROOT] = imx_clk_gate4("usb1_ctrl_root_clk", "usb_bus", ccm + 0x44d0, 0);
-+	clks[IMX8MN_CLK_GPU_CORE_ROOT] = imx_clk_gate4("gpu_core_root_clk", "gpu_core_div", ccm + 0x44f0, 0);
-+	clks[IMX8MN_CLK_USDHC1_ROOT] = imx_clk_gate4("usdhc1_root_clk", "usdhc1", ccm + 0x4510, 0);
-+	clks[IMX8MN_CLK_USDHC2_ROOT] = imx_clk_gate4("usdhc2_root_clk", "usdhc2", ccm + 0x4520, 0);
-+	clks[IMX8MN_CLK_WDOG1_ROOT] = imx_clk_gate4("wdog1_root_clk", "wdog", ccm + 0x4530, 0);
-+	clks[IMX8MN_CLK_WDOG2_ROOT] = imx_clk_gate4("wdog2_root_clk", "wdog", ccm + 0x4540, 0);
-+	clks[IMX8MN_CLK_WDOG3_ROOT] = imx_clk_gate4("wdog3_root_clk", "wdog", ccm + 0x4550, 0);
-+	clks[IMX8MN_CLK_GPU_BUS_ROOT] = imx_clk_gate4("gpu_root_clk", "gpu_axi", ccm + 0x4570, 0);
-+	clks[IMX8MN_CLK_ASRC_ROOT] = imx_clk_gate4("asrc_root_clk", "audio_ahb", ccm + 0x4580, 0);
-+	clks[IMX8MN_CLK_PDM_ROOT] = imx_clk_gate2_shared2("pdm_root_clk", "pdm", ccm + 0x45b0, 0);
-+	clks[IMX8MN_CLK_PDM_IPG]  = imx_clk_gate2_shared2("pdm_ipg_clk", "ipg_audio_root", ccm + 0x45b0, 0);
-+	clks[IMX8MN_CLK_DISP_AXI_ROOT]  = imx_clk_gate2_shared2("disp_axi_root_clk", "disp_axi", ccm + 0x45d0, 0);
-+	clks[IMX8MN_CLK_DISP_APB_ROOT]  = imx_clk_gate2_shared2("disp_apb_root_clk", "disp_apb", ccm + 0x45d0, 0);
-+	clks[IMX8MN_CLK_CAMERA_PIXEL_ROOT] = imx_clk_gate2_shared2("camera_pixel_clk", "camera_pixel", ccm + 0x45d0, 0);
-+	clks[IMX8MN_CLK_DISP_PIXEL_ROOT] = imx_clk_gate2_shared2("disp_pixel_clk", "disp_pixel", ccm + 0x45d0, 0);
-+	clks[IMX8MN_CLK_USDHC3_ROOT] = imx_clk_gate4("usdhc3_root_clk", "usdhc3", ccm + 0x45e0, 0);
-+	clks[IMX8MN_CLK_TMU_ROOT] = imx_clk_gate4("tmu_root_clk", "ipg_root", ccm + 0x4620, 0);
-+	clks[IMX8MN_CLK_SDMA1_ROOT] = imx_clk_gate4("sdma1_clk", "ipg_root", ccm + 0x43a0, 0);
-+	clks[IMX8MN_CLK_SDMA2_ROOT] = imx_clk_gate4("sdma2_clk", "ipg_audio_root", ccm + 0x43b0, 0);
-+	clks[IMX8MN_CLK_SDMA3_ROOT] = imx_clk_gate4("sdma3_clk", "ipg_audio_root", ccm + 0x45f0, 0);
-+	clks[IMX8MN_CLK_SAI7_ROOT] = imx_clk_gate2_shared2("sai7_root_clk", "sai7", ccm + 0x4650, 0);
++	/* set VDD_SNVS_0V8 from default 0.85V */
++	pmic_reg_write(i2c, addr, PCA9450_LDO2CTRL, 0xC0);
 +
-+	clks[IMX8MN_CLK_DRAM_ALT_ROOT] = imx_clk_fixed_factor("dram_alt_root", "dram_alt", 1, 4);
++	/* enable LDO4 to 1.2v */
++	pmic_reg_write(i2c, addr, PCA9450_LDO4CTRL, 0x44);
 +
-+	clks[IMX8MN_CLK_ARM] = imx_clk_cpu("arm", "arm_a53_core",
-+					   clks[IMX8MN_CLK_A53_CORE],
-+					   clks[IMX8MN_CLK_A53_CORE],
-+					   clks[IMX8MN_ARM_PLL_OUT],
-+					   clks[IMX8MN_CLK_A53_DIV]);
++	/* set WDOG_B_CFG to cold reset */
++	pmic_reg_write(i2c, addr, PCA9450_RESET_CTRL, 0xA1);
 +
-+	imx_check_clocks(clks, ARRAY_SIZE(clks));
-+
-+	clk_enable(clks[IMX8MN_SYS_PLL3_OUT]);
-+	clk_data.clks = clks;
-+	clk_data.clk_num = ARRAY_SIZE(clks);
-+
-+	ret = of_clk_add_provider(ccm_np, of_clk_src_onecell_get, &clk_data);
-+	if (ret < 0)
-+		pr_err("failed to register clks for i.MX8MN\n");
-+
-+	return ret;
++	return 0;
 +}
-+CLK_OF_DECLARE(imx8mn, "fsl,imx8mn-ccm", imx8mn_clocks_init);
 +
-+MODULE_AUTHOR("Anson Huang <Anson.Huang@nxp.com>");
-+MODULE_DESCRIPTION("NXP i.MX8MN clock driver");
-+MODULE_LICENSE("GPL v2");
++static int power_init_board_bd71837(void *i2c, int addr)
++{
++	/* decrease RESET key long push time from the default 10s to 10ms */
++	pmic_reg_write(i2c, addr, BD718XX_PWRONCONFIG1, 0x0);
++
++	/* unlock the PMIC regs */
++	pmic_reg_write(i2c, addr, BD718XX_REGLOCK, 0x1);
++
++	/* Set VDD_ARM to typical value 0.85v for 1.2Ghz */
++	pmic_reg_write(i2c, addr, BD718XX_BUCK2_VOLT_RUN, 0xf);
++
++	/* Set VDD_SOC/VDD_DRAM to typical value 0.85v for nominal mode */
++	pmic_reg_write(i2c, addr, BD718XX_BUCK1_VOLT_RUN, 0xf);
++
++	/* Set VDD_SOC 0.85v for suspend */
++	pmic_reg_write(i2c, addr, BD718XX_BUCK1_VOLT_SUSP, 0xf);
++
++	/* increase NVCC_DRAM_1V2 to 1.2v for DDR4
++	 * */
++	pmic_reg_write(i2c, addr, BD718XX_4TH_NODVS_BUCK_CTRL, 0x28);
++
++	/* lock the PMIC regs */
++	pmic_reg_write(i2c, addr, BD718XX_REGLOCK, 0x11);
++
++	return 0;
++}
++
++extern struct dram_timing_info imx8mn_evk_ddr4_timing, imx8mn_evk_lpddr4_timing;
++
++static void start_atf(void)
++{
++	struct dram_timing_info *dram_timing = &imx8mn_evk_lpddr4_timing;
++	size_t bl31_size;
++	const u8 *bl31;
++	enum bootsource src;
++	void *i2c;
++	int instance;
++	int ret;
++
++	/*
++	 * If we are in EL3 we are running for the first time and need to
++	 * initialize the DRAM and run TF-A (BL31). The TF-A will then jump
++	 * to DRAM in EL2.
++	 */
++	if (current_el() != 3)
++		return;
++
++	imx8mn_setup_pad(IMX8MN_PAD_I2C1_SCL__I2C1_SCL);
++	imx8mn_setup_pad(IMX8MN_PAD_I2C1_SDA__I2C1_SDA);
++
++	imx8mn_early_clock_init();
++	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
++
++	i2c = imx8m_i2c_early_init(IOMEM(MX8MN_I2C1_BASE_ADDR));
++
++	ret = power_init_board_pca9450(i2c, 0x25);
++	if (ret) {
++		power_init_board_bd71837(i2c, 0x4b);
++		dram_timing = &imx8mn_evk_ddr4_timing;
++	}
++
++	imx8mn_ddr_init(dram_timing);
++
++	imx8mn_get_boot_source(&src, &instance);
++	switch (src) {
++	case BOOTSOURCE_MMC:
++		imx8mn_esdhc_load_image(instance, false);
++		break;
++	default:
++		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
++		hang();
++	}
++
++	/*
++	 * On completion the TF-A will jump to MX8M_ATF_BL33_BASE_ADDR
++	 * in EL2. Copy the image there, but replace the PBL part of
++	 * that image with ourselves. On a high assurance boot only the
++	 * currently running code is validated and contains the checksum
++	 * for the piggy data, so we need to ensure that we are running
++	 * the same code in DRAM.
++	 */
++	memcpy((void *)MX8M_ATF_BL33_BASE_ADDR,
++	       __image_start, barebox_pbl_size);
++
++	get_builtin_firmware(imx8mn_bl31_bin, &bl31, &bl31_size);
++
++	imx8mn_atf_load_bl31(bl31, bl31_size);
++
++	/* not reached */
++}
++
++/*
++ * Power-on execution flow of start_nxp_imx8mn_evk() might not be
++ * obvious for a very first read, so here's, hopefully helpful,
++ * summary:
++ *
++ * 1. MaskROM uploads PBL into OCRAM and that's where this function is
++ *    executed for the first time. At entry the exception level is EL3.
++ *
++ * 2. DDR is initialized and the image is loaded from storage into DRAM. The PBL
++ *    part is copied from OCRAM to the TF-A return address in DRAM.
++ *
++ * 3. TF-A is executed and exits into the PBL code in DRAM. TF-A has taken us
++ *    from EL3 to EL2.
++ *
++ * 4. Standard barebox boot flow continues
++ */
++static __noreturn noinline void nxp_imx8mn_evk_start(void)
++{
++	setup_uart();
++
++	start_atf();
++
++	/*
++	 * Standard entry we hit once we initialized both DDR and ATF
++	 */
++	imx8mn_barebox_entry(__dtb_z_imx8mn_evk_start);
++}
++
++ENTRY_FUNCTION(start_nxp_imx8mn_evk, r0, r1, r2)
++{
++	imx8mn_cpu_lowlevel_init();
++
++	relocate_to_current_adr();
++	setup_c();
++
++	nxp_imx8mn_evk_start();
++}
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c
+new file mode 100644
+index 000000000000..c53bcc705d2b
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c
+@@ -0,0 +1,1591 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2019 NXP
++ *
++ * Generated code from MX8M_DDR_tool
++ * Align with uboot-imx_v2018.03_4.14.78_1.0.0_ga
++ */
++
++#include <common.h>
++#include <soc/imx8m/ddr.h>
++
++#define DDR_ONE_RANK
++#include <soc/imx8m/lpddr4_define.h>
++
++static struct dram_cfg_param ddr_ddrc_cfg[] = {
++	{0x3d400020, 0x00000213},
++	{0x3d400024, 0x0003e800},
++	{0x3d400030, 0x00000120},
++	{0x3d400000, 0xa3080020},
++	{0x3d400064, 0x006100e0},
++	{0x3d4000d0, 0xc003061c},
++	{0x3d4000d4, 0x009e0000},
++	{0x3d4000dc, 0x00d4002d},
++	{0x3d4000e0, 0x00310000},
++	{0x3d4000e8, 0x0066004d},
++	{0x3d4000ec, 0x0016004a},
++	{0x3d400100, 0x1a201b22},
++	{0x3d400104, 0x00060633},
++	{0x3d40010c, 0x00c0c000},
++	{0x3d400110, 0x0f04080f},
++	{0x3d400114, 0x02040c0c},
++	{0x3d400118, 0x01010007},
++	{0x3d40011c, 0x00000401},
++	{0x3d400130, 0x00020600},
++	{0x3d400134, 0x0c100002},
++	{0x3d400138, 0x000000e6},
++	{0x3d400144, 0x00a00050},
++	{0x3d400180, 0x03200018},
++	{0x3d400184, 0x028061a8},
++	{0x3d400188, 0x00000000},
++	{0x3d400190, 0x0497820a},
++	{0x3d4001b4, 0x0000170a},
++	{0x3d400108, 0x070e1617},
++	{0x3d4001c0, 0x00000001},
++	{0x3d400194, 0x00080303},
++	{0x3d4001a0, 0xe0400018},
++	{0x3d4001a4, 0x00df00e4},
++	{0x3d4001a8, 0x80000000},
++	{0x3d4001b0, 0x00000011},
++	{0x3d4001c4, 0x00000001},
++	{0x3d4000f4, 0x00000c99},
++	{0x3d400200, 0x00000017},
++	{0x3d400204, 0x00080808},
++	{0x3d400208, 0x00000000},
++	{0x3d40020c, 0x00000000},
++	{0x3d400210, 0x00001f1f},
++	{0x3d400214, 0x07070707},
++	{0x3d400218, 0x07070707},
++	{0x3d40021c, 0x00000f0f},
++	{0x3d400250, 0x29001701},
++	{0x3d400254, 0x0000002c},
++	{0x3d40025c, 0x04000030},
++	{0x3d400264, 0x900093e7},
++	{0x3d40026c, 0x20005574},
++	{0x3d400400, 0x00000111},
++	{0x3d400408, 0x000072ff},
++	{0x3d400494, 0x02100e07},
++	{0x3d400498, 0x00620096},
++	{0x3d40049c, 0x01100e07},
++	{0x3d4004a0, 0x00c8012c},
++	{0x3d402020, 0x00000011},
++	{0x3d402024, 0x00007d00},
++	{0x3d402050, 0x0020d040},
++	{0x3d402064, 0x000c001d},
++	{0x3d4020f4, 0x00000c99},
++	{0x3d402100, 0x0a040305},
++	{0x3d402104, 0x00030407},
++	{0x3d402108, 0x0203060b},
++	{0x3d40210c, 0x00505000},
++	{0x3d402110, 0x02040202},
++	{0x3d402114, 0x02030202},
++	{0x3d402118, 0x01010004},
++	{0x3d40211c, 0x00000301},
++	{0x3d402130, 0x00020300},
++	{0x3d402134, 0x0a100002},
++	{0x3d402138, 0x0000001d},
++	{0x3d402144, 0x0014000a},
++	{0x3d402180, 0x00650004},
++	{0x3d402190, 0x03818200},
++	{0x3d402194, 0x00080303},
++	{0x3d4021b4, 0x00000100},
++	{0x3d4020dc, 0x00840000},
++	{0x3d4020e0, 0x00310000},
++	{0x3d4020e8, 0x0066004d},
++	{0x3d4020ec, 0x0016004a},
++	{0x3d403020, 0x00000011},
++	{0x3d403024, 0x00001f40},
++	{0x3d403050, 0x0020d040},
++	{0x3d403064, 0x00030007},
++	{0x3d4030f4, 0x00000c99},
++	{0x3d403100, 0x0a010102},
++	{0x3d403104, 0x00030404},
++	{0x3d403108, 0x0203060b},
++	{0x3d40310c, 0x00505000},
++	{0x3d403110, 0x02040202},
++	{0x3d403114, 0x02030202},
++	{0x3d403118, 0x01010004},
++	{0x3d40311c, 0x00000301},
++	{0x3d403130, 0x00020300},
++	{0x3d403134, 0x0a100002},
++	{0x3d403138, 0x00000008},
++	{0x3d403144, 0x00050003},
++	{0x3d403180, 0x00190004},
++	{0x3d403190, 0x03818200},
++	{0x3d403194, 0x00080303},
++	{0x3d4031b4, 0x00000100},
++	{0x3d4030dc, 0x00840000},
++	{0x3d4030e0, 0x00310000},
++	{0x3d4030e8, 0x0066004d},
++	{0x3d4030ec, 0x0016004a},
++
++	/* default boot point */
++	{ 0x3d400028, 0x0 },
++};
++
++/* PHY Initialize Configuration */
++static struct dram_cfg_param ddr_ddrphy_cfg[] = {
++	{0x000d0000, 0x00000000},
++	{0x000100a0, 0x00000000},
++	{0x000100a1, 0x00000001},
++	{0x000100a2, 0x00000002},
++	{0x000100a3, 0x00000003},
++	{0x000100a4, 0x00000004},
++	{0x000100a5, 0x00000005},
++	{0x000100a6, 0x00000006},
++	{0x000100a7, 0x00000007},
++	{0x000110a0, 0x00000000},
++	{0x000110a1, 0x00000001},
++	{0x000110a2, 0x00000003},
++	{0x000110a3, 0x00000004},
++	{0x000110a4, 0x00000005},
++	{0x000110a5, 0x00000002},
++	{0x000110a6, 0x00000007},
++	{0x000110a7, 0x00000006},
++	{0x0001005f, 0x0000015f},
++	{0x0001015f, 0x0000015f},
++	{0x0001105f, 0x0000015f},
++	{0x0001115f, 0x0000015f},
++	{0x0011005f, 0x0000015f},
++	{0x0011015f, 0x0000015f},
++	{0x0011105f, 0x0000015f},
++	{0x0011115f, 0x0000015f},
++	{0x0021005f, 0x0000015f},
++	{0x0021015f, 0x0000015f},
++	{0x0021105f, 0x0000015f},
++	{0x0021115f, 0x0000015f},
++	{0x00000055, 0x0000016f},
++	{0x00001055, 0x0000016f},
++	{0x00002055, 0x0000016f},
++	{0x00003055, 0x0000016f},
++	{0x00004055, 0x0000016f},
++	{0x00005055, 0x0000016f},
++	{0x00006055, 0x0000016f},
++	{0x00007055, 0x0000016f},
++	{0x00008055, 0x0000016f},
++	{0x00009055, 0x0000016f},
++	{0x000200c5, 0x00000019},
++	{0x001200c5, 0x00000007},
++	{0x002200c5, 0x00000007},
++	{0x0002002e, 0x00000002},
++	{0x0012002e, 0x00000002},
++	{0x0022002e, 0x00000002},
++	{0x00090204, 0x00000000},
++	{0x00190204, 0x00000000},
++	{0x00290204, 0x00000000},
++	{0x00020024, 0x000001a3},
++	{0x0002003a, 0x00000002},
++	{0x0002007d, 0x00000212},
++	{0x0002007c, 0x00000061},
++	{0x00120024, 0x000001a3},
++	{0x0002003a, 0x00000002},
++	{0x0012007d, 0x00000212},
++	{0x0012007c, 0x00000061},
++	{0x00220024, 0x000001a3},
++	{0x0002003a, 0x00000002},
++	{0x0022007d, 0x00000212},
++	{0x0022007c, 0x00000061},
++	{0x00020056, 0x00000003},
++	{0x00120056, 0x00000003},
++	{0x00220056, 0x00000003},
++	{0x0001004d, 0x00000f80},
++	{0x0001014d, 0x00000f80},
++	{0x0001104d, 0x00000f80},
++	{0x0001114d, 0x00000f80},
++	{0x0011004d, 0x00000f80},
++	{0x0011014d, 0x00000f80},
++	{0x0011104d, 0x00000f80},
++	{0x0011114d, 0x00000f80},
++	{0x0021004d, 0x00000f80},
++	{0x0021014d, 0x00000f80},
++	{0x0021104d, 0x00000f80},
++	{0x0021114d, 0x00000f80},
++	{0x00010049, 0x00000fbe},
++	{0x00010149, 0x00000fbe},
++	{0x00011049, 0x00000fbe},
++	{0x00011149, 0x00000fbe},
++	{0x00110049, 0x00000fbe},
++	{0x00110149, 0x00000fbe},
++	{0x00111049, 0x00000fbe},
++	{0x00111149, 0x00000fbe},
++	{0x00210049, 0x00000fbe},
++	{0x00210149, 0x00000fbe},
++	{0x00211049, 0x00000fbe},
++	{0x00211149, 0x00000fbe},
++	{0x00000043, 0x00000063},
++	{0x00001043, 0x00000063},
++	{0x00002043, 0x00000063},
++	{0x00003043, 0x00000063},
++	{0x00004043, 0x00000063},
++	{0x00005043, 0x00000063},
++	{0x00006043, 0x00000063},
++	{0x00007043, 0x00000063},
++	{0x00008043, 0x00000063},
++	{0x00009043, 0x00000063},
++	{0x00020018, 0x00000001},
++	{0x00020075, 0x00000004},
++	{0x00020050, 0x00000000},
++	{0x00020008, 0x00000320},
++	{0x00120008, 0x00000064},
++	{0x00220008, 0x00000019},
++	{0x00020088, 0x00000009},
++	{0x000200b2, 0x000000dc},
++	{0x00010043, 0x000005a1},
++	{0x00010143, 0x000005a1},
++	{0x00011043, 0x000005a1},
++	{0x00011143, 0x000005a1},
++	{0x001200b2, 0x000000dc},
++	{0x00110043, 0x000005a1},
++	{0x00110143, 0x000005a1},
++	{0x00111043, 0x000005a1},
++	{0x00111143, 0x000005a1},
++	{0x002200b2, 0x000000dc},
++	{0x00210043, 0x000005a1},
++	{0x00210143, 0x000005a1},
++	{0x00211043, 0x000005a1},
++	{0x00211143, 0x000005a1},
++	{0x000200fa, 0x00000001},
++	{0x001200fa, 0x00000001},
++	{0x002200fa, 0x00000001},
++	{0x00020019, 0x00000001},
++	{0x00120019, 0x00000001},
++	{0x00220019, 0x00000001},
++	{0x000200f0, 0x00000660},
++	{0x000200f1, 0x00000000},
++	{0x000200f2, 0x00004444},
++	{0x000200f3, 0x00008888},
++	{0x000200f4, 0x00005665},
++	{0x000200f5, 0x00000000},
++	{0x000200f6, 0x00000000},
++	{0x000200f7, 0x0000f000},
++	{0x0001004a, 0x00000500},
++	{0x0001104a, 0x00000500},
++	{0x00020025, 0x00000000},
++	{0x0002002d, 0x00000000},
++	{0x0012002d, 0x00000000},
++	{0x0022002d, 0x00000000},
++	{0x0002002c, 0x00000000},
++	{0x000200c7, 0x00000021},
++	{0x000200ca, 0x00000024},
++	{0x000200cc, 0x000001f7},
++	{0x001200c7, 0x00000021},
++	{0x001200ca, 0x00000024},
++	{0x001200cc, 0x000001f7},
++	{0x002200c7, 0x00000021},
++	{0x002200ca, 0x00000024},
++	{0x002200cc, 0x000001f7},
++	{0x00020060, 0x00000002},
++	{0x000d0000, 0x00000001},
++};
++
++/* ddr phy trained csr */
++static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
++	{0x0200b2, 0x0},
++	{0x1200b2, 0x0},
++	{0x2200b2, 0x0},
++	{0x0200cb, 0x0},
++	{0x010043, 0x0},
++	{0x110043, 0x0},
++	{0x210043, 0x0},
++	{0x010143, 0x0},
++	{0x110143, 0x0},
++	{0x210143, 0x0},
++	{0x011043, 0x0},
++	{0x111043, 0x0},
++	{0x211043, 0x0},
++	{0x011143, 0x0},
++	{0x111143, 0x0},
++	{0x211143, 0x0},
++	{0x000080, 0x0},
++	{0x100080, 0x0},
++	{0x200080, 0x0},
++	{0x001080, 0x0},
++	{0x101080, 0x0},
++	{0x201080, 0x0},
++	{0x002080, 0x0},
++	{0x102080, 0x0},
++	{0x202080, 0x0},
++	{0x003080, 0x0},
++	{0x103080, 0x0},
++	{0x203080, 0x0},
++	{0x004080, 0x0},
++	{0x104080, 0x0},
++	{0x204080, 0x0},
++	{0x005080, 0x0},
++	{0x105080, 0x0},
++	{0x205080, 0x0},
++	{0x006080, 0x0},
++	{0x106080, 0x0},
++	{0x206080, 0x0},
++	{0x007080, 0x0},
++	{0x107080, 0x0},
++	{0x207080, 0x0},
++	{0x008080, 0x0},
++	{0x108080, 0x0},
++	{0x208080, 0x0},
++	{0x009080, 0x0},
++	{0x109080, 0x0},
++	{0x209080, 0x0},
++	{0x010080, 0x0},
++	{0x110080, 0x0},
++	{0x210080, 0x0},
++	{0x010180, 0x0},
++	{0x110180, 0x0},
++	{0x210180, 0x0},
++	{0x011080, 0x0},
++	{0x111080, 0x0},
++	{0x211080, 0x0},
++	{0x011180, 0x0},
++	{0x111180, 0x0},
++	{0x211180, 0x0},
++	{0x010081, 0x0},
++	{0x110081, 0x0},
++	{0x210081, 0x0},
++	{0x010181, 0x0},
++	{0x110181, 0x0},
++	{0x210181, 0x0},
++	{0x011081, 0x0},
++	{0x111081, 0x0},
++	{0x211081, 0x0},
++	{0x011181, 0x0},
++	{0x111181, 0x0},
++	{0x211181, 0x0},
++	{0x0100d0, 0x0},
++	{0x1100d0, 0x0},
++	{0x2100d0, 0x0},
++	{0x0101d0, 0x0},
++	{0x1101d0, 0x0},
++	{0x2101d0, 0x0},
++	{0x0110d0, 0x0},
++	{0x1110d0, 0x0},
++	{0x2110d0, 0x0},
++	{0x0111d0, 0x0},
++	{0x1111d0, 0x0},
++	{0x2111d0, 0x0},
++	{0x0100d1, 0x0},
++	{0x1100d1, 0x0},
++	{0x2100d1, 0x0},
++	{0x0101d1, 0x0},
++	{0x1101d1, 0x0},
++	{0x2101d1, 0x0},
++	{0x0110d1, 0x0},
++	{0x1110d1, 0x0},
++	{0x2110d1, 0x0},
++	{0x0111d1, 0x0},
++	{0x1111d1, 0x0},
++	{0x2111d1, 0x0},
++	{0x010068, 0x0},
++	{0x010168, 0x0},
++	{0x010268, 0x0},
++	{0x010368, 0x0},
++	{0x010468, 0x0},
++	{0x010568, 0x0},
++	{0x010668, 0x0},
++	{0x010768, 0x0},
++	{0x010868, 0x0},
++	{0x011068, 0x0},
++	{0x011168, 0x0},
++	{0x011268, 0x0},
++	{0x011368, 0x0},
++	{0x011468, 0x0},
++	{0x011568, 0x0},
++	{0x011668, 0x0},
++	{0x011768, 0x0},
++	{0x011868, 0x0},
++	{0x010069, 0x0},
++	{0x010169, 0x0},
++	{0x010269, 0x0},
++	{0x010369, 0x0},
++	{0x010469, 0x0},
++	{0x010569, 0x0},
++	{0x010669, 0x0},
++	{0x010769, 0x0},
++	{0x010869, 0x0},
++	{0x011069, 0x0},
++	{0x011169, 0x0},
++	{0x011269, 0x0},
++	{0x011369, 0x0},
++	{0x011469, 0x0},
++	{0x011569, 0x0},
++	{0x011669, 0x0},
++	{0x011769, 0x0},
++	{0x011869, 0x0},
++	{0x01008c, 0x0},
++	{0x11008c, 0x0},
++	{0x21008c, 0x0},
++	{0x01018c, 0x0},
++	{0x11018c, 0x0},
++	{0x21018c, 0x0},
++	{0x01108c, 0x0},
++	{0x11108c, 0x0},
++	{0x21108c, 0x0},
++	{0x01118c, 0x0},
++	{0x11118c, 0x0},
++	{0x21118c, 0x0},
++	{0x01008d, 0x0},
++	{0x11008d, 0x0},
++	{0x21008d, 0x0},
++	{0x01018d, 0x0},
++	{0x11018d, 0x0},
++	{0x21018d, 0x0},
++	{0x01108d, 0x0},
++	{0x11108d, 0x0},
++	{0x21108d, 0x0},
++	{0x01118d, 0x0},
++	{0x11118d, 0x0},
++	{0x21118d, 0x0},
++	{0x0100c0, 0x0},
++	{0x1100c0, 0x0},
++	{0x2100c0, 0x0},
++	{0x0101c0, 0x0},
++	{0x1101c0, 0x0},
++	{0x2101c0, 0x0},
++	{0x0102c0, 0x0},
++	{0x1102c0, 0x0},
++	{0x2102c0, 0x0},
++	{0x0103c0, 0x0},
++	{0x1103c0, 0x0},
++	{0x2103c0, 0x0},
++	{0x0104c0, 0x0},
++	{0x1104c0, 0x0},
++	{0x2104c0, 0x0},
++	{0x0105c0, 0x0},
++	{0x1105c0, 0x0},
++	{0x2105c0, 0x0},
++	{0x0106c0, 0x0},
++	{0x1106c0, 0x0},
++	{0x2106c0, 0x0},
++	{0x0107c0, 0x0},
++	{0x1107c0, 0x0},
++	{0x2107c0, 0x0},
++	{0x0108c0, 0x0},
++	{0x1108c0, 0x0},
++	{0x2108c0, 0x0},
++	{0x0110c0, 0x0},
++	{0x1110c0, 0x0},
++	{0x2110c0, 0x0},
++	{0x0111c0, 0x0},
++	{0x1111c0, 0x0},
++	{0x2111c0, 0x0},
++	{0x0112c0, 0x0},
++	{0x1112c0, 0x0},
++	{0x2112c0, 0x0},
++	{0x0113c0, 0x0},
++	{0x1113c0, 0x0},
++	{0x2113c0, 0x0},
++	{0x0114c0, 0x0},
++	{0x1114c0, 0x0},
++	{0x2114c0, 0x0},
++	{0x0115c0, 0x0},
++	{0x1115c0, 0x0},
++	{0x2115c0, 0x0},
++	{0x0116c0, 0x0},
++	{0x1116c0, 0x0},
++	{0x2116c0, 0x0},
++	{0x0117c0, 0x0},
++	{0x1117c0, 0x0},
++	{0x2117c0, 0x0},
++	{0x0118c0, 0x0},
++	{0x1118c0, 0x0},
++	{0x2118c0, 0x0},
++	{0x0100c1, 0x0},
++	{0x1100c1, 0x0},
++	{0x2100c1, 0x0},
++	{0x0101c1, 0x0},
++	{0x1101c1, 0x0},
++	{0x2101c1, 0x0},
++	{0x0102c1, 0x0},
++	{0x1102c1, 0x0},
++	{0x2102c1, 0x0},
++	{0x0103c1, 0x0},
++	{0x1103c1, 0x0},
++	{0x2103c1, 0x0},
++	{0x0104c1, 0x0},
++	{0x1104c1, 0x0},
++	{0x2104c1, 0x0},
++	{0x0105c1, 0x0},
++	{0x1105c1, 0x0},
++	{0x2105c1, 0x0},
++	{0x0106c1, 0x0},
++	{0x1106c1, 0x0},
++	{0x2106c1, 0x0},
++	{0x0107c1, 0x0},
++	{0x1107c1, 0x0},
++	{0x2107c1, 0x0},
++	{0x0108c1, 0x0},
++	{0x1108c1, 0x0},
++	{0x2108c1, 0x0},
++	{0x0110c1, 0x0},
++	{0x1110c1, 0x0},
++	{0x2110c1, 0x0},
++	{0x0111c1, 0x0},
++	{0x1111c1, 0x0},
++	{0x2111c1, 0x0},
++	{0x0112c1, 0x0},
++	{0x1112c1, 0x0},
++	{0x2112c1, 0x0},
++	{0x0113c1, 0x0},
++	{0x1113c1, 0x0},
++	{0x2113c1, 0x0},
++	{0x0114c1, 0x0},
++	{0x1114c1, 0x0},
++	{0x2114c1, 0x0},
++	{0x0115c1, 0x0},
++	{0x1115c1, 0x0},
++	{0x2115c1, 0x0},
++	{0x0116c1, 0x0},
++	{0x1116c1, 0x0},
++	{0x2116c1, 0x0},
++	{0x0117c1, 0x0},
++	{0x1117c1, 0x0},
++	{0x2117c1, 0x0},
++	{0x0118c1, 0x0},
++	{0x1118c1, 0x0},
++	{0x2118c1, 0x0},
++	{0x010020, 0x0},
++	{0x110020, 0x0},
++	{0x210020, 0x0},
++	{0x011020, 0x0},
++	{0x111020, 0x0},
++	{0x211020, 0x0},
++	{0x020072, 0x0},
++	{0x020073, 0x0},
++	{0x020074, 0x0},
++	{0x0100aa, 0x0},
++	{0x0110aa, 0x0},
++	{0x020010, 0x0},
++	{0x120010, 0x0},
++	{0x220010, 0x0},
++	{0x020011, 0x0},
++	{0x120011, 0x0},
++	{0x220011, 0x0},
++	{0x0100ae, 0x0},
++	{0x1100ae, 0x0},
++	{0x2100ae, 0x0},
++	{0x0100af, 0x0},
++	{0x1100af, 0x0},
++	{0x2100af, 0x0},
++	{0x0110ae, 0x0},
++	{0x1110ae, 0x0},
++	{0x2110ae, 0x0},
++	{0x0110af, 0x0},
++	{0x1110af, 0x0},
++	{0x2110af, 0x0},
++	{0x020020, 0x0},
++	{0x120020, 0x0},
++	{0x220020, 0x0},
++	{0x0100a0, 0x0},
++	{0x0100a1, 0x0},
++	{0x0100a2, 0x0},
++	{0x0100a3, 0x0},
++	{0x0100a4, 0x0},
++	{0x0100a5, 0x0},
++	{0x0100a6, 0x0},
++	{0x0100a7, 0x0},
++	{0x0110a0, 0x0},
++	{0x0110a1, 0x0},
++	{0x0110a2, 0x0},
++	{0x0110a3, 0x0},
++	{0x0110a4, 0x0},
++	{0x0110a5, 0x0},
++	{0x0110a6, 0x0},
++	{0x0110a7, 0x0},
++	{0x02007c, 0x0},
++	{0x12007c, 0x0},
++	{0x22007c, 0x0},
++	{0x02007d, 0x0},
++	{0x12007d, 0x0},
++	{0x22007d, 0x0},
++	{0x0400fd, 0x0},
++	{0x0400c0, 0x0},
++	{0x090201, 0x0},
++	{0x190201, 0x0},
++	{0x290201, 0x0},
++	{0x090202, 0x0},
++	{0x190202, 0x0},
++	{0x290202, 0x0},
++	{0x090203, 0x0},
++	{0x190203, 0x0},
++	{0x290203, 0x0},
++	{0x090204, 0x0},
++	{0x190204, 0x0},
++	{0x290204, 0x0},
++	{0x090205, 0x0},
++	{0x190205, 0x0},
++	{0x290205, 0x0},
++	{0x090206, 0x0},
++	{0x190206, 0x0},
++	{0x290206, 0x0},
++	{0x090207, 0x0},
++	{0x190207, 0x0},
++	{0x290207, 0x0},
++	{0x090208, 0x0},
++	{0x190208, 0x0},
++	{0x290208, 0x0},
++	{0x010062, 0x0},
++	{0x010162, 0x0},
++	{0x010262, 0x0},
++	{0x010362, 0x0},
++	{0x010462, 0x0},
++	{0x010562, 0x0},
++	{0x010662, 0x0},
++	{0x010762, 0x0},
++	{0x010862, 0x0},
++	{0x011062, 0x0},
++	{0x011162, 0x0},
++	{0x011262, 0x0},
++	{0x011362, 0x0},
++	{0x011462, 0x0},
++	{0x011562, 0x0},
++	{0x011662, 0x0},
++	{0x011762, 0x0},
++	{0x011862, 0x0},
++	{0x020077, 0x0},
++	{0x010001, 0x0},
++	{0x011001, 0x0},
++	{0x010040, 0x0},
++	{0x010140, 0x0},
++	{0x010240, 0x0},
++	{0x010340, 0x0},
++	{0x010440, 0x0},
++	{0x010540, 0x0},
++	{0x010640, 0x0},
++	{0x010740, 0x0},
++	{0x010840, 0x0},
++	{0x010030, 0x0},
++	{0x010130, 0x0},
++	{0x010230, 0x0},
++	{0x010330, 0x0},
++	{0x010430, 0x0},
++	{0x010530, 0x0},
++	{0x010630, 0x0},
++	{0x010730, 0x0},
++	{0x010830, 0x0},
++	{0x011040, 0x0},
++	{0x011140, 0x0},
++	{0x011240, 0x0},
++	{0x011340, 0x0},
++	{0x011440, 0x0},
++	{0x011540, 0x0},
++	{0x011640, 0x0},
++	{0x011740, 0x0},
++	{0x011840, 0x0},
++	{0x011030, 0x0},
++	{0x011130, 0x0},
++	{0x011230, 0x0},
++	{0x011330, 0x0},
++	{0x011430, 0x0},
++	{0x011530, 0x0},
++	{0x011630, 0x0},
++	{0x011730, 0x0},
++	{0x011830, 0x0},
++};
++
++/* P0 message block paremeter for training firmware */
++static struct dram_cfg_param ddr_fsp0_cfg[] = {
++	{0x000d0000, 0x00000000},
++	{0x00054000, 0x00000000},
++	{0x00054001, 0x00000000},
++	{0x00054002, 0x00000000},
++	{0x00054003, 0x00000c80},
++	{0x00054004, 0x00000002},
++	{0x00054005, 0x00000000},
++	{0x00054006, 0x00000011},
++	{0x00054007, 0x00000000},
++	{0x00054008, 0x0000131f},
++	{0x00054009, 0x000000c8},
++	{0x0005400a, 0x00000000},
++	{0x0005400b, 0x00000002},
++	{0x0005400c, 0x00000000},
++	{0x0005400d, 0x00000000},
++	{0x0005400e, 0x00000000},
++	{0x0005400f, 0x00000100},
++	{0x00054010, 0x00000000},
++	{0x00054011, 0x00000000},
++	{0x00054012, 0x00000310},
++	{0x00054013, 0x00000000},
++	{0x00054014, 0x00000000},
++	{0x00054015, 0x00000000},
++	{0x00054016, 0x00000000},
++	{0x00054017, 0x00000000},
++	{0x00054018, 0x00000000},
++	{0x00054019, 0x00002dd4},
++	{0x0005401a, 0x00000031},
++	{0x0005401b, 0x00004d66},
++	{0x0005401c, 0x00004a00},
++	{0x0005401d, 0x00000000},
++	{0x0005401e, 0x00000016},
++	{0x0005401f, 0x00002dd4},
++	{0x00054020, 0x00000031},
++	{0x00054021, 0x00004d66},
++	{0x00054022, 0x00004a00},
++	{0x00054023, 0x00000000},
++	{0x00054024, 0x0000002e},
++	{0x00054025, 0x00000000},
++	{0x00054026, 0x00000000},
++	{0x00054027, 0x00000000},
++	{0x00054028, 0x00000000},
++	{0x00054029, 0x00000000},
++	{0x0005402a, 0x00000000},
++	{0x0005402b, 0x00000000},
++	{0x0005402c, 0x00000000},
++	{0x0005402d, 0x00000000},
++	{0x0005402e, 0x00000000},
++	{0x0005402f, 0x00000000},
++	{0x00054030, 0x00000000},
++	{0x00054031, 0x00000000},
++	{0x00054032, 0x0000d400},
++	{0x00054033, 0x0000312d},
++	{0x00054034, 0x00006600},
++	{0x00054035, 0x0000004d},
++	{0x00054036, 0x0000004a},
++	{0x00054037, 0x00001600},
++	{0x00054038, 0x0000d400},
++	{0x00054039, 0x0000312d},
++	{0x0005403a, 0x00006600},
++	{0x0005403b, 0x0000004d},
++	{0x0005403c, 0x0000004a},
++	{0x0005403d, 0x00002e00},
++	{0x0005403e, 0x00000000},
++	{0x0005403f, 0x00000000},
++	{0x00054040, 0x00000000},
++	{0x00054041, 0x00000000},
++	{0x00054042, 0x00000000},
++	{0x00054043, 0x00000000},
++	{0x00054044, 0x00000000},
++	{0x000d0000, 0x00000001},
++};
++
++/* P1 message block paremeter for training firmware */
++static struct dram_cfg_param ddr_fsp1_cfg[] = {
++	{0x000d0000, 0x00000000},
++	{0x00054000, 0x00000000},
++	{0x00054001, 0x00000000},
++	{0x00054002, 0x00000101},
++	{0x00054003, 0x00000190},
++	{0x00054004, 0x00000002},
++	{0x00054005, 0x00000000},
++	{0x00054006, 0x00000011},
++	{0x00054007, 0x00000000},
++	{0x00054008, 0x0000121f},
++	{0x00054009, 0x000000c8},
++	{0x0005400a, 0x00000000},
++	{0x0005400b, 0x00000002},
++	{0x0005400c, 0x00000000},
++	{0x0005400d, 0x00000000},
++	{0x0005400e, 0x00000000},
++	{0x0005400f, 0x00000100},
++	{0x00054010, 0x00000000},
++	{0x00054011, 0x00000000},
++	{0x00054012, 0x00000310},
++	{0x00054013, 0x00000000},
++	{0x00054014, 0x00000000},
++	{0x00054015, 0x00000000},
++	{0x00054016, 0x00000000},
++	{0x00054017, 0x00000000},
++	{0x00054018, 0x00000000},
++	{0x00054019, 0x00000084},
++	{0x0005401a, 0x00000031},
++	{0x0005401b, 0x00004d66},
++	{0x0005401c, 0x00004a00},
++	{0x0005401d, 0x00000000},
++	{0x0005401e, 0x00000016},
++	{0x0005401f, 0x00000084},
++	{0x00054020, 0x00000031},
++	{0x00054021, 0x00004d66},
++	{0x00054022, 0x00004a00},
++	{0x00054023, 0x00000000},
++	{0x00054024, 0x0000002e},
++	{0x00054025, 0x00000000},
++	{0x00054026, 0x00000000},
++	{0x00054027, 0x00000000},
++	{0x00054028, 0x00000000},
++	{0x00054029, 0x00000000},
++	{0x0005402a, 0x00000000},
++	{0x0005402b, 0x00000000},
++	{0x0005402c, 0x00000000},
++	{0x0005402d, 0x00000000},
++	{0x0005402e, 0x00000000},
++	{0x0005402f, 0x00000000},
++	{0x00054030, 0x00000000},
++	{0x00054031, 0x00000000},
++	{0x00054032, 0x00008400},
++	{0x00054033, 0x00003100},
++	{0x00054034, 0x00006600},
++	{0x00054035, 0x0000004d},
++	{0x00054036, 0x0000004a},
++	{0x00054037, 0x00001600},
++	{0x00054038, 0x00008400},
++	{0x00054039, 0x00003100},
++	{0x0005403a, 0x00006600},
++	{0x0005403b, 0x0000004d},
++	{0x0005403c, 0x0000004a},
++	{0x0005403d, 0x00002e00},
++	{0x0005403e, 0x00000000},
++	{0x0005403f, 0x00000000},
++	{0x00054040, 0x00000000},
++	{0x00054041, 0x00000000},
++	{0x00054042, 0x00000000},
++	{0x00054043, 0x00000000},
++	{0x00054044, 0x00000000},
++	{0x000d0000, 0x00000001},
++};
++
++/* P2 message block paremeter for training firmware */
++static struct dram_cfg_param ddr_fsp2_cfg[] = {
++	{0x000d0000, 0x00000000},
++	{0x00054000, 0x00000000},
++	{0x00054001, 0x00000000},
++	{0x00054002, 0x00000102},
++	{0x00054003, 0x00000064},
++	{0x00054004, 0x00000002},
++	{0x00054005, 0x00000000},
++	{0x00054006, 0x00000011},
++	{0x00054007, 0x00000000},
++	{0x00054008, 0x0000121f},
++	{0x00054009, 0x000000c8},
++	{0x0005400a, 0x00000000},
++	{0x0005400b, 0x00000002},
++	{0x0005400c, 0x00000000},
++	{0x0005400d, 0x00000000},
++	{0x0005400e, 0x00000000},
++	{0x0005400f, 0x00000100},
++	{0x00054010, 0x00000000},
++	{0x00054011, 0x00000000},
++	{0x00054012, 0x00000310},
++	{0x00054013, 0x00000000},
++	{0x00054014, 0x00000000},
++	{0x00054015, 0x00000000},
++	{0x00054016, 0x00000000},
++	{0x00054017, 0x00000000},
++	{0x00054018, 0x00000000},
++	{0x00054019, 0x00000084},
++	{0x0005401a, 0x00000031},
++	{0x0005401b, 0x00004d66},
++	{0x0005401c, 0x00004a00},
++	{0x0005401d, 0x00000000},
++	{0x0005401e, 0x00000016},
++	{0x0005401f, 0x00000084},
++	{0x00054020, 0x00000031},
++	{0x00054021, 0x00004d66},
++	{0x00054022, 0x00004a00},
++	{0x00054023, 0x00000000},
++	{0x00054024, 0x0000002e},
++	{0x00054025, 0x00000000},
++	{0x00054026, 0x00000000},
++	{0x00054027, 0x00000000},
++	{0x00054028, 0x00000000},
++	{0x00054029, 0x00000000},
++	{0x0005402a, 0x00000000},
++	{0x0005402b, 0x00000000},
++	{0x0005402c, 0x00000000},
++	{0x0005402d, 0x00000000},
++	{0x0005402e, 0x00000000},
++	{0x0005402f, 0x00000000},
++	{0x00054030, 0x00000000},
++	{0x00054031, 0x00000000},
++	{0x00054032, 0x00008400},
++	{0x00054033, 0x00003100},
++	{0x00054034, 0x00006600},
++	{0x00054035, 0x0000004d},
++	{0x00054036, 0x0000004a},
++	{0x00054037, 0x00001600},
++	{0x00054038, 0x00008400},
++	{0x00054039, 0x00003100},
++	{0x0005403a, 0x00006600},
++	{0x0005403b, 0x0000004d},
++	{0x0005403c, 0x0000004a},
++	{0x0005403d, 0x00002e00},
++	{0x0005403e, 0x00000000},
++	{0x0005403f, 0x00000000},
++	{0x00054040, 0x00000000},
++	{0x00054041, 0x00000000},
++	{0x00054042, 0x00000000},
++	{0x00054043, 0x00000000},
++	{0x00054044, 0x00000000},
++	{0x000d0000, 0x00000001},
++};
++
++/* P0 2D message block paremeter for training firmware */
++static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
++	{0x000d0000, 0x00000000},
++	{0x00054000, 0x00000000},
++	{0x00054001, 0x00000000},
++	{0x00054002, 0x00000000},
++	{0x00054003, 0x00000c80},
++	{0x00054004, 0x00000002},
++	{0x00054005, 0x00000000},
++	{0x00054006, 0x00000011},
++	{0x00054007, 0x00000000},
++	{0x00054008, 0x00000061},
++	{0x00054009, 0x000000c8},
++	{0x0005400a, 0x00000000},
++	{0x0005400b, 0x00000002},
++	{0x0005400c, 0x00000000},
++	{0x0005400d, 0x00000000},
++	{0x0005400e, 0x00000000},
++	{0x0005400f, 0x00000100},
++	{0x00054010, 0x00001f7f},
++	{0x00054011, 0x00000000},
++	{0x00054012, 0x00000310},
++	{0x00054013, 0x00000000},
++	{0x00054014, 0x00000000},
++	{0x00054015, 0x00000000},
++	{0x00054016, 0x00000000},
++	{0x00054017, 0x00000000},
++	{0x00054018, 0x00000000},
++	{0x00054019, 0x00002dd4},
++	{0x0005401a, 0x00000031},
++	{0x0005401b, 0x00004d66},
++	{0x0005401c, 0x00004a00},
++	{0x0005401d, 0x00000000},
++	{0x0005401e, 0x00000016},
++	{0x0005401f, 0x00002dd4},
++	{0x00054020, 0x00000031},
++	{0x00054021, 0x00004d66},
++	{0x00054022, 0x00004a00},
++	{0x00054023, 0x00000000},
++	{0x00054024, 0x0000002e},
++	{0x00054025, 0x00000000},
++	{0x00054026, 0x00000000},
++	{0x00054027, 0x00000000},
++	{0x00054028, 0x00000000},
++	{0x00054029, 0x00000000},
++	{0x0005402a, 0x00000000},
++	{0x0005402b, 0x00000000},
++	{0x0005402c, 0x00000000},
++	{0x0005402d, 0x00000000},
++	{0x0005402e, 0x00000000},
++	{0x0005402f, 0x00000000},
++	{0x00054030, 0x00000000},
++	{0x00054031, 0x00000000},
++	{0x00054032, 0x0000d400},
++	{0x00054033, 0x0000312d},
++	{0x00054034, 0x00006600},
++	{0x00054035, 0x0000004d},
++	{0x00054036, 0x0000004a},
++	{0x00054037, 0x00001600},
++	{0x00054038, 0x0000d400},
++	{0x00054039, 0x0000312d},
++	{0x0005403a, 0x00006600},
++	{0x0005403b, 0x0000004d},
++	{0x0005403c, 0x0000004a},
++	{0x0005403d, 0x00002e00},
++	{0x0005403e, 0x00000000},
++	{0x0005403f, 0x00000000},
++	{0x00054040, 0x00000000},
++	{0x00054041, 0x00000000},
++	{0x00054042, 0x00000000},
++	{0x00054043, 0x00000000},
++	{0x00054044, 0x00000000},
++	{0x000d0000, 0x00000001},
++};
++
++/* DRAM PHY init engine image */
++static struct dram_cfg_param ddr_phy_pie[] = {
++	{0xd0000, 0x0},
++	{0x90000, 0x10},
++	{0x90001, 0x400},
++	{0x90002, 0x10e},
++	{0x90003, 0x0},
++	{0x90004, 0x0},
++	{0x90005, 0x8},
++	{0x90029, 0xb},
++	{0x9002a, 0x480},
++	{0x9002b, 0x109},
++	{0x9002c, 0x8},
++	{0x9002d, 0x448},
++	{0x9002e, 0x139},
++	{0x9002f, 0x8},
++	{0x90030, 0x478},
++	{0x90031, 0x109},
++	{0x90032, 0x0},
++	{0x90033, 0xe8},
++	{0x90034, 0x109},
++	{0x90035, 0x2},
++	{0x90036, 0x10},
++	{0x90037, 0x139},
++	{0x90038, 0xb},
++	{0x90039, 0x7c0},
++	{0x9003a, 0x139},
++	{0x9003b, 0x44},
++	{0x9003c, 0x633},
++	{0x9003d, 0x159},
++	{0x9003e, 0x14f},
++	{0x9003f, 0x630},
++	{0x90040, 0x159},
++	{0x90041, 0x47},
++	{0x90042, 0x633},
++	{0x90043, 0x149},
++	{0x90044, 0x4f},
++	{0x90045, 0x633},
++	{0x90046, 0x179},
++	{0x90047, 0x8},
++	{0x90048, 0xe0},
++	{0x90049, 0x109},
++	{0x9004a, 0x0},
++	{0x9004b, 0x7c8},
++	{0x9004c, 0x109},
++	{0x9004d, 0x0},
++	{0x9004e, 0x1},
++	{0x9004f, 0x8},
++	{0x90050, 0x0},
++	{0x90051, 0x45a},
++	{0x90052, 0x9},
++	{0x90053, 0x0},
++	{0x90054, 0x448},
++	{0x90055, 0x109},
++	{0x90056, 0x40},
++	{0x90057, 0x633},
++	{0x90058, 0x179},
++	{0x90059, 0x1},
++	{0x9005a, 0x618},
++	{0x9005b, 0x109},
++	{0x9005c, 0x40c0},
++	{0x9005d, 0x633},
++	{0x9005e, 0x149},
++	{0x9005f, 0x8},
++	{0x90060, 0x4},
++	{0x90061, 0x48},
++	{0x90062, 0x4040},
++	{0x90063, 0x633},
++	{0x90064, 0x149},
++	{0x90065, 0x0},
++	{0x90066, 0x4},
++	{0x90067, 0x48},
++	{0x90068, 0x40},
++	{0x90069, 0x633},
++	{0x9006a, 0x149},
++	{0x9006b, 0x10},
++	{0x9006c, 0x4},
++	{0x9006d, 0x18},
++	{0x9006e, 0x0},
++	{0x9006f, 0x4},
++	{0x90070, 0x78},
++	{0x90071, 0x549},
++	{0x90072, 0x633},
++	{0x90073, 0x159},
++	{0x90074, 0xd49},
++	{0x90075, 0x633},
++	{0x90076, 0x159},
++	{0x90077, 0x94a},
++	{0x90078, 0x633},
++	{0x90079, 0x159},
++	{0x9007a, 0x441},
++	{0x9007b, 0x633},
++	{0x9007c, 0x149},
++	{0x9007d, 0x42},
++	{0x9007e, 0x633},
++	{0x9007f, 0x149},
++	{0x90080, 0x1},
++	{0x90081, 0x633},
++	{0x90082, 0x149},
++	{0x90083, 0x0},
++	{0x90084, 0xe0},
++	{0x90085, 0x109},
++	{0x90086, 0xa},
++	{0x90087, 0x10},
++	{0x90088, 0x109},
++	{0x90089, 0x9},
++	{0x9008a, 0x3c0},
++	{0x9008b, 0x149},
++	{0x9008c, 0x9},
++	{0x9008d, 0x3c0},
++	{0x9008e, 0x159},
++	{0x9008f, 0x18},
++	{0x90090, 0x10},
++	{0x90091, 0x109},
++	{0x90092, 0x0},
++	{0x90093, 0x3c0},
++	{0x90094, 0x109},
++	{0x90095, 0x18},
++	{0x90096, 0x4},
++	{0x90097, 0x48},
++	{0x90098, 0x18},
++	{0x90099, 0x4},
++	{0x9009a, 0x58},
++	{0x9009b, 0xb},
++	{0x9009c, 0x10},
++	{0x9009d, 0x109},
++	{0x9009e, 0x1},
++	{0x9009f, 0x10},
++	{0x900a0, 0x109},
++	{0x900a1, 0x5},
++	{0x900a2, 0x7c0},
++	{0x900a3, 0x109},
++	{0x40000, 0x811},
++	{0x40020, 0x880},
++	{0x40040, 0x0},
++	{0x40060, 0x0},
++	{0x40001, 0x4008},
++	{0x40021, 0x83},
++	{0x40041, 0x4f},
++	{0x40061, 0x0},
++	{0x40002, 0x4040},
++	{0x40022, 0x83},
++	{0x40042, 0x51},
++	{0x40062, 0x0},
++	{0x40003, 0x811},
++	{0x40023, 0x880},
++	{0x40043, 0x0},
++	{0x40063, 0x0},
++	{0x40004, 0x720},
++	{0x40024, 0xf},
++	{0x40044, 0x1740},
++	{0x40064, 0x0},
++	{0x40005, 0x16},
++	{0x40025, 0x83},
++	{0x40045, 0x4b},
++	{0x40065, 0x0},
++	{0x40006, 0x716},
++	{0x40026, 0xf},
++	{0x40046, 0x2001},
++	{0x40066, 0x0},
++	{0x40007, 0x716},
++	{0x40027, 0xf},
++	{0x40047, 0x2800},
++	{0x40067, 0x0},
++	{0x40008, 0x716},
++	{0x40028, 0xf},
++	{0x40048, 0xf00},
++	{0x40068, 0x0},
++	{0x40009, 0x720},
++	{0x40029, 0xf},
++	{0x40049, 0x1400},
++	{0x40069, 0x0},
++	{0x4000a, 0xe08},
++	{0x4002a, 0xc15},
++	{0x4004a, 0x0},
++	{0x4006a, 0x0},
++	{0x4000b, 0x625},
++	{0x4002b, 0x15},
++	{0x4004b, 0x0},
++	{0x4006b, 0x0},
++	{0x4000c, 0x4028},
++	{0x4002c, 0x80},
++	{0x4004c, 0x0},
++	{0x4006c, 0x0},
++	{0x4000d, 0xe08},
++	{0x4002d, 0xc1a},
++	{0x4004d, 0x0},
++	{0x4006d, 0x0},
++	{0x4000e, 0x625},
++	{0x4002e, 0x1a},
++	{0x4004e, 0x0},
++	{0x4006e, 0x0},
++	{0x4000f, 0x4040},
++	{0x4002f, 0x80},
++	{0x4004f, 0x0},
++	{0x4006f, 0x0},
++	{0x40010, 0x2604},
++	{0x40030, 0x15},
++	{0x40050, 0x0},
++	{0x40070, 0x0},
++	{0x40011, 0x708},
++	{0x40031, 0x5},
++	{0x40051, 0x0},
++	{0x40071, 0x2002},
++	{0x40012, 0x8},
++	{0x40032, 0x80},
++	{0x40052, 0x0},
++	{0x40072, 0x0},
++	{0x40013, 0x2604},
++	{0x40033, 0x1a},
++	{0x40053, 0x0},
++	{0x40073, 0x0},
++	{0x40014, 0x708},
++	{0x40034, 0xa},
++	{0x40054, 0x0},
++	{0x40074, 0x2002},
++	{0x40015, 0x4040},
++	{0x40035, 0x80},
++	{0x40055, 0x0},
++	{0x40075, 0x0},
++	{0x40016, 0x60a},
++	{0x40036, 0x15},
++	{0x40056, 0x1200},
++	{0x40076, 0x0},
++	{0x40017, 0x61a},
++	{0x40037, 0x15},
++	{0x40057, 0x1300},
++	{0x40077, 0x0},
++	{0x40018, 0x60a},
++	{0x40038, 0x1a},
++	{0x40058, 0x1200},
++	{0x40078, 0x0},
++	{0x40019, 0x642},
++	{0x40039, 0x1a},
++	{0x40059, 0x1300},
++	{0x40079, 0x0},
++	{0x4001a, 0x4808},
++	{0x4003a, 0x880},
++	{0x4005a, 0x0},
++	{0x4007a, 0x0},
++	{0x900a4, 0x0},
++	{0x900a5, 0x790},
++	{0x900a6, 0x11a},
++	{0x900a7, 0x8},
++	{0x900a8, 0x7aa},
++	{0x900a9, 0x2a},
++	{0x900aa, 0x10},
++	{0x900ab, 0x7b2},
++	{0x900ac, 0x2a},
++	{0x900ad, 0x0},
++	{0x900ae, 0x7c8},
++	{0x900af, 0x109},
++	{0x900b0, 0x10},
++	{0x900b1, 0x10},
++	{0x900b2, 0x109},
++	{0x900b3, 0x10},
++	{0x900b4, 0x2a8},
++	{0x900b5, 0x129},
++	{0x900b6, 0x8},
++	{0x900b7, 0x370},
++	{0x900b8, 0x129},
++	{0x900b9, 0xa},
++	{0x900ba, 0x3c8},
++	{0x900bb, 0x1a9},
++	{0x900bc, 0xc},
++	{0x900bd, 0x408},
++	{0x900be, 0x199},
++	{0x900bf, 0x14},
++	{0x900c0, 0x790},
++	{0x900c1, 0x11a},
++	{0x900c2, 0x8},
++	{0x900c3, 0x4},
++	{0x900c4, 0x18},
++	{0x900c5, 0xe},
++	{0x900c6, 0x408},
++	{0x900c7, 0x199},
++	{0x900c8, 0x8},
++	{0x900c9, 0x8568},
++	{0x900ca, 0x108},
++	{0x900cb, 0x18},
++	{0x900cc, 0x790},
++	{0x900cd, 0x16a},
++	{0x900ce, 0x8},
++	{0x900cf, 0x1d8},
++	{0x900d0, 0x169},
++	{0x900d1, 0x10},
++	{0x900d2, 0x8558},
++	{0x900d3, 0x168},
++	{0x900d4, 0x70},
++	{0x900d5, 0x788},
++	{0x900d6, 0x16a},
++	{0x900d7, 0x1ff8},
++	{0x900d8, 0x85a8},
++	{0x900d9, 0x1e8},
++	{0x900da, 0x50},
++	{0x900db, 0x798},
++	{0x900dc, 0x16a},
++	{0x900dd, 0x60},
++	{0x900de, 0x7a0},
++	{0x900df, 0x16a},
++	{0x900e0, 0x8},
++	{0x900e1, 0x8310},
++	{0x900e2, 0x168},
++	{0x900e3, 0x8},
++	{0x900e4, 0xa310},
++	{0x900e5, 0x168},
++	{0x900e6, 0xa},
++	{0x900e7, 0x408},
++	{0x900e8, 0x169},
++	{0x900e9, 0x6e},
++	{0x900ea, 0x0},
++	{0x900eb, 0x68},
++	{0x900ec, 0x0},
++	{0x900ed, 0x408},
++	{0x900ee, 0x169},
++	{0x900ef, 0x0},
++	{0x900f0, 0x8310},
++	{0x900f1, 0x168},
++	{0x900f2, 0x0},
++	{0x900f3, 0xa310},
++	{0x900f4, 0x168},
++	{0x900f5, 0x1ff8},
++	{0x900f6, 0x85a8},
++	{0x900f7, 0x1e8},
++	{0x900f8, 0x68},
++	{0x900f9, 0x798},
++	{0x900fa, 0x16a},
++	{0x900fb, 0x78},
++	{0x900fc, 0x7a0},
++	{0x900fd, 0x16a},
++	{0x900fe, 0x68},
++	{0x900ff, 0x790},
++	{0x90100, 0x16a},
++	{0x90101, 0x8},
++	{0x90102, 0x8b10},
++	{0x90103, 0x168},
++	{0x90104, 0x8},
++	{0x90105, 0xab10},
++	{0x90106, 0x168},
++	{0x90107, 0xa},
++	{0x90108, 0x408},
++	{0x90109, 0x169},
++	{0x9010a, 0x58},
++	{0x9010b, 0x0},
++	{0x9010c, 0x68},
++	{0x9010d, 0x0},
++	{0x9010e, 0x408},
++	{0x9010f, 0x169},
++	{0x90110, 0x0},
++	{0x90111, 0x8b10},
++	{0x90112, 0x168},
++	{0x90113, 0x1},
++	{0x90114, 0xab10},
++	{0x90115, 0x168},
++	{0x90116, 0x0},
++	{0x90117, 0x1d8},
++	{0x90118, 0x169},
++	{0x90119, 0x80},
++	{0x9011a, 0x790},
++	{0x9011b, 0x16a},
++	{0x9011c, 0x18},
++	{0x9011d, 0x7aa},
++	{0x9011e, 0x6a},
++	{0x9011f, 0xa},
++	{0x90120, 0x0},
++	{0x90121, 0x1e9},
++	{0x90122, 0x8},
++	{0x90123, 0x8080},
++	{0x90124, 0x108},
++	{0x90125, 0xf},
++	{0x90126, 0x408},
++	{0x90127, 0x169},
++	{0x90128, 0xc},
++	{0x90129, 0x0},
++	{0x9012a, 0x68},
++	{0x9012b, 0x9},
++	{0x9012c, 0x0},
++	{0x9012d, 0x1a9},
++	{0x9012e, 0x0},
++	{0x9012f, 0x408},
++	{0x90130, 0x169},
++	{0x90131, 0x0},
++	{0x90132, 0x8080},
++	{0x90133, 0x108},
++	{0x90134, 0x8},
++	{0x90135, 0x7aa},
++	{0x90136, 0x6a},
++	{0x90137, 0x0},
++	{0x90138, 0x8568},
++	{0x90139, 0x108},
++	{0x9013a, 0xb7},
++	{0x9013b, 0x790},
++	{0x9013c, 0x16a},
++	{0x9013d, 0x1f},
++	{0x9013e, 0x0},
++	{0x9013f, 0x68},
++	{0x90140, 0x8},
++	{0x90141, 0x8558},
++	{0x90142, 0x168},
++	{0x90143, 0xf},
++	{0x90144, 0x408},
++	{0x90145, 0x169},
++	{0x90146, 0xd},
++	{0x90147, 0x0},
++	{0x90148, 0x68},
++	{0x90149, 0x0},
++	{0x9014a, 0x408},
++	{0x9014b, 0x169},
++	{0x9014c, 0x0},
++	{0x9014d, 0x8558},
++	{0x9014e, 0x168},
++	{0x9014f, 0x8},
++	{0x90150, 0x3c8},
++	{0x90151, 0x1a9},
++	{0x90152, 0x3},
++	{0x90153, 0x370},
++	{0x90154, 0x129},
++	{0x90155, 0x20},
++	{0x90156, 0x2aa},
++	{0x90157, 0x9},
++	{0x90158, 0x0},
++	{0x90159, 0x400},
++	{0x9015a, 0x10e},
++	{0x9015b, 0x8},
++	{0x9015c, 0xe8},
++	{0x9015d, 0x109},
++	{0x9015e, 0x0},
++	{0x9015f, 0x8140},
++	{0x90160, 0x10c},
++	{0x90161, 0x10},
++	{0x90162, 0x8138},
++	{0x90163, 0x10c},
++	{0x90164, 0x8},
++	{0x90165, 0x7c8},
++	{0x90166, 0x101},
++	{0x90167, 0x8},
++	{0x90168, 0x448},
++	{0x90169, 0x109},
++	{0x9016a, 0xf},
++	{0x9016b, 0x7c0},
++	{0x9016c, 0x109},
++	{0x9016d, 0x0},
++	{0x9016e, 0xe8},
++	{0x9016f, 0x109},
++	{0x90170, 0x47},
++	{0x90171, 0x630},
++	{0x90172, 0x109},
++	{0x90173, 0x8},
++	{0x90174, 0x618},
++	{0x90175, 0x109},
++	{0x90176, 0x8},
++	{0x90177, 0xe0},
++	{0x90178, 0x109},
++	{0x90179, 0x0},
++	{0x9017a, 0x7c8},
++	{0x9017b, 0x109},
++	{0x9017c, 0x8},
++	{0x9017d, 0x8140},
++	{0x9017e, 0x10c},
++	{0x9017f, 0x0},
++	{0x90180, 0x1},
++	{0x90181, 0x8},
++	{0x90182, 0x8},
++	{0x90183, 0x4},
++	{0x90184, 0x8},
++	{0x90185, 0x8},
++	{0x90186, 0x7c8},
++	{0x90187, 0x101},
++	{0x90006, 0x0},
++	{0x90007, 0x0},
++	{0x90008, 0x8},
++	{0x90009, 0x0},
++	{0x9000a, 0x0},
++	{0x9000b, 0x0},
++	{0xd00e7, 0x400},
++	{0x90017, 0x0},
++	{0x9001f, 0x29},
++	{0x90026, 0x6a},
++	{0x400d0, 0x0},
++	{0x400d1, 0x101},
++	{0x400d2, 0x105},
++	{0x400d3, 0x107},
++	{0x400d4, 0x10f},
++	{0x400d5, 0x202},
++	{0x400d6, 0x20a},
++	{0x400d7, 0x20b},
++	{0x2003a, 0x2},
++	{0x2000b, 0x64},
++	{0x2000c, 0xc8},
++	{0x2000d, 0x7d0},
++	{0x2000e, 0x2c},
++	{0x12000b, 0xc},
++	{0x12000c, 0x19},
++	{0x12000d, 0xfa},
++	{0x12000e, 0x10},
++	{0x22000b, 0x3},
++	{0x22000c, 0x6},
++	{0x22000d, 0x3e},
++	{0x22000e, 0x10},
++	{0x9000c, 0x0},
++	{0x9000d, 0x173},
++	{0x9000e, 0x60},
++	{0x9000f, 0x6110},
++	{0x90010, 0x2152},
++	{0x90011, 0xdfbd},
++	{0x90012, 0x2060},
++	{0x90013, 0x6152},
++	{0x20010, 0x5a},
++	{0x20011, 0x3},
++	{0x40080, 0xe0},
++	{0x40081, 0x12},
++	{0x40082, 0xe0},
++	{0x40083, 0x12},
++	{0x40084, 0xe0},
++	{0x40085, 0x12},
++	{0x140080, 0xe0},
++	{0x140081, 0x12},
++	{0x140082, 0xe0},
++	{0x140083, 0x12},
++	{0x140084, 0xe0},
++	{0x140085, 0x12},
++	{0x240080, 0xe0},
++	{0x240081, 0x12},
++	{0x240082, 0xe0},
++	{0x240083, 0x12},
++	{0x240084, 0xe0},
++	{0x240085, 0x12},
++	{0x400fd, 0xf},
++	{0x10011, 0x1},
++	{0x10012, 0x1},
++	{0x10013, 0x180},
++	{0x10018, 0x1},
++	{0x10002, 0x6209},
++	{0x100b2, 0x1},
++	{0x101b4, 0x1},
++	{0x102b4, 0x1},
++	{0x103b4, 0x1},
++	{0x104b4, 0x1},
++	{0x105b4, 0x1},
++	{0x106b4, 0x1},
++	{0x107b4, 0x1},
++	{0x108b4, 0x1},
++	{0x11011, 0x1},
++	{0x11012, 0x1},
++	{0x11013, 0x180},
++	{0x11018, 0x1},
++	{0x11002, 0x6209},
++	{0x110b2, 0x1},
++	{0x111b4, 0x1},
++	{0x112b4, 0x1},
++	{0x113b4, 0x1},
++	{0x114b4, 0x1},
++	{0x115b4, 0x1},
++	{0x116b4, 0x1},
++	{0x117b4, 0x1},
++	{0x118b4, 0x1},
++	{0x20089, 0x1},
++	{0x20088, 0x19},
++	{0xc0080, 0x2},
++	{0xd0000, 0x1},
++};
++
++static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
++	{
++		/* P0 3200mts 1D */
++		.drate = 3200,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp0_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_cfg),
++	},
++	{
++		/* P1 400mts 1D */
++		.drate = 400,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp1_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp1_cfg),
++	},
++	{
++		/* P2 100mts 1D */
++		.drate = 100,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp2_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp2_cfg),
++	},
++	{
++		/* P0 3200mts 2D */
++		.drate = 3200,
++		.fw_type = FW_2D_IMAGE,
++		.fsp_cfg = ddr_fsp0_2d_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_cfg),
++	},
++};
++
++/* ddr timing config params */
++struct dram_timing_info imx8mn_evk_lpddr4_timing = {
++	.dram_type = DRAM_TYPE_LPDDR4,
++	.ddrc_cfg = ddr_ddrc_cfg,
++	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
++	.ddrphy_cfg = ddr_ddrphy_cfg,
++	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
++	.fsp_msg = ddr_dram_fsp_msg,
++	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg),
++	.ddrphy_trained_csr = ddr_ddrphy_trained_csr,
++	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
++	.ddrphy_pie = ddr_phy_pie,
++	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
++	.fsp_table = { 3200, 400, 100, },
++};
+diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_defconfig
+index e1e7b0f91e67..b28c868a99bf 100644
+--- a/arch/arm/configs/imx_v8_defconfig
++++ b/arch/arm/configs/imx_v8_defconfig
+@@ -3,6 +3,7 @@ CONFIG_IMX_MULTI_BOARDS=y
+ CONFIG_MACH_PROTONIC_IMX8M=y
+ CONFIG_MACH_ZII_IMX8MQ_DEV=y
+ CONFIG_MACH_NXP_IMX8MM_EVK=y
++CONFIG_MACH_NXP_IMX8MN_EVK=y
+ CONFIG_MACH_NXP_IMX8MP_EVK=y
+ CONFIG_MACH_NXP_IMX8MQ_EVK=y
+ CONFIG_MACH_PHYTEC_SOM_IMX8MQ=y
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index ffa9fe88c128..bc78037c7d7b 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -125,6 +125,7 @@ lwl-$(CONFIG_MACH_TECHNEXION_WANDBOARD) += imx6q-wandboard.dtb.o imx6dl-wandboar
+ lwl-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT) += imx6ul-pico-hobbit.dtb.o
+ lwl-$(CONFIG_MACH_NXP_IMX6ULL_EVK) += imx6ull-14x14-evk.dtb.o
+ lwl-$(CONFIG_MACH_NXP_IMX8MM_EVK) += imx8mm-evk.dtb.o
++lwl-$(CONFIG_MACH_NXP_IMX8MN_EVK) += imx8mn-evk.dtb.o
+ lwl-$(CONFIG_MACH_NXP_IMX8MP_EVK) += imx8mp-evk.dtb.o
+ lwl-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += imx8mq-evk.dtb.o
+ lwl-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
+diff --git a/arch/arm/dts/imx8mn-evk.dts b/arch/arm/dts/imx8mn-evk.dts
+new file mode 100644
+index 000000000000..9fe24b3184f1
+--- /dev/null
++++ b/arch/arm/dts/imx8mn-evk.dts
+@@ -0,0 +1,62 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++/*
++ * Copyright 2017 NXP
++ * Copyright (C) 2017 Pengutronix, Lucas Stach <kernel@pengutronix.de>
++ */
++
++/dts-v1/;
++
++#include <arm64/freescale/imx8mn-evk.dts>
++
++/ {
++	chosen {
++		environment-sd {
++			compatible = "barebox,environment";
++			device-path = &usdhc2, "partname:barebox-environment";
++			status = "disabled";
++		};
++		environment-emmc {
++			compatible = "barebox,environment";
++			device-path = &usdhc3, "partname:barebox-environment";
++			status = "disabled";
++		};
++	};
++};
++
++&fec1 {
++	phy-reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
++};
++
++&usdhc2 {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	partition@0 {
++		label = "barebox";
++		reg = <0x0 0xe0000>;
++	};
++
++	partition@e0000 {
++		label = "barebox-environment";
++		reg = <0xe0000 0x20000>;
++	};
++};
++
++&usdhc3 {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	partition@0 {
++		label = "barebox";
++		reg = <0x0 0xe0000>;
++	};
++
++	partition@e0000 {
++		label = "barebox-environment";
++		reg = <0xe0000 0x20000>;
++	};
++};
++
++&ocotp {
++	barebox,provide-mac-address = <&fec1 0x640>;
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 959b934b6abb..92db011baed7 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -558,6 +558,18 @@ config MACH_NXP_IMX8MM_EVK
+ 	select I2C_IMX_EARLY
+ 	select USB_GADGET_DRIVER_ARC_PBL
+ 
++config MACH_NXP_IMX8MN_EVK
++	bool "NXP i.MX8MN EVK Board"
++	select ARCH_IMX8MN
++	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
++	select FIRMWARE_IMX_DDR4_PMU_TRAIN
++	select FIRMWARE_IMX8MN_ATF
++	select ARM_SMCCC
++	select MCI_IMX_ESDHC_PBL
++	select IMX8M_DRAM
++	select I2C_IMX_EARLY
++	select ARM_USE_COMPRESSED_DTB
++
+ config MACH_NXP_IMX8MP_EVK
+ 	bool "NXP i.MX8MP EVK Board"
+ 	select ARCH_IMX8MP
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index dd927aba5532..18ab3daee3b8 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -425,6 +425,12 @@ CFG_start_prt_prt8mm.pblb.imximg = $(board)/protonic-imx8m/flash-header-prt8mm.i
+ FILE_barebox-prt-prt8mm.img = start_prt_prt8mm.pblb.pimximg
+ image-$(CONFIG_MACH_PROTONIC_IMX8M) += barebox-prt-prt8mm.img
+ 
++# ----------------------- i.MX8mn based boards --------------------------
++pblb-$(CONFIG_MACH_NXP_IMX8MN_EVK) += start_nxp_imx8mn_evk
++CFG_start_nxp_imx8mn_evk.pblb.imximg = $(board)/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
++FILE_barebox-nxp-imx8mn-evk.img = start_nxp_imx8mn_evk.pblb.pimximg
++image-$(CONFIG_MACH_NXP_IMX8MN_EVK) += barebox-nxp-imx8mn-evk.img
++
+ # ----------------------- i.MX8mp based boards --------------------------
+ pblb-$(CONFIG_MACH_NXP_IMX8MP_EVK) += start_nxp_imx8mp_evk
+ CFG_start_nxp_imx8mp_evk.pblb.imximg = $(board)/nxp-imx8mp-evk/flash-header-imx8mp-evk.imxcfg
 -- 
 2.30.2
 
