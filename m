@@ -1,15 +1,15 @@
-Delivery-date: Fri, 01 Oct 2021 15:27:12 +0200
+Delivery-date: Fri, 01 Oct 2021 15:28:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWIZE-0001Q1-KD
-	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 15:27:12 +0200
+	id 1mWIaq-0001Ue-0Y
+	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 15:28:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWIZD-0004Sy-PZ
-	for lore@pengutronix.de; Fri, 01 Oct 2021 15:27:12 +0200
+	id 1mWIap-0004qz-2X
+	for lore@pengutronix.de; Fri, 01 Oct 2021 15:28:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=xPbBML23TOE0Lj8Zay3ZGh0adWNt+2njjOG+LzImc2U=; b=HpH4HMJe+lfPsKv9DQDM/7LHGB
-	5XbPP/fFadgzHlr3/8TYfNrav0rOPuFS3nKutqJlsYDyVxuqMTaxBgmWdog5i0JIQb2zHun6dKj5X
-	pRNQHLZX5XWZFvtIR+SHXyNQX4dCgi6/2YpHvqUh6dGd0vydnE5ErCls2tlucVB3QtQpm2j9nR1ks
-	/yT7bmJljRUjAfdJeur2TKmvVYnvO9j6qSIs+Y2JvvIBjq2R4pYBd9v5Q+1rUO8CDuEEE2WIz65B0
-	uSbJ5xrjHLy5DwEJOuuj6c1kd83YO+TNE3LdTUVA32x8igma9w3z3o5nkWA2qtxxmYY8T5KefrflP
-	EdsVbPgQ==;
+	bh=QF26D25cFNC71ZMfNau+mfqRp5h7HgyBi/zcULqaimg=; b=lXpsJ/02hObdE8lOvzmuM96bJG
+	sD+EgPbHPDTFDUoSWNvJK2qhZsVRivWuH8yiwm9HEYP+gerCQTH7+CM4sPtEyeMv9TPHKoesmTTwK
+	ouhC/ubScK4P0heOoV/JMFRYonhYT3gQwqhox8+zU/IcI4c9O2NNkfXH/fw+plZ6JBDfhRkJK+KB5
+	L2y3lL+hZwNCclxAMfiHBViMMMwi4V+MtdzpWmFbkdmfxT7gSehHHqhNxN71ycH2lKgsJF4SN84nd
+	pwDU9JjhZq6LkmyxIrLcQFGpCmis/imkkb9k4pixZltS/9bSv1YennW35V75vLGUdjbkhJu5qoV/5
+	vZR9+8sw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mWIXq-000QOs-Mu; Fri, 01 Oct 2021 13:25:46 +0000
+	id 1mWIZY-000Qdm-LQ; Fri, 01 Oct 2021 13:27:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mWIXk-000QNy-W4
- for barebox@lists.infradead.org; Fri, 01 Oct 2021 13:25:42 +0000
+ id 1mWIZT-000QcX-6X
+ for barebox@lists.infradead.org; Fri, 01 Oct 2021 13:27:28 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mWIXj-0004Fu-3h; Fri, 01 Oct 2021 15:25:39 +0200
+ id 1mWIZR-0004an-Tx; Fri, 01 Oct 2021 15:27:25 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mWIXi-00067O-Qb; Fri, 01 Oct 2021 15:25:38 +0200
-Date: Fri, 1 Oct 2021 15:25:38 +0200
+ id 1mWIZR-0006AZ-JR; Fri, 01 Oct 2021 15:27:25 +0200
+Date: Fri, 1 Oct 2021 15:27:25 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org, jbe@pengutronix.de
-Message-ID: <20211001132538.GU24834@pengutronix.de>
-References: <20210922091549.23185-1-a.fatoum@pengutronix.de>
+Message-ID: <20211001132725.GV24834@pengutronix.de>
+References: <20210922090940.18002-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210922091549.23185-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20210922090940.18002-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 15:25:23 up 225 days, 16:49, 136 users,  load average: 0.16, 0.10,
+X-Uptime: 15:27:13 up 225 days, 16:51, 136 users,  load average: 0.10, 0.11,
  0.12
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211001_062541_051574_AAF484C9 
-X-CRM114-Status: GOOD (  19.86  )
+X-CRM114-CacheID: sfid-20211001_062727_264853_016E0465 
+X-CRM114-Status: GOOD (  17.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,25 +81,21 @@ X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] Documentation: reboot-mode: add note about /env/bmode
+Subject: Re: [PATCH master] power: reset: nvmem-reboot-mode: disable device
+ tree fixup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Sep 22, 2021 at 11:15:49AM +0200, Ahmad Fatoum wrote:
-> This directory is an optional part of the defaultenv-2 and
-> is documented there. There should be a sentence about it in
-> the reboot-mode docs as well, because users can add it to
-> their environments as well to avoid doing if-else chains
-> in the init scripts.
+On Wed, Sep 22, 2021 at 11:09:40AM +0200, Ahmad Fatoum wrote:
+> Fixing up the nvmem reboot device tree node is problematic, because it
+> contains a phandle to another node. Take the easy way out for now and
+> expect user to provide matching reboot-mode nodes in both kernel and
+> barebox device tree manually.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
-> v1 -> v2:
->   - hands where on autopilot.. s/directly/directory/
-> ---
->  Documentation/user/defaultenv-2.rst | 2 +-
->  Documentation/user/reboot-mode.rst  | 4 +++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
+>  drivers/power/reset/nvmem-reboot-mode.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
 Applied, thanks
 
