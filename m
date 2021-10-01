@@ -1,54 +1,53 @@
-Delivery-date: Fri, 01 Oct 2021 12:15:09 +0200
+Delivery-date: Fri, 01 Oct 2021 12:15:45 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFZN-0002oB-Bs
-	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:15:09 +0200
+	id 1mWFZx-0002qE-3J
+	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:15:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFZI-0007Tq-JT
-	for lore@pengutronix.de; Fri, 01 Oct 2021 12:15:09 +0200
+	id 1mWFZv-0007dd-EQ
+	for lore@pengutronix.de; Fri, 01 Oct 2021 12:15:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=c5vd9d8W68A5XUhQdsUnhRMhJ+pAssOf+lgHpDrNghM=; b=MSsr9t53FyX5DBa3skmnUPjpGh
-	MbAzEzZBuy7tn3DM52tQKTQWdWqtXhHagieFCRgR4s9khILOjTu3nNCApUc7inUOeWrfRmjamkdLx
-	ahwlH5T6Z2i8aDMA6HYcB8lchBl+flGzq7r2Iu4KZl5VLckNN29hOZZHLk3KLvPQy9S0Lnp1UnlJc
-	xaX7m1NkKvtcYLWu2L0jQVeHcY2HNLKvI519wsa7GTW4rrkgI3gPL226SW8wzsamt5s7y+GWRSmoW
-	Ucv+zz57t3J638OXWWDxswkNRGW1AivfuflaYxv1Flff608yimxFdfDZ557t4RZruzmqZf88jU0UJ
-	sNqOjy4Q==;
+	Message-ID:From:References:To:Subject:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=u6KWvP3m8YI9kyLwwuDbmqoTqh2g4SNqvGuc471BBz8=; b=YWCek+L1gFscvT
+	br0YCbAx0P8zWex1vtcO/nD0pnrycEF6t4TRe6Az9EzsdbgkTBK+ExDmqlCggX8WuIv++K6pq8nmZ
+	/kcfm3UPXoGnKcsurh3PI8YZq8PjfeRPYvb0yoYQCVJm8hkhAe6YT/RLpHIEKKdzVHxjGSTDdMjSn
+	qOny7YRxGMr9z+lPhboIXrHl+/pYjo/5VDpdZokJJd/nXqqkJizJDnCGgubdWNXTeDDgbFPK7OZ44
+	Ozf3tAzCYmxIv8SI3qokyMB+dYs+BXZ4uCsxP+KtnAo+i/6eQvY7n0FS2JsccTI4NhDILmUhRoH6C
+	eGO0A2o3D++8Nwludr+g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mWFY1-00HSPl-RM; Fri, 01 Oct 2021 10:13:45 +0000
+	id 1mWFYc-00HSZP-Ga; Fri, 01 Oct 2021 10:14:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mWFXw-00HSOs-7J
- for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:13:42 +0000
+ id 1mWFYW-00HSYM-8e
+ for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:14:18 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1mWFXv-0007Fb-0A; Fri, 01 Oct 2021 12:13:39 +0200
+ id 1mWFYV-0007JF-0f; Fri, 01 Oct 2021 12:14:15 +0200
 To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
 References: <20210817101104.114945-1-antonynpavlov@gmail.com>
- <20210817101104.114945-6-antonynpavlov@gmail.com>
+ <20210817101104.114945-7-antonynpavlov@gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <741ec3d7-91e0-d5db-e43f-5d11df2d388b@pengutronix.de>
-Date: Fri, 1 Oct 2021 12:13:38 +0200
+Message-ID: <838a1759-f979-9329-94e1-ccec28612150@pengutronix.de>
+Date: Fri, 1 Oct 2021 12:14:14 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20210817101104.114945-6-antonynpavlov@gmail.com>
+In-Reply-To: <20210817101104.114945-7-antonynpavlov@gmail.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211001_031340_475453_5B6FF941 
-X-CRM114-Status: GOOD (  31.68  )
+X-CRM114-CacheID: sfid-20211001_031416_681418_97E167FB 
+X-CRM114-Status: GOOD (  35.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,6 +59,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Marek Czerski <m.czerski@ap-tech.pl>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -72,296 +72,445 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH RESEND v4 5/8] spi: add litex spiflash driver
+Subject: Re: [PATCH RESEND v4 6/8] net: add LiteEth driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 On 17.08.21 12:11, Antony Pavlov wrote:
+> LiteEth provides a small footprint and configurable Ethernet core.
+> 
+> LiteEth is part of LiteX libraries whose aims are to lower entry level of
+> complex FPGA cores by providing simple, elegant and efficient implementations
+> of components used in today's SoC such as Ethernet, SATA, PCIe, SDRAM Controller...
+> 
+> Using Migen to describe the HDL allows the core to be highly and easily configurable.
+> 
+> LiteEth can be used as LiteX library or can be integrated with your standard
+> design flow by generating the verilog rtl that you will use as a standard core.
+> 
+> See https://github.com/enjoy-digital/liteeth for details.
+> 
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-
-With the fixup squashed (I hope Sascha can do it on apply):
+> Signed-off-by: Marek Czerski <m.czerski@ap-tech.pl>
 
 Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  drivers/spi/Kconfig          |   3 +
->  drivers/spi/Makefile         |   1 +
->  drivers/spi/litex_spiflash.c | 241 +++++++++++++++++++++++++++++++++++
->  3 files changed, 245 insertions(+)
+>  drivers/net/Kconfig   |   8 +
+>  drivers/net/Makefile  |   1 +
+>  drivers/net/liteeth.c | 376 ++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 385 insertions(+)
 > 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 91083ee709..e92cf675ab 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -74,6 +74,9 @@ config DRIVER_SPI_IMX_2_3
->  	depends on ARCH_IMX50 || ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6 || ARCH_IMX7 || ARCH_IMX8M
->  	default y
+> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+> index 802169a86e..781c7e69db 100644
+> --- a/drivers/net/Kconfig
+> +++ b/drivers/net/Kconfig
+> @@ -285,6 +285,14 @@ config TSE_USE_DEDICATED_DESC_MEM
+>  	  reserved with a malloc but directly mapped to the memory
+>  	  address (defined in config.h)
 >  
-> +config DRIVER_SPI_LITEX_SPIFLASH
-> +	bool "Litex SPIFLASH bitbang master driver"
+> +config DRIVER_NET_LITEETH
+> +	bool "LiteX ethernet driver"
+> +	select PHYLIB
+> +	select MDIO_BITBANG
+> +	help
+> +	  This option enables support for the LiteX LiteEth
+> +	  ethernet IP core.
 > +
->  config DRIVER_SPI_MXS
->  	bool "i.MX (23,28) SPI Master driver"
->  	depends on ARCH_IMX28
-> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-> index 908d514a01..ac95ffc1db 100644
-> --- a/drivers/spi/Makefile
-> +++ b/drivers/spi/Makefile
-> @@ -4,6 +4,7 @@ obj-$(CONFIG_DRIVER_SPI_ATH79) += ath79_spi.o
->  obj-$(CONFIG_DRIVER_SPI_GPIO) += gpio_spi.o
->  obj-$(CONFIG_DRIVER_SPI_FSL_QUADSPI) += spi-fsl-qspi.o
->  obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
-> +obj-$(CONFIG_DRIVER_SPI_LITEX_SPIFLASH) += litex_spiflash.o
->  obj-$(CONFIG_DRIVER_SPI_MVEBU) += mvebu_spi.o
->  obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
->  obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
-> diff --git a/drivers/spi/litex_spiflash.c b/drivers/spi/litex_spiflash.c
+>  source "drivers/net/phy/Kconfig"
+>  source "drivers/net/usb/Kconfig"
+>  
+> diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+> index fb3e3bdee4..466c910b3e 100644
+> --- a/drivers/net/Makefile
+> +++ b/drivers/net/Makefile
+> @@ -38,3 +38,4 @@ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
+>  obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
+>  obj-$(CONFIG_DRIVER_NET_EFI_SNP)	+= efi-snp.o
+>  obj-$(CONFIG_DRIVER_NET_AG71XX)		+= ag71xx.o
+> +obj-$(CONFIG_DRIVER_NET_LITEETH)	+= liteeth.o
+> diff --git a/drivers/net/liteeth.c b/drivers/net/liteeth.c
 > new file mode 100644
-> index 0000000000..26ef207699
+> index 0000000000..137cb854c5
 > --- /dev/null
-> +++ b/drivers/spi/litex_spiflash.c
-> @@ -0,0 +1,241 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +++ b/drivers/net/liteeth.c
+> @@ -0,0 +1,376 @@
 > +/*
-> + * Copyright (C) 2020 Antony Pavlov <antonynpavlov@gmail.com>
+> + * LiteX Liteeth Ethernet
+> + *
+> + * Copyright 2017 Joel Stanley <joel@jms.id.au>
+> + *
+> + * Ported to barebox from linux kernel
+> + *   Copyright (C) 2019-2021 Antony Pavlov <antonynpavlov@gmail.com>
+> + *   Copyright (C) 2021 Marek Czerski <m.czerski@ap-tech.pl>
 > + *
 > + */
 > +
 > +#include <common.h>
-> +#include <init.h>
-> +#include <driver.h>
-> +#include <spi/spi.h>
 > +#include <io.h>
+> +#include <linux/iopoll.h>
+> +#include <malloc.h>
+> +#include <net.h>
+> +#include <init.h>
+> +#include <of_net.h>
+> +#include <linux/phy.h>
+> +#include <linux/mdio-bitbang.h>
 > +
-> +struct litex_spiflash_spi {
-> +	struct spi_master	master;
-> +	void __iomem		*regs;
-> +	u32			val;
+> +#define DRV_NAME	"liteeth"
+> +
+> +#define LITEETH_WRITER_SLOT		0x00
+> +#define LITEETH_WRITER_LENGTH		0x04
+> +#define LITEETH_WRITER_ERRORS		0x08
+> +#define LITEETH_WRITER_EV_STATUS	0x0c
+> +#define LITEETH_WRITER_EV_PENDING	0x10
+> +#define LITEETH_WRITER_EV_ENABLE	0x14
+> +#define LITEETH_READER_START		0x18
+> +#define LITEETH_READER_READY		0x1c
+> +#define LITEETH_READER_LEVEL		0x20
+> +#define LITEETH_READER_SLOT		0x24
+> +#define LITEETH_READER_LENGTH		0x28
+> +#define LITEETH_READER_EV_STATUS	0x2c
+> +#define LITEETH_READER_EV_PENDING	0x30
+> +#define LITEETH_READER_EV_ENABLE	0x34
+> +#define LITEETH_PREAMBLE_CRC		0x38
+> +#define LITEETH_PREAMBLE_ERRORS		0x3c
+> +#define LITEETH_CRC_ERRORS		0x40
+> +
+> +#define LITEETH_PHY_CRG_RESET		0x00
+> +#define LITEETH_MDIO_W			0x04
+> +#define  MDIO_W_CLK			BIT(0)
+> +#define  MDIO_W_OE			BIT(1)
+> +#define  MDIO_W_DO			BIT(2)
+> +
+> +#define LITEETH_MDIO_R			0x08
+> +#define  MDIO_R_DI			BIT(0)
+> +
+> +#define LITEETH_BUFFER_SIZE		0x800
+> +#define MAX_PKT_SIZE			LITEETH_BUFFER_SIZE
+> +
+> +struct liteeth {
+> +	struct device_d *dev;
+> +	struct eth_device edev;
+> +	void __iomem *base;
+> +	void __iomem *mdio_base;
+> +	struct mii_bus *mii_bus;
+> +	struct mdiobb_ctrl mdiobb;
+> +
+> +	/* Link management */
+> +	int cur_duplex;
+> +	int cur_speed;
+> +
+> +	/* Tx */
+> +	int tx_slot;
+> +	int num_tx_slots;
+> +	void __iomem *tx_base;
+> +
+> +	/* Rx */
+> +	int rx_slot;
+> +	int num_rx_slots;
+> +	void __iomem *rx_base;
 > +};
 > +
-> +#define SPIFLASH_BITBANG 0x0
-> +#define  SPIFLASH_BB_MOSI BIT(0)
-> +#define  SPIFLASH_BB_CLK BIT(1)
-> +#define  SPIFLASH_BB_CSN BIT(2)
-> +#define  SPIFLASH_BB_DIR BIT(3)
-> +
-> +#define SPIFLASH_MISO 0x4
-> +#define SPIFLASH_BITBANG_EN 0x8
-> +
-> +static inline u32 litex_spiflash_spi_rr(struct litex_spiflash_spi *sp, int reg)
+> +static inline void litex_write8(void __iomem *addr, u8 val)
 > +{
-> +	return readl(sp->regs + reg);
+> +	writeb(val, addr);
 > +}
 > +
-> +static inline void litex_spiflash_spi_wr(struct litex_spiflash_spi *sp, u32 val, int reg)
+> +static inline void litex_write16(void __iomem *addr, u16 val)
 > +{
-> +	writel(val, sp->regs + reg);
+> +	writew(val, addr);
 > +}
 > +
-> +static inline void setbits(struct litex_spiflash_spi *sp, int bits, int on)
+> +static inline u8 litex_read8(void __iomem *addr)
 > +{
-> +	/*
-> +	 * We are the only user of SCSPTR so no locking is required.
-> +	 * Reading bit 2 and 0 in SCSPTR gives pin state as input.
-> +	 * Writing the same bits sets the output value.
-> +	 * This makes regular read-modify-write difficult so we
-> +	 * use sp->val to keep track of the latest register value.
-> +	 */
-> +
-> +	if (on)
-> +		sp->val |= bits;
-> +	else
-> +		sp->val &= ~bits;
-> +
-> +	litex_spiflash_spi_wr(sp, sp->val, SPIFLASH_BITBANG);
+> +	return readb(addr);
 > +}
 > +
-> +static inline struct litex_spiflash_spi *litex_spiflash_spidev_to_sp(struct spi_device *spi)
+> +static inline u32 litex_read32(void __iomem *addr)
 > +{
-> +	return container_of(spi->master, struct litex_spiflash_spi, master);
+> +	return readl(addr);
 > +}
 > +
-> +static inline void setsck(struct spi_device *spi, int on)
+> +static void liteeth_mdio_w_modify(struct liteeth *priv, u8 clear, u8 set)
 > +{
-> +	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
+> +	void __iomem *mdio_w = priv->mdio_base + LITEETH_MDIO_W;
 > +
-> +	setbits(sc, SPIFLASH_BB_CLK, on);
+> +	litex_write8(mdio_w, (litex_read8(mdio_w) & ~clear) | set);
 > +}
 > +
-> +static inline void setmosi(struct spi_device *spi, int on)
+> +static void liteeth_mdio_ctrl(struct mdiobb_ctrl *ctrl, u8 mask, int set)
 > +{
-> +	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
+> +	struct liteeth *priv = container_of(ctrl, struct liteeth, mdiobb);
 > +
-> +	sc->val &= ~SPIFLASH_BB_DIR;
-> +	setbits(sc, SPIFLASH_BB_MOSI, on);
+> +	liteeth_mdio_w_modify(priv, mask, set ? mask : 0);
 > +}
 > +
-> +static inline u32 getmiso(struct spi_device *spi)
+> +/* MDC pin control */
+> +static void liteeth_set_mdc(struct mdiobb_ctrl *ctrl, int level)
 > +{
-> +	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
-> +
-> +	setbits(sc, SPIFLASH_BB_DIR, 1);
-> +	return !!((litex_spiflash_spi_rr(sc, SPIFLASH_MISO) & 1));
+> +	liteeth_mdio_ctrl(ctrl, MDIO_W_CLK, level);
 > +}
 > +
-> +#define spidelay(nsecs) udelay(nsecs/1000)
-> +
-> +#include "spi-bitbang-txrx.h"
-> +
-> +static inline void litex_spiflash_spi_chipselect(struct litex_spiflash_spi *sc, int on)
+> +/* Data I/O pin control */
+> +static void liteeth_set_mdio_dir(struct mdiobb_ctrl *ctrl, int output)
 > +{
-> +	setbits(sc, SPIFLASH_BB_CSN, on);
+> +	liteeth_mdio_ctrl(ctrl, MDIO_W_OE, output);
 > +}
 > +
-> +static int litex_spiflash_spi_setup(struct spi_device *spi)
+> +/* Set data bit */
+> +static void liteeth_set_mdio_data(struct mdiobb_ctrl *ctrl, int value)
 > +{
-> +	struct spi_master *master = spi->master;
-> +	struct device_d spi_dev = spi->dev;
+> +	liteeth_mdio_ctrl(ctrl, MDIO_W_DO, value);
+> +}
 > +
-> +	if (spi->bits_per_word != 8) {
-> +		dev_err(master->dev, "master doesn't support %d bits per word requested by %s\n",
-> +			spi->bits_per_word, spi_dev.name);
-> +		return -EINVAL;
-> +	}
+> +/* Get data bit */
+> +static int liteeth_get_mdio_data(struct mdiobb_ctrl *ctrl)
+> +{
+> +	struct liteeth *priv = container_of(ctrl, struct liteeth, mdiobb);
 > +
-> +	if ((spi->mode & (SPI_CPHA | SPI_CPOL)) != SPI_MODE_0) {
-> +		dev_err(master->dev, "master doesn't support SPI_MODE%d requested by %s\n",
-> +			spi->mode & (SPI_CPHA | SPI_CPOL), spi_dev.name);
-> +		return -EINVAL;
-> +	}
+> +	return (litex_read8(priv->mdio_base + LITEETH_MDIO_R) & MDIO_R_DI) != 0;
+> +}
+> +
+> +/* MDIO bus control struct */
+> +static struct mdiobb_ops bb_ops = {
+> +	.set_mdc = liteeth_set_mdc,
+> +	.set_mdio_dir = liteeth_set_mdio_dir,
+> +	.set_mdio_data = liteeth_set_mdio_data,
+> +	.get_mdio_data = liteeth_get_mdio_data,
+> +};
+> +
+> +static int liteeth_init_dev(struct eth_device *edev)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int liteeth_eth_open(struct eth_device *edev)
+> +{
+> +	struct liteeth *priv = edev->priv;
+> +	int ret;
+> +
+> +	/* Disable events */
+> +	litex_write8(priv->base + LITEETH_WRITER_EV_ENABLE, 0);
+> +	litex_write8(priv->base + LITEETH_READER_EV_ENABLE, 0);
+> +
+> +	/* Clear pending events? */
+> +	litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, 1);
+> +	litex_write8(priv->base + LITEETH_READER_EV_PENDING, 1);
+> +
+> +	ret = phy_device_connect(edev, priv->mii_bus, -1, NULL, 0, -1);
+> +	if (ret)
+> +		return ret;
 > +
 > +	return 0;
 > +}
 > +
-> +static int litex_spiflash_spi_read(struct spi_device *spi, void *buf, size_t nbyte)
+> +static int liteeth_eth_send(struct eth_device *edev, void *packet,
+> +				int packet_length)
 > +{
-> +	ssize_t cnt = 0;
-> +	u8 *rxf_buf = buf;
+> +	struct liteeth *priv = edev->priv;
+> +	void *txbuffer;
+> +	int ret;
+> +	u8 val;
+> +	u8 reg;
 > +
-> +	while (cnt < nbyte) {
-> +		*rxf_buf = bitbang_txrx_be_cpha1(spi, 1000, 1, 0, 8);
-> +		rxf_buf++;
-> +		cnt++;
+> +	reg = litex_read8(priv->base + LITEETH_READER_EV_PENDING);
+> +	if (reg) {
+> +		litex_write8(priv->base + LITEETH_READER_EV_PENDING, reg);
 > +	}
 > +
-> +	return cnt;
-> +}
-> +
-> +static int litex_spiflash_spi_write(struct spi_device *spi,
-> +				const void *buf, size_t nbyte)
-> +{
-> +	ssize_t cnt = 0;
-> +	const u8 *txf_buf = buf;
-> +
-> +	while (cnt < nbyte) {
-> +		bitbang_txrx_be_cpha1(spi, 1000, 1, (u32)*txf_buf, 8);
-> +		txf_buf++;
-> +		cnt++;
+> +	/* Reject oversize packets */
+> +	if (unlikely(packet_length > MAX_PKT_SIZE)) {
+> +		dev_err(priv->dev, "tx packet too big\n");
+> +		goto drop;
 > +	}
 > +
+> +	txbuffer = priv->tx_base + priv->tx_slot * LITEETH_BUFFER_SIZE;
+> +	memcpy(txbuffer, packet, packet_length);
+> +	litex_write8(priv->base + LITEETH_READER_SLOT, priv->tx_slot);
+> +	litex_write16(priv->base + LITEETH_READER_LENGTH, packet_length);
+> +
+> +	ret = readb_poll_timeout(priv->base + LITEETH_READER_READY,
+> +			val, val, 1000);
+> +	if (ret == -ETIMEDOUT) {
+> +		dev_err(priv->dev, "LITEETH_READER_READY timed out\n");
+> +		goto drop;
+> +	}
+> +
+> +	litex_write8(priv->base + LITEETH_READER_START, 1);
+> +
+> +	priv->tx_slot = (priv->tx_slot + 1) % priv->num_tx_slots;
+> +
+> +drop:
 > +	return 0;
 > +}
 > +
-> +static int litex_spiflash_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
+> +static int liteeth_eth_rx(struct eth_device *edev)
 > +{
-> +	struct litex_spiflash_spi *sc = litex_spiflash_spidev_to_sp(spi);
-> +	struct spi_transfer *t;
+> +	struct liteeth *priv = edev->priv;
+> +	u8 rx_slot;
+> +	int len = 0;
+> +	u8 reg;
 > +
-> +	mesg->actual_length = 0;
-> +
-> +	/* activate chip select signal */
-> +	litex_spiflash_spi_chipselect(sc, 0);
-> +
-> +	list_for_each_entry(t, &mesg->transfers, transfer_list) {
-> +
-> +		if (t->tx_buf)
-> +			litex_spiflash_spi_write(spi, t->tx_buf, t->len);
-> +
-> +		if (t->rx_buf)
-> +			litex_spiflash_spi_read(spi, t->rx_buf, t->len);
-> +
-> +		mesg->actual_length += t->len;
+> +	reg = litex_read8(priv->base + LITEETH_WRITER_EV_PENDING);
+> +	if (!reg) {
+> +		goto done;
 > +	}
 > +
-> +	/* inactivate chip select signal */
-> +	litex_spiflash_spi_chipselect(sc, 1);
+> +	len = litex_read32(priv->base + LITEETH_WRITER_LENGTH);
+> +	if (len == 0 || len > 2048) {
+> +		len = 0;
+> +		dev_err(priv->dev, "%s: invalid len %d\n", __func__, len);
+> +		litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, reg);
+> +		goto done;
+> +	}
 > +
+> +	rx_slot = litex_read8(priv->base + LITEETH_WRITER_SLOT);
+> +
+> +	memcpy(NetRxPackets[0], priv->rx_base + rx_slot * LITEETH_BUFFER_SIZE, len);
+> +
+> +	net_receive(edev, NetRxPackets[0], len);
+> +
+> +	litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, reg);
+> +
+> +done:
+> +	return len;
+> +}
+> +
+> +static void liteeth_eth_halt(struct eth_device *edev)
+> +{
+> +	struct liteeth *priv = edev->priv;
+> +
+> +	litex_write8(priv->base + LITEETH_WRITER_EV_ENABLE, 0);
+> +	litex_write8(priv->base + LITEETH_READER_EV_ENABLE, 0);
+> +}
+> +
+> +static void liteeth_reset_hw(struct liteeth *priv)
+> +{
+> +	/* Reset, twice */
+> +	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 0);
+> +	udelay(10);
+> +	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 1);
+> +	udelay(10);
+> +	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 0);
+> +	udelay(10);
+> +}
+> +
+> +static int liteeth_get_ethaddr(struct eth_device *edev, unsigned char *m)
+> +{
 > +	return 0;
 > +}
 > +
-> +static void litex_spiflash_spi_enable(struct litex_spiflash_spi *sp)
+> +static int liteeth_set_ethaddr(struct eth_device *edev,
+> +					const unsigned char *mac_addr)
 > +{
-> +	u32 val;
-> +
-> +	/* set SPIFLASH_BB_DIR = 0 */
-> +	val = SPIFLASH_BB_CSN | SPIFLASH_BB_CLK | SPIFLASH_BB_MOSI;
-> +	litex_spiflash_spi_wr(sp, val, SPIFLASH_BITBANG);
-> +
-> +	/* enable GPIO mode */
-> +	litex_spiflash_spi_wr(sp, 1, SPIFLASH_BITBANG_EN);
-> +}
-> +
-> +static void litex_spiflash_spi_disable(struct litex_spiflash_spi *sp)
-> +{
-> +	/* disable GPIO mode */
-> +	litex_spiflash_spi_wr(sp, 0, SPIFLASH_BITBANG_EN);
-> +}
-> +
-> +static int litex_spiflash_spi_probe(struct device_d *dev)
-> +{
-> +	struct resource *iores;
-> +	struct spi_master *master;
-> +	struct litex_spiflash_spi *litex_spiflash_spi;
-> +
-> +	litex_spiflash_spi = xzalloc(sizeof(*litex_spiflash_spi));
-> +	dev->priv = litex_spiflash_spi;
-> +
-> +	master = &litex_spiflash_spi->master;
-> +	master->dev = dev;
-> +
-> +	master->bus_num = dev->id;
-> +	master->setup = litex_spiflash_spi_setup;
-> +	master->transfer = litex_spiflash_spi_transfer;
-> +	master->num_chipselect = 1;
-> +
-> +	iores = dev_request_mem_resource(dev, 0);
-> +	if (IS_ERR(iores))
-> +		return PTR_ERR(iores);
-> +	litex_spiflash_spi->regs = IOMEM(iores->start);
-> +
-> +	litex_spiflash_spi_enable(litex_spiflash_spi);
-> +
-> +	/* inactivate chip select signal */
-> +	litex_spiflash_spi_chipselect(litex_spiflash_spi, 1);
-> +
-> +	spi_register_master(master);
-> +
 > +	return 0;
 > +}
 > +
-> +static void litex_spiflash_spi_remove(struct device_d *dev)
+> +static int liteeth_probe(struct device_d *dev)
 > +{
-> +	struct litex_spiflash_spi *sp = dev->priv;
+> +	struct device_node *np = dev->device_node;
+> +	struct eth_device *edev;
+> +	void __iomem *buf_base;
+> +	struct liteeth *priv;
+> +	int err;
 > +
-> +	litex_spiflash_spi_disable(sp);
+> +	priv = xzalloc(sizeof(struct liteeth));
+> +	edev = &priv->edev;
+> +	edev->priv = priv;
+> +	priv->dev = dev;
+> +
+> +	priv->base = dev_request_mem_region(dev, 0);
+> +	if (IS_ERR(priv->base)) {
+> +		err = PTR_ERR(priv->base);
+> +		goto err;
+> +	}
+> +
+> +	priv->mdio_base = dev_request_mem_region(dev, 1);
+> +	if (IS_ERR(priv->mdio_base)) {
+> +		err = PTR_ERR(priv->mdio_base);
+> +		goto err;
+> +	}
+> +
+> +	buf_base = dev_request_mem_region(dev, 2);
+> +	if (IS_ERR(buf_base)) {
+> +		err = PTR_ERR(buf_base);
+> +		goto err;
+> +	}
+> +
+> +	err = of_property_read_u32(np, "rx-fifo-depth",
+> +			&priv->num_rx_slots);
+> +	if (err) {
+> +		dev_err(dev, "unable to get rx-fifo-depth\n");
+> +		goto err;
+> +	}
+> +
+> +	err = of_property_read_u32(np, "tx-fifo-depth",
+> +			&priv->num_tx_slots);
+> +	if (err) {
+> +		dev_err(dev, "unable to get tx-fifo-depth\n");
+> +		goto err;
+> +	}
+> +
+> +	/* Rx slots */
+> +	priv->rx_base = buf_base;
+> +	priv->rx_slot = 0;
+> +
+> +	/* Tx slots come after Rx slots */
+> +	priv->tx_base = buf_base + priv->num_rx_slots * LITEETH_BUFFER_SIZE;
+> +	priv->tx_slot = 0;
+> +
+> +	edev->init = liteeth_init_dev;
+> +	edev->open = liteeth_eth_open;
+> +	edev->send = liteeth_eth_send;
+> +	edev->recv = liteeth_eth_rx;
+> +	edev->get_ethaddr = liteeth_get_ethaddr;
+> +	edev->set_ethaddr = liteeth_set_ethaddr;
+> +	edev->halt = liteeth_eth_halt;
+> +	edev->parent = dev;
+> +
+> +	priv->mdiobb.ops = &bb_ops;
+> +
+> +	priv->mii_bus = alloc_mdio_bitbang(&priv->mdiobb);
+> +	priv->mii_bus->parent = dev;
+> +
+> +	liteeth_reset_hw(priv);
+> +
+> +	err = eth_register(edev);
+> +	if (err) {
+> +		dev_err(dev, "failed to register edev\n");
+> +		goto err;
+> +	}
+> +
+> +	err = mdiobus_register(priv->mii_bus);
+> +	if (err) {
+> +		dev_err(dev, "failed to register mii_bus\n");
+> +		goto err;
+> +	}
+> +
+> +	dev_info(dev, DRV_NAME " driver registered\n");
+> +
+> +	return 0;
+> +
+> +err:
+> +	return err;
 > +}
 > +
-> +static __maybe_unused struct of_device_id litex_spiflash_spi_dt_ids[] = {
+> +static const struct of_device_id liteeth_dt_ids[] = {
 > +	{
-> +		.compatible = "litex,spiflash",
-> +	},
-> +	{
-> +		/* sentinel */
+> +		.compatible = "litex,liteeth"
+> +	}, {
 > +	}
 > +};
 > +
-> +static struct driver_d litex_spiflash_spi_driver = {
-> +	.name  = "litex-spiflash",
-> +	.probe = litex_spiflash_spi_probe,
-> +	.remove = litex_spiflash_spi_remove,
-> +	.of_compatible = DRV_OF_COMPAT(litex_spiflash_spi_dt_ids),
+> +static struct driver_d liteeth_driver = {
+> +	.name = DRV_NAME,
+> +	.probe = liteeth_probe,
+> +	.of_compatible = DRV_OF_COMPAT(liteeth_dt_ids),
 > +};
-> +device_platform_driver(litex_spiflash_spi_driver);
+> +device_platform_driver(liteeth_driver);
+> +
+> +MODULE_AUTHOR("Joel Stanley <joel@jms.id.au>");
+> +MODULE_LICENSE("GPL");
 > 
 
 
