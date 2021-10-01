@@ -1,54 +1,55 @@
-Delivery-date: Fri, 01 Oct 2021 12:19:55 +0200
+Delivery-date: Fri, 01 Oct 2021 12:22:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFdz-000348-O3
-	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:19:55 +0200
+	id 1mWFgi-0003BO-42
+	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:22:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFdy-00085s-Jf
-	for lore@pengutronix.de; Fri, 01 Oct 2021 12:19:55 +0200
+	id 1mWFgg-0008Pb-9N
+	for lore@pengutronix.de; Fri, 01 Oct 2021 12:22:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=/6LKrq9l5+Ex6zo9RYpV7rjm4ebaZ4M5wQa37ytmWMQ=; b=NW40EhOS8pWDxc0EJCdXeJcWmL
-	oOXX87jTooHJx2gt3iXAoXJHNCSai5Bvk3h9cVp8zMuJE8iUggaF8E4tyhd/AtpDzYn4GbOOnuPcs
-	M/DzptColMPEegackbXl7z265FE1RsIV3M4T/bWJee6NLlRSmKy7Mju+iFz1RfMvvk5LKY86ew9VR
-	DZFb1TiNmVFUs6U1yfFwmSTbn4Zx1kRBniyfCFqGX3PnNDkfhfG2JjREdgh5qzpcF5WwvBW59qXzy
-	teBqTYbqhqP+rZm1Q+OUVmGoevMudETvkckkGMJ42p6+rUZr506gkM2aWqEv0rn9yT8UhW8hTL7Pw
-	7WMS5Cfg==;
+	Message-ID:From:References:To:Subject:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=u3Vxl58+piuwsW4tGhFD3sagDJIRCeZW6393l6XrZyI=; b=BniWuCxGVUvYRH
+	sb7OUr4qW5Zcup0fedQVWsAMG59MTbwk2qO6tdGpiok71e/WXlyV3y/r4UmnxrL/HxJa5yovIW0Cq
+	oUVvqdQvreMEjOS3+A5DldXnAUrbr6pyisL3psJu478fUTwfhaUYyBbwOUHzKWvyGZvC6LIaffJ6H
+	upb+j0SOYoYvWPuALTAGjpZ4/1FjzDYZoxZv5vtqloXGLADhpL5z8PI5mwn7yC1sIJpzzMSOu7rtP
+	1fo6DHL5DwH6yzL60F6lCEH+FbxmFf3tONglW+cMJ7ZF9VuO7s5Simtxg8hdaSJ1fD1zt03b6okbF
+	J5TrI8bQLNRXqrvQFdTw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mWFck-00HTXX-CG; Fri, 01 Oct 2021 10:18:38 +0000
+	id 1mWFfJ-00HTui-Ad; Fri, 01 Oct 2021 10:21:17 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mWFcf-00HTWj-La
- for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:18:35 +0000
+ id 1mWFfD-00HTu4-2j
+ for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:21:13 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1mWFce-000821-Ca; Fri, 01 Oct 2021 12:18:32 +0200
-To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
+ id 1mWFfB-0008He-GB; Fri, 01 Oct 2021 12:21:09 +0200
+To: Antony Pavlov <antonynpavlov@gmail.com>
 References: <20210817101104.114945-1-antonynpavlov@gmail.com>
- <20210817101104.114945-9-antonynpavlov@gmail.com>
+ <20210817101104.114945-8-antonynpavlov@gmail.com>
+ <f234164a-64b9-63ae-8ecc-97336d5c695c@pengutronix.de>
+ <20210831073838.176dd337f649dfeed2b2ec8f@gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <8d183b2f-debf-f253-d07d-35f09b62ffba@pengutronix.de>
-Date: Fri, 1 Oct 2021 12:18:32 +0200
+Message-ID: <391bd8c3-c3e8-d4dc-9384-b49a863032b9@pengutronix.de>
+Date: Fri, 1 Oct 2021 12:21:09 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20210817101104.114945-9-antonynpavlov@gmail.com>
+In-Reply-To: <20210831073838.176dd337f649dfeed2b2ec8f@gmail.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211001_031833_747085_B3742D8E 
-X-CRM114-Status: GOOD (  16.67  )
+X-CRM114-CacheID: sfid-20211001_032111_519330_7723E33F 
+X-CRM114-Status: GOOD (  34.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,6 +61,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: barebox@lists.infradead.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -71,105 +73,495 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,UPPERCASE_50_75 autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH RESEND v4 8/8] RISC-V: add litex_linux_defconfig
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH RESEND v4 7/8] RISC-V: add LiteX SoC and
+ linux-on-litex-vexriscv support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hi,
 
-On 17.08.21 12:11, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-
-I prefer a litex32_defconfig which will enable this and future boards.
-But we can add this for now. 
-
-> ---
->  arch/riscv/configs/litex_linux_defconfig | 75 ++++++++++++++++++++++++
->  1 file changed, 75 insertions(+)
+On 31.08.21 06:38, Antony Pavlov wrote:
+> On Mon, 23 Aug 2021 14:06:09 +0200
+> Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 > 
-> diff --git a/arch/riscv/configs/litex_linux_defconfig b/arch/riscv/configs/litex_linux_defconfig
-> new file mode 100644
-> index 0000000000..8e19964890
-> --- /dev/null
-> +++ b/arch/riscv/configs/litex_linux_defconfig
-> @@ -0,0 +1,75 @@
-> +CONFIG_SOC_LITEX=y
-> +CONFIG_STACK_SIZE=0x20000
-> +CONFIG_MALLOC_SIZE=0xf00000
-> +CONFIG_MALLOC_TLSF=y
-> +CONFIG_PANIC_HANG=y
-> +CONFIG_BAUDRATE=1000000
-> +CONFIG_HUSH_FANCY_PROMPT=y
-> +CONFIG_CMDLINE_EDITING=y
-> +CONFIG_AUTO_COMPLETE=y
-> +# CONFIG_TIMESTAMP is not set
-> +CONFIG_BOOTM_SHOW_TYPE=y
-> +CONFIG_BOOTM_VERBOSE=y
-> +CONFIG_BOOTM_INITRD=y
-> +CONFIG_BOOTM_OFTREE=y
-> +CONFIG_BOOTM_OFTREE_UIMAGE=y
-> +CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-> +CONFIG_DEBUG_LL=y
-> +CONFIG_LONGHELP=y
-> +CONFIG_CMD_IOMEM=y
-> +CONFIG_CMD_IMD=y
-> +CONFIG_CMD_MEMINFO=y
-> +CONFIG_CMD_GO=y
-> +CONFIG_CMD_LOADY=y
-> +CONFIG_CMD_EXPORT=y
-> +CONFIG_CMD_CMP=y
-> +CONFIG_CMD_MD5SUM=y
-> +CONFIG_CMD_SHA1SUM=y
-> +CONFIG_CMD_MSLEEP=y
-> +CONFIG_CMD_SLEEP=y
-> +CONFIG_CMD_DHCP=y
-> +CONFIG_CMD_MIITOOL=y
-> +CONFIG_CMD_PING=y
-> +CONFIG_CMD_TFTP=y
-> +CONFIG_CMD_ECHO_E=y
-> +CONFIG_CMD_EDIT=y
-> +CONFIG_CMD_MEMTEST=y
-> +CONFIG_CMD_MM=y
-> +CONFIG_CMD_CLK=y
-> +CONFIG_CMD_GPIO=y
-> +CONFIG_CMD_LED=y
-> +CONFIG_CMD_SPI=y
-> +CONFIG_CMD_LED_TRIGGER=y
-> +CONFIG_CMD_OF_DUMP=y
-> +CONFIG_CMD_TIME=y
-> +CONFIG_CMD_DHRYSTONE=y
-> +CONFIG_NET=y
-> +CONFIG_NET_NFS=y
-> +CONFIG_NET_NETCONSOLE=y
-> +CONFIG_DRIVER_NET_LITEETH=y
-> +CONFIG_AR8327N_PHY=y
-> +CONFIG_AT803X_PHY=y
-> +CONFIG_DAVICOM_PHY=y
-> +CONFIG_DP83867_PHY=y
-> +CONFIG_LXT_PHY=y
-> +CONFIG_MARVELL_PHY=y
-> +CONFIG_MICREL_PHY=y
-> +CONFIG_NATIONAL_PHY=y
-> +CONFIG_REALTEK_PHY=y
-> +CONFIG_SMSC_PHY=y
-> +CONFIG_DRIVER_SPI_LITEX_SPIFLASH=y
-> +CONFIG_MTD=y
-> +# CONFIG_MTD_OOB_DEVICE is not set
-> +CONFIG_MTD_M25P80=y
-> +CONFIG_CLOCKSOURCE_DUMMY_RATE=20000
-> +CONFIG_SRAM=y
-> +CONFIG_LED=y
-> +CONFIG_LED_GPIO=y
-> +CONFIG_LED_GPIO_OF=y
-> +CONFIG_LED_TRIGGERS=y
-> +CONFIG_GPIO_74XX_MMIO=y
-> +CONFIG_GPIO_GENERIC_PLATFORM=y
-> +# CONFIG_PINCTRL is not set
-> +CONFIG_FS_TFTP=y
-> +CONFIG_FS_NFS=y
-> +CONFIG_DIGEST_CRC32_GENERIC=y
+> Hi Ahmad!
+> 
+>> On 17.08.21 12:11, Antony Pavlov wrote:
+>>> LiteX is a Migen-based System on Chip, supporting softcore
+>>> VexRiscv CPU, a 32-bits Linux Capable RISC-V CPU.
+>>>
+>>> See https://github.com/enjoy-digital/litex and
+>>> https://github.com/litex-hub/linux-on-litex-vexriscv
+>>> for details.
+>>>
+>>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>>> ---
+>>>  arch/riscv/Kconfig.socs                  |  14 +++
+>>>  arch/riscv/boards/Makefile               |   1 +
+>>>  arch/riscv/boards/litex-linux/Makefile   |   3 +
+>>>  arch/riscv/boards/litex-linux/lowlevel.c |  22 ++++
+>>>  arch/riscv/dts/Makefile                  |   1 +
+>>>  arch/riscv/dts/litex-linux.dts           |  92 +++++++++++++++++
+>>>  arch/riscv/dts/litex_soc_linux.dtsi      |  49 +++++++++
+>>>  arch/riscv/include/asm/debug_ll.h        |   3 +
+>>>  arch/riscv/include/asm/debug_ll_litex.h  | 123 +++++++++++++++++++++++
+>>>  common/Kconfig                           |   4 +
+>>>  images/Makefile.riscv                    |   4 +
+>>>  11 files changed, 316 insertions(+)
+>>>
+>>> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+>>> index 221ea133d4..5c281918d5 100644
+>>> --- a/arch/riscv/Kconfig.socs
+>>> +++ b/arch/riscv/Kconfig.socs
+>>> @@ -95,4 +95,18 @@ config SIFIVE_L2
+>>>  	bool "SiFive L2 cache controller"
+>>>  	depends on CPU_SIFIVE
+>>>  
+>>> +config SOC_LITEX
+>>> +	bool "LiteX SoCs"
+>>> +	depends on ARCH_RV32I
+>>> +	select HAS_ASM_DEBUG_LL
+>>> +	select HAS_NMON
+>>> +	select USE_COMPRESSED_DTB
+>>> +	select RISCV_TIMER
+>>> +
+>>> +config BOARD_LITEX_LINUX
+>>> +	bool "litex linux board"
+>>> +	depends on SOC_LITEX
+>>> +	select RISCV_M_MODE
+>>> +	def_bool y
+>>> +
+>>>  endmenu
+>>> diff --git a/arch/riscv/boards/Makefile b/arch/riscv/boards/Makefile
+>>> index cb28a25d8b..8d5d9d4fc6 100644
+>>> --- a/arch/riscv/boards/Makefile
+>>> +++ b/arch/riscv/boards/Makefile
+>>> @@ -2,3 +2,4 @@
+>>>  obj-$(CONFIG_BOARD_ERIZO_GENERIC)	+= erizo/
+>>>  obj-$(CONFIG_BOARD_HIFIVE)		+= hifive/
+>>>  obj-$(CONFIG_BOARD_BEAGLEV)		+= beaglev/
+>>> +obj-$(CONFIG_BOARD_LITEX_LINUX)		+= litex-linux/
+>>> diff --git a/arch/riscv/boards/litex-linux/Makefile b/arch/riscv/boards/litex-linux/Makefile
+>>> new file mode 100644
+>>> index 0000000000..3d217ffe0b
+>>> --- /dev/null
+>>> +++ b/arch/riscv/boards/litex-linux/Makefile
+>>> @@ -0,0 +1,3 @@
+>>> +# SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +pbl-y += lowlevel.o
+>>> diff --git a/arch/riscv/boards/litex-linux/lowlevel.c b/arch/riscv/boards/litex-linux/lowlevel.c
+>>> new file mode 100644
+>>> index 0000000000..da23ef5633
+>>> --- /dev/null
+>>> +++ b/arch/riscv/boards/litex-linux/lowlevel.c
+>>> @@ -0,0 +1,22 @@
+>>> +// SPDX-License-Identifier: GPL-2.0-only
+>>> +
+>>> +#include <common.h>
+>>> +#include <asm/barebox-riscv.h>
+>>> +#include <debug_ll.h>
+>>> +#include <asm/riscv_nmon.h>
+>>> +
+>>> +ENTRY_FUNCTION(start_litex_linux, a0, a1, a2)
+>>> +{
+>>> +	extern char __dtb_z_litex_linux_start[];
+>>> +	void *fdt;
+>>> +
+>>> +	barebox_nmon_entry();
+>>> +
+>>> +	putc_ll('>');
+>>> +
+>>> +	/* On POR, we are running from read-only memory here. */
+>>
+>> Do we? I thought BIOS loads barebox to RAM first?
+> 
+> Yes, your are right. At the moment litex BIOS loads barebox to RAM first
+> and this comment must be dropped.
+
+Sent a fixup.
+
+> Please note there is a possibility to use barebox instead of litex BIOS
+> and start barebox on POR from ROM.
+> linux-on-litex-vexriscv bitstream for Arty board incorporates litex BIOS
+> so on Arty litex BIOS runs on POR unconditionally.
+> Litex BIOS is no more than 64K and "one does not simply push barebox into 64K".
+
+We have some configurations where barebox fits into 64K SRAM, but with DT
+support, this becomes quite hard. barebox PBL chainloading from flash
+would be an option for the future.
+
+> But litex works on boards with tiny FPGA resources e.g. iCEBreaker-bitsy.
+> litex configuration for these tiny FPGA skips internal RAM/ROM and BIOS
+> starts from SPI flash so there is no limit on barebox image size.
+
+I am fine with merging as is.
+
+Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> 
+> 
+> 
+>>
+>>> +
+>>> +	fdt = __dtb_z_litex_linux_start + get_runtime_offset();
+>>> +
+>>> +	barebox_riscv_machine_entry(0x40000000, SZ_256M, fdt);
+>>> +}
+>>> diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
+>>> index 4a15423b7f..17d7d249e4 100644
+>>> --- a/arch/riscv/dts/Makefile
+>>> +++ b/arch/riscv/dts/Makefile
+>>> @@ -8,5 +8,6 @@ pbl-$(CONFIG_BOARD_ERIZO_GENERIC) += erizo-generic.dtb.o
+>>>  pbl-$(CONFIG_BOARD_HIFIVE) += hifive-unmatched-a00.dtb.o \
+>>>                                hifive-unleashed-a00.dtb.o
+>>>  pbl-$(CONFIG_BOARD_BEAGLEV) += jh7100-beaglev-starlight.dtb.o
+>>> +pbl-$(CONFIG_BOARD_LITEX_LINUX) += litex-linux.dtb.o
+>>>  
+>>>  clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
+>>> diff --git a/arch/riscv/dts/litex-linux.dts b/arch/riscv/dts/litex-linux.dts
+>>> new file mode 100644
+>>> index 0000000000..d21fa57e30
+>>> --- /dev/null
+>>> +++ b/arch/riscv/dts/litex-linux.dts
+>>> @@ -0,0 +1,92 @@
+>>> +// SPDX-License-Identifier: GPL-2.0-only
+>>> +
+>>> +#include "litex_soc_linux.dtsi"
+>>> +
+>>> +#include <dt-bindings/gpio/gpio.h>
+>>> +
+>>> +/ {
+>>> +	model = "LiteX VexRiscV-SoC-Linux";
+>>> +	compatible = "litex,vexriscv-soc-linux";
+>>> +
+>>> +	aliases {
+>>> +		rom = &rom;
+>>> +		sram = &sram;
+>>> +	};
+>>> +
+>>> +	/* ARTY board */
+>>> +	rom: rom@00000000 {
+>>
+>> I can see why RAM is specific to ARTY, but why ROM?
+>>
+>>> +		compatible = "mmio-sram";
+>>> +		reg = <0x00000000 0x00008000>;
+>>> +		read-only;
+>>> +	};
+>>> +
+>>> +	sram: sram@20000000 {
+>>> +		compatible = "mmio-sram";
+>>> +		reg = <0x20000000 0x00004000>;
+>>> +	};
+>>> +
+>>> +	main_ram: memory@40000000 {
+>>> +		device_type = "memory";
+>>> +		reg = <0x40000000 0x10000000>;
+>>> +	};
+>>> +};
+>>> +
+>>> +&uart0 {
+>>> +	status = "okay";
+>>> +};
+>>> +
+>>> +&mac0 {
+>>> +	status = "okay";
+>>> +};
+>>> +
+>>> +&spi0 {
+>>> +	status = "okay";
+>>> +
+>>> +	spiflash: w25q128@0 {
+>>> +		#address-cells = <1>;
+>>> +		#size-cells = <1>;
+>>> +		compatible = "winbond,w25q128", "jedec,spi-nor";
+>>> +		spi-max-frequency = <104000000>;
+>>> +		reg = <0>;
+>>> +	};
+>>> +};
+>>> +
+>>> +/ {
+>>> +	ledsgpio: gpio@f000a800 {
+>>> +		compatible = "ti,74175";
+>>> +		reg = <0xf000a800 0x4>;
+>>> +		gpio-controller;
+>>> +		#gpio-cells = <2>;
+>>> +	};
+>>> +
+>>> +	leds {
+>>> +		compatible = "gpio-leds";
+>>> +
+>>> +		ld0 {
+>>> +			label = "arty:green:ld0";
+>>> +			gpios = <&ledsgpio 0 GPIO_ACTIVE_HIGH>;
+>>> +		};
+>>> +
+>>> +		ld1 {
+>>> +			label = "arty:green:ld1";
+>>> +			gpios = <&ledsgpio 1 GPIO_ACTIVE_HIGH>;
+>>> +		};
+>>> +
+>>> +		ld2 {
+>>> +			label = "arty:green:ld2";
+>>> +			gpios = <&ledsgpio 2 GPIO_ACTIVE_HIGH>;
+>>> +		};
+>>> +
+>>> +		ld3 {
+>>> +			label = "arty:green:ld3";
+>>> +			gpios = <&ledsgpio 3 GPIO_ACTIVE_HIGH>;
+>>> +		};
+>>> +	};
+>>> +
+>>> +	swgpio: gpio@f0006000 {
+>>> +		compatible = "ti,74125";
+>>> +		reg = <0xf0006000 0x4>;
+>>> +		gpio-controller;
+>>> +		#gpio-cells = <2>;
+>>> +	};
+>>> +};
+>>> diff --git a/arch/riscv/dts/litex_soc_linux.dtsi b/arch/riscv/dts/litex_soc_linux.dtsi
+>>> new file mode 100644
+>>> index 0000000000..94a0ba29da
+>>> --- /dev/null
+>>> +++ b/arch/riscv/dts/litex_soc_linux.dtsi
+>>> @@ -0,0 +1,49 @@
+>>> +// SPDX-License-Identifier: GPL-2.0-only
+>>> +
+>>> +/dts-v1/;
+>>> +
+>>> +/ {
+>>> +	compatible = "litex,vexriscv-soc-linux";
+>>> +
+>>> +	#address-cells = <1>;
+>>> +	#size-cells = <1>;
+>>> +
+>>> +	cpus {
+>>> +		#address-cells = <1>;
+>>> +		#size-cells = <0>;
+>>> +
+>>> +		timebase-frequency = <100000000>; // 100 MHz
+>>> +
+>>> +		cpu@0 {
+>>> +			device_type = "cpu";
+>>> +			compatible = "spinalhdl,vexriscv", "riscv";
+>>> +			reg = <0>;
+>>> +		};
+>>> +	};
+>>> +
+>>> +	uart0: serial@f0001000 {
+>>> +		compatible = "litex,uart";
+>>> +		reg = <0xf0001000 0x18>;
+>>> +		status = "disabled";
+>>> +	};
+>>> +
+>>> +	mac0: mac@f0006800 {
+>>> +		compatible = "litex,liteeth";
+>>> +		reg = <0xf0006800 0x7c /* base */
+>>> +			0xf0007000 0x0a /* mdio_base */
+>>> +			0xb0000000 0x2000>; /* buf_base */
+>>> +		tx-fifo-depth = <2>;
+>>> +		rx-fifo-depth = <2>;
+>>> +		status = "disabled";
+>>> +	};
+>>> +
+>>> +	spi0: spi@f000b800 {
+>>> +		compatible = "litex,spiflash";
+>>> +
+>>> +		#address-cells = <1>;
+>>> +		#size-cells = <0>;
+>>> +
+>>> +		reg = <0xf000b800 0x100>;
+>>> +		status = "disabled";
+>>> +	};
+>>> +};
+>>> diff --git a/arch/riscv/include/asm/debug_ll.h b/arch/riscv/include/asm/debug_ll.h
+>>> index b4caa0597a..a3b9c1c4bc 100644
+>>> --- a/arch/riscv/include/asm/debug_ll.h
+>>> +++ b/arch/riscv/include/asm/debug_ll.h
+>>> @@ -43,6 +43,9 @@ static inline void PUTC_LL(char ch)
+>>>  
+>>>  	writel(ch, uart0);
+>>>  }
+>>> +#elif defined CONFIG_DEBUG_LITEX
+>>> +
+>>> +#include <asm/debug_ll_litex.h>
+>>>  
+>>>  #endif
+>>>  
+>>> diff --git a/arch/riscv/include/asm/debug_ll_litex.h b/arch/riscv/include/asm/debug_ll_litex.h
+>>> new file mode 100644
+>>> index 0000000000..2fcdd9b0ec
+>>> --- /dev/null
+>>> +++ b/arch/riscv/include/asm/debug_ll_litex.h
+>>> @@ -0,0 +1,123 @@
+>>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>>> +/*
+>>> + * Copyright (C) 2019 Antony Pavlov <antonynpavlov@gmail.com>
+>>> + *
+>>> + * This file is part of barebox.
+>>> + *
+>>> + * This program is distributed in the hope that it will be useful,
+>>> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>>> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>>> + * GNU General Public License for more details.
+>>
+>> Nitpick: That part could be dropped as the SPDX-License-Identifier
+>> above says as much.
+> 
+> ok.
+> 
+>>
+>>> + *
+>>> + */
+>>> +
+>>> +#ifndef __ASM_DEBUG_LL_LITEX__
+>>> +#define __ASM_DEBUG_LL_LITEX__
+>>> +
+>>> +/** @file
+>>> + *  This File contains declaration for early output support
+>>> + */
+>>> +
+>>> +#include <linux/kconfig.h>
+>>> +
+>>> +#define DEBUG_LL_UART_ADDR	0xf0001000
+>>> +#define UART_RXTX	0x00
+>>> +#define UART_TXFULL	0x04
+>>> +#define UART_RXEMPTY	0x08
+>>> +#define UART_EV_PENDING	0x10
+>>> +#define  UART_EV_RX	(1 << 1)
+>>> +
+>>> +
+>>> +#ifndef __ASSEMBLY__
+>>> +
+>>> +/*
+>>> + * C macros
+>>> + */
+>>> +
+>>> +#include <asm/io.h>
+>>> +
+>>> +static inline void PUTC_LL(char ch)
+>>> +{
+>>> +#ifdef CONFIG_DEBUG_LL
+>>> +	/* wait for space */
+>>> +	while (__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_TXFULL))
+>>> +		;
+>>> +
+>>> +	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_RXTX);
+>>> +#endif /* CONFIG_DEBUG_LL */
+>>> +}
+>>> +#else /* __ASSEMBLY__ */
+>>> +/*
+>>> + * Macros for use in assembly language code
+>>> + */
+>>> +
+>>> +/*
+>>> + * output a character in a0
+>>> + */
+>>> +.macro	debug_ll_outc_a0
+>>> +#ifdef CONFIG_DEBUG_LL
+>>> +
+>>> +	li	t0, DEBUG_LL_UART_ADDR
+>>> +
+>>> +201:
+>>> +	lbu	t1, UART_TXFULL(t0)	/* uart tx full ? */
+>>> +	andi	t1, t1, 0xff
+>>> +	bnez	t1, 201b		/* try again */
+>>> +
+>>> +	sb	a0, UART_RXTX(t0)	/* write the character */
+>>> +
+>>> +#endif /* CONFIG_DEBUG_LL */
+>>> +.endm
+>>> +
+>>> +/*
+>>> + * output a character
+>>> + */
+>>> +.macro	debug_ll_outc chr
+>>> +#ifdef CONFIG_DEBUG_LL
+>>> +	li	a0, \chr
+>>> +	debug_ll_outc_a0
+>>> +#endif /* CONFIG_DEBUG_LL */
+>>> +.endm
+>>> +
+>>> +/*
+>>> + * check character in input buffer
+>>> + * return value:
+>>> + *  v0 = 0   no character in input buffer
+>>> + *  v0 != 0  character in input buffer
+>>> + */
+>>> +.macro	debug_ll_tstc
+>>> +#ifdef CONFIG_DEBUG_LL
+>>> +	li	t0, DEBUG_LL_UART_ADDR
+>>> +
+>>> +	/* get line status and check for data present */
+>>> +	lbu	s0, UART_RXEMPTY(t0)
+>>> +	bnez    s0, 243f
+>>> +	li	s0, 1
+>>> +	j	244f
+>>> +243:	li	s0, 0
+>>> +244:	nop
+>>> +#endif /* CONFIG_DEBUG_LL */
+>>> +.endm
+>>> +
+>>> +/*
+>>> + * get character to v0
+>>> + */
+>>> +.macro	debug_ll_getc
+>>> +#ifdef CONFIG_DEBUG_LL
+>>> +
+>>> +204:
+>>> +	debug_ll_tstc
+>>> +
+>>> +	/* try again */
+>>> +	beqz	s0, 204b
+>>> +
+>>> +	/* read a character */
+>>> +	lb	s0, UART_RXTX(t0)
+>>> +	li      t1, UART_EV_RX
+>>> +	sb	t1, UART_EV_PENDING(t0)
+>>> +
+>>> +#endif /* CONFIG_DEBUG_LL */
+>>> +.endm
+>>> +#endif /* __ASSEMBLY__ */
+>>> +
+>>> +#endif /* __ASM_DEBUG_LL_LITEX__ */
+>>> diff --git a/common/Kconfig b/common/Kconfig
+>>> index a9feae2ae8..cb8bd8b2bf 100644
+>>> --- a/common/Kconfig
+>>> +++ b/common/Kconfig
+>>> @@ -1399,6 +1399,10 @@ config DEBUG_SIFIVE
+>>>  	bool "SiFive serial0 port"
+>>>  	depends on SOC_SIFIVE
+>>>  
+>>> +config DEBUG_LITEX
+>>> +	bool "LiteX serial port"
+>>> +	depends on SOC_LITEX
+>>> +
+>>>  endchoice
+>>>  
+>>>  config DEBUG_LL_NS16550
+>>> diff --git a/images/Makefile.riscv b/images/Makefile.riscv
+>>> index 4410765cf6..0645238c43 100644
+>>> --- a/images/Makefile.riscv
+>>> +++ b/images/Makefile.riscv
+>>> @@ -19,3 +19,7 @@ image-$(CONFIG_BOARD_HIFIVE) += barebox-hifive-unmatched.img barebox-hifive-unle
+>>>  pblb-$(CONFIG_BOARD_BEAGLEV) += start_beaglev_starlight
+>>>  FILE_barebox-beaglev-starlight.img = start_beaglev_starlight.pblb
+>>>  image-$(CONFIG_BOARD_BEAGLEV) += barebox-beaglev-starlight.img
+>>> +
+>>> +pblb-$(CONFIG_BOARD_LITEX_LINUX) += start_litex_linux
+>>> +FILE_barebox-litex-linux.img = start_litex_linux.pblb
+>>> +image-$(CONFIG_BOARD_LITEX_LINUX) += barebox-litex-linux.img
+>>>
+>>
+>>
+>> -- 
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
 > 
 
 
