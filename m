@@ -1,53 +1,54 @@
-Delivery-date: Fri, 01 Oct 2021 12:15:45 +0200
+Delivery-date: Fri, 01 Oct 2021 12:19:55 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFZx-0002qE-3J
-	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:15:45 +0200
+	id 1mWFdz-000348-O3
+	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:19:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFZv-0007dd-EQ
-	for lore@pengutronix.de; Fri, 01 Oct 2021 12:15:44 +0200
+	id 1mWFdy-00085s-Jf
+	for lore@pengutronix.de; Fri, 01 Oct 2021 12:19:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Content-ID:Content-Description
-	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=u6KWvP3m8YI9kyLwwuDbmqoTqh2g4SNqvGuc471BBz8=; b=YWCek+L1gFscvT
-	br0YCbAx0P8zWex1vtcO/nD0pnrycEF6t4TRe6Az9EzsdbgkTBK+ExDmqlCggX8WuIv++K6pq8nmZ
-	/kcfm3UPXoGnKcsurh3PI8YZq8PjfeRPYvb0yoYQCVJm8hkhAe6YT/RLpHIEKKdzVHxjGSTDdMjSn
-	qOny7YRxGMr9z+lPhboIXrHl+/pYjo/5VDpdZokJJd/nXqqkJizJDnCGgubdWNXTeDDgbFPK7OZ44
-	Ozf3tAzCYmxIv8SI3qokyMB+dYs+BXZ4uCsxP+KtnAo+i/6eQvY7n0FS2JsccTI4NhDILmUhRoH6C
-	eGO0A2o3D++8Nwludr+g==;
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=/6LKrq9l5+Ex6zo9RYpV7rjm4ebaZ4M5wQa37ytmWMQ=; b=NW40EhOS8pWDxc0EJCdXeJcWmL
+	oOXX87jTooHJx2gt3iXAoXJHNCSai5Bvk3h9cVp8zMuJE8iUggaF8E4tyhd/AtpDzYn4GbOOnuPcs
+	M/DzptColMPEegackbXl7z265FE1RsIV3M4T/bWJee6NLlRSmKy7Mju+iFz1RfMvvk5LKY86ew9VR
+	DZFb1TiNmVFUs6U1yfFwmSTbn4Zx1kRBniyfCFqGX3PnNDkfhfG2JjREdgh5qzpcF5WwvBW59qXzy
+	teBqTYbqhqP+rZm1Q+OUVmGoevMudETvkckkGMJ42p6+rUZr506gkM2aWqEv0rn9yT8UhW8hTL7Pw
+	7WMS5Cfg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mWFYc-00HSZP-Ga; Fri, 01 Oct 2021 10:14:22 +0000
+	id 1mWFck-00HTXX-CG; Fri, 01 Oct 2021 10:18:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mWFYW-00HSYM-8e
- for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:14:18 +0000
+ id 1mWFcf-00HTWj-La
+ for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:18:35 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1mWFYV-0007JF-0f; Fri, 01 Oct 2021 12:14:15 +0200
+ id 1mWFce-000821-Ca; Fri, 01 Oct 2021 12:18:32 +0200
 To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
 References: <20210817101104.114945-1-antonynpavlov@gmail.com>
- <20210817101104.114945-7-antonynpavlov@gmail.com>
+ <20210817101104.114945-9-antonynpavlov@gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <838a1759-f979-9329-94e1-ccec28612150@pengutronix.de>
-Date: Fri, 1 Oct 2021 12:14:14 +0200
+Message-ID: <8d183b2f-debf-f253-d07d-35f09b62ffba@pengutronix.de>
+Date: Fri, 1 Oct 2021 12:18:32 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20210817101104.114945-7-antonynpavlov@gmail.com>
+In-Reply-To: <20210817101104.114945-9-antonynpavlov@gmail.com>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211001_031416_681418_97E167FB 
-X-CRM114-Status: GOOD (  35.82  )
+X-CRM114-CacheID: sfid-20211001_031833_747085_B3742D8E 
+X-CRM114-Status: GOOD (  16.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -59,7 +60,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Marek Czerski <m.czerski@ap-tech.pl>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -71,446 +71,105 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH RESEND v4 6/8] net: add LiteEth driver
+	SPF_NONE,UPPERCASE_50_75 autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH RESEND v4 8/8] RISC-V: add litex_linux_defconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 17.08.21 12:11, Antony Pavlov wrote:
-> LiteEth provides a small footprint and configurable Ethernet core.
-> 
-> LiteEth is part of LiteX libraries whose aims are to lower entry level of
-> complex FPGA cores by providing simple, elegant and efficient implementations
-> of components used in today's SoC such as Ethernet, SATA, PCIe, SDRAM Controller...
-> 
-> Using Migen to describe the HDL allows the core to be highly and easily configurable.
-> 
-> LiteEth can be used as LiteX library or can be integrated with your standard
-> design flow by generating the verilog rtl that you will use as a standard core.
-> 
-> See https://github.com/enjoy-digital/liteeth for details.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Signed-off-by: Marek Czerski <m.czerski@ap-tech.pl>
+Hi,
 
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On 17.08.21 12:11, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+
+I prefer a litex32_defconfig which will enable this and future boards.
+But we can add this for now. 
 
 > ---
->  drivers/net/Kconfig   |   8 +
->  drivers/net/Makefile  |   1 +
->  drivers/net/liteeth.c | 376 ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 385 insertions(+)
+>  arch/riscv/configs/litex_linux_defconfig | 75 ++++++++++++++++++++++++
+>  1 file changed, 75 insertions(+)
 > 
-> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-> index 802169a86e..781c7e69db 100644
-> --- a/drivers/net/Kconfig
-> +++ b/drivers/net/Kconfig
-> @@ -285,6 +285,14 @@ config TSE_USE_DEDICATED_DESC_MEM
->  	  reserved with a malloc but directly mapped to the memory
->  	  address (defined in config.h)
->  
-> +config DRIVER_NET_LITEETH
-> +	bool "LiteX ethernet driver"
-> +	select PHYLIB
-> +	select MDIO_BITBANG
-> +	help
-> +	  This option enables support for the LiteX LiteEth
-> +	  ethernet IP core.
-> +
->  source "drivers/net/phy/Kconfig"
->  source "drivers/net/usb/Kconfig"
->  
-> diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-> index fb3e3bdee4..466c910b3e 100644
-> --- a/drivers/net/Makefile
-> +++ b/drivers/net/Makefile
-> @@ -38,3 +38,4 @@ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
->  obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
->  obj-$(CONFIG_DRIVER_NET_EFI_SNP)	+= efi-snp.o
->  obj-$(CONFIG_DRIVER_NET_AG71XX)		+= ag71xx.o
-> +obj-$(CONFIG_DRIVER_NET_LITEETH)	+= liteeth.o
-> diff --git a/drivers/net/liteeth.c b/drivers/net/liteeth.c
+> diff --git a/arch/riscv/configs/litex_linux_defconfig b/arch/riscv/configs/litex_linux_defconfig
 > new file mode 100644
-> index 0000000000..137cb854c5
+> index 0000000000..8e19964890
 > --- /dev/null
-> +++ b/drivers/net/liteeth.c
-> @@ -0,0 +1,376 @@
-> +/*
-> + * LiteX Liteeth Ethernet
-> + *
-> + * Copyright 2017 Joel Stanley <joel@jms.id.au>
-> + *
-> + * Ported to barebox from linux kernel
-> + *   Copyright (C) 2019-2021 Antony Pavlov <antonynpavlov@gmail.com>
-> + *   Copyright (C) 2021 Marek Czerski <m.czerski@ap-tech.pl>
-> + *
-> + */
-> +
-> +#include <common.h>
-> +#include <io.h>
-> +#include <linux/iopoll.h>
-> +#include <malloc.h>
-> +#include <net.h>
-> +#include <init.h>
-> +#include <of_net.h>
-> +#include <linux/phy.h>
-> +#include <linux/mdio-bitbang.h>
-> +
-> +#define DRV_NAME	"liteeth"
-> +
-> +#define LITEETH_WRITER_SLOT		0x00
-> +#define LITEETH_WRITER_LENGTH		0x04
-> +#define LITEETH_WRITER_ERRORS		0x08
-> +#define LITEETH_WRITER_EV_STATUS	0x0c
-> +#define LITEETH_WRITER_EV_PENDING	0x10
-> +#define LITEETH_WRITER_EV_ENABLE	0x14
-> +#define LITEETH_READER_START		0x18
-> +#define LITEETH_READER_READY		0x1c
-> +#define LITEETH_READER_LEVEL		0x20
-> +#define LITEETH_READER_SLOT		0x24
-> +#define LITEETH_READER_LENGTH		0x28
-> +#define LITEETH_READER_EV_STATUS	0x2c
-> +#define LITEETH_READER_EV_PENDING	0x30
-> +#define LITEETH_READER_EV_ENABLE	0x34
-> +#define LITEETH_PREAMBLE_CRC		0x38
-> +#define LITEETH_PREAMBLE_ERRORS		0x3c
-> +#define LITEETH_CRC_ERRORS		0x40
-> +
-> +#define LITEETH_PHY_CRG_RESET		0x00
-> +#define LITEETH_MDIO_W			0x04
-> +#define  MDIO_W_CLK			BIT(0)
-> +#define  MDIO_W_OE			BIT(1)
-> +#define  MDIO_W_DO			BIT(2)
-> +
-> +#define LITEETH_MDIO_R			0x08
-> +#define  MDIO_R_DI			BIT(0)
-> +
-> +#define LITEETH_BUFFER_SIZE		0x800
-> +#define MAX_PKT_SIZE			LITEETH_BUFFER_SIZE
-> +
-> +struct liteeth {
-> +	struct device_d *dev;
-> +	struct eth_device edev;
-> +	void __iomem *base;
-> +	void __iomem *mdio_base;
-> +	struct mii_bus *mii_bus;
-> +	struct mdiobb_ctrl mdiobb;
-> +
-> +	/* Link management */
-> +	int cur_duplex;
-> +	int cur_speed;
-> +
-> +	/* Tx */
-> +	int tx_slot;
-> +	int num_tx_slots;
-> +	void __iomem *tx_base;
-> +
-> +	/* Rx */
-> +	int rx_slot;
-> +	int num_rx_slots;
-> +	void __iomem *rx_base;
-> +};
-> +
-> +static inline void litex_write8(void __iomem *addr, u8 val)
-> +{
-> +	writeb(val, addr);
-> +}
-> +
-> +static inline void litex_write16(void __iomem *addr, u16 val)
-> +{
-> +	writew(val, addr);
-> +}
-> +
-> +static inline u8 litex_read8(void __iomem *addr)
-> +{
-> +	return readb(addr);
-> +}
-> +
-> +static inline u32 litex_read32(void __iomem *addr)
-> +{
-> +	return readl(addr);
-> +}
-> +
-> +static void liteeth_mdio_w_modify(struct liteeth *priv, u8 clear, u8 set)
-> +{
-> +	void __iomem *mdio_w = priv->mdio_base + LITEETH_MDIO_W;
-> +
-> +	litex_write8(mdio_w, (litex_read8(mdio_w) & ~clear) | set);
-> +}
-> +
-> +static void liteeth_mdio_ctrl(struct mdiobb_ctrl *ctrl, u8 mask, int set)
-> +{
-> +	struct liteeth *priv = container_of(ctrl, struct liteeth, mdiobb);
-> +
-> +	liteeth_mdio_w_modify(priv, mask, set ? mask : 0);
-> +}
-> +
-> +/* MDC pin control */
-> +static void liteeth_set_mdc(struct mdiobb_ctrl *ctrl, int level)
-> +{
-> +	liteeth_mdio_ctrl(ctrl, MDIO_W_CLK, level);
-> +}
-> +
-> +/* Data I/O pin control */
-> +static void liteeth_set_mdio_dir(struct mdiobb_ctrl *ctrl, int output)
-> +{
-> +	liteeth_mdio_ctrl(ctrl, MDIO_W_OE, output);
-> +}
-> +
-> +/* Set data bit */
-> +static void liteeth_set_mdio_data(struct mdiobb_ctrl *ctrl, int value)
-> +{
-> +	liteeth_mdio_ctrl(ctrl, MDIO_W_DO, value);
-> +}
-> +
-> +/* Get data bit */
-> +static int liteeth_get_mdio_data(struct mdiobb_ctrl *ctrl)
-> +{
-> +	struct liteeth *priv = container_of(ctrl, struct liteeth, mdiobb);
-> +
-> +	return (litex_read8(priv->mdio_base + LITEETH_MDIO_R) & MDIO_R_DI) != 0;
-> +}
-> +
-> +/* MDIO bus control struct */
-> +static struct mdiobb_ops bb_ops = {
-> +	.set_mdc = liteeth_set_mdc,
-> +	.set_mdio_dir = liteeth_set_mdio_dir,
-> +	.set_mdio_data = liteeth_set_mdio_data,
-> +	.get_mdio_data = liteeth_get_mdio_data,
-> +};
-> +
-> +static int liteeth_init_dev(struct eth_device *edev)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int liteeth_eth_open(struct eth_device *edev)
-> +{
-> +	struct liteeth *priv = edev->priv;
-> +	int ret;
-> +
-> +	/* Disable events */
-> +	litex_write8(priv->base + LITEETH_WRITER_EV_ENABLE, 0);
-> +	litex_write8(priv->base + LITEETH_READER_EV_ENABLE, 0);
-> +
-> +	/* Clear pending events? */
-> +	litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, 1);
-> +	litex_write8(priv->base + LITEETH_READER_EV_PENDING, 1);
-> +
-> +	ret = phy_device_connect(edev, priv->mii_bus, -1, NULL, 0, -1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static int liteeth_eth_send(struct eth_device *edev, void *packet,
-> +				int packet_length)
-> +{
-> +	struct liteeth *priv = edev->priv;
-> +	void *txbuffer;
-> +	int ret;
-> +	u8 val;
-> +	u8 reg;
-> +
-> +	reg = litex_read8(priv->base + LITEETH_READER_EV_PENDING);
-> +	if (reg) {
-> +		litex_write8(priv->base + LITEETH_READER_EV_PENDING, reg);
-> +	}
-> +
-> +	/* Reject oversize packets */
-> +	if (unlikely(packet_length > MAX_PKT_SIZE)) {
-> +		dev_err(priv->dev, "tx packet too big\n");
-> +		goto drop;
-> +	}
-> +
-> +	txbuffer = priv->tx_base + priv->tx_slot * LITEETH_BUFFER_SIZE;
-> +	memcpy(txbuffer, packet, packet_length);
-> +	litex_write8(priv->base + LITEETH_READER_SLOT, priv->tx_slot);
-> +	litex_write16(priv->base + LITEETH_READER_LENGTH, packet_length);
-> +
-> +	ret = readb_poll_timeout(priv->base + LITEETH_READER_READY,
-> +			val, val, 1000);
-> +	if (ret == -ETIMEDOUT) {
-> +		dev_err(priv->dev, "LITEETH_READER_READY timed out\n");
-> +		goto drop;
-> +	}
-> +
-> +	litex_write8(priv->base + LITEETH_READER_START, 1);
-> +
-> +	priv->tx_slot = (priv->tx_slot + 1) % priv->num_tx_slots;
-> +
-> +drop:
-> +	return 0;
-> +}
-> +
-> +static int liteeth_eth_rx(struct eth_device *edev)
-> +{
-> +	struct liteeth *priv = edev->priv;
-> +	u8 rx_slot;
-> +	int len = 0;
-> +	u8 reg;
-> +
-> +	reg = litex_read8(priv->base + LITEETH_WRITER_EV_PENDING);
-> +	if (!reg) {
-> +		goto done;
-> +	}
-> +
-> +	len = litex_read32(priv->base + LITEETH_WRITER_LENGTH);
-> +	if (len == 0 || len > 2048) {
-> +		len = 0;
-> +		dev_err(priv->dev, "%s: invalid len %d\n", __func__, len);
-> +		litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, reg);
-> +		goto done;
-> +	}
-> +
-> +	rx_slot = litex_read8(priv->base + LITEETH_WRITER_SLOT);
-> +
-> +	memcpy(NetRxPackets[0], priv->rx_base + rx_slot * LITEETH_BUFFER_SIZE, len);
-> +
-> +	net_receive(edev, NetRxPackets[0], len);
-> +
-> +	litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, reg);
-> +
-> +done:
-> +	return len;
-> +}
-> +
-> +static void liteeth_eth_halt(struct eth_device *edev)
-> +{
-> +	struct liteeth *priv = edev->priv;
-> +
-> +	litex_write8(priv->base + LITEETH_WRITER_EV_ENABLE, 0);
-> +	litex_write8(priv->base + LITEETH_READER_EV_ENABLE, 0);
-> +}
-> +
-> +static void liteeth_reset_hw(struct liteeth *priv)
-> +{
-> +	/* Reset, twice */
-> +	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 0);
-> +	udelay(10);
-> +	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 1);
-> +	udelay(10);
-> +	litex_write8(priv->base + LITEETH_PHY_CRG_RESET, 0);
-> +	udelay(10);
-> +}
-> +
-> +static int liteeth_get_ethaddr(struct eth_device *edev, unsigned char *m)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int liteeth_set_ethaddr(struct eth_device *edev,
-> +					const unsigned char *mac_addr)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int liteeth_probe(struct device_d *dev)
-> +{
-> +	struct device_node *np = dev->device_node;
-> +	struct eth_device *edev;
-> +	void __iomem *buf_base;
-> +	struct liteeth *priv;
-> +	int err;
-> +
-> +	priv = xzalloc(sizeof(struct liteeth));
-> +	edev = &priv->edev;
-> +	edev->priv = priv;
-> +	priv->dev = dev;
-> +
-> +	priv->base = dev_request_mem_region(dev, 0);
-> +	if (IS_ERR(priv->base)) {
-> +		err = PTR_ERR(priv->base);
-> +		goto err;
-> +	}
-> +
-> +	priv->mdio_base = dev_request_mem_region(dev, 1);
-> +	if (IS_ERR(priv->mdio_base)) {
-> +		err = PTR_ERR(priv->mdio_base);
-> +		goto err;
-> +	}
-> +
-> +	buf_base = dev_request_mem_region(dev, 2);
-> +	if (IS_ERR(buf_base)) {
-> +		err = PTR_ERR(buf_base);
-> +		goto err;
-> +	}
-> +
-> +	err = of_property_read_u32(np, "rx-fifo-depth",
-> +			&priv->num_rx_slots);
-> +	if (err) {
-> +		dev_err(dev, "unable to get rx-fifo-depth\n");
-> +		goto err;
-> +	}
-> +
-> +	err = of_property_read_u32(np, "tx-fifo-depth",
-> +			&priv->num_tx_slots);
-> +	if (err) {
-> +		dev_err(dev, "unable to get tx-fifo-depth\n");
-> +		goto err;
-> +	}
-> +
-> +	/* Rx slots */
-> +	priv->rx_base = buf_base;
-> +	priv->rx_slot = 0;
-> +
-> +	/* Tx slots come after Rx slots */
-> +	priv->tx_base = buf_base + priv->num_rx_slots * LITEETH_BUFFER_SIZE;
-> +	priv->tx_slot = 0;
-> +
-> +	edev->init = liteeth_init_dev;
-> +	edev->open = liteeth_eth_open;
-> +	edev->send = liteeth_eth_send;
-> +	edev->recv = liteeth_eth_rx;
-> +	edev->get_ethaddr = liteeth_get_ethaddr;
-> +	edev->set_ethaddr = liteeth_set_ethaddr;
-> +	edev->halt = liteeth_eth_halt;
-> +	edev->parent = dev;
-> +
-> +	priv->mdiobb.ops = &bb_ops;
-> +
-> +	priv->mii_bus = alloc_mdio_bitbang(&priv->mdiobb);
-> +	priv->mii_bus->parent = dev;
-> +
-> +	liteeth_reset_hw(priv);
-> +
-> +	err = eth_register(edev);
-> +	if (err) {
-> +		dev_err(dev, "failed to register edev\n");
-> +		goto err;
-> +	}
-> +
-> +	err = mdiobus_register(priv->mii_bus);
-> +	if (err) {
-> +		dev_err(dev, "failed to register mii_bus\n");
-> +		goto err;
-> +	}
-> +
-> +	dev_info(dev, DRV_NAME " driver registered\n");
-> +
-> +	return 0;
-> +
-> +err:
-> +	return err;
-> +}
-> +
-> +static const struct of_device_id liteeth_dt_ids[] = {
-> +	{
-> +		.compatible = "litex,liteeth"
-> +	}, {
-> +	}
-> +};
-> +
-> +static struct driver_d liteeth_driver = {
-> +	.name = DRV_NAME,
-> +	.probe = liteeth_probe,
-> +	.of_compatible = DRV_OF_COMPAT(liteeth_dt_ids),
-> +};
-> +device_platform_driver(liteeth_driver);
-> +
-> +MODULE_AUTHOR("Joel Stanley <joel@jms.id.au>");
-> +MODULE_LICENSE("GPL");
+> +++ b/arch/riscv/configs/litex_linux_defconfig
+> @@ -0,0 +1,75 @@
+> +CONFIG_SOC_LITEX=y
+> +CONFIG_STACK_SIZE=0x20000
+> +CONFIG_MALLOC_SIZE=0xf00000
+> +CONFIG_MALLOC_TLSF=y
+> +CONFIG_PANIC_HANG=y
+> +CONFIG_BAUDRATE=1000000
+> +CONFIG_HUSH_FANCY_PROMPT=y
+> +CONFIG_CMDLINE_EDITING=y
+> +CONFIG_AUTO_COMPLETE=y
+> +# CONFIG_TIMESTAMP is not set
+> +CONFIG_BOOTM_SHOW_TYPE=y
+> +CONFIG_BOOTM_VERBOSE=y
+> +CONFIG_BOOTM_INITRD=y
+> +CONFIG_BOOTM_OFTREE=y
+> +CONFIG_BOOTM_OFTREE_UIMAGE=y
+> +CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+> +CONFIG_DEBUG_LL=y
+> +CONFIG_LONGHELP=y
+> +CONFIG_CMD_IOMEM=y
+> +CONFIG_CMD_IMD=y
+> +CONFIG_CMD_MEMINFO=y
+> +CONFIG_CMD_GO=y
+> +CONFIG_CMD_LOADY=y
+> +CONFIG_CMD_EXPORT=y
+> +CONFIG_CMD_CMP=y
+> +CONFIG_CMD_MD5SUM=y
+> +CONFIG_CMD_SHA1SUM=y
+> +CONFIG_CMD_MSLEEP=y
+> +CONFIG_CMD_SLEEP=y
+> +CONFIG_CMD_DHCP=y
+> +CONFIG_CMD_MIITOOL=y
+> +CONFIG_CMD_PING=y
+> +CONFIG_CMD_TFTP=y
+> +CONFIG_CMD_ECHO_E=y
+> +CONFIG_CMD_EDIT=y
+> +CONFIG_CMD_MEMTEST=y
+> +CONFIG_CMD_MM=y
+> +CONFIG_CMD_CLK=y
+> +CONFIG_CMD_GPIO=y
+> +CONFIG_CMD_LED=y
+> +CONFIG_CMD_SPI=y
+> +CONFIG_CMD_LED_TRIGGER=y
+> +CONFIG_CMD_OF_DUMP=y
+> +CONFIG_CMD_TIME=y
+> +CONFIG_CMD_DHRYSTONE=y
+> +CONFIG_NET=y
+> +CONFIG_NET_NFS=y
+> +CONFIG_NET_NETCONSOLE=y
+> +CONFIG_DRIVER_NET_LITEETH=y
+> +CONFIG_AR8327N_PHY=y
+> +CONFIG_AT803X_PHY=y
+> +CONFIG_DAVICOM_PHY=y
+> +CONFIG_DP83867_PHY=y
+> +CONFIG_LXT_PHY=y
+> +CONFIG_MARVELL_PHY=y
+> +CONFIG_MICREL_PHY=y
+> +CONFIG_NATIONAL_PHY=y
+> +CONFIG_REALTEK_PHY=y
+> +CONFIG_SMSC_PHY=y
+> +CONFIG_DRIVER_SPI_LITEX_SPIFLASH=y
+> +CONFIG_MTD=y
+> +# CONFIG_MTD_OOB_DEVICE is not set
+> +CONFIG_MTD_M25P80=y
+> +CONFIG_CLOCKSOURCE_DUMMY_RATE=20000
+> +CONFIG_SRAM=y
+> +CONFIG_LED=y
+> +CONFIG_LED_GPIO=y
+> +CONFIG_LED_GPIO_OF=y
+> +CONFIG_LED_TRIGGERS=y
+> +CONFIG_GPIO_74XX_MMIO=y
+> +CONFIG_GPIO_GENERIC_PLATFORM=y
+> +# CONFIG_PINCTRL is not set
+> +CONFIG_FS_TFTP=y
+> +CONFIG_FS_NFS=y
+> +CONFIG_DIGEST_CRC32_GENERIC=y
 > 
 
 
