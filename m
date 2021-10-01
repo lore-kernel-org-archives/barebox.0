@@ -1,55 +1,55 @@
-Delivery-date: Fri, 01 Oct 2021 12:11:41 +0200
+Delivery-date: Fri, 01 Oct 2021 12:11:56 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFW1-0002aP-Lo
-	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:11:41 +0200
+	id 1mWFWG-0002be-Ry
+	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:11:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFVz-0006RY-Ug
-	for lore@pengutronix.de; Fri, 01 Oct 2021 12:11:41 +0200
+	id 1mWFWD-0006YY-3L
+	for lore@pengutronix.de; Fri, 01 Oct 2021 12:11:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=RMzwaJRhFFLdsMCQdgjjzpELMvPI3PEqivP0Q28Gzlc=; b=mE7cpxx+IkTvJG
-	E+CJqVvbC2ajF3zaE3bUUxG26Z+su/YjIPHIq32hOQyvMi+BVYmB1Cn+dkO6IN5NpizPX5BuQkYoe
-	141Qq+mOMMNFx7X2kaKwjU96n3aQLoz7EjHTMvDrU0HAdrx8lopg2O4yOK0xK5GKS4zsp4nLIJZyG
-	2Bss7D+WLlvrVZTVPHBE1sDgy6mOlKEFTw0Ei988fpEHTDihP72D+EGpHAMqMwOu+hrY9FDj0saWN
-	feJK8KGj+oLaSPtqPZHuIJT/pApjSvsJNWPf7TeizOsip8RYPxdhE0CQFAzfGi3lIsTneDUS/G1vr
-	FrcrQ2kqJS6W4C1EunGg==;
+	List-Owner; bh=fbQEcGifoNW3pBMfuLbYDlEVkF7+Rk14kPHk9YUrSGs=; b=fEGd11ufJjcCM5
+	StNdp+2yeYFaaTuytd58UBsC1CKrA5lLInscEb2x/7yJnO7tUn7x/e8SM0jNZEUMnQxJBi29vRApm
+	f8cbAgOttlisY9t9nQhwuBIdIeRPbTPAuOD+6sj2y3a4q3X9rtJMi8qXQ+1V9XEnO4X9bPRE0ODGS
+	YgR+QyoObVqSKyS05Hby6ANWf8lAFUAzVNf+5T/5g7mcbQp47penNORtxSz4L4GutftgdCFUEJmei
+	ZWWWF+GK62eb03gimA32o1jpap3xryc3nH8bSxXFa0C0P/DfYER1yvlXrG5CFpOGsswi6sge5nraT
+	cbSNCEDBDA6NQFSyR5xQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mWFUX-00HQp5-6J; Fri, 01 Oct 2021 10:10:09 +0000
+	id 1mWFUa-00HQqF-73; Fri, 01 Oct 2021 10:10:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mWFUJ-00HQja-2S
- for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:09:58 +0000
+ id 1mWFUI-00HQjY-W0
+ for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:10:00 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mWFUF-0005ku-5t; Fri, 01 Oct 2021 12:09:51 +0200
+ id 1mWFUF-0005kq-3K; Fri, 01 Oct 2021 12:09:51 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mWFUE-0001pg-GP; Fri, 01 Oct 2021 12:09:50 +0200
+ id 1mWFUE-0001pU-Eh; Fri, 01 Oct 2021 12:09:50 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Trent Piepho <tpiepho@gmail.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  1 Oct 2021 12:09:47 +0200
-Message-Id: <20211001100949.6891-7-a.fatoum@pengutronix.de>
+Date: Fri,  1 Oct 2021 12:09:43 +0200
+Message-Id: <20211001100949.6891-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211001100949.6891-1-a.fatoum@pengutronix.de>
 References: <20211001100949.6891-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211001_030955_526381_3298D7D4 
-X-CRM114-Status: GOOD (  18.96  )
+X-CRM114-CacheID: sfid-20211001_030955_612176_7AA21E40 
+X-CRM114-Status: GOOD (  12.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,301 +73,601 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 6/8] ddr: imx8m: ddrphy_train: add DDR4 support
+Subject: [PATCH v2 2/8] clk: imx: add i.MX8MN (Nano) support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-There are DDR3L, DDR4 and LPDDR4 variants of the i.MX8M* SoMs used with
-the NXP EVKs. So far, we only supported LPDDR4. For DDR4, we just need
-different PHY training code. Encode the DRAM variant information
-into a new dram_timing_info::dram_type and adjust the driver to make use
-of it. The new CONFIG_FIRMWARE_IMX_DDR4_PMU_TRAIN Kconfig symbol can
-co-exist with CONFIG_FIRMWARE_IMX_LPDDR4_PMU_TRAIN, allowing the same
-barebox binary to target different memory types, provided board code
-can determine what kind of DRAM is fitted.
+Import the Linux v5.14-rc2 state of the clock driver. Some abstractions
+used there were not yet added to barebox, so previous equivalent
+versions were taken instead. This makes the code more in-line with the
+i.MX8MM.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/mnt-reform/lpddr4-timing.c    |  1 +
- .../arm/boards/nxp-imx8mm-evk/lpddr4-timing.c |  1 +
- .../arm/boards/nxp-imx8mp-evk/lpddr4-timing.c |  1 +
- arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c |  6 ++---
- .../boards/phytec-som-imx8mq/ddrphy_train.c   |  6 ++---
- .../protonic-imx8m/lpddr4-timing-prt8mm.c     |  1 +
- arch/arm/boards/zii-imx8mq-dev/ddrphy_train.c |  6 ++---
- drivers/ddr/imx8m/ddrphy_train.c              | 26 ++++++++++++++-----
- firmware/Kconfig                              |  3 +++
- firmware/Makefile                             |  6 +++++
- include/soc/imx8m/ddr.h                       | 20 +++++++++++++-
- 11 files changed, 60 insertions(+), 17 deletions(-)
+ drivers/clk/imx/Makefile     |   2 +
+ drivers/clk/imx/clk-imx8mn.c | 558 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 560 insertions(+)
+ create mode 100644 drivers/clk/imx/clk-imx8mn.c
 
-diff --git a/arch/arm/boards/mnt-reform/lpddr4-timing.c b/arch/arm/boards/mnt-reform/lpddr4-timing.c
-index 0b5853000d03..0e962890fde2 100644
---- a/arch/arm/boards/mnt-reform/lpddr4-timing.c
-+++ b/arch/arm/boards/mnt-reform/lpddr4-timing.c
-@@ -1000,6 +1000,7 @@ static struct dram_fsp_msg mnt_reform_lpddr4_dram_fsp_msg[] = {
- 
- /* ddr timing config params */
- struct dram_timing_info mnt_reform_dram_timing = {
-+	.dram_type = DRAM_TYPE_LPDDR4,
- 	.ddrc_cfg = mnt_reform_lpddr4_ddrc_cfg,
- 	.ddrc_cfg_num = ARRAY_SIZE(mnt_reform_lpddr4_ddrc_cfg),
- 	.ddrphy_cfg = mnt_reform_lpddr4_ddrphy_cfg,
-diff --git a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
-index e7c01f9cc9a0..68efbbdf917b 100644
---- a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
-+++ b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
-@@ -1965,6 +1965,7 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
- 
- /* lpddr4 timing config params on EVK board */
- struct dram_timing_info imx8mm_evk_dram_timing = {
-+	.dram_type = DRAM_TYPE_LPDDR4,
- 	.ddrc_cfg = lpddr4_ddrc_cfg,
- 	.ddrc_cfg_num = ARRAY_SIZE(lpddr4_ddrc_cfg),
- 	.ddrphy_cfg = lpddr4_ddrphy_cfg,
-diff --git a/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
-index 3028bc084c73..681e70d06022 100644
---- a/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
-+++ b/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
-@@ -1834,6 +1834,7 @@ static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
- 
- /* ddr timing config params */
- struct dram_timing_info imx8mp_evk_dram_timing = {
-+	.dram_type = DRAM_TYPE_LPDDR4,
- 	.ddrc_cfg = ddr_ddrc_cfg,
- 	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
- 	.ddrphy_cfg = ddr_ddrphy_cfg,
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c b/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
-index 1b30ff725797..d2c73fc7ce22 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
-@@ -142,7 +142,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 1D training image
--	ddr_load_train_code(FW_1D_IMAGE);
-+	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
- 
- 	//configure DDRPHY-FW DMEM structure @clock0...
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
-@@ -289,7 +289,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 2D training image
--	ddr_load_train_code(FW_2D_IMAGE);
-+	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_2D_IMAGE);
- 
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54003,0xc80);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54006,0x11);
-@@ -932,4 +932,4 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x2006e, 0x0);
- 	//disable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x1);
--}
-\ No newline at end of file
-+}
-diff --git a/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c b/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c
-index cc0052764971..2c84a0f5fd5a 100644
---- a/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c
-+++ b/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c
-@@ -146,7 +146,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 1D training image
--	ddr_load_train_code(FW_1D_IMAGE);
-+	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
- 
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54003,0xc80);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54004,0x2);
-@@ -222,7 +222,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 1D training image
--	ddr_load_train_code(FW_1D_IMAGE);
-+	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
- 
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54002,0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54003,0x29c);
-@@ -298,7 +298,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 2D training image
--	ddr_load_train_code(FW_2D_IMAGE);
-+	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_2D_IMAGE);
- 
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54003,0xc80);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54004,0x2);
-diff --git a/arch/arm/boards/protonic-imx8m/lpddr4-timing-prt8mm.c b/arch/arm/boards/protonic-imx8m/lpddr4-timing-prt8mm.c
-index 2c55e7d45144..ea5c0b915437 100644
---- a/arch/arm/boards/protonic-imx8m/lpddr4-timing-prt8mm.c
-+++ b/arch/arm/boards/protonic-imx8m/lpddr4-timing-prt8mm.c
-@@ -1981,6 +1981,7 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
- 
- /* lpddr4 timing config params on EVK board */
- struct dram_timing_info prt8mm_dram_timing = {
-+	.dram_type = DRAM_TYPE_LPDDR4,
- 	.ddrc_cfg = lpddr4_ddrc_cfg,
- 	.ddrc_cfg_num = ARRAY_SIZE(lpddr4_ddrc_cfg),
- 	.ddrphy_cfg = lpddr4_ddrphy_cfg,
-diff --git a/arch/arm/boards/zii-imx8mq-dev/ddrphy_train.c b/arch/arm/boards/zii-imx8mq-dev/ddrphy_train.c
-index 1b30ff725797..d2c73fc7ce22 100644
---- a/arch/arm/boards/zii-imx8mq-dev/ddrphy_train.c
-+++ b/arch/arm/boards/zii-imx8mq-dev/ddrphy_train.c
-@@ -142,7 +142,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 1D training image
--	ddr_load_train_code(FW_1D_IMAGE);
-+	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
- 
- 	//configure DDRPHY-FW DMEM structure @clock0...
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
-@@ -289,7 +289,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 2D training image
--	ddr_load_train_code(FW_2D_IMAGE);
-+	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_2D_IMAGE);
- 
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54003,0xc80);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54006,0x11);
-@@ -932,4 +932,4 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x2006e, 0x0);
- 	//disable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x1);
--}
-\ No newline at end of file
-+}
-diff --git a/drivers/ddr/imx8m/ddrphy_train.c b/drivers/ddr/imx8m/ddrphy_train.c
-index a4677f903c6b..d930a2fffe44 100644
---- a/drivers/ddr/imx8m/ddrphy_train.c
-+++ b/drivers/ddr/imx8m/ddrphy_train.c
-@@ -11,17 +11,29 @@
- #include <firmware.h>
- #include <mach/imx8m-regs.h>
- 
--void ddr_load_train_code(enum fw_type type)
-+void ddr_load_train_code(enum dram_type dram_type, enum fw_type fw_type)
- {
- 	const u16 *imem, *dmem;
- 	size_t isize, dsize;
- 
--	if (type == FW_1D_IMAGE) {
--		get_builtin_firmware(lpddr4_pmu_train_1d_imem_bin, &imem, &isize);
--		get_builtin_firmware(lpddr4_pmu_train_1d_dmem_bin, &dmem, &dsize);
-+	if (dram_is_lpddr4(dram_type)) {
-+		if (fw_type == FW_1D_IMAGE) {
-+			get_builtin_firmware(lpddr4_pmu_train_1d_imem_bin, &imem, &isize);
-+			get_builtin_firmware(lpddr4_pmu_train_1d_dmem_bin, &dmem, &dsize);
-+		} else {
-+			get_builtin_firmware(lpddr4_pmu_train_2d_imem_bin, &imem, &isize);
-+			get_builtin_firmware(lpddr4_pmu_train_2d_dmem_bin, &dmem, &dsize);
-+		}
-+	} else if (dram_is_ddr4(dram_type)) {
-+		if (fw_type == FW_1D_IMAGE) {
-+			get_builtin_firmware(ddr4_imem_1d_bin, &imem, &isize);
-+			get_builtin_firmware(ddr4_dmem_1d_bin, &dmem, &dsize);
-+		} else {
-+			get_builtin_firmware(ddr4_imem_2d_bin, &imem, &isize);
-+			get_builtin_firmware(ddr4_dmem_2d_bin, &dmem, &dsize);
-+		}
- 	} else {
--		get_builtin_firmware(lpddr4_pmu_train_2d_imem_bin, &imem, &isize);
--		get_builtin_firmware(lpddr4_pmu_train_2d_dmem_bin, &dmem, &dsize);
-+		panic("No matching DDR PHY firmware found");
- 	}
- 
- 	ddrc_phy_load_firmware(IOMEM(MX8M_DDRC_PHY_BASE_ADDR),
-@@ -58,7 +70,7 @@ int ddr_cfg_phy(struct dram_timing_info *dram_timing, enum ddrc_type type)
- 
- 		/* load the dram training firmware image */
- 		dwc_ddrphy_apb_wr(0xd0000, 0x0);
--		ddr_load_train_code(fsp_msg->fw_type);
-+		ddr_load_train_code(dram_timing->dram_type, fsp_msg->fw_type);
- 
- 		/* load the frequency set point message block parameter */
- 		dram_cfg = fsp_msg->fsp_cfg;
-diff --git a/firmware/Kconfig b/firmware/Kconfig
-index 16acab7c5f08..b44753892776 100644
---- a/firmware/Kconfig
-+++ b/firmware/Kconfig
-@@ -7,6 +7,9 @@ config EXTRA_FIRMWARE_DIR
- config FIRMWARE_IMX_LPDDR4_PMU_TRAIN
-        	bool
- 
-+config FIRMWARE_IMX_DDR4_PMU_TRAIN
-+       	bool
+diff --git a/drivers/clk/imx/Makefile b/drivers/clk/imx/Makefile
+index bb6635d5e4d3..4a792422d534 100644
+--- a/drivers/clk/imx/Makefile
++++ b/drivers/clk/imx/Makefile
+@@ -28,8 +28,10 @@ obj-$(CONFIG_ARCH_IMX6SL) += clk-imx6sl.o
+ obj-$(CONFIG_ARCH_IMX6UL) += clk-imx6ul.o
+ obj-$(CONFIG_ARCH_IMX7) += clk-imx7.o
+ pbl-$(CONFIG_ARCH_IMX8MM) += clk-pll14xx.o
++pbl-$(CONFIG_ARCH_IMX8MN) += clk-pll14xx.o
+ pbl-$(CONFIG_ARCH_IMX8MP) += clk-pll14xx.o
+ obj-$(CONFIG_ARCH_IMX8MM) += clk-imx8mm.o
++obj-$(CONFIG_ARCH_IMX8MN) += clk-imx8mn.o
+ obj-$(CONFIG_ARCH_IMX8MP) += clk-imx8mp.o
+ obj-$(CONFIG_ARCH_IMX8MQ) += clk-imx8mq.o
+ obj-$(CONFIG_ARCH_VF610)  += clk-vf610.o
+diff --git a/drivers/clk/imx/clk-imx8mn.c b/drivers/clk/imx/clk-imx8mn.c
+new file mode 100644
+index 000000000000..ffce907781ac
+--- /dev/null
++++ b/drivers/clk/imx/clk-imx8mn.c
+@@ -0,0 +1,558 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright 2018-2019 NXP.
++ */
 +
- config FIRMWARE_IMX8MM_ATF
-         bool
- 
-diff --git a/firmware/Makefile b/firmware/Makefile
-index e3fe8d604f13..8873f5178d33 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -6,6 +6,12 @@ firmware-$(CONFIG_FIRMWARE_IMX_LPDDR4_PMU_TRAIN) += \
- 	lpddr4_pmu_train_2d_dmem.bin \
- 	lpddr4_pmu_train_2d_imem.bin
- 
-+firmware-$(CONFIG_FIRMWARE_IMX_DDR4_PMU_TRAIN) += \
-+	ddr4_dmem_1d.bin \
-+	ddr4_dmem_2d.bin \
-+	ddr4_imem_1d.bin \
-+	ddr4_imem_2d.bin
++#include <dt-bindings/clock/imx8mn-clock.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <linux/err.h>
++#include <linux/types.h>
++#include <of_address.h>
 +
- firmware-$(CONFIG_FIRMWARE_IMX8MM_ATF) += imx8mm-bl31.bin
- firmware-$(CONFIG_FIRMWARE_IMX8MN_ATF) += imx8mn-bl31.bin
- firmware-$(CONFIG_FIRMWARE_IMX8MP_ATF) += imx8mp-bl31.bin
-diff --git a/include/soc/imx8m/ddr.h b/include/soc/imx8m/ddr.h
-index a25274c57671..9ae7cb877686 100644
---- a/include/soc/imx8m/ddr.h
-+++ b/include/soc/imx8m/ddr.h
-@@ -329,6 +329,11 @@ enum fw_type {
- 	FW_2D_IMAGE,
- };
- 
-+enum dram_type {
-+	DRAM_TYPE_LPDDR4,
-+	DRAM_TYPE_DDR4,
-+};
++#include "clk.h"
 +
- struct dram_cfg_param {
- 	unsigned int reg;
- 	unsigned int val;
-@@ -342,6 +347,7 @@ struct dram_fsp_msg {
- };
- 
- struct dram_timing_info {
-+	enum dram_type dram_type;
- 	/* umctl2 config */
- 	struct dram_cfg_param *ddrc_cfg;
- 	unsigned int ddrc_cfg_num;
-@@ -409,12 +415,24 @@ enum ddrc_phy_firmware_offset {
- 	DDRC_PHY_DMEM = 0x00054000U,
- };
- 
--void ddr_load_train_code(enum fw_type type);
-+void ddr_load_train_code(enum dram_type dram_type, enum fw_type type);
- 
- void ddrc_phy_load_firmware(void __iomem *,
- 			    enum ddrc_phy_firmware_offset,
- 			    const u16 *, size_t);
- 
-+static inline bool dram_is_lpddr4(enum dram_type type)
++static const char * const pll_ref_sels[] = { "osc_24m", "dummy", "dummy", "dummy", };
++static const char * const audio_pll1_bypass_sels[] = {"audio_pll1", "audio_pll1_ref_sel", };
++static const char * const audio_pll2_bypass_sels[] = {"audio_pll2", "audio_pll2_ref_sel", };
++static const char * const video_pll1_bypass_sels[] = {"video_pll1", "video_pll1_ref_sel", };
++static const char * const dram_pll_bypass_sels[] = {"dram_pll", "dram_pll_ref_sel", };
++static const char * const gpu_pll_bypass_sels[] = {"gpu_pll", "gpu_pll_ref_sel", };
++static const char * const vpu_pll_bypass_sels[] = {"vpu_pll", "vpu_pll_ref_sel", };
++static const char * const arm_pll_bypass_sels[] = {"arm_pll", "arm_pll_ref_sel", };
++static const char * const sys_pll3_bypass_sels[] = {"sys_pll3", "sys_pll3_ref_sel", };
++
++static const char * const imx8mn_a53_sels[] = {"osc_24m", "arm_pll_out", "sys_pll2_500m",
++					       "sys_pll2_1000m", "sys_pll1_800m", "sys_pll1_400m",
++					       "audio_pll1_out", "sys_pll3_out", };
++
++static const char * const imx8mn_a53_core_sels[] = {"arm_a53_div", "arm_pll_out", };
++
++static const char * const imx8mn_gpu_core_sels[] = {"osc_24m", "gpu_pll_out", "sys_pll1_800m",
++						    "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
++						    "video_pll1_out", "audio_pll2_out", };
++
++static const char * const imx8mn_gpu_shader_sels[] = {"osc_24m", "gpu_pll_out", "sys_pll1_800m",
++						      "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
++						      "video_pll1_out", "audio_pll2_out", };
++
++static const char * const imx8mn_main_axi_sels[] = {"osc_24m", "sys_pll2_333m", "sys_pll1_800m",
++						    "sys_pll2_250m", "sys_pll2_1000m", "audio_pll1_out",
++						    "video_pll1_out", "sys_pll1_100m",};
++
++static const char * const imx8mn_enet_axi_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll1_800m",
++						    "sys_pll2_250m", "sys_pll2_200m", "audio_pll1_out",
++						    "video_pll1_out", "sys_pll3_out", };
++
++static const char * const imx8mn_nand_usdhc_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll1_800m",
++						      "sys_pll2_200m", "sys_pll1_133m", "sys_pll3_out",
++						      "sys_pll2_250m", "audio_pll1_out", };
++
++static const char * const imx8mn_disp_axi_sels[] = {"osc_24m", "sys_pll2_1000m", "sys_pll1_800m",
++						    "sys_pll3_out", "sys_pll1_40m", "audio_pll2_out",
++						    "clk_ext1", "clk_ext4", };
++
++static const char * const imx8mn_disp_apb_sels[] = {"osc_24m", "sys_pll2_125m", "sys_pll1_800m",
++						    "sys_pll3_out", "sys_pll1_40m", "audio_pll2_out",
++						    "clk_ext1", "clk_ext3", };
++
++static const char * const imx8mn_usb_bus_sels[] = {"osc_24m", "sys_pll2_500m", "sys_pll1_800m",
++						   "sys_pll2_100m", "sys_pll2_200m", "clk_ext2",
++						   "clk_ext4", "audio_pll2_out", };
++
++static const char * const imx8mn_gpu_axi_sels[] = {"osc_24m", "sys_pll1_800m", "gpu_pll_out",
++						   "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
++						   "video_pll1_out", "audio_pll2_out", };
++
++static const char * const imx8mn_gpu_ahb_sels[] = {"osc_24m", "sys_pll1_800m", "gpu_pll_out",
++						   "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
++						   "video_pll1_out", "audio_pll2_out", };
++
++static const char * const imx8mn_noc_sels[] = {"osc_24m", "sys_pll1_800m", "sys_pll3_out",
++					       "sys_pll2_1000m", "sys_pll2_500m", "audio_pll1_out",
++					       "video_pll1_out", "audio_pll2_out", };
++
++static const char * const imx8mn_ahb_sels[] = {"osc_24m", "sys_pll1_133m", "sys_pll1_800m",
++					       "sys_pll1_400m", "sys_pll2_125m", "sys_pll3_out",
++					       "audio_pll1_out", "video_pll1_out", };
++
++static const char * const imx8mn_audio_ahb_sels[] = {"osc_24m", "sys_pll2_500m", "sys_pll1_800m",
++						     "sys_pll2_1000m", "sys_pll2_166m", "sys_pll3_out",
++						     "audio_pll1_out", "video_pll1_out", };
++
++static const char * const imx8mn_dram_alt_sels[] = {"osc_24m", "sys_pll1_800m", "sys_pll1_100m",
++						    "sys_pll2_500m", "sys_pll2_1000m", "sys_pll3_out",
++						    "audio_pll1_out", "sys_pll1_266m", };
++
++static const char * const imx8mn_dram_apb_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
++						    "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
++						    "sys_pll2_250m", "audio_pll2_out", };
++
++static const char * const imx8mn_disp_pixel_sels[] = {"osc_24m", "video_pll1_out", "audio_pll2_out",
++						      "audio_pll1_out", "sys_pll1_800m", "sys_pll2_1000m",
++						      "sys_pll3_out", "clk_ext4", };
++
++static const char * const imx8mn_sai2_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
++						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
++						"clk_ext3", "clk_ext4", };
++
++static const char * const imx8mn_sai3_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
++						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
++						"clk_ext3", "clk_ext4", };
++
++static const char * const imx8mn_sai5_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
++						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
++						"clk_ext2", "clk_ext3", };
++
++static const char * const imx8mn_sai6_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
++						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
++						"clk_ext3", "clk_ext4", };
++
++static const char * const imx8mn_sai7_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
++						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
++						"clk_ext3", "clk_ext4", };
++
++static const char * const imx8mn_spdif1_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
++						  "video_pll1_out", "sys_pll1_133m", "osc_hdmi",
++						  "clk_ext2", "clk_ext3", };
++
++static const char * const imx8mn_enet_ref_sels[] = {"osc_24m", "sys_pll2_125m", "sys_pll2_50m",
++						    "sys_pll2_100m", "sys_pll1_160m", "audio_pll1_out",
++						    "video_pll1_out", "clk_ext4", };
++
++static const char * const imx8mn_enet_timer_sels[] = {"osc_24m", "sys_pll2_100m", "audio_pll1_out",
++						      "clk_ext1", "clk_ext2", "clk_ext3",
++						      "clk_ext4", "video_pll1_out", };
++
++static const char * const imx8mn_enet_phy_sels[] = {"osc_24m", "sys_pll2_50m", "sys_pll2_125m",
++						    "sys_pll2_200m", "sys_pll2_500m", "video_pll1_out",
++						    "audio_pll2_out", };
++
++static const char * const imx8mn_nand_sels[] = {"osc_24m", "sys_pll2_500m", "audio_pll1_out",
++						"sys_pll1_400m", "audio_pll2_out", "sys_pll3_out",
++						"sys_pll2_250m", "video_pll1_out", };
++
++static const char * const imx8mn_qspi_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll2_333m",
++						"sys_pll2_500m", "audio_pll2_out", "sys_pll1_266m",
++						"sys_pll3_out", "sys_pll1_100m", };
++
++static const char * const imx8mn_usdhc1_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll1_800m",
++						  "sys_pll2_500m", "sys_pll3_out", "sys_pll1_266m",
++						  "audio_pll2_out", "sys_pll1_100m", };
++
++static const char * const imx8mn_usdhc2_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll1_800m",
++						  "sys_pll2_500m", "sys_pll3_out", "sys_pll1_266m",
++						  "audio_pll2_out", "sys_pll1_100m", };
++
++static const char * const imx8mn_i2c1_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
++						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
++						"audio_pll2_out", "sys_pll1_133m", };
++
++static const char * const imx8mn_i2c2_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
++						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
++						"audio_pll2_out", "sys_pll1_133m", };
++
++static const char * const imx8mn_i2c3_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
++						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
++						"audio_pll2_out", "sys_pll1_133m", };
++
++static const char * const imx8mn_i2c4_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
++						"sys_pll3_out",	"audio_pll1_out", "video_pll1_out",
++						"audio_pll2_out", "sys_pll1_133m", };
++
++static const char * const imx8mn_uart1_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
++						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
++						 "clk_ext4", "audio_pll2_out", };
++
++static const char * const imx8mn_uart2_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
++						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
++						 "clk_ext3", "audio_pll2_out", };
++
++static const char * const imx8mn_uart3_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
++						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
++						 "clk_ext4", "audio_pll2_out", };
++
++static const char * const imx8mn_uart4_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
++						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
++						 "clk_ext3", "audio_pll2_out", };
++
++static const char * const imx8mn_usb_core_sels[] = {"osc_24m", "sys_pll1_100m", "sys_pll1_40m",
++						    "sys_pll2_100m", "sys_pll2_200m", "clk_ext2",
++						    "clk_ext3", "audio_pll2_out", };
++
++static const char * const imx8mn_usb_phy_sels[] = {"osc_24m", "sys_pll1_100m", "sys_pll1_40m",
++						   "sys_pll2_100m", "sys_pll2_200m", "clk_ext2",
++						   "clk_ext3", "audio_pll2_out", };
++
++static const char * const imx8mn_gic_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
++					"sys_pll2_100m", "sys_pll1_800m", "clk_ext2",
++					"clk_ext4", "audio_pll2_out" };
++
++static const char * const imx8mn_ecspi1_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
++						  "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
++						  "sys_pll2_250m", "audio_pll2_out", };
++
++static const char * const imx8mn_ecspi2_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
++						  "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
++						  "sys_pll2_250m", "audio_pll2_out", };
++
++static const char * const imx8mn_pwm1_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
++						"sys_pll1_40m", "sys_pll3_out", "clk_ext1",
++						"sys_pll1_80m", "video_pll1_out", };
++
++static const char * const imx8mn_pwm2_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
++						"sys_pll1_40m", "sys_pll3_out", "clk_ext1",
++						"sys_pll1_80m", "video_pll1_out", };
++
++static const char * const imx8mn_pwm3_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
++						"sys_pll1_40m", "sys_pll3_out", "clk_ext2",
++						"sys_pll1_80m", "video_pll1_out", };
++
++static const char * const imx8mn_pwm4_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
++						"sys_pll1_40m", "sys_pll3_out", "clk_ext2",
++						"sys_pll1_80m", "video_pll1_out", };
++
++static const char * const imx8mn_wdog_sels[] = {"osc_24m", "sys_pll1_133m", "sys_pll1_160m",
++						"vpu_pll_out", "sys_pll2_125m", "sys_pll3_out",
++						"sys_pll1_80m", "sys_pll2_166m", };
++
++static const char * const imx8mn_wrclk_sels[] = {"osc_24m", "sys_pll1_40m", "vpu_pll_out",
++						 "sys_pll3_out", "sys_pll2_200m", "sys_pll1_266m",
++						 "sys_pll2_500m", "sys_pll1_100m", };
++
++static const char * const imx8mn_dsi_core_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll2_250m",
++						    "sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
++						    "audio_pll2_out", "video_pll1_out", };
++
++static const char * const imx8mn_dsi_phy_sels[] = {"osc_24m", "sys_pll2_125m", "sys_pll2_100m",
++						   "sys_pll1_800m", "sys_pll2_1000m", "clk_ext2",
++						   "audio_pll2_out", "video_pll1_out", };
++
++static const char * const imx8mn_dsi_dbi_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll2_100m",
++						   "sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
++						   "audio_pll2_out", "video_pll1_out", };
++
++static const char * const imx8mn_usdhc3_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll1_800m",
++						  "sys_pll2_500m", "sys_pll3_out", "sys_pll1_266m",
++						  "audio_pll2_out", "sys_pll1_100m", };
++
++static const char * const imx8mn_camera_pixel_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll2_250m",
++							"sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
++							"audio_pll2_out", "video_pll1_out", };
++
++static const char * const imx8mn_csi1_phy_sels[] = {"osc_24m", "sys_pll2_333m", "sys_pll2_100m",
++						    "sys_pll1_800m", "sys_pll2_1000m", "clk_ext2",
++						    "audio_pll2_out", "video_pll1_out", };
++
++static const char * const imx8mn_csi2_phy_sels[] = {"osc_24m", "sys_pll2_333m", "sys_pll2_100m",
++						    "sys_pll1_800m", "sys_pll2_1000m", "clk_ext2",
++						    "audio_pll2_out", "video_pll1_out", };
++
++static const char * const imx8mn_csi2_esc_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_80m",
++						    "sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
++						    "clk_ext3", "audio_pll2_out", };
++
++static const char * const imx8mn_ecspi3_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
++						  "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
++						  "sys_pll2_250m", "audio_pll2_out", };
++
++static const char * const imx8mn_pdm_sels[] = {"osc_24m", "sys_pll2_100m", "audio_pll1_out",
++					       "sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
++					       "clk_ext3", "audio_pll2_out", };
++
++static const char * const imx8mn_dram_core_sels[] = {"dram_pll_out", "dram_alt_root", };
++
++static const char * const imx8mn_clko1_sels[] = {"osc_24m", "sys_pll1_800m", "osc_27m",
++						 "sys_pll1_200m", "audio_pll2_out", "vpu_pll",
++						 "sys_pll1_80m", };
++static const char * const imx8mn_clko2_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_400m",
++						 "sys_pll2_166m", "sys_pll3_out", "audio_pll1_out",
++						 "video_pll1_out", "osc_32k", };
++
++static const char * const clkout_sels[] = {"audio_pll1_out", "audio_pll2_out", "video_pll1_out",
++					   "dummy", "dummy", "gpu_pll_out", "dummy",
++					   "arm_pll_out", "sys_pll1", "sys_pll2", "sys_pll3",
++					   "dummy", "dummy", "osc_24m", "dummy", "osc_32k"};
++
++static struct clk *clks[IMX8MN_CLK_END];
++static struct clk_onecell_data clk_data;
++
++static int imx8mn_clocks_init(struct device_node *ccm_np)
 +{
-+	return IS_ENABLED(CONFIG_FIRMWARE_IMX_LPDDR4_PMU_TRAIN) &&
-+		type == DRAM_TYPE_LPDDR4;
-+}
++	struct device_node *anatop_np;
++	void __iomem *ccm, *ana;
++	int ret;
 +
-+static inline bool dram_is_ddr4(enum dram_type type)
-+{
-+	return IS_ENABLED(CONFIG_FIRMWARE_IMX_DDR4_PMU_TRAIN) &&
-+		type == DRAM_TYPE_DDR4;
-+}
++	anatop_np = of_find_compatible_node(NULL, NULL, "fsl,imx8mn-anatop");
++	ana = of_iomap(anatop_np, 0);
++	if (WARN_ON(!ana))
++		return -ENOMEM;
 +
- #define DDRC_PHY_REG(x)	((x) * 4)
- 
- #endif
++	ccm = of_iomap(ccm_np, 0);
++	if (WARN_ON(!ccm))
++		return -ENOMEM;
++
++	clks[IMX8MN_CLK_DUMMY] = clk_fixed("dummy", 0);
++	clks[IMX8MN_CLK_24M] = of_clk_get_by_name(ccm_np, "osc_24m");
++	clks[IMX8MN_CLK_32K] = of_clk_get_by_name(ccm_np, "osc_32k");
++	clks[IMX8MN_CLK_EXT1] = of_clk_get_by_name(ccm_np, "clk_ext1");
++	clks[IMX8MN_CLK_EXT2] = of_clk_get_by_name(ccm_np, "clk_ext2");
++	clks[IMX8MN_CLK_EXT3] = of_clk_get_by_name(ccm_np, "clk_ext3");
++	clks[IMX8MN_CLK_EXT4] = of_clk_get_by_name(ccm_np, "clk_ext4");
++
++	clks[IMX8MN_AUDIO_PLL1_REF_SEL] = imx_clk_mux("audio_pll1_ref_sel", ana + 0x0, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
++	clks[IMX8MN_AUDIO_PLL2_REF_SEL] = imx_clk_mux("audio_pll2_ref_sel", ana + 0x14, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
++	clks[IMX8MN_VIDEO_PLL1_REF_SEL] = imx_clk_mux("video_pll1_ref_sel", ana + 0x28, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
++	clks[IMX8MN_DRAM_PLL_REF_SEL] = imx_clk_mux("dram_pll_ref_sel", ana + 0x50, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
++	clks[IMX8MN_GPU_PLL_REF_SEL] = imx_clk_mux("gpu_pll_ref_sel", ana + 0x64, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
++	clks[IMX8MN_VPU_PLL_REF_SEL] = imx_clk_mux("vpu_pll_ref_sel", ana + 0x74, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
++	clks[IMX8MN_ARM_PLL_REF_SEL] = imx_clk_mux("arm_pll_ref_sel", ana + 0x84, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
++	clks[IMX8MN_SYS_PLL3_REF_SEL] = imx_clk_mux("sys_pll3_ref_sel", ana + 0x114, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
++
++	clks[IMX8MN_AUDIO_PLL1] = imx_clk_pll14xx("audio_pll1", "audio_pll1_ref_sel", ana, &imx_1443x_pll);
++	clks[IMX8MN_AUDIO_PLL2] = imx_clk_pll14xx("audio_pll2", "audio_pll2_ref_sel", ana + 0x14, &imx_1443x_pll);
++	clks[IMX8MN_VIDEO_PLL1] = imx_clk_pll14xx("video_pll1", "video_pll1_ref_sel", ana + 0x28, &imx_1443x_pll);
++	clks[IMX8MN_DRAM_PLL] = imx_clk_pll14xx("dram_pll", "dram_pll_ref_sel", ana + 0x50, &imx_1443x_pll);
++	clks[IMX8MN_GPU_PLL] = imx_clk_pll14xx("gpu_pll", "gpu_pll_ref_sel", ana + 0x64, &imx_1416x_pll);
++	clks[IMX8MN_VPU_PLL] = imx_clk_pll14xx("vpu_pll", "vpu_pll_ref_sel", ana + 0x74, &imx_1416x_pll);
++	clks[IMX8MN_ARM_PLL] = imx_clk_pll14xx("arm_pll", "arm_pll_ref_sel", ana + 0x84, &imx_1416x_pll);
++	clks[IMX8MN_SYS_PLL1] = clk_fixed("sys_pll1", 800000000);
++	clks[IMX8MN_SYS_PLL2] = clk_fixed("sys_pll2", 1000000000);
++	clks[IMX8MN_SYS_PLL3] = imx_clk_pll14xx("sys_pll3", "sys_pll3_ref_sel", ana + 0x114, &imx_1416x_pll);
++
++	/* PLL bypass out */
++	clks[IMX8MN_AUDIO_PLL1_BYPASS] = imx_clk_mux_flags("audio_pll1_bypass", ana, 16, 1, audio_pll1_bypass_sels, ARRAY_SIZE(audio_pll1_bypass_sels), CLK_SET_RATE_PARENT);
++	clks[IMX8MN_AUDIO_PLL2_BYPASS] = imx_clk_mux_flags("audio_pll2_bypass", ana + 0x14, 16, 1, audio_pll2_bypass_sels, ARRAY_SIZE(audio_pll2_bypass_sels), CLK_SET_RATE_PARENT);
++	clks[IMX8MN_VIDEO_PLL1_BYPASS] = imx_clk_mux_flags("video_pll1_bypass", ana + 0x28, 16, 1, video_pll1_bypass_sels, ARRAY_SIZE(video_pll1_bypass_sels), CLK_SET_RATE_PARENT);
++	clks[IMX8MN_DRAM_PLL_BYPASS] = imx_clk_mux_flags("dram_pll_bypass", ana + 0x50, 16, 1, dram_pll_bypass_sels, ARRAY_SIZE(dram_pll_bypass_sels), CLK_SET_RATE_PARENT);
++	clks[IMX8MN_GPU_PLL_BYPASS] = imx_clk_mux_flags("gpu_pll_bypass", ana + 0x64, 28, 1, gpu_pll_bypass_sels, ARRAY_SIZE(gpu_pll_bypass_sels), CLK_SET_RATE_PARENT);
++	clks[IMX8MN_VPU_PLL_BYPASS] = imx_clk_mux_flags("vpu_pll_bypass", ana + 0x74, 28, 1, vpu_pll_bypass_sels, ARRAY_SIZE(vpu_pll_bypass_sels), CLK_SET_RATE_PARENT);
++	clks[IMX8MN_ARM_PLL_BYPASS] = imx_clk_mux_flags("arm_pll_bypass", ana + 0x84, 28, 1, arm_pll_bypass_sels, ARRAY_SIZE(arm_pll_bypass_sels), CLK_SET_RATE_PARENT);
++	clks[IMX8MN_SYS_PLL3_BYPASS] = imx_clk_mux_flags("sys_pll3_bypass", ana + 0x114, 28, 1, sys_pll3_bypass_sels, ARRAY_SIZE(sys_pll3_bypass_sels), CLK_SET_RATE_PARENT);
++
++	/* PLL out gate */
++	clks[IMX8MN_AUDIO_PLL1_OUT] = imx_clk_gate("audio_pll1_out", "audio_pll1_bypass", ana, 13);
++	clks[IMX8MN_AUDIO_PLL2_OUT] = imx_clk_gate("audio_pll2_out", "audio_pll2_bypass", ana + 0x14, 13);
++	clks[IMX8MN_VIDEO_PLL1_OUT] = imx_clk_gate("video_pll1_out", "video_pll1_bypass", ana + 0x28, 13);
++	clks[IMX8MN_DRAM_PLL_OUT] = imx_clk_gate("dram_pll_out", "dram_pll_bypass", ana + 0x50, 13);
++	clks[IMX8MN_GPU_PLL_OUT] = imx_clk_gate("gpu_pll_out", "gpu_pll_bypass", ana + 0x64, 11);
++	clks[IMX8MN_VPU_PLL_OUT] = imx_clk_gate("vpu_pll_out", "vpu_pll_bypass", ana + 0x74, 11);
++	clks[IMX8MN_ARM_PLL_OUT] = imx_clk_gate("arm_pll_out", "arm_pll_bypass", ana + 0x84, 11);
++	clks[IMX8MN_SYS_PLL3_OUT] = imx_clk_gate("sys_pll3_out", "sys_pll3_bypass", ana + 0x114, 11);
++
++	/* SYS PLL1 fixed output */
++	clks[IMX8MN_SYS_PLL1_40M_CG] = imx_clk_gate("sys_pll1_40m_cg", "sys_pll1", ana + 0x94, 27);
++	clks[IMX8MN_SYS_PLL1_80M_CG] = imx_clk_gate("sys_pll1_80m_cg", "sys_pll1", ana + 0x94, 25);
++	clks[IMX8MN_SYS_PLL1_100M_CG] = imx_clk_gate("sys_pll1_100m_cg", "sys_pll1", ana + 0x94, 23);
++	clks[IMX8MN_SYS_PLL1_133M_CG] = imx_clk_gate("sys_pll1_133m_cg", "sys_pll1", ana + 0x94, 21);
++	clks[IMX8MN_SYS_PLL1_160M_CG] = imx_clk_gate("sys_pll1_160m_cg", "sys_pll1", ana + 0x94, 19);
++	clks[IMX8MN_SYS_PLL1_200M_CG] = imx_clk_gate("sys_pll1_200m_cg", "sys_pll1", ana + 0x94, 17);
++	clks[IMX8MN_SYS_PLL1_266M_CG] = imx_clk_gate("sys_pll1_266m_cg", "sys_pll1", ana + 0x94, 15);
++	clks[IMX8MN_SYS_PLL1_400M_CG] = imx_clk_gate("sys_pll1_400m_cg", "sys_pll1", ana + 0x94, 13);
++	clks[IMX8MN_SYS_PLL1_OUT] = imx_clk_gate("sys_pll1_out", "sys_pll1", ana + 0x94, 11);
++
++	clks[IMX8MN_SYS_PLL1_40M] = imx_clk_fixed_factor("sys_pll1_40m", "sys_pll1_40m_cg", 1, 20);
++	clks[IMX8MN_SYS_PLL1_80M] = imx_clk_fixed_factor("sys_pll1_80m", "sys_pll1_80m_cg", 1, 10);
++	clks[IMX8MN_SYS_PLL1_100M] = imx_clk_fixed_factor("sys_pll1_100m", "sys_pll1_100m_cg", 1, 8);
++	clks[IMX8MN_SYS_PLL1_133M] = imx_clk_fixed_factor("sys_pll1_133m", "sys_pll1_133m_cg", 1, 6);
++	clks[IMX8MN_SYS_PLL1_160M] = imx_clk_fixed_factor("sys_pll1_160m", "sys_pll1_160m_cg", 1, 5);
++	clks[IMX8MN_SYS_PLL1_200M] = imx_clk_fixed_factor("sys_pll1_200m", "sys_pll1_200m_cg", 1, 4);
++	clks[IMX8MN_SYS_PLL1_266M] = imx_clk_fixed_factor("sys_pll1_266m", "sys_pll1_266m_cg", 1, 3);
++	clks[IMX8MN_SYS_PLL1_400M] = imx_clk_fixed_factor("sys_pll1_400m", "sys_pll1_400m_cg", 1, 2);
++	clks[IMX8MN_SYS_PLL1_800M] = imx_clk_fixed_factor("sys_pll1_800m", "sys_pll1_out", 1, 1);
++
++	/* SYS PLL2 fixed output */
++	clks[IMX8MN_SYS_PLL2_50M_CG] = imx_clk_gate("sys_pll2_50m_cg", "sys_pll2", ana + 0x104, 27);
++	clks[IMX8MN_SYS_PLL2_100M_CG] = imx_clk_gate("sys_pll2_100m_cg", "sys_pll2", ana + 0x104, 25);
++	clks[IMX8MN_SYS_PLL2_125M_CG] = imx_clk_gate("sys_pll2_125m_cg", "sys_pll2", ana + 0x104, 23);
++	clks[IMX8MN_SYS_PLL2_166M_CG] = imx_clk_gate("sys_pll2_166m_cg", "sys_pll2", ana + 0x104, 21);
++	clks[IMX8MN_SYS_PLL2_200M_CG] = imx_clk_gate("sys_pll2_200m_cg", "sys_pll2", ana + 0x104, 19);
++	clks[IMX8MN_SYS_PLL2_250M_CG] = imx_clk_gate("sys_pll2_250m_cg", "sys_pll2", ana + 0x104, 17);
++	clks[IMX8MN_SYS_PLL2_333M_CG] = imx_clk_gate("sys_pll2_333m_cg", "sys_pll2", ana + 0x104, 15);
++	clks[IMX8MN_SYS_PLL2_500M_CG] = imx_clk_gate("sys_pll2_500m_cg", "sys_pll2", ana + 0x104, 13);
++	clks[IMX8MN_SYS_PLL2_OUT] = imx_clk_gate("sys_pll2_out", "sys_pll2", ana + 0x104, 11);
++
++	clks[IMX8MN_SYS_PLL2_50M] = imx_clk_fixed_factor("sys_pll2_50m", "sys_pll2_50m_cg", 1, 20);
++	clks[IMX8MN_SYS_PLL2_100M] = imx_clk_fixed_factor("sys_pll2_100m", "sys_pll2_100m_cg", 1, 10);
++	clks[IMX8MN_SYS_PLL2_125M] = imx_clk_fixed_factor("sys_pll2_125m", "sys_pll2_125m_cg", 1, 8);
++	clks[IMX8MN_SYS_PLL2_166M] = imx_clk_fixed_factor("sys_pll2_166m", "sys_pll2_166m_cg", 1, 6);
++	clks[IMX8MN_SYS_PLL2_200M] = imx_clk_fixed_factor("sys_pll2_200m", "sys_pll2_200m_cg", 1, 5);
++	clks[IMX8MN_SYS_PLL2_250M] = imx_clk_fixed_factor("sys_pll2_250m", "sys_pll2_250m_cg", 1, 4);
++	clks[IMX8MN_SYS_PLL2_333M] = imx_clk_fixed_factor("sys_pll2_333m", "sys_pll2_333m_cg", 1, 3);
++	clks[IMX8MN_SYS_PLL2_500M] = imx_clk_fixed_factor("sys_pll2_500m", "sys_pll2_500m_cg", 1, 2);
++	clks[IMX8MN_SYS_PLL2_1000M] = imx_clk_fixed_factor("sys_pll2_1000m", "sys_pll2_out", 1, 1);
++
++	clks[IMX8MN_CLK_CLKOUT1_SEL] = imx_clk_mux("clkout1_sel", ana + 0x128, 4, 4, clkout_sels, ARRAY_SIZE(clkout_sels));
++	clks[IMX8MN_CLK_CLKOUT1_DIV] = imx_clk_divider("clkout1_div", "clkout1_sel", ana + 0x128, 0, 4);
++	clks[IMX8MN_CLK_CLKOUT1] = imx_clk_gate("clkout1", "clkout1_div", ana + 0x128, 8);
++	clks[IMX8MN_CLK_CLKOUT2_SEL] = imx_clk_mux("clkout2_sel", ana + 0x128, 20, 4, clkout_sels, ARRAY_SIZE(clkout_sels));
++	clks[IMX8MN_CLK_CLKOUT2_DIV] = imx_clk_divider("clkout2_div", "clkout2_sel", ana + 0x128, 16, 4);
++	clks[IMX8MN_CLK_CLKOUT2] = imx_clk_gate("clkout2", "clkout2_div", ana + 0x128, 24);
++
++	/* CORE */
++	clks[IMX8MN_CLK_A53_SRC] = imx_clk_mux2("arm_a53_src", ccm + 0x8000, 24, 3, imx8mn_a53_sels, ARRAY_SIZE(imx8mn_a53_sels));
++	clks[IMX8MN_CLK_GPU_CORE_SRC] = imx_clk_mux2("gpu_core_src", ccm + 0x8180, 24, 3, imx8mn_gpu_core_sels, ARRAY_SIZE(imx8mn_gpu_core_sels));
++	clks[IMX8MN_CLK_GPU_SHADER_SRC] = imx_clk_mux2("gpu_shader_src", ccm + 0x8200, 24, 3, imx8mn_gpu_shader_sels,  ARRAY_SIZE(imx8mn_gpu_shader_sels));
++	clks[IMX8MN_CLK_A53_CG] = imx_clk_gate3("arm_a53_cg", "arm_a53_src", ccm + 0x8000, 28);
++	clks[IMX8MN_CLK_GPU_CORE_CG] = imx_clk_gate3("gpu_core_cg", "gpu_core_src", ccm + 0x8180, 28);
++	clks[IMX8MN_CLK_GPU_SHADER_CG] = imx_clk_gate3("gpu_shader_cg", "gpu_shader_src", ccm + 0x8200, 28);
++
++	clks[IMX8MN_CLK_A53_DIV] = imx_clk_divider2("arm_a53_div", "arm_a53_cg", ccm + 0x8000, 0, 3);
++	clks[IMX8MN_CLK_GPU_CORE_DIV] = imx_clk_divider2("gpu_core_div", "gpu_core_cg", ccm + 0x8180, 0, 3);
++	clks[IMX8MN_CLK_GPU_SHADER_DIV] = imx_clk_divider2("gpu_shader_div", "gpu_shader_cg", ccm + 0x8200, 0, 3);
++
++	/* CORE SEL */
++	clks[IMX8MN_CLK_A53_CORE] = imx_clk_mux2("arm_a53_core", ccm + 0x9880, 24, 1, imx8mn_a53_core_sels, ARRAY_SIZE(imx8mn_a53_core_sels));
++
++	/* BUS */
++	clks[IMX8MN_CLK_MAIN_AXI] = imx8m_clk_composite_critical("main_axi", imx8mn_main_axi_sels, ccm + 0x8800);
++	clks[IMX8MN_CLK_ENET_AXI] = imx8m_clk_composite("enet_axi", imx8mn_enet_axi_sels, ccm + 0x8880);
++	clks[IMX8MN_CLK_NAND_USDHC_BUS] = imx8m_clk_composite("nand_usdhc_bus", imx8mn_nand_usdhc_sels, ccm + 0x8900);
++	clks[IMX8MN_CLK_DISP_AXI] = imx8m_clk_composite("disp_axi", imx8mn_disp_axi_sels, ccm + 0x8a00);
++	clks[IMX8MN_CLK_DISP_APB] = imx8m_clk_composite("disp_apb", imx8mn_disp_apb_sels, ccm + 0x8a80);
++	clks[IMX8MN_CLK_USB_BUS] = imx8m_clk_composite("usb_bus", imx8mn_usb_bus_sels, ccm + 0x8b80);
++	clks[IMX8MN_CLK_GPU_AXI] = imx8m_clk_composite("gpu_axi", imx8mn_gpu_axi_sels, ccm + 0x8c00);
++	clks[IMX8MN_CLK_GPU_AHB] = imx8m_clk_composite("gpu_ahb", imx8mn_gpu_ahb_sels, ccm + 0x8c80);
++	clks[IMX8MN_CLK_NOC] = imx8m_clk_composite_critical("noc", imx8mn_noc_sels, ccm + 0x8d00);
++
++	clks[IMX8MN_CLK_AHB] = imx8m_clk_composite_critical("ahb", imx8mn_ahb_sels, ccm + 0x9000);
++	clks[IMX8MN_CLK_AUDIO_AHB] = imx8m_clk_composite("audio_ahb", imx8mn_audio_ahb_sels, ccm + 0x9100);
++	clks[IMX8MN_CLK_IPG_ROOT] = imx_clk_divider2("ipg_root", "ahb", ccm + 0x9080, 0, 1);
++	clks[IMX8MN_CLK_IPG_AUDIO_ROOT] = imx_clk_divider2("ipg_audio_root", "audio_ahb", ccm + 0x9180, 0, 1);
++	clks[IMX8MN_CLK_DRAM_CORE] = imx_clk_mux2_flags("dram_core_clk", ccm + 0x9800, 24, 1, imx8mn_dram_core_sels, ARRAY_SIZE(imx8mn_dram_core_sels), CLK_IS_CRITICAL);
++
++	/*
++	 * DRAM clocks are manipulated from TF-A outside clock framework.
++	 * Mark with GET_RATE_NOCACHE to always read div value from hardware
++	 */
++	clks[IMX8MN_CLK_DRAM_ALT] = __imx8m_clk_composite("dram_alt", imx8mn_dram_alt_sels, ccm + 0xa000, CLK_GET_RATE_NOCACHE);
++	clks[IMX8MN_CLK_DRAM_APB] = __imx8m_clk_composite("dram_apb", imx8mn_dram_apb_sels, ccm + 0xa080, CLK_IS_CRITICAL | CLK_GET_RATE_NOCACHE);
++
++	clks[IMX8MN_CLK_DISP_PIXEL] = imx8m_clk_composite("disp_pixel", imx8mn_disp_pixel_sels, ccm + 0xa500);
++	clks[IMX8MN_CLK_SAI2] = imx8m_clk_composite("sai2", imx8mn_sai2_sels, ccm + 0xa600);
++	clks[IMX8MN_CLK_SAI3] = imx8m_clk_composite("sai3", imx8mn_sai3_sels, ccm + 0xa680);
++	clks[IMX8MN_CLK_SAI5] = imx8m_clk_composite("sai5", imx8mn_sai5_sels, ccm + 0xa780);
++	clks[IMX8MN_CLK_SAI6] = imx8m_clk_composite("sai6", imx8mn_sai6_sels, ccm + 0xa800);
++	clks[IMX8MN_CLK_SPDIF1] = imx8m_clk_composite("spdif1", imx8mn_spdif1_sels, ccm + 0xa880);
++	clks[IMX8MN_CLK_ENET_REF] = imx8m_clk_composite("enet_ref", imx8mn_enet_ref_sels, ccm + 0xa980);
++	clks[IMX8MN_CLK_ENET_TIMER] = imx8m_clk_composite("enet_timer", imx8mn_enet_timer_sels, ccm + 0xaa00);
++	clks[IMX8MN_CLK_ENET_PHY_REF] = imx8m_clk_composite("enet_phy", imx8mn_enet_phy_sels, ccm + 0xaa80);
++	clks[IMX8MN_CLK_NAND] = imx8m_clk_composite("nand", imx8mn_nand_sels, ccm + 0xab00);
++	clks[IMX8MN_CLK_QSPI] = imx8m_clk_composite("qspi", imx8mn_qspi_sels, ccm + 0xab80);
++	clks[IMX8MN_CLK_USDHC1] = imx8m_clk_composite("usdhc1", imx8mn_usdhc1_sels, ccm + 0xac00);
++	clks[IMX8MN_CLK_USDHC2] = imx8m_clk_composite("usdhc2", imx8mn_usdhc2_sels, ccm + 0xac80);
++	clks[IMX8MN_CLK_I2C1] = imx8m_clk_composite("i2c1", imx8mn_i2c1_sels, ccm + 0xad00);
++	clks[IMX8MN_CLK_I2C2] = imx8m_clk_composite("i2c2", imx8mn_i2c2_sels, ccm + 0xad80);
++	clks[IMX8MN_CLK_I2C3] = imx8m_clk_composite("i2c3", imx8mn_i2c3_sels, ccm + 0xae00);
++	clks[IMX8MN_CLK_I2C4] = imx8m_clk_composite("i2c4", imx8mn_i2c4_sels, ccm + 0xae80);
++	clks[IMX8MN_CLK_UART1] = imx8m_clk_composite("uart1", imx8mn_uart1_sels, ccm + 0xaf00);
++	clks[IMX8MN_CLK_UART2] = imx8m_clk_composite("uart2", imx8mn_uart2_sels, ccm + 0xaf80);
++	clks[IMX8MN_CLK_UART3] = imx8m_clk_composite("uart3", imx8mn_uart3_sels, ccm + 0xb000);
++	clks[IMX8MN_CLK_UART4] = imx8m_clk_composite("uart4", imx8mn_uart4_sels, ccm + 0xb080);
++	clks[IMX8MN_CLK_USB_CORE_REF] = imx8m_clk_composite("usb_core_ref", imx8mn_usb_core_sels, ccm + 0xb100);
++	clks[IMX8MN_CLK_USB_PHY_REF] = imx8m_clk_composite("usb_phy_ref", imx8mn_usb_phy_sels, ccm + 0xb180);
++	clks[IMX8MN_CLK_GIC] = imx8m_clk_composite_critical("gic", imx8mn_gic_sels, ccm + 0xb200);
++	clks[IMX8MN_CLK_ECSPI1] = imx8m_clk_composite("ecspi1", imx8mn_ecspi1_sels, ccm + 0xb280);
++	clks[IMX8MN_CLK_ECSPI2] = imx8m_clk_composite("ecspi2", imx8mn_ecspi2_sels, ccm + 0xb300);
++	clks[IMX8MN_CLK_PWM1] = imx8m_clk_composite("pwm1", imx8mn_pwm1_sels, ccm + 0xb380);
++	clks[IMX8MN_CLK_PWM2] = imx8m_clk_composite("pwm2", imx8mn_pwm2_sels, ccm + 0xb400);
++	clks[IMX8MN_CLK_PWM3] = imx8m_clk_composite("pwm3", imx8mn_pwm3_sels, ccm + 0xb480);
++	clks[IMX8MN_CLK_PWM4] = imx8m_clk_composite("pwm4", imx8mn_pwm4_sels, ccm + 0xb500);
++	clks[IMX8MN_CLK_WDOG] = imx8m_clk_composite("wdog", imx8mn_wdog_sels, ccm + 0xb900);
++	clks[IMX8MN_CLK_WRCLK] = imx8m_clk_composite("wrclk", imx8mn_wrclk_sels, ccm + 0xb980);
++	clks[IMX8MN_CLK_CLKO1] = imx8m_clk_composite("clko1", imx8mn_clko1_sels, ccm + 0xba00);
++	clks[IMX8MN_CLK_CLKO2] = imx8m_clk_composite("clko2", imx8mn_clko2_sels, ccm + 0xba80);
++	clks[IMX8MN_CLK_DSI_CORE] = imx8m_clk_composite("dsi_core", imx8mn_dsi_core_sels, ccm + 0xbb00);
++	clks[IMX8MN_CLK_DSI_PHY_REF] = imx8m_clk_composite("dsi_phy_ref", imx8mn_dsi_phy_sels, ccm + 0xbb80);
++	clks[IMX8MN_CLK_DSI_DBI] = imx8m_clk_composite("dsi_dbi", imx8mn_dsi_dbi_sels, ccm + 0xbc00);
++	clks[IMX8MN_CLK_USDHC3] = imx8m_clk_composite("usdhc3", imx8mn_usdhc3_sels, ccm + 0xbc80);
++	clks[IMX8MN_CLK_CAMERA_PIXEL] = imx8m_clk_composite("camera_pixel", imx8mn_camera_pixel_sels, ccm + 0xbd00);
++	clks[IMX8MN_CLK_CSI1_PHY_REF] = imx8m_clk_composite("csi1_phy_ref", imx8mn_csi1_phy_sels, ccm + 0xbd80);
++	clks[IMX8MN_CLK_CSI2_PHY_REF] = imx8m_clk_composite("csi2_phy_ref", imx8mn_csi2_phy_sels, ccm + 0xbf00);
++	clks[IMX8MN_CLK_CSI2_ESC] = imx8m_clk_composite("csi2_esc", imx8mn_csi2_esc_sels, ccm + 0xbf80);
++	clks[IMX8MN_CLK_ECSPI3] = imx8m_clk_composite("ecspi3", imx8mn_ecspi3_sels, ccm + 0xc180);
++	clks[IMX8MN_CLK_PDM] = imx8m_clk_composite("pdm", imx8mn_pdm_sels, ccm + 0xc200);
++	clks[IMX8MN_CLK_SAI7] = imx8m_clk_composite("sai7", imx8mn_sai7_sels, ccm + 0xc300);
++
++	clks[IMX8MN_CLK_ECSPI1_ROOT] = imx_clk_gate4("ecspi1_root_clk", "ecspi1", ccm + 0x4070, 0);
++	clks[IMX8MN_CLK_ECSPI2_ROOT] = imx_clk_gate4("ecspi2_root_clk", "ecspi2", ccm + 0x4080, 0);
++	clks[IMX8MN_CLK_ECSPI3_ROOT] = imx_clk_gate4("ecspi3_root_clk", "ecspi3", ccm + 0x4090, 0);
++	clks[IMX8MN_CLK_ENET1_ROOT] = imx_clk_gate4("enet1_root_clk", "enet_axi", ccm + 0x40a0, 0);
++	clks[IMX8MN_CLK_GPIO1_ROOT] = imx_clk_gate4("gpio1_root_clk", "ipg_root", ccm + 0x40b0, 0);
++	clks[IMX8MN_CLK_GPIO2_ROOT] = imx_clk_gate4("gpio2_root_clk", "ipg_root", ccm + 0x40c0, 0);
++	clks[IMX8MN_CLK_GPIO3_ROOT] = imx_clk_gate4("gpio3_root_clk", "ipg_root", ccm + 0x40d0, 0);
++	clks[IMX8MN_CLK_GPIO4_ROOT] = imx_clk_gate4("gpio4_root_clk", "ipg_root", ccm + 0x40e0, 0);
++	clks[IMX8MN_CLK_GPIO5_ROOT] = imx_clk_gate4("gpio5_root_clk", "ipg_root", ccm + 0x40f0, 0);
++	clks[IMX8MN_CLK_I2C1_ROOT] = imx_clk_gate4("i2c1_root_clk", "i2c1", ccm + 0x4170, 0);
++	clks[IMX8MN_CLK_I2C2_ROOT] = imx_clk_gate4("i2c2_root_clk", "i2c2", ccm + 0x4180, 0);
++	clks[IMX8MN_CLK_I2C3_ROOT] = imx_clk_gate4("i2c3_root_clk", "i2c3", ccm + 0x4190, 0);
++	clks[IMX8MN_CLK_I2C4_ROOT] = imx_clk_gate4("i2c4_root_clk", "i2c4", ccm + 0x41a0, 0);
++	clks[IMX8MN_CLK_MU_ROOT] = imx_clk_gate4("mu_root_clk", "ipg_root", ccm + 0x4210, 0);
++	clks[IMX8MN_CLK_OCOTP_ROOT] = imx_clk_gate4("ocotp_root_clk", "ipg_root", ccm + 0x4220, 0);
++	clks[IMX8MN_CLK_PWM1_ROOT] = imx_clk_gate4("pwm1_root_clk", "pwm1", ccm + 0x4280, 0);
++	clks[IMX8MN_CLK_PWM2_ROOT] = imx_clk_gate4("pwm2_root_clk", "pwm2", ccm + 0x4290, 0);
++	clks[IMX8MN_CLK_PWM3_ROOT] = imx_clk_gate4("pwm3_root_clk", "pwm3", ccm + 0x42a0, 0);
++	clks[IMX8MN_CLK_PWM4_ROOT] = imx_clk_gate4("pwm4_root_clk", "pwm4", ccm + 0x42b0, 0);
++	clks[IMX8MN_CLK_QSPI_ROOT] = imx_clk_gate4("qspi_root_clk", "qspi", ccm + 0x42f0, 0);
++	clks[IMX8MN_CLK_NAND_ROOT] = imx_clk_gate2_shared2("nand_root_clk", "nand", ccm + 0x4300, 0);
++	clks[IMX8MN_CLK_NAND_USDHC_BUS_RAWNAND_CLK] = imx_clk_gate2_shared2("nand_usdhc_rawnand_clk", "nand_usdhc_bus", ccm + 0x4300, 0);
++	clks[IMX8MN_CLK_SAI2_ROOT] = imx_clk_gate2_shared2("sai2_root_clk", "sai2", ccm + 0x4340, 0);
++	clks[IMX8MN_CLK_SAI2_IPG] = imx_clk_gate2_shared2("sai2_ipg_clk", "ipg_audio_root", ccm + 0x4340, 0);
++	clks[IMX8MN_CLK_SAI3_ROOT] = imx_clk_gate2_shared2("sai3_root_clk", "sai3", ccm + 0x4350, 0);
++	clks[IMX8MN_CLK_SAI3_IPG] = imx_clk_gate2_shared2("sai3_ipg_clk", "ipg_audio_root", ccm + 0x4350, 0);
++	clks[IMX8MN_CLK_SAI5_ROOT] = imx_clk_gate2_shared2("sai5_root_clk", "sai5", ccm + 0x4370, 0);
++	clks[IMX8MN_CLK_SAI5_IPG] = imx_clk_gate2_shared2("sai5_ipg_clk", "ipg_audio_root", ccm + 0x4370, 0);
++	clks[IMX8MN_CLK_SAI6_ROOT] = imx_clk_gate2_shared2("sai6_root_clk", "sai6", ccm + 0x4380, 0);
++	clks[IMX8MN_CLK_SAI6_IPG] = imx_clk_gate2_shared2("sai6_ipg_clk", "ipg_audio_root", ccm + 0x4380, 0);
++	clks[IMX8MN_CLK_SNVS_ROOT] = imx_clk_gate4("snvs_root_clk", "ipg_root", ccm + 0x4470, 0);
++	clks[IMX8MN_CLK_UART1_ROOT] = imx_clk_gate4("uart1_root_clk", "uart1", ccm + 0x4490, 0);
++	clks[IMX8MN_CLK_UART2_ROOT] = imx_clk_gate4("uart2_root_clk", "uart2", ccm + 0x44a0, 0);
++	clks[IMX8MN_CLK_UART3_ROOT] = imx_clk_gate4("uart3_root_clk", "uart3", ccm + 0x44b0, 0);
++	clks[IMX8MN_CLK_UART4_ROOT] = imx_clk_gate4("uart4_root_clk", "uart4", ccm + 0x44c0, 0);
++	clks[IMX8MN_CLK_USB1_CTRL_ROOT] = imx_clk_gate4("usb1_ctrl_root_clk", "usb_bus", ccm + 0x44d0, 0);
++	clks[IMX8MN_CLK_GPU_CORE_ROOT] = imx_clk_gate4("gpu_core_root_clk", "gpu_core_div", ccm + 0x44f0, 0);
++	clks[IMX8MN_CLK_USDHC1_ROOT] = imx_clk_gate4("usdhc1_root_clk", "usdhc1", ccm + 0x4510, 0);
++	clks[IMX8MN_CLK_USDHC2_ROOT] = imx_clk_gate4("usdhc2_root_clk", "usdhc2", ccm + 0x4520, 0);
++	clks[IMX8MN_CLK_WDOG1_ROOT] = imx_clk_gate4("wdog1_root_clk", "wdog", ccm + 0x4530, 0);
++	clks[IMX8MN_CLK_WDOG2_ROOT] = imx_clk_gate4("wdog2_root_clk", "wdog", ccm + 0x4540, 0);
++	clks[IMX8MN_CLK_WDOG3_ROOT] = imx_clk_gate4("wdog3_root_clk", "wdog", ccm + 0x4550, 0);
++	clks[IMX8MN_CLK_GPU_BUS_ROOT] = imx_clk_gate4("gpu_root_clk", "gpu_axi", ccm + 0x4570, 0);
++	clks[IMX8MN_CLK_ASRC_ROOT] = imx_clk_gate4("asrc_root_clk", "audio_ahb", ccm + 0x4580, 0);
++	clks[IMX8MN_CLK_PDM_ROOT] = imx_clk_gate2_shared2("pdm_root_clk", "pdm", ccm + 0x45b0, 0);
++	clks[IMX8MN_CLK_PDM_IPG]  = imx_clk_gate2_shared2("pdm_ipg_clk", "ipg_audio_root", ccm + 0x45b0, 0);
++	clks[IMX8MN_CLK_DISP_AXI_ROOT]  = imx_clk_gate2_shared2("disp_axi_root_clk", "disp_axi", ccm + 0x45d0, 0);
++	clks[IMX8MN_CLK_DISP_APB_ROOT]  = imx_clk_gate2_shared2("disp_apb_root_clk", "disp_apb", ccm + 0x45d0, 0);
++	clks[IMX8MN_CLK_CAMERA_PIXEL_ROOT] = imx_clk_gate2_shared2("camera_pixel_clk", "camera_pixel", ccm + 0x45d0, 0);
++	clks[IMX8MN_CLK_DISP_PIXEL_ROOT] = imx_clk_gate2_shared2("disp_pixel_clk", "disp_pixel", ccm + 0x45d0, 0);
++	clks[IMX8MN_CLK_USDHC3_ROOT] = imx_clk_gate4("usdhc3_root_clk", "usdhc3", ccm + 0x45e0, 0);
++	clks[IMX8MN_CLK_TMU_ROOT] = imx_clk_gate4("tmu_root_clk", "ipg_root", ccm + 0x4620, 0);
++	clks[IMX8MN_CLK_SDMA1_ROOT] = imx_clk_gate4("sdma1_clk", "ipg_root", ccm + 0x43a0, 0);
++	clks[IMX8MN_CLK_SDMA2_ROOT] = imx_clk_gate4("sdma2_clk", "ipg_audio_root", ccm + 0x43b0, 0);
++	clks[IMX8MN_CLK_SDMA3_ROOT] = imx_clk_gate4("sdma3_clk", "ipg_audio_root", ccm + 0x45f0, 0);
++	clks[IMX8MN_CLK_SAI7_ROOT] = imx_clk_gate2_shared2("sai7_root_clk", "sai7", ccm + 0x4650, 0);
++
++	clks[IMX8MN_CLK_DRAM_ALT_ROOT] = imx_clk_fixed_factor("dram_alt_root", "dram_alt", 1, 4);
++
++	clks[IMX8MN_CLK_ARM] = imx_clk_cpu("arm", "arm_a53_core",
++					   clks[IMX8MN_CLK_A53_CORE],
++					   clks[IMX8MN_CLK_A53_CORE],
++					   clks[IMX8MN_ARM_PLL_OUT],
++					   clks[IMX8MN_CLK_A53_DIV]);
++
++	imx_check_clocks(clks, ARRAY_SIZE(clks));
++
++	clk_enable(clks[IMX8MN_SYS_PLL3_OUT]);
++	clk_data.clks = clks;
++	clk_data.clk_num = ARRAY_SIZE(clks);
++
++	ret = of_clk_add_provider(ccm_np, of_clk_src_onecell_get, &clk_data);
++	if (ret < 0)
++		pr_err("failed to register clks for i.MX8MN\n");
++
++	return ret;
++}
++CLK_OF_DECLARE(imx8mn, "fsl,imx8mn-ccm", imx8mn_clocks_init);
++
++MODULE_AUTHOR("Anson Huang <Anson.Huang@nxp.com>");
++MODULE_DESCRIPTION("NXP i.MX8MN clock driver");
++MODULE_LICENSE("GPL v2");
 -- 
 2.30.2
 
