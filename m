@@ -1,55 +1,55 @@
-Delivery-date: Fri, 01 Oct 2021 12:12:35 +0200
+Delivery-date: Fri, 01 Oct 2021 12:12:38 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFWt-0002eL-HP
-	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:12:35 +0200
+	id 1mWFWw-0002eq-2j
+	for lore@lore.pengutronix.de; Fri, 01 Oct 2021 12:12:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWFWm-0006mX-KY
-	for lore@pengutronix.de; Fri, 01 Oct 2021 12:12:35 +0200
+	id 1mWFWp-0006oz-AV
+	for lore@pengutronix.de; Fri, 01 Oct 2021 12:12:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=IU9aKCKtpMsNy/H6jnshyqaYQf9/ZilVAiH+zVjlN6M=; b=BB/F8QRQk0ozM2
-	qjOwQp7m7Tl2yu0QHA4/z3m3gJdHJS1aPTsduCvTpYeUwLi8OWvR+CRx6sBkbaBk1NnCifiKJTir+
-	MvI1jsLQO8TaiezlLFr9eCPmLH+9Df16rYbQXY/isVv7ujlQ6ueL9zKf6whlapsTqGrpIXlSmV4Lp
-	0zIxgXM44KeRHY9gDwrDcXpRTMcfNSvWIaDUTTBVRRj8yl5+1TO0JoI70FLWyWQ2R3yD4PcOO7qx7
-	Gzru+8Xe4Y+v7mhcMYMdQkA4SYLjbYHTl1vBSQbUG1XLUWq2OTvuO/OKAgDEDNQrzhs6ChFe9IvBR
-	Au7TLHvOtTNySf1hA0ZA==;
+	List-Owner; bh=ZAhil4BYlzqJrrFFwnU2ux+NTmMpCE1UwFn3PHICXE0=; b=VHcJUnvXdGNSwd
+	u3AKSq66OHj0H3iMvmHaiudTz/i/WLvhQJWRQF4P9JKh1xnM0sGMJXOm1sbo66/Uud7r7hXm7HMW5
+	E6STnkGX1POna8Flv2hKyKCTfsC8Wac8ZproPUWktaxYYTqjCYWS1EJ1mwx6tdHhc2EJY3ySkLl2u
+	FDZ3Mu6qHS8yuxFzrK6jOoe/J1clntLP7/9klS59o6MqWOQEnpt6nC59BReaLHZnTUetLWe3FMHK8
+	k1utOTHT6SYWO7oxH2QZHpzN57o5dpbCzp/ntKbZwjNxJBfMzd0jk13tfDK/mBt00V+gurq0gsQFB
+	RAQW8qvtFxPBkd7tbTbg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mWFUo-00HQy8-J5; Fri, 01 Oct 2021 10:10:26 +0000
+	id 1mWFUt-00HR4Z-DB; Fri, 01 Oct 2021 10:10:31 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mWFUI-00HQjd-UT
- for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:10:02 +0000
+ id 1mWFUO-00HQlW-E2
+ for barebox@lists.infradead.org; Fri, 01 Oct 2021 10:10:05 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mWFUF-0005kw-8F; Fri, 01 Oct 2021 12:09:51 +0200
+ id 1mWFUF-0005kp-2f; Fri, 01 Oct 2021 12:09:51 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mWFUE-0001pn-Hb; Fri, 01 Oct 2021 12:09:50 +0200
+ id 1mWFUE-0001pS-E7; Fri, 01 Oct 2021 12:09:50 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Trent Piepho <tpiepho@gmail.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  1 Oct 2021 12:09:49 +0200
-Message-Id: <20211001100949.6891-9-a.fatoum@pengutronix.de>
+Date: Fri,  1 Oct 2021 12:09:42 +0200
+Message-Id: <20211001100949.6891-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211001100949.6891-1-a.fatoum@pengutronix.de>
 References: <20211001100949.6891-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211001_030955_600700_73676272 
-X-CRM114-Status: GOOD (  23.12  )
+X-CRM114-CacheID: sfid-20211001_031001_266892_484E8D17 
+X-CRM114-Status: GOOD (  25.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,3253 +73,1219 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 8/8] ARM: i.MX8MN: add i.MX8MN-EVK support
+Subject: [PATCH v2 1/8] ARM: i.MX: add i.MX8MN (Nano) SoC support boilerplate
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-With driver support in place, we can now build and run barebox in the
-i.MX8MN. Following tested working:
-
-  - Setting up DDR4 SDRAM
-  - Booting from SD-Card
-  - Booting from eMMC
-  - Updating barebox in SD-Card/eMMC boot partition
-  - USB Fastboot, ACM gadgets
-  - UART
-  - Early I2C with bd71837
-  - Ethernet
-  - Loading and communicating with TF-A
-
-The resulting image supports both DDR4 and LPDDR4. They use different
-PMICs, so probing the i2c addresses of them indicates what DRAM type
-to setup. I have only tested this on a DDR4 EVK, but the LPDDR4 code
-is equivalent to what's already used in barebox with i.MX8M Mini
-and Plus, so it should work(tm).
-
-Notably missing:
-
-  - boot from USB SDP doesn't work. early debug_ll doesn't indicate
-    that barebox PBL was actually entered.
-
-This can follow later though.
+The Nano is basically a downsized mini. Add the necessary bits, so
+driver and board support can be added.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/imx/nxp-imx8mn-evk.rst   |   60 +
- arch/arm/boards/Makefile                      |    1 +
- arch/arm/boards/nxp-imx8mn-evk/Makefile       |    2 +
- arch/arm/boards/nxp-imx8mn-evk/board.c        |   62 +
- arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c  | 1055 +++++++++++
- .../flash-header-imx8mn-evk.imxcfg            |    5 +
- arch/arm/boards/nxp-imx8mn-evk/lowlevel.c     |  231 +++
- .../arm/boards/nxp-imx8mn-evk/lpddr4-timing.c | 1591 +++++++++++++++++
- arch/arm/configs/imx_v8_defconfig             |    1 +
- arch/arm/dts/Makefile                         |    1 +
- arch/arm/dts/imx8mn-evk.dts                   |   62 +
- arch/arm/mach-imx/Kconfig                     |   12 +
- images/Makefile.imx                           |    6 +
- 13 files changed, 3089 insertions(+)
- create mode 100644 Documentation/boards/imx/nxp-imx8mn-evk.rst
- create mode 100644 arch/arm/boards/nxp-imx8mn-evk/Makefile
- create mode 100644 arch/arm/boards/nxp-imx8mn-evk/board.c
- create mode 100644 arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c
- create mode 100644 arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
- create mode 100644 arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
- create mode 100644 arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c
- create mode 100644 arch/arm/dts/imx8mn-evk.dts
+ arch/arm/mach-imx/Kconfig                     |   4 +
+ arch/arm/mach-imx/atf.c                       |   5 +
+ arch/arm/mach-imx/boot.c                      |   6 +
+ arch/arm/mach-imx/cpu_init.c                  |   3 +
+ arch/arm/mach-imx/esdctl.c                    |   8 +
+ arch/arm/mach-imx/imx-bbu-internal.c          |   8 +-
+ arch/arm/mach-imx/imx.c                       |   4 +
+ arch/arm/mach-imx/imx8m.c                     |  23 +
+ arch/arm/mach-imx/include/mach/atf.h          |   2 +
+ arch/arm/mach-imx/include/mach/esdctl.h       |   1 +
+ arch/arm/mach-imx/include/mach/generic.h      |  18 +-
+ arch/arm/mach-imx/include/mach/imx8mn-regs.h  |  34 +
+ arch/arm/mach-imx/include/mach/imx8mq.h       |  11 +
+ .../arm/mach-imx/include/mach/imx_cpu_types.h |   1 +
+ arch/arm/mach-imx/include/mach/iomux-mx8mn.h  | 774 ++++++++++++++++++
+ arch/arm/mach-imx/include/mach/xload.h        |   1 +
+ drivers/mci/imx-esdhc-pbl.c                   |   3 +
+ scripts/imx/imx.h                             |   1 +
+ 18 files changed, 902 insertions(+), 5 deletions(-)
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8mn-regs.h
+ create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx8mn.h
 
-diff --git a/Documentation/boards/imx/nxp-imx8mn-evk.rst b/Documentation/boards/imx/nxp-imx8mn-evk.rst
-new file mode 100644
-index 000000000000..44cd0c68e4d9
---- /dev/null
-+++ b/Documentation/boards/imx/nxp-imx8mn-evk.rst
-@@ -0,0 +1,60 @@
-+NXP i.MX8MN EVK Evaluation Board
-+================================
-+
-+Board comes with either:
-+
-+* 2GiB of LPDDR4 RAM
-+* 2GiB of DDR4 RAM
-+
-+barebox supports both variants with the same image.
-+
-+Downloading DDR PHY Firmware
-+----------------------------
-+
-+As a part of DDR intialization routine NXP i.MX8MN EVK requires and
-+uses several binary firmware blobs that are distributed under a
-+separate EULA and cannot be included in Barebox. In order to obtain
-+them do the following::
-+
-+ wget https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.12.bin
-+ chmod +x firmware-imx-8.12.bin
-+ ./firmware-imx-8.12.bin
-+
-+Executing that file should produce a EULA acceptance dialog as well as
-+result in the following files:
-+
-+- lpddr4_pmu_train_1d_dmem.bin
-+- lpddr4_pmu_train_1d_imem.bin
-+- lpddr4_pmu_train_2d_dmem.bin
-+- lpddr4_pmu_train_2d_imem.bin
-+- ddr4_dmem_1d_201810.bin
-+- ddr4_imem_1d_201810.bin
-+- ddr4_dmem_2d_201810.bin
-+- ddr4_imem_2d_201810.bin
-+
-+As a last step of this process those files need to be placed in
-+"firmware/"::
-+
-+  for f in lpddr4_pmu_train_1d_dmem.bin  \
-+           lpddr4_pmu_train_1d_imem.bin  \
-+	   lpddr4_pmu_train_2d_dmem.bin  \
-+	   lpddr4_pmu_train_2d_imem.bin; \
-+  do \
-+	   cp firmware-imx-8.0/firmware/ddr/synopsys/${f} \
-+	      firmware/${f}; \
-+  done
-+
-+  for f in ddr4_dmem_1d_201810.bin  \
-+           ddr4_imem_1d_201810.bin  \
-+           ddr4_dmem_2d_201810.bin  \
-+           ddr4_imem_2d_201810.bin; \
-+  do \
-+	   cp firmware-imx-8.0/firmware/ddr/synopsys/${f} \
-+	      firmware/${f%_201810.bin}.bin; \
-+  done
-+
-+Build barebox
-+=============
-+
-+ make imx_v8_defconfig
-+ make
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 5aac64fce584..810d94b7f0d7 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -84,6 +84,7 @@ obj-$(CONFIG_MACH_NVIDIA_JETSON)		+= nvidia-jetson-tk1/
- obj-$(CONFIG_MACH_NXP_IMX6ULL_EVK)		+= nxp-imx6ull-evk/
- obj-$(CONFIG_MACH_NXP_IMX8MQ_EVK)		+= nxp-imx8mq-evk/
- obj-$(CONFIG_MACH_NXP_IMX8MM_EVK)		+= nxp-imx8mm-evk/
-+obj-$(CONFIG_MACH_NXP_IMX8MN_EVK)		+= nxp-imx8mn-evk/
- obj-$(CONFIG_MACH_NXP_IMX8MP_EVK)		+= nxp-imx8mp-evk/
- obj-$(CONFIG_MACH_OMAP343xSDP)			+= omap343xdsp/
- obj-$(CONFIG_MACH_OMAP3EVM)			+= omap3evm/
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/Makefile b/arch/arm/boards/nxp-imx8mn-evk/Makefile
-new file mode 100644
-index 000000000000..4b13ff3b94e4
---- /dev/null
-+++ b/arch/arm/boards/nxp-imx8mn-evk/Makefile
-@@ -0,0 +1,2 @@
-+obj-y += board.o
-+lwl-y += lowlevel.o ddr4-timing.o lpddr4-timing.o
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/board.c b/arch/arm/boards/nxp-imx8mn-evk/board.c
-new file mode 100644
-index 000000000000..3c478d5f7088
---- /dev/null
-+++ b/arch/arm/boards/nxp-imx8mn-evk/board.c
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2021 Ahmad Fatoum, Pengutronix
-+ */
-+
-+#include <bootsource.h>
-+#include <common.h>
-+#include <init.h>
-+#include <linux/phy.h>
-+#include <linux/sizes.h>
-+#include <mach/bbu.h>
-+#include <envfs.h>
-+
-+#define PHY_ID_AR8031	0x004dd074
-+#define AR_PHY_ID_MASK	0xffffffff
-+
-+static int ar8031_phy_fixup(struct phy_device *phydev)
-+{
-+	/*
-+	 * Enable 1.8V(SEL_1P5_1P8_POS_REG) on
-+	 * Phy control debug reg 0
-+	 */
-+	phy_write(phydev, 0x1d, 0x1f);
-+	phy_write(phydev, 0x1e, 0x8);
-+
-+	/* rgmii tx clock delay enable */
-+	phy_write(phydev, 0x1d, 0x05);
-+	phy_write(phydev, 0x1e, 0x100);
-+
-+	return 0;
-+}
-+
-+static int nxp_imx8mn_evk_init(void)
-+{
-+	int emmc_bbu_flag = 0;
-+	int sd_bbu_flag = 0;
-+
-+	if (!of_machine_is_compatible("fsl,imx8mn-evk"))
-+		return 0;
-+
-+	if (bootsource_get() == BOOTSOURCE_MMC) {
-+		if (bootsource_get_instance() == 2) {
-+			of_device_enable_path("/chosen/environment-emmc");
-+			emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-+		} else {
-+			of_device_enable_path("/chosen/environment-sd");
-+			sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-+		}
-+	} else {
-+		of_device_enable_path("/chosen/environment-emmc");
-+		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-+	}
-+
-+	imx8m_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox", sd_bbu_flag);
-+	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc2", emmc_bbu_flag);
-+
-+	phy_register_fixup_for_uid(PHY_ID_AR8031, AR_PHY_ID_MASK,
-+				   ar8031_phy_fixup);
-+
-+	return 0;
-+}
-+coredevice_initcall(nxp_imx8mn_evk_init);
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c b/arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c
-new file mode 100644
-index 000000000000..7ce371384ea7
---- /dev/null
-+++ b/arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c
-@@ -0,0 +1,1055 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright 2019 NXP
-+ *
-+ * Generated code from MX8M_DDR_tool
-+ * Align with uboot version:
-+ * imx_v2018.03_4.14.78_1.0.0_ga ~ imx_v2018.04_4.19.35_1.0.0_ga
-+ */
-+
-+#include <common.h>
-+#include <soc/imx8m/ddr.h>
-+
-+static struct dram_cfg_param ddr_ddrc_cfg[] = {
-+	/** Initialize DDRC registers **/
-+	{ 0x3d400000, 0x81040010 },
-+	{ 0x3d400030, 0x20 },
-+	{ 0x3d400034, 0x221306 },
-+	{ 0x3d400050, 0x210070 },
-+	{ 0x3d400054, 0x10008 },
-+	{ 0x3d400060, 0x0 },
-+	{ 0x3d400064, 0x92014a },
-+	{ 0x3d4000c0, 0x0 },
-+	{ 0x3d4000c4, 0x1000 },
-+	{ 0x3d4000d0, 0xc0030126 },
-+	{ 0x3d4000d4, 0x770000 },
-+	{ 0x3d4000dc, 0x8340105 },
-+	{ 0x3d4000e0, 0x180200 },
-+	{ 0x3d4000e4, 0x110000 },
-+	{ 0x3d4000e8, 0x2000600 },
-+	{ 0x3d4000ec, 0x810 },
-+	{ 0x3d4000f0, 0x20 },
-+	{ 0x3d4000f4, 0xec7 },
-+	{ 0x3d400100, 0x11122914 },
-+	{ 0x3d400104, 0x4051c },
-+	{ 0x3d400108, 0x608050d },
-+	{ 0x3d40010c, 0x400c },
-+	{ 0x3d400110, 0x8030409 },
-+	{ 0x3d400114, 0x6060403 },
-+	{ 0x3d40011c, 0x606 },
-+	{ 0x3d400120, 0x7070d0c },
-+	{ 0x3d400124, 0x2040a },
-+	{ 0x3d40012c, 0x1809010e },
-+	{ 0x3d400130, 0x8 },
-+	{ 0x3d40013c, 0x0 },
-+	{ 0x3d400180, 0x1000040 },
-+	{ 0x3d400184, 0x493e },
-+	{ 0x3d400190, 0x38b8207 },
-+	{ 0x3d400194, 0x2020303 },
-+	{ 0x3d400198, 0x7f04011 },
-+	{ 0x3d40019c, 0xb0 },
-+	{ 0x3d4001a0, 0xe0400018 },
-+	{ 0x3d4001a4, 0x48005a },
-+	{ 0x3d4001a8, 0x80000000 },
-+	{ 0x3d4001b0, 0x1 },
-+	{ 0x3d4001b4, 0xb07 },
-+	{ 0x3d4001b8, 0x4 },
-+	{ 0x3d4001c0, 0x1 },
-+	{ 0x3d4001c4, 0x0 },
-+	{ 0x3d400200, 0x3f1f },
-+	{ 0x3d400204, 0x3f0909 },
-+	{ 0x3d400208, 0x700 },
-+	{ 0x3d40020c, 0x0 },
-+	{ 0x3d400210, 0x1f1f },
-+	{ 0x3d400214, 0x7070707 },
-+	{ 0x3d400218, 0x7070707 },
-+	{ 0x3d40021c, 0xf07 },
-+	{ 0x3d400220, 0x3f01 },
-+	{ 0x3d400240, 0x6000610 },
-+	{ 0x3d400244, 0x1323 },
-+	{ 0x3d400400, 0x100 },
-+
-+	/* performance setting */
-+	{ 0x3d400250, 0x00001f05 },
-+	{ 0x3d400254, 0x1f },
-+	{ 0x3d400264, 0x900003ff },
-+	{ 0x3d40026c, 0x200003ff },
-+	{ 0x3d400494, 0x01000e00 },
-+	{ 0x3d400498, 0x03ff0000 },
-+	{ 0x3d40049c, 0x01000e00 },
-+	{ 0x3d4004a0, 0x03ff0000 },
-+
-+	{ 0x3d402050, 0x210070 },
-+	{ 0x3d402064, 0x400093 },
-+	{ 0x3d4020dc, 0x105 },
-+	{ 0x3d4020e0, 0x0 },
-+	{ 0x3d4020e8, 0x2000600 },
-+	{ 0x3d4020ec, 0x10 },
-+	{ 0x3d402100, 0xb081209 },
-+	{ 0x3d402104, 0x2020d },
-+	{ 0x3d402108, 0x5050309 },
-+	{ 0x3d40210c, 0x400c },
-+	{ 0x3d402110, 0x5030206 },
-+	{ 0x3d402114, 0x3030202 },
-+	{ 0x3d40211c, 0x303 },
-+	{ 0x3d402120, 0x4040d06 },
-+	{ 0x3d402124, 0x20208 },
-+	{ 0x3d40212c, 0x1205010e },
-+	{ 0x3d402130, 0x8 },
-+	{ 0x3d40213c, 0x0 },
-+	{ 0x3d402180, 0x1000040 },
-+	{ 0x3d402190, 0x3848204 },
-+	{ 0x3d402194, 0x2020303 },
-+	{ 0x3d4021b4, 0x404 },
-+	{ 0x3d4021b8, 0x4 },
-+	{ 0x3d402240, 0x6000600 },
-+	{ 0x3d4020f4, 0xec7 },
-+};
-+
-+/* PHY Initialize Configuration */
-+static struct dram_cfg_param ddr_ddrphy_cfg[] = {
-+	{ 0x1005f, 0x2fd },
-+	{ 0x1015f, 0x2fd },
-+	{ 0x1105f, 0x2fd },
-+	{ 0x1115f, 0x2fd },
-+	{ 0x11005f, 0x2fd },
-+	{ 0x11015f, 0x2fd },
-+	{ 0x11105f, 0x2fd },
-+	{ 0x11115f, 0x2fd },
-+	{ 0x55, 0x355 },
-+	{ 0x1055, 0x355 },
-+	{ 0x2055, 0x355 },
-+	{ 0x3055, 0x355 },
-+	{ 0x4055, 0x55 },
-+	{ 0x5055, 0x55 },
-+	{ 0x6055, 0x355 },
-+	{ 0x7055, 0x355 },
-+	{ 0x8055, 0x355 },
-+	{ 0x9055, 0x355 },
-+	{ 0x200c5, 0xa },
-+	{ 0x1200c5, 0x6 },
-+	{ 0x2002e, 0x2 },
-+	{ 0x12002e, 0x1 },
-+	{ 0x20024, 0x8 },
-+	{ 0x2003a, 0x2 },
-+	{ 0x120024, 0x8 },
-+	{ 0x2003a, 0x2 },
-+	{ 0x20056, 0x6 },
-+	{ 0x120056, 0xa },
-+	{ 0x1004d, 0x1a },
-+	{ 0x1014d, 0x1a },
-+	{ 0x1104d, 0x1a },
-+	{ 0x1114d, 0x1a },
-+	{ 0x11004d, 0x1a },
-+	{ 0x11014d, 0x1a },
-+	{ 0x11104d, 0x1a },
-+	{ 0x11114d, 0x1a },
-+	{ 0x10049, 0xe38 },
-+	{ 0x10149, 0xe38 },
-+	{ 0x11049, 0xe38 },
-+	{ 0x11149, 0xe38 },
-+	{ 0x110049, 0xe38 },
-+	{ 0x110149, 0xe38 },
-+	{ 0x111049, 0xe38 },
-+	{ 0x111149, 0xe38 },
-+	{ 0x43, 0x63 },
-+	{ 0x1043, 0x63 },
-+	{ 0x2043, 0x63 },
-+	{ 0x3043, 0x63 },
-+	{ 0x4043, 0x63 },
-+	{ 0x5043, 0x63 },
-+	{ 0x6043, 0x63 },
-+	{ 0x7043, 0x63 },
-+	{ 0x8043, 0x63 },
-+	{ 0x9043, 0x63 },
-+	{ 0x20018, 0x1 },
-+	{ 0x20075, 0x2 },
-+	{ 0x20050, 0x0 },
-+	{ 0x20008, 0x258 },
-+	{ 0x120008, 0x10a },
-+	{ 0x20088, 0x9 },
-+	{ 0x200b2, 0x268 },
-+	{ 0x10043, 0x5b1 },
-+	{ 0x10143, 0x5b1 },
-+	{ 0x11043, 0x5b1 },
-+	{ 0x11143, 0x5b1 },
-+	{ 0x1200b2, 0x268 },
-+	{ 0x110043, 0x5b1 },
-+	{ 0x110143, 0x5b1 },
-+	{ 0x111043, 0x5b1 },
-+	{ 0x111143, 0x5b1 },
-+	{ 0x200fa, 0x1 },
-+	{ 0x1200fa, 0x1 },
-+	{ 0x20019, 0x5 },
-+	{ 0x120019, 0x5 },
-+	{ 0x200f0, 0x5555 },
-+	{ 0x200f1, 0x5555 },
-+	{ 0x200f2, 0x5555 },
-+	{ 0x200f3, 0x5555 },
-+	{ 0x200f4, 0x5555 },
-+	{ 0x200f5, 0x5555 },
-+	{ 0x200f6, 0x5555 },
-+	{ 0x200f7, 0xf000 },
-+	{ 0x20025, 0x0 },
-+	{ 0x2002d, 0x0 },
-+	{ 0x12002d, 0x0 },
-+	{ 0x2005b, 0x7529 },
-+	{ 0x2005c, 0x0 },
-+	{ 0x200c7, 0x21 },
-+	{ 0x200ca, 0x24 },
-+	{ 0x200cc, 0x1f7 },
-+	{ 0x1200c7, 0x21 },
-+	{ 0x1200ca, 0x24 },
-+	{ 0x1200cc, 0x1f7 },
-+	{ 0x2007d, 0x212 },
-+	{ 0x12007d, 0x212 },
-+	{ 0x2007c, 0x61 },
-+	{ 0x12007c, 0x61 },
-+	{ 0x1004a, 0x500 },
-+	{ 0x1104a, 0x500 },
-+	{ 0x2002c, 0x0 },
-+};
-+
-+/* ddr phy trained csr */
-+static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
-+	{0x0200b2, 0x0},
-+	{0x1200b2, 0x0},
-+	{0x2200b2, 0x0},
-+	{0x0200cb, 0x0},
-+	{0x010043, 0x0},
-+	{0x110043, 0x0},
-+	{0x210043, 0x0},
-+	{0x010143, 0x0},
-+	{0x110143, 0x0},
-+	{0x210143, 0x0},
-+	{0x011043, 0x0},
-+	{0x111043, 0x0},
-+	{0x211043, 0x0},
-+	{0x011143, 0x0},
-+	{0x111143, 0x0},
-+	{0x211143, 0x0},
-+	{0x000080, 0x0},
-+	{0x100080, 0x0},
-+	{0x200080, 0x0},
-+	{0x001080, 0x0},
-+	{0x101080, 0x0},
-+	{0x201080, 0x0},
-+	{0x002080, 0x0},
-+	{0x102080, 0x0},
-+	{0x202080, 0x0},
-+	{0x003080, 0x0},
-+	{0x103080, 0x0},
-+	{0x203080, 0x0},
-+	{0x004080, 0x0},
-+	{0x104080, 0x0},
-+	{0x204080, 0x0},
-+	{0x005080, 0x0},
-+	{0x105080, 0x0},
-+	{0x205080, 0x0},
-+	{0x006080, 0x0},
-+	{0x106080, 0x0},
-+	{0x206080, 0x0},
-+	{0x007080, 0x0},
-+	{0x107080, 0x0},
-+	{0x207080, 0x0},
-+	{0x008080, 0x0},
-+	{0x108080, 0x0},
-+	{0x208080, 0x0},
-+	{0x009080, 0x0},
-+	{0x109080, 0x0},
-+	{0x209080, 0x0},
-+	{0x010080, 0x0},
-+	{0x110080, 0x0},
-+	{0x210080, 0x0},
-+	{0x010180, 0x0},
-+	{0x110180, 0x0},
-+	{0x210180, 0x0},
-+	{0x010081, 0x0},
-+	{0x110081, 0x0},
-+	{0x210081, 0x0},
-+	{0x010181, 0x0},
-+	{0x110181, 0x0},
-+	{0x210181, 0x0},
-+	{0x010082, 0x0},
-+	{0x110082, 0x0},
-+	{0x210082, 0x0},
-+	{0x010182, 0x0},
-+	{0x110182, 0x0},
-+	{0x210182, 0x0},
-+	{0x010083, 0x0},
-+	{0x110083, 0x0},
-+	{0x210083, 0x0},
-+	{0x010183, 0x0},
-+	{0x110183, 0x0},
-+	{0x210183, 0x0},
-+	{0x011080, 0x0},
-+	{0x111080, 0x0},
-+	{0x211080, 0x0},
-+	{0x011180, 0x0},
-+	{0x111180, 0x0},
-+	{0x211180, 0x0},
-+	{0x011081, 0x0},
-+	{0x111081, 0x0},
-+	{0x211081, 0x0},
-+	{0x011181, 0x0},
-+	{0x111181, 0x0},
-+	{0x211181, 0x0},
-+	{0x011082, 0x0},
-+	{0x111082, 0x0},
-+	{0x211082, 0x0},
-+	{0x011182, 0x0},
-+	{0x111182, 0x0},
-+	{0x211182, 0x0},
-+	{0x011083, 0x0},
-+	{0x111083, 0x0},
-+	{0x211083, 0x0},
-+	{0x011183, 0x0},
-+	{0x111183, 0x0},
-+	{0x211183, 0x0},
-+	{0x0100d0, 0x0},
-+	{0x1100d0, 0x0},
-+	{0x2100d0, 0x0},
-+	{0x0101d0, 0x0},
-+	{0x1101d0, 0x0},
-+	{0x2101d0, 0x0},
-+	{0x0100d1, 0x0},
-+	{0x1100d1, 0x0},
-+	{0x2100d1, 0x0},
-+	{0x0101d1, 0x0},
-+	{0x1101d1, 0x0},
-+	{0x2101d1, 0x0},
-+	{0x0100d2, 0x0},
-+	{0x1100d2, 0x0},
-+	{0x2100d2, 0x0},
-+	{0x0101d2, 0x0},
-+	{0x1101d2, 0x0},
-+	{0x2101d2, 0x0},
-+	{0x0100d3, 0x0},
-+	{0x1100d3, 0x0},
-+	{0x2100d3, 0x0},
-+	{0x0101d3, 0x0},
-+	{0x1101d3, 0x0},
-+	{0x2101d3, 0x0},
-+	{0x0110d0, 0x0},
-+	{0x1110d0, 0x0},
-+	{0x2110d0, 0x0},
-+	{0x0111d0, 0x0},
-+	{0x1111d0, 0x0},
-+	{0x2111d0, 0x0},
-+	{0x0110d1, 0x0},
-+	{0x1110d1, 0x0},
-+	{0x2110d1, 0x0},
-+	{0x0111d1, 0x0},
-+	{0x1111d1, 0x0},
-+	{0x2111d1, 0x0},
-+	{0x0110d2, 0x0},
-+	{0x1110d2, 0x0},
-+	{0x2110d2, 0x0},
-+	{0x0111d2, 0x0},
-+	{0x1111d2, 0x0},
-+	{0x2111d2, 0x0},
-+	{0x0110d3, 0x0},
-+	{0x1110d3, 0x0},
-+	{0x2110d3, 0x0},
-+	{0x0111d3, 0x0},
-+	{0x1111d3, 0x0},
-+	{0x2111d3, 0x0},
-+	{0x010068, 0x0},
-+	{0x010168, 0x0},
-+	{0x010268, 0x0},
-+	{0x010368, 0x0},
-+	{0x010468, 0x0},
-+	{0x010568, 0x0},
-+	{0x010668, 0x0},
-+	{0x010768, 0x0},
-+	{0x010868, 0x0},
-+	{0x010069, 0x0},
-+	{0x010169, 0x0},
-+	{0x010269, 0x0},
-+	{0x010369, 0x0},
-+	{0x010469, 0x0},
-+	{0x010569, 0x0},
-+	{0x010669, 0x0},
-+	{0x010769, 0x0},
-+	{0x010869, 0x0},
-+	{0x01006a, 0x0},
-+	{0x01016a, 0x0},
-+	{0x01026a, 0x0},
-+	{0x01036a, 0x0},
-+	{0x01046a, 0x0},
-+	{0x01056a, 0x0},
-+	{0x01066a, 0x0},
-+	{0x01076a, 0x0},
-+	{0x01086a, 0x0},
-+	{0x01006b, 0x0},
-+	{0x01016b, 0x0},
-+	{0x01026b, 0x0},
-+	{0x01036b, 0x0},
-+	{0x01046b, 0x0},
-+	{0x01056b, 0x0},
-+	{0x01066b, 0x0},
-+	{0x01076b, 0x0},
-+	{0x01086b, 0x0},
-+	{0x011068, 0x0},
-+	{0x011168, 0x0},
-+	{0x011268, 0x0},
-+	{0x011368, 0x0},
-+	{0x011468, 0x0},
-+	{0x011568, 0x0},
-+	{0x011668, 0x0},
-+	{0x011768, 0x0},
-+	{0x011868, 0x0},
-+	{0x011069, 0x0},
-+	{0x011169, 0x0},
-+	{0x011269, 0x0},
-+	{0x011369, 0x0},
-+	{0x011469, 0x0},
-+	{0x011569, 0x0},
-+	{0x011669, 0x0},
-+	{0x011769, 0x0},
-+	{0x011869, 0x0},
-+	{0x01106a, 0x0},
-+	{0x01116a, 0x0},
-+	{0x01126a, 0x0},
-+	{0x01136a, 0x0},
-+	{0x01146a, 0x0},
-+	{0x01156a, 0x0},
-+	{0x01166a, 0x0},
-+	{0x01176a, 0x0},
-+	{0x01186a, 0x0},
-+	{0x01106b, 0x0},
-+	{0x01116b, 0x0},
-+	{0x01126b, 0x0},
-+	{0x01136b, 0x0},
-+	{0x01146b, 0x0},
-+	{0x01156b, 0x0},
-+	{0x01166b, 0x0},
-+	{0x01176b, 0x0},
-+	{0x01186b, 0x0},
-+	{0x01008c, 0x0},
-+	{0x11008c, 0x0},
-+	{0x21008c, 0x0},
-+	{0x01018c, 0x0},
-+	{0x11018c, 0x0},
-+	{0x21018c, 0x0},
-+	{0x01008d, 0x0},
-+	{0x11008d, 0x0},
-+	{0x21008d, 0x0},
-+	{0x01018d, 0x0},
-+	{0x11018d, 0x0},
-+	{0x21018d, 0x0},
-+	{0x01008e, 0x0},
-+	{0x11008e, 0x0},
-+	{0x21008e, 0x0},
-+	{0x01018e, 0x0},
-+	{0x11018e, 0x0},
-+	{0x21018e, 0x0},
-+	{0x01008f, 0x0},
-+	{0x11008f, 0x0},
-+	{0x21008f, 0x0},
-+	{0x01018f, 0x0},
-+	{0x11018f, 0x0},
-+	{0x21018f, 0x0},
-+	{0x01108c, 0x0},
-+	{0x11108c, 0x0},
-+	{0x21108c, 0x0},
-+	{0x01118c, 0x0},
-+	{0x11118c, 0x0},
-+	{0x21118c, 0x0},
-+	{0x01108d, 0x0},
-+	{0x11108d, 0x0},
-+	{0x21108d, 0x0},
-+	{0x01118d, 0x0},
-+	{0x11118d, 0x0},
-+	{0x21118d, 0x0},
-+	{0x01108e, 0x0},
-+	{0x11108e, 0x0},
-+	{0x21108e, 0x0},
-+	{0x01118e, 0x0},
-+	{0x11118e, 0x0},
-+	{0x21118e, 0x0},
-+	{0x01108f, 0x0},
-+	{0x11108f, 0x0},
-+	{0x21108f, 0x0},
-+	{0x01118f, 0x0},
-+	{0x11118f, 0x0},
-+	{0x21118f, 0x0},
-+	{0x0100c0, 0x0},
-+	{0x1100c0, 0x0},
-+	{0x2100c0, 0x0},
-+	{0x0101c0, 0x0},
-+	{0x1101c0, 0x0},
-+	{0x2101c0, 0x0},
-+	{0x0102c0, 0x0},
-+	{0x1102c0, 0x0},
-+	{0x2102c0, 0x0},
-+	{0x0103c0, 0x0},
-+	{0x1103c0, 0x0},
-+	{0x2103c0, 0x0},
-+	{0x0104c0, 0x0},
-+	{0x1104c0, 0x0},
-+	{0x2104c0, 0x0},
-+	{0x0105c0, 0x0},
-+	{0x1105c0, 0x0},
-+	{0x2105c0, 0x0},
-+	{0x0106c0, 0x0},
-+	{0x1106c0, 0x0},
-+	{0x2106c0, 0x0},
-+	{0x0107c0, 0x0},
-+	{0x1107c0, 0x0},
-+	{0x2107c0, 0x0},
-+	{0x0108c0, 0x0},
-+	{0x1108c0, 0x0},
-+	{0x2108c0, 0x0},
-+	{0x0100c1, 0x0},
-+	{0x1100c1, 0x0},
-+	{0x2100c1, 0x0},
-+	{0x0101c1, 0x0},
-+	{0x1101c1, 0x0},
-+	{0x2101c1, 0x0},
-+	{0x0102c1, 0x0},
-+	{0x1102c1, 0x0},
-+	{0x2102c1, 0x0},
-+	{0x0103c1, 0x0},
-+	{0x1103c1, 0x0},
-+	{0x2103c1, 0x0},
-+	{0x0104c1, 0x0},
-+	{0x1104c1, 0x0},
-+	{0x2104c1, 0x0},
-+	{0x0105c1, 0x0},
-+	{0x1105c1, 0x0},
-+	{0x2105c1, 0x0},
-+	{0x0106c1, 0x0},
-+	{0x1106c1, 0x0},
-+	{0x2106c1, 0x0},
-+	{0x0107c1, 0x0},
-+	{0x1107c1, 0x0},
-+	{0x2107c1, 0x0},
-+	{0x0108c1, 0x0},
-+	{0x1108c1, 0x0},
-+	{0x2108c1, 0x0},
-+	{0x0100c2, 0x0},
-+	{0x1100c2, 0x0},
-+	{0x2100c2, 0x0},
-+	{0x0101c2, 0x0},
-+	{0x1101c2, 0x0},
-+	{0x2101c2, 0x0},
-+	{0x0102c2, 0x0},
-+	{0x1102c2, 0x0},
-+	{0x2102c2, 0x0},
-+	{0x0103c2, 0x0},
-+	{0x1103c2, 0x0},
-+	{0x2103c2, 0x0},
-+	{0x0104c2, 0x0},
-+	{0x1104c2, 0x0},
-+	{0x2104c2, 0x0},
-+	{0x0105c2, 0x0},
-+	{0x1105c2, 0x0},
-+	{0x2105c2, 0x0},
-+	{0x0106c2, 0x0},
-+	{0x1106c2, 0x0},
-+	{0x2106c2, 0x0},
-+	{0x0107c2, 0x0},
-+	{0x1107c2, 0x0},
-+	{0x2107c2, 0x0},
-+	{0x0108c2, 0x0},
-+	{0x1108c2, 0x0},
-+	{0x2108c2, 0x0},
-+	{0x0100c3, 0x0},
-+	{0x1100c3, 0x0},
-+	{0x2100c3, 0x0},
-+	{0x0101c3, 0x0},
-+	{0x1101c3, 0x0},
-+	{0x2101c3, 0x0},
-+	{0x0102c3, 0x0},
-+	{0x1102c3, 0x0},
-+	{0x2102c3, 0x0},
-+	{0x0103c3, 0x0},
-+	{0x1103c3, 0x0},
-+	{0x2103c3, 0x0},
-+	{0x0104c3, 0x0},
-+	{0x1104c3, 0x0},
-+	{0x2104c3, 0x0},
-+	{0x0105c3, 0x0},
-+	{0x1105c3, 0x0},
-+	{0x2105c3, 0x0},
-+	{0x0106c3, 0x0},
-+	{0x1106c3, 0x0},
-+	{0x2106c3, 0x0},
-+	{0x0107c3, 0x0},
-+	{0x1107c3, 0x0},
-+	{0x2107c3, 0x0},
-+	{0x0108c3, 0x0},
-+	{0x1108c3, 0x0},
-+	{0x2108c3, 0x0},
-+	{0x0110c0, 0x0},
-+	{0x1110c0, 0x0},
-+	{0x2110c0, 0x0},
-+	{0x0111c0, 0x0},
-+	{0x1111c0, 0x0},
-+	{0x2111c0, 0x0},
-+	{0x0112c0, 0x0},
-+	{0x1112c0, 0x0},
-+	{0x2112c0, 0x0},
-+	{0x0113c0, 0x0},
-+	{0x1113c0, 0x0},
-+	{0x2113c0, 0x0},
-+	{0x0114c0, 0x0},
-+	{0x1114c0, 0x0},
-+	{0x2114c0, 0x0},
-+	{0x0115c0, 0x0},
-+	{0x1115c0, 0x0},
-+	{0x2115c0, 0x0},
-+	{0x0116c0, 0x0},
-+	{0x1116c0, 0x0},
-+	{0x2116c0, 0x0},
-+	{0x0117c0, 0x0},
-+	{0x1117c0, 0x0},
-+	{0x2117c0, 0x0},
-+	{0x0118c0, 0x0},
-+	{0x1118c0, 0x0},
-+	{0x2118c0, 0x0},
-+	{0x0110c1, 0x0},
-+	{0x1110c1, 0x0},
-+	{0x2110c1, 0x0},
-+	{0x0111c1, 0x0},
-+	{0x1111c1, 0x0},
-+	{0x2111c1, 0x0},
-+	{0x0112c1, 0x0},
-+	{0x1112c1, 0x0},
-+	{0x2112c1, 0x0},
-+	{0x0113c1, 0x0},
-+	{0x1113c1, 0x0},
-+	{0x2113c1, 0x0},
-+	{0x0114c1, 0x0},
-+	{0x1114c1, 0x0},
-+	{0x2114c1, 0x0},
-+	{0x0115c1, 0x0},
-+	{0x1115c1, 0x0},
-+	{0x2115c1, 0x0},
-+	{0x0116c1, 0x0},
-+	{0x1116c1, 0x0},
-+	{0x2116c1, 0x0},
-+	{0x0117c1, 0x0},
-+	{0x1117c1, 0x0},
-+	{0x2117c1, 0x0},
-+	{0x0118c1, 0x0},
-+	{0x1118c1, 0x0},
-+	{0x2118c1, 0x0},
-+	{0x0110c2, 0x0},
-+	{0x1110c2, 0x0},
-+	{0x2110c2, 0x0},
-+	{0x0111c2, 0x0},
-+	{0x1111c2, 0x0},
-+	{0x2111c2, 0x0},
-+	{0x0112c2, 0x0},
-+	{0x1112c2, 0x0},
-+	{0x2112c2, 0x0},
-+	{0x0113c2, 0x0},
-+	{0x1113c2, 0x0},
-+	{0x2113c2, 0x0},
-+	{0x0114c2, 0x0},
-+	{0x1114c2, 0x0},
-+	{0x2114c2, 0x0},
-+	{0x0115c2, 0x0},
-+	{0x1115c2, 0x0},
-+	{0x2115c2, 0x0},
-+	{0x0116c2, 0x0},
-+	{0x1116c2, 0x0},
-+	{0x2116c2, 0x0},
-+	{0x0117c2, 0x0},
-+	{0x1117c2, 0x0},
-+	{0x2117c2, 0x0},
-+	{0x0118c2, 0x0},
-+	{0x1118c2, 0x0},
-+	{0x2118c2, 0x0},
-+	{0x0110c3, 0x0},
-+	{0x1110c3, 0x0},
-+	{0x2110c3, 0x0},
-+	{0x0111c3, 0x0},
-+	{0x1111c3, 0x0},
-+	{0x2111c3, 0x0},
-+	{0x0112c3, 0x0},
-+	{0x1112c3, 0x0},
-+	{0x2112c3, 0x0},
-+	{0x0113c3, 0x0},
-+	{0x1113c3, 0x0},
-+	{0x2113c3, 0x0},
-+	{0x0114c3, 0x0},
-+	{0x1114c3, 0x0},
-+	{0x2114c3, 0x0},
-+	{0x0115c3, 0x0},
-+	{0x1115c3, 0x0},
-+	{0x2115c3, 0x0},
-+	{0x0116c3, 0x0},
-+	{0x1116c3, 0x0},
-+	{0x2116c3, 0x0},
-+	{0x0117c3, 0x0},
-+	{0x1117c3, 0x0},
-+	{0x2117c3, 0x0},
-+	{0x0118c3, 0x0},
-+	{0x1118c3, 0x0},
-+	{0x2118c3, 0x0},
-+	{0x010020, 0x0},
-+	{0x110020, 0x0},
-+	{0x210020, 0x0},
-+	{0x011020, 0x0},
-+	{0x111020, 0x0},
-+	{0x211020, 0x0},
-+	{0x02007d, 0x0},
-+	{0x12007d, 0x0},
-+	{0x22007d, 0x0},
-+	{0x010040, 0x0},
-+	{0x010140, 0x0},
-+	{0x010240, 0x0},
-+	{0x010340, 0x0},
-+	{0x010440, 0x0},
-+	{0x010540, 0x0},
-+	{0x010640, 0x0},
-+	{0x010740, 0x0},
-+	{0x010840, 0x0},
-+	{0x010030, 0x0},
-+	{0x010130, 0x0},
-+	{0x010230, 0x0},
-+	{0x010330, 0x0},
-+	{0x010430, 0x0},
-+	{0x010530, 0x0},
-+	{0x010630, 0x0},
-+	{0x010730, 0x0},
-+	{0x010830, 0x0},
-+	{0x011040, 0x0},
-+	{0x011140, 0x0},
-+	{0x011240, 0x0},
-+	{0x011340, 0x0},
-+	{0x011440, 0x0},
-+	{0x011540, 0x0},
-+	{0x011640, 0x0},
-+	{0x011740, 0x0},
-+	{0x011840, 0x0},
-+	{0x011030, 0x0},
-+	{0x011130, 0x0},
-+	{0x011230, 0x0},
-+	{0x011330, 0x0},
-+	{0x011430, 0x0},
-+	{0x011530, 0x0},
-+	{0x011630, 0x0},
-+	{0x011730, 0x0},
-+	{0x011830, 0x0},
-+};
-+
-+/* P0 message block paremeter for training firmware */
-+static struct dram_cfg_param ddr_fsp0_cfg[] = {
-+	{ 0xd0000, 0x0 },
-+	{ 0x54003, 0x960 },
-+	{ 0x54004, 0x2 },
-+	{ 0x54005, 0x2830 },
-+	{ 0x54006, 0x25e },
-+	{ 0x54007, 0x1000 },
-+	{ 0x54008, 0x101 },
-+	{ 0x5400b, 0x31f },
-+	{ 0x5400c, 0xc8 },
-+	{ 0x5400d, 0x100 },
-+	{ 0x54012, 0x1 },
-+	{ 0x5402f, 0x834 },
-+	{ 0x54030, 0x105 },
-+	{ 0x54031, 0x18 },
-+	{ 0x54032, 0x200 },
-+	{ 0x54033, 0x200 },
-+	{ 0x54034, 0x600 },
-+	{ 0x54035, 0x810 },
-+	{ 0x54036, 0x101 },
-+	{ 0x5403f, 0x1221 },
-+	{ 0x541fc, 0x100 },
-+	{ 0xd0000, 0x1 },
-+};
-+
-+/* P1 message block paremeter for training firmware */
-+static struct dram_cfg_param ddr_fsp1_cfg[] = {
-+	{ 0xd0000, 0x0 },
-+	{ 0x54002, 0x1 },
-+	{ 0x54003, 0x42a },
-+	{ 0x54004, 0x2 },
-+	{ 0x54005, 0x2830 },
-+	{ 0x54006, 0x25e },
-+	{ 0x54007, 0x1000 },
-+	{ 0x54008, 0x101 },
-+	{ 0x5400b, 0x21f },
-+	{ 0x5400c, 0xc8 },
-+	{ 0x5400d, 0x100 },
-+	{ 0x54012, 0x1 },
-+	{ 0x54030, 0x105 },
-+	{ 0x54033, 0x200 },
-+	{ 0x54034, 0x600 },
-+	{ 0x54035, 0x10 },
-+	{ 0x54036, 0x101 },
-+	{ 0x5403f, 0x1221 },
-+	{ 0x541fc, 0x100 },
-+	{ 0xd0000, 0x1 },
-+};
-+
-+
-+/* P0 2D message block paremeter for training firmware */
-+static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
-+	{ 0xd0000, 0x0 },
-+	{ 0x54003, 0x960 },
-+	{ 0x54004, 0x2 },
-+	{ 0x54005, 0x2830 },
-+	{ 0x54006, 0x25e },
-+	{ 0x54007, 0x1000 },
-+	{ 0x54008, 0x101 },
-+	{ 0x5400b, 0x61 },
-+	{ 0x5400c, 0xc8 },
-+	{ 0x5400d, 0x100 },
-+	{ 0x5400e, 0x1f7f },
-+	{ 0x54012, 0x1 },
-+	{ 0x5402f, 0x834 },
-+	{ 0x54030, 0x105 },
-+	{ 0x54031, 0x18 },
-+	{ 0x54032, 0x200 },
-+	{ 0x54033, 0x200 },
-+	{ 0x54034, 0x600 },
-+	{ 0x54035, 0x810 },
-+	{ 0x54036, 0x101 },
-+	{ 0x5403f, 0x1221 },
-+	{ 0x541fc, 0x100 },
-+	{ 0xd0000, 0x1 },
-+};
-+
-+/* DRAM PHY init engine image */
-+static struct dram_cfg_param ddr_phy_pie[] = {
-+	{ 0xd0000, 0x0 },
-+	{ 0x90000, 0x10 },
-+	{ 0x90001, 0x400 },
-+	{ 0x90002, 0x10e },
-+	{ 0x90003, 0x0 },
-+	{ 0x90004, 0x0 },
-+	{ 0x90005, 0x8 },
-+	{ 0x90029, 0xb },
-+	{ 0x9002a, 0x480 },
-+	{ 0x9002b, 0x109 },
-+	{ 0x9002c, 0x8 },
-+	{ 0x9002d, 0x448 },
-+	{ 0x9002e, 0x139 },
-+	{ 0x9002f, 0x8 },
-+	{ 0x90030, 0x478 },
-+	{ 0x90031, 0x109 },
-+	{ 0x90032, 0x2 },
-+	{ 0x90033, 0x10 },
-+	{ 0x90034, 0x139 },
-+	{ 0x90035, 0xb },
-+	{ 0x90036, 0x7c0 },
-+	{ 0x90037, 0x139 },
-+	{ 0x90038, 0x44 },
-+	{ 0x90039, 0x633 },
-+	{ 0x9003a, 0x159 },
-+	{ 0x9003b, 0x14f },
-+	{ 0x9003c, 0x630 },
-+	{ 0x9003d, 0x159 },
-+	{ 0x9003e, 0x47 },
-+	{ 0x9003f, 0x633 },
-+	{ 0x90040, 0x149 },
-+	{ 0x90041, 0x4f },
-+	{ 0x90042, 0x633 },
-+	{ 0x90043, 0x179 },
-+	{ 0x90044, 0x8 },
-+	{ 0x90045, 0xe0 },
-+	{ 0x90046, 0x109 },
-+	{ 0x90047, 0x0 },
-+	{ 0x90048, 0x7c8 },
-+	{ 0x90049, 0x109 },
-+	{ 0x9004a, 0x0 },
-+	{ 0x9004b, 0x1 },
-+	{ 0x9004c, 0x8 },
-+	{ 0x9004d, 0x0 },
-+	{ 0x9004e, 0x45a },
-+	{ 0x9004f, 0x9 },
-+	{ 0x90050, 0x0 },
-+	{ 0x90051, 0x448 },
-+	{ 0x90052, 0x109 },
-+	{ 0x90053, 0x40 },
-+	{ 0x90054, 0x633 },
-+	{ 0x90055, 0x179 },
-+	{ 0x90056, 0x1 },
-+	{ 0x90057, 0x618 },
-+	{ 0x90058, 0x109 },
-+	{ 0x90059, 0x40c0 },
-+	{ 0x9005a, 0x633 },
-+	{ 0x9005b, 0x149 },
-+	{ 0x9005c, 0x8 },
-+	{ 0x9005d, 0x4 },
-+	{ 0x9005e, 0x48 },
-+	{ 0x9005f, 0x4040 },
-+	{ 0x90060, 0x633 },
-+	{ 0x90061, 0x149 },
-+	{ 0x90062, 0x0 },
-+	{ 0x90063, 0x4 },
-+	{ 0x90064, 0x48 },
-+	{ 0x90065, 0x40 },
-+	{ 0x90066, 0x633 },
-+	{ 0x90067, 0x149 },
-+	{ 0x90068, 0x10 },
-+	{ 0x90069, 0x4 },
-+	{ 0x9006a, 0x18 },
-+	{ 0x9006b, 0x0 },
-+	{ 0x9006c, 0x4 },
-+	{ 0x9006d, 0x78 },
-+	{ 0x9006e, 0x549 },
-+	{ 0x9006f, 0x633 },
-+	{ 0x90070, 0x159 },
-+	{ 0x90071, 0xd49 },
-+	{ 0x90072, 0x633 },
-+	{ 0x90073, 0x159 },
-+	{ 0x90074, 0x94a },
-+	{ 0x90075, 0x633 },
-+	{ 0x90076, 0x159 },
-+	{ 0x90077, 0x441 },
-+	{ 0x90078, 0x633 },
-+	{ 0x90079, 0x149 },
-+	{ 0x9007a, 0x42 },
-+	{ 0x9007b, 0x633 },
-+	{ 0x9007c, 0x149 },
-+	{ 0x9007d, 0x1 },
-+	{ 0x9007e, 0x633 },
-+	{ 0x9007f, 0x149 },
-+	{ 0x90080, 0x0 },
-+	{ 0x90081, 0xe0 },
-+	{ 0x90082, 0x109 },
-+	{ 0x90083, 0xa },
-+	{ 0x90084, 0x10 },
-+	{ 0x90085, 0x109 },
-+	{ 0x90086, 0x9 },
-+	{ 0x90087, 0x3c0 },
-+	{ 0x90088, 0x149 },
-+	{ 0x90089, 0x9 },
-+	{ 0x9008a, 0x3c0 },
-+	{ 0x9008b, 0x159 },
-+	{ 0x9008c, 0x18 },
-+	{ 0x9008d, 0x10 },
-+	{ 0x9008e, 0x109 },
-+	{ 0x9008f, 0x0 },
-+	{ 0x90090, 0x3c0 },
-+	{ 0x90091, 0x109 },
-+	{ 0x90092, 0x18 },
-+	{ 0x90093, 0x4 },
-+	{ 0x90094, 0x48 },
-+	{ 0x90095, 0x18 },
-+	{ 0x90096, 0x4 },
-+	{ 0x90097, 0x58 },
-+	{ 0x90098, 0xb },
-+	{ 0x90099, 0x10 },
-+	{ 0x9009a, 0x109 },
-+	{ 0x9009b, 0x1 },
-+	{ 0x9009c, 0x10 },
-+	{ 0x9009d, 0x109 },
-+	{ 0x9009e, 0x5 },
-+	{ 0x9009f, 0x7c0 },
-+	{ 0x900a0, 0x109 },
-+	{ 0x900a1, 0x0 },
-+	{ 0x900a2, 0x8140 },
-+	{ 0x900a3, 0x10c },
-+	{ 0x900a4, 0x10 },
-+	{ 0x900a5, 0x8138 },
-+	{ 0x900a6, 0x10c },
-+	{ 0x900a7, 0x8 },
-+	{ 0x900a8, 0x7c8 },
-+	{ 0x900a9, 0x101 },
-+	{ 0x900aa, 0x8 },
-+	{ 0x900ab, 0x448 },
-+	{ 0x900ac, 0x109 },
-+	{ 0x900ad, 0xf },
-+	{ 0x900ae, 0x7c0 },
-+	{ 0x900af, 0x109 },
-+	{ 0x900b0, 0x47 },
-+	{ 0x900b1, 0x630 },
-+	{ 0x900b2, 0x109 },
-+	{ 0x900b3, 0x8 },
-+	{ 0x900b4, 0x618 },
-+	{ 0x900b5, 0x109 },
-+	{ 0x900b6, 0x8 },
-+	{ 0x900b7, 0xe0 },
-+	{ 0x900b8, 0x109 },
-+	{ 0x900b9, 0x0 },
-+	{ 0x900ba, 0x7c8 },
-+	{ 0x900bb, 0x109 },
-+	{ 0x900bc, 0x8 },
-+	{ 0x900bd, 0x8140 },
-+	{ 0x900be, 0x10c },
-+	{ 0x900bf, 0x0 },
-+	{ 0x900c0, 0x1 },
-+	{ 0x900c1, 0x8 },
-+	{ 0x900c2, 0x8 },
-+	{ 0x900c3, 0x4 },
-+	{ 0x900c4, 0x8 },
-+	{ 0x900c5, 0x8 },
-+	{ 0x900c6, 0x7c8 },
-+	{ 0x900c7, 0x101 },
-+	{ 0x90006, 0x0 },
-+	{ 0x90007, 0x0 },
-+	{ 0x90008, 0x8 },
-+	{ 0x90009, 0x0 },
-+	{ 0x9000a, 0x0 },
-+	{ 0x9000b, 0x0 },
-+	{ 0xd00e7, 0x400 },
-+	{ 0x90017, 0x0 },
-+	{ 0x90026, 0x2b },
-+	{ 0x2000b, 0x4b },
-+	{ 0x2000c, 0x96 },
-+	{ 0x2000d, 0x5dc },
-+	{ 0x2000e, 0x2c },
-+	{ 0x12000b, 0x21 },
-+	{ 0x12000c, 0x42 },
-+	{ 0x12000d, 0x29a },
-+	{ 0x12000e, 0x21 },
-+	{ 0x9000c, 0x0 },
-+	{ 0x9000d, 0x173 },
-+	{ 0x9000e, 0x60 },
-+	{ 0x9000f, 0x6110 },
-+	{ 0x90010, 0x2152 },
-+	{ 0x90011, 0xdfbd },
-+	{ 0x90012, 0xffff },
-+	{ 0x90013, 0x6152 },
-+	{ 0x20089, 0x1 },
-+	{ 0x20088, 0x19 },
-+	{ 0xc0080, 0x0 },
-+	{ 0xd0000, 0x1 }
-+};
-+
-+static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
-+	{
-+		/* P0 2400mts 1D */
-+		.drate = 2400,
-+		.fw_type = FW_1D_IMAGE,
-+		.fsp_cfg = ddr_fsp0_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_cfg),
-+	},
-+	{
-+		/* P1 1066mts 1D */
-+		.drate = 1066,
-+		.fw_type = FW_1D_IMAGE,
-+		.fsp_cfg = ddr_fsp1_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp1_cfg),
-+	},
-+	{
-+		/* P0 2400mts 2D */
-+		.drate = 2400,
-+		.fw_type = FW_2D_IMAGE,
-+		.fsp_cfg = ddr_fsp0_2d_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_cfg),
-+	},
-+};
-+
-+/* ddr timing config params */
-+struct dram_timing_info imx8mn_evk_ddr4_timing = {
-+	.dram_type = DRAM_TYPE_DDR4,
-+	.ddrc_cfg = ddr_ddrc_cfg,
-+	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
-+	.ddrphy_cfg = ddr_ddrphy_cfg,
-+	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
-+	.fsp_msg = ddr_dram_fsp_msg,
-+	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg),
-+	.ddrphy_trained_csr = ddr_ddrphy_trained_csr,
-+	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
-+	.ddrphy_pie = ddr_phy_pie,
-+	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
-+	.fsp_table = { 2400, 1066, },
-+};
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg b/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
-new file mode 100644
-index 000000000000..a768874d4076
---- /dev/null
-+++ b/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
-@@ -0,0 +1,5 @@
-+soc imx8mn
-+
-+loadaddr 0x912000
-+max_load_size 0x3f000
-+ivtofs 0x0
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-new file mode 100644
-index 000000000000..bac632aa431b
---- /dev/null
-+++ b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-@@ -0,0 +1,231 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <io.h>
-+#include <common.h>
-+#include <debug_ll.h>
-+#include <firmware.h>
-+#include <asm/mmu.h>
-+#include <asm/cache.h>
-+#include <asm/sections.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <i2c/i2c-early.h>
-+#include <linux/sizes.h>
-+#include <mach/atf.h>
-+#include <mach/xload.h>
-+#include <mach/esdctl.h>
-+#include <mach/generic.h>
-+#include <mach/imx8mn-regs.h>
-+#include <mach/iomux-mx8mn.h>
-+#include <mach/imx8m-ccm-regs.h>
-+#include <mfd/pca9450.h>
-+#include <mfd/bd71837.h>
-+#include <soc/imx8m/ddr.h>
-+
-+extern char __dtb_z_imx8mn_evk_start[];
-+
-+static void setup_uart(void)
-+{
-+	void __iomem *uart = IOMEM(MX8M_UART2_BASE_ADDR);
-+
-+	imx8m_early_setup_uart_clock();
-+
-+	imx8mn_setup_pad(IMX8MN_PAD_UART2_TXD__UART2_DCE_TX);
-+	imx8m_uart_setup(uart);
-+
-+	pbl_set_putc(imx_uart_putc, uart);
-+
-+	putc_ll('>');
-+}
-+
-+static void pmic_reg_write(void *i2c, int addr, int reg, uint8_t val)
-+{
-+	int ret;
-+	u8 buf[32];
-+	struct i2c_msg msgs[] = {
-+		{
-+			.addr = addr,
-+			.buf = buf,
-+		},
-+	};
-+
-+	buf[0] = reg;
-+	buf[1] = val;
-+
-+	msgs[0].len = 2;
-+
-+	ret = i2c_fsl_xfer(i2c, msgs, ARRAY_SIZE(msgs));
-+	if (ret != 1)
-+		pr_err("Failed to write to pmic %d\n", ret);
-+}
-+
-+static int power_init_board_pca9450(void *i2c, int addr)
-+{
-+	u8 buf[1];
-+	struct i2c_msg msgs[] = {
-+		{
-+			.addr = addr,
-+			.buf = buf,
-+			.flags = I2C_M_RD
-+		},
-+	};
-+
-+	if (i2c_fsl_xfer(i2c, msgs, 1) != 1)
-+		return -ENODEV;
-+
-+	/* BUCKxOUT_DVS0/1 control BUCK123 output */
-+	pmic_reg_write(i2c, addr, PCA9450_BUCK123_DVS, 0x29);
-+
-+	/*
-+	 * increase VDD_SOC to typical value 0.95V before first
-+	 * DRAM access, set DVS1 to 0.85v for suspend.
-+	 * Enable DVS control through PMIC_STBY_REQ and
-+	 * set B1_ENMODE=1 (ON by PMIC_ON_REQ=H)
-+	 */
-+	pmic_reg_write(i2c, addr, PCA9450_BUCK1OUT_DVS0, 0x1C);
-+
-+	/* Set DVS1 to 0.85v for suspend */
-+	/* Enable DVS control through PMIC_STBY_REQ and set B1_ENMODE=1 (ON by PMIC_ON_REQ=H) */
-+	pmic_reg_write(i2c, addr, PCA9450_BUCK1OUT_DVS1, 0x14);
-+	pmic_reg_write(i2c, addr, PCA9450_BUCK1CTRL, 0x59);
-+
-+	/* set VDD_SNVS_0V8 from default 0.85V */
-+	pmic_reg_write(i2c, addr, PCA9450_LDO2CTRL, 0xC0);
-+
-+	/* enable LDO4 to 1.2v */
-+	pmic_reg_write(i2c, addr, PCA9450_LDO4CTRL, 0x44);
-+
-+	/* set WDOG_B_CFG to cold reset */
-+	pmic_reg_write(i2c, addr, PCA9450_RESET_CTRL, 0xA1);
-+
-+	return 0;
-+}
-+
-+static int power_init_board_bd71837(void *i2c, int addr)
-+{
-+	/* decrease RESET key long push time from the default 10s to 10ms */
-+	pmic_reg_write(i2c, addr, BD718XX_PWRONCONFIG1, 0x0);
-+
-+	/* unlock the PMIC regs */
-+	pmic_reg_write(i2c, addr, BD718XX_REGLOCK, 0x1);
-+
-+	/* Set VDD_ARM to typical value 0.85v for 1.2Ghz */
-+	pmic_reg_write(i2c, addr, BD718XX_BUCK2_VOLT_RUN, 0xf);
-+
-+	/* Set VDD_SOC/VDD_DRAM to typical value 0.85v for nominal mode */
-+	pmic_reg_write(i2c, addr, BD718XX_BUCK1_VOLT_RUN, 0xf);
-+
-+	/* Set VDD_SOC 0.85v for suspend */
-+	pmic_reg_write(i2c, addr, BD718XX_BUCK1_VOLT_SUSP, 0xf);
-+
-+	/* increase NVCC_DRAM_1V2 to 1.2v for DDR4
-+	 * */
-+	pmic_reg_write(i2c, addr, BD718XX_4TH_NODVS_BUCK_CTRL, 0x28);
-+
-+	/* lock the PMIC regs */
-+	pmic_reg_write(i2c, addr, BD718XX_REGLOCK, 0x11);
-+
-+	return 0;
-+}
-+
-+extern struct dram_timing_info imx8mn_evk_ddr4_timing, imx8mn_evk_lpddr4_timing;
-+
-+static void start_atf(void)
-+{
-+	struct dram_timing_info *dram_timing = &imx8mn_evk_lpddr4_timing;
-+	size_t bl31_size;
-+	const u8 *bl31;
-+	enum bootsource src;
-+	void *i2c;
-+	int instance;
-+	int ret;
-+
-+	/*
-+	 * If we are in EL3 we are running for the first time and need to
-+	 * initialize the DRAM and run TF-A (BL31). The TF-A will then jump
-+	 * to DRAM in EL2.
-+	 */
-+	if (current_el() != 3)
-+		return;
-+
-+	imx8mn_setup_pad(IMX8MN_PAD_I2C1_SCL__I2C1_SCL);
-+	imx8mn_setup_pad(IMX8MN_PAD_I2C1_SDA__I2C1_SDA);
-+
-+	imx8mn_early_clock_init();
-+	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
-+
-+	i2c = imx8m_i2c_early_init(IOMEM(MX8MN_I2C1_BASE_ADDR));
-+
-+	ret = power_init_board_pca9450(i2c, 0x25);
-+	if (ret) {
-+		power_init_board_bd71837(i2c, 0x4b);
-+		dram_timing = &imx8mn_evk_ddr4_timing;
-+	}
-+
-+	imx8mn_ddr_init(dram_timing);
-+
-+	imx8mn_get_boot_source(&src, &instance);
-+	switch (src) {
-+	case BOOTSOURCE_MMC:
-+		imx8mn_esdhc_load_image(instance, false);
-+		break;
-+	default:
-+		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
-+		hang();
-+	}
-+
-+	/*
-+	 * On completion the TF-A will jump to MX8M_ATF_BL33_BASE_ADDR
-+	 * in EL2. Copy the image there, but replace the PBL part of
-+	 * that image with ourselves. On a high assurance boot only the
-+	 * currently running code is validated and contains the checksum
-+	 * for the piggy data, so we need to ensure that we are running
-+	 * the same code in DRAM.
-+	 */
-+	memcpy((void *)MX8M_ATF_BL33_BASE_ADDR,
-+	       __image_start, barebox_pbl_size);
-+
-+	get_builtin_firmware(imx8mn_bl31_bin, &bl31, &bl31_size);
-+
-+	imx8mn_atf_load_bl31(bl31, bl31_size);
-+
-+	/* not reached */
-+}
-+
-+/*
-+ * Power-on execution flow of start_nxp_imx8mn_evk() might not be
-+ * obvious for a very first read, so here's, hopefully helpful,
-+ * summary:
-+ *
-+ * 1. MaskROM uploads PBL into OCRAM and that's where this function is
-+ *    executed for the first time. At entry the exception level is EL3.
-+ *
-+ * 2. DDR is initialized and the image is loaded from storage into DRAM. The PBL
-+ *    part is copied from OCRAM to the TF-A return address in DRAM.
-+ *
-+ * 3. TF-A is executed and exits into the PBL code in DRAM. TF-A has taken us
-+ *    from EL3 to EL2.
-+ *
-+ * 4. Standard barebox boot flow continues
-+ */
-+static __noreturn noinline void nxp_imx8mn_evk_start(void)
-+{
-+	setup_uart();
-+
-+	start_atf();
-+
-+	/*
-+	 * Standard entry we hit once we initialized both DDR and ATF
-+	 */
-+	imx8mn_barebox_entry(__dtb_z_imx8mn_evk_start);
-+}
-+
-+ENTRY_FUNCTION(start_nxp_imx8mn_evk, r0, r1, r2)
-+{
-+	imx8mn_cpu_lowlevel_init();
-+
-+	relocate_to_current_adr();
-+	setup_c();
-+
-+	nxp_imx8mn_evk_start();
-+}
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c
-new file mode 100644
-index 000000000000..c53bcc705d2b
---- /dev/null
-+++ b/arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c
-@@ -0,0 +1,1591 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright 2019 NXP
-+ *
-+ * Generated code from MX8M_DDR_tool
-+ * Align with uboot-imx_v2018.03_4.14.78_1.0.0_ga
-+ */
-+
-+#include <common.h>
-+#include <soc/imx8m/ddr.h>
-+
-+#define DDR_ONE_RANK
-+#include <soc/imx8m/lpddr4_define.h>
-+
-+static struct dram_cfg_param ddr_ddrc_cfg[] = {
-+	{0x3d400020, 0x00000213},
-+	{0x3d400024, 0x0003e800},
-+	{0x3d400030, 0x00000120},
-+	{0x3d400000, 0xa3080020},
-+	{0x3d400064, 0x006100e0},
-+	{0x3d4000d0, 0xc003061c},
-+	{0x3d4000d4, 0x009e0000},
-+	{0x3d4000dc, 0x00d4002d},
-+	{0x3d4000e0, 0x00310000},
-+	{0x3d4000e8, 0x0066004d},
-+	{0x3d4000ec, 0x0016004a},
-+	{0x3d400100, 0x1a201b22},
-+	{0x3d400104, 0x00060633},
-+	{0x3d40010c, 0x00c0c000},
-+	{0x3d400110, 0x0f04080f},
-+	{0x3d400114, 0x02040c0c},
-+	{0x3d400118, 0x01010007},
-+	{0x3d40011c, 0x00000401},
-+	{0x3d400130, 0x00020600},
-+	{0x3d400134, 0x0c100002},
-+	{0x3d400138, 0x000000e6},
-+	{0x3d400144, 0x00a00050},
-+	{0x3d400180, 0x03200018},
-+	{0x3d400184, 0x028061a8},
-+	{0x3d400188, 0x00000000},
-+	{0x3d400190, 0x0497820a},
-+	{0x3d4001b4, 0x0000170a},
-+	{0x3d400108, 0x070e1617},
-+	{0x3d4001c0, 0x00000001},
-+	{0x3d400194, 0x00080303},
-+	{0x3d4001a0, 0xe0400018},
-+	{0x3d4001a4, 0x00df00e4},
-+	{0x3d4001a8, 0x80000000},
-+	{0x3d4001b0, 0x00000011},
-+	{0x3d4001c4, 0x00000001},
-+	{0x3d4000f4, 0x00000c99},
-+	{0x3d400200, 0x00000017},
-+	{0x3d400204, 0x00080808},
-+	{0x3d400208, 0x00000000},
-+	{0x3d40020c, 0x00000000},
-+	{0x3d400210, 0x00001f1f},
-+	{0x3d400214, 0x07070707},
-+	{0x3d400218, 0x07070707},
-+	{0x3d40021c, 0x00000f0f},
-+	{0x3d400250, 0x29001701},
-+	{0x3d400254, 0x0000002c},
-+	{0x3d40025c, 0x04000030},
-+	{0x3d400264, 0x900093e7},
-+	{0x3d40026c, 0x20005574},
-+	{0x3d400400, 0x00000111},
-+	{0x3d400408, 0x000072ff},
-+	{0x3d400494, 0x02100e07},
-+	{0x3d400498, 0x00620096},
-+	{0x3d40049c, 0x01100e07},
-+	{0x3d4004a0, 0x00c8012c},
-+	{0x3d402020, 0x00000011},
-+	{0x3d402024, 0x00007d00},
-+	{0x3d402050, 0x0020d040},
-+	{0x3d402064, 0x000c001d},
-+	{0x3d4020f4, 0x00000c99},
-+	{0x3d402100, 0x0a040305},
-+	{0x3d402104, 0x00030407},
-+	{0x3d402108, 0x0203060b},
-+	{0x3d40210c, 0x00505000},
-+	{0x3d402110, 0x02040202},
-+	{0x3d402114, 0x02030202},
-+	{0x3d402118, 0x01010004},
-+	{0x3d40211c, 0x00000301},
-+	{0x3d402130, 0x00020300},
-+	{0x3d402134, 0x0a100002},
-+	{0x3d402138, 0x0000001d},
-+	{0x3d402144, 0x0014000a},
-+	{0x3d402180, 0x00650004},
-+	{0x3d402190, 0x03818200},
-+	{0x3d402194, 0x00080303},
-+	{0x3d4021b4, 0x00000100},
-+	{0x3d4020dc, 0x00840000},
-+	{0x3d4020e0, 0x00310000},
-+	{0x3d4020e8, 0x0066004d},
-+	{0x3d4020ec, 0x0016004a},
-+	{0x3d403020, 0x00000011},
-+	{0x3d403024, 0x00001f40},
-+	{0x3d403050, 0x0020d040},
-+	{0x3d403064, 0x00030007},
-+	{0x3d4030f4, 0x00000c99},
-+	{0x3d403100, 0x0a010102},
-+	{0x3d403104, 0x00030404},
-+	{0x3d403108, 0x0203060b},
-+	{0x3d40310c, 0x00505000},
-+	{0x3d403110, 0x02040202},
-+	{0x3d403114, 0x02030202},
-+	{0x3d403118, 0x01010004},
-+	{0x3d40311c, 0x00000301},
-+	{0x3d403130, 0x00020300},
-+	{0x3d403134, 0x0a100002},
-+	{0x3d403138, 0x00000008},
-+	{0x3d403144, 0x00050003},
-+	{0x3d403180, 0x00190004},
-+	{0x3d403190, 0x03818200},
-+	{0x3d403194, 0x00080303},
-+	{0x3d4031b4, 0x00000100},
-+	{0x3d4030dc, 0x00840000},
-+	{0x3d4030e0, 0x00310000},
-+	{0x3d4030e8, 0x0066004d},
-+	{0x3d4030ec, 0x0016004a},
-+
-+	/* default boot point */
-+	{ 0x3d400028, 0x0 },
-+};
-+
-+/* PHY Initialize Configuration */
-+static struct dram_cfg_param ddr_ddrphy_cfg[] = {
-+	{0x000d0000, 0x00000000},
-+	{0x000100a0, 0x00000000},
-+	{0x000100a1, 0x00000001},
-+	{0x000100a2, 0x00000002},
-+	{0x000100a3, 0x00000003},
-+	{0x000100a4, 0x00000004},
-+	{0x000100a5, 0x00000005},
-+	{0x000100a6, 0x00000006},
-+	{0x000100a7, 0x00000007},
-+	{0x000110a0, 0x00000000},
-+	{0x000110a1, 0x00000001},
-+	{0x000110a2, 0x00000003},
-+	{0x000110a3, 0x00000004},
-+	{0x000110a4, 0x00000005},
-+	{0x000110a5, 0x00000002},
-+	{0x000110a6, 0x00000007},
-+	{0x000110a7, 0x00000006},
-+	{0x0001005f, 0x0000015f},
-+	{0x0001015f, 0x0000015f},
-+	{0x0001105f, 0x0000015f},
-+	{0x0001115f, 0x0000015f},
-+	{0x0011005f, 0x0000015f},
-+	{0x0011015f, 0x0000015f},
-+	{0x0011105f, 0x0000015f},
-+	{0x0011115f, 0x0000015f},
-+	{0x0021005f, 0x0000015f},
-+	{0x0021015f, 0x0000015f},
-+	{0x0021105f, 0x0000015f},
-+	{0x0021115f, 0x0000015f},
-+	{0x00000055, 0x0000016f},
-+	{0x00001055, 0x0000016f},
-+	{0x00002055, 0x0000016f},
-+	{0x00003055, 0x0000016f},
-+	{0x00004055, 0x0000016f},
-+	{0x00005055, 0x0000016f},
-+	{0x00006055, 0x0000016f},
-+	{0x00007055, 0x0000016f},
-+	{0x00008055, 0x0000016f},
-+	{0x00009055, 0x0000016f},
-+	{0x000200c5, 0x00000019},
-+	{0x001200c5, 0x00000007},
-+	{0x002200c5, 0x00000007},
-+	{0x0002002e, 0x00000002},
-+	{0x0012002e, 0x00000002},
-+	{0x0022002e, 0x00000002},
-+	{0x00090204, 0x00000000},
-+	{0x00190204, 0x00000000},
-+	{0x00290204, 0x00000000},
-+	{0x00020024, 0x000001a3},
-+	{0x0002003a, 0x00000002},
-+	{0x0002007d, 0x00000212},
-+	{0x0002007c, 0x00000061},
-+	{0x00120024, 0x000001a3},
-+	{0x0002003a, 0x00000002},
-+	{0x0012007d, 0x00000212},
-+	{0x0012007c, 0x00000061},
-+	{0x00220024, 0x000001a3},
-+	{0x0002003a, 0x00000002},
-+	{0x0022007d, 0x00000212},
-+	{0x0022007c, 0x00000061},
-+	{0x00020056, 0x00000003},
-+	{0x00120056, 0x00000003},
-+	{0x00220056, 0x00000003},
-+	{0x0001004d, 0x00000f80},
-+	{0x0001014d, 0x00000f80},
-+	{0x0001104d, 0x00000f80},
-+	{0x0001114d, 0x00000f80},
-+	{0x0011004d, 0x00000f80},
-+	{0x0011014d, 0x00000f80},
-+	{0x0011104d, 0x00000f80},
-+	{0x0011114d, 0x00000f80},
-+	{0x0021004d, 0x00000f80},
-+	{0x0021014d, 0x00000f80},
-+	{0x0021104d, 0x00000f80},
-+	{0x0021114d, 0x00000f80},
-+	{0x00010049, 0x00000fbe},
-+	{0x00010149, 0x00000fbe},
-+	{0x00011049, 0x00000fbe},
-+	{0x00011149, 0x00000fbe},
-+	{0x00110049, 0x00000fbe},
-+	{0x00110149, 0x00000fbe},
-+	{0x00111049, 0x00000fbe},
-+	{0x00111149, 0x00000fbe},
-+	{0x00210049, 0x00000fbe},
-+	{0x00210149, 0x00000fbe},
-+	{0x00211049, 0x00000fbe},
-+	{0x00211149, 0x00000fbe},
-+	{0x00000043, 0x00000063},
-+	{0x00001043, 0x00000063},
-+	{0x00002043, 0x00000063},
-+	{0x00003043, 0x00000063},
-+	{0x00004043, 0x00000063},
-+	{0x00005043, 0x00000063},
-+	{0x00006043, 0x00000063},
-+	{0x00007043, 0x00000063},
-+	{0x00008043, 0x00000063},
-+	{0x00009043, 0x00000063},
-+	{0x00020018, 0x00000001},
-+	{0x00020075, 0x00000004},
-+	{0x00020050, 0x00000000},
-+	{0x00020008, 0x00000320},
-+	{0x00120008, 0x00000064},
-+	{0x00220008, 0x00000019},
-+	{0x00020088, 0x00000009},
-+	{0x000200b2, 0x000000dc},
-+	{0x00010043, 0x000005a1},
-+	{0x00010143, 0x000005a1},
-+	{0x00011043, 0x000005a1},
-+	{0x00011143, 0x000005a1},
-+	{0x001200b2, 0x000000dc},
-+	{0x00110043, 0x000005a1},
-+	{0x00110143, 0x000005a1},
-+	{0x00111043, 0x000005a1},
-+	{0x00111143, 0x000005a1},
-+	{0x002200b2, 0x000000dc},
-+	{0x00210043, 0x000005a1},
-+	{0x00210143, 0x000005a1},
-+	{0x00211043, 0x000005a1},
-+	{0x00211143, 0x000005a1},
-+	{0x000200fa, 0x00000001},
-+	{0x001200fa, 0x00000001},
-+	{0x002200fa, 0x00000001},
-+	{0x00020019, 0x00000001},
-+	{0x00120019, 0x00000001},
-+	{0x00220019, 0x00000001},
-+	{0x000200f0, 0x00000660},
-+	{0x000200f1, 0x00000000},
-+	{0x000200f2, 0x00004444},
-+	{0x000200f3, 0x00008888},
-+	{0x000200f4, 0x00005665},
-+	{0x000200f5, 0x00000000},
-+	{0x000200f6, 0x00000000},
-+	{0x000200f7, 0x0000f000},
-+	{0x0001004a, 0x00000500},
-+	{0x0001104a, 0x00000500},
-+	{0x00020025, 0x00000000},
-+	{0x0002002d, 0x00000000},
-+	{0x0012002d, 0x00000000},
-+	{0x0022002d, 0x00000000},
-+	{0x0002002c, 0x00000000},
-+	{0x000200c7, 0x00000021},
-+	{0x000200ca, 0x00000024},
-+	{0x000200cc, 0x000001f7},
-+	{0x001200c7, 0x00000021},
-+	{0x001200ca, 0x00000024},
-+	{0x001200cc, 0x000001f7},
-+	{0x002200c7, 0x00000021},
-+	{0x002200ca, 0x00000024},
-+	{0x002200cc, 0x000001f7},
-+	{0x00020060, 0x00000002},
-+	{0x000d0000, 0x00000001},
-+};
-+
-+/* ddr phy trained csr */
-+static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
-+	{0x0200b2, 0x0},
-+	{0x1200b2, 0x0},
-+	{0x2200b2, 0x0},
-+	{0x0200cb, 0x0},
-+	{0x010043, 0x0},
-+	{0x110043, 0x0},
-+	{0x210043, 0x0},
-+	{0x010143, 0x0},
-+	{0x110143, 0x0},
-+	{0x210143, 0x0},
-+	{0x011043, 0x0},
-+	{0x111043, 0x0},
-+	{0x211043, 0x0},
-+	{0x011143, 0x0},
-+	{0x111143, 0x0},
-+	{0x211143, 0x0},
-+	{0x000080, 0x0},
-+	{0x100080, 0x0},
-+	{0x200080, 0x0},
-+	{0x001080, 0x0},
-+	{0x101080, 0x0},
-+	{0x201080, 0x0},
-+	{0x002080, 0x0},
-+	{0x102080, 0x0},
-+	{0x202080, 0x0},
-+	{0x003080, 0x0},
-+	{0x103080, 0x0},
-+	{0x203080, 0x0},
-+	{0x004080, 0x0},
-+	{0x104080, 0x0},
-+	{0x204080, 0x0},
-+	{0x005080, 0x0},
-+	{0x105080, 0x0},
-+	{0x205080, 0x0},
-+	{0x006080, 0x0},
-+	{0x106080, 0x0},
-+	{0x206080, 0x0},
-+	{0x007080, 0x0},
-+	{0x107080, 0x0},
-+	{0x207080, 0x0},
-+	{0x008080, 0x0},
-+	{0x108080, 0x0},
-+	{0x208080, 0x0},
-+	{0x009080, 0x0},
-+	{0x109080, 0x0},
-+	{0x209080, 0x0},
-+	{0x010080, 0x0},
-+	{0x110080, 0x0},
-+	{0x210080, 0x0},
-+	{0x010180, 0x0},
-+	{0x110180, 0x0},
-+	{0x210180, 0x0},
-+	{0x011080, 0x0},
-+	{0x111080, 0x0},
-+	{0x211080, 0x0},
-+	{0x011180, 0x0},
-+	{0x111180, 0x0},
-+	{0x211180, 0x0},
-+	{0x010081, 0x0},
-+	{0x110081, 0x0},
-+	{0x210081, 0x0},
-+	{0x010181, 0x0},
-+	{0x110181, 0x0},
-+	{0x210181, 0x0},
-+	{0x011081, 0x0},
-+	{0x111081, 0x0},
-+	{0x211081, 0x0},
-+	{0x011181, 0x0},
-+	{0x111181, 0x0},
-+	{0x211181, 0x0},
-+	{0x0100d0, 0x0},
-+	{0x1100d0, 0x0},
-+	{0x2100d0, 0x0},
-+	{0x0101d0, 0x0},
-+	{0x1101d0, 0x0},
-+	{0x2101d0, 0x0},
-+	{0x0110d0, 0x0},
-+	{0x1110d0, 0x0},
-+	{0x2110d0, 0x0},
-+	{0x0111d0, 0x0},
-+	{0x1111d0, 0x0},
-+	{0x2111d0, 0x0},
-+	{0x0100d1, 0x0},
-+	{0x1100d1, 0x0},
-+	{0x2100d1, 0x0},
-+	{0x0101d1, 0x0},
-+	{0x1101d1, 0x0},
-+	{0x2101d1, 0x0},
-+	{0x0110d1, 0x0},
-+	{0x1110d1, 0x0},
-+	{0x2110d1, 0x0},
-+	{0x0111d1, 0x0},
-+	{0x1111d1, 0x0},
-+	{0x2111d1, 0x0},
-+	{0x010068, 0x0},
-+	{0x010168, 0x0},
-+	{0x010268, 0x0},
-+	{0x010368, 0x0},
-+	{0x010468, 0x0},
-+	{0x010568, 0x0},
-+	{0x010668, 0x0},
-+	{0x010768, 0x0},
-+	{0x010868, 0x0},
-+	{0x011068, 0x0},
-+	{0x011168, 0x0},
-+	{0x011268, 0x0},
-+	{0x011368, 0x0},
-+	{0x011468, 0x0},
-+	{0x011568, 0x0},
-+	{0x011668, 0x0},
-+	{0x011768, 0x0},
-+	{0x011868, 0x0},
-+	{0x010069, 0x0},
-+	{0x010169, 0x0},
-+	{0x010269, 0x0},
-+	{0x010369, 0x0},
-+	{0x010469, 0x0},
-+	{0x010569, 0x0},
-+	{0x010669, 0x0},
-+	{0x010769, 0x0},
-+	{0x010869, 0x0},
-+	{0x011069, 0x0},
-+	{0x011169, 0x0},
-+	{0x011269, 0x0},
-+	{0x011369, 0x0},
-+	{0x011469, 0x0},
-+	{0x011569, 0x0},
-+	{0x011669, 0x0},
-+	{0x011769, 0x0},
-+	{0x011869, 0x0},
-+	{0x01008c, 0x0},
-+	{0x11008c, 0x0},
-+	{0x21008c, 0x0},
-+	{0x01018c, 0x0},
-+	{0x11018c, 0x0},
-+	{0x21018c, 0x0},
-+	{0x01108c, 0x0},
-+	{0x11108c, 0x0},
-+	{0x21108c, 0x0},
-+	{0x01118c, 0x0},
-+	{0x11118c, 0x0},
-+	{0x21118c, 0x0},
-+	{0x01008d, 0x0},
-+	{0x11008d, 0x0},
-+	{0x21008d, 0x0},
-+	{0x01018d, 0x0},
-+	{0x11018d, 0x0},
-+	{0x21018d, 0x0},
-+	{0x01108d, 0x0},
-+	{0x11108d, 0x0},
-+	{0x21108d, 0x0},
-+	{0x01118d, 0x0},
-+	{0x11118d, 0x0},
-+	{0x21118d, 0x0},
-+	{0x0100c0, 0x0},
-+	{0x1100c0, 0x0},
-+	{0x2100c0, 0x0},
-+	{0x0101c0, 0x0},
-+	{0x1101c0, 0x0},
-+	{0x2101c0, 0x0},
-+	{0x0102c0, 0x0},
-+	{0x1102c0, 0x0},
-+	{0x2102c0, 0x0},
-+	{0x0103c0, 0x0},
-+	{0x1103c0, 0x0},
-+	{0x2103c0, 0x0},
-+	{0x0104c0, 0x0},
-+	{0x1104c0, 0x0},
-+	{0x2104c0, 0x0},
-+	{0x0105c0, 0x0},
-+	{0x1105c0, 0x0},
-+	{0x2105c0, 0x0},
-+	{0x0106c0, 0x0},
-+	{0x1106c0, 0x0},
-+	{0x2106c0, 0x0},
-+	{0x0107c0, 0x0},
-+	{0x1107c0, 0x0},
-+	{0x2107c0, 0x0},
-+	{0x0108c0, 0x0},
-+	{0x1108c0, 0x0},
-+	{0x2108c0, 0x0},
-+	{0x0110c0, 0x0},
-+	{0x1110c0, 0x0},
-+	{0x2110c0, 0x0},
-+	{0x0111c0, 0x0},
-+	{0x1111c0, 0x0},
-+	{0x2111c0, 0x0},
-+	{0x0112c0, 0x0},
-+	{0x1112c0, 0x0},
-+	{0x2112c0, 0x0},
-+	{0x0113c0, 0x0},
-+	{0x1113c0, 0x0},
-+	{0x2113c0, 0x0},
-+	{0x0114c0, 0x0},
-+	{0x1114c0, 0x0},
-+	{0x2114c0, 0x0},
-+	{0x0115c0, 0x0},
-+	{0x1115c0, 0x0},
-+	{0x2115c0, 0x0},
-+	{0x0116c0, 0x0},
-+	{0x1116c0, 0x0},
-+	{0x2116c0, 0x0},
-+	{0x0117c0, 0x0},
-+	{0x1117c0, 0x0},
-+	{0x2117c0, 0x0},
-+	{0x0118c0, 0x0},
-+	{0x1118c0, 0x0},
-+	{0x2118c0, 0x0},
-+	{0x0100c1, 0x0},
-+	{0x1100c1, 0x0},
-+	{0x2100c1, 0x0},
-+	{0x0101c1, 0x0},
-+	{0x1101c1, 0x0},
-+	{0x2101c1, 0x0},
-+	{0x0102c1, 0x0},
-+	{0x1102c1, 0x0},
-+	{0x2102c1, 0x0},
-+	{0x0103c1, 0x0},
-+	{0x1103c1, 0x0},
-+	{0x2103c1, 0x0},
-+	{0x0104c1, 0x0},
-+	{0x1104c1, 0x0},
-+	{0x2104c1, 0x0},
-+	{0x0105c1, 0x0},
-+	{0x1105c1, 0x0},
-+	{0x2105c1, 0x0},
-+	{0x0106c1, 0x0},
-+	{0x1106c1, 0x0},
-+	{0x2106c1, 0x0},
-+	{0x0107c1, 0x0},
-+	{0x1107c1, 0x0},
-+	{0x2107c1, 0x0},
-+	{0x0108c1, 0x0},
-+	{0x1108c1, 0x0},
-+	{0x2108c1, 0x0},
-+	{0x0110c1, 0x0},
-+	{0x1110c1, 0x0},
-+	{0x2110c1, 0x0},
-+	{0x0111c1, 0x0},
-+	{0x1111c1, 0x0},
-+	{0x2111c1, 0x0},
-+	{0x0112c1, 0x0},
-+	{0x1112c1, 0x0},
-+	{0x2112c1, 0x0},
-+	{0x0113c1, 0x0},
-+	{0x1113c1, 0x0},
-+	{0x2113c1, 0x0},
-+	{0x0114c1, 0x0},
-+	{0x1114c1, 0x0},
-+	{0x2114c1, 0x0},
-+	{0x0115c1, 0x0},
-+	{0x1115c1, 0x0},
-+	{0x2115c1, 0x0},
-+	{0x0116c1, 0x0},
-+	{0x1116c1, 0x0},
-+	{0x2116c1, 0x0},
-+	{0x0117c1, 0x0},
-+	{0x1117c1, 0x0},
-+	{0x2117c1, 0x0},
-+	{0x0118c1, 0x0},
-+	{0x1118c1, 0x0},
-+	{0x2118c1, 0x0},
-+	{0x010020, 0x0},
-+	{0x110020, 0x0},
-+	{0x210020, 0x0},
-+	{0x011020, 0x0},
-+	{0x111020, 0x0},
-+	{0x211020, 0x0},
-+	{0x020072, 0x0},
-+	{0x020073, 0x0},
-+	{0x020074, 0x0},
-+	{0x0100aa, 0x0},
-+	{0x0110aa, 0x0},
-+	{0x020010, 0x0},
-+	{0x120010, 0x0},
-+	{0x220010, 0x0},
-+	{0x020011, 0x0},
-+	{0x120011, 0x0},
-+	{0x220011, 0x0},
-+	{0x0100ae, 0x0},
-+	{0x1100ae, 0x0},
-+	{0x2100ae, 0x0},
-+	{0x0100af, 0x0},
-+	{0x1100af, 0x0},
-+	{0x2100af, 0x0},
-+	{0x0110ae, 0x0},
-+	{0x1110ae, 0x0},
-+	{0x2110ae, 0x0},
-+	{0x0110af, 0x0},
-+	{0x1110af, 0x0},
-+	{0x2110af, 0x0},
-+	{0x020020, 0x0},
-+	{0x120020, 0x0},
-+	{0x220020, 0x0},
-+	{0x0100a0, 0x0},
-+	{0x0100a1, 0x0},
-+	{0x0100a2, 0x0},
-+	{0x0100a3, 0x0},
-+	{0x0100a4, 0x0},
-+	{0x0100a5, 0x0},
-+	{0x0100a6, 0x0},
-+	{0x0100a7, 0x0},
-+	{0x0110a0, 0x0},
-+	{0x0110a1, 0x0},
-+	{0x0110a2, 0x0},
-+	{0x0110a3, 0x0},
-+	{0x0110a4, 0x0},
-+	{0x0110a5, 0x0},
-+	{0x0110a6, 0x0},
-+	{0x0110a7, 0x0},
-+	{0x02007c, 0x0},
-+	{0x12007c, 0x0},
-+	{0x22007c, 0x0},
-+	{0x02007d, 0x0},
-+	{0x12007d, 0x0},
-+	{0x22007d, 0x0},
-+	{0x0400fd, 0x0},
-+	{0x0400c0, 0x0},
-+	{0x090201, 0x0},
-+	{0x190201, 0x0},
-+	{0x290201, 0x0},
-+	{0x090202, 0x0},
-+	{0x190202, 0x0},
-+	{0x290202, 0x0},
-+	{0x090203, 0x0},
-+	{0x190203, 0x0},
-+	{0x290203, 0x0},
-+	{0x090204, 0x0},
-+	{0x190204, 0x0},
-+	{0x290204, 0x0},
-+	{0x090205, 0x0},
-+	{0x190205, 0x0},
-+	{0x290205, 0x0},
-+	{0x090206, 0x0},
-+	{0x190206, 0x0},
-+	{0x290206, 0x0},
-+	{0x090207, 0x0},
-+	{0x190207, 0x0},
-+	{0x290207, 0x0},
-+	{0x090208, 0x0},
-+	{0x190208, 0x0},
-+	{0x290208, 0x0},
-+	{0x010062, 0x0},
-+	{0x010162, 0x0},
-+	{0x010262, 0x0},
-+	{0x010362, 0x0},
-+	{0x010462, 0x0},
-+	{0x010562, 0x0},
-+	{0x010662, 0x0},
-+	{0x010762, 0x0},
-+	{0x010862, 0x0},
-+	{0x011062, 0x0},
-+	{0x011162, 0x0},
-+	{0x011262, 0x0},
-+	{0x011362, 0x0},
-+	{0x011462, 0x0},
-+	{0x011562, 0x0},
-+	{0x011662, 0x0},
-+	{0x011762, 0x0},
-+	{0x011862, 0x0},
-+	{0x020077, 0x0},
-+	{0x010001, 0x0},
-+	{0x011001, 0x0},
-+	{0x010040, 0x0},
-+	{0x010140, 0x0},
-+	{0x010240, 0x0},
-+	{0x010340, 0x0},
-+	{0x010440, 0x0},
-+	{0x010540, 0x0},
-+	{0x010640, 0x0},
-+	{0x010740, 0x0},
-+	{0x010840, 0x0},
-+	{0x010030, 0x0},
-+	{0x010130, 0x0},
-+	{0x010230, 0x0},
-+	{0x010330, 0x0},
-+	{0x010430, 0x0},
-+	{0x010530, 0x0},
-+	{0x010630, 0x0},
-+	{0x010730, 0x0},
-+	{0x010830, 0x0},
-+	{0x011040, 0x0},
-+	{0x011140, 0x0},
-+	{0x011240, 0x0},
-+	{0x011340, 0x0},
-+	{0x011440, 0x0},
-+	{0x011540, 0x0},
-+	{0x011640, 0x0},
-+	{0x011740, 0x0},
-+	{0x011840, 0x0},
-+	{0x011030, 0x0},
-+	{0x011130, 0x0},
-+	{0x011230, 0x0},
-+	{0x011330, 0x0},
-+	{0x011430, 0x0},
-+	{0x011530, 0x0},
-+	{0x011630, 0x0},
-+	{0x011730, 0x0},
-+	{0x011830, 0x0},
-+};
-+
-+/* P0 message block paremeter for training firmware */
-+static struct dram_cfg_param ddr_fsp0_cfg[] = {
-+	{0x000d0000, 0x00000000},
-+	{0x00054000, 0x00000000},
-+	{0x00054001, 0x00000000},
-+	{0x00054002, 0x00000000},
-+	{0x00054003, 0x00000c80},
-+	{0x00054004, 0x00000002},
-+	{0x00054005, 0x00000000},
-+	{0x00054006, 0x00000011},
-+	{0x00054007, 0x00000000},
-+	{0x00054008, 0x0000131f},
-+	{0x00054009, 0x000000c8},
-+	{0x0005400a, 0x00000000},
-+	{0x0005400b, 0x00000002},
-+	{0x0005400c, 0x00000000},
-+	{0x0005400d, 0x00000000},
-+	{0x0005400e, 0x00000000},
-+	{0x0005400f, 0x00000100},
-+	{0x00054010, 0x00000000},
-+	{0x00054011, 0x00000000},
-+	{0x00054012, 0x00000310},
-+	{0x00054013, 0x00000000},
-+	{0x00054014, 0x00000000},
-+	{0x00054015, 0x00000000},
-+	{0x00054016, 0x00000000},
-+	{0x00054017, 0x00000000},
-+	{0x00054018, 0x00000000},
-+	{0x00054019, 0x00002dd4},
-+	{0x0005401a, 0x00000031},
-+	{0x0005401b, 0x00004d66},
-+	{0x0005401c, 0x00004a00},
-+	{0x0005401d, 0x00000000},
-+	{0x0005401e, 0x00000016},
-+	{0x0005401f, 0x00002dd4},
-+	{0x00054020, 0x00000031},
-+	{0x00054021, 0x00004d66},
-+	{0x00054022, 0x00004a00},
-+	{0x00054023, 0x00000000},
-+	{0x00054024, 0x0000002e},
-+	{0x00054025, 0x00000000},
-+	{0x00054026, 0x00000000},
-+	{0x00054027, 0x00000000},
-+	{0x00054028, 0x00000000},
-+	{0x00054029, 0x00000000},
-+	{0x0005402a, 0x00000000},
-+	{0x0005402b, 0x00000000},
-+	{0x0005402c, 0x00000000},
-+	{0x0005402d, 0x00000000},
-+	{0x0005402e, 0x00000000},
-+	{0x0005402f, 0x00000000},
-+	{0x00054030, 0x00000000},
-+	{0x00054031, 0x00000000},
-+	{0x00054032, 0x0000d400},
-+	{0x00054033, 0x0000312d},
-+	{0x00054034, 0x00006600},
-+	{0x00054035, 0x0000004d},
-+	{0x00054036, 0x0000004a},
-+	{0x00054037, 0x00001600},
-+	{0x00054038, 0x0000d400},
-+	{0x00054039, 0x0000312d},
-+	{0x0005403a, 0x00006600},
-+	{0x0005403b, 0x0000004d},
-+	{0x0005403c, 0x0000004a},
-+	{0x0005403d, 0x00002e00},
-+	{0x0005403e, 0x00000000},
-+	{0x0005403f, 0x00000000},
-+	{0x00054040, 0x00000000},
-+	{0x00054041, 0x00000000},
-+	{0x00054042, 0x00000000},
-+	{0x00054043, 0x00000000},
-+	{0x00054044, 0x00000000},
-+	{0x000d0000, 0x00000001},
-+};
-+
-+/* P1 message block paremeter for training firmware */
-+static struct dram_cfg_param ddr_fsp1_cfg[] = {
-+	{0x000d0000, 0x00000000},
-+	{0x00054000, 0x00000000},
-+	{0x00054001, 0x00000000},
-+	{0x00054002, 0x00000101},
-+	{0x00054003, 0x00000190},
-+	{0x00054004, 0x00000002},
-+	{0x00054005, 0x00000000},
-+	{0x00054006, 0x00000011},
-+	{0x00054007, 0x00000000},
-+	{0x00054008, 0x0000121f},
-+	{0x00054009, 0x000000c8},
-+	{0x0005400a, 0x00000000},
-+	{0x0005400b, 0x00000002},
-+	{0x0005400c, 0x00000000},
-+	{0x0005400d, 0x00000000},
-+	{0x0005400e, 0x00000000},
-+	{0x0005400f, 0x00000100},
-+	{0x00054010, 0x00000000},
-+	{0x00054011, 0x00000000},
-+	{0x00054012, 0x00000310},
-+	{0x00054013, 0x00000000},
-+	{0x00054014, 0x00000000},
-+	{0x00054015, 0x00000000},
-+	{0x00054016, 0x00000000},
-+	{0x00054017, 0x00000000},
-+	{0x00054018, 0x00000000},
-+	{0x00054019, 0x00000084},
-+	{0x0005401a, 0x00000031},
-+	{0x0005401b, 0x00004d66},
-+	{0x0005401c, 0x00004a00},
-+	{0x0005401d, 0x00000000},
-+	{0x0005401e, 0x00000016},
-+	{0x0005401f, 0x00000084},
-+	{0x00054020, 0x00000031},
-+	{0x00054021, 0x00004d66},
-+	{0x00054022, 0x00004a00},
-+	{0x00054023, 0x00000000},
-+	{0x00054024, 0x0000002e},
-+	{0x00054025, 0x00000000},
-+	{0x00054026, 0x00000000},
-+	{0x00054027, 0x00000000},
-+	{0x00054028, 0x00000000},
-+	{0x00054029, 0x00000000},
-+	{0x0005402a, 0x00000000},
-+	{0x0005402b, 0x00000000},
-+	{0x0005402c, 0x00000000},
-+	{0x0005402d, 0x00000000},
-+	{0x0005402e, 0x00000000},
-+	{0x0005402f, 0x00000000},
-+	{0x00054030, 0x00000000},
-+	{0x00054031, 0x00000000},
-+	{0x00054032, 0x00008400},
-+	{0x00054033, 0x00003100},
-+	{0x00054034, 0x00006600},
-+	{0x00054035, 0x0000004d},
-+	{0x00054036, 0x0000004a},
-+	{0x00054037, 0x00001600},
-+	{0x00054038, 0x00008400},
-+	{0x00054039, 0x00003100},
-+	{0x0005403a, 0x00006600},
-+	{0x0005403b, 0x0000004d},
-+	{0x0005403c, 0x0000004a},
-+	{0x0005403d, 0x00002e00},
-+	{0x0005403e, 0x00000000},
-+	{0x0005403f, 0x00000000},
-+	{0x00054040, 0x00000000},
-+	{0x00054041, 0x00000000},
-+	{0x00054042, 0x00000000},
-+	{0x00054043, 0x00000000},
-+	{0x00054044, 0x00000000},
-+	{0x000d0000, 0x00000001},
-+};
-+
-+/* P2 message block paremeter for training firmware */
-+static struct dram_cfg_param ddr_fsp2_cfg[] = {
-+	{0x000d0000, 0x00000000},
-+	{0x00054000, 0x00000000},
-+	{0x00054001, 0x00000000},
-+	{0x00054002, 0x00000102},
-+	{0x00054003, 0x00000064},
-+	{0x00054004, 0x00000002},
-+	{0x00054005, 0x00000000},
-+	{0x00054006, 0x00000011},
-+	{0x00054007, 0x00000000},
-+	{0x00054008, 0x0000121f},
-+	{0x00054009, 0x000000c8},
-+	{0x0005400a, 0x00000000},
-+	{0x0005400b, 0x00000002},
-+	{0x0005400c, 0x00000000},
-+	{0x0005400d, 0x00000000},
-+	{0x0005400e, 0x00000000},
-+	{0x0005400f, 0x00000100},
-+	{0x00054010, 0x00000000},
-+	{0x00054011, 0x00000000},
-+	{0x00054012, 0x00000310},
-+	{0x00054013, 0x00000000},
-+	{0x00054014, 0x00000000},
-+	{0x00054015, 0x00000000},
-+	{0x00054016, 0x00000000},
-+	{0x00054017, 0x00000000},
-+	{0x00054018, 0x00000000},
-+	{0x00054019, 0x00000084},
-+	{0x0005401a, 0x00000031},
-+	{0x0005401b, 0x00004d66},
-+	{0x0005401c, 0x00004a00},
-+	{0x0005401d, 0x00000000},
-+	{0x0005401e, 0x00000016},
-+	{0x0005401f, 0x00000084},
-+	{0x00054020, 0x00000031},
-+	{0x00054021, 0x00004d66},
-+	{0x00054022, 0x00004a00},
-+	{0x00054023, 0x00000000},
-+	{0x00054024, 0x0000002e},
-+	{0x00054025, 0x00000000},
-+	{0x00054026, 0x00000000},
-+	{0x00054027, 0x00000000},
-+	{0x00054028, 0x00000000},
-+	{0x00054029, 0x00000000},
-+	{0x0005402a, 0x00000000},
-+	{0x0005402b, 0x00000000},
-+	{0x0005402c, 0x00000000},
-+	{0x0005402d, 0x00000000},
-+	{0x0005402e, 0x00000000},
-+	{0x0005402f, 0x00000000},
-+	{0x00054030, 0x00000000},
-+	{0x00054031, 0x00000000},
-+	{0x00054032, 0x00008400},
-+	{0x00054033, 0x00003100},
-+	{0x00054034, 0x00006600},
-+	{0x00054035, 0x0000004d},
-+	{0x00054036, 0x0000004a},
-+	{0x00054037, 0x00001600},
-+	{0x00054038, 0x00008400},
-+	{0x00054039, 0x00003100},
-+	{0x0005403a, 0x00006600},
-+	{0x0005403b, 0x0000004d},
-+	{0x0005403c, 0x0000004a},
-+	{0x0005403d, 0x00002e00},
-+	{0x0005403e, 0x00000000},
-+	{0x0005403f, 0x00000000},
-+	{0x00054040, 0x00000000},
-+	{0x00054041, 0x00000000},
-+	{0x00054042, 0x00000000},
-+	{0x00054043, 0x00000000},
-+	{0x00054044, 0x00000000},
-+	{0x000d0000, 0x00000001},
-+};
-+
-+/* P0 2D message block paremeter for training firmware */
-+static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
-+	{0x000d0000, 0x00000000},
-+	{0x00054000, 0x00000000},
-+	{0x00054001, 0x00000000},
-+	{0x00054002, 0x00000000},
-+	{0x00054003, 0x00000c80},
-+	{0x00054004, 0x00000002},
-+	{0x00054005, 0x00000000},
-+	{0x00054006, 0x00000011},
-+	{0x00054007, 0x00000000},
-+	{0x00054008, 0x00000061},
-+	{0x00054009, 0x000000c8},
-+	{0x0005400a, 0x00000000},
-+	{0x0005400b, 0x00000002},
-+	{0x0005400c, 0x00000000},
-+	{0x0005400d, 0x00000000},
-+	{0x0005400e, 0x00000000},
-+	{0x0005400f, 0x00000100},
-+	{0x00054010, 0x00001f7f},
-+	{0x00054011, 0x00000000},
-+	{0x00054012, 0x00000310},
-+	{0x00054013, 0x00000000},
-+	{0x00054014, 0x00000000},
-+	{0x00054015, 0x00000000},
-+	{0x00054016, 0x00000000},
-+	{0x00054017, 0x00000000},
-+	{0x00054018, 0x00000000},
-+	{0x00054019, 0x00002dd4},
-+	{0x0005401a, 0x00000031},
-+	{0x0005401b, 0x00004d66},
-+	{0x0005401c, 0x00004a00},
-+	{0x0005401d, 0x00000000},
-+	{0x0005401e, 0x00000016},
-+	{0x0005401f, 0x00002dd4},
-+	{0x00054020, 0x00000031},
-+	{0x00054021, 0x00004d66},
-+	{0x00054022, 0x00004a00},
-+	{0x00054023, 0x00000000},
-+	{0x00054024, 0x0000002e},
-+	{0x00054025, 0x00000000},
-+	{0x00054026, 0x00000000},
-+	{0x00054027, 0x00000000},
-+	{0x00054028, 0x00000000},
-+	{0x00054029, 0x00000000},
-+	{0x0005402a, 0x00000000},
-+	{0x0005402b, 0x00000000},
-+	{0x0005402c, 0x00000000},
-+	{0x0005402d, 0x00000000},
-+	{0x0005402e, 0x00000000},
-+	{0x0005402f, 0x00000000},
-+	{0x00054030, 0x00000000},
-+	{0x00054031, 0x00000000},
-+	{0x00054032, 0x0000d400},
-+	{0x00054033, 0x0000312d},
-+	{0x00054034, 0x00006600},
-+	{0x00054035, 0x0000004d},
-+	{0x00054036, 0x0000004a},
-+	{0x00054037, 0x00001600},
-+	{0x00054038, 0x0000d400},
-+	{0x00054039, 0x0000312d},
-+	{0x0005403a, 0x00006600},
-+	{0x0005403b, 0x0000004d},
-+	{0x0005403c, 0x0000004a},
-+	{0x0005403d, 0x00002e00},
-+	{0x0005403e, 0x00000000},
-+	{0x0005403f, 0x00000000},
-+	{0x00054040, 0x00000000},
-+	{0x00054041, 0x00000000},
-+	{0x00054042, 0x00000000},
-+	{0x00054043, 0x00000000},
-+	{0x00054044, 0x00000000},
-+	{0x000d0000, 0x00000001},
-+};
-+
-+/* DRAM PHY init engine image */
-+static struct dram_cfg_param ddr_phy_pie[] = {
-+	{0xd0000, 0x0},
-+	{0x90000, 0x10},
-+	{0x90001, 0x400},
-+	{0x90002, 0x10e},
-+	{0x90003, 0x0},
-+	{0x90004, 0x0},
-+	{0x90005, 0x8},
-+	{0x90029, 0xb},
-+	{0x9002a, 0x480},
-+	{0x9002b, 0x109},
-+	{0x9002c, 0x8},
-+	{0x9002d, 0x448},
-+	{0x9002e, 0x139},
-+	{0x9002f, 0x8},
-+	{0x90030, 0x478},
-+	{0x90031, 0x109},
-+	{0x90032, 0x0},
-+	{0x90033, 0xe8},
-+	{0x90034, 0x109},
-+	{0x90035, 0x2},
-+	{0x90036, 0x10},
-+	{0x90037, 0x139},
-+	{0x90038, 0xb},
-+	{0x90039, 0x7c0},
-+	{0x9003a, 0x139},
-+	{0x9003b, 0x44},
-+	{0x9003c, 0x633},
-+	{0x9003d, 0x159},
-+	{0x9003e, 0x14f},
-+	{0x9003f, 0x630},
-+	{0x90040, 0x159},
-+	{0x90041, 0x47},
-+	{0x90042, 0x633},
-+	{0x90043, 0x149},
-+	{0x90044, 0x4f},
-+	{0x90045, 0x633},
-+	{0x90046, 0x179},
-+	{0x90047, 0x8},
-+	{0x90048, 0xe0},
-+	{0x90049, 0x109},
-+	{0x9004a, 0x0},
-+	{0x9004b, 0x7c8},
-+	{0x9004c, 0x109},
-+	{0x9004d, 0x0},
-+	{0x9004e, 0x1},
-+	{0x9004f, 0x8},
-+	{0x90050, 0x0},
-+	{0x90051, 0x45a},
-+	{0x90052, 0x9},
-+	{0x90053, 0x0},
-+	{0x90054, 0x448},
-+	{0x90055, 0x109},
-+	{0x90056, 0x40},
-+	{0x90057, 0x633},
-+	{0x90058, 0x179},
-+	{0x90059, 0x1},
-+	{0x9005a, 0x618},
-+	{0x9005b, 0x109},
-+	{0x9005c, 0x40c0},
-+	{0x9005d, 0x633},
-+	{0x9005e, 0x149},
-+	{0x9005f, 0x8},
-+	{0x90060, 0x4},
-+	{0x90061, 0x48},
-+	{0x90062, 0x4040},
-+	{0x90063, 0x633},
-+	{0x90064, 0x149},
-+	{0x90065, 0x0},
-+	{0x90066, 0x4},
-+	{0x90067, 0x48},
-+	{0x90068, 0x40},
-+	{0x90069, 0x633},
-+	{0x9006a, 0x149},
-+	{0x9006b, 0x10},
-+	{0x9006c, 0x4},
-+	{0x9006d, 0x18},
-+	{0x9006e, 0x0},
-+	{0x9006f, 0x4},
-+	{0x90070, 0x78},
-+	{0x90071, 0x549},
-+	{0x90072, 0x633},
-+	{0x90073, 0x159},
-+	{0x90074, 0xd49},
-+	{0x90075, 0x633},
-+	{0x90076, 0x159},
-+	{0x90077, 0x94a},
-+	{0x90078, 0x633},
-+	{0x90079, 0x159},
-+	{0x9007a, 0x441},
-+	{0x9007b, 0x633},
-+	{0x9007c, 0x149},
-+	{0x9007d, 0x42},
-+	{0x9007e, 0x633},
-+	{0x9007f, 0x149},
-+	{0x90080, 0x1},
-+	{0x90081, 0x633},
-+	{0x90082, 0x149},
-+	{0x90083, 0x0},
-+	{0x90084, 0xe0},
-+	{0x90085, 0x109},
-+	{0x90086, 0xa},
-+	{0x90087, 0x10},
-+	{0x90088, 0x109},
-+	{0x90089, 0x9},
-+	{0x9008a, 0x3c0},
-+	{0x9008b, 0x149},
-+	{0x9008c, 0x9},
-+	{0x9008d, 0x3c0},
-+	{0x9008e, 0x159},
-+	{0x9008f, 0x18},
-+	{0x90090, 0x10},
-+	{0x90091, 0x109},
-+	{0x90092, 0x0},
-+	{0x90093, 0x3c0},
-+	{0x90094, 0x109},
-+	{0x90095, 0x18},
-+	{0x90096, 0x4},
-+	{0x90097, 0x48},
-+	{0x90098, 0x18},
-+	{0x90099, 0x4},
-+	{0x9009a, 0x58},
-+	{0x9009b, 0xb},
-+	{0x9009c, 0x10},
-+	{0x9009d, 0x109},
-+	{0x9009e, 0x1},
-+	{0x9009f, 0x10},
-+	{0x900a0, 0x109},
-+	{0x900a1, 0x5},
-+	{0x900a2, 0x7c0},
-+	{0x900a3, 0x109},
-+	{0x40000, 0x811},
-+	{0x40020, 0x880},
-+	{0x40040, 0x0},
-+	{0x40060, 0x0},
-+	{0x40001, 0x4008},
-+	{0x40021, 0x83},
-+	{0x40041, 0x4f},
-+	{0x40061, 0x0},
-+	{0x40002, 0x4040},
-+	{0x40022, 0x83},
-+	{0x40042, 0x51},
-+	{0x40062, 0x0},
-+	{0x40003, 0x811},
-+	{0x40023, 0x880},
-+	{0x40043, 0x0},
-+	{0x40063, 0x0},
-+	{0x40004, 0x720},
-+	{0x40024, 0xf},
-+	{0x40044, 0x1740},
-+	{0x40064, 0x0},
-+	{0x40005, 0x16},
-+	{0x40025, 0x83},
-+	{0x40045, 0x4b},
-+	{0x40065, 0x0},
-+	{0x40006, 0x716},
-+	{0x40026, 0xf},
-+	{0x40046, 0x2001},
-+	{0x40066, 0x0},
-+	{0x40007, 0x716},
-+	{0x40027, 0xf},
-+	{0x40047, 0x2800},
-+	{0x40067, 0x0},
-+	{0x40008, 0x716},
-+	{0x40028, 0xf},
-+	{0x40048, 0xf00},
-+	{0x40068, 0x0},
-+	{0x40009, 0x720},
-+	{0x40029, 0xf},
-+	{0x40049, 0x1400},
-+	{0x40069, 0x0},
-+	{0x4000a, 0xe08},
-+	{0x4002a, 0xc15},
-+	{0x4004a, 0x0},
-+	{0x4006a, 0x0},
-+	{0x4000b, 0x625},
-+	{0x4002b, 0x15},
-+	{0x4004b, 0x0},
-+	{0x4006b, 0x0},
-+	{0x4000c, 0x4028},
-+	{0x4002c, 0x80},
-+	{0x4004c, 0x0},
-+	{0x4006c, 0x0},
-+	{0x4000d, 0xe08},
-+	{0x4002d, 0xc1a},
-+	{0x4004d, 0x0},
-+	{0x4006d, 0x0},
-+	{0x4000e, 0x625},
-+	{0x4002e, 0x1a},
-+	{0x4004e, 0x0},
-+	{0x4006e, 0x0},
-+	{0x4000f, 0x4040},
-+	{0x4002f, 0x80},
-+	{0x4004f, 0x0},
-+	{0x4006f, 0x0},
-+	{0x40010, 0x2604},
-+	{0x40030, 0x15},
-+	{0x40050, 0x0},
-+	{0x40070, 0x0},
-+	{0x40011, 0x708},
-+	{0x40031, 0x5},
-+	{0x40051, 0x0},
-+	{0x40071, 0x2002},
-+	{0x40012, 0x8},
-+	{0x40032, 0x80},
-+	{0x40052, 0x0},
-+	{0x40072, 0x0},
-+	{0x40013, 0x2604},
-+	{0x40033, 0x1a},
-+	{0x40053, 0x0},
-+	{0x40073, 0x0},
-+	{0x40014, 0x708},
-+	{0x40034, 0xa},
-+	{0x40054, 0x0},
-+	{0x40074, 0x2002},
-+	{0x40015, 0x4040},
-+	{0x40035, 0x80},
-+	{0x40055, 0x0},
-+	{0x40075, 0x0},
-+	{0x40016, 0x60a},
-+	{0x40036, 0x15},
-+	{0x40056, 0x1200},
-+	{0x40076, 0x0},
-+	{0x40017, 0x61a},
-+	{0x40037, 0x15},
-+	{0x40057, 0x1300},
-+	{0x40077, 0x0},
-+	{0x40018, 0x60a},
-+	{0x40038, 0x1a},
-+	{0x40058, 0x1200},
-+	{0x40078, 0x0},
-+	{0x40019, 0x642},
-+	{0x40039, 0x1a},
-+	{0x40059, 0x1300},
-+	{0x40079, 0x0},
-+	{0x4001a, 0x4808},
-+	{0x4003a, 0x880},
-+	{0x4005a, 0x0},
-+	{0x4007a, 0x0},
-+	{0x900a4, 0x0},
-+	{0x900a5, 0x790},
-+	{0x900a6, 0x11a},
-+	{0x900a7, 0x8},
-+	{0x900a8, 0x7aa},
-+	{0x900a9, 0x2a},
-+	{0x900aa, 0x10},
-+	{0x900ab, 0x7b2},
-+	{0x900ac, 0x2a},
-+	{0x900ad, 0x0},
-+	{0x900ae, 0x7c8},
-+	{0x900af, 0x109},
-+	{0x900b0, 0x10},
-+	{0x900b1, 0x10},
-+	{0x900b2, 0x109},
-+	{0x900b3, 0x10},
-+	{0x900b4, 0x2a8},
-+	{0x900b5, 0x129},
-+	{0x900b6, 0x8},
-+	{0x900b7, 0x370},
-+	{0x900b8, 0x129},
-+	{0x900b9, 0xa},
-+	{0x900ba, 0x3c8},
-+	{0x900bb, 0x1a9},
-+	{0x900bc, 0xc},
-+	{0x900bd, 0x408},
-+	{0x900be, 0x199},
-+	{0x900bf, 0x14},
-+	{0x900c0, 0x790},
-+	{0x900c1, 0x11a},
-+	{0x900c2, 0x8},
-+	{0x900c3, 0x4},
-+	{0x900c4, 0x18},
-+	{0x900c5, 0xe},
-+	{0x900c6, 0x408},
-+	{0x900c7, 0x199},
-+	{0x900c8, 0x8},
-+	{0x900c9, 0x8568},
-+	{0x900ca, 0x108},
-+	{0x900cb, 0x18},
-+	{0x900cc, 0x790},
-+	{0x900cd, 0x16a},
-+	{0x900ce, 0x8},
-+	{0x900cf, 0x1d8},
-+	{0x900d0, 0x169},
-+	{0x900d1, 0x10},
-+	{0x900d2, 0x8558},
-+	{0x900d3, 0x168},
-+	{0x900d4, 0x70},
-+	{0x900d5, 0x788},
-+	{0x900d6, 0x16a},
-+	{0x900d7, 0x1ff8},
-+	{0x900d8, 0x85a8},
-+	{0x900d9, 0x1e8},
-+	{0x900da, 0x50},
-+	{0x900db, 0x798},
-+	{0x900dc, 0x16a},
-+	{0x900dd, 0x60},
-+	{0x900de, 0x7a0},
-+	{0x900df, 0x16a},
-+	{0x900e0, 0x8},
-+	{0x900e1, 0x8310},
-+	{0x900e2, 0x168},
-+	{0x900e3, 0x8},
-+	{0x900e4, 0xa310},
-+	{0x900e5, 0x168},
-+	{0x900e6, 0xa},
-+	{0x900e7, 0x408},
-+	{0x900e8, 0x169},
-+	{0x900e9, 0x6e},
-+	{0x900ea, 0x0},
-+	{0x900eb, 0x68},
-+	{0x900ec, 0x0},
-+	{0x900ed, 0x408},
-+	{0x900ee, 0x169},
-+	{0x900ef, 0x0},
-+	{0x900f0, 0x8310},
-+	{0x900f1, 0x168},
-+	{0x900f2, 0x0},
-+	{0x900f3, 0xa310},
-+	{0x900f4, 0x168},
-+	{0x900f5, 0x1ff8},
-+	{0x900f6, 0x85a8},
-+	{0x900f7, 0x1e8},
-+	{0x900f8, 0x68},
-+	{0x900f9, 0x798},
-+	{0x900fa, 0x16a},
-+	{0x900fb, 0x78},
-+	{0x900fc, 0x7a0},
-+	{0x900fd, 0x16a},
-+	{0x900fe, 0x68},
-+	{0x900ff, 0x790},
-+	{0x90100, 0x16a},
-+	{0x90101, 0x8},
-+	{0x90102, 0x8b10},
-+	{0x90103, 0x168},
-+	{0x90104, 0x8},
-+	{0x90105, 0xab10},
-+	{0x90106, 0x168},
-+	{0x90107, 0xa},
-+	{0x90108, 0x408},
-+	{0x90109, 0x169},
-+	{0x9010a, 0x58},
-+	{0x9010b, 0x0},
-+	{0x9010c, 0x68},
-+	{0x9010d, 0x0},
-+	{0x9010e, 0x408},
-+	{0x9010f, 0x169},
-+	{0x90110, 0x0},
-+	{0x90111, 0x8b10},
-+	{0x90112, 0x168},
-+	{0x90113, 0x1},
-+	{0x90114, 0xab10},
-+	{0x90115, 0x168},
-+	{0x90116, 0x0},
-+	{0x90117, 0x1d8},
-+	{0x90118, 0x169},
-+	{0x90119, 0x80},
-+	{0x9011a, 0x790},
-+	{0x9011b, 0x16a},
-+	{0x9011c, 0x18},
-+	{0x9011d, 0x7aa},
-+	{0x9011e, 0x6a},
-+	{0x9011f, 0xa},
-+	{0x90120, 0x0},
-+	{0x90121, 0x1e9},
-+	{0x90122, 0x8},
-+	{0x90123, 0x8080},
-+	{0x90124, 0x108},
-+	{0x90125, 0xf},
-+	{0x90126, 0x408},
-+	{0x90127, 0x169},
-+	{0x90128, 0xc},
-+	{0x90129, 0x0},
-+	{0x9012a, 0x68},
-+	{0x9012b, 0x9},
-+	{0x9012c, 0x0},
-+	{0x9012d, 0x1a9},
-+	{0x9012e, 0x0},
-+	{0x9012f, 0x408},
-+	{0x90130, 0x169},
-+	{0x90131, 0x0},
-+	{0x90132, 0x8080},
-+	{0x90133, 0x108},
-+	{0x90134, 0x8},
-+	{0x90135, 0x7aa},
-+	{0x90136, 0x6a},
-+	{0x90137, 0x0},
-+	{0x90138, 0x8568},
-+	{0x90139, 0x108},
-+	{0x9013a, 0xb7},
-+	{0x9013b, 0x790},
-+	{0x9013c, 0x16a},
-+	{0x9013d, 0x1f},
-+	{0x9013e, 0x0},
-+	{0x9013f, 0x68},
-+	{0x90140, 0x8},
-+	{0x90141, 0x8558},
-+	{0x90142, 0x168},
-+	{0x90143, 0xf},
-+	{0x90144, 0x408},
-+	{0x90145, 0x169},
-+	{0x90146, 0xd},
-+	{0x90147, 0x0},
-+	{0x90148, 0x68},
-+	{0x90149, 0x0},
-+	{0x9014a, 0x408},
-+	{0x9014b, 0x169},
-+	{0x9014c, 0x0},
-+	{0x9014d, 0x8558},
-+	{0x9014e, 0x168},
-+	{0x9014f, 0x8},
-+	{0x90150, 0x3c8},
-+	{0x90151, 0x1a9},
-+	{0x90152, 0x3},
-+	{0x90153, 0x370},
-+	{0x90154, 0x129},
-+	{0x90155, 0x20},
-+	{0x90156, 0x2aa},
-+	{0x90157, 0x9},
-+	{0x90158, 0x0},
-+	{0x90159, 0x400},
-+	{0x9015a, 0x10e},
-+	{0x9015b, 0x8},
-+	{0x9015c, 0xe8},
-+	{0x9015d, 0x109},
-+	{0x9015e, 0x0},
-+	{0x9015f, 0x8140},
-+	{0x90160, 0x10c},
-+	{0x90161, 0x10},
-+	{0x90162, 0x8138},
-+	{0x90163, 0x10c},
-+	{0x90164, 0x8},
-+	{0x90165, 0x7c8},
-+	{0x90166, 0x101},
-+	{0x90167, 0x8},
-+	{0x90168, 0x448},
-+	{0x90169, 0x109},
-+	{0x9016a, 0xf},
-+	{0x9016b, 0x7c0},
-+	{0x9016c, 0x109},
-+	{0x9016d, 0x0},
-+	{0x9016e, 0xe8},
-+	{0x9016f, 0x109},
-+	{0x90170, 0x47},
-+	{0x90171, 0x630},
-+	{0x90172, 0x109},
-+	{0x90173, 0x8},
-+	{0x90174, 0x618},
-+	{0x90175, 0x109},
-+	{0x90176, 0x8},
-+	{0x90177, 0xe0},
-+	{0x90178, 0x109},
-+	{0x90179, 0x0},
-+	{0x9017a, 0x7c8},
-+	{0x9017b, 0x109},
-+	{0x9017c, 0x8},
-+	{0x9017d, 0x8140},
-+	{0x9017e, 0x10c},
-+	{0x9017f, 0x0},
-+	{0x90180, 0x1},
-+	{0x90181, 0x8},
-+	{0x90182, 0x8},
-+	{0x90183, 0x4},
-+	{0x90184, 0x8},
-+	{0x90185, 0x8},
-+	{0x90186, 0x7c8},
-+	{0x90187, 0x101},
-+	{0x90006, 0x0},
-+	{0x90007, 0x0},
-+	{0x90008, 0x8},
-+	{0x90009, 0x0},
-+	{0x9000a, 0x0},
-+	{0x9000b, 0x0},
-+	{0xd00e7, 0x400},
-+	{0x90017, 0x0},
-+	{0x9001f, 0x29},
-+	{0x90026, 0x6a},
-+	{0x400d0, 0x0},
-+	{0x400d1, 0x101},
-+	{0x400d2, 0x105},
-+	{0x400d3, 0x107},
-+	{0x400d4, 0x10f},
-+	{0x400d5, 0x202},
-+	{0x400d6, 0x20a},
-+	{0x400d7, 0x20b},
-+	{0x2003a, 0x2},
-+	{0x2000b, 0x64},
-+	{0x2000c, 0xc8},
-+	{0x2000d, 0x7d0},
-+	{0x2000e, 0x2c},
-+	{0x12000b, 0xc},
-+	{0x12000c, 0x19},
-+	{0x12000d, 0xfa},
-+	{0x12000e, 0x10},
-+	{0x22000b, 0x3},
-+	{0x22000c, 0x6},
-+	{0x22000d, 0x3e},
-+	{0x22000e, 0x10},
-+	{0x9000c, 0x0},
-+	{0x9000d, 0x173},
-+	{0x9000e, 0x60},
-+	{0x9000f, 0x6110},
-+	{0x90010, 0x2152},
-+	{0x90011, 0xdfbd},
-+	{0x90012, 0x2060},
-+	{0x90013, 0x6152},
-+	{0x20010, 0x5a},
-+	{0x20011, 0x3},
-+	{0x40080, 0xe0},
-+	{0x40081, 0x12},
-+	{0x40082, 0xe0},
-+	{0x40083, 0x12},
-+	{0x40084, 0xe0},
-+	{0x40085, 0x12},
-+	{0x140080, 0xe0},
-+	{0x140081, 0x12},
-+	{0x140082, 0xe0},
-+	{0x140083, 0x12},
-+	{0x140084, 0xe0},
-+	{0x140085, 0x12},
-+	{0x240080, 0xe0},
-+	{0x240081, 0x12},
-+	{0x240082, 0xe0},
-+	{0x240083, 0x12},
-+	{0x240084, 0xe0},
-+	{0x240085, 0x12},
-+	{0x400fd, 0xf},
-+	{0x10011, 0x1},
-+	{0x10012, 0x1},
-+	{0x10013, 0x180},
-+	{0x10018, 0x1},
-+	{0x10002, 0x6209},
-+	{0x100b2, 0x1},
-+	{0x101b4, 0x1},
-+	{0x102b4, 0x1},
-+	{0x103b4, 0x1},
-+	{0x104b4, 0x1},
-+	{0x105b4, 0x1},
-+	{0x106b4, 0x1},
-+	{0x107b4, 0x1},
-+	{0x108b4, 0x1},
-+	{0x11011, 0x1},
-+	{0x11012, 0x1},
-+	{0x11013, 0x180},
-+	{0x11018, 0x1},
-+	{0x11002, 0x6209},
-+	{0x110b2, 0x1},
-+	{0x111b4, 0x1},
-+	{0x112b4, 0x1},
-+	{0x113b4, 0x1},
-+	{0x114b4, 0x1},
-+	{0x115b4, 0x1},
-+	{0x116b4, 0x1},
-+	{0x117b4, 0x1},
-+	{0x118b4, 0x1},
-+	{0x20089, 0x1},
-+	{0x20088, 0x19},
-+	{0xc0080, 0x2},
-+	{0xd0000, 0x1},
-+};
-+
-+static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
-+	{
-+		/* P0 3200mts 1D */
-+		.drate = 3200,
-+		.fw_type = FW_1D_IMAGE,
-+		.fsp_cfg = ddr_fsp0_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_cfg),
-+	},
-+	{
-+		/* P1 400mts 1D */
-+		.drate = 400,
-+		.fw_type = FW_1D_IMAGE,
-+		.fsp_cfg = ddr_fsp1_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp1_cfg),
-+	},
-+	{
-+		/* P2 100mts 1D */
-+		.drate = 100,
-+		.fw_type = FW_1D_IMAGE,
-+		.fsp_cfg = ddr_fsp2_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp2_cfg),
-+	},
-+	{
-+		/* P0 3200mts 2D */
-+		.drate = 3200,
-+		.fw_type = FW_2D_IMAGE,
-+		.fsp_cfg = ddr_fsp0_2d_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_cfg),
-+	},
-+};
-+
-+/* ddr timing config params */
-+struct dram_timing_info imx8mn_evk_lpddr4_timing = {
-+	.dram_type = DRAM_TYPE_LPDDR4,
-+	.ddrc_cfg = ddr_ddrc_cfg,
-+	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
-+	.ddrphy_cfg = ddr_ddrphy_cfg,
-+	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
-+	.fsp_msg = ddr_dram_fsp_msg,
-+	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg),
-+	.ddrphy_trained_csr = ddr_ddrphy_trained_csr,
-+	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
-+	.ddrphy_pie = ddr_phy_pie,
-+	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
-+	.fsp_table = { 3200, 400, 100, },
-+};
-diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_defconfig
-index e1e7b0f91e67..b28c868a99bf 100644
---- a/arch/arm/configs/imx_v8_defconfig
-+++ b/arch/arm/configs/imx_v8_defconfig
-@@ -3,6 +3,7 @@ CONFIG_IMX_MULTI_BOARDS=y
- CONFIG_MACH_PROTONIC_IMX8M=y
- CONFIG_MACH_ZII_IMX8MQ_DEV=y
- CONFIG_MACH_NXP_IMX8MM_EVK=y
-+CONFIG_MACH_NXP_IMX8MN_EVK=y
- CONFIG_MACH_NXP_IMX8MP_EVK=y
- CONFIG_MACH_NXP_IMX8MQ_EVK=y
- CONFIG_MACH_PHYTEC_SOM_IMX8MQ=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index ffa9fe88c128..bc78037c7d7b 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -125,6 +125,7 @@ lwl-$(CONFIG_MACH_TECHNEXION_WANDBOARD) += imx6q-wandboard.dtb.o imx6dl-wandboar
- lwl-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT) += imx6ul-pico-hobbit.dtb.o
- lwl-$(CONFIG_MACH_NXP_IMX6ULL_EVK) += imx6ull-14x14-evk.dtb.o
- lwl-$(CONFIG_MACH_NXP_IMX8MM_EVK) += imx8mm-evk.dtb.o
-+lwl-$(CONFIG_MACH_NXP_IMX8MN_EVK) += imx8mn-evk.dtb.o
- lwl-$(CONFIG_MACH_NXP_IMX8MP_EVK) += imx8mp-evk.dtb.o
- lwl-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += imx8mq-evk.dtb.o
- lwl-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
-diff --git a/arch/arm/dts/imx8mn-evk.dts b/arch/arm/dts/imx8mn-evk.dts
-new file mode 100644
-index 000000000000..9fe24b3184f1
---- /dev/null
-+++ b/arch/arm/dts/imx8mn-evk.dts
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Copyright 2017 NXP
-+ * Copyright (C) 2017 Pengutronix, Lucas Stach <kernel@pengutronix.de>
-+ */
-+
-+/dts-v1/;
-+
-+#include <arm64/freescale/imx8mn-evk.dts>
-+
-+/ {
-+	chosen {
-+		environment-sd {
-+			compatible = "barebox,environment";
-+			device-path = &usdhc2, "partname:barebox-environment";
-+			status = "disabled";
-+		};
-+		environment-emmc {
-+			compatible = "barebox,environment";
-+			device-path = &usdhc3, "partname:barebox-environment";
-+			status = "disabled";
-+		};
-+	};
-+};
-+
-+&fec1 {
-+	phy-reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
-+};
-+
-+&usdhc2 {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	partition@0 {
-+		label = "barebox";
-+		reg = <0x0 0xe0000>;
-+	};
-+
-+	partition@e0000 {
-+		label = "barebox-environment";
-+		reg = <0xe0000 0x20000>;
-+	};
-+};
-+
-+&usdhc3 {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	partition@0 {
-+		label = "barebox";
-+		reg = <0x0 0xe0000>;
-+	};
-+
-+	partition@e0000 {
-+		label = "barebox-environment";
-+		reg = <0xe0000 0x20000>;
-+	};
-+};
-+
-+&ocotp {
-+	barebox,provide-mac-address = <&fec1 0x640>;
-+};
 diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 959b934b6abb..92db011baed7 100644
+index fa373f9a7cdf..959b934b6abb 100644
 --- a/arch/arm/mach-imx/Kconfig
 +++ b/arch/arm/mach-imx/Kconfig
-@@ -558,6 +558,18 @@ config MACH_NXP_IMX8MM_EVK
- 	select I2C_IMX_EARLY
- 	select USB_GADGET_DRIVER_ARC_PBL
+@@ -186,6 +186,10 @@ config ARCH_IMX8MM
+ 	select ARCH_IMX8M
+ 	bool
  
-+config MACH_NXP_IMX8MN_EVK
-+	bool "NXP i.MX8MN EVK Board"
-+	select ARCH_IMX8MN
-+	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
-+	select FIRMWARE_IMX_DDR4_PMU_TRAIN
-+	select FIRMWARE_IMX8MN_ATF
-+	select ARM_SMCCC
-+	select MCI_IMX_ESDHC_PBL
-+	select IMX8M_DRAM
-+	select I2C_IMX_EARLY
-+	select ARM_USE_COMPRESSED_DTB
++config ARCH_IMX8MN
++	select ARCH_IMX8M
++	bool
 +
- config MACH_NXP_IMX8MP_EVK
- 	bool "NXP i.MX8MP EVK Board"
- 	select ARCH_IMX8MP
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index dd927aba5532..18ab3daee3b8 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -425,6 +425,12 @@ CFG_start_prt_prt8mm.pblb.imximg = $(board)/protonic-imx8m/flash-header-prt8mm.i
- FILE_barebox-prt-prt8mm.img = start_prt_prt8mm.pblb.pimximg
- image-$(CONFIG_MACH_PROTONIC_IMX8M) += barebox-prt-prt8mm.img
+ config ARCH_IMX8MP
+ 	select ARCH_IMX8M
+ 	bool
+diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
+index 03857e6b9b47..4b6ac8a2ae5e 100644
+--- a/arch/arm/mach-imx/atf.c
++++ b/arch/arm/mach-imx/atf.c
+@@ -47,6 +47,11 @@ void imx8mm_atf_load_bl31(const void *fw, size_t fw_size)
+ 	imx8m_atf_load_bl31(fw, fw_size, (void *)MX8MM_ATF_BL31_BASE_ADDR);
+ }
  
-+# ----------------------- i.MX8mn based boards --------------------------
-+pblb-$(CONFIG_MACH_NXP_IMX8MN_EVK) += start_nxp_imx8mn_evk
-+CFG_start_nxp_imx8mn_evk.pblb.imximg = $(board)/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
-+FILE_barebox-nxp-imx8mn-evk.img = start_nxp_imx8mn_evk.pblb.pimximg
-+image-$(CONFIG_MACH_NXP_IMX8MN_EVK) += barebox-nxp-imx8mn-evk.img
++void imx8mn_atf_load_bl31(const void *fw, size_t fw_size)
++{
++	imx8m_atf_load_bl31(fw, fw_size, (void *)MX8MN_ATF_BL31_BASE_ADDR);
++}
 +
- # ----------------------- i.MX8mp based boards --------------------------
- pblb-$(CONFIG_MACH_NXP_IMX8MP_EVK) += start_nxp_imx8mp_evk
- CFG_start_nxp_imx8mp_evk.pblb.imximg = $(board)/nxp-imx8mp-evk/flash-header-imx8mp-evk.imxcfg
+ void imx8mp_atf_load_bl31(const void *fw, size_t fw_size)
+ {
+ 	imx8m_atf_load_bl31(fw, fw_size, (void *)MX8MP_ATF_BL31_BASE_ADDR);
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index fcb3c1006440..63afdf1ef4ed 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -672,6 +672,12 @@ void imx8mm_boot_save_loc(void)
+ 	imx_boot_save_loc(imx8mm_get_boot_source);
+ }
+ 
++void imx8mn_get_boot_source(enum bootsource *src, int *instance)
++	__alias(imx8mm_get_boot_source);
++
++void imx8mn_boot_save_loc(void)
++	__alias(imx8mm_boot_save_loc);
++
+ void imx8mp_get_boot_source(enum bootsource *src, int *instance)
+ {
+ 	unsigned long addr;
+diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+index ea1c67469122..559692c765fc 100644
+--- a/arch/arm/mach-imx/cpu_init.c
++++ b/arch/arm/mach-imx/cpu_init.c
+@@ -75,6 +75,9 @@ void imx8mm_cpu_lowlevel_init(void)
+ 	imx8m_cpu_lowlevel_init();
+ }
+ 
++void imx8mn_cpu_lowlevel_init(void)
++	__alias(imx8mm_cpu_lowlevel_init);
++
+ void imx8mp_cpu_lowlevel_init(void)
+ 	__alias(imx8mm_cpu_lowlevel_init);
+ 
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index 64a583249411..e56da3cb76d4 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -678,6 +678,9 @@ static __maybe_unused struct of_device_id imx_esdctl_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx8mm-ddrc",
+ 		.data = &imx8mq_data
++	}, {
++		.compatible = "fsl,imx8mn-ddrc",
++		.data = &imx8mq_data
+ 	}, {
+ 		.compatible = "fsl,imx8mq-ddrc",
+ 		.data = &imx8mq_data
+@@ -887,6 +890,11 @@ void __noreturn imx8mm_barebox_entry(void *boarddata)
+ 	imx8m_barebox_entry(boarddata);
+ }
+ 
++void __noreturn imx8mn_barebox_entry(void *boarddata)
++{
++	imx8m_barebox_entry(boarddata);
++}
++
+ void __noreturn imx8mp_barebox_entry(void *boarddata)
+ {
+ 	imx8m_barebox_entry(boarddata);
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index 91e1785d18e0..64d4d77ff596 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -384,10 +384,10 @@ static unsigned long imx_bbu_flash_header_offset_mmc(void)
+ 		return SZ_32K + SZ_1K;
+ 
+ 	/*
+-	 * i.MX8MP moved the header by 32K to accomodate for GPT partition
++	 * i.MX8MN/P moved the header by 32K to accomodate for GPT partition
+ 	 * tables, but the IVT is right at the beginning of the image.
+ 	 */
+-	if (cpu_is_mx8mp())
++	if (cpu_is_mx8mn() || cpu_is_mx8mp())
+ 		return SZ_32K;
+ 
+ 	return SZ_1K;
+@@ -396,10 +396,10 @@ static unsigned long imx_bbu_flash_header_offset_mmc(void)
+ static unsigned long imx_bbu_flash_header_offset_mmcboot(unsigned long *flags)
+ {
+ 	/*
+-	 * i.MX8MP places IVT directly at start of eMMC boot partition. IVT
++	 * i.MX8MN/P places IVT directly at start of eMMC boot partition. IVT
+ 	 * in eMMC user partition and SD is at 32K offset.
+ 	 */
+-	if (cpu_is_mx8mp())
++	if (cpu_is_mx8mn() || cpu_is_mx8mp())
+ 		*flags |= IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER;
+ 
+ 	return imx_bbu_flash_header_offset_mmc();
+diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
+index 0d2a5b2063cf..489cef6d863d 100644
+--- a/arch/arm/mach-imx/imx.c
++++ b/arch/arm/mach-imx/imx.c
+@@ -71,6 +71,8 @@ static int imx_soc_from_dt(void)
+ 		return IMX_CPU_IMX8MQ;
+ 	if (of_machine_is_compatible("fsl,imx8mm"))
+ 		return IMX_CPU_IMX8MM;
++	if (of_machine_is_compatible("fsl,imx8mn"))
++		return IMX_CPU_IMX8MN;
+ 	if (of_machine_is_compatible("fsl,imx8mp"))
+ 		return IMX_CPU_IMX8MP;
+ 	if (of_machine_is_compatible("fsl,vf610"))
+@@ -115,6 +117,8 @@ static int imx_init(void)
+ 		ret = imx7_init();
+ 	else if (cpu_is_mx8mm())
+ 		ret = imx8mm_init();
++	else if (cpu_is_mx8mn())
++		ret = imx8mn_init();
+ 	else if (cpu_is_mx8mp())
+ 		ret = imx8mp_init();
+ 	else if (cpu_is_mx8mq())
+diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
+index 8672d5fe39eb..ac48e7aa0ab1 100644
+--- a/arch/arm/mach-imx/imx8m.c
++++ b/arch/arm/mach-imx/imx8m.c
+@@ -95,6 +95,29 @@ int imx8mm_init(void)
+ 	return imx8m_init(cputypestr);
+ }
+ 
++int imx8mn_init(void)
++{
++	void __iomem *anatop = IOMEM(MX8M_ANATOP_BASE_ADDR);
++	uint32_t type = FIELD_GET(DIGPROG_MAJOR,
++				  readl(anatop + MX8MN_ANATOP_DIGPROG));
++	const char *cputypestr;
++
++	imx8mn_boot_save_loc();
++
++	switch (type) {
++	case IMX8M_CPUTYPE_IMX8MN:
++		cputypestr = "i.MX8MN";
++		break;
++	default:
++		cputypestr = "unknown i.MX8M";
++		break;
++	};
++
++	imx_set_silicon_revision(cputypestr, imx8mn_cpu_revision());
++
++	return imx8m_init(cputypestr);
++}
++
+ int imx8mp_init(void)
+ {
+ 	void __iomem *anatop = IOMEM(MX8MP_ANATOP_BASE_ADDR);
+diff --git a/arch/arm/mach-imx/include/mach/atf.h b/arch/arm/mach-imx/include/mach/atf.h
+index c21ffaeb5639..5ca75f8f92d2 100644
+--- a/arch/arm/mach-imx/include/mach/atf.h
++++ b/arch/arm/mach-imx/include/mach/atf.h
+@@ -7,6 +7,7 @@
+ #define MX8M_ATF_BL31_SIZE_LIMIT	SZ_64K
+ 
+ #define MX8MM_ATF_BL31_BASE_ADDR	0x00920000
++#define MX8MN_ATF_BL31_BASE_ADDR	0x00960000
+ #define MX8MP_ATF_BL31_BASE_ADDR	0x00960000
+ #define MX8MQ_ATF_BL31_BASE_ADDR	0x00910000
+ #define MX8M_ATF_BL33_BASE_ADDR		0x40200000
+@@ -14,6 +15,7 @@
+ #define MX8MQ_ATF_BL33_BASE_ADDR	MX8M_ATF_BL33_BASE_ADDR
+ 
+ void imx8mm_atf_load_bl31(const void *fw, size_t fw_size);
++void imx8mn_atf_load_bl31(const void *fw, size_t fw_size);
+ void imx8mp_atf_load_bl31(const void *fw, size_t fw_size);
+ void imx8mq_atf_load_bl31(const void *fw, size_t fw_size);
+ 
+diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
+index e6bbc3145a4e..caafa4732314 100644
+--- a/arch/arm/mach-imx/include/mach/esdctl.h
++++ b/arch/arm/mach-imx/include/mach/esdctl.h
+@@ -140,6 +140,7 @@ void __noreturn imx6q_barebox_entry(void *boarddata);
+ void __noreturn imx6ul_barebox_entry(void *boarddata);
+ void __noreturn vf610_barebox_entry(void *boarddata);
+ void __noreturn imx8mm_barebox_entry(void *boarddata);
++void __noreturn imx8mn_barebox_entry(void *boarddata);
+ void __noreturn imx8mp_barebox_entry(void *boarddata);
+ void __noreturn imx8mq_barebox_entry(void *boarddata);
+ void __noreturn imx7d_barebox_entry(void *boarddata);
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index f30133a05aa8..fce7a813200b 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -17,6 +17,7 @@ void imx6_boot_save_loc(void);
+ void imx7_boot_save_loc(void);
+ void vf610_boot_save_loc(void);
+ void imx8mm_boot_save_loc(void);
++void imx8mn_boot_save_loc(void);
+ void imx8mp_boot_save_loc(void);
+ void imx8mq_boot_save_loc(void);
+ 
+@@ -29,6 +30,7 @@ void imx6_get_boot_source(enum bootsource *src, int *instance);
+ void imx7_get_boot_source(enum bootsource *src, int *instance);
+ void vf610_get_boot_source(enum bootsource *src, int *instance);
+ void imx8mm_get_boot_source(enum bootsource *src, int *instance);
++void imx8mn_get_boot_source(enum bootsource *src, int *instance);
+ void imx8mp_get_boot_source(enum bootsource *src, int *instance);
+ void imx8mq_get_boot_source(enum bootsource *src, int *instance);
+ 
+@@ -45,6 +47,7 @@ int imx6_init(void);
+ int imx7_init(void);
+ int vf610_init(void);
+ int imx8mm_init(void);
++int imx8mn_init(void);
+ int imx8mp_init(void);
+ int imx8mq_init(void);
+ 
+@@ -66,6 +69,7 @@ void imx7_cpu_lowlevel_init(void);
+ void vf610_cpu_lowlevel_init(void);
+ void imx8mq_cpu_lowlevel_init(void);
+ void imx8mm_cpu_lowlevel_init(void);
++void imx8mn_cpu_lowlevel_init(void);
+ void imx8mp_cpu_lowlevel_init(void);
+ 
+ /* There's a off-by-one betweem the gpio bank number and the gpiochip */
+@@ -219,6 +223,18 @@ extern unsigned int __imx_cpu_type;
+ # define cpu_is_mx8mm()	(0)
+ #endif
+ 
++#ifdef CONFIG_ARCH_IMX8MN
++# ifdef imx_cpu_type
++#  undef imx_cpu_type
++#  define imx_cpu_type __imx_cpu_type
++# else
++#  define imx_cpu_type IMX_CPU_IMX8MN
++# endif
++# define cpu_is_mx8mn()	(imx_cpu_type == IMX_CPU_IMX8MN)
++#else
++# define cpu_is_mx8mn()	(0)
++#endif
++
+ #ifdef CONFIG_ARCH_IMX8MP
+ # ifdef imx_cpu_type
+ #  undef imx_cpu_type
+@@ -267,6 +283,6 @@ extern unsigned int __imx_cpu_type;
+ #define cpu_is_mx23()	(0)
+ #define cpu_is_mx28()	(0)
+ 
+-#define cpu_is_mx8m()	(cpu_is_mx8mq() || cpu_is_mx8mm() || cpu_is_mx8mp())
++#define cpu_is_mx8m()	(cpu_is_mx8mq() || cpu_is_mx8mm() || cpu_is_mx8mn() || cpu_is_mx8mp())
+ 
+ #endif /* __MACH_GENERIC_H */
+diff --git a/arch/arm/mach-imx/include/mach/imx8mn-regs.h b/arch/arm/mach-imx/include/mach/imx8mn-regs.h
+new file mode 100644
+index 000000000000..9d0ec513c28f
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/imx8mn-regs.h
+@@ -0,0 +1,34 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __MACH_IMX8MN_REGS_H
++#define __MACH_IMX8MN_REGS_H
++
++#include <mach/imx8m-regs.h>
++
++#define MX8MN_GPIO1_BASE_ADDR		0x30200000
++#define MX8MN_GPIO2_BASE_ADDR		0x30210000
++#define MX8MN_GPIO3_BASE_ADDR		0x30220000
++#define MX8MN_GPIO4_BASE_ADDR		0x30230000
++#define MX8MN_GPIO5_BASE_ADDR		0x30240000
++#define MX8MN_WDOG1_BASE_ADDR		0x30280000
++#define MX8MN_WDOG2_BASE_ADDR		0x30290000
++#define MX8MN_WDOG3_BASE_ADDR		0x302a0000
++#define MX8MN_IOMUXC_BASE_ADDR		0x30330000
++#define MX8MN_IOMUXC_GPR_BASE_ADDR	0x30340000
++#define MX8MN_OCOTP_BASE_ADDR		0x30350000
++#define MX8MN_ANATOP_BASE_ADDR		0x30360000
++#define MX8MN_CCM_BASE_ADDR		0x30380000
++#define MX8MN_SRC_BASE_ADDR		0x30390000
++
++#define MX8MN_SYSCNT_RD_BASE_ADDR	0x306a0000
++
++
++#define MX8MN_I2C1_BASE_ADDR		0x30a20000
++#define MX8MN_I2C2_BASE_ADDR		0x30a30000
++#define MX8MN_I2C3_BASE_ADDR		0x30a40000
++#define MX8MN_I2C4_BASE_ADDR		0x30a50000
++#define MX8MN_USDHC1_BASE_ADDR		0x30b40000
++#define MX8MN_USDHC2_BASE_ADDR		0x30b50000
++
++#define MX8MN_USB1_BASE_ADDR		0x32e40000
++
++#endif /* __MACH_IMX8MN_REGS_H */
+diff --git a/arch/arm/mach-imx/include/mach/imx8mq.h b/arch/arm/mach-imx/include/mach/imx8mq.h
+index 1494fd661f55..f8f39cdd63fb 100644
+--- a/arch/arm/mach-imx/include/mach/imx8mq.h
++++ b/arch/arm/mach-imx/include/mach/imx8mq.h
+@@ -5,6 +5,7 @@
+ #include <mach/generic.h>
+ #include <mach/imx8mq-regs.h>
+ #include <mach/imx8mm-regs.h>
++#include <mach/imx8mn-regs.h>
+ #include <mach/imx8mp-regs.h>
+ #include <mach/revision.h>
+ #include <linux/bitfield.h>
+@@ -16,6 +17,7 @@
+ 
+ #define MX8MQ_ANATOP_DIGPROG	0x6c
+ #define MX8MM_ANATOP_DIGPROG	0x800
++#define MX8MN_ANATOP_DIGPROG	0x800
+ #define MX8MP_ANATOP_DIGPROG	0x800
+ 
+ #define DIGPROG_MAJOR	GENMASK(23, 8)
+@@ -23,6 +25,7 @@
+ 
+ #define IMX8M_CPUTYPE_IMX8MQ	0x8240
+ #define IMX8M_CPUTYPE_IMX8MM	0x8241
++#define IMX8M_CPUTYPE_IMX8MN	0x8242
+ #define IMX8M_CPUTYPE_IMX8MP	0x8243
+ 
+ static inline int imx8mm_cpu_revision(void)
+@@ -33,6 +36,14 @@ static inline int imx8mm_cpu_revision(void)
+ 	return revision;
+ }
+ 
++static inline int imx8mn_cpu_revision(void)
++{
++	void __iomem *anatop = IOMEM(MX8MN_ANATOP_BASE_ADDR);
++	uint32_t revision = FIELD_GET(DIGPROG_MINOR,
++				      readl(anatop + MX8MN_ANATOP_DIGPROG));
++	return revision;
++}
++
+ static inline int imx8mp_cpu_revision(void)
+ {
+ 	void __iomem *anatop = IOMEM(MX8MP_ANATOP_BASE_ADDR);
+diff --git a/arch/arm/mach-imx/include/mach/imx_cpu_types.h b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
+index 6d96f7c5900e..e9a9d8b38a08 100644
+--- a/arch/arm/mach-imx/include/mach/imx_cpu_types.h
++++ b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
+@@ -14,6 +14,7 @@
+ #define IMX_CPU_IMX7	7
+ #define IMX_CPU_IMX8MQ	8
+ #define IMX_CPU_IMX8MM  81
++#define IMX_CPU_IMX8MN  82
+ #define IMX_CPU_IMX8MP  83
+ #define IMX_CPU_VF610	610
+ 
+diff --git a/arch/arm/mach-imx/include/mach/iomux-mx8mn.h b/arch/arm/mach-imx/include/mach/iomux-mx8mn.h
+new file mode 100644
+index 000000000000..3c3e0ecba38c
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/iomux-mx8mn.h
+@@ -0,0 +1,774 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2018-2019 NXP
++ */
++
++#ifndef __ASM_ARCH_IMX8MN_PINS_H__
++#define __ASM_ARCH_IMX8MN_PINS_H__
++
++#include <mach/iomux-v3.h>
++#include <mach/imx8mn-regs.h>
++#include <mach/iomux-mx8m.h>
++
++enum {
++	IMX8MN_PAD_BOOT_MODE2__CCMSRCGPCMIX_BOOT_MODE2                          = IOMUX_PAD(0x025C, 0x0020, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_BOOT_MODE2__I2C1_SCL                                         = IOMUX_PAD(0x025C, 0x0020, 1, 0x055C, 3, 0),
++
++	IMX8MN_PAD_BOOT_MODE3__CCMSRCGPCMIX_BOOT_MODE3                          = IOMUX_PAD(0x0260, 0x0024, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_BOOT_MODE3__I2C1_SDA                                         = IOMUX_PAD(0x0260, 0x0024, 1, 0x056C, 3, 0),
++
++	IMX8MN_PAD_GPIO1_IO00__GPIO1_IO0                                        = IOMUX_PAD(0x0290, 0x0028, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO00__CCMSRCGPCMIX_ENET_PHY_REF_CLK_ROOT               = IOMUX_PAD(0x0290, 0x0028, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO00__ANAMIX_REF_CLK_32K                               = IOMUX_PAD(0x0290, 0x0028, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO00__CCMSRCGPCMIX_EXT_CLK1                            = IOMUX_PAD(0x0290, 0x0028, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO01__GPIO1_IO1                                        = IOMUX_PAD(0x0294, 0x002C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO01__PWM1_OUT                                         = IOMUX_PAD(0x0294, 0x002C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO01__ANAMIX_REF_CLK_24M                               = IOMUX_PAD(0x0294, 0x002C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO01__CCMSRCGPCMIX_EXT_CLK2                            = IOMUX_PAD(0x0294, 0x002C, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO02__GPIO1_IO2                                        = IOMUX_PAD(0x0298, 0x0030, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO02__WDOG1_WDOG_B                                     = IOMUX_PAD(0x0298, 0x0030, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO02__WDOG1_WDOG_ANY                                   = IOMUX_PAD(0x0298, 0x0030, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO03__GPIO1_IO3                                        = IOMUX_PAD(0x029C, 0x0034, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO03__USDHC1_VSELECT                                   = IOMUX_PAD(0x029C, 0x0034, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO03__SDMA1_EXT_EVENT0                                 = IOMUX_PAD(0x029C, 0x0034, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO03__ANAMIX_XTAL_OK                                   = IOMUX_PAD(0x029C, 0x0034, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO04__GPIO1_IO4                                        = IOMUX_PAD(0x02A0, 0x0038, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO04__USDHC2_VSELECT                                   = IOMUX_PAD(0x02A0, 0x0038, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO04__SDMA1_EXT_EVENT1                                 = IOMUX_PAD(0x02A0, 0x0038, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO04__ANAMIX_XTAL_OK_LV                                = IOMUX_PAD(0x02A0, 0x0038, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO05__GPIO1_IO5                                        = IOMUX_PAD(0x02A4, 0x003C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO05__M4_NMI                                           = IOMUX_PAD(0x02A4, 0x003C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO05__CCMSRCGPCMIX_PMIC_READY                          = IOMUX_PAD(0x02A4, 0x003C, 5, 0x04BC, 0, 0),
++	IMX8MN_PAD_GPIO1_IO05__CCMSRCGPCMIX_INT_BOOT                            = IOMUX_PAD(0x02A4, 0x003C, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO06__GPIO1_IO6                                        = IOMUX_PAD(0x02A8, 0x0040, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO06__ENET1_MDC                                        = IOMUX_PAD(0x02A8, 0x0040, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO06__USDHC1_CD_B                                      = IOMUX_PAD(0x02A8, 0x0040, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO06__CCMSRCGPCMIX_EXT_CLK3                            = IOMUX_PAD(0x02A8, 0x0040, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO07__GPIO1_IO7                                        = IOMUX_PAD(0x02AC, 0x0044, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO07__ENET1_MDIO                                       = IOMUX_PAD(0x02AC, 0x0044, 1, 0x04C0, 0, 0),
++	IMX8MN_PAD_GPIO1_IO07__USDHC1_WP                                        = IOMUX_PAD(0x02AC, 0x0044, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO07__CCMSRCGPCMIX_EXT_CLK4                            = IOMUX_PAD(0x02AC, 0x0044, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO08__GPIO1_IO8                                        = IOMUX_PAD(0x02B0, 0x0048, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO08__ENET1_1588_EVENT0_IN                             = IOMUX_PAD(0x02B0, 0x0048, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO08__PWM1_OUT                                         = IOMUX_PAD(0x02B0, 0x0048, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO08__USDHC2_RESET_B                                   = IOMUX_PAD(0x02B0, 0x0048, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO08__CCMSRCGPCMIX_WAIT                                = IOMUX_PAD(0x02B0, 0x0048, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO09__GPIO1_IO9                                        = IOMUX_PAD(0x02B4, 0x004C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO09__ENET1_1588_EVENT0_OUT                            = IOMUX_PAD(0x02B4, 0x004C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO09__PWM2_OUT                                         = IOMUX_PAD(0x02B4, 0x004C, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO09__USDHC3_RESET_B                                   = IOMUX_PAD(0x02B4, 0x004C, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO09__SDMA2_EXT_EVENT0                                 = IOMUX_PAD(0x02B4, 0x004C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO09__CCMSRCGPCMIX_STOP                                = IOMUX_PAD(0x02B4, 0x004C, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO10__GPIO1_IO10                                       = IOMUX_PAD(0x02B8, 0x0050, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO10__USB1_OTG_ID                                      = IOMUX_PAD(0x02B8, 0x0050, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO10__PWM3_OUT                                         = IOMUX_PAD(0x02B8, 0x0050, 2, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO11__GPIO1_IO11                                       = IOMUX_PAD(0x02BC, 0x0054, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO11__PWM2_OUT                                         = IOMUX_PAD(0x02BC, 0x0054, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO11__USDHC3_VSELECT                                   = IOMUX_PAD(0x02BC, 0x0054, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO11__CCMSRCGPCMIX_PMIC_READY                          = IOMUX_PAD(0x02BC, 0x0054, 5, 0x04BC, 1, 0),
++	IMX8MN_PAD_GPIO1_IO11__CCMSRCGPCMIX_OUT0                                = IOMUX_PAD(0x02BC, 0x0054, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO12__GPIO1_IO12                                       = IOMUX_PAD(0x02C0, 0x0058, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO12__USB1_OTG_PWR                                     = IOMUX_PAD(0x02C0, 0x0058, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO12__SDMA2_EXT_EVENT1                                 = IOMUX_PAD(0x02C0, 0x0058, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO12__CCMSRCGPCMIX_OUT1                                = IOMUX_PAD(0x02C0, 0x0058, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO13__GPIO1_IO13                                       = IOMUX_PAD(0x02C4, 0x005C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO13__USB1_OTG_OC                                      = IOMUX_PAD(0x02C4, 0x005C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO13__PWM2_OUT                                         = IOMUX_PAD(0x02C4, 0x005C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO13__CCMSRCGPCMIX_OUT2                                = IOMUX_PAD(0x02C4, 0x005C, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO14__GPIO1_IO14                                       = IOMUX_PAD(0x02C8, 0x0060, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO14__USDHC3_CD_B                                      = IOMUX_PAD(0x02C8, 0x0060, 4, 0x0598, 2, 0),
++	IMX8MN_PAD_GPIO1_IO14__PWM3_OUT                                         = IOMUX_PAD(0x02C8, 0x0060, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO14__CCMSRCGPCMIX_CLKO1                               = IOMUX_PAD(0x02C8, 0x0060, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_GPIO1_IO15__GPIO1_IO15                                       = IOMUX_PAD(0x02CC, 0x0064, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO15__USDHC3_WP                                        = IOMUX_PAD(0x02CC, 0x0064, 4, 0x05B8, 2, 0),
++	IMX8MN_PAD_GPIO1_IO15__PWM4_OUT                                         = IOMUX_PAD(0x02CC, 0x0064, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_GPIO1_IO15__CCMSRCGPCMIX_CLKO2                               = IOMUX_PAD(0x02CC, 0x0064, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_ENET_MDC__ENET1_MDC                                          = IOMUX_PAD(0x02D0, 0x0068, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_MDC__SAI6_TX_DATA0                                      = IOMUX_PAD(0x02D0, 0x0068, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_MDC__PDM_BIT_STREAM3                                    = IOMUX_PAD(0x02D0, 0x0068, 3, 0x0540, 1, 0),
++	IMX8MN_PAD_ENET_MDC__SPDIF1_OUT                                         = IOMUX_PAD(0x02D0, 0x0068, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_MDC__GPIO1_IO16                                         = IOMUX_PAD(0x02D0, 0x0068, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_MDC__USDHC3_STROBE                                      = IOMUX_PAD(0x02D0, 0x0068, 6, 0x059C, 1, 0),
++
++	IMX8MN_PAD_ENET_MDIO__ENET1_MDIO                                        = IOMUX_PAD(0x02D4, 0x006C, 0, 0x04C0, 1, 0),
++	IMX8MN_PAD_ENET_MDIO__SAI6_TX_SYNC                                      = IOMUX_PAD(0x02D4, 0x006C, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_MDIO__PDM_BIT_STREAM2                                   = IOMUX_PAD(0x02D4, 0x006C, 3, 0x053C, 1, 0),
++	IMX8MN_PAD_ENET_MDIO__SPDIF1_IN                                         = IOMUX_PAD(0x02D4, 0x006C, 4, 0x05CC, 1, 0),
++	IMX8MN_PAD_ENET_MDIO__GPIO1_IO17                                        = IOMUX_PAD(0x02D4, 0x006C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_MDIO__USDHC3_DATA5                                      = IOMUX_PAD(0x02D4, 0x006C, 6, 0x0550, 1, 0),
++
++	IMX8MN_PAD_ENET_TD3__ENET1_RGMII_TD3                                    = IOMUX_PAD(0x02D8, 0x0070, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD3__SAI6_TX_BCLK                                       = IOMUX_PAD(0x02D8, 0x0070, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD3__PDM_BIT_STREAM1                                    = IOMUX_PAD(0x02D8, 0x0070, 3, 0x0538, 1, 0),
++	IMX8MN_PAD_ENET_TD3__SPDIF1_EXT_CLK                                     = IOMUX_PAD(0x02D8, 0x0070, 4, 0x0568, 1, 0),
++	IMX8MN_PAD_ENET_TD3__GPIO1_IO18                                         = IOMUX_PAD(0x02D8, 0x0070, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD3__USDHC3_DATA6                                       = IOMUX_PAD(0x02D8, 0x0070, 6, 0x0584, 1, 0),
++
++	IMX8MN_PAD_ENET_TD2__ENET1_RGMII_TD2                                    = IOMUX_PAD(0x02DC, 0x0074, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD2__ENET1_TX_CLK                                       = IOMUX_PAD(0x02DC, 0x0074, 1, 0x05A4, 0, 0),
++	IMX8MN_PAD_ENET_TD2__CCMSRCGPCMIX_ENET_REF_CLK_ROOT                     = IOMUX_PAD(0x02DC, 0x0074, 1, 0x05A4, 0, 0),
++	IMX8MN_PAD_ENET_TD2__SAI6_RX_DATA0                                      = IOMUX_PAD(0x02DC, 0x0074, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD2__PDM_BIT_STREAM3                                    = IOMUX_PAD(0x02DC, 0x0074, 3, 0x0540, 2, 0),
++	IMX8MN_PAD_ENET_TD2__GPIO1_IO19                                         = IOMUX_PAD(0x02DC, 0x0074, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD2__USDHC3_DATA7                                       = IOMUX_PAD(0x02DC, 0x0074, 6, 0x054C, 1, 0),
++
++	IMX8MN_PAD_ENET_TD1__ENET1_RGMII_TD1                                    = IOMUX_PAD(0x02E0, 0x0078, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD1__SAI6_RX_SYNC                                       = IOMUX_PAD(0x02E0, 0x0078, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD1__PDM_BIT_STREAM2                                    = IOMUX_PAD(0x02E0, 0x0078, 3, 0x053C, 2, 0),
++	IMX8MN_PAD_ENET_TD1__GPIO1_IO20                                         = IOMUX_PAD(0x02E0, 0x0078, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD1__USDHC3_CD_B                                        = IOMUX_PAD(0x02E0, 0x0078, 6, 0x0598, 3, 0),
++
++	IMX8MN_PAD_ENET_TD0__ENET1_RGMII_TD0                                    = IOMUX_PAD(0x02E4, 0x007C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD0__SAI6_RX_BCLK                                       = IOMUX_PAD(0x02E4, 0x007C, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD0__PDM_BIT_STREAM1                                    = IOMUX_PAD(0x02E4, 0x007C, 3, 0x0538, 2, 0),
++	IMX8MN_PAD_ENET_TD0__GPIO1_IO21                                         = IOMUX_PAD(0x02E4, 0x007C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TD0__USDHC3_WP                                          = IOMUX_PAD(0x02E4, 0x007C, 6, 0x05B8, 3, 0),
++
++	IMX8MN_PAD_ENET_TX_CTL__ENET1_RGMII_TX_CTL                              = IOMUX_PAD(0x02E8, 0x0080, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TX_CTL__SAI6_MCLK                                       = IOMUX_PAD(0x02E8, 0x0080, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TX_CTL__GPIO1_IO22                                      = IOMUX_PAD(0x02E8, 0x0080, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TX_CTL__USDHC3_DATA0                                    = IOMUX_PAD(0x02E8, 0x0080, 6, 0x05B4, 1, 0),
++
++	IMX8MN_PAD_ENET_TXC__ENET1_RGMII_TXC                                    = IOMUX_PAD(0x02EC, 0x0084, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TXC__ENET1_TX_ER                                        = IOMUX_PAD(0x02EC, 0x0084, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TXC__SAI7_TX_DATA0                                      = IOMUX_PAD(0x02EC, 0x0084, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TXC__GPIO1_IO23                                         = IOMUX_PAD(0x02EC, 0x0084, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_TXC__USDHC3_DATA1                                       = IOMUX_PAD(0x02EC, 0x0084, 6, 0x05B0, 1, 0),
++
++	IMX8MN_PAD_ENET_RX_CTL__ENET1_RGMII_RX_CTL                              = IOMUX_PAD(0x02F0, 0x0088, 0, 0x0574, 0, 0),
++	IMX8MN_PAD_ENET_RX_CTL__SAI7_TX_SYNC                                    = IOMUX_PAD(0x02F0, 0x0088, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RX_CTL__PDM_BIT_STREAM3                                 = IOMUX_PAD(0x02F0, 0x0088, 3, 0x0540, 3, 0),
++	IMX8MN_PAD_ENET_RX_CTL__GPIO1_IO24                                      = IOMUX_PAD(0x02F0, 0x0088, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RX_CTL__USDHC3_DATA2                                    = IOMUX_PAD(0x02F0, 0x0088, 6, 0x05E4, 1, 0),
++
++	IMX8MN_PAD_ENET_RXC__ENET1_RGMII_RXC                                    = IOMUX_PAD(0x02F4, 0x008C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RXC__ENET1_RX_ER                                        = IOMUX_PAD(0x02F4, 0x008C, 1, 0x05C8, 0, 0),
++	IMX8MN_PAD_ENET_RXC__SAI7_TX_BCLK                                       = IOMUX_PAD(0x02F4, 0x008C, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RXC__PDM_BIT_STREAM2                                    = IOMUX_PAD(0x02F4, 0x008C, 3, 0x053C, 3, 0),
++	IMX8MN_PAD_ENET_RXC__GPIO1_IO25                                         = IOMUX_PAD(0x02F4, 0x008C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RXC__USDHC3_DATA3                                       = IOMUX_PAD(0x02F4, 0x008C, 6, 0x05E0, 1, 0),
++
++	IMX8MN_PAD_ENET_RD0__ENET1_RGMII_RD0                                    = IOMUX_PAD(0x02F8, 0x0090, 0, 0x057C, 0, 0),
++	IMX8MN_PAD_ENET_RD0__SAI7_RX_DATA0                                      = IOMUX_PAD(0x02F8, 0x0090, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD0__PDM_BIT_STREAM1                                    = IOMUX_PAD(0x02F8, 0x0090, 3, 0x0538, 3, 0),
++	IMX8MN_PAD_ENET_RD0__GPIO1_IO26                                         = IOMUX_PAD(0x02F8, 0x0090, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD0__USDHC3_DATA4                                       = IOMUX_PAD(0x02F8, 0x0090, 6, 0x0558, 1, 0),
++
++	IMX8MN_PAD_ENET_RD1__ENET1_RGMII_RD1                                    = IOMUX_PAD(0x02FC, 0x0094, 0, 0x0554, 0, 0),
++	IMX8MN_PAD_ENET_RD1__SAI7_RX_SYNC                                       = IOMUX_PAD(0x02FC, 0x0094, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD1__PDM_BIT_STREAM0                                    = IOMUX_PAD(0x02FC, 0x0094, 3, 0x0534, 1, 0),
++	IMX8MN_PAD_ENET_RD1__GPIO1_IO27                                         = IOMUX_PAD(0x02FC, 0x0094, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD1__USDHC3_RESET_B                                     = IOMUX_PAD(0x02FC, 0x0094, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_ENET_RD2__ENET1_RGMII_RD2                                    = IOMUX_PAD(0x0300, 0x0098, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD2__SAI7_RX_BCLK                                       = IOMUX_PAD(0x0300, 0x0098, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD2__PDM_CLK                                            = IOMUX_PAD(0x0300, 0x0098, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD2__GPIO1_IO28                                         = IOMUX_PAD(0x0300, 0x0098, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD2__USDHC3_CLK                                         = IOMUX_PAD(0x0300, 0x0098, 6, 0x05A0, 1, 0),
++
++	IMX8MN_PAD_ENET_RD3__ENET1_RGMII_RD3                                    = IOMUX_PAD(0x0304, 0x009C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD3__SAI7_MCLK                                          = IOMUX_PAD(0x0304, 0x009C, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD3__SPDIF1_IN                                          = IOMUX_PAD(0x0304, 0x009C, 3, 0x05CC, 5, 0),
++	IMX8MN_PAD_ENET_RD3__GPIO1_IO29                                         = IOMUX_PAD(0x0304, 0x009C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_ENET_RD3__USDHC3_CMD                                         = IOMUX_PAD(0x0304, 0x009C, 6, 0x05DC, 1, 0),
++
++	IMX8MN_PAD_SD1_CLK__USDHC1_CLK                                          = IOMUX_PAD(0x0308, 0x00A0, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_CLK__ENET1_MDC                                           = IOMUX_PAD(0x0308, 0x00A0, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_CLK__UART1_DCE_TX                                        = IOMUX_PAD(0x0308, 0x00A0, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_CLK__UART1_DTE_RX                                        = IOMUX_PAD(0x0308, 0x00A0, 4, 0x04F4, 4, 0),
++	IMX8MN_PAD_SD1_CLK__GPIO2_IO0                                           = IOMUX_PAD(0x0308, 0x00A0, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_CMD__USDHC1_CMD                                          = IOMUX_PAD(0x030C, 0x00A4, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_CMD__ENET1_MDIO                                          = IOMUX_PAD(0x030C, 0x00A4, 1, 0x04C0, 3, 0),
++	IMX8MN_PAD_SD1_CMD__UART1_DCE_RX                                        = IOMUX_PAD(0x030C, 0x00A4, 4, 0x04F4, 5, 0),
++	IMX8MN_PAD_SD1_CMD__UART1_DTE_TX                                        = IOMUX_PAD(0x030C, 0x00A4, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_CMD__GPIO2_IO1                                           = IOMUX_PAD(0x030C, 0x00A4, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_DATA0__USDHC1_DATA0                                      = IOMUX_PAD(0x0310, 0x00A8, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA0__ENET1_RGMII_TD1                                   = IOMUX_PAD(0x0310, 0x00A8, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA0__UART1_DCE_RTS_B                                   = IOMUX_PAD(0x0310, 0x00A8, 4, 0x04F0, 4, 0),
++	IMX8MN_PAD_SD1_DATA0__UART1_DTE_CTS_B                                   = IOMUX_PAD(0x0310, 0x00A8, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA0__GPIO2_IO2                                         = IOMUX_PAD(0x0310, 0x00A8, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_DATA1__USDHC1_DATA1                                      = IOMUX_PAD(0x0314, 0x00AC, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA1__ENET1_RGMII_TD0                                   = IOMUX_PAD(0x0314, 0x00AC, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA1__UART1_DCE_CTS_B                                   = IOMUX_PAD(0x0314, 0x00AC, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA1__UART1_DTE_RTS_B                                   = IOMUX_PAD(0x0314, 0x00AC, 4, 0x04F0, 5, 0),
++	IMX8MN_PAD_SD1_DATA1__GPIO2_IO3                                         = IOMUX_PAD(0x0314, 0x00AC, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_DATA2__USDHC1_DATA2                                      = IOMUX_PAD(0x0318, 0x00B0, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA2__ENET1_RGMII_RD0                                   = IOMUX_PAD(0x0318, 0x00B0, 1, 0x057C, 1, 0),
++	IMX8MN_PAD_SD1_DATA2__UART2_DCE_TX                                      = IOMUX_PAD(0x0318, 0x00B0, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA2__UART2_DTE_RX                                      = IOMUX_PAD(0x0318, 0x00B0, 4, 0x04FC, 4, 0),
++	IMX8MN_PAD_SD1_DATA2__GPIO2_IO4                                         = IOMUX_PAD(0x0318, 0x00B0, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_DATA3__USDHC1_DATA3                                      = IOMUX_PAD(0x031C, 0x00B4, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA3__ENET1_RGMII_RD1                                   = IOMUX_PAD(0x031C, 0x00B4, 1, 0x0554, 1, 0),
++	IMX8MN_PAD_SD1_DATA3__UART2_DCE_RX                                      = IOMUX_PAD(0x031C, 0x00B4, 4, 0x04FC, 5, 0),
++	IMX8MN_PAD_SD1_DATA3__UART2_DTE_TX                                      = IOMUX_PAD(0x031C, 0x00B4, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA3__GPIO2_IO5                                         = IOMUX_PAD(0x031C, 0x00B4, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_DATA4__USDHC1_DATA4                                      = IOMUX_PAD(0x0320, 0x00B8, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA4__ENET1_RGMII_TX_CTL                                = IOMUX_PAD(0x0320, 0x00B8, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA4__I2C1_SCL                                          = IOMUX_PAD(0x0320, 0x00B8, 3, 0x055C, 1, 0),
++	IMX8MN_PAD_SD1_DATA4__UART2_DCE_RTS_B                                   = IOMUX_PAD(0x0320, 0x00B8, 4, 0x04F8, 4, 0),
++	IMX8MN_PAD_SD1_DATA4__UART2_DTE_CTS_B                                   = IOMUX_PAD(0x0320, 0x00B8, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA4__GPIO2_IO6                                         = IOMUX_PAD(0x0320, 0x00B8, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_DATA5__USDHC1_DATA5                                      = IOMUX_PAD(0x0324, 0x00BC, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA5__ENET1_TX_ER                                       = IOMUX_PAD(0x0324, 0x00BC, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA5__I2C1_SDA                                          = IOMUX_PAD(0x0324, 0x00BC, 3, 0x056C, 1, 0),
++	IMX8MN_PAD_SD1_DATA5__UART2_DCE_CTS_B                                   = IOMUX_PAD(0x0324, 0x00BC, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA5__UART2_DTE_RTS_B                                   = IOMUX_PAD(0x0324, 0x00BC, 4, 0x04F8, 5, 0),
++	IMX8MN_PAD_SD1_DATA5__GPIO2_IO7                                         = IOMUX_PAD(0x0324, 0x00BC, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_DATA6__USDHC1_DATA6                                      = IOMUX_PAD(0x0328, 0x00C0, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA6__ENET1_RGMII_RX_CTL                                = IOMUX_PAD(0x0328, 0x00C0, 1, 0x0574, 1, 0),
++	IMX8MN_PAD_SD1_DATA6__I2C2_SCL                                          = IOMUX_PAD(0x0328, 0x00C0, 3, 0x05D0, 1, 0),
++	IMX8MN_PAD_SD1_DATA6__UART3_DCE_TX                                      = IOMUX_PAD(0x0328, 0x00C0, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA6__UART3_DTE_RX                                      = IOMUX_PAD(0x0328, 0x00C0, 4, 0x0504, 4, 0),
++	IMX8MN_PAD_SD1_DATA6__GPIO2_IO8                                         = IOMUX_PAD(0x0328, 0x00C0, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_DATA7__USDHC1_DATA7                                      = IOMUX_PAD(0x032C, 0x00C4, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA7__ENET1_RX_ER                                       = IOMUX_PAD(0x032C, 0x00C4, 1, 0x05C8, 1, 0),
++	IMX8MN_PAD_SD1_DATA7__I2C2_SDA                                          = IOMUX_PAD(0x032C, 0x00C4, 3, 0x0560, 1, 0),
++	IMX8MN_PAD_SD1_DATA7__UART3_DCE_RX                                      = IOMUX_PAD(0x032C, 0x00C4, 4, 0x0504, 5, 0),
++	IMX8MN_PAD_SD1_DATA7__UART3_DTE_TX                                      = IOMUX_PAD(0x032C, 0x00C4, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_DATA7__GPIO2_IO9                                         = IOMUX_PAD(0x032C, 0x00C4, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_RESET_B__USDHC1_RESET_B                                  = IOMUX_PAD(0x0330, 0x00C8, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_RESET_B__ENET1_TX_CLK                              = IOMUX_PAD(0x0330, 0x00C8, 1, 0x05A4, 1, 0),
++	IMX8MN_PAD_SD1_RESET_B__CCMSRCGPCMIX_ENET_REF_CLK_ROOT                  = IOMUX_PAD(0x0330, 0x00C8, 1, 0x05A4, 0, 0),
++	IMX8MN_PAD_SD1_RESET_B__I2C3_SCL                                        = IOMUX_PAD(0x0330, 0x00C8, 3, 0x0588, 1, 0),
++	IMX8MN_PAD_SD1_RESET_B__UART3_DCE_RTS_B                                 = IOMUX_PAD(0x0330, 0x00C8, 4, 0x0500, 2, 0),
++	IMX8MN_PAD_SD1_RESET_B__UART3_DTE_CTS_B                                 = IOMUX_PAD(0x0330, 0x00C8, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_RESET_B__GPIO2_IO10                                      = IOMUX_PAD(0x0330, 0x00C8, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD1_STROBE__USDHC1_STROBE                                    = IOMUX_PAD(0x0334, 0x00CC, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_STROBE__I2C3_SDA                                         = IOMUX_PAD(0x0334, 0x00CC, 3, 0x05BC, 1, 0),
++	IMX8MN_PAD_SD1_STROBE__UART3_DCE_CTS_B                                  = IOMUX_PAD(0x0334, 0x00CC, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD1_STROBE__UART3_DTE_RTS_B                                  = IOMUX_PAD(0x0334, 0x00CC, 4, 0x0500, 3, 0),
++	IMX8MN_PAD_SD1_STROBE__GPIO2_IO11                                       = IOMUX_PAD(0x0334, 0x00CC, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD2_CD_B__USDHC2_CD_B                                        = IOMUX_PAD(0x0338, 0x00D0, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_CD_B__GPIO2_IO12                                         = IOMUX_PAD(0x0338, 0x00D0, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_CD_B__CCMSRCGPCMIX_TESTER_ACK                            = IOMUX_PAD(0x0338, 0x00D0, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD2_CLK__USDHC2_CLK                                          = IOMUX_PAD(0x033C, 0x00D4, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_CLK__SAI5_RX_SYNC                                        = IOMUX_PAD(0x033C, 0x00D4, 1, 0x04E4, 1, 0),
++	IMX8MN_PAD_SD2_CLK__ECSPI2_SCLK                                         = IOMUX_PAD(0x033C, 0x00D4, 2, 0x0580, 1, 0),
++	IMX8MN_PAD_SD2_CLK__UART4_DCE_RX                                        = IOMUX_PAD(0x033C, 0x00D4, 3, 0x050C, 4, 0),
++	IMX8MN_PAD_SD2_CLK__UART4_DTE_TX                                        = IOMUX_PAD(0x033C, 0x00D4, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_CLK__SAI5_MCLK                                           = IOMUX_PAD(0x033C, 0x00D4, 4, 0x0594, 1, 0),
++	IMX8MN_PAD_SD2_CLK__GPIO2_IO13                                          = IOMUX_PAD(0x033C, 0x00D4, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_CLK__CCMSRCGPCMIX_OBSERVE0                               = IOMUX_PAD(0x033C, 0x00D4, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD2_CMD__USDHC2_CMD                                          = IOMUX_PAD(0x0340, 0x00D8, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_CMD__SAI5_RX_BCLK                                        = IOMUX_PAD(0x0340, 0x00D8, 1, 0x04D0, 1, 0),
++	IMX8MN_PAD_SD2_CMD__ECSPI2_MOSI                                         = IOMUX_PAD(0x0340, 0x00D8, 2, 0x0590, 1, 0),
++	IMX8MN_PAD_SD2_CMD__UART4_DCE_TX                                        = IOMUX_PAD(0x0340, 0x00D8, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_CMD__UART4_DTE_RX                                        = IOMUX_PAD(0x0340, 0x00D8, 3, 0x050C, 5, 0),
++	IMX8MN_PAD_SD2_CMD__PDM_CLK                                             = IOMUX_PAD(0x0340, 0x00D8, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_CMD__GPIO2_IO14                                          = IOMUX_PAD(0x0340, 0x00D8, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_CMD__CCMSRCGPCMIX_OBSERVE1                               = IOMUX_PAD(0x0340, 0x00D8, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD2_DATA0__USDHC2_DATA0                                      = IOMUX_PAD(0x0344, 0x00DC, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA0__SAI5_RX_DATA0                                     = IOMUX_PAD(0x0344, 0x00DC, 1, 0x04D4, 1, 0),
++	IMX8MN_PAD_SD2_DATA0__I2C4_SDA                                          = IOMUX_PAD(0x0344, 0x00DC, 2, 0x058C, 1, 0),
++	IMX8MN_PAD_SD2_DATA0__UART2_DCE_RX                                      = IOMUX_PAD(0x0344, 0x00DC, 3, 0x04FC, 6, 0),
++	IMX8MN_PAD_SD2_DATA0__UART2_DTE_TX                                      = IOMUX_PAD(0x0344, 0x00DC, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA0__PDM_BIT_STREAM0                                   = IOMUX_PAD(0x0344, 0x00DC, 4, 0x0534, 2, 0),
++	IMX8MN_PAD_SD2_DATA0__GPIO2_IO15                                        = IOMUX_PAD(0x0344, 0x00DC, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA0__CCMSRCGPCMIX_OBSERVE2                             = IOMUX_PAD(0x0344, 0x00DC, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD2_DATA1__USDHC2_DATA1                                      = IOMUX_PAD(0x0348, 0x00E0, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA1__SAI5_TX_SYNC                                      = IOMUX_PAD(0x0348, 0x00E0, 1, 0x04EC, 1, 0),
++	IMX8MN_PAD_SD2_DATA1__I2C4_SCL                                          = IOMUX_PAD(0x0348, 0x00E0, 2, 0x05D4, 1, 0),
++	IMX8MN_PAD_SD2_DATA1__UART2_DCE_TX                                      = IOMUX_PAD(0x0348, 0x00E0, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA1__UART2_DTE_RX                                      = IOMUX_PAD(0x0348, 0x00E0, 3, 0x04FC, 7, 0),
++	IMX8MN_PAD_SD2_DATA1__PDM_BIT_STREAM1                                   = IOMUX_PAD(0x0348, 0x00E0, 4, 0x0538, 4, 0),
++	IMX8MN_PAD_SD2_DATA1__GPIO2_IO16                                        = IOMUX_PAD(0x0348, 0x00E0, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA1__CCMSRCGPCMIX_WAIT                                 = IOMUX_PAD(0x0348, 0x00E0, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD2_DATA2__USDHC2_DATA2                                      = IOMUX_PAD(0x034C, 0x00E4, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA2__SAI5_TX_BCLK                                      = IOMUX_PAD(0x034C, 0x00E4, 1, 0x04E8, 1, 0),
++	IMX8MN_PAD_SD2_DATA2__ECSPI2_SS0                                        = IOMUX_PAD(0x034C, 0x00E4, 2, 0x0570, 2, 0),
++	IMX8MN_PAD_SD2_DATA2__SPDIF1_OUT                                        = IOMUX_PAD(0x034C, 0x00E4, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA2__PDM_BIT_STREAM2                                   = IOMUX_PAD(0x034C, 0x00E4, 4, 0x053C, 4, 0),
++	IMX8MN_PAD_SD2_DATA2__GPIO2_IO17                                        = IOMUX_PAD(0x034C, 0x00E4, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA2__CCMSRCGPCMIX_STOP                                 = IOMUX_PAD(0x034C, 0x00E4, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD2_DATA3__USDHC2_DATA3                                      = IOMUX_PAD(0x0350, 0x00E8, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA3__SAI5_TX_DATA0                                     = IOMUX_PAD(0x0350, 0x00E8, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA3__ECSPI2_MISO                                       = IOMUX_PAD(0x0350, 0x00E8, 2, 0x0578, 1, 0),
++	IMX8MN_PAD_SD2_DATA3__SPDIF1_IN                                         = IOMUX_PAD(0x0350, 0x00E8, 3, 0x05CC, 2, 0),
++	IMX8MN_PAD_SD2_DATA3__PDM_BIT_STREAM3                                   = IOMUX_PAD(0x0350, 0x00E8, 4, 0x0540, 4, 0),
++	IMX8MN_PAD_SD2_DATA3__GPIO2_IO18                                        = IOMUX_PAD(0x0350, 0x00E8, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_DATA3__CCMSRCGPCMIX_EARLY_RESET                          = IOMUX_PAD(0x0350, 0x00E8, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD2_RESET_B__USDHC2_RESET_B                                  = IOMUX_PAD(0x0354, 0x00EC, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_RESET_B__GPIO2_IO19                                      = IOMUX_PAD(0x0354, 0x00EC, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_RESET_B__CCMSRCGPCMIX_SYSTEM_RESET                       = IOMUX_PAD(0x0354, 0x00EC, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SD2_WP__USDHC2_WP                                            = IOMUX_PAD(0x0358, 0x00F0, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_WP__GPIO2_IO20                                           = IOMUX_PAD(0x0358, 0x00F0, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SD2_WP__CORESIGHT_EVENTI                                     = IOMUX_PAD(0x0358, 0x00F0, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_ALE__RAWNAND_ALE                                        = IOMUX_PAD(0x035C, 0x00F4, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_ALE__QSPI_A_SCLK                                        = IOMUX_PAD(0x035C, 0x00F4, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_ALE__PDM_BIT_STREAM0                                    = IOMUX_PAD(0x035C, 0x00F4, 3, 0x0534, 3, 0),
++	IMX8MN_PAD_NAND_ALE__UART3_DCE_RX                                       = IOMUX_PAD(0x035C, 0x00F4, 4, 0x0504, 6, 0),
++	IMX8MN_PAD_NAND_ALE__UART3_DTE_TX                                       = IOMUX_PAD(0x035C, 0x00F4, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_ALE__GPIO3_IO0                                          = IOMUX_PAD(0x035C, 0x00F4, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_ALE__CORESIGHT_TRACE_CLK                                = IOMUX_PAD(0x035C, 0x00F4, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_CE0_B__RAWNAND_CE0_B                                    = IOMUX_PAD(0x0360, 0x00F8, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE0_B__QSPI_A_SS0_B                                     = IOMUX_PAD(0x0360, 0x00F8, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE0_B__PDM_BIT_STREAM1                                  = IOMUX_PAD(0x0360, 0x00F8, 3, 0x0538, 5, 0),
++	IMX8MN_PAD_NAND_CE0_B__UART3_DCE_TX                                     = IOMUX_PAD(0x0360, 0x00F8, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE0_B__UART3_DTE_RX                                     = IOMUX_PAD(0x0360, 0x00F8, 4, 0x0504, 7, 0),
++	IMX8MN_PAD_NAND_CE0_B__GPIO3_IO1                                        = IOMUX_PAD(0x0360, 0x00F8, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE0_B__CORESIGHT_TRACE_CTL                              = IOMUX_PAD(0x0360, 0x00F8, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_CE1_B__RAWNAND_CE1_B                                    = IOMUX_PAD(0x0364, 0x00FC, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE1_B__QSPI_A_SS1_B                                     = IOMUX_PAD(0x0364, 0x00FC, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE1_B__USDHC3_STROBE                                    = IOMUX_PAD(0x0364, 0x00FC, 2, 0x059C, 0, 0),
++	IMX8MN_PAD_NAND_CE1_B__PDM_BIT_STREAM0                                  = IOMUX_PAD(0x0364, 0x00FC, 3, 0x0534, 4, 0),
++	IMX8MN_PAD_NAND_CE1_B__I2C4_SCL                                         = IOMUX_PAD(0x0364, 0x00FC, 4, 0x05D4, 2, 0),
++	IMX8MN_PAD_NAND_CE1_B__GPIO3_IO2                                        = IOMUX_PAD(0x0364, 0x00FC, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE1_B__CORESIGHT_TRACE0                                 = IOMUX_PAD(0x0364, 0x00FC, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_CE2_B__RAWNAND_CE2_B                                    = IOMUX_PAD(0x0368, 0x0100, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE2_B__QSPI_B_SS0_B                                     = IOMUX_PAD(0x0368, 0x0100, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE2_B__USDHC3_DATA5                                     = IOMUX_PAD(0x0368, 0x0100, 2, 0x0550, 0, 0),
++	IMX8MN_PAD_NAND_CE2_B__PDM_BIT_STREAM1                                  = IOMUX_PAD(0x0368, 0x0100, 3, 0x0538, 6, 0),
++	IMX8MN_PAD_NAND_CE2_B__I2C4_SDA                                         = IOMUX_PAD(0x0368, 0x0100, 4, 0x058C, 2, 0),
++	IMX8MN_PAD_NAND_CE2_B__GPIO3_IO3                                        = IOMUX_PAD(0x0368, 0x0100, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE2_B__CORESIGHT_TRACE1                                 = IOMUX_PAD(0x0368, 0x0100, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_CE3_B__RAWNAND_CE3_B                                    = IOMUX_PAD(0x036C, 0x0104, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE3_B__QSPI_B_SS1_B                                     = IOMUX_PAD(0x036C, 0x0104, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE3_B__USDHC3_DATA6                                     = IOMUX_PAD(0x036C, 0x0104, 2, 0x0584, 0, 0),
++	IMX8MN_PAD_NAND_CE3_B__PDM_BIT_STREAM2                                  = IOMUX_PAD(0x036C, 0x0104, 3, 0x053C, 5, 0),
++	IMX8MN_PAD_NAND_CE3_B__I2C3_SDA                                         = IOMUX_PAD(0x036C, 0x0104, 4, 0x05BC, 2, 0),
++	IMX8MN_PAD_NAND_CE3_B__GPIO3_IO4                                        = IOMUX_PAD(0x036C, 0x0104, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CE3_B__CORESIGHT_TRACE2                                 = IOMUX_PAD(0x036C, 0x0104, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_CLE__RAWNAND_CLE                                        = IOMUX_PAD(0x0370, 0x0108, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CLE__QSPI_B_SCLK                                        = IOMUX_PAD(0x0370, 0x0108, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CLE__USDHC3_DATA7                                       = IOMUX_PAD(0x0370, 0x0108, 2, 0x054C, 0, 0),
++	IMX8MN_PAD_NAND_CLE__GPIO3_IO5                                          = IOMUX_PAD(0x0370, 0x0108, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_CLE__CORESIGHT_TRACE3                                   = IOMUX_PAD(0x0370, 0x0108, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_DATA00__RAWNAND_DATA00                                  = IOMUX_PAD(0x0374, 0x010C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA00__QSPI_A_DATA0                                    = IOMUX_PAD(0x0374, 0x010C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA00__PDM_BIT_STREAM2                                 = IOMUX_PAD(0x0374, 0x010C, 3, 0x053C, 6, 0),
++	IMX8MN_PAD_NAND_DATA00__UART4_DCE_RX                                    = IOMUX_PAD(0x0374, 0x010C, 4, 0x050C, 6, 0),
++	IMX8MN_PAD_NAND_DATA00__UART4_DTE_TX                                    = IOMUX_PAD(0x0374, 0x010C, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA00__GPIO3_IO6                                       = IOMUX_PAD(0x0374, 0x010C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA00__CORESIGHT_TRACE4                                = IOMUX_PAD(0x0374, 0x010C, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_DATA01__RAWNAND_DATA01                                  = IOMUX_PAD(0x0378, 0x0110, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA01__QSPI_A_DATA1                                    = IOMUX_PAD(0x0378, 0x0110, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA01__PDM_BIT_STREAM3                                 = IOMUX_PAD(0x0378, 0x0110, 3, 0x0540, 5, 0),
++	IMX8MN_PAD_NAND_DATA01__UART4_DCE_TX                                    = IOMUX_PAD(0x0378, 0x0110, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA01__UART4_DTE_RX                                    = IOMUX_PAD(0x0378, 0x0110, 4, 0x050C, 7, 0),
++	IMX8MN_PAD_NAND_DATA01__GPIO3_IO7                                       = IOMUX_PAD(0x0378, 0x0110, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA01__CORESIGHT_TRACE5                                = IOMUX_PAD(0x0378, 0x0110, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_DATA02__RAWNAND_DATA02                                  = IOMUX_PAD(0x037C, 0x0114, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA02__QSPI_A_DATA2                                    = IOMUX_PAD(0x037C, 0x0114, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA02__USDHC3_CD_B                                     = IOMUX_PAD(0x037C, 0x0114, 2, 0x0598, 0, 0),
++	IMX8MN_PAD_NAND_DATA02__I2C4_SDA                                        = IOMUX_PAD(0x037C, 0x0114, 4, 0x058C, 3, 0),
++	IMX8MN_PAD_NAND_DATA02__GPIO3_IO8                                       = IOMUX_PAD(0x037C, 0x0114, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA02__CORESIGHT_TRACE6                                = IOMUX_PAD(0x037C, 0x0114, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_DATA03__RAWNAND_DATA03                                  = IOMUX_PAD(0x0380, 0x0118, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA03__QSPI_A_DATA3                                    = IOMUX_PAD(0x0380, 0x0118, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA03__USDHC3_WP                                       = IOMUX_PAD(0x0380, 0x0118, 2, 0x05B8, 0, 0),
++	IMX8MN_PAD_NAND_DATA03__GPIO3_IO9                                       = IOMUX_PAD(0x0380, 0x0118, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA03__CORESIGHT_TRACE7                                = IOMUX_PAD(0x0380, 0x0118, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_DATA04__RAWNAND_DATA04                                  = IOMUX_PAD(0x0384, 0x011C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA04__QSPI_B_DATA0                                    = IOMUX_PAD(0x0384, 0x011C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA04__USDHC3_DATA0                                    = IOMUX_PAD(0x0384, 0x011C, 2, 0x05B4, 0, 0),
++	IMX8MN_PAD_NAND_DATA04__GPIO3_IO10                                      = IOMUX_PAD(0x0384, 0x011C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA04__CORESIGHT_TRACE8                                = IOMUX_PAD(0x0384, 0x011C, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_DATA05__RAWNAND_DATA05                                  = IOMUX_PAD(0x0388, 0x0120, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA05__QSPI_B_DATA1                                    = IOMUX_PAD(0x0388, 0x0120, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA05__USDHC3_DATA1                                    = IOMUX_PAD(0x0388, 0x0120, 2, 0x05B0, 0, 0),
++	IMX8MN_PAD_NAND_DATA05__GPIO3_IO11                                      = IOMUX_PAD(0x0388, 0x0120, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA05__CORESIGHT_TRACE9                                = IOMUX_PAD(0x0388, 0x0120, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_DATA06__RAWNAND_DATA06                                  = IOMUX_PAD(0x038C, 0x0124, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA06__QSPI_B_DATA2                                    = IOMUX_PAD(0x038C, 0x0124, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA06__USDHC3_DATA2                                    = IOMUX_PAD(0x038C, 0x0124, 2, 0x05E4, 0, 0),
++	IMX8MN_PAD_NAND_DATA06__GPIO3_IO12                                      = IOMUX_PAD(0x038C, 0x0124, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA06__CORESIGHT_TRACE10                               = IOMUX_PAD(0x038C, 0x0124, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_DATA07__RAWNAND_DATA07                                  = IOMUX_PAD(0x0390, 0x0128, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA07__QSPI_B_DATA3                                    = IOMUX_PAD(0x0390, 0x0128, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA07__USDHC3_DATA3                                    = IOMUX_PAD(0x0390, 0x0128, 2, 0x05E0, 0, 0),
++	IMX8MN_PAD_NAND_DATA07__GPIO3_IO13                                      = IOMUX_PAD(0x0390, 0x0128, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DATA07__CORESIGHT_TRACE11                               = IOMUX_PAD(0x0390, 0x0128, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_DQS__RAWNAND_DQS                                        = IOMUX_PAD(0x0394, 0x012C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DQS__QSPI_A_DQS                                         = IOMUX_PAD(0x0394, 0x012C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DQS__PDM_CLK                                            = IOMUX_PAD(0x0394, 0x012C, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DQS__I2C3_SCL                                           = IOMUX_PAD(0x0394, 0x012C, 4, 0x0588, 2, 0),
++	IMX8MN_PAD_NAND_DQS__GPIO3_IO14                                         = IOMUX_PAD(0x0394, 0x012C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_DQS__CORESIGHT_TRACE12                                  = IOMUX_PAD(0x0394, 0x012C, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_RE_B__RAWNAND_RE_B                                      = IOMUX_PAD(0x0398, 0x0130, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_RE_B__QSPI_B_DQS                                        = IOMUX_PAD(0x0398, 0x0130, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_RE_B__USDHC3_DATA4                                      = IOMUX_PAD(0x0398, 0x0130, 2, 0x0558, 0, 0),
++	IMX8MN_PAD_NAND_RE_B__PDM_BIT_STREAM1                                   = IOMUX_PAD(0x0398, 0x0130, 3, 0x0538, 7, 0),
++	IMX8MN_PAD_NAND_RE_B__GPIO3_IO15                                        = IOMUX_PAD(0x0398, 0x0130, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_RE_B__CORESIGHT_TRACE13                                 = IOMUX_PAD(0x0398, 0x0130, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_READY_B__RAWNAND_READY_B                                = IOMUX_PAD(0x039C, 0x0134, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_READY_B__USDHC3_RESET_B                                 = IOMUX_PAD(0x039C, 0x0134, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_READY_B__PDM_BIT_STREAM3                                = IOMUX_PAD(0x039C, 0x0134, 3, 0x0540, 6, 0),
++	IMX8MN_PAD_NAND_READY_B__I2C3_SCL                                       = IOMUX_PAD(0x039C, 0x0134, 4, 0x0588, 3, 0),
++	IMX8MN_PAD_NAND_READY_B__GPIO3_IO16                                     = IOMUX_PAD(0x039C, 0x0134, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_READY_B__CORESIGHT_TRACE14                              = IOMUX_PAD(0x039C, 0x0134, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_WE_B__RAWNAND_WE_B                                      = IOMUX_PAD(0x03A0, 0x0138, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_WE_B__USDHC3_CLK                                        = IOMUX_PAD(0x03A0, 0x0138, 2  | IOMUX_CONFIG_SION, 0x05A0, 0, 0),
++	IMX8MN_PAD_NAND_WE_B__I2C3_SDA                                          = IOMUX_PAD(0x03A0, 0x0138, 4, 0x05BC, 3, 0),
++	IMX8MN_PAD_NAND_WE_B__GPIO3_IO17                                        = IOMUX_PAD(0x03A0, 0x0138, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_WE_B__CORESIGHT_TRACE15                                 = IOMUX_PAD(0x03A0, 0x0138, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_NAND_WP_B__RAWNAND_WP_B                                      = IOMUX_PAD(0x03A4, 0x013C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_WP_B__USDHC3_CMD                                        = IOMUX_PAD(0x03A4, 0x013C, 2, 0x05DC, 0, 0),
++	IMX8MN_PAD_NAND_WP_B__I2C4_SDA                                          = IOMUX_PAD(0x03A4, 0x013C, 4, 0x058C, 4, 0),
++	IMX8MN_PAD_NAND_WP_B__GPIO3_IO18                                        = IOMUX_PAD(0x03A4, 0x013C, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_NAND_WP_B__CORESIGHT_EVENTO                                  = IOMUX_PAD(0x03A4, 0x013C, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SAI5_RXFS__SAI5_RX_SYNC                                      = IOMUX_PAD(0x03A8, 0x0140, 0, 0x04E4, 0, 0),
++	IMX8MN_PAD_SAI5_RXFS__GPIO3_IO19                                        = IOMUX_PAD(0x03A8, 0x0140, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SAI5_RXC__SAI5_RX_BCLK                                       = IOMUX_PAD(0x03AC, 0x0144, 0, 0x04D0, 0, 0),
++	IMX8MN_PAD_SAI5_RXC__PDM_CLK                                            = IOMUX_PAD(0x03AC, 0x0144, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI5_RXC__GPIO3_IO20                                         = IOMUX_PAD(0x03AC, 0x0144, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SAI5_RXD0__SAI5_RX_DATA0                                     = IOMUX_PAD(0x03B0, 0x0148, 0, 0x04D4, 0, 0),
++	IMX8MN_PAD_SAI5_RXD0__PDM_BIT_STREAM0                                   = IOMUX_PAD(0x03B0, 0x0148, 4, 0x0534, 0, 0),
++	IMX8MN_PAD_SAI5_RXD0__GPIO3_IO21                                        = IOMUX_PAD(0x03B0, 0x0148, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SAI5_RXD1__SAI5_RX_DATA1                                     = IOMUX_PAD(0x03B4, 0x014C, 0, 0x04D8, 0, 0),
++	IMX8MN_PAD_SAI5_RXD1__SAI5_TX_SYNC                                      = IOMUX_PAD(0x03B4, 0x014C, 3, 0x04EC, 0, 0),
++	IMX8MN_PAD_SAI5_RXD1__PDM_BIT_STREAM1                                   = IOMUX_PAD(0x03B4, 0x014C, 4, 0x0538, 0, 0),
++	IMX8MN_PAD_SAI5_RXD1__GPIO3_IO22                                        = IOMUX_PAD(0x03B4, 0x014C, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SAI5_RXD2__SAI5_RX_DATA2                                     = IOMUX_PAD(0x03B8, 0x0150, 0, 0x04DC, 0, 0),
++	IMX8MN_PAD_SAI5_RXD2__SAI5_TX_BCLK                                      = IOMUX_PAD(0x03B8, 0x0150, 3, 0x04E8, 0, 0),
++	IMX8MN_PAD_SAI5_RXD2__PDM_BIT_STREAM2                                   = IOMUX_PAD(0x03B8, 0x0150, 4, 0x053C, 0, 0),
++	IMX8MN_PAD_SAI5_RXD2__GPIO3_IO23                                        = IOMUX_PAD(0x03B8, 0x0150, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SAI5_RXD3__SAI5_RX_DATA3                                     = IOMUX_PAD(0x03BC, 0x0154, 0, 0x04E0, 0, 0),
++	IMX8MN_PAD_SAI5_RXD3__SAI5_TX_DATA0                                     = IOMUX_PAD(0x03BC, 0x0154, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI5_RXD3__PDM_BIT_STREAM3                                   = IOMUX_PAD(0x03BC, 0x0154, 4, 0x0540, 0, 0),
++	IMX8MN_PAD_SAI5_RXD3__GPIO3_IO24                                        = IOMUX_PAD(0x03BC, 0x0154, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SAI5_MCLK__SAI5_MCLK                                         = IOMUX_PAD(0x03C0, 0x0158, 0, 0x0594, 0, 0),
++	IMX8MN_PAD_SAI5_MCLK__GPIO3_IO25                                        = IOMUX_PAD(0x03C0, 0x0158, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SAI2_RXFS__SAI2_RX_SYNC                                      = IOMUX_PAD(0x0418, 0x01B0, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXFS__SAI5_TX_SYNC                                      = IOMUX_PAD(0x0418, 0x01B0, 1, 0x04EC, 2, 0),
++	IMX8MN_PAD_SAI2_RXFS__SAI5_TX_DATA1                                     = IOMUX_PAD(0x0418, 0x01B0, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXFS__SAI2_RX_DATA1                                     = IOMUX_PAD(0x0418, 0x01B0, 3, 0x05AC, 0, 0),
++	IMX8MN_PAD_SAI2_RXFS__UART1_DCE_TX                                      = IOMUX_PAD(0x0418, 0x01B0, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXFS__UART1_DTE_RX                                      = IOMUX_PAD(0x0418, 0x01B0, 4, 0x04F4, 2, 0),
++	IMX8MN_PAD_SAI2_RXFS__GPIO4_IO21                                        = IOMUX_PAD(0x0418, 0x01B0, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXFS__PDM_BIT_STREAM2                                   = IOMUX_PAD(0x0418, 0x01B0, 6, 0x053C, 7, 0),
++
++	IMX8MN_PAD_SAI2_RXC__SAI2_RX_BCLK                                       = IOMUX_PAD(0x041C, 0x01B4, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXC__SAI5_TX_BCLK                                       = IOMUX_PAD(0x041C, 0x01B4, 1, 0x04E8, 2, 0),
++	IMX8MN_PAD_SAI2_RXC__UART1_DCE_RX                                       = IOMUX_PAD(0x041C, 0x01B4, 4, 0x04F4, 3, 0),
++	IMX8MN_PAD_SAI2_RXC__UART1_DTE_TX                                       = IOMUX_PAD(0x041C, 0x01B4, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXC__GPIO4_IO22                                         = IOMUX_PAD(0x041C, 0x01B4, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXC__PDM_BIT_STREAM1                                    = IOMUX_PAD(0x041C, 0x01B4, 6, 0x0538, 8, 0),
++
++	IMX8MN_PAD_SAI2_RXD0__SAI2_RX_DATA0                                     = IOMUX_PAD(0x0420, 0x01B8, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXD0__SAI5_TX_DATA0                                     = IOMUX_PAD(0x0420, 0x01B8, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXD0__SAI2_TX_DATA1                                     = IOMUX_PAD(0x0420, 0x01B8, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXD0__UART1_DCE_RTS_B                                   = IOMUX_PAD(0x0420, 0x01B8, 4, 0x04F0, 2, 0),
++	IMX8MN_PAD_SAI2_RXD0__UART1_DTE_CTS_B                                   = IOMUX_PAD(0x0420, 0x01B8, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXD0__GPIO4_IO23                                        = IOMUX_PAD(0x0420, 0x01B8, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_RXD0__PDM_BIT_STREAM3                                   = IOMUX_PAD(0x0420, 0x01B8, 6, 0x0540, 7, 0),
++
++	IMX8MN_PAD_SAI2_TXFS__SAI2_TX_SYNC                                      = IOMUX_PAD(0x0424, 0x01BC, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXFS__SAI5_TX_DATA1                                     = IOMUX_PAD(0x0424, 0x01BC, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXFS__SAI2_TX_DATA1                                     = IOMUX_PAD(0x0424, 0x01BC, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXFS__UART1_DCE_CTS_B                                   = IOMUX_PAD(0x0424, 0x01BC, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXFS__UART1_DTE_RTS_B                                   = IOMUX_PAD(0x0424, 0x01BC, 4, 0x04F0, 3, 0),
++	IMX8MN_PAD_SAI2_TXFS__GPIO4_IO24                                        = IOMUX_PAD(0x0424, 0x01BC, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXFS__PDM_BIT_STREAM2                                   = IOMUX_PAD(0x0424, 0x01BC, 6, 0x053C, 8, 0),
++
++	IMX8MN_PAD_SAI2_TXC__SAI2_TX_BCLK                                       = IOMUX_PAD(0x0428, 0x01C0, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXC__SAI5_TX_DATA2                                      = IOMUX_PAD(0x0428, 0x01C0, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXC__GPIO4_IO25                                         = IOMUX_PAD(0x0428, 0x01C0, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXC__PDM_BIT_STREAM1                                    = IOMUX_PAD(0x0428, 0x01C0, 6, 0x0538, 9, 0),
++
++	IMX8MN_PAD_SAI2_TXD0__SAI2_TX_DATA0                                     = IOMUX_PAD(0x042C, 0x01C4, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXD0__SAI5_TX_DATA3                                     = IOMUX_PAD(0x042C, 0x01C4, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXD0__GPIO4_IO26                                        = IOMUX_PAD(0x042C, 0x01C4, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_TXD0__CCMSRCGPCMIX_BOOT_MODE4                           = IOMUX_PAD(0x042C, 0x01C4, 6, 0x0540, 8, 0),
++
++	IMX8MN_PAD_SAI2_MCLK__SAI2_MCLK                                         = IOMUX_PAD(0x0430, 0x01C8, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_MCLK__SAI5_MCLK                                         = IOMUX_PAD(0x0430, 0x01C8, 1, 0x0594, 2, 0),
++	IMX8MN_PAD_SAI2_MCLK__GPIO4_IO27                                        = IOMUX_PAD(0x0430, 0x01C8, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI2_MCLK__SAI3_MCLK                                         = IOMUX_PAD(0x0430, 0x01C8, 6, 0x05C0, 1, 0),
++
++	IMX8MN_PAD_SAI3_RXFS__SAI3_RX_SYNC                                      = IOMUX_PAD(0x0434, 0x01CC, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXFS__GPT1_CAPTURE1                                     = IOMUX_PAD(0x0434, 0x01CC, 1, 0x05F0, 0, 0),
++	IMX8MN_PAD_SAI3_RXFS__SAI5_RX_SYNC                                      = IOMUX_PAD(0x0434, 0x01CC, 2, 0x04E4, 2, 0),
++	IMX8MN_PAD_SAI3_RXFS__SAI3_RX_DATA1                                     = IOMUX_PAD(0x0434, 0x01CC, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXFS__SPDIF1_IN                                         = IOMUX_PAD(0x0434, 0x01CC, 4, 0x05CC, 3, 0),
++	IMX8MN_PAD_SAI3_RXFS__GPIO4_IO28                                        = IOMUX_PAD(0x0434, 0x01CC, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXFS__PDM_BIT_STREAM0                                   = IOMUX_PAD(0x0434, 0x01CC, 6, 0x0534, 5, 0),
++
++	IMX8MN_PAD_SAI3_RXC__SAI3_RX_BCLK                                       = IOMUX_PAD(0x0438, 0x01D0, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXC__GPT1_CLK                                           = IOMUX_PAD(0x0438, 0x01D0, 1, 0x05E8, 0, 0),
++	IMX8MN_PAD_SAI3_RXC__SAI5_RX_BCLK                                       = IOMUX_PAD(0x0438, 0x01D0, 2, 0x04D0, 2, 0),
++	IMX8MN_PAD_SAI3_RXC__SAI2_RX_DATA1                                      = IOMUX_PAD(0x0438, 0x01D0, 3, 0x05AC, 2, 0),
++	IMX8MN_PAD_SAI3_RXC__UART2_DCE_CTS_B                                    = IOMUX_PAD(0x0438, 0x01D0, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXC__UART2_DTE_RTS_B                                    = IOMUX_PAD(0x0438, 0x01D0, 4, 0x04F8, 2, 0),
++	IMX8MN_PAD_SAI3_RXC__GPIO4_IO29                                         = IOMUX_PAD(0x0438, 0x01D0, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXC__PDM_CLK                                            = IOMUX_PAD(0x0438, 0x01D0, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SAI3_RXD__SAI3_RX_DATA0                                      = IOMUX_PAD(0x043C, 0x01D4, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXD__GPT1_COMPARE1                                      = IOMUX_PAD(0x043C, 0x01D4, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXD__SAI5_RX_DATA0                                      = IOMUX_PAD(0x043C, 0x01D4, 2, 0x04D4, 2, 0),
++	IMX8MN_PAD_SAI3_RXD__SAI3_TX_DATA1                                      = IOMUX_PAD(0x043C, 0x01D4, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXD__UART2_DCE_RTS_B                                    = IOMUX_PAD(0x043C, 0x01D4, 4, 0x04F8, 3, 0),
++	IMX8MN_PAD_SAI3_RXD__UART2_DTE_CTS_B                                    = IOMUX_PAD(0x043C, 0x01D4, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXD__GPIO4_IO30                                         = IOMUX_PAD(0x043C, 0x01D4, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_RXD__PDM_BIT_STREAM1                                    = IOMUX_PAD(0x043C, 0x01D4, 6, 0x0538, 10, 0),
++
++	IMX8MN_PAD_SAI3_TXFS__SAI3_TX_SYNC                                      = IOMUX_PAD(0x0440, 0x01D8, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXFS__GPT1_CAPTURE2                                     = IOMUX_PAD(0x0440, 0x01D8, 1, 0x05EC, 0, 0),
++	IMX8MN_PAD_SAI3_TXFS__SAI5_RX_DATA1                                     = IOMUX_PAD(0x0440, 0x01D8, 2, 0x04D8, 1, 0),
++	IMX8MN_PAD_SAI3_TXFS__SAI3_TX_DATA1                                     = IOMUX_PAD(0x0440, 0x01D8, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXFS__UART2_DCE_RX                                      = IOMUX_PAD(0x0440, 0x01D8, 4, 0x04FC, 2, 0),
++	IMX8MN_PAD_SAI3_TXFS__UART2_DTE_TX                                      = IOMUX_PAD(0x0440, 0x01D8, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXFS__GPIO4_IO31                                        = IOMUX_PAD(0x0440, 0x01D8, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXFS__PDM_BIT_STREAM3                                   = IOMUX_PAD(0x0440, 0x01D8, 6, 0x0540, 9, 0),
++
++	IMX8MN_PAD_SAI3_TXC__SAI3_TX_BCLK                                       = IOMUX_PAD(0x0444, 0x01DC, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXC__GPT1_COMPARE2                                      = IOMUX_PAD(0x0444, 0x01DC, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXC__SAI5_RX_DATA2                                      = IOMUX_PAD(0x0444, 0x01DC, 2, 0x04DC, 1, 0),
++	IMX8MN_PAD_SAI3_TXC__SAI2_TX_DATA1                                      = IOMUX_PAD(0x0444, 0x01DC, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXC__UART2_DCE_TX                                       = IOMUX_PAD(0x0444, 0x01DC, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXC__UART2_DTE_RX                                       = IOMUX_PAD(0x0444, 0x01DC, 4, 0x04FC, 3, 0),
++	IMX8MN_PAD_SAI3_TXC__GPIO5_IO0                                          = IOMUX_PAD(0x0444, 0x01DC, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXC__PDM_BIT_STREAM2                                    = IOMUX_PAD(0x0444, 0x01DC, 6, 0x053C, 9, 0),
++
++	IMX8MN_PAD_SAI3_TXD__SAI3_TX_DATA0                                      = IOMUX_PAD(0x0448, 0x01E0, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXD__GPT1_COMPARE3                                      = IOMUX_PAD(0x0448, 0x01E0, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXD__SAI5_RX_DATA3                                      = IOMUX_PAD(0x0448, 0x01E0, 2, 0x04E0, 1, 0),
++	IMX8MN_PAD_SAI3_TXD__SPDIF1_EXT_CLK                                     = IOMUX_PAD(0x0448, 0x01E0, 4, 0x0568, 2, 0),
++	IMX8MN_PAD_SAI3_TXD__GPIO5_IO1                                          = IOMUX_PAD(0x0448, 0x01E0, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_TXD__CCMSRCGPCMIX_BOOT_MODE5                            = IOMUX_PAD(0x0448, 0x01E0, 6, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SAI3_MCLK__SAI3_MCLK                                         = IOMUX_PAD(0x044C, 0x01E4, 0, 0x05C0, 0, 0),
++	IMX8MN_PAD_SAI3_MCLK__PWM4_OUT                                          = IOMUX_PAD(0x044C, 0x01E4, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_MCLK__SAI5_MCLK                                         = IOMUX_PAD(0x044C, 0x01E4, 2, 0x0594, 3, 0),
++	IMX8MN_PAD_SAI3_MCLK__SPDIF1_OUT                                        = IOMUX_PAD(0x044C, 0x01E4, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_MCLK__GPIO5_IO2                                         = IOMUX_PAD(0x044C, 0x01E4, 5, 0x0000, 0, 0),
++	IMX8MN_PAD_SAI3_MCLK__SPDIF1_IN                                         = IOMUX_PAD(0x044C, 0x01E4, 6, 0x05CC, 4, 0),
++
++	IMX8MN_PAD_SPDIF_TX__SPDIF1_OUT                                         = IOMUX_PAD(0x0450, 0x01E8, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_SPDIF_TX__PWM3_OUT                                           = IOMUX_PAD(0x0450, 0x01E8, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SPDIF_TX__GPIO5_IO3                                          = IOMUX_PAD(0x0450, 0x01E8, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SPDIF_RX__SPDIF1_IN                                          = IOMUX_PAD(0x0454, 0x01EC, 0, 0x05CC, 0, 0),
++	IMX8MN_PAD_SPDIF_RX__PWM2_OUT                                           = IOMUX_PAD(0x0454, 0x01EC, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SPDIF_RX__GPIO5_IO4                                          = IOMUX_PAD(0x0454, 0x01EC, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_SPDIF_EXT_CLK__SPDIF1_EXT_CLK                                = IOMUX_PAD(0x0458, 0x01F0, 0, 0x0568, 0, 0),
++	IMX8MN_PAD_SPDIF_EXT_CLK__PWM1_OUT                                      = IOMUX_PAD(0x0458, 0x01F0, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_SPDIF_EXT_CLK__GPIO5_IO5                                     = IOMUX_PAD(0x0458, 0x01F0, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_ECSPI1_SCLK__ECSPI1_SCLK                                     = IOMUX_PAD(0x045C, 0x01F4, 0, 0x05D8, 0, 0),
++	IMX8MN_PAD_ECSPI1_SCLK__UART3_DCE_RX                                    = IOMUX_PAD(0x045C, 0x01F4, 1, 0x0504, 0, 0),
++	IMX8MN_PAD_ECSPI1_SCLK__UART3_DTE_TX                                    = IOMUX_PAD(0x045C, 0x01F4, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_ECSPI1_SCLK__I2C1_SCL                                        = IOMUX_PAD(0x045C, 0x01F4, 2, 0x055C, 2, 0),
++	IMX8MN_PAD_ECSPI1_SCLK__SAI5_RX_SYNC                                    = IOMUX_PAD(0x045C, 0x01F4, 3, 0x04DC, 2, 0),
++	IMX8MN_PAD_ECSPI1_SCLK__GPIO5_IO6                                       = IOMUX_PAD(0x045C, 0x01F4, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_ECSPI1_MOSI__ECSPI1_MOSI                                     = IOMUX_PAD(0x0460, 0x01F8, 0, 0x05A8, 0, 0),
++	IMX8MN_PAD_ECSPI1_MOSI__UART3_DCE_TX                                    = IOMUX_PAD(0x0460, 0x01F8, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_ECSPI1_MOSI__UART3_DTE_RX                                    = IOMUX_PAD(0x0460, 0x01F8, 1, 0x0504, 1, 0),
++	IMX8MN_PAD_ECSPI1_MOSI__I2C1_SDA                                        = IOMUX_PAD(0x0460, 0x01F8, 2, 0x056C, 2, 0),
++	IMX8MN_PAD_ECSPI1_MOSI__SAI5_RX_BCLK                                    = IOMUX_PAD(0x0460, 0x01F8, 3, 0x04D0, 3, 0),
++	IMX8MN_PAD_ECSPI1_MOSI__GPIO5_IO7                                       = IOMUX_PAD(0x0460, 0x01F8, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_ECSPI1_MISO__ECSPI1_MISO                                     = IOMUX_PAD(0x0464, 0x01FC, 0, 0x05C4, 0, 0),
++	IMX8MN_PAD_ECSPI1_MISO__UART3_DCE_CTS_B                                 = IOMUX_PAD(0x0464, 0x01FC, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_ECSPI1_MISO__UART3_DTE_RTS_B                                 = IOMUX_PAD(0x0464, 0x01FC, 1, 0x0500, 0, 0),
++	IMX8MN_PAD_ECSPI1_MISO__I2C2_SCL                                        = IOMUX_PAD(0x0464, 0x01FC, 2, 0x05D0, 2, 0),
++	IMX8MN_PAD_ECSPI1_MISO__SAI5_RX_DATA0                                   = IOMUX_PAD(0x0464, 0x01FC, 3, 0x04D4, 3, 0),
++	IMX8MN_PAD_ECSPI1_MISO__GPIO5_IO8                                       = IOMUX_PAD(0x0464, 0x01FC, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_ECSPI1_SS0__ECSPI1_SS0                                       = IOMUX_PAD(0x0468, 0x0200, 0, 0x0564, 0, 0),
++	IMX8MN_PAD_ECSPI1_SS0__UART3_DCE_RTS_B                                  = IOMUX_PAD(0x0468, 0x0200, 1, 0x0500, 1, 0),
++	IMX8MN_PAD_ECSPI1_SS0__UART3_DTE_CTS_B                                  = IOMUX_PAD(0x0468, 0x0200, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_ECSPI1_SS0__I2C2_SDA                                         = IOMUX_PAD(0x0468, 0x0200, 2, 0x0560, 2, 0),
++	IMX8MN_PAD_ECSPI1_SS0__SAI5_RX_DATA1                                    = IOMUX_PAD(0x0468, 0x0200, 3, 0x04D8, 2, 0),
++	IMX8MN_PAD_ECSPI1_SS0__SAI5_TX_SYNC                                     = IOMUX_PAD(0x0468, 0x0200, 4, 0x04EC, 3, 0),
++	IMX8MN_PAD_ECSPI1_SS0__GPIO5_IO9                                        = IOMUX_PAD(0x0468, 0x0200, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_ECSPI2_SCLK__ECSPI2_SCLK                                     = IOMUX_PAD(0x046C, 0x0204, 0, 0x0580, 0, 0),
++	IMX8MN_PAD_ECSPI2_SCLK__UART4_DCE_RX                                    = IOMUX_PAD(0x046C, 0x0204, 1, 0x050C, 0, 0),
++	IMX8MN_PAD_ECSPI2_SCLK__UART4_DTE_TX                                    = IOMUX_PAD(0x046C, 0x0204, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_ECSPI2_SCLK__I2C3_SCL                                        = IOMUX_PAD(0x046C, 0x0204, 2, 0x0588, 4, 0),
++	IMX8MN_PAD_ECSPI2_SCLK__SAI5_RX_DATA2                                   = IOMUX_PAD(0x046C, 0x0204, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_ECSPI2_SCLK__SAI5_TX_BCLK                                    = IOMUX_PAD(0x046C, 0x0204, 4, 0x04E8, 3, 0),
++	IMX8MN_PAD_ECSPI2_SCLK__GPIO5_IO10                                      = IOMUX_PAD(0x046C, 0x0204, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_ECSPI2_MOSI__ECSPI2_MOSI                                     = IOMUX_PAD(0x0470, 0x0208, 0, 0x0590, 0, 0),
++	IMX8MN_PAD_ECSPI2_MOSI__UART4_DCE_TX                                    = IOMUX_PAD(0x0470, 0x0208, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_ECSPI2_MOSI__UART4_DTE_RX                                    = IOMUX_PAD(0x0470, 0x0208, 1, 0x050C, 1, 0),
++	IMX8MN_PAD_ECSPI2_MOSI__I2C3_SDA                                        = IOMUX_PAD(0x0470, 0x0208, 2, 0x05BC, 4, 0),
++	IMX8MN_PAD_ECSPI2_MOSI__SAI5_RX_DATA3                                   = IOMUX_PAD(0x0470, 0x0208, 3, 0x04E0, 2, 0),
++	IMX8MN_PAD_ECSPI2_MOSI__SAI5_TX_DATA0                                   = IOMUX_PAD(0x0470, 0x0208, 4, 0x0000, 0, 0),
++	IMX8MN_PAD_ECSPI2_MOSI__GPIO5_IO11                                      = IOMUX_PAD(0x0470, 0x0208, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_ECSPI2_MISO__ECSPI2_MISO                                     = IOMUX_PAD(0x0474, 0x020C, 0, 0x0578, 0, 0),
++	IMX8MN_PAD_ECSPI2_MISO__UART4_DCE_CTS_B                                 = IOMUX_PAD(0x0474, 0x020C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_ECSPI2_MISO__UART4_DTE_RTS_B                                 = IOMUX_PAD(0x0474, 0x020C, 1, 0x0508, 0, 0),
++	IMX8MN_PAD_ECSPI2_MISO__I2C4_SCL                                        = IOMUX_PAD(0x0474, 0x020C, 2, 0x05D4, 3, 0),
++	IMX8MN_PAD_ECSPI2_MISO__SAI5_MCLK                                       = IOMUX_PAD(0x0474, 0x020C, 3, 0x0594, 4, 0),
++	IMX8MN_PAD_ECSPI2_MISO__GPIO5_IO12                                      = IOMUX_PAD(0x0474, 0x020C, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_ECSPI2_SS0__ECSPI2_SS0                                       = IOMUX_PAD(0x0478, 0x0210, 0, 0x0570, 0, 0),
++	IMX8MN_PAD_ECSPI2_SS0__UART4_DCE_RTS_B                                  = IOMUX_PAD(0x0478, 0x0210, 1, 0x0508, 1, 0),
++	IMX8MN_PAD_ECSPI2_SS0__UART4_DTE_CTS_B                                  = IOMUX_PAD(0x0478, 0x0210, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_ECSPI2_SS0__I2C4_SDA                                         = IOMUX_PAD(0x0478, 0x0210, 2, 0x058C, 5, 0),
++	IMX8MN_PAD_ECSPI2_SS0__GPIO5_IO13                                       = IOMUX_PAD(0x0478, 0x0210, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_I2C1_SCL__I2C1_SCL                                           = IOMUX_PAD(0x047C, 0x0214, 0 | IOMUX_CONFIG_SION, 0x055C, 0, 0),
++	IMX8MN_PAD_I2C1_SCL__ENET1_MDC                                          = IOMUX_PAD(0x047C, 0x0214, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_I2C1_SCL__ECSPI1_SCLK                                        = IOMUX_PAD(0x047C, 0x0214, 3, 0x05D8, 1, 0),
++	IMX8MN_PAD_I2C1_SCL__GPIO5_IO14                                         = IOMUX_PAD(0x047C, 0x0214, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_I2C1_SDA__I2C1_SDA                                           = IOMUX_PAD(0x0480, 0x0218, 0 | IOMUX_CONFIG_SION, 0x056C, 0, 0),
++	IMX8MN_PAD_I2C1_SDA__ENET1_MDIO                                         = IOMUX_PAD(0x0480, 0x0218, 1, 0x04C0, 2, 0),
++	IMX8MN_PAD_I2C1_SDA__ECSPI1_MOSI                                        = IOMUX_PAD(0x0480, 0x0218, 3, 0x05A8, 1, 0),
++	IMX8MN_PAD_I2C1_SDA__GPIO5_IO15                                         = IOMUX_PAD(0x0480, 0x0218, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_I2C2_SCL__I2C2_SCL                                           = IOMUX_PAD(0x0484, 0x021C, 0, 0x05D0, 0, 0),
++	IMX8MN_PAD_I2C2_SCL__ENET1_1588_EVENT1_IN                               = IOMUX_PAD(0x0484, 0x021C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_I2C2_SCL__USDHC3_CD_B                                        = IOMUX_PAD(0x0484, 0x021C, 2, 0x0598, 1, 0),
++	IMX8MN_PAD_I2C2_SCL__ECSPI1_MISO                                        = IOMUX_PAD(0x0484, 0x021C, 3, 0x05C4, 1, 0),
++	IMX8MN_PAD_I2C2_SCL__GPIO5_IO16                                         = IOMUX_PAD(0x0484, 0x021C, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_I2C2_SDA__I2C2_SDA                                           = IOMUX_PAD(0x0488, 0x0220, 0, 0x0560, 0, 0),
++	IMX8MN_PAD_I2C2_SDA__ENET1_1588_EVENT1_OUT                              = IOMUX_PAD(0x0488, 0x0220, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_I2C2_SDA__USDHC3_WP                                          = IOMUX_PAD(0x0488, 0x0220, 2, 0x05B8, 1, 0),
++	IMX8MN_PAD_I2C2_SDA__ECSPI1_SS0                                         = IOMUX_PAD(0x0488, 0x0220, 3, 0x0564, 1, 0),
++	IMX8MN_PAD_I2C2_SDA__GPIO5_IO17                                         = IOMUX_PAD(0x0488, 0x0220, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_I2C3_SCL__I2C3_SCL                                           = IOMUX_PAD(0x048C, 0x0224, 0, 0x0588, 0, 0),
++	IMX8MN_PAD_I2C3_SCL__PWM4_OUT                                           = IOMUX_PAD(0x048C, 0x0224, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_I2C3_SCL__GPT2_CLK                                           = IOMUX_PAD(0x048C, 0x0224, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_I2C3_SCL__ECSPI2_SCLK                                        = IOMUX_PAD(0x048C, 0x0224, 3, 0x0580, 2, 0),
++	IMX8MN_PAD_I2C3_SCL__GPIO5_IO18                                         = IOMUX_PAD(0x048C, 0x0224, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_I2C3_SDA__I2C3_SDA                                           = IOMUX_PAD(0x0490, 0x0228, 0, 0x05BC, 0, 0),
++	IMX8MN_PAD_I2C3_SDA__PWM3_OUT                                           = IOMUX_PAD(0x0490, 0x0228, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_I2C3_SDA__GPT3_CLK                                           = IOMUX_PAD(0x0490, 0x0228, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_I2C3_SDA__ECSPI2_MOSI                                        = IOMUX_PAD(0x0490, 0x0228, 3, 0x0590, 2, 0),
++	IMX8MN_PAD_I2C3_SDA__GPIO5_IO19                                         = IOMUX_PAD(0x0490, 0x0228, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_I2C4_SCL__I2C4_SCL                                           = IOMUX_PAD(0x0494, 0x022C, 0, 0x05D4, 0, 0),
++	IMX8MN_PAD_I2C4_SCL__PWM2_OUT                                           = IOMUX_PAD(0x0494, 0x022C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_I2C4_SCL__ECSPI2_MISO                                        = IOMUX_PAD(0x0494, 0x022C, 3, 0x0578, 2, 0),
++	IMX8MN_PAD_I2C4_SCL__GPIO5_IO20                                         = IOMUX_PAD(0x0494, 0x022C, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_I2C4_SDA__I2C4_SDA                                           = IOMUX_PAD(0x0498, 0x0230, 0, 0x058C, 0, 0),
++	IMX8MN_PAD_I2C4_SDA__PWM1_OUT                                           = IOMUX_PAD(0x0498, 0x0230, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_I2C4_SDA__ECSPI2_SS0                                         = IOMUX_PAD(0x0498, 0x0230, 3, 0x0570, 1, 0),
++	IMX8MN_PAD_I2C4_SDA__GPIO5_IO21                                         = IOMUX_PAD(0x0498, 0x0230, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_UART1_RXD__UART1_DCE_RX                                      = IOMUX_PAD(0x049C, 0x0234, 0, 0x04F4, 0, 0),
++	IMX8MN_PAD_UART1_RXD__UART1_DTE_TX                                      = IOMUX_PAD(0x049C, 0x0234, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_UART1_RXD__ECSPI3_SCLK                                       = IOMUX_PAD(0x049C, 0x0234, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_UART1_RXD__GPIO5_IO22                                        = IOMUX_PAD(0x049C, 0x0234, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_UART1_TXD__UART1_DCE_TX                                      = IOMUX_PAD(0x04A0, 0x0238, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_UART1_TXD__UART1_DTE_RX                                      = IOMUX_PAD(0x04A0, 0x0238, 0, 0x04F4, 1, 0),
++	IMX8MN_PAD_UART1_TXD__ECSPI3_MOSI                                       = IOMUX_PAD(0x04A0, 0x0238, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_UART1_TXD__GPIO5_IO23                                        = IOMUX_PAD(0x04A0, 0x0238, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_UART2_RXD__UART2_DCE_RX                                      = IOMUX_PAD(0x04A4, 0x023C, 0, 0x04FC, 0, 0),
++	IMX8MN_PAD_UART2_RXD__UART2_DTE_TX                                      = IOMUX_PAD(0x04A4, 0x023C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_UART2_RXD__ECSPI3_MISO                                       = IOMUX_PAD(0x04A4, 0x023C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_UART2_RXD__GPT1_COMPARE3                                     = IOMUX_PAD(0x04A4, 0x023C, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_UART2_RXD__GPIO5_IO24                                        = IOMUX_PAD(0x04A4, 0x023C, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_UART2_TXD__UART2_DCE_TX                                      = IOMUX_PAD(0x04A8, 0x0240, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_UART2_TXD__UART2_DTE_RX                                      = IOMUX_PAD(0x04A8, 0x0240, 0, 0x04FC, 1, 0),
++	IMX8MN_PAD_UART2_TXD__ECSPI3_SS0                                        = IOMUX_PAD(0x04A8, 0x0240, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_UART2_TXD__GPT1_COMPARE2                                     = IOMUX_PAD(0x04A8, 0x0240, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_UART2_TXD__GPIO5_IO25                                        = IOMUX_PAD(0x04A8, 0x0240, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_UART3_RXD__UART3_DCE_RX                                      = IOMUX_PAD(0x04AC, 0x0244, 0, 0x0504, 2, 0),
++	IMX8MN_PAD_UART3_RXD__UART3_DTE_TX                                      = IOMUX_PAD(0x04AC, 0x0244, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_UART3_RXD__UART1_DCE_CTS_B                                   = IOMUX_PAD(0x04AC, 0x0244, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_UART3_RXD__UART1_DTE_RTS_B                                   = IOMUX_PAD(0x04AC, 0x0244, 1, 0x04F0, 0, 0),
++	IMX8MN_PAD_UART3_RXD__USDHC3_RESET_B                                    = IOMUX_PAD(0x04AC, 0x0244, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_UART3_RXD__GPT1_CAPTURE2                                     = IOMUX_PAD(0x04AC, 0x0244, 3, 0x05EC, 1, 0),
++	IMX8MN_PAD_UART3_RXD__GPIO5_IO26                                        = IOMUX_PAD(0x04AC, 0x0244, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_UART3_TXD__UART3_DCE_TX                                      = IOMUX_PAD(0x04B0, 0x0248, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_UART3_TXD__UART3_DTE_RX                                      = IOMUX_PAD(0x04B0, 0x0248, 0, 0x0504, 3, 0),
++	IMX8MN_PAD_UART3_TXD__UART1_DCE_RTS_B                                   = IOMUX_PAD(0x04B0, 0x0248, 1, 0x04F0, 1, 0),
++	IMX8MN_PAD_UART3_TXD__UART1_DTE_CTS_B                                   = IOMUX_PAD(0x04B0, 0x0248, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_UART3_TXD__USDHC3_VSELECT                                    = IOMUX_PAD(0x04B0, 0x0248, 2, 0x0000, 0, 0),
++	IMX8MN_PAD_UART3_TXD__GPT1_CLK                                          = IOMUX_PAD(0x04B0, 0x0248, 3, 0x05E8, 1, 0),
++	IMX8MN_PAD_UART3_TXD__GPIO5_IO27                                        = IOMUX_PAD(0x04B0, 0x0248, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_UART4_RXD__UART4_DCE_RX                                      = IOMUX_PAD(0x04B4, 0x024C, 0, 0x050C, 2, 0),
++	IMX8MN_PAD_UART4_RXD__UART4_DTE_TX                                      = IOMUX_PAD(0x04B4, 0x024C, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_UART4_RXD__UART2_DCE_CTS_B                                   = IOMUX_PAD(0x04B4, 0x024C, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_UART4_RXD__UART2_DTE_RTS_B                                   = IOMUX_PAD(0x04B4, 0x024C, 1, 0x04F8, 0, 0),
++	IMX8MN_PAD_UART4_RXD__GPT1_COMPARE1                                     = IOMUX_PAD(0x04B4, 0x024C, 3, 0x0000, 0, 0),
++	IMX8MN_PAD_UART4_RXD__GPIO5_IO28                                        = IOMUX_PAD(0x04B4, 0x024C, 5, 0x0000, 0, 0),
++
++	IMX8MN_PAD_UART4_TXD__UART4_DCE_TX                                      = IOMUX_PAD(0x04B8, 0x0250, 0, 0x0000, 0, 0),
++	IMX8MN_PAD_UART4_TXD__UART4_DTE_RX                                      = IOMUX_PAD(0x04B8, 0x0250, 0, 0x050C, 3, 0),
++	IMX8MN_PAD_UART4_TXD__UART2_DCE_RTS_B                                   = IOMUX_PAD(0x04B8, 0x0250, 1, 0x04F8, 1, 0),
++	IMX8MN_PAD_UART4_TXD__UART2_DTE_CTS_B                                   = IOMUX_PAD(0x04B8, 0x0250, 1, 0x0000, 0, 0),
++	IMX8MN_PAD_UART4_TXD__GPT1_CAPTURE1                                     = IOMUX_PAD(0x04B8, 0x0250, 3, 0x05F0, 1, 0),
++	IMX8MN_PAD_UART4_TXD__GPIO5_IO29                                        = IOMUX_PAD(0x04B8, 0x0250, 5, 0x0000, 0, 0),
++};
++
++
++static inline void imx8mn_setup_pad(iomux_v3_cfg_t pad)
++{
++	void __iomem *iomux = IOMEM(MX8MN_IOMUXC_BASE_ADDR);
++
++	imx8m_setup_pad(iomux, pad);
++}
++
++#endif
+diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
+index 7187787f5b79..f0deaf068aed 100644
+--- a/arch/arm/mach-imx/include/mach/xload.h
++++ b/arch/arm/mach-imx/include/mach/xload.h
+@@ -8,6 +8,7 @@ int imx6_esdhc_start_image(int instance);
+ int imx6_nand_start_image(void);
+ int imx7_esdhc_start_image(int instance);
+ int imx8m_esdhc_load_image(int instance, bool start);
++int imx8mn_esdhc_load_image(int instance, bool start);
+ int imx8mp_esdhc_load_image(int instance, bool start);
+ 
+ int imx_image_size(void);
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 66df4f6dfc74..5a76e7a66381 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -384,6 +384,9 @@ int imx8mp_esdhc_load_image(int instance, bool start)
+ 	return esdhc_load_image(&host, MX8M_DDR_CSD1_BASE_ADDR,
+ 				MX8MQ_ATF_BL33_BASE_ADDR, offset, 0, start);
+ }
++
++int imx8mn_esdhc_load_image(int instance, bool start)
++	__alias(imx8mp_esdhc_load_image);
+ #endif
+ 
+ #ifdef CONFIG_ARCH_LS1046
+diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+index 7a3ac31cd218..77dea7c54a3b 100644
+--- a/scripts/imx/imx.h
++++ b/scripts/imx/imx.h
+@@ -7,6 +7,7 @@ static inline int cpu_is_mx8m(const struct config_data *data)
+ 	switch (data->cpu_type) {
+ 	case IMX_CPU_IMX8MQ:
+ 	case IMX_CPU_IMX8MM:
++	case IMX_CPU_IMX8MN:
+ 	case IMX_CPU_IMX8MP:
+ 		return true;
+ 	default:
 -- 
 2.30.2
 
