@@ -1,15 +1,15 @@
-Delivery-date: Sat, 02 Oct 2021 11:20:56 +0200
+Delivery-date: Sat, 02 Oct 2021 11:27:57 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWbCS-0003BP-VF
-	for lore@lore.pengutronix.de; Sat, 02 Oct 2021 11:20:56 +0200
+	id 1mWbJF-0003Xi-KX
+	for lore@lore.pengutronix.de; Sat, 02 Oct 2021 11:27:57 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mWbCS-0001vD-3u
-	for lore@pengutronix.de; Sat, 02 Oct 2021 11:20:56 +0200
+	id 1mWbJE-0002aH-M6
+	for lore@pengutronix.de; Sat, 02 Oct 2021 11:27:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=IuOC6/MYeoQmq7vZcaebBksiQIOvvfHR60etsCh1g24=; b=ylXEzS4EUfQ6WnAZWq5zWLKbEg
-	7z09ae5eU/bFjMtnI2ksSoP+QsC/MNoUIGuYFVQHLvu8ai8cN4LLzpg+nPuYOLK0zrD8jWjT6W1IB
-	FOEqmhpCg1NmmvWeuwLXtt4EeNmgVxsxzDODeBcLHcjxIv7hfsKiFCiTixmn02y9ATmwSbVqYqzic
-	6vZmqrLGCREPXyX+BWA8wGswB+PHmuIUGEWGRmKTt1tTYACF9pz9RkVDd6Lztj/Gg4keTJXPX4C8m
-	63pn1MrU+IruTlL9fUyRkS8LojTs5K9nr7AagYpq3nf280V9Ku4YXA3JgzgdRv2zGtRmFRsVMoZPc
-	oBDYiCxg==;
+	bh=1I+f6rhGxLNl1u/gfOow9ZZRP2UwCGDrm3LClETde1I=; b=xHLOpd0zJwubD6XUCho+cgZ75G
+	QoLfM3Qf6fUppeDUqNbYG2RV12TxrqfXs0Q+1nEiThwF7XDHcphkimrdubz7RhoawFm/5nmEsvK0N
+	meCoLecijki/DqjzlJ+t4//KJb8Ip1o0ZJL7xyt09dySXWftExljeAJdxktNrxPgwUUn4ssm4ecM3
+	LA4z4fU96Ihbg+ZzomueU5MnL1M8zDwSs5IZMkNVM8S2Wbz2jFaPD3URr8/RxmBA0G8DgitFzdjqZ
+	mPvWm63HOn0UWonsm4Eu7Fv6GqL7DyHklL9Yhe26fjcQkN+w8QzKcWDVo2o/MryreKK+0ghVv2wvw
+	oTEoz/Ew==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mWbBF-001zSf-NV; Sat, 02 Oct 2021 09:19:41 +0000
+	id 1mWbHp-001zny-60; Sat, 02 Oct 2021 09:26:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mWbBA-001zRl-RA
- for barebox@lists.infradead.org; Sat, 02 Oct 2021 09:19:38 +0000
+ id 1mWbHj-001znL-VJ
+ for barebox@lists.infradead.org; Sat, 02 Oct 2021 09:26:25 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mWbB9-0001gd-JX; Sat, 02 Oct 2021 11:19:35 +0200
+ id 1mWbHg-0002P0-L6; Sat, 02 Oct 2021 11:26:20 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mWbB9-0001UF-Ag; Sat, 02 Oct 2021 11:19:35 +0200
-Date: Sat, 2 Oct 2021 11:19:35 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20211002091935.GF28453@pengutronix.de>
-References: <20210916093514.21267-1-a.fatoum@pengutronix.de>
+ id 1mWbHg-0001lp-Bg; Sat, 02 Oct 2021 11:26:20 +0200
+Date: Sat, 2 Oct 2021 11:26:20 +0200
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org,
+ Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Message-ID: <20211002092620.GG28453@pengutronix.de>
+References: <20210915123644.1292607-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210916093514.21267-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20210915123644.1292607-1-ahmad@a3f.at>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 11:19:20 up 226 days, 12:43, 94 users,  load average: 0.25, 0.20,
- 0.18
+X-Uptime: 11:26:01 up 226 days, 12:49, 94 users,  load average: 0.08, 0.09,
+ 0.13
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211002_021936_903132_DFAC03F0 
-X-CRM114-Status: GOOD (  19.35  )
+X-CRM114-CacheID: sfid-20211002_022624_031157_78403C31 
+X-CRM114-Status: GOOD (  22.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,23 +84,36 @@ X-Spam-Status: No, score=-2.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,PTX_BROKEN_RDNS,RCVD_IN_DNSWL_MED,RDNS_NONE,
 	SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] RISC-V: board-dt-2nd: move low level init into
- nonnaked function
+Subject: Re: [PATCH v2] console: add new CONFIG_CONSOLE_DISABLE_INPUT option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Sep 16, 2021 at 11:35:14AM +0200, Ahmad Fatoum wrote:
-> The generic DT image for RISC-V mimics a kernel image and specifies
-> a load offset that it expects to be honoured. The stack should then
-> grow down from the load address. This didn't work as intended though
-> with riscv64-linux-gnu-gcc (Debian 10.2.1-6), because of the entry
-> point's __naked attribute: local variables overwrote the first bytes
-> of the entry point. Fix this by using a noinline nonnaked function.
+On Wed, Sep 15, 2021 at 02:36:44PM +0200, Ahmad Fatoum wrote:
+> From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > 
+> Add CONFIG_CONSOLE_DISABLE_INPUT to initialize the consoles without
+> input support, making default bootup effectively non-interactive.
+> 
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/riscv/boot/board-dt-2nd.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+> v1 is <20201013075925.2984-1-r.czerwinski@pengutronix.de>
+> v1 -> v2:
+>   - Make it the default for CONSOLE_NONE. This allows skipping
+>     count down there early.
+>   - rename write-only to disable input. This is arguably clearer
+>   - allow re-enabling input on a per console basis. This way
+>     e.g. a gpio-key with limited function can be reenabled,
+>     but all other consoles have input disabled by default.
+>   - add new CONSOLE_STDIOE to make the three bits easier to
+>     write as a group.
+> ---
+>  common/Kconfig          | 11 +++++++++++
+>  common/console.c        | 12 +++++++-----
+>  common/console_simple.c |  5 ++++-
+>  common/startup.c        |  5 +++++
+>  include/console.h       |  2 ++
+>  5 files changed, 29 insertions(+), 6 deletions(-)
 
 Applied, thanks
 
