@@ -1,88 +1,63 @@
-Delivery-date: Mon, 04 Oct 2021 14:13:31 +0200
+Delivery-date: Mon, 04 Oct 2021 14:15:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mXMqZ-0007Yb-NG
-	for lore@lore.pengutronix.de; Mon, 04 Oct 2021 14:13:31 +0200
+	id 1mXMsp-0007d0-Qf
+	for lore@lore.pengutronix.de; Mon, 04 Oct 2021 14:15:51 +0200
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mXMqY-0008EV-Ss
-	for lore@pengutronix.de; Mon, 04 Oct 2021 14:13:31 +0200
+	id 1mXMso-0000Dm-Th
+	for lore@pengutronix.de; Mon, 04 Oct 2021 14:15:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=sy1OG6OoGMcHhlOaWRTSv70+eT7M+umF4Pdjms6E0yE=; b=L35UxbP8GT8fFB
-	9qruSpxvCGzBJ/k6E+CH3jvRR2gFbj0/sTNUq2WJoNGKj6xY/bDQlf7FH4AtTxDqED3wGCx4+ew8b
-	eBRxNBjLiK8wltoJ9U9kIV/9fEq5K5fqpMnTyNT720aRjRBeeacb0/0j2sTkQTTkhdJc4Pw9MoXXk
-	9ueUOJNjFXR8n9xMzaHG8bNUiUoGGHuEBpt1dW4c79OJXmF2F1E+7ClewFVkU3XEd3jlHAFAck2EF
-	dSvq+KiEK10uBZNwQadOfGeiZ8GsAVTU0eIa+t5K92+9Eqtb6zUnnAZ9lcPRdtNDU8E+Ckf9WX3L3
-	Juyj++nlpbXCrqFRAZCA==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=OX4em/AkBLtaybjm6iVEf9QnuxM0msmRtthgdcw2sfk=; b=i/P4s4ejFzmM72rrroIyOgSVVv
+	fgJSPsFT0IHoPrtBDVS83snMgcEPQw0/hI3ZjWTyGA8OkbwDVcM77Q3CViw12yDK1djbKg1llFuwo
+	7uY+wU5paCUejhWLTD1pFUh/oQbR2Dt/sTZkcQ66ZTuAdvBqFXZ+s98C3X5T8EUSD4PkPA3/QDQTb
+	xis/zTiQwh6j1XUf0ssUUwR7KHMcnBfOPeRe5GMIrvCkm7m27VHZXaR9Dwld9GeN67Nqmc/m1uuGC
+	HnYCSkNnl5gXlsday8ZFfuCDD/w+iiLAV/m7ci6Se6hfJ4NKMtBOKhtvSjeH7A3gq8F3awG+4RRYi
+	/K4jh8wQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mXMp2-006OR0-Et; Mon, 04 Oct 2021 12:11:56 +0000
-Received: from mxout.security-mail.net ([85.31.212.48]
- helo=fx304.security-mail.net)
+	id 1mXMrJ-006PFz-59; Mon, 04 Oct 2021 12:14:17 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mXMov-006OP1-6c
- for barebox@lists.infradead.org; Mon, 04 Oct 2021 12:11:50 +0000
-Received: from localhost (localhost [127.0.0.1])
- by fx304.security-mail.net (Postfix) with ESMTP id CDE9762A21
- for <barebox@lists.infradead.org>; Mon,  4 Oct 2021 14:11:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
- s=sec-sig-email; t=1633349472;
- bh=6nuuSLAY5p3xsOadaTJ2kKZQmBSWbOAkWkifx/PR0A0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To;
- b=luYNxYuWxeOyTg18FR6+EZYbpFxlayluoac2MgPh2P84CE/moLsXp2+sZKwnA0AKx
- 4GRAm/jut+F/YQiQboEIaKBO5dPuLwn+YbXZc9brqwckog4Zka9NdZGRWq6WZgqptK
- LN6eGntijfStm0IbQeGvNMlg8X4w3Jv95YvnMmBc=
-Received: from fx304 (localhost [127.0.0.1]) by fx304.security-mail.net
- (Postfix) with ESMTP id 6494362A18; Mon,  4 Oct 2021 14:11:12 +0200 (CEST)
-Received: from zimbra2.kalray.eu (unknown [217.181.231.53]) by
- fx304.security-mail.net (Postfix) with ESMTPS id 01337629FC; Mon,  4 Oct
- 2021 14:11:12 +0200 (CEST)
-Received: from zimbra2.kalray.eu (localhost [127.0.0.1]) by
- zimbra2.kalray.eu (Postfix) with ESMTPS id D8BB027E031D; Mon,  4 Oct 2021
- 14:11:11 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1]) by zimbra2.kalray.eu
- (Postfix) with ESMTP id C184B27E0322; Mon,  4 Oct 2021 14:11:11 +0200 (CEST)
-Received: from zimbra2.kalray.eu ([127.0.0.1]) by localhost
- (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026) with ESMTP id
- b8c4wUYAAcH2; Mon,  4 Oct 2021 14:11:11 +0200 (CEST)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206]) by
- zimbra2.kalray.eu (Postfix) with ESMTPSA id AFE0727E031D; Mon,  4 Oct 2021
- 14:11:11 +0200 (CEST)
-X-Virus-Scanned: E-securemail, by Secumail
-Secumail-id: <10b15.615aef60.38e.0>
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu C184B27E0322
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1633349471;
- bh=6nuuSLAY5p3xsOadaTJ2kKZQmBSWbOAkWkifx/PR0A0=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=BSB31UYTnzIPIbI2/fDepDr23SLRhoLH7jaTpJpfj5YhQQHT1IDU5UmWNLu6hid0l
- 2FpmBwj7MnuMcOSScXxk4mqno/bovPADIjzWLxLCs29jPy/jHO0WApgMAvxuRkmbal
- Bj/J0s7zt15bt/zGtSY6cWuqHqjkCn42NKnBQDdA=
-Date: Mon, 4 Oct 2021 14:11:10 +0200
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org, =?utf-8?b?QW7FvmUgTGXFoW5paw==?=
- <anze.lesnik@norik.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20211004121110.GF19809@tellis.lin.mbt.kalray.eu>
-References: <20210910102931.26078-1-jmaselbas@kalray.eu>
- <20211004114556.GB28453@pengutronix.de>
+ id 1mXMr4-006P9q-Dv
+ for barebox@lists.infradead.org; Mon, 04 Oct 2021 12:14:04 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mXMr2-0008Gg-Vn; Mon, 04 Oct 2021 14:14:00 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mXMr2-0007Bv-LH; Mon, 04 Oct 2021 14:14:00 +0200
+Date: Mon, 4 Oct 2021 14:14:00 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20211004121400.GJ28453@pengutronix.de>
+References: <20210830115325.24905-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211004114556.GB28453@pengutronix.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-ALTERMIMEV2_out: done
+In-Reply-To: <20210830115325.24905-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 14:13:50 up 228 days, 15:37, 143 users,  load average: 0.27, 0.28,
+ 0.27
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211004_051149_558192_88504590 
-X-CRM114-Status: UNSURE (   4.38  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20211004_051402_501940_46213F2C 
+X-CRM114-Status: GOOD (  23.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -102,26 +77,77 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] usb: gadget: dfu: Rework dfu command to use usbgadget
+Subject: Re: [PATCH] ARM: i.MX8MP: move SCTR enabling into
+ imx8mp_cpu_lowlevel_init
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Sascha,
+On Mon, Aug 30, 2021 at 01:53:25PM +0200, Ahmad Fatoum wrote:
+> We already do this SCTR poking in imx8mm_cpu_lowlevel_init. If the EVK
+> needs it, other boards should as well, thus move it to a more generic
+> place.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/boards/nxp-imx8mp-evk/lowlevel.c | 5 -----
+>  arch/arm/mach-imx/cpu_init.c              | 4 +---
+>  2 files changed, 1 insertion(+), 8 deletions(-)
 
-Would it be interesting to do the same for other usbgadget commands ?
-I think there is the "serial" command that still doesn't uses the
-usbgaget.
+Applied, thanks
 
-Best,
-Jules
+Sascha
 
+> 
+> diff --git a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
+> index 3298ded5866d..6cb109ae1675 100644
+> --- a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
+> +++ b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
+> @@ -179,11 +179,6 @@ static __noreturn noinline void nxp_imx8mp_evk_start(void)
+>  
+>  ENTRY_FUNCTION(start_nxp_imx8mp_evk, r0, r1, r2)
+>  {
+> -	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
+> -
+> -	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
+> -	       ccm + IMX8M_CCM_CCGRn_SET(IMX8M_CCM_CCGR_SCTR));
+> -
+>  	imx8mp_cpu_lowlevel_init();
+>  
+>  	relocate_to_current_adr();
+> diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+> index a034b5a9a500..ea1c67469122 100644
+> --- a/arch/arm/mach-imx/cpu_init.c
+> +++ b/arch/arm/mach-imx/cpu_init.c
+> @@ -76,9 +76,7 @@ void imx8mm_cpu_lowlevel_init(void)
+>  }
+>  
+>  void imx8mp_cpu_lowlevel_init(void)
+> -{
+> -	imx8m_cpu_lowlevel_init();
+> -}
+> +	__alias(imx8mm_cpu_lowlevel_init);
+>  
+>  void imx8mq_cpu_lowlevel_init(void)
+>  {
+> -- 
+> 2.30.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
