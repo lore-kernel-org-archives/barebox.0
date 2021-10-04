@@ -1,15 +1,15 @@
-Delivery-date: Mon, 04 Oct 2021 13:06:45 +0200
+Delivery-date: Mon, 04 Oct 2021 13:09:06 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mXLnx-0005Xm-9v
-	for lore@lore.pengutronix.de; Mon, 04 Oct 2021 13:06:45 +0200
+	id 1mXLqE-0005dU-2Q
+	for lore@lore.pengutronix.de; Mon, 04 Oct 2021 13:09:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mXLnw-0007PQ-95
-	for lore@pengutronix.de; Mon, 04 Oct 2021 13:06:45 +0200
+	id 1mXLqD-0007dn-3l
+	for lore@pengutronix.de; Mon, 04 Oct 2021 13:09:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=kQWXB9RJtq9ntIGPOlyMmgDxT8akjPgGhmRU5NeCQ4c=; b=ZO2tI5QWUg3UF/If4dwUNY+6fG
-	kx5AapWSG/y3akiJu07zrlEZYVKCzjZ92lo8t5su9moyMKO/B52S7113fFkO+AEfS2F43cPdGskM3
-	dGhnSTPFlv+HQn3er6qeNTBA5MbXGN612HgDdj2ZiMUdls2h7KOcNJzuBOOlf64XdTRPSofFDVhik
-	QJlq+AbxVTgdUyX1G4HFTNxxvVLnw9Rd5BGMAeU0iC/bz5EBADexvNA+d74jG0maxPPRyg9imjyiz
-	KJxsvG53q0YMCn3GOkmx0R7EekM+5B+ymQKsBs4qSSwHPPrY8IVIVMAhYXNQ9yiZy95onj+ScUQVc
-	DYUPA68A==;
+	bh=NelLiQyizH6vUqS+qMrvyWq1ak5brxWha2dJQ9J5sMo=; b=XLMuh4kIUZ1Y/ZmuuYUCIJZ9GM
+	m+LwPg7dTYt7mv42HyRlXiyFi0L+EQlHKtMIHJ0f9x155kfKTYuKmF/m1PYV0F4n1xnMCUBHTm/ID
+	X95rwRpgWpX4asgmsVxU/n0Imd/U9lC7oshYDWm6AZVNekXY3uwEgOsO6h9701SM0+BukGG03Pl+l
+	cLAT3hQDc9a2OjY0ohMphpa4IdzW5Di4IkXVg2BqWF778R5vqJ3e4GFGdlBHfHpigezzz9lHdwfQm
+	s8hrhcYtAp1gExV9oXzp9lo6ij5wp4PXAX+vM6lcMZgBcNOBYU21Dc/dtxT5y348JCIEDZTFeoJRd
+	4koVnBfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mXLmc-0064T0-P6; Mon, 04 Oct 2021 11:05:22 +0000
+	id 1mXLoq-0064re-Ho; Mon, 04 Oct 2021 11:07:40 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mXLmY-0064SH-0z
- for barebox@lists.infradead.org; Mon, 04 Oct 2021 11:05:19 +0000
+ id 1mXLom-0064rF-4q
+ for barebox@lists.infradead.org; Mon, 04 Oct 2021 11:07:37 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mXLmW-0007D4-Jm; Mon, 04 Oct 2021 13:05:16 +0200
+ id 1mXLok-0007Ry-Ph; Mon, 04 Oct 2021 13:07:34 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mXLmW-0002KH-As; Mon, 04 Oct 2021 13:05:16 +0200
-Date: Mon, 4 Oct 2021 13:05:16 +0200
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20211004110516.GV28453@pengutronix.de>
-References: <20210831064715.8392-1-s.trumtrar@pengutronix.de>
+ id 1mXLoj-0002NL-LC; Mon, 04 Oct 2021 13:07:33 +0200
+Date: Mon, 4 Oct 2021 13:07:33 +0200
+To: "Karfich, Oleg" <Oleg.Karfich@wago.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Message-ID: <20211004110733.GW28453@pengutronix.de>
+References: <1630414594-10601-1-git-send-email-oleg.karfich@wago.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210831064715.8392-1-s.trumtrar@pengutronix.de>
+In-Reply-To: <1630414594-10601-1-git-send-email-oleg.karfich@wago.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 13:05:04 up 228 days, 14:28, 143 users,  load average: 0.13, 0.36,
- 0.32
+X-Uptime: 13:07:24 up 228 days, 14:31, 143 users,  load average: 0.15, 0.29,
+ 0.30
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211004_040518_091698_5DF55C76 
-X-CRM114-Status: GOOD (  26.96  )
+X-CRM114-CacheID: sfid-20211004_040736_217496_296B6262 
+X-CRM114-Status: GOOD (  25.86  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,58 +81,51 @@ X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] mci: sdhci: fix big-endian write for blockcount/size
+Subject: Re: [PATCH] net: cpsw: fix ethernet bringup in case of a fixed-link
+ phy
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Aug 31, 2021 at 08:47:15AM +0200, Steffen Trumtrar wrote:
-> From: Steffen Trumtrar <str@pengutronix.de>
+On Tue, Aug 31, 2021 at 12:57:01PM +0000, Karfich, Oleg wrote:
+> In case of a fixed-link phy the cpsw_adjust_link() function is
+> called directly in phy_device_attach() and configures the MACCONTROL
+> register. Right after this configuration cpsw_init() is called and
+> resets the MACCONTROL register.
+> Fix this by initializing the slave before connecting the phy device in
+> cpsw_open().
 > 
-> The patch
-> 
->     0a47bce1b03fd236384e904dca005c0870ce8684
->     mci: imx-esdhc: Use common DMA helpers
-> 
-> converted the imx-esdhc driver to use the DMA helpers introduced with
-> 
->     60b608b2714472aa22862a20d04f267cbbac0863
->     mci: sdhci: Add DMA transfer helpers
-> 
-> The common DMA helpers however break support for BE-variants (e.g.
-> Layerscape) as the BLKATTR register seems to be a 32-bit register which
-> internally switches bytes when used with two 16-bit write accesses.
-> As the alignment should also work for LE-SDHCI-variants convert the two
-> 16-bit accesses to one 32-bit access.
-> 
-> Signed-off-by: Steffen Trumtrar <str@pengutronix.de>
+> Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
 > ---
->  drivers/mci/sdhci.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+>  drivers/net/cpsw.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
-> index aca4a5a6f911..8b5520d6827a 100644
-> --- a/drivers/mci/sdhci.c
-> +++ b/drivers/mci/sdhci.c
-> @@ -129,9 +129,8 @@ void sdhci_setup_data_pio(struct sdhci *sdhci, struct mci_data *data)
->  	if (!data)
->  		return;
+> diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+> index b01e7ac..4a8f9e6 100644
+> --- a/drivers/net/cpsw.c
+> +++ b/drivers/net/cpsw.c
+> @@ -901,13 +901,13 @@ static int cpsw_open(struct eth_device *edev)
 >  
-> -	sdhci_write16(sdhci, SDHCI_BLOCK_SIZE, sdhci->sdma_boundary |
-> -		    SDHCI_TRANSFER_BLOCK_SIZE(data->blocksize));
-> -	sdhci_write16(sdhci, SDHCI_BLOCK_COUNT, data->blocks);
-> +	sdhci_write32(sdhci, SDHCI_BLOCK_SIZE, sdhci->sdma_boundary |
-> +		      SDHCI_TRANSFER_BLOCK_SIZE(data->blocksize) | data->blocks << 16);
+>  	dev_dbg(&slave->dev, "* %s\n", __func__);
+>  
+> +	cpsw_slave_init(slave, priv);
+> +
+>  	ret = phy_device_connect(edev, NULL, slave->phy_id,
+>  				 cpsw_adjust_link, 0, slave->phy_if);
+>  	if (ret)
+>  		return ret;
+>  
+> -	cpsw_slave_init(slave, priv);
+> -
+>  	return 0;
 >  }
 >  
->  void sdhci_setup_data_dma(struct sdhci *sdhci, struct mci_data *data,
 > -- 
-> 2.30.2
-> 
+> 2.7.4
 > 
 > _______________________________________________
 > barebox mailing list
