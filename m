@@ -1,84 +1,65 @@
-Delivery-date: Mon, 04 Oct 2021 09:40:57 +0200
+Delivery-date: Mon, 04 Oct 2021 09:54:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mXIan-0008KF-VR
-	for lore@lore.pengutronix.de; Mon, 04 Oct 2021 09:40:57 +0200
+	id 1mXIns-0000H8-L6
+	for lore@lore.pengutronix.de; Mon, 04 Oct 2021 09:54:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mXIan-0007zA-3j
-	for lore@pengutronix.de; Mon, 04 Oct 2021 09:40:57 +0200
+	id 1mXInr-0000zr-H6
+	for lore@pengutronix.de; Mon, 04 Oct 2021 09:54:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:List-Subscribe:List-Help:
-	List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:Subject:Cc:To
-	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=xMFhsy7OpZMnLsGRB+h6L5+yjD8itDxiBe4V8ITefBw=; b=q94MYRwS1+82vV
-	jmfi0FrJpIhz0GPxE34f8k8rOkGr136V9GO2Q4LAIHc55u9InA8cnZwmJtaBxzRP3F5pczS9GvoMF
-	hiK+sqfJeM5QW1TH7K1G3mLKIG/2GaaEde+C4NWbs5qXqkaU7xyVKwKwgnX12S0Y+fA5ApitxBuMD
-	8lsPnip//Z0OorvhP38xIZpjYRteheq9lTNhDrzaP7rAPAP8MEBGSO2BZOQNbPKN+D2Q4730sYOJH
-	M15r5JYoMoH3CI21/k/dFlQ+wP4KUo74kak/UKyYGI5cukl/KlL3qbI/WripFKQCitCq7de40+3c0
-	EbrQBIFSGf8ZdmEMRmxg==;
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=mx+/LyPiZhXmBtED3C3P613oIrwLmgrtbVFuQ12qBZo=; b=4IUJ46XZxyFBN9
+	SseO1VZEhcBBNUwZM0h202EIgRJ359noFxJGy9zwl96dGcW7jHBk3dsONPTGIPbYLQ58vfs3EMB2O
+	fatmsaYRwKfen0tGSq6A4JPXGsqNQdSnKX2M6K7d6m1AtfAP40aeXCz10W4AC48goy+IMRCWOZkzu
+	+xMYK8vFSMD53k3NBwdRmYLaZ5qjBIdXRDwOEiUsGbQYUaGP0JsTCilvkUbsA/X6ShcyG1GzTwEH/
+	ihT2AXbRCeMOlfFG1e8XjiCuYUQVAvKbbeGCBghRBp8c7qZRezNg+WxpOOEBbJ20Dg3/Il2U+5lHw
+	MVTzTUvtfh2lafcoEbaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mXIYz-005W4P-IC; Mon, 04 Oct 2021 07:39:05 +0000
-Received: from smtpout30.security-mail.net ([85.31.212.37]
- helo=fx306.security-mail.net)
+	id 1mXImX-005XV0-H4; Mon, 04 Oct 2021 07:53:05 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mXIYt-005W3c-WE
- for barebox@lists.infradead.org; Mon, 04 Oct 2021 07:39:01 +0000
-Received: from localhost (localhost [127.0.0.1])
- by fx306.security-mail.net (Postfix) with ESMTP id C96B339972F
- for <barebox@lists.infradead.org>; Mon,  4 Oct 2021 09:38:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
- s=sec-sig-email; t=1633333129;
- bh=MtVxtWzv81lRT6mCJK73zJclUUlClhtV+q3ZCpHpW3w=;
- h=From:To:Cc:Subject:Date;
- b=J5VfTF7Q2fPuZc5Te/KbRrHjSVkRXRJ2iyqyH5smJxQkaxwHgWlhncF9wggWESXSB
- ANkMB34ksl3yI4sHOJefo4pQgTq1oanWGFP14o2E75JlWA3CIMcpY2sqYXo9eu71mf
- 8fTNdgapkMtLHdp5vOA9wIpKfEg8JPKcqItRu7A8=
-Received: from fx306 (localhost [127.0.0.1])
- by fx306.security-mail.net (Postfix) with ESMTP id 93331399745
- for <barebox@lists.infradead.org>; Mon,  4 Oct 2021 09:38:49 +0200 (CEST)
-X-Virus-Scanned: E-securemail
-Secumail-id: <86ec.615aaf89.3f6eb.0>
-Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
- by fx306.security-mail.net (Postfix) with ESMTPS id 40B17399730
- for <barebox@lists.infradead.org>; Mon,  4 Oct 2021 09:38:49 +0200 (CEST)
-Received: from zimbra2.kalray.eu (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTPS id 2860B27E031D;
- Mon,  4 Oct 2021 09:38:49 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 1255427E031E;
- Mon,  4 Oct 2021 09:38:49 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 1255427E031E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1633333129;
- bh=ngUzZ8gJ7cgZae7Gkod0yyt/YY8IgRcAqZY9IST/qwA=;
- h=From:To:Date:Message-Id;
- b=mUvPW1H60gBZnuv6oad2fA+nWQGQBvTXSULJ+4OvGtuHAcgcTjfh3RmgznUc58yXO
- cmJdrWRgpL7Kua6eyU57FI7+BXIFd2dEgZuSdNzYZm4Dp72h+4u2sXOj2KyNdtopkH
- 0GW7V+8LfyX8etjDGtPySlW8sQjYPykwkaXzqM0M=
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id eVc1Y3UTqHAE; Mon,  4 Oct 2021 09:38:49 +0200 (CEST)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
- by zimbra2.kalray.eu (Postfix) with ESMTPSA id 0391627E031D;
- Mon,  4 Oct 2021 09:38:49 +0200 (CEST)
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: barebox@lists.infradead.org
-Cc: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Mon,  4 Oct 2021 09:38:42 +0200
-Message-Id: <20211004073842.14809-1-jmaselbas@kalray.eu>
-X-Mailer: git-send-email 2.17.1
-X-Virus-Scanned: by Secumail
+ id 1mXImS-005XTt-IA
+ for barebox@lists.infradead.org; Mon, 04 Oct 2021 07:53:02 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mXImP-0000to-BC; Mon, 04 Oct 2021 09:52:57 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mXImN-0001tu-Uh; Mon, 04 Oct 2021 09:52:55 +0200
+Date: Mon, 4 Oct 2021 09:52:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Message-ID: <20211004075255.GM28453@pengutronix.de>
+References: <20211001142453.4a3c0ba9bd7bb909125e2a5f@gmail.com>
+ <20211002084850.GA24834@pengutronix.de>
+ <20211002124447.74a231c6c07697e9042b905e@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20211002124447.74a231c6c07697e9042b905e@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:47:38 up 228 days, 11:11, 130 users,  load average: 0.20, 0.34,
+ 0.26
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211004_003900_431003_0BD39567 
-X-CRM114-Status: UNSURE (   8.77  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20211004_005300_629905_7741C4F9 
+X-CRM114-Status: GOOD (  33.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,7 +71,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -99,39 +79,107 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] debug_ll: ns16550: Fix interrupt disable on init
+Subject: Re: 'of_compatible' and 'model' imd records are unusable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The debug_ll_write_reg function takes first the register
-and secondly the value to write, which in this call were
-inverted. Fix the argument order.
+On Sat, Oct 02, 2021 at 12:44:47PM +0300, Antony Pavlov wrote:
+> On Sat, 2 Oct 2021 10:48:50 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> Hi Sascha!
+> 
+> > On Fri, Oct 01, 2021 at 02:24:53PM +0300, Antony Pavlov wrote:
+> > > Hi all!
+> > > 
+> > > I have cloned barebox c67ada0024da (v2021.08.0) and found that
+> > > 'of_compatible' and 'model' imd records are unusable.
+> > > 
+> > > E.g.
+> > > 
+> > > barebox$ make ARCH=arm CROSS_COMPILE=aarch64-linux-gnu- imx_v8_defconfig
+> > > barebox$ make ARCH=arm CROSS_COMPILE=aarch64-linux-gnu-
+> > > ...
+> > > images built:
+> > > barebox-nxp-imx8mm-evk.img
+> > > barebox-prt-prt8mm.img
+> > > barebox-nxp-imx8mp-evk.img
+> > > barebox-nxp-imx8mq-evk.img
+> > > barebox-zii-imx8mq-dev.img
+> > > barebox-phytec-phycore-imx8mq.img
+> > > 
+> > > barebox$ ./scripts/bareboximd images/barebox-nxp-imx8mm-evk.img
+> > > build: #1 Fri Oct 1 10:16:30 UTC 2021
+> > > buildsystem version: 
+> > > crc32: 0x00000000
+> > > release: 2021.08.0
+> > > barebox$ 
+> > > 
+> > > There is no 'of_compatible' and 'model' imd records in bareboximd output.
+> > > 
+> > > So there is no chance to imd_find_type(..., IMD_TYPE_OF_COMPATIBLE)
+> > > (see common/bbu.c) in a barebox image file.
+> > > 
+> > > scripts/gen-dtb-s puts IMD_TYPE_OF_COMPATIBLE and IMD_TYPE_MODEL
+> > > records into barebox_imd_0 section.
+> > > 
+> > > BAREBOX_IMD macro (include/asm-generic/barebox.lds.h)
+> > > does not KEEP barebox_imd_0 section":
+> > 
+> > This is done on purpose because otherwise...
+> > 
+> > > 
+> > > #define BAREBOX_IMD                             \
+> > >         STRUCT_ALIGN();                         \
+> > >         KEEP(*(.barebox_imd_start))             \
+> > >         KEEP(*(.barebox_imd_1*))                \
+> > >         *(.barebox_imd_0*)                      \
+> > >         KEEP(*(.barebox_imd_end))
+> > > 
+> > > KEEPing barebox_imd_0 leads to several 'of_compatible' and 'model' records
+> > > in one barebox image file, e.g.:
+> > 
+> > ...exactly this would happen.
+> > 
+> > To get the of_compatible and model imd tags in an image you have to put
+> > IMD_USED_OF() explicitly into the entry function of the image handling
+> > this compatible, there's no way for the build process to know which
+> > image handles which device tree. See below for an example which adds the
+> > tags for the boards you are currently compiling.
+> 
+> There are two remarks:
+> 
+> 1. It looks like we still able to automatically add of_compatible and model imd tags.
+> Please see my message http://lists.infradead.org/pipermail/barebox/2021-October/037412.html
 
-Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
----
- include/debug_ll/ns16550.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I gave it a try, it works and looks like a good solution. We'll need
+another
 
-diff --git a/include/debug_ll/ns16550.h b/include/debug_ll/ns16550.h
-index 7e4dbeb453..373c917d86 100644
---- a/include/debug_ll/ns16550.h
-+++ b/include/debug_ll/ns16550.h
-@@ -43,7 +43,7 @@ static inline uint16_t debug_ll_ns16550_calc_divisor(unsigned long clk)
- static inline void debug_ll_ns16550_init(uint16_t divisor)
- {
- 	debug_ll_write_reg(NS16550_LCR, 0x0); /* select ier reg */
--        debug_ll_write_reg(0x00, NS16550_IER);
-+	debug_ll_write_reg(NS16550_IER, 0x0); /* disable interrupts */
- 
- 	debug_ll_write_reg(NS16550_LCR, NS16550_LCR_BKSE);
- 	debug_ll_write_reg(NS16550_DLL, divisor & 0xff);
+if [ "$imd" = "y" ]; then
+       echo ".word __imd_${name}_start"
+fi
+
+at the end of scripts/gen-dtb-s to make it work with compressed dtbs as
+well.
+
+> 
+> Can we automaticaly generate of_compatible and model imd tags for most of the boards
+> and explicitly generate tags with IMD_USED_OF() just for selected boards?
+
+With your approach we can drop IMD_USED_OF(), at least I see no more
+need for it.
+
+Sascha
+
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
