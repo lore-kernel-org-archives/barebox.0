@@ -1,15 +1,15 @@
-Delivery-date: Mon, 04 Oct 2021 13:09:06 +0200
+Delivery-date: Mon, 04 Oct 2021 13:35:17 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mXLqE-0005dU-2Q
-	for lore@lore.pengutronix.de; Mon, 04 Oct 2021 13:09:06 +0200
+	id 1mXMFZ-0006LC-9J
+	for lore@lore.pengutronix.de; Mon, 04 Oct 2021 13:35:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mXLqD-0007dn-3l
-	for lore@pengutronix.de; Mon, 04 Oct 2021 13:09:05 +0200
+	id 1mXMFX-0002ro-TQ
+	for lore@pengutronix.de; Mon, 04 Oct 2021 13:35:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=NelLiQyizH6vUqS+qMrvyWq1ak5brxWha2dJQ9J5sMo=; b=XLMuh4kIUZ1Y/ZmuuYUCIJZ9GM
-	m+LwPg7dTYt7mv42HyRlXiyFi0L+EQlHKtMIHJ0f9x155kfKTYuKmF/m1PYV0F4n1xnMCUBHTm/ID
-	X95rwRpgWpX4asgmsVxU/n0Imd/U9lC7oshYDWm6AZVNekXY3uwEgOsO6h9701SM0+BukGG03Pl+l
-	cLAT3hQDc9a2OjY0ohMphpa4IdzW5Di4IkXVg2BqWF778R5vqJ3e4GFGdlBHfHpigezzz9lHdwfQm
-	s8hrhcYtAp1gExV9oXzp9lo6ij5wp4PXAX+vM6lcMZgBcNOBYU21Dc/dtxT5y348JCIEDZTFeoJRd
-	4koVnBfA==;
+	bh=6rz3JjJzoUREcvREjvdqtHHMc5qcbEyuAeThPNgb/oQ=; b=2/iCaX3oxKYkiu4xtUXWpF/Tx/
+	kO+QO+Dp8Bykd3oL6UPo7iBqfDG0Ca02sYPO/WsDkEY4ixdMhShQaVt+u1Eu49GU7CuA3WjSzISnz
+	moFcTk7tlLVX6a4Ptkg3p3gpRj+P/rHv3XA+ijvFxwG20IoJB9zqTK/i1FglkOlk1KgTcFDyr/DPH
+	arbhgYlvoPrB5BkpYuhP46HQQ5E2D4IbynI4ACxC61PFltIHYBXOrDavgeiteEjj1nsTchQ3kaLb9
+	mrrMgJX6FNWfyG93dyDEt6Ehrb2pjtiekfW9SDsaN3Buwfdqsn34f9U1LvUDjVza3tvyrSnAOMAVe
+	kVDQZBLg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mXLoq-0064re-Ho; Mon, 04 Oct 2021 11:07:40 +0000
+	id 1mXME6-006DDm-PW; Mon, 04 Oct 2021 11:33:46 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mXLom-0064rF-4q
- for barebox@lists.infradead.org; Mon, 04 Oct 2021 11:07:37 +0000
+ id 1mXM6j-006A4v-DI
+ for barebox@lists.infradead.org; Mon, 04 Oct 2021 11:26:10 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mXLok-0007Ry-Ph; Mon, 04 Oct 2021 13:07:34 +0200
+ id 1mXM6i-0001l6-3f; Mon, 04 Oct 2021 13:26:08 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mXLoj-0002NL-LC; Mon, 04 Oct 2021 13:07:33 +0200
-Date: Mon, 4 Oct 2021 13:07:33 +0200
-To: "Karfich, Oleg" <Oleg.Karfich@wago.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Message-ID: <20211004110733.GW28453@pengutronix.de>
-References: <1630414594-10601-1-git-send-email-oleg.karfich@wago.com>
+ id 1mXM6h-0003cw-QY; Mon, 04 Oct 2021 13:26:07 +0200
+Date: Mon, 4 Oct 2021 13:26:07 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20211004112607.GX28453@pengutronix.de>
+References: <20210831153214.31047-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1630414594-10601-1-git-send-email-oleg.karfich@wago.com>
+In-Reply-To: <20210831153214.31047-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 13:07:24 up 228 days, 14:31, 143 users,  load average: 0.15, 0.29,
- 0.30
+X-Uptime: 13:24:45 up 228 days, 14:48, 141 users,  load average: 0.08, 0.23,
+ 0.27
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211004_040736_217496_296B6262 
-X-CRM114-Status: GOOD (  25.86  )
+X-CRM114-CacheID: sfid-20211004_042609_492113_C9CD5961 
+X-CRM114-Status: GOOD (  25.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,57 +81,50 @@ X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] net: cpsw: fix ethernet bringup in case of a fixed-link
- phy
+Subject: Re: [PATCH master] net: designware: eqos: fix MDIO regression for
+ STM32MP1 boards
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Aug 31, 2021 at 12:57:01PM +0000, Karfich, Oleg wrote:
-> In case of a fixed-link phy the cpsw_adjust_link() function is
-> called directly in phy_device_attach() and configures the MACCONTROL
-> register. Right after this configuration cpsw_init() is called and
-> resets the MACCONTROL register.
-> Fix this by initializing the slave before connecting the phy device in
-> cpsw_open().
+On Tue, Aug 31, 2021 at 05:32:14PM +0200, Ahmad Fatoum wrote:
+> The STM32MP1 boards call their mdio subnode mdio0, which is now skipped
+> since ed8c7bdf8592 ("net: designware: eqos: set mdio bus device node").
 > 
-> Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
+> Fix networking for them by only falling back to the mdio node name when a
+> child node with the correct compatible could not be found.
+> 
+> Fixes: ed8c7bdf8592 ("net: designware: eqos: set mdio bus device node")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/net/cpsw.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/net/designware_eqos.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
+> index f83ec127143c..5eee844e289a 100644
+> --- a/drivers/net/designware_eqos.c
+> +++ b/drivers/net/designware_eqos.c
+> @@ -824,6 +824,7 @@ static void eqos_probe_dt(struct device_d *dev, struct eqos *eqos)
+>  
+>  int eqos_probe(struct device_d *dev, const struct eqos_ops *ops, void *priv)
+>  {
+> +	struct device_node *np = dev->device_node;
+>  	struct mii_bus *miibus;
+>  	struct resource *iores;
+>  	struct eqos *eqos;
+> @@ -862,7 +863,10 @@ int eqos_probe(struct device_d *dev, const struct eqos_ops *ops, void *priv)
+>  	miibus->read = eqos_mdio_read;
+>  	miibus->write = eqos_mdio_write;
+>  	miibus->priv = eqos;
+> -	miibus->dev.device_node = of_get_child_by_name(dev->device_node, "mdio");
+> +
+> +	miibus->dev.device_node = of_get_compatible_child(np, "snps,dwmac-mdio");
+> +	if (!miibus->dev.device_node)
+> +		miibus->dev.device_node = of_get_child_by_name(np, "mdio");
 
-Applied, thanks
+Do we need this fallback? I think I introduced ed8c7bdf8592 for the
+rk3568, which also should work without the fallback.
 
 Sascha
-
-> 
-> diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-> index b01e7ac..4a8f9e6 100644
-> --- a/drivers/net/cpsw.c
-> +++ b/drivers/net/cpsw.c
-> @@ -901,13 +901,13 @@ static int cpsw_open(struct eth_device *edev)
->  
->  	dev_dbg(&slave->dev, "* %s\n", __func__);
->  
-> +	cpsw_slave_init(slave, priv);
-> +
->  	ret = phy_device_connect(edev, NULL, slave->phy_id,
->  				 cpsw_adjust_link, 0, slave->phy_if);
->  	if (ret)
->  		return ret;
->  
-> -	cpsw_slave_init(slave, priv);
-> -
->  	return 0;
->  }
->  
-> -- 
-> 2.7.4
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
