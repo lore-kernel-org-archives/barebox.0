@@ -1,63 +1,48 @@
-Delivery-date: Mon, 04 Oct 2021 15:12:34 +0200
+Delivery-date: Tue, 05 Oct 2021 09:02:19 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mXNli-0000pa-UK
-	for lore@lore.pengutronix.de; Mon, 04 Oct 2021 15:12:34 +0200
+	id 1mXeSv-00082g-Nz
+	for lore@lore.pengutronix.de; Tue, 05 Oct 2021 09:02:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mXNle-0007Zl-Tq
-	for lore@pengutronix.de; Mon, 04 Oct 2021 15:12:34 +0200
+	id 1mXeSu-0002Ku-QY
+	for lore@pengutronix.de; Tue, 05 Oct 2021 09:02:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=LXD8IS3xp3h+xukrAQyJ/yHQE1+F7It8Hr8QPFLnQlg=; b=mtZCiQ/o5kXn6h
-	W4bjsUPlNQBPys5KcpDrJOL9pzGOSZilbuzgWBZPmTChjINA9yzmBPGr0XTS3TzmGgtd7Nh63SbD8
-	o1MABI6AVdufFac/iQQ7oXuDeMUKdpDBUk6Pao6hLzcK1fEwab4avdrRKqC8U3Yow9wiqxb68VsEP
-	0T0B5F0VaKVAPl16ST4R+8sr+i1P3lWLIV69fSDsPf4WJSAVtN0dEEgd6v7xGXWX7Yw4azEvXnEef
-	u6YwwIZhGUhn73ZSiP0vhXoJ9A/kbA+e9iMxoJIg3lUb1bsrbwRCcjRDDSuHuvgb8TPhUOMciVuL6
-	/U/j9455yCIMPOwErNkQ==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=neOtga2G0U3c2ckjr9XvKF29ywmKc1A90uVbfz+pXhc=; b=hkMLLNpIPIoDUh
+	31l94zq/XruVvZQHHTGqtNlkSCd27cdBhG8UvMuM3aCZ3QmXioXk6Q+a5iGOE3fryEJqEJBaG9bzl
+	IUhgNK9FihnTZ/fNjo954LTLMS+tX9A5bFIhPwAK/93BbuPPkyCdZMeDlMszI8yhZ+z3UZTc8OI5r
+	jc2o+JSkPOUYz57Z6ONAqKHCvtLOKL8uxatuTnUCz5pU4vTki9Oo8b+AQdNxJ7J4/A53JVxsQPwUZ
+	/IVhRXVNVB3/0vO57xyD3o9umQ+wATCM+S6UbNHg1FuYCHWWCenGigrJJo9HdowSdn7eFMYnd6RX8
+	5DTzrvmDTq3YkOkULgrg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mXNkB-006a0h-Ms; Mon, 04 Oct 2021 13:10:59 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mXeR8-009EaQ-Az; Tue, 05 Oct 2021 07:00:26 +0000
+Received: from relay9-d.mail.gandi.net ([217.70.183.199])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mXNk4-006Zzt-LJ
- for barebox@lists.infradead.org; Mon, 04 Oct 2021 13:10:55 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mXNk3-00075b-AG; Mon, 04 Oct 2021 15:10:51 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mXNk3-0003Bo-1C; Mon, 04 Oct 2021 15:10:51 +0200
-Date: Mon, 4 Oct 2021 15:10:51 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Alexander Dahl <ada@thorsis.com>
-Message-ID: <20211004131051.GL28453@pengutronix.de>
-References: <20210622080811.28335-1-a.fatoum@pengutronix.de>
- <991b390e-3f6d-5c2d-af66-602292dc956e@pengutronix.de>
+ id 1mXeR2-009EYj-1m
+ for barebox@lists.infradead.org; Tue, 05 Oct 2021 07:00:23 +0000
+Received: (Authenticated sender: ahmad@a3f.at)
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 44C75FF810;
+ Tue,  5 Oct 2021 07:00:13 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Tue,  5 Oct 2021 09:00:07 +0200
+Message-Id: <20211005070007.1675059-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <991b390e-3f6d-5c2d-af66-602292dc956e@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 15:10:34 up 228 days, 16:34, 143 users,  load average: 0.49, 0.50,
- 0.40
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211004_061052_720508_8E1EEBA1 
-X-CRM114-Status: GOOD (  22.72  )
+X-CRM114-CacheID: sfid-20211005_000022_019720_08BF0C7C 
+X-CRM114-Status: UNSURE (   8.34  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,40 +62,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: at91: sama5d27_som1_ek: populate MAC address from
- EEPROM
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] kbuild: force 16-bit wchar_t treewide
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Sep 22, 2021 at 12:54:25PM +0200, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 22.06.21 10:08, Ahmad Fatoum wrote:
-> > With the latest NVMEM enhancements merged, barebox networking core now
-> > always consults NVMEM cells referenced in the network controller
-> > device tree node before it falls back to randomizing a new address.
-> > 
-> > The SAM5D27-SOM1 has a 256 byte EEPROM, which holds a MAC address in its
-> > last 6 bytes. Describe this in the device tree, so boards using the SoM
-> > will get an unique MAC address assigned and fixed up into the kernel
-> > device tree. This change can be dropped again when/if the change is
-> > submitted and applied upstream.
-> 
-> This patch seems to have slipped through the cracks.
+All current uses of wchar_t assume 16 bit code units. We enforce this
+via -fshort-wchar on x86 and by typedefing in <linux/nls.h>.
 
-Applied now, thanks
+Make wchar_t universally 16-bit to acknowledge this, a small step
+towards ARM and RISC-V EFI support in barebox.
 
-Sascha
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ Makefile          | 2 +-
+ arch/x86/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/Makefile b/Makefile
+index 74e4893f02c8..cc01e5656d7c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -438,7 +438,7 @@ LINUXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
+ KBUILD_CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffreestanding
+ 
+ KBUILD_CFLAGS   := -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs \
+-		   -fno-strict-aliasing -fno-common \
++		   -fno-strict-aliasing -fno-common -fshort-wchar \
+                    -Werror=implicit-function-declaration -Werror=implicit-int \
+                    -Os -pipe -Wmissing-prototypes -std=gnu89
+ KBUILD_AFLAGS          := -D__ASSEMBLY__
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index fd871ca21419..532246647b63 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -5,7 +5,7 @@ KBUILD_CPPFLAGS += -D__X86__
+ TEXT_BASE = $(CONFIG_TEXT_BASE)
+ 
+ machine-y := efi
+-KBUILD_CFLAGS += -fpic -fshort-wchar -mno-sse -mno-mmx
++KBUILD_CFLAGS += -fpic -mno-sse -mno-mmx
+ ifeq ($(CONFIG_X86_32),y)
+ 	TARGET = efi-app-ia32
+ else
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.33.0
+
 
 _______________________________________________
 barebox mailing list
