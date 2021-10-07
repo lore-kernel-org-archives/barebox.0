@@ -1,54 +1,86 @@
-Delivery-date: Thu, 07 Oct 2021 12:05:34 +0200
+Delivery-date: Thu, 07 Oct 2021 13:55:14 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mYQHO-0005xZ-NO
-	for lore@lore.pengutronix.de; Thu, 07 Oct 2021 12:05:34 +0200
+	id 1mYRzW-0001QZ-FD
+	for lore@lore.pengutronix.de; Thu, 07 Oct 2021 13:55:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mYQHN-0002su-Pb
-	for lore@pengutronix.de; Thu, 07 Oct 2021 12:05:34 +0200
+	id 1mYRzV-00051Q-F5
+	for lore@pengutronix.de; Thu, 07 Oct 2021 13:55:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Content-ID:Content-Description
-	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=BKVhU7eCpacYKmhrDg4W17VarjWOhuDQzulBa/3PJkA=; b=EFhJOBKSEg/yI7
-	xSprpGvRpgmS2sYUaDxyHde7ybnzFYmMM5BZMD4NTp3OfbSR6g7wMmoohJyeJC88XveM4JwVhs3mm
-	yFsNxfG77rxuQvDz13Nang0+5xosVqmYDw/TzQdCGWrE/csrOl4QVsQE04oOxNQcHFYWs7mlubW9s
-	LGnqTHdkhlJDm/o0gC0+rSTOu2GV3NT/WQyDjXx0XQ8v7rxzTyISfMSeuZlfXwsTZl00gmcHhDWnU
-	X5iRjDAtkqIUoFgpnR3vqpsoT4hOin8tK8hjGrQKP5+TB+bORPiMmnn5iEQ5KKEnsBmnK5JO/B54x
-	vOkZpuF0Nl6eBSumX3qQ==;
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:References:
+	In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=W3ugpg/ggQ8TGGJ3QZcKBN8qGxNoKjADe4Nz4KJbDyI=; b=zAu5BBLCtbZpaJLX+BAXD+2yCb
+	PmLKynzxcJf3yxEWre+F7/FV9efzjFWhajlv2MfE5TbTEfovGh8PCFM4VuKiQtW16xXhIHWJadLgl
+	rU5h5xM1oy6//XXz4lfwU0MbneRvZMZkpyahlvMKZQUxYO1iFjFFOl57CXsMcQYj4tB+Qg5b8ihE4
+	drYzoGK7cJvfZ0i/ZwrlWskHmLBMWk29RXKdgI/25DKC1DQnAbT3lY5r+nxEEojqTr2W7pAy5LhAj
+	PoDbsXWIzWzrDy6P7Csnf4OR08wiaDSj4k5jItKonZiPvqckYkYoFcUwETP3qiHP0EykuSY4yk65O
+	hu1ZYX8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mYQFr-00Go8Q-Qx; Thu, 07 Oct 2021 10:03:59 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mYRxv-00HAjC-1y; Thu, 07 Oct 2021 11:53:35 +0000
+Received: from smtpout140.security-mail.net ([85.31.212.148]
+ helo=fx408.security-mail.net)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mYQFm-00Go7H-Ql
- for barebox@lists.infradead.org; Thu, 07 Oct 2021 10:03:56 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1mYQFh-0002TX-3e; Thu, 07 Oct 2021 12:03:49 +0200
-To: Jules Maselbas <jmaselbas@kalray.eu>
+ id 1mYRxp-00HAif-Dv
+ for barebox@lists.infradead.org; Thu, 07 Oct 2021 11:53:31 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by fx408.security-mail.net (Postfix) with ESMTP id 008001B7BAE4
+ for <barebox@lists.infradead.org>; Thu,  7 Oct 2021 13:53:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
+ s=sec-sig-email; t=1633607604;
+ bh=skwLcOGo/BCNrD6GM/S9VwzJGbO9dZsDgIpDdwH0Zpw=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=oxWIOWiw6ogbMeHy+7Y7G+v2U9u7iHUaN4E6M54gLLC3W/4k1woqnM83NXbtk8zMb
+ axR2QYdIDIF6ULMjhXq2GEDAr3bPfT3YUZqCSCRIwvJjFYipNsx5iQ9QXEpKzFp0lr
+ T8WkVGyflv2r6dRkSkng5S3905VlhSfNsE4vefRs=
+Received: from fx408 (localhost [127.0.0.1])
+ by fx408.security-mail.net (Postfix) with ESMTP id 3E82B1B7BAAC;
+ Thu,  7 Oct 2021 13:53:23 +0200 (CEST)
+X-Virus-Scanned: E-securemail
+Secumail-id: <291c.615edfb3.c6ab.0>
+Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
+ by fx408.security-mail.net (Postfix) with ESMTPS id 0CF3A1B7BADE;
+ Thu,  7 Oct 2021 13:53:23 +0200 (CEST)
+Received: from zimbra2.kalray.eu (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTPS id E760627E02D4;
+ Thu,  7 Oct 2021 13:53:22 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id CFA6D27E0333;
+ Thu,  7 Oct 2021 13:53:22 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu CFA6D27E0333
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1633607602;
+ bh=REMMsNBuyX9ARF4CLlsLYdbC87xoChkDDClYfJ0vVj4=;
+ h=From:To:Date:Message-Id;
+ b=ONo1WMEwLSvZPN0wXOXBBDvMrjkbVNfNGGrQ4gZlX2uhdyd+0ldHhj7+oRZ0yR+Nk
+ mPAM8lUHqGrlWns/aAgNf/uRRPUz+NUsi4hQNBJ3J8Szwfjg0ENNRnGg0Wj1+2Pi8n
+ 7/jnxR3I481b7NH+Mq+gDH3ObdYTvb8tzYSFKa4Q=
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id KJLfBJed8ML7; Thu,  7 Oct 2021 13:53:22 +0200 (CEST)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id B2CE427E02D4;
+ Thu,  7 Oct 2021 13:53:22 +0200 (CEST)
+From: Jules Maselbas <jmaselbas@kalray.eu>
+To: barebox@lists.infradead.org
+Date: Thu,  7 Oct 2021 13:52:54 +0200
+Message-Id: <20211007115254.32270-1-jmaselbas@kalray.eu>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20211006135844.7361b72436286f5accbde0ad@gmail.com>
 References: <20211006135844.7361b72436286f5accbde0ad@gmail.com>
- <7fd50051-7370-5e29-c68a-8ac2439d5f9e@pengutronix.de>
- <20211007094900.GI19809@tellis.lin.mbt.kalray.eu>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <e1967cb1-e3d8-f47d-e8e0-7c2d66c65008@pengutronix.de>
-Date: Thu, 7 Oct 2021 12:03:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <20211007094900.GI19809@tellis.lin.mbt.kalray.eu>
-Content-Language: en-US
+X-Virus-Scanned: by Secumail
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211007_030354_930261_C0EF19F2 
-X-CRM114-Status: GOOD (  18.06  )
+X-CRM114-CacheID: sfid-20211007_045329_991876_560853CD 
+X-CRM114-Status: UNSURE (   6.90  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,7 +92,9 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@kalray.eu>, Ian Abbott <abbotti@mev.co.uk>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -69,84 +103,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: inkscape 1.1.1 issue
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [RFC PATCH] logo: Makefile: Replace inkscape with convert
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Jules
+The uses of inkscape to convert svg to png hasn't been very stable from
+one version to another, and required quirks from one version to another.
 
-On 07.10.21 11:49, Jules Maselbas wrote:
-> Hi,
-> 
-> On Wed, Oct 06, 2021 at 01:19:36PM +0200, Ahmad Fatoum wrote:
->> Hello Antony,
->>
->> On 06.10.21 12:58, Antony Pavlov wrote:
->>> Hi!
->>>
->>> I have just update inkscape from Debian repo.
->>> It looks like inkscape-1.1.1 has new unexpected behaviour.
->>
->> I ran into issues as well when going from 0.92.4 to 1.0.1.
->> Instead of adding another quirk, maybe we should use something
->> else for SVG to PNG that is actually stable.
->>
->> Any suggestions?
-> Maybe using imagemagick's convert ?
-> 
-> How can I see the result of the current solution ?
+I hope that convert from imagemagick will be a more stable solution.
 
-Build for ARCH=sandbox and look into /logo.
-If you enable CONFIG_DRIVER_VIDEO_SDL, you can display
-the PNGs with e.g. fb0.enable=1 splash /logo/barebox-logo-640.png
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+---
+ lib/logo/Makefile | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
->>>
->>> During barebox sandbox build process I have faced with unexpected
->>> inkscape dialog. Also the '--without-gui=' option is depricated.
->>> See my build log
->>>
->>> barebox$ make
->>> ...
->>> Warning: Option --without-gui= is deprecated
->>> Unable to init server: Could not connect: Connection refused
->>> Background RRGGBBAA: ffffff00
->>> Area 0:0:3000:1500 exported to 640 x 320 pixels (20.48 dpi)
->>>   LOGO.S   lib/logo/barebox-logo-w640.bblogo.S
->>>   AS      lib/logo/barebox-logo-w640.bblogo.o
->>>   AR      lib/logo/built-in.a
->>>   AR      lib/built-in.a
->>>   GEN     .version
->>>   CHK     include/generated/compile.h
->>>   UPD     include/generated/compile.h
->>>   CC      common/version.o
->>>   CC      common/imd-barebox.o
->>>   AR      common/built-in.a
->>>   LD      barebox
->>>   SYSMAP  System.map
->>>   OBJCOPY barebox.bin
->>>   CHKFILESIZE barebox.bin
->>>   LN      barebox-flash-image
->>> antony@cinco:~/barebox$ dpkg -l | grep inkscape
->>> ii  inkscape                                     1.1.1-2                                   amd64        vector-based drawing program
->>>
->>
-> 
-> 
-> 
-> 
-> 
-
-
+diff --git a/lib/logo/Makefile b/lib/logo/Makefile
+index 4149d4ff6c..f08beef76b 100644
+--- a/lib/logo/Makefile
++++ b/lib/logo/Makefile
+@@ -1,17 +1,17 @@
+ 
+-OPTS_barebox-logo-w64.bblogo = --export-width=64
++OPTS_barebox-logo-w64.bblogo = -resize 64
+ bblogo-$(CONFIG_BAREBOX_LOGO_64) += barebox-logo-w64
+ 
+-OPTS_barebox-logo-w240.bblogo = --export-width=240
++OPTS_barebox-logo-w240.bblogo = -resize 240
+ bblogo-$(CONFIG_BAREBOX_LOGO_240) += barebox-logo-w240
+ 
+-OPTS_barebox-logo-w320.bblogo = --export-width=320
++OPTS_barebox-logo-w320.bblogo = -resize 320
+ bblogo-$(CONFIG_BAREBOX_LOGO_320) += barebox-logo-w320
+ 
+-OPTS_barebox-logo-w400.bblogo = --export-width=400
++OPTS_barebox-logo-w400.bblogo = -resize 400
+ bblogo-$(CONFIG_BAREBOX_LOGO_400) += barebox-logo-w400
+ 
+-OPTS_barebox-logo-w640.bblogo = --export-width=640
++OPTS_barebox-logo-w640.bblogo = -resize 640
+ bblogo-$(CONFIG_BAREBOX_LOGO_640) += barebox-logo-w640
+ 
+ obj-y += $(patsubst %,%.bblogo.o,$(bblogo-y))
+@@ -38,15 +38,12 @@ cmd_logo_S =							\
+ %.bblogo.S: %.bblogo FORCE
+ 	$(call if_changed,logo_S)
+ 
+-# Inkscape 0.92.4 supports -z -e but Inkscape 1.0 uses --export-type=png
+-INKSCAPEOPTS += $(call try-run, inkscape -z -e -,-z -e -,--export-type=png)
+-# Inkscape 1.0 supports -o -
+-INKSCAPEOPTS += $(call try-run, inkscape -o -,-o -,)
++CONVERTOPTS += -background none
+ 
+-quiet_cmd_logo = LOGO.S  $@
++quiet_cmd_logo = PNG     $@
+ cmd_logo =							\
+ (								\
+-	inkscape $(OPTS_$(@F)) $(INKSCAPEOPTS) $< > $@; \
++	convert $(OPTS_$(@F)) $(CONVERTOPTS) $< png:$@; \
+ )
+ 
+ %.bblogo: $(srctree)/Documentation/barebox.svg FORCE
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
