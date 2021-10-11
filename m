@@ -1,52 +1,63 @@
-Delivery-date: Mon, 11 Oct 2021 10:35:08 +0200
+Delivery-date: Mon, 11 Oct 2021 11:38:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZqm4-00006h-NK
-	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 10:35:08 +0200
-Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
+	id 1mZrlF-0002N5-5i
+	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 11:38:21 +0200
+Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZqm3-0002oV-B6
-	for lore@pengutronix.de; Mon, 11 Oct 2021 10:35:08 +0200
+	id 1mZrlE-0001dW-8L
+	for lore@pengutronix.de; Mon, 11 Oct 2021 11:38:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ei89H2M2U45MlCqXvRs7FyMqLBBBGMQDU4HG3PBuutE=; b=yyR23o71vIU4Sj
-	GMH39nWbhvVfRk2j5AoZye6aua2rhkkcWwShpW0tIkh+4xcWhSW705SXymQb96XWw+eZxQS5JF0J4
-	yeXR2anOkKsMcQnNSyoKZADj/1OgE/O5vVl4KkeF7QuHaPY8RSRVgE7whV+RY1HFPB7exzPgooiNZ
-	aMW562YLik0BdNcESlcjxOj6ON9GWzIu4K9Xk5A3oVkJEgP7SI/XGCmRxURyIZIrU+cqcJaRgU2bZ
-	etlXxU1pOWosPC53kOoOKIO3iXUe76lh48wHRgrKLdTrh2ZJ7sNBO9NmY13hTf0LG26S+msz0Jq1A
-	OGGLF/ghaAVvHzwbG1yg==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=hYjii2H63/E9lBSkrOsfxiHvoKnrN0psTKIZLuV75NE=; b=fdOKXv31uQ5jsKL3KpEQx83sKi
+	oEmCkynxabjXKJMPKGB3YZCnwsQr+pY4xL2t1eJxplj7LHsNVX+y5WdR4RltRxFbfPQOVz35ZTmNQ
+	D5mg0I9DsCT8Gzxp+YnZUp2r5XnX2y8/NN9kEqZxtDbiSVaz+HGCDtGnr3LlF5zX5+B129hb9AioT
+	vQs7o+tnPGhxLTVoOi11+9hN6xgUlp2U8dipir6KZHxmzNbLdccLjzV2GBNUTwrPTNcFIR6rQINh4
+	nhpRpFRX+71NhGY5a7QMU+dbxTPu7/gkK+/W98rD/z+jp7KfMQdoxg3gDm7ozW7oKoPfCXpfgyVru
+	Qso3CIeg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mZqkE-008LfA-UE; Mon, 11 Oct 2021 08:33:15 +0000
+	id 1mZrje-008Ygh-O6; Mon, 11 Oct 2021 09:36:42 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mZqh4-008Kan-Es
- for barebox@lists.infradead.org; Mon, 11 Oct 2021 08:30:00 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
- helo=[IPv6:::1]) by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ejo@pengutronix.de>)
- id 1mZqh0-00027A-Uo; Mon, 11 Oct 2021 10:29:55 +0200
-Message-ID: <87ba97538c71fc252ae5bdf0c0a5add29d19b0c2.camel@pengutronix.de>
-From: Enrico =?ISO-8859-1?Q?J=F6rns?= <ejo@pengutronix.de>
-To: Sascha Hauer <sha@pengutronix.de>, Konstantin Kletschke
- <konstantin.kletschke@inside-m2m.de>
+ id 1mZrjY-008YfF-TI
+ for barebox@lists.infradead.org; Mon, 11 Oct 2021 09:36:38 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mZrjX-0001W4-EO; Mon, 11 Oct 2021 11:36:35 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mZrjX-0004I0-5A; Mon, 11 Oct 2021 11:36:35 +0200
+Date: Mon, 11 Oct 2021 11:36:35 +0200
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Date: Mon, 11 Oct 2021 10:29:54 +0200
-In-Reply-To: <20211011081129.GX28453@pengutronix.de>
-References: <12cdc549cacb6f4f93f939fb76486d62@inside-m2m.de>
- <20211011081129.GX28453@pengutronix.de>
-User-Agent: Evolution 3.38.3-1 
+Message-ID: <20211011093635.GA28453@pengutronix.de>
+References: <20211006084323.14051-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20211006084323.14051-1-o.rempel@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 11:36:23 up 235 days, 13:00, 140 users,  load average: 0.29, 0.21,
+ 0.18
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211011_012958_552550_3DB23D4E 
-X-CRM114-Status: GOOD (  28.89  )
+X-CRM114-CacheID: sfid-20211011_023636_977995_40B9B432 
+X-CRM114-Status: GOOD (  18.86  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -58,92 +69,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:7c80:54:e::133 (failed)
+X-Broken-Reverse-DNS: no host name for IP address 2607:7c80:54:e::133
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,URIBL_RED
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: yocto integration - best practice
+	MAILING_LIST_MULTI,PTX_BROKEN_RDNS,RCVD_IN_DNSWL_MED,RDNS_NONE,
+	SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v4 0/8] add noswitch support for skov boards
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGkgS29uc3RpLAoKQW0gTW9udGFnLCBkZW0gMTEuMTAuMjAyMSB1bSAxMDoxMSArMDIwMCBzY2hy
-aWViIFNhc2NoYSBIYXVlcjoKPiBIaSBLb25zdGksCj4gCj4gT24gRnJpLCBPY3QgMDgsIDIwMjEg
-YXQgMDM6MTg6NTZQTSArMDIwMCwgS29uc3RhbnRpbiBLbGV0c2Noa2Ugd3JvdGU6Cj4gPiBIaSBB
-bGwsCj4gPiAKPiA+IEkgd29uZGVyIGhvdyB0byBwcm9wZXJseSBpbnRlZ3JhdGUgYmFyZSBib3gg
-aW50byBteSB5b2N0by4gSSByZWFkIG1hbnkgb3RoZXIKPiA+IGV4YW1wbGVzIGluCj4gPiB0aGUg
-aW50ZXJuZXQgaG93IG90aGVyIHBlb3BsZSBkbyB0aGlzIGFuZCBJIGFtIGEgbGl0dGxlIHN0dXBp
-ZCBub3cuCj4gPiAKPiA+IEkgaGF2ZSBhIHlvY3RvIHBva3kgaW1hZ2UgdXAgYW5kIHJ1bm5pbmcg
-YmFzZWQgb24gdGhlaXIgYmVhZ2xlYm9uZS15b2N0bwo+ID4gc3Vic2V0IHdoaWNoIGNhbiBiZSB1
-dGxpbGl6ZWQKPiA+IGluIG15IGNhc2Ugd2l0aCBhIHJhdGhlciBtaW5pbWFsIHNldHVwIHdpdGgg
-YSBsb2NhbC5jb25mIG9ubHkuIFRoaXMgc2luY2UgSQo+ID4gYnkgYWNjaWRlbnQgYWN0dWFsbHkK
-PiA+IHVzZSBhIEJlYWdsZWJvbmUgQmxhY2sgYm9hcmQuCj4gPiAKPiA+IEkgYWRkZWQgbXkgb3du
-IG1ldGEtaW5zaWRlbTJtIGxheWVyIGFsc28gYW5kIGluIHRoaXMgbGF5ZXIgSSBtb2RpZnkga2Vy
-bmVsCj4gPiBjb25maWcsIGludGVncmF0ZSBvdXQgb2YKPiA+IGtlcm5lbCBtb2R1bGVzIGFuZCBv
-dGhlciBzdHVmZi4gQWxzbyBiYXJlYm94IHBhdGNoZXMgKGZvciBkZWZhdWx0IGJvb3QKPiA+IGNv
-bmZpZ3MpIGFyZSBhZGRlZCBmcm9tIHRoZXJlLgo+ID4gVGhlIGxvY2FsLmNvbmYgc2hydW5rIHRv
-IGEgcmF0aGVyIG1pbmltYWwgY29udGVudCwgYmVjYXVzZSBJIGhhdmUgYW4gb3duCj4gPiBkaXN0
-cm8gaW4gaXQgd2l0aCB0aHJlZQo+ID4gZGlmZmVyZW50IGltYWdlcy4KPiA+IAo+ID4gQWRkaXRp
-b25hbGx5IEkgaW50ZWdyYXRlZCBtZXRhLWJhcmVib3ggc3VjY2Vzc2Z1bGx5IGludG8gdGhpcyBh
-bmQgdXNlCj4gPiBiYXJlYm94IGluIG15IGRhaWx5IGRldmVsb3BtZW50Cj4gPiB3b3JrIHRvIGJv
-b3QgZnJvbSBpbnRlcm5hbCBNTUMgYW5kIGV4dGVybmFsIFNELUNhcmQuCj4gPiAKPiA+IFdoYXQg
-SSB3b25kZXIsIHdoYXQgaXMgbmVlZCB0byBiZSBkb25lIHRvIGludGVncmF0ZSBNTE8gYW5kIGJh
-cmVib3guYmluIGludG8KPiA+IHRoZSBTRC1DYXJkIGltYWdlPwo+IAo+IFdlIHVzZSBodHRwczov
-L2dpdGh1Yi5jb20vcGVuZ3V0cm9uaXgvZ2VuaW1hZ2UgZm9yIHRoaXMgdGFzay4gVGhlIHRvb2wK
-PiBjYW4gZ2VuZXJhdGUgYWxsIGtpbmRzIG9mIGltYWdlcyB3aXRoIGNvbXBsZXRlIHBhcnRpdGlv
-bmluZywgYWxzbwo+IGNvbnRhaW5pbmcgYm9vdGxvYWRlciBpbWFnZXMgYW5kIGJhcmVib3ggZW52
-aXJvbm1lbnQgaW1hZ2VzIGlmIHlvdSBsaWtlLgo+IAoKeWVzLCB0aGlzIGlzIGFjdHVhbGx5IG9u
-ZSBvcHRpb24uIFRoZSBvdGhlciBvbmUgKHdpYykgSSBzaG9ydGx5IGRlc2NyaWJlIGJlbG93LgoK
-U28gd2hlbiB5b3Ugd2FudCB0byB1c2UgJ2dlbmltYWdlJyB0aGVuIHlvdSBzaG91bGQgYWRkIHRo
-ZSBtZXRhLXB0eCBsYXllcjoKCmh0dHBzOi8vZ2l0aHViLmNvbS9wZW5ndXRyb25peC9tZXRhLXB0
-eAoKVGhpcyBjb21lcyB3aXRoIGEgJ2dlbmltYWdlJyByZWNpcGUgYXMgd2VsbCBhcyAnZ2VuaW1h
-Z2UuYmJjbGFzcyc6CgpodHRwczovL2dpdGh1Yi5jb20vcGVuZ3V0cm9uaXgvbWV0YS1wdHgvYmxv
-Yi9tYXN0ZXIvY2xhc3Nlcy9nZW5pbWFnZS5iYmNsYXNzCgpCYXNpY2FsbHksIHlvdSBuZWVkIHRv
-IGNyZWF0ZSBhbiBhZGRpdGlvbmFsIGRpc2sgaW1hZ2UgcmVjaXBlIGluIFlvY3RvIHRoYXQKaW5j
-bHVkZXMgdGhpcyBjbGFzcyBhbmQgcHJvdmlkZXMgYSAnZ2VuaW1hZ2UuY29uZmlnJyBmaWxlLgoK
-VGhlIHJlc3QgaXMgdGhlbiBtYWlubHkgZ2VuaW1hZ2UtZ2VuZXJpYyAod2hlcmUgU2FzY2hhIGFs
-cmVhZHkgcG9zdGVkIGEgbGluawp0bykuIFRoZSBhcnRpZmFjdHMgdXNlZCBmb3IgYnVpbGRpbmcg
-dGhlIGRpc2sgaW1hZ2UgYXJlIGV4cGVjdGVkIHRvIGJlIGxvY2F0ZWQKaW4gdGhlIGRlcGxveSBm
-b2xkZXIuCgpBbiBleGFtcGxlIGJlYWdsZWJvbmUgZ2VuaW1hZ2UgY29uZmlnIHlvdSBjYW4gZ2V0
-IGZvcm0gdGhlIFBUWGRpc3QgRGlzdHJvS2l0IGZvcgpleGFtcGxlOgoKaHR0cHM6Ly9naXQucGVu
-Z3V0cm9uaXguZGUvY2dpdC9EaXN0cm9LaXQvdHJlZS9jb25maWdzL3BsYXRmb3JtLXY3YS9jb25m
-aWcvaW1hZ2VzL2JlYWdsZWJvbmUuY29uZmlnCgoKTm93LCB0aGUgb3RoZXIgYXBwcm9hY2ggKHdo
-aWNoIGlzIHByb2JhYmx5IG1vcmUgeW9jdG8tbGlrZSksIGlzICd3aWMnLgoKV2ljIGlzIHRoZSBp
-bWFnZSB0b29sa2l0IHRoYXQgY29tZXMgd2l0aCBZb2N0byBhbmQgYmFzaWNhbGx5IGhhcyB0aGUg
-c2FtZQpwdXJwb3NlIGFzIGdlbmltYWdlIGhhcy4gSG93ZXZlciwgaXQgaGFzIGEgZGlmZmVyZW50
-IHN5bnRheCBkZXNjcmliaW5nIHRoZQpjb250ZW50IGFuZCBpcyBhIGJpdCB0aWdodGVyIGNvdXBs
-ZWQgaW50byBiaXRiYWtlIHByb2Nlc3MuCkl0IGFsc28gYWxsb3dzIGV4dGVuZGluZyBpdCBieSBw
-bHVnaW5zIHdyaXR0ZW4gaW4gcHl0aG9uLgoKVW5saWtlIHdpdGggZ2VuaW1hZ2UsIHlvdSBhbHNv
-IGRvIG5vdCBuZWVkIGEgc2VwYXJhdGUgcmVjaXBlLCBidXQgYWRkIHRoZSAnd2ljJwp0byBJTUFH
-RV9GU1RZUEVTLgoKQW4gZXhhbXBsZSBCZWFnbGVib25lIHdpYyBraWNrc3RhcnRlciAoLndrcykg
-ZmlsZSBpczoKCmh0dHA6Ly9naXQueW9jdG9wcm9qZWN0Lm9yZy9jZ2l0L2NnaXQuY2dpL21ldGEt
-eW9jdG8vdHJlZS9tZXRhLXlvY3RvLWJzcC93aWMvYmVhZ2xlYm9uZS15b2N0by53a3MKClRoZSBj
-b21wcmVoZW5zaXZlIGRvY3VtZW50YXRpb24gb24gd2ljIHlvdSBjYW4gZmluZCBpbiB0aGUgWW9j
-dG8gZG9jcyBoZXJlOgoKaHR0cHM6Ly9kb2NzLnlvY3RvcHJvamVjdC5vcmcvZGV2LW1hbnVhbC9j
-b21tb24tdGFza3MuaHRtbCNjcmVhdGluZy1wYXJ0aXRpb25lZC1pbWFnZXMtdXNpbmctd2ljCgpU
-aGUgZnVsbCB3a3MgcmVmZXJlbmNlIGlzIGhlcmU6CgpodHRwczovL2RvY3MueW9jdG9wcm9qZWN0
-Lm9yZy9yZWYtbWFudWFsL2tpY2tzdGFydC5odG1sCgo+IEknbSBub3QgdmVyeSBtdWNoIGludG8g
-WU9DVE8sIEkgZG9uJ3Qga25vdyBob3cgZ2VuaW1hZ2UgaXMgaW50ZWdyYXRlZAo+IGludG8gWU9D
-VE8sIHRoZXJlIG11c3QgYmUgdGhlIHJpZ2h0IHJlY2VpcHQgZmlsZXMgc29tZXdoZXJlLiBBZGRl
-ZAo+IEVucmljbyB0byBDYzogZm9yIHRoYXQuCj4gCgpJIGhvcGUgSSBjb3VsZCBhdCBsZWFzdCBn
-aXZlIHNvbWUgcG9pbnRlcnMuIEZvciBkZXRhaWxlZCBoZWxwIG9uIHNwZWNpZmljIFlvY3RvLQpy
-ZWxhdGVkIHRvcGljcywgeW91IGNhbiBhbHNvIGpvaW4gdGhlICNvZSBvciAjeW9jdG8gaXJjIGNo
-YW5uZWxzLgoKCkJlc3QgcmVnYXJkcwoKRW5yaWNvCgo+IFJlZ2FyZHMsCj4gwqDCoFNhc2NoYQo+
-IAoKLS0gClBlbmd1dHJvbml4IGUuSy7CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqB8IEVucmljbyBKw7ZybnPCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoHwKRW1iZWRkZWQgTGludXggQ29uc3VsdGluZyAmIFN1cHBvcnTCoMKgwqDCoMKg
-wqDCoMKgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8gfApTdGV1ZXJ3YWxkZXIgU3RyLiAy
-McKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8IFBob25lOiAr
-NDktNTEyMS0yMDY5MTctMTgwwqDCoHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFuecKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHwgRmF4OsKgwqDCoCs0OS01MTIxLTIwNjkxNy05
-wqDCoMKgwqB8CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Wed, Oct 06, 2021 at 10:43:15AM +0200, Oleksij Rempel wrote:
+> changes v4:
+> - rename skov_no_switch to skov_have_switch
+> - use xasprintf instead of xzallox + snprintf
+> - use alias for ethernet0 node detection and make it compatible with the
+>   old DTs versions.
+> 
+> changes v3:
+> - add missing byte in the switch path generation
+> - make sure it work with old devicetrees
+> 
+> Oleksij Rempel (8):
+>   ARM: dts: skov-imx6: add USB nodes
+>   ARM: boards: skov-imx6: fixup_machine_compatible() add optional root
+>     node
+>   ARM: boards: skov-imx6: add switch detection
+>   ARM: boards: skov-imx6: disable eth0 for barebox if no switch is
+>     detected
+>   ARM: boards: skov-imx6: fixup different DTS variants
+>   ARM: boards: skov-imx6: start using deep-probe
+>   ARM: boards: skov-imx6: add defaultenv with eth1-discover script
+>   ARM: boards: skov-imx6: use separate DTS for the iMX6 Solo variant
+
+Applied, thanks
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
