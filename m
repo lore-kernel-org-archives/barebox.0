@@ -1,53 +1,53 @@
-Delivery-date: Mon, 11 Oct 2021 10:05:28 +0200
+Delivery-date: Mon, 11 Oct 2021 10:05:30 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZqJM-0007Q9-Jj
-	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 10:05:28 +0200
+	id 1mZqJO-0007Qh-Vj
+	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 10:05:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZqJL-0006mc-9G
-	for lore@pengutronix.de; Mon, 11 Oct 2021 10:05:28 +0200
+	id 1mZqJN-0006ne-IW
+	for lore@pengutronix.de; Mon, 11 Oct 2021 10:05:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Kriq5aLn0qpq/NdVd0AenA+9MNodljBc8MnGfTQodNM=; b=eA9bElBxsTuzmG
-	tEQIfvZN5z3otLuEBp5x1xg+lXkdhtBibdJp8YsOL3zCG3KkrREiWjoaHYjVSjq53VS2QOJkzAenc
-	ShL5n+sBY7Yp9DkSFb/59/V/wMIC/vd4DaLsNrOim1RfzvdZ05xFFDWadUD67zgrz6e3wUoLY4xSZ
-	PBIOzA7apX/Uo5JDyHMSYq8RUksdkCRITDoXOSNGUUCGAkds9awn0rVZVnMMfFTsx6VLGpqXqd5lD
-	Mv36/AK3iq3GrYrRVG8fOy800x64i4wdMXHC8+2nvl11m4mR13AXav5beyp6nUHoFOIKBCvXEIuZR
-	j5ovo/b5IIDb7HQJ4CyQ==;
+	List-Owner; bh=pK4+TgQ+33qo3g0X6A5i7piewYTWxg4FKPNdYg+ln/Q=; b=SfY3yJkwbBn9DR
+	pHMJElFB2E4eakaLfsQPYDurlwd5j3Wzy2d0sJ7V/RnwmjCG7GC5zmMMD+UeCwm0S2Xgl3+7JtiOg
+	xFoRX81+n73Wb4DlrrHt2IvJ8i9ZNjUWjv3b8/W8p1efXRh/SvqQyVr2XKFbJHW0fun6J+Whkm+yz
+	bkF4+zkBXu3vrPvvYKWnZngs4b75Ql4gzDDBX+3PAiAIqr0NRbOFNNpXoq/vDWRo7L3NVizh2xfXH
+	eKkLXZ+Hpq/4ZArDmPFaAV4KXQgJsLGouEJwJf7aMZU3nwkmfseRfasnEg2T3m7moDdFaA/6oouf4
+	MH4CXhg7a43ZmJGxB3hg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mZqHv-008DN8-8R; Mon, 11 Oct 2021 08:03:59 +0000
+	id 1mZqI1-008DPz-53; Mon, 11 Oct 2021 08:04:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mZqHl-008DJo-Aw
+ id 1mZqHl-008DJn-Av
  for barebox@lists.infradead.org; Mon, 11 Oct 2021 08:03:52 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mZqHk-0006Ds-3J; Mon, 11 Oct 2021 10:03:48 +0200
+ id 1mZqHk-0006Dn-2A; Mon, 11 Oct 2021 10:03:48 +0200
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <sha@pengutronix.de>)
- id 1mZqHj-0009iB-AH; Mon, 11 Oct 2021 10:03:47 +0200
+ id 1mZqHj-0009hw-7x; Mon, 11 Oct 2021 10:03:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 11 Oct 2021 10:03:45 +0200
-Message-Id: <20211011080346.37197-9-s.hauer@pengutronix.de>
+Date: Mon, 11 Oct 2021 10:03:40 +0200
+Message-Id: <20211011080346.37197-4-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211011080346.37197-1-s.hauer@pengutronix.de>
 References: <20211011080346.37197-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211011_010349_441133_97259523 
-X-CRM114-Status: GOOD (  14.83  )
+X-CRM114-CacheID: sfid-20211011_010349_461051_3777F44F 
+X-CRM114-Status: GOOD (  10.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,69 +71,67 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 8/9] cdev: Add function to get unallocated start of device
+Subject: [PATCH 3/9] ARM: Rockchip: rk3568 EVB: use 64bit partition sizes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On several SoCs barebox is written to the raw device in front of the
-first partition. So far we blindly trust that there is enough space
-available for the barebox image. Start changing this by adding a
-function that retrieves the available space.
+The ofpart partition fixup will use #address-cells = <2> and #size-cells
+= <2>. Use the same in the dts file to make the diff between the live
+tree and its fixed version smaller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/partitions.c | 28 ++++++++++++++++++++++++++++
- include/driver.h    |  1 +
- 2 files changed, 29 insertions(+)
+ arch/arm/dts/rk3568-evb1-v10.dts | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/common/partitions.c b/common/partitions.c
-index d80878e065..e36341fc1e 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -156,3 +156,31 @@ int partition_parser_register(struct partition_parser *p)
+diff --git a/arch/arm/dts/rk3568-evb1-v10.dts b/arch/arm/dts/rk3568-evb1-v10.dts
+index bd583015e8..ebfd45ada8 100644
+--- a/arch/arm/dts/rk3568-evb1-v10.dts
++++ b/arch/arm/dts/rk3568-evb1-v10.dts
+@@ -472,17 +472,17 @@
  
- 	return 0;
- }
-+
-+/**
-+ * cdev_unallocated_start - return unallocated space
-+ * @name: The cdev name
-+ *
-+ * This function returns the space that is not allocated by any partition
-+ * at the start of a device.
-+ *
-+ * Return: The unallocated space at the start of the device in bytes
-+ */
-+loff_t cdev_unallocated_start(const char *name)
-+{
-+	struct cdev *cdev, *partcdev;
-+	loff_t start;
-+
-+	cdev = cdev_by_name(name);
-+	if (!cdev)
-+		return 0;
-+
-+	start = cdev->size;
-+
-+	list_for_each_entry(partcdev, &cdev->partitions, partition_entry) {
-+		if (partcdev->offset < start)
-+			start = partcdev->offset;
-+	}
-+
-+	return start;
-+}
-diff --git a/include/driver.h b/include/driver.h
-index c7f5903fce..38aa3cf8f5 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -494,6 +494,7 @@ ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulo
- ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags);
- int cdev_ioctl(struct cdev *cdev, int cmd, void *buf);
- int cdev_erase(struct cdev *cdev, loff_t count, loff_t offset);
-+loff_t cdev_unallocated_start(const char *name);
+ 	partitions {
+ 		compatible = "fixed-partitions";
+-		#address-cells = <1>;
+-		#size-cells = <1>;
++		#address-cells = <2>;
++		#size-cells = <2>;
  
- #define DEVFS_PARTITION_FIXED		(1U << 0)
- #define DEVFS_PARTITION_READONLY	(1U << 1)
+ 		partition@8000 {
+ 			label = "barebox";
+-			reg = <0x8000 0x400000>;
++			reg = <0x0 0x8000 0x0 0x400000>;
+ 		};
+ 
+ 		environment_emmc: partition@408000 {
+ 			label = "barebox-environment";
+-			reg = <0x408000 0x8000>;
++			reg = <0x0 0x408000 0x0 0x8000>;
+ 		};
+ 	};
+ };
+@@ -503,17 +503,17 @@
+ 
+ 	partitions {
+ 		compatible = "fixed-partitions";
+-		#address-cells = <1>;
+-		#size-cells = <1>;
++		#address-cells = <2>;
++		#size-cells = <2>;
+ 
+ 		partition@8000 {
+ 			label = "barebox";
+-			reg = <0x8000 0x400000>;
++			reg = <0x0 0x8000 0x0 0x400000>;
+ 		};
+ 
+ 		environment_sd: partition@408000 {
+ 			label = "barebox-environment";
+-			reg = <0x408000 0x8000>;
++			reg = <0x0 0x408000 0x0 0x8000>;
+ 		};
+ 	};
+ };
 -- 
 2.30.2
 
