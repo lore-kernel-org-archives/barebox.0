@@ -1,72 +1,75 @@
-Delivery-date: Mon, 11 Oct 2021 18:41:17 +0200
+Delivery-date: Mon, 11 Oct 2021 19:45:58 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZyMX-0004Vu-Mi
-	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 18:41:17 +0200
+	id 1mZzN8-0006dc-JO
+	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 19:45:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZyMW-00062C-ON
-	for lore@pengutronix.de; Mon, 11 Oct 2021 18:41:17 +0200
+	id 1mZzN7-0004n1-N4
+	for lore@pengutronix.de; Mon, 11 Oct 2021 19:45:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
 	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ZrTXWHajF9rE6/TE2bQxiON9RcvcebcXymOO8N4eUzw=; b=Dm2XWHpzihSulW
-	uknILoTVvp/mqK7SHBsGXzAf1tAeMEhJ96f/wR61O1tZE7GunGD/NMEWb/9SlX5/svRwKGSNw5l6j
-	5e24tKazBwAbAjX2KPKBxyqEBp1xjmc748ANwXxBZPMDJrty7b2X8zalYWaZZNKu4pwrat2sCSNim
-	EjFWLrx/s51pdiyoYSmfM5DvsJbLFYDdUitoMhCSMo7MmUdDh/uuHXQwLNDxyGzf0q42C5PGSy9Au
-	7Y7y6GUCEUqejh4MkkGsVQF/otCSbmiOeMCWXjui0V9viCwL0ydeGINN5g0uXvQpxlNJaXibFmdD/
-	alg5rBzu7CsihNIGsw5A==;
+	List-Owner; bh=8QFrBjv1oOU93FeZCoIsWgqMc+DyT7An4TxbLm19afo=; b=CyGc6K/KoW1OvN
+	NWR+1pkhZgBwGbRdY7ngONOl0CzwzIDSUG06KEVlWKPfGucF/kXHAcdVLwxNiBZTtAWgDb+6bEqi7
+	oB97yJbMUrv89bWDJTFP3y3upt6AL7SL3TSE/N2CluDqlpHNGEF4HS8+XwE/gs2bi7h1NgRMHqtnu
+	C6EgHdQBg8kRIhZj8aO4lSlhm2eS0WnxZHlZHIuvnT8hUf533bGIxWjOSjcXBT9NM0N+3Dg6iIdFP
+	BRWrco9HX259t/0H0epBeSDOkWf0YfP03YT/guL5P3C8lweep6lGTVL0gM6ZOEPZ413V61IjD0eLJ
+	VQNFGFxZBimar9q4jdMw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mZyKu-00A71W-49; Mon, 11 Oct 2021 16:39:36 +0000
-Received: from conssluserg-03.nifty.com ([210.131.2.82])
+	id 1mZzLR-00AGyk-PL; Mon, 11 Oct 2021 17:44:13 +0000
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mZyKo-00A70l-JA
- for barebox@lists.infradead.org; Mon, 11 Oct 2021 16:39:32 +0000
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com
- [209.85.210.174]) (authenticated)
- by conssluserg-03.nifty.com with ESMTP id 19BGd5ex011181
- for <barebox@lists.infradead.org>; Tue, 12 Oct 2021 01:39:05 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 19BGd5ex011181
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1633970345;
- bh=i++DA27+XREYPUxbn2obnVOpWSBUhH63JsJROLS0oFw=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=01Hr6ABdc4nPpikotDXSzVRYxSaeIcLdU1k9t4JCJBkJNW4IUC2xWc3dYdFQvMsGy
- hE4tr/i5lOYsJZ/NFniRdCAg9iWKbgdhgQ0ArR+B3XmpOIWQkIiZtwHnIckEsY9kKp
- b/rekx7HvQUmKScBm49zVIQpzP/I8+N/19j8TKBV3VPVyvenFStesLtPRgUcOsTVBH
- 3uBsYz8W2YxmKl3PKRP7wdk9pffGjKQgMQ3m1VRLGu/eFxuSrOscqlwHf47oHkGfe3
- uzR0I5Jc2nesxNF4SA1uScBbcs1FbVsB4vrOzArVT0VDyyfojX/hBLLgW7ayWN1zcW
- t4Cy6D0oAG30w==
-X-Nifty-SrcIP: [209.85.210.174]
-Received: by mail-pf1-f174.google.com with SMTP id t15so1593012pfl.13
- for <barebox@lists.infradead.org>; Mon, 11 Oct 2021 09:39:05 -0700 (PDT)
-X-Gm-Message-State: AOAM531ojDf0hrOzqDx6/JEjQk06i11TMGWss5sr6qmJkBnZ6xuaLh7d
- b7xh8YiaUlPc8hbgb+grriaZXmqkqe13XcaZu6c=
-X-Google-Smtp-Source: ABdhPJwPZ4fMVGW10CY1N72L1OP7TzNQFqMonfoCyxzDfz6zqnlVs3uHhh4+1wXpqyjc/LwdP72QucpW8VZqtlaFkp8=
-X-Received: by 2002:a65:530d:: with SMTP id m13mr19075541pgq.128.1633970344687; 
- Mon, 11 Oct 2021 09:39:04 -0700 (PDT)
+ id 1mZzLM-00AGxu-MI
+ for barebox@lists.infradead.org; Mon, 11 Oct 2021 17:44:10 +0000
+Received: by mail-lf1-x134.google.com with SMTP id p16so6126451lfa.2
+ for <barebox@lists.infradead.org>; Mon, 11 Oct 2021 10:44:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=igorinstitute-com.20210112.gappssmtp.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=GpNYxkhscM3bLPxTwlUQQBF5foG4nwsxf7FARB4w9so=;
+ b=QQpfjkIaLQ99vnpjAYJTAlzdGlS02bEF+Fzi5+mDrOWYHiknJKt9wEptJkxe5NpbUZ
+ /HkY7/0eRYd+g/TIdcQn1dfBANZ5OVxhUHWYny+j373SBqVfl5kuqJUf8gqP8GO3Y4Nw
+ MmQNFvNnCFE/trEXjoErZolqb+goSL2CmQzpS8fKZCcrRj1lGz3mmmmOUr/a9Vp/PpFF
+ r0lVQ5toWR4CH/TYu6L1WeqMf1DZPfcJpRZfkaOO0IKbvrKxlwKCaPyPl46PjSq7vUwC
+ 1bL+f3s3aWmiun0yPF3ZLDT1fNteZhY7QxNY1cOFlgm2GLsRo5j2Igu66hWw6QPYq66W
+ 0A0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=GpNYxkhscM3bLPxTwlUQQBF5foG4nwsxf7FARB4w9so=;
+ b=CyVsxTi0ZE9EWvkCTFufQW9cL5oyuzRrD6nxm+QqnjZwNQMyr/tGum0y7MMDzwPKz6
+ lbY7NyNF7PlR2qh8dlalHog/bnOLK/NiWm/EOxjBYwGV9NhmzdXgZeuu9bvwC+kAdcxz
+ GrHsEDtEO0SLJjJxkNL6dQws7W1Ig/9q1juSlwFZEKoS/8r88MKjzNG+rDXRTFq/Wg7R
+ cdyNoLiNQxc+rj3qYzfjjwx/3uCkq/paK0Z1QGpeT8o6Ca/0E+3Ai1bg8b8MqSoJTZnC
+ xh8l6npDG41HGNkjbyPchqFOEVf7djXpBC9SgjtTLK4o8ybuZCzSaz+jYG/durKrHO8+
+ MdxQ==
+X-Gm-Message-State: AOAM531jr5sh1Eir3VRuCB7uJaR93oPBpzuJQ8n8kGzLvsIN8QRuPA0M
+ muZ7g8NJ+UMDDveDKHLFeZQK+Ab4MrEvWEl1NEEx4JtZ2DJ8M5cG
+X-Google-Smtp-Source: ABdhPJxcKiU1kCvYhsRigVTW2OIHAew+Wmd0MmtKlc0ntTFYNUhNPthkEe3y+6KgX5SJ6q+Dcu/YnUV2XLP22cqMye8=
+X-Received: by 2002:a2e:6e0b:: with SMTP id j11mr24424682ljc.527.1633974246498; 
+ Mon, 11 Oct 2021 10:44:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211006142254.1751864-1-s.hauer@pengutronix.de>
- <20211006142254.1751864-3-s.hauer@pengutronix.de>
- <CAK7LNATVZXcPcHMbQ2T2tCa9+id2AY_1RgMe=-XkH=_aoXGc+w@mail.gmail.com>
- <20211011145248.GE28453@pengutronix.de>
-In-Reply-To: <20211011145248.GE28453@pengutronix.de>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 12 Oct 2021 01:38:27 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASY0fnOH5S3xDVBCH7TsT-ThcPCwLBc19-TR2gU2wqHxQ@mail.gmail.com>
-Message-ID: <CAK7LNASY0fnOH5S3xDVBCH7TsT-ThcPCwLBc19-TR2gU2wqHxQ@mail.gmail.com>
+References: <20211011080346.37197-1-s.hauer@pengutronix.de>
+ <20211011080346.37197-7-s.hauer@pengutronix.de>
+In-Reply-To: <20211011080346.37197-7-s.hauer@pengutronix.de>
+From: Trent Piepho <trent.piepho@igorinstitute.com>
+Date: Mon, 11 Oct 2021 10:43:55 -0700
+Message-ID: <CAMHeXxP4vbdaN84B3Vz5xFT=ioHy92CPn1BJT6Y6JpFg3Uj+Kw@mail.gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211011_093930_990525_C6254479 
-X-CRM114-Status: GOOD (  21.14  )
+X-CRM114-CacheID: sfid-20211011_104408_932216_9A7C7A21 
+X-CRM114-Status: UNSURE (   9.49  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,61 +89,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/5] scripts: Add common library functions
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 6/9] usb: dwc3: Clarify error message
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Oct 11, 2021 at 11:53 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Mon, Oct 11, 2021 at 11:37:07PM +0900, Masahiro Yamada wrote:
-> > On Wed, Oct 6, 2021 at 11:26 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > >
-> > > Several functions are duplicated in different host tools. This patch
-> > > starts collecting them in a single C file. We start with read_file()
-> > > and read_file_2(), others follow in separate commits.
-> > >
-> > > It would be great to compile these functions in a separate library, but
-> > > I don't know how this can be archieved in Kbuild. Instead, the C file
-> > > is included where needed. Not nice, not beautiful, but at least enough
-> > > to get something going.
-> >
-> >
-> > You can try this.
-> >
-> >
-> > hostprogs-always-$(CONFIG_IMD)   += bareboximd
-> > bareboximd-objs                                 := bareboximd.o common.o
-> >
-> >
-> > hostprogs-always-$(CONFIG_OMAP3_USB_LOADER) += omap3-usb-loader
-> > omap3-usb-loader-objs                       := omap3-usb-loader.o common.o
->
-> I did and it works well as long as common.o is used only in a single
-> directory. Unfortunately some tools are in subdirectories, like for
-> example scripts/imx/imx-usb-loader.c. Of course these could be moved up
-> one level, but I didn't want to go that path.
-> Do you see any possibility to archieve the same with files in different
-> directories?
->
+On Mon, Oct 11, 2021 at 1:04 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>         case DWC3_GHWPARAMS0_MODE_GADGET:
+>                 if (IS_ENABLED(CONFIG_USB_DWC3_HOST)) {
+>                         dev_err(dev,
+> -                               "Controller does not support host mode.\n");
+> +                               "This barebox does not support DWC3 host mode.\n");
 
-Then, I have no idea.
+Aren't these messages backward?  The hardware is set to device mode,
+CONFIG_USB_DWC3_HOST means, "Support only host mode," so it should
+fail because Barebox does not support device mode.
 
-At least, the Makefile part needs to be moved up.
+Maybe something like: "Barebox built without support for DWC3 USB
+device mode (USB_DWC_HOST).\n"  Let the person know what variable to
+search for in the config menu to change it.
 
-hostprogs-always-$(CONFIG_ARCH_IMX_IMXIMAGE)    += imx-image
-imx-usb-loader-objs := imx/imx-usb-loader.o imx/imx.o  common.o
-
-Probably, you do not want to do it.
-
-
--- 
-Best Regards
-Masahiro Yamada
+>                         return -EINVAL;
+>                 }
+>                 mode = USB_DR_MODE_PERIPHERAL;
+> @@ -51,7 +51,7 @@ static int dwc3_get_dr_mode(struct dwc3 *dwc)
+>         case DWC3_GHWPARAMS0_MODE_HOST:
+>                 if (IS_ENABLED(CONFIG_USB_DWC3_GADGET)) {
+>                         dev_err(dev,
+> -                               "Controller does not support device mode.\n");
+> +                               "This barebox does not support DWC3 device mode.\n");
+>                         return -EINVAL;
+>                 }
+>                 mode = USB_DR_MODE_HOST;
 
 _______________________________________________
 barebox mailing list
