@@ -1,142 +1,139 @@
-Delivery-date: Mon, 11 Oct 2021 11:52:33 +0200
+Delivery-date: Mon, 11 Oct 2021 12:05:00 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZryz-0002lN-I1
-	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 11:52:33 +0200
+	id 1mZsB2-0003Fx-5U
+	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 12:05:00 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZryx-0004jk-9w
-	for lore@pengutronix.de; Mon, 11 Oct 2021 11:52:33 +0200
+	id 1mZsAz-0007FB-AW
+	for lore@pengutronix.de; Mon, 11 Oct 2021 12:04:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:In-Reply-To:Date:
-	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=+RVLpzhh6ROBv1OE8uRL/aWZ+wUsLgBiOItM8QPGkM0=; b=EHC8S+um5+T2jGPxAiPvfk8hrI
-	SmMd6d8ZfUK3FmnKH7BYV3uLHFMdxGs0NoMCC6JciOHH5NM/wRVWZjZjn9FyLBguuuoZoZCpkLfVF
-	nDNU8XoVSLWHfitHsLV0u5rlXAMlfpSyEc1uqHRIifvF3L5DlYEm7QATmeOvQQdPEcCr70dO6lvE7
-	xRd6HzpBB1sGwuSnfroRzG7Cdw62sUpehI1lc944JwGirW955HvzBl7ASIbOmSPeAxRZaooqfzrTy
-	ZOIOWo0pkTrblCekKQugODh9YQIQNs8dI22+xhRRq1ETv2dawt2RJ3Wn9h+T73+UH+QKt1CB4BvV9
-	m0UAmI6A==;
+	bh=S9kQqKVJAX43vZOFOGGhjnFWXBaIy1hGtc4zcIBl4vU=; b=yDQ0HYeVDNcoprUJRICkRLnONm
+	FJzFdVFxMTDMGvaI6UbKm2XNU0jfeAsTBJ+DD0KMlJzP/S2KVltF6VFF1wlfGKdja5soF/B1+BMfj
+	joBG46caLDEOQsHvsTyz6H9SXSR5/Sj1kiKZ4Lv82ReKjlDgeeZLJ3npb6THnOuoNgjt89FjG+rOW
+	Qpx6t5s2Z2g4vY+jr74BfZPMgsE/iM2Y0md8gh4jDaBPAHOZuUIpDyq0gB228v8qk9KlOQWhHyeFh
+	TywVwm0DuUTfUFKdDQekyA9HGju/cfEUtfzoeoc98YS8TE0BlCfg5LQh5uDhtF8jomlTsel9qVCQq
+	Ckj0Ql0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mZrx5-008eFA-1r; Mon, 11 Oct 2021 09:50:38 +0000
-Received: from mail-eopbgr40061.outbound.protection.outlook.com ([40.107.4.61]
+	id 1mZs96-008jgG-Nw; Mon, 11 Oct 2021 10:03:02 +0000
+Received: from mail-eopbgr40083.outbound.protection.outlook.com ([40.107.4.83]
  helo=EUR03-DB5-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mZrsy-008cEl-NN
- for barebox@lists.infradead.org; Mon, 11 Oct 2021 09:46:22 +0000
+ id 1mZs6G-008iQk-9K
+ for barebox@lists.infradead.org; Mon, 11 Oct 2021 10:00:06 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RHw42Yd/KpImUgJVR9tKCEcpdCEBFF2K+UOcs6FCPr+RmY/9iw/cljnogQ36HXIXSMYj/+t768WcuypUKzG1pLsvz3FXOvHdRDmL+3zJqWB4JBRQi7AqkgOzHMlNCzZVi3t7QLvdXisDu9oOAXv5zm6olOGD2wt/3lmqc2asueg9w3HUk/mVOCoAV7gCpll5mUDaiKJ5YaeHSX03hlZZSW8uM2iq2DVcSebv2fDpFkdxsGYK/mqw6coCBVPeAuPCcejwNc40zJ3hCRdSj9E4Ev4Vp7pjcVZVbWS2xOj7ZF+a6YxgxTptGiKvANm4Hh52XYPu5yZxRn0lZQMVHAW0JA==
+ b=Hj+e1twgdm7LeSdoPVtuj0bFu17VBFN0jgOlTARf7o3A9ItvIjrMliAw1wwY+25FdBCzHO5dCeRv2eratv5ItuLGBnV/PRtKscWJo/eJBe/pjlrDeZf+BcNbLRX4S2Mg8Dp5ly11DvpEOJVTP6sTnJxuv5nyjf75bmkhgtr+jbJ5XBxlVYyEaKywpFb9T6zxlen0biqL/LAn6l8+8DVNc+R5z+46rEhOHaB1gr72P/v3Q/cvRA6Ye+CRgW73uHrGrIsRxb0YbSNFsESdDs2c8ASsQ4X9VbC3Wwv1jT9LiWbigBBUo/xods1uvmhZxAkBS7PmqolJUEo16EjUvaHobQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wU+wR0fnuEYTQHPeDZhC+RFz7HV4U6XS/p/fWRxcdsY=;
- b=dBXKn8lzdTcha+Yi94WnYhtO8DxMMBZfPmUOQpA8Qw3KznmSQNXqXqygCYSlQ8e433+CaOswFkbWbyzSwbtk/aytRNQKmhVifFMJmoESGAdtyve5UEpN/YM4mRSoJajbHlXKXaYk2+2quy1frzJKmhXSHyQdBE0hMjtFUI+tkzSEwRSaIIZuO8igNKmyTMSoSL2sYOV4TlpUKGft2P7zWBLgp+JqrGPuXD0K3Pdkjkx8e4xz/3d5yomZiFslYy0TUAw7/JmMgOtyu/mQ6yYez24B3EFirB0vPNEGbbvW3RfDNrsqAi6OqGDlv9JX+Ck9KsNDSUFABDBCTtj+6bhVjw==
+ bh=eQx03qLo1l9DZjYIS6gHN3vz89gXlYNLNZNB9rx4BWo=;
+ b=KDvkG/1EmILVNDs9V9fy5CnO1KOgSD6kZ1mBOgjNauzp7lBEHeoRiLR1eT2YBRjObn1PZfKSK/M7NsMR8SeHnPXPl2rzSqhj/BrBo6wAYpqT4iXKaG6m0eBlOzrOwiYvId3QZzDYN7sxbJFCk2W63qHzhh21fnTQqZYOuneFQifgTPktjcqEtDPhQdeRWb9SwhdV6Q/G9eJUS6yddWvMqiyH51/B46lFFzZB36ztzhPmA825M0lq4GFpK0itXVwOnUvgz2YrLUrtIbGNI4nodvYhY7ZtRapFUcAV7ash0+hj0g2nl9549TK6v6ALdwMDj0AhBfrWvXxkbb1683+Leg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=wolfvision.net; dmarc=pass action=none
  header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wU+wR0fnuEYTQHPeDZhC+RFz7HV4U6XS/p/fWRxcdsY=;
- b=N8GNnA9sJYg181MxslMnYfPFkNypVNtyDb61D2At+6/S0FLcM1xIJUaFb05FjGi5UQzgoNarhRS0r3bBqY0Kv5vEkThC6v8mw2ikpJzIYitVjwSX2mpGt3D1aL7iuVv/iUGQuB+jWGlPxMNxdlWi3i7p9UFqZ52OqVcEf01sSdw=
-Authentication-Results: lists.infradead.org; dkim=none (message not signed)
- header.d=none;lists.infradead.org; dmarc=none action=none
+ bh=eQx03qLo1l9DZjYIS6gHN3vz89gXlYNLNZNB9rx4BWo=;
+ b=laigCzjtqFkIHJJyidAk8D1eUvSFo5Ze3x6vulyfmTYT1davV/1SYNpe+jrB6cL1WcceRt0pFZVAaJttIyTgZuXuMn1AMRSLJG1R5POdgLt9LqP9aSLkUe0fS1LYC+TxE9lcHS7W2mcfG724gGIQLK5/+z0dDmrFOl83d9Su0uU=
+Authentication-Results: pengutronix.de; dkim=none (message not signed)
+ header.d=none;pengutronix.de; dmarc=none action=none
  header.from=wolfvision.net;
 Received: from DBBPR08MB4523.eurprd08.prod.outlook.com (2603:10a6:10:c8::19)
- by DB6PR0802MB2390.eurprd08.prod.outlook.com (2603:10a6:4:9f::15) with
+ by DB6PR0801MB2086.eurprd08.prod.outlook.com (2603:10a6:4:7a::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18; Mon, 11 Oct
- 2021 09:46:13 +0000
+ 2021 09:59:59 +0000
 Received: from DBBPR08MB4523.eurprd08.prod.outlook.com
  ([fe80::452b:e508:9c57:a6e3]) by DBBPR08MB4523.eurprd08.prod.outlook.com
  ([fe80::452b:e508:9c57:a6e3%7]) with mapi id 15.20.4587.026; Mon, 11 Oct 2021
- 09:46:13 +0000
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20211006142254.1751864-1-s.hauer@pengutronix.de>
- <20211006142254.1751864-6-s.hauer@pengutronix.de>
- <19559eab-4ba0-f96a-028e-a748da9b9c29@wolfvision.net>
- <20211011071812.GW28453@pengutronix.de>
+ 09:59:58 +0000
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+References: <20211011080346.37197-1-s.hauer@pengutronix.de>
+ <20211011080346.37197-10-s.hauer@pengutronix.de>
 From: Michael Riesch <michael.riesch@wolfvision.net>
 Organization: WolfVision GmbH
-Message-ID: <9ffdc27e-1e8a-9e92-a982-f1c140f2bee1@wolfvision.net>
-Date: Mon, 11 Oct 2021 11:46:12 +0200
+Message-ID: <8691baee-536c-5f89-d788-3687add471b6@wolfvision.net>
+Date: Mon, 11 Oct 2021 11:59:57 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
-In-Reply-To: <20211011071812.GW28453@pengutronix.de>
+In-Reply-To: <20211011080346.37197-10-s.hauer@pengutronix.de>
 Content-Language: en-US
-X-ClientProxiedBy: VI1PR07CA0233.eurprd07.prod.outlook.com
- (2603:10a6:802:58::36) To DBBPR08MB4523.eurprd08.prod.outlook.com
+X-ClientProxiedBy: VI1PR08CA0097.eurprd08.prod.outlook.com
+ (2603:10a6:800:d3::23) To DBBPR08MB4523.eurprd08.prod.outlook.com
  (2603:10a6:10:c8::19)
 MIME-Version: 1.0
 Received: from [192.168.100.125] (91.118.163.37) by
- VI1PR07CA0233.eurprd07.prod.outlook.com (2603:10a6:802:58::36) with Microsoft
+ VI1PR08CA0097.eurprd08.prod.outlook.com (2603:10a6:800:d3::23) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4608.4 via Frontend Transport; Mon, 11 Oct 2021 09:46:13 +0000
+ 15.20.4587.21 via Frontend Transport; Mon, 11 Oct 2021 09:59:58 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e6cd0cea-4d02-4704-b90c-08d98c9bf69d
-X-MS-TrafficTypeDiagnostic: DB6PR0802MB2390:
-X-Microsoft-Antispam-PRVS: <DB6PR0802MB2390259BD75A5D2982EAD3D2F2B59@DB6PR0802MB2390.eurprd08.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Office365-Filtering-Correlation-Id: 27fdbfa5-d055-4ab0-fea4-08d98c9de275
+X-MS-TrafficTypeDiagnostic: DB6PR0801MB2086:
+X-Microsoft-Antispam-PRVS: <DB6PR0801MB208614CC28331BEC0E951827F2B59@DB6PR0801MB2086.eurprd08.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2276;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: QoMyHfJ5dzfqb/Ak0SxTKh+WoqUYbyIthmqRYG6Nl3BDtdJNFFtMZ/1MAcvA1iULNaFHCywKBgbVFw/s7YfPZAFb0jmk3yrOyVPaz+uOsBkx7cSS9oN7J4krdrHz+W75NfNiTmCsDWLNRuLNBcrooFRvESgswhJfXW68SEPsRpoijoJX+lEpPvjQyOIlSmDzyaN9S1l20hiUHtWx7L8VXiwiaMIkqhJ7pGOszAwzzGxPZXT+nObefs1d104i4xoeWoTMHVSubi6jZCGKXPvE/jpeUqDCFP9oP7zP7Nih+JNp7lKjvm9MLoqe7TPDQS2oh3ucOvQgAKsDnf5dCEIur1KaewQOEP5+LP860tfUNAPS6RPqQlszTTdomc7cvI86uog/E9h7ZDFQSovenvvb+NExubK0i4Tc2fQX6nOQn2LiJXy8++exhpxaRDZXhTnbMXXIVf6Rh89Q40KTtL66a+2GFnZux3g4DCtC0jZhUx2FCIPkw/paftvhH+KgUKQOgNPkRGJkXxPW7yxDwZ19jy0BRPtqwQcv/O0KbJ5M7yyJDmu1LoH0xGewXDCFK4D6wzKUtjQY/v9c4jfNnaMpFgQZ/0OnJiPAQDwQQWBUca1W88pjrSyy7db0QweSJjk2wfxbqj7Ui7sDNMd4upWA98PMhyFDLE4D1sLQu4Nj74M2pucdR9NL/7jn0BlcG3BWIUzY+xd4Yo0VC3NDXZS6CUtkeER6cW0pBOjc+OwQflOliobWc1pwy+LnyKrhwGI2FT+huV1UhMAzjAIKm27f+A==
+X-Microsoft-Antispam-Message-Info: Ox7DmtTtgMXDeBFNtHSb3tmsqh0Qt1euSKykSso/m04jj7PTZQVTqriRvyqKK2noL9OIszx6RWIMqTxlIBHajkbHeCxRvjXntt0AGSllBIY6Ecjxt5C5gehbmgQelmtUpwPRNkiI/B0SXK1kd6L+3THtskNPaynE4mgMwE3aD09mNfyGhmW+7mbR+2rgNqfqE7n5aZ9X8r/lbBzfeiUgHltDGpxzSOmXkeH58sR7Ka2OXDeUuGjgTg4STp97t6qbwC4hyaY0PrUFYJnIxOtvYVFKp8ZbiOUvQpM41+t3wUxyq824tSK5a4HZ8KrZdCgURfopopnvGe96yxqVaPUBwguwoVsYfV+BwTS2p7VLy6zAPLQKUgHlWbGNioBq6cmE9tWoY5sZInTT83WYgMA9bz1DZqzFfTidKSIejIMQ6tCZsR2r7qv4sYzWSkUkbjxMp1H6QlrBoS/eoShP0n0AhN3t6Jqzt1RVKOnPCFJxi1ZvEPxaIZ6Wmasyvgtz/bu/Lj7X6E/qlsJX+NbxRhy9FxrMLn8XUFchm8rJDmFQOp8hVKxi4Oj6mYwZSrz59PiMf+6hf/78cWvW00Pv1Y+lKNdCGB7+hwkCK4zWno2O36cMvIOKbM4xJytsWy4uwq1yCy/cBFW1nSjhppYFsjAX/zNCpTZgMSYn41qvVES9f7Hg0ZKQJpcnfdx8H3jXPUvkXypY3KtQKK5CZYeML6FKoSPtWq/I2bev7IwVmAPCJ7YMfUOzko1VZXhK7Ca11oR8
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DBBPR08MB4523.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(39840400004)(396003)(346002)(376002)(136003)(44832011)(16576012)(4326008)(316002)(83380400001)(86362001)(31696002)(36756003)(31686004)(38100700002)(38350700002)(2616005)(956004)(53546011)(2906002)(36916002)(6916009)(508600001)(5660300002)(52116002)(8676002)(186003)(66556008)(66476007)(26005)(8936002)(6486002)(66946007)(45980500001)(43740500002);
+ SFS:(4636009)(39840400004)(136003)(396003)(366004)(376002)(346002)(956004)(316002)(26005)(38350700002)(38100700002)(5660300002)(31686004)(2616005)(16576012)(2906002)(186003)(66946007)(44832011)(66556008)(66476007)(31696002)(8936002)(8676002)(86362001)(53546011)(6486002)(6916009)(508600001)(52116002)(36916002)(36756003)(15650500001)(83380400001)(45980500001)(43740500002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VDFEQVZEbm1XUjVKdHNqU3pQWFVqc2Z0cGdCUGdIWlV0UVVHSm9UL3ZEdFJP?=
- =?utf-8?B?ZFBCaUtoSnpCYXlnd1ZPWU9DWW5SR0VFa09pbUp4N1dINy84K2VKbStZQ0RN?=
- =?utf-8?B?RDh4SlppeUo2VVc5VGlRVzAyVnFPa0xFOG9lV0ViVWNpcWdPRlkyenN5Nmtt?=
- =?utf-8?B?WUFKdThzay8wSzRON3NRdzdtZnY4TWxpYVNZeWJxN2JTSHJEZ1c1enUrcHlt?=
- =?utf-8?B?aGRONVFQWHBHb0RVdlhTaWVIWVVJYkFoVStmUG40N1ZLYlczOGtlcCs3ZW1r?=
- =?utf-8?B?d0hYb3BHcnpsSVlXYkMrbUlwYU01aTlZaHlrVXd2VllHaXJ6L0VyNFB5aVFP?=
- =?utf-8?B?cXl2ZDZXV2J2QUpVM2c5eXdFQXhQNEFaaGZmTFJBeW9hcUhzNnl4WStVUmxi?=
- =?utf-8?B?MVl6NDNqZXpBdmhPQWdNeForZml5YW5TdklmbGxzRkdQaThSbzR3b2hsNVVr?=
- =?utf-8?B?TmhWMG9ndG5FTGdlb3ZDbmZiaVNpQmMvRXdnWjZQZGFOSWJOOTJMd1IwMHBZ?=
- =?utf-8?B?NGYyK2NTUkw4YnRXc3RaVWlnajhyQVR5TWlYaEJMcndwNHhxVFFVNXJxUkRn?=
- =?utf-8?B?WEVGaExicElZd2g0UjNsbW1sejE1VnRRNjBRQTYxclZuQktJUGdjN1BvYncy?=
- =?utf-8?B?WGVTVWJVY3ZCNnV2V2dvZFhHWVdua2hsUkRINUVZOEtoUS9KbmZpOVhNdG1h?=
- =?utf-8?B?bDV4bkdYOXVlZE8vM3Y2YVlBUHhpRjhRUDJodUNMYkpwM2R4NWpkZGpVQXpI?=
- =?utf-8?B?MnFGU3NITEU2WDJ4VGZiRkFoTUFTdzU0b1RIcVdYQlBlMjFDalFjSFk0U2M0?=
- =?utf-8?B?cFpaRGdwSitDL2xZVmlabzRiTTNHYUlRWTg2czFkQ2ZFb1VsTStSRWlKU1lr?=
- =?utf-8?B?Z2djaHpnMno4UlVvV3pveklWV1VzVWpodTJLR1I2NFRFYzRlYm8xWE1OZU1G?=
- =?utf-8?B?ZlIxWnVsa2l3YlpaN2t3TFdTdVVwbFdzUXE1YkVBb3NUcHIyTXI0OTR3OURK?=
- =?utf-8?B?UzFzdElpVytXZm9xQVJZQ3gyL2FKc1lWKytTUXRCSmdaL0RucytMaGxDY3Rm?=
- =?utf-8?B?RG8xV28vRlVRbHVuSk5OL3gweHVuVmx3K1FJYjgvYzBqNndIR29CMUtIR1ha?=
- =?utf-8?B?cnRGVEhNUUhmZnc4TG90ZnM4dkhFN1lOZkVPTnd0ZVZUMVB2blhwam5JM2pr?=
- =?utf-8?B?TG4rQy9SdXV2TXVaSlVDa0IwWE5DRHExek9zaEpyY0d3MjA2c0hISXFlcnk4?=
- =?utf-8?B?My9MSUNGNmpRbjhCU0t0dDBwTFJFY3VFY3ZCY3VUR1lka1ZPNkFzVDZKTVRj?=
- =?utf-8?B?Ylkxa1F2bHdldzNlSTlWN1cvdDN1WWJkNXpQbTVZb2d6UDR2RzJXcEZiOGZx?=
- =?utf-8?B?TXI4QUpqd0xoOFh6Z2Z3bjFjZUlpQU9QN29OSFhIR0p6Uy8xb2pYVHdWUGVS?=
- =?utf-8?B?WjRZTnhhWVAxeWREcUNOdjlZc0o4cVNBdEExaHJTb2VzSG5mUDdkbXlxQlBP?=
- =?utf-8?B?Y28rd3BzYUhTUTV0QTJUTnZUc0RRN05XSFJ1WmJNUlg2Z2NPOHcyaDhBTTAr?=
- =?utf-8?B?ZC9tWEc1OFBUR0pHTlRPNmsvT1pRYldzTXZEL05HbWR6cFJIbCtiKzVSbWli?=
- =?utf-8?B?bENBbVJJK0dQWVZmTU5PaWdITnZHQmVXdlNFblduTjJjVlhkWVA4b2pnL1c1?=
- =?utf-8?B?czBrdng3amRFdk05d3I1NkpmTExMRWlOS2JtcWdpQlVKWE03R3ZlKzNRUWhR?=
- =?utf-8?Q?0PUP4/zJ7bbyqD73iu2Np0QQVNIAvUSzDaL9LgI?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SXBRK2pVOXh5aUdvVWpObW5wSVRuaGM4aHEvRVFDaEx0RGIwTFNiakVjcXpX?=
+ =?utf-8?B?NytzQW1JaDZGTTYxTWpKVkwzdE83OE1wc2NIT0VCSFBTaVcvUDlkSThZNkR5?=
+ =?utf-8?B?WElUYWVrS1BTWEJlZG9ncDFNdllDemgwcDU1aHVtT2pFcXpXT1FjaHE3dkdw?=
+ =?utf-8?B?a2NBdU8vMU92c041Y0dyMzA3MmpONzJKWHNVTnRKNlZNS0lTdXB2cWpkUyts?=
+ =?utf-8?B?TWdYemNhcGpkU0h4c1RUcGUrMTJ4c3h2aGw5RHRJMXFBY1pENUdIb3FlOWdO?=
+ =?utf-8?B?dzZlaEJZYkJrZHhXejBiK0Erb0licG1GUldZa3lPMWZDMnJUUVBqVTdhVkZj?=
+ =?utf-8?B?cHBpM1lEM3FFdUo2TGdQWEFKZFU0TG1ZNjhUN2xoaklvZzdUK1krMk1oa2JU?=
+ =?utf-8?B?bmpUU1JKMDA0aG84TzBiYVNQWFJzVzJSSWsvT3pmeC9ybkcvak9sWjRQQTEw?=
+ =?utf-8?B?VE5FOENmblhMV3d0MUJ0S3E1SUgrbmhuM1I4dmlpYWZVT2lLSTQ2YWVZL2pR?=
+ =?utf-8?B?L3o3dER0SjRKeExHczNEaHRMUUtGbmNOUnhjcXdTcDdFdnZoejZuZUZrb0ht?=
+ =?utf-8?B?S1JIVXRpTGFGaWs1RjJzYURkZUhZWFlNUmdUaUZFL3c3UitrSnJma0JSR09E?=
+ =?utf-8?B?WGExdjcvVGpCQWNkR3c2Mk5UWVIyTVRXc2Q4RDA5TXhGTi96ZDNvUTZmVi8w?=
+ =?utf-8?B?Rlh2VUtmNGZ1OEN3Q3hDQWNsZ2dna3ZhS01vTUI1VkxKVCt0WWRKWlR3OXNo?=
+ =?utf-8?B?cERoOG1Vd0c5RXNOK0hkSDc0ZksyY0t1QVhkZ0o5cGFQYkUrV0FHZHRGK1Va?=
+ =?utf-8?B?dnE1YlQ2d1NkVFhLTHNDeEQrK0JUTkVMbTZ2Vi9oOFNXaDVGb3NnOHNrOWtO?=
+ =?utf-8?B?ZDNtdWpSRlczWko4b0NybEpFdkI5TnY0bmV3NmJ5M2J4WklDL0JaWGJtVlNW?=
+ =?utf-8?B?dWJ5ajl5czk2M2Q4YUZndGpHajFIZ0szbmZleGh2cDhabElHb0xSWTNPMUxS?=
+ =?utf-8?B?VzlWajlpQysyK25pKysxY1lUQ2FkN3ZncjhRREV5WGxKS0xGSmtJdXV3cjkz?=
+ =?utf-8?B?aEsxV1NaMzFxc3NsRWtMdjIzK29JUHFRQmhPUVE3aHkwRFdJMVljRFRtNWpO?=
+ =?utf-8?B?dEtkMzQwOHBqTnJoZ0w3dXVyVzBRdXBKY2d5K1FBM1poSHh1SXAxRHc0aTV0?=
+ =?utf-8?B?OVZNcjFXdDlWVmdYbmtsUlJ6aUlWdVdtZWNscU16OVNicm03c3Rod0V5c3pw?=
+ =?utf-8?B?QjNjL0tGOFh0TVFaWkV4eVp5TTB0THdPUGUxVm8zRTZVSDhUMjJTZGtXT0lE?=
+ =?utf-8?B?TXo1ektnYUVWMTRIUlpYQ3V1b3EyblJKWHVGVFZqNmRKNUZIWHJnT2N5RjE3?=
+ =?utf-8?B?R1I3K0ZEWEJUTXVvam4vQ2R3TGRvZFhwNGlJZlhrYVhnWWVNZmRkUHJ1VlVR?=
+ =?utf-8?B?QlJwbUJnbXJMNGx5NjFxNzBTMk9Vd1EySm9qc1ltbFg3T3hJYVhEVGNZWTRB?=
+ =?utf-8?B?enh6Q0IydTE0amhyamhHSnpMdlZzVjdJS3dUNzJIdWl2bWNZcEFrOFdwdzdW?=
+ =?utf-8?B?dUlMSzFYSGdGUVp3Uzk4bGcxSEk2WE9MVk1JUXpJWkxrL0t5QmY1ODVjY3NO?=
+ =?utf-8?B?RWV3aVF4V1h3bHR0RkppWHRhVjFsZXRWN2o0MnRnMmh6QUM1WjJrY1dPcmVI?=
+ =?utf-8?B?ZFdHakd4STFTREVCSU9aNUFuYTVMcHFwclorZ3J3MWVCSk9aUTNPSmpZQmF5?=
+ =?utf-8?Q?ExDT0qLSB5ZKaHkUvuJ7FgQKs4T4HyWaR6CVBld?=
 X-OriginatorOrg: wolfvision.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6cd0cea-4d02-4704-b90c-08d98c9bf69d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27fdbfa5-d055-4ab0-fea4-08d98c9de275
 X-MS-Exchange-CrossTenant-AuthSource: DBBPR08MB4523.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2021 09:46:13.6116 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2021 09:59:58.9262 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lc13YQiXf3owMcf8LOOT21ool/WBh1wyN3rxAuvGjusYxhK18f2ohzQoNNIVO1tuRf4P9yXv5YFkJ5mL88SsYS6FRM94hg1jMx4kkZDhS2Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0802MB2390
+X-MS-Exchange-CrossTenant-UserPrincipalName: uegKzbKPZTjgWTxx8eJA3O/O0zre/aJi8RvvbixKeAzmZBmm8kRIN++QTVdbtncO+nOxgJcP0U7o3fkxI7CH8c+hIrpkEiBfOSogD8pqvJQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0801MB2086
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211011_024620_899921_7071151F 
-X-CRM114-Status: GOOD (  23.53  )
+X-CRM114-CacheID: sfid-20211011_030004_541392_EDF5907D 
+X-CRM114-Status: GOOD (  34.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -163,105 +160,236 @@ X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,NICE_REPLY_A,PTX_BROKEN_RDNS,
 	RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,SPF_NONE autolearn=no
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 5/5] scripts: Add rk-usb-loader tool
+Subject: Re: [PATCH 9/9] ARM: Rockchip: RK3568: implement failsafe barebox
+ update
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hello Sascha,
 
-On 10/11/21 9:18 AM, Sascha Hauer wrote:
-> On Fri, Oct 08, 2021 at 04:25:58PM +0200, Michael Riesch wrote:
->> Hello Sascha,
->>
->> On 10/6/21 4:22 PM, Sascha Hauer wrote:
->>> This adds a tool suitable for bootstrapping barebox on Rockchip RK3568
->>> SoCs. It has been tested on this SoC only. It might or might not work
->>> with minor adjustments on other SoCs.
->>>
->>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->>> ---
->>>  scripts/Kconfig         |   8 +
->>>  scripts/Makefile        |   3 +
->>>  scripts/rk-usb-loader.c | 324 ++++++++++++++++++++++++++++++++++++++++
->>>  scripts/rkimage.c       |  32 +---
->>>  scripts/rockchip.h      |  35 +++++
->>>  5 files changed, 371 insertions(+), 31 deletions(-)
->>>  create mode 100644 scripts/rk-usb-loader.c
->>>  create mode 100644 scripts/rockchip.h
->>>
->>> diff --git a/scripts/Kconfig b/scripts/Kconfig
->>> index 5cba520f4b..5118269c2d 100644
->>> --- a/scripts/Kconfig
->>> +++ b/scripts/Kconfig
->>> @@ -102,4 +102,12 @@ config OMAP4_HOSTTOOL_USBBOOT
->>>  
->>>  	  You need libusb-1.0 to compile this tool.
->>>  
->>> +config RK_USB_LOADER
->>> +	bool "Rockchip USB loader"
->>> +	depends on ARCH_ROCKCHIP || COMPILE_HOST_TOOLS
->>> +	help
->>> +	  Say Y here to build the rockchip usb loader tool.
->>> +
->>> +	  You need libusb-1.0 to compile this tool.
->>> +
->>>  endmenu
->>> diff --git a/scripts/Makefile b/scripts/Makefile
->>> index 53568573a3..db2168bfab 100644
->>> --- a/scripts/Makefile
->>> +++ b/scripts/Makefile
->>> @@ -36,6 +36,9 @@ hostprogs-always-$(CONFIG_OMAP3_USB_LOADER)		+= omap3-usb-loader
->>>  HOSTCFLAGS_omap4_usbboot.o = `pkg-config --cflags libusb-1.0`
->>>  HOSTLDLIBS_omap4_usbboot = -lpthread `pkg-config --libs libusb-1.0`
->>>  hostprogs-always-$(CONFIG_OMAP4_HOSTTOOL_USBBOOT)	+= omap4_usbboot
->>> +HOSTCFLAGS_rk-usb-loader.o = `pkg-config --cflags libusb-1.0`
->>> +HOSTLDLIBS_rk-usb-loader  = `pkg-config --libs libusb-1.0`
->>> +hostprogs-always-$(CONFIG_RK_USB_LOADER)		+= rk-usb-loader
->>>  
->>>  userprogs-always-$(CONFIG_BAREBOXENV_TARGET)		+= bareboxenv-target
->>>  userprogs-always-$(CONFIG_KERNEL_INSTALL_TARGET)	+= kernel-install-target
->>> diff --git a/scripts/rk-usb-loader.c b/scripts/rk-usb-loader.c
->>> new file mode 100644
->>> index 0000000000..87bc7b94a9
->>> --- /dev/null
->>> +++ b/scripts/rk-usb-loader.c
->>> @@ -0,0 +1,324 @@
->>> +// SPDX-License-Identifier: GPL-2.0-or-later
->>> +
->>> +/*
->>> + * rk-usb-loader: A tool to USB Bootstrap RK3568 SoCs
->>> + *
->>> + * This tool bootstraps Rockchip RK3568 SoCs via USB. It currently
->>> + * works for this SoC only. It takes the barebox images the barebox
->>> + * build process generates as input. The upload protocol has been
->>> + * taken from the rkdevelop tool, but it's not a full replacement
->>> + * of that tool.
->>> + */
->>
->> very nice! I was able to load barebox images into the RAM of the RK3568
->> EVB1 as well as of the Pine64 Quartz64A boards. So it works for the
->> RK3566 as well, maybe this should be reflected in the comments and the
->> commit message.
->>
->> Also, if it is not too much to ask, a short hint to this tool in the
->> documentation would be nice.
+On 10/11/21 10:03 AM, Sascha Hauer wrote:
+> The RK3568 ROM searches for valid boot images at different positions
+> on SD/eMMC cards. This can be used to implement a failsafe barebox
+> update which is immune against power failures.
 > 
-> I added a text to the documentation and also a note about the RK3566 to
-> the top of the tool's sourcecode.
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/boards/rockchip-rk3568-evb/board.c |   4 +-
+>  arch/arm/dts/rk3568-evb1-v10.dts            |  10 --
+>  arch/arm/mach-rockchip/Makefile             |   1 +
+>  arch/arm/mach-rockchip/bbu.c                | 117 ++++++++++++++++++++
+>  arch/arm/mach-rockchip/include/mach/bbu.h   |   9 +-
+>  5 files changed, 126 insertions(+), 15 deletions(-)
+>  create mode 100644 arch/arm/mach-rockchip/bbu.c
 > 
->>> +	dev = rk_usb_open(ctx, 0x2207, 0x350a);
-> 
-> I hardcoded the vid/pid of the RK3568 here. Is it the same for the
-> RK3566 or did you have to change it?
+> diff --git a/arch/arm/boards/rockchip-rk3568-evb/board.c b/arch/arm/boards/rockchip-rk3568-evb/board.c
+> index 2d472d1331..09385bea29 100644
+> --- a/arch/arm/boards/rockchip-rk3568-evb/board.c
+> +++ b/arch/arm/boards/rockchip-rk3568-evb/board.c
+> @@ -28,8 +28,8 @@ static int rk3568_evb_probe(struct device_d *dev)
+>  	else
+>  		of_device_enable_path("/chosen/environment-emmc");
+>  
+> -	rk3568_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT, "/dev/emmc.barebox");
+> -	rk3568_bbu_mmc_register("sd", 0, "/dev/sd.barebox");
+> +	rk3568_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT, "/dev/emmc");
+> +	rk3568_bbu_mmc_register("sd", 0, "/dev/sd");
+>  
+>  	return 0;
+>  }
+> diff --git a/arch/arm/dts/rk3568-evb1-v10.dts b/arch/arm/dts/rk3568-evb1-v10.dts
+> index ebfd45ada8..6f1eebc619 100644
+> --- a/arch/arm/dts/rk3568-evb1-v10.dts
+> +++ b/arch/arm/dts/rk3568-evb1-v10.dts
+> @@ -475,11 +475,6 @@
+>  		#address-cells = <2>;
+>  		#size-cells = <2>;
+>  
+> -		partition@8000 {
+> -			label = "barebox";
+> -			reg = <0x0 0x8000 0x0 0x400000>;
+> -		};
+> -
+>  		environment_emmc: partition@408000 {
+>  			label = "barebox-environment";
+>  			reg = <0x0 0x408000 0x0 0x8000>;
+> @@ -506,11 +501,6 @@
+>  		#address-cells = <2>;
+>  		#size-cells = <2>;
+>  
+> -		partition@8000 {
+> -			label = "barebox";
+> -			reg = <0x0 0x8000 0x0 0x400000>;
+> -		};
+> -
+>  		environment_sd: partition@408000 {
+>  			label = "barebox-environment";
+>  			reg = <0x0 0x408000 0x0 0x8000>;
+> diff --git a/arch/arm/mach-rockchip/Makefile b/arch/arm/mach-rockchip/Makefile
+> index ebaa3a5450..66bcdba2eb 100644
+> --- a/arch/arm/mach-rockchip/Makefile
+> +++ b/arch/arm/mach-rockchip/Makefile
+> @@ -4,3 +4,4 @@ obj-$(CONFIG_ARCH_RK3188) += rk3188.o
+>  obj-$(CONFIG_ARCH_RK3288) += rk3288.o
+>  obj-pbl-$(CONFIG_ARCH_RK3568) += rk3568.o
+>  obj-$(CONFIG_ARCH_RK3568) += bootm.o
+> +obj-$(CONFIG_BAREBOX_UPDATE) += bbu.o
+> diff --git a/arch/arm/mach-rockchip/bbu.c b/arch/arm/mach-rockchip/bbu.c
+> new file mode 100644
+> index 0000000000..6bfba95133
+> --- /dev/null
+> +++ b/arch/arm/mach-rockchip/bbu.c
+> @@ -0,0 +1,117 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +#include <common.h>
+> +#include <malloc.h>
+> +#include <bbu.h>
+> +#include <filetype.h>
+> +#include <errno.h>
+> +#include <fs.h>
+> +#include <fcntl.h>
+> +#include <linux/sizes.h>
+> +#include <linux/stat.h>
+> +#include <ioctl.h>
+> +#include <environment.h>
+> +#include <mach/bbu.h>
+> +#include <libfile.h>
+> +
+> +/* The MaskROM looks for images on these four locations: */
+> +#define IMG_OFFSET_0	(0 * SZ_1K + SZ_32K)
+> +#define IMG_OFFSET_1	(512 * SZ_1K + SZ_32K)
+> +#define IMG_OFFSET_2	(1024 * SZ_1K + SZ_32K)
+> +#define IMG_OFFSET_3	(1536 * SZ_1K + SZ_32K)
+> +#define IMG_OFFSET_4	(2048 * SZ_1K + SZ_32K)
 
-The RK3566 has the same VID/PID:
+That's five locations, isn't it?
 
-ID 2207:350a Fuzhou Rockchip Electronics Company
+> +
+> +/*
+> + * The strategy here is:
+> + * The MaskROM iterates over the above four locations until it finds a valid
 
-and I guess the IDs can remain hardcoded for now.
+Five?
 
 Best regards,
 Michael
+
+> + * boot image. The images are protected with sha sums, so any change to an
+> + * image on disk is invalidating it. We first check if we have enough space to
+> + * write two copies of barebox. To make it simple we only use IMG_OFFSET_0 and
+> + * IMG_OFFSET_4 which leaves the maximum size for a single image. When there's
+> + * not enough free space on the beginning of the disk we only write a single
+> + * image. When we have enough space for two images we first write the second one
+> + * (leaving the first one intact). Afterwards we write the first one which
+> + * leaves the previously written second image as a fallback in case writing the
+> + * first one gets interrupted.
+> + * This mechanism assumes that the first image is valid which isn't the case
+> + * when the previous update has been interrupted. Two power failures in a row
+> + * can leave the board unbootable. To prevent that we would have to be able
+> + * to detect valid images to determine the order in which we write the two
+> + * images.
+> + */
+> +static int rk3568_bbu_mmc_handler(struct bbu_handler *handler,
+> +				  struct bbu_data *data)
+> +{
+> +	enum filetype filetype;
+> +	int ret, fd;
+> +	loff_t space;
+> +
+> +	filetype = file_detect_type(data->image, data->len);
+> +	if (filetype != filetype_rockchip_rkns_image) {
+> +		if (!bbu_force(data, "incorrect image type. Expected: %s, got %s",
+> +				file_type_to_string(filetype_rockchip_rkns_image),
+> +				file_type_to_string(filetype)))
+> +			return -EINVAL;
+> +	}
+> +
+> +	device_detect_by_name(devpath_to_name(data->devicefile));
+> +
+> +	ret = bbu_confirm(data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	space = cdev_unallocated_start(devpath_to_name(data->devicefile));
+> +
+> +	if (space < IMG_OFFSET_0 + data->len) {
+> +		pr_err("Unallocated space on %s is too small for one image\n", data->devicefile);
+> +		return -ENOSPC;
+> +	}
+> +
+> +	fd = open(data->devicefile, O_WRONLY);
+> +	if (fd < 0)
+> +		return fd;
+> +        
+> +	if (space >= IMG_OFFSET_4 + data->len) {
+> +		pr_info("Unallocated space is enough for two copies, doing failsafe update\n");
+> +
+> +		ret = pwrite_full(fd, data->image, data->len, IMG_OFFSET_4);
+> +		if (ret < 0) {
+> +			pr_err("writing to %s failed with %s\n", data->devicefile,
+> +				strerror(-ret));
+> +			goto err_close;
+> +		}
+> +	}
+> +
+> +	ret = pwrite_full(fd, data->image, data->len, IMG_OFFSET_0);
+> +	if (ret < 0) {
+> +		pr_err("writing to %s failed with %s\n", data->devicefile,
+> +			strerror(-ret));
+> +		goto err_close;
+> +	}
+> +
+> +	ret = 0;
+> +
+> +err_close:
+> +	close(fd);
+> +
+> +	return ret;
+> +}
+> +
+> +int rk3568_bbu_mmc_register(const char *name, unsigned long flags,
+> +                const char *devicefile)
+> +{
+> +	struct bbu_handler *handler;
+> +	int ret;
+> +
+> +	handler = xzalloc(sizeof(*handler));
+> +
+> +	handler->flags = flags;
+> +	handler->devicefile = devicefile;
+> +	handler->name = name;
+> +	handler->handler = rk3568_bbu_mmc_handler;
+> +
+> +	ret = bbu_register_handler(handler);
+> +	if (ret)
+> +		free(handler);
+> +
+> +	return ret;
+> +}
+> diff --git a/arch/arm/mach-rockchip/include/mach/bbu.h b/arch/arm/mach-rockchip/include/mach/bbu.h
+> index e61e0615e2..7fb08a0a9e 100644
+> --- a/arch/arm/mach-rockchip/include/mach/bbu.h
+> +++ b/arch/arm/mach-rockchip/include/mach/bbu.h
+> @@ -3,12 +3,15 @@
+>  
+>  #include <bbu.h>
+>  
+> +#ifdef CONFIG_BAREBOX_UPDATE
+> +int rk3568_bbu_mmc_register(const char *name, unsigned long flags,
+> +                const char *devicefile);
+> +#else
+>  static inline int rk3568_bbu_mmc_register(const char *name, unsigned long flags,
+>                  const char *devicefile)
+>  {
+> -	return bbu_register_std_file_update(name, flags,
+> -                devicefile, filetype_rockchip_rkns_image);
+> -
+> +	return -ENOSYS;
+>  }
+> +#endif
+>  
+>  # endif /* __MACH_ROCKCHIP_BBU_H */
+> 
 
 _______________________________________________
 barebox mailing list
