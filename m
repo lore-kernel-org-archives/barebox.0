@@ -1,64 +1,52 @@
-Delivery-date: Mon, 11 Oct 2021 16:54:21 +0200
+Delivery-date: Mon, 11 Oct 2021 16:57:14 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZwh3-0007Yb-Jt
-	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 16:54:21 +0200
+	id 1mZwjq-0007h8-1t
+	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 16:57:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZwh2-0002UC-JL
-	for lore@pengutronix.de; Mon, 11 Oct 2021 16:54:21 +0200
+	id 1mZwjo-0003BI-SD
+	for lore@pengutronix.de; Mon, 11 Oct 2021 16:57:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=q0zWjnKZjif4s7rrVJpwQhVsVL/1l7qb85igvfooRfU=; b=ZVUOnYip5dSwQ6
-	DiCY+FRrJKL8jt42DOTkgOHO6Y2AnzPLkWjX9TWet76M5F9S9jPeCz7FKSBmoFxMA4vYZ8eu2h8LY
-	MpvdxCL5+67Tm4l/W38hwWMvMeMxNMlYFMpqUBaSu/6OT6hf7eV5QCrwS5+As+HdV09NJxIP5BOXF
-	K9CZqTtofTzWIRcOPCw3v5De6OQB9OmWOa2NnCUFUQp45axBoScy+ORPpQFCbhDUaWMSioiLu3gr3
-	PJsnLVnR3TvWgXtpbafbROhyHzJjHRzoOvg07QgUhlWhAwK+FYnjcUliyB9JyWhArp5JXX0RtYl2i
-	utUxnpr/hZZf2OF1K0Gg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=NB8mTkeaL3Bm3Tf5ZAB4lBGZsvVWAN1prT64eAuSuT4=; b=pcj983/s1TYtHb
+	Z3n46mtNT0LItnvdpNT8ohk4T67LtgrCJwm80OQzrT2hnfnt7rIK4uP3uQiklU6+IScHa+M37LAW+
+	TfN88CCoksIgAlmwFF+217Ol8Pr7weVbrGzPUcz3+JO0gsiGFa85WbwqXrKlLrfI1kwUSExuraLPo
+	pPf3u/5GmQcyYIyPl7x8ukf39xTSw764aWxB4R742H4jmlC8oLxb5wMa6sodatlvp1fA4UgIkNKd5
+	bV6a4PdR3Ct5PecR0GkboZPsEGVNxG7uCffXQzQRLXCN46+p1UZMN4H375oUOI84R3uAcJaVRQ1DQ
+	Wx9Bnodq4nf4v63KzofQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mZwff-009pQG-0k; Mon, 11 Oct 2021 14:52:55 +0000
+	id 1mZwiX-009qLc-DX; Mon, 11 Oct 2021 14:55:53 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mZwfa-009pOx-Eh
- for barebox@lists.infradead.org; Mon, 11 Oct 2021 14:52:51 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1mZwho-009q5X-Cc
+ for barebox@lists.infradead.org; Mon, 11 Oct 2021 14:55:09 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mZwfZ-0002O2-5F; Mon, 11 Oct 2021 16:52:49 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mZwfY-0007rh-SH; Mon, 11 Oct 2021 16:52:48 +0200
-Date: Mon, 11 Oct 2021 16:52:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20211011145248.GE28453@pengutronix.de>
-References: <20211006142254.1751864-1-s.hauer@pengutronix.de>
- <20211006142254.1751864-3-s.hauer@pengutronix.de>
- <CAK7LNATVZXcPcHMbQ2T2tCa9+id2AY_1RgMe=-XkH=_aoXGc+w@mail.gmail.com>
+ (envelope-from <afa@pengutronix.de>)
+ id 1mZwhn-0002hq-4k; Mon, 11 Oct 2021 16:55:07 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1mZwhm-0002e3-RQ; Mon, 11 Oct 2021 16:55:06 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 11 Oct 2021 16:55:05 +0200
+Message-Id: <20211011145506.23860-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAK7LNATVZXcPcHMbQ2T2tCa9+id2AY_1RgMe=-XkH=_aoXGc+w@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 16:49:28 up 235 days, 18:13, 143 users,  load average: 0.13, 0.10,
- 0.17
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211011_075250_514488_DB3F10B6 
-X-CRM114-Status: GOOD (  26.09  )
+X-CRM114-CacheID: sfid-20211011_075508_471119_283D7643 
+X-CRM114-Status: GOOD (  10.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,52 +66,66 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/5] scripts: Add common library functions
+Subject: [PATCH 1/2] fixup! scripts: Add rk-usb-loader tool
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Oct 11, 2021 at 11:37:07PM +0900, Masahiro Yamada wrote:
-> On Wed, Oct 6, 2021 at 11:26 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> > Several functions are duplicated in different host tools. This patch
-> > starts collecting them in a single C file. We start with read_file()
-> > and read_file_2(), others follow in separate commits.
-> >
-> > It would be great to compile these functions in a separate library, but
-> > I don't know how this can be archieved in Kbuild. Instead, the C file
-> > is included where needed. Not nice, not beautiful, but at least enough
-> > to get something going.
-> 
-> 
-> You can try this.
-> 
-> 
-> hostprogs-always-$(CONFIG_IMD)   += bareboximd
-> bareboximd-objs                                 := bareboximd.o common.o
-> 
-> 
-> hostprogs-always-$(CONFIG_OMAP3_USB_LOADER) += omap3-usb-loader
-> omap3-usb-loader-objs                       := omap3-usb-loader.o common.o
+Similar to d297e90323f3 ("scripts: omap3-usb-loader: make proper
+use of pkg-config --cflags"), tools using libusb-1.0 should
+include <libusb.h> and not assume its parent directory will be
+found by the search path, regardless of pkg-config.
 
-I did and it works well as long as common.o is used only in a single
-directory. Unfortunately some tools are in subdirectories, like for
-example scripts/imx/imx-usb-loader.c. Of course these could be moved up
-one level, but I didn't want to go that path.
-Do you see any possibility to archieve the same with files in different
-directories?
+Also, .gitignore was missing an entry for the new tool and
+hosttools_defconfig should enable all useful host tools.
 
-Sascha
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/sandbox/configs/hosttools_defconfig | 1 +
+ scripts/.gitignore                       | 1 +
+ scripts/rk-usb-loader.c                  | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-
+diff --git a/arch/sandbox/configs/hosttools_defconfig b/arch/sandbox/configs/hosttools_defconfig
+index 7d3385312488..0b62b648c744 100644
+--- a/arch/sandbox/configs/hosttools_defconfig
++++ b/arch/sandbox/configs/hosttools_defconfig
+@@ -4,3 +4,4 @@ CONFIG_ARCH_IMX_USBLOADER=y
+ CONFIG_MVEBU_HOSTTOOLS=y
+ CONFIG_OMAP3_USB_LOADER=y
+ CONFIG_OMAP4_HOSTTOOL_USBBOOT=y
++CONFIG_RK_USB_LOADER=y
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index cf645ec74661..bc6e5dbc43df 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -31,6 +31,7 @@ omap4_usbboot
+ omap4_usbboot-target
+ omap3-usb-loader
+ omap3-usb-loader-target
++rk-usb-loader
+ mips-relocs
+ rsatoc
+ stm32image
+diff --git a/scripts/rk-usb-loader.c b/scripts/rk-usb-loader.c
+index 627af7259ed0..c742023c60d9 100644
+--- a/scripts/rk-usb-loader.c
++++ b/scripts/rk-usb-loader.c
+@@ -25,7 +25,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+-#include <libusb-1.0/libusb.h>
++#include <libusb.h>
+ 
+ #include "../common.h"
+ #include "../common.c"
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 _______________________________________________
 barebox mailing list
