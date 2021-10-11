@@ -1,15 +1,15 @@
-Delivery-date: Mon, 11 Oct 2021 11:38:21 +0200
+Delivery-date: Mon, 11 Oct 2021 11:50:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZrlF-0002N5-5i
-	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 11:38:21 +0200
+	id 1mZrxN-0002jT-Md
+	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 11:50:53 +0200
 Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZrlE-0001dW-8L
-	for lore@pengutronix.de; Mon, 11 Oct 2021 11:38:20 +0200
+	id 1mZrxL-0004UY-S9
+	for lore@pengutronix.de; Mon, 11 Oct 2021 11:50:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=hYjii2H63/E9lBSkrOsfxiHvoKnrN0psTKIZLuV75NE=; b=fdOKXv31uQ5jsKL3KpEQx83sKi
-	oEmCkynxabjXKJMPKGB3YZCnwsQr+pY4xL2t1eJxplj7LHsNVX+y5WdR4RltRxFbfPQOVz35ZTmNQ
-	D5mg0I9DsCT8Gzxp+YnZUp2r5XnX2y8/NN9kEqZxtDbiSVaz+HGCDtGnr3LlF5zX5+B129hb9AioT
-	vQs7o+tnPGhxLTVoOi11+9hN6xgUlp2U8dipir6KZHxmzNbLdccLjzV2GBNUTwrPTNcFIR6rQINh4
-	nhpRpFRX+71NhGY5a7QMU+dbxTPu7/gkK+/W98rD/z+jp7KfMQdoxg3gDm7ozW7oKoPfCXpfgyVru
-	Qso3CIeg==;
+	bh=BK/ELNOETnceiK9tlwYh/zZxMWRqWEkRn64toZhyZVU=; b=0Nl0ud6bJznobRhv1brlDNElMt
+	V82/fl5go1u4MRh89ZOsp+qY1GhvkmrVaxR3igToLfVzkWyQAxWlqHMhL76C1CDYKCEU6UAFxjtDZ
+	lKwSMsSvSAxUWHMsPU3OiC3IVMB7MfOc3wl/Xz/1D24P2lL1mxrRg9I5o8XhiQH1wbYepq8+QgdcV
+	o8FOCx5CPJLQvPJvI7NL1Kshj1u7K2F/mfpJIcfyFlybXTobqQnqFOim6pvY9QTpi9KCZP24ZQes4
+	w0UodTpBBmRLyXr6sia1EpsiYe9MUk0MC0O49w4yeYqqngj3ojWPeEv612U6/Gqg9dIJcNcpeiG12
+	MgorR8Fg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mZrje-008Ygh-O6; Mon, 11 Oct 2021 09:36:42 +0000
+	id 1mZrvq-008daS-TC; Mon, 11 Oct 2021 09:49:19 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mZrjY-008YfF-TI
- for barebox@lists.infradead.org; Mon, 11 Oct 2021 09:36:38 +0000
+ id 1mZrsR-008c08-NO
+ for barebox@lists.infradead.org; Mon, 11 Oct 2021 09:45:49 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mZrjX-0001W4-EO; Mon, 11 Oct 2021 11:36:35 +0200
+ id 1mZrsQ-0003VA-Bl; Mon, 11 Oct 2021 11:45:46 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mZrjX-0004I0-5A; Mon, 11 Oct 2021 11:36:35 +0200
-Date: Mon, 11 Oct 2021 11:36:35 +0200
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20211011093635.GA28453@pengutronix.de>
-References: <20211006084323.14051-1-o.rempel@pengutronix.de>
+ id 1mZrsP-0004nT-F0; Mon, 11 Oct 2021 11:45:45 +0200
+Date: Mon, 11 Oct 2021 11:45:45 +0200
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: barebox@lists.infradead.org, Ian Abbott <abbotti@mev.co.uk>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <20211011094545.GB28453@pengutronix.de>
+References: <20211006135844.7361b72436286f5accbde0ad@gmail.com>
+ <20211007115254.32270-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211006084323.14051-1-o.rempel@pengutronix.de>
+In-Reply-To: <20211007115254.32270-1-jmaselbas@kalray.eu>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 11:36:23 up 235 days, 13:00, 140 users,  load average: 0.29, 0.21,
- 0.18
+X-Uptime: 11:44:14 up 235 days, 13:08, 140 users,  load average: 0.30, 0.25,
+ 0.20
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211011_023636_977995_40B9B432 
-X-CRM114-Status: GOOD (  18.86  )
+X-CRM114-CacheID: sfid-20211011_024547_799538_74A7C402 
+X-CRM114-Status: GOOD (  19.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,37 +85,25 @@ X-Spam-Status: No, score=-2.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,PTX_BROKEN_RDNS,RCVD_IN_DNSWL_MED,RDNS_NONE,
 	SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v4 0/8] add noswitch support for skov boards
+Subject: Re: [RFC PATCH] logo: Makefile: Replace inkscape with convert
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Oct 06, 2021 at 10:43:15AM +0200, Oleksij Rempel wrote:
-> changes v4:
-> - rename skov_no_switch to skov_have_switch
-> - use xasprintf instead of xzallox + snprintf
-> - use alias for ethernet0 node detection and make it compatible with the
->   old DTs versions.
+On Thu, Oct 07, 2021 at 01:52:54PM +0200, Jules Maselbas wrote:
+> The uses of inkscape to convert svg to png hasn't been very stable from
+> one version to another, and required quirks from one version to another.
 > 
-> changes v3:
-> - add missing byte in the switch path generation
-> - make sure it work with old devicetrees
+> I hope that convert from imagemagick will be a more stable solution.
 > 
-> Oleksij Rempel (8):
->   ARM: dts: skov-imx6: add USB nodes
->   ARM: boards: skov-imx6: fixup_machine_compatible() add optional root
->     node
->   ARM: boards: skov-imx6: add switch detection
->   ARM: boards: skov-imx6: disable eth0 for barebox if no switch is
->     detected
->   ARM: boards: skov-imx6: fixup different DTS variants
->   ARM: boards: skov-imx6: start using deep-probe
->   ARM: boards: skov-imx6: add defaultenv with eth1-discover script
->   ARM: boards: skov-imx6: use separate DTS for the iMX6 Solo variant
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> ---
+>  lib/logo/Makefile | 19 ++++++++-----------
+>  1 file changed, 8 insertions(+), 11 deletions(-)
 
-Applied, thanks
+I applied this one to the tree, thanks for the effort. Inkscape was
+mentioned in the Kconfig entry, I changed this to ImageMagick.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
