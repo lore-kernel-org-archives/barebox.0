@@ -1,74 +1,74 @@
-Delivery-date: Mon, 11 Oct 2021 19:45:58 +0200
+Delivery-date: Mon, 11 Oct 2021 19:54:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZzN8-0006dc-JO
-	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 19:45:58 +0200
+	id 1mZzVk-0006wM-6F
+	for lore@lore.pengutronix.de; Mon, 11 Oct 2021 19:54:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mZzN7-0004n1-N4
-	for lore@pengutronix.de; Mon, 11 Oct 2021 19:45:58 +0200
+	id 1mZzVj-0005hP-6F
+	for lore@pengutronix.de; Mon, 11 Oct 2021 19:54:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
 	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=8QFrBjv1oOU93FeZCoIsWgqMc+DyT7An4TxbLm19afo=; b=CyGc6K/KoW1OvN
-	NWR+1pkhZgBwGbRdY7ngONOl0CzwzIDSUG06KEVlWKPfGucF/kXHAcdVLwxNiBZTtAWgDb+6bEqi7
-	oB97yJbMUrv89bWDJTFP3y3upt6AL7SL3TSE/N2CluDqlpHNGEF4HS8+XwE/gs2bi7h1NgRMHqtnu
-	C6EgHdQBg8kRIhZj8aO4lSlhm2eS0WnxZHlZHIuvnT8hUf533bGIxWjOSjcXBT9NM0N+3Dg6iIdFP
-	BRWrco9HX259t/0H0epBeSDOkWf0YfP03YT/guL5P3C8lweep6lGTVL0gM6ZOEPZ413V61IjD0eLJ
-	VQNFGFxZBimar9q4jdMw==;
+	List-Owner; bh=/J3dmzQ7FzH0y8WjgkpDa6vtCGkT+SXad2rW1zGRb5g=; b=BsAm296EGoiuLE
+	QiLkHKzR8EUvvCCMaYASECWW0Me0NBEW0MsKnd6BlGJkdey6tZ1FpopHrZUxrKhRHd+1g0DR48m9O
+	nQ+UVRLANr1Vblw12Jz0t7PbN5Y+FvidCDZ7Kv9yqnw5foRAtOo1hBP3CFHn3KMUcoY+KH0lkIL/Q
+	gz4WMf73Rxe8iqQaIGx1hluW3Mpy3HRI0BfD/jOMd+0BKHzxPvGczN/kJY0BCmjeYn8DmfSseW0J4
+	PlWt+41qmKFPyhYY9eYXZxVI2RRbVZUpRafJBozZKbEI1U24g5nY8igG2S1KjU+6s1GY0eJfgeajV
+	f8LD7t5uznx7VL3mdbcQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mZzLR-00AGyk-PL; Mon, 11 Oct 2021 17:44:13 +0000
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+	id 1mZzUU-00AIbD-8g; Mon, 11 Oct 2021 17:53:34 +0000
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mZzLM-00AGxu-MI
- for barebox@lists.infradead.org; Mon, 11 Oct 2021 17:44:10 +0000
-Received: by mail-lf1-x134.google.com with SMTP id p16so6126451lfa.2
- for <barebox@lists.infradead.org>; Mon, 11 Oct 2021 10:44:07 -0700 (PDT)
+ id 1mZzUG-00AIYQ-QF
+ for barebox@lists.infradead.org; Mon, 11 Oct 2021 17:53:22 +0000
+Received: by mail-lf1-x131.google.com with SMTP id j21so59303387lfe.0
+ for <barebox@lists.infradead.org>; Mon, 11 Oct 2021 10:53:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=igorinstitute-com.20210112.gappssmtp.com; s=20210112;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=GpNYxkhscM3bLPxTwlUQQBF5foG4nwsxf7FARB4w9so=;
- b=QQpfjkIaLQ99vnpjAYJTAlzdGlS02bEF+Fzi5+mDrOWYHiknJKt9wEptJkxe5NpbUZ
- /HkY7/0eRYd+g/TIdcQn1dfBANZ5OVxhUHWYny+j373SBqVfl5kuqJUf8gqP8GO3Y4Nw
- MmQNFvNnCFE/trEXjoErZolqb+goSL2CmQzpS8fKZCcrRj1lGz3mmmmOUr/a9Vp/PpFF
- r0lVQ5toWR4CH/TYu6L1WeqMf1DZPfcJpRZfkaOO0IKbvrKxlwKCaPyPl46PjSq7vUwC
- 1bL+f3s3aWmiun0yPF3ZLDT1fNteZhY7QxNY1cOFlgm2GLsRo5j2Igu66hWw6QPYq66W
- 0A0g==
+ :cc; bh=8PGe9xvjH7RV81H10LzpjvdgQezztao4B3iUP/kxuHI=;
+ b=ED7etfGkijNNywRiFPCaELdBfZLbbIPDMmkzEbNSMIHNcN1VUcA+yILBdtIBx69GMS
+ zLtGvaF/bqQIi8wZCb0YmWl9qVKZu9b94LIgni44CTqwgeM4Ci4Ex7wiXaCG5beZzn6r
+ do8dCCarIksMFccdXEpd3oH7igDQt5xUnHRW4CrAWCuepmDL9SmePqKFBHSCvCW5wH5n
+ QxOX7urBF1PkaeJubrnzMQzWaiC5TgoMgLBFlrz9Q645TgqgAepZNeKRfaUg4y69YV6j
+ vdQsPfDIaFiBbrygRLjgZbUtIukpR+svq42bZqZCJHn5NO1tab678KquPZFhd4oLRD7f
+ 5EsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=GpNYxkhscM3bLPxTwlUQQBF5foG4nwsxf7FARB4w9so=;
- b=CyVsxTi0ZE9EWvkCTFufQW9cL5oyuzRrD6nxm+QqnjZwNQMyr/tGum0y7MMDzwPKz6
- lbY7NyNF7PlR2qh8dlalHog/bnOLK/NiWm/EOxjBYwGV9NhmzdXgZeuu9bvwC+kAdcxz
- GrHsEDtEO0SLJjJxkNL6dQws7W1Ig/9q1juSlwFZEKoS/8r88MKjzNG+rDXRTFq/Wg7R
- cdyNoLiNQxc+rj3qYzfjjwx/3uCkq/paK0Z1QGpeT8o6Ca/0E+3Ai1bg8b8MqSoJTZnC
- xh8l6npDG41HGNkjbyPchqFOEVf7djXpBC9SgjtTLK4o8ybuZCzSaz+jYG/durKrHO8+
- MdxQ==
-X-Gm-Message-State: AOAM531jr5sh1Eir3VRuCB7uJaR93oPBpzuJQ8n8kGzLvsIN8QRuPA0M
- muZ7g8NJ+UMDDveDKHLFeZQK+Ab4MrEvWEl1NEEx4JtZ2DJ8M5cG
-X-Google-Smtp-Source: ABdhPJxcKiU1kCvYhsRigVTW2OIHAew+Wmd0MmtKlc0ntTFYNUhNPthkEe3y+6KgX5SJ6q+Dcu/YnUV2XLP22cqMye8=
-X-Received: by 2002:a2e:6e0b:: with SMTP id j11mr24424682ljc.527.1633974246498; 
- Mon, 11 Oct 2021 10:44:06 -0700 (PDT)
+ bh=8PGe9xvjH7RV81H10LzpjvdgQezztao4B3iUP/kxuHI=;
+ b=Esj3pODXyOS+/lbSiltUuygmPzX7M+oinhi5O0kdVAt9jDb1cfk4KiGFPnVChQZYET
+ UU0ZWcoT1ftAkAF01BFdjiywwKMUsZm1XhRatOmyNMvYQ/Mn7OoIID4G2KSDjOPbARbb
+ 4hKC/xiBuGttAGI+E2lkSk08EDKOGgCNFcjuNX8DDQOK848wg5hsgETFwCzxD7uCBCRZ
+ HdcR54F2C4mmmtrJdNo6onmgRZOsK3A68IRVbulLQKX+ZJqya2T+EhAiWNWWtH8XJRut
+ TExeKWHfP8AkFnDcGjeHtKMX+uMeGSGyaA4A6Oak4IYhqafGSix/+BMizAbd2O7lwj3+
+ anbw==
+X-Gm-Message-State: AOAM533nMYqJaYU9ZSPvUJv8s3nEe3OZLshwLnYp0FueEkO32j4I9bQr
+ O0cOjX6hOpgeIHgji/KQgaBFee4nbN9aIfAwHaUYQg==
+X-Google-Smtp-Source: ABdhPJzo+h+5XxFguCEgb0nB+OjeVyhYbcLVh+kx0ZDiNoPa2p1Af+r6U4gPuLTfjH79cHfj/QKyXmxEfcNNpfu2pp0=
+X-Received: by 2002:a2e:7616:: with SMTP id r22mr23639383ljc.241.1633974798284; 
+ Mon, 11 Oct 2021 10:53:18 -0700 (PDT)
 MIME-Version: 1.0
 References: <20211011080346.37197-1-s.hauer@pengutronix.de>
- <20211011080346.37197-7-s.hauer@pengutronix.de>
-In-Reply-To: <20211011080346.37197-7-s.hauer@pengutronix.de>
+ <20211011080346.37197-8-s.hauer@pengutronix.de>
+In-Reply-To: <20211011080346.37197-8-s.hauer@pengutronix.de>
 From: Trent Piepho <trent.piepho@igorinstitute.com>
-Date: Mon, 11 Oct 2021 10:43:55 -0700
-Message-ID: <CAMHeXxP4vbdaN84B3Vz5xFT=ioHy92CPn1BJT6Y6JpFg3Uj+Kw@mail.gmail.com>
+Date: Mon, 11 Oct 2021 10:53:07 -0700
+Message-ID: <CAMHeXxP1MycJ4zarcdc74BH9Wi9eiT+JFgbeYB12751FriKpLw@mail.gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211011_104408_932216_9A7C7A21 
-X-CRM114-Status: UNSURE (   9.49  )
+X-CRM114-CacheID: sfid-20211011_105320_875445_31BBA844 
+X-CRM114-Status: UNSURE (   8.46  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -93,37 +93,35 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 6/9] usb: dwc3: Clarify error message
+Subject: Re: [PATCH 7/9] ARM: rk3568: Detect USB boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 On Mon, Oct 11, 2021 at 1:04 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->         case DWC3_GHWPARAMS0_MODE_GADGET:
->                 if (IS_ENABLED(CONFIG_USB_DWC3_HOST)) {
->                         dev_err(dev,
-> -                               "Controller does not support host mode.\n");
-> +                               "This barebox does not support DWC3 host mode.\n");
+> @@ -151,6 +151,11 @@ static struct rk_bootsource bootdev_map[] = {
+>         { .src = BOOTSOURCE_SPI_NOR, .instance = 0 },
+>         { .src = BOOTSOURCE_SPI_NAND, .instance = 0 },
+>         { .src = BOOTSOURCE_MMC, .instance = 1 },
+> +       { .src = BOOTSOURCE_UNKNOWN, .instance = 0 },
+> +       { .src = BOOTSOURCE_UNKNOWN, .instance = 0 },
+> +       { .src = BOOTSOURCE_UNKNOWN, .instance = 0 },
+> +       { .src = BOOTSOURCE_UNKNOWN, .instance = 0 },
+> +       { .src = BOOTSOURCE_USB, .instance = 0 },
+>  };
 
-Aren't these messages backward?  The hardware is set to device mode,
-CONFIG_USB_DWC3_HOST means, "Support only host mode," so it should
-fail because Barebox does not support device mode.
+Instead of blank entries, one could do designated array initialization
+(since BOOTSOURCE_UNKNOWN is 0):
 
-Maybe something like: "Barebox built without support for DWC3 USB
-device mode (USB_DWC_HOST).\n"  Let the person know what variable to
-search for in the config menu to change it.
+static struct rk_bootsource bootdev_map[] = {
+       [0x01] = { .src = BOOTSOURCE_NAND, .instance = 0 },
+       [0x02] = { .src = BOOTSOURCE_MMC, .instance = 0 },
+       [0x03] = { .src = BOOTSOURCE_SPI_NOR, .instance = 0 },
+       [0x04] = { .src = BOOTSOURCE_SPI_NAND, .instance = 0 },
+       [0x05] = { .src = BOOTSOURCE_MMC, .instance = 1 },
+       [0x0a] =  { .src = BOOTSOURCE_USB, .instance = 0 },
+};
 
->                         return -EINVAL;
->                 }
->                 mode = USB_DR_MODE_PERIPHERAL;
-> @@ -51,7 +51,7 @@ static int dwc3_get_dr_mode(struct dwc3 *dwc)
->         case DWC3_GHWPARAMS0_MODE_HOST:
->                 if (IS_ENABLED(CONFIG_USB_DWC3_GADGET)) {
->                         dev_err(dev,
-> -                               "Controller does not support device mode.\n");
-> +                               "This barebox does not support DWC3 device mode.\n");
->                         return -EINVAL;
->                 }
->                 mode = USB_DR_MODE_HOST;
+I also like the way the register value shows up in the table.
 
 _______________________________________________
 barebox mailing list
