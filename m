@@ -1,64 +1,54 @@
-Delivery-date: Tue, 12 Oct 2021 10:32:41 +0200
+Delivery-date: Tue, 12 Oct 2021 10:40:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1maDDF-00046x-2r
-	for lore@lore.pengutronix.de; Tue, 12 Oct 2021 10:32:41 +0200
+	id 1maDL6-0004LD-Ac
+	for lore@lore.pengutronix.de; Tue, 12 Oct 2021 10:40:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1maDDD-0005Ya-OU
-	for lore@pengutronix.de; Tue, 12 Oct 2021 10:32:40 +0200
+	id 1maDL5-0006V7-H5
+	for lore@pengutronix.de; Tue, 12 Oct 2021 10:40:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Hi4PD59kQ+ERl3ADX+WVgthjvSP337dOlzl5uWOEY+o=; b=xkh0N24NibOVmE
-	eFxCl2G23m15VP1k4008cP9sBlLMfNutbSmWvCzmmkoaOCj+b4K8C+RHAK65C2K6ai+gPY6ZuRHWo
-	Fkmd1NLhw9aKBhIdNXc9nj7O8h0A9PUtegkJlSI7lafRptS/GzWUDNpSNxaXDHWbjxrLU5rT/h6Ct
-	X/NVvpSEO5MbUrsS9PdWNVhWwuSVmTuUBXv5Qd63SrHedBgjmxTKf/jIs4MNRv1lVIj6ACYJvs7fN
-	PWRDc0lYLMXX1gBFV/KlJW0v1+gtsgH2d7JTkG1NQyOcp1Cs4ml1as1btKBWY+OtSWGHdgDwAl90L
-	8AS1Fi+zPPvmbHBXzTBQ==;
+	List-Owner; bh=LJh5mE+DXNm9JRk3KFV8e4P9WWUsPXVZLeORorNdN4g=; b=D9ZgEBF1qNb/YE
+	L4PyjrA23LoAt61z49aCzimvA/eqtur7R/fRwFhI/Xm8udoNp/ZrK+zw+Cjy97g5BxmF0Bsb0/QdV
+	BH0dsftIKY6o5wEMJgp7t3BgqC2bqaaWmyBD7OgH+pqxn7SslucUhOen6orNSHuwXDBSO5oKZWHuF
+	q+v0WcY/AQ5xOZSg9I1SN0NUJOdOGOkvsqFBxpo0+9/dc/m4M60Gl6aDq/PVGJAozItYJqsEnUeLf
+	FWylANEPQDK+E0/V6M3iMac2ElUs9+BgItQtYIg3SnWeYOed1RMA5Qb4fQTyHm4S9RRRhRKYEtCEL
+	ScPPm1svWOD0QwNXI96w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1maDBo-00C13W-Io; Tue, 12 Oct 2021 08:31:12 +0000
+	id 1maDJq-00C37k-Sr; Tue, 12 Oct 2021 08:39:30 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1maDBf-00C119-VU
- for barebox@lists.infradead.org; Tue, 12 Oct 2021 08:31:05 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1maDJm-00C36O-Ud
+ for barebox@lists.infradead.org; Tue, 12 Oct 2021 08:39:28 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1maDBe-0005Gs-Jt; Tue, 12 Oct 2021 10:31:02 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1maDBe-0004d9-AU; Tue, 12 Oct 2021 10:31:02 +0200
-Date: Tue, 12 Oct 2021 10:31:02 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20211012083102.GO28453@pengutronix.de>
-References: <20211012073352.4071559-1-s.hauer@pengutronix.de>
- <20211012073352.4071559-8-s.hauer@pengutronix.de>
- <05f86cbe-ad12-f957-8e51-58e7d9b3b830@pengutronix.de>
+ (envelope-from <uol@pengutronix.de>)
+ id 1maDJj-00069Q-VP; Tue, 12 Oct 2021 10:39:23 +0200
+Received: from uol by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <uol@pengutronix.de>)
+ id 1maDJj-0003g5-Lw; Tue, 12 Oct 2021 10:39:23 +0200
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue, 12 Oct 2021 10:39:20 +0200
+Message-Id: <20211012083920.14092-2-u.oelmann@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211012083920.14092-1-u.oelmann@pengutronix.de>
+References: <20211012083920.14092-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <05f86cbe-ad12-f957-8e51-58e7d9b3b830@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:28:45 up 236 days, 11:52, 141 users,  load average: 0.20, 0.24,
- 0.31
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211012_013104_109928_B76E2D27 
-X-CRM114-Status: GOOD (  36.55  )
+X-CRM114-CacheID: sfid-20211012_013927_007430_F4C08DBE 
+X-CRM114-Status: UNSURE (   9.25  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,145 +60,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 7/8] cdev: Add function to get unallocated start of device
+Subject: [PATCH 2/2] common: Kconfig: fix indentation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Oct 12, 2021 at 09:52:51AM +0200, Ahmad Fatoum wrote:
-> On 12.10.21 09:33, Sascha Hauer wrote:
-> > On several SoCs barebox is written to the raw device in front of the
-> > first partition. So far we blindly trust that there is enough space
-> > available for the barebox image. Start changing this by adding a
-> > function that retrieves the available space.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  common/partitions.c | 28 ++++++++++++++++++++++++++++
-> >  include/driver.h    |  1 +
-> >  2 files changed, 29 insertions(+)
-> > 
-> > diff --git a/common/partitions.c b/common/partitions.c
-> > index d80878e065..e36341fc1e 100644
-> > --- a/common/partitions.c
-> > +++ b/common/partitions.c
-> > @@ -156,3 +156,31 @@ int partition_parser_register(struct partition_parser *p)
-> >  
-> >  	return 0;
-> >  }
-> > +
-> > +/**
-> > + * cdev_unallocated_start - return unallocated space
-> > + * @name: The cdev name
-> > + *
-> > + * This function returns the space that is not allocated by any partition
-> > + * at the start of a device.
-> > + *
-> > + * Return: The unallocated space at the start of the device in bytes
-> > + */
-> > +loff_t cdev_unallocated_start(const char *name)
-> 
-> That name is a bit misleading. It's either cdev_allocated_start
-> or cdev_unallocated_space. Also cdev_ for a function not taking a cdev
-> is unexpected. Perhaps define devpath_to_cdev(s) as
-> cdev_by_name(devpath_to_name(s)) and have the caller pass in the cdev?
-
-That's a case of "wow, what a horrible name, let's write the function
-first and rethink the name later". That rethinking didn't happen on my
-side, thanks for doing this ;)
-
-Sascha
-
------------------------------8<-------------------------------
-
->From 839d934c79aee95a7d67d2f8dceacbfd0e5ea848 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 12 Oct 2021 09:33:51 +0200
-Subject: [PATCH] cdev: Add function to get unallocated space at start of
- device
-
-On several SoCs barebox is written to the raw device in front of the
-first partition. So far we blindly trust that there is enough space
-available for the barebox image. Start changing this by adding a
-function that retrieves the available space.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.barebox.org/20211012073352.4071559-8-s.hauer@pengutronix.de
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/partitions.c | 27 +++++++++++++++++++++++++++
- include/driver.h    |  1 +
- 2 files changed, 28 insertions(+)
-
-diff --git a/common/partitions.c b/common/partitions.c
-index d80878e065..b579559672 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -156,3 +156,30 @@ int partition_parser_register(struct partition_parser *p)
- 
- 	return 0;
- }
-+
-+/**
-+ * cdev_unallocated_space - return unallocated space
-+ * cdev: The cdev
-+ *
-+ * This function returns the space that is not allocated by any partition
-+ * at the start of a device.
-+ *
-+ * Return: The unallocated space at the start of the device in bytes
-+ */
-+loff_t cdev_unallocated_space(struct cdev *cdev)
-+{
-+	struct cdev *partcdev;
-+	loff_t start;
-+
-+	if (!cdev)
-+		return 0;
-+
-+	start = cdev->size;
-+
-+	list_for_each_entry(partcdev, &cdev->partitions, partition_entry) {
-+		if (partcdev->offset < start)
-+			start = partcdev->offset;
-+	}
-+
-+	return start;
-+}
-diff --git a/include/driver.h b/include/driver.h
-index c7f5903fce..4f6d40e17c 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -494,6 +494,7 @@ ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulo
- ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags);
- int cdev_ioctl(struct cdev *cdev, int cmd, void *buf);
- int cdev_erase(struct cdev *cdev, loff_t count, loff_t offset);
-+loff_t cdev_unallocated_space(struct cdev *cdev);
- 
- #define DEVFS_PARTITION_FIXED		(1U << 0)
- #define DEVFS_PARTITION_READONLY	(1U << 1)
--- 
-2.30.2
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
+LS0tCiBjb21tb24vS2NvbmZpZyB8IDYgKysrLS0tCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRp
+b25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9LY29uZmlnIGIvY29t
+bW9uL0tjb25maWcKaW5kZXggZDhkMjA5MTdhYWI2Li5mNDEyMGIyMDgzZWUgMTAwNjQ0Ci0tLSBh
+L2NvbW1vbi9LY29uZmlnCisrKyBiL2NvbW1vbi9LY29uZmlnCkBAIC05OTIsOSArOTkyLDkgQEAg
+Y29uZmlnIEJUSFJFQUQKIAlzZWxlY3QgSEFTX1NDSEVECiAJZGVwZW5kcyBvbiBIQVNfQVJDSF9T
+SkxKCiAJaGVscAotCSBiYXJlYm94IHRocmVhZHMgYXJlIGxpZ2h0d2VpZ2h0IGNvb3BlcmF0aXZl
+IChncmVlbikgdGhyZWFkcyB0aGF0IGFyZQotCSBzY2hlZHVsZWQgd2l0aGluIGRlbGF5IGxvb3Bz
+IGFuZCB0aGUgY29uc29sZSBpZGxlIHRvIGFzeW5jaHJvbm91c2x5Ci0JIGV4ZWN1dGUgYWN0aW9u
+cywgbGlrZSBjaGVja2luZyBmb3IgbGluayB1cCBvciBmZWVkaW5nIGEgd2F0Y2hkb2cuCisJICBi
+YXJlYm94IHRocmVhZHMgYXJlIGxpZ2h0d2VpZ2h0IGNvb3BlcmF0aXZlIChncmVlbikgdGhyZWFk
+cyB0aGF0IGFyZQorCSAgc2NoZWR1bGVkIHdpdGhpbiBkZWxheSBsb29wcyBhbmQgdGhlIGNvbnNv
+bGUgaWRsZSB0byBhc3luY2hyb25vdXNseQorCSAgZXhlY3V0ZSBhY3Rpb25zLCBsaWtlIGNoZWNr
+aW5nIGZvciBsaW5rIHVwIG9yIGZlZWRpbmcgYSB3YXRjaGRvZy4KIAogY29uZmlnIFNUQVRFCiAJ
+Ym9vbCAiZ2VuZXJpYyBzdGF0ZSBpbmZyYXN0cnVjdHVyZSIKLS0gCjIuMzAuMgoKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
 
