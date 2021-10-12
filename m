@@ -1,15 +1,15 @@
-Delivery-date: Tue, 12 Oct 2021 09:47:39 +0200
+Delivery-date: Tue, 12 Oct 2021 09:48:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1maCVf-0002YM-T7
-	for lore@lore.pengutronix.de; Tue, 12 Oct 2021 09:47:39 +0200
+	id 1maCWp-0002bS-Jf
+	for lore@lore.pengutronix.de; Tue, 12 Oct 2021 09:48:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1maCVe-0007Fl-Uv
-	for lore@pengutronix.de; Tue, 12 Oct 2021 09:47:39 +0200
+	id 1maCWo-0007Q4-Ia
+	for lore@pengutronix.de; Tue, 12 Oct 2021 09:48:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=6ap005v31NrwgfZ2ktPNbcRP7J/ADnUeUWOYeBWwyUo=; b=N0Ql7Ih3c9JLnUfUu78Q2jeIbT
-	1ZqF/pUuS1Gh373IeV6x05vBMkkptjLlYTLfoPdmMyBN4+xMvBzJvBmsfTy5h2SuQSfu8S5sftOB6
-	MyZXOJez7s9nbfJyjCG6MTaFscAvPwAqEh6t/vs/cnRRgbh/GlXs9HLpMOBQNnD9fbj5TlpCSmN5C
-	fwUPC341FBPHNn7eBwRFlJhEBXyJNvMYz6H3RemOwEX4FxHSn2tIi82Fc0qiFkO9BPV/XtdGK9Xii
-	jbm8DLNJWW+v4X4xWf6X8+Wdnop07ASdScMXQzgC9/dkVf39AoftZ+FGVCkhmqpLBGxQt5b+xhrAm
-	Vuzg52ew==;
+	bh=pUUk7/TqjvW0C2JUy9hmJgYUiP+PL69rrOJPHvd5feI=; b=D9aWKrv8Rqsqc0YjUB9eTPxXEu
+	LTcvD+81wLOkQDBS4zmfsVZ8duYfMGfOma8+iLEzQ8KePu1ehthSy1CAu0RTYP017IGjejZiGDzGZ
+	LOtDb7CmRR4USd84ug4wfT2zEXPh8pdgJSiJmp/cRwWRSH+o3h6EfGTLaPjO3ixNgFNOwgETS0JLq
+	150Yjsm/8VP+zFAQ0bTYxL2WpEFqHgOxsGgYqwY9qyzt0sgdUpbmNMcVSWA10Ru4lBrLvQn+glHAb
+	WbtqFb/bKlVOzE/o6McD0na48IIJbdIOt7XwXoTv3UrGSY6FMfgOiWXelOewmOCzCNhDNV4szhRWr
+	xLkUiMZw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1maCUW-00Bq79-9W; Tue, 12 Oct 2021 07:46:28 +0000
+	id 1maCVe-00BqQn-Fl; Tue, 12 Oct 2021 07:47:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1maCUR-00Bq5z-AR
- for barebox@lists.infradead.org; Tue, 12 Oct 2021 07:46:24 +0000
+ id 1maCVZ-00BqPq-Pz
+ for barebox@lists.infradead.org; Tue, 12 Oct 2021 07:47:35 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1maCUQ-00073y-3i; Tue, 12 Oct 2021 09:46:22 +0200
+ id 1maCVY-0007FI-JF; Tue, 12 Oct 2021 09:47:32 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1maCUP-0000vK-Pv; Tue, 12 Oct 2021 09:46:21 +0200
-Date: Tue, 12 Oct 2021 09:46:21 +0200
+ id 1maCVY-0000wC-9y; Tue, 12 Oct 2021 09:47:32 +0200
+Date: Tue, 12 Oct 2021 09:47:32 +0200
 To: Trent Piepho <trent.piepho@igorinstitute.com>
 Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20211012074621.GK28453@pengutronix.de>
-References: <20211011190725.856597-1-trent.piepho@igorinstitute.com>
+Message-ID: <20211012074732.GL28453@pengutronix.de>
+References: <20211011191933.857941-1-trent.piepho@igorinstitute.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211011190725.856597-1-trent.piepho@igorinstitute.com>
+In-Reply-To: <20211011191933.857941-1-trent.piepho@igorinstitute.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 09:45:51 up 236 days, 11:09, 140 users,  load average: 0.16, 0.15,
+X-Uptime: 09:47:24 up 236 days, 11:11, 140 users,  load average: 0.15, 0.14,
  0.17
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211012_004623_382358_9A4FC709 
-X-CRM114-Status: GOOD (  27.85  )
+X-CRM114-CacheID: sfid-20211012_004733_877109_C04BD67A 
+X-CRM114-Status: GOOD (  29.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,48 +81,46 @@ X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] nandtest: Add more fields when bad byte found
+Subject: Re: [PATCH] of: partitions: Skip fixup for devices with no partitions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Oct 11, 2021 at 12:07:25PM -0700, Trent Piepho wrote:
-> This can help to determine what is causing the problem.  E.g., is the
-> bad byte always in the same eraseblock?  Is it always 513 bytes into a
-> page with a hardware ECC chunk size of 512 bytes?
+On Mon, Oct 11, 2021 at 12:19:33PM -0700, Trent Piepho wrote:
+> If the device has no partitions, e.g. most EEPROM or OTP memory,
+> of_partition_fixup() can exit early, before trying to find the kernel dt
+> node and calling of_fixup_partitions().
 > 
-> Example before and after (error at absolute address 123456 with 128kB
-> eraseblock and 2kB page sizes):
-> 
-> Byte 0xe240 is 12 should be 34
-> Block 0x1 byte 0xe240 (page 0x1c offset 0x240) is 0x12 should be 0x34
+> This avoids spurious error messages when the kernel dt node doesn't
+> exist.  E.g., for an EEPROM in the Barebox dtb but not in the kernel
+> dtb, Barebox will display an error about being unable to fixup the
+> kernel dt node, however, if it had found the node it would just return
+> without doing anything since the partition list is empty, so really
+> there is no error.
 > 
 > Signed-off-by: Trent Piepho <trent.piepho@igorinstitute.com>
 > ---
->  commands/nandtest.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  drivers/of/partition.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/commands/nandtest.c b/commands/nandtest.c
-> index 1bb59c7fd..4a7db9cc7 100644
-> --- a/commands/nandtest.c
-> +++ b/commands/nandtest.c
-> @@ -169,8 +169,10 @@ static int erase_and_write(loff_t ofs, unsigned char *data,
->  		printf("\ncompare failed. seed %d\n", seed);
->  		for (i = 0; i < meminfo.erasesize; i++) {
->  			if (data[i] != rbuf[i])
-> -				printf("Byte 0x%x is %02x should be %02x\n",
-> -				       i, rbuf[i], data[i]);
-> +				printf("Block 0x%llx byte 0x%0x (page 0x%x offset 0x%x) is %02x should be %02x\n",
-> +				       div64_ul(ofs, meminfo.erasesize), i,
-> +				       i / meminfo.writesize, i % meminfo.writesize,
-> +				       rbuf[i], data[i]);
->  		}
->  		return ret;
->  	}
+> diff --git a/drivers/of/partition.c b/drivers/of/partition.c
+> index 10081363d..18b138f00 100644
+> --- a/drivers/of/partition.c
+> +++ b/drivers/of/partition.c
+> @@ -256,6 +256,9 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
+>  	if (!cdev->device_node)
+>  		return -EINVAL;
+>  
+> +	if (list_empty(&cdev->partitions))
+> +		return 0;
+> +
+>  	name = of_get_reproducible_name(cdev->device_node);
+>  	np = of_find_node_by_reproducible_name(root, name);
+>  	free(name);
 > -- 
 > 2.31.1
 > 
