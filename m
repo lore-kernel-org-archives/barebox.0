@@ -1,51 +1,63 @@
-Delivery-date: Tue, 12 Oct 2021 10:40:50 +0200
+Delivery-date: Tue, 12 Oct 2021 10:46:01 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1maDL8-0004La-1m
-	for lore@lore.pengutronix.de; Tue, 12 Oct 2021 10:40:50 +0200
+	id 1maDQ9-0004V6-RS
+	for lore@lore.pengutronix.de; Tue, 12 Oct 2021 10:46:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1maDL7-0006Vo-0P
-	for lore@pengutronix.de; Tue, 12 Oct 2021 10:40:49 +0200
+	id 1maDQ8-0007Mp-NN
+	for lore@pengutronix.de; Tue, 12 Oct 2021 10:46:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=qL7a1yQDah1ELoBs358VKqGF7pUfahVKWU2basxMb08=; b=SzZL5dfDR+Ycrr
-	ivvNW2tj9dLt9O4Kw8pDNpT2sN5ak9/XFRKV5CJGdLX48STcigRAcgurgQKWedNsMRHcRXonH3kQF
-	7Lg0+H4OvWNammTFxmcdV6aOZXKjvccE8Jxn/DCc0tTliHeDzGe24lZmzMLEYou1xRwOxy60XyJca
-	944TAEKAX4C0Uden8QvrA40gOfoRt8gty20uhFkAUwRX37wcIEQPZXNBeq3agdra9DdTDPu5Ae+Hy
-	HqaoVQy715CA9CKaHUBfH9o83XQPs0clYv7KIJY+BbC15OTho+08eY7tZuTXXK6o3MOidmq6Z+4ps
-	0hFPr0/ehRIDGkhG8fwA==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=EmGawIQlbPRLYgVQStOHRRYcXaWJyIX7K5nA8OHLYiE=; b=YhYb9lu13ez31tHTLN6eeNZFsJ
+	Wlurc4mkVbNvHigsGU9DTDOS2GkO6EEw/cNMKWt4oQtvhQ0n08KBzQpCiHSMkC3pJxEWr256d+44m
+	wWBFxpAqM6cDkjrgVqAJ6HPzAPu3mVVyXj00g+9o9FAPBhBsvmJcE4sG4L9DADqidF7mLKjUGsjmH
+	41GUt3fNcoBWGHkNcMonfrFcpZ6PqN4jbMCG09yRr9+ODZKX7Gvxv7ghKFrAqkVB0jtVdRG+/kJKk
+	wgig+5OySoazFT081xq7B9ccFCJoAP3yGpPFEei6jjWFK/eSrViqsmyvvrBDrw4egPioAUBjHNPSl
+	jr0PmIQg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1maDJt-00C389-IH; Tue, 12 Oct 2021 08:39:33 +0000
+	id 1maDOn-00C3rA-M8; Tue, 12 Oct 2021 08:44:37 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1maDJm-00C36N-VX
- for barebox@lists.infradead.org; Tue, 12 Oct 2021 08:39:28 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ id 1maDOi-00C3qk-Q8
+ for barebox@lists.infradead.org; Tue, 12 Oct 2021 08:44:34 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <uol@pengutronix.de>)
- id 1maDJj-00069P-Ui; Tue, 12 Oct 2021 10:39:23 +0200
-Received: from uol by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <uol@pengutronix.de>)
- id 1maDJj-0003g3-LV; Tue, 12 Oct 2021 10:39:23 +0200
-From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 12 Oct 2021 10:39:19 +0200
-Message-Id: <20211012083920.14092-1-u.oelmann@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+ (envelope-from <sha@pengutronix.de>)
+ id 1maDOh-00074k-8C; Tue, 12 Oct 2021 10:44:31 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1maDOg-00061C-V3; Tue, 12 Oct 2021 10:44:30 +0200
+Date: Tue, 12 Oct 2021 10:44:30 +0200
+To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20211012084430.GP28453@pengutronix.de>
+References: <20211012083920.14092-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20211012083920.14092-1-u.oelmann@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 10:43:44 up 236 days, 12:07, 141 users,  load average: 2.43, 1.21,
+ 0.65
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211012_013927_068471_2B085915 
-X-CRM114-Status: GOOD (  17.81  )
+X-CRM114-CacheID: sfid-20211012_014432_876704_18A35761 
+X-CRM114-Status: GOOD (  38.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -57,98 +69,167 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] common: Kconfig: fix typos
+Subject: Re: [PATCH 1/2] common: Kconfig: fix typos
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
-LS0tCiBjb21tb24vS2NvbmZpZyB8IDI2ICsrKysrKysrKysrKystLS0tLS0tLS0tLS0tCiAxIGZp
-bGUgY2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygrKSwgMTMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
-IGEvY29tbW9uL0tjb25maWcgYi9jb21tb24vS2NvbmZpZwppbmRleCA0MjM5ZGRmYjE5ZTAuLmQ4
-ZDIwOTE3YWFiNiAxMDA2NDQKLS0tIGEvY29tbW9uL0tjb25maWcKKysrIGIvY29tbW9uL0tjb25m
-aWcKQEAgLTEwLDcgKzEwLDcgQEAgY29uZmlnIEhBU19NT0RVTEVTCiBjb25maWcgSEFTX0NBQ0hF
-CiAJYm9vbAogCWhlbHAKLQkgIFRoaXMgYWxsb3dzIHlvdSBkbyBydW4gIm1ha2UgQVJDSD1zYW5k
-Ym94IGFsbHllc2NvbmZpZyIuCisJICBUaGlzIGFsbG93cyB5b3UgdG8gcnVuICJtYWtlIEFSQ0g9
-c2FuZGJveCBhbGx5ZXNjb25maWciLgogCiAJICBEcml2ZXJzIHRoYXQgZGVwZW5kIG9uIGEgY2Fj
-aGUgaW1wbGVtZW50YXRpb24gY2FuIGRlcGVuZCBvbiB0aGlzCiAJICBjb25maWcsIHNvIHRoYXQg
-eW91IGRvbid0IGdldCBhIGNvbXBpbGF0aW9uIGVycm9yLgpAQCAtMTgsNyArMTgsNyBAQCBjb25m
-aWcgSEFTX0NBQ0hFCiBjb25maWcgSEFTX0RNQQogCWJvb2wKIAloZWxwCi0JICBUaGlzIGFsbG93
-cyB5b3UgZG8gcnVuICJtYWtlIEFSQ0g9c2FuZGJveCBhbGx5ZXNjb25maWciLgorCSAgVGhpcyBh
-bGxvd3MgeW91IHRvIHJ1biAibWFrZSBBUkNIPXNhbmRib3ggYWxseWVzY29uZmlnIi4KIAogCSAg
-RHJpdmVycyB0aGF0IGRlcGVuZCBvbiBhIERNQSBpbXBsZW1lbnRhdGlvbiBjYW4gZGVwZW5kIG9u
-IHRoaXMKIAkgIGNvbmZpZywgc28gdGhhdCB5b3UgZG9uJ3QgZ2V0IGEgY29tcGlsYXRpb24gZXJy
-b3IuCkBAIC02MzAsNyArNjMwLDcgQEAgY29uZmlnIEJPT1RNX0ZJVElNQUdFCiAJc2VsZWN0IEZJ
-VElNQUdFCiAJZGVwZW5kcyBvbiBCT09UTSAmJiBBUk0KIAloZWxwCi0JICBTdXBwb3J0IHVzaW5n
-IEZsYXR0ZW5lZCBJbWFnZSBUcmVlIChGSVQpIEltYWdlcy4gRklUIGlzIGFuIGltYWdlCisJICBT
-dXBwb3J0IHVzaW5nIEZsYXR0ZW5lZCBJbWFnZSBUcmVlIChGSVQpIGltYWdlcy4gRklUIGlzIGFu
-IGltYWdlCiAJICBmb3JtYXQgaW50cm9kdWNlZCBieSBVLUJvb3QuIEEgRklUIGltYWdlIGNvbnRh
-aW5zIG9uZSBvciBtdWx0aXBsZQogCSAga2VybmVscywgZGV2aWNlIHRyZWVzIGFuZCBpbml0cmRz
-LiBUaGUgRklUIGltYWdlIGl0c2VsZiBpcyBhIGZsYXR0ZW5lZAogCSAgZGV2aWNlIHRyZWUgYmlu
-YXJ5LiBIYXZlIGEgbG9vayBhdCB0aGUgdS1ib290IHNvdXJjZSB0cmVlCkBAIC03MTEsNyArNzEx
-LDcgQEAgY29uZmlnIE1NQ0JMS0RFVl9ST09UQVJHCiAJICB2YXJpYWJsZSBpcyBzZXQgb3IgdGhl
-IHVzZWQgYmxzcGVjIGVudHJ5IGNvbnRhaW5zICdsaW51eC1hcHBlbmRyb290Jy4KIAogCSAgTm90
-ZTogSXQgaXMgY3J1Y2lhbCB0aGF0IHRoZSBrZXJuZWwgZGV2aWNlIHRyZWUgYW5kIHRoZSBiYXJl
-Ym94IGRldmljZQotCSAgdHJlZSB1c2VzIHRoZSBzYW1lIG1tYyBhbGlhc2VzLgorCSAgdHJlZSB1
-c2UgdGhlIHNhbWUgbW1jIGFsaWFzZXMuCiAKIAkgIFsxXSBmYTJkMGFhOTY5NDEgKCJtbWM6IGNv
-cmU6IEFsbG93IHNldHRpbmcgc2xvdCBpbmRleCB2aWEgZGV2aWNlIHRyZWUKIAkgICAgICBhbGlh
-cyIpCkBAIC05NjgsNyArOTY4LDcgQEAgY29uZmlnIERFRkFVTFRfRU5WSVJPTk1FTlRfR0VORVJJ
-Q19ORVdfSUtDT05GSUcKIAlkZXBlbmRzIG9uIERFRkFVTFRfRU5WSVJPTk1FTlRfR0VORVJJQ19O
-RVcKIAloZWxwCiAJICBUaGlzIG9wdGlvbiBlbWJlZHMgdGhlIHVzZWQgYmFyZWJveCBLY29uZmln
-IC5jb25maWcgZmlsZSBpbnRvIHRoZQotCSAgZW52aXJvbm1lbnQgYXMgL2Vudi9kYXRhL2NvbmZp
-Zy4gVGhpcyB3aWxsIGluY3JlYXNlcyBiYXJlYm94IGltYWdlCisJICBlbnZpcm9ubWVudCBhcyAv
-ZW52L2RhdGEvY29uZmlnLiBUaGlzIHdpbGwgaW5jcmVhc2UgYmFyZWJveCcgaW1hZ2UKIAkgIHNp
-emUuIElmIHVuc3VyZSwgc2F5IG4gaGVyZS4KIAogY29uZmlnIERFRkFVTFRfRU5WSVJPTk1FTlRf
-UEFUSApAQCAtMTAxMCw3ICsxMDEwLDcgQEAgY29uZmlnIFNUQVRFX0NSWVBUTwogCXNlbGVjdCBE
-SUdFU1QKIAlzZWxlY3QgRElHRVNUX0hNQUNfR0VORVJJQwogCWhlbHAKLQkgIFRoaXMgb3B0aW9u
-cyBlbmFibGVzIEhNQUMgYmFzZWQgYXV0aGVudGljYXRpb24gc3VwcG9ydCBmb3IKKwkgIFRoaXMg
-b3B0aW9uIGVuYWJsZXMgSE1BQyBiYXNlZCBhdXRoZW50aWNhdGlvbiBzdXBwb3J0IGZvcgogCSAg
-dGhlIHN0YXRlJ3MgaGVhZGVyIGFuZCBkYXRhLiBUaGlzIG1lYW5zIHRoZSBzdGF0ZSBmcmFtZXdv
-cmsKIAkgIGNhbiB2ZXJpZnkgYm90aCB0aGUgZGF0YSBpbnRlZ3JpdHkgYW5kIHRoZSBhdXRoZW50
-aWNhdGlvbiBvZgogCSAgdGhlIHN0YXRlJ3MgaGVhZGVyIGFuZCBkYXRhLgpAQCAtMTA4NCw4ICsx
-MDg0LDggQEAgY29uZmlnIEVYVEVSTkFMX0RUU19GUkFHTUVOVFMKIAkgIHRoZSBkdGMgaW5jbHVk
-ZSBzZWFyY2ggcGF0aC4KIAogCSAgQSBwcmVwcm9jZXNzb3IgbWFjcm8gYmFzZWQgb24gdGhlIG5h
-bWUgb2YgdGhlIG1haW4gZHRzIHdpbGwgYmUKLQkgIGRlZmluZWQsIHdoaWNoIGFsbG93cyB0aGUg
-ZHRzIGZyYWdtZW50cyB0byBiYXNlZCBvbiB3aGljaCBpbWFnZSBvZiBhCi0JICBtdWx0aSBpbWFn
-ZSBidWlsZCB0aGV5IGFyZSBiZWluZyB1c2VkIGluLiBHaXZlbiB0aGUgZHRzIGZpbGVuYW1lCisJ
-ICBkZWZpbmVkLCB3aGljaCBhbGxvd3MgdGhlIGR0cyBmcmFnbWVudHMgdG8gYmUgYmFzZWQgb24g
-d2hpY2ggaW1hZ2Ugb2YKKwkgIGEgbXVsdGkgaW1hZ2UgYnVpbGQgdGhleSBhcmUgYmVpbmcgdXNl
-ZCBpbi4gR2l2ZW4gdGhlIGR0cyBmaWxlbmFtZQogCSAgdXNlZCBmb3IgYSBib2FyZCBpcyAiZm9v
-LWJvYXJkLmR0cyIgdGhlIGV4dGVybmFsIGR0cyB1c2FnZSBjYW4gYmUKIAkgIGxpbWl0ZWQgdG8g
-dGhhdCBib2FyZCB3aXRoCiAKQEAgLTEwOTMsOSArMTA5Myw5IEBAIGNvbmZpZyBFWFRFUk5BTF9E
-VFNfRlJBR01FTlRTCiAJICAuLi4KIAkgICNlbmRpZgogCi0JICBJdCBub3QgaW50ZW5kZWQgdGhh
-dCB0aGlzIGJlIHB1dCBpbnRvIGludG8gQmFyZWJveCBkZWZjb25maWcgZmlsZXMuCi0JICBJbnN0
-ZWFkLCBpdCdzIGFuIGV4dGVybmFsIGJ1aWxkIHN5c3RlbSwgbGlrZSBZb2N0byBvciBidWlsZHJv
-b3QsIHRvCi0JICBhZGQgZHRzIGZyYWdtZW50cyBmcm9tIG91dHNpZGUgdGhlIEJhcmVib3ggc291
-cmNlIHRyZWUgaW50byB0aGUKKwkgIEl0IGlzIG5vdCBpbnRlbmRlZCB0aGF0IHRoaXMgaXMgcHV0
-IGludG8gQmFyZWJveCcgZGVmY29uZmlnIGZpbGVzLgorCSAgSW5zdGVhZCwgaXQncyBhbiBleHRl
-cm5hbCBidWlsZCBzeXN0ZW0ncyBqb2IsIGxpa2UgWW9jdG8gb3IgYnVpbGRyb290LAorCSAgdG8g
-YWRkIGR0cyBmcmFnbWVudHMgZnJvbSBvdXRzaWRlIHRoZSBCYXJlYm94IHNvdXJjZSB0cmVlIGlu
-dG8gdGhlCiAJICBCYXJlYm94IGJ1aWxkLgogCiBtZW51ICJPUC1URUUgbG9hZGluZyIKQEAgLTEx
-MjcsNyArMTEyNyw3IEBAIGNvbmZpZyBQQkxfT1BURUUKIAlkZXBlbmRzIG9uICFUSFVNQjJfQkFS
-RUJPWAogCWhlbHAKIAkgIEFsbG93cyBzdGFydGluZyBPUC1URUUgZHVyaW5nIGxvd2xldmVsIGlu
-aXRpYWxpemF0aW9uIG9mIHRoZSBQQkwuCi0JICBSZXF1aXJlcyBleHBsaWNpdCBzdXBwb3J0IGlu
-IHRoZSBib2FyZHMgbG93bGV2ZWwgZmlsZS4KKwkgIFJlcXVpcmVzIGV4cGxpY2l0IHN1cHBvcnQg
-aW4gdGhlIGJvYXJkJ3MgbG93bGV2ZWwgZmlsZS4KIAogZW5kbWVudQogCkBAIC0xNTEwLDcgKzE1
-MTAsNyBAQCBjb25maWcgUEJMX0JSRUFLCiAJYm9vbCAiRXhlY3V0ZSBzb2Z0d2FyZSBicmVhayBv
-biBwYmwgc3RhcnQiCiAJZGVwZW5kcyBvbiBBUk0gJiYgKCFDUFVfMzJ2NFQgJiYgIUFSQ0hfVEVH
-UkEpCiAJaGVscAotCSAgSWYgdGhpcyBlbmFibGVkLCBiYXJlYm94IHdpbGwgYmUgY29tcGlsZWQg
-d2l0aCBCS1BUIGluc3RydWN0aW9uCisJICBJZiBlbmFibGVkLCBiYXJlYm94IHdpbGwgYmUgY29t
-cGlsZWQgd2l0aCBCS1BUIGluc3RydWN0aW9uCiAJICBvbiBlYXJseSBwYmwgaW5pdC4gVGhpcyBv
-cHRpb24gc2hvdWxkIGJlIHVzZWQgb25seSB3aXRoIEpUQUcgZGVidWdnZXIhCiAKIHNvdXJjZSAi
-bGliL0tjb25maWcudWJzYW4iCi0tIAoyLjMwLjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9iYXJlYm94Cg==
+On Tue, Oct 12, 2021 at 10:39:19AM +0200, Ulrich =D6lmann wrote:
+> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+> ---
+>  common/Kconfig | 26 +++++++++++++-------------
+>  1 file changed, 13 insertions(+), 13 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 4239ddfb19e0..d8d20917aab6 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -10,7 +10,7 @@ config HAS_MODULES
+>  config HAS_CACHE
+>  	bool
+>  	help
+> -	  This allows you do run "make ARCH=3Dsandbox allyesconfig".
+> +	  This allows you to run "make ARCH=3Dsandbox allyesconfig".
+>  =
+
+>  	  Drivers that depend on a cache implementation can depend on this
+>  	  config, so that you don't get a compilation error.
+> @@ -18,7 +18,7 @@ config HAS_CACHE
+>  config HAS_DMA
+>  	bool
+>  	help
+> -	  This allows you do run "make ARCH=3Dsandbox allyesconfig".
+> +	  This allows you to run "make ARCH=3Dsandbox allyesconfig".
+>  =
+
+>  	  Drivers that depend on a DMA implementation can depend on this
+>  	  config, so that you don't get a compilation error.
+> @@ -630,7 +630,7 @@ config BOOTM_FITIMAGE
+>  	select FITIMAGE
+>  	depends on BOOTM && ARM
+>  	help
+> -	  Support using Flattened Image Tree (FIT) Images. FIT is an image
+> +	  Support using Flattened Image Tree (FIT) images. FIT is an image
+>  	  format introduced by U-Boot. A FIT image contains one or multiple
+>  	  kernels, device trees and initrds. The FIT image itself is a flattened
+>  	  device tree binary. Have a look at the u-boot source tree
+> @@ -711,7 +711,7 @@ config MMCBLKDEV_ROOTARG
+>  	  variable is set or the used blspec entry contains 'linux-appendroot'.
+>  =
+
+>  	  Note: It is crucial that the kernel device tree and the barebox device
+> -	  tree uses the same mmc aliases.
+> +	  tree use the same mmc aliases.
+>  =
+
+>  	  [1] fa2d0aa96941 ("mmc: core: Allow setting slot index via device tree
+>  	      alias")
+> @@ -968,7 +968,7 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG
+>  	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
+>  	help
+>  	  This option embeds the used barebox Kconfig .config file into the
+> -	  environment as /env/data/config. This will increases barebox image
+> +	  environment as /env/data/config. This will increase barebox' image
+>  	  size. If unsure, say n here.
+>  =
+
+>  config DEFAULT_ENVIRONMENT_PATH
+> @@ -1010,7 +1010,7 @@ config STATE_CRYPTO
+>  	select DIGEST
+>  	select DIGEST_HMAC_GENERIC
+>  	help
+> -	  This options enables HMAC based authentication support for
+> +	  This option enables HMAC based authentication support for
+>  	  the state's header and data. This means the state framework
+>  	  can verify both the data integrity and the authentication of
+>  	  the state's header and data.
+> @@ -1084,8 +1084,8 @@ config EXTERNAL_DTS_FRAGMENTS
+>  	  the dtc include search path.
+>  =
+
+>  	  A preprocessor macro based on the name of the main dts will be
+> -	  defined, which allows the dts fragments to based on which image of a
+> -	  multi image build they are being used in. Given the dts filename
+> +	  defined, which allows the dts fragments to be based on which image of
+> +	  a multi image build they are being used in. Given the dts filename
+>  	  used for a board is "foo-board.dts" the external dts usage can be
+>  	  limited to that board with
+>  =
+
+> @@ -1093,9 +1093,9 @@ config EXTERNAL_DTS_FRAGMENTS
+>  	  ...
+>  	  #endif
+>  =
+
+> -	  It not intended that this be put into into Barebox defconfig files.
+> -	  Instead, it's an external build system, like Yocto or buildroot, to
+> -	  add dts fragments from outside the Barebox source tree into the
+> +	  It is not intended that this is put into Barebox' defconfig files.
+> +	  Instead, it's an external build system's job, like Yocto or buildroot,
+> +	  to add dts fragments from outside the Barebox source tree into the
+>  	  Barebox build.
+>  =
+
+>  menu "OP-TEE loading"
+> @@ -1127,7 +1127,7 @@ config PBL_OPTEE
+>  	depends on !THUMB2_BAREBOX
+>  	help
+>  	  Allows starting OP-TEE during lowlevel initialization of the PBL.
+> -	  Requires explicit support in the boards lowlevel file.
+> +	  Requires explicit support in the board's lowlevel file.
+>  =
+
+>  endmenu
+>  =
+
+> @@ -1510,7 +1510,7 @@ config PBL_BREAK
+>  	bool "Execute software break on pbl start"
+>  	depends on ARM && (!CPU_32v4T && !ARCH_TEGRA)
+>  	help
+> -	  If this enabled, barebox will be compiled with BKPT instruction
+> +	  If enabled, barebox will be compiled with BKPT instruction
+>  	  on early pbl init. This option should be used only with JTAG debugger!
+>  =
+
+>  source "lib/Kconfig.ubsan"
+> -- =
+
+> 2.30.2
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
