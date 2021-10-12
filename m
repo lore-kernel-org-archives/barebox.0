@@ -1,64 +1,64 @@
-Delivery-date: Tue, 12 Oct 2021 10:23:27 +0200
+Delivery-date: Tue, 12 Oct 2021 10:32:41 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1maD4J-0003pH-9f
-	for lore@lore.pengutronix.de; Tue, 12 Oct 2021 10:23:27 +0200
+	id 1maDDF-00046x-2r
+	for lore@lore.pengutronix.de; Tue, 12 Oct 2021 10:32:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1maD4H-0004BJ-V7
-	for lore@pengutronix.de; Tue, 12 Oct 2021 10:23:27 +0200
+	id 1maDDD-0005Ya-OU
+	for lore@pengutronix.de; Tue, 12 Oct 2021 10:32:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=xrNnj4gqdN8LAcvvHYBrLCxJzdRX+R6tJbB1ZYRbjo0=; b=RoIoVoW3apTaJXLmSwhkS6FpV+
-	jfJAVsZk2E25kbXFb6XjR81ChwbJehTajudc+tcZsyuH0/3gpZi5Al6SN48xPez5P2k/2xeeIakUL
-	sqQR4zVrfvhBo5rrCy7NpOO9CpInU5KbQS2eV+JfNcE+Woa+wKYfjeFZwwQhzgiP6jZkjGOJPKVvS
-	81ijjzcNeyYLBP8Z1XuFNuJj6aywAVFzeiJbtbsU7zGEP+9Gs4nXpqESU5tucGk8/aesBoWWbsoRN
-	gcnEuHMLvq0ml0nvwsOQXuHOc4cgAqIQfBvLXpCRcGxTz6+xXL3+dKhHcCLVq5b0oporYD8mYihlq
-	WBdckO5w==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=Hi4PD59kQ+ERl3ADX+WVgthjvSP337dOlzl5uWOEY+o=; b=xkh0N24NibOVmE
+	eFxCl2G23m15VP1k4008cP9sBlLMfNutbSmWvCzmmkoaOCj+b4K8C+RHAK65C2K6ai+gPY6ZuRHWo
+	Fkmd1NLhw9aKBhIdNXc9nj7O8h0A9PUtegkJlSI7lafRptS/GzWUDNpSNxaXDHWbjxrLU5rT/h6Ct
+	X/NVvpSEO5MbUrsS9PdWNVhWwuSVmTuUBXv5Qd63SrHedBgjmxTKf/jIs4MNRv1lVIj6ACYJvs7fN
+	PWRDc0lYLMXX1gBFV/KlJW0v1+gtsgH2d7JTkG1NQyOcp1Cs4ml1as1btKBWY+OtSWGHdgDwAl90L
+	8AS1Fi+zPPvmbHBXzTBQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1maD2h-00BzKr-4T; Tue, 12 Oct 2021 08:21:47 +0000
+	id 1maDBo-00C13W-Io; Tue, 12 Oct 2021 08:31:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1maD2X-00BzIu-Hq
- for barebox@lists.infradead.org; Tue, 12 Oct 2021 08:21:39 +0000
+ id 1maDBf-00C119-VU
+ for barebox@lists.infradead.org; Tue, 12 Oct 2021 08:31:05 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1maD2W-00043P-8h; Tue, 12 Oct 2021 10:21:36 +0200
+ id 1maDBe-0005Gs-Jt; Tue, 12 Oct 2021 10:31:02 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1maD2V-0003vi-V9; Tue, 12 Oct 2021 10:21:35 +0200
-Date: Tue, 12 Oct 2021 10:21:35 +0200
-To: Trent Piepho <trent.piepho@igorinstitute.com>
-Cc: Barebox List <barebox@lists.infradead.org>, Yunus Bas <Y.Bas@phytec.de>
-Message-ID: <20211012082135.GN28453@pengutronix.de>
-References: <20211012015359.933464-1-trent.piepho@igorinstitute.com>
- <20211012015359.933464-3-trent.piepho@igorinstitute.com>
+ id 1maDBe-0004d9-AU; Tue, 12 Oct 2021 10:31:02 +0200
+Date: Tue, 12 Oct 2021 10:31:02 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20211012083102.GO28453@pengutronix.de>
+References: <20211012073352.4071559-1-s.hauer@pengutronix.de>
+ <20211012073352.4071559-8-s.hauer@pengutronix.de>
+ <05f86cbe-ad12-f957-8e51-58e7d9b3b830@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211012015359.933464-3-trent.piepho@igorinstitute.com>
+In-Reply-To: <05f86cbe-ad12-f957-8e51-58e7d9b3b830@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:16:13 up 236 days, 11:40, 140 users,  load average: 1.35, 0.78,
- 0.42
+X-Uptime: 10:28:45 up 236 days, 11:52, 141 users,  load average: 0.20, 0.24,
+ 0.31
 User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211012_012137_626119_DA555D02 
-X-CRM114-Status: GOOD (  46.86  )
+X-CRM114-CacheID: sfid-20211012_013104_109928_B76E2D27 
+X-CRM114-Status: GOOD (  36.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,196 +78,128 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/3] imx-bbu-nand-fcb: Add command to help debug FCB issues
+Subject: Re: [PATCH 7/8] cdev: Add function to get unallocated start of device
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Oct 11, 2021 at 06:53:59PM -0700, Trent Piepho wrote:
-> Add new "fcb" command.  It can save a decoded copy of the FCB to a file,
-> do a hexdump of the decoded FCB, or display the FCB fields.  Or simply
-> read and validate the FCB.
+On Tue, Oct 12, 2021 at 09:52:51AM +0200, Ahmad Fatoum wrote:
+> On 12.10.21 09:33, Sascha Hauer wrote:
+> > On several SoCs barebox is written to the raw device in front of the
+> > first partition. So far we blindly trust that there is enough space
+> > available for the barebox image. Start changing this by adding a
+> > function that retrieves the available space.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  common/partitions.c | 28 ++++++++++++++++++++++++++++
+> >  include/driver.h    |  1 +
+> >  2 files changed, 29 insertions(+)
+> > 
+> > diff --git a/common/partitions.c b/common/partitions.c
+> > index d80878e065..e36341fc1e 100644
+> > --- a/common/partitions.c
+> > +++ b/common/partitions.c
+> > @@ -156,3 +156,31 @@ int partition_parser_register(struct partition_parser *p)
+> >  
+> >  	return 0;
+> >  }
+> > +
+> > +/**
+> > + * cdev_unallocated_start - return unallocated space
+> > + * @name: The cdev name
+> > + *
+> > + * This function returns the space that is not allocated by any partition
+> > + * at the start of a device.
+> > + *
+> > + * Return: The unallocated space at the start of the device in bytes
+> > + */
+> > +loff_t cdev_unallocated_start(const char *name)
 > 
-> The FCB uses a different ECC system that the rest of flash and there is
-> no easy way to decode it in Barebox or Linux.  The code already here
-> does it.
-> 
-> This will also set the nand0.barebox device parameters with the location
-> of the bootloader images as read from the FCB.
-> 
-> Signed-off-by: Trent Piepho <trent.piepho@igorinstitute.com>
-> ---
->  commands/Kconfig          |  19 ++++++
->  common/imx-bbu-nand-fcb.c | 126 ++++++++++++++++++++++++++++++++++++--
->  2 files changed, 139 insertions(+), 6 deletions(-)
-> 
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 5ae3cb3dd..d3b5cd7fa 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -277,6 +277,25 @@ config CMD_SLICE
->  	  command can be used to print informations about slices and also to manipulate
->  	  them on the command line for debugging purposes.
->  
-> +config CMD_IMX_NAND_FCB
-> +	tristate
-> +	prompt "iMX FCB decoding and display"
-> +	depends on BAREBOX_UPDATE_IMX_NAND_FCB
-> +	help
-> +	  Decode and display or save the contents of the iMX FCB.
-> +
-> +	  This will add a command named "fcb" that will decode the FCB and can
-> +	  save the decode data to a file or display the contents.
-> +
-> +	  The FCB is a block of data at the start of NAND flash that instructs
-> +	  the iMX ROM bootloader on how to find Barebox.  It uses a different
-> +	  ECC config than the rest of NAND flash and can't be read correctly
-> +	  with normal "md" commands.
-> +
-> +	  The command also saves the locations of the Barebox image in NAND
-> +	  from the FCB into parameters on the NAND deivce, which are available
-> +	  in scripts as environment variables.
-> +
->  # end Information commands
->  endmenu
->  
-> diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-> index 76ac1d4f2..e61494930 100644
-> --- a/common/imx-bbu-nand-fcb.c
-> +++ b/common/imx-bbu-nand-fcb.c
-> @@ -7,6 +7,8 @@
->  
->  #include <filetype.h>
->  #include <common.h>
-> +#include <command.h>
-> +#include <getopt.h>
->  #include <malloc.h>
->  #include <errno.h>
->  #include <fcntl.h>
-> @@ -14,6 +16,7 @@
->  #include <linux/sizes.h>
->  #include <bbu.h>
->  #include <fs.h>
-> +#include <libfile.h>
->  #include <linux/mtd/mtd-abi.h>
->  #include <linux/mtd/nand_mxs.h>
->  #include <linux/mtd/mtd.h>
-> @@ -27,6 +30,9 @@
->  #include <mtd/mtd-peb.h>
->  #include <soc/imx/imx-nand-bcb.h>
->  
-> +/* Name of NAND device that contains FCB */
-> +#define FCB_NAND_PART "nand0.barebox"
-> +
->  #ifdef CONFIG_ARCH_IMX6
->  #include <mach/imx6.h>
->  static inline int fcb_is_bch_encoded(void)
-> @@ -387,6 +393,7 @@ static ssize_t raw_write_page(struct mtd_info *mtd, void *buf, loff_t offset)
->          return ret;
->  }
->  
-> +/* Returns size of FCB on success, negative on error */
->  static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
->  {
->  	int ret;
-> @@ -403,10 +410,13 @@ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
->  		goto err;
->  	}
->  
-> -	if (fcb_is_bch_encoded())
-> +	if (fcb_is_bch_encoded()) {
->  		fcb = read_fcb_bch(rawpage, 40);
-> -	else
-> +		ret = 128 * 8;
-> +	} else {
->  		fcb = read_fcb_hamming_13_8(rawpage);
-> +		ret = 512;
-> +	}
->  
->  	if (IS_ERR(fcb)) {
->  		pr_err("Cannot read fcb on block %d\n", num);
-> @@ -415,7 +425,6 @@ static int read_fcb(struct mtd_info *mtd, int num, struct fcb_block **retfcb)
->  	}
->  
->  	*retfcb = fcb;
-> -	ret = 0;
->  err:
->  	free(rawpage);
->  
-> @@ -870,7 +879,7 @@ static int fcb_dbbt_check(struct mtd_info *mtd, int num, struct fcb_block *fcb)
->  	int pages_per_block = mtd->erasesize / mtd->writesize;
->  
->  	ret = read_fcb(mtd, num, &f);
-> -	if (ret)
-> +	if (ret < 0)
->  		return ret;
->  
->  	if (memcmp(fcb, f, sizeof(*fcb))) {
-> @@ -1403,7 +1412,7 @@ int imx6_bbu_nand_register_handler(const char *name, unsigned long flags)
->  	imx_handler->filetype = filetype_arm_barebox;
->  
->  	handler = &imx_handler->handler;
-> -	handler->devicefile = "nand0.barebox";
-> +	handler->devicefile = FCB_NAND_PART;
->  	handler->name = name;
->  	handler->flags = flags | BBU_HANDLER_CAN_REFRESH;
->  	handler->handler = imx_bbu_nand_update;
-> @@ -1480,7 +1489,7 @@ int imx28_bbu_nand_register_handler(const char *name, unsigned long flags)
->  	imx_handler->filetype = filetype_mxs_bootstream;
->  
->  	handler = &imx_handler->handler;
-> -	handler->devicefile = "nand0.barebox";
-> +	handler->devicefile = FCB_NAND_PART;
->  	handler->name = name;
->  	handler->flags = flags | BBU_HANDLER_CAN_REFRESH;
->  	handler->handler = imx_bbu_nand_update;
-> @@ -1492,3 +1501,108 @@ int imx28_bbu_nand_register_handler(const char *name, unsigned long flags)
->  	return ret;
->  }
->  #endif
-> +
-> +#if IS_ENABLED(CONFIG_CMD_IMX_NAND_FCB)
-> +
-> +static int do_fcb(int argc, char *argv[])
-> +{
-> +	int opt;
-> +	int fd;
-> +	int ret;
-> +	int fcbsize;
-> +	struct cdev *cdev;
-> +	struct fcb_block *fcb;
-> +	bool hex = false, info = false;
-> +	const char *outfile = NULL;
-> +	unsigned int block = 0;
-> +
-> +	while ((opt = getopt(argc, argv, "xin:o:")) > 0) {
-> +		switch (opt) {
-> +		case 'x':
-> +			hex = true;
-> +			break;
-> +		case 'i':
-> +			info = true;
-> +			break;
-> +		case 'o':
-> +			outfile = optarg;
-> +			break;
-> +		case 'n':
-> +			block = strtoull_suffix(optarg, NULL, 0);
-> +			break;
-> +		default:
-> +			return COMMAND_ERROR_USAGE;
-> +		}
-> +	}
+> That name is a bit misleading. It's either cdev_allocated_start
+> or cdev_unallocated_space. Also cdev_ for a function not taking a cdev
+> is unexpected. Perhaps define devpath_to_cdev(s) as
+> cdev_by_name(devpath_to_name(s)) and have the caller pass in the cdev?
 
-Not sure if we need to control this command in such a fine grained way.
-For me just extracting all possible FCBs including the firmware images,
-maybe printing consistency information would be enough. That's just a
-personal opinion though, feel free to override it.
+That's a case of "wow, what a horrible name, let's write the function
+first and rethink the name later". That rethinking didn't happen on my
+side, thanks for doing this ;)
 
 Sascha
+
+-----------------------------8<-------------------------------
+
+>From 839d934c79aee95a7d67d2f8dceacbfd0e5ea848 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 12 Oct 2021 09:33:51 +0200
+Subject: [PATCH] cdev: Add function to get unallocated space at start of
+ device
+
+On several SoCs barebox is written to the raw device in front of the
+first partition. So far we blindly trust that there is enough space
+available for the barebox image. Start changing this by adding a
+function that retrieves the available space.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.barebox.org/20211012073352.4071559-8-s.hauer@pengutronix.de
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/partitions.c | 27 +++++++++++++++++++++++++++
+ include/driver.h    |  1 +
+ 2 files changed, 28 insertions(+)
+
+diff --git a/common/partitions.c b/common/partitions.c
+index d80878e065..b579559672 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -156,3 +156,30 @@ int partition_parser_register(struct partition_parser *p)
+ 
+ 	return 0;
+ }
++
++/**
++ * cdev_unallocated_space - return unallocated space
++ * cdev: The cdev
++ *
++ * This function returns the space that is not allocated by any partition
++ * at the start of a device.
++ *
++ * Return: The unallocated space at the start of the device in bytes
++ */
++loff_t cdev_unallocated_space(struct cdev *cdev)
++{
++	struct cdev *partcdev;
++	loff_t start;
++
++	if (!cdev)
++		return 0;
++
++	start = cdev->size;
++
++	list_for_each_entry(partcdev, &cdev->partitions, partition_entry) {
++		if (partcdev->offset < start)
++			start = partcdev->offset;
++	}
++
++	return start;
++}
+diff --git a/include/driver.h b/include/driver.h
+index c7f5903fce..4f6d40e17c 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -494,6 +494,7 @@ ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulo
+ ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags);
+ int cdev_ioctl(struct cdev *cdev, int cmd, void *buf);
+ int cdev_erase(struct cdev *cdev, loff_t count, loff_t offset);
++loff_t cdev_unallocated_space(struct cdev *cdev);
+ 
+ #define DEVFS_PARTITION_FIXED		(1U << 0)
+ #define DEVFS_PARTITION_READONLY	(1U << 1)
+-- 
+2.30.2
 
 -- 
 Pengutronix e.K.                           |                             |
