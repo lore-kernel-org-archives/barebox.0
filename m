@@ -1,66 +1,74 @@
-Delivery-date: Wed, 13 Oct 2021 13:36:20 +0200
+Delivery-date: Wed, 13 Oct 2021 13:36:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1macYW-0003QW-CG
-	for lore@lore.pengutronix.de; Wed, 13 Oct 2021 13:36:20 +0200
+	id 1macYn-0003RI-Pi
+	for lore@lore.pengutronix.de; Wed, 13 Oct 2021 13:36:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1macYV-0002gt-1q
-	for lore@pengutronix.de; Wed, 13 Oct 2021 13:36:20 +0200
+	id 1macYm-0002i2-8h
+	for lore@pengutronix.de; Wed, 13 Oct 2021 13:36:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
+	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=nVLPb3YdLkFDdwPrH9V9PVE4braDhjYOtgpucPR6bJQ=; b=J0jn27cPQ3RoH/
-	rYgVgGzNlGHczt5J0EK3EOW+/i5aWDF6l5ldtpGxw1h9COWnni0iQFX3caK9m4eBhDrZS+U5Rn4lJ
-	H7wnEM2vM2fHXtLqn2FNSpblXIT90aomw6GIiIW030NPeLOVJU43xTPWI0hO9fKHD7DnUXbVla756
-	LOBkQ2DIfBraJubURuTPR2TQB5Qxi2eU+Z6xl4vmxZkqfK+vUvaOZXtiPxdQsLGv832lfiRpgrfUA
-	jZKyVd9dpGw474FxMLzciSEijF7HFM86w/dVVg02CZfV7lisMrSxUonlaWyLBNYfbLO8fj3tklhvh
-	aIc4SFN5ZlAqKDk+5X3w==;
+	List-Owner; bh=dHAAncqdzCBjxovxqRHA671i31wMIBaGAV9ZBhWR5lc=; b=qTStXGeZyXqknd
+	W/RjSvgVwUm4t3/K8/CWCGOZ62K4iy9JhGZM1Dik9RVRTVo0kEbzd3WHOFqbn8ejYCo6ZOx3Q2MDe
+	bYHdPQNPzqPzAAtB4gQlhoXaPOCc+pmDWlT+McYhOU91r1DOLYv8bVd+3vKFhUALTmnw0UUK8oNEI
+	H/sSTPW0Ny3SW3861PNINAGrIMPMUU/Eym2g30SN96ipkaTMyAsw6DKEgOqDbjUQFdXa1Gh1V4lMM
+	GpCAeHZ19dy8yJQVAaaGCkRMiTQU/g0NSXbiEraVNX4q0WMoxkFbAIaqTM69WCaMNYdJLsODoZGvv
+	n5LrhwftkS7ErCH0vlAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1macWs-00GL1G-5A; Wed, 13 Oct 2021 11:34:38 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1macXE-00GL8I-PH; Wed, 13 Oct 2021 11:35:02 +0000
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mabPz-00Fyma-7G
- for barebox@lists.infradead.org; Wed, 13 Oct 2021 10:23:28 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ore@pengutronix.de>)
- id 1mabPv-0000qn-8n; Wed, 13 Oct 2021 12:23:23 +0200
-Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <ore@pengutronix.de>)
- id 1mabPu-0007Op-MW; Wed, 13 Oct 2021 12:23:22 +0200
-Date: Wed, 13 Oct 2021 12:23:22 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Trent Piepho <trent.piepho@igorinstitute.com>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20211013102322.GA17532@pengutronix.de>
-References: <20211012100859.1409-1-o.rempel@pengutronix.de>
- <20211012100859.1409-2-o.rempel@pengutronix.de>
- <CAMHeXxOmv1TR0-4LQDz5A1Bfw+xrBBU+WsO43rn26hwTYrbVqw@mail.gmail.com>
- <20211013072858.GC14971@pengutronix.de>
- <CAMHeXxMTxSWb_evKksZVZkUxJoYF5DS0amDKaAOGhJ3f5pORAQ@mail.gmail.com>
+ id 1mabRy-00FzOr-KZ
+ for barebox@lists.infradead.org; Wed, 13 Oct 2021 10:25:32 +0000
+Received: by mail-lf1-x133.google.com with SMTP id y26so9551384lfa.11
+ for <barebox@lists.infradead.org>; Wed, 13 Oct 2021 03:25:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=igorinstitute-com.20210112.gappssmtp.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=edysRep+Ly6n9omY5exMs+xwAlIPRis3myENZPX2JLc=;
+ b=Y/0HuP/T/Z2c4HBKeQFotzMn3+wzth5ueS825DggLcJ+vuRK3mp22qumnu3iV/fi7v
+ mHFo22VnF7rkbvyf33DpwjKpJRbiIzET5/BMzT9HtdF8UgVUhWfWORz0NX9mJDQXzw8q
+ iHgNWj2hQqOac0XZeMSTzKcNEXsakecMIXbPfouBTX12lTm6Z4O4LCV+ppt+lb445z/K
+ GxD5z30WPFY8xNCW6TYD4SyF9zit/BxeugDBQcmJxBo7C9TXj8UpKCnpqq1ONTR2dzCq
+ 6t9cyyd/w1bJaKUMfKCiwTf6psrU1kQ6SUyPICZmcanRwQTCRe2CTemBvcmiWfwx7FMQ
+ 30XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=edysRep+Ly6n9omY5exMs+xwAlIPRis3myENZPX2JLc=;
+ b=KCJ5EMxxupFEwL2EtMFxyWuzILa2UQpTrt8BgUy4wh4gH5T/s7TG/oudYY70QTVaMh
+ rrAsrhPFAJRhvPkqMp7H6D+Bnj/H2unrLYO+AezVw62d77Z87p63Os11HQh2rHiMJfjW
+ rtHznJRdrKBpsB/MJSGqjgcJAMKiWI7NWJ/YTqWh/7f5OS6BDB/dwxmJNkf12A/i27uy
+ zvuVbji3dNgoZkGq1pRbJqEgcgh97LVhTTE2SWzILcB+BcxOD7NL3QsxcoP6gk5QXH7w
+ svzI7P6A/cAcJFsYnLx8XhTcr0KsiTf8KOTht0M3BjbUUKtJhiM+ZXr/70sksvJDqyQD
+ s5fQ==
+X-Gm-Message-State: AOAM532CTPQgMdRdzvArvYH141QdFv7e7E5BqjOxNjBLx18c+L/LmYtS
+ mkAl1PrXrxkTlRUbJzN0w1Vwn28RuBfRK0GUOUV7Wm4TXz4=
+X-Google-Smtp-Source: ABdhPJzJNJ6AyL1DSa9/PT+xU/Snf4RH7OqvICSS4JD17Og9QVBMxUUC9IiqarFqKBqDoauXaUW70gjjhMqoiaY/Ii0=
+X-Received: by 2002:ac2:5210:: with SMTP id a16mr17054095lfl.279.1634120728575; 
+ Wed, 13 Oct 2021 03:25:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAMHeXxMTxSWb_evKksZVZkUxJoYF5DS0amDKaAOGhJ3f5pORAQ@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 11:54:24 up 237 days, 13:18, 143 users,  load average: 0.11, 0.12,
- 0.16
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20211013075327.28225-1-o.rempel@pengutronix.de>
+ <20211013075327.28225-2-o.rempel@pengutronix.de>
+In-Reply-To: <20211013075327.28225-2-o.rempel@pengutronix.de>
+From: Trent Piepho <trent.piepho@igorinstitute.com>
+Date: Wed, 13 Oct 2021 03:25:17 -0700
+Message-ID: <CAMHeXxPE0Y71XOLLmMfSiVVA1T51+z_Afi9Kzn3-9qX=hxKOFQ@mail.gmail.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211013_032327_310489_C7170DCF 
-X-CRM114-Status: GOOD (  26.84  )
+X-CRM114-CacheID: sfid-20211013_032530_723902_FCCFEABD 
+X-CRM114-Status: GOOD (  10.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,64 +88,32 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1 2/2] net: phy: micrel: port clock select support
+Subject: Re: [PATCH v2 2/2] net: phy: micrel: sync init code for ksz80xx
+ variants with the kernel driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Oct 13, 2021 at 01:48:20AM -0700, Trent Piepho wrote:
-> On Wed, Oct 13, 2021 at 12:29 AM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> > > Note that not just KSZ8081 has this bit.  Also KSZ8021, KSZ8031, and
-> > > KSZ8051, which has the existing different method to handle it, as
-> > > described earlier.
-> >
-> > ok, i'll sync all of this PHYs with the state of the kernel driver.
-> > The board fixups should be removed by someone who can confirm it.
-> 
-> If you copy the entire kernel driver you will massively bloat this
-> code with stuff that is totally unused.
+On Wed, Oct 13, 2021 at 2:43 AM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+>
+> Sync part of barebox micrel driver with the kernel v5.15-rc1.
+> This change will affect most of by barebox supported 100Mbit/ksz80xx PHY
+> variants and provide unified devicetree support for LED and clock configuration.
 
-Yes.
+I already added LED mode OF support to this driver.
 
-> > > > +static int kszphy_rmii_clk_sel(struct phy_device *phydev, bool val)
-> > > > +{
-> > > > +       int ctrl;
-> > > > +
-> > > > +       ctrl = phy_read(phydev, MII_KSZPHY_CTRL);
-> > > > +       if (ctrl < 0)
-> > > > +               return ctrl;
-> > > > +
-> > > > +       if (val)
-> > > > +               ctrl |= KSZPHY_RMII_REF_CLK_SEL;
-> > > > +       else
-> > > > +               ctrl &= ~KSZPHY_RMII_REF_CLK_SEL;
-> > > > +
-> > > > +       return phy_write(phydev, MII_KSZPHY_CTRL, ctrl);
-> > > > +}
-> > >
-> > > phy_set_bits(phydev, MII_KSZPHY_CTRL, KSZ8051_RMII_50MHZ_CLK);
-> >
-> > No, it should be synced with kernel not in the opposite way.
-> 
-> If you want the code to match, then improve the kernel code rather
-> than make Barebox code worse.  phy_set_bits, phy_clear_bits and
-> phy_modify exist.  One can not use them if a kernel driver has not
-> been refactored to use them?
+>  drivers/net/phy/micrel.c | 249 +++++++++++++++++++++++++++++++++++----
+>  1 file changed, 228 insertions(+), 21 deletions(-)
 
-Sure. Can you please show example of the kszphy_rmii_clk_sel() refactoring.
-And how much optimization will it introduce? Please compared with disassembled
-part. 
+227 added lines is a lot to do basically nothing not already done.
 
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>  #define KSZ8051_RMII_50MHZ_CLK                 BIT(7)
+> +#define KSZPHY_RMII_REF_CLK_SEL                        BIT(7)
+
+These are the same bit in the same register!
 
 _______________________________________________
 barebox mailing list
