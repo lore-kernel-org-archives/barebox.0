@@ -1,57 +1,66 @@
-Delivery-date: Wed, 13 Oct 2021 21:35:05 +0200
+Delivery-date: Thu, 14 Oct 2021 09:32:45 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mak1p-0007rY-SA
-	for lore@lore.pengutronix.de; Wed, 13 Oct 2021 21:35:05 +0200
-Received: from [2607:7c80:54:e::133] (helo=bombadil.infradead.org)
+	id 1mavEL-0000qY-0p
+	for lore@lore.pengutronix.de; Thu, 14 Oct 2021 09:32:45 +0200
+Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mak1o-0001E6-KR
-	for lore@pengutronix.de; Wed, 13 Oct 2021 21:35:05 +0200
+	id 1mavEK-0007jT-4j
+	for lore@pengutronix.de; Thu, 14 Oct 2021 09:32:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=MNn/YMFbkdUYScR9amG4Wd1L48RYWZJVMRFSmI5zDpE=; b=BqX7lCitiZAODxtoVq6zwrnqBh
-	P9XP+L3N7KFtolSNErZ7inDq9Sote7JqT9+SJSieH0DB/7Y46XAliSF14F+gRezWm7TgP/3wnNzLt
-	or1O7eb5u/30BPjfWPGWVu72SWRCs2pTF687AH2GWpJ3GgjMNhpNrV8lwIeZBlJ0mwV+FPcly1CqB
-	O3t99Lq8Y8LNZ46b13SdBwLWmCEjMSYu3cboKNcYw7akgosAKjvQMEQaFJK+Ku44pXlfSdxo6Y4lP
-	DajK33P+jASwByWfabw6406VB+JVO3kxIq34j3QS84h7kt75k+NCWeQF129Kf2Iz2sOCfz1rr/6Db
-	jvzxpUyw==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=7ZdJU0qFbIWtTlJAR39tBQdGN9HdB4zl4To/wug3KfQ=; b=cB1AWXMQnhrkXV
+	pueau7JUh2JtlB+aEXLs7iUsq/c6ZBo6Z7j/INe710FU+sg2uwI21/UtMIXlgxc1QV4kjuw8s3XRx
+	hSDSsQnfFiC0R+XklgQWEj3qSFT6lZ/VCCQfGdCLuOoJ5Mb0YyWsT2JwRsyugHPwafZERZSjXAf0e
+	fXN6zfssfdmeuH+n58vMkPKI52cHNxlZ+buHn8izAy8K9gUN4rXcLXPHnswGzyt9kg/ivdA5tSO3A
+	NY+8ssv3+lZFYqYz1lPT2S5vhi/IMRb+yvqiGKPDJpL31xFRkIyVtqOAOLx7cAVsfix130HtJcaZh
+	85mX6vyGBDDC6RfBDZrg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mak09-000RHk-2j; Wed, 13 Oct 2021 19:33:21 +0000
+	id 1mavCd-001ugb-Rx; Thu, 14 Oct 2021 07:30:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mak03-000RHJ-3G
- for barebox@lists.infradead.org; Wed, 13 Oct 2021 19:33:17 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1majzy-00013f-Er; Wed, 13 Oct 2021 21:33:10 +0200
-To: Lucas Stach <l.stach@pengutronix.de>,
- =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
- barebox@lists.infradead.org
-Cc: rcz@pengutronix.de
-References: <20210813152245.15841-1-u.kleine-koenig@pengutronix.de>
- <18eb76a0689a44244b81d33d3606cb48f9f447ff.camel@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <9be876f6-3719-addd-e241-90c35dd8b9f5@pengutronix.de>
-Date: Wed, 13 Oct 2021 21:33:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ id 1mavCY-001ufL-86
+ for barebox@lists.infradead.org; Thu, 14 Oct 2021 07:30:56 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mavCU-0007WL-Ig; Thu, 14 Oct 2021 09:30:50 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mavCT-0005y1-63; Thu, 14 Oct 2021 09:30:49 +0200
+Date: Thu, 14 Oct 2021 09:30:49 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: barebox@lists.infradead.org,
+ =?iso-8859-15?Q?An=B8e_Le=A8nik?= <anze.lesnik@norik.com>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <20211014073049.GV28453@pengutronix.de>
+References: <20210910102931.26078-1-jmaselbas@kalray.eu>
+ <20211004114556.GB28453@pengutronix.de>
+ <20211004121110.GF19809@tellis.lin.mbt.kalray.eu>
 MIME-Version: 1.0
-In-Reply-To: <18eb76a0689a44244b81d33d3606cb48f9f447ff.camel@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20211004121110.GF19809@tellis.lin.mbt.kalray.eu>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:29:51 up 238 days, 10:53, 122 users,  load average: 0.25, 0.18,
+ 0.20
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211013_123315_165556_98727EB7 
-X-CRM114-Status: GOOD (  40.54  )
+X-CRM114-CacheID: sfid-20211014_003054_332231_88BCB309 
+X-CRM114-Status: GOOD (  17.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -63,118 +72,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:7c80:54:e::133 (failed)
-X-Broken-Reverse-DNS: no host name for IP address 2607:7c80:54:e::133
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,PTX_BROKEN_RDNS,RCVD_IN_DNSWL_MED,
-	RDNS_NONE,SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH v2 0/3] Support usb booting on i.MX8MP
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2] usb: gadget: dfu: Rework dfu command to use usbgadget
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-T24gMTMuMDguMjEgMjI6MzIsIEx1Y2FzIFN0YWNoIHdyb3RlOgo+IEhpIFV3ZSwKPiAKPiBBbSBG
-cmVpdGFnLCBkZW0gMTMuMDguMjAyMSB1bSAxNzoyMiArMDIwMCBzY2hyaWViIFV3ZSBLbGVpbmUt
-S8O2bmlnOgo+PiBIZWxsbywKPj4KPj4gY29tcGFyZWQgdG8gKGltcGxpY2l0KSB2MSwgdGhlIGZv
-bGxvd2luZyBjaGFuZ2VkIGhlcmU6Cj4+Cj4+ICAtIGJlIGEgYml0IG1vcmUgY29uc2VydmF0aXZl
-IGluICJpbXgtdXNiLWxvYWRlcjogQWRkIHN1cHBvcnQgZm9yCj4+ICAgIGkuTVg4TVAiIHJlZ2Fy
-ZGluZyBsYXN0X3RyYW5zZmVyOyBmZWVkYmFjayBieSBTYXNjaGEgSGF1ZXIKPj4KPj4gIC0gQWRk
-IHN1cHBvcnQgaW4gUEJMIHRvIGJlIGFjdHVhbGx5IGJvb3RlZCB1c2luZyBpbXgtdXNiLWxvYWRl
-ciAob25seQo+PiAgICB0ZXN0ZWQgdGhlIHZlbmRvciBVLUJvb3QgZm9yIHYxKSwgYWxzbyBza2lw
-IHRoZSBiYXJlYm94IGhlYWRlciAoaS5lLgo+PiAgICB0aGUgZmlyc3QgKHVzdWFsbHkpIDB4ODAw
-MCBieXRlcykgYmVmb3JlIHRoZSBJVlQgaGVhZGVyIG9uIHVwbG9hZGVpbmcKPj4KPj4gVGhlcmUg
-YXJlIHR3byB0aGluZ3MgdGhhdCByZXN1bHRlZCBpbiBkaXNjdXNzaW9ucyBiZXR3ZWVuIEx1Y2Fz
-LCBBaG1hZAo+PiBhbmQgbWUgZHVyaW5nIGRldmVsb3BtZW50IG9mIHRoaXMgc2VyaWVzOgo+Pgo+
-PiAgLSBPbiBpLk1YOE1NIGFuZCBpLk1YOE1RIGFmdGVyIHRoZSBQQkwgaXMgdXBsb2FkZWQgaXQn
-cyBmb2xsb3dlZCB1cCBieQo+PiAgICB0aGUgY29tcGxldGUgaW1hZ2UuIFNvIHRoZSBQQkwgaXMg
-dXBsb2FkZWQgdHdpY2UuIFRoZSBtb3RpdmF0aW9uIGZvcgo+PiAgICB0aGlzIGJlaGF2aW91ciB3
-YXMgdGhhdCB3aGVuIGJvb3RpbmcgZnJvbSBNTUMgbG9hZGluZyBmcm9tIG9mZnNldCAwCj4+ICAg
-IGlzIGVhc2llciBiZWNhdXNlIGRlcGVuZGluZyBvbiB0aGUgbW9kZSB0aGUgaGFyZHdhcmUgaXMg
-aW4gdGhlIG9mZnNldAo+PiAgICBoYXMgdG8gYmUgc3BlY2lmaWVkIGluIGRpZmZlcmVudCB3YXlz
-LiBTbyB0byBtYWtlIHRoZSB0d28gbW9kZXMgbW9yZQo+PiAgICBzaW1pbGFyIHRoZSBQQkwgaXMg
-bG9hZGVkIHR3aWNlIGZvciBib3RoIG1vZGVzLgo+Pgo+PiAgICBIZXJlIGhvd2V2ZXIgYWZ0ZXIg
-dGhlIFBCTCBvbmx5IHRoZSBwaWdneSBkYXRhIGlzIHNlbnQgYmVjYXVzZSBpdAo+PiAgICBmZWVs
-cyB3cm9uZyBmb3IgbWUgdG8gc3BlbmQgc29tZSBleHRyYSBlZmZvcnQgaW4gaW14LXVzYi1sb2Fk
-ZXIgdG8gZG8KPj4gICAgYSBrbHVkZ2UgZm9yIFVTQiBqdXN0IGJlY2F1c2UgdGhlcmUgYXJlIHNv
-bWUgZGlmZmljdWx0aWVzIHdpdGggTU1DLgo+Pgo+PiAgICBBcmd1bWVudHMgZm9yIHRoaXMgY2hv
-aWNlIChhcGFydCBmcm9tIHRoYXQgYWxyZWFkeSBiZWluZyBjb21wbGV0ZWQKPj4gICAgYW5kIHRl
-c3RlZCA6LSkgYXJlOgo+Pgo+PiAgICAtIE5vIGR1cGxpY2F0aW9uIG9mIGRhdGEgdGhhdCBpcyBv
-dmVyd3JpdHRlbiBhbnlob3cKPj4gICAgLSBCZXR0ZXIgaW50ZXJvcGVyYWJpbGl0eSB3aXRoIFUt
-Qm9vdC9tZmctdG9vbHMKPj4gICAgICBXaGlsZSB0aGlzIGlzIHVzdWFsbHkgbm90IG91ciBmb2N1
-cyBJIGNvbnNpZGVyIGl0IHF1aXRlIGFubm95aW5nCj4+ICAgICAgdGhhdCB0aGVyZSBhcmUgYXQg
-bGVhc3QgdGhyZWUgaW1wbGVtZW50YXRpb25zIG9mIGlteC11c2ItbG9hZGVyIGFuZAo+PiAgICAg
-IGRlcGVuZGluZyBvbiB3aGljaCBtYWNoaW5lIGFuZCBib290bG9hZGVyIHlvdSB1c2UgeW91IGhh
-dmUgdG8gcGljawo+PiAgICAgIHRoZSByaWdodCBpbXBsZW1lbnRhdGlvbi4gV2l0aCB0aGUgbG9u
-Z3Rlcm0gZ29hbCB0byBoYXZlCj4+ICAgICAgaW14LXVzYi1sb2FkZXIgYW5kIGJhcmVib3ggYXZh
-aWxhYmxlIGluIERlYmlhbiBzb21lCj4+ICAgICAgaW50ZXJvcGVyYWJpbGl0eSB3b3VsZCBiZSBu
-aWNlLgo+Pgo+PiAgICBJIHF1aWNrbHkgdHJpZWQgdXNpbmcgdGhlIGJvb3Qgcm9tIGxvYWQgaW1h
-Z2Ugc3VwcG9ydCB3aGVuIGJvb3RpbmcKPj4gICAgZnJvbSBTRCwgYnV0IGl0IGRpZG4ndCB3b3Jr
-IG91dCBvZiB0aGUgYm94IGFuZCBJIGRpZG4ndCBkZWJ1ZyB0aGF0Lgo+PiAgICBIb3dldmVyIEkg
-aW1hZ2luZSB0aGF0IGluIHRoaXMgbW9kZSBpdCB3b3VsZCBhbHNvIGJlIG1vcmUgbmF0dXJhbCB0
-bwo+PiAgICBub3QgZXhwZWN0IHRoZSBQQkwgdHdpY2UuCj4+Cj4+ICAgIFN3aXRjaGluZyB0byB0
-aGUgZHVwbGljYXRlZCBvcGVyYXRpb24gbW9kZSB3b3VsZCBtYWtlIGlteC11c2ItbG9hZGVyCj4+
-ICAgIGEgYml0IG1vcmUgY29tcGxpY2F0ZWQgKGJlY2F1c2UgaW4gdGhlIE1YUyBjb2RlIHBhdGgg
-dGhlIGR1cGxpY2F0aW9uCj4+ICAgIGlzbid0IGF2YWlsYWJsZSB5ZXQpLCBpbiByZXR1cm4gd2Un
-ZCBzYXZlIGFuIG9mZnNldCBjYWxjdWxhdGlvbiBpbgo+PiAgICB0aGUgUEJMLgo+IAo+IEkgY2Fu
-IGZvbGxvdyB0aG9zZSBhcmd1bWVudHMsIGJ1dCBmb3IgdGhlIHNha2Ugb2YgdGhlIHNhbml0eSBv
-Zgo+IGV2ZXJ5b25lIGludm9sdmVkIEkgd291bGQgdm90ZSBmb3IgY2hhbmdpbmcgdGhlIGkuTVg4
-TU0gVVNCIGxvYWRpbmcgdG8KPiB3b3JrIGluIHRoZSBzYW1lIHdheSwgbWF5YmUgZXZlbiB1c2lu
-ZyB0aGUgUk9NIEFQSSBpZiBpdCB3b3JrcyB0aGVyZQo+IHRvby4gaS5NWDhNTSBpc24ndCB0b28g
-d2lkZWx5IHVzZWQgeWV0LCBzbyBJIGd1ZXNzIHdlIGNhbiBzdGlsbCBjaGFuZ2UKPiBpdCB3aXRo
-b3V0IGluZmxpY3RpbmcgdG9vIG11Y2ggaW5jb21wYXRpYmlsaXR5IHBhaW4uCgo4TU0gZG9lc24n
-dCBoYXZlIFJPTSBBUEkuIDhNTiBkb2VzLgoKPiBUaGUgaS5NWDhNKiBCYXJlYm94IGxvd2xldmVs
-IGZsb3cgaXMgYWxyZWFkeSBxdWl0ZSBkZWxpY2F0ZSwgc28gSSB3b3VsZAo+IHJhdGhlciBhdm9p
-ZCBoYXZpbmcgdG8gZGVhbCB3aXRoIHN1YnRsZSBkaWZmZXJlbmNlcyBiZXR3ZWVuIHRoZSB2YXJp
-b3VzCj4gZmFtaWx5IG1lbWJlcnMuCgpPbiA4TU0sIHRoZSBQQkwgbG9hZGVkIGluIHRoZSBzZWNv
-bmQgdXBsb2FkIGlzIG92ZXJ3cml0dGVuIHdpdGggdGhlIHJ1bm5pbmcKUEJMIChmcm9tIHRoZSBm
-aXJzdCB1cGxvYWQpLCBzbyBwcmFjdGljYWxseSwgdGhlIG9ubHkgY2hhbmdlIHNlZW1zIHRvIGJl
-CndoZXRoZXIgd2Ugb3ZlcndyaXRlIGEgUEJMIHRyYW5zZmVycmVkIGZvciBub3VnaHQgb3Igbm90
-PwoKPj4gICAgSSBzaG91bGQgYmUgcG9zc2libGUgdG8gbG9vayBhdCB0aGUgZmlyc3QgcG9zdC1Q
-QkwgZGF0YSBjaHVuayBjb21pbmcKPj4gICAgaW4gdmlhIFVTQiBhbmQganVkZ2Ugd2hpY2ggbW9k
-ZSBvZiBvcGVyYXRpb24gaXMgdXNlZCBhbmQgYmVoYXZlCj4+ICAgIGFjY29yZGluZ2x5LiBJZiB0
-aGlzIGlzIGNvbnNpZGVyZWQgYSBnb29kIGlkZWEgSSBjYW4gY3JlYXRlIGEgcGF0Y2gKPj4gICAg
-Zm9yIHRoYXQuCgpTb3VuZHMgbGlrZSBhIGdvb2QgY29tcHJvbWlzZSwgYnV0IEkgZG9uJ3QgeWV0
-IHVuZGVyc3RhbmQgTHVjYXMnCnBvaW50LiBQQkwgaXMgZW50ZXJlZCB0d2ljZSB3aXRoIFV3ZSdz
-IGNoYW5nZXMgYXMgd2VsbC4KCj4+ICAtIFdoZW4gYm9vdGluZyB2aWEgVVNCIHRoZSBib290IHNv
-dXJjZSBpcyBpZGVudGlmaWVkIGFzICJzZXJpYWwiLiBJCj4+ICAgIHdvdWxkIGV4cGVjdCB0aGF0
-IHRoZSBzZW1hbnRpYyBvZiB0aGF0IGlzIHJzMjMyIGFuZCBub3QgVVNCLiBUaGUKPj4gICAgc291
-cmNlIG9mIHRoaXMgY29uZnVzaW9uIGlzIHByb2JhYmx5IHRoYXQgdGhlIFJlZmVyZW5jZSBNYW51
-YWwgY2FsbHMKPj4gICAgdGhlIFVTQiAgYm9vdCBtb2RlICJVU0IgU2VyaWFsIERvd25sb2FkIGJv
-b3QiLiBJIHN0dWNrIHRvCj4+ICAgIEJPT1RTT1VSQ0VfU0VSSUFMIGhlcmUgZm9yIGNvbnNpc3Rl
-bmN5LiBJZiBpdCdzIG5vdCBvbmx5IG1lIHdobyB3b3VsZAo+PiAgICBjb25zaWRlciB1c2luZyBC
-T09UU09VUkNFX1VTQiBpbnN0ZWFkIGEgZml4IHRoaXMgc2hvdWxkIGJlIGNoYW5nZWQKPj4gICAg
-Y29uc2lzdGVudGx5IGZvciBhbGwgaS5NWCBwbGF0Zm9ybXMuCj4+ICAgIEFobWFkIHBvaW50ZWQg
-b3V0IHRoYXQgdGhpcyBtaWdodCBicmVhayBiYXJlYm94IHNoZWxsIHNjcmlwdHMuCj4gCj4gVGhp
-cyBob3dldmVyIHNvdW5kcyBsaWtlIGJyZWFraW5nIGJhY2t3YXJkcyBjb21wYXQgZm9yIG5vIHJl
-YWwgZ2Fpbi4gQXMKPiBldmVuIHRoZSByZWZlcmVuY2UgbWFudWFsIGNhbGxzIHRoaXMgYm9vdCBt
-b2RlICJzZXJpYWwiIEkgYWx3YXlzIGZvdW5kCj4gdGhpcyBxdWl0ZSBjbGVhci4gTXkgdm90ZSBp
-cyBvbiBrZWVwaW5nIHRoaW5ncyBhcyB0aGV5IGFyZS4KCkFncmVlZC4KCkNoZWVycywKQWhtYWQK
-Cj4gCj4gUmVnYXJkcywKPiBMdWNhcwo+IAo+Pgo+PiBVd2UgS2xlaW5lLUvDtm5pZyAoMyk6Cj4+
-ICAgaW14OG1wLWV2azogQWRkIHN1cHBvcnQgZm9yIGJvb3RpbmcgdmlhIFVTQgo+PiAgIGlteC11
-c2ItbG9hZGVyOiBEcm9wIG5lYXJseSB1bnVzZWQgc3RydWN0IHVzYl9pZAo+PiAgIGlteC11c2It
-bG9hZGVyOiBBZGQgc3VwcG9ydCBmb3IgaS5NWDhNUAo+Pgo+PiAgYXJjaC9hcm0vYm9hcmRzL254
-cC1pbXg4bXAtZXZrL2xvd2xldmVsLmMgfCAgMjcgKysrKysKPj4gIGFyY2gvYXJtL21hY2gtaW14
-L2Jvb3QuYyAgICAgICAgICAgICAgICAgIHwgICA0ICstCj4+ICBpbmNsdWRlL2FzbS1nZW5lcmlj
-L3NlY3Rpb25zLmggICAgICAgICAgICB8ICAgMSArCj4+ICBzY3JpcHRzL2lteC9pbXgtdXNiLWxv
-YWRlci5jICAgICAgICAgICAgICB8IDEzMSArKysrKysrKysrKystLS0tLS0tLS0tCj4+ICA0IGZp
-bGVzIGNoYW5nZWQsIDEwMyBpbnNlcnRpb25zKCspLCA2MCBkZWxldGlvbnMoLSkKPj4KPj4KPj4g
-YmFzZS1jb21taXQ6IDcyNDI0ZmQwNTdkMTM1ZWMwZTQxMTM5ZmU0Y2I1NzQwNDcxZDMzYTUKPiAK
-PiAKPiAKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAg
-ICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGls
-ZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkx
-Ny0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4
-OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+Hi Jules,
+
+On Mon, Oct 04, 2021 at 02:11:10PM +0200, Jules Maselbas wrote:
+> Hi Sascha,
+> 
+> Would it be interesting to do the same for other usbgadget commands ?
+> I think there is the "serial" command that still doesn't uses the
+> usbgaget.
+
+Sorry for the delay. Yes, that would be interesting, bringing code into
+shape is always nice.
+
+Regards,
+  Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
