@@ -1,52 +1,78 @@
-Delivery-date: Wed, 27 Oct 2021 08:46:15 +0200
+Delivery-date: Thu, 28 Oct 2021 03:32:03 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mfchT-0005Nw-JN
-	for lore@lore.pengutronix.de; Wed, 27 Oct 2021 08:46:15 +0200
+	id 1mfuGx-0001y7-Fv
+	for lore@lore.pengutronix.de; Thu, 28 Oct 2021 03:32:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mfc2Y-0003uz-0L
-	for lore@pengutronix.de; Wed, 27 Oct 2021 08:03:58 +0200
+	id 1mfuGw-000116-KM
+	for lore@pengutronix.de; Thu, 28 Oct 2021 03:32:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=4dl9319t3vQhIHrFKcr/Pb0T4gLIM58fwrtp6MUvIxY=; b=YSJI5tG75sqODe
-	ijcuRXUkCNKJWeysrwgTIuiFJNeZGto8ULc8apa4NzitkdBpGxEZP/5S5JvR33TeZMYG7TfZJymSY
-	CSerIidhw+N6tu6XTg7LiQVczUufBPcaiItc1SXQqsdnZxfRRngBeEiIoWQ5j6Tob221P/owOeu53
-	9bQxyf9m1O6B4GzcrnsCuA7KoJzosgodX+zoZent7ATD2H4Rp+Bed4BxXiQKh9sC2NXMrfBFtgq5b
-	8UXA2LkZ6rZQDrL61gQuDUqGOuCiLt/J0iodLl9ZTbwIypztzcq2nHKua22Hlg5OpyUAkv+NswuPs
-	NLDb9zsXeZDrSwGfUkvg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=imZDb3GGSttZbbfUkXR2+WFZb8vQDDAQUYfNaj/bRhY=; b=fDzYbRB9VV1ZdG
+	9TX1qgPYskDRovhof9adzGKR7zcx0bAub/tO2WOUV4iA0nDaa+bgbXWVye5mpqzPGQcUCuxNQo/88
+	326S78qVgE2+1loaZ91bNN0pVVtQCiPPTkw2IHYrvWenJpr+pyoWDHdmYRoImNHwwwmQXedCRRg+u
+	0jvWenz8XDdzCOl5DnxpEtqx2ckGZbejx/F2rloGNiXwi759ojv9O5Eww7TM0WwAhWsaHxf5vq+jw
+	GRRPmxK57nDPMyRcF4i7N49+z+VKCBa6thwYxs5t5otKIboGX/UK9kjAoKDqmgcnVuamlHq4aihv+
+	CG4hv077zvoJ8PSWMeyg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mfc0h-003xSJ-FL; Wed, 27 Oct 2021 06:02:03 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mfuDb-006cC6-Q5; Thu, 28 Oct 2021 01:28:35 +0000
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mfc0c-003xR5-EN
- for barebox@lists.infradead.org; Wed, 27 Oct 2021 06:01:59 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1mfc0V-0003s0-Tq; Wed, 27 Oct 2021 08:01:51 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1mfc0V-0007il-KM; Wed, 27 Oct 2021 08:01:51 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1mfuDP-006c8W-8Z
+ for barebox@lists.infradead.org; Thu, 28 Oct 2021 01:28:24 +0000
+Received: by mail-lf1-x134.google.com with SMTP id i13so483349lfe.4
+ for <barebox@lists.infradead.org>; Wed, 27 Oct 2021 18:28:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=r9H1mmsbtKD8WCby4+y1ftk9gMYtb+ugsx92VS0X+68=;
+ b=qGy/qdEBV3xm2iQ3+eYz+t4hdFlhmF4ajkc/3CaioOCcBZWPAaODvIURm2RxJ5ZUpQ
+ VZM2JNAAJwgKD7TdwgleJ1m8Q7vMP4FUqhCBdz84qE9Sjba0BSLm4oTGYI9iDnShrG/o
+ UJbl4aQUddZ/eJh5T4YPWT4HUDePu8U5yilqz/87RiGHQ1o3LYR6XhHxb63TAX9Rj7ws
+ r37rxPBC9icGpThcgJH1j8CSbwDn4i48aCos1XO3zl7mc5GU2QqjPMVYZULjt9NBkth8
+ pUmnR5/QQDjQr+2akis1d2B1XG/BqRF+xGSkB3+3/f0UOeYW7gEKnYRo5IE2QplZcjdu
+ c1zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=r9H1mmsbtKD8WCby4+y1ftk9gMYtb+ugsx92VS0X+68=;
+ b=R2cNXGEqQZqfmamdYaxjD58vYgXz+yLndg+a31wrVJt+a9pUytkNi0nj2Ar7A1Jj64
+ rQb5u9at+OK3RUOLvAke18F9PZU7aapcfi7WUT51IjBe3fjgeIWULUR5k4gzKQuvem2+
+ txanpQ58DZehoyof+U7ZkcwGJglaOgqhAMul7Uge4AmtFBgU6VLgvn/R1d13Et6CSD9e
+ eDys2YAlj6CN0JzU9ajtB73QT2cRLYi4v86ciCWfZA7GbShwOiz/8YCBYgmjS6SmpJoO
+ RtD3z5i2alv/cv/iemcl9TkEPJbbdVqFKuNkLjettUxWBKkG8lut/cAcrTHSsarZcJLz
+ OW/w==
+X-Gm-Message-State: AOAM53352CAU6hZj9yi9Q8KvHQ2voTXhkmWXDJ0/HI4xUzse84iJb61D
+ UJB7LoyBsvvjvlYv1CBGLj1y6pZmf94=
+X-Google-Smtp-Source: ABdhPJxBx4Ee0/6+kWslG4UmRrGzVRbnsorOsv7lhkJTyRVVkK5jgn85C/EbBPQUvVwilxHd5mnZ7w==
+X-Received: by 2002:a19:5e56:: with SMTP id z22mr1116544lfi.146.1635384500980; 
+ Wed, 27 Oct 2021 18:28:20 -0700 (PDT)
+Received: from localhost.localdomain (109-252-203-96.dynamic.spd-mgts.ru.
+ [109.252.203.96])
+ by smtp.gmail.com with ESMTPSA id h14sm153111lfv.83.2021.10.27.18.28.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Oct 2021 18:28:20 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 27 Oct 2021 08:01:50 +0200
-Message-Id: <20211027060150.28184-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+Date: Thu, 28 Oct 2021 04:28:13 +0300
+Message-Id: <20211028012816.929611-2-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211028012816.929611-1-antonynpavlov@gmail.com>
+References: <20211028012816.929611-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211026_230158_502780_46507C80 
-X-CRM114-Status: GOOD (  11.43  )
+X-CRM114-CacheID: sfid-20211027_182823_358336_9FE7913C 
+X-CRM114-Status: GOOD (  11.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,47 +92,35 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! scripts: Add common library functions
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 1/4] imd: fix imd_is_crc32()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-scripts: common: mmap mutable memory in read_file_2
-
-imx-usb-loader expects the file buffer contents to be mutable as it
-will patch out references to plugin and DCD segments.
-
-With the consolidation of the different file read helpers, the
-buffer is no longer always malloc'd, but a read-only shared
-mapping is attempted first and if it succeeds, imx-usb-loader
-will seg fault during fixups.
-
-As we don't want to modify the underlying file, switch to a writable
-private mapping to remedy this.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- scripts/common.c | 2 +-
+ include/image-metadata.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/common.c b/scripts/common.c
-index bff08b0810c2..b780b099419c 100644
---- a/scripts/common.c
-+++ b/scripts/common.c
-@@ -46,7 +46,7 @@ int read_file_2(const char *filename, size_t *size, void **outbuf, size_t max_si
- 		goto close;
- 	}
+diff --git a/include/image-metadata.h b/include/image-metadata.h
+index a9cb9cfe8f..439a0cba81 100644
+--- a/include/image-metadata.h
++++ b/include/image-metadata.h
+@@ -67,7 +67,7 @@ struct imd_entry_crc32 {
  
--	buf = mmap(NULL, max_size, PROT_READ, MAP_SHARED, fd, 0);
-+	buf = mmap(NULL, max_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
- 	if (buf == MAP_FAILED ) {
- 		buf = malloc(max_size);
- 		if (!buf) {
+ static inline int imd_is_crc32(uint32_t type)
+ {
+-	return (type & IMD_TYPE_CRC32) ? 1 : 0;
++	return type == IMD_TYPE_CRC32;
+ }
+ 
+ static inline int imd_crc32_is_valid(uint32_t flags)
 -- 
-2.30.2
+2.33.0
 
 
 _______________________________________________
