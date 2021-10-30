@@ -1,54 +1,54 @@
-Delivery-date: Sat, 30 Oct 2021 19:59:40 +0200
+Delivery-date: Sat, 30 Oct 2021 19:59:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mgsdo-0001Be-MQ
-	for lore@lore.pengutronix.de; Sat, 30 Oct 2021 19:59:40 +0200
+	id 1mgsdx-0001C9-17
+	for lore@lore.pengutronix.de; Sat, 30 Oct 2021 19:59:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mgsdn-0002S1-MS
-	for lore@pengutronix.de; Sat, 30 Oct 2021 19:59:40 +0200
+	id 1mgsdv-0002UU-V9
+	for lore@pengutronix.de; Sat, 30 Oct 2021 19:59:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=mKhOKK9tWoQ8x7/ltUzsbR+ZtsBdjZZZXpE4BJL6x/I=; b=OphlLXm/XDbCDZ
-	YSlTc+SLcKwQz9X+WXlhNmu+Lm9ZTiH3CeS7tUQ6gxUa9E68FLm2FJ0jrHbPsI2M/3M/8eQxYL4q6
-	/oTXnDtjPzUH8EH0CFL+mWvkJeUsPWTG1R3mM2/vR9/Fj/pnofL3pXytzgINPgYYZaJV+7EyPGLVu
-	xuwqnULmNI9HpHjVdnLmxteoqbBMTJvNfM/LHAYaws617+gn/DeqSNkAo8lm3JRIdbgkC3sEe0Jmy
-	zZIuvkzZCNThCrBFJHVkuebyeXaVoMx7Pn62RhSShnCNBN4FqHiQa+0m5U4MTN1z76NCdi8Dh/C6K
-	z3DoDX0h8vyWjtHmpgNA==;
+	List-Owner; bh=15jzCXuwJ64H2QsTpWDbUg1FKgsJDXnm8beWs2AMnYE=; b=LOm+pjkr48607Q
+	0TvnFktkKmovZxZAFpxCuXfSPwDdMor7GRguvISkEVmKt/zBRvxe2CWzjfuCKncC8KG5LKp2bMHMz
+	NGRZKm6lDyODi3++fkUVh4Vty/1jJZzNSKyUedfKP/a5YlYZ5SUUrZ6vb1Cl/CwwO04IsP8NuMT8S
+	2ygO7oSdsMvdOTR1iZpzpYpgPput2Bf+mlF2hxVw0VrhyP1UNQMVq6gy0a4MOQ2DNq3R4mBvj1UMu
+	he2GIl0ia+TcFqv9ZLKSN+B0H/PLQPNes132b+YU8XQAZlWW6pQhi//hwCF7cCdeDHvw56brCOvM/
+	e2+PBAamRWUOJkknY4bg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mgsce-00DNJG-IN; Sat, 30 Oct 2021 17:58:28 +0000
+	id 1mgsci-00DNLn-JZ; Sat, 30 Oct 2021 17:58:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mgscR-00DNDz-D3
+ id 1mgscR-00DNE0-CL
  for barebox@lists.infradead.org; Sat, 30 Oct 2021 17:58:18 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mgscQ-00020W-1y; Sat, 30 Oct 2021 19:58:14 +0200
+ id 1mgscQ-00020V-4b; Sat, 30 Oct 2021 19:58:14 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1mgscP-009YIQ-8U; Sat, 30 Oct 2021 19:58:13 +0200
+ id 1mgscP-009YIN-7S; Sat, 30 Oct 2021 19:58:13 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sat, 30 Oct 2021 19:58:07 +0200
-Message-Id: <20211030175812.2276705-5-a.fatoum@pengutronix.de>
+Date: Sat, 30 Oct 2021 19:58:06 +0200
+Message-Id: <20211030175812.2276705-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211030175812.2276705-1-a.fatoum@pengutronix.de>
 References: <20211030175812.2276705-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211030_105815_499550_330C7089 
-X-CRM114-Status: UNSURE (   9.62  )
+X-CRM114-CacheID: sfid-20211030_105815_445987_C68DFB97 
+X-CRM114-Status: UNSURE (   9.42  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -73,7 +73,7 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/9] aiodev: fix bitrotted EXPORT_SYMBOL
+Subject: [PATCH 3/9] regulator: fix bitrotted EXPORT_SYMBOL_GPL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
@@ -82,21 +82,21 @@ unknown symbol.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/aiodev/core.c | 2 +-
+ drivers/regulator/core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/aiodev/core.c b/drivers/aiodev/core.c
-index 5181d4c1077d..945494a6e7b2 100644
---- a/drivers/aiodev/core.c
-+++ b/drivers/aiodev/core.c
-@@ -29,7 +29,7 @@ struct aiochannel *aiochannel_by_name(const char *name)
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index a9e25753fee8..7eb849cd31f2 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -564,7 +564,7 @@ int regulator_get_voltage(struct regulator *regulator)
  
- 	return ERR_PTR(-ENOENT);
+ 	return ret;
  }
--EXPORT_SYMBOL(aiochannel_get_by_name);
-+EXPORT_SYMBOL(aiochannel_by_name);
+-EXPORT_SYMBOL_GPL(regulator_get_voltage_rdev);
++EXPORT_SYMBOL_GPL(regulator_get_voltage);
  
- struct aiochannel *aiochannel_get(struct device_d *dev, int index)
+ static void regulator_print_one(struct regulator_internal *ri)
  {
 -- 
 2.30.2
