@@ -1,15 +1,15 @@
-Delivery-date: Thu, 04 Nov 2021 20:48:38 +0100
+Delivery-date: Thu, 04 Nov 2021 20:56:28 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1miij0-0000Gx-VC
-	for lore@lore.pengutronix.de; Thu, 04 Nov 2021 20:48:38 +0100
+	id 1miiqX-0000UY-Ko
+	for lore@lore.pengutronix.de; Thu, 04 Nov 2021 20:56:28 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1miij0-0001zx-3m
-	for lore@pengutronix.de; Thu, 04 Nov 2021 20:48:38 +0100
+	id 1miiqW-0002zf-P5
+	for lore@pengutronix.de; Thu, 04 Nov 2021 20:56:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=Bo20P98gnXfloZN6DgRs92DItYRxTxLIqKpIlBnM8C0=; b=sQGlqQk02MJ9vyDR2WxBfHPQyv
-	7vWFeUZjlBk4YJmltDlOtGXwIfLPBFfZpOrMnrXV/oku4mTd9FC06maun2sdmw2ehM+eQMoBNJxBj
-	46RWp91FPVLsHYeknJ5bLQyOP0vQmvBxIPn5VavyEhc9T1slISWa4h2wC04FAc1R7Bk3ee0lkYZds
-	TwM82xObmsaTREkb0PAM9zYUhR+Aucuty6po7YKj7DcYlxixJOyy+WH1lyUOlCRmqSmRR2ENXsBMG
-	F4Q+vDStf55urRVUrLPFYv7y/mttcQcPa57/NPYqbr+zLVL5GEnQH9K+0nFXrUUwwW2VRbT+Iwof+
-	q7frN4OQ==;
+	bh=qtcGuMrzof5sBgl56bQFfoDkH5Bwc7DJ77ZrzYD9cSs=; b=qW+WPWL4TFFAGLBrp2stwGG3oG
+	XO239febW/gs1BA4c1v4VuSUVGuSuctITOHlwOjrw/rvZfX+JKbGizf0n+a7PCEDttUF2ipFO/xqI
+	B2LeaKfjXuhhngLGOHm20dlcBL/r02iSfZUYr4R4n/WrOZsvispng7DwwyQDqG0oi/FUXbQQe4dX2
+	jHLwPPOnItXeigOtetr75ZThrgvYucoxdll+8P1SKYaWHkDxIyg0NGJYFNBGZ6VD7GMGS17YyrbuH
+	nGNhGU3x3zGutEzUdPFHk0Ve/OOvJCBx3PZwOQTnOwLsapNZJ1hDrzudFAd1g/u2qOJvhkR65Kw6N
+	AXDhXR5w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1miihE-009tb9-VW; Thu, 04 Nov 2021 19:46:49 +0000
+	id 1miipH-009u5d-KU; Thu, 04 Nov 2021 19:55:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1miih9-009taB-6v
- for barebox@lists.infradead.org; Thu, 04 Nov 2021 19:46:45 +0000
+ id 1miipC-009u52-4h
+ for barebox@lists.infradead.org; Thu, 04 Nov 2021 19:55:03 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1miih3-0001wS-TG; Thu, 04 Nov 2021 20:46:37 +0100
+ id 1miipA-0002bj-KY; Thu, 04 Nov 2021 20:55:00 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1miih3-0005a5-3l; Thu, 04 Nov 2021 20:46:37 +0100
-Date: Thu, 4 Nov 2021 20:46:37 +0100
-To: Jules Maselbas <jmaselbas@kalray.eu>
+ id 1miipA-0005nR-6O; Thu, 04 Nov 2021 20:55:00 +0100
+Date: Thu, 4 Nov 2021 20:55:00 +0100
+To: Ian Abbott <abbotti@mev.co.uk>
 Cc: barebox@lists.infradead.org
-Message-ID: <20211104194637.GC25698@pengutronix.de>
-References: <20211102132247.24080-1-jmaselbas@kalray.eu>
+Message-ID: <20211104195500.GD25698@pengutronix.de>
+References: <ee2d159c-4f0f-e81f-baca-343b846ee62e@mev.co.uk>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211102132247.24080-1-jmaselbas@kalray.eu>
+In-Reply-To: <ee2d159c-4f0f-e81f-baca-343b846ee62e@mev.co.uk>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 20:46:18 up 259 days, 23:10, 119 users,  load average: 0.10, 0.12,
- 0.12
+X-Uptime: 20:51:20 up 259 days, 23:15, 117 users,  load average: 0.10, 0.12,
+ 0.11
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211104_124643_297543_8A8C4545 
-X-CRM114-Status: GOOD (  19.98  )
+X-CRM114-CacheID: sfid-20211104_125502_213310_23223BEB 
+X-CRM114-Status: GOOD (  24.79  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,28 +81,65 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] memory commands: Improve command documentation
+Subject: Re: Inconsistent "compatible" string for Terasic DE0-Nano-SoC /
+ Atlas SoC Kit
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Nov 02, 2021 at 02:22:47PM +0100, Jules Maselbas wrote:
-> The quad write flags was missing from memory command usage.
-> Make the -s/-d options expecting an argument more clean from the usage line.
-> Reword some command help to make them more easier to use. For instance the
-> memcpy command help was a bit misleading on the uses for SRC/DEST with a
-> source/dest file. Some users were being confused by SRC/DEST being offsets.
-> 
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> ---
->  commands/md.c     | 4 ++--
->  commands/memcmp.c | 2 +-
->  commands/memcpy.c | 6 ++++--
->  commands/memset.c | 2 +-
->  commands/mm.c     | 2 +-
->  commands/mw.c     | 7 ++++++-
->  6 files changed, 15 insertions(+), 8 deletions(-)
+Hi Ian,
 
-Applied, thanks
+On Tue, Nov 02, 2021 at 02:22:51PM +0000, Ian Abbott wrote:
+> Hi there!
+> 
+> I have a slight issue getting BootLoaderSpec entries for Terasic
+> DE0-Nano-SoC to work:
+> 
+> barebox@Terasic DE0-Nano-SoC/Atlas-SoC Kit:/ boot mmc0
+> blspec: ignoring entry with incompatible devicetree "terasic,de0-atlas"
+> Nothing bootable found on 'mmc0'
+> Nothing bootable found
+> 
+> From the (recent) Linux kernel sources
+> "arch/arm/boot/dts/socfpga_cyclone5_de0_nano_soc.dts":
+> 
+> 	model = "Terasic DE-0(Atlas)";
+> 	compatible = "terasic,de0-atlas", "altr,socfpga-cyclone5", "altr,socfpga";
+> 
+> Of course, the above compatible string matches the barebox source
+> "dts/src/arm/socfpga_cyclone5_de0_nano_soc.dts" file.
+> 
+> However the "model" and "compatible" strings get overridden by the barebox
+> source "arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts":
+> 
+> 	model = "Terasic DE0-Nano-SoC/Atlas-SoC Kit";
+> 	compatible = "terasic,de0-nano-soc","altr,socfpga-cyclone5",
+> "altr,socfpga";
+> 
+> The socfpga_init() function in
+> "arch/arm/boards/terasic-de0-nano-soc/board.c" also checks the "compatible"
+> string for registering a PHY fixup:
+> 
+> static int socfpga_init(void)
+> {
+> 	if (!of_machine_is_compatible("terasic,de0-nano-soc"))
+> 		return 0;
+> 
+> 	if (IS_ENABLED(CONFIG_PHYLIB))
+> 		phy_register_fixup_for_uid(PHY_ID_KSZ9031, MICREL_PHY_ID_MASK, phy_fixup);
+> 
+> 	return 0;
+> }
+> 
+> I think I can get everything working by changing barebox's "compatible"
+> string to the following:
+> 
+> 	compatible = "terasic,de0-atlas", "terasic,de0-nano-soc",
+> "altr,socfpga-cyclone5", "altr,socfpga";
+
+You can drop the model and compatible properties from
+arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts and change the
+of_machine_is_compatible check to the upstream dts string. I don't think
+we have a good reason to keep the terasic,de0-nano-soc compatible.
 
 Sascha
 
