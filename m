@@ -1,63 +1,59 @@
-Delivery-date: Fri, 05 Nov 2021 10:40:51 +0100
+Delivery-date: Fri, 05 Nov 2021 13:23:42 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1miviN-0003qr-RK
-	for lore@lore.pengutronix.de; Fri, 05 Nov 2021 10:40:51 +0100
+	id 1miyFy-0001l2-0A
+	for lore@lore.pengutronix.de; Fri, 05 Nov 2021 13:23:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1miviN-0008L5-0X
-	for lore@pengutronix.de; Fri, 05 Nov 2021 10:40:51 +0100
+	id 1miyFw-0000K7-VR
+	for lore@pengutronix.de; Fri, 05 Nov 2021 13:23:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=KUO+/GnsN6YwAn86BiZRaMsrrT+Hna2vUlVjFCM24vc=; b=tP1B4OjERDuZa0kcQPrODSOo62
-	xHq/2qZGbJiPOQYOJFGQNsBdHq4felmtIh26NdUX2T5AklXb/EuCa91LMQuSW/Vn75qp/5iYqzCzy
-	y8DqzzJlQP3gotCr8nAu342nDkBzM8xwtXkPhbtTUkc27QsuMzyVCCItVYJEn7QqxQK1Znz+k/35n
-	rmI4McQdogRBmHUt6uRPCiBwbLWyKu5lABmdy6viHOnBMaUjmS5Oc2RpvfxTKYDdAp++DaAqzXGsl
-	+iEyzkGZDNuJBE92M63h8rTs9cBS9J0i/vpCc0mIof0lZ8AM4t1LqAFlcCe3UK3Fy0DtZGZEgjVZr
-	V69M6F/w==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=/U279Lq72cXNPlRPZIwkF+aol5D7eIh3VcVPsZFxYho=; b=bYGOlTFjVDwHZc
+	iZHJuLq7IGY3n/HCAGe4cNezAFt7dfhcLo2VAYZZ9Ftt49aA8jTVQ5S/ZtMovAJqbZeHvw7ZT6oVO
+	LGtlXdhPccsJc6CmyGDYJDQ6ovixpkc6QG1pJ1iQALdmC9LgJu8ZXbB6Wajjk7+RzXlvnrhOmAd3E
+	FQh06SPRuR7UIsN37eg23c4NlsK/H7XKCTeSYObftwO65FUqj0CXm0Xx4ge9lvXGNIRRwM6AJKdNJ
+	bg9qFUaO8QdvBn4J4YTtI4f3695+71XoF9GvL8OCpWr3BzgAqll0vFs7nDyfmnSxpfZkVAMoikCC/
+	VsSRoNHXwz699iA4jJTg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mivh9-00AzTG-4q; Fri, 05 Nov 2021 09:39:35 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1miyEX-00BFFf-1H; Fri, 05 Nov 2021 12:22:13 +0000
+Received: from smtp93.iad3a.emailsrvr.com ([173.203.187.93])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mivh4-00AzSw-4A
- for barebox@lists.infradead.org; Fri, 05 Nov 2021 09:39:31 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mivh2-000892-Gq; Fri, 05 Nov 2021 10:39:28 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mivh1-00041X-I6; Fri, 05 Nov 2021 10:39:27 +0100
-Date: Fri, 5 Nov 2021 10:39:27 +0100
-To: Joacim Zetterling <joaze@westermo.com>
-Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
-Message-ID: <20211105093927.GI25698@pengutronix.de>
-References: <20211101121109.GA56533@wsevst-c0022>
+ id 1miyEP-00BFES-Dv
+ for barebox@lists.infradead.org; Fri, 05 Nov 2021 12:22:06 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+ s=20190130-41we5z8j; t=1636114921;
+ bh=aaValPZRnAOd0yj1HTAaUPwVdPpNGuKmsMt+b3isT0o=;
+ h=From:To:Subject:Date:From;
+ b=JElJvCQsjTjXcz3zLBOMrCNWfjMwu53nZHu2BX0bXqIJAoKJbDvnKL/hNNkRn5syn
+ mu//N5baJRWfdb0D2NsGTH36gREpzZQUCJwTqz2UE+XDWMB02nh1dSMUbuGu7XzRju
+ cDSMPh6nTPyrNEnEdiLqRHrBbage/B4w+sfmLyoQ=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp36.relay.iad3a.emailsrvr.com (Authenticated sender:
+ abbotti-AT-mev.co.uk) with ESMTPSA id D5F603A78; 
+ Fri,  5 Nov 2021 08:22:00 -0400 (EDT)
+From: Ian Abbott <abbotti@mev.co.uk>
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+ Ian Abbott <abbotti@mev.co.uk>
+Date: Fri,  5 Nov 2021 12:21:45 +0000
+Message-Id: <20211105122146.29370-2-abbotti@mev.co.uk>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211105122146.29370-1-abbotti@mev.co.uk>
+References: <20211105122146.29370-1-abbotti@mev.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20211101121109.GA56533@wsevst-c0022>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:36:39 up 260 days, 13:00, 137 users,  load average: 0.14, 0.22,
- 0.21
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+X-Classification-ID: 6f09cc8c-29e8-4c57-a62d-ba4724a39c85-2-1
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211105_023930_206186_7B52AD46 
-X-CRM114-Status: GOOD (  22.46  )
+X-CRM114-CacheID: sfid-20211105_052205_589797_A2048E70 
+X-CRM114-Status: GOOD (  14.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,60 +73,76 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3] Fix problem with imx_ddrc_sdram_size calc
+Subject: [PATCH 1/2] ARM: Terasic DE0-Nano-SoC/Atlas-SoC: Use upstream
+ compatible string
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Joacim,
+The upstream (Linux) 'compatible' string for the Terasic
+DE0-Nano-SoC/Atlas-SoC board in
+"dts/src/arm/socfpga_cyclone5_de0_nano_soc.dts" differs from the barebox
+'compatible' string for the same board in
+"arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts":
 
-On Mon, Nov 01, 2021 at 01:11:09PM +0100, Joacim Zetterling wrote:
-> There was some issues with the imx_ddrc_sdram_size calculation.
-> 
-> If we compare the imx8mn DDR4 evk against the LPDDR4 variant in
-> code and in the datasheets, we see the following:
-> 
->              DDR4   LPDDR4
->   ========================
->   Bus width   16      16
->   Rank        1       1
->   Ranks       1       1
->   Banks       4       8
->   Banks grps  2       1
->   Rows        17      15
->   Col         10      10
-> 
-> This gives us the following problems:
-> 
-> 1. Bus width problem.
->    Does not support 16 bit SDRAM bus mode, only 32 bit supported
-> 
-> 2. Row size problem.
->    Only up to 16 bit row size support.
-> 
-> 3. Bank groups support.
->    Only support of 1 bank group.
-> 
-> 4. Bit count problem.
->    The imx_ddrc_count_bits function does not do a correct count.
+Linux: "terasic,de0-atlas"
+barebox:  "terasic,de0-nano-soc"
 
-Could you split this into four patches fixing one problem at a time?
-I am not sure the problems can be separated from each other entirely,
-but splitting this up would make it much easier to understand the
-problems and also their fixes. We'll be glad having smaller patches
-should we ever have to look at this again.
+That results in an incompatibility when trying to boot a bootloader spec
+entry with a 'devicetree' key that refers to the DTB file built from the
+Linux sources.  The barebox bootloader spec loader will ignore the entry
+because the 'compatible' string in the root node of the DTB does not
+match what barebox expects.
 
-Sascha
+Remove the 'compatible' string list from
+"arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts" so that barebox uses
+the upstream compatible string list.  Also remove the 'model' string
+("Terasic DE0-Nano-SoC/Atlas-SoC Kit") so that barebox uses the upstream
+(and shorter!) model name ("Terasic DE-0(Atlas)").
 
+Finally, update the `of_machine_is_compatible("terasic,de0-nano-soc")`
+function call in `socfpga_init()` to use the "terasic,de0-atlas" string.
 
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+---
+ arch/arm/boards/terasic-de0-nano-soc/board.c   | 2 +-
+ arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts | 3 ---
+ 2 files changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/arch/arm/boards/terasic-de0-nano-soc/board.c b/arch/arm/boards/terasic-de0-nano-soc/board.c
+index 8e69319d17..c6036a41f9 100644
+--- a/arch/arm/boards/terasic-de0-nano-soc/board.c
++++ b/arch/arm/boards/terasic-de0-nano-soc/board.c
+@@ -24,7 +24,7 @@ static int phy_fixup(struct phy_device *dev)
+ 
+ static int socfpga_init(void)
+ {
+-	if (!of_machine_is_compatible("terasic,de0-nano-soc"))
++	if (!of_machine_is_compatible("terasic,de0-atlas"))
+ 		return 0;
+ 
+ 	if (IS_ENABLED(CONFIG_PHYLIB))
+diff --git a/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts b/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
+index 427f150fb4..c737b091a7 100644
+--- a/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
++++ b/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
+@@ -19,9 +19,6 @@
+ #include "socfpga.dtsi"
+ 
+ / {
+-	model = "Terasic DE0-Nano-SoC/Atlas-SoC Kit";
+-	compatible = "terasic,de0-nano-soc","altr,socfpga-cyclone5", "altr,socfpga";
+-
+ 	chosen {
+ 		stdout-path = &uart0;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.33.0
+
 
 _______________________________________________
 barebox mailing list
