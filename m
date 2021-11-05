@@ -1,15 +1,15 @@
-Delivery-date: Fri, 05 Nov 2021 10:26:12 +0100
+Delivery-date: Fri, 05 Nov 2021 10:33:49 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mivUC-0003AO-PS
-	for lore@lore.pengutronix.de; Fri, 05 Nov 2021 10:26:12 +0100
+	id 1mivbZ-0003XD-7v
+	for lore@lore.pengutronix.de; Fri, 05 Nov 2021 10:33:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mivUB-0006fe-UW
-	for lore@pengutronix.de; Fri, 05 Nov 2021 10:26:12 +0100
+	id 1mivbY-0007eP-B6
+	for lore@pengutronix.de; Fri, 05 Nov 2021 10:33:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=fsr225IJ0dwvpSk9gMwigEDzyWSOASjDI+IA0Bh0pks=; b=rh7MOFWh7DP056unIVhxX1Iy6d
-	j77MEpR1+aH6U7voT6FiGrlZRlJA1TnQZWI39AutGbI0VhMsiDwjwNFQm0Of0vsCH0ak1dYkbNO4i
-	OcOL77ghb7zOB2uObJl5Dnc4jgAM4RXHlEofoNz/A5yniDl0bDod9XWmMnGEeWsj164Ww+BLqrcqh
-	mZ/pOZsBVWAl4m3ieatcyzm/TAXXDWNT3pz5T03wBavtf6fafRSGHXO+WYsqD/Ol8IkK76o99prvM
-	8+aDbU5lQuM0EQ+MUDQT7Lnq+YYg4k0iKc0DXcc9izbxwG/X/orSEqySnz8KWv2xksA1kkNjsJ5L8
-	Y+jZjGVg==;
+	bh=sS8Hu0civVjcA4mwS+9HXOn0kncGYnWj0mwU0XGx6Z8=; b=vtIuHcM/HNWAKqWaUynbz8K4gH
+	CiDnpZmo1H00Uvv7GZNkTFgGuc4MnEIUwuNGkfiqn9YLMXOvYGCaj7kqIHDvZgFdlQXt+IeUvzHeL
+	3Z5z47jyvi1o3RCGpLC2bQSZNzs37eIomsNIJ2zr9iy8XOsMBpdX1MfNhpNiHfJW4SkygX3MCC0bv
+	x9uOro3ZkE7050Z1o6zpe5UiCwrUOAzas++PV0/9od9ODWIIt77u36xCGc0I2lkfveLCGu22IUUNJ
+	HIK+afORURVAoLIYwadaM5bZyLaLpvjmkSQ3+658PtQlDH3SN7RBjjdoKKwt9DY9wQbHsIZkt5ASj
+	IjTa856Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mivT0-00Axkx-4H; Fri, 05 Nov 2021 09:24:58 +0000
+	id 1mivaJ-00Ayms-LY; Fri, 05 Nov 2021 09:32:31 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mivSv-00Axji-E8
- for barebox@lists.infradead.org; Fri, 05 Nov 2021 09:24:54 +0000
+ id 1mivaE-00AymA-SQ
+ for barebox@lists.infradead.org; Fri, 05 Nov 2021 09:32:28 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mivSu-0006PC-7d; Fri, 05 Nov 2021 10:24:52 +0100
+ id 1mivaD-0007aL-KR; Fri, 05 Nov 2021 10:32:25 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mivSt-0003MD-VK; Fri, 05 Nov 2021 10:24:51 +0100
-Date: Fri, 5 Nov 2021 10:24:51 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1mivaD-0003gb-Ac; Fri, 05 Nov 2021 10:32:25 +0100
+Date: Fri, 5 Nov 2021 10:32:25 +0100
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20211105092451.GG25698@pengutronix.de>
-References: <20211105074657.3914257-1-a.fatoum@pengutronix.de>
+Message-ID: <20211105093225.GH25698@pengutronix.de>
+References: <20211101125538.512494-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211105074657.3914257-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20211101125538.512494-1-o.rempel@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:24:35 up 260 days, 12:48, 137 users,  load average: 0.10, 0.12,
- 0.15
+X-Uptime: 10:32:04 up 260 days, 12:55, 137 users,  load average: 0.23, 0.28,
+ 0.22
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211105_022453_504040_EC39D64C 
-X-CRM114-Status: GOOD (  18.13  )
+X-CRM114-CacheID: sfid-20211105_023226_939403_191D6BAD 
+X-CRM114-Status: GOOD (  18.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,21 +81,26 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] spi: add STM32 SPI controller driver
+Subject: Re: [PATCH v4] usb: net: Add support for the Realtek RTL8152B/RTL8153
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Nov 05, 2021 at 08:46:57AM +0100, Ahmad Fatoum wrote:
-> Tested on a STM32MP1 communicating with a ksz9563.
+On Mon, Nov 01, 2021 at 01:55:38PM +0100, Oleksij Rempel wrote:
+> This adds support for the Realtek RTL8152B/RTL8153 ethernet converter chip.
+> This driver is based on U-Boot version v2021.10 with port to barebox
+> internal frameworks.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  arch/arm/configs/stm32mp_defconfig |   7 +-
->  drivers/spi/Kconfig                |   7 +
->  drivers/spi/Makefile               |   1 +
->  drivers/spi/stm32_spi.c            | 590 +++++++++++++++++++++++++++++
->  4 files changed, 604 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/spi/stm32_spi.c
+>  drivers/net/usb/Kconfig    |    7 +
+>  drivers/net/usb/Makefile   |    1 +
+>  drivers/net/usb/r8152.c    | 1593 ++++++++++++++++++++++++++++++++++++
+>  drivers/net/usb/r8152.h    |  619 ++++++++++++++
+>  drivers/net/usb/r8152_fw.c | 1199 +++++++++++++++++++++++++++
+>  5 files changed, 3419 insertions(+)
+>  create mode 100644 drivers/net/usb/r8152.c
+>  create mode 100644 drivers/net/usb/r8152.h
+>  create mode 100644 drivers/net/usb/r8152_fw.c
 
 Applied, thanks
 
