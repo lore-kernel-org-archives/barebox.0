@@ -1,63 +1,55 @@
-Delivery-date: Mon, 08 Nov 2021 09:12:53 +0100
+Delivery-date: Mon, 08 Nov 2021 09:15:54 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mjzlt-0006Zv-Tl
-	for lore@lore.pengutronix.de; Mon, 08 Nov 2021 09:12:53 +0100
+	id 1mjzoo-0006k5-6O
+	for lore@lore.pengutronix.de; Mon, 08 Nov 2021 09:15:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mjzlt-0006vC-2N
-	for lore@pengutronix.de; Mon, 08 Nov 2021 09:12:53 +0100
+	id 1mjzon-0007DT-58
+	for lore@pengutronix.de; Mon, 08 Nov 2021 09:15:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=DAW4uDEYVZkgdbHqdbpDnVi3vQGLtzgW+VLaKKMidC8=; b=uqOjInmjjcx6GoXhqdJGCPiGfN
-	7BW6PIDMv/XJgtsqNhhLLyGUCPlXNXRu3SaNUk3Okcj/qMEYxQgrizWBQG7XcY++ozsG25Z08ahcj
-	Aj6/55xCyIs3Y/uHkgVce7Y+qhyQupcY3rXl5tpf2Ir8i89bY6sskSnWQj+99YdQPcYOjC1wjQOpU
-	gTdyCAip/V4ExZkb440yubS14Sn1qGc4XomFqaYv1KuX5aCV12e5eJW1LGfZazAWtbkSp+RyZQ/Nq
-	yCvwZnVFaOhq140buUpByHzUtfBTmxLdTCqJU1LlKRXkw8ptcRo0g1oBUOtJTQy6s8pg95qXy1okQ
-	tjTTl3Fg==;
+	bh=YZHXhxhMCj1atARyx4xe18nnpTkoC4Q2N2Qkjs6s3hc=; b=RWCdnvcF3tFeu7Hjduw9UCXKpv
+	TJksWfI67Kctq013sOX3gSTMiHBiQiYxikBjHkSkzNms8RU0HLiGCINRTddWslJyPlDHUwMJku9XR
+	qLtjB8y0BI0dp3tFUoX/w6JRy18LtAufomRShe0/P/7SMgY2O9rFP27TQNDojNmfSbWrZnnKD9ApU
+	56ErRPAgPSFj1g7WGPp8xGjtVdssoUuUpK6QejkWp8dRGR87eQl1cYU7T3/Me/ZvXw4tbDCriGPSt
+	fc6nkOZOCzyjEAhk1Mj0UY+7qrA4sIbbxGE2q2rgqVBDKk9W6ApoTxIAyP1Ft+yiCchC2oWv80Tjn
+	0kJO2xbw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mjzkZ-00FhDM-73; Mon, 08 Nov 2021 08:11:31 +0000
+	id 1mjznb-00FhlY-PU; Mon, 08 Nov 2021 08:14:39 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mjzkU-00FhBv-Ak
- for barebox@lists.infradead.org; Mon, 08 Nov 2021 08:11:27 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mjzkR-0006bj-An; Mon, 08 Nov 2021 09:11:23 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mjzkQ-0005k2-LS; Mon, 08 Nov 2021 09:11:22 +0100
-Date: Mon, 8 Nov 2021 09:11:22 +0100
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20211108081122.GJ25698@pengutronix.de>
-References: <20211105122146.29370-1-abbotti@mev.co.uk>
+ id 1mjznW-00Fhkl-Ec
+ for barebox@lists.infradead.org; Mon, 08 Nov 2021 08:14:35 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1mjznT-00071G-C4; Mon, 08 Nov 2021 09:14:31 +0100
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>
+References: <20211108075209.2366770-1-a.fatoum@pengutronix.de>
+ <20211108075209.2366770-5-a.fatoum@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <746b52d4-bdfa-12fb-05fa-1d9b135b460e@pengutronix.de>
+Date: Mon, 8 Nov 2021 09:14:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20211105122146.29370-1-abbotti@mev.co.uk>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 09:11:09 up 263 days, 11:35, 128 users,  load average: 0.23, 0.24,
- 0.25
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <20211108075209.2366770-5-a.fatoum@pengutronix.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211108_001126_390417_24C73558 
-X-CRM114-Status: GOOD (  17.36  )
+X-CRM114-CacheID: sfid-20211108_001434_523827_03E045C0 
+X-CRM114-Status: GOOD (  23.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,30 +69,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/2] ARM: socfpga: Use upstream compatible strings
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 5/9] ARM64: <asm/barebox-arm-head.h>: mark prologue
+ location
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Nov 05, 2021 at 12:21:44PM +0000, Ian Abbott wrote:
-> Fix up the 'compatible' strings for a couple of SoCFPGA development
-> boards to match those provided upstream (by Linux).
-> 
-> 1) ARM: Terasic DE0-Nano-SoC/Atlas-SoC: Use upstream compatible string
-> 2) ARM: Terasic SoCkit: Use upstream compatible string
-> 
->  arch/arm/boards/terasic-de0-nano-soc/board.c   | 2 +-
->  arch/arm/boards/terasic-sockit/board.c         | 2 +-
->  arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts | 3 ---
->  arch/arm/dts/socfpga_cyclone5_sockit.dts       | 3 ---
->  4 files changed, 2 insertions(+), 8 deletions(-)
+Hello Sascha,
 
-Applied, thanks
+On 08.11.21 08:52, Ahmad Fatoum wrote:
+> Unlike with ARM32, barebox prologue on ARM64 starts with the function
+> prologue, because of the absence of the naked attribute. The code is
+> written with that in mind (6 branches instead of 8 to account for the
+> two instructions inserted by the compiler), but it's still suprising.
+> 
+> Add a hint about that in the code.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/include/asm/barebox-arm-head.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
+> index 8409a77d2e7c..187d12c9fc8d 100644
+> --- a/arch/arm/include/asm/barebox-arm-head.h
+> +++ b/arch/arm/include/asm/barebox-arm-head.h
+> @@ -44,6 +44,8 @@ static inline void __barebox_arm_head(void)
+>  		"1: b 1b\n"
+>  #endif
+>  #else
+> +		/* two instruction long function prologue */
+> +		/* only use if stack is initialized! */
 
-Sascha
+On the rk3399, the sp points into INTMEM0. When I added a new user to
+load_elf64_image_phdr, the function become out-of-line and thus return
+from that function broke. Does the rk3568 MaskROM initialize the stack
+pointer differently? I want to avoid breaking it when I send out the
+remaining rk3399 patches.
+
+>  		"b 2f\n"
+>  		"nop\n"
+>  		"nop\n"
+> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
