@@ -1,67 +1,69 @@
-Delivery-date: Wed, 10 Nov 2021 11:47:40 +0100
+Delivery-date: Wed, 10 Nov 2021 11:47:41 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mkl8m-0002Gx-2a
-	for lore@lore.pengutronix.de; Wed, 10 Nov 2021 11:47:40 +0100
+	id 1mkl8n-0002HK-Ck
+	for lore@lore.pengutronix.de; Wed, 10 Nov 2021 11:47:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mkl8k-0005l3-RU
-	for lore@pengutronix.de; Wed, 10 Nov 2021 11:47:39 +0100
+	id 1mkl8l-0005l5-QE
+	for lore@pengutronix.de; Wed, 10 Nov 2021 11:47:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=Yrw16uTTqXVWjWil9TTyGGKH2jgO3xFxzB1fy3WKoiI=; b=EE1+BbGNpIK5Ea
-	dnoG7JH/fb7dHp9PSuZgAObXt1VSYj4xFBtSreiezQUClqAInwnLubLnEiC11opvHaBimf1OY6gV/
-	WdQAaQ90waLSnFBWxx67bnwr0gnoFa3D2kVJBQppH0bNNi48YfDc0FLgreyx6AvDpOSS4ygeaDdHM
-	AAwtfla81z1ahMxZ1C8j1GCY89SXxjhnh8oRbbx3e2hYZGDYIrFZtuFRgA7MrznvcHK5nHpjn51su
-	n7NAv5havSIz+JB7oUFHqCddbG/eEkWbuUU19+7UweEo5K5YVMPv4+XIg9H/tpSOXJ+UhFDInqohH
-	xJ+lOurN6qVc6RR5ggzA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=e3C5qjJ/4h955hpQBj2yhwXPhU0eBzN8f/jAeWMeWxU=; b=ocl28wJdZuwKLq
+	gjpvG0tvU8oQFwFsz8hTMorpDtqo+MmispphBHJqp5UJVjZn3niugiGNSrGVaa2F1CW4JS3KiQhVF
+	meta+ypCvzEleo6GSZ9vpGkbc7jUQqdwC+R7d92WWxoeZvSM/OqZaI2ZXcoi4WYIKIEo6lrMTRPpV
+	BpMUbaHUBMXB2xv45WTvBBabxr8tjXUCt8Gp1X0g4RG973a+Lb95EBEwOCr0rxmAIgvKN3rv1++zS
+	m5vL05bqoP0M2gtDMLHLQh6Pxkw4tlIjnYQlMncKUT47nuKefMSUDo2p9gESZyzlApyrfg2oukLyq
+	Zrw1Wk3YRkFR8gVAzIsw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mkl7B-005Aey-VF; Wed, 10 Nov 2021 10:46:02 +0000
-Received: from mail-eopbgr60071.outbound.protection.outlook.com ([40.107.6.71]
- helo=EUR04-DB3-obe.outbound.protection.outlook.com)
+	id 1mkl7E-005AfT-NV; Wed, 10 Nov 2021 10:46:04 +0000
+Received: from mail-eopbgr00056.outbound.protection.outlook.com ([40.107.0.56]
+ helo=EUR02-AM5-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mkl76-005Adl-Ev
+ id 1mkl76-005Adu-H1
  for barebox@lists.infradead.org; Wed, 10 Nov 2021 10:45:58 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XLe1UgzhHe7Ah28DMru5TEeNiG3gc/grhBWvQq96d8IO3JHimSbklefBkfkKtPGacmjEb151DvWFaVhCJYVs311vV7+zviMSgzS5gOLbiQixtJxK0YjkudeDMs99bFf8Hg3L5W4I/EzWww+UHK1hUlPc0vp7HyQc7lPdErsObqsYGgx3tSPAlP0JVkVaHm0Ck4OQdT0lKt7urp2SVLGhURCJSxscMb91tLFCdb0ujluW12VBjp3z6jU7oBbKUnggFn+uj/ab/3iDCUvUrxA3wOOJMc5FqVbCpTdj0ejIyrWu2l30TgQ8mDBAm8N0g2dDzd33KeloIjHGqvChF2REkg==
+ b=gzB46xfg49AbE/cP09aMlqdM3Uq7gx074EeB4y15bxnpXT5RokN+kur204qpjomcWueFYfd24mOoPoS1vuXpTxozhlAhixInatEywm0opEXFIMBNw7iDkW4fk+ngKutJAM61SwLps0IhO83BcABbhFaqQSIWGgYYlwgfvz7v3bOKPtlNBOW30lkfb/q0jIFCdlkdULHG5m2qFAJmHNpuKv4icyhBqa6E+08zONYLpFgUSyuTYixDbv/N1mGrBEaYVLXG314ZtZLywGl5nSIO3ezF23pOs1mUnqSu6giKA33fox7sOHErYUbSbbkvldviFxuC9P2T9Y1RD8id1nJWtw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/iBspfMelh8ZghwI49o/FFb8ZIV2d45risZJ377ZA4A=;
- b=Cec8Y2hiHBCL71+xZbW59PN15PFiMA0w7LCXX+0zLix+zttBHXptiuaTD9rSle8N9Twtwxcnz3uY5iR0chdSxO+HoNIOtZNEY6iqXuwTnxmjaQDxx7z05aqoBTQa3VlF6fb9fZ1CkQ7BKdr9K37wDOie+9jFBt/BBEYQYUw82a1crrFb8g4OZBFJD8ddjj8PBYyZl/S2VpitqY2JQecj1OzASL7VmIcto7vfQKathqvuPU2frLAKMnHaRmlbB+U5YC0dcZZGTIIMI4YJ+mlb0mzSC6c49eSjHqx014+6D0UoEy9XhdjB5NOLcV2GO4OesObsXWNnmpwgxSal4Qjw8w==
+ bh=nMxmlwHhrFHefWYc47ZIgSfEcXmK5NS0HhY5rAvTj3Y=;
+ b=LvMLN20niv9nTeDdhcjtu/vFS/h8Aw12UhQO4HPv/nfNDLfnbckivQMbwyr/0Ti8kp5vwFvBqsBWQM44lfW3fITclSQP8ZltjuxwkhUc2Pv/9KPtpEYN3smk04okbpws6iZ2y1fpihGYUd//38xD2M+Ly17K5NgVmaQ0OnDazrETI+tBdAh8rTFKpQGCQg02OS8IQ7Mfj41wpiA+OwcFw3gSsQm/uNopaVRmwJ/IUAkpLEmBQ64geXg6unPxbQNCbd3tNQrc9QjD6UKrCy6XRIbQFLpsyITG4j1pfb4sWJ5tsgNU6r4NTYeyI05mOtuho1qYcU5bZll0BrCtq5hx+A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=wolfvision.net; dmarc=pass action=none
  header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/iBspfMelh8ZghwI49o/FFb8ZIV2d45risZJ377ZA4A=;
- b=QPIga3zHydye7JywmgTOwkwv/ObLzwa/k/QSje5NnbJMZjWayLDjDoPOv4RWDOmaiEj05Q36/gwvMPQSuGJKsln8r/E/BNRBwWGEZU90McZXAVtw26kHvkY44+ng/lW00DqJ3aeXY0onNv32n/LBhWNoaLpf48htdmb2yHMXuMg=
+ bh=nMxmlwHhrFHefWYc47ZIgSfEcXmK5NS0HhY5rAvTj3Y=;
+ b=yr5Qu+yjhqScy0E4Vqz8KyItSotu6o76ksBOvxChOCGoltJ6fP5BsgnXv3qoxzB+KAw7tkah7PK9lZWZ+UJdli1ldaWQSMLlhnl6/kDqNjjqkVy1DIg+xcLngD0g0kgjruw5/TluiaypYDK4XF2sUm+JNpIvD4sQjggQc8DPCPg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=wolfvision.net;
 Received: from DBBPR08MB4523.eurprd08.prod.outlook.com (2603:10a6:10:c8::19)
- by DBBPR08MB4393.eurprd08.prod.outlook.com (2603:10a6:10:c7::17) with
+ by DB9PR08MB6329.eurprd08.prod.outlook.com (2603:10a6:10:25a::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4669.13; Wed, 10 Nov
- 2021 10:45:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.17; Wed, 10 Nov
+ 2021 10:45:53 +0000
 Received: from DBBPR08MB4523.eurprd08.prod.outlook.com
  ([fe80::a9fd:7c7f:72a5:feda]) by DBBPR08MB4523.eurprd08.prod.outlook.com
  ([fe80::a9fd:7c7f:72a5:feda%6]) with mapi id 15.20.4669.016; Wed, 10 Nov 2021
- 10:45:48 +0000
+ 10:45:53 +0000
 From: Michael Riesch <michael.riesch@wolfvision.net>
 To: barebox@lists.infradead.org
 Cc: Michael Riesch <michael.riesch@wolfvision.net>
-Date: Wed, 10 Nov 2021 11:45:29 +0100
-Message-Id: <20211110104530.980192-1-michael.riesch@wolfvision.net>
+Date: Wed, 10 Nov 2021 11:45:30 +0100
+Message-Id: <20211110104530.980192-2-michael.riesch@wolfvision.net>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211110104530.980192-1-michael.riesch@wolfvision.net>
+References: <20211110104530.980192-1-michael.riesch@wolfvision.net>
 X-ClientProxiedBy: VI1PR08CA0123.eurprd08.prod.outlook.com
  (2603:10a6:800:d4::25) To DBBPR08MB4523.eurprd08.prod.outlook.com
  (2603:10a6:10:c8::19)
@@ -69,64 +71,64 @@ MIME-Version: 1.0
 Received: from charlie.fritz.box (2a05:1141:1c9:7c00:7d7e:927b:463c:154) by
  VI1PR08CA0123.eurprd08.prod.outlook.com (2603:10a6:800:d4::25) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4690.16 via Frontend Transport; Wed, 10 Nov 2021 10:45:47 +0000
+ 15.20.4690.16 via Frontend Transport; Wed, 10 Nov 2021 10:45:53 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 19232881-26ff-4c4a-9a44-08d9a437419d
-X-MS-TrafficTypeDiagnostic: DBBPR08MB4393:
-X-Microsoft-Antispam-PRVS: <DBBPR08MB43934E1C0414420DE25855D3F2939@DBBPR08MB4393.eurprd08.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Office365-Filtering-Correlation-Id: 8c41fe77-16dc-4a9f-c435-08d9a43744e1
+X-MS-TrafficTypeDiagnostic: DB9PR08MB6329:
+X-Microsoft-Antispam-PRVS: <DB9PR08MB63294AB461CA70E4F35EA328F2939@DB9PR08MB6329.eurprd08.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: tvQxul+vYAMiknDuR9q8wMJPP5G5ozzB8Uz4uGtLmFzlN57IftmFPM3yoKEZzY5sGT938lwxnkqCxRgzG7Z2AbVWvxaPlvFgFrfcxTbBaUlJXxi5wmQXvq4euV02hgpa56gIjyO7XzDZokmvWt7TtGHfymeRAy8EGSNr60AsbtSBaCHZBszd4Wl8ZnFQzBs+mQemnUJJeNcC1RcPppEdXM79XxfnErnhKx18tdYUQ06155PsfsgTvrXOje5V5pZIU6Kx+C8UbmBtK16+MKzGoMMxexLJMpPbpbPBS7d0ynpXj/qwyRj6ArQ5eJC/920zKuWxgsTiqhpFc41h51+P4eVtsbNvo5q7B/mr08gTqA5ScHV1n+bK98hEugw9QAKR8nNezusZwKHS1aiNdMpniMY4DbFTxc5+jCh159gVwcwrvCqBCXl3c46+BOLoLK99WSZ9L7OGaHY/XBZdagMhf/iUSmZ4g1DWfO5HgJVlOZi2zMhFmnWyN6ThVoFoEJXGeO281t/vIWd+jEWSaNhKOoP8R6X/44ouCyJnpBVB3qTlYHeeH4+omHedpKsXssBFZIDwHrDwV8QywNHDxDwaymkOoLL7O5TXzpHwnxXHVv5f515U2of37nfFxVQEb6VodYWwzBbh/VfXNPZm9dRd7g==
+X-Microsoft-Antispam-Message-Info: BKJuonA106YF+0H5FM1KzeQt5EXs7J8Y5KzQq+Bv1YdW3RtkGtXtw4HuPivckSPO2xDBfI1Na4URtNBFOyyAxEwPgeD0vFBncMyAuRneo18AAro5K030XHAFqPzj8TmNoEZ7u4rkc8aUothJWBykSMEZ5iBFkLLorOdCr2Km+AwNLPdRl5pSUe0B2ChGMzda+c6CNI90DsM1FGVs0XrK4rOr/s/A6p4mCAj/ua2Ol1Gc1uwEt7H1+9Iqw5h8nHDcfrCOJhjP9ZvUNpVpDTacP8jeH+ydBbmMKen8Xh4ff+TfmCHQzvMmvJ4w+s1otTQFTIVxldzG5mklHGtUzazGvqpUkOLIeGgRsy2hy9XUgOaMKG+82KtB55kG3mTpv1JRAGSnUTpOJoy34egmrwtDUVc+2LGv+03gqew9u6eKNqkzOWZY+UF0cA2sKG6CkjWUVSKLZx44BT6iRoo9pK6F19e7Gvcuw2C8xAqOiCjrvJKsgOKadxM4DipJd67/f/BbrEXyxfNFbKG8XkpuvJQgyDcK5VEmfzAJD+Y91zbsFH9KrCStT2XC7KuX5eFhObxgiVAcd3teofTlSIAW2S0WjW7/tpH3nI/WuqDmi3PDKrhZhkMhfU9Z8kYfXr8Zh1ckGR17n4Zs5FVvCPq2iU0AvvJOSRF0piWmMRCTAnD7MmKRPNlaa/gaaxxVTM5l+32sS/OWURXWY2UNxEw2xx6NuMYIm6AHYNnxGgKqrNgcKxI=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DBBPR08MB4523.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(376002)(136003)(346002)(366004)(39850400004)(396003)(38100700002)(66476007)(66946007)(2616005)(316002)(6666004)(86362001)(6916009)(107886003)(6512007)(6486002)(508600001)(83380400001)(66556008)(5660300002)(186003)(8936002)(4326008)(44832011)(2906002)(1076003)(52116002)(6506007)(36756003)(8676002);
+ SFS:(4636009)(366004)(396003)(39850400004)(136003)(346002)(376002)(6486002)(1076003)(8676002)(4326008)(966005)(66556008)(44832011)(2616005)(107886003)(6506007)(186003)(86362001)(52116002)(6512007)(83380400001)(66946007)(66476007)(36756003)(6916009)(6666004)(508600001)(2906002)(8936002)(5660300002)(38100700002)(316002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?h6rsvvCKn4l8p7IUyAeKkHhUMNDXVRKsBuWfRTRccvKme34ozoBsfoH4AVhf?=
- =?us-ascii?Q?asdBAVzGlf0Ot5y2lILprPYZYAvmyefQ8PtgFKAni1v7Ne4Cos2IwvQZG4VM?=
- =?us-ascii?Q?1HmV8S3LVYYPV4gHcrrMqJKYnXhsmfm4aXr44xFfCMQWqGy1Ibdq8/Ev5+T1?=
- =?us-ascii?Q?/x2ktG8R4ROogwV1EnBaAQf43DaJf0XuxT5trEyBOk1LkWPqEd5H9KG2RnvS?=
- =?us-ascii?Q?wCKXhm6NrIhs8BEBU5HYAbCEYgcHSbwvwimWPHpcN31yZraid0NHDPxZ4t5k?=
- =?us-ascii?Q?LR56PouFTi2aAWHs/i74BxEy2gpKgAACJYysWZyO6HXnLfeVGHjC2REyKxpK?=
- =?us-ascii?Q?V+RxWQw5OCsInnFyTuURmkUCWMWWiuq4ADA+qD7SeLBAws1fSaqXmyvsecpL?=
- =?us-ascii?Q?FEyjigMAfCoEgpd5IG8Ls6kWBGqEtWiyh0IAz3EgPYmuyMnGxeyoOHm3Lppg?=
- =?us-ascii?Q?BfaCdZbZUjYGZG5761iqOP+3OBKVw++I2TQh5yY2VTke5oZVhSIh2Btmo/Lw?=
- =?us-ascii?Q?xwBA5Y6n4VquMJYhMNwQr/dgcqZtEiOfzNHS+u0qAqZiVDFoHq5yCV6xyOOH?=
- =?us-ascii?Q?qdEkKnAEW/U2oU35YvrV3iaPVGd8LRtk4l81qZnPzKMqx9AEo+2n8dtUrYwC?=
- =?us-ascii?Q?N9i+RKtMHI9gMtbpdNCXHPvwgSaqPVzaUNQNXKapQUq79NxsvtCYKA0cxLtm?=
- =?us-ascii?Q?7a1l9iBRiKbuV+8nneIM96Gdt2NIA2a6panke6u7+TtxCAGfQ+GBUWn/z8km?=
- =?us-ascii?Q?Iuri8wj4XdYuxqt/d+ntTwaBo/Q2ZJtbXJlVxWtmWFFkWMPP5xrKu0/N1fFT?=
- =?us-ascii?Q?YSV1CffK+naf40bQO+usYvoF4BnMLldYDwFa2bJGf2L9Gub7/XFoRq67AUhW?=
- =?us-ascii?Q?nIF+URuMW8q5B0ITse748xx3mY4VHNL2VRBJQx7cQ6J3PgRwLjCzMCZwt6Hj?=
- =?us-ascii?Q?+jA5nbzRAbWB3yIPTRDGP7oJwVbKrFIFGNVEVtthbqqoaMpwhiXu0NjjWoX1?=
- =?us-ascii?Q?owxLPhy2Yyml1GMLSPDkCMrgGVzyXB/92rI4/ttijw44kaquJSSK1OioOqUQ?=
- =?us-ascii?Q?pI/+a8u8ZNNQas4pRrfAP1VrxcdosxJ3CwueIW30+QraQ80t5PWtx70YkcmC?=
- =?us-ascii?Q?Su8MVQc/J/dMp55xIqyOzXCka89P+EtX/ElPKw7rabu3Ae1uDnmWgGqEVg2v?=
- =?us-ascii?Q?aviAFipJENcrENOy9Z3L7yzW/u/XCgng5NZp6jq+eLiGj5nOh0n5xNNIBC53?=
- =?us-ascii?Q?0kgRwbkpwx1ZzmgbcD1AUcMRrluW1799Pjvm9SmjeFHWXAxctcTu7Z4LO7rY?=
- =?us-ascii?Q?wYa4f4un1LObOD6lb4Zpy8DN9sBfykMQqxM1OFNJvez/ePeMJNL+CipqB/a7?=
- =?us-ascii?Q?EPzhpPD9c8nK9nFZ3BXaYTT9FxTu6YSiiNkFIXSGB/yorvaucMVqpmaDGdhk?=
- =?us-ascii?Q?uwm8sFYaoP4yv+vJs3eAsKI8SQ2MsI9u8HhzXxn4Sfjt/98dH4h1BC2rR1aj?=
- =?us-ascii?Q?XD+M1n0hCg79LPFfy+amcPoekuGf7hfVp4WxZW1NzAALbzbf+XenvWJGqmed?=
- =?us-ascii?Q?Hfx/98BGanWDWNxC5lTWOlYO7SAVx/sk1Ge0zRmdExciycrjH3opA0xyUUm5?=
- =?us-ascii?Q?81DyXj7OKMPAB3/sFC9Ij5lEo5e5S1R8BbWOxiuHSH0I1xX08SgX5RiTyVrl?=
- =?us-ascii?Q?39IxSHnKzS9BpKPSzwfDHUQGYFg/rX0Z03BqARKn+2cVoW59oBExdUpJ1IxH?=
- =?us-ascii?Q?0QlMDZMwDQ=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?n3srwxL8Hfj/zn+719e7LA6eCGkV6V5ScveU1HwyNvyK5b7U3jW0+tBki44Q?=
+ =?us-ascii?Q?KPqmS42MAzBOmGh869pKupCHnhFqM9hpMk2o2WGEJVhPAhv172lHD/MpJ3+K?=
+ =?us-ascii?Q?bj7LBMLMl+9fEwjDp06ABVlOcFh5gGHSgcodyx2lp7NbTbK24chi24zZNhLF?=
+ =?us-ascii?Q?EFJA5BC4IFSGsJaTiuB+0AqOAXlZrQkBVrGY3Cdky3prKAJXcZzWtIASzqpA?=
+ =?us-ascii?Q?jlXyvpzkJgJCXgRcI04Bc6edYa++HXck/vJlWFfcC4MlfzeEJ1MTP3uXQ2YV?=
+ =?us-ascii?Q?GYup7iwyeM0MZ5e+Nx/GiSx0oQzbzMUWnqpmitvq1tocj8a54LGtV0T85AGR?=
+ =?us-ascii?Q?5QOZBDgVqvrVW6oMOS/9pcAYV/ymSk5mqt8KaQpvtL2MURBLJkGG7WKxdeTx?=
+ =?us-ascii?Q?AZi1R1YA/Ix+93OgxxIUUdiTq+zW6nbxn6mtW2oddCZdwbsz+NRwJAILYXbU?=
+ =?us-ascii?Q?7QOe2/ZmDGmHy6PHEr0FxZ4LYsvIa17xTo9i+iOHuGs/DtUJ+DOLZlmSd1+U?=
+ =?us-ascii?Q?oHuIHOkUbPUUwl0lDIbj/MnCQg1c3wR4IELRB/zttWPtqIVlKoPKJz/jlWjD?=
+ =?us-ascii?Q?i6lHFiM4Ps71Fum2ZQWb2mIlnR1kVrZ42ORdT0pHfoZnBZXle5t8yKlTUle4?=
+ =?us-ascii?Q?xdd5jVLcaTQPVtdEqQ/m3ck6+KYL7mMVizZYj27hKk4nwmnY1MxOqA1p2nrz?=
+ =?us-ascii?Q?BShQx8ISxIaqXJ7XAnjOMmryeFOmXvBK0X70r0WetsqsF5uvXsn5VRrFfU6f?=
+ =?us-ascii?Q?xHxyPy/ng4kVHWLg7C8+FT8csPulBhlvMz6wJ6p3M97ZDZfcyECfXOP1eu50?=
+ =?us-ascii?Q?1VXmpFL7tvoqqOlPIxMk5yfGd1ST0XNOjuqyvaMw303SMxkr6bRYIs9PG0JY?=
+ =?us-ascii?Q?eyNHU7dPgM+xcQ0LAb3ftTLN+USm1gnaLd27CfnjLZCSN7TYrIxSl2Mi6AN4?=
+ =?us-ascii?Q?VLXUKpw0qBipS0mDrZ330E/k3y42KHQg4qvVa7AXilHKEah4FCMCeViFPQA1?=
+ =?us-ascii?Q?S4SJ7r//HCCZeRZtBSnSZvRWJA+P2zXeM/Y4ncqYKFECVToY0RCagS1bIivn?=
+ =?us-ascii?Q?57x/GhuoRCImyae/dEzeNXS/XgkxUQXsfJ7QkPcxQHi7rSkJaTU+oL1pp4cc?=
+ =?us-ascii?Q?+RmWNb7jyQ2HiW541bVmf7gDmaoIoZxFRb0Qym3GBMpBr+Fbu5Np4jrCqnoI?=
+ =?us-ascii?Q?eAkSFQyN/k6FlboBEk3TNztBtIfZUuA6FJPwAMzVrX+O17X+iztz2WIfJzCu?=
+ =?us-ascii?Q?fn/fqYPFonEZFpG01e371wItnhNbbX4la8FgdHPMFwGY3N4WcxeqQKjlRvhf?=
+ =?us-ascii?Q?dtg7ZzDPSKgv6tZBxdxngSy/pWjHvwPOkUy2vBvFhsDLt8cUZbykYTcB+6i0?=
+ =?us-ascii?Q?iAsBfaDaLPeKtCXBvg8PAlIapPCtU3wAxZDN86HGvqQmC+MR9x3fOJTQ64NM?=
+ =?us-ascii?Q?mN1FSVQO6GYkB1zkSB5Vw95C9pyxe/tD1McjnGYKDfplhGX9eSUZI9bUKg7J?=
+ =?us-ascii?Q?1D73UioqLJLU+kpSJ3Y6ZH9h/G1vvAhqZwZHG05Huv2h198GCuZnIx0gEY1E?=
+ =?us-ascii?Q?6m/Ey+VP9q9hCsN7C21Xg81Gj+0Our+t9X6Ywe05daKdufrbuET5ds1HtZac?=
+ =?us-ascii?Q?bz1gB4Jn+2Uthuyb3IuGhAAPxrrJLuqqAZyGoTxNFvpc7Wc1PBe1Llv5E5Ga?=
+ =?us-ascii?Q?JtNoWByGBRvQisGybmOr9xrM3RoQ1R7XmsQ7Rhk84SRxwEEQjlNdP9vajziW?=
+ =?us-ascii?Q?lVOcevLKhQ=3D=3D?=
 X-OriginatorOrg: wolfvision.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19232881-26ff-4c4a-9a44-08d9a437419d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c41fe77-16dc-4a9f-c435-08d9a43744e1
 X-MS-Exchange-CrossTenant-AuthSource: DBBPR08MB4523.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2021 10:45:48.2479 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2021 10:45:53.6648 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ja6ljbrWvBDFZ4b/DxCm4NkycbM0D8ZBLixeUwM1TzzXeWW6CIq+1B0yAbDJ/xoEEXo5levmuJb7BtPa6aS97kk1VJ814GyK6XzfwU+ASVs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB4393
+X-MS-Exchange-CrossTenant-UserPrincipalName: lOZpziZLuLWjIYPQ8QmFRC5Lag7T7mhvqlpAdbMy1qR99hvaDVD81N3qfwBWyS+ENL02rkoKkd32cCtKYyAkucDFpbiaLYZ5O1a/rC/nK2o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB6329
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211110_024556_630759_8F8743DC 
-X-CRM114-Status: GOOD (  11.36  )
+X-CRM114-CacheID: sfid-20211110_024556_749115_BF84E00F 
+X-CRM114-Status: GOOD (  25.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -151,27 +153,18 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 0/1] arm: rockchip: add support for the quartz64 board
+Subject: [PATCH] arm: rockchip: add support for the quartz64 board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi all,
+The Pine64 Quartz64 board features the Rockchip RK3566, a reduced but
+largely identical version of the RK3568.
 
-This patch introduces support for the Pine64 Quartz64 board that features
-the Rockchip RK3566, a reduced but largely identical version of the RK3568.
+Two models (A and B) of the Quartz64 board are envisaged, where
+this patch targets the already available model A.
 
-Please note that the corresponding board device tree is not yet available
-in barebox. It is going to appear in Linux v5.16-rc1 and will be synced
-shortly afterwards (hopefully :-).
-
-Looking forward to your comments!
-
-Best regards,
-Michael
-
-Michael Riesch (1):
-  arm: rockchip: add support for the quartz64 board
-
+Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
+---
  Documentation/boards/rockchip.rst          | 28 +++++++++++----
  arch/arm/boards/Makefile                   |  1 +
  arch/arm/boards/pine64-quartz64/Makefile   |  3 ++
@@ -186,6 +179,245 @@ Michael Riesch (1):
  create mode 100644 arch/arm/boards/pine64-quartz64/board.c
  create mode 100644 arch/arm/boards/pine64-quartz64/lowlevel.c
 
+diff --git a/Documentation/boards/rockchip.rst b/Documentation/boards/rockchip.rst
+index d52d979cb..68c3e1126 100644
+--- a/Documentation/boards/rockchip.rst
++++ b/Documentation/boards/rockchip.rst
+@@ -46,19 +46,31 @@ Instructions.
+ * Insert SD card and run "dd if=rrboot.bin of=</dev/sdcard> bs=$((0x200)) seek=$((0x40))"
+ * SD card is ready
+ 
+-Rockchip RK3568
++Rockchip RK356x
+ ===============
+ 
+-RK3568 EVB
+-----------
++Barebox features support for the Rockchip RK3566 and RK3568 SoCs, where the
++RK3566 can be considered as reduced but largely identical version of the
++RK3568.
++
++Supported Boards
++----------------
++
++- Rockchip RK3568 EVB
++- Pine64 Quartz64 Model A
++
++The steps described in the following target the RK3568 and the RK3568 EVB but
++generally apply to both SoCs and all boards.
++Differences between the SoCs or boards are outlined where required.
+ 
+ Building
+-^^^^^^^^
++--------
+ 
+ The build process needs three binary files which have to be copied from the
+ `rkbin https://github.com/rockchip-linux/rkbin` repository to the barebox source tree:
+ 
+ .. code-block:: sh
++
+   cp $RKBIN/bin/rk35/rk3568_bl31_v1.24.elf firmware/rk3568-bl31.bin
+   cp $RKBIN/bin/rk35/rk3568_bl32_v1.05.bin firmware/rk3568-op-tee.bin
+   cp $RKBIN/bin/rk35/rk3568_ddr_1560MHz_v1.08.bin arch/arm/boards/rockchip-rk3568-evb/sdram-init.bin
+@@ -72,8 +84,11 @@ With these barebox can be compiled as:
+ 
+ **NOTE** I found the bl32 firmware non working for me as of 7d631e0d5b2d373b54d4533580d08fb9bd2eaad4 in the rkbin repository.
+ 
++**NOTE** The RK3566 and RK3568 seem to share the bl31 and bl32 firmware files,
++whereas the memory initialization blob is different.
++
+ Creating a bootable SD card
+-^^^^^^^^^^^^^^^^^^^^^^^^^^^
++---------------------------
+ 
+ A bootable SD card can be created with:
+ 
+@@ -86,7 +101,7 @@ doesn't conflict with the are barebox is written to. Starting the first
+ partition at offset 8MiB is a safe bet.
+ 
+ USB bootstrapping
+-^^^^^^^^^^^^^^^^^
++-----------------
+ 
+ The RK3568 can be bootstrapped via USB for which the rk-usb-loader tool in the barebox
+ repository can be used. The tool takes the same images as written on SD cards:
+@@ -99,3 +114,4 @@ Note that the boot order of the RK3568 is not configurable. The SoC will only en
+ MaskROM mode when no other bootsource contains a valid bootloader. This means to use USB
+ you have to make all other bootsources invalid by removing SD cards and shortcircuiting
+ eMMCs. The RK3568 EVB has a pushbutton to disable the eMMC.
++On the Quartz64 boards, remove the eMMC module if present.
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index a841053c2..b7a72d5ba 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -184,3 +184,4 @@ obj-$(CONFIG_MACH_TQMLS1046A)			+= tqmls1046a/
+ obj-$(CONFIG_MACH_MNT_REFORM)			+= mnt-reform/
+ obj-$(CONFIG_MACH_SKOV_ARM9CPU)			+= skov-arm9cpu/
+ obj-$(CONFIG_MACH_RK3568_EVB)			+= rockchip-rk3568-evb/
++obj-$(CONFIG_MACH_PINE64_QUARTZ64)		+= pine64-quartz64/
+diff --git a/arch/arm/boards/pine64-quartz64/Makefile b/arch/arm/boards/pine64-quartz64/Makefile
+new file mode 100644
+index 000000000..b37b6c870
+--- /dev/null
++++ b/arch/arm/boards/pine64-quartz64/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/pine64-quartz64/board.c b/arch/arm/boards/pine64-quartz64/board.c
+new file mode 100644
+index 000000000..db2d921c3
+--- /dev/null
++++ b/arch/arm/boards/pine64-quartz64/board.c
+@@ -0,0 +1,40 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <common.h>
++#include <init.h>
++
++struct quartz64_model {
++	const char *name;
++	const char *shortname;
++};
++
++static int quartz64_probe(struct device_d *dev)
++{
++	struct quartz64_model *model;
++
++	model = device_get_match_data(dev);
++
++	barebox_set_model(model->name);
++	barebox_set_hostname(model->shortname);
++
++	return 0;
++}
++
++static const struct quartz64_model quartz64a = {
++	.name = "Pine64 Quartz64 Model A",
++	.shortname = "quartz64a",
++};
++
++static const struct of_device_id quartz64_of_match[] = {
++	{
++		.compatible = "pine64,quartz64-a",
++		.data = &quartz64a,
++	},
++	{ /* sentinel */ },
++};
++
++static struct driver_d quartz64_board_driver = {
++	.name = "board-quartz64",
++	.probe = quartz64_probe,
++	.of_compatible = quartz64_of_match,
++};
++coredevice_platform_driver(quartz64_board_driver);
+diff --git a/arch/arm/boards/pine64-quartz64/lowlevel.c b/arch/arm/boards/pine64-quartz64/lowlevel.c
+new file mode 100644
+index 000000000..b29588552
+--- /dev/null
++++ b/arch/arm/boards/pine64-quartz64/lowlevel.c
+@@ -0,0 +1,39 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <common.h>
++#include <linux/sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
++#include <mach/atf.h>
++#include <debug_ll.h>
++#include <mach/rockchip.h>
++
++extern char __dtb_rk3566_quartz64_a_start[];
++
++static noinline void start_quartz64(void *fdt)
++{
++	/*
++	 * Image execution starts at 0x0, but this is used for ATF and
++	 * OP-TEE later, so move away from here.
++	 */
++	if (current_el() == 3)
++		relocate_to_adr_full(RK3568_BAREBOX_LOAD_ADDRESS);
++	else
++		relocate_to_current_adr();
++
++	setup_c();
++
++	if (current_el() == 3) {
++		rk3568_lowlevel_init();
++		rk3568_atf_load_bl31(fdt);
++		/* not reached */
++	}
++
++	barebox_arm_entry(RK3568_DRAM_BOTTOM, 0x80000000 - RK3568_DRAM_BOTTOM,
++			  fdt);
++}
++
++ENTRY_FUNCTION(start_quartz64a, r0, r1, r2)
++{
++	start_quartz64(__dtb_rk3566_quartz64_a_start);
++}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 88a079497..7da366bda 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -74,6 +74,7 @@ lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-phycard.dtb.o \
+ 				imx6ull-phytec-phycore-som-emmc.dtb.o
+ lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7) += imx7d-phyboard-zeta.dtb.o
+ lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ) += imx8mq-phytec-phycore-som.dtb.o
++lwl-$(CONFIG_MACH_PINE64_QUARTZ64) += rk3566-quartz64-a.dtb.o
+ lwl-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += armada-xp-openblocks-ax3-4-bb.dtb.o
+ lwl-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += kirkwood-openblocks_a6-bb.dtb.o
+ lwl-$(CONFIG_MACH_PROTONIC_IMX6) += \
+diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
+index 1ad7ccedf..5603fc12c 100644
+--- a/arch/arm/mach-rockchip/Kconfig
++++ b/arch/arm/mach-rockchip/Kconfig
+@@ -50,6 +50,12 @@ config MACH_RK3568_EVB
+ 	help
+ 	  Say Y here if you are using a RK3568 EVB
+ 
++config MACH_PINE64_QUARTZ64
++	select ARCH_RK3568
++	bool "Pine64 Quartz64"
++	help
++	  Say Y here if you are using a Pine64 Quartz64
++
+ comment "select board features:"
+ 
+ config ARCH_RK3568_OPTEE
+diff --git a/arch/arm/mach-rockchip/rockchip.c b/arch/arm/mach-rockchip/rockchip.c
+index c185b0cc2..698d23e3a 100644
+--- a/arch/arm/mach-rockchip/rockchip.c
++++ b/arch/arm/mach-rockchip/rockchip.c
+@@ -9,6 +9,8 @@ static int rockchip_init(void)
+ 		return rk3188_init();
+ 	if (of_machine_is_compatible("rockchip,rk3288"))
+ 		return rk3288_init();
++	if (of_machine_is_compatible("rockchip,rk3566"))
++		return rk3568_init();
+ 	if (of_machine_is_compatible("rockchip,rk3568"))
+ 		return rk3568_init();
+ 
+diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
+index e64fccec6..19980914b 100644
+--- a/images/Makefile.rockchip
++++ b/images/Makefile.rockchip
+@@ -13,9 +13,16 @@ image-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += barebox-rk3288-phycore-som.img
+ pblb-$(CONFIG_MACH_RK3568_EVB) += start_rk3568_evb
+ image-$(CONFIG_MACH_RK3568_EVB) += barebox-rk3568-evb.img
+ 
++pblb-$(CONFIG_MACH_PINE64_QUARTZ64) += start_quartz64a
++image-$(CONFIG_MACH_PINE64_QUARTZ64) += barebox-quartz64a.img
++
+ quiet_cmd_rkimg_image = RK-IMG $@
+       cmd_rkimg_image = $(objtree)/scripts/rkimage -o $@ $(word 2,$^) $(word 1,$^)
+ 
+ $(obj)/barebox-rk3568-evb.img: $(obj)/start_rk3568_evb.pblb \
+                 $(board)/rockchip-rk3568-evb/sdram-init.bin
+ 	$(call if_changed,rkimg_image)
++
++$(obj)/barebox-quartz64a.img: $(obj)/start_quartz64a.pblb \
++                $(board)/pine64-quartz64/sdram-init.bin
++	$(call if_changed,rkimg_image)
 -- 
 2.30.2
 
