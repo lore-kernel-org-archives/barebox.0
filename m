@@ -1,62 +1,71 @@
-Delivery-date: Wed, 10 Nov 2021 14:52:30 +0100
+Delivery-date: Thu, 11 Nov 2021 14:11:27 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mko1e-00020t-7z
-	for lore@lore.pengutronix.de; Wed, 10 Nov 2021 14:52:30 +0100
+	id 1ml9rT-0005Oc-IE
+	for lore@lore.pengutronix.de; Thu, 11 Nov 2021 14:11:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mko1d-00024Q-C8
-	for lore@pengutronix.de; Wed, 10 Nov 2021 14:52:30 +0100
+	id 1ml9rS-0007iv-DO
+	for lore@pengutronix.de; Thu, 11 Nov 2021 14:11:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=nYbOOT5BGx5Mqxcg7OsDD+umfn8eM+O/uoyW5us+fN8=; b=CT47QhCYTFv+H4
-	bV10yxZU/vURwIg1hhf0FJF2AGjDcg0Ms3D6U7vGnBmgc5et0V2LI2X/b8+6CwY2xrQB346hZIDRl
-	9NbwFx64LW7yGlCOw7+HtNstajTAVpcby/q5hTPFHZ9aEgFypdnIRyXm/0gfglCUmHw3QwzZS6j8s
-	w4u2eGMMdYvtZZWDpmATHvcoBscTIhxtbER60ioMbj8rV+ukzk1Zu297cDHgk/N4Vns2YAnKbdZQH
-	JGVlzdtxeGNZPcw5KJHGnW0aJWr8dIV0EC3OiSXEZzmuMS6Xv2eZLQ9LHTDh9H8nxWW220+l8jJl1
-	usFACAd1Isvg8KJ0rV3Q==;
+	List-Owner; bh=0ehr9etKDXWMrz1452n53WIxzc5ygdrPYhb2OSlhWzo=; b=ynycgt/YZN6P9A
+	LdZMtt4T5XIlRKMtCrGCmuX0E1j/dWtKaGLskXvF7zN/YE/0FJXrxWrRERkapW3I3no7U072WTu0J
+	xI8Yc89ts3TDrTGlgTFO9L6nEK7kiXBZM4RUn0wthL2QL+dUPUwkW7/RtGdPH3hIVa6QmzuxwIGRg
+	K2vv6gIRsv8WhHXXs/eDsHQhg9NYAMSuHgoandTsKqrAQDR17q1wOKQkwxKQlhsOnWxbNWlC17F65
+	V1aJr47sJ0/QZCqemfKvafU7g3yr4nANHv1swSDjkLFT1cUgvAVVI2SLRyIG0ZKZ0wOrHGXECO2Rq
+	5Lq0rIwpUwFL9TpNBFjA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mko02-005ak7-C5; Wed, 10 Nov 2021 13:50:50 +0000
-Received: from mailout12.rmx.de ([94.199.88.78])
+	id 1ml9pY-007vlm-Ue; Thu, 11 Nov 2021 13:09:29 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mknzw-005aiX-MA
- for barebox@lists.infradead.org; Wed, 10 Nov 2021 13:50:46 +0000
-Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mailout12.rmx.de (Postfix) with ESMTPS id 4Hq5pP3psHzRqJW;
- Wed, 10 Nov 2021 14:50:37 +0100 (CET)
-Received: from mta.arri.de (unknown [217.111.95.66])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
- (No client certificate requested)
- by kdin02.retarus.com (Postfix) with ESMTPS id 4Hq5pM480Pz2TTJK;
- Wed, 10 Nov 2021 14:50:35 +0100 (CET)
-Received: from n95hx1g2.localnet (192.168.201.115) by mta.arri.de
- (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.498.0; Wed, 10 Nov
- 2021 14:50:35 +0100
-From: Christian Eggers <ceggers@arri.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Nov 2021 14:50:34 +0100
-Message-ID: <2182678.iZASKD2KPV@n95hx1g2>
-Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-In-Reply-To: <20211108103426.GL25698@pengutronix.de>
-References: <3170930.44csPzL39Z@n95hx1g2>
- <20211108103426.GL25698@pengutronix.de>
+ id 1ml9pT-007vl0-TS
+ for barebox@lists.infradead.org; Thu, 11 Nov 2021 13:09:25 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1ml9pP-0007IC-7E; Thu, 11 Nov 2021 14:09:19 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1ml9pO-0006NB-9f; Thu, 11 Nov 2021 14:09:18 +0100
+Date: Thu, 11 Nov 2021 14:09:18 +0100
+From: Sascha Hauer <sha@pengutronix.de>
+To: Trent Piepho <trent.piepho@igorinstitute.com>
+Cc: Daniel =?iso-8859-15?Q?Br=E1t?= <danek.brat@gmail.com>,
+ barebox@lists.infradead.org
+Message-ID: <20211111130918.GV25698@pengutronix.de>
+References: <20211020083954.3787-1-danek.brat@gmail.com>
+ <20211101090039.GM25698@pengutronix.de>
+ <CAMHeXxMJYC2q4Hs7zd9A=5-KsXyFUtTshMVoZZC2nJUah=LtjA@mail.gmail.com>
+ <20211102074048.GW25698@pengutronix.de>
+ <CAMHeXxNbHxrEyzsYaXaaaFx38iKt+LjAkC-EcVUXt96yZ3XBBw@mail.gmail.com>
+ <20211104200222.GE25698@pengutronix.de>
+ <CAMHeXxOfPsNPHzewPtUKZJ=7bR9ew-hanrokiBF0Cst_oQkcqQ@mail.gmail.com>
+ <20211108091022.GK25698@pengutronix.de>
+ <CAMHeXxNw1qOXS7X+_bE9h7SK5z80=DCsYMopDwJwGCmCe4ROtg@mail.gmail.com>
 MIME-Version: 1.0
-X-Originating-IP: [192.168.201.115]
-X-RMX-ID: 20211110-145035-rnRVYdrsDQFh-0@out02.hq
-X-RMX-SOURCE: 217.111.95.66
+Content-Disposition: inline
+In-Reply-To: <CAMHeXxNw1qOXS7X+_bE9h7SK5z80=DCsYMopDwJwGCmCe4ROtg@mail.gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 13:56:52 up 266 days, 16:20, 143 users,  load average: 0.23, 0.16,
+ 0.18
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211110_055044_938098_5DB62484 
-X-CRM114-Status: GOOD (  18.73  )
+X-CRM114-CacheID: sfid-20211111_050923_975724_9D38BE14 
+X-CRM114-Status: GOOD (  52.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,7 +77,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -77,69 +85,114 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [Barebox] Polling infrastructure causes reentrancy problem
+Subject: Re: [PATCH] phy: core: Make 'phy_optional_get' return NULL when not
+ implemented
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Sascha,
-
-On Monday, 8 November 2021, 11:34:26 CET, Sascha Hauer wrote:
-> Hi Christian,
+On Mon, Nov 08, 2021 at 02:01:58PM -0800, Trent Piepho wrote:
+> On Mon, Nov 8, 2021 at 1:10 AM Sascha Hauer <sha@pengutronix.de> wrote:
+> > On Thu, Nov 04, 2021 at 02:40:08PM -0700, Trent Piepho wrote:
+> > >
+> > > I think the specific situation you are concerned about is where:
+> > > A) the dts does define a phy for usb
+> > > B) This phy does not work in Barebox, e.g. no driver
+> > > C) Despite B, USB will still operate with the desired level
+> > > functionality without a working phy driver.
+> > >
+> > > With the patch and CONFIG_GENERIC_PHY disabled, we get a non-fatal
+> > > return at step A and everything is good.  But once enabled, we now get
+> > > a fatal error at step B and this is not good.
+> > >
+> > > Could this be fixed by making the error at B non-fatal?  This is more
+> > > how Linux works here: errors that are non-fatal in Linux's
+> > > phy_optional_get() path are fatal for Barebox.
+> >
+> > In Linux phy_optional_get() returns NULL (which is a valid phy) when
+> > a) there is no "phys" property
+> > b) The phy os compatible to "usb-nop-xceiv"
+> > c) The phy has a status = "disabled" property
 > 
-> On Fri, Nov 05, 2021 at 01:40:52PM +0100, Christian Eggers wrote:
-> > Disclaimer: I stumbled over this on barebox 2020.01.
-> > I haven't tried to reproduce this on the current version.
+> Add to this:
+> d) Missing phy-names property.
+> e) Named phy is not in phy-names.
+> f) Malformed phys property.
+> g) PHY's index from phy-names does not exist in phys property.
+> h) PHY exists in phys property, but has empty phandle
+> i) No '#phy-cells' property for phy.
+> j) No of_node for device and phy is not in the global phy list. No
+> driver, not defined, error adding, anything could cause this to
+> happen.
 > 
-> Please update to a recent barebox. The fastboot commands now run in a
-> workqueue which itself only runs when we are outside any critical pathes
-> in barebox.
-thanks for the hint. I just upgraded to 2021.10.
+> And then we go to device specific cases:
+> An Allwinner sun4i usb phy provider is given a phy index that is
+> greater than the number of defined phys.
+> A phy from a sun4i phy provider is marked as missing in the device
+> configuration data, i.e. phy 1 or 2 on an Allwinner H6.
+> A Broadcom stingray phy can not ioremap its registers with ENODEV.
+> And the list goes on, but I think my point is made.
 
-> Particularly fastboot commands will only execute when you called
-> command_slice_release() beforehand. You'll have to call
-> command_slice_acquire() before entering any critical pathes like probing
-> for USB devices.
-I guess that more or less all commands can be critical because
-is_timeout() is called from many places. As parallelism for fastboot
-is not mandatory, I implemented it the following way: 
+You are right, there are many more cases that lead to a -ENODEV which
+causes phy_optional_get() to return a NULL phy. I don't think this is
+intended and it doesn't make much sense to me.
 
-	struct usbgadget_funcs const fastboot_funcs= {
-		.flags = USBGADGET_FASTBOOT,
-		.fastboot_opts = "/dev/null(null)",
-	};
+> 
+> > When there is a phy specified in the device tree then it's mandatory
+> > and failures in getting it must lead to an error. the "optional" in
+> 
+> "Must lead to an error"  Can this be said with certainty?  I can find
+> no real case where a warning results in a different end than an error.
+> Put another way, suppose it does not lead to an error?  What specific
+> bad thing happens?
+> 
+> > phy_optional_get() is only meant for the "there is no phy specified in
+> > the device tree" case, it's only a shortcut for
+> >
+> >         if (is_there_a_phy_in_device_tree())
+> >                 phy = phy_get();
+> >         else
+> >                 phy = NULL;
+> 
+> Perhaps that is what it was supposed to mean, I agree these seem like
+> sensible semantics, but see the various errors I tracked down above,
+> it's far far more complex than that.  IMHO, this complexity is
+> evidence of a bad design.  No one can keep straight what errors are
+> fatal and which are not.  It is better to just make all errors
+> non-fatal and be done with it.  Then at least one knows what to
+> expect.
+> 
+> > Once you interpret "optional" as something different you end up
+> > returning NULL for cases where you really need a phy. Only you as a
+> > human know that, in your special case, on your special board, there is a
+> > phy specified, but it can do without initialisation. That's why I
+> > suggested you should add a status = "disabled" property to the phy to
+> > explicitly state that it can work without the phy. By making it explicit
+> > you also document that you thought about the case and not just exploited
+> > a heuristic in barebox.
+> 
+> I think returning NULL on every error, with a warning message, will
+> allow this.  The warning lets the user know there may be an issue with
+> the usb phy.  If it works, they can decide the warning is spurious and
+> silence it, via existing dts editing methods (/delete-property/,
+> status = disabled, etc.).  If it doesn't work, they know they need to
+> enable a driver, write a driver, or perhaps disable USB entirely as
+> unsupported.
 
-	/*
-	 *  Register fastboot gadget (will run in background)
-	 */
-	ret = usbgadget_register(&fastboot_funcs);
-	if (ret)
-		goto error_usb_gadget;
+Given that phy_optional_get() returns rather random results I tend to
+agree now. Let's insert a warning, return successfully and see what
+happens.
 
-	/* fastboot runs within a work queue. Allow fastboot execution within
-	 * the next 5 seconds...
-	 */
-	command_slice_release();
-	mdelay(5000);
-	command_slice_acquire();
+Sascha
 
-
-BTW: I use a modified/stripped down version of the Android fastboot for booting
-Barebox FIT images. Is there any interest integrating this into barebox/scripts/?
-- more or less stand alone (about 15 files at all)
-- currently USB-only
-- Apache-2.0 / BSD-2-clause
-- C++
-- CMake (only 60 lines, so it can be ported to Kbuild)
-
-regards
-Christian
-
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
