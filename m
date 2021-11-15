@@ -1,59 +1,147 @@
-Delivery-date: Mon, 15 Nov 2021 14:22:25 +0100
+Delivery-date: Mon, 15 Nov 2021 15:08:05 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mmbwH-00018o-CS
-	for lore@lore.pengutronix.de; Mon, 15 Nov 2021 14:22:25 +0100
+	id 1mmceT-000374-Fe
+	for lore@lore.pengutronix.de; Mon, 15 Nov 2021 15:08:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mmbwF-0001Yt-1D
-	for lore@pengutronix.de; Mon, 15 Nov 2021 14:22:25 +0100
+	id 1mmceS-0007iK-A0
+	for lore@pengutronix.de; Mon, 15 Nov 2021 15:08:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:MIME-Version:Message-ID:Subject:To
-	:Date:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=sp+T/juhIBC1L+77neAzsmU8St6cRy350kpDFP2XtQA=; b=gfJf2RnqMCu0TY
-	Sx2xa3RQz8J2N+mAjtRIPk6I4cEWBNSbvfbg6ZFmaR01yZAMifcG8f9+rt4h/LJhbEdJK00HfYOpV
-	g+j5baHqVcXbCTpgrR54jBbLMCvIE2HPsw+WRD2mLGrjJ90+yNVGw0EkHP2woALDZec9GTTNsQJdr
-	gbwDnFJWQERsLOdMGXapWqA/M+0j/O4WmUnNkZotG7SmKZyk1/YuV8ciHmoQiY4jZWAvx2j2ZCGNk
-	HNCQWSJl47oE4Khs3VqenNt2Jrx16WxkrtXfmmfwlbk+IkCRhWuqJzYCTYYWv4BkyTuSw2/c6d1tq
-	K2yr4YDy9R9cVKWiG0Hg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:In-Reply-To:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=0QAP/cMrx+nQrwcnjbr0Qmc48sHCX15tPBEcXUq5Z+c=; b=VFtiRGY6mOuYS5
+	zJ/RkpVDoeQ15rNB90OaL1SerhhWj7sLQtv4IZcLU3rveDXL0ng9zDQ3swWmGA3eySoXyKDAbzLkm
+	jx9BWiGIsStVUN38voNLaJ1eZk50w2qJjawLxhpJKHAy3UEQ8X8wopmdw57WxuXX4LuQlV7/IfDcO
+	B6z++vdTZxHDEm4i8zxkPYOsw3HKapUWRS6Z6e88t03NsmA2dDKMPRLc8I1cnqoWK5ABlDQcLKVTq
+	GKniWVglMGk3zvwUZZMdGdYGfDySHOP3fC8iprmEJ5ZmvXYLM0t67ijohC7VsoRcejkNaC+1z/EA6
+	RpXAGQI2cA1qrGyse8+g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mmbur-00FeCW-4Y; Mon, 15 Nov 2021 13:20:57 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mmcco-00FoIn-ET; Mon, 15 Nov 2021 14:06:22 +0000
+Received: from mail-eopbgr130081.outbound.protection.outlook.com
+ ([40.107.13.81] helo=EUR01-HE1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mmbul-00FeB8-EG
- for barebox@lists.infradead.org; Mon, 15 Nov 2021 13:20:54 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mmbuj-0001Gp-Gy; Mon, 15 Nov 2021 14:20:49 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mmbuj-0004F4-81; Mon, 15 Nov 2021 14:20:49 +0100
-Date: Mon, 15 Nov 2021 14:20:49 +0100
-To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20211115132049.GB6556@pengutronix.de>
-MIME-Version: 1.0
+ id 1mmcci-00FoHC-FU
+ for barebox@lists.infradead.org; Mon, 15 Nov 2021 14:06:18 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AGUaHWF3DQZ18T6S1iA9Qk3kMG90kbbHEAcsI20W6ANuW8V/zt2oQPEQ6p8g0zU9ZlVaIKXtAtLqOdlBIAp7YPAoUrQg7ptDw9t6MRo9fbd1bFA/8oTsst5S7tWTKVApaTkN96SyBzuKV70wuV5EWE9dXoO+gpvu6aPeXuKfwCxQHvNNypyl32S5JL82VnQmWEJAxV/6nVqerBS6yKEnHjfZikKVjv/ZAW/wFUzYr1fS7l1Aw1HbyYcK5cAT1m82aGLZsz83tIBihAabWJI2tJxOCaC5s2UgTstGDOXlJHQmVjzYGgMucCmhhOW5pSSkWA5Dd4vqyvLyWtAGGUrBlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1jytJYIzXPuwVbQT4hy2y7eqpjylerVlQ7ZxMFDAv+c=;
+ b=GdOs0MLrxr4A4E3rCC0jlYN13KZOnCFGyFhfgMa3NBM8HC7TKF4ldctQIQk6Nqm9PK//+hZnQu2UyJ9DNd8RJtnFwaPYhgO8ZrJmaL2ExLk18sqT2bmqv1nBUPBJcRWW2154chtQURuvr3jx90ZBbteQgvvkA1B7Jat6QUYc3LLDY1KdieFjSfwFmCcYWHeX+fRfYOuKicqyRphxIiPGrHqsv33lw8GKwSt4mYrjq7FUDbWg/4aOjixFYbPJhWlQOPmfRKGB5wc2RcQDr9U+3i4HcocAO4WaR3cyryDq/rtYECzpPI/Zlexv/uA34eYHpYf4kZew8ugbeG9xBNoh0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
+ dkim=pass header.d=westermo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=beijerelectronicsab.onmicrosoft.com;
+ s=selector1-beijerelectronicsab-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1jytJYIzXPuwVbQT4hy2y7eqpjylerVlQ7ZxMFDAv+c=;
+ b=cCa4I80Ja9keGvP/L0tMW67YO2XyVyTuUsCpAVmLrRyfc+o82I7oDG7qemQH6yWY/xtv/YXkXSeDZafLhhl88TzDCwDY5MRdWuyIQYk5NvVOsXJmJbn23QpGByuk6i+VBEW2yY3PXo7rg2sR1X+MxluCTc41VtOB544TEYdXSOk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=westermo.com;
+Received: from HE1P192MB0251.EURP192.PROD.OUTLOOK.COM (2603:10a6:3:105::10) by
+ HE1P192MB0219.EURP192.PROD.OUTLOOK.COM (2603:10a6:3:103::16) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4690.26; Mon, 15 Nov 2021 14:06:08 +0000
+Received: from HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
+ ([fe80::cd56:de39:90bb:7466]) by HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
+ ([fe80::cd56:de39:90bb:7466%12]) with mapi id 15.20.4690.026; Mon, 15 Nov
+ 2021 14:06:07 +0000
+Date: Mon, 15 Nov 2021 15:05:39 +0100
+From: Joacim Zetterling <joaze@westermo.com>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20211115140539.GA118449@wsevst-c0022>
+References: <20211101121109.GA56533@wsevst-c0022>
+ <20211105093927.GI25698@pengutronix.de>
 Content-Disposition: inline
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 14:11:17 up 270 days, 16:35, 152 users,  load average: 0.34, 0.30,
- 0.28
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <20211105093927.GI25698@pengutronix.de>
+X-ClientProxiedBy: GV3P280CA0064.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:a::16) To HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:3:105::10)
+MIME-Version: 1.0
+Received: from wsevst-c0022 (90.229.138.185) by
+ GV3P280CA0064.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:a::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4690.15 via Frontend Transport; Mon, 15 Nov 2021 14:06:07 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a0b3b2d4-b5cd-4bb8-8258-08d9a84111da
+X-MS-TrafficTypeDiagnostic: HE1P192MB0219:
+X-Microsoft-Antispam-PRVS: <HE1P192MB02197042F825391570AC147B9C989@HE1P192MB0219.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: tiYk2Sa+dzYiiKLefPKDE5fZHSM+3heSXAjL5dozj9Z1Ewrvcrlmgx7Ynv9UTU7GzIiFaRDiZhNKzmw4ivsOTWsEOL445Vwx8pWph4ME9zhIMO4yH8NYvlztQ82F4tEzeKpYFxIRMlwqhuRRH5NDJBl140QvbYr5q+DxqyxDNbe91GR4cTp1LQOeyTHgGDcsAxKW8HYvEVIbPLE4tCSEWagSI7ay8ezF0qhtMMMFGDQjDNJ15wj/xigc79K94856vPsF3xfSqsLbYegB8lUrBGkawT51srdt9Ko6CEr9MO300LWW0cYNgQL/9/rbxcBYvxAkGcz7ZHO4KrXZuSisfZTZKKp1TioWKiwR5RVi+IzXEnGjd/TH7RggPDZCFJpQuIUx+6jM2y6m2G6FKrAp0UouSyeANOqFN0GZX7JifurpxZnhaoll+i6RjwyXVRnubgjlQfauuxZKdu0IfkViOtyOz2BrzQP/akxb6y6kK2M8dhWKaxJ2JWnA1656B8s3r1eMXCYJuRutixsAadWhdbSAGBlXoEX6SMhe+va5QTeEqUQoaCBQs7dLRzjNURB38qfUOkFFTGo1wfwHs841/s1S1u1rFvHzoIj+aF4T2vBYkh/0WlySl3lPLJ8nfmSzwN1DQo1cqFGdg5Y2A9WC3yflxIyn27eBA2SENoM+M1kVlunkrjqVZAZogFavxReQQIvtnVShuKlRT4MvJgXE3ZF/thLBt6RcMkEEFxwHPD3vwHvoNb+R/zCkqnyYetykB4O2QzPdhWNo75WlRURFyz76nAue0NnoCKyw2DrGNyA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:HE1P192MB0251.EURP192.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(4326008)(52116002)(8676002)(956004)(5660300002)(2906002)(966005)(38100700002)(38350700002)(186003)(33716001)(316002)(26005)(55016002)(6916009)(6666004)(33656002)(66556008)(66946007)(66476007)(1076003)(8936002)(83380400001)(9686003)(508600001)(6496006);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?fEO2H+TV7t0mndGLts3qzAdIZzLY30+OaEl4x/kjfglo1KGfRubIx0xXvuyX?=
+ =?us-ascii?Q?d11ccsW2tgxnWvKP2z6h1OMY1bSIrzRgj0e2ov/w7L1QajHW2p8OKnJnX9ZL?=
+ =?us-ascii?Q?Szm6af9UPdc8jQ1XtS1UzBjfzrvQUNylHoSd0hH6U22PKiFQZtRDVkZEgcFn?=
+ =?us-ascii?Q?hlX6i8OnChBzNaPHh7R7LGTyDOW0TnoUnsqZ/VbZMqkZShSrMSEtZK+70Kj8?=
+ =?us-ascii?Q?xcolI+X8YuglIkbCGN7BlpksgjSk1sc4w6D8YWVjdV+H4LXx+zJmVR/P88yk?=
+ =?us-ascii?Q?FcknTo77uqa3vKkyL1YKYJcpT2euVtt9M0a57qtN8S6WrixzFDA6I66CCbdY?=
+ =?us-ascii?Q?QMbtxW2yr/+ZIPcNXDiupnb1JSVr1sQNhx6biwSZCkC6KY5TnBqOg/fNhjup?=
+ =?us-ascii?Q?oajvwFEYLT8zygS1dNdNWs2EIvEBOpTmt/7DfjZOYQEsSGtjK5oBXxZflK63?=
+ =?us-ascii?Q?FUpw2DdYlkl6hMsXEEdSaYfZInwy5Rc3ovl4SfxNLnEhqlSOTYOdhdrm/3qn?=
+ =?us-ascii?Q?3QJ3Dz9ocXtUkfcWVuyoGccMHKVLc5yDo2Av/mcYJp6mYCkrF0onjblF9LpL?=
+ =?us-ascii?Q?JO8cBaKQUn+J1KCWsnt4mIEWoYbg0t5QeHftKs6bWXex/uMzAmcDnJLV9AiQ?=
+ =?us-ascii?Q?d+xyGNuuHDQrTtRoQrSX/Ln0/rUqGzFS5Szdr2+ptVdCxW4v35IkzmUtxuxN?=
+ =?us-ascii?Q?gUq0yDNQSnEvm2KsVWDsOcZG86u9xZsTwRuTgVK8X+fn9k/QlNbfpOUej6Ef?=
+ =?us-ascii?Q?N24zoA11/rU2Y2TGdWpWvRn9CCBthm6VnEka54eKNh7eiywbL/x1HS8DIj9y?=
+ =?us-ascii?Q?xKE8/nxiYqroGJr46mw9j4+R3tuoM7whU09NVynKRki45M4awDROxZQpcHS7?=
+ =?us-ascii?Q?Ys7kzlR8/uxW4YmZTWAW43SBBj9ykpWB5YFUOKJ5IDcRN0BkLeX9yE52YcvZ?=
+ =?us-ascii?Q?0H1P3H4RD0WH+L/1wcbj3del7CxNNqgHwiYoXsNoaVDqSCBdev9f/WaGmBiJ?=
+ =?us-ascii?Q?oqYXscP1mgFONZP6DFL2W7Zp3ZwSPysYBNuHaj7MNp8+6lS6rbg/5CkEc4cn?=
+ =?us-ascii?Q?+n/neKXExggzHlDKCTwVEWtjvoBL1Tt1wiqZYxJtMMNfbJgd5nD0dQ/PV6Aa?=
+ =?us-ascii?Q?zsO4Jse0w2WPCXzC/RjoAuyCSGCCBHUIoT1jZqCMkC3IousRvG5s1PLV4ukI?=
+ =?us-ascii?Q?Q66PYs4g4zMmN8p/mniGe7l151OHNEy+jR4mT1PLJeF2bnjpUMR/OeMhrB6R?=
+ =?us-ascii?Q?8mWDJxBDOxm8k5Qlki5bGyP2O2HrTsiiinEzgdhkv/Tt5UX3XpX1GGrgR+MT?=
+ =?us-ascii?Q?moXyKCKa1CkIN3qfe9JBjQMokUnt+4G3kKkKMhFzBKrAVmp2Fe9Ybqspgm7u?=
+ =?us-ascii?Q?tmNs8g5c+5Exn4Cim9iytayEDkQcYynm8A1W/JSP7wwM0+CN5xWs02PGs25j?=
+ =?us-ascii?Q?1eDlxh5eu0f634WnAuwg2CXGOvbevjcL0KucqrUpz8Q8m69hhTt9GuyTkMdv?=
+ =?us-ascii?Q?Oo0qAZswFRSoU3q1fAYWBLYp0FmPJLC51u9SucnpMBPw+7qRaN3qAxj+/caN?=
+ =?us-ascii?Q?oem1WW8R8zhoi7CmHUkecrkKe3RVYIt5L6h9d65kZNR0fnaptdAWfRan1jqi?=
+ =?us-ascii?Q?nzF596Q59IIdIZqSDPTPO9o=3D?=
+X-OriginatorOrg: westermo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0b3b2d4-b5cd-4bb8-8258-08d9a84111da
+X-MS-Exchange-CrossTenant-AuthSource: HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2021 14:06:07.8078 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lzM/MpRzsd0IQeI08WcSGo2PCcstSYYVEKeQ0npIbjrUVGqqJSWy2JQXts64HROz8H9qQ95B2DcONwFJgE+9OQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1P192MB0219
+X-MS-Exchange-CrossPremises-AuthSource: HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossPremises-AuthAs: Internal
+X-MS-Exchange-CrossPremises-AuthMechanism: 06
+X-MS-Exchange-CrossPremises-Mapi-Admin-Submission: 
+X-MS-Exchange-CrossPremises-MessageSource: StoreDriver
+X-MS-Exchange-CrossPremises-BCC: 
+X-MS-Exchange-CrossPremises-OriginalClientIPAddress: 90.229.138.185
+X-MS-Exchange-CrossPremises-TransportTrafficType: Email
+X-MS-Exchange-CrossPremises-Antispam-ScanContext: DIR:Originating; SFV:NSPM;
+ SKIP:0; 
+X-MS-Exchange-CrossPremises-SCL: 1
+X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
+X-OrganizationHeadersPreserved: HE1P192MB0219.EURP192.PROD.OUTLOOK.COM
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211115_052051_676510_366E2128 
-X-CRM114-Status: GOOD (  20.37  )
+X-CRM114-CacheID: sfid-20211115_060616_637917_6C6B67CC 
+X-CRM114-Status: GOOD (  24.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,222 +153,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: v2021.11.0
+	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH v3] Fix problem with imx_ddrc_sdram_size calc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi All,
-
-barebox-2021.11.0 is out. Worth mentioning this time is a new SoC
-supported: RISC-V Litex. Also we have i.MX8MN-EVK and Xilinx zcu106
-board support. There are some new drivers as well: virtio network,
-LiteX SPI flash support, LiteEth support and NXP IFC NAND support.
-
-As usual, see below for a full list of changes.
-
-Have Fun!
-  Sascha
-
---------------------------------8<---------------------------------
-
-Ahmad Fatoum (47):
-      watchdog: imxwd: register explicit warm reset handler
-      ARM: i.MX8MM: add reboot to serial download mode
-      net: drop Calxeda Highbank xgmac driver support
-      net: make ARC MAC driver 32-bit only
-      asm-generic: include bitio.h from io.h
-      x86: define phys_to_virt and virt_to_phys
-      net: e1000: split EEPROM and barebox MTD wrapper into separate files
-      Documentation: boards: at91: remove done TODOs
-      ARM: at91: sam9_smc: register driver earlier
-      ARM: AT91: migrate sama5d3-xplained to DT
-      common: remove !SANDBOX dependency for target tools
-      common: add new menu for target tools
-      scripts: omap3-usb-loader: make proper use of pkg-config --cflags
-      scripts: allow building USB loader tools for target as well
-      arm64: Don't truncate upper 32 bits in ENTRY_FUNCTION arg registers
-      ARM: i.MX8MP: move SCTR enabling into imx8mp_cpu_lowlevel_init
-      ARM: at91: sama5d27_som1_ek: populate MAC address from EEPROM
-      ARM: i.MX8MP: bbu: fix wrong flash header offset for eMMC boot partit=
-ion
-      ARM: i.MX8MP: EVK: change bbu handler from eMMC user to boot partition
-      pinctrl: bcm2835: Probe driver earlier
-      pinctrl: bcm2835: Add support for bcm2711
-      mci: imx-esdhc-pbl: support eMMC boot partitions on i.MX8MP
-      ARM: i.MX: add i.MX8MN (Nano) SoC support boilerplate
-      clk: imx: add i.MX8MN (Nano) support
-      ARM: i.MX8MN: adapt early clock support
-      ARM: i.MX: extend drivers for i.MX8MN (Nano) support
-      ddr: imx8m: add i.MX8MN (Nano) support
-      ddr: imx8m: ddrphy_train: add DDR4 support
-      scripts: imx: add i.MX8MN support to imx-image
-      ARM: i.MX8MN: add i.MX8MN-EVK support
-      net: add virtio network driver
-      fs: remove unused struct fs_device_d::parent_device
-      Documentation: framebuffer: remove note about lack of backlight suppo=
-rt
-      video: simplefb-client: populate video mode field
-      video: simplefb-client: make probe less verbose
-      commands: smc: disable -c (start cpu) test option for ARMv8
-      ARM: document arm_setup_stack() pitfalls
-      RISC-V: virt: support poweroff/restart on tinyemu
-      console: fixup add new CONFIG_CONSOLE_DISABLE_INPUT option
-      ARM: Rockchip: fix path to rkbin firmware in documentation
-      ARM: psci: client: fix power off and reset via 64-bit secure monitor
-      ARM: i.MX8M: nxp-imx8mn-evk: use regular i2c read for device detection
-      net: designware: eqos: fix MDIO regression for STM32MP1 boards
-      mci: dw_mmc: make reset control optional again
-      pci: efi: skip driver model fixup for non-EFI PCI busses
-      efi: efi-iomem: don't add EFI loader code/data as memory banks
-      efi: efi-iomem: fix erroneous use of IS_ENABLED()
-
-Andrej Picej (1):
-      hush: fix conditional statements exit code
-
-Antony Pavlov (9):
-      clocksource: timer-riscv: select CSR from device tree
-      serial: add litex UART driver
-      console: support set baudrate for fixed baudrate drivers
-      gpio: add driver for 74xx-ICs with MMIO access
-      mtd: core: fix whitespaces
-      spi: add litex spiflash driver
-      net: add LiteEth driver
-      RISC-V: add LiteX SoC and linux-on-litex-vexriscv support
-      RISC-V: add litex_linux_defconfig
-
-Daniel Br=E1t (1):
-      ARM: rpi_defconfig: Enable PHY core for dwc2 USB driver
-
-Ian Abbott (2):
-      ARM: Terasic DE0-Nano-SoC/Atlas-SoC: Use upstream compatible string
-      ARM: Terasic SoCkit: Use upstream compatible string
-
-Jules Maselbas (2):
-      common: Select CRC32 dependency for DEFAULT_ENVIRONMENT
-      usb: gadget: dfu: Rework dfu command to use usbgadget
-
-Karfich, Oleg (1):
-      net: cpsw: fix ethernet bringup in case of a fixed-link phy
-
-Marcelo Politzer (1):
-      serial: implement riscv SBI console support
-
-Marco Felsch (5):
-      scripts: bareboxenv: add erase hint if build as host-tool
-      ARM: i.MX6: boot: detect USB serial downloader more reliable
-      fastboot net: add setter for global.fastboot.net.autostart
-      usb: imx-us-phy: add vbus_valid ro parameter
-      state: backend_raw: fix ignoring unpack failures
-
-Michael Riesch (4):
-      arm: rockchip-rk3568-evb: add hardware id detection
-      arm: zynqmp: add support for xilinx zcu106 board
-      Documentation: boards: zynqmp: fix broken links
-      arm: zynqmp: add boot source support
-
-Michael Tretter (4):
-      firmware: zynqmp-fpga: initialize flags at function start
-      firmware: zynqmp-fpga: avoid additional buffer for size argument
-      firmware: zynqmp-fpga: do not use DMA coherent memory for bitstream
-      ARM: zynqmp: use std_file_update as update handler
-
-Oleksij Rempel (4):
-      ARM: boards: protonic-imx6: enable deep-probe support
-      ARM: boards: protonic-imx6: use decode error values instead error num=
-bers.
-      net: dhcp: send current hostname as part of the DHCP request
-      net: dhcp: set default DHCP vendor ID to "barebox"
-
-Renaud Barbier (3):
-      ARM: atomic.h: add 64-bit counter support
-      nand: add NXP IFC nand driver
-      ls1046ardb: enable IFC NAND.
-
-Robin van der Gracht (8):
-      ARM: boards: protonic-imx6: Run usb boot entry instead of bare device
-      ARM: boards: protonic-imx6: Don't fixup MAC address for disabled devi=
-ce
-      ARM: dts: imx6dl-prtvt7: Add brand state variable
-      ARM: boards: protonic-imx6: Don't register SD with bbu
-      ARM: boards: protonic-imx6: Add emmc_usdhc machine data variable
-      ARM: boards: protonic-imx6: Enable bootchooser on prti6g board
-      ARM: boards: protonic-imx6: Skip usb check on prtvt7 by default
-      ARM: boards: protonic-imx6: Add support for jozacp board
-
-Rouven Czerwinski (4):
-      file_list: add file_list_parse_null()
-      fastboot: use file_list_parse_null()
-      console: add new CONFIG_CONSOLE_DISABLE_INPUT option
-      net: eqos: let phy_resume handle fixed link phys
-
-Sascha Hauer (25):
-      dts: update to v5.14-rc1
-      dts: update to v5.14-rc2
-      dts: update to v5.14-rc3
-      dts: update to v5.14-rc4
-      dts: update to v5.14-rc5
-      dts: update to v5.14-rc6
-      ARM: i.MX8m: Add of_compatible imd tags for i.MX8 boards
-      dts: update to v5.14-rc7
-      dts: update to v5.14
-      dts: update to v5.15-rc1
-      dts: update to v5.15-rc2
-      dts: update to v5.15-rc3
-      Merge branch 'for-next/arm'
-      Merge branch 'for-next/at91'
-      dts: update to v5.15-rc4
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/imx'
-      Merge branch 'for-next/layerscape'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/protonic'
-      Merge branch 'for-next/riscv'
-      Merge branch 'for-next/targettools'
-      Merge branch 'for-next/zynqmp'
-      sandbox: Fix stickypage.bin dependencies
-      Release v2021.11.0
-
-Steffen Trumtrar (2):
-      scripts: socfpga_import_preloader: make sdk optional
-      mci: sdhci: fix big-endian write for blockcount/size
-
-Trent Piepho (2):
-      ddr: imx8m: Rework ddrphy code and fix DDR-1067 on iMX8MM
-      kbuild: dtc: Allow adding device tree fragments via config
-
-Ulrich =D6lmann (3):
-      common: Kconfig: fix typos
-      common: Kconfig: fix indentation
-      Documentation: reboot-mode: fix typos
-
-Uwe Kleine-K=F6nig (6):
-      arm/mvebu: sync barebox-arm-head.h to generic variant
-      arm: mxs: Replace license and copyright boilerplate by SPDX identifie=
-rs
-      mci: imx-esdhc-pbl: Fix two typos in a comment
-      mci-bcm2835: Don't block infinitely while waiting for a command compl=
-etion
-      mci-bcm2835: Fix return type handling of bcm2835_mci_wait_command_don=
-e()
-      mci: Improve error message for non-existent vmmc regulator
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+On Fri, Nov 05, 2021 at 10:39:27AM +0100, Sascha Hauer wrote:
+> Hi Joacim,
+> 
+> On Mon, Nov 01, 2021 at 01:11:09PM +0100, Joacim Zetterling wrote:
+> > There was some issues with the imx_ddrc_sdram_size calculation.
+> > 
+> > If we compare the imx8mn DDR4 evk against the LPDDR4 variant in
+> > code and in the datasheets, we see the following:
+> > 
+> >              DDR4   LPDDR4
+> >   ========================
+> >   Bus width   16      16
+> >   Rank        1       1
+> >   Ranks       1       1
+> >   Banks       4       8
+> >   Banks grps  2       1
+> >   Rows        17      15
+> >   Col         10      10
+> > 
+> > This gives us the following problems:
+> > 
+> > 1. Bus width problem.
+> >    Does not support 16 bit SDRAM bus mode, only 32 bit supported
+> > 
+> > 2. Row size problem.
+> >    Only up to 16 bit row size support.
+> > 
+> > 3. Bank groups support.
+> >    Only support of 1 bank group.
+> > 
+> > 4. Bit count problem.
+> >    The imx_ddrc_count_bits function does not do a correct count.
+> 
+> Could you split this into four patches fixing one problem at a time?
+> I am not sure the problems can be separated from each other entirely,
+> but splitting this up would make it much easier to understand the
+> problems and also their fixes. We'll be glad having smaller patches
+> should we ever have to look at this again.
+> 
+> Sascha
+I agree with You that the problems can not be separated completely.
+But I will try to do my best. Do You prefer a patch set or separately
+patches or a combination of them both?
+> 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | https://urldefense.com/v3/__http://www.pengutronix.de/__;!!I9LPvj3b!Wb3fL9pyR56wlJRdVF8DNTWkyIIzz62heX4PoFnCqATftaC0TnNM4XTgg1tc9ok$   |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
