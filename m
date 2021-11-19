@@ -1,51 +1,61 @@
-Delivery-date: Fri, 19 Nov 2021 11:13:23 +0100
+Delivery-date: Fri, 19 Nov 2021 11:31:41 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mo0tX-0001fn-9y
-	for lore@lore.pengutronix.de; Fri, 19 Nov 2021 11:13:23 +0100
+	id 1mo1BF-0002IW-Pe
+	for lore@lore.pengutronix.de; Fri, 19 Nov 2021 11:31:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mo0tV-0000IR-Lm
-	for lore@pengutronix.de; Fri, 19 Nov 2021 11:13:23 +0100
+	id 1mo1BE-0002Wq-Oy
+	for lore@pengutronix.de; Fri, 19 Nov 2021 11:31:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=dGIBAsX5YLNyr/CtoZufkZ1K113vXTHjiU72SimP39M=; b=MhyxwtdM5Vw4O6
-	qGkWtaQyC4W4v51yy83MGDA1nK/tm3cmhlPNAAEePxJxfa1evTqJGh/QNIBz4dhipUut0V9l1VJzJ
-	jxzgbiepdCy5R4ZFW3J0Z3JBE8QS6EWNnx240wRonTfzcAS6RuWvCd5df1OR8vjUNIZyjggY7OJxE
-	QqEfcbf8IKFBB5UJr8u8RJr9eGZk1GYLlN9ZCmIgiP0SZJSEjrJ4ws6cUow/IFW/1LHgbZwUOSH8G
-	TIZeKZxk2IQ1XjDqS8sZD8swAJhGfqcslPP1uRT1F5SfThAyJ/ZUUkNRf+111HdAvDO6vG2KSe5GM
-	bsHnLJuHuWQaCHB+Vd5g==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Content-Type:
+	Content-Transfer-Encoding:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:Message-ID:From:
+	References:To:Subject:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=gHccmnnWBgrSBiCpI9xALFE5gb6O+mgiE2Jb90W6fwE=; b=eInpX+7ZSvEvK4R6glnZ6BF+8+
+	rkfvt/yLWr4WPyShKtdHrp89+vZxrbGQMc3j16pzTkhT88ZyS/MkRPG9hPDAaHC3DYNf4W7dvqEKf
+	feWRHZHRkZe2CRAGiQTSk4Oq7nI1j8aLfaHe+0Xdz2PeACE79as5h5yec5CeMitl2/J3oXVmOVZ9g
+	PooM1uJ5NkUTjGQqb2do2K5FxPkykN1TfTOUMGryMsLEfDDz8XHiJLLHGoF9yc3aJJPdvNHYVwk3t
+	AACfiGhp42F8ykl3rKK9hJ+vU9mR1Acd3QaIaQ/KG4DAG7e7vCgK0kwE2/7oHJwJ93+apruMmVdoQ
+	bpvn2HLA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mo0s8-00A4fV-Tm; Fri, 19 Nov 2021 10:11:56 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mo19o-00A7Z0-AU; Fri, 19 Nov 2021 10:30:12 +0000
+Received: from smtp120.iad3b.emailsrvr.com ([146.20.161.120])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mo0s3-00A4fB-Mn
- for barebox@lists.infradead.org; Fri, 19 Nov 2021 10:11:53 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <has@pengutronix.de>)
- id 1mo0rz-0008Qo-TD; Fri, 19 Nov 2021 11:11:47 +0100
-Received: from has by dude02.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <has@pengutronix.de>)
- id 1mo0rz-0030TA-D0; Fri, 19 Nov 2021 11:11:47 +0100
-From: Holger Assmann <h.assmann@pengutronix.de>
+ id 1mo19i-00A7Y5-V0
+ for barebox@lists.infradead.org; Fri, 19 Nov 2021 10:30:08 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+ s=20190130-41we5z8j; t=1637317803;
+ bh=KWQUZpI6thEA3LwJDIc3byQrJDhrQdgl8ta7GUq2/yU=;
+ h=Subject:To:From:Date:From;
+ b=i6aPcgGJUrl413IiasbsMbV5DUBs7Pae7JT0ev/YI6DNVsqLRK3nbt7P4arEzMsoS
+ 8wCwnC055OmEITlcgKQ5ioWU2uU+vcpV7wpyfRlim4tzRZqOMfhtG1qb1lqKIHo0/L
+ MYlCF9KJ/TIHHi9CPdV2eATpKDltCwhLmQH10L1k=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp16.relay.iad3b.emailsrvr.com (Authenticated sender:
+ abbotti-AT-mev.co.uk) with ESMTPSA id 97C70C00C5
+ for <barebox@lists.infradead.org>; Fri, 19 Nov 2021 05:30:03 -0500 (EST)
 To: barebox@lists.infradead.org
-Date: Fri, 19 Nov 2021 11:10:07 +0100
-Message-Id: <20211119101005.715749-1-h.assmann@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+References: <62b76c10-a376-a2f5-5b21-fdda86db4a03@mev.co.uk>
+ <20211119092916.GD5253@pengutronix.de>
+From: Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+Message-ID: <3bc9c94a-55b2-c7b3-0546-7959bb45219c@mev.co.uk>
+Date: Fri, 19 Nov 2021 10:30:02 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
+In-Reply-To: <20211119092916.GD5253@pengutronix.de>
+Content-Language: en-GB
+X-Classification-ID: 91cca802-6617-467c-8004-890434c7f576-1-1
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211119_021151_965897_D3C6C290 
-X-CRM114-Status: GOOD (  18.98  )
+X-CRM114-CacheID: sfid-20211119_023007_189376_1A755919 
+X-CRM114-Status: GOOD (  22.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -57,392 +67,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Holger Assmann <h.assmann@pengutronix.de>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fs: jffs2: remove slab cache substitute with malloc
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: Build failures with CC=arm-linux-gnueabihf-gcc-11
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Function jffs2_create_slab_caches() was called by the probing stage
-every time a new jffs2 volume was mounted. This has lead to the memory
-allocation pointers for slab caches to become overwritten. As a result
-the system crashes at least when trying to unmount more than one volume.
-
-In Barebox, the respective (pseudo) slab caches are designed to work as a
-substitute when code gets ported from Linux. They are no real caches, but
-function as an interface for malloc and can therefore directly be replaced
-by it.
-
-Furthermore, the compressor initialization also suffered from being
-called with every probing of a jffs2 volume. We therefore introduce a
-variable that counts the amount of jffs2 probing and ensures compressor
-init/exit only to happen with the first/last volume being (un)mouted.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Holger Assmann <h.assmann@pengutronix.de>
----
- fs/jffs2/fs.c       |  45 +++++++++-------
- fs/jffs2/malloc.c   | 129 +++++++-------------------------------------
- fs/jffs2/nodelist.h |   2 -
- 3 files changed, 43 insertions(+), 133 deletions(-)
-
-diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
-index c1d04c397d..a27f67dea3 100644
---- a/fs/jffs2/fs.c
-+++ b/fs/jffs2/fs.c
-@@ -386,6 +386,8 @@ void jffs2_flash_cleanup(struct jffs2_sb_info *c) {
- 	}
- }
- 
-+static int jffs2_probe_cnt;
-+
- static int jffs2_probe(struct device_d *dev)
- {
- 	struct fs_device_d *fsdev;
-@@ -408,28 +410,28 @@ static int jffs2_probe(struct device_d *dev)
- 
- 	sb->s_fs_info = ctx;
- 
--        ret = jffs2_compressors_init();
--        if (ret) {
--		pr_err("error: Failed to initialise compressors\n");
--		goto err_out;
--        }
--
--        ret = jffs2_create_slab_caches();
--        if (ret) {
--		pr_err("error: Failed to initialise slab caches\n");
--		goto err_compressors;
--        }
--
--        if (jffs2_fill_super(fsdev, 0)) {
--		dev_err(dev, "no valid jffs2 found\n");
--		ret = -EINVAL;
--		goto err_slab;
-+	if (!jffs2_probe_cnt) {
-+		ret = jffs2_compressors_init();
-+        	if (ret) {
-+			pr_err("error: Failed to initialise compressors\n");
-+			goto err_out;
-+        	}
-+
-+        	if (ret) {
-+			pr_err("error: Failed to initialise slab caches\n");
-+			goto err_compressors;
-+        	}
-+
-+        	if (jffs2_fill_super(fsdev, 0)) {
-+			dev_err(dev, "no valid jffs2 found\n");
-+			ret = -EINVAL;
-+		}
- 	}
- 
-+	jffs2_probe_cnt++;
-+
- 	return 0;
- 
--err_slab:
--        jffs2_destroy_slab_caches();
- err_compressors:
- 	jffs2_compressors_exit();
- err_out:
-@@ -445,8 +447,11 @@ static void jffs2_remove(struct device_d *dev)
- 	fsdev = dev_to_fs_device(dev);
- 	sb = &fsdev->sb;
- 
--	jffs2_destroy_slab_caches();
--	jffs2_compressors_exit();
-+	jffs2_probe_cnt--;
-+
-+	if (!jffs2_probe_cnt) {
-+		jffs2_compressors_exit();
-+	}
- 
- 	jffs2_put_super(sb);
- }
-diff --git a/fs/jffs2/malloc.c b/fs/jffs2/malloc.c
-index b7afc68cea..869330ea28 100644
---- a/fs/jffs2/malloc.c
-+++ b/fs/jffs2/malloc.c
-@@ -17,99 +17,6 @@
- #include <linux/jffs2.h>
- #include "nodelist.h"
- 
--/* These are initialised to NULL in the kernel startup code.
--   If you're porting to other operating systems, beware */
--static struct kmem_cache *full_dnode_slab;
--static struct kmem_cache *raw_dirent_slab;
--static struct kmem_cache *raw_inode_slab;
--static struct kmem_cache *tmp_dnode_info_slab;
--static struct kmem_cache *raw_node_ref_slab;
--static struct kmem_cache *node_frag_slab;
--static struct kmem_cache *inode_cache_slab;
--#ifdef CONFIG_JFFS2_FS_XATTR
--static struct kmem_cache *xattr_datum_cache;
--static struct kmem_cache *xattr_ref_cache;
--#endif
--
--int __init jffs2_create_slab_caches(void)
--{
--	full_dnode_slab = kmem_cache_create("jffs2_full_dnode",
--					    sizeof(struct jffs2_full_dnode),
--					    0, 0, NULL);
--	if (!full_dnode_slab)
--		goto err;
--
--	raw_dirent_slab = kmem_cache_create("jffs2_raw_dirent",
--					    sizeof(struct jffs2_raw_dirent),
--					    0, SLAB_HWCACHE_ALIGN, NULL);
--	if (!raw_dirent_slab)
--		goto err;
--
--	raw_inode_slab = kmem_cache_create("jffs2_raw_inode",
--					   sizeof(struct jffs2_raw_inode),
--					   0, SLAB_HWCACHE_ALIGN, NULL);
--	if (!raw_inode_slab)
--		goto err;
--
--	tmp_dnode_info_slab = kmem_cache_create("jffs2_tmp_dnode",
--						sizeof(struct jffs2_tmp_dnode_info),
--						0, 0, NULL);
--	if (!tmp_dnode_info_slab)
--		goto err;
--
--	raw_node_ref_slab = kmem_cache_create("jffs2_refblock",
--					      sizeof(struct jffs2_raw_node_ref) * (REFS_PER_BLOCK + 1),
--					      0, 0, NULL);
--	if (!raw_node_ref_slab)
--		goto err;
--
--	node_frag_slab = kmem_cache_create("jffs2_node_frag",
--					   sizeof(struct jffs2_node_frag),
--					   0, 0, NULL);
--	if (!node_frag_slab)
--		goto err;
--
--	inode_cache_slab = kmem_cache_create("jffs2_inode_cache",
--					     sizeof(struct jffs2_inode_cache),
--					     0, 0, NULL);
--	if (!inode_cache_slab)
--		goto err;
--
--#ifdef CONFIG_JFFS2_FS_XATTR
--	xattr_datum_cache = kmem_cache_create("jffs2_xattr_datum",
--					     sizeof(struct jffs2_xattr_datum),
--					     0, 0, NULL);
--	if (!xattr_datum_cache)
--		goto err;
--
--	xattr_ref_cache = kmem_cache_create("jffs2_xattr_ref",
--					   sizeof(struct jffs2_xattr_ref),
--					   0, 0, NULL);
--	if (!xattr_ref_cache)
--		goto err;
--#endif
--
--	return 0;
-- err:
--	jffs2_destroy_slab_caches();
--	return -ENOMEM;
--}
--
--void jffs2_destroy_slab_caches(void)
--{
--	kmem_cache_destroy(full_dnode_slab);
--	kmem_cache_destroy(raw_dirent_slab);
--	kmem_cache_destroy(raw_inode_slab);
--	kmem_cache_destroy(tmp_dnode_info_slab);
--	kmem_cache_destroy(raw_node_ref_slab);
--	kmem_cache_destroy(node_frag_slab);
--	kmem_cache_destroy(inode_cache_slab);
--#ifdef CONFIG_JFFS2_FS_XATTR
--	kmem_cache_destroy(xattr_datum_cache);
--	kmem_cache_destroy(xattr_ref_cache);
--#endif
--}
--
- struct jffs2_full_dirent *jffs2_alloc_full_dirent(int namesize)
- {
- 	struct jffs2_full_dirent *ret;
-@@ -127,7 +34,7 @@ void jffs2_free_full_dirent(struct jffs2_full_dirent *x)
- struct jffs2_full_dnode *jffs2_alloc_full_dnode(void)
- {
- 	struct jffs2_full_dnode *ret;
--	ret = kmem_cache_alloc(full_dnode_slab, GFP_KERNEL);
-+	ret = malloc(sizeof(struct jffs2_full_dnode));
- 	dbg_memalloc("%p\n", ret);
- 	return ret;
- }
-@@ -135,13 +42,13 @@ struct jffs2_full_dnode *jffs2_alloc_full_dnode(void)
- void jffs2_free_full_dnode(struct jffs2_full_dnode *x)
- {
- 	dbg_memalloc("%p\n", x);
--	kmem_cache_free(full_dnode_slab, x);
-+	free(x);
- }
- 
- struct jffs2_raw_dirent *jffs2_alloc_raw_dirent(void)
- {
- 	struct jffs2_raw_dirent *ret;
--	ret = kmem_cache_alloc(raw_dirent_slab, GFP_KERNEL);
-+	ret = malloc(sizeof(struct jffs2_raw_dirent));
- 	dbg_memalloc("%p\n", ret);
- 	return ret;
- }
-@@ -149,13 +56,13 @@ struct jffs2_raw_dirent *jffs2_alloc_raw_dirent(void)
- void jffs2_free_raw_dirent(struct jffs2_raw_dirent *x)
- {
- 	dbg_memalloc("%p\n", x);
--	kmem_cache_free(raw_dirent_slab, x);
-+	free(x);
- }
- 
- struct jffs2_raw_inode *jffs2_alloc_raw_inode(void)
- {
- 	struct jffs2_raw_inode *ret;
--	ret = kmem_cache_alloc(raw_inode_slab, GFP_KERNEL);
-+	ret = malloc(sizeof(struct jffs2_raw_inode));
- 	dbg_memalloc("%p\n", ret);
- 	return ret;
- }
-@@ -163,13 +70,13 @@ struct jffs2_raw_inode *jffs2_alloc_raw_inode(void)
- void jffs2_free_raw_inode(struct jffs2_raw_inode *x)
- {
- 	dbg_memalloc("%p\n", x);
--	kmem_cache_free(raw_inode_slab, x);
-+	free(x);
- }
- 
- struct jffs2_tmp_dnode_info *jffs2_alloc_tmp_dnode_info(void)
- {
- 	struct jffs2_tmp_dnode_info *ret;
--	ret = kmem_cache_alloc(tmp_dnode_info_slab, GFP_KERNEL);
-+	ret = malloc(sizeof(struct jffs2_tmp_dnode_info));
- 	dbg_memalloc("%p\n",
- 		ret);
- 	return ret;
-@@ -178,14 +85,14 @@ struct jffs2_tmp_dnode_info *jffs2_alloc_tmp_dnode_info(void)
- void jffs2_free_tmp_dnode_info(struct jffs2_tmp_dnode_info *x)
- {
- 	dbg_memalloc("%p\n", x);
--	kmem_cache_free(tmp_dnode_info_slab, x);
-+	free(x);
- }
- 
- static struct jffs2_raw_node_ref *jffs2_alloc_refblock(void)
- {
- 	struct jffs2_raw_node_ref *ret;
- 
--	ret = kmem_cache_alloc(raw_node_ref_slab, GFP_KERNEL);
-+	ret = malloc(sizeof(struct jffs2_raw_node_ref) * (REFS_PER_BLOCK + 1));
- 	if (ret) {
- 		int i = 0;
- 		for (i=0; i < REFS_PER_BLOCK; i++) {
-@@ -242,13 +149,13 @@ int jffs2_prealloc_raw_node_refs(struct jffs2_sb_info *c,
- void jffs2_free_refblock(struct jffs2_raw_node_ref *x)
- {
- 	dbg_memalloc("%p\n", x);
--	kmem_cache_free(raw_node_ref_slab, x);
-+	free(x);
- }
- 
- struct jffs2_node_frag *jffs2_alloc_node_frag(void)
- {
- 	struct jffs2_node_frag *ret;
--	ret = kmem_cache_alloc(node_frag_slab, GFP_KERNEL);
-+	ret = malloc(sizeof(struct jffs2_node_frag));
- 	dbg_memalloc("%p\n", ret);
- 	return ret;
- }
-@@ -256,13 +163,13 @@ struct jffs2_node_frag *jffs2_alloc_node_frag(void)
- void jffs2_free_node_frag(struct jffs2_node_frag *x)
- {
- 	dbg_memalloc("%p\n", x);
--	kmem_cache_free(node_frag_slab, x);
-+	free(x);
- }
- 
- struct jffs2_inode_cache *jffs2_alloc_inode_cache(void)
- {
- 	struct jffs2_inode_cache *ret;
--	ret = kmem_cache_alloc(inode_cache_slab, GFP_KERNEL);
-+	ret = malloc(sizeof(struct jffs2_inode_cache));
- 	dbg_memalloc("%p\n", ret);
- 	return ret;
- }
-@@ -270,14 +177,14 @@ struct jffs2_inode_cache *jffs2_alloc_inode_cache(void)
- void jffs2_free_inode_cache(struct jffs2_inode_cache *x)
- {
- 	dbg_memalloc("%p\n", x);
--	kmem_cache_free(inode_cache_slab, x);
-+	free(x);
- }
- 
- #ifdef CONFIG_JFFS2_FS_XATTR
- struct jffs2_xattr_datum *jffs2_alloc_xattr_datum(void)
- {
- 	struct jffs2_xattr_datum *xd;
--	xd = kmem_cache_zalloc(xattr_datum_cache, GFP_KERNEL);
-+	xd = malloc(sizeof(struct jffs2_xattr_datum));
- 	dbg_memalloc("%p\n", xd);
- 	if (!xd)
- 		return NULL;
-@@ -291,13 +198,13 @@ struct jffs2_xattr_datum *jffs2_alloc_xattr_datum(void)
- void jffs2_free_xattr_datum(struct jffs2_xattr_datum *xd)
- {
- 	dbg_memalloc("%p\n", xd);
--	kmem_cache_free(xattr_datum_cache, xd);
-+	free(xd);
- }
- 
- struct jffs2_xattr_ref *jffs2_alloc_xattr_ref(void)
- {
- 	struct jffs2_xattr_ref *ref;
--	ref = kmem_cache_zalloc(xattr_ref_cache, GFP_KERNEL);
-+	ref = malloc(sizeof(struct jffs2_xattr_ref));
- 	dbg_memalloc("%p\n", ref);
- 	if (!ref)
- 		return NULL;
-@@ -310,6 +217,6 @@ struct jffs2_xattr_ref *jffs2_alloc_xattr_ref(void)
- void jffs2_free_xattr_ref(struct jffs2_xattr_ref *ref)
- {
- 	dbg_memalloc("%p\n", ref);
--	kmem_cache_free(xattr_ref_cache, ref);
-+	free(ref);
- }
- #endif
-diff --git a/fs/jffs2/nodelist.h b/fs/jffs2/nodelist.h
-index 20deb639f6..7ea18cd2fc 100644
---- a/fs/jffs2/nodelist.h
-+++ b/fs/jffs2/nodelist.h
-@@ -441,8 +441,6 @@ int jffs2_do_crccheck_inode(struct jffs2_sb_info *c, struct jffs2_inode_cache *i
- void jffs2_do_clear_inode(struct jffs2_sb_info *c, struct jffs2_inode_info *f);
- 
- /* malloc.c */
--int jffs2_create_slab_caches(void);
--void jffs2_destroy_slab_caches(void);
- 
- struct jffs2_full_dirent *jffs2_alloc_full_dirent(int namesize);
- void jffs2_free_full_dirent(struct jffs2_full_dirent *);
--- 
-2.30.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgTWljaGFlbCwKCk9uIDE5LzExLzIwMjEgMDk6MjksIE1pY2hhZWwgT2xicmljaCB3cm90ZToK
+PiBPbiBUaHUsIE5vdiAxOCwgMjAyMSBhdCAwMzozMjowNFBNICswMDAwLCBJYW4gQWJib3R0IHdy
+b3RlOgo+PiBIaSwKPj4KPj4gTXkgRGViaWFuICJ0ZXN0aW5nIiBidWlsZCBzeXN0ZW0gdXBkYXRl
+ZCB0aGUgZGVmYXVsdCB2ZXJzaW9uIG9mCj4+IGFybS1saW51eC1nbnVlYWJpaGYtZ2NjIGZyb20g
+MTAueCB0byAxMS54LiAgQnVpbGRpbmcgYmFyZWJveCBpbiB0aHVtYi0yIG1vZGUKPj4gZm9yIGFu
+IEFSTXY3IChpdCdzIGEgU29DRlBHQSkgd2l0aCB0aGlzIGNvbXBpbGVyIGZhaWxzIHdpdGggYXNz
+ZW1ibGVyIGVycm9ycwo+PiBzdWNoIGFzOgo+Pgo+PiAgICBDQyAgICAgIGNvbW1vbi9zdGF0ZS9z
+dGF0ZV92YXJpYWJsZXMubwo+PiB7c3RhbmRhcmQgaW5wdXR9OiBBc3NlbWJsZXIgbWVzc2FnZXM6
+Cj4+IHtzdGFuZGFyZCBpbnB1dH06MTUzNTogRXJyb3I6IHNlbGVjdGVkIHByb2Nlc3NvciBkb2Vz
+IG5vdCBzdXBwb3J0IGByZXYKPj4gcjMscjMnIGluIFRodW1iIG1vZGUKPj4ge3N0YW5kYXJkIGlu
+cHV0fToxNTc2OiBFcnJvcjogc2VsZWN0ZWQgcHJvY2Vzc29yIGRvZXMgbm90IHN1cHBvcnQgYHJl
+dgo+PiByMyxyMycgaW4gVGh1bWIgbW9kZQo+Pgo+PiBCdWlsZGluZyBpbiB2ZXJib3NlIG1vZGUg
+KFY9MSkgc2hvd3MgdGhhdCAibWFrZSIgaGFzIHNlbGVjdGVkIHRoZSBjb21waWxlCj4+IGZsYWdz
+IGAtbWFyY2g9YXJtdjV0IC1XYSwtbWFyY2g9YXJtdjctYWAgaW5zdGVhZCBvZiB0aGUgdXN1YWwK
+Pj4gYC1tYXJjaD1hcm12Ny1hYC4KPj4KPj4gTG9va2luZyBhIGxpdHRsZSBkZWVwZXIsIGFsbCBv
+ZiB0aGUgZm9sbG93aW5nIGxpbmVzIGluICJhcmNoL2FybS9NYWtlZmlsZSIKPj4gYXJlIGZhaWxp
+bmcgdG8gc2VsZWN0IHRoZSBmaXJzdCBvcHRpb24gYW5kIGRlZmF1bHRpbmcgdG8gdGhlIHNlY29u
+ZCBvcHRpb24KPj4gKGlmIGFueSk6Cj4gCj4gSXQgcHJvYmFibHkgaXMgYWRkZWQgZnJvbSBoZXJl
+Ogo+IAo+IGFyY2gtJChDT05GSUdfQ1BVXzMydjcpCQk6PS1EX19MSU5VWF9BUk1fQVJDSF9fPTcg
+JChjYWxsIGNjLW9wdGlvbiwtbWFyY2g9YXJtdjctYSwtbWFyY2g9YXJtdjV0IC1XYSQoY29tbWEp
+LW1hcmNoPWFybXY3LWEpCj4gCj4gVGhlIGNoZWNrIGZvciAtbWFyY2g9YXJtdjctYSBmYWlscyBm
+b3Igc29tZSByZWFzb24gc28gdGhlIGZhbGxiYWNrIGlzIHVzZWQuCgpZZXMsIEkgc2hvd2VkIHRo
+ZSBleGFjdCBmYWlsdXJlIHJlc3VsdGluZyBmcm9tIHRoZSBjYy1vcHRpb24gY2FsbCAKZnVydGhl
+ciBkb3duIG15IGVtYWlsOgoKY2MxOiBlcnJvcjog4oCYLW1mbG9hdC1hYmk9aGFyZOKAmTogc2Vs
+ZWN0ZWQgYXJjaGl0ZWN0dXJlIGxhY2tzIGFuIEZQVQoKPiBJJ3ZlIHNlZW4gdGhpcyB3aGVuIEND
+IGlzIGEgd3JhcHBlciBhbmQgYWxyZWFkeSBhZGRzIC1tY3B1PS4uLiB0byB0aGUKPiBjb21tYW5k
+bGluZS4gSW4gdGhhdCBjYXNlIGdjYyBub3cgY29tcGxhaW5zIGFib3V0IHRoZSBjb21iaW5hdGlv
+biBhbmQgdGhlCj4gY2hlY2sgZmFpbHMuCgpJbiBteSBjYXNlLCBDQyB3YXMgc2V0IGJ5IHRoaXMg
+ImJ1aWxkLnNoIiBzY3JpcHQ6CgojISAvYmluL3NoCiAKClNSQz0iLi4vYmFyZWJveC1kZTAtbmFu
+by1zb2MiIAoKQVJDSD0iYXJtIgpDUk9TU19DT01QSUxFPWFybS1saW51eC1nbnVlYWJpaGYtCkND
+PSckKENST1NTX0NPTVBJTEUpZ2NjLTExJwoKbWFrZSAtQyAiJFNSQyIgTz1gcHdkYCBBUkNIPSIk
+QVJDSCIgQ1JPU1NfQ09NUElMRT0iJENST1NTX0NPTVBJTEUiIApDQz0iJENDIiAkKgoKCnNvIGFm
+dGVyIGV4cGFuc2lvbiwgQ0M9YXJtLWxpbnV4LWdudWVhYmloZi1nY2MtMTEKCj4gCj4gTWljaGFl
+bAoKQ2hlZXJzLCBJYW4uCgo+IAo+PiBhcmNoLSQoQ09ORklHX0NQVV82NHY4KQkJOj0gLURfX0xJ
+TlVYX0FSTV9BUkNIX189OCAkKGNhbGwKPj4gY2Mtb3B0aW9uLC1tYXJjaD1hcm12OC1hKQo+PiBh
+cmNoLSQoQ09ORklHX0NQVV8zMnY3KQkJOj0tRF9fTElOVVhfQVJNX0FSQ0hfXz03ICQoY2FsbAo+
+PiBjYy1vcHRpb24sLW1hcmNoPWFybXY3LWEsLW1hcmNoPWFybXY1dCAtV2EkKGNvbW1hKS1tYXJj
+aD1hcm12Ny1hKQo+PiBhcmNoLSQoQ09ORklHX0NQVV8zMnY2KQkJOj0tRF9fTElOVVhfQVJNX0FS
+Q0hfXz02ICQoY2FsbAo+PiBjYy1vcHRpb24sLW1hcmNoPWFybXY2LC1tYXJjaD1hcm12NXQgLVdh
+JChjb21tYSktbWFyY2g9YXJtdjYpCj4+IGFyY2gtJChDT05GSUdfQ1BVXzMydjUpCQk6PS1EX19M
+SU5VWF9BUk1fQVJDSF9fPTUgJChjYWxsCj4+IGNjLW9wdGlvbiwtbWFyY2g9YXJtdjV0ZSwtbWFy
+Y2g9YXJtdjR0KQo+Pgo+PiBUaGUgZXJyb3IgZnJvbSB0aGUgY29tcGlsZXIgaXM6Cj4+Cj4+IGNj
+MTogZXJyb3I6IOKAmC1tZmxvYXQtYWJpPWhhcmTigJk6IHNlbGVjdGVkIGFyY2hpdGVjdHVyZSBs
+YWNrcyBhbiBGUFUKPj4KPj4gKE5vdGU6IHRoZSBlcnJvciBpcyBvbmx5IHNob3duIGFmdGVyIHR3
+ZWFraW5nIHRoZSBgdHJ5LXJ1bmAgY29tbWFuZCBpbgo+PiAic2NyaXB0cy9LYnVpbGQuaW5jbHVk
+ZSIgc28gdGhhdCBpdCBkb2VzIG5vdCBzZW5kIGVycm9yIG91dHB1dCB0bwo+PiAiL2Rldi9udWxs
+Ii4pCj4+Cj4+IFRoYXQgZXJyb3Igc2VlbXMgdG8gYmUgYSBjaGFuZ2UgaW4gYmVoYXZpb3VyIGJl
+dHdlZW4gR0NDIDEwLnggYW5kIEdDQyAxMS54Lgo+Pgo+PiBBdCB0aGUgcG9pbnQgaW4gdGhlIE1h
+a2VmaWxlIHRoYXQgdGhlIGVycm9yIG9jY3VycywgdGhlIGAtbXNvZnQtZmxvYXRgCj4+IG9wdGlv
+biBoYXMgbm90IGJlZW4gYWRkZWQgdG8gYEtCVUlMRF9DUFBGTEFHU2AgeWV0LiBUaGF0IGlzIGRv
+bmUgZnVydGhlcgo+PiBkb3duIHRoZSBNYWtlZmlsZSBleGNlcHQgZm9yIGBDT05GSUdfQ1BVX1Y4
+YC4gIEkgZ3Vlc3MgaXQgbmVlZHMgdG8gYmUgYWRkZWQKPj4gc29tZXdoZXJlIGJlZm9yZSBwcm9i
+bGVtYXRpYyBsaW5lcyBpbiB0aGUgTWFrZWZpbGUuICBJJ20gbm90IHN1cmUgaWYKPj4gYC1tc29m
+dC1mbG9hdGAgaXMgYWxzbyBuZWVkZWQgZm9yIDY0LWJpdCBBUk12OCwgYnV0IHRoZSBlcnJvciBz
+dWdnZXN0cyBpdCBpcwo+PiByZXF1aXJlZCB0aGVyZSB0b28uCj4gCgoKLS0gCi09KCBJYW4gQWJi
+b3R0IDxhYmJvdHRpQG1ldi5jby51az4gfHwgTUVWIEx0ZC4gaXMgYSBjb21wYW55ICApPS0KLT0o
+IHJlZ2lzdGVyZWQgaW4gRW5nbGFuZCAmIFdhbGVzLiAgUmVnZC4gbnVtYmVyOiAwMjg2MjI2OC4g
+ICk9LQotPSggUmVnZC4gYWRkci46IFMxMSAmIDEyIEJ1aWxkaW5nIDY3LCBFdXJvcGEgQnVzaW5l
+c3MgUGFyaywgKT0tCi09KCBCaXJkIEhhbGwgTGFuZSwgU1RPQ0tQT1JULCBTSzMgMFhBLCBVSy4g
+fHwgd3d3Lm1ldi5jby51ayApPS0KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
 
