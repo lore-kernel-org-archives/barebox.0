@@ -1,53 +1,63 @@
-Delivery-date: Mon, 22 Nov 2021 09:56:47 +0100
+Delivery-date: Mon, 22 Nov 2021 09:59:03 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp583-0003nq-SD
-	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 09:56:47 +0100
+	id 1mp5AF-0003sb-FJ
+	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 09:59:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp582-0002rd-8N
-	for lore@pengutronix.de; Mon, 22 Nov 2021 09:56:47 +0100
+	id 1mp5AE-000334-CT
+	for lore@pengutronix.de; Mon, 22 Nov 2021 09:59:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=034rmVugfVaAdB7HebVCxs8WeO0rN4HBA1XvftHLdbc=; b=WkdS4w2ZskHRbO99qBhbsrCENZ
-	ycuy7nkhFLDhVjhappP0TT6Rfo6cFuGlFbOdQPOt4FZo5yxGhri33zzL0qvg0TbNXvblrQ/G36nDH
-	R+13g6v4LG2+VgAlNnkn+k4I+P/anCThb1ikgQz2RwGYr15A4PFRTNCD6UI2VOaHR9UWLl88rHt+S
-	bF8aDUsJEC79TuESMCrWCjaiM2i3GEuUMRqpyFYVd4J7YSt+WeuJ+/yZhzugqZ9JfA0BzQVJoBOoi
-	F7EcBApp/tCx5vBpgCsv/EqyQbAcuzqdZBJgFXw5ZMep0F93l0+GDj6r8Rd7IMXUD3jiTbchYZza8
-	PV047aqw==;
+	bh=0x0KXYRMvQ1VQMffDUp2BLxOXNBced+qlNJL4bNeeUA=; b=taBABpgk4V/XvcqrL2UO0zpf/4
+	z1qyspG3iotPlF4g1CTA8cK0oXlFYvov2Yd0Zq5qEykleJRSNlDZUYX2OIw0F/8ynuNXJOyxjuDZY
+	2pczDL7j0S97pGzox6W2w3mhOW3OyP5pOOJF67UV8ZDeYMvmv86CDovKG/juLDtce2E4a9ovrhfrT
+	m7ky7lKn17Z6tOvrpXcVxKJC9g6af5b5mZsbxDPDKjfY36l03rw4xaC/GXXkrGIOZYWmXOuwoEFsD
+	v34Gf9t6tJ14m902lqbI6EQ1qQemMVJXZWc0YqnzOWqCaw77e7cC0ImLkxdO5JrIf9cnAIN5qw+pG
+	/CgwiAUQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mp56j-00FPtN-4L; Mon, 22 Nov 2021 08:55:25 +0000
+	id 1mp591-00FR2P-Iw; Mon, 22 Nov 2021 08:57:47 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mp518-00FMAU-MG
- for barebox@lists.infradead.org; Mon, 22 Nov 2021 08:49:46 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1mp515-000076-Ib; Mon, 22 Nov 2021 09:49:35 +0100
-To: Holger Assmann <h.assmann@pengutronix.de>, barebox@lists.infradead.org
-References: <20211119101005.715749-1-h.assmann@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <e0d5792d-6c06-5567-9b2f-48f70cecd5c4@pengutronix.de>
-Date: Mon, 22 Nov 2021 09:49:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ id 1mp55E-00FOzr-LB
+ for barebox@lists.infradead.org; Mon, 22 Nov 2021 08:53:54 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mp55D-0001u8-A9; Mon, 22 Nov 2021 09:53:51 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mp55C-00021V-W4; Mon, 22 Nov 2021 09:53:50 +0100
+Date: Mon, 22 Nov 2021 09:53:50 +0100
+To: Roland Hieber <rhi@pengutronix.de>
+Cc: Barebox Mailing List <barebox@lists.infradead.org>
+Message-ID: <20211122085350.GT6556@pengutronix.de>
+References: <20211117113851.2022669-1-rhi@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20211119101005.715749-1-h.assmann@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20211117113851.2022669-1-rhi@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:53:36 up 277 days, 12:17, 141 users,  load average: 0.03, 0.11,
+ 0.15
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211122_004939_121552_8D1F8ACA 
-X-CRM114-Status: GOOD (  37.27  )
+X-CRM114-CacheID: sfid-20211122_005352_746830_AAE2A7BD 
+X-CRM114-Status: GOOD (  17.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,406 +77,27 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fs: jffs2: remove slab cache substitute with malloc
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/3] drivers: mci-bcm2835: remove useless comment
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 19.11.21 11:10, Holger Assmann wrote:
-> From: Sascha Hauer <s.hauer@pengutronix.de>
+On Wed, Nov 17, 2021 at 12:38:49PM +0100, Roland Hieber wrote:
+> The comment serves no purpose anymore since the previously following
+> license blurb was migrated to an SPDX license identifier.
 > 
-> Function jffs2_create_slab_caches() was called by the probing stage
-> every time a new jffs2 volume was mounted. This has lead to the memory
-> allocation pointers for slab caches to become overwritten. As a result
-> the system crashes at least when trying to unmount more than one volume.
-
-Freeing data still in use is a bug.
-
-> In Barebox, the respective (pseudo) slab caches are designed to work as a
-> substitute when code gets ported from Linux. They are no real caches, but
-> function as an interface for malloc and can therefore directly be replaced
-> by it.
-
-Replacing one API with another is clean up and not really related to the
-issue here.
-
-> Furthermore, the compressor initialization also suffered from being
-> called with every probing of a jffs2 volume. We therefore introduce a
-> variable that counts the amount of jffs2 probing and ensures compressor
-> init/exit only to happen with the first/last volume being (un)mouted.
-
-That also sounds like a bug, although the commit message isn't clear
-what the ramifications are.
-
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Holger Assmann <h.assmann@pengutronix.de>
+> Fixes: 28f4a6a4df76f0f1581d (2021-10-30, "drivers: add missing SPDX-License-Identifier")
+> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
 > ---
->  fs/jffs2/fs.c       |  45 +++++++++-------
->  fs/jffs2/malloc.c   | 129 +++++++-------------------------------------
->  fs/jffs2/nodelist.h |   2 -
->  3 files changed, 43 insertions(+), 133 deletions(-)
-> 
-> diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
-> index c1d04c397d..a27f67dea3 100644
-> --- a/fs/jffs2/fs.c
-> +++ b/fs/jffs2/fs.c
-> @@ -386,6 +386,8 @@ void jffs2_flash_cleanup(struct jffs2_sb_info *c) {
->  	}
->  }
->  
-> +static int jffs2_probe_cnt;
-> +
->  static int jffs2_probe(struct device_d *dev)
->  {
->  	struct fs_device_d *fsdev;
-> @@ -408,28 +410,28 @@ static int jffs2_probe(struct device_d *dev)
->  
->  	sb->s_fs_info = ctx;
->  
-> -        ret = jffs2_compressors_init();
-> -        if (ret) {
-> -		pr_err("error: Failed to initialise compressors\n");
-> -		goto err_out;
-> -        }
-> -
-> -        ret = jffs2_create_slab_caches();
-> -        if (ret) {
-> -		pr_err("error: Failed to initialise slab caches\n");
-> -		goto err_compressors;
-> -        }
-> -
-> -        if (jffs2_fill_super(fsdev, 0)) {
-> -		dev_err(dev, "no valid jffs2 found\n");
-> -		ret = -EINVAL;
-> -		goto err_slab;
-> +	if (!jffs2_probe_cnt) {
-> +		ret = jffs2_compressors_init();
-> +        	if (ret) {
-> +			pr_err("error: Failed to initialise compressors\n");
-> +			goto err_out;
-> +        	}
-> +
-> +        	if (ret) {
+>  drivers/mci/mci-bcm2835.c | 2 --
+>  1 file changed, 2 deletions(-)
 
-This branch is never entered. You likely meant to remove it.
+Applied, thanks
 
-> +			pr_err("error: Failed to initialise slab caches\n");
-> +			goto err_compressors;
-> +        	}
-> +
-> +        	if (jffs2_fill_super(fsdev, 0)) {
-> +			dev_err(dev, "no valid jffs2 found\n");
-> +			ret = -EINVAL;
-> +		}
-
-This is buggy. Why would you call a function taking a fsdev
-only on the first ever mount? The next mount would have another fsdev.
-By the looks of it, I'd assume reading from a second jffs2 mount
-is now broken.
-
->  	}
->  
-> +	jffs2_probe_cnt++;
-> +
->  	return 0;
->  
-> -err_slab:
-> -        jffs2_destroy_slab_caches();
->  err_compressors:
->  	jffs2_compressors_exit();
->  err_out:
-> @@ -445,8 +447,11 @@ static void jffs2_remove(struct device_d *dev)
->  	fsdev = dev_to_fs_device(dev);
->  	sb = &fsdev->sb;
->  
-> -	jffs2_destroy_slab_caches();
-> -	jffs2_compressors_exit();
-> +	jffs2_probe_cnt--;
-> +
-> +	if (!jffs2_probe_cnt) {
-> +		jffs2_compressors_exit();
-> +	}
->  
->  	jffs2_put_super(sb);
->  }
-> diff --git a/fs/jffs2/malloc.c b/fs/jffs2/malloc.c
-> index b7afc68cea..869330ea28 100644
-> --- a/fs/jffs2/malloc.c
-> +++ b/fs/jffs2/malloc.c
-> @@ -17,99 +17,6 @@
->  #include <linux/jffs2.h>
->  #include "nodelist.h"
->  
-> -/* These are initialised to NULL in the kernel startup code.
-> -   If you're porting to other operating systems, beware */
-> -static struct kmem_cache *full_dnode_slab;
-> -static struct kmem_cache *raw_dirent_slab;
-> -static struct kmem_cache *raw_inode_slab;
-> -static struct kmem_cache *tmp_dnode_info_slab;
-> -static struct kmem_cache *raw_node_ref_slab;
-> -static struct kmem_cache *node_frag_slab;
-> -static struct kmem_cache *inode_cache_slab;
-> -#ifdef CONFIG_JFFS2_FS_XATTR
-> -static struct kmem_cache *xattr_datum_cache;
-> -static struct kmem_cache *xattr_ref_cache;
-> -#endif
-> -
-> -int __init jffs2_create_slab_caches(void)
-> -{
-> -	full_dnode_slab = kmem_cache_create("jffs2_full_dnode",
-> -					    sizeof(struct jffs2_full_dnode),
-> -					    0, 0, NULL);
-> -	if (!full_dnode_slab)
-> -		goto err;
-> -
-> -	raw_dirent_slab = kmem_cache_create("jffs2_raw_dirent",
-> -					    sizeof(struct jffs2_raw_dirent),
-> -					    0, SLAB_HWCACHE_ALIGN, NULL);
-> -	if (!raw_dirent_slab)
-> -		goto err;
-> -
-> -	raw_inode_slab = kmem_cache_create("jffs2_raw_inode",
-> -					   sizeof(struct jffs2_raw_inode),
-> -					   0, SLAB_HWCACHE_ALIGN, NULL);
-> -	if (!raw_inode_slab)
-> -		goto err;
-> -
-> -	tmp_dnode_info_slab = kmem_cache_create("jffs2_tmp_dnode",
-> -						sizeof(struct jffs2_tmp_dnode_info),
-> -						0, 0, NULL);
-> -	if (!tmp_dnode_info_slab)
-> -		goto err;
-> -
-> -	raw_node_ref_slab = kmem_cache_create("jffs2_refblock",
-> -					      sizeof(struct jffs2_raw_node_ref) * (REFS_PER_BLOCK + 1),
-> -					      0, 0, NULL);
-> -	if (!raw_node_ref_slab)
-> -		goto err;
-> -
-> -	node_frag_slab = kmem_cache_create("jffs2_node_frag",
-> -					   sizeof(struct jffs2_node_frag),
-> -					   0, 0, NULL);
-> -	if (!node_frag_slab)
-> -		goto err;
-> -
-> -	inode_cache_slab = kmem_cache_create("jffs2_inode_cache",
-> -					     sizeof(struct jffs2_inode_cache),
-> -					     0, 0, NULL);
-> -	if (!inode_cache_slab)
-> -		goto err;
-> -
-> -#ifdef CONFIG_JFFS2_FS_XATTR
-> -	xattr_datum_cache = kmem_cache_create("jffs2_xattr_datum",
-> -					     sizeof(struct jffs2_xattr_datum),
-> -					     0, 0, NULL);
-> -	if (!xattr_datum_cache)
-> -		goto err;
-> -
-> -	xattr_ref_cache = kmem_cache_create("jffs2_xattr_ref",
-> -					   sizeof(struct jffs2_xattr_ref),
-> -					   0, 0, NULL);
-> -	if (!xattr_ref_cache)
-> -		goto err;
-> -#endif
-> -
-> -	return 0;
-> - err:
-> -	jffs2_destroy_slab_caches();
-> -	return -ENOMEM;
-> -}
-> -
-> -void jffs2_destroy_slab_caches(void)
-> -{
-> -	kmem_cache_destroy(full_dnode_slab);
-> -	kmem_cache_destroy(raw_dirent_slab);
-> -	kmem_cache_destroy(raw_inode_slab);
-> -	kmem_cache_destroy(tmp_dnode_info_slab);
-> -	kmem_cache_destroy(raw_node_ref_slab);
-> -	kmem_cache_destroy(node_frag_slab);
-> -	kmem_cache_destroy(inode_cache_slab);
-> -#ifdef CONFIG_JFFS2_FS_XATTR
-> -	kmem_cache_destroy(xattr_datum_cache);
-> -	kmem_cache_destroy(xattr_ref_cache);
-> -#endif
-> -}
-> -
->  struct jffs2_full_dirent *jffs2_alloc_full_dirent(int namesize)
->  {
->  	struct jffs2_full_dirent *ret;
-> @@ -127,7 +34,7 @@ void jffs2_free_full_dirent(struct jffs2_full_dirent *x)
->  struct jffs2_full_dnode *jffs2_alloc_full_dnode(void)
->  {
->  	struct jffs2_full_dnode *ret;
-> -	ret = kmem_cache_alloc(full_dnode_slab, GFP_KERNEL);
-> +	ret = malloc(sizeof(struct jffs2_full_dnode));
-
-Please prefer sizeof(*ret) over hardcoding the size where possible.
-This makes it easy to verify that the type is indeed correct.
-
->  	dbg_memalloc("%p\n", ret);
->  	return ret;
->  }
-> @@ -135,13 +42,13 @@ struct jffs2_full_dnode *jffs2_alloc_full_dnode(void)
->  void jffs2_free_full_dnode(struct jffs2_full_dnode *x)
->  {
->  	dbg_memalloc("%p\n", x);
-> -	kmem_cache_free(full_dnode_slab, x);
-> +	free(x);
->  }
->  
->  struct jffs2_raw_dirent *jffs2_alloc_raw_dirent(void)
->  {
->  	struct jffs2_raw_dirent *ret;
-> -	ret = kmem_cache_alloc(raw_dirent_slab, GFP_KERNEL);
-> +	ret = malloc(sizeof(struct jffs2_raw_dirent));
->  	dbg_memalloc("%p\n", ret);
->  	return ret;
->  }
-> @@ -149,13 +56,13 @@ struct jffs2_raw_dirent *jffs2_alloc_raw_dirent(void)
->  void jffs2_free_raw_dirent(struct jffs2_raw_dirent *x)
->  {
->  	dbg_memalloc("%p\n", x);
-> -	kmem_cache_free(raw_dirent_slab, x);
-> +	free(x);
->  }
->  
->  struct jffs2_raw_inode *jffs2_alloc_raw_inode(void)
->  {
->  	struct jffs2_raw_inode *ret;
-> -	ret = kmem_cache_alloc(raw_inode_slab, GFP_KERNEL);
-> +	ret = malloc(sizeof(struct jffs2_raw_inode));
->  	dbg_memalloc("%p\n", ret);
->  	return ret;
->  }
-> @@ -163,13 +70,13 @@ struct jffs2_raw_inode *jffs2_alloc_raw_inode(void)
->  void jffs2_free_raw_inode(struct jffs2_raw_inode *x)
->  {
->  	dbg_memalloc("%p\n", x);
-> -	kmem_cache_free(raw_inode_slab, x);
-> +	free(x);
->  }
->  
->  struct jffs2_tmp_dnode_info *jffs2_alloc_tmp_dnode_info(void)
->  {
->  	struct jffs2_tmp_dnode_info *ret;
-> -	ret = kmem_cache_alloc(tmp_dnode_info_slab, GFP_KERNEL);
-> +	ret = malloc(sizeof(struct jffs2_tmp_dnode_info));
->  	dbg_memalloc("%p\n",
->  		ret);
->  	return ret;
-> @@ -178,14 +85,14 @@ struct jffs2_tmp_dnode_info *jffs2_alloc_tmp_dnode_info(void)
->  void jffs2_free_tmp_dnode_info(struct jffs2_tmp_dnode_info *x)
->  {
->  	dbg_memalloc("%p\n", x);
-> -	kmem_cache_free(tmp_dnode_info_slab, x);
-> +	free(x);
->  }
->  
->  static struct jffs2_raw_node_ref *jffs2_alloc_refblock(void)
->  {
->  	struct jffs2_raw_node_ref *ret;
->  
-> -	ret = kmem_cache_alloc(raw_node_ref_slab, GFP_KERNEL);
-> +	ret = malloc(sizeof(struct jffs2_raw_node_ref) * (REFS_PER_BLOCK + 1));
->  	if (ret) {
->  		int i = 0;
->  		for (i=0; i < REFS_PER_BLOCK; i++) {
-> @@ -242,13 +149,13 @@ int jffs2_prealloc_raw_node_refs(struct jffs2_sb_info *c,
->  void jffs2_free_refblock(struct jffs2_raw_node_ref *x)
->  {
->  	dbg_memalloc("%p\n", x);
-> -	kmem_cache_free(raw_node_ref_slab, x);
-> +	free(x);
->  }
->  
->  struct jffs2_node_frag *jffs2_alloc_node_frag(void)
->  {
->  	struct jffs2_node_frag *ret;
-> -	ret = kmem_cache_alloc(node_frag_slab, GFP_KERNEL);
-> +	ret = malloc(sizeof(struct jffs2_node_frag));
->  	dbg_memalloc("%p\n", ret);
->  	return ret;
->  }
-> @@ -256,13 +163,13 @@ struct jffs2_node_frag *jffs2_alloc_node_frag(void)
->  void jffs2_free_node_frag(struct jffs2_node_frag *x)
->  {
->  	dbg_memalloc("%p\n", x);
-> -	kmem_cache_free(node_frag_slab, x);
-> +	free(x);
->  }
->  
->  struct jffs2_inode_cache *jffs2_alloc_inode_cache(void)
->  {
->  	struct jffs2_inode_cache *ret;
-> -	ret = kmem_cache_alloc(inode_cache_slab, GFP_KERNEL);
-> +	ret = malloc(sizeof(struct jffs2_inode_cache));
->  	dbg_memalloc("%p\n", ret);
->  	return ret;
->  }
-> @@ -270,14 +177,14 @@ struct jffs2_inode_cache *jffs2_alloc_inode_cache(void)
->  void jffs2_free_inode_cache(struct jffs2_inode_cache *x)
->  {
->  	dbg_memalloc("%p\n", x);
-> -	kmem_cache_free(inode_cache_slab, x);
-> +	free(x);
->  }
->  
->  #ifdef CONFIG_JFFS2_FS_XATTR
->  struct jffs2_xattr_datum *jffs2_alloc_xattr_datum(void)
->  {
->  	struct jffs2_xattr_datum *xd;
-> -	xd = kmem_cache_zalloc(xattr_datum_cache, GFP_KERNEL);
-> +	xd = malloc(sizeof(struct jffs2_xattr_datum));
->  	dbg_memalloc("%p\n", xd);
->  	if (!xd)
->  		return NULL;
-> @@ -291,13 +198,13 @@ struct jffs2_xattr_datum *jffs2_alloc_xattr_datum(void)
->  void jffs2_free_xattr_datum(struct jffs2_xattr_datum *xd)
->  {
->  	dbg_memalloc("%p\n", xd);
-> -	kmem_cache_free(xattr_datum_cache, xd);
-> +	free(xd);
->  }
->  
->  struct jffs2_xattr_ref *jffs2_alloc_xattr_ref(void)
->  {
->  	struct jffs2_xattr_ref *ref;
-> -	ref = kmem_cache_zalloc(xattr_ref_cache, GFP_KERNEL);
-> +	ref = malloc(sizeof(struct jffs2_xattr_ref));
->  	dbg_memalloc("%p\n", ref);
->  	if (!ref)
->  		return NULL;
-> @@ -310,6 +217,6 @@ struct jffs2_xattr_ref *jffs2_alloc_xattr_ref(void)
->  void jffs2_free_xattr_ref(struct jffs2_xattr_ref *ref)
->  {
->  	dbg_memalloc("%p\n", ref);
-> -	kmem_cache_free(xattr_ref_cache, ref);
-> +	free(ref);
->  }
->  #endif
-
-I think all changes of this file are unrelated to the bug. Could you split this up?
-
-> diff --git a/fs/jffs2/nodelist.h b/fs/jffs2/nodelist.h
-> index 20deb639f6..7ea18cd2fc 100644
-> --- a/fs/jffs2/nodelist.h
-> +++ b/fs/jffs2/nodelist.h
-> @@ -441,8 +441,6 @@ int jffs2_do_crccheck_inode(struct jffs2_sb_info *c, struct jffs2_inode_cache *i
->  void jffs2_do_clear_inode(struct jffs2_sb_info *c, struct jffs2_inode_info *f);
->  
->  /* malloc.c */
-> -int jffs2_create_slab_caches(void);
-> -void jffs2_destroy_slab_caches(void);
->  
->  struct jffs2_full_dirent *jffs2_alloc_full_dirent(int namesize);
->  void jffs2_free_full_dirent(struct jffs2_full_dirent *);
-
-Cheers,
-Ahmad
+Sascha
 
 
 -- 
