@@ -1,15 +1,15 @@
-Delivery-date: Mon, 22 Nov 2021 10:23:24 +0100
+Delivery-date: Mon, 22 Nov 2021 10:23:54 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp5Xo-0004Xj-7d
-	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 10:23:24 +0100
+	id 1mp5YI-0004Yt-SS
+	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 10:23:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp5Xn-0006We-9s
-	for lore@pengutronix.de; Mon, 22 Nov 2021 10:23:24 +0100
+	id 1mp5YH-0006a4-LV
+	for lore@pengutronix.de; Mon, 22 Nov 2021 10:23:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=ttf0znsuK/WEjlOy1osVqq12+05hiWbOdrbQf0kzPmM=; b=miVqnP5q5G7JyuUeXDGxKpDGfw
-	Xb3u8nVjQW1sCzxJK4tLfUqZaZHvz5xVEz84R+wFYZAi/ymS4e4d7umLgchAM4CU9hYW+KlX7I/+Z
-	z+65/BRzYw5Ez4vbFD6Vjs9xEHDO0koTp9/X5/34Jdt2R8ghCxdgFkQkh11HjTJh9b7zSo1e3e8K/
-	7L0+6D4OyvgnyhCeiiTYzsVG2bS+oC+oODc9y1yASOLMW3oG34M4//WPFLgPRMViIg2w0JxGBJROD
-	OxILkJB+OhG2lrPsU3iiNvNBhLi2jBODcbT7D4o2UqS4JnMx5Xzj6j9lToX0qNibhONztezMfNkKY
-	SX3j7wAA==;
+	bh=c5+/jTypSeTKXv31eWfYnYFEHf/zPbPq90TwkCQX7DU=; b=PgQSr3juUikZpkL7bZjK4KcVfK
+	NG7xFui8nr2LIeEuEhGXLigMIBsns2OtoxmmH8q3rX+nRCH7xAAwkDGkE7bpb7mm+B0qa6dSIEDOz
+	cQrC9GGtWOeo8yMZxNEJyk1gzzRAIIu27HyCRPO7HKaDq0tPV8lfQJunqpV/yWXLoZQRivmZ+OqpO
+	BsVAMMGyVROFmTsIjkf7yygtTkw4rxQEMu8QX151N/mJL7dhOwDkhAl7+F4vOTHejEf/iPpXpZ79n
+	IU+vV6FMIRvQWyXpVDkGxTnevSH+FPnQcpsJGdNzi23GKindSEiAV0MraCyIJXmqig7V6I2AU9Dnr
+	Q1itvD/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mp5WH-00FY13-28; Mon, 22 Nov 2021 09:21:49 +0000
+	id 1mp5Wd-00FY60-UH; Mon, 22 Nov 2021 09:22:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mp5Kc-00FUip-51
- for barebox@lists.infradead.org; Mon, 22 Nov 2021 09:09:47 +0000
+ id 1mp5Lc-00FV2O-Ei
+ for barebox@lists.infradead.org; Mon, 22 Nov 2021 09:10:49 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mp5Ka-0004TW-TT; Mon, 22 Nov 2021 10:09:44 +0100
+ id 1mp5La-0004hi-VG; Mon, 22 Nov 2021 10:10:46 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mp5Ka-0004LD-5j; Mon, 22 Nov 2021 10:09:44 +0100
-Date: Mon, 22 Nov 2021 10:09:44 +0100
+ id 1mp5La-0004wB-LZ; Mon, 22 Nov 2021 10:10:46 +0100
+Date: Mon, 22 Nov 2021 10:10:46 +0100
 To: Jules Maselbas <jmaselbas@kalray.eu>
 Cc: barebox@lists.infradead.org
-Message-ID: <20211122090944.GB25124@pengutronix.de>
+Message-ID: <20211122091046.GX6556@pengutronix.de>
 References: <20211004073842.14809-1-jmaselbas@kalray.eu>
+ <20211118123357.GF1022@tellis.lin.mbt.kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211004073842.14809-1-jmaselbas@kalray.eu>
+In-Reply-To: <20211118123357.GF1022@tellis.lin.mbt.kalray.eu>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:09:28 up 277 days, 12:33, 143 users,  load average: 0.51, 0.56,
- 0.35
+X-Uptime: 10:09:50 up 277 days, 12:33, 143 users,  load average: 0.34, 0.52,
+ 0.34
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211122_010946_255159_C694AA42 
-X-CRM114-Status: GOOD (  18.05  )
+X-CRM114-CacheID: sfid-20211122_011048_567453_31FC0124 
+X-CRM114-Status: GOOD (  14.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,19 +86,14 @@ Subject: Re: [PATCH] debug_ll: ns16550: Fix interrupt disable on init
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Oct 04, 2021 at 09:38:42AM +0200, Jules Maselbas wrote:
-> The debug_ll_write_reg function takes first the register
-> and secondly the value to write, which in this call were
-> inverted. Fix the argument order.
-> 
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> ---
->  include/debug_ll/ns16550.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, Nov 18, 2021 at 01:33:57PM +0100, Jules Maselbas wrote:
+> ping
 
-Applied, thanks
+Sorry, I misconfigured my .procmailrc when you sent this patch, so I
+lost it.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
