@@ -1,54 +1,54 @@
-Delivery-date: Mon, 22 Nov 2021 09:53:07 +0100
+Delivery-date: Mon, 22 Nov 2021 09:53:14 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp54V-0003ao-1Y
-	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 09:53:07 +0100
+	id 1mp54c-0003bV-MO
+	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 09:53:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp54T-0001dY-G7
-	for lore@pengutronix.de; Mon, 22 Nov 2021 09:53:06 +0100
+	id 1mp54a-0001fm-Ny
+	for lore@pengutronix.de; Mon, 22 Nov 2021 09:53:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=W7yGuiK2pKkfzBvHl/v5R2S7wJqCHfrKVRlSAP4D7PY=; b=Wma408XuGz/dBg
-	9JFLG/34daAD9Pll9JZZr4yvJReQWywhzYUSJOugYtK8JIDipmRAtRq6pqo2gE5u5l/jKzf2WIzLT
-	CduiPQPK2MTfJX87efHtzNWd84pMMBTK4UXFNSOoG0Hu230WvSTVoW0bzChtgBbH5T7cJeC8am5jG
-	9q6CeO11kE6Mpb0CIS3Mh3mZTDr2b6gUS0djjyq8TAjMsQHJAKYEWd8FWlGlAD5jeh9kWyF34i/He
-	SvcaV2XmwoBY5ccRuYAlEJUE28ex+33qaePoXwQ4KixkXWqEimdaiQPaxZczgSkdUPgQp/5D1aART
-	csKY7kr55nxbamkrWCIw==;
+	List-Owner; bh=tpXX2e/SySp6k0MLCb19Zf0bUsn3iorvl3SpNqdJdX8=; b=gLRw2AFpTemRNf
+	Qa9zr5S04m4gEs4z8j9d4he38j6vqj2B+aFi1GXIASBBD1graprzXvyuQa7F+Zsu0+63QOTfSz2hs
+	0cShpmtOZvWkTXYvJ2K1Uju0sIaStlDRD1/FidwkfC+1QFfGcKqzxRuiymFo8L2oGgLWLZfTmW49I
+	rdFfJjkrq2K+vAVuDOedjFaoX9gvPJf/kt7ImfCTbh3Olfl5SYUhk9efGX+ejtMKhHvoHeWjkfiuQ
+	ukgEBuWuG9t1s0kaJvbCd2ojZgOx1SEBWQ+kDkyRWqJBTgD+rg94yYebSMoRdcoMwhS+6TU9k5uab
+	RTL48G7Ap/azGJlsk4mA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mp536-00FNMA-KY; Mon, 22 Nov 2021 08:51:41 +0000
+	id 1mp53J-00FNWR-MV; Mon, 22 Nov 2021 08:51:53 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mp4zK-00FL5H-Jj
+ id 1mp4zK-00FL5R-QW
  for barebox@lists.infradead.org; Mon, 22 Nov 2021 08:47:49 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mp4zA-0007wJ-Ut; Mon, 22 Nov 2021 09:47:36 +0100
+ id 1mp4zB-0007wS-BZ; Mon, 22 Nov 2021 09:47:37 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1mp4z9-00Ateq-Cu; Mon, 22 Nov 2021 09:47:35 +0100
+ id 1mp4z9-00AtfH-LZ; Mon, 22 Nov 2021 09:47:35 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 22 Nov 2021 09:47:10 +0100
-Message-Id: <20211122084732.2597109-9-a.fatoum@pengutronix.de>
+Date: Mon, 22 Nov 2021 09:47:19 +0100
+Message-Id: <20211122084732.2597109-18-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211122084732.2597109-1-a.fatoum@pengutronix.de>
 References: <20211122084732.2597109-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211122_004746_724128_6970E232 
-X-CRM114-Status: GOOD (  14.74  )
+X-CRM114-CacheID: sfid-20211122_004747_009007_EBF0E880 
+X-CRM114-Status: GOOD (  12.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,187 +72,79 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 08/30] common: move EFI code into new efi/ top level directory
+Subject: [PATCH 17/30] lib: wchar: add wctomb and mbtowc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-So far, barebox EFI meant EFI payload support on x86. Upcoming changes
-will extend barebox to support EFI payload _and_ loader on ARM64.
-Prepare for this by renaming files and directories appropriately, so
-it's immediately clear whether a file is about paylaod, loader or common
-support.
+We currently convert wchar_t to char by truncating to 8-bit.
+In future, we may want to do UTF-16 to UTF-8 conversion.
+Prepare for this by wrapping each conversion direction in a function.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/Kconfig                                   | 10 ++--------
- common/Makefile                                  |  4 +---
- common/efi/Kconfig                               | 16 ++++++++++++++++
- common/efi/Makefile                              |  9 +++++----
- common/{efi-devicepath.c => efi/devicepath.c}    |  0
- common/{efi-guid.c => efi/guid.c}                |  0
- common/efi/payload/Makefile                      |  6 ++++++
- .../{ => payload}/env-efi/network/eth0-discover  |  0
- common/efi/{efi-image.c => payload/image.c}      |  2 +-
- common/efi/{efi.c => payload/init.c}             |  2 +-
- common/efi/{efi-iomem.c => payload/iomem.c}      |  0
- drivers/efi/Kconfig                              |  1 +
- 12 files changed, 33 insertions(+), 17 deletions(-)
- create mode 100644 common/efi/Kconfig
- rename common/{efi-devicepath.c => efi/devicepath.c} (100%)
- rename common/{efi-guid.c => efi/guid.c} (100%)
- create mode 100644 common/efi/payload/Makefile
- rename common/efi/{ => payload}/env-efi/network/eth0-discover (100%)
- rename common/efi/{efi-image.c => payload/image.c} (99%)
- rename common/efi/{efi.c => payload/init.c} (99%)
- rename common/efi/{efi-iomem.c => payload/iomem.c} (100%)
+ include/wchar.h |  5 +++++
+ lib/wchar.c     | 22 ++++++++++++++++++++--
+ 2 files changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index f4120b2083ee..42240ae8411b 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -78,14 +78,6 @@ config MENUTREE
- 	select GLOB
- 	select GLOB_SORT
+diff --git a/include/wchar.h b/include/wchar.h
+index b601cc62079b..fb9b127a8c04 100644
+--- a/include/wchar.h
++++ b/include/wchar.h
+@@ -17,4 +17,9 @@ char *strdup_wchar_to_char(const wchar_t *src);
  
--config EFI_GUID
--	bool
--	help
--	  With this option a table of EFI guids is compiled in.
--
--config EFI_DEVICEPATH
--	bool
--
- config ARCH_DMA_ADDR_T_64BIT
- 	bool
+ size_t wcslen(const wchar_t *s);
  
-@@ -1538,6 +1530,8 @@ config COMPILE_TEST
++#define MB_CUR_MAX 4
++
++int mbtowc(wchar_t *pwc, const char *s, size_t n);
++int wctomb(char *s, wchar_t wc);
++
+ #endif /* __WCHAR_H */
+diff --git a/lib/wchar.c b/lib/wchar.c
+index 4d49431e8653..3be228b5a77a 100644
+--- a/lib/wchar.c
++++ b/lib/wchar.c
+@@ -44,12 +44,30 @@ wchar_t *strdup_wchar(const wchar_t *src)
+ 	return tmp;
+ }
  
- endmenu
++int mbtowc(wchar_t *pwc, const char *s, size_t n)
++{
++	if (!s)
++		return 0; /* we don't mantain a non-trivial shift state */
++
++	if (n < 1)
++		return -1;
++
++	*pwc = *s;
++	return 1;
++}
++
++int wctomb(char *s, wchar_t wc)
++{
++	*s = wc & 0xFF;
++	return 1;
++}
++
+ char *strcpy_wchar_to_char(char *dst, const wchar_t *src)
+ {
+ 	char *ret = dst;
  
-+source "common/efi/Kconfig"
-+
- config HAS_DEBUG_LL
- 	bool
+ 	while (*src)
+-		*dst++ = *src++ & 0xff;
++		wctomb(dst++, *src++);
  
-diff --git a/common/Makefile b/common/Makefile
-index 4b45f678c7de..9ed279806a08 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -63,9 +63,7 @@ obj-$(CONFIG_BOOTCHOOSER)	+= bootchooser.o
- obj-$(CONFIG_UIMAGE)		+= image.o uimage.o
- obj-$(CONFIG_FITIMAGE)		+= image-fit.o
- obj-$(CONFIG_MENUTREE)		+= menutree.o
--obj-$(CONFIG_EFI_BOOTUP)	+= efi/
--obj-$(CONFIG_EFI_GUID)		+= efi-guid.o
--obj-$(CONFIG_EFI_DEVICEPATH)	+= efi-devicepath.o
-+obj-$(CONFIG_EFI)		+= efi/
- lwl-$(CONFIG_IMD)		+= imd-barebox.o
- obj-$(CONFIG_IMD)		+= imd.o
- obj-y				+= file-list.o
-diff --git a/common/efi/Kconfig b/common/efi/Kconfig
-new file mode 100644
-index 000000000000..a0565854c2f5
---- /dev/null
-+++ b/common/efi/Kconfig
-@@ -0,0 +1,16 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+menu "EFI (Extensible Firmware Interface) Support"
-+
-+config EFI
-+	bool
-+
-+config EFI_GUID
-+	bool
-+	help
-+	  With this option a table of EFI guids is compiled in.
-+
-+config EFI_DEVICEPATH
-+	bool
-+
-+endmenu
-diff --git a/common/efi/Makefile b/common/efi/Makefile
-index d746fabe2109..1ed5d45c1f5e 100644
---- a/common/efi/Makefile
-+++ b/common/efi/Makefile
-@@ -1,4 +1,5 @@
--obj-y += efi.o
--obj-y += efi-image.o
--bbenv-y += env-efi
--obj-$(CONFIG_CMD_IOMEM) += efi-iomem.o
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+obj-$(CONFIG_EFI_BOOTUP)	+= payload/
-+obj-$(CONFIG_EFI_GUID)		+= guid.o
-+obj-$(CONFIG_EFI_DEVICEPATH)	+= devicepath.o
-diff --git a/common/efi-devicepath.c b/common/efi/devicepath.c
-similarity index 100%
-rename from common/efi-devicepath.c
-rename to common/efi/devicepath.c
-diff --git a/common/efi-guid.c b/common/efi/guid.c
-similarity index 100%
-rename from common/efi-guid.c
-rename to common/efi/guid.c
-diff --git a/common/efi/payload/Makefile b/common/efi/payload/Makefile
-new file mode 100644
-index 000000000000..bcbdda335f06
---- /dev/null
-+++ b/common/efi/payload/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+obj-y += init.o
-+obj-y += image.o
-+bbenv-y += env-efi
-+obj-$(CONFIG_CMD_IOMEM) += iomem.o
-diff --git a/common/efi/env-efi/network/eth0-discover b/common/efi/payload/env-efi/network/eth0-discover
-similarity index 100%
-rename from common/efi/env-efi/network/eth0-discover
-rename to common/efi/payload/env-efi/network/eth0-discover
-diff --git a/common/efi/efi-image.c b/common/efi/payload/image.c
-similarity index 99%
-rename from common/efi/efi-image.c
-rename to common/efi/payload/image.c
-index bd1c58438e84..3c55a457eae3 100644
---- a/common/efi/efi-image.c
-+++ b/common/efi/payload/image.c
-@@ -1,5 +1,5 @@
- /*
-- * efi-image.c - barebox EFI payload support
-+ * image.c - barebox EFI payload support
-  *
-  * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-  *
-diff --git a/common/efi/efi.c b/common/efi/payload/init.c
-similarity index 99%
-rename from common/efi/efi.c
-rename to common/efi/payload/init.c
-index 7f12342cf91b..88d0bfa939ec 100644
---- a/common/efi/efi.c
-+++ b/common/efi/payload/init.c
-@@ -1,5 +1,5 @@
- /*
-- * efi.c - barebox EFI payload support
-+ * init.c - barebox EFI payload support
-  *
-  * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-  *
-diff --git a/common/efi/efi-iomem.c b/common/efi/payload/iomem.c
-similarity index 100%
-rename from common/efi/efi-iomem.c
-rename to common/efi/payload/iomem.c
-diff --git a/drivers/efi/Kconfig b/drivers/efi/Kconfig
-index dd3ac7525f9f..e8abc2709e26 100644
---- a/drivers/efi/Kconfig
-+++ b/drivers/efi/Kconfig
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- config EFI_BOOTUP
- 	bool
-+	select EFI
- 	select BLOCK
- 	select PARTITION_DISK
- 	select HW_HAS_PCI
+ 	*dst = 0;
+ 
+@@ -61,7 +79,7 @@ wchar_t *strcpy_char_to_wchar(wchar_t *dst, const char *src)
+ 	wchar_t *ret = dst;
+ 
+ 	while (*src)
+-		*dst++ = *src++;
++		mbtowc(dst++, src++, 1);
+ 
+ 	*dst = 0;
+ 
 -- 
 2.30.2
 
