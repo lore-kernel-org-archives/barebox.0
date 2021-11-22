@@ -1,15 +1,15 @@
-Delivery-date: Mon, 22 Nov 2021 10:25:43 +0100
+Delivery-date: Mon, 22 Nov 2021 10:47:18 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp5a3-0004bx-Ue
-	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 10:25:43 +0100
+	id 1mp5uw-0005NK-9M
+	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 10:47:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp5a2-0006v5-RP
-	for lore@pengutronix.de; Mon, 22 Nov 2021 10:25:43 +0100
+	id 1mp5uu-000154-VK
+	for lore@pengutronix.de; Mon, 22 Nov 2021 10:47:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,49 +17,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=ksJRpGfM/n+ffZccxlDdtL3LP0yEBSiuucDYxceTkuU=; b=AEB1LtgHw/jhPjI+mf059pSWX2
-	riyqZWfclSoCOFGVUWS0fqt2dSEzwYQYrH/uwJ97tSp+hVyf+ce1v7sCniFMtRVRyQZdkVGkLEIIA
-	yBIDR6HIjDyoBqO62MwcDzGQZMdTQFM1nzYTYeyANQ/BGJFPEJhQl/ZbTDcwhF8ebiYl2sRRmCvXb
-	hGK+QHbV5IhUZB8PB2PZa2d4/tPPc4ZCFXv4+2Nc7KWFeguEJORTP1Xeizi56ql5YoseP5rrmLhhj
-	MOqjc/INQZbhulH6HnLu3MvRS1vcBuKwdzqf6JIbblhabfOTDCDO1iTUYXsSP9jJs6EIorJM+BsNa
-	S9w2VrdQ==;
+	bh=6MEYy8sFcFS7KZ7Mi4c0LCdasgsrgidI+C0WoSp7sE0=; b=VXAv/as3o8viUJfNoUsPc7ujI4
+	mAGvVCC3HVX0DGjBKQVq3aRQC2PUMnSriL4/uL77pqO4MrT9fYMPKh+GI0JPd9fdBmrzzOJKs+8Bg
+	ZsJrWT3GPoRrgQIgKIJm6AkePT2RBATMZYBF8yaMvQyfyUYfpQw7/vxAz2wjCov5fL2btjmp5CyPJ
+	cBu2uWY+05jo7OLRFwEbnnYcQYLWnIFhcJVUJsT8BgH52Uo/JE88jzy4FGKLxkyaNO1iskuUTn/s6
+	DtfRCIwIrIODD6DmTZIpLzh5ywi66dT6//uDLZQlF5PWknnQW3roaN/aosmJDPxMtO1nV2xHMtqBU
+	QaLGNCig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mp5YS-00FYlV-QH; Mon, 22 Nov 2021 09:24:05 +0000
+	id 1mp5tA-00FfKH-Fc; Mon, 22 Nov 2021 09:45:28 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mp5MM-00FVEV-8g
- for barebox@lists.infradead.org; Mon, 22 Nov 2021 09:11:35 +0000
+ id 1mp5bF-00FZsh-8P
+ for barebox@lists.infradead.org; Mon, 22 Nov 2021 09:26:58 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mp5MK-0004oh-3J; Mon, 22 Nov 2021 10:11:32 +0100
+ id 1mp5bD-0007N3-R7; Mon, 22 Nov 2021 10:26:55 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mp5MJ-000524-DR; Mon, 22 Nov 2021 10:11:31 +0100
-Date: Mon, 22 Nov 2021 10:11:31 +0100
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>,
- Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20211122091131.GY6556@pengutronix.de>
-References: <20211101174053.68486-1-abbotti@mev.co.uk>
- <20211118130927.53123-1-abbotti@mev.co.uk>
+ id 1mp5bD-0005xH-Hg; Mon, 22 Nov 2021 10:26:55 +0100
+Date: Mon, 22 Nov 2021 10:26:55 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Holger Assmann <h.assmann@pengutronix.de>, barebox@lists.infradead.org
+Message-ID: <20211122092655.GZ6556@pengutronix.de>
+References: <20211119101005.715749-1-h.assmann@pengutronix.de>
+ <e0d5792d-6c06-5567-9b2f-48f70cecd5c4@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211118130927.53123-1-abbotti@mev.co.uk>
+In-Reply-To: <e0d5792d-6c06-5567-9b2f-48f70cecd5c4@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:11:18 up 277 days, 12:35, 143 users,  load average: 0.56, 0.52,
- 0.36
+X-Uptime: 10:15:14 up 277 days, 12:39, 143 users,  load average: 0.65, 0.58,
+ 0.41
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211122_011134_353632_A81F9044 
-X-CRM114-Status: GOOD (  20.48  )
+X-CRM114-CacheID: sfid-20211122_012657_328627_2BDB55D1 
+X-CRM114-Status: GOOD (  29.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,36 +82,56 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] ARM: socfpga: Set reset-names property for &mmc
+Subject: Re: [PATCH] fs: jffs2: remove slab cache substitute with malloc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Nov 18, 2021 at 01:09:27PM +0000, Ian Abbott wrote:
-> The device tree node for SoCFPGA's MMC device has the `resets =` property,
-> but is missing the `reset-names = "reset";` property.  This causes the
-> "dw_mmc" driver to output a warning:
+On Mon, Nov 22, 2021 at 09:49:35AM +0100, Ahmad Fatoum wrote:
+> On 19.11.21 11:10, Holger Assmann wrote:
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > 
+> > Function jffs2_create_slab_caches() was called by the probing stage
+> > every time a new jffs2 volume was mounted. This has lead to the memory
+> > allocation pointers for slab caches to become overwritten. As a result
+> > the system crashes at least when trying to unmount more than one volume.
 > 
-> WARNING: dw_mmc ff704000.dwmmc0@ff704000.of: error claiming reset: Invalid argument
+> Freeing data still in use is a bug.
 > 
-> Add the missing `reset-names` property to the `&mmc` node in
-> "arch/arm/dts/socfpga.dtsi".  It probably needs fixing in the upstream
-> Linux device tree sources too!
+> > In Barebox, the respective (pseudo) slab caches are designed to work as a
+> > substitute when code gets ported from Linux. They are no real caches, but
+> > function as an interface for malloc and can therefore directly be replaced
+> > by it.
 > 
-> Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-> ---
-> v2: Updated commit message because it no longer fails to initialize the
-> MMC device since commit 724512bbac14 ("mci: dw_mmc: make reset control
-> optional again").
-> 
->  arch/arm/dts/socfpga.dtsi | 4 ++++
->  1 file changed, 4 insertions(+)
+> Replacing one API with another is clean up and not really related to the
+> issue here.
 
-Applied, thanks
+The bug in the jffs2 code is that it allocates global data structures in
+probe():
+
+	...
+        jffs2_compressors_init();
+	...
+	jffs2_create_slab_caches();
+	...
+
+jffs2_create_slab_caches() has several calls to kmem_cache_create()
+which does nothing more than allocating the context data structure for
+the kmem_cache. Probing a second jffs2 will overwrite the pointers
+returned by kmem_cache_create() leading to a double free when it the
+two jffs2 fs are unmounted and jffs2_destroy_slab_caches() is called.
+Replacing the kmem_caches with pure malloc indeed fixes this as it makes
+allocating of kmem_cache context structure unnecessary.
+
+jffs2_compressors_init() has the same problem. We still need this
+function though, so the solution here is to introduce a reference
+counting so that it is done exactly once in the first probe().
+
+We can introduce the reference counting for both
+jffs2_compressors_init() and jffs2_create_slab_caches() in patch 1/2
+and replace kmem_cache with malloc in 2/2. Then 2/2 would indeed only be
+a cleanup.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
