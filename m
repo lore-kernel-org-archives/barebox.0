@@ -1,54 +1,54 @@
-Delivery-date: Mon, 22 Nov 2021 09:52:58 +0100
+Delivery-date: Mon, 22 Nov 2021 09:53:07 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp54M-0003a7-KH
-	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 09:52:58 +0100
+	id 1mp54V-0003ao-1Y
+	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 09:53:07 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp54K-0001aa-WD
-	for lore@pengutronix.de; Mon, 22 Nov 2021 09:52:58 +0100
+	id 1mp54T-0001dY-G7
+	for lore@pengutronix.de; Mon, 22 Nov 2021 09:53:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=+iLhkZe+w2u0FuxrSTQvQtf5tat7u2dZjMcvU7hWYXs=; b=s6Tz/WgtZdymPr
-	atKpi94D0VpMX42XMpTxKgxHLNvDzbB9OeyPxF2DRixyuIE6orVUhuQXy2lptnBsrRkSLmlteMtAJ
-	YyZUYofdShVfVAsmgKBayHWpnn0+1ziJ85iMfO7a7IRCyl6jhd5pOx5OACSqpHXdPlDOTLvU9KQb+
-	IU9DIZw8d/zcrDV74TIaa96jB5PTuK1nRsuv4tFR++QPfCLgRR2rZ0z/yoC2rFIgtqFsDdhCBWCvP
-	Z9P6YRkGOcjZnqwcLk/ZEqYa2paoK1muE9v9DZhtlKEohfFV1AbGI5DUsJtNDsJzJgU+vz4mWJKdJ
-	qImPI+2fe/kQGEeKklXA==;
+	List-Owner; bh=W7yGuiK2pKkfzBvHl/v5R2S7wJqCHfrKVRlSAP4D7PY=; b=Wma408XuGz/dBg
+	9JFLG/34daAD9Pll9JZZr4yvJReQWywhzYUSJOugYtK8JIDipmRAtRq6pqo2gE5u5l/jKzf2WIzLT
+	CduiPQPK2MTfJX87efHtzNWd84pMMBTK4UXFNSOoG0Hu230WvSTVoW0bzChtgBbH5T7cJeC8am5jG
+	9q6CeO11kE6Mpb0CIS3Mh3mZTDr2b6gUS0djjyq8TAjMsQHJAKYEWd8FWlGlAD5jeh9kWyF34i/He
+	SvcaV2XmwoBY5ccRuYAlEJUE28ex+33qaePoXwQ4KixkXWqEimdaiQPaxZczgSkdUPgQp/5D1aART
+	csKY7kr55nxbamkrWCIw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mp52f-00FN4Y-Ku; Mon, 22 Nov 2021 08:51:13 +0000
+	id 1mp536-00FNMA-KY; Mon, 22 Nov 2021 08:51:41 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mp4zE-00FKzD-H7
- for barebox@lists.infradead.org; Mon, 22 Nov 2021 08:47:48 +0000
+ id 1mp4zK-00FL5H-Jj
+ for barebox@lists.infradead.org; Mon, 22 Nov 2021 08:47:49 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mp4zB-0007wN-8g; Mon, 22 Nov 2021 09:47:37 +0100
+ id 1mp4zA-0007wJ-Ut; Mon, 22 Nov 2021 09:47:36 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1mp4z9-00Atf2-Gv; Mon, 22 Nov 2021 09:47:35 +0100
+ id 1mp4z9-00Ateq-Cu; Mon, 22 Nov 2021 09:47:35 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 22 Nov 2021 09:47:14 +0100
-Message-Id: <20211122084732.2597109-13-a.fatoum@pengutronix.de>
+Date: Mon, 22 Nov 2021 09:47:10 +0100
+Message-Id: <20211122084732.2597109-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211122084732.2597109-1-a.fatoum@pengutronix.de>
 References: <20211122084732.2597109-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211122_004740_782449_AF697AC4 
-X-CRM114-Status: GOOD (  15.63  )
+X-CRM114-CacheID: sfid-20211122_004746_724128_6970E232 
+X-CRM114-Status: GOOD (  14.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,264 +72,187 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 12/30] efi: factor out errno translation
+Subject: [PATCH 08/30] common: move EFI code into new efi/ top level directory
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The errno translation will come in handy for the EFI loader support, so
-factor that out.
+So far, barebox EFI meant EFI payload support on x86. Upcoming changes
+will extend barebox to support EFI payload _and_ loader on ARM64.
+Prepare for this by renaming files and directories appropriately, so
+it's immediately clear whether a file is about paylaod, loader or common
+support.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/efi/Makefile       |  1 +
- common/efi/errno.c        | 90 +++++++++++++++++++++++++++++++++++++++
- common/efi/payload/init.c | 86 -------------------------------------
- include/efi/efi-util.h    | 10 +++++
- include/efi/efi.h         |  5 +--
- 5 files changed, 102 insertions(+), 90 deletions(-)
- create mode 100644 common/efi/errno.c
- create mode 100644 include/efi/efi-util.h
+ common/Kconfig                                   | 10 ++--------
+ common/Makefile                                  |  4 +---
+ common/efi/Kconfig                               | 16 ++++++++++++++++
+ common/efi/Makefile                              |  9 +++++----
+ common/{efi-devicepath.c => efi/devicepath.c}    |  0
+ common/{efi-guid.c => efi/guid.c}                |  0
+ common/efi/payload/Makefile                      |  6 ++++++
+ .../{ => payload}/env-efi/network/eth0-discover  |  0
+ common/efi/{efi-image.c => payload/image.c}      |  2 +-
+ common/efi/{efi.c => payload/init.c}             |  2 +-
+ common/efi/{efi-iomem.c => payload/iomem.c}      |  0
+ drivers/efi/Kconfig                              |  1 +
+ 12 files changed, 33 insertions(+), 17 deletions(-)
+ create mode 100644 common/efi/Kconfig
+ rename common/{efi-devicepath.c => efi/devicepath.c} (100%)
+ rename common/{efi-guid.c => efi/guid.c} (100%)
+ create mode 100644 common/efi/payload/Makefile
+ rename common/efi/{ => payload}/env-efi/network/eth0-discover (100%)
+ rename common/efi/{efi-image.c => payload/image.c} (99%)
+ rename common/efi/{efi.c => payload/init.c} (99%)
+ rename common/efi/{efi-iomem.c => payload/iomem.c} (100%)
 
+diff --git a/common/Kconfig b/common/Kconfig
+index f4120b2083ee..42240ae8411b 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -78,14 +78,6 @@ config MENUTREE
+ 	select GLOB
+ 	select GLOB_SORT
+ 
+-config EFI_GUID
+-	bool
+-	help
+-	  With this option a table of EFI guids is compiled in.
+-
+-config EFI_DEVICEPATH
+-	bool
+-
+ config ARCH_DMA_ADDR_T_64BIT
+ 	bool
+ 
+@@ -1538,6 +1530,8 @@ config COMPILE_TEST
+ 
+ endmenu
+ 
++source "common/efi/Kconfig"
++
+ config HAS_DEBUG_LL
+ 	bool
+ 
+diff --git a/common/Makefile b/common/Makefile
+index 4b45f678c7de..9ed279806a08 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -63,9 +63,7 @@ obj-$(CONFIG_BOOTCHOOSER)	+= bootchooser.o
+ obj-$(CONFIG_UIMAGE)		+= image.o uimage.o
+ obj-$(CONFIG_FITIMAGE)		+= image-fit.o
+ obj-$(CONFIG_MENUTREE)		+= menutree.o
+-obj-$(CONFIG_EFI_BOOTUP)	+= efi/
+-obj-$(CONFIG_EFI_GUID)		+= efi-guid.o
+-obj-$(CONFIG_EFI_DEVICEPATH)	+= efi-devicepath.o
++obj-$(CONFIG_EFI)		+= efi/
+ lwl-$(CONFIG_IMD)		+= imd-barebox.o
+ obj-$(CONFIG_IMD)		+= imd.o
+ obj-y				+= file-list.o
+diff --git a/common/efi/Kconfig b/common/efi/Kconfig
+new file mode 100644
+index 000000000000..a0565854c2f5
+--- /dev/null
++++ b/common/efi/Kconfig
+@@ -0,0 +1,16 @@
++# SPDX-License-Identifier: GPL-2.0
++
++menu "EFI (Extensible Firmware Interface) Support"
++
++config EFI
++	bool
++
++config EFI_GUID
++	bool
++	help
++	  With this option a table of EFI guids is compiled in.
++
++config EFI_DEVICEPATH
++	bool
++
++endmenu
 diff --git a/common/efi/Makefile b/common/efi/Makefile
-index 1ed5d45c1f5e..ed110f5a6899 100644
+index d746fabe2109..1ed5d45c1f5e 100644
 --- a/common/efi/Makefile
 +++ b/common/efi/Makefile
-@@ -3,3 +3,4 @@
- obj-$(CONFIG_EFI_BOOTUP)	+= payload/
- obj-$(CONFIG_EFI_GUID)		+= guid.o
- obj-$(CONFIG_EFI_DEVICEPATH)	+= devicepath.o
-+obj-y				+= errno.o
-diff --git a/common/efi/errno.c b/common/efi/errno.c
+@@ -1,4 +1,5 @@
+-obj-y += efi.o
+-obj-y += efi-image.o
+-bbenv-y += env-efi
+-obj-$(CONFIG_CMD_IOMEM) += efi-iomem.o
++# SPDX-License-Identifier: GPL-2.0-only
++
++obj-$(CONFIG_EFI_BOOTUP)	+= payload/
++obj-$(CONFIG_EFI_GUID)		+= guid.o
++obj-$(CONFIG_EFI_DEVICEPATH)	+= devicepath.o
+diff --git a/common/efi-devicepath.c b/common/efi/devicepath.c
+similarity index 100%
+rename from common/efi-devicepath.c
+rename to common/efi/devicepath.c
+diff --git a/common/efi-guid.c b/common/efi/guid.c
+similarity index 100%
+rename from common/efi-guid.c
+rename to common/efi/guid.c
+diff --git a/common/efi/payload/Makefile b/common/efi/payload/Makefile
 new file mode 100644
-index 000000000000..3bb68e7781e6
+index 000000000000..bcbdda335f06
 --- /dev/null
-+++ b/common/efi/errno.c
-@@ -0,0 +1,90 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/common/efi/payload/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
-+#include <efi/efi-util.h>
-+#include <errno.h>
-+
-+const char *efi_strerror(efi_status_t err)
-+{
-+	const char *str;
-+
-+	switch (err) {
-+	case EFI_SUCCESS: str = "Success"; break;
-+	case EFI_LOAD_ERROR: str = "Load Error"; break;
-+	case EFI_INVALID_PARAMETER: str = "Invalid Parameter"; break;
-+	case EFI_UNSUPPORTED: str = "Unsupported"; break;
-+	case EFI_BAD_BUFFER_SIZE: str = "Bad Buffer Size"; break;
-+	case EFI_BUFFER_TOO_SMALL: str = "Buffer Too Small"; break;
-+	case EFI_NOT_READY: str = "Not Ready"; break;
-+	case EFI_DEVICE_ERROR: str = "Device Error"; break;
-+	case EFI_WRITE_PROTECTED: str = "Write Protected"; break;
-+	case EFI_OUT_OF_RESOURCES: str = "Out of Resources"; break;
-+	case EFI_VOLUME_CORRUPTED: str = "Volume Corrupt"; break;
-+	case EFI_VOLUME_FULL: str = "Volume Full"; break;
-+	case EFI_NO_MEDIA: str = "No Media"; break;
-+	case EFI_MEDIA_CHANGED: str = "Media changed"; break;
-+	case EFI_NOT_FOUND: str = "Not Found"; break;
-+	case EFI_ACCESS_DENIED: str = "Access Denied"; break;
-+	case EFI_NO_RESPONSE: str = "No Response"; break;
-+	case EFI_NO_MAPPING: str = "No mapping"; break;
-+	case EFI_TIMEOUT: str = "Time out"; break;
-+	case EFI_NOT_STARTED: str = "Not started"; break;
-+	case EFI_ALREADY_STARTED: str = "Already started"; break;
-+	case EFI_ABORTED: str = "Aborted"; break;
-+	case EFI_ICMP_ERROR: str = "ICMP Error"; break;
-+	case EFI_TFTP_ERROR: str = "TFTP Error"; break;
-+	case EFI_PROTOCOL_ERROR: str = "Protocol Error"; break;
-+	case EFI_INCOMPATIBLE_VERSION: str = "Incompatible Version"; break;
-+	case EFI_SECURITY_VIOLATION: str = "Security Violation"; break;
-+	case EFI_CRC_ERROR: str = "CRC Error"; break;
-+	case EFI_END_OF_MEDIA: str = "End of Media"; break;
-+	case EFI_END_OF_FILE: str = "End of File"; break;
-+	case EFI_INVALID_LANGUAGE: str = "Invalid Language"; break;
-+	case EFI_COMPROMISED_DATA: str = "Compromised Data"; break;
-+	default: str = "unknown error";
-+	}
-+
-+	return str;
-+}
-+
-+int efi_errno(efi_status_t err)
-+{
-+	int ret;
-+
-+	switch (err) {
-+	case EFI_SUCCESS: ret = 0; break;
-+	case EFI_LOAD_ERROR: ret = EIO; break;
-+	case EFI_INVALID_PARAMETER: ret = EINVAL; break;
-+	case EFI_UNSUPPORTED: ret = ENOTSUPP; break;
-+	case EFI_BAD_BUFFER_SIZE: ret = EINVAL; break;
-+	case EFI_BUFFER_TOO_SMALL: ret = EINVAL; break;
-+	case EFI_NOT_READY: ret = EAGAIN; break;
-+	case EFI_DEVICE_ERROR: ret = EIO; break;
-+	case EFI_WRITE_PROTECTED: ret = EROFS; break;
-+	case EFI_OUT_OF_RESOURCES: ret = ENOMEM; break;
-+	case EFI_VOLUME_CORRUPTED: ret = EIO; break;
-+	case EFI_VOLUME_FULL: ret = ENOSPC; break;
-+	case EFI_NO_MEDIA: ret = ENOMEDIUM; break;
-+	case EFI_MEDIA_CHANGED: ret = ENOMEDIUM; break;
-+	case EFI_NOT_FOUND: ret = ENODEV; break;
-+	case EFI_ACCESS_DENIED: ret = EACCES; break;
-+	case EFI_NO_RESPONSE: ret = ETIMEDOUT; break;
-+	case EFI_NO_MAPPING: ret = EINVAL; break;
-+	case EFI_TIMEOUT: ret = ETIMEDOUT; break;
-+	case EFI_NOT_STARTED: ret = EINVAL; break;
-+	case EFI_ALREADY_STARTED: ret = EINVAL; break;
-+	case EFI_ABORTED: ret = EINTR; break;
-+	case EFI_ICMP_ERROR: ret = EINVAL; break;
-+	case EFI_TFTP_ERROR: ret = EINVAL; break;
-+	case EFI_PROTOCOL_ERROR: ret = EPROTO; break;
-+	case EFI_INCOMPATIBLE_VERSION: ret = EINVAL; break;
-+	case EFI_SECURITY_VIOLATION: ret = EINVAL; break;
-+	case EFI_CRC_ERROR: ret = EINVAL; break;
-+	case EFI_END_OF_MEDIA: ret = EINVAL; break;
-+	case EFI_END_OF_FILE: ret = EINVAL; break;
-+	case EFI_INVALID_LANGUAGE: ret = EINVAL; break;
-+	case EFI_COMPROMISED_DATA: ret = EINVAL; break;
-+	default: ret = EINVAL;
-+	}
-+
-+	return ret;
-+}
-diff --git a/common/efi/payload/init.c b/common/efi/payload/init.c
-index 0e672a6b56d2..5149b5b5d0d3 100644
---- a/common/efi/payload/init.c
++obj-y += init.o
++obj-y += image.o
++bbenv-y += env-efi
++obj-$(CONFIG_CMD_IOMEM) += iomem.o
+diff --git a/common/efi/env-efi/network/eth0-discover b/common/efi/payload/env-efi/network/eth0-discover
+similarity index 100%
+rename from common/efi/env-efi/network/eth0-discover
+rename to common/efi/payload/env-efi/network/eth0-discover
+diff --git a/common/efi/efi-image.c b/common/efi/payload/image.c
+similarity index 99%
+rename from common/efi/efi-image.c
+rename to common/efi/payload/image.c
+index bd1c58438e84..3c55a457eae3 100644
+--- a/common/efi/efi-image.c
++++ b/common/efi/payload/image.c
+@@ -1,5 +1,5 @@
+ /*
+- * efi-image.c - barebox EFI payload support
++ * image.c - barebox EFI payload support
+  *
+  * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+  *
+diff --git a/common/efi/efi.c b/common/efi/payload/init.c
+similarity index 99%
+rename from common/efi/efi.c
+rename to common/efi/payload/init.c
+index 7f12342cf91b..88d0bfa939ec 100644
+--- a/common/efi/efi.c
 +++ b/common/efi/payload/init.c
-@@ -163,92 +163,6 @@ static int misc_init(void)
- }
- late_initcall(misc_init);
- 
--const char *efi_strerror(efi_status_t err)
--{
--	const char *str;
--
--	switch (err) {
--	case EFI_SUCCESS: str = "Success"; break;
--	case EFI_LOAD_ERROR: str = "Load Error"; break;
--	case EFI_INVALID_PARAMETER: str = "Invalid Parameter"; break;
--	case EFI_UNSUPPORTED: str = "Unsupported"; break;
--	case EFI_BAD_BUFFER_SIZE: str = "Bad Buffer Size"; break;
--	case EFI_BUFFER_TOO_SMALL: str = "Buffer Too Small"; break;
--	case EFI_NOT_READY: str = "Not Ready"; break;
--	case EFI_DEVICE_ERROR: str = "Device Error"; break;
--	case EFI_WRITE_PROTECTED: str = "Write Protected"; break;
--	case EFI_OUT_OF_RESOURCES: str = "Out of Resources"; break;
--	case EFI_VOLUME_CORRUPTED: str = "Volume Corrupt"; break;
--	case EFI_VOLUME_FULL: str = "Volume Full"; break;
--	case EFI_NO_MEDIA: str = "No Media"; break;
--	case EFI_MEDIA_CHANGED: str = "Media changed"; break;
--	case EFI_NOT_FOUND: str = "Not Found"; break;
--	case EFI_ACCESS_DENIED: str = "Access Denied"; break;
--	case EFI_NO_RESPONSE: str = "No Response"; break;
--	case EFI_NO_MAPPING: str = "No mapping"; break;
--	case EFI_TIMEOUT: str = "Time out"; break;
--	case EFI_NOT_STARTED: str = "Not started"; break;
--	case EFI_ALREADY_STARTED: str = "Already started"; break;
--	case EFI_ABORTED: str = "Aborted"; break;
--	case EFI_ICMP_ERROR: str = "ICMP Error"; break;
--	case EFI_TFTP_ERROR: str = "TFTP Error"; break;
--	case EFI_PROTOCOL_ERROR: str = "Protocol Error"; break;
--	case EFI_INCOMPATIBLE_VERSION: str = "Incompatible Version"; break;
--	case EFI_SECURITY_VIOLATION: str = "Security Violation"; break;
--	case EFI_CRC_ERROR: str = "CRC Error"; break;
--	case EFI_END_OF_MEDIA: str = "End of Media"; break;
--	case EFI_END_OF_FILE: str = "End of File"; break;
--	case EFI_INVALID_LANGUAGE: str = "Invalid Language"; break;
--	case EFI_COMPROMISED_DATA: str = "Compromised Data"; break;
--	default: str = "unknown error";
--	}
--
--	return str;
--}
--
--int efi_errno(efi_status_t err)
--{
--	int ret;
--
--	switch (err) {
--	case EFI_SUCCESS: ret = 0; break;
--	case EFI_LOAD_ERROR: ret = EIO; break;
--	case EFI_INVALID_PARAMETER: ret = EINVAL; break;
--	case EFI_UNSUPPORTED: ret = ENOTSUPP; break;
--	case EFI_BAD_BUFFER_SIZE: ret = EINVAL; break;
--	case EFI_BUFFER_TOO_SMALL: ret = EINVAL; break;
--	case EFI_NOT_READY: ret = EAGAIN; break;
--	case EFI_DEVICE_ERROR: ret = EIO; break;
--	case EFI_WRITE_PROTECTED: ret = EROFS; break;
--	case EFI_OUT_OF_RESOURCES: ret = ENOMEM; break;
--	case EFI_VOLUME_CORRUPTED: ret = EIO; break;
--	case EFI_VOLUME_FULL: ret = ENOSPC; break;
--	case EFI_NO_MEDIA: ret = ENOMEDIUM; break;
--	case EFI_MEDIA_CHANGED: ret = ENOMEDIUM; break;
--	case EFI_NOT_FOUND: ret = ENODEV; break;
--	case EFI_ACCESS_DENIED: ret = EACCES; break;
--	case EFI_NO_RESPONSE: ret = ETIMEDOUT; break;
--	case EFI_NO_MAPPING: ret = EINVAL; break;
--	case EFI_TIMEOUT: ret = ETIMEDOUT; break;
--	case EFI_NOT_STARTED: ret = EINVAL; break;
--	case EFI_ALREADY_STARTED: ret = EINVAL; break;
--	case EFI_ABORTED: ret = EINTR; break;
--	case EFI_ICMP_ERROR: ret = EINVAL; break;
--	case EFI_TFTP_ERROR: ret = EINVAL; break;
--	case EFI_PROTOCOL_ERROR: ret = EPROTO; break;
--	case EFI_INCOMPATIBLE_VERSION: ret = EINVAL; break;
--	case EFI_SECURITY_VIOLATION: ret = EINVAL; break;
--	case EFI_CRC_ERROR: ret = EINVAL; break;
--	case EFI_END_OF_MEDIA: ret = EINVAL; break;
--	case EFI_END_OF_FILE: ret = EINVAL; break;
--	case EFI_INVALID_LANGUAGE: ret = EINVAL; break;
--	case EFI_COMPROMISED_DATA: ret = EINVAL; break;
--	default: ret = EINVAL;
--	}
--
--	return ret;
--}
--
- static struct NS16550_plat ns16550_plat = {
- 	.clock = 115200 * 16,
- };
-diff --git a/include/efi/efi-util.h b/include/efi/efi-util.h
-new file mode 100644
-index 000000000000..0645af270769
---- /dev/null
-+++ b/include/efi/efi-util.h
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __EFI_UTIL_H
-+#define __EFI_UTIL_H
-+
-+#include <efi.h>
-+
-+const char *efi_strerror(efi_status_t err);
-+int efi_errno(efi_status_t err);
-+
-+#endif
-diff --git a/include/efi/efi.h b/include/efi/efi.h
-index c7679b4b8f28..e77b1c5feb52 100644
---- a/include/efi/efi.h
-+++ b/include/efi/efi.h
-@@ -3,16 +3,13 @@
- #define __MACH_EFI_H
- 
- #include <efi.h>
--
--const char *efi_strerror(efi_status_t err);
-+#include <efi/efi-util.h>
- 
- extern efi_system_table_t *efi_sys_table;
- extern efi_handle_t efi_parent_image;
- extern struct efi_device_path *efi_device_path;
- extern efi_loaded_image_t *efi_loaded_image;
- 
--int efi_errno(efi_status_t err);
--
- void *efi_get_variable(char *name, efi_guid_t *vendor, int *var_size);
- 
- static inline void *efi_get_global_var(char *name, int *var_size)
+@@ -1,5 +1,5 @@
+ /*
+- * efi.c - barebox EFI payload support
++ * init.c - barebox EFI payload support
+  *
+  * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+  *
+diff --git a/common/efi/efi-iomem.c b/common/efi/payload/iomem.c
+similarity index 100%
+rename from common/efi/efi-iomem.c
+rename to common/efi/payload/iomem.c
+diff --git a/drivers/efi/Kconfig b/drivers/efi/Kconfig
+index dd3ac7525f9f..e8abc2709e26 100644
+--- a/drivers/efi/Kconfig
++++ b/drivers/efi/Kconfig
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ config EFI_BOOTUP
+ 	bool
++	select EFI
+ 	select BLOCK
+ 	select PARTITION_DISK
+ 	select HW_HAS_PCI
 -- 
 2.30.2
 
