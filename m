@@ -1,76 +1,62 @@
-Delivery-date: Fri, 19 Nov 2021 14:08:18 +0100
+Delivery-date: Mon, 22 Nov 2021 09:27:17 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mo3co-0007iV-3n
-	for lore@lore.pengutronix.de; Fri, 19 Nov 2021 14:08:18 +0100
+	id 1mp4fT-0002Xj-QK
+	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 09:27:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mo3cj-0001xM-LG
-	for lore@pengutronix.de; Fri, 19 Nov 2021 14:08:17 +0100
+	id 1mp4fS-0005cl-FA
+	for lore@pengutronix.de; Mon, 22 Nov 2021 09:27:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=WTxocfrTn3i9Hr1Zlh1+BoaXrw6d/Q9cl046rzhvl4o=; b=J+X4snBnFyoexQ
-	0n7XD3cDHyCuEEPA2NaG2BGMWxoEo/TqP84L9dvsMv4pH/9Xbkyqd1bw1VIvJTVLDQ4MwE8g7yu+X
-	kXFQ40SlPlnw5RCuBttDdj1aAHyBHeP/Mvoe5rwN3UdDFDtRRhvdPK6FHAmQaI1hzNXCNnARtiyCo
-	AfEsDlr2+GH0jzYfkozcyPSUfTtvM5uajBHL3tFr54RazM0HIUXidPC0ZKE3vcD8FXz6ZIm92CQ/J
-	SPr8TkH7bJBqHD6pYvpbZTnUPPHom0zF5dKBHtjgOC0gl179niURdYhtH8WdMir1wwYSuVGqmOFL4
-	KazJPsfAD1GUIodrt1PQ==;
+	List-Owner; bh=yfgH1bnJ310G/smlgMDZ95+3TqE8ylR7repUU73bMXY=; b=pEUGOsKFAvH2rK
+	BbhQMpjksaFUNGHHbGcA+6pMk9Vw/Z/N4ENfSsbJo5Hpdz3GFeZVjkcHoYLb7VZBHd5BtOB1JISPS
+	z6ZmzmD2MMSpCWrSa32sIu9nOuenxNWCTA38lcw9TJNE5xjqdlooSBOERSW9M/PYQfWUIELll/lfY
+	i1Pf8dVQidqE5kN8jygZB5zCADg8/8jVPC9Z+vRltMq3F0/qTB09Mp4WtvUtVkVtdLiFU35wN/8io
+	gKBgqYvE9X9AcBMaF+xduvHn9AqYED19wpFUHsQEBvXkL1XK8uDgsE9BECiHnYleUZISxFBMKmTo6
+	x+6vNN2h5FSHcoZ64YuA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mo3bA-00ARIX-1l; Fri, 19 Nov 2021 13:06:36 +0000
-Received: from cpanel.siel.si ([46.19.9.99])
+	id 1mp4dW-00FHQ3-7s; Mon, 22 Nov 2021 08:25:15 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mo3b4-00ARH3-B7
- for barebox@lists.infradead.org; Fri, 19 Nov 2021 13:06:32 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com; 
- s=default;
- h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=q11Gp+jfs9ae962QfC07CpGthxcEuE6pRL2dtow+y1s=; b=IPGNhuS6gOwumsCfV+LO6DkDwk
- gnT148gxtoED9+HpzPcVlt1bzmyXZeKa5RNHbJecuERCKNxjq6da7INKq1NeOfHgRqrk3LIVQvErC
- PU2B2T1Yhy7IHW1foHDh4Jy3he264jmFbY/KmnZ2fOa9/+WYtAXZev0Qvjnz1OTlBSlmhRt7LbFDX
- /H0o/Ow1pIPTklGgDpqi+x/T7ns50yDroc9JJ3VfQrQnC8iIFUbTuYNINQbKntZkAMxKHhxjCDHgj
- ixqGCGHlJqCNcCiQ8Xx7gP1q1tzs7ElrfRSlSDZniVb1jlrFAH6fxzmWsh2ktebjrilcQ0cmwlR6n
- FoIMhggA==;
-Received: from [89.212.21.243] (port=56938 helo=localhost.localdomain)
- by cpanel.siel.si with esmtpsa (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <andrej.picej@norik.com>) id 1mo3ax-00EYaJ-EI
- for barebox@lists.infradead.org; Fri, 19 Nov 2021 14:06:23 +0100
-From: Andrej Picej <andrej.picej@norik.com>
-To: barebox@lists.infradead.org
-Date: Fri, 19 Nov 2021 14:06:23 +0100
-Message-Id: <20211119130623.1948659-1-andrej.picej@norik.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <CAMHeXxPD9eOdamfmB84e76YtMrifo663zt7cnDN7Qd=iENQdfA@mail.gmail.com>
-References: <CAMHeXxPD9eOdamfmB84e76YtMrifo663zt7cnDN7Qd=iENQdfA@mail.gmail.com>
+ id 1mp4d7-00FHOD-UN
+ for barebox@lists.infradead.org; Mon, 22 Nov 2021 08:24:51 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mp4d6-0005Bz-BJ; Mon, 22 Nov 2021 09:24:48 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1mp4d5-00085K-Py; Mon, 22 Nov 2021 09:24:47 +0100
+Date: Mon, 22 Nov 2021 09:24:47 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
+Message-ID: <20211122082447.GS6556@pengutronix.de>
+References: <20211006223038.129681-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.infradead.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id:
- andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Disposition: inline
+In-Reply-To: <20211006223038.129681-1-antonynpavlov@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:14:52 up 277 days, 11:38, 112 users,  load average: 0.12, 0.23,
+ 0.22
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211119_050630_728445_4A2F396F 
-X-CRM114-Status: UNSURE (   5.47  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20211122_002450_033299_F46A3DFB 
+X-CRM114-Status: GOOD (  16.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,41 +76,32 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] regulator: fix memory leak
+Subject: Re: [PATCH] Documentation/boards/riscv.rst: fix code blocks
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Fix memory leak of propname.
+On Thu, Oct 07, 2021 at 01:30:38AM +0300, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  Documentation/boards/riscv.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
----
- drivers/regulator/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Splipped through the cracks, but better late than never:
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 097f7d779..c5cb9ee34 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -231,8 +231,10 @@ static struct regulator_internal *of_regulator_get(struct device_d *dev, const c
- 	}
- 
- 	ret = of_device_ensure_probed(node);
--	if (ret)
--		return ERR_PTR(ret);
-+	if (ret) {
-+		ri = ERR_PTR(ret);
-+		goto out;
-+	}
- 
- 	list_for_each_entry(ri, &regulator_list, list) {
- 		if (ri->node == node) {
+Applied, thanks
+
+Sascha
+
+
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
