@@ -1,15 +1,15 @@
-Delivery-date: Mon, 22 Nov 2021 09:59:19 +0100
+Delivery-date: Mon, 22 Nov 2021 10:11:41 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp5AV-0003tA-3s
-	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 09:59:19 +0100
+	id 1mp5MT-0004HN-5F
+	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 10:11:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp5AU-000349-4r
-	for lore@pengutronix.de; Mon, 22 Nov 2021 09:59:18 +0100
+	id 1mp5MS-0004xW-6x
+	for lore@pengutronix.de; Mon, 22 Nov 2021 10:11:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=6u0/lvgn3XIJvKJx15MxkbuUrB0YhpUngqgNBD327o0=; b=ZOTp7GRVez7IdLdwq1BTObrImg
-	6bT+j9rDU1omjo/HrdyQHu4L+jkC0wNpPO9ZfSbBbvL49rhsYKWQfkI9IFO+rGq4exAkAc+4Hab6G
-	U2Y92rt+poDIWFYp7BnAp+1byGlAtR2kL3P+HL+pXLahCg4VVGELyy+SZwtrdoICoaLUdBlDJN4CZ
-	VEJttOmtLWofY2NBdBcGr+MuLbZLdIR+0pdHKHAaKD+peWcLcn4q91iIj21j41TyQUmgJvzG7Gvtp
-	+PauDiraHK7kAKSmLOcY4PE7tIjqZLYlbAxbGVWMWnWboF201A1t6ooPEv7xVFQa+mdiLOg/q0cxu
-	2R8lHDVg==;
+	bh=2UKa2nDHl4Rro0BrNI5KXvzIgWtOsLkgwGJbHDBwv8c=; b=4qcqk8ay9ANg03Xhd9oLHyeFye
+	BEnwNv+c7FnatcUcR4arPz05eQ2XZwAOD3H/ffjRPGDrCvt/kFS+zCr2fqBtqXZqm5y2+rMxwstiJ
+	YoOc7Nn/yeo2J6GrMu1TPvVDPwEf8nZfnovajHFAQWTCO3kKD6XjfHcXquZr8Tt/kk/ZFpRANn0qK
+	VVAztfYxK005tiIP9C0LwtCivGtYtz/2aiuyEIaJQdZRggF5dCEb36BS/3McvwDjnhUE04lt6j785
+	ByZBrpJ6G54q09Iw5UgMks8TpXn15Mmx64WRxDqCZDm6ewGmmAargZxVGdDf0FtO3kABe1rF/AoXO
+	iM3rDEyg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mp59C-00FR7P-VS; Mon, 22 Nov 2021 08:57:59 +0000
+	id 1mp5Ky-00FUjf-FX; Mon, 22 Nov 2021 09:10:09 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mp56E-00FPfz-8P
- for barebox@lists.infradead.org; Mon, 22 Nov 2021 08:54:55 +0000
+ id 1mp5ID-00FU5J-AK
+ for barebox@lists.infradead.org; Mon, 22 Nov 2021 09:07:18 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mp56C-0002G1-Tq; Mon, 22 Nov 2021 09:54:52 +0100
+ id 1mp5IC-0004Ii-2h; Mon, 22 Nov 2021 10:07:16 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mp56C-00022D-LD; Mon, 22 Nov 2021 09:54:52 +0100
-Date: Mon, 22 Nov 2021 09:54:52 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20211122085452.GU6556@pengutronix.de>
-References: <20211117130044.2437471-1-a.fatoum@pengutronix.de>
+ id 1mp5IB-0003yu-Gc; Mon, 22 Nov 2021 10:07:15 +0100
+Date: Mon, 22 Nov 2021 10:07:15 +0100
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, David Jander <david@protonic.nl>
+Message-ID: <20211122090715.GV6556@pengutronix.de>
+References: <20211118134125.408959-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211117130044.2437471-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20211118134125.408959-1-o.rempel@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 09:54:38 up 277 days, 12:18, 141 users,  load average: 0.01, 0.09,
- 0.14
+X-Uptime: 10:06:47 up 277 days, 12:30, 142 users,  load average: 0.29, 0.28,
+ 0.21
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211122_005454_360629_A8BE05F8 
-X-CRM114-Status: GOOD (  19.06  )
+X-CRM114-CacheID: sfid-20211122_010717_399183_937DA7E8 
+X-CRM114-Status: GOOD (  17.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,24 +81,29 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] ARM64: qemu-virt: enable PCI support
+Subject: Re: [PATCH v2 1/2] arm: boards: Add support for PRTT1x STM32MP151
+ based boards
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Nov 17, 2021 at 02:00:43PM +0100, Ahmad Fatoum wrote:
-> We now have a driver for the PCI controller on QEMU, so define
-> HW_HAS_PCI. The barebox PCI implementation doesn't yet deal with 64-bit
-> addresses, so use -M virt,highmem=off by default.
+On Thu, Nov 18, 2021 at 02:41:24PM +0100, Oleksij Rempel wrote:
+> From: David Jander <david@protonic.nl>
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> - PRTT1A is a very simple 10Base-T1L Ethernet to 0-10V output converter
+>   module.
+> - PRTT1S is a CO2- and RH measurement module with 10Base-T1L and PoDL power
+>   sink.
+> - PRTT1C is a "white box switch" device, meant to control the other members
+>   of the PRTT1L family of devices, connected via 10Base-T1L and PoDL power.
+> 
+> Signed-off-by: David Jander <david@protonic.nl>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  arch/arm/Kconfig                    | 1 +
->  test/arm/qemu_virt64_defconfig.yaml | 2 +-
->  2 files changed, 2 insertions(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
