@@ -1,54 +1,55 @@
-Delivery-date: Mon, 22 Nov 2021 09:55:32 +0100
+Delivery-date: Mon, 22 Nov 2021 09:55:38 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp56q-0003jV-4c
-	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 09:55:32 +0100
+	id 1mp56w-0003k8-9h
+	for lore@lore.pengutronix.de; Mon, 22 Nov 2021 09:55:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mp56p-0002TG-71
-	for lore@pengutronix.de; Mon, 22 Nov 2021 09:55:31 +0100
+	id 1mp56v-0002V0-3P
+	for lore@pengutronix.de; Mon, 22 Nov 2021 09:55:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=dvjQU9cENSgLX5oPTta9igrCe1jd4BI7uC7KWcWxamQ=; b=OJmTlAZUKM1hjq
-	yyBgV3zGz9LvUaH85RFIAbuFow7Y7QKAJpwsqDacTPZujjVfGPr54TpxfAgRABuWXT82PShmJ3MY7
-	Maa5CGUfd5U0eh4hX1DcMxPJbp6q4lh/yDhDMTKwyWmxeBJtm+MP80aIJ7VNYWZnypviyvpuaLbMj
-	mzJDEDy+UaCWEo60Pd3PUC7ETpbZzPyB+m7X6TtV2RFGOan/3fvFmLUwLIwO9PI7srWhZBr2JOLYO
-	zItAyQ6Tzeqnpalt/DPFeeKasfkZAg3yLvcMnetdeCYXIKFeBNP30ecyTSl1k1kfmXxHiGwPhgq4d
-	S/4o6xECpG7h1FT27Syw==;
+	List-Owner; bh=dzF24SwgOhPvbXGB9bAyhMnJ+SMW7HBIhxrn0d9JqPM=; b=fffZns1AzO2Ha8
+	6ULTwRqtmVmL3vblguDcHK/C6SM8OVtsP95k2JC+Kkz46njnXTt4JQW5RcMoq2k0ofFTApEpDOnxw
+	79Zxt1uPJY5qSy+VVu0E276kt2Vzz2vlJW3C+EANxb3+sfaPVy5p3VBTUpZL/EDWJnRnHsO0JHv5X
+	ectp+lHQ3favecg24FVQzjwJnihIwpjvosIehkn0lf2I2gISC3cEcqZ3mq95YAsaXtGcAjsBfbEq3
+	6AVuaKo1f/SxIv9bSPMep6qauymLIczHyCWQy0cvEk1K9ZyzYLre2By31PHqpVwvC3Mc7FZuOTDZA
+	OT90+70FCSUUdw9VFkOQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mp55E-00FOnv-Jk; Mon, 22 Nov 2021 08:53:53 +0000
+	id 1mp54q-00FOeM-5n; Mon, 22 Nov 2021 08:53:28 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mp4zR-00FL9y-Ug
- for barebox@lists.infradead.org; Mon, 22 Nov 2021 08:47:55 +0000
+ id 1mp4zK-00FL5U-Vr
+ for barebox@lists.infradead.org; Mon, 22 Nov 2021 08:47:52 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mp4zA-0007wF-GX; Mon, 22 Nov 2021 09:47:36 +0100
+ id 1mp4zB-0007we-HF; Mon, 22 Nov 2021 09:47:37 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1mp4z9-00Atee-AF; Mon, 22 Nov 2021 09:47:35 +0100
+ id 1mp4z9-00AtfZ-Qv; Mon, 22 Nov 2021 09:47:35 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 22 Nov 2021 09:47:06 +0100
-Message-Id: <20211122084732.2597109-5-a.fatoum@pengutronix.de>
+Date: Mon, 22 Nov 2021 09:47:25 +0100
+Message-Id: <20211122084732.2597109-24-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211122084732.2597109-1-a.fatoum@pengutronix.de>
 References: <20211122084732.2597109-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211122_004754_023483_C548F899 
-X-CRM114-Status: GOOD (  10.14  )
+X-CRM114-CacheID: sfid-20211122_004747_161095_BC37823E 
+X-CRM114-Status: UNSURE (   7.67  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,41 +69,100 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 04/30] include: <linux/types.h>: wrap in #ifndef __ASSEMBLY__
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 23/30] efi: define and use new EFI_ERROR_MASK macro
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-While it makes no sense for assembly sources to include <linux/types.h>
-directly, it may be included transitively outside of an __ASSEMBLY__
-guard, thus wrap it completely in the __ASSEMBLY__ guard, just like
-Linux does.
+Future code may want to differentiate between warnings and errors, so
+add a new macro for the error mask and use it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/types.h | 2 ++
- 1 file changed, 2 insertions(+)
+ include/efi.h | 67 +++++++++++++++++++++++++++------------------------
+ 1 file changed, 35 insertions(+), 32 deletions(-)
 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 5716a4c92fac..dfef336c198b 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -1,5 +1,6 @@
- #ifndef _LINUX_TYPES_H
- #define _LINUX_TYPES_H
-+#ifndef __ASSEMBLY__
+diff --git a/include/efi.h b/include/efi.h
+index 51382f5bfea0..c20e7ad2b53a 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -23,38 +23,41 @@
  
- #include <linux/posix_types.h>
- #include <asm/types.h>
-@@ -213,4 +214,5 @@ struct hlist_node {
- 	struct hlist_node *next, **pprev;
- };
+ struct efi_device_path;
  
-+#endif
- #endif /* _LINUX_TYPES_H */
+-#define EFI_SUCCESS                             0
+-#define EFI_LOAD_ERROR                  ( 1 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_INVALID_PARAMETER           ( 2 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_UNSUPPORTED                 ( 3 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_BAD_BUFFER_SIZE             ( 4 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_BUFFER_TOO_SMALL            ( 5 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_NOT_READY                   ( 6 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_DEVICE_ERROR                ( 7 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_WRITE_PROTECTED             ( 8 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_OUT_OF_RESOURCES            ( 9 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_VOLUME_CORRUPTED            ( 10 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_VOLUME_FULL                 ( 11 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_NO_MEDIA                    ( 12 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_MEDIA_CHANGED               ( 13 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_NOT_FOUND                   ( 14 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_ACCESS_DENIED               ( 15 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_NO_RESPONSE                 ( 16 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_NO_MAPPING                  ( 17 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_TIMEOUT                     ( 18 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_NOT_STARTED                 ( 19 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_ALREADY_STARTED             ( 20 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_ABORTED                     ( 21 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_ICMP_ERROR                  ( 22 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_TFTP_ERROR                  ( 23 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_PROTOCOL_ERROR              ( 24 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_INCOMPATIBLE_VERSION        ( 25 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_SECURITY_VIOLATION          ( 26 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_CRC_ERROR                   ( 27 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_END_OF_MEDIA                ( 28 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_END_OF_FILE                 ( 31 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_INVALID_LANGUAGE            ( 32 | (1UL << (BITS_PER_LONG-1)))
+-#define EFI_COMPROMISED_DATA            ( 33 | (1UL << (BITS_PER_LONG-1)))
++/* Bit mask for EFI status code with error */
++#define EFI_ERROR_MASK (1UL << (BITS_PER_LONG-1))
++
++#define EFI_SUCCESS                       0
++#define EFI_LOAD_ERROR                  ( 1 | EFI_ERROR_MASK)
++#define EFI_INVALID_PARAMETER           ( 2 | EFI_ERROR_MASK)
++#define EFI_UNSUPPORTED                 ( 3 | EFI_ERROR_MASK)
++#define EFI_BAD_BUFFER_SIZE             ( 4 | EFI_ERROR_MASK)
++#define EFI_BUFFER_TOO_SMALL            ( 5 | EFI_ERROR_MASK)
++#define EFI_NOT_READY                   ( 6 | EFI_ERROR_MASK)
++#define EFI_DEVICE_ERROR                ( 7 | EFI_ERROR_MASK)
++#define EFI_WRITE_PROTECTED             ( 8 | EFI_ERROR_MASK)
++#define EFI_OUT_OF_RESOURCES            ( 9 | EFI_ERROR_MASK)
++#define EFI_VOLUME_CORRUPTED            (10 | EFI_ERROR_MASK)
++#define EFI_VOLUME_FULL                 (11 | EFI_ERROR_MASK)
++#define EFI_NO_MEDIA                    (12 | EFI_ERROR_MASK)
++#define EFI_MEDIA_CHANGED               (13 | EFI_ERROR_MASK)
++#define EFI_NOT_FOUND                   (14 | EFI_ERROR_MASK)
++#define EFI_ACCESS_DENIED               (15 | EFI_ERROR_MASK)
++#define EFI_NO_RESPONSE                 (16 | EFI_ERROR_MASK)
++#define EFI_NO_MAPPING                  (17 | EFI_ERROR_MASK)
++#define EFI_TIMEOUT                     (18 | EFI_ERROR_MASK)
++#define EFI_NOT_STARTED                 (19 | EFI_ERROR_MASK)
++#define EFI_ALREADY_STARTED             (20 | EFI_ERROR_MASK)
++#define EFI_ABORTED                     (21 | EFI_ERROR_MASK)
++#define EFI_ICMP_ERROR                  (22 | EFI_ERROR_MASK)
++#define EFI_TFTP_ERROR                  (23 | EFI_ERROR_MASK)
++#define EFI_PROTOCOL_ERROR              (24 | EFI_ERROR_MASK)
++#define EFI_INCOMPATIBLE_VERSION        (25 | EFI_ERROR_MASK)
++#define EFI_SECURITY_VIOLATION          (26 | EFI_ERROR_MASK)
++#define EFI_CRC_ERROR                   (27 | EFI_ERROR_MASK)
++#define EFI_END_OF_MEDIA                (28 | EFI_ERROR_MASK)
++#define EFI_END_OF_FILE                 (31 | EFI_ERROR_MASK)
++#define EFI_INVALID_LANGUAGE            (32 | EFI_ERROR_MASK)
++#define EFI_COMPROMISED_DATA            (33 | EFI_ERROR_MASK)
+ 
+ #define EFI_ERROR(a)	(((signed long) a) < 0)
+ 
 -- 
 2.30.2
 
