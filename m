@@ -1,63 +1,54 @@
-Delivery-date: Thu, 25 Nov 2021 08:51:24 +0100
+Delivery-date: Thu, 25 Nov 2021 17:08:49 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mq9XQ-0005eM-9q
-	for lore@lore.pengutronix.de; Thu, 25 Nov 2021 08:51:24 +0100
+	id 1mqHIn-0001XB-49
+	for lore@lore.pengutronix.de; Thu, 25 Nov 2021 17:08:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mq9XP-0007PC-En
-	for lore@pengutronix.de; Thu, 25 Nov 2021 08:51:24 +0100
+	id 1mqHIl-0000Bf-17
+	for lore@pengutronix.de; Thu, 25 Nov 2021 17:08:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=Nf1dkcltQ+TgWuXBpkRGtWYxZ3tP+j4elLMMSJSPk/s=; b=0sqIlNMbCifPBnWvYDqiKtWzVa
-	3YbjoW1lfps5qFLwpYPemP5RG3MFcFOX8YSgdjsz15YwBT8aDdtkslG96afdavUD3rqQplABHPoCp
-	+ELBWe+kkU//aK7ZZHSXVFLIh52aWNjcCPuBQVkybbz8bbhDuRVwkaGKFQDk2s2dyhKTcCIYK3vOG
-	6KQDewQI8Np7LQJoLN23qXJGeT6Zbu2ZJx/mtNWuz4IW80e7bq2QCsKTagfgwLRrAUfd+T4y3us8J
-	a25zPY6jpttFyghbE3esUIxefGd7mkxNiU74Pfln9BTKaJxydrtKbuv+5p489Lm97SXV/tslQji5B
-	RzJSZ1yQ==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=Y3WT9WxSCWVOQi22l25uKarAQLcnGgLwzHzBMlBaSD0=; b=pswxYMbXf3itga
+	G17syreASGhXpbEEWbTO0DeoU7uxGGoMbKrrqeL05kB09ZnFz7ioHqvD1HmmKsYonCfJzYe7plw7M
+	X/cq2fplVTn4IbzAbtpli/LMQlX5BxMBNPYOz8fSw9U4j/SaSdz5yB881oHpZk4Y5FQ2kCGTrncXP
+	4G6Nc2LV7iuMQ7cGPQ4pyvSrzXZYdfP/aKs55RqBajFPbpdTc3nNka7tQ1HANFDzJU3xohB3XfSeh
+	/1BnpknOGtn9ycT3ghgSsHH1eLunbU2ywvn993GSVJH2g6A2Ml6/YD/QNsyILIZAqn5sw/y3s/g9p
+	Rq1cACq/ACqBh+4PDbEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mq9WD-006dRU-UX; Thu, 25 Nov 2021 07:50:10 +0000
+	id 1mqHGp-008C23-UM; Thu, 25 Nov 2021 16:06:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mq9W8-006dQS-VO
- for barebox@lists.infradead.org; Thu, 25 Nov 2021 07:50:06 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1mqHGk-008C0n-PZ
+ for barebox@lists.infradead.org; Thu, 25 Nov 2021 16:06:44 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mq9W7-00073m-NI; Thu, 25 Nov 2021 08:50:03 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1mq9W7-0007dz-Dz; Thu, 25 Nov 2021 08:50:03 +0100
-Date: Thu, 25 Nov 2021 08:50:03 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20211125075003.GF28260@pengutronix.de>
-References: <20211030175926.2277259-1-a.fatoum@pengutronix.de>
+ (envelope-from <afa@pengutronix.de>)
+ id 1mqHGh-0008Qy-KI; Thu, 25 Nov 2021 17:06:39 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1mqHGh-00G3yw-3p; Thu, 25 Nov 2021 17:06:39 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 25 Nov 2021 17:06:37 +0100
+Message-Id: <20211125160637.3828394-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211125160637.3828394-1-a.fatoum@pengutronix.de>
+References: <20211125160637.3828394-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20211030175926.2277259-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 08:49:43 up 280 days, 11:13, 143 users,  load average: 0.10, 0.14,
- 0.16
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211124_235005_063458_83FD6BF3 
-X-CRM114-Status: GOOD (  18.90  )
+X-CRM114-CacheID: sfid-20211125_080642_855662_75F210F8 
+X-CRM114-Status: GOOD (  13.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,33 +72,58 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] driver: implement dev_err_probe()
+Subject: [PATCH 2/2] of: base: improve documentation of global exports
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sat, Oct 30, 2021 at 07:59:26PM +0200, Ahmad Fatoum wrote:
-> The function like it's Linux equivalent is meant to be used during
-> driver probe whenever an error occurs that would lead to aborting the
-> probe. This allows moving EPROBE_DEFER checks out of drivers and
-> in future could allow selectively compiling out only error probe
-> messages, as they are mainly interesting during bring up.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/base/driver.c  | 49 ++++++++++++++++++++++++++++++++++++++++++
->  include/linux/printk.h | 12 +++++++++++
->  2 files changed, 61 insertions(+)
+Most comments are probably from the initial Linux port. Fix some
+discrepancies and add docs for barebox-specific of_probe.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/of/base.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Sascha
-
-
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index ec4f9327036c..065265ec9756 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -171,8 +171,7 @@ static int of_alias_id_parse(const char *start, int *len)
+  * of_alias_scan - Scan all properties of 'aliases' node
+  *
+  * The function scans all the properties of 'aliases' node and populates
+- * the global lookup table with the properties.  It returns the
+- * number of alias_prop found, or error code in error case.
++ * the global lookup table with the properties.
+  */
+ void of_alias_scan(void)
+ {
+@@ -2354,6 +2353,13 @@ static const struct of_device_id reserved_mem_matches[] = {
+ 	{}
+ };
+ 
++/**
++ * of_probe - Probe unflattened device tree starting at of_get_root_node
++ *
++ * The function walks the device tree and creates devices as needed.
++ * With care, it can be called more than once, but if you really need that,
++ * consider first if deep probe would help instead.
++ */
+ int of_probe(void)
+ {
+ 	struct device_node *node;
+@@ -2727,8 +2733,6 @@ struct device_node *of_find_node_by_reproducible_name(struct device_node *from,
+  * of_graph_parse_endpoint() - parse common endpoint node properties
+  * @node: pointer to endpoint device_node
+  * @endpoint: pointer to the OF endpoint data structure
+- *
+- * The caller should hold a reference to @node.
+  */
+ int of_graph_parse_endpoint(const struct device_node *node,
+ 			    struct of_endpoint *endpoint)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 _______________________________________________
 barebox mailing list
