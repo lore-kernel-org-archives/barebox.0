@@ -1,51 +1,54 @@
-Delivery-date: Thu, 25 Nov 2021 17:12:44 +0100
+Delivery-date: Thu, 25 Nov 2021 17:12:49 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mqHMa-0001ix-R6
-	for lore@lore.pengutronix.de; Thu, 25 Nov 2021 17:12:44 +0100
+	id 1mqHMf-0001jT-J3
+	for lore@lore.pengutronix.de; Thu, 25 Nov 2021 17:12:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mqHMY-0001dR-J3
-	for lore@pengutronix.de; Thu, 25 Nov 2021 17:12:44 +0100
+	id 1mqHMe-0001fK-LZ
+	for lore@pengutronix.de; Thu, 25 Nov 2021 17:12:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=HWVURf5AbxYUVm1seW2N4vz3Gj8/hZYoe3iArzy8DXA=; b=f2gF8R9cPxCdJP
-	MPkZs6CAY8RM8l7+omnp/Cxf455pSxittx/fXYPG8RfWL7fcXo4SHx7IMABPx4yRzY9Zzu4kOJzkF
-	CVQUzeB9UEFzJOvoFxxUnz0XjUITqZ7mi+WKR9VB6fCm70ngeLhhvovUGyfRQ8ITG1HhmOrUfBO7i
-	LS0QbGJaOFCd4xGScLrn786sQQ1+tZnb8ow0sPbQfn0T9ujZn/X6job6fsC1sHSiFSOmurg351Rfq
-	/+WE1/88fdPjkrjzoYWywtAuQX60DXpYHFzETZr2SRZS15bQ0nZPREDEMc/dS4WmGrJL3S/3Et3VQ
-	BNzU/lY1mWwUvQL+H4fg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=eIK5DxcYgLkEUD/OVQkKYpqpp7/rHXHP+B4/AmPr7gc=; b=RUagEN92MKgojD
+	DW6qRhKvc3uaLAnuEaURtgwS2tHDosmadBbtgziAKurCPV/zU2lzzhIqcLD3Ob5hBYKl9u7+ZDpnT
+	mI/ZFAf/XvaxWRp337vBWC+MCGcO7vndII8NpN5VGCAByz7UTBSubOoWWxDWJWzy+pOlYLKw1I4z+
+	7unmKwUIDgFsVzRFQNK6GKx9G1nCSOqEyOzGTQBl4Nqb+SRJJSAsw3WpeIXIQ2LrJ88yMJgVQf/MU
+	iknXKlnAhTFm/4KcNgpjnusYCKEBC2+FsSMANX4wXmpBCi7WJvwEt0xmn7wpKEQzt8wg9MLwhUHfZ
+	MpCnq4L9vcWFPNBitoAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mqHKn-008DTK-Kt; Thu, 25 Nov 2021 16:10:53 +0000
+	id 1mqHKw-008DX5-Uc; Thu, 25 Nov 2021 16:11:03 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mqHKg-008DPg-Ss
- for barebox@lists.infradead.org; Thu, 25 Nov 2021 16:10:48 +0000
+ id 1mqHKh-008DPx-QB
+ for barebox@lists.infradead.org; Thu, 25 Nov 2021 16:10:50 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1mqHKe-0000be-Ct
- for barebox@lists.infradead.org; Thu, 25 Nov 2021 17:10:44 +0100
+ (envelope-from <afa@pengutronix.de>)
+ id 1mqHKe-0000bi-N2; Thu, 25 Nov 2021 17:10:44 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>) id 1mqHKd-00G4Wu-Nl
- for barebox@lists.infradead.org; Thu, 25 Nov 2021 17:10:43 +0100
+ (envelope-from <afa@pengutronix.de>)
+ id 1mqHKd-00G4X2-S7; Thu, 25 Nov 2021 17:10:43 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 25 Nov 2021 17:10:35 +0100
-Message-Id: <20211125161042.3829996-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 25 Nov 2021 17:10:38 +0100
+Message-Id: <20211125161042.3829996-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211125161042.3829996-1-a.fatoum@pengutronix.de>
+References: <20211125161042.3829996-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211125_081046_974034_13E14333 
-X-CRM114-Status: GOOD (  11.47  )
+X-CRM114-CacheID: sfid-20211125_081047_875147_7A3A63FE 
+X-CRM114-Status: GOOD (  10.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,50 +72,42 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/7] ARM/RISC-V: qemu-virt: share common cleaned up state/env
- support
+Subject: [PATCH 3/7] of: overlay: rescan aliases calling of_overlay_apply_tree
+ on live tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-ARM QEMU Virt has support for environment/state. Make this available in
-RISC-V as well, while cleaning up the code a bit and fixing a bug due to
-too early of_probe at pure_initcall level.
+Couple of drivers in-tree, like state, depend on aliases for correct
+operation. If state node is added via overlay and oftree -p is called,
+driver would start probing, but fail because aliases weren't reloaded.
 
-Ahmad Fatoum (7):
-  state: mark state init errors specially
-  state: make first boot less verbose
-  of: overlay: rescan aliases calling of_overlay_apply_tree on live tree
-  ARM: qemu: enable deep probe support
-  ARM: qemu: move board code to central location
-  common: boards: qemu-virt: genericize to support non-ARM architectures
-  RISC-V: qemu-virt: add overlay for environment and state
+Fix this corner case by always just calling of_alias_scan() on every
+successful of_overlay_apply_tree to the live tree. No functional change
+yet, as the only user of this function is overlay application code of
+ARM QEMU machine, which happens at pure_initcall level, making
+of_alias_scan a no-op. Follow-up commit will move overlay application to
+happen after device tree is registered, necessitating this change.
 
- arch/arm/Kconfig                              |  1 +
- arch/arm/boards/Makefile                      |  1 -
- arch/arm/boards/qemu-virt/Makefile            |  1 -
- arch/riscv/Kconfig.socs                       | 10 +++
- arch/riscv/configs/virt32_defconfig           |  4 ++
- arch/riscv/configs/virt64_defconfig           |  4 ++
- common/Kconfig                                |  2 +
- common/Makefile                               |  1 +
- common/boards/Kconfig                         |  4 ++
- common/boards/Makefile                        |  3 +
- common/boards/qemu-virt/Makefile              |  7 +++
- {arch/arm => common}/boards/qemu-virt/board.c | 61 ++++++++-----------
- .../boards/qemu-virt/overlay-of-flash.dts     | 13 +++-
- common/state/backend_format_raw.c             |  7 +--
- common/state/backend_storage.c                | 17 +++---
- common/state/state.c                          |  4 +-
- common/state/state.h                          | 14 +++++
- drivers/misc/state.c                          |  4 +-
- drivers/of/overlay.c                          |  4 ++
- 19 files changed, 110 insertions(+), 52 deletions(-)
- create mode 100644 common/boards/Kconfig
- create mode 100644 common/boards/Makefile
- create mode 100644 common/boards/qemu-virt/Makefile
- rename {arch/arm => common}/boards/qemu-virt/board.c (64%)
- rename {arch/arm => common}/boards/qemu-virt/overlay-of-flash.dts (83%)
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/of/overlay.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+index e6f6634d6042..20a43f5170c8 100644
+--- a/drivers/of/overlay.c
++++ b/drivers/of/overlay.c
+@@ -199,6 +199,10 @@ int of_overlay_apply_tree(struct device_node *root,
+ 			pr_warn("failed to apply %s\n", fragment->name);
+ 	}
+ 
++	/* We are patching the live tree, reload aliases */
++	if (root == of_get_root_node())
++		of_alias_scan();
++
+ out_err:
+ 	of_delete_node(resolved);
+ 
 -- 
 2.30.2
 
