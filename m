@@ -1,52 +1,52 @@
-Delivery-date: Thu, 25 Nov 2021 17:09:09 +0100
+Delivery-date: Thu, 25 Nov 2021 17:09:33 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mqHJ7-0001Y8-En
-	for lore@lore.pengutronix.de; Thu, 25 Nov 2021 17:09:09 +0100
+	id 1mqHJV-0001ZI-0v
+	for lore@lore.pengutronix.de; Thu, 25 Nov 2021 17:09:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mqHJ4-0000EQ-OV
-	for lore@pengutronix.de; Thu, 25 Nov 2021 17:09:09 +0100
+	id 1mqHJT-0000IF-ST
+	for lore@pengutronix.de; Thu, 25 Nov 2021 17:09:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
 	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=664RvT5/K9mxjYipOjtQ1fp98GsbtIbPm0gd2kPFL1U=; b=1+m6+kjON8aEjM
-	A36Ru2UdkEsCoEb/DZwbDDnXkhdgyDiWtjvjXPLdTyGw8CMikh2LVAZbV3IOz2DwDxyBX4gnN3DU+
-	cflKn2V0150K5VPkbCU85zwjYMbWNtnWjmGj8YUgqZggZ2Fi/wu9gYIuUx3B5gyqNI2RxTrO827A5
-	JWbfUlnHXlH64lxUqTZfb3qp3fDFy9O+GnnfWHTmVFZoC20ynLMFMml+c+DDt8nWOnqWMrPF3w0Zq
-	lH23SVGEniPumoBQ57dqIAhTBqfwLetGDgiToaxmtlh6Aof7zb/JNhMl0auaKTqepSkzSn29Us4C8
-	GyoWne31suBbmmdAwGBg==;
+	List-Owner; bh=FXlwZLuYErrPSi4Xjwh7paR9RPebT3lSqGwf9OQCwQs=; b=2OMl1zStdNOps6
+	hrjgJFsq9sztW1Ood2X1EGf7dDf1J7obTGzADl6gpvRk/G+d1rU1x4IHggsfL0nh6kFbu/ji/RmjN
+	yyfIa4s/TONWBGyvT0ZsQa9PbLK7pFWCxUcWpVm+b5pUmSx5l6/jhcvWSIudHwQC7kVQa7+6qCyc2
+	SRrmUoiPPDMmCGKZRktrEJyyN+79qnFbq0V1urbsfrPUV9mrWmnL4J8Z2HefO7iKKXFje1iA9B0Fp
+	vUqzTgw2L4b7eJ1wtPJDNUZBoBu2ONhudBtLKVfzidwBI//DmTSjh5VlsBf9yHQODlIBWLcu3gt+Y
+	oDKiH1W4duW/GFRcN1EA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mqHH8-008C8X-6Z; Thu, 25 Nov 2021 16:07:06 +0000
+	id 1mqHGm-008C1C-TK; Thu, 25 Nov 2021 16:06:44 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mqHH1-008C78-RQ
- for barebox@lists.infradead.org; Thu, 25 Nov 2021 16:07:01 +0000
+ id 1mqHGh-008C0L-Jf
+ for barebox@lists.infradead.org; Thu, 25 Nov 2021 16:06:40 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mqHH0-0008SQ-Et; Thu, 25 Nov 2021 17:06:58 +0100
+ id 1mqHGg-0008Qm-Bv; Thu, 25 Nov 2021 17:06:38 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1mqHGz-00G41P-Uv; Thu, 25 Nov 2021 17:06:57 +0100
+ id 1mqHGf-00G3ys-RR; Thu, 25 Nov 2021 17:06:37 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 25 Nov 2021 17:06:57 +0100
-Message-Id: <20211125160657.3828643-1-a.fatoum@pengutronix.de>
+Date: Thu, 25 Nov 2021 17:06:36 +0100
+Message-Id: <20211125160637.3828394-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211125_080659_907234_860EEF59 
-X-CRM114-Status: GOOD (  10.89  )
+X-CRM114-CacheID: sfid-20211125_080639_681697_047D3C3E 
+X-CRM114-Status: GOOD (  10.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,75 +70,39 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] RISC-V: virt: add DEBUG_LL support
+Subject: [PATCH 1/2] of: skip machine device creation on subsequent of_probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-While we have PBL console support, console isn't available during early
-barebox startup. Implement DEBUG_LL for Qemu RISC-V Virt to make such
-early debugging easier.
+of_probe may be called more than once, e.g. after oftree -p or by board
+code after fixing up device tree. This currently leads to a harmless,
+but annoying error message about machine already being registered.
+
+Avoid this by creating the device only once.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/riscv/Kconfig.socs           |  1 +
- arch/riscv/include/asm/debug_ll.h | 10 ++++++++--
- common/Kconfig                    |  5 +++++
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/of/base.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-index bd4a44a575ef..b12c795041b0 100644
---- a/arch/riscv/Kconfig.socs
-+++ b/arch/riscv/Kconfig.socs
-@@ -18,6 +18,7 @@ config SOC_VIRT
- 	select RISCV_S_MODE
- 	select BOARD_RISCV_GENERIC_DT
- 	select HAS_CACHE
-+	select HAS_ASM_DEBUG_LL
- 	help
- 	  Generates an image tht can be be booted by QEMU. The image is called
- 	  barebox-dt-2nd.img
-diff --git a/arch/riscv/include/asm/debug_ll.h b/arch/riscv/include/asm/debug_ll.h
-index a3b9c1c4bcfb..d01b4f09b8e1 100644
---- a/arch/riscv/include/asm/debug_ll.h
-+++ b/arch/riscv/include/asm/debug_ll.h
-@@ -17,13 +17,19 @@
- #if defined CONFIG_DEBUG_ERIZO
- #define DEBUG_LL_UART_ADDR	0x90000000
- #define DEBUG_LL_UART_CLK       (24000000 / 16)
-+#define DEBUG_LL_UART_SHIFT	2
-+#define DEBUG_LL_UART_IOSIZE32
- #elif defined CONFIG_DEBUG_STARFIVE
- #define DEBUG_LL_UART_ADDR	0x12440000
- #define DEBUG_LL_UART_CLK       (100000000 / 16)
--#endif
--
- #define DEBUG_LL_UART_SHIFT	2
- #define DEBUG_LL_UART_IOSIZE32
-+#elif defined CONFIG_DEBUG_RISCV_VIRT
-+#define DEBUG_LL_UART_ADDR	0x10000000
-+#define DEBUG_LL_UART_CLK       (58982400  / 16)
-+#define DEBUG_LL_UART_SHIFT	0
-+#define DEBUG_LL_UART_IOSIZE8
-+#endif
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 910348fb81b9..ec4f9327036c 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2333,9 +2333,12 @@ mem_initcall(of_probe_memory);
  
- #define DEBUG_LL_UART_BPS       CONFIG_BAUDRATE
- #define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
-diff --git a/common/Kconfig b/common/Kconfig
-index f4120b2083ee..ab6258d90f40 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1402,6 +1402,11 @@ config DEBUG_STARFIVE
- 	depends on SOC_STARFIVE
- 	select DEBUG_LL_NS16550
+ static void of_platform_device_create_root(struct device_node *np)
+ {
+-	struct device_d *dev;
++	static struct device_d *dev;
+ 	int ret;
  
-+config DEBUG_RISCV_VIRT
-+	bool "RISC-V Virt ns16550 port"
-+	depends on SOC_VIRT
-+	select DEBUG_LL_NS16550
++	if (dev)
++		return;
 +
- config DEBUG_SIFIVE
- 	bool "SiFive serial0 port"
- 	depends on SOC_SIFIVE
+ 	dev = xzalloc(sizeof(*dev));
+ 	dev->id = DEVICE_ID_SINGLE;
+ 	dev->device_node = np;
 -- 
 2.30.2
 
