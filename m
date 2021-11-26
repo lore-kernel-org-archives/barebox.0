@@ -1,54 +1,52 @@
-Delivery-date: Thu, 25 Nov 2021 17:13:18 +0100
+Delivery-date: Fri, 26 Nov 2021 14:33:12 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mqHN8-0001m8-HQ
-	for lore@lore.pengutronix.de; Thu, 25 Nov 2021 17:13:18 +0100
+	id 1mqbLk-0001b4-Uc
+	for lore@lore.pengutronix.de; Fri, 26 Nov 2021 14:33:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mqHN6-0001lg-5C
-	for lore@pengutronix.de; Thu, 25 Nov 2021 17:13:18 +0100
+	id 1mqbLk-0006SN-1m
+	for lore@pengutronix.de; Fri, 26 Nov 2021 14:33:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=epEMPO4MvHMPj3vlQ8IA3V93CYoNm2rUP7rc+1sl70s=; b=B16VgYG9wohCAv
-	Bs/uE1jUNntucDkw7tsX3AvaH0mJyxZqgR0HtwXD9lSB7dSfGQzi3ZVQPnuozPO8rS9mjAAznUOuR
-	JZyb8psQSFLc6TNJgJgQaVMF/cpxMnZZFzlNkU60Qw9EYcT5ykToktQ3Ym8csp7lLh7atnWLjzj9F
-	x/5vSagabhsNxX6dnKNKLL5SPpB7OJ1eFFbHz5zYOLCE9KEmoeefuvqOgtCU5UlSFPV/orkBP2MRY
-	BtOE1c9w5v9k3ueY2Z9+1+4C1DUSJ1uEekAeq3JIsRG8DhSNLdi4T5QPOpc+UaXgxNa3Yuf0ecQog
-	jxhUYHXr3GlbbpKDRdgA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=cJnhuLqzqyKkzHBnIkgCjHX0XpCJ+ZPsTqy2/e0JoMc=; b=K0JIUl11aW84Mu
+	+Xb/bKzqMV6NmgJlD8B0nX7g5P93nAQOo7MEqiG1uDwDB37jjCxWdcOPkxS7hy+9tTaGpmoiBXb1s
+	oizxH7VC4WagbwiCtI7NlXi3Xnr0HUlpEk5dw9+0nIHo2tNGdUgFwUBC48x2fO3RK6vo1iG3aPsUz
+	Prlx/AWm3HN7/XeS2zuaZtdZpky6ot4rwYb6Mqgr6JZTiB4R+MB9qHzeF54h58mHBhgNPNI4+Bu6O
+	E0yOLKaWwGUXh/zMh4PZ0bvWwoFWAQah6KKLVgw6tcuENb15Z4KC0Z783omXY5ris02/nztJA5V9g
+	FP3oGCCkkEdB2P+hAnfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mqHLF-008DiU-SY; Thu, 25 Nov 2021 16:11:21 +0000
+	id 1mqbJu-00AbVr-Fg; Fri, 26 Nov 2021 13:31:18 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mqHKq-008DUo-BZ
- for barebox@lists.infradead.org; Thu, 25 Nov 2021 16:10:58 +0000
+ id 1mqbJp-00AbUP-DF
+ for barebox@lists.infradead.org; Fri, 26 Nov 2021 13:31:14 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1mqHKe-0000bg-Qx; Thu, 25 Nov 2021 17:10:44 +0100
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>)
- id 1mqHKd-00G4Wz-Qf; Thu, 25 Nov 2021 17:10:43 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ (envelope-from <ore@pengutronix.de>)
+ id 1mqbJm-0006C9-23; Fri, 26 Nov 2021 14:31:10 +0100
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <ore@pengutronix.de>)
+ id 1mqbJl-00CbLC-E2; Fri, 26 Nov 2021 14:31:09 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 25 Nov 2021 17:10:37 +0100
-Message-Id: <20211125161042.3829996-3-a.fatoum@pengutronix.de>
+Cc: David Jander <david@protonic.nl>, Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 26 Nov 2021 14:31:08 +0100
+Message-Id: <20211126133108.3003431-1-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211125161042.3829996-1-a.fatoum@pengutronix.de>
-References: <20211125161042.3829996-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211125_081056_451920_DCE8B535 
-X-CRM114-Status: GOOD (  16.68  )
+X-CRM114-CacheID: sfid-20211126_053113_479196_918A8991 
+X-CRM114-Status: GOOD (  13.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,163 +66,81 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/7] state: make first boot less verbose
+Subject: [PATCH v1] nvmem: bsec.c: Use SMC_READ_OTP in stm32_bsec_read_mac()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-First boot with uninitialized state is needlessly verbose:
+From: David Jander <david@protonic.nl>
 
-  state: New state registered 'state'
-  state: Detected old on-storage format
-  ERROR: state: Error, invalid header crc in raw format, calculated 0x7bd5c66f, found 0x00000000
-  state: Ignoring broken bucket 0@0x00000000...
-  state: Detected old on-storage format
-  ERROR: state: Error, invalid header crc in raw format, calculated 0x7bd5c66f, found 0x00000000
-  state: Ignoring broken bucket 1@0x00040000...
-  state: Detected old on-storage format
-  ERROR: state: Error, invalid header crc in raw format, calculated 0x7bd5c66f, found 0x00000000
-  state: Ignoring broken bucket 2@0x00080000...
-  ERROR: state: Failed to find any valid state copy in any bucket
-  ERROR: state: Failed to read state with format raw, -2
+TF-A (version >= v2.4?) apparently does not copy all of OTP to shadow
+registers so reading the MAC address area will read all-zeroes.
+Make sure to read the _real_ OTP register in this case.
 
-This has confused barebox-state novices more than once. Let's handle
-the zeroed state case specially and reduce output in that case, so
-it now looks like this:
-
-  state: New state registered 'state'
-  state: Detected old on-storage format
-  state: Detected old on-storage format
-  state: Detected old on-storage format
-  state state.of: Fresh state detected, continuing with defaults
-
-This is only the output when CRC is zero (hinting at zeroed state
-partition). If crc != zero, then output is a little more verbose than
-before:
-
-  state: New state registered 'state'
-  state: Detected old on-storage format
-  ERROR: state: init error: Invalid argument: header crc in raw format, calculated 0x7bd5c66f, found 0x00000000
-  state: Ignoring broken bucket 0@0x00000000...
-  state: Detected old on-storage format
-  ERROR: state: init error: Invalid argument: header crc in raw format, calculated 0x7bd5c66f, found 0x00000000
-  state: Ignoring broken bucket 1@0x00040000...
-  state: Detected old on-storage format
-  ERROR: state: init error: Invalid argument: header crc in raw format, calculated 0x7bd5c66f, found 0x00000000
-  state: Ignoring broken bucket 2@0x00080000...
-  ERROR: state: init error: No such file or directory: no valid state copy in any bucket
-  ERROR: state: init error: No such file or directory: format raw read failed
-  WARNING: state state.of: Failed to load persistent state, continuing with defaults, -2
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: David Jander <david@protonic.nl>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/state/backend_format_raw.c |  6 +++---
- common/state/backend_storage.c    | 12 +++++++++---
- common/state/state.h              |  9 ++++++++-
- drivers/misc/state.c              |  4 +++-
- 4 files changed, 23 insertions(+), 8 deletions(-)
+ drivers/nvmem/bsec.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/common/state/backend_format_raw.c b/common/state/backend_format_raw.c
-index aeee41d07ce9..1fecdeb9cf57 100644
---- a/common/state/backend_format_raw.c
-+++ b/common/state/backend_format_raw.c
-@@ -115,10 +115,10 @@ static int backend_format_raw_verify(struct state_backend_format *format,
+diff --git a/drivers/nvmem/bsec.c b/drivers/nvmem/bsec.c
+index d9b38c8414..a31eff7358 100644
+--- a/drivers/nvmem/bsec.c
++++ b/drivers/nvmem/bsec.c
+@@ -82,20 +82,27 @@ static void stm32_bsec_set_unique_machine_id(struct regmap *map)
+ 	machine_id_set_hashable(unique_id, sizeof(unique_id));
+ }
  
- 	header = (struct backend_raw_header *)buf;
- 	crc = crc32(0, header, sizeof(*header) - sizeof(uint32_t));
--	if (crc != header->header_crc) {
--		return dev_err_state_init(backend_raw->dev, -EINVAL, "header crc in raw format, calculated 0x%08x, found 0x%08x\n",
-+	if (crc != header->header_crc)
-+		return dev_err_state_init(backend_raw->dev, header->header_crc ? -EINVAL : -ENOMEDIUM,
-+			"header crc in raw format, calculated 0x%08x, found 0x%08x\n",
- 			crc, header->header_crc);
--	}
- 
- 	if (magic && magic != header->magic) {
- 		dev_err(backend_raw->dev, "Error, invalid magic in raw format 0x%08x, should be 0x%08x\n",
-diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
-index 2d7d9a4a63c0..72f8bcf521ad 100644
---- a/common/state/backend_storage.c
-+++ b/common/state/backend_storage.c
-@@ -144,6 +144,7 @@ int state_storage_read(struct state_backend_storage *storage,
- 		       enum state_flags flags)
+-static int stm32_bsec_read_mac(struct regmap *map, int offset, u8 *mac)
++static int stm32_bsec_read_mac(struct bsec_priv *priv, int offset, u8 *mac)
  {
- 	struct state_backend_storage_bucket *bucket, *bucket_used = NULL;
-+	int zerobuckets = 0, totalbuckets = 0;
+-	u8 res[8];
++	u32 val[2];
  	int ret;
  
- 	dev_dbg(storage->dev, "Checking redundant buckets...\n");
-@@ -152,6 +153,8 @@ int state_storage_read(struct state_backend_storage *storage,
- 	 * one we want to use.
- 	 */
- 	list_for_each_entry(bucket, &storage->buckets, bucket_list) {
-+		totalbuckets++;
-+
- 		ret = bucket->read(bucket, &bucket->buf, &bucket->len);
- 		if (ret == -EUCLEAN)
- 			bucket->needs_refresh = 1;
-@@ -163,16 +166,19 @@ int state_storage_read(struct state_backend_storage *storage,
- 		 * .verify overwrites it with the length actually used.
- 		 */
- 		ret = format->verify(format, magic, bucket->buf, &bucket->len, flags);
--		if (!ret && !bucket_used)
-+		if (ret == -ENOMEDIUM)
-+			zerobuckets++;
-+		else if (!ret && !bucket_used)
- 			bucket_used = bucket;
--		if (ret)
-+		else if (ret)
- 			dev_info(storage->dev, "Ignoring broken bucket %d@0x%08llx...\n", bucket->num, (long long) bucket->offset);
- 	}
+-	ret = regmap_bulk_read(map, offset * 4, res, 8);
++	/* Some TF-A does not copy all of OTP into shadow registers, so make
++	 * sure we read the _real_ OTP bits here.
++	 */
++	ret = bsec_smc(priv, BSEC_SMC_READ_OTP, offset * 4, 0, &val[0]);
++	if (ret)
++		return ret;
++	ret = bsec_smc(priv, BSEC_SMC_READ_OTP, offset * 4 + 4, 0, &val[1]);
+ 	if (ret)
+ 		return ret;
  
- 	dev_dbg(storage->dev, "Checking redundant buckets finished.\n");
- 
- 	if (!bucket_used)
--		return dev_err_state_init(storage->dev, -ENOENT, "no valid state copy in any bucket\n");
-+		return dev_err_state_init(storage->dev, zerobuckets == totalbuckets ? -ENOMEDIUM : -ENOENT,
-+					  "no valid state copy in any bucket\n");
- 
- 	dev_info(storage->dev, "Using bucket %d@0x%08llx\n", bucket_used->num, (long long) bucket_used->offset);
- 
-diff --git a/common/state/state.h b/common/state/state.h
-index d858c9e42735..48572c5d4137 100644
---- a/common/state/state.h
-+++ b/common/state/state.h
-@@ -268,8 +268,15 @@ static inline int state_string_copy_to_raw(struct state_string *string,
+-	memcpy(mac, res, ETH_ALEN);
++	memcpy(mac, val, ETH_ALEN);
  	return 0;
  }
  
-+#ifdef DEBUG
-+#define MSG_STATE_ZERO_INIT	MSG_INFO
-+#else
-+#define MSG_STATE_ZERO_INIT	MSG_DEBUG
-+#endif
-+
- #define dev_err_state_init(dev, ret, fmt, ...) ({ \
- 	int __ret = (ret); \
--	dev_err((dev), "init error: %pe: " fmt, ERR_PTR(__ret), ##__VA_ARGS__); \
-+	__dev_printf(__ret == -ENOMEDIUM ? MSG_STATE_ZERO_INIT : MSG_ERR, \
-+		     (dev), "init error: %pe: " fmt, ERR_PTR(__ret), ##__VA_ARGS__); \
- 	__ret; \
- })
-diff --git a/drivers/misc/state.c b/drivers/misc/state.c
-index 5da8e4ef915a..cb0d9cf3ad09 100644
---- a/drivers/misc/state.c
-+++ b/drivers/misc/state.c
-@@ -28,7 +28,9 @@ static int state_probe(struct device_d *dev)
- 	}
+-static void stm32_bsec_init_dt(struct device_d *dev, struct regmap *map)
++static void stm32_bsec_init_dt(struct bsec_priv *priv, struct device_d *dev,
++			       struct regmap *map)
+ {
+ 	struct device_node *node = dev->device_node;
+ 	struct device_node *rnode;
+@@ -118,7 +125,7 @@ static void stm32_bsec_init_dt(struct device_d *dev, struct regmap *map)
+ 	rnode = of_find_node_by_phandle(phandle);
+ 	offset = be32_to_cpup(prop++);
  
- 	ret = state_load(state);
--	if (ret)
-+	if (ret == -ENOMEDIUM)
-+		dev_info(dev, "Fresh state detected, continuing with defaults\n");
-+	else if (ret)
- 		dev_warn(dev, "Failed to load persistent state, continuing with defaults, %d\n",
- 			 ret);
+-	ret = stm32_bsec_read_mac(map, offset, mac);
++	ret = stm32_bsec_read_mac(priv, offset, mac);
+ 	if (ret) {
+ 		dev_warn(dev, "error setting MAC address: %s\n", strerror(-ret));
+ 		return;
+@@ -159,7 +166,7 @@ static int stm32_bsec_probe(struct device_d *dev)
+ 	if (IS_ENABLED(CONFIG_MACHINE_ID))
+ 		stm32_bsec_set_unique_machine_id(map);
  
+-	stm32_bsec_init_dt(dev, map);
++	stm32_bsec_init_dt(priv, dev, map);
+ 
+ 	return 0;
+ }
 -- 
 2.30.2
 
