@@ -1,54 +1,48 @@
-Delivery-date: Fri, 26 Nov 2021 17:11:28 +0100
+Delivery-date: Mon, 29 Nov 2021 07:43:32 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mqdou-0000XS-F7
-	for lore@lore.pengutronix.de; Fri, 26 Nov 2021 17:11:28 +0100
+	id 1mraNw-000079-Gl
+	for lore@lore.pengutronix.de; Mon, 29 Nov 2021 07:43:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mqdot-0005B1-FG
-	for lore@pengutronix.de; Fri, 26 Nov 2021 17:11:28 +0100
+	id 1mraNv-0003z5-Nr
+	for lore@pengutronix.de; Mon, 29 Nov 2021 07:43:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=EXNIk8VLZJkoJ1m/vuwv/Sb5tcoksfSk5OwvAGFJ9bI=; b=em2UzJRz8xgGhDCpR0NLBsV6VE
-	d2vc44tg/GIakpZF8pmjzUfv9109HSbzxRK6lZFV0xD5O4paE3DbSknAkYDPOnobdiEpvDk9QqUbD
-	MO9qVA5WQvTdCaKJQSSgJjlsNTztMxEjnkZQZt+b3H89fjUX+sJPxx8KssKoxV0n67EHybGANzJFj
-	yB915X3yBQ0nQjaDLxoEvhBe8GCJTxbPm+WrqbA4bB/nVaqTZV9VPGrYajzlyynG0fPIqhWRytCcJ
-	ARr3dLKXMRndbfJTx1rs3v/yynUqkKF2l7DzQ/lo0FqEEdh/G1d/BJl2rVlSQ0uBR8VeXfX+9M6KI
-	6wg8WnQQ==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=sUx0gqGKmUw+i11SDdapcdDfH7zbGgL8Z4Dx2cdcTUI=; b=yDvrY7n01LWOar
+	4EyNH3xkXqQxZjvtH6mv6fmIeJUD1kqM6QjFJoKdU7BsbUDcjzKVX9vFQvwA2vaVCVm6bZvcTqSk4
+	Py0wJRy7fmVW94xEb8Hzun+wsn+bCHHXooAC3ZCNIPKe6+8LTS9YJbux5nghtc1OC+zv2I3HBELDL
+	K3esBhmLyHWRwuyYfO3GzZH73MlXT80GmDnrAGAdlBw3X9FQMEM9zc950k4huCNaK/FGuffm1X/bE
+	t8y6TbjoMVzmqkNQGC2G7i0Ql0V//pVv37EsCOfgrHH9XaNyz2u50QuLldo4jthTSwzg+m0JGau2d
+	ZBE6yyRSzT48VanOdsrA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mqdn7-00B4tz-UW; Fri, 26 Nov 2021 16:09:38 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mraM4-00HTkv-6E; Mon, 29 Nov 2021 06:41:36 +0000
+Received: from relay6-d.mail.gandi.net ([217.70.183.198])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mqdn2-00B4t9-Qq
- for barebox@lists.infradead.org; Fri, 26 Nov 2021 16:09:34 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1mqdms-0004nx-Gu; Fri, 26 Nov 2021 17:09:22 +0100
-To: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
-Cc: David Jander <david@protonic.nl>
-References: <20211126133108.3003431-1-o.rempel@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <efcbb9fd-478b-57d6-b774-17afd3320116@pengutronix.de>
-Date: Fri, 26 Nov 2021 17:09:22 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ id 1mraLw-00HTf7-SN
+ for barebox@lists.infradead.org; Mon, 29 Nov 2021 06:41:30 +0000
+Received: (Authenticated sender: ahmad@a3f.at)
+ by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id BE3A7C0007;
+ Mon, 29 Nov 2021 06:41:21 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 29 Nov 2021 07:41:17 +0100
+Message-Id: <20211129064117.2007757-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-In-Reply-To: <20211126133108.3003431-1-o.rempel@pengutronix.de>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211126_080932_903895_E217D4C7 
-X-CRM114-Status: GOOD (  26.56  )
+X-CRM114-CacheID: sfid-20211128_224129_082839_161ACE3B 
+X-CRM114-Status: UNSURE (   8.00  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,104 +62,38 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1] nvmem: bsec.c: Use SMC_READ_OTP in
- stm32_bsec_read_mac()
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH master] RISC-V: nmon: fix SiFive DEBUG_LL build
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Oleksij, David,
+nmon includes <debug_ll.h> in assembly source, so add __ASSEMBLY__
+guards, so the build doesn't fail.
 
-On 26.11.21 14:31, Oleksij Rempel wrote:
-> From: David Jander <david@protonic.nl>
-> 
-> TF-A (version >= v2.4?) apparently does not copy all of OTP to shadow
-> registers so reading the MAC address area will read all-zeroes.
-> Make sure to read the _real_ OTP register in this case.
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/riscv/include/asm/debug_ll.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks for the fix. Linux reads the lowest 32 words of OTP directly from shadow
-registers and calls into TF-A for reading shadow memory beyond that, which should
-include MAC address (offset 0x39, didn't test though).
-
-It never does READ_OTP, so it seems the TF-A change would affect Linux as well?
-It's for sure something we'll need to address in TF-A eventually, but as a bug
-fix, this is ok:
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-
-> Signed-off-by: David Jander <david@protonic.nl>
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  drivers/nvmem/bsec.c | 21 ++++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/nvmem/bsec.c b/drivers/nvmem/bsec.c
-> index d9b38c8414..a31eff7358 100644
-> --- a/drivers/nvmem/bsec.c
-> +++ b/drivers/nvmem/bsec.c
-> @@ -82,20 +82,27 @@ static void stm32_bsec_set_unique_machine_id(struct regmap *map)
->  	machine_id_set_hashable(unique_id, sizeof(unique_id));
->  }
->  
-> -static int stm32_bsec_read_mac(struct regmap *map, int offset, u8 *mac)
-> +static int stm32_bsec_read_mac(struct bsec_priv *priv, int offset, u8 *mac)
->  {
-> -	u8 res[8];
-> +	u32 val[2];
->  	int ret;
->  
-> -	ret = regmap_bulk_read(map, offset * 4, res, 8);
-> +	/* Some TF-A does not copy all of OTP into shadow registers, so make
-> +	 * sure we read the _real_ OTP bits here.
-> +	 */
-> +	ret = bsec_smc(priv, BSEC_SMC_READ_OTP, offset * 4, 0, &val[0]);
-> +	if (ret)
-> +		return ret;
-> +	ret = bsec_smc(priv, BSEC_SMC_READ_OTP, offset * 4 + 4, 0, &val[1]);
->  	if (ret)
->  		return ret;
->  
-> -	memcpy(mac, res, ETH_ALEN);
-> +	memcpy(mac, val, ETH_ALEN);
->  	return 0;
->  }
->  
-> -static void stm32_bsec_init_dt(struct device_d *dev, struct regmap *map)
-> +static void stm32_bsec_init_dt(struct bsec_priv *priv, struct device_d *dev,
-> +			       struct regmap *map)
->  {
->  	struct device_node *node = dev->device_node;
->  	struct device_node *rnode;
-> @@ -118,7 +125,7 @@ static void stm32_bsec_init_dt(struct device_d *dev, struct regmap *map)
->  	rnode = of_find_node_by_phandle(phandle);
->  	offset = be32_to_cpup(prop++);
->  
-> -	ret = stm32_bsec_read_mac(map, offset, mac);
-> +	ret = stm32_bsec_read_mac(priv, offset, mac);
->  	if (ret) {
->  		dev_warn(dev, "error setting MAC address: %s\n", strerror(-ret));
->  		return;
-> @@ -159,7 +166,7 @@ static int stm32_bsec_probe(struct device_d *dev)
->  	if (IS_ENABLED(CONFIG_MACHINE_ID))
->  		stm32_bsec_set_unique_machine_id(map);
->  
-> -	stm32_bsec_init_dt(dev, map);
-> +	stm32_bsec_init_dt(priv, dev, map);
->  
->  	return 0;
->  }
-> 
-
-
+diff --git a/arch/riscv/include/asm/debug_ll.h b/arch/riscv/include/asm/debug_ll.h
+index d01b4f09b8e1..867c96d79724 100644
+--- a/arch/riscv/include/asm/debug_ll.h
++++ b/arch/riscv/include/asm/debug_ll.h
+@@ -36,7 +36,7 @@
+ 
+ #include <asm/debug_ll_ns16550.h>
+ 
+-#elif defined CONFIG_DEBUG_SIFIVE
++#elif defined CONFIG_DEBUG_SIFIVE && !defined __ASSEMBLY__
+ 
+ #include <io.h>
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.33.0
+
 
 _______________________________________________
 barebox mailing list
