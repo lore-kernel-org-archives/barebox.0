@@ -1,64 +1,64 @@
-Delivery-date: Tue, 30 Nov 2021 11:42:25 +0100
+Delivery-date: Tue, 30 Nov 2021 11:49:29 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ms0af-0003ST-Cr
-	for lore@lore.pengutronix.de; Tue, 30 Nov 2021 11:42:25 +0100
+	id 1ms0hV-0003hm-Ou
+	for lore@lore.pengutronix.de; Tue, 30 Nov 2021 11:49:29 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ms0ae-0002wB-G7
-	for lore@pengutronix.de; Tue, 30 Nov 2021 11:42:25 +0100
+	id 1ms0hU-00043C-QN
+	for lore@pengutronix.de; Tue, 30 Nov 2021 11:49:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=AvgNt408vln3Tb3FDJQTF+jblzemCmpKaRj1qLY2524=; b=rd3P/I19wfiY5q
-	cUKDqFM5E9Q0kbJITAYeUHch4/UHopZD/uWwhftqj6+pLETOPg+oTejalk7PJh/ri5Hzj2K1jTiYt
-	SqKs1KPLPKcbOUyzN19jcht1creuo8rCJEzILicSxAgxrAV/z9RZI4LjF2XITFfhJ8v4PomDJzAOs
-	UQbtnPWAibyT/+3iIzmyVO2/C/AkfZtEFbGAMOgu2CYt2fXfPQpb+qd6gqHKqcFNLXKgrdv1eOVZC
-	0xmZWnSoAl5bq9cc90DVDMXpWkABFY93ub9PQO1wtH7OIsIduV+jKV5S2LwepvMa0Jk5WWAaUIt3i
-	I131WINi/r0qNKgSFaNg==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=ps0qbXZlxiPOI6RHDwaLMopsarohI8f6SS9FVGkTuLw=; b=i9lXb3DKek/t76voPdYErfwcAD
+	WLOoyy1EpnqwMS1lvdtMkhelVBRTx+w/PjLdfJKuZ/TPIkOmaohRb+5gROmfzFxQuMZ5MxN1MZpu0
+	gBLcUMcsyBS3Zmj2N3pfkefYV4rnHNPKeLjm6Pog3KuypGZO/oRqZqR7hrQOKow3q53MnVNium/AS
+	PUxY/GnQ+yfmVDdlpbEaqoxf/zhavj4VJaqqtX/u4HdaJivC3VT7o6B7/9W5I2nlReGtnBqYcY/KN
+	+umc0hjf87KX0t2WmSx8j1EH9GEzU23glqYR0V+9LOgsMit0xPgivD5HHCpet1GMI6xJJ9tjXeCMk
+	Y01laIzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ms0ZT-004gQL-JU; Tue, 30 Nov 2021 10:41:11 +0000
+	id 1ms0g4-004jCB-IJ; Tue, 30 Nov 2021 10:48:00 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ms0ZM-004gO8-5Z
- for barebox@lists.infradead.org; Tue, 30 Nov 2021 10:41:05 +0000
+ id 1ms0ft-004j9l-W3
+ for barebox@lists.infradead.org; Tue, 30 Nov 2021 10:47:51 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ms0ZK-0002ab-T7; Tue, 30 Nov 2021 11:41:02 +0100
+ id 1ms0fs-0003ux-Co; Tue, 30 Nov 2021 11:47:48 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ms0ZK-0000qP-Jg; Tue, 30 Nov 2021 11:41:02 +0100
-Date: Tue, 30 Nov 2021 11:41:02 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
+ id 1ms0fs-0001DU-31; Tue, 30 Nov 2021 11:47:48 +0100
+Date: Tue, 30 Nov 2021 11:47:48 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Holger Assmann <h.assmann@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <20211130104102.GU28260@pengutronix.de>
-References: <20211129124545.14171-1-h.assmann@pengutronix.de>
- <20211129124545.14171-3-h.assmann@pengutronix.de>
- <384035a6-6fab-0e56-b17a-28ad2cb11650@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20211130104748.GV28260@pengutronix.de>
+References: <20211125161042.3829996-1-a.fatoum@pengutronix.de>
+ <20211125161042.3829996-3-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <384035a6-6fab-0e56-b17a-28ad2cb11650@pengutronix.de>
+In-Reply-To: <20211125161042.3829996-3-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 11:40:22 up 285 days, 14:04, 154 users,  load average: 0.24, 0.16,
- 0.17
+X-Uptime: 11:46:18 up 285 days, 14:10, 154 users,  load average: 0.31, 0.39,
+ 0.27
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211130_024104_258795_8DB8ED96 
-X-CRM114-Status: GOOD (  27.80  )
+X-CRM114-CacheID: sfid-20211130_024750_069473_2C061487 
+X-CRM114-Status: GOOD (  18.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,60 +78,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/2] fs: jffs2: remove unnecessary slab cache structure
+Subject: Re: [PATCH 2/7] state: make first boot less verbose
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Nov 30, 2021 at 11:29:11AM +0100, Ahmad Fatoum wrote:
-> Hi,
+On Thu, Nov 25, 2021 at 05:10:37PM +0100, Ahmad Fatoum wrote:
+> First boot with uninitialized state is needlessly verbose:
 > 
-> On 29.11.21 13:45, Holger Assmann wrote:
-> > jffs2_create_slab_caches() and its subsequent kmem_cache calls are not
-> > needed in Barebox since they can directly be replaced by malloc calls.
-> > 
-> > This patch performs that replacement as well as the related clean up.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > Signed-off-by: Holger Assmann <h.assmann@pengutronix.de>
-> > ---
-> >  fs/jffs2/fs.c       |  10 ----
-> >  fs/jffs2/malloc.c   | 131 +++++++-------------------------------------
-> >  fs/jffs2/nodelist.h |   2 -
-> >  3 files changed, 19 insertions(+), 124 deletions(-)
-> > 
-> > diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
-> > index 7538252336..b72721cfc4 100644
-> > --- a/fs/jffs2/fs.c
-> > +++ b/fs/jffs2/fs.c
-> > @@ -416,26 +416,17 @@ static int jffs2_probe(struct device_d *dev)
-> >  			pr_err("error: Failed to initialise compressors\n");
-> >  			goto err_out;
-> >  		}
-> > -
-> > -		ret = jffs2_create_slab_caches();
-> > -		if (ret) {
-> > -			pr_err("error: Failed to initialise slab caches\n");
-> > -			goto err_compressors;
-> > -		}
-> >  	}
-> >  
-> >          if (jffs2_fill_super(fsdev, 0)) {
-> >  		dev_err(dev, "no valid jffs2 found\n");
-> >  		ret = -EINVAL;
-> > -		goto err_slab;
+>   state: New state registered 'state'
+>   state: Detected old on-storage format
+>   ERROR: state: Error, invalid header crc in raw format, calculated 0x7bd5c66f, found 0x00000000
+>   state: Ignoring broken bucket 0@0x00000000...
+>   state: Detected old on-storage format
+>   ERROR: state: Error, invalid header crc in raw format, calculated 0x7bd5c66f, found 0x00000000
+>   state: Ignoring broken bucket 1@0x00040000...
+>   state: Detected old on-storage format
+>   ERROR: state: Error, invalid header crc in raw format, calculated 0x7bd5c66f, found 0x00000000
+>   state: Ignoring broken bucket 2@0x00080000...
+>   ERROR: state: Failed to find any valid state copy in any bucket
+>   ERROR: state: Failed to read state with format raw, -2
 > 
-> This should be goto err_compressors. ret = -EINVAL is't
-> used in the success path, so the probe will succeed despite the error
-> and likely triggering a crash on mount. In that case,
-> jffs2_compressors_exit is also never called.
+> This has confused barebox-state novices more than once. Let's handle
+> the zeroed state case specially and reduce output in that case, so
+> it now looks like this:
 > 
-> @Sascha, can you fixup?
+>   state: New state registered 'state'
+>   state: Detected old on-storage format
+>   state: Detected old on-storage format
+>   state: Detected old on-storage format
+>   state state.of: Fresh state detected, continuing with defaults
+> 
+> This is only the output when CRC is zero (hinting at zeroed state
+> partition). If crc != zero, then output is a little more verbose than
+> before:
 
-Did that.
+Should we handle crc == 0xffffffff in the same way for flash devices?
 
 Sascha
 
