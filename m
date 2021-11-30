@@ -1,15 +1,15 @@
-Delivery-date: Tue, 30 Nov 2021 11:25:26 +0100
+Delivery-date: Tue, 30 Nov 2021 11:28:21 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ms0KE-0002qj-L6
-	for lore@lore.pengutronix.de; Tue, 30 Nov 2021 11:25:26 +0100
+	id 1ms0N3-0002x6-DC
+	for lore@lore.pengutronix.de; Tue, 30 Nov 2021 11:28:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ms0KD-0008Bu-Fk
-	for lore@pengutronix.de; Tue, 30 Nov 2021 11:25:26 +0100
+	id 1ms0N2-0000FT-CE
+	for lore@pengutronix.de; Tue, 30 Nov 2021 11:28:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=/sUW8gTNJO0GymNnUEZnbXCQQaDXKmpf+SijnvTYSuE=; b=oULvr9UqWxdGjQyoOQf4copzCN
-	EnkpjVlUFEC0O/kfI0U675KwRDZ0wQ1b0i8fbQ3vosJu1g0Co8G7rZy9d11gRhPvuugqBA3Bmz/35
-	gZdfIDXSGdENGeovKzkn477NbvnJJkOOGuc8PFOkmZZEzzuoxvREcb3qF0F+MPwiHjv9e82YgQbXX
-	jchpnEFduDCq7izX5zohCZUN2cKkAkbd8twT0W8AtkIWH+0W0KdLqx4xjrb/ueqIksMAgHNXXlL9s
-	VxZcqZanjmtoy/DB3hrL2ew7foJxwxyW6Jjdeis9TYCBakYSn+Lzg7AjYZ3NbGnm6NGHvDLsSAHtY
-	qJ/2Ic8Q==;
+	bh=as9uGZYoYD975AsHsmJvHf6pvog6MotFNbBkEVP0o28=; b=Q8Fp2WlwSXJMz0VAV4FmOFBqQb
+	XvtztoXHWq1T1/o4KRqol8DH8xmC+Mj/fijk6yez//O5T6L4PYgMH/f79YjQbEZGbOQbk5sS9yC5W
+	aSxEopyZwotDkNGJ/tZgMfaexuZrbxVmYeSTX8NdHepxpoSnQd2xCq4XdqlhVU/CiBkJjoc8ssVew
+	8b37bkAGs4iGENpau1foALm3nrG4FAR4LHZumMGJdA0lrQHXoDC+zQXKD4LUnPxF6ytLGBGpKI0gH
+	YI7M6FKe1wHd6tY/Iyo7dL6yeuVRRXZXvjpTA0jOeZU9zKbilssC2mg0GZ1Lk2FBFMjcD9ruS6D9M
+	N8apux0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ms0Ig-004aOV-Ba; Tue, 30 Nov 2021 10:23:50 +0000
+	id 1ms0LS-004bS0-HH; Tue, 30 Nov 2021 10:26:43 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ms03W-004VQ5-Cn
- for barebox@lists.infradead.org; Tue, 30 Nov 2021 10:08:12 +0000
+ id 1ms0By-004YAL-2c
+ for barebox@lists.infradead.org; Tue, 30 Nov 2021 10:16:55 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ms03U-0005y4-HM; Tue, 30 Nov 2021 11:08:08 +0100
+ id 1ms0Bw-0007OD-Nj; Tue, 30 Nov 2021 11:16:52 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1ms03U-00076j-4E; Tue, 30 Nov 2021 11:08:08 +0100
-Date: Tue, 30 Nov 2021 11:08:08 +0100
+ id 1ms0Bw-0008Co-Er; Tue, 30 Nov 2021 11:16:52 +0100
+Date: Tue, 30 Nov 2021 11:16:52 +0100
 To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, David Jander <david@protonic.nl>
-Message-ID: <20211130100808.GM28260@pengutronix.de>
-References: <20211126133108.3003431-1-o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20211130101652.GN28260@pengutronix.de>
+References: <20211129105244.3032203-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211126133108.3003431-1-o.rempel@pengutronix.de>
+In-Reply-To: <20211129105244.3032203-1-o.rempel@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 11:07:52 up 285 days, 13:31, 144 users,  load average: 0.10, 0.19,
- 0.18
+X-Uptime: 11:16:04 up 285 days, 13:39, 144 users,  load average: 0.08, 0.13,
+ 0.16
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211130_020810_487318_244DCD7E 
-X-CRM114-Status: GOOD (  19.45  )
+X-CRM114-CacheID: sfid-20211130_021654_163239_74F70021 
+X-CRM114-Status: GOOD (  18.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,23 +81,19 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1] nvmem: bsec.c: Use SMC_READ_OTP in
- stm32_bsec_read_mac()
+Subject: Re: [PATCH v1] nvmem: bsec.c: add optional permanent write support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Nov 26, 2021 at 02:31:08PM +0100, Oleksij Rempel wrote:
-> From: David Jander <david@protonic.nl>
+On Mon, Nov 29, 2021 at 11:52:44AM +0100, Oleksij Rempel wrote:
+> To be able to fuze MAC address we need to be able to use BSEC_SMC_PROG_OTP
+> instead of BSEC_SMC_WRITE_SHADOW.
 > 
-> TF-A (version >= v2.4?) apparently does not copy all of OTP to shadow
-> registers so reading the MAC address area will read all-zeroes.
-> Make sure to read the _real_ OTP register in this case.
-> 
-> Signed-off-by: David Jander <david@protonic.nl>
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  drivers/nvmem/bsec.c | 21 ++++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
+>  drivers/nvmem/Kconfig | 11 +++++++++++
+>  drivers/nvmem/bsec.c  | 22 +++++++++++++++++++---
+>  2 files changed, 30 insertions(+), 3 deletions(-)
 
 Applied, thanks
 
