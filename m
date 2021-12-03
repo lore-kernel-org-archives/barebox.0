@@ -1,51 +1,47 @@
-Delivery-date: Thu, 02 Dec 2021 11:50:36 +0100
+Delivery-date: Fri, 03 Dec 2021 07:35:47 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1msjfg-0003e7-8Y
-	for lore@lore.pengutronix.de; Thu, 02 Dec 2021 11:50:36 +0100
+	id 1mt2Ad-0001fz-Ow
+	for lore@lore.pengutronix.de; Fri, 03 Dec 2021 07:35:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1msjff-0001a5-CF
-	for lore@pengutronix.de; Thu, 02 Dec 2021 11:50:36 +0100
+	id 1mt2Ac-0000cj-Vi
+	for lore@pengutronix.de; Fri, 03 Dec 2021 07:35:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=ABpSHHhO5a8GLDPpypxBqTP9rbsi5FyPBlzNtgs9Bbk=; b=00X9nKjTkBHRms
-	OiOBbjqjWUb7FJX78UXJutE7JlAvpW5zNjhxEvgmP5rsz7LXl6u67K5029z1XPoWuxJkMrzDRZttq
-	7/MCVu4P1aWc9nd+I4PZ1OueIev9TnYghCGRaLY/btynNLdYCkdQ7wWDi47CJC8ihLIhtTB0YtzCk
-	FPW/F2XfcEJR1Ju82776Q9016oEz1ecM72yd32RMO4dnnjkPwzC3/c1E7gd4/xIyhAMgL90PCZZKG
-	IaWc0Dnxy43rffqLng3f4zihP9aAEG/O43GM4DhxAy2CzLO/BewuhiY/qGKM4NVydTVUGOufZRya5
-	PSoXi/3GA/cD0ajfClRQ==;
+	List-Owner; bh=sOGWMrstDvdlQfFV2B+MLbZOGXoiSl4mvBHUcBydXjc=; b=b/WqssvlCh8nYa
+	/lX+tVjflMy9YhTRZdr1Iwyglf6zqmU2UZNaPwzhMGSulP3VXnrN7LSGNnGih0hE4+zSc7+8Ybl7l
+	Tt8+D0KldS6dRmU4Q33UNDqkRrkOFRm1/PEX9Ggf/M+K8WoQfEfFChmiwyTHlP8HYy8gLahLbykBF
+	/xocvMzqpJHpk9FaNuxlWNUORhlMhh7FhRQGDaoFqpoEv3CSmGhjCSDMJqseQ/u66lZUCguLkDuiM
+	8jB4M186bLY73KooG+HptYe9p6eyqlxRJC7nnEWy8Wn4sAHAYvZMMkR2lhXt7Zdu+8Sf1up6du09b
+	+uOC/EsnGeC/GX+I465A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1msjdw-00Bsct-Qo; Thu, 02 Dec 2021 10:48:48 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mt28r-00EX5G-5e; Fri, 03 Dec 2021 06:33:57 +0000
+Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1msjdr-00BsaR-DY
- for barebox@lists.infradead.org; Thu, 02 Dec 2021 10:48:44 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <has@pengutronix.de>)
- id 1msjdn-0001Mj-Nu; Thu, 02 Dec 2021 11:48:39 +0100
-Received: from has by dude02.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <has@pengutronix.de>)
- id 1msjdn-00GPxF-95; Thu, 02 Dec 2021 11:48:39 +0100
-From: Holger Assmann <h.assmann@pengutronix.de>
+ id 1mt28m-00EX4R-26
+ for barebox@lists.infradead.org; Fri, 03 Dec 2021 06:33:53 +0000
+Received: (Authenticated sender: ahmad@a3f.at)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 74E281BF205;
+ Fri,  3 Dec 2021 06:33:45 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
-Date: Thu,  2 Dec 2021 11:48:37 +0100
-Message-Id: <20211202104837.3912925-1-h.assmann@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Fri,  3 Dec 2021 07:33:40 +0100
+Message-Id: <20211203063340.1026512-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211202_024843_480014_03DE765B 
-X-CRM114-Status: GOOD (  14.92  )
+X-CRM114-CacheID: sfid-20211202_223352_303328_93D14714 
+X-CRM114-Status: GOOD (  10.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -57,7 +53,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: afa@pengutronix.de, Holger Assmann <h.assmann@pengutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -66,72 +61,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fs: jffs2: fix error when reading blocks with offset
+Subject: [PATCH master] RISC-V: interrupts: fix Zifencei emulation on rv64
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This bug resulted in a panic when trying to read a file partially with
-an offset, e.g. when starting Linux. In such a case a header is loaded
-by a separate call of jffs2_read(), which then copies only the first n
-bytes out of the respective block.
-When the remaining data of the block is then subsequently going to to be
-read the system deviates in its behaviour from that under Linux by not
-calling jffs2_read_inode_range() in a 4k-alignment, but with an offset.
+Zifencei emulaton was added for bare bones 32-bit targets, but the code
+is there on 64-bit too. The instruction skip at the end of the function
+skips 4 bytes, the size of an instruction on both rv32 and rv64. The
+instruction decoder however assumes instructions are size(long) bytes,
+which is 8 > 4 on rv64. Fix this.
 
-jffs2_read_inode_range() originates from the Linux jffs2 driver. When
-being called with an offset it still reads 4096 bytes of data and
-eventually returns fragments of two consecutive blocks. jffs2_read()
-then reads this result whilst again applying the offset, therefore
-returning faulty data.
-
-We fix that problem by calling jffs2_get_block() without an offset and
-therefore reading the whole block. The offset is then applied when we
-actually perform memcpy with the returned buffer. This fix might also
-increase the performance since the respective block is likely to be
-cached from the previous call.
-
-Signed-off-by: Holger Assmann <h.assmann@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- fs/jffs2/fs.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/riscv/cpu/interrupts.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
-index 1a2b443792..3d4cb98c97 100644
---- a/fs/jffs2/fs.c
-+++ b/fs/jffs2/fs.c
-@@ -74,6 +74,9 @@ static int jffs2_get_block(struct jffs2_file *jf, unsigned int pos)
- 	struct jffs2_inode_info *f = JFFS2_INODE_INFO(jf->inode);
- 	int ret;
+diff --git a/arch/riscv/cpu/interrupts.c b/arch/riscv/cpu/interrupts.c
+index 0e8951b61968..1f2d7b885737 100644
+--- a/arch/riscv/cpu/interrupts.c
++++ b/arch/riscv/cpu/interrupts.c
+@@ -122,7 +122,7 @@ unsigned long handle_trap(struct pt_regs *regs)
+ 		goto skip;
  
-+	/* pos always has to be 4096 bytes aligned here */
-+	WARN_ON(pos % 4096 != 0);
-+
- 	if (pos != jf->offset) {
- 		ret = jffs2_read_inode_range(c, f, jf->buf, pos,
- 					     JFFS2_BLOCK_SIZE);
-@@ -98,13 +101,14 @@ static int jffs2_read(struct device_d *_dev, FILE *f, void *buf,
- 	/* Read till end of current block */
- 	ofs = f->pos % JFFS2_BLOCK_SIZE;
- 	if (ofs) {
--		ret = jffs2_get_block(jf, pos);
-+		ret = jffs2_get_block(jf, f->pos - ofs); /* Align down block */
- 		if (ret)
- 			return ret;
- 
- 		now = min(size, JFFS2_BLOCK_SIZE - ofs);
- 
--		memcpy(buf, jf->buf + ofs, now);
-+		/* Complete block has been read, re-apply ofset now */
-+		memcpy(buf, jf->buf + ofs, now); 
- 		size -= now;
- 		pos += now;
- 		buf += now;
+ 	if (regs->cause == 2) { /* illegal instruction */
+-		switch(*(unsigned long *)regs->epc) {
++		switch(*(u32 *)regs->epc) {
+ 		case 0x0000100f: /* fence.i */
+ 			goto skip;
+ 		default:
 -- 
-2.30.2
+2.33.0
 
 
 _______________________________________________
