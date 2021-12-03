@@ -1,73 +1,51 @@
-Delivery-date: Fri, 03 Dec 2021 18:54:02 +0100
+Delivery-date: Fri, 03 Dec 2021 19:54:02 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mtCl0-0000ZE-Q7
-	for lore@lore.pengutronix.de; Fri, 03 Dec 2021 18:54:02 +0100
+	id 1mtDh4-0003SV-RZ
+	for lore@lore.pengutronix.de; Fri, 03 Dec 2021 19:54:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mtCkz-00078I-Q9
-	for lore@pengutronix.de; Fri, 03 Dec 2021 18:54:02 +0100
+	id 1mtDh3-000563-TR
+	for lore@pengutronix.de; Fri, 03 Dec 2021 19:54:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
-	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=iXdqnR9tjAYNqxrd74v4+jA6QolWejbunh6/fgBALGA=; b=aHdU47kj51YTtg
-	sUflk789n50bwsY9OS+jjFbja1A4KL/w/uanppdrOAL6P9wf3/MSL1j3YxNnZbAwsZMmS2vG3zZeN
-	HRsriMr1UgXkghAQ/ILc2QpQ1+VWuUMoq8NnNUTejUp3WHWsB+PY8m+RMgeNAjNTWuSEFBR3No+SL
-	kkQkRaVjFwYjsBy54IZIMi5oCHSKYQMWmtZ4DgFaqhya8WH/4ewlUapJ/BVZc0zievk+8EFz2bgD6
-	gfLnwDPdZ1JZatFhsZgAH+KtCd4giU/alp2UIDQPprjiHrDapLXlvDRJYRM9HsZndRlefAxpwkDOZ
-	Ik2SfuffqvnOIFbbOgew==;
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=zky6XkdG4n3e3wDzwEfOLFiyWjbJy3aUZYpEfOmzVxg=; b=GxiunyR1mzUQUy
+	tOOGr8IJlB34J2bF+mzoBNlxABSlIbw5726r5QCq7Ot6XTutJHyheVwE4Ragsj0zepUf8MaCqLZr2
+	cMQN9vfq/HVLnak4C3vpIPLLY7lsYv7/ap5OHcsJkdYzjjA/WBcHY+GiEZkgdot6a68hANFc1MVxO
+	Gtj0nX93bhVr90DG+ytc+Qqh3Oy0ShDcfFBu4oGrbbDYcC+P3y/n6dyVvdH2uCXrYCD5cZCkRYRhA
+	q2fLtTNOlcIFBBofisVG49jATdnJjwRZRsWo7eQkOt2lMrKzsysB01Jd8MMe4SGcCFG18MYFY7LLs
+	+gXYAX9jtUjk3xXmOHTw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mtCjM-00GiIW-Uz; Fri, 03 Dec 2021 17:52:21 +0000
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+	id 1mtDfO-00Gnbh-GO; Fri, 03 Dec 2021 18:52:18 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mtCjH-00GiHU-LG
- for barebox@lists.infradead.org; Fri, 03 Dec 2021 17:52:17 +0000
-Received: by mail-lf1-x12e.google.com with SMTP id bi37so8362500lfb.5
- for <barebox@lists.infradead.org>; Fri, 03 Dec 2021 09:52:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igorinstitute-com.20210112.gappssmtp.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=7Gb2nRSaEdcHXxavlrGnlvLnwHdDKfzxv9L4q7RvSjw=;
- b=7kctROK0nMQY4Y0KW7ndpvQqPoRiTj1fWe72R1xSeqw8/6ySf+6i7w9Wfv9g/VpTMH
- iEODiDnabxO+kGJKJs33gA+bMAIyRPw288NNMYc1Bm4J9gLp1IO3r2CWPspLjZPA2ajt
- y4hRRrg3wzNcB4TDe+leZxYZ3Vz+QiO6jzq4UY6qwBNJ3gG+ukZs7BGwHi4jwLuVLBd+
- uq9MSe24RRSY2NGV/N5q7dkXVabNyvMnqJIAPG7YwQis9oXfUjsZxO+VC6NLBrW13cwY
- yTVL5S4LEUhvXabqQ7ElQynLzwcOwDaJkp4X7lKXwnEEG81ngysXunPJ9k7IAbVx/xbJ
- +JHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=7Gb2nRSaEdcHXxavlrGnlvLnwHdDKfzxv9L4q7RvSjw=;
- b=5J/Kqmb9NLpJvYueerHkYCGh/GV1p2uxGNkpCGAIFmySGChw3X1mvtWuHXtLSxr8cB
- aHREdUf2FKa8Yuc7HLwcLBOKymjE5DcI0EWwzPw6V6DNWGKIFSYTbbWIagoPDUGk0CvG
- AuNxEjQKB5Vtr+bxgTrHKuir7Wr51tzkEGFu7uiz4eiIi8KifB7MnbllPDCvjtsQAX19
- aQ7KkjDZ+/xzqoBoRVl1ieOQpd7RoAPbvuH8/hUJQb+XHzFnknB4+WV5hvmdbnb2eelJ
- ogeKOiihvoxM0VILbUigtRI5f3JxWfkz+YMTtMCprGU5zQmDTCkItoOGYsQy5Fb2iqIz
- oUPg==
-X-Gm-Message-State: AOAM530WIMAN8Yyde992Du1xNRD2sCV+0TMFsdId95Wme7cyCIdtC1tG
- icjy8XZYpQmO/aquOllhL431xhwxZLwgP5TCmTsrkjhTR0mybg==
-X-Google-Smtp-Source: ABdhPJw9ZYhTIs0LZy1Kp1o1OqP0V3p/Um+byxTfYIQj3nHda75JD2fN3s4JoZN1NCq+O2sJ7Nq9sRnxLl1IYm2m8RI=
-X-Received: by 2002:ac2:4c4d:: with SMTP id o13mr18749993lfk.196.1638553931267; 
- Fri, 03 Dec 2021 09:52:11 -0800 (PST)
+ id 1mtDfB-00Gnaf-Ek
+ for barebox@lists.infradead.org; Fri, 03 Dec 2021 18:52:06 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1mtDf7-0004wP-5W; Fri, 03 Dec 2021 19:52:01 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1mtDf3-001czF-Do; Fri, 03 Dec 2021 19:51:57 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Fri,  3 Dec 2021 19:51:54 +0100
+Message-Id: <20211203185154.388145-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <9215c9815f25cc3328a05d6c9553ac36@inside-m2m.de>
-In-Reply-To: <9215c9815f25cc3328a05d6c9553ac36@inside-m2m.de>
-From: Trent Piepho <trent.piepho@igorinstitute.com>
-Date: Fri, 3 Dec 2021 09:52:00 -0800
-Message-ID: <CAMHeXxOoXjqtSGXdE73oROUk9ybFmFv7gi8PtzLsKn=iH+FXLA@mail.gmail.com>
-To: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
-Cc: barebox@lists.infradead.org
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211203_095215_849953_BEDE7078 
-X-CRM114-Status: GOOD (  21.83  )
+X-CRM114-CacheID: sfid-20211203_105205_515133_44B0ED08 
+X-CRM114-Status: GOOD (  10.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,85 +57,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Howto implement bootchooser <-> rauc interaction
+Subject: [PATCH master] Revert "ARM: beaglebone: init MPU speed to 800Mhz"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Dec 3, 2021 at 4:42 AM Konstantin Kletschke
-<konstantin.kletschke@inside-m2m.de> wrote:
-> The documentation looks very good and comprehensive overall but may be
-> its me not getting
-> the part how and where the shared data is properly stored.
-
-You should add a node of "barebox,state" to the *Barebox* device tree.
-Barebox needs to read state when it boots to determine the partition
-to use and set boot attempts.  You also need in aliases { state =
-&your_state_node: }: so it knows which state node it should use.
-
-If you want to use state from Linux too, and of course you do so that
-you can run rauc commands and update boot success in Linux, then you
-must have state node ALSO in the Linux device tree.  But you do not
-need to add it manually!  Barebox will automatically inject the state
-node into the Linux device tree when it boots the kernel.
-
-For this to work, you need to have Barebox give the kernel the Linux
-device tree when booting.  This is the normal way to boot now.  All
-current docs tell you to do this.  There was a much older style where
-the dtb was appended to the kernel image and the kernel found it
-itself without involving the bootloader.  I assume this will not work,
-but I think Barebox state did not exist when I last booted a system
-this way, so I haven't tried.
-
->
-> When linux is booted rauc complains:
->
-> (rauc:396): rauc-WARNING **: 08:32:31.311: Failed getting primary slot:
-> Failed getting primary slot: No content to read
-
-Sounds like barebox-state command did not work.
-
->
-> # barebox-state -d
-> Neither /aliases/state nor /state found
-
-Yes, not working.  Barebox should put the state node into Linux device
-tree.  It should appear under /sys/firmware/devicetree/base.  In
-aliases node and also state node.
-
-> I could easily utilize the I2C EEPROM on my Beaglebone Black for this
-> but how should this
-> look like for barebox and kernel?
-
-Yes you can use your EEPROM to store state and use rauc.  One could
-write code that uses one byte to indicate partition to boot and one
-byte for attempts left.  Then you write some board code in Barebox to
-read these bytes and set variables bootchooser will use.  There is a
-script you write that rauc will run in Linux, it should read EEPROM
-and return what it means to rauc.  I have done this to use a few bytes
-of NVRAM in RTC chip for boot state information.
-
-I think also one could use Barebox state to store data into an EEPROM.
-Normally state is stored into a file, partition in eMMC/SD, or NAND
-flash.  But I think EEPROM or a partition in an EEPROM would work too.
-Haven't tried it myself though.
-
-If you write custom code to store your information, you can easily
-pack everything bootchooser and rauc *need* into just one byte.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Q29tbWl0IDEzMGM3ZDY3MTVlOSAoIkFSTTogYmVhZ2xlYm9uZTogaW5pdCBNUFUgc3BlZWQgdG8g
+ODAwTWh6IikgY2F1c2VzCndhcm0gcmVib290IGZyb20gd2l0aGluIExpbnV4IHY1LjE0LjAgdG8g
+bm8gbG9uZ2VyIHN1Y2NlZWQuCmJhcmVib3ggTUxPIGlzIGVudGVyZWQsIGJ1dCBoYW5ncy4gUmVz
+ZXQgZnJvbSB3aXRoaW4gYmFyZWJveCBpcwp1bmFmZmVjdGVkLgpUaGlzIGNhbiBiZSByZXByb2R1
+Y2VkIHVzaW5nIERpc3Ryb0tpdCA5NDljNWVmMmI5YTYgKCJ2N2E6IGJhcmVib3g6CnZlcnNpb24g
+YnVtcCB2MjAyMS4wOC4wIOKGkiB2MjAyMS4xMS4wIikgb24gYSBCZWFnbGVib25lIEJsYWNrLgpV
+bnRpbCB0aGF0J3MgZmlndXJlZCBvdXQsIHJldmVydCB0aGUgY29tbWl0OyBmdW5jdGlvbmFsIHJl
+Ym9vdCBpcyBtb3JlCmltcG9ydGFudCB0aGFuIHRoZSBxdWlja2VyIGJvb3QgdXAuCgpUaGlzIHJl
+dmVydHMgY29tbWl0IDEzMGM3ZDY3MTVlOTMyYTFlMGIzZTAyNmZlYTk3ZjcwMGFiMzNlYTkuCgpG
+aXhlczogMTMwYzdkNjcxNWU5ICgiQVJNOiBiZWFnbGVib25lOiBpbml0IE1QVSBzcGVlZCB0byA4
+MDBNaHoiKQpSZXBvcnRlZC1ieTogYXJ3aWUgIyBJUkMKQ2M6IE1hcmMgUmVpbGx5IDxtYXJjQGNw
+ZGVzaWduLmNvbS5hdT4KU2lnbmVkLW9mZi1ieTogQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5n
+dXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvYmVhZ2xlYm9uZS9sb3dsZXZlbC5jIHwg
+MiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZm
+IC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2JlYWdsZWJvbmUvbG93bGV2ZWwuYyBiL2FyY2gvYXJt
+L2JvYXJkcy9iZWFnbGVib25lL2xvd2xldmVsLmMKaW5kZXggMzEyMTE0NDhmNWU4Li45MWQxNDNl
+NDE1MGIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9iZWFnbGVib25lL2xvd2xldmVsLmMK
+KysrIGIvYXJjaC9hcm0vYm9hcmRzL2JlYWdsZWJvbmUvbG93bGV2ZWwuYwpAQCAtMTI2LDcgKzEy
+Niw3IEBAIHN0YXRpYyBub2lubGluZSBpbnQgYmVhZ2xlYm9uZV9zcmFtX2luaXQodm9pZCkKIAog
+CS8qIFNldHVwIHRoZSBQTExzIGFuZCB0aGUgY2xvY2tzIGZvciB0aGUgcGVyaXBoZXJhbHMgKi8K
+IAlpZiAoaXNfYmVhZ2xlYm9uZV9ibGFjaygpKSB7Ci0JCWFtMzN4eF9wbGxfaW5pdChNUFVQTExf
+TV84MDAsIEREUlBMTF9NXzQwMCk7CisJCWFtMzN4eF9wbGxfaW5pdChNUFVQTExfTV81MDAsIERE
+UlBMTF9NXzQwMCk7CiAJCWFtMzM1eF9zZHJhbV9pbml0KDB4MThCLCAmZGRyM19jbWRfY3RybCwg
+JmRkcjNfcmVncywKIAkJCQkmZGRyM19kYXRhKTsKIAl9IGVsc2UgewotLSAKMi4zMC4yCgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
 
