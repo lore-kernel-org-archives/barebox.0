@@ -1,53 +1,52 @@
-Delivery-date: Fri, 03 Dec 2021 19:56:00 +0100
+Delivery-date: Fri, 03 Dec 2021 21:52:31 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mtDiy-0003Z4-Nh
-	for lore@lore.pengutronix.de; Fri, 03 Dec 2021 19:56:00 +0100
+	id 1mtFXi-0000KZ-Vx
+	for lore@lore.pengutronix.de; Fri, 03 Dec 2021 21:52:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mtDix-0005ZZ-Ob
-	for lore@pengutronix.de; Fri, 03 Dec 2021 19:56:00 +0100
+	id 1mtFXh-0000En-UN
+	for lore@pengutronix.de; Fri, 03 Dec 2021 21:52:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=4rCh59Ly+SC5SYi+WB3AR7cfz10B0G0Lk3WwAeL44LM=; b=mhksuquCRSNc0xvNPu+1aNDA5/
-	q3h+Q3s1SUzjVLG6lhAM84sAlaXEeQmurc2MUZQIf1sL8gGNAfUFwrqPEM3r6d6A0AhuQwv1i6a2K
-	YqsJn9YTi4/EjQPkflylN/YAwPPmrAUqvys2edOzVKVUe+Y5qXDoOY5w17NE9Bzb0g4KlOVKwpW96
-	BbXo87Dh2OV/92kUHTwRcjoHXYRJURw1qKw0U6PqDxC5XEVIyi6vT0eqwhNFXWVeDRt4LHfQmwqUX
-	fe56wjSuChIqsvAFtgRPjF71gGDgG/lA+cdmaTMVH7DrieTYtRsO3kS+tR/QGgBplcTxnPTpFMrDF
-	Bpg8sffg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=umUefpZZRScIyfd8pvP23FNivqOvnM7Hulg+gpBsPQE=; b=CHt4wLg71lyugb
+	oC8i/I94mnEkMm/tn4U4XlH9vB25PAT02V+Tiq+VbkmEPdrnPMBjBAy0cczWAlCzoOprTS3L8bFJM
+	yOR1USgkKGxwHsbz/nIPqm7boG5Azg47jwm6mqj4weUOz+PseTggIkeTwGXqlPOlZC7sJWANYUzEJ
+	oi4k7Niifi3ZGfcVR8p8DWxsJ6bBOyPtcAtF421KBHkdpXMDz77pJzADWH5yb8gan807PCCDA/1US
+	SlrU2anm+2EgtCbvnDmKkn8d4H8XXhw+K6pCgSVQsBcmkuDaDAU+QYv5nNasTcpqJWh+YHS7NvIEv
+	qVfTymZB0TWo/7Y3X2og==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mtDhI-00GnuY-Fk; Fri, 03 Dec 2021 18:54:16 +0000
+	id 1mtFW3-00H19t-Gr; Fri, 03 Dec 2021 20:50:47 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mtDh5-00Gnqb-F7
- for barebox@lists.infradead.org; Fri, 03 Dec 2021 18:54:05 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1mtDh2-00055n-Fn; Fri, 03 Dec 2021 19:54:00 +0100
-To: barebox@lists.infradead.org, Marc Reilly <marc@cpdesign.com.au>
-References: <20211203185154.388145-1-a.fatoum@pengutronix.de>
+ id 1mtFVy-00H19U-5G
+ for barebox@lists.infradead.org; Fri, 03 Dec 2021 20:50:43 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1mtFVv-00006I-36; Fri, 03 Dec 2021 21:50:39 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1mtFVu-002KZE-JF; Fri, 03 Dec 2021 21:50:38 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <7bf2e775-02d7-ef03-2559-0e939fb78937@pengutronix.de>
-Date: Fri, 3 Dec 2021 19:53:59 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri,  3 Dec 2021 21:50:35 +0100
+Message-Id: <20211203205035.555285-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20211203185154.388145-1-a.fatoum@pengutronix.de>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211203_105403_528680_7B86F3F2 
-X-CRM114-Status: GOOD (  22.73  )
+X-CRM114-CacheID: sfid-20211203_125042_230790_228F203B 
+X-CRM114-Status: GOOD (  20.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -59,58 +58,228 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] Revert "ARM: beaglebone: init MPU speed to 800Mhz"
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH master] net: cpsw: add support for new binding in Linux
+ v5.15-rc1 DTs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGVsbG8gTWFyYywKCk9uIDAzLjEyLjIxIDE5OjUxLCBBaG1hZCBGYXRvdW0gd3JvdGU6Cj4gQ29t
-bWl0IDEzMGM3ZDY3MTVlOSAoIkFSTTogYmVhZ2xlYm9uZTogaW5pdCBNUFUgc3BlZWQgdG8gODAw
-TWh6IikgY2F1c2VzCj4gd2FybSByZWJvb3QgZnJvbSB3aXRoaW4gTGludXggdjUuMTQuMCB0byBu
-byBsb25nZXIgc3VjY2VlZC4KPiBiYXJlYm94IE1MTyBpcyBlbnRlcmVkLCBidXQgaGFuZ3MuIFJl
-c2V0IGZyb20gd2l0aGluIGJhcmVib3ggaXMKPiB1bmFmZmVjdGVkLgo+IFRoaXMgY2FuIGJlIHJl
-cHJvZHVjZWQgdXNpbmcgRGlzdHJvS2l0IDk0OWM1ZWYyYjlhNiAoInY3YTogYmFyZWJveDoKPiB2
-ZXJzaW9uIGJ1bXAgdjIwMjEuMDguMCDihpIgdjIwMjEuMTEuMCIpIG9uIGEgQmVhZ2xlYm9uZSBC
-bGFjay4KPiBVbnRpbCB0aGF0J3MgZmlndXJlZCBvdXQsIHJldmVydCB0aGUgY29tbWl0OyBmdW5j
-dGlvbmFsIHJlYm9vdCBpcyBtb3JlCj4gaW1wb3J0YW50IHRoYW4gdGhlIHF1aWNrZXIgYm9vdCB1
-cC4KPiAKPiBUaGlzIHJldmVydHMgY29tbWl0IDEzMGM3ZDY3MTVlOTMyYTFlMGIzZTAyNmZlYTk3
-ZjcwMGFiMzNlYTkuCgpJIHNlbmQgYSByZXZlcnQsIHNvIGJhcmVib3ggdjIwMjEuMTIuMCBjYW4g
-c2hpcCB3aXRoIHRoZSByZWdyZXNzaW9uIGZpeGVkLgpXb3VsZCBiZSBncmVhdCBpZiB5b3UgY291
-bGQgdGFrZSBhIGxvb2sgdG8gc2VlIHdoYXQgbmVlZHMgdG8gYmUgZG9uZQpkaWZmZXJlbnRseSB0
-byByZWluc3RhdGUgdGhlIGNsb2NrIGZyZXF1ZW5jeSBpbmNyZWFzZS4KCkNoZWVycywKQWhtYWQK
-Cj4gCj4gRml4ZXM6IDEzMGM3ZDY3MTVlOSAoIkFSTTogYmVhZ2xlYm9uZTogaW5pdCBNUFUgc3Bl
-ZWQgdG8gODAwTWh6IikKPiBSZXBvcnRlZC1ieTogYXJ3aWUgIyBJUkMKPiBDYzogTWFyYyBSZWls
-bHkgPG1hcmNAY3BkZXNpZ24uY29tLmF1Pgo+IFNpZ25lZC1vZmYtYnk6IEFobWFkIEZhdG91bSA8
-YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Cj4gLS0tCj4gIGFyY2gvYXJtL2JvYXJkcy9iZWFnbGVi
-b25lL2xvd2xldmVsLmMgfCAyICstCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwg
-MSBkZWxldGlvbigtKQo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvYmVhZ2xlYm9u
-ZS9sb3dsZXZlbC5jIGIvYXJjaC9hcm0vYm9hcmRzL2JlYWdsZWJvbmUvbG93bGV2ZWwuYwo+IGlu
-ZGV4IDMxMjExNDQ4ZjVlOC4uOTFkMTQzZTQxNTBiIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2Jv
-YXJkcy9iZWFnbGVib25lL2xvd2xldmVsLmMKPiArKysgYi9hcmNoL2FybS9ib2FyZHMvYmVhZ2xl
-Ym9uZS9sb3dsZXZlbC5jCj4gQEAgLTEyNiw3ICsxMjYsNyBAQCBzdGF0aWMgbm9pbmxpbmUgaW50
-IGJlYWdsZWJvbmVfc3JhbV9pbml0KHZvaWQpCj4gIAo+ICAJLyogU2V0dXAgdGhlIFBMTHMgYW5k
-IHRoZSBjbG9ja3MgZm9yIHRoZSBwZXJpcGhlcmFscyAqLwo+ICAJaWYgKGlzX2JlYWdsZWJvbmVf
-YmxhY2soKSkgewo+IC0JCWFtMzN4eF9wbGxfaW5pdChNUFVQTExfTV84MDAsIEREUlBMTF9NXzQw
-MCk7Cj4gKwkJYW0zM3h4X3BsbF9pbml0KE1QVVBMTF9NXzUwMCwgRERSUExMX01fNDAwKTsKPiAg
-CQlhbTMzNXhfc2RyYW1faW5pdCgweDE4QiwgJmRkcjNfY21kX2N0cmwsICZkZHIzX3JlZ3MsCj4g
-IAkJCQkmZGRyM19kYXRhKTsKPiAgCX0gZWxzZSB7Cj4gCgoKLS0gClBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
-cGVuZ3V0cm9uaXguZGUvICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAg
-ICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+As is customary, upstream OMAP DTs have yet again added a new binding
+breaking compatibility with a barebox driver. This time, the old Ethernet
+node was disabled in favor of a new node that is matched by the new Linux
+cpsw driver introduced with Linux commit ed3525eda4c4 ("net: ethernet:
+ti: introduce cpsw switchdev based driver part 1 - dual-emac").
+
+Add support for the new binding to restore working Beaglebone Black
+networking. These changes have been tested against both the old and new
+bindings.
+
+Fixes: 618948e4e5b3 ("dts: update to v5.15-rc1")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/net/cpsw.c | 120 +++++++++++++++++++++++++++++++++------------
+ 1 file changed, 89 insertions(+), 31 deletions(-)
+
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index 4a8f9e67d6f0..6725c7b9bdb4 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -592,7 +592,12 @@ static int cpsw_mdio_probe(struct device_d *dev)
+ 
+ 	priv = xzalloc(sizeof(*priv));
+ 
++	/* If we can't request I/O memory region, we'll assume parent did
++	 * it for us
++	 */
+ 	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores) && PTR_ERR(iores) == -EBUSY)
++		iores = dev_get_resource(dev, IORESOURCE_MEM, 0);
+ 	if (IS_ERR(iores))
+ 		return PTR_ERR(iores);
+ 	priv->mdio_regs = IOMEM(iores->start);
+@@ -1214,11 +1219,27 @@ static void cpsw_gmii_sel_am335x(struct cpsw_slave *slave)
+ 	writel(reg, phy_sel_addr);
+ }
+ 
+-static int cpsw_probe_dt(struct cpsw_priv *priv)
++static void cpsw_add_slave(struct cpsw_slave *slave, struct device_node *child, int i)
++{
++	uint32_t phy_id[2] = {-1, -1};
++	int ret;
++
++	if (!of_find_node_by_name(child, "fixed-link")) {
++		ret = of_property_read_u32_array(child, "phy_id", phy_id, 2);
++		if (!ret)
++			dev_warn(slave->cpsw->dev, "phy_id is deprecated, use phy-handle\n");
++	}
++
++	slave->dev.device_node = child;
++	slave->phy_id = phy_id[1];
++	slave->phy_if = of_get_phy_mode(child);
++	slave->slave_num = i;
++}
++
++static int cpsw_legacy_probe_dt(struct cpsw_priv *priv)
+ {
+ 	struct device_d *dev = priv->dev;
+ 	struct device_node *np = dev->device_node, *child;
+-	struct device_node *physel;
+ 	int ret, i = 0;
+ 
+ 	ret = of_property_read_u32(np, "slaves", &priv->num_slaves);
+@@ -1227,15 +1248,6 @@ static int cpsw_probe_dt(struct cpsw_priv *priv)
+ 
+ 	priv->slaves = xzalloc(sizeof(struct cpsw_slave) * priv->num_slaves);
+ 
+-	physel = of_find_compatible_node(NULL, NULL, "ti,am3352-phy-gmii-sel");
+-	if (!physel) {
+-		dev_err(dev, "Cannot find ti,am3352-phy-gmii-sel node\n");
+-		return -EINVAL;
+-	}
+-	ret = cpsw_phy_sel_init(priv, physel);
+-	if (ret)
+-		return ret;
+-
+ 	for_each_child_of_node(np, child) {
+ 		if (of_device_is_compatible(child, "ti,davinci_mdio")) {
+ 			ret = of_pinctrl_select_state_default(child);
+@@ -1244,29 +1256,73 @@ static int cpsw_probe_dt(struct cpsw_priv *priv)
+ 		}
+ 
+ 		if (i < priv->num_slaves && !strncmp(child->name, "slave", 5)) {
+-			struct cpsw_slave *slave = &priv->slaves[i];
+-			uint32_t phy_id[2] = {-1, -1};
++			cpsw_add_slave(&priv->slaves[i], child, i);
++			i++;
++		}
++	}
+ 
+-			if (!of_find_node_by_name(child, "fixed-link")) {
+-				ret = of_property_read_u32_array(child, "phy_id", phy_id, 2);
+-				if (!ret)
+-					dev_warn(dev, "phy_id is deprecated, use phy-handle\n");
+-			}
++	return 0;
++}
++
++static int cpsw_switch_probe_dt(struct cpsw_priv *priv)
++{
++	struct device_d *dev = priv->dev;
++	struct device_node *np = dev->device_node, *child;
++	struct device_node *ports = NULL;
++	int ret, i = 0;
+ 
+-			slave->dev.device_node = child;
+-			slave->phy_id = phy_id[1];
+-			slave->phy_if = of_get_phy_mode(child);
+-			slave->slave_num = i;
++	for_each_child_of_node(np, child) {
++		if (of_device_is_compatible(child, "ti,davinci_mdio")) {
++			ret = of_pinctrl_select_state_default(child);
++			if (ret)
++				return ret;
++		}
+ 
+-			i++;
++		if (!strcmp(child->name, "ethernet-ports")) {
++			ports = child;
++			priv->num_slaves = of_get_available_child_count(ports);
+ 		}
+ 	}
+ 
+-	for (i = 0; i < priv->num_slaves; i++) {
+-		struct cpsw_slave *slave = &priv->slaves[i];
++	if (!ports)
++		return -EINVAL;
++
++	priv->slaves = xzalloc(sizeof(struct cpsw_slave) * priv->num_slaves);
++
++	for_each_available_child_of_node(ports, child) {
++		cpsw_add_slave(&priv->slaves[i], child, i);
++		i++;
++	}
++
++	return 0;
++}
+ 
+-		cpsw_gmii_sel_am335x(slave);
++static int cpsw_probe_dt(struct cpsw_priv *priv)
++{
++	struct device_d *dev = priv->dev;
++	struct device_node *physel;
++	int (*probe_slaves_dt)(struct cpsw_priv *priv);
++	int ret, i = 0;
++
++	physel = of_find_compatible_node(NULL, NULL, "ti,am3352-phy-gmii-sel");
++	if (!physel) {
++		dev_err(dev, "Cannot find ti,am3352-phy-gmii-sel node\n");
++		return -EINVAL;
+ 	}
++	ret = cpsw_phy_sel_init(priv, physel);
++	if (ret)
++		return ret;
++
++	probe_slaves_dt = device_get_match_data(dev);
++	if (!probe_slaves_dt)
++		return -EINVAL;
++
++	ret = probe_slaves_dt(priv);
++	if (ret < 0)
++		return ret;
++
++	for (i = 0; i < priv->num_slaves; i++)
++		cpsw_gmii_sel_am335x(&priv->slaves[i]);
+ 
+ 	return 0;
+ }
+@@ -1282,15 +1338,15 @@ static int cpsw_probe(struct device_d *dev)
+ 
+ 	dev_dbg(dev, "* %s\n", __func__);
+ 
+-	ret = of_platform_populate(dev->device_node, NULL, dev);
+-	if (ret)
+-		return ret;
+-
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+ 		return PTR_ERR(iores);
+ 	regs = IOMEM(iores->start);
+ 
++	ret = of_platform_populate(dev->device_node, NULL, dev);
++	if (ret)
++		return ret;
++
+ 	priv = xzalloc(sizeof(*priv));
+ 	priv->dev = dev;
+ 
+@@ -1371,7 +1427,9 @@ static void cpsw_remove(struct device_d *dev)
+ 
+ static __maybe_unused struct of_device_id cpsw_dt_ids[] = {
+ 	{
+-		.compatible = "ti,cpsw",
++		.compatible = "ti,cpsw", .data = cpsw_legacy_probe_dt
++	}, {
++		.compatible = "ti,cpsw-switch", .data = cpsw_switch_probe_dt
+ 	}, {
+ 		/* sentinel */
+ 	}
+-- 
+2.30.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
