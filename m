@@ -1,15 +1,15 @@
-Delivery-date: Tue, 07 Dec 2021 10:14:49 +0100
+Delivery-date: Tue, 07 Dec 2021 10:16:55 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1muWYj-0008Fc-AM
-	for lore@lore.pengutronix.de; Tue, 07 Dec 2021 10:14:49 +0100
+	id 1muWal-0008Mb-51
+	for lore@lore.pengutronix.de; Tue, 07 Dec 2021 10:16:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1muWYh-0002QU-Um
-	for lore@pengutronix.de; Tue, 07 Dec 2021 10:14:49 +0100
+	id 1muWak-0002x0-1B
+	for lore@pengutronix.de; Tue, 07 Dec 2021 10:16:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=BALVOY/apyy3MnhMtc4CA2MMdSSQVo+xljcZjPNsoS0=; b=Mk2tcx4uQuKbOzczC7B064Hfgl
-	9deHmP//evaDMBq2+ItMqK+xxia6Po5kgtZCYVQE8sQ0xzFA6AdMtTjAKgyF5ELkp5Gd7fg5rAXMR
-	pz/+R0dINsfWYJGxXJxMONdHTmXWQmjRGajlM7GnVqsyWi2WTo5tcGGZxAjPpmHOrjb/vspCe/aY7
-	1A2m4lJ6sZSf9a/v/jb9wXk3sc2w57yVgkptbQC5iY5luGJLeMRlysGk7Ut5freLkEFtDlPvR9Ssg
-	kSGdKrGRd2DO0vNFvyBC5ciItJlt5blajOxJDjAFlYGDbJLDK3ToNl+AmZmqi/+2AHAPygdfK69cq
-	VwhNcVTw==;
+	bh=qNXIIbl5hxpYZsXb3PvpfNys3w0EfAeFBzotVE5R1Ag=; b=MYFEv4yWsVHE94Ho7VytaRthfN
+	DpPF8BVgFs+zXiLNymtgVZwI/lon3VUrO58p15e6wuv/C4FMbRrwvmsTIRYJqMMoh74FwO/RpSvkl
+	k1+XLReK6IrzHw6JTlKKm02k1NRqf4+s4BvXxKRXaEj735sty6E6tcNWM8hJ+Vq/C8UuKmgSbUuU7
+	BINPejLTNM/uWRZ6q2cpq+UOKO4m+0hAEZWqqcTk/yWlcYg5fGwUgkP8G//hB7Ope1e0nlbQwHsKy
+	jDkBtyGxfSUmCIDAlkAif4TR6zmIA6Dl5XxXp+poOpRNMqdTutJVd2k5284KJA1zk4UtBUwkiJZBG
+	tIngUenQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1muWX5-007kFg-Hk; Tue, 07 Dec 2021 09:13:08 +0000
+	id 1muWZK-007lEC-7m; Tue, 07 Dec 2021 09:15:26 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1muWVR-007jZl-QL
- for barebox@lists.infradead.org; Tue, 07 Dec 2021 09:11:27 +0000
+ id 1muWX5-007kPy-D5
+ for barebox@lists.infradead.org; Tue, 07 Dec 2021 09:13:08 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1muWVQ-0001e2-Dn; Tue, 07 Dec 2021 10:11:24 +0100
+ id 1muWX3-0002BE-UW; Tue, 07 Dec 2021 10:13:05 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1muWVQ-0003mH-31; Tue, 07 Dec 2021 10:11:24 +0100
-Date: Tue, 7 Dec 2021 10:11:24 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1muWX3-0003ng-Ij; Tue, 07 Dec 2021 10:13:05 +0100
+Date: Tue, 7 Dec 2021 10:13:05 +0100
+To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
-Message-ID: <20211207091124.GK28260@pengutronix.de>
-References: <20211125160657.3828643-1-a.fatoum@pengutronix.de>
+Message-ID: <20211207091305.GL28260@pengutronix.de>
+References: <20211129071454.2014315-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211125160657.3828643-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20211129071454.2014315-1-ahmad@a3f.at>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:11:14 up 292 days, 12:35, 143 users,  load average: 0.36, 0.31,
- 0.25
+X-Uptime: 10:12:51 up 292 days, 12:36, 143 users,  load average: 0.14, 0.23,
+ 0.22
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211207_011125_907048_A50B8241 
-X-CRM114-Status: GOOD (  24.91  )
+X-CRM114-CacheID: sfid-20211207_011307_502250_C9AB6F80 
+X-CRM114-Status: GOOD (  25.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,83 +81,52 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] RISC-V: virt: add DEBUG_LL support
+Subject: Re: [PATCH master] fs: /dev/mem: handle copy at offset 0 correctly
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Nov 25, 2021 at 05:06:57PM +0100, Ahmad Fatoum wrote:
-> While we have PBL console support, console isn't available during early
-> barebox startup. Implement DEBUG_LL for Qemu RISC-V Virt to make such
-> early debugging easier.
+On Mon, Nov 29, 2021 at 08:14:54AM +0100, Ahmad Fatoum wrote:
+> Despite that /dev/mem has a size of 0, the check preventing
+> out-of-bounds access works for /dev/mem as well, because of unsigned
+> wrap around. Corner case is when offset is zero. There will be no wrap
+> around and
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>   count = min(count, 0 - 0) = 0
+> 
+> Leading to unexpected behavior with e.g.
+> 
+>   memcmp -s /dev/mem 0
+> 
+> on systems without MMU. Fix this.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 > ---
->  arch/riscv/Kconfig.socs           |  1 +
->  arch/riscv/include/asm/debug_ll.h | 10 ++++++++--
->  common/Kconfig                    |  5 +++++
->  3 files changed, 14 insertions(+), 2 deletions(-)
+>  fs/devfs-core.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-> index bd4a44a575ef..b12c795041b0 100644
-> --- a/arch/riscv/Kconfig.socs
-> +++ b/arch/riscv/Kconfig.socs
-> @@ -18,6 +18,7 @@ config SOC_VIRT
->  	select RISCV_S_MODE
->  	select BOARD_RISCV_GENERIC_DT
->  	select HAS_CACHE
-> +	select HAS_ASM_DEBUG_LL
->  	help
->  	  Generates an image tht can be be booted by QEMU. The image is called
->  	  barebox-dt-2nd.img
-> diff --git a/arch/riscv/include/asm/debug_ll.h b/arch/riscv/include/asm/debug_ll.h
-> index a3b9c1c4bcfb..d01b4f09b8e1 100644
-> --- a/arch/riscv/include/asm/debug_ll.h
-> +++ b/arch/riscv/include/asm/debug_ll.h
-> @@ -17,13 +17,19 @@
->  #if defined CONFIG_DEBUG_ERIZO
->  #define DEBUG_LL_UART_ADDR	0x90000000
->  #define DEBUG_LL_UART_CLK       (24000000 / 16)
-> +#define DEBUG_LL_UART_SHIFT	2
-> +#define DEBUG_LL_UART_IOSIZE32
->  #elif defined CONFIG_DEBUG_STARFIVE
->  #define DEBUG_LL_UART_ADDR	0x12440000
->  #define DEBUG_LL_UART_CLK       (100000000 / 16)
-> -#endif
-> -
->  #define DEBUG_LL_UART_SHIFT	2
->  #define DEBUG_LL_UART_IOSIZE32
-> +#elif defined CONFIG_DEBUG_RISCV_VIRT
-> +#define DEBUG_LL_UART_ADDR	0x10000000
-> +#define DEBUG_LL_UART_CLK       (58982400  / 16)
-> +#define DEBUG_LL_UART_SHIFT	0
-> +#define DEBUG_LL_UART_IOSIZE8
-> +#endif
+> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+> index 3715e543e632..2d016e0e4861 100644
+> --- a/fs/devfs-core.c
+> +++ b/fs/devfs-core.c
+> @@ -573,7 +573,10 @@ ssize_t mem_copy(struct device_d *dev, void *dst, const void *src,
+>  	if (!dev || dev->num_resources < 1)
+>  		return -1;
 >  
->  #define DEBUG_LL_UART_BPS       CONFIG_BAUDRATE
->  #define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
-> diff --git a/common/Kconfig b/common/Kconfig
-> index f4120b2083ee..ab6258d90f40 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -1402,6 +1402,11 @@ config DEBUG_STARFIVE
->  	depends on SOC_STARFIVE
->  	select DEBUG_LL_NS16550
->  
-> +config DEBUG_RISCV_VIRT
-> +	bool "RISC-V Virt ns16550 port"
-> +	depends on SOC_VIRT
-> +	select DEBUG_LL_NS16550
+> -	count = size = min(count, resource_size(&dev->resource[0]) - offset);
+> +	if (resource_size(&dev->resource[0]) > 0 || offset != 0)
+> +		count = min(count, resource_size(&dev->resource[0]) - offset);
 > +
->  config DEBUG_SIFIVE
->  	bool "SiFive serial0 port"
->  	depends on SOC_SIFIVE
+> +	size = count;
+>  
+>  	/* no rwsize specification given. Do whatever memcpy likes best */
+>  	if (!rwsize) {
 > -- 
-> 2.30.2
+> 2.33.0
 > 
 > 
 > _______________________________________________
