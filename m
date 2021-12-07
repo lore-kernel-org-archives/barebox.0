@@ -1,15 +1,15 @@
-Delivery-date: Tue, 07 Dec 2021 10:16:55 +0100
+Delivery-date: Tue, 07 Dec 2021 10:27:41 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1muWal-0008Mb-51
-	for lore@lore.pengutronix.de; Tue, 07 Dec 2021 10:16:55 +0100
+	id 1muWlB-0000Pf-2V
+	for lore@lore.pengutronix.de; Tue, 07 Dec 2021 10:27:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1muWak-0002x0-1B
-	for lore@pengutronix.de; Tue, 07 Dec 2021 10:16:54 +0100
+	id 1muWlA-0004KF-4v
+	for lore@pengutronix.de; Tue, 07 Dec 2021 10:27:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,47 +17,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=qNXIIbl5hxpYZsXb3PvpfNys3w0EfAeFBzotVE5R1Ag=; b=MYFEv4yWsVHE94Ho7VytaRthfN
-	DpPF8BVgFs+zXiLNymtgVZwI/lon3VUrO58p15e6wuv/C4FMbRrwvmsTIRYJqMMoh74FwO/RpSvkl
-	k1+XLReK6IrzHw6JTlKKm02k1NRqf4+s4BvXxKRXaEj735sty6E6tcNWM8hJ+Vq/C8UuKmgSbUuU7
-	BINPejLTNM/uWRZ6q2cpq+UOKO4m+0hAEZWqqcTk/yWlcYg5fGwUgkP8G//hB7Ope1e0nlbQwHsKy
-	jDkBtyGxfSUmCIDAlkAif4TR6zmIA6Dl5XxXp+poOpRNMqdTutJVd2k5284KJA1zk4UtBUwkiJZBG
-	tIngUenQ==;
+	bh=kdUTxCmxsp/mWFzY2C32K6ZuP1t9Hh3HfSFWVikDEQA=; b=xJy83XCRLHEDUv7IJUc5AurKyw
+	55egv0+fp+7PHXaAfanlcOEK/Z3d8GLxylPpJH1FimdQ11l7DVhA81gA4dBfc6Uwx9klY3PsM11E/
+	E5d+YKRPuCtSc2ayMjpp9V7dAPHflaJSSUABxlDWXN6uouN0KyEfeROzlxyc2u7JFr8JP/Jetfy4q
+	eH/j7y9P4mFdWo8TgtuG0zH++TBKUUVIVwGh8NRvykWFsrdKDdFIeBY5f1Wl6Ia5rcgaptKEVYHHq
+	nrPfsKvLTPnx0UtGW8XEoHkvURMhyXUf8HUi6Nft/lf90Jd/3rv87D7tGSyIIz8/OxUEAEfOQQN1a
+	c2UMcNEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1muWZK-007lEC-7m; Tue, 07 Dec 2021 09:15:26 +0000
+	id 1muWjm-007nwp-AF; Tue, 07 Dec 2021 09:26:14 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1muWX5-007kPy-D5
- for barebox@lists.infradead.org; Tue, 07 Dec 2021 09:13:08 +0000
+ id 1muWjh-007nwP-Mb
+ for barebox@lists.infradead.org; Tue, 07 Dec 2021 09:26:11 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1muWX3-0002BE-UW; Tue, 07 Dec 2021 10:13:05 +0100
+ id 1muWjf-0004Ei-Pt; Tue, 07 Dec 2021 10:26:07 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1muWX3-0003ng-Ij; Tue, 07 Dec 2021 10:13:05 +0100
-Date: Tue, 7 Dec 2021 10:13:05 +0100
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
-Message-ID: <20211207091305.GL28260@pengutronix.de>
-References: <20211129071454.2014315-1-ahmad@a3f.at>
+ id 1muWjf-0004RC-H1; Tue, 07 Dec 2021 10:26:07 +0100
+Date: Tue, 7 Dec 2021 10:26:07 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, ukl@pengutronix.de
+Message-ID: <20211207092607.GM28260@pengutronix.de>
+References: <20211202074256.200325-1-a.fatoum@pengutronix.de>
+ <20211202074256.200325-2-a.fatoum@pengutronix.de>
+ <f1721621-fc62-7ec8-f1cb-b6659853ab22@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20211129071454.2014315-1-ahmad@a3f.at>
+In-Reply-To: <f1721621-fc62-7ec8-f1cb-b6659853ab22@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:12:51 up 292 days, 12:36, 143 users,  load average: 0.14, 0.23,
- 0.22
+X-Uptime: 10:20:22 up 292 days, 12:44, 143 users,  load average: 0.31, 0.16,
+ 0.18
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211207_011307_502250_C9AB6F80 
-X-CRM114-Status: GOOD (  25.14  )
+X-CRM114-CacheID: sfid-20211207_012609_768126_788FD482 
+X-CRM114-Status: GOOD (  23.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,59 +83,50 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] fs: /dev/mem: handle copy at offset 0 correctly
+Subject: Re: [PATCH 2/3] ARM: turn arm_mem_stack_top into a macro
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Nov 29, 2021 at 08:14:54AM +0100, Ahmad Fatoum wrote:
-> Despite that /dev/mem has a size of 0, the check preventing
-> out-of-bounds access works for /dev/mem as well, because of unsigned
-> wrap around. Corner case is when offset is zero. There will be no wrap
-> around and
+On Thu, Dec 02, 2021 at 09:01:10AM +0100, Ahmad Fatoum wrote:
+> On 02.12.21 08:42, Ahmad Fatoum wrote:
+> > This makes it possible to use for static initialization, like done in a
+> > follow-up commit.
+> > 
+> > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> > ---
+> >  arch/arm/include/asm/barebox-arm.h | 13 ++++++-------
+> >  1 file changed, 6 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+> > index d70de6d5e6e6..0481d3391c26 100644
+> > --- a/arch/arm/include/asm/barebox-arm.h
+> > +++ b/arch/arm/include/asm/barebox-arm.h
+> > @@ -97,14 +97,13 @@ static inline void arm_fixup_vectors(void)
+> >  
+> >  void *barebox_arm_boot_dtb(void);
+> >  
+> > -static inline unsigned long arm_mem_stack_top(unsigned long membase,
+> > -					      unsigned long endmem)
+> > -{
+> > -	if (IS_ENABLED(CONFIG_BOOTM_OPTEE) || IS_ENABLED(CONFIG_PBL_OPTEE))
+> > -		endmem -= OPTEE_SIZE;
+> > +#define __arm_mem_stack_top(membase, endmem) ((endmem) - SZ_64K)
+> >  
+> > -	return endmem - SZ_64K;
+> > -}
+> > +#if defined(CONFIG_BOOTM_OPTEE) || defined(CONFIG_PBL_OPTEE)
+> > +#define arm_mem_stack_top(membase, endmem) (__arm_mem_stack_top(membase, endmem) - OPTEE_SIZE)
+> > +#else
+> > +#define arm_mem_stack_top(membase, endmem) (__arm_mem_stack_top(membase, endmem) - OPTEE_SIZE)
 > 
->   count = min(count, 0 - 0) = 0
-> 
-> Leading to unexpected behavior with e.g.
-> 
->   memcmp -s /dev/mem 0
-> 
-> on systems without MMU. Fix this.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  fs/devfs-core.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> Argh. Should have looked more closely before sending out. I'll respin later,
+> but looking forward to feedback in the mean time.
 
-Applied, thanks
+Apart from this error this series looks good to me (at least in the
+range of how good such a preprocessor/assembly wasteland can look).
 
 Sascha
 
-> 
-> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-> index 3715e543e632..2d016e0e4861 100644
-> --- a/fs/devfs-core.c
-> +++ b/fs/devfs-core.c
-> @@ -573,7 +573,10 @@ ssize_t mem_copy(struct device_d *dev, void *dst, const void *src,
->  	if (!dev || dev->num_resources < 1)
->  		return -1;
->  
-> -	count = size = min(count, resource_size(&dev->resource[0]) - offset);
-> +	if (resource_size(&dev->resource[0]) > 0 || offset != 0)
-> +		count = min(count, resource_size(&dev->resource[0]) - offset);
-> +
-> +	size = count;
->  
->  	/* no rwsize specification given. Do whatever memcpy likes best */
->  	if (!rwsize) {
-> -- 
-> 2.33.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
