@@ -1,15 +1,15 @@
-Delivery-date: Tue, 07 Dec 2021 10:27:41 +0100
+Delivery-date: Tue, 07 Dec 2021 15:41:16 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1muWlB-0000Pf-2V
-	for lore@lore.pengutronix.de; Tue, 07 Dec 2021 10:27:41 +0100
+	id 1mubee-0007lI-Gp
+	for lore@lore.pengutronix.de; Tue, 07 Dec 2021 15:41:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1muWlA-0004KF-4v
-	for lore@pengutronix.de; Tue, 07 Dec 2021 10:27:40 +0100
+	id 1mubed-0004nc-9C
+	for lore@pengutronix.de; Tue, 07 Dec 2021 15:41:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -17,49 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=kdUTxCmxsp/mWFzY2C32K6ZuP1t9Hh3HfSFWVikDEQA=; b=xJy83XCRLHEDUv7IJUc5AurKyw
-	55egv0+fp+7PHXaAfanlcOEK/Z3d8GLxylPpJH1FimdQ11l7DVhA81gA4dBfc6Uwx9klY3PsM11E/
-	E5d+YKRPuCtSc2ayMjpp9V7dAPHflaJSSUABxlDWXN6uouN0KyEfeROzlxyc2u7JFr8JP/Jetfy4q
-	eH/j7y9P4mFdWo8TgtuG0zH++TBKUUVIVwGh8NRvykWFsrdKDdFIeBY5f1Wl6Ia5rcgaptKEVYHHq
-	nrPfsKvLTPnx0UtGW8XEoHkvURMhyXUf8HUi6Nft/lf90Jd/3rv87D7tGSyIIz8/OxUEAEfOQQN1a
-	c2UMcNEg==;
+	bh=wzruoiehAHRoIS3lms6K4kwqhd71OmdY7uywuuvLWp4=; b=TMTVMeV2Owzt7v1giphGwYTGIi
+	ERKRKO+Oq+aP7V9bOr8ZOsYEf+iCMtvi/zhRBwXa9uL1DfLdI9wOY9YnwxiSGlJGh0RV7AZOQINtU
+	2wQRSo3l2RzOPhhufPJ/kta5nEOGpoPBlKkVXkMvRtsdphgvJ1Xfs9aHkCQOG41iOUmyp3wJBgR6w
+	4UDpCa50+jHA2ux30oovx6fZfixV/HJ3rgJMV2wKxEYi8mUH5a/h3QNGiBW3N+N09ItCg7VI9+gK9
+	ESvpHmHtROhMdHyTCwsJNGTzfAJGs4HiSAXHxniOexAbi+NRU8dGh+vYrVWOkPtB5tehs36PW7JuY
+	1+lpzKNQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1muWjm-007nwp-AF; Tue, 07 Dec 2021 09:26:14 +0000
+	id 1mubcp-008yNr-Ew; Tue, 07 Dec 2021 14:39:24 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1muWjh-007nwP-Mb
- for barebox@lists.infradead.org; Tue, 07 Dec 2021 09:26:11 +0000
+ id 1mub4h-008pJH-5i
+ for barebox@lists.infradead.org; Tue, 07 Dec 2021 14:04:08 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1muWjf-0004Ei-Pt; Tue, 07 Dec 2021 10:26:07 +0100
+ id 1mub4f-0007b4-Sd; Tue, 07 Dec 2021 15:04:05 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1muWjf-0004RC-H1; Tue, 07 Dec 2021 10:26:07 +0100
-Date: Tue, 7 Dec 2021 10:26:07 +0100
+ id 1mub4f-0007ik-Jm; Tue, 07 Dec 2021 15:04:05 +0100
+Date: Tue, 7 Dec 2021 15:04:05 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, ukl@pengutronix.de
-Message-ID: <20211207092607.GM28260@pengutronix.de>
-References: <20211202074256.200325-1-a.fatoum@pengutronix.de>
- <20211202074256.200325-2-a.fatoum@pengutronix.de>
- <f1721621-fc62-7ec8-f1cb-b6659853ab22@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20211207140405.GN28260@pengutronix.de>
+References: <20211125161042.3829996-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <f1721621-fc62-7ec8-f1cb-b6659853ab22@pengutronix.de>
+In-Reply-To: <20211125161042.3829996-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:20:22 up 292 days, 12:44, 143 users,  load average: 0.31, 0.16,
- 0.18
+X-Uptime: 15:03:54 up 292 days, 17:27, 152 users,  load average: 0.58, 0.47,
+ 0.34
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211207_012609_768126_788FD482 
-X-CRM114-Status: GOOD (  23.38  )
+X-CRM114-CacheID: sfid-20211207_060407_272041_548E8BDE 
+X-CRM114-Status: GOOD (  22.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,50 +81,65 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/3] ARM: turn arm_mem_stack_top into a macro
+Subject: Re: [PATCH 0/7] ARM/RISC-V: qemu-virt: share common cleaned up
+ state/env support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Dec 02, 2021 at 09:01:10AM +0100, Ahmad Fatoum wrote:
-> On 02.12.21 08:42, Ahmad Fatoum wrote:
-> > This makes it possible to use for static initialization, like done in a
-> > follow-up commit.
-> > 
-> > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > ---
-> >  arch/arm/include/asm/barebox-arm.h | 13 ++++++-------
-> >  1 file changed, 6 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-> > index d70de6d5e6e6..0481d3391c26 100644
-> > --- a/arch/arm/include/asm/barebox-arm.h
-> > +++ b/arch/arm/include/asm/barebox-arm.h
-> > @@ -97,14 +97,13 @@ static inline void arm_fixup_vectors(void)
-> >  
-> >  void *barebox_arm_boot_dtb(void);
-> >  
-> > -static inline unsigned long arm_mem_stack_top(unsigned long membase,
-> > -					      unsigned long endmem)
-> > -{
-> > -	if (IS_ENABLED(CONFIG_BOOTM_OPTEE) || IS_ENABLED(CONFIG_PBL_OPTEE))
-> > -		endmem -= OPTEE_SIZE;
-> > +#define __arm_mem_stack_top(membase, endmem) ((endmem) - SZ_64K)
-> >  
-> > -	return endmem - SZ_64K;
-> > -}
-> > +#if defined(CONFIG_BOOTM_OPTEE) || defined(CONFIG_PBL_OPTEE)
-> > +#define arm_mem_stack_top(membase, endmem) (__arm_mem_stack_top(membase, endmem) - OPTEE_SIZE)
-> > +#else
-> > +#define arm_mem_stack_top(membase, endmem) (__arm_mem_stack_top(membase, endmem) - OPTEE_SIZE)
+On Thu, Nov 25, 2021 at 05:10:35PM +0100, Ahmad Fatoum wrote:
+> ARM QEMU Virt has support for environment/state. Make this available in
+> RISC-V as well, while cleaning up the code a bit and fixing a bug due to
+> too early of_probe at pure_initcall level.
 > 
-> Argh. Should have looked more closely before sending out. I'll respin later,
-> but looking forward to feedback in the mean time.
+> Ahmad Fatoum (7):
+>   state: mark state init errors specially
+>   state: make first boot less verbose
+>   of: overlay: rescan aliases calling of_overlay_apply_tree on live tree
+>   ARM: qemu: enable deep probe support
+>   ARM: qemu: move board code to central location
+>   common: boards: qemu-virt: genericize to support non-ARM architectures
+>   RISC-V: qemu-virt: add overlay for environment and state
 
-Apart from this error this series looks good to me (at least in the
-range of how good such a preprocessor/assembly wasteland can look).
+Applied, thanks
 
 Sascha
 
+> 
+>  arch/arm/Kconfig                              |  1 +
+>  arch/arm/boards/Makefile                      |  1 -
+>  arch/arm/boards/qemu-virt/Makefile            |  1 -
+>  arch/riscv/Kconfig.socs                       | 10 +++
+>  arch/riscv/configs/virt32_defconfig           |  4 ++
+>  arch/riscv/configs/virt64_defconfig           |  4 ++
+>  common/Kconfig                                |  2 +
+>  common/Makefile                               |  1 +
+>  common/boards/Kconfig                         |  4 ++
+>  common/boards/Makefile                        |  3 +
+>  common/boards/qemu-virt/Makefile              |  7 +++
+>  {arch/arm => common}/boards/qemu-virt/board.c | 61 ++++++++-----------
+>  .../boards/qemu-virt/overlay-of-flash.dts     | 13 +++-
+>  common/state/backend_format_raw.c             |  7 +--
+>  common/state/backend_storage.c                | 17 +++---
+>  common/state/state.c                          |  4 +-
+>  common/state/state.h                          | 14 +++++
+>  drivers/misc/state.c                          |  4 +-
+>  drivers/of/overlay.c                          |  4 ++
+>  19 files changed, 110 insertions(+), 52 deletions(-)
+>  create mode 100644 common/boards/Kconfig
+>  create mode 100644 common/boards/Makefile
+>  create mode 100644 common/boards/qemu-virt/Makefile
+>  rename {arch/arm => common}/boards/qemu-virt/board.c (64%)
+>  rename {arch/arm => common}/boards/qemu-virt/overlay-of-flash.dts (83%)
+> 
+> -- 
+> 2.30.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
