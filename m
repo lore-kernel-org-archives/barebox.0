@@ -1,53 +1,53 @@
-Delivery-date: Thu, 09 Dec 2021 11:59:06 +0100
+Delivery-date: Thu, 09 Dec 2021 11:59:51 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mvH8k-0010iG-N6
-	for lore@lore.pengutronix.de; Thu, 09 Dec 2021 11:59:06 +0100
+	id 1mvH9T-0010k3-Do
+	for lore@lore.pengutronix.de; Thu, 09 Dec 2021 11:59:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mvH8j-0000we-6F
-	for lore@pengutronix.de; Thu, 09 Dec 2021 11:59:06 +0100
+	id 1mvH9S-0001Bx-1r
+	for lore@pengutronix.de; Thu, 09 Dec 2021 11:59:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
 	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=AD7ipE38xVAB9UpUj1TIBJX2LIIKR+lf5BnCHM4Odlg=; b=TL3asvSIrTTS6P
-	ItS2xOnH2Deyjpt/9txTq2YtSTHRbr2mkdK/RH28LvpfrKdJbTJv9rpEaI/7Etu5iqzLUX8ehnSlF
-	raSWB8XwhxWttYImQUfoMPtGQ8ldLGKaxPTiCfRyT2C/gNJlQoSSLH5bCcnCQBWcAbeKgsiwJSfYs
-	C6p7pisYvdvbQ9oysNiUInZGq+0Su+GS8i7w/gIxUj4lQLGJwXjFO4+BCCYyVXNlC1PHJmcyd8iXy
-	9MDkElCmuDHC138tmBAY7pfmhZnrb906feDrZl2JCbxCFfMuboYzYIbOJ8zGOacricFpZd1asSgOy
-	+KOgHyWbspA/ZRllR2Qg==;
+	List-Owner; bh=tFgY+0a/fs9ZHNnzt5dpJFBKeoT/bG3g35ipGDsScz8=; b=iWp67zySYFVf5l
+	d9LHF/SR1KF9qie41/SswyvgeLYQFr2dX0K6x/1Un+MnBC91BMOCYh6BAjK8oAbfMnuhyizS6pQnv
+	CNr3yfHfOwGX3MpvMmwet4w48tMgle/ioxW8RP285zNo8u9VX2/BK3/oCcMJGBQmneTR1gHhoXv0+
+	erqcIhcibNKzTcIZuqylPf7yVlJUkzM5cwMfKRaCinceQIWBAcd3wnt9XNxVapxZGEoYi+0r7jjqL
+	GunKSt02m1y7/+vUzE8+s0jjMpbv5ZFN5UaK0JlfPUu7ruaKx4IQFdiuKAOG0rtfzM+J0ekv6bcYN
+	q/cTpgEMU4ZDoT0Lco0A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mvH7T-00Fh3H-GM; Thu, 09 Dec 2021 10:57:47 +0000
+	id 1mvH86-00FhFE-5b; Thu, 09 Dec 2021 10:58:26 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mvH7O-00Fh1f-Fp
- for barebox@lists.infradead.org; Thu, 09 Dec 2021 10:57:43 +0000
+ id 1mvH81-00FhEH-MJ
+ for barebox@lists.infradead.org; Thu, 09 Dec 2021 10:58:22 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1mvH7N-0000d2-A2; Thu, 09 Dec 2021 11:57:41 +0100
+ id 1mvH80-0000jV-Ff; Thu, 09 Dec 2021 11:58:20 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1mvH7M-00ElCp-RN; Thu, 09 Dec 2021 11:57:40 +0100
+ id 1mvH80-00ElGw-0q; Thu, 09 Dec 2021 11:58:20 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  9 Dec 2021 11:57:39 +0100
-Message-Id: <20211209105739.3517998-1-a.fatoum@pengutronix.de>
+Date: Thu,  9 Dec 2021 11:58:17 +0100
+Message-Id: <20211209105817.3518258-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211209_025742_550505_534F100E 
-X-CRM114-Status: GOOD (  10.40  )
+X-CRM114-CacheID: sfid-20211209_025821_753693_D292EF6F 
+X-CRM114-Status: GOOD (  11.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,82 +71,46 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] commands: of_diff: don't mix tabs and spaces for indentation
+Subject: [PATCH] include: <linux/build_bug.h>: define static_assert
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Nodes are indented with spaces, while properties are indented with tabs,
-leading to discrepancies when the indentation doesn't start at a tab
-stop, like when using of_diff:
-
-chosen {
-+ 	barebox-version = "barebox-2021.06.0-20210716-2";
-+ 	reset-source = "POR";
-+ 	reset-source-instance = <0x0>;
-+        subnode {
-
-Fix this by using spaces throughout.
+BUILD_BUG_ON can't be used outside of a function, unlike static_assert.
+Import the macro definition.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/of/base.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ include/linux/build_bug.h | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 664a3a411eaf..06e37b0fca4a 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -2011,12 +2011,7 @@ void of_print_nodes(struct device_node *node, int indent)
+diff --git a/include/linux/build_bug.h b/include/linux/build_bug.h
+index 43d1fd50d433..40cd504f63ba 100644
+--- a/include/linux/build_bug.h
++++ b/include/linux/build_bug.h
+@@ -80,4 +80,23 @@
  
- static void __of_print_property(struct property *p, int indent)
- {
--	int i;
--
--	for (i = 0; i < indent; i++)
--		printf("\t");
--
--	printf("%s", p->name);
-+	printf("%*s%s", indent * 8, "", p->name);
- 	if (p->length) {
- 		printf(" = ");
- 		of_print_property(of_property_get_value(p), p->length);
-@@ -2034,17 +2029,14 @@ void of_print_properties(struct device_node *node)
+ #endif	/* __CHECKER__ */
  
- static int __of_print_parents(struct device_node *node)
- {
--	int indent, i;
-+	int indent;
- 
- 	if (!node->parent)
- 		return 0;
- 
- 	indent = __of_print_parents(node->parent);
- 
--	for (i = 0; i < indent; i++)
--		printf("\t");
--
--	printf("%s {\n", node->name);
-+	printf("%*s%s {\n", indent * 8, "", node->name);
- 
- 	return indent + 1;
- }
-@@ -2124,14 +2116,14 @@ void of_diff(struct device_node *a, struct device_node *b, int indent)
- 			of_diff(ca, cb, indent + 1);
- 		} else {
- 			of_print_parents(a, &printed);
--			__of_print_nodes(ca, indent, "-");
-+			__of_print_nodes(ca, indent, "- ");
- 		}
- 	}
- 
- 	for_each_child_of_node(b, cb) {
- 		if (!of_get_child_by_name(a, cb->name)) {
- 			of_print_parents(a, &printed);
--			__of_print_nodes(cb, indent, "+");
-+			__of_print_nodes(cb, indent, "+ ");
- 		}
- 	}
- 
++/**
++ * static_assert - check integer constant expression at build time
++ *
++ * static_assert() is a wrapper for the C11 _Static_assert, with a
++ * little macro magic to make the message optional (defaulting to the
++ * stringification of the tested expression).
++ *
++ * Contrary to BUILD_BUG_ON(), static_assert() can be used at global
++ * scope, but requires the expression to be an integer constant
++ * expression (i.e., it is not enough that __builtin_constant_p() is
++ * true for expr).
++ *
++ * Also note that BUILD_BUG_ON() fails the build if the condition is
++ * true, while static_assert() fails the build if the expression is
++ * false.
++ */
++#define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
++#define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
++
+ #endif	/* _LINUX_BUILD_BUG_H */
 -- 
 2.30.2
 
