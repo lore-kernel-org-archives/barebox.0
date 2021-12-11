@@ -1,53 +1,48 @@
-Delivery-date: Thu, 09 Dec 2021 12:00:20 +0100
+Delivery-date: Sat, 11 Dec 2021 09:43:08 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mvH9w-0010lO-JM
-	for lore@lore.pengutronix.de; Thu, 09 Dec 2021 12:00:20 +0100
+	id 1mvxyG-0030qX-EQ
+	for lore@lore.pengutronix.de; Sat, 11 Dec 2021 09:43:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mvH9u-0001Jr-PO
-	for lore@pengutronix.de; Thu, 09 Dec 2021 12:00:19 +0100
+	id 1mvxyF-0002D4-3m
+	for lore@pengutronix.de; Sat, 11 Dec 2021 09:43:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
 	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=APDCFecu20Xyj1Eui/hWS/ZWX622ow/1+GZ2hMBtsSM=; b=JxompLyuNM+Fs4
-	qQWIZsoXqywXJ2QAZ9EHeZIzBUvGoVCKcu3IwFLHBP/InacCCMz5OXvOWD+LTC8Yig/DAE7j3ikR+
-	ZoT8T1uvF7NqNEkay+yQDQbS9pYjuAPvYqVSa30CvB7+Lwt156/vW3xmb3Z9MKW+rVIA2QnNJCkDN
-	ptP+63ZvvAEJ2+/IsWN9Qv+AyN7hb6kvd9Epucmr7NFhYKAWwawRBExGhoMY+G5VY6KR3Ob38092h
-	FKIyk4on5Xcq0US6dI/3RgLjiP6YKg5SHYlD2LTiQ/Hy/zvL/P0UZqnEhe2L0e5uwd5rPlKC6ZSo3
-	Jcacns69/FtymD9+E8Lw==;
+	List-Owner; bh=rdWXNobbPnxHD241agevPkXODAfZ9cX/JFE42H4x7+k=; b=lPr0H3gueb67DJ
+	KFnw5O1HljdJC3zu0O8PdqRYaJKu8NuQyrLwGLM+ZmiYrNfshXqbaQJVmJKQ1152dvAtrBa8kimB+
+	/2xyTFVP3+Lmzgnq2gyGSoqWfgsQPTEhxuSr6D6Vi8zFBe/GFIrd/UCdGhOSwTs6HUEj8q1a0Z2RN
+	xUCi0KB7QzkwFrWChBe8Fs752CTdWTI6zAtvoYGkqnBhCRAb4FRpLCJph0dLdz3TJbr6G8oziETmK
+	kFJDcmaFg7IcPpWe1+1sHfChqguNU1z+VlYZkxccx40mU3jmmpo6ifoAXN7q9sB+RkG5VecvEhld3
+	GO9yZIj/vCq79qQpyNzA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mvH8l-00FhXk-26; Thu, 09 Dec 2021 10:59:07 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mvxvv-004kfm-Cp; Sat, 11 Dec 2021 08:40:43 +0000
+Received: from relay3-d.mail.gandi.net ([217.70.183.195])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mvH8O-00FhOD-7O
- for barebox@lists.infradead.org; Thu, 09 Dec 2021 10:58:45 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1mvH8N-0000mx-0c; Thu, 09 Dec 2021 11:58:43 +0100
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>)
- id 1mvH8M-00ElLA-Hg; Thu, 09 Dec 2021 11:58:42 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1mvxvr-004kf2-0s
+ for barebox@lists.infradead.org; Sat, 11 Dec 2021 08:40:40 +0000
+Received: (Authenticated sender: ahmad@a3f.at)
+ by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 0FE8A60007;
+ Sat, 11 Dec 2021 08:40:30 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  9 Dec 2021 11:58:41 +0100
-Message-Id: <20211209105841.3518522-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Sat, 11 Dec 2021 09:40:26 +0100
+Message-Id: <20211211084026.443756-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211209_025844_319209_401122CC 
-X-CRM114-Status: UNSURE (   9.89  )
+X-CRM114-CacheID: sfid-20211211_004039_243771_5C0DA25A 
+X-CRM114-Status: UNSURE (   6.72  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -68,47 +63,38 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! vsprintf: add optional support for %ls format modifier
+Subject: [PATCH master] include: linux/printk.h: include <stdarg.h> to make
+ header self-contained
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
--- has higher operator precedence than *, so instead of decreasing
-field_width, the pointer was decremented. This lead to misalignment,
-e.g. when doing of_dump. Fix this up.
+The point of <linux/printk.h> is to have a minimal self-contained header
+for use where ever printing is required. va_list was used, but not
+defined, remedy this.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- lib/vsprintf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/printk.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index ce92787c58ef..9a94a1bbe84e 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -153,7 +153,7 @@ static char *leading_spaces(char *buf, const char *end,
- 			    int len, int *field_width, int flags)
- {
- 	if (!(flags & LEFT)) {
--		while (len < *field_width--) {
-+		while (len < (*field_width)--) {
- 			if (buf < end)
- 				*buf = ' ';
- 			++buf;
-@@ -166,7 +166,7 @@ static char *leading_spaces(char *buf, const char *end,
- static char *trailing_spaces(char *buf, const char *end,
- 			     int len, int *field_width, int flags)
- {
--	while (len < *field_width--) {
-+	while (len < (*field_width)--) {
- 		if (buf < end)
- 			*buf = ' ';
- 		++buf;
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 212041927251..39523b0572a0 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/list.h>
+ #include <printk.h>
++#include <stdarg.h>
+ 
+ #define MSG_EMERG      0    /* system is unusable */
+ #define MSG_ALERT      1    /* action must be taken immediately */
 -- 
-2.30.2
+2.33.0
 
 
 _______________________________________________
