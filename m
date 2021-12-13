@@ -1,54 +1,68 @@
-Delivery-date: Mon, 13 Dec 2021 22:13:51 +0100
+Delivery-date: Mon, 13 Dec 2021 22:14:10 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mwsdr-005gIO-9u
-	for lore@lore.pengutronix.de; Mon, 13 Dec 2021 22:13:51 +0100
+	id 1mwseA-005gJI-Ds
+	for lore@lore.pengutronix.de; Mon, 13 Dec 2021 22:14:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mwsdp-0004Vq-IQ
-	for lore@pengutronix.de; Mon, 13 Dec 2021 22:13:50 +0100
+	id 1mwse8-0004YV-EA
+	for lore@pengutronix.de; Mon, 13 Dec 2021 22:14:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=7TF9Kj3YPX6KZ0l49U/aiXqbV1LJOuCjkvdRQtOfo9w=; b=2NQ9SkAWGerq15
-	oqEhaTA2EN8dP0TmGL/8RQYqlg3n+ga9Asf9oudugxo2a0GL05abAZMWEGE5fjrxBhdqoHMbBA3/y
-	uMqRdtcpO0Dkp52TszK8F/UIwTN5Z/hpT3CkhUQBlnYbHyghErGp+Zm4t4gluE3Mt7nLY/XpQfAyc
-	Y3+swodz/fZVXK9E8nGQzTKdpWImKUh8jK8L75TNGwpvz0A9Gn5gEhynCWJexveA+gUniToyxUOBY
-	5MkFaOSXf4DxfJt//W4p1RqfOO60ciNMYRqERmw2cgebJ4qjOAC7zx/QBGQMwGOc1Ixz7j+b4iXw/
-	efbSFhGnqe2ZduQkw1wA==;
+	List-Owner; bh=/ae1cIvnSxTxtPBpBdZH0QBqkHPzsBOxlccNhHYr4U4=; b=Jd3AiQXQmnPfER
+	EbPdOj03AF18dV2c8aERPdsNQudG5uHf0hbZgwy6XMhtqu1QMxoAliqDbO+27ObmHikqtX+rcPJID
+	3x6i2aoZq5+rdo6tooRFSpOiKe6gEeLjAXLJF2ClS6dPq4Wn60hPgE/bYBHzSC5MaFsg/IdyrakwH
+	j0XjP1VoRV36ezH8weoccV3F2SocUphIXF64AXLPFCqzCT3zQytZAPTGl3pOAByA3FCh0ntQbsiuE
+	uYA0cCwDvE1fpbn8gbFdonbDWi3jx7DNgdJhnFTsQj5HJsf6W2zh81m+G8H4Dzgn741fcsbmSMIPB
+	pSKIuocZmdtKm81FI7GA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mwscG-00BQaP-PU; Mon, 13 Dec 2021 21:12:13 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1mwscZ-00BQsI-Hv; Mon, 13 Dec 2021 21:12:32 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mwsZU-00BOuj-CL
- for barebox@lists.infradead.org; Mon, 13 Dec 2021 21:09:23 +0000
+ id 1mwsZa-00BOxX-Ur
+ for barebox@bombadil.infradead.org; Mon, 13 Dec 2021 21:09:26 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+ :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+ Content-Type:Content-ID:Content-Description;
+ bh=mcGpFK+s3mePmpOHWlVctgwf3OwTxvbkmfZuah4j1Ow=; b=Xl44KBs5OQDA1E7zt7R6wDjWqV
+ aKI8F8I5jVyvtdVeChEmbD9zu+RJiRXCTrY6+zLdqymqa3HIfFbMqO529aFDnJs2W1/7GVuRfaz7T
+ WjpKjz5cnR7B0D/fKZX2EoyeElbiGGYLgOio3rSwV7jrK19bCYtIWVCIZw9/aCNn8L0b0nYNDJisH
+ 2rQMSvC2BRHqnN+BrZDNt6JQ5Frqw2meUmCdqTE8ZyJbynPgpo1mKVD58cOuoii1LwRlaVJ/oKS3U
+ Xf8FVJY0o/R6oTtd3Nb+fW1uhvPl/PFGPOhn3jZgOfDwdpfiXh0huB8GOxFNsKk6QLM3J30vjoTxO
+ IN0GnTCg==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1mwsZW-001BcV-2m
+ for barebox@lists.infradead.org; Mon, 13 Dec 2021 21:09:24 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1mwsZL-0002TC-0N; Mon, 13 Dec 2021 22:09:11 +0100
+ id 1mwsZL-0002T7-3m; Mon, 13 Dec 2021 22:09:11 +0100
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <sha@pengutronix.de>)
- id 1mwsZJ-00EGpg-EQ; Mon, 13 Dec 2021 22:09:09 +0100
+ id 1mwsZJ-00EGpR-Bx; Mon, 13 Dec 2021 22:09:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 13 Dec 2021 22:09:04 +0100
-Message-Id: <20211213210905.3399551-25-s.hauer@pengutronix.de>
+Date: Mon, 13 Dec 2021 22:08:59 +0100
+Message-Id: <20211213210905.3399551-20-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211213210905.3399551-1-s.hauer@pengutronix.de>
 References: <20211213210905.3399551-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211213_130920_510118_53A29A53 
-X-CRM114-Status: GOOD (  15.33  )
+X-CRM114-CacheID: sfid-20211213_210922_324537_46D6A82F 
+X-CRM114-Status: GOOD (  18.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,111 +86,130 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 24/25] efi: add efi_device hook to be called before an image
- is started
+Subject: [PATCH 19/25] efi-stdio: Support different text modes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-boot_services::open_protocol supports opening protocols exclusively.
-A protocol that is opened exclusively can not be used anymore by
-an application that is called via boot_services::start_image.
-
-We want to open the SNP protocol exclusively in the next step. That
-would mean a chainloaded barebox could no longer use the SNP protocol
-because it's exclusively opened by the current barebox already.
-To work around this a efi_drv::dev_pause and efi_drv::dev_continue is
-introduced. The former is called before an application is started and
-the latter right after an application has exited. This will be used
-by the SNP network driver to enter/leave exclusive mode.
+the EFI simple text output protocol supports different text modes. This
+patch adds support for these modes using a device parameter attached to
+the console device.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/efi/efi-image.c   |  4 ++++
- drivers/efi/efi-device.c | 28 ++++++++++++++++++++++++++++
- include/efi/efi-device.h |  5 +++++
- 3 files changed, 37 insertions(+)
+ drivers/serial/efi-stdio.c | 64 ++++++++++++++++++++++++++------------
+ 1 file changed, 44 insertions(+), 20 deletions(-)
 
-diff --git a/common/efi/efi-image.c b/common/efi/efi-image.c
-index bd1c58438e..7807d0653e 100644
---- a/common/efi/efi-image.c
-+++ b/common/efi/efi-image.c
-@@ -149,10 +149,14 @@ static int efi_execute_image(const char *file)
- 		shutdown_barebox();
- 	}
- 
-+	efi_pause_devices();
+diff --git a/drivers/serial/efi-stdio.c b/drivers/serial/efi-stdio.c
+index 3f99ef5d97..7f348f82af 100644
+--- a/drivers/serial/efi-stdio.c
++++ b/drivers/serial/efi-stdio.c
+@@ -75,6 +75,11 @@ struct efi_console_priv {
+ 	int bg;
+ 	bool inverse;
+ 	s16 *blank_line;
 +
- 	efiret = BS->start_image(handle, NULL, NULL);
- 	if (EFI_ERROR(efiret))
- 		pr_err("failed to StartImage: %s\n", efi_strerror(efiret));
- 
-+	efi_continue_devices();
-+
- 	if (!is_driver)
- 		BS->unload_image(handle);
- 
-diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-index 6c86a8ab1a..f3f5452b98 100644
---- a/drivers/efi/efi-device.c
-+++ b/drivers/efi/efi-device.c
-@@ -466,6 +466,34 @@ static int efi_init_devices(void)
- }
- core_initcall(efi_init_devices);
- 
-+void efi_pause_devices(void)
-+{
-+	struct device_d *dev;
-+
-+	bus_for_each_device(&efi_bus, dev) {
-+		struct driver_d *drv = dev->driver;
-+		struct efi_device *efidev = to_efi_device(dev);
-+		struct efi_driver *efidrv = to_efi_driver(drv);
-+
-+		if (efidrv->dev_pause)
-+			efidrv->dev_pause(efidev);
-+	}
-+}
-+
-+void efi_continue_devices(void)
-+{
-+	struct device_d *dev;
-+
-+	bus_for_each_device(&efi_bus, dev) {
-+		struct driver_d *drv = dev->driver;
-+		struct efi_device *efidev = to_efi_device(dev);
-+		struct efi_driver *efidrv = to_efi_driver(drv);
-+
-+		if (efidrv->dev_continue)
-+			efidrv->dev_continue(efidev);
-+	}
-+}
-+
- static void efi_devpath(efi_handle_t handle)
- {
- 	efi_status_t efiret;
-diff --git a/include/efi/efi-device.h b/include/efi/efi-device.h
-index 5ec59a8a2d..729fbc8103 100644
---- a/include/efi/efi-device.h
-+++ b/include/efi/efi-device.h
-@@ -15,6 +15,8 @@ struct efi_driver {
- 	struct driver_d driver;
- 	int (*probe)(struct efi_device *efidev);
- 	void (*remove)(struct efi_device *efidev);
-+	int (*dev_pause)(struct efi_device *efidev);
-+	int (*dev_continue)(struct efi_device *efidev);
- 	efi_guid_t guid;
++	struct param_d *param_mode;
++	const char **mode_names;
++	int *mode_num;
++	unsigned int var_mode;
  };
  
-@@ -45,6 +47,9 @@ int efi_connect_all(void);
- void efi_register_devices(void);
- struct efi_device *efi_get_bootsource(void);
+ static inline struct efi_console_priv *to_efi(struct console_device *cdev)
+@@ -407,29 +412,45 @@ static int efi_console_getc(struct console_device *cdev)
+ 	return efi_read_key(priv, 1);
+ }
  
-+void efi_pause_devices(void);
-+void efi_continue_devices(void);
++static int efi_console_set_mode(struct param_d *param, void *p)
++{
++	struct efi_console_priv *priv = p;
 +
- static inline bool efi_device_has_guid(struct efi_device *efidev, efi_guid_t guid)
++	priv->out->set_mode(priv->out, priv->mode_num[priv->var_mode]);
++
++	priv->out->query_mode(priv->out, priv->out->mode->mode,
++			      &priv->columns, &priv->rows);
++	return 0;
++}
++
+ static void efi_set_mode(struct efi_console_priv *priv)
  {
+-#if 0
  	int i;
+-	unsigned long rows, columns, best = 0, mode = 0;
++	unsigned long rows, columns;
++	int n = 0;
+ 	efi_status_t efiret;
+ 
++	priv->mode_names = xzalloc(priv->out->mode->max_mode * sizeof(*priv->mode_names));
++	priv->mode_num = xzalloc(priv->out->mode->max_mode * sizeof(*priv->mode_num));
++
++	priv->out->query_mode(priv->out, priv->out->mode->mode, &priv->columns, &priv->rows);
++
+ 	for (i = 0; i < priv->out->mode->max_mode; i++) {
+-		priv->out->query_mode(priv->out, i, &columns, &rows);
+-		printf("%d: %ld %ld\n", i, columns, rows);
+-		if (rows * columns > best) {
+-			best = rows * columns;
+-			mode = i;
+-		}
++		efiret = priv->out->query_mode(priv->out, i, &columns, &rows);
++		if (EFI_ERROR(efiret))
++			continue;
++
++		if (columns == priv->columns && rows == priv->rows)
++			priv->var_mode = n;
++
++		priv->mode_names[n] = basprintf("%ldx%ld", columns, rows);
++		priv->mode_num[n] = i;
++		n++;
+ 	}
+ 
+-	/*
+-	 * Setting the mode doesn't work as expected. set_mode succeeds, but
+-	 * the graphics resolution is not changed.
+-	 */
+-	priv->out->set_mode(priv->out, mode);
+-#endif
+-	priv->out->query_mode(priv->out, priv->out->mode->mode, &priv->columns, &priv->rows);
++	priv->param_mode = dev_add_param_enum(&priv->cdev.class_dev, "mode",
++					efi_console_set_mode, NULL, &priv->var_mode,
++				       priv->mode_names, n, priv);
+ }
+ 
+ static int efi_console_probe(struct device_d *dev)
+@@ -439,8 +460,7 @@ static int efi_console_probe(struct device_d *dev)
+ 	struct console_device *cdev;
+ 	struct efi_console_priv *priv;
+ 	efi_status_t efiret;
+-
+-	int i;
++	int i, ret;
+ 
+ 	priv = xzalloc(sizeof(*priv));
+ 
+@@ -466,8 +486,6 @@ static int efi_console_probe(struct device_d *dev)
+ 	priv->fg = EFI_LIGHTGRAY;
+ 	priv->bg = EFI_BLACK;
+ 
+-	efi_set_mode(priv);
+-
+ 	priv->out->enable_cursor(priv->out, 1);
+ 
+ 	priv->blank_line = xzalloc((priv->columns + 1) * sizeof(s16));
+@@ -481,7 +499,13 @@ static int efi_console_probe(struct device_d *dev)
+ 	cdev->putc = efi_console_putc;
+ 	cdev->puts = efi_console_puts;
+ 
+-	return console_register(cdev);
++	ret = console_register(cdev);
++	if (ret)
++		return ret;
++
++	efi_set_mode(priv);
++
++	return 0;
+ }
+ 
+ static struct driver_d efi_console_driver = {
 -- 
 2.30.2
 
