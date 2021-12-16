@@ -1,75 +1,87 @@
-Delivery-date: Thu, 16 Dec 2021 14:03:19 +0100
+Delivery-date: Thu, 16 Dec 2021 14:13:05 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mxqPn-008SIm-Im
-	for lore@lore.pengutronix.de; Thu, 16 Dec 2021 14:03:19 +0100
+	id 1mxqZF-008Sh3-2f
+	for lore@lore.pengutronix.de; Thu, 16 Dec 2021 14:13:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mxqPl-0003Y9-MJ
-	for lore@pengutronix.de; Thu, 16 Dec 2021 14:03:18 +0100
+	id 1mxqZ8-0005Fz-UP
+	for lore@pengutronix.de; Thu, 16 Dec 2021 14:13:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=chlwITWogUfozE4CH1vvhRok7pOdDviuhC+RlqK1+Uk=; b=4PukwSSUK+IgNW
-	wmRNGworDwmxCsdajlj8pyLJtf1u/SkqTdrx1J4crf99z2iJPO3PFgwPXC3wZ4KplJZg5rTjTL+vZ
-	UEijASBamPo66FzGXegJ/gGPEQytSpX6NXTJfznvMb+Kr3TTNxusotEE29o1cxeHoB2my/DnC79fv
-	2tb1WoxG22Cpkqh1F14y58Mg47koF+FBwYT7Rob7WjCnYb2Ukqm7a1UZvvKYNEsKYaYba9wll2Jhr
-	4UnqBkb0981CVoNYB6kr/d9gMwxADtV56h4Q60vHk3zsfldbGli8kmYvQ1VrkkoIuOKchdG7zZl/d
-	M/TtxTwd07erycn3y71w==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=yrRrmH+zF74Ph6/X6cwg/SbS5pG2BLCTN7IolpVX2kY=; b=ot3Z42NccmBvne
+	pHMDwzIKyI/y0RzLCuuL4w9HN/ZUhSh+wSUQur2+guSYzygkS9fckDoCQO67twSDHVMSyVaxYDZIS
+	74dI68V1mapB00QwLIXqkMYAZKI9Eh0cZVRgjfw9tbfq/0OU58VjI077Su3O4nhKdySnzn7NUzcMP
+	4a/0dWv308C/jTzQefB+FjuLmbz/g7V4wd6gea/ZyyTbd6sBd+jlP/Fr+X/VvUiRb5B9dvt2by1B7
+	bMkBHpbhH5S+hZ5EqQSnO2HMZrtzUehI9x3XcGvMMSlJNggEvFkWYSt8W1zQQ5XCpBShDNVYgAn22
+	p0ubBOk5jXaZtS5Sf6bQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mxqOB-005bLx-6C; Thu, 16 Dec 2021 13:01:40 +0000
-Received: from cpanel.siel.si ([46.19.9.99])
+	id 1mxqXV-005fIE-3M; Thu, 16 Dec 2021 13:11:17 +0000
+Received: from mxout.security-mail.net ([85.31.212.42]
+ helo=fx302.security-mail.net)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mxprO-005QZY-5S
- for barebox@lists.infradead.org; Thu, 16 Dec 2021 12:27:49 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com; 
- s=default;
- h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
- To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=0Oa7j8uyjiy4klcN4k4jCO/+AVMfLKqnvXv2p8b1Sug=; b=pSdVVBhBD11WTBBpnplrHnqLEE
- 7k7Q3e5/QumSYC0G73pjU2lBQ+u7v3+PELmJYkLvjZPjWamxq0y7x8agxb1vWhaF89MAw64/565hu
- MIXtSbWEEkxD8UFRiipkTAfUb+uveD1VHboMNcRqI61abrej2aiXzx+/VgJEJsSNa7BEo9NjHCta6
- YEq9SKjYBOC1BctA0Nw9EbeX3LVO7ewTdzU0AYI28Nox8qv3Q8aKUXtJEZamOLYWP0HtH5MnRjiXM
- rhU8pGQgukKi78gfaGvhh4cJsev7R97qB1kndpget99fGDyCKnX+7JutzEdyBavMYLpwnB2qkCMU2
- Mh65WqyQ==;
-Received: from [89.212.21.243] (port=49948 helo=localhost.localdomain)
- by cpanel.siel.si with esmtpsa (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <andrej.picej@norik.com>) id 1mxprF-00HJMj-2C
- for barebox@lists.infradead.org; Thu, 16 Dec 2021 13:27:37 +0100
-From: Andrej Picej <andrej.picej@norik.com>
-To: barebox@lists.infradead.org
-Date: Thu, 16 Dec 2021 13:26:53 +0100
-Message-Id: <20211216122653.2335949-1-andrej.picej@norik.com>
-X-Mailer: git-send-email 2.25.1
+ id 1mxq4o-005Uim-9r
+ for barebox@lists.infradead.org; Thu, 16 Dec 2021 12:41:40 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by fx302.security-mail.net (Postfix) with ESMTP id 29B973D3B1E6
+ for <barebox@lists.infradead.org>; Thu, 16 Dec 2021 13:41:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
+ s=sec-sig-email; t=1639658496;
+ bh=ye5luLtUFIsonS1M1fpRDcYreyQv6bohWR1BHtRBngE=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To;
+ b=r9ObPqYiV1R4qs98hR+8vU5AYmcIVAAevlq+L7uOGgl85Pcf2sW+43OUgNYIBSBP5
+ CXdOkjCOaPcejrelsNGDf6fNsMmHgvodoPTp1W8zTPMAvD7mpAHHZNWTk7bKePQJ6X
+ SdABF6+2Vxc9kjoKQwu2GhfR0xkpAclo+ainDN2Q=
+Received: from fx302 (localhost [127.0.0.1]) by fx302.security-mail.net
+ (Postfix) with ESMTP id D56313D3B1CD; Thu, 16 Dec 2021 13:41:35 +0100 (CET)
+Received: from zimbra2.kalray.eu (unknown [217.181.231.53]) by
+ fx302.security-mail.net (Postfix) with ESMTPS id 5DF673D3B1C5; Thu, 16 Dec
+ 2021 13:41:35 +0100 (CET)
+Received: from zimbra2.kalray.eu (localhost [127.0.0.1]) by
+ zimbra2.kalray.eu (Postfix) with ESMTPS id 4520127E0398; Thu, 16 Dec 2021
+ 13:41:35 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1]) by zimbra2.kalray.eu
+ (Postfix) with ESMTP id 2EBDF27E03AD; Thu, 16 Dec 2021 13:41:35 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1]) by localhost
+ (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026) with ESMTP id
+ vzfB3aK9fH4E; Thu, 16 Dec 2021 13:41:35 +0100 (CET)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206]) by
+ zimbra2.kalray.eu (Postfix) with ESMTPSA id 1E49727E0398; Thu, 16 Dec 2021
+ 13:41:35 +0100 (CET)
+X-Virus-Scanned: E-securemail, by Secumail
+Secumail-id: <a634.61bb33ff.5d853.0>
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 2EBDF27E03AD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1639658495;
+ bh=B7gTPGJkFevFoY/v+U6lHL5c0axe6IwL1uSBYFV5foY=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=evhGHv8E24U40dz1UzzFfJR4FkuYtOhx4KOX//HvNqxHfL1Ak5AivSlAZ+sWAWpCZ
+ d1AXo3dYaP6eTIENudWNa9paOOKSbsXrhMWs21X3g7lpi2omxKK6ZBtPqGbfKZtki/
+ BKYUM7vz0opkdUEQ2vloNWntCOJPw4pk1CDxV1Bw=
+Date: Thu, 16 Dec 2021 13:41:34 +0100
+From: Jules Maselbas <jmaselbas@kalray.eu>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20211216124134.GG3394@tellis.lin.mbt.kalray.eu>
+References: <20211213210905.3399551-1-s.hauer@pengutronix.de>
+ <20211213210905.3399551-22-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.infradead.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id:
- andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Disposition: inline
+In-Reply-To: <20211213210905.3399551-22-s.hauer@pengutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211216_042746_573662_DE5AE58D 
-X-CRM114-Status: UNSURE (   8.41  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20211216_044138_551386_C576FD15 
+X-CRM114-Status: GOOD (  28.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,59 +101,129 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] watchdog: imxwd: suspend watchdog timer in low power mode
+Subject: Re: [PATCH 21/25] edit: Improve behaviour on efi-stdio console
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Watchdog timer should be disabled in low power mode. The problem that
-was observed was that when the watchdog is started from barebox, kernel
-driver doesn't do its own setup again and in turn this bit is left
-unset. Moreover, this bit is write-once and has to be set before
-enabling the watchdog, leaving responsibility for proper setup to a
-party first using the watchdog timer (e.g. bootloader). Issue manifests
-itself later on, when device enters low power mode (e.g. suspend) for
-more amount of time than what is maximum watchdog timeout (128s). After
-that period of time, device will not recover ever as there is no service
-patting the watchdog (CPU is suspended). This means that the device can
-hang in suspend mode or it performs an unexpected reset.
+Hi,
 
-Thus to avoid suspend/resume problems when watchdog is started already
-in the bootloader, align bootloader driver settings with kernel settings.
-Kernel driver has been already setting this bit since 2014.
+On Mon, Dec 13, 2021 at 10:09:01PM +0100, Sascha Hauer wrote:
+> Our console driver for the EFI simple text protocol does not support
+> the "\e[1S" escape sequence to scroll the window which means sedit
+> doesn't work properly. Disable smartscroll when the efi-stdio console
+> is active. While at it put the screen height reduction into the same
+> dynamic test.
 
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
----
- drivers/watchdog/imxwd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+FYI
 
-diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-index b2cfd1cd3..653c2d9c4 100644
---- a/drivers/watchdog/imxwd.c
-+++ b/drivers/watchdog/imxwd.c
-@@ -54,6 +54,7 @@ struct imx_wd {
- #define IMX21_WDOG_WSR	0x02 /* Watchdog Service Register */
- #define IMX21_WDOG_WSTR	0x04 /* Watchdog Status Register  */
- #define IMX21_WDOG_WMCR	0x08 /* Misc Register */
-+#define IMX21_WDOG_WCR_WDZST	(1 << 0)
- #define IMX21_WDOG_WCR_WDE	(1 << 2)
- #define IMX21_WDOG_WCR_WDT	(1 << 3)
- #define IMX21_WDOG_WCR_SRS	(1 << 4)
-@@ -132,6 +133,9 @@ static int imx21_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
- 	if (priv->ext_reset)
- 		val |= IMX21_WDOG_WCR_WDT;
- 
-+	/* Suspend timer in low power mode */
-+	val |= IMX21_WDOG_WCR_WDZST;
-+
- 	/*
- 	 * set time and some write once bits first prior enabling the
- 	 * watchdog according to the datasheet
--- 
-2.25.1
+>From the terminfo manpage:
+In order to scroll text up, a program will go to the bottom left corner
+of the screen and send the ind (index) string. [...] Parameterized
+versions of the scrolling sequences are indn and rin which have the same
+semantics as ind and ri except that they take one parameter, and scroll
+that many lines. [...]
+
+>From infocmp on my system: ind=\n and indn=\e[%p1$pS
+
+So the smart scroll could be replaced by a move to the last line plus \n
+
+
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  commands/edit.c | 46 ++++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 36 insertions(+), 10 deletions(-)
+> 
+> diff --git a/commands/edit.c b/commands/edit.c
+> index 30448cbc04..592cf4aa3d 100644
+> --- a/commands/edit.c
+> +++ b/commands/edit.c
+> @@ -522,6 +522,25 @@ static int read_modal_key(bool is_modal)
+>  	return -EAGAIN;
+>  }
+>  
+> +static bool is_efi_console_active(void)
+> +{
+> +	struct console_device *cdev;
+> +
+> +	if (!IS_ENABLED(CONFIG_DRIVER_SERIAL_EFI_STDIO))
+> +		return false;
+> +
+> +	for_each_console(cdev) {
+> +		if (!(cdev->f_active & CONSOLE_STDIN))
+> +			continue;
+> +		if (!(cdev->f_active & CONSOLE_STDOUT))
+> +			continue;
+> +		if (!strcmp(dev_name(cdev->dev), "efi-stdio"))
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  static int do_edit(int argc, char *argv[])
+>  {
+>  	bool is_vi = false;
+> @@ -539,16 +558,7 @@ static int do_edit(int argc, char *argv[])
+>  		return 1;
+>  
+>  	screenwidth = 80;
+> -
+> -	/*
+> -	 * The EFI simple text output protocol wraps to the next line and scrolls
+> -	 * down when we write to the right bottom screen position. Reduce the number
+> -	 * of rows by one to work around this.
+> -	 */
+> -	if (IS_ENABLED(CONFIG_EFI_BOOTUP))
+> -		screenheight = 24;
+> -	else
+> -		screenheight = 25;
+> +	screenheight = 25;
+>  
+>  	/* check if we are not called as "edit" */
+>  	if (*argv[0] != 'e') {
+> @@ -560,6 +570,22 @@ static int do_edit(int argc, char *argv[])
+>  			is_vi = true;
+>  	}
+>  
+> +	if (is_efi_console_active()) {
+> +		/*
+> +		 * The EFI simple text output protocol wraps to the next line and
+> +		 * scrolls down when we write to the right bottom screen position.
+> +		 * Reduce the number of rows by one to work around this.
+> +		 */
+> +		screenheight--;
+> +
+> +		/*
+> +		 * Our console driver for the EFI simple text output protocol does
+> +		 * not implement the "\e[1S" sequence we use for scrolling the
+> +		 * screen.
+> +		 */
+> +		smartscroll = 0;
+> +	}
+> +
+>  	cursx  = 0;
+>  	cursy  = 0;
+>  	textx  = 0;
+> -- 
+> 2.30.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+> 
+> To declare a filtering error, please use the following link : https://www.security-mail.net/reporter.php?mid=51ef.61b7b6ff.b5dfd.0&r=jmaselbas%40kalray.eu&s=barebox-bounces%2Bjmaselbas%3Dkalray.eu%40lists.infradead.org&o=%5BPATCH+21%2F25%5D+edit%3A+Improve+behaviour+on+efi-stdio+console&verdict=C&c=7aca3328f2dac1c6571b69dba9c6a9e04f98dc81
+> 
+
+
+
 
 
 _______________________________________________
