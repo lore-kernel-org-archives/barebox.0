@@ -1,84 +1,60 @@
-Delivery-date: Thu, 16 Dec 2021 20:43:34 +0100
+Delivery-date: Fri, 17 Dec 2021 10:48:47 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mxwf8-008isD-Lg
-	for lore@lore.pengutronix.de; Thu, 16 Dec 2021 20:43:34 +0100
+	id 1my9r5-009Kae-I3
+	for lore@lore.pengutronix.de; Fri, 17 Dec 2021 10:48:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1mxwf6-0000i4-Dx
-	for lore@pengutronix.de; Thu, 16 Dec 2021 20:43:33 +0100
+	id 1my9r3-0001rv-Me
+	for lore@pengutronix.de; Fri, 17 Dec 2021 10:48:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Content-Type:
-	Content-Transfer-Encoding:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:Message-ID:References:In-Reply-To:Subject:To:From:
-	Date:MIME-Version:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+Z9uRRrC7sOkm9WUpp46I/jFFcpIUAWezOEwHPkSwTU=; b=fL0aKPQqbzFRfKH4Sa61I+tZxO
-	dh01XjYnuCu+64puFBAmPywfqEVo1M2oYWuFeCbRxb/PEuTTeZBacNzr309ML07xpDeeyi00z+ZF+
-	33hCN4gXpfCzbA4sBDERpKJvppyq6lv6dqYmauC0EAxgOaPcUB+T4qvNzeaiFfl93ryWAZ87zfE1C
-	r187WQJrKkf0nO/effEvwCIeqhSM51h1w5H6qtQR+WbDM0/jMo/3ZGG228+us80mEQhrW3eKHxkYf
-	Q20SXT6nAuPAcCBhpoFJc7V21urWXa0JgrJsQg2Y9Q2LxqGM/jPzHPnUFypjY+lYIurdZboVtEnHU
-	mvIW39Pw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=lsGmzjUsZWHEnXVxviKoYRt5vdkkKK4u+7kLHv4bLtU=; b=bKPNZy5lcpy6HGuVJ1B15Pxw13
+	aa5VlwctdWppeLpO+c8pySQLAAkvmNPogBqhdM+UwAWXulEvAzVraYp7FrToE9wRfTXEZ6+dnyl6S
+	EADGg9QNNm3jhuKXKXNo1Titw74+TcZ0Rx5U5qAVXh0TpAW/Bz52o+bvNp3sFNtFlnC3ugm/Neo1m
+	6dsWTk0RCJEAaq8+5szXdHD2TrmQLNjpVdsrXyoS5oELJqQxQA/hGlW80UscqKfJAtCRQEtnKgYTk
+	IymJs/LwRknqHZinL2YfzS8SaOx45lafTaw4Pe0CyER3ILtE4O1SGQmKAhk2klWYMGVrAivyMy8Qj
+	BkwuIgjA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1mxwdp-007Mxe-NJ; Thu, 16 Dec 2021 19:42:13 +0000
-Received: from mail.inside-m2m.de ([188.68.57.244])
+	id 1my9pJ-009HzB-M8; Fri, 17 Dec 2021 09:46:57 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mxwdj-007Mwd-IL
- for barebox@lists.infradead.org; Thu, 16 Dec 2021 19:42:09 +0000
-Received: from localhost (localhost [127.0.0.1])
- by mail.inside-m2m.de (Postfix) with ESMTP id 3C70640253
- for <barebox@lists.infradead.org>; Thu, 16 Dec 2021 20:42:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
- s=default; t=1639683726;
- bh=LT5y3rh6YRfkfAY30jSo1wjsu5uBIvglY5BBY64ySng=;
- h=Date:From:To:Subject:In-Reply-To:References:From;
- b=mnTLvM4x58CxbITv60+9uIytDOwn4Ll6NzzpkCwD1FA5CuNoPTHZrjaSVe7M5dVod
- +T5fFkRVTey+8oNCNdwWrMdpCT7aKOMWiYtvoYuF6LfFXLVoCmg8X9AmDJ4yLYfmY3
- mtoh6UulOGzzAQEuhphjF/boDPO0btc5QDVPYKiQS0/Rvb+jDHVM79MgNsPTMlxKv6
- nM63mhhSiTdQ6+tPMSTa2qjGqmQdBxyRyND8qOKeDlEsajUx2QR48H5zMtc/RRV7QB
- rLWp2AOo62JpqcQQFtL2DpJlWcCwt1pDSEdjTjI41B5WepmVefJK+tEDWPMwczwgMz
- 5Qo/mJ9bxLuWw==
-X-Virus-Scanned: Debian amavisd-new at mail.inside-m2m.de
-Received: from mail.inside-m2m.de ([127.0.0.1])
- by localhost (mail.inside-m2m.de [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id U9vpVaS2EdGG for <barebox@lists.infradead.org>;
- Thu, 16 Dec 2021 20:42:05 +0100 (CET)
-Received: from mail.inside-m2m.de (mail.inside-m2m.de [188.68.57.244])
- (Authenticated sender: konstantin.kletschke@inside-m2m.de)
- by mail.inside-m2m.de (Postfix) with ESMTPSA id B524740073
- for <barebox@lists.infradead.org>; Thu, 16 Dec 2021 20:42:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
- s=default; t=1639683725;
- bh=LT5y3rh6YRfkfAY30jSo1wjsu5uBIvglY5BBY64ySng=;
- h=Date:From:To:Subject:In-Reply-To:References:From;
- b=IQDRgV1UA6hd/kUkzEQmgM5Wrg90/6sDGPa/bIeedvcuABixK32rFI9D7G/8b+yzv
- tbTAoawuCK8LwJH/h4oWbrg1e8yw1h94kSgb5942POX8bObfJoeyymsx0/h6YL7NpA
- kl/PwMPiI6N7vW/1filP85j0V1+5p/ZJQsIHOd5H3FB4vJeoxOGKeP5AMl+X4n/Yyj
- 1uwYB9VzTpte1NT9C2uqyqUmiphIcZBsN98TDjGSjC1XV66RINiBgsDTHSEUgMaX/F
- UoVvy5DtXtHf7ICZb3lxkMHJkjQoUkcI+FGWIkg4kyrHeBqBbmYQMVyI5PFgRo79cS
- VIXBftyg+qccA==
-MIME-Version: 1.0
-Date: Thu, 16 Dec 2021 20:42:05 +0100
-From: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
-To: barebox@lists.infradead.org
-Organization: Inside M2M GmbH
-In-Reply-To: <297b3425baa118783dccb6446900fbfa@inside-m2m.de>
+ id 1my9p8-009HwD-Tn
+ for barebox@lists.infradead.org; Fri, 17 Dec 2021 09:46:48 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1my9p5-0001lm-90; Fri, 17 Dec 2021 10:46:43 +0100
+To: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>,
+ barebox@lists.infradead.org
 References: <9215c9815f25cc3328a05d6c9553ac36@inside-m2m.de>
  <CAMHeXxOoXjqtSGXdE73oROUk9ybFmFv7gi8PtzLsKn=iH+FXLA@mail.gmail.com>
  <c4ae26b8698992ad37f201101795b1bb@inside-m2m.de>
  <53bdfd89-f363-5cec-4cb1-417c25c90eaf@pengutronix.de>
  <297b3425baa118783dccb6446900fbfa@inside-m2m.de>
-Message-ID: <cf1e6cf6a51dc13ec5275d94e18d23c1@inside-m2m.de>
-X-Sender: konstantin.kletschke@inside-m2m.de
-User-Agent: Roundcube Webmail/1.3.0 
+ <cf1e6cf6a51dc13ec5275d94e18d23c1@inside-m2m.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <ef8a2a82-91f5-5401-a564-a0ab20da4772@pengutronix.de>
+Date: Fri, 17 Dec 2021 10:46:42 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <cf1e6cf6a51dc13ec5275d94e18d23c1@inside-m2m.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20211216_114207_948028_B9A85743 
-X-CRM114-Status: GOOD (  33.22  )
+X-CRM114-CacheID: sfid-20211217_014647_015374_63859083 
+X-CRM114-Status: GOOD (  50.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,161 +66,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Fwd: Re: Howto implement bootchooser <-> rauc interaction
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: Fwd: Re: Howto implement bootchooser <-> rauc interaction
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-I forgot to address the ML.
-May be somebody else is interested!
-:-/
-
-
--------- Original Message --------
-
-  		SUBJECT:
-  		Re: Howto implement bootchooser <-> rauc interaction
-
-  		DATE:
-  		2021-12-16 19:24
-
-  		FROM:
-  		Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
-
-  		TO:
-  		Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-On 2021-12-15 11:50, Ahmad Fatoum wrote:
-
-> Ye, DT here looks just like arch/arm/dts/imx6qdl-phytec-state.dtsi
-
-I think you are 100% right. It is borrowed from
-https://bootlin.com/blog/another-system-update-adventure-with-rauc-barebox-yocto-project/
-and I thing this exact file is displayed as an example there.
-
-> This is fixed in Linux upstream since 0445efacec75 ("nvmem: core: skip 
-> child nodes not
-> matching binding"), first included with v5.12-rc1. This has been 
-> backported to older
-
-Okay, this information is extremely useful. I have seen your intital 
-patch series but was
-not able yet to gather information what commit in what time relates to 
-roughly what
-kernel version. So I am involved because I have 5.10.1n here. I will 
-check to update
-to a newer one but do you have a backport for this available by chance 
-for 5.10.1x?
-
-> The parent node has #address-cells and #size-cells, which describe how 
-> much 32-bit
-> cells are offset and length. For #address-cells = 1 and #size-cells = 
-> 1, X is offset
-> and Y is length.
-
-So one has to take care of the parent note size being big enough to 
-contain the sum of
-all length and thse itself must not overlap, right?
-
->> What me bugs more is, how should a devicetree setup look like (is 
->> there a reasonable example?)
->> to make the same in a file in the first FAT partition, is this 
->> possible? In the state specification
->> I read it should be able to be done by a file but ... I don't get it.
-> 
-> I can't follow. What do you want to place in the FAT partition? The 
-> state itself?
-> The DT describing it? What bothers you about the current setup? (DT 
-> description
-> and state in EEPROM).
-
-I am sorry I did create confusion.
-I did a mistake somehow. When I have the EEPROM setup up and running 
-(may be tomorrow? Always other
-work looks more important) this was only for me to understand 
-barebox-state fully to
-work with this for production use later upon.
-
-Because the mistake is, I _totally_ forgot when in production the 
-Beaglebone Black I2C EEPROM
-is write protected. The EEPROM's WP pin is hard pulled up on those 
-boards with no chance
-other than solder a wire to the pin to ground (against the pullup 
-resistor). I forgot,
-my daily work golden example has a wire but we sell so much that I must 
-avoid using
-the EEPROM because I cant solder wires onto every BBB.
-
-I need to put the state somewhere else, into the MBR, before partition 
-table (1st partition?)
-or I need to find some NVRAM elsewhere on the board (PHY, CPU...).
-
-> You can place state in EEPROM. It looks very similar to your snippet 
-> above,
-> but your backend partition will be a MMC OF partition.
-
-> That's indeed a bit rough around the edges. You can keep unpartitioned 
-> space at the start
-> of the MMC device and partition it with OF and have regular MBR/GPT 
-> partition start at
-> a later offset. barebox will warn you if they overlap.
-
-So state in MMC will be an OF partition which must or be covered or 
-overlap with MBR
-partitioning, right? What does the "OF" mean?
-On the other hand I am shure in MBR the 1st 446 bytes are available 
-because the TI am335x
-CPU is ignoring it while searching for a bootable flagged FAT and loads 
-BL from there...
-On the other hand, I could access plenty of space unallocated after the 
-MBR if 1st partition
-starts at a late sector like 1024 or so.
-
-And what I understood from the examples, documentation is how to access 
-exactly what byte
-in an EEPROM, but how do I setup and access the bytes at 0x100 to 0x300 
-in the MMC at
-mmc1 interface or the bytes 0x1000 to 0x2000?
-
-And is doing this state thing in a file (for example on the 1st  FAT 
-where barebox.env is)
-for barebox and raux/barebox-state possible or not?
-
-> For devices with an EEPROM, I'd use EEPROM for state over everything 
-> else.
-
-You are right, I will search for some place rather than the file or MMC 
-thingy because
-i chose it because it looks most convenient, but as said, Write Only in 
-produktion.
-
-> If your only issue is the kernel error above, just import the patch
-> (or update to a newer more shiny Linux release :-)
-
-No, no problem with either updating the kernel or patching it, the 
-latter is at the project's
-state actually more convenient I - admit.
-
-HTH.
-
-Very much, thanks for your friendly elaboration :-)
-
-Regards
-Konstantin
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpPbiAxNi4xMi4yMSAyMDo0MiwgS29uc3RhbnRpbiBLbGV0c2Noa2Ugd3JvdGU6Cj4gSSBm
+b3Jnb3QgdG8gYWRkcmVzcyB0aGUgTUwuCj4gT24gMjAyMS0xMi0xNSAxMTo1MCwgQWhtYWQgRmF0
+b3VtIHdyb3RlOgo+IAo+PiBZZSwgRFQgaGVyZSBsb29rcyBqdXN0IGxpa2UgYXJjaC9hcm0vZHRz
+L2lteDZxZGwtcGh5dGVjLXN0YXRlLmR0c2kKPiAKPiBJIHRoaW5rIHlvdSBhcmUgMTAwJSByaWdo
+dC4gSXQgaXMgYm9ycm93ZWQgZnJvbQo+IGh0dHBzOi8vYm9vdGxpbi5jb20vYmxvZy9hbm90aGVy
+LXN5c3RlbS11cGRhdGUtYWR2ZW50dXJlLXdpdGgtcmF1Yy1iYXJlYm94LXlvY3RvLXByb2plY3Qv
+Cj4gYW5kIEkgdGhpbmcgdGhpcyBleGFjdCBmaWxlIGlzIGRpc3BsYXllZCBhcyBhbiBleGFtcGxl
+IHRoZXJlLgo+IAo+PiBUaGlzIGlzIGZpeGVkIGluIExpbnV4IHVwc3RyZWFtIHNpbmNlIDA0NDVl
+ZmFjZWM3NSAoIm52bWVtOiBjb3JlOiBza2lwIGNoaWxkIG5vZGVzIG5vdAo+PiBtYXRjaGluZyBi
+aW5kaW5nIiksIGZpcnN0IGluY2x1ZGVkIHdpdGggdjUuMTItcmMxLiBUaGlzIGhhcyBiZWVuIGJh
+Y2twb3J0ZWQgdG8gb2xkZXIKPiAKPiBPa2F5LCB0aGlzIGluZm9ybWF0aW9uIGlzIGV4dHJlbWVs
+eSB1c2VmdWwuIEkgaGF2ZSBzZWVuIHlvdXIgaW50aXRhbCBwYXRjaCBzZXJpZXMgYnV0IHdhcwo+
+IG5vdCBhYmxlIHlldCB0byBnYXRoZXIgaW5mb3JtYXRpb24gd2hhdCBjb21taXQgaW4gd2hhdCB0
+aW1lIHJlbGF0ZXMgdG8gcm91Z2hseSB3aGF0Cj4ga2VybmVsIHZlcnNpb24uIFNvIEkgYW0gaW52
+b2x2ZWQgYmVjYXVzZSBJIGhhdmUgNS4xMC4xbiBoZXJlLiBJIHdpbGwgY2hlY2sgdG8gdXBkYXRl
+Cj4gdG8gYSBuZXdlciBvbmUgYnV0IGRvIHlvdSBoYXZlIGEgYmFja3BvcnQgZm9yIHRoaXMgYXZh
+aWxhYmxlIGJ5IGNoYW5jZSBmb3IgNS4xMC4xeD8KCkl0IHdhcyBiYWNrcG9ydGVkIHRvIHN0YWJs
+ZSBpbiB2NS4xMC4yMC4gQmFja3BvcnQgY29tbWl0IGlzIDY2M2ExODI3MS4KCj4+IFRoZSBwYXJl
+bnQgbm9kZSBoYXMgI2FkZHJlc3MtY2VsbHMgYW5kICNzaXplLWNlbGxzLCB3aGljaCBkZXNjcmli
+ZSBob3cgbXVjaCAzMi1iaXQKPj4gY2VsbHMgYXJlIG9mZnNldCBhbmQgbGVuZ3RoLiBGb3IgI2Fk
+ZHJlc3MtY2VsbHMgPSAxIGFuZCAjc2l6ZS1jZWxscyA9IDEsIFggaXMgb2Zmc2V0Cj4+IGFuZCBZ
+IGlzIGxlbmd0aC4KPiAKPiBTbyBvbmUgaGFzIHRvIHRha2UgY2FyZSBvZiB0aGUgcGFyZW50IG5v
+dGUgc2l6ZSBiZWluZyBiaWcgZW5vdWdoIHRvIGNvbnRhaW4gdGhlIHN1bSBvZgo+IGFsbCBsZW5n
+dGggYW5kIHRoc2UgaXRzZWxmIG11c3Qgbm90IG92ZXJsYXAsIHJpZ2h0PwoKWWVzLiBEZXZpY2Ug
+VHJlZSBjb21waWxlciBoZWxwcyBoZXJlIGEgYml0IGJ5IHdhcm5pbmcgaWYgdHdvIG5vZGVzIG9u
+IHRoZSBzYW1lIGJ1cwpoYXZlIHRoZSBzYW1lIGJhc2UgYWRkcmVzcy4KCj4+PiBXaGF0IG1lIGJ1
+Z3MgbW9yZSBpcywgaG93IHNob3VsZCBhIGRldmljZXRyZWUgc2V0dXAgbG9vayBsaWtlIChpcyB0
+aGVyZSBhIHJlYXNvbmFibGUgZXhhbXBsZT8pCj4+PiB0byBtYWtlIHRoZSBzYW1lIGluIGEgZmls
+ZSBpbiB0aGUgZmlyc3QgRkFUIHBhcnRpdGlvbiwgaXMgdGhpcyBwb3NzaWJsZT8gSW4gdGhlIHN0
+YXRlIHNwZWNpZmljYXRpb24KPj4+IEkgcmVhZCBpdCBzaG91bGQgYmUgYWJsZSB0byBiZSBkb25l
+IGJ5IGEgZmlsZSBidXQgLi4uIEkgZG9uJ3QgZ2V0IGl0Lgo+Pgo+PiBJIGNhbid0IGZvbGxvdy4g
+V2hhdCBkbyB5b3Ugd2FudCB0byBwbGFjZSBpbiB0aGUgRkFUIHBhcnRpdGlvbj8gVGhlIHN0YXRl
+IGl0c2VsZj8KPj4gVGhlIERUIGRlc2NyaWJpbmcgaXQ/IFdoYXQgYm90aGVycyB5b3UgYWJvdXQg
+dGhlIGN1cnJlbnQgc2V0dXA/IChEVCBkZXNjcmlwdGlvbgo+PiBhbmQgc3RhdGUgaW4gRUVQUk9N
+KS4KPiAKPiBJIGFtIHNvcnJ5IEkgZGlkIGNyZWF0ZSBjb25mdXNpb24uCj4gSSBkaWQgYSBtaXN0
+YWtlIHNvbWVob3cuIFdoZW4gSSBoYXZlIHRoZSBFRVBST00gc2V0dXAgdXAgYW5kIHJ1bm5pbmcg
+KG1heSBiZSB0b21vcnJvdz8gQWx3YXlzIG90aGVyCj4gd29yayBsb29rcyBtb3JlIGltcG9ydGFu
+dCkgdGhpcyB3YXMgb25seSBmb3IgbWUgdG8gdW5kZXJzdGFuZCBiYXJlYm94LXN0YXRlIGZ1bGx5
+IHRvCj4gd29yayB3aXRoIHRoaXMgZm9yIHByb2R1Y3Rpb24gdXNlIGxhdGVyIHVwb24uCj4gCj4g
+QmVjYXVzZSB0aGUgbWlzdGFrZSBpcywgSSBfdG90YWxseV8gZm9yZ290IHdoZW4gaW4gcHJvZHVj
+dGlvbiB0aGUgQmVhZ2xlYm9uZSBCbGFjayBJMkMgRUVQUk9NCj4gaXMgd3JpdGUgcHJvdGVjdGVk
+LiBUaGUgRUVQUk9NJ3MgV1AgcGluIGlzIGhhcmQgcHVsbGVkIHVwIG9uIHRob3NlIGJvYXJkcyB3
+aXRoIG5vIGNoYW5jZQo+IG90aGVyIHRoYW4gc29sZGVyIGEgd2lyZSB0byB0aGUgcGluIHRvIGdy
+b3VuZCAoYWdhaW5zdCB0aGUgcHVsbHVwIHJlc2lzdG9yKS4gSSBmb3Jnb3QsCj4gbXkgZGFpbHkg
+d29yayBnb2xkZW4gZXhhbXBsZSBoYXMgYSB3aXJlIGJ1dCB3ZSBzZWxsIHNvIG11Y2ggdGhhdCBJ
+IG11c3QgYXZvaWQgdXNpbmcKPiB0aGUgRUVQUk9NIGJlY2F1c2UgSSBjYW50IHNvbGRlciB3aXJl
+cyBvbnRvIGV2ZXJ5IEJCQi4KPiAKPiBJIG5lZWQgdG8gcHV0IHRoZSBzdGF0ZSBzb21ld2hlcmUg
+ZWxzZSwgaW50byB0aGUgTUJSLCBiZWZvcmUgcGFydGl0aW9uIHRhYmxlICgxc3QgcGFydGl0aW9u
+PykKPiBvciBJIG5lZWQgdG8gZmluZCBzb21lIE5WUkFNIGVsc2V3aGVyZSBvbiB0aGUgYm9hcmQg
+KFBIWSwgQ1BVLi4uKS4KPiAKPj4gWW91IGNhbiBwbGFjZSBzdGF0ZSBpbiBFRVBST00uIEl0IGxv
+b2tzIHZlcnkgc2ltaWxhciB0byB5b3VyIHNuaXBwZXQgYWJvdmUsCj4+IGJ1dCB5b3VyIGJhY2tl
+bmQgcGFydGl0aW9uIHdpbGwgYmUgYSBNTUMgT0YgcGFydGl0aW9uLgo+IAo+PiBUaGF0J3MgaW5k
+ZWVkIGEgYml0IHJvdWdoIGFyb3VuZCB0aGUgZWRnZXMuIFlvdSBjYW4ga2VlcCB1bnBhcnRpdGlv
+bmVkIHNwYWNlIGF0IHRoZSBzdGFydAo+PiBvZiB0aGUgTU1DIGRldmljZSBhbmQgcGFydGl0aW9u
+IGl0IHdpdGggT0YgYW5kIGhhdmUgcmVndWxhciBNQlIvR1BUIHBhcnRpdGlvbiBzdGFydCBhdAo+
+PiBhIGxhdGVyIG9mZnNldC4gYmFyZWJveCB3aWxsIHdhcm4geW91IGlmIHRoZXkgb3ZlcmxhcC4K
+PiAKPiBTbyBzdGF0ZSBpbiBNTUMgd2lsbCBiZSBhbiBPRiBwYXJ0aXRpb24gd2hpY2ggbXVzdCBv
+ciBiZSBjb3ZlcmVkIG9yIG92ZXJsYXAgd2l0aCBNQlIKPiBwYXJ0aXRpb25pbmcsIHJpZ2h0PyBX
+aGF0IGRvZXMgdGhlICJPRiIgbWVhbj8KCk9wZW4gRmlybXdhcmUuIEl0J3MgdGhlIG9yaWdpbmFs
+IHN0YW5kYXJkIHRoYXQgZGVzY3JpYmVkIGRldmljZSB0cmVlcy4KCj4gT24gdGhlIG90aGVyIGhh
+bmQgSSBhbSBzaHVyZSBpbiBNQlIgdGhlIDFzdCA0NDYgYnl0ZXMgYXJlIGF2YWlsYWJsZSBiZWNh
+dXNlIHRoZSBUSSBhbTMzNXgKPiBDUFUgaXMgaWdub3JpbmcgaXQgd2hpbGUgc2VhcmNoaW5nIGZv
+ciBhIGJvb3RhYmxlIGZsYWdnZWQgRkFUIGFuZCBsb2FkcyBCTCBmcm9tIHRoZXJlLi4uCj4gT24g
+dGhlIG90aGVyIGhhbmQsIEkgY291bGQgYWNjZXNzIHBsZW50eSBvZiBzcGFjZSB1bmFsbG9jYXRl
+ZCBhZnRlciB0aGUgTUJSIGlmIDFzdCBwYXJ0aXRpb24KPiBzdGFydHMgYXQgYSBsYXRlIHNlY3Rv
+ciBsaWtlIDEwMjQgb3Igc28uCgpMYXR0ZXIgaXMgd2hhdCBJIHVzdWFsbHkgZG8uCgo+IEFuZCB3
+aGF0IEkgdW5kZXJzdG9vZCBmcm9tIHRoZSBleGFtcGxlcywgZG9jdW1lbnRhdGlvbiBpcyBob3cg
+dG8gYWNjZXNzIGV4YWN0bHkgd2hhdCBieXRlCj4gaW4gYW4gRUVQUk9NLCBidXQgaG93IGRvIEkg
+c2V0dXAgYW5kIGFjY2VzcyB0aGUgYnl0ZXMgYXQgMHgxMDAgdG8gMHgzMDAgaW4gdGhlIE1NQyBh
+dAo+IG1tYzEgaW50ZXJmYWNlIG9yIHRoZSBieXRlcyAweDEwMDAgdG8gMHgyMDAwPwoKYXJjaC9h
+cm0vZHRzL2lteDZxZGwtcHJ0aTZxLWVtbWMuZHRzaSBwbGFjZXMgaXQgb24gZU1NQy4gQ2hlY2sg
+aXQgb3V0LgoKPiBBbmQgaXMgZG9pbmcgdGhpcyBzdGF0ZSB0aGluZyBpbiBhIGZpbGUgKGZvciBl
+eGFtcGxlIG9uIHRoZSAxc3TCoCBGQVQgd2hlcmUgYmFyZWJveC5lbnYgaXMpCj4gZm9yIGJhcmVi
+b3ggYW5kIHJhdXgvYmFyZWJveC1zdGF0ZSBwb3NzaWJsZSBvciBub3Q/CgpGQVQgaXNuJ3QgcG93
+ZXItZmFpbCBzYWZlLiBJdCdzIG9rIGZvciByZWFkaW5nIG9yIHdyaXRpbmcgc3R1ZmYgZHVyaW5n
+CmRldmVsb3BtZW50IChlLmcuIGVudmlyb25tZW50KSwgYnV0IHlvdSByZWFsbHkgZG9uJ3Qgd2Fu
+dCB0byB1c2UgaXQKZm9yIGJhcmVib3gtc3RhdGUgdGhhdCdzIG1lYW50IHRvIGJlIHBvd2VyLWZh
+aWwgc2FmZS4KCllvdSBjYW4gb2YgY291cnNlIHVzZSBhIE1CUiBwYXJ0aXRpb24sIGJ1dCByYXcs
+IHdpdGhvdXQgYSBmaWxlIHN5c3RlbS4KCj4+IEZvciBkZXZpY2VzIHdpdGggYW4gRUVQUk9NLCBJ
+J2QgdXNlIEVFUFJPTSBmb3Igc3RhdGUgb3ZlciBldmVyeXRoaW5nIGVsc2UuCj4gCj4gWW91IGFy
+ZSByaWdodCwgSSB3aWxsIHNlYXJjaCBmb3Igc29tZSBwbGFjZSByYXRoZXIgdGhhbiB0aGUgZmls
+ZSBvciBNTUMgdGhpbmd5IGJlY2F1c2UKPiBpIGNob3NlIGl0IGJlY2F1c2UgaXQgbG9va3MgbW9z
+dCBjb252ZW5pZW50LCBidXQgYXMgc2FpZCwgV3JpdGUgT25seSBpbiBwcm9kdWt0aW9uLgo+IAo+
+PiBJZiB5b3VyIG9ubHkgaXNzdWUgaXMgdGhlIGtlcm5lbCBlcnJvciBhYm92ZSwganVzdCBpbXBv
+cnQgdGhlIHBhdGNoCj4+IChvciB1cGRhdGUgdG8gYSBuZXdlciBtb3JlIHNoaW55IExpbnV4IHJl
+bGVhc2UgOi0pCj4gCj4gTm8sIG5vIHByb2JsZW0gd2l0aCBlaXRoZXIgdXBkYXRpbmcgdGhlIGtl
+cm5lbCBvciBwYXRjaGluZyBpdCwgdGhlIGxhdHRlciBpcyBhdCB0aGUgcHJvamVjdCdzCj4gc3Rh
+dGUgYWN0dWFsbHkgbW9yZSBjb252ZW5pZW50IEkgLSBhZG1pdC4KPiAKPiBIVEguCj4gCj4gVmVy
+eSBtdWNoLCB0aGFua3MgZm9yIHlvdXIgZnJpZW5kbHkgZWxhYm9yYXRpb24gOi0pCj4gCj4gUmVn
+YXJkcwo+IEtvbnN0YW50aW4KPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cj4gCgoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAg
+ICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8CjMxMTM3
+IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0y
+MDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8
+IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
+LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9iYXJlYm94Cg==
 
