@@ -1,61 +1,58 @@
-Delivery-date: Mon, 03 Jan 2022 17:19:51 +0100
+Delivery-date: Mon, 03 Jan 2022 17:52:23 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n4Q3r-00A0Su-NO
-	for lore@lore.pengutronix.de; Mon, 03 Jan 2022 17:19:51 +0100
+	id 1n4QZL-00A1hY-96
+	for lore@lore.pengutronix.de; Mon, 03 Jan 2022 17:52:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n4Q3q-0000Fs-KF
-	for lore@pengutronix.de; Mon, 03 Jan 2022 17:19:51 +0100
+	id 1n4QZJ-0003hx-W7
+	for lore@pengutronix.de; Mon, 03 Jan 2022 17:52:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
 	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=WR00pYfsmwjyjm/v+SgA7gINRuxoCyRqfGfelOXawlc=; b=JfXRCYOcszAPw2
-	t7D7qnLOmic1yprNyn6cDhf7d8Lcmw8KU/xKvF2GIlL2153sKp6yuwBixj+7yj3KjylEoivrhZN9R
-	LR4UyGjQQzW/U87Dg/xL3AvLoY4pQm23HEmZyh60E8oLghmIcEZVflO4LA9WApb/OhQYODcW0hcE/
-	pwQ7o+g3U5LA0NoXTf58SSl0bKGtMUNzNjX5PRVyklJ2cBuaXMvsDSwgfiRPKN+OLikFFQYZFfNob
-	/EIK4YPc25/Zn15WUxdzYzPEwVYy2+kLswd6BS5OtVsDADGV07ME14CBQmoDz3KPSUBRaPl03vg07
-	eC6mAidBjNwoI8SX+kRw==;
+	List-Owner; bh=ac1CLL4lRX0SjXdynzfGawgow5zu6Lku9U+rEUh+pgs=; b=xRs1MgDbhjoCZ2
+	fHhmoqUb2AOquKqYYHgCKMKgUZD2uwXvMc8eSvIakEArVqWpiQE/CMEA4W5vs2GhsoG39Ito/giuV
+	clY5sZrTSZMS4c9OM0dVSnvXKGpVEh5GS4lNfqzLgMRmTO1QaV0Xr9tLjw7oRWa170XYjTnRvihom
+	r4m2UKGWxDs3fKbS1VNuijU9+lJDmhrdD1x2P8taFT1WuPLuKgU2ZvKgvp9sXFwYp5u0clm+RY0jN
+	8hk8Dy+bZgh5wf2bT6WdQifKDdeg7UqiYOysH0+69itiUpERoGJ0ny3L14VFcOme+5p/If/YzuQf+
+	xjT382wuHUUQEch8Ad7w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n4Q2e-009RpN-Uh; Mon, 03 Jan 2022 16:18:37 +0000
-Received: from mx1.smtp.larsendata.com ([91.221.196.215])
+	id 1n4QXn-009YKW-7s; Mon, 03 Jan 2022 16:50:47 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n4Q2Z-009Ro6-R8
- for barebox@lists.infradead.org; Mon, 03 Jan 2022 16:18:33 +0000
-Received: from mail01.mxhotel.dk (mail01.mxhotel.dk [91.221.196.236])
- by mx1.smtp.larsendata.com (Halon) with ESMTPS
- id e103436b-6cb0-11ec-b20b-0050568c148b;
- Mon, 03 Jan 2022 16:19:08 +0000 (UTC)
-Received: from ravnborg.org (80-162-45-141-cable.dk.customer.tdc.net
- [80.162.45.141])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- (Authenticated sender: sam@ravnborg.org)
- by mail01.mxhotel.dk (Postfix) with ESMTPSA id 6534F194B04;
- Mon,  3 Jan 2022 17:18:34 +0100 (CET)
-Date: Mon, 3 Jan 2022 17:18:28 +0100
-X-Report-Abuse-To: abuse@mxhotel.dk
-From: Sam Ravnborg <sam@ravnborg.org>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <YdMh1FIPwhP9ga9C@ravnborg.org>
-References: <20220103115718.1723730-1-a.fatoum@pengutronix.de>
- <20220103115718.1723730-2-a.fatoum@pengutronix.de>
- <YdMgSbOoD/1csUNT@ravnborg.org>
+ id 1n4QXh-009YJ4-Mr
+ for barebox@lists.infradead.org; Mon, 03 Jan 2022 16:50:43 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <rhi@pengutronix.de>)
+ id 1n4QXf-0003Xi-VP; Mon, 03 Jan 2022 17:50:39 +0100
+Received: from rhi by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <rhi@pengutronix.de>)
+ id 1n4QXf-0007lA-Ma; Mon, 03 Jan 2022 17:50:39 +0100
+Date: Mon, 3 Jan 2022 17:50:39 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Message-ID: <20220103165039.p5cqln44got6ybrg@pengutronix.de>
+References: <20220103120539.1730644-1-a.fatoum@pengutronix.de>
+ <20220103120539.1730644-12-a.fatoum@pengutronix.de>
+ <20220103122053.ry32inulqtx2wwsj@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <YdMgSbOoD/1csUNT@ravnborg.org>
+In-Reply-To: <20220103122053.ry32inulqtx2wwsj@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220103_081832_048379_79C51CBC 
-X-CRM114-Status: GOOD (  19.37  )
+X-CRM114-CacheID: sfid-20220103_085041_770776_8C81049E 
+X-CRM114-Status: GOOD (  16.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,49 +64,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 1/5] pwm: atmel: point MMIO accesses at correct
- address
+Subject: Re: [PATCH 11/11] treewide: add SPDX-License-Identifier for files
+ without explicit license
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jan 03, 2022 at 05:11:53PM +0100, Sam Ravnborg wrote:
-> Hi Ahmad,
-> 
-> On Mon, Jan 03, 2022 at 12:57:14PM +0100, Ahmad Fatoum wrote:
-> > The base address for MMIO writes was the address of the resource struct,
-> > not the start address pointed at by it.
-> > 
-> > Change untested, but it doesn't look like this driver could ever have
-> > worked.
-> 
-> You are right that I never got around to see backlight dimming work.
-> I recall that backlight worked and then the pwm driver was added as part
-> of several other patches for barebox.
-> I should have dropped the patch until I had seen it actually work.
-> 
-> But nice catch!
-> 
-> I may try to dust of the skov board where this is used to test it.
-> But these days I play with an i.MX6 board which has a bit more power,
-> so no promises.
-
-For the patch btw:
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBKYW4gMDMsIDIwMjIgYXQgMDE6MjA6NTNQTSArMDEwMCwgVXdlIEtsZWluZS1Lw7Zu
+aWcgd3JvdGU6Cj4gT24gTW9uLCBKYW4gMDMsIDIwMjIgYXQgMDE6MDU6MzlQTSArMDEwMCwgQWht
+YWQgRmF0b3VtIHdyb3RlOgo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL3Rvb2xzL2dlbi1tYWNo
+LXR5cGVzIGIvYXJjaC9hcm0vdG9vbHMvZ2VuLW1hY2gtdHlwZXMKPiA+IGluZGV4IDA0ZmVmNzFk
+N2JlOS4uZmNmYzBlZDE5MmUxIDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9hcm0vdG9vbHMvZ2VuLW1h
+Y2gtdHlwZXMKPiA+ICsrKyBiL2FyY2gvYXJtL3Rvb2xzL2dlbi1tYWNoLXR5cGVzCj4gPiBAQCAt
+MSw1ICsxLDcgQEAKPiA+ICAjIS9iaW4vYXdrCj4gPiAgIwo+ID4gKyMgU1BEWC1MaWNlbnNlLUlk
+ZW50aWZpZXI6IEdQTC0yLjAtb25seQo+ID4gKyMKPiAKPiBJIHdvdWxkIHByZWZlciB0byBoYXZl
+IHRoZSBsaWNlbnNlIGlkZW50aWZpZXIgaW4gdGhlIDJuZCBsaW5lLiBOb3Qgc3VyZQo+IHdoYXQg
+dGhlIHN0YW5kYXJkIHRlbGxzLCBidXQgSVNUUiB0aGF0IGluIExpbnV4IHRoZSBpcyBubyAiZW1w
+dHkiIGxpbmUsCj4gdG9vLgoKSSB3YXMgc3R1bWJsaW5nIG92ZXIgdGhpcyBvbmUgdG9vLCBidXQg
+dGhlIHN0YW5kYXJkIHNheXMgImF0IG9yIG5lYXIgdGhlCnRvcCBvZiB0aGUgZmlsZSIgWzFdLCBz
+byBJIHRoaW5rLCB0aGlzIGlzIG9rYXkuCgpPdGhlcndpc2UgZGlkbid0IG5vdGljZSBhbnl0aGlu
+ZyBzdHJhbmdlIHdoaWxlIHNjcm9sbGluZyB0aHJvdWdoIHRoaXMKc2VyaWVzLCBleGNlcHQgYSBm
+ZXcgbmV3bGluZSBjaGFuZ2VzIGF0IGVuZHMgb2YgZmlsZXMgaGVyZSBhbmQgdGhlcmUsCmJ1dCBJ
+IHRoaW5rIHRob3NlIGFyZSBva2F5IHRvby4KClsxXTogaHR0cHM6Ly9zcGR4LmdpdGh1Yi5pby9z
+cGR4LXNwZWMvdXNpbmctU1BEWC1zaG9ydC1pZGVudGlmaWVycy1pbi1zb3VyY2UtZmlsZXMvI2Uy
+LWZvcm1hdC1mb3Itc3BkeC1saWNlbnNlLWlkZW50aWZpZXIKCj4gT3RoZXJ3aXNlIHRoYW5rcyBm
+b3IgeW91ciBlZmZvcnQsCgpZZXMsIHRoYW5rIHlvdSEKCiAtIFJvbGFuZAoKLS0gClJvbGFuZCBI
+aWViZXIsIFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgfCByLmhpZWJlckBwZW5ndXRyb25peC5k
+ZSAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgIHwgaHR0cHM6
+Ly93d3cucGVuZ3V0cm9uaXguZGUvIHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAg
+ICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRl
+c2hlaW0sIEhSQSAyNjg2ICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
 
