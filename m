@@ -1,63 +1,56 @@
-Delivery-date: Mon, 03 Jan 2022 10:07:23 +0100
+Delivery-date: Mon, 03 Jan 2022 11:27:35 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n4JJL-009gnG-4i
-	for lore@lore.pengutronix.de; Mon, 03 Jan 2022 10:07:23 +0100
+	id 1n4KYw-009kTn-Vn
+	for lore@lore.pengutronix.de; Mon, 03 Jan 2022 11:27:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n4JJJ-0005aY-FR
-	for lore@pengutronix.de; Mon, 03 Jan 2022 10:07:22 +0100
+	id 1n4KYv-0003xi-Mb
+	for lore@pengutronix.de; Mon, 03 Jan 2022 11:27:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=VnDixDPn0R6toewV3MGzMIC9HU+VLNob9giUo/UqfQw=; b=uy9Jpp5gQj4Nmc4Ua0ORKsi5wm
-	FFU0mw63RxhQhsx3qzPlMMTY7d/Mwl4QHYLX7RilixwFOSfbYJHgtI5RP79K2HHASg6r8oVBueyIf
-	H59i5wvRlweJEod67cyJgYHp+731ppC/DRpiRbaZ6aieOkdLtDqalEhknIB13X8LzQdSwJ48LUFkK
-	hJwbZNNx4QSjmYg+v1LiOSZ8eoaL+o2EC9ZHoF8H1iyBiBteULdLUXvseTUG3QxLh5vKUuNAZEEvW
-	H80XQ7UMt62LPoboMxQDY2y4GlnMBwNIQSVyYfcLo2WJGesy2QfKvCFiTayqmYPi6FHDAkUnohfE5
-	YIpvJf+A==;
+	bh=J4d5H1AyQYHV70AJbBpAlt93Tw8WeS71uhB9KHsmjdo=; b=EaYhfyTpbyvyYkAtzCmvg6WCAm
+	mTw6eP964LeyxxylJsmuFRqcqtE6j4QhIvmwkQp0a18bDoHHmG5kBYsB1PLlIjckvjiZUdTh2O2nY
+	KYwozzvZ6rVD+7DkPKKYcoP/O3Ohq3asESm/dgg4trpDqCy5MljtdzmvRMaRe9dKcaPmBlcV3EPRX
+	NhA/zTPB8aCRrN34tNrGAppiUDWUvHdMyjctgzNGafH90F7tXKwmo9f6Z07tfbZ6BajOJCbcJw/yy
+	7nvsW9HNXbqsGs75BOcfGDaO+/B17hlWBOV70GJfOkWHV70nudiiF1ioziFq9v9qZQDByFAw/CNQ/
+	m7L12CQQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n4JHs-008dZj-Um; Mon, 03 Jan 2022 09:05:53 +0000
+	id 1n4KXP-008mt2-66; Mon, 03 Jan 2022 10:25:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n4JHn-008dYH-WA
- for barebox@lists.infradead.org; Mon, 03 Jan 2022 09:05:49 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1n4JHm-0005Re-Es; Mon, 03 Jan 2022 10:05:46 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1n4JHl-0000jo-Sr; Mon, 03 Jan 2022 10:05:45 +0100
-Date: Mon, 3 Jan 2022 10:05:45 +0100
-To: Andrej Picej <andrej.picej@norik.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220103090545.GG6003@pengutronix.de>
-References: <20211216122653.2335949-1-andrej.picej@norik.com>
+ id 1n4KXI-008msH-I6
+ for barebox@lists.infradead.org; Mon, 03 Jan 2022 10:25:55 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1n4KXF-0003qK-4g; Mon, 03 Jan 2022 11:25:49 +0100
+To: Sascha Hauer <sha@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org, Yann Sionneau <ysionneau@kalray.eu>
+References: <20211204130854.1624493-1-ahmad@a3f.at>
+ <20211207090615.GF28260@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <d7b38b7a-e6ef-d96d-557d-1fa25a979276@pengutronix.de>
+Date: Mon, 3 Jan 2022 11:25:47 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20211216122653.2335949-1-andrej.picej@norik.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:05:32 up 23 days, 17:51, 64 users,  load average: 1.33, 1.31, 1.32
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <20211207090615.GF28260@pengutronix.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220103_010548_061571_6D9FBA45 
-X-CRM114-Status: GOOD (  22.90  )
+X-CRM114-CacheID: sfid-20220103_022554_417533_0EE1BCD4 
+X-CRM114-Status: GOOD (  18.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,39 +70,65 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] watchdog: imxwd: suspend watchdog timer in low power mode
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH master] RISC-V: cpu: fix build with
+ CONFIG_RISCV_EXCEPTIONS=n
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Dec 16, 2021 at 01:26:53PM +0100, Andrej Picej wrote:
-> Watchdog timer should be disabled in low power mode. The problem that
-> was observed was that when the watchdog is started from barebox, kernel
-> driver doesn't do its own setup again and in turn this bit is left
-> unset. Moreover, this bit is write-once and has to be set before
-> enabling the watchdog, leaving responsibility for proper setup to a
-> party first using the watchdog timer (e.g. bootloader). Issue manifests
-> itself later on, when device enters low power mode (e.g. suspend) for
-> more amount of time than what is maximum watchdog timeout (128s). After
-> that period of time, device will not recover ever as there is no service
-> patting the watchdog (CPU is suspended). This means that the device can
-> hang in suspend mode or it performs an unexpected reset.
-> 
-> Thus to avoid suspend/resume problems when watchdog is started already
-> in the bootloader, align bootloader driver settings with kernel settings.
-> Kernel driver has been already setting this bit since 2014.
-> 
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> ---
->  drivers/watchdog/imxwd.c | 4 ++++
->  1 file changed, 4 insertions(+)
+Hello Sascha,
 
-Applied, thanks
+On 07.12.21 10:06, Sascha Hauer wrote:
+> On Sat, Dec 04, 2021 at 02:08:54PM +0100, Ahmad Fatoum wrote:
+>> Building without CONFIG_RISCV_EXCEPTIONS causes a compile error, because
+>> of a definition mismatch. data_abort_mask is a no-op without exception
+>> support, but interrupt.c defines it as a different type of symbol. Skip
+>> interrupt.c compilation to fix the build error.
 
-Sascha
+I don't find this patch in either master or next.
+Can you push it?
+
+Thanks,
+Ahmad
+
+>>
+>> Reported-by: Yann Sionneau <ysionneau@kalray.eu>
+>> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+>> ---
+>>  arch/riscv/cpu/Makefile | 2 ++
+>>  1 file changed, 2 insertions(+)
+> 
+> Applied, thanks
+> 
+> Sascha
+> 
+>>
+>> diff --git a/arch/riscv/cpu/Makefile b/arch/riscv/cpu/Makefile
+>> index 717baaaaa727..d79bafc6f142 100644
+>> --- a/arch/riscv/cpu/Makefile
+>> +++ b/arch/riscv/cpu/Makefile
+>> @@ -2,6 +2,8 @@
+>>  
+>>  obj-y += core.o time.o
+>>  obj-$(CONFIG_HAS_DMA) += dma.o
+>> +ifeq ($(CONFIG_RISCV_EXCEPTIONS),y)
+>>  obj-pbl-$(CONFIG_RISCV_M_MODE) += mtrap.o
+>>  obj-pbl-$(CONFIG_RISCV_S_MODE) += strap.o
+>>  obj-pbl-y += interrupts.o
+>> +endif
+>> -- 
+>> 2.33.0
+>>
+>>
+>> _______________________________________________
+>> barebox mailing list
+>> barebox@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/barebox
+>>
+> 
 
 
 -- 
