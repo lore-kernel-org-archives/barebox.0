@@ -1,56 +1,57 @@
-Delivery-date: Mon, 03 Jan 2022 11:27:35 +0100
+Delivery-date: Mon, 03 Jan 2022 11:29:19 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n4KYw-009kTn-Vn
-	for lore@lore.pengutronix.de; Mon, 03 Jan 2022 11:27:34 +0100
+	id 1n4Kad-009kXe-9Q
+	for lore@lore.pengutronix.de; Mon, 03 Jan 2022 11:29:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n4KYv-0003xi-Mb
-	for lore@pengutronix.de; Mon, 03 Jan 2022 11:27:34 +0100
+	id 1n4Kab-00043Y-CJ
+	for lore@pengutronix.de; Mon, 03 Jan 2022 11:29:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
+	Message-ID:References:Cc:To:From:Subject:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=J4d5H1AyQYHV70AJbBpAlt93Tw8WeS71uhB9KHsmjdo=; b=EaYhfyTpbyvyYkAtzCmvg6WCAm
-	mTw6eP964LeyxxylJsmuFRqcqtE6j4QhIvmwkQp0a18bDoHHmG5kBYsB1PLlIjckvjiZUdTh2O2nY
-	KYwozzvZ6rVD+7DkPKKYcoP/O3Ohq3asESm/dgg4trpDqCy5MljtdzmvRMaRe9dKcaPmBlcV3EPRX
-	NhA/zTPB8aCRrN34tNrGAppiUDWUvHdMyjctgzNGafH90F7tXKwmo9f6Z07tfbZ6BajOJCbcJw/yy
-	7nvsW9HNXbqsGs75BOcfGDaO+/B17hlWBOV70GJfOkWHV70nudiiF1ioziFq9v9qZQDByFAw/CNQ/
-	m7L12CQQ==;
+	bh=Z65Sa/dGJzpe+byggxXV/Jz0bUrt+xjHOIE59aQoaWg=; b=OsIm/L7ExKPszVHpAbBcqKnfrh
+	IRop8oCyjOY0kVVpQD4MQUiHCZrAcX3W4oq7SXikPVbBlXuu3CEThmxhNM2/S1FojFhyi522V+GyC
+	lhB963d9ptAMDyuInJvitKHL2aoAIgH98le9TFO1nJzeMn8/xlAS/dRpb6GO0V6rWhDOebFf8HRJd
+	+NJ5U7MTciA2u7AcE4GYJ/HugB5ZOEo4t/bCjr/j5jYxhEWM8HLCOia7uaa5lnG7jyqeJnNwx21DS
+	IFytvD9kcRSF6HX9bA8AbWMOvainoVpGxmbfy/eBOg4S4RMPN3TUwp69eH/BXww78T2MPUquOfDV8
+	jA0IoTDA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n4KXP-008mt2-66; Mon, 03 Jan 2022 10:25:59 +0000
+	id 1n4KZN-008n8O-6p; Mon, 03 Jan 2022 10:28:01 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n4KXI-008msH-I6
- for barebox@lists.infradead.org; Mon, 03 Jan 2022 10:25:55 +0000
+ id 1n4KZH-008n7M-UL
+ for barebox@lists.infradead.org; Mon, 03 Jan 2022 10:27:57 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1n4KXF-0003qK-4g; Mon, 03 Jan 2022 11:25:49 +0100
-To: Sascha Hauer <sha@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org, Yann Sionneau <ysionneau@kalray.eu>
-References: <20211204130854.1624493-1-ahmad@a3f.at>
- <20211207090615.GF28260@pengutronix.de>
+ id 1n4KZG-0003zV-OT; Mon, 03 Jan 2022 11:27:54 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <d7b38b7a-e6ef-d96d-557d-1fa25a979276@pengutronix.de>
-Date: Mon, 3 Jan 2022 11:25:47 +0100
+To: Sascha Hauer <sha@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
+References: <20211129072235.2016324-1-ahmad@a3f.at>
+ <20211130102302.GP28260@pengutronix.de>
+ <93265eaa-3a16-9253-b6f5-35dae8a9f3ab@pengutronix.de>
+Message-ID: <2ed28579-71e0-a0ec-e36a-c83c81bd97c2@pengutronix.de>
+Date: Mon, 3 Jan 2022 11:27:54 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <20211207090615.GF28260@pengutronix.de>
+In-Reply-To: <93265eaa-3a16-9253-b6f5-35dae8a9f3ab@pengutronix.de>
 Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220103_022554_417533_0EE1BCD4 
-X-CRM114-Status: GOOD (  18.45  )
+X-CRM114-CacheID: sfid-20220103_022756_016873_8500A914 
+X-CRM114-Status: GOOD (  23.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,60 +75,83 @@ X-Spam-Status: No, score=-6.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] RISC-V: cpu: fix build with
- CONFIG_RISCV_EXCEPTIONS=n
+Subject: Re: [PATCH] state: make first boot with uninitialized legacy state
+ less verbose
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hello Sascha,
 
-On 07.12.21 10:06, Sascha Hauer wrote:
-> On Sat, Dec 04, 2021 at 02:08:54PM +0100, Ahmad Fatoum wrote:
->> Building without CONFIG_RISCV_EXCEPTIONS causes a compile error, because
->> of a definition mismatch. data_abort_mask is a no-op without exception
->> support, but interrupt.c defines it as a different type of symbol. Skip
->> interrupt.c compilation to fix the build error.
+On 30.11.21 11:39, Ahmad Fatoum wrote:
+> Hello Sascha,
+> 
+> On 30.11.21 11:23, Sascha Hauer wrote:
+>> On Mon, Nov 29, 2021 at 08:22:35AM +0100, Ahmad Fatoum wrote:
+>>> With non-legacy state, barebox checks a header for a specific magic
+>>> signature. This can be all zero on an uninitialized state, so in that
+>>> particular case, bump down the log message severity.
+>>>
+>>> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+>>> ---
+>>> Applies on top of https://lore.barebox.org/barebox/20211125161042.3829996-3-a.fatoum@pengutronix.de/
+> 
+> Yes, please see ^ first.
 
-I don't find this patch in either master or next.
-Can you push it?
+Is this ok for next?
 
-Thanks,
+Cheers,
 Ahmad
 
->>
->> Reported-by: Yann Sionneau <ysionneau@kalray.eu>
->> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
->> ---
->>  arch/riscv/cpu/Makefile | 2 ++
->>  1 file changed, 2 insertions(+)
 > 
-> Applied, thanks
+>>> ---
+>>>  common/state/backend_bucket_direct.c | 4 ++--
+>>>  common/state/backend_storage.c       | 7 +++++--
+>>>  2 files changed, 7 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+>>> index 517aec60634b..117cdfb46c9e 100644
+>>> --- a/common/state/backend_bucket_direct.c
+>>> +++ b/common/state/backend_bucket_direct.c
+>>> @@ -76,9 +76,9 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+>>>  		if (meta.magic != ~0 && !!meta.magic)
+>>>  			bucket->wrong_magic = 1;
+>>>  		if (!IS_ENABLED(CONFIG_STATE_BACKWARD_COMPATIBLE)) {
+>>> -			dev_err(direct->dev, "No meta data header found\n");
+>>>  			dev_dbg(direct->dev, "Enable backward compatibility or increase stride size\n");
+>>> -			return -EINVAL;
+>>> +			return dev_err_state_init(direct->dev, meta.magic ? -EINVAL : -ENOMEDIUM,
+>>> +						  "No meta data header found\n");
+>>
+>> What is dev_err_state_init()? I don't have that in my tree.
+>>
+>>>  		}
+>>>  		read_len = direct->max_size;
+>>>  		if (lseek(direct->fd, direct->offset, SEEK_SET) !=
+>>> diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
+>>> index 72f8bcf521ad..c55d22e37f70 100644
+>>> --- a/common/state/backend_storage.c
+>>> +++ b/common/state/backend_storage.c
+>>> @@ -156,10 +156,13 @@ int state_storage_read(struct state_backend_storage *storage,
+>>>  		totalbuckets++;
+>>>  
+>>>  		ret = bucket->read(bucket, &bucket->buf, &bucket->len);
+>>> -		if (ret == -EUCLEAN)
+>>> +		if (ret == -EUCLEAN) {
+>>>  			bucket->needs_refresh = 1;
+>>> -		else if (ret)
+>>> +		} else if (ret) {
+>>> +			if (ret == -ENOMEDIUM)
+>>> +				zerobuckets++;
+>>
+>> This variable also does not exist. Does this patch depend on other
+>> patches?
 > 
-> Sascha
+> It does. I
 > 
 >>
->> diff --git a/arch/riscv/cpu/Makefile b/arch/riscv/cpu/Makefile
->> index 717baaaaa727..d79bafc6f142 100644
->> --- a/arch/riscv/cpu/Makefile
->> +++ b/arch/riscv/cpu/Makefile
->> @@ -2,6 +2,8 @@
->>  
->>  obj-y += core.o time.o
->>  obj-$(CONFIG_HAS_DMA) += dma.o
->> +ifeq ($(CONFIG_RISCV_EXCEPTIONS),y)
->>  obj-pbl-$(CONFIG_RISCV_M_MODE) += mtrap.o
->>  obj-pbl-$(CONFIG_RISCV_S_MODE) += strap.o
->>  obj-pbl-y += interrupts.o
->> +endif
->> -- 
->> 2.33.0
+>> Sascha
 >>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
+> 
 > 
 
 
