@@ -1,56 +1,53 @@
-Delivery-date: Mon, 03 Jan 2022 13:08:29 +0100
+Delivery-date: Mon, 03 Jan 2022 13:08:38 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n4M8b-009oAx-Dq
-	for lore@lore.pengutronix.de; Mon, 03 Jan 2022 13:08:29 +0100
+	id 1n4M8k-009oBr-39
+	for lore@lore.pengutronix.de; Mon, 03 Jan 2022 13:08:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n4M8R-0005o6-V8
-	for lore@pengutronix.de; Mon, 03 Jan 2022 13:08:28 +0100
+	id 1n4M8U-0005of-JK
+	for lore@pengutronix.de; Mon, 03 Jan 2022 13:08:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=sKIaFg11rjtTm+KCnemMXK3W4hZatgko/SfzsGhZQc4=; b=ciJOGbLLcCZB/T
-	ENz28jmqzv+CFIcA7Eq2DN5iHkSzn78ygJUKGJxFysXc+bZqsyFs7Vi48Bu1ckcedwV0J8ox9THP0
-	Lc0ciw3OEulbcq6SNDCN25ZKxKC8nd9ySBJEqFNkUC1GUssKTvGfCMBKyaWzYzAM9QOnet+s5/Rgh
-	aJ6LMRTLeIza6/oE5qkX09y6SzbgYWrQJT/Zf78rp8X7l8z/UOL99g1pCxBlaswH5n+0DUfYbnY1J
-	CDPdU64IiWn9ihY1T9jqIeUiJr+ufc8SvOB5ye4jy/0ToTGHgq3z8bLO5JbA71Y+yjdEyM42XfY7i
-	NiSi9tajNq0x6p16kY3Q==;
+	List-Owner; bh=vfNtAUMM1qs+TPJ8FcBDlfcDcy6NM9b32RWlib2ZsF4=; b=yUe4770/ZUApJC
+	g1gEusWuwKI8FnbPUxY/wsXmz0f+zBLp4SJngdpByMumbSwB5q7C2+mdmjV6t5gLWXk8kYFjv/coZ
+	BZnJCC9xR7xtWGdkjaiXuqduD7iQr79EMEAErBrVRX6aeYxbKj6ttvejQlmpk8YO1DuE5fgl5vKfG
+	V6EblyCvor2cVZyoIJl40I1MkC4CTmyt7ADpw2DVS5iGE7K4ZE08xuEk3l+v6WNl7e15adFDYTkG4
+	YQ0NhNmIvm3DMn9MoVHNDfaDeDIgNQmZJHjz129g2yvF6Lek7ZV4LBx/CEUZ1+m1Pfn14RZKZy1om
+	dwpdMCSvqXYuusy8mMSQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n4M6a-008yE0-Cx; Mon, 03 Jan 2022 12:06:24 +0000
+	id 1n4M6I-008y29-Hj; Mon, 03 Jan 2022 12:06:06 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n4M5w-008xtu-4r
- for barebox@lists.infradead.org; Mon, 03 Jan 2022 12:05:54 +0000
+ id 1n4M5v-008xtr-R7
+ for barebox@lists.infradead.org; Mon, 03 Jan 2022 12:05:51 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1n4M5u-00052e-Bb; Mon, 03 Jan 2022 13:05:42 +0100
+ id 1n4M5t-00052O-QB; Mon, 03 Jan 2022 13:05:41 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1n4M5t-007GWI-CQ; Mon, 03 Jan 2022 13:05:41 +0100
+ id 1n4M5t-007GW3-30; Mon, 03 Jan 2022 13:05:41 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: ukl@pengutronix.de, rhi@pengutronix.de,
  Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  3 Jan 2022 13:05:35 +0100
-Message-Id: <20220103120539.1730644-8-a.fatoum@pengutronix.de>
+Date: Mon,  3 Jan 2022 13:05:30 +0100
+Message-Id: <20220103120539.1730644-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220103120539.1730644-1-a.fatoum@pengutronix.de>
 References: <20220103120539.1730644-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220103_040544_745982_DE4CDF94 
-X-CRM114-Status: GOOD (  11.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,1765 +71,3759 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/11] ARM: i.MX: add SPDX-License-Identifier for DCD
+Subject: [PATCH 02/11] treewide: add SPDX-License-Identifier for Kbuild/Kconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-In absence of a license statement, the default is GPL-2.0-only. Add that
-to the DCD files. All of //  /* */  # are acceptable comment characters
-in the DSL. If there are nearby comments in the file, the same character
-is used, otherwise #.
+To verify only Kconfig/Makefile is touched:
+
+  git show --numstat --format=oneline HEAD | grep -v 'Kconfig\|Makefile'
+
+will print only arch/powerpc/Kbuild.
+To verify nothing unexpected is added:
+
+  git show -U0 | grep '^-[^-]\|^+[^+]' | sort -u
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../advantech-mx6/flash-header-advantech-rom-7421.imxcfg      | 2 ++
- .../flash-header-nitrogen6dl-1g.imxcfg                        | 2 ++
- .../flash-header-nitrogen6dl-2g.imxcfg                        | 2 ++
- .../flash-header-nitrogen6q-1g.imxcfg                         | 2 ++
- .../flash-header-nitrogen6q-2g.imxcfg                         | 2 ++
- .../flash-header-nitrogen6qp-max.imxcfg                       | 2 ++
- arch/arm/boards/boundarydevices-nitrogen6/ram-base.imxcfg     | 2 ++
- arch/arm/boards/ccxmx51/flash-header.imxcfg                   | 2 ++
- .../arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg | 2 ++
- .../boards/ccxmx53/flash-header-imx53-ccxmx53_512mb.imxcfg    | 2 ++
- arch/arm/boards/cm-fx6/flash-header-mx6-cm-fx6.imxcfg         | 2 ++
- arch/arm/boards/datamodul-edm-qmx6/flash-header.imxcfg        | 2 ++
- .../dfi-fs700-m60/flash-header-fs700-m60-6q-micron.imxcfg     | 2 ++
- .../dfi-fs700-m60/flash-header-fs700-m60-6q-nanya.imxcfg      | 2 ++
- .../arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6s.imxcfg | 2 ++
- .../flash-header-imx6ul-ccimx6ulsbcpro.imxcfg                 | 2 ++
- .../flash-header-imx51-genesi-efikasb.imxcfg                  | 2 ++
- .../boards/eltec-hipercam/flash-header-eltec-hipercam.imxcfg  | 2 ++
- arch/arm/boards/embedsky-e9/flash-header-e9.imxcfg            | 2 ++
- .../embest-marsboard/flash-header-embest-marsboard.imxcfg     | 2 ++
- .../embest-riotboard/flash-header-embest-riotboard.imxcfg     | 2 ++
- arch/arm/boards/eukrea_cpuimx25/flash-header.imxcfg           | 2 ++
- arch/arm/boards/eukrea_cpuimx35/flash-header.imxcfg           | 2 ++
- arch/arm/boards/eukrea_cpuimx51/flash-header.imxcfg           | 2 ++
- arch/arm/boards/freescale-mx25-3ds/flash-header.imxcfg        | 2 ++
- arch/arm/boards/freescale-mx35-3ds/flash-header.imxcfg        | 2 ++
- .../freescale-mx51-babbage/flash-header-imx51-babbage.imxcfg  | 2 ++
- .../boards/freescale-mx53-qsb/flash-header-imx53-loco.imxcfg  | 2 ++
- arch/arm/boards/freescale-mx53-smd/flash-header.imxcfg        | 2 ++
- .../freescale-mx53-vmx53/flash-header-imx53-vmx53.imxcfg      | 2 ++
- .../freescale-mx6-sabrelite/flash-header-mx6-sabrelite.imxcfg | 2 ++
- .../freescale-mx6-sabresd/flash-header-mx6q-sabresd.imxcfg    | 2 ++
- .../freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg   | 2 ++
- .../flash-header-mx6sx-sabresdb.imxcfg                        | 2 ++
- .../freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg     | 4 +++-
- .../boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg  | 2 ++
- .../gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg  | 2 ++
- arch/arm/boards/gateworks-ventana/quad_128x64.imxcfg          | 2 ++
- arch/arm/boards/gateworks-ventana/ram-base.imxcfg             | 2 ++
- arch/arm/boards/gk802/flash-header.imxcfg                     | 2 ++
- .../grinn-liteboard/flash-header-liteboard-256mb.imxcfg       | 1 +
- .../grinn-liteboard/flash-header-liteboard-512mb.imxcfg       | 1 +
- arch/arm/boards/grinn-liteboard/flash-header-liteboard.h      | 1 +
- arch/arm/boards/guf-santaro/flash-header.imxcfg               | 2 ++
- arch/arm/boards/guf-vincell/flash-header.imxcfg               | 2 ++
- .../kamstrup-mx7-concentrator/flash-header-tqma7d.imxcfg      | 2 ++
- arch/arm/boards/karo-tx25/flash-header-tx25.imxcfg            | 1 +
- arch/arm/boards/karo-tx28/tx28.h                              | 1 +
- arch/arm/boards/karo-tx53/flash-header-tx53-rev1011.imxcfg    | 2 ++
- .../boards/karo-tx53/flash-header-tx53-revxx30-samsung.imxcfg | 2 ++
- arch/arm/boards/karo-tx53/flash-header-tx53-revxx30.imxcfg    | 2 ++
- arch/arm/boards/karo-tx6x/1600mhz_4x128mx16.imxcfg            | 2 ++
- arch/arm/boards/karo-tx6x/flash-header-tx6dl-1g.imxcfg        | 2 ++
- arch/arm/boards/karo-tx6x/flash-header-tx6dl-512m.imxcfg      | 2 ++
- arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg         | 2 ++
- arch/arm/boards/karo-tx6x/flash-header-tx6qp-2g.imxcfg        | 2 ++
- arch/arm/boards/karo-tx6x/pmic.h                              | 1 +
- arch/arm/boards/karo-tx6x/ram-base.imxcfg                     | 2 ++
- arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr1.imxcfg | 2 ++
- arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr2.imxcfg | 2 ++
- arch/arm/boards/kindle3/flash-header.imxcfg                   | 2 ++
- .../boards/kontron-samx6i/flash-header-samx6i-duallite.imxcfg | 2 ++
- .../arm/boards/kontron-samx6i/flash-header-samx6i-quad.imxcfg | 2 ++
- arch/arm/boards/kontron-samx6i/mem.h                          | 2 ++
- arch/arm/boards/ls1046ardb/ls1046ardb_pbi.cfg                 | 2 ++
- arch/arm/boards/ls1046ardb/ls1046ardb_qspi_pbi.cfg            | 2 ++
- arch/arm/boards/ls1046ardb/ls1046ardb_rcw_emmc.cfg            | 2 ++
- arch/arm/boards/ls1046ardb/ls1046ardb_rcw_qspi.cfg            | 2 ++
- arch/arm/boards/ls1046ardb/ls1046ardb_rcw_sd.cfg              | 2 ++
- arch/arm/boards/mnt-reform/flash-header-mnt-reform.imxcfg     | 2 ++
- arch/arm/boards/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg | 2 ++
- arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg | 2 ++
- arch/arm/boards/nxp-imx8mp-evk/flash-header-imx8mp-evk.imxcfg | 2 ++
- arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg | 2 ++
- arch/arm/boards/panda/mux.h                                   | 2 ++
- arch/arm/boards/phytec-phycard-omap4/mux.h                    | 2 ++
- arch/arm/boards/phytec-phycore-imx35/flash-header.imxcfg      | 2 ++
- arch/arm/boards/phytec-phycore-omap4460/mux.h                 | 2 ++
- .../flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg             | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg   | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg   | 2 ++
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.h | 2 ++
- .../boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.h | 1 +
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063.h  | 1 +
- .../phytec-som-imx6/flash-header-phytec-pcl063ul-512mb.imxcfg | 1 +
- .../flash-header-phytec-pcl063ull-256mb.imxcfg                | 1 +
- .../flash-header-phytec-pcl063ull-512mb.imxcfg                | 1 +
- .../phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg    | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg    | 2 ++
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058.h  | 2 ++
- .../flash-header-phytec-pcm058dl-1gib-32bit.imxcfg            | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg  | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pcm058dl-512mb.imxcfg | 2 ++
- .../arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl.h | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg  | 2 ++
- .../arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp.h | 2 ++
- .../flash-header-phytec-pfla02-1gib-1bank.imxcfg              | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg    | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg    | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg    | 2 ++
- .../flash-header-phytec-pfla02-512mb-1bank.imxcfg             | 2 ++
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02.h  | 2 ++
- .../flash-header-phytec-pfla02dl-1gib-1bank.imxcfg            | 2 ++
- .../phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg  | 2 ++
- .../arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl.h | 2 ++
- .../flash-header-phytec-pfla02s-128mb-1bank.imxcfg            | 2 ++
- .../flash-header-phytec-pfla02s-256mb-1bank.imxcfg            | 2 ++
- .../flash-header-phytec-pfla02s-512mb-1bank.imxcfg            | 2 ++
- .../phytec-som-imx8mq/flash-header-phycore-imx8mq.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/ddr3-defines.imxcfg             | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-jozacp.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg     | 2 ++
- arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg      | 2 ++
- arch/arm/boards/protonic-imx6/lpddr2-defines.imxcfg           | 2 ++
- arch/arm/boards/protonic-imx6/padsetup-dl.imxcfg              | 1 +
- arch/arm/boards/protonic-imx6/padsetup-q.imxcfg               | 1 +
- arch/arm/boards/protonic-imx6/padsetup-ul.imxcfg              | 1 +
- arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg     | 2 ++
- arch/arm/boards/skov-imx6/flash-header-mx6-skov-imx6.imxcfg   | 2 ++
- .../boards/solidrun-microsom/flash-header-microsom-i1.imxcfg  | 2 ++
- .../boards/solidrun-microsom/flash-header-microsom-i2.imxcfg  | 2 ++
- .../solidrun-microsom/flash-header-microsom-i2eX.imxcfg       | 2 ++
- .../boards/solidrun-microsom/flash-header-microsom-i4.imxcfg  | 2 ++
- .../flash-header-imx6ul-pico-hobbit-256.imxcfg                | 2 ++
- .../flash-header-imx6ul-pico-hobbit-512.imxcfg                | 2 ++
- .../flash-header-technexion-wandboard.imxcfg                  | 2 ++
- arch/arm/boards/tqma53/flash-header-tq-tqma53-1gib.imxcfg     | 2 ++
- arch/arm/boards/tqma53/flash-header-tq-tqma53-512mib.imxcfg   | 2 ++
- arch/arm/boards/tqma53/flash-header-tq-tqma53.h               | 2 ++
- arch/arm/boards/tqma53/flash-header.imxcfg                    | 2 ++
- arch/arm/boards/tqma6x/flash-header-tqma6dl.imxcfg            | 2 ++
- arch/arm/boards/tqma6x/flash-header-tqma6q.imxcfg             | 2 ++
- arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg                 | 2 ++
- arch/arm/boards/tqmls1046a/tqmls1046a_rcw_qspi_3333_5559.cfg  | 2 ++
- arch/arm/boards/tqmls1046a/tqmls1046a_rcw_sd_3333_5559.cfg    | 2 ++
- .../boards/udoo-neo/flash-header-mx6sx-udoo-neo_full.imxcfg   | 2 ++
- arch/arm/boards/udoo/flash-header-mx6-udoo.imxcfg             | 2 ++
- arch/arm/boards/variscite-mx6/flash-header-variscite.imxcfg   | 2 ++
- .../boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg  | 2 ++
- arch/arm/boards/zii-imx6q-rdu2/flash-header-rdu2.imxcfg       | 2 ++
- .../boards/zii-imx7d-dev/flash-header-zii-imx7d-dev.imxcfg    | 2 ++
- .../boards/zii-imx8mq-dev/flash-header-zii-imx8mq-dev.imxcfg  | 2 ++
- .../boards/zii-vf610-dev/flash-header-zii-vf610-dev.imxcfg    | 2 ++
- .../include/mach/flash-header/vf610-ddr-cr-default.imxcfg     | 4 +++-
- .../include/mach/flash-header/vf610-ddr-pll2-400mhz.imxcfg    | 2 ++
- 159 files changed, 306 insertions(+), 2 deletions(-)
+ Kconfig                                            | 2 ++
+ arch/arm/Kconfig                                   | 2 ++
+ arch/arm/Makefile                                  | 2 ++
+ arch/arm/boards/Makefile                           | 2 ++
+ arch/arm/boards/a9m2410/Makefile                   | 1 +
+ arch/arm/boards/a9m2440/Makefile                   | 1 +
+ arch/arm/boards/ac-sxb/Makefile                    | 2 ++
+ arch/arm/boards/advantech-mx6/Makefile             | 2 ++
+ arch/arm/boards/afi-gf/Makefile                    | 2 ++
+ arch/arm/boards/altera-socdk/Makefile              | 2 ++
+ arch/arm/boards/animeo_ip/Makefile                 | 2 ++
+ arch/arm/boards/archosg9/Makefile                  | 2 ++
+ arch/arm/boards/at91rm9200ek/Makefile              | 2 ++
+ arch/arm/boards/at91sam9260ek/Makefile             | 2 ++
+ arch/arm/boards/at91sam9261ek/Makefile             | 2 ++
+ arch/arm/boards/at91sam9263ek/Makefile             | 2 ++
+ arch/arm/boards/at91sam9m10g45ek/Makefile          | 2 ++
+ arch/arm/boards/at91sam9m10ihd/Makefile            | 2 ++
+ arch/arm/boards/at91sam9n12ek/Makefile             | 2 ++
+ arch/arm/boards/at91sam9x5ek/Makefile              | 2 ++
+ arch/arm/boards/avnet-zedboard/Makefile            | 2 ++
+ arch/arm/boards/beagle/Makefile                    | 2 ++
+ arch/arm/boards/beaglebone/Makefile                | 2 ++
+ arch/arm/boards/boundarydevices-nitrogen6/Makefile | 2 ++
+ arch/arm/boards/canon-a1100/Makefile               | 2 ++
+ arch/arm/boards/ccxmx51/Makefile                   | 2 ++
+ arch/arm/boards/ccxmx53/Makefile                   | 2 ++
+ arch/arm/boards/chumby_falconwing/Makefile         | 2 ++
+ arch/arm/boards/clep7212/Makefile                  | 2 ++
+ arch/arm/boards/cm-fx6/Makefile                    | 2 ++
+ arch/arm/boards/crystalfontz-cfa10036/Makefile     | 2 ++
+ arch/arm/boards/datamodul-edm-qmx6/Makefile        | 2 ++
+ arch/arm/boards/dfi-fs700-m60/Makefile             | 2 ++
+ arch/arm/boards/digi-ccimx6ulsom/Makefile          | 2 ++
+ arch/arm/boards/dss11/Makefile                     | 2 ++
+ arch/arm/boards/duckbill/Makefile                  | 2 ++
+ arch/arm/boards/ebv-socrates/Makefile              | 2 ++
+ arch/arm/boards/edb93xx/Makefile                   | 1 +
+ arch/arm/boards/efika-mx-smartbook/Makefile        | 2 ++
+ arch/arm/boards/element14-warp7/Makefile           | 2 ++
+ arch/arm/boards/eltec-hipercam/Makefile            | 2 ++
+ arch/arm/boards/embedsky-e9/Makefile               | 2 ++
+ arch/arm/boards/embest-marsboard/Makefile          | 2 ++
+ arch/arm/boards/embest-riotboard/Makefile          | 2 ++
+ arch/arm/boards/eukrea_cpuimx27/Makefile           | 1 +
+ arch/arm/boards/eukrea_cpuimx51/Makefile           | 2 ++
+ arch/arm/boards/freescale-mx21-ads/Makefile        | 2 ++
+ arch/arm/boards/freescale-mx23-evk/Makefile        | 3 ++-
+ arch/arm/boards/freescale-mx27-ads/Makefile        | 1 +
+ arch/arm/boards/freescale-mx28-evk/Makefile        | 2 ++
+ arch/arm/boards/freescale-mx35-3ds/Makefile        | 2 ++
+ arch/arm/boards/freescale-mx51-babbage/Makefile    | 2 ++
+ arch/arm/boards/freescale-mx53-qsb/Makefile        | 2 ++
+ arch/arm/boards/freescale-mx53-smd/Makefile        | 2 ++
+ arch/arm/boards/freescale-mx53-vmx53/Makefile      | 2 ++
+ arch/arm/boards/freescale-mx6-sabrelite/Makefile   | 2 ++
+ arch/arm/boards/freescale-mx6-sabresd/Makefile     | 2 ++
+ arch/arm/boards/freescale-mx6sx-sabresdb/Makefile  | 2 ++
+ arch/arm/boards/freescale-mx7-sabresd/Makefile     | 2 ++
+ arch/arm/boards/freescale-vf610-twr/Makefile       | 2 ++
+ arch/arm/boards/friendlyarm-mini2440/Kconfig       | 1 +
+ arch/arm/boards/friendlyarm-mini2440/Makefile      | 2 ++
+ arch/arm/boards/friendlyarm-mini6410/Makefile      | 2 ++
+ arch/arm/boards/friendlyarm-tiny210/Makefile       | 2 ++
+ arch/arm/boards/friendlyarm-tiny6410/Kconfig       | 2 ++
+ arch/arm/boards/friendlyarm-tiny6410/Makefile      | 2 ++
+ arch/arm/boards/gateworks-ventana/Makefile         | 2 ++
+ arch/arm/boards/gk802/Makefile                     | 2 ++
+ arch/arm/boards/globalscale-guruplug/Makefile      | 2 ++
+ arch/arm/boards/globalscale-mirabox/Makefile       | 2 ++
+ arch/arm/boards/grinn-liteboard/Makefile           | 2 ++
+ arch/arm/boards/guf-neso/Makefile                  | 2 ++
+ arch/arm/boards/guf-santaro/Makefile               | 2 ++
+ arch/arm/boards/guf-vincell/Makefile               | 2 ++
+ arch/arm/boards/haba-knx/Makefile                  | 2 ++
+ arch/arm/boards/imx233-olinuxino/Makefile          | 2 ++
+ arch/arm/boards/kamstrup-mx7-concentrator/Makefile | 4 +++-
+ arch/arm/boards/karo-tx28/Makefile                 | 2 ++
+ arch/arm/boards/karo-tx53/Makefile                 | 2 ++
+ arch/arm/boards/karo-tx6x/Makefile                 | 2 ++
+ arch/arm/boards/kindle-mx50/Makefile               | 2 ++
+ arch/arm/boards/kindle3/Makefile                   | 2 ++
+ arch/arm/boards/kontron-samx6i/Makefile            | 2 ++
+ arch/arm/boards/lenovo-ix4-300d/Makefile           | 2 ++
+ arch/arm/boards/ls1046ardb/Makefile                | 2 ++
+ arch/arm/boards/lubbock/Makefile                   | 2 ++
+ arch/arm/boards/lxa-mc1/Makefile                   | 2 ++
+ arch/arm/boards/mainstone/Makefile                 | 2 ++
+ arch/arm/boards/marvell-armada-xp-db/Makefile      | 2 ++
+ arch/arm/boards/marvell-armada-xp-gp/Makefile      | 2 ++
+ arch/arm/boards/microchip-ksz9477-evb/Makefile     | 2 ++
+ arch/arm/boards/mioa701/Makefile                   | 2 ++
+ arch/arm/boards/mnt-reform/Makefile                | 4 +++-
+ arch/arm/boards/module-mb7707/Makefile             | 2 ++
+ arch/arm/boards/netgear-rn104/Makefile             | 2 ++
+ arch/arm/boards/netgear-rn2120/Makefile            | 2 ++
+ arch/arm/boards/nhk8815/Makefile                   | 2 ++
+ arch/arm/boards/nvidia-beaver/Makefile             | 2 ++
+ arch/arm/boards/nvidia-jetson-tk1/Makefile         | 2 ++
+ arch/arm/boards/nxp-imx6ull-evk/Makefile           | 2 ++
+ arch/arm/boards/nxp-imx8mm-evk/Makefile            | 2 ++
+ arch/arm/boards/nxp-imx8mn-evk/Makefile            | 2 ++
+ arch/arm/boards/nxp-imx8mp-evk/Makefile            | 2 ++
+ arch/arm/boards/nxp-imx8mq-evk/Makefile            | 2 ++
+ arch/arm/boards/omap343xdsp/Makefile               | 2 ++
+ arch/arm/boards/omap3evm/Makefile                  | 2 ++
+ arch/arm/boards/panda/Makefile                     | 2 ++
+ arch/arm/boards/phytec-phycard-imx27/Makefile      | 1 +
+ arch/arm/boards/phytec-phycore-imx27/Makefile      | 2 ++
+ arch/arm/boards/phytec-phycore-imx7/Makefile       | 2 ++
+ arch/arm/boards/phytec-phycore-omap4460/Makefile   | 2 ++
+ arch/arm/boards/phytec-phycore-pxa270/Makefile     | 2 ++
+ arch/arm/boards/phytec-som-am335x/Kconfig          | 1 +
+ arch/arm/boards/phytec-som-am335x/Makefile         | 2 ++
+ arch/arm/boards/phytec-som-imx6/Makefile           | 2 ++
+ arch/arm/boards/phytec-som-imx8mq/Makefile         | 2 ++
+ arch/arm/boards/phytec-som-rk3288/Makefile         | 2 ++
+ arch/arm/boards/plathome-openblocks-a6/Makefile    | 2 ++
+ arch/arm/boards/plathome-openblocks-ax3/Makefile   | 2 ++
+ arch/arm/boards/pm9261/Makefile                    | 2 ++
+ arch/arm/boards/pm9263/Makefile                    | 2 ++
+ arch/arm/boards/pm9g45/Makefile                    | 2 ++
+ arch/arm/boards/protonic-imx6/Makefile             | 2 ++
+ arch/arm/boards/protonic-imx8m/Makefile            | 2 ++
+ arch/arm/boards/protonic-stm32mp1/Makefile         | 2 ++
+ arch/arm/boards/qemu-virt/Makefile                 | 2 ++
+ arch/arm/boards/qil-a926x/Makefile                 | 2 ++
+ arch/arm/boards/radxa-rock/Makefile                | 2 ++
+ arch/arm/boards/raspberry-pi/Makefile              | 2 ++
+ arch/arm/boards/reflex-achilles/Makefile           | 2 ++
+ arch/arm/boards/rockchip-rk3568-evb/Makefile       | 2 ++
+ arch/arm/boards/sama5d27-giantboard/Makefile       | 2 ++
+ arch/arm/boards/sama5d27-som1/Makefile             | 2 ++
+ arch/arm/boards/sama5d3_xplained/Makefile          | 2 ++
+ arch/arm/boards/sama5d3xek/Makefile                | 2 ++
+ arch/arm/boards/sama5d4_xplained/Makefile          | 2 ++
+ arch/arm/boards/sama5d4ek/Makefile                 | 2 ++
+ arch/arm/boards/scb9328/Makefile                   | 1 +
+ arch/arm/boards/seeed-odyssey/Makefile             | 2 ++
+ arch/arm/boards/skov-arm9cpu/Makefile              | 2 ++
+ arch/arm/boards/skov-imx6/Makefile                 | 2 ++
+ arch/arm/boards/solidrun-cubox/Makefile            | 2 ++
+ arch/arm/boards/solidrun-microsom/Makefile         | 2 ++
+ arch/arm/boards/stm32mp15x-ev1/Makefile            | 2 ++
+ arch/arm/boards/stm32mp15xx-dkx/Makefile           | 2 ++
+ arch/arm/boards/technexion-pico-hobbit/Makefile    | 2 ++
+ arch/arm/boards/technexion-wandboard/Makefile      | 2 ++
+ arch/arm/boards/telit-evk-pro3/Makefile            | 2 ++
+ arch/arm/boards/terasic-de0-nano-soc/Makefile      | 2 ++
+ arch/arm/boards/terasic-de10-nano/Makefile         | 2 ++
+ arch/arm/boards/terasic-sockit/Makefile            | 2 ++
+ arch/arm/boards/tny-a926x/Makefile                 | 2 ++
+ arch/arm/boards/toradex-colibri-t20/Makefile       | 2 ++
+ arch/arm/boards/toshiba-ac100/Makefile             | 2 ++
+ arch/arm/boards/tqma53/Makefile                    | 2 ++
+ arch/arm/boards/tqma6x/Makefile                    | 2 ++
+ arch/arm/boards/tqmls1046a/Makefile                | 2 ++
+ arch/arm/boards/turris-omnia/Makefile              | 2 ++
+ arch/arm/boards/udoo-neo/Makefile                  | 2 ++
+ arch/arm/boards/udoo/Makefile                      | 2 ++
+ arch/arm/boards/usb-a926x/Makefile                 | 2 ++
+ arch/arm/boards/usi-topkick/Makefile               | 2 ++
+ arch/arm/boards/variscite-mx6/Makefile             | 2 ++
+ arch/arm/boards/versatile/Kconfig                  | 1 +
+ arch/arm/boards/versatile/Makefile                 | 2 ++
+ arch/arm/boards/vexpress/Makefile                  | 2 ++
+ arch/arm/boards/virt2real/Makefile                 | 2 ++
+ arch/arm/boards/vscom-baltos/Makefile              | 2 ++
+ arch/arm/boards/wago-pfc-am35xx/Makefile           | 2 ++
+ arch/arm/boards/webasto-ccbv2/Makefile             | 2 ++
+ arch/arm/boards/zii-common/Makefile                | 2 ++
+ arch/arm/boards/zii-imx51-rdu1/Makefile            | 2 ++
+ arch/arm/boards/zii-imx6q-rdu2/Makefile            | 2 ++
+ arch/arm/boards/zii-imx7d-dev/Makefile             | 2 ++
+ arch/arm/boards/zii-imx8mq-dev/Makefile            | 2 ++
+ arch/arm/boards/zii-vf610-dev/Makefile             | 2 ++
+ arch/arm/boards/zylonite/Makefile                  | 2 ++
+ arch/arm/cpu/Kconfig                               | 2 ++
+ arch/arm/cpu/Makefile                              | 2 ++
+ arch/arm/crypto/Makefile                           | 1 +
+ arch/arm/dts/Makefile                              | 2 ++
+ arch/arm/lib/Makefile                              | 2 ++
+ arch/arm/lib32/Makefile                            | 2 ++
+ arch/arm/lib64/Makefile                            | 2 ++
+ arch/arm/mach-at91/Kconfig                         | 2 ++
+ arch/arm/mach-at91/Makefile                        | 2 ++
+ arch/arm/mach-bcm283x/Kconfig                      | 2 ++
+ arch/arm/mach-bcm283x/Makefile                     | 2 ++
+ arch/arm/mach-clps711x/Kconfig                     | 2 ++
+ arch/arm/mach-clps711x/Makefile                    | 2 ++
+ arch/arm/mach-davinci/Kconfig                      | 2 ++
+ arch/arm/mach-davinci/Makefile                     | 2 ++
+ arch/arm/mach-digic/Kconfig                        | 2 ++
+ arch/arm/mach-digic/Makefile                       | 2 ++
+ arch/arm/mach-ep93xx/Kconfig                       | 2 ++
+ arch/arm/mach-ep93xx/Makefile                      | 2 ++
+ arch/arm/mach-imx/Kconfig                          | 2 ++
+ arch/arm/mach-imx/Makefile                         | 2 ++
+ arch/arm/mach-layerscape/Kconfig                   | 2 ++
+ arch/arm/mach-layerscape/Makefile                  | 2 ++
+ arch/arm/mach-mvebu/Kconfig                        | 2 ++
+ arch/arm/mach-mvebu/Makefile                       | 2 ++
+ arch/arm/mach-mxs/Kconfig                          | 2 ++
+ arch/arm/mach-mxs/Makefile                         | 2 ++
+ arch/arm/mach-nomadik/Kconfig                      | 2 ++
+ arch/arm/mach-nomadik/Makefile                     | 1 +
+ arch/arm/mach-pxa/Kconfig                          | 2 ++
+ arch/arm/mach-pxa/Makefile                         | 2 ++
+ arch/arm/mach-rockchip/Kconfig                     | 2 ++
+ arch/arm/mach-rockchip/Makefile                    | 2 ++
+ arch/arm/mach-samsung/Kconfig                      | 2 ++
+ arch/arm/mach-samsung/Makefile                     | 2 ++
+ arch/arm/mach-socfpga/Kconfig                      | 2 ++
+ arch/arm/mach-socfpga/Makefile                     | 2 ++
+ arch/arm/mach-stm32mp/Kconfig                      | 2 ++
+ arch/arm/mach-stm32mp/Makefile                     | 2 ++
+ arch/arm/mach-tegra/Kconfig                        | 2 ++
+ arch/arm/mach-tegra/Makefile                       | 2 ++
+ arch/arm/mach-uemd/Kconfig                         | 2 ++
+ arch/arm/mach-uemd/Makefile                        | 2 ++
+ arch/arm/mach-versatile/Kconfig                    | 1 +
+ arch/arm/mach-versatile/Makefile                   | 1 +
+ arch/arm/mach-vexpress/Kconfig                     | 2 ++
+ arch/arm/mach-vexpress/Makefile                    | 2 ++
+ arch/arm/mach-zynq/Kconfig                         | 2 ++
+ arch/arm/mach-zynq/Makefile                        | 2 ++
+ arch/arm/tools/Makefile                            | 2 ++
+ arch/kvx/Kconfig                                   | 2 ++
+ arch/kvx/Makefile                                  | 2 ++
+ arch/kvx/dts/Makefile                              | 2 ++
+ arch/mips/Kconfig                                  | 5 ++---
+ arch/mips/Makefile                                 | 2 ++
+ arch/mips/boards/8devices-lima/Makefile            | 2 ++
+ arch/mips/boards/Makefile                          | 2 ++
+ arch/mips/boards/black-swift/Makefile              | 2 ++
+ arch/mips/boards/dlink-dir-320/Makefile            | 2 ++
+ arch/mips/boards/dptechnics-dpt-module/Makefile    | 2 ++
+ arch/mips/boards/img-ci20/Makefile                 | 2 ++
+ arch/mips/boards/loongson-ls1b/Makefile            | 2 ++
+ arch/mips/boards/netgear-wg102/Makefile            | 2 ++
+ arch/mips/boards/okud-max9331/Makefile             | 2 ++
+ arch/mips/boards/openembed-som9331/Makefile        | 2 ++
+ arch/mips/boards/qemu-malta/Makefile               | 2 ++
+ arch/mips/boards/ritmix-rzx50/Makefile             | 2 ++
+ arch/mips/boards/tplink-mr3020/Makefile            | 2 ++
+ arch/mips/boards/tplink-wdr4300/Makefile           | 2 ++
+ arch/mips/boot/Makefile                            | 2 ++
+ arch/mips/dts/Makefile                             | 2 ++
+ arch/mips/lib/Makefile                             | 2 ++
+ arch/mips/mach-ar231x/Kconfig                      | 2 ++
+ arch/mips/mach-ar231x/Makefile                     | 2 ++
+ arch/mips/mach-ath79/Kconfig                       | 2 ++
+ arch/mips/mach-ath79/Makefile                      | 2 ++
+ arch/mips/mach-bcm47xx/Kconfig                     | 2 ++
+ arch/mips/mach-bcm47xx/Makefile                    | 2 ++
+ arch/mips/mach-loongson/Kconfig                    | 2 ++
+ arch/mips/mach-loongson/Makefile                   | 2 ++
+ arch/mips/mach-malta/Kconfig                       | 2 ++
+ arch/mips/mach-malta/Makefile                      | 2 ++
+ arch/mips/mach-xburst/Kconfig                      | 2 ++
+ arch/mips/mach-xburst/Makefile                     | 2 ++
+ arch/mips/pbl/Makefile                             | 1 +
+ arch/openrisc/Kconfig                              | 2 ++
+ arch/openrisc/Makefile                             | 2 ++
+ arch/openrisc/boards/generic/Makefile              | 2 ++
+ arch/openrisc/cpu/Makefile                         | 2 ++
+ arch/openrisc/dts/Makefile                         | 1 +
+ arch/openrisc/lib/Makefile                         | 2 ++
+ arch/powerpc/Kbuild                                | 2 ++
+ arch/powerpc/Kconfig                               | 2 ++
+ arch/powerpc/Makefile                              | 2 ++
+ arch/powerpc/boards/freescale-p1010rdb/Makefile    | 2 ++
+ arch/powerpc/boards/freescale-p1022ds/Makefile     | 2 ++
+ arch/powerpc/boards/freescale-p2020rdb/Makefile    | 2 ++
+ arch/powerpc/boards/owc-da923rc/Makefile           | 2 ++
+ arch/powerpc/boards/pcm030/Makefile                | 2 ++
+ arch/powerpc/cpu-85xx/Makefile                     | 2 ++
+ arch/powerpc/ddr-8xxx/Makefile                     | 2 ++
+ arch/powerpc/lib/Makefile                          | 2 ++
+ arch/powerpc/mach-mpc5xxx/Kconfig                  | 2 ++
+ arch/powerpc/mach-mpc5xxx/Makefile                 | 2 ++
+ arch/powerpc/mach-mpc85xx/Kconfig                  | 2 ++
+ arch/powerpc/mach-mpc85xx/Makefile                 | 2 ++
+ arch/riscv/Kconfig                                 | 2 ++
+ arch/riscv/Kconfig.socs                            | 2 ++
+ arch/riscv/Makefile                                | 2 ++
+ arch/riscv/boards/riscvemu/Makefile                | 2 ++
+ arch/sandbox/Kconfig                               | 2 ++
+ arch/sandbox/Makefile                              | 2 ++
+ arch/sandbox/board/Makefile                        | 2 ++
+ arch/sandbox/dts/Makefile                          | 2 ++
+ arch/sandbox/lib/Makefile                          | 2 ++
+ arch/sandbox/os/Makefile                           | 2 ++
+ arch/x86/Kconfig                                   | 5 ++---
+ arch/x86/Makefile                                  | 2 ++
+ arch/x86/lib/Makefile                              | 2 ++
+ arch/x86/mach-efi/Makefile                         | 2 ++
+ common/Kconfig                                     | 2 ++
+ common/Makefile                                    | 2 ++
+ common/partitions/Kconfig                          | 2 ++
+ common/partitions/Makefile                         | 2 ++
+ common/ratp/Kconfig                                | 3 ++-
+ common/ratp/Makefile                               | 2 ++
+ common/state/Makefile                              | 2 ++
+ crypto/Kconfig                                     | 2 ++
+ crypto/Makefile                                    | 2 ++
+ defaultenv/Makefile                                | 2 ++
+ firmware/Kconfig                                   | 2 ++
+ fs/Kconfig                                         | 1 +
+ fs/Makefile                                        | 2 ++
+ fs/cramfs/Makefile                                 | 2 ++
+ fs/ext4/Kconfig                                    | 2 ++
+ fs/ext4/Makefile                                   | 2 ++
+ fs/fat/Kconfig                                     | 2 ++
+ fs/fat/Makefile                                    | 2 ++
+ fs/jffs2/Kconfig                                   | 2 ++
+ fs/jffs2/Makefile                                  | 2 ++
+ fs/pstore/Kconfig                                  | 2 ++
+ fs/pstore/Makefile                                 | 2 ++
+ fs/squashfs/Kconfig                                | 2 ++
+ fs/squashfs/Makefile                               | 2 ++
+ fs/ubifs/Kconfig                                   | 2 ++
+ fs/ubifs/Makefile                                  | 2 ++
+ images/Makefile                                    | 1 +
+ lib/Kconfig                                        | 2 ++
+ lib/Makefile                                       | 2 ++
+ lib/bootstrap/Kconfig                              | 2 ++
+ lib/bootstrap/Makefile                             | 2 ++
+ lib/fonts/Kconfig                                  | 2 ++
+ lib/fonts/Makefile                                 | 2 ++
+ lib/gui/Kconfig                                    | 2 ++
+ lib/gui/Makefile                                   | 2 ++
+ lib/kasan/Kconfig                                  | 2 ++
+ lib/kasan/Makefile                                 | 1 +
+ lib/logo/Kconfig                                   | 2 ++
+ lib/logo/Makefile                                  | 1 +
+ lib/lz4/Makefile                                   | 2 ++
+ lib/lzo/Kconfig                                    | 2 ++
+ lib/lzo/Makefile                                   | 2 ++
+ lib/math/Makefile                                  | 2 ++
+ lib/reed_solomon/Makefile                          | 2 ++
+ lib/xz/Makefile                                    | 2 ++
+ lib/zlib_inflate/Makefile                          | 2 ++
+ lib/zstd/Makefile                                  | 2 ++
+ net/Kconfig                                        | 2 ++
+ net/Makefile                                       | 2 ++
+ pbl/Kconfig                                        | 2 ++
+ pbl/Makefile                                       | 2 ++
+ scripts/Kconfig                                    | 2 ++
+ scripts/Makefile                                   | 2 ++
+ scripts/imx/Kconfig                                | 2 ++
+ scripts/imx/Makefile                               | 2 ++
+ scripts/mod/Makefile                               | 2 ++
+ scripts/tegra/Makefile                             | 2 ++
+ test/Kconfig                                       | 2 ++
+ test/Makefile                                      | 2 ++
+ 356 files changed, 694 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boards/advantech-mx6/flash-header-advantech-rom-7421.imxcfg b/arch/arm/boards/advantech-mx6/flash-header-advantech-rom-7421.imxcfg
-index aefdf68e8950..91a8babafd57 100644
---- a/arch/arm/boards/advantech-mx6/flash-header-advantech-rom-7421.imxcfg
-+++ b/arch/arm/boards/advantech-mx6/flash-header-advantech-rom-7421.imxcfg
+diff --git a/Kconfig b/Kconfig
+index 7c4cf36881b4..7e9b892129da 100644
+--- a/Kconfig
++++ b/Kconfig
 @@ -1,3 +1,5 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-1g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-1g.imxcfg
-index 5da5fd941942..8282d4140ce3 100644
---- a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-1g.imxcfg
-+++ b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-1g.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-2g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-2g.imxcfg
-index 3ccf7591c50a..9ef9b5789fcc 100644
---- a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-2g.imxcfg
-+++ b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-2g.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-1g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-1g.imxcfg
-index 7bdc0e736cff..5c5af546a74a 100644
---- a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-1g.imxcfg
-+++ b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-1g.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-2g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-2g.imxcfg
-index c6f5aa8484e1..58b9dc74681c 100644
---- a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-2g.imxcfg
-+++ b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-2g.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6qp-max.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6qp-max.imxcfg
-index 797b9717e7a5..4ab0a653bd5c 100644
---- a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6qp-max.imxcfg
-+++ b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6qp-max.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6/ram-base.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/ram-base.imxcfg
-index 5d675883fd49..bf2aec5d965a 100644
---- a/arch/arm/boards/boundarydevices-nitrogen6/ram-base.imxcfg
-+++ b/arch/arm/boards/boundarydevices-nitrogen6/ram-base.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- wm 32 MX6_IOM_DRAM_SDQS0		0x00000030
- wm 32 MX6_IOM_DRAM_SDQS1		0x00000030
- wm 32 MX6_IOM_DRAM_SDQS2		0x00000030
-diff --git a/arch/arm/boards/ccxmx51/flash-header.imxcfg b/arch/arm/boards/ccxmx51/flash-header.imxcfg
-index 3b1df11133ea..185a48fe18e5 100644
---- a/arch/arm/boards/ccxmx51/flash-header.imxcfg
-+++ b/arch/arm/boards/ccxmx51/flash-header.imxcfg
+ #
+ # For a description of the syntax of this configuration file,
+ # see Documentation/kbuild/kconfig-language.txt.
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index b532d3fe2fc2..fecbe392333b 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
 @@ -1,3 +1,5 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- soc imx51
- loadaddr 0x90000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg b/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg
-index 390b75b4f230..c049b2a10f52 100644
---- a/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg
-+++ b/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_1gib.imxcfg
+ config ARM
+ 	bool
+ 	select HAS_KALLSYMS
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index f4b0e8d6b68f..610ded8a125e 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
 @@ -1,3 +1,5 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- loadaddr 0x70000000
- soc imx53
- ivtofs 0x400
-diff --git a/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_512mb.imxcfg b/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_512mb.imxcfg
-index c32ab9c1628d..a6460e0333c9 100644
---- a/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_512mb.imxcfg
-+++ b/arch/arm/boards/ccxmx53/flash-header-imx53-ccxmx53_512mb.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x70000000
- soc imx53
- ivtofs 0x400
-diff --git a/arch/arm/boards/cm-fx6/flash-header-mx6-cm-fx6.imxcfg b/arch/arm/boards/cm-fx6/flash-header-mx6-cm-fx6.imxcfg
-index 4bb615ebb0f6..da4cd4bebf77 100644
---- a/arch/arm/boards/cm-fx6/flash-header-mx6-cm-fx6.imxcfg
-+++ b/arch/arm/boards/cm-fx6/flash-header-mx6-cm-fx6.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx6
- loadaddr 0x00907000
- max_load_size 0x11000
-diff --git a/arch/arm/boards/datamodul-edm-qmx6/flash-header.imxcfg b/arch/arm/boards/datamodul-edm-qmx6/flash-header.imxcfg
-index 14146bed2284..139e6df79206 100644
---- a/arch/arm/boards/datamodul-edm-qmx6/flash-header.imxcfg
-+++ b/arch/arm/boards/datamodul-edm-qmx6/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx6
- loadaddr 0x00907000
- ivtofs 0x400
-diff --git a/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6q-micron.imxcfg b/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6q-micron.imxcfg
-index fe8bd8cbd6ee..9f821650668e 100644
---- a/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6q-micron.imxcfg
-+++ b/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6q-micron.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x27800000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6q-nanya.imxcfg b/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6q-nanya.imxcfg
-index 6919bd8c3f8e..ccb3e6848766 100644
---- a/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6q-nanya.imxcfg
-+++ b/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6q-nanya.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x27800000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6s.imxcfg b/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6s.imxcfg
-index 709c11974b08..5b8bc2625741 100644
---- a/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6s.imxcfg
-+++ b/arch/arm/boards/dfi-fs700-m60/flash-header-fs700-m60-6s.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x17800000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/digi-ccimx6ulsom/flash-header-imx6ul-ccimx6ulsbcpro.imxcfg b/arch/arm/boards/digi-ccimx6ulsom/flash-header-imx6ul-ccimx6ulsbcpro.imxcfg
-index 7b2a198672dd..6f1c5bc8a78e 100644
---- a/arch/arm/boards/digi-ccimx6ulsom/flash-header-imx6ul-ccimx6ulsbcpro.imxcfg
-+++ b/arch/arm/boards/digi-ccimx6ulsom/flash-header-imx6ul-ccimx6ulsbcpro.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x80000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/efika-mx-smartbook/flash-header-imx51-genesi-efikasb.imxcfg b/arch/arm/boards/efika-mx-smartbook/flash-header-imx51-genesi-efikasb.imxcfg
-index 60436e7e37d0..de28650519cc 100644
---- a/arch/arm/boards/efika-mx-smartbook/flash-header-imx51-genesi-efikasb.imxcfg
-+++ b/arch/arm/boards/efika-mx-smartbook/flash-header-imx51-genesi-efikasb.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx51
- loadaddr 0x90000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/eltec-hipercam/flash-header-eltec-hipercam.imxcfg b/arch/arm/boards/eltec-hipercam/flash-header-eltec-hipercam.imxcfg
-index 5b422a786714..e53f1c107fe1 100644
---- a/arch/arm/boards/eltec-hipercam/flash-header-eltec-hipercam.imxcfg
-+++ b/arch/arm/boards/eltec-hipercam/flash-header-eltec-hipercam.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/embedsky-e9/flash-header-e9.imxcfg b/arch/arm/boards/embedsky-e9/flash-header-e9.imxcfg
-index d51dc17a1262..474ad3a15943 100644
---- a/arch/arm/boards/embedsky-e9/flash-header-e9.imxcfg
-+++ b/arch/arm/boards/embedsky-e9/flash-header-e9.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x27800000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/embest-marsboard/flash-header-embest-marsboard.imxcfg b/arch/arm/boards/embest-marsboard/flash-header-embest-marsboard.imxcfg
-index afc95d9bd936..5cf7201e88fd 100644
---- a/arch/arm/boards/embest-marsboard/flash-header-embest-marsboard.imxcfg
-+++ b/arch/arm/boards/embest-marsboard/flash-header-embest-marsboard.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/embest-riotboard/flash-header-embest-riotboard.imxcfg b/arch/arm/boards/embest-riotboard/flash-header-embest-riotboard.imxcfg
-index bc30e4c38759..a005b500dee3 100644
---- a/arch/arm/boards/embest-riotboard/flash-header-embest-riotboard.imxcfg
-+++ b/arch/arm/boards/embest-riotboard/flash-header-embest-riotboard.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x20000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/eukrea_cpuimx25/flash-header.imxcfg b/arch/arm/boards/eukrea_cpuimx25/flash-header.imxcfg
-index 129498ca8521..00417dddedb7 100644
---- a/arch/arm/boards/eukrea_cpuimx25/flash-header.imxcfg
-+++ b/arch/arm/boards/eukrea_cpuimx25/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx25
- loadaddr 0x80000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/eukrea_cpuimx35/flash-header.imxcfg b/arch/arm/boards/eukrea_cpuimx35/flash-header.imxcfg
-index c1353e2904ec..ad187db742dc 100644
---- a/arch/arm/boards/eukrea_cpuimx35/flash-header.imxcfg
-+++ b/arch/arm/boards/eukrea_cpuimx35/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx35
- loadaddr 0x80000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/eukrea_cpuimx51/flash-header.imxcfg b/arch/arm/boards/eukrea_cpuimx51/flash-header.imxcfg
-index 85c128c8fdd8..7f9a8773dab8 100644
---- a/arch/arm/boards/eukrea_cpuimx51/flash-header.imxcfg
-+++ b/arch/arm/boards/eukrea_cpuimx51/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx51
- ivtofs 0x400
- loadaddr 0x90000000
-diff --git a/arch/arm/boards/freescale-mx25-3ds/flash-header.imxcfg b/arch/arm/boards/freescale-mx25-3ds/flash-header.imxcfg
-index 8c1a25782967..9f83d102cbce 100644
---- a/arch/arm/boards/freescale-mx25-3ds/flash-header.imxcfg
-+++ b/arch/arm/boards/freescale-mx25-3ds/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx25
- loadaddr 0x80000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/freescale-mx35-3ds/flash-header.imxcfg b/arch/arm/boards/freescale-mx35-3ds/flash-header.imxcfg
-index ea1803b7de59..a6d16e8ab421 100644
---- a/arch/arm/boards/freescale-mx35-3ds/flash-header.imxcfg
-+++ b/arch/arm/boards/freescale-mx35-3ds/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx35
- loadaddr 0x80000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage.imxcfg b/arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage.imxcfg
-index b4e11fc22743..56e2a9607cd4 100644
---- a/arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage.imxcfg
-+++ b/arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x90000000
- soc imx51
- ivtofs 0x400
-diff --git a/arch/arm/boards/freescale-mx53-qsb/flash-header-imx53-loco.imxcfg b/arch/arm/boards/freescale-mx53-qsb/flash-header-imx53-loco.imxcfg
-index 2025f5da082c..da08c607392d 100644
---- a/arch/arm/boards/freescale-mx53-qsb/flash-header-imx53-loco.imxcfg
-+++ b/arch/arm/boards/freescale-mx53-qsb/flash-header-imx53-loco.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x70000000
- soc imx53
- ivtofs 0x400
-diff --git a/arch/arm/boards/freescale-mx53-smd/flash-header.imxcfg b/arch/arm/boards/freescale-mx53-smd/flash-header.imxcfg
-index fac4c29019a3..e885186c5418 100644
---- a/arch/arm/boards/freescale-mx53-smd/flash-header.imxcfg
-+++ b/arch/arm/boards/freescale-mx53-smd/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x70000000
- soc imx53
- ivtofs 0x400
-diff --git a/arch/arm/boards/freescale-mx53-vmx53/flash-header-imx53-vmx53.imxcfg b/arch/arm/boards/freescale-mx53-vmx53/flash-header-imx53-vmx53.imxcfg
-index e6f73df30e6d..20e028691a29 100644
---- a/arch/arm/boards/freescale-mx53-vmx53/flash-header-imx53-vmx53.imxcfg
-+++ b/arch/arm/boards/freescale-mx53-vmx53/flash-header-imx53-vmx53.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x70000000
- soc imx53
- ivtofs 0x400
-diff --git a/arch/arm/boards/freescale-mx6-sabrelite/flash-header-mx6-sabrelite.imxcfg b/arch/arm/boards/freescale-mx6-sabrelite/flash-header-mx6-sabrelite.imxcfg
-index d635c8b9487a..af2807134edc 100644
---- a/arch/arm/boards/freescale-mx6-sabrelite/flash-header-mx6-sabrelite.imxcfg
-+++ b/arch/arm/boards/freescale-mx6-sabrelite/flash-header-mx6-sabrelite.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6q-sabresd.imxcfg b/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6q-sabresd.imxcfg
-index d0a0b40189a0..39f8950e8e16 100644
---- a/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6q-sabresd.imxcfg
-+++ b/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6q-sabresd.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x10000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg b/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg
-index aa52776afb74..224ac3207f01 100644
---- a/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg
-+++ b/arch/arm/boards/freescale-mx6-sabresd/flash-header-mx6qp-sabresd.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x10000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/freescale-mx6sx-sabresdb/flash-header-mx6sx-sabresdb.imxcfg b/arch/arm/boards/freescale-mx6sx-sabresdb/flash-header-mx6sx-sabresdb.imxcfg
-index 5536f342b4fe..ebae00b8ea10 100644
---- a/arch/arm/boards/freescale-mx6sx-sabresdb/flash-header-mx6sx-sabresdb.imxcfg
-+++ b/arch/arm/boards/freescale-mx6sx-sabresdb/flash-header-mx6sx-sabresdb.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x80000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg b/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
-index 41e0e9ca61c2..9194b19fe4e8 100644
---- a/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
-+++ b/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
-@@ -1,5 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx7
- loadaddr 0x80000000
- ivtofs 0x400
+ KBUILD_DEFCONFIG := qemu_virt64_defconfig
  
--#include <mach/flash-header/imx7d-ddr-sabresd.imxcfg>
+ KBUILD_CPPFLAGS	+= -D__ARM__ -fno-strict-aliasing
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 50b07462bb78..6fe1b5991455 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ # keep sorted by CONFIG_* macro name.
+ obj-$(CONFIG_MACH_ADVANTECH_ROM_742X)		+= advantech-mx6/
+ obj-$(CONFIG_MACH_AFI_GF)			+= afi-gf/
+diff --git a/arch/arm/boards/a9m2410/Makefile b/arch/arm/boards/a9m2410/Makefile
+index 4bf737c1fc9b..6c53eafae249 100644
+--- a/arch/arm/boards/a9m2410/Makefile
++++ b/arch/arm/boards/a9m2410/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ lwl-y += lowlevel_init.o
+ obj-y += a9m2410.o
+diff --git a/arch/arm/boards/a9m2440/Makefile b/arch/arm/boards/a9m2440/Makefile
+index f21d389c140d..e32c0aca640e 100644
+--- a/arch/arm/boards/a9m2440/Makefile
++++ b/arch/arm/boards/a9m2440/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ lwl-y += lowlevel_init.o
+ obj-y += a9m2440.o
+diff --git a/arch/arm/boards/ac-sxb/Makefile b/arch/arm/boards/ac-sxb/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/ac-sxb/Makefile
++++ b/arch/arm/boards/ac-sxb/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/advantech-mx6/Makefile b/arch/arm/boards/advantech-mx6/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/advantech-mx6/Makefile
++++ b/arch/arm/boards/advantech-mx6/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/afi-gf/Makefile b/arch/arm/boards/afi-gf/Makefile
+index 399a4b8cc00d..8d1041650e9b 100644
+--- a/arch/arm/boards/afi-gf/Makefile
++++ b/arch/arm/boards/afi-gf/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+ bbenv-y += defaultenv-gf
+diff --git a/arch/arm/boards/altera-socdk/Makefile b/arch/arm/boards/altera-socdk/Makefile
+index 8c927fe291a6..ea898309d720 100644
+--- a/arch/arm/boards/altera-socdk/Makefile
++++ b/arch/arm/boards/altera-socdk/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += lowlevel.o board.o
+ pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/animeo_ip/Makefile b/arch/arm/boards/animeo_ip/Makefile
+index 61c714b45d2e..149c41024a12 100644
+--- a/arch/arm/boards/animeo_ip/Makefile
++++ b/arch/arm/boards/animeo_ip/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/archosg9/Makefile b/arch/arm/boards/archosg9/Makefile
+index a78956f4e4d0..790ff623f591 100644
+--- a/arch/arm/boards/archosg9/Makefile
++++ b/arch/arm/boards/archosg9/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ obj-$(CONFIG_ARM_BOARD_APPEND_ATAG) += archos_features.o
+ lwl-y += lowlevel.o mux.o
+diff --git a/arch/arm/boards/at91rm9200ek/Makefile b/arch/arm/boards/at91rm9200ek/Makefile
+index a07c06a6d909..da5c1038b25c 100644
+--- a/arch/arm/boards/at91rm9200ek/Makefile
++++ b/arch/arm/boards/at91rm9200ek/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/at91sam9260ek/Makefile b/arch/arm/boards/at91sam9260ek/Makefile
+index 9cc933a28793..7aa83a77366a 100644
+--- a/arch/arm/boards/at91sam9260ek/Makefile
++++ b/arch/arm/boards/at91sam9260ek/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/at91sam9261ek/Makefile b/arch/arm/boards/at91sam9261ek/Makefile
+index e7a9cde419fa..91e0037d6d4b 100644
+--- a/arch/arm/boards/at91sam9261ek/Makefile
++++ b/arch/arm/boards/at91sam9261ek/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel_init.o
+diff --git a/arch/arm/boards/at91sam9263ek/Makefile b/arch/arm/boards/at91sam9263ek/Makefile
+index d4d5e76395be..7f4c1bfac3e3 100644
+--- a/arch/arm/boards/at91sam9263ek/Makefile
++++ b/arch/arm/boards/at91sam9263ek/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ ifeq ($(CONFIG_OFDEVICE),)
+ obj-y += init.o
+ endif
+diff --git a/arch/arm/boards/at91sam9m10g45ek/Makefile b/arch/arm/boards/at91sam9m10g45ek/Makefile
+index da011f825b6d..291716cbf062 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/Makefile
++++ b/arch/arm/boards/at91sam9m10g45ek/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/at91sam9m10ihd/Makefile b/arch/arm/boards/at91sam9m10ihd/Makefile
+index 06193007ad38..8bf9a102fe36 100644
+--- a/arch/arm/boards/at91sam9m10ihd/Makefile
++++ b/arch/arm/boards/at91sam9m10ihd/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ obj-y += hw_version.o
+ 
+diff --git a/arch/arm/boards/at91sam9n12ek/Makefile b/arch/arm/boards/at91sam9n12ek/Makefile
+index 458b05591814..6ba8b4e38f99 100644
+--- a/arch/arm/boards/at91sam9n12ek/Makefile
++++ b/arch/arm/boards/at91sam9n12ek/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/at91sam9x5ek/Makefile b/arch/arm/boards/at91sam9x5ek/Makefile
+index 4939b7e17e16..c6c1ad967058 100644
+--- a/arch/arm/boards/at91sam9x5ek/Makefile
++++ b/arch/arm/boards/at91sam9x5ek/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ obj-y += hw_version.o
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-at91sam9x5ek
+diff --git a/arch/arm/boards/avnet-zedboard/Makefile b/arch/arm/boards/avnet-zedboard/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/avnet-zedboard/Makefile
++++ b/arch/arm/boards/avnet-zedboard/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/beagle/Makefile b/arch/arm/boards/beagle/Makefile
+index 3bee9a22ab4a..e273f4a3dace 100644
+--- a/arch/arm/boards/beagle/Makefile
++++ b/arch/arm/boards/beagle/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-beagle
+diff --git a/arch/arm/boards/beaglebone/Makefile b/arch/arm/boards/beaglebone/Makefile
+index 21a1a29d0b48..108e481be3b0 100644
+--- a/arch/arm/boards/beaglebone/Makefile
++++ b/arch/arm/boards/beaglebone/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+ bbenv-y += defaultenv-beaglebone
+diff --git a/arch/arm/boards/boundarydevices-nitrogen6/Makefile b/arch/arm/boards/boundarydevices-nitrogen6/Makefile
+index 0ec04ce8986e..b365c8eab067 100644
+--- a/arch/arm/boards/boundarydevices-nitrogen6/Makefile
++++ b/arch/arm/boards/boundarydevices-nitrogen6/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/canon-a1100/Makefile b/arch/arm/boards/canon-a1100/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/canon-a1100/Makefile
++++ b/arch/arm/boards/canon-a1100/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/ccxmx51/Makefile b/arch/arm/boards/ccxmx51/Makefile
+index 50cf929c5d49..9fbde144a5f7 100644
+--- a/arch/arm/boards/ccxmx51/Makefile
++++ b/arch/arm/boards/ccxmx51/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y					+= ccxmx51.o
+ lwl-y					+= lowlevel.o
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT)	+= defaultenv-ccxmx51
+diff --git a/arch/arm/boards/ccxmx53/Makefile b/arch/arm/boards/ccxmx53/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/ccxmx53/Makefile
++++ b/arch/arm/boards/ccxmx53/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/chumby_falconwing/Makefile b/arch/arm/boards/chumby_falconwing/Makefile
+index cf92c6a9eafe..6aaff6cdf72d 100644
+--- a/arch/arm/boards/chumby_falconwing/Makefile
++++ b/arch/arm/boards/chumby_falconwing/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y = falconwing.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/clep7212/Makefile b/arch/arm/boards/clep7212/Makefile
+index a5001df9b5d5..096120e56772 100644
+--- a/arch/arm/boards/clep7212/Makefile
++++ b/arch/arm/boards/clep7212/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += clep7212.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-clep7212
+diff --git a/arch/arm/boards/cm-fx6/Makefile b/arch/arm/boards/cm-fx6/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/cm-fx6/Makefile
++++ b/arch/arm/boards/cm-fx6/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/crystalfontz-cfa10036/Makefile b/arch/arm/boards/crystalfontz-cfa10036/Makefile
+index 5b764a698106..3cd1cecaa722 100644
+--- a/arch/arm/boards/crystalfontz-cfa10036/Makefile
++++ b/arch/arm/boards/crystalfontz-cfa10036/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += cfa10036.o hwdetect.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/datamodul-edm-qmx6/Makefile b/arch/arm/boards/datamodul-edm-qmx6/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/datamodul-edm-qmx6/Makefile
++++ b/arch/arm/boards/datamodul-edm-qmx6/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/dfi-fs700-m60/Makefile b/arch/arm/boards/dfi-fs700-m60/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/dfi-fs700-m60/Makefile
++++ b/arch/arm/boards/dfi-fs700-m60/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/digi-ccimx6ulsom/Makefile b/arch/arm/boards/digi-ccimx6ulsom/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/digi-ccimx6ulsom/Makefile
++++ b/arch/arm/boards/digi-ccimx6ulsom/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/dss11/Makefile b/arch/arm/boards/dss11/Makefile
+index e11fd5b6924e..d59545033d21 100644
+--- a/arch/arm/boards/dss11/Makefile
++++ b/arch/arm/boards/dss11/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/duckbill/Makefile b/arch/arm/boards/duckbill/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/duckbill/Makefile
++++ b/arch/arm/boards/duckbill/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/ebv-socrates/Makefile b/arch/arm/boards/ebv-socrates/Makefile
+index 8c927fe291a6..ea898309d720 100644
+--- a/arch/arm/boards/ebv-socrates/Makefile
++++ b/arch/arm/boards/ebv-socrates/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += lowlevel.o board.o
+ pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/edb93xx/Makefile b/arch/arm/boards/edb93xx/Makefile
+index eec5ed265801..be969bde201b 100644
+--- a/arch/arm/boards/edb93xx/Makefile
++++ b/arch/arm/boards/edb93xx/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ obj-y += edb93xx.o
+ lwl-y += flash_cfg.o pll_cfg.o sdram_cfg.o
+diff --git a/arch/arm/boards/efika-mx-smartbook/Makefile b/arch/arm/boards/efika-mx-smartbook/Makefile
+index 73d7b9696cf4..497da461efba 100644
+--- a/arch/arm/boards/efika-mx-smartbook/Makefile
++++ b/arch/arm/boards/efika-mx-smartbook/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-efikasb
+diff --git a/arch/arm/boards/element14-warp7/Makefile b/arch/arm/boards/element14-warp7/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/element14-warp7/Makefile
++++ b/arch/arm/boards/element14-warp7/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/eltec-hipercam/Makefile b/arch/arm/boards/eltec-hipercam/Makefile
+index 092c31d6b28d..5678718188b9 100644
+--- a/arch/arm/boards/eltec-hipercam/Makefile
++++ b/arch/arm/boards/eltec-hipercam/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/embedsky-e9/Makefile b/arch/arm/boards/embedsky-e9/Makefile
+index 86afde47fbf4..116bbfb4c2bf 100644
+--- a/arch/arm/boards/embedsky-e9/Makefile
++++ b/arch/arm/boards/embedsky-e9/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-e9
+diff --git a/arch/arm/boards/embest-marsboard/Makefile b/arch/arm/boards/embest-marsboard/Makefile
+index ef5219444c0e..eaa6ace2f43f 100644
+--- a/arch/arm/boards/embest-marsboard/Makefile
++++ b/arch/arm/boards/embest-marsboard/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-mars
+diff --git a/arch/arm/boards/embest-riotboard/Makefile b/arch/arm/boards/embest-riotboard/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/embest-riotboard/Makefile
++++ b/arch/arm/boards/embest-riotboard/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/eukrea_cpuimx27/Makefile b/arch/arm/boards/eukrea_cpuimx27/Makefile
+index 2c3148abd085..6b6de4e87dc1 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/Makefile
++++ b/arch/arm/boards/eukrea_cpuimx27/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ lwl-y += lowlevel_init.o
+ obj-y += eukrea_cpuimx27.o
+diff --git a/arch/arm/boards/eukrea_cpuimx51/Makefile b/arch/arm/boards/eukrea_cpuimx51/Makefile
+index e8c84fe17da0..77bd4cc87ac9 100644
+--- a/arch/arm/boards/eukrea_cpuimx51/Makefile
++++ b/arch/arm/boards/eukrea_cpuimx51/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += eukrea_cpuimx51.o
+ lwl-y += lowlevel.o
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-eukrea_cpuimx51
+diff --git a/arch/arm/boards/freescale-mx21-ads/Makefile b/arch/arm/boards/freescale-mx21-ads/Makefile
+index a43425b9ea8b..3e809a8c5927 100644
+--- a/arch/arm/boards/freescale-mx21-ads/Makefile
++++ b/arch/arm/boards/freescale-mx21-ads/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel_init.o
+ obj-y += imx21ads.o
+diff --git a/arch/arm/boards/freescale-mx23-evk/Makefile b/arch/arm/boards/freescale-mx23-evk/Makefile
+index 3e0026252cbd..7723ad93b091 100644
+--- a/arch/arm/boards/freescale-mx23-evk/Makefile
++++ b/arch/arm/boards/freescale-mx23-evk/Makefile
+@@ -1,3 +1,4 @@
+-#
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y := mx23-evk.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx27-ads/Makefile b/arch/arm/boards/freescale-mx27-ads/Makefile
+index 398db9b6b971..9fd43dd984cc 100644
+--- a/arch/arm/boards/freescale-mx27-ads/Makefile
++++ b/arch/arm/boards/freescale-mx27-ads/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ lwl-y += lowlevel_init.o
+ obj-y += imx27ads.o
+diff --git a/arch/arm/boards/freescale-mx28-evk/Makefile b/arch/arm/boards/freescale-mx28-evk/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/freescale-mx28-evk/Makefile
++++ b/arch/arm/boards/freescale-mx28-evk/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx35-3ds/Makefile b/arch/arm/boards/freescale-mx35-3ds/Makefile
+index c192854f0bec..e33babb4b3c7 100644
+--- a/arch/arm/boards/freescale-mx35-3ds/Makefile
++++ b/arch/arm/boards/freescale-mx35-3ds/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y					+= 3stack.o
+ lwl-y					+= lowlevel_init.o
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-freescale-mx35-3ds
+diff --git a/arch/arm/boards/freescale-mx51-babbage/Makefile b/arch/arm/boards/freescale-mx51-babbage/Makefile
+index b6e085818fdf..aed38f2eaa8f 100644
+--- a/arch/arm/boards/freescale-mx51-babbage/Makefile
++++ b/arch/arm/boards/freescale-mx51-babbage/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_MACH_FREESCALE_MX51_PDK_POWER) += power.o
+ obj-$(CONFIG_MACH_FREESCALE_MX51_PDK) += board.o
+ lwl-$(CONFIG_MACH_FREESCALE_MX51_PDK) += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx53-qsb/Makefile b/arch/arm/boards/freescale-mx53-qsb/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/freescale-mx53-qsb/Makefile
++++ b/arch/arm/boards/freescale-mx53-qsb/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx53-smd/Makefile b/arch/arm/boards/freescale-mx53-smd/Makefile
+index 98ed2753962e..9e7882a5db6c 100644
+--- a/arch/arm/boards/freescale-mx53-smd/Makefile
++++ b/arch/arm/boards/freescale-mx53-smd/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-freescale-mx53-smd
+diff --git a/arch/arm/boards/freescale-mx53-vmx53/Makefile b/arch/arm/boards/freescale-mx53-vmx53/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/freescale-mx53-vmx53/Makefile
++++ b/arch/arm/boards/freescale-mx53-vmx53/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/Makefile b/arch/arm/boards/freescale-mx6-sabrelite/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/Makefile
++++ b/arch/arm/boards/freescale-mx6-sabrelite/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx6-sabresd/Makefile b/arch/arm/boards/freescale-mx6-sabresd/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/freescale-mx6-sabresd/Makefile
++++ b/arch/arm/boards/freescale-mx6-sabresd/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx6sx-sabresdb/Makefile b/arch/arm/boards/freescale-mx6sx-sabresdb/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/freescale-mx6sx-sabresdb/Makefile
++++ b/arch/arm/boards/freescale-mx6sx-sabresdb/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx7-sabresd/Makefile b/arch/arm/boards/freescale-mx7-sabresd/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/freescale-mx7-sabresd/Makefile
++++ b/arch/arm/boards/freescale-mx7-sabresd/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-vf610-twr/Makefile b/arch/arm/boards/freescale-vf610-twr/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/freescale-vf610-twr/Makefile
++++ b/arch/arm/boards/freescale-vf610-twr/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/friendlyarm-mini2440/Kconfig b/arch/arm/boards/friendlyarm-mini2440/Kconfig
+index feb905e96e33..1037f7c77ddd 100644
+--- a/arch/arm/boards/friendlyarm-mini2440/Kconfig
++++ b/arch/arm/boards/friendlyarm-mini2440/Kconfig
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ if MACH_MINI2440
+ 
+diff --git a/arch/arm/boards/friendlyarm-mini2440/Makefile b/arch/arm/boards/friendlyarm-mini2440/Makefile
+index da3520cc816c..618828126cf7 100644
+--- a/arch/arm/boards/friendlyarm-mini2440/Makefile
++++ b/arch/arm/boards/friendlyarm-mini2440/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ 
+ obj-y += mini2440.o
+ lwl-y += lowlevel_init.o
+diff --git a/arch/arm/boards/friendlyarm-mini6410/Makefile b/arch/arm/boards/friendlyarm-mini6410/Makefile
+index c04150e97ff3..2e6ea7aa7e5c 100644
+--- a/arch/arm/boards/friendlyarm-mini6410/Makefile
++++ b/arch/arm/boards/friendlyarm-mini6410/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += mini6410.o
+ lwl-y += lowlevel.o
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-friendlyarm-mini6410
+diff --git a/arch/arm/boards/friendlyarm-tiny210/Makefile b/arch/arm/boards/friendlyarm-tiny210/Makefile
+index 7deb178739c5..d026a7ed4775 100644
+--- a/arch/arm/boards/friendlyarm-tiny210/Makefile
++++ b/arch/arm/boards/friendlyarm-tiny210/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += tiny210.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/friendlyarm-tiny6410/Kconfig b/arch/arm/boards/friendlyarm-tiny6410/Kconfig
+index 374820f8b351..1283b8e7d922 100644
+--- a/arch/arm/boards/friendlyarm-tiny6410/Kconfig
++++ b/arch/arm/boards/friendlyarm-tiny6410/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if MACH_TINY6410
+ 
+ choice
+diff --git a/arch/arm/boards/friendlyarm-tiny6410/Makefile b/arch/arm/boards/friendlyarm-tiny6410/Makefile
+index ba3f3360f8f6..f0b868d67fed 100644
+--- a/arch/arm/boards/friendlyarm-tiny6410/Makefile
++++ b/arch/arm/boards/friendlyarm-tiny6410/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += tiny6410.o
+ lwl-y += lowlevel.o
+ lwl-$(CONFIG_MACH_TINY6410_FA) += development-board.o
+diff --git a/arch/arm/boards/gateworks-ventana/Makefile b/arch/arm/boards/gateworks-ventana/Makefile
+index 7d195eebd642..4e1cefbc4c94 100644
+--- a/arch/arm/boards/gateworks-ventana/Makefile
++++ b/arch/arm/boards/gateworks-ventana/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o gsc.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/gk802/Makefile b/arch/arm/boards/gk802/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/gk802/Makefile
++++ b/arch/arm/boards/gk802/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/globalscale-guruplug/Makefile b/arch/arm/boards/globalscale-guruplug/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/globalscale-guruplug/Makefile
++++ b/arch/arm/boards/globalscale-guruplug/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/globalscale-mirabox/Makefile b/arch/arm/boards/globalscale-mirabox/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/globalscale-mirabox/Makefile
++++ b/arch/arm/boards/globalscale-mirabox/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/grinn-liteboard/Makefile b/arch/arm/boards/grinn-liteboard/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/grinn-liteboard/Makefile
++++ b/arch/arm/boards/grinn-liteboard/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/guf-neso/Makefile b/arch/arm/boards/guf-neso/Makefile
+index af90c36c7e62..8d304e4afb41 100644
+--- a/arch/arm/boards/guf-neso/Makefile
++++ b/arch/arm/boards/guf-neso/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+ obj-y += pll_init.o
+diff --git a/arch/arm/boards/guf-santaro/Makefile b/arch/arm/boards/guf-santaro/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/guf-santaro/Makefile
++++ b/arch/arm/boards/guf-santaro/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/guf-vincell/Makefile b/arch/arm/boards/guf-vincell/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/guf-vincell/Makefile
++++ b/arch/arm/boards/guf-vincell/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/haba-knx/Makefile b/arch/arm/boards/haba-knx/Makefile
+index b1c469dcf9a6..f2cf1123ed7a 100644
+--- a/arch/arm/boards/haba-knx/Makefile
++++ b/arch/arm/boards/haba-knx/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/imx233-olinuxino/Makefile b/arch/arm/boards/imx233-olinuxino/Makefile
+index 987b34394aa4..1288c8c1ded3 100644
+--- a/arch/arm/boards/imx233-olinuxino/Makefile
++++ b/arch/arm/boards/imx233-olinuxino/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y = imx23-olinuxino.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-imx233-olinuxino
+diff --git a/arch/arm/boards/kamstrup-mx7-concentrator/Makefile b/arch/arm/boards/kamstrup-mx7-concentrator/Makefile
+index 7ab9f5274768..458f5209008d 100644
+--- a/arch/arm/boards/kamstrup-mx7-concentrator/Makefile
++++ b/arch/arm/boards/kamstrup-mx7-concentrator/Makefile
+@@ -1 +1,3 @@
+-lwl-y += lowlevel.o
 \ No newline at end of file
-+#include <mach/flash-header/imx7d-ddr-sabresd.imxcfg>
-diff --git a/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg b/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
-index bcef9921fab0..06d5a40a69cd 100644
---- a/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
-+++ b/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
++# SPDX-License-Identifier: GPL-2.0-only
++
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/karo-tx28/Makefile b/arch/arm/boards/karo-tx28/Makefile
+index c7d7398cf3d4..b13ffc8f3c6e 100644
+--- a/arch/arm/boards/karo-tx28/Makefile
++++ b/arch/arm/boards/karo-tx28/Makefile
 @@ -1,3 +1,5 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- soc vf610
- loadaddr 0x80000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg b/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
-index 98c7ae60953a..8f155a88dd2a 100644
---- a/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
-+++ b/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
+ obj-y += tx28.o
+ obj-$(CONFIG_MACH_TX28STK5) += tx28-stk5.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/karo-tx53/Makefile b/arch/arm/boards/karo-tx53/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/karo-tx53/Makefile
++++ b/arch/arm/boards/karo-tx53/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/karo-tx6x/Makefile b/arch/arm/boards/karo-tx6x/Makefile
+index 51b7c2d449d8..bfd7eed20a0a 100644
+--- a/arch/arm/boards/karo-tx6x/Makefile
++++ b/arch/arm/boards/karo-tx6x/Makefile
 @@ -1,3 +1,5 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/gateworks-ventana/quad_128x64.imxcfg b/arch/arm/boards/gateworks-ventana/quad_128x64.imxcfg
-index daf01a8ad1da..66a78766495d 100644
---- a/arch/arm/boards/gateworks-ventana/quad_128x64.imxcfg
-+++ b/arch/arm/boards/gateworks-ventana/quad_128x64.imxcfg
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ obj-y += pmic-ltc3676.o pmic-rn5t567.o pmic-rn5t618.o
+diff --git a/arch/arm/boards/kindle-mx50/Makefile b/arch/arm/boards/kindle-mx50/Makefile
+index 2cc614a8785b..14cf83793d89 100644
+--- a/arch/arm/boards/kindle-mx50/Makefile
++++ b/arch/arm/boards/kindle-mx50/Makefile
 @@ -1,3 +1,5 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- wm 32 MX6_MMDC_P0_MPWLDECTRL0	0x00190017
- wm 32 MX6_MMDC_P0_MPWLDECTRL1	0x00140026
- wm 32 MX6_MMDC_P1_MPWLDECTRL0	0x0021001C
-diff --git a/arch/arm/boards/gateworks-ventana/ram-base.imxcfg b/arch/arm/boards/gateworks-ventana/ram-base.imxcfg
-index 07dc34c0bbd1..c482f60b0930 100644
---- a/arch/arm/boards/gateworks-ventana/ram-base.imxcfg
-+++ b/arch/arm/boards/gateworks-ventana/ram-base.imxcfg
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-kindle-mx50
+diff --git a/arch/arm/boards/kindle3/Makefile b/arch/arm/boards/kindle3/Makefile
+index 86c746240e28..75a0ff560f26 100644
+--- a/arch/arm/boards/kindle3/Makefile
++++ b/arch/arm/boards/kindle3/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += kindle3.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/kontron-samx6i/Makefile b/arch/arm/boards/kontron-samx6i/Makefile
+index 816962241a5f..d753ff5f1813 100644
+--- a/arch/arm/boards/kontron-samx6i/Makefile
++++ b/arch/arm/boards/kontron-samx6i/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o mem.o
+ lwl-y += lowlevel.o mem.o
+diff --git a/arch/arm/boards/lenovo-ix4-300d/Makefile b/arch/arm/boards/lenovo-ix4-300d/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/lenovo-ix4-300d/Makefile
++++ b/arch/arm/boards/lenovo-ix4-300d/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/ls1046ardb/Makefile b/arch/arm/boards/ls1046ardb/Makefile
+index 03ac4ecca3dd..829be5327aed 100644
+--- a/arch/arm/boards/ls1046ardb/Makefile
++++ b/arch/arm/boards/ls1046ardb/Makefile
 @@ -1,3 +1,5 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- wm 32 MX6_IOM_DRAM_SDQS0	0x00000030
- wm 32 MX6_IOM_DRAM_SDQS1	0x00000030
- wm 32 MX6_IOM_DRAM_SDQS2	0x00000030
-diff --git a/arch/arm/boards/gk802/flash-header.imxcfg b/arch/arm/boards/gk802/flash-header.imxcfg
-index acc7a367856a..aa5aef554f1f 100644
---- a/arch/arm/boards/gk802/flash-header.imxcfg
-+++ b/arch/arm/boards/gk802/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x10000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/grinn-liteboard/flash-header-liteboard-256mb.imxcfg b/arch/arm/boards/grinn-liteboard/flash-header-liteboard-256mb.imxcfg
-index 1b980c7846dd..c2d4b2875bfe 100644
---- a/arch/arm/boards/grinn-liteboard/flash-header-liteboard-256mb.imxcfg
-+++ b/arch/arm/boards/grinn-liteboard/flash-header-liteboard-256mb.imxcfg
-@@ -1,3 +1,4 @@
-+# SPDX-License-Identifier: GPL-2.0-only
- 
- #define SETUP_MDASP_MDCTL		\
- 	wm 32 0x021B0040 0x00000047;	\
-diff --git a/arch/arm/boards/grinn-liteboard/flash-header-liteboard-512mb.imxcfg b/arch/arm/boards/grinn-liteboard/flash-header-liteboard-512mb.imxcfg
-index c93a2cc0faa7..45bc841ab598 100644
---- a/arch/arm/boards/grinn-liteboard/flash-header-liteboard-512mb.imxcfg
-+++ b/arch/arm/boards/grinn-liteboard/flash-header-liteboard-512mb.imxcfg
-@@ -1,3 +1,4 @@
-+# SPDX-License-Identifier: GPL-2.0-only
- 
- #define SETUP_MDASP_MDCTL		\
- 	wm 32 0x021B0040 0x0000004F;	\
-diff --git a/arch/arm/boards/grinn-liteboard/flash-header-liteboard.h b/arch/arm/boards/grinn-liteboard/flash-header-liteboard.h
-index 82f5c627a3ab..776a69f8b60f 100644
---- a/arch/arm/boards/grinn-liteboard/flash-header-liteboard.h
-+++ b/arch/arm/boards/grinn-liteboard/flash-header-liteboard.h
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
- 
- loadaddr 0x80000000
- soc imx6
-diff --git a/arch/arm/boards/guf-santaro/flash-header.imxcfg b/arch/arm/boards/guf-santaro/flash-header.imxcfg
-index 4505d81ea1f1..eff9f66f9404 100644
---- a/arch/arm/boards/guf-santaro/flash-header.imxcfg
-+++ b/arch/arm/boards/guf-santaro/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x10000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/guf-vincell/flash-header.imxcfg b/arch/arm/boards/guf-vincell/flash-header.imxcfg
-index c17dcbab6e64..f5f2eceb5da5 100644
---- a/arch/arm/boards/guf-vincell/flash-header.imxcfg
-+++ b/arch/arm/boards/guf-vincell/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x71000000
- soc imx53
- ivtofs 0x400
-diff --git a/arch/arm/boards/kamstrup-mx7-concentrator/flash-header-tqma7d.imxcfg b/arch/arm/boards/kamstrup-mx7-concentrator/flash-header-tqma7d.imxcfg
-index 4b363241100d..564fa62b91a6 100644
---- a/arch/arm/boards/kamstrup-mx7-concentrator/flash-header-tqma7d.imxcfg
-+++ b/arch/arm/boards/kamstrup-mx7-concentrator/flash-header-tqma7d.imxcfg
-@@ -1,3 +1,5 @@
+ lwl-y += lowlevel.o
+ obj-y += board.o
+ lwl-y += start.o
+diff --git a/arch/arm/boards/lubbock/Makefile b/arch/arm/boards/lubbock/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/lubbock/Makefile
++++ b/arch/arm/boards/lubbock/Makefile
+@@ -1,2 +1,4 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- soc imx7
- loadaddr 0xbfbff000
- ivtofs 0x400
-diff --git a/arch/arm/boards/karo-tx25/flash-header-tx25.imxcfg b/arch/arm/boards/karo-tx25/flash-header-tx25.imxcfg
-index 6f8eaf0fc566..0786017a852e 100644
---- a/arch/arm/boards/karo-tx25/flash-header-tx25.imxcfg
-+++ b/arch/arm/boards/karo-tx25/flash-header-tx25.imxcfg
-@@ -1,3 +1,4 @@
-+# SPDX-License-Identifier: GPL-2.0-only
- #
- # currently unused in barebox, but useful to generate
- # a imx-image to use with imx-usb-loader
-diff --git a/arch/arm/boards/karo-tx28/tx28.h b/arch/arm/boards/karo-tx28/tx28.h
-index 5fb1e13412b6..2e14211b7a95 100644
---- a/arch/arm/boards/karo-tx28/tx28.h
-+++ b/arch/arm/boards/karo-tx28/tx28.h
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
- 
- void base_board_init(void);
- 
-diff --git a/arch/arm/boards/karo-tx53/flash-header-tx53-rev1011.imxcfg b/arch/arm/boards/karo-tx53/flash-header-tx53-rev1011.imxcfg
-index 4bcb3b8b5eba..158233cc86ae 100644
---- a/arch/arm/boards/karo-tx53/flash-header-tx53-rev1011.imxcfg
-+++ b/arch/arm/boards/karo-tx53/flash-header-tx53-rev1011.imxcfg
-@@ -1,3 +1,5 @@
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/lxa-mc1/Makefile b/arch/arm/boards/lxa-mc1/Makefile
+index 092c31d6b28d..5678718188b9 100644
+--- a/arch/arm/boards/lxa-mc1/Makefile
++++ b/arch/arm/boards/lxa-mc1/Makefile
+@@ -1,2 +1,4 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- loadaddr 0x71000000
- soc imx53
- ivtofs 0x400
-diff --git a/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30-samsung.imxcfg b/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30-samsung.imxcfg
-index a4e3fab9a377..d7da89beef68 100644
---- a/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30-samsung.imxcfg
-+++ b/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30-samsung.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x71000000
- soc imx53
- ivtofs 0x400
-diff --git a/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30.imxcfg b/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30.imxcfg
-index 5b6b79f7058d..d516da37702f 100644
---- a/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30.imxcfg
-+++ b/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30.imxcfg
-@@ -1,3 +1,5 @@
+ lwl-y += lowlevel.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/mainstone/Makefile b/arch/arm/boards/mainstone/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/mainstone/Makefile
++++ b/arch/arm/boards/mainstone/Makefile
+@@ -1,2 +1,4 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- loadaddr 0x71000000
- soc imx53
- ivtofs 0x400
-diff --git a/arch/arm/boards/karo-tx6x/1600mhz_4x128mx16.imxcfg b/arch/arm/boards/karo-tx6x/1600mhz_4x128mx16.imxcfg
-index 7e244edfd33d..f11387b0232b 100644
---- a/arch/arm/boards/karo-tx6x/1600mhz_4x128mx16.imxcfg
-+++ b/arch/arm/boards/karo-tx6x/1600mhz_4x128mx16.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- /* MDMISC	mirroring	interleaved (row/bank/col) */
- wm 32 MX6_MMDC_P0_MDMISC		0x00000742
- check 32 until_all_bits_set MX6_MMDC_P0_MDMISC 0x00000002
-diff --git a/arch/arm/boards/karo-tx6x/flash-header-tx6dl-1g.imxcfg b/arch/arm/boards/karo-tx6x/flash-header-tx6dl-1g.imxcfg
-index 7d77f54f00e6..d860a5e2af3d 100644
---- a/arch/arm/boards/karo-tx6x/flash-header-tx6dl-1g.imxcfg
-+++ b/arch/arm/boards/karo-tx6x/flash-header-tx6dl-1g.imxcfg
-@@ -1,3 +1,5 @@
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/marvell-armada-xp-db/Makefile b/arch/arm/boards/marvell-armada-xp-db/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/marvell-armada-xp-db/Makefile
++++ b/arch/arm/boards/marvell-armada-xp-db/Makefile
+@@ -1,2 +1,4 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/karo-tx6x/flash-header-tx6dl-512m.imxcfg b/arch/arm/boards/karo-tx6x/flash-header-tx6dl-512m.imxcfg
-index eb63fa34d315..c327b5f0c149 100644
---- a/arch/arm/boards/karo-tx6x/flash-header-tx6dl-512m.imxcfg
-+++ b/arch/arm/boards/karo-tx6x/flash-header-tx6dl-512m.imxcfg
-@@ -1,3 +1,5 @@
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/marvell-armada-xp-gp/Makefile b/arch/arm/boards/marvell-armada-xp-gp/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/marvell-armada-xp-gp/Makefile
++++ b/arch/arm/boards/marvell-armada-xp-gp/Makefile
+@@ -1 +1,3 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg b/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg
-index e5a1ed233154..9c8196d4da27 100644
---- a/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg
-+++ b/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/karo-tx6x/flash-header-tx6qp-2g.imxcfg b/arch/arm/boards/karo-tx6x/flash-header-tx6qp-2g.imxcfg
-index 889416b849b3..c242193a620c 100644
---- a/arch/arm/boards/karo-tx6x/flash-header-tx6qp-2g.imxcfg
-+++ b/arch/arm/boards/karo-tx6x/flash-header-tx6qp-2g.imxcfg
-@@ -1,3 +1,5 @@
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/microchip-ksz9477-evb/Makefile b/arch/arm/boards/microchip-ksz9477-evb/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/microchip-ksz9477-evb/Makefile
++++ b/arch/arm/boards/microchip-ksz9477-evb/Makefile
+@@ -1 +1,3 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/karo-tx6x/pmic.h b/arch/arm/boards/karo-tx6x/pmic.h
-index 2427a52e50c9..5e5616e8c769 100644
---- a/arch/arm/boards/karo-tx6x/pmic.h
-+++ b/arch/arm/boards/karo-tx6x/pmic.h
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
- 
- #include <i2c/i2c.h>
- 
-diff --git a/arch/arm/boards/karo-tx6x/ram-base.imxcfg b/arch/arm/boards/karo-tx6x/ram-base.imxcfg
-index e912fb0f2b52..9f15806b5531 100644
---- a/arch/arm/boards/karo-tx6x/ram-base.imxcfg
-+++ b/arch/arm/boards/karo-tx6x/ram-base.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- wm 32 MX6_IOM_DRAM_DQM0			0x00020030
- wm 32 MX6_IOM_DRAM_DQM1			0x00020030
- wm 32 MX6_IOM_DRAM_DQM2			0x00020030
-diff --git a/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr1.imxcfg b/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr1.imxcfg
-index b8a4e824ef5a..5f1f8ef6b00e 100644
---- a/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr1.imxcfg
-+++ b/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr1.imxcfg
-@@ -1,3 +1,5 @@
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/mioa701/Makefile b/arch/arm/boards/mioa701/Makefile
+index 3072706237d6..bf17869fb2ac 100644
+--- a/arch/arm/boards/mioa701/Makefile
++++ b/arch/arm/boards/mioa701/Makefile
+@@ -1,2 +1,4 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- # DCD i.MX50 SoC setup using 256MiB LPDDR1
- # Copyright (C) 2017 Alexander Kurz <akurz@blala.de>
- #
-diff --git a/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr2.imxcfg b/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr2.imxcfg
-index 527d91dc78c0..520e61be5823 100644
---- a/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr2.imxcfg
-+++ b/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr2.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
- # DCD i.MX50 SoC setup using 256MiB LPDDR2
- # Copyright (C) 2017 Alexander Kurz <akurz@blala.de>
- #
-diff --git a/arch/arm/boards/kindle3/flash-header.imxcfg b/arch/arm/boards/kindle3/flash-header.imxcfg
-index 74b65d6a5c1f..5ef09200ed69 100644
---- a/arch/arm/boards/kindle3/flash-header.imxcfg
-+++ b/arch/arm/boards/kindle3/flash-header.imxcfg
-@@ -1,3 +1,5 @@
+ obj-y += board.o gpio0_poweroff.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/mnt-reform/Makefile b/arch/arm/boards/mnt-reform/Makefile
+index a3da88fbe68f..35d8640087b1 100644
+--- a/arch/arm/boards/mnt-reform/Makefile
++++ b/arch/arm/boards/mnt-reform/Makefile
+@@ -1,2 +1,4 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
- soc imx35
- loadaddr 0x87eff400
- ivtofs 0x400
-diff --git a/arch/arm/boards/kontron-samx6i/flash-header-samx6i-duallite.imxcfg b/arch/arm/boards/kontron-samx6i/flash-header-samx6i-duallite.imxcfg
-index db1698d272f7..1ff4caccfaae 100644
---- a/arch/arm/boards/kontron-samx6i/flash-header-samx6i-duallite.imxcfg
-+++ b/arch/arm/boards/kontron-samx6i/flash-header-samx6i-duallite.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/kontron-samx6i/flash-header-samx6i-quad.imxcfg b/arch/arm/boards/kontron-samx6i/flash-header-samx6i-quad.imxcfg
-index 99608d0fe8fb..a8cc0d512b6b 100644
---- a/arch/arm/boards/kontron-samx6i/flash-header-samx6i-quad.imxcfg
-+++ b/arch/arm/boards/kontron-samx6i/flash-header-samx6i-quad.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/kontron-samx6i/mem.h b/arch/arm/boards/kontron-samx6i/mem.h
-index 57e3c0ceccab..25faf3849071 100644
---- a/arch/arm/boards/kontron-samx6i/mem.h
-+++ b/arch/arm/boards/kontron-samx6i/mem.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- #ifndef __BOARD_KONTRON_SAMX6I_MEM_H
- #define __BOARD_KONTRON_SAMX6I_MEM_H
- 
-diff --git a/arch/arm/boards/ls1046ardb/ls1046ardb_pbi.cfg b/arch/arm/boards/ls1046ardb/ls1046ardb_pbi.cfg
-index 5478217524d0..0ed997031e88 100644
---- a/arch/arm/boards/ls1046ardb/ls1046ardb_pbi.cfg
-+++ b/arch/arm/boards/ls1046ardb/ls1046ardb_pbi.cfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #Configure Scratch register
- 09570600 00000000
- 09570604 10000000
-diff --git a/arch/arm/boards/ls1046ardb/ls1046ardb_qspi_pbi.cfg b/arch/arm/boards/ls1046ardb/ls1046ardb_qspi_pbi.cfg
-index 735d46c9f9b7..b9e455da9e1e 100644
---- a/arch/arm/boards/ls1046ardb/ls1046ardb_qspi_pbi.cfg
-+++ b/arch/arm/boards/ls1046ardb/ls1046ardb_qspi_pbi.cfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #QSPI clk
- 0957015c 40100000
- #Configure Scratch register
-diff --git a/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_emmc.cfg b/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_emmc.cfg
-index ccedf87e8495..debb6479a86c 100644
---- a/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_emmc.cfg
-+++ b/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_emmc.cfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #PBL preamble and RCW header
- aa55aa55 01ee0100
- # RCW
-diff --git a/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_qspi.cfg b/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_qspi.cfg
-index 7b9be0ad3f8e..2167a71b7f1c 100644
---- a/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_qspi.cfg
-+++ b/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_qspi.cfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #PBL preamble and RCW header
- aa55aa55 01ee0100
- # RCW
-diff --git a/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_sd.cfg b/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_sd.cfg
-index d3b152282f2e..ec18028c4b80 100644
---- a/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_sd.cfg
-+++ b/arch/arm/boards/ls1046ardb/ls1046ardb_rcw_sd.cfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #PBL preamble and RCW header
- aa55aa55 01ee0100
- # RCW
-diff --git a/arch/arm/boards/mnt-reform/flash-header-mnt-reform.imxcfg b/arch/arm/boards/mnt-reform/flash-header-mnt-reform.imxcfg
-index 80ce03e22c3a..180a44fda361 100644
---- a/arch/arm/boards/mnt-reform/flash-header-mnt-reform.imxcfg
-+++ b/arch/arm/boards/mnt-reform/flash-header-mnt-reform.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx8mq
- 
- loadaddr 0x007E1000
-diff --git a/arch/arm/boards/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg b/arch/arm/boards/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg
-index b013173113e4..10606ce29c96 100644
---- a/arch/arm/boards/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg
-+++ b/arch/arm/boards/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx8mm
- 
- loadaddr 0x007e1000
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg b/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
-index a768874d4076..27a2138e4322 100644
---- a/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
-+++ b/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx8mn
- 
- loadaddr 0x912000
-diff --git a/arch/arm/boards/nxp-imx8mp-evk/flash-header-imx8mp-evk.imxcfg b/arch/arm/boards/nxp-imx8mp-evk/flash-header-imx8mp-evk.imxcfg
-index 7739fe5be6e8..663bd102e9a2 100644
---- a/arch/arm/boards/nxp-imx8mp-evk/flash-header-imx8mp-evk.imxcfg
-+++ b/arch/arm/boards/nxp-imx8mp-evk/flash-header-imx8mp-evk.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx8mp
- 
- loadaddr 0x920000
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg b/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
-index 80ce03e22c3a..180a44fda361 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
-+++ b/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx8mq
- 
- loadaddr 0x007E1000
-diff --git a/arch/arm/boards/panda/mux.h b/arch/arm/boards/panda/mux.h
-index 11f2848a2734..540d4e5d3422 100644
---- a/arch/arm/boards/panda/mux.h
-+++ b/arch/arm/boards/panda/mux.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- #ifndef __BOARD_MUX_H
- #define __BOARD_MUX_H
- 
-diff --git a/arch/arm/boards/phytec-phycard-omap4/mux.h b/arch/arm/boards/phytec-phycard-omap4/mux.h
-index 8b1a3d37e9c2..46a2434ad0ee 100644
---- a/arch/arm/boards/phytec-phycard-omap4/mux.h
-+++ b/arch/arm/boards/phytec-phycard-omap4/mux.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- #ifndef __BOARD_MUX_H
- #define __BOARD_MUX_H
- 
-diff --git a/arch/arm/boards/phytec-phycore-imx35/flash-header.imxcfg b/arch/arm/boards/phytec-phycore-imx35/flash-header.imxcfg
-index d3049369d9ed..3d690e9732ae 100644
---- a/arch/arm/boards/phytec-phycore-imx35/flash-header.imxcfg
-+++ b/arch/arm/boards/phytec-phycore-imx35/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx35
- ivtofs 0x400
- loadaddr 0x80000000
-diff --git a/arch/arm/boards/phytec-phycore-omap4460/mux.h b/arch/arm/boards/phytec-phycore-omap4460/mux.h
-index 64d4478b2c9f..c84ecd32c8a3 100644
---- a/arch/arm/boards/phytec-phycore-omap4460/mux.h
-+++ b/arch/arm/boards/phytec-phycore-omap4460/mux.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- #ifndef __BOARD_MUX_H
- #define __BOARD_MUX_H
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
-index bb4fbeb20538..d124518930c5 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x54597955;	\
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
-index 990c34b3af71..4c3e5b06c9d9 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x3a3f7975;	\
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
-index 7c56c24ed757..bb858e874d38 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x54597955;	\
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.h b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.h
-index 1876a5aa9df0..3d1952fb99fc 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.h
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.h b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.h
-index c4122d245d7d..c7ee1aaeeba3 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.h
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.h
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
- 
- #define SETUP_MDCFG0			\
- 	wm 32 0x021B000C 0x676B52F3
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063.h b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063.h
-index 8e0ab6f58510..984795469302 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063.h
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063.h
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
- 
- loadaddr 0x80000000
- soc imx6
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ul-512mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ul-512mb.imxcfg
-index f629a8e7b2f7..225f8a32aa70 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ul-512mb.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ul-512mb.imxcfg
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
- 
- #include "flash-header-phytec-pcl063-512mb.h"
- #include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg
-index e6871d8534fe..44f103603288 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg
-@@ -1,3 +1,4 @@
-+# SPDX-License-Identifier: GPL-2.0-only
- 
- #define SETUP_MDCFG0			\
- 	wm 32 0x021B000C 0x676B52F3
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
-index d2d71838430e..e976979118a8 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
-@@ -1,3 +1,4 @@
-+# SPDX-License-Identifier: GPL-2.0-only
- 
- #include "flash-header-phytec-pcl063-512mb.h"
- #include <mach/habv4-imx6ull-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg
-index 0042909c9592..b2ea8ee0e8d8 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x555A7955
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg
-index 8a090369929b..f6895a0587c9 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x8c929b85
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058.h b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058.h
-index d32ee836a8e3..d213403467bc 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058.h
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
-index c949f985030d..ec5beb937c17 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x8c929b85
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
-index 3ac7e4e7ffa9..a5b3cdc63322 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x555A7955
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
-index bb8cdc9e4d5e..26755f946a4a 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x3c409b85
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-512mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-512mb.imxcfg
-index 5b92e5809c56..cd1d2d185e0d 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-512mb.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-512mb.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x3c409b85
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl.h b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl.h
-index e820cbf86b3a..94ca4bcc0eaa 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl.h
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg
-index 3ed5b346aeea..0d2d245fc270 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x555A7955
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp.h b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp.h
-index f3174f9bb70c..aae646e75c56 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp.h
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg
-index 02f3fa7b33b8..77ef6358ec54 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0                    \
- 	wm 32 0x021b000c 0x565c9b85
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg
-index dd142a20a9f3..dd222ed7a179 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x3c409b85
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg
-index 3f9d11dc49b9..de5aab6242cb 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0                    \
- 	wm 32 0x021b000c 0x565c9b85
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg
-index fdb1d155380e..c3819e958f22 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0                    \
- 	wm 32 0x021b000c 0x8c929b85
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg
-index f4f150ee68ff..08d579241ee9 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x555a7975
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02.h b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02.h
-index 4a9b179f59f3..998411784401 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02.h
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg
-index b2a0521bbc87..c851cc2844a6 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0                    \
- 	wm 32 0x021b000c 0x41447525
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg
-index e03e25eae284..7276adad604b 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x2d307525
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl.h b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl.h
-index be4084c1615e..48d2001fb243 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl.h
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg
-index 58c1576219b2..d450ec1efda6 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0                    \
-         wm 32 0x021b000c 0x2D307525
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg
-index 9975e2197bea..7f1535d0e0fd 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0                    \
-         wm 32 0x021b000c 0x2D307525
- 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg
-index edc396bc5d33..b6fd2db254f4 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- #define SETUP_MDCFG0			\
- 	wm 32 0x021b000c 0x41447525
- 
-diff --git a/arch/arm/boards/phytec-som-imx8mq/flash-header-phycore-imx8mq.imxcfg b/arch/arm/boards/phytec-som-imx8mq/flash-header-phycore-imx8mq.imxcfg
-index 8921f32110b9..93cf14f26ba5 100644
---- a/arch/arm/boards/phytec-som-imx8mq/flash-header-phycore-imx8mq.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx8mq/flash-header-phycore-imx8mq.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx8mq
- 
- loadaddr 0x007E1000
-diff --git a/arch/arm/boards/protonic-imx6/ddr3-defines.imxcfg b/arch/arm/boards/protonic-imx6/ddr3-defines.imxcfg
-index 65bd1bc3c6f0..5bcd6c5f3c01 100644
---- a/arch/arm/boards/protonic-imx6/ddr3-defines.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/ddr3-defines.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- /*
-  * Timing configuration:
-  *
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg
-index c778391d7576..4e71e493aeef 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-jozacp.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-jozacp.imxcfg
-index ec9fb8410834..472767611dc8 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-jozacp.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-jozacp.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x80000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg
-index b08e14983454..e6e37672aa3e 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg
-index dbbb9818b645..16f2f596c773 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg
-index dbbb9818b645..1692c1e08771 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg
-index ec9fb8410834..472767611dc8 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x80000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
-index 029edc248af6..2d0064e8c1cb 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg
-index 1131174f70a6..887811fa4240 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg
-index dbbb9818b645..16f2f596c773 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg
-index 019696295de5..7f2662567e6b 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
-index 5f847c004dce..035b5f13152c 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
-index 054043cc800e..be2b9883a8cc 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg
-index d3de7b6aab4f..e3f0f0a19a7c 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg
-index 54f655c4c2e5..b86a32be0c2c 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
-index f7e75b47bf8d..3abb21b70e32 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
-index e21827923960..a8178fe2580b 100644
---- a/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x10000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/protonic-imx6/lpddr2-defines.imxcfg b/arch/arm/boards/protonic-imx6/lpddr2-defines.imxcfg
-index 29c42cc697c9..b54b9542bd68 100644
---- a/arch/arm/boards/protonic-imx6/lpddr2-defines.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/lpddr2-defines.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- /*
-  * Timing configuration:
-  *
-diff --git a/arch/arm/boards/protonic-imx6/padsetup-dl.imxcfg b/arch/arm/boards/protonic-imx6/padsetup-dl.imxcfg
-index f60d37f63e2e..380ce8863cf4 100644
---- a/arch/arm/boards/protonic-imx6/padsetup-dl.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/padsetup-dl.imxcfg
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
- 
- /*
-  * Some defines for PAD setup:
-diff --git a/arch/arm/boards/protonic-imx6/padsetup-q.imxcfg b/arch/arm/boards/protonic-imx6/padsetup-q.imxcfg
-index f5fa3e8d2857..c58a481e13a2 100644
---- a/arch/arm/boards/protonic-imx6/padsetup-q.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/padsetup-q.imxcfg
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
- 
- /*
-  * Some defines for PAD setup:
-diff --git a/arch/arm/boards/protonic-imx6/padsetup-ul.imxcfg b/arch/arm/boards/protonic-imx6/padsetup-ul.imxcfg
-index e36601942d10..9cdc9ac9a3c8 100644
---- a/arch/arm/boards/protonic-imx6/padsetup-ul.imxcfg
-+++ b/arch/arm/boards/protonic-imx6/padsetup-ul.imxcfg
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
- 
- /*
-  * Some defines for PAD setup:
-diff --git a/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg b/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg
-index b013173113e4..10606ce29c96 100644
---- a/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg
-+++ b/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx8mm
- 
- loadaddr 0x007e1000
-diff --git a/arch/arm/boards/skov-imx6/flash-header-mx6-skov-imx6.imxcfg b/arch/arm/boards/skov-imx6/flash-header-mx6-skov-imx6.imxcfg
-index 4bb615ebb0f6..da4cd4bebf77 100644
---- a/arch/arm/boards/skov-imx6/flash-header-mx6-skov-imx6.imxcfg
-+++ b/arch/arm/boards/skov-imx6/flash-header-mx6-skov-imx6.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx6
- loadaddr 0x00907000
- max_load_size 0x11000
-diff --git a/arch/arm/boards/solidrun-microsom/flash-header-microsom-i1.imxcfg b/arch/arm/boards/solidrun-microsom/flash-header-microsom-i1.imxcfg
-index 2c6a32eed425..374ea2e8a20b 100644
---- a/arch/arm/boards/solidrun-microsom/flash-header-microsom-i1.imxcfg
-+++ b/arch/arm/boards/solidrun-microsom/flash-header-microsom-i1.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x10000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/solidrun-microsom/flash-header-microsom-i2.imxcfg b/arch/arm/boards/solidrun-microsom/flash-header-microsom-i2.imxcfg
-index 7f9b2a3988ff..7c1b17f6f266 100644
---- a/arch/arm/boards/solidrun-microsom/flash-header-microsom-i2.imxcfg
-+++ b/arch/arm/boards/solidrun-microsom/flash-header-microsom-i2.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x10000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/solidrun-microsom/flash-header-microsom-i2eX.imxcfg b/arch/arm/boards/solidrun-microsom/flash-header-microsom-i2eX.imxcfg
-index 7f75a17a35d3..f777784e44af 100644
---- a/arch/arm/boards/solidrun-microsom/flash-header-microsom-i2eX.imxcfg
-+++ b/arch/arm/boards/solidrun-microsom/flash-header-microsom-i2eX.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x10000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/solidrun-microsom/flash-header-microsom-i4.imxcfg b/arch/arm/boards/solidrun-microsom/flash-header-microsom-i4.imxcfg
-index 9d5bc03c965d..2a12b053408a 100644
---- a/arch/arm/boards/solidrun-microsom/flash-header-microsom-i4.imxcfg
-+++ b/arch/arm/boards/solidrun-microsom/flash-header-microsom-i4.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x10000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256.imxcfg b/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256.imxcfg
-index 6d2d37de59d2..00ac4ef8ec74 100644
---- a/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256.imxcfg
-+++ b/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x80000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-512.imxcfg b/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-512.imxcfg
-index 201493e6a38c..915203950778 100644
---- a/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-512.imxcfg
-+++ b/arch/arm/boards/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-512.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x80000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/technexion-wandboard/flash-header-technexion-wandboard.imxcfg b/arch/arm/boards/technexion-wandboard/flash-header-technexion-wandboard.imxcfg
-index 5f91bed6f377..61425976ec59 100644
---- a/arch/arm/boards/technexion-wandboard/flash-header-technexion-wandboard.imxcfg
-+++ b/arch/arm/boards/technexion-wandboard/flash-header-technexion-wandboard.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- loadaddr 0x00907000
- soc imx6
- max_load_size 0x11000
-diff --git a/arch/arm/boards/tqma53/flash-header-tq-tqma53-1gib.imxcfg b/arch/arm/boards/tqma53/flash-header-tq-tqma53-1gib.imxcfg
-index 50a8f27dc5af..6aeff80de5b6 100644
---- a/arch/arm/boards/tqma53/flash-header-tq-tqma53-1gib.imxcfg
-+++ b/arch/arm/boards/tqma53/flash-header-tq-tqma53-1gib.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- #define SETUP_512MIB_1GIB \
- 	wm 32 0x63fd9018 0x00011740; \
- 	wm 32 0x63fd9000 0xc3190000
-diff --git a/arch/arm/boards/tqma53/flash-header-tq-tqma53-512mib.imxcfg b/arch/arm/boards/tqma53/flash-header-tq-tqma53-512mib.imxcfg
-index 4c8eed40d2af..2431d6f03998 100644
---- a/arch/arm/boards/tqma53/flash-header-tq-tqma53-512mib.imxcfg
-+++ b/arch/arm/boards/tqma53/flash-header-tq-tqma53-512mib.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- #define SETUP_512MIB_1GIB \
- 	wm 32 0x63fd9018 0x00101740; \
- 	wm 32 0x63fd9000 0x83190000
-diff --git a/arch/arm/boards/tqma53/flash-header-tq-tqma53.h b/arch/arm/boards/tqma53/flash-header-tq-tqma53.h
-index b9492bbcb302..a11855f926b8 100644
---- a/arch/arm/boards/tqma53/flash-header-tq-tqma53.h
-+++ b/arch/arm/boards/tqma53/flash-header-tq-tqma53.h
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx53
- loadaddr 0x70000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/tqma53/flash-header.imxcfg b/arch/arm/boards/tqma53/flash-header.imxcfg
-index bbe2300ece53..6981a230a56c 100644
---- a/arch/arm/boards/tqma53/flash-header.imxcfg
-+++ b/arch/arm/boards/tqma53/flash-header.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx53
- loadaddr 0x70000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/tqma6x/flash-header-tqma6dl.imxcfg b/arch/arm/boards/tqma6x/flash-header-tqma6dl.imxcfg
-index 4f557d5db56c..9f8d9c0d2624 100644
---- a/arch/arm/boards/tqma6x/flash-header-tqma6dl.imxcfg
-+++ b/arch/arm/boards/tqma6x/flash-header-tqma6dl.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/tqma6x/flash-header-tqma6q.imxcfg b/arch/arm/boards/tqma6x/flash-header-tqma6q.imxcfg
-index deda53b46433..b0923e77f9ea 100644
---- a/arch/arm/boards/tqma6x/flash-header-tqma6q.imxcfg
-+++ b/arch/arm/boards/tqma6x/flash-header-tqma6q.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg b/arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg
-index 0a04afa770b6..e4c293ab778d 100644
---- a/arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg
-+++ b/arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
- #Configure QSPI clock
- 0957015c 40100000
- #Configure Scratch register
-diff --git a/arch/arm/boards/tqmls1046a/tqmls1046a_rcw_qspi_3333_5559.cfg b/arch/arm/boards/tqmls1046a/tqmls1046a_rcw_qspi_3333_5559.cfg
-index 2df229c56c2c..490d45af9e31 100644
---- a/arch/arm/boards/tqmls1046a/tqmls1046a_rcw_qspi_3333_5559.cfg
-+++ b/arch/arm/boards/tqmls1046a/tqmls1046a_rcw_qspi_3333_5559.cfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
- # RCW values
- #   0:  1 - SYS_PLL_CFG              :       0 [0x0 / 0b00]
- #   2:  6 - SYS_PLL_RAT              :       6 [0x6 / 0b00110]
-diff --git a/arch/arm/boards/tqmls1046a/tqmls1046a_rcw_sd_3333_5559.cfg b/arch/arm/boards/tqmls1046a/tqmls1046a_rcw_sd_3333_5559.cfg
-index 72ab1cd7d7ac..645dc4fd22ed 100644
---- a/arch/arm/boards/tqmls1046a/tqmls1046a_rcw_sd_3333_5559.cfg
-+++ b/arch/arm/boards/tqmls1046a/tqmls1046a_rcw_sd_3333_5559.cfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
- # RCW values
- #   0:  1 - SYS_PLL_CFG              :       0 [0x0 / 0b00]
- #   2:  6 - SYS_PLL_RAT              :       6 [0x6 / 0b00110]
-diff --git a/arch/arm/boards/udoo-neo/flash-header-mx6sx-udoo-neo_full.imxcfg b/arch/arm/boards/udoo-neo/flash-header-mx6sx-udoo-neo_full.imxcfg
-index a349b1022b86..6246e17a7387 100644
---- a/arch/arm/boards/udoo-neo/flash-header-mx6sx-udoo-neo_full.imxcfg
-+++ b/arch/arm/boards/udoo-neo/flash-header-mx6sx-udoo-neo_full.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- /*
-  * These values are taken from:
-  * repository: https://github.com/UDOOboard/uboot-imx
-diff --git a/arch/arm/boards/udoo/flash-header-mx6-udoo.imxcfg b/arch/arm/boards/udoo/flash-header-mx6-udoo.imxcfg
-index fc88a0b8b4d0..0d364bf8ce52 100644
---- a/arch/arm/boards/udoo/flash-header-mx6-udoo.imxcfg
-+++ b/arch/arm/boards/udoo/flash-header-mx6-udoo.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx6
- loadaddr 0x20000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/variscite-mx6/flash-header-variscite.imxcfg b/arch/arm/boards/variscite-mx6/flash-header-variscite.imxcfg
-index 50968d79409f..b0a31a0b96f6 100644
---- a/arch/arm/boards/variscite-mx6/flash-header-variscite.imxcfg
-+++ b/arch/arm/boards/variscite-mx6/flash-header-variscite.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- loadaddr 0x10000000
- soc imx6
- ivtofs 0x400
-diff --git a/arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg b/arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
-index 5674e7a6e139..6d40976b83c0 100644
---- a/arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
-+++ b/arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx51
- loadaddr 0x90000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/zii-imx6q-rdu2/flash-header-rdu2.imxcfg b/arch/arm/boards/zii-imx6q-rdu2/flash-header-rdu2.imxcfg
-index fcfef9c23477..0b37ab248f90 100644
---- a/arch/arm/boards/zii-imx6q-rdu2/flash-header-rdu2.imxcfg
-+++ b/arch/arm/boards/zii-imx6q-rdu2/flash-header-rdu2.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx6
- loadaddr 0x00907000
- max_load_size 0x31000
-diff --git a/arch/arm/boards/zii-imx7d-dev/flash-header-zii-imx7d-dev.imxcfg b/arch/arm/boards/zii-imx7d-dev/flash-header-zii-imx7d-dev.imxcfg
-index 022f9711b252..05f95bbed11e 100644
---- a/arch/arm/boards/zii-imx7d-dev/flash-header-zii-imx7d-dev.imxcfg
-+++ b/arch/arm/boards/zii-imx7d-dev/flash-header-zii-imx7d-dev.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc imx7
- loadaddr 0x80000000
- ivtofs 0x400
-diff --git a/arch/arm/boards/zii-imx8mq-dev/flash-header-zii-imx8mq-dev.imxcfg b/arch/arm/boards/zii-imx8mq-dev/flash-header-zii-imx8mq-dev.imxcfg
-index 8921f32110b9..93cf14f26ba5 100644
---- a/arch/arm/boards/zii-imx8mq-dev/flash-header-zii-imx8mq-dev.imxcfg
-+++ b/arch/arm/boards/zii-imx8mq-dev/flash-header-zii-imx8mq-dev.imxcfg
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
- soc imx8mq
- 
- loadaddr 0x007E1000
-diff --git a/arch/arm/boards/zii-vf610-dev/flash-header-zii-vf610-dev.imxcfg b/arch/arm/boards/zii-vf610-dev/flash-header-zii-vf610-dev.imxcfg
-index 4b73da4c191d..617245b2d372 100644
---- a/arch/arm/boards/zii-vf610-dev/flash-header-zii-vf610-dev.imxcfg
-+++ b/arch/arm/boards/zii-vf610-dev/flash-header-zii-vf610-dev.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- soc vf610
- loadaddr 0x80000000
- ivtofs 0x400
-diff --git a/arch/arm/mach-imx/include/mach/flash-header/vf610-ddr-cr-default.imxcfg b/arch/arm/mach-imx/include/mach/flash-header/vf610-ddr-cr-default.imxcfg
-index 8c411ddc7ecf..ab70fa7bd938 100644
---- a/arch/arm/mach-imx/include/mach/flash-header/vf610-ddr-cr-default.imxcfg
-+++ b/arch/arm/mach-imx/include/mach/flash-header/vf610-ddr-cr-default.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
- /*
- 
-  The following table contains DDR3 memory timing parameters derived
-@@ -128,4 +130,4 @@ wm 32 DDRMC_CR138 0x01000100
- wm 32 DDRMC_CR154 0x682c4000
- wm 32 DDRMC_CR155 0x00000009
- wm 32 DDRMC_CR158 0x00000006
--wm 32 DDRMC_CR161 0x00010606
+ obj-y += board.o
+-lwl-y += lowlevel.o lpddr4-timing.o
 \ No newline at end of file
-+wm 32 DDRMC_CR161 0x00010606
-diff --git a/arch/arm/mach-imx/include/mach/flash-header/vf610-ddr-pll2-400mhz.imxcfg b/arch/arm/mach-imx/include/mach/flash-header/vf610-ddr-pll2-400mhz.imxcfg
-index 74d119b59ed3..e235b0990b74 100644
---- a/arch/arm/mach-imx/include/mach/flash-header/vf610-ddr-pll2-400mhz.imxcfg
-+++ b/arch/arm/mach-imx/include/mach/flash-header/vf610-ddr-pll2-400mhz.imxcfg
-@@ -1,3 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++lwl-y += lowlevel.o lpddr4-timing.o
+diff --git a/arch/arm/boards/module-mb7707/Makefile b/arch/arm/boards/module-mb7707/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/module-mb7707/Makefile
++++ b/arch/arm/boards/module-mb7707/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
- /*
-  * Ungate all IP block clocks
-  */
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/netgear-rn104/Makefile b/arch/arm/boards/netgear-rn104/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/netgear-rn104/Makefile
++++ b/arch/arm/boards/netgear-rn104/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/netgear-rn2120/Makefile b/arch/arm/boards/netgear-rn2120/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/netgear-rn2120/Makefile
++++ b/arch/arm/boards/netgear-rn2120/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/nhk8815/Makefile b/arch/arm/boards/nhk8815/Makefile
+index 56f2013e2254..0367fa7dd5da 100644
+--- a/arch/arm/boards/nhk8815/Makefile
++++ b/arch/arm/boards/nhk8815/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += setup.o
+ lwl-y += lowlevel.o
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-nhk8815
+diff --git a/arch/arm/boards/nvidia-beaver/Makefile b/arch/arm/boards/nvidia-beaver/Makefile
+index 1b90eb13fdd0..6485e5d2da77 100644
+--- a/arch/arm/boards/nvidia-beaver/Makefile
++++ b/arch/arm/boards/nvidia-beaver/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ CFLAGS_entry.pbl.o := -mcpu=arm7tdmi -march=armv4t
+ soc := tegra30
+ lwl-y += entry.o
+diff --git a/arch/arm/boards/nvidia-jetson-tk1/Makefile b/arch/arm/boards/nvidia-jetson-tk1/Makefile
+index d38001c15890..7d9402f9b345 100644
+--- a/arch/arm/boards/nvidia-jetson-tk1/Makefile
++++ b/arch/arm/boards/nvidia-jetson-tk1/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ CFLAGS_entry.pbl.o := -mcpu=arm7tdmi -march=armv4t
+ soc := tegra124
+ lwl-y += entry.o
+diff --git a/arch/arm/boards/nxp-imx6ull-evk/Makefile b/arch/arm/boards/nxp-imx6ull-evk/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/nxp-imx6ull-evk/Makefile
++++ b/arch/arm/boards/nxp-imx6ull-evk/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/Makefile b/arch/arm/boards/nxp-imx8mm-evk/Makefile
+index 4d0d9890153b..35d8640087b1 100644
+--- a/arch/arm/boards/nxp-imx8mm-evk/Makefile
++++ b/arch/arm/boards/nxp-imx8mm-evk/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o lpddr4-timing.o
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/Makefile b/arch/arm/boards/nxp-imx8mn-evk/Makefile
+index 4b13ff3b94e4..d74c5845ef7d 100644
+--- a/arch/arm/boards/nxp-imx8mn-evk/Makefile
++++ b/arch/arm/boards/nxp-imx8mn-evk/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o ddr4-timing.o lpddr4-timing.o
+diff --git a/arch/arm/boards/nxp-imx8mp-evk/Makefile b/arch/arm/boards/nxp-imx8mp-evk/Makefile
+index 4d0d9890153b..35d8640087b1 100644
+--- a/arch/arm/boards/nxp-imx8mp-evk/Makefile
++++ b/arch/arm/boards/nxp-imx8mp-evk/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o lpddr4-timing.o
+diff --git a/arch/arm/boards/nxp-imx8mq-evk/Makefile b/arch/arm/boards/nxp-imx8mq-evk/Makefile
+index 2995f06f0fd9..17d769f3309b 100644
+--- a/arch/arm/boards/nxp-imx8mq-evk/Makefile
++++ b/arch/arm/boards/nxp-imx8mq-evk/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o ddr_init.o ddrphy_train.o
+diff --git a/arch/arm/boards/omap343xdsp/Makefile b/arch/arm/boards/omap343xdsp/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/omap343xdsp/Makefile
++++ b/arch/arm/boards/omap343xdsp/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/omap3evm/Makefile b/arch/arm/boards/omap3evm/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/omap3evm/Makefile
++++ b/arch/arm/boards/omap3evm/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/panda/Makefile b/arch/arm/boards/panda/Makefile
+index 5d4eb10b9b1b..3bd91350ce8b 100644
+--- a/arch/arm/boards/panda/Makefile
++++ b/arch/arm/boards/panda/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o mux.o
+diff --git a/arch/arm/boards/phytec-phycard-imx27/Makefile b/arch/arm/boards/phytec-phycard-imx27/Makefile
+index 34492bb127b4..0e6411d58809 100644
+--- a/arch/arm/boards/phytec-phycard-imx27/Makefile
++++ b/arch/arm/boards/phytec-phycard-imx27/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ lwl-y += lowlevel.o
+ obj-y += pca100.o
+diff --git a/arch/arm/boards/phytec-phycore-imx27/Makefile b/arch/arm/boards/phytec-phycore-imx27/Makefile
+index 4723c77818f2..ce7b990407ce 100644
+--- a/arch/arm/boards/phytec-phycore-imx27/Makefile
++++ b/arch/arm/boards/phytec-phycore-imx27/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y	+= pcm038.o pcm970.o
+ lwl-y	+= lowlevel.o
+ bbenv-y += defaultenv-pcm038
+diff --git a/arch/arm/boards/phytec-phycore-imx7/Makefile b/arch/arm/boards/phytec-phycore-imx7/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/phytec-phycore-imx7/Makefile
++++ b/arch/arm/boards/phytec-phycore-imx7/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/phytec-phycore-omap4460/Makefile b/arch/arm/boards/phytec-phycore-omap4460/Makefile
+index 5e78e11ec133..c5d3950bc3c7 100644
+--- a/arch/arm/boards/phytec-phycore-omap4460/Makefile
++++ b/arch/arm/boards/phytec-phycore-omap4460/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o mux.o
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-phytec-phycore-omap4460
+diff --git a/arch/arm/boards/phytec-phycore-pxa270/Makefile b/arch/arm/boards/phytec-phycore-pxa270/Makefile
+index 040cf93944ee..e00d1cfd7f70 100644
+--- a/arch/arm/boards/phytec-phycore-pxa270/Makefile
++++ b/arch/arm/boards/phytec-phycore-pxa270/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel_init.o
+diff --git a/arch/arm/boards/phytec-som-am335x/Kconfig b/arch/arm/boards/phytec-som-am335x/Kconfig
+index 52fa723a21a1..054a1d219f83 100644
+--- a/arch/arm/boards/phytec-som-am335x/Kconfig
++++ b/arch/arm/boards/phytec-som-am335x/Kconfig
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ if MACH_PHYTEC_SOM_AM335X
+ 
+diff --git a/arch/arm/boards/phytec-som-am335x/Makefile b/arch/arm/boards/phytec-som-am335x/Makefile
+index 78397bd59fdf..82dd631c9f08 100644
+--- a/arch/arm/boards/phytec-som-am335x/Makefile
++++ b/arch/arm/boards/phytec-som-am335x/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+ bbenv-y += defaultenv-physom-am335x
+diff --git a/arch/arm/boards/phytec-som-imx6/Makefile b/arch/arm/boards/phytec-som-imx6/Makefile
+index 73456aed8bf7..0780da79b9b3 100644
+--- a/arch/arm/boards/phytec-som-imx6/Makefile
++++ b/arch/arm/boards/phytec-som-imx6/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-physom-imx6
+diff --git a/arch/arm/boards/phytec-som-imx8mq/Makefile b/arch/arm/boards/phytec-som-imx8mq/Makefile
+index 2995f06f0fd9..17d769f3309b 100644
+--- a/arch/arm/boards/phytec-som-imx8mq/Makefile
++++ b/arch/arm/boards/phytec-som-imx8mq/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o ddr_init.o ddrphy_train.o
+diff --git a/arch/arm/boards/phytec-som-rk3288/Makefile b/arch/arm/boards/phytec-som-rk3288/Makefile
+index 6f34c9a2f21e..e4ba704dea09 100644
+--- a/arch/arm/boards/phytec-som-rk3288/Makefile
++++ b/arch/arm/boards/phytec-som-rk3288/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-physom-rk3288
+diff --git a/arch/arm/boards/plathome-openblocks-a6/Makefile b/arch/arm/boards/plathome-openblocks-a6/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/plathome-openblocks-a6/Makefile
++++ b/arch/arm/boards/plathome-openblocks-a6/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/plathome-openblocks-ax3/Makefile b/arch/arm/boards/plathome-openblocks-ax3/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/plathome-openblocks-ax3/Makefile
++++ b/arch/arm/boards/plathome-openblocks-ax3/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/pm9261/Makefile b/arch/arm/boards/pm9261/Makefile
+index e9bf1212fe04..5b501a548fd5 100644
+--- a/arch/arm/boards/pm9261/Makefile
++++ b/arch/arm/boards/pm9261/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel_init.o
+diff --git a/arch/arm/boards/pm9263/Makefile b/arch/arm/boards/pm9263/Makefile
+index 68bfbfa92695..7220ee11f357 100644
+--- a/arch/arm/boards/pm9263/Makefile
++++ b/arch/arm/boards/pm9263/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel_init.o
+diff --git a/arch/arm/boards/pm9g45/Makefile b/arch/arm/boards/pm9g45/Makefile
+index abf50243e540..148ae4a2521c 100644
+--- a/arch/arm/boards/pm9g45/Makefile
++++ b/arch/arm/boards/pm9g45/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/protonic-imx6/Makefile b/arch/arm/boards/protonic-imx6/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/protonic-imx6/Makefile
++++ b/arch/arm/boards/protonic-imx6/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/protonic-imx8m/Makefile b/arch/arm/boards/protonic-imx8m/Makefile
+index 51a27f0c2dfd..18da0f5a4415 100644
+--- a/arch/arm/boards/protonic-imx8m/Makefile
++++ b/arch/arm/boards/protonic-imx8m/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel-prt8mm.o lpddr4-timing-prt8mm.o
+ bbenv-y += defaultenv-prt8m
+diff --git a/arch/arm/boards/protonic-stm32mp1/Makefile b/arch/arm/boards/protonic-stm32mp1/Makefile
+index 092c31d6b28d..5678718188b9 100644
+--- a/arch/arm/boards/protonic-stm32mp1/Makefile
++++ b/arch/arm/boards/protonic-stm32mp1/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/qemu-virt/Makefile b/arch/arm/boards/qemu-virt/Makefile
+index dcfc2937d325..ad283446eaf1 100644
+--- a/arch/arm/boards/qemu-virt/Makefile
++++ b/arch/arm/boards/qemu-virt/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+diff --git a/arch/arm/boards/qil-a926x/Makefile b/arch/arm/boards/qil-a926x/Makefile
+index 82e46b369f41..bf5ed8b4f4c5 100644
+--- a/arch/arm/boards/qil-a926x/Makefile
++++ b/arch/arm/boards/qil-a926x/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/radxa-rock/Makefile b/arch/arm/boards/radxa-rock/Makefile
+index ec930bc264e7..79d3969dcde1 100644
+--- a/arch/arm/boards/radxa-rock/Makefile
++++ b/arch/arm/boards/radxa-rock/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_MACH_RADXA_ROCK) += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-radxa-rock
+diff --git a/arch/arm/boards/raspberry-pi/Makefile b/arch/arm/boards/raspberry-pi/Makefile
+index ddcf015f0848..6f995b564017 100644
+--- a/arch/arm/boards/raspberry-pi/Makefile
++++ b/arch/arm/boards/raspberry-pi/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_MACH_RPI_COMMON) += rpi-common.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-rpi
+diff --git a/arch/arm/boards/reflex-achilles/Makefile b/arch/arm/boards/reflex-achilles/Makefile
+index 092c31d6b28d..5678718188b9 100644
+--- a/arch/arm/boards/reflex-achilles/Makefile
++++ b/arch/arm/boards/reflex-achilles/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/rockchip-rk3568-evb/Makefile b/arch/arm/boards/rockchip-rk3568-evb/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/rockchip-rk3568-evb/Makefile
++++ b/arch/arm/boards/rockchip-rk3568-evb/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/sama5d27-giantboard/Makefile b/arch/arm/boards/sama5d27-giantboard/Makefile
+index f5869c483978..e2c6a3adf671 100644
+--- a/arch/arm/boards/sama5d27-giantboard/Makefile
++++ b/arch/arm/boards/sama5d27-giantboard/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+ bbenv-y += defaultenv-giantboard
+diff --git a/arch/arm/boards/sama5d27-som1/Makefile b/arch/arm/boards/sama5d27-som1/Makefile
+index 092c31d6b28d..5678718188b9 100644
+--- a/arch/arm/boards/sama5d27-som1/Makefile
++++ b/arch/arm/boards/sama5d27-som1/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/sama5d3_xplained/Makefile b/arch/arm/boards/sama5d3_xplained/Makefile
+index e5c86e58957e..b7d6b2e7fa89 100644
+--- a/arch/arm/boards/sama5d3_xplained/Makefile
++++ b/arch/arm/boards/sama5d3_xplained/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-sama5d3_xplained
+diff --git a/arch/arm/boards/sama5d3xek/Makefile b/arch/arm/boards/sama5d3xek/Makefile
+index 6ed914fc0a47..9691f0791702 100644
+--- a/arch/arm/boards/sama5d3xek/Makefile
++++ b/arch/arm/boards/sama5d3xek/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ obj-$(CONFIG_W1) += hw_version.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/sama5d4_xplained/Makefile b/arch/arm/boards/sama5d4_xplained/Makefile
+index 8873dfc22c44..eece4cc38118 100644
+--- a/arch/arm/boards/sama5d4_xplained/Makefile
++++ b/arch/arm/boards/sama5d4_xplained/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += sama5d4_xplained.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/sama5d4ek/Makefile b/arch/arm/boards/sama5d4ek/Makefile
+index 152750bbe0a7..82ffe9771caf 100644
+--- a/arch/arm/boards/sama5d4ek/Makefile
++++ b/arch/arm/boards/sama5d4ek/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += sama5d4ek.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/scb9328/Makefile b/arch/arm/boards/scb9328/Makefile
+index 8e1c7ef7a505..5c13dddc0657 100644
+--- a/arch/arm/boards/scb9328/Makefile
++++ b/arch/arm/boards/scb9328/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ lwl-y += lowlevel_init.o lowlevel.o
+ obj-y += scb9328.o
+diff --git a/arch/arm/boards/seeed-odyssey/Makefile b/arch/arm/boards/seeed-odyssey/Makefile
+index 092c31d6b28d..5678718188b9 100644
+--- a/arch/arm/boards/seeed-odyssey/Makefile
++++ b/arch/arm/boards/seeed-odyssey/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/skov-arm9cpu/Makefile b/arch/arm/boards/skov-arm9cpu/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/skov-arm9cpu/Makefile
++++ b/arch/arm/boards/skov-arm9cpu/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/skov-imx6/Makefile b/arch/arm/boards/skov-imx6/Makefile
+index 07b87ff11df0..b6b8b44b847b 100644
+--- a/arch/arm/boards/skov-imx6/Makefile
++++ b/arch/arm/boards/skov-imx6/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ obj-pbl-y += version.o
+diff --git a/arch/arm/boards/solidrun-cubox/Makefile b/arch/arm/boards/solidrun-cubox/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/solidrun-cubox/Makefile
++++ b/arch/arm/boards/solidrun-cubox/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/solidrun-microsom/Makefile b/arch/arm/boards/solidrun-microsom/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/solidrun-microsom/Makefile
++++ b/arch/arm/boards/solidrun-microsom/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/stm32mp15x-ev1/Makefile b/arch/arm/boards/stm32mp15x-ev1/Makefile
+index 092c31d6b28d..5678718188b9 100644
+--- a/arch/arm/boards/stm32mp15x-ev1/Makefile
++++ b/arch/arm/boards/stm32mp15x-ev1/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/stm32mp15xx-dkx/Makefile b/arch/arm/boards/stm32mp15xx-dkx/Makefile
+index 092c31d6b28d..5678718188b9 100644
+--- a/arch/arm/boards/stm32mp15xx-dkx/Makefile
++++ b/arch/arm/boards/stm32mp15xx-dkx/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/technexion-pico-hobbit/Makefile b/arch/arm/boards/technexion-pico-hobbit/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/technexion-pico-hobbit/Makefile
++++ b/arch/arm/boards/technexion-pico-hobbit/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/technexion-wandboard/Makefile b/arch/arm/boards/technexion-wandboard/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/technexion-wandboard/Makefile
++++ b/arch/arm/boards/technexion-wandboard/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/telit-evk-pro3/Makefile b/arch/arm/boards/telit-evk-pro3/Makefile
+index e11fd5b6924e..d59545033d21 100644
+--- a/arch/arm/boards/telit-evk-pro3/Makefile
++++ b/arch/arm/boards/telit-evk-pro3/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/terasic-de0-nano-soc/Makefile b/arch/arm/boards/terasic-de0-nano-soc/Makefile
+index 8c927fe291a6..ea898309d720 100644
+--- a/arch/arm/boards/terasic-de0-nano-soc/Makefile
++++ b/arch/arm/boards/terasic-de0-nano-soc/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += lowlevel.o board.o
+ pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/terasic-de10-nano/Makefile b/arch/arm/boards/terasic-de10-nano/Makefile
+index 8c927fe291a6..ea898309d720 100644
+--- a/arch/arm/boards/terasic-de10-nano/Makefile
++++ b/arch/arm/boards/terasic-de10-nano/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += lowlevel.o board.o
+ pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/terasic-sockit/Makefile b/arch/arm/boards/terasic-sockit/Makefile
+index 8c927fe291a6..ea898309d720 100644
+--- a/arch/arm/boards/terasic-sockit/Makefile
++++ b/arch/arm/boards/terasic-sockit/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += lowlevel.o board.o
+ pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/tny-a926x/Makefile b/arch/arm/boards/tny-a926x/Makefile
+index d400788757b6..1ebe527d608e 100644
+--- a/arch/arm/boards/tny-a926x/Makefile
++++ b/arch/arm/boards/tny-a926x/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ obj-$(CONFIG_AT91_BOOTSTRAP) += tny_a9263_bootstrap.o
+diff --git a/arch/arm/boards/toradex-colibri-t20/Makefile b/arch/arm/boards/toradex-colibri-t20/Makefile
+index cdce48d1f847..aeb4765cf674 100644
+--- a/arch/arm/boards/toradex-colibri-t20/Makefile
++++ b/arch/arm/boards/toradex-colibri-t20/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ CFLAGS_entry.pbl.o := -mcpu=arm7tdmi -march=armv4t
+ soc := tegra20
+ lwl-y += entry.o
+diff --git a/arch/arm/boards/toshiba-ac100/Makefile b/arch/arm/boards/toshiba-ac100/Makefile
+index e8158cb253cf..702c86a9247a 100644
+--- a/arch/arm/boards/toshiba-ac100/Makefile
++++ b/arch/arm/boards/toshiba-ac100/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ CFLAGS_entry.pbl.o := -mcpu=arm7tdmi -march=armv4t
+ lwl-y += entry.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/tqma53/Makefile b/arch/arm/boards/tqma53/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/tqma53/Makefile
++++ b/arch/arm/boards/tqma53/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/tqma6x/Makefile b/arch/arm/boards/tqma6x/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/tqma6x/Makefile
++++ b/arch/arm/boards/tqma6x/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/tqmls1046a/Makefile b/arch/arm/boards/tqmls1046a/Makefile
+index 851a5dcb3d7c..4af7fc3602a6 100644
+--- a/arch/arm/boards/tqmls1046a/Makefile
++++ b/arch/arm/boards/tqmls1046a/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o start.o
+ obj-y += board.o
+ bbenv-y += defaultenv-tqmls1046a
+diff --git a/arch/arm/boards/turris-omnia/Makefile b/arch/arm/boards/turris-omnia/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/turris-omnia/Makefile
++++ b/arch/arm/boards/turris-omnia/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/udoo-neo/Makefile b/arch/arm/boards/udoo-neo/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/udoo-neo/Makefile
++++ b/arch/arm/boards/udoo-neo/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/udoo/Makefile b/arch/arm/boards/udoo/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/udoo/Makefile
++++ b/arch/arm/boards/udoo/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
+index 65cc4082fc0f..022b1a4ab6fb 100644
+--- a/arch/arm/boards/usb-a926x/Makefile
++++ b/arch/arm/boards/usb-a926x/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ 
+ obj-$(CONFIG_AT91_BOOTSTRAP) += usb_a9263_bootstrap.o
+diff --git a/arch/arm/boards/usi-topkick/Makefile b/arch/arm/boards/usi-topkick/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/arm/boards/usi-topkick/Makefile
++++ b/arch/arm/boards/usi-topkick/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/variscite-mx6/Makefile b/arch/arm/boards/variscite-mx6/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/variscite-mx6/Makefile
++++ b/arch/arm/boards/variscite-mx6/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/versatile/Kconfig b/arch/arm/boards/versatile/Kconfig
+index 94cba3ba8173..66492404e0b2 100644
+--- a/arch/arm/boards/versatile/Kconfig
++++ b/arch/arm/boards/versatile/Kconfig
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ if MACH_VERSATILEPB
+ 
+diff --git a/arch/arm/boards/versatile/Makefile b/arch/arm/boards/versatile/Makefile
+index 89232a7884c8..5a55d0017d14 100644
+--- a/arch/arm/boards/versatile/Makefile
++++ b/arch/arm/boards/versatile/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_MACH_VERSATILEPB) += versatilepb.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/vexpress/Makefile b/arch/arm/boards/vexpress/Makefile
+index 2da0494d49b3..720210d8905f 100644
+--- a/arch/arm/boards/vexpress/Makefile
++++ b/arch/arm/boards/vexpress/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += init.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/virt2real/Makefile b/arch/arm/boards/virt2real/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/virt2real/Makefile
++++ b/arch/arm/boards/virt2real/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/vscom-baltos/Makefile b/arch/arm/boards/vscom-baltos/Makefile
+index 092c31d6b28d..5678718188b9 100644
+--- a/arch/arm/boards/vscom-baltos/Makefile
++++ b/arch/arm/boards/vscom-baltos/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/wago-pfc-am35xx/Makefile b/arch/arm/boards/wago-pfc-am35xx/Makefile
+index 7bd3009f31e3..35ac0462cba1 100644
+--- a/arch/arm/boards/wago-pfc-am35xx/Makefile
++++ b/arch/arm/boards/wago-pfc-am35xx/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ ifdef CONFIG_OMAP_BUILD_IFT
+ obj-y += board-mlo.o
+diff --git a/arch/arm/boards/webasto-ccbv2/Makefile b/arch/arm/boards/webasto-ccbv2/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/webasto-ccbv2/Makefile
++++ b/arch/arm/boards/webasto-ccbv2/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/zii-common/Makefile b/arch/arm/boards/zii-common/Makefile
+index 90bdf21e77bd..7488148cff9c 100644
+--- a/arch/arm/boards/zii-common/Makefile
++++ b/arch/arm/boards/zii-common/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o switch-cmd.o pn-fixup.o
+ bbenv-y += defaultenv-zii-common
+diff --git a/arch/arm/boards/zii-imx51-rdu1/Makefile b/arch/arm/boards/zii-imx51-rdu1/Makefile
+index 7f2569bda37d..96663f9ae867 100644
+--- a/arch/arm/boards/zii-imx51-rdu1/Makefile
++++ b/arch/arm/boards/zii-imx51-rdu1/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-rdu1
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/Makefile b/arch/arm/boards/zii-imx6q-rdu2/Makefile
+index c6285362f2ee..31b592bd36a5 100644
+--- a/arch/arm/boards/zii-imx6q-rdu2/Makefile
++++ b/arch/arm/boards/zii-imx6q-rdu2/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-rdu2
+diff --git a/arch/arm/boards/zii-imx7d-dev/Makefile b/arch/arm/boards/zii-imx7d-dev/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/zii-imx7d-dev/Makefile
++++ b/arch/arm/boards/zii-imx7d-dev/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/zii-imx8mq-dev/Makefile b/arch/arm/boards/zii-imx8mq-dev/Makefile
+index d0148b506752..8894e40b5a3f 100644
+--- a/arch/arm/boards/zii-imx8mq-dev/Makefile
++++ b/arch/arm/boards/zii-imx8mq-dev/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o ddr_init.o ddrphy_train.o
+ bbenv-y += defaultenv-imx8mq-zii-dev
+diff --git a/arch/arm/boards/zii-vf610-dev/Makefile b/arch/arm/boards/zii-vf610-dev/Makefile
+index 1297d815e319..a1a8318e1588 100644
+--- a/arch/arm/boards/zii-vf610-dev/Makefile
++++ b/arch/arm/boards/zii-vf610-dev/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-zii-vf610-dev
+diff --git a/arch/arm/boards/zylonite/Makefile b/arch/arm/boards/zylonite/Makefile
+index 01c7a259e9a5..da63d2625f7a 100644
+--- a/arch/arm/boards/zylonite/Makefile
++++ b/arch/arm/boards/zylonite/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index ca3bd98962e2..0a493754a418 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ comment "Processor Type"
+ 
+ config PHYS_ADDR_T_64BIT
+diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+index 6344ab506645..c0993c1abe5d 100644
+--- a/arch/arm/cpu/Makefile
++++ b/arch/arm/cpu/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += cpu.o
+ 
+ obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions$(S64).o interrupts$(S64).o
+diff --git a/arch/arm/crypto/Makefile b/arch/arm/crypto/Makefile
+index fda4eeafeca0..990c0bd609cd 100644
+--- a/arch/arm/crypto/Makefile
++++ b/arch/arm/crypto/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ #
+ # Arch-specific CryptoAPI modules.
+ #
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 76c96752cd78..8ae8244bfeee 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ # just to build a built-in.o. Otherwise compilation fails when no devicetree is
+ # created.
+ obj- += dummy.o
+diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
+index 33db7350f85f..1a8144f6c64a 100644
+--- a/arch/arm/lib/Makefile
++++ b/arch/arm/lib/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_BOOTM)	+= bootm.o
+ obj-$(CONFIG_CMD_BOOTU)	+= bootu.o
+diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
+index ec6a3aea6721..82507fffc02b 100644
+--- a/arch/arm/lib32/Makefile
++++ b/arch/arm/lib32/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_ARM_LINUX)	+= armlinux.o
+ obj-$(CONFIG_CMD_BOOTZ)	+= bootz.o
+ obj-$(CONFIG_BOOTM)     += bootm.o
+diff --git a/arch/arm/lib64/Makefile b/arch/arm/lib64/Makefile
+index a004af4867f2..e86a2e5a2f3d 100644
+--- a/arch/arm/lib64/Makefile
++++ b/arch/arm/lib64/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += stacktrace.o
+ obj-$(CONFIG_ARM_LINUX)	+= armlinux.o
+ obj-y	+= div0.o
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 734256e3614e..bc55b1c4e76e 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_AT91
+ 
+ config HAVE_AT91_UTMI
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index c895af7a2f8b..bfdc89f680ed 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += setup.o aic.o
+ lwl-y += at91_pmc_ll.o ddramc_ll.o matrix.o
+ lwl-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += early_udelay.o
+diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
+index 9d6a7b2ec2d4..75acee8dad56 100644
+--- a/arch/arm/mach-bcm283x/Kconfig
++++ b/arch/arm/mach-bcm283x/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_BCM283X
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-bcm283x/Makefile b/arch/arm/mach-bcm283x/Makefile
+index 940f98cbce76..e5ef78af978f 100644
+--- a/arch/arm/mach-bcm283x/Makefile
++++ b/arch/arm/mach-bcm283x/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += core.o mbox.o
+diff --git a/arch/arm/mach-clps711x/Kconfig b/arch/arm/mach-clps711x/Kconfig
+index c00514e86d6c..52cf8468c03f 100644
+--- a/arch/arm/mach-clps711x/Kconfig
++++ b/arch/arm/mach-clps711x/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_CLPS711X
+ 
+ choice
+diff --git a/arch/arm/mach-clps711x/Makefile b/arch/arm/mach-clps711x/Makefile
+index 45525343d737..4d5950d9b5f0 100644
+--- a/arch/arm/mach-clps711x/Makefile
++++ b/arch/arm/mach-clps711x/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += clock.o devices.o reset.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+index c6d4fce603ae..a87b6256ce49 100644
+--- a/arch/arm/mach-davinci/Kconfig
++++ b/arch/arm/mach-davinci/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_DAVINCI
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-davinci/Makefile b/arch/arm/mach-davinci/Makefile
+index b96d4146f6d5..f7865a941b82 100644
+--- a/arch/arm/mach-davinci/Makefile
++++ b/arch/arm/mach-davinci/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += time.o
+diff --git a/arch/arm/mach-digic/Kconfig b/arch/arm/mach-digic/Kconfig
+index d25c3b3f5108..25b9a0da2fe6 100644
+--- a/arch/arm/mach-digic/Kconfig
++++ b/arch/arm/mach-digic/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_DIGIC
+ 
+ choice
+diff --git a/arch/arm/mach-digic/Makefile b/arch/arm/mach-digic/Makefile
+index 16a218658ade..1c2b374603ce 100644
+--- a/arch/arm/mach-digic/Makefile
++++ b/arch/arm/mach-digic/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj- := __dummy__.o
+diff --git a/arch/arm/mach-ep93xx/Kconfig b/arch/arm/mach-ep93xx/Kconfig
+index f805a8fd527a..e39f1d8a9b28 100644
+--- a/arch/arm/mach-ep93xx/Kconfig
++++ b/arch/arm/mach-ep93xx/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_EP93XX
+ 
+ config EP93XX_SDCE0_PHYS_OFFSET
+diff --git a/arch/arm/mach-ep93xx/Makefile b/arch/arm/mach-ep93xx/Makefile
+index fc0cb1afcd6e..80dbe7c42bfa 100644
+--- a/arch/arm/mach-ep93xx/Makefile
++++ b/arch/arm/mach-ep93xx/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += clocksource.o gpio.o header.o
+ 
+ lwl-y += lowlevel_init.o led.o
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 92db011baed7..454f7328d834 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_IMX
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index d94c846a13bf..2cafcd77e00d 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_ARCH_IMX1)  += imx1.o
+ obj-$(CONFIG_ARCH_IMX25) += imx25.o
+ obj-$(CONFIG_ARCH_IMX21) += imx21.o
+diff --git a/arch/arm/mach-layerscape/Kconfig b/arch/arm/mach-layerscape/Kconfig
+index c15d5873a55e..bdd7d0dbfe52 100644
+--- a/arch/arm/mach-layerscape/Kconfig
++++ b/arch/arm/mach-layerscape/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_LAYERSCAPE
+ 
+ config ARCH_LAYERSCAPE_PPA
+diff --git a/arch/arm/mach-layerscape/Makefile b/arch/arm/mach-layerscape/Makefile
+index 854a327c9125..58d3ea820aa3 100644
+--- a/arch/arm/mach-layerscape/Makefile
++++ b/arch/arm/mach-layerscape/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj- := __dummy__.o
+ lwl-y += lowlevel.o errata.o
+ lwl-$(CONFIG_ARCH_LS1046) += lowlevel-ls1046a.o
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+index bab22f07ff34..1b26148434ad 100644
+--- a/arch/arm/mach-mvebu/Kconfig
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_MVEBU
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
+index 6079403b83dd..88580cb58f4c 100644
+--- a/arch/arm/mach-mvebu/Makefile
++++ b/arch/arm/mach-mvebu/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-pbl-y			+= common.o
+ obj-$(CONFIG_ARCH_ARMADA_370)	+= armada-370-xp.o
+ obj-$(CONFIG_ARCH_ARMADA_XP)	+= armada-370-xp.o
+diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
+index f4a9d3d4221e..691c159e365f 100644
+--- a/arch/arm/mach-mxs/Kconfig
++++ b/arch/arm/mach-mxs/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_MXS
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-mxs/Makefile b/arch/arm/mach-mxs/Makefile
+index e3843368c2d1..0f3fba896751 100644
+--- a/arch/arm/mach-mxs/Makefile
++++ b/arch/arm/mach-mxs/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += imx.o iomux-imx.o power.o
+ pbl-y += iomux-imx.o
+ obj-$(CONFIG_ARCH_IMX23) += clocksource-imx23.o usb-imx23.o soc-imx23.o
+diff --git a/arch/arm/mach-nomadik/Kconfig b/arch/arm/mach-nomadik/Kconfig
+index 51d490df1b1b..823777917391 100644
+--- a/arch/arm/mach-nomadik/Kconfig
++++ b/arch/arm/mach-nomadik/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_NOMADIK
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-nomadik/Makefile b/arch/arm/mach-nomadik/Makefile
+index 1d77c4cf52f9..0ab83f61c816 100644
+--- a/arch/arm/mach-nomadik/Makefile
++++ b/arch/arm/mach-nomadik/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ obj-y	+= clock.o reset.o timer.o
+ obj-y	+= 8815.o
+diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
+index fd9084f83ea1..711f8ed8d83c 100644
+--- a/arch/arm/mach-pxa/Kconfig
++++ b/arch/arm/mach-pxa/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_PXA
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-pxa/Makefile b/arch/arm/mach-pxa/Makefile
+index 0c3219807bc6..9249c8fe14e3 100644
+--- a/arch/arm/mach-pxa/Makefile
++++ b/arch/arm/mach-pxa/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += clocksource.o
+ obj-y += common.o
+ obj-y += gpio.o
+diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
+index 5603fc12c307..2e855714f7da 100644
+--- a/arch/arm/mach-rockchip/Kconfig
++++ b/arch/arm/mach-rockchip/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menu "Rockchip Features"
+ 	depends on ARCH_ROCKCHIP
+ 
+diff --git a/arch/arm/mach-rockchip/Makefile b/arch/arm/mach-rockchip/Makefile
+index 66bcdba2eb22..72bf77c1e124 100644
+--- a/arch/arm/mach-rockchip/Makefile
++++ b/arch/arm/mach-rockchip/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += rockchip.o
+ pbl-$(CONFIG_ARCH_RK3568) += atf.o
+ obj-$(CONFIG_ARCH_RK3188) += rk3188.o
+diff --git a/arch/arm/mach-samsung/Kconfig b/arch/arm/mach-samsung/Kconfig
+index fa1a3ddcc49f..aa2ae67e2d86 100644
+--- a/arch/arm/mach-samsung/Kconfig
++++ b/arch/arm/mach-samsung/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config ARCH_SAMSUNG
+ 	bool
+ 
+diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
+index 284c80a2ad43..8a893a076ff1 100644
+--- a/arch/arm/mach-samsung/Makefile
++++ b/arch/arm/mach-samsung/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += s3c-timer.o generic.o
+ obj-$(CONFIG_RESET_SOURCE) += reset_source.o
+ obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
+diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
+index ea2abebaa20c..80344315e3d9 100644
+--- a/arch/arm/mach-socfpga/Kconfig
++++ b/arch/arm/mach-socfpga/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_SOCFPGA
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-socfpga/Makefile b/arch/arm/mach-socfpga/Makefile
+index 3a3a2fc57dd3..935270bfad8e 100644
+--- a/arch/arm/mach-socfpga/Makefile
++++ b/arch/arm/mach-socfpga/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ pbl-$(CONFIG_ARCH_SOCFPGA_CYCLONE5) += cyclone5-init.o cyclone5-freeze-controller.o cyclone5-scan-manager.o cyclone5-system-manager.o
+ pbl-$(CONFIG_ARCH_SOCFPGA_CYCLONE5) += cyclone5-clock-manager.o
+ obj-$(CONFIG_ARCH_SOCFPGA_CYCLONE5) += cyclone5-generic.o nic301.o cyclone5-bootsource.o cyclone5-reset-manager.o
+diff --git a/arch/arm/mach-stm32mp/Kconfig b/arch/arm/mach-stm32mp/Kconfig
+index 8328eb899aba..d059dbda56a9 100644
+--- a/arch/arm/mach-stm32mp/Kconfig
++++ b/arch/arm/mach-stm32mp/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_STM32MP
+ 
+ config ARCH_NR_GPIO
+diff --git a/arch/arm/mach-stm32mp/Makefile b/arch/arm/mach-stm32mp/Makefile
+index 8e14b225359d..4163bd176b1f 100644
+--- a/arch/arm/mach-stm32mp/Makefile
++++ b/arch/arm/mach-stm32mp/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y := init.o
+ obj-pbl-y := ddrctrl.o
+ obj-$(CONFIG_BOOTM) += stm32image.o
+diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
+index f144d346b4c5..cc256f584ac6 100644
+--- a/arch/arm/mach-tegra/Kconfig
++++ b/arch/arm/mach-tegra/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_TEGRA
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
+index 60aae41ea06c..ddc029bda26a 100644
+--- a/arch/arm/mach-tegra/Makefile
++++ b/arch/arm/mach-tegra/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ CFLAGS_tegra_avp_init.o := -mcpu=arm7tdmi -march=armv4t
+ CFLAGS_tegra_avp_init.pbl.o := -mcpu=arm7tdmi -march=armv4t
+ lwl-y += tegra_avp_init.o
+diff --git a/arch/arm/mach-uemd/Kconfig b/arch/arm/mach-uemd/Kconfig
+index 2bcdd320c99a..7844b9c78fbc 100644
+--- a/arch/arm/mach-uemd/Kconfig
++++ b/arch/arm/mach-uemd/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_UEMD
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-uemd/Makefile b/arch/arm/mach-uemd/Makefile
+index 16a218658ade..1c2b374603ce 100644
+--- a/arch/arm/mach-uemd/Makefile
++++ b/arch/arm/mach-uemd/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj- := __dummy__.o
+diff --git a/arch/arm/mach-versatile/Kconfig b/arch/arm/mach-versatile/Kconfig
+index 95172cff8c2d..e0e1996d333e 100644
+--- a/arch/arm/mach-versatile/Kconfig
++++ b/arch/arm/mach-versatile/Kconfig
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ if ARCH_VERSATILE
+ 
+diff --git a/arch/arm/mach-versatile/Makefile b/arch/arm/mach-versatile/Makefile
+index a8da54c27b2f..6a9630115f9f 100644
+--- a/arch/arm/mach-versatile/Makefile
++++ b/arch/arm/mach-versatile/Makefile
+@@ -1,2 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ obj-y += core.o
+diff --git a/arch/arm/mach-vexpress/Kconfig b/arch/arm/mach-vexpress/Kconfig
+index b72684caa722..1b89d0edf9ef 100644
+--- a/arch/arm/mach-vexpress/Kconfig
++++ b/arch/arm/mach-vexpress/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_VEXPRESS
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-vexpress/Makefile b/arch/arm/mach-vexpress/Makefile
+index 9a06e648a6f1..b52ba00f3c11 100644
+--- a/arch/arm/mach-vexpress/Makefile
++++ b/arch/arm/mach-vexpress/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += v2m.o
+ obj-y += reset.o
+diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
+index 3e07633e5f08..3f2cd8e99c14 100644
+--- a/arch/arm/mach-zynq/Kconfig
++++ b/arch/arm/mach-zynq/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_ZYNQ
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/arm/mach-zynq/Makefile b/arch/arm/mach-zynq/Makefile
+index 06c2ce996cfa..d5e94859a6b1 100644
+--- a/arch/arm/mach-zynq/Makefile
++++ b/arch/arm/mach-zynq/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += zynq.o bootm-zynqimg.o
+ lwl-y += cpu_init.o
+diff --git a/arch/arm/tools/Makefile b/arch/arm/tools/Makefile
+index bff825e58a01..298a7f90e627 100644
+--- a/arch/arm/tools/Makefile
++++ b/arch/arm/tools/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ #
+ # linux/arch/arm/tools/Makefile
+ #
+diff --git a/arch/kvx/Kconfig b/arch/kvx/Kconfig
+index 09344408806b..960b712ac9b4 100644
+--- a/arch/kvx/Kconfig
++++ b/arch/kvx/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config KVX
+ 	bool
+ 	select 64BIT
+diff --git a/arch/kvx/Makefile b/arch/kvx/Makefile
+index f29eeef9210b..9431c9fe18fd 100644
+--- a/arch/kvx/Makefile
++++ b/arch/kvx/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ KBUILD_DEFCONFIG := generic_defconfig
+ 
+ KBUILD_CPPFLAGS += -fno-strict-aliasing
+diff --git a/arch/kvx/dts/Makefile b/arch/kvx/dts/Makefile
+index d4221d2c1bb6..3f03192750bc 100644
+--- a/arch/kvx/dts/Makefile
++++ b/arch/kvx/dts/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
+ # just to build a built-in.o. Otherwise compilation fails when no devicetree is
+ # created.
+ obj- += dummy.o
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 7774abe94827..be5a4ff30de9 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1,6 +1,5 @@
+-#
+-#
+-#
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config MIPS
+ 	bool
+ 	select GENERIC_LIB_ASHLDI3
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 786695194490..345e703d332b 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ KBUILD_DEFCONFIG := qemu-malta_defconfig
+ 
+ #
+diff --git a/arch/mips/boards/8devices-lima/Makefile b/arch/mips/boards/8devices-lima/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/8devices-lima/Makefile
++++ b/arch/mips/boards/8devices-lima/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/Makefile b/arch/mips/boards/Makefile
+index 5f9b61e7545c..9402035856c2 100644
+--- a/arch/mips/boards/Makefile
++++ b/arch/mips/boards/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_BOARD_8DEVICES_LIMA) += 8devices-lima/
+ obj-$(CONFIG_BOARD_BLACK_SWIFT) += black-swift/
+ obj-$(CONFIG_BOARD_CI20) += img-ci20/
+diff --git a/arch/mips/boards/black-swift/Makefile b/arch/mips/boards/black-swift/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/black-swift/Makefile
++++ b/arch/mips/boards/black-swift/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/dlink-dir-320/Makefile b/arch/mips/boards/dlink-dir-320/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/dlink-dir-320/Makefile
++++ b/arch/mips/boards/dlink-dir-320/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/dptechnics-dpt-module/Makefile b/arch/mips/boards/dptechnics-dpt-module/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/dptechnics-dpt-module/Makefile
++++ b/arch/mips/boards/dptechnics-dpt-module/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/img-ci20/Makefile b/arch/mips/boards/img-ci20/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/img-ci20/Makefile
++++ b/arch/mips/boards/img-ci20/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/loongson-ls1b/Makefile b/arch/mips/boards/loongson-ls1b/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/loongson-ls1b/Makefile
++++ b/arch/mips/boards/loongson-ls1b/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/netgear-wg102/Makefile b/arch/mips/boards/netgear-wg102/Makefile
+index 344a6711b2bd..fe0616fdb8f6 100644
+--- a/arch/mips/boards/netgear-wg102/Makefile
++++ b/arch/mips/boards/netgear-wg102/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ obj-y += ram.o
+diff --git a/arch/mips/boards/okud-max9331/Makefile b/arch/mips/boards/okud-max9331/Makefile
+index c58bf72354db..c28b1a9059a2 100644
+--- a/arch/mips/boards/okud-max9331/Makefile
++++ b/arch/mips/boards/okud-max9331/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+ lwl-y += lowlevel_boot0.o
+diff --git a/arch/mips/boards/openembed-som9331/Makefile b/arch/mips/boards/openembed-som9331/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/openembed-som9331/Makefile
++++ b/arch/mips/boards/openembed-som9331/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/qemu-malta/Makefile b/arch/mips/boards/qemu-malta/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/qemu-malta/Makefile
++++ b/arch/mips/boards/qemu-malta/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/ritmix-rzx50/Makefile b/arch/mips/boards/ritmix-rzx50/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/ritmix-rzx50/Makefile
++++ b/arch/mips/boards/ritmix-rzx50/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/tplink-mr3020/Makefile b/arch/mips/boards/tplink-mr3020/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/tplink-mr3020/Makefile
++++ b/arch/mips/boards/tplink-mr3020/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/tplink-wdr4300/Makefile b/arch/mips/boards/tplink-wdr4300/Makefile
+index b08c4a93ca27..458f5209008d 100644
+--- a/arch/mips/boards/tplink-wdr4300/Makefile
++++ b/arch/mips/boards/tplink-wdr4300/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boot/Makefile b/arch/mips/boot/Makefile
+index 3d46e836f7a7..d1e27b5e6b8a 100644
+--- a/arch/mips/boot/Makefile
++++ b/arch/mips/boot/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += start.o
+ obj-y += main_entry.o
+ 
+diff --git a/arch/mips/dts/Makefile b/arch/mips/dts/Makefile
+index e5900c971b9a..e4cc3b44a53e 100644
+--- a/arch/mips/dts/Makefile
++++ b/arch/mips/dts/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
+ ifneq ($(BUILTIN_DTB),)
+ obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index 88a2bdbd282b..1ef340202acf 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ extra-$(CONFIG_GENERIC_LINKER_SCRIPT) += barebox.lds
+ obj-$(CONFIG_CSRC_R4K_LIB) += csrc-r4k.o
+ obj-y += cpu-probe.o
+diff --git a/arch/mips/mach-ar231x/Kconfig b/arch/mips/mach-ar231x/Kconfig
+index f920f300bd20..f3e17000a754 100644
+--- a/arch/mips/mach-ar231x/Kconfig
++++ b/arch/mips/mach-ar231x/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if MACH_MIPS_AR231X
+ 
+ choice
+diff --git a/arch/mips/mach-ar231x/Makefile b/arch/mips/mach-ar231x/Makefile
+index eba8e818b5b7..65e32c7bc3a7 100644
+--- a/arch/mips/mach-ar231x/Makefile
++++ b/arch/mips/mach-ar231x/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += ar231x.o
+ obj-y += board.o
+ obj-y += ar231x_reset.o
+diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
+index 2dfe0e587a65..75640504895c 100644
+--- a/arch/mips/mach-ath79/Kconfig
++++ b/arch/mips/mach-ath79/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if MACH_MIPS_ATH79
+ 
+ config SOC_QCA_AR9331
+diff --git a/arch/mips/mach-ath79/Makefile b/arch/mips/mach-ath79/Makefile
+index 396df66bf162..9f3a34b3eb77 100644
+--- a/arch/mips/mach-ath79/Makefile
++++ b/arch/mips/mach-ath79/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ lwl-y += lowlevel_ar9331_spi_trap.o
+ lwl-y += lowlevel_ar9331_sram.o
+ 
+diff --git a/arch/mips/mach-bcm47xx/Kconfig b/arch/mips/mach-bcm47xx/Kconfig
+index c4791901afb0..606d9e600099 100644
+--- a/arch/mips/mach-bcm47xx/Kconfig
++++ b/arch/mips/mach-bcm47xx/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if MACH_MIPS_BCM47XX
+ 
+ choice
+diff --git a/arch/mips/mach-bcm47xx/Makefile b/arch/mips/mach-bcm47xx/Makefile
+index f3cc6684b896..d19b1f29501a 100644
+--- a/arch/mips/mach-bcm47xx/Makefile
++++ b/arch/mips/mach-bcm47xx/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += reset.o
+diff --git a/arch/mips/mach-loongson/Kconfig b/arch/mips/mach-loongson/Kconfig
+index ab7ccd0cb569..38d05e415be4 100644
+--- a/arch/mips/mach-loongson/Kconfig
++++ b/arch/mips/mach-loongson/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if MACH_MIPS_LOONGSON
+ 
+ choice
+diff --git a/arch/mips/mach-loongson/Makefile b/arch/mips/mach-loongson/Makefile
+index 52b36f3cf946..451c572e76cb 100644
+--- a/arch/mips/mach-loongson/Makefile
++++ b/arch/mips/mach-loongson/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += loongson1_reset.o
+diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
+index 467107514006..cf061f667057 100644
+--- a/arch/mips/mach-malta/Kconfig
++++ b/arch/mips/mach-malta/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if MACH_MIPS_MALTA
+ 
+ config BOARD_QEMU_MALTA
+diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
+index 7d56f215b034..d937083bbb0a 100644
+--- a/arch/mips/mach-malta/Makefile
++++ b/arch/mips/mach-malta/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_PCI) += pci.o
+diff --git a/arch/mips/mach-xburst/Kconfig b/arch/mips/mach-xburst/Kconfig
+index ae8093d1a311..954e295fd149 100644
+--- a/arch/mips/mach-xburst/Kconfig
++++ b/arch/mips/mach-xburst/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if MACH_MIPS_XBURST
+ 
+ config CPU_JZ4755
+diff --git a/arch/mips/mach-xburst/Makefile b/arch/mips/mach-xburst/Makefile
+index e5634ba9cc4c..0d2bb542c790 100644
+--- a/arch/mips/mach-xburst/Makefile
++++ b/arch/mips/mach-xburst/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_CPU_JZ4755) += csrc-jz4750.o reset-jz4750.o
+diff --git a/arch/mips/pbl/Makefile b/arch/mips/pbl/Makefile
+index f85c7a6d6d58..38dfbd47243c 100644
+--- a/arch/mips/pbl/Makefile
++++ b/arch/mips/pbl/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
+ suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
+diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
+index bd8851e4b306..34b24bec0858 100644
+--- a/arch/openrisc/Kconfig
++++ b/arch/openrisc/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config OPENRISC
+ 	bool
+ 	select OFTREE
+diff --git a/arch/openrisc/Makefile b/arch/openrisc/Makefile
+index 1776f56df97b..609b998de98e 100644
+--- a/arch/openrisc/Makefile
++++ b/arch/openrisc/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ KBUILD_DEFCONFIG := generic_defconfig
+ 
+ KBUILD_CPPFLAGS += -D__OR1K__ -ffixed-r10 -mhard-mul -mhard-div
+diff --git a/arch/openrisc/boards/generic/Makefile b/arch/openrisc/boards/generic/Makefile
+index d8a3d7f2cc2d..3cdac31b391d 100644
+--- a/arch/openrisc/boards/generic/Makefile
++++ b/arch/openrisc/boards/generic/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += generic.o
+diff --git a/arch/openrisc/cpu/Makefile b/arch/openrisc/cpu/Makefile
+index 1cd7506003be..9828dff95d02 100644
+--- a/arch/openrisc/cpu/Makefile
++++ b/arch/openrisc/cpu/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y                 += start.o
+ obj-y                 += cpu.o
+ obj-y                 += exceptions.o
+diff --git a/arch/openrisc/dts/Makefile b/arch/openrisc/dts/Makefile
+index 6d6c9a3ce094..f43a28d6b905 100644
+--- a/arch/openrisc/dts/Makefile
++++ b/arch/openrisc/dts/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
+ obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
+diff --git a/arch/openrisc/lib/Makefile b/arch/openrisc/lib/Makefile
+index 808b09f3aa50..a55a9049e6e9 100644
+--- a/arch/openrisc/lib/Makefile
++++ b/arch/openrisc/lib/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y                 += clock.o
+ obj-y                 += board.o
+ obj-y                 += cpuinfo.o
+diff --git a/arch/powerpc/Kbuild b/arch/powerpc/Kbuild
+index 65e249338688..e9f7b32848e0 100644
+--- a/arch/powerpc/Kbuild
++++ b/arch/powerpc/Kbuild
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_ARCH_MPC85XX) += cpu-85xx/
+ obj-y += lib/
+ obj-$(CONFIG_FSL_DDR2) += ddr-8xxx/
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 376c1bf42b5e..7525ecef4948 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config PPC
+ 	bool
+ 	select HAVE_CONFIGURABLE_TEXT_BASE
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index aa7626049613..ebd8fe60d3f1 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ KBUILD_DEFCONFIG := p2020rdb_defconfig
+ 
+ KBUILD_CPPFLAGS += -ffixed-r14 -m32 	\
+diff --git a/arch/powerpc/boards/freescale-p1010rdb/Makefile b/arch/powerpc/boards/freescale-p1010rdb/Makefile
+index a7b64eef4d34..e54ee8ee43fa 100644
+--- a/arch/powerpc/boards/freescale-p1010rdb/Makefile
++++ b/arch/powerpc/boards/freescale-p1010rdb/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y	+= p1010rdb.o
+ obj-y	+= law.o
+ obj-y	+= tlb.o
+diff --git a/arch/powerpc/boards/freescale-p1022ds/Makefile b/arch/powerpc/boards/freescale-p1022ds/Makefile
+index 48867fa851ee..1d969d48ebb2 100644
+--- a/arch/powerpc/boards/freescale-p1022ds/Makefile
++++ b/arch/powerpc/boards/freescale-p1022ds/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y	+= p1022ds.o
+ obj-y	+= law.o
+ obj-y	+= tlb.o
+diff --git a/arch/powerpc/boards/freescale-p2020rdb/Makefile b/arch/powerpc/boards/freescale-p2020rdb/Makefile
+index b2497f695cc7..ff0cdd657c94 100644
+--- a/arch/powerpc/boards/freescale-p2020rdb/Makefile
++++ b/arch/powerpc/boards/freescale-p2020rdb/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y	+= p2020rdb.o
+ obj-y	+= law.o
+ obj-y	+= tlb.o
+diff --git a/arch/powerpc/boards/owc-da923rc/Makefile b/arch/powerpc/boards/owc-da923rc/Makefile
+index 4cf6c5cf3c90..78b6885c0873 100644
+--- a/arch/powerpc/boards/owc-da923rc/Makefile
++++ b/arch/powerpc/boards/owc-da923rc/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += da923rc.o
+ obj-y += tlb.o
+ obj-y += law.o
+diff --git a/arch/powerpc/boards/pcm030/Makefile b/arch/powerpc/boards/pcm030/Makefile
+index 4e5dc4f57bcd..95dd0610437c 100644
+--- a/arch/powerpc/boards/pcm030/Makefile
++++ b/arch/powerpc/boards/pcm030/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += pcm030.o eeprom.o
+ extra-y += barebox.lds
+diff --git a/arch/powerpc/cpu-85xx/Makefile b/arch/powerpc/cpu-85xx/Makefile
+index c649c4ec2530..c7c5c8a00663 100644
+--- a/arch/powerpc/cpu-85xx/Makefile
++++ b/arch/powerpc/cpu-85xx/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y			+= traps.o
+ obj-y			+= tlb.o
+ obj-$(CONFIG_MMU)	+= mmu.o
+diff --git a/arch/powerpc/ddr-8xxx/Makefile b/arch/powerpc/ddr-8xxx/Makefile
+index 43ae3a41df4b..651fe050f65b 100644
+--- a/arch/powerpc/ddr-8xxx/Makefile
++++ b/arch/powerpc/ddr-8xxx/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y	+=  	main.o util.o ctrl_regs.o options.o lc_common_dimm_params.o
+ obj-y	+=	ddr_setctrl.o
+ obj-$(CONFIG_FSL_DDR2)	+= ddr2_dimm_params.o
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 405351c19929..65729953e693 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += bat_rw.o
+ obj-y += board.o
+ obj-y += extable.o
+diff --git a/arch/powerpc/mach-mpc5xxx/Kconfig b/arch/powerpc/mach-mpc5xxx/Kconfig
+index 4da947dc6cfc..e78c2fa350b1 100644
+--- a/arch/powerpc/mach-mpc5xxx/Kconfig
++++ b/arch/powerpc/mach-mpc5xxx/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_MPC5XXX
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/powerpc/mach-mpc5xxx/Makefile b/arch/powerpc/mach-mpc5xxx/Makefile
+index 101d0618152a..9fc45c08bb31 100644
+--- a/arch/powerpc/mach-mpc5xxx/Makefile
++++ b/arch/powerpc/mach-mpc5xxx/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y 				+= cpu.o
+ obj-y				+= cpu_init.o
+ obj-y				+= loadtask.o
+diff --git a/arch/powerpc/mach-mpc85xx/Kconfig b/arch/powerpc/mach-mpc85xx/Kconfig
+index aa518b98fca8..550c554286d7 100644
+--- a/arch/powerpc/mach-mpc85xx/Kconfig
++++ b/arch/powerpc/mach-mpc85xx/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ if ARCH_MPC85XX
+ 
+ config MMU
+diff --git a/arch/powerpc/mach-mpc85xx/Makefile b/arch/powerpc/mach-mpc85xx/Makefile
+index 9886c7da45d6..3e23c1b8125d 100644
+--- a/arch/powerpc/mach-mpc85xx/Makefile
++++ b/arch/powerpc/mach-mpc85xx/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y 			+= cpuid.o
+ obj-y 			+= cpu.o
+ obj-y 			+= cpu_init.o
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 8c6669718554..e093ed4226de 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config RISCV
+ 	def_bool y
+ 	select GENERIC_FIND_NEXT_BIT
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index 9f2a4f825ebb..828b65a0c177 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menu "SoC selection"
+ 
+ config SOC_ERIZO
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index 23ea6178a25a..6fbf1d4dddbf 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ KBUILD_DEFCONFIG := virt64_defconfig
+ 
+ KBUILD_CPPFLAGS += -fno-strict-aliasing
+diff --git a/arch/riscv/boards/riscvemu/Makefile b/arch/riscv/boards/riscvemu/Makefile
+index dcfc2937d325..ad283446eaf1 100644
+--- a/arch/riscv/boards/riscvemu/Makefile
++++ b/arch/riscv/boards/riscvemu/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+index 01078bca971f..a8bca8757f28 100644
+--- a/arch/sandbox/Kconfig
++++ b/arch/sandbox/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ source "scripts/Kconfig.include"
+ 
+ config SANDBOX
+diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
+index 5fc7e227be67..2cf51fa34917 100644
+--- a/arch/sandbox/Makefile
++++ b/arch/sandbox/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ KBUILD_DEFCONFIG := sandbox_defconfig
+ 
+ KBUILD_CPPFLAGS += -D__SANDBOX__ -fno-strict-aliasing -fvisibility=hidden
+diff --git a/arch/sandbox/board/Makefile b/arch/sandbox/board/Makefile
+index ed01cb9c3e25..11688c5aba45 100644
+--- a/arch/sandbox/board/Makefile
++++ b/arch/sandbox/board/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += board.o
+ obj-y += clock.o
+ obj-y += hostfile.o
+diff --git a/arch/sandbox/dts/Makefile b/arch/sandbox/dts/Makefile
+index c8d83141ceab..9af91cb72c03 100644
+--- a/arch/sandbox/dts/Makefile
++++ b/arch/sandbox/dts/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_OFTREE) += \
+ 	sandbox.dtb.o
+ 
+diff --git a/arch/sandbox/lib/Makefile b/arch/sandbox/lib/Makefile
+index b32ca6aaf804..9535305d5bfa 100644
+--- a/arch/sandbox/lib/Makefile
++++ b/arch/sandbox/lib/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_ARCH_HAS_STACK_DUMP) += unwind.o
+diff --git a/arch/sandbox/os/Makefile b/arch/sandbox/os/Makefile
+index 5d0c938ce68c..ebcbe5833b26 100644
+--- a/arch/sandbox/os/Makefile
++++ b/arch/sandbox/os/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ machine-y := sandbox
+ 
+ machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index f40b14dddc00..5e2e26cd6e5b 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1,6 +1,5 @@
+-#
+-#
+-#
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config X86
+ 	bool
+ 	select HAS_KALLSYMS
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index a0ce8c17f181..dba5b196b310 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ KBUILD_DEFCONFIG := efi_defconfig
+ 
+ KBUILD_CPPFLAGS += -D__X86__
+diff --git a/arch/x86/lib/Makefile b/arch/x86/lib/Makefile
+index 360aebf56936..d713065fd395 100644
+--- a/arch/x86/lib/Makefile
++++ b/arch/x86/lib/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_X86_32) += setjmp_32.o
+ obj-$(CONFIG_X86_64) += setjmp_64.o
+diff --git a/arch/x86/mach-efi/Makefile b/arch/x86/mach-efi/Makefile
+index f633e7c7ed95..bddbac8f66b8 100644
+--- a/arch/x86/mach-efi/Makefile
++++ b/arch/x86/mach-efi/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_X86_64) += reloc_x86_64.o crt0-efi-x86_64.o
+ obj-$(CONFIG_X86_32) += reloc_ia32.o crt0-efi-ia32.o
+ obj-y += clocksource.o
+diff --git a/common/Kconfig b/common/Kconfig
+index e540cba7ebaa..276b2c0d8f7d 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ source "common/boards/Kconfig"
+ 
+ config GREGORIAN_CALENDER
+diff --git a/common/Makefile b/common/Makefile
+index f4496c4d9b69..35f2120496ea 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y				+= boards/
+ obj-y				+= memory.o
+ obj-y				+= memory_display.o
+diff --git a/common/partitions/Kconfig b/common/partitions/Kconfig
+index be9405a6495f..7f12383082c4 100644
+--- a/common/partitions/Kconfig
++++ b/common/partitions/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config PARTITION_DISK
+ 	depends on PARTITION
+ 	depends on BLOCK
+diff --git a/common/partitions/Makefile b/common/partitions/Makefile
+index 2b0c5b4b9c77..d304b6f8d587 100644
+--- a/common/partitions/Makefile
++++ b/common/partitions/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_PARTITION_DISK_DOS)	+= dos.o
+ obj-$(CONFIG_PARTITION_DISK_EFI)	+= efi.o
+diff --git a/common/ratp/Kconfig b/common/ratp/Kconfig
+index 25150addfd75..43720e30a0e4 100644
+--- a/common/ratp/Kconfig
++++ b/common/ratp/Kconfig
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ config CONSOLE_RATP
+ 	bool
+@@ -28,4 +29,4 @@ config RATP_CMD_GPIO
+ 	depends on GENERIC_GPIO
+ 	prompt "RATP GPIO support"
+ 	help
+-	  This option adds support for GPIO get/set/direction commands via RATP.
+\ No newline at end of file
++	  This option adds support for GPIO get/set/direction commands via RATP.
+diff --git a/common/ratp/Makefile b/common/ratp/Makefile
+index 71288bcb8ceb..e37ccca1fa5b 100644
+--- a/common/ratp/Makefile
++++ b/common/ratp/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += ratp.o
+ obj-y += ping.o
+ obj-y += getenv.o
+diff --git a/common/state/Makefile b/common/state/Makefile
+index fcf9add52cbe..93215dd06921 100644
+--- a/common/state/Makefile
++++ b/common/state/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += state.o
+ obj-y += state_variables.o
+ obj-y += backend_format_dtb.o
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index ff83a40f5b43..3b68836b3482 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menu "Crypto support"
+ 
+ config CRC32
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 5da58d799882..be0f79d4e39c 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_CRC32)	+= crc32.o
+ obj-pbl-$(CONFIG_CRC_ITU_T)	+= crc-itu-t.o
+ obj-$(CONFIG_CRC7)	+= crc7.o
+diff --git a/defaultenv/Makefile b/defaultenv/Makefile
+index 68790321187d..1eaca9f41087 100644
+--- a/defaultenv/Makefile
++++ b/defaultenv/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
+diff --git a/firmware/Kconfig b/firmware/Kconfig
+index b44753892776..b4a6fd913709 100644
+--- a/firmware/Kconfig
++++ b/firmware/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menu "Firmware files"
+ 
+ config EXTRA_FIRMWARE_DIR
+diff --git a/fs/Kconfig b/fs/Kconfig
+index e0405de334ee..aeba00073eed 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ menu "Filesystem support"
+ 
+diff --git a/fs/Makefile b/fs/Makefile
+index fa950941de92..6160ef4e1a0b 100644
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_FS_CRAMFS)	+= cramfs/
+ obj-$(CONFIG_FS_EXT4)	+= ext4/
+ obj-$(CONFIG_FS_RAMFS)	+= ramfs.o
+diff --git a/fs/cramfs/Makefile b/fs/cramfs/Makefile
+index 4e84a98fe119..1b54096664b2 100644
+--- a/fs/cramfs/Makefile
++++ b/fs/cramfs/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y	+= cramfs.o
+ obj-y	+= uncompress.o
+diff --git a/fs/ext4/Kconfig b/fs/ext4/Kconfig
+index f36043d9a743..cb01675507ca 100644
+--- a/fs/ext4/Kconfig
++++ b/fs/ext4/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config FS_EXT4
+ 	bool
+ 	prompt "ext4 filesystem support"
+diff --git a/fs/ext4/Makefile b/fs/ext4/Makefile
+index 5084e3fb25ab..223f50e470f6 100644
+--- a/fs/ext4/Makefile
++++ b/fs/ext4/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_FS_EXT4) += ext4fs.o ext4_common.o ext_barebox.o
+diff --git a/fs/fat/Kconfig b/fs/fat/Kconfig
+index bc3b4b69e870..8cd3b604baeb 100644
+--- a/fs/fat/Kconfig
++++ b/fs/fat/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menuconfig FS_FAT
+ 	bool
+ 	select FS_LEGACY
+diff --git a/fs/fat/Makefile b/fs/fat/Makefile
+index fe47569bda09..7a7a5ccdc688 100644
+--- a/fs/fat/Makefile
++++ b/fs/fat/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += fat.o
+ pbl-y += fat-pbl.o
+ obj-pbl-y += ff.o fat-diskio.o
+diff --git a/fs/jffs2/Kconfig b/fs/jffs2/Kconfig
+index 3121d369b470..329e7b806a6e 100644
+--- a/fs/jffs2/Kconfig
++++ b/fs/jffs2/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menuconfig FS_JFFS2
+ 	bool
+ 	select CRC32
+diff --git a/fs/jffs2/Makefile b/fs/jffs2/Makefile
+index a4da48d3c3c6..3c5bfd261c48 100644
+--- a/fs/jffs2/Makefile
++++ b/fs/jffs2/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += compr.o dir.o nodelist.o malloc.o
+ obj-y += read.o readinode.o scan.o
+ obj-y += build.o fs.o
+diff --git a/fs/pstore/Kconfig b/fs/pstore/Kconfig
+index 30c2de19c82a..ff9091d3f39f 100644
+--- a/fs/pstore/Kconfig
++++ b/fs/pstore/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menuconfig FS_PSTORE
+ 	select FS_LEGACY
+ 	bool
+diff --git a/fs/pstore/Makefile b/fs/pstore/Makefile
+index c4043e1a8fb2..18475497a3f3 100644
+--- a/fs/pstore/Makefile
++++ b/fs/pstore/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ #
+ # Makefile for the linux pstorefs routines.
+ #
+diff --git a/fs/squashfs/Kconfig b/fs/squashfs/Kconfig
+index 19b8297af622..af187a2a8ac7 100644
+--- a/fs/squashfs/Kconfig
++++ b/fs/squashfs/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menuconfig FS_SQUASHFS
+ 	bool
+ 	prompt "squashfs support"
+diff --git a/fs/squashfs/Makefile b/fs/squashfs/Makefile
+index 81fc7e570d81..59a78a24b0d7 100644
+--- a/fs/squashfs/Makefile
++++ b/fs/squashfs/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y	+= squashfs.o
+ obj-y	+= block.o
+ obj-y	+= cache.o
+diff --git a/fs/ubifs/Kconfig b/fs/ubifs/Kconfig
+index 889a2be97a5f..ae58c2b7f230 100644
+--- a/fs/ubifs/Kconfig
++++ b/fs/ubifs/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menuconfig FS_UBIFS
+ 	bool
+ 	depends on MTD_UBI
+diff --git a/fs/ubifs/Makefile b/fs/ubifs/Makefile
+index d8c4b2299eb8..7a1ce4e8fcc0 100644
+--- a/fs/ubifs/Makefile
++++ b/fs/ubifs/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += ubifs.o io.o super.o sb.o master.o
+ obj-y += scan.o dir.o misc.o
+ obj-y += tnc.o tnc_misc.o debug.o
+diff --git a/images/Makefile b/images/Makefile
+index cc330d957597..5e2b9ecaaa9f 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ #
+ # barebox image generation Makefile
+ #
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 718033e56e64..53c0e70e3a7c 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menu "Library routines"
+ config PARAMETER
+ 	bool
+diff --git a/lib/Makefile b/lib/Makefile
+index 9b37d847e0cc..3f6653d74e9a 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y			+= bcd.o
+ obj-$(CONFIG_BOOTSTRAP)	+= bootstrap/
+ obj-pbl-y		+= ctype.o
+diff --git a/lib/bootstrap/Kconfig b/lib/bootstrap/Kconfig
+index 645f0b4b78dd..5cd6035beef4 100644
+--- a/lib/bootstrap/Kconfig
++++ b/lib/bootstrap/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menuconfig BOOTSTRAP
+ 	bool "Library bootstrap routines"
+ 	depends on SHELL_NONE
+diff --git a/lib/bootstrap/Makefile b/lib/bootstrap/Makefile
+index cbaa49f9d9da..295d63e07458 100644
+--- a/lib/bootstrap/Makefile
++++ b/lib/bootstrap/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y				+= common.o
+ obj-$(CONFIG_BOOTSTRAP_DEVFS)	+= devfs.o
+ obj-$(CONFIG_BOOTSTRAP_DISK)	+= disk.o
+diff --git a/lib/fonts/Kconfig b/lib/fonts/Kconfig
+index e1a736d137c2..3201364cae27 100644
+--- a/lib/fonts/Kconfig
++++ b/lib/fonts/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ #
+ # Font configuration
+ #
+diff --git a/lib/fonts/Makefile b/lib/fonts/Makefile
+index 394e2c5e4c18..1eae8ee67b35 100644
+--- a/lib/fonts/Makefile
++++ b/lib/fonts/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ # Font handling
+ 
+ font-objs := fonts.o
+diff --git a/lib/gui/Kconfig b/lib/gui/Kconfig
+index 2625d9fb2fbe..d102604335b5 100644
+--- a/lib/gui/Kconfig
++++ b/lib/gui/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menu "Library gui routines"
+ 
+ config IMAGE_RENDERER
+diff --git a/lib/gui/Makefile b/lib/gui/Makefile
+index 31e66225d7c0..59caa8fbeb8a 100644
+--- a/lib/gui/Makefile
++++ b/lib/gui/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_BMP)	+= bmp.o
+ obj-$(CONFIG_IMAGE_RENDERER)	+= image_renderer.o graphic_utils.o
+ obj-$(CONFIG_PNG)	+= png.o
+diff --git a/lib/kasan/Kconfig b/lib/kasan/Kconfig
+index 7a18cf95be87..46fc4f263b3e 100644
+--- a/lib/kasan/Kconfig
++++ b/lib/kasan/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ source "scripts/Kconfig.include"
+ 
+ config HAVE_ARCH_KASAN
+diff --git a/lib/kasan/Makefile b/lib/kasan/Makefile
+index 31e9d890d538..e3f4bb61f900 100644
+--- a/lib/kasan/Makefile
++++ b/lib/kasan/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ obj-y += generic_report.o generic.o report.o common.o test_kasan.o
+ KASAN_SANITIZE_generic_report.o := n
+diff --git a/lib/logo/Kconfig b/lib/logo/Kconfig
+index 7d55f7fa2727..56ec76afb6cf 100644
+--- a/lib/logo/Kconfig
++++ b/lib/logo/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menuconfig BAREBOX_LOGO
+ 	bool "include barebox logos in build"
+ 	help
+diff --git a/lib/logo/Makefile b/lib/logo/Makefile
+index f08beef76b95..3e36cf911f94 100644
+--- a/lib/logo/Makefile
++++ b/lib/logo/Makefile
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
+ 
+ OPTS_barebox-logo-w64.bblogo = -resize 64
+ bblogo-$(CONFIG_BAREBOX_LOGO_64) += barebox-logo-w64
+diff --git a/lib/lz4/Makefile b/lib/lz4/Makefile
+index 7f548c6d1c5c..7156ec914589 100644
+--- a/lib/lz4/Makefile
++++ b/lib/lz4/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_LZ4_DECOMPRESS) += lz4_decompress.o
+diff --git a/lib/lzo/Kconfig b/lib/lzo/Kconfig
+index 17b0083236af..2ead1321e862 100644
+--- a/lib/lzo/Kconfig
++++ b/lib/lzo/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config LZO_DECOMPRESS
+ 	bool "include lzo uncompression support"
+ 	select UNCOMPRESS
+diff --git a/lib/lzo/Makefile b/lib/lzo/Makefile
+index 0e576a1c10d2..4ab28ff6f5cd 100644
+--- a/lib/lzo/Makefile
++++ b/lib/lzo/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_LZO_DECOMPRESS) += lzo1x_decompress_safe.o
+diff --git a/lib/math/Makefile b/lib/math/Makefile
+index 756d7dd90d76..2830dedb2ff9 100644
+--- a/lib/math/Makefile
++++ b/lib/math/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += div64.o
+ pbl-y += div64.o
+ obj-y += rational.o
+diff --git a/lib/reed_solomon/Makefile b/lib/reed_solomon/Makefile
+index c3d7136827ed..f7475981b92e 100644
+--- a/lib/reed_solomon/Makefile
++++ b/lib/reed_solomon/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ #
+ # This is a modified version of reed solomon lib,
+ #
+diff --git a/lib/xz/Makefile b/lib/xz/Makefile
+index 86ba5507335a..23581d2d8c6b 100644
+--- a/lib/xz/Makefile
++++ b/lib/xz/Makefile
+@@ -1,2 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_XZ_DECOMPRESS) += xz_crc32.o xz_dec_bcj.o
+ obj-$(CONFIG_XZ_DECOMPRESS) += xz_dec_lzma2.o xz_dec_stream.o
+diff --git a/lib/zlib_inflate/Makefile b/lib/zlib_inflate/Makefile
+index 8e95fcd3c939..bfe12b0d6ed0 100644
+--- a/lib/zlib_inflate/Makefile
++++ b/lib/zlib_inflate/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ #
+ # This is a modified version of zlib, which does all memory
+ # allocation ahead of time.
+diff --git a/lib/zstd/Makefile b/lib/zstd/Makefile
+index 0c4f56c50c5b..4e8689a4855d 100644
+--- a/lib/zstd/Makefile
++++ b/lib/zstd/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-$(CONFIG_ZSTD_DECOMPRESS) += zstd_decompress.o
+ 
+ ccflags-y += -O3
+diff --git a/net/Kconfig b/net/Kconfig
+index 3512055c456a..59f14c23cba2 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menuconfig NET
+ 	bool "Networking Support"
+ 	select POLLER
+diff --git a/net/Makefile b/net/Makefile
+index 962b2dec58e8..c93d0772c3e4 100644
+--- a/net/Makefile
++++ b/net/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y			+= lib.o
+ obj-$(CONFIG_NET)	+= eth.o
+ obj-$(CONFIG_NET)	+= net.o
+diff --git a/pbl/Kconfig b/pbl/Kconfig
+index 5fc9971084a5..ce0acbb646c7 100644
+--- a/pbl/Kconfig
++++ b/pbl/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config HAVE_PBL_IMAGE
+ 	bool
+ 
+diff --git a/pbl/Makefile b/pbl/Makefile
+index 9faa56ac91d1..f6e98e78be3f 100644
+--- a/pbl/Makefile
++++ b/pbl/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ #
+ # only unsed by the pbl
+ #
+diff --git a/scripts/Kconfig b/scripts/Kconfig
+index 96b0d26f8874..1ec907b5f1cc 100644
+--- a/scripts/Kconfig
++++ b/scripts/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menu "Host Tools"
+ 
+ config COMPILE_HOST_TOOLS
+diff --git a/scripts/Makefile b/scripts/Makefile
+index dc5fa75f908b..2a17058333e7 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ ###
+ # scripts contains sources for various helper programs used throughout
+ # barebox for the build process.
+diff --git a/scripts/imx/Kconfig b/scripts/imx/Kconfig
+index ef83fa14dd14..759f5521a5e5 100644
+--- a/scripts/imx/Kconfig
++++ b/scripts/imx/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ config ARCH_IMX_USBLOADER
+ 	depends on ARCH_MXS || ARCH_IMX || COMPILE_HOST_TOOLS
+ 	bool "imx-usb-loader"
+diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
+index a7f487a0452c..d62277bb5430 100644
+--- a/scripts/imx/Makefile
++++ b/scripts/imx/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ hostprogs-always-$(CONFIG_ARCH_IMX_IMXIMAGE)	+= imx-image
+ hostprogs-always-$(CONFIG_ARCH_IMX_USBLOADER)	+= imx-usb-loader
+ 
+diff --git a/scripts/mod/Makefile b/scripts/mod/Makefile
+index 9926ed08dc57..b381877a8330 100644
+--- a/scripts/mod/Makefile
++++ b/scripts/mod/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ hostprogs-always-y	+= modpost mk_elfconfig
+ always-y		+= empty.o
+ 
+diff --git a/scripts/tegra/Makefile b/scripts/tegra/Makefile
+index dec0b529d6a4..2c682786b168 100644
+--- a/scripts/tegra/Makefile
++++ b/scripts/tegra/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ hostprogs-always-$(CONFIG_ARCH_TEGRA) += cbootimage
+ 
+ HOSTLDLIBS_cbootimage  = '-lm'
+diff --git a/test/Kconfig b/test/Kconfig
+index eece702e68aa..958b483ea946 100644
+--- a/test/Kconfig
++++ b/test/Kconfig
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ menuconfig TEST
+ 	bool "Testing"
+ 
+diff --git a/test/Makefile b/test/Makefile
+index 1b9eb2171a82..ac2aa2843518 100644
+--- a/test/Makefile
++++ b/test/Makefile
+@@ -1 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += self/
 -- 
 2.30.2
 
