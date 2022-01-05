@@ -1,80 +1,54 @@
-Delivery-date: Wed, 05 Jan 2022 16:43:44 +0100
+Delivery-date: Wed, 05 Jan 2022 17:08:57 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n58S0-00BuZG-0Q
-	for lore@lore.pengutronix.de; Wed, 05 Jan 2022 16:43:44 +0100
+	id 1n58qP-00BvwR-Ku
+	for lore@lore.pengutronix.de; Wed, 05 Jan 2022 17:08:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n58Ry-00034o-O1
-	for lore@pengutronix.de; Wed, 05 Jan 2022 16:43:43 +0100
+	id 1n58qO-00055o-3A
+	for lore@pengutronix.de; Wed, 05 Jan 2022 17:08:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:Date:Subject:Cc:
-	To:From:Message-ID:MIME-Version:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=OVgiKV/5LMelglIOWr5/apPdya13f9AjLi9CM0rE18U=; b=ncBRiihjBIJ9hh
-	GAcgnoyLqAepyedVBUkLwoqT3jH3zaTeWEOV05+LGJ4xfXbmXB4+pvq1FshsRgrChRVAw0YummPEr
-	La5KjiFi+KYaA0oK3qMhBQjHG6kEsPRRgLLR15+JKVjHY9sD/zRKlNbMmow1S3oIZOyo3nGyYNkKn
-	Ejj43lPtIM9ZKMawPCk6azIEoN8r8mLUQfEoTL23NBnZ+8CRPtSGkhtzKcgtHsIQtkE2hbBeCodlx
-	QpfKd9PvGvn3EZfxl3Kb6eKUZShVJO8tLZKpcamBEh0FZK0jfeTv8ByeNvYOsqktDyAFbOY1fnFwH
-	FqCnyQwmzz/4e2/r/mEw==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:References:To:Subject:From:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=iTTNCry6P2yzxk2kFHyM1gyDiYNGoSJEnZogUcd3xIA=; b=4hdYkFaHoyTQv7ZlEwxogvlGVJ
+	iesovPUg3VhegJTWQDYjwxV+JaBSIOKGix2U/AcQF9dZ0udz4ypwvRPvn13TQgtKMzfXroKc05Xxq
+	2lcmGV2dGapJP0vaWy9g76MRY4Lj4Q2f1R7IOt94m2QA9YOCqLmHUA/xiFup4vEBxOiMJEC/JCn54
+	ZiBPQi43bbgTib4PyRU2kqh+Cb451CeeYaZCEjpN1kOGlGhIlOxtxrHS0AuFzXfJ0hbySQ0pMz/6v
+	vvjhmqmwoxT+3Io4639JgOMM6a0CsLHFEB9oW+zuvyEFG1oX2c+bngZgIj/M00Vx5ArNs3bvseTMd
+	lhq/6A/w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n58Qe-00FCXL-Pb; Wed, 05 Jan 2022 15:42:20 +0000
-Received: from mout.gmx.net ([212.227.15.19])
+	id 1n58p0-00FHD6-RN; Wed, 05 Jan 2022 16:07:30 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n58QU-00FCV3-2Q
- for barebox@lists.infradead.org; Wed, 05 Jan 2022 15:42:11 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1641397322;
- bh=pwlxprU5hJpAzjhdcqaq8GtCbswGoa9tqKZxKDodgos=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=PTt41jGRyNLoJRdPMSfwjhbaLdUlAXeleKfJcMnp0a3U7hYiaVi9Q+TxlgvCkbZsi
- bIlVlL+azycB1LsT3PbNmFgktEihBr5keTYBPAOWFdWB+VrLcmE3AtoP0e5KyFfyMh
- 6a/MbfGouv+1yiSOPEGpwYRQoZ7UmFL6SkOxqwkY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [80.245.79.138] ([80.245.79.138]) by web-mail.gmx.net
- (3c-app-gmx-bs58.server.lan [172.19.170.142]) (via HTTP); Wed, 5 Jan 2022
- 16:42:02 +0100
+ id 1n58ov-00FHBI-0Q
+ for barebox@lists.infradead.org; Wed, 05 Jan 2022 16:07:26 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1n58ot-00051y-4f; Wed, 05 Jan 2022 17:07:23 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Frank Wunderlich <frank-w@public-files.de>, barebox@lists.infradead.org
+References: <trinity-236a89db-cfb0-4d29-bf25-44dc71d5d143-1641396043420@3c-app-gmx-bs58>
+Message-ID: <65c439c2-d82a-5cc7-133b-aae7df21b610@pengutronix.de>
+Date: Wed, 5 Jan 2022 17:07:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Message-ID: <trinity-cf421ba4-410b-4e0e-bb2f-60fef962bc97-1641397322119@3c-app-gmx-bs58>
-From: Frank Wunderlich <frank-w@public-files.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Date: Wed, 5 Jan 2022 16:42:02 +0100
-Importance: normal
-Sensitivity: Normal
-In-Reply-To: <5692a978-e5e5-c46d-978e-49438ee28782@pengutronix.de>
-References: <trinity-c26cce2b-95ff-45dc-9d60-3a1eebfa088b-1641285545326@3c-app-gmx-bap27>
- <5692a978-e5e5-c46d-978e-49438ee28782@pengutronix.de>
-X-UI-Message-Type: mail
-X-Priority: 3
-X-Provags-ID: V03:K1:Dcj3zCVHPZCMDOM/5Dk64xM2cVzboPqrVtTPqSbeq+ZThJV9vONyn5qD+9zRJv+0qCmIm
- y5km9+uQja7M84FmIELdAOwBcSh8AWPISejyo90zPVr9hb8JrQqCMYwybNyhR3VheNm6MK+PouHM
- BMvH3z6PaqlRros8YGIRlcpbm5kUvrKnxB/MvIwuxGX35nRvAgx7CqPb7WIw/Rk7AfCuhsF4v1ZY
- K5ZLrjn2Tk7+ILEFVFhTEvxUYojSqYyUr0fVatNcCLOd6KeFZCiLCwxc2Kj6VmIM70VXtpYxHj8S
- 0c=
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0gVQUFel0AE=:MM3WmeDH3LTJrFdZSfDI9S
- WaqU2/HD32w3c5KJtCeNaRE1DyFRh0t1s+sfsmWIWO6JBJIekYd4XK81wC4O9vp9IPSMbvUsO
- mnmUeFyEAC/MfwtkoE1Jz8YsFbKLVCHqpE0LOPRSselqmRSE+ilYoxKsDJFrayO3pmeoWcogE
- puZIy4w6dLHwCv7YBkyqE3Binw/zqfErKOIkZ7orQs0OCQd0OcllpA8eiO3VCm/YPy7sHvouy
- 7kdS1nXSdTialV+jhutNW+Z8FJcSW8dt52UCKlD1k1YWAtQWP4fzm55+eyMaZGCqt6ZerhHc3
- 5G0xvBJZlo7SrS5iI1GfqUjk0yngEuR6TQPYNq1Dws4UEZNRGU0hCXIFMDZnAxgd0LkHWjuOp
- R24FwO74EaEtefgWOue0Xpnue0pPdntR5kGDHp9PeZRdl9tBqJOjA2c1zW/cCZg4bF4A2NFgG
- XrCMX7zB84jVKQLgYLg+d4varBQZaCun4S0PJo6wgfnP5S0GfGbBwr0jBZsR8/ybuEnCeaNb4
- mU5CVLaLJqXyzEwHXimok9ZLwUwtVwH8shqITEBTi2XwJnEbtJsIB4pIVdAmjW2MWgQNuIy9k
- ZuHrnzfPTjcfvHEvYI8tkge4bU3djlllokWjLflz9t2IqwIjWIfGFnA5ejctkM79QKo6jppVp
- zVW6CEojIoJgL3dksj6I9KgoCJ++e+2qdHoKvfQCQ0S1W3tRCSBIu2THMdgsdBdNK4t/Y+DxP
- J07SHQkyP2lqWm+7aEP0Uoe9h09mKd4l8k82TC1hfcvJzlUKNIfCF7Uvdmn0tMb2BztvnoCDq
- DxAvSUc
+In-Reply-To: <trinity-236a89db-cfb0-4d29-bf25-44dc71d5d143-1641396043420@3c-app-gmx-bs58>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220105_074210_471728_B82D08DD 
-X-CRM114-Status: GOOD (  11.26  )
+X-CRM114-CacheID: sfid-20220105_080725_089030_7A9F0510 
+X-CRM114-Status: GOOD (  29.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,40 +68,134 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Aw: Re: barebox - rk3568
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: barebox extending boot-scripts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-> Gesendet: Mittwoch, 05. Januar 2022 um 13:08 Uhr
-> Von: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-> An: "Frank Wunderlich" <frank-w@public-files.de>, barebox@lists.infradead.org
-> Betreff: Re: barebox - rk3568
+Hi,
 
-> > https://www.barebox.org/doc/latest/boards/rockchip.html#rockchip-rk3568
-> >
-> > says it starts from sector 32, my first block for uboot (idblock.bin=spl+raminit) starts at 64, full uboot in partition at 8M.
->
-> You probably figured it out by now, but the discrepancy is likely due to differing
-> block sizes. barebox documentation has `dd bs=1024`, while the default is 512.
-> boot firmware is a single chunk with barebox, so no separate second stage bootloader
-> partition.
+On 05.01.22 16:20, Frank Wunderlich wrote:
+> Hi,
+> 
+> i'm making my first steps and try to add more boot-scripts (to land in /env/boot)
+> 
+> i added a scipt in
+> 
+> arch/arm/boards/rockchip-rk3568-evb/defaultenv/mmc-linux
 
-thanks, this indeed explain the different offset, which is same after resolving the double blocksize
+This should be defaultenv/boot/mmc-linux instead.
 
-> > As it differs a bit from evb can i add new dts like in uboot?
->
-> You can check out the commit adding the EVB or the Pine64 Quartz64:
-> 8d14f8e898b4 ("arm: rockchip: add support for the quartz64 board")
->
-> Feel free to send patches for your board along the same lines. :)
+> and set
+> 
+> DEFAULT_ENVIRONMENT_PATH [=arch/arm/boards/rockchip-rk3568-evb/defaultenv]
+> 
+> but if i boot the board /env/boot only contains the 2 default scripts
+> 
+> barebox@Rockchip RK3568 EVB:/ ls /env/boot/
+> bnet    net
 
-currently evb is working well, so i try to add bootscripts and maybe an menu (if i found out how) :)
+Try ls -R /env, you should see mmc-linux at top-level with your
+current setup.
 
-regards Frank
+> so maybe the dir/config-option i used is for defining variables only right?
+
+Top level is only meant for directories. There are directories for the different
+stuff, e.g. variables go into /env/nv/
+
+> should this point to an directory or a file?
+
+The config option is meant for use with external build systems, e.g. buildroot
+or PTXdist. For boards in-tree, you can add bbenv-y in the Makefile and call
+
+  // assuming directory is called defaultenv-myboard
+  defaultenv_append_directory(defaultenv_myboard);
+
+in the board code, see e.g. arch/arm/boards/embest-marsboard for an example.
+
+The reason for avoiding the config option for in-tree boards is that a single barebox
+configuration can build multiple boards in one go:
+extreme case: imx_v7_defconfig, which builds marsboard also builds more than 100 other images.
+
+The config option is global, but by explicitly calling defaultenv_append_directory,
+you can have board-specific environments.
+
+> i see this file which looks like the source of it
+> 
+> ./defaultenv/defaultenv-2-base/boot/net
+> 
+> I've put them there and they appear, but this is not board specific
+
+Ye, you can use this for debugging, but stuff upstreamed there must be generally
+applicable.
+
+> so if i later want to upstream one this is maybe not the right place.
+
+Boot scripts for publicly available evaluation kits are often not good candidates
+for upstreaming, because everybody using the EVKs has different thoughts on how to
+boot. The best way would be to use bootloader spec. It's one or more files you
+place at a known location that describe where your kernel and device tree are and
+what command line arguments to use and barebox can then automatically generate
+boot entries from all available bootloader spec files.
+
+See https://elinux.org/images/9/9d/Barebox-bells-n-whistles.pdf for an example
+of how to set this up. This is what I'd recommend instead of writing your own
+scripts.
+
+> ./defaultenv/defaultenv-2-menu/menu/10-boot-all/net
+> 
+> seems to be a menu entry, but have not yet figured out how i can define one to add my scripts too
+> 
+> have not found anything for it in the documentation yet
+
+The default boot menu is populated with the boot entries extracted from
+the contents of $global.boot.default.
+
+boot -m will display that menu. It will also include all bootloader spec files.
+If that suffices, you won't need to create your own menu. If you want though,
+check the help text of the menutree command.
+
+To boot into the boot menu, set nv autoboot=menu. "Detect bootsources" will
+list boot sources known to the barebox boot command.
+
+See magicvar for a listing of all magic variables, or refer to the documentation.
+
+> btw. is there a way to use ls with wildcard without printing the path?
+> 
+> ls /mnt/sd.1/extlinux/
+> Image_5.16            Image_5.16-next.gz    Image_5.16.gz
+> 
+> ls /mnt/sd.1/extlinux/Image*
+> /mnt/sd.1/extlinux/Image_5.16
+> /mnt/sd.1/extlinux/Image_5.16-next.gz
+> /mnt/sd.1/extlinux/Image_5.16.gz
+> 
+> i want to list only files matching Image*, but without path....number of columns does not matter
+
+Yes, cd /mnt/sd.1/extlinux
+
+Cheers,
+Ahmad
+
+> 
+> regards Frank
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
