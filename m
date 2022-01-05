@@ -1,63 +1,56 @@
-Delivery-date: Wed, 05 Jan 2022 10:15:56 +0100
+Delivery-date: Wed, 05 Jan 2022 10:22:50 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n52Oi-00BaMl-TJ
-	for lore@lore.pengutronix.de; Wed, 05 Jan 2022 10:15:56 +0100
+	id 1n52VO-00Baez-7G
+	for lore@lore.pengutronix.de; Wed, 05 Jan 2022 10:22:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n52Oh-0007NC-IQ
-	for lore@pengutronix.de; Wed, 05 Jan 2022 10:15:56 +0100
+	id 1n52VM-0007z5-VM
+	for lore@pengutronix.de; Wed, 05 Jan 2022 10:22:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:References:Cc:To:Subject:From:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=kHdJAPUZyjjN+buR1xmtJEr1oI9qWmYSMRw8PQvcA3s=; b=ouCrGKD5L+JnJlAExPUj2ON1Ni
-	wnBIt6ZJTVLW5RzOpsvSVUvdGoQ38CX6PHAOEyY/sqp7/QFv7ptgR7r9BlGM2HaFjDXeoH7R6Oqlv
-	L8dJprAop+A0ciD7jd5oJYa/JXrGI9mXgGcONZ1v7GLdHRGu87F11Bwrmoc4P0dfX887uihZN5s1E
-	vUVIHzT8u8AGljMDxmVlaB+r15FhoVRk+q2LoOXkv8i0MBPq648ZuZ7ucBr/FbMtYiYS22cOaTfzV
-	HMKtBS0M4hBUgdel+Zo9lvtgEq+uGF7XqzuR5o30IaJYsiSxEuUzF7yLkrzaeHbANAmn8hk7PJenC
-	NtbizaAQ==;
+	bh=uD684zmb0kzIDj/XweKXjbbYkhXque41UKaJssk0RJ4=; b=pJ1VzyTcyIC7Dax5UDRyay4F/v
+	RWjNBgQRF8JTacQ1tFhpUZch7K+Eo9Mb/gslyrewKKOtkwDhw3nw7MC4BcbUSAMF9XPkIVkUVGNyp
+	lbOCAiF3XUxXSb3hx2jY5teYRIrUmg0bZGDnhMFh5WQxPH7A9hJWIAITYJvbTacMLVCUH5fkxR6UP
+	64vJx73EEqPnEEyX81qw0AhFjRbQZyrMB27Uv+4bOPfLeWmaB8MrqJJNNW7/8NUaHtYZeNt2xCq8N
+	/7oboe95E1eFG99W+HRb3COZ5nDYSfMJJhksiqItOR50mCHsaD1fp5uR33Ja7ptU7gyDydIaVIDqc
+	/4YY0Zlg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n52NK-00EIrL-8D; Wed, 05 Jan 2022 09:14:30 +0000
+	id 1n52U6-00EKGu-0F; Wed, 05 Jan 2022 09:21:30 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n52NF-00EIqB-Hq
- for barebox@lists.infradead.org; Wed, 05 Jan 2022 09:14:26 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1n52NE-00077O-9C; Wed, 05 Jan 2022 10:14:24 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1n52NE-0006bw-0l; Wed, 05 Jan 2022 10:14:24 +0100
-Date: Wed, 5 Jan 2022 10:14:24 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1n52U0-00EKEp-Jo
+ for barebox@lists.infradead.org; Wed, 05 Jan 2022 09:21:26 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1n52Tx-0007rx-Lt; Wed, 05 Jan 2022 10:21:21 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220105091423.GQ6003@pengutronix.de>
 References: <20220103120336.1729791-1-a.fatoum@pengutronix.de>
+ <20220105091423.GQ6003@pengutronix.de>
+Message-ID: <089dca59-c852-751a-00c6-df572a832d62@pengutronix.de>
+Date: Wed, 5 Jan 2022 10:21:21 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20220103120336.1729791-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:07:39 up 25 days, 17:53, 75 users,  load average: 1.05, 1.17, 1.15
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <20220105091423.GQ6003@pengutronix.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220105_011425_619235_F32B264B 
-X-CRM114-Status: GOOD (  26.89  )
+X-CRM114-CacheID: sfid-20220105_012124_701396_49D4694A 
+X-CRM114-Status: GOOD (  27.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,69 +70,89 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
 Subject: Re: [PATCH] commands: regulator: add support for enabling/disabling
  regulators
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jan 03, 2022 at 01:03:36PM +0100, Ahmad Fatoum wrote:
-> For testing regulator drivers, it can be handy to enable/disable them
-> from the shell prompt. Extend the regulator command to support this.
+Hi,
+
+On 05.01.22 10:14, Sascha Hauer wrote:
+> On Mon, Jan 03, 2022 at 01:03:36PM +0100, Ahmad Fatoum wrote:
+>> For testing regulator drivers, it can be handy to enable/disable them
+>> from the shell prompt. Extend the regulator command to support this.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  commands/regulator.c     | 38 +++++++++++++++++++++++++++++++++++---
+>>  drivers/regulator/core.c |  8 ++++++++
+>>  include/regulator.h      |  1 +
+>>  3 files changed, 44 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/commands/regulator.c b/commands/regulator.c
+>> index 3e2595f8bfc1..e6b2f4852db4 100644
+>> --- a/commands/regulator.c
+>> +++ b/commands/regulator.c
+>> @@ -6,16 +6,48 @@
+>>  #include <common.h>
+>>  #include <command.h>
+>>  #include <regulator.h>
+>> +#include <getopt.h>
+>>  
+>>  static int do_regulator(int argc, char *argv[])
+>>  {
+>> -	regulators_print();
+>> +	struct regulator *chosen;
+>> +	int opt, ret;
+>> +
+>> +	while ((opt = getopt(argc, argv, "e:d:")) > 0) {
+>> +		switch (opt) {
+>> +		case 'e':
+>> +		case 'd':
+>> +			chosen = regulator_get_name(optarg);
+>> +			if (IS_ERR_OR_NULL(chosen)) {
+>> +				printf("regulator not found\n");
+>> +				return COMMAND_ERROR;
+>> +			}
+>> +
+>> +			ret = opt == 'e' ? regulator_enable(chosen)
+>> +				         : regulator_disable(chosen);
+>> +			regulator_put(chosen);
+>> +			return ret;
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  commands/regulator.c     | 38 +++++++++++++++++++++++++++++++++++---
->  drivers/regulator/core.c |  8 ++++++++
->  include/regulator.h      |  1 +
->  3 files changed, 44 insertions(+), 3 deletions(-)
+> The barebox regulator core distinguishes between struct regulator and
+> struct regulator_internal. regulator_internal represents the physical
+> regulator whereas regulator is allocated for each consumer. If the
+> regulator core were a bit more sophisticated then a regulator would
+> have it's own enable count and you would be warned when a regulators
+> enable count goes below zero.
 > 
-> diff --git a/commands/regulator.c b/commands/regulator.c
-> index 3e2595f8bfc1..e6b2f4852db4 100644
-> --- a/commands/regulator.c
-> +++ b/commands/regulator.c
-> @@ -6,16 +6,48 @@
->  #include <common.h>
->  #include <command.h>
->  #include <regulator.h>
-> +#include <getopt.h>
->  
->  static int do_regulator(int argc, char *argv[])
->  {
-> -	regulators_print();
-> +	struct regulator *chosen;
-> +	int opt, ret;
-> +
-> +	while ((opt = getopt(argc, argv, "e:d:")) > 0) {
-> +		switch (opt) {
-> +		case 'e':
-> +		case 'd':
-> +			chosen = regulator_get_name(optarg);
-> +			if (IS_ERR_OR_NULL(chosen)) {
-> +				printf("regulator not found\n");
-> +				return COMMAND_ERROR;
-> +			}
-> +
-> +			ret = opt == 'e' ? regulator_enable(chosen)
-> +				         : regulator_disable(chosen);
-> +			regulator_put(chosen);
-> +			return ret;
+> I agree that controlling regulators on the command line would be useful,
+> but I also don't want to block extending the regulator core in such a
+> way.
 
-The barebox regulator core distinguishes between struct regulator and
-struct regulator_internal. regulator_internal represents the physical
-regulator whereas regulator is allocated for each consumer. If the
-regulator core were a bit more sophisticated then a regulator would
-have it's own enable count and you would be warned when a regulators
-enable count goes below zero.
+Should I move the command implementation then into drivers/regulator/core.c?
 
-I agree that controlling regulators on the command line would be useful,
-but I also don't want to block extending the regulator core in such a
-way.
+That's what I did here[1], but I seem to recall that you objected to
+moving the command into drivers/ to access internals, when the API
+should suffice/be extended. I can't find the mail right now though or
+perhaps my recollection is erroneous.
 
-Sascha
+So how to proceed?
+
+[1]: https://lore.barebox.org/barebox/20191106094459.w32tgsl22ty34vhe@pengutronix.de/#t
+
+Cheers,
+Ahmad
+
+> 
+> Sascha
+> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
