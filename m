@@ -1,76 +1,80 @@
-Delivery-date: Wed, 05 Jan 2022 16:22:33 +0100
+Delivery-date: Wed, 05 Jan 2022 16:43:44 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n587V-00BtFG-4T
-	for lore@lore.pengutronix.de; Wed, 05 Jan 2022 16:22:33 +0100
+	id 1n58S0-00BuZG-0Q
+	for lore@lore.pengutronix.de; Wed, 05 Jan 2022 16:43:44 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n587T-0001Dv-Vq
-	for lore@pengutronix.de; Wed, 05 Jan 2022 16:22:32 +0100
+	id 1n58Ry-00034o-O1
+	for lore@pengutronix.de; Wed, 05 Jan 2022 16:43:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Date:Subject:To:From:Message-ID:
-	MIME-Version:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Owner; bh=N3/EHGnfZtLsp6b1WDMqoMWy2mYYxVGJX4OmBTFvVN8=; b=bnG
-	4V54EMNgZq/5YAnHgA3P9SGNH2JSGwevN73bqYMBfsBjdssgsBLBeUp1axD8uGWI3CXKZrRw6Nl7p
-	lgCQ5gLgEl2EwLKyvDObuwRwKlnmUXV8M3zy7KtEtNtw9cNRCcmFxE1iX3hbeQiNoxG8O3ehcfaJo
-	n9nKmu4hzKFjZDwT+4C1J2xWjyp4b9JmsvF/nGQIviqzGZZjToeViGyIpn8SW2AviPiZrF1+qfpvz
-	XtU7uKtVBVW7rGDcePquVJ334XW086kRTBIChRkMJ5zqQM++9P7h5Z/lxT/dHDLYvKbA2+UTRmiyc
-	q65zbs9IY89WX3ky2ikTPqyU0Sxtpnw==;
+	List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:Date:Subject:Cc:
+	To:From:Message-ID:MIME-Version:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=OVgiKV/5LMelglIOWr5/apPdya13f9AjLi9CM0rE18U=; b=ncBRiihjBIJ9hh
+	GAcgnoyLqAepyedVBUkLwoqT3jH3zaTeWEOV05+LGJ4xfXbmXB4+pvq1FshsRgrChRVAw0YummPEr
+	La5KjiFi+KYaA0oK3qMhBQjHG6kEsPRRgLLR15+JKVjHY9sD/zRKlNbMmow1S3oIZOyo3nGyYNkKn
+	Ejj43lPtIM9ZKMawPCk6azIEoN8r8mLUQfEoTL23NBnZ+8CRPtSGkhtzKcgtHsIQtkE2hbBeCodlx
+	QpfKd9PvGvn3EZfxl3Kb6eKUZShVJO8tLZKpcamBEh0FZK0jfeTv8ByeNvYOsqktDyAFbOY1fnFwH
+	FqCnyQwmzz/4e2/r/mEw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n585w-00F9py-HA; Wed, 05 Jan 2022 15:20:56 +0000
-Received: from mout.gmx.net ([212.227.17.21])
+	id 1n58Qe-00FCXL-Pb; Wed, 05 Jan 2022 15:42:20 +0000
+Received: from mout.gmx.net ([212.227.15.19])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n585r-00F9pN-1U
- for barebox@lists.infradead.org; Wed, 05 Jan 2022 15:20:52 +0000
+ id 1n58QU-00FCV3-2Q
+ for barebox@lists.infradead.org; Wed, 05 Jan 2022 15:42:11 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1641396043;
- bh=PSpGqKSJscmRp2gonzsHxWGkBJ1mYw6BkbLllwjfI0E=;
- h=X-UI-Sender-Class:From:To:Subject:Date;
- b=HcNGXPyjTPMKMA8+NSc962/oBMBMXgEDofpJuxOOxtHM68O+XqHls23gvvfjhzsB4
- 7AKWesA1pRKTsOPcCM2MmDmoUiSgbT9WDA0XXQ4t+9rKlAWY8ooFh5JPUOHXArjz5s
- YWUDlAmEuVc5k9tyLAQpbEmMTtcq26xpGrystzE4=
+ s=badeba3b8450; t=1641397322;
+ bh=pwlxprU5hJpAzjhdcqaq8GtCbswGoa9tqKZxKDodgos=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=PTt41jGRyNLoJRdPMSfwjhbaLdUlAXeleKfJcMnp0a3U7hYiaVi9Q+TxlgvCkbZsi
+ bIlVlL+azycB1LsT3PbNmFgktEihBr5keTYBPAOWFdWB+VrLcmE3AtoP0e5KyFfyMh
+ 6a/MbfGouv+1yiSOPEGpwYRQoZ7UmFL6SkOxqwkY=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from [80.245.79.138] ([80.245.79.138]) by web-mail.gmx.net
  (3c-app-gmx-bs58.server.lan [172.19.170.142]) (via HTTP); Wed, 5 Jan 2022
- 16:20:43 +0100
+ 16:42:02 +0100
 MIME-Version: 1.0
-Message-ID: <trinity-236a89db-cfb0-4d29-bf25-44dc71d5d143-1641396043420@3c-app-gmx-bs58>
+Message-ID: <trinity-cf421ba4-410b-4e0e-bb2f-60fef962bc97-1641397322119@3c-app-gmx-bs58>
 From: Frank Wunderlich <frank-w@public-files.de>
-To: barebox@lists.infradead.org
-Date: Wed, 5 Jan 2022 16:20:43 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Date: Wed, 5 Jan 2022 16:42:02 +0100
 Importance: normal
 Sensitivity: Normal
+In-Reply-To: <5692a978-e5e5-c46d-978e-49438ee28782@pengutronix.de>
+References: <trinity-c26cce2b-95ff-45dc-9d60-3a1eebfa088b-1641285545326@3c-app-gmx-bap27>
+ <5692a978-e5e5-c46d-978e-49438ee28782@pengutronix.de>
+X-UI-Message-Type: mail
 X-Priority: 3
-X-Provags-ID: V03:K1:rwPC/vlD+ffipmN3O41+Wn9/lRoA7Klv0V2TeqAzwjZSE2T+OqfTXmXoJNnNveTyZ1akc
- VQmXltlHg1YdgUci45ufvrfhgrzUoQZ3hXMjNl+OxKQ6cyVi10uB496rDbfHXgxa65NOU9GUo4DY
- mTT030GqBZNFGsSR76JKmDw1LGK+tAshugyvfSjFDgkCgAWXWv+z2DYba2QSym1Rt3NOKzSzQ5zS
- aZLT5l200rok55EGt49cWuRhB+jbha25G4RYddot3U26voySwuKu83iY4bR8gciGx4E55wWqMO7i
- Qo=
-X-UI-Out-Filterresults: notjunk:1;V03:K0:TOyGphEOV84=:2t6iBwX6a/b/rX61smKqTb
- pA1NOrXToOjBdAbkukxUyON9ofFjicWOVm6EPIacbnQFByuvZXFWOUJZVQjoEsInEHWlFZMRF
- dJbtaqPKujiq28KG6S9enShaakibuX/qVfK2/0ocR2t30tjT1bZYclllMKDJ93S/VYXogMRnF
- rA802P4TuvqWBPNA+b+rtxNERMz2OsYpXlFiTLt9ZQPiDCVdMGRW3oQwTcPf9bhljld/4LJNL
- yi+peodg0X8c0SfQdzD3v0S6NbCBSve+Gcxmt6fYTvm1e/9zgLHTFmpzyhjCP747Aa5lEf5Xo
- DYucNU0D+XWD8IhvLKujp4NruFEmPPLgWBuTQd2SkAG+jQO+aa6rELw8kNkljH0W1sT5apTCZ
- Mk62sEYgbxqB5JcDoZomEwtJoRuzG3CBPHErn/TES8QPt7ZGSKCBIj2JLho2tCW5KuxxkA+sU
- xVNweIiQCuYvLKFCHlCH87QipPzfchD2Gg5tSxn4a4OVIxmE5GUoKVf5veGsDWoTBrDv2XfQW
- b2DCAywar+zlRK4kdYJdU4fEvsmN81Y1pX0ftUj1OJoK50hbt9E/kxY0Pbr/6lcMwG68XU0jW
- YAYaPJ7REANMjvlCkl+We95zGS4MYgarHAQqYudnnYJykJ0Xv1yuuqh3TQLQZztaN1Mztaw5X
- 0Z3jobgCuWUPt4JrBAyJ7YQY6YGKg+BdPvfHq5T08f7ISUIDvIBHPMSeuRGLcRBCE4BRLk7ta
- eKda+tMyWuKkpT0CQ6gP2AOx8WSR2uKa7mmFsOeBJ3WVxbkaFm6sgtseIGnzFPbXEtWzSKAs2
- NwEVYeO
+X-Provags-ID: V03:K1:Dcj3zCVHPZCMDOM/5Dk64xM2cVzboPqrVtTPqSbeq+ZThJV9vONyn5qD+9zRJv+0qCmIm
+ y5km9+uQja7M84FmIELdAOwBcSh8AWPISejyo90zPVr9hb8JrQqCMYwybNyhR3VheNm6MK+PouHM
+ BMvH3z6PaqlRros8YGIRlcpbm5kUvrKnxB/MvIwuxGX35nRvAgx7CqPb7WIw/Rk7AfCuhsF4v1ZY
+ K5ZLrjn2Tk7+ILEFVFhTEvxUYojSqYyUr0fVatNcCLOd6KeFZCiLCwxc2Kj6VmIM70VXtpYxHj8S
+ 0c=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0gVQUFel0AE=:MM3WmeDH3LTJrFdZSfDI9S
+ WaqU2/HD32w3c5KJtCeNaRE1DyFRh0t1s+sfsmWIWO6JBJIekYd4XK81wC4O9vp9IPSMbvUsO
+ mnmUeFyEAC/MfwtkoE1Jz8YsFbKLVCHqpE0LOPRSselqmRSE+ilYoxKsDJFrayO3pmeoWcogE
+ puZIy4w6dLHwCv7YBkyqE3Binw/zqfErKOIkZ7orQs0OCQd0OcllpA8eiO3VCm/YPy7sHvouy
+ 7kdS1nXSdTialV+jhutNW+Z8FJcSW8dt52UCKlD1k1YWAtQWP4fzm55+eyMaZGCqt6ZerhHc3
+ 5G0xvBJZlo7SrS5iI1GfqUjk0yngEuR6TQPYNq1Dws4UEZNRGU0hCXIFMDZnAxgd0LkHWjuOp
+ R24FwO74EaEtefgWOue0Xpnue0pPdntR5kGDHp9PeZRdl9tBqJOjA2c1zW/cCZg4bF4A2NFgG
+ XrCMX7zB84jVKQLgYLg+d4varBQZaCun4S0PJo6wgfnP5S0GfGbBwr0jBZsR8/ybuEnCeaNb4
+ mU5CVLaLJqXyzEwHXimok9ZLwUwtVwH8shqITEBTi2XwJnEbtJsIB4pIVdAmjW2MWgQNuIy9k
+ ZuHrnzfPTjcfvHEvYI8tkge4bU3djlllokWjLflz9t2IqwIjWIfGFnA5ejctkM79QKo6jppVp
+ zVW6CEojIoJgL3dksj6I9KgoCJ++e+2qdHoKvfQCQ0S1W3tRCSBIu2THMdgsdBdNK4t/Y+DxP
+ J07SHQkyP2lqWm+7aEP0Uoe9h09mKd4l8k82TC1hfcvJzlUKNIfCF7Uvdmn0tMb2BztvnoCDq
+ DxAvSUc
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220105_072051_427531_3A55EE88 
-X-CRM114-Status: UNSURE (   7.07  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220105_074210_471728_B82D08DD 
+X-CRM114-Status: GOOD (  11.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,55 +98,36 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: barebox extending boot-scripts
+Subject: Aw: Re: barebox - rk3568
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
+> Gesendet: Mittwoch, 05. Januar 2022 um 13:08 Uhr
+> Von: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
+> An: "Frank Wunderlich" <frank-w@public-files.de>, barebox@lists.infradead.org
+> Betreff: Re: barebox - rk3568
 
-i'm making my first steps and try to add more boot-scripts (to land in /env/boot)
+> > https://www.barebox.org/doc/latest/boards/rockchip.html#rockchip-rk3568
+> >
+> > says it starts from sector 32, my first block for uboot (idblock.bin=spl+raminit) starts at 64, full uboot in partition at 8M.
+>
+> You probably figured it out by now, but the discrepancy is likely due to differing
+> block sizes. barebox documentation has `dd bs=1024`, while the default is 512.
+> boot firmware is a single chunk with barebox, so no separate second stage bootloader
+> partition.
 
-i added a scipt in
+thanks, this indeed explain the different offset, which is same after resolving the double blocksize
 
-arch/arm/boards/rockchip-rk3568-evb/defaultenv/mmc-linux
+> > As it differs a bit from evb can i add new dts like in uboot?
+>
+> You can check out the commit adding the EVB or the Pine64 Quartz64:
+> 8d14f8e898b4 ("arm: rockchip: add support for the quartz64 board")
+>
+> Feel free to send patches for your board along the same lines. :)
 
-and set
-
-DEFAULT_ENVIRONMENT_PATH [=arch/arm/boards/rockchip-rk3568-evb/defaultenv]
-
-but if i boot the board /env/boot only contains the 2 default scripts
-
-barebox@Rockchip RK3568 EVB:/ ls /env/boot/
-bnet    net
-
-so maybe the dir/config-option i used is for defining variables only right? should this point to an directory or a file?
-
-i see this file which looks like the source of it
-
-./defaultenv/defaultenv-2-base/boot/net
-
-I've put them there and they appear, but this is not board specific, so if i later want to upstream one this is maybe not the right place.
-
-./defaultenv/defaultenv-2-menu/menu/10-boot-all/net
-
-seems to be a menu entry, but have not yet figured out how i can define one to add my scripts too
-
-have not found anything for it in the documentation yet
-
-btw. is there a way to use ls with wildcard without printing the path?
-
-ls /mnt/sd.1/extlinux/
-Image_5.16            Image_5.16-next.gz    Image_5.16.gz
-
-ls /mnt/sd.1/extlinux/Image*
-/mnt/sd.1/extlinux/Image_5.16
-/mnt/sd.1/extlinux/Image_5.16-next.gz
-/mnt/sd.1/extlinux/Image_5.16.gz
-
-i want to list only files matching Image*, but without path....number of columns does not matter
+currently evb is working well, so i try to add bootscripts and maybe an menu (if i found out how) :)
 
 regards Frank
-
 
 _______________________________________________
 barebox mailing list
