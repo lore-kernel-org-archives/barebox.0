@@ -1,63 +1,66 @@
-Delivery-date: Fri, 07 Jan 2022 10:29:40 +0100
+Delivery-date: Fri, 07 Jan 2022 14:10:10 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n5lZ6-00DdHo-2E
-	for lore@lore.pengutronix.de; Fri, 07 Jan 2022 10:29:40 +0100
+	id 1n5p0U-00Dk0x-Lp
+	for lore@lore.pengutronix.de; Fri, 07 Jan 2022 14:10:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n5lZ4-0001Vb-KX
-	for lore@pengutronix.de; Fri, 07 Jan 2022 10:29:39 +0100
+	id 1n5p0P-0003gs-IJ
+	for lore@pengutronix.de; Fri, 07 Jan 2022 14:10:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=TpPbTfoH2RF4DJ1UjMPHsh6qJR4t9vVxuDUwpyQbNco=; b=vcIecVQzgKD6sx
-	P7wY6aP/ieprhphL0o7CfCOj4WWhHIH66y6OapySf3yzpu+U2bgjiP2aBsIoJ7Uodx3RbMQ7rtGRj
-	2/1e2i/t7KSveZCACJMCvt4PWSgtRppx6wVi+EQxiBSsLZ9YcZHUOA1klxPWNZlqGeHvrz3HNyBHU
-	YVdRU8HLf3LJUvk/ong8jNPuz51m4wrim8C2+PUHXy9rfT2vdWfzr6QFLolmC2eZHmhmhnn4MUIdZ
-	MPCS1JPavWQHCY/2+SOzh7W5OlY/K5ukY+o/bhK2890OC/NK20ajgExYAxwZ5RPFCgcGy1cY0Hrew
-	0LH96mrhtVUHTXV/Q6qg==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=IMUDp2cz3lDZd5qUfrF/pFHatiAM2gQbJQes6EiFZkI=; b=Vv7N1e/WIbCJR/
+	XbV8+4B6cmo94eqQanmIQuldTYsJOYiexbcKRafzPsdlceflGaNXFNzK2wa1X+eVxglbfgN9X/TZZ
+	j6U6QqNlS/3r9nOsVDehfOaqGYjimXV8FcjWP+VDiIkQaJXOZJe2eiNtb10znSL3zp02ltjlnQwdm
+	9VcBenyECE3HNlU+FUTVbk6m4ZAlAOM74ZeEp733WtmraxAArcgiACi2LT5myM44sgzo2GdtGRAU1
+	inqOqJF6pmsHAZh90elMk2+SvxtEP5lCfPHU3U27NC/FP5ezPLuXnGu6M0hZxpl6Tu5Yi5IZXMPi2
+	WGKnBDtzh3mMpXzV6fiA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n5lXW-0033mk-W6; Fri, 07 Jan 2022 09:28:03 +0000
-Received: from mail.savoirfairelinux.com ([208.88.110.44])
+	id 1n5oya-003wUN-H9; Fri, 07 Jan 2022 13:08:12 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n5lXQ-0033jY-7t
- for barebox@lists.infradead.org; Fri, 07 Jan 2022 09:27:58 +0000
-Received: from localhost (localhost [127.0.0.1])
- by mail.savoirfairelinux.com (Postfix) with ESMTP id 228279C5459
- for <barebox@lists.infradead.org>; Fri,  7 Jan 2022 04:27:44 -0500 (EST)
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id wdjFZ1Hoexzc; Fri,  7 Jan 2022 04:27:43 -0500 (EST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.savoirfairelinux.com (Postfix) with ESMTP id C14429C545B;
- Fri,  7 Jan 2022 04:27:43 -0500 (EST)
-X-Virus-Scanned: amavisd-new at mail.savoirfairelinux.com
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id 3g86wkkWycpk; Fri,  7 Jan 2022 04:27:43 -0500 (EST)
-Received: from localhost.localdomain (85-170-128-172.rev.numericable.fr
- [85.170.128.172])
- by mail.savoirfairelinux.com (Postfix) with ESMTPSA id F3E5D9C5451;
- Fri,  7 Jan 2022 04:27:42 -0500 (EST)
-From: Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>
-To: barebox@lists.infradead.org
-Cc: Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>
-Date: Fri,  7 Jan 2022 10:27:29 +0100
-Message-Id: <20220107092729.17929-1-enguerrand.de-ribaucourt@savoirfairelinux.com>
-X-Mailer: git-send-email 2.25.1
+ id 1n5oyS-003wTA-N8
+ for barebox@lists.infradead.org; Fri, 07 Jan 2022 13:08:08 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1n5oyG-0003bz-BV; Fri, 07 Jan 2022 14:07:52 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1n5oyF-0005Li-NU; Fri, 07 Jan 2022 14:07:51 +0100
+Date: Fri, 7 Jan 2022 14:07:51 +0100
+From: Sascha Hauer <sha@pengutronix.de>
+To: Frank Wunderlich <frank-w@public-files.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Message-ID: <20220107130751.GW6003@pengutronix.de>
+References: <trinity-236a89db-cfb0-4d29-bf25-44dc71d5d143-1641396043420@3c-app-gmx-bs58>
+ <65c439c2-d82a-5cc7-133b-aae7df21b610@pengutronix.de>
+ <trinity-48d6bfb8-862a-4bdf-9146-e208983a61b5-1641406402672@3c-app-gmx-bs58>
+ <20220106080838.GV6003@pengutronix.de>
+ <trinity-7a53a76e-9836-482e-861e-31439f242e2d-1641472899713@3c-app-gmx-bs51>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <trinity-7a53a76e-9836-482e-861e-31439f242e2d-1641472899713@3c-app-gmx-bs51>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 13:51:31 up 27 days, 21:37, 81 users,  load average: 0.02, 0.08, 0.09
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220107_012756_395100_158B218E 
-X-CRM114-Status: UNSURE (   4.38  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220107_050804_793244_32AD30C9 
+X-CRM114-Status: GOOD (  53.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,80 +80,173 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] commands: hashsum: Fix endif typos
+Subject: Re: Re: Re: barebox extending boot-scripts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Fix the comments in endif to correspond to the symbol of their
-ifdef.
+On Thu, Jan 06, 2022 at 01:41:39PM +0100, Frank Wunderlich wrote:
+> Hi,
+> thanks for answer. tried to strip mail it a bit down ;)
+> > Gesendet: Donnerstag, 06. Januar 2022 um 09:08 Uhr
+> > Von: "Sascha Hauer" <sha@pengutronix.de>
+> > On Wed, Jan 05, 2022 at 07:13:22PM +0100, Frank Wunderlich wrote:
+> 
+> > > > > DEFAULT_ENVIRONMENT_PATH [=arch/arm/boards/rockchip-rk3568-evb/defaultenv]
+> > > > The config option is meant for use with external build systems, e.g. buildroot
+> > > > or PTXdist. For boards in-tree, you can add bbenv-y in the Makefile and call
+> > > >
+> > > >   // assuming directory is called defaultenv-myboard
+> > > >   defaultenv_append_directory(defaultenv_myboard);
+> > > >
+> > > > in the board code, see e.g. arch/arm/boards/embest-marsboard for an example.
+> 
+> if i understand it right i need to create a dir
+> 
+> arch/arm/boards/rockchip-rk3568-evb/defaultenv-rk3568
 
-Signed-off-by: Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>
----
- commands/hashsum.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Yes.
 
-diff --git a/commands/hashsum.c b/commands/hashsum.c
-index bfacee0b9..308faa172 100644
---- a/commands/hashsum.c
-+++ b/commands/hashsum.c
-@@ -74,7 +74,7 @@ BAREBOX_CMD_START(md5sum)
- 	BAREBOX_CMD_HELP(cmd_md5sum_help)
- BAREBOX_CMD_END
- 
--#endif /* CMD_CMD_MD5SUM */
-+#endif /* CONFIG_CMD_MD5SUM */
- 
- #ifdef CONFIG_CMD_SHA1SUM
- 
-@@ -95,7 +95,7 @@ BAREBOX_CMD_START(sha1sum)
- 	BAREBOX_CMD_HELP(cmd_sha1sum_help)
- BAREBOX_CMD_END
- 
--#endif /* CMD_CMD_SHA1SUM */
-+#endif /* CONFIG_CMD_SHA1SUM */
- 
- #ifdef CONFIG_CMD_SHA224SUM
- 
-@@ -116,7 +116,7 @@ BAREBOX_CMD_START(sha224sum)
- 	BAREBOX_CMD_HELP(cmd_sha224sum_help)
- BAREBOX_CMD_END
- 
--#endif /* CMD_CMD_SHA224SUM */
-+#endif /* CONFIG_CMD_SHA224SUM */
- 
- #ifdef CONFIG_CMD_SHA256SUM
- 
-@@ -137,7 +137,7 @@ BAREBOX_CMD_START(sha256sum)
- 	BAREBOX_CMD_HELP(cmd_sha256sum_help)
- BAREBOX_CMD_END
- 
--#endif /* CMD_CMD_SHA256SUM */
-+#endif /* CONFIG_CMD_SHA256SUM */
- 
- #ifdef CONFIG_CMD_SHA384SUM
- 
-@@ -158,7 +158,7 @@ BAREBOX_CMD_START(sha384sum)
- 	BAREBOX_CMD_HELP(cmd_sha384sum_help)
- BAREBOX_CMD_END
- 
--#endif /* CMD_CMD_SHA384SUM */
-+#endif /* CONFIG_CMD_SHA384SUM */
- 
- #ifdef CONFIG_CMD_SHA512SUM
- 
-@@ -179,4 +179,4 @@ BAREBOX_CMD_START(sha512sum)
- 	BAREBOX_CMD_HELP(cmd_sha512sum_help)
- BAREBOX_CMD_END
- 
--#endif /* CMD_CMD_SHA512SUM */
-+#endif /* CONFIG_CMD_SHA512SUM */
+> 
+> with dirs nv (variables) and boot (bootscripts)
+> 
+> and add
+> bbenv-y += defaultenv-rk3568
+> in
+> arch/arm/boards/rockchip-rk3568-evb/Makefile
+
+Yes. Furthermore you have to add to the board code:
+
+	defaultenv_append_directory(defaultenv_rk3568);
+
+> 
+> > > > Boot scripts for publicly available evaluation kits are often not good candidates
+> > > > for upstreaming, because everybody using the EVKs has different thoughts on how to
+> > > > boot. The best way would be to use bootloader spec. It's one or more files you
+> > > > place at a known location that describe where your kernel and device tree are and
+> > > > what command line arguments to use and barebox can then automatically generate
+> > > > boot entries from all available bootloader spec files.
+> 
+> is extlinux (i used in uboot and conf-file is already present) supported here?
+> 
+> > > > See https://elinux.org/images/9/9d/Barebox-bells-n-whistles.pdf for an example
+> > > > of how to set this up. This is what I'd recommend instead of writing your own
+> > > > scripts.
+> 
+> i do not fully understand the bootloader spec in the pdf as config file seems to be
+> 
+> /mnt/mmc0.4/loader/entries/stm32mp157c-dk2.conf
+> 
+> and then
+> boot -d mmc0.4
+> 
+> is run...so the path (loader/entries) seems to be fixed and all files there will be processed (which order)?
+
+Yes. No particular order, I guess it would be the order it is on the
+filesystem.
+
+> how is root appended (/dev/mmcblkXpY|uuid|...) when linux-appendroot is set to true?
+
+When root is appended it is assumed to be the same fs that also has the
+bootloader spec file, so the rootfs also has the entry and the kernel.
+
+> > > needed to add this option, and now it prints only "net" and "back",not my own scripts ;(
+> > >
+> > > do i need my scripts to ./defaultenv/defaultenv-2-menu/menu/10-boot-all/ too?
+> 
+> do i need to propagate my own scripts somewhere to be listed in the bootmenu?
+> 
+> in cmdline i had tried this:
+> 
+> global.boot.default="net mmc-linux tftp-linux"
+> boot -m
+> 
+> which works, but how can i set this variable at compile-time?
+
+By creating the file defaultenv/defaultenv-2-base/nv/boot.default with
+the content "net mmc-linux tftp-linux". Alternatively you can also
+create your own board specific env overlay like discussed above using
+the bbenv-y approach.
+
+> 
+> is the right way creating a file
+> defaultenv/defaultenv-2-base/nv/boot.default (or arch/arm/boards/rockchip-rk3568-evb/defaultenv-rk3568/nv/boot.default)
+> with the content i want? so it looks like in the pdf above ("global.variable s, these are initialized from the
+> correspoding non-volatile nv.variable s")
+
+Yes.
+
+> > &sdhci {
+> > 	...
+> > 	partitions {
+> > 		compatible = "fixed-partitions";
+> >
+> > 		environment_emmc: partition@408000 {
+> > 			label = "barebox-environment";
+> > 			reg = <0x0 0x408000 0x0 0x8000>;
+> > 		};
+> > 	};
+> > };
+> 
+> thx, if i understand it right, then it's an offset/size defined in dts by reg-property. My board uses the same values which is iirc a bit above the 4M position (0x408000,4M=0x400000).
+
+Yes. It's the fixed partition binding normally used for raw NOR/NAND
+flashes.
+
+> As i don't have a real partition there (first partition is at 8M), so i guess it is directly written (no file, like ENV_OFFSET in uboot). The 0x8000 should be the size (32kByte like ENV_SIZE), right?
+
+Right.
+
+> 
+> > > > See magicvar for a listing of all magic variables, or refer to the documentation.
+> > > >
+> > > > > btw. is there a way to use ls with wildcard without printing the path?
+> >
+> > It works for example with:
+> >
+> > for i in /mnt/sd.1/extlinux/Image*; do basename $i b; echo $b; done
+> 
+> nice, that makes it a bit more usable like using numbers to choose
+> 
+> i=0;for f in /mnt/sd.1/extlinux/Image*; do basename $f b; echo "$i:$b";let i++; done
+> 
+> > But anyway, I'm with Ahmad here, you should rather look into bootloader
+> > spec. The shell is nice to have, but it's even nicer to not have to use
+> > it.
+> 
+> this is for testing multiple kernels with changing filenames (very
+> dynamic process, e.g. using 1 kernel binary with multiple dtb) and to
+> avoid adding a bootmenu entry everytime....this is not for end-user :)
+
+In that case you could also use bootm directly.
+
+> 
+> and here scripting is imho the best way...this allows me to add extra
+> params to cmdline too (like debug level,dumping offsets) without
+> changing a distroboot config
+
+Not sure if you know already, but barebox concatenates all variables in
+the "global.linux.bootargs." namespace to the kernel command line, so
+you can easily add or remove a variable to add/remove kernel options
+without affecting unrelated options.
+
+> 
+> for fixed kernels i have defined an extlinux.conf for uboot, but i'm
+> unsure if barebox can use this file too. have not found anything about
+> extlinux/syslinux in barebox yet.
+
+No, not yet.
+
+Sascha
+
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
