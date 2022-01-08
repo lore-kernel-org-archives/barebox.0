@@ -1,55 +1,54 @@
-Delivery-date: Sat, 08 Jan 2022 18:16:01 +0100
+Delivery-date: Sat, 08 Jan 2022 18:16:03 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n6FJx-00EccF-0M
-	for lore@lore.pengutronix.de; Sat, 08 Jan 2022 18:16:01 +0100
+	id 1n6FJz-00Eccj-Ns
+	for lore@lore.pengutronix.de; Sat, 08 Jan 2022 18:16:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n6FJu-0004NT-TR
-	for lore@pengutronix.de; Sat, 08 Jan 2022 18:16:00 +0100
+	id 1n6FJx-0004P8-WF
+	for lore@pengutronix.de; Sat, 08 Jan 2022 18:16:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=R26Jv23bzXy8vhKD4XI/OgajVrJnLc4wZjPZZApBmu4=; b=s4Cm5tUXmeAtJS
-	ptNs+SBTtDOWPRaLV9tm8RD8/w29hhKkRXJzUTK3UNyUKFvIWUR/cygHe3hb8KX5OJkSc5rE2nRNe
-	Anmd9KoKeR4no/7j96flpeCrZV4uQQcUIzcZYjUVqG5txpbnW4c547Fr71obaYP0gzhNZqZkYLz74
-	NBy7Xp9frZp5BMgGf4OAlYhXOHFFg5FI1dVZRhFqI1biv6uighiEOpE0PFJMs6GDJShvdJsfkx6AP
-	dOID6sRjt87AQ1ZimZQ5D/nDDLPA746AvlHoEOP24jpEe9ACPrSiP81TLA/XpXm1Uzl9OdVA6AJVK
-	uKMiHwxDAJrgrZL47Hbw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=7UNn3P9C90yOum56DcS815Oznj+TMh1fZlqBj78a1lw=; b=MEJVdlMxgbU1/q
+	BaweD2RupNe+9kmIC2qcC0ux0EvZTWJRFXis3VZj0Z+2NGpWt4uPinqVRzhFC2h85El7ERwRwHpB5
+	TJmivbDfEAF8NcBQjHZmzEK9zCImWz2+XU6nJudSY6pxlUxmDgjS1fT6HFZ+DTDSmRN56we+CtQdA
+	MgX4SloiXmGvLRRxkgRHj3gu0ncXuiIwFLIiWtgTaXVl8DkFxEZyoLMPcrbbauKuZQiatfeHcQJyJ
+	WEmD7pqBq2dEaVptlcPQlSd0nxt8Z0q/HR1ouQZMRIMO4mU+ee0aAXIlCkvQfj9BpgxsiEaLYazzD
+	rSMi4cYCmOb/uKviWTFw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n6FIg-006jIV-Ei; Sat, 08 Jan 2022 17:14:42 +0000
+	id 1n6FIj-006jKG-VB; Sat, 08 Jan 2022 17:14:46 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n6FIb-006jHM-PP
- for barebox@lists.infradead.org; Sat, 08 Jan 2022 17:14:39 +0000
+ id 1n6FIe-006jIS-Jm
+ for barebox@lists.infradead.org; Sat, 08 Jan 2022 17:14:41 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1n6FIS-0003rF-Iw; Sat, 08 Jan 2022 18:14:28 +0100
+ id 1n6FId-0003t1-EC; Sat, 08 Jan 2022 18:14:39 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1n6FIS-002SXv-1P; Sat, 08 Jan 2022 18:14:28 +0100
+ id 1n6FIc-002Sb0-Ud; Sat, 08 Jan 2022 18:14:38 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sat,  8 Jan 2022 18:14:26 +0100
-Message-Id: <20220108171426.586330-3-a.fatoum@pengutronix.de>
+Date: Sat,  8 Jan 2022 18:14:37 +0100
+Message-Id: <20220108171437.586532-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220108171426.586330-1-a.fatoum@pengutronix.de>
-References: <20220108171426.586330-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220108_091437_856227_6770C92C 
-X-CRM114-Status: GOOD (  21.36  )
+X-CRM114-CacheID: sfid-20220108_091440_684886_942B2419 
+X-CRM114-Status: UNSURE (   6.98  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,8 +60,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -73,103 +72,38 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] commands: add new devunbind debugging command
+Subject: [PATCH] include <printk.h>: include <linux/types.h> for size_t
+ definition
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-TWVtb3J5IGNvcnJ1cHRpb24gYXJvdW5kIGRldmljZSByZW1vdmFsIG1heSBnbyB1bm5vdGljZWQs
-IGJlY2F1c2UKYmFyZWJveCBpcyBzaHV0dGluZyBkb3duIGFueXdheSBhbmQgZG9pbmcgbm8gbmV3
-IGFsbG9jYXRpb25zLgoKQWRkIGEgbmV3IGRldnVuYmluZCBjb21tYW5kIHRoYXQgc2hvdWxkIGhl
-bHAgd2l0aCBkZWJ1Z2dpbmcgc3VjaCBpc3N1ZXMKYnkgYWxsb3dpbmcgc2VsZWN0aXZlIHVuYmlu
-ZGluZyBhbmQgcmVtb3ZhbCBvZiBkZXZpY2VzLgoKU2lnbmVkLW9mZi1ieTogQWhtYWQgRmF0b3Vt
-IDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4KLS0tCiBjb21tYW5kcy9LY29uZmlnICAgICAgfCAx
-MiArKysrKysrCiBjb21tYW5kcy9NYWtlZmlsZSAgICAgfCAgMSArCiBjb21tYW5kcy9kZXZ1bmJp
-bmQuYyAgfCA3NCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBk
-cml2ZXJzL2Jhc2UvZHJpdmVyLmMgfCAgNyArKy0tCiBpbmNsdWRlL2RyaXZlci5oICAgICAgfCAg
-NCArKysKIDUgZmlsZXMgY2hhbmdlZCwgOTUgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkK
-IGNyZWF0ZSBtb2RlIDEwMDY0NCBjb21tYW5kcy9kZXZ1bmJpbmQuYwoKZGlmZiAtLWdpdCBhL2Nv
-bW1hbmRzL0tjb25maWcgYi9jb21tYW5kcy9LY29uZmlnCmluZGV4IGUyYzM2OTQ5MzQ3ZS4uOWFi
-ZDk3MjcxOTUyIDEwMDY0NAotLS0gYS9jb21tYW5kcy9LY29uZmlnCisrKyBiL2NvbW1hbmRzL0tj
-b25maWcKQEAgLTY4LDYgKzY4LDE4IEBAIGNvbmZpZyBDTURfREVWSU5GTwogCSAgSWYgY2FsbGVk
-IHdpdGggYSBkZXZpY2UgcGF0aCBiZWluZyB0aGUgYXJndW1lbnQsIGRldmluZm8gc2hvd3MgbW9y
-ZQogCSAgZGVmYXVsdCBpbmZvcm1hdGlvbiBhYm91dCB0aGlzIGRldmljZSBhbmQgaXRzIHBhcmFt
-ZXRlcnMuCiAKK2NvbmZpZyBDTURfREVWVU5CSU5ECisJdHJpc3RhdGUKKwlkZWZhdWx0IHkKKwlw
-cm9tcHQgImRldnVuYmluZCIKKwloZWxwCisJICBEZWJ1Z2dpbmcgYWlkIHRvIHVuYmluZCBkZXZp
-Y2UgZnJvbSBkcml2ZXIgYXQgcnVudGltZQorCisJICBkZXZ1bmJpbmQgWy1mXSBERVZJQ0UKKwor
-CSAgT3B0aW9uczoKKwkgICAgLWYgICB1bmJpbmQgZHJpdmVyIGFuZCBmb3JjZSByZW1vdmFsIG9m
-IGRldmljZSBhbmQgY2hpbGRyZW4KKwogY29uZmlnIENNRF9ETUVTRwogCXRyaXN0YXRlCiAJcHJv
-bXB0ICJkbWVzZyIKZGlmZiAtLWdpdCBhL2NvbW1hbmRzL01ha2VmaWxlIGIvY29tbWFuZHMvTWFr
-ZWZpbGUKaW5kZXggMGI3YzE1NjNiNTM0Li44NzU4MjY3NDNmZmUgMTAwNjQ0Ci0tLSBhL2NvbW1h
-bmRzL01ha2VmaWxlCisrKyBiL2NvbW1hbmRzL01ha2VmaWxlCkBAIC0xMDcsNiArMTA3LDcgQEAg
-b2JqLSQoQ09ORklHX0NNRF9NSUlUT09MKQkrPSBtaWl0b29sLm8KIG9iai0kKENPTkZJR19DTURf
-REVURUNUKQkrPSBkZXRlY3Qubwogb2JqLSQoQ09ORklHX0NNRF9CT09UKQkJKz0gYm9vdC5vCiBv
-YmotJChDT05GSUdfQ01EX0RFVklORk8pCSs9IGRldmluZm8ubworb2JqLSQoQ09ORklHX0NNRF9E
-RVZVTkJJTkQpCSs9IGRldnVuYmluZC5vCiBvYmotJChDT05GSUdfQ01EX0RSVklORk8pCSs9IGRy
-dmluZm8ubwogb2JqLSQoQ09ORklHX0NNRF9SRUFERikJCSs9IHJlYWRmLm8KIG9iai0kKENPTkZJ
-R19DTURfTUVOVVRSRUUpCSs9IG1lbnV0cmVlLm8KZGlmZiAtLWdpdCBhL2NvbW1hbmRzL2RldnVu
-YmluZC5jIGIvY29tbWFuZHMvZGV2dW5iaW5kLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXgg
-MDAwMDAwMDAwMDAwLi40YmViYjI3ZThlNjgKLS0tIC9kZXYvbnVsbAorKysgYi9jb21tYW5kcy9k
-ZXZ1bmJpbmQuYwpAQCAtMCwwICsxLDc0IEBACisvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjog
-R1BMLTIuMC1vbmx5CisvLyBTUERYLUZpbGVDb3B5cmlnaHRUZXh0OiDCqSAyMDIxIEFobWFkIEZh
-dG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+LCBQZW5ndXRyb25peAorCisjaW5jbHVkZSA8
-Y29tbWFuZC5oPgorI2luY2x1ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUgPGNvbXBsZXRlLmg+Cisj
-aW5jbHVkZSA8ZHJpdmVyLmg+CisjaW5jbHVkZSA8Z2V0b3B0Lmg+CisKK3N0YXRpYyBpbnQgZG9f
-ZGV2dW5iaW5kKGludCBhcmdjLCBjaGFyICphcmd2W10pCit7CisJYm9vbCB1bnJlZ2lzdGVyID0g
-ZmFsc2U7CisJc3RydWN0IGRldmljZV9kICpkZXY7CisJaW50IHJldCA9IENPTU1BTkRfU1VDQ0VT
-UywgaSwgb3B0OworCisJd2hpbGUgKChvcHQgPSBnZXRvcHQoYXJnYywgYXJndiwgImZsIikpID4g
-MCkgeworCQlzd2l0Y2ggKG9wdCkgeworCQljYXNlICdmJzoKKwkJCXVucmVnaXN0ZXIgPSB0cnVl
-OworCQkJYnJlYWs7CisJCWNhc2UgJ2wnOgorCQkJbGlzdF9mb3JfZWFjaF9lbnRyeShkZXYsICZh
-Y3RpdmVfZGV2aWNlX2xpc3QsIGFjdGl2ZSkgeworCQkJCUJVR19PTighZGV2LT5kcml2ZXIpOwor
-CQkJCWlmIChkZXYtPmJ1cy0+cmVtb3ZlKQorCQkJCQlwcmludGYoIiVwUyglcywgJXMpXG4iLCBk
-ZXYtPmJ1cy0+cmVtb3ZlLAorCQkJCQkgICAgICAgZGV2LT5kcml2ZXItPm5hbWUsIGRldl9uYW1l
-KGRldikpOworCQkJfQorCQkJcmV0dXJuIDA7CisJCWRlZmF1bHQ6CisJCQlyZXR1cm4gQ09NTUFO
-RF9FUlJPUl9VU0FHRTsKKwkJfQorCX0KKworCWlmICghYXJndltvcHRpbmRdKQorCQlyZXR1cm4g
-Q09NTUFORF9FUlJPUl9VU0FHRTsKKworCWZvciAoaSA9IG9wdGluZDsgaSA8IGFyZ2M7IGkrKykg
-eworCQlkZXYgPSBnZXRfZGV2aWNlX2J5X25hbWUoYXJndltpXSk7CisJCWlmICghZGV2KQorCQkJ
-cmV0dXJuIC1FTk9ERVY7CisKKwkJaWYgKHVucmVnaXN0ZXIpCisJCQlyZXR1cm4gdW5yZWdpc3Rl
-cl9kZXZpY2UoZGV2KTsKKworCQlpZiAoIWRldi0+ZHJpdmVyIHx8ICFkZXYtPmJ1cy0+cmVtb3Zl
-KSB7CisJCQlwcmludGYoInNraXBwaW5nIHVuYm91bmQgJXNcbiIsIGFyZ3ZbaV0pOworCQkJcmV0
-ID0gQ09NTUFORF9FUlJPUjsKKwkJCWNvbnRpbnVlOworCQl9CisKKwkJZGV2LT5idXMtPnJlbW92
-ZShkZXYpOworCQlkZXYtPmRyaXZlciA9IE5VTEw7CisJCWxpc3RfZGVsKCZkZXYtPmFjdGl2ZSk7
-CisJfQorCisJcmV0dXJuIHJldDsKK30KKworQkFSRUJPWF9DTURfSEVMUF9TVEFSVChkZXZ1bmJp
-bmQpCitCQVJFQk9YX0NNRF9IRUxQX1RFWFQoIkRlYnVnZ2luZyBhaWQgdG8gdW5iaW5kIGRldmlj
-ZSBmcm9tIGRyaXZlciBhdCBydW50aW1lIikKK0JBUkVCT1hfQ01EX0hFTFBfVEVYVCgiIikKK0JB
-UkVCT1hfQ01EX0hFTFBfVEVYVCgiT3B0aW9uczoiKQorQkFSRUJPWF9DTURfSEVMUF9PUFQgKCIt
-ZiIsICAidW5iaW5kIGRyaXZlciBhbmQgZm9yY2UgcmVtb3ZhbCBvZiBkZXZpY2UgYW5kIGNoaWxk
-cmVuIikKK0JBUkVCT1hfQ01EX0hFTFBfT1BUICgiLWwiLCAgImxpc3QgcmVtb3ZlIGNhbGxiYWNr
-cyBpbiBzaHV0ZG93biBvcmRlciIpCitCQVJFQk9YX0NNRF9IRUxQX0VORAorCitCQVJFQk9YX0NN
-RF9TVEFSVChkZXZ1bmJpbmQpCisJLmNtZAkJPSBkb19kZXZ1bmJpbmQsCisJQkFSRUJPWF9DTURf
-REVTQygidW5iaW5kIGRldmljZShzKSBmcm9tIGRyaXZlciIpCisJQkFSRUJPWF9DTURfT1BUUygi
-Wy1mbF0gREVWSUNFUy4uIikKKwlCQVJFQk9YX0NNRF9HUk9VUChDTURfR1JQX0lORk8pCisJQkFS
-RUJPWF9DTURfSEVMUChjbWRfZGV2dW5iaW5kX2hlbHApCisJQkFSRUJPWF9DTURfQ09NUExFVEUo
-ZGV2aWNlX2NvbXBsZXRlKQorQkFSRUJPWF9DTURfRU5ECmRpZmYgLS1naXQgYS9kcml2ZXJzL2Jh
-c2UvZHJpdmVyLmMgYi9kcml2ZXJzL2Jhc2UvZHJpdmVyLmMKaW5kZXggYmIwN2U5NmRjYWY0Li5m
-NTRmNGQwYjM3NDYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvYmFzZS9kcml2ZXIuYworKysgYi9kcml2
-ZXJzL2Jhc2UvZHJpdmVyLmMKQEAgLTQxLDcgKzQxLDggQEAgRVhQT1JUX1NZTUJPTChkZXZpY2Vf
-bGlzdCk7CiBMSVNUX0hFQUQoZHJpdmVyX2xpc3QpOwogRVhQT1JUX1NZTUJPTChkcml2ZXJfbGlz
-dCk7CiAKLXN0YXRpYyBMSVNUX0hFQUQoYWN0aXZlKTsKK0xJU1RfSEVBRChhY3RpdmVfZGV2aWNl
-X2xpc3QpOworRVhQT1JUX1NZTUJPTChhY3RpdmVfZGV2aWNlX2xpc3QpOwogc3RhdGljIExJU1Rf
-SEVBRChkZWZlcnJlZCk7CiAKIHN0cnVjdCBkZXZpY2VfZCAqZ2V0X2RldmljZV9ieV9uYW1lKGNv
-bnN0IGNoYXIgKm5hbWUpCkBAIC05MSw3ICs5Miw3IEBAIGludCBkZXZpY2VfcHJvYmUoc3RydWN0
-IGRldmljZV9kICpkZXYpCiAJcGluY3RybF9zZWxlY3Rfc3RhdGVfZGVmYXVsdChkZXYpOwogCW9m
-X2Nsa19zZXRfZGVmYXVsdHMoZGV2LT5kZXZpY2Vfbm9kZSwgZmFsc2UpOwogCi0JbGlzdF9hZGQo
-JmRldi0+YWN0aXZlLCAmYWN0aXZlKTsKKwlsaXN0X2FkZCgmZGV2LT5hY3RpdmUsICZhY3RpdmVf
-ZGV2aWNlX2xpc3QpOwogCiAJcmV0ID0gZGV2LT5idXMtPnByb2JlKGRldik7CiAJaWYgKHJldCA9
-PSAwKQpAQCAtNTA0LDcgKzUwNSw3IEBAIHN0YXRpYyB2b2lkIGRldmljZXNfc2h1dGRvd24odm9p
-ZCkKIAlzdHJ1Y3QgZGV2aWNlX2QgKmRldjsKIAlpbnQgZGVwdGggPSAwOwogCi0JbGlzdF9mb3Jf
-ZWFjaF9lbnRyeShkZXYsICZhY3RpdmUsIGFjdGl2ZSkgeworCWxpc3RfZm9yX2VhY2hfZW50cnko
-ZGV2LCAmYWN0aXZlX2RldmljZV9saXN0LCBhY3RpdmUpIHsKIAkJaWYgKGRldi0+YnVzLT5yZW1v
-dmUpIHsKIAkJCWRlcHRoKys7CiAJCQlwcl9yZXBvcnRfcHJvYmUoIiUqc3JlbW92ZS0+ICVzXG4i
-LCBkZXB0aCAqIDQsICIiLCBkZXZfbmFtZShkZXYpKTsKZGlmZiAtLWdpdCBhL2luY2x1ZGUvZHJp
-dmVyLmggYi9pbmNsdWRlL2RyaXZlci5oCmluZGV4IDRmNmQ0MGUxN2MxNC4uMTIxNWEyZDU3YWIz
-IDEwMDY0NAotLS0gYS9pbmNsdWRlL2RyaXZlci5oCisrKyBiL2luY2x1ZGUvZHJpdmVyLmgKQEAg
-LTMyOCw2ICszMjgsMTAgQEAgZXh0ZXJuIHN0cnVjdCBsaXN0X2hlYWQgZGV2aWNlX2xpc3Q7CiAg
-Ki8KIGV4dGVybiBzdHJ1Y3QgbGlzdF9oZWFkIGRyaXZlcl9saXN0OwogCisvKiBsaW5lYXIgbGlz
-dCBvdmVyIGFsbCBhY3RpdmUgZGV2aWNlcworICovCitleHRlcm4gc3RydWN0IGxpc3RfaGVhZCBh
-Y3RpdmVfZGV2aWNlX2xpc3Q7CisKIC8qIEl0ZXJhdGUgb3ZlciBhbGwgZGV2aWNlcwogICovCiAj
-ZGVmaW5lIGZvcl9lYWNoX2RldmljZShkZXYpIGxpc3RfZm9yX2VhY2hfZW50cnkoZGV2LCAmZGV2
-aWNlX2xpc3QsIGxpc3QpCi0tIAoyLjMwLjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+size_t is used without previous definition relying on header include
+order. Fix that up.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/printk.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/printk.h b/include/printk.h
+index baf2cca20213..046b456a9d2b 100644
+--- a/include/printk.h
++++ b/include/printk.h
+@@ -2,6 +2,8 @@
+ #ifndef __PRINTK_H
+ #define __PRINTK_H
+ 
++#include <linux/types.h>
++
+ #define KERN_EMERG      ""   /* system is unusable                   */
+ #define KERN_ALERT      ""   /* action must be taken immediately     */
+ #define KERN_CRIT       ""   /* critical conditions                  */
+-- 
+2.30.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
