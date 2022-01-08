@@ -1,55 +1,55 @@
-Delivery-date: Sat, 08 Jan 2022 18:17:15 +0100
+Delivery-date: Sat, 08 Jan 2022 18:17:22 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n6FL9-00Ecgd-3R
-	for lore@lore.pengutronix.de; Sat, 08 Jan 2022 18:17:15 +0100
+	id 1n6FLG-00EchF-FY
+	for lore@lore.pengutronix.de; Sat, 08 Jan 2022 18:17:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n6FL7-00055J-21
-	for lore@pengutronix.de; Sat, 08 Jan 2022 18:17:13 +0100
+	id 1n6FLE-00057y-Tf
+	for lore@pengutronix.de; Sat, 08 Jan 2022 18:17:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=802c72h7p/Q7KTl66aXQFpYkCV4XlHoXh+SEWWVYIVI=; b=LywdKVFbZ8fLer
-	uImUAseJk+6MUzjlSmtAOkGcmLiGU8dtj8kLrpJyStsTY7G4h3M1dOjnM8wyv6MZUsilyPEN/jW3h
-	zmhw0wNrGU2X9Vatek5eSauhUeVlY1ly13+c8HgrBNx72vFnNqwNCDE+SuEfgizLsdiezOZsbD2zI
-	tDRt6mQCrg2Kpp8IkP0X30qvgK2Kv4XWHA5UhQslWvjFzWjGOdq+V8V3rRA1zkLY0K8fl3ufozc3K
-	QfwxtZwwyO4DE8+O8Ey5QLY1PGKqGX7Ahc7AdZMvNa87agK3XvFJnMrTL02TJFJZbXso1rekBVNbw
-	SHmzLULAkgIOpb7ArbxQ==;
+	List-Owner; bh=W1gwndg/ztbo0BB87IFnyt2P/b+5L2B+cbczs+bsPpU=; b=Hm7IH0aITwJQip
+	y7BVJ0eFMzVTekyA2mOvrKzbtQHV3kFcNp4qmxOJ+u7KqFtpRFJ/Da3S0ebEwy/x1LM+Z3240Ei4t
+	Zhql4Wzvd0+IXVVcCKICW52B8tgkKSwOCVtZAcKe5h/M2Hel6WCpYw9ODDGgaJZ7cq/mBpHqFQFvq
+	YRL2BeeS5vsxfDKJQUxKqogEQJVXS838V7NphfChJFnrttyfWdmj6NZOVmK+pQ9zsE4WKE6KuQSsN
+	ccOENpqoWlc+9xazWeYl4qKPjtJedUbMaC7sdTGiL8OXq7rQu3IRLVysomUiIpPTaP1UqFPeVmBOH
+	G7iV11Sdn0dJ3vH6WjAQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n6FJo-006jrl-M8; Sat, 08 Jan 2022 17:15:52 +0000
+	id 1n6FJw-006juD-3K; Sat, 08 Jan 2022 17:16:00 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n6FJP-006jer-OC
+ id 1n6FJP-006jeq-Nq
  for barebox@lists.infradead.org; Sat, 08 Jan 2022 17:15:31 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1n6FJO-0004Ax-EI; Sat, 08 Jan 2022 18:15:26 +0100
+ id 1n6FJO-0004Au-Bn; Sat, 08 Jan 2022 18:15:26 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1n6FJN-002Smk-Gd; Sat, 08 Jan 2022 18:15:25 +0100
+ id 1n6FJN-002Smb-F9; Sat, 08 Jan 2022 18:15:25 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sat,  8 Jan 2022 18:15:22 +0100
-Message-Id: <20220108171524.587144-7-a.fatoum@pengutronix.de>
+Date: Sat,  8 Jan 2022 18:15:19 +0100
+Message-Id: <20220108171524.587144-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220108171524.587144-1-a.fatoum@pengutronix.de>
 References: <20220108171524.587144-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220108_091527_853780_5B889187 
-X-CRM114-Status: GOOD (  11.59  )
+X-CRM114-CacheID: sfid-20220108_091527_834044_FBED4ECD 
+X-CRM114-Status: GOOD (  19.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,212 +73,226 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 7/9] RISC-V: don't use x8/s0/fp in assembly
+Subject: [PATCH 4/9] RISC-V: virt: riscvemu: repurpose 64k low RAM for
+ state/environment
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Free up the register to allow building a configuration with x8/s0 used
-as the frame pointer.
+TinyEMU's RISC-V machine emulates a 64K SRAM at address 0.
+First 4K page is unused, then a maximum of 0x40 bytes for boot ROM
+(trampoline that passes FDT), then the FDT. The remainder of the 64K is
+unused. Make use of that space for storing state and environment.
+
+We start the mtd-ram at 0x1000 to easily allow for a faulting zero page.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/riscv/include/asm/debug_ll_litex.h   | 12 +++---
- arch/riscv/include/asm/debug_ll_ns16550.h |  8 ++--
- arch/riscv/include/asm/riscv_nmon.h       | 50 +++++++++++------------
- 3 files changed, 35 insertions(+), 35 deletions(-)
+ arch/riscv/boards/riscvemu/Makefile           |   1 +
+ arch/riscv/boards/riscvemu/board.c            |   9 ++
+ .../riscv/boards/riscvemu/overlay-of-sram.dts | 119 ++++++++++++++++++
+ arch/riscv/configs/virt32_defconfig           |   1 +
+ arch/riscv/configs/virt64_defconfig           |   1 +
+ 5 files changed, 131 insertions(+)
+ create mode 100644 arch/riscv/boards/riscvemu/overlay-of-sram.dts
 
-diff --git a/arch/riscv/include/asm/debug_ll_litex.h b/arch/riscv/include/asm/debug_ll_litex.h
-index 2fcdd9b0ec3e..295477fc1010 100644
---- a/arch/riscv/include/asm/debug_ll_litex.h
-+++ b/arch/riscv/include/asm/debug_ll_litex.h
-@@ -90,11 +90,11 @@ static inline void PUTC_LL(char ch)
- 	li	t0, DEBUG_LL_UART_ADDR
+diff --git a/arch/riscv/boards/riscvemu/Makefile b/arch/riscv/boards/riscvemu/Makefile
+index ad283446eaf1..75f52ada8f37 100644
+--- a/arch/riscv/boards/riscvemu/Makefile
++++ b/arch/riscv/boards/riscvemu/Makefile
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
  
- 	/* get line status and check for data present */
--	lbu	s0, UART_RXEMPTY(t0)
--	bnez    s0, 243f
--	li	s0, 1
-+	lbu	s1, UART_RXEMPTY(t0)
-+	bnez    s1, 243f
-+	li	s1, 1
- 	j	244f
--243:	li	s0, 0
-+243:	li	s1, 0
- 244:	nop
- #endif /* CONFIG_DEBUG_LL */
- .endm
-@@ -109,10 +109,10 @@ static inline void PUTC_LL(char ch)
- 	debug_ll_tstc
+ obj-y += board.o
++obj-y += overlay-of-sram.dtb.o
+diff --git a/arch/riscv/boards/riscvemu/board.c b/arch/riscv/boards/riscvemu/board.c
+index 73d787a8335a..60c93716a2bc 100644
+--- a/arch/riscv/boards/riscvemu/board.c
++++ b/arch/riscv/boards/riscvemu/board.c
+@@ -7,6 +7,7 @@
+ #include <driver.h>
+ #include <poweroff.h>
+ #include <restart.h>
++#include <deep-probe.h>
+ #include <asm/system.h>
+ #include <asm/barebox-riscv.h>
  
- 	/* try again */
--	beqz	s0, 204b
-+	beqz	s1, 204b
+@@ -28,12 +29,19 @@ static void __noreturn riscvemu_restart(struct restart_handler *rst)
+ 	priv->restart(riscv_hartid(), barebox_riscv_boot_dtb());
+ }
  
- 	/* read a character */
--	lb	s0, UART_RXTX(t0)
-+	lb	s1, UART_RXTX(t0)
- 	li      t1, UART_EV_RX
- 	sb	t1, UART_EV_PENDING(t0)
++extern char __dtb_overlay_of_sram_start[];
++
+ static int riscvemu_probe(struct device_d *dev)
+ {
+ 	struct device_node *of_chosen;
++	struct device_node *overlay;
+ 	struct riscvemu_priv *priv;
+ 	u64 start;
  
-diff --git a/arch/riscv/include/asm/debug_ll_ns16550.h b/arch/riscv/include/asm/debug_ll_ns16550.h
-index e208ef4fb1e1..47f0be328ce8 100644
---- a/arch/riscv/include/asm/debug_ll_ns16550.h
-+++ b/arch/riscv/include/asm/debug_ll_ns16550.h
-@@ -143,8 +143,8 @@ static inline void debug_ll_ns16550_init(void)
- 	li      t0, DEBUG_LL_UART_ADDR
++	overlay = of_unflatten_dtb(__dtb_overlay_of_sram_start, INT_MAX);
++	of_overlay_apply_tree(dev->device_node, overlay);
++	/* of_probe() will happen later at of_populate_initcall */
++
+ 	of_chosen = of_find_node_by_path("/chosen");
  
- 	/* get line status and check for data present */
--	UART_REG_L	s0, UART_LSR(DEBUG_LL_UART_SHIFT)(t0)
--	andi	s0, s0, UART_LSR_DR
-+	UART_REG_L	s1, UART_LSR(DEBUG_LL_UART_SHIFT)(t0)
-+	andi	s1, s1, UART_LSR_DR
+ 	if (of_property_read_u64(of_chosen, "riscv,kernel-start", &start))
+@@ -52,6 +60,7 @@ static const struct of_device_id riscvemu_of_match[] = {
+ 	{ .compatible = "ucbbar,riscvemu-bar_dev" },
+ 	{ /* sentinel */ },
+ };
++BAREBOX_DEEP_PROBE_ENABLE(riscvemu_of_match);
  
- #endif /* CONFIG_DEBUG_LL */
- .endm
-@@ -159,10 +159,10 @@ static inline void debug_ll_ns16550_init(void)
- 	debug_ll_tstc
- 
- 	/* try again */
--	beqz	s0, 204b
-+	beqz	s1, 204b
- 
- 	/* read a character */
--	UART_REG_L	s0, UART_RBR(DEBUG_LL_UART_SHIFT)(t0)
-+	UART_REG_L	s1, UART_RBR(DEBUG_LL_UART_SHIFT)(t0)
- 
- #endif /* CONFIG_DEBUG_LL */
- .endm
-diff --git a/arch/riscv/include/asm/riscv_nmon.h b/arch/riscv/include/asm/riscv_nmon.h
-index 8a44e216d72d..3e349025febc 100644
---- a/arch/riscv/include/asm/riscv_nmon.h
-+++ b/arch/riscv/include/asm/riscv_nmon.h
-@@ -84,7 +84,7 @@ nmon_main:
- 	debug_ll_getc
- 
- 	li	a0, 'q'
--	bne	s0, a0, 3f
-+	bne	s1, a0, 3f
- 
- 	jal	a2, _nmon_outc_a0
- 
-@@ -92,13 +92,13 @@ nmon_main:
- 
- 3:
- 	li	a0, 'd'
--	beq	s0, a0, nmon_cmd_d
-+	beq	s1, a0, nmon_cmd_d
- 
- 	li	a0, 'w'
--	beq	s0, a0, nmon_cmd_w
-+	beq	s1, a0, nmon_cmd_w
- 
- 	li	a0, 'g'
--	beq	s0, a0, nmon_cmd_g
-+	beq	s1, a0, nmon_cmd_g
- 
- 	j	nmon_main_help
- 
-@@ -112,7 +112,7 @@ nmon_cmd_d:
- 
- 	nmon_outs	msg_nl
- 
--	lw	a0, (s0)
-+	lw	a0, (s1)
- 	debug_ll_outhexw
- 
- 	j	nmon_main
-@@ -124,13 +124,13 @@ nmon_cmd_w:
- 	jal	a2, _nmon_outc_a0
- 
- 	jal	a2, _nmon_gethexw
--	move	s2, s0
-+	move	s3, s1
- 
- 	li	a0, ' '
- 	jal	a2, _nmon_outc_a0
- 	jal	a2, _nmon_gethexw
- 
--	sw	s0, 0(s2)
-+	sw	s1, 0(s3)
- 	j	nmon_main
- 
- nmon_cmd_g:
-@@ -140,11 +140,11 @@ nmon_cmd_g:
- 	jal	a2, _nmon_outc_a0
- 
- 	jal	a2, _nmon_gethexw
--	move	s2, s0
-+	move	s3, s1
- 
- 	nmon_outs	msg_nl
- 
--	jalr	s2
-+	jalr	s3
- 	j	nmon_main
- 
- _nmon_outc_a0:
-@@ -169,37 +169,37 @@ _nmon_gethexw:
- _get_hex_digit:
- 	debug_ll_getc
- 
--	li	s1, CODE_ESC
--	beq	s0, s1, nmon_main
-+	li	s2, CODE_ESC
-+	beq	s1, s2, nmon_main
- 
--	li	s1, '0'
--	bge	s0, s1, 0f
-+	li	s2, '0'
-+	bge	s1, s2, 0f
- 	j	_get_hex_digit
- 
- 0:
--	li	s1, '9'
--	ble	s0, s1, 9f
-+	li	s2, '9'
-+	ble	s1, s2, 9f
- 
--	li	s1, 'f'
--	ble	s0, s1, 1f
-+	li	s2, 'f'
-+	ble	s1, s2, 1f
- 	j	_get_hex_digit
- 
- 1:
--	li	s1, 'a'
--	bge	s0, s1, 8f
-+	li	s2, 'a'
-+	bge	s1, s2, 8f
- 
- 	j	_get_hex_digit
- 
--8: /* s0 \in {'a', 'b' ... 'f'} */
--	sub	a3, s0, s1
-+8: /* s1 \in {'a', 'b' ... 'f'} */
-+	sub	a3, s1, s2
- 	addi	a3, a3, 0xa
- 	j	0f
- 
--9: /* s0 \in {'0', '1' ... '9'} */
-+9: /* s1 \in {'0', '1' ... '9'} */
- 	li	a3, '0'
--	sub	a3, s0, a3
-+	sub	a3, s1, a3
- 
--0:	move	a0, s0
-+0:	move	a0, s1
- 	debug_ll_outc_a0
- 
- 	sll	t2, t2, 4
-@@ -212,7 +212,7 @@ _get_hex_digit:
- 	j	_get_hex_digit
- 
- 0:
--	move	s0, t2
-+	move	s1, t2
- 
- _nmon_jr_ra_exit:
- 	jr	a2
+ static struct driver_d riscvemu_board_driver = {
+ 	.name = "board-riscvemu",
+diff --git a/arch/riscv/boards/riscvemu/overlay-of-sram.dts b/arch/riscv/boards/riscvemu/overlay-of-sram.dts
+new file mode 100644
+index 000000000000..839887fef24c
+--- /dev/null
++++ b/arch/riscv/boards/riscvemu/overlay-of-sram.dts
+@@ -0,0 +1,119 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++/dts-v1/;
++/plugin/;
++
++/ {
++	fragment@0 {
++		target-path = "/soc";
++		__overlay__ {
++			#address-cells = <2>;
++			#size-cells = <2>;
++			sram@0 {
++				compatible = "mtd-ram";
++				reg = <0 0x1000 0 0x10000>;
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				partitions {
++					compatible = "fixed-partitions";
++					#address-cells = <1>;
++					#size-cells = <1>;
++
++					partition@0 {
++						label = "bootrom";
++						reg = <0x0 0x40>;
++					};
++
++					partition@40 {
++						label = "fdt";
++						reg = <0x40 0x1fc0>;
++					};
++
++					environment_sram: partition@3000 {
++						label = "barebox-environment";
++						reg = <0x3000 0xb000>;
++					};
++
++					backend_state_sram: partition@e000 {
++						label = "barebox-state";
++						reg = <0xe000 0x1000>;
++					};
++				};
++			};
++		};
++	};
++
++	fragment@2 {
++		target-path = "/chosen";
++		__overlay__ {
++			environment {
++				compatible = "barebox,environment";
++				device-path = "/soc/sram@0/partitions/partition@3000";
++			};
++		};
++	};
++
++	fragment@3 {
++		target-path = "/";
++		__overlay__ {
++			aliases {
++				state = "/state";
++			};
++
++			state {
++				#address-cells = <1>;
++				#size-cells = <1>;
++				compatible = "barebox,state";
++				magic = <0x290cf8c6>;
++				backend-type = "raw";
++				backend = <&backend_state_sram>;
++				backend-stridesize = <64>;
++
++				bootstate {
++					#address-cells = <1>;
++					#size-cells = <1>;
++
++					system0 {
++						#address-cells = <1>;
++						#size-cells = <1>;
++
++						remaining_attempts@0 {
++							reg = <0x0 0x4>;
++							type = "uint32";
++							default = <3>;
++						};
++
++						priority@4 {
++							reg = <0x4 0x4>;
++							type = "uint32";
++							default = <20>;
++						};
++					};
++
++					system1 {
++						#address-cells = <1>;
++						#size-cells = <1>;
++
++						remaining_attempts@8 {
++							reg = <0x8 0x4>;
++							type = "uint32";
++							default = <3>;
++						};
++
++						priority@c {
++							reg = <0xc 0x4>;
++							type = "uint32";
++							default = <21>;
++						};
++					};
++
++					last_chosen@10 {
++						reg = <0x10 0x4>;
++						type = "uint32";
++					};
++				};
++			};
++		};
++	};
++};
+diff --git a/arch/riscv/configs/virt32_defconfig b/arch/riscv/configs/virt32_defconfig
+index bfea7771efd8..28a20673e9b7 100644
+--- a/arch/riscv/configs/virt32_defconfig
++++ b/arch/riscv/configs/virt32_defconfig
+@@ -88,6 +88,7 @@ CONFIG_MTD=y
+ # CONFIG_MTD_OOB_DEVICE is not set
+ CONFIG_MTD_CONCAT=y
+ CONFIG_MTD_M25P80=y
++CONFIG_MTD_MTDRAM=y
+ CONFIG_DRIVER_CFI=y
+ CONFIG_DRIVER_CFI_BANK_WIDTH_8=y
+ CONFIG_DISK=y
+diff --git a/arch/riscv/configs/virt64_defconfig b/arch/riscv/configs/virt64_defconfig
+index 2ddc174b8a65..17588f61fa35 100644
+--- a/arch/riscv/configs/virt64_defconfig
++++ b/arch/riscv/configs/virt64_defconfig
+@@ -89,6 +89,7 @@ CONFIG_MTD=y
+ # CONFIG_MTD_OOB_DEVICE is not set
+ CONFIG_MTD_CONCAT=y
+ CONFIG_MTD_M25P80=y
++CONFIG_MTD_MTDRAM=y
+ CONFIG_DRIVER_CFI=y
+ CONFIG_DRIVER_CFI_BANK_WIDTH_8=y
+ CONFIG_DISK=y
 -- 
 2.30.2
 
