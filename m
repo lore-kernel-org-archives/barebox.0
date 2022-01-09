@@ -1,56 +1,57 @@
-Delivery-date: Sat, 08 Jan 2022 19:26:50 +0100
+Delivery-date: Sun, 09 Jan 2022 19:40:41 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n6GQU-00EfNf-J4
-	for lore@lore.pengutronix.de; Sat, 08 Jan 2022 19:26:50 +0100
+	id 1n6d7R-00FR4Z-6P
+	for lore@lore.pengutronix.de; Sun, 09 Jan 2022 19:40:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n6GQT-0002vX-3s
-	for lore@pengutronix.de; Sat, 08 Jan 2022 19:26:49 +0100
+	id 1n6d7P-0005OF-Uj
+	for lore@pengutronix.de; Sun, 09 Jan 2022 19:40:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:Cc:References:To:Subject:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=9s6YjPoNZ9viLMQPKJ6oOvUXUIlUzcIlFDhiKxXu/F0=; b=tK+z68Gqdv49capmyW7pfzuZGA
-	LjgvMOf7xFH0Yxsi+F1m8W6K2hPJZWHN/Sgmt+qnqzIm/Js/1g/IE1FMnfsOverlyYEISM/RLY9Le
-	tQwr7QLs7akNbcsCdyH2KxKB2BWYiHOfIbAd7W8F2iFfJoum5l9hjI5FO8h4mVL+EitFaE3A3qhIb
-	aFJ3fXTixZV2b7s8n2o7FUFuOJkX/3HYlBN8D5pOkaHmu1fLJwK7K/Dx18PXwrDQD9MQpXu4GTR/H
-	DVEGc71ZM+9aKVRtQ88rMKfUJkvsd0rB52tXQ8QukWDhR/UsMrVH3a8IJsBy6DFsJAsZwUuzZ5e2S
-	YsU6We5g==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-ID:Subject:To:From
+	:Date:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=a+ombl8g/iI8FlG3z9ynY/NGvbEoe+h8kBQ9/ba8irk=; b=u8IDDhEklNFpJo
+	CJ+hD9yntydzQbJjb9BR0r0F2ZKNC3Idr2GqGQrG66tvR9Uug+Xcr4kQFnrMrK9R8LyV4Q5bJBI7C
+	mSv7VfIXyI/cXNzJsD7Qu+LjBrB2zLqvRc3g8bHF0lvScpKIE0WVuDl87rkwEtvbDQ26g+S70bmCS
+	FGQR8JuRcoM/MRPPfwOYwpcnCbNK3AgCJfeIjV3ahxaATuCN1pGDoYM5JILE5QiZQv4CRxaK5rOI0
+	vxKm4AJoyihUKwNc3FnEx/1NePc6TGpvjNb2qXtdxG03yhDSemT5kI44NwLmJOqQsM2yiMyFt60kE
+	JUwPQF5atE7XajkY4X3w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n6GOw-006pm9-Rz; Sat, 08 Jan 2022 18:25:14 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1n6d5k-008FGu-Q6; Sun, 09 Jan 2022 18:38:56 +0000
+Received: from mx1.smtp.larsendata.com ([91.221.196.215])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n6GOs-006pll-J4
- for barebox@lists.infradead.org; Sat, 08 Jan 2022 18:25:12 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1n6GOn-0002XP-3o; Sat, 08 Jan 2022 19:25:05 +0100
-To: Antony Pavlov <antonynpavlov@gmail.com>
-References: <20220108171524.587144-1-a.fatoum@pengutronix.de>
- <20220108171524.587144-7-a.fatoum@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <6136d698-30cd-12a7-58e4-a6598ff3a86e@pengutronix.de>
-Date: Sat, 8 Jan 2022 19:25:03 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ id 1n6d5g-008FG2-11
+ for barebox@lists.infradead.org; Sun, 09 Jan 2022 18:38:53 +0000
+Received: from mail01.mxhotel.dk (mail01.mxhotel.dk [91.221.196.236])
+ by mx1.smtp.larsendata.com (Halon) with ESMTPS
+ id 77aad817-717b-11ec-b20b-0050568c148b;
+ Sun, 09 Jan 2022 18:39:24 +0000 (UTC)
+Received: from ravnborg.org (80-162-45-141-cable.dk.customer.tdc.net
+ [80.162.45.141])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ (Authenticated sender: sam@ravnborg.org)
+ by mail01.mxhotel.dk (Postfix) with ESMTPSA id 6B12B194B00;
+ Sun,  9 Jan 2022 19:38:45 +0100 (CET)
+Date: Sun, 9 Jan 2022 19:38:38 +0100
+X-Report-Abuse-To: abuse@mxhotel.dk
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Barebox List <barebox@lists.infradead.org>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <Ydsrrj76kk6tmD2X@ravnborg.org>
 MIME-Version: 1.0
-In-Reply-To: <20220108171524.587144-7-a.fatoum@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220108_102510_692248_7862FC7D 
-X-CRM114-Status: GOOD (  21.84  )
+X-CRM114-CacheID: sfid-20220109_103852_261443_526D4178 
+X-CRM114-Status: GOOD (  16.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,231 +71,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 7/9] RISC-V: don't use x8/s0/fp in assembly
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Q about bootstrap support for at91sam92* boards and proposal for
+ retirement
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Antony,
+Hi all.
 
-On 08.01.22 18:15, Ahmad Fatoum wrote:
-> Free up the register to allow building a configuration with x8/s0 used
-> as the frame pointer.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/riscv/include/asm/debug_ll_litex.h   | 12 +++---
->  arch/riscv/include/asm/debug_ll_ns16550.h |  8 ++--
->  arch/riscv/include/asm/riscv_nmon.h       | 50 +++++++++++------------
+This little detour started because Ahmad pointed out I had made
+a stupid mistake in pwm-atmel.
+So I decided I wanted to give it a spin to verify if it actually works
+now.
 
-I just bumped the s register: s2 -> s3, s1 -> s2, s0 -> s1 to
-clear s0. Is that ok?
+The first challenge I encountered was that said driver had bit-rotted
+as it used the old pwm framework - so I updated it from the Linux
+kernel.
+I have the code locally - but this time I will not have it posted before
+it is tested.
 
->  3 files changed, 35 insertions(+), 35 deletions(-)
-> 
-> diff --git a/arch/riscv/include/asm/debug_ll_litex.h b/arch/riscv/include/asm/debug_ll_litex.h
-> index 2fcdd9b0ec3e..295477fc1010 100644
-> --- a/arch/riscv/include/asm/debug_ll_litex.h
-> +++ b/arch/riscv/include/asm/debug_ll_litex.h
-> @@ -90,11 +90,11 @@ static inline void PUTC_LL(char ch)
->  	li	t0, DEBUG_LL_UART_ADDR
->  
->  	/* get line status and check for data present */
-> -	lbu	s0, UART_RXEMPTY(t0)
-> -	bnez    s0, 243f
-> -	li	s0, 1
-> +	lbu	s1, UART_RXEMPTY(t0)
-> +	bnez    s1, 243f
-> +	li	s1, 1
->  	j	244f
-> -243:	li	s0, 0
-> +243:	li	s1, 0
->  244:	nop
->  #endif /* CONFIG_DEBUG_LL */
->  .endm
-> @@ -109,10 +109,10 @@ static inline void PUTC_LL(char ch)
->  	debug_ll_tstc
->  
->  	/* try again */
-> -	beqz	s0, 204b
-> +	beqz	s1, 204b
->  
->  	/* read a character */
-> -	lb	s0, UART_RXTX(t0)
-> +	lb	s1, UART_RXTX(t0)
->  	li      t1, UART_EV_RX
->  	sb	t1, UART_EV_PENDING(t0)
->  
-> diff --git a/arch/riscv/include/asm/debug_ll_ns16550.h b/arch/riscv/include/asm/debug_ll_ns16550.h
-> index e208ef4fb1e1..47f0be328ce8 100644
-> --- a/arch/riscv/include/asm/debug_ll_ns16550.h
-> +++ b/arch/riscv/include/asm/debug_ll_ns16550.h
-> @@ -143,8 +143,8 @@ static inline void debug_ll_ns16550_init(void)
->  	li      t0, DEBUG_LL_UART_ADDR
->  
->  	/* get line status and check for data present */
-> -	UART_REG_L	s0, UART_LSR(DEBUG_LL_UART_SHIFT)(t0)
-> -	andi	s0, s0, UART_LSR_DR
-> +	UART_REG_L	s1, UART_LSR(DEBUG_LL_UART_SHIFT)(t0)
-> +	andi	s1, s1, UART_LSR_DR
->  
->  #endif /* CONFIG_DEBUG_LL */
->  .endm
-> @@ -159,10 +159,10 @@ static inline void debug_ll_ns16550_init(void)
->  	debug_ll_tstc
->  
->  	/* try again */
-> -	beqz	s0, 204b
-> +	beqz	s1, 204b
->  
->  	/* read a character */
-> -	UART_REG_L	s0, UART_RBR(DEBUG_LL_UART_SHIFT)(t0)
-> +	UART_REG_L	s1, UART_RBR(DEBUG_LL_UART_SHIFT)(t0)
->  
->  #endif /* CONFIG_DEBUG_LL */
->  .endm
-> diff --git a/arch/riscv/include/asm/riscv_nmon.h b/arch/riscv/include/asm/riscv_nmon.h
-> index 8a44e216d72d..3e349025febc 100644
-> --- a/arch/riscv/include/asm/riscv_nmon.h
-> +++ b/arch/riscv/include/asm/riscv_nmon.h
-> @@ -84,7 +84,7 @@ nmon_main:
->  	debug_ll_getc
->  
->  	li	a0, 'q'
-> -	bne	s0, a0, 3f
-> +	bne	s1, a0, 3f
->  
->  	jal	a2, _nmon_outc_a0
->  
-> @@ -92,13 +92,13 @@ nmon_main:
->  
->  3:
->  	li	a0, 'd'
-> -	beq	s0, a0, nmon_cmd_d
-> +	beq	s1, a0, nmon_cmd_d
->  
->  	li	a0, 'w'
-> -	beq	s0, a0, nmon_cmd_w
-> +	beq	s1, a0, nmon_cmd_w
->  
->  	li	a0, 'g'
-> -	beq	s0, a0, nmon_cmd_g
-> +	beq	s1, a0, nmon_cmd_g
->  
->  	j	nmon_main_help
->  
-> @@ -112,7 +112,7 @@ nmon_cmd_d:
->  
->  	nmon_outs	msg_nl
->  
-> -	lw	a0, (s0)
-> +	lw	a0, (s1)
->  	debug_ll_outhexw
->  
->  	j	nmon_main
-> @@ -124,13 +124,13 @@ nmon_cmd_w:
->  	jal	a2, _nmon_outc_a0
->  
->  	jal	a2, _nmon_gethexw
-> -	move	s2, s0
-> +	move	s3, s1
->  
->  	li	a0, ' '
->  	jal	a2, _nmon_outc_a0
->  	jal	a2, _nmon_gethexw
->  
-> -	sw	s0, 0(s2)
-> +	sw	s1, 0(s3)
->  	j	nmon_main
->  
->  nmon_cmd_g:
-> @@ -140,11 +140,11 @@ nmon_cmd_g:
->  	jal	a2, _nmon_outc_a0
->  
->  	jal	a2, _nmon_gethexw
-> -	move	s2, s0
-> +	move	s3, s1
->  
->  	nmon_outs	msg_nl
->  
-> -	jalr	s2
-> +	jalr	s3
->  	j	nmon_main
->  
->  _nmon_outc_a0:
-> @@ -169,37 +169,37 @@ _nmon_gethexw:
->  _get_hex_digit:
->  	debug_ll_getc
->  
-> -	li	s1, CODE_ESC
-> -	beq	s0, s1, nmon_main
-> +	li	s2, CODE_ESC
-> +	beq	s1, s2, nmon_main
->  
-> -	li	s1, '0'
-> -	bge	s0, s1, 0f
-> +	li	s2, '0'
-> +	bge	s1, s2, 0f
->  	j	_get_hex_digit
->  
->  0:
-> -	li	s1, '9'
-> -	ble	s0, s1, 9f
-> +	li	s2, '9'
-> +	ble	s1, s2, 9f
->  
-> -	li	s1, 'f'
-> -	ble	s0, s1, 1f
-> +	li	s2, 'f'
-> +	ble	s1, s2, 1f
->  	j	_get_hex_digit
->  
->  1:
-> -	li	s1, 'a'
-> -	bge	s0, s1, 8f
-> +	li	s2, 'a'
-> +	bge	s1, s2, 8f
->  
->  	j	_get_hex_digit
->  
-> -8: /* s0 \in {'a', 'b' ... 'f'} */
-> -	sub	a3, s0, s1
-> +8: /* s1 \in {'a', 'b' ... 'f'} */
-> +	sub	a3, s1, s2
->  	addi	a3, a3, 0xa
->  	j	0f
->  
-> -9: /* s0 \in {'0', '1' ... '9'} */
-> +9: /* s1 \in {'0', '1' ... '9'} */
->  	li	a3, '0'
-> -	sub	a3, s0, a3
-> +	sub	a3, s1, a3
->  
-> -0:	move	a0, s0
-> +0:	move	a0, s1
->  	debug_ll_outc_a0
->  
->  	sll	t2, t2, 4
-> @@ -212,7 +212,7 @@ _get_hex_digit:
->  	j	_get_hex_digit
->  
->  0:
-> -	move	s0, t2
-> +	move	s1, t2
->  
->  _nmon_jr_ra_exit:
->  	jr	a2
-> 
+Then I cloned the latest at91bootstrap - but they no longer support old
+at91sam92xx CPUs.
+So it was time to enable bootstrap support for at91sam9263.
 
+In the past I had something working, but alas no luck this time.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Can anyone (Ahmad?) help me a little how to get the bootstrap
+functionality working on the at91sam9263?
+
+I do not expect patches, but I hope for something that can point me in
+the right way to do it.
+
+I have skov-arm9cpu boards (plenty - as they are mostly retired by SKOV)
+and one at91sam9263ek where I can test.
+
+We see very little interest in at91sam92* boards and we could decide
+to retire all the boards that are not updated to multi-image.
+This could simplify things - and if there is interest the missing boards
+can be brought back to life provided they are updated to multi image.
+Any comments on this?
+I am happy to type the patches - and verify that the boards I have works.
+
+	Sam
+
 
 _______________________________________________
 barebox mailing list
