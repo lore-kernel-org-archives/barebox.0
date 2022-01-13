@@ -1,57 +1,55 @@
-Delivery-date: Thu, 13 Jan 2022 17:06:09 +0100
+Delivery-date: Thu, 13 Jan 2022 17:06:10 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n82c5-001GNX-Q6
-	for lore@lore.pengutronix.de; Thu, 13 Jan 2022 17:06:09 +0100
+	id 1n82c6-001GNw-Oc
+	for lore@lore.pengutronix.de; Thu, 13 Jan 2022 17:06:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n82c4-0001kQ-AQ
-	for lore@pengutronix.de; Thu, 13 Jan 2022 17:06:09 +0100
+	id 1n82c5-0001kw-Ct
+	for lore@pengutronix.de; Thu, 13 Jan 2022 17:06:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=mzh7otLSC6ldd/toHGmchw9SM+mnLfU0UE1zb4l5c/k=; b=XhUZ2qJK5eLMP2bwAGvRbZQtvT
-	O5O3wcgRRI0gWnOHPfuSMnswLfBhjS8BexdbnhPgvfHTE2iFh4aDRNl2VYXF0RJ/x/iK2P+ofBBND
-	DVdTf8jXan6wjIyl8lGX+XtTWvC/SRk638WsXC2M9JKn5KpcvPqF4KdyoJxxcX33bAzPKzxDy6nf4
-	nRKL+7K6YiYfTBGsPEBANsibDCHfbXmGir03zOJejaMSwF7VwwaMEH5qptlKOPZKqlWa72Gcf5/uj
-	1hVTq/Lja0wuS5URqChnSoxKnpa87Su/8JqK9O64oyo4fPFm05CgaPjN2WGxOoi7YNeVj5iIO5wbl
-	Br3g6vpA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=8zdSIcpcDjvXyL/dB3RXhfG6j1Sm2xaWpfNfygvf7oQ=; b=oFOArcmMlFgHSP
+	csOyGxfP84HbXyvaj3LOvRpSqEgccjEFmK9sYmCXiURlFB4JjlzGKQMsI0PT54a2LxvKcIj8awMVk
+	6bzZ76+6W5+uE2cbdoa8ptZQwpx1SeMZBOPLQRs0FMCgxsG7rTexEQ+hPKk7/NqyL51YlwF96SuE3
+	mMYDZwDPcpR2eGB7n9XdsSDreJPbJ3ww5g46VniRuEMszE+UuyNlcj6RlZy4SWYG89UFkwz7BcAbL
+	X62MZ8i3uxmZ8O3B59UPnhhNp+6B9MRhC94K9uvCrIKeAIakbRTgwqksIROMy6+KJ8sAHXpY5eHkU
+	arHDch+pOT7dY9+HWxEw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n82aT-006Sat-6M; Thu, 13 Jan 2022 16:04:29 +0000
+	id 1n82aO-006SZp-I0; Thu, 13 Jan 2022 16:04:24 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n82aN-006SZh-OG
- for barebox@lists.infradead.org; Thu, 13 Jan 2022 16:04:25 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1n82aK-0001Ef-RI; Thu, 13 Jan 2022 17:04:20 +0100
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20220108171426.586330-1-a.fatoum@pengutronix.de>
- <20220108171426.586330-3-a.fatoum@pengutronix.de>
- <20220110085634.GD6003@pengutronix.de>
+ id 1n82aK-006SYr-6h
+ for barebox@lists.infradead.org; Thu, 13 Jan 2022 16:04:21 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1n82aF-0001Cv-Om; Thu, 13 Jan 2022 17:04:15 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1n82aF-00GaP4-A8; Thu, 13 Jan 2022 17:04:15 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <0ea7d9ed-0aa9-1fab-6e39-eb07f4833c99@pengutronix.de>
-Date: Thu, 13 Jan 2022 17:04:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 13 Jan 2022 17:04:13 +0100
+Message-Id: <20220113160414.3943151-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220113160414.3943151-1-a.fatoum@pengutronix.de>
+References: <20220113160414.3943151-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20220110085634.GD6003@pengutronix.de>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220113_080423_839578_1899F717 
-X-CRM114-Status: GOOD (  24.87  )
+X-CRM114-CacheID: sfid-20220113_080420_265389_2D774972 
+X-CRM114-Status: GOOD (  12.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -63,8 +61,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -73,135 +71,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/3] commands: add new devunbind debugging command
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v2 2/3] driver: have CONFIG_DEBUG_PROBES report device unbind
+ as well
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 10.01.22 09:56, Sascha Hauer wrote:
-> On Sat, Jan 08, 2022 at 06:14:26PM +0100, Ahmad Fatoum wrote:
->> Memory corruption around device removal may go unnoticed, because
->> barebox is shutting down anyway and doing no new allocations.
->>
->> Add a new devunbind command that should help with debugging such issues
->> by allowing selective unbinding and removal of devices.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  commands/Kconfig      | 12 +++++++
->>  commands/Makefile     |  1 +
->>  commands/devunbind.c  | 74 +++++++++++++++++++++++++++++++++++++++++++
->>  drivers/base/driver.c |  7 ++--
->>  include/driver.h      |  4 +++
->>  5 files changed, 95 insertions(+), 3 deletions(-)
->>  create mode 100644 commands/devunbind.c
->>
->> diff --git a/commands/Kconfig b/commands/Kconfig
->> index e2c36949347e..9abd97271952 100644
->> --- a/commands/Kconfig
->> +++ b/commands/Kconfig
->> @@ -68,6 +68,18 @@ config CMD_DEVINFO
->>  	  If called with a device path being the argument, devinfo shows more
->>  	  default information about this device and its parameters.
->>  =
+This aligns it with DEBUG_INITCALLS, which also traces exitcalls.
 
->> +config CMD_DEVUNBIND
->> +	tristate
->> +	default y
->> +	prompt "devunbind"
->> +	help
->> +	  Debugging aid to unbind device from driver at runtime
->> +
->> +	  devunbind [-f] DEVICE
->> +
->> +	  Options:
->> +	    -f   unbind driver and force removal of device and children
->> +
->>  config CMD_DMESG
->>  	tristate
->>  	prompt "dmesg"
->> diff --git a/commands/Makefile b/commands/Makefile
->> index 0b7c1563b534..875826743ffe 100644
->> --- a/commands/Makefile
->> +++ b/commands/Makefile
->> @@ -107,6 +107,7 @@ obj-$(CONFIG_CMD_MIITOOL)	+=3D miitool.o
->>  obj-$(CONFIG_CMD_DETECT)	+=3D detect.o
->>  obj-$(CONFIG_CMD_BOOT)		+=3D boot.o
->>  obj-$(CONFIG_CMD_DEVINFO)	+=3D devinfo.o
->> +obj-$(CONFIG_CMD_DEVUNBIND)	+=3D devunbind.o
->>  obj-$(CONFIG_CMD_DRVINFO)	+=3D drvinfo.o
->>  obj-$(CONFIG_CMD_READF)		+=3D readf.o
->>  obj-$(CONFIG_CMD_MENUTREE)	+=3D menutree.o
->> diff --git a/commands/devunbind.c b/commands/devunbind.c
->> new file mode 100644
->> index 000000000000..4bebb27e8e68
->> --- /dev/null
->> +++ b/commands/devunbind.c
->> @@ -0,0 +1,74 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +// SPDX-FileCopyrightText: =A9 2021 Ahmad Fatoum <a.fatoum@pengutronix.=
-de>, Pengutronix
->> +
->> +#include <command.h>
->> +#include <common.h>
->> +#include <complete.h>
->> +#include <driver.h>
->> +#include <getopt.h>
->> +
->> +static int do_devunbind(int argc, char *argv[])
->> +{
->> +	bool unregister =3D false;
->> +	struct device_d *dev;
->> +	int ret =3D COMMAND_SUCCESS, i, opt;
->> +
->> +	while ((opt =3D getopt(argc, argv, "fl")) > 0) {
->> +		switch (opt) {
->> +		case 'f':
->> +			unregister =3D true;
->> +			break;
->> +		case 'l':
->> +			list_for_each_entry(dev, &active_device_list, active) {
->> +				BUG_ON(!dev->driver);
->> +				if (dev->bus->remove)
->> +					printf("%pS(%s, %s)\n", dev->bus->remove,
->> +					       dev->driver->name, dev_name(dev));
->> +			}
->> +			return 0;
->> +		default:
->> +			return COMMAND_ERROR_USAGE;
->> +		}
->> +	}
->> +
->> +	if (!argv[optind])
->> +		return COMMAND_ERROR_USAGE;
->> +
->> +	for (i =3D optind; i < argc; i++) {
->> +		dev =3D get_device_by_name(argv[i]);
->> +		if (!dev)
->> +			return -ENODEV;
->> +
->> +		if (unregister)
->> +			return unregister_device(dev);
-> =
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2: no change
+---
+ common/Kconfig        | 10 ++++++++--
+ drivers/base/driver.c |  4 ++++
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-> Shouldn't you continue the loop here?
+diff --git a/common/Kconfig b/common/Kconfig
+index 482faea933a6..060e21d9fedf 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1524,9 +1524,15 @@ config DEBUG_INITCALLS
+ 	  If enabled this will print initcall traces.
+ 
+ config DEBUG_PROBES
+-	bool "Trace driver probes"
++	bool "Trace driver probes/removes"
+ 	help
+-	  If enabled this will print driver probe traces.
++	  If enabled this will log driver probe and remove traces. If DEBUG_LL is enabled,
++	  probes will be printed even before registering consoles. If it's disabled, they
++	  will be collected in the log and written out once a console is active.
++
++	  Removes are written to the log and will be printed as long as consoles exist.
++	  Most consoles do not implement a remove callback to remain operable until
++	  the very end. Consoles using DMA, however, must be removed.
+ 
+ config PBL_BREAK
+ 	bool "Execute software break on pbl start"
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index dd965eb165ee..bb07e96dcaf4 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -502,11 +502,15 @@ EXPORT_SYMBOL_GPL(dev_set_name);
+ static void devices_shutdown(void)
+ {
+ 	struct device_d *dev;
++	int depth = 0;
+ 
+ 	list_for_each_entry(dev, &active, active) {
+ 		if (dev->bus->remove) {
++			depth++;
++			pr_report_probe("%*sremove-> %s\n", depth * 4, "", dev_name(dev));
+ 			dev->bus->remove(dev);
+ 			dev->driver = NULL;
++			depth--;
+ 		}
+ 	}
+ }
+-- 
+2.30.2
 
-Yes. Fixed in v2.
-
-> =
-
-> Sascha
-> =
-
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
