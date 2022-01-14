@@ -1,90 +1,88 @@
-Delivery-date: Fri, 14 Jan 2022 17:54:21 +0100
+Delivery-date: Fri, 14 Jan 2022 17:54:23 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8PqH-002DG9-TY
-	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 17:54:21 +0100
+	id 1n8PqJ-002DHG-6o
+	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 17:54:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8PqF-0004Pe-MH
-	for lore@pengutronix.de; Fri, 14 Jan 2022 17:54:21 +0100
+	id 1n8PqH-0004Qq-L9
+	for lore@pengutronix.de; Fri, 14 Jan 2022 17:54:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:List-Subscribe:List-Help:
 	List-Post:List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=rt40KqXYAcc4Ob70t8D4lOjGiZvFwSmw1AqtBpMpEsI=; b=LzxxnVrCBBW3m4
-	kYsfqoKOPTowTl+REiW6VNSqjjqwwsOy1PJd/44zWfmzqkyxTdoBx02iN0eNBCsPqQT0wrt8UHJhE
-	aXD3FHlmeXxc0F2Vm2iHsSPHzRZG2F11QU8Ykl7hilUKkmf3ttvFotqPwdrwRIE/etAyYzBzUPDqR
-	cfKVms+4iZpyh9Wg35/8feKLLkgIAUS/PVU/TQKJavFznBZrn9a+BpgYEy1T85O7Pf/Qk+sQgHJ5r
-	05ed3FHvYxkb5Yk+LIR0iJw2o0OIutKEs5WhGEHMQ1wv2CbIRPRCOY9Cv1GBZrCFDEJGkChlXw6zZ
-	z3H47F+4XbqGbF7oiE7A==;
+	List-Owner; bh=gojAvSjod7DUnScel5rjksFYbvAxot1f7MQeh2nPV7w=; b=zJgOeM7B28OjOc
+	7Mie0Rp0NJw4pe6luYHaKLgWVroQiA/vX7HTugh+F2zaDhjFaLih1+gEn4oIJtTBEW35cVQXgLJT8
+	8iWiOv/DeHcGIMGUulBnEqHBEf7449XTJRCLO+6NH/8p70TIDOEkzSuB461ssafVn5wRvpWjQ8Sq5
+	lla4PgpHJ/3zepR6BSLV5iCdi5IWsvbAsy+CGhkkGeRfwiRCvxnmEx2+T7MsrtaKyd1/0jfFxplxC
+	3Iny2Ykmjr4+IwG0NwFZIMBX80ugqXjCcFIEerV3cYbK8VdYzuaFZmO0HGvIe3KBvhtF0Ul3pMi1L
+	07tgdVTe/tOm7pQ3IXhA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n8PoX-009qK2-HI; Fri, 14 Jan 2022 16:52:33 +0000
-Received: from smtpout140.security-mail.net ([85.31.212.143]
- helo=fx403.security-mail.net)
+	id 1n8Pof-009qMJ-D2; Fri, 14 Jan 2022 16:52:41 +0000
+Received: from smtpout30.security-mail.net ([85.31.212.37]
+ helo=fx306.security-mail.net)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n8PoR-009qHE-0d
- for barebox@lists.infradead.org; Fri, 14 Jan 2022 16:52:29 +0000
+ id 1n8PoR-009qGt-0E
+ for barebox@lists.infradead.org; Fri, 14 Jan 2022 16:52:31 +0000
 Received: from localhost (localhost [127.0.0.1])
- by fx403.security-mail.net (Postfix) with ESMTP id 6105B1C74BF
+ by fx306.security-mail.net (Postfix) with ESMTP id 11B22399572
  for <barebox@lists.infradead.org>; Fri, 14 Jan 2022 17:52:25 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
  s=sec-sig-email; t=1642179145;
- bh=hX9kaH233wrA7f8LMFK2mdz1EGQv4WKswj9MjZHUwTA=;
+ bh=kWhUOm/xy6a3Wt6Uacnpzb05e04HIMfh+zZnnw+4kXc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=Q5iIngaXmKFr9baX8l2AMQqJ4717gfrH78ovnLizK9u1tYcisMNO++TgQxbR1dyoH
- iQ/9TICV1/gODtujFVLR989lUHfx+Opnw35HWiBp3tm7COOiSOfPQOiXJyC/nQT6kS
- B1tkfiZ0ucmq1gksFOaMS+L5Qz7D07xzCB/MljMA=
-Received: from fx403 (localhost [127.0.0.1])
- by fx403.security-mail.net (Postfix) with ESMTP id A8C8D1C74B2;
+ b=3uUN2XodSJ9kAhB9AUhhqdC3AjYNbaf8mu9cIGHcWwXXonDbouZPGddxoc8WU+oHh
+ leqFsPwpMJtzKS0j+I4Xi1DGfohNJoIGw8gEmkW3023J9qkC2WZex1tgeaw6lHjq6T
+ VUU0N9fwCbUDg+DKuhZgBKSg9GAWFMk4C6EnbUZ4=
+Received: from fx306 (localhost [127.0.0.1])
+ by fx306.security-mail.net (Postfix) with ESMTP id 9D7B4399543;
  Fri, 14 Jan 2022 17:52:24 +0100 (CET)
 X-Virus-Scanned: E-securemail
-Secumail-id: <264a.61e1aa48.4d8ad.0>
+Secumail-id: <15c0.61e1aa48.2f1f5.0>
 Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
- by fx403.security-mail.net (Postfix) with ESMTPS id 4E9561C74A3;
+ by fx306.security-mail.net (Postfix) with ESMTPS id 2FD7D399515;
  Fri, 14 Jan 2022 17:52:24 +0100 (CET)
 Received: from zimbra2.kalray.eu (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTPS id 2EBEA27E03AE;
+ by zimbra2.kalray.eu (Postfix) with ESMTPS id 1337727E03DD;
  Fri, 14 Jan 2022 17:52:24 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 1843027E0341;
- Fri, 14 Jan 2022 17:52:24 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 1843027E0341
+ by zimbra2.kalray.eu (Postfix) with ESMTP id F142D27E0341;
+ Fri, 14 Jan 2022 17:52:23 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu F142D27E0341
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
  s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1642179144;
- bh=EGd0wFiFKQfdjyl0+fPK1ooTpNXVfLsGAqkNcP4jbOQ=;
+ bh=07coFaaEd6CrvelCYOR5cjaMphMpnNGUZO/RsCl3BtI=;
  h=From:To:Date:Message-Id;
- b=PbhfejOdl6m1Z5L6ViMFhkz5NkNGIuD4vkjlrVccfLbK/SkFSFH5U+dEz+w+U2AUw
- dTMFV5hbnFfY5c1nIlV0eqGDgp32o2NbRYYCJ08vlvd4poEbMjBwzFBBbRwIwBKgcS
- x7ipQk7Y3JfnKTVTZpNTuRkyk8KDTN3MgaOLAsDE=
+ b=T5DfncHN9wuxfW/ko2SuOE6blId7KCXCPKZCJfLZAWrBUH+pBZi+6AeWCAXjqjiTH
+ N1yNwT+Sj3dG9gKNHP9BNWoq8VPGqcufYJpp0OY/iov2wM1XxRrW9tw7puVTruHNVo
+ inls5WxGPV9zED47APYiEt6ky6YH4edfqCppqjXU=
 Received: from zimbra2.kalray.eu ([127.0.0.1])
  by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id qZdwXkS2dW1b; Fri, 14 Jan 2022 17:52:24 +0100 (CET)
+ with ESMTP id Eu-hFbYJEqGW; Fri, 14 Jan 2022 17:52:23 +0100 (CET)
 Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
- by zimbra2.kalray.eu (Postfix) with ESMTPSA id 0246727E0401;
- Fri, 14 Jan 2022 17:52:24 +0100 (CET)
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id D67E427E03A2;
+ Fri, 14 Jan 2022 17:52:23 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
 To: barebox@lists.infradead.org
 Cc: Clement Leger <clement.leger@bootlin.com>,
  Louis Morhet <lmorhet@kalray.eu>, Luc Michel <lmichel@kalray.eu>,
- Yann Sionneau <ysionneau@kalray.eu>, Clement Leger <cleger@kalray.eu>,
- Jules Maselbas <jmaselbas@kalray.eu>
-Date: Fri, 14 Jan 2022 17:52:08 +0100
-Message-Id: <20220114165208.9980-10-jmaselbas@kalray.eu>
+ Yann Sionneau <ysionneau@kalray.eu>, Jules Maselbas <jmaselbas@kalray.eu>
+Date: Fri, 14 Jan 2022 17:52:06 +0100
+Message-Id: <20220114165208.9980-8-jmaselbas@kalray.eu>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220114165208.9980-1-jmaselbas@kalray.eu>
 References: <20220114165208.9980-1-jmaselbas@kalray.eu>
 X-Virus-Scanned: by Secumail
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220114_085227_245932_911297D0 
-X-CRM114-Status: UNSURE (   7.02  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220114_085227_254563_D0BEB291 
+X-CRM114-Status: GOOD (  11.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -109,34 +107,45 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 09/13] kvx: add kvx_sfr_field_val
+Subject: [PATCH 07/13] watchdog: kvx: do not disable watchdog on probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Clement Leger <cleger@kalray.eu>
+From: Louis Morhet <lmorhet@kalray.eu>
 
-Add this macro for upcoming socinfo driver. This extract a sfr field
-using only its name.
+As the watchdog may be set by a lower stage in the boot chain, and for
+a good reason (precisely to ensure reliable update when something
+unexpected happens during the boot chain), it is a bad idea to always
+disable it during probe.
 
-Signed-off-by: Clement Leger <cleger@kalray.eu>
+We should either have a mechanism to refresh it on a regular basis in
+barebox itself and set it to something bigger for Linux, or handle it
+transparently and let the previous stage set the global watchdog up to
+Linux. This patch assumes for now the latter.
+
+Signed-off-by: Louis Morhet <lmorhet@kalray.eu>
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- arch/kvx/include/asm/sfr.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/watchdog/kvx_wdt.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/kvx/include/asm/sfr.h b/arch/kvx/include/asm/sfr.h
-index 5b93cee345..89ff64bbdc 100644
---- a/arch/kvx/include/asm/sfr.h
-+++ b/arch/kvx/include/asm/sfr.h
-@@ -44,4 +44,8 @@ kvx_sfr_set_mask(unsigned char sfr, uint64_t mask, uint64_t value)
- #define kvx_sfr_set(_sfr, _val)	__builtin_kvx_set(KVX_SFR_ ## _sfr, _val)
- #define kvx_sfr_get(_sfr)	__builtin_kvx_get(KVX_SFR_ ## _sfr)
+diff --git a/drivers/watchdog/kvx_wdt.c b/drivers/watchdog/kvx_wdt.c
+index da19136fda..df9430769b 100644
+--- a/drivers/watchdog/kvx_wdt.c
++++ b/drivers/watchdog/kvx_wdt.c
+@@ -73,11 +73,9 @@ static int kvx_wdt_drv_probe(struct device_d *dev)
+ 	wdd->hwdev = dev;
+ 	wdd->set_timeout = kvx_wdt_set_timeout;
  
-+#define kvx_sfr_field_val(_val, _sfr, _field) \
-+			  (((_val) & KVX_SFR_ ## _sfr ## _ ## _field ## _MASK) \
-+			  >> KVX_SFR_ ## _sfr ## _ ## _field ## _SHIFT)
-+
- #endif	/* _ASM_KVX_SFR_DEFS_H */
+-	/* Be sure that interrupt are disable */
++	/* Be sure that interrupt are disabled */
+ 	kvx_sfr_set_field(TCR, WIE, 0);
+ 
+-	kvx_watchdog_disable();
+-
+ 	return watchdog_register(wdd);
+ }
+ 
 -- 
 2.17.1
 
