@@ -1,88 +1,88 @@
-Delivery-date: Fri, 14 Jan 2022 11:56:32 +0100
+Delivery-date: Fri, 14 Jan 2022 12:15:45 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8KG0-001y9i-6F
-	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 11:56:32 +0100
+	id 1n8KYb-001z9n-7l
+	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 12:15:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8KFy-0002ih-O7
-	for lore@pengutronix.de; Fri, 14 Jan 2022 11:56:31 +0100
+	id 1n8KYZ-0005kx-Ly
+	for lore@pengutronix.de; Fri, 14 Jan 2022 12:15:44 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
 	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Gj7JBwHP0+Ad+8BXCopcUuSYC1c6S30z9BHfHhWpkUc=; b=e8uBgmcRY3356c
-	Sxa452Bib9yyIBhnCVFLw3i+uk41sD3piQ0h3l/45ElpGK6srUkZMYmp2Nk2+nkskSPMldTD19hzh
-	eTAA/Y9hReFTIOwRfbx1RV1hE7O11hQA1HqBFxEAy3kqT0+FJqUCFQ4M53OL6z2+bCY6N3S1SDS8F
-	bzbsXXlaotDThperKkELX0QDKnidRIOrs3pMtM9sTL6+aozs5WCMwr/MHBqHwZjTEBPppmrBvyyZS
-	VmJdzMOkaeAplixmIbJgJDuD68B0HlEg0XaNOYfIiqBA9X3X7nT6sT3wNGOWcVT7oATNhfNkA9Naj
-	x7wqrsUmJXfdLuLRZjvQ==;
+	List-Owner; bh=xnESidbYDit1wteWNZ3g2muYrfecGSZyZCQyn2sno9A=; b=SshSLqBj8z2+3A
+	6pKVOJzLbTCJDJpkm698TEdJBY7bakihNxgyeASyF8e8BsqZg2NameRmdVpX6pJfcgHBOjSB6QDt+
+	QKcylX1EnGrE2cieNT7OTbgBvqEj97e9mgFEFddaFPbDf5G/5okKRkbegQcFVqmAYHY3HqKG9ZGdx
+	1GGrhiaonbjMXPsvO4Cyd5KyjsiLlPeTH8c0WKIi4gFPclWCUAtf0HlQdwAOlfjYs6TzGgHKYcsMk
+	IfAqT0p38YuHMsR/lu+1mES9a7eMbgGWmtKmkGmVpxkuD2zWVICio/qg1L90ndDGg9BFDM4OoosJt
+	1X1gnhoT7yDSQNZ75qOA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n8KEj-008nb9-BP; Fri, 14 Jan 2022 10:55:13 +0000
-Received: from smtpout140.security-mail.net ([85.31.212.148]
- helo=fx408.security-mail.net)
+	id 1n8KXC-008uf4-DZ; Fri, 14 Jan 2022 11:14:18 +0000
+Received: from smtpout30.security-mail.net ([85.31.212.36]
+ helo=fx301.security-mail.net)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n8KEd-008nZ7-GJ
- for barebox@lists.infradead.org; Fri, 14 Jan 2022 10:55:09 +0000
+ id 1n8KX7-008ueE-3W
+ for barebox@lists.infradead.org; Fri, 14 Jan 2022 11:14:14 +0000
 Received: from localhost (localhost [127.0.0.1])
- by fx408.security-mail.net (Postfix) with ESMTP id D90521B7B235
- for <barebox@lists.infradead.org>; Fri, 14 Jan 2022 11:54:54 +0100 (CET)
+ by fx301.security-mail.net (Postfix) with ESMTP id EB4A924BD0EF
+ for <barebox@lists.infradead.org>; Fri, 14 Jan 2022 12:14:06 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
- s=sec-sig-email; t=1642157695;
- bh=Du+m63XvZocPDYB7pJBvuiMGd+6wgEGTrN/vSRpVzGM=;
+ s=sec-sig-email; t=1642158847;
+ bh=hXNfOGwCv/nmN9Ks4idzHdmII1ySvUkYX+qrwTJwGwQ=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To;
- b=IijYQKBRriU9F8CWrrQzgYMXwPg06mN0cNiJFNYTF//w3h3G/Z57pCnzmaMC3W5eh
- AL7Avhqg5JyC9F48/bBGz88/jZ0R3vwq+30WgG2OYKR8dos8Snc+nl3dVi3XWF+0Hm
- VSxfr1K2tEEYWaZLNZeRgPsQn/X1LumuPI38hT00=
-Received: from fx408 (localhost [127.0.0.1]) by fx408.security-mail.net
- (Postfix) with ESMTP id 13BE81B7B27C; Fri, 14 Jan 2022 11:54:54 +0100 (CET)
+ b=RpkTpu7tQJ+vIXtCgMZXq8xB8B+uI/liRgKOYz2cJvz38QW/6t85Ls0I7bfpSlEQP
+ nQ7DbAOUtEVr4Eaw3hFWviquizjnwKkWOQrmDo3vvRk28xOjIPlMR54WliDOQuuP68
+ 5VGNc2jFXfSQE36xkOOAY9yYKVGRdZ/4ngcboZ04=
+Received: from fx301 (localhost [127.0.0.1]) by fx301.security-mail.net
+ (Postfix) with ESMTP id 69EE624BD101; Fri, 14 Jan 2022 12:14:06 +0100 (CET)
 Received: from zimbra2.kalray.eu (unknown [217.181.231.53]) by
- fx408.security-mail.net (Postfix) with ESMTPS id 993DD1B7B29C; Fri, 14 Jan
- 2022 11:54:53 +0100 (CET)
+ fx301.security-mail.net (Postfix) with ESMTPS id 0445C24BD0EF; Fri, 14 Jan
+ 2022 12:14:05 +0100 (CET)
 Received: from zimbra2.kalray.eu (localhost [127.0.0.1]) by
- zimbra2.kalray.eu (Postfix) with ESMTPS id 26AE727E03CB; Fri, 14 Jan 2022
- 11:54:53 +0100 (CET)
+ zimbra2.kalray.eu (Postfix) with ESMTPS id A513F27E03CB; Fri, 14 Jan 2022
+ 12:14:05 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1]) by zimbra2.kalray.eu
- (Postfix) with ESMTP id 0DB3327E03F5; Fri, 14 Jan 2022 11:54:53 +0100 (CET)
+ (Postfix) with ESMTP id 8C74B27E03F5; Fri, 14 Jan 2022 12:14:05 +0100 (CET)
 Received: from zimbra2.kalray.eu ([127.0.0.1]) by localhost
  (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026) with ESMTP id
- N8YBveGhAnOC; Fri, 14 Jan 2022 11:54:52 +0100 (CET)
+ 0ufgei57bmT8; Fri, 14 Jan 2022 12:14:05 +0100 (CET)
 Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206]) by
- zimbra2.kalray.eu (Postfix) with ESMTPSA id EF09D27E03CB; Fri, 14 Jan 2022
- 11:54:52 +0100 (CET)
+ zimbra2.kalray.eu (Postfix) with ESMTPSA id 799BE27E03CB; Fri, 14 Jan 2022
+ 12:14:05 +0100 (CET)
 X-Virus-Scanned: E-securemail, by Secumail
-Secumail-id: <d717.61e1567d.4a3a2.0>
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 0DB3327E03F5
+Secumail-id: <eb87.61e15afd.c5031.0>
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 8C74B27E03F5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1642157693;
- bh=dn1gfh93mD0qix+1kddpsG0dhI8nyUM2KeLx3i0C42s=;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1642158845;
+ bh=SQY+GciocaL+UCPqo4/Duh85zjs91hrfg0TzlFaqf6E=;
  h=Date:From:To:Message-ID:MIME-Version;
- b=A7khetTUNi8BCZQot9vKML7I3u2KVjCzsMSTjnhZeSdFrfP75Rq+8eM630ZoOD3jR
- R074//sle8XL2EOecZnp8r2JuvIzE5tJbaIcEYiVqFAEGGi47IswTjQ0jNEqQYeIM+
- nX43B/j0dIslDdBhK3SHbMBnvVtXUVQJhNGEVFMA=
-Date: Fri, 14 Jan 2022 11:54:51 +0100
+ b=WYi7qYSJJ0tpKv1lM3K8Y8CaYUKOXUMh1R1sgiFywpLPpmhHu87lMjt2vK230bpVO
+ JmBtBw/aCo75P/OnfAV+V0uopeQqsbTf0N9PXdHqIAvwaYz+nRe88srdpuwPX0utdA
+ 24dPacOUgoQ41Fb20AIC7hqpGNZpiKAqiqAbiSwU=
+Date: Fri, 14 Jan 2022 12:14:04 +0100
 From: Jules Maselbas <jmaselbas@kalray.eu>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220114105451.GA29876@tellis.lin.mbt.kalray.eu>
+Message-ID: <20220114111404.GB29876@tellis.lin.mbt.kalray.eu>
 References: <20220110221255.5003-1-jmaselbas@kalray.eu>
- <20220110221255.5003-3-jmaselbas@kalray.eu>
- <0ca90254-a1d1-7151-0236-4dd92ee4d620@pengutronix.de>
+ <20220110221255.5003-4-jmaselbas@kalray.eu>
+ <ec782b1e-ffed-3f01-71a7-f28c161d802d@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <0ca90254-a1d1-7151-0236-4dd92ee4d620@pengutronix.de>
+In-Reply-To: <ec782b1e-ffed-3f01-71a7-f28c161d802d@pengutronix.de>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220114_025507_758618_BBD46DAD 
-X-CRM114-Status: GOOD (  29.13  )
+X-CRM114-CacheID: sfid-20220114_031413_317445_69EFC93C 
+X-CRM114-Status: GOOD (  26.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -106,91 +106,73 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/5] gui: Add qoi image format
+Subject: Re: [PATCH 3/5] scripts: Add qoiconv to convert png to qoi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jan 14, 2022 at 11:05:15AM +0100, Ahmad Fatoum wrote:
+On Fri, Jan 14, 2022 at 11:29:58AM +0100, Ahmad Fatoum wrote:
 > On 10.01.22 23:12, Jules Maselbas wrote:
-> 
-> Could you add a link there the project is from, what version
-> you're importing. Perhaps how to update them in the future?
-> (Do we touch the header, or is it just some macros we define
-> outside).
-ok, I'll amend the commit message with the following information:
-The project home page can be found at https://qoiformat.org with
-a single header file reference implementation of encoder/decoder
-that is currently hosted at https://github.com/phoboslab/qoi.
-There is no plan for future version, this is a frozen format.
-
-> > diff --git a/lib/gui/qoi.c b/lib/gui/qoi.c
+> > ImageMagick will eventually support the qoi image format, in the
+> > mean time add a png to qoi conversion program.
+> > 
+> > Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> > ---
+> >  scripts/Kconfig     |    5 +
+> >  scripts/Makefile    |    1 +
+> >  scripts/qoiconv.c   |   91 +
+> >  scripts/stb_image.h | 7756 +++++++++++++++++++++++++++++++++++++++++++
+> >  4 files changed, 7853 insertions(+)
+> >  create mode 100644 scripts/qoiconv.c
+> >  create mode 100644 scripts/stb_image.h
+> > 
+> > diff --git a/scripts/Kconfig b/scripts/Kconfig
+> > index 9b744deba9..747f665e02 100644
+> > --- a/scripts/Kconfig
+> > +++ b/scripts/Kconfig
+> > @@ -110,6 +110,11 @@ config RK_USB_LOADER
+> >  
+> >  	  You need libusb-1.0 to compile this tool.
+> >  
+> > +config QOICONV
+> > +	bool "QOI image format conversion" if COMPILE_HOST_TOOLS
+> > +	help
+> > +	  This enable converting png to qoi images to generate boot logo.
+> > +
+> >  endmenu
+> >  
+> >  menu "Target Tools"
+> > diff --git a/scripts/Makefile b/scripts/Makefile
+> > index dc5fa75f90..cbaf2d55ff 100644
+> > --- a/scripts/Makefile
+> > +++ b/scripts/Makefile
+> > @@ -8,6 +8,7 @@ hostprogs-always-y					+= fix_size
+> >  hostprogs-always-y					+= bareboxenv
+> >  hostprogs-always-y					+= bareboxcrc32
+> >  hostprogs-always-y					+= kernel-install
+> > +hostprogs-always-$(CONFIG_QOICONV)			+= qoiconv
+> >  hostprogs-always-$(CONFIG_CRYPTO_RSA_BUILTIN_KEYS)	+= rsatoc
+> >  HOSTCFLAGS_rsatoc = `pkg-config --cflags openssl`
+> >  HOSTLDLIBS_rsatoc = `pkg-config --libs openssl`
+> > diff --git a/scripts/qoiconv.c b/scripts/qoiconv.c
 > > new file mode 100644
-> > index 0000000000..f6c1bc1b94
+> > index 0000000000..010c70ead0
 > > --- /dev/null
-> > +++ b/lib/gui/qoi.c
-> 
-> License statement missing.
-ok
+> > +++ b/scripts/qoiconv.c
+> > @@ -0,0 +1,91 @@
+Probably missing SPDX identifiers as well
 
-> > +
-> > +	pr_debug("qoi: %d x %d  x %d data@0x%p\n", img->width, img->height,
-> > +		 img->bits_per_pixel, img->data);
-> 
-> Nitpick: You can define a common prefix
-> with pr_fmt at the top of the file, e.g
-> 
-> #define pr_fmt(fmt) "qoi: " fmt
-sure will do
-
-> > +	return img;
-> > +}
-> > +
-> > +static void qoi_close(struct image *img)
-> > +{
-> > +	free(img->data);
-> 
-> Curious API that open() is allocating, but close's caller is
-> the one resposible for freeing. Should probably be fixed up.
-> 
-> > +static struct image_renderer qoi = {
-> > +	.type = filetype_qoi,
-> > +	.open = qoi_open,
-> > +	.close = qoi_close,
-> > +	.renderer = qoi_renderer,
-> > +	.keep_file_data = 1,
-> 
-> Do you really need this? For bmp, it makes sense, because the pixel data isn't
-> compressed, so there are direct pointers into it. But if you uncompress into a
-> newly allocated buffer, you should not need to keep (and leak) inbuf's content
-> 
-You're right, I haven't look at what .keep_file_data was for and, it is
-indeed not needed.
-
-> > +};
-> > +
-> > +static int qoi_init(void)
-> > +{
-> > +	return image_renderer_register(&qoi);
-> > +}
-> > +fs_initcall(qoi_init);
-> > diff --git a/lib/gui/qoi.h b/lib/gui/qoi.h
-> > new file mode 100644
-> > index 0000000000..988f9edcb4
-> > --- /dev/null
-> > +++ b/lib/gui/qoi.h
-> > @@ -0,0 +1,671 @@
 > > +/*
 > > +
-> > +QOI - The "Quite OK Image" format for fast, lossless image compression
+> > +Command line tool to convert between png <> qoi format
+> > +
+> > +Requires "stb_image.h" and "stb_image_write.h"
+> > +Compile with: 
+> > +	gcc qoiconv.c -std=c99 -O3 -o qoiconv
 > > +
 > > +Dominic Szablewski - https://phoboslab.org
 > > +
 > > +
 > > +-- LICENSE: The MIT License(MIT)
-> 
-> Can you turn this into a SPDX-License-Identifier: please?
-ok
-
 > > +
 > > +Copyright(c) 2021 Dominic Szablewski
 > > +
@@ -210,6 +192,26 @@ ok
 > > +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > > +SOFTWARE.
 > > +
+> > +*/
+> 
+> Can you not reuse the header added in the previous commit?
+I am not sure what you mean here, the qoi.h header is reused from
+lib/gui/qoi.h, see the include below.
+Are you sugesting to _not_ reuse the header?
+
+
+> > +
+> > +
+> > +#define STB_IMAGE_IMPLEMENTATION
+> > +#define STBI_ONLY_PNG
+> > +#define STBI_NO_LINEAR
+> > +#include "stb_image.h"
+> > +
+> > +#define QOI_IMPLEMENTATION
+> > +#include "../lib/gui/qoi.h"
+included here.
+
+
 
 
 
