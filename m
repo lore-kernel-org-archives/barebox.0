@@ -1,60 +1,54 @@
-Delivery-date: Fri, 14 Jan 2022 18:22:06 +0100
+Delivery-date: Fri, 14 Jan 2022 18:23:32 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8QH8-002ErH-S0
-	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 18:22:06 +0100
+	id 1n8QIW-002EuN-OT
+	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 18:23:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8QH7-0008BW-Jb
-	for lore@pengutronix.de; Fri, 14 Jan 2022 18:22:06 +0100
+	id 1n8QIV-0008Oj-37
+	for lore@pengutronix.de; Fri, 14 Jan 2022 18:23:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:References:Cc:To:Subject:From:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=hXGAyiqf0gD3rlGUMPvYhCa+eS4BcFqWMTxGx1meAHo=; b=a+1CapZad1FOB7/ybPD2ufr7+7
-	I0vwKL0mnEoT7xZPgXcWX0VNt8ABs0tbRyW+NUbbkISpyHjY7Aop5k0ZiHwJlhTyel2K1m90uHli0
-	bG+S4CJP0QdVbvIAklcxysOwLgrxaKxew6UXI2NRybTyVe3Ay20kjVZnRqGDZPG0K2UpqdyQfddNa
-	zAQpX5V1yDQnRmHNpQ1M5u48mjgSBHGblaKf9hgpFeAqQy8ldQ83TvupomNBMWgGYQ48nICPCiZ1b
-	yIzGwq2fz5r9Hd1f669TGlZS3asIaDFzdTjoXfRIQhkCdwU28KZa1y54XZyJu41gXDYn+71OZZ7In
-	2jgXB1lA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=DixWQJZiIgrWg22PJY3Jkn18KiD0O3BJelm/tylrX08=; b=EWrYkbVTEbLhAg
+	8Cx3vLqRKCdR12B3XAMve7miWxXw/MzBdMNXP1oT0oF59haDG2V4okSzhdBQLLKCJ8aMyokSXvvFO
+	grsIP2OU2hAtjORyvUF92OlIUR9VzrmZSUP74JJBAL7GBATbOVjc8Hucde5r38UapN/LDvpCezgo1
+	6oe4SIJefqKBgtj7vRO1mAf8yDxc1cT2mcfVdj2F2ABBzlhH3zNETgLPwlCPCew99pinZL2mNaVs2
+	8CdE944l31NSGtIG/oGIiXiWMOfEcAldCeXlc8nq0le7v/jll5WVlhUVUT4rbbAMP/gU1mQob48oP
+	BjoE0Pmrh8eB5POrlWKQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n8QFr-009uzy-MW; Fri, 14 Jan 2022 17:20:47 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1n8QHH-009v9s-A5; Fri, 14 Jan 2022 17:22:15 +0000
+Received: from relay7-d.mail.gandi.net ([2001:4b98:dc4:8::227])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n8QFn-009uza-0i
- for barebox@lists.infradead.org; Fri, 14 Jan 2022 17:20:44 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1n8QFi-00082z-4R; Fri, 14 Jan 2022 18:20:38 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1n8QHB-009v8k-MP
+ for barebox@lists.infradead.org; Fri, 14 Jan 2022 17:22:11 +0000
+Received: (Authenticated sender: clement.leger@bootlin.com)
+ by mail.gandi.net (Postfix) with ESMTPSA id 68E9F2000D;
+ Fri, 14 Jan 2022 17:22:04 +0000 (UTC)
+Date: Fri, 14 Jan 2022 18:21:09 +0100
+From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
 To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: barebox@lists.infradead.org, Clement Leger <clement.leger@bootlin.com>,
- Louis Morhet <lmorhet@kalray.eu>, Luc Michel <lmichel@kalray.eu>,
- Yann Sionneau <ysionneau@kalray.eu>, Clement Leger <cleger@kalray.eu>
+Cc: barebox@lists.infradead.org, Louis Morhet <lmorhet@kalray.eu>, Luc
+ Michel <lmichel@kalray.eu>, Yann Sionneau <ysionneau@kalray.eu>, Clement
+ Leger <cleger@kalray.eu>
+Message-ID: <20220114182109.6dfe1836@fixe.home>
+In-Reply-To: <20220114165208.9980-5-jmaselbas@kalray.eu>
 References: <20220114165208.9980-1-jmaselbas@kalray.eu>
- <20220114165456.10542-1-jmaselbas@kalray.eu>
- <f99cfd5d-f477-4564-c5e3-dac889b5c8b3@pengutronix.de>
- <20220114171111.GC29876@tellis.lin.mbt.kalray.eu>
-Message-ID: <414be7ce-3abd-115e-71d9-4cae945e7b3b@pengutronix.de>
-Date: Fri, 14 Jan 2022 18:20:37 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ <20220114165208.9980-5-jmaselbas@kalray.eu>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20220114171111.GC29876@tellis.lin.mbt.kalray.eu>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220114_092043_122436_147C3635 
-X-CRM114-Status: GOOD (  22.15  )
+X-CRM114-CacheID: sfid-20220114_092210_097906_914A5880 
+X-CRM114-Status: GOOD (  19.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,113 +60,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 10/13] drivers: add soc hierarchy properly
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 04/13] common: elf: add elf_load_binary
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 14.01.22 18:11, Jules Maselbas wrote:
-> On Fri, Jan 14, 2022 at 06:06:34PM +0100, Ahmad Fatoum wrote:
->> Hello Jules,
->>
->> On 14.01.22 17:54, Jules Maselbas wrote:
->>> From: Clement Leger <cleger@kalray.eu>
->>>
->>> We will add kvx driver in this folder to create a proper hierarchy.
->>
->> This won't apply cleanly. You need to rebase.
-
-Sorry, my pattern matching was too eager. You only add
-drivers/soc/Kconfig, not drivers/soc/Makefile. The latter
-was added only recently.
-
-> On master ? Or should I wait for 2022.01.0 ?
-
-At release time, Sascha tags master and then merges
-next into master. Then for a month patches are applied onto
-next and only fixes are cherry-picked to master until next
-release, so patches rebased on next are least likely to conflict.
-
-Given that most arch/kvx stuff you touch wasn't updated
-in the meantime, I guess you don't need to rebase.
-
-Sorry for the confusion!
-
-Cheers,
-Ahmad
-
->>
->>>
->>> Signed-off-by: Clement Leger <cleger@kalray.eu>
->>> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
->>> ---
->>>  drivers/Kconfig     | 2 +-
->>>  drivers/soc/Kconfig | 5 +++++
->>>  2 files changed, 6 insertions(+), 1 deletion(-)
->>>  create mode 100644 drivers/soc/Kconfig
->>>
->>> diff --git a/drivers/Kconfig b/drivers/Kconfig
->>> index dbdf3c06f5..d66714af9a 100644
->>> --- a/drivers/Kconfig
->>> +++ b/drivers/Kconfig
->>> @@ -42,7 +42,7 @@ source "drivers/fpga/Kconfig"
->>>  source "drivers/phy/Kconfig"
->>>  source "drivers/crypto/Kconfig"
->>>  source "drivers/memory/Kconfig"
->>> -source "drivers/soc/imx/Kconfig"
->>> +source "drivers/soc/Kconfig"
->>>  source "drivers/nvme/Kconfig"
->>>  source "drivers/ddr/Kconfig"
->>>  source "drivers/power/Kconfig"
->>> diff --git a/drivers/soc/Kconfig b/drivers/soc/Kconfig
->>> new file mode 100644
->>> index 0000000000..d78f13f3f8
->>> --- /dev/null
->>> +++ b/drivers/soc/Kconfig
->>> @@ -0,0 +1,5 @@
->>> +menu "SoC drivers"
->>> +
->>> +source "drivers/soc/imx/Kconfig"
->>> +
->>> +endmenu
->>>
->>
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
->>
->> To declare a filtering error, please use the following link : https://www.security-mail.net/reporter.php?mid=9c47.61e1ad9d.ae4c.0&r=jmaselbas%40kalray.eu&s=a.fatoum%40pengutronix.de&o=Re%3A+%5BPATCH+10%2F13%5D+drivers%3A+add+soc+hierarchy+properly&verdict=C&c=835ed3aa69d359c0f8acda9912ca30b77899cc91
->>
-> 
-> 
-> 
-> 
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TGUgRnJpLCAxNCBKYW4gMjAyMiAxNzo1MjowMyArMDEwMCwKSnVsZXMgTWFzZWxiYXMgPGptYXNl
+bGJhc0BrYWxyYXkuZXU+IGEgw6ljcml0IDoKCj4gRnJvbTogQ2xlbWVudCBMZWdlciA8Y2xlZ2Vy
+QGthbHJheS5ldT4KPiAKPiBJbiBvcmRlciB0byBsb2FkIGVsZiBmcm9tIGEgYmluYXJ5IGJ1ZmZl
+ciwgYWRkIGVsZl9sb2FkX2JpbmFyeS4gVGhpcwo+IHdpbGwgYmUgdXNlZCBieSBGSVQgc3VwcG9y
+dCB0byBhbGxvdyBsb2FkaW5nIGFuIGVsZiBmcm9tIEZJVC4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBD
+bGVtZW50IExlZ2VyIDxjbGVnZXJAa2FscmF5LmV1PgoKSGkgSnVsZXMsCgpUaGlzIGlzIG5vdCBt
+eSBtYWlsIGFkZHJlc3MgYW55bW9yZSwgY291bGQgeW91IHVwZGF0ZSBpdCB3aXRoCmNsZW1lbnQu
+bGVnZXJAYm9vdGxpbi5jb20gPwoKVGhhbmtzLgoKPiBTaWduZWQtb2ZmLWJ5OiBKdWxlcyBNYXNl
+bGJhcyA8am1hc2VsYmFzQGthbHJheS5ldT4KPiAtLS0KPiAgY29tbW9uL2VsZi5jICB8IDgzICsr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLQo+ICBpbmNs
+dWRlL2VsZi5oIHwgIDEgKwo+ICAyIGZpbGVzIGNoYW5nZWQsIDYyIGluc2VydGlvbnMoKyksIDIy
+IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9jb21tb24vZWxmLmMgYi9jb21tb24vZWxm
+LmMKPiBpbmRleCBhZjIyYmUzN2U2Li5mMTBmYjc3OTUzIDEwMDY0NAo+IC0tLSBhL2NvbW1vbi9l
+bGYuYwo+ICsrKyBiL2NvbW1vbi9lbGYuYwo+IEBAIC0xMDEsMTUgKzEwMSwxNyBAQCBzdGF0aWMg
+aW50IGVsZl9zZWN0aW9uX2NtcCh2b2lkICpwcml2LCBzdHJ1Y3QgbGlzdF9oZWFkICphLCBzdHJ1
+Y3QgbGlzdF9oZWFkICpiKQo+ICBzdGF0aWMgaW50IGxvYWRfZWxmX3RvX21lbW9yeShzdHJ1Y3Qg
+ZWxmX2ltYWdlICplbGYpCj4gIHsKPiAgCXZvaWQgKmRzdDsKPiAtCWludCByZXQsIGZkOwo+ICsJ
+aW50IHJldCwgZmQgPSAtMTsKPiAgCXU2NCBwX2ZpbGVzeiwgcF9tZW1zeiwgcF9vZmZzZXQ7Cj4g
+IAlzdHJ1Y3QgZWxmX3NlY3Rpb24gKnI7Cj4gIAlzdHJ1Y3QgbGlzdF9oZWFkICpsaXN0ID0gJmVs
+Zi0+bGlzdDsKPiAgCj4gLQlmZCA9IG9wZW4oZWxmLT5maWxlbmFtZSwgT19SRE9OTFkpOwo+IC0J
+aWYgKGZkIDwgMCkgewo+IC0JCXByX2VycigiY291bGQgbm90IG9wZW46ICVzXG4iLCBlcnJub19z
+dHIoKSk7Cj4gLQkJcmV0dXJuIC1lcnJubzsKPiArCWlmIChlbGYtPmZpbGVuYW1lKSB7Cj4gKwkJ
+ZmQgPSBvcGVuKGVsZi0+ZmlsZW5hbWUsIE9fUkRPTkxZKTsKPiArCQlpZiAoZmQgPCAwKSB7Cj4g
+KwkJCXByX2VycigiY291bGQgbm90IG9wZW46ICVzXG4iLCBlcnJub19zdHIoKSk7Cj4gKwkJCXJl
+dHVybiAtZXJybm87Cj4gKwkJfQo+ICAJfQo+ICAKPiAgCWxpc3RfZm9yX2VhY2hfZW50cnkociwg
+bGlzdCwgbGlzdCkgewo+IEBAIC0xMTgsMjEgKzEyMCwyNiBAQCBzdGF0aWMgaW50IGxvYWRfZWxm
+X3RvX21lbW9yeShzdHJ1Y3QgZWxmX2ltYWdlICplbGYpCj4gIAkJcF9tZW1zeiA9IGVsZl9waGRy
+X3BfbWVtc3ooZWxmLCByLT5waGRyKTsKPiAgCQlkc3QgPSAodm9pZCAqKSAocGh5c19hZGRyX3Qp
+IGVsZl9waGRyX3BfcGFkZHIoZWxmLCByLT5waGRyKTsKPiAgCj4gLQkJcmV0ID0gbHNlZWsoZmQs
+IHBfb2Zmc2V0LCBTRUVLX1NFVCk7Cj4gLQkJaWYgKHJldCA9PSAtMSkgewo+IC0JCQlwcl9lcnIo
+ImxzZWVrIGF0IG9mZnNldCAweCVsbHggZmFpbGVkXG4iLCBwX29mZnNldCk7Cj4gLQkJCWNsb3Nl
+KGZkKTsKPiAtCQkJcmV0dXJuIHJldDsKPiAtCQl9Cj4gLQo+ICAJCXByX2RlYnVnKCJMb2FkaW5n
+IHBoZHIgb2Zmc2V0IDB4JWxseCB0byAweCVwICglbGx1IGJ5dGVzKVxuIiwKPiAgCQkJIHBfb2Zm
+c2V0LCBkc3QsIHBfZmlsZXN6KTsKPiAgCj4gLQkJaWYgKHJlYWRfZnVsbChmZCwgZHN0LCBwX2Zp
+bGVzeikgPCAwKSB7Cj4gLQkJCXByX2VycigiY291bGQgbm90IHJlYWQgZWxmIHNlZ21lbnQ6ICVz
+XG4iLAo+IC0JCQkgICAgICAgZXJybm9fc3RyKCkpOwo+IC0JCQljbG9zZShmZCk7Cj4gLQkJCXJl
+dHVybiAtZXJybm87Cj4gKwkJaWYgKGZkID49IDApIHsKPiArCQkJcmV0ID0gbHNlZWsoZmQsIHBf
+b2Zmc2V0LCBTRUVLX1NFVCk7Cj4gKwkJCWlmIChyZXQgPT0gLTEpIHsKPiArCQkJCXByX2Vycigi
+bHNlZWsgYXQgb2Zmc2V0IDB4JWxseCBmYWlsZWRcbiIsCj4gKwkJCQkgICAgICAgcF9vZmZzZXQp
+Owo+ICsJCQkJY2xvc2UoZmQpOwo+ICsJCQkJcmV0dXJuIHJldDsKPiArCQkJfQo+ICsKPiArCQkJ
+aWYgKHJlYWRfZnVsbChmZCwgZHN0LCBwX2ZpbGVzeikgPCAwKSB7Cj4gKwkJCQlwcl9lcnIoImNv
+dWxkIG5vdCByZWFkIGVsZiBzZWdtZW50OiAlc1xuIiwKPiArCQkJCSAgICAgICBlcnJub19zdHIo
+KSk7Cj4gKwkJCQljbG9zZShmZCk7Cj4gKwkJCQlyZXR1cm4gLWVycm5vOwo+ICsJCQl9Cj4gKwkJ
+fSBlbHNlIHsKPiArCQkJbWVtY3B5KGRzdCwgZWxmLT5oZHJfYnVmICsgcF9vZmZzZXQsIHBfZmls
+ZXN6KTsKPiAgCQl9Cj4gIAo+ICAJCWlmIChwX2ZpbGVzeiA8IHBfbWVtc3opCj4gQEAgLTIwMiw2
+ICsyMDksMzcgQEAgc3RhdGljIGludCBlbGZfY2hlY2tfaW1hZ2Uoc3RydWN0IGVsZl9pbWFnZSAq
+ZWxmLCB2b2lkICpidWYpCj4gIAlyZXR1cm4gMDsKPiAgfQo+ICAKPiArc3RhdGljIHZvaWQgZWxm
+X2luaXRfc3RydWN0KHN0cnVjdCBlbGZfaW1hZ2UgKmVsZikKPiArewo+ICsJSU5JVF9MSVNUX0hF
+QUQoJmVsZi0+bGlzdCk7Cj4gKwllbGYtPmxvd19hZGRyID0gKHZvaWQgKikgKHVuc2lnbmVkIGxv
+bmcpIC0xOwo+ICsJZWxmLT5oaWdoX2FkZHIgPSAwOwo+ICsJZWxmLT5maWxlbmFtZSA9IE5VTEw7
+Cj4gK30KPiArCj4gK3N0cnVjdCBlbGZfaW1hZ2UgKmVsZl9vcGVuX2JpbmFyeSh2b2lkICpidWYp
+Cj4gK3sKPiArCWludCByZXQ7Cj4gKwlzdHJ1Y3QgZWxmX2ltYWdlICplbGY7Cj4gKwo+ICsJZWxm
+ID0gY2FsbG9jKDEsIHNpemVvZigqZWxmKSk7Cj4gKwlpZiAoIWVsZikKPiArCQlyZXR1cm4gRVJS
+X1BUUigtRU5PTUVNKTsKPiArCj4gKwllbGZfaW5pdF9zdHJ1Y3QoZWxmKTsKPiArCj4gKwllbGYt
+Pmhkcl9idWYgPSBidWY7Cj4gKwlyZXQgPSBlbGZfY2hlY2tfaW1hZ2UoZWxmLCBidWYpOwo+ICsJ
+aWYgKHJldCkgewo+ICsJCWZyZWUoZWxmKTsKPiArCQlyZXR1cm4gRVJSX1BUUigtRUlOVkFMKTsK
+PiArCX0KPiArCj4gKwllbGYtPmVudHJ5ID0gZWxmX2hkcl9lX2VudHJ5KGVsZiwgZWxmLT5oZHJf
+YnVmKTsKPiArCj4gKwlyZXR1cm4gZWxmOwo+ICt9Cj4gKwo+ICBzdGF0aWMgc3RydWN0IGVsZl9p
+bWFnZSAqZWxmX2NoZWNrX2luaXQoY29uc3QgY2hhciAqZmlsZW5hbWUpCj4gIHsKPiAgCWludCBy
+ZXQsIGZkOwo+IEBAIC0yMTMsOSArMjUxLDcgQEAgc3RhdGljIHN0cnVjdCBlbGZfaW1hZ2UgKmVs
+Zl9jaGVja19pbml0KGNvbnN0IGNoYXIgKmZpbGVuYW1lKQo+ICAJaWYgKCFlbGYpCj4gIAkJcmV0
+dXJuIEVSUl9QVFIoLUVOT01FTSk7Cj4gIAo+IC0JSU5JVF9MSVNUX0hFQUQoJmVsZi0+bGlzdCk7
+Cj4gLQllbGYtPmxvd19hZGRyID0gKHZvaWQgKikgKHVuc2lnbmVkIGxvbmcpIC0xOwo+IC0JZWxm
+LT5oaWdoX2FkZHIgPSAwOwo+ICsJZWxmX2luaXRfc3RydWN0KGVsZik7Cj4gIAo+ICAJLyogRmly
+c3QgcGFzcyBpcyB0byByZWFkIGVsZiBoZWFkZXIgb25seSAqLwo+ICAJZmQgPSBvcGVuKGZpbGVu
+YW1lLCBPX1JET05MWSk7Cj4gQEAgLTI5OSw3ICszMzUsMTAgQEAgdm9pZCBlbGZfY2xvc2Uoc3Ry
+dWN0IGVsZl9pbWFnZSAqZWxmKQo+ICB7Cj4gIAllbGZfcmVsZWFzZV9yZWdpb25zKGVsZik7Cj4g
+IAo+IC0JZnJlZShlbGYtPmhkcl9idWYpOwo+IC0JZnJlZShlbGYtPmZpbGVuYW1lKTsKPiArCWlm
+IChlbGYtPmZpbGVuYW1lKSB7Cj4gKwkJZnJlZShlbGYtPmhkcl9idWYpOwo+ICsJCWZyZWUoZWxm
+LT5maWxlbmFtZSk7Cj4gKwl9Cj4gKwo+ICAJZnJlZShlbGYpOwo+ICB9Cj4gZGlmZiAtLWdpdCBh
+L2luY2x1ZGUvZWxmLmggYi9pbmNsdWRlL2VsZi5oCj4gaW5kZXggNzk3MGZkMmM5NS4uMTI2NzNl
+OTNlZCAxMDA2NDQKPiAtLS0gYS9pbmNsdWRlL2VsZi5oCj4gKysrIGIvaW5jbHVkZS9lbGYuaAo+
+IEBAIC00MTQsNiArNDE0LDcgQEAgc3RhdGljIGlubGluZSBzaXplX3QgZWxmX2dldF9tZW1fc2l6
+ZShzdHJ1Y3QgZWxmX2ltYWdlICplbGYpCj4gIAlyZXR1cm4gZWxmLT5oaWdoX2FkZHIgLSBlbGYt
+Pmxvd19hZGRyOwo+ICB9Cj4gIAo+ICtzdHJ1Y3QgZWxmX2ltYWdlICplbGZfb3Blbl9iaW5hcnko
+dm9pZCAqYnVmKTsKPiAgc3RydWN0IGVsZl9pbWFnZSAqZWxmX29wZW4oY29uc3QgY2hhciAqZmls
+ZW5hbWUpOwo+ICB2b2lkIGVsZl9jbG9zZShzdHJ1Y3QgZWxmX2ltYWdlICplbGYpOwo+ICBpbnQg
+ZWxmX2xvYWQoc3RydWN0IGVsZl9pbWFnZSAqZWxmKTsKCgoKLS0gCkNsw6ltZW50IEzDqWdlciwK
+RW1iZWRkZWQgTGludXggYW5kIEtlcm5lbCBlbmdpbmVlciBhdCBCb290bGluCmh0dHBzOi8vYm9v
+dGxpbi5jb20KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
 
