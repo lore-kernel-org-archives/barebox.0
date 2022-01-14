@@ -1,55 +1,53 @@
-Delivery-date: Fri, 14 Jan 2022 09:52:11 +0100
+Delivery-date: Fri, 14 Jan 2022 09:52:24 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8IJf-001szb-Qk
-	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 09:52:11 +0100
+	id 1n8IJs-001t0N-LJ
+	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 09:52:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8IJd-0002zx-RP
-	for lore@pengutronix.de; Fri, 14 Jan 2022 09:52:11 +0100
+	id 1n8IJq-00030z-Kh
+	for lore@pengutronix.de; Fri, 14 Jan 2022 09:52:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=hwrll+y2GCW81p6d12yUCgMks+3A5iG158P5ZKvzU9g=; b=Pctqzv9+BNXoWc
-	YuRXbQLPjhPa6k+K+Vg8N9YeEiYJCK80B9HOnpQfT92AJsd50cw4xUmte80qncUt6fHz26tAAcnF3
-	GchAtdskkPJz16qVmu+CWmwxLseUa29zYHLzy5EtfcSk+/gENRo7gSwwSA2BvHuemfyI40Hlc6lCp
-	sStd6xZb3Bk9aIzu1ss5H73GYrfZFxPyakw6IcKmLxRFY1C4FzvqRresyQtRUg/ulos1nGAhGwwX5
-	RKAyylWTNDgql4yX+TYJdDLVleslNcAvm2SzW7kdohqc7htTo443nhgcnCykq5gDDNqNbxV/qgrmj
-	nNoMre5KnsICHP2IH6Vg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Zrxd/ZTIgt3OXWHDgVEiSwZxzFBdTJvN21Y+xye3vzY=; b=bq1pF7JL7qU1DR
+	OIULqXbp1xmeAoveqoYaOEFTDmapPNK6pklc5XJEobvwaOxgm2qcdT82wbCq7rWUoOQqYxEN3jLDY
+	c0L00AzXQMiLMo3X/B41a9j4VnHyLGjY0y1/hS6vjkiYwTv7ByxzDx5Q+Cgur6jjTAML+oXC3AEix
+	wy4M9QvywhmqntQwxHTFqx8br9QVOlrszS90/roJkX5hhB+2PopLovdnqGVsi/R5AbLFoOMns28w9
+	/kLs5u+yms4u5cMDwD3R0ZOzjfHMF0ZYa4rHsmv1Oc8ceEwkAV4LQLf2mTgZtOYB19HG5cUURFWdD
+	DGpo3RpD04FHsYu8y8SQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n8IIQ-008Mfo-9v; Fri, 14 Jan 2022 08:50:54 +0000
+	id 1n8IIZ-008Mj8-Ox; Fri, 14 Jan 2022 08:51:03 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n8IIK-008MeJ-PC
- for barebox@lists.infradead.org; Fri, 14 Jan 2022 08:50:50 +0000
+ id 1n8IIS-008MhO-Oq
+ for barebox@lists.infradead.org; Fri, 14 Jan 2022 08:50:59 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1n8IIJ-0002lb-Io; Fri, 14 Jan 2022 09:50:47 +0100
+ id 1n8IIJ-0002la-Io; Fri, 14 Jan 2022 09:50:47 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1n8IIJ-001JcA-1n; Fri, 14 Jan 2022 09:50:47 +0100
+ id 1n8IIJ-001Jc8-0z; Fri, 14 Jan 2022 09:50:47 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 14 Jan 2022 09:50:46 +0100
-Message-Id: <20220114085046.313677-2-a.fatoum@pengutronix.de>
+Date: Fri, 14 Jan 2022 09:50:45 +0100
+Message-Id: <20220114085046.313677-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220114085046.313677-1-a.fatoum@pengutronix.de>
-References: <20220114085046.313677-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220114_005049_018157_2EE52C4B 
-X-CRM114-Status: GOOD (  22.20  )
+X-CRM114-CacheID: sfid-20220114_005057_157319_A17CD996 
+X-CRM114-Status: GOOD (  17.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,352 +71,409 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] nvmem: add Rockchip eFuse support
+Subject: [PATCH 1/2] nvmem: retire struct nvmem_bus for better Linux
+ compatibility
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The driver allows read-only support to e.g. the Hardware UID, which
-could in future be used to derive a MAC like U-Boot does.
+nvmem_bus is arguably a confusing name and serves no real purpose over
+just embedding its two members directly. That's what Linux currently
+does, so follow suit.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/nvmem/Kconfig          |   8 +
- drivers/nvmem/Makefile         |   1 +
- drivers/nvmem/rockchip-efuse.c | 299 +++++++++++++++++++++++++++++++++
- 3 files changed, 308 insertions(+)
- create mode 100644 drivers/nvmem/rockchip-efuse.c
+ drivers/eeprom/at24.c            |  8 ++------
+ drivers/net/phy/mv88e6xxx/chip.c |  8 ++------
+ drivers/nvmem/core.c             | 22 +++++++++++++---------
+ drivers/nvmem/eeprom_93xx46.c    |  9 +++------
+ drivers/nvmem/ocotp.c            |  8 ++------
+ drivers/nvmem/partition.c        |  8 ++------
+ drivers/nvmem/rave-sp-eeprom.c   |  8 ++------
+ drivers/nvmem/regmap.c           |  8 ++------
+ drivers/nvmem/rmem.c             |  6 +-----
+ drivers/nvmem/snvs_lpgpr.c       |  8 ++------
+ drivers/rtc/rtc-imxdi.c          |  8 ++------
+ include/linux/nvmem-provider.h   | 10 ++++------
+ 12 files changed, 37 insertions(+), 74 deletions(-)
 
-diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-index 7b1ebe1d689d..ea1156918a34 100644
---- a/drivers/nvmem/Kconfig
-+++ b/drivers/nvmem/Kconfig
-@@ -84,4 +84,12 @@ config STARFIVE_OTP
- 	  This adds support for the StarFive OTP controller. Only reading
- 	  is currently supported.
+diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
+index 3103d7722a40..22f3d6d880ed 100644
+--- a/drivers/eeprom/at24.c
++++ b/drivers/eeprom/at24.c
+@@ -361,11 +361,6 @@ static int at24_nvmem_write(void *ctx, unsigned off, const void *buf, size_t cou
+ 	return at24_write(ctx, buf, off, count);
+ }
  
-+config ROCKCHIP_EFUSE
-+	tristate "Rockchip eFuse Support"
-+	depends on ARCH_ROCKCHIP || COMPILE_TEST
-+	depends on OFDEVICE
-+	help
-+	  This is a simple drive to dump specified values of Rockchip SoC
-+	  from eFuse, such as CPU ID.
-+
- endif
-diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
-index 586591961215..2261816c189c 100644
---- a/drivers/nvmem/Makefile
-+++ b/drivers/nvmem/Makefile
-@@ -25,3 +25,4 @@ obj-$(CONFIG_STM32_BSEC)	+= nvmem_bsec.o
- nvmem_bsec-y			:= bsec.o
+-static const struct nvmem_bus at24_nvmem_bus = {
+-	.write = at24_nvmem_write,
+-	.read  = at24_nvmem_read,
+-};
+-
+ static int at24_probe(struct device_d *dev)
+ {
+ 	struct i2c_client *client = to_i2c_client(dev);
+@@ -487,7 +482,8 @@ static int at24_probe(struct device_d *dev)
+ 	at24->nvmem_config.dev = dev;
+ 	at24->nvmem_config.priv = at24;
+ 	at24->nvmem_config.read_only = !writable;
+-	at24->nvmem_config.bus = &at24_nvmem_bus;
++	at24->nvmem_config.reg_write = at24_nvmem_write;
++	at24->nvmem_config.reg_read  = at24_nvmem_read;
+ 	at24->nvmem_config.stride = 1;
+ 	at24->nvmem_config.word_size = 1;
+ 	at24->nvmem_config.size = chip.byte_len;
+diff --git a/drivers/net/phy/mv88e6xxx/chip.c b/drivers/net/phy/mv88e6xxx/chip.c
+index ae59d134e792..88e0ab5c42af 100644
+--- a/drivers/net/phy/mv88e6xxx/chip.c
++++ b/drivers/net/phy/mv88e6xxx/chip.c
+@@ -808,11 +808,6 @@ static int mv88e6xxx_eeprom_write(void *ctx, unsigned offset, const void *val, s
+ 	return chip->info->ops->set_eeprom(chip, &eeprom, (void *)val);
+ }
  
- obj-$(CONFIG_STARFIVE_OTP)	+= starfive-otp.o
-+obj-$(CONFIG_ROCKCHIP_EFUSE)	+= rockchip-efuse.o
-diff --git a/drivers/nvmem/rockchip-efuse.c b/drivers/nvmem/rockchip-efuse.c
-new file mode 100644
-index 000000000000..24e7de0aa9ce
---- /dev/null
-+++ b/drivers/nvmem/rockchip-efuse.c
-@@ -0,0 +1,299 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Rockchip eFuse Driver
-+ *
-+ * Copyright (c) 2015 Rockchip Electronics Co. Ltd.
-+ * Author: Caesar Wang <wxt@rock-chips.com>
-+ */
+-static const struct nvmem_bus mv88e6xxx_eeprom_nvmem_bus = {
+-	.write = mv88e6xxx_eeprom_write,
+-	.read  = mv88e6xxx_eeprom_read,
+-};
+-
+ static int mv88e6xxx_probe(struct device_d *dev)
+ {
+ 	struct device_node *np = dev->device_node;
+@@ -887,7 +882,8 @@ static int mv88e6xxx_probe(struct device_d *dev)
+ 			.stride = 1,
+ 			.size = eeprom_len,
+ 			.read_only = false,
+-			.bus = &mv88e6xxx_eeprom_nvmem_bus,
++			.reg_write = mv88e6xxx_eeprom_write,
++			.reg_read = mv88e6xxx_eeprom_read,
+ 		};
+ 
+ 		if (IS_ERR(nvmem_register(&config)))
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index fed387c43a26..f1df0969ecfd 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -16,7 +16,6 @@
+ struct nvmem_device {
+ 	const char		*name;
+ 	struct device_d		dev;
+-	const struct nvmem_bus	*bus;
+ 	struct list_head	node;
+ 	int			stride;
+ 	int			word_size;
+@@ -26,6 +25,10 @@ struct nvmem_device {
+ 	bool			read_only;
+ 	struct cdev		cdev;
+ 	void			*priv;
++	int			(*reg_write)(void *ctx, unsigned int reg,
++					     const void *val, size_t val_size);
++	int			(*reg_read)(void *ctx, unsigned int reg,
++					    void *val, size_t val_size);
+ };
+ 
+ struct nvmem_cell {
+@@ -205,12 +208,13 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ 	nvmem->word_size = config->word_size;
+ 	nvmem->size = config->size;
+ 	nvmem->dev.parent = config->dev;
+-	nvmem->bus = config->bus;
++	nvmem->reg_read = config->reg_read;
++	nvmem->reg_write = config->reg_write;
+ 	np = config->cdev ? config->cdev->device_node : config->dev->device_node;
+ 	nvmem->dev.device_node = np;
+ 	nvmem->priv = config->priv;
+ 
+-	if (config->read_only || !config->bus->write || of_property_read_bool(np, "read-only"))
++	if (config->read_only || !config->reg_write || of_property_read_bool(np, "read-only"))
+ 		nvmem->read_only = true;
+ 
+ 	dev_set_name(&nvmem->dev, config->name);
+@@ -525,7 +529,7 @@ static int __nvmem_cell_read(struct nvmem_device *nvmem,
+ {
+ 	int rc;
+ 
+-	rc = nvmem->bus->read(nvmem->priv, cell->offset, buf, cell->bytes);
++	rc = nvmem->reg_read(nvmem->priv, cell->offset, buf, cell->bytes);
+ 	if (IS_ERR_VALUE(rc))
+ 		return rc;
+ 
+@@ -590,7 +594,7 @@ static inline void *nvmem_cell_prepare_write_buffer(struct nvmem_cell *cell,
+ 		*b <<= bit_offset;
+ 
+ 		/* setup the first byte with lsb bits from nvmem */
+-		rc = nvmem->bus->read(nvmem->priv, cell->offset, &v, 1);
++		rc = nvmem->reg_read(nvmem->priv, cell->offset, &v, 1);
+ 		*b++ |= GENMASK(bit_offset - 1, 0) & v;
+ 
+ 		/* setup rest of the byte if any */
+@@ -607,7 +611,7 @@ static inline void *nvmem_cell_prepare_write_buffer(struct nvmem_cell *cell,
+ 	/* if it's not end on byte boundary */
+ 	if ((nbits + bit_offset) % BITS_PER_BYTE) {
+ 		/* setup the last byte with msb bits from nvmem */
+-		rc = nvmem->bus->read(nvmem->priv, cell->offset + cell->bytes - 1,
++		rc = nvmem->reg_read(nvmem->priv, cell->offset + cell->bytes - 1,
+ 				      &v, 1);
+ 		*p |= GENMASK(7, (nbits + bit_offset) % BITS_PER_BYTE) & v;
+ 
+@@ -640,7 +644,7 @@ int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len)
+ 			return PTR_ERR(buf);
+ 	}
+ 
+-	rc = nvmem->bus->write(nvmem->priv, cell->offset, buf, cell->bytes);
++	rc = nvmem->reg_write(nvmem->priv, cell->offset, buf, cell->bytes);
+ 
+ 	/* free the tmp buffer */
+ 	if (cell->bit_offset || cell->nbits)
+@@ -737,7 +741,7 @@ int nvmem_device_read(struct nvmem_device *nvmem,
+ 	if (!bytes)
+ 		return 0;
+ 
+-	rc = nvmem->bus->read(nvmem->priv, offset, buf, bytes);
++	rc = nvmem->reg_read(nvmem->priv, offset, buf, bytes);
+ 
+ 	if (IS_ERR_VALUE(rc))
+ 		return rc;
+@@ -771,7 +775,7 @@ int nvmem_device_write(struct nvmem_device *nvmem,
+ 	if (!bytes)
+ 		return 0;
+ 
+-	rc = nvmem->bus->write(nvmem->priv, offset, buf, bytes);
++	rc = nvmem->reg_write(nvmem->priv, offset, buf, bytes);
+ 
+ 	if (IS_ERR_VALUE(rc))
+ 		return rc;
+diff --git a/drivers/nvmem/eeprom_93xx46.c b/drivers/nvmem/eeprom_93xx46.c
+index 2f598fbc97f6..b76750ebbd33 100644
+--- a/drivers/nvmem/eeprom_93xx46.c
++++ b/drivers/nvmem/eeprom_93xx46.c
+@@ -364,11 +364,6 @@ static int eeprom_93xx46_probe_dt(struct spi_device *spi)
+ 	return 0;
+ }
+ 
+-static const struct nvmem_bus eeprom_93xx46_nvmem_bus = {
+-	.write = eeprom_93xx46_write,
+-	.read  = eeprom_93xx46_read,
+-};
+-
+ static int eeprom_93xx46_probe(struct device_d *dev)
+ {
+ 	struct spi_device *spi = (struct spi_device *)dev->type_data;
+@@ -408,7 +403,9 @@ static int eeprom_93xx46_probe(struct device_d *dev)
+ 	edev->nvmem_config.dev = &spi->dev;
+ 	edev->nvmem_config.priv = edev;
+ 	edev->nvmem_config.read_only = pd->flags & EE_READONLY;
+-	edev->nvmem_config.bus = &eeprom_93xx46_nvmem_bus;
++	edev->nvmem_config.reg_write = eeprom_93xx46_write;
++	edev->nvmem_config.reg_read  = eeprom_93xx46_read;
 +
-+#include <common.h>
-+#include <linux/clk.h>
-+#include <linux/overflow.h>
-+#include <clock.h>
-+#include <driver.h>
-+#include <io.h>
-+#include <linux/nvmem-provider.h>
-+#include <of.h>
-+#include <init.h>
-+
-+#define clk_prepare_enable clk_enable
-+#define clk_disable_unprepare clk_disable
-+
-+#define RK3288_A_SHIFT		6
-+#define RK3288_A_MASK		0x3ff
-+#define RK3288_PGENB		BIT(3)
-+#define RK3288_LOAD		BIT(2)
-+#define RK3288_STROBE		BIT(1)
-+#define RK3288_CSB		BIT(0)
-+
-+#define RK3328_SECURE_SIZES	96
-+#define RK3328_INT_STATUS	0x0018
-+#define RK3328_DOUT		0x0020
-+#define RK3328_AUTO_CTRL	0x0024
-+#define RK3328_INT_FINISH	BIT(0)
-+#define RK3328_AUTO_ENB		BIT(0)
-+#define RK3328_AUTO_RD		BIT(1)
-+
-+#define RK3399_A_SHIFT		16
-+#define RK3399_A_MASK		0x3ff
-+#define RK3399_NBYTES		4
-+#define RK3399_STROBSFTSEL	BIT(9)
-+#define RK3399_RSB		BIT(7)
-+#define RK3399_PD		BIT(5)
-+#define RK3399_PGENB		BIT(3)
-+#define RK3399_LOAD		BIT(2)
-+#define RK3399_STROBE		BIT(1)
-+#define RK3399_CSB		BIT(0)
-+
-+#define REG_EFUSE_CTRL		0x0000
-+#define REG_EFUSE_DOUT		0x0004
-+
-+struct rockchip_efuse_chip {
-+	struct device_d *dev;
-+	void __iomem *base;
-+	struct clk *clk;
-+};
-+
-+static int rockchip_rk3288_efuse_read(void *context, unsigned int offset,
-+				      void *val, size_t bytes)
-+{
-+	struct rockchip_efuse_chip *efuse = context;
-+	u8 *buf = val;
-+	int ret;
-+
-+	ret = clk_prepare_enable(efuse->clk);
-+	if (ret < 0) {
-+		dev_err(efuse->dev, "failed to prepare/enable efuse clk\n");
-+		return ret;
-+	}
-+
-+	writel(RK3288_LOAD | RK3288_PGENB, efuse->base + REG_EFUSE_CTRL);
-+	udelay(1);
-+	while (bytes--) {
-+		writel(readl(efuse->base + REG_EFUSE_CTRL) &
-+			     (~(RK3288_A_MASK << RK3288_A_SHIFT)),
-+			     efuse->base + REG_EFUSE_CTRL);
-+		writel(readl(efuse->base + REG_EFUSE_CTRL) |
-+			     ((offset++ & RK3288_A_MASK) << RK3288_A_SHIFT),
-+			     efuse->base + REG_EFUSE_CTRL);
-+		udelay(1);
-+		writel(readl(efuse->base + REG_EFUSE_CTRL) |
-+			     RK3288_STROBE, efuse->base + REG_EFUSE_CTRL);
-+		udelay(1);
-+		*buf++ = readb(efuse->base + REG_EFUSE_DOUT);
-+		writel(readl(efuse->base + REG_EFUSE_CTRL) &
-+		       (~RK3288_STROBE), efuse->base + REG_EFUSE_CTRL);
-+		udelay(1);
-+	}
-+
-+	/* Switch to standby mode */
-+	writel(RK3288_PGENB | RK3288_CSB, efuse->base + REG_EFUSE_CTRL);
-+
-+	clk_disable_unprepare(efuse->clk);
-+
-+	return 0;
-+}
-+
-+static int rockchip_rk3328_efuse_read(void *context, unsigned int offset,
-+				      void *val, size_t bytes)
-+{
-+	struct rockchip_efuse_chip *efuse = context;
-+	unsigned int addr_start, addr_end, addr_offset, addr_len;
-+	u32 out_value, status;
-+	u8 *buf;
-+	int ret, i = 0;
-+
-+	ret = clk_prepare_enable(efuse->clk);
-+	if (ret < 0) {
-+		dev_err(efuse->dev, "failed to prepare/enable efuse clk\n");
-+		return ret;
-+	}
-+
-+	/* 128 Byte efuse, 96 Byte for secure, 32 Byte for non-secure */
-+	offset += RK3328_SECURE_SIZES;
-+	addr_start = rounddown(offset, RK3399_NBYTES) / RK3399_NBYTES;
-+	addr_end = roundup(offset + bytes, RK3399_NBYTES) / RK3399_NBYTES;
-+	addr_offset = offset % RK3399_NBYTES;
-+	addr_len = addr_end - addr_start;
-+
-+	buf = kzalloc(array3_size(addr_len, RK3399_NBYTES, sizeof(*buf)),
-+		      GFP_KERNEL);
-+	if (!buf) {
-+		ret = -ENOMEM;
-+		goto nomem;
-+	}
-+
-+	while (addr_len--) {
-+		writel(RK3328_AUTO_RD | RK3328_AUTO_ENB |
-+		       ((addr_start++ & RK3399_A_MASK) << RK3399_A_SHIFT),
-+		       efuse->base + RK3328_AUTO_CTRL);
-+		udelay(4);
-+		status = readl(efuse->base + RK3328_INT_STATUS);
-+		if (!(status & RK3328_INT_FINISH)) {
-+			ret = -EIO;
-+			goto err;
-+		}
-+		out_value = readl(efuse->base + RK3328_DOUT);
-+		writel(RK3328_INT_FINISH, efuse->base + RK3328_INT_STATUS);
-+
-+		memcpy(&buf[i], &out_value, RK3399_NBYTES);
-+		i += RK3399_NBYTES;
-+	}
-+
-+	memcpy(val, buf + addr_offset, bytes);
-+err:
-+	kfree(buf);
-+nomem:
-+	clk_disable_unprepare(efuse->clk);
-+
-+	return ret;
-+}
-+
-+static int rockchip_rk3399_efuse_read(void *context, unsigned int offset,
-+				      void *val, size_t bytes)
-+{
-+	struct rockchip_efuse_chip *efuse = context;
-+	unsigned int addr_start, addr_end, addr_offset, addr_len;
-+	u32 out_value;
-+	u8 *buf;
-+	int ret, i = 0;
-+
-+	ret = clk_prepare_enable(efuse->clk);
-+	if (ret < 0) {
-+		dev_err(efuse->dev, "failed to prepare/enable efuse clk\n");
-+		return ret;
-+	}
-+
-+	addr_start = rounddown(offset, RK3399_NBYTES) / RK3399_NBYTES;
-+	addr_end = roundup(offset + bytes, RK3399_NBYTES) / RK3399_NBYTES;
-+	addr_offset = offset % RK3399_NBYTES;
-+	addr_len = addr_end - addr_start;
-+
-+	buf = kzalloc(array3_size(addr_len, RK3399_NBYTES, sizeof(*buf)),
-+		      GFP_KERNEL);
-+	if (!buf) {
-+		clk_disable_unprepare(efuse->clk);
-+		return -ENOMEM;
-+	}
-+
-+	writel(RK3399_LOAD | RK3399_PGENB | RK3399_STROBSFTSEL | RK3399_RSB,
-+	       efuse->base + REG_EFUSE_CTRL);
-+	udelay(1);
-+	while (addr_len--) {
-+		writel(readl(efuse->base + REG_EFUSE_CTRL) | RK3399_STROBE |
-+		       ((addr_start++ & RK3399_A_MASK) << RK3399_A_SHIFT),
-+		       efuse->base + REG_EFUSE_CTRL);
-+		udelay(1);
-+		out_value = readl(efuse->base + REG_EFUSE_DOUT);
-+		writel(readl(efuse->base + REG_EFUSE_CTRL) & (~RK3399_STROBE),
-+		       efuse->base + REG_EFUSE_CTRL);
-+		udelay(1);
-+
-+		memcpy(&buf[i], &out_value, RK3399_NBYTES);
-+		i += RK3399_NBYTES;
-+	}
-+
-+	/* Switch to standby mode */
-+	writel(RK3399_PD | RK3399_CSB, efuse->base + REG_EFUSE_CTRL);
-+
-+	memcpy(val, buf + addr_offset, bytes);
-+
-+	kfree(buf);
-+
-+	clk_disable_unprepare(efuse->clk);
-+
-+	return 0;
-+}
-+
-+static struct nvmem_config econfig = {
-+	.name = "rockchip-efuse",
-+	.stride = 1,
-+	.word_size = 1,
-+	.read_only = true,
-+};
-+
-+static const struct of_device_id rockchip_efuse_match[] = {
-+	/* deprecated but kept around for dts binding compatibility */
-+	{
-+		.compatible = "rockchip,rockchip-efuse",
-+		.data = (void *)&rockchip_rk3288_efuse_read,
-+	},
-+	{
-+		.compatible = "rockchip,rk3066a-efuse",
-+		.data = (void *)&rockchip_rk3288_efuse_read,
-+	},
-+	{
-+		.compatible = "rockchip,rk3188-efuse",
-+		.data = (void *)&rockchip_rk3288_efuse_read,
-+	},
-+	{
-+		.compatible = "rockchip,rk3228-efuse",
-+		.data = (void *)&rockchip_rk3288_efuse_read,
-+	},
-+	{
-+		.compatible = "rockchip,rk3288-efuse",
-+		.data = (void *)&rockchip_rk3288_efuse_read,
-+	},
-+	{
-+		.compatible = "rockchip,rk3368-efuse",
-+		.data = (void *)&rockchip_rk3288_efuse_read,
-+	},
-+	{
-+		.compatible = "rockchip,rk3328-efuse",
-+		.data = (void *)&rockchip_rk3328_efuse_read,
-+	},
-+	{
-+		.compatible = "rockchip,rk3399-efuse",
-+		.data = (void *)&rockchip_rk3399_efuse_read,
-+	},
-+	{ /* sentinel */},
-+};
-+MODULE_DEVICE_TABLE(of, rockchip_efuse_match);
-+
-+static int rockchip_efuse_probe(struct device_d *dev)
-+{
-+	struct resource *res;
-+	struct nvmem_device *nvmem;
-+	struct rockchip_efuse_chip *efuse;
-+	const void *data;
-+
-+	data = device_get_match_data(dev);
-+	if (!data) {
-+		dev_err(dev, "failed to get match data\n");
-+		return -EINVAL;
-+	}
-+
-+	efuse = kzalloc(sizeof(struct rockchip_efuse_chip), GFP_KERNEL);
-+	if (!efuse)
-+		return -ENOMEM;
-+
-+	res = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(res))
-+		return PTR_ERR(res);
-+
-+	efuse->base = IOMEM(res->start);
-+
-+	efuse->clk = clk_get(dev, "pclk_efuse");
-+	if (IS_ERR(efuse->clk))
-+		return PTR_ERR(efuse->clk);
-+
-+	efuse->dev = dev;
-+	if (of_property_read_u32(dev->device_node, "rockchip,efuse-size",
-+				 &econfig.size))
-+		econfig.size = resource_size(res);
-+	econfig.reg_read = data;
-+	econfig.priv = efuse;
-+	econfig.dev = efuse->dev;
-+	nvmem = nvmem_register(&econfig);
-+
-+	return PTR_ERR_OR_ZERO(nvmem);
-+}
-+
-+static struct driver_d rockchip_efuse_driver = {
-+	.name = "rockchip-efuse",
-+	.of_compatible = rockchip_efuse_match,
-+	.probe = rockchip_efuse_probe,
-+};
-+device_platform_driver(rockchip_efuse_driver);
-+MODULE_DESCRIPTION("rockchip_efuse driver");
-+MODULE_LICENSE("GPL v2");
+ 	edev->nvmem_config.stride = 4;
+ 	edev->nvmem_config.word_size = 1;
+ 	edev->nvmem_config.size = edev->size;
+diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+index 1f99a8012f7a..e7212f144c35 100644
+--- a/drivers/nvmem/ocotp.c
++++ b/drivers/nvmem/ocotp.c
+@@ -697,11 +697,6 @@ static void imx_ocotp_set_unique_machine_id(void)
+ 	machine_id_set_hashable(unique_id_parts, sizeof(unique_id_parts));
+ }
+ 
+-static const struct nvmem_bus imx_ocotp_nvmem_bus = {
+-	.write = imx_ocotp_write,
+-	.read  = imx_ocotp_read,
+-};
+-
+ static int imx_ocotp_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+@@ -745,7 +740,8 @@ static int imx_ocotp_probe(struct device_d *dev)
+ 	priv->config.stride = 4;
+ 	priv->config.word_size = 4;
+ 	priv->config.size = data->num_regs;
+-	priv->config.bus = &imx_ocotp_nvmem_bus;
++	priv->config.reg_write = imx_ocotp_write;
++	priv->config.reg_read  = imx_ocotp_read;
+ 
+ 	nvmem = nvmem_register(&priv->config);
+ 	if (IS_ERR(nvmem))
+diff --git a/drivers/nvmem/partition.c b/drivers/nvmem/partition.c
+index a034c6c4d55a..14907e05ba2d 100644
+--- a/drivers/nvmem/partition.c
++++ b/drivers/nvmem/partition.c
+@@ -18,11 +18,6 @@ static int nvmem_cdev_read(void *ctx, unsigned offset, void *buf, size_t bytes)
+ 	return cdev_read(ctx, buf, bytes, offset, 0);
+ }
+ 
+-static struct nvmem_bus nvmem_cdev_bus = {
+-	.read = nvmem_cdev_read,
+-	.write = nvmem_cdev_write,
+-};
+-
+ struct nvmem_device *nvmem_partition_register(struct cdev *cdev)
+ {
+ 	struct nvmem_config config = {};
+@@ -34,7 +29,8 @@ struct nvmem_device *nvmem_partition_register(struct cdev *cdev)
+ 	config.stride = 1;
+ 	config.word_size = 1;
+ 	config.size = cdev->size;
+-	config.bus = &nvmem_cdev_bus;
++	config.reg_read = nvmem_cdev_read;
++	config.reg_write = nvmem_cdev_write;
+ 
+ 	return nvmem_register(&config);
+ }
+diff --git a/drivers/nvmem/rave-sp-eeprom.c b/drivers/nvmem/rave-sp-eeprom.c
+index 2345b24936be..26367a02de17 100644
+--- a/drivers/nvmem/rave-sp-eeprom.c
++++ b/drivers/nvmem/rave-sp-eeprom.c
+@@ -280,11 +280,6 @@ static int rave_sp_eeprom_write(void *ctx, unsigned offset, const void *val, siz
+ 				     offset, (void *)val, bytes);
+ }
+ 
+-static const struct nvmem_bus rave_sp_eeprom_nvmem_bus = {
+-	.write = rave_sp_eeprom_write,
+-	.read  = rave_sp_eeprom_read,
+-};
+-
+ static int rave_sp_eeprom_probe(struct device_d *dev)
+ {
+ 	struct rave_sp *sp = dev->parent->priv;
+@@ -329,7 +324,8 @@ static int rave_sp_eeprom_probe(struct device_d *dev)
+ 	config.word_size = 1;
+ 	config.stride    = 1;
+ 	config.size      = reg[1];
+-	config.bus       = &rave_sp_eeprom_nvmem_bus;
++	config.reg_write = rave_sp_eeprom_write;
++	config.reg_read  = rave_sp_eeprom_read;
+ 
+ 	nvmem = nvmem_register(&config);
+ 	if (IS_ERR(nvmem)) {
+diff --git a/drivers/nvmem/regmap.c b/drivers/nvmem/regmap.c
+index 56611819a2b4..3c33a8aa75a8 100644
+--- a/drivers/nvmem/regmap.c
++++ b/drivers/nvmem/regmap.c
+@@ -53,11 +53,6 @@ static int nvmem_regmap_read(void *ctx, unsigned offset, void *buf, size_t bytes
+ 	return 0;
+ }
+ 
+-static struct nvmem_bus nvmem_regmap_bus = {
+-	.read = nvmem_regmap_read,
+-	.write = nvmem_regmap_write,
+-};
+-
+ struct nvmem_device *nvmem_regmap_register(struct regmap *map, const char *name)
+ {
+ 	struct nvmem_config config = {};
+@@ -72,7 +67,8 @@ struct nvmem_device *nvmem_regmap_register(struct regmap *map, const char *name)
+ 	config.stride = 1;
+ 	config.word_size = 1;
+ 	config.size = regmap_get_max_register(map) * regmap_get_reg_stride(map);
+-	config.bus = &nvmem_regmap_bus;
++	config.reg_read = nvmem_regmap_read;
++	config.reg_write = nvmem_regmap_write;
+ 
+ 	return nvmem_register(&config);
+ }
+diff --git a/drivers/nvmem/rmem.c b/drivers/nvmem/rmem.c
+index cd735e5ef39d..e0b9bd6d39f7 100644
+--- a/drivers/nvmem/rmem.c
++++ b/drivers/nvmem/rmem.c
+@@ -21,10 +21,6 @@ static int rmem_read(void *context, unsigned int offset,
+ 			bytes, offset, 0);
+ }
+ 
+-static struct nvmem_bus rmem_nvmem_bus = {
+-	.read = rmem_read,
+-};
+-
+ static int rmem_probe(struct device_d *dev)
+ {
+ 	struct nvmem_config config = { };
+@@ -45,7 +41,7 @@ static int rmem_probe(struct device_d *dev)
+ 	config.priv = priv;
+ 	config.name = "rmem";
+ 	config.size = resource_size(mem);
+-	config.bus = &rmem_nvmem_bus;
++	config.reg_read = rmem_read;
+ 
+ 	return PTR_ERR_OR_ZERO(nvmem_register(&config));
+ }
+diff --git a/drivers/nvmem/snvs_lpgpr.c b/drivers/nvmem/snvs_lpgpr.c
+index ddfc15e1479a..767ce0d17f61 100644
+--- a/drivers/nvmem/snvs_lpgpr.c
++++ b/drivers/nvmem/snvs_lpgpr.c
+@@ -73,11 +73,6 @@ static int snvs_lpgpr_read(void *ctx, unsigned offset, void *val, size_t bytes)
+ 				val, bytes);
+ }
+ 
+-static const struct nvmem_bus snvs_lpgpr_nvmem_bus = {
+-	.write = snvs_lpgpr_write,
+-	.read  = snvs_lpgpr_read,
+-};
+-
+ static int snvs_lpgpr_probe(struct device_d *dev)
+ {
+ 	struct device_node *node = dev->device_node;
+@@ -112,7 +107,8 @@ static int snvs_lpgpr_probe(struct device_d *dev)
+ 	cfg->stride = 4;
+ 	cfg->word_size = 4;
+ 	cfg->size = 4;
+-	cfg->bus = &snvs_lpgpr_nvmem_bus;
++	cfg->bus.reg_write = snvs_lpgpr_write;
++	cfg->bus.reg_read  = snvs_lpgpr_read;
+ 
+ 	nvmem = nvmem_register(cfg);
+ 	if (IS_ERR(nvmem)) {
+diff --git a/drivers/rtc/rtc-imxdi.c b/drivers/rtc/rtc-imxdi.c
+index 297fdc17b986..01d3b26aa2b6 100644
+--- a/drivers/rtc/rtc-imxdi.c
++++ b/drivers/rtc/rtc-imxdi.c
+@@ -529,17 +529,13 @@ static int nvstore_read(void *ctx, unsigned reg, void *val, size_t bytes)
+ 	return 0;
+ }
+ 
+-static struct nvmem_bus nvstore_nvmem_bus = {
+-	.write = nvstore_write,
+-	.read  = nvstore_read,
+-};
+-
+ static struct nvmem_config nvstore_nvmem_config = {
+ 	.name = "nvstore",
+ 	.stride = 4,
+ 	.word_size = 4,
+ 	.size = 4,
+-	.bus = &nvstore_nvmem_bus,
++	.reg_write = nvstore_write,
++	.reg_read = nvstore_read,
+ };
+ 
+ static int __init dryice_rtc_probe(struct device_d *dev)
+diff --git a/include/linux/nvmem-provider.h b/include/linux/nvmem-provider.h
+index a293f60c1ef3..560c78ded376 100644
+--- a/include/linux/nvmem-provider.h
++++ b/include/linux/nvmem-provider.h
+@@ -17,11 +17,6 @@
+ 
+ struct nvmem_device;
+ 
+-struct nvmem_bus {
+-	int (*write)(void *ctx, unsigned int reg, const void *val, size_t val_size);
+-	int (*read)(void *ctx, unsigned int reg, void *val, size_t val_size);
+-};
+-
+ struct nvmem_config {
+ 	struct device_d		*dev;
+ 	const char		*name;
+@@ -30,7 +25,10 @@ struct nvmem_config {
+ 	int			stride;
+ 	int			word_size;
+ 	int			size;
+-	const struct nvmem_bus	*bus;
++	int			(*reg_write)(void *ctx, unsigned int reg,
++					     const void *val, size_t val_size);
++	int			(*reg_read)(void *ctx, unsigned int reg,
++					    void *val, size_t val_size);
+ 	void			*priv;
+ };
+ 
 -- 
 2.30.2
 
