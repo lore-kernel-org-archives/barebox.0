@@ -1,55 +1,63 @@
-Delivery-date: Fri, 14 Jan 2022 10:01:55 +0100
+Delivery-date: Fri, 14 Jan 2022 10:16:29 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8IT5-001tME-58
-	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 10:01:55 +0100
+	id 1n8IhB-001uHj-7u
+	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 10:16:29 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8IT3-0004DW-S7
-	for lore@pengutronix.de; Fri, 14 Jan 2022 10:01:54 +0100
+	id 1n8Ih9-0005zZ-Ot
+	for lore@pengutronix.de; Fri, 14 Jan 2022 10:16:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=QO3xMTH2fB0ZfaML2VblHJBA4EI6zoWaxhyv1IHxhAM=; b=4EEX13g7llAJ8DXddEhJJ9zYtM
-	utSQ2XaDZfFUrresoA6axxpOEBC6PbquJznsf5AedEzM/YS+6G21QKD/ZPXcHZz5rXFz8P0aauM3C
-	G9HAiVCXQiha66s7Tvi/QfsNat/gm+NvODxoQdzCpoRL3xHHFsUio/+JmIqM++mjhDNHXWPDAKWAD
-	kX0MrUKUVDoFzqWOIuISyyhm+v5fKSkmOOBj8cUK95CRAnHb3InciHbc2MsOFwbGXJCyZfn9Yh4WH
-	4FsN8mM51xjgeXUcZOW2p3ZIi+RbBMPs6kqeiqocDLFF2rrbIPuc8SOCDO43u3Jd1r7jscm+y/1Dz
-	nP6AC2PQ==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=6GKBDDebezvyTrrRJ6tAkfCEVcozFrYiv1FbUI/HJOU=; b=lfrFiQoKImOZ1J
+	730dHDr1l42NEJkvRsbExtwWsms7/PZu4C9PsL2zphHfNm+PkIOmY5EYLHOj71Wkb3q8RuKW0z/yG
+	fQ2rxy4TwR8URs8vV3f+snQQlajj40x06qffZ3FmLWh74z2/HX+hfHwwUT71kty21qt51whagevCY
+	/iLYpQcqGhZlT7lwGkz2Gd15l5Hmk0mJueSMWRDWkkE2xtVtWzx2PRqfjW0xt9J7np5xB/zhrzWeX
+	nfnDrn0JZJif/h/c4WOMkOeFn1dZwKO9gnI0Ql34vB3lSgU/1JfGbGG3fdiWmV2NX2CGGMkbnB0Kp
+	O1g3wzbxApZf7wh+wwbw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n8IRq-008PJh-Bw; Fri, 14 Jan 2022 09:00:38 +0000
+	id 1n8Ifs-008RAo-0w; Fri, 14 Jan 2022 09:15:08 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n8IRl-008PJA-Ll
- for barebox@lists.infradead.org; Fri, 14 Jan 2022 09:00:35 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1n8IRk-00042p-DY; Fri, 14 Jan 2022 10:00:32 +0100
-To: Jules Maselbas <jmaselbas@kalray.eu>, barebox@lists.infradead.org
-References: <20220110221255.5003-1-jmaselbas@kalray.eu>
- <20220110221255.5003-2-jmaselbas@kalray.eu>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <7fba581c-019e-7e51-29e9-ce75e60e5945@pengutronix.de>
-Date: Fri, 14 Jan 2022 10:00:31 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ id 1n8Ifn-008RAC-Ed
+ for barebox@lists.infradead.org; Fri, 14 Jan 2022 09:15:04 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1n8Ifk-0005gO-U7; Fri, 14 Jan 2022 10:15:00 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1n8Ifk-0000um-Bw; Fri, 14 Jan 2022 10:15:00 +0100
+Date: Fri, 14 Jan 2022 10:15:00 +0100
+From: Sascha Hauer <sha@pengutronix.de>
+To: Michael Riesch <michael.riesch@wolfvision.net>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220114091500.GA2312@pengutronix.de>
+References: <3fb6debc-4891-c366-94df-0d7c0b80685c@wolfvision.net>
+ <20211117142448.2091017-1-michael.riesch@wolfvision.net>
 MIME-Version: 1.0
-In-Reply-To: <20220110221255.5003-2-jmaselbas@kalray.eu>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20211117142448.2091017-1-michael.riesch@wolfvision.net>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:47:06 up 34 days, 17:32, 75 users,  load average: 0.13, 0.14, 0.13
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220114_010033_751766_5DA19D8D 
-X-CRM114-Status: GOOD (  19.09  )
+X-CRM114-CacheID: sfid-20220114_011503_519420_48D28E3A 
+X-CRM114-Status: GOOD (  21.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,60 +79,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/5] filetype: Add QOI format image type
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [RFC PATCH] bootsource: add helper to set instance by name
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 10.01.22 23:12, Jules Maselbas wrote:
-> QOI image format is a "Quite OK" image format, it's simplicity is it's
-> strength and could be a good replacement of bmp, maybe even for png.
-> 
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+On Wed, Nov 17, 2021 at 03:24:48PM +0100, Michael Riesch wrote:
+> Instance numbers should be related to device tree aliases, which may be
+> board-specific.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+When instance numbers were introduced they were meant to be SoC
+specific, i.e. they should correspond to the numbers in the manual.
+When starting with device tree aliases the alias numbers were assumed to
+match the numbers in the manual. On i.MX this is still mostly true, but
+on (most?) other SoCs it is not. In barebox we have several users of
+bootsource_get_instance() which rely on the instance being the hardware
+instance number, so we can't just change that.
 
-> ---
->  common/filetype.c  | 3 +++
->  include/filetype.h | 1 +
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/common/filetype.c b/common/filetype.c
-> index 8ffcd6adcd..e5245668e2 100644
-> --- a/common/filetype.c
-> +++ b/common/filetype.c
-> @@ -45,6 +45,7 @@ static const struct filetype_str filetype_str[] = {
->  	[filetype_mbr] = { "MBR sector", "mbr" },
->  	[filetype_bmp] = { "BMP image", "bmp" },
->  	[filetype_png] = { "PNG image", "png" },
-> +	[filetype_qoi] = { "QOI image", "qoi" },
->  	[filetype_ext] = { "EXT filesystem", "ext" },
->  	[filetype_gpt] = { "GUID Partition Table", "gpt" },
->  	[filetype_ubifs] = { "UBIFS image", "ubifs" },
-> @@ -300,6 +301,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
->  		return filetype_aimage;
->  	if (buf64[0] == le64_to_cpu(0x0a1a0a0d474e5089ull))
->  		return filetype_png;
-> +	if (strncmp(buf8, "qoif", 4) == 0)
-> +		return filetype_qoi;
->  	if (is_barebox_mips_head(_buf))
->  		return filetype_mips_barebox;
->  	if (buf[0] == be32_to_cpu(0x534F4659))
-> diff --git a/include/filetype.h b/include/filetype.h
-> index 2640847e1f..8bc179ac08 100644
-> --- a/include/filetype.h
-> +++ b/include/filetype.h
-> @@ -28,6 +28,7 @@ enum filetype {
->  	filetype_mbr,
->  	filetype_bmp,
->  	filetype_png,
-> +	filetype_qoi,
->  	filetype_ext,
->  	filetype_gpt,
->  	filetype_ubifs,
-> 
+If we have to keep track of both hardware numbers and alias numbers we
+have to store both separately and not change the meaning of the existing
+instance number.
 
+Thinking this further I don't think the alias is worth anything because
+it may differ between the barebox internal device tree and the one the
+kernel is booted with. We should rather store the device node providing
+the bootsource. From that we can retrieve the alias matching a given
+device tree if we still need it.
+
+That said, I don't know a good way how we get there from our existing
+codebase.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
