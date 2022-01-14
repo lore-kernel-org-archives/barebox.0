@@ -1,76 +1,88 @@
-Delivery-date: Fri, 14 Jan 2022 11:55:11 +0100
+Delivery-date: Fri, 14 Jan 2022 11:56:32 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8KEg-001y77-Sd
-	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 11:55:11 +0100
+	id 1n8KG0-001y9i-6F
+	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 11:56:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8KEf-0002ST-LI
-	for lore@pengutronix.de; Fri, 14 Jan 2022 11:55:10 +0100
+	id 1n8KFy-0002ih-O7
+	for lore@pengutronix.de; Fri, 14 Jan 2022 11:56:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=S5f+4FEmHfSW/FhnrKBv9nMFhldsMgL3RjC3sZtHCnM=; b=J57kge0oMxUoY0
-	3rtFzYiFXF+45xk1d++tXZjZLQ1KRr6oxEN+JdBcqG8+HNV2JVZY82SUCye514YFgwuL1KwpTRtTW
-	vu6jqDiE8riIJOl+SiKg80vmvaGz6Lps/FzIQHb6WhQX0oXmGGp+ytXzZyZibwsUSEnfh2+MwHt9t
-	BnH6FTdfzbgUyOHCoLhsJLpwwiu6hknPdF3eZHeSb0a/m+Byo9RIa73e6XuCtyQp9wLHuWyMjEabk
-	vQgE6VC/WaifZB65W7Mb3gV7o7Fl4pgdZGk3SEcBHDbfZkH25Rs8oyp7wwKSXYEKi+APkiNMFRMEv
-	ZU450WAaFCNsL/LNqNTg==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=Gj7JBwHP0+Ad+8BXCopcUuSYC1c6S30z9BHfHhWpkUc=; b=e8uBgmcRY3356c
+	Sxa452Bib9yyIBhnCVFLw3i+uk41sD3piQ0h3l/45ElpGK6srUkZMYmp2Nk2+nkskSPMldTD19hzh
+	eTAA/Y9hReFTIOwRfbx1RV1hE7O11hQA1HqBFxEAy3kqT0+FJqUCFQ4M53OL6z2+bCY6N3S1SDS8F
+	bzbsXXlaotDThperKkELX0QDKnidRIOrs3pMtM9sTL6+aozs5WCMwr/MHBqHwZjTEBPppmrBvyyZS
+	VmJdzMOkaeAplixmIbJgJDuD68B0HlEg0XaNOYfIiqBA9X3X7nT6sT3wNGOWcVT7oATNhfNkA9Naj
+	x7wqrsUmJXfdLuLRZjvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n8KDK-008nEp-6n; Fri, 14 Jan 2022 10:53:46 +0000
-Received: from smtpout-2.cvg.de ([2003:49:a034:1067:5::2])
+	id 1n8KEj-008nb9-BP; Fri, 14 Jan 2022 10:55:13 +0000
+Received: from smtpout140.security-mail.net ([85.31.212.148]
+ helo=fx408.security-mail.net)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n8KDE-008n5X-J5
- for barebox@lists.infradead.org; Fri, 14 Jan 2022 10:53:42 +0000
-Received: from mail-mta-3.intern.sigma-chemnitz.de
- (mail-mta-3.intern.sigma-chemnitz.de [192.168.12.71])
- by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id
- 20EAqsIe289334
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
- for <barebox@lists.infradead.org>; Fri, 14 Jan 2022 11:52:55 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
- s=v2012061000; t=1642157575;
- bh=pAOsSJcZIoavySJ7+clW2Q0yBC5aXmOuQm/KPWo7q5w=; l=1814;
- h=From:To:Cc:Subject:Date;
- b=hNMV9fDruuzwWvZoIWUgTCgXquPHqQGaRxPGUpz70Iu5TjhU7wSUYoPUX0sX6U+Ck
- Ycbp0q9ga3NAqAV2RdIKdaZpQHdmsE/GljhxRi8sjJjJokY8gq+A/slvrqmApRrrs0
- jQUtWTpTfHD3d6HQhnYJzDk/dzmdiYdWPi5k4pXs=
-Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local
- [192.168.16.32])
- by mail-mta-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id
- 20EAqrjp1067392
- for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de;
- Fri, 14 Jan 2022 11:52:53 +0100
-Received: from mail-msa-2.intern.sigma-chemnitz.de ( [192.168.12.72]) by
- reddoxx.intern.sigma-chemnitz.de
- (Reddoxx engine) with SMTP id 7D73FA905CB; Fri, 14 Jan 2022 11:52:51 +0100
-Received: from ensc-virt.intern.sigma-chemnitz.de
- (ensc-virt.intern.sigma-chemnitz.de [192.168.3.24])
- by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id
- 20EAqord284533
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
- Fri, 14 Jan 2022 11:52:51 +0100
-Received: from ensc by ensc-virt.intern.sigma-chemnitz.de with local (Exim
- 4.94.2) (envelope-from <ensc@sigma-chemnitz.de>)
- id 1n8KCP-00ApFx-Uj; Fri, 14 Jan 2022 11:52:50 +0100
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-To: barebox@lists.infradead.org
-Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Date: Fri, 14 Jan 2022 11:52:35 +0100
-Message-Id: <20220114105235.2580174-1-enrico.scholz@sigma-chemnitz.de>
-X-Mailer: git-send-email 2.33.1
+ id 1n8KEd-008nZ7-GJ
+ for barebox@lists.infradead.org; Fri, 14 Jan 2022 10:55:09 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by fx408.security-mail.net (Postfix) with ESMTP id D90521B7B235
+ for <barebox@lists.infradead.org>; Fri, 14 Jan 2022 11:54:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
+ s=sec-sig-email; t=1642157695;
+ bh=Du+m63XvZocPDYB7pJBvuiMGd+6wgEGTrN/vSRpVzGM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To;
+ b=IijYQKBRriU9F8CWrrQzgYMXwPg06mN0cNiJFNYTF//w3h3G/Z57pCnzmaMC3W5eh
+ AL7Avhqg5JyC9F48/bBGz88/jZ0R3vwq+30WgG2OYKR8dos8Snc+nl3dVi3XWF+0Hm
+ VSxfr1K2tEEYWaZLNZeRgPsQn/X1LumuPI38hT00=
+Received: from fx408 (localhost [127.0.0.1]) by fx408.security-mail.net
+ (Postfix) with ESMTP id 13BE81B7B27C; Fri, 14 Jan 2022 11:54:54 +0100 (CET)
+Received: from zimbra2.kalray.eu (unknown [217.181.231.53]) by
+ fx408.security-mail.net (Postfix) with ESMTPS id 993DD1B7B29C; Fri, 14 Jan
+ 2022 11:54:53 +0100 (CET)
+Received: from zimbra2.kalray.eu (localhost [127.0.0.1]) by
+ zimbra2.kalray.eu (Postfix) with ESMTPS id 26AE727E03CB; Fri, 14 Jan 2022
+ 11:54:53 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1]) by zimbra2.kalray.eu
+ (Postfix) with ESMTP id 0DB3327E03F5; Fri, 14 Jan 2022 11:54:53 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1]) by localhost
+ (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026) with ESMTP id
+ N8YBveGhAnOC; Fri, 14 Jan 2022 11:54:52 +0100 (CET)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206]) by
+ zimbra2.kalray.eu (Postfix) with ESMTPSA id EF09D27E03CB; Fri, 14 Jan 2022
+ 11:54:52 +0100 (CET)
+X-Virus-Scanned: E-securemail, by Secumail
+Secumail-id: <d717.61e1567d.4a3a2.0>
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 0DB3327E03F5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1642157693;
+ bh=dn1gfh93mD0qix+1kddpsG0dhI8nyUM2KeLx3i0C42s=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=A7khetTUNi8BCZQot9vKML7I3u2KVjCzsMSTjnhZeSdFrfP75Rq+8eM630ZoOD3jR
+ R074//sle8XL2EOecZnp8r2JuvIzE5tJbaIcEYiVqFAEGGi47IswTjQ0jNEqQYeIM+
+ nX43B/j0dIslDdBhK3SHbMBnvVtXUVQJhNGEVFMA=
+Date: Fri, 14 Jan 2022 11:54:51 +0100
+From: Jules Maselbas <jmaselbas@kalray.eu>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220114105451.GA29876@tellis.lin.mbt.kalray.eu>
+References: <20220110221255.5003-1-jmaselbas@kalray.eu>
+ <20220110221255.5003-3-jmaselbas@kalray.eu>
+ <0ca90254-a1d1-7151-0236-4dd92ee4d620@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <0ca90254-a1d1-7151-0236-4dd92ee4d620@pengutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220114_025341_141420_46D9DB91 
-X-CRM114-Status: GOOD (  11.55  )
+X-CRM114-CacheID: sfid-20220114_025507_758618_BBD46DAD 
+X-CRM114-Status: GOOD (  29.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,64 +102,117 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] usb:chipidea-imx: honor "phys" dtree property
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 2/5] gui: Add qoi image format
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Recent kernel devicetrees changed the "fsl,usbphy" property name to
-"phys" on some platforms (e.g. iMX8) but the old one was kept on other
-platforms (e.g. iMX6).
+On Fri, Jan 14, 2022 at 11:05:15AM +0100, Ahmad Fatoum wrote:
+> On 10.01.22 23:12, Jules Maselbas wrote:
+> 
+> Could you add a link there the project is from, what version
+> you're importing. Perhaps how to update them in the future?
+> (Do we touch the header, or is it just some macros we define
+> outside).
+ok, I'll amend the commit message with the following information:
+The project home page can be found at https://qoiformat.org with
+a single header file reference implementation of encoder/decoder
+that is currently hosted at https://github.com/phoboslab/qoi.
+There is no plan for future version, this is a frozen format.
 
-Check them both in the usb driver by preferring "phys".
+> > diff --git a/lib/gui/qoi.c b/lib/gui/qoi.c
+> > new file mode 100644
+> > index 0000000000..f6c1bc1b94
+> > --- /dev/null
+> > +++ b/lib/gui/qoi.c
+> 
+> License statement missing.
+ok
 
-NOTE: this fixes a hard lockup when booting NXP linux kernels on iMX8.
+> > +
+> > +	pr_debug("qoi: %d x %d  x %d data@0x%p\n", img->width, img->height,
+> > +		 img->bits_per_pixel, img->data);
+> 
+> Nitpick: You can define a common prefix
+> with pr_fmt at the top of the file, e.g
+> 
+> #define pr_fmt(fmt) "qoi: " fmt
+sure will do
 
-Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
----
- drivers/usb/imx/chipidea-imx.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+> > +	return img;
+> > +}
+> > +
+> > +static void qoi_close(struct image *img)
+> > +{
+> > +	free(img->data);
+> 
+> Curious API that open() is allocating, but close's caller is
+> the one resposible for freeing. Should probably be fixed up.
+> 
+> > +static struct image_renderer qoi = {
+> > +	.type = filetype_qoi,
+> > +	.open = qoi_open,
+> > +	.close = qoi_close,
+> > +	.renderer = qoi_renderer,
+> > +	.keep_file_data = 1,
+> 
+> Do you really need this? For bmp, it makes sense, because the pixel data isn't
+> compressed, so there are direct pointers into it. But if you uncompress into a
+> newly allocated buffer, you should not need to keep (and leak) inbuf's content
+> 
+You're right, I haven't look at what .keep_file_data was for and, it is
+indeed not needed.
 
-diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
-index f81477885884..bf8b6f1eb88a 100644
---- a/drivers/usb/imx/chipidea-imx.c
-+++ b/drivers/usb/imx/chipidea-imx.c
-@@ -218,6 +218,7 @@ static int imx_chipidea_probe(struct device_d *dev)
- 	struct resource *iores;
- 	struct imx_chipidea_data *imx_data;
- 	struct imxusb_platformdata *pdata = dev->platform_data;
-+	char const *phynode_name;
- 	int ret;
- 	void __iomem *base;
- 	struct imx_chipidea *ci;
-@@ -262,8 +263,19 @@ static int imx_chipidea_probe(struct device_d *dev)
- 	if (!IS_ERR(ci->clk))
- 		clk_enable(ci->clk);
- 
--	if (of_property_read_bool(dev->device_node, "fsl,usbphy")) {
--		ci->phy = of_phy_get_by_phandle(dev, "fsl,usbphy", 0);
-+	/* Device trees are using both "phys" and "fsl,usbphy".  Prefer the
-+	 * more modern former one but fall back to the old one.
-+	 *
-+	 * Code should be removed when all devicetrees are using "phys" */
-+	if (of_property_read_bool(dev->device_node, "phys"))
-+		phynode_name = "phys";
-+	else if (of_property_read_bool(dev->device_node, "fsl,usbphy"))
-+		phynode_name = "fsl,usbphy";
-+	else
-+		phynode_name = NULL;
-+
-+	if (phynode_name) {
-+		ci->phy = of_phy_get_by_phandle(dev, phynode_name, 0);
- 		if (IS_ERR(ci->phy)) {
- 			dev_err(dev, "Cannot get phy: %pe\n", ci->phy);
- 			return PTR_ERR(ci->phy);
--- 
-2.33.1
+> > +};
+> > +
+> > +static int qoi_init(void)
+> > +{
+> > +	return image_renderer_register(&qoi);
+> > +}
+> > +fs_initcall(qoi_init);
+> > diff --git a/lib/gui/qoi.h b/lib/gui/qoi.h
+> > new file mode 100644
+> > index 0000000000..988f9edcb4
+> > --- /dev/null
+> > +++ b/lib/gui/qoi.h
+> > @@ -0,0 +1,671 @@
+> > +/*
+> > +
+> > +QOI - The "Quite OK Image" format for fast, lossless image compression
+> > +
+> > +Dominic Szablewski - https://phoboslab.org
+> > +
+> > +
+> > +-- LICENSE: The MIT License(MIT)
+> 
+> Can you turn this into a SPDX-License-Identifier: please?
+ok
+
+> > +
+> > +Copyright(c) 2021 Dominic Szablewski
+> > +
+> > +Permission is hereby granted, free of charge, to any person obtaining a copy of
+> > +this software and associated documentation files(the "Software"), to deal in
+> > +the Software without restriction, including without limitation the rights to
+> > +use, copy, modify, merge, publish, distribute, sublicense, and / or sell copies
+> > +of the Software, and to permit persons to whom the Software is furnished to do
+> > +so, subject to the following conditions :
+> > +The above copyright notice and this permission notice shall be included in all
+> > +copies or substantial portions of the Software.
+> > +THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > +IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > +FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+> > +AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> > +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+> > +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+> > +SOFTWARE.
+> > +
+
+
+
 
 
 _______________________________________________
