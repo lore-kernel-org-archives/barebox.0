@@ -1,55 +1,86 @@
-Delivery-date: Fri, 14 Jan 2022 18:33:39 +0100
+Delivery-date: Sat, 15 Jan 2022 14:49:40 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8QSJ-002FCC-R9
-	for lore@lore.pengutronix.de; Fri, 14 Jan 2022 18:33:39 +0100
+	id 1n8jR6-002yqO-Ja
+	for lore@lore.pengutronix.de; Sat, 15 Jan 2022 14:49:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n8QSI-00012q-5f
-	for lore@pengutronix.de; Fri, 14 Jan 2022 18:33:38 +0100
+	id 1n8jR4-0002H6-LF
+	for lore@pengutronix.de; Sat, 15 Jan 2022 14:49:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:Date:Subject:Cc:
+	To:From:Message-ID:MIME-Version:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=3RXQ2TlwblSAKobCS43vJkMdz5947alON/ceqNfdotA=; b=3zQMRPbW05tush
-	esYmKDU57N9mjkTsrwGRhIWKixwcJo0fX4neylK0KxoOLIK313g4ENUiHVBH1Wn31dunvAARCS68O
-	AX62vj+bAZEkZJkk2s5qfzG0XzKduP8OUHf7wGFrhqpOwW9d1wA+4IpElgrwhBiaQz4Mc0lEaLKc5
-	t4D7C/+6HM0VZ6zagrD8WzDuog4lmdI2of8zLIo+WvWrDDE6tDcP4zKk0aP1eo2pECV4g6SAqMker
-	3SAbblFtRktbH3pK3VICusrP499z5RMcvzC2fXvNs0raqqkYyJVGl7yqMZ/xq2IIxyRnfSKojgw83
-	iOoHvqRECJdkSzA14tyw==;
+	List-Owner; bh=xnNjTMIdfQWfm7qKpslZ3soLl86cGhGnXqw0XsG3Pug=; b=HZbMhI+s2sexV4
+	BxzVZiDecozFbu18n8eTAUj7ZrISHbah87lzsRSLxaFDKYz9ekYman8cNWAlQTRPsVSvioyLN8FRr
+	RafhaI8b3A8ek4az6akG58vWTXL1B1WlR4yLtYK7jAa0UMwNcmd206w5rBUB1r/JU9T13W7eFhbq0
+	2otgFHCesE+AZIipitOcsR78oW/Sa0flBAlMXDyGlycOHXB6Jt2uL4HuAUGtElXmRa/F41XuGpHa8
+	ko1gB2jGLvOFbttSqP+xVMMzwf9wP4Uoim93hhTY/OlC54/j5TR/l59Aw/A6UGjvM34jdia5eS0v1
+	WIBSdWcVWCBQUveelr7Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n8QQy-009w88-N8; Fri, 14 Jan 2022 17:32:16 +0000
-Received: from relay3-d.mail.gandi.net ([2001:4b98:dc4:8::223])
+	id 1n8jPS-00B8Y9-IP; Sat, 15 Jan 2022 13:47:58 +0000
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n8QQt-009w7P-7x
- for barebox@lists.infradead.org; Fri, 14 Jan 2022 17:32:13 +0000
-Received: (Authenticated sender: clement.leger@bootlin.com)
- by mail.gandi.net (Postfix) with ESMTPSA id 0B3E660007;
- Fri, 14 Jan 2022 17:32:07 +0000 (UTC)
-Date: Fri, 14 Jan 2022 18:31:12 +0100
-From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: barebox@lists.infradead.org, Louis Morhet <lmorhet@kalray.eu>, Luc
- Michel <lmichel@kalray.eu>, Yann Sionneau <ysionneau@kalray.eu>
-Message-ID: <20220114183112.6145264e@fixe.home>
-In-Reply-To: <20220114165456.10542-4-jmaselbas@kalray.eu>
-References: <20220114165208.9980-1-jmaselbas@kalray.eu>
- <20220114165456.10542-1-jmaselbas@kalray.eu>
- <20220114165456.10542-4-jmaselbas@kalray.eu>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ id 1n8jPM-00B8Wx-EU
+ for barebox@lists.infradead.org; Sat, 15 Jan 2022 13:47:54 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=badeba3b8450; t=1642254462;
+ bh=Lnby/HIXU+1IdrBU2fkjrB+i9qIZPySe/h4LSf4d9VE=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=TWpqJe9ZVrtNFAVemRYokdKwXjbZAN68C9nDW4m5bX+thWBAHen0jtagYkHT9eJIK
+ 8mR/Ufqvqo9YaoYDW0l1UX6Daihj5Y/AnpKHB7d8BTLIWW3d3mgHDQYrjBYepuL9QO
+ lOibLflN3NnBuJjujjKEdCPzXiJM3SXBCusn0zxo=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [157.180.225.197] ([157.180.225.197]) by web-mail.gmx.net
+ (3c-app-gmx-bap71.server.lan [172.19.172.171]) (via HTTP); Sat, 15 Jan 2022
+ 14:47:42 +0100
 MIME-Version: 1.0
+Message-ID: <trinity-dcf71a1e-4856-486b-a9a5-74ed6a82fd34-1642254462656@3c-app-gmx-bap71>
+From: Frank Wunderlich <frank-w@public-files.de>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Date: Sat, 15 Jan 2022 14:47:42 +0100
+Importance: normal
+Sensitivity: Normal
+In-Reply-To: <20220110094214.GG6003@pengutronix.de>
+References: <trinity-236a89db-cfb0-4d29-bf25-44dc71d5d143-1641396043420@3c-app-gmx-bs58>
+ <65c439c2-d82a-5cc7-133b-aae7df21b610@pengutronix.de>
+ <trinity-48d6bfb8-862a-4bdf-9146-e208983a61b5-1641406402672@3c-app-gmx-bs58>
+ <20220106080838.GV6003@pengutronix.de>
+ <trinity-7a53a76e-9836-482e-861e-31439f242e2d-1641472899713@3c-app-gmx-bs51>
+ <20220107130751.GW6003@pengutronix.de>
+ <trinity-f8991630-17eb-4ae0-9dfa-9a66bc41b02e-1641573741990@3c-app-gmx-bs48>
+ <20220110094214.GG6003@pengutronix.de>
+X-UI-Message-Type: mail
+X-Priority: 3
+X-Provags-ID: V03:K1:8t7xevntZNmFQy7G3TgzS3DH6n/khvdCg7h740dBZqSrg1UquR1mYVXweHCUoKiZLZh3m
+ 6vY4y9jDi6Fu+jnfSDRXkIGqAGTGjNH70a3yybWTGzolD2xyPZLyVO4SpQIu9tye9eUk6dvNaPPG
+ FXqLCJtIPEJejiNY7sWjAADE4dpYwiiCEu4TG+LJvzdrr8Fl/Yz+F6g0B2HmtmraJCow7O5ggtpf
+ Cnld/Ghmht2ZIXnIbJJfHPEpJhfSi/rFEfSIecQvUUDj+Yrfl4XlcnYUKk+DOSTGkv7Z46KsD7hk
+ vw=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7eIkLTYUdWg=:ypNhWJLSELTKD0iezvYFwz
+ HAsGEumBxOO58+tI5a79qM3R6/WA/2Mm52WZ5gOXFlXIekNwc+Y2copaXSRUkEYZigWFfvubq
+ c201hTiaQWBMha/PoVokW2sp2wCSsHqpzqm7L94TDUQVZljxqdrDPaKropiC8izdL+D6Ta2Vw
+ ISiCsJUb8KEoV5IK3THq2Qq2+8B7mv+5MEid4+0/wA8FdjWvLTuLfIGGH4Pg6OTBrMUkHHA/B
+ QFZvxKQH7iikVw8ln41fE55w4p/eeUjAkRc3TkpzP9cr/l7xkvGhJbXnIhsin1+mu1IqiXV1X
+ ibD/AYj74WFL+Sl1hDmySzMY3dGdvz/AZNSldu7cAzZoBgBZ6Laq3RRgkkd/XEAh+N26xpl6j
+ qQK923d70p1QpznAEF9WjIV8QeuVOCQkIC+RuuC2oUPg1eXyEbKQlKfCqWXKtX094xhp/g/mt
+ sjUkhml+oZ04r02Bqu3PpqhlIxLZxDNB7VBmNekzmOwtow5+uYtzjZTyyAMu+iPNVTOXR/7h3
+ Q4w8zWeMR4N8Q2tcmvXnF84L9zVC9Z2PPpXMaYGchV/q5vIC/o2N7/FdKRtGJioWqM4xFD/AO
+ 0ivryDsRK2m10EukMlQB8TUss0gter+MYJInyt6Vztk73ReaZPXcnd7a1UBvNjm0EFw/JJRyK
+ S+JfH5ViP8F545PZYIw1uO9kxTmxGd02M8rkTruF9q+1J0RQc/ymMO0JBpUQo7q2TckA/WN/q
+ BKMBR3GO1D5ca+k9c4EQ6q4BAnkgNbSxpL7VyHPzuVXcEcUC41jn8ISxqR9BHlLzJygoUtIt2
+ +TFCBcG
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220114_093211_608276_4DF21105 
-X-CRM114-Status: UNSURE (   6.40  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220115_054752_873711_1235126E 
+X-CRM114-Status: GOOD (  43.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,107 +92,158 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 13/13] kvx: dts: Update k200.dts
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Aw: Re: Re: Re: Re: barebox extending boot-scripts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-TGUgRnJpLCAxNCBKYW4gMjAyMiAxNzo1NDo1NiArMDEwMCwKSnVsZXMgTWFzZWxiYXMgPGptYXNl
-bGJhc0BrYWxyYXkuZXU+IGEgw6ljcml0IDoKCj4gKwkJYXBiIHsKPiArCQkJY29tcGF0aWJsZSA9
-ICJzaW1wbGUtYnVzIjsKPiArCQkJI2FkZHJlc3MtY2VsbHMgPSA8Mj47Cj4gKwkJCSNzaXplLWNl
-bGxzID0gPDI+Owo+ICsJCQlyYW5nZXM7Cj4gKwo+ICsJCQlncGlvMDogZ3Bpb0AyMDIzMDAwMCB7
-Cj4gKwkJCQljb21wYXRpYmxlID0gInNucHMsZHctYXBiLWdwaW8iOwo+ICsJCQkJcmVnID0gPDB4
-MCAweDIwMjMwMDAwIDB4MCAweDEwMDA+Owo+ICsJCQkJI2FkZHJlc3MtY2VsbHMgPSA8MT47Cj4g
-KwkJCQkjc2l6ZS1jZWxscyA9IDwwPjsKPiArCj4gKwkJCQlncGlvMF9iYW5rYTogZ3Bpby1jb250
-cm9sbGVyQDAgewo+ICsJCQkJCWNvbXBhdGlibGUgPSAic25wcyxkdy1hcGItZ3Bpby1wb3J0IjsK
-PiArCQkJCQkjYWRkcmVzcy1jZWxscyA9IDwwPjsKPiArCQkJCQlncGlvLWNvbnRyb2xsZXI7Cj4g
-KwkJCQkJI2dwaW8tY2VsbHMgPSA8Mj47Cj4gKwkJCQkJc25wcyxuci1ncGlvcyA9IDwzMj47Cj4g
-KwkJCQkJc25wcyxoYXMtcGluY3RybDsKPiArCQkJCQlyZWcgPSA8MD47Cj4gKwkJCQkJaW50ZXJy
-dXB0LXBhcmVudCA9IDwmaXRnZW5fc29jX3BlcmlwaDA+Owo+ICsJCQkJCWludGVycnVwdHMgPSA8
-MjMgSVJRX1RZUEVfTEVWRUxfSElHSD47Cj4gKwkJCQkJLyogQWxsIHBpbnMgb2YgcG9ydCBBIGFy
-ZSBpbnRlcnJ1cHQgY2FwYWJsZSAqLwo+ICsJCQkJCWludGVycnVwdC1jb250cm9sbGVyOwo+ICsJ
-CQkJCSNpbnRlcnJ1cHQtY2VsbHMgPSA8Mj47Cj4gKwo+ICsJCQkJCXVhcnQwX3BpbnM6IHBpbm11
-eF91YXJ0MF9waW5zIHsKPiArCQkJCQkJZnVuY3Rpb24gPSAiaHciOwo+ICsJCQkJCQlwaW5zID0g
-InBpbjAiLCAicGluMSI7Cj4gKwkJCQkJfTsKPiArCQkJCQl1YXJ0MV9waW5zOiBwaW5tdXhfdWFy
-dDFfcGlucyB7Cj4gKwkJCQkJCWZ1bmN0aW9uID0gImh3IjsKPiArCQkJCQkJcGlucyA9ICJwaW4y
-IiwgInBpbjMiOwo+ICsJCQkJCX07Cj4gKwkJCQkJdWFydDJfcGluczogcGlubXV4X3VhcnQyX3Bp
-bnMgewo+ICsJCQkJCQlmdW5jdGlvbiA9ICJodyI7Cj4gKwkJCQkJCXBpbnMgPSAicGluNCIsICJw
-aW41IjsKPiArCQkJCQl9Owo+ICsJCQkJCWNhbjBfcGluczogcGlubXV4X2NhbjBfcGlucyB7Cj4g
-KwkJCQkJCWZ1bmN0aW9uID0gImh3IjsKPiArCQkJCQkJcGlucyA9ICJwaW42IiwgInBpbjciOwo+
-ICsJCQkJCX07Cj4gKwkJCQkJY2FuMV9waW5zOiBwaW5tdXhfY2FuMV9waW5zIHsKPiArCQkJCQkJ
-ZnVuY3Rpb24gPSAiaHciOwo+ICsJCQkJCQlwaW5zID0gInBpbjgiLCAicGluOSI7Cj4gKwkJCQkJ
-fTsKPiArCQkJCQlpMmMwX3BpbnM6IHBpbm11eF9pMmMwX3BpbnMgewo+ICsJCQkJCQlmdW5jdGlv
-biA9ICJodyI7Cj4gKwkJCQkJCXBpbnMgPSAicGluMTAiLCAicGluMTEiOwo+ICsJCQkJCX07Cj4g
-KwkJCQkJc21iMV9waW5zOiBwaW5tdXhfc21iMV9waW5zIHsKPiArCQkJCQkJZnVuY3Rpb24gPSAi
-aHciOwo+ICsJCQkJCQlwaW5zID0gInBpbjEyIiwgInBpbjEzIjsKPiArCQkJCQl9Owo+ICsJCQkJ
-CXNtYjJfcGluczogcGlubXV4X3NtYjJfcGlucyB7Cj4gKwkJCQkJCWZ1bmN0aW9uID0gImh3IjsK
-PiArCQkJCQkJcGlucyA9ICJwaW4xNCIsICJwaW4xNSI7Cj4gKwkJCQkJfTsKPiArCQkJCQlxc3Bp
-MF9tYXN0ZXJfcGluczpwaW5tdXhfcXNwaTBfbWFzdGVyX3BpbnMgewo+ICsJCQkJCQlmdW5jdGlv
-biA9ICJodyI7Cj4gKwkJCQkJCXBpbnMgPSAicGluMTgiLCAicGluMTkiLCAicGluMjAiLCAicGlu
-MjEiLCAicGluMjIiLCAicGluMjMiLCAicGluMjQiOwo+ICsJCQkJCX07Cj4gKwkJCQkJc3BpX3Ns
-YXZlX3BpbnM6cGlubXV4X3NwaV9zbGF2ZV9waW5zIHsKPiArCQkJCQkJZnVuY3Rpb24gPSAiaHci
-Owo+ICsJCQkJCQlwaW5zID0gInBpbjI1IiwgInBpbjI2IiwgInBpbjI3IiwgInBpbjI4IjsKPiAr
-CQkJCQl9Owo+ICsJCQkJCXRpbWVyMF9waW5zOnBpbm11eF90aW1lcjBfcGlucyB7Cj4gKwkJCQkJ
-CWZ1bmN0aW9uID0gImh3IjsKPiArCQkJCQkJcGlucyA9ICJwaW4yOSI7Cj4gKwkJCQkJfTsKPiAr
-CQkJCQl0aW1lcjFfcGluczpwaW5tdXhfdGltZXIxX3BpbnMgewo+ICsJCQkJCQlmdW5jdGlvbiA9
-ICJodyI7Cj4gKwkJCQkJCXBpbnMgPSAicGluMzAiOwo+ICsJCQkJCX07Cj4gKwkJCQkJdGltZXIy
-X3BpbnM6cGlubXV4X3RpbWVyMl9waW5zIHsKPiArCQkJCQkJZnVuY3Rpb24gPSAiaHciOwo+ICsJ
-CQkJCQlwaW5zID0gInBpbjMxIjsKPiArCQkJCQl9OwoKSGkgSnVsZXMsCgpJJ20gYWZyYWlkIHRo
-aXMgd29uJ3Qgd29yayBhdCBhbGwgc2luY2UgdGhlIHVwc3RyZWFtCnNucHMsZHctYXBiLWdwaW8g
-Y29tcGF0aWJsZSBkcml2ZXIgZG9lcyBub3QgaGFuZGxlIHBpbmN0cmwgeWV0LiBUaGUKc3VwcG9y
-dCBmb3IgdGhhdCBpcyBpbiB5b3VyIHByaXZhdGUgdHJlZSBJIGd1ZXNzIFsxXS4KCkNsw6ltZW50
-CgpbMV0KaHR0cHM6Ly9naXRodWIuY29tL2thbHJheS9iYXJlYm94L2Jsb2IvY29vbGlkZ2UvZHJp
-dmVycy9waW5jdHJsL3BpbmN0cmwtZHcuYwo+ICsJCQkJfTsKPiArCQkJfTsKPiArCj4gKwkJCWdw
-aW8xOiBncGlvQDIwMjMxMDAwIHsKPiArCQkJCWNvbXBhdGlibGUgPSAic25wcyxkdy1hcGItZ3Bp
-byI7Cj4gKwkJCQlyZWcgPSA8MHgwIDB4MjAyMzEwMDAgMHgwIDB4MTAwMD47Cj4gKwkJCQkjYWRk
-cmVzcy1jZWxscyA9IDwxPjsKPiArCQkJCSNzaXplLWNlbGxzID0gPDA+Owo+ICsKPiArCQkJCWdw
-aW8xX2JhbmthOiBncGlvLWNvbnRyb2xsZXJAMCB7Cj4gKwkJCQkJY29tcGF0aWJsZSA9ICJzbnBz
-LGR3LWFwYi1ncGlvLXBvcnQiOwo+ICsJCQkJCSNhZGRyZXNzLWNlbGxzID0gPDA+Owo+ICsJCQkJ
-CWdwaW8tY29udHJvbGxlcjsKPiArCQkJCQkjZ3Bpby1jZWxscyA9IDwyPjsKPiArCQkJCQlzbnBz
-LG5yLWdwaW9zID0gPDMyPjsKPiArCQkJCQlzbnBzLGhhcy1waW5jdHJsOwo+ICsJCQkJCXJlZyA9
-IDwwPjsKPiArCQkJCQlpbnRlcnJ1cHQtcGFyZW50ID0gPCZpdGdlbl9zb2NfcGVyaXBoMD47Cj4g
-KwkJCQkJaW50ZXJydXB0cyA9IDwyNCBJUlFfVFlQRV9MRVZFTF9ISUdIPjsKPiArCQkJCQkvKiBB
-bGwgcGlucyBvZiBwb3J0IEEgYXJlIGludGVycnVwdCBjYXBhYmxlICovCj4gKwkJCQkJaW50ZXJy
-dXB0LWNvbnRyb2xsZXI7Cj4gKwkJCQkJI2ludGVycnVwdC1jZWxscyA9IDwyPjsKPiArCj4gKwkJ
-CQkJdWFydDNfcGluczogcGlubXV4X3VhcnQzX3BpbnMgewo+ICsJCQkJCQlmdW5jdGlvbiA9ICJo
-dyI7Cj4gKwkJCQkJCXBpbnMgPSAicGluMCIsICJwaW4xIjsKPiArCQkJCQl9Owo+ICsJCQkJCXVh
-cnQ0X3BpbnM6IHBpbm11eF91YXJ0NF9waW5zIHsKPiArCQkJCQkJZnVuY3Rpb24gPSAiaHciOwo+
-ICsJCQkJCQlwaW5zID0gInBpbjIiLCAicGluMyI7Cj4gKwkJCQkJfTsKPiArCQkJCQl1YXJ0NV9w
-aW5zOiBwaW5tdXhfdWFydDVfcGlucyB7Cj4gKwkJCQkJCWZ1bmN0aW9uID0gImh3IjsKPiArCQkJ
-CQkJcGlucyA9ICJwaW40IiwgInBpbjUiOwo+ICsJCQkJCX07Cj4gKwkJCQkJY2FuMl9waW5zOiBw
-aW5tdXhfY2FuMl9waW5zIHsKPiArCQkJCQkJZnVuY3Rpb24gPSAiaHciOwo+ICsJCQkJCQlwaW5z
-ID0gInBpbjYiLCAicGluNyI7Cj4gKwkJCQkJfTsKPiArCQkJCQljYW4zX3BpbnM6IHBpbm11eF9j
-YW4zX3BpbnMgewo+ICsJCQkJCQlmdW5jdGlvbiA9ICJodyI7Cj4gKwkJCQkJCXBpbnMgPSAicGlu
-OCIsICJwaW45IjsKPiArCQkJCQl9Owo+ICsJCQkJCWkyYzNfcGluczogcGlubXV4X2kyYzNfcGlu
-cyB7Cj4gKwkJCQkJCWZ1bmN0aW9uID0gImh3IjsKPiArCQkJCQkJcGlucyA9ICJwaW4xMCIsICJw
-aW4xMSI7Cj4gKwkJCQkJfTsKPiArCQkJCQlzbWI0X3BpbnM6IHBpbm11eF9zbWI0X3BpbnMgewo+
-ICsJCQkJCQlmdW5jdGlvbiA9ICJodyI7Cj4gKwkJCQkJCXBpbnMgPSAicGluMTIiLCAicGluMTMi
-Owo+ICsJCQkJCX07Cj4gKwkJCQkJdGltZXIzX3BpbnM6cGlubXV4X3RpbWVyM19waW5zIHsKPiAr
-CQkJCQkJZnVuY3Rpb24gPSAiaHciOwo+ICsJCQkJCQlwaW5zID0gInBpbjE1IjsKPiArCQkJCQl9
-Owo+ICsJCQkJCXRpbWVyNF9waW5zOnBpbm11eF90aW1lcjRfcGlucyB7Cj4gKwkJCQkJCWZ1bmN0
-aW9uID0gImh3IjsKPiArCQkJCQkJcGlucyA9ICJwaW4xNiI7Cj4gKwkJCQkJfTsKPiArCQkJCQl0
-aW1lcjVfcGluczpwaW5tdXhfdGltZXI1X3BpbnMgewo+ICsJCQkJCQlmdW5jdGlvbiA9ICJodyI7
-Cj4gKwkJCQkJCXBpbnMgPSAicGluMTciOwo+ICsJCQkJCX07Cj4gKwkJCQkJcXNwaTFfbWFzdGVy
-X3BpbnM6cGlubXV4X3FzcGkxX21hc3Rlcl9waW5zIHsKPiArCQkJCQkJZnVuY3Rpb24gPSAiaHci
-Owo+ICsJCQkJCQlwaW5zID0gInBpbjE4IiwgInBpbjE5IiwgInBpbjIwIiwgInBpbjIxIiwgInBp
-bjIyIiwgInBpbjIzIiwgInBpbjI0IjsKPiArCQkJCQl9Owo+ICsJCQkJCXFzcGkyX21hc3Rlcl9w
-aW5zOnBpbm11eF9xc3BpMl9tYXN0ZXJfcGlucyB7Cj4gKwkJCQkJCWZ1bmN0aW9uID0gImh3IjsK
-PiArCQkJCQkJcGlucyA9ICJwaW4yNSIsICJwaW4yNiIsICJwaW4yNyIsICJwaW4yOCIsICJwaW4y
-OSIsICJwaW4zMCIsICJwaW4zMSI7Cj4gKwkJCQkJfTsKPiArCQkJCX07Cj4gKwkJCX07Cj4gIAkJ
-fTsKPiAgCX07Cj4gIH07CgoKLS0gCkNsw6ltZW50IEzDqWdlciwKRW1iZWRkZWQgTGludXggYW5k
-IEtlcm5lbCBlbmdpbmVlciBhdCBCb290bGluCmh0dHBzOi8vYm9vdGxpbi5jb20KCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi,
+
+i have now created a new barebox board as copy from evb. i can load it from tftp with
+
+bootm /mnt/tftp/barebox-rk3568-r2pro.img
+
+i can create a bootmenu with entries of loader/entries and boot it:
+
+boot -m sd.1
+
+my bootscripts are also there, but they are not listed in $global.boot.default
+
+$ grep defaultenv arch/arm/boards/bananapi-r2-pro/Makefile
+bbenv-y += defaultenv-rk3568
+$ grep defaultenv arch/arm/boards/bananapi-r2-pro/board.c
+	defaultenv_append_directory(defaultenv_rk3568);
+$ cat arch/arm/boards/bananapi-r2-pro/defaultenv-rk3568/nv/boot.default
+net list-images mmc-linux tftp-linux
+
+so it looks like the env is load, but the nv is not updated
+
+regards Frank
+
+
+> Gesendet: Montag, 10. Januar 2022 um 10:42 Uhr
+> Von: "Sascha Hauer" <sha@pengutronix.de>
+> An: "Frank Wunderlich" <frank-w@public-files.de>
+> Cc: "Ahmad Fatoum" <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+> Betreff: Re: Re: Re: Re: barebox extending boot-scripts
+>
+> On Fri, Jan 07, 2022 at 05:42:22PM +0100, Frank Wunderlich wrote:
+> > Hi
+> >
+> > missed the defaultenv_append_directory(defaultenv_rk3568); in board-file...after adding that it seems to work
+> >
+> > > Gesendet: Freitag, 07. Januar 2022 um 14:07 Uhr
+> > > Von: "Sascha Hauer" <sha@pengutronix.de>
+> > >
+> > > Yes. Furthermore you have to add to the board code:
+> > >
+> > > 	defaultenv_append_directory(defaultenv_rk3568);
+> >
+> > maybe this is the part i've missed. i thought it were 2 ways...either link via makefile or add to boards code
+> >
+> > > > > > > Boot scripts for publicly available evaluation kits are often not good candidates
+> > > > > > > for upstreaming, because everybody using the EVKs has different thoughts on how to
+> > > > > > > boot. The best way would be to use bootloader spec. It's one or more files you
+> > > > > > > place at a known location that describe where your kernel and device tree are and
+> > > > > > > what command line arguments to use and barebox can then automatically generate
+> > > > > > > boot entries from all available bootloader spec files.
+> > > >
+> > > > is extlinux (i used in uboot and conf-file is already present) supported here?
+> > > >
+> > > > > > > See https://elinux.org/images/9/9d/Barebox-bells-n-whistles.pdf for an example
+> > > > > > > of how to set this up. This is what I'd recommend instead of writing your own
+> > > > > > > scripts.
+> > > >
+> > > > i do not fully understand the bootloader spec in the pdf as config file seems to be
+> > > >
+> > > > /mnt/mmc0.4/loader/entries/stm32mp157c-dk2.conf
+> > > >
+> > > > and then
+> > > > boot -d mmc0.4
+> > > >
+> > > > is run...so the path (loader/entries) seems to be fixed and all files there will be processed (which order)?
+> > >
+> > > Yes. No particular order, I guess it would be the order it is on the
+> > > filesystem.
+> > >
+> > > > how is root appended (/dev/mmcblkXpY|uuid|...) when linux-appendroot is set to true?
+> > >
+> > > When root is appended it is assumed to be the same fs that also has the
+> > > bootloader spec file, so the rootfs also has the entry and the kernel.
+> >
+> > ok, then this is not usable for me, as i have a boot-partition
+> > (bootloader+kernel+dtb) and separate rootfs-partition
+> >
+> > > > this is for testing multiple kernels with changing filenames (very
+> > > > dynamic process, e.g. using 1 kernel binary with multiple dtb) and to
+> > > > avoid adding a bootmenu entry everytime....this is not for end-user :)
+> > >
+> > > In that case you could also use bootm directly.
+> >
+> > yes but my approach is to list the available kernels before and ask to
+> > enter the filename to not everytime look for correct commands ;)
+> >
+> > > > and here scripting is imho the best way...this allows me to add extra
+> > > > params to cmdline too (like debug level,dumping offsets) without
+> > > > changing a distroboot config
+> > >
+> > > Not sure if you know already, but barebox concatenates all variables in
+> > > the "global.linux.bootargs." namespace to the kernel command line, so
+> > > you can easily add or remove a variable to add/remove kernel options
+> > > without affecting unrelated options.
+> >
+> > i know some options from documentation like this i've used to get a earlycon for tftp
+> >
+> > global linux.bootargs.debug="earlycon=uart8250,mmio32,0xfe660000 earlyprintk"
+> >
+> > > > for fixed kernels i have defined an extlinux.conf for uboot, but i'm
+> > > > unsure if barebox can use this file too. have not found anything about
+> > > > extlinux/syslinux in barebox yet.
+> > >
+> > > No, not yet.
+> >
+> > ok, i created a bootloader-config like described in the pdf:
+> >
+> > cat /mnt/sd.1/loader/entries/linux-gz.conf
+> > title Linux GZip
+> > version 5.16
+> > options earlycon=uart8250,mmio32,0xfe660000 console=ttyS2,1500000n8
+> > linux /extlinux/Image_5.16.gz
+> > devicetree /extlinux/dtb_5.16
+> > initrd /rootfs.cpio.lz4
+> >
+> > but on starting it is skipped due to devicetree mismatch
+> >
+> > boot -d sd.1
+> > blspec: ignoring entry with incompatible devicetree "rockchip,rk3568-bpi-r2pro"
+> > blspec: ignoring entry with incompatible devicetree "rockchip,rk3568-bpi-r2pro"
+> > Nothing bootable found on 'sd.1'
+> > Nothing bootable found
+> >
+> > in barebox i use the evb whereas in linux i already have a separate
+> > dts. Can i override the compatible for the bootloader or do i need to
+> > add my board (as copy of evb first)?
+>
+> You can overwrite the compatible using the of_property command. However,
+> I really recommend to add a separate barebox board for your board.
+> Sooner or later you'll have to do this anyway and it's the only way to
+> properly add quirks for your board.
+
+have now added a new barebox-board, and now this seems to work, but it's booting the first entry and do not display a menu of all configs in loader/entries, is this possible?
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
