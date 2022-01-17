@@ -1,58 +1,53 @@
-Delivery-date: Mon, 17 Jan 2022 12:49:48 +0100
+Delivery-date: Mon, 17 Jan 2022 13:06:58 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n9QWC-004X0n-Qw
-	for lore@lore.pengutronix.de; Mon, 17 Jan 2022 12:49:48 +0100
+	id 1n9Qmo-004Y3e-Rn
+	for lore@lore.pengutronix.de; Mon, 17 Jan 2022 13:06:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n9QWB-0000jH-2W
-	for lore@pengutronix.de; Mon, 17 Jan 2022 12:49:47 +0100
+	id 1n9Qmj-0003y4-BJ
+	for lore@pengutronix.de; Mon, 17 Jan 2022 13:06:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:Cc:To:Subject:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=ItIwn3XIy1VJW5VBdO/V5tR+I3SW7hfdcG5mi1tmE2s=; b=u+WzZT65zAY88RyWfgZhRxnovD
-	7udx8wBqltmMWaFr/xkW6HOIjcyQHrBwp/6EH4Y1qp9pLF5WPHcBXXGX4mEkhNcQm6jLZtqed1bLl
-	Q0DFDdHJBOVq06KE1kILxyKF1FXzijJvaQhbG4Bn/I4X0EQmSmzz7eGbAnCUUSnu/1m3b735nKtW4
-	1X/vlEC0+85HEZr6bDp2j0F+PsGouNHvB6d//k+H5OEWRT2SphWSGCc8tO7EjPlWAuCsmMZp7fvQU
-	QXJdNf/wK1P7O+78HR6+7n60HXpk59l6Deeflnu0BchaOmoQvSYCkmNoedykqLqpkuTGDkFd5CmjU
-	Rgp8+ngQ==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=CtJHyVFDehdPRmP7g2PJWvIpjBvbx7igbOXDC4CN0bo=; b=gFHf/h8wmTY90p
+	naQSWPUOpVRJwRku09H+n78gSVqpbIzjpoVTlpyqnNFJAqqAYPybGJ7fmQHBnAAgzzCm0/x0/cK8x
+	xpdI3UEYno//o5mSHGLU3H6Owq4xg9spq7IQQu8FndCkKPqEXN9+ELxlUdqJ1vX1RkrK2/0GtuvlP
+	Yb0Xts0+1wrunfGx5SUnGtaoEGLAEAwoJgYjj177q0HLxaR8v8dUbYyui8C6UWVzGAwwG91+72+oB
+	/O9AM/ZAuUqvYG0I6npvuDzSev/jwAzUb+4pfzXqvNWwDBTPn+srXdVP0Pv46BdXTbeJY+4LcGUDA
+	1FVX9qg7rcodtiMYQRJg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n9QUy-00EhMj-Sa; Mon, 17 Jan 2022 11:48:32 +0000
+	id 1n9QlE-00ElQW-DM; Mon, 17 Jan 2022 12:05:20 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n9QUt-00EhLd-C2
- for barebox@lists.infradead.org; Mon, 17 Jan 2022 11:48:29 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1n9QUs-0000Zi-6x; Mon, 17 Jan 2022 12:48:26 +0100
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: barebox@lists.infradead.org
-References: <20220110221255.5003-1-jmaselbas@kalray.eu>
- <20220110221255.5003-4-jmaselbas@kalray.eu>
- <ec782b1e-ffed-3f01-71a7-f28c161d802d@pengutronix.de>
- <20220114111404.GB29876@tellis.lin.mbt.kalray.eu>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <cbfacecf-06b8-81d1-50cc-7398fd003903@pengutronix.de>
-Date: Mon, 17 Jan 2022 12:48:25 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ id 1n9Ql0-00ElKj-II
+ for barebox@lists.infradead.org; Mon, 17 Jan 2022 12:05:08 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ore@pengutronix.de>)
+ id 1n9Qkw-0003X4-Hp; Mon, 17 Jan 2022 13:05:02 +0100
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <ore@pengutronix.de>)
+ id 1n9Qkw-00EvH9-2F; Mon, 17 Jan 2022 13:05:02 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon, 17 Jan 2022 13:04:57 +0100
+Message-Id: <20220117120500.3556703-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20220114111404.GB29876@tellis.lin.mbt.kalray.eu>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220117_034827_448021_AE4CCF7F 
-X-CRM114-Status: GOOD (  24.63  )
+X-CRM114-CacheID: sfid-20220117_040506_660201_D73685A6 
+X-CRM114-Status: GOOD (  12.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,132 +67,80 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/5] scripts: Add qoiconv to convert png to qoi
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v1 1/4] ARM: rpi: convert board code to a driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 14.01.22 12:14, Jules Maselbas wrote:
-> On Fri, Jan 14, 2022 at 11:29:58AM +0100, Ahmad Fatoum wrote:
->> On 10.01.22 23:12, Jules Maselbas wrote:
->>> ImageMagick will eventually support the qoi image format, in the
->>> mean time add a png to qoi conversion program.
->>>
->>> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
->>> ---
->>>  scripts/Kconfig     |    5 +
->>>  scripts/Makefile    |    1 +
->>>  scripts/qoiconv.c   |   91 +
->>>  scripts/stb_image.h | 7756 +++++++++++++++++++++++++++++++++++++++++++
->>>  4 files changed, 7853 insertions(+)
->>>  create mode 100644 scripts/qoiconv.c
->>>  create mode 100644 scripts/stb_image.h
->>>
->>> diff --git a/scripts/Kconfig b/scripts/Kconfig
->>> index 9b744deba9..747f665e02 100644
->>> --- a/scripts/Kconfig
->>> +++ b/scripts/Kconfig
->>> @@ -110,6 +110,11 @@ config RK_USB_LOADER
->>>  
->>>  	  You need libusb-1.0 to compile this tool.
->>>  
->>> +config QOICONV
->>> +	bool "QOI image format conversion" if COMPILE_HOST_TOOLS
->>> +	help
->>> +	  This enable converting png to qoi images to generate boot logo.
->>> +
->>>  endmenu
->>>  
->>>  menu "Target Tools"
->>> diff --git a/scripts/Makefile b/scripts/Makefile
->>> index dc5fa75f90..cbaf2d55ff 100644
->>> --- a/scripts/Makefile
->>> +++ b/scripts/Makefile
->>> @@ -8,6 +8,7 @@ hostprogs-always-y					+= fix_size
->>>  hostprogs-always-y					+= bareboxenv
->>>  hostprogs-always-y					+= bareboxcrc32
->>>  hostprogs-always-y					+= kernel-install
->>> +hostprogs-always-$(CONFIG_QOICONV)			+= qoiconv
->>>  hostprogs-always-$(CONFIG_CRYPTO_RSA_BUILTIN_KEYS)	+= rsatoc
->>>  HOSTCFLAGS_rsatoc = `pkg-config --cflags openssl`
->>>  HOSTLDLIBS_rsatoc = `pkg-config --libs openssl`
->>> diff --git a/scripts/qoiconv.c b/scripts/qoiconv.c
->>> new file mode 100644
->>> index 0000000000..010c70ead0
->>> --- /dev/null
->>> +++ b/scripts/qoiconv.c
->>> @@ -0,0 +1,91 @@
-> Probably missing SPDX identifiers as well
-> 
->>> +/*
->>> +
->>> +Command line tool to convert between png <> qoi format
->>> +
->>> +Requires "stb_image.h" and "stb_image_write.h"
->>> +Compile with: 
->>> +	gcc qoiconv.c -std=c99 -O3 -o qoiconv
->>> +
->>> +Dominic Szablewski - https://phoboslab.org
->>> +
->>> +
->>> +-- LICENSE: The MIT License(MIT)
->>> +
->>> +Copyright(c) 2021 Dominic Szablewski
->>> +
->>> +Permission is hereby granted, free of charge, to any person obtaining a copy of
->>> +this software and associated documentation files(the "Software"), to deal in
->>> +the Software without restriction, including without limitation the rights to
->>> +use, copy, modify, merge, publish, distribute, sublicense, and / or sell copies
->>> +of the Software, and to permit persons to whom the Software is furnished to do
->>> +so, subject to the following conditions :
->>> +The above copyright notice and this permission notice shall be included in all
->>> +copies or substantial portions of the Software.
->>> +THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->>> +IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->>> +FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
->>> +AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
->>> +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
->>> +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
->>> +SOFTWARE.
->>> +
->>> +*/
->>
->> Can you not reuse the header added in the previous commit?
-> I am not sure what you mean here, the qoi.h header is reused from
-> lib/gui/qoi.h, see the include below.
-> Are you sugesting to _not_ reuse the header?
+Convert board code to a driver model. This will prevent executing this
+part of code on any other BCM2xxx based boards.
 
-All good then. I missed that.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/arm/boards/raspberry-pi/rpi-common.c | 40 +++++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 2 deletions(-)
 
-> 
-> 
->>> +
->>> +
->>> +#define STB_IMAGE_IMPLEMENTATION
->>> +#define STBI_ONLY_PNG
->>> +#define STBI_NO_LINEAR
->>> +#include "stb_image.h"
->>> +
->>> +#define QOI_IMPLEMENTATION
->>> +#include "../lib/gui/qoi.h"
-> included here.
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-
-
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index 2684bd5ed7..43e7e66e0f 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -511,7 +511,7 @@ static void rpi_vc_fdt(void)
+ 	}
+ }
+ 
+-static int rpi_devices_init(void)
++static int rpi_devices_probe(struct device_d *dev)
+ {
+ 	struct regulator *reg;
+ 
+@@ -529,4 +529,40 @@ static int rpi_devices_init(void)
+ 
+ 	return 0;
+ }
+-late_initcall(rpi_devices_init);
++
++static const struct of_device_id rpi_of_match[] = {
++	/* BCM2711 based Boards */
++	{ .compatible = "raspberrypi,400" },
++	{ .compatible = "raspberrypi,4-compute-module" },
++	{ .compatible = "raspberrypi,4-model-b" },
++
++	/* BCM2835 based Boards */
++	{ .compatible = "raspberrypi,model-a" },
++	{ .compatible = "raspberrypi,model-a-plus" },
++	{ .compatible = "raspberrypi,model-b" },
++	/* Raspberry Pi Model B (no P5) */
++	{ .compatible = "raspberrypi,model-b-i2c0" },
++	{ .compatible = "raspberrypi,model-b-rev2" },
++	{ .compatible = "raspberrypi,model-b-plus" },
++	{ .compatible = "raspberrypi,compute-module" },
++	{ .compatible = "raspberrypi,model-zero" },
++	{ .compatible = "raspberrypi,model-zero-w" },
++
++	/* BCM2836 based Boards */
++	{ .compatible = "raspberrypi,2-model-b" },
++
++	/* BCM2837 based Boards */
++	{ .compatible = "raspberrypi,3-model-a-plus" },
++	{ .compatible = "raspberrypi,3-model-b" },
++	{ .compatible = "raspberrypi,3-model-b-plus" },
++	{ .compatible = "raspberrypi,3-compute-module" },
++	{ .compatible = "raspberrypi,3-compute-module-lite" },
++	{ /* sentinel */ },
++};
++
++static struct driver_d rpi_board_driver = {
++	.name = "board-rpi",
++	.probe = rpi_devices_probe,
++	.of_compatible = DRV_OF_COMPAT(rpi_of_match),
++};
++late_platform_driver(rpi_board_driver);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 _______________________________________________
 barebox mailing list
