@@ -1,66 +1,58 @@
-Delivery-date: Mon, 17 Jan 2022 09:26:03 +0100
+Delivery-date: Mon, 17 Jan 2022 10:00:47 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n9NL1-004PIt-QJ
-	for lore@lore.pengutronix.de; Mon, 17 Jan 2022 09:26:03 +0100
+	id 1n9Nsd-004QtN-Tc
+	for lore@lore.pengutronix.de; Mon, 17 Jan 2022 10:00:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n9NL0-0007Ce-Ek
-	for lore@pengutronix.de; Mon, 17 Jan 2022 09:26:03 +0100
+	id 1n9Nsb-0003HU-Um
+	for lore@pengutronix.de; Mon, 17 Jan 2022 10:00:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=RANa7D6FZEuYWLLfUxPVfbxxFBVtDl5DkgwUTYXkTtM=; b=vnmQluC0SITk8mw/nb0d6DKQ7e
-	46oTwYcpN0kCTm+sRvOf5kZXRdpJ4ByN1uATLWHm4MzeYe8VdIRhSbQTP47Xo10ycdh/Mo6nZwDHV
-	rhwZBT4W5b96wdxbOojvppqXqs/+lIi7QAZIEUKbubEtddcjCxGUJ59OuSbNtIHmrmiij+jDN1NiF
-	GosXshKkEhCnIqjn0R34YCF3/mHH5N+wa3Lfp2MOBct+xi2ZIPusKMnCVuR2MGMasVsfmpSkDEZuO
-	WD5YSVVo851gVBaXQMPc+CirKoI5jcyF7wMjMfj8hwqJ52CUUfNqa7K+LWffEj+1/8vcDJ3TbtJhg
-	slIll1eA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=HGkYdCdUM1wi6dmepkPPHU8i/6WzY6z9g3Z5zB1YAd4=; b=tp+y+evZDSeE35
+	djjAIkZISLuzupaJYZUjU+m240D2kHHf8QQz3cn9uG7t46dH1I8fcwJ452xxMj1phIbM0CYvvlu5Y
+	KpsqtDzKQhaR68K/NBwKptXxlsCXEsM38ddBamix4kBid96wOnB8nEE+/m2ES+2vEsyvP3GvM7qE/
+	FwYGyjG/7oZ8rtb9gsxwUr3EGjuhC+Z0LSMU9bbfXqyywAe6pZn2ROXGoXnTsr/quFpoCZDYcFlbA
+	VchUTma1ZYZaOGNU8rx8dHQSJ6yB/L2v+1MMmSLDH9dquIo/12xvjm30d+Y6Mou16vuXxNB3kTKXK
+	/vGBfpDJ9tZ+iKyuMFnw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n9NJU-00E3Z8-Sl; Mon, 17 Jan 2022 08:24:28 +0000
+	id 1n9NrN-00EBWF-6O; Mon, 17 Jan 2022 08:59:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n9NJP-00E3Xv-59
- for barebox@lists.infradead.org; Mon, 17 Jan 2022 08:24:24 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1n9NrC-00EBUB-RT
+ for barebox@lists.infradead.org; Mon, 17 Jan 2022 08:59:21 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1n9NJL-0006ut-Si; Mon, 17 Jan 2022 09:24:19 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1n9NJL-0006Sw-7R; Mon, 17 Jan 2022 09:24:19 +0100
-Date: Mon, 17 Jan 2022 09:24:19 +0100
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: barebox@lists.infradead.org, Clement Leger <clement.leger@bootlin.com>,
- Louis Morhet <lmorhet@kalray.eu>, Luc Michel <lmichel@kalray.eu>,
- Yann Sionneau <ysionneau@kalray.eu>, Clement Leger <cleger@kalray.eu>
-Message-ID: <20220117082419.GA1121@pengutronix.de>
-References: <20220114165208.9980-1-jmaselbas@kalray.eu>
- <20220114165208.9980-9-jmaselbas@kalray.eu>
+ (envelope-from <jbe@pengutronix.de>) id 1n9Nr9-0002vH-Jk
+ for barebox@lists.infradead.org; Mon, 17 Jan 2022 09:59:15 +0100
+Received: from [2a0a:edc0:0:900:1d::45] (helo=ginster)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+ (envelope-from <jbe@pengutronix.de>) id 1n9Nr8-00AmnZ-EE
+ for barebox@lists.infradead.org; Mon, 17 Jan 2022 09:59:13 +0100
+Received: from jbe by ginster with local (Exim 4.94.2)
+ (envelope-from <jbe@pengutronix.de>) id 1n9Nr6-0009VJ-TL
+ for barebox@lists.infradead.org; Mon, 17 Jan 2022 09:59:12 +0100
+From: Juergen Borleis <jbe@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Mon, 17 Jan 2022 09:59:08 +0100
+Message-Id: <20220117085908.36460-3-jbe@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220117085908.36460-1-jbe@pengutronix.de>
+References: <20220117085908.36460-1-jbe@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20220114165208.9980-9-jmaselbas@kalray.eu>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 09:09:43 up 37 days, 16:55, 72 users,  load average: 0.36, 0.38, 0.31
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220117_002423_227765_B94075F1 
-X-CRM114-Status: GOOD (  30.27  )
+X-CRM114-CacheID: sfid-20220117_005918_923675_A7D732DB 
+X-CRM114-Status: GOOD (  19.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,131 +64,207 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 08/13] nvmem: add kvx otp non volatile regbank support
+Subject: [PATCH 2/2] Add Ricoh RN5T568 PMIC based watchdog
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jan 14, 2022 at 05:52:07PM +0100, Jules Maselbas wrote:
-> From: Clement Leger <cleger@kalray.eu>
-> =
+---
+ drivers/watchdog/Kconfig       |   6 ++
+ drivers/watchdog/Makefile      |   1 +
+ drivers/watchdog/rn5t568_wdt.c | 140 +++++++++++++++++++++++++++++++++
+ 3 files changed, 147 insertions(+)
+ create mode 100644 drivers/watchdog/rn5t568_wdt.c
 
-> Backport Linux driver to barebox to access nvmem.
-> =
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index d605e62..61a096b 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -109,6 +109,12 @@ config STPMIC1_WATCHDOG
+ 	help
+ 	  Enable to support configuration of the stpmic1's built-in watchdog.
+ 
++config RN568_WATCHDOG
++	bool "Ricoh RN5t568 PMIC based Watchdog"
++	depends on MFD_RN568PMIC
++	help
++	  Enable to support system control via the PMIC based watchdog.
++
+ config F71808E_WDT
+ 	bool "Fintek F718xx, F818xx Super I/O Watchdog"
+ 	depends on X86
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index dbb76a5..84fd2bf 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -16,6 +16,7 @@ obj-$(CONFIG_ARCH_BCM283X) += bcm2835_wdt.o
+ obj-$(CONFIG_RAVE_SP_WATCHDOG) += rave-sp-wdt.o
+ obj-$(CONFIG_STM32_IWDG_WATCHDOG) += stm32_iwdg.o
+ obj-$(CONFIG_STPMIC1_WATCHDOG) += stpmic1_wdt.o
++obj-$(CONFIG_RN568_WATCHDOG) += rn5t568_wdt.o
+ obj-$(CONFIG_F71808E_WDT) += f71808e_wdt.o
+ obj-$(CONFIG_GPIO_WATCHDOG) += gpio_wdt.o
+ obj-$(CONFIG_ITCO_WDT) += itco_wdt.o
+diff --git a/drivers/watchdog/rn5t568_wdt.c b/drivers/watchdog/rn5t568_wdt.c
+new file mode 100644
+index 0000000..f6e7234
+--- /dev/null
++++ b/drivers/watchdog/rn5t568_wdt.c
+@@ -0,0 +1,140 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Watchdog driver for Ricoh RN5T618 PMIC
++ *
++ * Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
++ */
++
++#include <common.h>
++#include <init.h>
++#include <watchdog.h>
++#include <regmap.h>
++#include <of.h>
++
++#define RN5T568_WATCHDOG 0x0b
++# define RN5T568_WATCHDOG_WDPWROFFEN BIT(2)
++# define RN5T568_WATCHDOG_WDOGTIM_M (BIT(0) | BIT(1))
++#define RN5T568_PWRIREN 0x12
++# define RN5T568_PWRIREN_EN_WDOG BIT(6)
++#define RN5T568_PWRIRQ 0x13
++# define RN5T568_PWRIRQ_IR_WDOG BIT(6)
++
++struct rn5t568_wdt {
++	struct watchdog wdd;
++	struct regmap *regmap;
++	unsigned int timeout;
++};
++
++struct rn5t568_wdt_tim {
++	u8 reg_val;
++	u8 time;
++};
++
++static const struct rn5t568_wdt_tim rn5t568_wdt_timeout[] = {
++	{ .reg_val = 0, .time = 1, },
++	{ .reg_val = 1, .time = 8, },
++	{ .reg_val = 2, .time = 32, },
++	{ .reg_val = 3, .time = 128, },
++};
++
++#define PMIC_WDT_MAX_TIMEOUT 128
++
++static int rn5t568_wdt_start(struct regmap *regmap, int idx)
++{
++	int ret;
++
++	ret = regmap_update_bits(regmap, RN5T568_WATCHDOG, RN5T568_WATCHDOG_WDOGTIM_M,
++				 rn5t568_wdt_timeout[idx].reg_val);
++	if (ret)
++		return ret;
++
++	regmap_update_bits(regmap, RN5T568_PWRIRQ, RN5T568_PWRIRQ_IR_WDOG, 0x00);
++	regmap_update_bits(regmap, RN5T568_PWRIREN, RN5T568_PWRIREN_EN_WDOG, RN5T568_PWRIREN_EN_WDOG);
++
++	pr_debug("RN5t: Starting the watchdog with %u seconds\n", rn5t568_wdt_timeout[idx].time);
++
++	return regmap_update_bits(regmap, RN5T568_WATCHDOG, RN5T568_WATCHDOG_WDPWROFFEN,
++				 RN5T568_WATCHDOG_WDPWROFFEN);
++}
++
++static int rn5t568_wdt_stop(struct regmap *regmap)
++{
++	int ret;
++
++	ret  = regmap_update_bits(regmap, RN5T568_PWRIREN, RN5T568_PWRIREN_EN_WDOG, 0);
++	if (ret)
++		return ret;
++	return regmap_update_bits(regmap, RN5T568_WATCHDOG, RN5T568_WATCHDOG_WDPWROFFEN, 0);
++}
++
++static int rn5t568_wdt_ping(struct regmap *regmap)
++{
++	unsigned int val;
++	int ret;
++
++	ret = regmap_read(regmap, RN5T568_WATCHDOG, &val);
++	if (ret)
++		return ret;
++
++	return regmap_write(regmap, RN5T568_WATCHDOG, val);
++}
++
++static int rn5t568_wdt_set_timeout(struct watchdog *wdd, unsigned int timeout)
++{
++	struct rn5t568_wdt *wdt = container_of(wdd, struct rn5t568_wdt, wdd);
++	int ret, i;
++
++	if (!timeout)
++		return rn5t568_wdt_stop(wdt->regmap);
++
++	for (i = 0; i < ARRAY_SIZE(rn5t568_wdt_timeout); i++) {
++		if (rn5t568_wdt_timeout[i].time + 1 >= timeout)
++			break;
++	}
++
++	if (i == ARRAY_SIZE(rn5t568_wdt_timeout))
++		return -EINVAL;
++
++	if (wdt->timeout == timeout)
++		return rn5t568_wdt_ping(wdt->regmap);
++
++	ret = rn5t568_wdt_start(wdt->regmap, i);
++	if (ret)
++		return ret;
++
++	wdt->timeout = rn5t568_wdt_timeout[i].time;
++
++	return ret;
++}
++
++static int rn5t568_wdt_probe(struct device_d *dev)
++{
++	struct rn5t568_wdt *wdt;
++	struct watchdog *wdd;
++
++	wdt = xzalloc(sizeof(*wdt));
++
++	wdt->regmap = dev_get_regmap(dev->parent, NULL);
++	if (IS_ERR(wdt->regmap))
++		return PTR_ERR(wdt->regmap);
++
++	wdd = &wdt->wdd;
++	wdd->hwdev = dev;
++	wdd->set_timeout = rn5t568_wdt_set_timeout;
++	wdd->timeout_max = PMIC_WDT_MAX_TIMEOUT;
++
++	regmap_write(wdt->regmap, RN5T568_WATCHDOG, 0x03);
++	return watchdog_register(wdd);
++}
++
++static __maybe_unused const struct of_device_id rn5t568_wdt_of_match[] = {
++	{ .compatible = "ricoh,rn5t568-wdt" },
++	{ /* sentinel */ }
++};
++
++static struct driver_d rn5t568_wdt_driver = {
++	.name  = "rn5t568-wdt",
++	.probe = rn5t568_wdt_probe,
++	.of_compatible = DRV_OF_COMPAT(rn5t568_wdt_of_match),
++};
++device_platform_driver(rn5t568_wdt_driver);
+-- 
+2.30.2
 
-> Signed-off-by: Clement Leger <cleger@kalray.eu>
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> ---
->  drivers/nvmem/Kconfig      |  7 +++
->  drivers/nvmem/Makefile     |  3 ++
->  drivers/nvmem/kvx-otp-nv.c | 99 ++++++++++++++++++++++++++++++++++++++
->  3 files changed, 109 insertions(+)
->  create mode 100644 drivers/nvmem/kvx-otp-nv.c
-> =
-
-> diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-> index 07320101b8..3624cc64b6 100644
-> --- a/drivers/nvmem/Kconfig
-> +++ b/drivers/nvmem/Kconfig
-> @@ -66,6 +66,13 @@ config STM32_BSEC
->  	  This adds support for the STM32 OTP controller. Reads and writes
->  	  to will go to the shadow RAM, not the OTP fuses themselvers.
->  =
-
-> +config KVX_OTP_NV
-> +	tristate "kalray KVX OTP Non volatile regs Support"
-> +	depends on KVX
-> +	help
-> +	  This is a simple driver to dump specified values of KVX OTP non
-> +	  volatile regs.
-> +
->  config STARFIVE_OTP
->  	tristate "Starfive OTP Supprot"
->  	depends on SOC_STARFIVE
-> diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
-> index cd970aaea1..81629ddb27 100644
-> --- a/drivers/nvmem/Makefile
-> +++ b/drivers/nvmem/Makefile
-> @@ -24,4 +24,7 @@ nvmem_eeprom_93xx46-y		:=3D eeprom_93xx46.o
->  obj-$(CONFIG_STM32_BSEC)	+=3D nvmem_bsec.o
->  nvmem_bsec-y			:=3D bsec.o
->  =
-
-> +obj-$(CONFIG_KVX_OTP_NV)	+=3D nvmem-kvx-otp-nv.o
-> +nvmem-kvx-otp-nv-y		:=3D kvx-otp-nv.o
-> +
->  obj-$(CONFIG_STARFIVE_OTP)	+=3D starfive-otp.o
-> diff --git a/drivers/nvmem/kvx-otp-nv.c b/drivers/nvmem/kvx-otp-nv.c
-> new file mode 100644
-> index 0000000000..f997f8a63b
-> --- /dev/null
-> +++ b/drivers/nvmem/kvx-otp-nv.c
-> @@ -0,0 +1,99 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (C) 2020 Kalray Inc., Cl=E9ment L=E9ger
-> + */
-> +
-> +#include <common.h>
-> +#include <driver.h>
-> +#include <malloc.h>
-> +#include <xfuncs.h>
-> +#include <errno.h>
-> +#include <init.h>
-> +#include <net.h>
-> +#include <io.h>
-> +
-> +#include <linux/nvmem-provider.h>
-> +
-> +#define OTP_NV_ALIGN		4
-> +#define OTP_NV_ALIGN_MASK	(OTP_NV_ALIGN - 1)
-> +
-> +struct kvx_otp_nv_priv {
-> +	void __iomem *base;
-> +};
-> +
-> +static int kvx_otp_nv_read(void *context, unsigned int offset,
-> +			  void *_val, size_t bytes)
-> +{
-> +	struct kvx_otp_nv_priv *priv =3D context;
-> +	u8 *val =3D _val;
-> +	u32 tmp, copy_size;
-> +	u8 skip =3D offset & OTP_NV_ALIGN_MASK;
-> +
-> +	offset &=3D ~OTP_NV_ALIGN_MASK;
-> +
-> +	while (bytes) {
-> +		tmp =3D readl(priv->base + offset);
-> +		if (skip !=3D 0)
-> +			copy_size =3D min(OTP_NV_ALIGN - skip, (int) bytes);
-> +		else
-> +			copy_size =3D min(bytes, sizeof(tmp));
-> +
-> +		memcpy(val, ((u8 *) &tmp) + skip, copy_size);
-> +		if (skip !=3D 0)
-> +			skip =3D 0;
-
-The if() here is unnecessary.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
