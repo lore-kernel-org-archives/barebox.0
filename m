@@ -1,63 +1,52 @@
-Delivery-date: Mon, 17 Jan 2022 10:16:16 +0100
+Delivery-date: Mon, 17 Jan 2022 10:18:01 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n9O7c-004Rvr-4J
-	for lore@lore.pengutronix.de; Mon, 17 Jan 2022 10:16:16 +0100
+	id 1n9O9J-004Rye-PX
+	for lore@lore.pengutronix.de; Mon, 17 Jan 2022 10:18:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n9O7a-0005OW-Mu
-	for lore@pengutronix.de; Mon, 17 Jan 2022 10:16:15 +0100
+	id 1n9O9I-0005bl-C9
+	for lore@pengutronix.de; Mon, 17 Jan 2022 10:18:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=3rW3WQxV7eLSUvJyBzsPBN0lnmZ9LLTG8yaO1Wd9MVc=; b=0/xE1lcRvVDNExW3mMuWGPXb0X
-	4wCC4GqLPesUTRaKC8XwFUgZDhpAkrxLXfSQzTG8SHLWBG7h1tDsVx8NN8CNYa+dgpyUjNA7Ifcuw
-	dO/1Cw7v+qejYan1VR9OIxiZqcJch6LHouKYGJLZzAkAzwpbdvJrVnpFXDbzQelT2hw8JopaCQSTG
-	p7lkraAD0mfhMh4mNiSYwoQJa0VDtgWTG3nVc9+JBag15U63k45RFiFY8qXtFafTVfAEJq+f2oO+D
-	B87D/4msLEgMg8k3gRjkqKicZOpUc22GT5z/fcUjDIpj9QdPP52PFRUJt924ePS/Dgrpq0HYxhpdt
-	3t/SzS0w==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Date:To:From:Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=VeppcRPZXhgOhP0VQRVigeGmT6bRrz9snlv5AyBULYY=; b=Rv+IhcKNwdEgov
+	tji8w9vu5zrL4P241wNZrm2ebBTjlwPX6FgID0S6q/PXMEw65Ice6VVXj3jYscxFIV6m1YefDQ4BM
+	+wncqK9iyPZCEbrHTBpSLh8AqllQcM2wkxzzSxDcErGYvvXnkEIoVrnnjj8teEsdZL5vlGGD8eWqI
+	G1/jlLrZ3Zpp5/8mhXYdr3SsgSGamduEzGbYQAPtuk4ZRnbLxu7slwVnDoqs1XBloOLMy7AdHu4cJ
+	6ubHT4jZBfiOuslCijiH29+2RRVV/V/ct77ikLxnHXVqWdkewEGCzSogRDocGKGWd0KGSTrEbwGzv
+	NSa7ZGaIbxjQcTG/UIWg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n9O6P-00EEFK-Bi; Mon, 17 Jan 2022 09:15:01 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n9O6K-00EEEv-98
- for barebox@lists.infradead.org; Mon, 17 Jan 2022 09:14:57 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1n9O6I-00055s-OK; Mon, 17 Jan 2022 10:14:54 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1n9O6H-0002f8-Tt; Mon, 17 Jan 2022 10:14:53 +0100
-Date: Mon, 17 Jan 2022 10:14:53 +0100
-To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220117091453.GF1121@pengutronix.de>
-References: <20220114105235.2580174-1-enrico.scholz@sigma-chemnitz.de>
+	id 1n9O86-00EERg-J2; Mon, 17 Jan 2022 09:16:46 +0000
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1n9O80-00EEQy-U3
+ for barebox@lists.infradead.org; Mon, 17 Jan 2022 09:16:42 +0000
+Received: by lynxeye.de (Postfix, from userid 501)
+ id 57228E74217; Mon, 17 Jan 2022 10:16:09 +0100 (CET)
+Received: from [192.168.178.22] (a89-183-29-160.net-htp.de [89.183.29.160])
+ by lynxeye.de (Postfix) with ESMTPSA id 344C8E7420D;
+ Mon, 17 Jan 2022 10:16:08 +0100 (CET)
+Message-ID: <10192ccb41be58fd4e53044b17e6a5838c3629d7.camel@lynxeye.de>
+From: Lucas Stach <dev@lynxeye.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Date: Mon, 17 Jan 2022 10:16:07 +0100
+In-Reply-To: <095bafc0-7261-aa13-a9c7-8022cc78b26c@pengutronix.de>
+References: <20220116213221.3466936-1-dev@lynxeye.de>
+ <095bafc0-7261-aa13-a9c7-8022cc78b26c@pengutronix.de>
+User-Agent: Evolution 3.40.4 (3.40.4-2.fc34) 
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20220114105235.2580174-1-enrico.scholz@sigma-chemnitz.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:14:37 up 37 days, 18:00, 77 users,  load average: 0.12, 0.25, 0.31
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220117_011456_343201_8E347EC8 
-X-CRM114-Status: GOOD (  18.88  )
+X-CRM114-CacheID: sfid-20220117_011641_158075_2F87D696 
+X-CRM114-Status: GOOD (  25.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,37 +66,80 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] usb:chipidea-imx: honor "phys" dtree property
+Subject: Re: [PATCH 1/3] clk: ignore of_device_ensure_probed error in clock
+ lookup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jan 14, 2022 at 11:52:35AM +0100, Enrico Scholz wrote:
-> Recent kernel devicetrees changed the "fsl,usbphy" property name to
-> "phys" on some platforms (e.g. iMX8) but the old one was kept on other
-> platforms (e.g. iMX6).
-> 
-> Check them both in the usb driver by preferring "phys".
-> 
-> NOTE: this fixes a hard lockup when booting NXP linux kernels on iMX8.
-> 
-> Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-> ---
->  drivers/usb/imx/chipidea-imx.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
+Hi Ahmad,
 
-Applied to master, thanks
+Am Montag, dem 17.01.2022 um 06:12 +0100 schrieb Ahmad Fatoum:
+> Hello Lucas,
+> 
+> On 16.01.22 22:32, Lucas Stach wrote:
+> > For CLK_OF_DECLARE clocks there is no driver that is bound to the device,
+> > so the lookup fails before even trying to find the provider, breaking
+> > the parent_ready() logic used when initializing the declared providers.
+> > 
+> > Ignore the return code from of_device_ensure_probed to allow the lookup
+> > to proceed as usual. If of_device_ensure_probed the lookup will also fail,
+> > as no provider will be found.
+> 
+> This seems to be an alternate fix for the issue addressed by:
+> bd516e38dd14 ("clk: handle CLK_OF_DECLARE in deep probe")
+> 
+> What do you think?
 
-Sascha
+Yes, it seems to be aimed at the same issue. However, your fix in
+bd516e38dd14 doesn't fix my specific issue, as we still don't get the
+correct -EPROBE_DEFER error code for the logic in parent_ready() in
+drivers/clk/clk.c to work.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I guess we could even revert your fix if we agree that ignoring the
+return code here is the right thing to do? Attaching a dummy driver 
+doesn't seem to be totally correct, as I think it isn't prohibited to
+have both a CLK_OF_DECLARE clock controller and a real platform driver
+for other uses attached to the same OF node. While I'm not aware of any
+clock controllers where this would be the case, I have seen such
+constructs with IRQ controllers.
+
+Regards,
+Lucas
+
+> 
+> > 
+> > Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> > ---
+> >  drivers/clk/clk.c | 6 ++----
+> >  1 file changed, 2 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+> > index 189c9c62df5c..a1d1d7f1a467 100644
+> > --- a/drivers/clk/clk.c
+> > +++ b/drivers/clk/clk.c
+> > @@ -643,11 +643,9 @@ struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
+> >  {
+> >  	struct of_clk_provider *provider;
+> >  	struct clk *clk = ERR_PTR(-EPROBE_DEFER);
+> > -	int ret;
+> >  
+> > -	ret = of_device_ensure_probed(clkspec->np);
+> > -	if (ret)
+> > -		return ERR_PTR(ret);
+> > +	/* Ignore error, as CLK_OF_DECLARE clocks have no proper driver. */
+> > +	of_device_ensure_probed(clkspec->np);
+> >  
+> >  	/* Check if we have such a provider in our array */
+> >  	list_for_each_entry(provider, &of_clk_providers, link) {
+> > 
+> 
+> 
+
+
 
 _______________________________________________
 barebox mailing list
