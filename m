@@ -1,63 +1,56 @@
-Delivery-date: Mon, 17 Jan 2022 10:31:07 +0100
+Delivery-date: Mon, 17 Jan 2022 11:21:52 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n9OLz-004SKz-Rh
-	for lore@lore.pengutronix.de; Mon, 17 Jan 2022 10:31:07 +0100
+	id 1n9P96-004UBE-V3
+	for lore@lore.pengutronix.de; Mon, 17 Jan 2022 11:21:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n9OLy-0007VD-6D
-	for lore@pengutronix.de; Mon, 17 Jan 2022 10:31:06 +0100
+	id 1n9P95-0006JJ-JP
+	for lore@pengutronix.de; Mon, 17 Jan 2022 11:21:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:To:Subject:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=CIN04mNnesa1+QLSIalbKyOBNVEWOMEQWJ4c9XThnd4=; b=eX9nGhZ5dKpovVe7NtRIwdQ7sW
-	NkQ8qLrvg0DpYsBjWSBOR7YL8H85TirURm7UW8aV6gRdUj7sKpUo/G8mgFNu3eCJkLqBVpRHI+dMZ
-	rb67jQUeVsXHImz2RQ5cFlC3yFPg0yb6EojyVBi6GjHuUYu1PSfN5XDUtxHZcuL7dwO6c2VJcqNUG
-	8Lge9/o+/WUDx01ZhvMmonDw/lqj7XfpY/z1rarXOzG0i/fVHxhfBemTlHAHhmo5X6TWMaF6zqxGt
-	lfNMdMloykIgNlIoCPpq8v94EtKDqTxQ5K0kx1UMFCi2w4w3KYF2OdfDSulP6wYdHkeU+c1Iub91s
-	0N/gpuhg==;
+	bh=ZAdT6K9db4jqNQR0ciPBcdkhpTDsvl5vronxtfsy7LA=; b=eSGZeGuWYTtAIPMnHZX79lZ8YN
+	POCcJInaXA0pZczllo9gqB0n2UlrTqe4843F7x6Klk6vzYRNk9OXfnUF+Ic2XbYsQFSNkFZk1AG5S
+	CJuj5eWWXSWZWp7Hw4pC/3jn07/FlNlYQANTzkz+YBLbObWoeFj+lFfpJv+ku71umoEjsxjy5dDCP
+	qBSPjTioNmnN6eViE0xQV5VAIjK8XQxFSpwXNXEAeUBY0ea3y14ewr+82I8i/O4e0HZTbLtWWI1Ru
+	GRO59MitSmh6aA5pOvErgQ1ntnC0nb7iO71rEZYN1WybMJNWlgkMoOD7NN1meHTAMxhoBdIyYlyzR
+	/4mZY+JA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n9OKb-00EGG4-6b; Mon, 17 Jan 2022 09:29:41 +0000
+	id 1n9P7g-00ESeZ-0p; Mon, 17 Jan 2022 10:20:24 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n9OKV-00EGEM-EW
- for barebox@lists.infradead.org; Mon, 17 Jan 2022 09:29:37 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1n9OKU-000725-7Q; Mon, 17 Jan 2022 10:29:34 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1n9OKT-0003F8-V2; Mon, 17 Jan 2022 10:29:33 +0100
-Date: Mon, 17 Jan 2022 10:29:33 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220117092933.GG1121@pengutronix.de>
-References: <20220114084728.311277-1-a.fatoum@pengutronix.de>
+ id 1n9P7a-00ESd3-DO
+ for barebox@lists.infradead.org; Mon, 17 Jan 2022 10:20:20 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1n9P7Z-00062T-76; Mon, 17 Jan 2022 11:20:17 +0100
+To: Lucas Stach <dev@lynxeye.de>, barebox@lists.infradead.org
+References: <20220116213221.3466936-1-dev@lynxeye.de>
+ <095bafc0-7261-aa13-a9c7-8022cc78b26c@pengutronix.de>
+ <10192ccb41be58fd4e53044b17e6a5838c3629d7.camel@lynxeye.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <0ecb57c3-e0a3-076f-5bd7-4b12c59fa80e@pengutronix.de>
+Date: Mon, 17 Jan 2022 11:20:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20220114084728.311277-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:28:03 up 37 days, 18:13, 77 users,  load average: 0.04, 0.10, 0.17
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <10192ccb41be58fd4e53044b17e6a5838c3629d7.camel@lynxeye.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220117_012935_517130_B45ED6A0 
-X-CRM114-Status: GOOD (  28.50  )
+X-CRM114-CacheID: sfid-20220117_022018_497068_CC828C24 
+X-CRM114-Status: GOOD (  28.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,87 +70,89 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mfd: implement mfd_add_devices
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/3] clk: ignore of_device_ensure_probed error in clock
+ lookup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jan 14, 2022 at 09:47:28AM +0100, Ahmad Fatoum wrote:
-> This makes it easier to port Linux drivers like PMICs, where a device
-> tree probed MFD node exists and the driver matching against it then
-> registers a number of MFD cell devices, which don't have their own
-> DT compatibles.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/base/resource.c  |  2 +-
->  drivers/mfd/Makefile     |  2 ++
->  drivers/mfd/core.c       | 25 +++++++++++++++++++++++++
->  include/driver.h         |  2 +-
->  include/linux/mfd/core.h | 23 +++++++++++++++++++++++
->  5 files changed, 52 insertions(+), 2 deletions(-)
->  create mode 100644 drivers/mfd/core.c
->  create mode 100644 include/linux/mfd/core.h
-> 
-> diff --git a/drivers/base/resource.c b/drivers/base/resource.c
-> index d0d39620772e..0134456ffac2 100644
-> --- a/drivers/base/resource.c
-> +++ b/drivers/base/resource.c
-> @@ -20,7 +20,7 @@ struct device_d *device_alloc(const char *devname, int id)
->  	return dev;
->  }
->  
-> -int device_add_data(struct device_d *dev, void *data, size_t size)
-> +int device_add_data(struct device_d *dev, const void *data, size_t size)
->  {
->  	free(dev->platform_data);
->  
-> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> index 2bcf90078ab4..a00119a1d5f4 100644
-> --- a/drivers/mfd/Makefile
-> +++ b/drivers/mfd/Makefile
-> @@ -1,4 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> +obj-y				+= core.o
-> +
->  obj-$(CONFIG_MFD_ACT8846)	+= act8846.o
->  obj-$(CONFIG_MFD_DA9053)	+= da9053.o
->  obj-$(CONFIG_MFD_DA9063)	+= da9063.o
-> diff --git a/drivers/mfd/core.c b/drivers/mfd/core.c
-> new file mode 100644
-> index 000000000000..fa6aa1c74a18
-> --- /dev/null
-> +++ b/drivers/mfd/core.c
-> @@ -0,0 +1,25 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +
-> +#include <linux/mfd/core.h>
-> +#include <driver.h>
-> +
-> +int mfd_add_devices(struct device_d *parent, const struct mfd_cell *cells, int n_devs)
-> +{
-> +	struct device_d *dev;
-> +	int ret, i;
-> +
-> +	for (i = 0; i < n_devs; i++) {
-> +		dev = device_alloc(cells[i].name, DEVICE_ID_DYNAMIC);
-> +		dev->parent = parent;
-> +
-> +		ret = platform_device_register(dev);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = device_add_data(dev, &cells[i], sizeof(cells[i]));
-> +		if (ret)
-> +			return ret;
+Hi,
 
-Calling platform_device_register() might result in probing the device.
-You should call device_add_data() before registering the device.
+On 17.01.22 10:16, Lucas Stach wrote:
+> Hi Ahmad,
+> 
+> Am Montag, dem 17.01.2022 um 06:12 +0100 schrieb Ahmad Fatoum:
+>> Hello Lucas,
+>>
+>> On 16.01.22 22:32, Lucas Stach wrote:
+>>> For CLK_OF_DECLARE clocks there is no driver that is bound to the device,
+>>> so the lookup fails before even trying to find the provider, breaking
+>>> the parent_ready() logic used when initializing the declared providers.
+>>>
+>>> Ignore the return code from of_device_ensure_probed to allow the lookup
+>>> to proceed as usual. If of_device_ensure_probed the lookup will also fail,
+>>> as no provider will be found.
+>>
+>> This seems to be an alternate fix for the issue addressed by:
+>> bd516e38dd14 ("clk: handle CLK_OF_DECLARE in deep probe")
+>>
+>> What do you think?
+> 
+> Yes, it seems to be aimed at the same issue. However, your fix in
+> bd516e38dd14 doesn't fix my specific issue, as we still don't get the
+> correct -EPROBE_DEFER error code for the logic in parent_ready() in
+> drivers/clk/clk.c to work.
+> 
+> I guess we could even revert your fix if we agree that ignoring the
+> return code here is the right thing to do? Attaching a dummy driver 
+> doesn't seem to be totally correct, as I think it isn't prohibited to
+> have both a CLK_OF_DECLARE clock controller and a real platform driver
+> for other uses attached to the same OF node. While I'm not aware of any
+> clock controllers where this would be the case, I have seen such
+> constructs with IRQ controllers.
 
-Sascha
+Sounds logical. I'll test with my fix reverted and yours applied
+and report back.
+
+> 
+> Regards,
+> Lucas
+> 
+>>
+>>>
+>>> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+>>> ---
+>>>  drivers/clk/clk.c | 6 ++----
+>>>  1 file changed, 2 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+>>> index 189c9c62df5c..a1d1d7f1a467 100644
+>>> --- a/drivers/clk/clk.c
+>>> +++ b/drivers/clk/clk.c
+>>> @@ -643,11 +643,9 @@ struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
+>>>  {
+>>>  	struct of_clk_provider *provider;
+>>>  	struct clk *clk = ERR_PTR(-EPROBE_DEFER);
+>>> -	int ret;
+>>>  
+>>> -	ret = of_device_ensure_probed(clkspec->np);
+>>> -	if (ret)
+>>> -		return ERR_PTR(ret);
+>>> +	/* Ignore error, as CLK_OF_DECLARE clocks have no proper driver. */
+>>> +	of_device_ensure_probed(clkspec->np);
+>>>  
+>>>  	/* Check if we have such a provider in our array */
+>>>  	list_for_each_entry(provider, &of_clk_providers, link) {
+>>>
+>>
+>>
+> 
+> 
+> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
