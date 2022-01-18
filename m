@@ -1,16 +1,16 @@
-Delivery-date: Tue, 18 Jan 2022 08:59:06 +0100
+Delivery-date: Tue, 18 Jan 2022 09:10:47 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n9jOU-005NRl-5M
-	for lore@lore.pengutronix.de; Tue, 18 Jan 2022 08:59:06 +0100
+	id 1n9jZn-005OIq-HT
+	for lore@lore.pengutronix.de; Tue, 18 Jan 2022 09:10:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1n9jOS-0005iM-NZ
-	for lore@pengutronix.de; Tue, 18 Jan 2022 08:59:05 +0100
+	id 1n9jZm-0006sc-BU
+	for lore@pengutronix.de; Tue, 18 Jan 2022 09:10:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,47 +18,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=SIU+O7jLLwE/fJP8hQo2rxWlB9zBq/m4uiOJ2hgNn3Y=; b=cRm3sVlja0TwossC0O6CZK++lW
-	491PTcI1NTHiZb1BGeXSkT4XT0IHqBuC/3xz/Gjp/Q8Rth1Hkt5B1sQgiUtiEjf3SGoQq9MAiTSeP
-	OkjVkLSK4/EcBkkTJQr1u4rTk0n/rV9vmX1AFB+cgEN+qBzzPHh8EbY7p6AKb85RosCWKqy7+jW3I
-	LM4m/BQ5cXAi0V4bYKD2XAFEqf13RJGbbW1lZ4pcma0Qm83Tz8ad29465VSTuM2ydUtsvyU3hfZtZ
-	LJWsfXm1OxgqUUNb9vhDo2aFVx5TWN4YH0iE4q21e6WtdbhlqZqf6tpFuqbuC28Dl3AmlzKA1I73y
-	PI4pdjtg==;
+	bh=qh+N5Nb2k90L77dr+3nJWtqh/sfEt0NO+XEqNNFdkGY=; b=Xmk50HBXJ6YFtarl0Evf1ydaie
+	masHf9aCF0KU8jmy4jse3nLXVlmDHtJwl2i5fZ7/kH9oCkfGF5j2j6m01abH5/DAvnQMsq4kixoM2
+	+W98Gv9wo7nQbUEZH7hhRPi9ffeygf+QpdoBT7Ju+bBogZLA2DW2/gWXk6hZwkjLffQdzxJA58Hvx
+	bTTyI6AvnoTLToj17wyOciJ1REbgdM2/3xnfIWHwkxrQUzn4EMs7UbNuXDk73W1taJOUmXLYk0svl
+	o3TLOMa7lKb7gv+W8tsUJNS3G4mDfFfaegTNOieKQdtK0aZ8llgyvEHJmRezgYNbjsNvggXc7bfNS
+	ifL4zMMg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1n9jN5-000eye-SH; Tue, 18 Jan 2022 07:57:39 +0000
+	id 1n9jYP-000iPa-Sv; Tue, 18 Jan 2022 08:09:21 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n9jN0-000ey9-Lf
- for barebox@lists.infradead.org; Tue, 18 Jan 2022 07:57:36 +0000
+ id 1n9jYK-000iPC-Ld
+ for barebox@lists.infradead.org; Tue, 18 Jan 2022 08:09:18 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1n9jMz-0005W3-Dd; Tue, 18 Jan 2022 08:57:33 +0100
+ id 1n9jYI-0006d1-VQ; Tue, 18 Jan 2022 09:09:14 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1n9jMz-0006Kr-2O; Tue, 18 Jan 2022 08:57:33 +0100
-Date: Tue, 18 Jan 2022 08:57:33 +0100
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220118075733.GE23490@pengutronix.de>
-References: <20220117120500.3556703-1-o.rempel@pengutronix.de>
- <20220117120500.3556703-2-o.rempel@pengutronix.de>
+ id 1n9jYI-0007sY-4N; Tue, 18 Jan 2022 09:09:14 +0100
+Date: Tue, 18 Jan 2022 09:09:14 +0100
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: barebox@lists.infradead.org, Clement Leger <clement.leger@bootlin.com>,
+ Louis Morhet <lmorhet@kalray.eu>, Luc Michel <lmichel@kalray.eu>,
+ Yann Sionneau <ysionneau@kalray.eu>
+Message-ID: <20220118080914.GF23490@pengutronix.de>
+References: <20220117221917.26970-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220117120500.3556703-2-o.rempel@pengutronix.de>
+In-Reply-To: <20220117221917.26970-1-jmaselbas@kalray.eu>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 08:51:59 up 38 days, 16:37, 62 users,  load average: 0.19, 0.17, 0.12
+X-Uptime: 09:08:52 up 38 days, 16:54, 75 users,  load average: 0.16, 0.33, 0.29
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220117_235734_735343_6D95A7B3 
-X-CRM114-Status: GOOD (  27.57  )
+X-CRM114-CacheID: sfid-20220118_000916_789171_A6E0CCD2 
+X-CRM114-Status: GOOD (  20.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,98 +83,32 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1 2/4] ARM: rpi: move clk support to a separate driver
- and enable deep-probe
+Subject: Re: [PATCH v2 00/11] kvx arch update
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jan 17, 2022 at 01:04:58PM +0100, Oleksij Rempel wrote:
-> To make deep-probe work properly, we need clock support be registered as
-> driver to related device.
+On Mon, Jan 17, 2022 at 11:19:06PM +0100, Jules Maselbas wrote:
+> This series has updates for the KVX architecture, with some fixes and
+> with the addition of kvx specific drivers for the otp-nvmem and socinfo.
 > 
-> To avoid regression, deep-probe is enabled in the same patch.
+> With this series it is now possible to run barebox on qemu, however
+> our qemu port isn't upstreamed yet, it can still be compiled. To do
+> so you will need to check this git repo [1] and follow the build
+> instructions.
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  arch/arm/boards/raspberry-pi/rpi-common.c | 75 +-----------------
->  drivers/clk/Makefile                      |  1 +
->  drivers/clk/clk-rpi.c                     | 93 +++++++++++++++++++++++
->  3 files changed, 96 insertions(+), 73 deletions(-)
->  create mode 100644 drivers/clk/clk-rpi.c
+> To compile barebox for the KVX architecture there is a pre-built
+> toolchain that can be downloaded here [2]
 > 
-> +static int bcm2835_cprman_init(struct device_node *np)
-> +{
-> +	struct device_node *mbox_node;
-> +	struct clk *clk;
-> +	int ret;
-> +
-> +	mbox_node = of_find_compatible_node(NULL, NULL, "brcm,bcm2835-mbox");
-> +	if (!mbox_node) {
-> +		pr_err("Missing mbox node\n");
-> +		return -ENOENT;
-> +	}
-> +
-> +	ret = of_device_ensure_probed(mbox_node);
-> +	if (ret) {
-> +		pr_err("Can't probe mbox node. %i\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_EMMC,
-> +					 "bcm2835_mci0");
-> +	if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-> +
-> +	clkdev_add_physbase(clk, 0x20300000, NULL);
-> +	clkdev_add_physbase(clk, 0x3f300000, NULL);
-> +
-> +	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_CORE,
-> +					  "bcm2835_sdhost");
-> +	if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-> +
-> +	clkdev_add_physbase(clk, 0x20202000, NULL);
-> +	clkdev_add_physbase(clk, 0x3f202000, NULL);
-> +
-> +	clk = clk_fixed("apb_pclk", 0);
-> +	clk_register_clkdev(clk, "apb_pclk", NULL);
-> +
-> +	clk = clk_fixed("uart0-pl0110", 48 * 1000 * 1000);
-> +	clk_register_clkdev(clk, NULL, "uart0-pl0110");
-> +	clkdev_add_physbase(clk, BCM2835_PL011_BASE, NULL);
-> +	clkdev_add_physbase(clk, BCM2836_PL011_BASE, NULL);
-> +
-> +	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_CORE,
-> +					  "uart1-8250");
-> +	if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-> +
-> +	clkdev_add_physbase(clk, BCM2835_MINIUART_BASE, NULL);
-> +	clkdev_add_physbase(clk, BCM2836_MINIUART_BASE, NULL);
-> +
-> +	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
-> +	clk_register_clkdev(clk, NULL, "bcm2835-cs");
-> +
-> +	return 0;
-> +}
-> +/* CLK_OF_DECLARE should be used to make it probed before amba,pl011 */
+> The following commands should build an run barebox on qemu:
+> $ PATH=<path/to/gcc-kalray-kvx-v4.7.0-cd2>/bin:$PATH ARCH=kvx make generic_defconfig all
+> $ qemu-system-kvx -m 1G -nographic -kernel barebox
+> 
+> [1] https://github.com/kalray/qemu-builder
+> [2] https://github.com/kalray/build-scripts/releases/tag/v4.7.0-cd2
 
-We should finally switch to device tree based lookup for the clocks.
-Given where we are already this seems to be only a small step left to
-go.
+Applied, thanks
 
 Sascha
-
-> +CLK_OF_DECLARE(bcm2835_cprman, "brcm,bcm2835-cprman", bcm2835_cprman_init);
-> -- 
-> 2.30.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
