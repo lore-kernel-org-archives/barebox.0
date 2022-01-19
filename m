@@ -1,55 +1,58 @@
-Delivery-date: Wed, 19 Jan 2022 15:10:24 +0100
+Delivery-date: Wed, 19 Jan 2022 15:27:30 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nABfM-006hlg-TA
-	for lore@lore.pengutronix.de; Wed, 19 Jan 2022 15:10:24 +0100
+	id 1nABvu-006ikL-Il
+	for lore@lore.pengutronix.de; Wed, 19 Jan 2022 15:27:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nABfI-0002Md-JC
-	for lore@pengutronix.de; Wed, 19 Jan 2022 15:10:24 +0100
+	id 1nABvt-0004k6-2n
+	for lore@pengutronix.de; Wed, 19 Jan 2022 15:27:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=e4SDcSbwwyjNOBm05hYMemgbh0IslZz+xhs7hktppWQ=; b=AxHSKOWZrG64XC
-	y8TROJxQvW+6Crzs/J1LTYrSvyULGXC9cjoL7msEWP2yLCY2CvdXSTLTieWIPtYPRQTJXe4bQ3YMm
-	T76p26m7M6P57nZJW9MsGwTHd20gkTBg6cMLNcBBkzCzgnQyrVJ0nuXW8GcVX+Zy6t7Lq4TLaqKtm
-	zjitKBitwrRyG2z4EiuSgS4DWmP9FJMVAiCYvD8XbVxphMIYmKAtmTUtIQusIoGa+c99fRWzhEoxN
-	kiKNWJHCJX0N78TVXyyp+59CQ7Om4Wlqw5bkJE2sVHDhggMPry4f1OyAVPhPFhA1ao+scEQP+cPlw
-	Fd5iwRzAEX1qLJ6fa42Q==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:References:Cc:To:Subject:From:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=fYcLfHdjLwoOkF4SpYOmO3TuqspofB9R4MaA6f14TRs=; b=JB/hdU7a0fz9MSO22GBQVwwWmz
+	U3pHfXpQqzp9b1lhsUISzbc4yOG/7XhHIFL7UQISig/33wqYoC5mAMcRaGNSQP5lfXpvB2IJXn24a
+	ORm+ax4UsFoD/CitiKWtYpApvDAuPqV2b6l3ijc0bBS5oo4g4ey54AG8QlcST71LsgxBXGn9zfmZu
+	LFzW4Qjp8UOamnWIN4jfzUM0d1RwjeXS5LQ5tI4fVEelC6Yv9zPST46+kaWdiNPsgQrZuS6t76rSD
+	8SFlxzNLTK4WtibrPnJhk8gjT0/4Ilu4o/hLqqdumnYnO9HCFzoAfCaKGGbS3hxo5WlXcVOBFceRs
+	vCtMO24g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nABdT-005pWV-K8; Wed, 19 Jan 2022 14:08:27 +0000
+	id 1nABua-005t8a-DU; Wed, 19 Jan 2022 14:26:08 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nABdM-005pUg-O0
- for barebox@lists.infradead.org; Wed, 19 Jan 2022 14:08:25 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1nABdL-00026m-Hw; Wed, 19 Jan 2022 15:08:19 +0100
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>)
- id 1nABdK-002YuV-OX; Wed, 19 Jan 2022 15:08:18 +0100
+ id 1nABuT-005t6S-IF
+ for barebox@lists.infradead.org; Wed, 19 Jan 2022 14:26:04 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1nABuP-0004cf-Pb; Wed, 19 Jan 2022 15:25:57 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- Michael Olbrich <mol@pengutronix.de>, Yann Sionneau <ysionneau@kalray.eu>,
- Jules Maselbas <jmaselbas@kalray.eu>
-Date: Wed, 19 Jan 2022 15:08:16 +0100
-Message-Id: <20220119140816.610764-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+To: Jules Maselbas <jmaselbas@kalray.eu>, barebox@lists.infradead.org
+Cc: Clement Leger <clement.leger@bootlin.com>,
+ Louis Morhet <lmorhet@kalray.eu>, Luc Michel <lmichel@kalray.eu>,
+ Yann Sionneau <ysionneau@kalray.eu>
+References: <20220117221917.26970-1-jmaselbas@kalray.eu>
+ <20220117221917.26970-8-jmaselbas@kalray.eu>
+Message-ID: <66425937-a173-1bdc-dd3e-ca727797d52e@pengutronix.de>
+Date: Wed, 19 Jan 2022 15:25:57 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
+In-Reply-To: <20220117221917.26970-8-jmaselbas@kalray.eu>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220119_060820_808883_2DC438F9 
-X-CRM114-Status: GOOD (  11.22  )
+X-CRM114-CacheID: sfid-20220119_062601_651275_F68012C0 
+X-CRM114-Status: GOOD (  27.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,65 +74,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] commands: wd: add new -x option to inhibit all watchdogs
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 07/11] watchdog: kvx: do not disable watchdog on probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-When booting after nv.autoboot=abort, barebox will drop to shell and
-try to inhibit all watchdogs: If they can be disabled, they will be and
-otherwise if autopoll support is compiled in, they will be periodically
-fed. This is useful for development. For this to work though, barebox
-needs an environment. Make watchdog_inhibit_all more accessible by
-making it directly invocable with wd -x.
+Hi,
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Cc: Michael Olbrich <mol@pengutronix.de>
-Cc: Yann Sionneau <ysionneau@kalray.eu>
-Cc: Jules Maselbas <jmaselbas@kalray.eu>
----
- commands/wd.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+On 17.01.22 23:19, Jules Maselbas wrote:
+> From: Louis Morhet <lmorhet@kalray.eu>
+> 
+> As the watchdog may be set by a lower stage in the boot chain, and for
+> a good reason (precisely to ensure reliable update when something
+> unexpected happens during the boot chain), it is a bad idea to always
+> disable it during probe.
+> 
+> We should either have a mechanism to refresh it on a regular basis in
+> barebox itself and set it to something bigger for Linux, or handle it
+> transparently and let the previous stage set the global watchdog up to
+> Linux. This patch assumes for now the latter.
 
-diff --git a/commands/wd.c b/commands/wd.c
-index c186244b2b3a..11f888133aac 100644
---- a/commands/wd.c
-+++ b/commands/wd.c
-@@ -18,11 +18,13 @@ static int do_wd(int argc, char *argv[])
- 	int opt;
- 	int rc;
- 
--	while ((opt = getopt(argc, argv, "d:")) > 0) {
-+	while ((opt = getopt(argc, argv, "d:x")) > 0) {
- 		switch (opt) {
- 		case 'd':
- 			wd = watchdog_get_by_name(optarg);
- 			break;
-+		case 'x':
-+			return watchdog_inhibit_all();
- 		default:
- 			return COMMAND_ERROR_USAGE;
- 		}
-@@ -66,12 +68,13 @@ BAREBOX_CMD_HELP_TEXT("When TIME is 0, the watchdog gets disabled,")
- BAREBOX_CMD_HELP_TEXT("Without a parameter the watchdog will be re-triggered.")
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT("-d DEVICE\t", "watchdog name (default is highest priority watchdog)")
-+BAREBOX_CMD_HELP_OPT("-x\t", "inhibit all watchdogs (i.e. disable or autopoll if possible)")
- BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(wd)
- 	.cmd = do_wd,
- 	BAREBOX_CMD_DESC("enable/disable/trigger the watchdog")
--	BAREBOX_CMD_OPTS("[-d DEVICE] [TIME]")
-+	BAREBOX_CMD_OPTS("[-d DEVICE] [-x] [TIME]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
- 	BAREBOX_CMD_HELP(cmd_wd_help)
- 	BAREBOX_CMD_COMPLETE(device_complete)
+The latter is preferable, because barebox execution time should be bound
+and the watchdog ensures that in face of spurious bugs.
+
+There's an autopoll mechanism that tries to ensure forward progress by
+polling the watchdog in is_timeout. The idea is that loops checking for
+is_timeout will either see forward progress or propagate an error. This
+is more robust than explicitly littering around WATCHDOG_PING()s, but it's
+not immune to all bugs, so turning on the watchdog very early is IMO
+the best course of action. For development use, you can always do wd 0
+or wd -x which I just sent out and CC'd you on. wd -x will disable
+all watchdogs either by wd 0 if supported by the hardware and driver
+or by enabling autopolling.
+
+It's a strict development feature (like wd in general. There's
+global.boot.watchdog_timeout for normal use during booting).
+
+> Signed-off-by: Louis Morhet <lmorhet@kalray.eu>
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+
+For this patch,
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+Cheers,
+Ahmad
+
+> ---
+>  drivers/watchdog/kvx_wdt.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/watchdog/kvx_wdt.c b/drivers/watchdog/kvx_wdt.c
+> index da19136fda..df9430769b 100644
+> --- a/drivers/watchdog/kvx_wdt.c
+> +++ b/drivers/watchdog/kvx_wdt.c
+> @@ -73,11 +73,9 @@ static int kvx_wdt_drv_probe(struct device_d *dev)
+>  	wdd->hwdev = dev;
+>  	wdd->set_timeout = kvx_wdt_set_timeout;
+>  
+> -	/* Be sure that interrupt are disable */
+> +	/* Be sure that interrupt are disabled */
+>  	kvx_sfr_set_field(TCR, WIE, 0);
+>  
+> -	kvx_watchdog_disable();
+> -
+>  	return watchdog_register(wdd);
+>  }
+>  
+> 
+
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
