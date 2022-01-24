@@ -1,59 +1,59 @@
-Delivery-date: Mon, 24 Jan 2022 11:07:57 +0100
+Delivery-date: Mon, 24 Jan 2022 11:08:04 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nBwGT-00Blfw-GZ
-	for lore@lore.pengutronix.de; Mon, 24 Jan 2022 11:07:57 +0100
+	id 1nBwGa-00BlgM-Bp
+	for lore@lore.pengutronix.de; Mon, 24 Jan 2022 11:08:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nBwGP-0002qc-0M
-	for lore@pengutronix.de; Mon, 24 Jan 2022 11:07:57 +0100
+	id 1nBwGX-0002rd-5o
+	for lore@pengutronix.de; Mon, 24 Jan 2022 11:08:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=1x6ND3YMuCBP0wABDplltSnLKanOmonkOwssPT5qJM4=; b=MqSilV4Jn3EnN3
-	lzFFN5M1XE2MYEqhKBH7329Zj1TMgTUSiKRXT3u/wjn5JsRqZ4/Gvgks2MpbGq4L/Fel0OsGCqfrF
-	sZqZKMyBU5PmhMPSDo2fQwYXAphPigCemA1JQ0zB2r0UrJTY7aDtj42/yGzIlovvjO+JntkRr2fLm
-	xEKS76mmfzyOZc/HjbFUMCHqwoZrRGfVFdySId8itjmCPxzsjlWV8WcoF5IA4OQm3I95Uaa0xe6Gf
-	GCq13RIL5bCw1JiWu/TbCGbhJcXCEc6PqyMPH+JTwlKGtFKT3LkchAXQjWcLhXsuqUGauiH9sF0tN
-	exlWbUOue42oPsag/mFw==;
+	List-Owner; bh=FB8XDlm/A/lJJ7Z4NCBjgerKzmia/ab7gty5uhDGa2c=; b=ck2EapjGy1yaWe
+	+YMF7jxLk1pOLDjLUzt6G+qkAPU/jGL0okGiuVWUYKvQUUzpluOkcGBhsJnB/TusDwlXWstX+dA0/
+	MkzVJEc1T8a55RgQq0/mFIEavoJqxql/vaK8LjIikB4snXEhbUk6Xi+THULHnn1z6DciOALym6C7r
+	i+Ye3WrEtnt4cuhsEyorULh5AJdbL93f4Woffp3HtFcPlY8CzOwE0DU/UL5WfFjtBhdeN+1SIosft
+	rQShSuGLTr01GfXL6IUbY3I0uDuzwRidIml8SYlKOSZ+ozw9XSOjOMZh6OufXUph9A+NfVTAnb6xj
+	0PqJwexSDEA46TWNnl4w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nBwEa-002uvD-7O; Mon, 24 Jan 2022 10:06:00 +0000
+	id 1nBwEu-002v3u-6d; Mon, 24 Jan 2022 10:06:20 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nBwDt-002uYR-Ly
- for barebox@lists.infradead.org; Mon, 24 Jan 2022 10:05:20 +0000
+ id 1nBwDt-002uYG-QV
+ for barebox@lists.infradead.org; Mon, 24 Jan 2022 10:05:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <mol@pengutronix.de>)
- id 1nBwDq-0002CH-52; Mon, 24 Jan 2022 11:05:14 +0100
+ id 1nBwDp-0002CD-Mt; Mon, 24 Jan 2022 11:05:13 +0100
 Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
  by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
  (envelope-from <mol@pengutronix.de>)
- id 1nBwDp-00C6RQ-MW; Mon, 24 Jan 2022 11:05:12 +0100
+ id 1nBwDp-00C6RK-Di; Mon, 24 Jan 2022 11:05:12 +0100
 Received: from mol by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <mol@pengutronix.de>)
- id 1nBwDn-00CGwF-KK; Mon, 24 Jan 2022 11:05:11 +0100
+ id 1nBwDn-00CGwI-L2; Mon, 24 Jan 2022 11:05:11 +0100
 From: Michael Olbrich <m.olbrich@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Michael Olbrich <m.olbrich@pengutronix.de>
-Date: Mon, 24 Jan 2022 11:04:56 +0100
-Message-Id: <20220124100458.2924679-2-m.olbrich@pengutronix.de>
+Date: Mon, 24 Jan 2022 11:04:57 +0100
+Message-Id: <20220124100458.2924679-3-m.olbrich@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220124100458.2924679-1-m.olbrich@pengutronix.de>
 References: <20220124100458.2924679-1-m.olbrich@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220124_020517_788655_88B90045 
-X-CRM114-Status: GOOD (  14.98  )
+X-CRM114-CacheID: sfid-20220124_020517_948729_0916C063 
+X-CRM114-Status: GOOD (  13.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,126 +73,90 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] cdev: rename partuuid to uuid
+Subject: [PATCH 2/3] cdev: add diskuuid support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Partitions are not the only devices that can have UUIDs. Change the name to
-something more generic to prepare for other users.
+This allows identifying disks by UUID. For disks with GPT the disk GUID is
+used. For DOS partition tables the NT signature ist used, similar to how
+the partuuid is generated.
 
 Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 ---
- common/bootm.c             | 6 +++---
- common/partitions.c        | 2 +-
- common/partitions/parser.h | 2 +-
- fs/devfs-core.c            | 2 +-
- fs/fs.c                    | 4 ++--
- include/driver.h           | 4 ++--
- 6 files changed, 10 insertions(+), 10 deletions(-)
+ common/partitions/dos.c |  3 +++
+ common/partitions/efi.c |  2 ++
+ fs/devfs-core.c         | 14 ++++++++++++++
+ include/driver.h        |  1 +
+ 4 files changed, 20 insertions(+)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 89e3e93f2ce0..4652467448eb 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -709,15 +709,15 @@ int bootm_boot(struct bootm_data *bootm_data)
- 			const char *root_dev_name = devpath_to_name(bootm_data->root_dev);
- 			const struct cdev *root_cdev = cdev_by_name(root_dev_name);
+diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+index 6c76aac37172..258b10a9ed3c 100644
+--- a/common/partitions/dos.c
++++ b/common/partitions/dos.c
+@@ -182,6 +182,9 @@ static void dos_partition(void *buf, struct block_device *blk,
+ 	struct disk_signature_priv *dsp;
+ 	uint32_t signature = get_unaligned_le32(buf + 0x1b8);
  
--			if (root_cdev && root_cdev->partuuid[0] != 0) {
--				rootarg = basprintf("root=PARTUUID=%s", root_cdev->partuuid);
-+			if (root_cdev && root_cdev->uuid[0] != 0) {
-+				rootarg = basprintf("root=PARTUUID=%s", root_cdev->uuid);
- 			} else {
- 				rootarg = ERR_PTR(-EINVAL);
++	if (signature)
++		sprintf(blk->cdev.uuid, "%08x", signature);
++
+ 	table = (struct partition_entry *)&buffer[446];
  
- 				if (!root_cdev)
- 					pr_err("no cdev found for %s, cannot set root= option\n",
- 						root_dev_name);
--				else if (!root_cdev->partuuid[0])
-+				else if (!root_cdev->uuid[0])
- 					pr_err("%s doesn't have a PARTUUID, cannot set root= option\n",
- 						root_dev_name);
- 			}
-diff --git a/common/partitions.c b/common/partitions.c
-index b579559672a0..9cca5c4a1546 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -51,7 +51,7 @@ static int register_one_partition(struct block_device *blk,
- 	cdev->flags |= DEVFS_PARTITION_FROM_TABLE;
+ 	for (i = 0; i < 4; i++) {
+diff --git a/common/partitions/efi.c b/common/partitions/efi.c
+index 6d811bfb3b01..0787b93f120b 100644
+--- a/common/partitions/efi.c
++++ b/common/partitions/efi.c
+@@ -445,6 +445,8 @@ static void efi_partition(void *buf, struct block_device *blk,
+ 		return;
+ 	}
  
- 	cdev->dos_partition_type = part->dos_partition_type;
--	strcpy(cdev->partuuid, part->partuuid);
-+	strcpy(cdev->uuid, part->partuuid);
++	snprintf(blk->cdev.uuid, sizeof(blk->cdev.uuid), "%pUl", &gpt->disk_guid);
++
+ 	nb_part = le32_to_cpu(gpt->num_partition_entries);
  
- 	free(partition_name);
- 
-diff --git a/common/partitions/parser.h b/common/partitions/parser.h
-index 69508932b361..d67f8e1d6a09 100644
---- a/common/partitions/parser.h
-+++ b/common/partitions/parser.h
-@@ -17,7 +17,7 @@
- struct partition {
- 	char name[MAX_PARTITION_NAME];
- 	u8 dos_partition_type;
--	char partuuid[MAX_PARTUUID_STR];
-+	char partuuid[MAX_UUID_STR];
- 	uint64_t first_sec;
- 	uint64_t size;
- };
+ 	if (nb_part > MAX_PARTITION) {
 diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 2d016e0e4861..82e4811b384a 100644
+index 82e4811b384a..2475ab959a10 100644
 --- a/fs/devfs-core.c
 +++ b/fs/devfs-core.c
-@@ -101,7 +101,7 @@ struct cdev *cdev_by_partuuid(const char *partuuid)
- 		return NULL;
- 
- 	list_for_each_entry(cdev, &cdev_list, list) {
--		if (!strcasecmp(cdev->partuuid, partuuid))
-+		if (cdev->master && !strcasecmp(cdev->uuid, partuuid))
- 			return cdev;
- 	}
+@@ -107,6 +107,20 @@ struct cdev *cdev_by_partuuid(const char *partuuid)
  	return NULL;
-diff --git a/fs/fs.c b/fs/fs.c
-index 7da3a050c1cb..a92b4e9dfca1 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -2969,8 +2969,8 @@ int mount(const char *device, const char *fsname, const char *pathname,
- 		    cdev_is_mci_main_part_dev(fsdev->cdev->master))
- 			str = get_linux_mmcblkdev(fsdev);
+ }
  
--		if (!str && fsdev->cdev->partuuid[0] != 0)
--			str = basprintf("root=PARTUUID=%s", fsdev->cdev->partuuid);
-+		if (!str && fsdev->cdev->uuid[0] != 0)
-+			str = basprintf("root=PARTUUID=%s", fsdev->cdev->uuid);
- 
- 		if (str)
- 			fsdev_set_linux_rootarg(fsdev, str);
++struct cdev *cdev_by_diskuuid(const char *diskuuid)
++{
++	struct cdev *cdev;
++
++	if (!diskuuid)
++		return NULL;
++
++	list_for_each_entry(cdev, &cdev_list, list) {
++		if (!cdev->master && !strcasecmp(cdev->uuid, diskuuid))
++			return cdev;
++	}
++	return NULL;
++}
++
+ /**
+  * device_find_partition - find a partition belonging to a physical device
+  *
 diff --git a/include/driver.h b/include/driver.h
-index 4f6d40e17c14..409ed7e02afd 100644
+index 409ed7e02afd..e38a15f51f00 100644
 --- a/include/driver.h
 +++ b/include/driver.h
-@@ -447,7 +447,7 @@ struct cdev_operations {
- 	int (*truncate)(struct cdev*, size_t size);
- };
- 
--#define MAX_PARTUUID_STR	sizeof("00112233-4455-6677-8899-AABBCCDDEEFF")
-+#define MAX_UUID_STR	sizeof("00112233-4455-6677-8899-AABBCCDDEEFF")
- 
- struct cdev {
- 	const struct cdev_operations *ops;
-@@ -460,7 +460,7 @@ struct cdev {
- 	char *partname; /* the partition name, usually the above without the
- 			 * device part, i.e. name = "nand0.barebox" -> partname = "barebox"
- 			 */
--	char partuuid[MAX_PARTUUID_STR];
-+	char uuid[MAX_UUID_STR];
- 	loff_t offset;
- 	loff_t size;
- 	unsigned int flags;
+@@ -484,6 +484,7 @@ struct cdev *lcdev_by_name(const char *filename);
+ struct cdev *cdev_readlink(struct cdev *cdev);
+ struct cdev *cdev_by_device_node(struct device_node *node);
+ struct cdev *cdev_by_partuuid(const char *partuuid);
++struct cdev *cdev_by_diskuuid(const char *partuuid);
+ struct cdev *cdev_open(const char *name, unsigned long flags);
+ struct cdev *cdev_create_loop(const char *path, ulong flags, loff_t offset);
+ void cdev_remove_loop(struct cdev *cdev);
 -- 
 2.30.2
 
