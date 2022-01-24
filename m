@@ -1,80 +1,55 @@
-Delivery-date: Mon, 24 Jan 2022 10:12:35 +0100
+Delivery-date: Mon, 24 Jan 2022 10:13:48 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nBvOt-00BjPf-Im
-	for lore@lore.pengutronix.de; Mon, 24 Jan 2022 10:12:35 +0100
+	id 1nBvQ4-00BjTY-Jk
+	for lore@lore.pengutronix.de; Mon, 24 Jan 2022 10:13:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nBvOr-0003xz-He
-	for lore@pengutronix.de; Mon, 24 Jan 2022 10:12:34 +0100
+	id 1nBvQ3-0004DI-8A
+	for lore@pengutronix.de; Mon, 24 Jan 2022 10:13:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:Date:Subject:Cc:
-	To:From:Message-ID:MIME-Version:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=CekNCG/ldZGxH1gqUeJ3I0Ictxh+EvkuUBDROuxI3q8=; b=d2LcWZDRly+tq7
-	W9v4+M/476Zvfd1pMhBr+YiE74RgGrP8+gqshvm4YlRDTM5a4OBqNKPughJOffPjuywjUAzzywKAS
-	2OPqq+25cFOVkSW/Un4+NLcl/DtwSgqCrg0Cd42zH4jMIOxglG6wpN52bcIoG4KkPuSHSpYH7SAnJ
-	/qL1V9KHhO6yqfLnywCliN7fjktu4zgOnkF6ckDADLGisKuzbuIGrFfpTDheNOuUXv5C3y6YeaVoe
-	aGeKfM99oYJTrPb0MLW+VJY8xprEUY74p5BQjdbkpVolDaF0ckJq6j9TEOg3368MC6QRBqpIUHOqO
-	0vCnO9JKjVcE1Dle0DKw==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:References:Cc:To:Subject:From:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=GbYcVx89lLxEXN/e3FaHgzoP3cC7OpYzVR4xb8q5piM=; b=qu+e+K6OxG0OIl5culfoYzqJO+
+	rp3tOLkhGd00W1XmvAGd9sv71qErxidf7kuYKNCv/fV04V8Gr0zwRgZMwxZXK7YL0SBEWRYDTKhtQ
+	t9/ReOdv/rJF551wPoEwT56tE5wH1gU6WveF90cW/YcSCCUx/7NXTWuBsCprF2BHAFXtWeYXviyyd
+	dyeWOuYAVwDSfuAlVboO9pVj1Bn4yrU0VkwKs2Eq1VWndWEcw9E2fGfhbRNHLGncv0wVdYaCfrzpY
+	Q9iwn5G5dnyzZ1PXSZnsVMh/0qJXfctaE8QCoBkAjK/N1GwnMrlmtvGDzisbitFz6QtlXUOQGa/Iz
+	VInPnsxw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nBvNb-002jzX-VU; Mon, 24 Jan 2022 09:11:16 +0000
-Received: from mout.gmx.net ([212.227.17.21])
+	id 1nBvOt-002klZ-MF; Mon, 24 Jan 2022 09:12:35 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nBvNX-002jye-3C
- for barebox@lists.infradead.org; Mon, 24 Jan 2022 09:11:12 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1643015463;
- bh=hv3ocmKmII7sLqC3L05Vnzw7blBRzO4wKAi+Qp4yfmc=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=i++bERr/h5LgzETRu0sHeTCHTD/zMTBQBmEzQhY4r044+/93c6GUvFghCU40tcI8r
- /0K3iKcWQY79HVJgRGfDSutfJs1MuDB6P39zlkI3Tcp+B73KbWggdy5J0DOHeJNezf
- d/OkCJQiK//2rRr4LI4/l7poSKf3OUdcEZMjfsFw=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [80.245.79.70] ([80.245.79.70]) by web-mail.gmx.net
- (3c-app-gmx-bs10.server.lan [172.19.170.61]) (via HTTP); Mon, 24 Jan 2022
- 10:11:03 +0100
-MIME-Version: 1.0
-Message-ID: <trinity-f96a614e-0fb1-40e9-b179-fcff525119d1-1643015462944@3c-app-gmx-bs10>
-From: Frank Wunderlich <frank-w@public-files.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Frank Wunderlich <linux@fw-web.de>, barebox@lists.infradead.org
-Date: Mon, 24 Jan 2022 10:11:03 +0100
-Importance: normal
-Sensitivity: Normal
-In-Reply-To: <20220124085513.GX23490@pengutronix.de>
+ id 1nBvOk-002kft-Eh
+ for barebox@lists.infradead.org; Mon, 24 Jan 2022 09:12:31 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1nBvOh-0003st-FU; Mon, 24 Jan 2022 10:12:23 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Frank Wunderlich <linux@fw-web.de>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Frank Wunderlich <frank-w@public-files.de>, barebox@lists.infradead.org
 References: <20220123165149.158515-1-linux@fw-web.de>
- <20220124085513.GX23490@pengutronix.de>
-X-UI-Message-Type: mail
-X-Priority: 3
-X-Provags-ID: V03:K1:hkxWcDxZfrfnav4OPSLn1Cc04gyBRZ8CK00+irELpjiegUFR6dGo53xR7MI342KgmjDuW
- ZPwPDWG7O4Xc0bPMTibC291wsPa7av+mYRaE8Y/JQuIYgjBsCn5q/tCD85V47L65MXnPF5psW6iN
- VyOWAbExzVUeTbiWS3kJL4aCvU9oyU/agZOn/Wvxi8Xajc/Jgon3Qi1p+tpHi+6J4/Orkll7tl4R
- /Le4WbXLTJdAhxK6zqfl3W5eTCYSAqaR8m3IAhGcYaj1EmjkVU2E4Bsveno3C6UuSSJ2kku3pZgj
- K4=
-X-UI-Out-Filterresults: notjunk:1;V03:K0:GDYg8RNmvPg=:ExlTEhkvuz0n1HMKWnBx7W
- D5BEvSb/0WzKcUmBE1QKslFYiPXPY2DWbnDLmJAhCmzZL2ZlhriI5xMXhfvnd+DzZazHTJNvr
- 10WocsWe6eH02qd8DRaYs6V9ySGq2dsRExtCV5eYyV+pJyflOFTD3qE+GxLyuuh3jU79O6cFy
- PbijWwuFXWO6Q84xBaO1mhqAZQwN5g/rypW6jk0xzYMn9YgwXQZtg4i5aZ2xyn1curkYKF+pT
- G8ZxnjJ/7UQHENInyIQNapODijfEEAzAVC6B9+bEj7u5OPFXH8v8j1w666ziNKx0iwM0XfiSp
- SMitiElOcqUN4xhyp/pmlLIeBAJXlMJGP/ekyIcacajDFSJC4Nas9Bpf1VhJMdIv/pZLsqNXV
- kGXxW6crKn2Kxs7tkOW1H1cF7oj77Ze9q1Zg5Yz3zJu1t3pupWHcCRY8aJ/Ccvbq2vmaVOkUN
- HKlWclkJW981Rw+hmHy903HpM4AjX1+AEb15O+gCnERYXI5ZVoGIQLWiZBWDjzay9SMsgz3p1
- l0pAFoKxpspFEcynHuCzi9usumRQmwTTIa9DfRV5MYmg4oNARrX+JOcbMSLnaMqKQYM1vlB5q
- ifO0lij5vyWWccHcJmec7U53RpJsP45/ixc15DpBXtptln9RY9G9JTuzvwW5bFceTznb4x2NP
- mguLl6onGSKMu7tf46PSKPHxjj9I3kExYY235a6qj/ZdpSXp2NMhGK1nxkDQpEcZJt28IXwRr
- 1ooLV2KL14UupQy1PQpRN/Wn5cbLzQlRrf0Rs6xLk+76oOqV7tdHHTv8ewDMvFEthQFn9Eepc
- kghU5Up
+Message-ID: <145cf84a-770c-261e-154c-96d82ab5b3a3@pengutronix.de>
+Date: Mon, 24 Jan 2022 10:12:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <20220123165149.158515-1-linux@fw-web.de>
+Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220124_011111_459055_39419835 
-X-CRM114-Status: GOOD (  21.65  )
+X-CRM114-CacheID: sfid-20220124_011226_536058_F7C7F609 
+X-CRM114-Status: GOOD (  18.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,79 +71,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Aw: Re: [PATCH v1] ARM: Rockchip: Add rk3568 BananaPi R2 Pro board
- support
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v1] ARM: Rockchip: Add rk3568 BananaPi R2 Pro board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
-> Gesendet: Montag, 24. Januar 2022 um 09:55 Uhr
-> Von: "Sascha Hauer" <s.hauer@pengutronix.de>
+Hello Frank,
 
-> > +static bool machine_is_rk3568_r2pro = false;
-> > +
-> > +static int rk3568_r2pro_probe(struct device_d *dev)
-> > +{
-> > +	enum bootsource bootsource = bootsource_get();
-> > +	int instance = bootsource_get_instance();
-> > +
-> > +	barebox_set_model("RK3568 R2PRO");
-> > +	barebox_set_hostname("rk3568-r2pro");
-> > +	machine_is_rk3568_r2pro = true;
->
-> Maybe add a bpi to the hostname, model, variable names and instead drop
-> the rk3568?
+On 23.01.22 17:51, Frank Wunderlich wrote:
+> From: Frank Wunderlich <frank-w@public-files.de>
 
-i can do...
+> +/ {
+> +	model = "Rockchip RK3568 Bananapi R2 Pro Board";
+> +	compatible = "rockchip,rk3568-bpi-r2pro", "rockchip,rk3568";
+> +
+> +	aliases {
+> +		emmc = &sdhci;
+> +		sd = &sdmmc0;
+> +	};
+> +
+> +	chosen: chosen {
 
-> > +	if (!IS_ENABLED(CONFIG_AIODEV))
-> > +		return 0;
-> > +
-> > +	if (!machine_is_rk3568_r2pro)
-> > +		return 0;
-> > +
-> > +	hwid_chan = aiochannel_by_name("aiodev0.in_value1_mV");
-> > +	if (IS_ERR(hwid_chan)) {
-> > +		ret = PTR_ERR(hwid_chan);
-> > +		goto err_hwid;
-> > +	}
-> > +
-> > +	ret = aiochannel_get_value(hwid_chan, &hwid_voltage);
-> > +	if (ret)
-> > +		goto err_hwid;
-> > +
-> > +	pr_info("hwid_voltage: %d\n", hwid_voltage);
->
-> The voltage is not really interesting. This should be a pr_debug.
+You can drop the label.
 
-ok, i change this
+> diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
+> index 3c6b3dd9b531..7d54f357cfda 100644
+> --- a/arch/arm/mach-rockchip/Kconfig
+> +++ b/arch/arm/mach-rockchip/Kconfig
+> @@ -68,6 +68,12 @@ config MACH_RK3568_EVB
+>  	help
+>  	  Say Y here if you are using a RK3568 EVB
+>  
+> +config MACH_RK3568_R2PRO
+> +	select ARCH_RK3568
+> +	bool "RK3568 R2PRO"
+> +	help
+> +	  Say Y here if you are using a RK3568 Bananpi R2 Pro
 
-> > +
-> > +	if (hwid_voltage == 1800)
-> > +		hwid = "V00";
-> > +	else
-> > +		hwid = "unknown";
->
-> Have you verified this board really encodes the hardware revision using
-> this adc channel?
+Banana Pi BPI-R2 Pro*. Perhaps include the Banana Pi bit in the prompt
+text as well?
 
-yes, in shematics it is named SARADC_VIN1_HW_ID (which should map the in_value1_mV), but i have only this one prototype for testing.
+> +
+>  config MACH_PINE64_QUARTZ64
+>  	select ARCH_RK3568
+>  	bool "Pine64 Quartz64"
+> diff --git a/dts/Bindings/arm/rockchip.yaml b/dts/Bindings/arm/rockchip.yaml
+> index 4aed16176434..109f885d970f 100644
+> --- a/dts/Bindings/arm/rockchip.yaml
+> +++ b/dts/Bindings/arm/rockchip.yaml
 
-> > diff --git a/arch/arm/dts/rk3568-bpi-r2-pro.dts b/arch/arm/dts/rk3568-bpi-r2-pro.dts
->
-> I saw this device tree looks different from the one you sent for kernel
-> inclusion. This is not a problem now, but once the kernel dts is
-> upstream it will show up in dts/ in the barebox tree. We then usually
-> include the upstream dts from the barebox board dts, so that only the
-> barebox specific additions are in the barebox dts. Given that it would
-> be nice if you could minimize the differences now already, so that later
-> inclusion of the upstream dts becomes easier.
+dts/ is synchronized with Linux, so patches here are not accepted in barebox.
+You can add new bindings to Documentation/devicetree/bindings/, although
+boards are usually not documented in the bindings, but instead in board
+docs:
 
-ok, we can wait for kernel dts to be merged, but most stuff in kernel dts will be unused in barebox. so i started with the evb one which is enough for barebox atm. Only added the leds.
+Could you add an entry to Documentation/boards/rockchip.rst -> Rockchip RK356x
+-> Supported Boards?
 
-regards Frank
+And enabling the board in arch/arm/configs/rockchip_v8_defconfig
+would be nice as well.
+
+Cheers,
+Ahmad
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
