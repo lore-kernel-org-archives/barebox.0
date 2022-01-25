@@ -1,57 +1,53 @@
-Delivery-date: Mon, 24 Jan 2022 16:22:26 +0100
+Delivery-date: Tue, 25 Jan 2022 09:26:16 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nC1Ao-00C1FZ-75
-	for lore@lore.pengutronix.de; Mon, 24 Jan 2022 16:22:26 +0100
+	id 1nCH9c-00Chm0-Cq
+	for lore@lore.pengutronix.de; Tue, 25 Jan 2022 09:26:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nC1Am-0001Lq-9X
-	for lore@pengutronix.de; Mon, 24 Jan 2022 16:22:25 +0100
+	id 1nCH9a-0000sy-Uk
+	for lore@pengutronix.de; Tue, 25 Jan 2022 09:26:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:Cc:References:To:Subject:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=B/S0qnxpMRG9bf6lq4/XvamUrqpoydtJRnwRSlXEeLk=; b=jQmeKe55b/BJ7RiWFUw1tosStZ
-	02laKLVbg4TiD1wxb+RmrmDyVVHBKrQnMPk2kZE4v8Ya3MGjyZwO/J8IF8pXYRKWMCVvjfw2fJGbP
-	nonXM+jqnb24KczLXpDH/l+qgsC4OZVShISMv+x72qzySOyB5OxgdSNYJ/0Z+/V8C/z5yNfDY2+Xx
-	h8i2sLRoWmnC7WTmlwo8OYKha8GywDJJ+1peBNgCgNxQPMLgf4ZQ4jJKSUtG2+1mIVLQ39ABVhZ1D
-	sfGeX+aGs0sfZ8PkwJvuSroZE299MMNsE5SC/1XTfBsXic6SeHCSjblS78pUJe3NPo8FbzRN1snI/
-	NuZptNQw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Sx8RuQ9bZ3IC1GKx3LrLyf7/rgy+iZUko7c+QNg7lro=; b=ZJ0+sj/CAlfVcE
+	1DVDfzK5RDs4KMBn+bPvZJFf6pKx1DFsMR9kjSWgn6Voyn0VAvZDBQbPBd5St3Z/lfY9fgP09I5i7
+	8UfcCmhJ2I5tcPcRg/2nrRaCMxO8KMi3R8rNm5SYqJ9J3T0Cr/ZloTBJreDv6VRGxY7HrvL6SofOy
+	bf2CHPgLHEmXxLvlXKfcCUEcIg8lelSsCjjeuYl6euNz8/7v1wB2lJFzQnqGqpwAiybt/uuUb6AK8
+	LC/Ui/zKpscBcSJfOOUF2RT9VApsc0ocSZh+kpCUUlvKqLPKhKLdYHvjl7vH1llGljL1Q7e+Nxyhb
+	5l9V408CDUQlCOrnMkYA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nC19Y-003ozX-42; Mon, 24 Jan 2022 15:21:08 +0000
+	id 1nCH87-006r4s-9m; Tue, 25 Jan 2022 08:24:43 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nC19S-003oz5-6R
- for barebox@lists.infradead.org; Mon, 24 Jan 2022 15:21:04 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1nC19Q-0001Fu-TL; Mon, 24 Jan 2022 16:21:00 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <20220124151827.3313412-1-a.fatoum@pengutronix.de>
- <20220124151827.3313412-2-a.fatoum@pengutronix.de>
-Cc: "Schneider, Johannes" <JSchneider@jetter.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <c7a12071-176b-a5c0-be94-a7f670c2a430@pengutronix.de>
-Date: Mon, 24 Jan 2022 16:21:00 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ id 1nCH82-006r4E-Lt
+ for barebox@lists.infradead.org; Tue, 25 Jan 2022 08:24:39 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nCH81-0000ZE-Bs; Tue, 25 Jan 2022 09:24:37 +0100
+Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nCH80-007bdL-TM; Tue, 25 Jan 2022 09:24:36 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue, 25 Jan 2022 09:24:35 +0100
+Message-Id: <20220125082435.1812912-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20220124151827.3313412-2-a.fatoum@pengutronix.de>
-Content-Language: en-US
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220124_072102_433331_017F68E5 
-X-CRM114-Status: GOOD (  34.64  )
+X-CRM114-CacheID: sfid-20220125_002438_734035_CA18B832 
+X-CRM114-Status: UNSURE (   9.58  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -63,8 +59,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -73,146 +69,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/6] Documentation: add chapter on Talks about barebox
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] ARM: rockchip-v8-defconfig: Enable USB
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-T24gMjQuMDEuMjIgMTY6MTgsIEFobWFkIEZhdG91bSB3cm90ZToKCkFyZ2gsIGJvdGNoZWQgYXV0
-aG9yc2hpcCBvbiByZWJhc2UuIEBTYXNjaGEsIGNvdWxkIHlvdSBmaXggdXAKSm9oYW5uZXMgYXMg
-Z2l0IGF1dGhvciBvbiBhcHBseSBpZiB0aGVyZSdzIG5vIHYyPyBUaGFua3MuCgo+IFRoZXJlJ3Mg
-YmVlbiBhIG51bWJlciBvZiB0YWxrcyBhYm91dCBiYXJlYm94LiBDb2xsZWN0IHRoZW0gaW4gYSBu
-ZXcKPiBjaGFwdGVyIGZvciB0aG9zZSwgd2hvIHByZWZlciBzb21ldGhpbmcgbGVzcyBkcnkgdGhh
-biB3YWRpbmcgdGhyb3VnaCB0aGUKPiBkb2NzLiBBIHRvcC1sZXZlbCBjaGFwdGVyIGlzIGNob3Nl
-biwgc28gaXQncyBtb3JlIHZpc2libGUgdG8gdmlzaXRvcnMuCj4gCj4gVGhlIG9yZGVyaW5nIGlz
-IHJldmVyc2UgY2hyb25vbG9naWNhbCwgZXhjZXB0IGZvciB0aGUgZmlyc3QgZW50cnk6IFRoZQo+
-IG5ld2VzdCB0YWxrIGlzIEdlcm1hbiBhYm91dCBydW5uaW5nIERPT00gaW4gYmFyZWJveCwgd2hp
-Y2ggaXMgYSBiaXQKPiBkZXRhY2hlZCB0byBob3cgYmFyZWJveCBpcyBub3JtYWxseSB1c2VkLgo+
-IAo+IEluc3RlYWQsIGxldCdzIGtlZXAgdGhlIGZpcnN0IGVudHJ5IGFzIGEgcG9pbnRlciB0byB0
-aGUgbGF0ZXN0IG92ZXJ2aWV3Cj4gdGFsayBhbmQgdGhlbiB1c2UgcmV2ZXJzZSBjaHJvbm9sb2dp
-Y2FsIG9yZGVyIGZvciB0aGUgcmVzdC4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBKb2hhbm5lcyBTY2hu
-ZWlkZXIgPEpTY2huZWlkZXJAamV0dGVyLmRlPgo+IFNpZ25lZC1vZmYtYnk6IEFobWFkIEZhdG91
-bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Cj4gLS0tCj4gIERvY3VtZW50YXRpb24vaW5kZXgu
-cnN0IHwgICAxICsKPiAgRG9jdW1lbnRhdGlvbi90YWxrcy5yc3QgfCAxMzAgKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ICAyIGZpbGVzIGNoYW5nZWQsIDEzMSBpbnNl
-cnRpb25zKCspCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBEb2N1bWVudGF0aW9uL3RhbGtzLnJzdAo+
-IAo+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2luZGV4LnJzdCBiL0RvY3VtZW50YXRpb24v
-aW5kZXgucnN0Cj4gaW5kZXggODM2ZGM0MWFmMmEzLi5hM2UwMTllOWYwYTIgMTAwNjQ0Cj4gLS0t
-IGEvRG9jdW1lbnRhdGlvbi9pbmRleC5yc3QKPiArKysgYi9Eb2N1bWVudGF0aW9uL2luZGV4LnJz
-dAo+IEBAIC0yMCw2ICsyMCw3IEBAIENvbnRlbnRzOgo+ICAgICBnbG9zc2FyeQo+ICAgICBkZXZp
-Y2V0cmVlLyoKPiAgICAgZGV2ZWwvZGV2ZWwucnN0Cj4gKyAgIHRhbGtzCj4gIAo+ICAqIDpyZWY6
-YHNlYXJjaGAKPiAgKiA6cmVmOmBnZW5pbmRleGAKPiBkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlv
-bi90YWxrcy5yc3QgYi9Eb2N1bWVudGF0aW9uL3RhbGtzLnJzdAo+IG5ldyBmaWxlIG1vZGUgMTAw
-NjQ0Cj4gaW5kZXggMDAwMDAwMDAwMDAwLi41ZjFhZjU5OTMxNmIKPiAtLS0gL2Rldi9udWxsCj4g
-KysrIGIvRG9jdW1lbnRhdGlvbi90YWxrcy5yc3QKPiBAQCAtMCwwICsxLDEzMCBAQAo+ICtUYWxr
-cyBhbmQgTGVjdHVyZXMKPiArPT09PT09PT09PT09PT09PT09Cj4gKwo+ICtUaGlzIGlzIGEgY29s
-bGVjdGlvbiBvZiB0YWxrcyBoZWxkIGFib3V0IGJhcmVib3ggdXNlIGFuZCBkZXZlbG9wbWVudAo+
-ICthdCBkaWZmZXJlbnQgdGVjaG5pY2FsIGNvbmZlcmVuY2VzLiBUaGUgbW9zdCByZWNlbnQgb3Zl
-cnZpZXcgdGFsawo+ICtpcyBmcm9tIDIwMjA6Cj4gKwo+ICtCZXlvbmQgJ0p1c3QnIEJvb3Rpbmc6
-IEJhcmVib3ggQmVsbHMgYW5kIFdoaXN0bGVzCj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArCj4gK0FobWFkIEZhdG91bSwgRW1iZWRkZWQgTGlu
-dXggQ29uZmVyZW5jZSAtIEV1cm9wZSAyMDIwCj4gK2Bbc2xpZGVzXSA8aHR0cHM6Ly9lbGludXgu
-b3JnL2ltYWdlcy85LzlkL0JhcmVib3gtYmVsbHMtbi13aGlzdGxlcy5wZGY+YF9fCj4gK2Bbdmlk
-ZW9dIDxodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PWZydTFuNTRzMlc0PmBfXwo+ICsK
-PiArICAgUG9ydGluZyBiYXJlYm94IHRvIGEgbmV3IFNUTTMyTVAxIGJvYXJkIGFuZCBhIGdlbmVy
-YWwgZGlzY3Vzc2lvbgo+ICsgICBvZiBkZXNpZ24gY2hvaWNlcyBsaWtlIG11bHRpLWltYWdlLCBW
-RlMsIFBPU0lYL0xpbnV4IEFQSSwKPiArICAgZmFpbC1zYWZlIHVwZGF0ZXMsIGJvb3QgZmFsbC1i
-YWNrIG1lY2hhbmlzbXMsIGV0Yy4KPiArCj4gK0Jlc2lkZXMgb2xkZXIgb3ZlcnZpZXcgdGFsa3Ms
-IHRoZXJlJ3MgYSBudW1iZXIgb2YgdGFsa3MgaGVsZAo+ICthYm91dCBkaWZmZXJlbnQgYXNwZWN0
-cyBvZiBiYXJlYm94IHVzZS4KPiArVGhlc2UgYXJlIGxpc3RlZCBoZXJlIGluIHJldmVyc2UgY2hy
-b25vbG9naWNhbCBvcmRlci4KPiArCj4gK0RPT00gcG9ydGllcmVuIGbDvHIgRWluc3RlaWdlciAt
-IEhlYXZ5IE1ldGFsIGF1ZiBCYXJlIE1ldGFsIChHZXJtYW4pCj4gKy0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArCj4g
-K0FobWFkIEZhdG91bSwgRnJPU0NvbiAyMDIxCj4gK2Bbc2xpZGVzXSA8aHR0cHM6Ly9wcm9ncmFt
-bS5mcm9zY29uLmRlLzIwMjEvc3lzdGVtL2V2ZW50X2F0dGFjaG1lbnRzL2F0dGFjaG1lbnRzLzAw
-MC8wMDAvNjIyL29yaWdpbmFsL2hlYXZ5LW1ldGFsLW9uLWJhcmUtbWV0YWwucGRmPmBfXwo+ICtg
-W3ZpZGVvXSA8aHR0cHM6Ly9tZWRpYS5jY2MuZGUvdi9mcm9zY29uMjAyMS0yNjg3LWRvb21fcG9y
-dGllcmVuX2Z1cl9laW5zdGVpZ2VyPmBfXwo+ICsKPiArICAiRE9PTSBhcyBhIGJvb3Qgc3BsYXNo
-LiBIb3csIHdoeSBhbmQgaG93IHRvIGdldCBpdCBvbiB5b3VyIG5lYXJlc3QKPiArICBob21lIGFw
-cGxpYW5jZSIuIEEgKEdlcm1hbikgd2Fsa3Rocm91Z2ggb24gaG93IHRvIGxldmVyYWdlIGJhcmVi
-b3gKPiArICBBUElzIHRvIHJ1biBET09NIG9uIGFueSBoYXJkd2FyZSBzdXBwb3J0ZWQgYnkgYmFy
-ZWJveC4KPiArCj4gK0luaXRpYWxpemluZyBSSVNDLVY6IEEgR3VpZGVkIFRvdXIgZm9yIEFSTSBE
-ZXZlbG9wZXJzCj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tCj4gKwo+ICtSb3V2ZW4gQ3plcndpbnNraSAmIEFobWFkIEZhdG91bSwgRW1iZWRk
-ZWQgTGludXggQ29uZmVyZW5jZSAyMDIxCj4gK2Bbc2xpZGVzXSA8aHR0cHM6Ly9lbGludXgub3Jn
-L2ltYWdlcy84LzgwL0luaXRpYWxpemluZy1yaXNjdi5wZGY+YF9fCj4gK2BbdmlkZW9dIDxodHRw
-czovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PTcwb1lZdWZsRkxzPmBfXwo+ICsKPiArICBBIGd1
-aWRlIHRocm91Z2ggdGhlIFJJU0MtViBhcmNoaXRlY3R1cmUgYW5kIHNvbWUgb2YgaXRzIElTQSBl
-eHRlbnNpb25zCj4gKyAgYW5kIGEgd2Fsa3Rocm91Z2ggb2YgdGhlIGJhcmVib3ggcG9ydCB0byB0
-aGUgQmVhZ2xlLVYgU3RhcmxpZ2h0Lgo+ICsKPiArRnJvbSBSZXNldCBWZWN0b3IgdG8gS2VybmVs
-IC0gTmF2aWdhdGluZyB0aGUgQVJNIE1hdHJ5b3Noa2EKPiArLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArCj4gK0FobWFkIEZhdG91
-bSwgRk9TREVNIDIwMjEKPiArYFtzbGlkZXMgJiB2aWRlb10gPGh0dHBzOi8vYXJjaGl2ZS5mb3Nk
-ZW0ub3JnLzIwMjEvc2NoZWR1bGUvZXZlbnQvZnJvbV9yZXNldF92ZWN0b3JfdG9fa2VybmVsLz5g
-X18KPiArCj4gKyAgQSB3YWxrdGhyb3VnaCBvZiBOWFAgaS5NWDhNIGJvb3RzdHJhcC4gRnJvbSBC
-b290IFJPTSB0aHJvdWdoIGJhcmVib3ggdG8gTGludXguCj4gKwo+ICtCb290aW5nIHlvdXIgaS5N
-WCBwcm9jZXNzb3Igc2VjdXJlIGFuZCBpbXBsZW1lbnRpbmcgaS5NWDggc2VjdXJlIGJvb3QgaW4g
-YmFyZWJveAo+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+ICsKPiArUm91dmVuIEN6ZXJ3aW5z
-a2ksIGBTdHJhdHVtIDAgVGFsayAyMDE5IDxodHRwczovL3N0cmF0dW0wLm9yZy93aWtpL1ZvcnRy
-JUMzJUE0Z2UvVm9yYmVpIzIwMTk+YF9fCj4gK2BbdmlkZW9dIDxodHRwczovL3d3dy55b3V0dWJl
-LmNvbS93YXRjaD92PVpVR0xFdWxaTFdNPmBfXwo+ICsKPiArICBBIHdhbGt0aHJvdWdoIG9mIE5Y
-UCBpLk1YOE1RIGhpZ2ggYXNzdXJhbmNlIGJvb3Qgd2l0aCBiYXJlYm94Lgo+ICsKPiArUG9ydGlu
-ZyBCYXJlYm94IHRvIHRoZSBEaWdpIENDLU1YNlVMIFNCQyBQcm8gKEdlcm1hbikKPiArLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArCj4gK1Jv
-dXZlbiBDemVyd2luc2tpLCBgU3RyYXR1bSAwIExpdmUtSGFja2luZyAyMDE5IDxodHRwczovL3N0
-cmF0dW0wLm9yZy93aWtpL1ZvcnRyJUMzJUE0Z2UvVm9yYmVpIzIwMTk+YF9fCj4gK2BbdmlkZW9d
-IDxodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PUZJd0Y2R2Ztc1dNPmBfXwo+ICsKPiAr
-ICBMaXZlLWNvZGluZyBhIGJhcmVib3ggcG9ydCB0byBhIG5ldyBpLk1YNlVMIGJvYXJkIHdoaWxl
-Cj4gKyAgZXhwbGFpbmluZyB0aGUgZGV0YWlscyAoaW4gR2VybWFuKS4KPiArCj4gK1JlbW90ZSB1
-cGRhdGUgYWR2ZW50dXJlcyB3aXRoIFJBVUMsIFlvY3RvIGFuZCBCYXJlYm94Cj4gKy0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gKwo+ICtQYXRy
-aWNrIEJvZXR0Y2hlciwgYEVtYmVkZGVkIFJlY2lwZXMgMjAxOSA8aHR0cHM6Ly9lbWJlZGRlZC1y
-ZWNpcGVzLm9yZy8yMDE5L3JlbW90ZS11cGRhdGUtYWR2ZW50dXJlcy13aXRoLXJhdWMteW9jdG8t
-YW5kLWJhcmVib3gvPmBfXwo+ICtgW3ZpZGVvXSA8aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0
-Y2g/dj1oUzNGamY3ZnVITT5gX18KPiArCj4gKyAgUmVtb3RlIHVwZGF0ZSBhbmQgcmVkdW5kYW50
-IGJvb3Qgb2YgRW1iZWRkZWQgTGludXggZGV2aWNlcwo+ICsgIGluIHRoZSBmaWVsZCB3aXRoIFJB
-VUMgYW5kIGJhcmVib3ggYm9vdGNob29zZXIuCj4gKwo+ICtWZXJpZmllZCBCb290OiBGcm9tIFJP
-TSB0byBVc2Vyc3BhY2UKPiArLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4g
-Kwo+ICtNYXJjIEtsZWluZS1CdWRkZSwgRW1iZWRkZWQgTGludXggQ29uZmVyZW5jZSAtIEV1cm9w
-ZSAyMDE2Cj4gK2Bbc2xpZGVzXSA8aHR0cHM6Ly9lbGludXgub3JnL2ltYWdlcy9mL2Y4L1Zlcmlm
-aWVkX0Jvb3QucGRmPmBfXwo+ICtgW3ZpZGVvXSA8aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0
-Y2g/dj1sa0ZLdENoMlNhVT5gX18KPiArCj4gKyAgVXNpbmcgRk9TUyBjb21wb25lbnRzLCBpbmNs
-dWRpbmcgYmFyZWJveCwgZm9yIGEgY3J5cHRvZ3JhcGhpY2FsbHkKPiArICBzZWN1cmVkIGJvb3Qg
-Y2hhaW4gb24gTlhQIGkuTVg2IFNvQ3MuCj4gKwo+ICtCb290aW5nIExpbnV4IE1hZGUgRWFzeTog
-QSBCYXJlYm94IFVwZGF0ZQo+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLQo+ICsKPiArUm9iZXJ0IFNjaHdlYmVsLCBgRk9TREVNIDIwMTQgPGh0dHBzOi8vYXJjaGl2
-ZS5mb3NkZW0ub3JnLzIwMTQvc2NoZWR1bGUvZXZlbnQvX2Jvb3RpbmdfbGludXhfbWFkZV9lYXN5
-Ol9hX2JhcmVib3hfdXBkYXRlLz5gX18KPiArYFt2aWRlb10gPGh0dHBzOi8vd3d3LnlvdXR1YmUu
-Y29tL3dhdGNoP3Y9cC1tSEFRYUpRY00+YF9fCj4gKwo+ICsgIEFuIG92ZXJ2aWV3IHRhbGsgb24g
-YmFyZWJveCB1c2UgaW4gZW1iZWRkZWQgTGludXggc3lzdGVtcy4KPiArCj4gK0JhcmVib3ggYW5k
-IEJvb3Rsb2FkZXIgU3BlY2lmaWNhdGlvbgo+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KPiArCj4gK1Nhc2NoYSBIYXVlciwgRW1iZWRkZWQgTGludXggQ29uZmVyZW5jZSAt
-IEV1cm9wZSAyMDEzCj4gK2Bbc2xpZGVzXSA8aHR0cHM6Ly9lbGludXgub3JnL2ltYWdlcy85Lzkw
-L0JhcmVib3gtZWxjZTIwMTMtYm9vdGxvYWRlcnNwZWMucGRmPmBfXwo+ICtgW3ZpZGVvXSA8aHR0
-cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1aOEZjSUdYb3hfWT5gX18KPiArCj4gKyAgVGhl
-IGZyZWVkZXNrdG9wLm9yZyBib290bG9hZGVyIHNwZWNpZmljYXRpb24gYW5kIGl0cyBzdXBwb3J0
-IGluIGJhcmVib3guCj4gKwo+ICtCYXJlYm94IEJvb3Rsb2FkZXIKPiArLS0tLS0tLS0tLS0tLS0t
-LS0tCj4gKwo+ICtTYXNjaGEgSGF1ZXIsIEVtYmVkZGVkIExpbnV4IENvbmZlcmVuY2UgLSBFdXJv
-cGUgMjAxMgo+ICtgW3NsaWRlc10gPGh0dHBzOi8vZWxpbnV4Lm9yZy9pbWFnZXMvNi82Yi9QUkUt
-MjAxMjExMDgtMS1CYXJlYm94LnBkZj5gX18KPiArYFt2aWRlb10gPGh0dHBzOi8vd3d3LnlvdXR1
-YmUuY29tL3dhdGNoP3Y9b1k4QmpDRXRfcDg+YF9fCj4gKwo+ICsgIEFuIHVwZGF0ZSBvbiBiYXJl
-Ym94IGRldmVsb3BtZW50IHByb2dyZXNzIHdpdGggYSBkaXNjdXNzaW9uIG9mIG5ld2x5Cj4gKyAg
-aW1wbGVtZW50ZWQgZmVhdHVyZXMgaW4gdGhlIHByZWNlZGluZyB0aHJlZSB5ZWFycy4KPiArCj4g
-K0JhcmVib3g6IEJvb3RpbmcgTGludXggRmFzdCBhbmQgRmFuY3kKPiArLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+ICsKPiArUm9iZXJ0IFNjaHdlYmVsICYgU2FzY2hhIEhh
-dWVyLCBFbWJlZGRlZCBMaW51eCBDb25mZXJlbmNlIC0gRXVyb3BlIDIwMTAKPiArYFtzbGlkZXNd
-IDxodHRwczovL2VsaW51eC5vcmcvaW1hZ2VzLzgvODkvRUxDRS0yMDEwLUJhcmVib3gtQm9vdGlu
-Zy1MaW51eC1GYXN0LWFuZC1GYW5jeS5wZGY+YF9fCj4gKwo+ICsgIEJvb3QgdGltZSBvcHRpbWl6
-YXRpb24gd2hpbGUgdXNpbmcgYmFyZWJveC4KPiArCj4gK1UtQm9vdC12Mgo+ICstLS0tLS0tLS0K
-PiArCj4gK1Nhc2NoYSBIYXVlciAmIE1hcmMgS2xlaW5lLUJ1ZGRlLCBFbWJlZGRlZCBMaW51eCBD
-b25mZXJlbmNlIDIwMDkKPiArYFtzbGlkZXNdIDxodHRwczovL2VsaW51eC5vcmcvaW1hZ2VzLzkv
-OTAvSGF1ZXItVV9Cb290VjIucGRmPmBfXwo+ICsKPiArICBFYXJseSBiYXJlYm94IChzdGlsbCBu
-YW1lZCBVLUJvb3QgdjIgYmFjayB0aGVuKSBwcmVzZW50YXRpb24gb24KPiArICB0aGUgbW90aXZh
-dGlvbiBmb3IgdGhlIGZvcmsgYW5kIHRoZSBuaWNldGllcyBtYWRlIHBvc3NpYmxlIGJ5IGl0Lgo+
-IAoKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAg
-ICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNo
-ZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAg
-ICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAg
-KzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+The USB controllers on the rk3568 are supported, so enable them in the
+defconfig file.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/configs/rockchip_v8_defconfig | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/configs/rockchip_v8_defconfig b/arch/arm/configs/rockchip_v8_defconfig
+index 4ceb036db6..973d666afa 100644
+--- a/arch/arm/configs/rockchip_v8_defconfig
++++ b/arch/arm/configs/rockchip_v8_defconfig
+@@ -8,7 +8,6 @@ CONFIG_MMU=y
+ CONFIG_MALLOC_SIZE=0x0
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_KALLSYMS=y
+-CONFIG_RELOCATABLE=y
+ CONFIG_PROMPT="barebox> "
+ CONFIG_BAUDRATE=1500000
+ CONFIG_HUSH_FANCY_PROMPT=y
+@@ -21,7 +20,6 @@ CONFIG_BOOTM_OFTREE=y
+ CONFIG_BOOTM_OFTREE_UIMAGE=y
+ CONFIG_BOOTM_AIMAGE=y
+ CONFIG_BLSPEC=y
+-CONFIG_SYSTEM_PARTITIONS=y
+ CONFIG_CONSOLE_ACTIVATE_NONE=y
+ CONFIG_CONSOLE_ALLOW_COLOR=y
+ CONFIG_PBL_CONSOLE=y
+@@ -37,6 +35,7 @@ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+ CONFIG_CMD_IMD=y
+ CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_REGULATOR=y
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_UIMAGE=y
+@@ -90,8 +89,22 @@ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_NET_DESIGNWARE_EQOS=y
+ CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP=y
+ CONFIG_SMSC_PHY=y
++CONFIG_NET_USB=y
++CONFIG_NET_USB_ASIX=y
++CONFIG_USB_NET_AX88179_178A=y
++CONFIG_NET_USB_SMSC95XX=y
++CONFIG_NET_USB_RTL8152=y
+ CONFIG_I2C=y
+ CONFIG_I2C_GPIO=y
++CONFIG_USB_HOST=y
++CONFIG_USB_DWC3=y
++CONFIG_USB_DWC3_DUAL_ROLE=y
++CONFIG_USB_EHCI=y
++CONFIG_USB_STORAGE=y
++CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_SERIAL=y
++CONFIG_USB_GADGET_FASTBOOT=y
++CONFIG_USB_GADGET_MASS_STORAGE=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+@@ -106,7 +119,12 @@ CONFIG_LED_GPIO_OF=y
+ CONFIG_WATCHDOG=y
+ CONFIG_WATCHDOG_POLLER=y
+ CONFIG_WATCHDOG_DW=y
++CONFIG_REGULATOR=y
++CONFIG_REGULATOR_FIXED=y
+ CONFIG_GENERIC_PHY=y
++CONFIG_USB_NOP_XCEIV=y
++CONFIG_PHY_ROCKCHIP_INNO_USB2=y
++CONFIG_PHY_ROCKCHIP_NANENG_COMBO_PHY=y
+ # CONFIG_VIRTIO_MENU is not set
+ CONFIG_FS_CRAMFS=y
+ CONFIG_FS_EXT4=y
+-- 
+2.30.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
