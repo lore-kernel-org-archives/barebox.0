@@ -1,80 +1,64 @@
-Delivery-date: Wed, 26 Jan 2022 07:34:29 +0100
+Delivery-date: Wed, 26 Jan 2022 08:59:12 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nCbsz-00DZDN-Mo
-	for lore@lore.pengutronix.de; Wed, 26 Jan 2022 07:34:29 +0100
+	id 1nCdCx-00DclU-WB
+	for lore@lore.pengutronix.de; Wed, 26 Jan 2022 08:59:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nCbsv-0006fZ-8C
-	for lore@pengutronix.de; Wed, 26 Jan 2022 07:34:29 +0100
+	id 1nCdCv-0000V7-D1
+	for lore@pengutronix.de; Wed, 26 Jan 2022 08:59:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Mime-Version:References:In-Reply-To:
-	Message-Id:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=C0nNjMPyO85ILlpvsr6DeysvRdF8nM0EboIQ/+WzwbY=; b=J5MFYXjXHOwqMS
-	UT2U0pYacSK1ipVmD5OqDQ/PmMykvnUOWoiD/10SPesRqyOFMEDqhvWAQC6PQAXrpFiKa0z4FqKBx
-	uFK5ZjzsBvrLlw7z82g4w0bJQegKE8RiFQ5W926V3kh5S7eoQy8+7uGi8aeG+Ko+KUrwNl+au3fG4
-	p8pSf5mj58u3hg/o3XrAWLhn5xc950l+NUQd8mZKLY9o6W2a8/q+HuMNmAzYYnKNBxQNyqmy16OSE
-	o08H6hl2hemzWE8QwqP0qFllWYG6yq/6k9LGB7rdrB35bB2EobQ4hhEzqC3/oVohDT/f4/bWmA0xU
-	P16hoj9luHWveGYLXNJw==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=xy+Dp+iU2P575AQ3JnXdJHFItwB5t/R7RFqJXgJErkM=; b=w1D/1QM9rt6pg3z4zkXOrO1CG+
+	j4jHucV2Xmq2CqogR1smkNNWMG/xtPULCRDO/7NCwGDL5cPbuVufOv71w2XEHzwMt7BlCdCaYrzDs
+	JrFb4SGx9nrRATZHvlE7MYD3OECW03D845VNZTfBgqg1UWWqkgAqJ2GXcgKbbo5mr4CXYEB51LLTX
+	LOli0GeyFhYztzGECPpZnlBF1jK3FXGlTE4s/tCtIs1Iy3xDt27MTVffDbfr6Bcbo9JOggJYgZPrB
+	0k9h3VaWFQW9jyP4ZsgAc0BVtujLM9cvPuBcnQvqUm9NHVZElE6ZUoKsriF0UIWgHfxfSZeXpMAxZ
+	sHnQgxFQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nCbrH-00AIGP-4M; Wed, 26 Jan 2022 06:32:43 +0000
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+	id 1nCdBP-00AcdR-DT; Wed, 26 Jan 2022 07:57:35 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nCbrB-00AIEk-UC
- for barebox@lists.infradead.org; Wed, 26 Jan 2022 06:32:39 +0000
-Received: by mail-lf1-x12f.google.com with SMTP id x11so61165141lfa.2
- for <barebox@lists.infradead.org>; Tue, 25 Jan 2022 22:32:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=sQ+xKXFqJvF9f/OaxmWLBqkhUnP/LlwLomYKOjp8p4c=;
- b=RqYsZB+Rulufb2OfzuGiiYBvrR6dVXnlBx5gTyThai6CuqiD1Llr3XVev5EwwQfaSo
- S0xomqc3taaJMtB/L695bywFCuEqn5bsEJxFZ+7jbVXi4KcospKVoM77wW6Yv+O2x/I1
- 4VzXY3DbDSH1y92MKz5c42yGpTRY1LdCeSSh3KGHo1X4feHolSSwwx7/rJmiNup9SZuR
- 2SU4Gdn/80wK7+78WFIc119hkehzE6fQ4PYUREng0wghSLXkYAyVIXU2w7Wk2GZG70/c
- V0j8t39MyQzloUWOUcTht+FMV45CE+oGO5R6iGdkCbzxKj+HLDmyJ/tyPEr4MPsy5oDm
- Ci4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=sQ+xKXFqJvF9f/OaxmWLBqkhUnP/LlwLomYKOjp8p4c=;
- b=02FXBnSylrl9lnLjwpRazPiryk7GufGgKx2EERIFvc+qhBnxcWdD3BltRJQB5N2TFK
- dKbnXBNXs1JFR1BiQCn7a+M/MO8B8CVeYjmC8CUPYEdtWw5GmRSrItnrJD2jJ21M0Aeb
- ydKmlwUAKukB56zf1lNLYmlvKpt23HnylrUNpwCy2/IvLdMKvb1FFP6j9RfveyT9Xaof
- QbS2EsnUc4Czlz6GuXiTSDy1G6mErxf1YeColHmscXbvm8fNRygyU9zAkL8aWU/7k2OP
- ButvIl6665oynKvhs12i4HDbA7MEzPOVMtzwJMqUN8ZaTz2jSoWIByotiDwn8h9mMwX1
- 6D/w==
-X-Gm-Message-State: AOAM530ZCkJovkP9lW7pkRTMTdeOFmYp3OipevfgpLCyFkbIBQeWUqUH
- p5HjOHrUHboPP/DKjXaeHrYRI8NRUsU=
-X-Google-Smtp-Source: ABdhPJzpHhcHbMFz+C507LRFZMunZ+DJNVqrKKH2gc73T1GzRbEiQWF8ADknylfa/Aeq4SexPo0UfA==
-X-Received: by 2002:ac2:5f4f:: with SMTP id 15mr9926420lfz.321.1643178755375; 
- Tue, 25 Jan 2022 22:32:35 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
- by smtp.gmail.com with ESMTPSA id w10sm702278lfr.234.2022.01.25.22.32.34
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 25 Jan 2022 22:32:34 -0800 (PST)
-Date: Wed, 26 Jan 2022 09:32:33 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-Id: <20220126093233.026701eddc2a1a7dceb76849@gmail.com>
-In-Reply-To: <20210607104411.23071-7-s.hauer@pengutronix.de>
-References: <20210607104411.23071-1-s.hauer@pengutronix.de>
- <20210607104411.23071-7-s.hauer@pengutronix.de>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; i686-pc-linux-gnu)
-Mime-Version: 1.0
+ id 1nCdBJ-00Acd8-Kj
+ for barebox@lists.infradead.org; Wed, 26 Jan 2022 07:57:31 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nCdBH-0000G8-C4; Wed, 26 Jan 2022 08:57:27 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nCdBH-0004Qf-2t; Wed, 26 Jan 2022 08:57:27 +0100
+Date: Wed, 26 Jan 2022 08:57:27 +0100
+To: Michael Olbrich <m.olbrich@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220126075727.GD23490@pengutronix.de>
+References: <20220124100458.2924679-1-m.olbrich@pengutronix.de>
+ <20220124100458.2924679-4-m.olbrich@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20220124100458.2924679-4-m.olbrich@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 08:37:21 up 46 days, 16:22, 65 users,  load average: 0.14, 0.34, 0.26
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220125_223238_018772_54A321A2 
-X-CRM114-Status: GOOD (  17.71  )
+X-CRM114-CacheID: sfid-20220125_235729_732870_98B6C033 
+X-CRM114-Status: GOOD (  34.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,170 +70,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 06/12] mci: sdhci: Use Linux defines for
- SDHCI_HOST_CONTROL register
+Subject: Re: [PATCH 3/3] state: support backend-diskuuid / backend-offset
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon,  7 Jun 2021 12:44:05 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-Hi Sascha!
-
-> To ease porting and comparing of Linux code.
-> =
-
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+On Mon, Jan 24, 2022 at 11:04:58AM +0100, Michael Olbrich wrote:
+> On some platforms (e.g. EFI on x86_64) the state backend can only be
+> selected by a partiton UUID. On existing devices with a DOS partition
+> table, there may be no spare partition available for state.
+> 
+> This makes it possible to select the disk via UUID. The exact position is
+> defined by an explicitly specified offset.
+> 
+> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 > ---
->  drivers/mci/arasan-sdhci.c       | 12 ++++++------
->  drivers/mci/atmel-sdhci-common.c | 14 +++++++-------
->  drivers/mci/dove-sdhci.c         | 10 +++++-----
->  drivers/mci/sdhci.h              | 17 ++++++++++++-----
->  4 files changed, 30 insertions(+), 23 deletions(-)
-> =
+> 
+> I wasn't sure where to add the helper function. Is include/fs.h ok or
+> should I put it somewhere else?
+> 
+> I'll implement the same helper for dt-utils, so we can avoid additional
+> #ifdef here.
+> 
+>  common/state/state.c | 55 +++++++++++++++++++++++++++++---------------
+>  include/fs.h         | 12 ++++++++++
+>  2 files changed, 49 insertions(+), 18 deletions(-)
+> 
+> diff --git a/common/state/state.c b/common/state/state.c
+> index 8c34ae83e52b..2a8b12d20c5a 100644
+> --- a/common/state/state.c
+> +++ b/common/state/state.c
+> @@ -592,6 +592,7 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
+>  	const char *backend_type;
+>  	const char *storage_type = NULL;
+>  	const char *alias;
+> +	const char *diskuuid;
+>  	uint32_t stridesize;
+>  	struct device_node *partition_node;
+>  	off_t offset = 0;
+> @@ -607,30 +608,48 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
+>  	if (IS_ERR(state))
+>  		return state;
+>  
+> -	partition_node = of_parse_phandle(node, "backend", 0);
+> -	if (!partition_node) {
+> -		dev_err(&state->dev, "Cannot resolve \"backend\" phandle\n");
+> -		ret = -EINVAL;
+> -		goto out_release_state;
+> -	}
+> +	ret = of_property_read_string(node, "backend-diskuuid", &diskuuid);
 
-> diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-> index e22db4cfa3..e02f222345 100644
-> --- a/drivers/mci/arasan-sdhci.c
-> +++ b/drivers/mci/arasan-sdhci.c
+This needs some documentation in
+Documentation/devicetree/bindings/barebox/barebox,state.rst.
 
-...
+> +	if (ret == 0) {
+> +		u64 off;
+> +
+> +		ret = devpath_from_diskuuid(diskuuid, &state->backend_path);
+> +		if (ret) {
+> +			dev_err(&state->dev, "state failed find backend device for diskuuid='%s'\n",
+> +				diskuuid);
+> +			goto out_release_state;
+> +		}
+> +		ret = of_property_read_u64(node, "backend-offset", &off);
 
-> @@ -200,21 +200,21 @@ static void arasan_sdhci_set_ios(struct mci_host *m=
-ci, struct mci_ios *ios)
->  	}
->  =
+I stumbled upon this because you have to use a 64bit type here instead
+of using 'offset' directly. I think 'offset' should be 64bit instead so
+that larger offsets can be used.
 
->  	val =3D sdhci_read8(&host->sdhci, SDHCI_HOST_CONTROL) &
-> -			~(SDHCI_DATA_WIDTH_4BIT | SDHCI_DATA_WIDTH_8BIT);
-> +			~(SDHCI_CTRL_8BITBUS | SDHCI_CTRL_8BITBUS);
->  =
+> +		if (ret) {
+> +			dev_err(&state->dev, "'backend-offset' property undefined\n");
+> +			goto out_release_state;
+> +		}
+> +		offset = off;
 
->  	switch (ios->bus_width) {
->  	case MMC_BUS_WIDTH_8:
-> -		val |=3D SDHCI_DATA_WIDTH_8BIT;
-> +		val |=3D SDHCI_CTRL_8BITBUS;
->  		break;
->  	case MMC_BUS_WIDTH_4:
-                     ^^^^^^^^
-> -		val |=3D SDHCI_DATA_WIDTH_4BIT;
-                                  ^^^^^^^^^^^
-> +		val |=3D SDHCI_CTRL_8BITBUS;
-                                  ^^^^^^^
-Is this correct?
+What about the size of the state partition? This is not set anywhere in
+this case so it's still zero. It should be specified the in device tree
+as well. At the same time I'm a bit nervous that it apparently still
+works with size zero.
 
->  		break;
->  	}
->  =
+Sascha
 
->  	if (ios->clock > 26000000)
-> -		val |=3D SDHCI_HIGHSPEED_EN;
-> +		val |=3D SDHCI_CTRL_HISPD;
->  	else
-> -		val &=3D ~SDHCI_HIGHSPEED_EN;
-> +		val &=3D ~SDHCI_CTRL_HISPD;
->  =
-
->  	sdhci_write8(&host->sdhci, SDHCI_HOST_CONTROL, val);
->  }
-> diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-c=
-ommon.c
-> index b391775b00..d2b777a93c 100644
-> --- a/drivers/mci/atmel-sdhci-common.c
-> +++ b/drivers/mci/atmel-sdhci-common.c
-
-...
-
-> @@ -297,15 +297,15 @@ static int at91_sdhci_set_bus_width(struct at91_sdh=
-ci *host, unsigned bus_width)
->  =
-
->  	switch(bus_width) {
->  	case MMC_BUS_WIDTH_8:
-> -		reg |=3D SDHCI_DATA_WIDTH_8BIT;
-> +		reg |=3D SDHCI_CTRL_8BITBUS;
->  		break;
->  	case MMC_BUS_WIDTH_4:
-                     ^^^^^^^
-
-> -		reg &=3D ~SDHCI_DATA_WIDTH_8BIT;
-> -		reg |=3D SDHCI_DATA_WIDTH_4BIT;
-                                  ^^^^^^^^^^^
-> +		reg &=3D ~SDHCI_CTRL_8BITBUS;
-> +		reg |=3D SDHCI_CTRL_8BITBUS;
-                                  ^^^^^^^^
-
-just the same question here
-
->  		break;
->  	default:
-> -		reg &=3D ~SDHCI_DATA_WIDTH_8BIT;
-> -		reg &=3D ~SDHCI_DATA_WIDTH_4BIT;
-> +		reg &=3D ~SDHCI_CTRL_8BITBUS;
-> +		reg &=3D ~SDHCI_CTRL_8BITBUS;
-
-and here
-
->  	}
->  =
-
->  	sdhci_write8(sdhci, SDHCI_HOST_CONTROL, reg);
-> diff --git a/drivers/mci/dove-sdhci.c b/drivers/mci/dove-sdhci.c
-> index 9c10e67eb8..cafc9dc579 100644
-> --- a/drivers/mci/dove-sdhci.c
-> +++ b/drivers/mci/dove-sdhci.c
-> @@ -224,20 +224,20 @@ static void dove_sdhci_mci_set_ios(struct mci_host =
-*mci, struct mci_ios *ios)
->  =
-
->  	/* set bus width */
->  	val =3D sdhci_read8(&host->sdhci, SDHCI_HOST_CONTROL) &
-> -		~(SDHCI_DATA_WIDTH_4BIT | SDHCI_DATA_WIDTH_8BIT);
-> +		~(SDHCI_CTRL_8BITBUS | SDHCI_CTRL_8BITBUS);
->  	switch (ios->bus_width) {
->  	case MMC_BUS_WIDTH_8:
-> -		val |=3D SDHCI_DATA_WIDTH_8BIT;
-> +		val |=3D SDHCI_CTRL_8BITBUS;
->  		break;
->  	case MMC_BUS_WIDTH_4:
-> -		val |=3D SDHCI_DATA_WIDTH_4BIT;
-> +		val |=3D SDHCI_CTRL_8BITBUS;
-
-and here
-
->  		break;
->  	}
->  =
-
->  	if (ios->clock > 26000000)
-> -		val |=3D SDHCI_HIGHSPEED_EN;
-> +		val |=3D SDHCI_CTRL_HISPD;
->  	else
-> -		val &=3D ~SDHCI_HIGHSPEED_EN;
-> +		val &=3D ~SDHCI_CTRL_HISPD;
->  =
-
->  	sdhci_write8(&host->sdhci, SDHCI_HOST_CONTROL, val);
->  =
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
