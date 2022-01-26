@@ -1,64 +1,66 @@
-Delivery-date: Wed, 26 Jan 2022 10:27:44 +0100
+Delivery-date: Wed, 26 Jan 2022 10:37:03 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nCeae-00Dgw3-4j
-	for lore@lore.pengutronix.de; Wed, 26 Jan 2022 10:27:44 +0100
+	id 1nCejf-00DhFV-2d
+	for lore@lore.pengutronix.de; Wed, 26 Jan 2022 10:37:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nCeac-0004kt-Fq
-	for lore@pengutronix.de; Wed, 26 Jan 2022 10:27:43 +0100
+	id 1nCejc-00060F-PC
+	for lore@pengutronix.de; Wed, 26 Jan 2022 10:37:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
 	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=/65ueo6jmHm2nk+3uuOyeTKen6jaia5GnpHs57bq8Tk=; b=2TURlZJSgGTV1M
-	4maoPK4ETUNqt3otSk3T6cB9NozOMbem4bURQJuh6aBCzNaCt3qW/lMguxUQ65dEX+oTQX8bgSpmu
-	8jdzdGXVecbvdq9/+1ZO2yWFejik8eMaG+JHwU4dN1asUCxopZMvi1V1n7puHzdIUVGWN7syCWRPN
-	ibKhYO3LsXNCu1EKMpk2dWLW4mo3jDp4UOCcdslu1hHCWWtuWJCfX9MyHep0joG7sMnu/aXo89usO
-	rReOV+weOKofuWshFoTtoZIGv9EsOXZrZYIvDvVX0v0HWn9tww2nOJxL1LxAmX5Ac6nJgoDbYbkEr
-	P/Cds2Q/DyVKHpOipYRw==;
+	List-Owner; bh=O6bT2GVXT+TTrHZ03l/scFDN2jCQYLYjLQkCHq/AnD0=; b=azwSJYkWw9j72g
+	EVlfckdK0xuBAof7nV9BfnI/j4D0VGlCDWWiFkuw2TnoGJWvMu3QBOibg2+C6DZ9Q4R2LorUuwPLR
+	ayGazLet6aS7UgY/2jJtXG7tU5IrSYhjCIJKoQGH8xoMn0g93+BvSPwpFmDYu6Q5Dlm6xt7fIIt0I
+	4UhVyjqfOZXdJ9eNO8/N0wH3tTXfzOFe3mw0VgtTUzJ1jNfBODv4hyVYmX/RnvqMpukcwzxyX/hhz
+	OFr2uK4GSdaY2EKDG49oWfDr+dHg6vGYljco3qK10XB7g/vXxO/1nZSmCAZP0XH9KiKiItBxg5mH1
+	zpT8Q8W81vJNqCKz3FhA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nCeZG-00AxNt-UT; Wed, 26 Jan 2022 09:26:19 +0000
+	id 1nCeiD-00B0Dl-7n; Wed, 26 Jan 2022 09:35:33 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nCeWN-00AwU2-Id
- for barebox@lists.infradead.org; Wed, 26 Jan 2022 09:23:21 +0000
+ id 1nCehx-00B0Bb-RP
+ for barebox@lists.infradead.org; Wed, 26 Jan 2022 09:35:19 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nCeWM-0004Aw-5N; Wed, 26 Jan 2022 10:23:18 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nCeWL-0002Qv-K7; Wed, 26 Jan 2022 10:23:17 +0100
-Date: Wed, 26 Jan 2022 10:23:17 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20220126092317.GG23490@pengutronix.de>
-References: <20210607104411.23071-1-s.hauer@pengutronix.de>
- <20210607104411.23071-7-s.hauer@pengutronix.de>
- <20220126093233.026701eddc2a1a7dceb76849@gmail.com>
+ (envelope-from <mol@pengutronix.de>)
+ id 1nCeht-0005eH-Vg; Wed, 26 Jan 2022 10:35:13 +0100
+Received: from mol by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mol@pengutronix.de>)
+ id 1nCeht-0002qY-Mi; Wed, 26 Jan 2022 10:35:13 +0100
+Date: Wed, 26 Jan 2022 10:35:13 +0100
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220126093513.GI11273@pengutronix.de>
+Mail-Followup-To: Sascha Hauer <sha@pengutronix.de>,
+ barebox@lists.infradead.org
+References: <20220124100458.2924679-1-m.olbrich@pengutronix.de>
+ <20220124100458.2924679-4-m.olbrich@pengutronix.de>
+ <20220126075727.GD23490@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220126093233.026701eddc2a1a7dceb76849@gmail.com>
+In-Reply-To: <20220126075727.GD23490@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:08:50 up 46 days, 17:54, 80 users,  load average: 0.01, 0.14, 0.17
+X-Uptime: 10:12:42 up 46 days, 17:58, 81 users,  load average: 0.08, 0.16, 0.17
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220126_012319_665493_C2DAFF4C 
-X-CRM114-Status: GOOD (  25.83  )
+X-CRM114-CacheID: sfid-20220126_013517_956276_F198DE1B 
+X-CRM114-Status: GOOD (  47.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,65 +80,113 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 06/12] mci: sdhci: Use Linux defines for
- SDHCI_HOST_CONTROL register
+Subject: Re: [PATCH 3/3] state: support backend-diskuuid / backend-offset
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jan 26, 2022 at 09:32:33AM +0300, Antony Pavlov wrote:
-> On Mon,  7 Jun 2021 12:44:05 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> Hi Sascha!
-> 
-> > To ease porting and comparing of Linux code.
+On Wed, Jan 26, 2022 at 08:57:27AM +0100, Sascha Hauer wrote:
+> On Mon, Jan 24, 2022 at 11:04:58AM +0100, Michael Olbrich wrote:
+> > On some platforms (e.g. EFI on x86_64) the state backend can only be
+> > selected by a partiton UUID. On existing devices with a DOS partition
+> > table, there may be no spare partition available for state.
 > > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > This makes it possible to select the disk via UUID. The exact position is
+> > defined by an explicitly specified offset.
+> > 
+> > Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 > > ---
-> >  drivers/mci/arasan-sdhci.c       | 12 ++++++------
-> >  drivers/mci/atmel-sdhci-common.c | 14 +++++++-------
-> >  drivers/mci/dove-sdhci.c         | 10 +++++-----
-> >  drivers/mci/sdhci.h              | 17 ++++++++++++-----
-> >  4 files changed, 30 insertions(+), 23 deletions(-)
 > > 
-> > diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-> > index e22db4cfa3..e02f222345 100644
-> > --- a/drivers/mci/arasan-sdhci.c
-> > +++ b/drivers/mci/arasan-sdhci.c
-> 
-> ...
-> 
-> > @@ -200,21 +200,21 @@ static void arasan_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
-> >  	}
+> > I wasn't sure where to add the helper function. Is include/fs.h ok or
+> > should I put it somewhere else?
+> > 
+> > I'll implement the same helper for dt-utils, so we can avoid additional
+> > #ifdef here.
+> > 
+> >  common/state/state.c | 55 +++++++++++++++++++++++++++++---------------
+> >  include/fs.h         | 12 ++++++++++
+> >  2 files changed, 49 insertions(+), 18 deletions(-)
+> > 
+> > diff --git a/common/state/state.c b/common/state/state.c
+> > index 8c34ae83e52b..2a8b12d20c5a 100644
+> > --- a/common/state/state.c
+> > +++ b/common/state/state.c
+> > @@ -592,6 +592,7 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
+> >  	const char *backend_type;
+> >  	const char *storage_type = NULL;
+> >  	const char *alias;
+> > +	const char *diskuuid;
+> >  	uint32_t stridesize;
+> >  	struct device_node *partition_node;
+> >  	off_t offset = 0;
+> > @@ -607,30 +608,48 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
+> >  	if (IS_ERR(state))
+> >  		return state;
 > >  
-> >  	val = sdhci_read8(&host->sdhci, SDHCI_HOST_CONTROL) &
-> > -			~(SDHCI_DATA_WIDTH_4BIT | SDHCI_DATA_WIDTH_8BIT);
-> > +			~(SDHCI_CTRL_8BITBUS | SDHCI_CTRL_8BITBUS);
-> >  
-> >  	switch (ios->bus_width) {
-> >  	case MMC_BUS_WIDTH_8:
-> > -		val |= SDHCI_DATA_WIDTH_8BIT;
-> > +		val |= SDHCI_CTRL_8BITBUS;
-> >  		break;
-> >  	case MMC_BUS_WIDTH_4:
->                      ^^^^^^^^
-> > -		val |= SDHCI_DATA_WIDTH_4BIT;
->                                   ^^^^^^^^^^^
-> > +		val |= SDHCI_CTRL_8BITBUS;
->                                   ^^^^^^^
-> Is this correct?
+> > -	partition_node = of_parse_phandle(node, "backend", 0);
+> > -	if (!partition_node) {
+> > -		dev_err(&state->dev, "Cannot resolve \"backend\" phandle\n");
+> > -		ret = -EINVAL;
+> > -		goto out_release_state;
+> > -	}
+> > +	ret = of_property_read_string(node, "backend-diskuuid", &diskuuid);
+> 
+> This needs some documentation in
+> Documentation/devicetree/bindings/barebox/barebox,state.rst.
 
-Nope, indeed not. Fortunately it's fixed in the same series in "[PATCH
-08/12] mci: sdhci: arasan: Use sdhci_set_bus_width()". The other places
-need fixing though, patch is out.
+I can do that.
 
-Thanks for noting
+> > +	if (ret == 0) {
+> > +		u64 off;
+> > +
+> > +		ret = devpath_from_diskuuid(diskuuid, &state->backend_path);
+> > +		if (ret) {
+> > +			dev_err(&state->dev, "state failed find backend device for diskuuid='%s'\n",
+> > +				diskuuid);
+> > +			goto out_release_state;
+> > +		}
+> > +		ret = of_property_read_u64(node, "backend-offset", &off);
+> 
+> I stumbled upon this because you have to use a 64bit type here instead
+> of using 'offset' directly. I think 'offset' should be 64bit instead so
+> that larger offsets can be used.
 
-Sascha
+It's not that simple. 'offset' used as a 'off_t' and 'ssize_t' all over the
+place in the state framework. On 32bit architecture both are defined as
+'long' or 'int'. Both are 32 bit types so changing 'offset' to a 64bit type
+here doesn't really help.
+On 64bit architectures 'off_t' and 'ssize_t' are both 'long' which is a
+64bit type. We still need to cast from unsigned to signed, but I don't
+think that's really a problem here.
+
+So it works for large offsets on 64bit architectures as it is, and it can
+be extended to work in 32bit architectures without changing the binding.
+But doing that requires larger code changes. And I have no way to test
+those.
+
+> > +		if (ret) {
+> > +			dev_err(&state->dev, "'backend-offset' property undefined\n");
+> > +			goto out_release_state;
+> > +		}
+> > +		offset = off;
+> 
+> What about the size of the state partition? This is not set anywhere in
+> this case so it's still zero. It should be specified the in device tree
+> as well. At the same time I'm a bit nervous that it apparently still
+> works with size zero.
+
+The code explicitly checks if the size is specified and skips any range
+checks if it's not. From what I can tell, it has been like that from the
+beginning.
+
+If that's not ok, then I could add a 'backend-size' property, or do you
+have something else in mind?
+
+Regards,
+Michael
 
 -- 
 Pengutronix e.K.                           |                             |
