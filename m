@@ -1,75 +1,55 @@
-Delivery-date: Fri, 28 Jan 2022 09:02:17 +0100
+Delivery-date: Fri, 28 Jan 2022 09:24:49 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nDMD3-00FlmM-Nz
-	for lore@lore.pengutronix.de; Fri, 28 Jan 2022 09:02:17 +0100
+	id 1nDMYr-00FmWS-NW
+	for lore@lore.pengutronix.de; Fri, 28 Jan 2022 09:24:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nDMD2-0007nf-4K
-	for lore@pengutronix.de; Fri, 28 Jan 2022 09:02:17 +0100
+	id 1nDMYp-0002Kf-VJ
+	for lore@pengutronix.de; Fri, 28 Jan 2022 09:24:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=L4l+xq89EI9WvJKGAZc3vnFtLi9zLJpBZI2QyMm9t9c=; b=T12QuBjTLnVPvB
-	KGUxFdJtHgJg1+QRklRIGYhqOtL3NKdHtWaodJtwBji4v1vr7g7693Y+W+ID3tE8uvCXa5lg7zZuA
-	Y4rZmEE/RxpTV3DMKeSEftO88AVde27hdLgebl8WQ/i3hXnxGsacD9aP8VU76ZZ7SFf/5Nj/2/z6F
-	b+E7O6SR92NVmBHuSueHsEir8CkRyUcBPbBDUzlBgnk7wCl5sr0Ho7IXkYlqJrRlJcfnuM/sBitCN
-	BArMQooqvJMO6mkYWp0CqaG1q1dTVPOQyvStAs+HegByLXT4A7HbTlEWIx/DsrrfWjspN7cOmIW3J
-	Ctz+yZrwJFxhNwpXgs8g==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=9OFwB+nx6zngBPX7EmF0hL7A/xhGw9FurYAoqSMsHDs=; b=kO0idDqNkne1eH
+	A8iCPWRbNteKH4FTEKUTYI/MUerNbfZpN3nFHLJmihzBNoXCka7UNYYOzoouDOq96jGX9h5Bj9C6U
+	Itcqsz8qJOvMr5aHHhK5PAX0BZHdjyJPW7LcLWVDfWd6R7B4q2SXSsj+Uh2DKv6QRGj7D3yUx+rIQ
+	yOgjxIZKPku5aHcqsVq24b+XFNuZ6Ascu7TIAPTpDUxQ7eRhm3jA2kTQufgcbRY+F9qrvMo8KCZV1
+	RXX04uBYr1vFvCTBS9beWTa9bWuPOGJIGbchyG1mrxhbGdDY2cZuqny5AtQbrdIwHW68xlXlBVV1+
+	tF+/Rm48nkInZ4WIm6aQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nDMBd-000vhU-B3; Fri, 28 Jan 2022 08:00:49 +0000
-Received: from cpanel.siel.si ([46.19.9.99])
+	id 1nDMXb-000zXm-4d; Fri, 28 Jan 2022 08:23:31 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nDMBY-000vh3-ET
- for barebox@lists.infradead.org; Fri, 28 Jan 2022 08:00:46 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com; 
- s=default;
- h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
- To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=j0vNKS9EsHi4eBZMNFjFGTc92WKCVU0KIqeL8saWEV0=; b=S81S7BXAxZI7YWtm/zbtGN1Y3g
- 3HIZX+MjtIS4igzinoixGh+L+m8Ds+4oIkVkZMcJnUqlBmSYCghY819BSL444nN+xprzsy2tD+fqq
- alwlJC/G7GC5LnK6LPO3bACLIDo744UrJ3zy+MB0G3qh1mXkezimLITDxwaVY8h5Uuc9AZzdaQYfx
- Fn3eB+Qf6T4kq4b73GRdoSvoTZ5YkWkxWLDJbcqu0RBvmb7jaDUAnpoDgI94R+qt9PB5PfNnrY/gf
- 84hGO238NNPGL2JtpMY/DcbJlTW5L8QNwo29BFcVHfZGZ7Kic2dFd7llNDj/JSpvKsSIKr6/yvX9p
- 1GCeJeUw==;
-Received: from [89.212.21.243] (port=48078 helo=localhost.localdomain)
- by cpanel.siel.si with esmtpsa (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <andrej.picej@norik.com>) id 1nDMBJ-00FIMn-7B
- for barebox@lists.infradead.org; Fri, 28 Jan 2022 09:00:36 +0100
-From: Andrej Picej <andrej.picej@norik.com>
+ id 1nDMXT-000zUd-6k
+ for barebox@lists.infradead.org; Fri, 28 Jan 2022 08:23:24 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ore@pengutronix.de>)
+ id 1nDMXQ-00026b-AV; Fri, 28 Jan 2022 09:23:20 +0100
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <ore@pengutronix.de>)
+ id 1nDMXP-00A74p-Or; Fri, 28 Jan 2022 09:23:19 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 28 Jan 2022 09:00:33 +0100
-Message-Id: <20220128080033.167251-1-andrej.picej@norik.com>
-X-Mailer: git-send-email 2.25.1
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 28 Jan 2022 09:23:14 +0100
+Message-Id: <20220128082317.2410427-2-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220128082317.2410427-1-o.rempel@pengutronix.de>
+References: <20220128082317.2410427-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.infradead.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id:
- andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220128_000044_849450_7CC9569E 
-X-CRM114-Status: UNSURE (   6.43  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220128_002323_274471_73C978C3 
+X-CRM114-Status: GOOD (  12.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,65 +69,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] scripts/common: fix write_file when opened with mmap
+Subject: [PATCH v2 1/4] ARM: rpi: convert board code to a driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Usage of bareboximd with -c option (Create checksum for FILE and write
-it to the crc32 tag) was broken. Possibly by applying 2154de1cf36c
-(bareboximd: Use mmap when possibly). The script fails with:
+Convert board code to a driver model. This will prevent executing this
+part of code on any other BCM2xxx based boards.
 
-    $ ./scripts/bareboximd -c images/<barebox-image.img>
-    Cannot write to images/<barebox-mage.img>: Bad address
-    CRC: write crc token to images/<barebox-image.img> failed: -14
-    Bad address
-
-This has to do with the usage of "mmap" and "open" with O_TRUNC flag
-which truncates the file length to 0. Writing to files fails with:
-EFAULT (14) buf is outside your accessible address space.
-Remove the truncate flag and truncate manually after writing the data.
-
-This fixes the bareboximd script, which is now again usable with -c
-option.
-
-Signed-off-by: Anze Lesnik <anze.lesnik@norik.com>
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- scripts/common.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 33 +++++++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/common.c b/scripts/common.c
-index 3f8dcd2d38..331988d593 100644
---- a/scripts/common.c
-+++ b/scripts/common.c
-@@ -107,7 +107,7 @@ int write_file(const char *filename, const void *buf, size_t size)
- 	int fd, ret = 0;
- 	int now;
- 
--	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT,
-+	fd = open(filename, O_WRONLY | O_CREAT,
- 		  S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
- 	if (fd < 0) {
- 		fprintf(stderr, "Cannot open %s: %s\n", filename, strerror(errno));
-@@ -126,6 +126,11 @@ int write_file(const char *filename, const void *buf, size_t size)
- 		buf += now;
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index 2684bd5ed7..247d12467a 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -511,7 +511,7 @@ static void rpi_vc_fdt(void)
  	}
+ }
  
-+	if (ftruncate(fd, now) < 0) {
-+		fprintf(stderr, "Cannot truncate file: %s", strerror(errno));
-+		ret = -errno;
-+	}
+-static int rpi_devices_init(void)
++static int rpi_devices_probe(struct device_d *dev)
+ {
+ 	struct regulator *reg;
+ 
+@@ -529,4 +529,33 @@ static int rpi_devices_init(void)
+ 
+ 	return 0;
+ }
+-late_initcall(rpi_devices_init);
 +
- out:
- 	close(fd);
- 
++static const struct of_device_id rpi_of_match[] = {
++	/* BCM2835 based Boards */
++	{ .compatible = "raspberrypi,model-a" },
++	{ .compatible = "raspberrypi,model-a-plus" },
++	{ .compatible = "raspberrypi,model-b" },
++	/* Raspberry Pi Model B (no P5) */
++	{ .compatible = "raspberrypi,model-b-i2c0" },
++	{ .compatible = "raspberrypi,model-b-rev2" },
++	{ .compatible = "raspberrypi,model-b-plus" },
++	{ .compatible = "raspberrypi,compute-module" },
++	{ .compatible = "raspberrypi,model-zero" },
++	{ .compatible = "raspberrypi,model-zero-w" },
++
++	/* BCM2836 based Boards */
++	{ .compatible = "raspberrypi,2-model-b" },
++
++	/* BCM2837 based Boards */
++	{ .compatible = "raspberrypi,3-model-a-plus" },
++	{ .compatible = "raspberrypi,3-model-b" },
++	{ .compatible = "raspberrypi,3-model-b-plus" },
++	{ /* sentinel */ },
++};
++
++static struct driver_d rpi_board_driver = {
++	.name = "board-rpi",
++	.probe = rpi_devices_probe,
++	.of_compatible = DRV_OF_COMPAT(rpi_of_match),
++};
++late_platform_driver(rpi_board_driver);
 -- 
-2.25.1
+2.30.2
 
 
 _______________________________________________
