@@ -1,16 +1,16 @@
-Delivery-date: Mon, 31 Jan 2022 10:45:05 +0100
+Delivery-date: Mon, 31 Jan 2022 11:23:23 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nETFB-001XaV-0C
-	for lore@lore.pengutronix.de; Mon, 31 Jan 2022 10:45:05 +0100
+	id 1nETqF-001aEY-QU
+	for lore@lore.pengutronix.de; Mon, 31 Jan 2022 11:23:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nETF9-0002ob-T7
-	for lore@pengutronix.de; Mon, 31 Jan 2022 10:45:04 +0100
+	id 1nETqE-0007vG-Km
+	for lore@pengutronix.de; Mon, 31 Jan 2022 11:23:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,46 +18,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=skCPxvC39f5983T5iVjnXTeTyrg2ZWOnimjUNO/hVvs=; b=hoF6MAjvhVcwBMy1Aqn/coWErP
-	7E0ctlrW2+7pm8ZfVK2hD10D+Y6GhbWJahiQulCwNcKf092aLwsH4bamoiAAh8bD1PrNcLXIoClZj
-	w446qY128YAmwlkuj2MQ36iu1yr9psqoij2834/ehUKNewigLdVvoM9rVUw+6UPVkJ/gfZoAnvfTd
-	f8T5f6IUGU8lwKUS/IZJUDUqK9hANTytdAc7T242rbJicdvgAAq9BZ9RT367NZXxICeYqBhuJfbaJ
-	Q6RqKPiz4F3eKpQgb3fKG26W24jW1CFUbyb7Noc+8I1WcrZBv5c9nhUdHim7upLDBglj9VkCGNYAY
-	ZpStnQqg==;
+	bh=kaJ8eZ/wiGTcT1ZqlAe2ofMYZYcqHjm9AADvJtVZeuk=; b=akhKGHSqctfqUOCxDyMuNNHjgk
+	58NQfLC8EMhbJJkfbFvzmtm4rCGAKQtRtKaojXA92ntcpYVJY22g5mIzlPGBT+gnt76X3Wam9F7Kh
+	krG+gs7WaCjzJlvMG+NNUtruF3iKwcyBNOZSd8/YrEMCB3yoMRNXYwhofTS1Zwn3YyF1KEcET5xXo
+	COnzX91h6zU8dY/BJUF+NjKi6dzrDSUWTtf+D70com93b2ZI+r2tifBEWN4mMRPn5+3WIepznqXtE
+	rsu5r2j3iLKRAq6+RgrKRehUx7m7rV0oYMgqiZWn7SKfXd4Yf8+p7M6kdwEHjwgJSvGf3LpQO8wU9
+	B9V6WqFw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nETDr-008h3n-Px; Mon, 31 Jan 2022 09:43:43 +0000
+	id 1nEToj-008phN-7Y; Mon, 31 Jan 2022 10:21:49 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nETDm-008h2p-Fz
- for barebox@lists.infradead.org; Mon, 31 Jan 2022 09:43:39 +0000
+ id 1nETod-008pfT-Jx
+ for barebox@lists.infradead.org; Mon, 31 Jan 2022 10:21:45 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nETDl-0002fl-7Z; Mon, 31 Jan 2022 10:43:37 +0100
+ id 1nEToc-0007dX-0F; Mon, 31 Jan 2022 11:21:42 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nETDk-0005XW-VA; Mon, 31 Jan 2022 10:43:36 +0100
-Date: Mon, 31 Jan 2022 10:43:36 +0100
+ id 1nETob-0000ZG-NI; Mon, 31 Jan 2022 11:21:41 +0100
+Date: Mon, 31 Jan 2022 11:21:41 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220131094336.GB23490@pengutronix.de>
-References: <20220131075350.1869535-1-a.fatoum@pengutronix.de>
+Message-ID: <20220131102141.GC23490@pengutronix.de>
+References: <20220131080302.1873443-1-a.fatoum@pengutronix.de>
+ <20220131080302.1873443-4-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220131075350.1869535-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220131080302.1873443-4-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:43:23 up 51 days, 18:28, 86 users,  load average: 0.08, 0.13, 0.13
+X-Uptime: 11:10:06 up 51 days, 18:55, 86 users,  load average: 0.23, 0.24, 0.24
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220131_014338_559471_7A18E391 
-X-CRM114-Status: GOOD (  17.47  )
+X-CRM114-CacheID: sfid-20220131_022143_696189_7E2ADA9F 
+X-CRM114-Status: GOOD (  26.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,23 +83,89 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] include: <asm-generic/bug.h>: implement WARN_ON_ONCE
+Subject: Re: [PATCH 3/4] video: add MIPI DBI Type C Option 3 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jan 31, 2022 at 08:53:50AM +0100, Ahmad Fatoum wrote:
-> We have WARN_ON and WARN_ONCE. Add WARN_ON_ONCE as well to accommodate
-> Linux driver code using it.
+On Mon, Jan 31, 2022 at 09:03:01AM +0100, Ahmad Fatoum wrote:
+> Import the Linux v5.15 state of the driver to allow easy porting of
+> MIPI-DBI displays like the Ilitek 9431 added in a follow-up commit.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  include/asm-generic/bug.h | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  commands/Kconfig             |  19 ++
+>  commands/Makefile            |   1 +
+>  commands/mipi_dbi.c          | 104 ++++++++
+>  drivers/video/Kconfig        |  14 ++
+>  drivers/video/Makefile       |   1 +
+>  drivers/video/mipi_dbi.c     | 467 +++++++++++++++++++++++++++++++++++
+>  include/spi/spi.h            |  20 ++
+>  include/video/mipi_dbi.h     | 105 ++++++++
+>  include/video/mipi_display.h | 150 +++++++++++
+>  9 files changed, 881 insertions(+)
+>  create mode 100644 commands/mipi_dbi.c
+>  create mode 100644 drivers/video/mipi_dbi.c
+>  create mode 100644 include/video/mipi_dbi.h
+>  create mode 100644 include/video/mipi_display.h
+> 
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index ba8ca5cdebce..2e13a4ed90bd 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -1969,6 +1969,25 @@ config CMD_SPI
+>  		  -w BIT	bits per word (default 8)
+>  		  -v		verbose
+>  
+> +config CMD_MIPI_DBI
+> +	bool
+> +	depends on DRIVER_VIDEO_MIPI_DBI && SPI
+> +	select PRINTF_HEXSTR
+> +	prompt "mipi_dbi command"
+> +	help
+> +	  Write/read from MIPI DBI device on SPI bus
+> +
+> +	  Usage: mipi_dbi [-brcmfwv] DATA...
+> +
+> +	  Options:
+> +		  -b BUS	SPI bus number (default 0)
+> +		  -r COUNT	bytes to read
+> +		  -c		chip select (default 0)
+> +		  -m MODE	SPI mode (default 0)
+> +		  -f HZ		max speed frequency, in Hz (default 1 MHz)
+> +		  -w BIT	bits per word (default 8)
+> +		  -v		verbose
 
-Applied, thanks
+This doesn't match the actual command. Copy-paste from CMD_SPI above?
+
+> +BAREBOX_CMD_HELP_START(mipi_dbi)
+> +BAREBOX_CMD_HELP_TEXT("Options:")
+> +BAREBOX_CMD_HELP_OPT ("-l\t",  "list all MIPI DBI devices")
+> +BAREBOX_CMD_HELP_OPT ("-d DEVICE",  "select specific device (default is first registered)")
+> +BAREBOX_CMD_HELP_OPT ("-w",  "issue write command")
+> +BAREBOX_CMD_HELP_END
+> +
+> +
+>  config DRIVER_VIDEO_BACKLIGHT
+>  	bool "Add backlight support"
+>  	help
+> @@ -178,4 +181,15 @@ config DRIVER_VIDEO_SIMPLE_PANEL
+>  	  Linux Kernel implementation this one is able to understand display-timings
+>  	  nodes so that it's not necessary to keep a list of all known displays
+>  	  with their corresponding timings in barebox.
+> +
+> +config DRIVER_VIDEO_PANEL_ILITEK_ILI9341
+> +	tristate "Ilitek ILI9341 240x320 QVGA panels"
+> +	depends on OFTREE && SPI
+> +	select DRIVER_VIDEO_MIPI_DBI
+> +	select VIDEO_VPL
+> +	help
+> +	  Say Y here if you want to enable support for Ilitek IL9341
+> +	  QVGA (240x320) RGB panels. support serial & parallel rgb
+> +	  interface.
+
+This hunk should be in 4/4.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
