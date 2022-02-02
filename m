@@ -1,55 +1,55 @@
-Delivery-date: Wed, 02 Feb 2022 23:36:29 +0100
+Delivery-date: Wed, 02 Feb 2022 23:36:33 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFOEn-0049LB-P1
-	for lore@lore.pengutronix.de; Wed, 02 Feb 2022 23:36:29 +0100
+	id 1nFOEq-0049Lb-Ur
+	for lore@lore.pengutronix.de; Wed, 02 Feb 2022 23:36:33 +0100
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFOEl-0005EY-2V
-	for lore@pengutronix.de; Wed, 02 Feb 2022 23:36:28 +0100
+	id 1nFOEo-0005FC-Nf
+	for lore@pengutronix.de; Wed, 02 Feb 2022 23:36:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=KUNZymVSF3E0U7DTQmGPOVcJzv5bPcS4QPdkjkeASnI=; b=a9/3sRMxYKsj5O
-	6XGKRqOuzQFvkSGwbe3D4KDkNewSe+IVfGHSkLdnBTohSeHCoBROp1BfztGLKgkGc64qvEaKellEb
-	d7UYXXdAVnyILQLIofpWr85EfgA+QadTBAyoxAJAvpYFinwuexE2t71O2RihtA/rP7FW6WK9UagPQ
-	mcnqZi2XifZiggckuyYr6axN5fqSQs8LCla4ReCR+hhTftsy6h3nEKnJQK5rXgQttAsb/ru1SsfNT
-	9VDVxmbDb6ylXIHW6P9LB44jV/5NsnB4m9Rt+C1YxMOSmtBGCAVYtAeNOcniFxekZp4bT6HkZNxmR
-	8xP3/rWrN6z9JwyTlrGQ==;
+	List-Owner; bh=LXM8cd7rBL892nEY1CIHbwQE2qNSAo0D7x8erfdk2dI=; b=ZDdRekS+5r3OhJ
+	I27qE+ik6sf9sdf5b/FtCIzkyiu3FBc1/nfaSwCreJhFNCTsNj6nP75A8/cu2czOWSykrWHllVSLP
+	u9rPgTa5WiEeAM7x4hVsAEdxP9pxvcqvRvFkS/RVm+9WkDWTR6rwcDWy+GoHq1xWecJY2ZAUQuUna
+	v/GbPJfhvBi9b8jmoxkPNsFIJNpxY+fJzLbUAQIyefGczr5qfIDOm7EVIct9s5xrBvyRidiUa4ZST
+	E2MwNrkhPxLDCvffUOw4hGUK91Kz2smtt752xbTzK6g1Bqv8q4S6QskjJK4VjanmRXgvZPMkINNUr
+	Ydz39Ebz4fElujYpT5hw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nFOBJ-00H0sN-FW; Wed, 02 Feb 2022 22:32:53 +0000
+	id 1nFOBN-00H0tA-0I; Wed, 02 Feb 2022 22:32:57 +0000
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nFOB6-00H0pd-SH
- for barebox@lists.infradead.org; Wed, 02 Feb 2022 22:32:44 +0000
+ id 1nFOBE-00H0rR-7x
+ for barebox@lists.infradead.org; Wed, 02 Feb 2022 22:32:51 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1nFO8y-0004Vv-OZ; Wed, 02 Feb 2022 23:30:28 +0100
+ id 1nFO8y-0004Vw-On; Wed, 02 Feb 2022 23:30:28 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nFO8y-001QyN-6F; Wed, 02 Feb 2022 23:30:28 +0100
+ id 1nFO8y-001QyQ-7A; Wed, 02 Feb 2022 23:30:28 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  2 Feb 2022 23:30:22 +0100
-Message-Id: <20220202223023.341817-4-a.fatoum@pengutronix.de>
+Date: Wed,  2 Feb 2022 23:30:23 +0100
+Message-Id: <20220202223023.341817-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220202223023.341817-1-a.fatoum@pengutronix.de>
 References: <20220202223023.341817-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220202_143241_281440_EC8A892E 
-X-CRM114-Status: GOOD (  32.98  )
+X-CRM114-CacheID: sfid-20220202_143248_654673_1FEDB9BF 
+X-CRM114-Status: GOOD (  27.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,8 +61,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 198.137.202.133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -74,277 +74,606 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 3/4] video: add MIPI DBI Type C Option 3 support
+Subject: [PATCH v3 4/4] video: add Ilitek ILI9341 panel support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SW1wb3J0IHRoZSBMaW51eCB2NS4xNSBzdGF0ZSBvZiB0aGUgZHJpdmVyIHRvIGFsbG93IGVhc3kg
-cG9ydGluZyBvZgpNSVBJLURCSSBkaXNwbGF5cyBsaWtlIHRoZSBJbGl0ZWsgOTQzMSBhZGRlZCBp
-biBhIGZvbGxvdy11cCBjb21taXQuCgpTaWduZWQtb2ZmLWJ5OiBBaG1hZCBGYXRvdW0gPGEuZmF0
-b3VtQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1hbmRzL0tjb25maWcgICAgICAgICB8ICAxNSAr
-KwogY29tbWFuZHMvTWFrZWZpbGUgICAgICAgIHwgICAxICsKIGRyaXZlcnMvdmlkZW8vS2NvbmZp
-ZyAgICB8ICAgMyArCiBkcml2ZXJzL3ZpZGVvL01ha2VmaWxlICAgfCAgIDEgKwogZHJpdmVycy92
-aWRlby9taXBpX2RiaS5jIHwgNDY3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKwogaW5jbHVkZS9zcGkvc3BpLmggICAgICAgIHwgIDIwICsrCiA2IGZpbGVzIGNoYW5nZWQs
-IDUwNyBpbnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy92aWRlby9taXBp
-X2RiaS5jCgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvS2NvbmZpZyBiL2NvbW1hbmRzL0tjb25maWcK
-aW5kZXggYmE4Y2E1Y2RlYmNlLi5jYWVmMWU4ZmI1NjQgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL0tj
-b25maWcKKysrIGIvY29tbWFuZHMvS2NvbmZpZwpAQCAtMTk2OSw2ICsxOTY5LDIxIEBAIGNvbmZp
-ZyBDTURfU1BJCiAJCSAgLXcgQklUCWJpdHMgcGVyIHdvcmQgKGRlZmF1bHQgOCkKIAkJICAtdgkJ
-dmVyYm9zZQogCitjb25maWcgQ01EX01JUElfREJJCisJYm9vbAorCWRlcGVuZHMgb24gRFJJVkVS
-X1ZJREVPX01JUElfREJJICYmIFNQSQorCXNlbGVjdCBQUklOVEZfSEVYU1RSCisJcHJvbXB0ICJt
-aXBpX2RiaSBjb21tYW5kIgorCWhlbHAKKwkgIHdyaXRlL3JlYWQgZnJvbSBNSVBJIERCSSBTUEkg
-ZGV2aWNlCisKKwkgIFVzYWdlOiBtaXBpX2RiaSBbLXdsZF0gW1JFR10gW0RBVEEuLi5dCisKKwkg
-IE9wdGlvbnM6CisJCSAgLWwJCWxpc3QgYWxsIE1JUEkgREJJIGRldmljZXMKKwkJICAtZCBERVZJ
-Q0UJc2VsZWN0IHNwZWNpZmljIGRldmljZSAoZGVmYXVsdCBpcyBmaXJzdCByZWdpc3RlcmVkKQor
-CQkgIC13CQlpc3N1ZSB3cml0ZSBjb21tYW5kCisKIGNvbmZpZyBDTURfTEVEX1RSSUdHRVIKIAli
-b29sCiAJZGVwZW5kcyBvbiBMRURfVFJJR0dFUlMKZGlmZiAtLWdpdCBhL2NvbW1hbmRzL01ha2Vm
-aWxlIGIvY29tbWFuZHMvTWFrZWZpbGUKaW5kZXggZGI3OGQwYjg3N2Y2Li5mZmZiNmQ5NzllODIg
-MTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL01ha2VmaWxlCisrKyBiL2NvbW1hbmRzL01ha2VmaWxlCkBA
-IC02Nyw2ICs2Nyw3IEBAIG9iai0kKENPTkZJR19DTURfR1BJTykJCSs9IGdwaW8ubwogb2JqLSQo
-Q09ORklHX0NNRF9VTkNPTVBSRVNTKQkrPSB1bmNvbXByZXNzLm8KIG9iai0kKENPTkZJR19DTURf
-STJDKQkJKz0gaTJjLm8KIG9iai0kKENPTkZJR19DTURfU1BJKQkJKz0gc3BpLm8KK29iai0kKENP
-TkZJR19DTURfTUlQSV9EQkkpCSs9IG1pcGlfZGJpLm8KIG9iai0kKENPTkZJR19DTURfVUJJKQkJ
-Kz0gdWJpLm8KIG9iai0kKENPTkZJR19DTURfVUJJRk9STUFUKQkrPSB1Ymlmb3JtYXQubwogb2Jq
-LSQoQ09ORklHX0NNRF9NRU5VKQkJKz0gbWVudS5vCmRpZmYgLS1naXQgYS9kcml2ZXJzL3ZpZGVv
-L0tjb25maWcgYi9kcml2ZXJzL3ZpZGVvL0tjb25maWcKaW5kZXggMWI4NjcyZmRlYTgyLi43MGQx
-ZDgwOTUzNmIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvdmlkZW8vS2NvbmZpZworKysgYi9kcml2ZXJz
-L3ZpZGVvL0tjb25maWcKQEAgLTEyOSw2ICsxMjksOSBAQCBjb25maWcgRFJJVkVSX1ZJREVPX0VE
-SUQKIAkgIFRoaXMgZW5hYmxlZCBzdXBwb3J0IGZvciByZWFkaW5nIGFuZCBwYXJzaW5nIEVESUQg
-ZGF0YSBmcm9tIGFuIGF0dGFjaGVkCiAJICBtb25pdG9yLgogCitjb25maWcgRFJJVkVSX1ZJREVP
-X01JUElfREJJCisJYm9vbAorCiBjb25maWcgRFJJVkVSX1ZJREVPX0JBQ0tMSUdIVAogCWJvb2wg
-IkFkZCBiYWNrbGlnaHQgc3VwcG9ydCIKIAloZWxwCmRpZmYgLS1naXQgYS9kcml2ZXJzL3ZpZGVv
-L01ha2VmaWxlIGIvZHJpdmVycy92aWRlby9NYWtlZmlsZQppbmRleCA3ZjQ0MjkyNzg5ODcuLmE3
-YjcwZDgyMDcyYSAxMDA2NDQKLS0tIGEvZHJpdmVycy92aWRlby9NYWtlZmlsZQorKysgYi9kcml2
-ZXJzL3ZpZGVvL01ha2VmaWxlCkBAIC05LDYgKzksNyBAQCBvYmotJChDT05GSUdfVklERU9fVlBM
-KSArPSB2cGwubwogb2JqLSQoQ09ORklHX0RSSVZFUl9WSURFT19NVEwwMTcpICs9IG10bDAxNy5v
-CiBvYmotJChDT05GSUdfRFJJVkVSX1ZJREVPX1RDMzU4NzY3KSArPSB0YzM1ODc2Ny5vCiBvYmot
-JChDT05GSUdfRFJJVkVSX1ZJREVPX1NJTVBMRV9QQU5FTCkgKz0gc2ltcGxlLXBhbmVsLm8KK29i
-ai0kKENPTkZJR19EUklWRVJfVklERU9fTUlQSV9EQkkpICs9IG1pcGlfZGJpLm8KIAogb2JqLSQo
-Q09ORklHX0RSSVZFUl9WSURFT19BVE1FTCkgKz0gYXRtZWxfbGNkZmIubyBhdG1lbF9sY2RmYl9j
-b3JlLm8KIG9iai0kKENPTkZJR19EUklWRVJfVklERU9fQVRNRUxfSExDRCkgKz0gYXRtZWxfaGxj
-ZGZiLm8gYXRtZWxfbGNkZmJfY29yZS5vCmRpZmYgLS1naXQgYS9kcml2ZXJzL3ZpZGVvL21pcGlf
-ZGJpLmMgYi9kcml2ZXJzL3ZpZGVvL21pcGlfZGJpLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5k
-ZXggMDAwMDAwMDAwMDAwLi40OGIxMTEwZjcyYWIKLS0tIC9kZXYvbnVsbAorKysgYi9kcml2ZXJz
-L3ZpZGVvL21pcGlfZGJpLmMKQEAgLTAsMCArMSw0NjcgQEAKKy8vIFNQRFgtTGljZW5zZS1JZGVu
-dGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyCisvKgorICogTUlQSSBEaXNwbGF5IEJ1cyBJbnRlcmZh
-Y2UgKERCSSkgTENEIGNvbnRyb2xsZXIgc3VwcG9ydAorICoKKyAqIENvcHlyaWdodCAyMDE2IE5v
-cmFsZiBUcsO4bm5lcworICovCisKKyNkZWZpbmUgcHJfZm10KGZtdCkgIm1pcGktZGJpOiAiIGZt
-dAorCisjaW5jbHVkZSA8Y29tbW9uLmg+CisjaW5jbHVkZSA8bGludXgva2VybmVsLmg+CisjaW5j
-bHVkZSA8bGludXgvc2l6ZXMuaD4KKyNpbmNsdWRlIDxncGlvZC5oPgorI2luY2x1ZGUgPHJlZ3Vs
-YXRvci5oPgorI2luY2x1ZGUgPHNwaS9zcGkuaD4KKyNpbmNsdWRlIDx2aWRlby9taXBpX2RiaS5o
-PgorCisjaW5jbHVkZSA8dmlkZW8vdnBsLmg+CisjaW5jbHVkZSA8dmlkZW8vbWlwaV9kaXNwbGF5
-Lmg+CisjaW5jbHVkZSA8dmlkZW8vZm91cmNjLmg+CisKKyNkZWZpbmUgTUlQSV9EQklfTUFYX1NQ
-SV9SRUFEX1NQRUVEIDIwMDAwMDAgLyogMk1IeiAqLworCisjZGVmaW5lIERDU19QT1dFUl9NT0RF
-X0RJU1BMQVkJCQlCSVQoMikKKyNkZWZpbmUgRENTX1BPV0VSX01PREVfRElTUExBWV9OT1JNQUxf
-TU9ERQlCSVQoMykKKyNkZWZpbmUgRENTX1BPV0VSX01PREVfU0xFRVBfTU9ERQkJQklUKDQpCisj
-ZGVmaW5lIERDU19QT1dFUl9NT0RFX1BBUlRJQUxfTU9ERQkJQklUKDUpCisjZGVmaW5lIERDU19Q
-T1dFUl9NT0RFX0lETEVfTU9ERQkJQklUKDYpCisjZGVmaW5lIERDU19QT1dFUl9NT0RFX1JFU0VS
-VkVEX01BU0sJCShCSVQoMCkgfCBCSVQoMSkgfCBCSVQoNykpCisKK0xJU1RfSEVBRChtaXBpX2Ri
-aV9saXN0KTsKK0VYUE9SVF9TWU1CT0wobWlwaV9kYmlfbGlzdCk7CisKKy8qKgorICogRE9DOiBv
-dmVydmlldworICoKKyAqIFRoaXMgbGlicmFyeSBwcm92aWRlcyBoZWxwZXJzIGZvciBNSVBJIERp
-c3BsYXkgQnVzIEludGVyZmFjZSAoREJJKQorICogY29tcGF0aWJsZSBkaXNwbGF5IGNvbnRyb2xs
-ZXJzLgorICoKKyAqIE1hbnkgY29udHJvbGxlcnMgZm9yIHRpbnkgbGNkIGRpc3BsYXlzIGFyZSBN
-SVBJIGNvbXBsaWFudCBhbmQgY2FuIHVzZSB0aGlzCisgKiBsaWJyYXJ5LiBJZiBhIGNvbnRyb2xs
-ZXIgdXNlcyByZWdpc3RlcnMgMHgyQSBhbmQgMHgyQiB0byBzZXQgdGhlIGFyZWEgdG8KKyAqIHVw
-ZGF0ZSBhbmQgdXNlcyByZWdpc3RlciAweDJDIHRvIHdyaXRlIHRvIGZyYW1lIG1lbW9yeSwgaXQg
-aXMgbW9zdCBsaWtlbHkKKyAqIE1JUEkgY29tcGxpYW50LgorICoKKyAqIE9ubHkgTUlQSSBUeXBl
-IDEgZGlzcGxheXMgYXJlIHN1cHBvcnRlZCBzaW5jZSBhIGZ1bGwgZnJhbWUgbWVtb3J5IGlzIG5l
-ZWRlZC4KKyAqCisgKiBUaGVyZSBhcmUgMyBNSVBJIERCSSBpbXBsZW1lbnRhdGlvbiB0eXBlczoK
-KyAqCisgKiBBLiBNb3Rvcm9sYSA2ODAwIHR5cGUgcGFyYWxsZWwgYnVzCisgKgorICogQi4gSW50
-ZWwgODA4MCB0eXBlIHBhcmFsbGVsIGJ1cworICoKKyAqIEMuIFNQSSB0eXBlIHdpdGggMyBvcHRp
-b25zOgorICoKKyAqICAgIDEuIDktYml0IHdpdGggdGhlIERhdGEvQ29tbWFuZCBzaWduYWwgYXMg
-dGhlIG5pbnRoIGJpdAorICogICAgMi4gU2FtZSBhcyBhYm92ZSBleGNlcHQgaXQncyBzZW50IGFz
-IDE2IGJpdHMKKyAqICAgIDMuIDgtYml0IHdpdGggdGhlIERhdGEvQ29tbWFuZCBzaWduYWwgYXMg
-YSBzZXBhcmF0ZSBEL0NYIHBpbgorICoKKyAqIEN1cnJlbnRseSBiYXJlYm94IG1pcGlfZGJpIG9u
-bHkgc3VwcG9ydHMgVHlwZSBDIG9wdGlvbiAzIHdpdGgKKyAqIG1pcGlfZGJpX3NwaV9pbml0KCku
-CisgKi8KKworI2RlZmluZSBNSVBJX0RCSV9ERUJVR19DT01NQU5EKGNtZCwgZGF0YSwgbGVuKSBc
-CisoeyBcCisJaWYgKCFsZW4pIFwKKwkJcHJfZGVidWcoImNtZD0lMDJ4XG4iLCBjbWQpOyBcCisJ
-ZWxzZSBpZiAobGVuIDw9IDMyKSBcCisJCXByX2RlYnVnKCJjbWQ9JTAyeCwgcGFyPSUqcGhcbiIs
-IGNtZCwgKGludClsZW4sIGRhdGEpO1wKKwllbHNlIFwKKwkJcHJfZGVidWcoImNtZD0lMDJ4LCBs
-ZW49JXp1XG4iLCBjbWQsIGxlbik7IFwKK30pCisKK3N0YXRpYyBjb25zdCB1OCBtaXBpX2RiaV9k
-Y3NfcmVhZF9jb21tYW5kc1tdID0geworCU1JUElfRENTX0dFVF9ESVNQTEFZX0lELAorCU1JUElf
-RENTX0dFVF9SRURfQ0hBTk5FTCwKKwlNSVBJX0RDU19HRVRfR1JFRU5fQ0hBTk5FTCwKKwlNSVBJ
-X0RDU19HRVRfQkxVRV9DSEFOTkVMLAorCU1JUElfRENTX0dFVF9ESVNQTEFZX1NUQVRVUywKKwlN
-SVBJX0RDU19HRVRfUE9XRVJfTU9ERSwKKwlNSVBJX0RDU19HRVRfQUREUkVTU19NT0RFLAorCU1J
-UElfRENTX0dFVF9QSVhFTF9GT1JNQVQsCisJTUlQSV9EQ1NfR0VUX0RJU1BMQVlfTU9ERSwKKwlN
-SVBJX0RDU19HRVRfU0lHTkFMX01PREUsCisJTUlQSV9EQ1NfR0VUX0RJQUdOT1NUSUNfUkVTVUxU
-LAorCU1JUElfRENTX1JFQURfTUVNT1JZX1NUQVJULAorCU1JUElfRENTX1JFQURfTUVNT1JZX0NP
-TlRJTlVFLAorCU1JUElfRENTX0dFVF9TQ0FOTElORSwKKwlNSVBJX0RDU19HRVRfRElTUExBWV9C
-UklHSFRORVNTLAorCU1JUElfRENTX0dFVF9DT05UUk9MX0RJU1BMQVksCisJTUlQSV9EQ1NfR0VU
-X1BPV0VSX1NBVkUsCisJTUlQSV9EQ1NfR0VUX0NBQkNfTUlOX0JSSUdIVE5FU1MsCisJTUlQSV9E
-Q1NfUkVBRF9EREJfU1RBUlQsCisJTUlQSV9EQ1NfUkVBRF9EREJfQ09OVElOVUUsCisJMCwgLyog
-c2VudGluZWwgKi8KK307CisKK2Jvb2wgbWlwaV9kYmlfY29tbWFuZF9pc19yZWFkKHN0cnVjdCBt
-aXBpX2RiaSAqZGJpLCB1OCBjbWQpCit7CisJdW5zaWduZWQgaW50IGk7CisKKwlpZiAoIWRiaS0+
-cmVhZF9jb21tYW5kcykKKwkJcmV0dXJuIGZhbHNlOworCisJZm9yIChpID0gMDsgaSA8IDB4ZmY7
-IGkrKykgeworCQlpZiAoIWRiaS0+cmVhZF9jb21tYW5kc1tpXSkKKwkJCXJldHVybiBmYWxzZTsK
-KwkJaWYgKGNtZCA9PSBkYmktPnJlYWRfY29tbWFuZHNbaV0pCisJCQlyZXR1cm4gdHJ1ZTsKKwl9
-CisKKwlyZXR1cm4gZmFsc2U7Cit9CisKK2ludCBtaXBpX2RiaV9jb21tYW5kX3JlYWRfbGVuKGlu
-dCBjbWQpCit7CisJc3dpdGNoIChjbWQpIHsKKwljYXNlIE1JUElfRENTX1JFQURfTUVNT1JZX1NU
-QVJUOgorCWNhc2UgTUlQSV9EQ1NfUkVBRF9NRU1PUllfQ09OVElOVUU6CisJCXJldHVybiAyOwor
-CWNhc2UgTUlQSV9EQ1NfR0VUX0RJU1BMQVlfSUQ6CisJCXJldHVybiAzOworCWNhc2UgTUlQSV9E
-Q1NfR0VUX0RJU1BMQVlfU1RBVFVTOgorCQlyZXR1cm4gNDsKKwlkZWZhdWx0OgorCQlyZXR1cm4g
-MTsKKwl9Cit9CisKKy8qKgorICogbWlwaV9kYmlfY29tbWFuZF9yZWFkIC0gTUlQSSBEQ1MgcmVh
-ZCBjb21tYW5kCisgKiBAZGJpOiBNSVBJIERCSSBzdHJ1Y3R1cmUKKyAqIEBjbWQ6IENvbW1hbmQK
-KyAqIEB2YWw6IFZhbHVlIHJlYWQKKyAqCisgKiBTZW5kIE1JUEkgRENTIHJlYWQgY29tbWFuZCB0
-byB0aGUgY29udHJvbGxlci4KKyAqCisgKiBSZXR1cm5zOgorICogWmVybyBvbiBzdWNjZXNzLCBu
-ZWdhdGl2ZSBlcnJvciBjb2RlIG9uIGZhaWx1cmUuCisgKi8KK2ludCBtaXBpX2RiaV9jb21tYW5k
-X3JlYWQoc3RydWN0IG1pcGlfZGJpICpkYmksIHU4IGNtZCwgdTggKnZhbCkKK3sKKwlpZiAoIWRi
-aS0+cmVhZF9jb21tYW5kcykKKwkJcmV0dXJuIC1FQUNDRVM7CisKKwlpZiAoIW1pcGlfZGJpX2Nv
-bW1hbmRfaXNfcmVhZChkYmksIGNtZCkpCisJCXJldHVybiAtRUlOVkFMOworCisJcmV0dXJuIG1p
-cGlfZGJpX2NvbW1hbmRfYnVmKGRiaSwgY21kLCB2YWwsIDEpOworfQorRVhQT1JUX1NZTUJPTCht
-aXBpX2RiaV9jb21tYW5kX3JlYWQpOworCisvKioKKyAqIG1pcGlfZGJpX2NvbW1hbmRfYnVmIC0g
-TUlQSSBEQ1MgY29tbWFuZCB3aXRoIHBhcmFtZXRlcihzKSBpbiBhbiBhcnJheQorICogQGRiaTog
-TUlQSSBEQkkgc3RydWN0dXJlCisgKiBAY21kOiBDb21tYW5kCisgKiBAZGF0YTogUGFyYW1ldGVy
-IGJ1ZmZlcgorICogQGxlbjogQnVmZmVyIGxlbmd0aAorICoKKyAqIFJldHVybnM6CisgKiBaZXJv
-IG9uIHN1Y2Nlc3MsIG5lZ2F0aXZlIGVycm9yIGNvZGUgb24gZmFpbHVyZS4KKyAqLworaW50IG1p
-cGlfZGJpX2NvbW1hbmRfYnVmKHN0cnVjdCBtaXBpX2RiaSAqZGJpLCB1OCBjbWQsIHU4ICpkYXRh
-LCBzaXplX3QgbGVuKQoreworCXU4ICpjbWRidWY7CisJaW50IHJldDsKKworCS8qIFNQSSByZXF1
-aXJlcyBkbWEtc2FmZSBidWZmZXJzICovCisJY21kYnVmID0ga21lbWR1cCgmY21kLCAxLCBHRlBf
-S0VSTkVMKTsKKwlpZiAoIWNtZGJ1ZikKKwkJcmV0dXJuIC1FTk9NRU07CisKKwlyZXQgPSBkYmkt
-PmNvbW1hbmQoZGJpLCBjbWRidWYsIGRhdGEsIGxlbik7CisKKwlrZnJlZShjbWRidWYpOworCisJ
-cmV0dXJuIHJldDsKK30KK0VYUE9SVF9TWU1CT0wobWlwaV9kYmlfY29tbWFuZF9idWYpOworCisv
-KiBUaGlzIHNob3VsZCBvbmx5IGJlIHVzZWQgYnkgbWlwaV9kYmlfY29tbWFuZCgpICovCitpbnQg
-bWlwaV9kYmlfY29tbWFuZF9zdGFja2J1ZihzdHJ1Y3QgbWlwaV9kYmkgKmRiaSwgdTggY21kLCBj
-b25zdCB1OCAqZGF0YSwKKwkJCSAgICAgIHNpemVfdCBsZW4pCit7CisJdTggKmJ1ZjsKKwlpbnQg
-cmV0OworCisJYnVmID0ga21lbWR1cChkYXRhLCBsZW4sIEdGUF9LRVJORUwpOworCWlmICghYnVm
-KQorCQlyZXR1cm4gLUVOT01FTTsKKworCXJldCA9IG1pcGlfZGJpX2NvbW1hbmRfYnVmKGRiaSwg
-Y21kLCBidWYsIGxlbik7CisKKwlrZnJlZShidWYpOworCisJcmV0dXJuIHJldDsKK30KK0VYUE9S
-VF9TWU1CT0wobWlwaV9kYmlfY29tbWFuZF9zdGFja2J1Zik7CisKKy8qKgorICogbWlwaV9kYmlf
-aHdfcmVzZXQgLSBIYXJkd2FyZSByZXNldCBvZiBjb250cm9sbGVyCisgKiBAZGJpOiBNSVBJIERC
-SSBzdHJ1Y3R1cmUKKyAqCisgKiBSZXNldCBjb250cm9sbGVyIGlmIHRoZSAmbWlwaV9kYmktPnJl
-c2V0IGdwaW8gaXMgc2V0LgorICovCit2b2lkIG1pcGlfZGJpX2h3X3Jlc2V0KHN0cnVjdCBtaXBp
-X2RiaSAqZGJpKQoreworCWlmICghZ3Bpb19pc192YWxpZChkYmktPnJlc2V0KSkKKwkJcmV0dXJu
-OworCisJZ3Bpb2Rfc2V0X3ZhbHVlKGRiaS0+cmVzZXQsIDApOworCXVkZWxheSgyMCk7CisJZ3Bp
-b2Rfc2V0X3ZhbHVlKGRiaS0+cmVzZXQsIDEpOworCW1kZWxheSgxMjApOworfQorRVhQT1JUX1NZ
-TUJPTChtaXBpX2RiaV9od19yZXNldCk7CisKKy8qKgorICogbWlwaV9kYmlfZGlzcGxheV9pc19v
-biAtIENoZWNrIGlmIGRpc3BsYXkgaXMgb24KKyAqIEBkYmk6IE1JUEkgREJJIHN0cnVjdHVyZQor
-ICoKKyAqIFRoaXMgZnVuY3Rpb24gY2hlY2tzIHRoZSBQb3dlciBNb2RlIHJlZ2lzdGVyIChpZiBy
-ZWFkYWJsZSkgdG8gc2VlIGlmCisgKiBkaXNwbGF5IG91dHB1dCBpcyB0dXJuZWQgb24uIFRoaXMg
-Y2FuIGJlIHVzZWQgdG8gc2VlIGlmIHRoZSBib290bG9hZGVyCisgKiBoYXMgYWxyZWFkeSB0dXJu
-ZWQgb24gdGhlIGRpc3BsYXkgYXZvaWRpbmcgZmxpY2tlciB3aGVuIHRoZSBwaXBlbGluZSBpcwor
-ICogZW5hYmxlZC4KKyAqCisgKiBSZXR1cm5zOgorICogdHJ1ZSBpZiB0aGUgZGlzcGxheSBjYW4g
-YmUgdmVyaWZpZWQgdG8gYmUgb24sIGZhbHNlIG90aGVyd2lzZS4KKyAqLworYm9vbCBtaXBpX2Ri
-aV9kaXNwbGF5X2lzX29uKHN0cnVjdCBtaXBpX2RiaSAqZGJpKQoreworCXU4IHZhbDsKKworCWlm
-IChtaXBpX2RiaV9jb21tYW5kX3JlYWQoZGJpLCBNSVBJX0RDU19HRVRfUE9XRVJfTU9ERSwgJnZh
-bCkpCisJCXJldHVybiBmYWxzZTsKKworCXZhbCAmPSB+RENTX1BPV0VSX01PREVfUkVTRVJWRURf
-TUFTSzsKKworCS8qIFRoZSBwb3dlcm9uL3Jlc2V0IHZhbHVlIGlzIDA4aCBEQ1NfUE9XRVJfTU9E
-RV9ESVNQTEFZX05PUk1BTF9NT0RFICovCisJaWYgKHZhbCAhPSAoRENTX1BPV0VSX01PREVfRElT
-UExBWSB8CisJICAgIERDU19QT1dFUl9NT0RFX0RJU1BMQVlfTk9STUFMX01PREUgfCBEQ1NfUE9X
-RVJfTU9ERV9TTEVFUF9NT0RFKSkKKwkJcmV0dXJuIGZhbHNlOworCisJcHJfZGVidWcoIkRpc3Bs
-YXkgaXMgT05cbiIpOworCisJcmV0dXJuIHRydWU7Cit9CitFWFBPUlRfU1lNQk9MKG1pcGlfZGJp
-X2Rpc3BsYXlfaXNfb24pOworCisjaWYgSVNfRU5BQkxFRChDT05GSUdfU1BJKQorCisvKioKKyAq
-IG1pcGlfZGJpX3NwaV9jbWRfbWF4X3NwZWVkIC0gZ2V0IHRoZSBtYXhpbXVtIFNQSSBidXMgc3Bl
-ZWQKKyAqIEBzcGk6IFNQSSBkZXZpY2UKKyAqIEBsZW46IFRoZSB0cmFuc2ZlciBidWZmZXIgbGVu
-Z3RoLgorICoKKyAqIE1hbnkgY29udHJvbGxlcnMgaGF2ZSBhIG1heCBzcGVlZCBvZiAxME1Ieiwg
-YnV0IGNhbiBiZSBwdXNoZWQgd2F5IGJleW9uZAorICogdGhhdC4gSW5jcmVhc2UgcmVsaWFiaWxp
-dHkgYnkgcnVubmluZyBwaXhlbCBkYXRhIGF0IG1heCBzcGVlZCBhbmQgdGhlIHJlc3QKKyAqIGF0
-IDEwTUh6LCBwcmV2ZW50aW5nIHRyYW5zZmVyIGdsaXRjaGVzIGZyb20gbWVzc2luZyB1cCB0aGUg
-aW5pdCBzZXR0aW5ncy4KKyAqLwordTMyIG1pcGlfZGJpX3NwaV9jbWRfbWF4X3NwZWVkKHN0cnVj
-dCBzcGlfZGV2aWNlICpzcGksIHNpemVfdCBsZW4pCit7CisJaWYgKGxlbiA+IDY0KQorCQlyZXR1
-cm4gMDsgLyogdXNlIGRlZmF1bHQgKi8KKworCXJldHVybiBtaW5fdCh1MzIsIDEwMDAwMDAwLCBz
-cGktPm1heF9zcGVlZF9oeik7Cit9CitFWFBPUlRfU1lNQk9MKG1pcGlfZGJpX3NwaV9jbWRfbWF4
-X3NwZWVkKTsKKworc3RhdGljIGJvb2wgbWlwaV9kYmlfbWFjaGluZV9saXR0bGVfZW5kaWFuKHZv
-aWQpCit7CisjaWYgZGVmaW5lZChfX0xJVFRMRV9FTkRJQU4pCisJcmV0dXJuIHRydWU7CisjZWxz
-ZQorCXJldHVybiBmYWxzZTsKKyNlbmRpZgorfQorCisvKiBNSVBJIERCSSBUeXBlIEMgT3B0aW9u
-IDMgKi8KKworc3RhdGljIGludCBtaXBpX2RiaV90eXBlYzNfY29tbWFuZF9yZWFkKHN0cnVjdCBt
-aXBpX2RiaSAqZGJpLCB1OCAqY21kLAorCQkJCQl1OCAqZGF0YSwgc2l6ZV90IGxlbikKK3sKKwlz
-dHJ1Y3Qgc3BpX2RldmljZSAqc3BpID0gZGJpLT5zcGk7CisJdTMyIHNwZWVkX2h6ID0gbWluX3Qo
-dTMyLCBNSVBJX0RCSV9NQVhfU1BJX1JFQURfU1BFRUQsCisJCQkgICAgIHNwaS0+bWF4X3NwZWVk
-X2h6IC8gMik7CisJc3RydWN0IHNwaV90cmFuc2ZlciB0clsyXSA9IHsKKwkJeworCQkJLnNwZWVk
-X2h6ID0gc3BlZWRfaHosCisJCQkudHhfYnVmID0gY21kLAorCQkJLmxlbiA9IDEsCisJCX0sIHsK
-KwkJCS5zcGVlZF9oeiA9IHNwZWVkX2h6LAorCQkJLmxlbiA9IGxlbiwKKwkJfSwKKwl9OworCXN0
-cnVjdCBzcGlfbWVzc2FnZSBtOworCXU4ICpidWY7CisJaW50IHJldDsKKworCWlmICghbGVuKQor
-CQlyZXR1cm4gLUVJTlZBTDsKKworCS8qCisJICogU3VwcG9ydCBub24tc3RhbmRhcmQgMjQtYml0
-IGFuZCAzMi1iaXQgTm9raWEgcmVhZCBjb21tYW5kcyB3aGljaAorCSAqIHN0YXJ0IHdpdGggYSBk
-dW1teSBjbG9jaywgc28gd2UgbmVlZCB0byByZWFkIGFuIGV4dHJhIGJ5dGUuCisJICovCisJaWYg
-KCpjbWQgPT0gTUlQSV9EQ1NfR0VUX0RJU1BMQVlfSUQgfHwKKwkgICAgKmNtZCA9PSBNSVBJX0RD
-U19HRVRfRElTUExBWV9TVEFUVVMpIHsKKwkJaWYgKCEobGVuID09IDMgfHwgbGVuID09IDQpKQor
-CQkJcmV0dXJuIC1FSU5WQUw7CisKKwkJdHJbMV0ubGVuID0gbGVuICsgMTsKKwl9CisKKwlidWYg
-PSBrbWFsbG9jKHRyWzFdLmxlbiwgR0ZQX0tFUk5FTCk7CisJaWYgKCFidWYpCisJCXJldHVybiAt
-RU5PTUVNOworCisJdHJbMV0ucnhfYnVmID0gYnVmOworCWdwaW9kX3NldF92YWx1ZShkYmktPmRj
-LCAwKTsKKworCXNwaV9tZXNzYWdlX2luaXRfd2l0aF90cmFuc2ZlcnMoJm0sIHRyLCBBUlJBWV9T
-SVpFKHRyKSk7CisJcmV0ID0gc3BpX3N5bmMoc3BpLCAmbSk7CisJaWYgKHJldCkKKwkJZ290byBl
-cnJfZnJlZTsKKworCWlmICh0clsxXS5sZW4gPT0gbGVuKSB7CisJCW1lbWNweShkYXRhLCBidWYs
-IGxlbik7CisJfSBlbHNlIHsKKwkJdW5zaWduZWQgaW50IGk7CisKKwkJZm9yIChpID0gMDsgaSA8
-IGxlbjsgaSsrKQorCQkJZGF0YVtpXSA9IChidWZbaV0gPDwgMSkgfCAoYnVmW2kgKyAxXSA+PiA3
-KTsKKwl9CisKKwlNSVBJX0RCSV9ERUJVR19DT01NQU5EKCpjbWQsIGRhdGEsIGxlbik7CisKK2Vy
-cl9mcmVlOgorCWtmcmVlKGJ1Zik7CisKKwlyZXR1cm4gcmV0OworfQorCitzdGF0aWMgaW50IG1p
-cGlfZGJpX3R5cGVjM19jb21tYW5kKHN0cnVjdCBtaXBpX2RiaSAqZGJpLCB1OCAqY21kLAorCQkJ
-CSAgIHU4ICpwYXIsIHNpemVfdCBudW0pCit7CisJc3RydWN0IHNwaV9kZXZpY2UgKnNwaSA9IGRi
-aS0+c3BpOworCXVuc2lnbmVkIGludCBicHcgPSA4OworCXUzMiBzcGVlZF9oejsKKwlpbnQgcmV0
-OworCisJaWYgKG1pcGlfZGJpX2NvbW1hbmRfaXNfcmVhZChkYmksICpjbWQpKQorCQlyZXR1cm4g
-bWlwaV9kYmlfdHlwZWMzX2NvbW1hbmRfcmVhZChkYmksIGNtZCwgcGFyLCBudW0pOworCisJTUlQ
-SV9EQklfREVCVUdfQ09NTUFORCgqY21kLCBwYXIsIG51bSk7CisKKwlncGlvZF9zZXRfdmFsdWUo
-ZGJpLT5kYywgMCk7CisJc3BlZWRfaHogPSBtaXBpX2RiaV9zcGlfY21kX21heF9zcGVlZChzcGks
-IDEpOworCXJldCA9IG1pcGlfZGJpX3NwaV90cmFuc2ZlcihzcGksIHNwZWVkX2h6LCA4LCBjbWQs
-IDEpOworCWlmIChyZXQgfHwgIW51bSkKKwkJcmV0dXJuIHJldDsKKworCWlmICgqY21kID09IE1J
-UElfRENTX1dSSVRFX01FTU9SWV9TVEFSVCAmJiAhZGJpLT5zd2FwX2J5dGVzKQorCQlicHcgPSAx
-NjsKKworCWdwaW9kX3NldF92YWx1ZShkYmktPmRjLCAxKTsKKwlzcGVlZF9oeiA9IG1pcGlfZGJp
-X3NwaV9jbWRfbWF4X3NwZWVkKHNwaSwgbnVtKTsKKworCXJldHVybiBtaXBpX2RiaV9zcGlfdHJh
-bnNmZXIoc3BpLCBzcGVlZF9oeiwgYnB3LCBwYXIsIG51bSk7Cit9CisKKy8qKgorICogbWlwaV9k
-Ymlfc3BpX2luaXQgLSBJbml0aWFsaXplIE1JUEkgREJJIFNQSSBpbnRlcmZhY2UKKyAqIEBzcGk6
-IFNQSSBkZXZpY2UKKyAqIEBkYmk6IE1JUEkgREJJIHN0cnVjdHVyZSB0byBpbml0aWFsaXplCisg
-KiBAZGM6IEQvQyBncGlvCisgKgorICogVGhpcyBmdW5jdGlvbiBzZXRzICZtaXBpX2RiaS0+Y29t
-bWFuZCwgZW5hYmxlcyAmbWlwaV9kYmktPnJlYWRfY29tbWFuZHMgZm9yIHRoZQorICogdXN1YWwg
-cmVhZCBjb21tYW5kcy4gSXQgc2hvdWxkIGJlIGZvbGxvd2VkIGJ5IGEgY2FsbCB0byBtaXBpX2Ri
-aV9kZXZfaW5pdCgpIG9yCisgKiBhIGRyaXZlci1zcGVjaWZpYyBpbml0LgorICoKKyAqIFR5cGUg
-QyBPcHRpb24gMyBpbnRlcmZhY2UgaXMgYXNzdW1lZCwgVHlwZSBDIE9wdGlvbiAxIGlzIG5vdCB5
-ZXQgc3VwcG9ydGVkLAorICogYmVjYXVzZSBiYXJlYm94IGhhcyBubyBnZW5lcmljIHdheSB5ZXQg
-dG8gcmVxdWlyZSBhIDktYml0IFNQSSB0cmFuc2ZlcgorICoKKyAqIElmIHRoZSBTUEkgbWFzdGVy
-IGRyaXZlciBkb2Vzbid0IHN1cHBvcnQgdGhlIG5lY2Vzc2FyeSBiaXRzIHBlciB3b3JkLAorICog
-dGhlIGZvbGxvd2luZyB0cmFuc2Zvcm1hdGlvbiBpcyB1c2VkOgorICoKKyAqIC0gOS1iaXQ6IHJl
-b3JkZXIgYnVmZmVyIGFzIDl4IDgtYml0IHdvcmRzLCBwYWRkZWQgd2l0aCBuby1vcCBjb21tYW5k
-LgorICogLSAxNi1iaXQ6IGlmIGJpZyBlbmRpYW4gc2VuZCBhcyA4LWJpdCwgaWYgbGl0dGxlIGVu
-ZGlhbiBzd2FwIGJ5dGVzCisgKgorICogUmV0dXJuczoKKyAqIFplcm8gb24gc3VjY2VzcywgbmVn
-YXRpdmUgZXJyb3IgY29kZSBvbiBmYWlsdXJlLgorICovCitpbnQgbWlwaV9kYmlfc3BpX2luaXQo
-c3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgc3RydWN0IG1pcGlfZGJpICpkYmksCisJCSAgICAgIGlu
-dCBkYykKK3sKKwlzdHJ1Y3QgZGV2aWNlX2QgKmRldiA9ICZzcGktPmRldjsKKworCWRiaS0+c3Bp
-ID0gc3BpOworCWRiaS0+cmVhZF9jb21tYW5kcyA9IG1pcGlfZGJpX2Rjc19yZWFkX2NvbW1hbmRz
-OworCisJaWYgKCFncGlvX2lzX3ZhbGlkKGRjKSkgeworCQlkZXZfZGJnKGRldiwgIk1JUEkgREJJ
-IFR5cGUtQyAxIHVuc3VwcG9ydGVkXG4iKTsKKwkJcmV0dXJuIC1FTk9TWVM7CisJfQorCisJZGJp
-LT5jb21tYW5kID0gbWlwaV9kYmlfdHlwZWMzX2NvbW1hbmQ7CisJZGJpLT5kYyA9IGRjOworCS8v
-IFRPRE86IGNhbiB3ZSBqdXN0IGZvcmNlIDE2IGJpdD8KKwlpZiAobWlwaV9kYmlfbWFjaGluZV9s
-aXR0bGVfZW5kaWFuKCkgJiYgc3BpLT5iaXRzX3Blcl93b3JkICE9IDE2KQorCQlkYmktPnN3YXBf
-Ynl0ZXMgPSB0cnVlOworCisJZGV2X2RiZyhkZXYsICJTUEkgc3BlZWQ6ICV1TUh6XG4iLCBzcGkt
-Pm1heF9zcGVlZF9oeiAvIDEwMDAwMDApOworCisJbGlzdF9hZGQoJmRiaS0+bGlzdCwgJm1pcGlf
-ZGJpX2xpc3QpOworCXJldHVybiAwOworfQorRVhQT1JUX1NZTUJPTChtaXBpX2RiaV9zcGlfaW5p
-dCk7CisKKy8qKgorICogbWlwaV9kYmlfc3BpX3RyYW5zZmVyIC0gU1BJIHRyYW5zZmVyIGhlbHBl
-cgorICogQHNwaTogU1BJIGRldmljZQorICogQHNwZWVkX2h6OiBPdmVycmlkZSBzcGVlZCAob3B0
-aW9uYWwpCisgKiBAYnB3OiBCaXRzIHBlciB3b3JkCisgKiBAYnVmOiBCdWZmZXIgdG8gdHJhbnNm
-ZXIKKyAqIEBsZW46IEJ1ZmZlciBsZW5ndGgKKyAqCisgKiBUaGlzIFNQSSB0cmFuc2ZlciBoZWxw
-ZXIgYnJlYWtzIHVwIHRoZSB0cmFuc2ZlciBvZiBAYnVmIGludG8gY2h1bmtzIHdoaWNoCisgKiB0
-aGUgU1BJIGNvbnRyb2xsZXIgZHJpdmVyIGNhbiBoYW5kbGUuCisgKgorICogUmV0dXJuczoKKyAq
-IFplcm8gb24gc3VjY2VzcywgbmVnYXRpdmUgZXJyb3IgY29kZSBvbiBmYWlsdXJlLgorICovCitp
-bnQgbWlwaV9kYmlfc3BpX3RyYW5zZmVyKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIHUzMiBzcGVl
-ZF9oeiwKKwkJCSAgdTggYnB3LCBjb25zdCB2b2lkICpidWYsIHNpemVfdCBsZW4pCit7CisJc2l6
-ZV90IG1heF9jaHVuayA9IHNwaV9tYXhfdHJhbnNmZXJfc2l6ZShzcGkpOworCXN0cnVjdCBzcGlf
-dHJhbnNmZXIgdHIgPSB7CisJCS5iaXRzX3Blcl93b3JkID0gYnB3LAorCQkuc3BlZWRfaHogPSBz
-cGVlZF9oeiwKKwl9OworCXN0cnVjdCBzcGlfbWVzc2FnZSBtOworCXNpemVfdCBjaHVuazsKKwlp
-bnQgcmV0OworCisJc3BpX21lc3NhZ2VfaW5pdF93aXRoX3RyYW5zZmVycygmbSwgJnRyLCAxKTsK
-KworCXdoaWxlIChsZW4pIHsKKwkJY2h1bmsgPSBtaW4obGVuLCBtYXhfY2h1bmspOworCisJCXRy
-LnR4X2J1ZiA9IGJ1ZjsKKwkJdHIubGVuID0gY2h1bms7CisJCWJ1ZiArPSBjaHVuazsKKwkJbGVu
-IC09IGNodW5rOworCisJCXJldCA9IHNwaV9zeW5jKHNwaSwgJm0pOworCQlpZiAocmV0KQorCQkJ
-cmV0dXJuIHJldDsKKwl9CisKKwlyZXR1cm4gMDsKK30KK0VYUE9SVF9TWU1CT0wobWlwaV9kYmlf
-c3BpX3RyYW5zZmVyKTsKKworI2VuZGlmIC8qIENPTkZJR19TUEkgKi8KKworTU9EVUxFX0xJQ0VO
-U0UoIkdQTCIpOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9zcGkvc3BpLmggYi9pbmNsdWRlL3NwaS9z
-cGkuaAppbmRleCBjNWFkNmJkMzlmZjkuLmQxMzNlMGUyMTI2NSAxMDA2NDQKLS0tIGEvaW5jbHVk
-ZS9zcGkvc3BpLmgKKysrIGIvaW5jbHVkZS9zcGkvc3BpLmgKQEAgLTQwOSw2ICs0MDksMjYgQEAg
-c3BpX21lc3NhZ2VfYWRkX3RhaWwoc3RydWN0IHNwaV90cmFuc2ZlciAqdCwgc3RydWN0IHNwaV9t
-ZXNzYWdlICptKQogCWxpc3RfYWRkX3RhaWwoJnQtPnRyYW5zZmVyX2xpc3QsICZtLT50cmFuc2Zl
-cnMpOwogfQogCisvKioKKyAqIHNwaV9tZXNzYWdlX2luaXRfd2l0aF90cmFuc2ZlcnMgLSBJbml0
-aWFsaXplIHNwaV9tZXNzYWdlIGFuZCBhcHBlbmQgdHJhbnNmZXJzCisgKiBAbTogc3BpX21lc3Nh
-Z2UgdG8gYmUgaW5pdGlhbGl6ZWQKKyAqIEB4ZmVyczogQW4gYXJyYXkgb2Ygc3BpIHRyYW5zZmVy
-cworICogQG51bV94ZmVyczogTnVtYmVyIG9mIGl0ZW1zIGluIHRoZSB4ZmVyIGFycmF5CisgKgor
-ICogVGhpcyBmdW5jdGlvbiBpbml0aWFsaXplcyB0aGUgZ2l2ZW4gc3BpX21lc3NhZ2UgYW5kIGFk
-ZHMgZWFjaCBzcGlfdHJhbnNmZXIgaW4KKyAqIHRoZSBnaXZlbiBhcnJheSB0byB0aGUgbWVzc2Fn
-ZS4KKyAqLworc3RhdGljIGlubGluZSB2b2lkCitzcGlfbWVzc2FnZV9pbml0X3dpdGhfdHJhbnNm
-ZXJzKHN0cnVjdCBzcGlfbWVzc2FnZSAqbSwKK3N0cnVjdCBzcGlfdHJhbnNmZXIgKnhmZXJzLCB1
-bnNpZ25lZCBpbnQgbnVtX3hmZXJzKQoreworCXVuc2lnbmVkIGludCBpOworCisJc3BpX21lc3Nh
-Z2VfaW5pdChtKTsKKwlmb3IgKGkgPSAwOyBpIDwgbnVtX3hmZXJzOyArK2kpCisJCXNwaV9tZXNz
-YWdlX2FkZF90YWlsKCZ4ZmVyc1tpXSwgbSk7Cit9CisKIHN0YXRpYyBpbmxpbmUgdm9pZAogc3Bp
-X3RyYW5zZmVyX2RlbChzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp0KQogewotLSAKMi4zMC4yCgoKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
-aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Port the Linux v5.15 DRM panel driver to barebox. This has been tested
+against a STM32F4 LTDC.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/video/Kconfig                |  11 +
+ drivers/video/Makefile               |   1 +
+ drivers/video/panel-ilitek-ili9341.c | 541 +++++++++++++++++++++++++++
+ 3 files changed, 553 insertions(+)
+ create mode 100644 drivers/video/panel-ilitek-ili9341.c
+
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 70d1d809536b..dcdc6c213591 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -181,4 +181,15 @@ config DRIVER_VIDEO_SIMPLE_PANEL
+ 	  Linux Kernel implementation this one is able to understand display-timings
+ 	  nodes so that it's not necessary to keep a list of all known displays
+ 	  with their corresponding timings in barebox.
++
++config DRIVER_VIDEO_PANEL_ILITEK_ILI9341
++	tristate "Ilitek ILI9341 240x320 QVGA panels"
++	depends on OFTREE && SPI
++	select DRIVER_VIDEO_MIPI_DBI
++	select VIDEO_VPL
++	help
++	  Say Y here if you want to enable support for Ilitek IL9341
++	  QVGA (240x320) RGB panels. support serial & parallel rgb
++	  interface.
++
+ endif
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index a7b70d82072a..9ec0420ccad1 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -10,6 +10,7 @@ obj-$(CONFIG_DRIVER_VIDEO_MTL017) += mtl017.o
+ obj-$(CONFIG_DRIVER_VIDEO_TC358767) += tc358767.o
+ obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
+ obj-$(CONFIG_DRIVER_VIDEO_MIPI_DBI) += mipi_dbi.o
++obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
+ 
+ obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
+ obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
+diff --git a/drivers/video/panel-ilitek-ili9341.c b/drivers/video/panel-ilitek-ili9341.c
+new file mode 100644
+index 000000000000..d8774420226d
+--- /dev/null
++++ b/drivers/video/panel-ilitek-ili9341.c
+@@ -0,0 +1,541 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Ilitek ILI9341 TFT LCD driver.
++ *
++ * This panel can be configured to support:
++ * - 16-bit parallel RGB interface
++ * - 18-bit parallel RGB interface
++ * - 4-line serial spi interface
++ *
++ * Copyright 2018 David Lechner <david@lechnology.com>
++ * Copyright (C) 2021 Dillon Min <dillon.minfei@gmail.com>
++ *
++ * Derived from Linux drivers/drm/gpu/panel/panel-ilitek-ili9341.c
++ */
++#define DEBUG 1
++#include <common.h>
++#include <linux/bitops.h>
++#include <gpiod.h>
++#include <of.h>
++#include <regulator.h>
++#include <spi/spi.h>
++#include <video/vpl.h>
++#include <video/mipi_dbi.h>
++
++#include <video/mipi_display.h>
++
++#define ILI9341_RGB_INTERFACE  0xb0   /* RGB Interface Signal Control */
++#define ILI9341_FRC            0xb1   /* Frame Rate Control register */
++#define ILI9341_DFC            0xb6   /* Display Function Control register */
++#define ILI9341_POWER1         0xc0   /* Power Control 1 register */
++#define ILI9341_POWER2         0xc1   /* Power Control 2 register */
++#define ILI9341_VCOM1          0xc5   /* VCOM Control 1 register */
++#define ILI9341_VCOM2          0xc7   /* VCOM Control 2 register */
++#define ILI9341_POWERA         0xcb   /* Power control A register */
++#define ILI9341_POWERB         0xcf   /* Power control B register */
++#define ILI9341_PGAMMA         0xe0   /* Positive Gamma Correction register */
++#define ILI9341_NGAMMA         0xe1   /* Negative Gamma Correction register */
++#define ILI9341_DTCA           0xe8   /* Driver timing control A */
++#define ILI9341_DTCB           0xea   /* Driver timing control B */
++#define ILI9341_POWER_SEQ      0xed   /* Power on sequence register */
++#define ILI9341_3GAMMA_EN      0xf2   /* 3 Gamma enable register */
++#define ILI9341_INTERFACE      0xf6   /* Interface control register */
++#define ILI9341_PRC            0xf7   /* Pump ratio control register */
++#define ILI9341_ETMOD	       0xb7   /* Entry mode set */
++
++#define ILI9341_MADCTL_BGR	BIT(3)
++#define ILI9341_MADCTL_MV	BIT(5)
++#define ILI9341_MADCTL_MX	BIT(6)
++#define ILI9341_MADCTL_MY	BIT(7)
++
++#define ILI9341_POWER_B_LEN	3
++#define ILI9341_POWER_SEQ_LEN	4
++#define ILI9341_DTCA_LEN	3
++#define ILI9341_DTCB_LEN	2
++#define ILI9341_POWER_A_LEN	5
++#define ILI9341_DFC_1_LEN	2
++#define ILI9341_FRC_LEN		2
++#define ILI9341_VCOM_1_LEN	2
++#define ILI9341_DFC_2_LEN	4
++#define ILI9341_COLUMN_ADDR_LEN	4
++#define ILI9341_PAGE_ADDR_LEN	4
++#define ILI9341_INTERFACE_LEN	3
++#define ILI9341_PGAMMA_LEN	15
++#define ILI9341_NGAMMA_LEN	15
++#define ILI9341_CA_LEN		3
++
++#define ILI9341_PIXEL_DPI_16_BITS	(BIT(6) | BIT(4))
++#define ILI9341_PIXEL_DPI_18_BITS	(BIT(6) | BIT(5))
++#define ILI9341_GAMMA_CURVE_1		BIT(0)
++#define ILI9341_IF_WE_MODE		BIT(0)
++#define ILI9341_IF_BIG_ENDIAN		0x00
++#define ILI9341_IF_DM_RGB		BIT(2)
++#define ILI9341_IF_DM_INTERNAL		0x00
++#define ILI9341_IF_DM_VSYNC		BIT(3)
++#define ILI9341_IF_RM_RGB		BIT(1)
++#define ILI9341_IF_RIM_RGB		0x00
++
++#define ILI9341_COLUMN_ADDR		0x00ef
++#define ILI9341_PAGE_ADDR		0x013f
++
++#define ILI9341_RGB_EPL			BIT(0)
++#define ILI9341_RGB_DPL			BIT(1)
++#define ILI9341_RGB_HSPL		BIT(2)
++#define ILI9341_RGB_VSPL		BIT(3)
++#define ILI9341_RGB_DE_MODE		BIT(6)
++#define ILI9341_RGB_DISP_PATH_MEM	BIT(7)
++
++#define ILI9341_DBI_VCOMH_4P6V		0x23
++#define ILI9341_DBI_PWR_2_DEFAULT	0x10
++#define ILI9341_DBI_PRC_NORMAL		0x20
++#define ILI9341_DBI_VCOM_1_VMH_4P25V	0x3e
++#define ILI9341_DBI_VCOM_1_VML_1P5V	0x28
++#define ILI9341_DBI_VCOM_2_DEC_58	0x86
++#define ILI9341_DBI_FRC_DIVA		0x00
++#define ILI9341_DBI_FRC_RTNA		0x1b
++#define ILI9341_DBI_EMS_GAS		BIT(0)
++#define ILI9341_DBI_EMS_DTS		BIT(1)
++#define ILI9341_DBI_EMS_GON		BIT(2)
++
++/* struct ili9341_config - the system specific ILI9341 configuration */
++struct ili9341_config {
++	u32 max_spi_speed;
++	/* mode: the display mode */
++	const struct fb_videomode mode;
++	/* ca: TODO: need comments for this register */
++	u8 ca[ILI9341_CA_LEN];
++	/* power_b: TODO: need comments for this register */
++	u8 power_b[ILI9341_POWER_B_LEN];
++	/* power_seq: TODO: need comments for this register */
++	u8 power_seq[ILI9341_POWER_SEQ_LEN];
++	/* dtca: TODO: need comments for this register */
++	u8 dtca[ILI9341_DTCA_LEN];
++	/* dtcb: TODO: need comments for this register */
++	u8 dtcb[ILI9341_DTCB_LEN];
++	/* power_a: TODO: need comments for this register */
++	u8 power_a[ILI9341_POWER_A_LEN];
++	/* frc: Frame Rate Control (In Normal Mode/Full Colors) (B1h) */
++	u8 frc[ILI9341_FRC_LEN];
++	/* prc: TODO: need comments for this register */
++	u8 prc;
++	/* dfc_1: B6h DISCTRL (Display Function Control) */
++	u8 dfc_1[ILI9341_DFC_1_LEN];
++	/* power_1: Power Control 1 (C0h) */
++	u8 power_1;
++	/* power_2: Power Control 2 (C1h) */
++	u8 power_2;
++	/* vcom_1: VCOM Control 1(C5h) */
++	u8 vcom_1[ILI9341_VCOM_1_LEN];
++	/* vcom_2: VCOM Control 2(C7h) */
++	u8 vcom_2;
++	/* address_mode: Memory Access Control (36h) */
++	u8 address_mode;
++	/* g3amma_en: TODO: need comments for this register */
++	u8 g3amma_en;
++	/* rgb_interface: RGB Interface Signal Control (B0h) */
++	u8 rgb_interface;
++	/* dfc_2: refer to dfc_1 */
++	u8 dfc_2[ILI9341_DFC_2_LEN];
++	/* column_addr: Column Address Set (2Ah) */
++	u8 column_addr[ILI9341_COLUMN_ADDR_LEN];
++	/* page_addr: Page Address Set (2Bh) */
++	u8 page_addr[ILI9341_PAGE_ADDR_LEN];
++	/* interface: Interface Control (F6h) */
++	u8 interface[ILI9341_INTERFACE_LEN];
++	/*
++	 * pixel_format: This command sets the pixel format for the RGB
++	 * image data used by
++	 */
++	u8 pixel_format;
++	/*
++	 * gamma_curve: This command is used to select the desired Gamma
++	 * curve for the
++	 */
++	u8 gamma_curve;
++	/* pgamma: Positive Gamma Correction (E0h) */
++	u8 pgamma[ILI9341_PGAMMA_LEN];
++	/* ngamma: Negative Gamma Correction (E1h) */
++	u8 ngamma[ILI9341_NGAMMA_LEN];
++};
++
++struct ili9341 {
++	struct device_d *dev;
++	struct vpl vpl;
++	const struct ili9341_config *conf;
++	int reset_gpio;
++	int dc_gpio;
++	struct mipi_dbi *dbi;
++	u32 max_spi_speed;
++	struct regulator_bulk_data supplies[3];
++};
++
++/*
++ * The Stm32f429-disco board has a panel ili9341 connected to ltdc controller
++ */
++static const struct ili9341_config ili9341_stm32f429_disco_data = {
++	.max_spi_speed = 10000000,
++	.mode = {
++		.name = "240x320",
++		.xres = 240,
++		.yres = 320,
++		.pixclock = KHZ2PICOS(6100),
++		.left_margin = 10,
++		.hsync_len = 10,
++		.right_margin = 20,
++		.upper_margin = 4,
++		.lower_margin = 2,
++		.vsync_len = 2,
++	},
++	.ca = {0xc3, 0x08, 0x50},
++	.power_b = {0x00, 0xc1, 0x30},
++	.power_seq = {0x64, 0x03, 0x12, 0x81},
++	.dtca = {0x85, 0x00, 0x78},
++	.power_a = {0x39, 0x2c, 0x00, 0x34, 0x02},
++	.prc = 0x20,
++	.dtcb = {0x00, 0x00},
++	/* 0x00 fosc, 0x1b 70hz */
++	.frc = {0x00, 0x1b},
++	/*
++	 * 0x0a Interval scan, AGND AGND AGND AGND
++	 * 0xa2 Normally white, G1 -> G320, S720 -> S1,
++	 *	Scan Cycle 5 frames,85ms
++	 */
++	.dfc_1 = {0x0a, 0xa2},
++	/* 0x10 3.65v */
++	.power_1 = 0x10,
++	/* 0x10 AVDD=vci*2, VGH=vci*7, VGL=-vci*4 */
++	.power_2 = 0x10,
++	/* 0x45 VCOMH 4.425v, 0x15 VCOML -1.975*/
++	.vcom_1 = {0x45, 0x15},
++	/* 0x90 offset voltage, VMH-48, VML-48 */
++	.vcom_2 = 0x90,
++	/*
++	 * 0xc8 Row Address Order, Column Address Order
++	 * BGR 1
++	 */
++	.address_mode = 0xc8,
++	.g3amma_en = 0x00,
++	/*
++	 * 0xc2
++	 * Display Data Path: Memory
++	 * RGB: DE mode
++	 * DOTCLK polarity set (data fetched at the falling time)
++	 */
++	.rgb_interface = ILI9341_RGB_DISP_PATH_MEM |
++			ILI9341_RGB_DE_MODE |
++			ILI9341_RGB_DPL,
++	/*
++	 * 0x0a
++	 * Gate outputs in non-display area: Interval scan
++	 * Determine source/VCOM output in a non-display area in the partial
++	 * display mode: AGND AGND AGND AGND
++	 *
++	 * 0xa7
++	 * Scan Cycle: 15 frames
++	 * fFLM = 60Hz: 255ms
++	 * Liquid crystal type: Normally white
++	 * Gate Output Scan Direction: G1 -> G320
++	 * Source Output Scan Direction: S720 -> S1
++	 *
++	 * 0x27
++	 * LCD Driver Line: 320 lines
++	 *
++	 * 0x04
++	 * PCDIV: 4
++	 */
++	.dfc_2 = {0x0a, 0xa7, 0x27, 0x04},
++	/* column address: 240 */
++	.column_addr = {0x00, 0x00, (ILI9341_COLUMN_ADDR >> 4) & 0xff,
++				ILI9341_COLUMN_ADDR & 0xff},
++	/* page address: 320 */
++	.page_addr = {0x00, 0x00, (ILI9341_PAGE_ADDR >> 4) & 0xff,
++				ILI9341_PAGE_ADDR & 0xff},
++	/*
++	 * Memory write control: When the transfer number of data exceeds
++	 * (EC-SC+1)*(EP-SP+1), the column and page number will be
++	 * reset, and the exceeding data will be written into the following
++	 * column and page.
++	 * Display Operation Mode: RGB Interface Mode
++	 * Interface for RAM Access: RGB interface
++	 * 16- bit RGB interface (1 transfer/pixel)
++	 */
++	.interface = {ILI9341_IF_WE_MODE, 0x00,
++			ILI9341_IF_DM_RGB | ILI9341_IF_RM_RGB},
++	/* DPI: 16 bits / pixel */
++	.pixel_format = ILI9341_PIXEL_DPI_16_BITS,
++	/* Curve Selected: Gamma curve 1 (G2.2) */
++	.gamma_curve = ILI9341_GAMMA_CURVE_1,
++	.pgamma = {0x0f, 0x29, 0x24, 0x0c, 0x0e,
++			0x09, 0x4e, 0x78, 0x3c, 0x09,
++			0x13, 0x05, 0x17, 0x11, 0x00},
++	.ngamma = {0x00, 0x16, 0x1b, 0x04, 0x11,
++			0x07, 0x31, 0x33, 0x42, 0x05,
++			0x0c, 0x0a, 0x28, 0x2f, 0x0f},
++};
++
++static inline struct ili9341 *vpl_to_ili9341(struct vpl *vpl)
++{
++	return container_of(vpl, struct ili9341, vpl);
++}
++
++static void ili9341_dpi_init(struct ili9341 *ili)
++{
++	struct device_d *dev = ili->dev;
++	struct mipi_dbi *dbi = ili->dbi;
++	struct ili9341_config *cfg = (struct ili9341_config *)ili->conf;
++
++	/* Power Control */
++	mipi_dbi_command_stackbuf(dbi, 0xca, cfg->ca, ILI9341_CA_LEN);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_POWERB, cfg->power_b,
++				  ILI9341_POWER_B_LEN);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_POWER_SEQ, cfg->power_seq,
++				  ILI9341_POWER_SEQ_LEN);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_DTCA, cfg->dtca,
++				  ILI9341_DTCA_LEN);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_POWERA, cfg->power_a,
++				  ILI9341_POWER_A_LEN);
++	mipi_dbi_command(ili->dbi, ILI9341_PRC, cfg->prc);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_DTCB, cfg->dtcb,
++				  ILI9341_DTCB_LEN);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_FRC, cfg->frc, ILI9341_FRC_LEN);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_DFC, cfg->dfc_1,
++				  ILI9341_DFC_1_LEN);
++	mipi_dbi_command(dbi, ILI9341_POWER1, cfg->power_1);
++	mipi_dbi_command(dbi, ILI9341_POWER2, cfg->power_2);
++
++	/* VCOM */
++	mipi_dbi_command_stackbuf(dbi, ILI9341_VCOM1, cfg->vcom_1,
++				  ILI9341_VCOM_1_LEN);
++	mipi_dbi_command(dbi, ILI9341_VCOM2, cfg->vcom_2);
++	mipi_dbi_command(dbi, MIPI_DCS_SET_ADDRESS_MODE, cfg->address_mode);
++
++	/* Gamma */
++	mipi_dbi_command(dbi, ILI9341_3GAMMA_EN, cfg->g3amma_en);
++	mipi_dbi_command(dbi, ILI9341_RGB_INTERFACE, cfg->rgb_interface);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_DFC, cfg->dfc_2,
++				  ILI9341_DFC_2_LEN);
++
++	/* Colomn address set */
++	mipi_dbi_command_stackbuf(dbi, MIPI_DCS_SET_COLUMN_ADDRESS,
++				  cfg->column_addr, ILI9341_COLUMN_ADDR_LEN);
++
++	/* Page address set */
++	mipi_dbi_command_stackbuf(dbi, MIPI_DCS_SET_PAGE_ADDRESS,
++				  cfg->page_addr, ILI9341_PAGE_ADDR_LEN);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_INTERFACE, cfg->interface,
++				  ILI9341_INTERFACE_LEN);
++
++	/* Format */
++	mipi_dbi_command(dbi, MIPI_DCS_SET_PIXEL_FORMAT, cfg->pixel_format);
++	mipi_dbi_command(dbi, MIPI_DCS_WRITE_MEMORY_START);
++	mdelay(200);
++	mipi_dbi_command(dbi, MIPI_DCS_SET_GAMMA_CURVE, cfg->gamma_curve);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_PGAMMA, cfg->pgamma,
++				  ILI9341_PGAMMA_LEN);
++	mipi_dbi_command_stackbuf(dbi, ILI9341_NGAMMA, cfg->ngamma,
++				  ILI9341_NGAMMA_LEN);
++	mipi_dbi_command(dbi, MIPI_DCS_EXIT_SLEEP_MODE);
++	mdelay(200);
++	mipi_dbi_command(dbi, MIPI_DCS_SET_DISPLAY_ON);
++	mipi_dbi_command(dbi, MIPI_DCS_WRITE_MEMORY_START);
++
++	dev_info(dev, "Initialized display rgb interface\n");
++}
++
++static int ili9341_dpi_power_on(struct ili9341 *ili)
++{
++	struct device_d *dev = ili->dev;
++	int ret = 0;
++
++	/* Assert RESET */
++	gpiod_set_value(ili->reset_gpio, 1);
++
++	/* Enable power */
++	ret = regulator_bulk_enable(ARRAY_SIZE(ili->supplies),
++				    ili->supplies);
++	if (ret < 0) {
++		dev_err(dev, "unable to enable vcc\n");
++		return ret;
++	}
++	mdelay(20);
++
++	/* De-assert RESET */
++	gpiod_set_value(ili->reset_gpio, 0);
++	mdelay(20);
++
++	return 0;
++}
++
++static int ili9341_dpi_power_off(struct ili9341 *ili)
++{
++	/* Assert RESET */
++	gpiod_set_value(ili->reset_gpio, 1);
++
++	/* Disable power */
++	return regulator_bulk_disable(ARRAY_SIZE(ili->supplies),
++				      ili->supplies);
++}
++
++static void ili9341_dpi_disable(struct ili9341 *ili)
++{
++	mipi_dbi_command(ili->dbi, MIPI_DCS_SET_DISPLAY_OFF);
++}
++
++static int ili9341_dpi_prepare(struct ili9341 *ili)
++{
++	int ret;
++
++	ret = ili9341_dpi_power_on(ili);
++	if (ret < 0)
++		return ret;
++
++	ili9341_dpi_init(ili);
++
++	return ret;
++}
++
++static void ili9341_dpi_enable(struct ili9341 *ili)
++{
++	mipi_dbi_command(ili->dbi, MIPI_DCS_SET_DISPLAY_ON);
++}
++
++static int ili9341_dpi_get_modes(struct ili9341 *ili,
++				 struct display_timings *timings)
++{
++	struct fb_videomode *mode;
++
++	mode = memdup(&ili->conf->mode, sizeof(*mode));
++	if (!mode)
++		return -ENOMEM;
++
++	/*
++	 * These are from the PoV of the display controller, so
++	 * DPL=1 => display samples at positive edge
++	 *       => controller drives at negative edge
++	 */
++	if (ili->conf->rgb_interface & ILI9341_RGB_DPL)
++		mode->display_flags |= DISPLAY_FLAGS_PIXDATA_NEGEDGE;
++	else
++		mode->display_flags |= DISPLAY_FLAGS_PIXDATA_POSEDGE;
++
++	if (ili->conf->rgb_interface & ILI9341_RGB_EPL)
++		mode->display_flags |= DISPLAY_FLAGS_DE_HIGH;
++	else
++		mode->display_flags |= DISPLAY_FLAGS_DE_LOW;
++
++	/* Set up the polarity */
++	if (ili->conf->rgb_interface & ILI9341_RGB_HSPL)
++		mode->sync |= FB_SYNC_HOR_HIGH_ACT;
++
++	if (ili->conf->rgb_interface & ILI9341_RGB_VSPL)
++		mode->sync |= FB_SYNC_VERT_HIGH_ACT;
++
++	timings->modes = mode;
++	timings->num_modes = 1;
++	return 0;
++}
++
++static int ili9341_ioctl(struct vpl *vpl, unsigned int port,
++			unsigned int cmd, void *ptr)
++{
++	struct ili9341 *ili = vpl_to_ili9341(vpl);
++
++	switch (cmd) {
++	case VPL_PREPARE:
++		return ili9341_dpi_prepare(ili);
++	case VPL_ENABLE:
++		ili9341_dpi_enable(ili);
++		return 0;
++	case VPL_DISABLE:
++		ili9341_dpi_disable(ili);
++		return 0;
++	case VPL_UNPREPARE:
++		return ili9341_dpi_power_off(ili);
++	case VPL_GET_VIDEOMODES:
++		return ili9341_dpi_get_modes(ili, ptr);
++	default:
++		return 0;
++	}
++}
++
++static int ili9341_dpi_probe(struct spi_device *spi, int dc, int reset)
++{
++	struct device_d *dev = &spi->dev;
++	struct ili9341 *ili;
++	int ret;
++
++	ili = kzalloc(sizeof(struct ili9341), GFP_KERNEL);
++	if (!ili)
++		return -ENOMEM;
++
++	ili->dbi = kzalloc(sizeof(struct mipi_dbi), GFP_KERNEL);
++	if (!ili->dbi)
++		return -ENOMEM;
++
++	ili->supplies[0].supply = "vci";
++	ili->supplies[1].supply = "vddi";
++	ili->supplies[2].supply = "vddi-led";
++	ret = regulator_bulk_get(dev, ARRAY_SIZE(ili->supplies),
++				 ili->supplies);
++	if (ret < 0) {
++		dev_err(dev, "failed to get regulators: %d\n", ret);
++		return ret;
++	}
++
++	ret = mipi_dbi_spi_init(spi, ili->dbi, dc);
++	if (ret)
++		return ret;
++
++	ili->reset_gpio = reset;
++	/*
++	 * Every new incarnation of this display must have a unique
++	 * data entry for the system in this driver.
++	 */
++	ili->conf = device_get_match_data(dev);
++	if (!ili->conf) {
++		dev_err(dev, "missing device configuration\n");
++		return -ENODEV;
++	}
++
++	ili->dev = dev;
++	ili->max_spi_speed = ili->conf->max_spi_speed;
++	ili->vpl.node = dev->device_node;
++	ili->vpl.ioctl = ili9341_ioctl;
++
++	return vpl_register(&ili->vpl);
++}
++
++static int ili9341_probe(struct device_d *dev)
++{
++	struct spi_device *spi = to_spi_device(dev);
++	int dc, reset;
++
++	reset = gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
++	if (!gpio_is_valid(reset) && reset != -ENOENT)
++		dev_err(dev, "Failed to get gpio 'reset'\n");
++
++	dc = gpiod_get(dev, "dc", GPIOD_OUT_LOW);
++	if (!gpio_is_valid(dc) && dc != -ENOENT)
++		dev_err(dev, "Failed to get gpio 'dc'\n");
++
++	return ili9341_dpi_probe(spi, dc, reset);
++}
++
++static const struct of_device_id ili9341_of_match[] = {
++	{
++		.compatible = "st,sf-tc240t-9370-t",
++		.data = &ili9341_stm32f429_disco_data,
++	},
++	{ }
++};
++
++static struct driver_d ili9341_driver = {
++	.name = "panel-ilitek-ili9341",
++	.of_compatible = ili9341_of_match,
++	.probe = ili9341_probe,
++};
++device_spi_driver(ili9341_driver);
++
++MODULE_AUTHOR("Dillon Min <dillon.minfei@gmail.com>");
++MODULE_DESCRIPTION("ILI9341 LCD panel driver");
++MODULE_LICENSE("GPL v2");
+-- 
+2.30.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
