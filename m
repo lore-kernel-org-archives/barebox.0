@@ -1,55 +1,52 @@
-Delivery-date: Wed, 02 Feb 2022 10:57:39 +0100
+Delivery-date: Wed, 02 Feb 2022 10:57:41 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFCOR-003b1j-FV
-	for lore@lore.pengutronix.de; Wed, 02 Feb 2022 10:57:39 +0100
+	id 1nFCOT-003b24-1q
+	for lore@lore.pengutronix.de; Wed, 02 Feb 2022 10:57:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFCOQ-0003RY-00
-	for lore@pengutronix.de; Wed, 02 Feb 2022 10:57:38 +0100
+	id 1nFCOR-0003SE-73
+	for lore@pengutronix.de; Wed, 02 Feb 2022 10:57:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=SEhxerwJskVgDUC+eR5UYM/hPRnJplAwk+iCWD3VzMU=; b=KZKiYkmbODX3E6
-	ukdlDYPv/E0F6Jf3EWXtr3Nm4jwMpYTuh+FrBP+FLm3peEzZN7FA1wxuLX0s8G9MxFOv66U59SgO1
-	9SRE0Jfj+Eq/3AMKFFjU8XReLoJSNGoEJEzOT1QfsPMAxikXaNaVtTNAxU8vfNUHY6Yhf0ZelYEBy
-	F0KzQsH8sFfDF41zHmJJvDqgG/As3OpSRj/9PQsskHFDtL1aXyh/4wv3UKAiV7Cy/KGGufcEzB+S0
-	UEKhOONauBFtTdHrD8SbEwdWhiYIKAUYNv75ueEdnD6T0E8rH/GexRWr5ITDx4uurWh+RfwhRDA3b
-	mImjU6Om5CY0LCu78Tag==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=r60NmdVCBZ+OrveEIc1w0UnCVnHr5N91NgUanNXdc9Q=; b=NDcCTeSmOB0Qom
+	ZRkXPrviJrWBHc48osSRpMnr3HcnMGFK9MqTRZcjzeUdwcYs91vdLIFsEJ6oiZeTGaY13hSqxFy7j
+	6fV0TT7fpIFeBnjasS5eC4DtDODAg3tuu53aj3BBFkWASJt282V41lKg6WqtMJuOHeJKxP42xh2oz
+	RGhwbvH2LaF5BW9RTnIlpc1vSaTUrMdcUA4dhUKjFzM2Glwn25EQcSAOEUNVUnSpYvAPnfsTkoWEI
+	o3ybqlXMU/JUQF6i1SDPDNWZ5cD9KOxVb8D1HxToSxxMt4eGVIt6ITzYgc79looN8PBPgK6GGtVGy
+	17pqbgES5YiT/X4gWgnA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nFCMt-00Eph0-Iw; Wed, 02 Feb 2022 09:56:03 +0000
+	id 1nFCMv-00EphQ-Qn; Wed, 02 Feb 2022 09:56:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nFCMo-00Epfn-Bk
+ id 1nFCMo-00Epfm-Bl
  for barebox@lists.infradead.org; Wed, 02 Feb 2022 09:56:00 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1nFCMm-00036Y-1E; Wed, 02 Feb 2022 10:55:56 +0100
+ (envelope-from <afa@pengutronix.de>) id 1nFCMl-00036X-Vh
+ for barebox@lists.infradead.org; Wed, 02 Feb 2022 10:55:55 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>)
- id 1nFCMl-004dGp-Fa; Wed, 02 Feb 2022 10:55:55 +0100
+ (envelope-from <afa@pengutronix.de>) id 1nFCMl-004dGn-F7
+ for barebox@lists.infradead.org; Wed, 02 Feb 2022 10:55:55 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  2 Feb 2022 10:55:51 +0100
-Message-Id: <20220202095554.1103016-2-a.fatoum@pengutronix.de>
+Date: Wed,  2 Feb 2022 10:55:50 +0100
+Message-Id: <20220202095554.1103016-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220202095554.1103016-1-a.fatoum@pengutronix.de>
-References: <20220202095554.1103016-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220202_015558_424097_11518E8C 
-X-CRM114-Status: GOOD (  11.75  )
+X-CRM114-CacheID: sfid-20220202_015558_423599_9255B9F7 
+X-CRM114-Status: GOOD (  10.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,46 +71,45 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/4] gpiolib: implement gpiod_set_value
+Subject: [PATCH 0/4] video: add STM32F429-DISCO video pipeline support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Linux gpiod_set_value is silent if the GPIO descriptor is NULL, but
-barebox warns about it. Also having gpio_set_value not respect active
-low/high, while Linux gpiod_set_value respects it is error-prone.
+The STM32F429-DISCO has the LCD-TFT display controller connected to a
+parallel panel with MIPI-DBI over SPI for panel control.
 
-Add a new gpiod_set_value function that covers this. gpio == -ENOENT is
-taken as the dummy value for optional GPIOs.
+The LTDC driver was originally written for the STM32MP1, but had some
+issues last time I tested it a few years ago. I debugged it into
+submission on the STM32F429 now though, so it might just work on the MP1
+as well.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- include/gpiod.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+v1 -> v2:
+  - removed stray Kconfig hunk for panel support to appropriate patch
+  (Sascha)
+  - fixed Kconfig help text for mipi_dbi helper
 
-diff --git a/include/gpiod.h b/include/gpiod.h
-index c8b2cd47a3cb..adac50b4c36d 100644
---- a/include/gpiod.h
-+++ b/include/gpiod.h
-@@ -14,7 +14,7 @@ enum gpiod_flags {
- 	GPIOD_IN	= GPIOF_IN,
- 	/*
- 	 * To change this later to a different logic level (i.e. taking
--	 * active low into account), use gpio_direction_active()
-+	 * active low into account), use gpiod_set_value()
- 	 */
- 	GPIOD_OUT_LOW	= GPIOF_OUT_INIT_INACTIVE,
- 	GPIOD_OUT_HIGH	= GPIOF_OUT_INIT_ACTIVE,
-@@ -23,4 +23,10 @@ enum gpiod_flags {
- /* returned gpio descriptor can be passed to any normal gpio_* function */
- int gpiod_get(struct device_d *dev, const char *_con_id, enum gpiod_flags flags);
- 
-+static inline void gpiod_set_value(unsigned gpio, bool value)
-+{
-+	if (gpio != -ENOENT)
-+		gpio_direction_active(gpio, value);
-+}
-+
- #endif
+Ahmad Fatoum (4):
+  gpiolib: implement gpiod_set_value
+  video: add driver for STM32 LCD-TFT Display Controller
+  video: add MIPI DBI Type C Option 3 support
+  video: add Ilitek ILI9341 panel support
+
+ commands/Kconfig                     |  23 ++
+ commands/Makefile                    |   1 +
+ drivers/video/Kconfig                |  22 ++
+ drivers/video/Makefile               |   3 +
+ drivers/video/mipi_dbi.c             | 467 +++++++++++++++++++++++
+ drivers/video/panel-ilitek-ili9341.c | 541 +++++++++++++++++++++++++++
+ drivers/video/stm32_ltdc.c           | 336 +++++++++++++++++
+ drivers/video/stm32_ltdc.h           | 130 +++++++
+ include/gpiod.h                      |   8 +-
+ include/spi/spi.h                    |  20 +
+ 10 files changed, 1550 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/video/mipi_dbi.c
+ create mode 100644 drivers/video/panel-ilitek-ili9341.c
+ create mode 100644 drivers/video/stm32_ltdc.c
+ create mode 100644 drivers/video/stm32_ltdc.h
+
 -- 
 2.30.2
 
