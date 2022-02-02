@@ -1,55 +1,55 @@
-Delivery-date: Wed, 02 Feb 2022 10:57:41 +0100
+Delivery-date: Wed, 02 Feb 2022 10:57:42 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFCOT-003b2A-CX
-	for lore@lore.pengutronix.de; Wed, 02 Feb 2022 10:57:41 +0100
+	id 1nFCOU-003b2V-5i
+	for lore@lore.pengutronix.de; Wed, 02 Feb 2022 10:57:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFCOQ-0003S1-Vl
-	for lore@pengutronix.de; Wed, 02 Feb 2022 10:57:40 +0100
+	id 1nFCOR-0003Sh-KL
+	for lore@pengutronix.de; Wed, 02 Feb 2022 10:57:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=UI4xQ9KJTHqflZQk6/gq8+3YNUWXfFpTzkUIwf8EQbg=; b=OXUGVKgnfE4gP4
-	gO0lZUpo7TXkg4f/MEWYYFGQ3P6qFsYTMge678F26HOEnSetrq/Z1t8CHCktqVni4zb1bG0trNIBs
-	BEoiLS5eo2y9LnPxpyqZtMauzai3ARK/uVX68niNfuOqsizggQgNMFbWYeZfBsTT4amQTBU9S/G0P
-	bmCot+yoOoCX5NRA+HMrroje0zX11eATv8PCgkHvjVJRDnqak4RdIhZ5V7oqCNXX+dc2dc9lm2C6l
-	lTa+aWyAvlqSapvRCqCwGl5xgFFz5p1oJSRfwNbwZ9R04iQci9mHJ5xv+gKj++XK8kt0BDn8+AXfu
-	P7QALe84r4+SzeFwWOGw==;
+	List-Owner; bh=Lpr+xsXhBuu8rulniJTvA2YcPIMzTRvPDFRwa7sWDtc=; b=vyd9JvfFbGBDk2
+	HTFdM9OwTNT8z06vHdf1MrDKxMeG98FQpU9iQutlSQ+TnqHxJtl59M6keNZBhZFuVuZDJq5wHFZW5
+	NTzwj+P6NOoCuIEZNvPaWYsPBlGAeDN5Fn4/xzjv9nO1BR/XrCxWhdognYfVniVmM/xrcxJ2sq/rF
+	B66wpS4qQLjtsnamfW54p9sVTXYqbA7No1F0S7ZRkXdbq2reQPAQytR0f6ScIFbesAIvnpSzSa8DW
+	AY+9SMtdiHoe0CaW43GfHEHBIqCLp8vnoeD7ZBqB61jylKrPf52Bn2g2f48hfl58cT9svI6tuO6Vz
+	yjwelAKJJVerIucf0fig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nFCMy-00Ephs-6G; Wed, 02 Feb 2022 09:56:08 +0000
+	id 1nFCN4-00EpjS-JJ; Wed, 02 Feb 2022 09:56:14 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nFCMo-00Epfo-Bn
- for barebox@lists.infradead.org; Wed, 02 Feb 2022 09:56:02 +0000
+ id 1nFCMv-00EphU-9E
+ for barebox@lists.infradead.org; Wed, 02 Feb 2022 09:56:08 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1nFCMm-00036Z-36; Wed, 02 Feb 2022 10:55:56 +0100
+ id 1nFCMm-00036a-3t; Wed, 02 Feb 2022 10:55:56 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nFCMl-004dGs-G6; Wed, 02 Feb 2022 10:55:55 +0100
+ id 1nFCMl-004dGv-H3; Wed, 02 Feb 2022 10:55:55 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  2 Feb 2022 10:55:52 +0100
-Message-Id: <20220202095554.1103016-3-a.fatoum@pengutronix.de>
+Date: Wed,  2 Feb 2022 10:55:53 +0100
+Message-Id: <20220202095554.1103016-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220202095554.1103016-1-a.fatoum@pengutronix.de>
 References: <20220202095554.1103016-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220202_015558_756050_1B95C6FD 
-X-CRM114-Status: GOOD (  27.33  )
+X-CRM114-CacheID: sfid-20220202_015605_689594_8D0E2598 
+X-CRM114-Status: GOOD (  33.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,8 +61,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -74,542 +74,281 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/4] video: add driver for STM32 LCD-TFT Display Controller
+Subject: [PATCH 3/4] video: add MIPI DBI Type C Option 3 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This driver has been tested on a STM32F429 connected to an Ilitek 9341
-Display for which support is added in a follow-up commit. The same
-driver can be used (but wasn't tested) for the STM32MP1 as well. The
-official ST evaluation kits all use MIPI-DSI for which we still lack
-support. The LXA MC-1 has a parallel display connected to the LTDC, but
-I didn't have one readily available to test.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/video/Kconfig      |   8 +
- drivers/video/Makefile     |   1 +
- drivers/video/stm32_ltdc.c | 336 +++++++++++++++++++++++++++++++++++++
- drivers/video/stm32_ltdc.h | 130 ++++++++++++++
- 4 files changed, 475 insertions(+)
- create mode 100644 drivers/video/stm32_ltdc.c
- create mode 100644 drivers/video/stm32_ltdc.h
-
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index cfbd541a956e..1b8672fdea82 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -59,6 +59,14 @@ config DRIVER_VIDEO_STM
- 	  Say 'Y' here to enable framebuffer and splash screen support for
- 	  i.MX23 and i.MX28 based systems.
- 
-+config DRIVER_VIDEO_STM32_LTDC
-+	bool "STM32 LTDC framebuffer driver"
-+	select VIDEO_VPL
-+	depends on ARCH_STM32 || COMPILE_TEST
-+	help
-+	  Say 'Y' here to enable framebuffer and splash screen support for
-+	  STM32 and STM32MP1.
-+
- config DRIVER_VIDEO_S3C24XX
- 	bool "S3C244x framebuffer driver"
- 	depends on ARCH_S3C24xx
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 8344bdd2af2a..7f4429278987 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
- obj-$(CONFIG_DRIVER_VIDEO_STM) += stm.o
-+obj-$(CONFIG_DRIVER_VIDEO_STM32_LTDC) += stm32_ltdc.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX) += imx.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) += imx-ipu-fb.o
- obj-$(CONFIG_DRIVER_VIDEO_S3C24XX) += s3c24xx.o
-diff --git a/drivers/video/stm32_ltdc.c b/drivers/video/stm32_ltdc.c
-new file mode 100644
-index 000000000000..645c20b5545f
---- /dev/null
-+++ b/drivers/video/stm32_ltdc.c
-@@ -0,0 +1,336 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2017-2018 STMicroelectronics - All Rights Reserved
-+ * Author(s): Philippe Cornu <philippe.cornu@st.com> for STMicroelectronics.
-+ *	      Yannick Fertre <yannick.fertre@st.com> for STMicroelectronics.
-+ *	      Ahmad Fatoum <a.fatoum@pengutronix.de>
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <linux/clk.h>
-+#include <linux/reset.h>
-+#include <io.h>
-+#include <fb.h>
-+#include <dma.h>
-+#include <video/media-bus-format.h>
-+#include <video/vpl.h>
-+#include <of_graph.h>
-+
-+#include "stm32_ltdc.h"
-+
-+struct ltdc_hw {
-+	void __iomem *regs;
-+	struct device_d *dev;
-+	struct clk *pclk;
-+	bool claimed;
-+};
-+
-+struct ltdc_fb {
-+	int id;
-+	struct fb_info info;
-+	u32 bg_col_argb;
-+	u32 alpha;
-+	u32 bus_format;
-+	enum stm32_ltdc_pixfmt pixfmt;
-+	struct vpl vpl;
-+	struct ltdc_hw *hw;
-+};
-+
-+static bool has_alpha(enum stm32_ltdc_pixfmt pixfmt)
-+{
-+	switch (pixfmt) {
-+	case PF_ARGB8888:
-+	case PF_ARGB1555:
-+	case PF_ARGB4444:
-+	case PF_AL44:
-+	case PF_AL88:
-+		return true;
-+	case PF_RGB888:
-+	case PF_RGB565:
-+	case PF_L8:
-+	default:
-+		return false;
-+	}
-+}
-+
-+static void ltdc_set_mode(struct ltdc_fb *priv,
-+			  struct fb_videomode *mode)
-+{
-+	void __iomem *regs = priv->hw->regs;
-+	u32 hsync, vsync, acc_hbp, acc_vbp, acc_act_w, acc_act_h;
-+	u32 total_w, total_h;
-+	u32 val;
-+
-+	/* Convert video timings to ltdc timings */
-+	hsync = mode->hsync_len - 1;
-+	vsync = mode->vsync_len - 1;
-+	acc_hbp = hsync + mode->left_margin;
-+	acc_vbp = vsync + mode->upper_margin;
-+	acc_act_w = acc_hbp + mode->xres;
-+	acc_act_h = acc_vbp + mode->yres;
-+	total_w = acc_act_w + mode->right_margin;
-+	total_h = acc_act_h + mode->lower_margin;
-+
-+	/* Synchronization sizes */
-+	val = (hsync << 16) | vsync;
-+	clrsetbits_le32(regs + LTDC_SSCR, SSCR_VSH | SSCR_HSW, val);
-+
-+	/* Accumulated back porch */
-+	val = (acc_hbp << 16) | acc_vbp;
-+	clrsetbits_le32(regs + LTDC_BPCR, BPCR_AVBP | BPCR_AHBP, val);
-+
-+	/* Accumulated active width */
-+	val = (acc_act_w << 16) | acc_act_h;
-+	clrsetbits_le32(regs + LTDC_AWCR, AWCR_AAW | AWCR_AAH, val);
-+
-+	/* Total width & height */
-+	val = (total_w << 16) | total_h;
-+	clrsetbits_le32(regs + LTDC_TWCR, TWCR_TOTALH | TWCR_TOTALW, val);
-+
-+	setbits_le32(regs + LTDC_LIPCR, acc_act_h + 1);
-+
-+	/* Signal polarities */
-+	val = 0;
-+	dev_dbg(priv->hw->dev, "mode->display_flags 0x%x mode->sync 0x%x\n",
-+		mode->display_flags, mode->sync);
-+	if (mode->sync & FB_SYNC_HOR_HIGH_ACT)
-+		val |= GCR_HSPOL;
-+	if (mode->sync & FB_SYNC_VERT_HIGH_ACT)
-+		val |= GCR_VSPOL;
-+	if (mode->display_flags & DISPLAY_FLAGS_DE_HIGH)
-+		val |= GCR_DEPOL;
-+	if (mode->display_flags & DISPLAY_FLAGS_PIXDATA_NEGEDGE)
-+		val |= GCR_PCPOL;
-+
-+	clrsetbits_le32(regs + LTDC_GCR,
-+			GCR_HSPOL | GCR_VSPOL | GCR_DEPOL | GCR_PCPOL, val);
-+
-+	/* Overall background color */
-+	writel(priv->bg_col_argb, regs + LTDC_BCCR);
-+}
-+
-+static void ltdc_set_layer1(struct ltdc_fb *priv)
-+{
-+	void __iomem *regs = priv->hw->regs;
-+	u32 x0, x1, y0, y1;
-+	u32 pitch_in_bytes;
-+	u32 line_length;
-+	u32 bus_width;
-+	u32 val, tmp, bpp;
-+	struct fb_videomode *mode = priv->info.mode;
-+
-+	x0 = y0 = 0;
-+	x1 = mode->xres - 1;
-+	y1 = mode->yres - 1;
-+
-+	/* Horizontal start and stop position */
-+	tmp = (readl(regs + LTDC_BPCR) & BPCR_AHBP) >> 16;
-+	val = ((x1 + 1 + tmp) << 16) + (x0 + 1 + tmp);
-+	clrsetbits_le32(regs + LTDC_L1WHPCR, LXWHPCR_WHSTPOS | LXWHPCR_WHSPPOS,
-+			val);
-+
-+	/* Vertical start & stop position */
-+	tmp = readl(regs + LTDC_BPCR) & BPCR_AVBP;
-+	val = ((y1 + 1 + tmp) << 16) + (y0 + 1 + tmp);
-+	clrsetbits_le32(regs + LTDC_L1WVPCR, LXWVPCR_WVSTPOS | LXWVPCR_WVSPPOS,
-+			val);
-+
-+	/* Layer background color */
-+	writel(priv->bg_col_argb, regs + LTDC_L1DCCR);
-+
-+	/* Color frame buffer pitch in bytes & line length */
-+	bpp = priv->info.bits_per_pixel;
-+	pitch_in_bytes = mode->xres * (bpp >> 3);
-+	bus_width = 8 << ((readl(regs + LTDC_GC2R) & GC2R_BW) >> 4);
-+	line_length = ((bpp >> 3) * mode->xres) + (bus_width >> 3) - 1;
-+	val = (pitch_in_bytes << 16) | line_length;
-+	clrsetbits_le32(regs + LTDC_L1CFBLR, LXCFBLR_CFBLL | LXCFBLR_CFBP, val);
-+
-+	/* Pixel format */
-+	clrsetbits_le32(regs + LTDC_L1PFCR, LXPFCR_PF, priv->pixfmt);
-+
-+	/* Constant alpha value */
-+	clrsetbits_le32(regs + LTDC_L1CACR, LXCACR_CONSTA, priv->alpha);
-+
-+	/* Specifies the blending factors : with or without pixel alpha */
-+	/* Manage hw-specific capabilities */
-+	val = has_alpha(priv->pixfmt) ? BF1_PAXCA | BF2_1PAXCA : BF1_CA | BF2_1CA;
-+
-+	/* Blending factors */
-+	clrsetbits_le32(regs + LTDC_L1BFCR, LXBFCR_BF2 | LXBFCR_BF1, val);
-+
-+	/* Frame buffer line number */
-+	clrsetbits_le32(regs + LTDC_L1CFBLNR, LXCFBLNR_CFBLN, mode->yres);
-+
-+	/* Frame buffer address */
-+	writel((unsigned long)priv->info.screen_base, regs + LTDC_L1CFBAR);
-+
-+	/* Enable layer 1 */
-+	setbits_le32(regs + LTDC_L1CR, LXCR_LEN);
-+}
-+
-+static int ltdc_activate_var(struct fb_info *info)
-+{
-+	info->line_length = info->xres * (info->bits_per_pixel >> 3);
-+
-+	info->screen_base = dma_alloc_writecombine(info->line_length * info->yres,
-+						   DMA_ADDRESS_BROKEN);
-+	if (!info->screen_base)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static void ltdc_enable(struct fb_info *info)
-+{
-+	struct fb_videomode *mode = info->mode;
-+	struct ltdc_fb *priv = info->priv;
-+	struct ltdc_hw *hw = priv->hw;
-+	u32 pixclock;
-+	int ret;
-+
-+	if (hw->claimed) {
-+		dev_warn(hw->dev, "CRTC currently claimed by other frame buffer!\n");
-+		return;
-+	}
-+
-+	vpl_ioctl_prepare(&priv->vpl, priv->id, mode);
-+
-+	pixclock = PICOS2KHZ(mode->pixclock) * 1000;
-+
-+	ret = clk_enable(hw->pclk);
-+	if (ret) {
-+		dev_err(hw->dev, "peripheral clock enable error %d\n", ret);
-+		return;
-+	}
-+
-+	clk_set_rate(clk_get_parent(hw->pclk), pixclock);
-+	if (!ret)
-+		ret = clk_set_rate(hw->pclk, pixclock);
-+	if (ret < 0) {
-+		dev_err(hw->dev, "fail to set pixel clock %d hz: %d\n",
-+			pixclock, ret);
-+		return;
-+	}
-+
-+	ret = device_reset_us(hw->dev, 100000);
-+	if (ret) {
-+		dev_err(hw->dev, "error resetting controller %d\n", ret);
-+		return;
-+	}
-+
-+	/* Configure & start LTDC */
-+	ltdc_set_mode(priv, mode);
-+	ltdc_set_layer1(priv);
-+
-+	/* Reload configuration immediately & enable LTDC */
-+	setbits_le32(hw->regs + LTDC_SRCR, SRCR_IMR);
-+	setbits_le32(hw->regs + LTDC_GCR, GCR_LTDCEN);
-+
-+	vpl_ioctl_enable(&priv->vpl, priv->id);
-+
-+	hw->claimed = true;
-+}
-+
-+static void ltdc_disable(struct fb_info *info)
-+{
-+	struct ltdc_fb *priv = info->priv;
-+
-+	vpl_ioctl_disable(&priv->vpl, priv->id);
-+
-+	clrbits_le32(priv->hw->regs + LTDC_GCR, GCR_LTDCEN);
-+	clk_disable(priv->hw->pclk);
-+	priv->hw->claimed = false;
-+
-+	vpl_ioctl_unprepare(&priv->vpl, priv->id);
-+}
-+
-+static struct fb_ops ltdc_ops = {
-+	.fb_activate_var	= ltdc_activate_var,
-+	.fb_enable		= ltdc_enable,
-+	.fb_disable		= ltdc_disable,
-+};
-+
-+static int ltdc_probe(struct device_d *dev)
-+{
-+	struct device_node *np;
-+	struct resource *iores;
-+	struct ltdc_hw *hw;
-+	int ret;
-+
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+
-+	hw = xzalloc(sizeof *hw);
-+	hw->dev = dev;
-+	hw->regs = IOMEM(iores->start);
-+
-+	hw->pclk = clk_get(dev, NULL);
-+	if (IS_ERR(hw->pclk)) {
-+		dev_err(dev, "peripheral clock get error %d\n", ret);
-+		return PTR_ERR(hw->pclk);
-+	}
-+
-+	for_each_available_child_of_node(dev->device_node, np) {
-+		struct ltdc_fb *priv;
-+		struct of_endpoint ep;
-+		struct fb_info *info;
-+
-+		if (!of_graph_port_is_available(np))
-+			continue;
-+
-+		ret = of_graph_parse_endpoint(np, &ep);
-+		if (ret)
-+			return ret;
-+
-+		dev_dbg(hw->dev, "register vpl for %s\n", np->full_name);
-+
-+		priv = xzalloc(sizeof(*priv));
-+		priv->hw = hw;
-+		priv->id = ep.id;
-+		priv->vpl.node = dev->device_node;
-+
-+		ret = vpl_register(&priv->vpl);
-+		if (ret)
-+			return ret;
-+
-+		info = &priv->info;
-+		info->priv = priv;
-+		info->fbops = &ltdc_ops;
-+
-+		info->red	= (struct fb_bitfield){ .offset = 11, .length = 5, };
-+		info->green	= (struct fb_bitfield){ .offset =  5, .length = 6, };
-+		info->blue	= (struct fb_bitfield){ .offset =  0, .length = 5, };
-+		info->bits_per_pixel = 16,
-+		priv->pixfmt = PF_RGB565;
-+		/* TODO Below parameters are hard-coded for the moment... */
-+		priv->bg_col_argb = 0xFFFFFFFF; /* white no transparency */
-+		priv->alpha = 0xFF;
-+
-+		ret = vpl_ioctl(&priv->vpl, priv->id, VPL_GET_VIDEOMODES, &info->modes);
-+		if (ret)
-+			dev_dbg(dev, "failed to get modes: %s\n", strerror(-ret));
-+
-+		ret = register_framebuffer(info);
-+		if (ret < 0) {
-+			dev_err(dev, "failed to register framebuffer\n");
-+			return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id ltdc_ids[] = {
-+	{ .compatible = "st,stm32-ltdc" },
-+	{ /* sentinel */ }
-+};
-+
-+static struct driver_d ltdc_driver = {
-+	.name = "stm32-ltdc",
-+	.probe = ltdc_probe,
-+	.of_compatible = DRV_OF_COMPAT(ltdc_ids),
-+};
-+device_platform_driver(ltdc_driver);
-diff --git a/drivers/video/stm32_ltdc.h b/drivers/video/stm32_ltdc.h
-new file mode 100644
-index 000000000000..6481f2613b95
---- /dev/null
-+++ b/drivers/video/stm32_ltdc.h
-@@ -0,0 +1,130 @@
-+#ifndef STM32_LTDC_H__
-+#define STM32_LTDC_H__
-+
-+/* LTDC main registers */
-+#define LTDC_IDR	0x00	/* IDentification */
-+#define LTDC_LCR	0x04	/* Layer Count */
-+#define LTDC_SSCR	0x08	/* Synchronization Size Configuration */
-+#define LTDC_BPCR	0x0C	/* Back Porch Configuration */
-+#define LTDC_AWCR	0x10	/* Active Width Configuration */
-+#define LTDC_TWCR	0x14	/* Total Width Configuration */
-+#define LTDC_GCR	0x18	/* Global Control */
-+#define LTDC_GC1R	0x1C	/* Global Configuration 1 */
-+#define LTDC_GC2R	0x20	/* Global Configuration 2 */
-+#define LTDC_SRCR	0x24	/* Shadow Reload Configuration */
-+#define LTDC_GACR	0x28	/* GAmma Correction */
-+#define LTDC_BCCR	0x2C	/* Background Color Configuration */
-+#define LTDC_IER	0x34	/* Interrupt Enable */
-+#define LTDC_ISR	0x38	/* Interrupt Status */
-+#define LTDC_ICR	0x3C	/* Interrupt Clear */
-+#define LTDC_LIPCR	0x40	/* Line Interrupt Position Conf. */
-+#define LTDC_CPSR	0x44	/* Current Position Status */
-+#define LTDC_CDSR	0x48	/* Current Display Status */
-+
-+/* LTDC layer 1 registers */
-+#define LTDC_L1LC1R	0x80	/* L1 Layer Configuration 1 */
-+#define LTDC_L1LC2R	0x84	/* L1 Layer Configuration 2 */
-+#define LTDC_L1CR	0x84	/* L1 Control */
-+#define LTDC_L1WHPCR	0x88	/* L1 Window Hor Position Config */
-+#define LTDC_L1WVPCR	0x8C	/* L1 Window Vert Position Config */
-+#define LTDC_L1CKCR	0x90	/* L1 Color Keying Configuration */
-+#define LTDC_L1PFCR	0x94	/* L1 Pixel Format Configuration */
-+#define LTDC_L1CACR	0x98	/* L1 Constant Alpha Config */
-+#define LTDC_L1DCCR	0x9C	/* L1 Default Color Configuration */
-+#define LTDC_L1BFCR	0xA0	/* L1 Blend Factors Configuration */
-+#define LTDC_L1FBBCR	0xA4	/* L1 FrameBuffer Bus Control */
-+#define LTDC_L1AFBCR	0xA8	/* L1 AuxFB Control */
-+#define LTDC_L1CFBAR	0xAC	/* L1 Color FrameBuffer Address */
-+#define LTDC_L1CFBLR	0xB0	/* L1 Color FrameBuffer Length */
-+#define LTDC_L1CFBLNR	0xB4	/* L1 Color FrameBuffer Line Nb */
-+#define LTDC_L1AFBAR	0xB8	/* L1 AuxFB Address */
-+#define LTDC_L1AFBLR	0xBC	/* L1 AuxFB Length */
-+#define LTDC_L1AFBLNR	0xC0	/* L1 AuxFB Line Number */
-+#define LTDC_L1CLUTWR	0xC4	/* L1 CLUT Write */
-+
-+/* Bit definitions */
-+#define SSCR_VSH	GENMASK(10, 0)	/* Vertical Synchronization Height */
-+#define SSCR_HSW	GENMASK(27, 16)	/* Horizontal Synchronization Width */
-+
-+#define BPCR_AVBP	GENMASK(10, 0)	/* Accumulated Vertical Back Porch */
-+#define BPCR_AHBP	GENMASK(27, 16)	/* Accumulated Horizontal Back Porch */
-+
-+#define AWCR_AAH	GENMASK(10, 0)	/* Accumulated Active Height */
-+#define AWCR_AAW	GENMASK(27, 16)	/* Accumulated Active Width */
-+
-+#define TWCR_TOTALH	GENMASK(10, 0)	/* TOTAL Height */
-+#define TWCR_TOTALW	GENMASK(27, 16)	/* TOTAL Width */
-+
-+#define GCR_LTDCEN	BIT(0)		/* LTDC ENable */
-+#define GCR_DEN		BIT(16)		/* Dither ENable */
-+#define GCR_PCPOL	BIT(28)		/* Pixel Clock POLarity-Inverted */
-+#define GCR_DEPOL	BIT(29)		/* Data Enable POLarity-High */
-+#define GCR_VSPOL	BIT(30)		/* Vertical Synchro POLarity-High */
-+#define GCR_HSPOL	BIT(31)		/* Horizontal Synchro POLarity-High */
-+
-+#define GC1R_WBCH	GENMASK(3, 0)	/* Width of Blue CHannel output */
-+#define GC1R_WGCH	GENMASK(7, 4)	/* Width of Green Channel output */
-+#define GC1R_WRCH	GENMASK(11, 8)	/* Width of Red Channel output */
-+#define GC1R_PBEN	BIT(12)		/* Precise Blending ENable */
-+#define GC1R_DT		GENMASK(15, 14)	/* Dithering Technique */
-+#define GC1R_GCT	GENMASK(19, 17)	/* Gamma Correction Technique */
-+#define GC1R_SHREN	BIT(21)		/* SHadow Registers ENabled */
-+#define GC1R_BCP	BIT(22)		/* Background Colour Programmable */
-+#define GC1R_BBEN	BIT(23)		/* Background Blending ENabled */
-+#define GC1R_LNIP	BIT(24)		/* Line Number IRQ Position */
-+#define GC1R_TP		BIT(25)		/* Timing Programmable */
-+#define GC1R_IPP	BIT(26)		/* IRQ Polarity Programmable */
-+#define GC1R_SPP	BIT(27)		/* Sync Polarity Programmable */
-+#define GC1R_DWP	BIT(28)		/* Dither Width Programmable */
-+#define GC1R_STREN	BIT(29)		/* STatus Registers ENabled */
-+#define GC1R_BMEN	BIT(31)		/* Blind Mode ENabled */
-+
-+#define GC2R_EDCA	BIT(0)		/* External Display Control Ability  */
-+#define GC2R_STSAEN	BIT(1)		/* Slave Timing Sync Ability ENabled */
-+#define GC2R_DVAEN	BIT(2)		/* Dual-View Ability ENabled */
-+#define GC2R_DPAEN	BIT(3)		/* Dual-Port Ability ENabled */
-+#define GC2R_BW		GENMASK(6, 4)	/* Bus Width (log2 of nb of bytes) */
-+#define GC2R_EDCEN	BIT(7)		/* External Display Control ENabled */
-+
-+#define SRCR_IMR	BIT(0)		/* IMmediate Reload */
-+#define SRCR_VBR	BIT(1)		/* Vertical Blanking Reload */
-+
-+#define LXCR_LEN	BIT(0)		/* Layer ENable */
-+#define LXCR_COLKEN	BIT(1)		/* Color Keying Enable */
-+#define LXCR_CLUTEN	BIT(4)		/* Color Look-Up Table ENable */
-+
-+#define LXWHPCR_WHSTPOS	GENMASK(11, 0)	/* Window Horizontal StarT POSition */
-+#define LXWHPCR_WHSPPOS	GENMASK(27, 16)	/* Window Horizontal StoP POSition */
-+
-+#define LXWVPCR_WVSTPOS	GENMASK(10, 0)	/* Window Vertical StarT POSition */
-+#define LXWVPCR_WVSPPOS	GENMASK(26, 16)	/* Window Vertical StoP POSition */
-+
-+#define LXPFCR_PF	GENMASK(2, 0)	/* Pixel Format */
-+
-+#define LXCACR_CONSTA	GENMASK(7, 0)	/* CONSTant Alpha */
-+
-+#define LXBFCR_BF2	GENMASK(2, 0)	/* Blending Factor 2 */
-+#define LXBFCR_BF1	GENMASK(10, 8)	/* Blending Factor 1 */
-+
-+#define LXCFBLR_CFBLL	GENMASK(12, 0)	/* Color Frame Buffer Line Length */
-+#define LXCFBLR_CFBP	GENMASK(28, 16)	/* Color Frame Buffer Pitch in bytes */
-+
-+#define LXCFBLNR_CFBLN	GENMASK(10, 0)	/* Color Frame Buffer Line Number */
-+
-+#define BF1_PAXCA	0x600		/* Pixel Alpha x Constant Alpha */
-+#define BF1_CA		0x400		/* Constant Alpha */
-+#define BF2_1PAXCA	0x007		/* 1 - (Pixel Alpha x Constant Alpha) */
-+#define BF2_1CA		0x005		/* 1 - Constant Alpha */
-+
-+enum stm32_ltdc_pixfmt {
-+	PF_ARGB8888 = 0,
-+	PF_RGB888,
-+	PF_RGB565,
-+	PF_ARGB1555,
-+	PF_ARGB4444,
-+	PF_L8,
-+	PF_AL44,
-+	PF_AL88
-+};
-+
-+#endif
--- 
-2.30.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SW1wb3J0IHRoZSBMaW51eCB2NS4xNSBzdGF0ZSBvZiB0aGUgZHJpdmVyIHRvIGFsbG93IGVhc3kg
+cG9ydGluZyBvZgpNSVBJLURCSSBkaXNwbGF5cyBsaWtlIHRoZSBJbGl0ZWsgOTQzMSBhZGRlZCBp
+biBhIGZvbGxvdy11cCBjb21taXQuCgpTaWduZWQtb2ZmLWJ5OiBBaG1hZCBGYXRvdW0gPGEuZmF0
+b3VtQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1hbmRzL0tjb25maWcgICAgICAgICB8ICAyMyAr
+KwogY29tbWFuZHMvTWFrZWZpbGUgICAgICAgIHwgICAxICsKIGRyaXZlcnMvdmlkZW8vS2NvbmZp
+ZyAgICB8ICAgMyArCiBkcml2ZXJzL3ZpZGVvL01ha2VmaWxlICAgfCAgIDEgKwogZHJpdmVycy92
+aWRlby9taXBpX2RiaS5jIHwgNDY3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKwogaW5jbHVkZS9zcGkvc3BpLmggICAgICAgIHwgIDIwICsrCiA2IGZpbGVzIGNoYW5nZWQs
+IDUxNSBpbnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy92aWRlby9taXBp
+X2RiaS5jCgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvS2NvbmZpZyBiL2NvbW1hbmRzL0tjb25maWcK
+aW5kZXggYmE4Y2E1Y2RlYmNlLi5hZjYwZjdiZTE1ODcgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL0tj
+b25maWcKKysrIGIvY29tbWFuZHMvS2NvbmZpZwpAQCAtMTk2OSw2ICsxOTY5LDI5IEBAIGNvbmZp
+ZyBDTURfU1BJCiAJCSAgLXcgQklUCWJpdHMgcGVyIHdvcmQgKGRlZmF1bHQgOCkKIAkJICAtdgkJ
+dmVyYm9zZQogCitjb25maWcgQ01EX01JUElfREJJCisJYm9vbAorCWRlcGVuZHMgb24gRFJJVkVS
+X1ZJREVPX01JUElfREJJICYmIFNQSQorCXNlbGVjdCBQUklOVEZfSEVYU1RSCisJcHJvbXB0ICJt
+aXBpX2RiaSBjb21tYW5kIgorCWhlbHAKKwkgIHdyaXRlL3JlYWQgZnJvbSBNSVBJIERCSSBTUEkg
+ZGV2aWNlCisKKwkgIFVzYWdlOiBtaXBpX2RiaSBbLXdsZF0gW1JFR10gW0RBVEEuLi5dCisKKwkg
+IE9wdGlvbnM6CisJCSAgLWwJCWxpc3QgYWxsIE1JUEkgREJJIGRldmljZXMKKwkJICAtZCBERVZJ
+Q0UJc2VsZWN0IHNwZWNpZmljIGRldmljZSAoZGVmYXVsdCBpcyBmaXJzdCByZWdpc3RlcmVkKQor
+CQkgIC13CQlpc3N1ZSB3cml0ZSBjb21tYW5kCisKK0JBUkVCT1hfQ01EX1NUQVJUKG1pcGlfZGJp
+KQorCS5jbWQJCT0gZG9fbWlwaV9kYmksCisJQkFSRUJPWF9DTURfREVTQygid3JpdGUvcmVhZCBm
+cm9tIE1JUEkgREJJIFNQSSBkZXZpY2UiKQorCUJBUkVCT1hfQ01EX09QVFMoIlstd2xkXSBbUkVH
+XSBbREFUQS4uLl0iKQorCUJBUkVCT1hfQ01EX0dST1VQKENNRF9HUlBfSFdNQU5JUCkKKwlCQVJF
+Qk9YX0NNRF9IRUxQKGNtZF9taXBpX2RiaV9oZWxwKQorQkFSRUJPWF9DTURfRU5ECisKIGNvbmZp
+ZyBDTURfTEVEX1RSSUdHRVIKIAlib29sCiAJZGVwZW5kcyBvbiBMRURfVFJJR0dFUlMKZGlmZiAt
+LWdpdCBhL2NvbW1hbmRzL01ha2VmaWxlIGIvY29tbWFuZHMvTWFrZWZpbGUKaW5kZXggZGI3OGQw
+Yjg3N2Y2Li5mZmZiNmQ5NzllODIgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL01ha2VmaWxlCisrKyBi
+L2NvbW1hbmRzL01ha2VmaWxlCkBAIC02Nyw2ICs2Nyw3IEBAIG9iai0kKENPTkZJR19DTURfR1BJ
+TykJCSs9IGdwaW8ubwogb2JqLSQoQ09ORklHX0NNRF9VTkNPTVBSRVNTKQkrPSB1bmNvbXByZXNz
+Lm8KIG9iai0kKENPTkZJR19DTURfSTJDKQkJKz0gaTJjLm8KIG9iai0kKENPTkZJR19DTURfU1BJ
+KQkJKz0gc3BpLm8KK29iai0kKENPTkZJR19DTURfTUlQSV9EQkkpCSs9IG1pcGlfZGJpLm8KIG9i
+ai0kKENPTkZJR19DTURfVUJJKQkJKz0gdWJpLm8KIG9iai0kKENPTkZJR19DTURfVUJJRk9STUFU
+KQkrPSB1Ymlmb3JtYXQubwogb2JqLSQoQ09ORklHX0NNRF9NRU5VKQkJKz0gbWVudS5vCmRpZmYg
+LS1naXQgYS9kcml2ZXJzL3ZpZGVvL0tjb25maWcgYi9kcml2ZXJzL3ZpZGVvL0tjb25maWcKaW5k
+ZXggMWI4NjcyZmRlYTgyLi43MGQxZDgwOTUzNmIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvdmlkZW8v
+S2NvbmZpZworKysgYi9kcml2ZXJzL3ZpZGVvL0tjb25maWcKQEAgLTEyOSw2ICsxMjksOSBAQCBj
+b25maWcgRFJJVkVSX1ZJREVPX0VESUQKIAkgIFRoaXMgZW5hYmxlZCBzdXBwb3J0IGZvciByZWFk
+aW5nIGFuZCBwYXJzaW5nIEVESUQgZGF0YSBmcm9tIGFuIGF0dGFjaGVkCiAJICBtb25pdG9yLgog
+Citjb25maWcgRFJJVkVSX1ZJREVPX01JUElfREJJCisJYm9vbAorCiBjb25maWcgRFJJVkVSX1ZJ
+REVPX0JBQ0tMSUdIVAogCWJvb2wgIkFkZCBiYWNrbGlnaHQgc3VwcG9ydCIKIAloZWxwCmRpZmYg
+LS1naXQgYS9kcml2ZXJzL3ZpZGVvL01ha2VmaWxlIGIvZHJpdmVycy92aWRlby9NYWtlZmlsZQpp
+bmRleCA3ZjQ0MjkyNzg5ODcuLmE3YjcwZDgyMDcyYSAxMDA2NDQKLS0tIGEvZHJpdmVycy92aWRl
+by9NYWtlZmlsZQorKysgYi9kcml2ZXJzL3ZpZGVvL01ha2VmaWxlCkBAIC05LDYgKzksNyBAQCBv
+YmotJChDT05GSUdfVklERU9fVlBMKSArPSB2cGwubwogb2JqLSQoQ09ORklHX0RSSVZFUl9WSURF
+T19NVEwwMTcpICs9IG10bDAxNy5vCiBvYmotJChDT05GSUdfRFJJVkVSX1ZJREVPX1RDMzU4NzY3
+KSArPSB0YzM1ODc2Ny5vCiBvYmotJChDT05GSUdfRFJJVkVSX1ZJREVPX1NJTVBMRV9QQU5FTCkg
+Kz0gc2ltcGxlLXBhbmVsLm8KK29iai0kKENPTkZJR19EUklWRVJfVklERU9fTUlQSV9EQkkpICs9
+IG1pcGlfZGJpLm8KIAogb2JqLSQoQ09ORklHX0RSSVZFUl9WSURFT19BVE1FTCkgKz0gYXRtZWxf
+bGNkZmIubyBhdG1lbF9sY2RmYl9jb3JlLm8KIG9iai0kKENPTkZJR19EUklWRVJfVklERU9fQVRN
+RUxfSExDRCkgKz0gYXRtZWxfaGxjZGZiLm8gYXRtZWxfbGNkZmJfY29yZS5vCmRpZmYgLS1naXQg
+YS9kcml2ZXJzL3ZpZGVvL21pcGlfZGJpLmMgYi9kcml2ZXJzL3ZpZGVvL21pcGlfZGJpLmMKbmV3
+IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi40OGIxMTEwZjcyYWIKLS0tIC9k
+ZXYvbnVsbAorKysgYi9kcml2ZXJzL3ZpZGVvL21pcGlfZGJpLmMKQEAgLTAsMCArMSw0NjcgQEAK
+Ky8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyCisvKgorICogTUlQ
+SSBEaXNwbGF5IEJ1cyBJbnRlcmZhY2UgKERCSSkgTENEIGNvbnRyb2xsZXIgc3VwcG9ydAorICoK
+KyAqIENvcHlyaWdodCAyMDE2IE5vcmFsZiBUcsO4bm5lcworICovCisKKyNkZWZpbmUgcHJfZm10
+KGZtdCkgIm1pcGktZGJpOiAiIGZtdAorCisjaW5jbHVkZSA8Y29tbW9uLmg+CisjaW5jbHVkZSA8
+bGludXgva2VybmVsLmg+CisjaW5jbHVkZSA8bGludXgvc2l6ZXMuaD4KKyNpbmNsdWRlIDxncGlv
+ZC5oPgorI2luY2x1ZGUgPHJlZ3VsYXRvci5oPgorI2luY2x1ZGUgPHNwaS9zcGkuaD4KKyNpbmNs
+dWRlIDx2aWRlby9taXBpX2RiaS5oPgorCisjaW5jbHVkZSA8dmlkZW8vdnBsLmg+CisjaW5jbHVk
+ZSA8dmlkZW8vbWlwaV9kaXNwbGF5Lmg+CisjaW5jbHVkZSA8dmlkZW8vZm91cmNjLmg+CisKKyNk
+ZWZpbmUgTUlQSV9EQklfTUFYX1NQSV9SRUFEX1NQRUVEIDIwMDAwMDAgLyogMk1IeiAqLworCisj
+ZGVmaW5lIERDU19QT1dFUl9NT0RFX0RJU1BMQVkJCQlCSVQoMikKKyNkZWZpbmUgRENTX1BPV0VS
+X01PREVfRElTUExBWV9OT1JNQUxfTU9ERQlCSVQoMykKKyNkZWZpbmUgRENTX1BPV0VSX01PREVf
+U0xFRVBfTU9ERQkJQklUKDQpCisjZGVmaW5lIERDU19QT1dFUl9NT0RFX1BBUlRJQUxfTU9ERQkJ
+QklUKDUpCisjZGVmaW5lIERDU19QT1dFUl9NT0RFX0lETEVfTU9ERQkJQklUKDYpCisjZGVmaW5l
+IERDU19QT1dFUl9NT0RFX1JFU0VSVkVEX01BU0sJCShCSVQoMCkgfCBCSVQoMSkgfCBCSVQoNykp
+CisKK0xJU1RfSEVBRChtaXBpX2RiaV9saXN0KTsKK0VYUE9SVF9TWU1CT0wobWlwaV9kYmlfbGlz
+dCk7CisKKy8qKgorICogRE9DOiBvdmVydmlldworICoKKyAqIFRoaXMgbGlicmFyeSBwcm92aWRl
+cyBoZWxwZXJzIGZvciBNSVBJIERpc3BsYXkgQnVzIEludGVyZmFjZSAoREJJKQorICogY29tcGF0
+aWJsZSBkaXNwbGF5IGNvbnRyb2xsZXJzLgorICoKKyAqIE1hbnkgY29udHJvbGxlcnMgZm9yIHRp
+bnkgbGNkIGRpc3BsYXlzIGFyZSBNSVBJIGNvbXBsaWFudCBhbmQgY2FuIHVzZSB0aGlzCisgKiBs
+aWJyYXJ5LiBJZiBhIGNvbnRyb2xsZXIgdXNlcyByZWdpc3RlcnMgMHgyQSBhbmQgMHgyQiB0byBz
+ZXQgdGhlIGFyZWEgdG8KKyAqIHVwZGF0ZSBhbmQgdXNlcyByZWdpc3RlciAweDJDIHRvIHdyaXRl
+IHRvIGZyYW1lIG1lbW9yeSwgaXQgaXMgbW9zdCBsaWtlbHkKKyAqIE1JUEkgY29tcGxpYW50Lgor
+ICoKKyAqIE9ubHkgTUlQSSBUeXBlIDEgZGlzcGxheXMgYXJlIHN1cHBvcnRlZCBzaW5jZSBhIGZ1
+bGwgZnJhbWUgbWVtb3J5IGlzIG5lZWRlZC4KKyAqCisgKiBUaGVyZSBhcmUgMyBNSVBJIERCSSBp
+bXBsZW1lbnRhdGlvbiB0eXBlczoKKyAqCisgKiBBLiBNb3Rvcm9sYSA2ODAwIHR5cGUgcGFyYWxs
+ZWwgYnVzCisgKgorICogQi4gSW50ZWwgODA4MCB0eXBlIHBhcmFsbGVsIGJ1cworICoKKyAqIEMu
+IFNQSSB0eXBlIHdpdGggMyBvcHRpb25zOgorICoKKyAqICAgIDEuIDktYml0IHdpdGggdGhlIERh
+dGEvQ29tbWFuZCBzaWduYWwgYXMgdGhlIG5pbnRoIGJpdAorICogICAgMi4gU2FtZSBhcyBhYm92
+ZSBleGNlcHQgaXQncyBzZW50IGFzIDE2IGJpdHMKKyAqICAgIDMuIDgtYml0IHdpdGggdGhlIERh
+dGEvQ29tbWFuZCBzaWduYWwgYXMgYSBzZXBhcmF0ZSBEL0NYIHBpbgorICoKKyAqIEN1cnJlbnRs
+eSBiYXJlYm94IG1pcGlfZGJpIG9ubHkgc3VwcG9ydHMgVHlwZSBDIG9wdGlvbiAzIHdpdGgKKyAq
+IG1pcGlfZGJpX3NwaV9pbml0KCkuCisgKi8KKworI2RlZmluZSBNSVBJX0RCSV9ERUJVR19DT01N
+QU5EKGNtZCwgZGF0YSwgbGVuKSBcCisoeyBcCisJaWYgKCFsZW4pIFwKKwkJcHJfZGVidWcoImNt
+ZD0lMDJ4XG4iLCBjbWQpOyBcCisJZWxzZSBpZiAobGVuIDw9IDMyKSBcCisJCXByX2RlYnVnKCJj
+bWQ9JTAyeCwgcGFyPSUqcGhcbiIsIGNtZCwgKGludClsZW4sIGRhdGEpO1wKKwllbHNlIFwKKwkJ
+cHJfZGVidWcoImNtZD0lMDJ4LCBsZW49JXp1XG4iLCBjbWQsIGxlbik7IFwKK30pCisKK3N0YXRp
+YyBjb25zdCB1OCBtaXBpX2RiaV9kY3NfcmVhZF9jb21tYW5kc1tdID0geworCU1JUElfRENTX0dF
+VF9ESVNQTEFZX0lELAorCU1JUElfRENTX0dFVF9SRURfQ0hBTk5FTCwKKwlNSVBJX0RDU19HRVRf
+R1JFRU5fQ0hBTk5FTCwKKwlNSVBJX0RDU19HRVRfQkxVRV9DSEFOTkVMLAorCU1JUElfRENTX0dF
+VF9ESVNQTEFZX1NUQVRVUywKKwlNSVBJX0RDU19HRVRfUE9XRVJfTU9ERSwKKwlNSVBJX0RDU19H
+RVRfQUREUkVTU19NT0RFLAorCU1JUElfRENTX0dFVF9QSVhFTF9GT1JNQVQsCisJTUlQSV9EQ1Nf
+R0VUX0RJU1BMQVlfTU9ERSwKKwlNSVBJX0RDU19HRVRfU0lHTkFMX01PREUsCisJTUlQSV9EQ1Nf
+R0VUX0RJQUdOT1NUSUNfUkVTVUxULAorCU1JUElfRENTX1JFQURfTUVNT1JZX1NUQVJULAorCU1J
+UElfRENTX1JFQURfTUVNT1JZX0NPTlRJTlVFLAorCU1JUElfRENTX0dFVF9TQ0FOTElORSwKKwlN
+SVBJX0RDU19HRVRfRElTUExBWV9CUklHSFRORVNTLAorCU1JUElfRENTX0dFVF9DT05UUk9MX0RJ
+U1BMQVksCisJTUlQSV9EQ1NfR0VUX1BPV0VSX1NBVkUsCisJTUlQSV9EQ1NfR0VUX0NBQkNfTUlO
+X0JSSUdIVE5FU1MsCisJTUlQSV9EQ1NfUkVBRF9EREJfU1RBUlQsCisJTUlQSV9EQ1NfUkVBRF9E
+REJfQ09OVElOVUUsCisJMCwgLyogc2VudGluZWwgKi8KK307CisKK2Jvb2wgbWlwaV9kYmlfY29t
+bWFuZF9pc19yZWFkKHN0cnVjdCBtaXBpX2RiaSAqZGJpLCB1OCBjbWQpCit7CisJdW5zaWduZWQg
+aW50IGk7CisKKwlpZiAoIWRiaS0+cmVhZF9jb21tYW5kcykKKwkJcmV0dXJuIGZhbHNlOworCisJ
+Zm9yIChpID0gMDsgaSA8IDB4ZmY7IGkrKykgeworCQlpZiAoIWRiaS0+cmVhZF9jb21tYW5kc1tp
+XSkKKwkJCXJldHVybiBmYWxzZTsKKwkJaWYgKGNtZCA9PSBkYmktPnJlYWRfY29tbWFuZHNbaV0p
+CisJCQlyZXR1cm4gdHJ1ZTsKKwl9CisKKwlyZXR1cm4gZmFsc2U7Cit9CisKK2ludCBtaXBpX2Ri
+aV9jb21tYW5kX3JlYWRfbGVuKGludCBjbWQpCit7CisJc3dpdGNoIChjbWQpIHsKKwljYXNlIE1J
+UElfRENTX1JFQURfTUVNT1JZX1NUQVJUOgorCWNhc2UgTUlQSV9EQ1NfUkVBRF9NRU1PUllfQ09O
+VElOVUU6CisJCXJldHVybiAyOworCWNhc2UgTUlQSV9EQ1NfR0VUX0RJU1BMQVlfSUQ6CisJCXJl
+dHVybiAzOworCWNhc2UgTUlQSV9EQ1NfR0VUX0RJU1BMQVlfU1RBVFVTOgorCQlyZXR1cm4gNDsK
+KwlkZWZhdWx0OgorCQlyZXR1cm4gMTsKKwl9Cit9CisKKy8qKgorICogbWlwaV9kYmlfY29tbWFu
+ZF9yZWFkIC0gTUlQSSBEQ1MgcmVhZCBjb21tYW5kCisgKiBAZGJpOiBNSVBJIERCSSBzdHJ1Y3R1
+cmUKKyAqIEBjbWQ6IENvbW1hbmQKKyAqIEB2YWw6IFZhbHVlIHJlYWQKKyAqCisgKiBTZW5kIE1J
+UEkgRENTIHJlYWQgY29tbWFuZCB0byB0aGUgY29udHJvbGxlci4KKyAqCisgKiBSZXR1cm5zOgor
+ICogWmVybyBvbiBzdWNjZXNzLCBuZWdhdGl2ZSBlcnJvciBjb2RlIG9uIGZhaWx1cmUuCisgKi8K
+K2ludCBtaXBpX2RiaV9jb21tYW5kX3JlYWQoc3RydWN0IG1pcGlfZGJpICpkYmksIHU4IGNtZCwg
+dTggKnZhbCkKK3sKKwlpZiAoIWRiaS0+cmVhZF9jb21tYW5kcykKKwkJcmV0dXJuIC1FQUNDRVM7
+CisKKwlpZiAoIW1pcGlfZGJpX2NvbW1hbmRfaXNfcmVhZChkYmksIGNtZCkpCisJCXJldHVybiAt
+RUlOVkFMOworCisJcmV0dXJuIG1pcGlfZGJpX2NvbW1hbmRfYnVmKGRiaSwgY21kLCB2YWwsIDEp
+OworfQorRVhQT1JUX1NZTUJPTChtaXBpX2RiaV9jb21tYW5kX3JlYWQpOworCisvKioKKyAqIG1p
+cGlfZGJpX2NvbW1hbmRfYnVmIC0gTUlQSSBEQ1MgY29tbWFuZCB3aXRoIHBhcmFtZXRlcihzKSBp
+biBhbiBhcnJheQorICogQGRiaTogTUlQSSBEQkkgc3RydWN0dXJlCisgKiBAY21kOiBDb21tYW5k
+CisgKiBAZGF0YTogUGFyYW1ldGVyIGJ1ZmZlcgorICogQGxlbjogQnVmZmVyIGxlbmd0aAorICoK
+KyAqIFJldHVybnM6CisgKiBaZXJvIG9uIHN1Y2Nlc3MsIG5lZ2F0aXZlIGVycm9yIGNvZGUgb24g
+ZmFpbHVyZS4KKyAqLworaW50IG1pcGlfZGJpX2NvbW1hbmRfYnVmKHN0cnVjdCBtaXBpX2RiaSAq
+ZGJpLCB1OCBjbWQsIHU4ICpkYXRhLCBzaXplX3QgbGVuKQoreworCXU4ICpjbWRidWY7CisJaW50
+IHJldDsKKworCS8qIFNQSSByZXF1aXJlcyBkbWEtc2FmZSBidWZmZXJzICovCisJY21kYnVmID0g
+a21lbWR1cCgmY21kLCAxLCBHRlBfS0VSTkVMKTsKKwlpZiAoIWNtZGJ1ZikKKwkJcmV0dXJuIC1F
+Tk9NRU07CisKKwlyZXQgPSBkYmktPmNvbW1hbmQoZGJpLCBjbWRidWYsIGRhdGEsIGxlbik7CisK
+KwlrZnJlZShjbWRidWYpOworCisJcmV0dXJuIHJldDsKK30KK0VYUE9SVF9TWU1CT0wobWlwaV9k
+YmlfY29tbWFuZF9idWYpOworCisvKiBUaGlzIHNob3VsZCBvbmx5IGJlIHVzZWQgYnkgbWlwaV9k
+YmlfY29tbWFuZCgpICovCitpbnQgbWlwaV9kYmlfY29tbWFuZF9zdGFja2J1ZihzdHJ1Y3QgbWlw
+aV9kYmkgKmRiaSwgdTggY21kLCBjb25zdCB1OCAqZGF0YSwKKwkJCSAgICAgIHNpemVfdCBsZW4p
+Cit7CisJdTggKmJ1ZjsKKwlpbnQgcmV0OworCisJYnVmID0ga21lbWR1cChkYXRhLCBsZW4sIEdG
+UF9LRVJORUwpOworCWlmICghYnVmKQorCQlyZXR1cm4gLUVOT01FTTsKKworCXJldCA9IG1pcGlf
+ZGJpX2NvbW1hbmRfYnVmKGRiaSwgY21kLCBidWYsIGxlbik7CisKKwlrZnJlZShidWYpOworCisJ
+cmV0dXJuIHJldDsKK30KK0VYUE9SVF9TWU1CT0wobWlwaV9kYmlfY29tbWFuZF9zdGFja2J1Zik7
+CisKKy8qKgorICogbWlwaV9kYmlfaHdfcmVzZXQgLSBIYXJkd2FyZSByZXNldCBvZiBjb250cm9s
+bGVyCisgKiBAZGJpOiBNSVBJIERCSSBzdHJ1Y3R1cmUKKyAqCisgKiBSZXNldCBjb250cm9sbGVy
+IGlmIHRoZSAmbWlwaV9kYmktPnJlc2V0IGdwaW8gaXMgc2V0LgorICovCit2b2lkIG1pcGlfZGJp
+X2h3X3Jlc2V0KHN0cnVjdCBtaXBpX2RiaSAqZGJpKQoreworCWlmICghZ3Bpb19pc192YWxpZChk
+YmktPnJlc2V0KSkKKwkJcmV0dXJuOworCisJZ3Bpb2Rfc2V0X3ZhbHVlKGRiaS0+cmVzZXQsIDAp
+OworCXVkZWxheSgyMCk7CisJZ3Bpb2Rfc2V0X3ZhbHVlKGRiaS0+cmVzZXQsIDEpOworCW1kZWxh
+eSgxMjApOworfQorRVhQT1JUX1NZTUJPTChtaXBpX2RiaV9od19yZXNldCk7CisKKy8qKgorICog
+bWlwaV9kYmlfZGlzcGxheV9pc19vbiAtIENoZWNrIGlmIGRpc3BsYXkgaXMgb24KKyAqIEBkYmk6
+IE1JUEkgREJJIHN0cnVjdHVyZQorICoKKyAqIFRoaXMgZnVuY3Rpb24gY2hlY2tzIHRoZSBQb3dl
+ciBNb2RlIHJlZ2lzdGVyIChpZiByZWFkYWJsZSkgdG8gc2VlIGlmCisgKiBkaXNwbGF5IG91dHB1
+dCBpcyB0dXJuZWQgb24uIFRoaXMgY2FuIGJlIHVzZWQgdG8gc2VlIGlmIHRoZSBib290bG9hZGVy
+CisgKiBoYXMgYWxyZWFkeSB0dXJuZWQgb24gdGhlIGRpc3BsYXkgYXZvaWRpbmcgZmxpY2tlciB3
+aGVuIHRoZSBwaXBlbGluZSBpcworICogZW5hYmxlZC4KKyAqCisgKiBSZXR1cm5zOgorICogdHJ1
+ZSBpZiB0aGUgZGlzcGxheSBjYW4gYmUgdmVyaWZpZWQgdG8gYmUgb24sIGZhbHNlIG90aGVyd2lz
+ZS4KKyAqLworYm9vbCBtaXBpX2RiaV9kaXNwbGF5X2lzX29uKHN0cnVjdCBtaXBpX2RiaSAqZGJp
+KQoreworCXU4IHZhbDsKKworCWlmIChtaXBpX2RiaV9jb21tYW5kX3JlYWQoZGJpLCBNSVBJX0RD
+U19HRVRfUE9XRVJfTU9ERSwgJnZhbCkpCisJCXJldHVybiBmYWxzZTsKKworCXZhbCAmPSB+RENT
+X1BPV0VSX01PREVfUkVTRVJWRURfTUFTSzsKKworCS8qIFRoZSBwb3dlcm9uL3Jlc2V0IHZhbHVl
+IGlzIDA4aCBEQ1NfUE9XRVJfTU9ERV9ESVNQTEFZX05PUk1BTF9NT0RFICovCisJaWYgKHZhbCAh
+PSAoRENTX1BPV0VSX01PREVfRElTUExBWSB8CisJICAgIERDU19QT1dFUl9NT0RFX0RJU1BMQVlf
+Tk9STUFMX01PREUgfCBEQ1NfUE9XRVJfTU9ERV9TTEVFUF9NT0RFKSkKKwkJcmV0dXJuIGZhbHNl
+OworCisJcHJfZGVidWcoIkRpc3BsYXkgaXMgT05cbiIpOworCisJcmV0dXJuIHRydWU7Cit9CitF
+WFBPUlRfU1lNQk9MKG1pcGlfZGJpX2Rpc3BsYXlfaXNfb24pOworCisjaWYgSVNfRU5BQkxFRChD
+T05GSUdfU1BJKQorCisvKioKKyAqIG1pcGlfZGJpX3NwaV9jbWRfbWF4X3NwZWVkIC0gZ2V0IHRo
+ZSBtYXhpbXVtIFNQSSBidXMgc3BlZWQKKyAqIEBzcGk6IFNQSSBkZXZpY2UKKyAqIEBsZW46IFRo
+ZSB0cmFuc2ZlciBidWZmZXIgbGVuZ3RoLgorICoKKyAqIE1hbnkgY29udHJvbGxlcnMgaGF2ZSBh
+IG1heCBzcGVlZCBvZiAxME1IeiwgYnV0IGNhbiBiZSBwdXNoZWQgd2F5IGJleW9uZAorICogdGhh
+dC4gSW5jcmVhc2UgcmVsaWFiaWxpdHkgYnkgcnVubmluZyBwaXhlbCBkYXRhIGF0IG1heCBzcGVl
+ZCBhbmQgdGhlIHJlc3QKKyAqIGF0IDEwTUh6LCBwcmV2ZW50aW5nIHRyYW5zZmVyIGdsaXRjaGVz
+IGZyb20gbWVzc2luZyB1cCB0aGUgaW5pdCBzZXR0aW5ncy4KKyAqLwordTMyIG1pcGlfZGJpX3Nw
+aV9jbWRfbWF4X3NwZWVkKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIHNpemVfdCBsZW4pCit7CisJ
+aWYgKGxlbiA+IDY0KQorCQlyZXR1cm4gMDsgLyogdXNlIGRlZmF1bHQgKi8KKworCXJldHVybiBt
+aW5fdCh1MzIsIDEwMDAwMDAwLCBzcGktPm1heF9zcGVlZF9oeik7Cit9CitFWFBPUlRfU1lNQk9M
+KG1pcGlfZGJpX3NwaV9jbWRfbWF4X3NwZWVkKTsKKworc3RhdGljIGJvb2wgbWlwaV9kYmlfbWFj
+aGluZV9saXR0bGVfZW5kaWFuKHZvaWQpCit7CisjaWYgZGVmaW5lZChfX0xJVFRMRV9FTkRJQU4p
+CisJcmV0dXJuIHRydWU7CisjZWxzZQorCXJldHVybiBmYWxzZTsKKyNlbmRpZgorfQorCisvKiBN
+SVBJIERCSSBUeXBlIEMgT3B0aW9uIDMgKi8KKworc3RhdGljIGludCBtaXBpX2RiaV90eXBlYzNf
+Y29tbWFuZF9yZWFkKHN0cnVjdCBtaXBpX2RiaSAqZGJpLCB1OCAqY21kLAorCQkJCQl1OCAqZGF0
+YSwgc2l6ZV90IGxlbikKK3sKKwlzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpID0gZGJpLT5zcGk7CisJ
+dTMyIHNwZWVkX2h6ID0gbWluX3QodTMyLCBNSVBJX0RCSV9NQVhfU1BJX1JFQURfU1BFRUQsCisJ
+CQkgICAgIHNwaS0+bWF4X3NwZWVkX2h6IC8gMik7CisJc3RydWN0IHNwaV90cmFuc2ZlciB0clsy
+XSA9IHsKKwkJeworCQkJLnNwZWVkX2h6ID0gc3BlZWRfaHosCisJCQkudHhfYnVmID0gY21kLAor
+CQkJLmxlbiA9IDEsCisJCX0sIHsKKwkJCS5zcGVlZF9oeiA9IHNwZWVkX2h6LAorCQkJLmxlbiA9
+IGxlbiwKKwkJfSwKKwl9OworCXN0cnVjdCBzcGlfbWVzc2FnZSBtOworCXU4ICpidWY7CisJaW50
+IHJldDsKKworCWlmICghbGVuKQorCQlyZXR1cm4gLUVJTlZBTDsKKworCS8qCisJICogU3VwcG9y
+dCBub24tc3RhbmRhcmQgMjQtYml0IGFuZCAzMi1iaXQgTm9raWEgcmVhZCBjb21tYW5kcyB3aGlj
+aAorCSAqIHN0YXJ0IHdpdGggYSBkdW1teSBjbG9jaywgc28gd2UgbmVlZCB0byByZWFkIGFuIGV4
+dHJhIGJ5dGUuCisJICovCisJaWYgKCpjbWQgPT0gTUlQSV9EQ1NfR0VUX0RJU1BMQVlfSUQgfHwK
+KwkgICAgKmNtZCA9PSBNSVBJX0RDU19HRVRfRElTUExBWV9TVEFUVVMpIHsKKwkJaWYgKCEobGVu
+ID09IDMgfHwgbGVuID09IDQpKQorCQkJcmV0dXJuIC1FSU5WQUw7CisKKwkJdHJbMV0ubGVuID0g
+bGVuICsgMTsKKwl9CisKKwlidWYgPSBrbWFsbG9jKHRyWzFdLmxlbiwgR0ZQX0tFUk5FTCk7CisJ
+aWYgKCFidWYpCisJCXJldHVybiAtRU5PTUVNOworCisJdHJbMV0ucnhfYnVmID0gYnVmOworCWdw
+aW9kX3NldF92YWx1ZShkYmktPmRjLCAwKTsKKworCXNwaV9tZXNzYWdlX2luaXRfd2l0aF90cmFu
+c2ZlcnMoJm0sIHRyLCBBUlJBWV9TSVpFKHRyKSk7CisJcmV0ID0gc3BpX3N5bmMoc3BpLCAmbSk7
+CisJaWYgKHJldCkKKwkJZ290byBlcnJfZnJlZTsKKworCWlmICh0clsxXS5sZW4gPT0gbGVuKSB7
+CisJCW1lbWNweShkYXRhLCBidWYsIGxlbik7CisJfSBlbHNlIHsKKwkJdW5zaWduZWQgaW50IGk7
+CisKKwkJZm9yIChpID0gMDsgaSA8IGxlbjsgaSsrKQorCQkJZGF0YVtpXSA9IChidWZbaV0gPDwg
+MSkgfCAoYnVmW2kgKyAxXSA+PiA3KTsKKwl9CisKKwlNSVBJX0RCSV9ERUJVR19DT01NQU5EKCpj
+bWQsIGRhdGEsIGxlbik7CisKK2Vycl9mcmVlOgorCWtmcmVlKGJ1Zik7CisKKwlyZXR1cm4gcmV0
+OworfQorCitzdGF0aWMgaW50IG1pcGlfZGJpX3R5cGVjM19jb21tYW5kKHN0cnVjdCBtaXBpX2Ri
+aSAqZGJpLCB1OCAqY21kLAorCQkJCSAgIHU4ICpwYXIsIHNpemVfdCBudW0pCit7CisJc3RydWN0
+IHNwaV9kZXZpY2UgKnNwaSA9IGRiaS0+c3BpOworCXVuc2lnbmVkIGludCBicHcgPSA4OworCXUz
+MiBzcGVlZF9oejsKKwlpbnQgcmV0OworCisJaWYgKG1pcGlfZGJpX2NvbW1hbmRfaXNfcmVhZChk
+YmksICpjbWQpKQorCQlyZXR1cm4gbWlwaV9kYmlfdHlwZWMzX2NvbW1hbmRfcmVhZChkYmksIGNt
+ZCwgcGFyLCBudW0pOworCisJTUlQSV9EQklfREVCVUdfQ09NTUFORCgqY21kLCBwYXIsIG51bSk7
+CisKKwlncGlvZF9zZXRfdmFsdWUoZGJpLT5kYywgMCk7CisJc3BlZWRfaHogPSBtaXBpX2RiaV9z
+cGlfY21kX21heF9zcGVlZChzcGksIDEpOworCXJldCA9IG1pcGlfZGJpX3NwaV90cmFuc2Zlcihz
+cGksIHNwZWVkX2h6LCA4LCBjbWQsIDEpOworCWlmIChyZXQgfHwgIW51bSkKKwkJcmV0dXJuIHJl
+dDsKKworCWlmICgqY21kID09IE1JUElfRENTX1dSSVRFX01FTU9SWV9TVEFSVCAmJiAhZGJpLT5z
+d2FwX2J5dGVzKQorCQlicHcgPSAxNjsKKworCWdwaW9kX3NldF92YWx1ZShkYmktPmRjLCAxKTsK
+KwlzcGVlZF9oeiA9IG1pcGlfZGJpX3NwaV9jbWRfbWF4X3NwZWVkKHNwaSwgbnVtKTsKKworCXJl
+dHVybiBtaXBpX2RiaV9zcGlfdHJhbnNmZXIoc3BpLCBzcGVlZF9oeiwgYnB3LCBwYXIsIG51bSk7
+Cit9CisKKy8qKgorICogbWlwaV9kYmlfc3BpX2luaXQgLSBJbml0aWFsaXplIE1JUEkgREJJIFNQ
+SSBpbnRlcmZhY2UKKyAqIEBzcGk6IFNQSSBkZXZpY2UKKyAqIEBkYmk6IE1JUEkgREJJIHN0cnVj
+dHVyZSB0byBpbml0aWFsaXplCisgKiBAZGM6IEQvQyBncGlvCisgKgorICogVGhpcyBmdW5jdGlv
+biBzZXRzICZtaXBpX2RiaS0+Y29tbWFuZCwgZW5hYmxlcyAmbWlwaV9kYmktPnJlYWRfY29tbWFu
+ZHMgZm9yIHRoZQorICogdXN1YWwgcmVhZCBjb21tYW5kcy4gSXQgc2hvdWxkIGJlIGZvbGxvd2Vk
+IGJ5IGEgY2FsbCB0byBtaXBpX2RiaV9kZXZfaW5pdCgpIG9yCisgKiBhIGRyaXZlci1zcGVjaWZp
+YyBpbml0LgorICoKKyAqIFR5cGUgQyBPcHRpb24gMyBpbnRlcmZhY2UgaXMgYXNzdW1lZCwgVHlw
+ZSBDIE9wdGlvbiAxIGlzIG5vdCB5ZXQgc3VwcG9ydGVkLAorICogYmVjYXVzZSBiYXJlYm94IGhh
+cyBubyBnZW5lcmljIHdheSB5ZXQgdG8gcmVxdWlyZSBhIDktYml0IFNQSSB0cmFuc2ZlcgorICoK
+KyAqIElmIHRoZSBTUEkgbWFzdGVyIGRyaXZlciBkb2Vzbid0IHN1cHBvcnQgdGhlIG5lY2Vzc2Fy
+eSBiaXRzIHBlciB3b3JkLAorICogdGhlIGZvbGxvd2luZyB0cmFuc2Zvcm1hdGlvbiBpcyB1c2Vk
+OgorICoKKyAqIC0gOS1iaXQ6IHJlb3JkZXIgYnVmZmVyIGFzIDl4IDgtYml0IHdvcmRzLCBwYWRk
+ZWQgd2l0aCBuby1vcCBjb21tYW5kLgorICogLSAxNi1iaXQ6IGlmIGJpZyBlbmRpYW4gc2VuZCBh
+cyA4LWJpdCwgaWYgbGl0dGxlIGVuZGlhbiBzd2FwIGJ5dGVzCisgKgorICogUmV0dXJuczoKKyAq
+IFplcm8gb24gc3VjY2VzcywgbmVnYXRpdmUgZXJyb3IgY29kZSBvbiBmYWlsdXJlLgorICovCitp
+bnQgbWlwaV9kYmlfc3BpX2luaXQoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgc3RydWN0IG1pcGlf
+ZGJpICpkYmksCisJCSAgICAgIGludCBkYykKK3sKKwlzdHJ1Y3QgZGV2aWNlX2QgKmRldiA9ICZz
+cGktPmRldjsKKworCWRiaS0+c3BpID0gc3BpOworCWRiaS0+cmVhZF9jb21tYW5kcyA9IG1pcGlf
+ZGJpX2Rjc19yZWFkX2NvbW1hbmRzOworCisJaWYgKCFncGlvX2lzX3ZhbGlkKGRjKSkgeworCQlk
+ZXZfZGJnKGRldiwgIk1JUEkgREJJIFR5cGUtQyAxIHVuc3VwcG9ydGVkXG4iKTsKKwkJcmV0dXJu
+IC1FTk9TWVM7CisJfQorCisJZGJpLT5jb21tYW5kID0gbWlwaV9kYmlfdHlwZWMzX2NvbW1hbmQ7
+CisJZGJpLT5kYyA9IGRjOworCS8vIFRPRE86IGNhbiB3ZSBqdXN0IGZvcmNlIDE2IGJpdD8KKwlp
+ZiAobWlwaV9kYmlfbWFjaGluZV9saXR0bGVfZW5kaWFuKCkgJiYgc3BpLT5iaXRzX3Blcl93b3Jk
+ICE9IDE2KQorCQlkYmktPnN3YXBfYnl0ZXMgPSB0cnVlOworCisJZGV2X2RiZyhkZXYsICJTUEkg
+c3BlZWQ6ICV1TUh6XG4iLCBzcGktPm1heF9zcGVlZF9oeiAvIDEwMDAwMDApOworCisJbGlzdF9h
+ZGQoJmRiaS0+bGlzdCwgJm1pcGlfZGJpX2xpc3QpOworCXJldHVybiAwOworfQorRVhQT1JUX1NZ
+TUJPTChtaXBpX2RiaV9zcGlfaW5pdCk7CisKKy8qKgorICogbWlwaV9kYmlfc3BpX3RyYW5zZmVy
+IC0gU1BJIHRyYW5zZmVyIGhlbHBlcgorICogQHNwaTogU1BJIGRldmljZQorICogQHNwZWVkX2h6
+OiBPdmVycmlkZSBzcGVlZCAob3B0aW9uYWwpCisgKiBAYnB3OiBCaXRzIHBlciB3b3JkCisgKiBA
+YnVmOiBCdWZmZXIgdG8gdHJhbnNmZXIKKyAqIEBsZW46IEJ1ZmZlciBsZW5ndGgKKyAqCisgKiBU
+aGlzIFNQSSB0cmFuc2ZlciBoZWxwZXIgYnJlYWtzIHVwIHRoZSB0cmFuc2ZlciBvZiBAYnVmIGlu
+dG8gY2h1bmtzIHdoaWNoCisgKiB0aGUgU1BJIGNvbnRyb2xsZXIgZHJpdmVyIGNhbiBoYW5kbGUu
+CisgKgorICogUmV0dXJuczoKKyAqIFplcm8gb24gc3VjY2VzcywgbmVnYXRpdmUgZXJyb3IgY29k
+ZSBvbiBmYWlsdXJlLgorICovCitpbnQgbWlwaV9kYmlfc3BpX3RyYW5zZmVyKHN0cnVjdCBzcGlf
+ZGV2aWNlICpzcGksIHUzMiBzcGVlZF9oeiwKKwkJCSAgdTggYnB3LCBjb25zdCB2b2lkICpidWYs
+IHNpemVfdCBsZW4pCit7CisJc2l6ZV90IG1heF9jaHVuayA9IHNwaV9tYXhfdHJhbnNmZXJfc2l6
+ZShzcGkpOworCXN0cnVjdCBzcGlfdHJhbnNmZXIgdHIgPSB7CisJCS5iaXRzX3Blcl93b3JkID0g
+YnB3LAorCQkuc3BlZWRfaHogPSBzcGVlZF9oeiwKKwl9OworCXN0cnVjdCBzcGlfbWVzc2FnZSBt
+OworCXNpemVfdCBjaHVuazsKKwlpbnQgcmV0OworCisJc3BpX21lc3NhZ2VfaW5pdF93aXRoX3Ry
+YW5zZmVycygmbSwgJnRyLCAxKTsKKworCXdoaWxlIChsZW4pIHsKKwkJY2h1bmsgPSBtaW4obGVu
+LCBtYXhfY2h1bmspOworCisJCXRyLnR4X2J1ZiA9IGJ1ZjsKKwkJdHIubGVuID0gY2h1bms7CisJ
+CWJ1ZiArPSBjaHVuazsKKwkJbGVuIC09IGNodW5rOworCisJCXJldCA9IHNwaV9zeW5jKHNwaSwg
+Jm0pOworCQlpZiAocmV0KQorCQkJcmV0dXJuIHJldDsKKwl9CisKKwlyZXR1cm4gMDsKK30KK0VY
+UE9SVF9TWU1CT0wobWlwaV9kYmlfc3BpX3RyYW5zZmVyKTsKKworI2VuZGlmIC8qIENPTkZJR19T
+UEkgKi8KKworTU9EVUxFX0xJQ0VOU0UoIkdQTCIpOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9zcGkv
+c3BpLmggYi9pbmNsdWRlL3NwaS9zcGkuaAppbmRleCBjNWFkNmJkMzlmZjkuLmQxMzNlMGUyMTI2
+NSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9zcGkvc3BpLmgKKysrIGIvaW5jbHVkZS9zcGkvc3BpLmgK
+QEAgLTQwOSw2ICs0MDksMjYgQEAgc3BpX21lc3NhZ2VfYWRkX3RhaWwoc3RydWN0IHNwaV90cmFu
+c2ZlciAqdCwgc3RydWN0IHNwaV9tZXNzYWdlICptKQogCWxpc3RfYWRkX3RhaWwoJnQtPnRyYW5z
+ZmVyX2xpc3QsICZtLT50cmFuc2ZlcnMpOwogfQogCisvKioKKyAqIHNwaV9tZXNzYWdlX2luaXRf
+d2l0aF90cmFuc2ZlcnMgLSBJbml0aWFsaXplIHNwaV9tZXNzYWdlIGFuZCBhcHBlbmQgdHJhbnNm
+ZXJzCisgKiBAbTogc3BpX21lc3NhZ2UgdG8gYmUgaW5pdGlhbGl6ZWQKKyAqIEB4ZmVyczogQW4g
+YXJyYXkgb2Ygc3BpIHRyYW5zZmVycworICogQG51bV94ZmVyczogTnVtYmVyIG9mIGl0ZW1zIGlu
+IHRoZSB4ZmVyIGFycmF5CisgKgorICogVGhpcyBmdW5jdGlvbiBpbml0aWFsaXplcyB0aGUgZ2l2
+ZW4gc3BpX21lc3NhZ2UgYW5kIGFkZHMgZWFjaCBzcGlfdHJhbnNmZXIgaW4KKyAqIHRoZSBnaXZl
+biBhcnJheSB0byB0aGUgbWVzc2FnZS4KKyAqLworc3RhdGljIGlubGluZSB2b2lkCitzcGlfbWVz
+c2FnZV9pbml0X3dpdGhfdHJhbnNmZXJzKHN0cnVjdCBzcGlfbWVzc2FnZSAqbSwKK3N0cnVjdCBz
+cGlfdHJhbnNmZXIgKnhmZXJzLCB1bnNpZ25lZCBpbnQgbnVtX3hmZXJzKQoreworCXVuc2lnbmVk
+IGludCBpOworCisJc3BpX21lc3NhZ2VfaW5pdChtKTsKKwlmb3IgKGkgPSAwOyBpIDwgbnVtX3hm
+ZXJzOyArK2kpCisJCXNwaV9tZXNzYWdlX2FkZF90YWlsKCZ4ZmVyc1tpXSwgbSk7Cit9CisKIHN0
+YXRpYyBpbmxpbmUgdm9pZAogc3BpX3RyYW5zZmVyX2RlbChzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp0
+KQogewotLSAKMi4zMC4yCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
 
