@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFOEq-0049Lb-Ur
+	id 1nFOEr-0049Lc-Ky
 	for lore@lore.pengutronix.de; Wed, 02 Feb 2022 23:36:33 +0100
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFOEo-0005FC-Nf
+	id 1nFOEp-0005FL-5d
 	for lore@pengutronix.de; Wed, 02 Feb 2022 23:36:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
@@ -17,39 +17,39 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=LXM8cd7rBL892nEY1CIHbwQE2qNSAo0D7x8erfdk2dI=; b=ZDdRekS+5r3OhJ
-	I27qE+ik6sf9sdf5b/FtCIzkyiu3FBc1/nfaSwCreJhFNCTsNj6nP75A8/cu2czOWSykrWHllVSLP
-	u9rPgTa5WiEeAM7x4hVsAEdxP9pxvcqvRvFkS/RVm+9WkDWTR6rwcDWy+GoHq1xWecJY2ZAUQuUna
-	v/GbPJfhvBi9b8jmoxkPNsFIJNpxY+fJzLbUAQIyefGczr5qfIDOm7EVIct9s5xrBvyRidiUa4ZST
-	E2MwNrkhPxLDCvffUOw4hGUK91Kz2smtt752xbTzK6g1Bqv8q4S6QskjJK4VjanmRXgvZPMkINNUr
-	Ydz39Ebz4fElujYpT5hw==;
+	List-Owner; bh=UI4xQ9KJTHqflZQk6/gq8+3YNUWXfFpTzkUIwf8EQbg=; b=WLeplFR966aAHC
+	wTKrOc4D2SKZDv/uiCv7nkwE1vzII0q1RVgnhbPek+grJvzi+QeRPXGxEC6m194dqGYbMcCAVFd/M
+	77DZhwl9jX2/dYg0I4EMPJsiZyk73d73z4ylIMfzTmXIHPJuEck/+IayiHZxqpynMlt6Tj0oWNik9
+	+GOWvSPwQycIxOXqEuDxAEpRrMou4bWsG76CTN8veDwCbwfv5doQmA9qcu0fWsMKnNigkfAoFnYNq
+	PAayhyjpFtfrdBfyK9RglsyzrxypYrrlLj/8Bpd5o8dL5p1BxOUrMIV+Kgji3RFzQXx96/Gx3Y0fk
+	VL+9MjQkyrNjElkEIrTQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nFOBN-00H0tA-0I; Wed, 02 Feb 2022 22:32:57 +0000
+	id 1nFOBG-00H0re-P1; Wed, 02 Feb 2022 22:32:50 +0000
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nFOBE-00H0rR-7x
- for barebox@lists.infradead.org; Wed, 02 Feb 2022 22:32:51 +0000
+ id 1nFOB6-00H0pe-SE
+ for barebox@lists.infradead.org; Wed, 02 Feb 2022 22:32:44 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1nFO8y-0004Vw-On; Wed, 02 Feb 2022 23:30:28 +0100
+ id 1nFO8y-0004Vu-ML; Wed, 02 Feb 2022 23:30:28 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nFO8y-001QyQ-7A; Wed, 02 Feb 2022 23:30:28 +0100
+ id 1nFO8y-001QyK-5I; Wed, 02 Feb 2022 23:30:28 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  2 Feb 2022 23:30:23 +0100
-Message-Id: <20220202223023.341817-5-a.fatoum@pengutronix.de>
+Date: Wed,  2 Feb 2022 23:30:21 +0100
+Message-Id: <20220202223023.341817-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220202223023.341817-1-a.fatoum@pengutronix.de>
 References: <20220202223023.341817-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220202_143248_654673_1FEDB9BF 
-X-CRM114-Status: GOOD (  27.25  )
+X-CRM114-CacheID: sfid-20220202_143241_278537_D24542F1 
+X-CRM114-Status: GOOD (  27.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,600 +74,536 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 4/4] video: add Ilitek ILI9341 panel support
+Subject: [PATCH v3 2/4] video: add driver for STM32 LCD-TFT Display Controller
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Port the Linux v5.15 DRM panel driver to barebox. This has been tested
-against a STM32F4 LTDC.
+This driver has been tested on a STM32F429 connected to an Ilitek 9341
+Display for which support is added in a follow-up commit. The same
+driver can be used (but wasn't tested) for the STM32MP1 as well. The
+official ST evaluation kits all use MIPI-DSI for which we still lack
+support. The LXA MC-1 has a parallel display connected to the LTDC, but
+I didn't have one readily available to test.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/video/Kconfig                |  11 +
- drivers/video/Makefile               |   1 +
- drivers/video/panel-ilitek-ili9341.c | 541 +++++++++++++++++++++++++++
- 3 files changed, 553 insertions(+)
- create mode 100644 drivers/video/panel-ilitek-ili9341.c
+ drivers/video/Kconfig      |   8 +
+ drivers/video/Makefile     |   1 +
+ drivers/video/stm32_ltdc.c | 336 +++++++++++++++++++++++++++++++++++++
+ drivers/video/stm32_ltdc.h | 130 ++++++++++++++
+ 4 files changed, 475 insertions(+)
+ create mode 100644 drivers/video/stm32_ltdc.c
+ create mode 100644 drivers/video/stm32_ltdc.h
 
 diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 70d1d809536b..dcdc6c213591 100644
+index cfbd541a956e..1b8672fdea82 100644
 --- a/drivers/video/Kconfig
 +++ b/drivers/video/Kconfig
-@@ -181,4 +181,15 @@ config DRIVER_VIDEO_SIMPLE_PANEL
- 	  Linux Kernel implementation this one is able to understand display-timings
- 	  nodes so that it's not necessary to keep a list of all known displays
- 	  with their corresponding timings in barebox.
-+
-+config DRIVER_VIDEO_PANEL_ILITEK_ILI9341
-+	tristate "Ilitek ILI9341 240x320 QVGA panels"
-+	depends on OFTREE && SPI
-+	select DRIVER_VIDEO_MIPI_DBI
+@@ -59,6 +59,14 @@ config DRIVER_VIDEO_STM
+ 	  Say 'Y' here to enable framebuffer and splash screen support for
+ 	  i.MX23 and i.MX28 based systems.
+ 
++config DRIVER_VIDEO_STM32_LTDC
++	bool "STM32 LTDC framebuffer driver"
 +	select VIDEO_VPL
++	depends on ARCH_STM32 || COMPILE_TEST
 +	help
-+	  Say Y here if you want to enable support for Ilitek IL9341
-+	  QVGA (240x320) RGB panels. support serial & parallel rgb
-+	  interface.
++	  Say 'Y' here to enable framebuffer and splash screen support for
++	  STM32 and STM32MP1.
 +
- endif
+ config DRIVER_VIDEO_S3C24XX
+ 	bool "S3C244x framebuffer driver"
+ 	depends on ARCH_S3C24xx
 diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index a7b70d82072a..9ec0420ccad1 100644
+index 8344bdd2af2a..7f4429278987 100644
 --- a/drivers/video/Makefile
 +++ b/drivers/video/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_DRIVER_VIDEO_MTL017) += mtl017.o
- obj-$(CONFIG_DRIVER_VIDEO_TC358767) += tc358767.o
- obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
- obj-$(CONFIG_DRIVER_VIDEO_MIPI_DBI) += mipi_dbi.o
-+obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
- 
+@@ -13,6 +13,7 @@ obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
  obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
  obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
-diff --git a/drivers/video/panel-ilitek-ili9341.c b/drivers/video/panel-ilitek-ili9341.c
+ obj-$(CONFIG_DRIVER_VIDEO_STM) += stm.o
++obj-$(CONFIG_DRIVER_VIDEO_STM32_LTDC) += stm32_ltdc.o
+ obj-$(CONFIG_DRIVER_VIDEO_IMX) += imx.o
+ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) += imx-ipu-fb.o
+ obj-$(CONFIG_DRIVER_VIDEO_S3C24XX) += s3c24xx.o
+diff --git a/drivers/video/stm32_ltdc.c b/drivers/video/stm32_ltdc.c
 new file mode 100644
-index 000000000000..d8774420226d
+index 000000000000..645c20b5545f
 --- /dev/null
-+++ b/drivers/video/panel-ilitek-ili9341.c
-@@ -0,0 +1,541 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/video/stm32_ltdc.c
+@@ -0,0 +1,336 @@
++// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * Ilitek ILI9341 TFT LCD driver.
-+ *
-+ * This panel can be configured to support:
-+ * - 16-bit parallel RGB interface
-+ * - 18-bit parallel RGB interface
-+ * - 4-line serial spi interface
-+ *
-+ * Copyright 2018 David Lechner <david@lechnology.com>
-+ * Copyright (C) 2021 Dillon Min <dillon.minfei@gmail.com>
-+ *
-+ * Derived from Linux drivers/drm/gpu/panel/panel-ilitek-ili9341.c
++ * Copyright (C) 2017-2018 STMicroelectronics - All Rights Reserved
++ * Author(s): Philippe Cornu <philippe.cornu@st.com> for STMicroelectronics.
++ *	      Yannick Fertre <yannick.fertre@st.com> for STMicroelectronics.
++ *	      Ahmad Fatoum <a.fatoum@pengutronix.de>
 + */
-+#define DEBUG 1
++
 +#include <common.h>
-+#include <linux/bitops.h>
-+#include <gpiod.h>
-+#include <of.h>
-+#include <regulator.h>
-+#include <spi/spi.h>
++#include <init.h>
++#include <linux/clk.h>
++#include <linux/reset.h>
++#include <io.h>
++#include <fb.h>
++#include <dma.h>
++#include <video/media-bus-format.h>
 +#include <video/vpl.h>
-+#include <video/mipi_dbi.h>
++#include <of_graph.h>
 +
-+#include <video/mipi_display.h>
++#include "stm32_ltdc.h"
 +
-+#define ILI9341_RGB_INTERFACE  0xb0   /* RGB Interface Signal Control */
-+#define ILI9341_FRC            0xb1   /* Frame Rate Control register */
-+#define ILI9341_DFC            0xb6   /* Display Function Control register */
-+#define ILI9341_POWER1         0xc0   /* Power Control 1 register */
-+#define ILI9341_POWER2         0xc1   /* Power Control 2 register */
-+#define ILI9341_VCOM1          0xc5   /* VCOM Control 1 register */
-+#define ILI9341_VCOM2          0xc7   /* VCOM Control 2 register */
-+#define ILI9341_POWERA         0xcb   /* Power control A register */
-+#define ILI9341_POWERB         0xcf   /* Power control B register */
-+#define ILI9341_PGAMMA         0xe0   /* Positive Gamma Correction register */
-+#define ILI9341_NGAMMA         0xe1   /* Negative Gamma Correction register */
-+#define ILI9341_DTCA           0xe8   /* Driver timing control A */
-+#define ILI9341_DTCB           0xea   /* Driver timing control B */
-+#define ILI9341_POWER_SEQ      0xed   /* Power on sequence register */
-+#define ILI9341_3GAMMA_EN      0xf2   /* 3 Gamma enable register */
-+#define ILI9341_INTERFACE      0xf6   /* Interface control register */
-+#define ILI9341_PRC            0xf7   /* Pump ratio control register */
-+#define ILI9341_ETMOD	       0xb7   /* Entry mode set */
-+
-+#define ILI9341_MADCTL_BGR	BIT(3)
-+#define ILI9341_MADCTL_MV	BIT(5)
-+#define ILI9341_MADCTL_MX	BIT(6)
-+#define ILI9341_MADCTL_MY	BIT(7)
-+
-+#define ILI9341_POWER_B_LEN	3
-+#define ILI9341_POWER_SEQ_LEN	4
-+#define ILI9341_DTCA_LEN	3
-+#define ILI9341_DTCB_LEN	2
-+#define ILI9341_POWER_A_LEN	5
-+#define ILI9341_DFC_1_LEN	2
-+#define ILI9341_FRC_LEN		2
-+#define ILI9341_VCOM_1_LEN	2
-+#define ILI9341_DFC_2_LEN	4
-+#define ILI9341_COLUMN_ADDR_LEN	4
-+#define ILI9341_PAGE_ADDR_LEN	4
-+#define ILI9341_INTERFACE_LEN	3
-+#define ILI9341_PGAMMA_LEN	15
-+#define ILI9341_NGAMMA_LEN	15
-+#define ILI9341_CA_LEN		3
-+
-+#define ILI9341_PIXEL_DPI_16_BITS	(BIT(6) | BIT(4))
-+#define ILI9341_PIXEL_DPI_18_BITS	(BIT(6) | BIT(5))
-+#define ILI9341_GAMMA_CURVE_1		BIT(0)
-+#define ILI9341_IF_WE_MODE		BIT(0)
-+#define ILI9341_IF_BIG_ENDIAN		0x00
-+#define ILI9341_IF_DM_RGB		BIT(2)
-+#define ILI9341_IF_DM_INTERNAL		0x00
-+#define ILI9341_IF_DM_VSYNC		BIT(3)
-+#define ILI9341_IF_RM_RGB		BIT(1)
-+#define ILI9341_IF_RIM_RGB		0x00
-+
-+#define ILI9341_COLUMN_ADDR		0x00ef
-+#define ILI9341_PAGE_ADDR		0x013f
-+
-+#define ILI9341_RGB_EPL			BIT(0)
-+#define ILI9341_RGB_DPL			BIT(1)
-+#define ILI9341_RGB_HSPL		BIT(2)
-+#define ILI9341_RGB_VSPL		BIT(3)
-+#define ILI9341_RGB_DE_MODE		BIT(6)
-+#define ILI9341_RGB_DISP_PATH_MEM	BIT(7)
-+
-+#define ILI9341_DBI_VCOMH_4P6V		0x23
-+#define ILI9341_DBI_PWR_2_DEFAULT	0x10
-+#define ILI9341_DBI_PRC_NORMAL		0x20
-+#define ILI9341_DBI_VCOM_1_VMH_4P25V	0x3e
-+#define ILI9341_DBI_VCOM_1_VML_1P5V	0x28
-+#define ILI9341_DBI_VCOM_2_DEC_58	0x86
-+#define ILI9341_DBI_FRC_DIVA		0x00
-+#define ILI9341_DBI_FRC_RTNA		0x1b
-+#define ILI9341_DBI_EMS_GAS		BIT(0)
-+#define ILI9341_DBI_EMS_DTS		BIT(1)
-+#define ILI9341_DBI_EMS_GON		BIT(2)
-+
-+/* struct ili9341_config - the system specific ILI9341 configuration */
-+struct ili9341_config {
-+	u32 max_spi_speed;
-+	/* mode: the display mode */
-+	const struct fb_videomode mode;
-+	/* ca: TODO: need comments for this register */
-+	u8 ca[ILI9341_CA_LEN];
-+	/* power_b: TODO: need comments for this register */
-+	u8 power_b[ILI9341_POWER_B_LEN];
-+	/* power_seq: TODO: need comments for this register */
-+	u8 power_seq[ILI9341_POWER_SEQ_LEN];
-+	/* dtca: TODO: need comments for this register */
-+	u8 dtca[ILI9341_DTCA_LEN];
-+	/* dtcb: TODO: need comments for this register */
-+	u8 dtcb[ILI9341_DTCB_LEN];
-+	/* power_a: TODO: need comments for this register */
-+	u8 power_a[ILI9341_POWER_A_LEN];
-+	/* frc: Frame Rate Control (In Normal Mode/Full Colors) (B1h) */
-+	u8 frc[ILI9341_FRC_LEN];
-+	/* prc: TODO: need comments for this register */
-+	u8 prc;
-+	/* dfc_1: B6h DISCTRL (Display Function Control) */
-+	u8 dfc_1[ILI9341_DFC_1_LEN];
-+	/* power_1: Power Control 1 (C0h) */
-+	u8 power_1;
-+	/* power_2: Power Control 2 (C1h) */
-+	u8 power_2;
-+	/* vcom_1: VCOM Control 1(C5h) */
-+	u8 vcom_1[ILI9341_VCOM_1_LEN];
-+	/* vcom_2: VCOM Control 2(C7h) */
-+	u8 vcom_2;
-+	/* address_mode: Memory Access Control (36h) */
-+	u8 address_mode;
-+	/* g3amma_en: TODO: need comments for this register */
-+	u8 g3amma_en;
-+	/* rgb_interface: RGB Interface Signal Control (B0h) */
-+	u8 rgb_interface;
-+	/* dfc_2: refer to dfc_1 */
-+	u8 dfc_2[ILI9341_DFC_2_LEN];
-+	/* column_addr: Column Address Set (2Ah) */
-+	u8 column_addr[ILI9341_COLUMN_ADDR_LEN];
-+	/* page_addr: Page Address Set (2Bh) */
-+	u8 page_addr[ILI9341_PAGE_ADDR_LEN];
-+	/* interface: Interface Control (F6h) */
-+	u8 interface[ILI9341_INTERFACE_LEN];
-+	/*
-+	 * pixel_format: This command sets the pixel format for the RGB
-+	 * image data used by
-+	 */
-+	u8 pixel_format;
-+	/*
-+	 * gamma_curve: This command is used to select the desired Gamma
-+	 * curve for the
-+	 */
-+	u8 gamma_curve;
-+	/* pgamma: Positive Gamma Correction (E0h) */
-+	u8 pgamma[ILI9341_PGAMMA_LEN];
-+	/* ngamma: Negative Gamma Correction (E1h) */
-+	u8 ngamma[ILI9341_NGAMMA_LEN];
-+};
-+
-+struct ili9341 {
++struct ltdc_hw {
++	void __iomem *regs;
 +	struct device_d *dev;
++	struct clk *pclk;
++	bool claimed;
++};
++
++struct ltdc_fb {
++	int id;
++	struct fb_info info;
++	u32 bg_col_argb;
++	u32 alpha;
++	u32 bus_format;
++	enum stm32_ltdc_pixfmt pixfmt;
 +	struct vpl vpl;
-+	const struct ili9341_config *conf;
-+	int reset_gpio;
-+	int dc_gpio;
-+	struct mipi_dbi *dbi;
-+	u32 max_spi_speed;
-+	struct regulator_bulk_data supplies[3];
++	struct ltdc_hw *hw;
 +};
 +
-+/*
-+ * The Stm32f429-disco board has a panel ili9341 connected to ltdc controller
-+ */
-+static const struct ili9341_config ili9341_stm32f429_disco_data = {
-+	.max_spi_speed = 10000000,
-+	.mode = {
-+		.name = "240x320",
-+		.xres = 240,
-+		.yres = 320,
-+		.pixclock = KHZ2PICOS(6100),
-+		.left_margin = 10,
-+		.hsync_len = 10,
-+		.right_margin = 20,
-+		.upper_margin = 4,
-+		.lower_margin = 2,
-+		.vsync_len = 2,
-+	},
-+	.ca = {0xc3, 0x08, 0x50},
-+	.power_b = {0x00, 0xc1, 0x30},
-+	.power_seq = {0x64, 0x03, 0x12, 0x81},
-+	.dtca = {0x85, 0x00, 0x78},
-+	.power_a = {0x39, 0x2c, 0x00, 0x34, 0x02},
-+	.prc = 0x20,
-+	.dtcb = {0x00, 0x00},
-+	/* 0x00 fosc, 0x1b 70hz */
-+	.frc = {0x00, 0x1b},
-+	/*
-+	 * 0x0a Interval scan, AGND AGND AGND AGND
-+	 * 0xa2 Normally white, G1 -> G320, S720 -> S1,
-+	 *	Scan Cycle 5 frames,85ms
-+	 */
-+	.dfc_1 = {0x0a, 0xa2},
-+	/* 0x10 3.65v */
-+	.power_1 = 0x10,
-+	/* 0x10 AVDD=vci*2, VGH=vci*7, VGL=-vci*4 */
-+	.power_2 = 0x10,
-+	/* 0x45 VCOMH 4.425v, 0x15 VCOML -1.975*/
-+	.vcom_1 = {0x45, 0x15},
-+	/* 0x90 offset voltage, VMH-48, VML-48 */
-+	.vcom_2 = 0x90,
-+	/*
-+	 * 0xc8 Row Address Order, Column Address Order
-+	 * BGR 1
-+	 */
-+	.address_mode = 0xc8,
-+	.g3amma_en = 0x00,
-+	/*
-+	 * 0xc2
-+	 * Display Data Path: Memory
-+	 * RGB: DE mode
-+	 * DOTCLK polarity set (data fetched at the falling time)
-+	 */
-+	.rgb_interface = ILI9341_RGB_DISP_PATH_MEM |
-+			ILI9341_RGB_DE_MODE |
-+			ILI9341_RGB_DPL,
-+	/*
-+	 * 0x0a
-+	 * Gate outputs in non-display area: Interval scan
-+	 * Determine source/VCOM output in a non-display area in the partial
-+	 * display mode: AGND AGND AGND AGND
-+	 *
-+	 * 0xa7
-+	 * Scan Cycle: 15 frames
-+	 * fFLM = 60Hz: 255ms
-+	 * Liquid crystal type: Normally white
-+	 * Gate Output Scan Direction: G1 -> G320
-+	 * Source Output Scan Direction: S720 -> S1
-+	 *
-+	 * 0x27
-+	 * LCD Driver Line: 320 lines
-+	 *
-+	 * 0x04
-+	 * PCDIV: 4
-+	 */
-+	.dfc_2 = {0x0a, 0xa7, 0x27, 0x04},
-+	/* column address: 240 */
-+	.column_addr = {0x00, 0x00, (ILI9341_COLUMN_ADDR >> 4) & 0xff,
-+				ILI9341_COLUMN_ADDR & 0xff},
-+	/* page address: 320 */
-+	.page_addr = {0x00, 0x00, (ILI9341_PAGE_ADDR >> 4) & 0xff,
-+				ILI9341_PAGE_ADDR & 0xff},
-+	/*
-+	 * Memory write control: When the transfer number of data exceeds
-+	 * (EC-SC+1)*(EP-SP+1), the column and page number will be
-+	 * reset, and the exceeding data will be written into the following
-+	 * column and page.
-+	 * Display Operation Mode: RGB Interface Mode
-+	 * Interface for RAM Access: RGB interface
-+	 * 16- bit RGB interface (1 transfer/pixel)
-+	 */
-+	.interface = {ILI9341_IF_WE_MODE, 0x00,
-+			ILI9341_IF_DM_RGB | ILI9341_IF_RM_RGB},
-+	/* DPI: 16 bits / pixel */
-+	.pixel_format = ILI9341_PIXEL_DPI_16_BITS,
-+	/* Curve Selected: Gamma curve 1 (G2.2) */
-+	.gamma_curve = ILI9341_GAMMA_CURVE_1,
-+	.pgamma = {0x0f, 0x29, 0x24, 0x0c, 0x0e,
-+			0x09, 0x4e, 0x78, 0x3c, 0x09,
-+			0x13, 0x05, 0x17, 0x11, 0x00},
-+	.ngamma = {0x00, 0x16, 0x1b, 0x04, 0x11,
-+			0x07, 0x31, 0x33, 0x42, 0x05,
-+			0x0c, 0x0a, 0x28, 0x2f, 0x0f},
-+};
-+
-+static inline struct ili9341 *vpl_to_ili9341(struct vpl *vpl)
++static bool has_alpha(enum stm32_ltdc_pixfmt pixfmt)
 +{
-+	return container_of(vpl, struct ili9341, vpl);
-+}
-+
-+static void ili9341_dpi_init(struct ili9341 *ili)
-+{
-+	struct device_d *dev = ili->dev;
-+	struct mipi_dbi *dbi = ili->dbi;
-+	struct ili9341_config *cfg = (struct ili9341_config *)ili->conf;
-+
-+	/* Power Control */
-+	mipi_dbi_command_stackbuf(dbi, 0xca, cfg->ca, ILI9341_CA_LEN);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_POWERB, cfg->power_b,
-+				  ILI9341_POWER_B_LEN);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_POWER_SEQ, cfg->power_seq,
-+				  ILI9341_POWER_SEQ_LEN);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_DTCA, cfg->dtca,
-+				  ILI9341_DTCA_LEN);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_POWERA, cfg->power_a,
-+				  ILI9341_POWER_A_LEN);
-+	mipi_dbi_command(ili->dbi, ILI9341_PRC, cfg->prc);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_DTCB, cfg->dtcb,
-+				  ILI9341_DTCB_LEN);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_FRC, cfg->frc, ILI9341_FRC_LEN);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_DFC, cfg->dfc_1,
-+				  ILI9341_DFC_1_LEN);
-+	mipi_dbi_command(dbi, ILI9341_POWER1, cfg->power_1);
-+	mipi_dbi_command(dbi, ILI9341_POWER2, cfg->power_2);
-+
-+	/* VCOM */
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_VCOM1, cfg->vcom_1,
-+				  ILI9341_VCOM_1_LEN);
-+	mipi_dbi_command(dbi, ILI9341_VCOM2, cfg->vcom_2);
-+	mipi_dbi_command(dbi, MIPI_DCS_SET_ADDRESS_MODE, cfg->address_mode);
-+
-+	/* Gamma */
-+	mipi_dbi_command(dbi, ILI9341_3GAMMA_EN, cfg->g3amma_en);
-+	mipi_dbi_command(dbi, ILI9341_RGB_INTERFACE, cfg->rgb_interface);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_DFC, cfg->dfc_2,
-+				  ILI9341_DFC_2_LEN);
-+
-+	/* Colomn address set */
-+	mipi_dbi_command_stackbuf(dbi, MIPI_DCS_SET_COLUMN_ADDRESS,
-+				  cfg->column_addr, ILI9341_COLUMN_ADDR_LEN);
-+
-+	/* Page address set */
-+	mipi_dbi_command_stackbuf(dbi, MIPI_DCS_SET_PAGE_ADDRESS,
-+				  cfg->page_addr, ILI9341_PAGE_ADDR_LEN);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_INTERFACE, cfg->interface,
-+				  ILI9341_INTERFACE_LEN);
-+
-+	/* Format */
-+	mipi_dbi_command(dbi, MIPI_DCS_SET_PIXEL_FORMAT, cfg->pixel_format);
-+	mipi_dbi_command(dbi, MIPI_DCS_WRITE_MEMORY_START);
-+	mdelay(200);
-+	mipi_dbi_command(dbi, MIPI_DCS_SET_GAMMA_CURVE, cfg->gamma_curve);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_PGAMMA, cfg->pgamma,
-+				  ILI9341_PGAMMA_LEN);
-+	mipi_dbi_command_stackbuf(dbi, ILI9341_NGAMMA, cfg->ngamma,
-+				  ILI9341_NGAMMA_LEN);
-+	mipi_dbi_command(dbi, MIPI_DCS_EXIT_SLEEP_MODE);
-+	mdelay(200);
-+	mipi_dbi_command(dbi, MIPI_DCS_SET_DISPLAY_ON);
-+	mipi_dbi_command(dbi, MIPI_DCS_WRITE_MEMORY_START);
-+
-+	dev_info(dev, "Initialized display rgb interface\n");
-+}
-+
-+static int ili9341_dpi_power_on(struct ili9341 *ili)
-+{
-+	struct device_d *dev = ili->dev;
-+	int ret = 0;
-+
-+	/* Assert RESET */
-+	gpiod_set_value(ili->reset_gpio, 1);
-+
-+	/* Enable power */
-+	ret = regulator_bulk_enable(ARRAY_SIZE(ili->supplies),
-+				    ili->supplies);
-+	if (ret < 0) {
-+		dev_err(dev, "unable to enable vcc\n");
-+		return ret;
-+	}
-+	mdelay(20);
-+
-+	/* De-assert RESET */
-+	gpiod_set_value(ili->reset_gpio, 0);
-+	mdelay(20);
-+
-+	return 0;
-+}
-+
-+static int ili9341_dpi_power_off(struct ili9341 *ili)
-+{
-+	/* Assert RESET */
-+	gpiod_set_value(ili->reset_gpio, 1);
-+
-+	/* Disable power */
-+	return regulator_bulk_disable(ARRAY_SIZE(ili->supplies),
-+				      ili->supplies);
-+}
-+
-+static void ili9341_dpi_disable(struct ili9341 *ili)
-+{
-+	mipi_dbi_command(ili->dbi, MIPI_DCS_SET_DISPLAY_OFF);
-+}
-+
-+static int ili9341_dpi_prepare(struct ili9341 *ili)
-+{
-+	int ret;
-+
-+	ret = ili9341_dpi_power_on(ili);
-+	if (ret < 0)
-+		return ret;
-+
-+	ili9341_dpi_init(ili);
-+
-+	return ret;
-+}
-+
-+static void ili9341_dpi_enable(struct ili9341 *ili)
-+{
-+	mipi_dbi_command(ili->dbi, MIPI_DCS_SET_DISPLAY_ON);
-+}
-+
-+static int ili9341_dpi_get_modes(struct ili9341 *ili,
-+				 struct display_timings *timings)
-+{
-+	struct fb_videomode *mode;
-+
-+	mode = memdup(&ili->conf->mode, sizeof(*mode));
-+	if (!mode)
-+		return -ENOMEM;
-+
-+	/*
-+	 * These are from the PoV of the display controller, so
-+	 * DPL=1 => display samples at positive edge
-+	 *       => controller drives at negative edge
-+	 */
-+	if (ili->conf->rgb_interface & ILI9341_RGB_DPL)
-+		mode->display_flags |= DISPLAY_FLAGS_PIXDATA_NEGEDGE;
-+	else
-+		mode->display_flags |= DISPLAY_FLAGS_PIXDATA_POSEDGE;
-+
-+	if (ili->conf->rgb_interface & ILI9341_RGB_EPL)
-+		mode->display_flags |= DISPLAY_FLAGS_DE_HIGH;
-+	else
-+		mode->display_flags |= DISPLAY_FLAGS_DE_LOW;
-+
-+	/* Set up the polarity */
-+	if (ili->conf->rgb_interface & ILI9341_RGB_HSPL)
-+		mode->sync |= FB_SYNC_HOR_HIGH_ACT;
-+
-+	if (ili->conf->rgb_interface & ILI9341_RGB_VSPL)
-+		mode->sync |= FB_SYNC_VERT_HIGH_ACT;
-+
-+	timings->modes = mode;
-+	timings->num_modes = 1;
-+	return 0;
-+}
-+
-+static int ili9341_ioctl(struct vpl *vpl, unsigned int port,
-+			unsigned int cmd, void *ptr)
-+{
-+	struct ili9341 *ili = vpl_to_ili9341(vpl);
-+
-+	switch (cmd) {
-+	case VPL_PREPARE:
-+		return ili9341_dpi_prepare(ili);
-+	case VPL_ENABLE:
-+		ili9341_dpi_enable(ili);
-+		return 0;
-+	case VPL_DISABLE:
-+		ili9341_dpi_disable(ili);
-+		return 0;
-+	case VPL_UNPREPARE:
-+		return ili9341_dpi_power_off(ili);
-+	case VPL_GET_VIDEOMODES:
-+		return ili9341_dpi_get_modes(ili, ptr);
++	switch (pixfmt) {
++	case PF_ARGB8888:
++	case PF_ARGB1555:
++	case PF_ARGB4444:
++	case PF_AL44:
++	case PF_AL88:
++		return true;
++	case PF_RGB888:
++	case PF_RGB565:
++	case PF_L8:
 +	default:
-+		return 0;
++		return false;
 +	}
 +}
 +
-+static int ili9341_dpi_probe(struct spi_device *spi, int dc, int reset)
++static void ltdc_set_mode(struct ltdc_fb *priv,
++			  struct fb_videomode *mode)
 +{
-+	struct device_d *dev = &spi->dev;
-+	struct ili9341 *ili;
++	void __iomem *regs = priv->hw->regs;
++	u32 hsync, vsync, acc_hbp, acc_vbp, acc_act_w, acc_act_h;
++	u32 total_w, total_h;
++	u32 val;
++
++	/* Convert video timings to ltdc timings */
++	hsync = mode->hsync_len - 1;
++	vsync = mode->vsync_len - 1;
++	acc_hbp = hsync + mode->left_margin;
++	acc_vbp = vsync + mode->upper_margin;
++	acc_act_w = acc_hbp + mode->xres;
++	acc_act_h = acc_vbp + mode->yres;
++	total_w = acc_act_w + mode->right_margin;
++	total_h = acc_act_h + mode->lower_margin;
++
++	/* Synchronization sizes */
++	val = (hsync << 16) | vsync;
++	clrsetbits_le32(regs + LTDC_SSCR, SSCR_VSH | SSCR_HSW, val);
++
++	/* Accumulated back porch */
++	val = (acc_hbp << 16) | acc_vbp;
++	clrsetbits_le32(regs + LTDC_BPCR, BPCR_AVBP | BPCR_AHBP, val);
++
++	/* Accumulated active width */
++	val = (acc_act_w << 16) | acc_act_h;
++	clrsetbits_le32(regs + LTDC_AWCR, AWCR_AAW | AWCR_AAH, val);
++
++	/* Total width & height */
++	val = (total_w << 16) | total_h;
++	clrsetbits_le32(regs + LTDC_TWCR, TWCR_TOTALH | TWCR_TOTALW, val);
++
++	setbits_le32(regs + LTDC_LIPCR, acc_act_h + 1);
++
++	/* Signal polarities */
++	val = 0;
++	dev_dbg(priv->hw->dev, "mode->display_flags 0x%x mode->sync 0x%x\n",
++		mode->display_flags, mode->sync);
++	if (mode->sync & FB_SYNC_HOR_HIGH_ACT)
++		val |= GCR_HSPOL;
++	if (mode->sync & FB_SYNC_VERT_HIGH_ACT)
++		val |= GCR_VSPOL;
++	if (mode->display_flags & DISPLAY_FLAGS_DE_HIGH)
++		val |= GCR_DEPOL;
++	if (mode->display_flags & DISPLAY_FLAGS_PIXDATA_NEGEDGE)
++		val |= GCR_PCPOL;
++
++	clrsetbits_le32(regs + LTDC_GCR,
++			GCR_HSPOL | GCR_VSPOL | GCR_DEPOL | GCR_PCPOL, val);
++
++	/* Overall background color */
++	writel(priv->bg_col_argb, regs + LTDC_BCCR);
++}
++
++static void ltdc_set_layer1(struct ltdc_fb *priv)
++{
++	void __iomem *regs = priv->hw->regs;
++	u32 x0, x1, y0, y1;
++	u32 pitch_in_bytes;
++	u32 line_length;
++	u32 bus_width;
++	u32 val, tmp, bpp;
++	struct fb_videomode *mode = priv->info.mode;
++
++	x0 = y0 = 0;
++	x1 = mode->xres - 1;
++	y1 = mode->yres - 1;
++
++	/* Horizontal start and stop position */
++	tmp = (readl(regs + LTDC_BPCR) & BPCR_AHBP) >> 16;
++	val = ((x1 + 1 + tmp) << 16) + (x0 + 1 + tmp);
++	clrsetbits_le32(regs + LTDC_L1WHPCR, LXWHPCR_WHSTPOS | LXWHPCR_WHSPPOS,
++			val);
++
++	/* Vertical start & stop position */
++	tmp = readl(regs + LTDC_BPCR) & BPCR_AVBP;
++	val = ((y1 + 1 + tmp) << 16) + (y0 + 1 + tmp);
++	clrsetbits_le32(regs + LTDC_L1WVPCR, LXWVPCR_WVSTPOS | LXWVPCR_WVSPPOS,
++			val);
++
++	/* Layer background color */
++	writel(priv->bg_col_argb, regs + LTDC_L1DCCR);
++
++	/* Color frame buffer pitch in bytes & line length */
++	bpp = priv->info.bits_per_pixel;
++	pitch_in_bytes = mode->xres * (bpp >> 3);
++	bus_width = 8 << ((readl(regs + LTDC_GC2R) & GC2R_BW) >> 4);
++	line_length = ((bpp >> 3) * mode->xres) + (bus_width >> 3) - 1;
++	val = (pitch_in_bytes << 16) | line_length;
++	clrsetbits_le32(regs + LTDC_L1CFBLR, LXCFBLR_CFBLL | LXCFBLR_CFBP, val);
++
++	/* Pixel format */
++	clrsetbits_le32(regs + LTDC_L1PFCR, LXPFCR_PF, priv->pixfmt);
++
++	/* Constant alpha value */
++	clrsetbits_le32(regs + LTDC_L1CACR, LXCACR_CONSTA, priv->alpha);
++
++	/* Specifies the blending factors : with or without pixel alpha */
++	/* Manage hw-specific capabilities */
++	val = has_alpha(priv->pixfmt) ? BF1_PAXCA | BF2_1PAXCA : BF1_CA | BF2_1CA;
++
++	/* Blending factors */
++	clrsetbits_le32(regs + LTDC_L1BFCR, LXBFCR_BF2 | LXBFCR_BF1, val);
++
++	/* Frame buffer line number */
++	clrsetbits_le32(regs + LTDC_L1CFBLNR, LXCFBLNR_CFBLN, mode->yres);
++
++	/* Frame buffer address */
++	writel((unsigned long)priv->info.screen_base, regs + LTDC_L1CFBAR);
++
++	/* Enable layer 1 */
++	setbits_le32(regs + LTDC_L1CR, LXCR_LEN);
++}
++
++static int ltdc_activate_var(struct fb_info *info)
++{
++	info->line_length = info->xres * (info->bits_per_pixel >> 3);
++
++	info->screen_base = dma_alloc_writecombine(info->line_length * info->yres,
++						   DMA_ADDRESS_BROKEN);
++	if (!info->screen_base)
++		return -ENOMEM;
++
++	return 0;
++}
++
++static void ltdc_enable(struct fb_info *info)
++{
++	struct fb_videomode *mode = info->mode;
++	struct ltdc_fb *priv = info->priv;
++	struct ltdc_hw *hw = priv->hw;
++	u32 pixclock;
 +	int ret;
 +
-+	ili = kzalloc(sizeof(struct ili9341), GFP_KERNEL);
-+	if (!ili)
-+		return -ENOMEM;
++	if (hw->claimed) {
++		dev_warn(hw->dev, "CRTC currently claimed by other frame buffer!\n");
++		return;
++	}
 +
-+	ili->dbi = kzalloc(sizeof(struct mipi_dbi), GFP_KERNEL);
-+	if (!ili->dbi)
-+		return -ENOMEM;
++	vpl_ioctl_prepare(&priv->vpl, priv->id, mode);
 +
-+	ili->supplies[0].supply = "vci";
-+	ili->supplies[1].supply = "vddi";
-+	ili->supplies[2].supply = "vddi-led";
-+	ret = regulator_bulk_get(dev, ARRAY_SIZE(ili->supplies),
-+				 ili->supplies);
++	pixclock = PICOS2KHZ(mode->pixclock) * 1000;
++
++	ret = clk_enable(hw->pclk);
++	if (ret) {
++		dev_err(hw->dev, "peripheral clock enable error %d\n", ret);
++		return;
++	}
++
++	clk_set_rate(clk_get_parent(hw->pclk), pixclock);
++	if (!ret)
++		ret = clk_set_rate(hw->pclk, pixclock);
 +	if (ret < 0) {
-+		dev_err(dev, "failed to get regulators: %d\n", ret);
-+		return ret;
++		dev_err(hw->dev, "fail to set pixel clock %d hz: %d\n",
++			pixclock, ret);
++		return;
 +	}
 +
-+	ret = mipi_dbi_spi_init(spi, ili->dbi, dc);
-+	if (ret)
-+		return ret;
-+
-+	ili->reset_gpio = reset;
-+	/*
-+	 * Every new incarnation of this display must have a unique
-+	 * data entry for the system in this driver.
-+	 */
-+	ili->conf = device_get_match_data(dev);
-+	if (!ili->conf) {
-+		dev_err(dev, "missing device configuration\n");
-+		return -ENODEV;
++	ret = device_reset_us(hw->dev, 100000);
++	if (ret) {
++		dev_err(hw->dev, "error resetting controller %d\n", ret);
++		return;
 +	}
 +
-+	ili->dev = dev;
-+	ili->max_spi_speed = ili->conf->max_spi_speed;
-+	ili->vpl.node = dev->device_node;
-+	ili->vpl.ioctl = ili9341_ioctl;
++	/* Configure & start LTDC */
++	ltdc_set_mode(priv, mode);
++	ltdc_set_layer1(priv);
 +
-+	return vpl_register(&ili->vpl);
++	/* Reload configuration immediately & enable LTDC */
++	setbits_le32(hw->regs + LTDC_SRCR, SRCR_IMR);
++	setbits_le32(hw->regs + LTDC_GCR, GCR_LTDCEN);
++
++	vpl_ioctl_enable(&priv->vpl, priv->id);
++
++	hw->claimed = true;
 +}
 +
-+static int ili9341_probe(struct device_d *dev)
++static void ltdc_disable(struct fb_info *info)
 +{
-+	struct spi_device *spi = to_spi_device(dev);
-+	int dc, reset;
++	struct ltdc_fb *priv = info->priv;
 +
-+	reset = gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-+	if (!gpio_is_valid(reset) && reset != -ENOENT)
-+		dev_err(dev, "Failed to get gpio 'reset'\n");
++	vpl_ioctl_disable(&priv->vpl, priv->id);
 +
-+	dc = gpiod_get(dev, "dc", GPIOD_OUT_LOW);
-+	if (!gpio_is_valid(dc) && dc != -ENOENT)
-+		dev_err(dev, "Failed to get gpio 'dc'\n");
++	clrbits_le32(priv->hw->regs + LTDC_GCR, GCR_LTDCEN);
++	clk_disable(priv->hw->pclk);
++	priv->hw->claimed = false;
 +
-+	return ili9341_dpi_probe(spi, dc, reset);
++	vpl_ioctl_unprepare(&priv->vpl, priv->id);
 +}
 +
-+static const struct of_device_id ili9341_of_match[] = {
-+	{
-+		.compatible = "st,sf-tc240t-9370-t",
-+		.data = &ili9341_stm32f429_disco_data,
-+	},
-+	{ }
++static struct fb_ops ltdc_ops = {
++	.fb_activate_var	= ltdc_activate_var,
++	.fb_enable		= ltdc_enable,
++	.fb_disable		= ltdc_disable,
 +};
 +
-+static struct driver_d ili9341_driver = {
-+	.name = "panel-ilitek-ili9341",
-+	.of_compatible = ili9341_of_match,
-+	.probe = ili9341_probe,
-+};
-+device_spi_driver(ili9341_driver);
++static int ltdc_probe(struct device_d *dev)
++{
++	struct device_node *np;
++	struct resource *iores;
++	struct ltdc_hw *hw;
++	int ret;
 +
-+MODULE_AUTHOR("Dillon Min <dillon.minfei@gmail.com>");
-+MODULE_DESCRIPTION("ILI9341 LCD panel driver");
-+MODULE_LICENSE("GPL v2");
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	hw = xzalloc(sizeof *hw);
++	hw->dev = dev;
++	hw->regs = IOMEM(iores->start);
++
++	hw->pclk = clk_get(dev, NULL);
++	if (IS_ERR(hw->pclk)) {
++		dev_err(dev, "peripheral clock get error %d\n", ret);
++		return PTR_ERR(hw->pclk);
++	}
++
++	for_each_available_child_of_node(dev->device_node, np) {
++		struct ltdc_fb *priv;
++		struct of_endpoint ep;
++		struct fb_info *info;
++
++		if (!of_graph_port_is_available(np))
++			continue;
++
++		ret = of_graph_parse_endpoint(np, &ep);
++		if (ret)
++			return ret;
++
++		dev_dbg(hw->dev, "register vpl for %s\n", np->full_name);
++
++		priv = xzalloc(sizeof(*priv));
++		priv->hw = hw;
++		priv->id = ep.id;
++		priv->vpl.node = dev->device_node;
++
++		ret = vpl_register(&priv->vpl);
++		if (ret)
++			return ret;
++
++		info = &priv->info;
++		info->priv = priv;
++		info->fbops = &ltdc_ops;
++
++		info->red	= (struct fb_bitfield){ .offset = 11, .length = 5, };
++		info->green	= (struct fb_bitfield){ .offset =  5, .length = 6, };
++		info->blue	= (struct fb_bitfield){ .offset =  0, .length = 5, };
++		info->bits_per_pixel = 16,
++		priv->pixfmt = PF_RGB565;
++		/* TODO Below parameters are hard-coded for the moment... */
++		priv->bg_col_argb = 0xFFFFFFFF; /* white no transparency */
++		priv->alpha = 0xFF;
++
++		ret = vpl_ioctl(&priv->vpl, priv->id, VPL_GET_VIDEOMODES, &info->modes);
++		if (ret)
++			dev_dbg(dev, "failed to get modes: %s\n", strerror(-ret));
++
++		ret = register_framebuffer(info);
++		if (ret < 0) {
++			dev_err(dev, "failed to register framebuffer\n");
++			return ret;
++		}
++	}
++
++	return 0;
++}
++
++static __maybe_unused struct of_device_id ltdc_ids[] = {
++	{ .compatible = "st,stm32-ltdc" },
++	{ /* sentinel */ }
++};
++
++static struct driver_d ltdc_driver = {
++	.name = "stm32-ltdc",
++	.probe = ltdc_probe,
++	.of_compatible = DRV_OF_COMPAT(ltdc_ids),
++};
++device_platform_driver(ltdc_driver);
+diff --git a/drivers/video/stm32_ltdc.h b/drivers/video/stm32_ltdc.h
+new file mode 100644
+index 000000000000..6481f2613b95
+--- /dev/null
++++ b/drivers/video/stm32_ltdc.h
+@@ -0,0 +1,130 @@
++#ifndef STM32_LTDC_H__
++#define STM32_LTDC_H__
++
++/* LTDC main registers */
++#define LTDC_IDR	0x00	/* IDentification */
++#define LTDC_LCR	0x04	/* Layer Count */
++#define LTDC_SSCR	0x08	/* Synchronization Size Configuration */
++#define LTDC_BPCR	0x0C	/* Back Porch Configuration */
++#define LTDC_AWCR	0x10	/* Active Width Configuration */
++#define LTDC_TWCR	0x14	/* Total Width Configuration */
++#define LTDC_GCR	0x18	/* Global Control */
++#define LTDC_GC1R	0x1C	/* Global Configuration 1 */
++#define LTDC_GC2R	0x20	/* Global Configuration 2 */
++#define LTDC_SRCR	0x24	/* Shadow Reload Configuration */
++#define LTDC_GACR	0x28	/* GAmma Correction */
++#define LTDC_BCCR	0x2C	/* Background Color Configuration */
++#define LTDC_IER	0x34	/* Interrupt Enable */
++#define LTDC_ISR	0x38	/* Interrupt Status */
++#define LTDC_ICR	0x3C	/* Interrupt Clear */
++#define LTDC_LIPCR	0x40	/* Line Interrupt Position Conf. */
++#define LTDC_CPSR	0x44	/* Current Position Status */
++#define LTDC_CDSR	0x48	/* Current Display Status */
++
++/* LTDC layer 1 registers */
++#define LTDC_L1LC1R	0x80	/* L1 Layer Configuration 1 */
++#define LTDC_L1LC2R	0x84	/* L1 Layer Configuration 2 */
++#define LTDC_L1CR	0x84	/* L1 Control */
++#define LTDC_L1WHPCR	0x88	/* L1 Window Hor Position Config */
++#define LTDC_L1WVPCR	0x8C	/* L1 Window Vert Position Config */
++#define LTDC_L1CKCR	0x90	/* L1 Color Keying Configuration */
++#define LTDC_L1PFCR	0x94	/* L1 Pixel Format Configuration */
++#define LTDC_L1CACR	0x98	/* L1 Constant Alpha Config */
++#define LTDC_L1DCCR	0x9C	/* L1 Default Color Configuration */
++#define LTDC_L1BFCR	0xA0	/* L1 Blend Factors Configuration */
++#define LTDC_L1FBBCR	0xA4	/* L1 FrameBuffer Bus Control */
++#define LTDC_L1AFBCR	0xA8	/* L1 AuxFB Control */
++#define LTDC_L1CFBAR	0xAC	/* L1 Color FrameBuffer Address */
++#define LTDC_L1CFBLR	0xB0	/* L1 Color FrameBuffer Length */
++#define LTDC_L1CFBLNR	0xB4	/* L1 Color FrameBuffer Line Nb */
++#define LTDC_L1AFBAR	0xB8	/* L1 AuxFB Address */
++#define LTDC_L1AFBLR	0xBC	/* L1 AuxFB Length */
++#define LTDC_L1AFBLNR	0xC0	/* L1 AuxFB Line Number */
++#define LTDC_L1CLUTWR	0xC4	/* L1 CLUT Write */
++
++/* Bit definitions */
++#define SSCR_VSH	GENMASK(10, 0)	/* Vertical Synchronization Height */
++#define SSCR_HSW	GENMASK(27, 16)	/* Horizontal Synchronization Width */
++
++#define BPCR_AVBP	GENMASK(10, 0)	/* Accumulated Vertical Back Porch */
++#define BPCR_AHBP	GENMASK(27, 16)	/* Accumulated Horizontal Back Porch */
++
++#define AWCR_AAH	GENMASK(10, 0)	/* Accumulated Active Height */
++#define AWCR_AAW	GENMASK(27, 16)	/* Accumulated Active Width */
++
++#define TWCR_TOTALH	GENMASK(10, 0)	/* TOTAL Height */
++#define TWCR_TOTALW	GENMASK(27, 16)	/* TOTAL Width */
++
++#define GCR_LTDCEN	BIT(0)		/* LTDC ENable */
++#define GCR_DEN		BIT(16)		/* Dither ENable */
++#define GCR_PCPOL	BIT(28)		/* Pixel Clock POLarity-Inverted */
++#define GCR_DEPOL	BIT(29)		/* Data Enable POLarity-High */
++#define GCR_VSPOL	BIT(30)		/* Vertical Synchro POLarity-High */
++#define GCR_HSPOL	BIT(31)		/* Horizontal Synchro POLarity-High */
++
++#define GC1R_WBCH	GENMASK(3, 0)	/* Width of Blue CHannel output */
++#define GC1R_WGCH	GENMASK(7, 4)	/* Width of Green Channel output */
++#define GC1R_WRCH	GENMASK(11, 8)	/* Width of Red Channel output */
++#define GC1R_PBEN	BIT(12)		/* Precise Blending ENable */
++#define GC1R_DT		GENMASK(15, 14)	/* Dithering Technique */
++#define GC1R_GCT	GENMASK(19, 17)	/* Gamma Correction Technique */
++#define GC1R_SHREN	BIT(21)		/* SHadow Registers ENabled */
++#define GC1R_BCP	BIT(22)		/* Background Colour Programmable */
++#define GC1R_BBEN	BIT(23)		/* Background Blending ENabled */
++#define GC1R_LNIP	BIT(24)		/* Line Number IRQ Position */
++#define GC1R_TP		BIT(25)		/* Timing Programmable */
++#define GC1R_IPP	BIT(26)		/* IRQ Polarity Programmable */
++#define GC1R_SPP	BIT(27)		/* Sync Polarity Programmable */
++#define GC1R_DWP	BIT(28)		/* Dither Width Programmable */
++#define GC1R_STREN	BIT(29)		/* STatus Registers ENabled */
++#define GC1R_BMEN	BIT(31)		/* Blind Mode ENabled */
++
++#define GC2R_EDCA	BIT(0)		/* External Display Control Ability  */
++#define GC2R_STSAEN	BIT(1)		/* Slave Timing Sync Ability ENabled */
++#define GC2R_DVAEN	BIT(2)		/* Dual-View Ability ENabled */
++#define GC2R_DPAEN	BIT(3)		/* Dual-Port Ability ENabled */
++#define GC2R_BW		GENMASK(6, 4)	/* Bus Width (log2 of nb of bytes) */
++#define GC2R_EDCEN	BIT(7)		/* External Display Control ENabled */
++
++#define SRCR_IMR	BIT(0)		/* IMmediate Reload */
++#define SRCR_VBR	BIT(1)		/* Vertical Blanking Reload */
++
++#define LXCR_LEN	BIT(0)		/* Layer ENable */
++#define LXCR_COLKEN	BIT(1)		/* Color Keying Enable */
++#define LXCR_CLUTEN	BIT(4)		/* Color Look-Up Table ENable */
++
++#define LXWHPCR_WHSTPOS	GENMASK(11, 0)	/* Window Horizontal StarT POSition */
++#define LXWHPCR_WHSPPOS	GENMASK(27, 16)	/* Window Horizontal StoP POSition */
++
++#define LXWVPCR_WVSTPOS	GENMASK(10, 0)	/* Window Vertical StarT POSition */
++#define LXWVPCR_WVSPPOS	GENMASK(26, 16)	/* Window Vertical StoP POSition */
++
++#define LXPFCR_PF	GENMASK(2, 0)	/* Pixel Format */
++
++#define LXCACR_CONSTA	GENMASK(7, 0)	/* CONSTant Alpha */
++
++#define LXBFCR_BF2	GENMASK(2, 0)	/* Blending Factor 2 */
++#define LXBFCR_BF1	GENMASK(10, 8)	/* Blending Factor 1 */
++
++#define LXCFBLR_CFBLL	GENMASK(12, 0)	/* Color Frame Buffer Line Length */
++#define LXCFBLR_CFBP	GENMASK(28, 16)	/* Color Frame Buffer Pitch in bytes */
++
++#define LXCFBLNR_CFBLN	GENMASK(10, 0)	/* Color Frame Buffer Line Number */
++
++#define BF1_PAXCA	0x600		/* Pixel Alpha x Constant Alpha */
++#define BF1_CA		0x400		/* Constant Alpha */
++#define BF2_1PAXCA	0x007		/* 1 - (Pixel Alpha x Constant Alpha) */
++#define BF2_1CA		0x005		/* 1 - Constant Alpha */
++
++enum stm32_ltdc_pixfmt {
++	PF_ARGB8888 = 0,
++	PF_RGB888,
++	PF_RGB565,
++	PF_ARGB1555,
++	PF_ARGB4444,
++	PF_L8,
++	PF_AL44,
++	PF_AL88
++};
++
++#endif
 -- 
 2.30.2
 
