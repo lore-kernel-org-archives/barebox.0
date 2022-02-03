@@ -1,16 +1,16 @@
-Delivery-date: Thu, 03 Feb 2022 11:16:27 +0100
+Delivery-date: Thu, 03 Feb 2022 11:17:43 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFZAB-004ala-Qh
-	for lore@lore.pengutronix.de; Thu, 03 Feb 2022 11:16:27 +0100
+	id 1nFZBP-004aof-Gd
+	for lore@lore.pengutronix.de; Thu, 03 Feb 2022 11:17:43 +0100
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFZAA-0002aP-Fc
-	for lore@pengutronix.de; Thu, 03 Feb 2022 11:16:27 +0100
+	id 1nFZBN-0002hN-Qj
+	for lore@pengutronix.de; Thu, 03 Feb 2022 11:17:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,46 +18,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=Ehsmcs2LTpsR9ZWF9V0zqp+hW3oNSYsTgq67vrCSCUw=; b=Oq1I5ewBDTIZiNWcr/jw1eO4YO
-	B5idqI2FCYQEoPQW3bVPd6Gh9RZ8FFSFzplimMqzCZ0fB/jni5gDPPkczz3bwyRHDTdVDTX3HIhJV
-	Wn0Q7VcXwOO9yEOzHuSQx7c9RXiR8yCTI/gcSzpayhNJNy2s5g6+h9xT1BSWVp5/H7PEMOgtfzhvv
-	lXVDUU6uhSx+/1gD/McF2zLpsfhPYWqHqAYoW6fsxYKSe6rvo29iesdP5K+5tuhCuqaRMKwim/hjL
-	jltDhsyUb+qrfcuvcrbIfO5Cyp6Q6HEcVPNGEJUakl1EMS3G1T8AP/bPIieh0IFzM5lOiafgFnMG2
-	Iei9xw9w==;
+	bh=8v4iX5Jovu6VLb9z92BJHuOvZNuD7o3K1I0KdlnCiaA=; b=YZZo4Do75EXligt5E4eHmAbJAY
+	SOY+NjWgWt8IpD938jENhgmm2mqwVZnSlaefgNW9ijiESFgLNHBuY0hBXhVuNfaoscA/P4T7/tXHx
+	4u1ovnEfwvqEYc+iKSUvK0VTgjYQSBJE89yHjenImIvU631fNFSUnhH0Czsyz5S3OBvfVY/QRoVYn
+	Ew1DYurh1WIXn1z1Or5W3kFBL03lfTQOf73rrGA43mCwtnF272a9Fc4/f95xIWq4hwEjV4ojBNDM6
+	RCklXqZ+BzQHBWWGKg0F28C7C0RSUD7L3hKwdOHJOBeXjIZRSyd6+MqtlFAdGkQPeDrVw781LF2sQ
+	Mgl8OdeA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nFZ8s-000lOS-Ph; Thu, 03 Feb 2022 10:15:06 +0000
+	id 1nFZAA-000lxe-Re; Thu, 03 Feb 2022 10:16:26 +0000
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nFZ8i-000lMb-PE
- for barebox@lists.infradead.org; Thu, 03 Feb 2022 10:14:59 +0000
+ id 1nFZA3-000lvy-Kl
+ for barebox@lists.infradead.org; Thu, 03 Feb 2022 10:16:21 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nFZ8h-0002GN-A9; Thu, 03 Feb 2022 11:14:55 +0100
+ id 1nFZA2-0002Yh-By; Thu, 03 Feb 2022 11:16:18 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nFZ8h-0000fn-1D; Thu, 03 Feb 2022 11:14:55 +0100
-Date: Thu, 3 Feb 2022 11:14:55 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, ore@pengutronix.de, uol@pengutronix.de
-Message-ID: <20220203101455.GJ23490@pengutronix.de>
-References: <20220202195524.30740-1-a.fatoum@pengutronix.de>
+ id 1nFZA2-0000ni-3J; Thu, 03 Feb 2022 11:16:18 +0100
+Date: Thu, 3 Feb 2022 11:16:18 +0100
+To: Michael Tretter <m.tretter@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220203101618.GK23490@pengutronix.de>
+References: <20220202101054.3924339-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220202195524.30740-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220202101054.3924339-1-m.tretter@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 11:14:41 up 54 days, 19:00, 81 users,  load average: 0.02, 0.10, 0.13
+X-Uptime: 11:16:04 up 54 days, 19:01, 81 users,  load average: 0.07, 0.10, 0.12
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220203_021456_860334_981E3AF0 
-X-CRM114-Status: GOOD (  29.84  )
+X-CRM114-CacheID: sfid-20220203_021619_711969_D069208F 
+X-CRM114-Status: GOOD (  23.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,61 +82,32 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master] clk: imx6: fix PLL exception for i.MX6DQ revision
- 1.0
+Subject: Re: [PATCH] firmware: zynqmp-fpga: fix use of uninitialized addr
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Feb 02, 2022 at 08:55:24PM +0100, Ahmad Fatoum wrote:
-> cpu_is_mx6* and imx_silicon_revision access static variables only
-> initialized in imx_init(). Use the alternative functions instead, that
-> will always consult the hardware to determine the version.
-> This requires us to know beforehand that we run on an i.MX6, but this
-> is a given when probing the imx6-ccm driver.
+On Wed, Feb 02, 2022 at 11:10:54AM +0100, Michael Tretter wrote:
+> The bitstream loading API of the firmware is a bit clunky, as the driver
+> needs to either pass the size of the bitstream or a pointer to the size
+> of the bitstream.
 > 
-> Other instances of this issue were removed in 37bc313add40 ("clk: imx6:
-> fix use of cpu_is_mx6* before they are initialized"), but this instance
-> was reintroduced as part of b534f79112f0 ("clk: imx6: Fix procedure to
-> switch the parent of LDB_DI_CLK").
+> Commit 2f29ee311f1d ("firmware: zynqmp-fpga: do not use DMA coherent
+> memory for bitstream") broke the loading by address, as the pointer to
+> the bitstream size was set using the uninitialized DMA address.
 > 
-> This change only affects i.MX6D/Q SoCs with exactly revision 1.0 and
-> aligns their behavior to that of the Linux clock driver.
+> Fix it by determining the argument that is passed to the firmware after
+> the bitstream has been mapped and always write the size of the bitstream
+> at the end of the passed buffer.
 > 
-> Fixes: b534f79112f0 ("clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 > ---
->  drivers/clk/imx/clk-imx6.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/firmware/zynqmp-fpga.c | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
-> index 6935a8e85292..e3afcf7858bb 100644
-> --- a/drivers/clk/imx/clk-imx6.c
-> +++ b/drivers/clk/imx/clk-imx6.c
-> @@ -60,8 +60,8 @@ static inline int cpu_mx6_is_plus(void)
->  
->  /* Audio/Video PLL post dividers don't work on i.MX6q revision 1.0 */
->  static inline int cpu_has_working_video_pll_post_div(void) {
-> -	return !((cpu_is_mx6q() || cpu_is_mx6d()) &&
-> -		 imx_silicon_revision() == IMX_CHIP_REV_1_0);
-> +	return !((cpu_mx6_is_mx6q() || cpu_mx6_is_mx6d()) &&
-> +		 __imx6_cpu_revision() == IMX_CHIP_REV_1_0);
->  }
->  
->  /* i.MX6 Quad/Dual/DualLite/Solo are all affected */
-> -- 
-> 2.30.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
