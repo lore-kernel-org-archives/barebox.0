@@ -1,158 +1,56 @@
-Delivery-date: Thu, 03 Feb 2022 15:36:32 +0100
+Delivery-date: Thu, 03 Feb 2022 17:39:21 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFdDs-004jx7-71
-	for lore@lore.pengutronix.de; Thu, 03 Feb 2022 15:36:32 +0100
+	id 1nFf8j-004oHD-J9
+	for lore@lore.pengutronix.de; Thu, 03 Feb 2022 17:39:21 +0100
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nFdDq-000884-2k
-	for lore@pengutronix.de; Thu, 03 Feb 2022 15:36:31 +0100
+	id 1nFf8h-00059M-56
+	for lore@pengutronix.de; Thu, 03 Feb 2022 17:39:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:In-Reply-To:References:
-	Message-ID:Subject:CC:To:From:Date:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:From:References:Cc:To:
+	Subject:MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=FvWiKOLFbgcyqmondKUWj27YhXutognDnO0uIrkVIhA=; b=O8Z+ko9R7YmI07
-	2htqyqObs1IJtMZTi2WfROP1Ng1JDfUUDPflRDucXLQc8kuOqk3BN5P7ProuI9IfphPgR0F/SERo9
-	T2UBk2mNd3LQQ0Zye8R9euQNN9JKG4KocuTPnKrrqxKD8ecyr5uYjTC3eAWMXubEwRRvqsygeESt7
-	9JaaLM7C7gwcgOwQEqHGEqxnvWdRU4NutuebNof2gF0t2nWvs62wtDQvYf5QY1pbIoGIsbVG0DIlV
-	DcywZxy6jzW0lmpF5Xi6X0mF7Xwbykr8HvnK4tXfX4FbeLzsThg7NVjXXHrlw1jPREC2iLLWA4dvq
-	LzskpwJiMWvF1O3aM76Q==;
+	List-Owner; bh=RplxbNqo9EUTLFLK6RoIhRK4P40VyYWKS+qVGdGXqqY=; b=YgeeEMuI+XGtuV
+	ZthT7pgsgMBqLYNfs3oEgc0kZDoUVN7NoQGnwMiFaR6dp2BexGq3NZRgWN4eTQSBtlJUDZV3w/cmC
+	QDWOSM+hdOrwDb9JVCSnddahu7nNBVvCEheA9/2o3yFYBK7ohqljboZD44NTC34Qel61cHlTsErbV
+	Y4MMstuWYjqOkqBhAPLdU78WNDTxdxPWjimWOcKpe8v0bi4Eu6eSymr+HR4hC/+WKJQC000b+00qf
+	Ys7jiyEO0s6R9psyzDhUcziuV0q3wzenrSGJAtx3Dv2yhLuZVIAP01YH/xHOhu5Dh9Z/DDgBPy33L
+	Dk9KB68d94xtDoLXpllw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nFdCT-001dOO-L0; Thu, 03 Feb 2022 14:35:05 +0000
-Received: from mx-relay33-hz1.antispameurope.com ([94.100.133.209])
+	id 1nFf76-0020m4-6S; Thu, 03 Feb 2022 16:37:40 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nFdCM-001dLh-TE
- for barebox@lists.infradead.org; Thu, 03 Feb 2022 14:35:02 +0000
-Received: from smtp.eckelmann.de ([217.19.183.80]) by
- mx-relay33-hz1.antispameurope.com; Thu, 03 Feb 2022 15:34:55 +0100
-Received: from EX-SRV1.eckelmann.group (172.18.30.60) by
- EX-SRV1.eckelmann.group (172.18.30.60) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.18; Thu, 3 Feb 2022 15:34:50 +0100
-Received: from EUR02-HE1-obe.outbound.protection.outlook.com
- (2a00:1f08:4007:e035:172:18:35:1a) by smtp.eckelmann.de
- (2a00:1f08:4007:e035:172:18:35:4) with Microsoft SMTP Server (version=TLS1_2, 
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18 via Frontend
- Transport; Thu, 3 Feb 2022 15:34:50 +0100
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gxNazmmm9RIY7UJSP9dTkxC7GPO9lr1mvxhtkd13BLgvrLMedzhqMypQGrDh7S7lg0Ec+dHx+VKuKYzozAvqP/QK+eLi27NXwllMFQeuPFHGmL6ClCQZeu33R1GDOGS9zwaAAKcvdTWO7hzA77L0ET+T98zCFfK0vHZX+T0vQov9WpbBBjl6G8oK+sOmM6lJ/IpXygKggrWeC3F/aGkvSWhQS/q5k0iXJf9vzBpa4hlc1ygrgMIzY06vo0IR3Z/XHA9UwxqM1QciTxXb6YUi47eLh7g/niaznlrwR0iivvTedtCDW0WgmuuGiU2FKubgUdV7Qf1RWbxFbZjs3hZfig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ayhhxo1sTGzKcaLOKvw2qshOlBtJsdYKs2LT4ftwIlg=;
- b=k70he8eTIBvAFCs1oLYY7DJgGy0P8xwBgXNui5T5lnXC7IixviVZeVSKqH/wOUXP0ZCr/7iw8O627/Vgy5xbuGW6YuNZ23zsVf93wTvIbKTGZFJmIXOpu9lQiV1arcqdgbHnA32q32hZvtyNAOz0Aph6cQZ7RFgQ8gr2DvdrM+s8ADgiYHqHB8WD06HPynfdZFjsYwyspb+/Y0qeK68gqaHiApSnpdQn/yc7MHCI6PMoou8Iew4akOpPsWPkIBeWzo6qOjwqD9cA46DUdrKQd7M3LQZRsgxrriGSSkK2ghlMHVQGPNA+46eXJYjLcHhCKjtEbtYIfEb9N48OfzDXug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=eckelmannde.onmicrosoft.com; s=selector1-eckelmannde-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ayhhxo1sTGzKcaLOKvw2qshOlBtJsdYKs2LT4ftwIlg=;
- b=Axp3JQMINcB/pxFT21iGIDJXaEdJGQiP7kqFg37hjbjCakAV8KFELRNp7VJEy6UATeyB3OaKN0+t+zKh/X2MnF6zW/Ijwx9jdaMMolP7ZaOa4VLdIrdrk4OKvCdGbu6+QXLsZ4OGoq9oRQt6QcXZtJnvKYVdk89OmaBvkDHnrUQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=eckelmann.de;
-Received: from AM9P189MB1700.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:2fc::15)
- by DBBP189MB1162.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:1e2::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12; Thu, 3 Feb
- 2022 14:34:47 +0000
-Received: from AM9P189MB1700.EURP189.PROD.OUTLOOK.COM
- ([fe80::4d95:78c5:c7a:fdf7]) by AM9P189MB1700.EURP189.PROD.OUTLOOK.COM
- ([fe80::4d95:78c5:c7a:fdf7%3]) with mapi id 15.20.4951.012; Thu, 3 Feb 2022
- 14:34:47 +0000
-Date: Thu, 3 Feb 2022 15:34:46 +0100
-From: Thorsten Scherer <t.scherer@eckelmann.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-CC: <barebox@lists.infradead.org>
-Message-ID: <20220203143446.eewzqwy6jym7trqd@NB142.eckelmann.group>
+ id 1nFf6z-0020kt-MO
+ for barebox@lists.infradead.org; Thu, 03 Feb 2022 16:37:36 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1nFf6x-0004w0-F1; Thu, 03 Feb 2022 17:37:31 +0100
+Message-ID: <4551ed38-4902-e57e-fa3c-6e9728de1e30@pengutronix.de>
+Date: Thu, 3 Feb 2022 17:37:31 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Content-Language: en-US
+To: Thorsten Scherer <t.scherer@eckelmann.de>
+Cc: barebox@lists.infradead.org
 References: <20220202095554.1103016-1-a.fatoum@pengutronix.de>
  <20220202095554.1103016-4-a.fatoum@pengutronix.de>
-Content-Disposition: inline
-In-Reply-To: <20220202095554.1103016-4-a.fatoum@pengutronix.de>
-X-ClientProxiedBy: AS9PR06CA0063.eurprd06.prod.outlook.com
- (2603:10a6:20b:464::25) To AM9P189MB1700.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:2fc::15)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 3a5b4241-90b5-4df0-aa31-08d9e722541f
-X-MS-TrafficTypeDiagnostic: DBBP189MB1162:EE_
-X-Microsoft-Antispam-PRVS: <DBBP189MB1162D5CAFF89437FD7126AC19F289@DBBP189MB1162.EURP189.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:449;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: IotyNYX17Wk4anjlKuwUWeYXGlEntIrBtqG72blF/rqxRdtvzz3H22nsOM8T/fMdSXpDKuploJkSCymFwv1QTq9J5BHcREg9fcb1ndgS7xKyd1iUYjo2mYHFyogpXxHmh7Ltijo7A+sBBx3Wkb4ELU20y306H4AMQ7JFTUDPMhQDq0jK6yp4h9gHgYgQ/AFnRmj97cN3Qf9DAObNCj50wNupsZGgvBH1ejS3ICE+PQlijQCRp3x+3K5MmpjM2UM42+vdhQk9XPVGeiUYu0tAIQO4uG51I26s79H/ryv/HEg4RjOz0MKtUdwo2PNtJ5YZiMKoz0FxlR9dPsCtXP5jXQU7+8F0uhd/atMnlfOmsYJmRdbGT+tE818ThbxIYevbMnGVZ38r7kPyQIeo8+o3eVSAO6T/fSv4qGcGuouXwu2QJUNS3rQkk+N2TZ9CdWhlkVY7AgTj3CkMsGqFfAjkuQnvd+bd73488SCVdqJO4SBFl+t0BliAxlophA1gMRblfmbRlfraVjQwXYzWVPgXAIrEks1Zep/fEtC7qtGjOzauEQT/ntkgD2n5+qiodOD9eX+w7Jht/cqI/6s1SdMWrF3YaCaSgY9msz3wQ8DuTGsPmTTe2W9fMp/qMfclesjuLudh5tPk9PGm/VCmTIUMOdjbea7GuLmmESmG3kdiVlLyqs5ww93QSw4vK4dKW3fNtLOiJPIBs7sClwYki2sTrZCA8YhIgY3APEf15R62UQWOnv6XR+CXGRCfcX4kbyUIivllkNpE+dFRoX5IB08GXjWGBlT75VSthwGbDmJWKrBQmpQL8WXlYCCfeDMXBOPz
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM9P189MB1700.EURP189.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(346002)(366004)(396003)(136003)(376002)(39840400004)(9686003)(66476007)(66556008)(66946007)(2906002)(83380400001)(66574015)(38100700002)(38350700002)(6512007)(26005)(5660300002)(86362001)(30864003)(316002)(186003)(19273905006)(52116002)(6506007)(1076003)(6486002)(508600001)(966005)(6916009)(15974865002)(8676002)(8936002)(4326008)(563064011);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?ETdcULvhukXb4T0DL89rbgAFDG4MP8yDpiOPIvpJyZORgdU7G2o31e757n?=
- =?iso-8859-1?Q?k7iZgCvSmlcObzYMJON6H8zPm2t4YdhaQPO12779dAgl+AWqaorKE0g1rY?=
- =?iso-8859-1?Q?XKpmC5v9zLwGFX779ruXs2OHOGMvUytoB+ks/9s5A5+kQi7RAg57b9K/UO?=
- =?iso-8859-1?Q?rXmVxc7/xEVE7aEsqLYkAZ2g/3Fh7jwwvv5uTZxGvI1yvzMgNEmUvggowM?=
- =?iso-8859-1?Q?Oh6CYr8WZabi/FwXC+EA5E6arQWG8JUEZM395trhv1M5UKwF9D21wCLArs?=
- =?iso-8859-1?Q?V+8Z1l7fseOUdfnaZFP5GkZx69V68wi0RvOHKly4zSdfZMKuZgUiUQFvnI?=
- =?iso-8859-1?Q?BF9xl4VSXJoVtxcqpyV5SVUSsKAygB/90uOqL1lImDX4mTm2+Dg2xq+XBd?=
- =?iso-8859-1?Q?ZMG6y0LCGdkkWWiGJO/mPamiNvV173oeoruUUCg5j07giOywF678d1X5jZ?=
- =?iso-8859-1?Q?psN7sqSQMjqm8sVid6x4CnBaOk1Ib5L7waQfvPGZVojaFSP8JDcg8tqG81?=
- =?iso-8859-1?Q?o9WAOIfkrTzKh9f9XHlynbszQ1AjYKP1pbpCK94aaG//w5/HWKyYNJdi7E?=
- =?iso-8859-1?Q?p6u5Wg9hPsFsXIpY6xfYG6k7PL+WgcaU9eyD9urKpCEJ84cH5MpDSvD5jD?=
- =?iso-8859-1?Q?MPjSpUJAu5xlM218yUVO8NqmKZvm5hXXVFNP2BwPJUbfHejqRyeZPMiZ0w?=
- =?iso-8859-1?Q?k0eBVmWzn087tmSS8yOOSyTRpnHH4NVstpTIWkK/tzjN/VLf5B6BQlnbjF?=
- =?iso-8859-1?Q?MoE0BYRIdT6UCrQBJorRAz8TgvQuQ67yYH0lkdanWOnRs4NDGETwy32r4k?=
- =?iso-8859-1?Q?Gi3k8u2ktBbpJ0Dr0Rtiab8vUy3de+x5kk/EEuNA+rnNrby8M78XVuSfu6?=
- =?iso-8859-1?Q?ZNj87JA8ZC9DCXhpWMZsX5q60z5TEE6SbAh8kxnB0tShvS3JdzSx4klmFe?=
- =?iso-8859-1?Q?m9aIhG7IiFs25X99t9fIamnE+egUJ81iHQUOmk2xYTFPxCIFFWUx5Hq1vr?=
- =?iso-8859-1?Q?3Gvs0JmkzjaB0sc1hjFYDMKv4LsYhFEUNLscALegJANul0JwJuGYLYUzKb?=
- =?iso-8859-1?Q?1MCivEWwSafGOL135SiBJKEaCmP7qBpTjEr2f+uiaJR/mwXVDsMxXi76Nj?=
- =?iso-8859-1?Q?ef/JieMal35lWsdWNTxCrUkQJalOyC6WlZwyzYjesp5pZkut0m8X4WrM9a?=
- =?iso-8859-1?Q?73+QLPCN5UDG0M4G+98BC+U6rZ061SCsHj8rOpfI34dMkJi57K1m3wTiya?=
- =?iso-8859-1?Q?pN9wGPmQNwGnrsFDv9hwme56sPyFad5Lqk6E2a8dm1HR2SBkRqLAX1pU15?=
- =?iso-8859-1?Q?v4oVHjNSbwg5LLhTMqvsTOgBfIeWRl8KyoIfDM30XmjY9IlI0HPaeEtCdg?=
- =?iso-8859-1?Q?0BBO54Of3WxsQrkd6zZI3Z4N39U13pjBYpv3QJZ6GV3SBUoJgiry+d/LhG?=
- =?iso-8859-1?Q?DhMphwi40hUTP/VXWNC9pfWsT71MeOGiN1bMp45V/q7YmBTD5yHmDS/5Sn?=
- =?iso-8859-1?Q?NWhNCo1mWNm3lKAAql2/X/RJ2P4vCgSfl4PdjKOvDWg+oSlWbJo7RAm9D4?=
- =?iso-8859-1?Q?5G3FVLN4toaG1w6qT2zU+YnMuchh0LjE++q1OuKXfLwMm1STh1AfWbaTFu?=
- =?iso-8859-1?Q?ETHRqkKNHJPidd0rvY0wOb/fljFDII72fwt/5ccaBBULentAXQLU5hRrED?=
- =?iso-8859-1?Q?SRqVGGot/rT20DQXwCM=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a5b4241-90b5-4df0-aa31-08d9e722541f
-X-MS-Exchange-CrossTenant-AuthSource: AM9P189MB1700.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2022 14:34:47.7920 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 62e24f58-823c-4d73-8ff2-db0a5f20156c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mPa1b5OcBpWHP0knaYrbA7VQ6X2W8Ij4MI3LPfotgVq0OX5+fuBattC9izBcoRdXf8BXLjvE5+H9cRsU7oEboQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBP189MB1162
-X-cloud-security-sender: t.scherer@eckelmann.de
-X-cloud-security-recipient: barebox@lists.infradead.org
-X-cloud-security-Virusscan: CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on
- mx-relay33-hz1.antispameurope.com with C41401A2BC03
-X-cloud-security-connect: smtp.eckelmann.de[217.19.183.80], TLS=1,
- IP=217.19.183.80
-X-cloud-security-Digest: b4fa542be28aa31f0891e22d0a875ebd
-X-cloud-security: scantime:1.731
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=eckelmann.de; h=date
- :from:to:cc:subject:message-id:references:content-type
- :content-transfer-encoding:in-reply-to:mime-version; s=hse1; bh=
- FJ6W2ooV74iYQwDBQqX8+Slv5YSleDbVS9D0JNI3n10=; b=sUkf/BSd63L2Ea5f
- hMg1O+kVWVmHRFX3kJOunAxNyiMWQnpe2v9Ai3hGR/rJeHQl41VcLW2S4BVM8xua
- wjrQgkLKhcmXJmxoIqviTDeMI1TK29FyDc2R7mOhwXfMH69zHcb716r1g0fMyxOr
- YZy+BCZYry4gtU8kSEv6SgQGHATDQrnFV2JE8Gb0BaYs9QzOLDOjTLS5m3HTKUBg
- p/Uy9qIo9CEy++wIkBJM8SFcaXaI1puRL4BzhypK16zOCOGeLjvT2KWti6Uq0rzM
- rsz4HlwSfy+axBmE5Qd2x86+XO6WoSST8xfBfV2UJBrUF+bZMrikBItXn2GU83Zp
- bGACvQ==
+ <20220203143446.eewzqwy6jym7trqd@NB142.eckelmann.group>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220203143446.eewzqwy6jym7trqd@NB142.eckelmann.group>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220203_063459_280777_CE22B0EC 
-X-CRM114-Status: GOOD (  26.28  )
+X-CRM114-CacheID: sfid-20220203_083734_104181_F849F6C5 
+X-CRM114-Status: GOOD (  35.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -164,663 +62,339 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 198.137.202.133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,USER_IN_WELCOMELIST,USER_IN_WHITELIST
-	autolearn=unavailable autolearn_force=no version=3.4.2
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
 Subject: Re: [PATCH 3/4] video: add MIPI DBI Type C Option 3 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Ahmad,
-
-uups.  I did not see v3 of this patch. Sorry for the noise.
-
-On Wed, Feb 02, 2022 at 10:55:53AM +0100, Ahmad Fatoum wrote:
-> Import the Linux v5.15 state of the driver to allow easy porting of
-> MIPI-DBI displays like the Ilitek 9431 added in a follow-up commit.
-> =
-
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  commands/Kconfig         |  23 ++
->  commands/Makefile        |   1 +
->  drivers/video/Kconfig    |   3 +
->  drivers/video/Makefile   |   1 +
->  drivers/video/mipi_dbi.c | 467 +++++++++++++++++++++++++++++++++++++++
->  include/spi/spi.h        |  20 ++
->  6 files changed, 515 insertions(+)
->  create mode 100644 drivers/video/mipi_dbi.c
-> =
-
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index ba8ca5cdebce..af60f7be1587 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -1969,6 +1969,29 @@ config CMD_SPI
->  		  -w BIT	bits per word (default 8)
->  		  -v		verbose
->  =
-
-> +config CMD_MIPI_DBI
-> +	bool
-> +	depends on DRIVER_VIDEO_MIPI_DBI && SPI
-> +	select PRINTF_HEXSTR
-> +	prompt "mipi_dbi command"
-> +	help
-> +	  write/read from MIPI DBI SPI device
-> +
-> +	  Usage: mipi_dbi [-wld] [REG] [DATA...]
-> +
-> +	  Options:
-> +		  -l		list all MIPI DBI devices
-> +		  -d DEVICE	select specific device (default is first registered)
-> +		  -w		issue write command
-> +
-> +BAREBOX_CMD_START(mipi_dbi)
-> +	.cmd		=3D do_mipi_dbi,
-> +	BAREBOX_CMD_DESC("write/read from MIPI DBI SPI device")
-> +	BAREBOX_CMD_OPTS("[-wld] [REG] [DATA...]")
-> +	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
-> +	BAREBOX_CMD_HELP(cmd_mipi_dbi_help)
-> +BAREBOX_CMD_END
-> +
->  config CMD_LED_TRIGGER
->  	bool
->  	depends on LED_TRIGGERS
-> diff --git a/commands/Makefile b/commands/Makefile
-> index db78d0b877f6..fffb6d979e82 100644
-> --- a/commands/Makefile
-> +++ b/commands/Makefile
-> @@ -67,6 +67,7 @@ obj-$(CONFIG_CMD_GPIO)		+=3D gpio.o
->  obj-$(CONFIG_CMD_UNCOMPRESS)	+=3D uncompress.o
->  obj-$(CONFIG_CMD_I2C)		+=3D i2c.o
->  obj-$(CONFIG_CMD_SPI)		+=3D spi.o
-> +obj-$(CONFIG_CMD_MIPI_DBI)	+=3D mipi_dbi.o
->  obj-$(CONFIG_CMD_UBI)		+=3D ubi.o
->  obj-$(CONFIG_CMD_UBIFORMAT)	+=3D ubiformat.o
->  obj-$(CONFIG_CMD_MENU)		+=3D menu.o
-> diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-> index 1b8672fdea82..70d1d809536b 100644
-> --- a/drivers/video/Kconfig
-> +++ b/drivers/video/Kconfig
-> @@ -129,6 +129,9 @@ config DRIVER_VIDEO_EDID
->  	  This enabled support for reading and parsing EDID data from an attach=
-ed
->  	  monitor.
->  =
-
-> +config DRIVER_VIDEO_MIPI_DBI
-> +	bool
-> +
->  config DRIVER_VIDEO_BACKLIGHT
->  	bool "Add backlight support"
->  	help
-> diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-> index 7f4429278987..a7b70d82072a 100644
-> --- a/drivers/video/Makefile
-> +++ b/drivers/video/Makefile
-> @@ -9,6 +9,7 @@ obj-$(CONFIG_VIDEO_VPL) +=3D vpl.o
->  obj-$(CONFIG_DRIVER_VIDEO_MTL017) +=3D mtl017.o
->  obj-$(CONFIG_DRIVER_VIDEO_TC358767) +=3D tc358767.o
->  obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) +=3D simple-panel.o
-> +obj-$(CONFIG_DRIVER_VIDEO_MIPI_DBI) +=3D mipi_dbi.o
->  =
-
->  obj-$(CONFIG_DRIVER_VIDEO_ATMEL) +=3D atmel_lcdfb.o atmel_lcdfb_core.o
->  obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) +=3D atmel_hlcdfb.o atmel_lcdfb_co=
-re.o
-> diff --git a/drivers/video/mipi_dbi.c b/drivers/video/mipi_dbi.c
-> new file mode 100644
-> index 000000000000..48b1110f72ab
-> --- /dev/null
-> +++ b/drivers/video/mipi_dbi.c
-> @@ -0,0 +1,467 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * MIPI Display Bus Interface (DBI) LCD controller support
-> + *
-> + * Copyright 2016 Noralf Tr=F8nnes
-> + */
-> +
-> +#define pr_fmt(fmt) "mipi-dbi: " fmt
-> +
-> +#include <common.h>
-> +#include <linux/kernel.h>
-> +#include <linux/sizes.h>
-> +#include <gpiod.h>
-> +#include <regulator.h>
-> +#include <spi/spi.h>
-> +#include <video/mipi_dbi.h>
-> +
-> +#include <video/vpl.h>
-> +#include <video/mipi_display.h>
-> +#include <video/fourcc.h>
-> +
-> +#define MIPI_DBI_MAX_SPI_READ_SPEED 2000000 /* 2MHz */
-> +
-> +#define DCS_POWER_MODE_DISPLAY			BIT(2)
-> +#define DCS_POWER_MODE_DISPLAY_NORMAL_MODE	BIT(3)
-> +#define DCS_POWER_MODE_SLEEP_MODE		BIT(4)
-> +#define DCS_POWER_MODE_PARTIAL_MODE		BIT(5)
-> +#define DCS_POWER_MODE_IDLE_MODE		BIT(6)
-> +#define DCS_POWER_MODE_RESERVED_MASK		(BIT(0) | BIT(1) | BIT(7))
-> +
-> +LIST_HEAD(mipi_dbi_list);
-> +EXPORT_SYMBOL(mipi_dbi_list);
-> +
-> +/**
-> + * DOC: overview
-> + *
-> + * This library provides helpers for MIPI Display Bus Interface (DBI)
-> + * compatible display controllers.
-> + *
-> + * Many controllers for tiny lcd displays are MIPI compliant and can use=
- this
-> + * library. If a controller uses registers 0x2A and 0x2B to set the area=
- to
-> + * update and uses register 0x2C to write to frame memory, it is most li=
-kely
-> + * MIPI compliant.
-> + *
-> + * Only MIPI Type 1 displays are supported since a full frame memory is =
-needed.
-> + *
-> + * There are 3 MIPI DBI implementation types:
-> + *
-> + * A. Motorola 6800 type parallel bus
-> + *
-> + * B. Intel 8080 type parallel bus
-> + *
-> + * C. SPI type with 3 options:
-> + *
-> + *    1. 9-bit with the Data/Command signal as the ninth bit
-> + *    2. Same as above except it's sent as 16 bits
-> + *    3. 8-bit with the Data/Command signal as a separate D/CX pin
-> + *
-> + * Currently barebox mipi_dbi only supports Type C option 3 with
-> + * mipi_dbi_spi_init().
-> + */
-> +
-> +#define MIPI_DBI_DEBUG_COMMAND(cmd, data, len) \
-> +({ \
-> +	if (!len) \
-> +		pr_debug("cmd=3D%02x\n", cmd); \
-> +	else if (len <=3D 32) \
-> +		pr_debug("cmd=3D%02x, par=3D%*ph\n", cmd, (int)len, data);\
-> +	else \
-> +		pr_debug("cmd=3D%02x, len=3D%zu\n", cmd, len); \
-> +})
-> +
-> +static const u8 mipi_dbi_dcs_read_commands[] =3D {
-> +	MIPI_DCS_GET_DISPLAY_ID,
-> +	MIPI_DCS_GET_RED_CHANNEL,
-> +	MIPI_DCS_GET_GREEN_CHANNEL,
-> +	MIPI_DCS_GET_BLUE_CHANNEL,
-> +	MIPI_DCS_GET_DISPLAY_STATUS,
-> +	MIPI_DCS_GET_POWER_MODE,
-> +	MIPI_DCS_GET_ADDRESS_MODE,
-> +	MIPI_DCS_GET_PIXEL_FORMAT,
-> +	MIPI_DCS_GET_DISPLAY_MODE,
-> +	MIPI_DCS_GET_SIGNAL_MODE,
-> +	MIPI_DCS_GET_DIAGNOSTIC_RESULT,
-> +	MIPI_DCS_READ_MEMORY_START,
-> +	MIPI_DCS_READ_MEMORY_CONTINUE,
-> +	MIPI_DCS_GET_SCANLINE,
-> +	MIPI_DCS_GET_DISPLAY_BRIGHTNESS,
-> +	MIPI_DCS_GET_CONTROL_DISPLAY,
-> +	MIPI_DCS_GET_POWER_SAVE,
-> +	MIPI_DCS_GET_CABC_MIN_BRIGHTNESS,
-> +	MIPI_DCS_READ_DDB_START,
-> +	MIPI_DCS_READ_DDB_CONTINUE,
-> +	0, /* sentinel */
-> +};
-> +
-> +bool mipi_dbi_command_is_read(struct mipi_dbi *dbi, u8 cmd)
-> +{
-> +	unsigned int i;
-> +
-> +	if (!dbi->read_commands)
-> +		return false;
-> +
-> +	for (i =3D 0; i < 0xff; i++) {
-> +		if (!dbi->read_commands[i])
-> +			return false;
-> +		if (cmd =3D=3D dbi->read_commands[i])
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +int mipi_dbi_command_read_len(int cmd)
-> +{
-> +	switch (cmd) {
-> +	case MIPI_DCS_READ_MEMORY_START:
-> +	case MIPI_DCS_READ_MEMORY_CONTINUE:
-> +		return 2;
-> +	case MIPI_DCS_GET_DISPLAY_ID:
-> +		return 3;
-> +	case MIPI_DCS_GET_DISPLAY_STATUS:
-> +		return 4;
-> +	default:
-> +		return 1;
-> +	}
-> +}
-> +
-> +/**
-> + * mipi_dbi_command_read - MIPI DCS read command
-> + * @dbi: MIPI DBI structure
-> + * @cmd: Command
-> + * @val: Value read
-> + *
-> + * Send MIPI DCS read command to the controller.
-> + *
-> + * Returns:
-> + * Zero on success, negative error code on failure.
-> + */
-> +int mipi_dbi_command_read(struct mipi_dbi *dbi, u8 cmd, u8 *val)
-> +{
-> +	if (!dbi->read_commands)
-> +		return -EACCES;
-> +
-> +	if (!mipi_dbi_command_is_read(dbi, cmd))
-> +		return -EINVAL;
-> +
-> +	return mipi_dbi_command_buf(dbi, cmd, val, 1);
-> +}
-> +EXPORT_SYMBOL(mipi_dbi_command_read);
-> +
-> +/**
-> + * mipi_dbi_command_buf - MIPI DCS command with parameter(s) in an array
-> + * @dbi: MIPI DBI structure
-> + * @cmd: Command
-> + * @data: Parameter buffer
-> + * @len: Buffer length
-> + *
-> + * Returns:
-> + * Zero on success, negative error code on failure.
-> + */
-> +int mipi_dbi_command_buf(struct mipi_dbi *dbi, u8 cmd, u8 *data, size_t =
-len)
-> +{
-> +	u8 *cmdbuf;
-> +	int ret;
-> +
-> +	/* SPI requires dma-safe buffers */
-> +	cmdbuf =3D kmemdup(&cmd, 1, GFP_KERNEL);
-> +	if (!cmdbuf)
-> +		return -ENOMEM;
-> +
-> +	ret =3D dbi->command(dbi, cmdbuf, data, len);
-> +
-> +	kfree(cmdbuf);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(mipi_dbi_command_buf);
-> +
-> +/* This should only be used by mipi_dbi_command() */
-> +int mipi_dbi_command_stackbuf(struct mipi_dbi *dbi, u8 cmd, const u8 *da=
-ta,
-> +			      size_t len)
-> +{
-> +	u8 *buf;
-> +	int ret;
-> +
-> +	buf =3D kmemdup(data, len, GFP_KERNEL);
-> +	if (!buf)
-> +		return -ENOMEM;
-> +
-> +	ret =3D mipi_dbi_command_buf(dbi, cmd, buf, len);
-> +
-> +	kfree(buf);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(mipi_dbi_command_stackbuf);
-> +
-> +/**
-> + * mipi_dbi_hw_reset - Hardware reset of controller
-> + * @dbi: MIPI DBI structure
-> + *
-> + * Reset controller if the &mipi_dbi->reset gpio is set.
-> + */
-> +void mipi_dbi_hw_reset(struct mipi_dbi *dbi)
-> +{
-> +	if (!gpio_is_valid(dbi->reset))
-> +		return;
-> +
-> +	gpiod_set_value(dbi->reset, 0);
-> +	udelay(20);
-> +	gpiod_set_value(dbi->reset, 1);
-> +	mdelay(120);
-> +}
-> +EXPORT_SYMBOL(mipi_dbi_hw_reset);
-> +
-> +/**
-> + * mipi_dbi_display_is_on - Check if display is on
-> + * @dbi: MIPI DBI structure
-> + *
-> + * This function checks the Power Mode register (if readable) to see if
-> + * display output is turned on. This can be used to see if the bootloader
-> + * has already turned on the display avoiding flicker when the pipeline =
-is
-> + * enabled.
-> + *
-> + * Returns:
-> + * true if the display can be verified to be on, false otherwise.
-> + */
-> +bool mipi_dbi_display_is_on(struct mipi_dbi *dbi)
-> +{
-> +	u8 val;
-> +
-> +	if (mipi_dbi_command_read(dbi, MIPI_DCS_GET_POWER_MODE, &val))
-> +		return false;
-> +
-> +	val &=3D ~DCS_POWER_MODE_RESERVED_MASK;
-> +
-> +	/* The poweron/reset value is 08h DCS_POWER_MODE_DISPLAY_NORMAL_MODE */
-> +	if (val !=3D (DCS_POWER_MODE_DISPLAY |
-> +	    DCS_POWER_MODE_DISPLAY_NORMAL_MODE | DCS_POWER_MODE_SLEEP_MODE))
-> +		return false;
-> +
-> +	pr_debug("Display is ON\n");
-> +
-> +	return true;
-> +}
-> +EXPORT_SYMBOL(mipi_dbi_display_is_on);
-> +
-> +#if IS_ENABLED(CONFIG_SPI)
-> +
-> +/**
-> + * mipi_dbi_spi_cmd_max_speed - get the maximum SPI bus speed
-> + * @spi: SPI device
-> + * @len: The transfer buffer length.
-> + *
-> + * Many controllers have a max speed of 10MHz, but can be pushed way bey=
-ond
-> + * that. Increase reliability by running pixel data at max speed and the=
- rest
-> + * at 10MHz, preventing transfer glitches from messing up the init setti=
-ngs.
-> + */
-> +u32 mipi_dbi_spi_cmd_max_speed(struct spi_device *spi, size_t len)
-> +{
-> +	if (len > 64)
-> +		return 0; /* use default */
-> +
-> +	return min_t(u32, 10000000, spi->max_speed_hz);
-> +}
-> +EXPORT_SYMBOL(mipi_dbi_spi_cmd_max_speed);
-> +
-> +static bool mipi_dbi_machine_little_endian(void)
-> +{
-> +#if defined(__LITTLE_ENDIAN)
-> +	return true;
-> +#else
-> +	return false;
-> +#endif
-> +}
-> +
-> +/* MIPI DBI Type C Option 3 */
-> +
-> +static int mipi_dbi_typec3_command_read(struct mipi_dbi *dbi, u8 *cmd,
-> +					u8 *data, size_t len)
-> +{
-> +	struct spi_device *spi =3D dbi->spi;
-> +	u32 speed_hz =3D min_t(u32, MIPI_DBI_MAX_SPI_READ_SPEED,
-> +			     spi->max_speed_hz / 2);
-> +	struct spi_transfer tr[2] =3D {
-> +		{
-> +			.speed_hz =3D speed_hz,
-> +			.tx_buf =3D cmd,
-> +			.len =3D 1,
-> +		}, {
-> +			.speed_hz =3D speed_hz,
-> +			.len =3D len,
-> +		},
-> +	};
-> +	struct spi_message m;
-> +	u8 *buf;
-> +	int ret;
-> +
-> +	if (!len)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * Support non-standard 24-bit and 32-bit Nokia read commands which
-> +	 * start with a dummy clock, so we need to read an extra byte.
-> +	 */
-> +	if (*cmd =3D=3D MIPI_DCS_GET_DISPLAY_ID ||
-> +	    *cmd =3D=3D MIPI_DCS_GET_DISPLAY_STATUS) {
-> +		if (!(len =3D=3D 3 || len =3D=3D 4))
-> +			return -EINVAL;
-> +
-> +		tr[1].len =3D len + 1;
-> +	}
-> +
-> +	buf =3D kmalloc(tr[1].len, GFP_KERNEL);
-> +	if (!buf)
-> +		return -ENOMEM;
-> +
-> +	tr[1].rx_buf =3D buf;
-> +	gpiod_set_value(dbi->dc, 0);
-> +
-> +	spi_message_init_with_transfers(&m, tr, ARRAY_SIZE(tr));
-> +	ret =3D spi_sync(spi, &m);
-> +	if (ret)
-> +		goto err_free;
-> +
-> +	if (tr[1].len =3D=3D len) {
-> +		memcpy(data, buf, len);
-> +	} else {
-> +		unsigned int i;
-> +
-> +		for (i =3D 0; i < len; i++)
-> +			data[i] =3D (buf[i] << 1) | (buf[i + 1] >> 7);
-> +	}
-> +
-> +	MIPI_DBI_DEBUG_COMMAND(*cmd, data, len);
-> +
-> +err_free:
-> +	kfree(buf);
-> +
-> +	return ret;
-> +}
-> +
-> +static int mipi_dbi_typec3_command(struct mipi_dbi *dbi, u8 *cmd,
-> +				   u8 *par, size_t num)
-> +{
-> +	struct spi_device *spi =3D dbi->spi;
-> +	unsigned int bpw =3D 8;
-> +	u32 speed_hz;
-> +	int ret;
-> +
-> +	if (mipi_dbi_command_is_read(dbi, *cmd))
-> +		return mipi_dbi_typec3_command_read(dbi, cmd, par, num);
-> +
-> +	MIPI_DBI_DEBUG_COMMAND(*cmd, par, num);
-> +
-> +	gpiod_set_value(dbi->dc, 0);
-> +	speed_hz =3D mipi_dbi_spi_cmd_max_speed(spi, 1);
-> +	ret =3D mipi_dbi_spi_transfer(spi, speed_hz, 8, cmd, 1);
-> +	if (ret || !num)
-> +		return ret;
-> +
-> +	if (*cmd =3D=3D MIPI_DCS_WRITE_MEMORY_START && !dbi->swap_bytes)
-> +		bpw =3D 16;
-> +
-> +	gpiod_set_value(dbi->dc, 1);
-> +	speed_hz =3D mipi_dbi_spi_cmd_max_speed(spi, num);
-> +
-> +	return mipi_dbi_spi_transfer(spi, speed_hz, bpw, par, num);
-> +}
-> +
-> +/**
-> + * mipi_dbi_spi_init - Initialize MIPI DBI SPI interface
-> + * @spi: SPI device
-> + * @dbi: MIPI DBI structure to initialize
-> + * @dc: D/C gpio
-> + *
-> + * This function sets &mipi_dbi->command, enables &mipi_dbi->read_comman=
-ds for the
-> + * usual read commands. It should be followed by a call to mipi_dbi_dev_=
-init() or
-> + * a driver-specific init.
-> + *
-> + * Type C Option 3 interface is assumed, Type C Option 1 is not yet supp=
-orted,
-> + * because barebox has no generic way yet to require a 9-bit SPI transfer
-> + *
-> + * If the SPI master driver doesn't support the necessary bits per word,
-> + * the following transformation is used:
-> + *
-> + * - 9-bit: reorder buffer as 9x 8-bit words, padded with no-op command.
-> + * - 16-bit: if big endian send as 8-bit, if little endian swap bytes
-> + *
-> + * Returns:
-> + * Zero on success, negative error code on failure.
-> + */
-> +int mipi_dbi_spi_init(struct spi_device *spi, struct mipi_dbi *dbi,
-> +		      int dc)
-> +{
-> +	struct device_d *dev =3D &spi->dev;
-> +
-> +	dbi->spi =3D spi;
-> +	dbi->read_commands =3D mipi_dbi_dcs_read_commands;
-> +
-> +	if (!gpio_is_valid(dc)) {
-> +		dev_dbg(dev, "MIPI DBI Type-C 1 unsupported\n");
-> +		return -ENOSYS;
-> +	}
-> +
-> +	dbi->command =3D mipi_dbi_typec3_command;
-> +	dbi->dc =3D dc;
-> +	// TODO: can we just force 16 bit?
-> +	if (mipi_dbi_machine_little_endian() && spi->bits_per_word !=3D 16)
-> +		dbi->swap_bytes =3D true;
-> +
-> +	dev_dbg(dev, "SPI speed: %uMHz\n", spi->max_speed_hz / 1000000);
-> +
-> +	list_add(&dbi->list, &mipi_dbi_list);
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(mipi_dbi_spi_init);
-> +
-> +/**
-> + * mipi_dbi_spi_transfer - SPI transfer helper
-> + * @spi: SPI device
-> + * @speed_hz: Override speed (optional)
-> + * @bpw: Bits per word
-> + * @buf: Buffer to transfer
-> + * @len: Buffer length
-> + *
-> + * This SPI transfer helper breaks up the transfer of @buf into chunks w=
-hich
-> + * the SPI controller driver can handle.
-> + *
-> + * Returns:
-> + * Zero on success, negative error code on failure.
-> + */
-> +int mipi_dbi_spi_transfer(struct spi_device *spi, u32 speed_hz,
-> +			  u8 bpw, const void *buf, size_t len)
-> +{
-> +	size_t max_chunk =3D spi_max_transfer_size(spi);
-> +	struct spi_transfer tr =3D {
-> +		.bits_per_word =3D bpw,
-> +		.speed_hz =3D speed_hz,
-> +	};
-> +	struct spi_message m;
-> +	size_t chunk;
-> +	int ret;
-> +
-> +	spi_message_init_with_transfers(&m, &tr, 1);
-> +
-> +	while (len) {
-> +		chunk =3D min(len, max_chunk);
-> +
-> +		tr.tx_buf =3D buf;
-> +		tr.len =3D chunk;
-> +		buf +=3D chunk;
-> +		len -=3D chunk;
-> +
-> +		ret =3D spi_sync(spi, &m);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(mipi_dbi_spi_transfer);
-> +
-> +#endif /* CONFIG_SPI */
-> +
-> +MODULE_LICENSE("GPL");
-> diff --git a/include/spi/spi.h b/include/spi/spi.h
-> index c5ad6bd39ff9..d133e0e21265 100644
-> --- a/include/spi/spi.h
-> +++ b/include/spi/spi.h
-> @@ -409,6 +409,26 @@ spi_message_add_tail(struct spi_transfer *t, struct =
-spi_message *m)
->  	list_add_tail(&t->transfer_list, &m->transfers);
->  }
->  =
-
-> +/**
-> + * spi_message_init_with_transfers - Initialize spi_message and append t=
-ransfers
-> + * @m: spi_message to be initialized
-> + * @xfers: An array of spi transfers
-> + * @num_xfers: Number of items in the xfer array
-> + *
-> + * This function initializes the given spi_message and adds each spi_tra=
-nsfer in
-> + * the given array to the message.
-> + */
-> +static inline void
-> +spi_message_init_with_transfers(struct spi_message *m,
-> +struct spi_transfer *xfers, unsigned int num_xfers)
-> +{
-> +	unsigned int i;
-> +
-> +	spi_message_init(m);
-> +	for (i =3D 0; i < num_xfers; ++i)
-> +		spi_message_add_tail(&xfers[i], m);
-> +}
-> +
->  static inline void
->  spi_transfer_del(struct spi_transfer *t)
->  {
-> -- =
-
-> 2.30.2
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-Best regards
-Thorsten
-
---
-Thorsten Scherer | Eckelmann AG | www.eckelmann.de |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMDMuMDIuMjIgMTU6MzQsIFRob3JzdGVuIFNjaGVyZXIgd3JvdGU6Cj4gSGkgQWhtYWQsCj4g
+Cj4gdXVwcy4gIEkgZGlkIG5vdCBzZWUgdjMgb2YgdGhpcyBwYXRjaC4gU29ycnkgZm9yIHRoZSBu
+b2lzZS4KCkFsbCBnb29kLiBUaGFua3MgZm9yIGxvb2tpbmcgb3V0IDopCgo+IAo+IE9uIFdlZCwg
+RmViIDAyLCAyMDIyIGF0IDEwOjU1OjUzQU0gKzAxMDAsIEFobWFkIEZhdG91bSB3cm90ZToKPj4g
+SW1wb3J0IHRoZSBMaW51eCB2NS4xNSBzdGF0ZSBvZiB0aGUgZHJpdmVyIHRvIGFsbG93IGVhc3kg
+cG9ydGluZyBvZgo+PiBNSVBJLURCSSBkaXNwbGF5cyBsaWtlIHRoZSBJbGl0ZWsgOTQzMSBhZGRl
+ZCBpbiBhIGZvbGxvdy11cCBjb21taXQuCj4+Cj4+IFNpZ25lZC1vZmYtYnk6IEFobWFkIEZhdG91
+bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Cj4+IC0tLQo+PiAgY29tbWFuZHMvS2NvbmZpZyAg
+ICAgICAgIHwgIDIzICsrCj4+ICBjb21tYW5kcy9NYWtlZmlsZSAgICAgICAgfCAgIDEgKwo+PiAg
+ZHJpdmVycy92aWRlby9LY29uZmlnICAgIHwgICAzICsKPj4gIGRyaXZlcnMvdmlkZW8vTWFrZWZp
+bGUgICB8ICAgMSArCj4+ICBkcml2ZXJzL3ZpZGVvL21pcGlfZGJpLmMgfCA0NjcgKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCj4+ICBpbmNsdWRlL3NwaS9zcGkuaCAgICAg
+ICAgfCAgMjAgKysKPj4gIDYgZmlsZXMgY2hhbmdlZCwgNTE1IGluc2VydGlvbnMoKykKPj4gIGNy
+ZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL3ZpZGVvL21pcGlfZGJpLmMKPj4KPj4gZGlmZiAtLWdp
+dCBhL2NvbW1hbmRzL0tjb25maWcgYi9jb21tYW5kcy9LY29uZmlnCj4+IGluZGV4IGJhOGNhNWNk
+ZWJjZS4uYWY2MGY3YmUxNTg3IDEwMDY0NAo+PiAtLS0gYS9jb21tYW5kcy9LY29uZmlnCj4+ICsr
+KyBiL2NvbW1hbmRzL0tjb25maWcKPj4gQEAgLTE5NjksNiArMTk2OSwyOSBAQCBjb25maWcgQ01E
+X1NQSQo+PiAgCQkgIC13IEJJVAliaXRzIHBlciB3b3JkIChkZWZhdWx0IDgpCj4+ICAJCSAgLXYJ
+CXZlcmJvc2UKPj4gIAo+PiArY29uZmlnIENNRF9NSVBJX0RCSQo+PiArCWJvb2wKPj4gKwlkZXBl
+bmRzIG9uIERSSVZFUl9WSURFT19NSVBJX0RCSSAmJiBTUEkKPj4gKwlzZWxlY3QgUFJJTlRGX0hF
+WFNUUgo+PiArCXByb21wdCAibWlwaV9kYmkgY29tbWFuZCIKPj4gKwloZWxwCj4+ICsJICB3cml0
+ZS9yZWFkIGZyb20gTUlQSSBEQkkgU1BJIGRldmljZQo+PiArCj4+ICsJICBVc2FnZTogbWlwaV9k
+YmkgWy13bGRdIFtSRUddIFtEQVRBLi4uXQo+PiArCj4+ICsJICBPcHRpb25zOgo+PiArCQkgIC1s
+CQlsaXN0IGFsbCBNSVBJIERCSSBkZXZpY2VzCj4+ICsJCSAgLWQgREVWSUNFCXNlbGVjdCBzcGVj
+aWZpYyBkZXZpY2UgKGRlZmF1bHQgaXMgZmlyc3QgcmVnaXN0ZXJlZCkKPj4gKwkJICAtdwkJaXNz
+dWUgd3JpdGUgY29tbWFuZAo+PiArCj4+ICtCQVJFQk9YX0NNRF9TVEFSVChtaXBpX2RiaSkKPj4g
+KwkuY21kCQk9IGRvX21pcGlfZGJpLAo+PiArCUJBUkVCT1hfQ01EX0RFU0MoIndyaXRlL3JlYWQg
+ZnJvbSBNSVBJIERCSSBTUEkgZGV2aWNlIikKPj4gKwlCQVJFQk9YX0NNRF9PUFRTKCJbLXdsZF0g
+W1JFR10gW0RBVEEuLi5dIikKPj4gKwlCQVJFQk9YX0NNRF9HUk9VUChDTURfR1JQX0hXTUFOSVAp
+Cj4+ICsJQkFSRUJPWF9DTURfSEVMUChjbWRfbWlwaV9kYmlfaGVscCkKPj4gK0JBUkVCT1hfQ01E
+X0VORAo+PiArCj4+ICBjb25maWcgQ01EX0xFRF9UUklHR0VSCj4+ICAJYm9vbAo+PiAgCWRlcGVu
+ZHMgb24gTEVEX1RSSUdHRVJTCj4+IGRpZmYgLS1naXQgYS9jb21tYW5kcy9NYWtlZmlsZSBiL2Nv
+bW1hbmRzL01ha2VmaWxlCj4+IGluZGV4IGRiNzhkMGI4NzdmNi4uZmZmYjZkOTc5ZTgyIDEwMDY0
+NAo+PiAtLS0gYS9jb21tYW5kcy9NYWtlZmlsZQo+PiArKysgYi9jb21tYW5kcy9NYWtlZmlsZQo+
+PiBAQCAtNjcsNiArNjcsNyBAQCBvYmotJChDT05GSUdfQ01EX0dQSU8pCQkrPSBncGlvLm8KPj4g
+IG9iai0kKENPTkZJR19DTURfVU5DT01QUkVTUykJKz0gdW5jb21wcmVzcy5vCj4+ICBvYmotJChD
+T05GSUdfQ01EX0kyQykJCSs9IGkyYy5vCj4+ICBvYmotJChDT05GSUdfQ01EX1NQSSkJCSs9IHNw
+aS5vCj4+ICtvYmotJChDT05GSUdfQ01EX01JUElfREJJKQkrPSBtaXBpX2RiaS5vCj4+ICBvYmot
+JChDT05GSUdfQ01EX1VCSSkJCSs9IHViaS5vCj4+ICBvYmotJChDT05GSUdfQ01EX1VCSUZPUk1B
+VCkJKz0gdWJpZm9ybWF0Lm8KPj4gIG9iai0kKENPTkZJR19DTURfTUVOVSkJCSs9IG1lbnUubwo+
+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy92aWRlby9LY29uZmlnIGIvZHJpdmVycy92aWRlby9LY29u
+ZmlnCj4+IGluZGV4IDFiODY3MmZkZWE4Mi4uNzBkMWQ4MDk1MzZiIDEwMDY0NAo+PiAtLS0gYS9k
+cml2ZXJzL3ZpZGVvL0tjb25maWcKPj4gKysrIGIvZHJpdmVycy92aWRlby9LY29uZmlnCj4+IEBA
+IC0xMjksNiArMTI5LDkgQEAgY29uZmlnIERSSVZFUl9WSURFT19FRElECj4+ICAJICBUaGlzIGVu
+YWJsZWQgc3VwcG9ydCBmb3IgcmVhZGluZyBhbmQgcGFyc2luZyBFRElEIGRhdGEgZnJvbSBhbiBh
+dHRhY2hlZAo+PiAgCSAgbW9uaXRvci4KPj4gIAo+PiArY29uZmlnIERSSVZFUl9WSURFT19NSVBJ
+X0RCSQo+PiArCWJvb2wKPj4gKwo+PiAgY29uZmlnIERSSVZFUl9WSURFT19CQUNLTElHSFQKPj4g
+IAlib29sICJBZGQgYmFja2xpZ2h0IHN1cHBvcnQiCj4+ICAJaGVscAo+PiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy92aWRlby9NYWtlZmlsZSBiL2RyaXZlcnMvdmlkZW8vTWFrZWZpbGUKPj4gaW5kZXgg
+N2Y0NDI5Mjc4OTg3Li5hN2I3MGQ4MjA3MmEgMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvdmlkZW8v
+TWFrZWZpbGUKPj4gKysrIGIvZHJpdmVycy92aWRlby9NYWtlZmlsZQo+PiBAQCAtOSw2ICs5LDcg
+QEAgb2JqLSQoQ09ORklHX1ZJREVPX1ZQTCkgKz0gdnBsLm8KPj4gIG9iai0kKENPTkZJR19EUklW
+RVJfVklERU9fTVRMMDE3KSArPSBtdGwwMTcubwo+PiAgb2JqLSQoQ09ORklHX0RSSVZFUl9WSURF
+T19UQzM1ODc2NykgKz0gdGMzNTg3Njcubwo+PiAgb2JqLSQoQ09ORklHX0RSSVZFUl9WSURFT19T
+SU1QTEVfUEFORUwpICs9IHNpbXBsZS1wYW5lbC5vCj4+ICtvYmotJChDT05GSUdfRFJJVkVSX1ZJ
+REVPX01JUElfREJJKSArPSBtaXBpX2RiaS5vCj4+ICAKPj4gIG9iai0kKENPTkZJR19EUklWRVJf
+VklERU9fQVRNRUwpICs9IGF0bWVsX2xjZGZiLm8gYXRtZWxfbGNkZmJfY29yZS5vCj4+ICBvYmot
+JChDT05GSUdfRFJJVkVSX1ZJREVPX0FUTUVMX0hMQ0QpICs9IGF0bWVsX2hsY2RmYi5vIGF0bWVs
+X2xjZGZiX2NvcmUubwo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy92aWRlby9taXBpX2RiaS5jIGIv
+ZHJpdmVycy92aWRlby9taXBpX2RiaS5jCj4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4+IGluZGV4
+IDAwMDAwMDAwMDAwMC4uNDhiMTExMGY3MmFiCj4+IC0tLSAvZGV2L251bGwKPj4gKysrIGIvZHJp
+dmVycy92aWRlby9taXBpX2RiaS5jCj4+IEBAIC0wLDAgKzEsNDY3IEBACj4+ICsvLyBTUERYLUxp
+Y2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlcgo+PiArLyoKPj4gKyAqIE1JUEkgRGlz
+cGxheSBCdXMgSW50ZXJmYWNlIChEQkkpIExDRCBjb250cm9sbGVyIHN1cHBvcnQKPj4gKyAqCj4+
+ICsgKiBDb3B5cmlnaHQgMjAxNiBOb3JhbGYgVHLDuG5uZXMKPj4gKyAqLwo+PiArCj4+ICsjZGVm
+aW5lIHByX2ZtdChmbXQpICJtaXBpLWRiaTogIiBmbXQKPj4gKwo+PiArI2luY2x1ZGUgPGNvbW1v
+bi5oPgo+PiArI2luY2x1ZGUgPGxpbnV4L2tlcm5lbC5oPgo+PiArI2luY2x1ZGUgPGxpbnV4L3Np
+emVzLmg+Cj4+ICsjaW5jbHVkZSA8Z3Bpb2QuaD4KPj4gKyNpbmNsdWRlIDxyZWd1bGF0b3IuaD4K
+Pj4gKyNpbmNsdWRlIDxzcGkvc3BpLmg+Cj4+ICsjaW5jbHVkZSA8dmlkZW8vbWlwaV9kYmkuaD4K
+Pj4gKwo+PiArI2luY2x1ZGUgPHZpZGVvL3ZwbC5oPgo+PiArI2luY2x1ZGUgPHZpZGVvL21pcGlf
+ZGlzcGxheS5oPgo+PiArI2luY2x1ZGUgPHZpZGVvL2ZvdXJjYy5oPgo+PiArCj4+ICsjZGVmaW5l
+IE1JUElfREJJX01BWF9TUElfUkVBRF9TUEVFRCAyMDAwMDAwIC8qIDJNSHogKi8KPj4gKwo+PiAr
+I2RlZmluZSBEQ1NfUE9XRVJfTU9ERV9ESVNQTEFZCQkJQklUKDIpCj4+ICsjZGVmaW5lIERDU19Q
+T1dFUl9NT0RFX0RJU1BMQVlfTk9STUFMX01PREUJQklUKDMpCj4+ICsjZGVmaW5lIERDU19QT1dF
+Ul9NT0RFX1NMRUVQX01PREUJCUJJVCg0KQo+PiArI2RlZmluZSBEQ1NfUE9XRVJfTU9ERV9QQVJU
+SUFMX01PREUJCUJJVCg1KQo+PiArI2RlZmluZSBEQ1NfUE9XRVJfTU9ERV9JRExFX01PREUJCUJJ
+VCg2KQo+PiArI2RlZmluZSBEQ1NfUE9XRVJfTU9ERV9SRVNFUlZFRF9NQVNLCQkoQklUKDApIHwg
+QklUKDEpIHwgQklUKDcpKQo+PiArCj4+ICtMSVNUX0hFQUQobWlwaV9kYmlfbGlzdCk7Cj4+ICtF
+WFBPUlRfU1lNQk9MKG1pcGlfZGJpX2xpc3QpOwo+PiArCj4+ICsvKioKPj4gKyAqIERPQzogb3Zl
+cnZpZXcKPj4gKyAqCj4+ICsgKiBUaGlzIGxpYnJhcnkgcHJvdmlkZXMgaGVscGVycyBmb3IgTUlQ
+SSBEaXNwbGF5IEJ1cyBJbnRlcmZhY2UgKERCSSkKPj4gKyAqIGNvbXBhdGlibGUgZGlzcGxheSBj
+b250cm9sbGVycy4KPj4gKyAqCj4+ICsgKiBNYW55IGNvbnRyb2xsZXJzIGZvciB0aW55IGxjZCBk
+aXNwbGF5cyBhcmUgTUlQSSBjb21wbGlhbnQgYW5kIGNhbiB1c2UgdGhpcwo+PiArICogbGlicmFy
+eS4gSWYgYSBjb250cm9sbGVyIHVzZXMgcmVnaXN0ZXJzIDB4MkEgYW5kIDB4MkIgdG8gc2V0IHRo
+ZSBhcmVhIHRvCj4+ICsgKiB1cGRhdGUgYW5kIHVzZXMgcmVnaXN0ZXIgMHgyQyB0byB3cml0ZSB0
+byBmcmFtZSBtZW1vcnksIGl0IGlzIG1vc3QgbGlrZWx5Cj4+ICsgKiBNSVBJIGNvbXBsaWFudC4K
+Pj4gKyAqCj4+ICsgKiBPbmx5IE1JUEkgVHlwZSAxIGRpc3BsYXlzIGFyZSBzdXBwb3J0ZWQgc2lu
+Y2UgYSBmdWxsIGZyYW1lIG1lbW9yeSBpcyBuZWVkZWQuCj4+ICsgKgo+PiArICogVGhlcmUgYXJl
+IDMgTUlQSSBEQkkgaW1wbGVtZW50YXRpb24gdHlwZXM6Cj4+ICsgKgo+PiArICogQS4gTW90b3Jv
+bGEgNjgwMCB0eXBlIHBhcmFsbGVsIGJ1cwo+PiArICoKPj4gKyAqIEIuIEludGVsIDgwODAgdHlw
+ZSBwYXJhbGxlbCBidXMKPj4gKyAqCj4+ICsgKiBDLiBTUEkgdHlwZSB3aXRoIDMgb3B0aW9uczoK
+Pj4gKyAqCj4+ICsgKiAgICAxLiA5LWJpdCB3aXRoIHRoZSBEYXRhL0NvbW1hbmQgc2lnbmFsIGFz
+IHRoZSBuaW50aCBiaXQKPj4gKyAqICAgIDIuIFNhbWUgYXMgYWJvdmUgZXhjZXB0IGl0J3Mgc2Vu
+dCBhcyAxNiBiaXRzCj4+ICsgKiAgICAzLiA4LWJpdCB3aXRoIHRoZSBEYXRhL0NvbW1hbmQgc2ln
+bmFsIGFzIGEgc2VwYXJhdGUgRC9DWCBwaW4KPj4gKyAqCj4+ICsgKiBDdXJyZW50bHkgYmFyZWJv
+eCBtaXBpX2RiaSBvbmx5IHN1cHBvcnRzIFR5cGUgQyBvcHRpb24gMyB3aXRoCj4+ICsgKiBtaXBp
+X2RiaV9zcGlfaW5pdCgpLgo+PiArICovCj4+ICsKPj4gKyNkZWZpbmUgTUlQSV9EQklfREVCVUdf
+Q09NTUFORChjbWQsIGRhdGEsIGxlbikgXAo+PiArKHsgXAo+PiArCWlmICghbGVuKSBcCj4+ICsJ
+CXByX2RlYnVnKCJjbWQ9JTAyeFxuIiwgY21kKTsgXAo+PiArCWVsc2UgaWYgKGxlbiA8PSAzMikg
+XAo+PiArCQlwcl9kZWJ1ZygiY21kPSUwMngsIHBhcj0lKnBoXG4iLCBjbWQsIChpbnQpbGVuLCBk
+YXRhKTtcCj4+ICsJZWxzZSBcCj4+ICsJCXByX2RlYnVnKCJjbWQ9JTAyeCwgbGVuPSV6dVxuIiwg
+Y21kLCBsZW4pOyBcCj4+ICt9KQo+PiArCj4+ICtzdGF0aWMgY29uc3QgdTggbWlwaV9kYmlfZGNz
+X3JlYWRfY29tbWFuZHNbXSA9IHsKPj4gKwlNSVBJX0RDU19HRVRfRElTUExBWV9JRCwKPj4gKwlN
+SVBJX0RDU19HRVRfUkVEX0NIQU5ORUwsCj4+ICsJTUlQSV9EQ1NfR0VUX0dSRUVOX0NIQU5ORUws
+Cj4+ICsJTUlQSV9EQ1NfR0VUX0JMVUVfQ0hBTk5FTCwKPj4gKwlNSVBJX0RDU19HRVRfRElTUExB
+WV9TVEFUVVMsCj4+ICsJTUlQSV9EQ1NfR0VUX1BPV0VSX01PREUsCj4+ICsJTUlQSV9EQ1NfR0VU
+X0FERFJFU1NfTU9ERSwKPj4gKwlNSVBJX0RDU19HRVRfUElYRUxfRk9STUFULAo+PiArCU1JUElf
+RENTX0dFVF9ESVNQTEFZX01PREUsCj4+ICsJTUlQSV9EQ1NfR0VUX1NJR05BTF9NT0RFLAo+PiAr
+CU1JUElfRENTX0dFVF9ESUFHTk9TVElDX1JFU1VMVCwKPj4gKwlNSVBJX0RDU19SRUFEX01FTU9S
+WV9TVEFSVCwKPj4gKwlNSVBJX0RDU19SRUFEX01FTU9SWV9DT05USU5VRSwKPj4gKwlNSVBJX0RD
+U19HRVRfU0NBTkxJTkUsCj4+ICsJTUlQSV9EQ1NfR0VUX0RJU1BMQVlfQlJJR0hUTkVTUywKPj4g
+KwlNSVBJX0RDU19HRVRfQ09OVFJPTF9ESVNQTEFZLAo+PiArCU1JUElfRENTX0dFVF9QT1dFUl9T
+QVZFLAo+PiArCU1JUElfRENTX0dFVF9DQUJDX01JTl9CUklHSFRORVNTLAo+PiArCU1JUElfRENT
+X1JFQURfRERCX1NUQVJULAo+PiArCU1JUElfRENTX1JFQURfRERCX0NPTlRJTlVFLAo+PiArCTAs
+IC8qIHNlbnRpbmVsICovCj4+ICt9Owo+PiArCj4+ICtib29sIG1pcGlfZGJpX2NvbW1hbmRfaXNf
+cmVhZChzdHJ1Y3QgbWlwaV9kYmkgKmRiaSwgdTggY21kKQo+PiArewo+PiArCXVuc2lnbmVkIGlu
+dCBpOwo+PiArCj4+ICsJaWYgKCFkYmktPnJlYWRfY29tbWFuZHMpCj4+ICsJCXJldHVybiBmYWxz
+ZTsKPj4gKwo+PiArCWZvciAoaSA9IDA7IGkgPCAweGZmOyBpKyspIHsKPj4gKwkJaWYgKCFkYmkt
+PnJlYWRfY29tbWFuZHNbaV0pCj4+ICsJCQlyZXR1cm4gZmFsc2U7Cj4+ICsJCWlmIChjbWQgPT0g
+ZGJpLT5yZWFkX2NvbW1hbmRzW2ldKQo+PiArCQkJcmV0dXJuIHRydWU7Cj4+ICsJfQo+PiArCj4+
+ICsJcmV0dXJuIGZhbHNlOwo+PiArfQo+PiArCj4+ICtpbnQgbWlwaV9kYmlfY29tbWFuZF9yZWFk
+X2xlbihpbnQgY21kKQo+PiArewo+PiArCXN3aXRjaCAoY21kKSB7Cj4+ICsJY2FzZSBNSVBJX0RD
+U19SRUFEX01FTU9SWV9TVEFSVDoKPj4gKwljYXNlIE1JUElfRENTX1JFQURfTUVNT1JZX0NPTlRJ
+TlVFOgo+PiArCQlyZXR1cm4gMjsKPj4gKwljYXNlIE1JUElfRENTX0dFVF9ESVNQTEFZX0lEOgo+
+PiArCQlyZXR1cm4gMzsKPj4gKwljYXNlIE1JUElfRENTX0dFVF9ESVNQTEFZX1NUQVRVUzoKPj4g
+KwkJcmV0dXJuIDQ7Cj4+ICsJZGVmYXVsdDoKPj4gKwkJcmV0dXJuIDE7Cj4+ICsJfQo+PiArfQo+
+PiArCj4+ICsvKioKPj4gKyAqIG1pcGlfZGJpX2NvbW1hbmRfcmVhZCAtIE1JUEkgRENTIHJlYWQg
+Y29tbWFuZAo+PiArICogQGRiaTogTUlQSSBEQkkgc3RydWN0dXJlCj4+ICsgKiBAY21kOiBDb21t
+YW5kCj4+ICsgKiBAdmFsOiBWYWx1ZSByZWFkCj4+ICsgKgo+PiArICogU2VuZCBNSVBJIERDUyBy
+ZWFkIGNvbW1hbmQgdG8gdGhlIGNvbnRyb2xsZXIuCj4+ICsgKgo+PiArICogUmV0dXJuczoKPj4g
+KyAqIFplcm8gb24gc3VjY2VzcywgbmVnYXRpdmUgZXJyb3IgY29kZSBvbiBmYWlsdXJlLgo+PiAr
+ICovCj4+ICtpbnQgbWlwaV9kYmlfY29tbWFuZF9yZWFkKHN0cnVjdCBtaXBpX2RiaSAqZGJpLCB1
+OCBjbWQsIHU4ICp2YWwpCj4+ICt7Cj4+ICsJaWYgKCFkYmktPnJlYWRfY29tbWFuZHMpCj4+ICsJ
+CXJldHVybiAtRUFDQ0VTOwo+PiArCj4+ICsJaWYgKCFtaXBpX2RiaV9jb21tYW5kX2lzX3JlYWQo
+ZGJpLCBjbWQpKQo+PiArCQlyZXR1cm4gLUVJTlZBTDsKPj4gKwo+PiArCXJldHVybiBtaXBpX2Ri
+aV9jb21tYW5kX2J1ZihkYmksIGNtZCwgdmFsLCAxKTsKPj4gK30KPj4gK0VYUE9SVF9TWU1CT0wo
+bWlwaV9kYmlfY29tbWFuZF9yZWFkKTsKPj4gKwo+PiArLyoqCj4+ICsgKiBtaXBpX2RiaV9jb21t
+YW5kX2J1ZiAtIE1JUEkgRENTIGNvbW1hbmQgd2l0aCBwYXJhbWV0ZXIocykgaW4gYW4gYXJyYXkK
+Pj4gKyAqIEBkYmk6IE1JUEkgREJJIHN0cnVjdHVyZQo+PiArICogQGNtZDogQ29tbWFuZAo+PiAr
+ICogQGRhdGE6IFBhcmFtZXRlciBidWZmZXIKPj4gKyAqIEBsZW46IEJ1ZmZlciBsZW5ndGgKPj4g
+KyAqCj4+ICsgKiBSZXR1cm5zOgo+PiArICogWmVybyBvbiBzdWNjZXNzLCBuZWdhdGl2ZSBlcnJv
+ciBjb2RlIG9uIGZhaWx1cmUuCj4+ICsgKi8KPj4gK2ludCBtaXBpX2RiaV9jb21tYW5kX2J1Zihz
+dHJ1Y3QgbWlwaV9kYmkgKmRiaSwgdTggY21kLCB1OCAqZGF0YSwgc2l6ZV90IGxlbikKPj4gK3sK
+Pj4gKwl1OCAqY21kYnVmOwo+PiArCWludCByZXQ7Cj4+ICsKPj4gKwkvKiBTUEkgcmVxdWlyZXMg
+ZG1hLXNhZmUgYnVmZmVycyAqLwo+PiArCWNtZGJ1ZiA9IGttZW1kdXAoJmNtZCwgMSwgR0ZQX0tF
+Uk5FTCk7Cj4+ICsJaWYgKCFjbWRidWYpCj4+ICsJCXJldHVybiAtRU5PTUVNOwo+PiArCj4+ICsJ
+cmV0ID0gZGJpLT5jb21tYW5kKGRiaSwgY21kYnVmLCBkYXRhLCBsZW4pOwo+PiArCj4+ICsJa2Zy
+ZWUoY21kYnVmKTsKPj4gKwo+PiArCXJldHVybiByZXQ7Cj4+ICt9Cj4+ICtFWFBPUlRfU1lNQk9M
+KG1pcGlfZGJpX2NvbW1hbmRfYnVmKTsKPj4gKwo+PiArLyogVGhpcyBzaG91bGQgb25seSBiZSB1
+c2VkIGJ5IG1pcGlfZGJpX2NvbW1hbmQoKSAqLwo+PiAraW50IG1pcGlfZGJpX2NvbW1hbmRfc3Rh
+Y2tidWYoc3RydWN0IG1pcGlfZGJpICpkYmksIHU4IGNtZCwgY29uc3QgdTggKmRhdGEsCj4+ICsJ
+CQkgICAgICBzaXplX3QgbGVuKQo+PiArewo+PiArCXU4ICpidWY7Cj4+ICsJaW50IHJldDsKPj4g
+Kwo+PiArCWJ1ZiA9IGttZW1kdXAoZGF0YSwgbGVuLCBHRlBfS0VSTkVMKTsKPj4gKwlpZiAoIWJ1
+ZikKPj4gKwkJcmV0dXJuIC1FTk9NRU07Cj4+ICsKPj4gKwlyZXQgPSBtaXBpX2RiaV9jb21tYW5k
+X2J1ZihkYmksIGNtZCwgYnVmLCBsZW4pOwo+PiArCj4+ICsJa2ZyZWUoYnVmKTsKPj4gKwo+PiAr
+CXJldHVybiByZXQ7Cj4+ICt9Cj4+ICtFWFBPUlRfU1lNQk9MKG1pcGlfZGJpX2NvbW1hbmRfc3Rh
+Y2tidWYpOwo+PiArCj4+ICsvKioKPj4gKyAqIG1pcGlfZGJpX2h3X3Jlc2V0IC0gSGFyZHdhcmUg
+cmVzZXQgb2YgY29udHJvbGxlcgo+PiArICogQGRiaTogTUlQSSBEQkkgc3RydWN0dXJlCj4+ICsg
+Kgo+PiArICogUmVzZXQgY29udHJvbGxlciBpZiB0aGUgJm1pcGlfZGJpLT5yZXNldCBncGlvIGlz
+IHNldC4KPj4gKyAqLwo+PiArdm9pZCBtaXBpX2RiaV9od19yZXNldChzdHJ1Y3QgbWlwaV9kYmkg
+KmRiaSkKPj4gK3sKPj4gKwlpZiAoIWdwaW9faXNfdmFsaWQoZGJpLT5yZXNldCkpCj4+ICsJCXJl
+dHVybjsKPj4gKwo+PiArCWdwaW9kX3NldF92YWx1ZShkYmktPnJlc2V0LCAwKTsKPj4gKwl1ZGVs
+YXkoMjApOwo+PiArCWdwaW9kX3NldF92YWx1ZShkYmktPnJlc2V0LCAxKTsKPj4gKwltZGVsYXko
+MTIwKTsKPj4gK30KPj4gK0VYUE9SVF9TWU1CT0wobWlwaV9kYmlfaHdfcmVzZXQpOwo+PiArCj4+
+ICsvKioKPj4gKyAqIG1pcGlfZGJpX2Rpc3BsYXlfaXNfb24gLSBDaGVjayBpZiBkaXNwbGF5IGlz
+IG9uCj4+ICsgKiBAZGJpOiBNSVBJIERCSSBzdHJ1Y3R1cmUKPj4gKyAqCj4+ICsgKiBUaGlzIGZ1
+bmN0aW9uIGNoZWNrcyB0aGUgUG93ZXIgTW9kZSByZWdpc3RlciAoaWYgcmVhZGFibGUpIHRvIHNl
+ZSBpZgo+PiArICogZGlzcGxheSBvdXRwdXQgaXMgdHVybmVkIG9uLiBUaGlzIGNhbiBiZSB1c2Vk
+IHRvIHNlZSBpZiB0aGUgYm9vdGxvYWRlcgo+PiArICogaGFzIGFscmVhZHkgdHVybmVkIG9uIHRo
+ZSBkaXNwbGF5IGF2b2lkaW5nIGZsaWNrZXIgd2hlbiB0aGUgcGlwZWxpbmUgaXMKPj4gKyAqIGVu
+YWJsZWQuCj4+ICsgKgo+PiArICogUmV0dXJuczoKPj4gKyAqIHRydWUgaWYgdGhlIGRpc3BsYXkg
+Y2FuIGJlIHZlcmlmaWVkIHRvIGJlIG9uLCBmYWxzZSBvdGhlcndpc2UuCj4+ICsgKi8KPj4gK2Jv
+b2wgbWlwaV9kYmlfZGlzcGxheV9pc19vbihzdHJ1Y3QgbWlwaV9kYmkgKmRiaSkKPj4gK3sKPj4g
+Kwl1OCB2YWw7Cj4+ICsKPj4gKwlpZiAobWlwaV9kYmlfY29tbWFuZF9yZWFkKGRiaSwgTUlQSV9E
+Q1NfR0VUX1BPV0VSX01PREUsICZ2YWwpKQo+PiArCQlyZXR1cm4gZmFsc2U7Cj4+ICsKPj4gKwl2
+YWwgJj0gfkRDU19QT1dFUl9NT0RFX1JFU0VSVkVEX01BU0s7Cj4+ICsKPj4gKwkvKiBUaGUgcG93
+ZXJvbi9yZXNldCB2YWx1ZSBpcyAwOGggRENTX1BPV0VSX01PREVfRElTUExBWV9OT1JNQUxfTU9E
+RSAqLwo+PiArCWlmICh2YWwgIT0gKERDU19QT1dFUl9NT0RFX0RJU1BMQVkgfAo+PiArCSAgICBE
+Q1NfUE9XRVJfTU9ERV9ESVNQTEFZX05PUk1BTF9NT0RFIHwgRENTX1BPV0VSX01PREVfU0xFRVBf
+TU9ERSkpCj4+ICsJCXJldHVybiBmYWxzZTsKPj4gKwo+PiArCXByX2RlYnVnKCJEaXNwbGF5IGlz
+IE9OXG4iKTsKPj4gKwo+PiArCXJldHVybiB0cnVlOwo+PiArfQo+PiArRVhQT1JUX1NZTUJPTCht
+aXBpX2RiaV9kaXNwbGF5X2lzX29uKTsKPj4gKwo+PiArI2lmIElTX0VOQUJMRUQoQ09ORklHX1NQ
+SSkKPj4gKwo+PiArLyoqCj4+ICsgKiBtaXBpX2RiaV9zcGlfY21kX21heF9zcGVlZCAtIGdldCB0
+aGUgbWF4aW11bSBTUEkgYnVzIHNwZWVkCj4+ICsgKiBAc3BpOiBTUEkgZGV2aWNlCj4+ICsgKiBA
+bGVuOiBUaGUgdHJhbnNmZXIgYnVmZmVyIGxlbmd0aC4KPj4gKyAqCj4+ICsgKiBNYW55IGNvbnRy
+b2xsZXJzIGhhdmUgYSBtYXggc3BlZWQgb2YgMTBNSHosIGJ1dCBjYW4gYmUgcHVzaGVkIHdheSBi
+ZXlvbmQKPj4gKyAqIHRoYXQuIEluY3JlYXNlIHJlbGlhYmlsaXR5IGJ5IHJ1bm5pbmcgcGl4ZWwg
+ZGF0YSBhdCBtYXggc3BlZWQgYW5kIHRoZSByZXN0Cj4+ICsgKiBhdCAxME1IeiwgcHJldmVudGlu
+ZyB0cmFuc2ZlciBnbGl0Y2hlcyBmcm9tIG1lc3NpbmcgdXAgdGhlIGluaXQgc2V0dGluZ3MuCj4+
+ICsgKi8KPj4gK3UzMiBtaXBpX2RiaV9zcGlfY21kX21heF9zcGVlZChzdHJ1Y3Qgc3BpX2Rldmlj
+ZSAqc3BpLCBzaXplX3QgbGVuKQo+PiArewo+PiArCWlmIChsZW4gPiA2NCkKPj4gKwkJcmV0dXJu
+IDA7IC8qIHVzZSBkZWZhdWx0ICovCj4+ICsKPj4gKwlyZXR1cm4gbWluX3QodTMyLCAxMDAwMDAw
+MCwgc3BpLT5tYXhfc3BlZWRfaHopOwo+PiArfQo+PiArRVhQT1JUX1NZTUJPTChtaXBpX2RiaV9z
+cGlfY21kX21heF9zcGVlZCk7Cj4+ICsKPj4gK3N0YXRpYyBib29sIG1pcGlfZGJpX21hY2hpbmVf
+bGl0dGxlX2VuZGlhbih2b2lkKQo+PiArewo+PiArI2lmIGRlZmluZWQoX19MSVRUTEVfRU5ESUFO
+KQo+PiArCXJldHVybiB0cnVlOwo+PiArI2Vsc2UKPj4gKwlyZXR1cm4gZmFsc2U7Cj4+ICsjZW5k
+aWYKPj4gK30KPj4gKwo+PiArLyogTUlQSSBEQkkgVHlwZSBDIE9wdGlvbiAzICovCj4+ICsKPj4g
+K3N0YXRpYyBpbnQgbWlwaV9kYmlfdHlwZWMzX2NvbW1hbmRfcmVhZChzdHJ1Y3QgbWlwaV9kYmkg
+KmRiaSwgdTggKmNtZCwKPj4gKwkJCQkJdTggKmRhdGEsIHNpemVfdCBsZW4pCj4+ICt7Cj4+ICsJ
+c3RydWN0IHNwaV9kZXZpY2UgKnNwaSA9IGRiaS0+c3BpOwo+PiArCXUzMiBzcGVlZF9oeiA9IG1p
+bl90KHUzMiwgTUlQSV9EQklfTUFYX1NQSV9SRUFEX1NQRUVELAo+PiArCQkJICAgICBzcGktPm1h
+eF9zcGVlZF9oeiAvIDIpOwo+PiArCXN0cnVjdCBzcGlfdHJhbnNmZXIgdHJbMl0gPSB7Cj4+ICsJ
+CXsKPj4gKwkJCS5zcGVlZF9oeiA9IHNwZWVkX2h6LAo+PiArCQkJLnR4X2J1ZiA9IGNtZCwKPj4g
+KwkJCS5sZW4gPSAxLAo+PiArCQl9LCB7Cj4+ICsJCQkuc3BlZWRfaHogPSBzcGVlZF9oeiwKPj4g
+KwkJCS5sZW4gPSBsZW4sCj4+ICsJCX0sCj4+ICsJfTsKPj4gKwlzdHJ1Y3Qgc3BpX21lc3NhZ2Ug
+bTsKPj4gKwl1OCAqYnVmOwo+PiArCWludCByZXQ7Cj4+ICsKPj4gKwlpZiAoIWxlbikKPj4gKwkJ
+cmV0dXJuIC1FSU5WQUw7Cj4+ICsKPj4gKwkvKgo+PiArCSAqIFN1cHBvcnQgbm9uLXN0YW5kYXJk
+IDI0LWJpdCBhbmQgMzItYml0IE5va2lhIHJlYWQgY29tbWFuZHMgd2hpY2gKPj4gKwkgKiBzdGFy
+dCB3aXRoIGEgZHVtbXkgY2xvY2ssIHNvIHdlIG5lZWQgdG8gcmVhZCBhbiBleHRyYSBieXRlLgo+
+PiArCSAqLwo+PiArCWlmICgqY21kID09IE1JUElfRENTX0dFVF9ESVNQTEFZX0lEIHx8Cj4+ICsJ
+ICAgICpjbWQgPT0gTUlQSV9EQ1NfR0VUX0RJU1BMQVlfU1RBVFVTKSB7Cj4+ICsJCWlmICghKGxl
+biA9PSAzIHx8IGxlbiA9PSA0KSkKPj4gKwkJCXJldHVybiAtRUlOVkFMOwo+PiArCj4+ICsJCXRy
+WzFdLmxlbiA9IGxlbiArIDE7Cj4+ICsJfQo+PiArCj4+ICsJYnVmID0ga21hbGxvYyh0clsxXS5s
+ZW4sIEdGUF9LRVJORUwpOwo+PiArCWlmICghYnVmKQo+PiArCQlyZXR1cm4gLUVOT01FTTsKPj4g
+Kwo+PiArCXRyWzFdLnJ4X2J1ZiA9IGJ1ZjsKPj4gKwlncGlvZF9zZXRfdmFsdWUoZGJpLT5kYywg
+MCk7Cj4+ICsKPj4gKwlzcGlfbWVzc2FnZV9pbml0X3dpdGhfdHJhbnNmZXJzKCZtLCB0ciwgQVJS
+QVlfU0laRSh0cikpOwo+PiArCXJldCA9IHNwaV9zeW5jKHNwaSwgJm0pOwo+PiArCWlmIChyZXQp
+Cj4+ICsJCWdvdG8gZXJyX2ZyZWU7Cj4+ICsKPj4gKwlpZiAodHJbMV0ubGVuID09IGxlbikgewo+
+PiArCQltZW1jcHkoZGF0YSwgYnVmLCBsZW4pOwo+PiArCX0gZWxzZSB7Cj4+ICsJCXVuc2lnbmVk
+IGludCBpOwo+PiArCj4+ICsJCWZvciAoaSA9IDA7IGkgPCBsZW47IGkrKykKPj4gKwkJCWRhdGFb
+aV0gPSAoYnVmW2ldIDw8IDEpIHwgKGJ1ZltpICsgMV0gPj4gNyk7Cj4+ICsJfQo+PiArCj4+ICsJ
+TUlQSV9EQklfREVCVUdfQ09NTUFORCgqY21kLCBkYXRhLCBsZW4pOwo+PiArCj4+ICtlcnJfZnJl
+ZToKPj4gKwlrZnJlZShidWYpOwo+PiArCj4+ICsJcmV0dXJuIHJldDsKPj4gK30KPj4gKwo+PiAr
+c3RhdGljIGludCBtaXBpX2RiaV90eXBlYzNfY29tbWFuZChzdHJ1Y3QgbWlwaV9kYmkgKmRiaSwg
+dTggKmNtZCwKPj4gKwkJCQkgICB1OCAqcGFyLCBzaXplX3QgbnVtKQo+PiArewo+PiArCXN0cnVj
+dCBzcGlfZGV2aWNlICpzcGkgPSBkYmktPnNwaTsKPj4gKwl1bnNpZ25lZCBpbnQgYnB3ID0gODsK
+Pj4gKwl1MzIgc3BlZWRfaHo7Cj4+ICsJaW50IHJldDsKPj4gKwo+PiArCWlmIChtaXBpX2RiaV9j
+b21tYW5kX2lzX3JlYWQoZGJpLCAqY21kKSkKPj4gKwkJcmV0dXJuIG1pcGlfZGJpX3R5cGVjM19j
+b21tYW5kX3JlYWQoZGJpLCBjbWQsIHBhciwgbnVtKTsKPj4gKwo+PiArCU1JUElfREJJX0RFQlVH
+X0NPTU1BTkQoKmNtZCwgcGFyLCBudW0pOwo+PiArCj4+ICsJZ3Bpb2Rfc2V0X3ZhbHVlKGRiaS0+
+ZGMsIDApOwo+PiArCXNwZWVkX2h6ID0gbWlwaV9kYmlfc3BpX2NtZF9tYXhfc3BlZWQoc3BpLCAx
+KTsKPj4gKwlyZXQgPSBtaXBpX2RiaV9zcGlfdHJhbnNmZXIoc3BpLCBzcGVlZF9oeiwgOCwgY21k
+LCAxKTsKPj4gKwlpZiAocmV0IHx8ICFudW0pCj4+ICsJCXJldHVybiByZXQ7Cj4+ICsKPj4gKwlp
+ZiAoKmNtZCA9PSBNSVBJX0RDU19XUklURV9NRU1PUllfU1RBUlQgJiYgIWRiaS0+c3dhcF9ieXRl
+cykKPj4gKwkJYnB3ID0gMTY7Cj4+ICsKPj4gKwlncGlvZF9zZXRfdmFsdWUoZGJpLT5kYywgMSk7
+Cj4+ICsJc3BlZWRfaHogPSBtaXBpX2RiaV9zcGlfY21kX21heF9zcGVlZChzcGksIG51bSk7Cj4+
+ICsKPj4gKwlyZXR1cm4gbWlwaV9kYmlfc3BpX3RyYW5zZmVyKHNwaSwgc3BlZWRfaHosIGJwdywg
+cGFyLCBudW0pOwo+PiArfQo+PiArCj4+ICsvKioKPj4gKyAqIG1pcGlfZGJpX3NwaV9pbml0IC0g
+SW5pdGlhbGl6ZSBNSVBJIERCSSBTUEkgaW50ZXJmYWNlCj4+ICsgKiBAc3BpOiBTUEkgZGV2aWNl
+Cj4+ICsgKiBAZGJpOiBNSVBJIERCSSBzdHJ1Y3R1cmUgdG8gaW5pdGlhbGl6ZQo+PiArICogQGRj
+OiBEL0MgZ3Bpbwo+PiArICoKPj4gKyAqIFRoaXMgZnVuY3Rpb24gc2V0cyAmbWlwaV9kYmktPmNv
+bW1hbmQsIGVuYWJsZXMgJm1pcGlfZGJpLT5yZWFkX2NvbW1hbmRzIGZvciB0aGUKPj4gKyAqIHVz
+dWFsIHJlYWQgY29tbWFuZHMuIEl0IHNob3VsZCBiZSBmb2xsb3dlZCBieSBhIGNhbGwgdG8gbWlw
+aV9kYmlfZGV2X2luaXQoKSBvcgo+PiArICogYSBkcml2ZXItc3BlY2lmaWMgaW5pdC4KPj4gKyAq
+Cj4+ICsgKiBUeXBlIEMgT3B0aW9uIDMgaW50ZXJmYWNlIGlzIGFzc3VtZWQsIFR5cGUgQyBPcHRp
+b24gMSBpcyBub3QgeWV0IHN1cHBvcnRlZCwKPj4gKyAqIGJlY2F1c2UgYmFyZWJveCBoYXMgbm8g
+Z2VuZXJpYyB3YXkgeWV0IHRvIHJlcXVpcmUgYSA5LWJpdCBTUEkgdHJhbnNmZXIKPj4gKyAqCj4+
+ICsgKiBJZiB0aGUgU1BJIG1hc3RlciBkcml2ZXIgZG9lc24ndCBzdXBwb3J0IHRoZSBuZWNlc3Nh
+cnkgYml0cyBwZXIgd29yZCwKPj4gKyAqIHRoZSBmb2xsb3dpbmcgdHJhbnNmb3JtYXRpb24gaXMg
+dXNlZDoKPj4gKyAqCj4+ICsgKiAtIDktYml0OiByZW9yZGVyIGJ1ZmZlciBhcyA5eCA4LWJpdCB3
+b3JkcywgcGFkZGVkIHdpdGggbm8tb3AgY29tbWFuZC4KPj4gKyAqIC0gMTYtYml0OiBpZiBiaWcg
+ZW5kaWFuIHNlbmQgYXMgOC1iaXQsIGlmIGxpdHRsZSBlbmRpYW4gc3dhcCBieXRlcwo+PiArICoK
+Pj4gKyAqIFJldHVybnM6Cj4+ICsgKiBaZXJvIG9uIHN1Y2Nlc3MsIG5lZ2F0aXZlIGVycm9yIGNv
+ZGUgb24gZmFpbHVyZS4KPj4gKyAqLwo+PiAraW50IG1pcGlfZGJpX3NwaV9pbml0KHN0cnVjdCBz
+cGlfZGV2aWNlICpzcGksIHN0cnVjdCBtaXBpX2RiaSAqZGJpLAo+PiArCQkgICAgICBpbnQgZGMp
+Cj4+ICt7Cj4+ICsJc3RydWN0IGRldmljZV9kICpkZXYgPSAmc3BpLT5kZXY7Cj4+ICsKPj4gKwlk
+YmktPnNwaSA9IHNwaTsKPj4gKwlkYmktPnJlYWRfY29tbWFuZHMgPSBtaXBpX2RiaV9kY3NfcmVh
+ZF9jb21tYW5kczsKPj4gKwo+PiArCWlmICghZ3Bpb19pc192YWxpZChkYykpIHsKPj4gKwkJZGV2
+X2RiZyhkZXYsICJNSVBJIERCSSBUeXBlLUMgMSB1bnN1cHBvcnRlZFxuIik7Cj4+ICsJCXJldHVy
+biAtRU5PU1lTOwo+PiArCX0KPj4gKwo+PiArCWRiaS0+Y29tbWFuZCA9IG1pcGlfZGJpX3R5cGVj
+M19jb21tYW5kOwo+PiArCWRiaS0+ZGMgPSBkYzsKPj4gKwkvLyBUT0RPOiBjYW4gd2UganVzdCBm
+b3JjZSAxNiBiaXQ/Cj4+ICsJaWYgKG1pcGlfZGJpX21hY2hpbmVfbGl0dGxlX2VuZGlhbigpICYm
+IHNwaS0+Yml0c19wZXJfd29yZCAhPSAxNikKPj4gKwkJZGJpLT5zd2FwX2J5dGVzID0gdHJ1ZTsK
+Pj4gKwo+PiArCWRldl9kYmcoZGV2LCAiU1BJIHNwZWVkOiAldU1IelxuIiwgc3BpLT5tYXhfc3Bl
+ZWRfaHogLyAxMDAwMDAwKTsKPj4gKwo+PiArCWxpc3RfYWRkKCZkYmktPmxpc3QsICZtaXBpX2Ri
+aV9saXN0KTsKPj4gKwlyZXR1cm4gMDsKPj4gK30KPj4gK0VYUE9SVF9TWU1CT0wobWlwaV9kYmlf
+c3BpX2luaXQpOwo+PiArCj4+ICsvKioKPj4gKyAqIG1pcGlfZGJpX3NwaV90cmFuc2ZlciAtIFNQ
+SSB0cmFuc2ZlciBoZWxwZXIKPj4gKyAqIEBzcGk6IFNQSSBkZXZpY2UKPj4gKyAqIEBzcGVlZF9o
+ejogT3ZlcnJpZGUgc3BlZWQgKG9wdGlvbmFsKQo+PiArICogQGJwdzogQml0cyBwZXIgd29yZAo+
+PiArICogQGJ1ZjogQnVmZmVyIHRvIHRyYW5zZmVyCj4+ICsgKiBAbGVuOiBCdWZmZXIgbGVuZ3Ro
+Cj4+ICsgKgo+PiArICogVGhpcyBTUEkgdHJhbnNmZXIgaGVscGVyIGJyZWFrcyB1cCB0aGUgdHJh
+bnNmZXIgb2YgQGJ1ZiBpbnRvIGNodW5rcyB3aGljaAo+PiArICogdGhlIFNQSSBjb250cm9sbGVy
+IGRyaXZlciBjYW4gaGFuZGxlLgo+PiArICoKPj4gKyAqIFJldHVybnM6Cj4+ICsgKiBaZXJvIG9u
+IHN1Y2Nlc3MsIG5lZ2F0aXZlIGVycm9yIGNvZGUgb24gZmFpbHVyZS4KPj4gKyAqLwo+PiAraW50
+IG1pcGlfZGJpX3NwaV90cmFuc2ZlcihzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCB1MzIgc3BlZWRf
+aHosCj4+ICsJCQkgIHU4IGJwdywgY29uc3Qgdm9pZCAqYnVmLCBzaXplX3QgbGVuKQo+PiArewo+
+PiArCXNpemVfdCBtYXhfY2h1bmsgPSBzcGlfbWF4X3RyYW5zZmVyX3NpemUoc3BpKTsKPj4gKwlz
+dHJ1Y3Qgc3BpX3RyYW5zZmVyIHRyID0gewo+PiArCQkuYml0c19wZXJfd29yZCA9IGJwdywKPj4g
+KwkJLnNwZWVkX2h6ID0gc3BlZWRfaHosCj4+ICsJfTsKPj4gKwlzdHJ1Y3Qgc3BpX21lc3NhZ2Ug
+bTsKPj4gKwlzaXplX3QgY2h1bms7Cj4+ICsJaW50IHJldDsKPj4gKwo+PiArCXNwaV9tZXNzYWdl
+X2luaXRfd2l0aF90cmFuc2ZlcnMoJm0sICZ0ciwgMSk7Cj4+ICsKPj4gKwl3aGlsZSAobGVuKSB7
+Cj4+ICsJCWNodW5rID0gbWluKGxlbiwgbWF4X2NodW5rKTsKPj4gKwo+PiArCQl0ci50eF9idWYg
+PSBidWY7Cj4+ICsJCXRyLmxlbiA9IGNodW5rOwo+PiArCQlidWYgKz0gY2h1bms7Cj4+ICsJCWxl
+biAtPSBjaHVuazsKPj4gKwo+PiArCQlyZXQgPSBzcGlfc3luYyhzcGksICZtKTsKPj4gKwkJaWYg
+KHJldCkKPj4gKwkJCXJldHVybiByZXQ7Cj4+ICsJfQo+PiArCj4+ICsJcmV0dXJuIDA7Cj4+ICt9
+Cj4+ICtFWFBPUlRfU1lNQk9MKG1pcGlfZGJpX3NwaV90cmFuc2Zlcik7Cj4+ICsKPj4gKyNlbmRp
+ZiAvKiBDT05GSUdfU1BJICovCj4+ICsKPj4gK01PRFVMRV9MSUNFTlNFKCJHUEwiKTsKPj4gZGlm
+ZiAtLWdpdCBhL2luY2x1ZGUvc3BpL3NwaS5oIGIvaW5jbHVkZS9zcGkvc3BpLmgKPj4gaW5kZXgg
+YzVhZDZiZDM5ZmY5Li5kMTMzZTBlMjEyNjUgMTAwNjQ0Cj4+IC0tLSBhL2luY2x1ZGUvc3BpL3Nw
+aS5oCj4+ICsrKyBiL2luY2x1ZGUvc3BpL3NwaS5oCj4+IEBAIC00MDksNiArNDA5LDI2IEBAIHNw
+aV9tZXNzYWdlX2FkZF90YWlsKHN0cnVjdCBzcGlfdHJhbnNmZXIgKnQsIHN0cnVjdCBzcGlfbWVz
+c2FnZSAqbSkKPj4gIAlsaXN0X2FkZF90YWlsKCZ0LT50cmFuc2Zlcl9saXN0LCAmbS0+dHJhbnNm
+ZXJzKTsKPj4gIH0KPj4gIAo+PiArLyoqCj4+ICsgKiBzcGlfbWVzc2FnZV9pbml0X3dpdGhfdHJh
+bnNmZXJzIC0gSW5pdGlhbGl6ZSBzcGlfbWVzc2FnZSBhbmQgYXBwZW5kIHRyYW5zZmVycwo+PiAr
+ICogQG06IHNwaV9tZXNzYWdlIHRvIGJlIGluaXRpYWxpemVkCj4+ICsgKiBAeGZlcnM6IEFuIGFy
+cmF5IG9mIHNwaSB0cmFuc2ZlcnMKPj4gKyAqIEBudW1feGZlcnM6IE51bWJlciBvZiBpdGVtcyBp
+biB0aGUgeGZlciBhcnJheQo+PiArICoKPj4gKyAqIFRoaXMgZnVuY3Rpb24gaW5pdGlhbGl6ZXMg
+dGhlIGdpdmVuIHNwaV9tZXNzYWdlIGFuZCBhZGRzIGVhY2ggc3BpX3RyYW5zZmVyIGluCj4+ICsg
+KiB0aGUgZ2l2ZW4gYXJyYXkgdG8gdGhlIG1lc3NhZ2UuCj4+ICsgKi8KPj4gK3N0YXRpYyBpbmxp
+bmUgdm9pZAo+PiArc3BpX21lc3NhZ2VfaW5pdF93aXRoX3RyYW5zZmVycyhzdHJ1Y3Qgc3BpX21l
+c3NhZ2UgKm0sCj4+ICtzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp4ZmVycywgdW5zaWduZWQgaW50IG51
+bV94ZmVycykKPj4gK3sKPj4gKwl1bnNpZ25lZCBpbnQgaTsKPj4gKwo+PiArCXNwaV9tZXNzYWdl
+X2luaXQobSk7Cj4+ICsJZm9yIChpID0gMDsgaSA8IG51bV94ZmVyczsgKytpKQo+PiArCQlzcGlf
+bWVzc2FnZV9hZGRfdGFpbCgmeGZlcnNbaV0sIG0pOwo+PiArfQo+PiArCj4+ICBzdGF0aWMgaW5s
+aW5lIHZvaWQKPj4gIHNwaV90cmFuc2Zlcl9kZWwoc3RydWN0IHNwaV90cmFuc2ZlciAqdCkKPj4g
+IHsKPj4gLS0gCj4+IDIuMzAuMgo+Pgo+Pgo+PiBfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwo+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+PiBiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKPj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cj4gCj4gQmVzdCByZWdhcmRzCj4gVGhvcnN0ZW4KPiAKPiAtLQo+IFRo
+b3JzdGVuIFNjaGVyZXIgfCBFY2tlbG1hbm4gQUcgfCB3d3cuZWNrZWxtYW5uLmRlIHwKPiAKCgot
+LSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAg
+ICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVpbSwg
+R2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwK
+QW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01
+MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
+ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
 
