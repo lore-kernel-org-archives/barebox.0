@@ -1,81 +1,76 @@
-Delivery-date: Sat, 05 Feb 2022 15:14:33 +0100
+Delivery-date: Sat, 05 Feb 2022 15:18:10 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nGLph-006ThS-Qo
-	for lore@lore.pengutronix.de; Sat, 05 Feb 2022 15:14:33 +0100
+	id 1nGLtC-006Tmn-1F
+	for lore@lore.pengutronix.de; Sat, 05 Feb 2022 15:18:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nGLpg-0007OI-5l
-	for lore@pengutronix.de; Sat, 05 Feb 2022 15:14:33 +0100
+	id 1nGLtA-0007rS-IX
+	for lore@pengutronix.de; Sat, 05 Feb 2022 15:18:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Mime-Version:References:In-Reply-To:
-	Message-Id:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=PD/X9id24GZV36w4SY72P/1nQe61AC+GTGP2tiuWjmo=; b=2B58vX/Sh+nlsj
-	/KWqL4XwVo1RsNlIjtW8PULwUpGbcRdjlNlPGjex9E5kTyM1mqYm76p5jzPUSaFI1yi7xfdOW4+UN
-	0HqoXVOQVppgPfola5LjuKvklqhfSK5Y0npof69pldW1k+Gv3Zbud3sYRlr/tf2m8bfZYbsp/1JBH
-	7qF40LjQqngjryg32Ao/gTYyLnANp8xBEKjOcLli2dkNAMybe72Minq0OvlI+nOloOo+wNVyifNzN
-	7FtBMFR9ECCWDNrPwPwBKp0v0Agm1Lk5ZUgDPmteau340jeoedtYzw+BEtuI6yK+Uny3DDvgQJpLz
-	ed+/yW7jTpPm8qkB4bGA==;
+	List-Archive:List-Unsubscribe:List-Id:Date:Subject:To:From:Message-ID:
+	MIME-Version:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+	References:List-Owner; bh=u/9YRiRV0YPGtGK/RyNMBSa+oVjMabZIqR422ZCJTEs=; b=OPh
+	Sm1J7KiQM6cnncF1aAAtg8bPe2fLKq5l63x3Nlba4Fwcvd59orVfuiB0Zmq/iLTXPuQppNpt9S6Nj
+	HjKif+6P2VwyJtp8FOvL5teZgcoSOhUrlHu4GcYr9KTStNtO2kBlZ0Lz4NNlr1py5acXYLgkxlKgy
+	f6n7k713ZhHkYPdpS6lCYSn9ZIPBdiv+snNhPQbvv/oaxAvhQuHDx/FdZvI+CWR/Ax+SkrW5Ec1gv
+	Yhyxp8qt+97ttcl5Ri17KIimHh13dADoj7zDsksrsr0U9I4sXuzawe7DoPuvRgvpH6FpUKu1vZSqL
+	0qnyYzeEs/5BYUinob9GRODL0cI2Pzg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nGLnx-006cnU-0w; Sat, 05 Feb 2022 14:12:45 +0000
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+	id 1nGLrw-006dRJ-TY; Sat, 05 Feb 2022 14:16:53 +0000
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nGLnr-006clk-SS
- for barebox@lists.infradead.org; Sat, 05 Feb 2022 14:12:41 +0000
-Received: by mail-lf1-x130.google.com with SMTP id u6so18087848lfm.10
- for <barebox@lists.infradead.org>; Sat, 05 Feb 2022 06:12:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=Lm7KkvOdEPPy8TnjaOmDXwaHz7PBvhBoAx3RI7DkVQo=;
- b=BETQLp+FGzqFY9OkYwOFWFuhYGFIjAKblrWVc5UHbxTyFeCPLqQTw2cQqo6OL20h8m
- n0kjvaIrlI1sfKhyJI3Fli4hQBYzDfub56SzSQt7QuI6W/BFsO1X5dqwFEnnmtCM6c3f
- 1+X/Y9HxbkIfLDetzXSmYq/iJcD01ALx+NU2tzUEG9/YqX9vK2IJgKzyitXjYHbCL4Sn
- icSxXS3kRZMOVgnlG1qr42a2l+2x6XuHueUqwQdEy7RQu9oZYwPuTE/5ASzhgnYeYr3X
- GzkWRnkfJS8LvuL0nLl5LwRo6McQdUTGpaXRXjJI9oqdlgUsGDyySuWIFB4zjVnqkvIm
- AeTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=Lm7KkvOdEPPy8TnjaOmDXwaHz7PBvhBoAx3RI7DkVQo=;
- b=3AthTL4bxznkxDPkp9ItOdJBIdfugeMnkdp99l72K7mTszY1SMEYMduJysW5WnMqJL
- dQavup1i+Rv9DmBBUiH56b7pCDlhStZjBbWwbuaMxfOsrz+50hvJw2b9uZhAYR26PrAj
- dUJaVcHosoQ6bungKuHJHcSF9mNroesUCT0SQ9+tXQm4xR8DnOX+AKhoeccNr7U+iU9Z
- z1NX+qHRNPtOkN9tYN30ilYcSe9ZhJQvRbDNNQ+nRT7U4y7nCQBpT3L0Hrc2Z3Kbaetb
- FRpckKMOpSbma+WIDwIPvhZ47klS4PkKVvZ5mD0TSBXQj2guF+2lfhmQMKaUVSJaqIMZ
- C9Wg==
-X-Gm-Message-State: AOAM532lhTuvOHmHUis9uBs/GuyMWHU0LNtHkPUDVGdgheYSCVLDD8eM
- ylIYJmUTApEqcwXi2KS+Q1j8CT/hUvs=
-X-Google-Smtp-Source: ABdhPJxZA9Nk3n0b9+qw1J3rl/3BXYJj1QBYQE74zqjxvcZLrBpvslXHu4uNDw0ZijFdk09DF1XeDw==
-X-Received: by 2002:a05:6512:344b:: with SMTP id
- j11mr2632831lfr.495.1644070356080; 
- Sat, 05 Feb 2022 06:12:36 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
- by smtp.gmail.com with ESMTPSA id j13sm734187lfu.214.2022.02.05.06.12.34
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Sat, 05 Feb 2022 06:12:35 -0800 (PST)
-Date: Sat, 5 Feb 2022 17:12:33 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Sascha Hauer <sha@pengutronix.de>, barebox@lists.infradead.org
-Message-Id: <20220205171233.ec081c7d777a7d267c26fdf5@gmail.com>
-In-Reply-To: <9b440929-d7e8-da69-a4b0-dcca1f5a5ce7@pengutronix.de>
-References: <20220130150011.e8b22a088b654f6a0b0f96de@gmail.com>
- <9b440929-d7e8-da69-a4b0-dcca1f5a5ce7@pengutronix.de>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; i686-pc-linux-gnu)
-Mime-Version: 1.0
+ id 1nGLrs-006dQB-1P
+ for barebox@lists.infradead.org; Sat, 05 Feb 2022 14:16:49 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=badeba3b8450; t=1644070603;
+ bh=Yvy6ubce+q4WqGyLDtTvkuiXHdP+VZ/grmSrArCKPw8=;
+ h=X-UI-Sender-Class:From:To:Subject:Date;
+ b=iJWHDeqHHWYFVP5GmWanKxT+hzvNEcKFzMQmRMG1qf2CA+lUVN8ZWiVKizFi0vgi/
+ j7JJJ+2wCBgqui9+Ev9a5/ctwVkcXeW995oFgKuW2BtlrYuhw//6TPSpm6R3/Wa5sB
+ b4zimhNuZO3rVRzu2fVloN1DISyA/MKyGD9c04mo=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [80.245.75.80] ([80.245.75.80]) by web-mail.gmx.net
+ (3c-app-gmx-bs06.server.lan [172.19.170.55]) (via HTTP); Sat, 5 Feb 2022
+ 15:16:43 +0100
+MIME-Version: 1.0
+Message-ID: <trinity-455847f3-e03d-45aa-be41-64395a88bb28-1644070603514@3c-app-gmx-bs06>
+From: Frank Wunderlich <frank-w@public-files.de>
+To: barebox@lists.infradead.org
+Date: Sat, 5 Feb 2022 15:16:43 +0100
+Importance: normal
+Sensitivity: Normal
+X-Priority: 3
+X-Provags-ID: V03:K1:MiZFy/+gymt/Wp0grN4fauhTiWpj7zr2YTCL8XVvPD+jhyk2kFniYlwHBSOevD1+WayqW
+ dzQAzxLc4KIf3K7Pv3JZ+15Jdd8Ej2x6oTLU188rmyTWLN3C6RghEEYs4I2D11L2KZ9tG1R1vEzX
+ /49zr2UUdSj/MHfKY7TH8ElwUgmr9yKMxXd4H/9SiHaI6rbY/qWDaLY26ECJWpH6QvR+HLvmqEIx
+ l84qwnZ9GL48S2hJjOhe4thjejDfjkmbO+g19fsoYKFNdNA/h7KPm8DsCkUo7gwriiSdVc0NNpvE
+ UI=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:YWXfA0AXgIE=:RCA39t0sHnKypFJuw9u6tM
+ UTYGO7yhemmZmT90XmzCLWDcTnjAo+PBTGgaTWINJGREaW/ksNk0L4cJfy3i1z88JGPCiy+1M
+ jS33X++WMy/Xz1v3fI7QZfCGQFg1xE6uqRQpvXLPPOB8YQQEAmSC/dBj+kLhBS5pq/ruBMDhg
+ NkXf8H0hB2e/nioKpYbXhO9lCMrTEpVy0dRI+VCatkWeejR1nwtSi+2GsCKH0gqJs+c49NvC2
+ YnqpKr6gYYnSkDxO5AESoXyX3+u68ylrQmAHhhPVaQ+mIvwGudski2kPJEQbD9wqUreekC32i
+ fEHty/l/3VnrMOIruPuxzpOJZuJh6kj2akjNTaWgKiMHjf1VeqaO0QYW5dvast7/6uZjlGnTq
+ iWE57s8nEbr3g0hSZjfDG5811PPKbHCcM/XTa8blqxsjxVevo9ttxSughMQXhT9ZUI8ZsJuXV
+ kj8jWRg3PUJ3UJ9U4kQ7osbn+50Rif7VGmDa0S5YM2B07GBbov9sW57oNU7CMuS43bJQAFvD5
+ Z/tvu6k9cXZUGZ+RO9Th2BPYwGj7xLdvUXHO2tM7wZYXRQXtHo9JXoXqoE5GgMaP53ggX+yHG
+ 6xvoGVrQ5Rd1VCPligfhLKRk2qxns6GNC0rxP97KmlpsH9ZVGXbJs5Y1Wai6ABfpJb7qwGAr/
+ S5b/UgkVkOqQJZTjDxdfZCDAxU1TiEcp2XE2SqIIIr+IRM53xQXeU4Dk8twgmvvyUtvUAy7t8
+ 5MuFdKj6i5StptaMFAk0ZS2FBpK7tKrbGRTj66u3cebWgy6btCC4uYgex3EEONHj09xKjR5QT
+ ex2aXME
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220205_061239_944516_59E34FA5 
-X-CRM114-Status: GOOD (  17.98  )
+X-CRM114-CacheID: sfid-20220205_061648_451789_2B8875C2 
+X-CRM114-Status: UNSURE (   3.67  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,129 +82,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: RFC: Gitlab CI for barebox
+Subject: chainload barebox from uboot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, 31 Jan 2022 11:39:45 +0100
-Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+Hi,
 
-Hello Ahmad!
+documentation says that barebox can be loaded from uboot:
 
-> On 30.01.22 13:00, Antony Pavlov wrote:
-> > Hi!
-> > =
+https://www.barebox.org/doc/latest/user/barebox.html#starting-barebox
 
-> > I have made simple Gitlab CI for barebox.
-> =
+i tried the ./barebox.bin and the barebox-rk3568-*.img, both are not working in uboot.
 
-> Nice.
-> =
+=> fatload mmc 1:2 ${scriptaddr} barebox-rk3568-bpi-r2pro.img
+reading barebox-rk3568-bpi-r2pro.img
+768000 bytes read in 68 ms (10.8 MiB/s)
+=> bootm ${scriptaddr}
+Fdt Ramdisk skip relocation
+Wrong Image Format for bootm command
+ERROR: can't get kernel image!
 
-> > Gitlab CI runner setup instruction and
-> > the source for Debian 11 docker image can be found at:
-> > =
+=> fatload mmc 1:2 ${scriptaddr} barebox.bin
+reading barebox.bin
+860784 bytes read in 76 ms (10.8 MiB/s)
+=> bootm ${scriptaddr}
+Fdt Ramdisk skip relocation
+Wrong Image Format for bootm command
+ERROR: can't get kernel image!
 
-> >   https://gitlab.com/frantony/barebox-gitlab-ci-runner
-> =
+documation talkes about a "arch/$ARCH/pbl/zbarebox.bin" but i have no such file. Symbol PBL_IMAGE is already set to y
 
-> I had tried something similar, but with Github actions
-> =
+for testing i used my vendors uboot
 
-> https://github.com/a3f/barebox/actions/runs/740206381
-> =
+=> version
+U-Boot 2017.09 (Nov 21 2021 - 14:25:03 +0100)
 
-> I didn't have the time to pursue this further. I am fine
-> with Gitlab as well.
-> =
+isn't it possible to chainload barebox from uboot or do i miss any config-option to get the right image?
 
-> > =
+regards Frank
 
-> > Sample gitlab-ci.yaml config file:
-> > =
-
-> >   https://gitlab.com/frantony/barebox/-/commit/b1ed597d8e67c8f76f4f98cd=
-1c6605b936cf2471
-> =
-
-> Here's how it looks for Github actions with emulate.pl:
-> =
-
-> https://github.com/a3f/barebox/blob/emulate.pl/.github/workflows/build-co=
-nfigs.yaml
-
-I have just update gitlab runner, please see https://gitlab.com/frantony/ba=
-rebox-gitlab-ci-runner/-/commit/f90c3932f1e90f900c4d4304c6a54898a5ee0e1e
-
-As a result runner can build barebox for openrisc architecture and run emul=
-ate.pl, see
-https://gitlab.com/frantony/barebox/-/pipelines/464224894
-
-There is a problem with emulate.pl for MIPS (see https://gitlab.com/franton=
-y/barebox/-/jobs/2058215656).
-
-log/mips/console_main artifact contains the fragment:
-
----- begin ----
-Hit any to stop autoboot:    3
-barebox@qemu malta:/ echo "YGIS""XTJCSB"
-YGISXTJCSB
-barebox@qemu malta:/ echo -o /cmd 'cat /env/data/config'; echo "EOVL""SAWCF=
-S"; sh /cmd; echo "EOVL""SAWCFS" $?;
-EOVLSAWCFS
-could not open /env/data/config: No such file or directory
-EOVLSAWCFS 1
-barebox@qemu malta:/ echo -o /cmd selftest; echo "BOCZ""OJHGFV"; sh /cmd; e=
-cho "BOCZ""OJHGFV" $?;
-BOCZOJHGFV
-printf: all 116 tests passed
-progress_notifier: all 12 tests passed
-BOCZOJHGFV 0
-barebox@qemu malta:/
----- end ----
-
-there is a problem: "could not open /env/data/config: No such file or direc=
-tory"
-
-How we can pass error to gitlab runner? Now runner reports that there is no=
- error.
-
-> > =
-
-> > @Ahmad
-> > =
-
-> > I suppose we can add your qemu barebox/test/emulate.pl tests into CI.
-> =
-
-> Here is the Github action config for the tests:
-> https://github.com/a3f/barebox/blob/emulate.pl/.github/workflows/vm-tests=
-.yaml
-> =
-
-> Any thoughts on how/if to integrate with the mailing list?
-
-I suppose gitlab itself can send e-mails on CI pipeline fail.
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
