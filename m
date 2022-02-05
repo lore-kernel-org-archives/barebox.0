@@ -1,51 +1,53 @@
-Delivery-date: Sun, 06 Feb 2022 00:21:27 +0100
+Delivery-date: Sun, 06 Feb 2022 00:21:38 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nGUMx-006qTW-Uu
-	for lore@lore.pengutronix.de; Sun, 06 Feb 2022 00:21:27 +0100
+	id 1nGUN8-006qUr-P3
+	for lore@lore.pengutronix.de; Sun, 06 Feb 2022 00:21:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nGUMw-0001ss-97
-	for lore@pengutronix.de; Sun, 06 Feb 2022 00:21:26 +0100
+	id 1nGUN7-0001uA-FW
+	for lore@pengutronix.de; Sun, 06 Feb 2022 00:21:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:To:Subject:From:
+	MIME-Version:Date:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=KnTd1xeB4w/EhUKrkx4J8K7HXmea2JXFXIcltOf/p04=; b=fHKhwTCTIFOz/l
-	QCLE6LSgQF5xZOCLNBaK61JjQNWBc1Jg30EF0yNNQOl3uhUAfHK9Oi7Nsr+WArMgFI+Dy/ft1TKhe
-	ewjXXXkMgWDJsL9jel4bDBn7yyUSdXlxteswFerxXCGWfDER1NXpG/ZvwNRLSuD6rCq26Mk5O73mB
-	DOIS+dkHFJ0ZobsdKloPT8sosWwdhGCKVyYq4j18yTEobhvZxik3odoJgfM9Dx07U6IFbZnrHBZUF
-	3JZ6xCere8hVCPwDuoS24wl1iPH277IJaE9QlVbaqvU7KZKFPDAiegVwkOpvEZ8mW5CxAIwiwAw6C
-	v53Jlfsmg0qjGeYwK2pA==;
+	List-Owner; bh=CkYkN+RUiLekYbITIi6YmriKETrDQxKNnw+8VRM/1t4=; b=yGtsQHuqPfc5l2
+	mo88D/2ilRsJFurL5R/2ZIlSL5t6t8NAiueUQmYcB1G70BqWUWh5IFZyKodsj0+C5RSPQ93VdCC3h
+	2xZp/4zDFaK+C2bfq/raDZABDFv7Kle/sDj++aZ+TGGSjz1oDh8hBAxb/Jkgyy6624d7v2Gd/vpjX
+	f+NhKGb+A9PSD512b7RD3qT2FTUaxdf1wllYrDnecik26qLU+Wq7c2QtjBpxn1JpsDoQG+DkHL25Y
+	wfuqLPlbJ/Lfg3XpAgF3zx7XtZ3ATcE0g+65SgH3Sk273ovkN5HKC/htB7bRXhStQ+cgKKQ7z1zn1
+	wAnx+DXQu3ToJ0QXCxPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nGULP-007djI-5h; Sat, 05 Feb 2022 23:19:51 +0000
-Received: from relay6-d.mail.gandi.net ([217.70.183.198])
+	id 1nGULw-007drZ-Nc; Sat, 05 Feb 2022 23:20:24 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nGULJ-007dhm-2F
- for barebox@lists.infradead.org; Sat, 05 Feb 2022 23:19:46 +0000
-Received: (Authenticated sender: ahmad@a3f.at)
- by mail.gandi.net (Postfix) with ESMTPSA id 61B61C0004;
- Sat,  5 Feb 2022 23:19:39 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-To: barebox@lists.infradead.org
-Cc: Frank Wunderlich <frank-w@public-files.de>,
-	Ahmad Fatoum <ahmad@a3f.at>
-Date: Sun,  6 Feb 2022 00:19:30 +0100
-Message-Id: <20220205231930.2948516-2-ahmad@a3f.at>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20220205231930.2948516-1-ahmad@a3f.at>
-References: <20220205231930.2948516-1-ahmad@a3f.at>
+ id 1nGULs-007dpx-07
+ for barebox@lists.infradead.org; Sat, 05 Feb 2022 23:20:21 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1nGULn-0001eV-OW; Sun, 06 Feb 2022 00:20:15 +0100
+Message-ID: <2163dc49-9cf0-7df9-e559-f99bf2d1f31f@pengutronix.de>
+Date: Sun, 6 Feb 2022 00:20:15 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Frank Wunderlich <frank-w@public-files.de>, barebox@lists.infradead.org
+References: <trinity-455847f3-e03d-45aa-be41-64395a88bb28-1644070603514@3c-app-gmx-bs06>
+Content-Language: en-US
+In-Reply-To: <trinity-455847f3-e03d-45aa-be41-64395a88bb28-1644070603514@3c-app-gmx-bs06>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220205_151945_281479_92B9ADA9 
-X-CRM114-Status: GOOD (  10.61  )
+X-CRM114-CacheID: sfid-20220205_152020_080720_1E0F77AE 
+X-CRM114-Status: GOOD (  16.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,58 +67,74 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/2] Documentation: user: barebox: mention generic dt 2nd
- stage support
+Subject: Re: chainload barebox from uboot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Most users interested in chainloading barebox will probably want to use
-the generic DT format for that: It will pass the checks the boot command
-may have and it will ensure the system is in the correct state, e.g.
-that caches are disabled.
+Hi,
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- Documentation/user/barebox.rst | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+On 05.02.22 15:16, Frank Wunderlich wrote:
+> Hi,
+> 
+> documentation says that barebox can be loaded from uboot:
+> 
+> https://www.barebox.org/doc/latest/user/barebox.html#starting-barebox
+> 
+> i tried the ./barebox.bin and the barebox-rk3568-*.img, both are not working in uboot.
+> 
+> => fatload mmc 1:2 ${scriptaddr} barebox-rk3568-bpi-r2pro.img
+> reading barebox-rk3568-bpi-r2pro.img
+> 768000 bytes read in 68 ms (10.8 MiB/s)
+> => bootm ${scriptaddr}
+> Fdt Ramdisk skip relocation
+> Wrong Image Format for bootm command
+> ERROR: can't get kernel image!
+> 
+> => fatload mmc 1:2 ${scriptaddr} barebox.bin
+> reading barebox.bin
+> 860784 bytes read in 76 ms (10.8 MiB/s)
+> => bootm ${scriptaddr}
+> Fdt Ramdisk skip relocation
+> Wrong Image Format for bootm command
+> ERROR: can't get kernel image!
+> 
+> documation talkes about a "arch/$ARCH/pbl/zbarebox.bin" but i have no such file. Symbol PBL_IMAGE is already set to y
+> 
+> for testing i used my vendors uboot
+> 
+> => version
+> U-Boot 2017.09 (Nov 21 2021 - 14:25:03 +0100)
+> 
+> isn't it possible to chainload barebox from uboot or do i miss any config-option to get the right image?
 
-diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
-index 8634d8e48eef..4abcf79c6d2a 100644
---- a/Documentation/user/barebox.rst
-+++ b/Documentation/user/barebox.rst
-@@ -203,9 +203,21 @@ Starting barebox
- Bringing barebox to a board for the first time is highly board specific, see your
- board documentation for initial bringup.
- 
--barebox binaries are, where possible, designed to be startable second stage from another
--bootloader. For example, if you have U-Boot running on your board, you can start barebox
--with U-Boot's ``bootm`` command:
-+For ARM and RISC-V, the barebox build can additionally generate a generic DT image
-+(enable ``CONFIG_BOARD_ARM_GENERIC_DT`` or ``CONFIG_BOARD_RISCV_GENERIC_DT``,
-+respectively). The resulting ``images/barebox-dt-2nd.img`` can be booted just
-+like a Linux kernel that is passed an external device tree. For example:
-+
-+.. code-block:: console
-+
-+  U-Boot: tftp $kernel_addr barebox-dt-2nd.img
-+  U-Boot: tftp $fdt_addr my-board.dtb
-+  U-Boot: booti $kernel_addr - $fdt_addr
-+
-+For non-DT enabled-bootloaders or other architectures, often the normal barebox
-+binaries can also be used as they are designed to be startable second stage
-+from another bootloader, where possible. For example, if you have U-Boot running
-+on your board, you can start barebox with U-Boot's ``bootm`` command:
- 
- .. code-block:: console
- 
+You'll want to use the generic DT 2nd image, which in your case would have a Linux
+ARM64 header and be bootable just like a Linux kernel.
+See the documentation patches I cc'd you on.
+
+Cheers,
+Ahmad
+
+> 
+> regards Frank
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+
 -- 
-2.33.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
