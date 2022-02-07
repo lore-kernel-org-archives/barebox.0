@@ -1,63 +1,55 @@
-Delivery-date: Sun, 06 Feb 2022 16:09:37 +0100
+Delivery-date: Mon, 07 Feb 2022 08:57:49 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nGjAV-007RHB-Eq
-	for lore@lore.pengutronix.de; Sun, 06 Feb 2022 16:09:37 +0100
+	id 1nGyuD-0083V5-Km
+	for lore@lore.pengutronix.de; Mon, 07 Feb 2022 08:57:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nGjAU-0000rJ-9i
-	for lore@pengutronix.de; Sun, 06 Feb 2022 16:09:34 +0100
+	id 1nGyuB-0002Zk-L3
+	for lore@pengutronix.de; Mon, 07 Feb 2022 08:57:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=s+W2bPm5UtcDQWZ7gY0Er0aV+6cUZQSONa6MV9tfCDU=; b=is/WbRuLt2sLVL
-	cbWq9LL88b33xAywPLzs71jH2+u+s/Q435fV/2vw+dJTLdB4/vZy3whr11iQCBiNd6KjwDoAXno0c
-	4cVPwUjlX1HqAjGF9OrLS172NVh2O0WiT8ejHJ5HJt2c/2XWCo2Kwt7uTcManwO5ncdhaW5BCWQPE
-	YKlxb1RuDrSQOymgC9KZF/anhsm26xk140DC54M3TPZkl0p+0O6ZJjM6oF55Jq24bD9Cckrxa52eM
-	/Qt1ZWmMoW9vrub5X6CbzwYtnnC/iWroma9Wu2CDnIySoxVKJ1c5m0AtPUDkOSTyQMe9VqzimysHS
-	wZ/HlWVjygcSyH7WpeOw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=RO7AtMF2uhIKNTchtOG2gl1mUYgRlxzmXmYE8bK8sKQ=; b=A2EFfiv1ellYTp
+	ohF7I6+VFSa7USjClfyPIldMNfmB4gW6NiBuV1i76F7CN3ZoOIuCiYwK129xRqzffCYrkTELab6sn
+	AqZGsPfU9sfisYzw5o2YuJNTeKlxKtv8iPstXDsf60qE29wv9dUPGYZgvxtVvyI3Z8f4Z8nazqMnf
+	cbbY1btTZ/d3Z7FOVWN90FvpblONJr+OCWotc3L2LIk206y06+AjtKkKZrcwI77xceoRITQvAtk7v
+	iLyd2q5m9n9nccVuTgtC4M++cgJFezR1/6Aw/EAUPYK6I+yR/NAovQql7OKg0o8y1uVPW8yoGvu/Q
+	zpdcvDo4SWBRd0CxgbKg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nGj8d-008LvH-O5; Sun, 06 Feb 2022 15:07:39 +0000
-Received: from mxout1.routing.net ([2a03:2900:1:a::a])
+	id 1nGysk-009GaZ-4n; Mon, 07 Feb 2022 07:56:18 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nGj8Z-008Lum-B2
- for barebox@lists.infradead.org; Sun, 06 Feb 2022 15:07:36 +0000
-Received: from mxbox2.masterlogin.de (unknown [192.168.10.89])
- by mxout1.routing.net (Postfix) with ESMTP id AE47C3FF76;
- Sun,  6 Feb 2022 15:07:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
- s=20200217; t=1644160042;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=DwsH+bybjwXZUaQ/l+hoM+n6KOrqThhv7tW0xAOdJPc=;
- b=ttnX9DE3qLEwChKvPgnIYk9sPJm2FUVTetJczZSoNh7OQMs9yAgYKUNDSxIaEfernwIIOa
- 8gz1tpugAUgvAm3WDME3HJkjalFUIlLJ/Ei2lXXVekFDk47GAfm0PP/FSQBndPy4aMfftl
- deuB0lPfq3HE5UWmurAhdKh8QEtg/dc=
-Received: from localhost.localdomain (fttx-pool-80.245.75.84.bambit.de
- [80.245.75.84])
- by mxbox2.masterlogin.de (Postfix) with ESMTPSA id 2A711100681;
- Sun,  6 Feb 2022 15:07:22 +0000 (UTC)
-From: Frank Wunderlich <linux@fw-web.de>
+ id 1nGysc-009GZ1-Pn
+ for barebox@lists.infradead.org; Mon, 07 Feb 2022 07:56:12 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1nGysZ-000292-T3; Mon, 07 Feb 2022 08:56:07 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1nGysZ-004FsZ-DI; Mon, 07 Feb 2022 08:56:07 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Frank Wunderlich <frank-w@public-files.de>
-Date: Sun,  6 Feb 2022 16:07:16 +0100
-Message-Id: <20220206150716.32531-1-linux@fw-web.de>
-X-Mailer: git-send-email 2.25.1
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  7 Feb 2022 08:56:04 +0100
+Message-Id: <20220207075604.1014259-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220207075604.1014259-1-a.fatoum@pengutronix.de>
+References: <20220207075604.1014259-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-X-Mail-ID: a6cdfed5-540c-4a25-8688-2cacad47eb1c
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220206_070735_582733_E806D287 
-X-CRM114-Status: UNSURE (   6.75  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220206_235610_855078_829D217E 
+X-CRM114-Status: GOOD (  10.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,8 +61,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -82,49 +74,37 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] Kbuild: add bareboxversion target to Makefile
+Subject: [PATCH 2/2] compiler: fix __attribute__((format(printf,
+ sandbox incompatibility
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Frank Wunderlich <frank-w@public-files.de>
-
-This allows getting version string with make bareboxversion
-like for linux and uboot.
-
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
----
- Makefile | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/Makefile b/Makefile
-index 3125d628114b..4b4a92181034 100644
---- a/Makefile
-+++ b/Makefile
-@@ -247,7 +247,7 @@ version_h := include/generated/version.h
- clean-targets := %clean mrproper cleandocs
- no-dot-config-targets := $(clean-targets) \
- 			 cscope gtags TAGS tags help% %docs \
--			 $(version_h) kernelversion outputmakefile
-+			 $(version_h) bareboxversion outputmakefile
- no-sync-config-targets := $(no-dot-config-targets) install %install \
- 			   kernelrelease
- 
-@@ -1277,6 +1277,9 @@ docs: FORCE
- 	@$(SPHINXBUILD) -b html -d $(objtree)/doctrees $(srctree)/Documentation \
- 		$(objtree)/Documentation/html
- 
-+bareboxversion:
-+	@echo $(KERNELVERSION)
-+
- # Single targets
- # ---------------------------------------------------------------------------
- # Single targets are compatible with:
--- 
-2.25.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gc2FuZGJveCwgd2UgZGVmaW5lIHByaW50ZiB0byBiYXJlYm94X3ByaW50ZiBmb3IgdGhlIG5v
+bi1zYW5kYm94CnNwZWNpZmljIHBhcnRzIHRvIGF2b2lkIGNsYXNoaW5nIHdpdGggdGhlIGxpYmMt
+cHJvdmlkZWQgc3ltYm9sLiBUaGlzIGlzCnN1YnN0aXR1dGVkIGludG8gdGhlIGRlZmluaXRpb24g
+b2YgX19wcmludGYsIGxlYWRpbmcgdG8KCiAgdGVzdC9zZWxmL3ByaW50Zi5jOjM3OjE6IHdhcm5p
+bmc6IOKAmGJhcmVib3hfcHJpbnRm4oCZIGlzIGFuCgl1bnJlY29nbml6ZWQgZm9ybWF0IGZ1bmN0
+aW9uIHR5cGUgWy1XZm9ybWF0PV0KCkF2b2lkIHRoaXMgYnkgdXNpbmcgdGhlIGVxdWl2YWxlbnQg
+cmVzZXJ2ZWQga2V5d29yZCwgd2hpY2ggZG9lc24ndApjbGFzaC4gV2hpbGUgYXQgaXQsIGJlIGEg
+bGl0dGxlIGZ1dHVyZSBwcm9vZiBhbmQgZG8gdGhlIHNhbWUgZm9yIHNjYW5mCmFzIHdlbGwuCgpT
+aWduZWQtb2ZmLWJ5OiBBaG1hZCBGYXRvdW0gPGEuZmF0b3VtQHBlbmd1dHJvbml4LmRlPgotLS0K
+IGluY2x1ZGUvbGludXgvY29tcGlsZXJfdHlwZXMuaCB8IDQgKystLQogMSBmaWxlIGNoYW5nZWQs
+IDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9pbmNsdWRlL2xp
+bnV4L2NvbXBpbGVyX3R5cGVzLmggYi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyX3R5cGVzLmgKaW5k
+ZXggOWE1YTZmMGU4YjE3Li5hYTljYmNhYzc3NDAgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvbGludXgv
+Y29tcGlsZXJfdHlwZXMuaAorKysgYi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyX3R5cGVzLmgKQEAg
+LTIwMSw4ICsyMDEsOCBAQCBzdHJ1Y3QgZnRyYWNlX2xpa2VseV9kYXRhIHsKICNkZWZpbmUgX19w
+dXJlCQkJX19hdHRyaWJ1dGVfXygocHVyZSkpCiAjZGVmaW5lIF9fYWxpZ25lZCh4KQkJX19hdHRy
+aWJ1dGVfXygoYWxpZ25lZCh4KSkpCiAjZGVmaW5lIF9fYWxpZ25lZF9sYXJnZXN0CV9fYXR0cmli
+dXRlX18oKGFsaWduZWQpKQotI2RlZmluZSBfX3ByaW50ZihhLCBiKQkJX19hdHRyaWJ1dGVfXygo
+Zm9ybWF0KHByaW50ZiwgYSwgYikpKQotI2RlZmluZSBfX3NjYW5mKGEsIGIpCQlfX2F0dHJpYnV0
+ZV9fKChmb3JtYXQoc2NhbmYsIGEsIGIpKSkKKyNkZWZpbmUgX19wcmludGYoYSwgYikJCV9fYXR0
+cmlidXRlX18oKGZvcm1hdChfX3ByaW50Zl9fLCBhLCBiKSkpCisjZGVmaW5lIF9fc2NhbmYoYSwg
+YikJCV9fYXR0cmlidXRlX18oKGZvcm1hdChfX3NjYW5mX18sIGEsIGIpKSkKICNkZWZpbmUgX19t
+YXliZV91bnVzZWQJCV9fYXR0cmlidXRlX18oKHVudXNlZCkpCiAjZGVmaW5lIF9fYWx3YXlzX3Vu
+dXNlZAkJX19hdHRyaWJ1dGVfXygodW51c2VkKSkKICNkZWZpbmUgX19tb2RlKHgpCQlfX2F0dHJp
+YnV0ZV9fKChtb2RlKHgpKSkKLS0gCjIuMzAuMgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
 
