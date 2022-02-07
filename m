@@ -1,54 +1,54 @@
-Delivery-date: Mon, 07 Feb 2022 10:52:26 +0100
+Delivery-date: Mon, 07 Feb 2022 10:52:40 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nH0h8-0088tq-H4
-	for lore@lore.pengutronix.de; Mon, 07 Feb 2022 10:52:26 +0100
+	id 1nH0hM-0088uW-AT
+	for lore@lore.pengutronix.de; Mon, 07 Feb 2022 10:52:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nH0h6-0003fn-FV
-	for lore@pengutronix.de; Mon, 07 Feb 2022 10:52:25 +0100
+	id 1nH0hJ-0003j4-VX
+	for lore@pengutronix.de; Mon, 07 Feb 2022 10:52:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=2ds/dLEZL1ONLklm29COHul9WX4OVk6t/j3Dg5fGKoQ=; b=s4Kqtx1shhbdx2
-	nszLjfVFQwNKniiMlaDsNUbpxplrVjsv4ei87KcYzx2zjYCZRqe6cwNcPGOv9rk35VjYs+eFlS4PU
-	cP7ZEM5LTyKCdpW37PQj/3DujhkfrkKsM2a12DfJxFmsLdBbtUz791AjV9fvyH+6Hurgbuvpep1Fv
-	5rlkhi9vk63pnMnuHtObsdMigxUJdrSIIKZMnFw4QA3fI3GHIcKvPSKLI6PPPPLNSUia0O4mwddRm
-	5INZhAdphr1Gd/0x0bIFbC+xdCbc1trw6PWhzPIORTDTxuqEjAo4UknRxuKbwKmg1b1yZ/hC2cZKi
-	ijQeiJ+daIGf8PjZfUjw==;
+	List-Owner; bh=crPS9vcXwEL4+tD9Iq8+IyYIQ4JDDRogZ91qIRgmH94=; b=0g3Fqmgj2LwtJH
+	TjeTC7KJgM8IRYwAU6jmEKfE1UL784ChAAKi3Wp0qSufvTpMEipEUl/uY0YrVBRKodxwVZz38zdyQ
+	vQxVlhmzMWIidJa/PyKkzCxcQsUGcbOaXZgte+aiA5icfUsbf9QQLIzCHXsKuxJi+CeilUXKEWV00
+	p7CQ9Jarq0aF+4ALvdlP5QhS6UwqplIStXZDVp22R92zL4CwqKKQgxjpjtoTQEOliO5SRtkj3BGSL
+	Y7TgsgHd9ciO4YYcAUOX16nKN9yRd3gtM1oFA/nV8JTWS0jbA0A5Zvl4SRsKNSJ74jFd6jvcQdVLI
+	PFssRqSuRSEWutZm6PSg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nH0fn-009eAr-UZ; Mon, 07 Feb 2022 09:51:04 +0000
+	id 1nH0g2-009eIj-DX; Mon, 07 Feb 2022 09:51:18 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nH0eo-009dka-M0
- for barebox@lists.infradead.org; Mon, 07 Feb 2022 09:50:06 +0000
+ id 1nH0eo-009dkg-Lz
+ for barebox@lists.infradead.org; Mon, 07 Feb 2022 09:50:07 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nH0en-0002td-8y; Mon, 07 Feb 2022 10:50:01 +0100
+ id 1nH0en-0002ti-C0; Mon, 07 Feb 2022 10:50:01 +0100
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <sha@pengutronix.de>)
- id 1nH0em-0040Lp-Kx; Mon, 07 Feb 2022 10:50:00 +0100
+ id 1nH0em-0040MA-Nw; Mon, 07 Feb 2022 10:50:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon,  7 Feb 2022 10:49:48 +0100
-Message-Id: <20220207094953.949868-3-s.hauer@pengutronix.de>
+Date: Mon,  7 Feb 2022 10:49:53 +0100
+Message-Id: <20220207094953.949868-8-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220207094953.949868-1-s.hauer@pengutronix.de>
 References: <20220207094953.949868-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220207_015002_788798_44D323BE 
-X-CRM114-Status: GOOD (  14.07  )
+X-CRM114-CacheID: sfid-20220207_015002_944534_BB4BE71B 
+X-CRM114-Status: GOOD (  29.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,144 +74,283 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 3/8] rename cdev_open() -> cdev_open_name()
+Subject: [PATCH 8/8] misc: Add storage-by-uuid driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The cdev_* functions normally take a struct cdev * argument, with the
-exception of cdev_open(). Rename cdev_open() to cdev_open_name() to
-be able to implement cdev_open() with the expected semantics in the next
-step.
+This adds a driver which matches to a "barebox,storage-by-uuid"
+compatible node. The driver looks for a storage device matching the
+given UUID and when found registers a new cdev for the device.
+
+This driver solved a very specific problem. On EFI the storage devices
+are not connected to any device tree node. barebox-state however expects
+a node to use as its backend. The obvious solution would be to create
+a partition with a specific partuuid and use that for state, in our
+special usecase though the storage device is partitioned with a MBR
+which doesn't have any space left to create a new partition. As this
+driver parses the of partition binding we can use that to create
+a partition in an unallocated are of the disk which is then used for
+state.
+
+This driver has the problem that it depends on storage devices which
+are not described in the device tree. This means it cannot work with
+deep probe. This is not a problem on EFI though. It's a special purpose
+driver, it's not recommended for general use.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-mxs/ocotp.c  | 2 +-
- arch/arm/mach-omap/xload.c | 4 ++--
- common/filetype.c          | 2 +-
- fs/devfs-core.c            | 2 +-
- fs/fs.c                    | 4 ++--
- include/driver.h           | 2 +-
- lib/bootstrap/devfs.c      | 4 ++--
- 7 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/misc/Kconfig           |  23 ++++
+ drivers/misc/Makefile          |   1 +
+ drivers/misc/storage-by-uuid.c | 199 +++++++++++++++++++++++++++++++++
+ 3 files changed, 223 insertions(+)
+ create mode 100644 drivers/misc/storage-by-uuid.c
 
-diff --git a/arch/arm/mach-mxs/ocotp.c b/arch/arm/mach-mxs/ocotp.c
-index 5f78d9d773..466f8886cd 100644
---- a/arch/arm/mach-mxs/ocotp.c
-+++ b/arch/arm/mach-mxs/ocotp.c
-@@ -229,7 +229,7 @@ int mxs_ocotp_read(void *buf, int count, int offset)
- 	struct cdev *cdev;
- 	int ret;
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index 5ab0506cd9..78c9c193d8 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -47,4 +47,27 @@ config STARFIVE_PWRSEQ
+ 	  be accessed over /dev/mem or used from kernels which still depend
+ 	  on bootloader for initialization.
  
--	cdev = cdev_open(DRIVERNAME, O_RDONLY);
-+	cdev = cdev_open_name(DRIVERNAME, O_RDONLY);
- 	if (!cdev)
- 		return -ENODEV;
- 
-diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-index 0fe78883d1..edb094f36f 100644
---- a/arch/arm/mach-omap/xload.c
-+++ b/arch/arm/mach-omap/xload.c
-@@ -38,7 +38,7 @@ static void *read_image_head(const char *name)
- 	struct cdev *cdev;
- 	int ret;
- 
--	cdev = cdev_open(name, O_RDONLY);
-+	cdev = cdev_open_name(name, O_RDONLY);
- 	if (!cdev) {
- 		printf("failed to open %s\n", name);
- 		return NULL;
-@@ -86,7 +86,7 @@ static void *read_mtd_barebox(const char *partition)
- 
- 	to = xmalloc(size);
- 
--	cdev = cdev_open(partition, O_RDONLY);
-+	cdev = cdev_open_name(partition, O_RDONLY);
- 	if (!cdev) {
- 		printf("failed to open partition\n");
- 		return NULL;
-diff --git a/common/filetype.c b/common/filetype.c
-index 8ffcd6adcd..a955d88bc3 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -438,7 +438,7 @@ enum filetype cdev_detect_type(const char *name)
- 	struct cdev *cdev;
- 	void *buf;
- 
--	cdev = cdev_open(name, O_RDONLY);
-+	cdev = cdev_open_name(name, O_RDONLY);
- 	if (!cdev)
- 		return type;
- 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 2475ab959a..6350c3fa8b 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -169,7 +169,7 @@ int cdev_find_free_index(const char *basename)
- 	return -EBUSY;	/* all indexes are used */
- }
- 
--struct cdev *cdev_open(const char *name, unsigned long flags)
-+struct cdev *cdev_open_name(const char *name, unsigned long flags)
- {
- 	struct cdev *cdev;
- 	int ret;
-diff --git a/fs/fs.c b/fs/fs.c
-index 968e77b808..20362c3889 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -800,7 +800,7 @@ int fsdev_open_cdev(struct fs_device_d *fsdev)
- 
- 		fsdev->cdev = cdev_create_loop(fsdev->backingstore, O_RDWR, offset);
- 	} else {
--		fsdev->cdev = cdev_open(fsdev->backingstore, O_RDWR);
-+		fsdev->cdev = cdev_open_name(fsdev->backingstore, O_RDWR);
- 	}
- 	if (!fsdev->cdev) {
- 		path_put(&path);
-@@ -3048,7 +3048,7 @@ int umount(const char *pathname)
- 	path_put(&path);
- 
- 	if (!fsdev) {
--		struct cdev *cdev = cdev_open(pathname, O_RDWR);
-+		struct cdev *cdev = cdev_open_name(pathname, O_RDWR);
- 
- 		if (cdev) {
- 			cdev_close(cdev);
-diff --git a/include/driver.h b/include/driver.h
-index 3ef8bfb8a3..b4fae477a6 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -489,7 +489,7 @@ struct cdev *cdev_readlink(struct cdev *cdev);
- struct cdev *cdev_by_device_node(struct device_node *node);
- struct cdev *cdev_by_partuuid(const char *partuuid);
- struct cdev *cdev_by_diskuuid(const char *partuuid);
--struct cdev *cdev_open(const char *name, unsigned long flags);
-+struct cdev *cdev_open_name(const char *name, unsigned long flags);
- struct cdev *cdev_create_loop(const char *path, ulong flags, loff_t offset);
- void cdev_remove_loop(struct cdev *cdev);
- int cdev_do_open(struct cdev *, unsigned long flags);
-diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
-index 6d28b1cb4d..e26a3d831d 100644
---- a/lib/bootstrap/devfs.c
-+++ b/lib/bootstrap/devfs.c
-@@ -32,7 +32,7 @@ static void *read_image_head(const char *name)
- 	struct cdev *cdev;
- 	int ret;
- 
--	cdev = cdev_open(name, O_RDONLY);
-+	cdev = cdev_open_name(name, O_RDONLY);
- 	if (!cdev) {
- 		bootstrap_err("failed to open partition\n");
- 		goto free_header;
-@@ -124,7 +124,7 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
- 
- 	to = xmalloc(size);
- 
--	cdev = cdev_open(partname, O_RDONLY);
-+	cdev = cdev_open_name(partname, O_RDONLY);
- 	if (!cdev) {
- 		bootstrap_err("%s: failed to open %s\n", devname, partname);
- 		goto free_memory;
++config STORAGE_BY_UUID
++	bool "storage by UUID"
++	depends on OFDEVICE
++	help
++	  This adds a driver which matches to a "barebox,storage-by-uuid"
++	  compatible node. The driver looks for a storage device matching the
++	  given UUID and when found registers a new cdev for the device.
++
++	  This driver solved a very specific problem. On EFI the storage devices
++	  are not connected to any device tree node. barebox-state however expects
++	  a node to use as its backend. The obvious solution would be to create
++	  a partition with a specific partuuid and use that for state, in our
++	  special usecase though the storage device is partitioned with a MBR
++	  which doesn't have any space left to create a new partition. As this
++	  driver parses the of partition binding we can use that to create
++	  a partition in an unallocated are of the disk which is then used for
++	  state.
++
++	  This driver has the problem that it depends on storage devices which
++	  are not described in the device tree. This means it cannot work with
++	  deep probe. This is not a problem on EFI though. It's a special purpose
++	  driver, it's not recommended for general use.
++
+ endmenu
+diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+index 6326e784fc..986f7b1b38 100644
+--- a/drivers/misc/Makefile
++++ b/drivers/misc/Makefile
+@@ -9,3 +9,4 @@ obj-$(CONFIG_STATE_DRV)		+= state.o
+ obj-$(CONFIG_DEV_MEM)		+= mem.o
+ obj-$(CONFIG_UBOOTVAR)		+= ubootvar.o
+ obj-$(CONFIG_STARFIVE_PWRSEQ)	+= starfive-pwrseq.o
++obj-$(CONFIG_STORAGE_BY_UUID)	+= storage-by-uuid.o
+diff --git a/drivers/misc/storage-by-uuid.c b/drivers/misc/storage-by-uuid.c
+new file mode 100644
+index 0000000000..c9dd6e9793
+--- /dev/null
++++ b/drivers/misc/storage-by-uuid.c
+@@ -0,0 +1,199 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <of.h>
++#include <malloc.h>
++#include <partition.h>
++#include <envfs.h>
++#include <fs.h>
++
++static LIST_HEAD(sbu_list);
++
++struct sbu {
++	char *uuid;
++	struct device_d *dev;
++	struct cdev *rcdev;
++	struct cdev cdev;
++	struct list_head list;
++};
++
++void storage_by_uuid_check_exist(struct cdev *cdev);
++
++static ssize_t sbu_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
++{
++	struct sbu *sbu = cdev->priv;
++
++	return cdev_read(sbu->rcdev, buf, count, offset, flags);
++}
++
++static ssize_t sbu_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags)
++{
++	struct sbu *sbu = cdev->priv;
++
++	return cdev_write(sbu->rcdev, buf, count, offset, flags);
++}
++
++static int sbu_ioctl(struct cdev *cdev, int request, void *buf)
++{
++	struct sbu *sbu = cdev->priv;
++
++	return cdev_ioctl(sbu->rcdev, request, buf);
++}
++
++static int sbu_open(struct cdev *cdev, unsigned long flags)
++{
++	struct sbu *sbu = cdev->priv;
++
++	return cdev_open(sbu->rcdev, flags);
++}
++
++static int sbu_close(struct cdev *cdev)
++{
++	struct sbu *sbu = cdev->priv;
++
++	cdev_close(sbu->rcdev);
++
++	return 0;
++}
++
++static int sbu_flush(struct cdev *cdev)
++{
++	struct sbu *sbu = cdev->priv;
++
++	return cdev_flush(sbu->rcdev);
++}
++
++static int sbu_erase(struct cdev *cdev, loff_t count, loff_t offset)
++{
++	struct sbu *sbu = cdev->priv;
++
++	return cdev_erase(sbu->rcdev, count, offset);
++}
++
++static int sbu_protect(struct cdev *cdev, size_t count, loff_t offset, int prot)
++{
++	struct sbu *sbu = cdev->priv;
++
++	return cdev_protect(sbu->rcdev, count, offset, prot);
++}
++
++static int sbu_discard_range(struct cdev *cdev, loff_t count, loff_t offset)
++{
++	struct sbu *sbu = cdev->priv;
++
++	return cdev_discard_range(sbu->rcdev, count, offset);
++}
++
++static int sbu_memmap(struct cdev *cdev, void **map, int flags)
++{
++	struct sbu *sbu = cdev->priv;
++
++	return cdev_memmap(sbu->rcdev, map, flags);
++}
++
++static int sbu_truncate(struct cdev *cdev, size_t size)
++{
++	struct sbu *sbu = cdev->priv;
++
++	return cdev_truncate(sbu->rcdev, size);
++}
++
++static struct cdev_operations sbu_ops = {
++        .read = sbu_read,
++        .write = sbu_write,
++        .ioctl = sbu_ioctl,
++        .open = sbu_open,
++        .close = sbu_close,
++        .flush = sbu_flush,
++        .erase = sbu_erase,
++        .protect = sbu_protect,
++        .discard_range = sbu_discard_range,
++        .memmap = sbu_memmap,
++        .truncate = sbu_truncate,
++};
++
++static void storage_by_uuid_add_partitions(struct sbu *sbu, struct cdev *rcdev)
++{
++	int ret;
++
++	if (sbu->rcdev)
++		return;
++
++	sbu->rcdev = rcdev;
++	sbu->cdev.name = sbu->uuid;
++	sbu->cdev.size = rcdev->size;
++	sbu->cdev.ops = &sbu_ops;
++	sbu->cdev.dev = sbu->dev;
++	sbu->cdev.priv = sbu;
++
++	ret = devfs_create(&sbu->cdev);
++	if (ret) {
++		dev_err(sbu->dev, "Failed to create cdev: %s\n", strerror(-ret));
++		return;
++	}
++
++	of_parse_partitions(&sbu->cdev, sbu->dev->device_node);
++}
++
++static void check_exist(struct sbu *sbu)
++{
++	struct cdev *cdev;
++
++	for_each_cdev(cdev) {
++		if (!strcmp(cdev->uuid, sbu->uuid)) {
++			dev_dbg(sbu->dev, "Found %s %s\n", cdev->name, cdev->uuid);
++			storage_by_uuid_add_partitions(sbu, cdev);
++		}
++	}
++}
++
++static int sbu_detect(struct device_d *dev)
++{
++	struct sbu *sbu = dev->priv;
++
++	dev_dbg(dev, "%s\n", __func__);
++
++	check_exist(sbu);
++
++	return 0;
++}
++
++static int storage_by_uuid_probe(struct device_d *dev)
++{
++	struct sbu *sbu;
++	int ret;
++	const char *uuid;
++
++	sbu = xzalloc(sizeof(*sbu));
++
++	ret = of_property_read_string(dev->device_node, "uuid", &uuid);
++	if (ret)
++		return ret;
++
++	sbu->dev = dev;
++	sbu->uuid = xstrdup(uuid);
++
++	list_add_tail(&sbu->list, &sbu_list);
++
++	check_exist(sbu);
++	dev->priv = sbu;
++	dev->detect = sbu_detect;
++
++	return 0;
++}
++
++static struct of_device_id storage_by_uuid_dt_ids[] = {
++	{
++		.compatible = "barebox,storage-by-uuid",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d storage_by_uuid_driver = {
++	.name		= "storage-by-uuid",
++	.probe		= storage_by_uuid_probe,
++	.of_compatible	= storage_by_uuid_dt_ids,
++};
++device_platform_driver(storage_by_uuid_driver);
 -- 
 2.30.2
 
