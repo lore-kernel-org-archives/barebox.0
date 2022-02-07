@@ -1,54 +1,54 @@
-Delivery-date: Mon, 07 Feb 2022 10:52:40 +0100
+Delivery-date: Mon, 07 Feb 2022 10:52:54 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nH0hM-0088uW-AT
-	for lore@lore.pengutronix.de; Mon, 07 Feb 2022 10:52:40 +0100
+	id 1nH0ha-0088vD-9Z
+	for lore@lore.pengutronix.de; Mon, 07 Feb 2022 10:52:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nH0hJ-0003j4-VX
-	for lore@pengutronix.de; Mon, 07 Feb 2022 10:52:39 +0100
+	id 1nH0hY-0003mr-3a
+	for lore@pengutronix.de; Mon, 07 Feb 2022 10:52:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=crPS9vcXwEL4+tD9Iq8+IyYIQ4JDDRogZ91qIRgmH94=; b=0g3Fqmgj2LwtJH
-	TjeTC7KJgM8IRYwAU6jmEKfE1UL784ChAAKi3Wp0qSufvTpMEipEUl/uY0YrVBRKodxwVZz38zdyQ
-	vQxVlhmzMWIidJa/PyKkzCxcQsUGcbOaXZgte+aiA5icfUsbf9QQLIzCHXsKuxJi+CeilUXKEWV00
-	p7CQ9Jarq0aF+4ALvdlP5QhS6UwqplIStXZDVp22R92zL4CwqKKQgxjpjtoTQEOliO5SRtkj3BGSL
-	Y7TgsgHd9ciO4YYcAUOX16nKN9yRd3gtM1oFA/nV8JTWS0jbA0A5Zvl4SRsKNSJ74jFd6jvcQdVLI
-	PFssRqSuRSEWutZm6PSg==;
+	List-Owner; bh=/nbrhZmT+Mx6T/Sw9rhC10bRb9p803U34wZ10a+Nth8=; b=BH6VIrwFTjXVUZ
+	MYN4YiqXSr95LLIdnIFB5MtdofRnGLLzDparWzsCzUnegFUI2YhJ7y/jhHOFZiXxfYED/8Agdmm4s
+	ZqjT8nr2NpLNQ5Buj+qXTy7oPSecmml5B96gNVHhfm3ztWQjPfo6bwMOGmEbGViKYL1JiGj+3fN7Q
+	xetDvPDNzVviZ6q7xwbklRlo23P3o9D/bmxQEs++DR1QpWBkSRspN0WwQ4q02j7ArJ2STg8a/hL8F
+	wc1Vd24qKJwlJonS13oZtxVBF4ZbLjNoS/qO30zofW+yEnJjc1s2DmrhOO5G9QOEzVNZUoqYuWIYB
+	D8ojlLj+jMUebDz4MDUg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nH0g2-009eIj-DX; Mon, 07 Feb 2022 09:51:18 +0000
+	id 1nH0gF-009eUK-51; Mon, 07 Feb 2022 09:51:31 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nH0eo-009dkg-Lz
- for barebox@lists.infradead.org; Mon, 07 Feb 2022 09:50:07 +0000
+ id 1nH0ew-009dog-SX
+ for barebox@lists.infradead.org; Mon, 07 Feb 2022 09:50:12 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nH0en-0002ti-C0; Mon, 07 Feb 2022 10:50:01 +0100
+ id 1nH0en-0002tf-BU; Mon, 07 Feb 2022 10:50:01 +0100
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <sha@pengutronix.de>)
- id 1nH0em-0040MA-Nw; Mon, 07 Feb 2022 10:50:00 +0100
+ id 1nH0em-0040M1-ME; Mon, 07 Feb 2022 10:50:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon,  7 Feb 2022 10:49:53 +0100
-Message-Id: <20220207094953.949868-8-s.hauer@pengutronix.de>
+Date: Mon,  7 Feb 2022 10:49:50 +0100
+Message-Id: <20220207094953.949868-5-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220207094953.949868-1-s.hauer@pengutronix.de>
 References: <20220207094953.949868-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220207_015002_944534_BB4BE71B 
-X-CRM114-Status: GOOD (  29.09  )
+X-CRM114-CacheID: sfid-20220207_015010_967864_04C8871D 
+X-CRM114-Status: GOOD (  18.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,283 +74,132 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 8/8] misc: Add storage-by-uuid driver
+Subject: [PATCH 5/8] driver: Add functions to free devices
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This adds a driver which matches to a "barebox,storage-by-uuid"
-compatible node. The driver looks for a storage device matching the
-given UUID and when found registers a new cdev for the device.
+struct device_d has some dynamically allocated members, namely .name and
+.unique_name. These are normally not freed when a device is freed. Add
+two functions to free these resources. free_device_res() only frees the
+allocated members, but not the device itself. This is suitable for cases
+where the device is embedded in another struct. free_device() frees the
+allocated members along with the device itself. This can be called when
+the device itself has been directly allocated.
 
-This driver solved a very specific problem. On EFI the storage devices
-are not connected to any device tree node. barebox-state however expects
-a node to use as its backend. The obvious solution would be to create
-a partition with a specific partuuid and use that for state, in our
-special usecase though the storage device is partitioned with a MBR
-which doesn't have any space left to create a new partition. As this
-driver parses the of partition binding we can use that to create
-a partition in an unallocated are of the disk which is then used for
-state.
-
-This driver has the problem that it depends on storage devices which
-are not described in the device tree. This means it cannot work with
-deep probe. This is not a problem on EFI though. It's a special purpose
-driver, it's not recommended for general use.
+Some users which should use these functions are also fixed in this
+patch.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/misc/Kconfig           |  23 ++++
- drivers/misc/Makefile          |   1 +
- drivers/misc/storage-by-uuid.c | 199 +++++++++++++++++++++++++++++++++
- 3 files changed, 223 insertions(+)
- create mode 100644 drivers/misc/storage-by-uuid.c
+ drivers/base/driver.c  | 30 ++++++++++++++++++++++++++++++
+ drivers/of/base.c      |  2 +-
+ drivers/of/platform.c  |  3 ++-
+ drivers/usb/core/usb.c |  1 +
+ include/driver.h       |  4 ++++
+ 5 files changed, 38 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 5ab0506cd9..78c9c193d8 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -47,4 +47,27 @@ config STARFIVE_PWRSEQ
- 	  be accessed over /dev/mem or used from kernels which still depend
- 	  on bootloader for initialization.
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index f54f4d0b37..2347b5c71f 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -270,6 +270,36 @@ int unregister_device(struct device_d *old_dev)
+ }
+ EXPORT_SYMBOL(unregister_device);
  
-+config STORAGE_BY_UUID
-+	bool "storage by UUID"
-+	depends on OFDEVICE
-+	help
-+	  This adds a driver which matches to a "barebox,storage-by-uuid"
-+	  compatible node. The driver looks for a storage device matching the
-+	  given UUID and when found registers a new cdev for the device.
-+
-+	  This driver solved a very specific problem. On EFI the storage devices
-+	  are not connected to any device tree node. barebox-state however expects
-+	  a node to use as its backend. The obvious solution would be to create
-+	  a partition with a specific partuuid and use that for state, in our
-+	  special usecase though the storage device is partitioned with a MBR
-+	  which doesn't have any space left to create a new partition. As this
-+	  driver parses the of partition binding we can use that to create
-+	  a partition in an unallocated are of the disk which is then used for
-+	  state.
-+
-+	  This driver has the problem that it depends on storage devices which
-+	  are not described in the device tree. This means it cannot work with
-+	  deep probe. This is not a problem on EFI though. It's a special purpose
-+	  driver, it's not recommended for general use.
-+
- endmenu
-diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index 6326e784fc..986f7b1b38 100644
---- a/drivers/misc/Makefile
-+++ b/drivers/misc/Makefile
-@@ -9,3 +9,4 @@ obj-$(CONFIG_STATE_DRV)		+= state.o
- obj-$(CONFIG_DEV_MEM)		+= mem.o
- obj-$(CONFIG_UBOOTVAR)		+= ubootvar.o
- obj-$(CONFIG_STARFIVE_PWRSEQ)	+= starfive-pwrseq.o
-+obj-$(CONFIG_STORAGE_BY_UUID)	+= storage-by-uuid.o
-diff --git a/drivers/misc/storage-by-uuid.c b/drivers/misc/storage-by-uuid.c
-new file mode 100644
-index 0000000000..c9dd6e9793
---- /dev/null
-+++ b/drivers/misc/storage-by-uuid.c
-@@ -0,0 +1,199 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <of.h>
-+#include <malloc.h>
-+#include <partition.h>
-+#include <envfs.h>
-+#include <fs.h>
-+
-+static LIST_HEAD(sbu_list);
-+
-+struct sbu {
-+	char *uuid;
-+	struct device_d *dev;
-+	struct cdev *rcdev;
-+	struct cdev cdev;
-+	struct list_head list;
-+};
-+
-+void storage_by_uuid_check_exist(struct cdev *cdev);
-+
-+static ssize_t sbu_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
++/**
++ * free_device_res - free dynamically allocated device members
++ * @dev: The device
++ *
++ * This frees dynamically allocated resources allocated during device
++ * lifetime, but not the device itself.
++ */
++void free_device_res(struct device_d *dev)
 +{
-+	struct sbu *sbu = cdev->priv;
-+
-+	return cdev_read(sbu->rcdev, buf, count, offset, flags);
++	free(dev->name);
++	dev->name = NULL;
++	free(dev->unique_name);
++	dev->unique_name = NULL;
 +}
++EXPORT_SYMBOL(free_device_res);
 +
-+static ssize_t sbu_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags)
++/**
++ * free_device - free a device
++ * @dev: The device
++ *
++ * This frees dynamically allocated resources allocated during device
++ * lifetime and finally the device itself.
++ */
++void free_device(struct device_d *dev)
 +{
-+	struct sbu *sbu = cdev->priv;
-+
-+	return cdev_write(sbu->rcdev, buf, count, offset, flags);
++	free_device_res(dev);
++	free(dev);
 +}
++EXPORT_SYMBOL(free_device);
 +
-+static int sbu_ioctl(struct cdev *cdev, int request, void *buf)
-+{
-+	struct sbu *sbu = cdev->priv;
+ /*
+  * Loop over list of deferred devices as long as at least one
+  * device is successfully probed. Devices that again request
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 80465d6d50..2591610c3f 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2383,7 +2383,7 @@ static void of_platform_device_create_root(struct device_node *np)
+ 
+ 	ret = platform_device_register(dev);
+ 	if (ret)
+-		free(dev);
++		free_device(dev);
+ }
+ 
+ static const struct of_device_id reserved_mem_matches[] = {
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 3a82809cb3..0e718469db 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -155,7 +155,7 @@ struct device_d *of_platform_device_create(struct device_node *np,
+ 
+ 	np->dev = NULL;
+ 
+-	free(dev);
++	free_device(dev);
+ 	if (num_reg)
+ 		free(res);
+ 	return NULL;
+@@ -278,6 +278,7 @@ static struct device_d *of_amba_device_create(struct device_node *np)
+ 	return &dev->dev;
+ 
+ amba_err_free:
++	free_device_res(&dev->dev);
+ 	free(dev);
+ 	return NULL;
+ }
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 4eede13a11..34a0f004f7 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -534,6 +534,7 @@ void usb_free_device(struct usb_device *usbdev)
+ {
+ 	dma_free(usbdev->descriptor);
+ 	dma_free(usbdev->setup_packet);
++	free_device_res(&usbdev->dev);
+ 	free(usbdev);
+ }
+ 
+diff --git a/include/driver.h b/include/driver.h
+index 4f97b943c8..93de4f676e 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -141,6 +141,10 @@ void device_detect_all(void);
+  */
+ int unregister_device(struct device_d *);
+ 
++void free_device_res(struct device_d *dev);
++void free_device(struct device_d *dev);
 +
-+	return cdev_ioctl(sbu->rcdev, request, buf);
-+}
 +
-+static int sbu_open(struct cdev *cdev, unsigned long flags)
-+{
-+	struct sbu *sbu = cdev->priv;
-+
-+	return cdev_open(sbu->rcdev, flags);
-+}
-+
-+static int sbu_close(struct cdev *cdev)
-+{
-+	struct sbu *sbu = cdev->priv;
-+
-+	cdev_close(sbu->rcdev);
-+
-+	return 0;
-+}
-+
-+static int sbu_flush(struct cdev *cdev)
-+{
-+	struct sbu *sbu = cdev->priv;
-+
-+	return cdev_flush(sbu->rcdev);
-+}
-+
-+static int sbu_erase(struct cdev *cdev, loff_t count, loff_t offset)
-+{
-+	struct sbu *sbu = cdev->priv;
-+
-+	return cdev_erase(sbu->rcdev, count, offset);
-+}
-+
-+static int sbu_protect(struct cdev *cdev, size_t count, loff_t offset, int prot)
-+{
-+	struct sbu *sbu = cdev->priv;
-+
-+	return cdev_protect(sbu->rcdev, count, offset, prot);
-+}
-+
-+static int sbu_discard_range(struct cdev *cdev, loff_t count, loff_t offset)
-+{
-+	struct sbu *sbu = cdev->priv;
-+
-+	return cdev_discard_range(sbu->rcdev, count, offset);
-+}
-+
-+static int sbu_memmap(struct cdev *cdev, void **map, int flags)
-+{
-+	struct sbu *sbu = cdev->priv;
-+
-+	return cdev_memmap(sbu->rcdev, map, flags);
-+}
-+
-+static int sbu_truncate(struct cdev *cdev, size_t size)
-+{
-+	struct sbu *sbu = cdev->priv;
-+
-+	return cdev_truncate(sbu->rcdev, size);
-+}
-+
-+static struct cdev_operations sbu_ops = {
-+        .read = sbu_read,
-+        .write = sbu_write,
-+        .ioctl = sbu_ioctl,
-+        .open = sbu_open,
-+        .close = sbu_close,
-+        .flush = sbu_flush,
-+        .erase = sbu_erase,
-+        .protect = sbu_protect,
-+        .discard_range = sbu_discard_range,
-+        .memmap = sbu_memmap,
-+        .truncate = sbu_truncate,
-+};
-+
-+static void storage_by_uuid_add_partitions(struct sbu *sbu, struct cdev *rcdev)
-+{
-+	int ret;
-+
-+	if (sbu->rcdev)
-+		return;
-+
-+	sbu->rcdev = rcdev;
-+	sbu->cdev.name = sbu->uuid;
-+	sbu->cdev.size = rcdev->size;
-+	sbu->cdev.ops = &sbu_ops;
-+	sbu->cdev.dev = sbu->dev;
-+	sbu->cdev.priv = sbu;
-+
-+	ret = devfs_create(&sbu->cdev);
-+	if (ret) {
-+		dev_err(sbu->dev, "Failed to create cdev: %s\n", strerror(-ret));
-+		return;
-+	}
-+
-+	of_parse_partitions(&sbu->cdev, sbu->dev->device_node);
-+}
-+
-+static void check_exist(struct sbu *sbu)
-+{
-+	struct cdev *cdev;
-+
-+	for_each_cdev(cdev) {
-+		if (!strcmp(cdev->uuid, sbu->uuid)) {
-+			dev_dbg(sbu->dev, "Found %s %s\n", cdev->name, cdev->uuid);
-+			storage_by_uuid_add_partitions(sbu, cdev);
-+		}
-+	}
-+}
-+
-+static int sbu_detect(struct device_d *dev)
-+{
-+	struct sbu *sbu = dev->priv;
-+
-+	dev_dbg(dev, "%s\n", __func__);
-+
-+	check_exist(sbu);
-+
-+	return 0;
-+}
-+
-+static int storage_by_uuid_probe(struct device_d *dev)
-+{
-+	struct sbu *sbu;
-+	int ret;
-+	const char *uuid;
-+
-+	sbu = xzalloc(sizeof(*sbu));
-+
-+	ret = of_property_read_string(dev->device_node, "uuid", &uuid);
-+	if (ret)
-+		return ret;
-+
-+	sbu->dev = dev;
-+	sbu->uuid = xstrdup(uuid);
-+
-+	list_add_tail(&sbu->list, &sbu_list);
-+
-+	check_exist(sbu);
-+	dev->priv = sbu;
-+	dev->detect = sbu_detect;
-+
-+	return 0;
-+}
-+
-+static struct of_device_id storage_by_uuid_dt_ids[] = {
-+	{
-+		.compatible = "barebox,storage-by-uuid",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d storage_by_uuid_driver = {
-+	.name		= "storage-by-uuid",
-+	.probe		= storage_by_uuid_probe,
-+	.of_compatible	= storage_by_uuid_dt_ids,
-+};
-+device_platform_driver(storage_by_uuid_driver);
+ /* Iterate over a devices children
+  */
+ #define device_for_each_child(dev, child) \
 -- 
 2.30.2
 
