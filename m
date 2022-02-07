@@ -1,54 +1,54 @@
-Delivery-date: Mon, 07 Feb 2022 10:52:13 +0100
+Delivery-date: Mon, 07 Feb 2022 10:52:26 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nH0gv-0088tI-Rg
-	for lore@lore.pengutronix.de; Mon, 07 Feb 2022 10:52:13 +0100
+	id 1nH0h8-0088tq-H4
+	for lore@lore.pengutronix.de; Mon, 07 Feb 2022 10:52:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nH0gt-0003cY-PR
-	for lore@pengutronix.de; Mon, 07 Feb 2022 10:52:13 +0100
+	id 1nH0h6-0003fn-FV
+	for lore@pengutronix.de; Mon, 07 Feb 2022 10:52:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=G3rY61e87R0WNW/q34YDk742qk+5BA8cDl6DJCaAKDs=; b=T2e0mWExMJRsW/
-	X7oh5RBVnRxN/wNn6Lh4Xj360O/SloRrrTy5UDHBQYOoPKFvSt3wg0mP/yLgGzTuagwULXQir2XP+
-	P88kRd5t7uieEYy82bjp/vqjM4y/+Sn30uRHwT9dTwvIScKdw5pmwHLPmiIi7F/SAl7CJX/JYLCcF
-	QkFsj16v+S7XG1pgE/f1QADomu35BHVxWOTY6JaAJswlwvLgbChi6ASflOPjk//FW+WQrW4YXs0Vl
-	WW+6EuA2n5zW+2lpA7RVj+xqvZzR2OJ6bADGoF7m+SSg6ArkweL8m4gUaiZbEDHprNqtAvKc+8wjL
-	hwg7epv3akcret+rOIjw==;
+	List-Owner; bh=2ds/dLEZL1ONLklm29COHul9WX4OVk6t/j3Dg5fGKoQ=; b=s4Kqtx1shhbdx2
+	nszLjfVFQwNKniiMlaDsNUbpxplrVjsv4ei87KcYzx2zjYCZRqe6cwNcPGOv9rk35VjYs+eFlS4PU
+	cP7ZEM5LTyKCdpW37PQj/3DujhkfrkKsM2a12DfJxFmsLdBbtUz791AjV9fvyH+6Hurgbuvpep1Fv
+	5rlkhi9vk63pnMnuHtObsdMigxUJdrSIIKZMnFw4QA3fI3GHIcKvPSKLI6PPPPLNSUia0O4mwddRm
+	5INZhAdphr1Gd/0x0bIFbC+xdCbc1trw6PWhzPIORTDTxuqEjAo4UknRxuKbwKmg1b1yZ/hC2cZKi
+	ijQeiJ+daIGf8PjZfUjw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nH0fc-009e6N-9c; Mon, 07 Feb 2022 09:50:52 +0000
+	id 1nH0fn-009eAr-UZ; Mon, 07 Feb 2022 09:51:04 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nH0eo-009dkc-M0
+ id 1nH0eo-009dka-M0
  for barebox@lists.infradead.org; Mon, 07 Feb 2022 09:50:06 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nH0en-0002tg-BK; Mon, 07 Feb 2022 10:50:01 +0100
+ id 1nH0en-0002td-8y; Mon, 07 Feb 2022 10:50:01 +0100
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <sha@pengutronix.de>)
- id 1nH0em-0040M4-Mn; Mon, 07 Feb 2022 10:50:00 +0100
+ id 1nH0em-0040Lp-Kx; Mon, 07 Feb 2022 10:50:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon,  7 Feb 2022 10:49:51 +0100
-Message-Id: <20220207094953.949868-6-s.hauer@pengutronix.de>
+Date: Mon,  7 Feb 2022 10:49:48 +0100
+Message-Id: <20220207094953.949868-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220207094953.949868-1-s.hauer@pengutronix.de>
 References: <20220207094953.949868-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220207_015002_804492_17633FC7 
-X-CRM114-Status: GOOD (  14.18  )
+X-CRM114-CacheID: sfid-20220207_015002_788798_44D323BE 
+X-CRM114-Status: GOOD (  14.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,197 +74,144 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 6/8] cdev: Create missing cdev_* functions
+Subject: [PATCH 3/8] rename cdev_open() -> cdev_open_name()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We have several functions like cdev_read(), cdev_write() and others. For
-consistency create the remaining functions: cdev_lseek(),
-cdev_protect(), cdev_discard_range(), cdev_memmap() and cdev_truncate()
+The cdev_* functions normally take a struct cdev * argument, with the
+exception of cdev_open(). Rename cdev_open() to cdev_open_name() to
+be able to implement cdev_open() with the expected semantics in the next
+step.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/devfs-core.c  | 61 ++++++++++++++++++++++++++++++++++++++++++++++++
- fs/devfs.c       | 46 +++++-------------------------------
- include/driver.h |  5 ++++
- 3 files changed, 72 insertions(+), 40 deletions(-)
+ arch/arm/mach-mxs/ocotp.c  | 2 +-
+ arch/arm/mach-omap/xload.c | 4 ++--
+ common/filetype.c          | 2 +-
+ fs/devfs-core.c            | 2 +-
+ fs/fs.c                    | 4 ++--
+ include/driver.h           | 2 +-
+ lib/bootstrap/devfs.c      | 4 ++--
+ 7 files changed, 10 insertions(+), 10 deletions(-)
 
+diff --git a/arch/arm/mach-mxs/ocotp.c b/arch/arm/mach-mxs/ocotp.c
+index 5f78d9d773..466f8886cd 100644
+--- a/arch/arm/mach-mxs/ocotp.c
++++ b/arch/arm/mach-mxs/ocotp.c
+@@ -229,7 +229,7 @@ int mxs_ocotp_read(void *buf, int count, int offset)
+ 	struct cdev *cdev;
+ 	int ret;
+ 
+-	cdev = cdev_open(DRIVERNAME, O_RDONLY);
++	cdev = cdev_open_name(DRIVERNAME, O_RDONLY);
+ 	if (!cdev)
+ 		return -ENODEV;
+ 
+diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+index 0fe78883d1..edb094f36f 100644
+--- a/arch/arm/mach-omap/xload.c
++++ b/arch/arm/mach-omap/xload.c
+@@ -38,7 +38,7 @@ static void *read_image_head(const char *name)
+ 	struct cdev *cdev;
+ 	int ret;
+ 
+-	cdev = cdev_open(name, O_RDONLY);
++	cdev = cdev_open_name(name, O_RDONLY);
+ 	if (!cdev) {
+ 		printf("failed to open %s\n", name);
+ 		return NULL;
+@@ -86,7 +86,7 @@ static void *read_mtd_barebox(const char *partition)
+ 
+ 	to = xmalloc(size);
+ 
+-	cdev = cdev_open(partition, O_RDONLY);
++	cdev = cdev_open_name(partition, O_RDONLY);
+ 	if (!cdev) {
+ 		printf("failed to open partition\n");
+ 		return NULL;
+diff --git a/common/filetype.c b/common/filetype.c
+index 8ffcd6adcd..a955d88bc3 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -438,7 +438,7 @@ enum filetype cdev_detect_type(const char *name)
+ 	struct cdev *cdev;
+ 	void *buf;
+ 
+-	cdev = cdev_open(name, O_RDONLY);
++	cdev = cdev_open_name(name, O_RDONLY);
+ 	if (!cdev)
+ 		return type;
+ 
 diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index dd6a9585bc..c9a8529737 100644
+index 2475ab959a..6350c3fa8b 100644
 --- a/fs/devfs-core.c
 +++ b/fs/devfs-core.c
-@@ -239,6 +239,67 @@ int cdev_erase(struct cdev *cdev, loff_t count, loff_t offset)
- 	return cdev->ops->erase(cdev, count, cdev->offset + offset);
+@@ -169,7 +169,7 @@ int cdev_find_free_index(const char *basename)
+ 	return -EBUSY;	/* all indexes are used */
  }
  
-+int cdev_lseek(struct cdev *cdev, loff_t pos)
-+{
-+	int ret;
-+
-+	if (cdev->ops->lseek) {
-+		ret = cdev->ops->lseek(cdev, pos + cdev->offset);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+int cdev_protect(struct cdev *cdev, size_t count, loff_t offset, int prot)
-+{
-+	if (!cdev->ops->protect)
-+		return -ENOSYS;
-+
-+	return cdev->ops->protect(cdev, count, offset + cdev->offset, prot);
-+}
-+
-+int cdev_discard_range(struct cdev *cdev, loff_t count, loff_t offset)
-+{
-+	if (!cdev->ops->discard_range)
-+		return -ENOSYS;
-+
-+	if (cdev->flags & DEVFS_PARTITION_READONLY)
-+		return -EPERM;
-+
-+	if (offset >= cdev->size)
-+		return 0;
-+
-+	if (count + offset > cdev->size)
-+		count = cdev->size - offset;
-+
-+	return cdev->ops->discard_range(cdev, count, offset + cdev->offset);
-+}
-+
-+int cdev_memmap(struct cdev *cdev, void **map, int flags)
-+{
-+	int ret = -ENOSYS;
-+
-+	if (!cdev->ops->memmap)
-+		return -EINVAL;
-+
-+	ret = cdev->ops->memmap(cdev, map, flags);
-+
-+	if (!ret)
-+		*map = (void *)((unsigned long)*map + (unsigned long)cdev->offset);
-+
-+	return ret;
-+}
-+
-+int cdev_truncate(struct cdev *cdev, size_t size)
-+{
-+	if (cdev->ops->truncate)
-+		return cdev->ops->truncate(cdev, size);
-+
-+	return -EPERM;
-+}
-+
- int devfs_create(struct cdev *new)
+-struct cdev *cdev_open(const char *name, unsigned long flags)
++struct cdev *cdev_open_name(const char *name, unsigned long flags)
  {
  	struct cdev *cdev;
-diff --git a/fs/devfs.c b/fs/devfs.c
-index df229cca48..d205881765 100644
---- a/fs/devfs.c
-+++ b/fs/devfs.c
-@@ -57,15 +57,8 @@ static int devfs_write(struct device_d *_dev, FILE *f, const void *buf, size_t s
- static int devfs_lseek(struct device_d *_dev, FILE *f, loff_t pos)
- {
- 	struct cdev *cdev = f->priv;
--	int ret;
+ 	int ret;
+diff --git a/fs/fs.c b/fs/fs.c
+index 968e77b808..20362c3889 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -800,7 +800,7 @@ int fsdev_open_cdev(struct fs_device_d *fsdev)
  
--	if (cdev->ops->lseek) {
--		ret = cdev->ops->lseek(cdev, pos + cdev->offset);
--		if (ret < 0)
--			return ret;
--	}
--
--	return 0;
-+	return cdev_lseek(cdev, pos);
- }
+ 		fsdev->cdev = cdev_create_loop(fsdev->backingstore, O_RDWR, offset);
+ 	} else {
+-		fsdev->cdev = cdev_open(fsdev->backingstore, O_RDWR);
++		fsdev->cdev = cdev_open_name(fsdev->backingstore, O_RDWR);
+ 	}
+ 	if (!fsdev->cdev) {
+ 		path_put(&path);
+@@ -3048,7 +3048,7 @@ int umount(const char *pathname)
+ 	path_put(&path);
  
- static int devfs_erase(struct device_d *_dev, FILE *f, loff_t count, loff_t offset)
-@@ -81,14 +74,11 @@ static int devfs_erase(struct device_d *_dev, FILE *f, loff_t count, loff_t offs
- 	return cdev_erase(cdev, count, offset);
- }
+ 	if (!fsdev) {
+-		struct cdev *cdev = cdev_open(pathname, O_RDWR);
++		struct cdev *cdev = cdev_open_name(pathname, O_RDWR);
  
--static int devfs_protect(struct device_d *_dev, FILE *f, size_t count, loff_t offset, int prot)
-+static int devfs_protect(struct device_d *dev, FILE *f, size_t count, loff_t offset, int prot)
- {
- 	struct cdev *cdev = f->priv;
- 
--	if (!cdev->ops->protect)
--		return -ENOSYS;
--
--	return cdev->ops->protect(cdev, count, offset + cdev->offset, prot);
-+	return cdev_protect(cdev, count, offset, prot);
- }
- 
- static int devfs_discard_range(struct device_d *dev, FILE *f, loff_t count,
-@@ -96,35 +86,14 @@ static int devfs_discard_range(struct device_d *dev, FILE *f, loff_t count,
- {
- 	struct cdev *cdev = f->priv;
- 
--	if (!cdev->ops->discard_range)
--		return -ENOSYS;
--
--	if (cdev->flags & DEVFS_PARTITION_READONLY)
--		return -EPERM;
--
--	if (offset >= cdev->size)
--		return 0;
--
--	if (count + offset > cdev->size)
--		count = cdev->size - offset;
--
--	return cdev->ops->discard_range(cdev, count, offset + cdev->offset);
-+	return cdev_discard_range(cdev, count, offset);
- }
- 
- static int devfs_memmap(struct device_d *_dev, FILE *f, void **map, int flags)
- {
- 	struct cdev *cdev = f->priv;
--	int ret = -ENOSYS;
- 
--	if (!cdev->ops->memmap)
--		return -EINVAL;
--
--	ret = cdev->ops->memmap(cdev, map, flags);
--
--	if (!ret)
--		*map = (void *)((unsigned long)*map + (unsigned long)cdev->offset);
--
--	return ret;
-+	return cdev_memmap(cdev, map, flags);
- }
- 
- static int devfs_open(struct device_d *_dev, FILE *f, const char *filename)
-@@ -183,10 +152,7 @@ static int devfs_truncate(struct device_d *dev, FILE *f, loff_t size)
- {
- 	struct cdev *cdev = f->priv;
- 
--	if (cdev->ops->truncate)
--		return cdev->ops->truncate(cdev, size);
--
--	return -EPERM;
-+	return cdev_truncate(cdev, size);
- }
- 
- static struct inode *devfs_alloc_inode(struct super_block *sb)
+ 		if (cdev) {
+ 			cdev_close(cdev);
 diff --git a/include/driver.h b/include/driver.h
-index 93de4f676e..b9b0b8497d 100644
+index 3ef8bfb8a3..b4fae477a6 100644
 --- a/include/driver.h
 +++ b/include/driver.h
-@@ -503,6 +503,11 @@ ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulo
- ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags);
- int cdev_ioctl(struct cdev *cdev, int cmd, void *buf);
- int cdev_erase(struct cdev *cdev, loff_t count, loff_t offset);
-+int cdev_lseek(struct cdev*, loff_t);
-+int cdev_protect(struct cdev*, size_t count, loff_t offset, int prot);
-+int cdev_discard_range(struct cdev*, loff_t count, loff_t offset);
-+int cdev_memmap(struct cdev*, void **map, int flags);
-+int cdev_truncate(struct cdev*, size_t size);
- loff_t cdev_unallocated_space(struct cdev *cdev);
+@@ -489,7 +489,7 @@ struct cdev *cdev_readlink(struct cdev *cdev);
+ struct cdev *cdev_by_device_node(struct device_node *node);
+ struct cdev *cdev_by_partuuid(const char *partuuid);
+ struct cdev *cdev_by_diskuuid(const char *partuuid);
+-struct cdev *cdev_open(const char *name, unsigned long flags);
++struct cdev *cdev_open_name(const char *name, unsigned long flags);
+ struct cdev *cdev_create_loop(const char *path, ulong flags, loff_t offset);
+ void cdev_remove_loop(struct cdev *cdev);
+ int cdev_do_open(struct cdev *, unsigned long flags);
+diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
+index 6d28b1cb4d..e26a3d831d 100644
+--- a/lib/bootstrap/devfs.c
++++ b/lib/bootstrap/devfs.c
+@@ -32,7 +32,7 @@ static void *read_image_head(const char *name)
+ 	struct cdev *cdev;
+ 	int ret;
  
- #define DEVFS_PARTITION_FIXED		(1U << 0)
+-	cdev = cdev_open(name, O_RDONLY);
++	cdev = cdev_open_name(name, O_RDONLY);
+ 	if (!cdev) {
+ 		bootstrap_err("failed to open partition\n");
+ 		goto free_header;
+@@ -124,7 +124,7 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+ 
+ 	to = xmalloc(size);
+ 
+-	cdev = cdev_open(partname, O_RDONLY);
++	cdev = cdev_open_name(partname, O_RDONLY);
+ 	if (!cdev) {
+ 		bootstrap_err("%s: failed to open %s\n", devname, partname);
+ 		goto free_memory;
 -- 
 2.30.2
 
