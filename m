@@ -1,78 +1,80 @@
-Delivery-date: Thu, 10 Feb 2022 14:48:52 +0100
+Delivery-date: Thu, 10 Feb 2022 16:24:00 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nI9oa-00BqCl-3M
-	for lore@lore.pengutronix.de; Thu, 10 Feb 2022 14:48:52 +0100
+	id 1nIBIe-00BueB-IU
+	for lore@lore.pengutronix.de; Thu, 10 Feb 2022 16:24:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nI9oY-0004jj-Ne
-	for lore@pengutronix.de; Thu, 10 Feb 2022 14:48:51 +0100
+	id 1nIBId-0000qi-CS
+	for lore@pengutronix.de; Thu, 10 Feb 2022 16:24:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=YIYvRc/eOBDQfLyHBTp11mW8QVnqX7TpdxjEZipTkuI=; b=hWux1TnAdb9LfP
-	lUeOXFdajt6jG5Q8jdnXtMEwJ0J2q7277+Ty3GE55ilWlVPSV0wFRJwX+gE9n8qu7FWZMIQ08MSD3
-	v9zpjxBj3uAD5DcyErREHHkUkHGvPNe4IOJieGJ5AXMoEDBJNjTqbeF7awdyUQkHo6uk1P2/2dFZy
-	4i4NQLJJ8G757rhr/GompWdw2QtFSPq7U7H5WalshEyvjkfqonHIgSB2nec30/Mw0DhHdXcy7Pkpc
-	M0RVWg2LpnncVw0FHvH59xy5dCohBYihJrHHcX8UIpisDW3ieN401e3a0OM1bc5rf3VKkHb3DrVBl
-	y49RTS57RPiPae8aZQ3A==;
+	List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:Date:Subject:Cc:
+	To:From:Message-ID:MIME-Version:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=7pJjxzCNNDItk7xol9a6z625jWHlpfZpGwVEOvFWBS8=; b=KFh3oNoF+4tffN
+	uNnQQeEe4HqmJ4JAqTGvKmE5xW/WHb6oO/4+spuBDukawISeXjXRJUnLAWZNrGJVRHs7VBT3SDTkr
+	8snYUW393STdUHxUU8Z6gFXR7z0ITnj8uokzWxgtivSAgx89IVBH2xmJ6to2WzlCqjzxSJJbFgV4m
+	lIbPzU2pRGwXdqcjc207zfLG0dFbXxnQNkqxkEjLCAtHR9RE+Jf+80of9UQ/UMdTw3gJmPIk5RvCa
+	brxOGxKrPOKtsK0yrCQxPC7T6pfL47wdXKmkuPZY6Ya6R6/Bu/MWPZ/IE4Tkh55xdlrAJhsWpenei
+	uzyjMoGJHOjJQ8+2UnHg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nI9my-003x3H-8x; Thu, 10 Feb 2022 13:47:12 +0000
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+	id 1nIBHF-004DCn-01; Thu, 10 Feb 2022 15:22:33 +0000
+Received: from mout.gmx.net ([212.227.15.19])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nI9mi-003wyL-Tq
- for barebox@lists.infradead.org; Thu, 10 Feb 2022 13:47:00 +0000
-Received: by mail-lf1-x12d.google.com with SMTP id 13so10541415lfp.7
- for <barebox@lists.infradead.org>; Thu, 10 Feb 2022 05:46:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=uSPzrwjmRNh5Jjou6BmBekdDZZJS68e3dIdZ1wEYIH8=;
- b=jP3ybAmFGIJlozbpYnqxD0JlRhGQpme09l0qpUchs5cSxDd1qAMK/3Quh4baNZYbKq
- rzffOck8NOlYNWIS2FoovF2Rew3nTK/M+VzgsWWpfngS8x03x0RvZgfjQk8pySv/8O7i
- LSV7HTXiHDs4YeNBWnl5OMuXtWRqKSBERna/x91MmgIwQcOSmxy+04D48kChsYblyIQW
- KMyMFE2lgK3Q5XeePySHWsu7ObV4YbGwBo9j1kKlpu2mXY9j+F9jMpMLZ4Lh8B2xlGPu
- 2e7kmBswNvxd6C+5OCw0MIqfnIbIdyPFCy+DLUXIuorH5CJt1vlK47kEtiZc7NeCtT1D
- 5Vmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=uSPzrwjmRNh5Jjou6BmBekdDZZJS68e3dIdZ1wEYIH8=;
- b=gQrWU5AgHOTv2PP26kBPIC7vD4xvANKNQK+n5iovI++qnBVkmT3QENlAt+cy2dYXuZ
- btmN3SUzjBHb8eb8h85IkPOgTZUCH2mvx/I7SrFLN8JLkSTmkcBRJk76t2QTDho/Mhy1
- xhjJ8m0RGgdJLyN+ajx3yKcZONL+Av8qheQkhxpO0mgt+wiHKZKVEeles8Q8ANMI0j6+
- vuCXXW/ZdgQ6D6W1sS7QFoPj+lNCN+/PHR8OIelAtTfMRZsPKUerKcmOVK6yDfAwQala
- yuUssLsKw4LP+Nof6N8XXkvOvdvoXb851NLhX3Zhnef1YrlUAwTqDFeA5gQw9f5TqBah
- nECw==
-X-Gm-Message-State: AOAM532rAf12ttTJramZtKAczDNbZa4CZ7OcP9HteYCNkeoE44oDTWIA
- nIfzop1LBdG41ConawIgN0X+NnAEfTI=
-X-Google-Smtp-Source: ABdhPJwOmYn+6WE2Hj48v34RKX6qBcnPSabOCuHkaS2qF74BfN3xQ4OPpmYLDUbSNgGh69rrBlNvbw==
-X-Received: by 2002:a05:6512:3e0b:: with SMTP id
- i11mr5294013lfv.510.1644500813954; 
- Thu, 10 Feb 2022 05:46:53 -0800 (PST)
-Received: from localhost.localdomain ([193.232.173.109])
- by smtp.gmail.com with ESMTPSA id h13sm2799561lfv.100.2022.02.10.05.46.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Feb 2022 05:46:53 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: barebox@lists.infradead.org
-Date: Thu, 10 Feb 2022 16:46:39 +0300
-Message-Id: <20220210134639.341801-1-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 2.33.0
+ id 1nIBH9-004DAY-Oz
+ for barebox@lists.infradead.org; Thu, 10 Feb 2022 15:22:29 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=badeba3b8450; t=1644506542;
+ bh=q2U/Jwc5sMC5XAkNx8+CcK2GOM3r9jT+GxHSiRoOKnM=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=apCp3cRkfiz13TgsbWkHJxbvrfSCOQNhnBkYgdGoc1v8ccd9VaUdTBMHu5y4UXwTR
+ zZlc78Ly2pHGyBAgFP7Yjteq8BvJeJGZOemkxxMQ3AvUp+fP76I2thOlvVkqMk4nAm
+ SXdaGkmGTq5aWAQYWMym3yCLWzjSm1SrPpiFM4pc=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [80.245.78.143] ([80.245.78.143]) by web-mail.gmx.net
+ (3c-app-gmx-bs17.server.lan [172.19.170.69]) (via HTTP); Thu, 10 Feb 2022
+ 16:22:22 +0100
 MIME-Version: 1.0
+Message-ID: <trinity-428345f2-04d4-4905-9cf6-42ed3b3f5d4c-1644506542395@3c-app-gmx-bs17>
+From: Frank Wunderlich <frank-w@public-files.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Frank Wunderlich <linux@fw-web.de>, barebox@lists.infradead.org
+Date: Thu, 10 Feb 2022 16:22:22 +0100
+Importance: normal
+Sensitivity: Normal
+In-Reply-To: <20220124085513.GX23490@pengutronix.de>
+References: <20220123165149.158515-1-linux@fw-web.de>
+ <20220124085513.GX23490@pengutronix.de>
+X-UI-Message-Type: mail
+X-Priority: 3
+X-Provags-ID: V03:K1:ttim9wdHjisUsLv2q4P9ftJWsr75jjU1Pzz3GSac9BCmHZP9QOttWIolypGQo/OCagL6I
+ RGxGVTuSa5inPjT1uCPUkEqz2s2/YD1SpvIsmiMDqGOc2UmL5fZ7n9qZckjezrSn/1oAP0BMHV1r
+ G1gMyQFSd6vFhL18arRxADRaPDvqftA0XLXspey+W3wmKrEXnb0ck5coqhdxaDYcDTK7TmhGJ+3E
+ Y9P+9VM24sugDybDAftyOKcnNny9KwpyBVmt8hpZV/2yzbzm7jYO5P3GNGsiWjeu0Pj+q/Wd9UMF
+ q0=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1XjLjE4v8Vc=:5dwsWBpYebKOo03Aeu6rGa
+ 0cpIbDNMKfukOsYY1KrGhVc+2J4d/YiIyDlYN1iNHh2XYQCcq5OjHqrZGPCSE/tc9jjVqGPEQ
+ WMNIuVgSbhYKZZWL6LINKi/mtxiMgRmkVFt7qY58RSFGJ1jWgzpfN/fVx98SwsCsa+RGLWqx9
+ yE63nHoKjFEE5g4EEMe0DxxgmD8LjrbzXxsJoXntHDxcuxOqnNkcna2SWYt3+/E2kP7tXPP/+
+ Am8xaRGB5a2BROlnDTG5L01kQpOtj+HyUFdfYbPaX9cmlslVLZKl4FHRP2FZ1Lz3ZNmD5eFl3
+ zlhbkxpHHdGZ/iUEIhhMl1KFWrss4tFjwBUEjszKAaWnqIB/oIX/hArjHbmWRnQyrtpSYFl3q
+ Y9tAyvjeHxdFcLVWOcMnA26En4ADOmjnAcLi/AU4JZWB29EGUwVCgnwiYNFcRopHi9L3Sc/h3
+ eebtPrxBrJqmSZtX/fHMe+DCWKPmZRTWxNW3DyMj1WQiO2xbhf5ZTHYKXsK/5j51Z4xtxN1SB
+ 4ajm8CvOy/ktCq5MfKBDlIZru7yPR12QxYuGOxd4NfNElzzW0H0NYyO7Az2s+DvzdTYKSAHIm
+ J16moVPDmOs9XPce+v8TUeQyfTNqjSR6NQLnREu/CCqad0MTlv12j9VEeZBSTK9bWu08msDkt
+ /w6iLYgxWy0SMTFPV5KTwn+xJMMaeyBucryL0JbKyxXmuyJ0kkzQtPkex4w7Mfs0rguqPyM4J
+ ohXtoIxdzMVmFP0U80CNu7bdvaKbamrc1IlOrHpF3WI18cztLeT199QsnHUzGhznS4xo369sA
+ CfnuJJ3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220210_054656_994568_745F823E 
-X-CRM114-Status: UNSURE (   9.39  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220210_072228_121827_A60F0083 
+X-CRM114-Status: GOOD (  13.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,66 +94,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] imd: add optional endianness= parameter for bi-endian systems
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Aw: Re: [PATCH v1] ARM: Rockchip: Add rk3568 BananaPi R2 Pro board
+ support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-MIPS architecture supports both little- and big-endian modes.
-It's handy to have means to determine endianness of barebox
-image. This patch adds necessary record into imd block.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- common/Kconfig       |  6 ++++++
- common/imd-barebox.c | 10 ++++++++++
- 2 files changed, 16 insertions(+)
+> Gesendet: Montag, 24. Januar 2022 um 09:55 Uhr
+> Von: "Sascha Hauer" <s.hauer@pengutronix.de>
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 667b0a1e79..f8d99bd48c 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -730,6 +730,12 @@ config IMD
- 	select CRC32
- 	bool "barebox metadata support"
- 
-+config IMD_ENDIANNESS
-+	bool "add endianness record to metadata"
-+	depends on IMD
-+	depends on SYS_SUPPORTS_LITTLE_ENDIAN && SYS_SUPPORTS_BIG_ENDIAN
-+	default y
-+
- choice
- 	prompt "console support"
- 	default CONSOLE_FULL
-diff --git a/common/imd-barebox.c b/common/imd-barebox.c
-index e11fdca845..7877c8de39 100644
---- a/common/imd-barebox.c
-+++ b/common/imd-barebox.c
-@@ -23,6 +23,16 @@ __BAREBOX_IMD_SECTION(.barebox_imd_end) = {
- 	.type = cpu_to_le32(IMD_TYPE_END),
- };
- 
-+#ifdef CONFIG_IMD_ENDIANNESS
-+#ifdef CONFIG_CPU_LITTLE_ENDIAN
-+#define IMD_ENDIANNESS "little"
-+#else
-+#define IMD_ENDIANNESS "big"
-+#endif
-+BAREBOX_IMD_TAG_STRING(imd_endianness_tag, IMD_TYPE_PARAMETER,
-+			"endianness=" IMD_ENDIANNESS, 1);
-+#endif /* CONFIG_IMD_ENDIANNESS */
-+
- BAREBOX_IMD_TAG_STRING(imd_build_tag, IMD_TYPE_BUILD, UTS_VERSION, 1);
- BAREBOX_IMD_TAG_STRING(imd_release_tag, IMD_TYPE_RELEASE, UTS_RELEASE, 1);
- BAREBOX_IMD_TAG_STRING(imd_buildsystem_version_tag, IMD_TYPE_BUILDSYSTEM, BUILDSYSTEM_VERSION, 1);
--- 
-2.33.0
+> I saw this device tree looks different from the one you sent for kernel
+> inclusion. This is not a problem now, but once the kernel dts is
+> upstream it will show up in dts/ in the barebox tree. We then usually
+> include the upstream dts from the barebox board dts, so that only the
+> barebox specific additions are in the barebox dts. Given that it would
+> be nice if you could minimize the differences now already, so that later
+> inclusion of the upstream dts becomes easier.
 
+Hi,
+
+after dts got merged to linux i used it to find differences and minimized them.
+
+have not added io-domain as i don't know if they change in future and they are not needed in barebox.
+
+needed to add tsadc+pinctrl and spi3 to rk3568*.dtsi as they are referenced in my linux board dts
+
+can you look if the dts is now ok for upstreaming?
+
+https://github.com/frank-w/barebox-r2pro/blob/r2pro/arch/arm/dts/rk3568-bpi-r2-pro.dts
+
+regards Frank
 
 _______________________________________________
 barebox mailing list
