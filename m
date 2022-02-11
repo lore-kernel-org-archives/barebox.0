@@ -1,65 +1,63 @@
-Delivery-date: Thu, 10 Feb 2022 16:56:37 +0100
+Delivery-date: Fri, 11 Feb 2022 10:13:41 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nIBoD-00BwVS-Av
-	for lore@lore.pengutronix.de; Thu, 10 Feb 2022 16:56:37 +0100
+	id 1nIRzp-00Ch7p-7B
+	for lore@lore.pengutronix.de; Fri, 11 Feb 2022 10:13:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nIBoB-0004Nr-Op
-	for lore@pengutronix.de; Thu, 10 Feb 2022 16:56:36 +0100
+	id 1nIRzn-0004h8-Ss
+	for lore@pengutronix.de; Fri, 11 Feb 2022 10:13:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=hYZ9VoojbfMOK2Nsh/WMBF0YJF5wQ5gFjpyg1t991BM=; b=fOsd/ANIculmcS
-	RejXBem+qZQYtp5ciTGIRQqFdNkGK4VszRyWpp8LVoHbKxtVh8YlcYK84zhrHOjr7rhT+p4Dk75cW
-	aFkD4fUuVl5eqJhjQ8ayUQXG0o94OZVsGtZcIeml/pdvtuBpwdyYKD0xR8PUjS1fqMJliXlH2n5Hq
-	5CwXFci8An0QzmP9gajJwIxU+Tjzi3/mtYFbYK2HEuwvawZSIiQevUswWjHWkefsHSdpDvXP5xt8g
-	RdfhNPNw7u5LoxPFhFKkFqR+ZRgRGXweevf7+7TPWJAGRPnAhfD3h6B5vSUrYLGNmn4K9Xg8DG8un
-	mkPNJCDNh1JUjOUzPL/A==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=qzKAFb2/jxRorb1JewYmlJfSpm5NTpUcDRh7u5JLlc4=; b=eU0PzMZbN8Y1e/
+	Qm/sYwEtv4ped6Hk+TA39aIhQsZA73aoQsHWznvE/L9bLe9sbbQWa/mo5X14X3YXssuRG3lYAVFtt
+	W41FymottWaSc7HXJ2aNPym9eNsGqFQUnVE/kxtHdv8P9SWBFWmEMR9ZBUS6KKFa7gVEmQvUcMuLL
+	moQNiwBwsyQL+GPGna26FqVwuuW+gq4xZCDzm2ccIaricW+vVWBkiWkrr5gmZ/wVm++8qnRsc2A1w
+	UJg36O9cGdsAF7LwMMWLc9TMdA8VicUDevmUhjr62/1gqfRMy+EoUU/TwI26m0hzHZqT1/UcIDH0N
+	D/55P5QTHJWQ/A4bhEvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nIBmr-004Gpj-V9; Thu, 10 Feb 2022 15:55:14 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1nIRyE-006Izg-9f; Fri, 11 Feb 2022 09:12:02 +0000
+Received: from mxout1.routing.net ([2a03:2900:1:a::a])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nIBml-004Gnr-Ri
- for barebox@lists.infradead.org; Thu, 10 Feb 2022 15:55:11 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nIBmi-00043U-JY; Thu, 10 Feb 2022 16:55:04 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nIBmh-0003kk-H3; Thu, 10 Feb 2022 16:55:03 +0100
-Date: Thu, 10 Feb 2022 16:55:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Frank Wunderlich <frank-w@public-files.de>
-Cc: Frank Wunderlich <linux@fw-web.de>, barebox@lists.infradead.org
-Message-ID: <20220210155503.GC18637@pengutronix.de>
-References: <20220123165149.158515-1-linux@fw-web.de>
- <20220124085513.GX23490@pengutronix.de>
- <trinity-428345f2-04d4-4905-9cf6-42ed3b3f5d4c-1644506542395@3c-app-gmx-bs17>
+ id 1nIRy9-006Iz8-RE
+ for barebox@lists.infradead.org; Fri, 11 Feb 2022 09:11:59 +0000
+Received: from mxbox4.masterlogin.de (unknown [192.168.10.79])
+ by mxout1.routing.net (Postfix) with ESMTP id E718140719;
+ Fri, 11 Feb 2022 09:11:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+ s=20200217; t=1644570712;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=YQPPSWgnrLeobTNJCHw10bhxioJYePMxYImAgx6zIUk=;
+ b=GO0PefgMZwl94eRIpwtq2+2kj2kfCGgCGfIpd9E1jy4rnnbnrhWjvuv2MJifYqSjgiJl73
+ JAGI3GbpAkcBrodxOOhZWr6zx65Gv9IeLDMejHUbRuoAcK3MV4p6gMZa82qE+Lz28AHZW2
+ fwPA1O00dj0/ZGyNpdIphbcN7Eg9tUg=
+Received: from localhost.localdomain (fttx-pool-217.61.154.74.bambit.de
+ [217.61.154.74])
+ by mxbox4.masterlogin.de (Postfix) with ESMTPSA id 6ACF780C5E;
+ Fri, 11 Feb 2022 09:11:45 +0000 (UTC)
+From: Frank Wunderlich <linux@fw-web.de>
+To: barebox@lists.infradead.org
+Cc: Frank Wunderlich <frank-w@public-files.de>
+Date: Fri, 11 Feb 2022 10:11:14 +0100
+Message-Id: <20220211091114.11220-1-linux@fw-web.de>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <trinity-428345f2-04d4-4905-9cf6-42ed3b3f5d4c-1644506542395@3c-app-gmx-bs17>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 16:48:42 up 62 days, 34 min, 85 users,  load average: 0.18, 0.14,
- 0.13
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mail-ID: 69347f6a-bade-4197-8031-4bf4fee0d5f1
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220210_075507_925364_B19190CC 
-X-CRM114-Status: GOOD (  34.17  )
+X-CRM114-CacheID: sfid-20220211_011158_091151_2EF64F62 
+X-CRM114-Status: UNSURE (   7.28  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,250 +77,99 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: Re: [PATCH v1] ARM: Rockchip: Add rk3568 BananaPi R2 Pro board
- support
+Subject: [PATCH] ARM: Rockchip: rk3568: add tsadc and spi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Feb 10, 2022 at 04:22:22PM +0100, Frank Wunderlich wrote:
-> 
-> > Gesendet: Montag, 24. Januar 2022 um 09:55 Uhr
-> > Von: "Sascha Hauer" <s.hauer@pengutronix.de>
-> 
-> > I saw this device tree looks different from the one you sent for kernel
-> > inclusion. This is not a problem now, but once the kernel dts is
-> > upstream it will show up in dts/ in the barebox tree. We then usually
-> > include the upstream dts from the barebox board dts, so that only the
-> > barebox specific additions are in the barebox dts. Given that it would
-> > be nice if you could minimize the differences now already, so that later
-> > inclusion of the upstream dts becomes easier.
-> 
-> Hi,
-> 
-> after dts got merged to linux i used it to find differences and minimized them.
-> 
-> have not added io-domain as i don't know if they change in future and they are not needed in barebox.
-> 
-> needed to add tsadc+pinctrl and spi3 to rk3568*.dtsi as they are referenced in my linux board dts
-> 
-> can you look if the dts is now ok for upstreaming?
-> 
-> https://github.com/frank-w/barebox-r2pro/blob/r2pro/arch/arm/dts/rk3568-bpi-r2-pro.dts
+From: Frank Wunderlich <frank-w@public-files.de>
 
-Here's the diff for the two files. Most stuff looks ok, but some there
-are a few things:
+Add tsadc and spi node from linux.
 
-> --- rk3568-bpi-r2-pro.dts	2022-02-10 16:44:02.512408386 +0100
-> +++ bb.dts	2022-02-10 16:44:41.880348199 +0100
-> @@ -15,13 +15,29 @@
->  	compatible = "rockchip,rk3568-bpi-r2pro", "rockchip,rk3568";
->  
->  	aliases {
-> -		ethernet0 = &gmac0;
-> -		mmc0 = &sdmmc0;
-> -		mmc1 = &sdhci;
-> +		emmc = &sdhci;
-> +		sd = &sdmmc0;
->  	};
->  
-> -	chosen: chosen {
-> +	chosen {
->  		stdout-path = "serial2:1500000n8";
-> +
-> +		environment-sd {
-> +			compatible = "barebox,environment";
-> +			device-path = &environment_sd;
-> +			status = "disabled";
-> +		};
-> +
-> +		environment-emmc {
-> +			compatible = "barebox,environment";
-> +			device-path = &environment_emmc;
-> +			status = "disabled";
-> +		};
-> +	};
-> +
-> +	memory@a00000 {
-> +		device_type = "memory";
-> +		reg = <0x0 0x00a00000 0x0 0x7f600000>;
->  	};
->  
->  	leds {
-> @@ -72,11 +88,42 @@
->  		regulator-max-microvolt = <5000000>;
->  		vin-supply = <&dc_12v>;
->  	};
-> +
-> +	vcc3v3_lcd0_n: vcc3v3-lcd0-n {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vcc3v3_lcd0_n";
-> +		regulator-boot-on;
-> +
-> +		regulator-state-mem {
-> +			regulator-off-in-suspend;
-> +		};
-> +	};
-> +
-> +	vcc3v3_lcd1_n: vcc3v3-lcd1-n {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vcc3v3_lcd1_n";
-> +		regulator-boot-on;
-> +
-> +		regulator-state-mem {
-> +			regulator-off-in-suspend;
-> +		};
-> +	};
-> +
-> +	vcc5v0_host: vcc5v0-host-regulator {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vcc5v0_host";
-> +		enable-active-high;
-> +		gpio = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&vcc5v0_host_en>;
-> +		regulator-always-on;
-> +	};
->  };
->  
->  &gmac0 {
->  	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>, <&cru SCLK_GMAC0>;
->  	assigned-clock-parents = <&cru SCLK_GMAC0_RGMII_SPEED>, <&cru CLK_MAC0_2TOP>;
-> +	assigned-clock-rates = <0>, <125000000>;
->  	clock_in_out = "input";
->  	phy-handle = <&rgmii_phy0>;
->  	phy-mode = "rgmii";
-> @@ -86,10 +133,6 @@
->  		     &gmac0_rx_bus2
->  		     &gmac0_rgmii_clk
->  		     &gmac0_rgmii_bus>;
-> -	snps,reset-gpio = <&gpio3 RK_PB7 GPIO_ACTIVE_LOW>;
-> -	snps,reset-active-low;
-> -	/* Reset time is 20ms, 100ms for rtl8211f */
-> -	snps,reset-delays-us = <0 20000 100000>;
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+---
+ arch/arm/dts/rk3568-pinctrl.dtsi |  9 ++++++++
+ arch/arm/dts/rk3568.dtsi         | 35 ++++++++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+)
 
-Why is this removed?
-
->  	tx_delay = <0x3c>;
->  	rx_delay = <0x2f>;
->  	status = "okay";
-> @@ -106,6 +149,11 @@
->  		#clock-cells = <1>;
->  		pinctrl-names = "default";
->  		pinctrl-0 = <&pmic_int>;
-> +
-> +		clock-output-names = "rk808-clkout1", "rk808-clkout2";
-> +		/* 1: rst regs (default in codes), 0: rst the pmic */
-> +		pmic-reset-func = <0>;
-> +
->  		rockchip,system-power-controller;
->  		vcc1-supply = <&vcc3v3_sys>;
->  		vcc2-supply = <&vcc3v3_sys>;
-> @@ -118,6 +166,10 @@
->  		vcc9-supply = <&vcc3v3_sys>;
->  		wakeup-source;
->  
-> +		pwrkey {
-> +			status = "okay";
-> +		};
-
-This is unused in barebox, right? If so, please drop.
-
-> +
->  		regulators {
->  			vdd_logic: DCDC_REG1 {
->  				regulator-name = "vdd_logic";
-> @@ -337,19 +389,28 @@
->  			rockchip,pins =
->  				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
->  		};
-> +
-> +		soc_slppin_gpio: soc_slppin_gpio {
-> +			rockchip,pins =
-> +				<0 RK_PA2 RK_FUNC_GPIO &pcfg_output_low>;
-> +		};
-> +
-> +		soc_slppin_slp: soc_slppin_slp {
-> +			rockchip,pins =
-> +				<0 RK_PA2 1 &pcfg_pull_none>;
-> +		};
-> +
-> +		soc_slppin_rst: soc_slppin_rst {
-> +			rockchip,pins =
-> +				<0 RK_PA2 2 &pcfg_pull_none>;
-> +		};
-
-These are unused.
-
->  	};
-> -};
->  
-> -&pmu_io_domains {
-> -	pmuio1-supply = <&vcc3v3_pmu>;
-> -	pmuio2-supply = <&vcc3v3_pmu>;
-> -	vccio1-supply = <&vccio_acodec>;
-> -	vccio3-supply = <&vccio_sd>;
-> -	vccio4-supply = <&vcc_1v8>;
-> -	vccio5-supply = <&vcc_3v3>;
-> -	vccio6-supply = <&vcc_3v3>;
-> -	vccio7-supply = <&vcc_3v3>;
-> -	status = "okay";
-> +	usb {
-> +		vcc5v0_host_en: vcc5v0-host-en {
-> +			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
-> +		};
-> +	};
->  };
->  
->  &pwm8 {
-> @@ -404,22 +465,46 @@
->  	bus-width = <8>;
->  	max-frequency = <200000000>;
->  	non-removable;
-> +	no-sd;
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd &emmc_datastrobe>;
->  	status = "okay";
-> +
-> +	partitions {
-> +		compatible = "fixed-partitions";
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +
-> +		environment_emmc: partition@408000 {
-> +			label = "barebox-environment";
-> +			reg = <0x0 0x408000 0x0 0x8000>;
-> +		};
-> +	};
->  };
->  
->  &sdmmc0 {
->  	bus-width = <4>;
->  	cap-sd-highspeed;
-> -	cd-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_LOW>;
-
-Could be added to barebox dts as well.
-
->  	disable-wp;
-> +	max-frequency = <150000000>;
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
->  	sd-uhs-sdr104;
-> +	supports-sd;
-
-Please drop. This is used nowhere.
-
-Sascha
-
+diff --git a/arch/arm/dts/rk3568-pinctrl.dtsi b/arch/arm/dts/rk3568-pinctrl.dtsi
+index a588ca95ace2..8f90c66dd9e9 100644
+--- a/arch/arm/dts/rk3568-pinctrl.dtsi
++++ b/arch/arm/dts/rk3568-pinctrl.dtsi
+@@ -3108,4 +3108,13 @@
+ 				<4 RK_PA0 3 &pcfg_pull_none_drv_level_2>;
+ 		};
+ 	};
++
++	tsadc {
++		/omit-if-no-ref/
++		tsadc_pin: tsadc-pin {
++			rockchip,pins =
++				/* tsadc_pin */
++				<0 RK_PA1 0 &pcfg_pull_none>;
++		};
++	};
+ };
+diff --git a/arch/arm/dts/rk3568.dtsi b/arch/arm/dts/rk3568.dtsi
+index 0f19d3f0c0c3..6afd95b01c0c 100644
+--- a/arch/arm/dts/rk3568.dtsi
++++ b/arch/arm/dts/rk3568.dtsi
+@@ -772,6 +772,21 @@
+ 		clock-names = "tclk", "pclk";
+ 	};
+ 
++	spi3: spi@fe640000 {
++		compatible = "rockchip,rk3568-spi", "rockchip,rk3066-spi";
++		reg = <0x0 0xfe640000 0x0 0x1000>;
++		interrupts = <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&cru CLK_SPI3>, <&cru PCLK_SPI3>;
++		clock-names = "spiclk", "apb_pclk";
++		dmas = <&dmac0 26>, <&dmac0 27>;
++		dma-names = "tx", "rx";
++		pinctrl-names = "default";
++		pinctrl-0 = <&spi3m0_cs0 &spi3m0_cs1 &spi3m0_pins>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		status = "disabled";
++	};
++
+ 	uart1: serial@fe650000 {
+ 		compatible = "rockchip,rk3568-uart", "snps,dw-apb-uart";
+ 		reg = <0x0 0xfe650000 0x0 0x100>;
+@@ -1030,6 +1045,26 @@
+ 		status = "disabled";
+ 	};
+ 
++	tsadc: tsadc@fe710000 {
++		compatible = "rockchip,rk3568-tsadc";
++		reg = <0x0 0xfe710000 0x0 0x100>;
++		interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
++		assigned-clocks = <&cru CLK_TSADC_TSEN>, <&cru CLK_TSADC>;
++		assigned-clock-rates = <17000000>, <700000>;
++		clocks = <&cru CLK_TSADC>, <&cru PCLK_TSADC>;
++		clock-names = "tsadc", "apb_pclk";
++		resets = <&cru SRST_P_TSADC>, <&cru SRST_TSADC>,
++			 <&cru SRST_TSADCPHY>;
++		rockchip,grf = <&grf>;
++		rockchip,hw-tshut-temp = <95000>;
++		pinctrl-names = "init", "default", "sleep";
++		pinctrl-0 = <&tsadc_pin>;
++		pinctrl-1 = <&tsadc_shutorg>;
++		pinctrl-2 = <&tsadc_pin>;
++		#thermal-sensor-cells = <1>;
++		status = "disabled";
++	};
++
+ 	saradc: saradc@fe720000 {
+ 		compatible = "rockchip,rk3568-saradc";
+ 		reg = <0x0 0xfe720000 0x0 0x100>;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.1
+
 
 _______________________________________________
 barebox mailing list
