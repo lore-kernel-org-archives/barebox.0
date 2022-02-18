@@ -1,55 +1,59 @@
-Delivery-date: Thu, 17 Feb 2022 09:29:00 +0100
+Delivery-date: Fri, 18 Feb 2022 15:44:30 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nKc9s-001b2u-2Q
-	for lore@lore.pengutronix.de; Thu, 17 Feb 2022 09:29:00 +0100
+	id 1nL4Uo-002z0g-BJ
+	for lore@lore.pengutronix.de; Fri, 18 Feb 2022 15:44:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nKc9p-00028g-Uv
-	for lore@pengutronix.de; Thu, 17 Feb 2022 09:28:59 +0100
+	id 1nL4Ul-0004bP-WF
+	for lore@pengutronix.de; Fri, 18 Feb 2022 15:44:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=wFAzdcntcOb80LSqNMDXWJAqUPrH5H8Ta68RzCgNHXk=; b=bqoDCmaolwjmO4
-	EREBTeSDoCtwVDu1u7yu1w+ftz7CsHYmCFsROQ2nR9U7b4FfZXjA9KgXG7lWBi7gUyPy1rywtPpMR
-	Xn4lwkZvp07JRHRscK5vjSlO5HwB9EPlqOCv/5izyu/hQUNpliI2ylY6j6NZYM6IeQLCzwKmzQ7Ua
-	iy7mEgOLTUMu71hKlbDClQhpdmQ7U+0F/iYIJDvhcAj/JSi2IqGFfc0ODuNrnxQMcl5r54ER4zdpc
-	NUf0AJXUV4kk+JyWjTt4BGIVLwbBYLUuK0QreLC9jBk7N99ppd4Q4q7gRtEy6hi3UEWxANoypaVtJ
-	/ZI4VCDwPSu8/PJ2637A==;
+	List-Archive:List-Unsubscribe:List-Id:From:MIME-Version:Message-ID:Subject:To
+	:Date:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=ZKOegS3Q++lAm/BmfFnIsg2kaKmgLzROEGVefjWi0OE=; b=kWLuw38rbdRvee
+	OpGuQ3HFG9+gtnA0OtFmWDDy2Y4jt6xV4wkQzLjwi52xPDHHwPMrAl0ZzzqNgaX2+he7EavYWL9aD
+	bxD1e7NsmQo8QnY6J/VgsM7/jdeubbcraLHlpV+xIq0ZQceYju8muDkflZPnSIcerPqGwec803WE1
+	HfWQx1CzzlhJhhaG2QHyifhf1IKxNeuuLGg9JFYgzer91EW8aKuUidGaqldsRncR/1VTyGe0Ve44e
+	TBGI8owKGw9oajlEBfnSusRykjfV/cVWOzUqtsPlLE3Dl3XlNJC6wkVba35d4klwZAEZ9pNLh673/
+	bU/ruC+a7VIoYsjF2zDw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nKc8X-009PJx-8w; Thu, 17 Feb 2022 08:27:37 +0000
+	id 1nL4T0-00EpeM-8i; Fri, 18 Feb 2022 14:42:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nKc8G-009PD6-CB
- for barebox@lists.infradead.org; Thu, 17 Feb 2022 08:27:22 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ id 1nL4Sq-00EpcF-4u
+ for barebox@lists.infradead.org; Fri, 18 Feb 2022 14:42:31 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1nKc8F-0001md-55; Thu, 17 Feb 2022 09:27:19 +0100
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>)
- id 1nKc8E-000Lc5-M0; Thu, 17 Feb 2022 09:27:18 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 17 Feb 2022 09:27:14 +0100
-Message-Id: <20220217082714.81749-2-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220217082714.81749-1-a.fatoum@pengutronix.de>
-References: <20220217082714.81749-1-a.fatoum@pengutronix.de>
+ (envelope-from <sha@pengutronix.de>)
+ id 1nL4Sm-0004P9-E3; Fri, 18 Feb 2022 15:42:24 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nL4Sm-0001lK-5P; Fri, 18 Feb 2022 15:42:24 +0100
+Date: Fri, 18 Feb 2022 15:42:24 +0100
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20220218144224.GX18637@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 15:27:52 up 69 days, 23:13, 85 users,  load average: 0.06, 0.17, 0.25
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220217_002720_642616_7C49C5F6 
-X-CRM114-Status: GOOD (  30.38  )
+X-CRM114-CacheID: sfid-20220218_064228_419443_6C2B1407 
+X-CRM114-Status: GOOD (  18.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,8 +65,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -74,237 +78,180 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/1] Documentation: devel: add new project ideas section
+Subject: v2022.02.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This section will collect ideas to improve barebox and should serve as a
-pool of ideas for people who want to enter the field of firmware development
-but need some guidance what to work on.
+Hi All,
 
-These tasks can be adopted as part of programs like Google Summer of Code
-or by motivated individuals outside such programs.
+barebox-2022.02.0 is out. There are no new spectacular features this
+time, so maybe a few bugfixes are worth noting here. Support for
+extended dos partitions were broken in the last releases, they simply
+wouldn't show up. This is fixed now. Also there was a NULL pointer
+dereference when when a barebox under EFI loads other images. It seems
+not all BIOSes map the zero page as faulting, so this went through
+unnoticed. This is also fixed. Last not least generating signed USB
+images for i.MX was broken in the last release and is fixed now.
 
-It's structured after coreboot's
+As usual see below for a full list of changes.
 
-  https://doc.coreboot.org/contributing/project_ideas.html
+Have Fun!
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- Documentation/devel/devel.rst         |   1 +
- Documentation/devel/project-ideas.rst | 174 ++++++++++++++++++++++++++
- Documentation/user/introduction.rst   |   2 +
- 3 files changed, 177 insertions(+)
- create mode 100644 Documentation/devel/project-ideas.rst
+ Sascha
 
-diff --git a/Documentation/devel/devel.rst b/Documentation/devel/devel.rst
-index f703c3bf2767..39070074ca1b 100644
---- a/Documentation/devel/devel.rst
-+++ b/Documentation/devel/devel.rst
-@@ -10,6 +10,7 @@ Contents:
- 
-    porting
-    background-execution
-+   project-ideas
- 
- * :ref:`search`
- * :ref:`genindex`
-diff --git a/Documentation/devel/project-ideas.rst b/Documentation/devel/project-ideas.rst
-new file mode 100644
-index 000000000000..f27e4d5406fc
---- /dev/null
-+++ b/Documentation/devel/project-ideas.rst
-@@ -0,0 +1,174 @@
-+#####################
-+barebox Project Ideas
-+#####################
-+
-+This section collects ideas to improve barebox and should serve as a pool
-+of ideas for people who want to enter the field of firmware development
-+but need some guidance what to work on.
-+
-+These tasks can be adopted as part of programs like Google Summer of Code
-+or by motivated individuals outside such programs.
-+
-+If you find a project interesting and would like to work on it, reach out
-+to the :ref:`mailing list <feedback>` and we can together
-+try to figure out whether you are a good match for the project.
-+
-+This list can be edited and extended by sending patches to the mailing list.
-+Other interesting ideas: Support for new file systems (EROFS, extfat, btrfs).
-+Switch device framework (currently scripts write into a ``/dev/switch`` file
-+to configure passthrough), Improvements for barebox-efi (e.g. as a coreboot
-+payload), ... etc.
-+
-+Address static analyzer feedback for barebox
-+============================================
-+
-+Skills: C
-+
-+barebox is automatically tested using Synopsys' free "Coverity Scan" service.
-+The static analyzer has so far identified 191 possible defects at
-+https://scan.coverity.com/projects/barebox
-+
-+There is a number of false positives there, but it already helped us
-+find actual regressions, e.g. 610720857348 ("fs: ext4: fix bogus behavior
-+on failure to read ext4 block").
-+
-+To make this service more useful, the project would involve categorizing
-+reported issues and handling them as appropriate: Mark them as not applicable
-+if false positive or provide patches to fix real issues.
-+
-+This project does not require dedicated hardware. QEMU or barebox built
-+to run under Linux (sandbox) may be used.
-+
-+Update barebox networking stack for IPv6 support
-+================================================
-+
-+Skills: C, Networking
-+
-+The barebox network stack is mainly used for TFTP and NFSv3 (over UDP) boot.
-+Most embedded systems barebox runs on aren't deployed to IPv6 networks yet,
-+so it's the right time now to future-proof and learn more about networking
-+internals. One major complication with IPv6 support is neighbor discovery
-+protocols that require networking to be possible "in the background".
-+barebox' recent improvements of resource sharing and cooperative scheduling
-+makes it possible to integrate an IPv6 stack, e.g. lwIP.
-+
-+There are also community patches to integrate a TCP stack into barebox.
-+These can be evaluated as time allows.
-+
-+This project does not require dedicated hardware. QEMU or barebox built
-+to run under Linux (sandbox) may be used.
-+
-+Improving barebox test coverage
-+===============================
-+
-+Skills: C
-+
-+barebox is normally tested end-to-end as part of a deployed system.
-+More selftests/emulated tests would reduce the round trip time for testing
-+and thus enable more widely tested patches. A framework has been recently
-+merged to enable this:
-+
-+    * Selftest similar to the kernel can be registered and run. These
-+      directly interface with C-Code.
-+    * Labgrid tests: These boot barebox in a virtual machine or on real
-+      hardware and use the shell to test barebox behaviors.
-+
-+This project will focus on improving the testing coverage by writing more
-+tests for barebox functionality and by fuzzing the parsers available in
-+barebox, with special consideration to the FIT parser, which is used in
-+secure booting setups.
-+
-+This project does not require dedicated hardware. QEMU or barebox built
-+to run under Linux (sandbox) may be used.
-+
-+Porting barebox to new hardware
-+===============================
-+
-+Skills: C, low-level affinity
-+
-+While Linux and Linux userspace can be quite generic with respect to the
-+hardware it runs on, the bucket needs to stop somewhere: barebox needs
-+detailed knowledge of the hardware to initialize it and to pass this
-+along information to Linux. In this project, familiarity with barebox
-+and a new unsupported SoC will be established with the goal of porting
-+barebox to run on it. Prospective developers can suggest suitable
-+hardware (boards/SoCs) they are interested in. Preference is for
-+hardware, which is generally available and has more open documentation.
-+
-+The goal is to have enough support to run barebox on the board, set up
-+RAM and load a kernel from non-volatile storage and boot it.
-+
-+If time allows (because most drivers are already available in barebox),
-+new drivers can be ported to enable not only running Linux on the board,
-+but bareDOOM as well.
-+
-+This project requires embedded hardware with preferably an ARM SoC, as
-+these have the widest barebox support, but other architectures are ok
-+as well.
-+
-+Improve barebox RISC-V support
-+==============================
-+
-+Skills: C, RISC-V interest, low-level affinity
-+
-+barebox supports a number of both soft and hardRISC-V targets,
-+e.g.: BeagleV, HiFive, LiteX and the QEMU/TinyEMU Virt machine.
-+
-+Unlike e.g. ARM and MIPS, RISC-V support is still in its formative
-+stage, so much opportunity in implementing the gritty details:
-+
-+    - Physical memory protection in M-Mode to trap access violations
-+    - MMU support in S-Mode to trap access violations
-+    - Improve barebox support for multiple harts (hardware threads)
-+
-+This project does not require dedicated hardware. QEMU can be used.
-+
-+Improve barebox I/O performance
-+===============================
-+
-+Skills: C, low-level affinity
-+
-+On a normal modern system, booting may involve mounting and traversing
-+a file system, which employs caching for directory entries and sits
-+on top of a block device which caches blocks previously read from the
-+hardware driver, often by means of DMA. There are a number of improvements
-+possible to increase throughput of barebox I/O:
-+
-+    - Support for higher MMC speed modes: The maximum currently supported
-+      is 50/52 MHz and no DDR.
-+    - More efficient erase: Communication protocols like Android Fastboot
-+      encode large blocks of zeros specially. MMCs with erase-to-zero
-+      capability could perform such erases in the background instead
-+      of having to write big chunks of zeros.
-+    - Block layer block sizes: There is a fixed block size used for
-+      caching, which is meant to be a good compromise for read
-+      and write performance. This may not be optimal for all devices
-+      and can be revisited.
-+
-+This project requires embedded hardware with SD/eMMC that is supported
-+by a barebox media card interface (MCI) driver.
-+
-+Improve JSBarebox, the barebox web demo
-+=======================================
-+
-+Skills: C (Basics), Javascript/Web-assembly, Browser-Profiling
-+
-+While Linux and Linux userspace can be quite generic with respect to the
-+hardware it runs on, the bucket needs to stop somewhere: barebox needs
-+detailed knowledge of the hardware to initialize it and to pass this
-+along information to Linux. JSBarebox removes the hurdle of porting
-+barebox to a new board, for new users who are only interested in
-+trying it out: The browser runs Tinyemu, a virtual machine in which
-+barebox executes as if on real hardware and the user can manipulate the
-+(virtual) hardware from the barebox shell and learn about barebox
-+conveniences: barebox.org/jsbarebox/
-+
-+The project is about streamlining this demo: CPU usage currently is
-+quite high and teaching barebox to idle the CPU (as we do on sandbox)
-+didn't help. This needs to be analyzed with the profiling tools
-+provided with modern browsers. The remainder of the project can then
-+focus on improving the jsbarebox tutorial. e.g. by adding new
-+peripherals to the virtual machine.
-+
-+This project does not require dedicated hardware. The development
-+machine need only support a recent browser.
-diff --git a/Documentation/user/introduction.rst b/Documentation/user/introduction.rst
-index 523fe288f9fe..e7388b8bc95e 100644
---- a/Documentation/user/introduction.rst
-+++ b/Documentation/user/introduction.rst
-@@ -15,6 +15,8 @@ development binary as well as for lean production systems.
- Just like busybox is the Swiss Army Knife for embedded Linux,
- barebox is the Swiss Army Knife for bare metal, hence the name.
- 
-+.. _feedback:
-+
- Feedback
- --------
- 
--- 
-2.30.2
+----------------------------------------------------------------
+Ahmad Fatoum (53):
+      include: <linux/overflow.h>: add missing include
+      include: spinlock.h: define dummy for DEFINE_SPINLOCK
+      include: <linux/compiler.h>: delete __ADDRESSABLE macro
+      x86: remove reference to empty file
+      commands: set SPDX-License-Identifier for files without license state=
+ment
+      treewide: add SPDX-License-Identifier for Kbuild/Kconfig
+      treewide: add SPDX-License-Identifier for .gitignore
+      images: add SPDX-License-Identifiers
+      fs: jffs2: add SPDX-License-Identifier: GPL-2.0-only
+      include: add SPDX-License-Identifier
+      ARM: i.MX: add SPDX-License-Identifier for DCD
+      arch: add SPDX-License-Identifier to all headers
+      arch: add SPDX-License-Identifier to all .S files
+      arch: add SPDX-License-Identifier to all .c files
+      treewide: add SPDX-License-Identifier for files without explicit lice=
+nse
+      parseopt: drop unused, duplicate, parseopt_u16
+      commands: time: add -n option for nanoseconds output
+      drivers: virtio: import list of newer Virtio IDs
+      common: boards: qemu-virt: fix dtc warning
+      ARM64: qemu-virt64: disable MMU
+      include <printk.h>: include <linux/types.h> for size_t definition
+      include: <asm/csr.h>: sync with upstream
+      state: make first boot with uninitialized legacy state less verbose
+      RISC-V: virt: activate all consoles
+      power: reset: add RISC-V/UC Berkely HTIF poweroff driver support
+      RISC-V: virt: riscvemu: add HTIF DEBUG_LL support
+      RISC-V: virt: riscvemu: repurpose 64k low RAM for state/environment
+      RISC-V: virt: riscvemu: be explicit about HTIF base address
+      RISC-V: virt: riscvemu: clear frame buffer before jumping to reset ve=
+ctor
+      RISC-V: don't use x8/s0/fp in assembly
+      RISC-V: add stacktrace support via frame pointer walking
+      RISC-V: Virt: enable more useful options
+      fs: implement pushd/popd chdir wrappers
+      commands: add new tutorial command
+      tlsf: dump stack on assertion failure
+      driver: have CONFIG_DEBUG_PROBES report device unbind as well
+      commands: add new devunbind debugging command
+      pinctrl: stm32: replace magic values with defines for STM32_PINMODE
+      clk: change clk_get_num_parents into clk_hw_get_num_parents
+      clk: propagate error pointers in clk_hw_to_clk and clk_to_clk_hw
+      ARM: rockchip: add new ARCH_ROCKCHIP_{V7,V8} symbols
+      ARM: implement ENTRY_FUNCTION_WITHSTACK
+      ARM: turn arm_mem_stack_top into a macro
+      ARM: rpi: use ENTRY_FUNCTION_WITHSTACK to prepare for ARM64 support
+      ARM64: rockchip: add config symbol for ARMv8-based rk3399 SoC
+      clk: rockchip: extend for rk3399 support
+      i2c: add Rockchip i2c controller support
+      misc: acpi-test: retire test driver in favor of WDAT driver
+      clk: imx6: fix PLL exception for i.MX6DQ revision 1.0
+      Documentation: remove some references to zbarebox.bin
+      Documentation: user: barebox: mention generic dt 2nd stage support
+      Documentation: user: barebox: fix formatting for code block
+      Documentation: devel: add new project ideas section
 
+Andrej Picej (2):
+      watchdog: imxwd: suspend watchdog timer in low power mode
+      scripts/common: fix write_file when opened with mmap
+
+Antony Pavlov (2):
+      rtc: import pcf85363 support from linux-5.12
+      pinctrl: rockchip: drop unused variable 'name'
+
+Clement Leger (6):
+      common: elf: add elf_load_binary
+      kvx: enable FITIMAGE support
+      nvmem: add kvx otp non volatile regbank support
+      kvx: add kvx_sfr_field_val
+      drivers: add soc hierarchy properly
+      soc: add kvx_socinfo driver
+
+Enguerrand de Ribaucourt (1):
+      commands: hashsum: Fix endif typos
+
+Holger Assmann (1):
+      fs: jffs2: fix error when reading blocks with offset
+
+Jules Maselbas (4):
+      kvx: dma: Remove arch dma_map/unmap_single
+      kvx: Move LINUX_BOOT_PARAM_MAGIC in asm/common.h
+      kvx: Accept LINUX_BOOT_PARAM_MAGIC as a valid magic value
+      clocksource: kvx: Register as postcore_platform_driver
+
+Louis Morhet (1):
+      watchdog: kvx: do not disable watchdog on probe
+
+Lucas Stach (2):
+      soc: imx: gpcv2: split PGC domain probe in two passes
+      ARM: mnt-reform: switch to deep-probe
+
+Michael Riesch (1):
+      net: designware: rockchip: remove unnecessary clock pclk_xpcs
+
+Michael Tretter (10):
+      spi: stub device_spi_driver if SPI is disabled
+      spi: add to_spi_device helper
+      i2c: stub device_i2c_driver if I2C is disabled
+      video: ssd1307fb: pass par instead of i2c client to write
+      video: ssd1307fb: don't use i2c client for logging
+      video: ssd1307fb: move i2c setup to single place
+      video: ssd1307fb: use function pointer for write
+      video: ssd1307fb: add spi support
+      serial: cadence: add ZynqMP compatibles
+      firmware: zynqmp-fpga: fix use of uninitialized addr
+
+Oleksij Rempel (2):
+      serial: amba-pl011: reset controller on pl011_setbaudrate()
+      ARM: rpi: set uart0-pl0110 clk to 48MHz
+
+Philipp Zabel (1):
+      efi: skip devices without driver in efi_pause/continue_devices()
+
+Sascha Hauer (21):
+      dts: update to v5.16-rc6
+      dts: update to v5.16-rc7
+      getopt: Add support for '+' in optstring
+      dts: update to v5.16
+      Revert "clk: handle CLK_OF_DECLARE in deep probe"
+      regmap: Implement regmap_[set|clear]_bits()
+      Merge branch 'for-next/arm'
+      Merge branch 'for-next/clk-revert'
+      Merge branch 'for-next/dts'
+      Merge branch 'for-next/kvx'
+      Merge branch 'for-next/misc'
+      Merge branch 'for-next/riscv'
+      Merge branch 'for-next/spdx'
+      Merge branch 'for-next/ssd1307'
+      dos-partitions: Fix extended partitions
+      mmc: sdhci: Fix setting wrong buswidth
+      Documentation: Describe how to generate a uImage for use with bootm
+      scripts/common: Do not mmap in read_file_2()
+      scripts: bareboximd: Use mmap when possible
+      Revert "scripts/common: fix write_file when opened with mmap"
+      Release v2022.02.0
+
+Steffen Trumtrar (2):
+      acpi.h: add defines for adr_space and gas
+      watchdog: add support for wdat_wdt
+
+Uwe Kleine-K=F6nig (1):
+      arm: mvebu: Replace license and copyright boilerplate by SPDX identif=
+iers
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
