@@ -1,95 +1,53 @@
-Delivery-date: Mon, 21 Feb 2022 14:53:53 +0100
+Delivery-date: Mon, 21 Feb 2022 15:06:32 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nM98R-00621m-Cb
-	for lore@lore.pengutronix.de; Mon, 21 Feb 2022 14:53:53 +0100
+	id 1nM9Ki-0062JC-1n
+	for lore@lore.pengutronix.de; Mon, 21 Feb 2022 15:06:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nM98O-0001Z6-P6
-	for lore@pengutronix.de; Mon, 21 Feb 2022 14:53:50 +0100
+	id 1nM9Kf-0003ZX-6P
+	for lore@pengutronix.de; Mon, 21 Feb 2022 15:06:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-ID:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=Admicqgt+TjtAm9kXmp/s8je1QvlgtbCX5TV/sGyLZ8=; b=XfcO8fKbNROlt6
-	HdQLVwo1m+rih0V5D8HYt0Zs1fZhoPbfl/pVp7p8B2eyXl3WkdHkwMvtRAC6z3JHFGiv+mA4DhB56
-	RU3JD9/db6DRCo/GFq4J2nVOLxc3WBCFd7Y8ZSBF7sWiMj0VZnzCN/b1IS823iFvbmQ6lY/jkFQUO
-	InSHhHmzj8Oh9w4S3WkAZDScajsWNnCHm1NV+wnmKuoJbhHqHnZBBjv2JP6wUXyaZEf/pQx+gJu7T
-	1KGtq0OvcVSODVDUdmDCl3Znw7Xbe8+svmo4cWqNIASv3sSJy8xFeznR+tbkj75PQVNClhQ68I7rm
-	K/b8mxjK8WIyIiGBjGQA==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:To:Subject:From:
+	MIME-Version:Date:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=MeDow8e9n/K/GwDQiN9rJSDgJbYJywe6buu5PyRIWuY=; b=aQbwPXSfpGuIpG
+	jWjNPlcuTaiEgDZ/cp3qwB6rCraXcQ3Jd2984VZZlY5pzbdEIriPE+E+kGDMfYPpYan4DgJUsl4v4
+	jJ9Ieav6NQaOeyHbKWBUULmoAQt79I1YHRV1ntv1w322GZjqzrZG+1zFk74gfnJBWXlsdLJN5H0TI
+	dK6TWd5xUkntBYGHkLoCNl5Y6+gQx6bRQAP8kphQ2PcUN3qfo8k0SD1lD3KpGa9TvcJZvLaQCoIZY
+	I33Dtix1deeOcLO9JoTcWbSeVK8MNRJsbbofvhL+GUBUqk4OVXxTM0Rm1w9ZSnUpznJNczd3QmOZi
+	ZK7Pqrt2RFN90Wl/jomA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nM96U-0062Kf-U7; Mon, 21 Feb 2022 13:51:52 +0000
-Received: from mail-db8eur05olkn20827.outbound.protection.outlook.com
- ([2a01:111:f400:7e1a::827]
- helo=EUR05-DB8-obe.outbound.protection.outlook.com)
+	id 1nM9J7-00682l-Ic; Mon, 21 Feb 2022 14:04:53 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nM8bt-005rxN-Ps
- for barebox@lists.infradead.org; Mon, 21 Feb 2022 13:20:15 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Wdhag3/NnV5gBEG6TaVeQXGa8mJpV5zE+0CMGUxhyLp+ErYMhR276l/vDlYwkI0/U3AlfAuvtcL70IqKnQN/y/B65WvRtiSZlekHpfBVCsp9OVsLfhP3/mShd+2UOrPBU8QLKj6yUe0aCJW8bLjAmlRTKOpdWg76DRz8RvKYFeYelz/pr6zrcbyL4DiCv7LL/CXJMVogotqp05Wz9xApuSQsFE/Xoi46flCC0tMBM3LrKPpKVnlKFAv/R04eVSyW1eCLbR9DaTKI1N0gkc/1wI7MAcmiQWKKCZyU3SyKH/XKvRY6GlAdwPAFtgLu9s/PBo94eriJtCifxloEaWz0Yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qNFfLJagSAl7i2d+v1SuClNSnGXPTCKKBLkq3ZFE21I=;
- b=g4cPNCmF7PI/a+91gc+abcji8SRrmcY9MbfvFlKl9+eJQj/UP1nt2wXkhIa4D8cqodQrM0jehSlPFJcHQZwJvUVZTS9oZwECMm+CE1GqlNsBJ4Uh1IIY1jcy6eSkcCIv44IdZs4GlQPATubsPMgIKkoMJIaHGTh4qniZBXWDZZaIPvaBVwhmpkT7xCjxO17z/AowwroatHnNmZ/QZMMWFAENA3WsahWD7zxM+4hBszuJnKTnSiDWruthfSgUPGHGygtY8/qIibuJ+Qugyk8cXRLv7gQtQRQnktf7nsW+rrlnJ7bvQhaJ9XgGPYM+A3FKzkKcgEj+s+urf7xAuAS1QQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qNFfLJagSAl7i2d+v1SuClNSnGXPTCKKBLkq3ZFE21I=;
- b=ekjMV0ypNU3NK5LM16S+qB4aKFuQcoufoYWAuwisOjHwdjUKla0YZEvyxyZpMkczNTtnecoQstNxzQndx6tIg1HtJnyyPcL+1Htrc3tNH3F4kufo228EObZTnTgHF1Lvo14B+RmWn6a5OyJG43sMPdqsb3QPV8h5PJ6kGvNqFho/ZXiCwakUjcBBm72Zyw5uQNz+XFFHO5N5JYdc/OkM5HWIVTcjtuaYznIkUg9vFU0hqb9teHm1IhTZTrWNEnUw68WxhyjeDxEy8Th/K0OwQoHqCrTRDTCOzWrNlb+V1/2OpvGQPNUY6G6RMDpFoQ0kO6XfJnDrUuLy2NHHZG0BBw==
-Received: from AM9P192MB0870.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:1f2::13)
- by AM5P192MB0003.EURP192.PROD.OUTLOOK.COM (2603:10a6:203:8c::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.24; Mon, 21 Feb
- 2022 13:04:33 +0000
-Received: from AM9P192MB0870.EURP192.PROD.OUTLOOK.COM
- ([fe80::b101:2802:2eb2:504d]) by AM9P192MB0870.EURP192.PROD.OUTLOOK.COM
- ([fe80::b101:2802:2eb2:504d%6]) with mapi id 15.20.4995.027; Mon, 21 Feb 2022
- 13:04:33 +0000
-From: Michael Graichen <michael.graichen@hotmail.com>
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: Read Barebox Infos from Linux
-Thread-Index: AQHYJyMeN0T/sV2ubEezVEpnYdMKOg==
-Date: Mon, 21 Feb 2022 13:04:33 +0000
-Message-ID: <AM9P192MB08704D48582CC36E5B0CEFFBAB3A9@AM9P192MB0870.EURP192.PROD.OUTLOOK.COM>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-suggested_attachment_session_id: e17980f2-26a0-690b-43eb-c071e3e72ef2
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn: [U03J9t2HCTmDjNId7yZkwEZPvjFTUQ45]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 17237bda-3b4b-4f18-78f6-08d9f53ab46b
-x-ms-traffictypediagnostic: AM5P192MB0003:EE_
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hoXkomF9AvIP7USHxfHxr+mLpVJyKiEB2DJ0fJNbYEeXj6uFzwXN/3cFH8L6J+1AWMbGE6V1WhGn2MDqSl1434ZwA6ZLTNXtvdtwNjoQ/J6ZMVAMlFwHHJEmyRTf1R1DMsVtk/2tl/Uy74rLAH5roclW/jqYwxl2/mg2pgTqlWXFLxtWw+feE5QnlRv9fQ7xpqsFlbttVtPw4d4Yt+FSV9nzowGimNU1//yfyFvvbxnMjUrdOhua+8J9lW4GvXa1HzkiN2PTvHfpSE3QLJ8UJJQlJySVERoMnYA3TCBdJjpj0dbDTD5y+KkC8OdbxjX4ahFofmj1SJHAP4vFzWev/JFXDz5lOX+fJVUMmCxx5isRsGpse1vExL+bP0JyjV+pEPXOwhZqSx9Gv6XZPpSrcDqkwgk7niTCzsRp6yAd4I5ZduRkLT1jzfiMKt5b5GHQKCWB/uurcyOB5JAUV+RcuT4XdEH2NoXAviefj7pZOvo6heWDDi1PGgVfgdVOPm8ralKjAlaPmqISJmnkVmufh6dv/tVb0ftGEpnFEhYPh5CWaEyIQyItJpcrollzP8xxs7lfblisJuuwj5AKoHlsDg==
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: b7HBeoiGI2De3t0DK47waITa7MwwUbe6iEni5rqtdppaiQlw8p3xUQeDiI3tsCu1XBMgT3Qz7QBAzWVqNd7uLHbrfPLmJQhsBuqIe6/V3QDMZNWjyKYImKLe0SqJOBrvTuKzPcJi9RTrnj8A8LUZX9Lg90qSnwttOyqfkMxpdMGdPlI2OH/L205dFDtxEwYHIaNlr/kT6R+nMGA6E/GwmTfTtE6h+2kbUC7dTRt16hrlcmogZjSyIxJAVG9P9Icz5LpT5CK9UAzFGQNBf01IPH/P+cfiOc9A6fLz8dpDLpV3ATIOglQRS776bROVF/ebBc4SlAtlDwOOda2+biVL3uf88V9/u6UBrSmR4bGW5uOxPodpmeHMl/m2XgspeIm4Y/sSopCEoXADvTpd4daKzGwOIaoaROngmX9/ElVnpwp0UCjxULehUYVhFCtKxVHpIybUGZExMtQvno6ecaAmtFvlfl0ZUkrxhhdDSvf3uB7Pepj5v9bbWca2bRxIh5vssBDfB4W1UmMEU65qIRKS2v0GNuu478bm6euIEu+m17QetA5SjVmdhLXObpepUAl/tfWt3bs1PcqLbfj8ajSXV3CKyPdQpPUgjA6K1DHBeTfFy+DRDZAGehfVz5VNqQMNWl2C6GRw+FVAnG6NSXUe0I0bmIoJgIJrjhRgKrbfbCW5h9aMMSPdA7EULu+dmkCpblM82Wa2WxqIqEAtoHXd2kr+aeY/Y1vXiq2LuB/kHlckZFQxFE9wGbtqFjAEcuEcisRvViCuVm+bjZvNiiTdYO1iV+ofXK5tDYI3Rh3bPjGFOneLl3T0ly2mRpZGh75nC52oCsPBXfLIN4RpxlvRj3PELtL1nASYlVO3n+dYdUYRolXNrch0qyWFgbv+ALc0ES7VCU4C4P/8pgUWfNcg0rjORJCgbjbikhGZN4YMSBXjWCyoHwpmwrqL+NUd4XbZ
+ id 1nM96m-0062Tx-EH
+ for barebox@lists.infradead.org; Mon, 21 Feb 2022 13:52:10 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1nM96i-0001Qj-Mk
+ for barebox@lists.infradead.org; Mon, 21 Feb 2022 14:52:04 +0100
+Message-ID: <6382664b-de00-346d-b703-81b8db77a42a@pengutronix.de>
+Date: Mon, 21 Feb 2022 14:52:04 +0100
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-fb43a.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB0870.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17237bda-3b4b-4f18-78f6-08d9f53ab46b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2022 13:04:33.2705 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5P192MB0003
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+References: <20220217082714.81749-1-a.fatoum@pengutronix.de>
+Content-Language: en-US
+In-Reply-To: <20220217082714.81749-1-a.fatoum@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220221_052013_880041_6CCB7083 
-X-CRM114-Status: UNSURE (   6.03  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220221_055208_544790_311C78FE 
+X-CRM114-Status: GOOD (  22.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -109,21 +67,98 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,FORGED_HOTMAIL_RCVD2,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Read Barebox Infos from Linux
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 0/1] Applying barebox for Google Summer of Code 2022
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hey, 
+On 17.02.22 09:27, Ahmad Fatoum wrote:
+> I'll submit the GSoC proposal over the weekend. Sorry for the short
+> notice, but patches to the project ideas can still follow afterwards.
 
-I was just wondering if it is possibe to read the Barebox log messages or the Barebox version from within Linux?
+Just submitted the proposal:
 
-Best regards
-Michael
+> Why does your organization want to participate in Google Summer of Code?
+
+Firmware development is on the lesser accessible end of software projects: It often requires
+special hardware, resources are not very beginner-friendly and while there are established
+open source projects, the majority of contributions is company-sponsored, making it
+harder for interested individuals to get started on their own.
+
+Since 2009, the barebox project has been working to lessen this gap: By aligning itself with
+Linux code and convention, it provides a more familiar UNIX-like interface to the low-level
+details, which many users are already acquainted with.
+
+Besides improving its documentation, in recent years, barebox has also considerably improved
+its support for virtualized platforms, so development can happen in user-mode without dedicated
+hardware, for example the web demo at https://barebox.org/jsbarebox
+
+We are confident that this will make on-boarding process easier. It will teach contributors the ropes of
+low level programming and empower them to dive deeper, both inside barebox and outside
+in other low-level projects, like the Linux kernel, which barebox shares a lot of code with.
+
+We hope to not only benefit from the code produced, but to involve motivated individuals with
+(a newly-found?) low-level affinity, who may continue to use and improve barebox while
+exploring more of the world; be it kernel, runtime firmware or system software.
+
+> What would your organization consider to be a successful GSoC program?
+
+The program results should be upstreamed into barebox and it should be reusable
+for further work, e.g. a GSoC contributor adding support for their WLAN router not only
+serves their immediate use case, but also makes future ports of similar hardware easier.
+
+There are a number of project ideas collected here:
+
+https://barebox.org/doc/latest/devel/project-ideas.html
+
+which contributors can base their proposals on.
+
+> How will you keep mentors engaged with their GSoC contributors?
+
+Mentors and contributors will agree on pre-scheduled meetings to synchronize.
+We expect mentors to give advance notice if the schedule can't be observed.
+There will be a fallback mentor for each program should a mentor not have the time
+to continue.
+
+We will encourage students to use the existing communication channels to get
+feedback from the community at large and to get involved in it.
+
+If GSoC is approved for more than one applicant, mentors and contributors can
+organize discussions  in a group setting, where common problems are discussed
+and approached for solving them and to see how to tackle them at
+an organizational level if applicable.
+
+> How will you keep GSoC contributors on schedule to complete their projects?
+
+In the beginning, individual goals and milestones will be set according to the contributors
+experience and to their project.
+Weekly/Bi-Weekly meeting will be held to discuss progress. Contributors are expected to
+publicly publish code, even prior to upstreaming. Contributors should maintain a blog
+to document their journey. In case unexpected problems arise, mentors will try to steer projects
+to make the most out of contributor time.
+
+> How will you get your GSoC contributors involved in your community during GSoC?
+
+Collaboration currently happens via the mailing list and the IRC/Matrix channel. Mentors
+will guide contributors on how to get a working setup for mailing list collaboration. Contributors
+will be encouraged to discuss their questions in the real-time chat.
+
+
+Let's see if it works out. :-)
+
+Cheers,
+Ahmad
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
