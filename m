@@ -1,53 +1,57 @@
-Delivery-date: Mon, 21 Feb 2022 15:06:32 +0100
+Delivery-date: Mon, 21 Feb 2022 15:06:38 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nM9Ki-0062JC-1n
-	for lore@lore.pengutronix.de; Mon, 21 Feb 2022 15:06:32 +0100
+	id 1nM9Ko-0062Jc-JZ
+	for lore@lore.pengutronix.de; Mon, 21 Feb 2022 15:06:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nM9Kf-0003ZX-6P
-	for lore@pengutronix.de; Mon, 21 Feb 2022 15:06:30 +0100
+	id 1nM9Km-0003hf-W2
+	for lore@pengutronix.de; Mon, 21 Feb 2022 15:06:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:To:Subject:From:
-	MIME-Version:Date:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:From:References:Cc:To:
+	Subject:MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=MeDow8e9n/K/GwDQiN9rJSDgJbYJywe6buu5PyRIWuY=; b=aQbwPXSfpGuIpG
-	jWjNPlcuTaiEgDZ/cp3qwB6rCraXcQ3Jd2984VZZlY5pzbdEIriPE+E+kGDMfYPpYan4DgJUsl4v4
-	jJ9Ieav6NQaOeyHbKWBUULmoAQt79I1YHRV1ntv1w322GZjqzrZG+1zFk74gfnJBWXlsdLJN5H0TI
-	dK6TWd5xUkntBYGHkLoCNl5Y6+gQx6bRQAP8kphQ2PcUN3qfo8k0SD1lD3KpGa9TvcJZvLaQCoIZY
-	I33Dtix1deeOcLO9JoTcWbSeVK8MNRJsbbofvhL+GUBUqk4OVXxTM0Rm1w9ZSnUpznJNczd3QmOZi
-	ZK7Pqrt2RFN90Wl/jomA==;
+	List-Owner; bh=yBhtOqj8AU4EFADTCfpQ+Vb8cfXXxublXOFsFrJ6qtA=; b=bR0iC1luPcVnOm
+	TWDDsbG5MN0UwmA46I33qU8Bc1dWLLebCskAZg7PyElwxPNC+4JyuR04aPszNnteGZBUBw+s1PtLG
+	pnINqi7O8oEmiYE7jY8eEn7E77SLzmZV/KktgNH2ywIL/Z9q21KFPmudpIUBr1yvnawAOM5kOj7qj
+	04Sn0TvgKmFEEP1wZE/bjwNRaA8n27zgF+QFGsFmvWwvDLICWYvR8oRY7UX6VPGDYwar9Iqemi+tv
+	efAkCJwt7k0vSEI20r9ilyE/S98Dx3jGNtmaUY3/IJBKCVqSBKq0t6ZnrC6As7ib3Co/vTSz0ZWdP
+	UuQA7t5UzPGZlgGOYw1g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nM9J7-00682l-Ic; Mon, 21 Feb 2022 14:04:53 +0000
+	id 1nM9JP-0068B4-SE; Mon, 21 Feb 2022 14:05:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nM96m-0062Tx-EH
- for barebox@lists.infradead.org; Mon, 21 Feb 2022 13:52:10 +0000
+ id 1nM99U-0063cP-Bx
+ for barebox@lists.infradead.org; Mon, 21 Feb 2022 13:54:58 +0000
 Received: from gallifrey.ext.pengutronix.de
  ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1nM96i-0001Qj-Mk
- for barebox@lists.infradead.org; Mon, 21 Feb 2022 14:52:04 +0100
-Message-ID: <6382664b-de00-346d-b703-81b8db77a42a@pengutronix.de>
-Date: Mon, 21 Feb 2022 14:52:04 +0100
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1nM99S-0001ch-V9; Mon, 21 Feb 2022 14:54:55 +0100
+Message-ID: <070a17f9-d2c0-d58d-abca-29defd04023b@pengutronix.de>
+Date: Mon, 21 Feb 2022 14:54:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-References: <20220217082714.81749-1-a.fatoum@pengutronix.de>
 Content-Language: en-US
-In-Reply-To: <20220217082714.81749-1-a.fatoum@pengutronix.de>
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Sascha Hauer <sha@pengutronix.de>,
+ Jules Maselbas <jmaselbas@kalray.eu>
+References: <20220217082714.81749-1-a.fatoum@pengutronix.de>
+ <20220217082714.81749-2-a.fatoum@pengutronix.de>
+ <20220219002518.54e7eec76ca0e716131f07c5@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220219002518.54e7eec76ca0e716131f07c5@gmail.com>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220221_055208_544790_311C78FE 
-X-CRM114-Status: GOOD (  22.75  )
+X-CRM114-CacheID: sfid-20220221_055456_476201_C8AC54AA 
+X-CRM114-Status: GOOD (  18.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,86 +76,57 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 0/1] Applying barebox for Google Summer of Code 2022
+Subject: Re: [PATCH 1/1] Documentation: devel: add new project ideas section
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 17.02.22 09:27, Ahmad Fatoum wrote:
-> I'll submit the GSoC proposal over the weekend. Sorry for the short
-> notice, but patches to the project ideas can still follow afterwards.
+On 18.02.22 22:25, Antony Pavlov wrote:
+> On Thu, 17 Feb 2022 09:27:14 +0100
+> Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> 
+> Hi!
+> 
+> ...
+> 
+>> +Update barebox networking stack for IPv6 support
+>> +================================================
+>> +
+>> +Skills: C, Networking
+>> +
+>> +The barebox network stack is mainly used for TFTP and NFSv3 (over UDP) boot.
+>> +Most embedded systems barebox runs on aren't deployed to IPv6 networks yet,
+>> +so it's the right time now to future-proof and learn more about networking
+>> +internals. One major complication with IPv6 support is neighbor discovery
+>> +protocols that require networking to be possible "in the background".
+>> +barebox' recent improvements of resource sharing and cooperative scheduling
+>> +makes it possible to integrate an IPv6 stack, e.g. lwIP.
+> 
+> Several years ago I have tried to integrate picotcp network stack into barebox,
+> please see http://lists.infradead.org/pipermail/barebox/2015-June/thread.html#23749
+> and https://github.com/frantony/barebox/tree/20190707.picotcp
+> This work can be revived after current picotcp state of affairs investigation.
+> 
+>> +There are also community patches to integrate a TCP stack into barebox.
+>> +These can be evaluated as time allows.
+> 
+> picotcp supports both IPv6 and TCP.
 
-Just submitted the proposal:
+Ye, I saw that at your Github fork. lwIP was Sascha's suggestion.
+Jules also has hacked a TCP stack into barebox. If we get an applicant,
+I will suggest they reach out to you.
 
-> Why does your organization want to participate in Google Summer of Code?
-
-Firmware development is on the lesser accessible end of software projects: It often requires
-special hardware, resources are not very beginner-friendly and while there are established
-open source projects, the majority of contributions is company-sponsored, making it
-harder for interested individuals to get started on their own.
-
-Since 2009, the barebox project has been working to lessen this gap: By aligning itself with
-Linux code and convention, it provides a more familiar UNIX-like interface to the low-level
-details, which many users are already acquainted with.
-
-Besides improving its documentation, in recent years, barebox has also considerably improved
-its support for virtualized platforms, so development can happen in user-mode without dedicated
-hardware, for example the web demo at https://barebox.org/jsbarebox
-
-We are confident that this will make on-boarding process easier. It will teach contributors the ropes of
-low level programming and empower them to dive deeper, both inside barebox and outside
-in other low-level projects, like the Linux kernel, which barebox shares a lot of code with.
-
-We hope to not only benefit from the code produced, but to involve motivated individuals with
-(a newly-found?) low-level affinity, who may continue to use and improve barebox while
-exploring more of the world; be it kernel, runtime firmware or system software.
-
-> What would your organization consider to be a successful GSoC program?
-
-The program results should be upstreamed into barebox and it should be reusable
-for further work, e.g. a GSoC contributor adding support for their WLAN router not only
-serves their immediate use case, but also makes future ports of similar hardware easier.
-
-There are a number of project ideas collected here:
-
-https://barebox.org/doc/latest/devel/project-ideas.html
-
-which contributors can base their proposals on.
-
-> How will you keep mentors engaged with their GSoC contributors?
-
-Mentors and contributors will agree on pre-scheduled meetings to synchronize.
-We expect mentors to give advance notice if the schedule can't be observed.
-There will be a fallback mentor for each program should a mentor not have the time
-to continue.
-
-We will encourage students to use the existing communication channels to get
-feedback from the community at large and to get involved in it.
-
-If GSoC is approved for more than one applicant, mentors and contributors can
-organize discussions  in a group setting, where common problems are discussed
-and approached for solving them and to see how to tackle them at
-an organizational level if applicable.
-
-> How will you keep GSoC contributors on schedule to complete their projects?
-
-In the beginning, individual goals and milestones will be set according to the contributors
-experience and to their project.
-Weekly/Bi-Weekly meeting will be held to discuss progress. Contributors are expected to
-publicly publish code, even prior to upstreaming. Contributors should maintain a blog
-to document their journey. In case unexpected problems arise, mentors will try to steer projects
-to make the most out of contributor time.
-
-> How will you get your GSoC contributors involved in your community during GSoC?
-
-Collaboration currently happens via the mailing list and the IRC/Matrix channel. Mentors
-will guide contributors on how to get a working setup for mailing list collaboration. Contributors
-will be encouraged to discuss their questions in the real-time chat.
-
-
-Let's see if it works out. :-)
+Are you on IRC btw? There's a matrix channel bridged there now, which
+you can use instead of setting up a bouncer.
 
 Cheers,
 Ahmad
+
+> 
+>> +This project does not require dedicated hardware. QEMU or barebox built
+>> +to run under Linux (sandbox) may be used.
+>> +
+> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
