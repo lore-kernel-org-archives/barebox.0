@@ -1,55 +1,95 @@
-Delivery-date: Mon, 21 Feb 2022 11:55:04 +0100
+Delivery-date: Mon, 21 Feb 2022 14:53:53 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nM6LQ-005vVo-TQ
-	for lore@lore.pengutronix.de; Mon, 21 Feb 2022 11:55:04 +0100
+	id 1nM98R-00621m-Cb
+	for lore@lore.pengutronix.de; Mon, 21 Feb 2022 14:53:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nM6LP-0007Px-1F
-	for lore@pengutronix.de; Mon, 21 Feb 2022 11:55:04 +0100
+	id 1nM98O-0001Z6-P6
+	for lore@pengutronix.de; Mon, 21 Feb 2022 14:53:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=qJ3+B8+bDMa+cSXKWRIpmVG9dayFOj1/7UT7Vfvvlgw=; b=llAJvBklLFjSa6
-	kIje2ZcQvLUphnQHdQ7VZIT8TLADp+cGSJI7kFqVkLgPLnOTJK0Dz565sFVN0zmbMKtk1XLAZgaBG
-	pi8LmcUbV6vGdKKFCIDQJB/9b6jFbiNNdtMyPE+LcFkXDEjh1MXmj2a2iMZQSBsCleTzk8uSUOmho
-	n1WbjVKNcU08MBurOXi/QzQWnc+fHy3Aa7EGJ1WK34VZ+nrj6ThJRqoV0mNHDRbMWFB8+g6xA2oWn
-	EDQ9o52hRS45tlVWBd7dsw6Aw5bNKywXeVQPurCfdbLzaCNlcBPOeh6LRgVrUgpAA/pTUCA5Egn8a
-	EPtez/u6oM2K4OZkm4Fw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-ID:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Admicqgt+TjtAm9kXmp/s8je1QvlgtbCX5TV/sGyLZ8=; b=XfcO8fKbNROlt6
+	HdQLVwo1m+rih0V5D8HYt0Zs1fZhoPbfl/pVp7p8B2eyXl3WkdHkwMvtRAC6z3JHFGiv+mA4DhB56
+	RU3JD9/db6DRCo/GFq4J2nVOLxc3WBCFd7Y8ZSBF7sWiMj0VZnzCN/b1IS823iFvbmQ6lY/jkFQUO
+	InSHhHmzj8Oh9w4S3WkAZDScajsWNnCHm1NV+wnmKuoJbhHqHnZBBjv2JP6wUXyaZEf/pQx+gJu7T
+	1KGtq0OvcVSODVDUdmDCl3Znw7Xbe8+svmo4cWqNIASv3sSJy8xFeznR+tbkj75PQVNClhQ68I7rm
+	K/b8mxjK8WIyIiGBjGQA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nM6Jz-0058WA-7z; Mon, 21 Feb 2022 10:53:35 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1nM96U-0062Kf-U7; Mon, 21 Feb 2022 13:51:52 +0000
+Received: from mail-db8eur05olkn20827.outbound.protection.outlook.com
+ ([2a01:111:f400:7e1a::827]
+ helo=EUR05-DB8-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nM63R-0050DH-Iy
- for barebox@lists.infradead.org; Mon, 21 Feb 2022 10:36:31 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1nM63Q-0004uh-9c; Mon, 21 Feb 2022 11:36:28 +0100
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>)
- id 1nM63P-00FdrH-Qv; Mon, 21 Feb 2022 11:36:27 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 21 Feb 2022 11:36:25 +0100
-Message-Id: <20220221103625.3728055-2-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220221103625.3728055-1-a.fatoum@pengutronix.de>
-References: <20220221103625.3728055-1-a.fatoum@pengutronix.de>
+ id 1nM8bt-005rxN-Ps
+ for barebox@lists.infradead.org; Mon, 21 Feb 2022 13:20:15 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Wdhag3/NnV5gBEG6TaVeQXGa8mJpV5zE+0CMGUxhyLp+ErYMhR276l/vDlYwkI0/U3AlfAuvtcL70IqKnQN/y/B65WvRtiSZlekHpfBVCsp9OVsLfhP3/mShd+2UOrPBU8QLKj6yUe0aCJW8bLjAmlRTKOpdWg76DRz8RvKYFeYelz/pr6zrcbyL4DiCv7LL/CXJMVogotqp05Wz9xApuSQsFE/Xoi46flCC0tMBM3LrKPpKVnlKFAv/R04eVSyW1eCLbR9DaTKI1N0gkc/1wI7MAcmiQWKKCZyU3SyKH/XKvRY6GlAdwPAFtgLu9s/PBo94eriJtCifxloEaWz0Yw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qNFfLJagSAl7i2d+v1SuClNSnGXPTCKKBLkq3ZFE21I=;
+ b=g4cPNCmF7PI/a+91gc+abcji8SRrmcY9MbfvFlKl9+eJQj/UP1nt2wXkhIa4D8cqodQrM0jehSlPFJcHQZwJvUVZTS9oZwECMm+CE1GqlNsBJ4Uh1IIY1jcy6eSkcCIv44IdZs4GlQPATubsPMgIKkoMJIaHGTh4qniZBXWDZZaIPvaBVwhmpkT7xCjxO17z/AowwroatHnNmZ/QZMMWFAENA3WsahWD7zxM+4hBszuJnKTnSiDWruthfSgUPGHGygtY8/qIibuJ+Qugyk8cXRLv7gQtQRQnktf7nsW+rrlnJ7bvQhaJ9XgGPYM+A3FKzkKcgEj+s+urf7xAuAS1QQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qNFfLJagSAl7i2d+v1SuClNSnGXPTCKKBLkq3ZFE21I=;
+ b=ekjMV0ypNU3NK5LM16S+qB4aKFuQcoufoYWAuwisOjHwdjUKla0YZEvyxyZpMkczNTtnecoQstNxzQndx6tIg1HtJnyyPcL+1Htrc3tNH3F4kufo228EObZTnTgHF1Lvo14B+RmWn6a5OyJG43sMPdqsb3QPV8h5PJ6kGvNqFho/ZXiCwakUjcBBm72Zyw5uQNz+XFFHO5N5JYdc/OkM5HWIVTcjtuaYznIkUg9vFU0hqb9teHm1IhTZTrWNEnUw68WxhyjeDxEy8Th/K0OwQoHqCrTRDTCOzWrNlb+V1/2OpvGQPNUY6G6RMDpFoQ0kO6XfJnDrUuLy2NHHZG0BBw==
+Received: from AM9P192MB0870.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:1f2::13)
+ by AM5P192MB0003.EURP192.PROD.OUTLOOK.COM (2603:10a6:203:8c::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.24; Mon, 21 Feb
+ 2022 13:04:33 +0000
+Received: from AM9P192MB0870.EURP192.PROD.OUTLOOK.COM
+ ([fe80::b101:2802:2eb2:504d]) by AM9P192MB0870.EURP192.PROD.OUTLOOK.COM
+ ([fe80::b101:2802:2eb2:504d%6]) with mapi id 15.20.4995.027; Mon, 21 Feb 2022
+ 13:04:33 +0000
+From: Michael Graichen <michael.graichen@hotmail.com>
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Thread-Topic: Read Barebox Infos from Linux
+Thread-Index: AQHYJyMeN0T/sV2ubEezVEpnYdMKOg==
+Date: Mon, 21 Feb 2022 13:04:33 +0000
+Message-ID: <AM9P192MB08704D48582CC36E5B0CEFFBAB3A9@AM9P192MB0870.EURP192.PROD.OUTLOOK.COM>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+suggested_attachment_session_id: e17980f2-26a0-690b-43eb-c071e3e72ef2
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn: [U03J9t2HCTmDjNId7yZkwEZPvjFTUQ45]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 17237bda-3b4b-4f18-78f6-08d9f53ab46b
+x-ms-traffictypediagnostic: AM5P192MB0003:EE_
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: hoXkomF9AvIP7USHxfHxr+mLpVJyKiEB2DJ0fJNbYEeXj6uFzwXN/3cFH8L6J+1AWMbGE6V1WhGn2MDqSl1434ZwA6ZLTNXtvdtwNjoQ/J6ZMVAMlFwHHJEmyRTf1R1DMsVtk/2tl/Uy74rLAH5roclW/jqYwxl2/mg2pgTqlWXFLxtWw+feE5QnlRv9fQ7xpqsFlbttVtPw4d4Yt+FSV9nzowGimNU1//yfyFvvbxnMjUrdOhua+8J9lW4GvXa1HzkiN2PTvHfpSE3QLJ8UJJQlJySVERoMnYA3TCBdJjpj0dbDTD5y+KkC8OdbxjX4ahFofmj1SJHAP4vFzWev/JFXDz5lOX+fJVUMmCxx5isRsGpse1vExL+bP0JyjV+pEPXOwhZqSx9Gv6XZPpSrcDqkwgk7niTCzsRp6yAd4I5ZduRkLT1jzfiMKt5b5GHQKCWB/uurcyOB5JAUV+RcuT4XdEH2NoXAviefj7pZOvo6heWDDi1PGgVfgdVOPm8ralKjAlaPmqISJmnkVmufh6dv/tVb0ftGEpnFEhYPh5CWaEyIQyItJpcrollzP8xxs7lfblisJuuwj5AKoHlsDg==
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: b7HBeoiGI2De3t0DK47waITa7MwwUbe6iEni5rqtdppaiQlw8p3xUQeDiI3tsCu1XBMgT3Qz7QBAzWVqNd7uLHbrfPLmJQhsBuqIe6/V3QDMZNWjyKYImKLe0SqJOBrvTuKzPcJi9RTrnj8A8LUZX9Lg90qSnwttOyqfkMxpdMGdPlI2OH/L205dFDtxEwYHIaNlr/kT6R+nMGA6E/GwmTfTtE6h+2kbUC7dTRt16hrlcmogZjSyIxJAVG9P9Icz5LpT5CK9UAzFGQNBf01IPH/P+cfiOc9A6fLz8dpDLpV3ATIOglQRS776bROVF/ebBc4SlAtlDwOOda2+biVL3uf88V9/u6UBrSmR4bGW5uOxPodpmeHMl/m2XgspeIm4Y/sSopCEoXADvTpd4daKzGwOIaoaROngmX9/ElVnpwp0UCjxULehUYVhFCtKxVHpIybUGZExMtQvno6ecaAmtFvlfl0ZUkrxhhdDSvf3uB7Pepj5v9bbWca2bRxIh5vssBDfB4W1UmMEU65qIRKS2v0GNuu478bm6euIEu+m17QetA5SjVmdhLXObpepUAl/tfWt3bs1PcqLbfj8ajSXV3CKyPdQpPUgjA6K1DHBeTfFy+DRDZAGehfVz5VNqQMNWl2C6GRw+FVAnG6NSXUe0I0bmIoJgIJrjhRgKrbfbCW5h9aMMSPdA7EULu+dmkCpblM82Wa2WxqIqEAtoHXd2kr+aeY/Y1vXiq2LuB/kHlckZFQxFE9wGbtqFjAEcuEcisRvViCuVm+bjZvNiiTdYO1iV+ofXK5tDYI3Rh3bPjGFOneLl3T0ly2mRpZGh75nC52oCsPBXfLIN4RpxlvRj3PELtL1nASYlVO3n+dYdUYRolXNrch0qyWFgbv+ALc0ES7VCU4C4P/8pgUWfNcg0rjORJCgbjbikhGZN4YMSBXjWCyoHwpmwrqL+NUd4XbZ
 MIME-Version: 1.0
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-fb43a.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB0870.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17237bda-3b4b-4f18-78f6-08d9f53ab46b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2022 13:04:33.2705 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5P192MB0003
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220221_023629_711332_08CDA94E 
-X-CRM114-Status: GOOD (  16.80  )
+X-CRM114-CacheID: sfid-20220221_052013_880041_6CCB7083 
+X-CRM114-Status: UNSURE (   6.03  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,186 +109,21 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH 2/2] ARM: stm32mp: add board support for STM32MP135F-DK
+X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,FORGED_HOTMAIL_RCVD2,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Read Barebox Infos from Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We already have the needed drivers in place to support the upcoming
-STM32MP131. Linux already has a basic DT for the DK board. Add a barebox
-board that leverages it. To try it out modify the existing FIP with:
+Hey, 
 
-  fiptool update --nt-fw build/images/barebox-stm32mp-generic-bl33.img \
-                 --hw-config build/arch/arm/dts/stm32mp135f-dk.dtb \
-		 mmcblk0p3
+I was just wondering if it is possibe to read the Barebox log messages or the Barebox version from within Linux?
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- Documentation/boards/stm32mp.rst          |  1 +
- arch/arm/boards/Makefile                  |  1 +
- arch/arm/boards/stm32mp13xx-dk/Makefile   |  2 ++
- arch/arm/boards/stm32mp13xx-dk/lowlevel.c | 19 +++++++++++++++++++
- arch/arm/dts/Makefile                     |  1 +
- arch/arm/dts/stm32mp131.dtsi              | 14 ++++++++++++++
- arch/arm/dts/stm32mp135f-dk.dts           | 12 ++++++++++++
- arch/arm/mach-stm32mp/Kconfig             |  8 ++++++++
- images/Makefile.stm32mp                   |  1 +
- 9 files changed, 59 insertions(+)
- create mode 100644 arch/arm/boards/stm32mp13xx-dk/Makefile
- create mode 100644 arch/arm/boards/stm32mp13xx-dk/lowlevel.c
- create mode 100644 arch/arm/dts/stm32mp131.dtsi
- create mode 100644 arch/arm/dts/stm32mp135f-dk.dts
-
-diff --git a/Documentation/boards/stm32mp.rst b/Documentation/boards/stm32mp.rst
-index 55bdafe78579..6f4b14049ad4 100644
---- a/Documentation/boards/stm32mp.rst
-+++ b/Documentation/boards/stm32mp.rst
-@@ -33,6 +33,7 @@ There's a single ``stm32mp_defconfig`` for all STM32MP boards::
- The resulting images will be placed under ``images/``::
- 
-   barebox-stm32mp-generic-bl33.img
-+  barebox-stm32mp13xx-dk.stm32
-   barebox-stm32mp15xx-dkx.stm32
-   barebox-stm32mp15x-ev1.stm32
-   barebox-stm32mp157c-lxa-mc1.stm32
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index a15963c775ce..8557e1dca8c6 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -139,6 +139,7 @@ obj-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT)	+= terasic-sockit/
- obj-$(CONFIG_MACH_SOLIDRUN_CUBOX)		+= solidrun-cubox/
- obj-$(CONFIG_MACH_SOLIDRUN_MICROSOM)		+= solidrun-microsom/
- obj-$(CONFIG_MACH_STM32MP15XX_DKX)		+= stm32mp15xx-dkx/
-+obj-$(CONFIG_MACH_STM32MP13XX_DK)		+= stm32mp13xx-dk/
- obj-$(CONFIG_MACH_LXA_MC1)			+= lxa-mc1/
- obj-$(CONFIG_MACH_STM32MP15X_EV1)		+= stm32mp15x-ev1/
- obj-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT)	+= technexion-pico-hobbit/
-diff --git a/arch/arm/boards/stm32mp13xx-dk/Makefile b/arch/arm/boards/stm32mp13xx-dk/Makefile
-new file mode 100644
-index 000000000000..9961af02a3ea
---- /dev/null
-+++ b/arch/arm/boards/stm32mp13xx-dk/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/stm32mp13xx-dk/lowlevel.c b/arch/arm/boards/stm32mp13xx-dk/lowlevel.c
-new file mode 100644
-index 000000000000..ac4fa40e1960
---- /dev/null
-+++ b/arch/arm/boards/stm32mp13xx-dk/lowlevel.c
-@@ -0,0 +1,19 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+#include <mach/entry.h>
-+#include <debug_ll.h>
-+
-+extern char __dtb_z_stm32mp135f_dk_start[];
-+
-+ENTRY_FUNCTION(start_stm32mp13xx_dk, r0, r1, r2)
-+{
-+	void *fdt;
-+
-+	stm32mp_cpu_lowlevel_init();
-+
-+	putc_ll('>');
-+
-+	fdt = __dtb_z_stm32mp135f_dk_start  + get_runtime_offset();
-+
-+	stm32mp1_barebox_entry(fdt);
-+}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index d419e8394d53..e0bb66580f38 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -127,6 +127,7 @@ lwl-$(CONFIG_MACH_SKOV_IMX6) += imx6s-skov-imx6.dtb.o imx6dl-skov-imx6.dtb.o imx
- lwl-$(CONFIG_MACH_SKOV_ARM9CPU) += at91-skov-arm9cpu.dtb.o
- lwl-$(CONFIG_MACH_SEEED_ODYSSEY) += stm32mp157c-odyssey.dtb.o
- lwl-$(CONFIG_MACH_STM32MP15XX_DKX) += stm32mp157c-dk2.dtb.o stm32mp157a-dk1.dtb.o
-+lwl-$(CONFIG_MACH_STM32MP13XX_DK) += stm32mp135f-dk.dtb.o
- lwl-$(CONFIG_MACH_LXA_MC1) += stm32mp157c-lxa-mc1.dtb.o
- lwl-$(CONFIG_MACH_STM32MP15X_EV1) += stm32mp157c-ev1.dtb.o
- lwl-$(CONFIG_MACH_SCB9328) += imx1-scb9328.dtb.o
-diff --git a/arch/arm/dts/stm32mp131.dtsi b/arch/arm/dts/stm32mp131.dtsi
-new file mode 100644
-index 000000000000..2ecad85f086e
---- /dev/null
-+++ b/arch/arm/dts/stm32mp131.dtsi
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+/ {
-+	aliases {
-+		mmc0 = &sdmmc1;
-+	};
-+};
-+
-+&{/soc} {
-+	memory-controller@5a003000 {
-+		compatible = "st,stm32mp13-ddr";
-+		reg = <0x5a003000 0x1000>;
-+	};
-+};
-diff --git a/arch/arm/dts/stm32mp135f-dk.dts b/arch/arm/dts/stm32mp135f-dk.dts
-new file mode 100644
-index 000000000000..104886e8af88
---- /dev/null
-+++ b/arch/arm/dts/stm32mp135f-dk.dts
-@@ -0,0 +1,12 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+
-+#include <arm/stm32mp135f-dk.dts>
-+#include "stm32mp131.dtsi"
-+
-+/ {
-+	model = "STM32MP153F-DK";
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+};
-diff --git a/arch/arm/mach-stm32mp/Kconfig b/arch/arm/mach-stm32mp/Kconfig
-index 38c1a44770c9..57c1691591e7 100644
---- a/arch/arm/mach-stm32mp/Kconfig
-+++ b/arch/arm/mach-stm32mp/Kconfig
-@@ -6,10 +6,18 @@ config ARCH_NR_GPIO
- 	int
- 	default 416
- 
-+config ARCH_STM32MP13
-+	select ARM_PSCI_CLIENT
-+	bool
-+
- config ARCH_STM32MP157
- 	select ARM_PSCI_CLIENT
- 	bool
- 
-+config MACH_STM32MP13XX_DK
-+	select ARCH_STM32MP13
-+	bool "STM32MP137F DK board"
-+
- config MACH_STM32MP15XX_DKX
- 	select ARCH_STM32MP157
- 	bool "STM32MP157 DK1 and DK2 boards"
-diff --git a/images/Makefile.stm32mp b/images/Makefile.stm32mp
-index fa79e09f952f..abe70a6a5037 100644
---- a/images/Makefile.stm32mp
-+++ b/images/Makefile.stm32mp
-@@ -30,6 +30,7 @@ pblb-$(CONFIG_ARCH_STM32MP) += start_stm32mp_bl33
- FILE_barebox-stm32mp-generic-bl33.img  = start_stm32mp_bl33.pblb
- image-$(CONFIG_ARCH_STM32MP) += barebox-stm32mp-generic-bl33.img
- 
-+$(call build_stm32mp_image, CONFIG_MACH_STM32MP13XX_DK, start_stm32mp13xx_dk, stm32mp13xx-dk)
- $(call build_stm32mp_image, CONFIG_MACH_STM32MP15XX_DKX, start_stm32mp15xx_dkx, stm32mp15xx-dkx)
- $(call build_stm32mp_image, CONFIG_MACH_STM32MP15X_EV1, start_stm32mp15x_ev1, stm32mp15x-ev1)
- 
--- 
-2.30.2
-
-
+Best regards
+Michael
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
