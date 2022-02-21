@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nM6LG-005vUn-7z
+	id 1nM6LG-005vUb-CG
 	for lore@lore.pengutronix.de; Mon, 21 Feb 2022 11:54:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nM6LE-0007Mt-AU
+	id 1nM6LD-0007Mg-HY
 	for lore@pengutronix.de; Mon, 21 Feb 2022 11:54:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
@@ -17,40 +17,39 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=tuLzNyVA+Xmhg/2XND+5QcIrWxTlSRCAHN5M+HGMlRc=; b=kiOOtcIk1O9hKv
-	tNy4fpww6PTdi6tPRIJSLZJtTxx1NynGM8EOzyoTgqVOZbxPnsX0DPXA/+RqyGFgkt92bmqHNTChn
-	iFLEeNXB/CZG/BO3k1DmErwz3cxZAhYRpUmNZ+I1SV5lKqIph9CKu07JT5KwEW9LyOj3GbEGeEd6V
-	3Q8J5sBw6v8wVPfDW2/feauRrnxN/fN5cvQfMvAwW4P8cN4KD0nxlayR76QIz1aUjkDvQ0CFXET6x
-	pP4+R6+c7O/5kK0eDrDXQsVKLFFJLK33ae5HrIIVelo31tyTLHRvUMj4maISuFGGKwkPtegxDX4oE
-	1QcOuiym0qRlma7xVQxQ==;
+	List-Owner; bh=XeTJobor9+n6KrWRyOjaHbL5Hp7jL8MpW5xqTj8zUvQ=; b=y23EZSwjzi/3KL
+	FzqPfUQGzbCmbmjqbOTPS+Vv3VGjQbEPmOb3DP1B3I8IKv83kK2/PHCyvy1Dr/zY4KLZNcyBz+QDI
+	Gv8trIQzxj0de3iP1Es/SKJyL5H76RktkM+WZOPIcu/Uq1EYkoEr4nggU2ccbw540QroBZXnKxlGg
+	dGVVaraCVnkFIHauIu6q4LeByIYHVMmJ14rGmTeZ+hcc2CvOc4n9tzRfKVgnN+hHsiASIF8nxVTDF
+	B9nFLCn+zwyREpaSVyjb9k5KUoq+iRVZYrg0tUHksDvjBAlKcwGG/i05M3zV5riwvFAlckKxsFDKy
+	OO36Z6XSB+pRa7PRf34A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nM6JU-0058H1-BX; Mon, 21 Feb 2022 10:53:04 +0000
+	id 1nM6Jc-0058M9-Ck; Mon, 21 Feb 2022 10:53:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nM62E-004zW3-Qb
- for barebox@lists.infradead.org; Mon, 21 Feb 2022 10:35:16 +0000
+ id 1nM62u-004zvi-VU
+ for barebox@lists.infradead.org; Mon, 21 Feb 2022 10:36:00 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1nM62D-0004fA-3S; Mon, 21 Feb 2022 11:35:13 +0100
+ id 1nM62s-0004qb-JJ; Mon, 21 Feb 2022 11:35:54 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nM62C-00FdV2-GR; Mon, 21 Feb 2022 11:35:12 +0100
+ id 1nM62s-00Fdnc-41; Mon, 21 Feb 2022 11:35:54 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 21 Feb 2022 11:35:09 +0100
-Message-Id: <20220221103509.3726607-1-a.fatoum@pengutronix.de>
+Date: Mon, 21 Feb 2022 11:35:53 +0100
+Message-Id: <20220221103553.3727859-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220220124736.3052502-8-a.fatoum@pengutronix.de>
-References: <20220220124736.3052502-8-a.fatoum@pengutronix.de>
+In-Reply-To: <20220220124736.3052502-22-a.fatoum@pengutronix.de>
+References: <20220220124736.3052502-22-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220221_023514_890371_5B7892C5 
-X-CRM114-Status: UNSURE (   9.44  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220221_023557_109443_16152033 
+X-CRM114-Status: GOOD (  10.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,34 +74,31 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] fixup! ARM: stm32mp: build extra
- barebox-stm32mp-generic-bl33.img
+Subject: [PATCH] fixup! clk: stm32mp1: sync with Linux v5.17-rc1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Otherwise, this image is built even for non-STM32MP machines.
+This allows discarding code at compile-time for drivers that can be
+compiled without DT support.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- images/Makefile.stm32mp | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/driver.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/images/Makefile.stm32mp b/images/Makefile.stm32mp
-index 862e955dbc59..fa79e09f952f 100644
---- a/images/Makefile.stm32mp
-+++ b/images/Makefile.stm32mp
-@@ -26,9 +26,9 @@ endef
- # --------------------------------------
+diff --git a/include/driver.h b/include/driver.h
+index 1ee255c9ad0c..85cb30f8b0b1 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -600,7 +600,7 @@ struct device_d *device_find_child(struct device_d *parent, void *data,
  
- # For use as --nt-fw (BL33) in FIP images
--pblb-y += start_stm32mp_bl33
-+pblb-$(CONFIG_ARCH_STM32MP) += start_stm32mp_bl33
- FILE_barebox-stm32mp-generic-bl33.img  = start_stm32mp_bl33.pblb
--image-y += barebox-stm32mp-generic-bl33.img
-+image-$(CONFIG_ARCH_STM32MP) += barebox-stm32mp-generic-bl33.img
+ static inline struct device_node *dev_of_node(struct device_d *dev)
+ {
+-	return dev->device_node;
++	return IS_ENABLED(CONFIG_OFDEVICE) ? dev->device_node : NULL;
+ }
  
- $(call build_stm32mp_image, CONFIG_MACH_STM32MP15XX_DKX, start_stm32mp15xx_dkx, stm32mp15xx-dkx)
- $(call build_stm32mp_image, CONFIG_MACH_STM32MP15X_EV1, start_stm32mp15x_ev1, stm32mp15x-ev1)
+ #endif /* DRIVER_H */
 -- 
 2.30.2
 
