@@ -3,55 +3,56 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nMSr3-006lZs-Ja
+	id 1nMSr3-006lZw-Ta
 	for lore@lore.pengutronix.de; Tue, 22 Feb 2022 11:57:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nMSr1-00055e-Fq
-	for lore@pengutronix.de; Tue, 22 Feb 2022 11:57:12 +0100
+	id 1nMSr1-00055h-QF
+	for lore@pengutronix.de; Tue, 22 Feb 2022 11:57:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=72xwYn1QTrlD7PYSUTM0XK7NqB8sgUpC/+d9XOaUOSQ=; b=lwc0xO+/W6yZsb
-	PV74JbxQYJETRwmVgzY7MvAjIYwFMmt+kf92SNakUEuW1Sm9EZyD8CHrvdOMFVNQcdMTmx6SsuWYe
-	KbYZPkTNpuTQk9aqox9lMzh9FEJRmuKHeK0xAFuvlZtJYXYaOJxDCuDIH9sWSFVwa5NurH2HEFQQ7
-	bJbp0U5LYt5Fr/XjgWTxoTLHdxC/jsm6et7a3OE2LpqUGYB7ILPnlfWgGNk3+0hKm1el7SpS5DbsW
-	U2LUTf75Z9PamwYm4wYdeUbfbHVbfPO/RdbA/QJHIOjOqlmSNHiq9E3xwxF0/zGmfjnl8ZEj3sMJb
-	bKat0aO3mc4aiN0XCnvg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=ZARHayUpwjAIRrkvZcmh0cjZxhLwts0QvLAjgY0s6jA=; b=JeNjMG/xgiku9M
+	r8ln76KdptZjwXfHghnxjvkqJRJxlOnIOzTTLJp33t0PQLh44vdRLbCnINas7fv/f8nOapyZ1g4+S
+	xgB7aV/bfmLZ4l06wSy2DnXEHnL0me/w+hjhBJdF8Fm15EQ6hg1IaUziO725dcL+NC0/CCaWQoKS6
+	5CjJG26m67z0S6tploO++DKNej8ih9+h7nG2iElnHsDp6hUAZvqdYo6OtxsZPbO+G+9Sg8YDH+2zY
+	eEreEsRaKuxRN/ZBx1HGBYJpdFEoYCNBzn/rl+yBGncfzlb/nVRisfOTEu17HyKYJ4cbDa+ssbfu4
+	n9Do1NjOt+b4AXQ/jtdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nMSpI-009Dwy-1F; Tue, 22 Feb 2022 10:55:24 +0000
+	id 1nMSpQ-009E2o-DC; Tue, 22 Feb 2022 10:55:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nMSjC-009Aq2-6S
- for barebox@lists.infradead.org; Tue, 22 Feb 2022 10:49:07 +0000
+ id 1nMSjC-009Aq4-6g
+ for barebox@lists.infradead.org; Tue, 22 Feb 2022 10:49:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <jbe@pengutronix.de>) id 1nMSj7-0003ZI-GT
+ (envelope-from <jbe@pengutronix.de>) id 1nMSj7-0003ZJ-MM
  for barebox@lists.infradead.org; Tue, 22 Feb 2022 11:49:01 +0100
 Received: from [2a0a:edc0:0:900:1d::45] (helo=ginster)
  by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
- (envelope-from <jbe@pengutronix.de>) id 1nMSj7-000bKN-GV
+ (envelope-from <jbe@pengutronix.de>) id 1nMSj7-000bKQ-M5
  for barebox@lists.infradead.org; Tue, 22 Feb 2022 11:49:00 +0100
 Received: from jbe by ginster with local (Exim 4.94.2)
- (envelope-from <jbe@pengutronix.de>) id 1nMSj5-000BYm-P6
+ (envelope-from <jbe@pengutronix.de>) id 1nMSj5-000BYr-QF
  for barebox@lists.infradead.org; Tue, 22 Feb 2022 11:48:59 +0100
 From: Juergen Borleis <jbe@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 22 Feb 2022 11:48:57 +0100
-Message-Id: <20220222104859.44391-1-jbe@pengutronix.de>
+Date: Tue, 22 Feb 2022 11:48:59 +0100
+Message-Id: <20220222104859.44391-3-jbe@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220222104859.44391-1-jbe@pengutronix.de>
+References: <20220222104859.44391-1-jbe@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220222_024906_277183_FA09C6B9 
-X-CRM114-Status: UNSURE (   9.93  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220222_024906_300259_772AA091 
+X-CRM114-Status: GOOD (  12.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,54 +77,123 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/3] ARM: webasto-ccbv2: consider the available memory size
- for optee
+Subject: [PATCH 3/3] ARM: webasto-marvel: share the run-time setup with the
+ ccbv2 variant
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- arch/arm/boards/webasto-ccbv2/lowlevel.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boards/webasto-ccbv2/board.c    |  6 +++++-
+ arch/arm/boards/webasto-ccbv2/lowlevel.c | 24 ++++++++++++++++++------
+ images/Makefile.imx                      |  2 ++
+ 3 files changed, 25 insertions(+), 7 deletions(-)
 
+diff --git a/arch/arm/boards/webasto-ccbv2/board.c b/arch/arm/boards/webasto-ccbv2/board.c
+index 4777713..fd6ea6f 100644
+--- a/arch/arm/boards/webasto-ccbv2/board.c
++++ b/arch/arm/boards/webasto-ccbv2/board.c
+@@ -22,7 +22,10 @@ static int ccbv2_probe(struct device_d *dev)
+ 	imx6_bbu_internal_mmcboot_register_handler("emmc", "/dev/mmc1",
+ 			BBU_HANDLER_FLAG_DEFAULT);
+ 
+-	barebox_set_hostname("weabsto-ccbv2");
++	if (of_machine_is_compatible("webasto,imx6ul-marvel"))
++		barebox_set_hostname("webasto-marvel");
++	else
++		barebox_set_hostname("webasto-ccbv2");
+ 
+ 	if(!IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE))
+ 		return 0;
+@@ -48,6 +51,7 @@ err:
+ 
+ static const struct of_device_id ccbv2_of_match[] = {
+ 	{ .compatible = "webasto,imx6ul-ccbv2" },
++	{ .compatible = "webasto,imx6ul-marvel" },
+ 	{ /* sentinel */ },
+ };
+ 
 diff --git a/arch/arm/boards/webasto-ccbv2/lowlevel.c b/arch/arm/boards/webasto-ccbv2/lowlevel.c
-index 32117b0..84de271 100644
+index 84de271..add51c0 100644
 --- a/arch/arm/boards/webasto-ccbv2/lowlevel.c
 +++ b/arch/arm/boards/webasto-ccbv2/lowlevel.c
-@@ -32,7 +32,7 @@ static void configure_uart(void)
+@@ -15,8 +15,6 @@
+ 
+ #include "ccbv2.h"
+ 
+-extern char __dtb_z_imx6ul_webasto_ccbv2_start[];
+-
+ static void configure_uart(void)
+ {
+ 	void __iomem *iomuxbase = (void *)MX6_IOMUXC_BASE_ADDR;
+@@ -32,7 +30,7 @@ static void configure_uart(void)
  
  }
  
--static void noinline start_ccbv2(u32 r0)
-+static void noinline start_ccbv2(u32 r0, unsigned long memSize)
+-static void noinline start_ccbv2(u32 r0, unsigned long memSize)
++static void noinline start_ccbv2(u32 r0, unsigned long memSize, char *fdt)
  {
  	int tee_size;
  	void *tee;
-@@ -48,7 +48,7 @@ static void noinline start_ccbv2(u32 r0)
- 	 */
- 	if(IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE)
- 	   && !(r0 > MX6_MMDC_P0_BASE_ADDR
--	        &&  r0 < MX6_MMDC_P0_BASE_ADDR + SZ_512M)) {
-+	        &&  r0 < MX6_MMDC_P0_BASE_ADDR + memSize)) {
- 		get_builtin_firmware(ccbv2_optee_bin, &tee, &tee_size);
+@@ -56,9 +54,10 @@ static void noinline start_ccbv2(u32 r0, unsigned long memSize)
+ 		start_optee_early(NULL, tee);
+ 	}
  
- 		memset((void *)OPTEE_OVERLAY_LOCATION, 0, 0x1000);
-@@ -70,7 +70,7 @@ ENTRY_FUNCTION(start_imx6ul_ccbv2_256m, r0, r1, r2)
+-	imx6ul_barebox_entry(__dtb_z_imx6ul_webasto_ccbv2_start);
++	imx6ul_barebox_entry(fdt);
+ }
+ 
++extern char __dtb_z_imx6ul_webasto_ccbv2_start[];
+ ENTRY_FUNCTION(start_imx6ul_ccbv2_256m, r0, r1, r2)
+ {
+ 
+@@ -70,12 +69,25 @@ ENTRY_FUNCTION(start_imx6ul_ccbv2_256m, r0, r1, r2)
  	setup_c();
  	barrier();
  
--	start_ccbv2(r0);
-+	start_ccbv2(r0, SZ_256M);
+-	start_ccbv2(r0, SZ_256M);
++	start_ccbv2(r0, SZ_256M, __dtb_z_imx6ul_webasto_ccbv2_start);
  }
  
  ENTRY_FUNCTION(start_imx6ul_ccbv2_512m, r0, r1, r2)
-@@ -84,5 +84,5 @@ ENTRY_FUNCTION(start_imx6ul_ccbv2_512m, r0, r1, r2)
+ {
++	imx6ul_cpu_lowlevel_init();
+ 
++	arm_setup_stack(0x00910000);
++
++	relocate_to_current_adr();
++	setup_c();
++	barrier();
++
++	start_ccbv2(r0, SZ_512M, __dtb_z_imx6ul_webasto_ccbv2_start);
++}
++
++extern char __dtb_z_imx6ul_webasto_marvel_start[];
++ENTRY_FUNCTION(start_imx6ul_marvel, r0, r1, r2)
++{
+ 	imx6ul_cpu_lowlevel_init();
+ 
+ 	arm_setup_stack(0x00910000);
+@@ -84,5 +96,5 @@ ENTRY_FUNCTION(start_imx6ul_ccbv2_512m, r0, r1, r2)
  	setup_c();
  	barrier();
  
--	start_ccbv2(r0);
-+	start_ccbv2(r0, SZ_512M);
+-	start_ccbv2(r0, SZ_512M);
++	start_ccbv2(r0, SZ_512M, __dtb_z_imx6ul_webasto_marvel_start);
  }
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 18cabbf..4b2ad6e 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -377,6 +377,8 @@ $(call build_imx_habv4img, CONFIG_MACH_WEBASTO_CCBV2, start_imx6ul_ccbv2_256m, w
+ 
+ $(call build_imx_habv4img, CONFIG_MACH_WEBASTO_CCBV2, start_imx6ul_ccbv2_512m, webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-512, imx6ul-webasto-ccbv2-512m)
+ 
++$(call build_imx_habv4img, CONFIG_MACH_WEBASTO_CCBV2, start_imx6ul_marvel, webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2-512, imx6ul-webasto-marvel-512m)
++
+ # ----------------------- vf6xx based boards ---------------------------
+ pblb-$(CONFIG_MACH_VF610_TWR) += start_vf610_twr
+ CFG_start_vf610_twr.pblb.imximg = $(board)/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
 -- 
 2.30.2
 
