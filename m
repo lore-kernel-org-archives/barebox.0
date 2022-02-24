@@ -1,53 +1,59 @@
-Delivery-date: Thu, 24 Feb 2022 14:54:25 +0100
+Delivery-date: Thu, 24 Feb 2022 15:46:31 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nNEZc-008l3N-TD
-	for lore@lore.pengutronix.de; Thu, 24 Feb 2022 14:54:24 +0100
+	id 1nNFO3-008nTb-5Q
+	for lore@lore.pengutronix.de; Thu, 24 Feb 2022 15:46:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nNEZa-0004A9-0w
-	for lore@pengutronix.de; Thu, 24 Feb 2022 14:54:24 +0100
+	id 1nNFO1-00022V-NH
+	for lore@pengutronix.de; Thu, 24 Feb 2022 15:46:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=t+6ZG+7HVr4R3aG8SB79VX4G5juNTiX3yyWj8v8OdHY=; b=JOjtZ3vFPqu5rH
-	oU00WmHRuCaT5Z9WFZ3r/D4s8tqXaI2i5NavKVp1bJCIuLEBhnme5CUkx/qtNgKo7a6MTGG+EAP4Q
-	A2Z/+D/GuF/sgrprkOdZepCCd9UsBFyZCQYjmq7NrkfDt7YKt0rbI3Z85g26Obe+dWzuQqIGHXS9Z
-	M2Jwa5HlwAHgnN/ThugCn+5tdXyJGAqr9xbrRt/oB/RiOdw/IJa0GSQ+uKyZsPcEg+tT/rNPWM8QO
-	HYtxOTIpL5huZJnUV4jk1dbcSBLUie4yT5/6IOnu2ZGiAG0Rwv/A3XYk3EDN3p/27LHh9azm+KlP/
-	5vwBgrWOyo3yWmcu/Riw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Date:To:From:Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=esCHq7XjkI7mxe3CRnCz1KGgmKg9v2j2mRn/9XoQ2Ss=; b=jPwZgrMggd93hJ
+	glI7edDwu6oqgkKn1cfWZpQ5FUXWan78XWxWW1R4ATSyVh5vTVRGLAU1PJQid2Mv0faxJRE3AwBC1
+	D//CdJcYuMKBV0XTKSiItx+BMaS66neoi+P3+yMfwF4k3NHx+LSDSmdbKGEVo25EA6btv8NUFK71W
+	sflnsvE+tCTOEzF3/eXfgltL2S7pJV3V+pSvVzH7vAsWVmpdUaVMt7cDceakaLgK7YUKvCdnOAhCb
+	5elINkC32yhz4O8QVQsuCb0T5FDOTWWShjBQbaVtbTMMLrQxaAsOUYHV46/oL/q5gjBX6bP2LZHRL
+	g0cdZcaZ1Uk3/M/i+SkQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nNEYB-0010b9-TW; Thu, 24 Feb 2022 13:52:55 +0000
+	id 1nNFMZ-0019HH-Ez; Thu, 24 Feb 2022 14:44:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nNEY5-0010a6-4P
- for barebox@lists.infradead.org; Thu, 24 Feb 2022 13:52:52 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ id 1nNFMT-0019Gl-Ny
+ for barebox@lists.infradead.org; Thu, 24 Feb 2022 14:44:55 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1nNEY3-0003nP-VO; Thu, 24 Feb 2022 14:52:47 +0100
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>)
- id 1nNEY3-001566-G7; Thu, 24 Feb 2022 14:52:47 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 24 Feb 2022 14:52:46 +0100
-Message-Id: <20220224135246.257871-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+ (envelope-from <p.zabel@pengutronix.de>)
+ id 1nNFMQ-0001hM-Cn; Thu, 24 Feb 2022 15:44:50 +0100
+Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+ (envelope-from <p.zabel@pengutronix.de>)
+ id 1nNFMQ-0012Ac-CX; Thu, 24 Feb 2022 15:44:49 +0100
+Received: from pza by lupine with local (Exim 4.94.2)
+ (envelope-from <p.zabel@pengutronix.de>)
+ id 1nNFMJ-0009O9-Dr; Thu, 24 Feb 2022 15:44:43 +0100
+Message-ID: <3c32434087f62cdea5502a721bfce9cea26c49c2.camel@pengutronix.de>
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Date: Thu, 24 Feb 2022 15:44:43 +0100
+In-Reply-To: <20220224135246.257871-1-a.fatoum@pengutronix.de>
+References: <20220224135246.257871-1-a.fatoum@pengutronix.de>
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220224_055249_537763_8AB8B41D 
-X-CRM114-Status: GOOD (  27.54  )
+X-CRM114-CacheID: sfid-20220224_064453_798440_4DEF4B8E 
+X-CRM114-Status: UNSURE (   7.27  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,527 +73,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,LOTS_OF_MONEY,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] RISC-V: virt: riscvemu: add interactive tutorial
+Subject: Re: [PATCH] RISC-V: virt: riscvemu: add interactive tutorial
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This tutorial walks the user through basics of the barebox shell.
-It can be invoked using the next command.
+Hi Ahmad,
 
-It will be extended later to cover actual boot as well, but
-that part still needs to be added to the web demo. To try it out
-interactively, go to:
-
-  https://www.barebox.org/jsbarebox/
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/riscv/boards/riscvemu/Makefile                  |  1 +
- arch/riscv/boards/riscvemu/board.c                   |  4 ++++
- .../defaultenv-riscvemu/data/tutorial/00-init        | 12 ++++++++++++
- .../defaultenv-riscvemu/data/tutorial/01-interactive |  7 +++++++
- .../defaultenv-riscvemu/data/tutorial/02-ofdump      |  6 ++++++
- .../defaultenv-riscvemu/data/tutorial/03-devinfo     |  5 +++++
- .../defaultenv-riscvemu/data/tutorial/04-cs0         | 11 +++++++++++
- .../defaultenv-riscvemu/data/tutorial/05-drvinfo     |  4 ++++
- .../defaultenv-riscvemu/data/tutorial/06-devinfo-dev |  6 ++++++
- .../riscvemu/defaultenv-riscvemu/data/tutorial/07-mw |  9 +++++++++
- .../defaultenv-riscvemu/data/tutorial/08-devfs       |  8 ++++++++
- .../defaultenv-riscvemu/data/tutorial/09-partitions  |  9 +++++++++
- .../defaultenv-riscvemu/data/tutorial/10-environment |  8 ++++++++
- .../defaultenv-riscvemu/data/tutorial/11-env-data    | 12 ++++++++++++
- .../defaultenv-riscvemu/data/tutorial/12-dmesg       |  9 +++++++++
- .../defaultenv-riscvemu/data/tutorial/13-env-bin     | 11 +++++++++++
- .../defaultenv-riscvemu/data/tutorial/14-env-init    |  8 ++++++++
- .../defaultenv-riscvemu/data/tutorial/15-magicvar    | 10 ++++++++++
- .../defaultenv-riscvemu/data/tutorial/16-env-nv      | 12 ++++++++++++
- .../defaultenv-riscvemu/data/tutorial/17-env-saveenv |  7 +++++++
- .../defaultenv-riscvemu/data/tutorial/17-env-usage   |  5 +++++
- .../defaultenv-riscvemu/data/tutorial/18-mnt         | 11 +++++++++++
- .../defaultenv-riscvemu/data/tutorial/19-automount   |  9 +++++++++
- .../defaultenv-riscvemu/data/tutorial/20-mount-fs    | 11 +++++++++++
- .../defaultenv-riscvemu/data/tutorial/21-state       | 11 +++++++++++
- .../data/tutorial/22-device-params                   | 11 +++++++++++
- .../data/tutorial/23-device-param-types              |  8 ++++++++
- .../defaultenv-riscvemu/data/tutorial/24-boot        | 12 ++++++++++++
- .../defaultenv-riscvemu/data/tutorial/99-end         |  1 +
- .../defaultenv-riscvemu/init/90-tutorial-intro       |  6 ++++++
- 30 files changed, 244 insertions(+)
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/00-init
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/01-interactive
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/02-ofdump
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/03-devinfo
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/04-cs0
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/05-drvinfo
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/06-devinfo-dev
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/07-mw
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/08-devfs
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/09-partitions
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/10-environment
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/11-env-data
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/12-dmesg
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/13-env-bin
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/14-env-init
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/15-magicvar
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/16-env-nv
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-saveenv
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-usage
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/18-mnt
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/19-automount
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/20-mount-fs
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/21-state
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/22-device-params
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/23-device-param-types
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/24-boot
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/99-end
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/init/90-tutorial-intro
-
-diff --git a/arch/riscv/boards/riscvemu/Makefile b/arch/riscv/boards/riscvemu/Makefile
-index 75f52ada8f37..56949c2357c8 100644
---- a/arch/riscv/boards/riscvemu/Makefile
-+++ b/arch/riscv/boards/riscvemu/Makefile
-@@ -2,3 +2,4 @@
- 
- obj-y += board.o
- obj-y += overlay-of-sram.dtb.o
-+bbenv-$(CONFIG_CMD_TUTORIAL) += defaultenv-riscvemu
-diff --git a/arch/riscv/boards/riscvemu/board.c b/arch/riscv/boards/riscvemu/board.c
-index 31d0c70be643..d9c7bd77b8cc 100644
---- a/arch/riscv/boards/riscvemu/board.c
-+++ b/arch/riscv/boards/riscvemu/board.c
-@@ -5,6 +5,7 @@
- 
- #include <common.h>
- #include <driver.h>
-+#include <envfs.h>
- #include <poweroff.h>
- #include <restart.h>
- #include <deep-probe.h>
-@@ -45,6 +46,9 @@ static int riscvemu_probe(struct device_d *dev)
- 	of_overlay_apply_tree(dev->device_node, overlay);
- 	/* of_probe() will happen later at of_populate_initcall */
- 
-+	if (IS_ENABLED(CONFIG_CMD_TUTORIAL))
-+		defaultenv_append_directory(defaultenv_riscvemu);
-+
- 	of_chosen = of_find_node_by_path("/chosen");
- 
- 	if (of_property_read_u64(of_chosen, "riscv,kernel-start", &start))
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/00-init b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/00-init
-new file mode 100644
-index 000000000000..1ff43142bada
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/00-init
-@@ -0,0 +1,12 @@
-+
-+You are using Hush, barebox' default shell. You are currently using it
-+interactively, but it can execute scripts as part of the startup and boot
-+procedure as well. See for yourself:
-+```
-+  cat /env/init/90-tutorial-intro
-+```
-+Look around as you like. When you are ready to continue the tutorial,
-+type `next` again. The `prev` command does the inverse and shows previous
-+tutorial steps. The `help` command will show help usage text,
-+e.g. `help next`.
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/01-interactive b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/01-interactive
-new file mode 100644
-index 000000000000..8b285cd9f475
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/01-interactive
-@@ -0,0 +1,7 @@
-+
-+The interactive shell, its commands and the nodes in the virtual
-+file system they operate on enable quick UNIX-like prototyping
-+and debugging. Let's give it a try, shall we?
-+Type `of_dump` to list the open firmware (OF) device tree barebox
-+used to discover the hardware and `next` to continue the tutorial.
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/02-ofdump b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/02-ofdump
-new file mode 100644
-index 000000000000..3271f734b20b
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/02-ofdump
-@@ -0,0 +1,6 @@
-+
-+That's a lot of output, so let's restrict ourselves to just part
-+of the tree:
-+```
-+  of_dump /soc/virtio@40010000
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/03-devinfo b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/03-devinfo
-new file mode 100644
-index 000000000000..74bc9aa88a67
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/03-devinfo
-@@ -0,0 +1,5 @@
-+
-+This node tells barebox enough information to instantiate a device and
-+to try match it with existing drivers. Type `devinfo` to see the tree of
-+devices known to barebox.
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/04-cs0 b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/04-cs0
+On Do, 2022-02-24 at 14:52 +0100, Ahmad Fatoum wrote:
+[...]
+diff --git a/arch/riscv/boards/riscvemu/defaultenv-
+riscvemu/data/tutorial/04-cs0 b/arch/riscv/boards/riscvemu/defaultenv-
+riscvemu/data/tutorial/04-cs0
 new file mode 100644
 index 000000000000..0ac452d1b3b5
 --- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/04-cs0
++++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/04-
+cs0
 @@ -0,0 +1,11 @@
 +
 +In this tree, you will find 40010000.virtio@40010000.of, the
 +device corresponding to the device tree node we've just seen.
-+Devices can themself have child devices. This device's
-+grandchild is `cs0`, the virtual console device that prints
-+you this very text.
-+
-+See for yourself:
-+```
-+  echo -a /dev/cs0 Append this text to virtio console
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/05-drvinfo b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/05-drvinfo
-new file mode 100644
-index 000000000000..068bf303d8cd
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/05-drvinfo
-@@ -0,0 +1,4 @@
-+
-+Let's look at more devices. Type `drvinfo` to see what drivers are
-+available and what devices they were successfully matched with.
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/06-devinfo-dev b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/06-devinfo-dev
-new file mode 100644
-index 000000000000..f706915ba2e8
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/06-devinfo-dev
-@@ -0,0 +1,6 @@
-+
-+Let's pick another device out of the list: HTIF. We can display some extra
-+info with `devinfo`. (Use the tab completion to avoid writing it all out!)
-+```
-+devinfo 40008000.htif.of
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/07-mw b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/07-mw
-new file mode 100644
-index 000000000000..4278f8f391bd
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/07-mw
-@@ -0,0 +1,9 @@
-+
-+We see that the device has a memory mapped I/O region of 8 bytes that
-+can be used for communication. Poking 0x010100000000002e in little-
-+endian into that region should print a period '.'.
-+Let's do that quad-word memory write (`mw -q`) 80 times by having a shell
-+local variable keep count:
-+```
-+i=0; while [ $i -lt 80 ]; do mw -q 0x40008000 0x010100000000002e; let i=$i+1; done
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/08-devfs b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/08-devfs
-new file mode 100644
-index 000000000000..b117e4bb1632
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/08-devfs
-@@ -0,0 +1,8 @@
-+
-+`mw` is complemented by `md` for memory display. There are further commands
-+like `mm` (memory modify), `memcpy` and `memcmp` (copy/compare ranges).
-+These commands operate on `/dev/mem` by default, but any seekable device
-+or file can be used instead. Let's see what device files we got here:
-+```
-+ls /dev
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/09-partitions b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/09-partitions
-new file mode 100644
-index 000000000000..552ab2ab1e51
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/09-partitions
-@@ -0,0 +1,9 @@
-+
-+The `mtdram0` looks interesting. That's the 64K SRAM at the start of the
-+address space. The virtual machine places the boot "rom" there as well
-+as the flattened (compiled) device tree (FDT). barebox can be informed
-+about partitioning and will create extra devices for each partition.
-+This allows you to reference them from commands easily:
-+```
-+of_dump -f /dev/mtdram0.fdt
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/10-environment b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/10-environment
-new file mode 100644
-index 000000000000..d1a6f85119f7
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/10-environment
-@@ -0,0 +1,8 @@
-+
-+Not all of the 64K is used, so the barebox board support here uses
-+the unused mtd-ram space for saving modified environment and state.
-+The barebox environment is a file system which contains scripts, variables
-+and data:
-+```
-+ls -R /env
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/11-env-data b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/11-env-data
-new file mode 100644
-index 000000000000..81e3f47ee781
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/11-env-data
-@@ -0,0 +1,12 @@
-+
-+The environment you see here is the built-in environment barebox was
-+compiled with. It contains default values for non-volatile variables,
-+(init) scripts and data. It's generated from directories on the host
-+system specified during build and stored as an archive within
-+barebox. This environment may also be compressed allowing shipping
-+larger files and even binaries. For example, this barebox binary
-+has the option CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG=y,
-+which ships a copy of the used barebox configuration. See for yourself:
-+```
-+cat /env/data/config
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/12-dmesg b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/12-dmesg
-new file mode 100644
-index 000000000000..61cdd2adafbc
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/12-dmesg
-@@ -0,0 +1,9 @@
-+
-+In the field, you will probably want to depend exclusively on the built-in
-+environment, but it can be very handy to persist environment changes during
-+development. You may recall that barebox told us at first boot that the
-+environment was never written?  If you don't, no problem, log messages are,
-+you guessed it, logged:
-+```
-+dmesg
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/13-env-bin b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/13-env-bin
-new file mode 100644
-index 000000000000..34b7ab554b7f
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/13-env-bin
-@@ -0,0 +1,11 @@
-+
-+Let's modify the environment to add a new script (Remember
-+`help` can show you the usage, e.g. `help mw`):
-+```
-+cd /env/bin
-+echo -o putc '#!/bin/sh'
-+echo -a putc 'mw -l 0x40008000 $1'
-+echo -a putc 'mw -l 0x40008004 0x01010000'
-+cd /
-+putc 0x40 # Print an @ character
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/14-env-init b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/14-env-init
-new file mode 100644
-index 000000000000..184a4f571f8b
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/14-env-init
-@@ -0,0 +1,8 @@
-+
-+We could have added the last script anywhere in `/env`. But `/env/bin` is
-+already in the executable search `PATH`, so you don't have to write out
-+the full path when invoking the script. Another special directory is
-+`/env/init`. Anything there will be sourced on shell startup.
-+Let's poke the HTIF a bit every time we start: Open a new file with
-+`edit /env/init/99-percent` and type into it `putc 0x40`.
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/15-magicvar b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/15-magicvar
-new file mode 100644
-index 000000000000..ec2912da9fb9
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/15-magicvar
-@@ -0,0 +1,10 @@
-+
-+As init scripts only run on initialization, we'll have to do a reset to
-+see them in action. But first, we'll want to save our tutorial progress.
-+This happens via $global.variables.  Many parts of barebox monitor reads
-+and writes to such variables to make information available to the shell.
-+
-+The `next` command also does it. How would you know?
-+```
-+magicvar
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/16-env-nv b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/16-env-nv
-new file mode 100644
-index 000000000000..3440e0194722
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/16-env-nv
-@@ -0,0 +1,12 @@
-+
-+Now that you know that $global.tutorial.step holds the next step, you
-+will want to initialize it on the next reset. We could write an init shell
-+script for that, but there is something much more convenient:
-+
-+On startup, barebox needs to assign initial values for each
-+$global.variable; if a suitably named non-volatile $nv.variable already
-+exists, it will be used as initial value. Let's see what global variables
-+we got (leading asterisk '*' means it was initialized from NV):
-+```
-+global
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-saveenv b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-saveenv
-new file mode 100644
-index 000000000000..f929838138d6
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-saveenv
-@@ -0,0 +1,7 @@
-+
-+Now that we have written a normal script and an init script, add a
-+nv variable to the mix, save the environment and reset to see them
-+all in action:
-+```
-+nv tutorial.step=$global.tutorial.step; saveenv; reset
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-usage b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-usage
-new file mode 100644
-index 000000000000..1f4ff37f8652
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-usage
-@@ -0,0 +1,5 @@
-+
-+Welcome back! You have successfully saved the environment. Make sure
-+to reset your environment with `saveenv -z` when you are done. You wouldn't
-+want to chase ghosts, because you changed an init script and forgot about it. :)
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/18-mnt b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/18-mnt
-new file mode 100644
-index 000000000000..3122e6ffa404
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/18-mnt
-@@ -0,0 +1,11 @@
-+
-+We now have seen `/dev`, which holds the devfs, and `/env` which holds the
-+active environment. `/tmp` is as you have guessed it a directory where temporary
-+files can be placed. `/pstore` is short for persistent storage, a Linux
-+mechanism to store and retrieve error records even after a kernel panic.
-+
-+This leaves `/mnt`. Let's take a peek at it as well at our active mounts:
-+```
-+mount
-+ls /mnt
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/19-automount b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/19-automount
-new file mode 100644
-index 000000000000..4d4787a9a8c7
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/19-automount
-@@ -0,0 +1,9 @@
-+
-+Strangely, nothing inside `/mnt` is seen in the `mount` output. Why you
-+ask? Because these are automounts that are deferred until first access.
-+So when you `bootm /mnt/nfs/boot/Image.gz` the first time, barebox will
-+bring up the network and mount the network file system (provided you do
-+have network). We can list what automounts there are:
-+```
-+automount -l
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/20-mount-fs b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/20-mount-fs
-new file mode 100644
-index 000000000000..cc5e64c66c78
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/20-mount-fs
-@@ -0,0 +1,11 @@
-+
-+`/mnt/virtioblk0` is an interesting one. Block device partitions
-+automatically get automount entries created. On first access,
-+barebox will determine what file system is located in the partition
-+and mount it. Thus you can just use `/mnt/virtioblk0/DOOM1.WAD` in
-+your script and not incur the overhead of mounting unless it's accessed:
-+```
-+mount
-+ll /mnt/virtioblk0/DOOM1.WAD
-+mount
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/21-state b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/21-state
-new file mode 100644
-index 000000000000..1a71204cf5e1
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/21-state
-@@ -0,0 +1,11 @@
-+
-+You'll note most file systems in barebox are read-only. While those that aren't
-+could be used with `saveenv` to store a packed environment for Linux use, that's
-+murky waters: atomicity, limiting scope, authentication and journal handling
-+complicate things. barebox state is the mechanism how barebox stores variables
-+(and only variables) in a power-fail safe manner that's also accessible to Linux.
-+
-+Check the `state` device:
-+```
-+devinfo state
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/22-device-params b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/22-device-params
-new file mode 100644
-index 000000000000..3f8d31f171d0
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/22-device-params
-@@ -0,0 +1,11 @@
-+
-+The state driver parses the device tree to learn the state layout
-+and how it's (redundantly) placed. The information it learns are
-+registered with the device as device parameters. Device Parameters
-+make it easy to interact with the shell. For example, the MAC address
-+of a network adapter is a device parameter. We already saw some other
-+device parameters before. Those of the global and nv device:
-+```
-+devinfo global
-+devinfo nv
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/23-device-param-types b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/23-device-param-types
-new file mode 100644
-index 000000000000..36a311d011ac
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/23-device-param-types
-@@ -0,0 +1,8 @@
-+
-+Many device parameters are simple strings, some have specific types
-+and run actions on read/write or accept only specific values.
-+`devinfo` will show you what type a variable has and writing an
-+invalid value will give you an error:
-+```
-+global.tutorial.step=non-existent
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/24-boot b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/24-boot
-new file mode 100644
-index 000000000000..90c226697310
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/24-boot
-@@ -0,0 +1,12 @@
-+
-+You should now know enough about barebox' architecture, that
-+we could talk about barebox' actual function without it
-+seeming too magical: Booting.
-+
-+We still need to add that part to the tutorial though, but you
-+can check out `help boot`, `help bootm` as well as the barebox
-+documentation linked below. Also give the graphical mode a
-+try!
-+
-+Tutorial to be continued..
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/99-end b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/99-end
-new file mode 100644
-index 000000000000..4744f2b3eeb8
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/99-end
-@@ -0,0 +1 @@
-+End of tutorial reached!
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/init/90-tutorial-intro b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/init/90-tutorial-intro
-new file mode 100644
-index 000000000000..716905534c94
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/init/90-tutorial-intro
-@@ -0,0 +1,6 @@
-+source /env/data/ansi-colors
-+
-+echo -e $YELLOW
-+echo -e This is the barebox shell. See ${RED}help${YELLOW} for a listing of commands.
-+echo -e Type ${RED}next${YELLOW} for the next tutorial tip.
-+echo -e $NC
--- 
-2.30.2
++Devices can themself have child devices. [...]
 
+I'd change that to "Devices can have child devices themselves."
+
+regards
+Philipp
 
 _______________________________________________
 barebox mailing list
