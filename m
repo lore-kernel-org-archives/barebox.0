@@ -1,16 +1,16 @@
-Delivery-date: Mon, 28 Feb 2022 10:32:22 +0100
+Delivery-date: Mon, 28 Feb 2022 10:47:57 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nOcOE-00D5RO-2j
-	for lore@lore.pengutronix.de; Mon, 28 Feb 2022 10:32:22 +0100
+	id 1nOcdJ-00D6AE-00
+	for lore@lore.pengutronix.de; Mon, 28 Feb 2022 10:47:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nOcOC-0004xn-M9
-	for lore@pengutronix.de; Mon, 28 Feb 2022 10:32:21 +0100
+	id 1nOcdH-0006qz-Ik
+	for lore@pengutronix.de; Mon, 28 Feb 2022 10:47:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,46 +18,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=3bwX0g5aBgXSS9r1Zpu06cK3mWLs4mzEBO1n9DXTz90=; b=rdb/HIwLzMhjh5VSlZ7xSLHOfg
-	9kZUtM1waTIsQ0XgxAKeuKi2SQwPxWJ6UvKNvrBqyagfmbAKh0QmhL9L/5YZJyH0kYdPn1dkRpGLc
-	ySSwS94Ws8gP8k4uNfCquNvD2+RqqCBkGf4A0Co0AsInZEbVjZbNqW3Ps2r81UXc2jdBz9BNDsMa2
-	8hE+cFozkgu0vC6syuUaU9fqtV7rqj0kIV75Ln222wV2IbPPBUPxrkPUBG6pJh+4rFwK9Jj2xNHZT
-	PiiDLB4+A0lptp4Y1W6xLDDJRUnUy3DvsL3WEkP7BWQ894FEhylxNVdoK9wCs3c2+zYovp6qhM7EB
-	Q+z6zaDQ==;
+	bh=EAKE4AG2ZdL09/TMMgjTHYjsFIZnHVyG5qFsXRP0OIU=; b=meko/qlBsiWvjAhLU79o5tgA6I
+	qW7EidouisJm7zh3pLk6o5/gmT+X68Sqc4qXW+eVQRfIZZD2i36pcWt3PZe1hDl6cm2YFq2EJAXCb
+	sFmHhnBDnghOlJByqkcEZVG8zp6WfCPCBLUOIbz9QDuQfEG8aiowMds1tYmoa2YpGqVdQfrpXqnV3
+	Sr1qjfcRymYJZ8oQR76t3jscxOrJ1tN6ImNW3ng5godw6CAXsbM7QLsJweXAnfCXFHPsDpZlJtu0c
+	J2OxjI/5/6ypgjmUU+0Jl8hOaxG1PUs86AFeh23noZPnWA9rcfIxICsxTnqoqPfw3LRuAiIUjLvK0
+	nV/jfP5g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nOcMZ-00BGBV-AI; Mon, 28 Feb 2022 09:30:39 +0000
+	id 1nOcc0-00BJv8-0w; Mon, 28 Feb 2022 09:46:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nOcMR-00BGAk-73
- for barebox@lists.infradead.org; Mon, 28 Feb 2022 09:30:35 +0000
+ id 1nOcbt-00BJtk-IG
+ for barebox@lists.infradead.org; Mon, 28 Feb 2022 09:46:31 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nOcMN-0004dL-32; Mon, 28 Feb 2022 10:30:27 +0100
+ id 1nOcbs-0006ZQ-9R; Mon, 28 Feb 2022 10:46:28 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nOcMM-0002iA-QU; Mon, 28 Feb 2022 10:30:26 +0100
-Date: Mon, 28 Feb 2022 10:30:26 +0100
-To: Bastian Krause <bst@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220228093026.GF19585@pengutronix.de>
-References: <20220225100344.4166248-1-bst@pengutronix.de>
+ id 1nOcbo-0003bj-JK; Mon, 28 Feb 2022 10:46:24 +0100
+Date: Mon, 28 Feb 2022 10:46:24 +0100
+To: Joacim Zetterling <joacim.zetterling@westermo.com>
+Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Message-ID: <20220228094624.GH19585@pengutronix.de>
+References: <20220225144751.4160843-1-joacim.zetterling@westermo.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220225100344.4166248-1-bst@pengutronix.de>
+In-Reply-To: <20220225144751.4160843-1-joacim.zetterling@westermo.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:30:15 up 79 days, 18:15, 90 users,  load average: 0.48, 0.24, 0.33
+X-Uptime: 10:37:20 up 79 days, 18:22, 90 users,  load average: 0.32, 0.20, 0.26
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220228_013031_282611_E0C1E2F8 
-X-CRM114-Status: GOOD (  22.08  )
+X-CRM114-CacheID: sfid-20220228_014629_633214_187EED9B 
+X-CRM114-Status: GOOD (  24.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,57 +82,53 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] arch: arm: mach-imx: document field return in CSF template
+Subject: Re: [PATCH 0/4] ARM: imx: Fix problem with imx8 SDRAM size calculation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Feb 25, 2022 at 11:03:44AM +0100, Bastian Krause wrote:
-> Activating the field return configuration returns a locked-down board
-> (nearly) to its open state. In order to burn the FIELD_RETURN fuse, the
-> CSF must contain a specific unlock command with the device's UID.
+On Fri, Feb 25, 2022 at 03:47:47PM +0100, Joacim Zetterling wrote:
+> There is some issues with the imx8 ddrc sdram size calculation.
 > 
-> Signed-off-by: Bastian Krause <bst@pengutronix.de>
-> ---
->  .../include/mach/habv4-imx6-gencsf-template.h        | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+> If we compare the imx8mn DDR4 evk against the LPDDR4 variant in
+> code and in the datasheets, we see the following:
+> 
+>              DDR4   LPDDR4
+>   ========================
+>   Bus width   16      16
+>   Rank        1       1
+>   Ranks       1       1
+>   Banks       4       8
+>   Banks grps  2       1
+>   Rows        17      15
+>   Col         10      10
+> 
+> This gives us the following problems:
+> 
+> 1. Bus width problem.
+>    Does not support 16 bit SDRAM bus mode, only 32 bit supported
+> 
+> 2. Row size problem.
+>    Only up to 16 bit row size support.
+> 
+> 3. Bank groups support.
+>    Only support of 1 bank group.
+> 
+> 4. Bit count problem.
+>    The imx_ddrc_count_bits function does not do a correct count.
+>    Found out during test of the 1-3 part fixes.
+> 
+> The fact that the code only handled a 32 bit bus width, compensated
+> the problems with rows, banks and rank.
 
-Applied, thanks
+So this means this series causes a regression in between which is fixed
+at the end of the series, right?
+
+I think this is ok in this case and is better than putting everything in
+a single patch. I just want to make sure everyone who bisects barebox
+and ends up in one of these patches and likely reads this thread knows
+that this is expected.
 
 Sascha
-
-> 
-> diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf-template.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf-template.h
-> index a60b485292..45da2981cb 100644
-> --- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf-template.h
-> +++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf-template.h
-> @@ -39,6 +39,18 @@ hab Engine = SETUP_HABV4_ENGINE
->  hab Features = SETUP_HABV4_FEATURES
->  #endif
->  
-> +/*
-> +// allow fusing FIELD_RETURN
-> +// # ocotp0.permanent_write_enable=1
-> +// # mw -l -d /dev/imx-ocotp 0xb8 0x1
-> +hab [Unlock]
-> +hab Engine = OCOTP
-> +hab Features = FIELD RETURN
-> +// device-specific UID:
-> +// $ dd if=/sys/bus/nvmem/devices/imx-ocotp0/nvmem bs=4 skip=1 count=2 status=none | hexdump -ve '1/1 "0x%.2x, "' | sed 's/, $//'
-> +hab UID = 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08
-> +*/
-> +
->  hab [Install Key]
->  /* verification key index in key store (0, 2...4) */
->  hab Verification index = 0
-> -- 
-> 2.30.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
