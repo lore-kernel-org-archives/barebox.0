@@ -1,16 +1,16 @@
-Delivery-date: Mon, 28 Feb 2022 10:47:57 +0100
+Delivery-date: Mon, 28 Feb 2022 11:07:44 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nOcdJ-00D6AE-00
-	for lore@lore.pengutronix.de; Mon, 28 Feb 2022 10:47:57 +0100
+	id 1nOcwS-00D7f8-9w
+	for lore@lore.pengutronix.de; Mon, 28 Feb 2022 11:07:44 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nOcdH-0006qz-Ik
-	for lore@pengutronix.de; Mon, 28 Feb 2022 10:47:56 +0100
+	id 1nOcwQ-0001Ty-JW
+	for lore@pengutronix.de; Mon, 28 Feb 2022 11:07:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,31 +18,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=EAKE4AG2ZdL09/TMMgjTHYjsFIZnHVyG5qFsXRP0OIU=; b=meko/qlBsiWvjAhLU79o5tgA6I
-	qW7EidouisJm7zh3pLk6o5/gmT+X68Sqc4qXW+eVQRfIZZD2i36pcWt3PZe1hDl6cm2YFq2EJAXCb
-	sFmHhnBDnghOlJByqkcEZVG8zp6WfCPCBLUOIbz9QDuQfEG8aiowMds1tYmoa2YpGqVdQfrpXqnV3
-	Sr1qjfcRymYJZ8oQR76t3jscxOrJ1tN6ImNW3ng5godw6CAXsbM7QLsJweXAnfCXFHPsDpZlJtu0c
-	J2OxjI/5/6ypgjmUU+0Jl8hOaxG1PUs86AFeh23noZPnWA9rcfIxICsxTnqoqPfw3LRuAiIUjLvK0
-	nV/jfP5g==;
+	bh=6L0U6O90WFsfSjG1l+haQbiXMAzx2F3wp1/y9HfXS2I=; b=WVAbL3d0RMt1UeV0Yuvo0Vxec8
+	/VD1S38kyXh54cVJxS7lF2/WmRk3E9AgrKm6WKhvZYQ78F7lE+pH/VvfzAS5kbaKjAhF+febTmm03
+	LkUbfRHwFrQIKmz1sucH7pwq4I1RazvTmC9F++YQk8TX5XmIHsdBA3qS6gz1ywgltsbAVTzkheFSK
+	6Y2oPDOWk/thuoFC9/73c1sr2VIC3nbA3Ha9oZT+g5S9D+9NT/+ELkEClYT9oVUHROz1MZyPID1pi
+	2XEOY1FUdeR+QIBWVyd0n8I6kZg5hHnftXDXX9Blad6OfCv7j/au+tioMxbRAXCwFf5cAHEmXEK9B
+	WSkZXvXw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nOcc0-00BJv8-0w; Mon, 28 Feb 2022 09:46:36 +0000
+	id 1nOcv3-00BQXV-86; Mon, 28 Feb 2022 10:06:17 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nOcbt-00BJtk-IG
- for barebox@lists.infradead.org; Mon, 28 Feb 2022 09:46:31 +0000
+ id 1nOcuy-00BQWk-BG
+ for barebox@lists.infradead.org; Mon, 28 Feb 2022 10:06:13 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nOcbs-0006ZQ-9R; Mon, 28 Feb 2022 10:46:28 +0100
+ id 1nOcux-000174-2x; Mon, 28 Feb 2022 11:06:11 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nOcbo-0003bj-JK; Mon, 28 Feb 2022 10:46:24 +0100
-Date: Mon, 28 Feb 2022 10:46:24 +0100
+ id 1nOcuu-0006Fa-E0; Mon, 28 Feb 2022 11:06:08 +0100
+Date: Mon, 28 Feb 2022 11:06:08 +0100
 To: Joacim Zetterling <joacim.zetterling@westermo.com>
 Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
-Message-ID: <20220228094624.GH19585@pengutronix.de>
+Message-ID: <20220228100608.GI19585@pengutronix.de>
 References: <20220225144751.4160843-1-joacim.zetterling@westermo.com>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -52,12 +52,12 @@ X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:37:20 up 79 days, 18:22, 90 users,  load average: 0.32, 0.20, 0.26
+X-Uptime: 11:05:50 up 79 days, 18:51, 93 users,  load average: 0.45, 0.48, 0.34
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220228_014629_633214_187EED9B 
-X-CRM114-Status: GOOD (  24.23  )
+X-CRM114-CacheID: sfid-20220228_020612_415259_7B4B5C88 
+X-CRM114-Status: GOOD (  25.86  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -119,14 +119,21 @@ On Fri, Feb 25, 2022 at 03:47:47PM +0100, Joacim Zetterling wrote:
 > 
 > The fact that the code only handled a 32 bit bus width, compensated
 > the problems with rows, banks and rank.
+> 
+> This have been tested on the NXP IMX8MN-EVK with 2GB DDR4 SDRAM as
+> well as on a custom board with 512MB LPDDR4 SDRAM.
+> 
+> 
+> Joacim Zetterling (4):
+>   ARM: imx: Add imx8 support for 18 bit SDRAM row size handle
+>   ARM: imx: Add imx8 support for SDRAM with two or more bank groups
+>   ARM: imx: Correct mem size calculation for 4/8/16/32 bit bus width
+>   ARM: imx: Correct bit count function
+> 
+>  arch/arm/mach-imx/esdctl.c | 61 +++++++++++++++++++++++++-------------
+>  1 file changed, 41 insertions(+), 20 deletions(-)
 
-So this means this series causes a regression in between which is fixed
-at the end of the series, right?
-
-I think this is ok in this case and is better than putting everything in
-a single patch. I just want to make sure everyone who bisects barebox
-and ends up in one of these patches and likely reads this thread knows
-that this is expected.
+Applied, thanks
 
 Sascha
 
