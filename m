@@ -1,79 +1,80 @@
-Delivery-date: Tue, 01 Mar 2022 10:18:40 +0100
+Delivery-date: Tue, 01 Mar 2022 10:18:54 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nOyeW-00EDwf-V7
-	for lore@lore.pengutronix.de; Tue, 01 Mar 2022 10:18:40 +0100
+	id 1nOyek-00EDxh-CG
+	for lore@lore.pengutronix.de; Tue, 01 Mar 2022 10:18:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nOyeV-0002wV-Ne
-	for lore@pengutronix.de; Tue, 01 Mar 2022 10:18:40 +0100
+	id 1nOyej-0002xA-4v
+	for lore@pengutronix.de; Tue, 01 Mar 2022 10:18:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=SdNbMEEv+Q26FzgTCWV5xjA2OoOvGuchwOiQ3Lyip+E=; b=wd+dn4jRVG94Wb
-	xj6ABhOT0NLVhcBGCrKFoZzmlc4DiiXqpEdDmMDe+PciODXZpPQSzqalEQdgFfELblhV9UgUQX0RV
-	GoW7ugScp71KosleuFABFlqRmVki5RJwNvvzjOkb6rXetxOR6hR2hRAkRiWn1BPNBrfenLULC6eVp
-	HbhZvv5cGX9FKx/noPDjX7hP7hKvcgIgHFkMq5HRD3QkT6B1OWz5c08pUpdzCz7n+RGvyUiLXUxLv
-	GslrB667hy6b2ysK6ZXOYq1+7VjG3iIaHgqRlTmgZ2vEj/SdoF3PIzKnX0AGfmoM0aKKWLpUOYx9G
-	oZnY1p1c21pdOrzx/ifA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=fS+E0Xg65lrvfgYi95XFZTTL8Ru7gls2iLwW/0Nn86g=; b=c+ugBBPEvfC6yy
+	uYcgXW54TPyTi/TKfij0xj+cIk+3gonXkdb/o9cMFmoDWPxLEh8czyfOh5Bvm1IzTLGU12NVIPR7f
+	UgrpXyn9u05yM9G3Zxpwa9ML8GxzNQu9f43ZHA8lnFlR71BFnuLidZsgUSF7FnfqB9RLU6blO0fN+
+	uToMTXHux8zx/P33tt2ADlzJw2QpCqdG/ezvZfAr4qft4TXefaapbIFqPUnTHdSL5gsb9IaNuyKd4
+	HakWHbtDe8ouOU0OZio4G4Cij3E1i4/kEoA3OwFLY5jdUXGzaD40sm4utcpla+SZAYwyrV7v5tF3u
+	0HeOafrpoHeheboerPIA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nOyct-00Fnol-K6; Tue, 01 Mar 2022 09:16:59 +0000
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+	id 1nOydY-00Fo1Z-NB; Tue, 01 Mar 2022 09:17:40 +0000
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nOycp-00Fnn6-IU
- for barebox@lists.infradead.org; Tue, 01 Mar 2022 09:16:56 +0000
-Received: by mail-lj1-x22a.google.com with SMTP id r20so21013857ljj.1
- for <barebox@lists.infradead.org>; Tue, 01 Mar 2022 01:16:52 -0800 (PST)
+ id 1nOydT-00Fnzw-2F
+ for barebox@lists.infradead.org; Tue, 01 Mar 2022 09:17:36 +0000
+Received: by mail-lj1-x230.google.com with SMTP id bn33so21004461ljb.6
+ for <barebox@lists.infradead.org>; Tue, 01 Mar 2022 01:17:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=jADfaklsdTYNDatM1pl8Cpe+dwcdXFUNGKLHmEw1POg=;
- b=HAXKsNkaY6FmoI/7+K+6QS0vmgvVLE3BxeOtAUudWDbqcrjCvfn5ZW6Q/sO/YSE4gt
- EFiRB0vnk1e6Wn8m9Yr2Ai0FHGCi4vUJZd6VIy+Ejgt2/tA0ja56DXOHF/hjRN/2Cg5o
- OqTb2q4uho4hhNz2ENtV/lsgCIlkM/8ch3ZBp4BjkUbsnEmoTm0Grp4fsNzhBG+3RWA+
- iOBXoDQMcL2GY3dvu6lUTPRP06aA4j6pa1pUPYpE3DfnSlwC5ql1ldf0MyHipF2WKaN9
- /7t9G7sGgkJVtj0ue9pvkDzSNeEY/aqMrjyVjRXT6FXEFVbKuETB6xIakpH+cBQX064f
- xVtQ==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=JVccisUTub4bnZwA1Mg1+QkQIabBhpbif5IZ4V/1r5E=;
+ b=gsqqg2jEuPvhxLVdcww5ZEUks3Tse33pe8oU3OOG2Bjfhg/2Z46G2kOHiCECNaOaTx
+ 7hiJCww1gX6kvZpkwV03fEs7f/sxWH2W6b6k3PTJGodcHco9FD5A0riLpUooKX63W3aG
+ TXJ0L+XiwOM4e13ok0849eKFhS78w8CQUcYXA9BUCjVHnlUPIG3dmW/o+vHu8flGxFMw
+ Te2yBNEWNYM6ns25I8S+sAAjomC+wLzomPHlbyCajnvsGtO3JCogKx2Dw9I/ML2Ikq7S
+ GXH/Q4KZXRN/UY1rsPPL7Aq9d3rU1NV567Q+qujcdfBl1tNYNeV/Pm85BfV6Z+3U9bhL
+ MRrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=jADfaklsdTYNDatM1pl8Cpe+dwcdXFUNGKLHmEw1POg=;
- b=oBi5pdAqO5gA6pXklXg0y9z9UEmecazjUDqmwk6I6n//w/iRAgnvEQmfatP7wkFq77
- 96WHxa3rTWJ4UcqpZUvSOiwP9ykRU6+FfPLwWviXRQ7KfkydmGUV12KjZ+N85+c/8HjI
- f0yhEpfdTsq9a7kqDjIdQaJZemSulmh9HVz1XnFM3yxJffj7JS8GIMr++fLPY1NC5+B7
- c+fzQljzblGG0UyZmhbkEKD0wM+UBCLCV3iezuG2T0rBorO/1WhgXQRz0OCbEIDaRIG+
- xC7CgkFGAO8UYXNP84uZY9Pz+dwZcNAJgCZvALnwL5PDeeJKVFPn7AYztMHYYKpwSype
- srGg==
-X-Gm-Message-State: AOAM533/djLVdTZQmHwm9hUHFM49wyV8tiPysrbQhC0t3mVPNd0IeVqV
- rfG0135o/w4YATdIMQLMmU1sWFMhHgiDkIqy
-X-Google-Smtp-Source: ABdhPJzYg+d7go2Y3xYzEMk86HoVUlSs1sMQXWrxcviA3cmrBC8/huKfV1ZxNYh+rFOgo9ps44my6w==
-X-Received: by 2002:a05:651c:1028:b0:246:468b:dc3d with SMTP id
- w8-20020a05651c102800b00246468bdc3dmr16831246ljm.438.1646126210949; 
- Tue, 01 Mar 2022 01:16:50 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=JVccisUTub4bnZwA1Mg1+QkQIabBhpbif5IZ4V/1r5E=;
+ b=R1L6D/Xocx7aVKMnVQ7RX2taHm2CW4JRgWKBmJayVMgEx0UFYdrJB8Dyvb7jxQ4YlY
+ 3Qko8lHj+qAOxY7AK0+FfT8FNhk/nP2n65sYiaJgdkn171ndRQELVrlXmkcjB9i79a+C
+ RytFCH6UxnUSRGCGa4uW7eLuGLIGPvpTJk9YDe6mZlcCGd2ZIFW04xmnexOMEyc5j/dC
+ oOYgxgBB6pOsRl25w1Ss/ksHDc1hIphtFfpOZysWU16fjYMLTVZPUzTBrQ/OryOR2KnY
+ UedEPQor3uYYTkRX2MQNmTeOfKa2A9W5BDTXsi96LNYArJIKS9gmh9ZewwH4qP0Jwqk0
+ e1ew==
+X-Gm-Message-State: AOAM532oR0rQJMHux0npWogaT19JTdcC6pFPoCmRZwB58kgw6dJsGuQD
+ VGi/8bc5RJ6rynP8Om/rcs5Iw1TN0Wv/001d
+X-Google-Smtp-Source: ABdhPJx0nXt4jF3KjPugN72JiM2EN6oRNbxRNnIQpKzDowRSdxB1jEDp0jQbmEHs6fhU5LM/XPdP+g==
+X-Received: by 2002:a2e:2e0e:0:b0:246:1570:f001 with SMTP id
+ u14-20020a2e2e0e000000b002461570f001mr16708405lju.217.1646126251920; 
+ Tue, 01 Mar 2022 01:17:31 -0800 (PST)
 Received: from localhost.localdomain ([193.232.173.109])
  by smtp.gmail.com with ESMTPSA id
- t18-20020a2e9d12000000b00244b7b5d9b6sm1868865lji.8.2022.03.01.01.16.50
+ t18-20020a2e9d12000000b00244b7b5d9b6sm1868865lji.8.2022.03.01.01.17.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Mar 2022 01:16:50 -0800 (PST)
+ Tue, 01 Mar 2022 01:17:31 -0800 (PST)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue,  1 Mar 2022 12:14:22 +0300
-Message-Id: <20220301091423.19871-1-denorl2009@gmail.com>
+Date: Tue,  1 Mar 2022 12:14:23 +0300
+Message-Id: <20220301091423.19871-2-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20220301091423.19871-1-denorl2009@gmail.com>
+References: <20220301091423.19871-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220301_011655_632774_F171D1A0 
-X-CRM114-Status: UNSURE (   8.93  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220301_011735_132317_A223CD5A 
+X-CRM114-Status: GOOD (  12.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,32 +100,66 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] usb: host: ehci: add GENERIC_PHY dependency to Kconfig
+Subject: [PATCH 2/2] usb: host: ehci: reorder code in ehci_probe()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-With GENERIC_PHY disabled, EHCI driver initialization fails in
-ehci_probe() as calling phy_optional_get() returns "Function not
-implemented" value. So it seems reasonable to make USB_EHCI explicitly
-depend on GENERIC_PHY.
+Currently, after successful memory region requests the driver
+initialization could still fail, leaving those regions allocated. By
+reordering the code those requests can be placed later, after the
+possibly failing calls.
 
 Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 ---
- drivers/usb/host/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/ehci-hcd.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index d38b4dcac4..cc71b76902 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -2,6 +2,7 @@
- config USB_EHCI
- 	bool "EHCI driver"
- 	depends on HAS_DMA
-+	depends on GENERIC_PHY
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index facfb3a95b..068504557b 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1421,20 +1421,6 @@ static int ehci_probe(struct device_d *dev)
+ 		 */
+ 		data.flags = EHCI_HAS_TT;
  
- config USB_EHCI_OMAP
- 	depends on ARCH_OMAP3
+-	iores = dev_request_mem_resource(dev, 0);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
+-	data.hccr = IOMEM(iores->start);
+-
+-	if (dev->num_resources > 1) {
+-		iores = dev_request_mem_resource(dev, 1);
+-		if (IS_ERR(iores))
+-			return PTR_ERR(iores);
+-		data.hcor = IOMEM(iores->start);
+-	}
+-	else
+-		data.hcor = NULL;
+-
+ 	usb2_generic_phy = phy_optional_get(dev, "usb");
+ 	if (IS_ERR(usb2_generic_phy))
+ 		return PTR_ERR(usb2_generic_phy);
+@@ -1456,6 +1442,20 @@ static int ehci_probe(struct device_d *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++	data.hccr = IOMEM(iores->start);
++
++	if (dev->num_resources > 1) {
++		iores = dev_request_mem_resource(dev, 1);
++		if (IS_ERR(iores))
++			return PTR_ERR(iores);
++		data.hcor = IOMEM(iores->start);
++	}
++	else
++		data.hcor = NULL;
++
+ 	ehci = ehci_register(dev, &data);
+ 	if (IS_ERR(ehci))
+ 		return PTR_ERR(ehci);
 -- 
 2.20.1
 
