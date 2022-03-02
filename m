@@ -1,54 +1,53 @@
-Delivery-date: Wed, 02 Mar 2022 17:02:22 +0100
+Delivery-date: Wed, 02 Mar 2022 17:04:26 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nPRQk-00Fdqe-Kn
-	for lore@lore.pengutronix.de; Wed, 02 Mar 2022 17:02:22 +0100
+	id 1nPRSj-00Fduk-V2
+	for lore@lore.pengutronix.de; Wed, 02 Mar 2022 17:04:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nPRQi-00087l-4F
-	for lore@pengutronix.de; Wed, 02 Mar 2022 17:02:22 +0100
+	id 1nPRSh-0008Gl-Od
+	for lore@pengutronix.de; Wed, 02 Mar 2022 17:04:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
 	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=0AhzeIFCEPmn0IlhMpXZ/SPI2CiSzHGcVHb8u9Y7rd8=; b=ezkEsYRvNKSXg5
-	q9LhFNEDgrmjm+XI5DO7sP4pFq2LbJRQyhz9jjiFYOldUCliAbi32O/H6r/vyXw6oPwznMAXczEed
-	dcUSRxZOkeqqI2pn+6dQFdlSOcGvpOfO4faZYkCZH0R/baPMp4gr0y9KG7hgleCHi3/TPJJUOJD04
-	NuB+XEwgcItC4ySolLqDKs0I8rHHdX9Uelq+dbH18EmgDtBO3lqWlgOrWe30DXb7pB5SXmnC6PXhz
-	Zd+NyJbYmxeeuHSJQr/elgV1Z1WGXaQ77KcsZ3JHupRS5CiQAsTXHszfkR6LZt5Y25DFAIbaiibYN
-	p9UilMuAIG40vJu8gs/Q==;
+	List-Owner; bh=kUS+crKVk2p0SCbzKxNO44jl2Svuk1w7Fu9dbj4vNO4=; b=X5GK46cUNU4J59
+	I01Wq04sK6Jd63+gD4c3Y6lLd5326Yvd1jeQRhMEp2uwHAlJ/n0snXbnDQKjr2H4ako6f+c/IHGSl
+	MYOULgpAEruCH0CDgU/jNHtQ7c99+iR5znoJDeQVCbZ1tohUrQYgTMwPRaF1QUuPDMF89dMwu3Gh5
+	/JnTq6CNPe4oRY4TaOvYF95CdVtPKNk/JqkVXbaQNEr9hQd8USgQbHqpApG770ytdEW0a1uUN7E1t
+	sFmlUGKHypAZtnYVI2+PlPqQROspgKYWS8ClE53osWO5JYwL0Cg2/g4FKtjoZnHcG1kqSlh/lA81R
+	4JIn0YYkU/Rp0MvpU4IA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nPRPG-003GZ4-K5; Wed, 02 Mar 2022 16:00:50 +0000
+	id 1nPRRM-003H13-Nt; Wed, 02 Mar 2022 16:03:00 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nPRP8-003GXD-KR
- for barebox@lists.infradead.org; Wed, 02 Mar 2022 16:00:46 +0000
+ id 1nPRR8-003Gxw-P0
+ for barebox@lists.infradead.org; Wed, 02 Mar 2022 16:02:49 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1nPRP7-0007qd-DB; Wed, 02 Mar 2022 17:00:41 +0100
+ id 1nPRR7-00089D-JV; Wed, 02 Mar 2022 17:02:45 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nPRP6-00CYLQ-Ta; Wed, 02 Mar 2022 17:00:40 +0100
+ id 1nPRR7-00CZvR-4L; Wed, 02 Mar 2022 17:02:45 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: pza@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  2 Mar 2022 17:00:40 +0100
-Message-Id: <20220302160040.2990961-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  2 Mar 2022 17:02:42 +0100
+Message-Id: <20220302160242.2997946-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220302_080043_044531_F2288800 
-X-CRM114-Status: GOOD (  27.92  )
+X-CRM114-CacheID: sfid-20220302_080247_169256_03C28407 
+X-CRM114-Status: GOOD (  19.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,526 +68,586 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,LOTS_OF_MONEY,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2] RISC-V: virt: riscvemu: add interactive tutorial
+Subject: [PATCH v2] ARM: stm32: add support for PHYTEC phyCORE stm32mp1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This tutorial walks the user through basics of the barebox shell.
-It can be invoked using the next command.
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-It will be extended later to cover actual boot as well, but
-that part still needs to be added to the web demo. To try it out
-interactively, go to:
+Import DT[1] and add the boilerplate to have barebox generate a SSBL
+for the board.
 
-  https://www.barebox.org/jsbarebox/
+[1]: git://git.phytec.de/tf-a-stm32mp
 
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - rephrase 04-cs0 as suggested by Philipp
+  - drop QSPI and other nodes we don't use in barebox
+  - remove max-frequency limitation for SD-Card
 ---
- arch/riscv/boards/riscvemu/Makefile                  |  1 +
- arch/riscv/boards/riscvemu/board.c                   |  4 ++++
- .../defaultenv-riscvemu/data/tutorial/00-init        | 12 ++++++++++++
- .../defaultenv-riscvemu/data/tutorial/01-interactive |  7 +++++++
- .../defaultenv-riscvemu/data/tutorial/02-ofdump      |  6 ++++++
- .../defaultenv-riscvemu/data/tutorial/03-devinfo     |  5 +++++
- .../defaultenv-riscvemu/data/tutorial/04-cs0         | 11 +++++++++++
- .../defaultenv-riscvemu/data/tutorial/05-drvinfo     |  4 ++++
- .../defaultenv-riscvemu/data/tutorial/06-devinfo-dev |  6 ++++++
- .../riscvemu/defaultenv-riscvemu/data/tutorial/07-mw |  9 +++++++++
- .../defaultenv-riscvemu/data/tutorial/08-devfs       |  8 ++++++++
- .../defaultenv-riscvemu/data/tutorial/09-partitions  |  9 +++++++++
- .../defaultenv-riscvemu/data/tutorial/10-environment |  8 ++++++++
- .../defaultenv-riscvemu/data/tutorial/11-env-data    | 12 ++++++++++++
- .../defaultenv-riscvemu/data/tutorial/12-dmesg       |  9 +++++++++
- .../defaultenv-riscvemu/data/tutorial/13-env-bin     | 11 +++++++++++
- .../defaultenv-riscvemu/data/tutorial/14-env-init    |  8 ++++++++
- .../defaultenv-riscvemu/data/tutorial/15-magicvar    | 10 ++++++++++
- .../defaultenv-riscvemu/data/tutorial/16-env-nv      | 12 ++++++++++++
- .../defaultenv-riscvemu/data/tutorial/17-env-saveenv |  7 +++++++
- .../defaultenv-riscvemu/data/tutorial/17-env-usage   |  5 +++++
- .../defaultenv-riscvemu/data/tutorial/18-mnt         | 11 +++++++++++
- .../defaultenv-riscvemu/data/tutorial/19-automount   |  9 +++++++++
- .../defaultenv-riscvemu/data/tutorial/20-mount-fs    | 11 +++++++++++
- .../defaultenv-riscvemu/data/tutorial/21-state       | 11 +++++++++++
- .../data/tutorial/22-device-params                   | 11 +++++++++++
- .../data/tutorial/23-device-param-types              |  8 ++++++++
- .../defaultenv-riscvemu/data/tutorial/24-boot        | 12 ++++++++++++
- .../defaultenv-riscvemu/data/tutorial/99-end         |  1 +
- .../defaultenv-riscvemu/init/90-tutorial-intro       |  6 ++++++
- 30 files changed, 244 insertions(+)
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/00-init
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/01-interactive
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/02-ofdump
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/03-devinfo
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/04-cs0
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/05-drvinfo
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/06-devinfo-dev
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/07-mw
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/08-devfs
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/09-partitions
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/10-environment
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/11-env-data
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/12-dmesg
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/13-env-bin
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/14-env-init
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/15-magicvar
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/16-env-nv
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-saveenv
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-usage
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/18-mnt
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/19-automount
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/20-mount-fs
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/21-state
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/22-device-params
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/23-device-param-types
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/24-boot
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/99-end
- create mode 100644 arch/riscv/boards/riscvemu/defaultenv-riscvemu/init/90-tutorial-intro
+ arch/arm/boards/Makefile                      |   1 +
+ .../boards/phytec-phycore-stm32mp1/Makefile   |   3 +
+ .../boards/phytec-phycore-stm32mp1/board.c    |  28 ++
+ .../boards/phytec-phycore-stm32mp1/lowlevel.c |  19 ++
+ arch/arm/dts/Makefile                         |   1 +
+ .../dts/stm32mp157c-phycore-stm32mp1-3.dts    |  41 +++
+ ...stm32mp157c-phycore-stm32mp15-pinctrl.dtsi |  92 ++++++
+ .../stm32mp157c-phycore-stm32mp15-som.dtsi    | 271 ++++++++++++++++++
+ arch/arm/mach-stm32mp/Kconfig                 |   7 +
+ images/Makefile.stm32mp                       |   2 +
+ 10 files changed, 465 insertions(+)
+ create mode 100644 arch/arm/boards/phytec-phycore-stm32mp1/Makefile
+ create mode 100644 arch/arm/boards/phytec-phycore-stm32mp1/board.c
+ create mode 100644 arch/arm/boards/phytec-phycore-stm32mp1/lowlevel.c
+ create mode 100644 arch/arm/dts/stm32mp157c-phycore-stm32mp1-3.dts
+ create mode 100644 arch/arm/dts/stm32mp157c-phycore-stm32mp15-pinctrl.dtsi
+ create mode 100644 arch/arm/dts/stm32mp157c-phycore-stm32mp15-som.dtsi
 
-diff --git a/arch/riscv/boards/riscvemu/Makefile b/arch/riscv/boards/riscvemu/Makefile
-index 75f52ada8f37..56949c2357c8 100644
---- a/arch/riscv/boards/riscvemu/Makefile
-+++ b/arch/riscv/boards/riscvemu/Makefile
-@@ -2,3 +2,4 @@
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 8557e1dca8c6..75e15cbda4df 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -101,6 +101,7 @@ obj-$(CONFIG_MACH_PCM049)			+= phytec-phycore-omap4460/
+ obj-$(CONFIG_MACH_PHYTEC_SOM_AM335X)		+= phytec-som-am335x/
+ obj-$(CONFIG_MACH_PHYTEC_SOM_IMX6)		+= phytec-som-imx6/
+ obj-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7)		+= phytec-phycore-imx7/
++obj-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1)	+= phytec-phycore-stm32mp1/
+ obj-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ)		+= phytec-som-imx8mq/
+ obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
+ obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+= plathome-openblocks-a6/
+diff --git a/arch/arm/boards/phytec-phycore-stm32mp1/Makefile b/arch/arm/boards/phytec-phycore-stm32mp1/Makefile
+new file mode 100644
+index 000000000000..1d052d28c9fc
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycore-stm32mp1/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++lwl-y += lowlevel.o
++obj-y += board.o
+diff --git a/arch/arm/boards/phytec-phycore-stm32mp1/board.c b/arch/arm/boards/phytec-phycore-stm32mp1/board.c
+new file mode 100644
+index 000000000000..eb6147785ff0
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycore-stm32mp1/board.c
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++#include <common.h>
++#include <driver.h>
++#include <bootsource.h>
++
++static int phycore_stm32mp1_probe(struct device_d *dev)
++{
++	if (bootsource_get_instance() == 0)
++		of_device_enable_path("/chosen/environment-sd");
++	else
++		of_device_enable_path("/chosen/environment-emmc");
++
++	barebox_set_hostname("phyCORE-STM32MP1");
++
++	return 0;
++}
++
++static const struct of_device_id phycore_stm32mp1_of_match[] = {
++	{ .compatible = "phytec,phycore-stm32mp1-3" },
++	{ /* sentinel */ },
++};
++
++static struct driver_d phycore_stm32mp1_board_driver = {
++	.name = "board-phycore-stm32mp1",
++	.probe = phycore_stm32mp1_probe,
++	.of_compatible = phycore_stm32mp1_of_match,
++};
++device_platform_driver(phycore_stm32mp1_board_driver);
+diff --git a/arch/arm/boards/phytec-phycore-stm32mp1/lowlevel.c b/arch/arm/boards/phytec-phycore-stm32mp1/lowlevel.c
+new file mode 100644
+index 000000000000..f76bad86a10a
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycore-stm32mp1/lowlevel.c
+@@ -0,0 +1,19 @@
++// SPDX-License-Identifier: GPL-2.0+
++#include <common.h>
++#include <mach/entry.h>
++#include <debug_ll.h>
++
++extern char __dtb_z_stm32mp157c_phycore_stm32mp1_3_start[];
++
++ENTRY_FUNCTION(start_phycore_stm32mp1_3, r0, r1, r2)
++{
++	void *fdt;
++
++	stm32mp_cpu_lowlevel_init();
++
++	putc_ll('>');
++
++	fdt = __dtb_z_stm32mp157c_phycore_stm32mp1_3_start + get_runtime_offset();
++
++	stm32mp1_barebox_entry(fdt);
++}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index e0bb66580f38..925ac12aa52a 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -75,6 +75,7 @@ lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-phycard.dtb.o \
+ 				imx6ull-phytec-phycore-som-nand.dtb.o \
+ 				imx6ull-phytec-phycore-som-emmc.dtb.o
+ lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7) += imx7d-phyboard-zeta.dtb.o
++lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1) += stm32mp157c-phycore-stm32mp1-3.dtb.o
+ lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ) += imx8mq-phytec-phycore-som.dtb.o
+ lwl-$(CONFIG_MACH_PINE64_QUARTZ64) += rk3566-quartz64-a.dtb.o
+ lwl-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += armada-xp-openblocks-ax3-4-bb.dtb.o
+diff --git a/arch/arm/dts/stm32mp157c-phycore-stm32mp1-3.dts b/arch/arm/dts/stm32mp157c-phycore-stm32mp1-3.dts
+new file mode 100644
+index 000000000000..0818f8d9adbe
+--- /dev/null
++++ b/arch/arm/dts/stm32mp157c-phycore-stm32mp1-3.dts
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
++ * Author: Dom VOVARD <dom.vovard@linrt.com>.
++ */
++
++/dts-v1/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <arm/stm32mp157.dtsi>
++#include <arm/stm32mp15xc.dtsi>
++#include <arm/stm32mp15-pinctrl.dtsi>
++#include <arm/stm32mp15xxac-pinctrl.dtsi>
++#include "stm32mp157c-phycore-stm32mp15-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP1-3 SoM";
++	compatible = "phytec,phycore-stm32mp1-3", "st,stm32mp157";
++
++	chosen {
++		environment-sd {
++			compatible = "barebox,environment";
++			device-path = &sdmmc1, "partname:barebox-environment";
++			status = "disabled";
++		};
++
++		environment-emmc {
++			compatible = "barebox,environment";
++			device-path = &sdmmc2, "partname:barebox-environment";
++			status = "disabled";
++		};
++	};
++};
++
++&sdmmc1 {
++        status = "okay";
++};
++
++&sdmmc2 {
++        status = "okay";
++};
+diff --git a/arch/arm/dts/stm32mp157c-phycore-stm32mp15-pinctrl.dtsi b/arch/arm/dts/stm32mp157c-phycore-stm32mp15-pinctrl.dtsi
+new file mode 100644
+index 000000000000..011d73ec3f1a
+--- /dev/null
++++ b/arch/arm/dts/stm32mp157c-phycore-stm32mp15-pinctrl.dtsi
+@@ -0,0 +1,92 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
++ * Author: Dom VOVARD <dom.vovard@linrt.com>.
++ */
++#include <arm/stm32mp15-pinctrl.dtsi>
++
++&ethernet0_rgmii_pins_a {
++	pins1 {
++		pinmux = <STM32_PINMUX('G', 4, AF11)>,	/* ETH_RGMII_GTX_CLK */
++			 <STM32_PINMUX('G', 13, AF11)>, /* ETH_RGMII_TXD0 */
++			 <STM32_PINMUX('G', 14, AF11)>, /* ETH_RGMII_TXD1 */
++			 <STM32_PINMUX('C', 2, AF11)>,	/* ETH_RGMII_TXD2 */
++			 <STM32_PINMUX('E', 2, AF11)>,	/* ETH_RGMII_TXD3 */
++			 <STM32_PINMUX('B', 11, AF11)>, /* ETH_RGMII_TX_CTL */
++			 <STM32_PINMUX('A', 2, AF11)>,	/* ETH_MDIO */
++			 <STM32_PINMUX('C', 1, AF11)>;	/* ETH_MDC */
++		bias-disable;
++		drive-push-pull;
++		slew-rate = <2>;
++	};
++	pins2 {
++		pinmux = <STM32_PINMUX('C', 4, AF11)>, /* ETH_RGMII_RXD0 */
++			 <STM32_PINMUX('C', 5, AF11)>, /* ETH_RGMII_RXD1 */
++			 <STM32_PINMUX('H', 6, AF11)>, /* ETH_RGMII_RXD2 */
++			 <STM32_PINMUX('B', 1, AF11)>, /* ETH_RGMII_RXD3 */
++			 <STM32_PINMUX('A', 1, AF11)>, /* ETH_RGMII_RX_CLK */
++			 <STM32_PINMUX('A', 7, AF11)>; /* ETH_RGMII_RX_CTL */
++		bias-disable;
++	};
++};
++
++&pinctrl {
++	sdmmc1_dir_pins_b: sdmmc1-dir-1 {
++		pins1 {
++			pinmux = <STM32_PINMUX('E', 12, AF8)>, /* SDMMC1_D0DIR */
++				 <STM32_PINMUX('E', 14, AF11)>, /* SDMMC1_D123DIR */
++				 <STM32_PINMUX('B', 9, AF11)>; /* SDMMC1_CDIR */
++			slew-rate = <3>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 4, AF8)>; /* SDMMC1_CKIN */
++			bias-pull-up;
++		};
++	};
++};
++
++&sdmmc1_b4_pins_a {
++	pins1 {
++		pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
++			 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
++			 <STM32_PINMUX('E', 6, AF8)>, /* SDMMC1_D2 */
++			 <STM32_PINMUX('C', 11, AF12)>, /* SDMMC1_D3 */
++			 <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
++		slew-rate = <1>;
++		drive-push-pull;
++		bias-disable;
++	};
++	pins2 {
++		pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
++		slew-rate = <2>;
++		drive-push-pull;
++		bias-disable;
++	};
++};
++
++&sdmmc2_d47_pins_a {
++	pins {
++		pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
++			 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
++			 <STM32_PINMUX('C', 6, AF10)>, /* SDMMC2_D6 */
++			 <STM32_PINMUX('D', 3, AF9)>; /* SDMMC2_D7 */
++		slew-rate = <1>;
++		drive-push-pull;
++		bias-pull-up;
++	};
++};
++
++&uart4_pins_a {
++	pins1 {
++		pinmux = <STM32_PINMUX('B', 9, AF8)>; /* UART4_TX */
++		bias-disable;
++		drive-push-pull;
++		slew-rate = <0>;
++	};
++	pins2 {
++		pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
++		bias-disable;
++	};
++};
+diff --git a/arch/arm/dts/stm32mp157c-phycore-stm32mp15-som.dtsi b/arch/arm/dts/stm32mp157c-phycore-stm32mp15-som.dtsi
+new file mode 100644
+index 000000000000..a40e59ae2e53
+--- /dev/null
++++ b/arch/arm/dts/stm32mp157c-phycore-stm32mp15-som.dtsi
+@@ -0,0 +1,271 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
++ * Author: Dom VOVARD <dom.vovard@linrt.com>.
++ */
++
++#include "stm32mp157c-phycore-stm32mp15-pinctrl.dtsi"
++#include <dt-bindings/net/ti-dp83867.h>
++#include "stm32mp151.dtsi"
++
++/ {
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	aliases {
++		serial0 = &uart4;
++		serial1 = &usart3;
++	};
++
++	vin: vin {
++		compatible = "regulator-fixed";
++		regulator-name = "vin";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++	};
++
++	pwr_irq: pwr@50001020 {
++		compatible = "st,stm32mp1-pwr";
++		reg = <0x50001020 0x100>;
++	};
++};
++
++&bsec {
++	board_id: board_id@ec {
++		reg = <0xec 0x4>;
++		st,non-secure-otp;
++	};
++};
++
++&clk_hse {
++	st,digbypass;
++};
++
++&cpu0 {
++	cpu-supply = <&vddcore>;
++};
++
++&cpu1 {
++	cpu-supply = <&vddcore>;
++};
++
++&ethernet0 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&ethernet0_rgmii_pins_a>;
++	pinctrl-1 = <&ethernet0_rgmii_sleep_pins_a>;
++	phy-mode = "rgmii-id";
++	phy-handle = <&ethphy>;
++	max-speed = <1000>;
++	st,eth-clk-sel;
++	status = "okay";
++
++	mdio0 {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy: ethernet-phy@1 {
++			reg = <1>;
++		};
++	};
++};
++
++&i2c4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c4_pins_a>;
++	i2c-scl-rising-time-ns = <185>;
++	i2c-scl-falling-time-ns = <20>;
++
++	pmic: stpmic@33 {
++		compatible = "st,stpmic1";
++		reg = <0x33>;
++
++		regulators {
++			compatible = "st,stpmic1-regulators";
++			buck1-supply = <&vin>;
++			buck2-supply = <&vin>;
++			buck3-supply = <&vin>;
++			buck4-supply = <&vin>;
++			ldo1-supply = <&v3v3>;
++			ldo2-supply = <&v3v3>;
++			ldo3-supply = <&vdd_ddr>;
++			ldo4-supply = <&vin>;
++			ldo5-supply = <&v3v3>;
++			ldo6-supply = <&v3v3>;
++			vref_ddr-supply = <&vin>;
++			boost-supply = <&vin>;
++			pwr_sw1-supply = <&bst_out>;
++			pwr_sw2-supply = <&bst_out>;
++
++			vddcore: buck1 {
++				regulator-name = "vddcore";
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-always-on;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++			};
++
++			vdd_ddr: buck2 {
++				regulator-name = "vdd_ddr";
++				regulator-min-microvolt = <1350000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-always-on;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++			};
++
++			vdd: buck3 {
++				regulator-name = "vdd";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++				st,mask-reset;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++			};
++
++			v3v3: buck4 {
++				regulator-name = "v3v3";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++				regulator-over-current-protection;
++				regulator-initial-mode = <0>;
++			};
++
++			v1v8_audio: ldo1 {
++				regulator-name = "v1v8_audio";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-always-on;
++			};
++
++			vdd_eth_2v5: ldo2 {
++				regulator-name = "vdd_eth_2v5";
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <2500000>;
++				regulator-always-on;
++			};
++
++			vtt_ddr: ldo3 {
++				regulator-name = "vtt_ddr";
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <750000>;
++				regulator-always-on;
++				regulator-over-current-protection;
++			};
++
++			vdd_usb: ldo4 {
++				regulator-name = "vdd_usb";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++			};
++
++			vdda: ldo5 {
++				regulator-name = "vdda";
++				regulator-min-microvolt = <2900000>;
++				regulator-max-microvolt = <2900000>;
++				regulator-boot-on;
++			};
++
++			vdd_eth_1v0: ldo6 {
++				regulator-name = "vdd_eth_1v0";
++				regulator-min-microvolt = <1000000>;
++				regulator-max-microvolt = <1000000>;
++				regulator-always-on;
++			};
++
++			vref_ddr: vref_ddr {
++				regulator-name = "vref_ddr";
++				regulator-always-on;
++				regulator-over-current-protection;
++			};
++
++			bst_out: boost {
++				regulator-name = "bst_out";
++			};
++
++			vbus_otg: pwr_sw1 {
++				regulator-name = "vbus_otg";
++			};
++
++			vbus_sw: pwr_sw2 {
++				regulator-name = "vbus_sw";
++				regulator-active-discharge = <1>;
++			};
++		};
++	};
++};
++
++&iwdg2 {
++	timeout-sec = <32>;
++	status = "okay";
++};
++
++&pwr_regulators {
++	vdd-supply = <&vdd>;
++	vdd_3v3_usbfs-supply = <&vdd_usb>;
++};
++
++&rng1 {
++	status = "okay";
++};
++
++&sdmmc1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&sdmmc1_b4_pins_a>;
++	disable-wp;
++	st,neg-edge;
++	bus-width = <4>;
++	vmmc-supply = <&v3v3>;
++	status = "disabled";
++};
++
++&sdmmc2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&sdmmc2_b4_pins_a &sdmmc2_d47_pins_a>;
++	non-removable;
++	no-sd;
++	no-sdio;
++	st,neg-edge;
++	bus-width = <8>;
++	vmmc-supply = <&v3v3>;
++	vqmmc-supply = <&v3v3>;
++	mmc-ddr-3_3v;
++	status = "disabled";
++};
++
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart4_pins_a>;
++	status = "okay";
++};
++
++&usart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&usart3_pins_a>;
++	status = "disabled";
++};
++
++&usbotg_hs {
++	phys = <&usbphyc_port1 0>;
++	phy-names = "usb2-phy";
++	usb-role-switch;
++	status = "okay";
++};
++
++&usbphyc {
++	status = "okay";
++};
++
++&usbphyc_port0 {
++	phy-supply = <&vdd_usb>;
++};
++
++&usbphyc_port1 {
++	phy-supply = <&vdd_usb>;
++};
+diff --git a/arch/arm/mach-stm32mp/Kconfig b/arch/arm/mach-stm32mp/Kconfig
+index 57c1691591e7..bc0a48d64c82 100644
+--- a/arch/arm/mach-stm32mp/Kconfig
++++ b/arch/arm/mach-stm32mp/Kconfig
+@@ -48,4 +48,11 @@ config MACH_PROTONIC_STM32MP1
+ 	  Builds all barebox-prtt1*.stm32 that can be deployed as SSBL
+ 	  on the respective PRTT1L family board
  
- obj-y += board.o
- obj-y += overlay-of-sram.dtb.o
-+bbenv-$(CONFIG_CMD_TUTORIAL) += defaultenv-riscvemu
-diff --git a/arch/riscv/boards/riscvemu/board.c b/arch/riscv/boards/riscvemu/board.c
-index 31d0c70be643..d9c7bd77b8cc 100644
---- a/arch/riscv/boards/riscvemu/board.c
-+++ b/arch/riscv/boards/riscvemu/board.c
-@@ -5,6 +5,7 @@
++config MACH_PHYTEC_PHYCORE_STM32MP1
++	select ARCH_STM32MP157
++	bool "phyCORE-STM32MP1"
++	help
++	  builds an additional barebox-phytec-phycore.stm32
++	  that can be deployed as SSBL on the phyCORE-STM32MP1
++
+ endif
+diff --git a/images/Makefile.stm32mp b/images/Makefile.stm32mp
+index abe70a6a5037..59d65722078d 100644
+--- a/images/Makefile.stm32mp
++++ b/images/Makefile.stm32mp
+@@ -41,3 +41,5 @@ $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_prtt1s, prtt1s)
+ $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_prtt1c, prtt1c)
  
- #include <common.h>
- #include <driver.h>
-+#include <envfs.h>
- #include <poweroff.h>
- #include <restart.h>
- #include <deep-probe.h>
-@@ -45,6 +46,9 @@ static int riscvemu_probe(struct device_d *dev)
- 	of_overlay_apply_tree(dev->device_node, overlay);
- 	/* of_probe() will happen later at of_populate_initcall */
- 
-+	if (IS_ENABLED(CONFIG_CMD_TUTORIAL))
-+		defaultenv_append_directory(defaultenv_riscvemu);
+ $(call build_stm32mp_image, CONFIG_MACH_SEEED_ODYSSEY, start_stm32mp157c_seeed_odyssey, stm32mp157c-seeed-odyssey)
 +
- 	of_chosen = of_find_node_by_path("/chosen");
- 
- 	if (of_property_read_u64(of_chosen, "riscv,kernel-start", &start))
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/00-init b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/00-init
-new file mode 100644
-index 000000000000..1ff43142bada
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/00-init
-@@ -0,0 +1,12 @@
-+
-+You are using Hush, barebox' default shell. You are currently using it
-+interactively, but it can execute scripts as part of the startup and boot
-+procedure as well. See for yourself:
-+```
-+  cat /env/init/90-tutorial-intro
-+```
-+Look around as you like. When you are ready to continue the tutorial,
-+type `next` again. The `prev` command does the inverse and shows previous
-+tutorial steps. The `help` command will show help usage text,
-+e.g. `help next`.
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/01-interactive b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/01-interactive
-new file mode 100644
-index 000000000000..8b285cd9f475
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/01-interactive
-@@ -0,0 +1,7 @@
-+
-+The interactive shell, its commands and the nodes in the virtual
-+file system they operate on enable quick UNIX-like prototyping
-+and debugging. Let's give it a try, shall we?
-+Type `of_dump` to list the open firmware (OF) device tree barebox
-+used to discover the hardware and `next` to continue the tutorial.
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/02-ofdump b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/02-ofdump
-new file mode 100644
-index 000000000000..3271f734b20b
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/02-ofdump
-@@ -0,0 +1,6 @@
-+
-+That's a lot of output, so let's restrict ourselves to just part
-+of the tree:
-+```
-+  of_dump /soc/virtio@40010000
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/03-devinfo b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/03-devinfo
-new file mode 100644
-index 000000000000..74bc9aa88a67
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/03-devinfo
-@@ -0,0 +1,5 @@
-+
-+This node tells barebox enough information to instantiate a device and
-+to try match it with existing drivers. Type `devinfo` to see the tree of
-+devices known to barebox.
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/04-cs0 b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/04-cs0
-new file mode 100644
-index 000000000000..fdb878fa935a
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/04-cs0
-@@ -0,0 +1,11 @@
-+
-+In this tree, you will find 40010000.virtio@40010000.of, the
-+device corresponding to the device tree node we've just seen.
-+Devices can have child devices themselves. This device's
-+grandchild is `cs0`, the virtual console device that prints
-+you this very text.
-+
-+See for yourself:
-+```
-+  echo -a /dev/cs0 Append this text to virtio console
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/05-drvinfo b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/05-drvinfo
-new file mode 100644
-index 000000000000..068bf303d8cd
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/05-drvinfo
-@@ -0,0 +1,4 @@
-+
-+Let's look at more devices. Type `drvinfo` to see what drivers are
-+available and what devices they were successfully matched with.
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/06-devinfo-dev b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/06-devinfo-dev
-new file mode 100644
-index 000000000000..f706915ba2e8
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/06-devinfo-dev
-@@ -0,0 +1,6 @@
-+
-+Let's pick another device out of the list: HTIF. We can display some extra
-+info with `devinfo`. (Use the tab completion to avoid writing it all out!)
-+```
-+devinfo 40008000.htif.of
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/07-mw b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/07-mw
-new file mode 100644
-index 000000000000..4278f8f391bd
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/07-mw
-@@ -0,0 +1,9 @@
-+
-+We see that the device has a memory mapped I/O region of 8 bytes that
-+can be used for communication. Poking 0x010100000000002e in little-
-+endian into that region should print a period '.'.
-+Let's do that quad-word memory write (`mw -q`) 80 times by having a shell
-+local variable keep count:
-+```
-+i=0; while [ $i -lt 80 ]; do mw -q 0x40008000 0x010100000000002e; let i=$i+1; done
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/08-devfs b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/08-devfs
-new file mode 100644
-index 000000000000..b117e4bb1632
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/08-devfs
-@@ -0,0 +1,8 @@
-+
-+`mw` is complemented by `md` for memory display. There are further commands
-+like `mm` (memory modify), `memcpy` and `memcmp` (copy/compare ranges).
-+These commands operate on `/dev/mem` by default, but any seekable device
-+or file can be used instead. Let's see what device files we got here:
-+```
-+ls /dev
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/09-partitions b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/09-partitions
-new file mode 100644
-index 000000000000..552ab2ab1e51
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/09-partitions
-@@ -0,0 +1,9 @@
-+
-+The `mtdram0` looks interesting. That's the 64K SRAM at the start of the
-+address space. The virtual machine places the boot "rom" there as well
-+as the flattened (compiled) device tree (FDT). barebox can be informed
-+about partitioning and will create extra devices for each partition.
-+This allows you to reference them from commands easily:
-+```
-+of_dump -f /dev/mtdram0.fdt
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/10-environment b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/10-environment
-new file mode 100644
-index 000000000000..d1a6f85119f7
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/10-environment
-@@ -0,0 +1,8 @@
-+
-+Not all of the 64K is used, so the barebox board support here uses
-+the unused mtd-ram space for saving modified environment and state.
-+The barebox environment is a file system which contains scripts, variables
-+and data:
-+```
-+ls -R /env
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/11-env-data b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/11-env-data
-new file mode 100644
-index 000000000000..81e3f47ee781
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/11-env-data
-@@ -0,0 +1,12 @@
-+
-+The environment you see here is the built-in environment barebox was
-+compiled with. It contains default values for non-volatile variables,
-+(init) scripts and data. It's generated from directories on the host
-+system specified during build and stored as an archive within
-+barebox. This environment may also be compressed allowing shipping
-+larger files and even binaries. For example, this barebox binary
-+has the option CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_IKCONFIG=y,
-+which ships a copy of the used barebox configuration. See for yourself:
-+```
-+cat /env/data/config
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/12-dmesg b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/12-dmesg
-new file mode 100644
-index 000000000000..61cdd2adafbc
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/12-dmesg
-@@ -0,0 +1,9 @@
-+
-+In the field, you will probably want to depend exclusively on the built-in
-+environment, but it can be very handy to persist environment changes during
-+development. You may recall that barebox told us at first boot that the
-+environment was never written?  If you don't, no problem, log messages are,
-+you guessed it, logged:
-+```
-+dmesg
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/13-env-bin b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/13-env-bin
-new file mode 100644
-index 000000000000..34b7ab554b7f
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/13-env-bin
-@@ -0,0 +1,11 @@
-+
-+Let's modify the environment to add a new script (Remember
-+`help` can show you the usage, e.g. `help mw`):
-+```
-+cd /env/bin
-+echo -o putc '#!/bin/sh'
-+echo -a putc 'mw -l 0x40008000 $1'
-+echo -a putc 'mw -l 0x40008004 0x01010000'
-+cd /
-+putc 0x40 # Print an @ character
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/14-env-init b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/14-env-init
-new file mode 100644
-index 000000000000..184a4f571f8b
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/14-env-init
-@@ -0,0 +1,8 @@
-+
-+We could have added the last script anywhere in `/env`. But `/env/bin` is
-+already in the executable search `PATH`, so you don't have to write out
-+the full path when invoking the script. Another special directory is
-+`/env/init`. Anything there will be sourced on shell startup.
-+Let's poke the HTIF a bit every time we start: Open a new file with
-+`edit /env/init/99-percent` and type into it `putc 0x40`.
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/15-magicvar b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/15-magicvar
-new file mode 100644
-index 000000000000..ec2912da9fb9
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/15-magicvar
-@@ -0,0 +1,10 @@
-+
-+As init scripts only run on initialization, we'll have to do a reset to
-+see them in action. But first, we'll want to save our tutorial progress.
-+This happens via $global.variables.  Many parts of barebox monitor reads
-+and writes to such variables to make information available to the shell.
-+
-+The `next` command also does it. How would you know?
-+```
-+magicvar
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/16-env-nv b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/16-env-nv
-new file mode 100644
-index 000000000000..3440e0194722
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/16-env-nv
-@@ -0,0 +1,12 @@
-+
-+Now that you know that $global.tutorial.step holds the next step, you
-+will want to initialize it on the next reset. We could write an init shell
-+script for that, but there is something much more convenient:
-+
-+On startup, barebox needs to assign initial values for each
-+$global.variable; if a suitably named non-volatile $nv.variable already
-+exists, it will be used as initial value. Let's see what global variables
-+we got (leading asterisk '*' means it was initialized from NV):
-+```
-+global
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-saveenv b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-saveenv
-new file mode 100644
-index 000000000000..f929838138d6
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-saveenv
-@@ -0,0 +1,7 @@
-+
-+Now that we have written a normal script and an init script, add a
-+nv variable to the mix, save the environment and reset to see them
-+all in action:
-+```
-+nv tutorial.step=$global.tutorial.step; saveenv; reset
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-usage b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-usage
-new file mode 100644
-index 000000000000..1f4ff37f8652
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/17-env-usage
-@@ -0,0 +1,5 @@
-+
-+Welcome back! You have successfully saved the environment. Make sure
-+to reset your environment with `saveenv -z` when you are done. You wouldn't
-+want to chase ghosts, because you changed an init script and forgot about it. :)
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/18-mnt b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/18-mnt
-new file mode 100644
-index 000000000000..3122e6ffa404
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/18-mnt
-@@ -0,0 +1,11 @@
-+
-+We now have seen `/dev`, which holds the devfs, and `/env` which holds the
-+active environment. `/tmp` is as you have guessed it a directory where temporary
-+files can be placed. `/pstore` is short for persistent storage, a Linux
-+mechanism to store and retrieve error records even after a kernel panic.
-+
-+This leaves `/mnt`. Let's take a peek at it as well at our active mounts:
-+```
-+mount
-+ls /mnt
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/19-automount b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/19-automount
-new file mode 100644
-index 000000000000..4d4787a9a8c7
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/19-automount
-@@ -0,0 +1,9 @@
-+
-+Strangely, nothing inside `/mnt` is seen in the `mount` output. Why you
-+ask? Because these are automounts that are deferred until first access.
-+So when you `bootm /mnt/nfs/boot/Image.gz` the first time, barebox will
-+bring up the network and mount the network file system (provided you do
-+have network). We can list what automounts there are:
-+```
-+automount -l
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/20-mount-fs b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/20-mount-fs
-new file mode 100644
-index 000000000000..cc5e64c66c78
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/20-mount-fs
-@@ -0,0 +1,11 @@
-+
-+`/mnt/virtioblk0` is an interesting one. Block device partitions
-+automatically get automount entries created. On first access,
-+barebox will determine what file system is located in the partition
-+and mount it. Thus you can just use `/mnt/virtioblk0/DOOM1.WAD` in
-+your script and not incur the overhead of mounting unless it's accessed:
-+```
-+mount
-+ll /mnt/virtioblk0/DOOM1.WAD
-+mount
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/21-state b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/21-state
-new file mode 100644
-index 000000000000..1a71204cf5e1
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/21-state
-@@ -0,0 +1,11 @@
-+
-+You'll note most file systems in barebox are read-only. While those that aren't
-+could be used with `saveenv` to store a packed environment for Linux use, that's
-+murky waters: atomicity, limiting scope, authentication and journal handling
-+complicate things. barebox state is the mechanism how barebox stores variables
-+(and only variables) in a power-fail safe manner that's also accessible to Linux.
-+
-+Check the `state` device:
-+```
-+devinfo state
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/22-device-params b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/22-device-params
-new file mode 100644
-index 000000000000..3f8d31f171d0
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/22-device-params
-@@ -0,0 +1,11 @@
-+
-+The state driver parses the device tree to learn the state layout
-+and how it's (redundantly) placed. The information it learns are
-+registered with the device as device parameters. Device Parameters
-+make it easy to interact with the shell. For example, the MAC address
-+of a network adapter is a device parameter. We already saw some other
-+device parameters before. Those of the global and nv device:
-+```
-+devinfo global
-+devinfo nv
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/23-device-param-types b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/23-device-param-types
-new file mode 100644
-index 000000000000..36a311d011ac
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/23-device-param-types
-@@ -0,0 +1,8 @@
-+
-+Many device parameters are simple strings, some have specific types
-+and run actions on read/write or accept only specific values.
-+`devinfo` will show you what type a variable has and writing an
-+invalid value will give you an error:
-+```
-+global.tutorial.step=non-existent
-+```
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/24-boot b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/24-boot
-new file mode 100644
-index 000000000000..90c226697310
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/24-boot
-@@ -0,0 +1,12 @@
-+
-+You should now know enough about barebox' architecture, that
-+we could talk about barebox' actual function without it
-+seeming too magical: Booting.
-+
-+We still need to add that part to the tutorial though, but you
-+can check out `help boot`, `help bootm` as well as the barebox
-+documentation linked below. Also give the graphical mode a
-+try!
-+
-+Tutorial to be continued..
-+
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/99-end b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/99-end
-new file mode 100644
-index 000000000000..4744f2b3eeb8
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/data/tutorial/99-end
-@@ -0,0 +1 @@
-+End of tutorial reached!
-diff --git a/arch/riscv/boards/riscvemu/defaultenv-riscvemu/init/90-tutorial-intro b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/init/90-tutorial-intro
-new file mode 100644
-index 000000000000..716905534c94
---- /dev/null
-+++ b/arch/riscv/boards/riscvemu/defaultenv-riscvemu/init/90-tutorial-intro
-@@ -0,0 +1,6 @@
-+source /env/data/ansi-colors
-+
-+echo -e $YELLOW
-+echo -e This is the barebox shell. See ${RED}help${YELLOW} for a listing of commands.
-+echo -e Type ${RED}next${YELLOW} for the next tutorial tip.
-+echo -e $NC
++$(call build_stm32mp_image, CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1, start_phycore_stm32mp1_3, phycore-stm32mp1)
 -- 
 2.30.2
 
