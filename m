@@ -1,63 +1,54 @@
-Delivery-date: Wed, 02 Mar 2022 14:37:10 +0100
+Delivery-date: Wed, 02 Mar 2022 17:00:34 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nPPAE-00FWTZ-2J
-	for lore@lore.pengutronix.de; Wed, 02 Mar 2022 14:37:10 +0100
+	id 1nPRP0-00Fdnr-G8
+	for lore@lore.pengutronix.de; Wed, 02 Mar 2022 17:00:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nPPAC-0000NH-LM
-	for lore@pengutronix.de; Wed, 02 Mar 2022 14:37:09 +0100
+	id 1nPROy-0007ot-R0
+	for lore@pengutronix.de; Wed, 02 Mar 2022 17:00:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=Xma4R3qOkRjVPwqisBl4++yL8dCS9Ju5ve1hxios6C4=; b=og4w76wsOYmT1UmbebbGhDpoeV
-	L3Dn8DyKPzfxL189cnqjg/HWP1tKKxQr1UkdN+xP/bo8/2KNWOLeGciNB24pc9XqdXc9YokLvaXou
-	sHFbG+JZKo+WfX9KpyrpFwaFpxfEaVGinH6KbuyohMh/bTIK6eWEQqRrTkk5rM8qxVS07DxQ+6vl+
-	EOvat3ylJnmS2lCVAV0uHU2FE1XiDGl6Xc1ku7hKPyHXZbsB/miIjdz1J0f9zRfoABLWrROfbQSA1
-	MZsQCpTVExGPfHynIDgMpDIAEG+Qw/s5j79/Wj6Lclv65oRiP4PYLR9hjKXIQGe6x6QTUO+28AGfH
-	6+Cp6vwQ==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=xp9cML9se1/tILNRLZ2+lOc6Gjq8vGaPPsgimapDweU=; b=BvNF7MCHXTUOhq
+	jVEkGzXfAfs9X0yRtqDBjW6C0Ifi8ZQvYmIjFmkw601504bPc+jFqI5fdx4Fdz6Vaci/JZSJddxQx
+	Nl5DFEosLVmvmS4R7u+50cA3FNLbZtC7qw7o3Fwfa+cF9l3yS/NIp9Z/j0bcJQLgpX6JcYpjHcoxP
+	OXOgNykFfezRo0PeR+bQbUxhI0iftCJ0K3fMRkIsjWQdkiFiluttvCsOFeRncOnAP2k/V8q0ieB7g
+	eEObIA+mS2if2WCMBiWTgJnU0HRLWFeQMM0gCiUNEt3NE8QAnb8wvCFy1uNVfg6Q9Ihz2TVmReL2q
+	70M3uWbfImqsGi8poSpg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nPP91-002pwt-Bk; Wed, 02 Mar 2022 13:35:55 +0000
+	id 1nPRNR-003G3d-5L; Wed, 02 Mar 2022 15:58:57 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nPP8v-002pvV-8J
- for barebox@lists.infradead.org; Wed, 02 Mar 2022 13:35:50 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1nPRNL-003G2I-JL
+ for barebox@lists.infradead.org; Wed, 02 Mar 2022 15:58:53 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nPP8u-00006F-1e; Wed, 02 Mar 2022 14:35:48 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nPP8r-0006Tu-C1; Wed, 02 Mar 2022 14:35:45 +0100
-Date: Wed, 2 Mar 2022 14:35:45 +0100
-To: Joacim Zetterling <joacim.zetterling@westermo.com>
-Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
-Message-ID: <20220302133545.GX19585@pengutronix.de>
-References: <20220301132254.343387-1-joacim.zetterling@westermo.com>
+ (envelope-from <afa@pengutronix.de>)
+ id 1nPRNI-0007b8-2s; Wed, 02 Mar 2022 16:58:48 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1nPRNH-00CXtB-KF; Wed, 02 Mar 2022 16:58:47 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: rcz@pengutronix.de, sha@pengutronix.de,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  2 Mar 2022 16:58:46 +0100
+Message-Id: <20220302155846.2990159-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20220301132254.343387-1-joacim.zetterling@westermo.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 14:35:36 up 81 days, 22:21, 88 users,  load average: 0.16, 0.26, 0.24
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220302_053549_342344_87DE44B0 
-X-CRM114-Status: GOOD (  25.12  )
+X-CRM114-CacheID: sfid-20220302_075851_849237_BBDD6D28 
+X-CRM114-Status: GOOD (  20.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,64 +68,187 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2] driver: mtd: spi-nor: Add Micron MT25QU256A 1V8 SPI
- flash
+Subject: [PATCH] Documentation: devel: project-ideas: align with GSoC
+ guidelines
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Mar 01, 2022 at 02:22:54PM +0100, Joacim Zetterling wrote:
-> Add the Micron MT25QU256A 1V8 SPI flash to the mtd/spi-nor driver.
-> The flash has the same name as the 3V variant but as an other
-> manufacturer ID (20 bb 19 instead of 20 ba 19).
-> 
-> This SPI/QSPI flash is used on i.e. NXP IMX8MN-EVK board.
-> 
-> Signed-off-by: Joacim Zetterling <joacim.zetterling@westermo.com>
-> ---
-> 
-> Changes v2:
->   - Renamed the device name n25q256a to mt25qu256a
+Google informed orgs for GSoC 2022 about required info for ideas list:
 
-Applied, thanks
+  As we state in the Defining a Project Idea List section of the Mentor
+  guide, please provide the following information for each idea:
 
-Sascha
+  a) a project title/description
+  b) more detailed description of the project (2-5+ sentences)
+  c) expected outcomes
+  d) skills required/preferred
+  e) possible mentors
+  f) expected size of project (175 or 350 hour)
+  g) an easy, medium or hard difficulty rating of each project.
 
->   
->  drivers/mtd/spi-nor/spi-nor.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index b3af3c4263b9..cf532b13999b 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -727,6 +727,7 @@ static const struct spi_device_id spi_nor_ids[] = {
->  	{ "n25q128a11",  INFO(0x20bb18, 0, 64 * 1024,  256, SPI_NOR_QUAD_READ) },
->  	{ "n25q128a13",  INFO(0x20ba18, 0, 64 * 1024,  256, SPI_NOR_QUAD_READ) },
->  	{ "n25q256a",    INFO(0x20ba19, 0, 64 * 1024,  512, SECT_4K | SPI_NOR_QUAD_READ) },
-> +	{ "mt25qu256a",  INFO(0x20bb19, 0, 64 * 1024,  512, SECT_4K | SPI_NOR_QUAD_READ) },
->  	{ "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ) },
->  	{ "n25q512ax3",  INFO(0x20ba20, 0, 64 * 1024, 1024, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ) },
->  	{ "n25q00",      INFO(0x20ba21, 0, 64 * 1024, 2048, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ) },
-> -- 
-> 2.25.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+We are nearly there, add the missing points.
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/devel/project-ideas.rst | 44 ++++++++++++++++++++++-----
+ 1 file changed, 37 insertions(+), 7 deletions(-)
+
+diff --git a/Documentation/devel/project-ideas.rst b/Documentation/devel/project-ideas.rst
+index f27e4d5406fc..a3643298ab08 100644
+--- a/Documentation/devel/project-ideas.rst
++++ b/Documentation/devel/project-ideas.rst
+@@ -13,16 +13,26 @@ If you find a project interesting and would like to work on it, reach out
+ to the :ref:`mailing list <feedback>` and we can together
+ try to figure out whether you are a good match for the project.
+ 
++For GSoC, following barebox developers are mentoring:
++
++  - Ahmad Fatoum (IRC: ``a3f``)
++  - Sascha Hauer (IRC: ``_sha_``)
++  - Rouven Czerwinski (IRC: ``Emantor``)
++
+ This list can be edited and extended by sending patches to the mailing list.
+ Other interesting ideas: Support for new file systems (EROFS, extfat, btrfs).
+ Switch device framework (currently scripts write into a ``/dev/switch`` file
+ to configure passthrough), Improvements for barebox-efi (e.g. as a coreboot
+ payload), ... etc.
+ 
++Ideas listed below should contain a title, description, expected outcomes,
++skills (and HW if any) required and a difficulty rating.
++Projects are meant to be about 175 hours of effort, unless otherwise noted.
++
+ Address static analyzer feedback for barebox
+ ============================================
+ 
+-Skills: C
++Skills: C. Difficulty: Lowest
+ 
+ barebox is automatically tested using Synopsys' free "Coverity Scan" service.
+ The static analyzer has so far identified 191 possible defects at
+@@ -36,13 +46,15 @@ To make this service more useful, the project would involve categorizing
+ reported issues and handling them as appropriate: Mark them as not applicable
+ if false positive or provide patches to fix real issues.
+ 
++Expected outcome is that barebox is coverity-clean.
++
+ This project does not require dedicated hardware. QEMU or barebox built
+ to run under Linux (sandbox) may be used.
+ 
+ Update barebox networking stack for IPv6 support
+ ================================================
+ 
+-Skills: C, Networking
++Skills: C, Networking. Difficulty: Medium
+ 
+ The barebox network stack is mainly used for TFTP and NFSv3 (over UDP) boot.
+ Most embedded systems barebox runs on aren't deployed to IPv6 networks yet,
+@@ -55,13 +67,15 @@ makes it possible to integrate an IPv6 stack, e.g. lwIP.
+ There are also community patches to integrate a TCP stack into barebox.
+ These can be evaluated as time allows.
+ 
++Expected outcome is that barebox can TFTP/NFS boot over IPv6.
++
+ This project does not require dedicated hardware. QEMU or barebox built
+ to run under Linux (sandbox) may be used.
+ 
+ Improving barebox test coverage
+ ===============================
+ 
+-Skills: C
++Skills: C. Difficulty: Lowest
+ 
+ barebox is normally tested end-to-end as part of a deployed system.
+ More selftests/emulated tests would reduce the round trip time for testing
+@@ -78,13 +92,16 @@ tests for barebox functionality and by fuzzing the parsers available in
+ barebox, with special consideration to the FIT parser, which is used in
+ secure booting setups.
+ 
++Expected outcome is a richer test suite for barebox and an automated
++setup for fuzzing security-critical parsers.
++
+ This project does not require dedicated hardware. QEMU or barebox built
+ to run under Linux (sandbox) may be used.
+ 
+ Porting barebox to new hardware
+ ===============================
+ 
+-Skills: C, low-level affinity
++Skills: C, low-level affinity. Difficulty: Medium
+ 
+ While Linux and Linux userspace can be quite generic with respect to the
+ hardware it runs on, the bucket needs to stop somewhere: barebox needs
+@@ -102,6 +119,9 @@ If time allows (because most drivers are already available in barebox),
+ new drivers can be ported to enable not only running Linux on the board,
+ but bareDOOM as well.
+ 
++Expected outcome is upstreamed barebox drivers and board support to
++enable running on previously unsupported hardware.
++
+ This project requires embedded hardware with preferably an ARM SoC, as
+ these have the widest barebox support, but other architectures are ok
+ as well.
+@@ -109,7 +129,7 @@ as well.
+ Improve barebox RISC-V support
+ ==============================
+ 
+-Skills: C, RISC-V interest, low-level affinity
++Skills: C, RISC-V interest, low-level affinity. Difficulty: Medium
+ 
+ barebox supports a number of both soft and hardRISC-V targets,
+ e.g.: BeagleV, HiFive, LiteX and the QEMU/TinyEMU Virt machine.
+@@ -121,12 +141,16 @@ stage, so much opportunity in implementing the gritty details:
+     - MMU support in S-Mode to trap access violations
+     - Improve barebox support for multiple harts (hardware threads)
+ 
++Expected outcome is better RISC-V support: Access violations are
++trapped in both S- and M-Mode. Virtual memory is implemented and
++Linux can be booted on multiple harts.
++
+ This project does not require dedicated hardware. QEMU can be used.
+ 
+ Improve barebox I/O performance
+ ===============================
+ 
+-Skills: C, low-level affinity
++Skills: C, low-level affinity. Difficulty: Medium
+ 
+ On a normal modern system, booting may involve mounting and traversing
+ a file system, which employs caching for directory entries and sits
+@@ -145,13 +169,15 @@ possible to increase throughput of barebox I/O:
+       and write performance. This may not be optimal for all devices
+       and can be revisited.
+ 
++Expected outcome is faster read/write/erasure of MMC block devices.
++
+ This project requires embedded hardware with SD/eMMC that is supported
+ by a barebox media card interface (MCI) driver.
+ 
+ Improve JSBarebox, the barebox web demo
+ =======================================
+ 
+-Skills: C (Basics), Javascript/Web-assembly, Browser-Profiling
++Skills: C (Basics), Javascript/Web-assembly, Browser-Profiling. Difficulty: Medium
+ 
+ While Linux and Linux userspace can be quite generic with respect to the
+ hardware it runs on, the bucket needs to stop somewhere: barebox needs
+@@ -170,5 +196,9 @@ provided with modern browsers. The remainder of the project can then
+ focus on improving the jsbarebox tutorial. e.g. by adding new
+ peripherals to the virtual machine.
+ 
++Expected outcome is snappier and less CPU-intensive barebox demo.
++TinyEMU is extended, so the RISC-V machine is more like real
++hardware and tutorial is extended to make use of the new pripherals.
++
+ This project does not require dedicated hardware. The development
+ machine need only support a recent browser.
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 _______________________________________________
 barebox mailing list
