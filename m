@@ -1,53 +1,49 @@
-Delivery-date: Fri, 04 Mar 2022 07:26:13 +0100
+Delivery-date: Fri, 04 Mar 2022 10:43:36 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nQ1OH-00HHgw-RF
-	for lore@lore.pengutronix.de; Fri, 04 Mar 2022 07:26:13 +0100
+	id 1nQ4TI-00HQc6-D4
+	for lore@lore.pengutronix.de; Fri, 04 Mar 2022 10:43:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nQ1OG-00066q-En
-	for lore@pengutronix.de; Fri, 04 Mar 2022 07:26:13 +0100
+	id 1nQ4TG-0005Pg-Cx
+	for lore@pengutronix.de; Fri, 04 Mar 2022 10:43:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=0UREa5JOTUD4TSebgy/E/45zlRuaXTvInm3m0mVFxEw=; b=kjkRC8yFWg0qxG
-	f5PCZFm4Nl9t5Vaeyw7UVH6OZZo03z0F0O4V+IuVQf1kzTr1RSn8R2hP8VWUA82WMtWV+2DLrgiyK
-	SfQ/P0ItK4UXzoGPM18OGEt/3gZufCoxsj/8Lq2Mzqo1pTeZ+jBLQ622EyXvqLxKQEsjVQ0ha9tgO
-	J0WWRQ0bIVgeGpI8H0GtHyx769FcAEis+3evwyxOzX1I8Pc4v9wxs9yqTmtuqPgaBD9oMDMF+2bt8
-	fGcK0agpu9sxpjgMLrbOF+C2+1iiyjfyAF6f18K708Tgx00DYcXarkqkXshyCOz3E2P38iUSaerbA
-	a4DpGmiKecbBr3t/TVrQ==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=C5jf9EYw1ZyIzhx/Da9M2lnljgauU/spfvABUMtnvXs=; b=CWMF6CVO7hgfdM
+	tmWFdBPGESHcUB0zrKg697OrelsXCO5hZh2BEQSPQibqAuYcF6G5QDdXrCu/r/Y/Q0ug2Pjw01bl4
+	8S1NkLyoWCMVVqkX5xDAs7x4ahodz/rEmpt+FUynRAvAeR87VW77840/xAdDuCUPSzOt1nY8CmITw
+	scjUucf2v91CWpFMtekw/csVVijRDgvA8HEya98OpK8c1PClhRWr54CT0v4OJuz8yU8DnXhICa458
+	uLL2jew4XqMajk+SDDrSDePMw70/vDHB23iWmANC7S6VG0luaipyYW3jvYbUgumfekT+HlCsRp9SH
+	GxllLeUB09cgCd1shKdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nQ1Mk-008cdp-37; Fri, 04 Mar 2022 06:24:38 +0000
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+	id 1nQ4RW-009M21-Nk; Fri, 04 Mar 2022 09:41:47 +0000
+Received: from relay12.mail.gandi.net ([217.70.178.232])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nQ1Md-008ccQ-Ah
- for barebox@lists.infradead.org; Fri, 04 Mar 2022 06:24:32 +0000
-Received: by magratgarlick.emantor.de (Postfix, from userid 114)
- id F0D8B92D6B; Fri,  4 Mar 2022 07:24:26 +0100 (CET)
-Received: from localhost (unknown
- [IPv6:2001:9e8:216d:8301:c0d3:dbff:fefe:ff70])
- by magratgarlick.emantor.de (Postfix) with ESMTPSA id 088B492B9F;
- Fri,  4 Mar 2022 07:24:25 +0100 (CET)
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+ id 1nQ4ES-009Hgs-8k
+ for barebox@lists.infradead.org; Fri, 04 Mar 2022 09:28:18 +0000
+Received: (Authenticated sender: ahmad@a3f.at)
+ by mail.gandi.net (Postfix) with ESMTPSA id 17CF8200007;
+ Fri,  4 Mar 2022 09:28:09 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Fri,  4 Mar 2022 07:24:11 +0100
-Message-Id: <20220304062412.1248657-2-r.czerwinski@pengutronix.de>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220304062412.1248657-1-r.czerwinski@pengutronix.de>
-References: <20220304062412.1248657-1-r.czerwinski@pengutronix.de>
+Cc: Christian Melki <christian.melki@t2data.com>,
+ Jules Maselbas <jmaselbas@kalray.eu>, Ahmad Fatoum <ahmad@a3f.at>
+Date: Fri,  4 Mar 2022 10:28:05 +0100
+Message-Id: <20220304092805.1213879-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220303_222431_581774_A12DE411 
-X-CRM114-Status: GOOD (  13.74  )
+X-CRM114-CacheID: sfid-20220304_012816_645559_17C491D2 
+X-CRM114-Status: GOOD (  15.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,122 +63,129 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [RFC Patch 1/3] blspec: create list of entries, iterate over list
+Subject: [PATCH] block: set S_IFBLK for block devices instead of S_IFCHR
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Instead of parsing all files in one go and checking the compatible,
-create a list and iterate over it to check the compatible. This is a
-preparation to not only account for the top-level barebox compatible,
-but to instead use the compatible score system to find the correct
-bootable device tree entry.
+In barebox, block devices are a special case of character devices.
+Nevertheless, differentiation can be useful to allow scripts iterating
+over all block devices without accounting for naming, e.g.
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+  for dev in /dev/*; do
+	test -b $dev && echo $dev: blockdevice
+  done
+
+Add the necessary support. This will break scripts that assume
+test -c blockdevice to be true, but that's a quite improbable check.
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- common/blspec.c | 41 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 39 insertions(+), 2 deletions(-)
+ commands/memtester/memtester.c | 2 +-
+ common/block.c                 | 8 ++++++++
+ fs/devfs.c                     | 7 ++++++-
+ fs/legacy.c                    | 1 +
+ include/block.h                | 2 ++
+ 5 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 158fd1e9a2..0ea857294f 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -520,6 +520,21 @@ static bool entry_is_match_machine_id(struct blspec_entry *entry)
-  *
-  * returns the number of entries found or a negative error value otherwise.
-  */
-+
-+struct blspec_list_entry {
-+	struct list_head list;
-+	struct blspec_entry *entry;
-+	char *name;
-+};
-+
-+static int compare(struct list_head *a, struct list_head *b)
+diff --git a/commands/memtester/memtester.c b/commands/memtester/memtester.c
+index 130dc97c8334..f4adbfc855cb 100644
+--- a/commands/memtester/memtester.c
++++ b/commands/memtester/memtester.c
+@@ -113,7 +113,7 @@ static int do_memtester(int argc, char **argv) {
+                             strerror(errno));
+                     return COMMAND_ERROR_USAGE;
+                 } else {
+-                    if (!S_ISCHR(statbuf.st_mode)) {
++                    if (!S_ISCHR(statbuf.st_mode) && !S_ISBLK(statbuf.st_mode)) {
+                         printf("can not mmap non-char device %s\n",
+                                 optarg);
+                         return COMMAND_ERROR_USAGE;
+diff --git a/common/block.c b/common/block.c
+index 1d386edcfd49..a48016d8dcbd 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -361,6 +361,14 @@ static struct cdev_operations block_ops = {
+ 	.discard_range = block_op_discard_range,
+ };
+ 
++struct block_device *cdev_get_block_device(struct cdev *cdev)
 +{
-+	char *na = (char *)list_entry(a, struct blspec_list_entry, list)->name;
-+	char *nb = (char *)list_entry(b, struct blspec_list_entry, list)->name;
++	if (cdev->ops != &block_ops)
++		return NULL;
 +
-+	return strcmp(na, nb);
++	return container_of(cdev, struct block_device, cdev);
 +}
 +
- int blspec_scan_directory(struct bootentries *bootentries, const char *root)
+ int blockdevice_register(struct block_device *blk)
  {
- 	struct blspec_entry *entry;
-@@ -529,6 +544,11 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
- 	int ret, found = 0;
- 	const char *dirname = "loader/entries";
- 	char *nfspath = NULL;
-+	struct list_head entry_list;
-+	struct blspec_list_entry *lentry;
-+	struct blspec_list_entry *temp;
+ 	loff_t size = (loff_t)blk->num_blocks * BLOCKSIZE(blk);
+diff --git a/fs/devfs.c b/fs/devfs.c
+index deb244feeab6..49cd48f6d84e 100644
+--- a/fs/devfs.c
++++ b/fs/devfs.c
+@@ -29,6 +29,7 @@
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/mtd-abi.h>
+ #include <partition.h>
++#include <block.h>
+ 
+ struct devfs_inode {
+ 	struct inode inode;
+@@ -231,6 +232,7 @@ static struct inode *devfs_get_inode(struct super_block *sb, const struct inode
+ 	default:
+ 		return NULL;
+ 	case S_IFCHR:
++	case S_IFBLK:
+ 		inode->i_op = &devfs_file_inode_operations;
+ 		inode->i_fop = &devfs_file_operations;
+ 		break;
+@@ -250,12 +252,15 @@ static struct dentry *devfs_lookup(struct inode *dir, struct dentry *dentry,
+ 	struct devfs_inode *dinode;
+ 	struct inode *inode;
+ 	struct cdev *cdev;
++	umode_t mode;
+ 
+ 	cdev = cdev_by_name(dentry->name);
+ 	if (!cdev)
+ 		return ERR_PTR(-ENOENT);
+ 
+-	inode = devfs_get_inode(dir->i_sb, dir, S_IFCHR);
++	mode = cdev_get_block_device(cdev) ? S_IFBLK : S_IFCHR;
 +
-+	INIT_LIST_HEAD(&entry_list);
++	inode = devfs_get_inode(dir->i_sb, dir, mode);
+ 	if (!inode)
+ 		return ERR_PTR(-ENOMEM);
  
- 	nfspath = parse_nfs_url(root);
- 	if (!IS_ERR(nfspath))
-@@ -549,7 +569,6 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
- 		char *configname;
- 		struct stat s;
- 		char *dot;
--		char *devname = NULL, *hwdevname = NULL;
+diff --git a/fs/legacy.c b/fs/legacy.c
+index fc6a18f408ed..779f54629440 100644
+--- a/fs/legacy.c
++++ b/fs/legacy.c
+@@ -288,6 +288,7 @@ static struct inode *legacy_get_inode(struct super_block *sb, const struct inode
+ 		return NULL;
+ 	case S_IFREG:
+ 	case S_IFCHR:
++	case S_IFBLK:
+ 		inode->i_op = &legacy_file_inode_operations;
+ 		break;
+ 	case S_IFDIR:
+diff --git a/include/block.h b/include/block.h
+index d3a154bf73c0..06c15a71b58a 100644
+--- a/include/block.h
++++ b/include/block.h
+@@ -49,4 +49,6 @@ static inline int block_flush(struct block_device *blk)
+ 	return cdev_flush(&blk->cdev);
+ }
  
- 		if (*d->d_name == '.')
- 			continue;
-@@ -593,13 +612,29 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
- 		entry->configpath = configname;
- 		entry->cdev = get_cdev_by_mountpath(root);
- 
-+		lentry = calloc(1, sizeof(*lentry));
-+		lentry->entry = entry;
-+		lentry->name = d->d_name;
++struct block_device *cdev_get_block_device(struct cdev *cdev);
 +
-+		list_add_sort(&entry_list, &lentry->list, compare);
-+	}
-+
-+	list_for_each_entry_safe(lentry, temp, &entry_list, list) {
-+		char *devname = NULL, *hwdevname = NULL;
-+
-+		entry = lentry->entry;
-+
- 		if (!entry_is_of_compatible(entry)) {
- 			blspec_entry_free(&entry->entry);
-+			list_del(&lentry->list);
-+			free(lentry);
- 			continue;
- 		}
- 
- 		if (!entry_is_match_machine_id(entry)) {
- 			blspec_entry_free(&entry->entry);
-+			list_del(&lentry->list);
-+			free(lentry);
- 			continue;
- 		}
- 
-@@ -612,7 +647,7 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
- 		}
- 
- 		entry->entry.title = xasprintf("%s (%s)", blspec_entry_var_get(entry, "title"),
--					       configname);
-+					       entry->configpath);
- 		entry->entry.description = basprintf("blspec entry, device: %s hwdevice: %s",
- 						    devname ? devname : "none",
- 						    hwdevname ? hwdevname : "none");
-@@ -623,6 +658,8 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
- 		entry->entry.release = blspec_entry_free;
- 
- 		bootentries_add_entry(bootentries, &entry->entry);
-+		list_del(&lentry->list);
-+		free(lentry);
- 	}
- 
- 	ret = found;
+ #endif /* __BLOCK_H */
 -- 
-2.35.1
+2.34.1
 
 
 _______________________________________________
