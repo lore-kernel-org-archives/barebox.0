@@ -1,86 +1,63 @@
-Delivery-date: Fri, 04 Mar 2022 15:02:21 +0100
+Delivery-date: Fri, 04 Mar 2022 15:30:55 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nQ8Vh-0000hx-FU
-	for lore@lore.pengutronix.de; Fri, 04 Mar 2022 15:02:21 +0100
+	id 1nQ8xL-00031d-8A
+	for lore@lore.pengutronix.de; Fri, 04 Mar 2022 15:30:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nQ8Vf-0004KF-Vn
-	for lore@pengutronix.de; Fri, 04 Mar 2022 15:02:20 +0100
+	id 1nQ8xJ-00084m-UC
+	for lore@pengutronix.de; Fri, 04 Mar 2022 15:30:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=YKe20+nSoUVmNikTylQ7cy+Sp1YSGkSWzoYuDCaKXvU=; b=G3TqD5AiDnWNeN
-	z15d5GVWPsWCoW9c4jJQTmTR40dMNr3ZmDm8W7zn3mn++gHH+UCZiYYVuG/ObAwrwF1BU8RRyPy01
-	zdG3u5t3PTnJBE+M+8D0Ea2n7qeSOeIBVySamsrTO+3b9zBKab810ANAws7mFz8TY4NRBh2Rkll5+
-	HFnL56Qbt/y5vlgTp3QQbjTZuZ0NOV74pakDxEjiofxpGVosD5INtH2puiDcAUPOWsfunOo1MGDhF
-	Ot1IW06fGSmr+wQVrHhfFHLvHHNXx6cD3nlTfzkmEohV1aEuvDP7PzV4IW6pJ1PjXnEQPhTurMXkL
-	AOl2bZAHoCbf20ApBUyg==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=lyd4bHrIHfYEajrg/3G21NgjnXHETdptVX9XnVcEH5A=; b=gm/C3y90hOrmAfXxIwCHkGQOKr
+	vkKsnieXVu+sVbWBDF2IvbR0lJhDu8pcWEkLnkeQQFPeh/ZAlUvHPhNxxJ7dh8jB/5zDBBMWIe/+y
+	yJImUWiZganh5lQ9ryC+5fEgU7cTJvnFSa7ya5tYzMDabXvpIiZzkSRZa/Rww7uVcUH6boqRIMO78
+	V4Cz4wqjC/Wq2lowmCUnTyBOtD52/PHOBm9mAqZpcwVTKCkdNpqcBrCket9EymP6KbBNIXOaxLPn/
+	zbo7kkxppgJd3Y8tDyaAOkTiOA9zMcSw4htMe9DuLlO8DtxywKs3O6ZW8Ir3xBYFIbH2Q7ulc8xzd
+	VVh4xDJw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nQ8U2-00ANlB-UX; Fri, 04 Mar 2022 14:00:39 +0000
-Received: from mxout.security-mail.net ([85.31.212.46]
- helo=fx303.security-mail.net)
+	id 1nQ8vy-00ATmg-Hk; Fri, 04 Mar 2022 14:29:30 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nQ8Tw-00ANhq-5o
- for barebox@lists.infradead.org; Fri, 04 Mar 2022 14:00:34 +0000
-Received: from localhost (localhost [127.0.0.1])
- by fx303.security-mail.net (Postfix) with ESMTP id ABAE03237F2
- for <barebox@lists.infradead.org>; Fri,  4 Mar 2022 15:00:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
- s=sec-sig-email; t=1646402425;
- bh=ZXwzZlC1rxvAdsMIA4fwfrcH66uCkXbSjQbk/HCWc+A=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To;
- b=Ki6R+D+YijYi+nCyj3+fBbeuulUcGVpqSOoG26om8umv5oA89wG1HqZ3YgW0a56EO
- 1GnXAbnbE9dJ5bVbcDfmuWh6JHoHBF7VQ9gvZEo0T2zN6/RX6GGlrEZrMN2dHIJjG4
- Ki1RRz6MDgv+bnp+D3cyKbTR1CVnffNptJze/KZ8=
-Received: from fx303 (localhost [127.0.0.1]) by fx303.security-mail.net
- (Postfix) with ESMTP id 3215E3237FE; Fri,  4 Mar 2022 15:00:25 +0100 (CET)
-Received: from zimbra2.kalray.eu (unknown [217.181.231.53]) by
- fx303.security-mail.net (Postfix) with ESMTPS id C29F63237EE; Fri,  4 Mar
- 2022 15:00:24 +0100 (CET)
-Received: from zimbra2.kalray.eu (localhost [127.0.0.1]) by
- zimbra2.kalray.eu (Postfix) with ESMTPS id 4990A27E041A; Fri,  4 Mar 2022
- 15:00:24 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1]) by zimbra2.kalray.eu
- (Postfix) with ESMTP id 32CD427E041C; Fri,  4 Mar 2022 15:00:24 +0100 (CET)
-Received: from zimbra2.kalray.eu ([127.0.0.1]) by localhost
- (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026) with ESMTP id
- xJ9p4-8WQLEX; Fri,  4 Mar 2022 15:00:24 +0100 (CET)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206]) by
- zimbra2.kalray.eu (Postfix) with ESMTPSA id 2177027E041A; Fri,  4 Mar 2022
- 15:00:24 +0100 (CET)
-X-Virus-Scanned: E-securemail, by Secumail
-Secumail-id: <c316.62221b78.77e58.0>
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 32CD427E041C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1646402424;
- bh=JhSxdOqha6YJypiquW43jpS+werTRz1deoHCiWWYy+U=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=M+rPCpy2vMTWA1ks16iPlU+YJS5b9r5Q7EEyjWOxB4iNzx6tFtu8Eipvb528TUMfV
- UnwQBPOnoLHjbHBdmKewMN04aiVbhSeMANOuxwfGdnErSLWuxddFcK6a9ARpqEBOQ2
- C+NGKs7fwmqZjFhY954vo4gSjAizVDY/VIi8F4nA=
-Date: Fri, 4 Mar 2022 15:00:23 +0100
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: Ahmad Fatoum <ahmad@a3f.at>
+ id 1nQ8vZ-00ATcR-KE
+ for barebox@lists.infradead.org; Fri, 04 Mar 2022 14:29:07 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nQ8vY-0007f1-Al; Fri, 04 Mar 2022 15:29:04 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nQ8vX-00080S-Tm; Fri, 04 Mar 2022 15:29:03 +0100
+Date: Fri, 4 Mar 2022 15:29:03 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org, Christian Melki <christian.melki@t2data.com>
-Message-ID: <20220304140022.GB18417@tellis.lin.mbt.kalray.eu>
-References: <20220304092805.1213879-1-ahmad@a3f.at>
+Message-ID: <20220304142903.GA405@pengutronix.de>
+References: <20220303144246.3603311-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220304092805.1213879-1-ahmad@a3f.at>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-ALTERMIMEV2_out: done
+In-Reply-To: <20220303144246.3603311-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 15:28:55 up 83 days, 23:14, 83 users,  load average: 0.13, 0.18, 0.26
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220304_060032_403701_783BFDF1 
-X-CRM114-Status: GOOD (  21.69  )
+X-CRM114-CacheID: sfid-20220304_062905_698351_0501A019 
+X-CRM114-Status: GOOD (  28.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,142 +77,110 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] block: set S_IFBLK for block devices instead of S_IFCHR
+Subject: Re: [PATCH 1/2] ARM: i.MX: factor out AIPS configuration into helper
+ function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Mar 04, 2022 at 10:28:05AM +0100, Ahmad Fatoum wrote:
-> In barebox, block devices are a special case of character devices.
-> Nevertheless, differentiation can be useful to allow scripts iterating
-> over all block devices without accounting for naming, e.g.
+On Thu, Mar 03, 2022 at 03:42:45PM +0100, Ahmad Fatoum wrote:
+> We have the exact same sequence twice for each AIPS and i.MX6ULL/SX add
+> another AIPS, so it's time to factor this out into a dedicated helper
+> function and comment it a bit more.
 > 
->   for dev in /dev/*; do
-> 	test -b $dev && echo $dev: blockdevice
->   done
-> 
-> Add the necessary support. This will break scripts that assume
-> test -c blockdevice to be true, but that's a quite improbable check.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-
-Tested-by: Jules Maselbas <jmaselbas@kalray.eu>
-
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  commands/memtester/memtester.c | 2 +-
->  common/block.c                 | 8 ++++++++
->  fs/devfs.c                     | 7 ++++++-
->  fs/legacy.c                    | 1 +
->  include/block.h                | 2 ++
->  5 files changed, 18 insertions(+), 2 deletions(-)
+>  arch/arm/mach-imx/imx6.c | 44 +++++++++++++++++++++-------------------
+>  1 file changed, 23 insertions(+), 21 deletions(-)
+
+Applied, thanks
+
+Sascha
+
 > 
-> diff --git a/commands/memtester/memtester.c b/commands/memtester/memtester.c
-> index 130dc97c8334..f4adbfc855cb 100644
-> --- a/commands/memtester/memtester.c
-> +++ b/commands/memtester/memtester.c
-> @@ -113,7 +113,7 @@ static int do_memtester(int argc, char **argv) {
->                              strerror(errno));
->                      return COMMAND_ERROR_USAGE;
->                  } else {
-> -                    if (!S_ISCHR(statbuf.st_mode)) {
-> +                    if (!S_ISCHR(statbuf.st_mode) && !S_ISBLK(statbuf.st_mode)) {
->                          printf("can not mmap non-char device %s\n",
->                                  optarg);
->                          return COMMAND_ERROR_USAGE;
-> diff --git a/common/block.c b/common/block.c
-> index 1d386edcfd49..a48016d8dcbd 100644
-> --- a/common/block.c
-> +++ b/common/block.c
-> @@ -361,6 +361,14 @@ static struct cdev_operations block_ops = {
->  	.discard_range = block_op_discard_range,
->  };
+> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+> index 3ee42fd966dd..256288b25a88 100644
+> --- a/arch/arm/mach-imx/imx6.c
+> +++ b/arch/arm/mach-imx/imx6.c
+> @@ -31,10 +31,29 @@
+>  #define MX6_OCOTP_CFG0			0x410
+>  #define MX6_OCOTP_CFG1			0x420
 >  
-> +struct block_device *cdev_get_block_device(struct cdev *cdev)
+> +static void imx6_configure_aips(void __iomem *aips)
 > +{
-> +	if (cdev->ops != &block_ops)
-> +		return NULL;
+> +	/*
+> +	 * Set all MPROTx to be non-bufferable, trusted for R/W,
+> +	 * not forced to user-mode.
+> +	 */
+> +	writel(0x77777777, aips);
+> +	writel(0x77777777, aips + 0x4);
 > +
-> +	return container_of(cdev, struct block_device, cdev);
+> +	/*
+> +	 * Set all OPACRx to be non-bufferable, not require
+> +	 * supervisor privilege level for access,allow for
+> +	 * write access and untrusted master access.
+> +	 */
+> +	writel(0, aips + 0x40);
+> +	writel(0, aips + 0x44);
+> +	writel(0, aips + 0x48);
+> +	writel(0, aips + 0x4c);
+> +	writel(0, aips + 0x50);
 > +}
 > +
->  int blockdevice_register(struct block_device *blk)
+>  static void imx6_init_lowlevel(void)
 >  {
->  	loff_t size = (loff_t)blk->num_blocks * BLOCKSIZE(blk);
-> diff --git a/fs/devfs.c b/fs/devfs.c
-> index deb244feeab6..49cd48f6d84e 100644
-> --- a/fs/devfs.c
-> +++ b/fs/devfs.c
-> @@ -29,6 +29,7 @@
->  #include <linux/mtd/mtd.h>
->  #include <linux/mtd/mtd-abi.h>
->  #include <partition.h>
-> +#include <block.h>
+> -	void __iomem *aips1 = (void *)MX6_AIPS1_ON_BASE_ADDR;
+> -	void __iomem *aips2 = (void *)MX6_AIPS2_ON_BASE_ADDR;
+>  	bool is_imx6q = __imx6_cpu_type() == IMX6_CPUTYPE_IMX6Q;
+>  	bool is_imx6d = __imx6_cpu_type() == IMX6_CPUTYPE_IMX6D;
+>  	uint32_t val_480;
+> @@ -51,25 +70,8 @@ static void imx6_init_lowlevel(void)
+>  	if ((readl(MXC_CCM_CCGR6) & 0x3))
+>  		imx_reset_otg_controller(IOMEM(MX6_OTG_BASE_ADDR));
 >  
->  struct devfs_inode {
->  	struct inode inode;
-> @@ -231,6 +232,7 @@ static struct inode *devfs_get_inode(struct super_block *sb, const struct inode
->  	default:
->  		return NULL;
->  	case S_IFCHR:
-> +	case S_IFBLK:
->  		inode->i_op = &devfs_file_inode_operations;
->  		inode->i_fop = &devfs_file_operations;
->  		break;
-> @@ -250,12 +252,15 @@ static struct dentry *devfs_lookup(struct inode *dir, struct dentry *dentry,
->  	struct devfs_inode *dinode;
->  	struct inode *inode;
->  	struct cdev *cdev;
-> +	umode_t mode;
+> -	/*
+> -	 * Set all MPROTx to be non-bufferable, trusted for R/W,
+> -	 * not forced to user-mode.
+> -	 */
+> -	writel(0x77777777, aips1);
+> -	writel(0x77777777, aips1 + 0x4);
+> -	writel(0, aips1 + 0x40);
+> -	writel(0, aips1 + 0x44);
+> -	writel(0, aips1 + 0x48);
+> -	writel(0, aips1 + 0x4c);
+> -	writel(0, aips1 + 0x50);
+> -
+> -	writel(0x77777777, aips2);
+> -	writel(0x77777777, aips2 + 0x4);
+> -	writel(0, aips2 + 0x40);
+> -	writel(0, aips2 + 0x44);
+> -	writel(0, aips2 + 0x48);
+> -	writel(0, aips2 + 0x4c);
+> -	writel(0, aips2 + 0x50);
+> +	imx6_configure_aips(IOMEM(MX6_AIPS1_ON_BASE_ADDR));
+> +	imx6_configure_aips(IOMEM(MX6_AIPS2_ON_BASE_ADDR));
 >  
->  	cdev = cdev_by_name(dentry->name);
->  	if (!cdev)
->  		return ERR_PTR(-ENOENT);
->  
-> -	inode = devfs_get_inode(dir->i_sb, dir, S_IFCHR);
-> +	mode = cdev_get_block_device(cdev) ? S_IFBLK : S_IFCHR;
-> +
-> +	inode = devfs_get_inode(dir->i_sb, dir, mode);
->  	if (!inode)
->  		return ERR_PTR(-ENOMEM);
->  
-> diff --git a/fs/legacy.c b/fs/legacy.c
-> index fc6a18f408ed..779f54629440 100644
-> --- a/fs/legacy.c
-> +++ b/fs/legacy.c
-> @@ -288,6 +288,7 @@ static struct inode *legacy_get_inode(struct super_block *sb, const struct inode
->  		return NULL;
->  	case S_IFREG:
->  	case S_IFCHR:
-> +	case S_IFBLK:
->  		inode->i_op = &legacy_file_inode_operations;
->  		break;
->  	case S_IFDIR:
-> diff --git a/include/block.h b/include/block.h
-> index d3a154bf73c0..06c15a71b58a 100644
-> --- a/include/block.h
-> +++ b/include/block.h
-> @@ -49,4 +49,6 @@ static inline int block_flush(struct block_device *blk)
->  	return cdev_flush(&blk->cdev);
->  }
->  
-> +struct block_device *cdev_get_block_device(struct cdev *cdev);
-> +
->  #endif /* __BLOCK_H */
+>  	/* Due to hardware limitation, on MX6Q we need to gate/ungate all PFDs
+>  	 * to make sure PFD is working right, otherwise, PFDs may
 > -- 
-> 2.34.1
+> 2.30.2
 > 
 > 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
-> To declare a filtering error, please use the following link : https://www.security-mail.net/reporter.php?mid=10200.6221dbab.9d886.0&r=jmaselbas%40kalray.eu&s=ahmad%40a3f.at&o=%5BPATCH%5D+block%3A+set+S_IFBLK+for+block+devices+instead+of+S_IFCHR&verdict=C&c=87f89e12ce86b52361dd00e3bf70cf47f37c754f
-> 
 
-
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
