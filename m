@@ -1,86 +1,129 @@
-Delivery-date: Sun, 06 Mar 2022 23:51:10 +0100
+Delivery-date: Mon, 07 Mar 2022 08:18:29 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nQziY-002lR4-7H
-	for lore@lore.pengutronix.de; Sun, 06 Mar 2022 23:51:10 +0100
+	id 1nR7dV-003AzK-CC
+	for lore@lore.pengutronix.de; Mon, 07 Mar 2022 08:18:29 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nQziW-0000F3-Jj
-	for lore@pengutronix.de; Sun, 06 Mar 2022 23:51:09 +0100
+	id 1nR7dT-0000eu-Oy
+	for lore@pengutronix.de; Mon, 07 Mar 2022 08:18:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=kLEHKyK9WYR6L4kPOyUn1mhRFl8rm7ylURoxVNUrkIk=; b=X/Uj+iBCliXCJQ
-	QNSOkH6sXy5QuLAj+lW9ggMr9ZqOEMc0AaQdvnHmH+YB5jb8MsKADNdCJMNhpDKNUKV29TkVOVDLJ
-	2vzgi0WFkSzZ8rsvgpuM/7J1nvsVbudDvcbnxP21+dqDLKEoTqYqWuyF0HUkq3hKTXj+sc2fPcXuU
-	XUHW5b95148h6x+YLHPAMl+252mtnQmuTttFoOLgGjeI4iSxK157Fy3YET4X4hrqwEQWc9sc2NMX4
-	qfZ+7AEwSFptpmrA7ElO5D2VnYc4rpT2V0y26FIn6H6v9XaM+swlFRmOznqmk1mmAzg1WfdtQgVF7
-	N7cYAUJLLk+PsXGUxYLg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Qdjyl+Bqgm829Y/OLPWW7sHSnS9PSpGlVODv74d+Wis=; b=itNtxt6MSdAY6+
+	OWzkRsja8M1uRTzodiaqdwtMt139f2iLigTi/DCtsAcLOkCgRkIQBmtAvv+L0AudY4DuTlew8g0aM
+	xS4eTO9M9jtbxtaYtLOR5SHHEEtok/p9Hku+PW24lA/O7gMnveAlecc9+bDhCoR6O4U/KlKVdNAQE
+	BCLgd9uJmiFCYb1F2zPYb3oKL0xsSF2ODQRWw99+6Gb8kpIju5Fmu1+xFx/Q3pPhUNj7hLj2ZyhbS
+	05+6zVrjCFf+uj1x8/gt/Ky5NxsUe3O5l1Ejo2jSr8ha6pJM/ghPnHeljRkU2vTflUy2YWU4rQO35
+	c/OWekFziKzE79XPqGIQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nQzgj-00FOUv-Co; Sun, 06 Mar 2022 22:49:17 +0000
-Received: from mxout.security-mail.net ([85.31.212.46]
- helo=fx303.security-mail.net)
+	id 1nR7bt-00GGVh-IJ; Mon, 07 Mar 2022 07:16:49 +0000
+Received: from mail-db8eur05on2061e.outbound.protection.outlook.com
+ ([2a01:111:f400:7e1a::61e]
+ helo=EUR05-DB8-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nQzgd-00FOU6-Mt
- for barebox@lists.infradead.org; Sun, 06 Mar 2022 22:49:13 +0000
-Received: from localhost (localhost [127.0.0.1])
- by fx303.security-mail.net (Postfix) with ESMTP id 74EBA323734
- for <barebox@lists.infradead.org>; Sun,  6 Mar 2022 23:49:04 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
- s=sec-sig-email; t=1646606944;
- bh=2HOkELEksxEpohgZBuTXAMaMb2Ob1Z+h5cvXq/i1RpQ=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To;
- b=C6P3SjkJzdZX89Mqq9oUUgDCaGpgTH8U42IviQtdrs4DRE3ihow7PmrqZpL3IkTB6
- 5PdVdbVjGNNYog8kS7GLr5LShhCmeAIUf5A7Lwv8BbTeua4lZ8WXgC/5D7ym6VKckP
- ZYWxa4Mk0Kc4sccyolwHdyzWpatFaSbGxs4rB2CQ=
-Received: from fx303 (localhost [127.0.0.1]) by fx303.security-mail.net
- (Postfix) with ESMTP id DA1F332374C; Sun,  6 Mar 2022 23:49:03 +0100 (CET)
-Received: from zimbra2.kalray.eu (unknown [217.181.231.53]) by
- fx303.security-mail.net (Postfix) with ESMTPS id 3703D323747; Sun,  6 Mar
- 2022 23:49:02 +0100 (CET)
-Received: from zimbra2.kalray.eu (localhost [127.0.0.1]) by
- zimbra2.kalray.eu (Postfix) with ESMTPS id 9FF0027E03FA; Sun,  6 Mar 2022
- 23:49:02 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1]) by zimbra2.kalray.eu
- (Postfix) with ESMTP id 851B327E0412; Sun,  6 Mar 2022 23:49:02 +0100 (CET)
-Received: from zimbra2.kalray.eu ([127.0.0.1]) by localhost
- (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026) with ESMTP id
- TiKbQTpkdX4f; Sun,  6 Mar 2022 23:49:02 +0100 (CET)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206]) by
- zimbra2.kalray.eu (Postfix) with ESMTPSA id 60C9827E03FA; Sun,  6 Mar 2022
- 23:49:02 +0100 (CET)
-X-Virus-Scanned: E-securemail, by Secumail
-Secumail-id: <13091.62253a5e.c8053.0>
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 851B327E0412
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1646606942;
- bh=e1xurxCibzV09yy2nA5oHmlpT54mk+tnI0PS5TnIE6k=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=VLclP3arcAxDQxJfcLlluUsI4k4jbi7LHfOoW7cm0XltMkuVFni20hEugyVdB6Sgx
- qe4sFpiJGSA06X1a11TCsExTfocHxn6yxBfSbim/Q2BK/S1xhXU/651EF+73J88w25
- qX0BOqbgBfnTs6XDOe/W5D2G3oz9a+dWGhZuhp3I=
-Date: Sun, 6 Mar 2022 23:49:01 +0100
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220306224901.GC18417@tellis.lin.mbt.kalray.eu>
-References: <20220305222013.1902586-1-a.fatoum@pengutronix.de>
+ id 1nR7bn-00GGUl-Sc
+ for barebox@lists.infradead.org; Mon, 07 Mar 2022 07:16:45 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=P9/WPtPlUDz8S0abhqprAj6oziAcDr0lgo+KGsL1XDurAxRiNGk2ERyhiE3rM+ZbfdEoxDqkWhYCyyUppQtovHrxe2BQeXDNSVZud3IajIPHpxikZskU8F+BFVTcl+ij/VFpQM4QCyCjC3M5bhvjN0mREOcoWHihYJSPpEUK6bCNh2gFvEtqmphrMAIM3G1mQF6FwrTnPudvbkkp/jx5Q59k0jtU5hDiVB2KooWJPIrlpidydVA75WlDaqq6Z15623joOF7Jbb9qZA1veNOr148md2zGlI1TUtgnjVL/IVDxvJUfbNW/HDyLvbvdponikZl/krYXVmXuu/p71rEbXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vEGXrQuYVHn6c6/ykhi1FNcRrrTj9DTBWAesY2lF5BQ=;
+ b=kq4uy4lDEKiKMDk4pmiR0Sx31nBV+27rQmqL44ChRJahOK9wF4ctDM+7WSiJUwZ8hRvPMDmYIBFoiG4myEF5add4DJtAsPBiSruP834I4CUL8YQGVhsZ8NETzp9LxXvmzjvaNaKevwNsliC38MfJBlr99ThqBG5lIc1TnyrIu7mjdUhPdKtG9zQC7Y1GkWiYHYGeQXWQ4FLYou0Ugv2fLuKFNAY3VZ8eZnAiKNfrmCimK+yE7zEJeshCOXbSvm8SE9djwdRWGq5M+qylaP5WJ5LPlG9lySj9OwqJg5yUvmOxql+/n/5IdVC7DKmifMLrPCLfTCnieXacbZvE9J/cTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wolfvision.net; dmarc=pass action=none
+ header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vEGXrQuYVHn6c6/ykhi1FNcRrrTj9DTBWAesY2lF5BQ=;
+ b=O1vFS0icie9ghtdfsSiyvjZ4gqvFVcIZ2iY7OnkdhMqrgpb5XNtYhye4hz0FwSUohhimoNAQ0r1Ca2uDbmAZUWvI4G4CR1e87qat8vIl3Wmy5n3G2BD3KIVE1d4Uv3ZFA8LQPmbmBBwCPv6UDUVD1GJtNpXI92S1UsbcQnevi9s=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=wolfvision.net;
+Received: from HE1PR0802MB2426.eurprd08.prod.outlook.com (2603:10a6:3:e1::23)
+ by AM0PR08MB3793.eurprd08.prod.outlook.com (2603:10a6:208:fc::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Mon, 7 Mar
+ 2022 07:16:38 +0000
+Received: from HE1PR0802MB2426.eurprd08.prod.outlook.com
+ ([fe80::f9ee:a333:b115:5049]) by HE1PR0802MB2426.eurprd08.prod.outlook.com
+ ([fe80::f9ee:a333:b115:5049%4]) with mapi id 15.20.5038.027; Mon, 7 Mar 2022
+ 07:16:38 +0000
+From: Michael Riesch <michael.riesch@wolfvision.net>
+To: barebox@lists.infradead.org
+Cc: Michael Riesch <michael.riesch@wolfvision.net>
+Date: Mon,  7 Mar 2022 08:16:27 +0100
+Message-Id: <20220307071627.346527-1-michael.riesch@wolfvision.net>
+X-Mailer: git-send-email 2.30.2
+X-ClientProxiedBy: ZR0P278CA0153.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:41::20) To HE1PR0802MB2426.eurprd08.prod.outlook.com
+ (2603:10a6:3:e1::23)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20220305222013.1902586-1-a.fatoum@pengutronix.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-ALTERMIMEV2_out: done
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 65abd952-1ad1-43f8-c59d-08da000a6bbc
+X-MS-TrafficTypeDiagnostic: AM0PR08MB3793:EE_
+X-Microsoft-Antispam-PRVS: <AM0PR08MB379339AF62883E55F0063599F2089@AM0PR08MB3793.eurprd08.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: iZaOFZ8lQd6WFBqj3CAJehLrOeR+srQzdg2AAU2RPNrVTWlAqVo24nNTUuIciTsaF7wgOEcp6HXTDQTQNpVBuVVHxRLOY17dtU6IZWAIOxa9zS6gJ67NqlShFyQ82UZcCVF6C+Y/v8d1IMlEVKq2xo2cSrdjIilYcCB1i3BBx5uVutjz70Ax8ElCqtSjbJDtqYmk4SqjysfJyX7cOMkNznPY3MwCInp91NkmIt3qaeWIyb9Ymf8qahQund5Tv5cLv7c58fcrEsRi1yCqgl0/x9rKK4E9nOVNx6KS5ZvADbRyO3e+rEE3rOQCpxL8Fy6ZUZ8azSuS9QixSPsH+fC7okhPdtVjShQpCLmh4Hh056yNzDps08Nb0AbhD5K5LRR/5KKl/Liy5t8l5aAtXOlLkqDYngG3IDZWL60lDkfnLy9EHHnCxZvCTkLupdJMDTYsp9oxfQIcqdD8YVKn2MmsCUuuYzFMxh4p2GbohwM7A+ryoTIqKhWUvPSkHw5PJLPcVXiLQgO1uegWtFjfDuwzthwGUSLtS8db31vwHP7KayzOsc5uT7he7TrzDMx9hV2vN5v4TjkO8MK2TWFgKiURfJYOwVef7NsnRM+uYQ6xDfA4IuZWXm5GDng+lCrUvgtGfTsM6Vy+U/TMzBvKu/ihgQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:HE1PR0802MB2426.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(136003)(366004)(39830400003)(396003)(376002)(346002)(5660300002)(2616005)(52116002)(6506007)(8936002)(38100700002)(186003)(66946007)(83380400001)(107886003)(6512007)(86362001)(2906002)(1076003)(36756003)(44832011)(6666004)(508600001)(6486002)(66556008)(66476007)(8676002)(4326008)(316002)(6916009);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tN0jyy11lWOxMP9/bi6JCNRXcEg0OQzaT0PSCOH+m5LIj7gYjkAg74NVLAOQ?=
+ =?us-ascii?Q?KN9fS7xukx412EPU09KgkhfK14x7VOK0ZWUeAELirgwVcvjRz8kH4mCf2XbJ?=
+ =?us-ascii?Q?QyhIwChhvXXYiBXSQmYmlKzdUC5rl+YIJL/J2h6PLX578zCv+KIyb4koqfUp?=
+ =?us-ascii?Q?a3p92IYssLp2/6zHfS5ZqnCNkRZ2uXVw5p+yhBOI1fU5N2330B68IvK7pMZc?=
+ =?us-ascii?Q?t5AmhwoCOtvZ7l7+pAiN/NgvXtfRNdhcJSLgQeEb/o9n/5so2MqYog7Z5nfi?=
+ =?us-ascii?Q?8S6h/IbqiU/mUTBE7++xcUHLV170wOsGXh4e92KTT/AdjTWJ5t8+tj9ulihw?=
+ =?us-ascii?Q?VDw6r8SkzlMJWwybfdVZTCm/suN09lnne3ZPM+1QP/LUQPx/Dgw41KmIFKbQ?=
+ =?us-ascii?Q?bHKO7AlqbFldFY6+dWrW7KzKyvvf9KdPzSpqISS9Xu4E1LpGnivtSYZ4CjjQ?=
+ =?us-ascii?Q?+upQei/y+BvyV9vv26ISSw5JV4J/MPxbKGegY2xKBgE+r+h7MBzK29BQHwRQ?=
+ =?us-ascii?Q?clvCw2ZMW6lAaXW16rAfm+PA092EtCCaA3vc6Ze8Qdev1cQyyC0xDCCKP7yb?=
+ =?us-ascii?Q?GBIBuQ7vLFLL20FO3enpl3WWg+sr0LBiYy1nI5OVDeNHdQtfii9F3wh9NYCS?=
+ =?us-ascii?Q?w0wOpnNX4adngTNnCCePKacBFwHtYdvijAGtYtHFAzpQe7TKgFQ36IoyTinT?=
+ =?us-ascii?Q?PATEl+b1x/TYJo5ovzETf896BPdjOzqLE/Udo/mBKQm/CwKLtZYdyUyIGFva?=
+ =?us-ascii?Q?cRIKJENXweuq4g7O0zmO9EsT1IQ2N4weRnDE8wAD4X9Y+Vclp7HG+aVHL+Pm?=
+ =?us-ascii?Q?EgkBzYNvidOItijudt7geZbhABacBaWEELCUSONxnJ8UAJZPqBtFyxy62Sju?=
+ =?us-ascii?Q?cf9Vwl+VIRRqQGdnlS3g7gyfbHSjqBjjEfRsxRdduZcBZ++RmNizwBX4Dlsf?=
+ =?us-ascii?Q?SjmzryvG3bUbSHBAHPxF+50TVq8MEb/8JhANKRsE+y2qKxqBUIHCqEIbIHJE?=
+ =?us-ascii?Q?Jn7yiy0D/pKLLN5ugbjWRA9Rr1JIfNm8LZLAUItk/Nz+jGev7HncAs8hiAcd?=
+ =?us-ascii?Q?+V20fZTke1fTtrpPNChGeJCHkrVi4zV2ljLpHL/AjJnutyd2Qzp+3vvzApQj?=
+ =?us-ascii?Q?IU03/8ncYHiHsDO4kKyd72ADxzFawznxREnH47CDQZTrfAb44r2wab3aoevY?=
+ =?us-ascii?Q?AslOBMAWX0yJAtJoVM6tbIap66R3kgvE8J081QyiCMywbyMJtH9VQrsUtxKx?=
+ =?us-ascii?Q?NxfCJYtH8oS2FacrDqwP4K61yHOrJTR1mLDAUqgR6lZFK1eB0s2clnfbyhW5?=
+ =?us-ascii?Q?irxLd0tfw8bvRaUWSRibOdOFBVbI31Hrnsbtcwswr+EzHA4I1/FVNK1YIeZ9?=
+ =?us-ascii?Q?fGNu4rk00hEq6Rva53Rt9+1LjzccGS6hqDa/9+ryT497TRIKBtbXfPWSEKRn?=
+ =?us-ascii?Q?HZ2pB8I0/jOtyMvJekpXe8kn0OJFN6u+6r625FhF6GLKxr6EPNzXc+FyvAsj?=
+ =?us-ascii?Q?+e1oy16HfVF3Uiv7SMeRz8zQE5YKN+B93zj1CKxLPcw0Tmwcw3j7raJcq6bZ?=
+ =?us-ascii?Q?VD+ICNpqGmQh1gRL6WhDKCwpCiptytRf4IkNrMc6CvRjjnvIZIgitZJkNg68?=
+ =?us-ascii?Q?0k+AjYhYOaRhyB85slZ5Zc70nTfVBPRLHQZBBWAXucSycdV6moh6VxRIxGx1?=
+ =?us-ascii?Q?lMHCXogKo/zLQyLs1kz8m693xWbNkQcdnZHniEt+WkGHSGRMW85kKEAW54+i?=
+ =?us-ascii?Q?1np8pP8I+Q=3D=3D?=
+X-OriginatorOrg: wolfvision.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65abd952-1ad1-43f8-c59d-08da000a6bbc
+X-MS-Exchange-CrossTenant-AuthSource: HE1PR0802MB2426.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 07:16:38.5896 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aEjzRh/BDEV8QhnEcO73OaxVaCSg44Bg7ASdw9k91S1Um0XB9/B7sRaccpRSqN8baXWsPJS48MiMryfjJVrW9FQAKxy5ANMi+62ISKji9Z0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR08MB3793
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220306_144911_998425_9B1B7CA3 
-X-CRM114-Status: GOOD (  27.91  )
+X-CRM114-CacheID: sfid-20220306_231644_030983_03B1DE76 
+X-CRM114-Status: GOOD (  12.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,264 +143,77 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] common: add printf debugging automation
+Subject: [PATCH] net: designware: rockchip: improve support for multiple gmac
+ instances
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Ahmad,
+Do not rely on (board-specific) aliases to distinguish between multiple
+(SoC-specific) GMAC instances. Instead, use the base address of the
+controllers as is done in the Linux kernel.
 
-On Sat, Mar 05, 2022 at 11:20:13PM +0100, Ahmad Fatoum wrote:
-> This allows automating pinpointing of breakage outside PBL. For example
-> if barebox is stuck during startup:
-> 
->   - Turn on CONFIG_DEBUG_LL and CONFIG_DEBUG_INITCALLS
->   - Note last $initcall executed
-By $initcall are you talking about the function name or about the
-initcall address during startup ?
+Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
+---
+ drivers/net/designware_rockchip.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
->   - Set CONFIG_FTRACE_CALLCHAIN=$initcall
->   - Serial output will stop at the last called traced function
-> 
-> Alternatively, enable CONFIG_FTRACE and stick tracing_on() somewhere.
-> 
-> Output will look like:
-> 
->  [<4fd859a5>]   (netconsole_init+0x1/0x120) from [<4fd014c7>] (start_barebox+0x43/0x7c)
->  [<4fd77209>]     (xzalloc+0x1/0x34) from [<4fd859bd>] (netconsole_init+0x19/0x120)
->  [<4fd7719d>]       (xmalloc+0x1/0x34) from [<4fd77221>] (xzalloc+0x19/0x34)
->  [<4fd0995d>]         (malloc+0x1/0x54) from [<4fd771b5>] (xmalloc+0x19/0x34)
->  [<4fd0aae1>]           (tlsf_malloc+0x1/0x48) from [<4fd09983>] (malloc+0x27/0x54)
->  [<4fd0a1d9>]             (adjust_request_size+0x1/0x44) from [<4fd0aaff>] (tlsf_malloc+0x1f/0x48)
->  [<4fd0a18d>]               (align_up+0x1/0x4c) from [<4fd0a205>] (adjust_request_size+0x2d/0x44)
->  [<4fd0aa55>]             (block_locate_free+0x1/0x8c) from [<4fd0ab09>] (tlsf_malloc+0x29/0x48)
-> 
-> This is added as an experimental feature as it's not meant to be enabled
-> at all time due to large overhead and may change considerably in future,
-> e.g. to allow dumping to memory buffer and to record timestamps for
-> profiling.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  Makefile           | 10 +++++-
->  common/Kconfig     | 15 +++++++++
->  include/ftrace.h   | 18 +++++++++++
->  lib/Makefile       |  4 +++
->  lib/ftrace.c       | 77 ++++++++++++++++++++++++++++++++++++++++++++++
->  lib/kasan/Makefile |  5 +++
->  6 files changed, 128 insertions(+), 1 deletion(-)
->  create mode 100644 include/ftrace.h
->  create mode 100644 lib/ftrace.c
-> 
-> diff --git a/Makefile b/Makefile
-> index c04deaaa0f69..34743f4b6b45 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -469,7 +469,7 @@ export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
->  export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE
->  export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL
->  export LDFLAGS_barebox
-> -export LDFLAGS_pbl
-> +export LDFLAGS_pbl PBL_CPPFLAGS
->  
->  export CFLAGS_UBSAN
->  export CFLAGS_KASAN CFLAGS_KASAN_NOSANITIZE
-> @@ -682,6 +682,14 @@ KBUILD_CFLAGS += $(call cc-option,-Wno-pointer-sign,)
->  # change __FILE__ to the relative path from the srctree
->  KBUILD_CFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
->  
-> +# The arch Makefiles can override CC_FLAGS_FTRACE. We may also append it later.
-> +ifdef CONFIG_FTRACE
-> +CC_FLAGS_FTRACE := -finstrument-functions
-> +export CC_FLAGS_FTRACE
-> +KBUILD_CFLAGS	+= $(CC_FLAGS_FTRACE)
-> +PBL_CPPFLAGS   += -fno-instrument-functions
-> +endif
-> +
->  include-y +=scripts/Makefile.ubsan
->  include-$(CONFIG_KASAN)         += scripts/Makefile.kasan
->  
-> diff --git a/common/Kconfig b/common/Kconfig
-> index b8c3e34c0a58..2a35b43e2717 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -1592,6 +1592,21 @@ config ASAN
->  	  Enables ASAN (AddressSANitizer) - runtime memory debugger,
->  	  designed to find out-of-bounds accesses and use-after-free bugs.
->  
-> +config FTRACE
-> +	bool "Enable function tracing (Only for debugging!)
-missing closing quote here --------------------------------^
-which generated the following warning when building:
-common/Kconfig:1583:warning: multi-line strings not supported
-
-> +	depends on EXPERIMENTAL
-> +	help
-> +	  This is not Linux-like ftrace, but a poor man's substitute using
-> +	  GCC function instrumentation.
-> +
-> +config FTRACE_CALLCHAIN
-> +	string "Print execution trace of all function below"
-> +	depends on FTRACE && KALLSYMS
-> +	default ""
-> +	help
-> +	  All functions called directly or indirectly by the specified
-> +	  function will be logged to serial. Keep empty to disable
-> +
->  config COMPILE_TEST
->  	bool "compile-test drivers of other platforms"
->  	default n
-> diff --git a/include/ftrace.h b/include/ftrace.h
-> new file mode 100644
-> index 000000000000..68b46f1fa1d4
-> --- /dev/null
-> +++ b/include/ftrace.h
-> @@ -0,0 +1,18 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +
-> +#ifndef _FTRACE_H__
-> +#define _FTRACE_H__
-> +
-> +#ifdef CONFIG_FTRACE
-> +void tracing_on(void);
-> +void tracing_off(void);
-> +#else
-> +static inline void tracing_on(void)
-> +{
-> +}
-> +static inline void tracing_off(void)
-> +{
-> +}
-> +#endif
-> +
-> +#endif /* _FTRACE_H */
-> diff --git a/lib/Makefile b/lib/Makefile
-> index 3f6653d74e9a..7b86ad3383c3 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -73,6 +73,7 @@ obj-$(CONFIG_CRC_CCITT) += crc-ccitt.o
->  obj-$(CONFIG_CRC8)	+= crc8.o
->  obj-$(CONFIG_NLS)	+= nls_base.o
->  obj-$(CONFIG_FSL_QE_FIRMWARE) += fsl-qe-firmware.o
-> +obj-$(CONFIG_FTRACE)	+= ftrace.o
->  obj-$(CONFIG_UBSAN)	+= ubsan.o
->  
->  # GCC library routines
-> @@ -85,6 +86,9 @@ pbl-$(CONFIG_GENERIC_LIB_ASHLDI3) += ashldi3.o
->  
->  UBSAN_SANITIZE_ubsan.o := n
->  
-> +CFLAGS_REMOVE_ubsan.o = $(CC_FLAGS_FTRACE)
-> +CFLAGS_REMOVE_ftrace.o = $(CC_FLAGS_FTRACE)
-> +
->  libfdt_files = fdt.o fdt_ro.o fdt_wip.o fdt_rw.o fdt_sw.o fdt_strerror.o \
->  	                      fdt_empty_tree.o
->  $(foreach file, $(libfdt_files), \
-> diff --git a/lib/ftrace.c b/lib/ftrace.c
-> new file mode 100644
-> index 000000000000..1d0b36c10550
-> --- /dev/null
-> +++ b/lib/ftrace.c
-> @@ -0,0 +1,77 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +#include <common.h>
-> +#include <clock.h>
-> +#include <ftrace.h>
-> +#include <kallsyms.h>
-> +
-> +static int trace_enabled __section(".data");
-> +static volatile int trace_lock __section(".data");
-> +static int depth __section(".data");
-> +static const void *trigger __section(".data");
-> +
-> +void notrace tracing_on(void)
-> +{
-> +	if (trace_lock)
-> +		return;
-> +	trigger = NULL;
-> +	trace_enabled = 1;
-> +}
-> +
-> +void notrace tracing_off(void)
-> +{
-> +	if (trace_lock)
-> +		return;
-> +	trigger = NULL;
-> +	trace_enabled = 0;
-> +}
-> +
-> +void notrace __cyg_profile_func_enter(void *where, void *from)
-> +{
-> +	if (trace_lock)
-> +		return;
-> +
-> +	if (trace_enabled <= 0) {
-> +		if (where == trigger)
-> +			trace_enabled++;
-> +		else
-> +			return;
-> +	}
-> +
-> +	depth++;
-> +
-> +	trace_lock = true;
-> +
-> +	printf(" [<%08lx>] %*s(%pS) from [<%08lx>] (%pS)\n", (ulong) where,
-> +	       depth * 2, "", where, (ulong)from, from);
-> +
-> +	trace_lock = false;
-> +}
-> +
-> +void notrace __cyg_profile_func_exit(void *where, void *from)
-> +{
-> +	if (trace_lock || !trace_enabled)
-> +		return;
-> +
-> +	depth--;
-> +
-> +	if (where == trigger)
-> +		trace_enabled--;
-> +}
-> +
-> +static int init_trace(void)
-> +{
-> +	ulong _trigger;
-> +
-> +	trace_lock = true;
-> +
-> +	_trigger = kallsyms_lookup_name(CONFIG_FTRACE_CALLCHAIN);
-> +	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
-> +		_trigger |= 1;
-> +	trigger = (void *)_trigger;
-> +
-> +	trace_lock = false;
-> +
-> +	return 0;
-> +}
-> +pure_initcall(init_trace);
-> diff --git a/lib/kasan/Makefile b/lib/kasan/Makefile
-> index e3f4bb61f900..06fa906ff620 100644
-> --- a/lib/kasan/Makefile
-> +++ b/lib/kasan/Makefile
-> @@ -13,3 +13,8 @@ CFLAGS_generic_report.o := $(CC_FLAGS_KASAN_RUNTIME)
->  CFLAGS_generic.o := $(CC_FLAGS_KASAN_RUNTIME)
->  CFLAGS_report.o := $(CC_FLAGS_KASAN_RUNTIME)
->  CFLAGS_common.o := $(CC_FLAGS_KASAN_RUNTIME)
-> +
-> +CFLAGS_REMOVE_generic_report.o = $(CC_FLAGS_FTRACE)
-> +CFLAGS_REMOVE_generic.o = $(CC_FLAGS_FTRACE)
-> +CFLAGS_REMOVE_report.o = $(CC_FLAGS_FTRACE)
-> +CFLAGS_REMOVE_common.o = $(CC_FLAGS_FTRACE)
-> -- 
-> 2.30.2
-
-
-
+diff --git a/drivers/net/designware_rockchip.c b/drivers/net/designware_rockchip.c
+index da57ed171..dcf65c9ad 100644
+--- a/drivers/net/designware_rockchip.c
++++ b/drivers/net/designware_rockchip.c
+@@ -21,6 +21,7 @@ struct rk_gmac_ops {
+ 	void (*set_rmii_speed)(struct eqos *eqos, int speed);
+ 	void (*set_rgmii_speed)(struct eqos *eqos, int speed);
+ 	void (*integrated_phy_powerup)(struct eqos *eqos);
++	u32 regs[];
+ };
+ 
+ struct eqos_rk_gmac {
+@@ -174,6 +175,11 @@ static const struct rk_gmac_ops rk3568_ops = {
+ 	.set_to_rmii = rk3568_set_to_rmii,
+ 	.set_rmii_speed = rk3568_set_gmac_speed,
+ 	.set_rgmii_speed = rk3568_set_gmac_speed,
++	.regs = {
++		0xfe2a0000, /* gmac0 */
++		0xfe010000, /* gmac1 */
++		0x0, /* sentinel */
++	},
+ };
+ 
+ static int rk_gmac_powerup(struct eqos *eqos)
+@@ -228,7 +234,7 @@ static int eqos_init_rk_gmac(struct device_d *dev, struct eqos *eqos)
+ {
+ 	struct device_node *np = dev->device_node;
+ 	struct eqos_rk_gmac *priv = to_rk_gmac(eqos);
+-	int ret;
++	int i = 0, ret;
+ 	const char *strings;
+ 
+ 	priv->dev = dev;
+@@ -247,7 +253,15 @@ static int eqos_init_rk_gmac(struct device_d *dev, struct eqos *eqos)
+ 
+ 	priv->ops = device_get_match_data(dev);
+ 
+-	priv->bus_id = of_alias_get_id(np, "ethernet");
++	if (dev->num_resources > 0) {
++		while (priv->ops->regs[i]) {
++			if (priv->ops->regs[i] == dev->resource[0].start) {
++				priv->bus_id = i;
++				break;
++			}
++			i++;
++		}
++	}
+ 
+ 	priv->grf = syscon_regmap_lookup_by_phandle(np, "rockchip,grf");
+ 	if (IS_ERR(priv->grf)) {
+-- 
+2.30.2
 
 
 _______________________________________________
