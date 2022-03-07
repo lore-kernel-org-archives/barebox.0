@@ -1,53 +1,55 @@
-Delivery-date: Mon, 07 Mar 2022 18:03:44 +0100
+Delivery-date: Mon, 07 Mar 2022 18:03:55 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRGls-003fo7-Ic
-	for lore@lore.pengutronix.de; Mon, 07 Mar 2022 18:03:44 +0100
+	id 1nRGm3-003fpC-Mm
+	for lore@lore.pengutronix.de; Mon, 07 Mar 2022 18:03:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRGlr-0004ce-D3
-	for lore@pengutronix.de; Mon, 07 Mar 2022 18:03:44 +0100
+	id 1nRGm2-0004dw-J1
+	for lore@pengutronix.de; Mon, 07 Mar 2022 18:03:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=R7dvpUyiGTk0cezNceQUC0mQT2bQQ6zALaA3IgO47Tw=; b=F8irTTmtVQUEK+
-	TeDvNBlefAErXv3DfucQhi2CExwHtGcPHaziXMNqy7tjLPFF/d3+uFECCSu937f7VtmMnhT/iMUY+
-	MzXPiVeQ+HtIxxXnxUYB8H8qhPEScqrd3PdvmnsjMEO/Eg/XvlqSJQxlrmisg3z3sWq4pe20QadRm
-	FJ4S6XiooYCXs/cb+J9RnfB2MJOCzGcon8lKwMkBZ6ixTtfwf64TkhMPfu8R7aqWmdiBYRfrlliHI
-	utZwPBHy7cT8VBmLY6ilf0vlCeMrEePx51UtusVQPOftoe/boEC5l7bsnOHV0Vrsgc0dmFjpycq/U
-	BZ/kiby504lUCvcaD1dA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=gWJY3gReUgKhSMk0hcomUBZsemFlKGNN+nVZ5APtpLE=; b=ZxD9BCIkX8y7uf
+	/R3xPitANqCeQKsgRMuyGnH83gZwBEZ97/xyA01aC6peJVV5fbbhs45jy3A1PKGdw92CSb+juzSP4
+	qMRXV+TDBo1pt6XeP8RjeUEVs8ShkkZPfrhMjeF8DZAYIRUpVuAvgRUUIK0XzD+u6hDfDce3OG4Qh
+	KGHPV2BxAHlawpeXpcJ5yzcHn5Nzlei1N7dB0PSREByxrZS6Rr9aq/f3LrtmFalG0sXuZav9HIgmE
+	rcM35Uejd432ejHeF5YhVyBzoXXHGtCjK51oZvgq4R+1Yg/D9zchmd3TBr3bZky1ZnDBFEpnGCx7A
+	0/8sdUwMmuW9WnJa25Yg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nRGkc-000xNZ-LX; Mon, 07 Mar 2022 17:02:26 +0000
+	id 1nRGkf-000xOF-Dp; Mon, 07 Mar 2022 17:02:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nRGkO-000xJN-Cg
+ id 1nRGkO-000xJO-Cu
  for barebox@lists.infradead.org; Mon, 07 Mar 2022 17:02:13 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1nRGkN-0004Pv-4a; Mon, 07 Mar 2022 18:02:11 +0100
+ id 1nRGkN-0004Pw-64; Mon, 07 Mar 2022 18:02:11 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nRGkM-00GWP5-Lg; Mon, 07 Mar 2022 18:02:10 +0100
+ id 1nRGkM-00GWP7-M9; Mon, 07 Mar 2022 18:02:10 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  7 Mar 2022 18:02:09 +0100
-Message-Id: <20220307170210.3937726-1-a.fatoum@pengutronix.de>
+Date: Mon,  7 Mar 2022 18:02:10 +0100
+Message-Id: <20220307170210.3937726-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220307170210.3937726-1-a.fatoum@pengutronix.de>
+References: <20220307170210.3937726-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220307_090212_454423_70C85BAF 
-X-CRM114-Status: GOOD (  11.93  )
+X-CRM114-CacheID: sfid-20220307_090212_458956_C9EE2F60 
+X-CRM114-Status: GOOD (  10.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,63 +74,46 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH next 1/2] fixup! clk: stm32mp1: sync with Linux v5.17-rc1
+Subject: [PATCH next 2/2] fixup! clk: implement clk_hw_reparent
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-clk: stm32mp1: fix infinite recursion with composite clock
+Revert "clk: implement clk_hw_reparent"
 
-Linux clk_hw_reparent does some accounting, which seems to be not necessary
-for barebox. It does not do any hardware access and is distinct from
-clk_hw_set_parent. The faulty barebox implementation, however,
-configures a new parent leading to:
+The implementation is faulty. In Linux, the function does accounting,
+which seems not applicable to barebox and it does not do any hardware
+access or set parentage, unlike the barebox port. As a previous commit
+removed the sole use site of the helper to fix a bug, drop the helper
+altogether.
 
-  &rcc {
-    assigned-clocks = <&rcc ETHCK_K>;
-     assigned-clock-parents = <&rcc PLL4_P>;
-  };
+This reverts commit 55a41677e2be90bbcaaa93cc541ead71a1e632d6.
 
-to trigger an infinite recursion: ETHCK will have its parent set, then
-set the parent of its mux sibling, which in turn sets ETHCK and so on.
-
-Restore old working behavior.
-
-Fixes: 3045cc773a94 ("clk: stm32mp1: sync with Linux v5.17-rc1")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Please fixup
+Should result in an empty patch that can be skipped.
 ---
- drivers/clk/clk-stm32mp1.c | 17 +----------------
- 1 file changed, 1 insertion(+), 16 deletions(-)
+ include/linux/clk.h | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/clk/clk-stm32mp1.c b/drivers/clk/clk-stm32mp1.c
-index 3e0c15ee32b9..c4b03e9f6d74 100644
---- a/drivers/clk/clk-stm32mp1.c
-+++ b/drivers/clk/clk-stm32mp1.c
-@@ -704,22 +704,7 @@ static int clk_mmux_get_parent(struct clk_hw *hw)
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index ab96e36010c3..7fd835c35e51 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -241,14 +241,6 @@ int clk_hw_set_rate(struct clk_hw *hw, unsigned long rate);
+ int clk_set_parent(struct clk *clk, struct clk *parent);
+ int clk_hw_set_parent(struct clk_hw *hw, struct clk_hw *hwp);
  
- static int clk_mmux_set_parent(struct clk_hw *hw, u8 index)
- {
--	struct clk_mux *mux = to_clk_mux(hw);
--	struct stm32_clk_mmux *clk_mmux = to_clk_mmux(mux);
--	struct clk_hw *hwp;
--	int ret, n;
+-static inline void clk_hw_reparent(struct clk_hw *hw, struct clk_hw *new_parent)
+-{
+-	if (!hw)
+-		return;
 -
--	ret = clk_mux_ops.set_parent(hw, index);
--	if (ret)
--		return ret;
+-	clk_hw_set_parent(hw, new_parent);
+-}
 -
--	hwp = clk_hw_get_parent(hw);
--
--	for (n = 0; n < clk_mmux->mmux->nbr_clk; n++)
--		if (clk_mmux->mmux->hws[n] != hw)
--			clk_hw_reparent(clk_mmux->mmux->hws[n], hwp);
--
--	return 0;
-+	return clk_mux_ops.set_parent(hw, index);
- }
- 
- static const struct clk_ops clk_mmux_ops = {
+ /**
+  * clk_get_parent - get the parent clock source for this clock
+  * @clk: clock source
 -- 
 2.30.2
 
