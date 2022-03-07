@@ -1,16 +1,16 @@
-Delivery-date: Mon, 07 Mar 2022 08:55:49 +0100
+Delivery-date: Mon, 07 Mar 2022 08:57:37 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nR8Dd-003Ccr-6W
-	for lore@lore.pengutronix.de; Mon, 07 Mar 2022 08:55:49 +0100
+	id 1nR8FN-003ChC-BM
+	for lore@lore.pengutronix.de; Mon, 07 Mar 2022 08:57:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nR8Db-0004jP-Sd
-	for lore@pengutronix.de; Mon, 07 Mar 2022 08:55:48 +0100
+	id 1nR8FL-0004wb-T1
+	for lore@pengutronix.de; Mon, 07 Mar 2022 08:57:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,47 +18,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=nRJSTTiq/ORPF+shkNG976taB+VYyfl9BGuwgOnI8wo=; b=GPw2U3riPgMzYDru3yhypZIBto
-	Zu19QlAT15cdpJYN9bvk4FhjlDuy7eKY0JqCOIrEqHMarqCLOQLnyyD6Crz4y5PDRsGeTfUhR/NdM
-	tmKa+ZzSiGUOq0b0Mjv0LYnlbSPcr6Rp9m66nBL1rOLu1/AfR/+jSlD1xYTquqDvgeR7ir3fIbxv4
-	k+fYoijAntEI5FuaUvAX0vXuVihuL5Ze666LCkkwqCHqhToZi6wDJfGTAnZXnfXt66lwphuUzGXDa
-	YIMdgAozTXdZB7VZylpMl58dW2lVeDqhnC21rtJOtQrOdfW3o/ZjsnfMro0UkQHFOQfsEjjdEOs6N
-	y+orxlhg==;
+	bh=znonK6/qWuyKx0Ay+wC35SVjtUzgXEmDTPn2VDTkG9A=; b=mAB78HTQRwxt4PKAaq9W0unQ6D
+	qQ2ElPZcqpqscupv6Fp+kWshAFnhVLtEopzSOS4r9K5769AXfmsbZY/swt0xonhC2WB2zX+1yxm08
+	ETRVy2vSJV5t8T0SfrJmCqDLwws/8WkxV/mnPrZ5QZp3nWyiotzWQZkesPSRzQC6fp75gSz+M9Otl
+	Hn2ngofHgoMxhhH2uKPL/57LnGOeV6L43oSUrWxAqCCGLBnFFfYiRxKa92uSG3NZ0WzoArvrGPtxh
+	xkLZC31hAtDfknA+jVFWAlNk8V86grvjaKgFF/fEAGHL59jt0jtTaSZY47d5pNXmFgi32sCJjFqEJ
+	4GKYseFA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nR8C8-00GLNT-JT; Mon, 07 Mar 2022 07:54:16 +0000
+	id 1nR8EA-00GLyR-8l; Mon, 07 Mar 2022 07:56:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nR8C3-00GLLe-2g
- for barebox@lists.infradead.org; Mon, 07 Mar 2022 07:54:12 +0000
+ id 1nR8E5-00GLxW-7t
+ for barebox@lists.infradead.org; Mon, 07 Mar 2022 07:56:18 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nR8Bz-0004LB-Iw; Mon, 07 Mar 2022 08:54:07 +0100
+ id 1nR8E4-0004pR-26; Mon, 07 Mar 2022 08:56:16 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nR8By-0006ib-Gw; Mon, 07 Mar 2022 08:54:06 +0100
-Date: Mon, 7 Mar 2022 08:54:06 +0100
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org, Christian Melki <christian.melki@t2data.com>,
- Jules Maselbas <jmaselbas@kalray.eu>
-Message-ID: <20220307075406.GB405@pengutronix.de>
-References: <20220304092805.1213879-1-ahmad@a3f.at>
+ id 1nR8E3-0006r4-LD; Mon, 07 Mar 2022 08:56:15 +0100
+Date: Mon, 7 Mar 2022 08:56:15 +0100
+To: Michael Riesch <michael.riesch@wolfvision.net>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220307075615.GC405@pengutronix.de>
+References: <20220307071627.346527-1-michael.riesch@wolfvision.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220304092805.1213879-1-ahmad@a3f.at>
+In-Reply-To: <20220307071627.346527-1-michael.riesch@wolfvision.net>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 08:51:19 up 86 days, 16:36, 72 users,  load average: 0.24, 0.24, 0.20
+X-Uptime: 08:56:07 up 86 days, 16:41, 72 users,  load average: 0.30, 0.22, 0.19
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220306_235411_147063_00D0DE72 
-X-CRM114-Status: GOOD (  31.73  )
+X-CRM114-CacheID: sfid-20220306_235617_325565_1E4F69AA 
+X-CRM114-Status: GOOD (  29.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,130 +82,78 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] block: set S_IFBLK for block devices instead of S_IFCHR
+Subject: Re: [PATCH] net: designware: rockchip: improve support for multiple
+ gmac instances
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Mar 04, 2022 at 10:28:05AM +0100, Ahmad Fatoum wrote:
-> In barebox, block devices are a special case of character devices.
-> Nevertheless, differentiation can be useful to allow scripts iterating
-> over all block devices without accounting for naming, e.g.
+On Mon, Mar 07, 2022 at 08:16:27AM +0100, Michael Riesch wrote:
+> Do not rely on (board-specific) aliases to distinguish between multiple
+> (SoC-specific) GMAC instances. Instead, use the base address of the
+> controllers as is done in the Linux kernel.
 > 
->   for dev in /dev/*; do
-> 	test -b $dev && echo $dev: blockdevice
->   done
-> 
-> Add the necessary support. This will break scripts that assume
-> test -c blockdevice to be true, but that's a quite improbable check.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
 > ---
->  commands/memtester/memtester.c | 2 +-
->  common/block.c                 | 8 ++++++++
->  fs/devfs.c                     | 7 ++++++-
->  fs/legacy.c                    | 1 +
->  include/block.h                | 2 ++
->  5 files changed, 18 insertions(+), 2 deletions(-)
+>  drivers/net/designware_rockchip.c | 18 ++++++++++++++++--
+>  1 file changed, 16 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/commands/memtester/memtester.c b/commands/memtester/memtester.c
-> index 130dc97c8334..f4adbfc855cb 100644
-> --- a/commands/memtester/memtester.c
-> +++ b/commands/memtester/memtester.c
-> @@ -113,7 +113,7 @@ static int do_memtester(int argc, char **argv) {
->                              strerror(errno));
->                      return COMMAND_ERROR_USAGE;
->                  } else {
-> -                    if (!S_ISCHR(statbuf.st_mode)) {
-> +                    if (!S_ISCHR(statbuf.st_mode) && !S_ISBLK(statbuf.st_mode)) {
->                          printf("can not mmap non-char device %s\n",
->                                  optarg);
->                          return COMMAND_ERROR_USAGE;
-> diff --git a/common/block.c b/common/block.c
-> index 1d386edcfd49..a48016d8dcbd 100644
-> --- a/common/block.c
-> +++ b/common/block.c
-> @@ -361,6 +361,14 @@ static struct cdev_operations block_ops = {
->  	.discard_range = block_op_discard_range,
+> diff --git a/drivers/net/designware_rockchip.c b/drivers/net/designware_rockchip.c
+> index da57ed171..dcf65c9ad 100644
+> --- a/drivers/net/designware_rockchip.c
+> +++ b/drivers/net/designware_rockchip.c
+> @@ -21,6 +21,7 @@ struct rk_gmac_ops {
+>  	void (*set_rmii_speed)(struct eqos *eqos, int speed);
+>  	void (*set_rgmii_speed)(struct eqos *eqos, int speed);
+>  	void (*integrated_phy_powerup)(struct eqos *eqos);
+> +	u32 regs[];
 >  };
 >  
-> +struct block_device *cdev_get_block_device(struct cdev *cdev)
-> +{
-> +	if (cdev->ops != &block_ops)
-> +		return NULL;
-> +
-> +	return container_of(cdev, struct block_device, cdev);
-> +}
-> +
->  int blockdevice_register(struct block_device *blk)
+>  struct eqos_rk_gmac {
+> @@ -174,6 +175,11 @@ static const struct rk_gmac_ops rk3568_ops = {
+>  	.set_to_rmii = rk3568_set_to_rmii,
+>  	.set_rmii_speed = rk3568_set_gmac_speed,
+>  	.set_rgmii_speed = rk3568_set_gmac_speed,
+> +	.regs = {
+> +		0xfe2a0000, /* gmac0 */
+> +		0xfe010000, /* gmac1 */
+> +		0x0, /* sentinel */
+> +	},
+>  };
+>  
+>  static int rk_gmac_powerup(struct eqos *eqos)
+> @@ -228,7 +234,7 @@ static int eqos_init_rk_gmac(struct device_d *dev, struct eqos *eqos)
 >  {
->  	loff_t size = (loff_t)blk->num_blocks * BLOCKSIZE(blk);
-> diff --git a/fs/devfs.c b/fs/devfs.c
-> index deb244feeab6..49cd48f6d84e 100644
-> --- a/fs/devfs.c
-> +++ b/fs/devfs.c
-> @@ -29,6 +29,7 @@
->  #include <linux/mtd/mtd.h>
->  #include <linux/mtd/mtd-abi.h>
->  #include <partition.h>
-> +#include <block.h>
+>  	struct device_node *np = dev->device_node;
+>  	struct eqos_rk_gmac *priv = to_rk_gmac(eqos);
+> -	int ret;
+> +	int i = 0, ret;
+>  	const char *strings;
 >  
->  struct devfs_inode {
->  	struct inode inode;
-> @@ -231,6 +232,7 @@ static struct inode *devfs_get_inode(struct super_block *sb, const struct inode
->  	default:
->  		return NULL;
->  	case S_IFCHR:
-> +	case S_IFBLK:
->  		inode->i_op = &devfs_file_inode_operations;
->  		inode->i_fop = &devfs_file_operations;
->  		break;
-> @@ -250,12 +252,15 @@ static struct dentry *devfs_lookup(struct inode *dir, struct dentry *dentry,
->  	struct devfs_inode *dinode;
->  	struct inode *inode;
->  	struct cdev *cdev;
-> +	umode_t mode;
+>  	priv->dev = dev;
+> @@ -247,7 +253,15 @@ static int eqos_init_rk_gmac(struct device_d *dev, struct eqos *eqos)
 >  
->  	cdev = cdev_by_name(dentry->name);
->  	if (!cdev)
->  		return ERR_PTR(-ENOENT);
+>  	priv->ops = device_get_match_data(dev);
 >  
-> -	inode = devfs_get_inode(dir->i_sb, dir, S_IFCHR);
-> +	mode = cdev_get_block_device(cdev) ? S_IFBLK : S_IFCHR;
-> +
-> +	inode = devfs_get_inode(dir->i_sb, dir, mode);
->  	if (!inode)
->  		return ERR_PTR(-ENOMEM);
+> -	priv->bus_id = of_alias_get_id(np, "ethernet");
+> +	if (dev->num_resources > 0) {
+> +		while (priv->ops->regs[i]) {
+> +			if (priv->ops->regs[i] == dev->resource[0].start) {
+> +				priv->bus_id = i;
+> +				break;
+> +			}
+> +			i++;
+> +		}
+> +	}
 >  
-> diff --git a/fs/legacy.c b/fs/legacy.c
-> index fc6a18f408ed..779f54629440 100644
-> --- a/fs/legacy.c
-> +++ b/fs/legacy.c
-> @@ -288,6 +288,7 @@ static struct inode *legacy_get_inode(struct super_block *sb, const struct inode
->  		return NULL;
->  	case S_IFREG:
->  	case S_IFCHR:
-> +	case S_IFBLK:
->  		inode->i_op = &legacy_file_inode_operations;
->  		break;
->  	case S_IFDIR:
-> diff --git a/include/block.h b/include/block.h
-> index d3a154bf73c0..06c15a71b58a 100644
-> --- a/include/block.h
-> +++ b/include/block.h
-> @@ -49,4 +49,6 @@ static inline int block_flush(struct block_device *blk)
->  	return cdev_flush(&blk->cdev);
->  }
->  
-> +struct block_device *cdev_get_block_device(struct cdev *cdev);
-> +
->  #endif /* __BLOCK_H */
+>  	priv->grf = syscon_regmap_lookup_by_phandle(np, "rockchip,grf");
+>  	if (IS_ERR(priv->grf)) {
 > -- 
-> 2.34.1
+> 2.30.2
 > 
 > 
 > _______________________________________________
