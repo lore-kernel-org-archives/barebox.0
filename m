@@ -1,55 +1,55 @@
-Delivery-date: Mon, 07 Mar 2022 18:03:55 +0100
+Delivery-date: Mon, 07 Mar 2022 18:07:20 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRGm3-003fpC-Mm
-	for lore@lore.pengutronix.de; Mon, 07 Mar 2022 18:03:55 +0100
+	id 1nRGpM-003fyA-6X
+	for lore@lore.pengutronix.de; Mon, 07 Mar 2022 18:07:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRGm2-0004dw-J1
-	for lore@pengutronix.de; Mon, 07 Mar 2022 18:03:55 +0100
+	id 1nRGpK-0005CX-WC
+	for lore@pengutronix.de; Mon, 07 Mar 2022 18:07:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:From:References:Cc:To:
+	Subject:MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=gWJY3gReUgKhSMk0hcomUBZsemFlKGNN+nVZ5APtpLE=; b=ZxD9BCIkX8y7uf
-	/R3xPitANqCeQKsgRMuyGnH83gZwBEZ97/xyA01aC6peJVV5fbbhs45jy3A1PKGdw92CSb+juzSP4
-	qMRXV+TDBo1pt6XeP8RjeUEVs8ShkkZPfrhMjeF8DZAYIRUpVuAvgRUUIK0XzD+u6hDfDce3OG4Qh
-	KGHPV2BxAHlawpeXpcJ5yzcHn5Nzlei1N7dB0PSREByxrZS6Rr9aq/f3LrtmFalG0sXuZav9HIgmE
-	rcM35Uejd432ejHeF5YhVyBzoXXHGtCjK51oZvgq4R+1Yg/D9zchmd3TBr3bZky1ZnDBFEpnGCx7A
-	0/8sdUwMmuW9WnJa25Yg==;
+	List-Owner; bh=IFLdSIeVP/UPh2cUOJCXDHQMnmLIHpeiuTohEAqrunw=; b=HdlPsA0fyBaes4
+	OmXgHREWnuXMGX1EB3OaK4M/u6AqYuB278eHOUTS9vk5vqhRQMPCMoZmpIgDKvliCJj8FJ/4dqNAf
+	wnjWipEY5hUJyEDxyJzm5WSP/0Gmp0wOdenD/EiNlF6JQE5OAZkVnMHaT3EYRE3t4lKCmjEkyYayI
+	0UfAj0c/O5eN0k6OTOtuO2ate+hPNSJLc5OkUdgxPsLCtw0SSDQlymQmK7QIHazdTIYo95P1YUl1N
+	JrkLFEqdXLlpJK0wzYbsS0RIdLFFJKh27pH7gh3hGaLIQghEL9F5/UQNuO/d82YfVwb9v95mQ1byR
+	VNVhXpCNK2kDcuLtYdnQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nRGkf-000xOF-Dp; Mon, 07 Mar 2022 17:02:29 +0000
+	id 1nRGoC-000yBG-4i; Mon, 07 Mar 2022 17:06:08 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nRGkO-000xJO-Cu
- for barebox@lists.infradead.org; Mon, 07 Mar 2022 17:02:13 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1nRGkN-0004Pw-64; Mon, 07 Mar 2022 18:02:11 +0100
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>)
- id 1nRGkM-00GWP7-M9; Mon, 07 Mar 2022 18:02:10 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  7 Mar 2022 18:02:10 +0100
-Message-Id: <20220307170210.3937726-2-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220307170210.3937726-1-a.fatoum@pengutronix.de>
-References: <20220307170210.3937726-1-a.fatoum@pengutronix.de>
+ id 1nRGo7-000yAp-2k
+ for barebox@lists.infradead.org; Mon, 07 Mar 2022 17:06:04 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1nRGo5-000531-SF; Mon, 07 Mar 2022 18:06:01 +0100
+Message-ID: <5c85b663-8848-b84d-c687-bc467c6c1fa0@pengutronix.de>
+Date: Mon, 7 Mar 2022 18:06:01 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Content-Language: en-US
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: barebox@lists.infradead.org
+References: <20220305222013.1902586-1-a.fatoum@pengutronix.de>
+ <20220306224901.GC18417@tellis.lin.mbt.kalray.eu>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220306224901.GC18417@tellis.lin.mbt.kalray.eu>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220307_090212_458956_C9EE2F60 
-X-CRM114-Status: GOOD (  10.57  )
+X-CRM114-CacheID: sfid-20220307_090603_155861_79C4C294 
+X-CRM114-Status: GOOD (  17.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,52 +71,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH next 2/2] fixup! clk: implement clk_hw_reparent
+Subject: Re: [PATCH] common: add printf debugging automation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Revert "clk: implement clk_hw_reparent"
+Hello Jules,
 
-The implementation is faulty. In Linux, the function does accounting,
-which seems not applicable to barebox and it does not do any hardware
-access or set parentage, unlike the barebox port. As a previous commit
-removed the sole use site of the helper to fix a bug, drop the helper
-altogether.
+On 06.03.22 23:49, Jules Maselbas wrote:
+> Hi Ahmad,
+> 
+> On Sat, Mar 05, 2022 at 11:20:13PM +0100, Ahmad Fatoum wrote:
+>> This allows automating pinpointing of breakage outside PBL. For example
+>> if barebox is stuck during startup:
+>>
+>>   - Turn on CONFIG_DEBUG_LL and CONFIG_DEBUG_INITCALLS
+>>   - Note last $initcall executed
+> By $initcall are you talking about the function name or about the
+> initcall address during startup ?
 
-This reverts commit 55a41677e2be90bbcaaa93cc541ead71a1e632d6.
+Function name, that's why KALLSYMS is required. It's not strictly necessary
+though and code could just check if the first character is a digit and accept
+an address in that case. I will do this for v2.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Should result in an empty patch that can be skipped.
----
- include/linux/clk.h | 8 --------
- 1 file changed, 8 deletions(-)
+>> diff --git a/common/Kconfig b/common/Kconfig
+>> index b8c3e34c0a58..2a35b43e2717 100644
+>> --- a/common/Kconfig
+>> +++ b/common/Kconfig
+>> @@ -1592,6 +1592,21 @@ config ASAN
+>>  	  Enables ASAN (AddressSANitizer) - runtime memory debugger,
+>>  	  designed to find out-of-bounds accesses and use-after-free bugs.
+>>  
+>> +config FTRACE
+>> +	bool "Enable function tracing (Only for debugging!)
+> missing closing quote here --------------------------------^
+> which generated the following warning when building:
+> common/Kconfig:1583:warning: multi-line strings not supported
 
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index ab96e36010c3..7fd835c35e51 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -241,14 +241,6 @@ int clk_hw_set_rate(struct clk_hw *hw, unsigned long rate);
- int clk_set_parent(struct clk *clk, struct clk *parent);
- int clk_hw_set_parent(struct clk_hw *hw, struct clk_hw *hwp);
- 
--static inline void clk_hw_reparent(struct clk_hw *hw, struct clk_hw *new_parent)
--{
--	if (!hw)
--		return;
--
--	clk_hw_set_parent(hw, new_parent);
--}
--
- /**
-  * clk_get_parent - get the parent clock source for this clock
-  * @clk: clock source
+Thanks, will fix for v2.
+
+Cheers,
+Ahmad
+
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
