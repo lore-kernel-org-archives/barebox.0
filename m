@@ -1,54 +1,52 @@
-Delivery-date: Tue, 08 Mar 2022 13:22:04 +0100
+Delivery-date: Tue, 08 Mar 2022 13:22:05 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRYqq-004dMR-Cy
-	for lore@lore.pengutronix.de; Tue, 08 Mar 2022 13:22:04 +0100
+	id 1nRYqr-004dMr-KC
+	for lore@lore.pengutronix.de; Tue, 08 Mar 2022 13:22:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRYqp-0002Wa-2F
-	for lore@pengutronix.de; Tue, 08 Mar 2022 13:22:03 +0100
+	id 1nRYqq-0002Wp-4I
+	for lore@pengutronix.de; Tue, 08 Mar 2022 13:22:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=PYqkbSC3Tw+nnMe2ZgHTBdxLs50VuM1UrQcUEIMvFD0=; b=JYBjg350Xsj8It
-	VYBrhqn8CBB8AbwqOwaikmz80j+fvuugM5Qqyn9zTIfK0sWQIv6ev0ZHD99ruXpzJMRJnWYRAiboL
-	7gvVDTfGqGV97uhPN9F6J3R5Z+IGrJYeVEcq013w4QQSwHnCXHjJUMB+CwTg7rTErx9aXzsuncCPW
-	HG90SmiruiEOBa2pUhlrN6jKgXfija5bOmzvzS6ajkRUFAAF+At9fcK61ICxwZxUCiL1X/8A++uww
-	Psz4U/m3sinQDUP1h23InNRl+2AP8baEKiFqybx3AFa3LR8cx6krUcXiLNbdsCy5M7pkjxTq4LBZY
-	Hv19fZBu46NNfMaNzhyg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=X7mHjnCnwl8+PU17hCXDF1AUDZMod3p3BUhpCpGcpDU=; b=LkIuNwX0ZjUZUO
+	l9n1Y2tZKSpFoa3MHWyKDGVFyUL3G2uM63T7RCaz1O4CDG+UjQs36rq8QfcLcK6EYBjRqvQVyN6Fu
+	Rk0fiZw6CJQC8weGSVvrVUkm/F5Hj9OAuI3wF9P09EyUreRK5uXaiFbHa6Iz0lJcSIW4xMAS2VtUu
+	HZUEe1QNvvBzdqMZ7CdwijnCFVZX9oNdIdHfMu7H60nEAdjGBonhbhCpZ7ZLzI18ReRNIYTpp6I8P
+	TYw2u3OcKiTaS8qFwvo9JAxM5u6JzhiChz/qSgUoMcatrumuWlpTuikjJ6QUcM9u3nelKz0m2LiEy
+	nFHGhzaSbeEcapRfvXAQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nRYpY-004KOP-GA; Tue, 08 Mar 2022 12:20:44 +0000
+	id 1nRYpd-004KQH-Rm; Tue, 08 Mar 2022 12:20:49 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nRYpS-004KL1-JY
+ id 1nRYpS-004KL0-JX
  for barebox@lists.infradead.org; Tue, 08 Mar 2022 12:20:40 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nRYpR-00027W-1i; Tue, 08 Mar 2022 13:20:37 +0100
+ id 1nRYpR-00027V-0f; Tue, 08 Mar 2022 13:20:37 +0100
 Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <sha@pengutronix.de>)
- id 1nRYpQ-001YFN-Cp; Tue, 08 Mar 2022 13:20:36 +0100
+ id 1nRYpQ-001YEk-Bl; Tue, 08 Mar 2022 13:20:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  8 Mar 2022 13:20:23 +0100
-Message-Id: <20220308122028.3857376-3-s.hauer@pengutronix.de>
+Date: Tue,  8 Mar 2022 13:20:21 +0100
+Message-Id: <20220308122028.3857376-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220308122028.3857376-1-s.hauer@pengutronix.de>
-References: <20220308122028.3857376-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220308_042038_727391_98E582DB 
-X-CRM114-Status: GOOD (  10.03  )
+X-CRM114-CacheID: sfid-20220308_042038_735553_FC6480B2 
+X-CRM114-Status: GOOD (  14.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,43 +71,41 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/7] clk: imx6: fix axi_sels
+Subject: [PATCH 0/7] ARM: i.MX6: clk updates
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Adaption of Kernel commit:
+This branch fixes some odd issues in the i.MX6 clock tree. The i.MX6Q
+and i.MX6D SoC variants need a workaround for the PFDs and it turned
+out we have that workaround twice: once in the clk driver and then again
+in architecture code. When deep probe is enabled the order in which they
+run may be changed. The difference with both workarounds is that the one
+in the architecture code leaves the PFD clocks enabled and the one in
+the clock driver leaves them disabled. That is still not a problem, but
+our clock driver lacks the hdmi_isfr clock, so that the i.MX hdmi driver
+works on a dummy clock instead. This works when the architecture
+workaround runs after the one in the clk driver, but when deep probe
+is enabled and the order changes then the hdmi driver finds its clock
+disabled and doesn't work.
 
-| commit a08b9bc586a7810cdebbc316d5cbaed56a2a04a9
-| Author:     Anson Huang <b20788@freescale.com>
-| Commit:     Shawn Guo <shawn.guo@linaro.org>
-| CommitDate: Mon Jun 3 13:47:12 2013 +0800
-|
-| ARM: imx: clk-imx6q: AXI clock select index is incorrect
-|
-| The AXI clock mux should be as below:
-|
-|  00: periph;
-|  01: pll2_pfd2_396m;
-|  10: periph;
-|  11: pll3_pfd1_540m;
+The issues are resolved in this series: The hdmi_isfr clock is added to
+the clock tree and one of the duplicated workarounds is removed. There
+are some other patches I came along while investigating why hdmi doesn't
+work with deep probe enabled.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/clk/imx/clk-imx6.c | 1 +
- 1 file changed, 1 insertion(+)
+Sascha Hauer (7):
+  clk: imx6: Add hdmi_isfr clk
+  clk: imx6: fix axi_sels
+  clk: imx6: Fix periph_clk2_sel and periph2_clk2_sel clocks
+  clk: imx6: emi_sel clock muxing
+  clk: imx6: fix cko1_sels
+  clk: imx6: do pfd workaround unconditionally
+  ARM: i.MX: Remove duplicate PFD workaround
 
-diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
-index aa5876d21b..8cc4c2a08f 100644
---- a/drivers/clk/imx/clk-imx6.c
-+++ b/drivers/clk/imx/clk-imx6.c
-@@ -106,6 +106,7 @@ static const char *periph2_sels[] = {
- static const char *axi_sels[] = {
- 	"periph",
- 	"pll2_pfd2_396m",
-+	"periph",
- 	"pll3_pfd1_540m",
- };
- 
+ arch/arm/mach-imx/imx6.c   | 44 --------------------------------------
+ drivers/clk/imx/clk-imx6.c | 37 ++++++++++++++++++++++++--------
+ 2 files changed, 28 insertions(+), 53 deletions(-)
+
 -- 
 2.30.2
 
