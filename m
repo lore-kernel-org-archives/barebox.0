@@ -1,44 +1,44 @@
-Delivery-date: Tue, 08 Mar 2022 17:26:34 +0100
+Delivery-date: Tue, 08 Mar 2022 17:27:11 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRcfS-004qGh-DM
-	for lore@lore.pengutronix.de; Tue, 08 Mar 2022 17:26:34 +0100
+	id 1nRcg3-004qHs-In
+	for lore@lore.pengutronix.de; Tue, 08 Mar 2022 17:27:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRcfO-0000X5-8D
-	for lore@pengutronix.de; Tue, 08 Mar 2022 17:26:34 +0100
+	id 1nRcg0-0000h6-CG
+	for lore@pengutronix.de; Tue, 08 Mar 2022 17:27:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=PM8wPTnTwRiLWZj0KOwQUR3yfw/S73c5y91p8kh4gLE=; b=k7XvpVTH5vlIg8
-	oXK7gbgLE/StHUvRjSQb7YvoEfuQZDLhJLAkXpwOfA/a7cy904j9A7EduN75dzQYczVRc8z4fUQ8l
-	M/1YmaBMENLObinQuQUASCRKPDH1vnIAe04uVUHN6ZwPDwvsw2gdAOW+IRJkSzKQxjIbkUs+T5ERe
-	U4gU6nQXZDA2i1YcpjtIh4xHIQXb4x+VhBamcRMxt8/+uy3uVgEKu4+nwMP6tqB5JD63yVr0UORgA
-	7yP+TgTc/SpUJoCZE/0SjhOq2kE8uewqEm7+7tXIv4ND9yOOLFgD2WvKBgCMYrqWB0Bm3WCAm37gK
-	QivdQvugcBw4N+X1jn8Q==;
+	List-Owner; bh=6IzlB0itIqGU1KCH+64dQdDx9w7+ZDNs/d1KU651S34=; b=Igr+VUvdCmR38h
+	dOfpzE7Wd+yrgGn9+wu04fmxx3QIzNAgn2eZ0UC1hByq3ijdApfH60GzjpeY98wIhmDsdn9vX33r7
+	0JTZ8X3zy4/JoZlv5IKbqZxCXKo3o2qGiz/Ffcmfrn1PLZhcVSuGPSB8Eg0H1ApZJO2DEx5YWfBw9
+	OjskRJIHHQ13Nm9HPQuH8qCl0lluBLkoUE/AY8Rwwr+bhiX7ao+T2Fg2cxzXiPiWUpEzSsUoOgZ3a
+	MNtiztx01gs7HZH85JbUcRUXDpUhIhCT6e8TaSxs04p6Uncl3yAwYD0DglQkrraZHFZLI9wr2l5/W
+	LcAgZgwY0s3rjyYMzGLg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nRcdO-005Bqt-Id; Tue, 08 Mar 2022 16:24:28 +0000
+	id 1nRcdx-005C2x-0u; Tue, 08 Mar 2022 16:25:03 +0000
 Received: from mail-he1eur02on0626.outbound.protection.outlook.com
  ([2a01:111:f400:fe05::626]
  helo=EUR02-HE1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nRcNr-0057hl-QC
- for barebox@lists.infradead.org; Tue, 08 Mar 2022 16:08:25 +0000
+ id 1nRcNu-0057hl-8m
+ for barebox@lists.infradead.org; Tue, 08 Mar 2022 16:08:27 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cZb0K7KL9+w20QtU35tAXJar7sOW5MVdc9Q+mLQg9MbkrgrMeFw9ZhzYTr1v4eBoM3qKbzbPPXtqqJ90h+SgxSzy6bsqko7bT/aIrohp43nmvJckuzd71jOxEAV8YMWR6Hh83pZiNLFBQwphMdJ2Qw2azmnbXY4a3zZLI+lKt0vTnaXS/eXx7kdzwp4jU8hHVMpob+jjuI8G6xmlx4HSJ5xP725e6UDY0LDjfpG9bUrvQpB4F0F7VkdPlEQwVD3TGTWXI5ji15duYuwnXKaBATSBjtuSaXJIZZs+8i/5alasbseuxLc2/D8+l0A9E/R93oEId0Q/O9vkXWezFLVmdQ==
+ b=U7oIsA7c9FySQKn/OWYx4ANJ0AzkX47p3tpwUffccFTcwWyBk4ZbVxh5yeV7XJdaTRxSED3TdFuH8fheexztEWUUO2CrAwENsp1L/M7mKvP42+lvCFrxU806M9C0X1RFJjx/vA9TCGseOllhfeZho536ezRou3GMWcoPEZCLPqoliAaJ752Iyr0xbPPM7HDkaCVPN3HwQ4WiGDEvB8R5wdMGBDIwAx2UYM+3Ml6tMFYGPbrsV8vfjQ70riJBdC87xjonpO32ILDQVILm7Yw/iGIkIP6qWiZwN9OFSLCgqtvvw11F+GnE/Z0WLs738Q+bJ829xbDjZNSGrZ6EVyx5Ug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lLEKHdT/atfT2PPFSRsW9MQ1USSqWRnTbIObcnlm1T4=;
- b=E5eBT9M2lNzJeSdSVMIXSfGaB6Rwj979Yuwxa71IM5pOAhav9sP5Nwdft9KIVg+VHNvJydINvbJDlDG8hrrqjEcQCSBWWU6fav9/YUj+oRYMSfXeRvPUSSaglXfDZG1eYpvzIqclHFh1vlFwOjfg/Ti3Ey8BBx2iduqGik9Pp99JTICBCgIx6CLTUTmjXRK/TjsAXqMiO/MY4fpDTPD/wDuxjU5e71UsKRjKkadJetIO/gRU2aDqE1tALwaSBUjbcEZpZqVGMeFO0GbA0muewB9DFZEIJIWyubexQi37bFky55+W83iyRwA/PF+apt/HLBen62o6G4wusvj8rVhyGQ==
+ bh=x/9Wyl4QuaOC4G+feBzI4M77QjUazRSsBcjmHb4z7wU=;
+ b=gn9uxzm55BOLwqokzSRPz6DFsty7vOHQ+LJsrnwYanSpc9yHpqku0GTM2nmj7PlUVibskb++boIxmhRFpiGU+8s43ltEA+r4JtWUJWkQQNvDhPTb3dccvcoZh/PzOuSJw9mLVmw+7yFcAzErTiL42VMPU0kFp/xDx/byoR80gjQ17SUTrrDB2itVu36/5mfInAcI2Gsho79sFC8031E2ZwkIb1ZnTh/LnPo+c1UrS6wPCYdjIcYAihyoBaTeKK8anLYH6AqHSqL7rVWqViSsyUl7gBu+WIHtVfm5hBSXhMu7m+4hfEEm7zIJsBlWTl7daIBVeoneeYUPfZhktBXivw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
  dkim=pass header.d=westermo.com; arc=none
@@ -46,24 +46,24 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=beijerelectronicsab.onmicrosoft.com;
  s=selector1-beijerelectronicsab-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lLEKHdT/atfT2PPFSRsW9MQ1USSqWRnTbIObcnlm1T4=;
- b=EfQinQucq1dg0oQFEYJDDbExhS1sZyegYraWmkvYjC0ALsjNUfqr4cNALpdoeYMjY6fHXoCgaxuDhI9C6gF2UlMyv9WYMHxKh4cz87p72D1wcSD7G8wKKDGjIst9UyT40YJLGLSfRyrJLwRzq0HKPpPLz5d/plFwI3WQISdwAVc=
+ bh=x/9Wyl4QuaOC4G+feBzI4M77QjUazRSsBcjmHb4z7wU=;
+ b=zorUdr3nROZ0UjCq2x4r554MCS+mAwesGklR6c5Zf47TptpFX9+qdilVeLnWTBcTn6rj/TM83PmE+L/YnrWcfiAD8r53uXBb5694tLdJ+k9OJfBhZrrmyCypbzPvvmgs6pr9ZCtsN3bbRb4PzefqWB4GWHkV9YI+XkPe/B0RV30=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=westermo.com;
 Received: from HE1P192MB0251.EURP192.PROD.OUTLOOK.COM (2603:10a6:3:105::10) by
  AM5P192MB0036.EURP192.PROD.OUTLOOK.COM (2603:10a6:203:83::13) with
  Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5038.16; Tue, 8 Mar 2022 16:08:11 +0000
+ 15.20.5038.16; Tue, 8 Mar 2022 16:08:12 +0000
 Received: from HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
  ([fe80::4da6:577b:c682:de36]) by HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
  ([fe80::4da6:577b:c682:de36%3]) with mapi id 15.20.5038.027; Tue, 8 Mar 2022
- 16:08:11 +0000
+ 16:08:12 +0000
 From: Joacim Zetterling <joacim.zetterling@westermo.com>
 To: barebox@lists.infradead.org
 Cc: a.fatoum@pengutronix.de
-Date: Tue,  8 Mar 2022 17:08:00 +0100
-Message-Id: <20220308160801.782206-3-joacim.zetterling@westermo.com>
+Date: Tue,  8 Mar 2022 17:08:01 +0100
+Message-Id: <20220308160801.782206-4-joacim.zetterling@westermo.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220308160801.782206-1-joacim.zetterling@westermo.com>
 References: <20220308160801.782206-1-joacim.zetterling@westermo.com>
@@ -73,55 +73,55 @@ X-ClientProxiedBy: GV3P280CA0091.SWEP280.PROD.OUTLOOK.COM
  (2603:10a6:3:105::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e0b31308-e5e0-48b9-0854-08da011dd7e0
+X-MS-Office365-Filtering-Correlation-Id: 8897c08b-e9f9-412d-6472-08da011dd83f
 X-MS-TrafficTypeDiagnostic: AM5P192MB0036:EE_
-X-Microsoft-Antispam-PRVS: <AM5P192MB00364528B3CCC4DF07EF76CF9C099@AM5P192MB0036.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <AM5P192MB003670D75B1502D7D3B671659C099@AM5P192MB0036.EURP192.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7OlXRgoz0gd2sTM19umtMXwB7wRCkG5lI5C1pQoAZIwnJ+F5iTsvplU/3I8VoI2jcP8z7uYAu68Fsu803Zj9Heup06r+t1sV8WaCWlXJPxcp7KGsDfcC4t7KdINkUGHDrY2ITbWkljz+c+IO5IjXbMT/gpK3EFYAd0YxPFBVL1T9ipUIYzUG+04z3RrmewgoP8Yos1qltbQhhM+rBvi4P2OUZ7BtTGLdvmvy3Ec3auTvHLMdpI5cX6PgbINkg4hy3YL2VOOV4kaNeyGNNxN5/jeLR/2Jf3YTWlW+YF9kpHyhpQwTpBP/5MK1sJbzapkM/S7xQBMQKCcynisQMUZWYH/I/CmWjcmY6Yu5myql18bqPYiQxYTyiS3Zpu3iUUJn94YNfEr1q+gxC/VQX57fmw0/MrnZHzDAX6dKADALOwQJJ8HljMwBI4Wq9hO4svDZqJjfHY2LDP55+ZpIumu0PRsZpPeeui+Kkusnvr3hFoNJGrFIDsWQsGlECiJvDFOT79yI4qulBHPatg0/wT8FtfVBQfz0HRY1ZoOV/WirfeC9hsdMPwLyMnlUAMEx/reCbbYR3nXokvM57cJe6bTLweoX7YEB0YxytPtM1W3tX6ADaF9B1PZ/orWot6tjpc8NKgWRzekKvlfmgJco8EWJoo6l6pfYPb6zlnCkPBRCLrLbnVXeQlAL2ZopwR6HIFNj06GMXj0GmPMU8xSk0kVCtQ==
+X-Microsoft-Antispam-Message-Info: VjjoQU8uIv5xrXPLLT7r1y+LuLqlQAzK2DyRm94qchlL20l9UVqfXY5G+5wB6/sJQvtq9WcE1hFBUDXjzq50YJEJ3WoyAyq53JRxxxmJVFoivu7pQ7BETUYSxsLVlxen9OkBeUefMOEtIPspsmRVjGfP9sC81Nr6ocke3+y28EseMoTO8zYLEUbCdQIAkl6FPEl8gODAcq/gMQVduT0eT3BfHk9yLGzZ5/WjIp/xBmz4mosv1PZIQBhIgbxrEe8skZBpbcxtPW5KavXeM37IQsRQ30BYjOxZE0jZOATOllAGQ+dX/1Cg7tAqOZc92WsT8bEyMlFT8/fq9HcbqsHBt5lYTFi3SbsChs2oJ8M/IIBXn2CAUa6/e5HjCWOXxxhyJjCgwo2g78GlK96Uy6laz/Dm7Lygp9FlC+DPbXxvyAIMKlLlhzI9YRHY63a2z7wPVavidsngtGEUPdGuUg5xE+cOVFhX32r82R7+EmVcSYNbiLC65ygv6se+oEKsGceKrI7ne7XLXnlAMmcC8Ve8KKdmqm3O3cOXm6SQunXNPb3yrrf1/cE15RQtWVFkQ0bJGJlCaR8eHgJMGCGcY9QsAbI15Ms6OapNjz1arQ+uZHquLWYDbkJmjXJvdzvhlFxVlURIQJt6ESAKIS3zs0i1hiW55tNYFIRN5BhxjCGJXcc/KNgMYqfCO23NZH+8gv8FeDVgdkNU8XHWWVoVVvHLJJ6lVsZB4fOuTaIas82AzBY=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:HE1P192MB0251.EURP192.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(38100700002)(38350700002)(6916009)(36756003)(83380400001)(6666004)(8936002)(44832011)(86362001)(316002)(6486002)(508600001)(2616005)(1076003)(66476007)(2906002)(186003)(26005)(6506007)(66946007)(5660300002)(66556008)(4326008)(6512007)(52116002)(8676002)(36916002);
+ SFS:(13230001)(4636009)(366004)(38100700002)(38350700002)(6916009)(36756003)(6666004)(8936002)(44832011)(86362001)(316002)(6486002)(508600001)(2616005)(1076003)(66476007)(2906002)(186003)(26005)(6506007)(66946007)(5660300002)(66556008)(4326008)(6512007)(52116002)(8676002)(36916002)(32563001);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sRSOlJfDkFd29E7Bf+jHk7lEt+l/A+nfCAJkFrH1PvjeNklLOt+m1sncRz57?=
- =?us-ascii?Q?GX20Rz0WyovNXVYiyH7F91fdLsHTK2tqTdn6+Ol16P3Np9uBQjVc2Pbw1AD1?=
- =?us-ascii?Q?EV7O2NOOCYjUS4Px6Ix1nWVjVy2oRKyH2XeiaqEo/ydHEBRk0fO4CaApeFZ1?=
- =?us-ascii?Q?UiMMd2mjOHgmwkmBeDQ87FPn78+xfn1wxYtdRdQWKuETeNqjV3FmtLpt7VwU?=
- =?us-ascii?Q?of/0VlD/S+BsMJUAy2qoQnF9oPWPBkqVpTxgrmi+1ehJBZIEMsMxV/jPfaVo?=
- =?us-ascii?Q?c+h5/RPksHkUWAAlGW40mZg40p/rjdItDNRiAhoNyD9NFiMd49LnxkkVgHcf?=
- =?us-ascii?Q?pRsH1WZq9XZjma/f8NSeeMltbTRvXnoP18OR/v2vBcLt+v9Lwwahd1KeHx+B?=
- =?us-ascii?Q?MVvMBx6eQoM7wYaaZISVaD2ITxu1bYQc8J9AKZqTx1psyCXRM/dUZO65afgf?=
- =?us-ascii?Q?WClzlexUvL7082nru+hPDlcubI6+54TQrElMRMszOgXYGL1XahUogWVFOntt?=
- =?us-ascii?Q?mf0tu9j6BJXe4e2+2F+XCwyF5Y/goKBsfhEC0Qk/IBhYhHhR1qEitoyb/cCw?=
- =?us-ascii?Q?e4x6Ejea3m+BLNgOZc0VfQUSCd9VLwYnuSk3YBsfYqbDS3BzBlo8y5AJwU07?=
- =?us-ascii?Q?3sNxHpxXvigOwKjRC15AD90GJJxz3xzJlzV8to5t/FFAaXkkZX1ceduKm2TS?=
- =?us-ascii?Q?r1YJbFp2rwaHdBsadckl2vj+hxqt7y7qPshhsY8n6SIJ9pILpClVt3hm8qdR?=
- =?us-ascii?Q?UwTWf/KvA1lDpv7qsLtZnnc+vIYsgt58B0osVoZ2YYj55zm3nNiqTQoR0kHB?=
- =?us-ascii?Q?uCU+3GmRY3dpkaNy5nblKXn3Erj16ipV9fbwWaJqTblvoX/dteNux1thj8VS?=
- =?us-ascii?Q?V5hRt5gFaK6SuAOqovMKGzuCSl0K1i0+9jOhn85hHxUUDdR5o/45GW4gxKoT?=
- =?us-ascii?Q?kDK8ygcP2et4VZosTnTV6EtQnLTkCvl9Hx94KnAnmUf132OHTimeIZmbjVEP?=
- =?us-ascii?Q?oC1IZ7bkRbtu0bKqRL/O6D1d033xULZOrGfdqgyWFG7u2vyLafL27SvH3Uyc?=
- =?us-ascii?Q?qaZpEQecmdz2vBB9FmTDBWtWmTdLat5tRE/wRU22zxDvaKNLARE1O9kTJWdw?=
- =?us-ascii?Q?c5lUtT/TsBZT/+YkzXXNykO4AFyzsUB9E4f+igASaFckr4fAFrM9WyUJTDRm?=
- =?us-ascii?Q?EjUAEXsRDawNDG94TDMpjj2ZLv6Co5L65TZQoRTl3Y3ou1o1jyKUmUwQqjlb?=
- =?us-ascii?Q?gddGPQKYODMSu5a27SayBHnz3Kf5Qx9rl3Cp3p7zcQr5GnrFlyB6JlfGGWtp?=
- =?us-ascii?Q?E9WqAHhK0TupgTZ60b0K2TcLHz/003fFFwWl7w94ObtGmDmcT8fZjsliEUCi?=
- =?us-ascii?Q?7SwSKkPt6YdMGHRlXDc7+E0CAcdaNT8sde1D1Aj9LkmUZeNZCVqNAkxAuLH1?=
- =?us-ascii?Q?uPSAsBM4161ftZkB9MAmaOWkzPA9rMrWCflANobbNOt9rklnKcKT5dDi5wiL?=
- =?us-ascii?Q?pTbffz3k2ZVKDlupjn8V2dx63IwDWWylMlUyQd9VWUefeHEJM4NzwrYSgkgh?=
- =?us-ascii?Q?FetBL1FZO+qrCiAbJB1N9JOl2GXR4l/XAY++a9Rpxns5F3hgVA80VypPB3fp?=
- =?us-ascii?Q?a/ULRq+WTjU+E4UAyIhlMUo=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CC6b2xYCSFY5P+3vp6ltglyNEs5fAuhgpzq3/lcvLu2VYtUkyWqPcv4m+NUd?=
+ =?us-ascii?Q?Qej3NDwYi4tH/c4Lv/VeLt8nLDwEiZ+pW2okn+/EoyLvJcgut7xEPgPlRCxU?=
+ =?us-ascii?Q?qh+hAqOqbpcrXfJri1Y3kjMrv0Cp4AA05zxfhhsCYzDNYzKdoodg3VFjmLHQ?=
+ =?us-ascii?Q?geaAuJ+GOfzdz895csPNYU4amDNYwkQrZDoSUGLTrJT63d5PH3st9mIX7eLD?=
+ =?us-ascii?Q?Wqbj8oV6bFWjfctJQ66jFuEmDF9UADtjw/+4BuH/VKVCfDsJbZdsid3NQAYK?=
+ =?us-ascii?Q?MPwv43Jby4RR8XFasD4J3eSZ5dWSMK3cR7hc/vUMzSmPQwqsR/Z0SPIRLbIM?=
+ =?us-ascii?Q?aR1B9yE2k4IbYpGL5axnexTPEPy9x0HAysE+UKfRBgaykazOn4vGr2uDOg50?=
+ =?us-ascii?Q?WhDS/vT+KHwyqihCzTo25pu7+rT0daJ4OiqZ72DUWIEhy5NNFGTauISQTEAy?=
+ =?us-ascii?Q?7ELmGUrWIKNY5CFScFdHRAt+tWDDBBOgt5UdPfkpbbkWR+8spDlZ06FhBFmz?=
+ =?us-ascii?Q?RAtI6pBkxTk/DE9S5ZBknA671YaJBqXFq0g2Fa58uosCBDk4xFMeUcL6ThtW?=
+ =?us-ascii?Q?pAzIIIvhRmh1ypML47DIPMcDfeuyytMAVsf5Ugj9xIF1jCMRXvsZgkv0hZpM?=
+ =?us-ascii?Q?Mm/0HKSt+n3p7dP2SE3xens182BR4lDXhkgCgabpjzf5gpvVzaoCDuqxFsA1?=
+ =?us-ascii?Q?2hoLjmnwPSRk3nevefqlZsbM/sOhjTyTIXZXb8xCpbEREDjGsCoJPazrkitU?=
+ =?us-ascii?Q?711VXvufiGoVH3h1bCS0DrUoLQKlWDdVp0Hdh2bTNWWzQkglLLNAkHG+FS6Y?=
+ =?us-ascii?Q?KepLKAzMOj6zM8POW8apYIu3OaY5ZB9jRTjGPqItMH62i+TCJEuhtBBeGNMV?=
+ =?us-ascii?Q?yp6HbI8fiGmmR+ssh+nEdsO4SZwGOoiQPDNxMWBz4PANPgpCY37vV0VyNjw7?=
+ =?us-ascii?Q?PoTyxdb/L4zUAjtsEUjMc2QvVvxGEyFxebA8jVcsFC/dZh+9y0xARsmv6cPx?=
+ =?us-ascii?Q?Nfki0bQRQvUaG53gXtLOU7WoW0s8tiKyKlCHT1lq5mE7/zbRfJPisDwTZ9+v?=
+ =?us-ascii?Q?oXNlqND67YQiB/2jaypvoHxzga8MIqgFSloCw3Vb/SqEOo36FiG/EGoOMuE5?=
+ =?us-ascii?Q?zWM4nFb3WYj4zyGAQycmp7vXB2Q4CH3pSmrEyVHaRm7OrI+o+CgubkahrADJ?=
+ =?us-ascii?Q?R8C/+jBlopgPRk6VotoameEibC8kDT50fF+H2G1wtOYxK+8CnJolmHy7Jis0?=
+ =?us-ascii?Q?u9xnKBdFhVVNcclgeUmxfC+mSc+hTHqT10Z0pDKRq8ix8u5kV8E7bTiZYVlb?=
+ =?us-ascii?Q?0wSxzV2VBxPS8E/H0VzLSmGI9nvrJY2+O8kCUliwbNFzWqW+er6Le3oY6roz?=
+ =?us-ascii?Q?kZdJJ4aOzEjFbhakjsgH/Dol/oPrtTFzkqfiTkfxKx942nYExuzZqDyhlpH2?=
+ =?us-ascii?Q?1LVoMFCys7h5HOuE1welQhx1JhlNh/0Am+nTK8G06rcRrqYW3oYEqNotruRh?=
+ =?us-ascii?Q?DwjV15qaChkyErk/rmqKwwCBtJUKTqfAHdhLL32nwI5ZZU/Pzzrl+H1wF9gE?=
+ =?us-ascii?Q?X7Km/r9s6vYuiIxOJ7CxPkWhBpne9Bd4bWiIg0JL5nK/qt7qlQRduebnExLv?=
+ =?us-ascii?Q?E5mY7nvX9KeJNEk8dVQoN24=3D?=
 X-OriginatorOrg: westermo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0b31308-e5e0-48b9-0854-08da011dd7e0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8897c08b-e9f9-412d-6472-08da011dd83f
 X-MS-Exchange-CrossTenant-AuthSource: HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2022 16:08:11.5684 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2022 16:08:12.1933 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 59QU6gB+jT2z18pkYLn74+MT5nPfoZcSTVBnAbm6Ge+/XZO0UeQzW3uGtcRfhO8sknb0yGiTd2us4fI8lVFTcw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: r2wp7AEb+yk84Td23ylWtrIJM5N4uOoo9Ee8/jejkXE9DWhz1WN7QUmDLHLLs+e6CWJfLLv+wW5gGKNi6gVHgg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5P192MB0036
 X-MS-Exchange-CrossPremises-AuthSource: HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossPremises-AuthAs: Internal
@@ -137,8 +137,8 @@ X-MS-Exchange-CrossPremises-SCL: 1
 X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
 X-OrganizationHeadersPreserved: AM5P192MB0036.EURP192.PROD.OUTLOOK.COM
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220308_080823_886497_76986B05 
-X-CRM114-Status: GOOD (  19.40  )
+X-CRM114-CacheID: sfid-20220308_080826_362667_73D1A05A 
+X-CRM114-Status: GOOD (  14.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -158,197 +158,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/3] scripts: arch: imx: Add QSPI boot support to IMX build
- image script
+Subject: [PATCH 3/3] arch: arm: imx: spi: Add QSPI boot option to the
+ IMX8MN-EVK
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This functionality extend the IMX image build script with a support
-for generating QSPI boot images.
+Add lowlevel board functionality to be able to boot from
+a QSPI device.
 
-A QSPI boot image need device configuration parameters located at
-an offset of 0x400 in the IVT section. The configuration parameters
-are stored in a 512 byte bin file which will be included in the
-final boot image. The boot image parameters comes from the board
-flash header imxcfg file.
-
-The QSPI configuration parameters are described in the reference
-manual for the specific target.
+Also added configuration parameters for a QSPI device to be
+included in a final QSPI boot image.
+All configuration for a QSPI boot image are controlled within
+the board flash header configuration file.
 
 Signed-off-by: Joacim Zetterling <joacim.zetterling@westermo.com>
 ---
- arch/arm/mach-imx/include/mach/imx-header.h |  2 +
- scripts/imx/imx-image.c                     | 25 ++++++++
- scripts/imx/imx.c                           | 67 ++++++++++++++++++++-
- 3 files changed, 93 insertions(+), 1 deletion(-)
+ .../nxp-imx8mn-evk/bb-cfg-param-imx8mn-evk.bin    | Bin 0 -> 512 bytes
+ .../nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg |   5 +++++
+ arch/arm/boards/nxp-imx8mn-evk/lowlevel.c         |   3 +++
+ 3 files changed, 8 insertions(+)
+ create mode 100644 arch/arm/boards/nxp-imx8mn-evk/bb-cfg-param-imx8mn-evk.bin
 
-diff --git a/arch/arm/mach-imx/include/mach/imx-header.h b/arch/arm/mach-imx/include/mach/imx-header.h
-index 8e968e6efba3..a58deb8d864e 100644
---- a/arch/arm/mach-imx/include/mach/imx-header.h
-+++ b/arch/arm/mach-imx/include/mach/imx-header.h
-@@ -118,6 +118,8 @@ struct config_data {
- 	char *signed_hdmi_firmware_file;
- 	int encrypt_image;
- 	size_t dek_size;
-+	uint32_t bb_cfg_ofs;
-+	char *bb_cfg_file;
- };
- 
- #define MAX_RECORDS_DCD_V2 1024
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 439912a805dc..b8ae63ad9400 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -951,6 +951,31 @@ int main(int argc, char *argv[])
- 			exit(1);
- 		}
- 
-+		/*
-+		* The boot ROM expects a 512-byte configuration parameters area for
-+		* some devices (like the FlexSPI NOR flash) to be present an defined
-+		* offset in the image ivt section (0x400 for the FlexSPI NOR).
-+		*/
-+		if (data.bb_cfg_file) {
-+			size_t bb_cfg_file_size = 512;
-+			char *bb_cfg;
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/bb-cfg-param-imx8mn-evk.bin b/arch/arm/boards/nxp-imx8mn-evk/bb-cfg-param-imx8mn-evk.bin
+new file mode 100644
+index 0000000000000000000000000000000000000000..b39e85b8442f27660eb8d797233cdcc02759bc0e
+GIT binary patch
+literal 512
+zcmZ>Bc5`B2U<_jb0cK_}MJmC_$b_s#0GUIG&CMdg!C}CnLP*`HJb@5k1j&O50t!*3
+E0ni%)6aWAK
+
+literal 0
+HcmV?d00001
+
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg b/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
+index 27a2138e4322..232ce5f59bdf 100644
+--- a/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
++++ b/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
+@@ -5,3 +5,8 @@ soc imx8mn
+ loadaddr 0x912000
+ max_load_size 0x3f000
+ ivtofs 0x0
 +
-+			bb_cfg = calloc(512, sizeof(char));
-+			if (!bb_cfg)
-+				exit(1);
-+
-+			bb_cfg = read_file(data.bb_cfg_file, &bb_cfg_file_size);
-+
-+			if (lseek(outfd, data.bb_cfg_ofs, SEEK_SET) < 0) {
-+				perror("lseek");
-+				exit(1);
-+			}
-+
-+			xwrite(outfd, bb_cfg, bb_cfg_file_size);
-+
-+			free(bb_cfg);
-+		}
-+
- 		if (lseek(outfd, data.header_gap, SEEK_SET) < 0) {
- 			perror("lseek");
- 			exit(1);
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index 87560ad27de1..a242e6d76a47 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -215,6 +215,16 @@ static int do_dcdofs_error(struct config_data *data, int argc, char *argv[])
- 	return -EINVAL;
- }
- 
-+static int do_header_gap(struct config_data *data, int argc, char *argv[])
-+{
-+	if (argc < 2)
-+		return -EINVAL;
-+
-+	data->header_gap = strtoul(argv[1], NULL, 0);
-+
-+	return 0;
-+}
-+
- struct soc_type {
- 	char *name;
- 	int header_version;
-@@ -223,6 +233,7 @@ struct soc_type {
- 	uint32_t first_opcode;
- };
- 
-+#define SZ_4K	(4 * 1024)
- #define SZ_32K	(32 * 1024)
- 
- static struct soc_type socs[] = {
-@@ -580,7 +591,6 @@ do_signed_hdmi_firmware(struct config_data *data, int argc, char *argv[])
- 	const char *file;
- 	int len;
- 
--
- 	if (argc != 2) {
- 		fprintf(stderr, "usage: signed_hdmi_firmware <file>\n");
- 		return -EINVAL;
-@@ -609,6 +619,52 @@ do_signed_hdmi_firmware(struct config_data *data, int argc, char *argv[])
- 	return 0;
- }
- 
-+static int do_bb_cfg_ofs(struct config_data *data, int argc, char *argv[])
-+{
-+	if (argc < 2)
-+		return -EINVAL;
-+
-+	data->bb_cfg_ofs = strtoul(argv[1], NULL, 0);
-+
-+	return 0;
-+}
-+
-+static int do_bb_cfg_file(struct config_data *data, int argc, char *argv[])
-+{
-+	const char *file;
-+	int len;
-+
-+	if (argc != 2) {
-+		fprintf(stderr, "usage: bb_cfg_file <file>\n");
-+		return -EINVAL;
-+	}
-+
-+	if ((data->cpu_type != IMX_CPU_IMX8MM) && 
-+		(data->cpu_type != IMX_CPU_IMX8MN) && 
-+		(data->cpu_type != IMX_CPU_IMX8MP) &&
-+		(data->cpu_type != IMX_CPU_IMX8MQ)) {
-+		fprintf(stderr,
-+			"Warning: The configuration param command is "
-+			"only supported i.MX8 SoCs\n");
-+		return 0;
-+	}
-+
-+	file = argv[1];
-+
-+	if (*file == '"')
-+		file++;
-+
-+	data->bb_cfg_file = strdup(file);
-+	if (!data->bb_cfg_file)
-+		return -ENOMEM;
-+
-+	len = strlen(data->bb_cfg_file);
-+	if (data->bb_cfg_file[len - 1] == '"')
-+		data->bb_cfg_file[len - 1] = 0;
-+
-+	return 0;
-+}
-+
- struct command cmds[] = {
- 	{
- 		.name = "wm",
-@@ -634,6 +690,9 @@ struct command cmds[] = {
- 	}, {
- 		.name = "dcdofs",
- 		.parse = do_dcdofs_error,
-+	}, {
-+		.name = "header_gap",
-+		.parse = do_header_gap,
- 	}, {
- 		.name = "soc",
- 		.parse = do_soc,
-@@ -667,6 +726,12 @@ struct command cmds[] = {
- 	}, {
- 		.name = "signed_hdmi_firmware",
- 		.parse = do_signed_hdmi_firmware,
-+	}, {
-+		.name = "bb_cfg_ofs",
-+		.parse = do_bb_cfg_ofs,
-+	}, {
-+		.name = "bb_cfg_file",
-+		.parse = do_bb_cfg_file,
- 	},
- };
- 
++# Uncomment the following for QSPI boot
++# header_gap 0x1000
++# bb_cfg_ofs 0x400
++# bb_cfg_file "arch/arm/boards/nxp-imx8mn-evk/bb-cfg-param-imx8mn-evk.bin"
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
+index de53213ebc77..c8a43e48c085 100644
+--- a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
+@@ -170,6 +170,9 @@ static void start_atf(void)
+ 	case BOOTSOURCE_MMC:
+ 		imx8mn_esdhc_load_image(instance, false);
+ 		break;
++	case BOOTSOURCE_SPI:
++		imx8mn_qspi_start_image(0, false);
++		break;
+ 	default:
+ 		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
+ 		hang();
 -- 
 2.25.1
 
