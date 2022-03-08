@@ -1,44 +1,44 @@
-Delivery-date: Tue, 08 Mar 2022 17:23:20 +0100
+Delivery-date: Tue, 08 Mar 2022 17:26:34 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRccJ-004qBc-Ue
-	for lore@lore.pengutronix.de; Tue, 08 Mar 2022 17:23:20 +0100
+	id 1nRcfS-004qGh-DM
+	for lore@lore.pengutronix.de; Tue, 08 Mar 2022 17:26:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRccG-0008OX-B6
-	for lore@pengutronix.de; Tue, 08 Mar 2022 17:23:19 +0100
+	id 1nRcfO-0000X5-8D
+	for lore@pengutronix.de; Tue, 08 Mar 2022 17:26:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ZQ/d0aJ+uT7I5kBy2WrtHGk0UNm+92rplN9bLJnOTsI=; b=xM0o/b6abCvp8s
-	FbN41Ugxo4Fran7GkwF86MBJHIoxb2ggGoUpcWVudCq4ivDMelNKNxnOgs5L44ElPL3eNYcuAP1LU
-	E5CwrB74OH2lAExEPJCUVs0ui1hKvd7VC7E1huZEAwmlX/MbOn1DnDUTdPdTIBQMcr9sbnqoF9YJn
-	wYH7ZcsA7GzhVzeV8X3XpWDRMb9/2j7UdIIic1xJ2PpaF0SCQhcd8n56dhQmn+QKIuofMoQqVBaXp
-	Ll0b3VLjlMyZEYG4XDd4TMuwjDlT8D4ZyMtL57Hx49d2gph7SQpnXSNFnOHWIC8Hmswljxwjf/RCW
-	3FJ432wd3kbucXnc/9DQ==;
+	List-Owner; bh=PM8wPTnTwRiLWZj0KOwQUR3yfw/S73c5y91p8kh4gLE=; b=k7XvpVTH5vlIg8
+	oXK7gbgLE/StHUvRjSQb7YvoEfuQZDLhJLAkXpwOfA/a7cy904j9A7EduN75dzQYczVRc8z4fUQ8l
+	M/1YmaBMENLObinQuQUASCRKPDH1vnIAe04uVUHN6ZwPDwvsw2gdAOW+IRJkSzKQxjIbkUs+T5ERe
+	U4gU6nQXZDA2i1YcpjtIh4xHIQXb4x+VhBamcRMxt8/+uy3uVgEKu4+nwMP6tqB5JD63yVr0UORgA
+	7yP+TgTc/SpUJoCZE/0SjhOq2kE8uewqEm7+7tXIv4ND9yOOLFgD2WvKBgCMYrqWB0Bm3WCAm37gK
+	QivdQvugcBw4N+X1jn8Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nRcaB-005AzB-6i; Tue, 08 Mar 2022 16:21:08 +0000
+	id 1nRcdO-005Bqt-Id; Tue, 08 Mar 2022 16:24:28 +0000
 Received: from mail-he1eur02on0626.outbound.protection.outlook.com
  ([2a01:111:f400:fe05::626]
  helo=EUR02-HE1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nRcNp-0057hl-Kk
- for barebox@lists.infradead.org; Tue, 08 Mar 2022 16:08:23 +0000
+ id 1nRcNr-0057hl-QC
+ for barebox@lists.infradead.org; Tue, 08 Mar 2022 16:08:25 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EOa4h9Ylea6UA9tduJGa/FixcD8ua6KMMjy2b8C2NPXQ3SW/cYq520uFa0iOhZYGhqv3/6VbMA5EOgBAAY+TPL8Bsfu7DJJL8tm/HaJay/gOB7xj3p5ffwYDYmHp/a7LA//tC5NqWkpnY0jKYkI4UabV7TJ/TWSRx9WXeUD99BF3wuJI8Jp8X/6ORYB1jW9DgKbwIZXSMjOqJQeg3Tb/0PH+xRPfrhVq7ZMVpg8JFkq4R5haAm9ck+gnu4ANPGX587p/Ql6B5eCMH043jfDpYnsYBO3c0L3DuENwvxTTgq8KQf+p0SGH7hI7/ZTy3gjMTYS4w4vQK0EQqvHaKELeZw==
+ b=cZb0K7KL9+w20QtU35tAXJar7sOW5MVdc9Q+mLQg9MbkrgrMeFw9ZhzYTr1v4eBoM3qKbzbPPXtqqJ90h+SgxSzy6bsqko7bT/aIrohp43nmvJckuzd71jOxEAV8YMWR6Hh83pZiNLFBQwphMdJ2Qw2azmnbXY4a3zZLI+lKt0vTnaXS/eXx7kdzwp4jU8hHVMpob+jjuI8G6xmlx4HSJ5xP725e6UDY0LDjfpG9bUrvQpB4F0F7VkdPlEQwVD3TGTWXI5ji15duYuwnXKaBATSBjtuSaXJIZZs+8i/5alasbseuxLc2/D8+l0A9E/R93oEId0Q/O9vkXWezFLVmdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iC93l0IpZSDPNJODk7WL4t/hg5kq5uhxiilH80QuKsg=;
- b=METzez1TzkfKaoGe9MnatvJX7qmDBoUv2WU2zpHmK57COAy0k0voyLhyrb69lP8HE4nrtxhLwXvdfDVgfbpdozG22muzz4vWIOp7yEAyTnUccTr3hJr20ebD7drDfueyxXzIMuTumkDp3v2mL/iKvB8WTX1kpD7z+854mEyEj75zpK8GD5JwAQ8qkMObafDsmvfuZHc26aZrhZCiqfT/ta3riOckej59eJF8UOXvrDof9MVqBRuV2AokU26slY1XNYeblTxqLfYlO2vzC64zIUhoPXyI0BRkWA2X0d1V+ZYlWc9Xp6tCRtIgYnE7DHJHSgVm0i2rkyrKMVwabncohQ==
+ bh=lLEKHdT/atfT2PPFSRsW9MQ1USSqWRnTbIObcnlm1T4=;
+ b=E5eBT9M2lNzJeSdSVMIXSfGaB6Rwj979Yuwxa71IM5pOAhav9sP5Nwdft9KIVg+VHNvJydINvbJDlDG8hrrqjEcQCSBWWU6fav9/YUj+oRYMSfXeRvPUSSaglXfDZG1eYpvzIqclHFh1vlFwOjfg/Ti3Ey8BBx2iduqGik9Pp99JTICBCgIx6CLTUTmjXRK/TjsAXqMiO/MY4fpDTPD/wDuxjU5e71UsKRjKkadJetIO/gRU2aDqE1tALwaSBUjbcEZpZqVGMeFO0GbA0muewB9DFZEIJIWyubexQi37bFky55+W83iyRwA/PF+apt/HLBen62o6G4wusvj8rVhyGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
  dkim=pass header.d=westermo.com; arc=none
@@ -46,8 +46,8 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=beijerelectronicsab.onmicrosoft.com;
  s=selector1-beijerelectronicsab-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iC93l0IpZSDPNJODk7WL4t/hg5kq5uhxiilH80QuKsg=;
- b=tJWZrTIjaQebTHnAIQ1vAu6hVp4YsPBapvvAECWyI7l7IjtXlBAaGs3auYINru7295lrlK6Guae7pXD3S23C67vCwwpqCGYVZsEZOY+5p7iLgENvOakE7sKQBL5zRrF7UEFnY7az5yrobyK9Kfd1pS2LPuJ8DDq6HSRTnh1OgDc=
+ bh=lLEKHdT/atfT2PPFSRsW9MQ1USSqWRnTbIObcnlm1T4=;
+ b=EfQinQucq1dg0oQFEYJDDbExhS1sZyegYraWmkvYjC0ALsjNUfqr4cNALpdoeYMjY6fHXoCgaxuDhI9C6gF2UlMyv9WYMHxKh4cz87p72D1wcSD7G8wKKDGjIst9UyT40YJLGLSfRyrJLwRzq0HKPpPLz5d/plFwI3WQISdwAVc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=westermo.com;
 Received: from HE1P192MB0251.EURP192.PROD.OUTLOOK.COM (2603:10a6:3:105::10) by
@@ -62,8 +62,8 @@ Received: from HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
 From: Joacim Zetterling <joacim.zetterling@westermo.com>
 To: barebox@lists.infradead.org
 Cc: a.fatoum@pengutronix.de
-Date: Tue,  8 Mar 2022 17:07:59 +0100
-Message-Id: <20220308160801.782206-2-joacim.zetterling@westermo.com>
+Date: Tue,  8 Mar 2022 17:08:00 +0100
+Message-Id: <20220308160801.782206-3-joacim.zetterling@westermo.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220308160801.782206-1-joacim.zetterling@westermo.com>
 References: <20220308160801.782206-1-joacim.zetterling@westermo.com>
@@ -73,55 +73,55 @@ X-ClientProxiedBy: GV3P280CA0091.SWEP280.PROD.OUTLOOK.COM
  (2603:10a6:3:105::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2c8e6a9f-56ba-4988-0e7d-08da011dd783
+X-MS-Office365-Filtering-Correlation-Id: e0b31308-e5e0-48b9-0854-08da011dd7e0
 X-MS-TrafficTypeDiagnostic: AM5P192MB0036:EE_
-X-Microsoft-Antispam-PRVS: <AM5P192MB0036FC6E99C08826E5D77FF99C099@AM5P192MB0036.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <AM5P192MB00364528B3CCC4DF07EF76CF9C099@AM5P192MB0036.EURP192.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: t8VmKx0zmOTds46EDZmBG3ocfGymenPDatvmsjAX26RKP8janUtvhOJ/Q55woEMGn1JhIyvS6iI2PAHQxQcJUUy7tXpIwhsTFDaQVlY2vqutSEmtIrVWAtFSLpxuZaq1l0GHW/HSMvPiDMlS33dMJNyPt9X0E4JzLTBxnLQQupAzXImqj+2HqveO5q5btNRt1wIpj/gHPvVFDXmQ2sW5OF7JSN6+FO4dbFrWAbwKt5SzRcKi3B9e2J30mV4E1b6RbB2Pkv3YJakddho9jWJJ3gG/IKtGcdHJKqHFYUoCZgMydxjcwoiuBMNzrs4J1hdGgwywG+1KO3Hi70vC2mq/6ghfQJ7Z33H+7UK6rz1Wruk3+fZKwRkF2hTS3j7HkRU2gFRTJZ/HdalRn+6kKPidoWyEbZ4e7wMImTwafIFk7nGrQEX1jf5zCABrq+xneACtufQ+dydjhNZa8Tsz2IW5IChz5jgfp79uz1inqraVFQu6DqrGVD8x39D+yKYFL3T4EcApI1UCre3+ssgx8M3Tbe/k17T1HTTkLAjIdCLF2d+iRUf1+z8VWLcyVaOGgAfTQyrTQFpr9xoTXh4cQ2KETv2yxUbFwX2IZNIQV5uiuh0pOgCwLVvBuGf8W0qH/873hP/Mf5/FzH9ziQNFM/Xp9U12TfwZ1dVraHMTnFacGyjjYfIHt24U9++W29oX332sTpkL6UJp/b7nsNvrzuhhpg==
+X-Microsoft-Antispam-Message-Info: 7OlXRgoz0gd2sTM19umtMXwB7wRCkG5lI5C1pQoAZIwnJ+F5iTsvplU/3I8VoI2jcP8z7uYAu68Fsu803Zj9Heup06r+t1sV8WaCWlXJPxcp7KGsDfcC4t7KdINkUGHDrY2ITbWkljz+c+IO5IjXbMT/gpK3EFYAd0YxPFBVL1T9ipUIYzUG+04z3RrmewgoP8Yos1qltbQhhM+rBvi4P2OUZ7BtTGLdvmvy3Ec3auTvHLMdpI5cX6PgbINkg4hy3YL2VOOV4kaNeyGNNxN5/jeLR/2Jf3YTWlW+YF9kpHyhpQwTpBP/5MK1sJbzapkM/S7xQBMQKCcynisQMUZWYH/I/CmWjcmY6Yu5myql18bqPYiQxYTyiS3Zpu3iUUJn94YNfEr1q+gxC/VQX57fmw0/MrnZHzDAX6dKADALOwQJJ8HljMwBI4Wq9hO4svDZqJjfHY2LDP55+ZpIumu0PRsZpPeeui+Kkusnvr3hFoNJGrFIDsWQsGlECiJvDFOT79yI4qulBHPatg0/wT8FtfVBQfz0HRY1ZoOV/WirfeC9hsdMPwLyMnlUAMEx/reCbbYR3nXokvM57cJe6bTLweoX7YEB0YxytPtM1W3tX6ADaF9B1PZ/orWot6tjpc8NKgWRzekKvlfmgJco8EWJoo6l6pfYPb6zlnCkPBRCLrLbnVXeQlAL2ZopwR6HIFNj06GMXj0GmPMU8xSk0kVCtQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:HE1P192MB0251.EURP192.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
  SFS:(13230001)(4636009)(366004)(38100700002)(38350700002)(6916009)(36756003)(83380400001)(6666004)(8936002)(44832011)(86362001)(316002)(6486002)(508600001)(2616005)(1076003)(66476007)(2906002)(186003)(26005)(6506007)(66946007)(5660300002)(66556008)(4326008)(6512007)(52116002)(8676002)(36916002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+G4MTiMBtA1I63zwYXT5rE4Rq/DoO8Ey9iXkorKigMArTB7Y7oNKTFMcaq6I?=
- =?us-ascii?Q?6+Yvoi/EGGPn8uIy5wJPYxlmcMPppszHweamupQhe4zpuG8Vr5YXa5koreiR?=
- =?us-ascii?Q?aCQ5IS6Uz9iEsbUW8E0eESJZg/ERd0yvT7sxijSjtCnI/tUbi1eLeRPrFI+N?=
- =?us-ascii?Q?gwNgbaa04cQ8i+Z4p0bYnuXejHmpaoq/WYgNLBs+Uz2ZoeFvOJF1rl5w3cDB?=
- =?us-ascii?Q?co16ccNOGLFgUiMgoO96pKtSlYjBfbgRXPvv4sX8Sw+4w+LG91wlema8sVGZ?=
- =?us-ascii?Q?FqBMMSDUVByWmuG2L4PBlX1TexkJnMBY4PknjSzgooDACaaBSJ9s7y66R413?=
- =?us-ascii?Q?EnkD6YPTMNyVjfPpTiNXRzUoEw6l5wlGMynPJAqBz67YSZTUtPGpML24oO2O?=
- =?us-ascii?Q?Y6JoJqlmeueiijNGtZlZnX9UzjvBItVkvGbjQNUFCesq6/8vlZ8EXQhvhNpz?=
- =?us-ascii?Q?ODfR73HKU43b60wgYEpBo6NO26pPm2VXMTKpfnfeJ8DDW7PlEMPaxQu1q5bn?=
- =?us-ascii?Q?fu7yqqn6NLILaQ6/qCbKfwx2lspt6uClnQBc01Q8R4Pvxdkj/Ree5SsNWB9O?=
- =?us-ascii?Q?n/WSLPdlvYDjgSbR6uT0zLoq/tDjoc7JliI2DVOtmy1yeq1DeE3EFO8KfBTv?=
- =?us-ascii?Q?3NLBZV080h4aTkWwzulbkwcb302BuhTYLfYg3S3/yrQ3DFYdpwuRoa2ZwhM4?=
- =?us-ascii?Q?IS0K7wgudo4OFU32/uRuqxKOzW02uLcW2zXFU0hAGdP/rqwHBPFGKtiCfp9W?=
- =?us-ascii?Q?2f2sVlgnWW33K8EIZSq73mQmDODDG/odO5ooV7fTx96Hte9rD3rVS++hfyTm?=
- =?us-ascii?Q?6Cvq1HjJk1FdnBGJaY2I3i7FeBq2amon6bY9up9dFwYRQPcfgXLILZGkqJQt?=
- =?us-ascii?Q?awX4ihPjJ7CcgmQTWLuNnuGOCe8IMSjlUK8/3Sm/EgRe9ZzJNipurA8GKukH?=
- =?us-ascii?Q?MuzcbQEmmRZ+NQtVOms7QQX30FuAh5/aQafnt3nJlAAtVf3hq+YM/NWOHa7I?=
- =?us-ascii?Q?UBBDnlPCjxUMb9lJWOeXCWnnNNDOVpP4gpeavVRNUS12PzyOfayjKtcLEKEd?=
- =?us-ascii?Q?+0Nt2+waPYKynOxJi4gyJvE6PQ680D8BIEqaT1pDcHvyEsGwDSx0ntMPzqMs?=
- =?us-ascii?Q?zz5+rCbOCrCLprGAi2fIN8ICZIr+ylEKjKFHn9ksgnpI/EEElOBRwXx3gftt?=
- =?us-ascii?Q?qCruqrfEisIYEFxIG9r/1BFKxy766UWq1eBaVHb0Oicada61a3G+kMSPn4YZ?=
- =?us-ascii?Q?V8BayxFdeUdYvN47f4OtmVg2Sc/frJHsHIqPpHKSPlL4w+L1zfFcxg8ImvqB?=
- =?us-ascii?Q?OOzMlqNtnpnr8aYWn3oxMSSCviYKD8f7o2T9245S0KSnBITfYUluLnIHrjPe?=
- =?us-ascii?Q?unQXhHbrNyvBnmeT88mWGSP81dQW4S1bZUHBTtC8MTXo44wtqdqmYtu9xPLH?=
- =?us-ascii?Q?sxN+TAXlD6KHgzL9gXxC5uOf8EeFhgpnzQ1stabCvHscRFUklMq857DtbigZ?=
- =?us-ascii?Q?TD+ZcgJim57ARhIMYnaTzcMJ192OGLt/y364dJbB/T799xK9Qa5JITM5hC7N?=
- =?us-ascii?Q?n6WvCbK/pPOAGFRrSiCanqyjJVASsiq3IHgOiZf9SOJ/J8inEdx1dF/u0VtV?=
- =?us-ascii?Q?ZxftMz4KyWMd0e0c+mk921c=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sRSOlJfDkFd29E7Bf+jHk7lEt+l/A+nfCAJkFrH1PvjeNklLOt+m1sncRz57?=
+ =?us-ascii?Q?GX20Rz0WyovNXVYiyH7F91fdLsHTK2tqTdn6+Ol16P3Np9uBQjVc2Pbw1AD1?=
+ =?us-ascii?Q?EV7O2NOOCYjUS4Px6Ix1nWVjVy2oRKyH2XeiaqEo/ydHEBRk0fO4CaApeFZ1?=
+ =?us-ascii?Q?UiMMd2mjOHgmwkmBeDQ87FPn78+xfn1wxYtdRdQWKuETeNqjV3FmtLpt7VwU?=
+ =?us-ascii?Q?of/0VlD/S+BsMJUAy2qoQnF9oPWPBkqVpTxgrmi+1ehJBZIEMsMxV/jPfaVo?=
+ =?us-ascii?Q?c+h5/RPksHkUWAAlGW40mZg40p/rjdItDNRiAhoNyD9NFiMd49LnxkkVgHcf?=
+ =?us-ascii?Q?pRsH1WZq9XZjma/f8NSeeMltbTRvXnoP18OR/v2vBcLt+v9Lwwahd1KeHx+B?=
+ =?us-ascii?Q?MVvMBx6eQoM7wYaaZISVaD2ITxu1bYQc8J9AKZqTx1psyCXRM/dUZO65afgf?=
+ =?us-ascii?Q?WClzlexUvL7082nru+hPDlcubI6+54TQrElMRMszOgXYGL1XahUogWVFOntt?=
+ =?us-ascii?Q?mf0tu9j6BJXe4e2+2F+XCwyF5Y/goKBsfhEC0Qk/IBhYhHhR1qEitoyb/cCw?=
+ =?us-ascii?Q?e4x6Ejea3m+BLNgOZc0VfQUSCd9VLwYnuSk3YBsfYqbDS3BzBlo8y5AJwU07?=
+ =?us-ascii?Q?3sNxHpxXvigOwKjRC15AD90GJJxz3xzJlzV8to5t/FFAaXkkZX1ceduKm2TS?=
+ =?us-ascii?Q?r1YJbFp2rwaHdBsadckl2vj+hxqt7y7qPshhsY8n6SIJ9pILpClVt3hm8qdR?=
+ =?us-ascii?Q?UwTWf/KvA1lDpv7qsLtZnnc+vIYsgt58B0osVoZ2YYj55zm3nNiqTQoR0kHB?=
+ =?us-ascii?Q?uCU+3GmRY3dpkaNy5nblKXn3Erj16ipV9fbwWaJqTblvoX/dteNux1thj8VS?=
+ =?us-ascii?Q?V5hRt5gFaK6SuAOqovMKGzuCSl0K1i0+9jOhn85hHxUUDdR5o/45GW4gxKoT?=
+ =?us-ascii?Q?kDK8ygcP2et4VZosTnTV6EtQnLTkCvl9Hx94KnAnmUf132OHTimeIZmbjVEP?=
+ =?us-ascii?Q?oC1IZ7bkRbtu0bKqRL/O6D1d033xULZOrGfdqgyWFG7u2vyLafL27SvH3Uyc?=
+ =?us-ascii?Q?qaZpEQecmdz2vBB9FmTDBWtWmTdLat5tRE/wRU22zxDvaKNLARE1O9kTJWdw?=
+ =?us-ascii?Q?c5lUtT/TsBZT/+YkzXXNykO4AFyzsUB9E4f+igASaFckr4fAFrM9WyUJTDRm?=
+ =?us-ascii?Q?EjUAEXsRDawNDG94TDMpjj2ZLv6Co5L65TZQoRTl3Y3ou1o1jyKUmUwQqjlb?=
+ =?us-ascii?Q?gddGPQKYODMSu5a27SayBHnz3Kf5Qx9rl3Cp3p7zcQr5GnrFlyB6JlfGGWtp?=
+ =?us-ascii?Q?E9WqAHhK0TupgTZ60b0K2TcLHz/003fFFwWl7w94ObtGmDmcT8fZjsliEUCi?=
+ =?us-ascii?Q?7SwSKkPt6YdMGHRlXDc7+E0CAcdaNT8sde1D1Aj9LkmUZeNZCVqNAkxAuLH1?=
+ =?us-ascii?Q?uPSAsBM4161ftZkB9MAmaOWkzPA9rMrWCflANobbNOt9rklnKcKT5dDi5wiL?=
+ =?us-ascii?Q?pTbffz3k2ZVKDlupjn8V2dx63IwDWWylMlUyQd9VWUefeHEJM4NzwrYSgkgh?=
+ =?us-ascii?Q?FetBL1FZO+qrCiAbJB1N9JOl2GXR4l/XAY++a9Rpxns5F3hgVA80VypPB3fp?=
+ =?us-ascii?Q?a/ULRq+WTjU+E4UAyIhlMUo=3D?=
 X-OriginatorOrg: westermo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c8e6a9f-56ba-4988-0e7d-08da011dd783
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0b31308-e5e0-48b9-0854-08da011dd7e0
 X-MS-Exchange-CrossTenant-AuthSource: HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2022 16:08:11.0216 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2022 16:08:11.5684 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2dXkiqP/TkLk85fJDgpnaa0TzTUHYB7OxhMsY1X0QYv/OgxhWu1isMeM3sMEA8lJFSIoa6oEJx5Ap8ZFkMeI5Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 59QU6gB+jT2z18pkYLn74+MT5nPfoZcSTVBnAbm6Ge+/XZO0UeQzW3uGtcRfhO8sknb0yGiTd2us4fI8lVFTcw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5P192MB0036
 X-MS-Exchange-CrossPremises-AuthSource: HE1P192MB0251.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossPremises-AuthAs: Internal
@@ -137,8 +137,8 @@ X-MS-Exchange-CrossPremises-SCL: 1
 X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
 X-OrganizationHeadersPreserved: AM5P192MB0036.EURP192.PROD.OUTLOOK.COM
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220308_080821_738392_7BE9C762 
-X-CRM114-Status: GOOD (  27.28  )
+X-CRM114-CacheID: sfid-20220308_080823_886497_76986B05 
+X-CRM114-Status: GOOD (  19.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -163,195 +163,192 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/3] arch: arm: imx: spi: Add QSPI boot support to the IMX8
- platforms
+Subject: [PATCH 2/3] scripts: arch: imx: Add QSPI boot support to IMX build
+ image script
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The IMX8 platforms does only support boot from a SD or an EMMC
-device. With this functionality also a boot from a QSPI device
-is possible. For the moment only the IMX8MN platform is supported.
+This functionality extend the IMX image build script with a support
+for generating QSPI boot images.
+
+A QSPI boot image need device configuration parameters located at
+an offset of 0x400 in the IVT section. The configuration parameters
+are stored in a 512 byte bin file which will be included in the
+final boot image. The boot image parameters comes from the board
+flash header imxcfg file.
+
+The QSPI configuration parameters are described in the reference
+manual for the specific target.
 
 Signed-off-by: Joacim Zetterling <joacim.zetterling@westermo.com>
 ---
- arch/arm/mach-imx/Makefile             |   1 +
- arch/arm/mach-imx/include/mach/xload.h |   1 +
- arch/arm/mach-imx/xload-qspi.c         | 145 +++++++++++++++++++++++++
- 3 files changed, 147 insertions(+)
- create mode 100644 arch/arm/mach-imx/xload-qspi.c
+ arch/arm/mach-imx/include/mach/imx-header.h |  2 +
+ scripts/imx/imx-image.c                     | 25 ++++++++
+ scripts/imx/imx.c                           | 67 ++++++++++++++++++++-
+ 3 files changed, 93 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 2cafcd77e00d..d844196422df 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -29,3 +29,4 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND) += imx-bbu-external-nand.o
- obj-$(CONFIG_RESET_IMX_SRC) += src.o
- lwl-y += cpu_init.o
- pbl-y += xload-spi.o xload-common.o xload-imx-nand.o xload-gpmi-nand.o
-+pbl-y += xload-qspi.o
-diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
-index 03ec23ebbdb0..1876f3a4bd18 100644
---- a/arch/arm/mach-imx/include/mach/xload.h
-+++ b/arch/arm/mach-imx/include/mach/xload.h
-@@ -11,6 +11,7 @@ int imx6_nand_start_image(void);
- int imx7_esdhc_start_image(int instance);
- int imx8m_esdhc_load_image(int instance, bool start);
- int imx8mn_esdhc_load_image(int instance, bool start);
-+int imx8mn_qspi_start_image(int instance, bool start);
- int imx8mp_esdhc_load_image(int instance, bool start);
+diff --git a/arch/arm/mach-imx/include/mach/imx-header.h b/arch/arm/mach-imx/include/mach/imx-header.h
+index 8e968e6efba3..a58deb8d864e 100644
+--- a/arch/arm/mach-imx/include/mach/imx-header.h
++++ b/arch/arm/mach-imx/include/mach/imx-header.h
+@@ -118,6 +118,8 @@ struct config_data {
+ 	char *signed_hdmi_firmware_file;
+ 	int encrypt_image;
+ 	size_t dek_size;
++	uint32_t bb_cfg_ofs;
++	char *bb_cfg_file;
+ };
  
- int imx_image_size(void);
-diff --git a/arch/arm/mach-imx/xload-qspi.c b/arch/arm/mach-imx/xload-qspi.c
-new file mode 100644
-index 000000000000..c8305f15ee0a
---- /dev/null
-+++ b/arch/arm/mach-imx/xload-qspi.c
-@@ -0,0 +1,145 @@
-+// SPDX-License-Identifier: GPL-2.0
+ #define MAX_RECORDS_DCD_V2 1024
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 439912a805dc..b8ae63ad9400 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -951,6 +951,31 @@ int main(int argc, char *argv[])
+ 			exit(1);
+ 		}
+ 
++		/*
++		* The boot ROM expects a 512-byte configuration parameters area for
++		* some devices (like the FlexSPI NOR flash) to be present an defined
++		* offset in the image ivt section (0x400 for the FlexSPI NOR).
++		*/
++		if (data.bb_cfg_file) {
++			size_t bb_cfg_file_size = 512;
++			char *bb_cfg;
 +
-+#include <common.h>
-+#include <asm-generic/sections.h>
-+#include <asm/cache.h>
-+#include <mach/xload.h>
-+#include <mach/imx8mn-regs.h>
-+#include <mach/imx-header.h>
++			bb_cfg = calloc(512, sizeof(char));
++			if (!bb_cfg)
++				exit(1);
 +
-+#include <io.h>
-+#include <regmap.h>
-+#include <linux/sizes.h>
++			bb_cfg = read_file(data.bb_cfg_file, &bb_cfg_file_size);
 +
-+#include <mach/atf.h>
++			if (lseek(outfd, data.bb_cfg_ofs, SEEK_SET) < 0) {
++				perror("lseek");
++				exit(1);
++			}
 +
-+#define HDR_SIZE		512
++			xwrite(outfd, bb_cfg, bb_cfg_file_size);
 +
-+#define IMX8M_QSPI_MMAP		0x8000000
++			free(bb_cfg);
++		}
 +
-+
-+static int check_ivt_header_v2(struct imx_flash_header_v2 **header_pointer,
-+			    void *buf, u32 offset, u32 ivt_offset)
+ 		if (lseek(outfd, data.header_gap, SEEK_SET) < 0) {
+ 			perror("lseek");
+ 			exit(1);
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index 87560ad27de1..a242e6d76a47 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -215,6 +215,16 @@ static int do_dcdofs_error(struct config_data *data, int argc, char *argv[])
+ 	return -EINVAL;
+ }
+ 
++static int do_header_gap(struct config_data *data, int argc, char *argv[])
 +{
-+	int i, header_count = 1;
-+	struct imx_flash_header_v2 *hdr;
++	if (argc < 2)
++		return -EINVAL;
 +
-+	for (i = 0; i < header_count; i++) {
-+		hdr = buf + offset + ivt_offset;
++	data->header_gap = strtoul(argv[1], NULL, 0);
 +
-+		if (!is_imx_flash_header_v2(hdr)) {
-+			pr_debug("IVT header not found in QSPI. "
-+				 "Found tag: 0x%02x length: 0x%04x "
-+				 "version: %02x\n",
-+				 hdr->header.tag, hdr->header.length,
-+				 hdr->header.version);
-+			return -EINVAL;
-+		}
-+
-+		if (IS_ENABLED(CONFIG_ARCH_IMX8MQ) &&
-+		    hdr->boot_data.plugin & PLUGIN_HDMI_IMAGE) {
-+			/*
-+			 * In images that include signed HDMI
-+			 * firmware, first v2 header would be
-+			 * dedicated to that and would not contain any
-+			 * useful for us information. In order for us
-+			 * to pull the rest of the bootloader image
-+			 * in, we need to re-read header from SD/MMC,
-+			 * this time skipping anything HDMI firmware
-+			 * related.
-+			 */
-+			offset += hdr->boot_data.size + hdr->header.length;
-+			header_count++;
-+		}
-+	}
-+
-+	*header_pointer = hdr;
 +	return 0;
 +}
 +
-+static int
-+imx8m_qspi_load_image(void __iomem *ahb_addr, ptrdiff_t address,
-+		 ptrdiff_t entry, u32 offset, u32 ivt_offset, bool start)
+ struct soc_type {
+ 	char *name;
+ 	int header_version;
+@@ -223,6 +233,7 @@ struct soc_type {
+ 	uint32_t first_opcode;
+ };
+ 
++#define SZ_4K	(4 * 1024)
+ #define SZ_32K	(32 * 1024)
+ 
+ static struct soc_type socs[] = {
+@@ -580,7 +591,6 @@ do_signed_hdmi_firmware(struct config_data *data, int argc, char *argv[])
+ 	const char *file;
+ 	int len;
+ 
+-
+ 	if (argc != 2) {
+ 		fprintf(stderr, "usage: signed_hdmi_firmware <file>\n");
+ 		return -EINVAL;
+@@ -609,6 +619,52 @@ do_signed_hdmi_firmware(struct config_data *data, int argc, char *argv[])
+ 	return 0;
+ }
+ 
++static int do_bb_cfg_ofs(struct config_data *data, int argc, char *argv[])
 +{
-+	void *buf = (void *)address;
-+	struct imx_flash_header_v2 *hdr = NULL;
-+	int ret, len;
-+	void __noreturn (*bb)(void);
-+	unsigned int ofs;
++	if (argc < 2)
++		return -EINVAL;
 +
-+	len = imx_image_size();
++	data->bb_cfg_ofs = strtoul(argv[1], NULL, 0);
 +
-+	/* Read out the data directly from the AHB buffer. */
-+	memcpy(buf, __io_virt((void *)ahb_addr), 0x2000);
++	return 0;
++}
 +
-+	ret = check_ivt_header_v2(&hdr, buf, offset, ivt_offset);
-+	if (ret)
-+		return ret;
++static int do_bb_cfg_file(struct config_data *data, int argc, char *argv[])
++{
++	const char *file;
++	int len;
 +
-+	pr_debug("Check ok, loading image\n");
-+
-+	ofs = offset + hdr->entry - hdr->boot_data.start;
-+
-+	if (entry != address) {
-+		/*
-+		 * Passing entry different from address is interpreted
-+		 * as a request to place the image such that its entry
-+		 * point would be exactly at 'entry', that is:
-+		 *
-+		 *     buf + ofs = entry
-+		 *
-+		 * solving the above for 'buf' gives us the
-+		 * adjustment that needs to be made:
-+		 *
-+		 *     buf = entry - ofs
-+		 *
-+		 */
-+		if (WARN_ON(entry - ofs < address)) {
-+			/*
-+			 * We want to make sure we won't try to place
-+			 * the start of the image before the beginning
-+			 * of the memory buffer we were given in
-+			 * address.
-+			 */
-+			return -EINVAL;
-+		}
-+
-+		buf = (void *)(entry - ofs);
++	if (argc != 2) {
++		fprintf(stderr, "usage: bb_cfg_file <file>\n");
++		return -EINVAL;
 +	}
 +
-+	/* Read out the data directly from the AHB buffer. */
-+	memcpy(buf, __io_virt((void *)ahb_addr), len + SZ_4K);
-+
-+	pr_debug("Image loaded successfully\n");
-+
-+	if (!start)
++	if ((data->cpu_type != IMX_CPU_IMX8MM) && 
++		(data->cpu_type != IMX_CPU_IMX8MN) && 
++		(data->cpu_type != IMX_CPU_IMX8MP) &&
++		(data->cpu_type != IMX_CPU_IMX8MQ)) {
++		fprintf(stderr,
++			"Warning: The configuration param command is "
++			"only supported i.MX8 SoCs\n");
 +		return 0;
++	}
 +
-+	bb = buf + ofs;
++	file = argv[1];
 +
-+	sync_caches_for_execution();
++	if (*file == '"')
++		file++;
 +
-+	bb();
++	data->bb_cfg_file = strdup(file);
++	if (!data->bb_cfg_file)
++		return -ENOMEM;
++
++	len = strlen(data->bb_cfg_file);
++	if (data->bb_cfg_file[len - 1] == '"')
++		data->bb_cfg_file[len - 1] = 0;
++
++	return 0;
 +}
 +
-+/**
-+ * imx8mn_qspi_start_image - Load and optionally start an image from the
-+ * FlexSPI controller.
-+ * @instance: The FlexSPI controller instance (0)
-+ * @start: Whether to directly start the loaded image
-+ *
-+ * This uses imx8m_qspi_load_image() to load an image from QSPI. It is assumed
-+ * that the image is the currently running barebox image (This information
-+ * is used to calculate the length of the image).
-+ * The image is started afterwards.
-+ *
-+ * Return: If successful, this function does not return (if directly started)
-+ * or 0. A negative error code is returned when this function fails.
-+ */
-+int imx8mn_qspi_start_image(int instance, bool start)
-+{
-+	void __iomem *ahb_addr = IOMEM(IMX8M_QSPI_MMAP);
-+
-+	return imx8m_qspi_load_image(ahb_addr, MX8M_DDR_CSD1_BASE_ADDR,
-+				MX8M_ATF_BL33_BASE_ADDR, SZ_4K, 0, start);
-+}
+ struct command cmds[] = {
+ 	{
+ 		.name = "wm",
+@@ -634,6 +690,9 @@ struct command cmds[] = {
+ 	}, {
+ 		.name = "dcdofs",
+ 		.parse = do_dcdofs_error,
++	}, {
++		.name = "header_gap",
++		.parse = do_header_gap,
+ 	}, {
+ 		.name = "soc",
+ 		.parse = do_soc,
+@@ -667,6 +726,12 @@ struct command cmds[] = {
+ 	}, {
+ 		.name = "signed_hdmi_firmware",
+ 		.parse = do_signed_hdmi_firmware,
++	}, {
++		.name = "bb_cfg_ofs",
++		.parse = do_bb_cfg_ofs,
++	}, {
++		.name = "bb_cfg_file",
++		.parse = do_bb_cfg_file,
+ 	},
+ };
+ 
 -- 
 2.25.1
 
