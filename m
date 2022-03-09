@@ -1,55 +1,64 @@
-Delivery-date: Tue, 08 Mar 2022 17:39:06 +0100
+Delivery-date: Wed, 09 Mar 2022 09:45:21 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRcra-004qZw-OX
-	for lore@lore.pengutronix.de; Tue, 08 Mar 2022 17:39:06 +0100
+	id 1nRrwf-005SEP-L7
+	for lore@lore.pengutronix.de; Wed, 09 Mar 2022 09:45:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRcrZ-0002GL-84
-	for lore@pengutronix.de; Tue, 08 Mar 2022 17:39:06 +0100
+	id 1nRrwd-0003YO-6B
+	for lore@pengutronix.de; Wed, 09 Mar 2022 09:45:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:From:References:To:Subject:
-	MIME-Version:Date:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ZJs9A/aV0F3bZDNY9GgoLyhxGUCqKBL7n0T5W1W6Dk8=; b=n2obI88zBhYJhy
-	KjcPUVC6RXgnnWst3eU3NRmWARzk+VHxtdnQDZ2etAO3yrzs0tH/CEuPyGXiKbBCduutxw0xS+Ipn
-	2pRjt5SK4jbR7a3172uEPDlHVKy9dMAD7ThcEAQI/JQ9ot3IDPoj9l5ZU8yLX6uzya4WpwXXgV/Wq
-	UNz4H1tF0RzZl1OHtnvxvt+Hs0rY6w4QhMn/6sigmxafyhM3Xj3gpVvsDVAGjP1QtEEJQxqrsk/EX
-	BWDbAaWyWQAusaAihgGW/MjBRAfsMR3g4KMDoMkQDvdKHFLhu4NvQlHSJU9qDztCyAmyvrcVOcXH7
-	zTVpuxW2FF+W5/mreMtg==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=2/itFpdHG8h4FfqmHP5JtTHIgrfXQ8fU4vtziGL4TwA=; b=uDY7hAwfTYUQIcLGari0Nbabw2
+	ruv4FrsHcmy6vH0MS84Z1UEagcl1PLg1a76IPrSx+NvPAgVQsgafXEtF9Ie4+M0YAdw/DWunVgjam
+	WYy0XkUlmV5g28Lp8RtSWAImn9KzXIR3vyASqWFd5Q+d6CXDkmaPSFuI7523/hUZf5juHcNLgs40X
+	mX+s/SItIlRdr036H1Nvp6ixUfFbix6iJSZDwve4s1CZG3vBokaTAYWra9pCcx2wXhuXuEJyP63f7
+	a1THVUzDy/ehqhQr5rDLeTdEcq6gkRsdvwMr60FThaBUq8uHTPV4d+k3frDKoOCR156Uk4iBR1tB9
+	Q/CP9sxg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nRcqD-005Fl7-3K; Tue, 08 Mar 2022 16:37:41 +0000
+	id 1nRruy-007mWW-02; Wed, 09 Mar 2022 08:43:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nRcaB-005B5T-48
- for barebox@lists.infradead.org; Tue, 08 Mar 2022 16:21:09 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1nRca9-00088k-Om; Tue, 08 Mar 2022 17:21:05 +0100
-Message-ID: <694c28de-73e2-ff61-c32f-4e323989a822@pengutronix.de>
-Date: Tue, 8 Mar 2022 17:21:04 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Content-Language: en-US
-To: Joacim Zetterling <joacim.zetterling@westermo.com>,
- barebox@lists.infradead.org
+ id 1nRrus-007mW1-PK
+ for barebox@lists.infradead.org; Wed, 09 Mar 2022 08:43:32 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nRrur-0003QX-CM; Wed, 09 Mar 2022 09:43:29 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nRrum-00005Q-RU; Wed, 09 Mar 2022 09:43:24 +0100
+Date: Wed, 9 Mar 2022 09:43:24 +0100
+To: Joacim Zetterling <joacim.zetterling@westermo.com>
+Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Message-ID: <20220309084324.GI405@pengutronix.de>
 References: <20220308160801.782206-1-joacim.zetterling@westermo.com>
  <20220308160801.782206-3-joacim.zetterling@westermo.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <20220308160801.782206-3-joacim.zetterling@westermo.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:30:18 up 88 days, 17:15, 83 users,  load average: 0.56, 0.22, 0.13
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220308_082107_230404_E385A13E 
-X-CRM114-Status: GOOD (  33.92  )
+X-CRM114-CacheID: sfid-20220309_004330_847007_7446B4A5 
+X-CRM114-Status: GOOD (  31.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,15 +80,17 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
 Subject: Re: [PATCH 2/3] scripts: arch: imx: Add QSPI boot support to IMX
  build image script
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 08.03.22 17:08, Joacim Zetterling wrote:
+Hi Joacim,
+
+On Tue, Mar 08, 2022 at 05:08:00PM +0100, Joacim Zetterling wrote:
 > This functionality extend the IMX image build script with a support
 > for generating QSPI boot images.
 > 
@@ -93,17 +104,6 @@ On 08.03.22 17:08, Joacim Zetterling wrote:
 > manual for the specific target.
 > 
 > Signed-off-by: Joacim Zetterling <joacim.zetterling@westermo.com>
-
-Does this mean we can't have the same barebox image for both SD/eMMC
-and QSPI-NOR?
-
-Does filetype correctly detect this format? If not, you should
-add a check there to allow barebox update handlers to bail out
-when installing an incompatible image.
-
-Cheers,
-Ahmad
-
 > ---
 >  arch/arm/mach-imx/include/mach/imx-header.h |  2 +
 >  scripts/imx/imx-image.c                     | 25 ++++++++
@@ -143,136 +143,25 @@ Ahmad
 > +			bb_cfg = calloc(512, sizeof(char));
 > +			if (!bb_cfg)
 > +				exit(1);
+
+The buffer you are allocating here is not used...
 > +
 > +			bb_cfg = read_file(data.bb_cfg_file, &bb_cfg_file_size);
-> +
-> +			if (lseek(outfd, data.bb_cfg_ofs, SEEK_SET) < 0) {
-> +				perror("lseek");
-> +				exit(1);
-> +			}
-> +
-> +			xwrite(outfd, bb_cfg, bb_cfg_file_size);
-> +
-> +			free(bb_cfg);
-> +		}
-> +
->  		if (lseek(outfd, data.header_gap, SEEK_SET) < 0) {
->  			perror("lseek");
->  			exit(1);
-> diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-> index 87560ad27de1..a242e6d76a47 100644
-> --- a/scripts/imx/imx.c
-> +++ b/scripts/imx/imx.c
-> @@ -215,6 +215,16 @@ static int do_dcdofs_error(struct config_data *data, int argc, char *argv[])
->  	return -EINVAL;
->  }
->  
-> +static int do_header_gap(struct config_data *data, int argc, char *argv[])
-> +{
-> +	if (argc < 2)
-> +		return -EINVAL;
-> +
-> +	data->header_gap = strtoul(argv[1], NULL, 0);
-> +
-> +	return 0;
-> +}
-> +
->  struct soc_type {
->  	char *name;
->  	int header_version;
-> @@ -223,6 +233,7 @@ struct soc_type {
->  	uint32_t first_opcode;
->  };
->  
-> +#define SZ_4K	(4 * 1024)
->  #define SZ_32K	(32 * 1024)
->  
->  static struct soc_type socs[] = {
-> @@ -580,7 +591,6 @@ do_signed_hdmi_firmware(struct config_data *data, int argc, char *argv[])
->  	const char *file;
->  	int len;
->  
-> -
->  	if (argc != 2) {
->  		fprintf(stderr, "usage: signed_hdmi_firmware <file>\n");
->  		return -EINVAL;
-> @@ -609,6 +619,52 @@ do_signed_hdmi_firmware(struct config_data *data, int argc, char *argv[])
->  	return 0;
->  }
->  
-> +static int do_bb_cfg_ofs(struct config_data *data, int argc, char *argv[])
-> +{
-> +	if (argc < 2)
-> +		return -EINVAL;
-> +
-> +	data->bb_cfg_ofs = strtoul(argv[1], NULL, 0);
-> +
-> +	return 0;
-> +}
-> +
-> +static int do_bb_cfg_file(struct config_data *data, int argc, char *argv[])
-> +{
-> +	const char *file;
-> +	int len;
-> +
-> +	if (argc != 2) {
-> +		fprintf(stderr, "usage: bb_cfg_file <file>\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if ((data->cpu_type != IMX_CPU_IMX8MM) && 
-> +		(data->cpu_type != IMX_CPU_IMX8MN) && 
-> +		(data->cpu_type != IMX_CPU_IMX8MP) &&
-> +		(data->cpu_type != IMX_CPU_IMX8MQ)) {
-> +		fprintf(stderr,
-> +			"Warning: The configuration param command is "
-> +			"only supported i.MX8 SoCs\n");
-> +		return 0;
-> +	}
-> +
-> +	file = argv[1];
-> +
-> +	if (*file == '"')
-> +		file++;
-> +
-> +	data->bb_cfg_file = strdup(file);
-> +	if (!data->bb_cfg_file)
-> +		return -ENOMEM;
-> +
-> +	len = strlen(data->bb_cfg_file);
-> +	if (data->bb_cfg_file[len - 1] == '"')
-> +		data->bb_cfg_file[len - 1] = 0;
-> +
-> +	return 0;
-> +}
-> +
->  struct command cmds[] = {
->  	{
->  		.name = "wm",
-> @@ -634,6 +690,9 @@ struct command cmds[] = {
->  	}, {
->  		.name = "dcdofs",
->  		.parse = do_dcdofs_error,
-> +	}, {
-> +		.name = "header_gap",
-> +		.parse = do_header_gap,
->  	}, {
->  		.name = "soc",
->  		.parse = do_soc,
-> @@ -667,6 +726,12 @@ struct command cmds[] = {
->  	}, {
->  		.name = "signed_hdmi_firmware",
->  		.parse = do_signed_hdmi_firmware,
-> +	}, {
-> +		.name = "bb_cfg_ofs",
-> +		.parse = do_bb_cfg_ofs,
-> +	}, {
-> +		.name = "bb_cfg_file",
-> +		.parse = do_bb_cfg_file,
->  	},
->  };
->  
 
+...the pointer is directly overwritten with the buffer that read_file returns.
+
+You should check the return value of read_file.
+
+Anyway, specifying filenames in config files doesn't work properly. When
+you are building out of tree then imx-image will look for the file
+relative to $(objtree), but the file really is relative to $(srctree).
+
+In other tools we usually pass filenames via a command line option, see
+for example:
+
+images/Makefile.mvebu:43:BINHDR_start_lenovo_ix4_300d.pblb.mvebu1img = $(board)/lenovo-ix4-300d/binary.0
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
