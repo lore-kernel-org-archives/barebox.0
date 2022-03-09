@@ -1,16 +1,16 @@
-Delivery-date: Wed, 09 Mar 2022 09:45:21 +0100
+Delivery-date: Wed, 09 Mar 2022 09:55:23 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRrwf-005SEP-L7
-	for lore@lore.pengutronix.de; Wed, 09 Mar 2022 09:45:21 +0100
+	id 1nRs6N-005SoE-FZ
+	for lore@lore.pengutronix.de; Wed, 09 Mar 2022 09:55:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nRrwd-0003YO-6B
-	for lore@pengutronix.de; Wed, 09 Mar 2022 09:45:21 +0100
+	id 1nRs6M-0004eB-5L
+	for lore@pengutronix.de; Wed, 09 Mar 2022 09:55:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,47 +18,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=2/itFpdHG8h4FfqmHP5JtTHIgrfXQ8fU4vtziGL4TwA=; b=uDY7hAwfTYUQIcLGari0Nbabw2
-	ruv4FrsHcmy6vH0MS84Z1UEagcl1PLg1a76IPrSx+NvPAgVQsgafXEtF9Ie4+M0YAdw/DWunVgjam
-	WYy0XkUlmV5g28Lp8RtSWAImn9KzXIR3vyASqWFd5Q+d6CXDkmaPSFuI7523/hUZf5juHcNLgs40X
-	mX+s/SItIlRdr036H1Nvp6ixUfFbix6iJSZDwve4s1CZG3vBokaTAYWra9pCcx2wXhuXuEJyP63f7
-	a1THVUzDy/ehqhQr5rDLeTdEcq6gkRsdvwMr60FThaBUq8uHTPV4d+k3frDKoOCR156Uk4iBR1tB9
-	Q/CP9sxg==;
+	bh=1SOmr9jsnOw8q2SHUp++gRYKrq2gS556yTyiiZHy7Cc=; b=TkwoxzW9fvW8r5qK9a0D8mRizf
+	u/A9xivpTJDpc9vOL3O9WPi/UcmYe3BgQmBIa097yV8sf/hpOpnKA2rFJ7IzmYn+QMBZxptEoEe9R
+	OdW1P3pprwt1L+esPYnzjE1iAgiMxbtkR/vwsRlm2j2ORvwAc/HE4GjZOaULTE8gjRyx1r4KeyeGd
+	+SbVUXRGXq0jpJyh5TY1d9CFgPi803CzHv+/dSMHeOJNfavPkCtVf+sd/NmWOs5XDQTfpOK78Qi+E
+	Kt5nsa52iHBPv5HrfCZd5bjlUmI1Vumuax5EIxwhttoQAPIUqnTBqSa2jL8pNpVMkZo9yTUW7/8Ly
+	cxyuQxqA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nRruy-007mWW-02; Wed, 09 Mar 2022 08:43:36 +0000
+	id 1nRs52-007nYY-CT; Wed, 09 Mar 2022 08:54:00 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nRrus-007mW1-PK
- for barebox@lists.infradead.org; Wed, 09 Mar 2022 08:43:32 +0000
+ id 1nRs4x-007nXp-2J
+ for barebox@lists.infradead.org; Wed, 09 Mar 2022 08:53:56 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nRrur-0003QX-CM; Wed, 09 Mar 2022 09:43:29 +0100
+ id 1nRs4v-0004UE-FM; Wed, 09 Mar 2022 09:53:53 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nRrum-00005Q-RU; Wed, 09 Mar 2022 09:43:24 +0100
-Date: Wed, 9 Mar 2022 09:43:24 +0100
+ id 1nRs4p-0000TC-Ne; Wed, 09 Mar 2022 09:53:47 +0100
+Date: Wed, 9 Mar 2022 09:53:47 +0100
 To: Joacim Zetterling <joacim.zetterling@westermo.com>
 Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
-Message-ID: <20220309084324.GI405@pengutronix.de>
+Message-ID: <20220309085347.GJ405@pengutronix.de>
 References: <20220308160801.782206-1-joacim.zetterling@westermo.com>
- <20220308160801.782206-3-joacim.zetterling@westermo.com>
+ <20220308160801.782206-4-joacim.zetterling@westermo.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220308160801.782206-3-joacim.zetterling@westermo.com>
+In-Reply-To: <20220308160801.782206-4-joacim.zetterling@westermo.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 09:30:18 up 88 days, 17:15, 83 users,  load average: 0.56, 0.22, 0.13
+X-Uptime: 09:49:26 up 88 days, 17:35, 85 users,  load average: 0.00, 0.06, 0.07
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220309_004330_847007_7446B4A5 
-X-CRM114-Status: GOOD (  31.58  )
+X-CRM114-CacheID: sfid-20220309_005355_131294_D4E7F866 
+X-CRM114-Status: GOOD (  27.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,83 +83,61 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 2/3] scripts: arch: imx: Add QSPI boot support to IMX
- build image script
+Subject: Re: [PATCH 3/3] arch: arm: imx: spi: Add QSPI boot option to the
+ IMX8MN-EVK
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Joacim,
-
-On Tue, Mar 08, 2022 at 05:08:00PM +0100, Joacim Zetterling wrote:
-> This functionality extend the IMX image build script with a support
-> for generating QSPI boot images.
+On Tue, Mar 08, 2022 at 05:08:01PM +0100, Joacim Zetterling wrote:
+> Add lowlevel board functionality to be able to boot from
+> a QSPI device.
 > 
-> A QSPI boot image need device configuration parameters located at
-> an offset of 0x400 in the IVT section. The configuration parameters
-> are stored in a 512 byte bin file which will be included in the
-> final boot image. The boot image parameters comes from the board
-> flash header imxcfg file.
-> 
-> The QSPI configuration parameters are described in the reference
-> manual for the specific target.
+> Also added configuration parameters for a QSPI device to be
+> included in a final QSPI boot image.
+> All configuration for a QSPI boot image are controlled within
+> the board flash header configuration file.
 > 
 > Signed-off-by: Joacim Zetterling <joacim.zetterling@westermo.com>
 > ---
->  arch/arm/mach-imx/include/mach/imx-header.h |  2 +
->  scripts/imx/imx-image.c                     | 25 ++++++++
->  scripts/imx/imx.c                           | 67 ++++++++++++++++++++-
->  3 files changed, 93 insertions(+), 1 deletion(-)
+>  .../nxp-imx8mn-evk/bb-cfg-param-imx8mn-evk.bin    | Bin 0 -> 512 bytes
+>  .../nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg |   5 +++++
+>  arch/arm/boards/nxp-imx8mn-evk/lowlevel.c         |   3 +++
+>  3 files changed, 8 insertions(+)
+>  create mode 100644 arch/arm/boards/nxp-imx8mn-evk/bb-cfg-param-imx8mn-evk.bin
 > 
-> diff --git a/arch/arm/mach-imx/include/mach/imx-header.h b/arch/arm/mach-imx/include/mach/imx-header.h
-> index 8e968e6efba3..a58deb8d864e 100644
-> --- a/arch/arm/mach-imx/include/mach/imx-header.h
-> +++ b/arch/arm/mach-imx/include/mach/imx-header.h
-> @@ -118,6 +118,8 @@ struct config_data {
->  	char *signed_hdmi_firmware_file;
->  	int encrypt_image;
->  	size_t dek_size;
-> +	uint32_t bb_cfg_ofs;
-> +	char *bb_cfg_file;
->  };
->  
->  #define MAX_RECORDS_DCD_V2 1024
-> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-> index 439912a805dc..b8ae63ad9400 100644
-> --- a/scripts/imx/imx-image.c
-> +++ b/scripts/imx/imx-image.c
-> @@ -951,6 +951,31 @@ int main(int argc, char *argv[])
->  			exit(1);
->  		}
->  
-> +		/*
-> +		* The boot ROM expects a 512-byte configuration parameters area for
-> +		* some devices (like the FlexSPI NOR flash) to be present an defined
-> +		* offset in the image ivt section (0x400 for the FlexSPI NOR).
-> +		*/
-> +		if (data.bb_cfg_file) {
-> +			size_t bb_cfg_file_size = 512;
-> +			char *bb_cfg;
+> diff --git a/arch/arm/boards/nxp-imx8mn-evk/bb-cfg-param-imx8mn-evk.bin b/arch/arm/boards/nxp-imx8mn-evk/bb-cfg-param-imx8mn-evk.bin
+
+Looking into the file the content doesn't look very complicated. Can't
+we just create it from parameters in the imx-image tool itself?
+
+That would save us from adding another input binary file.
+
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..b39e85b8442f27660eb8d797233cdcc02759bc0e
+> GIT binary patch
+> literal 512
+> zcmZ>Bc5`B2U<_jb0cK_}MJmC_$b_s#0GUIG&CMdg!C}CnLP*`HJb@5k1j&O50t!*3
+> E0ni%)6aWAK
+> 
+> literal 0
+> HcmV?d00001
+> 
+> diff --git a/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg b/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
+> index 27a2138e4322..232ce5f59bdf 100644
+> --- a/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
+> +++ b/arch/arm/boards/nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg
+> @@ -5,3 +5,8 @@ soc imx8mn
+>  loadaddr 0x912000
+>  max_load_size 0x3f000
+>  ivtofs 0x0
 > +
-> +			bb_cfg = calloc(512, sizeof(char));
-> +			if (!bb_cfg)
-> +				exit(1);
+> +# Uncomment the following for QSPI boot
+> +# header_gap 0x1000
+> +# bb_cfg_ofs 0x400
+> +# bb_cfg_file "arch/arm/boards/nxp-imx8mn-evk/bb-cfg-param-imx8mn-evk.bin"
 
-The buffer you are allocating here is not used...
-> +
-> +			bb_cfg = read_file(data.bb_cfg_file, &bb_cfg_file_size);
-
-...the pointer is directly overwritten with the buffer that read_file returns.
-
-You should check the return value of read_file.
-
-Anyway, specifying filenames in config files doesn't work properly. When
-you are building out of tree then imx-image will look for the file
-relative to $(objtree), but the file really is relative to $(srctree).
-
-In other tools we usually pass filenames via a command line option, see
-for example:
-
-images/Makefile.mvebu:43:BINHDR_start_lenovo_ix4_300d.pblb.mvebu1img = $(board)/lenovo-ix4-300d/binary.0
+It would be nice to just create both images, then the user would not
+have to change the sourcecode.
 
 Sascha
 
