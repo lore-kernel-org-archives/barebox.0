@@ -1,59 +1,78 @@
-Delivery-date: Mon, 14 Mar 2022 10:18:10 +0100
+Delivery-date: Tue, 15 Mar 2022 14:41:58 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nTgq9-002igJ-VJ
-	for lore@lore.pengutronix.de; Mon, 14 Mar 2022 10:18:10 +0100
+	id 1nU7R0-004KMT-J6
+	for lore@lore.pengutronix.de; Tue, 15 Mar 2022 14:41:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nTgq8-0006ip-24
-	for lore@pengutronix.de; Mon, 14 Mar 2022 10:18:09 +0100
+	id 1nU7Qz-0007UP-Bi
+	for lore@pengutronix.de; Tue, 15 Mar 2022 14:41:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:MIME-Version:Message-ID:Subject:To
-	:Date:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=DloMdKLB+0bLSJvj6Ori5JSL86VTQCJBUMb3U0Jrbw8=; b=CN+goVCj7pFGSP
-	NGX70uVZTqVIHvWamfBX0qaEepHU8UOQFMjy4aSsos8nAwx90nwC0nhXCOZTyraN+IOEPEaLYttBy
-	kYtJH83UAqbc0dfLylAan+VUmV8zogTY5LGU1kYkRNcVEmUXYrBJosnaleRP8dmW8SKz9ct6KOZqc
-	cfz1bdqUr6pPqedcy8ZWLI/cTen6WYOF0ywYk6VnWsJvkGwkiaVVy0RpOKVL2p86jPE+6Am/eAofC
-	T7Or6tnmEfleHGzVfUHj4eR5EiSqw0jsPqpWV0KWc4dpWc3RsnMeL3FMjX01qHL2Eb+MhoilrDDrV
-	Hfwl52iVIb22u9FZ53uA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=62nkVo9IsatJVR8twlpFHpjfeDT/q0SAwer8EKmxOGQ=; b=0VC3616Dx7embI
+	zG7Ekj3x3h3T1owkw35HTbOxYd/oeUVtrvjsc5shNziRjT8HGs5Cvr+TfdG27KGGYMdl7vNAz8K3O
+	v6cfHq4TdYxv5tCnbT7ftCsq2pYGzCSvKraCCv/6x/rPPJHqeDa2KGd+kYFQYc+HiiycfEQy/4M4J
+	H9iX8MjO7uSWKUo6PpqBKLP1pNCh0N8fFKq6IpwjNOTxJ7EEgk/gj9L8w2MV/k+2VOVvxW6oe6EIa
+	34PZBm93MJmqUzg6FrnPkA0ht4j11fzKIIXm99eW7emTR/5nCNe7KZvRkQlxHp7+C4Y4Bx2x00nQp
+	VctAzwljmvDSgx5wFO0g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nTgoo-004lVq-Ds; Mon, 14 Mar 2022 09:16:46 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1nU7PN-009G2K-GQ; Tue, 15 Mar 2022 13:40:17 +0000
+Received: from cpanel.siel.si ([46.19.9.99])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nTgoi-004lUl-R7
- for barebox@lists.infradead.org; Mon, 14 Mar 2022 09:16:42 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nTgoh-0006fB-8W; Mon, 14 Mar 2022 10:16:39 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nTgog-00005c-W3; Mon, 14 Mar 2022 10:16:38 +0100
-Date: Mon, 14 Mar 2022 10:16:38 +0100
-To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20220314091638.GO405@pengutronix.de>
+ id 1nU7PF-009FzR-7x
+ for barebox@lists.infradead.org; Tue, 15 Mar 2022 13:40:11 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com; 
+ s=default;
+ h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+ Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=tEFGROOg2YxgUVy67HhtPp0QmwHsPOs/a0JAyrRKhUE=; b=cbX0vnhqaYkmRRVTYe2Z+pZhIG
+ 3b5N4WrgiEwfxPG/BSl7OeCGQrgtz+PsNt+86DvOuBs/KcLjLJaYYG1OVq98NaEvULCiicCIZbini
+ StpKeDgNEadHTd/ySfNQ4MBkCZZcIhILvrhYCnLR9UYTrpm47wnODsD6RHFLLVC5hyWqHnlZGFbVv
+ 7XeBG60D/DwnTef7/o9WW8636lYzOKR/M8PnDollQL/6Z1ZzUSGunpx9/qpfLfhEDOSvoiKzu4tbJ
+ OLCnMVAkOb+raFnOTm5wMRMSf8B6Sa2teST8w+iUXhwAcrbLWQL6b7/ntNMQ4NsuEsSPSBZMcU2vc
+ 5aTVv4CQ==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:40480
+ helo=localhost.localdomain)
+ by cpanel.siel.si with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <andrej.picej@norik.com>) id 1nU7P5-00EQ3O-AA
+ for barebox@lists.infradead.org; Tue, 15 Mar 2022 14:39:59 +0100
+From: Andrej Picej <andrej.picej@norik.com>
+To: barebox@lists.infradead.org
+Date: Tue, 15 Mar 2022 14:39:42 +0100
+Message-Id: <20220315133942.537756-2-andrej.picej@norik.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220315133942.537756-1-andrej.picej@norik.com>
+References: <20220315133942.537756-1-andrej.picej@norik.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:06:32 up 93 days, 17:52, 88 users,  load average: 0.14, 0.25, 0.25
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.infradead.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id:
+ andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220314_021640_908700_EB70120C 
-X-CRM114-Status: GOOD (  22.19  )
+X-CRM114-CacheID: sfid-20220315_064009_679691_91BED458 
+X-CRM114-Status: UNSURE (   5.29  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,185 +84,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: v2022.03.0
+Subject: [PATCH 2/2] mfd: da9063: ensure all gpio devices are probed before
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi All,
+GPIO lines in da9063 are assigned dynamically, while majority of SOC
+GPIO drivers assign their GPIOs in static manner (GPIO line numbers can
+be calculated).
 
-I am happy to announce barebox-2022.03.0.
+This introduces regression if deep probe support is used. If da9063
+GPIOs are registered before the SOCs GPIOs, there is a good chance that
+the SOCs statically computed GPIO line numbers will already be used by
+PMIC.
 
-No big changes, but a few nice little thingies here and there. UBIFS now
-has ZSTD compression support which is supported in the Kernel for quite
-a while. The 'wd' command now has an option to shortcircuit all running
-watchdogs: A 'wd -x' disables all known watchdogs, either by hardware
-disabling them or then that's not possibly by periodically feeding them.
-We have support for a new rk3568 board, the BananaPi R2 Pro. The TQMa6UL
-SoM board is now supported on the TQ eval board and in our mission to
-widen the deep probe support, it is now supported on the raspberry Pi
-boards.
+Ensure all SOCs GPIO drivers and GPIO lines get registered before the
+da9063 registers its own gpiochip.
 
-Hve Fun!
-  Sascha
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+---
+ drivers/mfd/da9063.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-----------------------------------------------------------------
-Ahmad Fatoum (42):
-      block: efi-block-io: add devinfo callback for media info
-      commands: wd: add new -x option to inhibit all watchdogs
-      Documentation: user: introduction: update with lore/matrix/libera info
-      commands: add missing command groups
-      Documentation: regulator: reference new directory from index
-      Documentation: boards: openrisc: fix wrong header format
-      Documentation: user: watchdog: note new wd -x option
-      reset: add simple reset controller support
-      reset: stm32: drop STM32 MCU support in favor of simple reset driver
-      include: <asm-generic/bug.h>: implement WARN_ON_ONCE
-      string: define new memdup_array
-      clk: composite: add clk_hw registration functions
-      clk: divider: add clk_hw registration functions
-      clk: fixed-factor: add clk_hw registration functions
-      clk: clk-fixed: add clk_hw registration functions
-      clk: define clk_hw_register
-      clk: mux: add clk_hw registration functions
-      clk: mux: export clk_mux_round_rate
-      clk: implement of_clk_add_hw_provider
-      clk: gate: add clk_hw registration functions
-      ARM: stm32mp: allow driver reuse for STM32 MCUs
-      clk: add clock driver for stm32f4 and stm32f7
-      clocksource: add ARMv7-M SysTick driver
-      clocksource: add STM32 Timer driver
-      gpiolib: implement gpiod_set_value
-      video: add driver for STM32 LCD-TFT Display Controller
-      sandbox: symlink stickypage.bin into build directory
-      compiler: fix __attribute__((format(printf, sandbox incompatibility
-      mtd: mtdram: discard superfluous code
-      mtd: mtdram: add physically mapped ROM (mtd-rom) support
-      test: self: printf: log skipped tests
-      test: self: printf: add tests for %*ph prints
-      of: report whether of_diff found differences in return code
-      of: silence of_diff output for negative indents
-      test: self: add device tree manipulation test
-      state: add deep probe aware helpers to get state
-      video: add MIPI DBI Type C Option 3 support
-      video: add Ilitek ILI9341 panel support
-      regulator: fix enabling of always-on regulators
-      bootm: add missing space in error message
-      Documentation: devel: project-ideas: align with GSoC guidelines
-      clk: composite: fix possible NULL pointer dereference
+diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
+index a4e5226f3c..8b943eb4ef 100644
+--- a/drivers/mfd/da9063.c
++++ b/drivers/mfd/da9063.c
+@@ -390,6 +390,10 @@ static int da9063_probe(struct device_d *dev)
+ 	restart_handler_register(&priv->restart);
+ 
+ 	if (IS_ENABLED(CONFIG_GPIOLIB)) {
++		ret = of_device_ensured_probed_by_alias_stem("gpio");
++		if (ret)
++			goto on_error;
++
+ 		priv->gpio.base = -1;
+ 		priv->gpio.ngpio = 5;
+ 		priv->gpio.ops  = &da9063_gpio_ops;
+-- 
+2.25.1
 
-Antony Pavlov (1):
-      imd: add optional endianness=3D parameter for bi-endian systems
-
-Denis Orlov (1):
-      MIPS: fix optimised memset returning garbage
-
-Frank Wunderlich (2):
-      Kbuild: add bareboxversion target to Makefile
-      ARM: Rockchip: Add rk3568 BananaPi R2 Pro board support
-
-Johannes Schneider (1):
-      Documentation: add chapter on Talks about barebox
-
-Juergen Borleis (2):
-      Add the base Ricoh RN5T568 PMIC driver
-      Add Ricoh RN5T568 PMIC based watchdog
-
-Jules Maselbas (5):
-      filetype: Add QOI format image type
-      gui: Add qoi image format
-      scripts: Add qoiconv to convert png to qoi
-      logo: Enable image format selection for the logo
-      logo: Add choice for the QOI image format option
-
-Masahiro Yamada (3):
-      setlocalversion: update to Linux 5.16
-      kvx: remove unused CONFIG_ARCHINFO
-      kbuild: replace $(H) with $(pound)
-
-Michael Olbrich (3):
-      cdev: rename partuuid to uuid
-      cdev: add diskuuid support
-      efi: probe devices from the device-tree
-
-Oleksij Rempel (6):
-      ARM: rpi: convert board code to a driver
-      ARM: bcm2835 mbox: drop driver mode and probe on first request
-      ARM: rpi: move clk support to a separate driver
-      ARM: rpi: validate devicetree compatible instead of changing model na=
-me
-      ARM: rpi: set host name based on DT compatible
-      ARM: rpi: enable deep-probe support
-
-Rouven Czerwinski (1):
-      ARM: imx: add support for TQMa6UL SoM on MBa6ulxl
-
-Sascha Hauer (29):
-      ARM: rockchip-v8-defconfig: Enable USB
-      build: Include dts/include/ after include/
-      dts: update to v5.17-rc1
-      clk: Move clk_hw_get_num_parents out of ifdef
-      of_path: Fix typo
-      dts: update to v5.17-rc2
-      ubifs: Add zstd support
-      rename cdev_open() -> cdev_open_by_name()
-      cdev: implement cdev_open()
-      driver: Add functions to free devices
-      cdev: Create missing cdev_* functions
-      cdev: create iterator for cdev list
-      misc: Add storage-by-uuid driver
-      ARM: rockchip: rk3568-evb: Drop unused property
-      compressed dtb: Make sure they are only available when supported
-      Merge branch 'for-next/doc'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/efi'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/qoi'
-      Merge branch 'for-next/rpi'
-      Merge branch 'for-next/sata-mv'
-      Merge branch 'for-next/state'
-      Merge branch 'for-next/stm32'
-      Merge branch 'for-next/tests'
-      Merge branch 'for-next/ubifs'
-      Merge branch 'for-next/video'
-      scripts: bareboximd: Fix -c option
-      Release v2022.03.0
-
-Steffen Trumtrar (6):
-      ata: sata_mv: cleanup alignment
-      ata: sata_mv: clear SERROR and en/disable EDMA
-      ata: sata_mv: handle the phy errata
-      ata: sata_mv: enable Generation 2 speed support
-      ata: sata_mv: issue hard-reset on probe
-      ata: sata_mv: try probing multiple times
-
-Ulrich =D6lmann (3):
-      power: reset: Kconfig: fix copy-&-paste bug in help text
-      Documentation: reboot-mode: fix typos
-      Documentation: reboot-mode: mention that system.reboot_mode.next is i=
-nitially set to 'normal'
-
-Uwe Kleine-K=F6nig (1):
-      crypto: consistently name the algo digest symbols HAVE_DIGEST_...
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
