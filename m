@@ -1,61 +1,59 @@
-Delivery-date: Tue, 15 Mar 2022 14:41:58 +0100
+Delivery-date: Tue, 15 Mar 2022 14:41:59 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nU7R0-004KMT-J6
-	for lore@lore.pengutronix.de; Tue, 15 Mar 2022 14:41:58 +0100
+	id 1nU7R1-004KMU-5V
+	for lore@lore.pengutronix.de; Tue, 15 Mar 2022 14:41:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nU7Qz-0007UP-Bi
+	id 1nU7Qz-0007UQ-IK
 	for lore@pengutronix.de; Tue, 15 Mar 2022 14:41:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=62nkVo9IsatJVR8twlpFHpjfeDT/q0SAwer8EKmxOGQ=; b=0VC3616Dx7embI
-	zG7Ekj3x3h3T1owkw35HTbOxYd/oeUVtrvjsc5shNziRjT8HGs5Cvr+TfdG27KGGYMdl7vNAz8K3O
-	v6cfHq4TdYxv5tCnbT7ftCsq2pYGzCSvKraCCv/6x/rPPJHqeDa2KGd+kYFQYc+HiiycfEQy/4M4J
-	H9iX8MjO7uSWKUo6PpqBKLP1pNCh0N8fFKq6IpwjNOTxJ7EEgk/gj9L8w2MV/k+2VOVvxW6oe6EIa
-	34PZBm93MJmqUzg6FrnPkA0ht4j11fzKIIXm99eW7emTR/5nCNe7KZvRkQlxHp7+C4Y4Bx2x00nQp
-	VctAzwljmvDSgx5wFO0g==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=PRNQa1HOGxnGlXh+jZxeQO+2rhkR9uDTAPgQ21vcCTQ=; b=jgPbkB9B50MKn/
+	S/YO8RNK47JX2umNTtsXCegL74bKQbJa6Lvb8D+TFoANAdcT9fnIp5bCIjZxsHORauVpyfXbHOzUA
+	SH2r+8MxtB2oSeYqt4IMCXVZgt8D3J4OaSp9Sw9LAQaAiTEUyZBk2Zxg23VF1Bn74FYEOM5VrBySj
+	3Xumrwk56TVwGKYKqbD/ZK+GZGsMWLa1Fr38XQDxDCVMPOEvfnMeF6zo9xf2L7FCfhnmHQXVxUJ1f
+	Eb9ikKit1QV7hKmEYIzVJhgq42Dn7i7pxGzW/+tiPrwRWg5tTDDybkKB5aCUyvRfihX6V3MqWJvb2
+	dzJmmYWWTb6LhlTvFKtQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nU7PN-009G2K-GQ; Tue, 15 Mar 2022 13:40:17 +0000
+	id 1nU7PQ-009G3E-I9; Tue, 15 Mar 2022 13:40:20 +0000
 Received: from cpanel.siel.si ([46.19.9.99])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nU7PF-009FzR-7x
- for barebox@lists.infradead.org; Tue, 15 Mar 2022 13:40:11 +0000
+ id 1nU7PF-009FzQ-8c
+ for barebox@lists.infradead.org; Tue, 15 Mar 2022 13:40:12 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com; 
  s=default;
- h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+ To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=tEFGROOg2YxgUVy67HhtPp0QmwHsPOs/a0JAyrRKhUE=; b=cbX0vnhqaYkmRRVTYe2Z+pZhIG
- 3b5N4WrgiEwfxPG/BSl7OeCGQrgtz+PsNt+86DvOuBs/KcLjLJaYYG1OVq98NaEvULCiicCIZbini
- StpKeDgNEadHTd/ySfNQ4MBkCZZcIhILvrhYCnLR9UYTrpm47wnODsD6RHFLLVC5hyWqHnlZGFbVv
- 7XeBG60D/DwnTef7/o9WW8636lYzOKR/M8PnDollQL/6Z1ZzUSGunpx9/qpfLfhEDOSvoiKzu4tbJ
- OLCnMVAkOb+raFnOTm5wMRMSf8B6Sa2teST8w+iUXhwAcrbLWQL6b7/ntNMQ4NsuEsSPSBZMcU2vc
- 5aTVv4CQ==;
+ bh=vKiQGnis+2TXi5MiH9+YUR8uKVqJh1z/+i7Ib9PzCLo=; b=nMdvDdh+JlwQUHC7WdmkDOceJY
+ bmvGoyiOwF/YQeZV2yMexFMtTKMo3yHMPQlNPMom22ZCL+rlUvt68OU+fRCwpGyuaUA0t9aoRs9eq
+ EAmLCqUBq6dbF/we9Xr1kYLNbfQto56i9A1TUsZMfhjdP5U8Jk0N60o8SSZbGORiMkToc8GyFKDlB
+ qyypDR17Nd2stF2OErF0pAkH0VQr5nz8ON/nfeQn4ZHK2O+BQkdLGPpVoYNF0Ak/TL+1NM309pNd5
+ B2KzzgXVlQqfDmF6Q/s6uWvThsRdtrZb8l43/3B4rRp/pVNQO7FSSw5WGyLp27IXwK2SPSuZ4b19P
+ fCWqpCYQ==;
 Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:40480
  helo=localhost.localdomain)
  by cpanel.siel.si with esmtpsa (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <andrej.picej@norik.com>) id 1nU7P5-00EQ3O-AA
+ (envelope-from <andrej.picej@norik.com>) id 1nU7P5-00EQ3O-90
  for barebox@lists.infradead.org; Tue, 15 Mar 2022 14:39:59 +0100
 From: Andrej Picej <andrej.picej@norik.com>
 To: barebox@lists.infradead.org
-Date: Tue, 15 Mar 2022 14:39:42 +0100
-Message-Id: <20220315133942.537756-2-andrej.picej@norik.com>
+Date: Tue, 15 Mar 2022 14:39:41 +0100
+Message-Id: <20220315133942.537756-1-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220315133942.537756-1-andrej.picej@norik.com>
-References: <20220315133942.537756-1-andrej.picej@norik.com>
 MIME-Version: 1.0
 X-AntiAbuse: This header was added to track abuse,
  please include it with any abuse report
@@ -70,8 +68,8 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220315_064009_679691_91BED458 
-X-CRM114-Status: UNSURE (   5.29  )
+X-CRM114-CacheID: sfid-20220315_064009_651051_54BEDDE1 
+X-CRM114-Status: UNSURE (   5.43  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -97,42 +95,83 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/2] mfd: da9063: ensure all gpio devices are probed before
+Subject: [PATCH 1/2] of: implement new of_device_ensured_probed_by_alias_stem
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-GPIO lines in da9063 are assigned dynamically, while majority of SOC
-GPIO drivers assign their GPIOs in static manner (GPIO line numbers can
-be calculated).
-
-This introduces regression if deep probe support is used. If da9063
-GPIOs are registered before the SOCs GPIOs, there is a good chance that
-the SOCs statically computed GPIO line numbers will already be used by
-PMIC.
-
-Ensure all SOCs GPIO drivers and GPIO lines get registered before the
-da9063 registers its own gpiochip.
+Function first goes through all the aliases which have the given stem.
+It then ensures that all the devices hiding under these aliases are
+probed.
 
 Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 ---
- drivers/mfd/da9063.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/of/base.c | 28 ++++++++++++++++++++++++++++
+ include/of.h      |  6 ++++++
+ 2 files changed, 34 insertions(+)
 
-diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
-index a4e5226f3c..8b943eb4ef 100644
---- a/drivers/mfd/da9063.c
-+++ b/drivers/mfd/da9063.c
-@@ -390,6 +390,10 @@ static int da9063_probe(struct device_d *dev)
- 	restart_handler_register(&priv->restart);
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 80465d6d50..055dba97ab 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -274,6 +274,34 @@ int of_alias_get_id_from(struct device_node *root, struct device_node *np,
+ }
+ EXPORT_SYMBOL_GPL(of_alias_get_id_from);
  
- 	if (IS_ENABLED(CONFIG_GPIOLIB)) {
-+		ret = of_device_ensured_probed_by_alias_stem("gpio");
-+		if (ret)
-+			goto on_error;
++/**
++ * of_device_ensured_probed_by_alias_stem - Ensure all devices with alias base name
++ * are probed
++ * @stem:	Alias stem of the given device_node
++ *
++ * The function ensures all devices with the given alias stem are probed.
++ *
++ * Returns 0 on success or error code.
++ */
++int of_device_ensured_probed_by_alias_stem(const char *stem)
++{
++	struct alias_prop *app;
++	int id = -ENODEV;
++	int ret;
 +
- 		priv->gpio.base = -1;
- 		priv->gpio.ngpio = 5;
- 		priv->gpio.ops  = &da9063_gpio_ops;
++	list_for_each_entry(app, &aliases_lookup, link) {
++		if (of_node_cmp(app->stem, stem) != 0)
++			continue;
++
++		ret = of_device_ensure_probed(app->np);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(of_device_ensured_probed_by_alias_stem);
++
+ const char *of_alias_get(struct device_node *np)
+ {
+ 	struct alias_prop *app;
+diff --git a/include/of.h b/include/of.h
+index 216d0ee763..95817c58a4 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -261,6 +261,7 @@ extern void of_alias_scan(void);
+ extern int of_alias_get_id(struct device_node *np, const char *stem);
+ extern int of_alias_get_id_from(struct device_node *root, struct device_node *np,
+ 				const char *stem);
++extern int of_device_ensured_probed_by_alias_stem(const char *stem);
+ extern const char *of_alias_get(struct device_node *np);
+ extern int of_modalias_node(struct device_node *node, char *modalias, int len);
+ 
+@@ -750,6 +751,11 @@ static inline int of_alias_get_id_from(struct device_node *root, struct device_n
+ 	return -ENOSYS;
+ }
+ 
++static int of_device_ensured_probed_by_aliases(const char *stem)
++{
++	return -ENOSYS;
++}
++
+ static inline const char *of_alias_get(struct device_node *np)
+ {
+ 	return NULL;
 -- 
 2.25.1
 
