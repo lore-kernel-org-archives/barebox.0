@@ -1,64 +1,54 @@
-Delivery-date: Fri, 18 Mar 2022 13:01:06 +0100
+Delivery-date: Fri, 18 Mar 2022 15:51:10 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nVBI0-00Fgqc-Cm
-	for lore@lore.pengutronix.de; Fri, 18 Mar 2022 13:01:06 +0100
+	id 1nVDwa-00FnSD-4H
+	for lore@lore.pengutronix.de; Fri, 18 Mar 2022 15:51:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nVBI1-0003EM-0e
-	for lore@pengutronix.de; Fri, 18 Mar 2022 13:01:05 +0100
+	id 1nVDwa-0007Cb-P2
+	for lore@pengutronix.de; Fri, 18 Mar 2022 15:51:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=qR785vuVfoq+mZFlKE/mFVH/XcGEQgo+/kypYrN+Zho=; b=PDZMCQ5GJ/l84m
-	KG0G+bFOY2L7WJ5azWZyY4gDzJFlE7ohsAMPpRPErzMk03TOTW2Gum3PX4JUmc0r8Anwkinse75j/
-	ZTmTaX7HMdAgxTnX/RN/hCv06TCNTfp5QdSHRNxujh0rlckmHCL36w4CAannPsisa/HVwKLGlOTK5
-	ZFbGsiKSn/fyD0HmAKi4Xj7TKHLWNkYcrB0GBOpMKpMLQ+/ORbxkXajQwtwEKzfkhiLyr8vbLL5qi
-	haMseVLoPo80aiiPlcR0WUOTFkpRFTBCR5GoI8hDj1NjqW+YXK+HNVTqfLXbf3WnkkYgVU8csHI/N
-	xfdntH04q2VIxihTlb6A==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=H6atA57LZPHFMFNGBTKpKl/jNW+y2wS6m6WwV9sW8Ks=; b=c+HiyY70m9thS6
+	46jHnypqaPEYoqjZxJ7q4tsc9NS00f8R1BIvrAmnB6MT8+zbYzY7B46ATxEWuSzortTpIAQFiD+pz
+	+XrFPs9JnotQ07FKERsvEkEIij4gsBlqXD3S9udohg7UhzBudVWFLKOLo/LBVr2FnZJRqWlRA+Vl+
+	rtw33I0ho/P6O54qf6pvGhB044rdddh1fzFuzHzK1864sLA40k+d2QXHO863NJ9QEnJuxKu4iXxtI
+	ogbW2h/DaXtlMkg8ePoL06UQURI9DKGQmJS1JufiFXvEMC8ErzhJZQ9VBK8AYZHptgKtQU4G5FNLM
+	nsLCLJhckWAygZTWxJqQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nVBGX-001VZQ-78; Fri, 18 Mar 2022 11:59:33 +0000
+	id 1nVDv9-0024lt-FV; Fri, 18 Mar 2022 14:49:39 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nVBGS-001VYl-Ez
- for barebox@lists.infradead.org; Fri, 18 Mar 2022 11:59:30 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1nVDuz-0024h4-Ov
+ for barebox@lists.infradead.org; Fri, 18 Mar 2022 14:49:34 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nVBGQ-0002xt-Fk; Fri, 18 Mar 2022 12:59:26 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nVBGP-0007AH-QC; Fri, 18 Mar 2022 12:59:25 +0100
-Date: Fri, 18 Mar 2022 12:59:25 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-To: Tibault Damman <tibault.damman@basalte.be>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Message-ID: <20220318115925.GC12181@pengutronix.de>
-References: <DB7PR04MB424951EBC916B7A1E0A1B274E8119@DB7PR04MB4249.eurprd04.prod.outlook.com>
- <20220317074628.GT405@pengutronix.de>
- <a4886a48-717f-d970-49af-551f3138e201@basalte.be>
+ (envelope-from <afa@pengutronix.de>)
+ id 1nVDuv-0006uF-Dt; Fri, 18 Mar 2022 15:49:25 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1nVDuu-0025Z0-TN; Fri, 18 Mar 2022 15:49:24 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 18 Mar 2022 15:49:24 +0100
+Message-Id: <20220318144924.497993-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <a4886a48-717f-d970-49af-551f3138e201@basalte.be>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 12:44:03 up 97 days, 20:29, 81 users,  load average: 0.01, 0.07, 0.08
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220318_045928_523244_8CE42CB1 
-X-CRM114-Status: GOOD (  23.92  )
+X-CRM114-CacheID: sfid-20220318_074929_872849_3C8F9B67 
+X-CRM114-Status: UNSURE (   9.69  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,68 +73,46 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: nand "BCH decoding failed" when using bch8_hw_romcode ecc mode
+Subject: [PATCH] scripts: constify wirte_full input buffer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Mar 18, 2022 at 11:32:36AM +0100, Tibault Damman wrote:
-> Gah, I just saw how that mail was sent, let me try that again:
-> 
-> 
-> Because the data looks right(?), despite the error prints, I tried
-> ubiformat again from barebox, then booted linux from SD, and attached
-> the ubi nand partition in linux... which worked fine.
-> All volumes and data were there.
-> 
-> Very confused about what's going wrong here.
+Buffer written is read-only, so align prototype with <libfile.h>.
 
-You can correctly write to the NAND and can even correctly read the
-data, that's good news.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ scripts/common.c | 2 +-
+ scripts/common.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Reading is done in omap_gpmc_read_page_bch_rom_mode(). Here we have this
-to read the OOB data:
-
-> 	p = chip->oob_poi;
-> 
-> 	p += omap_gpmc_read_buf_manual(chip, p, 2, 5);
-> 
-> 	for (i = 0; i < 4; i++) {
-> 		p += omap_gpmc_read_buf_manual(chip, p, 13, i + 1);
-> 		p += omap_gpmc_read_buf_manual(chip, p, 1, 5);
-> 	}
-
-omap_gpmc_read_buf_manual() is called with uneven numbers of bytes. This
-goes down to omap_read_buf_pref():
-
-> 	/* take care of subpage reads */
-> 	if (len % 4) {
-> 		if (info->nand.options & NAND_BUSWIDTH_16)
-> 			readsw(info->cs_base, buf, (len % 4) / 2);
-> 		else
-> 			readsb(info->cs_base, buf, len % 4);
-> 		p = (u32 *) (buf + len % 4);
-> 		len -= len % 4;
-> 	}
-
-This can't work properly for 16bit NANDs.
-
-I don't know how to do this correctly though, you'll have to experiment
-a bit here.
-
-Have a look at "md -s /dev/nand0.raw 0+2112", then you can see how the
-OOB data should look like and compare it with the data read in
-omap_gpmc_read_page_bch_rom_mode(). The ".raw" is important, I saw you
-printed 2112 bytes from a non raw device. I meant to print a single
-page, on a non raw device that would be 2048. You might have to enable
-CONFIG_MTD_RAW_DEVICE to get the raw device.
-
-Sascha
-
+diff --git a/scripts/common.c b/scripts/common.c
+index 2be41615ea9e..0eb263d041a5 100644
+--- a/scripts/common.c
++++ b/scripts/common.c
+@@ -148,7 +148,7 @@ int read_full(int fd, void *buf, size_t size)
+ 	return insize;
+ }
+ 
+-int write_full(int fd, void *buf, size_t size)
++int write_full(int fd, const void *buf, size_t size)
+ {
+ 	size_t insize = size;
+ 	int now;
+diff --git a/scripts/common.h b/scripts/common.h
+index 820108c52c2d..399729c338f3 100644
+--- a/scripts/common.h
++++ b/scripts/common.h
+@@ -5,6 +5,6 @@ int read_file_2(const char *filename, size_t *size, void **outbuf, size_t max_si
+ void *read_file(const char *filename, size_t *size);
+ int write_file(const char *filename, const void *buf, size_t size);
+ int read_full(int fd, void *buf, size_t size);
+-int write_full(int fd, void *buf, size_t size);
++int write_full(int fd, const void *buf, size_t size);
+ 
+ #endif /* __COMMON_H */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 _______________________________________________
 barebox mailing list
