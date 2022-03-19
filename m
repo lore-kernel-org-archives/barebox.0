@@ -1,51 +1,48 @@
-Delivery-date: Sat, 19 Mar 2022 08:28:38 +0100
+Delivery-date: Sat, 19 Mar 2022 08:29:30 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nVTVs-00GW29-DY
-	for lore@lore.pengutronix.de; Sat, 19 Mar 2022 08:28:38 +0100
+	id 1nVTWi-00GW3w-NY
+	for lore@lore.pengutronix.de; Sat, 19 Mar 2022 08:29:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nVTVt-0002IC-5H
-	for lore@pengutronix.de; Sat, 19 Mar 2022 08:28:37 +0100
+	id 1nVTWi-0002L4-1I
+	for lore@pengutronix.de; Sat, 19 Mar 2022 08:29:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=KIh5qXdRSsO77IZSF1fWnd59/8Tn4EsdIir8Ig8YpQw=; b=F0Ct7ai71dRTCv
-	GqGC+1j3p6Ezy/EkB/Vf9tW9cYn4gTxar7QZKgN7Mw0blWf63QSr7ngQV6aFLwBvEyYIRsK9Btkyg
-	jYcjxkKmr0ly9QNUkzw2dAmJKdV1oOwnQhbIbaX8OTpUnM4JoInrFEc9atrs4M3VAm7+ETt4FPZFB
-	uTA1MFv6dRmkI4ILN8YwmkQFo8EUP06y6HXAF6Sp4CEhkhsAf83UlOul2Jxn38Cf2ZqYbx/B4Sw+3
-	OSXi1cv++UPeyc5r1orVhvk8KI9Y7Kr9X5OETDybzh5NVwtRFwYumcbr497aysDXgUw/Y11ovP7wp
-	V0DxXTIOIF0qsYbkUbew==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=DCocT84LRQrW2yTNF+51wVf+uERyDI+Kixa6fhq0V78=; b=yUQisyVA+Ovf57
+	7RHbF1W80yp7aFL0b2MtZoB3/agm9QHC2ZPWFScNb1B5JMBk5f/2vbyM4UwrcHaADQlx2KI1NKzrt
+	EuD+V4pWYICAck43VJtKhfTgBv0NRwi/sj/8Kwi90oJTdsr4ihTnuzVyLs6DcbTCJvUrUPGMgIddS
+	9Lxos3m3YF8gNkiL7gHAp29xAqRf9taFEp068p2QKZJRIW6/mzAfcRQOo8h6TfMMHke1tmJIE/SUi
+	eCggOGVFE4RawpK8STsWeM6RGp1APH1ks1hBtBMx4zOvI7k1L4GJa+Zg1gY74PhTJNXRuqc6e7/ys
+	5vEUxsWgv0cT06zTFvQA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nVTRv-003NCL-DL; Sat, 19 Mar 2022 07:24:31 +0000
-Received: from relay5-d.mail.gandi.net ([2001:4b98:dc4:8::225])
+	id 1nVTS0-003NDZ-Mr; Sat, 19 Mar 2022 07:24:36 +0000
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nVTRo-003NAV-84
- for barebox@lists.infradead.org; Sat, 19 Mar 2022 07:24:27 +0000
+ id 1nVTRo-003N9x-1C
+ for barebox@lists.infradead.org; Sat, 19 Mar 2022 07:24:33 +0000
 Received: (Authenticated sender: ahmad@a3f.at)
- by mail.gandi.net (Postfix) with ESMTPSA id 20EAE1C0007;
- Sat, 19 Mar 2022 07:24:16 +0000 (UTC)
+ by mail.gandi.net (Postfix) with ESMTPSA id E7EDC1C0002;
+ Sat, 19 Mar 2022 07:24:14 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sat, 19 Mar 2022 08:24:10 +0100
-Message-Id: <20220319072410.1310723-4-ahmad@a3f.at>
+Date: Sat, 19 Mar 2022 08:24:07 +0100
+Message-Id: <20220319072410.1310723-1-ahmad@a3f.at>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220319072410.1310723-1-ahmad@a3f.at>
-References: <20220319072410.1310723-1-ahmad@a3f.at>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220319_002424_470441_1EC37502 
-X-CRM114-Status: UNSURE (   6.85  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220319_002424_421385_43A27BA2 
+X-CRM114-Status: GOOD (  28.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,74 +62,634 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75 autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH 4/4] RISC-V: sifive: enable SPI Flash and SD in config
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH 1/4] spi: Port SiFive SPI controller driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-To test SD-Card:
-
-  ./test/emulate.pl sifive_defconfig  -- -drive file=image.sdcard,if=sd
+Import the U-Boot v2022.04-rc2 driver to enable access to SPI flash and
+SD over SPI on the HiFive Unleashed. Tested with QEMU.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- arch/riscv/configs/sifive_defconfig | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/spi/Kconfig      |   6 +
+ drivers/spi/Makefile     |   1 +
+ drivers/spi/spi-sifive.c | 576 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 583 insertions(+)
+ create mode 100644 drivers/spi/spi-sifive.c
 
-diff --git a/arch/riscv/configs/sifive_defconfig b/arch/riscv/configs/sifive_defconfig
-index 59cfebf194df..6ebe6eaf3785 100644
---- a/arch/riscv/configs/sifive_defconfig
-+++ b/arch/riscv/configs/sifive_defconfig
-@@ -13,13 +13,10 @@ CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_MENU=y
--CONFIG_IMD_TARGET=y
- CONFIG_CONSOLE_ALLOW_COLOR=y
- CONFIG_PBL_CONSOLE=y
- CONFIG_PARTITION_DISK_EFI=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_BAREBOXENV_TARGET=y
--CONFIG_BAREBOXCRC32_TARGET=y
- CONFIG_STATE=y
- CONFIG_STATE_CRYPTO=y
- CONFIG_BOOTCHOOSER=y
-@@ -85,20 +82,21 @@ CONFIG_VIRTIO_CONSOLE=y
- CONFIG_SERIAL_SIFIVE=y
- CONFIG_DRIVER_NET_MACB=y
- CONFIG_DRIVER_SPI_GPIO=y
-+CONFIG_SPI_SIFIVE=y
- CONFIG_I2C=y
- CONFIG_I2C_GPIO=y
- CONFIG_MTD=y
--# CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_RAW_DEVICE=y
- CONFIG_MTD_CONCAT=y
- CONFIG_MTD_M25P80=y
- CONFIG_DRIVER_CFI=y
- CONFIG_DRIVER_CFI_BANK_WIDTH_8=y
--CONFIG_DISK=y
--CONFIG_DISK_WRITE=y
- CONFIG_VIRTIO_BLK=y
- CONFIG_VIDEO=y
- CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_DRIVER_VIDEO_SIMPLEFB_CLIENT=y
-+CONFIG_MCI=y
-+CONFIG_MCI_SPI=y
- CONFIG_CLOCKSOURCE_DUMMY_RATE=60000
- CONFIG_EEPROM_AT24=y
- CONFIG_HWRNG=y
-@@ -126,3 +124,6 @@ CONFIG_ZSTD_DECOMPRESS=y
- CONFIG_XZ_DECOMPRESS=y
- CONFIG_BASE64=y
- CONFIG_DIGEST_CRC32_GENERIC=y
-+CONFIG_IMD_TARGET=y
-+CONFIG_BAREBOXENV_TARGET=y
-+CONFIG_BAREBOXCRC32_TARGET=y
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 7df7561718c2..8935feb97b99 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -124,6 +124,12 @@ config SPI_NXP_FLEXSPI
+ 	  This controller does not support generic SPI messages and only
+ 	  supports the high-level SPI memory interface.
+ 
++config SPI_SIFIVE
++	tristate "SiFive SPI controller"
++	depends on SOC_SIFIVE || COMPILE_TEST
++	help
++	  This exposes the SPI controller IP from SiFive.
++
+ endif
+ 
+ endmenu
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 64c8e2645a94..3455eea86988 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -17,3 +17,4 @@ obj-$(CONFIG_DRIVER_SPI_DSPI) += dspi_spi.o
+ obj-$(CONFIG_SPI_ZYNQ_QSPI) += zynq_qspi.o
+ obj-$(CONFIG_SPI_NXP_FLEXSPI) += spi-nxp-fspi.o
+ obj-$(CONFIG_DRIVER_SPI_STM32) += stm32_spi.o
++obj-$(CONFIG_SPI_SIFIVE) += spi-sifive.o
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+new file mode 100644
+index 000000000000..3cb613285603
+--- /dev/null
++++ b/drivers/spi/spi-sifive.c
+@@ -0,0 +1,576 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2018 SiFive, Inc.
++ * Copyright 2019 Bhargav Shah <bhargavshah1988@gmail.com>
++ *
++ * SiFive SPI controller driver (master mode only)
++ */
++
++#include <common.h>
++#include <linux/clk.h>
++#include <driver.h>
++#include <init.h>
++#include <errno.h>
++#include <linux/reset.h>
++#include <spi/spi.h>
++#include <linux/spi/spi-mem.h>
++#include <linux/bitops.h>
++#include <clock.h>
++#include <gpio.h>
++#include <of_gpio.h>
++#include <linux/bitfield.h>
++#include <linux/iopoll.h>
++#include <linux/log2.h>
++
++#define SIFIVE_SPI_MAX_CS		32
++
++#define SIFIVE_SPI_DEFAULT_DEPTH	8
++#define SIFIVE_SPI_DEFAULT_BITS		8
++
++/* register offsets */
++#define SIFIVE_SPI_REG_SCKDIV            0x00 /* Serial clock divisor */
++#define SIFIVE_SPI_REG_SCKMODE           0x04 /* Serial clock mode */
++#define SIFIVE_SPI_REG_CSID              0x10 /* Chip select ID */
++#define SIFIVE_SPI_REG_CSDEF             0x14 /* Chip select default */
++#define SIFIVE_SPI_REG_CSMODE            0x18 /* Chip select mode */
++#define SIFIVE_SPI_REG_DELAY0            0x28 /* Delay control 0 */
++#define SIFIVE_SPI_REG_DELAY1            0x2c /* Delay control 1 */
++#define SIFIVE_SPI_REG_FMT               0x40 /* Frame format */
++#define SIFIVE_SPI_REG_TXDATA            0x48 /* Tx FIFO data */
++#define SIFIVE_SPI_REG_RXDATA            0x4c /* Rx FIFO data */
++#define SIFIVE_SPI_REG_TXMARK            0x50 /* Tx FIFO watermark */
++#define SIFIVE_SPI_REG_RXMARK            0x54 /* Rx FIFO watermark */
++#define SIFIVE_SPI_REG_FCTRL             0x60 /* SPI flash interface control */
++#define SIFIVE_SPI_REG_FFMT              0x64 /* SPI flash instruction format */
++#define SIFIVE_SPI_REG_IE                0x70 /* Interrupt Enable Register */
++#define SIFIVE_SPI_REG_IP                0x74 /* Interrupt Pendings Register */
++
++/* sckdiv bits */
++#define SIFIVE_SPI_SCKDIV_DIV_MASK       0xfffU
++
++/* sckmode bits */
++#define SIFIVE_SPI_SCKMODE_PHA           BIT(0)
++#define SIFIVE_SPI_SCKMODE_POL           BIT(1)
++#define SIFIVE_SPI_SCKMODE_MODE_MASK     (SIFIVE_SPI_SCKMODE_PHA | \
++					  SIFIVE_SPI_SCKMODE_POL)
++
++/* csmode bits */
++#define SIFIVE_SPI_CSMODE_MODE_AUTO      0U
++#define SIFIVE_SPI_CSMODE_MODE_HOLD      2U
++#define SIFIVE_SPI_CSMODE_MODE_OFF       3U
++
++/* delay0 bits */
++#define SIFIVE_SPI_DELAY0_CSSCK(x)       ((u32)(x))
++#define SIFIVE_SPI_DELAY0_CSSCK_MASK     0xffU
++#define SIFIVE_SPI_DELAY0_SCKCS(x)       ((u32)(x) << 16)
++#define SIFIVE_SPI_DELAY0_SCKCS_MASK     (0xffU << 16)
++
++/* delay1 bits */
++#define SIFIVE_SPI_DELAY1_INTERCS(x)     ((u32)(x))
++#define SIFIVE_SPI_DELAY1_INTERCS_MASK   0xffU
++#define SIFIVE_SPI_DELAY1_INTERXFR(x)    ((u32)(x) << 16)
++#define SIFIVE_SPI_DELAY1_INTERXFR_MASK  (0xffU << 16)
++
++/* fmt bits */
++#define SIFIVE_SPI_FMT_PROTO_SINGLE      0U
++#define SIFIVE_SPI_FMT_PROTO_DUAL        1U
++#define SIFIVE_SPI_FMT_PROTO_QUAD        2U
++#define SIFIVE_SPI_FMT_PROTO_MASK        3U
++#define SIFIVE_SPI_FMT_ENDIAN            BIT(2)
++#define SIFIVE_SPI_FMT_DIR               BIT(3)
++#define SIFIVE_SPI_FMT_LEN(x)            ((u32)(x) << 16)
++#define SIFIVE_SPI_FMT_LEN_MASK          (0xfU << 16)
++
++/* txdata bits */
++#define SIFIVE_SPI_TXDATA_DATA_MASK      0xffU
++#define SIFIVE_SPI_TXDATA_FULL           BIT(31)
++
++/* rxdata bits */
++#define SIFIVE_SPI_RXDATA_DATA_MASK      0xffU
++#define SIFIVE_SPI_RXDATA_EMPTY          BIT(31)
++
++/* ie and ip bits */
++#define SIFIVE_SPI_IP_TXWM               BIT(0)
++#define SIFIVE_SPI_IP_RXWM               BIT(1)
++
++/* format protocol */
++#define SIFIVE_SPI_PROTO_QUAD		4 /* 4 lines I/O protocol transfer */
++#define SIFIVE_SPI_PROTO_DUAL		2 /* 2 lines I/O protocol transfer */
++#define SIFIVE_SPI_PROTO_SINGLE		1 /* 1 line I/O protocol transfer */
++
++#define SPI_XFER_BEGIN  0x01                    /* Assert CS before transfer */
++#define SPI_XFER_END    0x02                    /* Deassert CS after transfer */
++
++struct sifive_spi {
++	struct spi_controller ctlr;
++	void __iomem	*regs;		/* base address of the registers */
++	u32		fifo_depth;
++	u32		bits_per_word;
++	u32		cs_inactive;	/* Level of the CS pins when inactive*/
++	u32		freq;
++	u8		fmt_proto;
++};
++
++static inline struct sifive_spi *to_sifive_spi(struct spi_controller *ctlr)
++{
++	return container_of(ctlr, struct sifive_spi, ctlr);
++}
++
++static void sifive_spi_prep_device(struct sifive_spi *spi,
++				   struct spi_device *spi_dev)
++{
++	/* Update the chip select polarity */
++	if (spi_dev->mode & SPI_CS_HIGH)
++		spi->cs_inactive &= ~BIT(spi_dev->chip_select);
++	else
++		spi->cs_inactive |= BIT(spi_dev->chip_select);
++	writel(spi->cs_inactive, spi->regs + SIFIVE_SPI_REG_CSDEF);
++
++	/* Select the correct device */
++	writel(spi_dev->chip_select, spi->regs + SIFIVE_SPI_REG_CSID);
++}
++
++static void sifive_spi_set_cs(struct sifive_spi *spi,
++			     struct spi_device *spi_dev)
++{
++	u32 cs_mode = SIFIVE_SPI_CSMODE_MODE_HOLD;
++
++	if (spi_dev->mode & SPI_CS_HIGH)
++		cs_mode = SIFIVE_SPI_CSMODE_MODE_AUTO;
++
++	writel(cs_mode, spi->regs + SIFIVE_SPI_REG_CSMODE);
++}
++
++static void sifive_spi_clear_cs(struct sifive_spi *spi)
++{
++	writel(SIFIVE_SPI_CSMODE_MODE_AUTO, spi->regs + SIFIVE_SPI_REG_CSMODE);
++}
++
++static void sifive_spi_prep_transfer(struct sifive_spi *spi,
++				     struct spi_device *spi_dev,
++				     u8 *rx_ptr)
++{
++	u32 cr;
++
++	/* Modify the SPI protocol mode */
++	cr = readl(spi->regs + SIFIVE_SPI_REG_FMT);
++
++	/* Bits per word ? */
++	cr &= ~SIFIVE_SPI_FMT_LEN_MASK;
++	cr |= SIFIVE_SPI_FMT_LEN(spi->bits_per_word);
++
++	/* LSB first? */
++	cr &= ~SIFIVE_SPI_FMT_ENDIAN;
++	if (spi_dev->mode & SPI_LSB_FIRST)
++		cr |= SIFIVE_SPI_FMT_ENDIAN;
++
++	/* Number of wires ? */
++	cr &= ~SIFIVE_SPI_FMT_PROTO_MASK;
++	switch (spi->fmt_proto) {
++	case SIFIVE_SPI_PROTO_QUAD:
++		cr |= SIFIVE_SPI_FMT_PROTO_QUAD;
++		break;
++	case SIFIVE_SPI_PROTO_DUAL:
++		cr |= SIFIVE_SPI_FMT_PROTO_DUAL;
++		break;
++	default:
++		cr |= SIFIVE_SPI_FMT_PROTO_SINGLE;
++		break;
++	}
++
++	/* SPI direction in/out ? */
++	cr &= ~SIFIVE_SPI_FMT_DIR;
++	if (!rx_ptr)
++		cr |= SIFIVE_SPI_FMT_DIR;
++
++	writel(cr, spi->regs + SIFIVE_SPI_REG_FMT);
++}
++
++static void sifive_spi_rx(struct sifive_spi *spi, u8 *rx_ptr)
++{
++	u32 data;
++
++	do {
++		data = readl(spi->regs + SIFIVE_SPI_REG_RXDATA);
++	} while (data & SIFIVE_SPI_RXDATA_EMPTY);
++
++	if (rx_ptr)
++		*rx_ptr = data & SIFIVE_SPI_RXDATA_DATA_MASK;
++}
++
++static void sifive_spi_tx(struct sifive_spi *spi, const u8 *tx_ptr)
++{
++	u32 data;
++	u8 tx_data = (tx_ptr) ? *tx_ptr & SIFIVE_SPI_TXDATA_DATA_MASK :
++				SIFIVE_SPI_TXDATA_DATA_MASK;
++
++	do {
++		data = readl(spi->regs + SIFIVE_SPI_REG_TXDATA);
++	} while (data & SIFIVE_SPI_TXDATA_FULL);
++
++	writel(tx_data, spi->regs + SIFIVE_SPI_REG_TXDATA);
++}
++
++static int sifive_spi_wait(struct sifive_spi *spi, u32 mask)
++{
++	u32 val;
++
++	return readl_poll_timeout(spi->regs + SIFIVE_SPI_REG_IP, val,
++				  (val & mask) == mask, 100 * USEC_PER_MSEC);
++}
++
++#define BUILD_WAIT_FOR_BIT(sfx, type, read)				\
++									\
++static inline int wait_for_bit_##sfx(const void *reg,			\
++				     const type mask,			\
++				     const bool set,			\
++				     const unsigned int timeout_ms,	\
++				     const bool breakable)		\
++{									\
++	type val;							\
++	unsigned long start = get_timer(0);				\
++									\
++	while (1) {							\
++		val = read(reg);					\
++									\
++		if (!set)						\
++			val = ~val;					\
++									\
++		if ((val & mask) == mask)				\
++			return 0;					\
++									\
++		if (get_timer(start) > timeout_ms)			\
++			break;						\
++									\
++		if (breakable && ctrlc()) {				\
++			puts("Abort\n");				\
++			return -EINTR;					\
++		}							\
++									\
++		udelay(1);						\
++		WATCHDOG_RESET();					\
++	}								\
++									\
++	debug("%s: Timeout (reg=%p mask=%x wait_set=%i)\n", __func__,	\
++	      reg, mask, set);						\
++									\
++	return -ETIMEDOUT;						\
++}
++
++static int sifive_spi_transfer_one(struct spi_device *spi_dev, unsigned int bitlen,
++			   const void *dout, void *din, unsigned long flags)
++{
++	struct sifive_spi *spi = to_sifive_spi(spi_dev->controller);
++	const u8 *tx_ptr = dout;
++	u8 *rx_ptr = din;
++	u32 remaining_len;
++	int ret;
++
++	if (flags & SPI_XFER_BEGIN) {
++		sifive_spi_prep_device(spi, spi_dev);
++		sifive_spi_set_cs(spi, spi_dev);
++	}
++
++	sifive_spi_prep_transfer(spi, spi_dev, rx_ptr);
++
++	remaining_len = bitlen / 8;
++
++	while (remaining_len) {
++		unsigned int n_words = min(remaining_len, spi->fifo_depth);
++		unsigned int tx_words, rx_words;
++
++		/* Enqueue n_words for transmission */
++		for (tx_words = 0; tx_words < n_words; tx_words++) {
++			if (!tx_ptr)
++				sifive_spi_tx(spi, NULL);
++			else
++				sifive_spi_tx(spi, tx_ptr++);
++		}
++
++		if (rx_ptr) {
++			/* Wait for transmission + reception to complete */
++			writel(n_words - 1, spi->regs + SIFIVE_SPI_REG_RXMARK);
++			ret = sifive_spi_wait(spi, SIFIVE_SPI_IP_RXWM);
++			if (ret)
++				return ret;
++
++			/* Read out all the data from the RX FIFO */
++			for (rx_words = 0; rx_words < n_words; rx_words++)
++				sifive_spi_rx(spi, rx_ptr++);
++		} else {
++			/* Wait for transmission to complete */
++			ret = sifive_spi_wait(spi, SIFIVE_SPI_IP_TXWM);
++			if (ret)
++				return ret;
++		}
++
++		remaining_len -= n_words;
++	}
++
++	if (flags & SPI_XFER_END)
++		sifive_spi_clear_cs(spi);
++
++	return 0;
++}
++
++static int sifive_spi_transfer(struct spi_device *spi_dev, struct spi_message *msg)
++{
++	struct spi_controller *ctlr = spi_dev->controller;
++	struct spi_transfer *t, *t_first, *t_last = NULL;
++	unsigned long flags;
++	int ret = 0;
++
++	if (list_empty(&msg->transfers))
++		return 0;
++
++	t_first = list_first_entry(&msg->transfers, struct spi_transfer, transfer_list);
++	t_last = list_last_entry(&msg->transfers, struct spi_transfer, transfer_list);
++
++	msg->actual_length = 0;
++
++	dev_dbg(ctlr->dev, "transfer start actual_length=%i\n", msg->actual_length);
++	list_for_each_entry(t, &msg->transfers, transfer_list) {
++		dev_dbg(ctlr->dev,
++			"  xfer %p: len %u tx %p rx %p\n",
++			t, t->len, t->tx_buf, t->rx_buf);
++		flags = 0;
++		if (t == t_first)
++			flags |= SPI_XFER_BEGIN;
++		if (t == t_last)
++			flags |= SPI_XFER_END;
++		ret = sifive_spi_transfer_one(spi_dev, t->len * 8,
++					      t->tx_buf, t->rx_buf, flags);
++		if (ret < 0)
++			return ret;
++		msg->actual_length += t->len;
++	}
++	dev_dbg(ctlr->dev, "transfer done actual_length=%i\n", msg->actual_length);
++
++	return ret;
++}
++
++static int sifive_spi_exec_op(struct spi_mem *mem,
++			      const struct spi_mem_op *op)
++{
++	struct spi_device *spi_dev = mem->spi;
++	struct device_d *dev = &spi_dev->dev;
++	struct sifive_spi *spi = spi_controller_get_devdata(spi_dev->controller);
++	unsigned long flags = SPI_XFER_BEGIN;
++	u8 opcode = op->cmd.opcode;
++	unsigned int pos = 0;
++	const void *tx_buf = NULL;
++	void *rx_buf = NULL;
++	int op_len, i;
++	u8 *op_buf;
++	int ret;
++
++	if (!op->addr.nbytes && !op->dummy.nbytes && !op->data.nbytes)
++		flags |= SPI_XFER_END;
++
++	spi->fmt_proto = op->cmd.buswidth;
++
++	/* send the opcode */
++	ret = sifive_spi_transfer_one(spi_dev, 8, (void *)&opcode, NULL, flags);
++	if (ret < 0) {
++		dev_err(dev, "failed to xfer opcode\n");
++		return ret;
++	}
++
++	op_len = op->addr.nbytes + op->dummy.nbytes;
++
++	op_buf = malloc(op_len);
++	if (!op_buf)
++		return -ENOMEM;
++
++	/* send the addr + dummy */
++	if (op->addr.nbytes) {
++		/* fill address */
++		for (i = 0; i < op->addr.nbytes; i++)
++			op_buf[pos + i] = op->addr.val >>
++				(8 * (op->addr.nbytes - i - 1));
++
++		pos += op->addr.nbytes;
++
++		/* fill dummy */
++		if (op->dummy.nbytes)
++			memset(op_buf + pos, 0xff, op->dummy.nbytes);
++
++		/* make sure to set end flag, if no data bytes */
++		if (!op->data.nbytes)
++			flags |= SPI_XFER_END;
++
++		spi->fmt_proto = op->addr.buswidth;
++
++		ret = sifive_spi_transfer_one(spi_dev, op_len * 8, op_buf, NULL, flags);
++		if (ret < 0) {
++			dev_err(dev, "failed to xfer addr + dummy\n");
++			goto out;
++		}
++	}
++
++	/* send/received the data */
++	if (op->data.nbytes) {
++		if (op->data.dir == SPI_MEM_DATA_IN)
++			rx_buf = op->data.buf.in;
++		else
++			tx_buf = op->data.buf.out;
++
++		spi->fmt_proto = op->data.buswidth;
++
++		ret = sifive_spi_transfer_one(spi_dev, op->data.nbytes * 8,
++				      tx_buf, rx_buf, SPI_XFER_END);
++		if (ret) {
++			dev_err(dev, "failed to xfer data\n");
++			goto out;
++		}
++	}
++
++out:
++	free(op_buf);
++	return ret;
++}
++
++static void sifive_spi_set_speed(struct sifive_spi *spi, uint speed)
++{
++	u32 scale;
++
++	if (speed > spi->freq)
++		speed = spi->freq;
++
++	/* Cofigure max speed */
++	scale = (DIV_ROUND_UP(spi->freq >> 1, speed) - 1)
++					& SIFIVE_SPI_SCKDIV_DIV_MASK;
++	writel(scale, spi->regs + SIFIVE_SPI_REG_SCKDIV);
++}
++
++static void sifive_spi_set_mode(struct sifive_spi *spi, uint mode)
++{
++	u32 cr;
++
++	/* Switch clock mode bits */
++	cr = readl(spi->regs + SIFIVE_SPI_REG_SCKMODE) &
++				~SIFIVE_SPI_SCKMODE_MODE_MASK;
++	if (mode & SPI_CPHA)
++		cr |= SIFIVE_SPI_SCKMODE_PHA;
++	if (mode & SPI_CPOL)
++		cr |= SIFIVE_SPI_SCKMODE_POL;
++
++	writel(cr, spi->regs + SIFIVE_SPI_REG_SCKMODE);
++}
++
++static int sifive_spi_setup(struct spi_device *spi_dev)
++{
++	struct sifive_spi *spi = to_sifive_spi(spi_dev->controller);
++
++	sifive_spi_set_mode(spi, spi_dev->mode);
++	sifive_spi_set_speed(spi, spi_dev->max_speed_hz);
++
++	return 0;
++}
++
++static void sifive_spi_init_hw(struct sifive_spi *spi)
++{
++	struct device_d *dev = spi->ctlr.dev;
++	u32 cs_bits;
++
++	/* probe the number of CS lines */
++	spi->cs_inactive = readl(spi->regs + SIFIVE_SPI_REG_CSDEF);
++	writel(0xffffffffU, spi->regs + SIFIVE_SPI_REG_CSDEF);
++	cs_bits = readl(spi->regs + SIFIVE_SPI_REG_CSDEF);
++	writel(spi->cs_inactive, spi->regs + SIFIVE_SPI_REG_CSDEF);
++	if (!cs_bits) {
++		dev_warn(dev, "Could not auto probe CS lines\n");
++		return;
++	}
++
++	spi->ctlr.num_chipselect = ilog2(cs_bits) + 1;
++	if (spi->ctlr.num_chipselect > SIFIVE_SPI_MAX_CS) {
++		dev_warn(dev, "Invalid number of spi slaves\n");
++		return;
++	}
++
++	/* Watermark interrupts are disabled by default */
++	writel(0, spi->regs + SIFIVE_SPI_REG_IE);
++
++	/* Default watermark FIFO threshold values */
++	writel(1, spi->regs + SIFIVE_SPI_REG_TXMARK);
++	writel(0, spi->regs + SIFIVE_SPI_REG_RXMARK);
++
++	/* Set CS/SCK Delays and Inactive Time to defaults */
++	writel(SIFIVE_SPI_DELAY0_CSSCK(1) | SIFIVE_SPI_DELAY0_SCKCS(1),
++	       spi->regs + SIFIVE_SPI_REG_DELAY0);
++	writel(SIFIVE_SPI_DELAY1_INTERCS(1) | SIFIVE_SPI_DELAY1_INTERXFR(0),
++	       spi->regs + SIFIVE_SPI_REG_DELAY1);
++
++	/* Exit specialized memory-mapped SPI flash mode */
++	writel(0, spi->regs + SIFIVE_SPI_REG_FCTRL);
++}
++
++static const struct spi_controller_mem_ops sifive_spi_mem_ops = {
++	.exec_op	= sifive_spi_exec_op,
++};
++
++static void sifive_spi_dt_probe(struct sifive_spi *spi)
++{
++	struct device_node *node = spi->ctlr.dev->device_node;
++
++	spi->fifo_depth = SIFIVE_SPI_DEFAULT_DEPTH;
++	of_property_read_u32(node, "sifive,fifo-depth", &spi->fifo_depth);
++
++	spi->bits_per_word = SIFIVE_SPI_DEFAULT_BITS;
++	of_property_read_u32(node, "sifive,max-bits-per-word", &spi->bits_per_word);
++}
++
++static int sifive_spi_probe(struct device_d *dev)
++{
++	struct sifive_spi *spi;
++	struct resource *iores;
++	struct spi_controller *ctlr;
++	struct clk *clkdev;
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	spi = xzalloc(sizeof(*spi));
++
++	spi->regs = IOMEM(iores->start);
++	if (!spi->regs)
++		return -ENODEV;
++
++	ctlr = &spi->ctlr;
++	ctlr->dev = dev;
++
++	ctlr->setup = sifive_spi_setup;
++	ctlr->transfer = sifive_spi_transfer;
++	ctlr->mem_ops = &sifive_spi_mem_ops;
++
++	ctlr->bus_num = -1;
++
++	spi_controller_set_devdata(ctlr, spi);
++
++	sifive_spi_dt_probe(spi);
++
++	clkdev = clk_get(dev, NULL);
++	if (IS_ERR(clkdev))
++		return PTR_ERR(clkdev);
++
++	spi->freq = clk_get_rate(clkdev);
++
++	/* init the sifive spi hw */
++	sifive_spi_init_hw(spi);
++
++	return spi_register_master(ctlr);
++}
++
++static const struct of_device_id sifive_spi_ids[] = {
++	{ .compatible = "sifive,spi0" },
++	{ /* sentinel */ }
++};
++
++static struct driver_d sifive_spi_driver = {
++	.name  = "sifive_spi",
++	.probe = sifive_spi_probe,
++	.of_compatible = sifive_spi_ids,
++};
++coredevice_platform_driver(sifive_spi_driver);
 -- 
 2.34.1
 
