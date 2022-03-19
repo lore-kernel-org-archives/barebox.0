@@ -3,46 +3,48 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nVTVj-00GW1D-M2
+	id 1nVTVj-00GW1E-Sn
 	for lore@lore.pengutronix.de; Sat, 19 Mar 2022 08:28:29 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nVTVj-0002HU-Qs
+	id 1nVTVk-0002HV-Al
 	for lore@pengutronix.de; Sat, 19 Mar 2022 08:28:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=DHCVLmGuSldKOejHsyTMNKsgEDWJrb41OIsN6q26w8M=; b=nGVCk+zN63BkfR
-	IU6PSpRHayZNwXbr8IqegGC8tvx77C7bJZM6CFDRLVYFgw14hj/g2F+He3eod+jxTHx38uceGfA8l
-	QXYVjt7DxZaNuqo8SKALmT8xmInvbl2bGO7rn3k5kxTWxtekIFZu9ZOkXppRwsNyL/hxHD9zZiPu2
-	98C+E6ktyC6zQ0e3yUG75C+PqSrr9ZaDjC1pZ5azMEzr4iRjWjsOWk1yYCf/irT3BpAspiRIalwlk
-	7EOmnTE5lWOI6HEuThoB1E4NN8ncfUptbIfBFsWGn/f22MFE6e7V9bPwZmABO2xGVBFeqKZhHhput
-	pIvyxYjtOOxP5AG7kKjA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=wlobKxg1lbCGSDtvfqi5hzejx94dOQ6HeJxP/bq3D2Y=; b=zbgYMTtQtmdE5q
+	lXKJeUhxaR//75oPNJvlhvvVMONqd+5oSA2X7C51EsKwLDjjeenjqdHxazsoMu2YZFvwpeM22lNf3
+	nISAh2206Ud0lZ59aWhlhxsXA8nOV0mYubQKMY7pqlfyEoUQx62nhD7KA9fsds477ATsbJMk//y5a
+	BSBi6i+m//EUpUKMCEoVB5BWuIkyM6R9U9Av6U9VcOyXadMzTqvLe8dudzuaQ2u6wfyvmqlhBLPZ8
+	OmMxNzdAEOnyVQQmdcfVyCJ3nghzbMGSiuoI63OeGv5Np8prPcIGqt1n4Jkodbtsc0z0N3Tvh0aar
+	PxZOZPu1Vr2tchIO8wsA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nVTS7-003NF3-2f; Sat, 19 Mar 2022 07:24:43 +0000
-Received: from relay12.mail.gandi.net ([217.70.178.232])
+	id 1nVTS3-003NEJ-Jp; Sat, 19 Mar 2022 07:24:39 +0000
+Received: from relay5-d.mail.gandi.net ([2001:4b98:dc4:8::225])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nVTRy-003ND5-TG
- for barebox@lists.infradead.org; Sat, 19 Mar 2022 07:24:39 +0000
+ id 1nVTRv-003NA9-Jy
+ for barebox@lists.infradead.org; Sat, 19 Mar 2022 07:24:33 +0000
 Received: (Authenticated sender: ahmad@a3f.at)
- by mail.gandi.net (Postfix) with ESMTPSA id 5DB29200002;
- Sat, 19 Mar 2022 07:24:31 +0000 (UTC)
+ by mail.gandi.net (Postfix) with ESMTPSA id ADAE71C0004;
+ Sat, 19 Mar 2022 07:24:15 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sat, 19 Mar 2022 08:24:27 +0100
-Message-Id: <20220319072427.1310855-1-ahmad@a3f.at>
+Date: Sat, 19 Mar 2022 08:24:08 +0100
+Message-Id: <20220319072410.1310723-2-ahmad@a3f.at>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220319072410.1310723-1-ahmad@a3f.at>
+References: <20220319072410.1310723-1-ahmad@a3f.at>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220319_002435_111976_9F406B95 
-X-CRM114-Status: GOOD (  10.11  )
+X-CRM114-CacheID: sfid-20220319_002432_222710_23B000FD 
+X-CRM114-Status: GOOD (  13.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -62,41 +64,103 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] partitions: efi: print GPT offset in debug message
+Subject: [PATCH 2/4] mci: mci_spi: extend driver for device tree probing
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This debug message is printed for the alternative GPT header as well,
-which may not exist at that location, because the medium has a different
-length than what's in the GPT header. Make it easier to differentiate,
-whether the message refers to the primary or alternate GPT header by
-printing the LBA the header was expected at.
+Driver has been matched by name only so far, add optional support for
+the device tree binding.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- common/partitions/efi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mci/mci_spi.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-index 0787b93f120b..848bed22610f 100644
---- a/common/partitions/efi.c
-+++ b/common/partitions/efi.c
-@@ -154,8 +154,8 @@ static int is_gpt_valid(struct block_device *blk, u64 lba,
+diff --git a/drivers/mci/mci_spi.c b/drivers/mci/mci_spi.c
+index ed3ddf890f7f..6ae2824eddc8 100644
+--- a/drivers/mci/mci_spi.c
++++ b/drivers/mci/mci_spi.c
+@@ -18,6 +18,8 @@
+ #include <mci.h>
+ #include <crc.h>
+ #include <crc7.h>
++#include <of.h>
++#include <gpiod.h>
  
- 	/* Check the GPT header signature */
- 	if (le64_to_cpu((*gpt)->signature) != GPT_HEADER_SIGNATURE) {
--		dev_dbg(blk->dev, "GUID Partition Table Header signature is wrong:"
--			"0x%llX != 0x%llX\n",
-+		dev_dbg(blk->dev, "GUID Partition Table Header signature at LBA"
-+			"%llu is wrong: 0x%llX != 0x%llX\n", lba,
- 			(unsigned long long)le64_to_cpu((*gpt)->signature),
- 			(unsigned long long)GPT_HEADER_SIGNATURE);
- 		goto fail;
+ #define to_spi_host(mci) container_of(mci, struct mmc_spi_host, mci)
+ #define spi_setup(spi) spi->master->setup(spi)
+@@ -47,6 +49,7 @@ struct mmc_spi_host {
+ 	struct mci_host	mci;
+ 	struct spi_device	*spi;
+ 	struct device_d	*dev;
++	int detect_pin;
+ 
+ 	/* for bulk data transfers */
+ 	struct spi_transfer	t_tx;
+@@ -351,8 +354,23 @@ static int mmc_spi_init(struct mci_host *mci, struct device_d *mci_dev)
+ 	return 0;
+ }
+ 
++static int spi_mci_card_present(struct mci_host *mci)
++{
++	struct mmc_spi_host	*host = to_spi_host(mci);
++	int			ret;
++
++	/* No gpio, assume card is present */
++	if (!gpio_is_valid(host->detect_pin))
++		return 1;
++
++	ret = gpio_get_value(host->detect_pin);
++
++	return ret == 0 ? 1 : 0;
++}
++
+ static int spi_mci_probe(struct device_d *dev)
+ {
++	struct device_node	*np = dev_of_node(dev);
+ 	struct spi_device	*spi = (struct spi_device *)dev->type_data;
+ 	struct mmc_spi_host	*host;
+ 	void			*ones;
+@@ -362,6 +380,7 @@ static int spi_mci_probe(struct device_d *dev)
+ 	host->mci.send_cmd = mmc_spi_request;
+ 	host->mci.set_ios = mmc_spi_set_ios;
+ 	host->mci.init = mmc_spi_init;
++	host->mci.card_present = spi_mci_card_present;
+ 	host->mci.hw_dev = dev;
+ 
+ 	/* MMC and SD specs only seem to care that sampling is on the
+@@ -415,14 +434,26 @@ static int spi_mci_probe(struct device_d *dev)
+ 
+ 	host->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
+ 	host->mci.host_caps = MMC_CAP_SPI;
++	host->detect_pin = -EINVAL;
++
++	if (np) {
++		host->mci.devname = xstrdup(of_alias_get(np));
++		host->detect_pin = gpiod_get(dev, NULL, GPIOD_IN);
++	}
+ 
+ 	mci_register(&host->mci);
+ 
+ 	return 0;
+ }
+ 
++static __maybe_unused struct of_device_id spi_mci_compatible[] = {
++	{ .compatible = "mmc-spi-slot" },
++	{ /* sentinel */ }
++};
++
+ static struct driver_d spi_mci_driver = {
+ 	.name	= "spi_mci",
+ 	.probe	= spi_mci_probe,
++	.of_compatible = DRV_OF_COMPAT(spi_mci_compatible),
+ };
+ device_spi_driver(spi_mci_driver);
 -- 
 2.34.1
 
