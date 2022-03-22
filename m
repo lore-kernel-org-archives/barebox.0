@@ -1,71 +1,94 @@
-Delivery-date: Tue, 22 Mar 2022 10:01:59 +0100
+Delivery-date: Tue, 22 Mar 2022 10:25:24 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nWaOp-002NWT-OJ
-	for lore@lore.pengutronix.de; Tue, 22 Mar 2022 10:01:59 +0100
+	id 1nWalV-002Op8-4y
+	for lore@lore.pengutronix.de; Tue, 22 Mar 2022 10:25:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nWaOr-00027v-Rn
-	for lore@pengutronix.de; Tue, 22 Mar 2022 10:01:58 +0100
+	id 1nWalX-00056Y-2H
+	for lore@pengutronix.de; Tue, 22 Mar 2022 10:25:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=MBmXI1iZkKA+NZtZWSmBKyQMusBe8jju7PCuMneec2s=; b=g2TlkoO13vc438
-	pslylVjbQXAcSsVfxNpncQXgIeqcbT3zzyeB60Rfdvvhu3WEZ5fUYkuMRo8F+AHvVTwELSGs3Hop8
-	dkCpfOGUIf+He50691gwaE32S3Bbc5tXZknY4wRJ+WheId0kEA3PcCD1G+I28+IopSLm/ZsNdyq9/
-	vKeucL8hQoycP2oLY/TPatm0mBlwP9Lo3wwomL6/yrGl6ksj6q7FbJp0yJjAJsS+PGyYn6LCCShdU
-	VEIDp/8mDEDE8hzZMN+32wpN7MdUGIX04slPcMG3eVWE3a1bLklrvdZwsf2PM9Wv+9XeosaWkxl7U
-	oefnkvV6Tzcaz/BgYcrA==;
+	List-Owner; bh=IUJW3/DMoY05hWUyOV6IqEiAAENwHvCpcL6sJjsYNws=; b=aWggM5qP69Bc1k
+	JH03kPv8xztE4k1Cs8dvqJ7qAnPrWydBMCsctpIX0G+LtJbeesKHq1l2wnLjaw7nvsx7FHMc7XCuU
+	2HIubtn69rTw54gOIeOY1ZL4Zafc814b6U9bzv1tI0wekdF77PxR6/YlpwHBRSNv1USAxe02TvqAY
+	k4tV7qZ0ootVwJ0zU+xyMmwNo8f9uFp4T+Wpi3onMx2gOJUHMyDQ+/mf8d4zGn9Nrt6iocmr0kAex
+	OihOtkcDGtp9JZ2BzCxDoVtkUW5/gLjWVD5cJ5YfDg4XJw8+hb1KShFOXgLyUIILxbbP+5Vn3FipE
+	917V+xu/sNziKsupaFuQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nWaNP-00AVh7-Pv; Tue, 22 Mar 2022 09:00:27 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1nWak6-00AaMG-1g; Tue, 22 Mar 2022 09:23:54 +0000
+Received: from smtpout140.security-mail.net ([85.31.212.143]
+ helo=fx403.security-mail.net)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nWaNK-00AVgG-PM
- for barebox@lists.infradead.org; Tue, 22 Mar 2022 09:00:24 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1nWaNH-0001hc-5O; Tue, 22 Mar 2022 10:00:19 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
- (envelope-from <ukl@pengutronix.de>)
- id 1nWaNC-002G4T-Re; Tue, 22 Mar 2022 10:00:17 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <ukl@pengutronix.de>)
- id 1nWaNE-00ArvX-HJ; Tue, 22 Mar 2022 10:00:16 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Renaud Barbier <Renaud.Barbier@ametek.com>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	barebox@lists.infradead.org
-Date: Tue, 22 Mar 2022 10:00:07 +0100
-Message-Id: <20220322090007.233155-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <32d47eaa-df0b-c949-ffd0-89e19ca1f244@pengutronix.de>
-References: <32d47eaa-df0b-c949-ffd0-89e19ca1f244@pengutronix.de>
+ id 1nWajz-00AaJg-Pj
+ for barebox@lists.infradead.org; Tue, 22 Mar 2022 09:23:49 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by fx403.security-mail.net (Postfix) with ESMTP id 476C755FCF4
+ for <barebox@lists.infradead.org>; Tue, 22 Mar 2022 10:23:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
+ s=sec-sig-email; t=1647941021;
+ bh=WVNHsLDE911vjuASviLGR1VPZc0shlecLCRQnw81+oQ=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To;
+ b=GsqtviMHntGyZXafBAZH7FNav5dLfZegJ8q3Q2CnjpUzWR7vjzUYuwOue5niatZFP
+ qjhvpghk9f4F7ltwkD4qQrDPA/8cJmTV0JZpxTM2BF+l/6hhdss1k7tXv2/A2cziMz
+ CWph+v9cYq6gX19Ypx2e5VeAd/Qv7bs93KnOzkls=
+Received: from fx403 (localhost [127.0.0.1]) by fx403.security-mail.net
+ (Postfix) with ESMTP id C39A655FCE6; Tue, 22 Mar 2022 10:23:40 +0100 (CET)
+Received: from zimbra2.kalray.eu (unknown [217.181.231.53]) by
+ fx403.security-mail.net (Postfix) with ESMTPS id F0A2455FCCC; Tue, 22 Mar
+ 2022 10:23:39 +0100 (CET)
+Received: from zimbra2.kalray.eu (localhost [127.0.0.1]) by
+ zimbra2.kalray.eu (Postfix) with ESMTPS id D4C3B27E041A; Tue, 22 Mar 2022
+ 10:23:39 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1]) by zimbra2.kalray.eu
+ (Postfix) with ESMTP id BB0DB27E0427; Tue, 22 Mar 2022 10:23:39 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1]) by localhost
+ (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026) with ESMTP id
+ UxDZ8OoRp4qe; Tue, 22 Mar 2022 10:23:39 +0100 (CET)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206]) by
+ zimbra2.kalray.eu (Postfix) with ESMTPSA id A8CF127E041A; Tue, 22 Mar 2022
+ 10:23:39 +0100 (CET)
+X-Virus-Scanned: E-securemail, by Secumail
+Secumail-id: <b24f.6239959b.efa52.0>
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu BB0DB27E0427
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1647941019;
+ bh=or1cB4ZiNqOGo+rj9Oqc7ItxW5ehA7UiZpeGTYsX5ks=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=bopufzlHXPwec0x1QWjS5G6pBN5t+AnV2FFTqWK6I/Vvz8P1VL733SFsH98iEskh+
+ NSULJqlhcnKLv4QfQZUUQZb4NipmBjMhpLu54da/Fo3gBoYHHZil1ikbq6UsgUVnZA
+ TKnICjNuFH5xmOZQTt8mEjFa7CRU7OwSUEv41HgQ=
+Date: Tue, 22 Mar 2022 10:23:38 +0100
+From: Jules Maselbas <jmaselbas@kalray.eu>
+To: Michael Grzeschik <mgr@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>,
+ Sascha Hauer <sha@pengutronix.de>, barebox@lists.infradead.org
+Message-ID: <20220322092338.GB5398@tellis.lin.mbt.kalray.eu>
+References: <20201221003251.83042-1-ahmad@a3f.at>
+ <20201221003251.83042-2-ahmad@a3f.at>
+ <20210106100543.GO19063@pengutronix.de>
+ <20220321221717.GJ11246@pengutronix.de>
+ <4bbe2758-ff16-6694-8bad-b8df2c254a48@pengutronix.de>
+ <20220322081905.GK11246@pengutronix.de>
+ <1c74b901-fa87-e922-0f37-e50478ac905b@pengutronix.de>
+ <20220322082923.GL11246@pengutronix.de>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2932; h=from:subject;
- bh=uN5xAl5RjgjqEyNR86lYAQ2Nxw1shCybVJE2oTKe4Xg=;
- b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBiOZATWRrN7RSpL4PvylnmpBhW582KcB4sZlkG7V89
- W81JUM+JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYjmQEwAKCRDB/BR4rcrsCTTVCA
- CF1rB9jweeoCkRxzh81MMnxrP+xJQhJWPnm1S/X23GVrDA4hvMNFlJbGSjemiWmVBBkPdye20y6iCR
- CddFmZNiQb8PvkDB7Vv/EF1LO4GdoEzxqDpI7jDWjAjmqs+25yxJfV73Wiav8hKzPJrmwZTz/PDdXv
- H7WL+VIFiu+9185H9wgfh9WcnBUecREeiMvL4ZLjmDPdfMeZu1oFc3ACa3MZQSXFKbzhs62lV9W2XO
- arG+p9wg7NveGlj14pwm7wajro1uNq9MCiyyytCjiVByi9oEI0f0VBLRR4FNpAhJtyXNSH+IgrqrPr
- w8lFzA4iftgaj8J8yV662RZRkZJC4l
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp;
- fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Disposition: inline
+In-Reply-To: <20220322082923.GL11246@pengutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220322_020022_869292_40B55543 
-X-CRM114-Status: GOOD (  13.33  )
+X-CRM114-CacheID: sfid-20220322_022348_078240_F18CB7D3 
+X-CRM114-Status: GOOD (  31.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,8 +100,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -90,62 +113,74 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] crypto: Followup to crypto symbol renaming for algo
- registration
+Subject: Re: [PATCH 1/2] fixup! usb: dwc2: Add support for optional usb phy
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-VGhlIHN5bWJvbHMgd2VyZSByZW5hbWVkIHRvIGEgbmljZXIgYW5kIGNvbnNpc3RlbnQgbmFtaW5n
-IHNjaGVtZSwgYnV0IEkKbWlzc2VkIHRvIGFkYXB0IGEgZmV3IHVzYWdlcy4KClRoaXMgd2FzIGRv
-bmUgdXNpbmc6CgoJcGVybCAtcCAtaSAtZSAncy9cYkNPTkZJR18oPzpESUdFU1RfKT8oTUQ1fFNI
-QTF8U0hBMjI0fFNIQTI1NnxTSEEzODR8U0hBNTEyfEhNQUMpXGIvQ09ORklHX0hBVkVfRElHRVNU
-XyQxLzsnIGNyeXB0by9obWFjLmMgY3J5cHRvL3NoYTIuYyBjcnlwdG8vc2hhNC5jCgpOb3cgdGhl
-cmUgZG9uJ3Qgc2VlbSB0byBiZSBhbnkgb2xkIG5hbWVzIGxlZnQ6CgpSZXBvcnRlZC1ieTogUmVu
-YXVkIEJhcmJpZXIgPFJlbmF1ZC5CYXJiaWVyQGFtZXRlay5jb20+CkZpeGVzOiAwM2ZiNTUyNGIw
-NjQgKCJjcnlwdG86IGNvbnNpc3RlbnRseSBuYW1lIHRoZSBhbGdvIGRpZ2VzdCBzeW1ib2xzIEhB
-VkVfRElHRVNUXy4uLiIpClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWlu
-ZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogY3J5cHRvL2htYWMuYyB8IDEyICsrKysrKy0t
-LS0tLQogY3J5cHRvL3NoYTIuYyB8ICA0ICsrLS0KIGNyeXB0by9zaGE0LmMgfCAgNCArKy0tCiAz
-IGZpbGVzIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL2NyeXB0by9obWFjLmMgYi9jcnlwdG8vaG1hYy5jCmluZGV4IDM3YjI3MGRmN2E5NS4u
-MjBmYzQ3MGQ5MDU5IDEwMDY0NAotLS0gYS9jcnlwdG8vaG1hYy5jCisrKyBiL2NyeXB0by9obWFj
-LmMKQEAgLTE4MSwxNyArMTgxLDE3IEBAIHN0YXRpYyBpbnQgZGlnZXN0X2htYWNfcmVnaXN0ZXIo
-Y2hhciAqbmFtZSwgdW5zaWduZWQgaW50IHBhZF9sZW5ndGgpCiAKIHN0YXRpYyBpbnQgZGlnZXN0
-X2htYWNfaW5pdGNhbGwodm9pZCkKIHsKLQlpZiAoSVNfRU5BQkxFRChDT05GSUdfTUQ1KSkKKwlp
-ZiAoSVNfRU5BQkxFRChDT05GSUdfSEFWRV9ESUdFU1RfTUQ1KSkKIAkJZGlnZXN0X2htYWNfcmVn
-aXN0ZXIoIm1kNSIsIDY0KTsKLQlpZiAoSVNfRU5BQkxFRChDT05GSUdfU0hBMSkpCisJaWYgKElT
-X0VOQUJMRUQoQ09ORklHX0hBVkVfRElHRVNUX1NIQTEpKQogCQlkaWdlc3RfaG1hY19yZWdpc3Rl
-cigic2hhMSIsIDY0KTsKLQlpZiAoSVNfRU5BQkxFRChDT05GSUdfU0hBMjI0KSkKKwlpZiAoSVNf
-RU5BQkxFRChDT05GSUdfSEFWRV9ESUdFU1RfU0hBMjI0KSkKIAkJZGlnZXN0X2htYWNfcmVnaXN0
-ZXIoInNoYTIyNCIsIDY0KTsKLQlpZiAoSVNfRU5BQkxFRChDT05GSUdfU0hBMjU2KSkKKwlpZiAo
-SVNfRU5BQkxFRChDT05GSUdfSEFWRV9ESUdFU1RfU0hBMjU2KSkKIAkJZGlnZXN0X2htYWNfcmVn
-aXN0ZXIoInNoYTI1NiIsIDY0KTsKLQlpZiAoSVNfRU5BQkxFRChDT05GSUdfU0hBMzg0KSkKKwlp
-ZiAoSVNfRU5BQkxFRChDT05GSUdfSEFWRV9ESUdFU1RfU0hBMzg0KSkKIAkJZGlnZXN0X2htYWNf
-cmVnaXN0ZXIoInNoYTM4NCIsIDEyOCk7Ci0JaWYgKElTX0VOQUJMRUQoQ09ORklHX1NIQTUxMikp
-CisJaWYgKElTX0VOQUJMRUQoQ09ORklHX0hBVkVfRElHRVNUX1NIQTUxMikpCiAJCWRpZ2VzdF9o
-bWFjX3JlZ2lzdGVyKCJzaGE1MTIiLCAxMjgpOwogCiAJcmV0dXJuIDA7CmRpZmYgLS1naXQgYS9j
-cnlwdG8vc2hhMi5jIGIvY3J5cHRvL3NoYTIuYwppbmRleCAwMTNmNWJiM2IyNDguLmNhYzUwOTU2
-NDgxNCAxMDA2NDQKLS0tIGEvY3J5cHRvL3NoYTIuYworKysgYi9jcnlwdG8vc2hhMi5jCkBAIC0z
-MzgsNyArMzM4LDcgQEAgc3RhdGljIHN0cnVjdCBkaWdlc3RfYWxnbyBtMjI0ID0gewogCiBzdGF0
-aWMgaW50IHNoYTIyNF9kaWdlc3RfcmVnaXN0ZXIodm9pZCkKIHsKLQlpZiAoIUlTX0VOQUJMRUQo
-Q09ORklHX1NIQTIyNCkpCisJaWYgKCFJU19FTkFCTEVEKENPTkZJR19IQVZFX0RJR0VTVF9TSEEy
-MjQpKQogCQlyZXR1cm4gMDsKIAogCXJldHVybiBkaWdlc3RfYWxnb19yZWdpc3RlcigmbTIyNCk7
-CkBAIC0zNjUsNyArMzY1LDcgQEAgc3RydWN0IGRpZ2VzdF9hbGdvIG0yNTYgPSB7CiAjaWZuZGVm
-IF9fUEJMX18KIHN0YXRpYyBpbnQgc2hhMjU2X2RpZ2VzdF9yZWdpc3Rlcih2b2lkKQogewotCWlm
-ICghSVNfRU5BQkxFRChDT05GSUdfU0hBMjU2KSkKKwlpZiAoIUlTX0VOQUJMRUQoQ09ORklHX0hB
-VkVfRElHRVNUX1NIQTI1NikpCiAJCXJldHVybiAwOwogCiAJcmV0dXJuIGRpZ2VzdF9hbGdvX3Jl
-Z2lzdGVyKCZtMjU2KTsKZGlmZiAtLWdpdCBhL2NyeXB0by9zaGE0LmMgYi9jcnlwdG8vc2hhNC5j
-CmluZGV4IGEyZTkwYzBhMmNhZS4uOGM5NGY1MDExZGMyIDEwMDY0NAotLS0gYS9jcnlwdG8vc2hh
-NC5jCisrKyBiL2NyeXB0by9zaGE0LmMKQEAgLTI1OCw3ICsyNTgsNyBAQCBzdGF0aWMgc3RydWN0
-IGRpZ2VzdF9hbGdvIG0zODQgPSB7CiAKIHN0YXRpYyBpbnQgc2hhMzg0X2RpZ2VzdF9yZWdpc3Rl
-cih2b2lkKQogewotCWlmICghSVNfRU5BQkxFRChDT05GSUdfU0hBMzg0KSkKKwlpZiAoIUlTX0VO
-QUJMRUQoQ09ORklHX0hBVkVfRElHRVNUX1NIQTM4NCkpCiAJCXJldHVybiAwOwogCiAJcmV0dXJu
-IGRpZ2VzdF9hbGdvX3JlZ2lzdGVyKCZtMzg0KTsKQEAgLTI4NCw3ICsyODQsNyBAQCBzdGF0aWMg
-c3RydWN0IGRpZ2VzdF9hbGdvIG01MTIgPSB7CiAKIHN0YXRpYyBpbnQgc2hhNTEyX2RpZ2VzdF9y
-ZWdpc3Rlcih2b2lkKQogewotCWlmICghSVNfRU5BQkxFRChDT05GSUdfU0hBNTEyKSkKKwlpZiAo
-IUlTX0VOQUJMRUQoQ09ORklHX0hBVkVfRElHRVNUX1NIQTUxMikpCiAJCXJldHVybiAwOwogCiAJ
-cmV0dXJuIGRpZ2VzdF9hbGdvX3JlZ2lzdGVyKCZtNTEyKTsKLS0gCjIuMzUuMQoKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi,
+
+> > > > > > > Until this is settled, swap the order to follow what Linux does.
+> > > > > > > This is suboptimal, because it means controller drivers have different
+> > > > > > > order of the operations and that you can't combine arbitrary PHYs and
+> > > > > > > controllers, but it seems unlikely we will support combinations that
+> > > > > > > aren't supported by Linux in the first place anyway.
+> > > > > > 
+> > > > > > This is valuable information and I don't want it to be lost, so instead
+> > > > > > of applying this as a fixup I rewrote the subject to:
+> > > > > > 
+> > > > > > usb: dwc2: swap order of phy_init and phy_power_on to what Linux does
+> > > > > > 
+> > > > > > and applied it as a separate patch.
+> > > > > 
+> > > > > With this patch applied, some stm32mp1 do seem to timeout when
+> > > > > addressing the core.
+> > > > > 
+> > > > > WARNING: dwc2 49000000.usb-otg@49000000.of: dwc2_core_reset: Timeout! Waiting for Core Soft Reset
+> > > > > ERROR: dwc2 49000000.usb-otg@49000000.of: probe failed: Connection timed out
+> > > > > 
+> > > > > When I revert this patch. Everything works fine again.
+> > > > > 
+> > > > > Is it possible that we can revert it in mainline now?
+> > > > 
+> > > > Since 0e37f94fbe1b ("phy: stm32: sync with upstream"), the phy-stm32-usbphyc now
+> > > > has no poweron/poweroff callbacks, so a revert seems to only slightly change
+> > > > timing. I'd suggest you dig some more.
+> > > 
+> > > That is not true. phy_power_on also enables the phy_regulator. Changing
+> > > this order has the effect that the regulator is enabled after or before
+> > > phy_init call.
+> > 
+> > Oh, good point.
+> > 
+> > > > > How can I reproduce the case this was fixing in the first place?
+> > > > 
+> > > > The case was that barebox calls poweron/init in a different order than Linux.
+> > > > This point is moot now though because poweron is no longer provided by the
+> > > > driver.
+> > > 
+> > > Still not true, though.
+> > 
+> > Isn't this the same order Linux uses? Powering on regulator and then phy_init?
+> > Why does it lead to issues in barebox, but not in Linux?
+> 
+> I have no clue so far. Especially as this seems to have implications on
+> the platform I am working on but not on the dk2. Although both use the
+> same st,stpmic1 node vdd_usb for the phy_regulator.
+
+In linux driver dwc2 (and dwc3) call phy_poweron then phy_init, which I
+believe is not the right order, it should be init -> poweron.
+The thing is that's a two part issue, first the usb drivers using phy
+must use the correct call order, secondly the phy drivers must implement
+the correct "flow"
+
+
+
+
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
