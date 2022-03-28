@@ -1,16 +1,16 @@
-Delivery-date: Mon, 28 Mar 2022 10:56:14 +0200
+Delivery-date: Mon, 28 Mar 2022 10:57:26 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nYlAZ-008oeL-9i
-	for lore@lore.pengutronix.de; Mon, 28 Mar 2022 10:56:14 +0200
+	id 1nYlBi-008oh6-Vz
+	for lore@lore.pengutronix.de; Mon, 28 Mar 2022 10:57:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nYlAb-0000sh-LK
-	for lore@pengutronix.de; Mon, 28 Mar 2022 10:56:14 +0200
+	id 1nYlBk-00016S-Pv
+	for lore@pengutronix.de; Mon, 28 Mar 2022 10:57:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,47 +18,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=eFSXqL6UWvcHvrjFaONKXoKh6lkuDTX/lw8FUDm1j7w=; b=ioHT2LEj4WeMXg2+C9D9PpiSLF
-	XJkU0mZxVUPgUoqzNvK+kk9fJNKwG6diy8sfpXsv7zGTh6eFZFpUG8R19HHSprdFfyd/fZLY2pZXL
-	Q2gcVGXgairTwxHxc1bzZXaiihXmQOBPYmXp4P3n13cefhBS8eM7ktGgZgk03TxlF8Te6YDvZbQwv
-	BvBE57kvDJfKX4C8jEf7zrMB6yK9EGEN1FHOTAvV5DkX/fbXHlwSiYYlxCSQEm5ScXBAmWodVrhVe
-	rTpT0lVtoXsnnITlb/ZwqTYzKEKRQQbA7RHRPRTostJXgpW5aJ2ghLKz9AOMuP5GJks3CDde27G0Y
-	xZF7dNeg==;
+	bh=aKTba16MJk+HykaQk72oVEXHQlPcu5YJvaxhwe5Dprg=; b=mvr0hb4VDeqSXwIuApSE09yc2X
+	JlbmaTgWvx9i/xIU1aS0jxcatblhAwrSkxvfLKuqNUijYKbWMCePD0emvMvx7B4O56t+1olVo5pYt
+	n8k+1Z9REJjo6WZGUtAnMryb7C+aPSpMFy8JI6C8N7wSh5kRap3zW6YFr5GGt07VMrLBnoAKAA6wH
+	du6w24AhfpihghCE9jL3XQRm01jCYmZxq9NIr+8MwpNoPo9ZRTw9URZIEQhSkT85YRB6xYHpH33qJ
+	f51B11Z9tj4woDP9F3w3d+OugvVMSsg3EutOpqyPMmdy1C3jUUSa0FInMqEi2581ArSWwja232hIQ
+	pQeUW6YA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nYl9Q-007vzV-14; Mon, 28 Mar 2022 08:55:00 +0000
+	id 1nYlAa-007wWH-78; Mon, 28 Mar 2022 08:56:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nYl9K-007vyf-Mk
- for barebox@lists.infradead.org; Mon, 28 Mar 2022 08:54:56 +0000
+ id 1nYlAT-007wUA-Mn
+ for barebox@lists.infradead.org; Mon, 28 Mar 2022 08:56:07 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nYl9J-0000Xr-GP; Mon, 28 Mar 2022 10:54:53 +0200
+ id 1nYlAS-0000oo-FX; Mon, 28 Mar 2022 10:56:04 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nYl9J-0005eX-7F; Mon, 28 Mar 2022 10:54:53 +0200
-Date: Mon, 28 Mar 2022 10:54:53 +0200
-To: Ahmad Fatoum <ahmad@a3f.at>
+ id 1nYlAS-0005nL-5k; Mon, 28 Mar 2022 10:56:04 +0200
+Date: Mon, 28 Mar 2022 10:56:04 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220328085453.GL12181@pengutronix.de>
-References: <20220319072427.1310855-1-ahmad@a3f.at>
+Message-ID: <20220328085604.GM12181@pengutronix.de>
+References: <20220318144924.497993-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220319072427.1310855-1-ahmad@a3f.at>
+In-Reply-To: <20220318144924.497993-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:54:45 up 107 days, 17:40, 85 users,  load average: 0.38, 0.26,
- 0.21
+X-Uptime: 10:55:41 up 107 days, 17:41, 85 users,  load average: 0.42, 0.30,
+ 0.22
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220328_015454_766890_186F21F8 
-X-CRM114-Status: GOOD (  25.70  )
+X-CRM114-CacheID: sfid-20220328_015605_767487_C2BB915D 
+X-CRM114-Status: GOOD (  22.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,44 +83,51 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] partitions: efi: print GPT offset in debug message
+Subject: Re: [PATCH] scripts: constify wirte_full input buffer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sat, Mar 19, 2022 at 08:24:27AM +0100, Ahmad Fatoum wrote:
-> This debug message is printed for the alternative GPT header as well,
-> which may not exist at that location, because the medium has a different
-> length than what's in the GPT header. Make it easier to differentiate,
-> whether the message refers to the primary or alternate GPT header by
-> printing the LBA the header was expected at.
+On Fri, Mar 18, 2022 at 03:49:24PM +0100, Ahmad Fatoum wrote:
+> Buffer written is read-only, so align prototype with <libfile.h>.
 > 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  common/partitions/efi.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  scripts/common.c | 2 +-
+>  scripts/common.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Applied, thanks
+Applied with s/wirte_full/write_full/, thanks
 
 Sascha
 
 > 
-> diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-> index 0787b93f120b..848bed22610f 100644
-> --- a/common/partitions/efi.c
-> +++ b/common/partitions/efi.c
-> @@ -154,8 +154,8 @@ static int is_gpt_valid(struct block_device *blk, u64 lba,
+> diff --git a/scripts/common.c b/scripts/common.c
+> index 2be41615ea9e..0eb263d041a5 100644
+> --- a/scripts/common.c
+> +++ b/scripts/common.c
+> @@ -148,7 +148,7 @@ int read_full(int fd, void *buf, size_t size)
+>  	return insize;
+>  }
 >  
->  	/* Check the GPT header signature */
->  	if (le64_to_cpu((*gpt)->signature) != GPT_HEADER_SIGNATURE) {
-> -		dev_dbg(blk->dev, "GUID Partition Table Header signature is wrong:"
-> -			"0x%llX != 0x%llX\n",
-> +		dev_dbg(blk->dev, "GUID Partition Table Header signature at LBA"
-> +			"%llu is wrong: 0x%llX != 0x%llX\n", lba,
->  			(unsigned long long)le64_to_cpu((*gpt)->signature),
->  			(unsigned long long)GPT_HEADER_SIGNATURE);
->  		goto fail;
+> -int write_full(int fd, void *buf, size_t size)
+> +int write_full(int fd, const void *buf, size_t size)
+>  {
+>  	size_t insize = size;
+>  	int now;
+> diff --git a/scripts/common.h b/scripts/common.h
+> index 820108c52c2d..399729c338f3 100644
+> --- a/scripts/common.h
+> +++ b/scripts/common.h
+> @@ -5,6 +5,6 @@ int read_file_2(const char *filename, size_t *size, void **outbuf, size_t max_si
+>  void *read_file(const char *filename, size_t *size);
+>  int write_file(const char *filename, const void *buf, size_t size);
+>  int read_full(int fd, void *buf, size_t size);
+> -int write_full(int fd, void *buf, size_t size);
+> +int write_full(int fd, const void *buf, size_t size);
+>  
+>  #endif /* __COMMON_H */
 > -- 
-> 2.34.1
+> 2.30.2
 > 
 > 
 > _______________________________________________
