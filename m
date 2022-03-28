@@ -1,16 +1,16 @@
-Delivery-date: Mon, 28 Mar 2022 10:54:30 +0200
+Delivery-date: Mon, 28 Mar 2022 10:55:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nYl8s-008oYI-UE
-	for lore@lore.pengutronix.de; Mon, 28 Mar 2022 10:54:30 +0200
+	id 1nYl9x-008oc5-Uh
+	for lore@lore.pengutronix.de; Mon, 28 Mar 2022 10:55:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nYl8v-0000VK-Dt
-	for lore@pengutronix.de; Mon, 28 Mar 2022 10:54:30 +0200
+	id 1nYlA0-0000iJ-39
+	for lore@pengutronix.de; Mon, 28 Mar 2022 10:55:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,47 +18,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=/d355uCWBy1yFlLlz5NZrrJpM8ktF/HZRg63c+Ygq+0=; b=m/Gmw9/F8djrCU5JKlzqhMKm1w
-	YMHUEte5DyL9dApNXP/zVptM1KjxurnQbrx9Q4pPRp2xmLOvF4S7U7xpqcG7sAYfRf090A1lmqheA
-	vukUQ/tQxRClEJYO/VOaWwLCBePuR6HkzKFYzVHxBjigaa4Dw/oLldolfH9uIMnKqcsaOQjbaS6KL
-	b0c0tzKMyYpkaqpbN938GBQkwFesRCykgbxYaIIPoT6NxXXaah+LcCBswoZ4UKMiZSvbXccSX9Nay
-	r+as4Lwsi9sBfApAmzfHxjag/ZGRk+zJz0qzfu3znEdZ6iORa+oMGNEC7Ce3hr8mlwHeJmZ8O1xUj
-	X2nyCnOg==;
+	bh=vcTfd01JKX9bUvnUQqlgYpCpW+m3bv9IYXqGRxJ8OQQ=; b=XRG7iysvoFgrscOB7mpniMCQag
+	jj3beMFzTDe/b2YP20VukstRKR3Ercptuw9C+37Tio8I+b+gQQfPTiuGTrLFO8vaLRb4hb8vZra/x
+	S0a+tTGV5dP1ubkx4qWhlqgKukc+lqbCT+2qz3N/sSlXSVHcjZR543WqOqLulZ5ye9B3BNYOyikcX
+	UGbUZJZSKjpEcRFsvAn4RlZM1gJjAJLnL3vNnylXP73BZZrXfO5O+N28+vS959BTcAL36PJodDqjG
+	1dd9tgkJn52L+45JAAjRhSrxP0xBqF757CsOdnjzI5MOSbVjYHj6RULj0BIXC3BFLIK4KkmvKrLtz
+	c2JF7LCw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nYl7j-007vaC-3v; Mon, 28 Mar 2022 08:53:15 +0000
+	id 1nYl8n-007vou-Fe; Mon, 28 Mar 2022 08:54:21 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nYl7d-007vZV-MD
- for barebox@lists.infradead.org; Mon, 28 Mar 2022 08:53:11 +0000
+ id 1nYl8h-007vnF-Qg
+ for barebox@lists.infradead.org; Mon, 28 Mar 2022 08:54:17 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nYl7c-0000Mz-EP; Mon, 28 Mar 2022 10:53:08 +0200
+ id 1nYl8g-0000T9-Cw; Mon, 28 Mar 2022 10:54:14 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nYl7c-0005HW-5f; Mon, 28 Mar 2022 10:53:08 +0200
-Date: Mon, 28 Mar 2022 10:53:08 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1nYl8f-0005d8-4h; Mon, 28 Mar 2022 10:54:13 +0200
+Date: Mon, 28 Mar 2022 10:54:13 +0200
+To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220328085308.GJ12181@pengutronix.de>
-References: <20220319110246.2850396-1-a.fatoum@pengutronix.de>
+Message-ID: <20220328085413.GK12181@pengutronix.de>
+References: <20220319074335.1313872-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220319110246.2850396-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220319074335.1313872-1-ahmad@a3f.at>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:52:59 up 107 days, 17:38, 85 users,  load average: 0.08, 0.12,
- 0.16
+X-Uptime: 10:54:03 up 107 days, 17:39, 85 users,  load average: 0.74, 0.29,
+ 0.22
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220328_015309_843908_2AB9634D 
-X-CRM114-Status: GOOD (  19.09  )
+X-CRM114-CacheID: sfid-20220328_015415_885347_E5BB8A49 
+X-CRM114-Status: GOOD (  21.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,38 +83,38 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master 0/6] usb: gadget: multi: fix bind error path
+Subject: Re: [PATCH] ARM: asm: setjmp: add missing .pop_section
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sat, Mar 19, 2022 at 12:02:40PM +0100, Ahmad Fatoum wrote:
-> USB mass storage gadget may fail during bind. USB multi gadget error
-> path for failed bind is broken. USB mass storage gadget unbind leaks
-> resources. Fix these three issues.
+On Sat, Mar 19, 2022 at 08:43:35AM +0100, Ahmad Fatoum wrote:
+> This fixes a mismatched .push_section. This had no effect, because the
+> file ended after the follow-up .push_section.
 > 
-> Ahmad Fatoum (6):
->   usb: gadget: implement and use system_partitions_get_null
->   usb: gadget: don't register UMS with empty function
->   usb: gadget: mass-storage: fix clean up of file descriptors
->   usb: gadget: mass-storage: reference count allocations used in bthread
->   usb: gadget: multi: fix broken handling of USB function bind error
->   usb: gadget: multi: free UMS instance at multi_unbind time
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  arch/arm/lib32/setjmp.S | 1 +
+>  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
 Sascha
 
 > 
->  common/fastboot.c                   |  4 +-
->  common/usbgadget.c                  |  6 +--
->  drivers/usb/gadget/f_mass_storage.c | 64 +++++++++++++++++++++++------
->  drivers/usb/gadget/multi.c          | 24 ++++++++---
->  include/system-partitions.h         |  8 ++++
->  include/usb/mass_storage.h          |  1 +
->  6 files changed, 81 insertions(+), 26 deletions(-)
-> 
+> diff --git a/arch/arm/lib32/setjmp.S b/arch/arm/lib32/setjmp.S
+> index 626d915da183..cc6cafa4af3e 100644
+> --- a/arch/arm/lib32/setjmp.S
+> +++ b/arch/arm/lib32/setjmp.S
+> @@ -33,6 +33,7 @@ ENTRY(longjmp)
+>  1:
+>  	bx   lr
+>  ENDPROC(longjmp)
+> +.popsection
+>  
+>  .pushsection .text.initjmp, "ax"
+>  ENTRY(initjmp)
 > -- 
-> 2.30.2
+> 2.34.1
 > 
 > 
 > _______________________________________________
