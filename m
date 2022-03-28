@@ -1,16 +1,16 @@
-Delivery-date: Mon, 28 Mar 2022 10:58:33 +0200
+Delivery-date: Mon, 28 Mar 2022 10:58:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nYlCn-008okB-TM
-	for lore@lore.pengutronix.de; Mon, 28 Mar 2022 10:58:33 +0200
+	id 1nYlD8-008olW-64
+	for lore@lore.pengutronix.de; Mon, 28 Mar 2022 10:58:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nYlCq-0001St-Ed
-	for lore@pengutronix.de; Mon, 28 Mar 2022 10:58:33 +0200
+	id 1nYlDA-0001Ub-GX
+	for lore@pengutronix.de; Mon, 28 Mar 2022 10:58:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,47 +18,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=p3mlH7xuMjJAF2DulWCeBjq+59Hr1mtr/9rcFFve0zw=; b=kPnnzCJKcziGWHk4m3QCclJiHh
-	WDAVonz54M08wwxjkXArQptcFNiAcJbasIn8D2CILrSRgqEyt0sNwvEIz1gZaONQEOzgZDS97vSyc
-	rzBxE5EQ1cY3v8V7nvnU5+GmgDXZ06/V6+nCJodkv+2cAFNP4tFO318WZKdrewKWr4tjAq1OJfCDR
-	/Wm984/llAIz1zKZnR3NDyl/8Q7AaMsIJh9f8M/Ez9qA0t4TBEc+qBzVaAytP+zoIXsRLu4jMBbTi
-	SiFeQkcgZ/diR92TXrrTmKjTSXPmDV+A6HnmVwU18TeXjjIfTJEzasouhbgZjroyfOLpGLpRRe1v5
-	fNBQED9A==;
+	bh=8zvoZTnkpmEvl57eZ2ZcO5EkmHtqNzOq2EFwo+O0f1A=; b=cgKsUWBXiNo+TsHbAknPxi2EEK
+	JBHviTHuoGwqjoa17D6uEysC91E3hU5tUXgcAldPWHdm5SvlIDFnOFU9NtmnnY9fdPNLt1Z2aixWq
+	Q3OeuQeAD3lyguip+OnchGX4JGNogl22RR2z8MkJUyrWgXUpsF7GuYe4hSLr0yiGAfznvkuWbHdLF
+	zzrGgEB/eqIlg9ltN2i/Ahuf35SqF6/3IPn+qW/OzyxnkMeYPk+7AtlngNKeLFHPMM9SIrnUn+f0N
+	xiqIGo41QHAiEmiqmCO5AbRI5td5bCCvkHeIM3raGbPNlLDwmj9LiV72wimV1/V+Yhb5hFYH6J/Iw
+	QSijAJhQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nYlBf-007wvl-6K; Mon, 28 Mar 2022 08:57:19 +0000
+	id 1nYlC2-007x3S-Py; Mon, 28 Mar 2022 08:57:42 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nYlBZ-007wuA-05
- for barebox@lists.infradead.org; Mon, 28 Mar 2022 08:57:14 +0000
+ id 1nYlBx-007x1z-FM
+ for barebox@lists.infradead.org; Mon, 28 Mar 2022 08:57:38 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nYlBX-00014n-Pb; Mon, 28 Mar 2022 10:57:11 +0200
+ id 1nYlBw-0001Jc-8V; Mon, 28 Mar 2022 10:57:36 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nYlBX-0005uq-H1; Mon, 28 Mar 2022 10:57:11 +0200
-Date: Mon, 28 Mar 2022 10:57:11 +0200
+ id 1nYlBv-0005vP-Uu; Mon, 28 Mar 2022 10:57:35 +0200
+Date: Mon, 28 Mar 2022 10:57:35 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220328085711.GO12181@pengutronix.de>
-References: <20220318152851.729901-1-a.fatoum@pengutronix.de>
+Message-ID: <20220328085735.GP12181@pengutronix.de>
+References: <20220318153047.733241-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220318152851.729901-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220318153047.733241-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:57:00 up 107 days, 17:42, 85 users,  load average: 0.27, 0.29,
- 0.23
+X-Uptime: 10:57:26 up 107 days, 17:43, 85 users,  load average: 0.24, 0.28,
+ 0.22
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220328_015713_067976_28D43EE4 
-X-CRM114-Status: GOOD (  20.07  )
+X-CRM114-CacheID: sfid-20220328_015737_541333_26033FDB 
+X-CRM114-Status: GOOD (  20.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,38 +83,32 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] scripts: remove non-existent bareboxstate binaries from
- .gitignore
+Subject: Re: [PATCH] sandbox: board: add stickypage.bin into .gitignore
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Mar 18, 2022 at 04:28:51PM +0100, Ahmad Fatoum wrote:
-> barebox builds no tools with these names. The normal barebox-state
-> utility comes from dt-utils, so drop the unnecessary entries.
+On Fri, Mar 18, 2022 at 04:30:47PM +0100, Ahmad Fatoum wrote:
+> Otherwise, it shows up in version control for in-tree builds.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  scripts/.gitignore | 2 --
->  1 file changed, 2 deletions(-)
+>  arch/sandbox/board/.gitignore | 1 +
+>  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/scripts/.gitignore b/scripts/.gitignore
-> index 6ef43640b79f..f78793eab7da 100644
-> --- a/scripts/.gitignore
-> +++ b/scripts/.gitignore
-> @@ -22,8 +22,6 @@ bareboxenv-target
->  kernel-install-target
->  bareboxcrc32-target
->  bareboximd-target
-> -bareboxstate
-> -bareboxstate-target
->  mk-am35xx-spi-image
->  mxsimage
->  mxsboot
+> diff --git a/arch/sandbox/board/.gitignore b/arch/sandbox/board/.gitignore
+> index 03987a700942..c0acd24b98b5 100644
+> --- a/arch/sandbox/board/.gitignore
+> +++ b/arch/sandbox/board/.gitignore
+> @@ -1,3 +1,4 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  
+>  barebox.lds
+> +stickypage.bin
 > -- 
 > 2.30.2
 > 
