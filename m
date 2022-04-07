@@ -1,59 +1,59 @@
-Delivery-date: Thu, 07 Apr 2022 11:41:41 +0200
+Delivery-date: Thu, 07 Apr 2022 11:41:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ncOe6-00AJ2T-Qu
-	for lore@lore.pengutronix.de; Thu, 07 Apr 2022 11:41:41 +0200
+	id 1ncOeH-00AJ3J-NA
+	for lore@lore.pengutronix.de; Thu, 07 Apr 2022 11:41:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ncOe2-0006et-77
-	for lore@pengutronix.de; Thu, 07 Apr 2022 11:41:40 +0200
+	id 1ncOeD-0006gt-Oj
+	for lore@pengutronix.de; Thu, 07 Apr 2022 11:41:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=4SXCeGuT61QuVnwfeU/5QS1zEiUpX7Yl1Dfh7wEPbv8=; b=XOrzw9detO2MFk
-	mCfaQa0oVr4XW0zkP+02FtLOtUF5CATIo2P8hphwqIjydsORbAUpADGNnacbHED3xSA6WxY0ou27j
-	IaNkCjElKL4q+3pF6aiLhTZ4+KDLcbHrjXjaUWT1xtJJivLlWiL7N5RZGt3z1ghcG+HIA8dwqioMw
-	GvQJEA6NdR6dTd9joH53FPmFz+GJsRWCbIjKZbMswlyXCJVqvy7SB2v8ueQhl22kkmG50+z2P3P05
-	gRatAoKAK26Wxs2yX7TCvlt0sEAQxWPBwSvMqNzafOMsVEK/dOOSTk07C86/La49RlZKw+lMTJXEo
-	ncz9MMfQoTq5qTulxTwg==;
+	List-Owner; bh=YeWuzTNJ4w3ti2FbQIsrFg0PJzyKxwVJq8uhMtQaOSQ=; b=V3ZaD8x9piNOen
+	Dg7co6tutMmLe0iP8opFaD9l4TXG0S0PvMduVqler0dPTdzCFLfvWrBxmtWZTGzBUR9JCtibGGgDd
+	Red4qTO6D935vMvP+ToDmidBd1fCzEV+WLWo95jt+BKgKFp2AII0EMOSgmrg/e6CK42kHGsGnx0aX
+	AGiQURk/yI5M20T8dJ8Zqd9epxDJg7l3mYVZZceDvli4NYlNo/kPLUK9h0xaSqBSnmkOul6WILrD5
+	03ZXeqodR9kuYof23FtBvg9MY+b2M0/8QM3u6daePeGUXErBj/EaLWaKcgHd3q3Ma9BmM2oW5yts/
+	pfVm/sLk/LlMZdnxXaeA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ncOcO-00Aw1l-6c; Thu, 07 Apr 2022 09:39:56 +0000
+	id 1ncOch-00AwEF-Kd; Thu, 07 Apr 2022 09:40:15 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ncOFN-00AlOR-L8
+ id 1ncOFN-00AlNp-Hv
  for barebox@lists.infradead.org; Thu, 07 Apr 2022 09:16:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1ncOFM-0001S1-4Q; Thu, 07 Apr 2022 11:16:08 +0200
+ id 1ncOFL-0001RS-SR; Thu, 07 Apr 2022 11:16:07 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
  by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
  (envelope-from <ore@pengutronix.de>)
- id 1ncOFM-001aKk-Sg; Thu, 07 Apr 2022 11:16:07 +0200
+ id 1ncOFM-001aKa-Ij; Thu, 07 Apr 2022 11:16:07 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <ore@pengutronix.de>)
- id 1ncOFI-0040rs-R9; Thu, 07 Apr 2022 11:16:04 +0200
+ id 1ncOFI-0040s1-Rw; Thu, 07 Apr 2022 11:16:04 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu,  7 Apr 2022 11:15:57 +0200
-Message-Id: <20220407091604.956577-6-o.rempel@pengutronix.de>
+Date: Thu,  7 Apr 2022 11:16:00 +0200
+Message-Id: <20220407091604.956577-9-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220407091604.956577-1-o.rempel@pengutronix.de>
 References: <20220407091604.956577-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220407_021609_799280_65E77330 
-X-CRM114-Status: GOOD (  13.61  )
+X-CRM114-CacheID: sfid-20220407_021609_627371_A2C9B23F 
+X-CRM114-Status: GOOD (  10.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,80 +78,32 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 05/12] net: port part of if_vlan header from kernel v5.17
+Subject: [PATCH v3 08/12] net: phy: make sure MDIO bus is probed if we search
+ for the PHY
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This header is needed for SJA11xx switch driver
+For DSA support we need to work with multiple MDIO buses. So, we need to
+make that MDIO bus node is probed before on on request of DSA switch
+registration.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- include/linux/if_vlan.h | 56 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
- create mode 100644 include/linux/if_vlan.h
+ drivers/net/phy/phy.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-new file mode 100644
-index 0000000000..9e54685064
---- /dev/null
-+++ b/include/linux/if_vlan.h
-@@ -0,0 +1,56 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * VLAN		An implementation of 802.1Q VLAN tagging.
-+ *
-+ * Authors:	Ben Greear <greearb@candelatech.com>
-+ */
-+#ifndef _LINUX_IF_VLAN_H_
-+#define _LINUX_IF_VLAN_H_
-+
-+#define VLAN_HLEN	4		/* The additional bytes required by VLAN
-+					 * (in addition to the Ethernet header)
-+					 */
-+#define VLAN_ETH_HLEN	18		/* Total octets in header.	 */
-+#define VLAN_ETH_ZLEN	64		/* Min. octets in frame sans FCS */
-+
-+/*
-+ * According to 802.3ac, the packet can be 4 bytes longer. --Klika Jan
-+ */
-+#define VLAN_ETH_DATA_LEN	1500	/* Max. octets in payload	 */
-+#define VLAN_ETH_FRAME_LEN	1518	/* Max. octets in frame sans FCS */
-+
-+#define VLAN_MAX_DEPTH	8		/* Max. number of nested VLAN tags parsed */
-+
-+/*
-+ * 	struct vlan_hdr - vlan header
-+ * 	@h_vlan_TCI: priority and VLAN ID
-+ *	@h_vlan_encapsulated_proto: packet type ID or len
-+ */
-+struct vlan_hdr {
-+	__be16	h_vlan_TCI;
-+	__be16	h_vlan_encapsulated_proto;
-+};
-+
-+/**
-+ *	struct vlan_ethhdr - vlan ethernet header (ethhdr + vlan_hdr)
-+ *	@h_dest: destination ethernet address
-+ *	@h_source: source ethernet address
-+ *	@h_vlan_proto: ethernet protocol
-+ *	@h_vlan_TCI: priority and VLAN ID
-+ *	@h_vlan_encapsulated_proto: packet type ID or len
-+ */
-+struct vlan_ethhdr {
-+	unsigned char	h_dest[ETH_ALEN];
-+	unsigned char	h_source[ETH_ALEN];
-+	__be16		h_vlan_proto;
-+	__be16		h_vlan_TCI;
-+	__be16		h_vlan_encapsulated_proto;
-+};
-+
-+#define VLAN_PRIO_MASK		0xe000 /* Priority Code Point */
-+#define VLAN_PRIO_SHIFT		13
-+#define VLAN_CFI_MASK		0x1000 /* Canonical Format Indicator / Drop Eligible Indicator */
-+#define VLAN_VID_MASK		0x0fff /* VLAN Identifier */
-+#define VLAN_N_VID		4096
-+
-+#endif /* !(_LINUX_IF_VLAN_H_) */
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index e8e8dad5bd..299e12b325 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -350,6 +350,7 @@ static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
+ 		return NULL;
+ 
+ 	if (!of_property_read_u32(phy_node, "reg", &addr)) {
++		of_device_ensure_probed(phy_node->parent);
+ 		for_each_mii_bus(bus) {
+ 			if (bus->parent->device_node == phy_node->parent) {
+ 				struct phy_device *phy = mdiobus_scan(bus, addr);
 -- 
 2.30.2
 
