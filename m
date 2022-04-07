@@ -1,60 +1,59 @@
-Delivery-date: Thu, 07 Apr 2022 11:20:46 +0200
+Delivery-date: Thu, 07 Apr 2022 11:21:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ncOJr-00AIB1-PA
-	for lore@lore.pengutronix.de; Thu, 07 Apr 2022 11:20:46 +0200
+	id 1ncOKY-00AICX-2Z
+	for lore@lore.pengutronix.de; Thu, 07 Apr 2022 11:21:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ncOJk-0002dW-Ss
-	for lore@pengutronix.de; Thu, 07 Apr 2022 11:20:46 +0200
+	id 1ncOKP-0002sn-8f
+	for lore@pengutronix.de; Thu, 07 Apr 2022 11:21:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=kfJYo3ueANhzupGNbIumiFqtjYpIl5RSKPFtBbD7tIw=; b=vpxJF/vJ6P/kNb
-	gAVpZtmzC2RJR6JTCeB9GTWicTt9bR65veBDEq+lWBU7reDUMApF9m4A+q6W3O4XRCYTTXb5cWEKK
-	eLMVj6H8dDtgymabnAELyViZa92fHnw2KgVFNu0FC054vogv+p5MU7IHukUzTf+dQylA81ltUJhHS
-	m+L7vESpFPYJYV5sFvmQ4vQ6QaJcbzfLNLLaaJJu3Aiw0+ClSOrede2TdFr/CI5zap6Jde0t4X/UT
-	6hsRiw0V5aLdRRrS0PMlq/THNyBCbPyNsd/4/Y1WVcdCx4eTIEJ5DxxNf3SyMdZlIN6RZUDbDSeUU
-	wSiibvwOnlCRJ2WK9viQ==;
+	List-Owner; bh=SLFE3Os/wXfqfF5s/QoFof81lgY43chJHnBQv5txtEE=; b=4JXbDyMbUFK/Vm
+	Xjs7VsG0sis2pAVkx7mKrYXIZS/vedPL1NKEnW6PGU1f1BJdGPJjLvDJQ+nkCsaOQ7ImNVSLgwaR0
+	ll690mMP+GHaflhQqlZaRKxMnEm6Qaz2N3GcLWy0QNliRNEIX24lq71ntxBe0FAYklfQwamtqDEVd
+	l1vY6bUXqzsl9mlESkzLOcemfDNvtQsqSiAs6e73qIkzc70v2R1POi7HTalqtSEoBvpNK/Jlo2LY+
+	YGaTB1cAxHDVeXocQxReROYnjqleUSyXiW7UnTB7lD8KsiTgyoqL0bX+SnrGPOSsj3/Ih25+Tw4Rp
+	Mx6V8FF0a/ydeX7ty7Dg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ncOHe-00AmLM-RV; Thu, 07 Apr 2022 09:18:31 +0000
+	id 1ncOIE-00AmcT-Ik; Thu, 07 Apr 2022 09:19:06 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ncNx2-00Acvo-Px
- for barebox@lists.infradead.org; Thu, 07 Apr 2022 08:57:28 +0000
+ id 1ncNx2-00Acvx-V4
+ for barebox@lists.infradead.org; Thu, 07 Apr 2022 08:57:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1ncNwz-0005pD-Ec; Thu, 07 Apr 2022 10:57:09 +0200
+ id 1ncNwz-0005pQ-ME; Thu, 07 Apr 2022 10:57:09 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
  by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
  (envelope-from <ore@pengutronix.de>)
- id 1ncNx0-001ZtE-2m; Thu, 07 Apr 2022 10:57:08 +0200
+ id 1ncNx0-001ZtM-99; Thu, 07 Apr 2022 10:57:08 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <ore@pengutronix.de>)
- id 1ncNww-003zUp-Nj; Thu, 07 Apr 2022 10:57:06 +0200
+ id 1ncNww-003zUm-MB; Thu, 07 Apr 2022 10:57:06 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  7 Apr 2022 10:57:04 +0200
-Message-Id: <20220407085705.951285-12-o.rempel@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu,  7 Apr 2022 10:57:03 +0200
+Message-Id: <20220407085705.951285-11-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220407085705.951285-1-o.rempel@pengutronix.de>
 References: <20220407085705.951285-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220407_015713_488314_05AD8907 
-X-CRM114-Status: GOOD (  23.33  )
+X-CRM114-CacheID: sfid-20220407_015713_954806_7D070454 
+X-CRM114-Status: GOOD (  19.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,2872 +78,3067 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 11/12] net: dsa: add KSZ9477 switch SPI driver
+Subject: [PATCH v2 10/12] net: dsa: add support for SJA11xx switches
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Add support for Microchip KSZ9477 switch.
+Port SJA11xx driver from u-boot v2022.04-rc2 to provide support for NXP SJA11xx
+series of switches.
 
-With this driver we will be able to use KSZ9477 switch as port
-multiplexer.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/Kconfig                 |    8 +
- drivers/net/Makefile                |    1 +
- drivers/net/ksz9477.c               |  570 +++++++++
- drivers/net/ksz9477_old.c           |  561 +++++++++
- include/platform_data/ksz9477_reg.h | 1665 +++++++++++++++++++++++++++
- 5 files changed, 2805 insertions(+)
- create mode 100644 drivers/net/ksz9477.c
- create mode 100644 drivers/net/ksz9477_old.c
- create mode 100644 include/platform_data/ksz9477_reg.h
+ drivers/net/Kconfig   |   17 +
+ drivers/net/Makefile  |    1 +
+ drivers/net/sja1105.c | 3000 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 3018 insertions(+)
+ create mode 100644 drivers/net/sja1105.c
 
 diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 038eeb19a8..50c87c8ff8 100644
+index 8d76fe66f2..038eeb19a8 100644
 --- a/drivers/net/Kconfig
 +++ b/drivers/net/Kconfig
-@@ -193,6 +193,14 @@ config DRIVER_NET_KS8851_MLL
- 	  This option enables support for the Micrel KS8851 MLL
- 	  ethernet chip.
+@@ -241,6 +241,23 @@ config DRIVER_NET_RTL8169
+ 	  This is a driver for the Fast Ethernet PCI network cards based on
+ 	  the RTL 8169 chips.
  
-+config DRIVER_NET_KSZ9477
-+	bool "KSZ9477 switch driver"
++config DRIVER_NET_SJA1105
++	bool "NXP SJA1105 Ethernet switch family driver"
 +	depends on SPI
++	select BITREV
 +	select DSA
 +	help
-+	  This option enables support for the Microchip KSZ9477
-+	  switch chip.
++	  This is the driver for the NXP SJA1105 automotive Ethernet switch
++	  family. These are 5-port devices and are managed over an SPI
++	  interface. Probing is handled based on OF bindings. The driver
++	  supports the following revisions:
++	    - SJA1105E (Gen. 1, No TT-Ethernet)
++	    - SJA1105T (Gen. 1, TT-Ethernet)
++	    - SJA1105P (Gen. 2, No SGMII, No TT-Ethernet)
++	    - SJA1105Q (Gen. 2, No SGMII, TT-Ethernet)
++	    - SJA1105R (Gen. 2, SGMII, No TT-Ethernet)
++	    - SJA1105S (Gen. 2, SGMII, TT-Ethernet)
 +
- config DRIVER_NET_MACB
- 	bool "macb Ethernet driver"
- 	depends on HAS_MACB || COMPILE_TEST
+ config DRIVER_NET_SMC911X
+ 	bool "smc911x ethernet driver"
+ 	select PHYLIB
 diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 1c979047d9..fa3d4583a0 100644
+index 406e13f1a0..1c979047d9 100644
 --- a/drivers/net/Makefile
 +++ b/drivers/net/Makefile
-@@ -26,6 +26,7 @@ obj-$(CONFIG_DRIVER_NET_FEC_IMX)	+= fec_imx.o
- obj-$(CONFIG_DRIVER_NET_FSL_FMAN)	+= fsl-fman.o
- obj-$(CONFIG_DRIVER_NET_GIANFAR)	+= gianfar.o
- obj-$(CONFIG_DRIVER_NET_KS8851_MLL)	+= ks8851_mll.o
-+obj-$(CONFIG_DRIVER_NET_KSZ9477)	+= ksz9477.o
- obj-$(CONFIG_DRIVER_NET_MACB)		+= macb.o
- obj-$(CONFIG_DRIVER_NET_MICREL)		+= ksz8864rmn.o
- obj-$(CONFIG_DRIVER_NET_MPC5200)	+= fec_mpc5200.o
-diff --git a/drivers/net/ksz9477.c b/drivers/net/ksz9477.c
+@@ -33,6 +33,7 @@ obj-$(CONFIG_DRIVER_NET_MVNETA)		+= mvneta.o
+ obj-$(CONFIG_DRIVER_NET_ORION)		+= orion-gbe.o
+ obj-$(CONFIG_DRIVER_NET_RTL8139)	+= rtl8139.o
+ obj-$(CONFIG_DRIVER_NET_RTL8169)	+= rtl8169.o
++obj-$(CONFIG_DRIVER_NET_SJA1105)	+= sja1105.o
+ obj-$(CONFIG_DRIVER_NET_SMC911X)	+= smc911x.o
+ obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
+ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
+diff --git a/drivers/net/sja1105.c b/drivers/net/sja1105.c
 new file mode 100644
-index 0000000000..76eb672f21
+index 0000000000..986e5b87a2
 --- /dev/null
-+++ b/drivers/net/ksz9477.c
-@@ -0,0 +1,570 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
++++ b/drivers/net/sja1105.c
+@@ -0,0 +1,3000 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2016-2018 NXP
++ * Copyright 2018, Sensor-Technik Wiedemann GmbH
++ * Copyright 2018-2019, Vladimir Oltean <olteanv@gmail.com>
++ * Copyright 2020-2021 NXP
++ *
++ * Ported from Linux (drivers/net/dsa/sja1105/).
++ * Ported from U-boot ....
++ */
 +
 +#include <common.h>
-+#include <complete.h>
 +#include <dsa.h>
 +#include <gpiod.h>
++#include <linux/bitrev.h>
++#include <linux/if_vlan.h>
 +#include <net.h>
-+#include <platform_data/ksz9477_reg.h>
 +#include <spi/spi.h>
 +
-+/* SPI frame opcodes */
-+#define KS_SPIOP_RD			3
-+#define KS_SPIOP_WR			2
++enum packing_op {
++	PACK,
++	UNPACK,
++};
 +
-+#define SPI_ADDR_SHIFT			24
-+#define SPI_ADDR_MASK			(BIT(SPI_ADDR_SHIFT) - 1)
-+#define SPI_TURNAROUND_SHIFT		5
++#define ETHER_CRC32_POLY				0x04C11DB7
++#define ETH_P_SJA1105					0xdadb
++#define SJA1105_NUM_PORTS				5
++#define SJA1110_NUM_PORTS				11
++#define SJA1105_MAX_NUM_PORTS				SJA1110_NUM_PORTS
++#define SJA1105_NUM_TC					8
++#define SJA1105ET_FDB_BIN_SIZE				4
++#define SJA1105_SIZE_CGU_CMD				4
++#define SJA1105_SIZE_RESET_CMD				4
++#define SJA1105_SIZE_MDIO_CMD				4
++#define SJA1105_SIZE_SPI_MSG_HEADER			4
++#define SJA1105_SIZE_SPI_MSG_MAXLEN			(64 * 4)
++#define SJA1105_SIZE_DEVICE_ID				4
++#define SJA1105_SIZE_TABLE_HEADER			12
++#define SJA1105_SIZE_L2_POLICING_ENTRY			8
++#define SJA1105_SIZE_VLAN_LOOKUP_ENTRY			8
++#define SJA1110_SIZE_VLAN_LOOKUP_ENTRY			12
++#define SJA1105_SIZE_L2_FORWARDING_ENTRY		8
++#define SJA1105_SIZE_L2_FORWARDING_PARAMS_ENTRY		12
++#define SJA1105_SIZE_XMII_PARAMS_ENTRY			4
++#define SJA1110_SIZE_XMII_PARAMS_ENTRY			8
++#define SJA1105ET_SIZE_MAC_CONFIG_ENTRY			28
++#define SJA1105ET_SIZE_GENERAL_PARAMS_ENTRY		40
++#define SJA1105PQRS_SIZE_MAC_CONFIG_ENTRY		32
++#define SJA1105PQRS_SIZE_GENERAL_PARAMS_ENTRY		44
++#define SJA1110_SIZE_GENERAL_PARAMS_ENTRY		56
 +
-+#define GBIT_SUPPORT			BIT(0)
-+#define NEW_XMII			BIT(1)
-+#define IS_9893				BIT(2)
-+#define KSZ9477_PHY_ERRATA		BIT(3)
++#define SJA1105_MAX_L2_LOOKUP_COUNT			1024
++#define SJA1105_MAX_L2_POLICING_COUNT			45
++#define SJA1110_MAX_L2_POLICING_COUNT			110
++#define SJA1105_MAX_VLAN_LOOKUP_COUNT			4096
++#define SJA1105_MAX_L2_FORWARDING_COUNT			13
++#define SJA1110_MAX_L2_FORWARDING_COUNT			19
++#define SJA1105_MAX_MAC_CONFIG_COUNT			5
++#define SJA1110_MAX_MAC_CONFIG_COUNT			11
++#define SJA1105_MAX_L2_FORWARDING_PARAMS_COUNT		1
++#define SJA1105_MAX_GENERAL_PARAMS_COUNT		1
++#define SJA1105_MAX_XMII_PARAMS_COUNT			1
 +
-+struct ksz_switch {
-+	struct spi_device *spi;
-+	struct dsa_switch ds;
++#define SJA1105_MAX_FRAME_MEMORY			929
++
++#define SJA1105E_DEVICE_ID				0x9C00000Cull
++#define SJA1105T_DEVICE_ID				0x9E00030Eull
++#define SJA1105PR_DEVICE_ID				0xAF00030Eull
++#define SJA1105QS_DEVICE_ID				0xAE00030Eull
++#define SJA1110_DEVICE_ID				0xB700030Full
++
++#define SJA1105ET_PART_NO				0x9A83
++#define SJA1105P_PART_NO				0x9A84
++#define SJA1105Q_PART_NO				0x9A85
++#define SJA1105R_PART_NO				0x9A86
++#define SJA1105S_PART_NO				0x9A87
++#define SJA1110A_PART_NO				0x1110
++#define SJA1110B_PART_NO				0x1111
++#define SJA1110C_PART_NO				0x1112
++#define SJA1110D_PART_NO				0x1113
++
++#define SJA1110_ACU			0x1c4400
++#define SJA1110_RGU			0x1c6000
++#define SJA1110_CGU			0x1c6400
++
++#define SJA1110_SPI_ADDR(x)		((x) / 4)
++#define SJA1110_ACU_ADDR(x)		(SJA1110_ACU + SJA1110_SPI_ADDR(x))
++#define SJA1110_CGU_ADDR(x)		(SJA1110_CGU + SJA1110_SPI_ADDR(x))
++#define SJA1110_RGU_ADDR(x)		(SJA1110_RGU + SJA1110_SPI_ADDR(x))
++
++#define SJA1105_RSV_ADDR		0xffffffffffffffffull
++
++#define SJA1110_PCS_BANK_REG		SJA1110_SPI_ADDR(0x3fc)
++
++#define DSA_8021Q_DIR_TX		BIT(11)
++#define DSA_8021Q_PORT_SHIFT		0
++#define DSA_8021Q_PORT_MASK		GENMASK(3, 0)
++#define DSA_8021Q_PORT(x)		(((x) << DSA_8021Q_PORT_SHIFT) & \
++						 DSA_8021Q_PORT_MASK)
++
++#define SJA1105_RATE_MBPS(speed) (((speed) * 64000) / 1000)
++
++/* XPCS registers */
++
++/* VR MII MMD registers offsets */
++#define DW_VR_MII_DIG_CTRL1		0x8000
++#define DW_VR_MII_AN_CTRL		0x8001
++#define DW_VR_MII_DIG_CTRL2		0x80e1
++
++/* VR_MII_DIG_CTRL1 */
++#define DW_VR_MII_DIG_CTRL1_MAC_AUTO_SW		BIT(9)
++
++/* VR_MII_DIG_CTRL2 */
++#define DW_VR_MII_DIG_CTRL2_TX_POL_INV		BIT(4)
++
++/* VR_MII_AN_CTRL */
++#define DW_VR_MII_AN_CTRL_TX_CONFIG_SHIFT	3
++#define DW_VR_MII_TX_CONFIG_MASK		BIT(3)
++#define DW_VR_MII_TX_CONFIG_MAC_SIDE_SGMII	0x0
++#define DW_VR_MII_AN_CTRL_PCS_MODE_SHIFT	1
++#define DW_VR_MII_PCS_MODE_MASK			GENMASK(2, 1)
++#define DW_VR_MII_PCS_MODE_C37_SGMII		0x2
++
++/* PMA registers */
++
++/* LANE_DRIVER1_0 register */
++#define SJA1110_LANE_DRIVER1_0		0x8038
++#define SJA1110_TXDRV(x)		(((x) << 12) & GENMASK(14, 12))
++
++/* LANE_DRIVER2_0 register */
++#define SJA1110_LANE_DRIVER2_0		0x803a
++#define SJA1110_TXDRVTRIM_LSB(x)	((x) & GENMASK_ULL(15, 0))
++
++/* LANE_DRIVER2_1 register */
++#define SJA1110_LANE_DRIVER2_1		0x803b
++#define SJA1110_LANE_DRIVER2_1_RSV	BIT(9)
++#define SJA1110_TXDRVTRIM_MSB(x)	(((x) & GENMASK_ULL(23, 16)) >> 16)
++
++/* LANE_TRIM register */
++#define SJA1110_LANE_TRIM		0x8040
++#define SJA1110_TXTEN			BIT(11)
++#define SJA1110_TXRTRIM(x)		(((x) << 8) & GENMASK(10, 8))
++#define SJA1110_TXPLL_BWSEL		BIT(7)
++#define SJA1110_RXTEN			BIT(6)
++#define SJA1110_RXRTRIM(x)		(((x) << 3) & GENMASK(5, 3))
++#define SJA1110_CDR_GAIN		BIT(2)
++#define SJA1110_ACCOUPLE_RXVCM_EN	BIT(0)
++
++/* LANE_DATAPATH_1 register */
++#define SJA1110_LANE_DATAPATH_1		0x8037
++
++/* POWERDOWN_ENABLE register */
++#define SJA1110_POWERDOWN_ENABLE	0x8041
++#define SJA1110_TXPLL_PD		BIT(12)
++#define SJA1110_TXPD			BIT(11)
++#define SJA1110_RXPKDETEN		BIT(10)
++#define SJA1110_RXCH_PD			BIT(9)
++#define SJA1110_RXBIAS_PD		BIT(8)
++#define SJA1110_RESET_SER_EN		BIT(7)
++#define SJA1110_RESET_SER		BIT(6)
++#define SJA1110_RESET_DES		BIT(5)
++#define SJA1110_RCVEN			BIT(4)
++
++/* RXPLL_CTRL0 register */
++#define SJA1110_RXPLL_CTRL0		0x8065
++#define SJA1110_RXPLL_FBDIV(x)		(((x) << 2) & GENMASK(9, 2))
++
++/* RXPLL_CTRL1 register */
++#define SJA1110_RXPLL_CTRL1		0x8066
++#define SJA1110_RXPLL_REFDIV(x)		((x) & GENMASK(4, 0))
++
++/* TXPLL_CTRL0 register */
++#define SJA1110_TXPLL_CTRL0		0x806d
++#define SJA1110_TXPLL_FBDIV(x)		((x) & GENMASK(11, 0))
++
++/* TXPLL_CTRL1 register */
++#define SJA1110_TXPLL_CTRL1		0x806e
++#define SJA1110_TXPLL_REFDIV(x)		((x) & GENMASK(5, 0))
++
++/* RX_DATA_DETECT register */
++#define SJA1110_RX_DATA_DETECT		0x8045
++
++/* RX_CDR_CTLE register */
++#define SJA1110_RX_CDR_CTLE		0x8042
++
++#define ETH_FCS_LEN 4
++
++/* UM10944.pdf Page 11, Table 2. Configuration Blocks */
++enum {
++	BLKID_L2_POLICING				= 0x06,
++	BLKID_VLAN_LOOKUP				= 0x07,
++	BLKID_L2_FORWARDING				= 0x08,
++	BLKID_MAC_CONFIG				= 0x09,
++	BLKID_L2_FORWARDING_PARAMS			= 0x0E,
++	BLKID_GENERAL_PARAMS				= 0x11,
++	BLKID_XMII_PARAMS				= 0x4E,
++};
++
++enum sja1105_blk_idx {
++	BLK_IDX_L2_POLICING = 0,
++	BLK_IDX_VLAN_LOOKUP,
++	BLK_IDX_L2_FORWARDING,
++	BLK_IDX_MAC_CONFIG,
++	BLK_IDX_L2_FORWARDING_PARAMS,
++	BLK_IDX_GENERAL_PARAMS,
++	BLK_IDX_XMII_PARAMS,
++	BLK_IDX_MAX,
++};
++
++struct sja1105_general_params_entry {
++	u64 mac_fltres1;
++	u64 mac_fltres0;
++	u64 mac_flt1;
++	u64 mac_flt0;
++	u64 casc_port;
++	u64 host_port;
++	u64 mirr_port;
++	u64 tpid;
++	u64 tpid2;
++};
++
++struct sja1105_vlan_lookup_entry {
++	u64 vmemb_port;
++	u64 vlan_bc;
++	u64 tag_port;
++	u64 vlanid;
++	u64 type_entry; /* SJA1110 only */
++};
++
++struct sja1105_l2_forwarding_entry {
++	u64 bc_domain;
++	u64 reach_port;
++	u64 fl_domain;
++};
++
++struct sja1105_l2_forwarding_params_entry {
++	u64 part_spc[SJA1105_NUM_TC];
++};
++
++struct sja1105_l2_policing_entry {
++	u64 sharindx;
++	u64 smax;
++	u64 rate;
++	u64 maxlen;
++	u64 partition;
++};
++
++struct sja1105_mac_config_entry {
++	u64 top[SJA1105_NUM_TC];
++	u64 base[SJA1105_NUM_TC];
++	u64 enabled[SJA1105_NUM_TC];
++	u64 speed;
++	u64 vlanid;
++	u64 egress;
++	u64 ingress;
++};
++
++struct sja1105_xmii_params_entry {
++	u64 phy_mac[SJA1105_MAX_NUM_PORTS];
++	u64 xmii_mode[SJA1105_MAX_NUM_PORTS];
++	u64 special[SJA1105_MAX_NUM_PORTS];
++};
++
++struct sja1105_table_header {
++	u64 block_id;
++	u64 len;
++	u64 crc;
++};
++
++struct sja1105_table_ops {
++	size_t (*packing)(void *buf, void *entry_ptr, enum packing_op op);
++	size_t unpacked_entry_size;
++	size_t packed_entry_size;
++	size_t max_entry_count;
++};
++
++struct sja1105_table {
++	const struct sja1105_table_ops *ops;
++	size_t entry_count;
++	void *entries;
++};
++
++struct sja1105_static_config {
++	u64 device_id;
++	struct sja1105_table tables[BLK_IDX_MAX];
++};
++
++struct sja1105_xpcs_cfg {
++	bool inband_an;
++	int speed;
++};
++
++struct sja1105_private {
++	struct sja1105_static_config static_config;
++	bool rgmii_rx_delay[SJA1105_MAX_NUM_PORTS];
++	bool rgmii_tx_delay[SJA1105_MAX_NUM_PORTS];
++	u16 pvid[SJA1105_MAX_NUM_PORTS];
++	struct sja1105_xpcs_cfg xpcs_cfg[SJA1105_MAX_NUM_PORTS];
++	const struct sja1105_info *info;
 +	struct device_d *dev;
-+	int phy_port_cnt;
-+	u32 chip_id;
-+	u8 features;
++	struct dsa_switch ds;
++	struct spi_device *spidev;
++	size_t max_xfer_len;
 +};
 +
-+static int ksz9477_spi_read_reg(struct spi_device *spi, u32 reg, u8 *val,
-+				unsigned int len)
++enum sja1105_spi_rw_mode {
++	SPI_READ = 0,
++	SPI_WRITE = 1,
++};
++
++enum sja1105_mii_role {
++	XMII_MAC = 0,
++	XMII_PHY = 1,
++};
++
++enum sja1105_phy_interface {
++	XMII_MODE_MII		= 0,
++	XMII_MODE_RMII		= 1,
++	XMII_MODE_RGMII		= 2,
++	XMII_MODE_SGMII		= 3,
++};
++
++enum {
++	SJA1105_SPEED_AUTO,
++	SJA1105_SPEED_10MBPS,
++	SJA1105_SPEED_100MBPS,
++	SJA1105_SPEED_1000MBPS,
++	SJA1105_SPEED_MAX,
++};
++
++enum sja1110_vlan_type {
++	SJA1110_VLAN_INVALID = 0,
++	SJA1110_VLAN_C_TAG = 1, /* Single inner VLAN tag */
++	SJA1110_VLAN_S_TAG = 2, /* Single outer VLAN tag */
++	SJA1110_VLAN_D_TAG = 3, /* Double tagged, use outer tag for lookup */
++};
++
++/* Keeps the different addresses between E/T and P/Q/R/S */
++struct sja1105_regs {
++	u64 device_id;
++	u64 prod_id;
++	u64 status;
++	u64 port_control;
++	u64 rgu;
++	u64 config;
++	u64 rmii_pll1;
++	u64 pad_mii_tx[SJA1105_MAX_NUM_PORTS];
++	u64 pad_mii_rx[SJA1105_MAX_NUM_PORTS];
++	u64 pad_mii_id[SJA1105_MAX_NUM_PORTS];
++	u64 cgu_idiv[SJA1105_MAX_NUM_PORTS];
++	u64 mii_tx_clk[SJA1105_MAX_NUM_PORTS];
++	u64 mii_rx_clk[SJA1105_MAX_NUM_PORTS];
++	u64 mii_ext_tx_clk[SJA1105_MAX_NUM_PORTS];
++	u64 mii_ext_rx_clk[SJA1105_MAX_NUM_PORTS];
++	u64 rgmii_tx_clk[SJA1105_MAX_NUM_PORTS];
++	u64 rmii_ref_clk[SJA1105_MAX_NUM_PORTS];
++	u64 rmii_ext_tx_clk[SJA1105_MAX_NUM_PORTS];
++	u64 pcs_base[SJA1105_MAX_NUM_PORTS];
++};
++
++struct sja1105_info {
++	u64 device_id;
++	u64 part_no;
++	const struct sja1105_table_ops *static_ops;
++	const struct sja1105_regs *regs;
++	int (*reset_cmd)(struct sja1105_private *priv);
++	int (*setup_rgmii_delay)(struct sja1105_private *priv, int port);
++	const char *name;
++	bool supports_mii[SJA1105_MAX_NUM_PORTS];
++	bool supports_rmii[SJA1105_MAX_NUM_PORTS];
++	bool supports_rgmii[SJA1105_MAX_NUM_PORTS];
++	bool supports_sgmii[SJA1105_MAX_NUM_PORTS];
++	const u64 port_speed[SJA1105_SPEED_MAX];
++	unsigned int num_ports;
++};
++
++struct sja1105_chunk {
++	u8	*buf;
++	size_t	len;
++	u64	reg_addr;
++};
++
++struct sja1105_spi_message {
++	u64 access;
++	u64 read_count;
++	u64 address;
++};
++
++/* Common structure for CFG_PAD_MIIx_RX and CFG_PAD_MIIx_TX */
++struct sja1105_cfg_pad_mii {
++	u64 d32_os;
++	u64 d32_ih;
++	u64 d32_ipud;
++	u64 d10_ih;
++	u64 d10_os;
++	u64 d10_ipud;
++	u64 ctrl_os;
++	u64 ctrl_ih;
++	u64 ctrl_ipud;
++	u64 clk_os;
++	u64 clk_ih;
++	u64 clk_ipud;
++};
++
++struct sja1105_cfg_pad_mii_id {
++	u64 rxc_stable_ovr;
++	u64 rxc_delay;
++	u64 rxc_bypass;
++	u64 rxc_pd;
++	u64 txc_stable_ovr;
++	u64 txc_delay;
++	u64 txc_bypass;
++	u64 txc_pd;
++};
++
++struct sja1105_cgu_idiv {
++	u64 clksrc;
++	u64 autoblock;
++	u64 idiv;
++	u64 pd;
++};
++
++struct sja1105_cgu_pll_ctrl {
++	u64 pllclksrc;
++	u64 msel;
++	u64 autoblock;
++	u64 psel;
++	u64 direct;
++	u64 fbsel;
++	u64 bypass;
++	u64 pd;
++};
++
++enum {
++	CLKSRC_MII0_TX_CLK	= 0x00,
++	CLKSRC_MII0_RX_CLK	= 0x01,
++	CLKSRC_MII1_TX_CLK	= 0x02,
++	CLKSRC_MII1_RX_CLK	= 0x03,
++	CLKSRC_MII2_TX_CLK	= 0x04,
++	CLKSRC_MII2_RX_CLK	= 0x05,
++	CLKSRC_MII3_TX_CLK	= 0x06,
++	CLKSRC_MII3_RX_CLK	= 0x07,
++	CLKSRC_MII4_TX_CLK	= 0x08,
++	CLKSRC_MII4_RX_CLK	= 0x09,
++	CLKSRC_PLL0		= 0x0B,
++	CLKSRC_PLL1		= 0x0E,
++	CLKSRC_IDIV0		= 0x11,
++	CLKSRC_IDIV1		= 0x12,
++	CLKSRC_IDIV2		= 0x13,
++	CLKSRC_IDIV3		= 0x14,
++	CLKSRC_IDIV4		= 0x15,
++};
++
++struct sja1105_cgu_mii_ctrl {
++	u64 clksrc;
++	u64 autoblock;
++	u64 pd;
++};
++
++static int get_reverse_lsw32_offset(int offset, size_t len)
 +{
-+	u32 txbuf;
-+	u32 rxbuf;
-+	int ret;
++	int closest_multiple_of_4;
++	int word_index;
 +
-+	txbuf = reg & SPI_ADDR_MASK;
-+	txbuf |= KS_SPIOP_RD << SPI_ADDR_SHIFT;
-+	txbuf <<= SPI_TURNAROUND_SHIFT;
-+	txbuf = cpu_to_be32(txbuf);
-+
-+	ret = spi_write_then_read(spi, &txbuf, 4, val, len);
-+	memcpy(&rxbuf, val, len);
-+
-+	return ret;
++	word_index = offset / 4;
++	closest_multiple_of_4 = word_index * 4;
++	offset -= closest_multiple_of_4;
++	word_index = (len / 4) - word_index - 1;
++	return word_index * 4 + offset;
 +}
 +
-+static int ksz9477_spi_write_reg(struct spi_device *spi, u32 reg, u8 *val,
-+				 unsigned int len)
++/* Simplified version of the "packing" function from Linux, adapted
++ * to support only sja1105's quirk: QUIRK_LSW32_IS_FIRST
++ */
++static void sja1105_packing(void *pbuf, u64 *uval, int startbit, int endbit,
++			    size_t pbuflen, enum packing_op op)
 +{
-+	u8 _txbuf[sizeof(u32) * 2] = {0};
-+	u32 *txbuf = (u32 *)&_txbuf[0];
++	int plogical_first_u8, plogical_last_u8, box;
 +
-+	memcpy(&_txbuf[4], val, len);
++	if (op == UNPACK)
++		*uval = 0;
 +
-+	*txbuf = reg & SPI_ADDR_MASK;
-+	*txbuf |= (KS_SPIOP_WR << SPI_ADDR_SHIFT);
-+	*txbuf <<= SPI_TURNAROUND_SHIFT;
-+	*txbuf = cpu_to_be32(*txbuf);
++	plogical_first_u8 = startbit / 8;
++	plogical_last_u8  = endbit / 8;
 +
-+	return spi_write(spi, txbuf, 4 + len);
-+}
++	for (box = plogical_first_u8; box >= plogical_last_u8; box--) {
++		int box_start_bit, box_end_bit, box_addr;
++		int proj_start_bit, proj_end_bit;
++		u64 proj_mask;
++		u8  box_mask;
 +
-+static int ksz_read8(struct ksz_switch *priv, u32 reg, u8 *val)
-+{
-+	return ksz9477_spi_read_reg(priv->spi, reg, val, 1);
-+}
-+
-+static int ksz_write8(struct ksz_switch *priv, u32 reg, u8 value)
-+{
-+	return ksz9477_spi_write_reg(priv->spi, reg, &value, 1);
-+}
-+
-+static int ksz_read16(struct ksz_switch *priv, u32 reg, u16 *val)
-+{
-+	int ret = ksz9477_spi_read_reg(priv->spi, reg, (u8 *)val, 2);
-+
-+	if (!ret)
-+		*val = be16_to_cpu(*val);
-+
-+	return ret;
-+}
-+
-+static int ksz_write16(struct ksz_switch *priv, u32 reg, u16 value)
-+{
-+	struct spi_device *spi = priv->spi;
-+
-+	value = cpu_to_be16(value);
-+	return ksz9477_spi_write_reg(spi, reg, (u8 *)&value, 2);
-+}
-+
-+static int ksz_read32(struct ksz_switch *priv, u32 reg, u32 *val)
-+{
-+	int ret = ksz9477_spi_read_reg(priv->spi, reg, (u8 *)val, 4);
-+
-+	if (!ret)
-+		*val = be32_to_cpu(*val);
-+
-+	return ret;
-+}
-+
-+static int ksz_write32(struct ksz_switch *priv, u32 reg, u32 value)
-+{
-+	struct spi_device *spi = priv->spi;
-+
-+	value = cpu_to_be32(value);
-+	return ksz9477_spi_write_reg(spi, reg, (u8 *)&value, 4);
-+}
-+
-+static void ksz_cfg(struct ksz_switch *priv, u32 addr, u8 bits, bool set)
-+{
-+	u8 data;
-+
-+	ksz_read8(priv, addr, &data);
-+	if (set)
-+		data |= bits;
-+	else
-+		data &= ~bits;
-+	ksz_write8(priv, addr, data);
-+}
-+
-+static int ksz_pread8(struct ksz_switch *priv, int port, int reg, u8 *val)
-+{
-+	return ksz_read8(priv, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static int ksz_pwrite8(struct ksz_switch *priv, int port, int reg, u8 val)
-+{
-+	return ksz_write8(priv, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static int ksz_pread16(struct ksz_switch *priv, int port, int reg, u16 *val)
-+{
-+	return ksz_read16(priv, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static int ksz_pwrite16(struct ksz_switch *priv, int port, int reg, u16 val)
-+{
-+	return ksz_write16(priv, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static int ksz_pwrite32(struct ksz_switch *priv, int port, int reg, u32 val)
-+{
-+	return ksz_write32(priv, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static int ksz9477_phy_read16(struct dsa_switch *ds, int addr, int reg)
-+{
-+	struct device_d *dev = ds->dev;
-+	struct ksz_switch *priv = dev_get_priv(dev);
-+	u16 val = 0xffff;
-+
-+	if (addr >= priv->phy_port_cnt)
-+		return val;
-+
-+	ksz_pread16(priv, addr, 0x100 + (reg << 1), &val);
-+
-+	return val;
-+}
-+
-+static int ksz9477_phy_write16(struct dsa_switch *ds, int addr, int reg,
-+			       u16 val)
-+{
-+	struct device_d *dev = ds->dev;
-+	struct ksz_switch *priv = dev_get_priv(dev);
-+
-+	/* No real PHY after this. */
-+	if (addr >= priv->phy_port_cnt)
-+		return 0;
-+
-+	/* No gigabit support.  Do not write to this register. */
-+	if (!(priv->features & GBIT_SUPPORT) && reg == MII_CTRL1000)
-+		return 0;
-+	ksz_pwrite16(priv, addr, 0x100 + (reg << 1), val);
-+
-+	return 0;
-+}
-+
-+static int ksz9477_switch_detect(struct ksz_switch *priv)
-+{
-+	u8 id_hi, id_lo;
-+	u8 data8;
-+	u32 id32;
-+	int ret;
-+
-+	/* read chip id */
-+	ret = ksz_read32(priv, REG_CHIP_ID0__1, &id32);
-+	if (ret)
-+		return ret;
-+
-+	ret = ksz_read8(priv, REG_GLOBAL_OPTIONS, &data8);
-+	if (ret)
-+		return ret;
-+
-+	priv->chip_id = id32;
-+
-+	priv->phy_port_cnt = 5;
-+	priv->features = GBIT_SUPPORT | KSZ9477_PHY_ERRATA;
-+
-+	id_hi = (u8)(id32 >> 16);
-+	id_lo = (u8)(id32 >> 8);
-+	if ((id_lo & 0xf) == 3) {
-+		/* Chip is from KSZ9893 design. */
-+		dev_info(priv->dev, "Found KSZ9893\n");
-+		priv->features |= IS_9893;
-+		priv->features &= ~KSZ9477_PHY_ERRATA;
-+
-+		/* Chip does not support gigabit. */
-+		if (data8 & SW_QW_ABLE)
-+			priv->features &= ~GBIT_SUPPORT;
-+		priv->phy_port_cnt = 2;
-+	} else {
-+		dev_info(priv->dev, "Found KSZ9477 or compatible\n");
-+		/* Chip uses new XMII register definitions. */
-+		priv->features |= NEW_XMII;
-+
-+		/* Chip does not support gigabit. */
-+		if (!(data8 & SW_GIGABIT_ABLE))
-+			priv->features &= ~GBIT_SUPPORT;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ksz_reset_switch(struct ksz_switch *priv)
-+{
-+	u8 data8;
-+	u16 data16;
-+	u32 data32;
-+
-+	/* reset switch */
-+	ksz_cfg(priv, REG_SW_OPERATION, SW_RESET, true);
-+
-+	/* turn off SPI DO Edge select */
-+	ksz_read8(priv, REG_SW_GLOBAL_SERIAL_CTRL_0, &data8);
-+	data8 &= ~SPI_AUTO_EDGE_DETECTION;
-+	ksz_write8(priv, REG_SW_GLOBAL_SERIAL_CTRL_0, data8);
-+
-+	/* default configuration */
-+	ksz_read8(priv, REG_SW_LUE_CTRL_1, &data8);
-+	data8 = SW_AGING_ENABLE | SW_LINK_AUTO_AGING |
-+	      SW_SRC_ADDR_FILTER | SW_FLUSH_STP_TABLE | SW_FLUSH_MSTP_TABLE;
-+	ksz_write8(priv, REG_SW_LUE_CTRL_1, data8);
-+
-+	/* disable interrupts */
-+	ksz_write32(priv, REG_SW_INT_MASK__4, SWITCH_INT_MASK);
-+	ksz_write32(priv, REG_SW_PORT_INT_MASK__4, 0x7F);
-+	ksz_read32(priv, REG_SW_PORT_INT_STATUS__4, &data32);
-+
-+	/* set broadcast storm protection 10% rate */
-+	ksz_read16(priv, REG_SW_MAC_CTRL_2, &data16);
-+	data16 &= ~BROADCAST_STORM_RATE;
-+	data16 |= (BROADCAST_STORM_VALUE * BROADCAST_STORM_PROT_RATE) / 100;
-+	ksz_write16(priv, REG_SW_MAC_CTRL_2, data16);
-+
-+	return 0;
-+}
-+
-+static void ksz9477_cfg_port_member(struct ksz_switch *priv, int port,
-+				    u8 member)
-+{
-+	ksz_pwrite32(priv, port, REG_PORT_VLAN_MEMBERSHIP__4, member);
-+}
-+
-+static void ksz9477_port_mmd_write(struct ksz_switch *priv, int port,
-+				   u8 dev_addr, u16 reg_addr, u16 val)
-+{
-+	ksz_pwrite16(priv, port, REG_PORT_PHY_MMD_SETUP,
-+		     MMD_SETUP(PORT_MMD_OP_INDEX, dev_addr));
-+	ksz_pwrite16(priv, port, REG_PORT_PHY_MMD_INDEX_DATA, reg_addr);
-+	ksz_pwrite16(priv, port, REG_PORT_PHY_MMD_SETUP,
-+		     MMD_SETUP(PORT_MMD_OP_DATA_NO_INCR, dev_addr));
-+	ksz_pwrite16(priv, port, REG_PORT_PHY_MMD_INDEX_DATA, val);
-+}
-+
-+static void ksz9477_phy_errata_setup(struct ksz_switch *priv, int port)
-+{
-+	/* Apply PHY settings to address errata listed in
-+	 * KSZ9477, KSZ9897, KSZ9896, KSZ9567, KSZ8565
-+	 * Silicon Errata and Data Sheet Clarification documents:
-+	 *
-+	 * Register settings are needed to improve PHY receive performance
-+	 */
-+	ksz9477_port_mmd_write(priv, port, 0x01, 0x6f, 0xdd0b);
-+	ksz9477_port_mmd_write(priv, port, 0x01, 0x8f, 0x6032);
-+	ksz9477_port_mmd_write(priv, port, 0x01, 0x9d, 0x248c);
-+	ksz9477_port_mmd_write(priv, port, 0x01, 0x75, 0x0060);
-+	ksz9477_port_mmd_write(priv, port, 0x01, 0xd3, 0x7777);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x06, 0x3008);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x08, 0x2001);
-+
-+	/* Transmit waveform amplitude can be improved
-+	 * (1000BASE-T, 100BASE-TX, 10BASE-Te)
-+	 */
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x04, 0x00d0);
-+
-+	/* Energy Efficient Ethernet (EEE) feature select must
-+	 * be manually disabled (except on KSZ8565 which is 100Mbit)
-+	 */
-+	if (priv->features & GBIT_SUPPORT)
-+		ksz9477_port_mmd_write(priv, port, 0x07, 0x3c, 0x0000);
-+
-+	/* Register settings are required to meet data sheet
-+	 * supply current specifications
-+	 */
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x13, 0x6eff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x14, 0xe6ff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x15, 0x6eff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x16, 0xe6ff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x17, 0x00ff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x18, 0x43ff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x19, 0xc3ff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x1a, 0x6fff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x1b, 0x07ff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x1c, 0x0fff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x1d, 0xe7ff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x1e, 0xefff);
-+	ksz9477_port_mmd_write(priv, port, 0x1c, 0x20, 0xeeee);
-+}
-+
-+static void ksz9477_set_xmii(struct ksz_switch *priv, int mode, u8 *data)
-+{
-+	u8 xmii;
-+
-+	if (priv->features & NEW_XMII) {
-+		switch (mode) {
-+		case 0:
-+			xmii = PORT_MII_SEL;
-+			break;
-+		case 1:
-+			xmii = PORT_RMII_SEL;
-+			break;
-+		case 2:
-+			xmii = PORT_GMII_SEL;
-+			break;
-+		default:
-+			xmii = PORT_RGMII_SEL;
-+			break;
-+		}
-+	} else {
-+		switch (mode) {
-+		case 0:
-+			xmii = PORT_MII_SEL_S1;
-+			break;
-+		case 1:
-+			xmii = PORT_RMII_SEL_S1;
-+			break;
-+		case 2:
-+			xmii = PORT_GMII_SEL_S1;
-+			break;
-+		default:
-+			xmii = PORT_RGMII_SEL_S1;
-+			break;
-+		}
-+	}
-+	*data &= ~PORT_MII_SEL_M;
-+	*data |= xmii;
-+}
-+
-+static void ksz9477_set_gbit(struct ksz_switch *priv, bool gbit, u8 *data)
-+{
-+	if (priv->features & NEW_XMII) {
-+		if (gbit)
-+			*data &= ~PORT_MII_NOT_1GBIT;
++		if (box == plogical_first_u8)
++			box_start_bit = startbit % 8;
 +		else
-+			*data |= PORT_MII_NOT_1GBIT;
-+	} else {
-+		if (gbit)
-+			*data |= PORT_MII_1000MBIT_S1;
++			box_start_bit = 7;
++		if (box == plogical_last_u8)
++			box_end_bit = endbit % 8;
 +		else
-+			*data &= ~PORT_MII_1000MBIT_S1;
-+	}
-+}
++			box_end_bit = 0;
 +
-+static int ksz_port_setup(struct ksz_switch *priv, int port,
-+			  phy_interface_t interface)
-+{
-+	u8 data8, member;
++		proj_start_bit = ((box * 8) + box_start_bit) - endbit;
++		proj_end_bit   = ((box * 8) + box_end_bit) - endbit;
++		proj_mask = GENMASK_ULL(proj_start_bit, proj_end_bit);
++		box_mask  = GENMASK_ULL(box_start_bit, box_end_bit);
 +
-+	if (port != priv->ds.cpu_port) {
-+		ksz_pwrite8(priv, port, REG_PORT_CTRL_0, 0);
-+		member = BIT(priv->ds.cpu_port);
-+		ksz9477_cfg_port_member(priv, port, member);
++		box_addr = pbuflen - box - 1;
++		box_addr = get_reverse_lsw32_offset(box_addr, pbuflen);
 +
-+		member = dsa_user_ports(&priv->ds);
-+		ksz9477_cfg_port_member(priv, priv->ds.cpu_port, member);
++		if (op == UNPACK) {
++			u64 pval;
 +
-+		if (priv->features & KSZ9477_PHY_ERRATA)
-+			ksz9477_phy_errata_setup(priv, port);
++			/* Read from pbuf, write to uval */
++			pval = ((u8 *)pbuf)[box_addr] & box_mask;
 +
-+		ksz_pwrite16(priv, port, 0x100 + (MII_BMCR << 1),
-+			     BMCR_ANENABLE | BMCR_ANRESTART | BMCR_RESET);
-+	} else {
-+		ksz_pwrite8(priv, port, REG_PORT_CTRL_0, PORT_TAIL_TAG_ENABLE);
-+		/* cpu port: configure MAC interface mode */
-+		ksz_pread8(priv, port, REG_PORT_XMII_CTRL_1, &data8);
-+		switch (interface) {
-+		case PHY_INTERFACE_MODE_MII:
-+			ksz9477_set_xmii(priv, 0, &data8);
-+			ksz9477_set_gbit(priv, false, &data8);
-+			break;
-+		case PHY_INTERFACE_MODE_RMII:
-+			ksz9477_set_xmii(priv, 1, &data8);
-+			ksz9477_set_gbit(priv, false, &data8);
-+			break;
-+		case PHY_INTERFACE_MODE_GMII:
-+			ksz9477_set_xmii(priv, 2, &data8);
-+			ksz9477_set_gbit(priv, true, &data8);
-+			break;
-+		default:
-+			ksz9477_set_xmii(priv, 3, &data8);
-+			ksz9477_set_gbit(priv, true, &data8);
-+			data8 &= ~PORT_RGMII_ID_IG_ENABLE;
-+			data8 &= ~PORT_RGMII_ID_EG_ENABLE;
-+			if (interface == PHY_INTERFACE_MODE_RGMII_ID ||
-+			    interface == PHY_INTERFACE_MODE_RGMII_RXID)
-+				data8 |= PORT_RGMII_ID_IG_ENABLE;
-+			if (interface == PHY_INTERFACE_MODE_RGMII_ID ||
-+			    interface == PHY_INTERFACE_MODE_RGMII_TXID)
-+				data8 |= PORT_RGMII_ID_EG_ENABLE;
-+			/* On KSZ9893, disable RGMII in-band status support */
-+			if (priv->features & IS_9893)
-+				data8 &= ~PORT_MII_MAC_MODE;
-+			break;
++			pval >>= box_end_bit;
++			pval <<= proj_end_bit;
++			*uval &= ~proj_mask;
++			*uval |= pval;
++		} else {
++			u64 pval;
++
++			/* Write to pbuf, read from uval */
++			pval = (*uval) & proj_mask;
++			pval >>= proj_end_bit;
++
++			pval <<= box_end_bit;
++			((u8 *)pbuf)[box_addr] &= ~box_mask;
++			((u8 *)pbuf)[box_addr] |= pval;
 +		}
-+		ksz_pwrite8(priv, port, REG_PORT_XMII_CTRL_1, data8);
 +	}
-+
-+	return 0;
 +}
 +
-+static int ksz_port_enable(struct dsa_port *dp, int port,
-+			   struct phy_device *phy)
++static u32 crc32_add(u32 crc, u8 byte)
 +{
-+	struct device_d *dev = dp->ds->dev;
-+	struct ksz_switch *priv = dev_get_priv(dev);
-+	u8 data8;
-+	int ret;
-+
-+	/* setup this port */
-+	ret = ksz_port_setup(priv, port, phy->interface);
-+	if (ret) {
-+		dev_err(dev, "port setup failed: %d\n", ret);
-+		return ret;
-+	}
-+
-+	/* enable port forwarding for this port */
-+	ksz_pread8(priv, port, REG_PORT_LUE_MSTP_STATE, &data8);
-+	data8 &= ~(PORT_TX_ENABLE | PORT_RX_ENABLE | PORT_LEARN_DISABLE);
-+	data8 |= (PORT_TX_ENABLE | PORT_RX_ENABLE);
-+	ksz_pwrite8(priv, port, REG_PORT_LUE_MSTP_STATE, data8);
-+
-+	/* if cpu master we are done */
-+	if (port == dp->ds->cpu_port)
-+		return 0;
-+
-+	/* start switch */
-+	ksz_read8(priv, REG_SW_OPERATION, &data8);
-+	data8 |= SW_START;
-+	ksz_write8(priv, REG_SW_OPERATION, data8);
-+
-+	return 0;
-+}
-+
-+static int ksz_xmit(struct dsa_port *dp, int port, void *packet, int length)
-+{
-+	u16 *tag = packet + length - dp->ds->needed_tx_tailroom;
-+
-+	*tag = cpu_to_be16(BIT(dp->index));
-+
-+	return 0;
-+}
-+
-+static int ksz_recv(struct dsa_switch *ds, int *port, void *packet, int length)
-+{
-+	u8 *tag = packet + length - ds->needed_rx_tailroom;
-+
-+	*port = *tag & 7;
-+
-+	return 0;
-+};
-+
-+static const struct dsa_ops ksz_dsa_ops = {
-+	.port_enable = ksz_port_enable,
-+	.xmit = ksz_xmit,
-+	.rcv = ksz_recv,
-+	.phy_read = ksz9477_phy_read16,
-+	.phy_write = ksz9477_phy_write16,
-+};
-+
-+static int ksz_default_setup(struct ksz_switch *priv)
-+{
++	u32 byte32 = bitrev32(byte);
 +	int i;
 +
-+	for (i = 0; i < priv->ds.num_ports; i++) {
-+		/* isolate all ports by default */
-+		ksz9477_cfg_port_member(priv, i, 0);
-+		/* and suspend ports with integrated PHYs */
-+		if (i < priv->phy_port_cnt)
-+			ksz_pwrite16(priv, i, 0x100 + (MII_BMCR << 1),
-+				     BMCR_PDOWN);
-+	}
-+
-+	return 0;
-+}
-+
-+static int microchip_switch_probe(struct device_d *dev)
-+{
-+	struct ksz_switch *priv;
-+	int ret = 0, gpio;
-+	struct dsa_switch *ds;
-+
-+	priv = xzalloc(sizeof(*priv));
-+
-+	dev->priv = priv;
-+	priv->dev = dev;
-+
-+	priv->spi = (struct spi_device *)dev->type_data;
-+	priv->spi->mode = SPI_MODE_0;
-+	priv->spi->bits_per_word = 8;
-+
-+	gpio = gpiod_get(dev, "reset", GPIOF_OUT_INIT_ACTIVE);
-+	if (gpio_is_valid(gpio)) {
-+		mdelay(1);
-+		gpio_set_active(gpio, false);
-+	}
-+
-+	ksz_reset_switch(dev->priv);
-+
-+	ret = ksz9477_switch_detect(dev->priv);
-+	if (ret) {
-+		dev_err(&priv->spi->dev, "error detecting KSZ9477: %s\n",
-+			strerror(-ret));
-+		return -ENODEV;
-+	}
-+
-+	dev_info(dev, "chip id: 0x%08x\n", priv->chip_id);
-+
-+	ds = &priv->ds;
-+	ds->dev = dev;
-+	ds->num_ports = 7;
-+	ds->ops = &ksz_dsa_ops;
-+	ds->needed_rx_tailroom = 1;
-+	ds->needed_tx_tailroom = 2;
-+	if (priv->phy_port_cnt == 5)
-+		ds->phys_mii_mask = 0x1f;
-+	else
-+		ds->phys_mii_mask = 0x03;
-+
-+	ksz_default_setup(priv);
-+
-+	return dsa_register_switch(ds);
-+}
-+
-+static const struct of_device_id microchip_switch_dt_ids[] = {
-+	{ .compatible = "microchip,ksz9477" },
-+	{ .compatible = "microchip,ksz9563" },
-+	{ }
-+};
-+
-+static struct driver_d microchip_switch_driver = {
-+	.name		= "ksz9477",
-+	.probe		= microchip_switch_probe,
-+	.of_compatible	= DRV_OF_COMPAT(microchip_switch_dt_ids),
-+};
-+
-+device_spi_driver(microchip_switch_driver);
-diff --git a/drivers/net/ksz9477_old.c b/drivers/net/ksz9477_old.c
-new file mode 100644
-index 0000000000..c8a306299c
---- /dev/null
-+++ b/drivers/net/ksz9477_old.c
-@@ -0,0 +1,561 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * (C) Copyright 2020
-+ * Tim Harvey, Gateworks Corporation
-+ */
-+
-+#include <common.h>
-+#include <malloc.h>
-+#include <net.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <io.h>
-+#include <xfuncs.h>
-+#include <linux/phy.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <of_net.h>
-+#include <of_gpio.h>
-+#include <gpio.h>
-+
-+
-+
-+/* Global registers */
-+
-+/* Chip ID */
-+#define REG_CHIP_ID0__1			0x0000
-+
-+/* Operation control */
-+#define REG_SW_OPERATION		0x0300
-+#define SW_RESET			BIT(1)
-+#define SW_START			BIT(0)
-+
-+/* Port Specific Registers */
-+#define PORT_CTRL_ADDR(port, addr) ((addr) | (((port) + 1) << 12))
-+
-+/* Port Control */
-+#define REG_PORT_XMII_CTRL_1		0x0301
-+#define PORT_MII_NOT_1GBIT		BIT(6)
-+#define PORT_MII_SEL_EDGE		BIT(5)
-+#define PORT_RGMII_ID_IG_ENABLE		BIT(4)
-+#define PORT_RGMII_ID_EG_ENABLE		BIT(3)
-+#define PORT_MII_MAC_MODE		BIT(2)
-+#define PORT_MII_SEL_M			0x3
-+#define PORT_RGMII_SEL			0x0
-+#define PORT_RMII_SEL			0x1
-+#define PORT_GMII_SEL			0x2
-+#define PORT_MII_SEL			0x3
-+
-+/* Port MSTP State Register */
-+#define REG_PORT_MSTP_STATE		0x0b04
-+#define PORT_TX_ENABLE			BIT(2)
-+#define PORT_RX_ENABLE			BIT(1)
-+#define PORT_LEARN_DISABLE		BIT(0)
-+
-+/* MMD */
-+#define REG_PORT_PHY_MMD_SETUP		0x011A
-+#define PORT_MMD_OP_MODE_M		0x3
-+#define PORT_MMD_OP_MODE_S		14
-+#define PORT_MMD_OP_INDEX		0
-+#define PORT_MMD_OP_DATA_NO_INCR	1
-+#define PORT_MMD_OP_DATA_INCR_RW	2
-+#define PORT_MMD_OP_DATA_INCR_W		3
-+#define PORT_MMD_DEVICE_ID_M		0x1F
-+#define MMD_SETUP(mode, dev)		(((u16)(mode) << PORT_MMD_OP_MODE_S) | (dev))
-+#define REG_PORT_PHY_MMD_INDEX_DATA	0x011C
-+
-+struct ksz_dsa_priv {
-+	struct udevice *dev;
-+	int active_port;
-+};
-+
-+static inline int ksz_read8(struct udevice *dev, u32 reg, u8 *val)
-+{
-+	int ret = dm_i2c_read(dev, reg, val, 1);
-+
-+	dev_dbg(dev, "%s 0x%04x<<0x%02x\n", __func__, reg, *val);
-+
-+	return ret;
-+}
-+
-+static inline int ksz_pread8(struct udevice *dev, int port, int reg, u8 *val)
-+{
-+	return ksz_read8(dev, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static inline int ksz_write8(struct udevice *dev, u32 reg, u8 val)
-+{
-+	dev_dbg(dev, "%s 0x%04x>>0x%02x\n", __func__, reg, val);
-+	return dm_i2c_write(dev, reg, &val, 1);
-+}
-+
-+static inline int ksz_pwrite8(struct udevice *dev, int port, int reg, u8 val)
-+{
-+	return ksz_write8(dev, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static inline int ksz_write16(struct udevice *dev, u32 reg, u16 val)
-+{
-+	u8 buf[2];
-+
-+	buf[1] = val & 0xff;
-+	buf[0] = val >> 8;
-+	dev_dbg(dev, "%s 0x%04x>>0x%04x\n", __func__, reg, val);
-+
-+	return dm_i2c_write(dev, reg, buf, 2);
-+}
-+
-+static inline int ksz_pwrite16(struct udevice *dev, int port, int reg, u16 val)
-+{
-+	return ksz_write16(dev, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static inline int ksz_read16(struct udevice *dev, u32 reg, u16 *val)
-+{
-+	u8 buf[2];
-+	int ret;
-+
-+	ret = dm_i2c_read(dev, reg, buf, 2);
-+	*val = (buf[0] << 8) | buf[1];
-+	dev_dbg(dev, "%s 0x%04x<<0x%04x\n", __func__, reg, *val);
-+
-+	return ret;
-+}
-+
-+static inline int ksz_pread16(struct udevice *dev, int port, int reg, u16 *val)
-+{
-+	return ksz_read16(dev, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static inline int ksz_read32(struct udevice *dev, u32 reg, u32 *val)
-+{
-+	return dm_i2c_read(dev, reg, (u8 *)val, 4);
-+}
-+
-+static inline int ksz_pread32(struct udevice *dev, int port, int reg, u32 *val)
-+{
-+	return ksz_read32(dev, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static inline int ksz_write32(struct udevice *dev, u32 reg, u32 val)
-+{
-+	u8 buf[4];
-+
-+	buf[3] = val & 0xff;
-+	buf[2] = (val >> 24) & 0xff;
-+	buf[1] = (val >> 16) & 0xff;
-+	buf[0] = (val >> 8) & 0xff;
-+	dev_dbg(dev, "%s 0x%04x>>0x%04x\n", __func__, reg, val);
-+
-+	return dm_i2c_write(dev, reg, buf, 4);
-+}
-+
-+static inline int ksz_pwrite32(struct udevice *dev, int port, int reg, u32 val)
-+{
-+	return ksz_write32(dev, PORT_CTRL_ADDR(port, reg), val);
-+}
-+
-+static __maybe_unused void ksz_port_mmd_read(struct udevice *dev, int port,
-+					     u8 addr, u16 reg, u16 *val)
-+{
-+	ksz_pwrite16(dev, port, REG_PORT_PHY_MMD_SETUP, MMD_SETUP(PORT_MMD_OP_INDEX, addr));
-+	ksz_pwrite16(dev, port, REG_PORT_PHY_MMD_INDEX_DATA, reg);
-+	ksz_pwrite16(dev, port, REG_PORT_PHY_MMD_SETUP, MMD_SETUP(PORT_MMD_OP_DATA_NO_INCR, addr));
-+	ksz_pread16(dev, port, REG_PORT_PHY_MMD_INDEX_DATA, val);
-+	dev_dbg(dev, "%s  P%d 0x%02x:0x%04x<<0x%04x\n", __func__, port + 1, addr, reg, *val);
-+}
-+
-+static void ksz_port_mmd_write(struct udevice *dev, int port, u8 addr, u16 reg, u16 val)
-+{
-+	dev_dbg(dev, "%s P%d 0x%02x:0x%04x>>0x%04x\n", __func__, port + 1, addr, addr, val);
-+	ksz_pwrite16(dev, port, REG_PORT_PHY_MMD_SETUP, MMD_SETUP(PORT_MMD_OP_INDEX, addr));
-+	ksz_pwrite16(dev, port, REG_PORT_PHY_MMD_INDEX_DATA, addr);
-+	ksz_pwrite16(dev, port, REG_PORT_PHY_MMD_SETUP, MMD_SETUP(PORT_MMD_OP_DATA_NO_INCR, addr));
-+	ksz_pwrite16(dev, port, REG_PORT_PHY_MMD_INDEX_DATA, val);
-+}
-+
-+/* Apply PHY settings to address errata listed in KSZ9477, KSZ9897, KSZ9896, KSZ9567
-+ * Silicon Errata and Data Sheet Clarification documents
-+ */
-+static void ksz_phy_errata_setup(struct udevice *dev, int port)
-+{
-+	dev_dbg(dev, "%s P%d\n", __func__, port + 1);
-+
-+	/* Register settings are needed to improve PHY receive performance */
-+	ksz_port_mmd_write(dev, port, 0x01, 0x6f, 0xdd0b);
-+	ksz_port_mmd_write(dev, port, 0x01, 0x8f, 0x6032);
-+	ksz_port_mmd_write(dev, port, 0x01, 0x9d, 0x248c);
-+	ksz_port_mmd_write(dev, port, 0x01, 0x75, 0x0060);
-+	ksz_port_mmd_write(dev, port, 0x01, 0xd3, 0x7777);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x06, 0x3008);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x08, 0x2001);
-+
-+	/* Transmit waveform amplitude can be improved (1000BASE-T, 100BASE-TX, 10BASE-Te) */
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x04, 0x00d0);
-+
-+	/* Energy Efficient Ethernet (EEE) feature select must be manually disabled */
-+	ksz_port_mmd_write(dev, port, 0x07, 0x3c, 0x0000);
-+
-+	/* Register settings are required to meet data sheet supply current specifications */
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x13, 0x6eff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x14, 0xe6ff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x15, 0x6eff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x16, 0xe6ff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x17, 0x00ff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x18, 0x43ff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x19, 0xc3ff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x1a, 0x6fff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x1b, 0x07ff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x1c, 0x0fff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x1d, 0xe7ff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x1e, 0xefff);
-+	ksz_port_mmd_write(dev, port, 0x1c, 0x20, 0xeeee);
-+}
-+
-+/*
-+ * mii bus driver
-+ */
-+#define KSZ_MDIO_CHILD_DRV_NAME	"ksz_mdio"
-+
-+struct ksz_mdio_priv {
-+	struct ksz_dsa_priv *ksz;
-+};
-+
-+static int dm_ksz_mdio_read(struct udevice *dev, int addr, int devad, int reg)
-+{
-+	struct ksz_mdio_priv *priv = dev_get_priv(dev);
-+	struct ksz_dsa_priv *ksz = priv->ksz;
-+	u16 val = 0xffff;
-+
-+	ksz_pread16(ksz->dev, addr, 0x100 + (reg << 1), &val);
-+	dev_dbg(ksz->dev, "%s P%d reg=0x%04x:0x%04x<<0x%04x\n", __func__,
-+		addr + 1, reg, 0x100 + (reg << 1), val);
-+
-+	return val;
-+};
-+
-+static int dm_ksz_mdio_write(struct udevice *dev, int addr, int devad, int reg, u16 val)
-+{
-+	struct ksz_mdio_priv *priv = dev_get_priv(dev);
-+	struct ksz_dsa_priv *ksz = priv->ksz;
-+
-+	dev_dbg(ksz->dev, "%s P%d reg=0x%04x:%04x>>0x%04x\n",
-+		__func__, addr + 1, reg, 0x100 + (reg << 1), val);
-+	ksz_pwrite16(ksz->dev, addr, 0x100 + (reg << 1), val);
-+
-+	return 0;
-+}
-+
-+static const struct mdio_ops ksz_mdio_ops = {
-+	.read = dm_ksz_mdio_read,
-+	.write = dm_ksz_mdio_write,
-+};
-+
-+static int ksz_mdio_bind(struct udevice *dev)
-+{
-+	char name[16];
-+	static int num_devices;
-+
-+	dev_dbg(dev, "%s\n", __func__);
-+	sprintf(name, "ksz-mdio-%d", num_devices++);
-+	device_set_name(dev, name);
-+
-+	return 0;
-+}
-+
-+static int ksz_mdio_probe(struct udevice *dev)
-+{
-+	struct ksz_mdio_priv *priv = dev_get_priv(dev);
-+
-+	dev_dbg(dev, "%s\n", __func__);
-+	priv->ksz = dev_get_parent_priv(dev->parent);
-+
-+	return 0;
-+}
-+
-+static const struct udevice_id ksz_mdio_ids[] = {
-+	{ .compatible = "microchip,ksz-mdio" },
-+	{ }
-+};
-+
-+U_BOOT_DRIVER(ksz_mdio) = {
-+	.name		= KSZ_MDIO_CHILD_DRV_NAME,
-+	.id		= UCLASS_MDIO,
-+	.of_match	= ksz_mdio_ids,
-+	.bind		= ksz_mdio_bind,
-+	.probe		= ksz_mdio_probe,
-+	.ops		= &ksz_mdio_ops,
-+	.priv_auto	= sizeof(struct ksz_mdio_priv),
-+	.plat_auto	= sizeof(struct mdio_perdev_priv),
-+};
-+
-+static int ksz_port_setup(struct udevice *dev, int port,
-+			  phy_interface_t interface)
-+{
-+	struct dsa_pdata *pdata = dev_get_uclass_plat(dev);
-+	u8 data8;
-+
-+	dev_dbg(dev, "%s P%d %s\n", __func__, port + 1,
-+		(port == pdata->cpu_port) ? "cpu" : "");
-+
-+	if (port != pdata->cpu_port) {
-+		/* phy port: config errata and leds */
-+		ksz_phy_errata_setup(dev, port);
-+	} else {
-+		/* cpu port: configure MAC interface mode */
-+		ksz_pread8(dev, port, REG_PORT_XMII_CTRL_1, &data8);
-+		dev_dbg(dev, "%s P%d cpu interface %s\n", __func__, port + 1,
-+			phy_string_for_interface(interface));
-+		switch (interface) {
-+		case PHY_INTERFACE_MODE_MII:
-+			data8 &= ~PORT_MII_SEL_M;
-+			data8 |= PORT_MII_SEL;
-+			data8 |= PORT_MII_NOT_1GBIT;
-+			break;
-+		case PHY_INTERFACE_MODE_RMII:
-+			data8 &= ~PORT_MII_SEL_M;
-+			data8 |= PORT_RMII_SEL;
-+			data8 |= PORT_MII_NOT_1GBIT;
-+			break;
-+		case PHY_INTERFACE_MODE_GMII:
-+			data8 &= ~PORT_MII_SEL_M;
-+			data8 |= PORT_GMII_SEL;
-+			data8 &= ~PORT_MII_NOT_1GBIT;
-+			break;
-+		default:
-+			data8 &= ~PORT_MII_SEL_M;
-+			data8 |= PORT_RGMII_SEL;
-+			data8 &= ~PORT_MII_NOT_1GBIT;
-+			data8 &= ~PORT_RGMII_ID_IG_ENABLE;
-+			data8 &= ~PORT_RGMII_ID_EG_ENABLE;
-+			if (interface == PHY_INTERFACE_MODE_RGMII_ID ||
-+			    interface == PHY_INTERFACE_MODE_RGMII_RXID)
-+				data8 |= PORT_RGMII_ID_IG_ENABLE;
-+			if (interface == PHY_INTERFACE_MODE_RGMII_ID ||
-+			    interface == PHY_INTERFACE_MODE_RGMII_TXID)
-+				data8 |= PORT_RGMII_ID_EG_ENABLE;
-+			break;
++	for (i = 0; i < 8; i++) {
++		if ((crc ^ byte32) & BIT(31)) {
++			crc <<= 1;
++			crc ^= ETHER_CRC32_POLY;
++		} else {
++			crc <<= 1;
 +		}
-+		ksz_write8(dev, PORT_CTRL_ADDR(port, REG_PORT_XMII_CTRL_1), data8);
++		byte32 <<= 1;
++	}
++	return crc;
++}
++
++/* Little-endian Ethernet CRC32 of data packed as big-endian u32 words */
++static uint32_t sja1105_crc32(void *buf, size_t len)
++{
++	unsigned int i;
++	u64 chunk;
++	u32 crc;
++
++	/* seed */
++	crc = 0xFFFFFFFF;
++	for (i = 0; i < len; i += 4) {
++		sja1105_packing(buf + i, &chunk, 31, 0, 4, UNPACK);
++		crc = crc32_add(crc, chunk & 0xFF);
++		crc = crc32_add(crc, (chunk >> 8) & 0xFF);
++		crc = crc32_add(crc, (chunk >> 16) & 0xFF);
++		crc = crc32_add(crc, (chunk >> 24) & 0xFF);
++	}
++	return bitrev32(~crc);
++}
++
++static void sja1105_spi_message_pack(void *buf, struct sja1105_spi_message *msg)
++{
++	const int size = SJA1105_SIZE_SPI_MSG_HEADER;
++
++	memset(buf, 0, size);
++
++	sja1105_packing(buf, &msg->access,     31, 31, size, PACK);
++	sja1105_packing(buf, &msg->read_count, 30, 25, size, PACK);
++	sja1105_packing(buf, &msg->address,    24,  4, size, PACK);
++}
++
++static int sja1105_xfer_buf(const struct sja1105_private *priv,
++			    enum sja1105_spi_rw_mode rw, u64 reg_addr,
++			    u8 *buf, size_t len)
++{
++	u8 hdr_buf[SJA1105_SIZE_SPI_MSG_HEADER] = {0};
++	struct spi_device *spi = priv->spidev;
++	struct spi_transfer xfers[2] = {0};
++	struct spi_transfer *chunk_xfer;
++	struct spi_transfer *hdr_xfer;
++	struct sja1105_chunk chunk;
++	int num_chunks;
++	int rc, i = 0;
++
++	num_chunks = DIV_ROUND_UP(len, priv->max_xfer_len);
++
++	chunk.reg_addr = reg_addr;
++	chunk.buf = buf;
++	chunk.len = min_t(size_t, len, priv->max_xfer_len);
++
++	hdr_xfer = &xfers[0];
++	chunk_xfer = &xfers[1];
++
++	for (i = 0; i < num_chunks; i++) {
++		struct sja1105_spi_message msg;
++
++		/* Populate the transfer's header buffer */
++		msg.address = chunk.reg_addr;
++		msg.access = rw;
++		if (rw == SPI_READ)
++			msg.read_count = chunk.len / 4;
++		else
++			/* Ignored */
++			msg.read_count = 0;
++		sja1105_spi_message_pack(hdr_buf, &msg);
++		hdr_xfer->tx_buf = hdr_buf;
++		hdr_xfer->len = SJA1105_SIZE_SPI_MSG_HEADER;
++
++		/* Populate the transfer's data buffer */
++		if (rw == SPI_READ)
++			chunk_xfer->rx_buf = chunk.buf;
++		else
++			chunk_xfer->tx_buf = chunk.buf;
++		chunk_xfer->len = chunk.len;
++
++		/* Calculate next chunk */
++		chunk.buf += chunk.len;
++		chunk.reg_addr += chunk.len / 4;
++		chunk.len = min_t(size_t, (ptrdiff_t)(buf + len - chunk.buf),
++				  priv->max_xfer_len);
++
++		rc = spi_sync_transfer(spi, xfers, 2);
++		if (rc < 0) {
++			dev_err(&spi->dev, "SPI transfer failed: %d\n", rc);
++			return rc;
++		}
 +	}
 +
 +	return 0;
 +}
 +
-+static int ksz_port_enable(struct udevice *dev, int port, struct phy_device *phy)
++static int sja1105et_reset_cmd(struct sja1105_private *priv)
 +{
-+	struct dsa_pdata *pdata = dev_get_uclass_plat(dev);
-+	struct ksz_dsa_priv *priv = dev_get_priv(dev);
-+	int supported = PHY_GBIT_FEATURES;
-+	u8 data8;
-+	int ret;
++	const struct sja1105_regs *regs = priv->info->regs;
++	u8 packed_buf[SJA1105_SIZE_RESET_CMD] = {0};
++	const int size = SJA1105_SIZE_RESET_CMD;
++	u64 cold_rst = 1;
 +
-+	dev_dbg(dev, "%s P%d 0x%x %s\n", __func__, port + 1, phy->phy_id,
-+		phy_string_for_interface(phy->interface));
++	sja1105_packing(packed_buf, &cold_rst, 3, 3, size, PACK);
 +
-+	/* setup this port */
-+	ret = ksz_port_setup(dev, port, phy->interface);
-+	if (ret) {
-+		dev_err(dev, "port setup failed: %d\n", ret);
-+		return ret;
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->rgu, packed_buf,
++				SJA1105_SIZE_RESET_CMD);
++}
++
++static int sja1105pqrs_reset_cmd(struct sja1105_private *priv)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	u8 packed_buf[SJA1105_SIZE_RESET_CMD] = {0};
++	const int size = SJA1105_SIZE_RESET_CMD;
++	u64 cold_rst = 1;
++
++	sja1105_packing(packed_buf, &cold_rst, 2, 2, size, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->rgu, packed_buf,
++				SJA1105_SIZE_RESET_CMD);
++}
++
++static int sja1110_reset_cmd(struct sja1105_private *priv)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	u8 packed_buf[SJA1105_SIZE_RESET_CMD] = {0};
++	const int size = SJA1105_SIZE_RESET_CMD;
++	u64 switch_rst = 1;
++
++	/* Only reset the switch core.
++	 * A full cold reset would re-enable the BASE_MCSS_CLOCK PLL which
++	 * would turn on the microcontroller, potentially letting it execute
++	 * code which could interfere with our configuration.
++	 */
++	sja1105_packing(packed_buf, &switch_rst, 20, 20, size, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->rgu, packed_buf,
++				SJA1105_SIZE_RESET_CMD);
++}
++
++static size_t sja1105et_general_params_entry_packing(void *buf, void *entry_ptr,
++						     enum packing_op op)
++{
++	const size_t size = SJA1105ET_SIZE_GENERAL_PARAMS_ENTRY;
++	struct sja1105_general_params_entry *entry = entry_ptr;
++
++	sja1105_packing(buf, &entry->mac_fltres1, 311, 264, size, op);
++	sja1105_packing(buf, &entry->mac_fltres0, 263, 216, size, op);
++	sja1105_packing(buf, &entry->mac_flt1,    215, 168, size, op);
++	sja1105_packing(buf, &entry->mac_flt0,    167, 120, size, op);
++	sja1105_packing(buf, &entry->casc_port,   115, 113, size, op);
++	sja1105_packing(buf, &entry->host_port,   112, 110, size, op);
++	sja1105_packing(buf, &entry->mirr_port,   109, 107, size, op);
++	sja1105_packing(buf, &entry->tpid,         42,  27, size, op);
++	sja1105_packing(buf, &entry->tpid2,        25,  10, size, op);
++	return size;
++}
++
++static size_t sja1110_general_params_entry_packing(void *buf, void *entry_ptr,
++						   enum packing_op op)
++{
++	struct sja1105_general_params_entry *entry = entry_ptr;
++	const size_t size = SJA1110_SIZE_GENERAL_PARAMS_ENTRY;
++
++	sja1105_packing(buf, &entry->mac_fltres1,  438, 391, size, op);
++	sja1105_packing(buf, &entry->mac_fltres0,  390, 343, size, op);
++	sja1105_packing(buf, &entry->mac_flt1,     342, 295, size, op);
++	sja1105_packing(buf, &entry->mac_flt0,     294, 247, size, op);
++	sja1105_packing(buf, &entry->casc_port,    242, 232, size, op);
++	sja1105_packing(buf, &entry->host_port,    231, 228, size, op);
++	sja1105_packing(buf, &entry->mirr_port,    227, 224, size, op);
++	sja1105_packing(buf, &entry->tpid2,        159, 144, size, op);
++	sja1105_packing(buf, &entry->tpid,         142, 127, size, op);
++	return size;
++}
++
++static size_t
++sja1105pqrs_general_params_entry_packing(void *buf, void *entry_ptr,
++					 enum packing_op op)
++{
++	const size_t size = SJA1105PQRS_SIZE_GENERAL_PARAMS_ENTRY;
++	struct sja1105_general_params_entry *entry = entry_ptr;
++
++	sja1105_packing(buf, &entry->mac_fltres1, 343, 296, size, op);
++	sja1105_packing(buf, &entry->mac_fltres0, 295, 248, size, op);
++	sja1105_packing(buf, &entry->mac_flt1,    247, 200, size, op);
++	sja1105_packing(buf, &entry->mac_flt0,    199, 152, size, op);
++	sja1105_packing(buf, &entry->casc_port,   147, 145, size, op);
++	sja1105_packing(buf, &entry->host_port,   144, 142, size, op);
++	sja1105_packing(buf, &entry->mirr_port,   141, 139, size, op);
++	sja1105_packing(buf, &entry->tpid,         74,  59, size, op);
++	sja1105_packing(buf, &entry->tpid2,        57,  42, size, op);
++	return size;
++}
++
++static size_t
++sja1105_l2_forwarding_params_entry_packing(void *buf, void *entry_ptr,
++					   enum packing_op op)
++{
++	const size_t size = SJA1105_SIZE_L2_FORWARDING_PARAMS_ENTRY;
++	struct sja1105_l2_forwarding_params_entry *entry = entry_ptr;
++	int offset, i;
++
++	for (i = 0, offset = 13; i < SJA1105_NUM_TC; i++, offset += 10)
++		sja1105_packing(buf, &entry->part_spc[i],
++				offset + 9, offset + 0, size, op);
++	return size;
++}
++
++static size_t
++sja1110_l2_forwarding_params_entry_packing(void *buf, void *entry_ptr,
++					   enum packing_op op)
++{
++	struct sja1105_l2_forwarding_params_entry *entry = entry_ptr;
++	const size_t size = SJA1105_SIZE_L2_FORWARDING_PARAMS_ENTRY;
++	int offset, i;
++
++	for (i = 0, offset = 5; i < 8; i++, offset += 11)
++		sja1105_packing(buf, &entry->part_spc[i],
++				offset + 10, offset + 0, size, op);
++	return size;
++}
++
++static size_t sja1105_l2_forwarding_entry_packing(void *buf, void *entry_ptr,
++						  enum packing_op op)
++{
++	const size_t size = SJA1105_SIZE_L2_FORWARDING_ENTRY;
++	struct sja1105_l2_forwarding_entry *entry = entry_ptr;
++
++	sja1105_packing(buf, &entry->bc_domain,  63, 59, size, op);
++	sja1105_packing(buf, &entry->reach_port, 58, 54, size, op);
++	sja1105_packing(buf, &entry->fl_domain,  53, 49, size, op);
++	return size;
++}
++
++static size_t sja1110_l2_forwarding_entry_packing(void *buf, void *entry_ptr,
++						  enum packing_op op)
++{
++	struct sja1105_l2_forwarding_entry *entry = entry_ptr;
++	const size_t size = SJA1105_SIZE_L2_FORWARDING_ENTRY;
++
++	sja1105_packing(buf, &entry->bc_domain,  63, 53, size, op);
++	sja1105_packing(buf, &entry->reach_port, 52, 42, size, op);
++	sja1105_packing(buf, &entry->fl_domain,  41, 31, size, op);
++	return size;
++}
++
++static size_t sja1105_l2_policing_entry_packing(void *buf, void *entry_ptr,
++						enum packing_op op)
++{
++	struct sja1105_l2_policing_entry *entry = entry_ptr;
++	const size_t size = SJA1105_SIZE_L2_POLICING_ENTRY;
++
++	sja1105_packing(buf, &entry->sharindx,  63, 58, size, op);
++	sja1105_packing(buf, &entry->smax,      57, 42, size, op);
++	sja1105_packing(buf, &entry->rate,      41, 26, size, op);
++	sja1105_packing(buf, &entry->maxlen,    25, 15, size, op);
++	sja1105_packing(buf, &entry->partition, 14, 12, size, op);
++	return size;
++}
++
++static size_t sja1110_l2_policing_entry_packing(void *buf, void *entry_ptr,
++						enum packing_op op)
++{
++	struct sja1105_l2_policing_entry *entry = entry_ptr;
++	const size_t size = SJA1105_SIZE_L2_POLICING_ENTRY;
++
++	sja1105_packing(buf, &entry->sharindx, 63, 57, size, op);
++	sja1105_packing(buf, &entry->smax,     56, 39, size, op);
++	sja1105_packing(buf, &entry->rate,     38, 21, size, op);
++	sja1105_packing(buf, &entry->maxlen,   20, 10, size, op);
++	sja1105_packing(buf, &entry->partition, 9,  7, size, op);
++	return size;
++}
++
++static size_t sja1105et_mac_config_entry_packing(void *buf, void *entry_ptr,
++						 enum packing_op op)
++{
++	const size_t size = SJA1105ET_SIZE_MAC_CONFIG_ENTRY;
++	struct sja1105_mac_config_entry *entry = entry_ptr;
++	int offset, i;
++
++	for (i = 0, offset = 72; i < SJA1105_NUM_TC; i++, offset += 19) {
++		sja1105_packing(buf, &entry->enabled[i],
++				offset +  0, offset +  0, size, op);
++		sja1105_packing(buf, &entry->base[i],
++				offset +  9, offset +  1, size, op);
++		sja1105_packing(buf, &entry->top[i],
++				offset + 18, offset + 10, size, op);
 +	}
++	sja1105_packing(buf, &entry->speed,     66, 65, size, op);
++	sja1105_packing(buf, &entry->vlanid,    21, 10, size, op);
++	sja1105_packing(buf, &entry->egress,     2,  2, size, op);
++	sja1105_packing(buf, &entry->ingress,    1,  1, size, op);
++	return size;
++}
 +
-+	/* enable port forwarding for this port */
-+	ksz_pread8(priv->dev, port, REG_PORT_MSTP_STATE, &data8);
-+	data8 &= ~(PORT_TX_ENABLE | PORT_RX_ENABLE | PORT_LEARN_DISABLE);
-+	data8 |= (PORT_TX_ENABLE | PORT_RX_ENABLE);
-+	ksz_pwrite8(priv->dev, port, REG_PORT_MSTP_STATE, data8);
++static size_t sja1105pqrs_mac_config_entry_packing(void *buf, void *entry_ptr,
++						   enum packing_op op)
++{
++	const size_t size = SJA1105PQRS_SIZE_MAC_CONFIG_ENTRY;
++	struct sja1105_mac_config_entry *entry = entry_ptr;
++	int offset, i;
 +
-+	/* if cpu master we are done */
-+	if (port == pdata->cpu_port)
-+		return 0;
++	for (i = 0, offset = 104; i < SJA1105_NUM_TC; i++, offset += 19) {
++		sja1105_packing(buf, &entry->enabled[i],
++				offset +  0, offset +  0, size, op);
++		sja1105_packing(buf, &entry->base[i],
++				offset +  9, offset +  1, size, op);
++		sja1105_packing(buf, &entry->top[i],
++				offset + 18, offset + 10, size, op);
++	}
++	sja1105_packing(buf, &entry->speed,      98, 97, size, op);
++	sja1105_packing(buf, &entry->vlanid,     53, 42, size, op);
++	sja1105_packing(buf, &entry->egress,     32, 32, size, op);
++	sja1105_packing(buf, &entry->ingress,    31, 31, size, op);
++	return size;
++}
 +
-+	/* configure phy */
-+	phy->supported &= supported;
-+	phy->advertising &= supported;
-+	ret = phy_config(phy);
-+	if (ret)
-+		return ret;
++static size_t sja1110_mac_config_entry_packing(void *buf, void *entry_ptr,
++					       enum packing_op op)
++{
++	const size_t size = SJA1105PQRS_SIZE_MAC_CONFIG_ENTRY;
++	struct sja1105_mac_config_entry *entry = entry_ptr;
++	int offset, i;
 +
-+	ret = phy_startup(phy);
-+	if (ret)
-+		return ret;
++	for (i = 0, offset = 104; i < 8; i++, offset += 19) {
++		sja1105_packing(buf, &entry->enabled[i],
++				offset +  0, offset +  0, size, op);
++		sja1105_packing(buf, &entry->base[i],
++				offset +  9, offset +  1, size, op);
++		sja1105_packing(buf, &entry->top[i],
++				offset + 18, offset + 10, size, op);
++	}
++	sja1105_packing(buf, &entry->speed,      98, 96, size, op);
++	sja1105_packing(buf, &entry->vlanid,     52, 41, size, op);
++	sja1105_packing(buf, &entry->egress,     31, 31, size, op);
++	sja1105_packing(buf, &entry->ingress,    30, 30, size, op);
++	return size;
++}
 +
-+	/* start switch */
-+	ksz_read8(priv->dev, REG_SW_OPERATION, &data8);
-+	data8 |= SW_START;
-+	ksz_write8(priv->dev, REG_SW_OPERATION, data8);
++static size_t sja1105_vlan_lookup_entry_packing(void *buf, void *entry_ptr,
++						enum packing_op op)
++{
++	const size_t size = SJA1105_SIZE_VLAN_LOOKUP_ENTRY;
++	struct sja1105_vlan_lookup_entry *entry = entry_ptr;
 +
-+	/* keep track of current enabled non-cpu port */
-+	priv->active_port = port;
++	sja1105_packing(buf, &entry->vmemb_port, 53, 49, size, op);
++	sja1105_packing(buf, &entry->vlan_bc,    48, 44, size, op);
++	sja1105_packing(buf, &entry->tag_port,   43, 39, size, op);
++	sja1105_packing(buf, &entry->vlanid,     38, 27, size, op);
++	return size;
++}
++
++static size_t sja1110_vlan_lookup_entry_packing(void *buf, void *entry_ptr,
++						enum packing_op op)
++{
++	struct sja1105_vlan_lookup_entry *entry = entry_ptr;
++	const size_t size = SJA1110_SIZE_VLAN_LOOKUP_ENTRY;
++
++	sja1105_packing(buf, &entry->vmemb_port, 73, 63, size, op);
++	sja1105_packing(buf, &entry->vlan_bc,    62, 52, size, op);
++	sja1105_packing(buf, &entry->tag_port,   51, 41, size, op);
++	sja1105_packing(buf, &entry->type_entry, 40, 39, size, op);
++	sja1105_packing(buf, &entry->vlanid,     38, 27, size, op);
++	return size;
++}
++
++static size_t sja1105_xmii_params_entry_packing(void *buf, void *entry_ptr,
++						enum packing_op op)
++{
++	const size_t size = SJA1105_SIZE_XMII_PARAMS_ENTRY;
++	struct sja1105_xmii_params_entry *entry = entry_ptr;
++	int offset, i;
++
++	for (i = 0, offset = 17; i < SJA1105_NUM_PORTS; i++, offset += 3) {
++		sja1105_packing(buf, &entry->xmii_mode[i],
++				offset + 1, offset + 0, size, op);
++		sja1105_packing(buf, &entry->phy_mac[i],
++				offset + 2, offset + 2, size, op);
++	}
++	return size;
++}
++
++static size_t sja1110_xmii_params_entry_packing(void *buf, void *entry_ptr,
++						enum packing_op op)
++{
++	const size_t size = SJA1110_SIZE_XMII_PARAMS_ENTRY;
++	struct sja1105_xmii_params_entry *entry = entry_ptr;
++	int offset, i;
++
++	for (i = 0, offset = 20; i < SJA1110_NUM_PORTS; i++, offset += 4) {
++		sja1105_packing(buf, &entry->xmii_mode[i],
++				offset + 1, offset + 0, size, op);
++		sja1105_packing(buf, &entry->phy_mac[i],
++				offset + 2, offset + 2, size, op);
++		sja1105_packing(buf, &entry->special[i],
++				offset + 3, offset + 3, size, op);
++	}
++	return size;
++}
++
++static size_t sja1105_table_header_packing(void *buf, void *entry_ptr,
++					   enum packing_op op)
++{
++	const size_t size = SJA1105_SIZE_TABLE_HEADER;
++	struct sja1105_table_header *entry = entry_ptr;
++
++	sja1105_packing(buf, &entry->block_id, 31, 24, size, op);
++	sja1105_packing(buf, &entry->len,      55, 32, size, op);
++	sja1105_packing(buf, &entry->crc,      95, 64, size, op);
++	return size;
++}
++
++static void
++sja1105_table_header_pack_with_crc(void *buf, struct sja1105_table_header *hdr)
++{
++	/* First pack the table as-is, then calculate the CRC, and
++	 * finally put the proper CRC into the packed buffer
++	 */
++	memset(buf, 0, SJA1105_SIZE_TABLE_HEADER);
++	sja1105_table_header_packing(buf, hdr, PACK);
++	hdr->crc = sja1105_crc32(buf, SJA1105_SIZE_TABLE_HEADER - 4);
++	sja1105_packing(buf + SJA1105_SIZE_TABLE_HEADER - 4, &hdr->crc,
++			31, 0, 4, PACK);
++}
++
++static void sja1105_table_write_crc(u8 *table_start, u8 *crc_ptr)
++{
++	u64 computed_crc;
++	int len_bytes;
++
++	len_bytes = (uintptr_t)(crc_ptr - table_start);
++	computed_crc = sja1105_crc32(table_start, len_bytes);
++	sja1105_packing(crc_ptr, &computed_crc, 31, 0, 4, PACK);
++}
++
++/* The block IDs that the switches support are unfortunately sparse, so keep a
++ * mapping table to "block indices" and translate back and forth.
++ */
++static const u64 blk_id_map[BLK_IDX_MAX] = {
++	[BLK_IDX_L2_POLICING] = BLKID_L2_POLICING,
++	[BLK_IDX_VLAN_LOOKUP] = BLKID_VLAN_LOOKUP,
++	[BLK_IDX_L2_FORWARDING] = BLKID_L2_FORWARDING,
++	[BLK_IDX_MAC_CONFIG] = BLKID_MAC_CONFIG,
++	[BLK_IDX_L2_FORWARDING_PARAMS] = BLKID_L2_FORWARDING_PARAMS,
++	[BLK_IDX_GENERAL_PARAMS] = BLKID_GENERAL_PARAMS,
++	[BLK_IDX_XMII_PARAMS] = BLKID_XMII_PARAMS,
++};
++
++static void
++sja1105_static_config_pack(void *buf, struct sja1105_static_config *config)
++{
++	struct sja1105_table_header header = {0};
++	enum sja1105_blk_idx i;
++	u8 *p = buf;
++	int j;
++
++	sja1105_packing(p, &config->device_id, 31, 0, 4, PACK);
++	p += SJA1105_SIZE_DEVICE_ID;
++
++	for (i = 0; i < BLK_IDX_MAX; i++) {
++		const struct sja1105_table *table;
++		u8 *table_start;
++
++		table = &config->tables[i];
++		if (!table->entry_count)
++			continue;
++
++		header.block_id = blk_id_map[i];
++		header.len = table->entry_count *
++			     table->ops->packed_entry_size / 4;
++		sja1105_table_header_pack_with_crc(p, &header);
++		p += SJA1105_SIZE_TABLE_HEADER;
++		table_start = p;
++		for (j = 0; j < table->entry_count; j++) {
++			u8 *entry_ptr = table->entries;
++
++			entry_ptr += j * table->ops->unpacked_entry_size;
++			memset(p, 0, table->ops->packed_entry_size);
++			table->ops->packing(p, entry_ptr, PACK);
++			p += table->ops->packed_entry_size;
++		}
++		sja1105_table_write_crc(table_start, p);
++		p += 4;
++	}
++	/* Final header:
++	 * Block ID does not matter
++	 * Length of 0 marks that header is final
++	 * CRC will be replaced on-the-fly
++	 */
++	header.block_id = 0;
++	header.len = 0;
++	header.crc = 0xDEADBEEF;
++	memset(p, 0, SJA1105_SIZE_TABLE_HEADER);
++	sja1105_table_header_packing(p, &header, PACK);
++}
++
++static size_t
++sja1105_static_config_get_length(const struct sja1105_static_config *config)
++{
++	unsigned int header_count;
++	enum sja1105_blk_idx i;
++	unsigned int sum;
++
++	/* Ending header */
++	header_count = 1;
++	sum = SJA1105_SIZE_DEVICE_ID;
++
++	/* Tables (headers and entries) */
++	for (i = 0; i < BLK_IDX_MAX; i++) {
++		const struct sja1105_table *table;
++
++		table = &config->tables[i];
++		if (table->entry_count)
++			header_count++;
++
++		sum += table->ops->packed_entry_size * table->entry_count;
++	}
++	/* Headers have an additional CRC at the end */
++	sum += header_count * (SJA1105_SIZE_TABLE_HEADER + 4);
++	/* Last header does not have an extra CRC because there is no data */
++	sum -= 4;
++
++	return sum;
++}
++
++/* Compatibility matrices */
++static const struct sja1105_table_ops sja1105et_table_ops[BLK_IDX_MAX] = {
++	[BLK_IDX_L2_POLICING] = {
++		.packing = sja1105_l2_policing_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_l2_policing_entry),
++		.packed_entry_size = SJA1105_SIZE_L2_POLICING_ENTRY,
++		.max_entry_count = SJA1105_MAX_L2_POLICING_COUNT,
++	},
++	[BLK_IDX_VLAN_LOOKUP] = {
++		.packing = sja1105_vlan_lookup_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_vlan_lookup_entry),
++		.packed_entry_size = SJA1105_SIZE_VLAN_LOOKUP_ENTRY,
++		.max_entry_count = SJA1105_MAX_VLAN_LOOKUP_COUNT,
++	},
++	[BLK_IDX_L2_FORWARDING] = {
++		.packing = sja1105_l2_forwarding_entry_packing,
++		.unpacked_entry_size =
++			sizeof(struct sja1105_l2_forwarding_entry),
++		.packed_entry_size = SJA1105_SIZE_L2_FORWARDING_ENTRY,
++		.max_entry_count = SJA1105_MAX_L2_FORWARDING_COUNT,
++	},
++	[BLK_IDX_MAC_CONFIG] = {
++		.packing = sja1105et_mac_config_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_mac_config_entry),
++		.packed_entry_size = SJA1105ET_SIZE_MAC_CONFIG_ENTRY,
++		.max_entry_count = SJA1105_MAX_MAC_CONFIG_COUNT,
++	},
++	[BLK_IDX_L2_FORWARDING_PARAMS] = {
++		.packing = sja1105_l2_forwarding_params_entry_packing,
++		.unpacked_entry_size =
++			sizeof(struct sja1105_l2_forwarding_params_entry),
++		.packed_entry_size = SJA1105_SIZE_L2_FORWARDING_PARAMS_ENTRY,
++		.max_entry_count = SJA1105_MAX_L2_FORWARDING_PARAMS_COUNT,
++	},
++	[BLK_IDX_GENERAL_PARAMS] = {
++		.packing = sja1105et_general_params_entry_packing,
++		.unpacked_entry_size =
++			sizeof(struct sja1105_general_params_entry),
++		.packed_entry_size = SJA1105ET_SIZE_GENERAL_PARAMS_ENTRY,
++		.max_entry_count = SJA1105_MAX_GENERAL_PARAMS_COUNT,
++	},
++	[BLK_IDX_XMII_PARAMS] = {
++		.packing = sja1105_xmii_params_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_xmii_params_entry),
++		.packed_entry_size = SJA1105_SIZE_XMII_PARAMS_ENTRY,
++		.max_entry_count = SJA1105_MAX_XMII_PARAMS_COUNT,
++	},
++};
++
++static const struct sja1105_table_ops sja1105pqrs_table_ops[BLK_IDX_MAX] = {
++	[BLK_IDX_L2_POLICING] = {
++		.packing = sja1105_l2_policing_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_l2_policing_entry),
++		.packed_entry_size = SJA1105_SIZE_L2_POLICING_ENTRY,
++		.max_entry_count = SJA1105_MAX_L2_POLICING_COUNT,
++	},
++	[BLK_IDX_VLAN_LOOKUP] = {
++		.packing = sja1105_vlan_lookup_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_vlan_lookup_entry),
++		.packed_entry_size = SJA1105_SIZE_VLAN_LOOKUP_ENTRY,
++		.max_entry_count = SJA1105_MAX_VLAN_LOOKUP_COUNT,
++	},
++	[BLK_IDX_L2_FORWARDING] = {
++		.packing = sja1105_l2_forwarding_entry_packing,
++		.unpacked_entry_size =
++			sizeof(struct sja1105_l2_forwarding_entry),
++		.packed_entry_size = SJA1105_SIZE_L2_FORWARDING_ENTRY,
++		.max_entry_count = SJA1105_MAX_L2_FORWARDING_COUNT,
++	},
++	[BLK_IDX_MAC_CONFIG] = {
++		.packing = sja1105pqrs_mac_config_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_mac_config_entry),
++		.packed_entry_size = SJA1105PQRS_SIZE_MAC_CONFIG_ENTRY,
++		.max_entry_count = SJA1105_MAX_MAC_CONFIG_COUNT,
++	},
++	[BLK_IDX_L2_FORWARDING_PARAMS] = {
++		.packing = sja1105_l2_forwarding_params_entry_packing,
++		.unpacked_entry_size =
++			sizeof(struct sja1105_l2_forwarding_params_entry),
++		.packed_entry_size = SJA1105_SIZE_L2_FORWARDING_PARAMS_ENTRY,
++		.max_entry_count = SJA1105_MAX_L2_FORWARDING_PARAMS_COUNT,
++	},
++	[BLK_IDX_GENERAL_PARAMS] = {
++		.packing = sja1105pqrs_general_params_entry_packing,
++		.unpacked_entry_size =
++			sizeof(struct sja1105_general_params_entry),
++		.packed_entry_size = SJA1105PQRS_SIZE_GENERAL_PARAMS_ENTRY,
++		.max_entry_count = SJA1105_MAX_GENERAL_PARAMS_COUNT,
++	},
++	[BLK_IDX_XMII_PARAMS] = {
++		.packing = sja1105_xmii_params_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_xmii_params_entry),
++		.packed_entry_size = SJA1105_SIZE_XMII_PARAMS_ENTRY,
++		.max_entry_count = SJA1105_MAX_XMII_PARAMS_COUNT,
++	},
++};
++
++static const struct sja1105_table_ops sja1110_table_ops[BLK_IDX_MAX] = {
++	[BLK_IDX_L2_POLICING] = {
++		.packing = sja1110_l2_policing_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_l2_policing_entry),
++		.packed_entry_size = SJA1105_SIZE_L2_POLICING_ENTRY,
++		.max_entry_count = SJA1110_MAX_L2_POLICING_COUNT,
++	},
++	[BLK_IDX_VLAN_LOOKUP] = {
++		.packing = sja1110_vlan_lookup_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_vlan_lookup_entry),
++		.packed_entry_size = SJA1110_SIZE_VLAN_LOOKUP_ENTRY,
++		.max_entry_count = SJA1105_MAX_VLAN_LOOKUP_COUNT,
++	},
++	[BLK_IDX_L2_FORWARDING] = {
++		.packing = sja1110_l2_forwarding_entry_packing,
++		.unpacked_entry_size =
++			sizeof(struct sja1105_l2_forwarding_entry),
++		.packed_entry_size = SJA1105_SIZE_L2_FORWARDING_ENTRY,
++		.max_entry_count = SJA1110_MAX_L2_FORWARDING_COUNT,
++	},
++	[BLK_IDX_MAC_CONFIG] = {
++		.packing = sja1110_mac_config_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_mac_config_entry),
++		.packed_entry_size = SJA1105PQRS_SIZE_MAC_CONFIG_ENTRY,
++		.max_entry_count = SJA1110_MAX_MAC_CONFIG_COUNT,
++	},
++	[BLK_IDX_L2_FORWARDING_PARAMS] = {
++		.packing = sja1110_l2_forwarding_params_entry_packing,
++		.unpacked_entry_size =
++			sizeof(struct sja1105_l2_forwarding_params_entry),
++		.packed_entry_size = SJA1105_SIZE_L2_FORWARDING_PARAMS_ENTRY,
++		.max_entry_count = SJA1105_MAX_L2_FORWARDING_PARAMS_COUNT,
++	},
++	[BLK_IDX_GENERAL_PARAMS] = {
++		.packing = sja1110_general_params_entry_packing,
++		.unpacked_entry_size =
++			sizeof(struct sja1105_general_params_entry),
++		.packed_entry_size = SJA1110_SIZE_GENERAL_PARAMS_ENTRY,
++		.max_entry_count = SJA1105_MAX_GENERAL_PARAMS_COUNT,
++	},
++	[BLK_IDX_XMII_PARAMS] = {
++		.packing = sja1110_xmii_params_entry_packing,
++		.unpacked_entry_size = sizeof(struct sja1105_xmii_params_entry),
++		.packed_entry_size = SJA1110_SIZE_XMII_PARAMS_ENTRY,
++		.max_entry_count = SJA1105_MAX_XMII_PARAMS_COUNT,
++	},
++};
++
++static int sja1105_init_mii_settings(struct sja1105_private *priv)
++{
++	struct sja1105_table *table;
++
++	table = &priv->static_config.tables[BLK_IDX_XMII_PARAMS];
++
++	table->entries = calloc(SJA1105_MAX_XMII_PARAMS_COUNT,
++				table->ops->unpacked_entry_size);
++	if (!table->entries)
++		return -ENOMEM;
++
++	/* Table will be populated at runtime */
++	table->entry_count = SJA1105_MAX_XMII_PARAMS_COUNT;
 +
 +	return 0;
 +}
 +
-+static void ksz_port_disable(struct udevice *dev, int port, struct phy_device *phy)
++static void sja1105_setup_tagging(struct sja1105_private *priv, int port)
 +{
-+	struct dsa_pdata *pdata = dev_get_uclass_plat(dev);
-+	struct ksz_dsa_priv *priv = dev_get_priv(dev);
-+	u8 data8;
++	struct sja1105_vlan_lookup_entry *vlan;
++	struct dsa_switch *ds = &priv->ds;
++	int cpu = ds->cpu_port;
 +
-+	dev_dbg(dev, "%s P%d 0x%x\n", __func__, port + 1, phy->phy_id);
-+
-+	/* can't disable CPU port without re-configuring/re-starting switch */
-+	if (port == pdata->cpu_port)
++	/* The CPU port is implicitly configured by
++	 * configuring the front-panel ports
++	 */
++	if (port == cpu)
 +		return;
 +
-+	/* disable port */
-+	ksz_pread8(priv->dev, port, REG_PORT_MSTP_STATE, &data8);
-+	data8 &= ~(PORT_TX_ENABLE | PORT_RX_ENABLE | PORT_LEARN_DISABLE);
-+	data8 |= PORT_LEARN_DISABLE;
-+	ksz_pwrite8(priv->dev, port, REG_PORT_MSTP_STATE, data8);
++	vlan = priv->static_config.tables[BLK_IDX_VLAN_LOOKUP].entries;
 +
-+	/*
-+	 * we don't call phy_shutdown here to avoid waiting next time we use
-+	 * the port, but the downside is that remote side will think we're
-+	 * actively processing traffic although we are not.
++	priv->pvid[port] = DSA_8021Q_DIR_TX | DSA_8021Q_PORT(port);
++
++	vlan[port].vmemb_port	= BIT(port) | BIT(cpu);
++	vlan[port].vlan_bc	= BIT(port) | BIT(cpu);
++	vlan[port].tag_port	= BIT(cpu);
++	vlan[port].vlanid	= priv->pvid[port];
++	vlan[port].type_entry	= SJA1110_VLAN_D_TAG;
++}
++
++static int sja1105_init_vlan(struct sja1105_private *priv)
++{
++	struct dsa_switch *ds = &priv->ds;
++	struct sja1105_table *table;
++	int port;
++
++	table = &priv->static_config.tables[BLK_IDX_VLAN_LOOKUP];
++
++	table->entries = calloc(ds->num_ports,
++				table->ops->unpacked_entry_size);
++	if (!table->entries)
++		return -ENOMEM;
++
++	table->entry_count = ds->num_ports;
++
++	for (port = 0; port < ds->num_ports; port++)
++		sja1105_setup_tagging(priv, port);
++
++	return 0;
++}
++
++static void
++sja1105_port_allow_traffic(struct sja1105_l2_forwarding_entry *l2_fwd,
++			   int from, int to)
++{
++	l2_fwd[from].bc_domain  |= BIT(to);
++	l2_fwd[from].reach_port |= BIT(to);
++	l2_fwd[from].fl_domain  |= BIT(to);
++}
++
++static int sja1105_init_l2_forwarding(struct sja1105_private *priv)
++{
++	struct sja1105_l2_forwarding_entry *l2fwd;
++	struct dsa_switch *ds = &priv->ds;
++	struct sja1105_table *table;
++	int cpu = ds->cpu_port;
++	int i;
++
++	table = &priv->static_config.tables[BLK_IDX_L2_FORWARDING];
++
++	table->entries = calloc(SJA1105_MAX_L2_FORWARDING_COUNT,
++				table->ops->unpacked_entry_size);
++	if (!table->entries)
++		return -ENOMEM;
++
++	table->entry_count = SJA1105_MAX_L2_FORWARDING_COUNT;
++
++	l2fwd = table->entries;
++
++	/* First 5 entries define the forwarding rules */
++	for (i = 0; i < ds->num_ports; i++) {
++		if (i == cpu)
++			continue;
++
++		sja1105_port_allow_traffic(l2fwd, i, cpu);
++		sja1105_port_allow_traffic(l2fwd, cpu, i);
++	}
++	/* Next 8 entries define VLAN PCP mapping from ingress to egress.
++	 * Leave them unpopulated (implicitly 0) but present.
 +	 */
++	return 0;
 +}
 +
-+static int ksz_xmit(struct udevice *dev, int port, void *packet, int length)
++static int sja1105_init_l2_forwarding_params(struct sja1105_private *priv)
 +{
-+	dev_dbg(dev, "%s P%d %d\n", __func__, port + 1, length);
++	struct sja1105_l2_forwarding_params_entry default_l2fwd_params = {
++		/* Use a single memory partition for all ingress queues */
++		.part_spc = { SJA1105_MAX_FRAME_MEMORY, 0, 0, 0, 0, 0, 0, 0 },
++	};
++	struct sja1105_table *table;
++
++	table = &priv->static_config.tables[BLK_IDX_L2_FORWARDING_PARAMS];
++
++	table->entries = calloc(SJA1105_MAX_L2_FORWARDING_PARAMS_COUNT,
++				table->ops->unpacked_entry_size);
++	if (!table->entries)
++		return -ENOMEM;
++
++	table->entry_count = SJA1105_MAX_L2_FORWARDING_PARAMS_COUNT;
++
++	/* This table only has a single entry */
++	((struct sja1105_l2_forwarding_params_entry *)table->entries)[0] =
++				default_l2fwd_params;
 +
 +	return 0;
 +}
 +
-+static int ksz_recv(struct udevice *dev, int *port, void *packet, int length)
++static int sja1105_init_general_params(struct sja1105_private *priv)
 +{
-+	struct ksz_dsa_priv *priv = dev_get_priv(dev);
++	struct dsa_switch *ds = &priv->ds;
++	struct sja1105_general_params_entry default_general_params = {
++		/* No frame trapping */
++		.mac_fltres1 = 0x0,
++		.mac_flt1    = 0xffffffffffff,
++		.mac_fltres0 = 0x0,
++		.mac_flt0    = 0xffffffffffff,
++		.host_port = ds->num_ports,
++		/* No mirroring => specify an out-of-range port value */
++		.mirr_port = ds->num_ports,
++		/* No link-local trapping => specify an out-of-range port value
++		 */
++		.casc_port = ds->num_ports,
++		/* Force the switch to see all traffic as untagged. */
++		.tpid = ETH_P_SJA1105,
++		.tpid2 = ETH_P_SJA1105,
++	};
++	struct sja1105_table *table;
 +
-+	dev_dbg(dev, "%s P%d %d\n", __func__, priv->active_port + 1, length);
-+	*port = priv->active_port;
++	table = &priv->static_config.tables[BLK_IDX_GENERAL_PARAMS];
++
++	table->entries = calloc(SJA1105_MAX_GENERAL_PARAMS_COUNT,
++				table->ops->unpacked_entry_size);
++	if (!table->entries)
++		return -ENOMEM;
++
++	table->entry_count = SJA1105_MAX_GENERAL_PARAMS_COUNT;
++
++	/* This table only has a single entry */
++	((struct sja1105_general_params_entry *)table->entries)[0] =
++				default_general_params;
 +
 +	return 0;
-+};
++}
 +
-+static const struct dsa_ops ksz_dsa_ops = {
-+	.port_enable = ksz_port_enable,
-+	.port_disable = ksz_port_disable,
-+	.xmit = ksz_xmit,
-+	.rcv = ksz_recv,
-+};
-+
-+static int ksz_probe_mdio(struct udevice *dev)
++static void sja1105_setup_policer(struct sja1105_l2_policing_entry *policing,
++				  int index, int mtu)
 +{
-+	ofnode node, mdios;
-+	int ret;
++	policing[index].sharindx = index;
++	policing[index].smax = 65535; /* Burst size in bytes */
++	policing[index].rate = SJA1105_RATE_MBPS(1000);
++	policing[index].maxlen = mtu;
++	policing[index].partition = 0;
++}
 +
-+	mdios = dev_read_subnode(dev, "mdios");
-+	if (ofnode_valid(mdios)) {
-+		ofnode_for_each_subnode(node, mdios) {
-+			const char *name = ofnode_get_name(node);
-+			struct udevice *pdev;
++static int sja1105_init_l2_policing(struct sja1105_private *priv)
++{
++	struct sja1105_l2_policing_entry *policing;
++	struct dsa_switch *ds = &priv->ds;
++	struct sja1105_table *table;
++	int cpu = ds->cpu_port;
++	int i, j, k;
 +
-+			ret = device_bind_driver_to_node(dev,
-+							 KSZ_MDIO_CHILD_DRV_NAME,
-+							 name, node, &pdev);
-+			if (ret)
-+				dev_err(dev, "failed to probe %s: %d\n", name, ret);
-+		}
++	table = &priv->static_config.tables[BLK_IDX_L2_POLICING];
++
++	table->entries = calloc(SJA1105_MAX_L2_POLICING_COUNT,
++				table->ops->unpacked_entry_size);
++	if (!table->entries)
++		return -ENOMEM;
++
++	table->entry_count = SJA1105_MAX_L2_POLICING_COUNT;
++
++	policing = table->entries;
++
++	/* k sweeps through all unicast policers (0-39).
++	 * bcast sweeps through policers 40-44.
++	 */
++	for (i = 0, k = 0; i < ds->num_ports; i++) {
++		int bcast = (ds->num_ports * SJA1105_NUM_TC) + i;
++		int mtu = VLAN_ETH_FRAME_LEN + ETH_FCS_LEN;
++
++		if (i == cpu)
++			mtu += VLAN_HLEN;
++
++		for (j = 0; j < SJA1105_NUM_TC; j++, k++)
++			sja1105_setup_policer(policing, k, mtu);
++
++		/* Set up this port's policer for broadcast traffic */
++		sja1105_setup_policer(policing, bcast, mtu);
++	}
++	return 0;
++}
++
++static int sja1105_init_mac_settings(struct sja1105_private *priv)
++{
++	struct sja1105_mac_config_entry default_mac = {
++		/* Enable 1 priority queue on egress. */
++		.top  = {0x1FF, 0, 0, 0, 0, 0, 0},
++		.base = {0x0, 0, 0, 0, 0, 0, 0, 0},
++		.enabled = {1, 0, 0, 0, 0, 0, 0, 0},
++		/* Will be overridden in sja1105_port_enable. */
++		.speed = priv->info->port_speed[SJA1105_SPEED_AUTO],
++		.egress = true,
++		.ingress = true,
++	};
++	struct sja1105_mac_config_entry *mac;
++	struct dsa_switch *ds = &priv->ds;
++	struct sja1105_table *table;
++	int port;
++
++	table = &priv->static_config.tables[BLK_IDX_MAC_CONFIG];
++
++	table->entries = calloc(ds->num_ports,
++				table->ops->unpacked_entry_size);
++	if (!table->entries)
++		return -ENOMEM;
++
++	table->entry_count = ds->num_ports;
++
++	mac = table->entries;
++
++	for (port = 0; port < ds->num_ports; port++) {
++		mac[port] = default_mac;
++		/* Internal VLAN (pvid) to apply to untagged ingress */
++		mac[port].vlanid = priv->pvid[port];
 +	}
 +
 +	return 0;
 +}
 +
-+/*
-+ * I2C driver
-+ */
-+static int ksz_i2c_probe(struct udevice *dev)
++static int sja1105_static_config_init(struct sja1105_private *priv)
 +{
-+	struct dsa_pdata *pdata = dev_get_uclass_plat(dev);
-+	struct ksz_dsa_priv *priv = dev_get_priv(dev);
-+	struct udevice *master = dsa_get_master(dev);
-+	int i, ret;
-+	u8 data8;
-+	u32 id;
++	struct sja1105_static_config *config = &priv->static_config;
++	const struct sja1105_table_ops *static_ops = priv->info->static_ops;
++	u64 device_id = priv->info->device_id;
++	enum sja1105_blk_idx i;
++	int rc;
 +
-+	if (!master)
-+		return -ENODEV;
++	*config = (struct sja1105_static_config) {0};
 +
-+	dev_dbg(dev, "%s %s master:%s\n", __func__, dev->name, master->name);
-+	dev_set_parent_priv(dev, priv);
++	/* Transfer static_ops array from priv into per-table ops
++	 * for handier access
++	 */
++	for (i = 0; i < BLK_IDX_MAX; i++)
++		config->tables[i].ops = &static_ops[i];
 +
-+	ret = i2c_set_chip_offset_len(dev, 2);
-+	if (ret) {
-+		printf("i2c_set_chip_offset_len failed: %d\n", ret);
-+		return ret;
++	config->device_id = device_id;
++
++	/* Build initial static configuration, to be fixed up during runtime */
++	rc = sja1105_init_vlan(priv);
++	if (rc < 0)
++		return rc;
++	rc = sja1105_init_mac_settings(priv);
++	if (rc < 0)
++		return rc;
++	rc = sja1105_init_mii_settings(priv);
++	if (rc < 0)
++		return rc;
++	rc = sja1105_init_l2_forwarding(priv);
++	if (rc < 0)
++		return rc;
++	rc = sja1105_init_l2_forwarding_params(priv);
++	if (rc < 0)
++		return rc;
++	rc = sja1105_init_l2_policing(priv);
++	if (rc < 0)
++		return rc;
++	rc = sja1105_init_general_params(priv);
++	if (rc < 0)
++		return rc;
++
++	return 0;
++}
++
++static void sja1105_cgu_idiv_packing(void *buf, struct sja1105_cgu_idiv *idiv,
++				     enum packing_op op)
++{
++	const int size = 4;
++
++	sja1105_packing(buf, &idiv->clksrc,    28, 24, size, op);
++	sja1105_packing(buf, &idiv->autoblock, 11, 11, size, op);
++	sja1105_packing(buf, &idiv->idiv,       5,  2, size, op);
++	sja1105_packing(buf, &idiv->pd,         0,  0, size, op);
++}
++
++static int sja1105_cgu_idiv_config(struct sja1105_private *priv, int port,
++				   bool enabled, int factor)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++	struct sja1105_cgu_idiv idiv;
++
++	if (regs->cgu_idiv[port] == SJA1105_RSV_ADDR)
++		return 0;
++
++	if (enabled && factor != 1 && factor != 10)
++		return -ERANGE;
++
++	/* Payload for packed_buf */
++	idiv.clksrc    = 0x0A;            /* 25MHz */
++	idiv.autoblock = 1;               /* Block clk automatically */
++	idiv.idiv      = factor - 1;      /* Divide by 1 or 10 */
++	idiv.pd        = enabled ? 0 : 1; /* Power down? */
++	sja1105_cgu_idiv_packing(packed_buf, &idiv, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->cgu_idiv[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static void
++sja1105_cgu_mii_control_packing(void *buf, struct sja1105_cgu_mii_ctrl *cmd,
++				enum packing_op op)
++{
++	const int size = 4;
++
++	sja1105_packing(buf, &cmd->clksrc,    28, 24, size, op);
++	sja1105_packing(buf, &cmd->autoblock, 11, 11, size, op);
++	sja1105_packing(buf, &cmd->pd,         0,  0, size, op);
++}
++
++static int sja1105_cgu_mii_tx_clk_config(struct sja1105_private *priv,
++					 int port, enum sja1105_mii_role role)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	struct sja1105_cgu_mii_ctrl mii_tx_clk;
++	const int mac_clk_sources[] = {
++		CLKSRC_MII0_TX_CLK,
++		CLKSRC_MII1_TX_CLK,
++		CLKSRC_MII2_TX_CLK,
++		CLKSRC_MII3_TX_CLK,
++		CLKSRC_MII4_TX_CLK,
++	};
++	const int phy_clk_sources[] = {
++		CLKSRC_IDIV0,
++		CLKSRC_IDIV1,
++		CLKSRC_IDIV2,
++		CLKSRC_IDIV3,
++		CLKSRC_IDIV4,
++	};
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++	int clksrc;
++
++	if (regs->mii_tx_clk[port] == SJA1105_RSV_ADDR)
++		return 0;
++
++	if (role == XMII_MAC)
++		clksrc = mac_clk_sources[port];
++	else
++		clksrc = phy_clk_sources[port];
++
++	/* Payload for packed_buf */
++	mii_tx_clk.clksrc    = clksrc;
++	mii_tx_clk.autoblock = 1;  /* Autoblock clk while changing clksrc */
++	mii_tx_clk.pd        = 0;  /* Power Down off => enabled */
++	sja1105_cgu_mii_control_packing(packed_buf, &mii_tx_clk, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->mii_tx_clk[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static int
++sja1105_cgu_mii_rx_clk_config(struct sja1105_private *priv, int port)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++	struct sja1105_cgu_mii_ctrl mii_rx_clk;
++	const int clk_sources[] = {
++		CLKSRC_MII0_RX_CLK,
++		CLKSRC_MII1_RX_CLK,
++		CLKSRC_MII2_RX_CLK,
++		CLKSRC_MII3_RX_CLK,
++		CLKSRC_MII4_RX_CLK,
++	};
++
++	if (regs->mii_rx_clk[port] == SJA1105_RSV_ADDR)
++		return 0;
++
++	/* Payload for packed_buf */
++	mii_rx_clk.clksrc    = clk_sources[port];
++	mii_rx_clk.autoblock = 1;  /* Autoblock clk while changing clksrc */
++	mii_rx_clk.pd        = 0;  /* Power Down off => enabled */
++	sja1105_cgu_mii_control_packing(packed_buf, &mii_rx_clk, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->mii_rx_clk[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static int
++sja1105_cgu_mii_ext_tx_clk_config(struct sja1105_private *priv, int port)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	struct sja1105_cgu_mii_ctrl mii_ext_tx_clk;
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++	const int clk_sources[] = {
++		CLKSRC_IDIV0,
++		CLKSRC_IDIV1,
++		CLKSRC_IDIV2,
++		CLKSRC_IDIV3,
++		CLKSRC_IDIV4,
++	};
++
++	if (regs->mii_ext_tx_clk[port] == SJA1105_RSV_ADDR)
++		return 0;
++
++	/* Payload for packed_buf */
++	mii_ext_tx_clk.clksrc    = clk_sources[port];
++	mii_ext_tx_clk.autoblock = 1; /* Autoblock clk while changing clksrc */
++	mii_ext_tx_clk.pd        = 0; /* Power Down off => enabled */
++	sja1105_cgu_mii_control_packing(packed_buf, &mii_ext_tx_clk, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->mii_ext_tx_clk[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static int
++sja1105_cgu_mii_ext_rx_clk_config(struct sja1105_private *priv, int port)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	struct sja1105_cgu_mii_ctrl mii_ext_rx_clk;
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++	const int clk_sources[] = {
++		CLKSRC_IDIV0,
++		CLKSRC_IDIV1,
++		CLKSRC_IDIV2,
++		CLKSRC_IDIV3,
++		CLKSRC_IDIV4,
++	};
++
++	if (regs->mii_ext_rx_clk[port] == SJA1105_RSV_ADDR)
++		return 0;
++
++	/* Payload for packed_buf */
++	mii_ext_rx_clk.clksrc    = clk_sources[port];
++	mii_ext_rx_clk.autoblock = 1; /* Autoblock clk while changing clksrc */
++	mii_ext_rx_clk.pd        = 0; /* Power Down off => enabled */
++	sja1105_cgu_mii_control_packing(packed_buf, &mii_ext_rx_clk, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->mii_ext_rx_clk[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static int sja1105_mii_clocking_setup(struct sja1105_private *priv, int port,
++				      enum sja1105_mii_role role)
++{
++	int rc;
++
++	rc = sja1105_cgu_idiv_config(priv, port, (role == XMII_PHY), 1);
++	if (rc < 0)
++		return rc;
++
++	rc = sja1105_cgu_mii_tx_clk_config(priv, port, role);
++	if (rc < 0)
++		return rc;
++
++	rc = sja1105_cgu_mii_rx_clk_config(priv, port);
++	if (rc < 0)
++		return rc;
++
++	if (role == XMII_PHY) {
++		rc = sja1105_cgu_mii_ext_tx_clk_config(priv, port);
++		if (rc < 0)
++			return rc;
++
++		rc = sja1105_cgu_mii_ext_rx_clk_config(priv, port);
++		if (rc < 0)
++			return rc;
++	}
++	return 0;
++}
++
++static void
++sja1105_cgu_pll_control_packing(void *buf, struct sja1105_cgu_pll_ctrl *cmd,
++				enum packing_op op)
++{
++	const int size = 4;
++
++	sja1105_packing(buf, &cmd->pllclksrc, 28, 24, size, op);
++	sja1105_packing(buf, &cmd->msel,      23, 16, size, op);
++	sja1105_packing(buf, &cmd->autoblock, 11, 11, size, op);
++	sja1105_packing(buf, &cmd->psel,       9,  8, size, op);
++	sja1105_packing(buf, &cmd->direct,     7,  7, size, op);
++	sja1105_packing(buf, &cmd->fbsel,      6,  6, size, op);
++	sja1105_packing(buf, &cmd->bypass,     1,  1, size, op);
++	sja1105_packing(buf, &cmd->pd,         0,  0, size, op);
++}
++
++static int sja1105_cgu_rgmii_tx_clk_config(struct sja1105_private *priv,
++					   int port, u64 speed)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	struct sja1105_cgu_mii_ctrl txc;
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++	int clksrc;
++
++	if (regs->rgmii_tx_clk[port] == SJA1105_RSV_ADDR)
++		return 0;
++
++	if (speed == priv->info->port_speed[SJA1105_SPEED_1000MBPS]) {
++		clksrc = CLKSRC_PLL0;
++	} else {
++		int clk_sources[] = {CLKSRC_IDIV0, CLKSRC_IDIV1, CLKSRC_IDIV2,
++				     CLKSRC_IDIV3, CLKSRC_IDIV4};
++		clksrc = clk_sources[port];
 +	}
 +
-+	/* default config */
-+	priv->dev = dev;
++	/* RGMII: 125MHz for 1000, 25MHz for 100, 2.5MHz for 10 */
++	txc.clksrc = clksrc;
++	/* Autoblock clk while changing clksrc */
++	txc.autoblock = 1;
++	/* Power Down off => enabled */
++	txc.pd = 0;
++	sja1105_cgu_mii_control_packing(packed_buf, &txc, PACK);
 +
-+	/* chip level reset */
-+	ksz_read8(priv->dev, REG_SW_OPERATION, &data8);
-+	data8 |= SW_RESET;
-+	ksz_write8(priv->dev, REG_SW_OPERATION, data8);
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->rgmii_tx_clk[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
 +
-+	/* read chip id */
-+	ret = ksz_read32(dev, REG_CHIP_ID0__1, &id);
-+	if (ret)
-+		return ret;
-+	id = __swab32(id);
-+	dev_dbg(dev, "%s id=0x%08x\n", __func__, id);
-+	switch (id & 0xffffff00) {
-+	case 0x00947700:
-+		puts("KSZ9477S: ");
++/* AGU */
++static void
++sja1105_cfg_pad_mii_packing(void *buf, struct sja1105_cfg_pad_mii *cmd,
++			    enum packing_op op)
++{
++	const int size = 4;
++
++	sja1105_packing(buf, &cmd->d32_os,   28, 27, size, op);
++	sja1105_packing(buf, &cmd->d32_ih,   26, 26, size, op);
++	sja1105_packing(buf, &cmd->d32_ipud, 25, 24, size, op);
++	sja1105_packing(buf, &cmd->d10_os,   20, 19, size, op);
++	sja1105_packing(buf, &cmd->d10_ih,   18, 18, size, op);
++	sja1105_packing(buf, &cmd->d10_ipud, 17, 16, size, op);
++	sja1105_packing(buf, &cmd->ctrl_os,  12, 11, size, op);
++	sja1105_packing(buf, &cmd->ctrl_ih,  10, 10, size, op);
++	sja1105_packing(buf, &cmd->ctrl_ipud, 9,  8, size, op);
++	sja1105_packing(buf, &cmd->clk_os,    4,  3, size, op);
++	sja1105_packing(buf, &cmd->clk_ih,    2,  2, size, op);
++	sja1105_packing(buf, &cmd->clk_ipud,  1,  0, size, op);
++}
++
++static void
++sja1110_cfg_pad_mii_id_packing(void *buf, struct sja1105_cfg_pad_mii_id *cmd,
++			       enum packing_op op)
++{
++	const int size = SJA1105_SIZE_CGU_CMD;
++	u64 range = 4;
++
++	/* Fields RXC_RANGE and TXC_RANGE select the input frequency range:
++	 * 0 = 2.5MHz
++	 * 1 = 25MHz
++	 * 2 = 50MHz
++	 * 3 = 125MHz
++	 * 4 = Automatically determined by port speed.
++	 * There's no point in defining a structure different than the one for
++	 * SJA1105, so just hardcode the frequency range to automatic, just as
++	 * before.
++	 */
++	sja1105_packing(buf, &cmd->rxc_stable_ovr, 26, 26, size, op);
++	sja1105_packing(buf, &cmd->rxc_delay,      25, 21, size, op);
++	sja1105_packing(buf, &range,               20, 18, size, op);
++	sja1105_packing(buf, &cmd->rxc_bypass,     17, 17, size, op);
++	sja1105_packing(buf, &cmd->rxc_pd,         16, 16, size, op);
++	sja1105_packing(buf, &cmd->txc_stable_ovr, 10, 10, size, op);
++	sja1105_packing(buf, &cmd->txc_delay,       9,  5, size, op);
++	sja1105_packing(buf, &range,                4,  2, size, op);
++	sja1105_packing(buf, &cmd->txc_bypass,      1,  1, size, op);
++	sja1105_packing(buf, &cmd->txc_pd,          0,  0, size, op);
++}
++
++static int sja1105_rgmii_cfg_pad_tx_config(struct sja1105_private *priv,
++					   int port)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	struct sja1105_cfg_pad_mii pad_mii_tx = {0};
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++
++	if (regs->pad_mii_tx[port] == SJA1105_RSV_ADDR)
++		return 0;
++
++	/* Payload */
++	pad_mii_tx.d32_os    = 3; /* TXD[3:2] output stage: */
++				  /*          high noise/high speed */
++	pad_mii_tx.d10_os    = 3; /* TXD[1:0] output stage: */
++				  /*          high noise/high speed */
++	pad_mii_tx.d32_ipud  = 2; /* TXD[3:2] input stage: */
++				  /*          plain input (default) */
++	pad_mii_tx.d10_ipud  = 2; /* TXD[1:0] input stage: */
++				  /*          plain input (default) */
++	pad_mii_tx.ctrl_os   = 3; /* TX_CTL / TX_ER output stage */
++	pad_mii_tx.ctrl_ipud = 2; /* TX_CTL / TX_ER input stage (default) */
++	pad_mii_tx.clk_os    = 3; /* TX_CLK output stage */
++	pad_mii_tx.clk_ih    = 0; /* TX_CLK input hysteresis (default) */
++	pad_mii_tx.clk_ipud  = 2; /* TX_CLK input stage (default) */
++	sja1105_cfg_pad_mii_packing(packed_buf, &pad_mii_tx, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->pad_mii_tx[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static int sja1105_cfg_pad_rx_config(struct sja1105_private *priv, int port)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	struct sja1105_cfg_pad_mii pad_mii_rx = {0};
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++
++	if (regs->pad_mii_rx[port] == SJA1105_RSV_ADDR)
++		return 0;
++
++	/* Payload */
++	pad_mii_rx.d32_ih    = 0; /* RXD[3:2] input stage hysteresis: */
++				  /*          non-Schmitt (default) */
++	pad_mii_rx.d32_ipud  = 2; /* RXD[3:2] input weak pull-up/down */
++				  /*          plain input (default) */
++	pad_mii_rx.d10_ih    = 0; /* RXD[1:0] input stage hysteresis: */
++				  /*          non-Schmitt (default) */
++	pad_mii_rx.d10_ipud  = 2; /* RXD[1:0] input weak pull-up/down */
++				  /*          plain input (default) */
++	pad_mii_rx.ctrl_ih   = 0; /* RX_DV/CRS_DV/RX_CTL and RX_ER */
++				  /* input stage hysteresis: */
++				  /* non-Schmitt (default) */
++	pad_mii_rx.ctrl_ipud = 3; /* RX_DV/CRS_DV/RX_CTL and RX_ER */
++				  /* input stage weak pull-up/down: */
++				  /* pull-down */
++	pad_mii_rx.clk_os    = 2; /* RX_CLK/RXC output stage: */
++				  /* medium noise/fast speed (default) */
++	pad_mii_rx.clk_ih    = 0; /* RX_CLK/RXC input hysteresis: */
++				  /* non-Schmitt (default) */
++	pad_mii_rx.clk_ipud  = 2; /* RX_CLK/RXC input pull-up/down: */
++				  /* plain input (default) */
++	sja1105_cfg_pad_mii_packing(packed_buf, &pad_mii_rx, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->pad_mii_rx[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static void
++sja1105_cfg_pad_mii_id_packing(void *buf, struct sja1105_cfg_pad_mii_id *cmd,
++			       enum packing_op op)
++{
++	const int size = SJA1105_SIZE_CGU_CMD;
++
++	sja1105_packing(buf, &cmd->rxc_stable_ovr, 15, 15, size, op);
++	sja1105_packing(buf, &cmd->rxc_delay,      14, 10, size, op);
++	sja1105_packing(buf, &cmd->rxc_bypass,      9,  9, size, op);
++	sja1105_packing(buf, &cmd->rxc_pd,          8,  8, size, op);
++	sja1105_packing(buf, &cmd->txc_stable_ovr,  7,  7, size, op);
++	sja1105_packing(buf, &cmd->txc_delay,       6,  2, size, op);
++	sja1105_packing(buf, &cmd->txc_bypass,      1,  1, size, op);
++	sja1105_packing(buf, &cmd->txc_pd,          0,  0, size, op);
++}
++
++/* Valid range in degrees is an integer between 73.8 and 101.7 */
++static u64 sja1105_rgmii_delay(u64 phase)
++{
++	/* UM11040.pdf: The delay in degree phase is 73.8 + delay_tune * 0.9.
++	 * To avoid floating point operations we'll multiply by 10
++	 * and get 1 decimal point precision.
++	 */
++	phase *= 10;
++	return (phase - 738) / 9;
++}
++
++static int sja1105pqrs_setup_rgmii_delay(struct sja1105_private *priv, int port)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	struct sja1105_cfg_pad_mii_id pad_mii_id = {0};
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++	int rc;
++
++	if (priv->rgmii_rx_delay[port])
++		pad_mii_id.rxc_delay = sja1105_rgmii_delay(90);
++	if (priv->rgmii_tx_delay[port])
++		pad_mii_id.txc_delay = sja1105_rgmii_delay(90);
++
++	/* Stage 1: Turn the RGMII delay lines off. */
++	pad_mii_id.rxc_bypass = 1;
++	pad_mii_id.rxc_pd = 1;
++	pad_mii_id.txc_bypass = 1;
++	pad_mii_id.txc_pd = 1;
++	sja1105_cfg_pad_mii_id_packing(packed_buf, &pad_mii_id, PACK);
++
++	rc = sja1105_xfer_buf(priv, SPI_WRITE, regs->pad_mii_id[port],
++			      packed_buf, SJA1105_SIZE_CGU_CMD);
++	if (rc < 0)
++		return rc;
++
++	/* Stage 2: Turn the RGMII delay lines on. */
++	if (priv->rgmii_rx_delay[port]) {
++		pad_mii_id.rxc_bypass = 0;
++		pad_mii_id.rxc_pd = 0;
++	}
++	if (priv->rgmii_tx_delay[port]) {
++		pad_mii_id.txc_bypass = 0;
++		pad_mii_id.txc_pd = 0;
++	}
++	sja1105_cfg_pad_mii_id_packing(packed_buf, &pad_mii_id, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->pad_mii_id[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static int sja1110_setup_rgmii_delay(struct sja1105_private *priv, int port)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	struct sja1105_cfg_pad_mii_id pad_mii_id = {0};
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++
++	pad_mii_id.rxc_pd = 1;
++	pad_mii_id.txc_pd = 1;
++
++	if (priv->rgmii_rx_delay[port]) {
++		pad_mii_id.rxc_delay = sja1105_rgmii_delay(90);
++		/* The "BYPASS" bit in SJA1110 is actually a "don't bypass" */
++		pad_mii_id.rxc_bypass = 1;
++		pad_mii_id.rxc_pd = 0;
++	}
++
++	if (priv->rgmii_tx_delay[port]) {
++		pad_mii_id.txc_delay = sja1105_rgmii_delay(90);
++		pad_mii_id.txc_bypass = 1;
++		pad_mii_id.txc_pd = 0;
++	}
++
++	sja1110_cfg_pad_mii_id_packing(packed_buf, &pad_mii_id, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->pad_mii_id[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static int sja1105_rgmii_clocking_setup(struct sja1105_private *priv, int port,
++					enum sja1105_mii_role role)
++{
++	struct sja1105_mac_config_entry *mac;
++	struct device_d *dev = priv->dev;
++	u64 speed;
++	int rc = -EINVAL;
++
++	mac = priv->static_config.tables[BLK_IDX_MAC_CONFIG].entries;
++	speed = mac[port].speed;
++
++	if (speed == priv->info->port_speed[SJA1105_SPEED_1000MBPS]) {
++		/* 1000Mbps, IDIV disabled (125 MHz) */
++		rc = sja1105_cgu_idiv_config(priv, port, false, 1);
++	} else if (speed == priv->info->port_speed[SJA1105_SPEED_100MBPS]) {
++		/* 100Mbps, IDIV enabled, divide by 1 (25 MHz) */
++		rc = sja1105_cgu_idiv_config(priv, port, true, 1);
++	} else if (speed == priv->info->port_speed[SJA1105_SPEED_10MBPS]) {
++		/* 10Mbps, IDIV enabled, divide by 10 (2.5 MHz) */
++		rc = sja1105_cgu_idiv_config(priv, port, true, 10);
++	} else if (speed == priv->info->port_speed[SJA1105_SPEED_AUTO]) {
++		/* Skip CGU configuration if there is no speed available
++		 * (e.g. link is not established yet)
++		 */
++		dev_dbg(dev, "Speed not available, skipping CGU config\n");
++
++		return 0;
++	}
++
++	if (rc < 0) {
++		dev_err(dev, "Failed to configure idiv\n");
++		return rc;
++	}
++	rc = sja1105_cgu_rgmii_tx_clk_config(priv, port, speed);
++	if (rc < 0) {
++		dev_err(dev, "Failed to configure RGMII Tx clock\n");
++		return rc;
++	}
++	rc = sja1105_rgmii_cfg_pad_tx_config(priv, port);
++	if (rc < 0) {
++		dev_err(dev, "Failed to configure Tx pad registers\n");
++		return rc;
++	}
++
++	if (!priv->info->setup_rgmii_delay)
++		return 0;
++
++	return priv->info->setup_rgmii_delay(priv, port);
++}
++
++static int sja1105_cgu_rmii_ref_clk_config(struct sja1105_private *priv,
++					   int port)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++	struct sja1105_cgu_mii_ctrl ref_clk;
++	const int clk_sources[] = {
++		CLKSRC_MII0_TX_CLK,
++		CLKSRC_MII1_TX_CLK,
++		CLKSRC_MII2_TX_CLK,
++		CLKSRC_MII3_TX_CLK,
++		CLKSRC_MII4_TX_CLK,
++	};
++
++	if (regs->rmii_ref_clk[port] == SJA1105_RSV_ADDR)
++		return 0;
++
++	/* Payload for packed_buf */
++	ref_clk.clksrc    = clk_sources[port];
++	ref_clk.autoblock = 1;      /* Autoblock clk while changing clksrc */
++	ref_clk.pd        = 0;      /* Power Down off => enabled */
++	sja1105_cgu_mii_control_packing(packed_buf, &ref_clk, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->rmii_ref_clk[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static int
++sja1105_cgu_rmii_ext_tx_clk_config(struct sja1105_private *priv, int port)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	struct sja1105_cgu_mii_ctrl ext_tx_clk;
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++
++	if (regs->rmii_ext_tx_clk[port] == SJA1105_RSV_ADDR)
++		return 0;
++
++	/* Payload for packed_buf */
++	ext_tx_clk.clksrc    = CLKSRC_PLL1;
++	ext_tx_clk.autoblock = 1;   /* Autoblock clk while changing clksrc */
++	ext_tx_clk.pd        = 0;   /* Power Down off => enabled */
++	sja1105_cgu_mii_control_packing(packed_buf, &ext_tx_clk, PACK);
++
++	return sja1105_xfer_buf(priv, SPI_WRITE, regs->rmii_ext_tx_clk[port],
++				packed_buf, SJA1105_SIZE_CGU_CMD);
++}
++
++static int sja1105_cgu_rmii_pll_config(struct sja1105_private *priv)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	u8 packed_buf[SJA1105_SIZE_CGU_CMD] = {0};
++	struct sja1105_cgu_pll_ctrl pll = {0};
++	int rc;
++
++	if (regs->rmii_pll1 == SJA1105_RSV_ADDR)
++		return 0;
++
++	/* Step 1: PLL1 setup for 50Mhz */
++	pll.pllclksrc = 0xA;
++	pll.msel      = 0x1;
++	pll.autoblock = 0x1;
++	pll.psel      = 0x1;
++	pll.direct    = 0x0;
++	pll.fbsel     = 0x1;
++	pll.bypass    = 0x0;
++	pll.pd        = 0x1;
++
++	sja1105_cgu_pll_control_packing(packed_buf, &pll, PACK);
++	rc = sja1105_xfer_buf(priv, SPI_WRITE, regs->rmii_pll1, packed_buf,
++			      SJA1105_SIZE_CGU_CMD);
++	if (rc < 0)
++		return rc;
++
++	/* Step 2: Enable PLL1 */
++	pll.pd = 0x0;
++
++	sja1105_cgu_pll_control_packing(packed_buf, &pll, PACK);
++	rc = sja1105_xfer_buf(priv, SPI_WRITE, regs->rmii_pll1, packed_buf,
++			      SJA1105_SIZE_CGU_CMD);
++	return rc;
++}
++
++static int sja1105_rmii_clocking_setup(struct sja1105_private *priv, int port,
++				       enum sja1105_mii_role role)
++{
++	int rc;
++
++	/* AH1601.pdf chapter 2.5.1. Sources */
++	if (role == XMII_MAC) {
++		/* Configure and enable PLL1 for 50Mhz output */
++		rc = sja1105_cgu_rmii_pll_config(priv);
++		if (rc < 0)
++			return rc;
++	}
++	/* Disable IDIV for this port */
++	rc = sja1105_cgu_idiv_config(priv, port, false, 1);
++	if (rc < 0)
++		return rc;
++	/* Source to sink mappings */
++	rc = sja1105_cgu_rmii_ref_clk_config(priv, port);
++	if (rc < 0)
++		return rc;
++	if (role == XMII_MAC) {
++		rc = sja1105_cgu_rmii_ext_tx_clk_config(priv, port);
++		if (rc < 0)
++			return rc;
++	}
++	return 0;
++}
++
++static int sja1105_clocking_setup_port(struct sja1105_private *priv, int port)
++{
++	struct sja1105_xmii_params_entry *mii;
++	enum sja1105_phy_interface phy_mode;
++	enum sja1105_mii_role role;
++	int rc;
++
++	mii = priv->static_config.tables[BLK_IDX_XMII_PARAMS].entries;
++
++	/* RGMII etc */
++	phy_mode = mii->xmii_mode[port];
++	/* MAC or PHY, for applicable types (not RGMII) */
++	role = mii->phy_mac[port];
++
++	switch (phy_mode) {
++	case XMII_MODE_MII:
++		rc = sja1105_mii_clocking_setup(priv, port, role);
 +		break;
-+	case 0x00956700:
-+		puts("KSZ9567R: ");
++	case XMII_MODE_RMII:
++		rc = sja1105_rmii_clocking_setup(priv, port, role);
 +		break;
-+	case 0x00989700:
-+		puts("KSZ9897S: ");
++	case XMII_MODE_RGMII:
++		rc = sja1105_rgmii_clocking_setup(priv, port, role);
 +		break;
 +	default:
-+		dev_err(dev, "invalid chip id: 0x%08x\n", id);
++		return -EINVAL;
++	}
++	if (rc)
++		return rc;
++
++	/* Internally pull down the RX_DV/CRS_DV/RX_CTL and RX_ER inputs */
++	return sja1105_cfg_pad_rx_config(priv, port);
++}
++
++static int sja1105_clocking_setup(struct sja1105_private *priv)
++{
++	struct dsa_switch *ds = &priv->ds;
++	int port, rc;
++
++	for (port = 0; port < ds->num_ports; port++) {
++		rc = sja1105_clocking_setup_port(priv, port);
++		if (rc < 0)
++			return rc;
++	}
++	return 0;
++}
++
++static const struct sja1105_regs sja1105et_regs = {
++	.device_id = 0x0,
++	.prod_id = 0x100BC3,
++	.status = 0x1,
++	.port_control = 0x11,
++	.config = 0x020000,
++	.rgu = 0x100440,
++	/* UM10944.pdf, Table 86, ACU Register overview */
++	.pad_mii_tx = {0x100800, 0x100802, 0x100804, 0x100806, 0x100808},
++	.pad_mii_rx = {0x100801, 0x100803, 0x100805, 0x100807, 0x100809},
++	.rmii_pll1 = 0x10000A,
++	.cgu_idiv = {0x10000B, 0x10000C, 0x10000D, 0x10000E, 0x10000F},
++	/* UM10944.pdf, Table 78, CGU Register overview */
++	.mii_tx_clk = {0x100013, 0x10001A, 0x100021, 0x100028, 0x10002F},
++	.mii_rx_clk = {0x100014, 0x10001B, 0x100022, 0x100029, 0x100030},
++	.mii_ext_tx_clk = {0x100018, 0x10001F, 0x100026, 0x10002D, 0x100034},
++	.mii_ext_rx_clk = {0x100019, 0x100020, 0x100027, 0x10002E, 0x100035},
++	.rgmii_tx_clk = {0x100016, 0x10001D, 0x100024, 0x10002B, 0x100032},
++	.rmii_ref_clk = {0x100015, 0x10001C, 0x100023, 0x10002A, 0x100031},
++	.rmii_ext_tx_clk = {0x100018, 0x10001F, 0x100026, 0x10002D, 0x100034},
++};
++
++static const struct sja1105_regs sja1105pqrs_regs = {
++	.device_id = 0x0,
++	.prod_id = 0x100BC3,
++	.status = 0x1,
++	.port_control = 0x12,
++	.config = 0x020000,
++	.rgu = 0x100440,
++	/* UM10944.pdf, Table 86, ACU Register overview */
++	.pad_mii_tx = {0x100800, 0x100802, 0x100804, 0x100806, 0x100808},
++	.pad_mii_rx = {0x100801, 0x100803, 0x100805, 0x100807, 0x100809},
++	.pad_mii_id = {0x100810, 0x100811, 0x100812, 0x100813, 0x100814},
++	.rmii_pll1 = 0x10000A,
++	.cgu_idiv = {0x10000B, 0x10000C, 0x10000D, 0x10000E, 0x10000F},
++	/* UM11040.pdf, Table 114 */
++	.mii_tx_clk = {0x100013, 0x100019, 0x10001F, 0x100025, 0x10002B},
++	.mii_rx_clk = {0x100014, 0x10001A, 0x100020, 0x100026, 0x10002C},
++	.mii_ext_tx_clk = {0x100017, 0x10001D, 0x100023, 0x100029, 0x10002F},
++	.mii_ext_rx_clk = {0x100018, 0x10001E, 0x100024, 0x10002A, 0x100030},
++	.rgmii_tx_clk = {0x100016, 0x10001C, 0x100022, 0x100028, 0x10002E},
++	.rmii_ref_clk = {0x100015, 0x10001B, 0x100021, 0x100027, 0x10002D},
++	.rmii_ext_tx_clk = {0x100017, 0x10001D, 0x100023, 0x100029, 0x10002F},
++};
++
++static const struct sja1105_regs sja1110_regs = {
++	.device_id = SJA1110_SPI_ADDR(0x0),
++	.prod_id = SJA1110_ACU_ADDR(0xf00),
++	.status = SJA1110_SPI_ADDR(0x4),
++	.port_control = SJA1110_SPI_ADDR(0x50), /* actually INHIB_TX */
++	.config = 0x020000,
++	.rgu = SJA1110_RGU_ADDR(0x100), /* Reset Control Register 0 */
++	/* Ports 2 and 3 are capable of xMII, but there isn't anything to
++	 * configure in the CGU/ACU for them.
++	 */
++	.pad_mii_tx = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR},
++	.pad_mii_rx = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR},
++	.pad_mii_id = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1110_ACU_ADDR(0x18), SJA1110_ACU_ADDR(0x28),
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR},
++	.rmii_pll1 = SJA1105_RSV_ADDR,
++	.cgu_idiv = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		     SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		     SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		     SJA1105_RSV_ADDR, SJA1105_RSV_ADDR},
++	.mii_tx_clk = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR},
++	.mii_rx_clk = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		       SJA1105_RSV_ADDR, SJA1105_RSV_ADDR},
++	.mii_ext_tx_clk = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			   SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			   SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			   SJA1105_RSV_ADDR, SJA1105_RSV_ADDR},
++	.mii_ext_rx_clk = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			   SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			   SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			   SJA1105_RSV_ADDR, SJA1105_RSV_ADDR},
++	.rgmii_tx_clk = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			 SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			 SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			 SJA1105_RSV_ADDR, SJA1105_RSV_ADDR},
++	.rmii_ref_clk = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			 SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			 SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			 SJA1105_RSV_ADDR, SJA1105_RSV_ADDR},
++	.rmii_ext_tx_clk = {SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			    SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			    SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			    SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			    SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++			    SJA1105_RSV_ADDR},
++	.pcs_base = {SJA1105_RSV_ADDR, 0x1c1400, 0x1c1800, 0x1c1c00, 0x1c2000,
++		     SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR,
++		     SJA1105_RSV_ADDR, SJA1105_RSV_ADDR, SJA1105_RSV_ADDR},
++};
++
++enum sja1105_switch_id {
++	SJA1105E = 0,
++	SJA1105T,
++	SJA1105P,
++	SJA1105Q,
++	SJA1105R,
++	SJA1105S,
++	SJA1110A,
++	SJA1110B,
++	SJA1110C,
++	SJA1110D,
++	SJA1105_MAX_SWITCH_ID,
++};
++
++static const struct sja1105_info sja1105_info[] = {
++	[SJA1105E] = {
++		.device_id		= SJA1105E_DEVICE_ID,
++		.part_no		= SJA1105ET_PART_NO,
++		.static_ops		= sja1105et_table_ops,
++		.reset_cmd		= sja1105et_reset_cmd,
++		.regs			= &sja1105et_regs,
++		.port_speed		= {
++			[SJA1105_SPEED_AUTO] = 0,
++			[SJA1105_SPEED_10MBPS] = 3,
++			[SJA1105_SPEED_100MBPS] = 2,
++			[SJA1105_SPEED_1000MBPS] = 1,
++		},
++		.supports_mii		= {true, true, true, true, true},
++		.supports_rmii		= {true, true, true, true, true},
++		.supports_rgmii		= {true, true, true, true, true},
++		.name			= "SJA1105E",
++		.num_ports		= SJA1105_NUM_PORTS,
++	},
++	[SJA1105T] = {
++		.device_id		= SJA1105T_DEVICE_ID,
++		.part_no		= SJA1105ET_PART_NO,
++		.static_ops		= sja1105et_table_ops,
++		.reset_cmd		= sja1105et_reset_cmd,
++		.regs			= &sja1105et_regs,
++		.port_speed		= {
++			[SJA1105_SPEED_AUTO] = 0,
++			[SJA1105_SPEED_10MBPS] = 3,
++			[SJA1105_SPEED_100MBPS] = 2,
++			[SJA1105_SPEED_1000MBPS] = 1,
++		},
++		.supports_mii		= {true, true, true, true, true},
++		.supports_rmii		= {true, true, true, true, true},
++		.supports_rgmii		= {true, true, true, true, true},
++		.name			= "SJA1105T",
++		.num_ports		= SJA1105_NUM_PORTS,
++	},
++	[SJA1105P] = {
++		.device_id		= SJA1105PR_DEVICE_ID,
++		.part_no		= SJA1105P_PART_NO,
++		.static_ops		= sja1105pqrs_table_ops,
++		.setup_rgmii_delay	= sja1105pqrs_setup_rgmii_delay,
++		.reset_cmd		= sja1105pqrs_reset_cmd,
++		.regs			= &sja1105pqrs_regs,
++		.port_speed		= {
++			[SJA1105_SPEED_AUTO] = 0,
++			[SJA1105_SPEED_10MBPS] = 3,
++			[SJA1105_SPEED_100MBPS] = 2,
++			[SJA1105_SPEED_1000MBPS] = 1,
++		},
++		.supports_mii		= {true, true, true, true, true},
++		.supports_rmii		= {true, true, true, true, true},
++		.supports_rgmii		= {true, true, true, true, true},
++		.name			= "SJA1105P",
++		.num_ports		= SJA1105_NUM_PORTS,
++	},
++	[SJA1105Q] = {
++		.device_id		= SJA1105QS_DEVICE_ID,
++		.part_no		= SJA1105Q_PART_NO,
++		.static_ops		= sja1105pqrs_table_ops,
++		.setup_rgmii_delay	= sja1105pqrs_setup_rgmii_delay,
++		.reset_cmd		= sja1105pqrs_reset_cmd,
++		.regs			= &sja1105pqrs_regs,
++		.port_speed		= {
++			[SJA1105_SPEED_AUTO] = 0,
++			[SJA1105_SPEED_10MBPS] = 3,
++			[SJA1105_SPEED_100MBPS] = 2,
++			[SJA1105_SPEED_1000MBPS] = 1,
++		},
++		.supports_mii		= {true, true, true, true, true},
++		.supports_rmii		= {true, true, true, true, true},
++		.supports_rgmii		= {true, true, true, true, true},
++		.name			= "SJA1105Q",
++		.num_ports		= SJA1105_NUM_PORTS,
++	},
++	[SJA1105R] = {
++		.device_id		= SJA1105PR_DEVICE_ID,
++		.part_no		= SJA1105R_PART_NO,
++		.static_ops		= sja1105pqrs_table_ops,
++		.setup_rgmii_delay	= sja1105pqrs_setup_rgmii_delay,
++		.reset_cmd		= sja1105pqrs_reset_cmd,
++		.regs			= &sja1105pqrs_regs,
++		.port_speed		= {
++			[SJA1105_SPEED_AUTO] = 0,
++			[SJA1105_SPEED_10MBPS] = 3,
++			[SJA1105_SPEED_100MBPS] = 2,
++			[SJA1105_SPEED_1000MBPS] = 1,
++		},
++		.supports_mii		= {true, true, true, true, true},
++		.supports_rmii		= {true, true, true, true, true},
++		.supports_rgmii		= {true, true, true, true, true},
++		.supports_sgmii		= {false, false, false, false, true},
++		.name			= "SJA1105R",
++		.num_ports		= SJA1105_NUM_PORTS,
++	},
++	[SJA1105S] = {
++		.device_id		= SJA1105QS_DEVICE_ID,
++		.part_no		= SJA1105S_PART_NO,
++		.static_ops		= sja1105pqrs_table_ops,
++		.setup_rgmii_delay	= sja1105pqrs_setup_rgmii_delay,
++		.reset_cmd		= sja1105pqrs_reset_cmd,
++		.regs			= &sja1105pqrs_regs,
++		.port_speed		= {
++			[SJA1105_SPEED_AUTO] = 0,
++			[SJA1105_SPEED_10MBPS] = 3,
++			[SJA1105_SPEED_100MBPS] = 2,
++			[SJA1105_SPEED_1000MBPS] = 1,
++		},
++		.supports_mii		= {true, true, true, true, true},
++		.supports_rmii		= {true, true, true, true, true},
++		.supports_rgmii		= {true, true, true, true, true},
++		.supports_sgmii		= {false, false, false, false, true},
++		.name			= "SJA1105S",
++		.num_ports		= SJA1105_NUM_PORTS,
++	},
++	[SJA1110A] = {
++		.device_id		= SJA1110_DEVICE_ID,
++		.part_no		= SJA1110A_PART_NO,
++		.static_ops		= sja1110_table_ops,
++		.setup_rgmii_delay	= sja1110_setup_rgmii_delay,
++		.reset_cmd		= sja1110_reset_cmd,
++		.regs			= &sja1110_regs,
++		.port_speed		= {
++			[SJA1105_SPEED_AUTO] = 0,
++			[SJA1105_SPEED_10MBPS] = 4,
++			[SJA1105_SPEED_100MBPS] = 3,
++			[SJA1105_SPEED_1000MBPS] = 2,
++		},
++		.supports_mii		= {true, true, true, true, false,
++					   true, true, true, true, true, true},
++		.supports_rmii		= {false, false, true, true, false,
++					   false, false, false, false, false,
++					   false},
++		.supports_rgmii		= {false, false, true, true, false,
++					   false, false, false, false, false,
++					   false},
++		.supports_sgmii		= {false, true, true, true, true,
++					   false, false, false, false, false,
++					   false},
++		.name			= "SJA1110A",
++		.num_ports		= SJA1110_NUM_PORTS,
++	},
++	[SJA1110B] = {
++		.device_id		= SJA1110_DEVICE_ID,
++		.part_no		= SJA1110B_PART_NO,
++		.static_ops		= sja1110_table_ops,
++		.setup_rgmii_delay	= sja1110_setup_rgmii_delay,
++		.reset_cmd		= sja1110_reset_cmd,
++		.regs			= &sja1110_regs,
++		.port_speed		= {
++			[SJA1105_SPEED_AUTO] = 0,
++			[SJA1105_SPEED_10MBPS] = 4,
++			[SJA1105_SPEED_100MBPS] = 3,
++			[SJA1105_SPEED_1000MBPS] = 2,
++		},
++		.supports_mii		= {true, true, true, true, false,
++					   true, true, true, true, true, false},
++		.supports_rmii		= {false, false, true, true, false,
++					   false, false, false, false, false,
++					   false},
++		.supports_rgmii		= {false, false, true, true, false,
++					   false, false, false, false, false,
++					   false},
++		.supports_sgmii		= {false, false, false, true, true,
++					   false, false, false, false, false,
++					   false},
++		.name			= "SJA1110B",
++		.num_ports		= SJA1110_NUM_PORTS,
++	},
++	[SJA1110C] = {
++		.device_id		= SJA1110_DEVICE_ID,
++		.part_no		= SJA1110C_PART_NO,
++		.static_ops		= sja1110_table_ops,
++		.setup_rgmii_delay	= sja1110_setup_rgmii_delay,
++		.reset_cmd		= sja1110_reset_cmd,
++		.regs			= &sja1110_regs,
++		.port_speed		= {
++			[SJA1105_SPEED_AUTO] = 0,
++			[SJA1105_SPEED_10MBPS] = 4,
++			[SJA1105_SPEED_100MBPS] = 3,
++			[SJA1105_SPEED_1000MBPS] = 2,
++		},
++		.supports_mii		= {true, true, true, true, false,
++					   true, true, true, false, false,
++					   false},
++		.supports_rmii		= {false, false, true, true, false,
++					   false, false, false, false, false,
++					   false},
++		.supports_rgmii		= {false, false, true, true, false,
++					   false, false, false, false, false,
++					   false},
++		.supports_sgmii		= {false, false, false, false, true,
++					   false, false, false, false, false,
++					   false},
++		.name			= "SJA1110C",
++		.num_ports		= SJA1110_NUM_PORTS,
++	},
++	[SJA1110D] = {
++		.device_id		= SJA1110_DEVICE_ID,
++		.part_no		= SJA1110D_PART_NO,
++		.static_ops		= sja1110_table_ops,
++		.setup_rgmii_delay	= sja1110_setup_rgmii_delay,
++		.reset_cmd		= sja1110_reset_cmd,
++		.regs			= &sja1110_regs,
++		.port_speed		= {
++			[SJA1105_SPEED_AUTO] = 0,
++			[SJA1105_SPEED_10MBPS] = 4,
++			[SJA1105_SPEED_100MBPS] = 3,
++			[SJA1105_SPEED_1000MBPS] = 2,
++		},
++		.supports_mii		= {true, false, true, false, false,
++					   true, true, true, false, false,
++					   false},
++		.supports_rmii		= {false, false, true, false, false,
++					   false, false, false, false, false,
++					   false},
++		.supports_rgmii		= {false, false, true, false, false,
++					   false, false, false, false, false,
++					   false},
++		.supports_sgmii		= {false, true, true, true, true,
++					   false, false, false, false, false,
++					   false},
++		.name			= "SJA1110D",
++		.num_ports		= SJA1110_NUM_PORTS,
++	},
++};
++
++struct sja1105_status {
++	u64 configs;
++	u64 crcchkl;
++	u64 ids;
++	u64 crcchkg;
++};
++
++static void sja1105_status_unpack(void *buf, struct sja1105_status *status)
++{
++	sja1105_packing(buf, &status->configs, 31, 31, 4, UNPACK);
++	sja1105_packing(buf, &status->crcchkl, 30, 30, 4, UNPACK);
++	sja1105_packing(buf, &status->ids,     29, 29, 4, UNPACK);
++	sja1105_packing(buf, &status->crcchkg, 28, 28, 4, UNPACK);
++}
++
++static int sja1105_status_get(struct sja1105_private *priv,
++			      struct sja1105_status *status)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	u8 packed_buf[4];
++	int rc;
++
++	rc = sja1105_xfer_buf(priv, SPI_READ, regs->status, packed_buf, 4);
++	if (rc < 0)
++		return rc;
++
++	sja1105_status_unpack(packed_buf, status);
++
++	return 0;
++}
++
++/* Not const because unpacking priv->static_config into buffers and preparing
++ * for upload requires the recalculation of table CRCs and updating the
++ * structures with these.
++ */
++static int
++static_config_buf_prepare_for_upload(struct sja1105_private *priv,
++				     void *config_buf, int buf_len)
++{
++	struct sja1105_static_config *config = &priv->static_config;
++	struct sja1105_table_header final_header;
++	char *final_header_ptr;
++	int crc_len;
++
++	/* Write Device ID and config tables to config_buf */
++	sja1105_static_config_pack(config_buf, config);
++	/* Recalculate CRC of the last header (right now 0xDEADBEEF).
++	 * Don't include the CRC field itself.
++	 */
++	crc_len = buf_len - 4;
++	/* Read the whole table header */
++	final_header_ptr = config_buf + buf_len - SJA1105_SIZE_TABLE_HEADER;
++	sja1105_table_header_packing(final_header_ptr, &final_header, UNPACK);
++	/* Modify */
++	final_header.crc = sja1105_crc32(config_buf, crc_len);
++	/* Rewrite */
++	sja1105_table_header_packing(final_header_ptr, &final_header, PACK);
++
++	return 0;
++}
++
++static int sja1105_static_config_upload(struct sja1105_private *priv)
++{
++	struct sja1105_static_config *config = &priv->static_config;
++	const struct sja1105_regs *regs = priv->info->regs;
++	struct sja1105_status status;
++	u8 *config_buf;
++	int buf_len;
++	int rc;
++
++	buf_len = sja1105_static_config_get_length(config);
++	config_buf = calloc(buf_len, sizeof(char));
++	if (!config_buf)
++		return -ENOMEM;
++
++	rc = static_config_buf_prepare_for_upload(priv, config_buf, buf_len);
++	if (rc < 0) {
++		printf("Invalid config, cannot upload\n");
++		rc = -EINVAL;
++		goto out;
++	}
++	/* Put the SJA1105 in programming mode */
++	rc = priv->info->reset_cmd(priv);
++	if (rc < 0) {
++		printf("Failed to reset switch\n");
++		goto out;
++	}
++	/* Wait for the switch to come out of reset */
++	udelay(1000);
++	/* Upload the static config to the device */
++	rc = sja1105_xfer_buf(priv, SPI_WRITE, regs->config,
++			      config_buf, buf_len);
++	if (rc < 0) {
++		printf("Failed to upload config\n");
++		goto out;
++	}
++	/* Check that SJA1105 responded well to the config upload */
++	rc = sja1105_status_get(priv, &status);
++	if (rc < 0)
++		goto out;
++
++	if (status.ids == 1) {
++		printf("Mismatch between hardware and static config device id. Wrote 0x%llx, wants 0x%llx\n",
++		       config->device_id, priv->info->device_id);
++		rc = -EIO;
++		goto out;
++	}
++	if (status.crcchkl == 1 || status.crcchkg == 1) {
++		printf("Switch reported invalid CRC on static config\n");
++		rc = -EIO;
++		goto out;
++	}
++	if (status.configs == 0) {
++		printf("Switch reported that config is invalid\n");
++		rc = -EIO;
++		goto out;
++	}
++
++out:
++	free(config_buf);
++	return rc;
++}
++
++static int sja1105_static_config_reload(struct sja1105_private *priv)
++{
++	int rc;
++
++	rc = sja1105_static_config_upload(priv);
++	if (rc < 0) {
++		printf("Failed to load static config: %d\n", rc);
++		return rc;
++	}
++
++	/* Configure the CGU (PHY link modes and speeds) */
++	rc = sja1105_clocking_setup(priv);
++	if (rc < 0) {
++		printf("Failed to configure MII clocking: %d\n", rc);
++		return rc;
++	}
++
++	return 0;
++}
++
++static int sja1105_port_set_mode(struct dsa_port *dp, int port,
++				 phy_interface_t phy_mode)
++{
++	struct device_d *dev = dp->ds->dev;
++	struct sja1105_private *priv = dev_get_priv(dev);
++	struct sja1105_xmii_params_entry *mii;
++
++	mii = priv->static_config.tables[BLK_IDX_XMII_PARAMS].entries;
++
++	mii->phy_mac[port] = XMII_MAC;
++
++	switch (phy_mode) {
++	case PHY_INTERFACE_MODE_REVMII:
++		mii->phy_mac[port] = XMII_PHY;
++		fallthrough;
++	case PHY_INTERFACE_MODE_MII:
++		if (!priv->info->supports_mii[port])
++			goto unsupported;
++
++		mii->xmii_mode[port] = XMII_MODE_MII;
++		break;
++	case PHY_INTERFACE_MODE_REVRMII:
++		mii->phy_mac[port] = XMII_PHY;
++		fallthrough;
++	case PHY_INTERFACE_MODE_RMII:
++		if (!priv->info->supports_rmii[port])
++			goto unsupported;
++
++		mii->xmii_mode[port] = XMII_MODE_RMII;
++		break;
++	case PHY_INTERFACE_MODE_RGMII:
++	case PHY_INTERFACE_MODE_RGMII_ID:
++	case PHY_INTERFACE_MODE_RGMII_RXID:
++	case PHY_INTERFACE_MODE_RGMII_TXID:
++		if (!priv->info->supports_rgmii[port])
++			goto unsupported;
++
++		mii->xmii_mode[port] = XMII_MODE_RGMII;
++		break;
++	case PHY_INTERFACE_MODE_SGMII:
++		if (!priv->info->supports_sgmii[port])
++			goto unsupported;
++
++		mii->xmii_mode[port] = XMII_MODE_SGMII;
++		mii->special[port] = true;
++		break;
++unsupported:
++	default:
++		dev_err(dev, "Unsupported PHY mode %d on port %d!\n",
++			phy_mode, port);
 +		return -EINVAL;
 +	}
 +
-+	/* probe mdio bus */
-+	ret = ksz_probe_mdio(dev);
++	return 0;
++}
++
++static int sja1105_port_pre_enable(struct dsa_port *dp, int port,
++				   phy_interface_t phy_mode)
++{
++	struct device_d *dev = dp->ds->dev;
++	struct sja1105_private *priv = dev_get_priv(dev);
++	int ret;
++
++	ret = sja1105_port_set_mode(dp, port, phy_mode);
 +	if (ret)
 +		return ret;
 +
-+	/* disable ports by default */
-+	for (i = 0; i < pdata->num_ports; i++) {
-+		ksz_pread8(priv->dev, i, REG_PORT_MSTP_STATE, &data8);
-+		data8 &= ~(PORT_TX_ENABLE | PORT_RX_ENABLE | PORT_LEARN_DISABLE);
-+		ksz_pwrite8(priv->dev, i, REG_PORT_MSTP_STATE, data8);
++	return sja1105_static_config_reload(priv);
++}
++
++static int sja1105_port_enable(struct dsa_port *dp, int port,
++			       struct phy_device *phy)
++{
++	struct device_d *dev = dp->ds->dev;
++	struct sja1105_private *priv = dev_get_priv(dev);
++	phy_interface_t phy_mode = phy->interface;
++	struct sja1105_xmii_params_entry *mii;
++	struct sja1105_mac_config_entry *mac;
++	int ret;
++
++	mii = priv->static_config.tables[BLK_IDX_XMII_PARAMS].entries;
++	mac = priv->static_config.tables[BLK_IDX_MAC_CONFIG].entries;
++
++	ret = sja1105_port_set_mode(dp, port, phy_mode);
++	if (ret)
++		return ret;
++
++	/* Let the PHY handle the RGMII delays, if present. */
++	if (phy->phy_id == 0) {
++		if (phy_mode == PHY_INTERFACE_MODE_RGMII_RXID ||
++		    phy_mode == PHY_INTERFACE_MODE_RGMII_ID)
++			priv->rgmii_rx_delay[port] = true;
++
++		if (phy_mode == PHY_INTERFACE_MODE_RGMII_TXID ||
++		    phy_mode == PHY_INTERFACE_MODE_RGMII_ID)
++			priv->rgmii_tx_delay[port] = true;
++
++		if ((priv->rgmii_rx_delay[port] ||
++		     priv->rgmii_tx_delay[port]) &&
++		     !priv->info->setup_rgmii_delay) {
++			printf("Chip does not support internal RGMII delays\n");
++			return -EINVAL;
++		}
 +	}
 +
-+	dsa_set_tagging(dev, 0, 0);
++	if (mii->xmii_mode[port] == XMII_MODE_SGMII) {
++		mac[port].speed =
++			priv->info->port_speed[SJA1105_SPEED_1000MBPS];
++		priv->xpcs_cfg[port].speed = phy->speed;
++	} else if (phy->speed == SPEED_1000) {
++		mac[port].speed =
++			priv->info->port_speed[SJA1105_SPEED_1000MBPS];
++	} else if (phy->speed == SPEED_100) {
++		mac[port].speed =
++			priv->info->port_speed[SJA1105_SPEED_100MBPS];
++	} else if (phy->speed == SPEED_10) {
++		mac[port].speed =
++			priv->info->port_speed[SJA1105_SPEED_10MBPS];
++	} else {
++		printf("Invalid PHY speed %d on port %d\n", phy->speed, port);
++		return -EINVAL;
++	}
++
++	return sja1105_static_config_reload(priv);
++}
++
++static int sja1105_xmit(struct dsa_port *dp, int port, void *packet, int length)
++{
++	struct sja1105_private *priv = dev_get_priv(dp->ds->dev);
++	u8 *from = (u8 *)packet + VLAN_HLEN;
++	struct vlan_ethhdr *hdr = packet;
++	u8 *dest = (u8 *)packet;
++
++	memmove(dest, from, 2 * ETH_ALEN);
++	hdr->h_vlan_proto = htons(ETH_P_SJA1105);
++	hdr->h_vlan_TCI = htons(priv->pvid[port]);
 +
 +	return 0;
++}
++
++static int sja1105_rcv(struct dsa_switch *ds, int *port, void *packet,
++		       int length)
++{
++	struct vlan_ethhdr *hdr = packet;
++	u8 *dest = packet + VLAN_HLEN;
++	u8 *from = packet;
++
++	if (ntohs(hdr->h_vlan_proto) != ETH_P_SJA1105)
++		return -EINVAL;
++
++	*port = ntohs(hdr->h_vlan_TCI) & DSA_8021Q_PORT_MASK;
++	memmove(dest, from, 2 * ETH_ALEN);
++
++	return 0;
++}
++
++static const struct dsa_ops sja1105_dsa_ops = {
++	.port_pre_enable	= sja1105_port_pre_enable,
++	.port_enable		= sja1105_port_enable,
++	.xmit			= sja1105_xmit,
++	.rcv			= sja1105_rcv,
 +};
 +
-+static const struct udevice_id ksz_i2c_ids[] = {
-+	{ .compatible = "microchip,ksz9897" },
-+	{ .compatible = "microchip,ksz9477" },
-+	{ .compatible = "microchip,ksz9567" },
++static int sja1105_init(struct sja1105_private *priv)
++{
++	int rc;
++
++	rc = sja1105_static_config_init(priv);
++	if (rc) {
++		printf("Failed to initialize static config: %d\n", rc);
++		return rc;
++	}
++
++	return 0;
++}
++
++static int sja1105_check_device_id(struct sja1105_private *priv)
++{
++	const struct sja1105_regs *regs = priv->info->regs;
++	u8 packed_buf[SJA1105_SIZE_DEVICE_ID] = {0};
++	enum sja1105_switch_id id;
++	u64 device_id;
++	u64 part_no;
++	int rc;
++
++	rc = sja1105_xfer_buf(priv, SPI_READ, regs->device_id, packed_buf,
++			      SJA1105_SIZE_DEVICE_ID);
++	if (rc < 0)
++		return rc;
++
++	sja1105_packing(packed_buf, &device_id, 31, 0, SJA1105_SIZE_DEVICE_ID,
++			UNPACK);
++
++	rc = sja1105_xfer_buf(priv, SPI_READ, regs->prod_id, packed_buf,
++			      SJA1105_SIZE_DEVICE_ID);
++	if (rc < 0)
++		return rc;
++
++	sja1105_packing(packed_buf, &part_no, 19, 4, SJA1105_SIZE_DEVICE_ID,
++			UNPACK);
++
++	for (id = 0; id < SJA1105_MAX_SWITCH_ID; id++) {
++		const struct sja1105_info *info = &sja1105_info[id];
++
++		/* Is what's been probed in our match table at all? */
++		if (info->device_id != device_id || info->part_no != part_no)
++			continue;
++
++		/* But is it what's in the device tree? */
++		if (priv->info->device_id != device_id ||
++		    priv->info->part_no != part_no) {
++			printf("Device tree specifies chip %s but found %s, please fix it!\n",
++			       priv->info->name, info->name);
++			/* It isn't. No problem, pick that up. */
++			priv->info = info;
++		}
++
++		return 0;
++	}
++
++	printf("Unexpected {device ID, part number}: 0x%llx 0x%llx\n",
++	       device_id, part_no);
++
++	return -ENODEV;
++}
++
++/* Configure the optional reset pin and bring up switch */
++static int sja1105_hw_reset(struct device_d *dev, unsigned int pulse_len,
++			    unsigned int startup_delay)
++{
++	int gpio;
++
++	gpio = gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
++	if (gpio < 0)
++		return 0;
++
++	gpiod_set_value(gpio, 1);
++	/* Wait for minimum reset pulse length */
++	mdelay(pulse_len);
++	gpiod_set_value(gpio, 0);
++	/* Wait until chip is ready after reset */
++	mdelay(startup_delay);
++
++	return 0;
++}
++
++static int sja1105_probe(struct device_d *dev)
++{
++	struct spi_device *spi = dev->type_data;
++	struct sja1105_private *priv;
++	enum sja1105_switch_id id;
++	size_t max_xfer, max_msg;
++	struct dsa_switch *ds;
++	int rc;
++
++	rc = sja1105_hw_reset(dev, 1, 1);
++	if (rc)
++		return rc;
++
++	priv = xzalloc(sizeof(*priv));
++
++	id = (enum sja1105_switch_id)device_get_match_data(dev);
++	priv->info = &sja1105_info[id];
++	priv->dev = dev;
++	dev->priv = priv;
++
++	/* spi init */
++	priv->spidev = spi;
++	/* Configure the SPI bus */
++	spi->bits_per_word = 8;
++
++	/* In sja1105_xfer, we send spi_messages composed of two spi_transfers:
++	 * a small one for the message header and another one for the current
++	 * chunk of the packed buffer.
++	 * Check that the restrictions imposed by the SPI controller are
++	 * respected: the chunk buffer is smaller than the max transfer size,
++	 * and the total length of the chunk plus its message header is smaller
++	 * than the max message size.
++	 * We do that during probe time since the maximum transfer size is a
++	 * runtime invariant.
++	 */
++	max_xfer = spi_max_transfer_size(spi);
++	max_msg = spi_max_message_size(spi);
++
++	/* We need to send at least one 64-bit word of SPI payload per message
++	 * in order to be able to make useful progress.
++	 */
++	if (max_msg < SJA1105_SIZE_SPI_MSG_HEADER + 8) {
++		dev_err(dev, "SPI master cannot send large enough buffers, aborting\n");
++		return -EINVAL;
++	}
++
++	priv->max_xfer_len = SJA1105_SIZE_SPI_MSG_MAXLEN;
++	if (priv->max_xfer_len > max_xfer)
++		priv->max_xfer_len = max_xfer;
++	if (priv->max_xfer_len > max_msg - SJA1105_SIZE_SPI_MSG_HEADER)
++		priv->max_xfer_len = max_msg - SJA1105_SIZE_SPI_MSG_HEADER;
++
++	rc = sja1105_check_device_id(priv);
++	if (rc < 0) {
++		dev_err(dev, "Device ID check failed: %d\n", rc);
++		return rc;
++	}
++
++	ds = &priv->ds;
++	ds->dev = dev;
++	ds->num_ports = sja1105_info[id].num_ports;
++	ds->ops = &sja1105_dsa_ops;
++	ds->needed_headroom = VLAN_HLEN;
++
++	dsa_register_switch(ds);
++
++	return sja1105_init(priv);
++}
++
++static const struct of_device_id sja1105_ids[] = {
++	{ .compatible = "nxp,sja1105e", .data = (void *)SJA1105E },
++	{ .compatible = "nxp,sja1105t", .data = (void *)SJA1105T },
++	{ .compatible = "nxp,sja1105p", .data = (void *)SJA1105P },
++	{ .compatible = "nxp,sja1105q", .data = (void *)SJA1105Q },
++	{ .compatible = "nxp,sja1105r", .data = (void *)SJA1105R },
++	{ .compatible = "nxp,sja1105s", .data = (void *)SJA1105S },
++	{ .compatible = "nxp,sja1110a", .data = (void *)SJA1110A },
++	{ .compatible = "nxp,sja1110b", .data = (void *)SJA1110B },
++	{ .compatible = "nxp,sja1110c", .data = (void *)SJA1110C },
++	{ .compatible = "nxp,sja1110d", .data = (void *)SJA1110D },
 +	{ }
 +};
 +
-+U_BOOT_DRIVER(ksz) = {
-+	.name		= "ksz-switch",
-+	.id		= UCLASS_DSA,
-+	.of_match	= ksz_i2c_ids,
-+	.probe		= ksz_i2c_probe,
-+	.ops		= &ksz_dsa_ops,
-+	.priv_auto	= sizeof(struct ksz_dsa_priv),
++static struct driver_d sja1105_driver = {
++	.name		= "sja1105",
++	.probe		= sja1105_probe,
++	.of_compatible	= DRV_OF_COMPAT(sja1105_ids),
 +};
 +
-+static struct driver_d ksz9477_driver = {
-+	.name   = "ksz9477-switch",
-+	.probe  = fec_probe,
-+	.remove = fec_remove,
-+	.of_compatible = DRV_OF_COMPAT(imx_fec_dt_ids),
-+	.id_table = imx_fec_ids,
-+};
-+device_platform_driver(fec_driver);
-+
-+
-diff --git a/include/platform_data/ksz9477_reg.h b/include/platform_data/ksz9477_reg.h
-new file mode 100644
-index 0000000000..2938e892b6
---- /dev/null
-+++ b/include/platform_data/ksz9477_reg.h
-@@ -0,0 +1,1665 @@
-+/* SPDX-License-Identifier: GPL-2.0
-+ *
-+ * Microchip KSZ9477 register definitions
-+ *
-+ * Copyright (C) 2017-2018 Microchip Technology Inc.
-+ */
-+
-+#ifndef __KSZ9477_REGS_H
-+#define __KSZ9477_REGS_H
-+
-+#define KS_PRIO_M			0x7
-+#define KS_PRIO_S			4
-+
-+/* 0 - Operation */
-+#define REG_CHIP_ID0__1			0x0000
-+
-+#define REG_CHIP_ID1__1			0x0001
-+
-+#define FAMILY_ID			0x95
-+#define FAMILY_ID_94			0x94
-+#define FAMILY_ID_95			0x95
-+#define FAMILY_ID_85			0x85
-+#define FAMILY_ID_98			0x98
-+#define FAMILY_ID_88			0x88
-+
-+#define REG_CHIP_ID2__1			0x0002
-+
-+#define CHIP_ID_63			0x63
-+#define CHIP_ID_66			0x66
-+#define CHIP_ID_67			0x67
-+#define CHIP_ID_77			0x77
-+#define CHIP_ID_93			0x93
-+#define CHIP_ID_96			0x96
-+#define CHIP_ID_97			0x97
-+
-+#define REG_CHIP_ID3__1			0x0003
-+
-+#define SWITCH_REVISION_M		0x0F
-+#define SWITCH_REVISION_S		4
-+#define SWITCH_RESET			0x01
-+
-+#define REG_SW_PME_CTRL			0x0006
-+
-+#define PME_ENABLE			BIT(1)
-+#define PME_POLARITY			BIT(0)
-+
-+#define REG_GLOBAL_OPTIONS		0x000F
-+
-+#define SW_GIGABIT_ABLE			BIT(6)
-+#define SW_REDUNDANCY_ABLE		BIT(5)
-+#define SW_AVB_ABLE			BIT(4)
-+#define SW_9567_RL_5_2			0xC
-+#define SW_9477_SL_5_2			0xD
-+
-+#define SW_9896_GL_5_1			0xB
-+#define SW_9896_RL_5_1			0x8
-+#define SW_9896_SL_5_1			0x9
-+
-+#define SW_9895_GL_4_1			0x7
-+#define SW_9895_RL_4_1			0x4
-+#define SW_9895_SL_4_1			0x5
-+
-+#define SW_9896_RL_4_2			0x6
-+
-+#define SW_9893_RL_2_1			0x0
-+#define SW_9893_SL_2_1			0x1
-+#define SW_9893_GL_2_1			0x3
-+
-+#define SW_QW_ABLE			BIT(5)
-+#define SW_9893_RN_2_1			0xC
-+
-+#define REG_SW_INT_STATUS__4		0x0010
-+#define REG_SW_INT_MASK__4		0x0014
-+
-+#define LUE_INT				BIT(31)
-+#define TRIG_TS_INT			BIT(30)
-+#define APB_TIMEOUT_INT			BIT(29)
-+
-+#define SWITCH_INT_MASK			(TRIG_TS_INT | APB_TIMEOUT_INT)
-+
-+#define REG_SW_PORT_INT_STATUS__4	0x0018
-+#define REG_SW_PORT_INT_MASK__4		0x001C
-+#define REG_SW_PHY_INT_STATUS		0x0020
-+#define REG_SW_PHY_INT_ENABLE		0x0024
-+
-+/* 1 - Global */
-+#define REG_SW_GLOBAL_SERIAL_CTRL_0	0x0100
-+#define SW_SPARE_REG_2			BIT(7)
-+#define SW_SPARE_REG_1			BIT(6)
-+#define SW_SPARE_REG_0			BIT(5)
-+#define SW_BIG_ENDIAN			BIT(4)
-+#define SPI_AUTO_EDGE_DETECTION		BIT(1)
-+#define SPI_CLOCK_OUT_RISING_EDGE	BIT(0)
-+
-+#define REG_SW_GLOBAL_OUTPUT_CTRL__1	0x0103
-+#define SW_ENABLE_REFCLKO		BIT(1)
-+#define SW_REFCLKO_IS_125MHZ		BIT(0)
-+
-+#define REG_SW_IBA__4			0x0104
-+
-+#define SW_IBA_ENABLE			BIT(31)
-+#define SW_IBA_DA_MATCH			BIT(30)
-+#define SW_IBA_INIT			BIT(29)
-+#define SW_IBA_QID_M			0xF
-+#define SW_IBA_QID_S			22
-+#define SW_IBA_PORT_M			0x2F
-+#define SW_IBA_PORT_S			16
-+#define SW_IBA_FRAME_TPID_M		0xFFFF
-+
-+#define REG_SW_APB_TIMEOUT_ADDR__4	0x0108
-+
-+#define APB_TIMEOUT_ACKNOWLEDGE		BIT(31)
-+
-+#define REG_SW_IBA_SYNC__1		0x010C
-+
-+#define REG_SW_IO_STRENGTH__1		0x010D
-+#define SW_DRIVE_STRENGTH_M		0x7
-+#define SW_DRIVE_STRENGTH_2MA		0
-+#define SW_DRIVE_STRENGTH_4MA		1
-+#define SW_DRIVE_STRENGTH_8MA		2
-+#define SW_DRIVE_STRENGTH_12MA		3
-+#define SW_DRIVE_STRENGTH_16MA		4
-+#define SW_DRIVE_STRENGTH_20MA		5
-+#define SW_DRIVE_STRENGTH_24MA		6
-+#define SW_DRIVE_STRENGTH_28MA		7
-+#define SW_HI_SPEED_DRIVE_STRENGTH_S	4
-+#define SW_LO_SPEED_DRIVE_STRENGTH_S	0
-+
-+#define REG_SW_IBA_STATUS__4		0x0110
-+
-+#define SW_IBA_REQ			BIT(31)
-+#define SW_IBA_RESP			BIT(30)
-+#define SW_IBA_DA_MISMATCH		BIT(14)
-+#define SW_IBA_FMT_MISMATCH		BIT(13)
-+#define SW_IBA_CODE_ERROR		BIT(12)
-+#define SW_IBA_CMD_ERROR		BIT(11)
-+#define SW_IBA_CMD_LOC_M		(BIT(6) - 1)
-+
-+#define REG_SW_IBA_STATES__4		0x0114
-+
-+#define SW_IBA_BUF_STATE_S		30
-+#define SW_IBA_CMD_STATE_S		28
-+#define SW_IBA_RESP_STATE_S		26
-+#define SW_IBA_STATE_M			0x3
-+#define SW_IBA_PACKET_SIZE_M		0x7F
-+#define SW_IBA_PACKET_SIZE_S		16
-+#define SW_IBA_FMT_ID_M			0xFFFF
-+
-+#define REG_SW_IBA_RESULT__4		0x0118
-+
-+#define SW_IBA_SIZE_S			24
-+
-+#define SW_IBA_RETRY_CNT_M		(BIT(5) - 1)
-+
-+/* 2 - PHY */
-+#define REG_SW_POWER_MANAGEMENT_CTRL	0x0201
-+
-+#define SW_PLL_POWER_DOWN		BIT(5)
-+#define SW_POWER_DOWN_MODE		0x3
-+#define SW_ENERGY_DETECTION		1
-+#define SW_SOFT_POWER_DOWN		2
-+#define SW_POWER_SAVING			3
-+
-+/* 3 - Operation Control */
-+#define REG_SW_OPERATION		0x0300
-+
-+#define SW_DOUBLE_TAG			BIT(7)
-+#define SW_RESET			BIT(1)
-+#define SW_START			BIT(0)
-+
-+#define REG_SW_MAC_ADDR_0		0x0302
-+#define REG_SW_MAC_ADDR_1		0x0303
-+#define REG_SW_MAC_ADDR_2		0x0304
-+#define REG_SW_MAC_ADDR_3		0x0305
-+#define REG_SW_MAC_ADDR_4		0x0306
-+#define REG_SW_MAC_ADDR_5		0x0307
-+
-+#define REG_SW_MTU__2			0x0308
-+
-+#define REG_SW_ISP_TPID__2		0x030A
-+
-+#define REG_SW_HSR_TPID__2		0x030C
-+
-+#define REG_AVB_STRATEGY__2		0x030E
-+
-+#define SW_SHAPING_CREDIT_ACCT		BIT(1)
-+#define SW_POLICING_CREDIT_ACCT		BIT(0)
-+
-+#define REG_SW_LUE_CTRL_0		0x0310
-+
-+#define SW_VLAN_ENABLE			BIT(7)
-+#define SW_DROP_INVALID_VID		BIT(6)
-+#define SW_AGE_CNT_M			0x7
-+#define SW_AGE_CNT_S			3
-+#define SW_RESV_MCAST_ENABLE		BIT(2)
-+#define SW_HASH_OPTION_M		0x03
-+#define SW_HASH_OPTION_CRC		1
-+#define SW_HASH_OPTION_XOR		2
-+#define SW_HASH_OPTION_DIRECT		3
-+
-+#define REG_SW_LUE_CTRL_1		0x0311
-+
-+#define UNICAST_LEARN_DISABLE		BIT(7)
-+#define SW_SRC_ADDR_FILTER		BIT(6)
-+#define SW_FLUSH_STP_TABLE		BIT(5)
-+#define SW_FLUSH_MSTP_TABLE		BIT(4)
-+#define SW_FWD_MCAST_SRC_ADDR		BIT(3)
-+#define SW_AGING_ENABLE			BIT(2)
-+#define SW_FAST_AGING			BIT(1)
-+#define SW_LINK_AUTO_AGING		BIT(0)
-+
-+#define REG_SW_LUE_CTRL_2		0x0312
-+
-+#define SW_TRAP_DOUBLE_TAG		BIT(6)
-+#define SW_EGRESS_VLAN_FILTER_DYN	BIT(5)
-+#define SW_EGRESS_VLAN_FILTER_STA	BIT(4)
-+#define SW_FLUSH_OPTION_M		0x3
-+#define SW_FLUSH_OPTION_S		2
-+#define SW_FLUSH_OPTION_DYN_MAC		1
-+#define SW_FLUSH_OPTION_STA_MAC		2
-+#define SW_FLUSH_OPTION_BOTH		3
-+#define SW_PRIO_M			0x3
-+#define SW_PRIO_DA			0
-+#define SW_PRIO_SA			1
-+#define SW_PRIO_HIGHEST_DA_SA		2
-+#define SW_PRIO_LOWEST_DA_SA		3
-+
-+#define REG_SW_LUE_CTRL_3		0x0313
-+
-+#define REG_SW_LUE_INT_STATUS		0x0314
-+#define REG_SW_LUE_INT_ENABLE		0x0315
-+
-+#define LEARN_FAIL_INT			BIT(2)
-+#define ALMOST_FULL_INT			BIT(1)
-+#define WRITE_FAIL_INT			BIT(0)
-+
-+#define REG_SW_LUE_INDEX_0__2		0x0316
-+
-+#define ENTRY_INDEX_M			0x0FFF
-+
-+#define REG_SW_LUE_INDEX_1__2		0x0318
-+
-+#define FAIL_INDEX_M			0x03FF
-+
-+#define REG_SW_LUE_INDEX_2__2		0x031A
-+
-+#define REG_SW_LUE_UNK_UCAST_CTRL__4	0x0320
-+
-+#define SW_UNK_UCAST_ENABLE		BIT(31)
-+
-+#define REG_SW_LUE_UNK_MCAST_CTRL__4	0x0324
-+
-+#define SW_UNK_MCAST_ENABLE		BIT(31)
-+
-+#define REG_SW_LUE_UNK_VID_CTRL__4	0x0328
-+
-+#define SW_UNK_VID_ENABLE		BIT(31)
-+
-+#define REG_SW_MAC_CTRL_0		0x0330
-+
-+#define SW_NEW_BACKOFF			BIT(7)
-+#define SW_CHECK_LENGTH			BIT(3)
-+#define SW_PAUSE_UNH_MODE		BIT(1)
-+#define SW_AGGR_BACKOFF			BIT(0)
-+
-+#define REG_SW_MAC_CTRL_1		0x0331
-+
-+#define MULTICAST_STORM_DISABLE		BIT(6)
-+#define SW_BACK_PRESSURE		BIT(5)
-+#define FAIR_FLOW_CTRL			BIT(4)
-+#define NO_EXC_COLLISION_DROP		BIT(3)
-+#define SW_JUMBO_PACKET			BIT(2)
-+#define SW_LEGAL_PACKET_DISABLE		BIT(1)
-+#define SW_PASS_SHORT_FRAME		BIT(0)
-+
-+#define REG_SW_MAC_CTRL_2		0x0332
-+
-+#define SW_REPLACE_VID			BIT(3)
-+#define BROADCAST_STORM_RATE_HI		0x07
-+
-+#define REG_SW_MAC_CTRL_3		0x0333
-+
-+#define BROADCAST_STORM_RATE_LO		0xFF
-+#define BROADCAST_STORM_RATE		0x07FF
-+
-+#define REG_SW_MAC_CTRL_4		0x0334
-+
-+#define SW_PASS_PAUSE			BIT(3)
-+
-+#define REG_SW_MAC_CTRL_5		0x0335
-+
-+#define SW_OUT_RATE_LIMIT_QUEUE_BASED	BIT(3)
-+
-+#define REG_SW_MAC_CTRL_6		0x0336
-+
-+#define SW_MIB_COUNTER_FLUSH		BIT(7)
-+#define SW_MIB_COUNTER_FREEZE		BIT(6)
-+
-+#define REG_SW_MAC_802_1P_MAP_0		0x0338
-+#define REG_SW_MAC_802_1P_MAP_1		0x0339
-+#define REG_SW_MAC_802_1P_MAP_2		0x033A
-+#define REG_SW_MAC_802_1P_MAP_3		0x033B
-+
-+#define SW_802_1P_MAP_M			KS_PRIO_M
-+#define SW_802_1P_MAP_S			KS_PRIO_S
-+
-+#define REG_SW_MAC_ISP_CTRL		0x033C
-+
-+#define REG_SW_MAC_TOS_CTRL		0x033E
-+
-+#define SW_TOS_DSCP_REMARK		BIT(1)
-+#define SW_TOS_DSCP_REMAP		BIT(0)
-+
-+#define REG_SW_MAC_TOS_PRIO_0		0x0340
-+#define REG_SW_MAC_TOS_PRIO_1		0x0341
-+#define REG_SW_MAC_TOS_PRIO_2		0x0342
-+#define REG_SW_MAC_TOS_PRIO_3		0x0343
-+#define REG_SW_MAC_TOS_PRIO_4		0x0344
-+#define REG_SW_MAC_TOS_PRIO_5		0x0345
-+#define REG_SW_MAC_TOS_PRIO_6		0x0346
-+#define REG_SW_MAC_TOS_PRIO_7		0x0347
-+#define REG_SW_MAC_TOS_PRIO_8		0x0348
-+#define REG_SW_MAC_TOS_PRIO_9		0x0349
-+#define REG_SW_MAC_TOS_PRIO_10		0x034A
-+#define REG_SW_MAC_TOS_PRIO_11		0x034B
-+#define REG_SW_MAC_TOS_PRIO_12		0x034C
-+#define REG_SW_MAC_TOS_PRIO_13		0x034D
-+#define REG_SW_MAC_TOS_PRIO_14		0x034E
-+#define REG_SW_MAC_TOS_PRIO_15		0x034F
-+#define REG_SW_MAC_TOS_PRIO_16		0x0350
-+#define REG_SW_MAC_TOS_PRIO_17		0x0351
-+#define REG_SW_MAC_TOS_PRIO_18		0x0352
-+#define REG_SW_MAC_TOS_PRIO_19		0x0353
-+#define REG_SW_MAC_TOS_PRIO_20		0x0354
-+#define REG_SW_MAC_TOS_PRIO_21		0x0355
-+#define REG_SW_MAC_TOS_PRIO_22		0x0356
-+#define REG_SW_MAC_TOS_PRIO_23		0x0357
-+#define REG_SW_MAC_TOS_PRIO_24		0x0358
-+#define REG_SW_MAC_TOS_PRIO_25		0x0359
-+#define REG_SW_MAC_TOS_PRIO_26		0x035A
-+#define REG_SW_MAC_TOS_PRIO_27		0x035B
-+#define REG_SW_MAC_TOS_PRIO_28		0x035C
-+#define REG_SW_MAC_TOS_PRIO_29		0x035D
-+#define REG_SW_MAC_TOS_PRIO_30		0x035E
-+#define REG_SW_MAC_TOS_PRIO_31		0x035F
-+
-+#define REG_SW_MRI_CTRL_0		0x0370
-+
-+#define SW_IGMP_SNOOP			BIT(6)
-+#define SW_IPV6_MLD_OPTION		BIT(3)
-+#define SW_IPV6_MLD_SNOOP		BIT(2)
-+#define SW_MIRROR_RX_TX			BIT(0)
-+
-+#define REG_SW_CLASS_D_IP_CTRL__4	0x0374
-+
-+#define SW_CLASS_D_IP_ENABLE		BIT(31)
-+
-+#define REG_SW_MRI_CTRL_8		0x0378
-+
-+#define SW_NO_COLOR_S			6
-+#define SW_RED_COLOR_S			4
-+#define SW_YELLOW_COLOR_S		2
-+#define SW_GREEN_COLOR_S		0
-+#define SW_COLOR_M			0x3
-+
-+#define REG_SW_QM_CTRL__4		0x0390
-+
-+#define PRIO_SCHEME_SELECT_M		KS_PRIO_M
-+#define PRIO_SCHEME_SELECT_S		6
-+#define PRIO_MAP_3_HI			0
-+#define PRIO_MAP_2_HI			2
-+#define PRIO_MAP_0_LO			3
-+#define UNICAST_VLAN_BOUNDARY		BIT(1)
-+
-+#define REG_SW_EEE_QM_CTRL__2		0x03C0
-+
-+#define REG_SW_EEE_TXQ_WAIT_TIME__2	0x03C2
-+
-+/* 4 - */
-+#define REG_SW_VLAN_ENTRY__4		0x0400
-+
-+#define VLAN_VALID			BIT(31)
-+#define VLAN_FORWARD_OPTION		BIT(27)
-+#define VLAN_PRIO_M			KS_PRIO_M
-+#define VLAN_PRIO_S			24
-+#define VLAN_MSTP_M			0x7
-+#define VLAN_MSTP_S			12
-+#define VLAN_FID_M			0x7F
-+
-+#define REG_SW_VLAN_ENTRY_UNTAG__4	0x0404
-+#define REG_SW_VLAN_ENTRY_PORTS__4	0x0408
-+
-+#define REG_SW_VLAN_ENTRY_INDEX__2	0x040C
-+
-+#define VLAN_INDEX_M			0x0FFF
-+
-+#define REG_SW_VLAN_CTRL		0x040E
-+
-+#define VLAN_START			BIT(7)
-+#define VLAN_ACTION			0x3
-+#define VLAN_WRITE			1
-+#define VLAN_READ			2
-+#define VLAN_CLEAR			3
-+
-+#define REG_SW_ALU_INDEX_0		0x0410
-+
-+#define ALU_FID_INDEX_S			16
-+#define ALU_MAC_ADDR_HI			0xFFFF
-+
-+#define REG_SW_ALU_INDEX_1		0x0414
-+
-+#define ALU_DIRECT_INDEX_M		(BIT(12) - 1)
-+
-+#define REG_SW_ALU_CTRL__4		0x0418
-+
-+#define ALU_VALID_CNT_M			(BIT(14) - 1)
-+#define ALU_VALID_CNT_S			16
-+#define ALU_START			BIT(7)
-+#define ALU_VALID			BIT(6)
-+#define ALU_DIRECT			BIT(2)
-+#define ALU_ACTION			0x3
-+#define ALU_WRITE			1
-+#define ALU_READ			2
-+#define ALU_SEARCH			3
-+
-+#define REG_SW_ALU_STAT_CTRL__4		0x041C
-+
-+#define ALU_STAT_INDEX_M		(BIT(4) - 1)
-+#define ALU_STAT_INDEX_S		16
-+#define ALU_RESV_MCAST_INDEX_M		(BIT(6) - 1)
-+#define ALU_STAT_START			BIT(7)
-+#define ALU_RESV_MCAST_ADDR		BIT(1)
-+#define ALU_STAT_READ			BIT(0)
-+
-+#define REG_SW_ALU_VAL_A		0x0420
-+
-+#define ALU_V_STATIC_VALID		BIT(31)
-+#define ALU_V_SRC_FILTER		BIT(30)
-+#define ALU_V_DST_FILTER		BIT(29)
-+#define ALU_V_PRIO_AGE_CNT_M		(BIT(3) - 1)
-+#define ALU_V_PRIO_AGE_CNT_S		26
-+#define ALU_V_MSTP_M			0x7
-+
-+#define REG_SW_ALU_VAL_B		0x0424
-+
-+#define ALU_V_OVERRIDE			BIT(31)
-+#define ALU_V_USE_FID			BIT(30)
-+#define ALU_V_PORT_MAP			(BIT(24) - 1)
-+
-+#define REG_SW_ALU_VAL_C		0x0428
-+
-+#define ALU_V_FID_M			(BIT(16) - 1)
-+#define ALU_V_FID_S			16
-+#define ALU_V_MAC_ADDR_HI		0xFFFF
-+
-+#define REG_SW_ALU_VAL_D		0x042C
-+
-+#define REG_HSR_ALU_INDEX_0		0x0440
-+
-+#define REG_HSR_ALU_INDEX_1		0x0444
-+
-+#define HSR_DST_MAC_INDEX_LO_S		16
-+#define HSR_SRC_MAC_INDEX_HI		0xFFFF
-+
-+#define REG_HSR_ALU_INDEX_2		0x0448
-+
-+#define HSR_INDEX_MAX			BIT(9)
-+#define HSR_DIRECT_INDEX_M		(HSR_INDEX_MAX - 1)
-+
-+#define REG_HSR_ALU_INDEX_3		0x044C
-+
-+#define HSR_PATH_INDEX_M		(BIT(4) - 1)
-+
-+#define REG_HSR_ALU_CTRL__4		0x0450
-+
-+#define HSR_VALID_CNT_M			(BIT(14) - 1)
-+#define HSR_VALID_CNT_S			16
-+#define HSR_START			BIT(7)
-+#define HSR_VALID			BIT(6)
-+#define HSR_SEARCH_END			BIT(5)
-+#define HSR_DIRECT			BIT(2)
-+#define HSR_ACTION			0x3
-+#define HSR_WRITE			1
-+#define HSR_READ			2
-+#define HSR_SEARCH			3
-+
-+#define REG_HSR_ALU_VAL_A		0x0454
-+
-+#define HSR_V_STATIC_VALID		BIT(31)
-+#define HSR_V_AGE_CNT_M			(BIT(3) - 1)
-+#define HSR_V_AGE_CNT_S			26
-+#define HSR_V_PATH_ID_M			(BIT(4) - 1)
-+
-+#define REG_HSR_ALU_VAL_B		0x0458
-+
-+#define REG_HSR_ALU_VAL_C		0x045C
-+
-+#define HSR_V_DST_MAC_ADDR_LO_S		16
-+#define HSR_V_SRC_MAC_ADDR_HI		0xFFFF
-+
-+#define REG_HSR_ALU_VAL_D		0x0460
-+
-+#define REG_HSR_ALU_VAL_E		0x0464
-+
-+#define HSR_V_START_SEQ_1_S		16
-+#define HSR_V_START_SEQ_2_S		0
-+
-+#define REG_HSR_ALU_VAL_F		0x0468
-+
-+#define HSR_V_EXP_SEQ_1_S		16
-+#define HSR_V_EXP_SEQ_2_S		0
-+
-+#define REG_HSR_ALU_VAL_G		0x046C
-+
-+#define HSR_V_SEQ_CNT_1_S		16
-+#define HSR_V_SEQ_CNT_2_S		0
-+
-+#define HSR_V_SEQ_M			(BIT(16) - 1)
-+
-+/* 5 - PTP Clock */
-+#define REG_PTP_CLK_CTRL		0x0500
-+
-+#define PTP_STEP_ADJ			BIT(6)
-+#define PTP_STEP_DIR			BIT(5)
-+#define PTP_READ_TIME			BIT(4)
-+#define PTP_LOAD_TIME			BIT(3)
-+#define PTP_CLK_ADJ_ENABLE		BIT(2)
-+#define PTP_CLK_ENABLE			BIT(1)
-+#define PTP_CLK_RESET			BIT(0)
-+
-+#define REG_PTP_RTC_SUB_NANOSEC__2	0x0502
-+
-+#define PTP_RTC_SUB_NANOSEC_M		0x0007
-+
-+#define REG_PTP_RTC_NANOSEC		0x0504
-+#define REG_PTP_RTC_NANOSEC_H		0x0504
-+#define REG_PTP_RTC_NANOSEC_L		0x0506
-+
-+#define REG_PTP_RTC_SEC			0x0508
-+#define REG_PTP_RTC_SEC_H		0x0508
-+#define REG_PTP_RTC_SEC_L		0x050A
-+
-+#define REG_PTP_SUBNANOSEC_RATE		0x050C
-+#define REG_PTP_SUBNANOSEC_RATE_H	0x050C
-+
-+#define PTP_RATE_DIR			BIT(31)
-+#define PTP_TMP_RATE_ENABLE		BIT(30)
-+
-+#define REG_PTP_SUBNANOSEC_RATE_L	0x050E
-+
-+#define REG_PTP_RATE_DURATION		0x0510
-+#define REG_PTP_RATE_DURATION_H		0x0510
-+#define REG_PTP_RATE_DURATION_L		0x0512
-+
-+#define REG_PTP_MSG_CONF1		0x0514
-+
-+#define PTP_802_1AS			BIT(7)
-+#define PTP_ENABLE			BIT(6)
-+#define PTP_ETH_ENABLE			BIT(5)
-+#define PTP_IPV4_UDP_ENABLE		BIT(4)
-+#define PTP_IPV6_UDP_ENABLE		BIT(3)
-+#define PTP_TC_P2P			BIT(2)
-+#define PTP_MASTER			BIT(1)
-+#define PTP_1STEP			BIT(0)
-+
-+#define REG_PTP_MSG_CONF2		0x0516
-+
-+#define PTP_UNICAST_ENABLE		BIT(12)
-+#define PTP_ALTERNATE_MASTER		BIT(11)
-+#define PTP_ALL_HIGH_PRIO		BIT(10)
-+#define PTP_SYNC_CHECK			BIT(9)
-+#define PTP_DELAY_CHECK			BIT(8)
-+#define PTP_PDELAY_CHECK		BIT(7)
-+#define PTP_DROP_SYNC_DELAY_REQ		BIT(5)
-+#define PTP_DOMAIN_CHECK		BIT(4)
-+#define PTP_UDP_CHECKSUM		BIT(2)
-+
-+#define REG_PTP_DOMAIN_VERSION		0x0518
-+#define PTP_VERSION_M			0xFF00
-+#define PTP_DOMAIN_M			0x00FF
-+
-+#define REG_PTP_UNIT_INDEX__4		0x0520
-+
-+#define PTP_UNIT_M			0xF
-+
-+#define PTP_GPIO_INDEX_S		16
-+#define PTP_TSI_INDEX_S			8
-+#define PTP_TOU_INDEX_S			0
-+
-+#define REG_PTP_TRIG_STATUS__4		0x0524
-+
-+#define TRIG_ERROR_S			16
-+#define TRIG_DONE_S			0
-+
-+#define REG_PTP_INT_STATUS__4		0x0528
-+
-+#define TRIG_INT_S			16
-+#define TS_INT_S			0
-+
-+#define TRIG_UNIT_M			0x7
-+#define TS_UNIT_M			0x3
-+
-+#define REG_PTP_CTRL_STAT__4		0x052C
-+
-+#define GPIO_IN				BIT(7)
-+#define GPIO_OUT			BIT(6)
-+#define TS_INT_ENABLE			BIT(5)
-+#define TRIG_ACTIVE			BIT(4)
-+#define TRIG_ENABLE			BIT(3)
-+#define TRIG_RESET			BIT(2)
-+#define TS_ENABLE			BIT(1)
-+#define TS_RESET			BIT(0)
-+
-+#define GPIO_CTRL_M			(GPIO_IN | GPIO_OUT)
-+
-+#define TRIG_CTRL_M			\
-+	(TRIG_ACTIVE | TRIG_ENABLE | TRIG_RESET)
-+
-+#define TS_CTRL_M			\
-+	(TS_INT_ENABLE | TS_ENABLE | TS_RESET)
-+
-+#define REG_TRIG_TARGET_NANOSEC		0x0530
-+#define REG_TRIG_TARGET_SEC		0x0534
-+
-+#define REG_TRIG_CTRL__4		0x0538
-+
-+#define TRIG_CASCADE_ENABLE		BIT(31)
-+#define TRIG_CASCADE_TAIL		BIT(30)
-+#define TRIG_CASCADE_UPS_M		0xF
-+#define TRIG_CASCADE_UPS_S		26
-+#define TRIG_NOW			BIT(25)
-+#define TRIG_NOTIFY			BIT(24)
-+#define TRIG_EDGE			BIT(23)
-+#define TRIG_PATTERN_S			20
-+#define TRIG_PATTERN_M			0x7
-+#define TRIG_NEG_EDGE			0
-+#define TRIG_POS_EDGE			1
-+#define TRIG_NEG_PULSE			2
-+#define TRIG_POS_PULSE			3
-+#define TRIG_NEG_PERIOD			4
-+#define TRIG_POS_PERIOD			5
-+#define TRIG_REG_OUTPUT			6
-+#define TRIG_GPO_S			16
-+#define TRIG_GPO_M			0xF
-+#define TRIG_CASCADE_ITERATE_CNT_M	0xFFFF
-+
-+#define REG_TRIG_CYCLE_WIDTH		0x053C
-+
-+#define REG_TRIG_CYCLE_CNT		0x0540
-+
-+#define TRIG_CYCLE_CNT_M		0xFFFF
-+#define TRIG_CYCLE_CNT_S		16
-+#define TRIG_BIT_PATTERN_M		0xFFFF
-+
-+#define REG_TRIG_ITERATE_TIME		0x0544
-+
-+#define REG_TRIG_PULSE_WIDTH__4		0x0548
-+
-+#define TRIG_PULSE_WIDTH_M		0x00FFFFFF
-+
-+#define REG_TS_CTRL_STAT__4		0x0550
-+
-+#define TS_EVENT_DETECT_M		0xF
-+#define TS_EVENT_DETECT_S		17
-+#define TS_EVENT_OVERFLOW		BIT(16)
-+#define TS_GPI_M			0xF
-+#define TS_GPI_S			8
-+#define TS_DETECT_RISE			BIT(7)
-+#define TS_DETECT_FALL			BIT(6)
-+#define TS_DETECT_S			6
-+#define TS_CASCADE_TAIL			BIT(5)
-+#define TS_CASCADE_UPS_M		0xF
-+#define TS_CASCADE_UPS_S		1
-+#define TS_CASCADE_ENABLE		BIT(0)
-+
-+#define DETECT_RISE			(TS_DETECT_RISE >> TS_DETECT_S)
-+#define DETECT_FALL			(TS_DETECT_FALL >> TS_DETECT_S)
-+
-+#define REG_TS_EVENT_0_NANOSEC		0x0554
-+#define REG_TS_EVENT_0_SEC		0x0558
-+#define REG_TS_EVENT_0_SUB_NANOSEC	0x055C
-+
-+#define REG_TS_EVENT_1_NANOSEC		0x0560
-+#define REG_TS_EVENT_1_SEC		0x0564
-+#define REG_TS_EVENT_1_SUB_NANOSEC	0x0568
-+
-+#define REG_TS_EVENT_2_NANOSEC		0x056C
-+#define REG_TS_EVENT_2_SEC		0x0570
-+#define REG_TS_EVENT_2_SUB_NANOSEC	0x0574
-+
-+#define REG_TS_EVENT_3_NANOSEC		0x0578
-+#define REG_TS_EVENT_3_SEC		0x057C
-+#define REG_TS_EVENT_3_SUB_NANOSEC	0x0580
-+
-+#define REG_TS_EVENT_4_NANOSEC		0x0584
-+#define REG_TS_EVENT_4_SEC		0x0588
-+#define REG_TS_EVENT_4_SUB_NANOSEC	0x058C
-+
-+#define REG_TS_EVENT_5_NANOSEC		0x0590
-+#define REG_TS_EVENT_5_SEC		0x0594
-+#define REG_TS_EVENT_5_SUB_NANOSEC	0x0598
-+
-+#define REG_TS_EVENT_6_NANOSEC		0x059C
-+#define REG_TS_EVENT_6_SEC		0x05A0
-+#define REG_TS_EVENT_6_SUB_NANOSEC	0x05A4
-+
-+#define REG_TS_EVENT_7_NANOSEC		0x05A8
-+#define REG_TS_EVENT_7_SEC		0x05AC
-+#define REG_TS_EVENT_7_SUB_NANOSEC	0x05B0
-+
-+#define TS_EVENT_EDGE_M			0x1
-+#define TS_EVENT_EDGE_S			30
-+#define TS_EVENT_NANOSEC_M		(BIT(30) - 1)
-+
-+#define TS_EVENT_SUB_NANOSEC_M		0x7
-+
-+#define TS_EVENT_SAMPLE			\
-+	(REG_TS_EVENT_1_NANOSEC - REG_TS_EVENT_0_NANOSEC)
-+
-+#define PORT_CTRL_ADDR(port, addr)	((addr) | (((port) + 1) << 12))
-+
-+#define REG_GLOBAL_RR_INDEX__1		0x0600
-+
-+/* DLR */
-+#define REG_DLR_SRC_PORT__4		0x0604
-+
-+#define DLR_SRC_PORT_UNICAST		BIT(31)
-+#define DLR_SRC_PORT_M			0x3
-+#define DLR_SRC_PORT_BOTH		0
-+#define DLR_SRC_PORT_EACH		1
-+
-+#define REG_DLR_IP_ADDR__4		0x0608
-+
-+#define REG_DLR_CTRL__1			0x0610
-+
-+#define DLR_RESET_SEQ_ID		BIT(3)
-+#define DLR_BACKUP_AUTO_ON		BIT(2)
-+#define DLR_BEACON_TX_ENABLE		BIT(1)
-+#define DLR_ASSIST_ENABLE		BIT(0)
-+
-+#define REG_DLR_STATE__1		0x0611
-+
-+#define DLR_NODE_STATE_M		0x3
-+#define DLR_NODE_STATE_S		1
-+#define DLR_NODE_STATE_IDLE		0
-+#define DLR_NODE_STATE_FAULT		1
-+#define DLR_NODE_STATE_NORMAL		2
-+#define DLR_RING_STATE_FAULT		0
-+#define DLR_RING_STATE_NORMAL		1
-+
-+#define REG_DLR_PRECEDENCE__1		0x0612
-+
-+#define REG_DLR_BEACON_INTERVAL__4	0x0614
-+
-+#define REG_DLR_BEACON_TIMEOUT__4	0x0618
-+
-+#define REG_DLR_TIMEOUT_WINDOW__4	0x061C
-+
-+#define DLR_TIMEOUT_WINDOW_M		(BIT(22) - 1)
-+
-+#define REG_DLR_VLAN_ID__2		0x0620
-+
-+#define DLR_VLAN_ID_M			(BIT(12) - 1)
-+
-+#define REG_DLR_DEST_ADDR_0		0x0622
-+#define REG_DLR_DEST_ADDR_1		0x0623
-+#define REG_DLR_DEST_ADDR_2		0x0624
-+#define REG_DLR_DEST_ADDR_3		0x0625
-+#define REG_DLR_DEST_ADDR_4		0x0626
-+#define REG_DLR_DEST_ADDR_5		0x0627
-+
-+#define REG_DLR_PORT_MAP__4		0x0628
-+
-+#define REG_DLR_CLASS__1		0x062C
-+
-+#define DLR_FRAME_QID_M			0x3
-+
-+/* HSR */
-+#define REG_HSR_PORT_MAP__4		0x0640
-+
-+#define REG_HSR_ALU_CTRL_0__1		0x0644
-+
-+#define HSR_DUPLICATE_DISCARD		BIT(7)
-+#define HSR_NODE_UNICAST		BIT(6)
-+#define HSR_AGE_CNT_DEFAULT_M		0x7
-+#define HSR_AGE_CNT_DEFAULT_S		3
-+#define HSR_LEARN_MCAST_DISABLE		BIT(2)
-+#define HSR_HASH_OPTION_M		0x3
-+#define HSR_HASH_DISABLE		0
-+#define HSR_HASH_UPPER_BITS		1
-+#define HSR_HASH_LOWER_BITS		2
-+#define HSR_HASH_XOR_BOTH_BITS		3
-+
-+#define REG_HSR_ALU_CTRL_1__1		0x0645
-+
-+#define HSR_LEARN_UCAST_DISABLE		BIT(7)
-+#define HSR_FLUSH_TABLE			BIT(5)
-+#define HSR_PROC_MCAST_SRC		BIT(3)
-+#define HSR_AGING_ENABLE		BIT(2)
-+
-+#define REG_HSR_ALU_CTRL_2__2		0x0646
-+
-+#define REG_HSR_ALU_AGE_PERIOD__4	0x0648
-+
-+#define REG_HSR_ALU_INT_STATUS__1	0x064C
-+#define REG_HSR_ALU_INT_MASK__1		0x064D
-+
-+#define HSR_WINDOW_OVERFLOW_INT		BIT(3)
-+#define HSR_LEARN_FAIL_INT		BIT(2)
-+#define HSR_ALMOST_FULL_INT		BIT(1)
-+#define HSR_WRITE_FAIL_INT		BIT(0)
-+
-+#define REG_HSR_ALU_ENTRY_0__2		0x0650
-+
-+#define HSR_ENTRY_INDEX_M		(BIT(10) - 1)
-+#define HSR_FAIL_INDEX_M		(BIT(8) - 1)
-+
-+#define REG_HSR_ALU_ENTRY_1__2		0x0652
-+
-+#define HSR_FAIL_LEARN_INDEX_M		(BIT(8) - 1)
-+
-+#define REG_HSR_ALU_ENTRY_3__2		0x0654
-+
-+#define HSR_CPU_ACCESS_ENTRY_INDEX_M	(BIT(8) - 1)
-+
-+/* 0 - Operation */
-+#define REG_PORT_DEFAULT_VID		0x0000
-+
-+#define REG_PORT_CUSTOM_VID		0x0002
-+#define REG_PORT_AVB_SR_1_VID		0x0004
-+#define REG_PORT_AVB_SR_2_VID		0x0006
-+
-+#define REG_PORT_AVB_SR_1_TYPE		0x0008
-+#define REG_PORT_AVB_SR_2_TYPE		0x000A
-+
-+#define REG_PORT_PME_STATUS		0x0013
-+#define REG_PORT_PME_CTRL		0x0017
-+
-+#define PME_WOL_MAGICPKT		BIT(2)
-+#define PME_WOL_LINKUP			BIT(1)
-+#define PME_WOL_ENERGY			BIT(0)
-+
-+#define REG_PORT_INT_STATUS		0x001B
-+#define REG_PORT_INT_MASK		0x001F
-+
-+#define PORT_SGMII_INT			BIT(3)
-+#define PORT_PTP_INT			BIT(2)
-+#define PORT_PHY_INT			BIT(1)
-+#define PORT_ACL_INT			BIT(0)
-+
-+#define PORT_INT_MASK			\
-+	(PORT_SGMII_INT | PORT_PTP_INT | PORT_PHY_INT | PORT_ACL_INT)
-+
-+#define REG_PORT_CTRL_0			0x0020
-+
-+#define PORT_MAC_LOOPBACK		BIT(7)
-+#define PORT_FORCE_TX_FLOW_CTRL		BIT(4)
-+#define PORT_FORCE_RX_FLOW_CTRL		BIT(3)
-+#define PORT_TAIL_TAG_ENABLE		BIT(2)
-+#define PORT_QUEUE_SPLIT_ENABLE		0x3
-+
-+#define REG_PORT_CTRL_1			0x0021
-+
-+#define PORT_SRP_ENABLE			0x3
-+
-+#define REG_PORT_STATUS_0		0x0030
-+
-+#define PORT_INTF_SPEED_M		0x3
-+#define PORT_INTF_SPEED_S		3
-+#define PORT_INTF_FULL_DUPLEX		BIT(2)
-+#define PORT_TX_FLOW_CTRL		BIT(1)
-+#define PORT_RX_FLOW_CTRL		BIT(0)
-+
-+#define REG_PORT_STATUS_1		0x0034
-+
-+/* 1 - PHY */
-+#define REG_PORT_PHY_CTRL		0x0100
-+
-+#define PORT_PHY_RESET			BIT(15)
-+#define PORT_PHY_LOOPBACK		BIT(14)
-+#define PORT_SPEED_100MBIT		BIT(13)
-+#define PORT_AUTO_NEG_ENABLE		BIT(12)
-+#define PORT_POWER_DOWN			BIT(11)
-+#define PORT_ISOLATE			BIT(10)
-+#define PORT_AUTO_NEG_RESTART		BIT(9)
-+#define PORT_FULL_DUPLEX		BIT(8)
-+#define PORT_COLLISION_TEST		BIT(7)
-+#define PORT_SPEED_1000MBIT		BIT(6)
-+
-+#define REG_PORT_PHY_STATUS		0x0102
-+
-+#define PORT_100BT4_CAPABLE		BIT(15)
-+#define PORT_100BTX_FD_CAPABLE		BIT(14)
-+#define PORT_100BTX_CAPABLE		BIT(13)
-+#define PORT_10BT_FD_CAPABLE		BIT(12)
-+#define PORT_10BT_CAPABLE		BIT(11)
-+#define PORT_EXTENDED_STATUS		BIT(8)
-+#define PORT_MII_SUPPRESS_CAPABLE	BIT(6)
-+#define PORT_AUTO_NEG_ACKNOWLEDGE	BIT(5)
-+#define PORT_REMOTE_FAULT		BIT(4)
-+#define PORT_AUTO_NEG_CAPABLE		BIT(3)
-+#define PORT_LINK_STATUS		BIT(2)
-+#define PORT_JABBER_DETECT		BIT(1)
-+#define PORT_EXTENDED_CAPABILITY	BIT(0)
-+
-+#define REG_PORT_PHY_ID_HI		0x0104
-+#define REG_PORT_PHY_ID_LO		0x0106
-+
-+#define KSZ9477_ID_HI			0x0022
-+#define KSZ9477_ID_LO			0x1622
-+
-+#define REG_PORT_PHY_AUTO_NEGOTIATION	0x0108
-+
-+#define PORT_AUTO_NEG_NEXT_PAGE		BIT(15)
-+#define PORT_AUTO_NEG_REMOTE_FAULT	BIT(13)
-+#define PORT_AUTO_NEG_ASYM_PAUSE	BIT(11)
-+#define PORT_AUTO_NEG_SYM_PAUSE		BIT(10)
-+#define PORT_AUTO_NEG_100BT4		BIT(9)
-+#define PORT_AUTO_NEG_100BTX_FD		BIT(8)
-+#define PORT_AUTO_NEG_100BTX		BIT(7)
-+#define PORT_AUTO_NEG_10BT_FD		BIT(6)
-+#define PORT_AUTO_NEG_10BT		BIT(5)
-+#define PORT_AUTO_NEG_SELECTOR		0x001F
-+#define PORT_AUTO_NEG_802_3		0x0001
-+
-+#define PORT_AUTO_NEG_PAUSE		\
-+	(PORT_AUTO_NEG_ASYM_PAUSE | PORT_AUTO_NEG_SYM_PAUSE)
-+
-+#define REG_PORT_PHY_REMOTE_CAPABILITY	0x010A
-+
-+#define PORT_REMOTE_NEXT_PAGE		BIT(15)
-+#define PORT_REMOTE_ACKNOWLEDGE		BIT(14)
-+#define PORT_REMOTE_REMOTE_FAULT	BIT(13)
-+#define PORT_REMOTE_ASYM_PAUSE		BIT(11)
-+#define PORT_REMOTE_SYM_PAUSE		BIT(10)
-+#define PORT_REMOTE_100BTX_FD		BIT(8)
-+#define PORT_REMOTE_100BTX		BIT(7)
-+#define PORT_REMOTE_10BT_FD		BIT(6)
-+#define PORT_REMOTE_10BT		BIT(5)
-+
-+#define REG_PORT_PHY_1000_CTRL		0x0112
-+
-+#define PORT_AUTO_NEG_MANUAL		BIT(12)
-+#define PORT_AUTO_NEG_MASTER		BIT(11)
-+#define PORT_AUTO_NEG_MASTER_PREFERRED	BIT(10)
-+#define PORT_AUTO_NEG_1000BT_FD		BIT(9)
-+#define PORT_AUTO_NEG_1000BT		BIT(8)
-+
-+#define REG_PORT_PHY_1000_STATUS	0x0114
-+
-+#define PORT_MASTER_FAULT		BIT(15)
-+#define PORT_LOCAL_MASTER		BIT(14)
-+#define PORT_LOCAL_RX_OK		BIT(13)
-+#define PORT_REMOTE_RX_OK		BIT(12)
-+#define PORT_REMOTE_1000BT_FD		BIT(11)
-+#define PORT_REMOTE_1000BT		BIT(10)
-+#define PORT_REMOTE_IDLE_CNT_M		0x0F
-+
-+#define PORT_PHY_1000_STATIC_STATUS	\
-+	(PORT_LOCAL_RX_OK |		\
-+	PORT_REMOTE_RX_OK |		\
-+	PORT_REMOTE_1000BT_FD |		\
-+	PORT_REMOTE_1000BT)
-+
-+#define REG_PORT_PHY_MMD_SETUP		0x011A
-+
-+#define PORT_MMD_OP_MODE_M		0x3
-+#define PORT_MMD_OP_MODE_S		14
-+#define PORT_MMD_OP_INDEX		0
-+#define PORT_MMD_OP_DATA_NO_INCR	1
-+#define PORT_MMD_OP_DATA_INCR_RW	2
-+#define PORT_MMD_OP_DATA_INCR_W		3
-+#define PORT_MMD_DEVICE_ID_M		0x1F
-+
-+#define MMD_SETUP(mode, dev)		\
-+	(((u16)(mode) << PORT_MMD_OP_MODE_S) | (dev))
-+
-+#define REG_PORT_PHY_MMD_INDEX_DATA	0x011C
-+
-+#define MMD_DEVICE_ID_DSP		1
-+
-+#define MMD_DSP_SQI_CHAN_A		0xAC
-+#define MMD_DSP_SQI_CHAN_B		0xAD
-+#define MMD_DSP_SQI_CHAN_C		0xAE
-+#define MMD_DSP_SQI_CHAN_D		0xAF
-+
-+#define DSP_SQI_ERR_DETECTED		BIT(15)
-+#define DSP_SQI_AVG_ERR			0x7FFF
-+
-+#define MMD_DEVICE_ID_COMMON		2
-+
-+#define MMD_DEVICE_ID_EEE_ADV		7
-+
-+#define MMD_EEE_ADV			0x3C
-+#define EEE_ADV_100MBIT			BIT(1)
-+#define EEE_ADV_1GBIT			BIT(2)
-+
-+#define MMD_EEE_LP_ADV			0x3D
-+#define MMD_EEE_MSG_CODE		0x3F
-+
-+#define MMD_DEVICE_ID_AFED		0x1C
-+
-+#define REG_PORT_PHY_EXTENDED_STATUS	0x011E
-+
-+#define PORT_100BTX_FD_ABLE		BIT(15)
-+#define PORT_100BTX_ABLE		BIT(14)
-+#define PORT_10BT_FD_ABLE		BIT(13)
-+#define PORT_10BT_ABLE			BIT(12)
-+
-+#define REG_PORT_SGMII_ADDR__4		0x0200
-+#define PORT_SGMII_AUTO_INCR		BIT(23)
-+#define PORT_SGMII_DEVICE_ID_M		0x1F
-+#define PORT_SGMII_DEVICE_ID_S		16
-+#define PORT_SGMII_ADDR_M		(BIT(21) - 1)
-+
-+#define REG_PORT_SGMII_DATA__4		0x0204
-+#define PORT_SGMII_DATA_M		(BIT(16) - 1)
-+
-+#define MMD_DEVICE_ID_PMA		0x01
-+#define MMD_DEVICE_ID_PCS		0x03
-+#define MMD_DEVICE_ID_PHY_XS		0x04
-+#define MMD_DEVICE_ID_DTE_XS		0x05
-+#define MMD_DEVICE_ID_AN		0x07
-+#define MMD_DEVICE_ID_VENDOR_CTRL	0x1E
-+#define MMD_DEVICE_ID_VENDOR_MII	0x1F
-+
-+#define SR_MII				MMD_DEVICE_ID_VENDOR_MII
-+
-+#define MMD_SR_MII_CTRL			0x0000
-+
-+#define SR_MII_RESET			BIT(15)
-+#define SR_MII_LOOPBACK			BIT(14)
-+#define SR_MII_SPEED_100MBIT		BIT(13)
-+#define SR_MII_AUTO_NEG_ENABLE		BIT(12)
-+#define SR_MII_POWER_DOWN		BIT(11)
-+#define SR_MII_AUTO_NEG_RESTART		BIT(9)
-+#define SR_MII_FULL_DUPLEX		BIT(8)
-+#define SR_MII_SPEED_1000MBIT		BIT(6)
-+
-+#define MMD_SR_MII_STATUS		0x0001
-+#define MMD_SR_MII_ID_1			0x0002
-+#define MMD_SR_MII_ID_2			0x0003
-+#define MMD_SR_MII_AUTO_NEGOTIATION	0x0004
-+
-+#define SR_MII_AUTO_NEG_NEXT_PAGE	BIT(15)
-+#define SR_MII_AUTO_NEG_REMOTE_FAULT_M	0x3
-+#define SR_MII_AUTO_NEG_REMOTE_FAULT_S	12
-+#define SR_MII_AUTO_NEG_NO_ERROR	0
-+#define SR_MII_AUTO_NEG_OFFLINE		1
-+#define SR_MII_AUTO_NEG_LINK_FAILURE	2
-+#define SR_MII_AUTO_NEG_ERROR		3
-+#define SR_MII_AUTO_NEG_PAUSE_M		0x3
-+#define SR_MII_AUTO_NEG_PAUSE_S		7
-+#define SR_MII_AUTO_NEG_NO_PAUSE	0
-+#define SR_MII_AUTO_NEG_ASYM_PAUSE_TX	1
-+#define SR_MII_AUTO_NEG_SYM_PAUSE	2
-+#define SR_MII_AUTO_NEG_ASYM_PAUSE_RX	3
-+#define SR_MII_AUTO_NEG_HALF_DUPLEX	BIT(6)
-+#define SR_MII_AUTO_NEG_FULL_DUPLEX	BIT(5)
-+
-+#define MMD_SR_MII_REMOTE_CAPABILITY	0x0005
-+#define MMD_SR_MII_AUTO_NEG_EXP		0x0006
-+#define MMD_SR_MII_AUTO_NEG_EXT		0x000F
-+
-+#define MMD_SR_MII_DIGITAL_CTRL_1	0x8000
-+
-+#define MMD_SR_MII_AUTO_NEG_CTRL	0x8001
-+
-+#define SR_MII_8_BIT			BIT(8)
-+#define SR_MII_SGMII_LINK_UP		BIT(4)
-+#define SR_MII_TX_CFG_PHY_MASTER	BIT(3)
-+#define SR_MII_PCS_MODE_M		0x3
-+#define SR_MII_PCS_MODE_S		1
-+#define SR_MII_PCS_SGMII		2
-+#define SR_MII_AUTO_NEG_COMPLETE_INTR	BIT(0)
-+
-+#define MMD_SR_MII_AUTO_NEG_STATUS	0x8002
-+
-+#define SR_MII_STAT_LINK_UP		BIT(4)
-+#define SR_MII_STAT_M			0x3
-+#define SR_MII_STAT_S			2
-+#define SR_MII_STAT_10_MBPS		0
-+#define SR_MII_STAT_100_MBPS		1
-+#define SR_MII_STAT_1000_MBPS		2
-+#define SR_MII_STAT_FULL_DUPLEX		BIT(1)
-+
-+#define MMD_SR_MII_PHY_CTRL		0x80A0
-+
-+#define SR_MII_PHY_LANE_SEL_M		0xF
-+#define SR_MII_PHY_LANE_SEL_S		8
-+#define SR_MII_PHY_WRITE		BIT(1)
-+#define SR_MII_PHY_START_BUSY		BIT(0)
-+
-+#define MMD_SR_MII_PHY_ADDR		0x80A1
-+
-+#define SR_MII_PHY_ADDR_M		(BIT(16) - 1)
-+
-+#define MMD_SR_MII_PHY_DATA		0x80A2
-+
-+#define SR_MII_PHY_DATA_M		(BIT(16) - 1)
-+
-+#define SR_MII_PHY_JTAG_CHIP_ID_HI	0x000C
-+#define SR_MII_PHY_JTAG_CHIP_ID_LO	0x000D
-+
-+#define REG_PORT_PHY_REMOTE_LB_LED	0x0122
-+
-+#define PORT_REMOTE_LOOPBACK		BIT(8)
-+#define PORT_LED_SELECT			(3 << 6)
-+#define PORT_LED_CTRL			(3 << 4)
-+#define PORT_LED_CTRL_TEST		BIT(3)
-+#define PORT_10BT_PREAMBLE		BIT(2)
-+#define PORT_LINK_MD_10BT_ENABLE	BIT(1)
-+#define PORT_LINK_MD_PASS		BIT(0)
-+
-+#define REG_PORT_PHY_LINK_MD		0x0124
-+
-+#define PORT_START_CABLE_DIAG		BIT(15)
-+#define PORT_TX_DISABLE			BIT(14)
-+#define PORT_CABLE_DIAG_PAIR_M		0x3
-+#define PORT_CABLE_DIAG_PAIR_S		12
-+#define PORT_CABLE_DIAG_SELECT_M	0x3
-+#define PORT_CABLE_DIAG_SELECT_S	10
-+#define PORT_CABLE_DIAG_RESULT_M	0x3
-+#define PORT_CABLE_DIAG_RESULT_S	8
-+#define PORT_CABLE_STAT_NORMAL		0
-+#define PORT_CABLE_STAT_OPEN		1
-+#define PORT_CABLE_STAT_SHORT		2
-+#define PORT_CABLE_STAT_FAILED		3
-+#define PORT_CABLE_FAULT_COUNTER	0x00FF
-+
-+#define REG_PORT_PHY_PMA_STATUS		0x0126
-+
-+#define PORT_1000_LINK_GOOD		BIT(1)
-+#define PORT_100_LINK_GOOD		BIT(0)
-+
-+#define REG_PORT_PHY_DIGITAL_STATUS	0x0128
-+
-+#define PORT_LINK_DETECT		BIT(14)
-+#define PORT_SIGNAL_DETECT		BIT(13)
-+#define PORT_PHY_STAT_MDI		BIT(12)
-+#define PORT_PHY_STAT_MASTER		BIT(11)
-+
-+#define REG_PORT_PHY_RXER_COUNTER	0x012A
-+
-+#define REG_PORT_PHY_INT_ENABLE		0x0136
-+#define REG_PORT_PHY_INT_STATUS		0x0137
-+
-+#define JABBER_INT			BIT(7)
-+#define RX_ERR_INT			BIT(6)
-+#define PAGE_RX_INT			BIT(5)
-+#define PARALLEL_DETECT_FAULT_INT	BIT(4)
-+#define LINK_PARTNER_ACK_INT		BIT(3)
-+#define LINK_DOWN_INT			BIT(2)
-+#define REMOTE_FAULT_INT		BIT(1)
-+#define LINK_UP_INT			BIT(0)
-+
-+#define REG_PORT_PHY_DIGITAL_DEBUG_1	0x0138
-+
-+#define PORT_REG_CLK_SPEED_25_MHZ	BIT(14)
-+#define PORT_PHY_FORCE_MDI		BIT(7)
-+#define PORT_PHY_AUTO_MDIX_DISABLE	BIT(6)
-+
-+/* Same as PORT_PHY_LOOPBACK */
-+#define PORT_PHY_PCS_LOOPBACK		BIT(0)
-+
-+#define REG_PORT_PHY_DIGITAL_DEBUG_2	0x013A
-+
-+#define REG_PORT_PHY_DIGITAL_DEBUG_3	0x013C
-+
-+#define PORT_100BT_FIXED_LATENCY	BIT(15)
-+
-+#define REG_PORT_PHY_PHY_CTRL		0x013E
-+
-+#define PORT_INT_PIN_HIGH		BIT(14)
-+#define PORT_ENABLE_JABBER		BIT(9)
-+#define PORT_STAT_SPEED_1000MBIT	BIT(6)
-+#define PORT_STAT_SPEED_100MBIT		BIT(5)
-+#define PORT_STAT_SPEED_10MBIT		BIT(4)
-+#define PORT_STAT_FULL_DUPLEX		BIT(3)
-+
-+/* Same as PORT_PHY_STAT_MASTER */
-+#define PORT_STAT_MASTER		BIT(2)
-+#define PORT_RESET			BIT(1)
-+#define PORT_LINK_STATUS_FAIL		BIT(0)
-+
-+/* 3 - xMII */
-+#define REG_PORT_XMII_CTRL_0		0x0300
-+
-+#define PORT_SGMII_SEL			BIT(7)
-+#define PORT_MII_FULL_DUPLEX		BIT(6)
-+#define PORT_MII_100MBIT		BIT(4)
-+#define PORT_GRXC_ENABLE		BIT(0)
-+
-+#define REG_PORT_XMII_CTRL_1		0x0301
-+
-+#define PORT_RMII_CLK_SEL		BIT(7)
-+/* S1 */
-+#define PORT_MII_1000MBIT_S1		BIT(6)
-+/* S2 */
-+#define PORT_MII_NOT_1GBIT		BIT(6)
-+#define PORT_MII_SEL_EDGE		BIT(5)
-+#define PORT_RGMII_ID_IG_ENABLE		BIT(4)
-+#define PORT_RGMII_ID_EG_ENABLE		BIT(3)
-+#define PORT_MII_MAC_MODE		BIT(2)
-+#define PORT_MII_SEL_M			0x3
-+/* S1 */
-+#define PORT_MII_SEL_S1			0x0
-+#define PORT_RMII_SEL_S1		0x1
-+#define PORT_GMII_SEL_S1		0x2
-+#define PORT_RGMII_SEL_S1		0x3
-+/* S2 */
-+#define PORT_RGMII_SEL			0x0
-+#define PORT_RMII_SEL			0x1
-+#define PORT_GMII_SEL			0x2
-+#define PORT_MII_SEL			0x3
-+
-+/* 4 - MAC */
-+#define REG_PORT_MAC_CTRL_0		0x0400
-+
-+#define PORT_BROADCAST_STORM		BIT(1)
-+#define PORT_JUMBO_FRAME		BIT(0)
-+
-+#define REG_PORT_MAC_CTRL_1		0x0401
-+
-+#define PORT_BACK_PRESSURE		BIT(3)
-+#define PORT_PASS_ALL			BIT(0)
-+
-+#define REG_PORT_MAC_CTRL_2		0x0402
-+
-+#define PORT_100BT_EEE_DISABLE		BIT(7)
-+#define PORT_1000BT_EEE_DISABLE		BIT(6)
-+
-+#define REG_PORT_MAC_IN_RATE_LIMIT	0x0403
-+
-+#define PORT_IN_PORT_BASED_S		6
-+#define PORT_RATE_PACKET_BASED_S	5
-+#define PORT_IN_FLOW_CTRL_S		4
-+#define PORT_COUNT_IFG_S		1
-+#define PORT_COUNT_PREAMBLE_S		0
-+#define PORT_IN_PORT_BASED		BIT(6)
-+#define PORT_IN_PACKET_BASED		BIT(5)
-+#define PORT_IN_FLOW_CTRL		BIT(4)
-+#define PORT_IN_LIMIT_MODE_M		0x3
-+#define PORT_IN_LIMIT_MODE_S		2
-+#define PORT_IN_ALL			0
-+#define PORT_IN_UNICAST			1
-+#define PORT_IN_MULTICAST		2
-+#define PORT_IN_BROADCAST		3
-+#define PORT_COUNT_IFG			BIT(1)
-+#define PORT_COUNT_PREAMBLE		BIT(0)
-+
-+#define REG_PORT_IN_RATE_0		0x0410
-+#define REG_PORT_IN_RATE_1		0x0411
-+#define REG_PORT_IN_RATE_2		0x0412
-+#define REG_PORT_IN_RATE_3		0x0413
-+#define REG_PORT_IN_RATE_4		0x0414
-+#define REG_PORT_IN_RATE_5		0x0415
-+#define REG_PORT_IN_RATE_6		0x0416
-+#define REG_PORT_IN_RATE_7		0x0417
-+
-+#define REG_PORT_OUT_RATE_0		0x0420
-+#define REG_PORT_OUT_RATE_1		0x0421
-+#define REG_PORT_OUT_RATE_2		0x0422
-+#define REG_PORT_OUT_RATE_3		0x0423
-+
-+#define PORT_RATE_LIMIT_M		(BIT(7) - 1)
-+
-+/* 5 - MIB Counters */
-+#define REG_PORT_MIB_CTRL_STAT__4	0x0500
-+
-+#define MIB_COUNTER_OVERFLOW		BIT(31)
-+#define MIB_COUNTER_VALID		BIT(30)
-+#define MIB_COUNTER_READ		BIT(25)
-+#define MIB_COUNTER_FLUSH_FREEZE	BIT(24)
-+#define MIB_COUNTER_INDEX_M		(BIT(8) - 1)
-+#define MIB_COUNTER_INDEX_S		16
-+#define MIB_COUNTER_DATA_HI_M		0xF
-+
-+#define REG_PORT_MIB_DATA		0x0504
-+
-+/* 6 - ACL */
-+#define REG_PORT_ACL_0			0x0600
-+
-+#define ACL_FIRST_RULE_M		0xF
-+
-+#define REG_PORT_ACL_1			0x0601
-+
-+#define ACL_MODE_M			0x3
-+#define ACL_MODE_S			4
-+#define ACL_MODE_DISABLE		0
-+#define ACL_MODE_LAYER_2		1
-+#define ACL_MODE_LAYER_3		2
-+#define ACL_MODE_LAYER_4		3
-+#define ACL_ENABLE_M			0x3
-+#define ACL_ENABLE_S			2
-+#define ACL_ENABLE_2_COUNT		0
-+#define ACL_ENABLE_2_TYPE		1
-+#define ACL_ENABLE_2_MAC		2
-+#define ACL_ENABLE_2_BOTH		3
-+#define ACL_ENABLE_3_IP			1
-+#define ACL_ENABLE_3_SRC_DST_COMP	2
-+#define ACL_ENABLE_4_PROTOCOL		0
-+#define ACL_ENABLE_4_TCP_PORT_COMP	1
-+#define ACL_ENABLE_4_UDP_PORT_COMP	2
-+#define ACL_ENABLE_4_TCP_SEQN_COMP	3
-+#define ACL_SRC				BIT(1)
-+#define ACL_EQUAL			BIT(0)
-+
-+#define REG_PORT_ACL_2			0x0602
-+#define REG_PORT_ACL_3			0x0603
-+
-+#define ACL_MAX_PORT			0xFFFF
-+
-+#define REG_PORT_ACL_4			0x0604
-+#define REG_PORT_ACL_5			0x0605
-+
-+#define ACL_MIN_PORT			0xFFFF
-+#define ACL_IP_ADDR			0xFFFFFFFF
-+#define ACL_TCP_SEQNUM			0xFFFFFFFF
-+
-+#define REG_PORT_ACL_6			0x0606
-+
-+#define ACL_RESERVED			0xF8
-+#define ACL_PORT_MODE_M			0x3
-+#define ACL_PORT_MODE_S			1
-+#define ACL_PORT_MODE_DISABLE		0
-+#define ACL_PORT_MODE_EITHER		1
-+#define ACL_PORT_MODE_IN_RANGE		2
-+#define ACL_PORT_MODE_OUT_OF_RANGE	3
-+
-+#define REG_PORT_ACL_7			0x0607
-+
-+#define ACL_TCP_FLAG_ENABLE		BIT(0)
-+
-+#define REG_PORT_ACL_8			0x0608
-+
-+#define ACL_TCP_FLAG_M			0xFF
-+
-+#define REG_PORT_ACL_9			0x0609
-+
-+#define ACL_TCP_FLAG			0xFF
-+#define ACL_ETH_TYPE			0xFFFF
-+#define ACL_IP_M			0xFFFFFFFF
-+
-+#define REG_PORT_ACL_A			0x060A
-+
-+#define ACL_PRIO_MODE_M			0x3
-+#define ACL_PRIO_MODE_S			6
-+#define ACL_PRIO_MODE_DISABLE		0
-+#define ACL_PRIO_MODE_HIGHER		1
-+#define ACL_PRIO_MODE_LOWER		2
-+#define ACL_PRIO_MODE_REPLACE		3
-+#define ACL_PRIO_M			KS_PRIO_M
-+#define ACL_PRIO_S			3
-+#define ACL_VLAN_PRIO_REPLACE		BIT(2)
-+#define ACL_VLAN_PRIO_M			KS_PRIO_M
-+#define ACL_VLAN_PRIO_HI_M		0x3
-+
-+#define REG_PORT_ACL_B			0x060B
-+
-+#define ACL_VLAN_PRIO_LO_M		0x8
-+#define ACL_VLAN_PRIO_S			7
-+#define ACL_MAP_MODE_M			0x3
-+#define ACL_MAP_MODE_S			5
-+#define ACL_MAP_MODE_DISABLE		0
-+#define ACL_MAP_MODE_OR			1
-+#define ACL_MAP_MODE_AND		2
-+#define ACL_MAP_MODE_REPLACE		3
-+
-+#define ACL_CNT_M			(BIT(11) - 1)
-+#define ACL_CNT_S			5
-+
-+#define REG_PORT_ACL_C			0x060C
-+
-+#define REG_PORT_ACL_D			0x060D
-+#define ACL_MSEC_UNIT			BIT(6)
-+#define ACL_INTR_MODE			BIT(5)
-+#define ACL_PORT_MAP			0x7F
-+
-+#define REG_PORT_ACL_E			0x060E
-+#define REG_PORT_ACL_F			0x060F
-+
-+#define REG_PORT_ACL_BYTE_EN_MSB	0x0610
-+#define REG_PORT_ACL_BYTE_EN_LSB	0x0611
-+
-+#define ACL_ACTION_START		0xA
-+#define ACL_ACTION_LEN			4
-+#define ACL_INTR_CNT_START		0xD
-+#define ACL_RULESET_START		0xE
-+#define ACL_RULESET_LEN			2
-+#define ACL_TABLE_LEN			16
-+
-+#define ACL_ACTION_ENABLE		0x003C
-+#define ACL_MATCH_ENABLE		0x7FC3
-+#define ACL_RULESET_ENABLE		0x8003
-+#define ACL_BYTE_ENABLE			0xFFFF
-+
-+#define REG_PORT_ACL_CTRL_0		0x0612
-+
-+#define PORT_ACL_WRITE_DONE		BIT(6)
-+#define PORT_ACL_READ_DONE		BIT(5)
-+#define PORT_ACL_WRITE			BIT(4)
-+#define PORT_ACL_INDEX_M		0xF
-+
-+#define REG_PORT_ACL_CTRL_1		0x0613
-+
-+/* 8 - Classification and Policing */
-+#define REG_PORT_MRI_MIRROR_CTRL	0x0800
-+
-+#define PORT_MIRROR_RX			BIT(6)
-+#define PORT_MIRROR_TX			BIT(5)
-+#define PORT_MIRROR_SNIFFER		BIT(1)
-+
-+#define REG_PORT_MRI_PRIO_CTRL		0x0801
-+
-+#define PORT_HIGHEST_PRIO		BIT(7)
-+#define PORT_OR_PRIO			BIT(6)
-+#define PORT_MAC_PRIO_ENABLE		BIT(4)
-+#define PORT_VLAN_PRIO_ENABLE		BIT(3)
-+#define PORT_802_1P_PRIO_ENABLE		BIT(2)
-+#define PORT_DIFFSERV_PRIO_ENABLE	BIT(1)
-+#define PORT_ACL_PRIO_ENABLE		BIT(0)
-+
-+#define REG_PORT_MRI_MAC_CTRL		0x0802
-+
-+#define PORT_USER_PRIO_CEILING		BIT(7)
-+#define PORT_DROP_NON_VLAN		BIT(4)
-+#define PORT_DROP_TAG			BIT(3)
-+#define PORT_BASED_PRIO_M		KS_PRIO_M
-+#define PORT_BASED_PRIO_S		0
-+
-+#define REG_PORT_MRI_AUTHEN_CTRL	0x0803
-+
-+#define PORT_ACL_ENABLE			BIT(2)
-+#define PORT_AUTHEN_MODE		0x3
-+#define PORT_AUTHEN_PASS		0
-+#define PORT_AUTHEN_BLOCK		1
-+#define PORT_AUTHEN_TRAP		2
-+
-+#define REG_PORT_MRI_INDEX__4		0x0804
-+
-+#define MRI_INDEX_P_M			0x7
-+#define MRI_INDEX_P_S			16
-+#define MRI_INDEX_Q_M			0x3
-+#define MRI_INDEX_Q_S			0
-+
-+#define REG_PORT_MRI_TC_MAP__4		0x0808
-+
-+#define PORT_TC_MAP_M			0xf
-+#define PORT_TC_MAP_S			4
-+
-+#define REG_PORT_MRI_POLICE_CTRL__4	0x080C
-+
-+#define POLICE_DROP_ALL			BIT(10)
-+#define POLICE_PACKET_TYPE_M		0x3
-+#define POLICE_PACKET_TYPE_S		8
-+#define POLICE_PACKET_DROPPED		0
-+#define POLICE_PACKET_GREEN		1
-+#define POLICE_PACKET_YELLOW		2
-+#define POLICE_PACKET_RED		3
-+#define PORT_BASED_POLICING		BIT(7)
-+#define NON_DSCP_COLOR_M		0x3
-+#define NON_DSCP_COLOR_S		5
-+#define COLOR_MARK_ENABLE		BIT(4)
-+#define COLOR_REMAP_ENABLE		BIT(3)
-+#define POLICE_DROP_SRP			BIT(2)
-+#define POLICE_COLOR_NOT_AWARE		BIT(1)
-+#define POLICE_ENABLE			BIT(0)
-+
-+#define REG_PORT_POLICE_COLOR_0__4	0x0810
-+#define REG_PORT_POLICE_COLOR_1__4	0x0814
-+#define REG_PORT_POLICE_COLOR_2__4	0x0818
-+#define REG_PORT_POLICE_COLOR_3__4	0x081C
-+
-+#define POLICE_COLOR_MAP_S		2
-+#define POLICE_COLOR_MAP_M		(BIT(POLICE_COLOR_MAP_S) - 1)
-+
-+#define REG_PORT_POLICE_RATE__4		0x0820
-+
-+#define POLICE_CIR_S			16
-+#define POLICE_PIR_S			0
-+
-+#define REG_PORT_POLICE_BURST_SIZE__4	0x0824
-+
-+#define POLICE_BURST_SIZE_M		0x3FFF
-+#define POLICE_CBS_S			16
-+#define POLICE_PBS_S			0
-+
-+#define REG_PORT_WRED_PM_CTRL_0__4	0x0830
-+
-+#define WRED_PM_CTRL_M			(BIT(11) - 1)
-+
-+#define WRED_PM_MAX_THRESHOLD_S		16
-+#define WRED_PM_MIN_THRESHOLD_S		0
-+
-+#define REG_PORT_WRED_PM_CTRL_1__4	0x0834
-+
-+#define WRED_PM_MULTIPLIER_S		16
-+#define WRED_PM_AVG_QUEUE_SIZE_S	0
-+
-+#define REG_PORT_WRED_QUEUE_CTRL_0__4	0x0840
-+#define REG_PORT_WRED_QUEUE_CTRL_1__4	0x0844
-+
-+#define REG_PORT_WRED_QUEUE_PMON__4	0x0848
-+
-+#define WRED_RANDOM_DROP_ENABLE		BIT(31)
-+#define WRED_PMON_FLUSH			BIT(30)
-+#define WRED_DROP_GYR_DISABLE		BIT(29)
-+#define WRED_DROP_YR_DISABLE		BIT(28)
-+#define WRED_DROP_R_DISABLE		BIT(27)
-+#define WRED_DROP_ALL			BIT(26)
-+#define WRED_PMON_M			(BIT(24) - 1)
-+
-+/* 9 - Shaping */
-+
-+#define REG_PORT_MTI_QUEUE_INDEX__4	0x0900
-+
-+#define REG_PORT_MTI_QUEUE_CTRL_0__4	0x0904
-+
-+#define MTI_PVID_REPLACE		BIT(0)
-+
-+#define REG_PORT_MTI_QUEUE_CTRL_0	0x0914
-+
-+#define MTI_SCHEDULE_MODE_M		0x3
-+#define MTI_SCHEDULE_MODE_S		6
-+#define MTI_SCHEDULE_STRICT_PRIO	0
-+#define MTI_SCHEDULE_WRR		2
-+#define MTI_SHAPING_M			0x3
-+#define MTI_SHAPING_S			4
-+#define MTI_SHAPING_OFF			0
-+#define MTI_SHAPING_SRP			1
-+#define MTI_SHAPING_TIME_AWARE		2
-+
-+#define REG_PORT_MTI_QUEUE_CTRL_1	0x0915
-+
-+#define MTI_TX_RATIO_M			(BIT(7) - 1)
-+
-+#define REG_PORT_MTI_QUEUE_CTRL_2__2	0x0916
-+#define REG_PORT_MTI_HI_WATER_MARK	0x0916
-+#define REG_PORT_MTI_QUEUE_CTRL_3__2	0x0918
-+#define REG_PORT_MTI_LO_WATER_MARK	0x0918
-+#define REG_PORT_MTI_QUEUE_CTRL_4__2	0x091A
-+#define REG_PORT_MTI_CREDIT_INCREMENT	0x091A
-+
-+/* A - QM */
-+
-+#define REG_PORT_QM_CTRL__4		0x0A00
-+
-+#define PORT_QM_DROP_PRIO_M		0x3
-+
-+#define REG_PORT_VLAN_MEMBERSHIP__4	0x0A04
-+
-+#define REG_PORT_QM_QUEUE_INDEX__4	0x0A08
-+
-+#define PORT_QM_QUEUE_INDEX_S		24
-+#define PORT_QM_BURST_SIZE_S		16
-+#define PORT_QM_MIN_RESV_SPACE_M	(BIT(11) - 1)
-+
-+#define REG_PORT_QM_WATER_MARK__4	0x0A0C
-+
-+#define PORT_QM_HI_WATER_MARK_S		16
-+#define PORT_QM_LO_WATER_MARK_S		0
-+#define PORT_QM_WATER_MARK_M		(BIT(11) - 1)
-+
-+#define REG_PORT_QM_TX_CNT_0__4		0x0A10
-+
-+#define PORT_QM_TX_CNT_USED_S		0
-+#define PORT_QM_TX_CNT_M		(BIT(11) - 1)
-+
-+#define REG_PORT_QM_TX_CNT_1__4		0x0A14
-+
-+#define PORT_QM_TX_CNT_CALCULATED_S	16
-+#define PORT_QM_TX_CNT_AVAIL_S		0
-+
-+/* B - LUE */
-+#define REG_PORT_LUE_CTRL		0x0B00
-+
-+#define PORT_VLAN_LOOKUP_VID_0		BIT(7)
-+#define PORT_INGRESS_FILTER		BIT(6)
-+#define PORT_DISCARD_NON_VID		BIT(5)
-+#define PORT_MAC_BASED_802_1X		BIT(4)
-+#define PORT_SRC_ADDR_FILTER		BIT(3)
-+
-+#define REG_PORT_LUE_MSTP_INDEX		0x0B01
-+
-+#define REG_PORT_LUE_MSTP_STATE		0x0B04
-+
-+#define PORT_TX_ENABLE			BIT(2)
-+#define PORT_RX_ENABLE			BIT(1)
-+#define PORT_LEARN_DISABLE		BIT(0)
-+
-+/* C - PTP */
-+
-+#define REG_PTP_PORT_RX_DELAY__2	0x0C00
-+#define REG_PTP_PORT_TX_DELAY__2	0x0C02
-+#define REG_PTP_PORT_ASYM_DELAY__2	0x0C04
-+
-+#define REG_PTP_PORT_XDELAY_TS		0x0C08
-+#define REG_PTP_PORT_XDELAY_TS_H	0x0C08
-+#define REG_PTP_PORT_XDELAY_TS_L	0x0C0A
-+
-+#define REG_PTP_PORT_SYNC_TS		0x0C0C
-+#define REG_PTP_PORT_SYNC_TS_H		0x0C0C
-+#define REG_PTP_PORT_SYNC_TS_L		0x0C0E
-+
-+#define REG_PTP_PORT_PDRESP_TS		0x0C10
-+#define REG_PTP_PORT_PDRESP_TS_H	0x0C10
-+#define REG_PTP_PORT_PDRESP_TS_L	0x0C12
-+
-+#define REG_PTP_PORT_TX_INT_STATUS__2	0x0C14
-+#define REG_PTP_PORT_TX_INT_ENABLE__2	0x0C16
-+
-+#define PTP_PORT_SYNC_INT		BIT(15)
-+#define PTP_PORT_XDELAY_REQ_INT		BIT(14)
-+#define PTP_PORT_PDELAY_RESP_INT	BIT(13)
-+
-+#define REG_PTP_PORT_LINK_DELAY__4	0x0C18
-+
-+#define PRIO_QUEUES			4
-+#define RX_PRIO_QUEUES			8
-+
-+#define KS_PRIO_IN_REG			2
-+
-+#define TOTAL_PORT_NUM			7
-+
-+#define KSZ9477_COUNTER_NUM		0x20
-+#define TOTAL_KSZ9477_COUNTER_NUM	(KSZ9477_COUNTER_NUM + 2 + 2)
-+
-+#define SWITCH_COUNTER_NUM		KSZ9477_COUNTER_NUM
-+#define TOTAL_SWITCH_COUNTER_NUM	TOTAL_KSZ9477_COUNTER_NUM
-+
-+#define P_BCAST_STORM_CTRL		REG_PORT_MAC_CTRL_0
-+#define P_PRIO_CTRL			REG_PORT_MRI_PRIO_CTRL
-+#define P_MIRROR_CTRL			REG_PORT_MRI_MIRROR_CTRL
-+#define P_STP_CTRL			REG_PORT_LUE_MSTP_STATE
-+#define P_PHY_CTRL			REG_PORT_PHY_CTRL
-+#define P_NEG_RESTART_CTRL		REG_PORT_PHY_CTRL
-+#define P_LINK_STATUS			REG_PORT_PHY_STATUS
-+#define P_SPEED_STATUS			REG_PORT_PHY_PHY_CTRL
-+#define P_RATE_LIMIT_CTRL		REG_PORT_MAC_IN_RATE_LIMIT
-+
-+#define S_LINK_AGING_CTRL		REG_SW_LUE_CTRL_1
-+#define S_MIRROR_CTRL			REG_SW_MRI_CTRL_0
-+#define S_REPLACE_VID_CTRL		REG_SW_MAC_CTRL_2
-+#define S_802_1P_PRIO_CTRL		REG_SW_MAC_802_1P_MAP_0
-+#define S_TOS_PRIO_CTRL			REG_SW_MAC_TOS_PRIO_0
-+#define S_FLUSH_TABLE_CTRL		REG_SW_LUE_CTRL_1
-+
-+#define SW_FLUSH_DYN_MAC_TABLE		SW_FLUSH_MSTP_TABLE
-+
-+#define MAX_TIMESTAMP_UNIT		2
-+#define MAX_TRIG_UNIT			3
-+#define MAX_TIMESTAMP_EVENT_UNIT	8
-+#define MAX_GPIO			4
-+
-+#define PTP_TRIG_UNIT_M			(BIT(MAX_TRIG_UNIT) - 1)
-+#define PTP_TS_UNIT_M			(BIT(MAX_TIMESTAMP_UNIT) - 1)
-+
-+/* Driver set switch broadcast storm protection at 10% rate. */
-+#define BROADCAST_STORM_PROT_RATE	10
-+
-+/* 148,800 frames * 67 ms / 100 */
-+#define BROADCAST_STORM_VALUE		9969
-+
-+#endif /* KSZ9477_REGS_H */
++device_spi_driver(sja1105_driver);
 -- 
 2.30.2
 
