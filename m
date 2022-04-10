@@ -1,50 +1,65 @@
-Delivery-date: Sun, 10 Apr 2022 10:30:21 +0200
+Delivery-date: Sun, 10 Apr 2022 11:30:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ndSxj-00E3Z6-2o
-	for lore@lore.pengutronix.de; Sun, 10 Apr 2022 10:30:21 +0200
+	id 1ndTuI-00E5tZ-5B
+	for lore@lore.pengutronix.de; Sun, 10 Apr 2022 11:30:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ndSxg-0002eS-Az
-	for lore@pengutronix.de; Sun, 10 Apr 2022 10:30:21 +0200
+	id 1ndTuF-0007vf-Db
+	for lore@pengutronix.de; Sun, 10 Apr 2022 11:30:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Reply-To:List-Subscribe:List-Help:
-	List-Post:List-Archive:List-Unsubscribe:List-Id:Message-ID:From:CC:To:Subject
-	:MIME-Version:References:In-Reply-To:Date:Content-ID:Content-Description:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
+	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=mXPFVK2LIvSDa1evcN3pesJpk8R2pMOX+5iGcBO8HwU=; b=dd5IACd16eV5zZ
-	IjZUgcdM0nFIW8C9zZBjwVlz+Q/38cTHS2oEEvs28fgsafPyJhIIoiCc6Xf/iXLnzvoZwUTJHdGUA
-	Tk6AmtSBXYAGUkBgOWbhqbN9CSQWp390cbYdDjTxuFCBNiDkjAaES63vyNqkJhoEiZGw9mBx9OfI4
-	Wfe2ZeaShUOaRbYSBXdKX9Cqnnb73TxesPi1hvj7UXMC3moaQ6o3eNWi3F9oSrxl0TBADVcrDn/4g
-	41rn7oHyPfjnvVSzV/i5OM2pcTRdeGVH91Ia27tCjBNsQbP4VoBxLZqp3cdEoPirqThkRXPzUc8hE
-	/U7hEsxzQdqZ5UiDE+eQ==;
+	List-Owner; bh=vahqT3oJeDXJdZn83eqYyQXL+hmRKJ/20fGFE6D3A4c=; b=BqCd4r/4aKFC5P
+	0nXwodjS5XEP7jZXn40J0jQcvx1IVaZTRaPXvV5/Sh9x8dv2RTi/mmLyhRDSKvfzkHXMGVjwHzxFl
+	YuEj4FzNFNFrb9t75mEWbVQ5yCZXSOML3ZIIlLjMka5oZvBPrpZL/lDV1OObi7Ee7CA7TJaezF7xP
+	tGUkYqGGTyxNaniQvwhzfcumiHuuBxocnbwvoLcA4CAmGjpBpPI03rSGkCXkUWDc65RAp/Dd1UVQH
+	+oHVBH+RvgkxtUNN1kAzMXnMEckYBAlMkvtB7Lwu4xTfSM3J5Lo97KZ+yMm1T0OtGzgYMVTSue9W0
+	erobItzOkQrWZyt4DTTA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ndSwD-004UuB-64; Sun, 10 Apr 2022 08:28:49 +0000
-Received: from mout.gmx.net ([212.227.15.15])
+	id 1ndTse-004ZEr-1J; Sun, 10 Apr 2022 09:29:12 +0000
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ndSw8-004Usw-CZ
- for barebox@lists.infradead.org; Sun, 10 Apr 2022 08:28:46 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1649579317;
- bh=+ZAPX19X5gIYuQD5H8TSw/vpnYv1yvWXDHEsCQVFq8o=;
- h=X-UI-Sender-Class:Date:In-Reply-To:References:Subject:Reply-to:To:
- CC:From;
- b=lkqbgdzbO2dGFB6nEvh1PLHFN2+6tz1P5ghKsXV/IpJ21vLUC2RDJAtVFyerZxnyd
- PQ9pQjXImcFmPCyepqfm6JLICHcnxQC1XYXZaYTpp9Bp+zs+mloZm/6dworvys/b5I
- sCaEC1+4rXUGT0Sdv6979lJgu+YNGIZImclCR9Qk=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from frank-s9 ([217.61.146.192]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MOzT4-1nKp5N2U3w-00PKqI; Sun, 10
- Apr 2022 10:28:37 +0200
-Date: Sun, 10 Apr 2022 10:28:36 +0200
-User-Agent: K-9 Mail for Android
-In-Reply-To: <286876ce-e2bb-4a67-7db4-8a4bb9ecf142@rempel-privat.de>
+ id 1ndTsZ-004ZDi-9p
+ for barebox@lists.infradead.org; Sun, 10 Apr 2022 09:29:09 +0000
+Received: by mail-lf1-x12e.google.com with SMTP id bq30so9025065lfb.3
+ for <barebox@lists.infradead.org>; Sun, 10 Apr 2022 02:29:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=igorinstitute-com.20210112.gappssmtp.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=LTz3ptNrq/A5/Z1ccmSWC4oD7Jm5m6jQ7+A2QPmot0o=;
+ b=pYsEQ+U/pJeZ6xTgPgttj3i6py7BrVN3fZwiSun4bHjTZalvDhZ4nM2zFhN6Rnvcn+
+ ZDpnWhDyFzQ3I4xvWx2g0cMDrW0bktNXbIAQPfflsIC4TP+TAtbFaTDgX118bqPXizb5
+ Gfkhuj2zhYjSYR9tp8Uv3h2+WwwXtVOPBAJ8zLoMLpyZA5QhpvfklwmJBdt+nEZmgVxP
+ dMsgxJmrIR+dmwcYv673pAHhTET+9RBdG2r/e2nxYubxHbS3sJkrZsUnJWBH9/CcJt5F
+ szkj6wbHjOqx80f6OBVGlRMRN+rshWwy4k7QBK7GVBphPl2tiFd27HVftsMfh1T+q5sM
+ jGxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=LTz3ptNrq/A5/Z1ccmSWC4oD7Jm5m6jQ7+A2QPmot0o=;
+ b=mxH04xmCXBBht3B3AVD4QqSTcbJGl14BJadCnDOIiGPYyRlRO1hWZGAS+dtbOlft1J
+ Za0j+InSZ51nnNvkT1KWhS1DEVDZHxfDfXHBIqddivbpn0v1zrDo/ZvLWuxytK8ogjCL
+ 5bTk+al70YOUo/qByrkk+Mzp6vioV7wE9N+IDFV+vAtpybWko+c9tptnNoC3DvL4F5TF
+ +XLzTgEFZ8oqBxin6GKqNiDsLki9Pk4lBd+LLcov3aksqDCXAsY1caEFNe7eex1TegIC
+ PxnoMH7qBHD/ynM5a6+8qFFq3K59pUPrv+bgVlSLyJzsIz2RTeMnDvaF13JtMC3B+xeR
+ KZEA==
+X-Gm-Message-State: AOAM533KADpo1wP3NyumY+PW4RcyPISZQ3+cpYZ9IMZF17lQ4pckwqx9
+ 1kQIYfeEKLz2YvPKPEGwQlKHAqrZHz+oFz3GDwUQQA==
+X-Google-Smtp-Source: ABdhPJzypxTV924PnVwDlj0mOfxTv5VmPpooqFtu6lZs7iaCG/oz1PLVZ5SZ1InBoM8y1qcifJl3QNG6zLl9bcvOQgE=
+X-Received: by 2002:a05:6512:c23:b0:44a:3191:b65c with SMTP id
+ z35-20020a0565120c2300b0044a3191b65cmr17510929lfu.636.1649582943342; Sun, 10
+ Apr 2022 02:29:03 -0700 (PDT)
+MIME-Version: 1.0
 References: <6FA3446D-797C-4DA1-A2FA-BAC5B213A65A@public-files.de>
  <2620f87b-ec79-7184-cd8a-d29c39938001@pengutronix.de>
  <trinity-82311693-b8da-49e3-a71c-d577df7e4021-1648021632406@3c-app-gmx-bap36>
@@ -57,36 +72,16 @@ References: <6FA3446D-797C-4DA1-A2FA-BAC5B213A65A@public-files.de>
  <1b2a8dc2-629d-6c76-207b-d1d78de4c458@rempel-privat.de>
  <CAMHeXxNuqjfkdoJ=pLLjbv60hzqx6cT1EzegX0ryAeYTBa9vdA@mail.gmail.com>
  <286876ce-e2bb-4a67-7db4-8a4bb9ecf142@rempel-privat.de>
-MIME-Version: 1.0
-To: Oleksij Rempel <linux@rempel-privat.de>,
- Trent Piepho <trent.piepho@igorinstitute.com>
-CC: Ahmad Fatoum <a.fatoum@pengutronix.de>,barebox@lists.infradead.org
-From: Frank Wunderlich <frank-w@public-files.de>
-Message-ID: <272C173E-3A56-4739-9586-C542E16C242E@public-files.de>
-X-Provags-ID: V03:K1:ppw9HekMYvfZ0ZR7vkORfTmODWZcFeOHLh8mP3f3YOMp/a/g2zv
- irt3o7QWreQCkfcpuweEIVbLrkutwnFrOPkZlJ6AfCrPJh+xzBQ45auQ7MRUhV+TDGmf+5a
- DvpB53kr89IR3meNRNWAMejOXfiJr9IBa5IJdgg3kFH3Jru65ONkdwPzuuX/zRwnyybBCo/
- ZLdL4uIFdPM8ih2cRHK/Q==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Zb2IEGPSgTQ=:Fe9d3meliMT9wOp2btcGJc
- XJlk9Ee66guP2YdtyFU8fP5+iHMr5aeQVvPGd800OHUSRuWG3Q48+USoUGEVd7YryzUWJ+Rbg
- FkZuLhlJL6NUPsnmMWO/WWDLRk8LfQCHNGQrj8Gngc5Bp1T1A+thohXYU5u3wmLXMHHTNa87N
- 8LNBfB7ry3bhp/5yXERJIWeK8E7co63YoX/Ib2JuITiwH9tex8ccsTrv9iCvXMaNCMm2siQIM
- mKHhaboIYY0Mir1QPxhR9O2n0E0YXTaPGuFz8zyJAGe7VEzN/u5c9rS3ry4fW6Q4JzjKKS5AG
- 6dC8arzZLtrMqtSJIZKlm4gCQ4qD3zLJ4lvTcRXU7My9xCj8QA3HqqP/ZZQXuRbqD1plCgxbw
- Dgf4o7aHTcnAzah3doWCX64ghAxbZjDitss+0/9dnF2RWLccGHYct/cwJI68Cnv2oAFT04x3B
- 01SyABErT9vz35cjttRaOUzP79MOsl5ccPBENi8MlWVr8RBEbz0ZPPcWqVYMyLLqB9wBHYd4G
- gqkc5g7bDB9Gub1k5E60Yi6rhpgafr/yegnb3xnpDEPxo+Kxi5N0f59idZlblxgyabpe6sXcH
- UTpDq1wdywbfscysADs0u1DQVwNHielwukTh4Hs7gl/Gi8Z3ZUm3HgMuba3vae71e07pToofJ
- 2+RubVi+u/A6o8nvtYC3XLi0VRc5C8rnb3i1nm5VYr2r8oZgC6QL3QguIfuL40z22/5AidRun
- RH2JOhHUnUCXdtO60TrbTF/puc0Du1U3bTBsfxBYGE5RZUYkx77P2+/d01calsjk+WGUYbhH5
- CVqXU/wa7A4PCkKn9RpagJyvcNEK+Z4fWCjSLneaahr3Yag70Z3YcvWUtR2abK41I0Uit3Par
- C8V5uxPSiQv2G19RxD6iT6hFARksmiRpm3hCNrWEXoWI6aokjYGBLQoajpqmxsB8P0I4wC7i2
- ayKy9qH4swdW3gJ0A+2p5tLHaoqagZbSoCwSAhrdol9I1xlF8uxzY3Y4azj8Z9j+9YduFsL1t
- N3Wk56uRDyHVs5sIWdvoOWJPoklpzwpzs2lyh3DhJwbMlDCaTmWgdm9Vb9s78IXIfcVDtNvxV
- y1VdR3qxniv1jA=
+In-Reply-To: <286876ce-e2bb-4a67-7db4-8a4bb9ecf142@rempel-privat.de>
+From: Trent Piepho <trent.piepho@igorinstitute.com>
+Date: Sun, 10 Apr 2022 02:28:52 -0700
+Message-ID: <CAMHeXxP6Mam1KL3p0R3yBe0gdBj931RwUNe_M9sPV6E8NVsy+g@mail.gmail.com>
+To: Oleksij Rempel <linux@rempel-privat.de>
+Cc: Frank Wunderlich <frank-w@public-files.de>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220410_012844_763408_E742AE40 
-X-CRM114-Status: GOOD (  14.80  )
+X-CRM114-CacheID: sfid-20220410_022907_728466_9CB66F62 
+X-CRM114-Status: GOOD (  28.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,7 +93,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: frank-w@public-files.de
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -107,7 +101,7 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
@@ -117,85 +111,95 @@ Subject: Re: change r2pro dts to public hw version (was "Board code with 2
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Am 10. April 2022 09:41:06 MESZ schrieb Oleksij Rempel <linux@rempel-privat.de>:
-
->Normally we use phy-mode with predefined values:
->- rgmii == tx/rx delay is 0
->- rgmii-id == PHY configures tx and rx delays to closest possible
->values to 2.8ns
->- rgmii-txid == PHY configures only tx delay to 2.8ns, rx is 0
->- rgmii-rxid == same as rgmii-txid but for rx.
+On Sun, Apr 10, 2022 at 12:41 AM Oleksij Rempel <linux@rempel-privat.de> wrote:
 >
->Using raw values or fine tuning this delays makes no sense in 99%
->cases.
-
-So i need to disable the delay-configuration and set rgmii-id. Do i need to set only on mac or on the phy too?
-
-https://git.pengutronix.de/cgit/barebox/tree/drivers/net/designware_rockchip.c#n117
-
-Set flags to RK3568_GMAC_{R,T}XCLK_DLY_DISABLE and disable second regmap write. Board has a realtek phy which is defined in dts only with this:
-
-&mdio1 {	
-rgmii_phy1: ethernet-phy@0 {	
-	compatible = "ethernet-phy-ieee802.3-c22";	
-  reg = <0x0>;
-	};
-};
-
-https://github.com/frank-w/barebox-r2pro/blob/b13021268148954a59682620ab284054b25448e4/arch/arm/dts/rk3568-bpi-r2-pro.dts#L373
-
-Can i check if the phy is recognized on mdio-bus and initialized? I see it in the devlist,but not sure if this means that it is completely initialized.
-
->Since the PHY and the driver, used on this boards, supports internal
->delay configuration, it makes
->no sense to spend any time on this kind of investigation for this or
->any other board. All embedded
->boards would work with "rgmii-id" and no delay on the MAC side. Which
->should be default MAC
->configuration without additional device tree properties, except of
->buggy driver or MACs with
->integrated not configurable delays, or boards with insanely long traces
->for rgmii clk.
+> Am 09.04.22 um 19:08 schrieb Trent Piepho:
+> > On Sat, Apr 9, 2022 at 9:02 AM Oleksij Rempel <linux@rempel-privat.de> wrote:>
+> >>
+> >> In this case driver will set some default values:
+> >> priv->tx_delay = used cd;
+> >> priv->rx_delay = 0x10;
+> >>
+> >> No idea what this values mean.
+> >
+> > They are supposed to be delays in picoseconds, but sometimes driver
+> > authors are lazy and just use whatever goes into their device's
+> > registers.  That creates a dts binding that only works for one
+> > specific device.
 >
->As I already said, except of delays there can be other issue. For
->example:
->- incorrect pinmux configuration
->- incorrect RGMII clock source configuration
->- incorrect MAC or PHY mode configuration (xMII instead of RGMII)
->- incorrect reset or power up sequence affecting proper bootstrap
->configuration.
->- incorrect MDIO configuration, for example CLK rate outside of range
->supported by the PHY.
->- not properly configured SoCs internal clock dependencies.
->- some missing "enable" bit on the PHY or the MAC side
+> According to RGMII 2.0 specification, delay should be 2.8 nanosecond or 2800 picoseconds. None of
+> used raw values fits to the specified range.
 
-I more guess something like the last 2 is the problem as the delay-settings work in linux. But have not completely understood all parts. Imho pinmux is done on usage. So if i use
+As I understand it, there are also delays due to PCB signal routing
+that might be significant enough that they need to be taken into
+account too.  Thus we have standard properties like:
 
-pinctrl-0 = <&gmac1m1_miim 		 &gmac1m1_tx_bus2 		 &gmac1m1_rx_bus2 		 &gmac1m1_rgmii_clk 		 &gmac1m1_rgmii_bus>;
+  rx-internal-delay-ps:
+   description: |
+     RGMII Receive Clock Delay defined in pico seconds.
+     This is used for controllers that have configurable RX internal delays.
+     If this property is present then the MAC applies the RX delay.
 
-The pinmux should be set,or am i wrong?
+This is for the MAC delay, not the PHY delay, but you will notice that
+it is in fact in picoseconds.  If the value was always 2.8 ns, then it
+could just be boolean property to enable the delay.  But it's not,
+because the delay is not always the same value for every board.
 
-https://github.com/frank-w/barebox-r2pro/blob/b13021268148954a59682620ab284054b25448e4/arch/arm/dts/rk3568-pinctrl.dtsi#L705
+Some drivers will not use this property and will make up their own.
+It will probably be whatever is written into the device registers.
+Others might use vendor specific properties in picoseconds for some
+reason known only to the author, e.g.:
 
-Afaik gmac1 uses fixed 125MHz clock (it came from cru like gmac0) as clock_in_out is set to output.
+mediatek,tx-delay-ps = <1530>;
 
-assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
-assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&cru CLK_MAC1_2TOP>;
+You will notice in picroseconds and also not 2800.
 
-I basicly use the config from linux,which i had mostly taken from vendors repo.
+When delay is controlled by the PHY, then there are properties like:
 
-As the first version (used the other gmac for wan-port) worked,i guess the phy and mac driver is right. Same for clock driver and constant values.
+    - rxc-skew-ps : Skew control of RXC pad
+    - txc-skew-ps : Skew control of TXC pad
 
->Even if you don't like the fact, that for most of this cases, scope
->will reduce dramatically
->investigation time. I'll need to repeat it, it will help to use the
->scope.
+Also in picoseconds.  A search of existing device trees will show it
+is not always 2800 either.
 
-I have none and if i'm not sure if i can trace it right because it's decades ago i made something with one.
+> Normally we use phy-mode with predefined values:
+> - rgmii == tx/rx delay is 0
+> - rgmii-id == PHY configures tx and rx delays to closest possible values to 2.8ns
+> - rgmii-txid == PHY configures only tx delay to 2.8ns, rx is 0
+> - rgmii-rxid == same as rgmii-txid but for rx.
+>
+> Using raw values or fine tuning this delays makes no sense in 99% cases.
 
-So i search ways to check it in software as far as possible. Maybe there are ways to read out registers to check if phy is available and compare values with linux.
+I agree today, rgmii-id is the normal configuration and usually works
+with no further modification.
 
-regards Frank
+For a new board design, I think running though the delay test is a
+valuable part of validating the RGMII design of the board.  Just
+because the 20 prototype boards all work at room temperature does not
+mean the million you make afterward will have a 0% failure rate over
+the full spec temp range.
+
+> As I already said, except of delays there can be other issue. For example:
+> - incorrect pinmux configuration
+> - incorrect RGMII clock source configuration
+> - incorrect MAC or PHY mode configuration (xMII instead of RGMII)
+> - incorrect reset or power up sequence affecting proper bootstrap configuration.
+> - incorrect MDIO configuration, for example CLK rate outside of range supported by the PHY.
+> - not properly configured SoCs internal clock dependencies.
+> - some missing "enable" bit on the PHY or the MAC side
+
+If all one knows is ethernet doesn't work, then I think all of those
+problems above are more likely the problem than a need to fine tune
+the RGMII delays.
+
+> Even if you don't like the fact, that for most of this cases, scope will reduce dramatically
+> investigation time. I'll need to repeat it, it will help to use the scope.
+
+Where do get this idea that I do not like an oscilloscope?  I use one
+constantly.  I do not own one that can measure the clk vs data delay
+on RGMII to 100 ps precision.  Do have one at work that can.  But
+rarely does a board have test points to do this anyway.  Determining
+if the various 25/50/125 MHz clocks are there is far more feasible.
 
 _______________________________________________
 barebox mailing list
