@@ -1,65 +1,56 @@
-Delivery-date: Sun, 10 Apr 2022 22:38:13 +0200
+Delivery-date: Mon, 11 Apr 2022 11:06:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ndeK6-00Eqj0-PP
-	for lore@lore.pengutronix.de; Sun, 10 Apr 2022 22:38:13 +0200
+	id 1ndq0a-00Fg5R-A7
+	for lore@lore.pengutronix.de; Mon, 11 Apr 2022 11:06:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ndeK3-0002BB-VD
-	for lore@pengutronix.de; Sun, 10 Apr 2022 22:38:12 +0200
+	id 1ndq0X-0001X7-70
+	for lore@pengutronix.de; Mon, 11 Apr 2022 11:06:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
-	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:Date:Subject:Cc:
+	To:From:Message-ID:MIME-Version:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ovegfbuGVavXdIonbeS03D3FeaTwpuaZ3UbG/ZpHb5Y=; b=f5CtSWvsJOAIrG
-	cumXuYk35NeereZ1qSx65xPzJvaismCJyRTgigSmMUzMAeoAgSxLWvQaAMKZYxujWlUuY2hs3lunY
-	Hx/5rTjbAqSs9BNjLulaBcXkJ0n3K7J+1EOrP/8lgdE3wwKkailssGfX+B2jK0akitUHaig8r9spQ
-	SZ5u3BebJWPO8ZfTwO4+j35TnF31Hybapt/nVbLyb2aoTgSFsRgU9C08iCZ7Nh6HRT4NJxzhPSBVS
-	Udo3UB1nbvRzEEiRLnXrD23fuVL/DM5yjMjeuPdAM17pqTJH+vuVBuTdDhrb5j+Ie53j4MupPFpFp
-	B9t5of0od7dPEQ4/5KSg==;
+	List-Owner; bh=TaEkEy30TmpspTk7kyj+mHIVGKlYYQrT2GK6JSCiCy8=; b=IAs+xK0Acfp4K+
+	ACQj3ck7im0NlO9DUPD+tXOTTxMv2ACFAhucRtrrAnBXGGQ36ei+5fU75o66ckubM1OdIhoBNmfgJ
+	3NYxs1ttF+j9O8fqO4Bdj0pAHEwIdAWGzeaST0Lo0RiqTlRV0DI4RRog4Kz6Fy+bqx1yFsjMANi2w
+	Tl+UFnpOfpgwaboeyz08D925GjOZnrqaPB0scR7IVuo7MCv0nJUCp7icqU9q+mxvbgbMmqpNsIT8H
+	bOd60Ot/CrjzpmwZKR5nE3mA+pIom3n9pAZSipop71cp5XM8yrh/B2mIvlqcd9kMnZEbeU5gKUyi2
+	gT6zSqhIQISQ2FkfGltA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ndeIM-005Smf-R4; Sun, 10 Apr 2022 20:36:26 +0000
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+	id 1ndpyi-007k1R-U2; Mon, 11 Apr 2022 09:04:57 +0000
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ndeIH-005SlN-9o
- for barebox@lists.infradead.org; Sun, 10 Apr 2022 20:36:23 +0000
-Received: by mail-lj1-x22f.google.com with SMTP id 17so17835279lji.1
- for <barebox@lists.infradead.org>; Sun, 10 Apr 2022 13:36:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igorinstitute-com.20210112.gappssmtp.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=DXIfJ9hmrsKotoFf6r/SN2Am5jafQD+2NvkON1VvXtY=;
- b=LWCVia0IMSc4ipKXjCp186N9DAVLACsfRbroKl8durXDbg3/3Qs7p1FURAh77YjMCc
- PfsDqWPAyVgFlSQK2u0qeJElwyhp48QhvS3nXkY/5k2QGOzq/fsC76Ah/vMonKvn3rhl
- jScXAi1SVW6ohUgAx/hTgsUVVp22jixQTQuroXC/14fP5bhkI3uG4vP5sVrbp78HYfJP
- 9di3shMtziAbv2TmF+cIPNfbP3iwzv26EJ0hReajyhQAV0tcIYCiyTHSivWPPT7BsyXp
- YMWiQVX79+B/N2Dne99FWN9pWTF8bVJfkZfUPHefxFn/EICcwHZs3zHAmg9M9Yu4JJ2c
- EJvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=DXIfJ9hmrsKotoFf6r/SN2Am5jafQD+2NvkON1VvXtY=;
- b=pNe3b5w+yUNjpFDkcTNlE910cge4rC3qUFA74TYfwFx388wLVmEeCsFuUo75fXW2fn
- f7BvYyhe9dN/SHPvbf12IbY7Xa4l0kEqOXd6CMmQmW6vgUDYeWMYKLKjd2Dcc8BqWrN2
- r+MJdAjFQ/oRRQVNQ8xOJxopFEUigangcjj1tY0MkIxrbWM/hC4RLN0XK4b7ms2YkIFA
- /0kmjTtcEv9LuC882gcat7tw0b+WjpNJAhl0h0KhIWQkfPncjASWE8OnNuFaAlrjDXZA
- Cs0+RMa43cysGaqOeX/cq7ZsmgTspdtN0dqpI522SAKbN5rYFQzB+DXfSqDAyRUZax9F
- 09KA==
-X-Gm-Message-State: AOAM532QAaEPIkI6qc0iWRtxVTmyo/dd2+tLDhaDmYAHCOW9QkPKMjA/
- ixY6dYyByKQskG0p5jHzamAAEMI4lqgoQJNiv/nHEA==
-X-Google-Smtp-Source: ABdhPJzVTO0dUZSNBRnUnirFBEZOfa5DOlT9HuGEVbxizpW9fn9vMTGEwbx+LjUYniJsK0YeT6huybTbTwHyeVm2f3U=
-X-Received: by 2002:a2e:9e95:0:b0:249:76e0:e86 with SMTP id
- f21-20020a2e9e95000000b0024976e00e86mr18070594ljk.232.1649622977864; Sun, 10
- Apr 2022 13:36:17 -0700 (PDT)
+ id 1ndpuw-007hv1-Js
+ for barebox@lists.infradead.org; Mon, 11 Apr 2022 09:01:09 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=badeba3b8450; t=1649667655;
+ bh=iRYblkt6qaS6paGGo87Dm1YaO5hLrHkEvEtezfvqhDY=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=h8FhRauux2Yf6ss0jfRKuWpwtO6PwrQk1UKoqA9e4sXwFup8JxIK4QkKEb7qg+LVu
+ QfiQRZE4YPqWbB2RPbvevQ+kdi4C6UlLD8nLiuHtd2gmiEqlZfKrNZIhPwc25JqQhX
+ 2yjZnDMLMtTQq4PoupYYSI0A1GVjwftrUpVe7k00=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [80.245.79.187] ([80.245.79.187]) by web-mail.gmx.net
+ (3c-app-gmx-bap51.server.lan [172.19.172.121]) (via HTTP); Mon, 11 Apr 2022
+ 11:00:55 +0200
 MIME-Version: 1.0
+Message-ID: <trinity-9f11e583-37b9-4f74-ad3b-0c3fa278e1ed-1649667655332@3c-app-gmx-bap51>
+From: Frank Wunderlich <frank-w@public-files.de>
+To: Trent Piepho <trent.piepho@igorinstitute.com>
+Cc: Oleksij Rempel <linux@rempel-privat.de>, Ahmad Fatoum
+ <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Date: Mon, 11 Apr 2022 11:00:55 +0200
+Importance: normal
+Sensitivity: Normal
+In-Reply-To: <CAMHeXxP3OeqMFDL_Ry81X80vjKu-G8FDHtwrDJprKOmFc-pTEg@mail.gmail.com>
 References: <6FA3446D-797C-4DA1-A2FA-BAC5B213A65A@public-files.de>
  <2620f87b-ec79-7184-cd8a-d29c39938001@pengutronix.de>
  <trinity-82311693-b8da-49e3-a71c-d577df7e4021-1648021632406@3c-app-gmx-bap36>
@@ -74,16 +65,31 @@ References: <6FA3446D-797C-4DA1-A2FA-BAC5B213A65A@public-files.de>
  <286876ce-e2bb-4a67-7db4-8a4bb9ecf142@rempel-privat.de>
  <CAMHeXxP6Mam1KL3p0R3yBe0gdBj931RwUNe_M9sPV6E8NVsy+g@mail.gmail.com>
  <6e8479f5-2081-b786-5c9f-298dac95984b@rempel-privat.de>
-In-Reply-To: <6e8479f5-2081-b786-5c9f-298dac95984b@rempel-privat.de>
-From: Trent Piepho <trent.piepho@igorinstitute.com>
-Date: Sun, 10 Apr 2022 13:36:06 -0700
-Message-ID: <CAMHeXxP3OeqMFDL_Ry81X80vjKu-G8FDHtwrDJprKOmFc-pTEg@mail.gmail.com>
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: Frank Wunderlich <frank-w@public-files.de>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+ <CAMHeXxP3OeqMFDL_Ry81X80vjKu-G8FDHtwrDJprKOmFc-pTEg@mail.gmail.com>
+X-UI-Message-Type: mail
+X-Priority: 3
+X-Provags-ID: V03:K1:urvTQeU4UcK1EQU6o3t52aZ40YNYaOeDruoyP1C7OkjK5bu4a2ASYceBcGowMGo6PBb5y
+ S+sj81+nrMw3M4j1Yo1YzrGGeardt2UE+MCXyJg/X9eix0i+eWTVlTlUpKrcXxjYYISPZWnHZg3a
+ FRaHKqXsA/X33tWnEdVEOZTIXyXs82+3yLimM7gbzsLD+4swgHohXLFSPKitITXmY2tKovoyO0gz
+ Y7MvB/Ao/XaE5xLDmpjhOHjCm1YKgLzh8VhrzFBxp8W38nuhCSklq9FFqLaJBvT6rehms5G9riSb
+ vM=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:gVq/2VJc56E=:NQ3+KLr62koHDbTVud8dph
+ A5srZoggSdoUMVlsj1u7huRISnNG1O5x/h/zkCtEeYghKctuYDNSQlh/pXz19LCmSFNoxDfrt
+ gtJ4ILTgVK2CEZDoe5CCf9JBQ5YHW8ccVQygqB34lwVWyZQBO8fXO8+zN1THf0ww5RZ6eo06L
+ dOlIsB/CsGkofeA71UsVRMbDNVCjST4RSyI2KR1hdtkk0pt2+iT2FaOBhUlYJQXEmyzIFrIoS
+ aBK76I8e0Wp54FlqV8Q2fzRWbxuHXXVvpRz34tDSNn3kwZEwZ5ObxeJ/mmMT/y4JSY5oWTPQk
+ sc9cUzloIY4t7tey6JwusCVxnNJM7kfHsMYRr6/py3ewk/DhK7t7FdWVbCeoxAQboBoBDB0Ov
+ p/NPpx2JpcsgvSyw0aLRopPOAZL2q4DjES0n/24VhqZEGomGA1cZN5hfKAVOGimtMgq25i0GF
+ eQxXpfXtblKZEW9PY5AIL9EuzH/apTeEKOyB39H1NvpZw/yivlxNuBWXA5lii0NlBPTdLl1mB
+ Ry5n1ixySP+PpAS7SRsxIMl5UD0U/Fgx/a6kDhsbNaYrA0L2DjxVC3kzL94SPaOtDLS2O7XUx
+ 6uyZQRDbIrFVKKgSSAOvB2VdRmmTdToJsDhhxFjhAlczH+vuw11/omS3tNvAtJGID4aGBtNKM
+ jtDGJxICnUNyzsMHRAwnShT44WSmTbeTtim5QrFgDcnAMWOVCqj8drIC86y4dK3sohYsOk10f
+ 9gYBuB8pN8+XiCkdFWKk4dybrp5EUT7VqCBHKlR1+n7OmMwNGdJO5UEd/1FJ4F+qNSrI+fosk
+ C4o+xsO
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220410_133621_746083_5942B3D5 
-X-CRM114-Status: GOOD (  15.14  )
+X-CRM114-CacheID: sfid-20220411_020104_269524_9499E057 
+X-CRM114-Status: UNSURE (   6.26  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -103,60 +109,44 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: change r2pro dts to public hw version (was "Board code with 2
- dts" )
+Subject: Aw: Re: change r2pro dts to public hw version (was "Board code with
+ 2 dts" )
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sun, Apr 10, 2022 at 8:00 AM Oleksij Rempel <linux@rempel-privat.de> wrote:
->
-> The PHY id is hard coded, so we can find the datasheet:
-> http://pdf.eepw.com.cn/i20090903/8d594ec98b62289dd0d3cd17fc8ffdd1.pdf
-> Page 46:
-> Ts3,
-> - if TXPHASE_SEL=0, then clock is shifted by -0.65 ns
-> - if TXPHASE_SEL=1, then clock is shifted by  1.35 ns
+Hi,
 
-I do not think that is what they are saying.  Page 38,
+it turned out that my problem is not wrong setting...it was the load method.
 
-TXPHASE_SEL  1: An intentional delay is added on GTX_CLK/ TXC (about
-2ns delay in 1000BASE-T, and about 4ns delay in 100BASE-TX and
-10BASE-T)
+i loaded barebox by uboot like it's documented here:
 
-So they add 0 or 2 ns, which makes sense for internal delay added or not.
+https://www.barebox.org/doc/latest/user/barebox.html#starting-barebox
 
-The table on page 46 is not clock shift, but the required setup time.
-The sign is backward from how I would have expected it.  But if the
-sign is inverted, then setup time + hold time is constant for both
-values of clock delay, which is how it should be.  So when they say
--0.65 ns, what that means is TXD must be stable 0.65 ns before TXC
-edge.  RGMII spec is that min setup time at receiver is 1.0 ns, but a
-PHY can be better than the spec.  ~0.5 ns is typical.  If TXC is
-delayed by 2 ns, then TXD can be stable 1.35 ns _after_ TCX edge and
-this still meets the setup time of 0.65 ns.
+except i have loaded files via fatload and not tftp.
 
-> So, why mediatek,tx-delay-ps = <1530>? 1.5 is not enough for RGMII.
-> In case of rgmii-rxid internal PHY clk skew will be -0.65 ns. Hard to say, if it is typo, but 1530 +
-> 650ps will be 2180, which is enough for RGMII.
+if i flash barebox and boot directly into it, network works (also with first version of dts with rx-delay/tx-delay and rgmii phy_mode).
 
-It doesn't make sense to me to add setup time to delay like that.  It
-does produce a value that is the right range, but I think this is just
-a coincidence.
+barebox@BPI R2PRO:/ dhcp eth1
+eth1: 1000Mbps full duplex link detected
+WARNING: eth1: No MAC address set. Using random address 92:26:6a:9c:ec:d5
+T T T eth1: DHCP client bound to address 192.168.0.104
+barebox@BPI R2PRO:/ ping 192.168.0.10
+PING 192.168.0.10 (192.168.0.10)
+host 192.168.0.10 is alive
 
->From PHY spec, we have 0.65 ns setup time and 0.2 ns hold time with 4
-ns clock period (DDR), with 5% allowed variation (per RGMII).  So the
-valid delay range is 0.65 ns to 3.6 ns.  But there are other factors
-that reduce this range.  See calculation in section 3 here,
-https://www.ti.com/lit/pdf/snla243
+so imho there are 2 possible rootcauses
 
-So maybe they did this and determined 1.53 ns delay will maximise
-setup and hold margin.  Or maybe they copied that value from somewhere
-and there is no good reason.
+- uboot has initialized anything (clocks/pinctrl/...) which barebox cannot change afterwards (due to missing reset)
+- barebox skips any initialization step if it is chainloaded
+
+i have now tested both configurations (rgmii+delays and rgmii-id without delay-properties, but delays set in driver). linux is already updated in next to the rgmii+delays part, so i would send this as update to barebox.
+
+regards Frank
 
 _______________________________________________
 barebox mailing list
