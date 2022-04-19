@@ -1,72 +1,63 @@
-Delivery-date: Thu, 14 Apr 2022 16:09:51 +0200
+Delivery-date: Tue, 19 Apr 2022 09:37:42 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nf0AS-001iQC-SZ
-	for lore@lore.pengutronix.de; Thu, 14 Apr 2022 16:09:51 +0200
+	id 1ngiQh-007alA-AQ
+	for lore@lore.pengutronix.de; Tue, 19 Apr 2022 09:37:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nf0AQ-0001kT-2H
-	for lore@pengutronix.de; Thu, 14 Apr 2022 16:09:50 +0200
+	id 1ngiQd-0006XP-BD
+	for lore@pengutronix.de; Tue, 19 Apr 2022 09:37:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:To:Subject:Message-ID:Date:From:
-	MIME-Version:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Owner; bh=xww7U+0fbu/0egArz4ePFd+nQVKqGrtfT0c04IgcJLI=; b=vNq
-	3JCeI/FDlypH+HQXhjsZXxhUAHJMqjnMnVou4LhojkFiu+MLUJrcDJXHdfj5tytsgbQfCQUh4l0Ze
-	xzk1hYLKW8arn6RBOfPlqm2yeW9Cr/JUk4vj7qwLgsCJUM7GMJ46Rrqw9MpD4/xglMSJcyLEQjniO
-	MtDoDhQQUS/oFKHjovEkNWy5ZosMSSgX52n5Plvh36vddyx6BxGLiS+T2SymuCJldBVIjIFainOI+
-	GhVMeHjfhYmF/WJooylUY7MSNNG4b0i+vZirWc5KjnhePgxt9TfxGJxbdJ4TPA5P2blk/69epFrEg
-	gMqkwDprlaDo4LdO95sygQQ6suFsj2A==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=JsXfRG6jWVRZ7VWjffQTTluEuxh1DPjB+u4f4K2xamY=; b=aTxh6cqOLzouf80tafd/78hWZG
+	VEdvXAgWcjd00HcoXlWDf7nk4w8AuTez5aSzIyaPRf/falP7z55LNnjfd9A5NsuUBdcR6Qwoo9kTV
+	MRpoSmXgq84UixmuG88HdUADauHtNLo32PDS7B9/W0+o/444TKfVKtgJYeTrZTZ3xH/k38vZ3gHrt
+	ELG+VWgXo8QZ1Rj3F9Hu9cYq7ByjIBq0B8U7NPzBGEliYgc3SBI4N8t0dA7WADM1e2764+w0NP8qL
+	2oyOtRMxdxp3EP1yqOZiMkKDsOeYcymIqkX6otRyaPspOD1aGaIil//Sxfy5zSzRVxsOhYAVVnHwp
+	tw0CRRXw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nf08b-005weK-0F; Thu, 14 Apr 2022 14:07:57 +0000
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+	id 1ngiOi-0022Y7-RD; Tue, 19 Apr 2022 07:35:41 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nf08W-005wdk-BV
- for barebox@lists.infradead.org; Thu, 14 Apr 2022 14:07:53 +0000
-Received: by mail-pj1-x1034.google.com with SMTP id
- o5-20020a17090ad20500b001ca8a1dc47aso9413460pju.1
- for <barebox@lists.infradead.org>; Thu, 14 Apr 2022 07:07:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:from:date:message-id:subject:to;
- bh=+eBgcI+ERH8bi+5HjbvOQn4dSZxaubXCZsN9CPbel74=;
- b=jSB/BxbTzidZoSsuHfYMTNO0EcInaZP6Fei7bvuCSWeUlEN3Y0s49TBmqtOUZ6QY+j
- YmDMXscNQJeQLKsCOEA5BThZ+H5OZUBUloAK4lz4gyKu/pQBdVwt/PXqdU3omv+2g+vu
- ntdR+JDRSpdmi7NhOt8iOifHx0uUmhCWC3MhVd7lN3onLDm4X7wSIiugKGFMsOWNFwsE
- 47Sb7CaP2rCly+N6jCGQ2JZuSw8gtQ0py1Pluwy5uAR6drRv1tCowuSk8iSht1VUeZ2g
- yJWtXuh4605ti2bzujb1vHWqJ1jn5MAn6RURZKnq2HNWRiflLFyEbB3ka2uHw8cyYU7k
- lNMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
- bh=+eBgcI+ERH8bi+5HjbvOQn4dSZxaubXCZsN9CPbel74=;
- b=D6rXnBvav5CR/GOv/FkTCcgO3hz+FmqlOvGRnYkP2SO6rvKneBzRwD1P76stjePBNd
- Us4xMkzIquwXeFgB71D+ZlmkmPNSB1OPJcYa0i6NUbP4zrxKfnNkZyNLKq1HQkhN6kav
- UbsplFb7Hpub515Z3UI+aEc6QpW0Jif6Vr1DdBzXLfQgpYTw+qNpwsrPyoXbTcaAPZHr
- 5w3is1Z3ZQZjhb0Woly2QogQRKXSbi0PP76sy+8/bhVSQNjNQ0hoOlwByZSb9X+VPZLg
- xnU8UodF7nGIbbyMZ+q1qUNJXuaXEbvLtC4lT7gJOZYRb70UnTh0XVfpehkNCfgvKaok
- rOAg==
-X-Gm-Message-State: AOAM530FwUaBAnMZWsQTJXwWvYhva8/cdefMekHZH1aVvy8QfP7bzq9K
- ir6h327+P9FDM6Q1hTfLgKbFEVY2FPOSMny+ZfPYc69cvTM=
-X-Google-Smtp-Source: ABdhPJzHEw4/J51RX+mSKED60WaisSZk91+2bw8d7TpeMlaLf/rK4lXOVuDtvyL/81doGulfhmysXpbUOC/QI3wt6j0=
-X-Received: by 2002:a17:90b:4b82:b0:1cb:7aec:a830 with SMTP id
- lr2-20020a17090b4b8200b001cb7aeca830mr4566690pjb.232.1649945270132; Thu, 14
- Apr 2022 07:07:50 -0700 (PDT)
+ id 1ngi5c-001uP7-4z
+ for barebox@lists.infradead.org; Tue, 19 Apr 2022 07:16:00 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1ngi5X-0002vk-Lb; Tue, 19 Apr 2022 09:15:51 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1ngi5X-00072a-CN; Tue, 19 Apr 2022 09:15:51 +0200
+Date: Tue, 19 Apr 2022 09:15:51 +0200
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220419071551.GM4012@pengutronix.de>
+References: <20220414075530.1372003-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Thu, 14 Apr 2022 17:07:38 +0300
-Message-ID: <CAP1tNvQd1iDsyNGSyv25L45xkk8wTQtsdPGvhXZrNcFEGbtY7w@mail.gmail.com>
-To: barebox@lists.infradead.org
+Content-Disposition: inline
+In-Reply-To: <20220414075530.1372003-1-o.rempel@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:15:41 up 19 days, 19:45, 72 users,  load average: 0.21, 0.30, 0.49
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220414_070752_446071_54DF05BB 
-X-CRM114-Status: UNSURE (   4.61  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220419_001556_327231_D1A71184 
+X-CRM114-Status: GOOD (  30.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,37 +77,96 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-	DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: AM335x MLO failed to boot
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH v1] net: phy: do not call adjust_link() form
+ phy_device_attach()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello.
+On Thu, Apr 14, 2022 at 09:55:30AM +0200, Oleksij Rempel wrote:
+> phy_device_attach() is usually called from eth_open() to enable
+> interface, configure MAC, etc. Some times we have situations like this:
+> 1. find and configure PHY
+> 2. define PHY as clock provider for MAC
+> 3. reset and configure MAC
+> 4. detect link and speed and configure MAC accordingly.
+> 
+> Which works as expected unless we use fixed PHY. Since fixed-phy was
+> handled differently by the PHY code, we did step 4. before step 3. In
+> this case we will loose MAC speed configuration at least on designware-eqos
+> Ethernet controller.
+> 
+> With this change, we handle real PHY and virtual fixed-PHY in the same way.
+> So, adjust_link() (step 4.) will be called after edev->open() (step 3.)
+> as it should be for both variants.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  drivers/net/phy/phy.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
 
-I can't start the custom AM335x board after updating to version 2021.12.0.
-Perhaps this is a consequence of the "devfs: Do not create overlapping
-partitions" commit.
+Applied, thanks
 
-Here is a debug output:
-Add partition nand0.MLO, device nand0 (0x00000000-0x00020000)
-Add partition nand0.boot, device nand0 (0x00020000-0x00080000)
-Add partition nand0.env, device nand0 (0x000a0000-0x00040000)
-Add partition nand0.system, device nand0 (0x000e0000-0x0ff20000)
-booting from NAND
-Add partition x, device nand0 (0x00020000-0x00080000)
-New partition x (0x00020000-0x0009ffff) on nand0.boot overlaps with
-partition nand0.boot (0x00000000-0x0007ffff), not creating it
-failed to open bbx
-booting failed
+Sascha
 
-What is the partition "x" in this case?
-How to fix this?
+> 
+> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> index 85cdd7862f..adff9dadd1 100644
+> --- a/drivers/net/phy/phy.c
+> +++ b/drivers/net/phy/phy.c
+> @@ -54,6 +54,13 @@ int phy_update_status(struct phy_device *phydev)
+>  			return ret;
+>  	}
+>  
+> +	/*
+> +	 * If the phy is a fixed-link, set it to active state to trigger
+> +	 * MAC configuration
+> +	 */
+> +	if (!phydev->bus && !phydev->link)
+> +		phydev->link = 1;
+> +
+>  	if (phydev->speed == oldspeed && phydev->duplex == oldduplex &&
+>  	    phydev->link == oldlink)
+>  		return 0;
+> @@ -311,7 +318,7 @@ struct phy_device *of_phy_register_fixed_link(struct device_node *np,
+>  
+>  	phydev->dev.parent = &edev->dev;
+>  	phydev->registered = 1;
+> -	phydev->link = 1;
+> +	phydev->link = 0;
+>  
+>  	if (of_property_read_u32(np, "speed", &phydev->speed))
+>  		return NULL;
+> @@ -401,10 +408,6 @@ static int phy_device_attach(struct phy_device *phy, struct eth_device *edev,
+>  
+>  	phy->adjust_link = adjust_link;
+>  
+> -	/* If the phy is a fixed-link, then call adjust_link directly */
+> -	if (!phy->bus && adjust_link)
+> -		adjust_link(edev);
+> -
+>  	return 0;
+>  }
+>  
+> -- 
+> 2.30.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-Thanks!
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
