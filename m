@@ -1,16 +1,16 @@
-Delivery-date: Wed, 20 Apr 2022 08:46:44 +0200
+Delivery-date: Wed, 20 Apr 2022 08:47:23 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nh46v-008q9g-Tx
-	for lore@lore.pengutronix.de; Wed, 20 Apr 2022 08:46:44 +0200
+	id 1nh47Y-008qB0-FZ
+	for lore@lore.pengutronix.de; Wed, 20 Apr 2022 08:47:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nh46t-0002KP-6h
-	for lore@pengutronix.de; Wed, 20 Apr 2022 08:46:43 +0200
+	id 1nh47V-0002QP-U5
+	for lore@pengutronix.de; Wed, 20 Apr 2022 08:47:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,46 +18,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=4yzWwDTwrK3xCh+Y0GDbbAO3mgWe/okQg1iOeNw53uM=; b=O1y20Gd2QyMowzd/nTPdmJAtZD
-	rGij3w0CfQJZyOmyvWp+ug79tB71EnfR+hr5XnRMzP2H9NQq9WsyU3R9CngdGQByl/rJr/XOIhWva
-	zmCezV3JjWDp9Jj0W3QDKdaIPI10Rb1m0U7IcqTtibQzpGbLZga55Tqvx1GyPYemTQADRMG0eR6Qf
-	wHpjc4UYcPBrtcZJZNvvoPSWoxpELaLLFmgOKy1CIMDDIKg6HQ6D4SVMUskgdcH9HTnNC17TMn/DN
-	wB+g2OTzYwQiV4V2fYoSZJxMqQHMGaFPw0nsQgVQJVh/DOc73zpXuzSnpfzABBU9pqX15H/llzrMw
-	CmQ2cs6g==;
+	bh=IkV91zpE5TIrhpSwqHpWFq8W4Vm1etuBXqNY/iyypTI=; b=sRcNWOYTo7my+YwKCHyKvojVyR
+	sEG0QhEHQ8hYF0RJgq7rILGjCB1Jp42O6cbIymcfNgwPCID5rCi/93xRRFcPeJVmTAfYksJ5QMrW4
+	gMyDmee5nEnZVX7FTt4q2MAU0kKMFDJbYB8YmLGSffhoohubGuuALtZC5l9eTcE5isEP1EFjS15uv
+	P9fab+iNSCmuDuOSvYhMg+C7N7L9HSVr/l0NZUBdgijLJ6LVwb7kBO+hQQ3IssiBBJEl1ca1je40W
+	iQHtOyKV8N0uqlnDJeFVTf18DSCiGT2Ljh6hAEC4EP4b85hiVQowwu+6kFRO6qsPK6jTQE+TlImrM
+	Lg5Be0Og==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nh45b-007bnz-Ny; Wed, 20 Apr 2022 06:45:23 +0000
+	id 1nh46K-007byd-Gk; Wed, 20 Apr 2022 06:46:08 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nh45W-007bn1-NG
- for barebox@lists.infradead.org; Wed, 20 Apr 2022 06:45:20 +0000
+ id 1nh46F-007bxr-Kg
+ for barebox@lists.infradead.org; Wed, 20 Apr 2022 06:46:05 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nh45V-0001zc-6y; Wed, 20 Apr 2022 08:45:17 +0200
+ id 1nh46E-00028s-EO; Wed, 20 Apr 2022 08:46:02 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nh45U-0004Me-K9; Wed, 20 Apr 2022 08:45:16 +0200
-Date: Wed, 20 Apr 2022 08:45:16 +0200
+ id 1nh46E-0004QT-5I; Wed, 20 Apr 2022 08:46:02 +0200
+Date: Wed, 20 Apr 2022 08:46:02 +0200
 To: Alexander Shiyan <eagle.alexander923@gmail.com>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220420064516.GQ4012@pengutronix.de>
-References: <20220419072123.28590-1-eagle.alexander923@gmail.com>
+Message-ID: <20220420064602.GR4012@pengutronix.de>
+References: <20220419093606.59318-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220419072123.28590-1-eagle.alexander923@gmail.com>
+In-Reply-To: <20220419093606.59318-1-eagle.alexander923@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 08:45:07 up 20 days, 19:14, 57 users,  load average: 0.17, 0.15, 0.16
+X-Uptime: 08:45:53 up 20 days, 19:15, 57 users,  load average: 0.12, 0.14, 0.16
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220419_234518_805315_53B6BE10 
-X-CRM114-Status: GOOD (  21.99  )
+X-CRM114-CacheID: sfid-20220419_234603_737467_1BC5E7B1 
+X-CRM114-Status: GOOD (  23.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,36 +82,47 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/3] ARM: CCMX51: Remove excess assignment
+Subject: Re: [PATCH] GPIO: clps711x: Simplify initialization
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Apr 19, 2022 at 10:21:21AM +0300, Alexander Shiyan wrote:
-> Default assignment for board index is already done in array initialization.
-> 
+On Tue, Apr 19, 2022 at 12:36:06PM +0300, Alexander Shiyan wrote:
 > Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 > ---
->  arch/arm/boards/ccxmx51/ccxmx51.c | 2 --
->  1 file changed, 2 deletions(-)
+>  drivers/gpio/gpio-clps711x.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
-> index dfc26cd835..cbf06e6cd6 100644
-> --- a/arch/arm/boards/ccxmx51/ccxmx51.c
-> +++ b/arch/arm/boards/ccxmx51/ccxmx51.c
-> @@ -245,8 +245,6 @@ static __init int ccxmx51_init(void)
->  		hang();
->  	}
+> diff --git a/drivers/gpio/gpio-clps711x.c b/drivers/gpio/gpio-clps711x.c
+> index 67bce79bc3..a1965b33e4 100644
+> --- a/drivers/gpio/gpio-clps711x.c
+> +++ b/drivers/gpio/gpio-clps711x.c
+> @@ -25,17 +25,15 @@ static int clps711x_gpio_probe(struct device_d *dev)
+>  		return PTR_ERR(iores);
+>  	dat = IOMEM(iores->start);
 >  
-> -	ccxmx_id = &ccxmx51_ids[hwid[0]];
-> -
->  	switch (hwid[2] & 0xc0) {
->  	case 0x00:
->  		manloc = 'B';
+> +	iores = dev_request_mem_resource(dev, 1);
+> +	if (IS_ERR(iores))
+> +		return PTR_ERR(iores);
+> +
+>  	switch (id) {
+>  	case 3:
+> -		iores = dev_request_mem_resource(dev, 1);
+> -		if (IS_ERR(iores))
+> -			return PTR_ERR(iores);
+>  		dir_inv = IOMEM(iores->start);
+>  		break;
+>  	default:
+> -		iores = dev_request_mem_resource(dev, 1);
+> -		if (IS_ERR(iores))
+> -			return PTR_ERR(iores);
+>  		dir = IOMEM(iores->start);
+>  		break;
+>  	}
 > -- 
 > 2.32.0
 > 
