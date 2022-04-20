@@ -1,76 +1,56 @@
-Delivery-date: Tue, 19 Apr 2022 15:40:01 +0200
+Delivery-date: Wed, 20 Apr 2022 08:40:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ngo5K-007uEq-MO
-	for lore@lore.pengutronix.de; Tue, 19 Apr 2022 15:40:01 +0200
+	id 1nh40s-008pt9-Vb
+	for lore@lore.pengutronix.de; Wed, 20 Apr 2022 08:40:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ngo5G-0000So-Kn
-	for lore@pengutronix.de; Tue, 19 Apr 2022 15:40:00 +0200
+	id 1nh40q-0001Oz-D0
+	for lore@pengutronix.de; Wed, 20 Apr 2022 08:40:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=goHRoIeUaN/rqHD6ECbyl80z5mKo/ZvtibCr2MEo1J8=; b=zepCPjgsBF3Bfm
-	4I/bymVgmVMZyftUCeNpG9mlURsjreGflfmKXysT/pHcCI4MNbQLD00wATaZNsKmwBgj2aumtgHg3
-	e7XkKwhFT9ILBIb0EWvxo2JN37T8IsTfPO7XmaK8/82vRhe5J0p4ntBt+Yf3MBpiNEc5kBDr+xqW7
-	Jhb94STHxpbr2Xe2ru9puCwLSpnfkWXtxMPpLKjWL5C5gQ999vlbjSHEUPsZwGLK4Ig4Dw46WLzs0
-	bTZOYFAfiZ7+sYZC/2sxPxx202ILZjTuDNg/Epg9O30N6V07ZSY0gDZ9R9xtGCaKhA5dnl+wkoBv3
-	32MPgw4tRJM8IIO9eESg==;
+	List-Owner; bh=3Krr/YDw1yEaXmLLS4yOxp20OWrs6wGAS2Edk4/Mg7s=; b=K4/Q2WRAVtbbph
+	LPe5H3Cd0FdQdIkXnCGhYPtKAjBA5l1Pra68PvVLzAXM4kwsZWSzRBV0fepyMr3hVU+PnC98SQcZV
+	Vji12jBIKLmPSCHONSznpg3feUrtDZ47K+W8E3a0L/J9fQy5E4879STJ1oBKAMKcEILV7HNC8pMXK
+	aBSffIC/zgaiKAZGe/GPvJ7T11ncayRe7wDfL5OTBj1JuugnfqeosG5ah1g4OmUG35JLDs8B3JJBP
+	8oujLMQQ97KFwcKnG+zptduzAqrtmaPOGOnmVWpv4tKX2IMaWXYxc3MM96ru2ucpEFSI/dpAys4sZ
+	mAvBdNqDzr585wMkYeyw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ngo3O-003ueP-Ec; Tue, 19 Apr 2022 13:38:03 +0000
-Received: from cpanel.siel.si ([46.19.9.99])
+	id 1nh3zO-007aQe-OE; Wed, 20 Apr 2022 06:38:58 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ngnG8-003bAt-Ta
- for barebox@lists.infradead.org; Tue, 19 Apr 2022 12:47:12 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com; 
- s=default;
- h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
- Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=fKGlY2DrS9R79NDJRr7QRlC89RTM6Js8Yd2jHzV26Q4=; b=kdgIVS9PIndfq58hmD512GXgc2
- 83fTzrgOBruotC9ZojoTIBkxb2U1tZE4WbqMnmKmHZ0/E1SPMYxJuYzvfLm4Qe73DS1GlEYd7GbW/
- 7ioAKuqMwbX8J52aP59SV+QjBjsD9yWhr7tAVUfJKs2hdbnkOB89uYMxN04+ojOMarJxEhQE1mAeQ
- llcs5+Fq+4EPU7W8HvJlocjZseG75r8yf56Bdkayf8g/cpTMBwqcZxholWxILZI13hjMReH5C9ADt
- 0aGZWy8a4cK3ZCA6S3CBRYHaJPoUHMBxMgrVZBSpk9iRzef2BbhbocYl4hmV3wJYz+L5uwsJ4KTNK
- r4Yr6ozQ==;
-Received: from [89.212.21.243] (port=47514 helo=localhost.localdomain)
- by cpanel.siel.si with esmtpsa (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.95)
- (envelope-from <andrej.picej@norik.com>) id 1ngnG0-009A1I-AI;
- Tue, 19 Apr 2022 14:47:00 +0200
-From: Andrej Picej <andrej.picej@norik.com>
-To: barebox@lists.infradead.org
-Cc: upstream@phytec.de
-Date: Tue, 19 Apr 2022 14:46:59 +0200
-Message-Id: <20220419124659.257134-1-andrej.picej@norik.com>
-X-Mailer: git-send-email 2.25.1
+ id 1nh3zJ-007aPO-Hw
+ for barebox@lists.infradead.org; Wed, 20 Apr 2022 06:38:54 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nh3zA-0001Cb-BC; Wed, 20 Apr 2022 08:38:44 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nh3zA-004710-Pq; Wed, 20 Apr 2022 08:38:43 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nh3z8-004SIs-ND; Wed, 20 Apr 2022 08:38:42 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Wed, 20 Apr 2022 08:38:39 +0200
+Message-Id: <20220420063840.1062067-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.infradead.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id:
- andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220419_054709_610434_8A0F523D 
-X-CRM114-Status: UNSURE (   6.15  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220419_233853_641898_C70484A2 
+X-CRM114-Status: GOOD (  14.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,6 +62,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -90,51 +71,94 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2] ARM: pbab01: allow USB-OTG port runtime configuration
+Subject: [PATCH 1/2] mtd: peb: Add mtd_peb_read_file()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Since commit a5a4c1d5a3 ("dts: update to v5.13-rc1"), which synced
-kernel dts, USB-OTG port on phyFLEX board was set to work only in
-peripheral mode. This has to do with phyFLEX baseboard hardware bug,
-which prevents correct USB OTG ID pin detection in kernel code.
+Analog to mtd_peb_write_file() this adds a mtd_peb_read_file()
 
-Unlike linux kernel, barebox doesn't support OTG auto-detection mode via
-ID pin. In barebox, user has to select desired USB mode of operation by
-setting 'otg.mode' variable. Thus set the 'dr_mode' property to "otg" to
-be able to later select USB OTG operating mode at runtime (either host
-or peripheral).
-
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-- rather than deleting the dr_mode property, set the property to "otg"
-  to explicitly set the mode to OTG
----
- arch/arm/dts/imx6qdl-phytec-pbab01.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mtd/peb.c     | 45 +++++++++++++++++++++++++++++++++++++++++++
+ include/mtd/mtd-peb.h |  2 ++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi b/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi
-index 991c7e4fab..88db962535 100644
---- a/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi
-@@ -15,6 +15,10 @@
- 	status = "okay";
- };
+diff --git a/drivers/mtd/peb.c b/drivers/mtd/peb.c
+index 6c61e0734c..8443ed86bc 100644
+--- a/drivers/mtd/peb.c
++++ b/drivers/mtd/peb.c
+@@ -508,6 +508,51 @@ out:
+ 	return ret;
+ }
  
-+&usbotg {
-+	dr_mode = "otg";
-+};
++/**
++ * mtd_peb_read_file - read data from a mtd device
++ * @mtd: mtd device
++ * @peb_start: The first PEB where to start reading
++ * @peb_last: last PEB where to read from
++ * @buf: buffer to read to
++ * @len: how many bytes to read
++ *
++ * This function reads @len bytes of data to buffer @buf from the mtd device
++ * @mtd starting at @peb_start. Reading will stop at @peb_last. This function
++ * skips all bad blocks and returns 0 on success or a negative error code
++ * otherwise.
++ */
++int mtd_peb_read_file(struct mtd_info *mtd, unsigned int peb_start,
++		      unsigned int peb_last, void *buf, size_t len)
++{
++	int ret, pnum;
 +
- #ifdef USE_STATE_EXAMPLE
- #include "state-example.dtsi"
- #endif
++	pnum = peb_start;
++
++	while (len) {
++		size_t now = min_t(size_t, mtd->erasesize, len);
++
++		if (pnum > peb_last)
++			return -EIO;
++
++		if (mtd_peb_is_bad(mtd, pnum)) {
++			pnum++;
++			continue;
++		}
++
++		ret = mtd_peb_read(mtd, buf, pnum, 0, now);
++		if (ret)
++			goto out;
++
++		len -= now;
++		pnum++;
++		buf += now;
++	}
++
++	ret = 0;
++out:
++	return ret;
++}
++
+ /**
+  * mtd_peb_erase - erase a physical eraseblock.
+  * @mtd: mtd device
+diff --git a/include/mtd/mtd-peb.h b/include/mtd/mtd-peb.h
+index cfcc0be611..cf8d8ff8da 100644
+--- a/include/mtd/mtd-peb.h
++++ b/include/mtd/mtd-peb.h
+@@ -23,6 +23,8 @@ int mtd_num_pebs(struct mtd_info *mtd);
+ int mtd_peb_create_bitflips(struct mtd_info *mtd, int pnum, int offset,
+ 				   int len, int num_bitflips, int random,
+ 				   int info);
++int mtd_peb_read_file(struct mtd_info *mtd, unsigned int peb_start,
++		      unsigned int peb_last, void *buf, size_t len);
+ int mtd_peb_write_file(struct mtd_info *mtd, int peb_start, int max_pebs,
+ 		       const void *buf, size_t len);
+ 
 -- 
-2.25.1
+2.30.2
 
 
 _______________________________________________
