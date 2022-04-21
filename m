@@ -1,76 +1,59 @@
-Delivery-date: Thu, 21 Apr 2022 09:59:22 +0200
+Delivery-date: Thu, 21 Apr 2022 10:19:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nhRim-009vG7-11
-	for lore@lore.pengutronix.de; Thu, 21 Apr 2022 09:59:22 +0200
+	id 1nhS2d-009w5R-7j
+	for lore@lore.pengutronix.de; Thu, 21 Apr 2022 10:19:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nhRij-0003nv-5T
-	for lore@pengutronix.de; Thu, 21 Apr 2022 09:59:21 +0200
+	id 1nhS2a-0007J9-8E
+	for lore@pengutronix.de; Thu, 21 Apr 2022 10:19:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
-	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=dV5PT0tNsmldGSahzCE1u5OH0KI/HDEfyjeZNL6BI88=; b=ntLe7jUOjEE6yM
-	G4i/q8VVE311qfVUzAK0WxcOxBabkOSOR4Or3cVV6A70qt3QeDI9utcQ4Dw0fpkeG08crwOPAwng0
-	5Sm/xK/Vtw5I8og09mAWUljmcYcyw0yn4qWVyU/+3XdLGMElHUuQ1vuujMt4pWC/CC5Sa1XgHi/VZ
-	bvksDDOp9PKrU38sQGkFfNbngtcsYP1wj8HtPGQPdFtdaJ871Ed3FO3N1ludQHHqh/Lvm0IiqRpLG
-	ao/QBdbY1Vh+eOnPs9w2Jh6VM7WB3K6lfiyOxQXMKFj9LwGNc9d5H5NvVr5dY6NokmgoSX9pnhYH9
-	08CyqjlN0g/gas1f0+pQ==;
+	List-Archive:List-Unsubscribe:List-Id:From:MIME-Version:Message-ID:Subject:To
+	:Date:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=FrIWVfFmdIehHa1IJ1/En4iLkikF8+dqju23xMyRI2k=; b=c/zsbwgrJDp4nM
+	M8NRk6hVILprWfJB2k3vi9eUMKzVPbMj/Brx+Ad9iLqKZV0tkW7aXvW6tJQD4JqwqOTIubv8Ji5qf
+	sRitLlVlmAS8Cr3fIJBd8hdvGNNlyd1mmEwn4EJeMD/IY2qA9JBqT4radmPw0OdZ0nx3+T/B8KDHw
+	Xp+H4G355mqoxsUFT5CVgp8AXYluJV+PS+Y4ZjJF/is6hQ5VIlfjpD0UkEH0iGpmhEh/ij1ohTcVu
+	rMvS1gnP6r2qTW+/NQ4S0AXrk8R64NBU7rU/rz4q4kAsMoLOGpvkQ4sqXIrepdFN4KSUXUPe2OfuD
+	fbG38PblYBe0GV9ja3hg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nhRhL-00CFOa-El; Thu, 21 Apr 2022 07:57:55 +0000
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+	id 1nhS12-00CODk-7R; Thu, 21 Apr 2022 08:18:17 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nhRhD-00CFN4-WD
- for barebox@lists.infradead.org; Thu, 21 Apr 2022 07:57:49 +0000
-Received: by mail-pg1-x52b.google.com with SMTP id k14so4036026pga.0
- for <barebox@lists.infradead.org>; Thu, 21 Apr 2022 00:57:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=bZUCjOQiT1yjUnor7b1BALwIYgBeo1ZH83HdlRcuW1g=;
- b=Uk0W+g7xMgS55jJ5fEIVuTS/hhbdyAKWymgRzGty/lwWPr9MG4b6azJE3wgImOU8Ro
- 6dWguOnWLmXq7mo64dHxEp/6urmgOGppe/nj2OojgqDfpaqoLZkKN4rvefVxzpgcAXc1
- u1G+x9fYj2m43hshbk/0kkITxdwXALTgMKbU43m8rR6+U5//NUx2+tNd8xZ0pPPMW5GU
- 8JizEZPU/w7Os7f1w9Gc06f4gBI3Bynnv2mJ9dDUodJvu4cjdCynxFo0IN0seERlDb+F
- kVcjywdaMlkXT69xQI+pdfgLWI/24qOJQ2uIlb2IaFZJau12QijbLo7wxHeU0bGrt0g1
- dpbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=bZUCjOQiT1yjUnor7b1BALwIYgBeo1ZH83HdlRcuW1g=;
- b=lr9EAlNGK0pqlJ5Ax2P03bie1lD6VWY2yVJWVCz+vEpaBYCqjLE9hx7jL0PQfqlSkw
- QQX5RJEOarxZ4KJJfMG8WIiI033fHrw5izLcL/TZDxUUb6W9VxlwIN6jo1j4aH5vNF2r
- tEFiGjHJI/WIXlO3eGSrBxzf2QjuKjdSHnOXqNeWu6Qp1ahOwtbnkp/KPCAtAEwnooQT
- O3BluEjwvegnb4Es0ncc3lsxhDAdKwlX65P0ttrZE3kYiN+mCWbpM9tnHQlg1e/j6NPB
- B7ygjsBpid/0VnreyhT9HJ3nLA1PDtlAFKkO3/+RP+C8nDn3SetsZDbv9RqStAZGdnnx
- ss2A==
-X-Gm-Message-State: AOAM532Aa9zIh4+ORshTLcbxCyd2PkSNZLn5dWMLYG+1EQOg+kIWUNXu
- sOAofVzeXWWyZJWvo2RdivZ9RmL3FUrMGzTLeQyvpcP8Epk+7Q==
-X-Google-Smtp-Source: ABdhPJzQs/c3CX2bOmSXe2qgNXAZ2f4IHHAmkWegVSounwUW97dtK/4zs/x2QhuuLPzfOfOVMpA+ydBEKjYLfv4RDSc=
-X-Received: by 2002:a05:6a00:1d19:b0:50a:3e40:d89f with SMTP id
- a25-20020a056a001d1900b0050a3e40d89fmr27403833pfx.61.1650527866432; Thu, 21
- Apr 2022 00:57:46 -0700 (PDT)
+ id 1nhS0d-00COAy-DE
+ for barebox@lists.infradead.org; Thu, 21 Apr 2022 08:17:54 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nhS0b-00077S-KU; Thu, 21 Apr 2022 10:17:49 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nhS0b-0002pj-C1; Thu, 21 Apr 2022 10:17:49 +0200
+Date: Thu, 21 Apr 2022 10:17:49 +0200
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20220421081749.GX4012@pengutronix.de>
 MIME-Version: 1.0
-References: <20220420095322.89880-1-eagle.alexander923@gmail.com>
- <20220421073546.GV4012@pengutronix.de>
-In-Reply-To: <20220421073546.GV4012@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Thu, 21 Apr 2022 10:57:33 +0300
-Message-ID: <CAP1tNvQOpnGwOUtHVTcxcMnv_GR=FNK3EuEFvBxDDcF-Fb9x3w@mail.gmail.com>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Content-Disposition: inline
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 09:57:06 up 21 days, 20:26, 73 users,  load average: 0.10, 0.09, 0.08
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220421_005748_096170_25815B81 
-X-CRM114-Status: GOOD (  20.34  )
+X-CRM114-CacheID: sfid-20220421_011751_535541_B28049AF 
+X-CRM114-Status: GOOD (  20.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,56 +65,152 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] arm: boards: Add support for MYIR MYD-AM335X Development
- Board
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: v2022.04.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-0YfRgiwgMjEg0LDQv9GALiAyMDIyINCzLiDQsiAxMDozNSwgU2FzY2hhIEhhdWVyIDxzaGFAcGVu
-Z3V0cm9uaXguZGU+Ogo+Cj4gT24gV2VkLCBBcHIgMjAsIDIwMjIgYXQgMTI6NTM6MjJQTSArMDMw
-MCwgQWxleGFuZGVyIFNoaXlhbiB3cm90ZToKPiA+IFRoZSBNWUQtQU0zMzVYIERldmVsb3BtZW50
-IEJvYXJkIGRlc2lnbmVkIGJ5IE1ZSVIgaXMgYSBoaWdoLXBlcmZvcm1hbmNlCj4gPiBBUk0gRXZh
-bHVhdGlvbiBNb2R1bGUgKEVWTSkgdXNpbmcgdGhlIE1ZQy1BTTMzNVggQ1BVIG1vZHVsZSBhcyB0
-aGUgY29yZQo+ID4gY29udHJvbGxlciBib2FyZC4gSXQgaXMgYmFzZWQgb24gdXAgdG8gMUdIeiBU
-ZXhhcyBJbnN0cnVtZW50cyAoVEkpCj4gPiBTaXRhcmEgQU0zMzV4IGZhbWlseSBvZiBBUk0gQ29y
-dGV4LUE4IE1pY3JvcHJvY2Vzc29ycyAoTVBVcykgdGhhdCBkZWxpdmVyCj4gPiBoaWdoIERNSVBz
-IGF0IGEgbG93IGNvc3Qgd2hpbGUgYWxzbyBkZWxpdmVyaW5nIG9wdGlvbmFsIDNEIGdyYXBoaWNz
-Cj4gPiBhY2NlbGVyYXRpb24gYW5kIGtleSBwZXJpcGhlcmFscy4KPiA+Cj4gPiBTaWduZWQtb2Zm
-LWJ5OiBBbGV4YW5kZXIgU2hpeWFuIDxlYWdsZS5hbGV4YW5kZXI5MjNAZ21haWwuY29tPgouLi4K
-PiA+ICtzdGF0aWMgc3RydWN0IG9tYXBfYmFyZWJveF9wYXJ0IG15aXJfYmFyZWJveF9wYXJ0ID0g
-ewo+ID4gKyAgICAgLm5hbmRfb2Zmc2V0ID0gU1pfMTI4SywKPiA+ICsgICAgIC5uYW5kX3NpemUg
-PSBTWl81MTJLLAo+ID4gK307Cj4KPiBJc24ndCB0aGlzIGEgYml0IHRvbyBzbWFsbD8gUHV0dGlu
-ZyBhIGJhcmVib3ggaW50byAxMjhrIHNlZW1zIHZlcnkKPiBhbWJpY291cy4KClRoZSBib290IGlt
-YWdlIChNTE8pIHNob3VsZCBub3QgZXhjZWVkIDEyOCBLQiBpbiBzaXplLApzbyBJIHRoaW5rIHRo
-aXMgc2hvdWxkIGJlIGVub3VnaC4KSW4gYW55IGNhc2UgdGhpcyBzaXplIGlzIGFscmVhZHkgc3Bl
-Y2lmaWVkIGZvciB0aGUgYm9vdCBwYXJ0aXRpb24KaW4ga2VybmVsIERUUyBmb3IgdGhpcyBib2Fy
-ZC4gOikKCi4uLgo+ID4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL215aXJ0ZWNoLXgzMzV4L2RlZmF1
-bHRlbnYtbXlpcnRlY2gteDMzNXgvbnYvbGludXguYm9vdGFyZ3MuY29uc29sZQo+ID4gQEAgLTAs
-MCArMSBAQAo+ID4gK2NvbnNvbGU9dHR5UzAsMTE1MjAwbjggZWFybHlwcmludGsKPgo+IFRoZSBj
-b25zb2xlPSBwYXJ0IHNob3VsZG4ndCBiZSBuZWVkZWQuIGJhcmVib3ggc2hvdWxkIGFkZCBhIGNv
-bnNvbGU9Cj4gcGFyYW1ldGVyIG1hdGNoaW5nIHRoZSBjdXJyZW50IGJhcmVib3ggY29uc29sZSBh
-dXRvbWF0aWNhbGx5Lgo+Cj4gSSB3b3VsZG4ndCBhZGQgdGhlIGVhcmx5cHJpbnRrIGJ5IGRlZmF1
-bHQuIEl0IG1pZ2h0IGJyZWFrIGJvb3Rpbmcgd2hlbgo+IHRoZSBrZXJuZWwgaXMgbm90IGV4YWN0
-bHkgY29uZmlndXJlZCBmb3IgeW91ciBib2FyZC4gQW55d2F5LCB0aGF0J3MKPiBwZXJzb25hbCB0
-YXN0ZS4KCk9LLgoKLi4uCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9teWlydGVj
-aF9hbTMzNXhfbXlkX2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3MvbXlpcnRlY2hfYW0zMzV4
-X215ZF9kZWZjb25maWcKPgo+IERvIHlvdSBuZWVkIHRoaXMgY29uZmlnPyBJIHJhdGhlciBwcmVm
-ZXIgdG8gYWRkIHRoZSBib2FyZCB0byBzb21lCj4gZXhpc3RpbmcgY29uZmlnLCBvbWFwX2RlZmNv
-bmZpZyBpbiB0aGlzIGNhc2UuCgpPSy4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+Hi All,
+
+barebox-2022.04.0 is out. This release brings us a new stm32mp1 board
+support for the PHYTEC phyCORE stm32mp1. Ahmad has invested some effort
+to get initial driver support for the ARM System Control and Management
+Interface (SCMI), we might see becoming this more widely adopted in the
+future, right now we can use it on the st32mp1. Also we have a
+last-minute fix to fix booting on OMAP platforms. These failed when the
+NAND/NOR was already partitioned in the device tree when the xload code
+created a conflicting partition to read the barebox image from.
+
+Other than that the usual cleanup patches, see below.
+
+Have Fun!
+  Sascha
+
+----------------------------------------------------------------
+Ahmad Fatoum (39):
+      PBL: fdt: factor reg property parsing into helper
+      pinctrl: stm32: use gpio-ranges instead of alias
+      ARM: stm32mp: simplify with build_stm32mp_image macro
+      ARM: stm32mp: change stm32image extension to .stm32
+      filetype: detect TF-A Firmware Image Packages (FIP)
+      scripts: add tool to adjust bl33 load address in existing FIP
+      ARM: stm32mp: build extra barebox-stm32mp-generic-bl33.img
+      ARM: stm32mp: ddrctrl: fix wrong register field widths
+      reset: stm32: drop stm32mp1_reset_ops indirection
+      reset: move stm32 reset code to drivers/power/reset
+      ARM: smccc: sync header with upstream
+      firmware: import Linux v5.13 SCMI support
+      reset: add SCMI support
+      clk: add SCMI clock driver
+      regulator: add SCMI regulator driver
+      clk: accept const arguments in clk_to_clk_hw/clk_hw_to_clk
+      serial: stm32: bail if clock_get_rate returns zero
+      clk: implement of_clk_hw_{onecell,simple}_get
+      commands: tutorial: adjust command description
+      ARM: i.MX: factor out AIPS configuration into helper function
+      ARM: i.MX6: configure AIPS3 for i.MX6ULL/i.MX6SX
+      RISC-V: virt: riscvemu: add interactive tutorial
+      of: deep-probe: replace BUG() with more verbose panic()
+      watchdog: wdat: fix mixed spaces/tabs in alignment
+      compiler: add support for fallthrough attribute
+      reset: add support for reset_control_status
+      clk: stm32mp1: sync with Linux v5.17-rc1
+      regulator: core: fall back to node name if no regulator-name property
+      ARM: dts: stm32mp: remove regulator-name override in stm32mp151.dtsi
+      ARM: stm32mp: enable more config options
+      ARM: stm32mp: ddrctl: add STM32MP131 RAM size querying support
+      ARM: stm32mp: add board support for STM32MP135F-DK
+      ARM: stm32mp: ddrctl: add STM32MP131 RAM size querying support
+      usb: gadget: implement and use system_partitions_get_null
+      usb: gadget: don't register UMS with empty function
+      usb: gadget: mass-storage: fix clean up of file descriptors
+      usb: gadget: mass-storage: reference count allocations used in bthread
+      usb: gadget: multi: fix broken handling of USB function bind error
+      usb: gadget: multi: free UMS instance at multi_unbind time
+
+Andrej Picej (1):
+      regulator: fix memory leak
+
+Bastian Krause (1):
+      arch: arm: mach-imx: document field return in CSF template
+
+Daniel Br=E1t (1):
+      phy: core: Make 'phy_optional_get' return NULL when not implemented
+
+Denis Orlov (1):
+      usb: host: ehci: reorder code in ehci_probe()
+
+Joacim Zetterling (7):
+      ARM: imx: Add imx8 support for 18 bit SDRAM row size handle
+      ARM: imx: Add imx8 support for SDRAM with two or more bank groups
+      ARM: imx: Correct mem size calculation for 4/8/16/32 bit bus width
+      ARM: imx: Correct bit count function
+      driver: mtd: spi-nor: Add Micron MT25QU256A 1V8 SPI flash
+      ARM: imx: spi: Add NXP IMX8 Flex SPI/QSPI support
+      ARM: arch: dts: qspi: Add QSPI config to the NXP IMX8MN-EVK board
+
+Michael Riesch (1):
+      net: designware: rockchip: improve support for multiple gmac instances
+
+Rouven Czerwinski (2):
+      Kbuild: use printf for as-instr
+      kbuild: dtc: use env to resolve echo
+
+Sascha Hauer (27):
+      dts: update to v5.17-rc3
+      dts: update to v5.17-rc4
+      dts: update to v5.17-rc5
+      regulator: fix memory leak #2
+      dts: update to v5.17-rc6
+      clk: Enable clk_bulk_* functions only with CONFIG_COMMON_CLK
+      dts: update to v5.17-rc7
+      of: platform: return early when deep probe is not supported
+      clk: imx6: Add hdmi_isfr clk
+      clk: imx6: fix axi_sels
+      clk: imx6: Fix periph_clk2_sel and periph2_clk2_sel clocks
+      clk: imx6: emi_sel clock muxing
+      clk: imx6: fix cko1_sels
+      clk: imx6: do pfd workaround unconditionally
+      ARM: i.MX: Remove duplicate PFD workaround
+      of: rename of_find_node_by_name() to of_find_node_by_name_address()
+      of: Add of_find_node_by_name() with Linux semantics
+      of: platform: Change of_devices_ensure_probed_by_property() return va=
+lue
+      of: platform: Ensure timers are probed early
+      Merge branch 'for-next/dts'
+      Merge branch 'for-next/imx'
+      Merge branch 'for-next/misc'
+      Merge branch 'for-next/of-deep-probe'
+      Merge branch 'for-next/stm32'
+      mtd: peb: Add mtd_peb_read_file()
+      ARM: omap: xload: read from unpartitioned device
+      Release v2022.04.0
+
+Steffen Trumtrar (1):
+      ARM: stm32: add support for PHYTEC phyCORE stm32mp1
+
+Uwe Kleine-K=F6nig (1):
+      crypto: Followup to crypto symbol renaming for algo registration
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
