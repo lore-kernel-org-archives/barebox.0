@@ -3,58 +3,56 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nivMg-00Eblq-AF
+	id 1nivMg-00Ebls-PG
 	for lore@lore.pengutronix.de; Mon, 25 Apr 2022 11:50:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nivMd-0007dv-3e
-	for lore@pengutronix.de; Mon, 25 Apr 2022 11:50:39 +0200
+	id 1nivMe-0007eE-5F
+	for lore@pengutronix.de; Mon, 25 Apr 2022 11:50:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=EueEGLPzUHwjjxWFwkaL5cgmpiuCu37IWLWBvfQ6OZo=; b=PHF3OnPOxBevBT
-	egnSf5XPfjvzxvos7YV2GRLq+yDN62HN9H62siwtkH2yaYaP2DtoJsD7ecRBVThW9A+rAzbAfsr21
-	EmIj6legfBDlk38+ILOco/tmYghsmg0rwfPK5yfjZtc44ZG715yn/8QFB3Q2fn6dPSXZ+Vi/MopmJ
-	sFKVdlLdMEtbd2lU/7HoAJ/ChX0o4KPo+2DrZrpRXyxBVrIhpJ36csl59b4dm5DTC6WcrJcUt3wOZ
-	Zi8ZC8SQec0rL2ABFSuJEnLdDBIQNHYW8JP/ejc86jGcEeuFPniu7HpFQJRY2DdSffw6d2KLQH3mc
-	H8wwTXhhPETbJkhA+DtA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=lC+b39l5lK3PUidxEDn07eDtWDUgoAwrNETe8deJ4UM=; b=lSB6zqyAoxYSU4
+	ihqoiOYdd3pVKpdiBkyUMbcT5Ad/OdcFr2F9T4DZ3TKn9mmMGr6B1/VDUgCCZ743RJ9ASp7K1xZ8v
+	BmE9gtVdR2C5iMb6j9ki0wcocV6dq22fy78QJUmVI0j28Agapvbfj/vSTo/BSpe5YQbbFEqygTuOR
+	iXmCp9FhInS9H/vqiFEMZPs5aG/Dv8ufwewgKPZPnDEAWU4o1nvt5g4G3lu+pAh56+EXsrzNrsdUf
+	tCGY8vswz0eE6t7cTnDDP/Tsv/XS5G7x9K5UVRVeuc/xgZBuUW2JzUsZ9mMW+MXPFr4yK1wNSRj/d
+	26sUgUhGDLCM0P71EnvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nivL8-008yYf-Ki; Mon, 25 Apr 2022 09:49:06 +0000
+	id 1nivLD-008yZT-Ja; Mon, 25 Apr 2022 09:49:11 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nivL3-008yXJ-PO
- for barebox@lists.infradead.org; Mon, 25 Apr 2022 09:49:03 +0000
+ id 1nivL3-008yXN-VF
+ for barebox@lists.infradead.org; Mon, 25 Apr 2022 09:49:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1nivL2-0007Kn-An; Mon, 25 Apr 2022 11:49:00 +0200
+ id 1nivL2-0007Km-Oq; Mon, 25 Apr 2022 11:49:00 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
  by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nivL3-0057Vw-2N; Mon, 25 Apr 2022 11:48:59 +0200
+ id 1nivL2-0057Vr-Om; Mon, 25 Apr 2022 11:48:59 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nivL0-002pPY-Br; Mon, 25 Apr 2022 11:48:58 +0200
+ id 1nivL0-002pPT-Aw; Mon, 25 Apr 2022 11:48:58 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: ore@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 25 Apr 2022 11:48:56 +0200
-Message-Id: <20220425094857.674044-3-a.fatoum@pengutronix.de>
+Cc: ore@pengutronix.de
+Date: Mon, 25 Apr 2022 11:48:54 +0200
+Message-Id: <20220425094857.674044-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220425094857.674044-1-a.fatoum@pengutronix.de>
-References: <20220425094857.674044-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220425_024901_870871_2034F573 
-X-CRM114-Status: GOOD (  17.73  )
+X-CRM114-CacheID: sfid-20220425_024902_045425_C179923D 
+X-CRM114-Status: UNSURE (   9.83  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,122 +76,73 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master v3 2/3] clk: add BCM2835 auxiliary peripheral clock
- driver
+Subject: [PATCH master v3 0/3] ARM: rpi3: fix misc recent breakage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Commit f6ce1103fdc4 ("ARM: rpi: move clk support to a separate driver")
-replaced board code setting up clocks with clkdev_add_physbase() with a
-proper cprman driver that registers fixed clocks and can be referenced
-from device tree.
+barebox v2022.04.0 on the Raspberry Pi 3b is malformated, silent on the
+mini UART and slow. Fix the root causes behind these issues.
 
-It was not fully equivalent though, because the mini UART's clock was no
-longer registered as that is provided by a different clock controller.
+This series is a bit bigger than what normally goes direct into master,
+but I'd prefer it's applied directly to master, so we have the proper
+fixes in v2022.05.0.
 
-Import the Linux v5.17 bcm2835-aux-clk driver to fix console usage on
-Raspberry Pi 3b.
+v2 -> v3:
+  - add intermediate NAKED noinline function only for ARM32 where it's
+    needed
+  - reuse ENTRY_FUNCTION instead of opencoding it
 
-Fixes: f6ce1103fdc4 ("ARM: rpi: move clk support to a separate driver")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/clk/Makefile              |  1 +
- drivers/clk/bcm/Makefile          |  2 +
- drivers/clk/bcm/clk-bcm2835-aux.c | 66 +++++++++++++++++++++++++++++++
- 3 files changed, 69 insertions(+)
+v1 -> v2:
+  - remove duplicated __ARM_SETUP_STACK
+
+Ahmad Fatoum (3):
+  ARM: asm: fix miscompilation of 32-bit ENTRY_FUNCTION_WITHSTACK
+  clk: add BCM2835 auxiliary peripheral clock driver
+  clocksource: assign non-zero priorities to all clocksources
+
+ arch/arm/include/asm/barebox-arm.h          | 14 ++++-
+ arch/arm/mach-at91/at91rm9200_time.c        |  1 +
+ arch/arm/mach-davinci/time.c                |  1 +
+ arch/arm/mach-ep93xx/clocksource.c          |  1 +
+ arch/arm/mach-mxs/clocksource-imx23.c       |  1 +
+ arch/arm/mach-mxs/clocksource-imx28.c       |  1 +
+ arch/arm/mach-pxa/clocksource.c             |  1 +
+ arch/arm/mach-samsung/s3c-timer.c           |  1 +
+ arch/arm/mach-tegra/tegra20-timer.c         |  1 +
+ arch/arm/mach-versatile/core.c              |  1 +
+ arch/mips/lib/csrc-r4k.c                    |  1 +
+ arch/mips/mach-xburst/csrc-jz4750.c         |  1 +
+ arch/openrisc/lib/clock.c                   |  1 +
+ arch/powerpc/mach-mpc5xxx/time.c            |  1 +
+ arch/powerpc/mach-mpc85xx/time.c            |  1 +
+ arch/sandbox/board/clock.c                  |  1 +
+ drivers/clk/Makefile                        |  1 +
+ drivers/clk/bcm/Makefile                    |  2 +
+ drivers/clk/bcm/clk-bcm2835-aux.c           | 66 +++++++++++++++++++++
+ drivers/clocksource/amba-sp804.c            |  1 +
+ drivers/clocksource/arm_architected_timer.c |  1 +
+ drivers/clocksource/arm_global_timer.c      |  1 +
+ drivers/clocksource/arm_smp_twd.c           |  1 +
+ drivers/clocksource/armv7m_systick.c        |  1 +
+ drivers/clocksource/bcm2835.c               |  1 +
+ drivers/clocksource/clps711x.c              |  1 +
+ drivers/clocksource/digic.c                 |  1 +
+ drivers/clocksource/dw_apb_timer.c          |  1 +
+ drivers/clocksource/efi.c                   |  1 +
+ drivers/clocksource/kvx_timer.c             |  1 +
+ drivers/clocksource/mvebu.c                 |  1 +
+ drivers/clocksource/nomadik.c               |  1 +
+ drivers/clocksource/orion.c                 |  1 +
+ drivers/clocksource/rk_timer.c              |  1 +
+ drivers/clocksource/timer-atmel-pit.c       |  1 +
+ drivers/clocksource/timer-imx-gpt.c         |  1 +
+ drivers/clocksource/timer-ti-32k.c          |  1 +
+ drivers/clocksource/timer-ti-dm.c           |  1 +
+ drivers/clocksource/uemd.c                  |  1 +
+ 39 files changed, 117 insertions(+), 1 deletion(-)
  create mode 100644 drivers/clk/bcm/Makefile
  create mode 100644 drivers/clk/bcm/clk-bcm2835-aux.c
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index ee503c1edb5f..baf452de9873 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -26,4 +26,5 @@ obj-$(CONFIG_CLK_SIFIVE)	+= sifive/
- obj-$(CONFIG_SOC_STARFIVE)	+= starfive/
- obj-$(CONFIG_COMMON_CLK_STM32F)		+= clk-stm32f4.o
- obj-$(CONFIG_MACH_RPI_COMMON)	+= clk-rpi.o
-+obj-y				+= bcm/
- obj-$(CONFIG_COMMON_CLK_SCMI)	+= clk-scmi.o
-diff --git a/drivers/clk/bcm/Makefile b/drivers/clk/bcm/Makefile
-new file mode 100644
-index 000000000000..1539e9f592a8
---- /dev/null
-+++ b/drivers/clk/bcm/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_ARCH_BCM283X)	+= clk-bcm2835-aux.o
-diff --git a/drivers/clk/bcm/clk-bcm2835-aux.c b/drivers/clk/bcm/clk-bcm2835-aux.c
-new file mode 100644
-index 000000000000..385cfd5d3f06
---- /dev/null
-+++ b/drivers/clk/bcm/clk-bcm2835-aux.c
-@@ -0,0 +1,66 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2015 Broadcom
-+ */
-+
-+#include <linux/clk.h>
-+#include <io.h>
-+#include <of_address.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <dt-bindings/clock/bcm2835-aux.h>
-+
-+#define BCM2835_AUXIRQ		0x00
-+#define BCM2835_AUXENB		0x04
-+
-+static int bcm2835_aux_clk_probe(struct device_d *dev)
-+{
-+	struct clk_hw_onecell_data *onecell;
-+	const char *parent;
-+	struct clk *parent_clk;
-+	void __iomem *reg, *gate;
-+
-+	parent_clk = clk_get(dev, NULL);
-+	if (IS_ERR(parent_clk))
-+		return PTR_ERR(parent_clk);
-+	parent = __clk_get_name(parent_clk);
-+
-+	reg = of_iomap(dev->device_node, 0);
-+	if (!reg)
-+		return -ENOMEM;
-+
-+	onecell = kmalloc(struct_size(onecell, hws, BCM2835_AUX_CLOCK_COUNT),
-+			  GFP_KERNEL);
-+	if (!onecell)
-+		return -ENOMEM;
-+	onecell->num = BCM2835_AUX_CLOCK_COUNT;
-+
-+	gate = reg + BCM2835_AUXENB;
-+	onecell->hws[BCM2835_AUX_CLOCK_UART] =
-+		clk_hw_register_gate(dev, "aux_uart", parent, 0, gate, 0, 0, NULL);
-+
-+	onecell->hws[BCM2835_AUX_CLOCK_SPI1] =
-+		clk_hw_register_gate(dev, "aux_spi1", parent, 0, gate, 1, 0, NULL);
-+
-+	onecell->hws[BCM2835_AUX_CLOCK_SPI2] =
-+		clk_hw_register_gate(dev, "aux_spi2", parent, 0, gate, 2, 0, NULL);
-+
-+	return of_clk_add_hw_provider(dev->device_node, of_clk_hw_onecell_get,
-+				      onecell);
-+}
-+
-+static const struct of_device_id bcm2835_aux_clk_of_match[] = {
-+	{ .compatible = "brcm,bcm2835-aux", },
-+	{},
-+};
-+
-+static struct driver_d bcm2835_aux_clk_driver = {
-+	.name = "bcm2835-aux-clk",
-+	.of_compatible = bcm2835_aux_clk_of_match,
-+	.probe          = bcm2835_aux_clk_probe,
-+};
-+core_platform_driver(bcm2835_aux_clk_driver);
-+
-+MODULE_AUTHOR("Eric Anholt <eric@anholt.net>");
-+MODULE_DESCRIPTION("BCM2835 auxiliary peripheral clock driver");
-+MODULE_LICENSE("GPL");
 -- 
 2.30.2
 
