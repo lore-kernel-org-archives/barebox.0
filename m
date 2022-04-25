@@ -1,16 +1,16 @@
-Delivery-date: Mon, 25 Apr 2022 12:29:08 +0200
+Delivery-date: Mon, 25 Apr 2022 12:37:02 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nivxu-00Eet5-15
-	for lore@lore.pengutronix.de; Mon, 25 Apr 2022 12:29:08 +0200
+	id 1niw5X-00EfD6-SI
+	for lore@lore.pengutronix.de; Mon, 25 Apr 2022 12:37:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nivxr-00053W-DC
-	for lore@pengutronix.de; Mon, 25 Apr 2022 12:29:08 +0200
+	id 1niw5U-0006Bw-9j
+	for lore@pengutronix.de; Mon, 25 Apr 2022 12:37:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,46 +18,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=eYALqdBU8K3ENO1DnDH8W+gipt+BBbdgOFBKdpnbH0M=; b=Y+GziXwIP/CRqc/l2lnyDuLdS3
-	kwmNhQriD2bCk6Iunozco/PCtfmmZyIkIM8RJ8uYiozfH+Vgx24PVapSUUP36V2Nve7xB2Qi4aEci
-	YC+4r6uSnKVIFlmm3lx3pIPY6KBw9aYENjR6D3zO99CtmR2R3/5DAuTKg0tRCeofIpypyLgOfnRSa
-	leFo2BaZFquLYD/pi1kjFMHdLJWJgnbRHqWoafCF1HVJnHLnHgkbbv4r5Idunwl8SheqxGT8P5HPR
-	q9qUYqi0v94sejp8s3qzZVau/iIABxlTTkMVnL6h8Oc94D6cC+8DBwTCXRTsCBqdCtfqbJtnutJCz
-	gqKm7Mtg==;
+	bh=8YFV72NOfQ5WtVlLEbzK8WMFiCJinW+ACs24VW8wqLc=; b=wV7U38N60qEApabC7S37wSiQ9q
+	EaK63JTEPIR+QlN2ShRuxFg6bpQzpoD220pfYFxK5dUnjV0ci1yFwGoEnkd8Y/mIUbaZCd4qc9vPp
+	moGqAWsAd4iuEymQITC8gvfUSAm//+FKfS8RgYZ+opFmvy2rex9NsD4uiTgOa9p6tw4nakOzSYtWL
+	f+DF7yBftvF39HW24vnN75aToFgziiRCTLwh/YRbf+L0G/LSE6AUNGtohhLG/HHbqo2n93EgDBIvX
+	VwiLcMb2SsHbtkJY4e1H/YVwPefoZlgpmibBNSfzwBgCE3UClxP687QrC8vsf/UW6qx667QtBSFwy
+	DW1XldoA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nivwZ-0097iW-PQ; Mon, 25 Apr 2022 10:27:47 +0000
+	id 1niw4A-0099BB-8E; Mon, 25 Apr 2022 10:35:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nivwU-0097hW-Qm
- for barebox@lists.infradead.org; Mon, 25 Apr 2022 10:27:44 +0000
+ id 1niw3w-0099Ab-9R
+ for barebox@lists.infradead.org; Mon, 25 Apr 2022 10:35:25 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nivwT-0004wm-KM; Mon, 25 Apr 2022 12:27:41 +0200
+ id 1niw3u-0005uT-R9; Mon, 25 Apr 2022 12:35:22 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nivwT-0005nh-BG; Mon, 25 Apr 2022 12:27:41 +0200
-Date: Mon, 25 Apr 2022 12:27:41 +0200
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220425102741.GI4012@pengutronix.de>
-References: <20220422092155.41183-1-eagle.alexander923@gmail.com>
+ id 1niw3u-00062a-IF; Mon, 25 Apr 2022 12:35:22 +0200
+Date: Mon, 25 Apr 2022 12:35:22 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, ore@pengutronix.de
+Message-ID: <20220425103522.GJ4012@pengutronix.de>
+References: <20220425094857.674044-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220422092155.41183-1-eagle.alexander923@gmail.com>
+In-Reply-To: <20220425094857.674044-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 12:27:32 up 25 days, 22:57, 79 users,  load average: 0.32, 0.19, 0.18
+X-Uptime: 12:35:14 up 25 days, 23:04, 79 users,  load average: 0.25, 0.15, 0.15
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220425_032742_905961_34772AE8 
-X-CRM114-Status: GOOD (  27.61  )
+X-CRM114-CacheID: sfid-20220425_033524_377018_DEF35A64 
+X-CRM114-Status: GOOD (  22.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,65 +81,81 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] serial: ns16550: Reuse 16550 serial for tegra UART
+Subject: Re: [PATCH master v3 0/3] ARM: rpi3: fix misc recent breakage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Apr 22, 2022 at 12:21:55PM +0300, Alexander Shiyan wrote:
-> The initialization for the tegra UART is the same as for the standard 16550,
-> so there is no reason to keep a separate structure for it in the driver.
+On Mon, Apr 25, 2022 at 11:48:54AM +0200, Ahmad Fatoum wrote:
+> barebox v2022.04.0 on the Raspberry Pi 3b is malformated, silent on the
+> mini UART and slow. Fix the root causes behind these issues.
 > 
-> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-> ---
->  drivers/serial/serial_ns16550.c | 14 +++-----------
->  1 file changed, 3 insertions(+), 11 deletions(-)
+> This series is a bit bigger than what normally goes direct into master,
+> but I'd prefer it's applied directly to master, so we have the proper
+> fixes in v2022.05.0.
+> 
+> v2 -> v3:
+>   - add intermediate NAKED noinline function only for ARM32 where it's
+>     needed
+>   - reuse ENTRY_FUNCTION instead of opencoding it
+> 
+> v1 -> v2:
+>   - remove duplicated __ARM_SETUP_STACK
+> 
+> Ahmad Fatoum (3):
+>   ARM: asm: fix miscompilation of 32-bit ENTRY_FUNCTION_WITHSTACK
+>   clk: add BCM2835 auxiliary peripheral clock driver
+>   clocksource: assign non-zero priorities to all clocksources
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-> index 464ae1aebc..f93a89ab95 100644
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -366,11 +366,6 @@ static __maybe_unused struct ns16550_drvdata jz_drvdata = {
->  	.init_port = ns16550_jz_init_port,
->  };
->  
-> -static __maybe_unused struct ns16550_drvdata tegra_drvdata = {
-> -	.init_port = ns16550_serial_init_port,
-> -	.linux_console_name = "ttyS",
-> -};
-> -
->  static __maybe_unused struct ns16550_drvdata rpi_drvdata = {
->  	.init_port = rpi_init_port,
->  	.linux_console_name = "ttyS",
-> @@ -528,6 +523,9 @@ static struct of_device_id ns16550_serial_dt_ids[] = {
->  	}, {
->  		.compatible = "marvell,armada-38x-uart",
->  		.data = &ns16550_drvdata,
-> +	}, {
-> +		.compatible = "nvidia,tegra20-uart",
-> +		.data = &ns16550_drvdata,
->  	},
->  #if IS_ENABLED(CONFIG_ARCH_OMAP)
->  	{
-> @@ -541,12 +539,6 @@ static struct of_device_id ns16550_serial_dt_ids[] = {
->  		.data = &omap_drvdata,
->  	},
->  #endif
-> -#if IS_ENABLED(CONFIG_ARCH_TEGRA)
-> -	{
-> -		.compatible = "nvidia,tegra20-uart",
-> -		.data = &tegra_drvdata,
-> -	},
-> -#endif
->  #if IS_ENABLED(CONFIG_MACH_MIPS_XBURST)
->  	{
->  		.compatible = "ingenic,jz4740-uart",
+>  arch/arm/include/asm/barebox-arm.h          | 14 ++++-
+>  arch/arm/mach-at91/at91rm9200_time.c        |  1 +
+>  arch/arm/mach-davinci/time.c                |  1 +
+>  arch/arm/mach-ep93xx/clocksource.c          |  1 +
+>  arch/arm/mach-mxs/clocksource-imx23.c       |  1 +
+>  arch/arm/mach-mxs/clocksource-imx28.c       |  1 +
+>  arch/arm/mach-pxa/clocksource.c             |  1 +
+>  arch/arm/mach-samsung/s3c-timer.c           |  1 +
+>  arch/arm/mach-tegra/tegra20-timer.c         |  1 +
+>  arch/arm/mach-versatile/core.c              |  1 +
+>  arch/mips/lib/csrc-r4k.c                    |  1 +
+>  arch/mips/mach-xburst/csrc-jz4750.c         |  1 +
+>  arch/openrisc/lib/clock.c                   |  1 +
+>  arch/powerpc/mach-mpc5xxx/time.c            |  1 +
+>  arch/powerpc/mach-mpc85xx/time.c            |  1 +
+>  arch/sandbox/board/clock.c                  |  1 +
+>  drivers/clk/Makefile                        |  1 +
+>  drivers/clk/bcm/Makefile                    |  2 +
+>  drivers/clk/bcm/clk-bcm2835-aux.c           | 66 +++++++++++++++++++++
+>  drivers/clocksource/amba-sp804.c            |  1 +
+>  drivers/clocksource/arm_architected_timer.c |  1 +
+>  drivers/clocksource/arm_global_timer.c      |  1 +
+>  drivers/clocksource/arm_smp_twd.c           |  1 +
+>  drivers/clocksource/armv7m_systick.c        |  1 +
+>  drivers/clocksource/bcm2835.c               |  1 +
+>  drivers/clocksource/clps711x.c              |  1 +
+>  drivers/clocksource/digic.c                 |  1 +
+>  drivers/clocksource/dw_apb_timer.c          |  1 +
+>  drivers/clocksource/efi.c                   |  1 +
+>  drivers/clocksource/kvx_timer.c             |  1 +
+>  drivers/clocksource/mvebu.c                 |  1 +
+>  drivers/clocksource/nomadik.c               |  1 +
+>  drivers/clocksource/orion.c                 |  1 +
+>  drivers/clocksource/rk_timer.c              |  1 +
+>  drivers/clocksource/timer-atmel-pit.c       |  1 +
+>  drivers/clocksource/timer-imx-gpt.c         |  1 +
+>  drivers/clocksource/timer-ti-32k.c          |  1 +
+>  drivers/clocksource/timer-ti-dm.c           |  1 +
+>  drivers/clocksource/uemd.c                  |  1 +
+>  39 files changed, 117 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/clk/bcm/Makefile
+>  create mode 100644 drivers/clk/bcm/clk-bcm2835-aux.c
+> 
 > -- 
-> 2.32.0
+> 2.30.2
 > 
 > 
 > _______________________________________________
