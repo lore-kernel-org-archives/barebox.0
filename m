@@ -1,60 +1,60 @@
-Delivery-date: Mon, 25 Apr 2022 08:27:21 +0200
+Delivery-date: Mon, 25 Apr 2022 08:27:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nisBu-00ERQU-HM
-	for lore@lore.pengutronix.de; Mon, 25 Apr 2022 08:27:21 +0200
+	id 1nisBx-00ERRS-Qi
+	for lore@lore.pengutronix.de; Mon, 25 Apr 2022 08:27:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nisBr-0000FL-BZ
-	for lore@pengutronix.de; Mon, 25 Apr 2022 08:27:20 +0200
+	id 1nisBu-0000GF-A9
+	for lore@pengutronix.de; Mon, 25 Apr 2022 08:27:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=QR4MG2bZABq2xc4GjtWMqOeIe/MG2UAKMKZprXIhQGA=; b=ryMp7lOiFXOR73
-	76jhcpXlI7qLMDSEpFJm75Y37JMErqxoaOnHA0BDROqZSfEr9j2XWey7gejT+F6jEVpLB0EwEB3e1
-	xZikBCXfXw/ELMBpMGZ21wfzbUdfG85n+WGTStGRgtdnDy5wJHjEk0pNRjopmpQkD7RY2kyu0cy+R
-	Uz2ELEwGUXnaLPeWtWuMQ0LJOy1rdSMOZqgDev+eVnjgnN3DtLvRNErcuFMRXVm7T462/SAU3tH7I
-	BzPrRTOVlPkteVr+QZ0RgjcF5T62pgAr+hX9/459FxRESMC7CKvAvCChPyM1o2ARyFlLAwqgnvzYL
-	DhFAB/bc5RMw2BaIZSWA==;
+	List-Owner; bh=5Vcg7u5wa9+8zTTOD7RLmLm9l1SIoE58S7+uAGtfpVQ=; b=iUBuVgpLcIQhGr
+	Chf5hEHI2GnzzHTzgiMNb3YO34weymVFLH07yglFHaU/pWLV1hKZJT1y/tQRwn0ilasnCatip+yok
+	dgEflo5gmudsmGwhxyy8YsfM+dM1UT8b3D8IOMSIA6KgcSAsSnp98MY+WFV86tR6Ial7AtWAkJvgY
+	OYvntdHgCIgUk+8DKwaZfP3pJ64NOzshE+rca9uGOZN07TrrMIf/hmm7SLrjnH1u2/hdpuCPHssKf
+	x7+vCCml7T/QOo7qNPskOezRUsgyeqDl0Jv/en3AMqpzx4HvSugSFWJcR2MU+yFVbNuifgQg8hoLw
+	zcZnF2DiBN7INNnJAoOA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nisAM-008TcX-P0; Mon, 25 Apr 2022 06:25:46 +0000
+	id 1nisAP-008Tcz-8E; Mon, 25 Apr 2022 06:25:49 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nisAB-008TZW-RJ
- for barebox@lists.infradead.org; Mon, 25 Apr 2022 06:25:39 +0000
+ id 1nisAB-008TZf-SH
+ for barebox@lists.infradead.org; Mon, 25 Apr 2022 06:25:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1nisA4-0008Ki-7j; Mon, 25 Apr 2022 08:25:28 +0200
+ id 1nisA4-0008Ko-LL; Mon, 25 Apr 2022 08:25:28 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
  by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nisA4-0055zC-Vt; Mon, 25 Apr 2022 08:25:27 +0200
+ id 1nisA5-0055zG-CT; Mon, 25 Apr 2022 08:25:27 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nisA2-0004Yp-Oe; Mon, 25 Apr 2022 08:25:26 +0200
+ id 1nisA2-0004Yv-PO; Mon, 25 Apr 2022 08:25:26 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: ore@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 25 Apr 2022 08:25:21 +0200
-Message-Id: <20220425062523.17478-2-a.fatoum@pengutronix.de>
+Date: Mon, 25 Apr 2022 08:25:23 +0200
+Message-Id: <20220425062523.17478-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220425062523.17478-1-a.fatoum@pengutronix.de>
 References: <20220425062523.17478-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220424_232535_921389_5268FDF6 
-X-CRM114-Status: GOOD (  10.88  )
+X-CRM114-CacheID: sfid-20220424_232536_276774_9DEA6F4B 
+X-CRM114-Status: GOOD (  11.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,59 +78,494 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master v2 1/3] ARM: asm: fix miscompilation of 32-bit
- ENTRY_FUNCTION_WITHSTACK
+Subject: [PATCH master v2 3/3] clocksource: assign non-zero priorities to all
+ clocksources
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-gcc-11.1.1 shipped with OSELAS.Toolchain-2021.07.0 hoists a single
-instruction from __ARM_SETUP_STACK in front of __barebox_arm_head
-breaking the barebox header format for the Raspberry Pi 3. This can't
-happen with ARM64 and the Raspberry Pi entry points are currently the
-only 32-bit users.
+Most barebox clocksources have a zero priority and if multiple of them
+exist, but no higher priority ones, the first to call init_clock wins.
 
-While the resulting barebox image was still bootable, header detection
-would fail. Add an intermediate naked function to work around this.
+Some supported boards like the Raspberry Pi additionally depended on
+initcall ordering to favor one zero-priority clocksource over another.
+With the move to deep probe and with Commit b641580deb8c ("of: platform:
+Ensure timers are probed early"), device tree blob iteration order could
+now dictate which clocksource is ultimately used. This led to a 20 times
+slower clock source being chosen on the Raspberry Pi, because the ARM
+architected timer was taken instead of the bcm2835 timer.
 
-This is not required for plain ENTRY_FUNCTION, because the
-board-supplied entry point is already NAKED. For
-ENTRY_FUNCTION_WITH_FUNCTION, that same entry point is intentionally
-non-naked to reduce pitfalls for board code authors..
+Fix the root cause by assigning priorities to all clocksource drivers.
+Priorities chosen are:
 
-Fixes: 880c9803b95a ("ARM: implement ENTRY_FUNCTION_WITHSTACK")
+  50: device_initcall
+  60: coredevice_initcall
+  70: postcore_initcall
+  80: core_initcall
+
+These priorities are all below 100, which was previously the lowest
+positive priority and as they are positive, they win against the dummy
+clocksource. This should ensure no priority inversion happens.
+
+Fixes: b641580deb8c ("of: platform: Ensure timers are probed early")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/include/asm/barebox-arm.h | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm/mach-at91/at91rm9200_time.c        | 1 +
+ arch/arm/mach-davinci/time.c                | 1 +
+ arch/arm/mach-ep93xx/clocksource.c          | 1 +
+ arch/arm/mach-mxs/clocksource-imx23.c       | 1 +
+ arch/arm/mach-mxs/clocksource-imx28.c       | 1 +
+ arch/arm/mach-pxa/clocksource.c             | 1 +
+ arch/arm/mach-samsung/s3c-timer.c           | 1 +
+ arch/arm/mach-tegra/tegra20-timer.c         | 1 +
+ arch/arm/mach-versatile/core.c              | 1 +
+ arch/mips/lib/csrc-r4k.c                    | 1 +
+ arch/mips/mach-xburst/csrc-jz4750.c         | 1 +
+ arch/openrisc/lib/clock.c                   | 1 +
+ arch/powerpc/mach-mpc5xxx/time.c            | 1 +
+ arch/powerpc/mach-mpc85xx/time.c            | 1 +
+ arch/sandbox/board/clock.c                  | 1 +
+ drivers/clocksource/amba-sp804.c            | 1 +
+ drivers/clocksource/arm_architected_timer.c | 1 +
+ drivers/clocksource/arm_global_timer.c      | 1 +
+ drivers/clocksource/arm_smp_twd.c           | 1 +
+ drivers/clocksource/armv7m_systick.c        | 1 +
+ drivers/clocksource/bcm2835.c               | 1 +
+ drivers/clocksource/clps711x.c              | 1 +
+ drivers/clocksource/digic.c                 | 1 +
+ drivers/clocksource/dw_apb_timer.c          | 1 +
+ drivers/clocksource/efi.c                   | 1 +
+ drivers/clocksource/kvx_timer.c             | 1 +
+ drivers/clocksource/mvebu.c                 | 1 +
+ drivers/clocksource/nomadik.c               | 1 +
+ drivers/clocksource/orion.c                 | 1 +
+ drivers/clocksource/rk_timer.c              | 1 +
+ drivers/clocksource/timer-atmel-pit.c       | 1 +
+ drivers/clocksource/timer-imx-gpt.c         | 1 +
+ drivers/clocksource/timer-ti-32k.c          | 1 +
+ drivers/clocksource/timer-ti-dm.c           | 1 +
+ drivers/clocksource/uemd.c                  | 1 +
+ 35 files changed, 35 insertions(+)
 
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index d915cde294a4..8b0c00633277 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -194,15 +194,21 @@ static inline unsigned long arm_mem_barebox_image(unsigned long membase,
- 	void name(ulong r0, ulong r1, ulong r2);			\
- 									\
- 	static void __##name(ulong, ulong, ulong);			\
-+	static void ____##name(ulong, ulong, ulong);			\
- 									\
- 	void NAKED __section(.text_head_entry_##name)	name		\
- 				(ulong r0, ulong r1, ulong r2)		\
- 		{							\
- 			__barebox_arm_head();				\
--			__ARM_SETUP_STACK(stack_top);			\
- 			__##name(r0, r1, r2);				\
- 		}							\
--		static void noinline __##name				\
-+		static void NAKED noinline __##name			\
-+			(ulong r0, ulong r1, ulong r2)			\
-+		{							\
-+			__ARM_SETUP_STACK(stack_top);			\
-+			____##name(r0, r1, r2);				\
-+		}							\
-+		static void noinline ____##name				\
- 			(ulong arg0, ulong arg1, ulong arg2)
+diff --git a/arch/arm/mach-at91/at91rm9200_time.c b/arch/arm/mach-at91/at91rm9200_time.c
+index ccbefbbc33a2..110d77088169 100644
+--- a/arch/arm/mach-at91/at91rm9200_time.c
++++ b/arch/arm/mach-at91/at91rm9200_time.c
+@@ -35,6 +35,7 @@ static struct clocksource cs = {
+ 	.mask	= CLOCKSOURCE_MASK(20),
+ 	.read	= at91rm9200_clocksource_read,
+ 	.shift	= 10,
++	.priority = 80,
+ };
  
+ static int clocksource_init (void)
+diff --git a/arch/arm/mach-davinci/time.c b/arch/arm/mach-davinci/time.c
+index 52b3ac3e6823..c54e49470b72 100644
+--- a/arch/arm/mach-davinci/time.c
++++ b/arch/arm/mach-davinci/time.c
+@@ -96,6 +96,7 @@ static uint64_t davinci_cs_read(void)
+ static struct clocksource davinci_cs = {
+ 	.read	= davinci_cs_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
++	.priority = 80,
+ };
  
+ static int timer32_config(struct timer_s *t)
+diff --git a/arch/arm/mach-ep93xx/clocksource.c b/arch/arm/mach-ep93xx/clocksource.c
+index 1f3ff7f8f20a..e2a3a397803f 100644
+--- a/arch/arm/mach-ep93xx/clocksource.c
++++ b/arch/arm/mach-ep93xx/clocksource.c
+@@ -37,6 +37,7 @@ static struct clocksource cs = {
+ 	.read	= ep93xx_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
+ 	.shift	= 10,
++	.priority = 80,
+ };
+ 
+ static int clocksource_init(void)
+diff --git a/arch/arm/mach-mxs/clocksource-imx23.c b/arch/arm/mach-mxs/clocksource-imx23.c
+index 0a6716f87958..ba5aad9f30dc 100644
+--- a/arch/arm/mach-mxs/clocksource-imx23.c
++++ b/arch/arm/mach-mxs/clocksource-imx23.c
+@@ -34,6 +34,7 @@ static struct clocksource cs = {
+ 	.read	= imx23_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(16),
+ 	.shift	= 10,
++	.priority = 80,
+ };
+ 
+ static int imx23_clocksource_clock_change(struct notifier_block *nb, unsigned long event, void *data)
+diff --git a/arch/arm/mach-mxs/clocksource-imx28.c b/arch/arm/mach-mxs/clocksource-imx28.c
+index ea6d4b514630..65d8155ad244 100644
+--- a/arch/arm/mach-mxs/clocksource-imx28.c
++++ b/arch/arm/mach-mxs/clocksource-imx28.c
+@@ -39,6 +39,7 @@ static struct clocksource imx28_cs = {
+ 	.read	= imx28_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
+ 	.shift	= 17,
++	.priority = 80,
+ };
+ 
+ static int imx28_clocksource_init(void)
+diff --git a/arch/arm/mach-pxa/clocksource.c b/arch/arm/mach-pxa/clocksource.c
+index ebfe6f1c330f..3bc95827d88d 100644
+--- a/arch/arm/mach-pxa/clocksource.c
++++ b/arch/arm/mach-pxa/clocksource.c
+@@ -28,6 +28,7 @@ static struct clocksource cs = {
+ 	.read	= pxa_clocksource_read,
+ 	.mask	= 0xffffffff,
+ 	.shift	= 20,
++	.priority = 80,
+ };
+ 
+ static int clocksource_init(void)
+diff --git a/arch/arm/mach-samsung/s3c-timer.c b/arch/arm/mach-samsung/s3c-timer.c
+index 6f38df395851..38bcebc7c4cb 100644
+--- a/arch/arm/mach-samsung/s3c-timer.c
++++ b/arch/arm/mach-samsung/s3c-timer.c
+@@ -101,6 +101,7 @@ static struct clocksource cs = {
+ 	.read = s3c_clocksource_read,
+ 	.mask = CLOCKSOURCE_MASK(TIMER_WIDTH),
+ 	.shift = TIMER_SHIFT,
++	.priority = 80,
+ };
+ 
+ static int s3c_clk_src_init(void)
+diff --git a/arch/arm/mach-tegra/tegra20-timer.c b/arch/arm/mach-tegra/tegra20-timer.c
+index 34d34f772331..8ca8cb24fad5 100644
+--- a/arch/arm/mach-tegra/tegra20-timer.c
++++ b/arch/arm/mach-tegra/tegra20-timer.c
+@@ -41,6 +41,7 @@ static uint64_t tegra20_timer_cs_read(void)
+ static struct clocksource cs = {
+ 	.read	= tegra20_timer_cs_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
++	.priority = 80,
+ };
+ 
+ static int tegra20_timer_probe(struct device_d *dev)
+diff --git a/arch/arm/mach-versatile/core.c b/arch/arm/mach-versatile/core.c
+index eb94a07dc907..9a2a9cad80cc 100644
+--- a/arch/arm/mach-versatile/core.c
++++ b/arch/arm/mach-versatile/core.c
+@@ -92,6 +92,7 @@ static struct clocksource vpb_cs = {
+ 	.read = vpb_clocksource_read,
+ 	.mask = CLOCKSOURCE_MASK(32),
+ 	.shift = 10,
++	.priority = 80,
+ };
+ 
+ /* From Linux v2.6.35
+diff --git a/arch/mips/lib/csrc-r4k.c b/arch/mips/lib/csrc-r4k.c
+index 9facf04bd3e9..35fba3a29ca6 100644
+--- a/arch/mips/lib/csrc-r4k.c
++++ b/arch/mips/lib/csrc-r4k.c
+@@ -23,6 +23,7 @@ static uint64_t c0_hpt_read(void)
+ static struct clocksource cs = {
+ 	.read	= c0_hpt_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
++	.priority = 70,
+ };
+ 
+ static int clocksource_init(void)
+diff --git a/arch/mips/mach-xburst/csrc-jz4750.c b/arch/mips/mach-xburst/csrc-jz4750.c
+index 302709e59747..43135ac4987e 100644
+--- a/arch/mips/mach-xburst/csrc-jz4750.c
++++ b/arch/mips/mach-xburst/csrc-jz4750.c
+@@ -23,6 +23,7 @@ static uint64_t jz4750_cs_read(void)
+ static struct clocksource jz4750_cs = {
+ 	.read	= jz4750_cs_read,
+ 	.mask   = CLOCKSOURCE_MASK(32),
++	.priority = 80,
+ };
+ 
+ static int clocksource_init(void)
+diff --git a/arch/openrisc/lib/clock.c b/arch/openrisc/lib/clock.c
+index 5ff978e8411a..651b163f13cb 100644
+--- a/arch/openrisc/lib/clock.c
++++ b/arch/openrisc/lib/clock.c
+@@ -28,6 +28,7 @@ static struct clocksource cs = {
+ 	.read	= openrisc_clocksource_read,
+ 	.mask	= 0xffffffff,
+ 	.shift	= 12,
++	.priority = 80,
+ };
+ 
+ static int clocksource_init(void)
+diff --git a/arch/powerpc/mach-mpc5xxx/time.c b/arch/powerpc/mach-mpc5xxx/time.c
+index 8981b14eeb7d..d690d50f0d5a 100644
+--- a/arch/powerpc/mach-mpc5xxx/time.c
++++ b/arch/powerpc/mach-mpc5xxx/time.c
+@@ -29,6 +29,7 @@ static struct clocksource cs = {
+ 	.read	= ppc_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
+ 	.shift	= 15,
++	.priority = 80,
+ };
+ 
+ static int clocksource_init(void)
+diff --git a/arch/powerpc/mach-mpc85xx/time.c b/arch/powerpc/mach-mpc85xx/time.c
+index 067bce8ea64e..5981995ac2ae 100644
+--- a/arch/powerpc/mach-mpc85xx/time.c
++++ b/arch/powerpc/mach-mpc85xx/time.c
+@@ -28,6 +28,7 @@ static uint64_t ppc_clocksource_read(void)
+ static struct clocksource cs = {
+ 	.read	= ppc_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(64),
++	.priority = 80,
+ };
+ 
+ static int clocksource_init(void)
+diff --git a/arch/sandbox/board/clock.c b/arch/sandbox/board/clock.c
+index b005e71633ff..1787fb578626 100644
+--- a/arch/sandbox/board/clock.c
++++ b/arch/sandbox/board/clock.c
+@@ -28,6 +28,7 @@ static struct clocksource cs = {
+ 	.read	= linux_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
+ 	.shift	= 10,
++	.priority = 80,
+ };
+ 
+ static int clocksource_init (void)
+diff --git a/drivers/clocksource/amba-sp804.c b/drivers/clocksource/amba-sp804.c
+index a22e567301b2..fcb2b0254bc3 100644
+--- a/drivers/clocksource/amba-sp804.c
++++ b/drivers/clocksource/amba-sp804.c
+@@ -26,6 +26,7 @@ static struct clocksource sp804_clksrc = {
+ 	.read	= sp804_read,
+ 	.shift	= 20,
+ 	.mask	= CLOCKSOURCE_MASK(32),
++	.priority = 60,
+ };
+ 
+ static int sp804_probe(struct amba_device *dev, const struct amba_id *id)
+diff --git a/drivers/clocksource/arm_architected_timer.c b/drivers/clocksource/arm_architected_timer.c
+index 16e40a1a0b3b..d5948fe9482c 100644
+--- a/drivers/clocksource/arm_architected_timer.c
++++ b/drivers/clocksource/arm_architected_timer.c
+@@ -19,6 +19,7 @@ static struct clocksource cs = {
+ 	.read	= arm_arch_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(64),
+ 	.shift	= 0,
++	.priority = 70,
+ };
+ 
+ static int arm_arch_timer_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
+index f18c6e4152f9..65bfca355855 100644
+--- a/drivers/clocksource/arm_global_timer.c
++++ b/drivers/clocksource/arm_global_timer.c
+@@ -60,6 +60,7 @@ static struct clocksource cs = {
+ 	.read	= arm_global_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(64),
+ 	.shift	= 0,
++	.priority = 70,
+ };
+ 
+ static int arm_global_timer_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/arm_smp_twd.c b/drivers/clocksource/arm_smp_twd.c
+index bc0c4a00b2f9..1ad754bb2b7a 100644
+--- a/drivers/clocksource/arm_smp_twd.c
++++ b/drivers/clocksource/arm_smp_twd.c
+@@ -35,6 +35,7 @@ static struct clocksource smp_twd_clksrc = {
+ 	.read	= smp_twd_read,
+ 	.shift	= 20,
+ 	.mask	= CLOCKSOURCE_MASK(32),
++	.priority = 60,
+ };
+ 
+ #define SMP_TWD_MAX_FREQ (25 *1000 * 1000)
+diff --git a/drivers/clocksource/armv7m_systick.c b/drivers/clocksource/armv7m_systick.c
+index 5f9222c50b8a..16d89c23bde5 100644
+--- a/drivers/clocksource/armv7m_systick.c
++++ b/drivers/clocksource/armv7m_systick.c
+@@ -34,6 +34,7 @@ static struct clocksource cs = {
+ 	.read	= armv7m_systick_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(24),
+ 	.shift	= 0,
++	.priority = 70,
+ };
+ 
+ static int armv7m_systick_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/bcm2835.c b/drivers/clocksource/bcm2835.c
+index 5134b349157c..d84341fc4083 100644
+--- a/drivers/clocksource/bcm2835.c
++++ b/drivers/clocksource/bcm2835.c
+@@ -28,6 +28,7 @@ static uint64_t stc_read_cycles(void)
+ static struct clocksource bcm2835_stc = {
+ 	.read = stc_read_cycles,
+ 	.mask = CLOCKSOURCE_MASK(32),
++	.priority = 80,
+ };
+ 
+ static int bcm2835_cs_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/clps711x.c b/drivers/clocksource/clps711x.c
+index cd099604786e..1fe7f6c89114 100644
+--- a/drivers/clocksource/clps711x.c
++++ b/drivers/clocksource/clps711x.c
+@@ -19,6 +19,7 @@ static uint64_t clps711x_cs_read(void)
+ static struct clocksource clps711x_cs = {
+ 	.read = clps711x_cs_read,
+ 	.mask = CLOCKSOURCE_MASK(16),
++	.priority = 60,
+ };
+ 
+ static int clps711x_cs_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/digic.c b/drivers/clocksource/digic.c
+index 1a335582b733..234985aece44 100644
+--- a/drivers/clocksource/digic.c
++++ b/drivers/clocksource/digic.c
+@@ -26,6 +26,7 @@ static uint64_t digic_cs_read(void)
+ static struct clocksource digic_cs = {
+ 	.read	= digic_cs_read,
+ 	.mask   = CLOCKSOURCE_MASK(16),
++	.priority = 60,
+ };
+ 
+ static int digic_timer_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/dw_apb_timer.c b/drivers/clocksource/dw_apb_timer.c
+index aef4f16d1494..251089cf7e16 100644
+--- a/drivers/clocksource/dw_apb_timer.c
++++ b/drivers/clocksource/dw_apb_timer.c
+@@ -94,6 +94,7 @@ static struct clocksource dw_apb_clksrc = {
+ 	.read  = dw_apb_clocksource_read,
+ 	.mask  = CLOCKSOURCE_MASK(32),
+ 	.shift = 0,
++	.priority = 50,
+ };
+ 
+ static int dw_apb_timer_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/efi.c b/drivers/clocksource/efi.c
+index 5c8c5fd46b1e..9df5226573bc 100644
+--- a/drivers/clocksource/efi.c
++++ b/drivers/clocksource/efi.c
+@@ -93,6 +93,7 @@ static struct clocksource efi_cs = {
+ 	.mask   = CLOCKSOURCE_MASK(64),
+ 	.shift  = 0,
+ 	.init   = efi_cs_init,
++	.priority = 80,
+ };
+ 
+ static int efi_cs_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/kvx_timer.c b/drivers/clocksource/kvx_timer.c
+index 2a05d8deedce..259755eacdda 100644
+--- a/drivers/clocksource/kvx_timer.c
++++ b/drivers/clocksource/kvx_timer.c
+@@ -21,6 +21,7 @@ static struct clocksource kvx_clksrc = {
+ 	.read	= kvx_pm_read,
+ 	.mask	= CLOCKSOURCE_MASK(64),
+ 	.shift	= 0,
++	.priority = 70,
+ };
+ 
+ static int kvx_timer_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/mvebu.c b/drivers/clocksource/mvebu.c
+index eb5246e4e79b..d3214955dc8f 100644
+--- a/drivers/clocksource/mvebu.c
++++ b/drivers/clocksource/mvebu.c
+@@ -42,6 +42,7 @@ static struct clocksource cs = {
+ 	.read	= mvebu_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
+ 	.shift	= 10,
++	.priority = 70,
+ };
+ 
+ static int mvebu_timer_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/nomadik.c b/drivers/clocksource/nomadik.c
+index d71d9da6b8c0..7cf10352eac7 100644
+--- a/drivers/clocksource/nomadik.c
++++ b/drivers/clocksource/nomadik.c
+@@ -71,6 +71,7 @@ static struct clocksource nmdk_clksrc = {
+ 	.read	= nmdk_read_timer,
+ 	.shift	= 20,
+ 	.mask	= CLOCKSOURCE_MASK(32),
++	.priority = 60,
+ };
+ 
+ static void nmdk_timer_reset(void)
+diff --git a/drivers/clocksource/orion.c b/drivers/clocksource/orion.c
+index d40b09e5debc..4a5684980064 100644
+--- a/drivers/clocksource/orion.c
++++ b/drivers/clocksource/orion.c
+@@ -31,6 +31,7 @@ static struct clocksource clksrc = {
+ 	.read	= orion_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
+ 	.shift	= 10,
++	.priority = 70,
+ };
+ 
+ static int orion_timer_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/rk_timer.c b/drivers/clocksource/rk_timer.c
+index 5cc8d32b601b..e94103077103 100644
+--- a/drivers/clocksource/rk_timer.c
++++ b/drivers/clocksource/rk_timer.c
+@@ -32,6 +32,7 @@ static struct clocksource rkcs = {
+ 	.read   = rockchip_get_ticks,
+ 	.mask   = CLOCKSOURCE_MASK(32),
+ 	.shift  = 10,
++	.priority = 80,
+ };
+ 
+ static int rockchip_timer_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/timer-atmel-pit.c b/drivers/clocksource/timer-atmel-pit.c
+index bbbc81788ce4..a133e384d74c 100644
+--- a/drivers/clocksource/timer-atmel-pit.c
++++ b/drivers/clocksource/timer-atmel-pit.c
+@@ -36,6 +36,7 @@ static struct clocksource cs = {
+ 	.read	= at91sam9_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
+ 	.shift	= 10,
++	.priority = 70,
+ };
+ 
+ static void at91_pit_stop(void)
+diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-imx-gpt.c
+index 28f90d967d3f..7ca879f4f008 100644
+--- a/drivers/clocksource/timer-imx-gpt.c
++++ b/drivers/clocksource/timer-imx-gpt.c
+@@ -64,6 +64,7 @@ static struct clocksource cs = {
+ 	.read	= imx_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
+ 	.shift	= 10,
++	.priority = 70,
+ };
+ 
+ static int imx_clocksource_clock_change(struct notifier_block *nb, unsigned long event, void *data)
+diff --git a/drivers/clocksource/timer-ti-32k.c b/drivers/clocksource/timer-ti-32k.c
+index 1f3f15561e09..21cb68636954 100644
+--- a/drivers/clocksource/timer-ti-32k.c
++++ b/drivers/clocksource/timer-ti-32k.c
+@@ -47,6 +47,7 @@ static struct clocksource s32k_cs = {
+ 	.read = s32k_clocksource_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
+ 	.shift = 10,
++	.priority = 70,
+ };
+ 
+ /**
+diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
+index d43609ad1967..cdd297f10c91 100644
+--- a/drivers/clocksource/timer-ti-dm.c
++++ b/drivers/clocksource/timer-ti-dm.c
+@@ -62,6 +62,7 @@ static struct clocksource dmtimer_cs = {
+ 	.read	= dmtimer_read,
+ 	.mask	= CLOCKSOURCE_MASK(32),
+ 	.shift	= 10,
++	.priority = 70,
+ };
+ 
+ static int omap_dmtimer_probe(struct device_d *dev)
+diff --git a/drivers/clocksource/uemd.c b/drivers/clocksource/uemd.c
+index 342260c5644b..a763eadc0c86 100644
+--- a/drivers/clocksource/uemd.c
++++ b/drivers/clocksource/uemd.c
+@@ -52,6 +52,7 @@ static uint64_t uemd_timer_cs_read(void)
+ static struct clocksource uemd_cs = {
+ 	.read = uemd_timer_cs_read,
+ 	.mask = CLOCKSOURCE_MASK(32),
++	.priority = 60,
+ };
+ 
+ static int uemd_timer_probe(struct device_d *dev)
 -- 
 2.30.2
 
