@@ -1,53 +1,60 @@
-Delivery-date: Wed, 27 Apr 2022 10:02:22 +0200
+Delivery-date: Wed, 27 Apr 2022 11:40:02 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1njccx-00GmPg-FU
-	for lore@lore.pengutronix.de; Wed, 27 Apr 2022 10:02:22 +0200
+	id 1nje9T-00Grgk-To
+	for lore@lore.pengutronix.de; Wed, 27 Apr 2022 11:40:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1njccu-0001Ys-Pe
-	for lore@pengutronix.de; Wed, 27 Apr 2022 10:02:21 +0200
+	id 1nje9Q-0004xv-IJ
+	for lore@pengutronix.de; Wed, 27 Apr 2022 11:40:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:From:References:To:Subject:
-	MIME-Version:Date:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=upu7+HC1IBVpSyAjfWPRqoYrumCEjubidFQlbRAq0GE=; b=EfdX5Bkqmea7Kv
-	haDTRJI3i+0YjbPSCz0iD9QNEQ0aF/ODqqMxy4f7IzBhQiVvTRb7fyrapizuBt/c3Pw+FNRbFjROt
-	CXSolGQIFmyKoQHtxtk/oZAXrx5PiBWCJ1oo5yvNjCW7liQ0MTb+cmEDKMZSlwOCbz0SujeWPpx+S
-	3+Nv8ypqo7C6mBY0RUv8POurXLoKbuqF4Q1K7TSHEh/WJvkPdrlZGEnHbA8i9VK0pUfly5y6qrfA5
-	gTZU6JLv+Hw2zHG9ooJ76JOirNXuqk5p5kSWb/8k35UIoggY94n2PhznMNiAZblsnd8UC6xPKIXqC
-	cutSsQd+Buh+/qz+cAIA==;
+	List-Owner; bh=E7mv3soz58kdY08dYB7ySfRN9d7MJ7P/k3lmDdwA4B0=; b=NR8q3R2Y8HVnwb
+	92Diy1po/iUEJYAuk73qpbMAtJaxLG44yl7ttcFxk6SuqQ2zCRwb30I076y74lTNbnU3XNY1f9UMB
+	N11LrzUaLysEJo29UIhEf07zWYymgDR5UHlVojX2TR5/k/Aa1edCXoJwzMceDkhj59+p1QAS3eGu5
+	HpTc42mYd+gSBVEKvgv8dEFBaOg8PWL21MxWq8BtEeYzL3GRNSDqr+X1Gew78n+SIEmooM5oa2sv1
+	vsC4XLvr3q7n964XY+b8K36U49N9jw9sgvsJTXWDKjRoJNHQx2kHPK7d/UQE/o1htMcgYIwdjA+5t
+	GeT9oURExRnjjTHXgr3w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1njcbZ-000SU0-Qi; Wed, 27 Apr 2022 08:00:57 +0000
+	id 1nje82-000mni-5O; Wed, 27 Apr 2022 09:38:35 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1njcbS-000SRU-Ht
- for barebox@lists.infradead.org; Wed, 27 Apr 2022 08:00:52 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77]
- helo=[127.0.0.1]) by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1njcbQ-0001GB-M0; Wed, 27 Apr 2022 10:00:48 +0200
-Message-ID: <0f90ecf7-75a3-4a6a-5188-90817c595bc0@pengutronix.de>
-Date: Wed, 27 Apr 2022 10:00:48 +0200
+ id 1nje7S-000mXb-CW
+ for barebox@lists.infradead.org; Wed, 27 Apr 2022 09:38:00 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ore@pengutronix.de>)
+ id 1nje7O-0004cX-Ox; Wed, 27 Apr 2022 11:37:54 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+ (envelope-from <ore@pengutronix.de>)
+ id 1nje7P-005Wta-F1; Wed, 27 Apr 2022 11:37:54 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <ore@pengutronix.de>)
+ id 1nje7N-007KTM-AV; Wed, 27 Apr 2022 11:37:53 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: rcz@pengutronix.de,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 27 Apr 2022 11:37:52 +0200
+Message-Id: <20220427093752.1746932-5-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220427093752.1746932-1-o.rempel@pengutronix.de>
+References: <20220427093752.1746932-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Content-Language: en-US
-To: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
-References: <20220427073724.3126601-1-o.rempel@pengutronix.de>
- <20220427073724.3126601-5-o.rempel@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220427073724.3126601-5-o.rempel@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220427_010050_656694_E8451389 
-X-CRM114-Status: GOOD (  21.64  )
+X-CRM114-CacheID: sfid-20220427_023758_477788_9007F580 
+X-CRM114-Status: GOOD (  12.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,107 +74,97 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1 5/5] ARM: boards: protonic-imx6: add HW revision
- specific machine compatible
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v2 4/4] ARM: boards: skov-imx6: make use of
+ of_fixup_machine_compatible()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 27.04.22 09:37, Oleksij Rempel wrote:
-> Currently we use generic/pinned machine compatible for different HW
-> revisions. With this patch we extend this compatible string with HW
-> revision specific.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  arch/arm/boards/protonic-imx6/board.c | 25 +++++++++++++++++++++----
->  1 file changed, 21 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm/boards/protonic-imx6/board.c b/arch/arm/boards/protonic-imx6/board.c
-> index 0fadd148b4..1a1e5540ee 100644
-> --- a/arch/arm/boards/protonic-imx6/board.c
-> +++ b/arch/arm/boards/protonic-imx6/board.c
-> @@ -85,6 +85,7 @@ struct prt_imx6_priv {
->  	const struct prt_machine_data *dcfg;
->  	unsigned int hw_id;
->  	unsigned int hw_rev;
-> +	const char *compatible;
->  	const char *name;
->  	unsigned int usb_delay;
->  	unsigned int no_usb_check;
-> @@ -126,6 +127,20 @@ static const struct gpio prt_imx6_kvg_gpios[] = {
->  	},
->  };
->  
-> +static int prt_of_fixup_hwrev(struct device_node *dstroot, void *arg)
-> +{
-> +	struct prt_imx6_priv *priv = prt_priv;
-> +	char *buf;
-> +
-> +	buf = xasprintf("%s,model:%u,rev:%u", priv->compatible, priv->hw_id,
-> +			priv->hw_rev);
+Replace board specific fixup_machine_compatible() with generic
+of_fixup_machine_compatible()
 
-: is not a valid character for device tree property names.
-(https://github.com/devicetree-org/devicetree-specification/releases/download/v0.4-rc1/devicetree-specification-v0.4-rc1.pdf
- Table 2.2)
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/arm/boards/skov-imx6/board.c | 40 +++----------------------------
+ 1 file changed, 3 insertions(+), 37 deletions(-)
 
-While barebox might not mind, it's better you stick to the standard
-character set.
-
-> +	of_fixup_machine_compatible(dstroot, buf);
-> +
-> +	free(buf);
-> +
-> +	return 0;
-> +}
-> +
->  static int prt_imx6_read_rfid(struct prt_imx6_priv *priv, void *buf,
->  			      size_t size)
->  {
-> @@ -797,7 +812,7 @@ exit_get_dcfg:
->  static int prt_imx6_probe(struct device_d *dev)
->  {
->  	struct prt_imx6_priv *priv;
-> -	const char *name, *ptr;
-> +	const char *ptr;
->  	struct param_d *p;
->  	int ret;
->  
-> @@ -806,9 +821,9 @@ static int prt_imx6_probe(struct device_d *dev)
->  		return -ENOMEM;
->  
->  	priv->dev = dev;
-> -	name = of_device_get_match_compatible(priv->dev);
-> -	ptr = strchr(name, ',');
-> -	priv->name =  ptr ? ptr + 1 : name;
-> +	priv->compatible = of_device_get_match_compatible(priv->dev);
-> +	ptr = strchr(priv->compatible, ',');
-> +	priv->name =  ptr ? ptr + 1 : priv->compatible;
-
-Could you reuse of_get_machine_compatible() here?
-
->  
->  	pr_info("Detected machine type: %s\n", priv->name);
->  
-> @@ -841,6 +856,8 @@ static int prt_imx6_probe(struct device_d *dev)
->  
->  	prt_priv = priv;
->  
-> +	of_register_fixup(prt_of_fixup_hwrev, NULL);
-> +
->  	return 0;
->  free_priv:
->  	kfree(priv);
-
-
+diff --git a/arch/arm/boards/skov-imx6/board.c b/arch/arm/boards/skov-imx6/board.c
+index 2702bc1de9..53c213f33b 100644
+--- a/arch/arm/boards/skov-imx6/board.c
++++ b/arch/arm/boards/skov-imx6/board.c
+@@ -312,55 +312,21 @@ static int skov_board_no = -1;
+ static bool skov_have_switch = true;
+ static const char *no_switch_suffix = "-noswitch";
+ 
+-static void fixup_machine_compatible(const char *compat,
+-				     struct device_node *root)
+-{
+-	int cclen = 0, clen = strlen(compat) + 1;
+-	const char *curcompat;
+-	void *buf;
+-
+-	if (!root) {
+-		root = of_get_root_node();
+-		if (!root)
+-			return;
+-	}
+-
+-	curcompat = of_get_property(root, "compatible", &cclen);
+-
+-	buf = xzalloc(cclen + clen);
+-
+-	memcpy(buf, compat, clen);
+-	memcpy(buf + clen, curcompat, cclen);
+-
+-	/*
+-	 * Prepend the compatible from board entry to the machine compatible.
+-	 * Used to match bootspec entries against it.
+-	 */
+-	of_set_property(root, "compatible", buf, cclen + clen, true);
+-
+-	free(buf);
+-}
+-
+ static void fixup_noswitch_machine_compatible(struct device_node *root)
+ {
+ 	const char *compat = imx6_variants[skov_board_no].dts_compatible;
+ 	const char *generic = "skov,imx6";
+-	size_t size, size_generic;
+ 	char *buf;
+ 
+-	size = strlen(compat) + strlen(no_switch_suffix) + 1;
+-	size_generic = strlen(generic) + strlen(no_switch_suffix) + 1;
+-	size = max(size, size_generic);
+-
+ 	/* add generic compatible, so systemd&co can make right decisions */
+ 	buf = xasprintf("%s%s", generic, no_switch_suffix);
+-	fixup_machine_compatible(buf, root);
++	of_fixup_machine_compatible(root, buf);
+ 
+ 	/* add specific compatible as fallback, in case this board has new
+ 	 * challenges.
+ 	 */
+ 	buf = xasprintf("%s%s", compat, no_switch_suffix);
+-	fixup_machine_compatible(buf, root);
++	of_fixup_machine_compatible(root, buf);
+ 
+ 	free(buf);
+ }
+@@ -648,7 +614,7 @@ static int skov_imx6_probe(struct device_d *dev)
+ 	globalvar_add_simple("board.dts", variant->dts_compatible);
+ 	globalvar_add_simple("board.display", variant->display ?: NULL);
+ 
+-	fixup_machine_compatible(variant->dts_compatible, NULL);
++	of_fixup_machine_compatible(NULL, variant->dts_compatible);
+ 
+ 	skov_init_board(variant);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 _______________________________________________
 barebox mailing list
