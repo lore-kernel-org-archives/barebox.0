@@ -1,58 +1,60 @@
-Delivery-date: Wed, 27 Apr 2022 14:16:02 +0200
+Delivery-date: Wed, 27 Apr 2022 14:16:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1njgaR-00H01J-Mo
-	for lore@lore.pengutronix.de; Wed, 27 Apr 2022 14:16:02 +0200
+	id 1njgaU-00H01t-Ol
+	for lore@lore.pengutronix.de; Wed, 27 Apr 2022 14:16:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1njgaM-0007lb-T3
-	for lore@pengutronix.de; Wed, 27 Apr 2022 14:16:01 +0200
+	id 1njgaR-0007n6-84
+	for lore@pengutronix.de; Wed, 27 Apr 2022 14:16:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=r+hTV24+Udb7ghQO34Pvjj8q38zP65TCviS1WTlnoxc=; b=gMHHZ9IPxRSq9t
-	oAubExyXoCwWv+g+hsstZbTRiKxVs7pDcKmOXDSgQ2ZH+l37Vp+Z2FbifGv81wGcABOWUVx8cTftA
-	qRM0q+0DZl5tQLytOfWMCmETJovEj3DuibUQ4jImYZ03mt12Hnr+cheonX5wELlFxaYLEYJHVREs1
-	y+thmeOd6RtT1sn7WUJ/8gKCLKYwa6A6tx5FTt/oFliupGgdiBotrlel/IOleQrRP+TehNjoNv8CY
-	fb4LI9KHdCXaDSTCuJ8rI2D5V7NgqHBjiYMAc569k39d3epivfkIithS+wTnRePeizzUgblZdyVsg
-	XzohQD40P6dFTainDjcw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=515cJ0ocQqzyvc/7VSmmhdQqmPLCoWax7VoQDAe4Sz4=; b=Poof2CJlxqEmqa
+	7e68exeSrFco3IkHLweLN2OP1Z9aW6GSCXeOr8tlMhtcJdcR4o0e0jIe8QTbgcSh14RluVR5LUFrz
+	sHsoWadoe5xAxf9Ca6DebmnUOK2vwPq3nFxOMO0UWsuB+mFEw9fgdo3nTlIzTh3LKblJ9SEpDhwgc
+	rJr6Q6+4sMr7YF7AVd29ewBDgiCceivFEilW5gOiKs+iL9vd7piJ1XLzs6jTcr4YfZLnIzRJ9mVnW
+	sYfMOT5uD9kiwJMEsnUWlQ/Dt2CkOeXXwoLXPJu3OsE3eB/FyjMYLhZf2Q1H5IhBiH+w+14gjVruP
+	Ci1/zF2jIe3zzxApz6jw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1njgYs-001Goy-4k; Wed, 27 Apr 2022 12:14:26 +0000
+	id 1njgYu-001GqH-UF; Wed, 27 Apr 2022 12:14:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1njgYl-001GmX-G4
- for barebox@lists.infradead.org; Wed, 27 Apr 2022 12:14:20 +0000
+ id 1njgYl-001GmY-G8
+ for barebox@lists.infradead.org; Wed, 27 Apr 2022 12:14:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1njgYi-0007QI-At; Wed, 27 Apr 2022 14:14:16 +0200
+ id 1njgYi-0007QL-Ed; Wed, 27 Apr 2022 14:14:16 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
  by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
  (envelope-from <ore@pengutronix.de>)
- id 1njgYj-005XwI-0z; Wed, 27 Apr 2022 14:14:15 +0200
+ id 1njgYj-005Xwj-4p; Wed, 27 Apr 2022 14:14:15 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <ore@pengutronix.de>)
- id 1njgYg-007v1m-Ig; Wed, 27 Apr 2022 14:14:14 +0200
+ id 1njgYg-007v1o-JB; Wed, 27 Apr 2022 14:14:14 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 27 Apr 2022 14:14:08 +0200
-Message-Id: <20220427121413.1887458-1-o.rempel@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 27 Apr 2022 14:14:09 +0200
+Message-Id: <20220427121413.1887458-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220427121413.1887458-1-o.rempel@pengutronix.de>
+References: <20220427121413.1887458-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220427_051419_626811_F0081BDF 
-X-CRM114-Status: UNSURE (   7.17  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220427_051419_749667_A5E109EE 
+X-CRM114-Status: GOOD (  16.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,41 +78,108 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 0/5] add different OF board fixups 
+Subject: [PATCH v3 1/5] common: add $global.serial_number with device tree
+ fixup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-changes v3:
-- rename global.of_machine_compatible to global.of.kernel.add_machine_compatible
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-changes v2:
-- protonic: use only allowed chars for generated compatible
-- protonic: make use of of_get_machine_compatible() to get board name
-- of_fixup_machine_compatible: make curcompat optional
-- add $global.of_machine_compatible
+This new variable can be set by boards from C code or from the
+environment to change the serial number fixed up into the kernel device
+tree.
 
-Add optional fixups for board serial-number and machine compatible.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ common/Kconfig   |  5 +++++
+ common/misc.c    | 16 ++++++++++++++++
+ common/oftree.c  |  9 +++++++++
+ include/common.h |  3 +++
+ 4 files changed, 33 insertions(+)
 
-Ahmad Fatoum (1):
-  common: add $global.serial_number with device tree fixup
-
-Oleksij Rempel (4):
-  ARM: boards: protonic-imx6: make use of barebox_set_serial_number()
-  of: add generic of_fixup_machine_compatible()
-  ARM: boards: skov-imx6: make use of of_fixup_machine_compatible()
-  ARM: boards: protonic-imx6: add HW revision specific machine
-    compatible
-
- arch/arm/boards/protonic-imx6/board.c | 42 ++++++++++------------
- arch/arm/boards/skov-imx6/board.c     | 40 ++-------------------
- arch/arm/mach-imx/Kconfig             |  2 ++
- common/Kconfig                        | 10 ++++++
- common/misc.c                         | 39 +++++++++++++++++++++
- common/oftree.c                       | 50 +++++++++++++++++++++++++++
- include/common.h                      |  6 ++++
- include/of.h                          |  6 ++++
- 8 files changed, 135 insertions(+), 60 deletions(-)
-
+diff --git a/common/Kconfig b/common/Kconfig
+index f7a6a96e87..d08302a573 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1066,6 +1066,11 @@ config MACHINE_ID
+ 	  Note: if no hashable information is available no machine id will be passed
+ 	  to the kernel.
+ 
++config SERIAL_NUMBER_FIXUP
++	bool "fix up board serial number"
++	help
++	  fixup serial number supplied by board code info device tree
++
+ config SYSTEMD_OF_WATCHDOG
+ 	bool "inform devicetree-enabled kernel of used watchdog"
+ 	depends on WATCHDOG && OFTREE && FLEXIBLE_BOOTARGS
+diff --git a/common/misc.c b/common/misc.c
+index 226635f0d4..3b3bc05bfd 100644
+--- a/common/misc.c
++++ b/common/misc.c
+@@ -149,6 +149,7 @@ EXPORT_SYMBOL(barebox_get_model);
+ BAREBOX_MAGICVAR(global.model, "Product name of this hardware");
+ 
+ static char *hostname;
++static char *serial_number;
+ 
+ /*
+  * The hostname is supposed to be the shortname of a board. It should
+@@ -179,6 +180,21 @@ EXPORT_SYMBOL(barebox_set_hostname_no_overwrite);
+ BAREBOX_MAGICVAR(global.hostname,
+ 		"shortname of the board. Also used as hostname for DHCP requests");
+ 
++void barebox_set_serial_number(const char *__serial_number)
++{
++	globalvar_add_simple_string("serial_number", &serial_number);
++
++	free(serial_number);
++	serial_number = xstrdup(__serial_number);
++}
++
++const char *barebox_get_serial_number(void)
++{
++	return serial_number;
++}
++
++BAREBOX_MAGICVAR(global.serial_number, "Board serial number");
++
+ void __noreturn panic(const char *fmt, ...)
+ {
+ 	va_list args;
+diff --git a/common/oftree.c b/common/oftree.c
+index bce0ff09d6..c6d75055cc 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -207,6 +207,15 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
+ 	int instance = reset_source_get_instance();
+ 	struct device_d *dev;
+ 
++	if (IS_ENABLED(CONFIG_SERIAL_NUMBER_FIXUP)) {
++		const char *serialno;
++
++		serialno = getenv("global.serial_number");
++		if (serialno)
++			of_property_write_string(root, "serial-number", serialno);
++
++	}
++
+ 	node = of_create_node(root, "/chosen");
+ 	if (!node)
+ 		return -ENOMEM;
+diff --git a/include/common.h b/include/common.h
+index 4167d4676e..967502a7ab 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -126,4 +126,7 @@ const char *barebox_get_hostname(void);
+ void barebox_set_hostname(const char *);
+ void barebox_set_hostname_no_overwrite(const char *);
+ 
++const char *barebox_get_serial_number(void);
++void barebox_set_serial_number(const char *);
++
+ #endif	/* __COMMON_H_ */
 -- 
 2.30.2
 
