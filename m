@@ -1,63 +1,58 @@
-Delivery-date: Fri, 29 Apr 2022 09:18:59 +0200
+Delivery-date: Fri, 29 Apr 2022 09:32:09 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nkKu4-001lKW-St
-	for lore@lore.pengutronix.de; Fri, 29 Apr 2022 09:18:59 +0200
+	id 1nkL6o-001m65-Ig
+	for lore@lore.pengutronix.de; Fri, 29 Apr 2022 09:32:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nkKu2-0007we-Em
-	for lore@pengutronix.de; Fri, 29 Apr 2022 09:18:59 +0200
+	id 1nkL6l-00015G-GA
+	for lore@pengutronix.de; Fri, 29 Apr 2022 09:32:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=J2Z0kXuckSSKRCJyHMmDzAVI/vmChHCmgsr3nIGTASo=; b=4Y73Wk8yk/X8PeBcvB6LwG6LOX
-	sxcprEIG8kc3sKXyvR6vxMdmSBP36z3UgazmwBp2rwIjfmea1S56F8Xwio4SQjrkloud8EzBBi5gn
-	dykUI9KUH5oeKufU31r7nYPNV8jIjAuBxag5qd8n4sRbUklD04aWI3+SxhS0ZG7tKSFol9Ax/JNv0
-	0sZgu1mycRo2jJZ6arNtBgMj2aZ5RmEYA9I652OZaHNezyzGI6P4xCb0PTKRrecyad/BxEplw9i0W
-	fC1Q1EwAz+Hq/E6HS8qbdNO7Ye50rNEsg6Dul4HPu+8Vcl2BjYRKfvNaEHz1AZWIBId8uoKoJVRbz
-	Cc2TNrCg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=QVvmnr+B76O4G+FHe66+wzF9yDrVFtKY+qUNH6FKY/A=; b=tJA+JpTRKCsrg/
+	tRsFO2AULVTIIa2E6GQWcppFKI+Se+AYA5UjD7k7rUVNJ5BNlhf9shU+1k7/eTkqn48Mjf31I2xRd
+	yDAlM0i3UfgTpmrZ3eyBG7vlwqx2pYeS7RKG68e/APm3qoFJtr76eZ2J2NUEAngHQVUTr5ugIiIMb
+	DQmWJP9aPbl13UrtwZrYskihEizQqfxU2KmWQQREH+fEbix4lz3D+fzwZ9IA4OwVlAypRWFgQmf3I
+	1a7LWz6kaKJn3fKGBH5CEarzZNNpu4mUZTk6zvGmGhSrhEmks6KVrZMzaCDp/FwpnQTisOlY/TXFw
+	iLQZ0TavJQw4pPa55ixA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nkKsr-009x5o-3Q; Fri, 29 Apr 2022 07:17:45 +0000
+	id 1nkL5V-009yUF-Ma; Fri, 29 Apr 2022 07:30:49 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nkKsm-009x4g-0s
- for barebox@lists.infradead.org; Fri, 29 Apr 2022 07:17:41 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1nkL5K-009yRj-Qe
+ for barebox@lists.infradead.org; Fri, 29 Apr 2022 07:30:44 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nkKsk-0007oX-RP; Fri, 29 Apr 2022 09:17:38 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1nkKsk-000489-If; Fri, 29 Apr 2022 09:17:38 +0200
-Date: Fri, 29 Apr 2022 09:17:38 +0200
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220429071738.GS4012@pengutronix.de>
-References: <20220427073340.3125330-1-o.rempel@pengutronix.de>
+ (envelope-from <ore@pengutronix.de>)
+ id 1nkL5J-0000gF-Da; Fri, 29 Apr 2022 09:30:37 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+ (envelope-from <ore@pengutronix.de>)
+ id 1nkL5K-005u6P-4V; Fri, 29 Apr 2022 09:30:36 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <ore@pengutronix.de>)
+ id 1nkL5H-000pM8-Rs; Fri, 29 Apr 2022 09:30:35 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 29 Apr 2022 09:30:29 +0200
+Message-Id: <20220429073034.197362-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20220427073340.3125330-1-o.rempel@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 09:17:25 up 29 days, 19:47, 77 users,  load average: 0.04, 0.11, 0.18
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220429_001740_103226_B39FB322 
-X-CRM114-Status: GOOD (  22.70  )
+X-CRM114-CacheID: sfid-20220429_003038_951413_03BEFD84 
+X-CRM114-Status: UNSURE (   6.94  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,59 +72,51 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1] net: dsa: wait until PHY aneg is done
+Subject: [PATCH v4 0/5] add different OF board fixups 
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Apr 27, 2022 at 09:33:40AM +0200, Oleksij Rempel wrote:
-> Some PHYs need a bit longer to complete auto negotiation. So, wait long
-> enough until this process is done.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  drivers/net/dsa.c | 4 ++++
->  1 file changed, 4 insertions(+)
+changes v4:
+- s/code info device/code into device/
 
-Applied, thanks
+changes v3:
+- rename global.of_machine_compatible to global.of.kernel.add_machine_compatible
 
-Sascha
+changes v2:
+- protonic: use only allowed chars for generated compatible
+- protonic: make use of of_get_machine_compatible() to get board name
+- of_fixup_machine_compatible: make curcompat optional
+- add $global.of_machine_compatible
 
+Add optional fixups for board serial-number and machine compatible.
 
-> 
-> diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
-> index f2420d306f..d9e629cefc 100644
-> --- a/drivers/net/dsa.c
-> +++ b/drivers/net/dsa.c
-> @@ -111,6 +111,10 @@ static int dsa_port_start(struct eth_device *edev)
->  
->  	dsa_port_set_ethaddr(edev);
->  
-> +	ret = phy_wait_aneg_done(dp->edev.phydev);
-> +	if (ret)
-> +		return ret;
-> +
->  	if (ops->port_enable) {
->  		ret = ops->port_enable(dp, dp->index, dp->edev.phydev);
->  		if (ret)
-> -- 
-> 2.30.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Ahmad Fatoum (1):
+  common: add $global.serial_number with device tree fixup
+
+Oleksij Rempel (4):
+  ARM: boards: protonic-imx6: make use of barebox_set_serial_number()
+  of: add generic of_fixup_machine_compatible()
+  ARM: boards: skov-imx6: make use of of_fixup_machine_compatible()
+  ARM: boards: protonic-imx6: add HW revision specific machine
+    compatible
+
+ arch/arm/boards/protonic-imx6/board.c | 42 ++++++++++------------
+ arch/arm/boards/skov-imx6/board.c     | 40 ++-------------------
+ arch/arm/mach-imx/Kconfig             |  2 ++
+ common/Kconfig                        | 10 ++++++
+ common/misc.c                         | 39 +++++++++++++++++++++
+ common/oftree.c                       | 50 +++++++++++++++++++++++++++
+ include/common.h                      |  6 ++++
+ include/of.h                          |  6 ++++
+ 8 files changed, 135 insertions(+), 60 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 _______________________________________________
 barebox mailing list
