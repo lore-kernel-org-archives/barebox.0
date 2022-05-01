@@ -1,77 +1,60 @@
-Delivery-date: Sun, 01 May 2022 18:28:50 +0200
+Delivery-date: Sun, 01 May 2022 20:28:19 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nlCRH-0056l6-Fq
-	for lore@lore.pengutronix.de; Sun, 01 May 2022 18:28:50 +0200
+	id 1nlEIu-005C6u-T0
+	for lore@lore.pengutronix.de; Sun, 01 May 2022 20:28:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nlCRE-0008DV-S3
-	for lore@pengutronix.de; Sun, 01 May 2022 18:28:49 +0200
+	id 1nlEIs-0001Nd-3t
+	for lore@pengutronix.de; Sun, 01 May 2022 20:28:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-ID:Subject:To:From
-	:Date:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=MZ5qG+34hiaAg/wwdc2HAFS06PGlzv1CU7V8xdxCzVg=; b=ui4zvfLDl6bwQ+
-	LS0v0oMX6m8YR6TAjsSBXneBTMcEcEGBPsQUcLyHeUJb7QMASTlxg9zFDTTuSPeUUmWWqPE+NA6we
-	/eISCMskFwyU3Sv2X67YH8BrOOTjpwrtaeElBnC/00ElrJKlzld+EdxNk7s1FibP8j71xsrxTLuVG
-	w+ZdOJTlQqmMiBRHQBvbb/+UX3UCPQzd3LHtBCzH+xblN7A44MELzhcCkILvQiiN/QWy0MhNeYUhJ
-	DbeiwrPlihjIYAcay7+GI037Ub2QhOAfryD/Xg5ASYcQS3L+/1gc4Utg/VIUzJiDx163V3g2/oyaT
-	tFRTg90yrT6iMHFCKggA==;
+	List-Owner; bh=0MkGPqkQrFNTiaMV1BCQ0WBhT+eKrukT+0XHqdzIeUc=; b=XJn7+3aQiIn/53
+	p7U68f1BmLKEzBHe9fXTt2we9Qc/+X+Vapf4zMU/+QxB08npaEOflmB93LaBeTicYx0NebjE9aVRK
+	a85g0jro8G1+xoQrbeVaoGu+cWfC/QqOH2/h9gyPsu4lhM0BD4jvl3h+q5OxyRqAeQdDcE/YXZKl+
+	M7RxNbNSWVPtHY/zvHtbEEz3/qOAaf+kM8X8bC308lbCS5WQBKxVDnIoFkeXDwgWzrqbSEmxEDXaS
+	2qvcTtibN8/Y3ApEdc79+ey84gNjrKWmZ4d78sf0RkgEuPoWbwKUwB0Uo4Uxn9xgiviTJMLPBSPjH
+	SKnx7G1tXSCiyiNOND5A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nlCPW-00Ga2a-29; Sun, 01 May 2022 16:27:02 +0000
-Received: from mail.inside-m2m.de ([188.68.57.244])
+	id 1nlEH7-00GhGE-Bs; Sun, 01 May 2022 18:26:29 +0000
+Received: from lx20.hoststar.hosting ([168.119.41.54])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nlCPP-00Ga2A-IM
- for barebox@lists.infradead.org; Sun, 01 May 2022 16:26:58 +0000
-Received: from localhost (localhost [127.0.0.1])
- by mail.inside-m2m.de (Postfix) with ESMTP id B78F4403FA
- for <barebox@lists.infradead.org>; Sun,  1 May 2022 18:18:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
- s=default; t=1651421929;
- bh=qJJ9LHg94RjclzQSpnKIaRHHaF7eaKis/9sXYPgo4PU=;
- h=Date:From:To:Subject:From;
- b=KvM0qn53URHnXVoUfkMfQsjx5X9+4J9jNAndO6sb01xUC1FsZMIKM17BFEWhEs4xI
- jC5bHSVh6ppUJf2ppdOrAauVNhqjBp8NPouc3DjlHBzwVLIHJCBxlPKupT32Z0TzIP
- SbFR/1zgtHpUcYgGlUAeOkoMGRFSSgkg3coNGaGGBrsvOSv6w81JHUbv2mZoMVsE7k
- FYXBMiSLztFB9ONRvlOpRnhb4BtN1v3Aat6EdhkexNHFSpaYWdCzo4wsIsW1weADCu
- PVaV9C94/tR66CCUpqDrGpMHf9EQG3UX16IQeVLZd//AV7JUUl7SeAv+B+aS5DIfu6
- 46OF377RX7B/Q==
-X-Virus-Scanned: Debian amavisd-new at mail.inside-m2m.de
-Received: from mail.inside-m2m.de ([127.0.0.1])
- by localhost (mail.inside-m2m.de [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id R2DNlnBKml2l for <barebox@lists.infradead.org>;
- Sun,  1 May 2022 18:18:49 +0200 (CEST)
-Received: from Hephaistos (unknown [94.31.102.219])
- (Authenticated sender: konstantin.kletschke@inside-m2m.de)
- by mail.inside-m2m.de (Postfix) with ESMTPSA id 5C21B403DE
- for <barebox@lists.infradead.org>; Sun,  1 May 2022 18:18:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
- s=default; t=1651421929;
- bh=qJJ9LHg94RjclzQSpnKIaRHHaF7eaKis/9sXYPgo4PU=;
- h=Date:From:To:Subject:From;
- b=KvM0qn53URHnXVoUfkMfQsjx5X9+4J9jNAndO6sb01xUC1FsZMIKM17BFEWhEs4xI
- jC5bHSVh6ppUJf2ppdOrAauVNhqjBp8NPouc3DjlHBzwVLIHJCBxlPKupT32Z0TzIP
- SbFR/1zgtHpUcYgGlUAeOkoMGRFSSgkg3coNGaGGBrsvOSv6w81JHUbv2mZoMVsE7k
- FYXBMiSLztFB9ONRvlOpRnhb4BtN1v3Aat6EdhkexNHFSpaYWdCzo4wsIsW1weADCu
- PVaV9C94/tR66CCUpqDrGpMHf9EQG3UX16IQeVLZd//AV7JUUl7SeAv+B+aS5DIfu6
- 46OF377RX7B/Q==
-Date: Sun, 1 May 2022 18:18:48 +0200
-From: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
+ id 1nlEH2-00GhFl-Md
+ for barebox@lists.infradead.org; Sun, 01 May 2022 18:26:26 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=emfend.at; 
+ s=mail;
+ h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:
+ From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=VwZXyLaVymx0Gh5yKs9rzje0D9U4UzK8k1Y2iU3liL0=; b=jywkT7uizwkN3FPBXUrnbVahR3
+ uOoNndTbZYD6yRECi34Eid2LCCrva7aAgZl+eeBaI1jtz7bGlJKS5x2oJU17CVOYNdVJbrcA64lEF
+ qP1qtmgmH9uFM+wzEN9PxDDCHsVb1nlfaC8o+U5xpST29ZQKmKhpp5b2KQ6jCLHuFhok=;
+Received: from 194-208-208-245.tele.net ([194.208.208.245]:62715
+ helo=localhost.localdomain)
+ by lx20.hoststar.hosting with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
+ (envelope-from <matthias.fend@emfend.at>) id 1nlEGs-005UG1-Be
+ for barebox@lists.infradead.org; Sun, 01 May 2022 20:26:14 +0200
+From: Matthias Fend <matthias.fend@emfend.at>
 To: barebox@lists.infradead.org
-Message-ID: <Ym6y6LXmdC9h3u4n@Hephaistos>
+Date: Sun,  1 May 2022 20:26:07 +0200
+Message-Id: <20220501182607.38125-1-matthias.fend@emfend.at>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Disposition: inline
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220501_092655_782693_E1318D9A 
-X-CRM114-Status: UNSURE (   5.47  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220501_112625_080240_5C97B25C 
+X-CRM114-Status: GOOD (  10.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,90 +66,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Boot from SD if SD-Card is present - Beaglebone Black
+Subject: [PATCH] firmware: zynqmp-fpga: do not load PL with ONLY_BIN flag
+ unless necessary
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi All,
+Since pmu-fw release 2018.3, the ZYNQMP_FPGA_BIT_ONLY_BIN flag is no
+longer used. This wasn't a problem for a while, but in newer versions a
+validation sequence will fail if this flag is set. This means that the PL
+can no longer be loaded.
 
-I have a Beaglebone Black whith internal MMC and external SD-Card
-interface.
+Do not set the ZYNQMP_FPGA_BIT_ONLY_BIN flag unless absolutely necessary
+to avoid this problem.
 
-I boot from internal MMC always. The system itself aways boots from
-internal MMC.
+Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
+---
+ drivers/firmware/zynqmp-fpga.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Is there a way - may be scriptable in boot entry - to start system from
-external SD-Card, if it is present?
-
-Normally I boot this way, bootchooser select system0 or system1:
-
-#!/bin/sh
-
-mount mmc1.1
-
-global.bootm.image=3D/mnt/mmc1.1/boot/zImage
-global.bootm.oftree=3D/mnt/mmc1.1/boot/am335x-boneblack.dtb
-global.linux.bootargs.dyn.root=3D"root=3D/dev/mmcblk0p2 rootfstype=3Dext4 r=
-ootwait"
-
-If I stop autoboot and want to use external SD-Card I manually select
-insidem2m_sd as a boot entry:
-
-#!/bin/sh
-
-mount mmc0.1
-
-global.bootm.image=3D/mnt/mmc0.1/boot/zImage
-global.bootm.oftree=3D/mnt/mmc0.1/boot/am335x-boneblack.dtb
-global.linux.bootargs.dyn.root=3D"root=3D/dev/mmcblk1p2 rootfstype=3Dext4 r=
-ootwait"
-
-Can this be something like:
-
-IF external SD-CARD IS PRESENT bootentry is insidem2m_sd ELSE
-bootchooser
-
-?
-
-Please obey if you are inspecting the CMDLINE, in more recent Kernels
-the mmcblk0 and mmcblk1 numbering is exchanged.
-
-
-Kind Regards
-Konstantin
-
-
--- =
-
-INSIDE M2M GmbH
-Konstantin Kletschke
-Berenbosteler Stra=DFe 76 B
-30823 Garbsen
-
-Telefon: +49 (0) 5137 90950136
-Mobil: +49 (0) 151 15256238
-Fax: +49 (0) 5137 9095010
-
-konstantin.kletschke@inside-m2m.de
-http://www.inside-m2m.de =
-
-
-Gesch=E4ftsf=FChrung: Michael Emmert, Ingo Haase, Dr. Fred K=F6nemann, Dere=
-k Uhlig
-HRB: 111204, AG Hannover
+diff --git a/drivers/firmware/zynqmp-fpga.c b/drivers/firmware/zynqmp-fpga.c
+index 63d7398fd..db34ac2be 100644
+--- a/drivers/firmware/zynqmp-fpga.c
++++ b/drivers/firmware/zynqmp-fpga.c
+@@ -261,9 +261,10 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
+ 		goto err_free_dma;
+ 	}
+ 
+-	if (mgr->features & ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED)
++	if (mgr->features & ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED) {
++		flags &= ~ZYNQMP_FPGA_BIT_ONLY_BIN;
+ 		buf_size = body_length;
+-	else
++	} else
+ 		buf_size = addr + body_length;
+ 
+ 	status = mgr->eemi_ops->fpga_load((u64)addr, buf_size, flags);
+-- 
+2.25.1
 
 
 _______________________________________________
