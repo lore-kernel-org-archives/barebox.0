@@ -1,59 +1,64 @@
-Delivery-date: Tue, 03 May 2022 11:14:03 +0200
+Delivery-date: Tue, 03 May 2022 12:13:08 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nlobb-000QT5-1b
-	for lore@lore.pengutronix.de; Tue, 03 May 2022 11:14:03 +0200
+	id 1nlpWm-000T5n-1e
+	for lore@lore.pengutronix.de; Tue, 03 May 2022 12:13:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nlobZ-0002dQ-Kt
-	for lore@pengutronix.de; Tue, 03 May 2022 11:14:02 +0200
+	id 1nlpWk-0004W0-Pz
+	for lore@pengutronix.de; Tue, 03 May 2022 12:13:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=3hh0twgpygZPG9UHzgbSBC6kT6XWBU3PGETkit0MdjI=; b=1wvGCheSvKZFAH
-	xUg0erc9s80AhPdZnM3sy8zBl5ELVSwQ95FbQRL5JJzkSYLGaIwrK1yN5k0Z1LlWEBq9lGHTaaqrY
-	Cn8z2t9bgbxfy1cwnrd4YoQGU9G/6rGbGtAlmYN9ppfJgwkFVLdTxwzKOK3gkhsIU3z1UYgkXZI0Y
-	U1jldG5UDwqIcREghrCcv//4rLUT+cdmx6UzoPKCF/eY8woRczYYF3JAkpG3GrBR6a5ohIOy+DXt2
-	DMlpueVIkaGYmEGTENCNJAK34eV1uXaSVC4jYqRBDdilOMVzvytY6VAIy2uf6fFfX4OjzRMc2R3yP
-	Yh3x6UKahjJ4kPpxoBmA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Content-Type:
+	Content-Transfer-Encoding:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:Subject:From:Cc:To:MIME-Version:Date:Message-ID:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=VLuutb7yG6Aei1hYL5I3CkzxV2r0iV+WL1ggscQ/By4=; b=r3YyhV94tHyGju94PRGmMqkhtG
+	3T2ZAl7IPXPkuS1ouY5KEFQdjwW/TfJvfWRs67eB4uEM3QpLG5R3+da9uy8WbT2Ewenwv4DMQeS/S
+	2LiuX539wa8u/KPKqsearPC1+kenyvYTHqWMpDEx/sjo6YmJvqkcqYS7Cp3VIVHGU75m8PsVQRbST
+	wChRUaofpH8LildbUXXJ4qZWWbYuhYVrSrMp36ZWRX3Ca8Wpa1JWMZUOGi7TkPoeci1hi40P286rz
+	ebYgxGjBuwgwS6KLmhjlHkmIv7dQOY5oApz+DChazVChLHAsU57EYlwx4EUpxRfP0ZY724BRUklfK
+	gd6n85Cw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nloaL-004luF-Gm; Tue, 03 May 2022 09:12:45 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1nlpV5-0055ny-Gl; Tue, 03 May 2022 10:11:23 +0000
+Received: from lx20.hoststar.hosting ([168.119.41.54])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nloa1-004llS-5c
- for barebox@lists.infradead.org; Tue, 03 May 2022 09:12:27 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ore@pengutronix.de>)
- id 1nloa0-00028n-1A; Tue, 03 May 2022 11:12:24 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
- (envelope-from <ore@pengutronix.de>)
- id 1nloa0-0005Fc-MB; Tue, 03 May 2022 11:12:23 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <ore@pengutronix.de>)
- id 1nloZx-00GFCq-2U; Tue, 03 May 2022 11:12:21 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue,  3 May 2022 11:12:20 +0200
-Message-Id: <20220503091220.3871612-6-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220503091220.3871612-1-o.rempel@pengutronix.de>
-References: <20220503091220.3871612-1-o.rempel@pengutronix.de>
+ id 1nlpV0-0055li-4b
+ for barebox@lists.infradead.org; Tue, 03 May 2022 10:11:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=emfend.at; 
+ s=mail;
+ h=Content-Transfer-Encoding:Content-Type:Subject:From:Cc:To:
+ MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=YV1r7YqLasEoj7Ssw9lSfIKgF1Fdes9Lvqbi9+BvIRU=; b=Y69YJQTYKv/fQMMbT3tAjMZ1lM
+ 6fm7y0YoyL3ibq6LooTyIWLunPENBS7DmVfzerpsTeCDpzhXicYXnQSlYuz9TWu/Y1/BWB7HqbqUx
+ JpLCw/CmA5vjLOHUq9wy31UceV/P8DUeLPKLSDnQPaTFbSNhYcFFo34gjr112KKPENd0=;
+Received: from 194-208-208-245.tele.net ([194.208.208.245]:61299
+ helo=[192.168.100.101])
+ by lx20.hoststar.hosting with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 (Exim 4.93)
+ (envelope-from <matthias.fend@emfend.at>)
+ id 1nlpUr-00Bp9P-JU; Tue, 03 May 2022 12:11:09 +0200
+Message-ID: <01aea3ad-d18b-fa9f-ea11-e6bae8750695@emfend.at>
+Date: Tue, 3 May 2022 12:11:08 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Content-Language: en-US
+To: barebox@lists.infradead.org
+Cc: a.fatoum@pengutronix.de
+From: Matthias Fend <matthias.fend@emfend.at>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220503_021225_244166_6062063C 
-X-CRM114-Status: GOOD (  12.37  )
+X-CRM114-CacheID: sfid-20220503_031118_547376_D48A6F5E 
+X-CRM114-Status: UNSURE (   3.16  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,90 +70,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v6 5/5] ARM: boards: protonic-imx6: add HW revision specific
- machine compatible
+Subject: i2c: Rockchip i2c controller support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Currently we use generic/pinned machine compatible for different HW
-revisions. With this patch we extend this compatible string with HW
-revision specific.
+Hi,
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- arch/arm/boards/protonic-imx6/board.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+it looks to me like the rockchip_i2c_xfer function returns 0 if 
+everything was successful, but shouldn't the i2c master_xfer functions 
+return the number of messages actually processed?
 
-diff --git a/arch/arm/boards/protonic-imx6/board.c b/arch/arm/boards/protonic-imx6/board.c
-index 0fadd148b4..cdbb8debe6 100644
---- a/arch/arm/boards/protonic-imx6/board.c
-+++ b/arch/arm/boards/protonic-imx6/board.c
-@@ -126,6 +126,22 @@ static const struct gpio prt_imx6_kvg_gpios[] = {
- 	},
- };
- 
-+static int prt_of_fixup_hwrev(struct prt_imx6_priv *priv)
-+{
-+	const char *compat;
-+	char *buf;
-+
-+	compat = of_device_get_match_compatible(priv->dev);
-+
-+	buf = xasprintf("%s-m%u-r%u", compat, priv->hw_id,
-+			priv->hw_rev);
-+	barebox_set_of_machine_compatible(buf);
-+
-+	free(buf);
-+
-+	return 0;
-+}
-+
- static int prt_imx6_read_rfid(struct prt_imx6_priv *priv, void *buf,
- 			      size_t size)
- {
-@@ -797,7 +813,6 @@ exit_get_dcfg:
- static int prt_imx6_probe(struct device_d *dev)
- {
- 	struct prt_imx6_priv *priv;
--	const char *name, *ptr;
- 	struct param_d *p;
- 	int ret;
- 
-@@ -806,9 +821,7 @@ static int prt_imx6_probe(struct device_d *dev)
- 		return -ENOMEM;
- 
- 	priv->dev = dev;
--	name = of_device_get_match_compatible(priv->dev);
--	ptr = strchr(name, ',');
--	priv->name =  ptr ? ptr + 1 : name;
-+	priv->name = of_get_machine_compatible();
- 
- 	pr_info("Detected machine type: %s\n", priv->name);
- 
-@@ -818,6 +831,7 @@ static int prt_imx6_probe(struct device_d *dev)
- 
- 	pr_info("  HW type:     %d\n", priv->hw_id);
- 	pr_info("  HW revision: %d\n", priv->hw_rev);
-+	prt_of_fixup_hwrev(priv);
- 
- 	ret = prt_imx6_get_dcfg(priv);
- 	if (ret)
--- 
-2.30.2
+I was just wondering about reading sources and can't do real world 
+testing due to lack of hardware...
 
+  ~Matthias
 
 _______________________________________________
 barebox mailing list
