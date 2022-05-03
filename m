@@ -1,66 +1,58 @@
-Delivery-date: Mon, 02 May 2022 18:02:29 +0200
+Delivery-date: Tue, 03 May 2022 06:44:03 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nlYVL-006IN8-8J
-	for lore@lore.pengutronix.de; Mon, 02 May 2022 18:02:29 +0200
+	id 1nlkOJ-000DCn-0c
+	for lore@lore.pengutronix.de; Tue, 03 May 2022 06:44:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nlYVI-0004DD-Lf
-	for lore@pengutronix.de; Mon, 02 May 2022 18:02:29 +0200
+	id 1nlkOG-00006I-BH
+	for lore@pengutronix.de; Tue, 03 May 2022 06:44:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Content-Type:
-	Content-Transfer-Encoding:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:In-Reply-To:From:References:Cc:To:Subject:
-	MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Adk04XKCIMF33Kim7S+NF8pT1vuWa4c+LKApGnSxEn4=; b=mIFLXqVTQfoACS
-	T+V2nl04rNPw0lFZPoJ/8pSLhCMB+fcBHQDVydFBqiGh1vHFY5bkZCRL5xClsqNAQViaNOnQpo+10
-	U8u7rVRMu3mp9ultBQmsSxEtUkEb/ZHInU0f6VoKJbzkQ9hNvU9PX3TXXI/Nx+FEtBwe9epDDc7px
-	IB015sycxKSJ5UonjkcoThjzvhJ5c5xMcO9PVNs4nLbdDGeDCDbVofanZ8D4bkINHu2J3rfUAcVA8
-	qolLAbUTFV0S80VsmhbBTAGkKXnsiRxHdJMGtaM1lxU+BlOqAwDNKX26j/hJE4036WweyvEuD/TQl
-	XafjlGIaRf6BwE3L7sPQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=keWaZmXUhQ+KARLzF1dahzA0MH0Pew0IH5zHDnDD6rs=; b=3wfFZHym3KdeBr
+	Z10U/O/8FwZud/DTFjaBgX70M2j86VkJKdZv7ns/fomc3TCIVv36MjCHj6vWZZTM5n6zvDocV2XuS
+	i2PaXmZoJSH6JObSggmRgyfpmuITwPphk71o+XbtNKhof/wgZC7h2XC7Sgb3MRdW/ZTqSsHn19CWa
+	Xh7BzZzOljukYe/xD6gb5BE0h1aYlPnbHcx9xbglegfdTqQoV85zXZQDTcgnfF7nDTXJ7xVSfy2pd
+	RVNlzQNYdEGr8ODyNIiDAI1PWqWCZ3DUidxhxhC/PbKB6JyOXcQKOWMqN3OxiXSjM1pnvEpOLh18N
+	tpZ/NOv5GN5b30BdKv+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nlYTe-001cH7-NQ; Mon, 02 May 2022 16:00:46 +0000
-Received: from lx20.hoststar.hosting ([168.119.41.54])
+	id 1nlkMi-003foC-Dt; Tue, 03 May 2022 04:42:24 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nlYTS-001c5n-OR
- for barebox@lists.infradead.org; Mon, 02 May 2022 16:00:39 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=emfend.at; 
- s=mail;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References
- :Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=zxSGNdfALfG+IRkZLq7OPcwK/VbXoTWaVImeOznXbVA=; b=VL5biHH+OmvScIzku50yM9MoOx
- QATb6/J3nxhZEi1payGX9CeHejQVkWn4fj5TcQbe59v31zpDt5YOB1euyJC6P0dvB8uePJwH4oJU6
- VBLDm9EYUdf4CYTNHihrjCE9eJEYh2BN5RvM35pdINhgZncmPu0Stlb1gcx2BPq8BZ8Q=;
-Received: from 194-208-208-245.tele.net ([194.208.208.245]:57443
- helo=[192.168.100.101])
- by lx20.hoststar.hosting with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 (Exim 4.93)
- (envelope-from <matthias.fend@emfend.at>)
- id 1nlYTM-000ifW-Te; Mon, 02 May 2022 18:00:29 +0200
-Message-ID: <9be29417-c0c4-ea84-4f34-8d2c04ddf737@emfend.at>
-Date: Mon, 2 May 2022 18:00:28 +0200
+ id 1nlkMZ-003flG-26
+ for barebox@lists.infradead.org; Tue, 03 May 2022 04:42:17 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ore@pengutronix.de>)
+ id 1nlkMT-000869-3m; Tue, 03 May 2022 06:42:09 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+ (envelope-from <ore@pengutronix.de>)
+ id 1nlkMT-0002qF-OQ; Tue, 03 May 2022 06:42:08 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <ore@pengutronix.de>)
+ id 1nlkMR-00DYzO-FM; Tue, 03 May 2022 06:42:07 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue,  3 May 2022 06:42:01 +0200
+Message-Id: <20220503044206.3232712-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Content-Language: en-US
-To: Michael Tretter <m.tretter@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20220501182607.38125-1-matthias.fend@emfend.at>
- <20220502140052.GC2021@pengutronix.de>
-From: Matthias Fend <matthias.fend@emfend.at>
-In-Reply-To: <20220502140052.GC2021@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220502_090035_179158_415434E9 
-X-CRM114-Status: GOOD (  25.73  )
+X-CRM114-CacheID: sfid-20220502_214215_180901_964703BC 
+X-CRM114-Status: UNSURE (   8.20  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,96 +64,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] firmware: zynqmp-fpga: do not load PL with ONLY_BIN flag
- unless necessary
+Subject: [PATCH v5 0/5] add different OF board fixups 
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Michael,
+changes v5:
+- remove SERIAL_NUMBER_FIXUP Kconfig
+- s/of_fixup_machine_compatible/of_prepend_machine_compatible
+- remove bogus comment
+- check if the passed device tree already is compatible to @compat
 
-Am 02.05.2022 um 16:00 schrieb Michael Tretter:
-> On Sun, 01 May 2022 20:26:07 +0200, Matthias Fend wrote:
->> Since pmu-fw release 2018.3, the ZYNQMP_FPGA_BIT_ONLY_BIN flag is no
->> longer used. This wasn't a problem for a while, but in newer versions a
->> validation sequence will fail if this flag is set. This means that the PL
->> can no longer be loaded.
->>
->> Do not set the ZYNQMP_FPGA_BIT_ONLY_BIN flag unless absolutely necessary
->> to avoid this problem.
-> 
-> Thanks for the patch.
-> 
->>
->> Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
->> ---
->>   drivers/firmware/zynqmp-fpga.c | 5 +++--
->>   1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/firmware/zynqmp-fpga.c b/drivers/firmware/zynqmp-fpga.c
->> index 63d7398fd..db34ac2be 100644
->> --- a/drivers/firmware/zynqmp-fpga.c
->> +++ b/drivers/firmware/zynqmp-fpga.c
->> @@ -261,9 +261,10 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
->>   		goto err_free_dma;
->>   	}
->>   
->> -	if (mgr->features & ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED)
->> +	if (mgr->features & ZYNQMP_PM_FEATURE_SIZE_NOT_NEEDED) {
->> +		flags &= ~ZYNQMP_FPGA_BIT_ONLY_BIN;
-> 
-> I would prefer if the flag is initialized as unset and only set, if the
-> bitstream does not have headers. This would be a lot clearer, than resetting
-> the flag based on a version dependent feature flag with a different name.
-> 
-> If I understand correctly, the newer versions of the PMUFW don't support
-> loading a bitstream without headers at all. Maybe we should have a feature
-> flag for bitstreams without headers, but maybe it is enough to just let the
-> PMUFW reject the bitstream in these cases.
+changes v4:
+- s/code info device/code into device/
 
-I don't know if the PMU firmware now somehow support header-less 
-bitstreams, but I can tell that it will fail in any case if this bit is set.
-So, with recent versions, this bit simply never should be set.
+changes v3:
+- rename global.of_machine_compatible to global.of.kernel.add_machine_compatible
 
-Here is the check that will fail if this bit is set:
-https://github.com/Xilinx/embeddedsw/blob/master/lib/sw_services/xilfpga/src/xilfpga.c#L643
+changes v2:
+- protonic: use only allowed chars for generated compatible
+- protonic: make use of of_get_machine_compatible() to get board name
+- of_fixup_machine_compatible: make curcompat optional
+- add $global.of_machine_compatible
 
-Since I can't test the different combinations for old (pre-2018.3) PMU 
-firmware, I would suggest leaving the bit set to avoid breaking something.
+Add optional fixups for board serial-number and machine compatible.
 
-~Matthias
+Ahmad Fatoum (1):
+  common: add $global.serial_number with device tree fixup
 
-> 
-> Michael
-> 
->>   		buf_size = body_length;
->> -	else
->> +	} else
->>   		buf_size = addr + body_length;
->>   
->>   	status = mgr->eemi_ops->fpga_load((u64)addr, buf_size, flags);
->> -- 
->> 2.25.1
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
-> 
+Oleksij Rempel (4):
+  ARM: boards: protonic-imx6: make use of barebox_set_serial_number()
+  of: add generic of_fixup_machine_compatible()
+  ARM: boards: skov-imx6: make use of of_fixup_machine_compatible()
+  ARM: boards: protonic-imx6: add HW revision specific machine
+    compatible
+
+ arch/arm/boards/protonic-imx6/board.c | 42 +++++++++++------------
+ arch/arm/boards/skov-imx6/board.c     | 40 ++--------------------
+ arch/arm/mach-imx/Kconfig             |  2 ++
+ common/Kconfig                        |  5 +++
+ common/misc.c                         | 39 ++++++++++++++++++++++
+ common/oftree.c                       | 48 +++++++++++++++++++++++++++
+ include/common.h                      |  6 ++++
+ include/of.h                          |  6 ++++
+ 8 files changed, 128 insertions(+), 60 deletions(-)
+
+-- 
+2.30.2
+
 
 _______________________________________________
 barebox mailing list
