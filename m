@@ -3,57 +3,57 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nlkOI-000DCl-H0
+	id 1nlkOI-000DCm-Mb
 	for lore@lore.pengutronix.de; Tue, 03 May 2022 06:44:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nlkOG-00006G-6h
-	for lore@pengutronix.de; Tue, 03 May 2022 06:44:01 +0200
+	id 1nlkOH-00006h-45
+	for lore@pengutronix.de; Tue, 03 May 2022 06:44:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=uvU8z5kBb9hEVSlfeWcYl80EE85Wn3zGUWmhOn7jap0=; b=wENQHtTWELHLDd
-	jN1XUsCe8P8qUtgfBa5+T6kqrOOw8Azapxk7kGbsZCylkm97FuEceKzbelB77okftTYd79h8pAFV3
-	Kzf4GS2nSI6phQ4q9RxFZOCh2GPtz6TQ7wCthr48ynwzqAMObZy0GTn82H0vfm4TLIBaOCieSKC4y
-	UluRe/UxU8t5ADvbtfyCgjm5wipPdH40DhZK3MWThRx6960UJlZLcN9KKyNrI6wJrn97sK3ItPCNi
-	nQ6EIGfFI8RX4A9L+9/Or9Wu1MUJ0WDRGkFSoRdMp5HAAd8HAbU/u8PJCL3P69qOyFqbJH2WuI3dQ
-	6lfkN8fMnh8eZiou7WHw==;
+	List-Owner; bh=OfL8/B7/5zRHijZ6Lt2UtQEHIhTjkqoAQN1Ju1Te7zU=; b=hoU5HyMZRhgJVE
+	JoRCrzHkXjCWp7ozzG2nLR8XSFK+8YlGnO/5bxsy1xRK5t6e1aBgytlbVYwbth6t8FzBMdh8eRqO7
+	hlvMYUBHgy9v8ZL0j93UN7tQH0muKIFy0OXZT6IMnPQB4dBRtnHt0kZCXxwnGUwlG5DAwP23t0O1s
+	t2H0JoXUtp5m3MuLK3PAS40K/XSf5rjPoyEi3QDRakw3WnkRriw8KIL2LuejAYu9c6xTHZM6Br993
+	0gzvT53bQmUZ8id7JVJs5TJYMrfwPlj56UW7lFTwPxlNWzK/SkUuHFDR/skeghX4rTrF7V37PRhu9
+	MdWm58OFJG/T/RzXHDKg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nlkMg-003fns-4b; Tue, 03 May 2022 04:42:22 +0000
+	id 1nlkMk-003for-Lg; Tue, 03 May 2022 04:42:26 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nlkMZ-003flL-0F
- for barebox@lists.infradead.org; Tue, 03 May 2022 04:42:16 +0000
+ id 1nlkMZ-003flJ-47
+ for barebox@lists.infradead.org; Tue, 03 May 2022 04:42:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <ore@pengutronix.de>)
- id 1nlkMT-00086E-It; Tue, 03 May 2022 06:42:09 +0200
+ id 1nlkMT-00086D-H0; Tue, 03 May 2022 06:42:09 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
  by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
  (envelope-from <ore@pengutronix.de>)
- id 1nlkMU-0002qU-7y; Tue, 03 May 2022 06:42:08 +0200
+ id 1nlkMU-0002qR-5f; Tue, 03 May 2022 06:42:08 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <ore@pengutronix.de>)
- id 1nlkMR-00DYzX-GS; Tue, 03 May 2022 06:42:07 +0200
+ id 1nlkMR-00DYzT-G5; Tue, 03 May 2022 06:42:07 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue,  3 May 2022 06:42:04 +0200
-Message-Id: <20220503044206.3232712-4-o.rempel@pengutronix.de>
+Date: Tue,  3 May 2022 06:42:03 +0200
+Message-Id: <20220503044206.3232712-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220503044206.3232712-1-o.rempel@pengutronix.de>
 References: <20220503044206.3232712-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220502_214215_086793_6D09C4FD 
-X-CRM114-Status: GOOD (  15.74  )
+X-CRM114-CacheID: sfid-20220502_214215_275526_24FEF03D 
+X-CRM114-Status: GOOD (  10.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,172 +78,68 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v5 3/5] of: add generic of_fixup_machine_compatible()
+Subject: [PATCH v5 2/5] ARM: boards: protonic-imx6: make use of
+ barebox_set_serial_number()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Add generic function to extend/fixup machine compatible.
+Replace board specific serial-number fixup with common
+barebox_set_serial_number().
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/Kconfig   |  5 +++++
- common/misc.c    | 23 +++++++++++++++++++++++
- common/oftree.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
- include/common.h |  3 +++
- include/of.h     |  6 ++++++
- 5 files changed, 80 insertions(+)
+ arch/arm/boards/protonic-imx6/board.c | 20 +-------------------
+ arch/arm/mach-imx/Kconfig             |  1 +
+ 2 files changed, 2 insertions(+), 19 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index f7a6a96e87..7385848dfc 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1066,6 +1066,11 @@ config MACHINE_ID
- 	  Note: if no hashable information is available no machine id will be passed
- 	  to the kernel.
- 
-+config MACHINE_FIXUP
-+	bool "fix up machine compatible"
-+	help
-+	  fixup machine compatible supplied by board code info device tree
-+
- config SYSTEMD_OF_WATCHDOG
- 	bool "inform devicetree-enabled kernel of used watchdog"
- 	depends on WATCHDOG && OFTREE && FLEXIBLE_BOOTARGS
-diff --git a/common/misc.c b/common/misc.c
-index 3b3bc05bfd..0f6de3e9e5 100644
---- a/common/misc.c
-+++ b/common/misc.c
-@@ -150,6 +150,7 @@ BAREBOX_MAGICVAR(global.model, "Product name of this hardware");
- 
- static char *hostname;
- static char *serial_number;
-+static char *of_machine_compatible;
- 
- /*
-  * The hostname is supposed to be the shortname of a board. It should
-@@ -195,6 +196,28 @@ const char *barebox_get_serial_number(void)
- 
- BAREBOX_MAGICVAR(global.serial_number, "Board serial number");
- 
-+void barebox_set_of_machine_compatible(const char *__compatible)
-+{
-+	free(of_machine_compatible);
-+	of_machine_compatible = xstrdup(__compatible);
-+}
-+
-+const char *barebox_get_of_machine_compatible(void)
-+{
-+	return of_machine_compatible;
-+}
-+
-+static int of_kernel_init(void)
-+{
-+	globalvar_add_simple_string("of.kernel.add_machine_compatible",
-+				    &of_machine_compatible);
-+
-+	return 0;
-+}
-+device_initcall(of_kernel_init);
-+
-+BAREBOX_MAGICVAR(global.of.kernel.add_machine_compatible, "Additional machine/board compatible");
-+
- void __noreturn panic(const char *fmt, ...)
- {
- 	va_list args;
-diff --git a/common/oftree.c b/common/oftree.c
-index 995e7201bf..5b183192bc 100644
---- a/common/oftree.c
-+++ b/common/oftree.c
-@@ -212,6 +212,15 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
- 	if (serialno)
- 		of_property_write_string(root, "serial-number", serialno);
- 
-+	if (IS_ENABLED(CONFIG_MACHINE_FIXUP)) {
-+		const char *compat;
-+
-+		compat = getenv("global.of.kernel.add_machine_compatible");
-+		if (compat)
-+			of_prepend_machine_compatible(root, compat);
-+
-+	}
-+
- 	node = of_create_node(root, "/chosen");
- 	if (!node)
- 		return -ENOMEM;
-@@ -483,3 +492,37 @@ int of_autoenable_i2c_by_component(char *path)
- 
- 	return ret;
- }
-+
-+int of_prepend_machine_compatible(struct device_node *root, const char *compat)
-+{
-+	int cclen = 0, clen = strlen(compat) + 1;
-+	const char *curcompat;
-+	void *buf;
-+
-+	if (!root) {
-+		root = of_get_root_node();
-+		if (!root)
-+			return -ENODEV;
-+	}
-+
-+	if (of_machine_is_compatible(compat)) {
-+		pr_warn("Machine is already compatible to %s. Skip compatible modification\n",
-+			compat);
-+		return 0;
-+	}
-+
-+	curcompat = of_get_property(root, "compatible", &cclen);
-+
-+	buf = xzalloc(cclen + clen);
-+
-+	memcpy(buf, compat, clen);
-+
-+	if (curcompat)
-+		memcpy(buf + clen, curcompat, cclen);
-+
-+	of_set_property(root, "compatible", buf, cclen + clen, true);
-+
-+	free(buf);
-+
-+	return 0;
-+}
-diff --git a/include/common.h b/include/common.h
-index 967502a7ab..bd12035688 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -129,4 +129,7 @@ void barebox_set_hostname_no_overwrite(const char *);
- const char *barebox_get_serial_number(void);
- void barebox_set_serial_number(const char *);
- 
-+void barebox_set_of_machine_compatible(const char *);
-+const char *barebox_get_of_machine_compatible(void);
-+
- #endif	/* __COMMON_H_ */
-diff --git a/include/of.h b/include/of.h
-index cf9950e9b3..cf1087f661 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -316,6 +316,7 @@ struct device_node *of_find_node_by_path_or_alias(struct device_node *root,
- 		const char *str);
- int of_autoenable_device_by_path(char *path);
- int of_autoenable_i2c_by_component(char *path);
-+int of_prepend_machine_compatible(struct device_node *root, const char *compat);
- #else
- static inline bool of_node_name_eq(const struct device_node *np, const char *name)
- {
-@@ -834,6 +835,11 @@ static inline int of_autoenable_i2c_by_component(char *path)
- 	return -ENODEV;
+diff --git a/arch/arm/boards/protonic-imx6/board.c b/arch/arm/boards/protonic-imx6/board.c
+index 52cf39917a..0fadd148b4 100644
+--- a/arch/arm/boards/protonic-imx6/board.c
++++ b/arch/arm/boards/protonic-imx6/board.c
+@@ -196,30 +196,12 @@ static int prt_imx6_set_mac(struct prt_imx6_priv *priv,
+ 	return 0;
  }
  
-+static int of_prepend_machine_compatible(struct device_node *root,
-+				       const char *compat)
-+{
-+	return -ENODEV;
-+}
+-static int prt_of_fixup_serial(struct device_node *dstroot, void *arg)
+-{
+-	struct device_node *srcroot = arg;
+-	const char *ser;
+-	int len;
+-
+-	ser = of_get_property(srcroot, "serial-number", &len);
+-	return of_set_property(dstroot, "serial-number", ser, len, 1);
+-}
+-
+-static void prt_oftree_fixup_serial(const char *serial)
+-{
+-	struct device_node *root = of_get_root_node();
+-
+-	of_set_property(root, "serial-number", serial, strlen(serial) + 1, 1);
+-	of_register_fixup(prt_of_fixup_serial, root);
+-}
+-
+ static int prt_imx6_set_serial(struct prt_imx6_priv *priv,
+ 			       struct prti6q_rfid_contents *rfid)
+ {
+ 	rfid->serial[9] = 0; /* Failsafe */
+ 	dev_info(priv->dev, "Serial number: %s\n", rfid->serial);
+-	prt_oftree_fixup_serial(rfid->serial);
++	barebox_set_serial_number(rfid->serial);
  
- #endif
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 6b962dcf7e..ee313a1502 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -350,6 +350,7 @@ config MACH_PROTONIC_IMX6
+ 	select ARCH_IMX6
+ 	select ARCH_IMX6UL
+ 	select ARM_USE_COMPRESSED_DTB
++	select SERIAL_NUMBER_FIXUP
  
+ config MACH_PROTONIC_IMX8M
+ 	bool "Protonic-Holland i.MX8Mx based boards"
 -- 
 2.30.2
 
