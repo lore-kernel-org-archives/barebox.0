@@ -1,80 +1,80 @@
-Delivery-date: Wed, 04 May 2022 11:43:32 +0200
+Delivery-date: Wed, 04 May 2022 11:43:58 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nmBXg-001WF0-MT
-	for lore@lore.pengutronix.de; Wed, 04 May 2022 11:43:32 +0200
+	id 1nmBY6-001WFn-67
+	for lore@lore.pengutronix.de; Wed, 04 May 2022 11:43:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nmBXd-0002Ns-Dx
-	for lore@pengutronix.de; Wed, 04 May 2022 11:43:31 +0200
+	id 1nmBY4-0002TS-7R
+	for lore@pengutronix.de; Wed, 04 May 2022 11:43:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Fd0vN70fLk+kLIGQqml31laH027DoPvZiV154Y1pDUc=; b=h749sLRHG3wzVV
-	muVCY2saJUiWXjc7OxTGsofEeBb+vA37/oMFtWbb+DJuNEeLVx9eWOf4zIPAtAjhC73Z1kc+tcYp9
-	RDQOndlneVzsFdrkhR+8U7vR35UBXgmF6FnpgiSwLDgBq39mGJIExrbjkfa7LrV6l7rWSLN3xShsa
-	zGoHdiybqjC5/FOkI4YUfNrBr5KVVZTKmCzLUbmL7+6d2AbdYGT1qRfPwVOuLeRA8htYGTNKb605g
-	W7/mIT5xpEi2ztj4RHTuQVXWbhSzRHlo8D2QK6F6Ezqpx5xCcEmQQaWpO9WcnKo/UkAKwWb6YuwpN
-	nF+OUeY6SfAgCN4LWvtg==;
+	List-Owner; bh=c5yaNqsFnBZxJaThlecXOzI5FSXUKBrIHrbqqxDXDRU=; b=RnnFxOnFAVwhA4
+	BV5IJXAvwYuGvEp7ZjXZgha1q/ohjqf0JIW9hoGjHMQEW4oG0L6MIUu8cOx4A1rvuXvRnY07CaUa6
+	apjLr/rZlt2ebgR2c+KPDkojmq1yfYNp8NbJ6r0TTVxMoPCXeODhV4EYKKZ++hRwPVLDQKSUchYDG
+	WOkMRGu/nyzbdNE4gqh8HEgyhvlRw4hROf9shjDVXQvUsZ3cB2MmHUDlYXIlBENGhBi+SzojkLawn
+	xsq5l8F9ey2lc9Yh0WdcxrBKYgWq2uOtfeNB/i1APc7v5D1tAWtKBs+JFfqXuAYPmfgEljTPXrTa2
+	A26QpN12ctTKU8+IfpVg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nmBVy-009z0A-MI; Wed, 04 May 2022 09:41:47 +0000
+	id 1nmBWL-009zAq-GK; Wed, 04 May 2022 09:42:11 +0000
 Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nmBI1-009qdR-DG
- for barebox@lists.infradead.org; Wed, 04 May 2022 09:27:23 +0000
-Received: by mail-lf1-x12b.google.com with SMTP id i10so1286515lfg.13
- for <barebox@lists.infradead.org>; Wed, 04 May 2022 02:27:19 -0700 (PDT)
+ id 1nmBI9-009qjh-KL
+ for barebox@lists.infradead.org; Wed, 04 May 2022 09:27:32 +0000
+Received: by mail-lf1-x12b.google.com with SMTP id w19so1297052lfu.11
+ for <barebox@lists.infradead.org>; Wed, 04 May 2022 02:27:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=Ci9Lj3A//7EvtZ3Galk/52Ggwsoh81hRnyK+jb5mtNY=;
- b=T4vNH4Y87P3tIRaW3vhZogRcJvvXmLF1gpIGeDDRrfq9ngy2cZki2f6YWf1oXOce6e
- ebr9uNY9FzKGJT8SBvNb0Uf2cgKF7WJwgEV0Wh/lvqqsNsRjbJbk0NlkhpBhRktDz8Pn
- 2NtsvcLZAyUj/1ZpiFdxAkC5g16KoCpcNOuwFchtY8yJ//LVeuM8tfqjuzykmGZH9yNR
- MaajlKjiWnCUkWtvRBDHjT+EtOOIwkcoVtxOkqXk/7tn9pA94F+MUMwGVD8LXzhy2JWI
- pu9+jW9OSqqwrISRZ9QQky1aJ2J70nv/bS+xOQl6oAHroFtLVo0At3M103t2EALkceoY
- O/ZA==
+ bh=P61o70A9aLvJQBpTi5xIOw4UF2k11yWLCp1tBV5nMoM=;
+ b=Ic+dsGkP6teZH0VvPfxhbdhq9lXFOxdZxokjp+dm5nmPIAX9+7KmwWm7ynRwonhRoq
+ LpwnnbYGjbMTBU1aCQb4fLMZ8fxH+bb/4eEQPlKrUT8YQitjtJao6a01rDpLMvTIKs4R
+ HqPnAArd8CR+r6tfrlCVwg3PVHfh4VAU2VzS0q1SG1V94wofX0r3JBoWSQ4FQxp7+K4d
+ AQubvvAZr/LksSKNcWM3t7XSYyxz/8he1YZl225r1SQgZnIQW4EGX6z9a7+WYz4cjRYC
+ MCTtsqXQMROQtGyzCrpeQUtvKQ4SGYNGfngvHMzdrbzvXRmlbmLHJkHciekzGp0/YjM3
+ G8Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=Ci9Lj3A//7EvtZ3Galk/52Ggwsoh81hRnyK+jb5mtNY=;
- b=f4f2my2+uGpTiSpp7GSpMBdT6QmSINVrQb1oQ5foHcOm7lspufbwt0aMAW8V00Cd0N
- 3WMuqfT2jLoK4k80msST0bcqYr+ees0p2xB8OC4ERiQdlmKFsFW6tORYXAKMDtJx8Jqh
- oAG3IxLC8SY0sMC9j+A3NNFlqXOVFl98K17ivB52kh2W4WGPQDl6+ndgrmeb5vMnogeh
- U0XX9kJhlOZ+FjN7sdR6mmEIKc4RJcWUIAGfbPVGu4VmSnU8mL8AtTdDkP0QayRbW1S5
- 1Zd3SD5l7wYlkNbnmupsJLwGcynu2KCn/CJbjrN01nnAmTSJoZprYzIt0P+H0zJ5UOK7
- 1ltA==
-X-Gm-Message-State: AOAM5302g/lcR0+8yB60VC5sQ2juGc5+EQmEAIQ9yvBnMXkd1Qw0Qu5X
- Q6/bXWSAMiM+0FaJri25MvVz70JIvx8fYXWL
-X-Google-Smtp-Source: ABdhPJy3ddpWyPg7bm2I9a7wcYmyJ1HUkKsx0t2Qt4SqpoP7tlocZyM6LK9tIK4UzWokcs1IQooJKQ==
-X-Received: by 2002:a05:6512:118b:b0:46b:a9ae:3a3b with SMTP id
- g11-20020a056512118b00b0046ba9ae3a3bmr13853122lfr.188.1651656437561; 
- Wed, 04 May 2022 02:27:17 -0700 (PDT)
+ bh=P61o70A9aLvJQBpTi5xIOw4UF2k11yWLCp1tBV5nMoM=;
+ b=mPlDlakYopks2KFYUZMV1Xi5Bk5u2yvs1ebft0bYZs+1y8B+d7Rd68ijbFYKBf7L7l
+ ZtCadca6TguZgPPCli+mcZv/Lukr0DhbOLr/fY03ITb8CEMhPbKOSJ4a8BHUObyWVl70
+ 2Y9YcygpTmkYAJsEK6Zb3O9nODWv8YrFEViytbWr6kWu7e+XUtN3fJWPdUTvT6pCyu7N
+ oNkkhefCC5JuAuybM5vT4hdwXbC5FEzLwkNGa5rw1ieTd+CmhaOs+iY8eGuK5Vv/lJz9
+ 3F6/eB1WiKbIktIV7xDjkaW/DHZlernhb6NItAyW5082rX1JO6RFoJEtTvvR7o2iTXIg
+ tVTQ==
+X-Gm-Message-State: AOAM531V3PdeOZmtEY/L+ayljfhA1UtXtUv2oUQljzOzBfzcZ4MxrZY5
+ V1qaaC40yV0HlOUQiX3sEIbvm/lY8iiX7cSB
+X-Google-Smtp-Source: ABdhPJxWsOIzJVSQ51g0/o5aqvkEiAWMrhE6lu5ZDU55NPqgPR6pqFdaV/2AWtuvZxBSEG8Aj3070w==
+X-Received: by 2002:a05:6512:3e1b:b0:472:5f64:e1d9 with SMTP id
+ i27-20020a0565123e1b00b004725f64e1d9mr10228564lfv.489.1651656447773; 
+ Wed, 04 May 2022 02:27:27 -0700 (PDT)
 Received: from localhost.localdomain ([193.232.173.109])
  by smtp.gmail.com with ESMTPSA id
- t25-20020a2e8e79000000b0024f3d1daeb3sm1616993ljk.59.2022.05.04.02.27.16
+ t25-20020a2e8e79000000b0024f3d1daeb3sm1616993ljk.59.2022.05.04.02.27.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 May 2022 02:27:17 -0700 (PDT)
+ Wed, 04 May 2022 02:27:27 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed,  4 May 2022 12:25:47 +0300
-Message-Id: <20220504092553.27961-10-denorl2009@gmail.com>
+Date: Wed,  4 May 2022 12:25:48 +0300
+Message-Id: <20220504092553.27961-11-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20220504092553.27961-1-denorl2009@gmail.com>
 References: <20220504092553.27961-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220504_022721_572433_3058F2ED 
-X-CRM114-Status: GOOD (  13.96  )
+X-CRM114-CacheID: sfid-20220504_022729_724531_44C85A8F 
+X-CRM114-Status: GOOD (  11.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,101 +100,59 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 10/16] ata: ahci: map buffers properly
+Subject: [PATCH 11/16] ata: ahci: use 64-bit addressing if available
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Using dma_sync_single_for_*() does not make sense in there - we are
-given a cpu side address of a buffer and need to actually map it for
-the device.
-
 Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 ---
- drivers/ata/ahci.c | 37 ++++++++++++++++++-------------------
- 1 file changed, 18 insertions(+), 19 deletions(-)
+ drivers/ata/ahci.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 1d8099c2ee..ff9093c7b7 100644
+index ff9093c7b7..d423da3a48 100644
 --- a/drivers/ata/ahci.c
 +++ b/drivers/ata/ahci.c
-@@ -121,7 +121,7 @@ static void ahci_fill_cmd_slot(struct ahci_port *ahci_port, u32 opts)
- 	ahci_port->cmd_slot->tbl_addr_hi = 0;
+@@ -117,8 +117,10 @@ static void ahci_fill_cmd_slot(struct ahci_port *ahci_port, u32 opts)
+ 	ahci_port->cmd_slot->opts = cpu_to_le32(opts);
+ 	ahci_port->cmd_slot->status = 0;
+ 	ahci_port->cmd_slot->tbl_addr =
+-		cpu_to_le32(ahci_port->cmd_tbl_dma & 0xffffffff);
+-	ahci_port->cmd_slot->tbl_addr_hi = 0;
++		cpu_to_le32(lower_32_bits(ahci_port->cmd_tbl_dma));
++	if (ahci_port->ahci->cap & HOST_CAP_64)
++		ahci_port->cmd_slot->tbl_addr_hi =
++			cpu_to_le32(upper_32_bits(ahci_port->cmd_tbl_dma));
  }
  
--static int ahci_fill_sg(struct ahci_port *ahci_port, const void *buf, int buf_len)
-+static int ahci_fill_sg(struct ahci_port *ahci_port, dma_addr_t buf_dma, int buf_len)
- {
- 	struct ahci_sg *ahci_sg = ahci_port->cmd_tbl_sg;
- 	u32 sg_count;
-@@ -133,12 +133,12 @@ static int ahci_fill_sg(struct ahci_port *ahci_port, const void *buf, int buf_le
+ static int ahci_fill_sg(struct ahci_port *ahci_port, dma_addr_t buf_dma, int buf_len)
+@@ -133,8 +135,9 @@ static int ahci_fill_sg(struct ahci_port *ahci_port, dma_addr_t buf_dma, int buf
  	while (buf_len) {
  		unsigned int now = min(AHCI_MAX_DATA_BYTE_COUNT, buf_len);
  
--		ahci_sg->addr = cpu_to_le32((u32)buf);
-+		ahci_sg->addr = cpu_to_le32(buf_dma);
- 		ahci_sg->addr_hi = 0;
+-		ahci_sg->addr = cpu_to_le32(buf_dma);
+-		ahci_sg->addr_hi = 0;
++		ahci_sg->addr = cpu_to_le32(lower_32_bits(buf_dma));
++		if (ahci_port->ahci->cap & HOST_CAP_64)
++			ahci_sg->addr_hi = cpu_to_le32(upper_32_bits(buf_dma));
  		ahci_sg->flags_size = cpu_to_le32(now - 1);
  
  		buf_len -= now;
--		buf += now;
-+		buf_dma += now;
- 		ahci_sg++;
- 	}
+@@ -327,8 +330,12 @@ static int ahci_init_port(struct ahci_port *ahci_port)
  
-@@ -151,20 +151,26 @@ static int ahci_io(struct ahci_port *ahci_port, u8 *fis, int fis_len, void *rbuf
- 	u32 opts;
- 	int sg_count;
- 	int ret;
-+	void *buf;
-+	dma_addr_t buf_dma;
-+	enum dma_data_direction dma_dir;
+ 	ahci_port->cmd_tbl_sg = ahci_port->cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
  
- 	if (!ahci_link_ok(ahci_port, 1))
- 		return -EIO;
+-	ahci_port_write_f(ahci_port, PORT_LST_ADDR, ahci_port->cmd_slot_dma);
+-	ahci_port_write_f(ahci_port, PORT_FIS_ADDR, ahci_port->rx_fis_dma);
++	ahci_port_write_f(ahci_port, PORT_LST_ADDR, lower_32_bits(ahci_port->cmd_slot_dma));
++	if (ahci_port->ahci->cap & HOST_CAP_64)
++		ahci_port_write_f(ahci_port, PORT_LST_ADDR_HI, upper_32_bits(ahci_port->cmd_slot_dma));
++	ahci_port_write_f(ahci_port, PORT_FIS_ADDR, lower_32_bits(ahci_port->rx_fis_dma));
++	if (ahci_port->ahci->cap & HOST_CAP_64)
++		ahci_port_write_f(ahci_port, PORT_FIS_ADDR_HI, upper_32_bits(ahci_port->rx_fis_dma));
  
--	if (wbuf)
--		dma_sync_single_for_device((unsigned long)wbuf, buf_len,
--					   DMA_TO_DEVICE);
--	if (rbuf)
--		dma_sync_single_for_device((unsigned long)rbuf, buf_len,
--					   DMA_FROM_DEVICE);
-+	if (wbuf) {
-+		buf = (void *)wbuf;
-+		dma_dir = DMA_TO_DEVICE;
-+	} else {
-+		buf = rbuf;
-+		dma_dir = DMA_FROM_DEVICE;
-+	}
-+
-+	buf_dma = dma_map_single(ahci_port->ahci->dev, buf, buf_len, dma_dir);
- 
- 	memcpy((unsigned char *)ahci_port->cmd_tbl, fis, fis_len);
- 
--	sg_count = ahci_fill_sg(ahci_port, rbuf ? rbuf : wbuf, buf_len);
-+	sg_count = ahci_fill_sg(ahci_port, buf_dma, buf_len);
- 	opts = (fis_len >> 2) | (sg_count << 16);
- 	if (wbuf)
- 		opts |= CMD_LIST_OPTS_WRITE;
-@@ -174,17 +180,10 @@ static int ahci_io(struct ahci_port *ahci_port, u8 *fis, int fis_len, void *rbuf
- 
- 	ret = wait_on_timeout(WAIT_DATAIO,
- 			(ahci_port_read(ahci_port, PORT_CMD_ISSUE) & 0x1) == 0);
--	if (ret)
--		return -ETIMEDOUT;
- 
--	if (wbuf)
--		dma_sync_single_for_cpu((unsigned long)wbuf, buf_len,
--					DMA_TO_DEVICE);
--	if (rbuf)
--		dma_sync_single_for_cpu((unsigned long)rbuf, buf_len,
--					DMA_FROM_DEVICE);
-+	dma_unmap_single(ahci_port->ahci->dev, buf_dma, buf_len, dma_dir);
- 
--	return 0;
-+	return ret;
- }
- 
- /*
+ 	/*
+ 	 * Add the spinup command to whatever mode bits may
 -- 
 2.20.1
 
