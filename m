@@ -1,80 +1,56 @@
-Delivery-date: Wed, 04 May 2022 11:46:22 +0200
+Delivery-date: Wed, 04 May 2022 15:16:31 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nmBaQ-001WKd-P5
-	for lore@lore.pengutronix.de; Wed, 04 May 2022 11:46:22 +0200
+	id 1nmErn-001g2v-5W
+	for lore@lore.pengutronix.de; Wed, 04 May 2022 15:16:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nmBaO-0003AW-Bo
-	for lore@pengutronix.de; Wed, 04 May 2022 11:46:22 +0200
+	id 1nmErl-0001Wh-Uk
+	for lore@pengutronix.de; Wed, 04 May 2022 15:16:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=4nuOZKE/F5pSMAk1pz6vA8+5mc1qr3mcBQ9ooRUIQzc=; b=jtmCJ1fSVagjYZ
-	pBg8eH2udpQ/IyHO4LwOF2Sc8uN2VRi8ywP9dNc7VwzjYphLyoS//OobAJBF4hrwVchMSBKKV6gCm
-	jaPC2rRUMvQxuH8YpJD7AFXH+roUM08qK4My7mnyJsyVcFvxQmgbL3+v6CyvnjXCO5Hf2rBAjonp2
-	bUKyXrRGGPDgirkIuhMGYh4QrnfglWMxu7ODcRHtzAcGtYXGokpoTy24/PmIt4alN+HdBIOODgtKC
-	GTKETBd6GZMaozR0kNX9d3NysQkj3ifI6aovD1Kdp+E2s4LfoyKVV1bT3E1gyqnJGFe5OPQJhVYoc
-	30vbbwfTi+MqAgaJrTIw==;
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
+	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=fKxjbNJaoj7LP7bLw0p2DK8YM65D5ch+vHvuF/Zwcz8=; b=yHEkaeO5KI7kmN
+	T1yfZ66mgNnjQUdWo/ekhWy1sUpJ0AFNqfEXR+7swLRBgDvI+qqzvHLtDkTsUyvzRnpnfIofmRvRF
+	ibIByY8eLOEcuq6WXzD+h0jCEclpbCgL1WCHkZCWJI0zgomkMBC8e3Mc3cVmRBvn5DvcLIOD/TQce
+	CJuB5ET5yGnhZe3P88Jn4DmjdGryoviyn/eatQEXPKQYC1sblOi3J/VPVj6vP4YljWryDN5XFRYGJ
+	DvewXDImx/+m6+0I8ZB8H74LXFEaCI7SRbiOderH9q+tBjoLhJyf4xuNEgCDNPQljekuu6SdPJOXI
+	Aq0GQG5zSLLCyJLrfwZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nmBYc-00A0Jn-UD; Wed, 04 May 2022 09:44:32 +0000
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+	id 1nmEqK-00AyrJ-43; Wed, 04 May 2022 13:15:01 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nmBIN-009qqC-MM
- for barebox@lists.infradead.org; Wed, 04 May 2022 09:27:45 +0000
-Received: by mail-lj1-x22a.google.com with SMTP id v4so909295ljd.10
- for <barebox@lists.infradead.org>; Wed, 04 May 2022 02:27:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=g491OwEx+mxjyLq8qI+y3PYsqonySIvDI31Ogly+0rI=;
- b=V6CC7q3oXhN3yjfKrSph9hkNJD6FQcP2op4yhrNbAVPAvE8x98OKek4da1pSKkiAwd
- qSkgra5TL6Au4/Pp3CnuizwMhA/lWo5tu260lNbpWCXka2uFwYLlTGAIpFKbiaPDBdJB
- V2itHvpNjlVzrfEB544Ysh6p07aYwEBW278SiqY7EZh4WkJ8/slzcBqew5fgl5ORpLbi
- y2B/HXymCcpfQwlYv0xKpZEKLUKqypkQ5bkCa9KOSUD3tkn2Q9h62Yw71Dq31UCP4+pK
- UCczzxA90w3jInrz6x0+66gjrBHA5VOBCz33Y9uljNWONr8Q8XCqLTePAJQZtHQVt+2T
- dbGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=g491OwEx+mxjyLq8qI+y3PYsqonySIvDI31Ogly+0rI=;
- b=LdxsBZB3JknPNhWmdp55G0oCwCEXF6s9curODYBQEMDIx3mASRB6EZX/YoXghytW5O
- cydWYqpngjffU7uptVQ9Wr00dUjJePDZCaxM0RyPgVaTpqht3FclfcrGThJrPbALIq63
- JZ4LuahjM+Uo6hkPHWswGJraFXfmSG1Gzfr0kgjRZch7vqagV9gKrYfUGe6HcBU51bqy
- whOeW0HcwNK8bvUAuyelpOunAWVOI4L4hMQhjNr21+Ek9+U9OE4kCVr+EPC/62c6CKQN
- TUZsUKfObb3tAq7LE4mT+CZNEHnYs2QKC5d9WxRG21C5FYb2l2xgjnV+JbXQ92cOzuUr
- LscA==
-X-Gm-Message-State: AOAM530Almrj4eHabSX1bta48t/DfO//BAlaztM58p2v0DT/9RPoA4yS
- JrCLmIvAVZmV4Xg5iQjoqmjX7oWX1hLiX63C
-X-Google-Smtp-Source: ABdhPJzZalLOCl23+ibyy69knibqFD2Pdb2B0ZdvQplNJgdAXFLDPoKzr62pto4E7m0MWeo15QGZuQ==
-X-Received: by 2002:a2e:9801:0:b0:24f:983:b17f with SMTP id
- a1-20020a2e9801000000b0024f0983b17fmr12176569ljj.88.1651656458591; 
- Wed, 04 May 2022 02:27:38 -0700 (PDT)
-Received: from localhost.localdomain ([193.232.173.109])
- by smtp.gmail.com with ESMTPSA id
- t25-20020a2e8e79000000b0024f3d1daeb3sm1616993ljk.59.2022.05.04.02.27.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 May 2022 02:27:38 -0700 (PDT)
-From: Denis Orlov <denorl2009@gmail.com>
-To: barebox@lists.infradead.org
-Date: Wed,  4 May 2022 12:25:52 +0300
-Message-Id: <20220504092553.27961-15-denorl2009@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20220504092553.27961-1-denorl2009@gmail.com>
-References: <20220504092553.27961-1-denorl2009@gmail.com>
+ id 1nmEpl-00AybD-Mp
+ for barebox@lists.infradead.org; Wed, 04 May 2022 13:14:29 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nmEpf-000107-PA; Wed, 04 May 2022 15:14:19 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nmEpg-000JqW-DQ; Wed, 04 May 2022 15:14:19 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nmEpd-00GEhr-Ia; Wed, 04 May 2022 15:14:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Wed,  4 May 2022 15:14:09 +0200
+Message-Id: <20220504131416.3869736-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220504_022743_771113_FA888B85 
-X-CRM114-Status: GOOD (  12.85  )
+X-CRM114-CacheID: sfid-20220504_061425_841090_B6826D93 
+X-CRM114-Status: GOOD (  10.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,84 +62,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Denis Orlov <denorl2009@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 15/16] ata: ahci: register only implemented ports
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH 1/8] rsatoc: fix compiler warnings
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The value from the "ports implemented" register should be kept in mind
-when registering ports or detecting devices on them.
-
-Signed-off-by: Denis Orlov <denorl2009@gmail.com>
----
- drivers/ata/ahci.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index f9056ff418..24098ada08 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -563,11 +563,15 @@ void ahci_info(struct device_d *dev)
- static int ahci_detect(struct device_d *dev)
- {
- 	struct ahci_device *ahci = dev->priv;
-+	int n_ports = max_t(int, ahci->n_ports, fls(ahci->port_map));
- 	int i;
- 
--	for (i = 0; i < ahci->n_ports; i++) {
-+	for (i = 0; i < n_ports; i++) {
- 		struct ahci_port *ahci_port = &ahci->ports[i];
- 
-+		if (!(ahci->port_map & (1 << i)))
-+			continue;
-+
- 		ata_port_detect(&ahci_port->ata);
- 	}
- 
-@@ -577,7 +581,7 @@ static int ahci_detect(struct device_d *dev)
- int ahci_add_host(struct ahci_device *ahci)
- {
- 	u32 tmp, cap_save;
--	int i, ret;
-+	int n_ports, i, ret;
- 
- 	ahci->host_flags = ATA_FLAG_SATA
- 				| ATA_FLAG_NO_LEGACY
-@@ -619,9 +623,14 @@ int ahci_add_host(struct ahci_device *ahci)
- 	ahci_debug(ahci, "cap 0x%x  port_map 0x%x  n_ports %d\n",
- 	      ahci->cap, ahci->port_map, ahci->n_ports);
- 
--	for (i = 0; i < ahci->n_ports; i++) {
-+	n_ports = max_t(int, ahci->n_ports, fls(ahci->port_map));
-+
-+	for (i = 0; i < n_ports; i++) {
- 		struct ahci_port *ahci_port = &ahci->ports[i];
- 
-+		if (!(ahci->port_map & (1 << i)))
-+			continue;
-+
- 		ahci_port->num = i;
- 		ahci_port->ahci = ahci;
- 		ahci_port->ata.dev = ahci->dev;
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Rml4ZXM6CgpzY3JpcHRzL3JzYXRvYy5jOjE4OTo1OiB3YXJuaW5nOiBubyBwcmV2aW91cyBwcm90
+b3R5cGUgZm9yIOKAmHJzYV9nZXRfcGFyYW1z4oCZIFstV21pc3NpbmctcHJvdG90eXBlc10KClNp
+Z25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLS0tCiBz
+Y3JpcHRzL3JzYXRvYy5jIHwgNiArKystLS0KIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMo
+KyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvc2NyaXB0cy9yc2F0b2MuYyBiL3Njcmlw
+dHMvcnNhdG9jLmMKaW5kZXggZjJkOTFiOGUwZC4uNzIyYzVkYmExOSAxMDA2NDQKLS0tIGEvc2Ny
+aXB0cy9yc2F0b2MuYworKysgYi9zY3JpcHRzL3JzYXRvYy5jCkBAIC0xODQsOCArMTg0LDggQEAg
+Y2xlYW51cDoKIC8qCiAgKiByc2FfZ2V0X3BhcmFtcygpOiAtIEdldCB0aGUgaW1wb3J0YW50IHBh
+cmFtZXRlcnMgb2YgYW4gUlNBIHB1YmxpYyBrZXkKICAqLwotaW50IHJzYV9nZXRfcGFyYW1zKFJT
+QSAqa2V5LCB1aW50NjRfdCAqZXhwb25lbnQsIHVpbnQzMl90ICpuMF9pbnZwLAotCQkgICBCSUdO
+VU0gKiptb2R1bHVzcCwgQklHTlVNICoqcl9zcXVhcmVkcCkKK3N0YXRpYyBpbnQgcnNhX2dldF9w
+YXJhbXMoUlNBICprZXksIHVpbnQ2NF90ICpleHBvbmVudCwgdWludDMyX3QgKm4wX2ludnAsCisJ
+CQkgIEJJR05VTSAqKm1vZHVsdXNwLCBCSUdOVU0gKipyX3NxdWFyZWRwKQogewogCUJJR05VTSAq
+YmlnMSwgKmJpZzIsICpiaWczMiwgKmJpZzJfMzI7CiAJQklHTlVNICpuLCAqciwgKnJfc3F1YXJl
+ZCwgKnRtcDsKQEAgLTM1OSw3ICszNTksNyBAQCBzdGF0aWMgaW50IHByaW50X2JpZ251bShCSUdO
+VU0gKm51bSwgaW50IG51bV9iaXRzKQogc3RhdGljIGludCBnZW5fa2V5KGNvbnN0IGNoYXIgKmtl
+eW5hbWUsIGNvbnN0IGNoYXIgKnBhdGgpCiB7CiAJQklHTlVNICptb2R1bHVzLCAqcl9zcXVhcmVk
+OwotCXVpbnQ2NF90IGV4cG9uZW50OworCXVpbnQ2NF90IGV4cG9uZW50ID0gMDsKIAl1aW50MzJf
+dCBuMF9pbnY7CiAJaW50IHJldDsKIAlpbnQgYml0czsKLS0gCjIuMzAuMgoKCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
+CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
 
