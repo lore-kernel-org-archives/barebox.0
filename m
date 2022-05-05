@@ -1,60 +1,60 @@
-Delivery-date: Thu, 05 May 2022 10:04:04 +0200
+Delivery-date: Thu, 05 May 2022 10:04:10 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nmWSy-002UV1-8V
-	for lore@lore.pengutronix.de; Thu, 05 May 2022 10:04:04 +0200
+	id 1nmWT4-002UVh-03
+	for lore@lore.pengutronix.de; Thu, 05 May 2022 10:04:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nmWSv-000810-Oz
-	for lore@pengutronix.de; Thu, 05 May 2022 10:04:03 +0200
+	id 1nmWT0-00083t-Af
+	for lore@pengutronix.de; Thu, 05 May 2022 10:04:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=BAGM43l6pCGZMq6kXsvaYw+zpBk0BFvgbSSKzmfmJVw=; b=M7yqgRy0UUyjOO
-	gMN91RxAzU6xDTOreKUOnF0K8YhOjMdWgOZGVJG/sgt3B8d8KI+z8BYhijYTUn5WFo9CYJOyvE8ZB
-	jytNdtgCrOscw9kYHxPq5GNggizXz7eGjhuq2JVKGlHYF6EVQixdd5cHE5qEyxYrgIx+q8HbNaiFl
-	bIHeNmHAfkjJUPXjII1YnDef0oGw7sKI2N8P+yiJWOEOsNSnIgWwAONBgdlsNDIX0a95N3gxtVSn5
-	8JKmPsXJAvYeE1vzA5LtJvsJ51HpoSgpfBXM6k8BqGncJB60imkSXMZGnPRXsf7k+nzeOaYTS/bZV
-	XGN3R97XRaN7zVZPRjfw==;
+	List-Owner; bh=+m5RSXrCYR8bzt+6ozARm9Y7iO1a3adAa27/FAjt6+4=; b=tUAB3slEIeaIHm
+	oKUrn/cbPPKd+EKdDl9dOmadBc7/lhRyst5Bn2DfGKSTg1cFlGXdmYdKnf7NzbIVb2Tcvi0yRohRA
+	tfWZMhM0QriK124e26ZbzhUgYYdjE4+mKnlfLW3j2/O6wkXMwek/7/g4a0VFsFrHhC5+YBaSN+jlb
+	f7KA5qjiyW5WVdpp2hEVdpKEm6WN1fitQte5U/C6Tb+zGQ8P6L8OmGokP4gJgG64pmypEhnOnbqCq
+	i1t5oT9mtqc9hvYJG1qp2a24u/dpf0LvQo8gyKy9OhNLZJPRC5Ai58wP+ckhqi1w2i5x2qXpIMqXj
+	lmNjw6zwKW0FqCXGyogQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nmWRZ-00EWxN-V0; Thu, 05 May 2022 08:02:38 +0000
+	id 1nmWRg-00EX1D-Ah; Thu, 05 May 2022 08:02:44 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nmWR2-00EWbq-Tn
- for barebox@lists.infradead.org; Thu, 05 May 2022 08:02:08 +0000
+ id 1nmWR2-00EWbX-Th
+ for barebox@lists.infradead.org; Thu, 05 May 2022 08:02:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <afa@pengutronix.de>)
- id 1nmWQz-0006uQ-Ed; Thu, 05 May 2022 10:02:01 +0200
+ id 1nmWQy-0006sr-In; Thu, 05 May 2022 10:02:00 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
  by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nmWQz-000TOh-NN; Thu, 05 May 2022 10:02:00 +0200
+ id 1nmWQy-000TO8-Bu; Thu, 05 May 2022 10:01:59 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
  (envelope-from <afa@pengutronix.de>)
- id 1nmWQv-004haf-8t; Thu, 05 May 2022 10:01:57 +0200
+ id 1nmWQv-004hbE-Gj; Thu, 05 May 2022 10:01:57 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: ukl@pengutronix.de, =?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>,
  ore@pengutronix.de, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  5 May 2022 10:01:38 +0200
-Message-Id: <20220505080152.1068424-2-a.fatoum@pengutronix.de>
+Date: Thu,  5 May 2022 10:01:50 +0200
+Message-Id: <20220505080152.1068424-14-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220505080152.1068424-1-a.fatoum@pengutronix.de>
 References: <20220505080152.1068424-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220505_010205_114839_B357420C 
-X-CRM114-Status: GOOD (  11.49  )
+X-CRM114-CacheID: sfid-20220505_010205_141434_3DE44E4E 
+X-CRM114-Status: GOOD (  12.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,34 +79,64 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 01/15] PBL: fdt: fix /memory parsing when #address-cells !=
- #size-cells
+Subject: [PATCH 13/15] ARM: rpi: add heuristic for skipping detection of SDIO
+ card
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Due to a typo, this code assumed so far ignored #size-cells and assumed
-it to be equal to #address-cells. This breaks using the
-barebox-dt-2nd.img with some 64-bit device trees like the Raspberry Pi's.
+mci0 is normally the WiFi while mci1 is the SD-Card on the Raspberry Pi
+4. The proper way would be to use aliases, but as we accept device trees
+from outside, we can apply a simple heuristic to disfavor the SDIO
+controller: The SDIO controller tends to have a child node.
 
-Fixes: ffb0344b7410 ("ARM: Add generic device tree 2nd stage support")
+If this is not the case, use mci0 as before. As probing the SDIO in
+barebox leads to many annoying error messages, disable its detection, so
+device_detect_all done by ifup -a (which doesn't find the Ethernet
+controller yet), doesn't spam the console.
+
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- pbl/fdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/pbl/fdt.c b/pbl/fdt.c
-index 51719698f269..8e4d1295074a 100644
---- a/pbl/fdt.c
-+++ b/pbl/fdt.c
-@@ -47,7 +47,7 @@ void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsiz
- 		pr_err("Cannot find #size-cells property");
- 		goto err;
- 	}
--	ns = fdt32_to_cpu(*nap);
-+	ns = fdt32_to_cpu(*nsp);
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index 0db03098e564..efa3157d61b9 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -230,13 +230,31 @@ static int rpi_mem_init(void)
+ }
+ mem_initcall(rpi_mem_init);
  
- 	/* Find the memory range */
- 	node = fdt_node_offset_by_prop_value(fdt, -1, "device_type",
++static bool mci_hwdev_has_child(struct device_d *dev)
++{
++	return dev && dev->parent && dev->parent->device_node &&
++		of_get_next_available_child(dev->parent->device_node, NULL);
++}
++
+ static int rpi_env_init(void)
+ {
+ 	struct stat s;
+ 	const char *diskdev = "/dev/disk0.0";
+-	int ret;
++	int ret = -ENODEV;
+ 
+-	device_detect_by_name("mci0");
++	struct device_d *mci0dev = get_device_by_name("mci0");
++	if (mci0dev) {
++		struct device_d *mci1dev = get_device_by_name("mci1");
++
++		if (mci_hwdev_has_child(mci0dev) && mci1dev &&
++		    !mci_hwdev_has_child(mci1dev))
++			ret = device_detect(mci1dev);
++
++		if (ret)
++			device_detect(mci0dev);
++		else
++			mci0dev->detect = mci0dev->parent->detect = NULL;
++	}
+ 
+ 	ret = stat(diskdev, &s);
+ 	if (ret) {
 -- 
 2.30.2
 
