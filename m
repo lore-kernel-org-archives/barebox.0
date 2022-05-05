@@ -1,76 +1,79 @@
-Delivery-date: Thu, 05 May 2022 11:43:55 +0200
+Delivery-date: Thu, 05 May 2022 11:44:23 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nmY1b-002Zrs-MD
-	for lore@lore.pengutronix.de; Thu, 05 May 2022 11:43:55 +0200
+	id 1nmY23-002Zso-Ov
+	for lore@lore.pengutronix.de; Thu, 05 May 2022 11:44:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nmY1a-0007Az-ER
-	for lore@pengutronix.de; Thu, 05 May 2022 11:43:55 +0200
+	id 1nmY22-0007Gc-GN
+	for lore@pengutronix.de; Thu, 05 May 2022 11:44:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
-	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=KFryU/qiTbyhSOKjuOPSBon2rLynriE/FB7+TZcPc+c=; b=rIKlERodTeNRgF
-	XTecZL5ixxmpME8WXpehitlBOzm3v7NNii9oFhTrsF/qKignn3lx3dTD2lvF0t9cZlGBp3Loc9mPc
-	cMBFaX6zxPK74MNm2O7/R3oLHZ19BXDKpb8Gk1iKoIgBzrod0IMWKNpYrCPk61a6BksR8ep6yVrii
-	zc+BzooosdZsEGWuMhtxAtwxFl494GcTJVG7l6o38K3apUI6zngR9COlgXcKLCECLL9pMtEID9gH/
-	2SS5ir9Ki9r4afFHbG6TZZsodsfT+YHRxXr56iMNhsuTkAQA4sCnH2Izp1mDEAUnt9Crl26S1GNhp
-	GVGcRIuz1Co6h6+lNaug==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=TpZcrqgla7kFrjghaHiyCWHSOQp0j2CehBd82FmddEg=; b=ix4cjRc8TAc+ch
+	cAMY7y23KFIjIwzPFzUROgE04x/XVZ7SiSLCN2B3rdcQpxzvqN2Q8yz0MQPw6NsDAW2bgRdI5ac0C
+	BnGUgihPhUobbmT43T2GRRoCYfeOU8LyTzugsXR39+0y05q/x8xBZrB5b4quxpl+/V91ulMulS3CX
+	c5qUlLbuvz90Ry//eq+9qPOUYc3O4dV7DVDTmHe5amW6QRNLxRNYomFFC45zY4h1cSL4BPTlsWGFj
+	a/0ODwU28pOwhhqjrXYZt4EgZ++GX5wbXP10X/wi1MS162XUPDK4H4A4cXyS/O8/5cHYUdyHiFVmW
+	gJTp1CM18OegKorQGh4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nmY0G-00F5Ya-0N; Thu, 05 May 2022 09:42:32 +0000
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+	id 1nmY0o-00F5gS-Gz; Thu, 05 May 2022 09:43:06 +0000
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nmY0C-00F5Xr-2L
- for barebox@lists.infradead.org; Thu, 05 May 2022 09:42:29 +0000
-Received: by mail-pj1-x1030.google.com with SMTP id p6so3711819pjm.1
- for <barebox@lists.infradead.org>; Thu, 05 May 2022 02:42:27 -0700 (PDT)
+ id 1nmY0j-00F5fC-5R
+ for barebox@lists.infradead.org; Thu, 05 May 2022 09:43:02 +0000
+Received: by mail-lf1-x133.google.com with SMTP id w1so6555389lfa.4
+ for <barebox@lists.infradead.org>; Thu, 05 May 2022 02:43:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=MPbctcHFVkmdxaCQXc0IclMIQ1w8OVess5Aaz92Wn/I=;
- b=EeACF0IgXxZFb5tAuOxCbQ8YR3CTZBgF9lWRxy99myizhEiJKDAQUMdlr94facGb2d
- +5PXhzuX8vvAKHX4Ds4TQVQsOXZazIw0Nqbfz2aEKxamreJuRbOtA48yWBnZSA0u6Og5
- Hf+AbjtLwCcp0za9D5hCFeoVy3x85VjTXKthdL91zKfKNVclNkdja+1oiAMOCd90IWn7
- rALl9FT+mRGrpEDUBc2KBLi9vPe+Yi083ClBABeAKqEqQkOQSmzEWnzhytr5vVu4RQyK
- E6S55OsPP10SaWF0tvwvKzWRPQQJV0xIk4GykJuCQ5HQ+RVCnpCR+GpMUAHw6evw7K9P
- P+AQ==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=YHZjUgpi1IfxlaKb3Nq1poV6OVJyhliD4aRKP8/rPWM=;
+ b=dW7y4iYm1epj8tvCavT0jkJGDlyiBlrG78+Mk+/yx9/uWNElsjgoY+TyxBAxYLjeVY
+ n5yHuYFLxdFTK9ehhyCWXl8XxmrWO3XMqv4AoLSar9dmXqFwnnDohSrmc1XbkEdwHhDm
+ o3aevHj6nHRsTV+MEAhY1AC7Q66bfoyOXN+OBZ5+4A0zHcA3751kAVYZhhwzehzvpGrE
+ 0YL8WjkQbPJUdi1CZFdnK33OQel5KtJR+KP4ZThKh0M1VaZZyP8tDEcNZq3YwYY2N7ql
+ HWpZokZtkManaGuSytcyEwoBOELwwGssvCwUEGtfFjnzduG4yhfNMY9SRmPK/CwSBMod
+ 4iAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=MPbctcHFVkmdxaCQXc0IclMIQ1w8OVess5Aaz92Wn/I=;
- b=2eRqElT5NEu5kExZ6IRPjGqhXbcwyajSNwFbxe1EbgTkbzEo7WKBZEbnTt8x2kmsHy
- ClMCMCgY9eS3zrUZItQZDXjLqRtuzVbBqSc5AIhhbDS9ZpevY5z1mSkArONZtqW0wxrr
- y9ngtzssS+HaDcssCpSezGwjcc9DSSUSujPEKo00D2OhudYvntrD5bZkko5HHwL6jX2g
- mdOGRz8JPVmlHMzroREf2ndB3zTKrMvH283MsjhtvT0IJeHOxBdcVoAbXVi29nxal+iJ
- B2D3x/BlqauwezcrfxcsaP+vQAD8eiFOt2CYrfuEFm9U5JqWnjM72Hh14YE6cFXCHMNG
- LlTQ==
-X-Gm-Message-State: AOAM533zqeI9oiv4Ccu2bi0No2R6By6bHYJ9SASgX6Up0lno7Hg5hW8n
- Mz/8ihndIhDo6Fu0+3qcctqy4ogllFOBDvoPQHczW2jpPe8mUQ==
-X-Google-Smtp-Source: ABdhPJzfKOXy4Sp8bwyufV4Y7uu0JMfjsK2m3tgYRXEYMGukaVhyTQILatCWoeZZtYlze4QidIZLJO4Wxa/9mqO+KD4=
-X-Received: by 2002:a17:90a:ec16:b0:1da:3249:685b with SMTP id
- l22-20020a17090aec1600b001da3249685bmr4980772pjy.101.1651743746534; Thu, 05
- May 2022 02:42:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220505073604.15065-1-eagle.alexander923@gmail.com>
- <20220505081353.GL4012@pengutronix.de>
-In-Reply-To: <20220505081353.GL4012@pengutronix.de>
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=YHZjUgpi1IfxlaKb3Nq1poV6OVJyhliD4aRKP8/rPWM=;
+ b=gGNYn1ck1vpy6CcKJo+CsHE7eayHtojm67ithTFW60X6sn8+x3PRvIMAreARVefsrR
+ 1kEwDebBrcZp+U5CaD1AfpeXcyh8d/B7PkIkT5xCTG7mpC+JLToAuMSCsf7vD71rBZFK
+ F3T0ubPDjXGaChxfqDv7fX8X0pwj+LWCH7vtqCBbV/HjxgZDZXbXwOwk8nDlrZWwYGBv
+ LVRY5oBCokIoF+7/3gw+URHT9ln5L7/oav4om2GZ0oeBxJBq5NS3U2uv/K6OYZ2p68f2
+ xU2YaHXtilEbXC45C7DmWW6YQDB9dUr86IurAIUPo8nl6ymzExotFFHSQA2vBDP2vdJD
+ V3sA==
+X-Gm-Message-State: AOAM53333H9poL8y44goOhZReoJzmMiTuCN7vTPV60Rrbve3WnoWRK7d
+ nSz5J55+v7uLbrBHZn+6BD6O+4AvZgwFdQ==
+X-Google-Smtp-Source: ABdhPJxjVniFg5ChdMraZjocPXKwYCv7upUdSTlZf4cCEjXhWtA3eSsKYM7fF4Fkcg89wNGpGxjodg==
+X-Received: by 2002:a05:6512:3042:b0:473:a8ff:513f with SMTP id
+ b2-20020a056512304200b00473a8ff513fmr8117562lfb.246.1651743778308; 
+ Thu, 05 May 2022 02:42:58 -0700 (PDT)
+Received: from shc.milas.spb.ru ([188.243.217.78])
+ by smtp.gmail.com with ESMTPSA id
+ n11-20020a2eb78b000000b0024f812282a4sm138443ljo.131.2022.05.05.02.42.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 May 2022 02:42:57 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Thu, 5 May 2022 12:42:13 +0300
-Message-ID: <CAP1tNvRjO1o9RT+XgM3tJ37UPbC_Uj8rg6MZhCCULN8XmXUX2A@mail.gmail.com>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Thu,  5 May 2022 12:42:54 +0300
+Message-Id: <20220505094254.23759-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.32.0
+MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220505_024228_147854_7FD662DF 
-X-CRM114-Status: GOOD (  14.16  )
+X-CRM114-CacheID: sfid-20220505_024301_240900_401A2B10 
+X-CRM114-Status: GOOD (  11.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,52 +85,108 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,
 	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: OMAP: debug_ll: Use Kconfig UART base address
+Subject: [RFC] ARM: OMAP: debug_ll: Add support for PBL console
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-0YfRgiwgNSDQvNCw0Y8gMjAyMiDQsy4g0LIgMTE6MTMsIFNhc2NoYSBIYXVlciA8c2hhQHBlbmd1
-dHJvbml4LmRlPjoKPiBIaSBBbGV4YW5kZXIsCj4gT24gVGh1LCBNYXkgMDUsIDIwMjIgYXQgMTA6
-MzY6MDRBTSArMDMwMCwgQWxleGFuZGVyIFNoaXlhbiB3cm90ZToKPiA+IFNpZ25lZC1vZmYtYnk6
-IEFsZXhhbmRlciBTaGl5YW4gPGVhZ2xlLmFsZXhhbmRlcjkyM0BnbWFpbC5jb20+Cj4gPiAtLS0K
-PiA+ICBhcmNoL2FybS9ib2FyZHMvYWZpLWdmL2xvd2xldmVsLmMgICAgICAgICAgICB8ICAyICst
-Cj4gPiAgYXJjaC9hcm0vYm9hcmRzL2JlYWdsZS9sb3dsZXZlbC5jICAgICAgICAgICAgfCAgMiAr
-LQo+ID4gIGFyY2gvYXJtL2JvYXJkcy9iZWFnbGVib25lL2xvd2xldmVsLmMgICAgICAgIHwgIDIg
-Ky0KPiA+ICBhcmNoL2FybS9ib2FyZHMvbXlpcnRlY2gteDMzNXgvbG93bGV2ZWwuYyAgICB8ICAy
-ICstCj4gPiAgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2xvd2xldmVsLmMgfCAg
-MiArLQo+ID4gIGFyY2gvYXJtL2JvYXJkcy92c2NvbS1iYWx0b3MvbG93bGV2ZWwuYyAgICAgIHwg
-IDIgKy0KPiA+ICBhcmNoL2FybS9ib2FyZHMvd2Fnby1wZmMtYW0zNXh4L2xvd2xldmVsLmMgICB8
-ICAyICstCj4gPiAgYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oICAg
-fCA0MyArKysrKysrKysrKystLS0tLS0tLQo+ID4gIDggZmlsZXMgY2hhbmdlZCwgMzMgaW5zZXJ0
-aW9ucygrKSwgMjQgZGVsZXRpb25zKC0pCj4gPgo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jv
-YXJkcy9hZmktZ2YvbG93bGV2ZWwuYyBiL2FyY2gvYXJtL2JvYXJkcy9hZmktZ2YvbG93bGV2ZWwu
-Ywo+ID4gaW5kZXggZGU0MGY2YzVhZi4uOWU4NmIyOWIyZCAxMDA2NDQKPiA+IC0tLSBhL2FyY2gv
-YXJtL2JvYXJkcy9hZmktZ2YvbG93bGV2ZWwuYwo+ID4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL2Fm
-aS1nZi9sb3dsZXZlbC5jCj4gPiBAQCAtMjMwLDcgKzIzMCw3IEBAIHN0YXRpYyBub2lubGluZSBp
-bnQgZ2Zfc3JhbV9pbml0KHZvaWQpCj4gPgo+ID4gICAgICAgYW0zM3h4X3VhcnRfc29mdF9yZXNl
-dCgodm9pZCAqKUFNMzNYWF9VQVJUMl9CQVNFKTsKPiA+ICAgICAgIGFtMzN4eF9lbmFibGVfdWFy
-dDJfcGluX211eCgpOwo+ID4gLSAgICAgb21hcF91YXJ0X2xvd2xldmVsX2luaXQoKHZvaWQgKilB
-TTMzWFhfVUFSVDJfQkFTRSk7Cj4gPiArICAgICBvbWFwX3VhcnRfbG93bGV2ZWxfaW5pdCgpOwo+
-Cj4gSSBkb24ndCB0aGluayByZW1vdmluZyB0aGUgYmFzZSBhZGRyZXNzIGZyb20gb21hcF91YXJ0
-X2xvd2xldmVsX2luaXQoKQo+IGlzIGEgc3RlcCBmb3J3YXJkLiBDT05GSUdfREVCVUdfTEwgaXMg
-b25seSBvbmUgcG9zc2libGUgdXNlY2FzZSBmb3IgdGhpcwo+IGZ1bmN0aW9uLCBhbm90aGVyIG9u
-ZSBpcyBmb3IgcmVndWxhciBlYXJseSBjb25zb2xlIHdpdGggcGJsX3NldF9wdXRjKCkuCgpPay4g
-UGxlYXNlIHRha2UgYSBsb29rIGF0IHRoZSBwYXRjaCBpbiB0aGUgbmV4dCBtZXNzYWdlLCBpcyB0
-aGlzIGhvdwppdCBzaG91bGQgYmU/CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cg==
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ arch/arm/boards/myirtech-x335x/lowlevel.c  | 10 ++++------
+ arch/arm/mach-omap/include/mach/debug_ll.h | 20 ++++++++++++++------
+ 2 files changed, 18 insertions(+), 12 deletions(-)
+
+diff --git a/arch/arm/boards/myirtech-x335x/lowlevel.c b/arch/arm/boards/myirtech-x335x/lowlevel.c
+index 1a883da203..f9f3ec4ddf 100644
+--- a/arch/arm/boards/myirtech-x335x/lowlevel.c
++++ b/arch/arm/boards/myirtech-x335x/lowlevel.c
+@@ -95,12 +95,10 @@ ENTRY_FUNCTION(start_am33xx_myirtech_sram, bootinfo, r1, r2)
+ 		am335x_sdram_init(0x18b, &ddr3_cmd_ctrl, &ddr3_regs, &ddr3_data);
+ 	}
+ 
+-	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
+-		am33xx_uart_soft_reset(IOMEM(AM33XX_UART0_BASE));
+-		am33xx_enable_uart0_pin_mux();
+-		omap_uart_lowlevel_init(IOMEM(AM33XX_UART0_BASE));
+-		putc_ll('>');
+-	}
++	am33xx_uart_soft_reset(IOMEM(AM33XX_UART0_BASE));
++	am33xx_enable_uart0_pin_mux();
++	omap_uart_lowlevel_init(IOMEM(AM33XX_UART0_BASE));
++	pr_debug("MYIR MYC-AM335X\n");
+ 
+ 	am335x_barebox_entry(fdt);
+ }
+diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
+index 25ddd485be..018171d112 100644
+--- a/arch/arm/mach-omap/include/mach/debug_ll.h
++++ b/arch/arm/mach-omap/include/mach/debug_ll.h
+@@ -17,6 +17,7 @@
+ #ifndef __MACH_DEBUG_LL_H__
+ #define   __MACH_DEBUG_LL_H__
+ 
++#include <console.h>
+ #include <io.h>
+ #include <mach/omap3-silicon.h>
+ #include <mach/omap4-silicon.h>
+@@ -34,6 +35,16 @@
+ #define MCR		(4 << 2)
+ #define MDR		(8 << 2)
+ 
++static inline void omap_uart_putc(void *base, int c)
++{
++	/* Wait until there is space in the FIFO */
++	while ((readb(base + LSR) & LSR_THRE) == 0);
++	/* Send the character */
++	writeb(c, base + THR);
++	/* Wait to make sure it hits the line, in case we die too soon. */
++	while ((readb(base + LSR) & LSR_THRE) == 0);
++}
++
+ static inline void omap_uart_lowlevel_init(void __iomem *base)
+ {
+ 	writeb(0x00, base + LCR);
+@@ -46,6 +57,8 @@ static inline void omap_uart_lowlevel_init(void __iomem *base)
+ 	writeb(0x03, base + MCR);
+ 	writeb(0x07, base + FCR);
+ 	writeb(0x00, base + MDR);
++
++	pbl_set_putc(omap_uart_putc, base);
+ }
+ 
+ #ifdef CONFIG_DEBUG_LL
+@@ -68,12 +81,7 @@ static inline void PUTC_LL(char c)
+ 	void __iomem *base = (void *)OMAP_UART_BASE(OMAP_DEBUG_SOC,
+ 			CONFIG_DEBUG_OMAP_UART_PORT);
+ 
+-	/* Wait until there is space in the FIFO */
+-	while ((readb(base + LSR) & LSR_THRE) == 0);
+-	/* Send the character */
+-	writeb(c, base + THR);
+-	/* Wait to make sure it hits the line, in case we die too soon. */
+-	while ((readb(base + LSR) & LSR_THRE) == 0);
++	omap_uart_putc(base, c);
+ }
+ #endif
+ 
+-- 
+2.32.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
