@@ -1,54 +1,87 @@
-Delivery-date: Fri, 06 May 2022 14:49:42 +0200
+Delivery-date: Fri, 06 May 2022 17:00:57 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nmxOw-003jDF-Aw
-	for lore@lore.pengutronix.de; Fri, 06 May 2022 14:49:42 +0200
+	id 1nmzRx-003pq7-Lb
+	for lore@lore.pengutronix.de; Fri, 06 May 2022 17:00:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nmxOv-0003kH-28
-	for lore@pengutronix.de; Fri, 06 May 2022 14:49:41 +0200
+	id 1nmzRw-0005ku-Io
+	for lore@pengutronix.de; Fri, 06 May 2022 17:00:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:Cc:To:From:
-	Subject:MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:List-Subscribe:List-Help:
+	List-Post:List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=sA9BHt3CTYuy3SnQo48PCgtWWpF48Z2pB5x/SiNBcUg=; b=YPCXl7EF8u8Tp2
-	xThvox7ZUv2cW+CB79PvnNVFSTncDNRMTa6/0L1xsvZlumW6APWlKQs/TysKbRMNR1QBm9HwOpXm/
-	Pr2/Zutom0nGauiuzvVb2vGcp9s4Fu8gjIz4Fb7Twmrz7Njco7ctciSvIGc3bWpjUHJjAH8WqT/ZS
-	3obntuK1Lrwwe56buNCm+Vev/H6+de71otTDe4opZQsF7IQrwRsJ+bF9KSHp6qOn3tfhQ8gILg89H
-	XcICyAU8+BsYDebgDlabESH0c6Pe3dY1/++igzB0x3cdePinYeDkJXLYwBIYQTGYkU1a0k4gu9tYI
-	5qUiEwGBu3pvm+obLJcA==;
+	List-Owner; bh=pNtg5GeoONLvEz/PuexuMR0H0MjBFHDpqLNRfyBwxfI=; b=McveRAMISznS5D
+	LIzOF+GDv1EuAz8w/DiFUhOaLzEuqSb1ZT5x68QVKmqe3IgzLM5aVp1liI/vvyX6XLQGdd9AgtWtF
+	t020/AbGRHqAkEO0yIAaeKvDLzoWRzvAd7t8SpLGDZpGNAkLbWJd6oVvGLj+kw5wN+QIfOWdKm18z
+	HZJrVBMTOWmKVP0FdOh4ac0SY8ajuHiTjbwGnVsmXO3ePi0fi/F9lX+qJAPOLCHNeCMS5zPNLLWBX
+	dFEVIx41SMb/i3y+l9Am5xu9GQn5XjpjtsXOksBvIti3o5FnoSg4VPssu7lb5v3rQ+hG/uNWAnnKF
+	pYsCIJg8y7TIYegLiPlg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nmxNP-003HmU-7d; Fri, 06 May 2022 12:48:07 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1nmzQJ-003vSQ-1C; Fri, 06 May 2022 14:59:15 +0000
+Received: from smtpout30.security-mail.net ([85.31.212.38]
+ helo=fx308.security-mail.net)
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nmxNK-003HlD-6H
- for barebox@lists.infradead.org; Fri, 06 May 2022 12:48:03 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77]
- helo=[127.0.0.1]) by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1nmxNI-0003gr-DH; Fri, 06 May 2022 14:48:00 +0200
-Message-ID: <63f0ead1-46be-0239-2692-1bf120e38aaf@pengutronix.de>
-Date: Fri, 6 May 2022 14:47:59 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ id 1nmzQD-003vQA-O5
+ for barebox@lists.infradead.org; Fri, 06 May 2022 14:59:11 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by fx308.security-mail.net (Postfix) with ESMTP id 5C1DF10C21F
+ for <barebox@lists.infradead.org>; Fri,  6 May 2022 16:58:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
+ s=sec-sig-email; t=1651849139;
+ bh=Ln5g+I/DZ2WfvbPesQy0xbTKIiPsPYLKzcy/UY+uXtA=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=fZRsRE6rtjnkOD+MD2FXYa8FdQvbSmocR4qjMgdTigrkr0St7ysL9rGo4xAeZetml
+ trPk9fBoUSyZbhcJil4/DX1CwEcRvL+Gud924HN7fXo69Hd3axoX/vhGjLxgxyyhqi
+ 5cXHOMFnLwSGqfgS0rKNsmc93rGnp7yGW9uW02q4=
+Received: from fx308 (localhost [127.0.0.1])
+ by fx308.security-mail.net (Postfix) with ESMTP id 23C9410C214
+ for <barebox@lists.infradead.org>; Fri,  6 May 2022 16:58:59 +0200 (CEST)
+X-Virus-Scanned: E-securemail
+Secumail-id: <11780.627537b2.a2de1.0>
+Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
+ by fx308.security-mail.net (Postfix) with ESMTPS id A42C510C207
+ for <barebox@lists.infradead.org>; Fri,  6 May 2022 16:58:58 +0200 (CEST)
+Received: from zimbra2.kalray.eu (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTPS id 8A88327E0457;
+ Fri,  6 May 2022 16:58:58 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 7414827E0491;
+ Fri,  6 May 2022 16:58:58 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 7414827E0491
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1651849138;
+ bh=zMWAezYXOkeJXjSrbWuRoMCNYt/rPElV02vZohdanAI=;
+ h=From:To:Date:Message-Id;
+ b=bISGrMlfTYLWKm7HwB0KLhcOEh4HU9+Aj3NRv2AUZ00DXyf0mJAXeg3BvDJMBvLO2
+ Rl2aHLEd8NlZwmS2ufn34TeOfgicY904ex1WYsadoQ4xCpK+Yd9Np9EAF7cnwTZhkR
+ 7zLf/nLuQOGOOXCJZXBpeyJ2dALcQWmOhnp3QVWo=
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id CrjfeDiT3lCw; Fri,  6 May 2022 16:58:58 +0200 (CEST)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id 6536527E0457;
+ Fri,  6 May 2022 16:58:58 +0200 (CEST)
+From: Jules Maselbas <jmaselbas@kalray.eu>
 To: barebox@lists.infradead.org
-Cc: ukl@pengutronix.de, =?UTF-8?Q?Daniel_Br=c3=a1t?= <danek.brat@gmail.com>,
- ore@pengutronix.de
-References: <20220505080152.1068424-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20220505080152.1068424-1-a.fatoum@pengutronix.de>
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Fri,  6 May 2022 16:58:56 +0200
+Message-Id: <20220506145856.14831-1-jmaselbas@kalray.eu>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20220505100805.5144-1-jmaselbas@kalray.eu>
+References: <20220505100805.5144-1-jmaselbas@kalray.eu>
+X-Virus-Scanned: by Secumail
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220506_054802_282439_35BD3B82 
-X-CRM114-Status: GOOD (  27.89  )
+X-CRM114-CacheID: sfid-20220506_075910_016552_A3E16760 
+X-CRM114-Status: UNSURE (   9.75  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,112 +93,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 00/15] ARM: rpi: add basic Raspberry Pi 4 support
+Subject: [PATCH] fixup! net: dns: Generate and verify transaction ID
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGksCgpPbiAwNS4wNS4yMiAxMDowMSwgQWhtYWQgRmF0b3VtIHdyb3RlOgo+IEp1c3QgYmFzaWMg
-c3VwcG9ydCwgc28gd2UgZ2V0IGEgc2hlbGwgb24gbWluaS11YXJ0IGFuZCBTRAo+IHdvcmtpbmcu
-IE5lZWRzIG1vcmUgd29yayBmb3IgVVNCIGFuZCBFdGhlcm5ldCwgYnV0IEknbGwgbGVhdmUgdGhh
-dAo+IHRvIG90aGVycyBub3cgdGhhdCB0aGUgaW5pdGlhbCBodXJkbGUgaXMgb3ZlcmNvbWUuCj4g
-Cj4gSSB0ZXN0ZWQgdGhpcyBzZXJpZXMgb24gUmFzcGJlcnJ5IFBpIDNiIChib3RoIDMyLWJpdCBh
-bmQgbmV3bHkKPiBhZGRlZCA2NC1iaXQgc3VwcG9ydCkgYW5kIFJhc3BiZXJyeSBQaSA0YiAoYm90
-aCAzMi82NC1iaXQpLgo+IAo+IEBPbGVrc2lqLCBjb3VsZCB5b3UgZ2l2ZSB0aGlzIGEgdGVzdCBv
-biBSYXNwYmVycnkgUGkgMiBhcyB3ZWxsPwo+IAo+IGJhcmVib3gtZHQtMm5kLmltZyBpcyB0aGUg
-aW1hZ2UgdG8gdXNlIGZvciBhbGwgY29uZmlndXJhdGlvbnMuCj4gYmFyZWJveCBkaWRuJ3Qgc3Rh
-cnQgdXAgKG9yIGF0IGxlYXN0IHNlcmlhbCB3YXMgc2lsZW50KSB3aXRoCj4gRGFpbHkgYnVpbHQg
-RGViaWFuIHJhc3BpXzRfYnVsbHNleWUuaW1nLiBXb3JrZWQgZmluZSB0aG91Z2gKPiB3aXRoIGZp
-cm13YXJlIGluIDIwMjItMDQtMDQtcmFzcGlvcy1idWxsc2V5ZS1hcm02NC1saXRlLmltZy4KPiBJ
-ZiBpbiBkb3VidCwgdXNlIGZpcm13YXJlIGRlc2NyaWJlZCBpbiBiYXJlYm94IGRvY3VtZW50YXRp
-b24uCgpXZSBkaXNjdXNzZWQgdGhpcyBvbiB0aGUgbWFpbGluZyBsaXN0IGEgYml0IGFuZCBJIHNl
-ZSBub3cgdGhhdApiYXJlYm94LWR0LTJuZC5pbWcgbWF5IG5vdCBiZSB0aGUgYmVzdCB3YXkgZm9y
-d2FyZCBmb3IgUmFzcGJlcnJ5ClBpOiBNYW55IHVzZXJzIGFyZSBkZXBlbmRpbmcgb24gdGhlIFZp
-ZGVvQ29yZSB0byBhcHBseSBvdmVybGF5cwphbmQgdGhlIFZpZGVvQ29yZSBoYXMgc3BlY2lhbCBt
-YWdpYyB3aGVuIGFwcGx5aW5nIHNwZWNpZmljIG92ZXJsYXlzLAplLmcuIHR1cm5pbmcgb24gVVNC
-IFBIWSBmb3IgZHdjMiB3aGVuIGFwcGx5aW5nIGR3YzIgb3ZlcmxheS4KCldoaWxlIHdlIGNvdWxk
-IGFwcGx5IG92ZXJsYXlzIGluIGJhcmVib3gsIHRoaXMgd291bGQgYWRkIGV4dHJhCmNvbXBsZXhp
-dHkgKGUuZy4gcGFyc2UgY29uZmlnLnR4dCkgYW5kIHVzaW5nIHNhbWUgZGV2aWNlIHRyZWUKZm9y
-IGtlcm5lbCBhbmQgYmFyZWJveCBtYXkgbm90IGJlIGZlYXNpYmxlLCBiZWNhdXNlIG9mIGRpZmZl
-cmluZwpiaW5kaW5ncywgZS5nLiB3aGVuIHVzaW5nIHRoZSBSYXNwYmVycnkgUGkga2VybmVsIGlu
-c3RlYWQgb2YKbWFpbmxpbmUuCgpJJ2xsIGluc3RlYWQgYnVpbGQgYSBuZXcgcmFzcGJlcnJ5IHBp
-IHNwZWNpZmljIGltYWdlIHdpdGgKbXVsdGlwbGUgZGV2aWNlIHRyZWVzIGVtYmVkZGVkIGZvciB2
-Mi4gVGhpcyBtYXkgYWxsb3cgcmVtb3ZpbmcKc29tZSBxdWlya3kgc3R1ZmYgaW4gdGhpcyBzZXJp
-ZXMgdG9vLgoKQ2hlZXJzLApBaG1hZAoKPiAKPiBCb290IGxvZzoKPiAKPiAgIGJhcmVib3ggMjAy
-Mi4wNC4wLTAwMTAxLWc1ZmVhM2U4OTc5YjIgIzIwNSBUdWUgTWF5IDMgMDk6MzM6NTQgQ0VTVCAy
-MDIyCj4gCj4gCj4gICBCb2FyZDogUmFzcGJlcnJ5IFBpIDQgTW9kZWwgQiBSZXYgMS4xCj4gICBE
-ZWVwIHByb2JlIHN1cHBvcnRlZCBkdWUgdG8gcmFzcGJlcnJ5cGksNC1tb2RlbC1iCj4gICBiY20y
-ODM1X21jaSBmZTMwMDAwMC5tbWNAN2UzMDAwMDAub2Y6IHJlZ2lzdGVyZWQgYXMgbWNpMAo+ICAg
-V0FSTklORzogZHdjMiBmZTk4MDAwMC51c2JAN2U5ODAwMDAub2Y6IGR3YzJfY29yZV9yZXNldDog
-VGltZW91dCEgV2FpdGluZyBmb3IgQ29yZSBTb2Z0IFJlc2V0Cj4gICBFUlJPUjogZHdjMiBmZTk4
-MDAwMC51c2JAN2U5ODAwMDAub2Y6IHByb2JlIGZhaWxlZDogQ29ubmVjdGlvbiB0aW1lZCBvdXQK
-PiAgIFdBUk5JTkc6IGJjbTI4MzVfbWNpIGZlMzQwMDAwLm1tY0A3ZTM0MDAwMC5vZjogRmFpbGVk
-IHRvIGdldCAndm1tYycgcmVndWxhdG9yIChpZ25vcmVkKS4KPiAgIGJjbTI4MzVfbWNpIGZlMzQw
-MDAwLm1tY0A3ZTM0MDAwMC5vZjogcmVnaXN0ZXJlZCBhcyBtY2kxCj4gICBFUlJPUjogdHJhbnNs
-YXRpb24gb2YgRE1BIGFkZHJlc3MoNDAwMDAwMDAwKSB0byBDUFUgYWRkcmVzcyBmYWlsZWQgbm9k
-ZShwY2llQDdkNTAwMDAwKQo+ICAgbWFsbG9jIHNwYWNlOiAweDFkOGZjODAwIC0+IDB4M2IxZjhm
-ZmYgKHNpemUgNDczIE1pQikKPiAgIG1jaTE6IGRldGVjdGVkIFNEIGNhcmQgdmVyc2lvbiAyLjAK
-PiAgIG1jaTE6IHJlZ2lzdGVyZWQgZGlzazAKPiAgIGVudmlyb25tZW50IGxvYWQgL2Jvb3QvYmFy
-ZWJveC5lbnY6IE5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnkKPiAgIE1heWJlIHlvdSBoYXZlIHRv
-IGNyZWF0ZSB0aGUgcGFydGl0aW9uLgo+IAo+IEFobWFkIEZhdG91bSAoMTMpOgo+ICAgUEJMOiBm
-ZHQ6IGZpeCAvbWVtb3J5IHBhcnNpbmcgd2hlbiAjYWRkcmVzcy1jZWxscyAhPSAjc2l6ZS1jZWxs
-cwo+ICAgc2VyaWFsOiBuczE2NTUwOiBycGk6IHJlbW92ZSB1bmdhdGluZyBub3cgZG9uZSBieSBw
-cm9wZXIgY2xrIGRyaXZlcgo+ICAgQVJNOiBjcHU6IHByZXZlbnQgcmVjdXJzaXZlIGRlcGVuZGVu
-Y2llcyB2aWEgQ1BVX1NVUFBPUlRTXzY0QklUX0tFUk5FTAo+ICAgQVJNOiBycGk6IGFkZCBSYXNw
-YmVycnkgUGkgMyA2NC1iaXQgYnVpbGQgc3VwcG9ydAo+ICAgQVJNOiBycGk6IHJwaTM6IGRpc2Fs
-bG93IE1NVV9FQVJMWSAmJiA2NEJJVAo+ICAgY2xrOiBycGk6IGFkZCBSYXNwYmVycnkgUGkgNCBz
-dXBwb3J0Cj4gICBzZXJpYWw6IG5zMTY1NTA6IHJwaTogc2tpcCBiYXVkcmF0ZSBjaGFuZ2VzIGZv
-ciBiY20yNzExCj4gICBjbG9ja3NvdXJjZTogYmNtMjgzNTogYnVtcCBiZWxvdyBhcmNoaXRlY2Vk
-IHRpbWVyIGZvciBBQXJjaDY0Cj4gICBBUk06IHJwaTogYWRkIFJhc3BiZXJyeSBQaSA0IHN1cHBv
-cnQKPiAgIEFSTTogcnBpOiBhZGQgZGVidWdfbGwgc3VwcG9ydCBmb3IgUmFzcGJlcnJ5IFBpIDQK
-PiAgIEFSTTogcnBpOiBhZGQgaGV1cmlzdGljIGZvciBza2lwcGluZyBkZXRlY3Rpb24gb2YgU0RJ
-TyBjYXJkCj4gICBkb2M6IGJjbTI4M3g6IGFkZCBpbml0aWFsIGRvY3MgZm9yIFJhc3BiZXJyeSBQ
-aSA0IHN1cHBvcnQKPiAgIGRvYzogYmNtMjgzeDogcmVmZXJlbmNlIG5ld2VyIGZpcm13YXJlCj4g
-Cj4gVXdlIEtsZWluZS1Lw7ZuaWcgKDIpOgo+ICAgb2Y6IGFkZHJlc3M6IGZpeCBwcmludGluZyBv
-ZiBPRiBub2RlIG5hbWUgaW4gZXJyb3IgbWVzc2FnZQo+ICAgbWNpOiBiY20yODM1OiBhZGQgYmNt
-MjcxMS1lbW1jMiAoUnBpNCkgc3VwcG9ydAo+IAo+ICBEb2N1bWVudGF0aW9uL2JvYXJkcy9iY20y
-ODM1LnJzdCAgICAgICAgICAgICAgfCAgNjUgKysrKysrKystLQo+ICBhcmNoL2FybS9LY29uZmln
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDQgKwo+ICBhcmNoL2FybS9ib2FyZHMv
-cmFzcGJlcnJ5LXBpL3JwaS1jb21tb24uYyAgICAgfCAgNTEgKysrKysrKy0KPiAgYXJjaC9hcm0v
-Y29uZmlncy9ycGlfdjhhX2RlZmNvbmZpZyAgICAgICAgICAgIHwgMTExICsrKysrKysrKysrKysr
-KysrKwo+ICBhcmNoL2FybS9jcHUvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-IDEgLQo+ICBhcmNoL2FybS9kdHMvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-IDEgKwo+ICBhcmNoL2FybS9kdHMvYmNtMjcxMS1ycGktNC1iLmR0cyAgICAgICAgICAgICAgfCAg
-IDEgKwo+ICBhcmNoL2FybS9tYWNoLWJjbTI4M3gvS2NvbmZpZyAgICAgICAgICAgICAgICAgfCAg
-MjggKysrKy0KPiAgYXJjaC9hcm0vbWFjaC1iY20yODN4L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5o
-IHwgIDIxICsrKysKPiAgYXJjaC9hcm0vbWFjaC1iY20yODN4L2luY2x1ZGUvbWFjaC9tYm94Lmgg
-ICAgIHwgICA0ICsKPiAgYXJjaC9hcm0vbWFjaC1iY20yODN4L2luY2x1ZGUvbWFjaC9wbGF0Zm9y
-bS5oIHwgICA1ICstCj4gIGFyY2gvYXJtL21hY2gtYmNtMjgzeC9tYm94LmMgICAgICAgICAgICAg
-ICAgICB8ICAgMiArLQo+ICBjb21tb24vS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgIDcgKysKPiAgZHJpdmVycy9jbGsvY2xrLXJwaS5jICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgIDQyICsrKysrLS0KPiAgZHJpdmVycy9jbG9ja3NvdXJjZS9iY20yODM1LmMgICAg
-ICAgICAgICAgICAgIHwgICAzICstCj4gIGRyaXZlcnMvbWNpL21jaS1iY20yODM1LmMgICAgICAg
-ICAgICAgICAgICAgICB8ICAgNCArLQo+ICBkcml2ZXJzL29mL2FkZHJlc3MuYyAgICAgICAgICAg
-ICAgICAgICAgICAgICAgfCAgIDQgKy0KPiAgZHJpdmVycy9zZXJpYWwvc2VyaWFsX25zMTY1NTAu
-YyAgICAgICAgICAgICAgIHwgIDE4ICsrLQo+ICBpbWFnZXMvTWFrZWZpbGUuYmNtMjgzeCAgICAg
-ICAgICAgICAgICAgICAgICAgfCAgIDYgKwo+ICBwYmwvZmR0LmMgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgfCAgIDIgKy0KPiAgMjAgZmlsZXMgY2hhbmdlZCwgMzQxIGluc2Vy
-dGlvbnMoKyksIDM5IGRlbGV0aW9ucygtKQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0v
-Y29uZmlncy9ycGlfdjhhX2RlZmNvbmZpZwo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0v
-ZHRzL2JjbTI3MTEtcnBpLTQtYi5kdHMKPiAKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVy
-d2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRy
-b25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwg
-UGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJB
-IDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+---
+ net/dns.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/dns.c b/net/dns.c
+index 9ad316e33..9803ef475 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -58,7 +58,7 @@ struct header {
+ 
+ static struct net_connection *dns_con;
+ static uint64_t dns_timer_start;
+-static uin32_t dns_req_id;
++static uint32_t dns_req_id;
+ static int dns_state;
+ static IPaddr_t dns_ip;
+ 
+@@ -132,7 +132,7 @@ static void dns_recv(struct header *header, unsigned len)
+ 	pr_debug("%s\n", __func__);
+ 
+ 	/* Only accept responses with the expected request id */
+-	if (ntohs(header->id) != dns_req_id)
++	if (ntohs(header->tid) != dns_req_id)
+ 		return;
+ 
+ 	/* We sent 1 query. We want to see more that 1 answer. */
+-- 
+2.17.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
