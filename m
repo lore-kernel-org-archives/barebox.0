@@ -1,58 +1,63 @@
-Delivery-date: Tue, 10 May 2022 17:38:59 +0200
+Delivery-date: Wed, 11 May 2022 08:30:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1noRwx-008WNb-3Q
-	for lore@lore.pengutronix.de; Tue, 10 May 2022 17:38:59 +0200
+	id 1nofs0-009JC6-S8
+	for lore@lore.pengutronix.de; Wed, 11 May 2022 08:30:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1noRwv-0000c6-Ha
-	for lore@pengutronix.de; Tue, 10 May 2022 17:38:58 +0200
+	id 1nofrz-0003nt-Jh
+	for lore@pengutronix.de; Wed, 11 May 2022 08:30:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=jXpJoHKivUYgreZy/ictHKAj6XmWGff4YV7CtvbhtOc=; b=KjcdyITCSuVCdS
-	87LlrlcYXSRUtIgsrHnwaaVhxwu1yfbWyYXzPGSZIVXzs8pR6T9lq2JzzLnP3Vszvk8JSSMhoelNp
-	FOYdsgWdoSywVZYxxtXbEkQC3s9xD+ujaUkfwnuS/czdZkmQar8hChZty7hv2198YRGKEVai37G5y
-	970C7vtXZxQyQe2a9phu/L2ui6DAM7h/XMGB1+Rc2aUo+RKFEjmVzOBmgQz/d1hRMbgGqNJJJIQsb
-	a7b5PkEvuD6yKR/p02grCyfpdRnpjGed7MLRlLeiaKVWJcMOQ0Cs69hGk0Jf0ft0H7GWn1CRyJ+4H
-	vu7hq1njaZyhwJdluEhA==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=0HEt+I2ZUrJzH6SJiRGo7dUCEMydmTpSsY0B8isF4X8=; b=sByB2MTqHnkwE+fk2T3N3+UGSR
+	8idSD9o9N1NOcz0gR4uB2xpQC8IcRJlyqB1KB2lg0zu1iloOEmk6oAFkswbz5XJdlPzMnBxXsfexn
+	2oQaV4c77z9xW56/e3T61dXVvjq9rg/X09/yBViJyijsw7Mkkmq3YCp5j5UIb7pNZgtvVCyMb5wH6
+	vY7dNcIgLW/hpwKWDHDIp8jlPsZH3uAZ4dRqWV4hah2kbTRsTVcuJEYwqYaHcBX9QL1qfuKaWlekw
+	PWqHfaoiiymc2LhSm4zW9zAaVxz3Th5hqAi6DJHrMmcR82OQzjTrKge7Oq42uuVUhzU3+UC4Vz3uQ
+	Qt/M/SdA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1noRvJ-002mYM-8E; Tue, 10 May 2022 15:37:17 +0000
+	id 1nofqG-005Qqr-D0; Wed, 11 May 2022 06:29:00 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1noRvD-002mTI-Eh
- for barebox@lists.infradead.org; Tue, 10 May 2022 15:37:13 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ id 1nofq9-005Qme-DS
+ for barebox@lists.infradead.org; Wed, 11 May 2022 06:28:56 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>)
- id 1noRv2-0000Lb-FJ; Tue, 10 May 2022 17:37:00 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>)
- id 1noRv2-001W6g-M1; Tue, 10 May 2022 17:36:59 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
- (envelope-from <afa@pengutronix.de>)
- id 1noRv0-008X6p-Di; Tue, 10 May 2022 17:36:58 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Matthias Fend <matthias.fend@emfend.at>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 10 May 2022 17:36:57 +0200
-Message-Id: <20220510153657.2033190-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+ (envelope-from <sha@pengutronix.de>)
+ id 1nofpm-0003bx-4z; Wed, 11 May 2022 08:28:30 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nofpj-0006an-Hv; Wed, 11 May 2022 08:28:27 +0200
+Date: Wed, 11 May 2022 08:28:27 +0200
+To: Michael Riesch <michael.riesch@wolfvision.net>
+Cc: barebox@lists.infradead.org, Frank Wunderlich <frank-w@public-files.de>
+Message-ID: <20220511062827.GF4012@pengutronix.de>
+References: <20220509113618.1602657-1-michael.riesch@wolfvision.net>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20220509113618.1602657-1-michael.riesch@wolfvision.net>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 08:28:11 up 41 days, 18:57, 67 users,  load average: 0.15, 0.13, 0.15
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220510_083711_543365_B40A4603 
-X-CRM114-Status: GOOD (  13.57  )
+X-CRM114-CacheID: sfid-20220510_232853_491347_8217410A 
+X-CRM114-Status: GOOD (  26.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,73 +77,65 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] i2c: rockchip: fix transfer return value
+Subject: Re: [PATCH 0/2] align rk356x drivers as preparation for mainline dts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-barebox (and kernel) API is for i2c_adapter::master_xfer to return the
-number of successfully transmitted messages and a negative value on
-error. This was not observed in the Rockchip driver, fix this.
+On Mon, May 09, 2022 at 01:36:16PM +0200, Michael Riesch wrote:
+> Hi all,
+> 
+> These patches align the barebox drivers for the Naneng Combo PHY and the dwc3
+> with the current device tree bindings in mainline Linux. Thereby, the
+> migration from the initial device tree files related to the RK3568 EVB1 and
+> the BananaPi R2Pro to their equivalents in mainline Linux is facilitated.
+> 
+> In order to ensure compatibility, the initial device tree files in
+> arch/arm/dts are adjusted accordingly.
+> 
+> The changes are tested exclusively on the RK3568 EVB1 -- Frank, if you could
+> give this a test on the BananaPi it would be great.
+> 
+> Looking forward to your comments!
+> 
+> Best regards,
+> Michael
+> 
+> Michael Riesch (2):
+>   phy: rockchip: align naneng-combphy clocks and resets with binding
+>   usb: dwc3: align dwc3 clocks with binding
 
-Reported-by: Matthias Fend <matthias.fend@emfend.at>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Only compile-tested, but change looks innocuous enough.
----
- drivers/i2c/busses/i2c-rockchip.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+Applied, thanks
 
-diff --git a/drivers/i2c/busses/i2c-rockchip.c b/drivers/i2c/busses/i2c-rockchip.c
-index 4990735a4b11..ca339053356c 100644
---- a/drivers/i2c/busses/i2c-rockchip.c
-+++ b/drivers/i2c/busses/i2c-rockchip.c
-@@ -375,15 +375,17 @@ i2c_exit:
- 	return err;
- }
- 
--static int rockchip_i2c_xfer(struct i2c_adapter *adapter, struct i2c_msg *msg,
-+static int rockchip_i2c_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
- 			     int nmsgs)
- {
- 	struct rk_i2c *i2c = to_rk_i2c(adapter);
- 	struct device_d *dev = &adapter->dev;
--	int ret;
-+	int i, ret = 0;
- 
- 	dev_dbg(dev, "i2c_xfer: %d messages\n", nmsgs);
--	for (; nmsgs > 0; nmsgs--, msg++) {
-+	for (i = 0; i < nmsgs; i++) {
-+		struct i2c_msg *msg = &msgs[i];
-+
- 		dev_dbg(dev, "i2c_xfer: chip=0x%x, len=0x%x\n", msg->addr, msg->len);
- 		if (msg->flags & I2C_M_RD) {
- 			ret = rk_i2c_read(i2c, msg->addr, 0, 0, msg->buf,
-@@ -395,14 +397,15 @@ static int rockchip_i2c_xfer(struct i2c_adapter *adapter, struct i2c_msg *msg,
- 		if (ret) {
- 			dev_dbg(dev, "i2c_write: error sending: %pe\n",
- 				ERR_PTR(ret));
--			return -EREMOTEIO;
-+			ret = -EREMOTEIO;
-+			break;
- 		}
- 	}
- 
- 	rk_i2c_send_stop_bit(i2c);
- 	rk_i2c_disable(i2c);
- 
--	return 0;
-+	return ret < 0 ? ret : nmsgs;
- }
- 
- static int rk_i2c_probe(struct device_d *dev)
+Sascha
+
+> 
+>  arch/arm/dts/rk3568-bpi-r2-pro.dts            |  7 +-
+>  arch/arm/dts/rk3568-evb1-v10.dts              | 14 ++--
+>  arch/arm/dts/rk3568.dtsi                      | 82 +++++++------------
+>  .../rockchip/phy-rockchip-naneng-combphy.c    | 19 +----
+>  drivers/usb/dwc3/core.c                       | 50 ++++++++---
+>  5 files changed, 79 insertions(+), 93 deletions(-)
+> 
+> -- 
+> 2.30.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
