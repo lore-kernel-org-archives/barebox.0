@@ -1,66 +1,58 @@
-Delivery-date: Fri, 13 May 2022 14:24:48 +0200
+Delivery-date: Fri, 13 May 2022 15:55:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1npULg-00BxVZ-IW
-	for lore@lore.pengutronix.de; Fri, 13 May 2022 14:24:48 +0200
+	id 1npVll-00C0Ao-9m
+	for lore@lore.pengutronix.de; Fri, 13 May 2022 15:55:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1npULf-0004rq-3G
-	for lore@pengutronix.de; Fri, 13 May 2022 14:24:47 +0200
+	id 1npVlj-0000ds-Su
+	for lore@pengutronix.de; Fri, 13 May 2022 15:55:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=83T0MLiXyshZzQI2g8nm0ddRyjUNNi0gFJ+7fJWVDoA=; b=bHhD7/K8tVOdVJDyjSkkNDBl5U
-	/6YpY1UrpqyeCkgIpdx4u3tdCqZdsf7k9lP/z9HNaDvZliCXy2qGtFoQHQk7enO2FqZdQVKNHRMVO
-	NfNQKHVJPWpH5RVcvN75tjBvk+2Qi+Ocy9EWnMouMYP1I2JNKB11+/2eAwcWAjnPpRX6IU8i4KB4T
-	OE49rjjn78EZk3Ai4biiAmtSt2Gxg+DMp3AoYul+vAHhp3Sa6kkA5wtkyvwm2oDnwdzu2J/qe1CD9
-	wULXDT+Fp3bomc5a0ss3AoXhBcgdGHDL4weDMlwmp+/MmWh9vpwMA1rxFnUbcD7JoM/c18dO0NXwY
-	6b2iWMgw==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=tpD+ngd+NDwEZqk/jP3tesgBhpntFlQkIUKSC5SkRx0=; b=nZtUURxPqE+eTA
+	ZRuKNC+UaruFLYUhkhgA8kEfFzOTfEIRDBbS1ieWdfBmTiY83L1SEDACSjaON0ZDq+N/9MUPJa18v
+	Nyp/li6+5fmqADVw3BQXGWFL7W9xn9zlgd+3yzyMcqxyo1x7hh1uHjN91BvmWCjRJkQRq8F+uTDtY
+	oKroGjr1lzqRUV34rSi9HFEf9LCeHqyKq0gbF5gNS+b0qDqCObdXRQAA7VGRPgL8CEtC88u0svk/h
+	MbSPW+hCX7pZYYhyQkqlIuhHEfmQttXZ2iQLp/AdT0Ese7yW18efh6dcP9t2kP62XSF9Rv/lF6PKo
+	lJo81+U5Lc6JobVjB2zw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1npUKT-00Fznu-1w; Fri, 13 May 2022 12:23:33 +0000
+	id 1npVk7-00GLgm-S8; Fri, 13 May 2022 13:54:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1npUKO-00FzmL-LG
- for barebox@lists.infradead.org; Fri, 13 May 2022 12:23:30 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ id 1npVk2-00GLfo-6S
+ for barebox@lists.infradead.org; Fri, 13 May 2022 13:54:03 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1npUKL-0004nd-R2; Fri, 13 May 2022 14:23:25 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <sha@pengutronix.de>)
- id 1npUKL-0007vJ-HW; Fri, 13 May 2022 14:23:25 +0200
-Date: Fri, 13 May 2022 14:23:25 +0200
-To: Matthias Fend <matthias.fend@emfend.at>
-Cc: Sam Ravnborg <sam@ravnborg.org>, barebox@lists.infradead.org
-Message-ID: <20220513122325.GF25578@pengutronix.de>
-References: <1607cab4-d2d3-b5be-99f1-f9f7347d1888@emfend.at>
- <Yn4zMYZte5E6XBXl@ravnborg.org>
- <2d23b3c4-8374-6e17-05ab-ed3829d985a0@emfend.at>
+ (envelope-from <afa@pengutronix.de>)
+ id 1npVjy-0000UZ-Ls; Fri, 13 May 2022 15:53:58 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1npVjv-0025lR-5Q; Fri, 13 May 2022 15:53:53 +0200
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1npVjt-008eBJ-5g; Fri, 13 May 2022 15:53:53 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Joacim Zetterling <joacim.zetterling@westermo.com>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 13 May 2022 15:53:52 +0200
+Message-Id: <20220513135352.2061026-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <2d23b3c4-8374-6e17-05ab-ed3829d985a0@emfend.at>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-IRC: #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 14:21:30 up 44 days, 51 min, 87 users,  load average: 0.19, 0.17,
- 0.20
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220513_052328_744071_34E075E5 
-X-CRM114-Status: GOOD (  27.54  )
+X-CRM114-CacheID: sfid-20220513_065402_279140_E382591E 
+X-CRM114-Status: GOOD (  10.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,52 +72,72 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: One barebox image for multiple boards
+Subject: [PATCH v2] ARM: i.MX7: esdctl: fix out-of-bounds read on memory size
+ calculation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, May 13, 2022 at 02:08:06PM +0200, Matthias Fend wrote:
-> Hello Sam,
-> 
-> Am 13.05.2022 um 12:30 schrieb Sam Ravnborg:
-> > Hi Matthias
-> > 
-> > On Fri, May 13, 2022 at 10:55:02AM +0200, Matthias Fend wrote:
-> > > Hi,
-> > > 
-> > > I'm looking for a solution to support multiple boards with just one barebox
-> > > image. The few core components that are relevant for barebox are the same on
-> > > all boards, so that the same barebox image runs on all boards. It is
-> > > possible to dynamically detect the board type inside barebox, but as this
-> > > requires some infrastructure it is not possible during lowlevel init.
-> > 
-> > The skov-imx6 boards was in a similar situation - here the solution was
-> > to add enough infrastructure to lowlevel to be able to determine the
-> > board variant.
-> > 
-> > Not what you asked for but maybe duplicating the minimal set of
-> > infrastructure allows you to determine the board type anyway in lowlevel?
-> 
-> Thank you for pointing out this interesting example.
-> Since in this case things like I2C devices are needed for board detection, I
-> think putting them in lowlevel init is not a good idea.
+addrmap[] has 9 elements on i.MX8M platforms and 7 elements on i.MX7.
+Checking unconditionally for addrmap[8] is thus out-of-bounds on the
+i.MX7. Get both arrays to the same size to fix this. This is ok,
+because an addrmap of 0 is a no-op.
 
-It wouldn't be the first board doing I2C in lowlevel init, see
-drivers/i2c/busses/i2c-imx-early.c.
+Fixes: 42d45ef380c5 ("ARM: imx: Add imx8 support for SDRAM with two or more bank groups")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - Just align array sizes to reduce surprise. No functional change
+ arch/arm/mach-imx/esdctl.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Sascha
-
-
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index d3dbfff423da..c1ed2f0b2fd4 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -350,6 +350,8 @@ static int vf610_ddrmc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+ #define DDRC_ADDRMAP8_BG_B1			GENMASK(13,  8)
+ #define DDRC_ADDRMAP8_BG_B0			GENMASK(4,  0)
+ 
++#define DDRC_ADDRMAP_LENGTH			9
++
+ static unsigned int
+ imx_ddrc_count_bits(unsigned int bits, const u8 config[],
+ 		     unsigned int config_num)
+@@ -365,7 +367,7 @@ imx_ddrc_count_bits(unsigned int bits, const u8 config[],
+ }
+ 
+ static resource_size_t
+-imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[],
++imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[DDRC_ADDRMAP_LENGTH],
+ 		    u8 col_max, const u8 col_b[], unsigned int col_b_num,
+ 		    u8 row_max, const u8 row_b[], unsigned int row_b_num,
+ 		    bool reduced_adress_space, bool is_imx8)
+@@ -446,7 +448,7 @@ imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[],
+ 
+ static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc)
+ {
+-	const u32 addrmap[] = {
++	const u32 addrmap[DDRC_ADDRMAP_LENGTH] = {
+ 		readl(ddrc + DDRC_ADDRMAP(0)),
+ 		readl(ddrc + DDRC_ADDRMAP(1)),
+ 		readl(ddrc + DDRC_ADDRMAP(2)),
+@@ -498,7 +500,7 @@ static int imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+ 
+ static resource_size_t imx7d_ddrc_sdram_size(void __iomem *ddrc)
+ {
+-	const u32 addrmap[] = {
++	const u32 addrmap[DDRC_ADDRMAP_LENGTH] = {
+ 		readl(ddrc + DDRC_ADDRMAP(0)),
+ 		readl(ddrc + DDRC_ADDRMAP(1)),
+ 		readl(ddrc + DDRC_ADDRMAP(2)),
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 _______________________________________________
 barebox mailing list
