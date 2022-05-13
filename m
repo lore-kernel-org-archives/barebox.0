@@ -1,84 +1,57 @@
-Delivery-date: Thu, 12 May 2022 16:39:36 +0200
+Delivery-date: Fri, 13 May 2022 07:47:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1np9ya-00AunI-3b
-	for lore@lore.pengutronix.de; Thu, 12 May 2022 16:39:36 +0200
+	id 1npO9A-00BcvT-1t
+	for lore@lore.pengutronix.de; Fri, 13 May 2022 07:47:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1np9yY-0007AL-A6
-	for lore@pengutronix.de; Thu, 12 May 2022 16:39:35 +0200
+	id 1npO99-0002qR-3B
+	for lore@pengutronix.de; Fri, 13 May 2022 07:47:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:List-Subscribe:List-Help:
-	List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:Subject:Cc:To
-	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=fcJi+59IP0Yg9aAMnA6wsYEQG60Gl6r/cXfJlVLWVzw=; b=2ykFD6tZpYjzoW
-	TU3Rxn2ngIusXG6YW6Fq0zu6BDzZ8wiVNtWLxp+t1ZUUX+7vgUBVjHxiV60UmZ0XhMTiwa4uFmY4H
-	C2PYeKJmgNUl52PD0hlaKCwXNdvTOCdLpbR6o2NHsDWTuytB0wvLavpnw46Ulug1MOda0ECcYD1WH
-	MWEwhcGb/QYyVlDr/dVPZ6Z6mycukQDFQvcfhWdbzmy4XPnPapy6S/UvYIOtyq344eaWyTLkpnV7Q
-	lkMlagwDprjc95+fYKT/CrX1hU4FVZKfPbvT26Vq+nivWfTQjB5AiJwtdjaowyzIeId5V0bUUdsdE
-	yqTHltK0y3x3j36usZZQ==;
+	List-Owner; bh=oAoHIbDnqsTdfLYoZpDkmpD2Z8LKcCEy1YyAab9cFMc=; b=OKazX8AhFgyFNr
+	+v5sgOsbbVEauqrntjtqaKntSMgLYxjaIv6PK3aw4GOfN1qmKSaKAgeFIJ9bBobyHacUromLKba/3
+	t4qZcLXqz9kQ6zbuWzR06n+WQ3WKrAJOixdEqDHF46IjDhzEYIREuo/G2GuDxUI3snDzkIEaZ1IHL
+	b+7xbHvWRxhQLByMK2i5SqesjcmT7oSW3XxrBzjAthj9BeJEQtB8s6gy+mY2wCaKdoxK1gX0XD7kc
+	B8ow+4rqvTupZIcVmVVXIMGIBMTFt2Mrqs5jvvjA2iUQjfRTP80t/qnzLlf5HoSRT73p0PEbi29sH
+	uWbmKPf5UgS7uvGx88OQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1np9wq-00CRnH-Vm; Thu, 12 May 2022 14:37:49 +0000
-Received: from smtpout30.security-mail.net ([85.31.212.35]
- helo=fx305.security-mail.net)
+	id 1npO7Q-00EabP-MM; Fri, 13 May 2022 05:45:40 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1np9wh-00CRiA-LH
- for barebox@lists.infradead.org; Thu, 12 May 2022 14:37:44 +0000
-Received: from localhost (localhost [127.0.0.1])
- by fx305.security-mail.net (Postfix) with ESMTP id 8FD2130FDA3
- for <barebox@lists.infradead.org>; Thu, 12 May 2022 16:37:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
- s=sec-sig-email; t=1652366249;
- bh=z8rm5ja4rQ2a9CLQDI+gkws90CiLdgNZId91Lusm1nM=;
- h=From:To:Cc:Subject:Date;
- b=lkfCuDI3PF4WEceBK7j5mOaSje8MY0joB7dZ2OwRb5TTf1zUVY4CfazCO+TO05Y8s
- +WY1m7e+U1TgToSOwKtHQr+0Mh4DeBZaOwVzfQTsm4zXgPVRTi/JCdiixi0bCkWOoh
- LtyR/rn0onPWcaVgjmN7KgJwDbgfHI7LJmZBRDtI=
-Received: from fx305 (localhost [127.0.0.1])
- by fx305.security-mail.net (Postfix) with ESMTP id 2F78D30FD98
- for <barebox@lists.infradead.org>; Thu, 12 May 2022 16:37:29 +0200 (CEST)
-X-Virus-Scanned: E-securemail
-Secumail-id: <7737.627d1ba8.75b77.0>
-Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
- by fx305.security-mail.net (Postfix) with ESMTPS id 782B430FD71
- for <barebox@lists.infradead.org>; Thu, 12 May 2022 16:37:28 +0200 (CEST)
-Received: from zimbra2.kalray.eu (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTPS id 5B9D827E04A8;
- Thu, 12 May 2022 16:37:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 44FFA27E04B1;
- Thu, 12 May 2022 16:37:28 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 44FFA27E04B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1652366248;
- bh=DdsW2jIdZiZ7nsSXjxTmKnFrWzaVrBLTt5INvuP+D38=;
- h=From:To:Date:Message-Id;
- b=mMqGLfrKTlJtVwJePVgsQM9cvtGoEKPLBhQzxr0SZBCvjhujLAFSlT57XxNBPvSbj
- KnvtFl2H14RKhXAbsLjM6nas9gkeGMQEJJAeHgIo5jK7cBo+DcA8Teg1a8bvZ+kSC2
- zSDg7jbaIGAZlp0IpzKe5WxBJO4TQHPxk8vrlwII=
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id 0BdfnfdoeulM; Thu, 12 May 2022 16:37:28 +0200 (CEST)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
- by zimbra2.kalray.eu (Postfix) with ESMTPSA id 2F16627E04A8;
- Thu, 12 May 2022 16:37:28 +0200 (CEST)
-From: Jules Maselbas <jmaselbas@kalray.eu>
+ id 1npO7L-00EaZw-BB
+ for barebox@lists.infradead.org; Fri, 13 May 2022 05:45:37 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1npO7E-0002a5-58; Fri, 13 May 2022 07:45:28 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1npO7E-0021Pr-PS; Fri, 13 May 2022 07:45:27 +0200
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1npO7C-000Byl-Nk; Fri, 13 May 2022 07:45:26 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Thu, 12 May 2022 16:37:26 +0200
-Message-Id: <20220512143726.21614-1-jmaselbas@kalray.eu>
-X-Mailer: git-send-email 2.17.1
-X-Virus-Scanned: by Secumail
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 13 May 2022 07:45:25 +0200
+Message-Id: <20220513054525.45999-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220512_073740_074939_AAC90678 
-X-CRM114-Status: GOOD (  13.18  )
+X-CRM114-CacheID: sfid-20220512_224535_422491_CE62AA2F 
+X-CRM114-Status: GOOD (  10.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,7 +63,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -99,71 +71,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2] net: dns: Generate and verify transaction ID
+Subject: [PATCH master] ARM: i.MX7: esdctl: fix out-of-bounds read on memory
+ size calculation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The transaction ID wasn't verified on received DNS responses, plus the
-ID needs to be difficult to predict in order to avoid MitM (man in the
-middle) being able to easily forge responses.
+addrmap[] has 9 elements on i.MX8M platforms and 7 elements on i.MX7.
+Checking unconditionally for addrmap[8] is thus out-of-bounds on the
+i.MX7. As this code was added for the i.MX8, skip it for i.MX7.
 
-The ID is generated from the time of the request, probably not strongly
-unpredictable, this what musl does and it is considered to be enough.
-
-Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+Fixes: 42d45ef380c5 ("ARM: imx: Add imx8 support for SDRAM with two or more bank groups")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v2: fix the dns_req_id type to uint16_t, added pr_debug when incorrect id
-    is received, drop uses of the random32.
+ arch/arm/mach-imx/esdctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- net/dns.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/net/dns.c b/net/dns.c
-index 78588b96f..8b5e8d59e 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -58,6 +58,7 @@ struct header {
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index b2f8fd0e39c6..23663406b70e 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -421,7 +421,7 @@ imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[],
+ 	if (FIELD_GET(DDRC_ADDRMAP1_BANK_B2, addrmap[1]) != 0b11111)
+ 		banks++;
  
- static struct net_connection *dns_con;
- static uint64_t dns_timer_start;
-+static uint16_t dns_req_id;
- static int dns_state;
- static IPaddr_t dns_ip;
- 
-@@ -70,9 +71,12 @@ static int dns_send(const char *name)
- 	unsigned char *p, *s, *fullname, *dotptr;
- 	const unsigned char *domain;
- 
-+	/* generate "difficult" to predict transaction id */
-+	dns_req_id = dns_timer_start + (dns_timer_start >> 16);
-+
- 	/* Prepare DNS packet header */
- 	header           = (struct header *)packet;
--	header->tid      = 1;
-+	header->tid      = htons(dns_req_id);
- 	header->flags    = htons(0x100);	/* standard query */
- 	header->nqueries = htons(1);		/* Just one query */
- 	header->nanswers = 0;
-@@ -127,6 +131,12 @@ static void dns_recv(struct header *header, unsigned len)
- 
- 	pr_debug("%s\n", __func__);
- 
-+	/* Only accept responses with the expected request id */
-+	if (ntohs(header->tid) != dns_req_id) {
-+		pr_debug("DNS response with incorrect id\n");
-+		return;
-+	}
-+
- 	/* We sent 1 query. We want to see more that 1 answer. */
- 	if (ntohs(header->nqueries) != 1)
- 		return;
+-	if (addrmap[8]) {
++	if (is_imx8 && addrmap[8]) {
+ 		if (FIELD_GET(DDRC_ADDRMAP8_BG_B0, addrmap[8]) != 0b11111)
+ 			banks++;
+ 		if (FIELD_GET(DDRC_ADDRMAP8_BG_B1, addrmap[8]) != 0b111111)
 -- 
-2.17.1
+2.30.2
 
 
 _______________________________________________
