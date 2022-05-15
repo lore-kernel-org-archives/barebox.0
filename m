@@ -1,15 +1,15 @@
-Delivery-date: Sun, 15 May 2022 21:40:31 +0200
+Delivery-date: Sun, 15 May 2022 21:40:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqK6R-00EWU2-QE
-	for lore@lore.pengutronix.de; Sun, 15 May 2022 21:40:31 +0200
+	id 1nqK6S-00EWUE-9Y
+	for lore@lore.pengutronix.de; Sun, 15 May 2022 21:40:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqK6O-0005wp-Rs
+	id 1nqK6N-0005w4-Ut
 	for lore@pengutronix.de; Sun, 15 May 2022 21:40:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
@@ -17,55 +17,54 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=8F9fZMBxApe2YRkPzT2j0+sU23QSnqEjJzgv0sYXxIc=; b=KyxKiWlCWi5TRP
-	rMNWtwaa7HEeSA+VTZaQBwVseA4h5tujq1PvH9sr4W8Bj0ZxRm3ZR8nU6/7wNymGkuxNKwckxghnl
-	6yxkMny7bkYUWtHBOopjNLIkEMKu1tYpzWIESWsuqVw2ooOJzjLzsJ6loLL2TQM62d2sxvo5wVuok
-	4XiKKz90d3Pk2ETpmn/0NJQcH/fH9EsmoXP9r+erkdId9uqRA7qO9qlX+sM1A9omtXEGQUo/udsXs
-	mKPOGvWkzgbk/9sXZKZqFMbp58DOLD/2ImgtCe7Ggefx6VwynuwyZNqN9VHURBCwq6sDuZgOHwX28
-	B6dB2gBZ+q/0v1pEe7NQ==;
+	List-Owner; bh=vr7vDjwrKekTY1p2kk+IagY7Sbs/PSWdapOdCxXCxPg=; b=Ge4Q2LmjjDo8Ug
+	4L5pVIvO6DQS8zzldytmmCnbycXbQc1WZE/vbkcNsC9FKIJEbqeIllAcCDlRIN8cNsIQ1BtGQjzH/
+	mS/R03ZM6wA7FiGEZN1fSt1VEEWMw7zikL0IiezjJx1Yi8VIJwQJ2snz6mIJcmzULS2jbtc2id0BE
+	PRJH9pma+7duPH++Liglq14XisVn+O78sNhKzX/lqIQCRj9prk+4tQ3DEFW2zsI+i6XAJChx5himU
+	IAhCpnWY/IHMuf89pbIPQDun/KKxtkTKqekBUrh7mtzvxw6nhQJqRdXECDgSbHspDbp3v/6sqXC2R
+	zE2Xd2pjDzACPGEQSHfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nqK4e-004nZP-9a; Sun, 15 May 2022 19:38:40 +0000
+	id 1nqK4j-004nav-C0; Sun, 15 May 2022 19:38:45 +0000
 Received: from mailrelay2-1.pub.mailoutpod1-cph3.one.com ([46.30.210.183])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nqK4T-004nVs-Cz
- for barebox@lists.infradead.org; Sun, 15 May 2022 19:38:31 +0000
+ id 1nqK4S-004nUl-3A
+ for barebox@lists.infradead.org; Sun, 15 May 2022 19:38:32 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ravnborg.org; s=rsa1;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=NHMs9ytjDn0etmXTZTL4Nsdrd9/sLgViy/Jav9T2VTc=;
- b=ZyWpWOTqNjA1/itg/Oa62KbL0sZi17zqDmxtGlZgdnVGTFsJpsZIUyuPlnr5NVzNBCWkaP/sef7+g
- rTcjp/5ga7X+3p72y/R8+Cczt68BXgyagyAobmk6rDdSqbpkAlzN+6prbRGqYu5J39GaqIGOHJ/fje
- KLpV53X9R7BHyMgeKzCa7YsCV514ZI1Wxcebst0NAlcGDtnPjhMTE856EXOT58k4Z6NbwNIzElNa99
- gIPLKv4oji29Ey8cYOk6FZuS6u/pVnbEkX0Oz6/pCpJnzNSo9RF6h/Gql8sJf22Snz3jFI/5zgNr+8
- /9kOswzS+9q1qtDLwi068TjEv+xQjCQ==
+ bh=QF9fvndoCHxhLohJ1sCyOiAALswquD6+0s3R5t588YA=;
+ b=RwQbX3f1nRsiHNHK+5GmNzSOIHmBMOqwRyHvsolgED0W/cOgNyYvVmqTshSB9TleZxaiEcQHTv7Xu
+ NIQSzQ1eC4T7QJzMJvSnv+19jytXFdUWOPZIhTxLcrFD1LU4v7LBm4nIo2FE+TP46LbTh09s6bXO7F
+ bbtRX0+MAaZgnNoF1G6Lhbnv4oL9N4NxR5ZG1IY/VyrJZBJRK8I8qXV1OJheAWc0Qs/VhcxlpGB54T
+ qzMEFn8xXGBD5by0gIswc+dKLI0SNF/z41dS6zSSW+lw50SNCya3cmYzJvxzv6bS0gtscbNqe7vIr0
+ k9TNjVJEjjqUEP8a5bo0hHt+WO/RjfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
  d=ravnborg.org; s=ed1;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=NHMs9ytjDn0etmXTZTL4Nsdrd9/sLgViy/Jav9T2VTc=;
- b=QKRoEMXEeDMAFfhRifMB6f4SkiYD4hzAoTjkmf7wD96GcZHgLdmzmXkYNlgj3/OKGEYJpNxwoRiCs
- nzHYINWAA==
-X-HalOne-Cookie: f4b8b7e89f766178adc8e108da64313c64568fda
-X-HalOne-ID: 97acb584-d486-11ec-a908-d0431ea8a290
+ bh=QF9fvndoCHxhLohJ1sCyOiAALswquD6+0s3R5t588YA=;
+ b=fQQjH8aro0Eh/YWwg5MaxZfelWhXz7hB+p/iV/60nQDXzQzhbc1D7CYIrHdh5KXo4WdjwndIfDh8z
+ xefHUIhCg==
+X-HalOne-Cookie: 071be7e22d324114d5af710954e7e6897f869446
+X-HalOne-ID: 968db952-d486-11ec-a908-d0431ea8a290
 Received: from mailproxy4.cst.dirpod4-cph3.one.com
  (80-162-45-141-cable.dk.customer.tdc.net [80.162.45.141])
  by mailrelay2.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
- id 97acb584-d486-11ec-a908-d0431ea8a290;
- Sun, 15 May 2022 19:38:27 +0000 (UTC)
+ id 968db952-d486-11ec-a908-d0431ea8a290;
+ Sun, 15 May 2022 19:38:25 +0000 (UTC)
 From: Sam Ravnborg <sam@ravnborg.org>
 To: barebox@lists.infradead.org
 Cc: Sam Ravnborg <sam@ravnborg.org>
-Date: Sun, 15 May 2022 21:38:05 +0200
-Message-Id: <20220515193807.354903-7-sam@ravnborg.org>
+Date: Sun, 15 May 2022 21:38:03 +0200
+Message-Id: <20220515193807.354903-5-sam@ravnborg.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220515193807.354903-1-sam@ravnborg.org>
 References: <20220515193807.354903-1-sam@ravnborg.org>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220515_123829_622781_E21B46FC 
-X-CRM114-Status: UNSURE (   8.49  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220515_123828_311423_76AC2D8C 
+X-CRM114-Status: GOOD (  10.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,110 +89,248 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v1 6/8] ARM: at91: Make sdramc.h useable in multi image builds
+Subject: [PATCH v1 4/8] ARM: at91: Add extra register definitions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-There is no need to ifdef out all the static inlines as the headers
-no longer conflicts. Drop the ifdefs so we can now use the header
-in multi image builds.
+Copied from at91bootstrap. Required in subsequent patches.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- .../mach-at91/include/mach/at91sam9_sdramc.h  | 45 ++-----------------
- 1 file changed, 4 insertions(+), 41 deletions(-)
+ arch/arm/mach-at91/include/mach/at91_pmc.h    |   2 +
+ arch/arm/mach-at91/include/mach/at91sam9263.h |  14 +++
+ .../include/mach/at91sam9263_matrix.h         |  23 +++-
+ arch/arm/mach-at91/include/mach/at91sam926x.h |   2 +
+ .../mach-at91/include/mach/at91sam9_sdramc.h  | 108 +++++++++++++++++-
+ 5 files changed, 141 insertions(+), 8 deletions(-)
 
+diff --git a/arch/arm/mach-at91/include/mach/at91_pmc.h b/arch/arm/mach-at91/include/mach/at91_pmc.h
+index 2860ea485..c5ce0f82a 100644
+--- a/arch/arm/mach-at91/include/mach/at91_pmc.h
++++ b/arch/arm/mach-at91/include/mach/at91_pmc.h
+@@ -170,6 +170,8 @@
+ #define			AT91_PMC_IPLLA_1		(1 <<  8)
+ #define			AT91_PMC_IPLLA_2		(2 <<  8)
+ #define			AT91_PMC_IPLLA_3		(3 <<  8)
++#define		AT91SAM9_PMC_ICPPLLA	(1 << 0)
++#define		AT91SAM9_PMC_ICPPLLB	(1 << 16)
+ 
+ 
+ #define AT91_PMC_PROT		0xe4			/* Write Protect Mode Register [some SAM9] */
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9263.h b/arch/arm/mach-at91/include/mach/at91sam9263.h
+index 2ea9aadaf..229f8d16b 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9263.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9263.h
+@@ -108,4 +108,18 @@
+ #define AT91SAM9263_DMAC_BASE	0x00800000	/* DMA Controller */
+ #define AT91SAM9263_UHP_BASE	0x00a00000	/* USB Host controller */
+ 
++/*
++ * External memory
++ */
++#define AT91SAM9263_BASE_EBI0_CS0	0x10000000
++#define AT91SAM9263_BASE_EBI0_CS1	0x20000000	/* EBI0 SDRAMC */
++#define AT91SAM9263_BASE_EBI0_CS2	0x30000000
++#define AT91SAM9263_BASE_EBI0_CS3	0x40000000	/* EBI0 NANDFlash */
++#define AT91SAM9263_BASE_EBI0_CS4	0x50000000	/* Compact Flash Slot 0 */
++#define AT91SAM9263_BASE_EBI0_CS5	0x60000000	/* Compact Flash Slot 1 */
++#define AT91SAM9263_BASE_EBI1_CS0	0x70000000
++#define AT91SAM9263_BASE_EBI1_CS1	0x80000000	/* EBI1 SDRAMC */
++#define AT91SAM9263_BASE_EBI1_CS2	0x90000000	/* EBI1 NANDFlash */
++
++
+ #endif
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9263_matrix.h b/arch/arm/mach-at91/include/mach/at91sam9263_matrix.h
+index 2f10ce096..837cceb41 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9263_matrix.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9263_matrix.h
+@@ -25,7 +25,7 @@
+ #define			AT91SAM9263_MATRIX_ULBT_SINGLE		(1 << 0)
+ #define			AT91SAM9263_MATRIX_ULBT_FOUR		(2 << 0)
+ #define			AT91SAM9263_MATRIX_ULBT_EIGHT		(3 << 0)
+-#define			AT91SAM9263_MATRIX_ULBT_SIXTEEN	(4 << 0)
++#define			AT91SAM9263_MATRIX_ULBT_SIXTEEN		(4 << 0)
+ 
+ #define AT91SAM9263_MATRIX_SCFG0	(0x40)	/* Slave Configuration Register 0 */
+ #define AT91SAM9263_MATRIX_SCFG1	(0x44)	/* Slave Configuration Register 1 */
+@@ -35,12 +35,22 @@
+ #define AT91SAM9263_MATRIX_SCFG5	(0x54)	/* Slave Configuration Register 5 */
+ #define AT91SAM9263_MATRIX_SCFG6	(0x58)	/* Slave Configuration Register 6 */
+ #define AT91SAM9263_MATRIX_SCFG7	(0x5C)	/* Slave Configuration Register 7 */
+-#define		AT91SAM9263_MATRIX_SLOT_CYCLE		(0xff << 0)	/* Maximum Number of Allowed Cycles for a Burst */
++#define		AT91SAM9263_MATRIX_SLOT_CYCLE	(0xff << 0)	/* Maximum Number of Allowed Cycles for a Burst */
++#define		AT91SAM9263_MATRIX_SLOT_CYCLE_(x)	(x << 0)
+ #define		AT91SAM9263_MATRIX_DEFMSTR_TYPE	(3    << 16)	/* Default Master Type */
+ #define			AT91SAM9263_MATRIX_DEFMSTR_TYPE_NONE	(0 << 16)
+ #define			AT91SAM9263_MATRIX_DEFMSTR_TYPE_LAST	(1 << 16)
+ #define			AT91SAM9263_MATRIX_DEFMSTR_TYPE_FIXED	(2 << 16)
+ #define		AT91SAM9263_MATRIX_FIXED_DEFMSTR	(0xf  << 18)	/* Fixed Index of Default Master */
++#define			AT91SAM9263_MATRIX_FIXED_DEFMSTR_ARM926I	(0x0 << 18)
++#define			AT91SAM9263_MATRIX_FIXED_DEFMSTR_ARM926D	(0x1 << 18)
++#define			AT91SAM9263_MATRIX_FIXED_DEFMSTR_PDC		(0x2 << 18)
++#define			AT91SAM9263_MATRIX_FIXED_DEFMSTR_LCDC		(0x3 << 18)
++#define			AT91SAM9263_MATRIX_FIXED_DEFMSTR_2DGC		(0x4 << 18)
++#define			AT91SAM9263_MATRIX_FIXED_DEFMSTR_ISI		(0x5 << 18)
++#define			AT91SAM9263_MATRIX_FIXED_DEFMSTR_DMA		(0x6 << 18)
++#define			AT91SAM9263_MATRIX_FIXED_DEFMSTR_EMAC		(0x7 << 18)
++#define			AT91SAM9263_MATRIX_FIXED_DEFMSTR_USB		(0x8 << 18)
+ #define		AT91SAM9263_MATRIX_ARBT		(3    << 24)	/* Arbitration Type */
+ #define			AT91SAM9263_MATRIX_ARBT_ROUND_ROBIN	(0 << 24)
+ #define			AT91SAM9263_MATRIX_ARBT_FIXED_PRIORITY	(1 << 24)
+@@ -62,14 +72,23 @@
+ #define AT91SAM9263_MATRIX_PRAS7	(0xB8)	/* Priority Register A for Slave 7 */
+ #define AT91SAM9263_MATRIX_PRBS7	(0xBC)	/* Priority Register B for Slave 7 */
+ #define		AT91SAM9263_MATRIX_M0PR		(3 << 0)	/* Master 0 Priority */
++#define		AT91SAM9263_MATRIX_M0PR_(x)	(x << 0)	/* ARM926EJ-S Instruction priority */
+ #define		AT91SAM9263_MATRIX_M1PR		(3 << 4)	/* Master 1 Priority */
++#define		AT91SAM9263_MATRIX_M1PR_(x)	(x << 4)	/* ARM926EJ-S Data priority */
+ #define		AT91SAM9263_MATRIX_M2PR		(3 << 8)	/* Master 2 Priority */
++#define		AT91SAM9263_MATRIX_M2PR_(x)	(x << 8)	/* PDC priority */
+ #define		AT91SAM9263_MATRIX_M3PR		(3 << 12)	/* Master 3 Priority */
++#define		AT91SAM9263_MATRIX_M3PR_(x)	(x << 12)	/* LCDC priority */
+ #define		AT91SAM9263_MATRIX_M4PR		(3 << 16)	/* Master 4 Priority */
++#define		AT91SAM9263_MATRIX_M4PR_(x)	(x << 16)	/* 2DGC priority */
+ #define		AT91SAM9263_MATRIX_M5PR		(3 << 20)	/* Master 5 Priority */
++#define		AT91SAM9263_MATRIX_M5PR_(x)	(x << 20)	/* ISI priority */
+ #define		AT91SAM9263_MATRIX_M6PR		(3 << 24)	/* Master 6 Priority */
++#define		AT91SAM9263_MATRIX_M6PR_(x)	(x << 24)	/* DMA priority */
+ #define		AT91SAM9263_MATRIX_M7PR		(3 << 28)	/* Master 7 Priority */
++#define		AT91SAM9263_MATRIX_M7PR_(x)	(x << 28)	/* EMAC priority */
+ #define		AT91SAM9263_MATRIX_M8PR		(3 << 0)	/* Master 8 Priority (in Register B) */
++#define		AT91SAM9263_MATRIX_M8PR_(x)	(x << 0)	/* USB Priority */
+ 
+ #define AT91SAM9263_MATRIX_MRCR	(0x100)	/* Master Remap Control Register */
+ #define		AT91SAM9263_MATRIX_RCB0		(1 << 0)	/* Remap Command for AHB Master 0 (ARM926EJ-S Instruction Master) */
+diff --git a/arch/arm/mach-at91/include/mach/at91sam926x.h b/arch/arm/mach-at91/include/mach/at91sam926x.h
+index 8ef83010d..ae7e224a7 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam926x.h
++++ b/arch/arm/mach-at91/include/mach/at91sam926x.h
+@@ -7,4 +7,6 @@
+ #define AT91SAM926X_BASE_RSTC	0xfffffd00
+ #define AT91SAM926X_BASE_WDT	0xfffffd40
+ 
++#define AT91SAM926X_ID_SYS	1	/* System Controller Interrupt */
++
+ #endif /* __MACH_AT91SAM926X_H */
 diff --git a/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h b/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
-index c34668d7b..fe76f60b0 100644
+index 80effe214..c34668d7b 100644
 --- a/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
 +++ b/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
-@@ -177,6 +177,10 @@
+@@ -47,12 +47,108 @@
+ #define		AT91_SDRAMC_DBW		(1 << 7)		/* Data Bus Width */
+ #define			AT91_SDRAMC_DBW_32	(0 << 7)
+ #define			AT91_SDRAMC_DBW_16	(1 << 7)
+-#define		AT91_SDRAMC_TWR		(0xf <<  8)		/* Write Recovery Delay */
+-#define		AT91_SDRAMC_TRC		(0xf << 12)		/* Row Cycle Delay */
+-#define		AT91_SDRAMC_TRP		(0xf << 16)		/* Row Precharge Delay */
+-#define		AT91_SDRAMC_TRCD	(0xf << 20)		/* Row to Column Delay */
+-#define		AT91_SDRAMC_TRAS	(0xf << 24)		/* Active to Precharge Delay */
+-#define		AT91_SDRAMC_TXSR	(0xf << 28)		/* Exit Self Refresh to Active Delay */
++#define AT91_SDRAMC_TWR	(0xF << 8)	/* Number of Write Recovery Time Cycles */
++#define 	AT91_SDRAMC_TWR_0		(0x0 << 8)
++#define 	AT91_SDRAMC_TWR_1		(0x1 << 8)
++#define 	AT91_SDRAMC_TWR_2		(0x2 << 8)
++#define 	AT91_SDRAMC_TWR_3		(0x3 << 8)
++#define 	AT91_SDRAMC_TWR_4		(0x4 << 8)
++#define 	AT91_SDRAMC_TWR_5		(0x5 << 8)
++#define 	AT91_SDRAMC_TWR_6		(0x6 << 8)
++#define 	AT91_SDRAMC_TWR_7		(0x7 << 8)
++#define 	AT91_SDRAMC_TWR_8		(0x8 << 8)
++#define 	AT91_SDRAMC_TWR_9		(0x9 << 8)
++#define 	AT91_SDRAMC_TWR_10		(0xA << 8)
++#define 	AT91_SDRAMC_TWR_11		(0xB << 8)
++#define 	AT91_SDRAMC_TWR_12		(0xC << 8)
++#define 	AT91_SDRAMC_TWR_13		(0xD << 8)
++#define 	AT91_SDRAMC_TWR_14		(0xE << 8)
++#define 	AT91_SDRAMC_TWR_15		(0xF << 8)
++#define AT91_SDRAMC_TRC	(0xF << 12)	/* Number of Row Cycle Delay Time Cycles */
++#define 	AT91_SDRAMC_TRC_0		(0x0 << 12)
++#define 	AT91_SDRAMC_TRC_1		(0x1 << 12)
++#define 	AT91_SDRAMC_TRC_2		(0x2 << 12)
++#define 	AT91_SDRAMC_TRC_3		(0x3 << 12)
++#define 	AT91_SDRAMC_TRC_4		(0x4 << 12)
++#define 	AT91_SDRAMC_TRC_5		(0x5 << 12)
++#define 	AT91_SDRAMC_TRC_6		(0x6 << 12)
++#define 	AT91_SDRAMC_TRC_7		(0x7 << 12)
++#define 	AT91_SDRAMC_TRC_8		(0x8 << 12)
++#define 	AT91_SDRAMC_TRC_9		(0x9 << 12)
++#define 	AT91_SDRAMC_TRC_10		(0xA << 12)
++#define 	AT91_SDRAMC_TRC_11		(0xB << 12)
++#define 	AT91_SDRAMC_TRC_12		(0xC << 12)
++#define 	AT91_SDRAMC_TRC_13		(0xD << 12)
++#define 	AT91_SDRAMC_TRC_14		(0xE << 12)
++#define 	AT91_SDRAMC_TRC_15		(0xF << 12)
++#define AT91_SDRAMC_TRP	(0xF << 16)	/* Number of Row Precharge Delay Time Cycles */
++#define 	AT91_SDRAMC_TRP_0		(0x0 << 16)
++#define 	AT91_SDRAMC_TRP_1		(0x1 << 16)
++#define 	AT91_SDRAMC_TRP_2		(0x2 << 16)
++#define 	AT91_SDRAMC_TRP_3		(0x3 << 16)
++#define 	AT91_SDRAMC_TRP_4		(0x4 << 16)
++#define 	AT91_SDRAMC_TRP_5		(0x5 << 16)
++#define 	AT91_SDRAMC_TRP_6		(0x6 << 16)
++#define 	AT91_SDRAMC_TRP_7		(0x7 << 16)
++#define 	AT91_SDRAMC_TRP_8		(0x8 << 16)
++#define 	AT91_SDRAMC_TRP_9		(0x9 << 16)
++#define 	AT91_SDRAMC_TRP_10		(0xA << 16)
++#define 	AT91_SDRAMC_TRP_11		(0xB << 16)
++#define 	AT91_SDRAMC_TRP_12		(0xC << 16)
++#define 	AT91_SDRAMC_TRP_13		(0xD << 16)
++#define 	AT91_SDRAMC_TRP_14		(0xE << 16)
++#define 	AT91_SDRAMC_TRP_15		(0xF << 16)
++#define AT91_SDRAMC_TRCD	(0xF << 20)	/* Number of Row to Column Delay Time Cycles */
++#define 	AT91_SDRAMC_TRCD_0		(0x0 << 20)
++#define 	AT91_SDRAMC_TRCD_1		(0x1 << 20)
++#define 	AT91_SDRAMC_TRCD_2		(0x2 << 20)
++#define 	AT91_SDRAMC_TRCD_3		(0x3 << 20)
++#define 	AT91_SDRAMC_TRCD_4		(0x4 << 20)
++#define 	AT91_SDRAMC_TRCD_5		(0x5 << 20)
++#define 	AT91_SDRAMC_TRCD_6		(0x6 << 20)
++#define 	AT91_SDRAMC_TRCD_7		(0x7 << 20)
++#define 	AT91_SDRAMC_TRCD_8		(0x8 << 20)
++#define 	AT91_SDRAMC_TRCD_9		(0x9 << 20)
++#define 	AT91_SDRAMC_TRCD_10		(0xA << 20)
++#define 	AT91_SDRAMC_TRCD_11		(0xB << 20)
++#define 	AT91_SDRAMC_TRCD_12		(0xC << 20)
++#define 	AT91_SDRAMC_TRCD_13		(0xD << 20)
++#define 	AT91_SDRAMC_TRCD_14		(0xE << 20)
++#define 	AT91_SDRAMC_TRCD_15		(0xF << 20)
++#define AT91_SDRAMC_TRAS	(0xF << 24)	/* Number of Active to Precharge Delay Time Cycles */
++#define 	AT91_SDRAMC_TRAS_0		(0x0 << 24)
++#define 	AT91_SDRAMC_TRAS_1		(0x1 << 24)
++#define 	AT91_SDRAMC_TRAS_2		(0x2 << 24)
++#define 	AT91_SDRAMC_TRAS_3		(0x3 << 24)
++#define 	AT91_SDRAMC_TRAS_4		(0x4 << 24)
++#define 	AT91_SDRAMC_TRAS_5		(0x5 << 24)
++#define 	AT91_SDRAMC_TRAS_6		(0x6 << 24)
++#define 	AT91_SDRAMC_TRAS_7		(0x7 << 24)
++#define 	AT91_SDRAMC_TRAS_8		(0x8 << 24)
++#define 	AT91_SDRAMC_TRAS_9		(0x9 << 24)
++#define 	AT91_SDRAMC_TRAS_10		(0xA << 24)
++#define 	AT91_SDRAMC_TRAS_11		(0xB << 24)
++#define 	AT91_SDRAMC_TRAS_12		(0xC << 24)
++#define 	AT91_SDRAMC_TRAS_13		(0xD << 24)
++#define 	AT91_SDRAMC_TRAS_14		(0xE << 24)
++#define 	AT91_SDRAMC_TRAS_15		(0xF << 24)
++#define AT91_SDRAMC_TXS	(0xF << 28)	/* Number of Exit Self Refresh to Active Delay Time Cycles */
++#define 	AT91_SDRAMC_TXSR_0		(0x0 << 28)
++#define 	AT91_SDRAMC_TXSR_1		(0x1 << 28)
++#define 	AT91_SDRAMC_TXSR_2		(0x2 << 28)
++#define 	AT91_SDRAMC_TXSR_3		(0x3 << 28)
++#define 	AT91_SDRAMC_TXSR_4		(0x4 << 28)
++#define 	AT91_SDRAMC_TXSR_5		(0x5 << 28)
++#define 	AT91_SDRAMC_TXSR_6		(0x6 << 28)
++#define 	AT91_SDRAMC_TXSR_7		(0x7 << 28)
++#define 	AT91_SDRAMC_TXSR_8		(0x8 << 28)
++#define 	AT91_SDRAMC_TXSR_9		(0x9 << 28)
++#define 	AT91_SDRAMC_TXSR_10		(0xA << 28)
++#define 	AT91_SDRAMC_TXSR_11		(0xB << 28)
++#define 	AT91_SDRAMC_TXSR_12		(0xC << 28)
++#define 	AT91_SDRAMC_TXSR_13		(0xD << 28)
++#define 	AT91_SDRAMC_TXSR_14		(0xE << 28)
++#define 	AT91_SDRAMC_TXSR_15		(0xF << 28)
  
- #ifndef __ASSEMBLY__
- #include <io.h>
-+#include <mach/at91sam9260.h>
-+#include <mach/at91sam9261.h>
-+#include <mach/at91sam9263.h>
-+
- static inline u32 at91_get_sdram_size(void *base)
- {
- 	u32 val;
-@@ -203,14 +207,11 @@ static inline u32 at91_get_sdram_size(void *base)
- 	return size;
- }
- 
--
- static inline bool at91_is_low_power_sdram(void *base)
- {
- 	return readl(base + AT91_SDRAMC_MDR) & AT91_SDRAMC_MD_LOW_POWER_SDRAM;
- }
- 
--#ifdef CONFIG_SOC_AT91SAM9260
--#include <mach/at91sam9260.h>
- static inline u32 at91sam9260_get_sdram_size(void)
- {
- 	return at91_get_sdram_size(IOMEM(AT91SAM9260_BASE_SDRAMC));
-@@ -220,20 +221,7 @@ static inline bool at91sam9260_is_low_power_sdram(void)
- {
- 	return at91_is_low_power_sdram(IOMEM(AT91SAM9260_BASE_SDRAMC));
- }
--#else
--static inline u32 at91sam9260_get_sdram_size(void)
--{
--	return 0;
--}
--
--static inline bool at91sam9260_is_low_power_sdram(void)
--{
--	return false;
--}
--#endif
- 
--#ifdef CONFIG_SOC_AT91SAM9261
--#include <mach/at91sam9261.h>
- static inline u32 at91sam9261_get_sdram_size(void)
- {
- 	return at91_get_sdram_size(IOMEM(AT91SAM9261_BASE_SDRAMC));
-@@ -243,20 +231,7 @@ static inline bool at91sam9261_is_low_power_sdram(void)
- {
- 	return at91_is_low_power_sdram(IOMEM(AT91SAM9261_BASE_SDRAMC));
- }
--#else
--static inline u32 at91sam9261_get_sdram_size(void)
--{
--	return 0;
--}
--
--static inline bool at91sam9261_is_low_power_sdram(void)
--{
--	return false;
--}
--#endif
- 
--#ifdef CONFIG_SOC_AT91SAM9263
--#include <mach/at91sam9263.h>
- static inline u32 at91sam9263_get_sdram_size(int bank)
- {
- 	switch (bank) {
-@@ -280,18 +255,6 @@ static inline bool at91sam9263_is_low_power_sdram(int bank)
- 		return false;
- 	}
- }
--#else
--static inline u32 at91sam9263_get_sdram_size(int bank)
--{
--	return 0;
--}
--
--static inline bool at91sam9263_is_low_power_sdram(void)
--{
--	return false;
--}
--#endif
- 
- #endif
--
- #endif
+ #define AT91_SDRAMC_LPR		0x10	/* SDRAM Controller Low Power Register */
+ #define		AT91_SDRAMC_LPCB		(3 << 0)	/* Low-power Configurations */
 -- 
 2.34.1
 
