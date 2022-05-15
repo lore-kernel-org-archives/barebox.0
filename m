@@ -1,70 +1,70 @@
-Delivery-date: Sun, 15 May 2022 21:40:33 +0200
+Delivery-date: Sun, 15 May 2022 21:40:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqK6T-00EWUX-8Z
-	for lore@lore.pengutronix.de; Sun, 15 May 2022 21:40:33 +0200
+	id 1nqK6U-00EWVw-Te
+	for lore@lore.pengutronix.de; Sun, 15 May 2022 21:40:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqK6P-0005wt-1Z
-	for lore@pengutronix.de; Sun, 15 May 2022 21:40:32 +0200
+	id 1nqK6S-0005yb-8o
+	for lore@pengutronix.de; Sun, 15 May 2022 21:40:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=mbHSS3e0GgF6c6hpBpRfUR2yEOkTfYoHNq5S6HDXYEw=; b=dFDKIF+e4OeVvm
-	UmEjTKGcVslYQ4SiYITCVJUlWlM0PVbewX0+0DZOFUCyEZSdZn6nKaBhJG2DdM8Sp+OEcQw1wwndj
-	vjkwZJ+7El+ADkK/gaJAK+7I1phkh+8zksMSzMZwHGgDZ1gpQUGzIzeb2qjt5Rvy/xSRo2WB6ZnkH
-	i1TQCpGm3W6RQhuWlklFRPmpjftWtoG9M7Md+8SQnzEtpydbZA4juPTk5V+q4V75IdhTgvJ2p/w/P
-	0sV1q4HVFdhTcqm3JosHa1NM9ttgEn+omOydvnmnMcM0oVqRZUJ8C/qYSdzUxA5AZ4KXfpFrWjmAE
-	dg25XpKSHxZsrK4kKFWg==;
+	List-Owner; bh=NNnUWUICreNaS6GYNFm4ufmSaCdCBRdfY2mV8xTq4HY=; b=aGggxe/GCVwA16
+	624QL2vH4GmPTKDLRdQ500sp0oKcykxHEeEwYYJeJFmENVwvTfGNgnZH7NU0jj0gEyKcaxDF+BYaN
+	BYUlDCpzv20cpwPbAfkxjBHQYaGzijil1s/ezY2dSsInLuajLKzXwt2WhnFNsZw5VecNkTc596ZNT
+	dXqfq45cxGGBqbdllN5eA3VRsPzM/bFYXunzbOv83cE6h3wcLM4PUIyw6rCUrgM2Uog/0HRGH9RdJ
+	uthMb3PsVW/XCSCLrA5QWasWGUAMUCI7eDUaq530W3rat64hAm2V4/qn93DI3vJLNqRs7lJhv3nJI
+	8nww92ywMZt6NWHI2JKg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nqK4m-004nc8-54; Sun, 15 May 2022 19:38:48 +0000
+	id 1nqK4g-004naV-J2; Sun, 15 May 2022 19:38:42 +0000
 Received: from mailrelay2-1.pub.mailoutpod1-cph3.one.com ([46.30.210.183])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nqK4R-004nUS-If
+ id 1nqK4T-004nUo-0S
  for barebox@lists.infradead.org; Sun, 15 May 2022 19:38:32 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ravnborg.org; s=rsa1;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=/0i0QYDbUSgqF2Aa/En2lmwrMAdrotm+9NCuHCST2+o=;
- b=LJ2dE5zz6rDLT1b8vjT8f/WpJjVRe8v7YnX0Q9cFg1kxW2gQ49z5T3QE2re6yg7DponS3eZRO5GkL
- dOJ5LaeXcviFyIErP/P9f+wz8lAko9LEHkDuhbSWbnjtIhpSqH9m5xMh5TPMi5aNZe6rCSwclXgxf7
- zrGe6T1F8ajVjRBCE4t2wYMYhKuqmWguekTB5Zv4j+2nP5oH5lD+3vMIpZyqvxgaMUgf3yq10VUQKJ
- PxCMMvtjMlb/si8P4ZNqMeOcSfdxSL2wnmHiQS8jEdykEM2zdnIqw+lzFW90Te8GQqUQ6IoRPG5Zv8
- 1bXJC3ARlXSFv7EKXh/aa6Ykua4ZjXA==
+ bh=AQ/mMZtcIy1U4PICG1dHJ36W9ivLLSxmcyELCPxiuw0=;
+ b=KsLsmC/TcYcMoEOqlt5WKQ4N933Pl6rXzIWPrZKVpfqB2BI3gCfFOzzaFTcW/bClT2r5V+7YSxZ2Y
+ mXPkyO/F+/dopQVyFxehUAuIkgr31toVunJGTlMhRThHaNvnNI8xhp1j2xHJjgXxh5eBt98TzCrVTn
+ RuuY/B9E4XYMn5bCi6H4umJzh7xFYvN4h/ZvhXdTdmhaIglzK/I4kBHex30hNrBE4zeJBr4TIMCnBG
+ rMs3HVdoHrPCnFUQFXX6zRlsZIRH94SVOQLSdJQignTpxRTBrrzC+y3PwuHSbV1VsJoX8hoLMP5a3k
+ WQjOm4jXGRk+eda3rCj/9G6frsRnXMQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
  d=ravnborg.org; s=ed1;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=/0i0QYDbUSgqF2Aa/En2lmwrMAdrotm+9NCuHCST2+o=;
- b=TzGSyFMkUYwUD0fHSn5ftzwffUO2kUD1TDy8TT660bmpk7OxC59SG8q0NFPzaCZeqK1DXZQT5p4bH
- 6l3EjUVBQ==
-X-HalOne-Cookie: e919a5f92339430a85fb990bd2bc543e9ae3fcfc
-X-HalOne-ID: 952cd892-d486-11ec-a908-d0431ea8a290
+ bh=AQ/mMZtcIy1U4PICG1dHJ36W9ivLLSxmcyELCPxiuw0=;
+ b=o5NYYTQD2EQLJBrx/uEPlr3tCIzMHYr4D+xoBtsAa+jwjv/jnMyVknj81PNinuG8ms1o0QgU+E+Ue
+ roxeSYfBQ==
+X-HalOne-Cookie: 165563a6007c4d9408062d4ecc4e1e92dcc5aa66
+X-HalOne-ID: 97294700-d486-11ec-a908-d0431ea8a290
 Received: from mailproxy4.cst.dirpod4-cph3.one.com
  (80-162-45-141-cable.dk.customer.tdc.net [80.162.45.141])
  by mailrelay2.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
- id 952cd892-d486-11ec-a908-d0431ea8a290;
- Sun, 15 May 2022 19:38:23 +0000 (UTC)
+ id 97294700-d486-11ec-a908-d0431ea8a290;
+ Sun, 15 May 2022 19:38:26 +0000 (UTC)
 From: Sam Ravnborg <sam@ravnborg.org>
 To: barebox@lists.infradead.org
 Cc: Sam Ravnborg <sam@ravnborg.org>
-Date: Sun, 15 May 2022 21:38:00 +0200
-Message-Id: <20220515193807.354903-2-sam@ravnborg.org>
+Date: Sun, 15 May 2022 21:38:04 +0200
+Message-Id: <20220515193807.354903-6-sam@ravnborg.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220515193807.354903-1-sam@ravnborg.org>
 References: <20220515193807.354903-1-sam@ravnborg.org>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220515_123828_108795_87184C37 
-X-CRM114-Status: GOOD (  28.45  )
+X-CRM114-CacheID: sfid-20220515_123829_242324_779C269A 
+X-CRM114-Status: GOOD (  14.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,528 +89,315 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v1 1/8] pwm: atmel: Fix build and update
+Subject: [PATCH v1 5/8] ARM: at91: Add lowlevel helpers for at91sam9263
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The pwm-atmel driver was not updated to use the atomic api and did not
-build.
-
-Update the driver from linux kernel 5.16-rc7 and adapt to barebox
-to get the latest fixes including the conversion to atomic api.
+Add lowlevel helpers like we already have for sama5d2 etc.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- drivers/pwm/pwm-atmel.c | 383 ++++++++++++++++++++++++++++++----------
- 1 file changed, 285 insertions(+), 98 deletions(-)
+ arch/arm/mach-at91/Makefile                |   1 +
+ arch/arm/mach-at91/include/mach/sam92_ll.h |  54 ++++++
+ arch/arm/mach-at91/sam9263_ll.c            | 216 +++++++++++++++++++++
+ 3 files changed, 271 insertions(+)
+ create mode 100644 arch/arm/mach-at91/include/mach/sam92_ll.h
+ create mode 100644 arch/arm/mach-at91/sam9263_ll.c
 
-diff --git a/drivers/pwm/pwm-atmel.c b/drivers/pwm/pwm-atmel.c
-index 648f75fb7..9ec81e18b 100644
---- a/drivers/pwm/pwm-atmel.c
-+++ b/drivers/pwm/pwm-atmel.c
-@@ -55,15 +55,7 @@
- #define PWMV2_CPRD		0x0C
- #define PWMV2_CPRDUPD		0x10
- 
--/*
-- * Max value for duty and period
-- *
-- * Although the duty and period register is 32 bit,
-- * however only the LSB 16 bits are significant.
-- */
--#define PWM_MAX_DTY		0xFFFF
--#define PWM_MAX_PRD		0xFFFF
--#define PRD_MAX_PRES		10
-+#define PWM_MAX_PRES		10
- 
- struct atmel_pwm_registers {
- 	u8 period;
-@@ -72,30 +64,53 @@ struct atmel_pwm_registers {
- 	u8 duty_upd;
- };
- 
--struct atmel_pwm;
-+struct atmel_pwm_config {
-+	u32 period_bits;
-+};
- 
--struct atmel_pwm_chip {
--	struct pwm_chip chip;
--	struct atmel_pwm *atmel;
-+struct atmel_pwm_data {
-+	struct atmel_pwm_registers regs;
-+	struct atmel_pwm_config cfg;
- };
- 
--struct atmel_pwm {
--	struct atmel_pwm_chip atmel_pwm_chip[PWM_CHANNELS];
--	const struct atmel_pwm_registers *regs;
-+struct atmel_pwm_chip {
-+	struct pwm_chip chips[PWM_CHANNELS];
- 	struct clk *clk;
- 	void __iomem *base;
- 	struct device_d *dev;
-+	const struct atmel_pwm_data *data;
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 72805d6ef..56c2a3170 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -31,6 +31,7 @@ ifeq ($(CONFIG_OFDEVICE),)
+ obj-$(CONFIG_SOC_AT91SAM9263) += at91sam9263.o at91sam9263_devices.o
+ obj-$(CONFIG_SOC_SAMA5D3)	+= sama5d3.o sama5d3_devices.o
+ endif
++lwl-$(CONFIG_SOC_AT91SAM9263)	+= sam9263_ll.o
+ lwl-$(CONFIG_SOC_SAMA5D2)	+= sama5d2_ll.o
+ obj-$(CONFIG_SOC_SAMA5D2)	+= sama5d2.o
+ lwl-$(CONFIG_SOC_SAMA5D3)	+= sama5d3_ll.o
+diff --git a/arch/arm/mach-at91/include/mach/sam92_ll.h b/arch/arm/mach-at91/include/mach/sam92_ll.h
+new file mode 100644
+index 000000000..f5cef197d
+--- /dev/null
++++ b/arch/arm/mach-at91/include/mach/sam92_ll.h
+@@ -0,0 +1,54 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +
-+	/*
-+	 * The hardware supports a mechanism to update a channel's duty cycle at
-+	 * the end of the currently running period. When such an update is
-+	 * pending we delay disabling the PWM until the new configuration is
-+	 * active because otherwise pmw_config(duty_cycle=0); pwm_disable();
-+	 * might not result in an inactive output.
-+	 * This bitmask tracks for which channels an update is pending in
-+	 * hardware.
-+	 */
-+	u32 update_pending;
++#ifndef __MACH_SAM92_LL_H__
++#define __MACH_SAM92_LL_H__
 +
-+	/* Protects .update_pending */
-+	spinlock_t lock;
- };
- 
- static inline struct atmel_pwm_chip *to_atmel_pwm_chip(struct pwm_chip *chip)
- {
--	return container_of(chip, struct atmel_pwm_chip, chip);
-+	struct pwm_chip (*chips)[4] = (void *)&chip[-chip->id];
-+	return container_of(chips, struct atmel_pwm_chip, chips);
-+}
++#include <debug_ll.h>
++#include <common.h>
 +
-+static inline u32 atmel_pwm_readl(struct atmel_pwm_chip *chip,
-+				  unsigned long offset)
-+{
-+	return readl_relaxed(chip->base + offset);
- }
- 
- static inline void atmel_pwm_writel(struct atmel_pwm_chip *chip,
- 				    unsigned long offset, unsigned long val)
- {
--	writel(val, chip->atmel->base + offset);
-+	writel_relaxed(val, chip->base + offset);
- }
- 
- static inline u32 atmel_pwm_ch_readl(struct atmel_pwm_chip *chip,
-@@ -103,7 +118,7 @@ static inline u32 atmel_pwm_ch_readl(struct atmel_pwm_chip *chip,
- {
- 	unsigned long base = PWM_CH_REG_OFFSET + ch * PWM_CH_REG_SIZE;
- 
--	return readl(chip->atmel->base + base + offset);
-+	return atmel_pwm_readl(chip, base + offset);
- }
- 
- static inline void atmel_pwm_ch_writel(struct atmel_pwm_chip *chip,
-@@ -112,24 +127,95 @@ static inline void atmel_pwm_ch_writel(struct atmel_pwm_chip *chip,
- {
- 	unsigned long base = PWM_CH_REG_OFFSET + ch * PWM_CH_REG_SIZE;
- 
--	writel(val, chip->atmel->base + base + offset);
-+	atmel_pwm_writel(chip, base + offset, val);
-+}
++#include <mach/at91_pmc_ll.h>
++#include <mach/at91sam9260.h>
++#include <mach/at91sam9261.h>
++#include <mach/at91sam9263.h>
++#include <mach/at91sam926x.h>
++#include <mach/debug_ll.h>
++#include <mach/early_udelay.h>
++#include <mach/iomux.h>
 +
-+static void atmel_pwm_update_pending(struct atmel_pwm_chip *chip)
-+{
-+	/*
-+	 * Each channel that has its bit in ISR set started a new period since
-+	 * ISR was cleared and so there is no more update pending.  Note that
-+	 * reading ISR clears it, so this needs to handle all channels to not
-+	 * loose information.
-+	 */
-+	u32 isr = atmel_pwm_readl(chip, PWM_ISR);
-+
-+	chip->update_pending &= ~isr;
-+}
-+
-+static void atmel_pwm_set_pending(struct atmel_pwm_chip *chip, unsigned int ch)
-+{
-+	spin_lock(&chip->lock);
-+
-+	/*
-+	 * Clear pending flags in hardware because otherwise there might still
-+	 * be a stale flag in ISR.
-+	 */
-+	atmel_pwm_update_pending(chip);
-+
-+	chip->update_pending |= (1 << ch);
-+
-+	spin_unlock(&chip->lock);
-+}
-+
-+static int atmel_pwm_test_pending(struct atmel_pwm_chip *chip, unsigned int ch)
-+{
-+	int ret = 0;
-+
-+	spin_lock(&chip->lock);
-+
-+	if (chip->update_pending & (1 << ch)) {
-+		atmel_pwm_update_pending(chip);
-+
-+		if (chip->update_pending & (1 << ch))
-+			ret = 1;
-+	}
-+
-+	spin_unlock(&chip->lock);
-+
-+	return ret;
-+}
-+
-+static int atmel_pwm_wait_nonpending(struct atmel_pwm_chip *chip, unsigned int ch)
-+{
-+	unsigned long timeout = get_time_ns() + 2 * HZ;
-+	int ret;
-+
-+	while ((ret = atmel_pwm_test_pending(chip, ch)) &&
-+	       !is_timeout(get_time_ns(), timeout))
-+		udelay(100);
-+
-+	return ret ? -ETIMEDOUT : 0;
- }
- 
--static int atmel_pwm_calculate_cprd_and_pres(struct atmel_pwm_chip *atmel_pwm,
--					     int period,
-+static int atmel_pwm_calculate_cprd_and_pres(struct pwm_chip *chip,
-+					     unsigned long clkrate,
-+					     const struct pwm_state *state,
- 					     unsigned long *cprd, u32 *pres)
- {
--	unsigned long long cycles = period;
-+	struct atmel_pwm_chip *atmel_pwm = to_atmel_pwm_chip(chip);
-+	unsigned long long cycles = state->period_ns;
-+	int shift;
-+
- 	/* Calculate the period cycles and prescale value */
--	cycles *= clk_get_rate(atmel_pwm->atmel->clk);
-+	cycles *= clkrate;
- 	do_div(cycles, NSEC_PER_SEC);
- 
--	for (*pres = 0; cycles > PWM_MAX_PRD; cycles >>= 1)
--		(*pres)++;
-+	/*
-+	 * The register for the period length is cfg.period_bits bits wide.
-+	 * So for each bit the number of clock cycles is wider divide the input
-+	 * clock frequency by two using pres and shift cprd accordingly.
-+	 */
-+	shift = fls(cycles) - atmel_pwm->data->cfg.period_bits;
- 
--	if (*pres > PRD_MAX_PRES) {
--		dev_err(atmel_pwm->atmel->dev, "pres exceeds the maximum value\n");
-+	if (shift > PWM_MAX_PRES) {
-+		dev_err(atmel_pwm->dev, "pres exceeds the maximum value\n");
- 		return -EINVAL;
-+	} else if (shift > 0) {
-+		*pres = shift;
-+		cycles >>= *pres;
-+	} else {
-+		*pres = 0;
- 	}
- 
- 	*cprd = cycles;
-@@ -137,137 +223,238 @@ static int atmel_pwm_calculate_cprd_and_pres(struct atmel_pwm_chip *atmel_pwm,
- 	return 0;
- }
- 
--static void atmel_pwm_calculate_cdty(int duty, int period,
--				     unsigned long cprd, unsigned long *cdty)
-+static void atmel_pwm_calculate_cdty(const struct pwm_state *state,
-+				     unsigned long clkrate, unsigned long cprd,
-+				     u32 pres, unsigned long *cdty)
- {
--	unsigned long long cycles = duty;
-+	unsigned long long cycles = state->duty_ns;
- 
--	cycles *= cprd;
--	do_div(cycles, period);
-+	cycles *= clkrate;
-+	do_div(cycles, NSEC_PER_SEC);
-+	cycles >>= pres;
- 	*cdty = cprd - cycles;
- }
- 
--static void atmel_pwm_set_cprd_cdty(struct atmel_pwm_chip *atmel_pwm, int ch,
-+static void atmel_pwm_update_cdty(struct pwm_chip *chip, unsigned long cdty)
-+{
-+	struct atmel_pwm_chip *atmel_pwm = to_atmel_pwm_chip(chip);
-+	u32 val;
-+
-+	if (atmel_pwm->data->regs.duty_upd ==
-+	    atmel_pwm->data->regs.period_upd) {
-+		val = atmel_pwm_ch_readl(atmel_pwm, chip->id, PWM_CMR);
-+		val &= ~PWM_CMR_UPD_CDTY;
-+		atmel_pwm_ch_writel(atmel_pwm, chip->id, PWM_CMR, val);
-+	}
-+
-+	atmel_pwm_ch_writel(atmel_pwm, chip->id,
-+			    atmel_pwm->data->regs.duty_upd, cdty);
-+	atmel_pwm_set_pending(atmel_pwm, chip->id);
-+}
-+
-+static void atmel_pwm_set_cprd_cdty(struct pwm_chip *chip,
- 				    unsigned long cprd, unsigned long cdty)
- {
--	const struct atmel_pwm_registers *regs = atmel_pwm->atmel->regs;
-+	struct atmel_pwm_chip *atmel_pwm = to_atmel_pwm_chip(chip);
- 
--	atmel_pwm_ch_writel(atmel_pwm, ch, regs->duty, cdty);
--	atmel_pwm_ch_writel(atmel_pwm, ch, regs->period, cprd);
-+	atmel_pwm_ch_writel(atmel_pwm, chip->id,
-+			    atmel_pwm->data->regs.duty, cdty);
-+	atmel_pwm_ch_writel(atmel_pwm, chip->id,
-+			    atmel_pwm->data->regs.period, cprd);
- }
- 
--static int atmel_pwm_config(struct pwm_chip *chip, int duty_ns, int period_ns)
-+static void atmel_pwm_disable(struct pwm_chip *chip, bool disable_clk)
- {
- 	struct atmel_pwm_chip *atmel_pwm = to_atmel_pwm_chip(chip);
--	unsigned long cprd, cdty;
--	u32 pres, val;
--	int ret;
--	int ch;
-+	unsigned long timeout;
- 
--	ch = atmel_pwm->chip.id;
--	ret = atmel_pwm_calculate_cprd_and_pres(atmel_pwm, period_ns, &cprd, &pres);
--	if (ret)
--		return ret;
-+	atmel_pwm_wait_nonpending(atmel_pwm, chip->id);
- 
--	atmel_pwm_calculate_cdty(duty_ns, period_ns, cprd, &cdty);
-+	atmel_pwm_writel(atmel_pwm, PWM_DIS, 1 << chip->id);
- 
--	/* It is necessary to preserve CPOL, inside CMR */
--	val = atmel_pwm_ch_readl(atmel_pwm, ch, PWM_CMR);
--	val = (val & ~PWM_CMR_CPRE_MSK) | (pres & PWM_CMR_CPRE_MSK);
--	/* Assuming normal polarity */
--	val &= ~PWM_CMR_CPOL;
-+	/*
-+	 * Wait for the PWM channel disable operation to be effective before
-+	 * stopping the clock.
-+	 */
-+	timeout = get_time_ns() + 2 * HZ;
- 
--	atmel_pwm_ch_writel(atmel_pwm, ch, PWM_CMR, val);
--	atmel_pwm_set_cprd_cdty(atmel_pwm, ch, cprd, cdty);
-+	while ((atmel_pwm_readl(atmel_pwm, PWM_SR) & (1 << chip->id)) &&
-+	       !is_timeout(get_time_ns(), timeout))
-+		udelay(100);
- 
--	return 0;
-+	if (disable_clk)
-+		clk_disable(atmel_pwm->clk);
- }
- 
--static int atmel_pwm_enable(struct pwm_chip *chip)
-+static int atmel_pwm_apply(struct pwm_chip *chip, const struct pwm_state *state)
- {
- 	struct atmel_pwm_chip *atmel_pwm = to_atmel_pwm_chip(chip);
-+	struct pwm_state cstate;
-+	unsigned long cprd, cdty;
-+	u32 pres, val;
-+	int ret;
- 
--	atmel_pwm_writel(atmel_pwm, PWM_ENA, 1 << atmel_pwm->chip.id);
--	return 0;
--}
-+	cstate = chip->state;
- 
--static void atmel_pwm_disable(struct pwm_chip *chip)
--{
--	struct atmel_pwm_chip *atmel_pwm = to_atmel_pwm_chip(chip);
-+	if (state->p_enable) {
-+		unsigned long clkrate = clk_get_rate(atmel_pwm->clk);
-+
-+		if (cstate.p_enable &&
-+		    cstate.polarity == state->polarity &&
-+		    cstate.period_ns == state->period_ns) {
-+			u32 cmr = atmel_pwm_ch_readl(atmel_pwm, chip->id, PWM_CMR);
-+
-+			cprd = atmel_pwm_ch_readl(atmel_pwm, chip->id,
-+						  atmel_pwm->data->regs.period);
-+			pres = cmr & PWM_CMR_CPRE_MSK;
-+
-+			atmel_pwm_calculate_cdty(state, clkrate, cprd, pres, &cdty);
-+			atmel_pwm_update_cdty(chip, cdty);
-+			return 0;
-+		}
-+
-+		ret = atmel_pwm_calculate_cprd_and_pres(chip, clkrate, state, &cprd,
-+							&pres);
-+		if (ret) {
-+			dev_err(atmel_pwm->dev,
-+				"failed to calculate cprd and prescaler\n");
-+			return ret;
-+		}
-+
-+		atmel_pwm_calculate_cdty(state, clkrate, cprd, pres, &cdty);
- 
--	atmel_pwm_writel(atmel_pwm, PWM_DIS, 1 << atmel_pwm->chip.id);
-+		if (cstate.p_enable) {
-+			atmel_pwm_disable(chip, false);
-+		} else {
-+			ret = clk_enable(atmel_pwm->clk);
-+			if (ret) {
-+				dev_err(atmel_pwm->dev, "failed to enable clock\n");
-+				return ret;
-+			}
-+		}
-+
-+		/* It is necessary to preserve CPOL, inside CMR */
-+		val = atmel_pwm_ch_readl(atmel_pwm, chip->id, PWM_CMR);
-+		val = (val & ~PWM_CMR_CPRE_MSK) | (pres & PWM_CMR_CPRE_MSK);
-+		if (state->polarity == PWM_POLARITY_NORMAL)
-+			val &= ~PWM_CMR_CPOL;
-+		else
-+			val |= PWM_CMR_CPOL;
-+		atmel_pwm_ch_writel(atmel_pwm, chip->id, PWM_CMR, val);
-+		atmel_pwm_set_cprd_cdty(chip, cprd, cdty);
-+		atmel_pwm_writel(atmel_pwm, PWM_ENA, 1 << chip->id);
-+	} else if (cstate.p_enable) {
-+		atmel_pwm_disable(chip, true);
-+	}
-+
-+	return 0;
- }
- 
--static struct pwm_ops atmel_pwm_ops = {
--	.config = atmel_pwm_config,
--	.enable = atmel_pwm_enable,
--	.disable = atmel_pwm_disable,
-+static const struct pwm_ops atmel_pwm_ops = {
-+	.apply = atmel_pwm_apply,
- };
- 
--static const struct atmel_pwm_registers atmel_pwm_regs_v1 = {
--	.period		= PWMV1_CPRD,
--	.period_upd	= PWMV1_CUPD,
--	.duty		= PWMV1_CDTY,
--	.duty_upd	= PWMV1_CUPD,
-+static const struct atmel_pwm_data atmel_sam9rl_pwm_data = {
-+	.regs = {
-+		.period		= PWMV1_CPRD,
-+		.period_upd	= PWMV1_CUPD,
-+		.duty		= PWMV1_CDTY,
-+		.duty_upd	= PWMV1_CUPD,
-+	},
-+	.cfg = {
-+		/* 16 bits to keep period and duty. */
-+		.period_bits	= 16,
-+	},
++struct sam92_pmc_config {
++	unsigned int diva;
++	unsigned int mula;
 +};
 +
-+static const struct atmel_pwm_data atmel_sama5_pwm_data = {
-+	.regs = {
-+		.period		= PWMV2_CPRD,
-+		.period_upd	= PWMV2_CPRDUPD,
-+		.duty		= PWMV2_CDTY,
-+		.duty_upd	= PWMV2_CDTYUPD,
-+	},
-+	.cfg = {
-+		/* 16 bits to keep period and duty. */
-+		.period_bits	= 16,
-+	},
- };
- 
--static const struct atmel_pwm_registers atmel_pwm_regs_v2 = {
--	.period		= PWMV2_CPRD,
--	.period_upd	= PWMV2_CPRDUPD,
--	.duty		= PWMV2_CDTY,
--	.duty_upd	= PWMV2_CDTYUPD,
-+static const struct atmel_pwm_data mchp_sam9x60_pwm_data = {
-+	.regs = {
-+		.period		= PWMV1_CPRD,
-+		.period_upd	= PWMV1_CUPD,
-+		.duty		= PWMV1_CDTY,
-+		.duty_upd	= PWMV1_CUPD,
-+	},
-+	.cfg = {
-+		/* 32 bits to keep period and duty. */
-+		.period_bits	= 32,
-+	},
- };
- 
- static const struct of_device_id atmel_pwm_dt_ids[] = {
- 	{
- 		.compatible = "atmel,at91sam9rl-pwm",
--		.data = &atmel_pwm_regs_v1,
-+		.data = &atmel_sam9rl_pwm_data,
- 	}, {
- 		.compatible = "atmel,sama5d3-pwm",
--		.data = &atmel_pwm_regs_v2,
-+		.data = &atmel_sama5_pwm_data,
- 	}, {
- 		.compatible = "atmel,sama5d2-pwm",
--		.data = &atmel_pwm_regs_v2,
-+		.data = &atmel_sama5_pwm_data,
-+	}, {
-+		.compatible = "microchip,sam9x60-pwm",
-+		.data = &mchp_sam9x60_pwm_data,
- 	}, {
- 		/* sentinel */
- 	},
- };
- 
-+static int id = -1;
++void sam9263_lowlevel_init(const struct sam92_pmc_config *config);
 +
- static int atmel_pwm_probe(struct device_d *dev)
- {
--	const struct atmel_pwm_registers *regs;
--	struct atmel_pwm *atmel_pwm;
--	struct resource *res;
-+	const struct atmel_pwm_data *data;
-+	struct atmel_pwm_chip *atmel_pwm;
-+	struct resource *iores;
-+	const char *alias;
- 	int ret;
- 	int i;
- 
--	ret = dev_get_drvdata(dev, (const void **)&regs);
-+	ret = dev_get_drvdata(dev, (const void **)&data);
- 	if (ret)
- 		return ret;
- 
- 	atmel_pwm = xzalloc(sizeof(*atmel_pwm));
--	atmel_pwm->regs = regs;
-+	atmel_pwm->data = data;
- 	atmel_pwm->dev = dev;
- 	atmel_pwm->clk = clk_get(dev, "pwm_clk");
- 	if (IS_ERR(atmel_pwm->clk))
- 		return PTR_ERR(atmel_pwm->clk);
- 
--	res = dev_request_mem_resource(dev, 0);
--	if (IS_ERR(res))
--		return PTR_ERR(res);
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
- 
--	atmel_pwm->base = IOMEM(res->start);
-+	atmel_pwm->base = IOMEM(iores->start);
-+	alias = of_alias_get(dev->device_node);
-+	if (!alias)
-+		id++;
- 
- 	for (i = 0; i < PWM_CHANNELS; i++) {
--		struct atmel_pwm_chip *chip = &atmel_pwm->atmel_pwm_chip[i];
--		chip->chip.ops = &atmel_pwm_ops;
--		chip->chip.devname = basprintf("pwm%d", i);
--		chip->chip.id = i;
--		chip->atmel = atmel_pwm;
--
--		ret = pwmchip_add(&chip->chip, dev);
--		if (ret < 0) {
--			dev_err(dev, "failed to add pwm chip[%d] %d\n", i, ret);
-+		struct pwm_chip *chip = &atmel_pwm->chips[i];
++static inline void sam92_pmc_enable_periph_clock(int clk)
++{
++	at91_pmc_enable_periph_clock(IOMEM(AT91SAM926X_BASE_PMC), clk);
++}
 +
-+		if (alias)
-+			chip->devname = basprintf("%sch%u", alias, i + 1);
-+		else
-+			chip->devname = basprintf("pwm%uch%u", id, i + 1);
++/* requires relocation */
++static inline void sam92_udelay_init(unsigned int msc)
++{
++	early_udelay_init(IOMEM(AT91SAM926X_BASE_PMC), IOMEM(AT91SAM9263_BASE_PIT),
++			  AT91SAM926X_ID_SYS, msc, 0);
++}
 +
-+		chip->ops = &atmel_pwm_ops;
-+		chip->id = i;
-+		ret = pwmchip_add(chip, dev);
-+		if (ret) {
-+			dev_err(dev, "failed to add pwm chip %d\n", ret);
- 			return ret;
- 		}
- 	}
++static inline void sam92_dbgu_setup_ll(unsigned int mck)
++{
++	void __iomem *pio = IOMEM(AT91SAM9263_BASE_PIOC);
++
++	// Setup clock for pio
++	sam92_pmc_enable_periph_clock(AT91SAM9263_ID_PIOCDE);
++
++	// Setup DBGU uart
++	at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PC30), AT91_MUX_PERIPH_A, GPIO_PULL_UP); // DRXD
++	at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PC31), AT91_MUX_PERIPH_A, 0); // DTXD
++
++	// Setup dbgu
++	at91_dbgu_setup_ll(IOMEM(AT91_BASE_DBGU1), mck, CONFIG_BAUDRATE);
++	pbl_set_putc(at91_dbgu_putc, IOMEM(AT91_BASE_DBGU1));
++	putc_ll('#');
++}
++
++#endif
+diff --git a/arch/arm/mach-at91/sam9263_ll.c b/arch/arm/mach-at91/sam9263_ll.c
+new file mode 100644
+index 000000000..11c399b66
+--- /dev/null
++++ b/arch/arm/mach-at91/sam9263_ll.c
+@@ -0,0 +1,216 @@
++// SPDX-License-Identifier: GPL-2.0-only AND BSD-1-Clause
++// SPDX-FileCopyrightText: 2017, Microchip Corporation
++
++#include <mach/at91sam9263_matrix.h>
++#include <mach/barebox-arm.h>
++#include <mach/at91_rstc.h>
++#include <mach/at91_wdt.h>
++#include <mach/sam92_ll.h>
++
++static void sam9263_pmc_init(const struct sam92_pmc_config *config)
++{
++	at91_pmc_init(IOMEM(AT91SAM926X_BASE_PMC), 0);
++
++	/* Initialize PLL charge pump, must be done before PLLAR/PLLBR */
++	at91_pmc_init_pll(IOMEM(AT91SAM926X_BASE_PMC), AT91SAM9_PMC_ICPPLLA | AT91SAM9_PMC_ICPPLLB);
++
++	/* Setting PLL A and divider A */
++	at91_pmc_cfg_plla(IOMEM(AT91SAM926X_BASE_PMC),
++			  AT91_PMC_MUL_(config->mula) |
++			  AT91_PMC_OUT_2 |		// 190 to 240 MHz		
++			  config->diva,			// Divider
++			  0);
++
++	/* Selection of Master Clock and Processor Clock */
++	 
++	/* PCK = PLLA = 2 * MCK */
++	at91_pmc_cfg_mck(IOMEM(AT91SAM926X_BASE_PMC),
++			 AT91_PMC_CSS_SLOW
++			 | AT91_PMC_PRES_1
++			 | AT91SAM9_PMC_MDIV_2
++			 | AT91_PMC_PDIV_1,
++			 0);
++
++	/* Switch MCK on PLLA output */
++	at91_pmc_cfg_mck(IOMEM(AT91SAM926X_BASE_PMC),
++			 AT91_PMC_CSS_PLLA
++			 | AT91_PMC_PRES_1
++			 | AT91SAM9_PMC_MDIV_2
++			 | AT91_PMC_PDIV_1,
++			 0);
++}
++
++static inline void matrix_wr(unsigned int offset, const unsigned int value)
++{
++	writel(value, IOMEM(AT91SAM9263_BASE_MATRIX + offset));
++}
++
++static void sam9263_matrix_init(void)
++{
++	/* Bus Matrix Master Configuration Register */
++	matrix_wr(AT91SAM9263_MATRIX_MCFG0, AT91SAM9263_MATRIX_ULBT_SIXTEEN);	/* OHCI */
++	matrix_wr(AT91SAM9263_MATRIX_MCFG1, AT91SAM9263_MATRIX_ULBT_EIGHT);	/* ISI */
++	matrix_wr(AT91SAM9263_MATRIX_MCFG2, AT91SAM9263_MATRIX_ULBT_EIGHT);	/* 2D */
++	matrix_wr(AT91SAM9263_MATRIX_MCFG3, AT91SAM9263_MATRIX_ULBT_EIGHT);	/* DMAC */
++	matrix_wr(AT91SAM9263_MATRIX_MCFG4, AT91SAM9263_MATRIX_ULBT_FOUR);	/* MACB */
++	matrix_wr(AT91SAM9263_MATRIX_MCFG5, AT91SAM9263_MATRIX_ULBT_SIXTEEN);	/* LCDC */
++	matrix_wr(AT91SAM9263_MATRIX_MCFG6, AT91SAM9263_MATRIX_ULBT_SINGLE);	/* PDC */
++	matrix_wr(AT91SAM9263_MATRIX_MCFG7, AT91SAM9263_MATRIX_ULBT_EIGHT);	/* DBUS */
++	matrix_wr(AT91SAM9263_MATRIX_MCFG8, AT91SAM9263_MATRIX_ULBT_EIGHT);	/* IBUS */
++
++	/* Bus Matrix Slave Configuration Registers */
++
++	/* ROM */
++	matrix_wr(AT91SAM9263_MATRIX_SCFG0,
++		  AT91SAM9263_MATRIX_ARBT_FIXED_PRIORITY
++		  | AT91SAM9263_MATRIX_FIXED_DEFMSTR_ARM926I
++		  | AT91SAM9263_MATRIX_DEFMSTR_TYPE_LAST
++		  | AT91SAM9263_MATRIX_SLOT_CYCLE_(32));
++
++	/* RAM80K */
++	matrix_wr(AT91SAM9263_MATRIX_SCFG1,
++		  AT91SAM9263_MATRIX_ARBT_FIXED_PRIORITY
++		  | AT91SAM9263_MATRIX_FIXED_DEFMSTR_EMAC
++		  | AT91SAM9263_MATRIX_DEFMSTR_TYPE_LAST
++		  | AT91SAM9263_MATRIX_SLOT_CYCLE_(32));
++
++	/* RAM16K */
++	matrix_wr(AT91SAM9263_MATRIX_SCFG2,
++		  AT91SAM9263_MATRIX_ARBT_FIXED_PRIORITY
++		  | AT91SAM9263_MATRIX_FIXED_DEFMSTR_USB
++		  | AT91SAM9263_MATRIX_DEFMSTR_TYPE_LAST
++		  | AT91SAM9263_MATRIX_SLOT_CYCLE_(16));
++
++	/* PERIPHERALS */
++	matrix_wr(AT91SAM9263_MATRIX_SCFG3,
++		  AT91SAM9263_MATRIX_ARBT_FIXED_PRIORITY
++		  | AT91SAM9263_MATRIX_FIXED_DEFMSTR_PDC
++		  | AT91SAM9263_MATRIX_DEFMSTR_TYPE_LAST
++		  | AT91SAM9263_MATRIX_SLOT_CYCLE_(4));
++
++	/* EBI0 */
++	matrix_wr(AT91SAM9263_MATRIX_SCFG4,
++		  AT91SAM9263_MATRIX_ARBT_ROUND_ROBIN
++		  | AT91SAM9263_MATRIX_FIXED_DEFMSTR_ARM926I
++		  | AT91SAM9263_MATRIX_DEFMSTR_TYPE_LAST
++		  | AT91SAM9263_MATRIX_SLOT_CYCLE_(32));
++
++	/* EBI1 */
++	matrix_wr(AT91SAM9263_MATRIX_SCFG5,
++		  AT91SAM9263_MATRIX_ARBT_FIXED_PRIORITY
++		  | AT91SAM9263_MATRIX_FIXED_DEFMSTR_LCDC
++		  | AT91SAM9263_MATRIX_DEFMSTR_TYPE_LAST
++		  | AT91SAM9263_MATRIX_SLOT_CYCLE_(64));
++
++	/* APB */
++	matrix_wr(AT91SAM9263_MATRIX_SCFG6,
++		  AT91SAM9263_MATRIX_ARBT_FIXED_PRIORITY
++		  | AT91SAM9263_MATRIX_FIXED_DEFMSTR_ARM926D
++		  | AT91SAM9263_MATRIX_DEFMSTR_TYPE_LAST
++		  | AT91SAM9263_MATRIX_SLOT_CYCLE_(4));
++
++	/* ROM */
++	matrix_wr(AT91SAM9263_MATRIX_PRAS0,
++		  AT91SAM9263_MATRIX_M0PR_(1)
++		  | AT91SAM9263_MATRIX_M1PR_(0)
++		  | AT91SAM9263_MATRIX_M2PR_(2)
++		  | AT91SAM9263_MATRIX_M3PR_(1)
++		  | AT91SAM9263_MATRIX_M4PR_(0)
++		  | AT91SAM9263_MATRIX_M5PR_(3)
++		  | AT91SAM9263_MATRIX_M6PR_(2)
++		  | AT91SAM9263_MATRIX_M7PR_(3));
++
++	matrix_wr(AT91SAM9263_MATRIX_PRBS0, AT91SAM9263_MATRIX_M8PR_(0));
++
++	/* RAM80K */
++	matrix_wr(AT91SAM9263_MATRIX_PRAS1,
++		  AT91SAM9263_MATRIX_M0PR_(1)
++		  | AT91SAM9263_MATRIX_M1PR_(2)
++		  | AT91SAM9263_MATRIX_M2PR_(1)
++		  | AT91SAM9263_MATRIX_M3PR_(3)
++		  | AT91SAM9263_MATRIX_M4PR_(0)
++		  | AT91SAM9263_MATRIX_M5PR_(0)
++		  | AT91SAM9263_MATRIX_M6PR_(3)
++		  | AT91SAM9263_MATRIX_M7PR_(0));
++
++	matrix_wr(AT91SAM9263_MATRIX_PRBS1, AT91SAM9263_MATRIX_M8PR_(2));
++
++       /* RAM16K */
++	matrix_wr(AT91SAM9263_MATRIX_PRAS2,
++		  AT91SAM9263_MATRIX_M0PR_(1)
++		  | AT91SAM9263_MATRIX_M1PR_(0)
++		  | AT91SAM9263_MATRIX_M2PR_(2)
++		  | AT91SAM9263_MATRIX_M3PR_(1)
++		  | AT91SAM9263_MATRIX_M4PR_(0)
++		  | AT91SAM9263_MATRIX_M5PR_(3)
++		  | AT91SAM9263_MATRIX_M6PR_(3)
++		  | AT91SAM9263_MATRIX_M7PR_(2));
++
++	matrix_wr(AT91SAM9263_MATRIX_PRBS2, AT91SAM9263_MATRIX_M8PR_(0));
++
++	/* PERIPHERALS */
++	matrix_wr(AT91SAM9263_MATRIX_PRAS3,
++		  AT91SAM9263_MATRIX_M0PR_(0)
++		  | AT91SAM9263_MATRIX_M1PR_(1)
++		  | AT91SAM9263_MATRIX_M2PR_(0)
++		  | AT91SAM9263_MATRIX_M3PR_(2)
++		  | AT91SAM9263_MATRIX_M4PR_(1)
++		  | AT91SAM9263_MATRIX_M5PR_(0)
++		  | AT91SAM9263_MATRIX_M6PR_(3)
++		  | AT91SAM9263_MATRIX_M7PR_(2));
++
++	matrix_wr(AT91SAM9263_MATRIX_PRBS3, AT91SAM9263_MATRIX_M8PR_(3));
++
++	/* EBI0 */
++	matrix_wr(AT91SAM9263_MATRIX_PRAS4,
++		  AT91SAM9263_MATRIX_M0PR_(1)
++		  | AT91SAM9263_MATRIX_M1PR_(3)
++		  | AT91SAM9263_MATRIX_M2PR_(0)
++		  | AT91SAM9263_MATRIX_M3PR_(2)
++		  | AT91SAM9263_MATRIX_M4PR_(3)
++		  | AT91SAM9263_MATRIX_M5PR_(0)
++		  | AT91SAM9263_MATRIX_M6PR_(0)
++		  | AT91SAM9263_MATRIX_M7PR_(1));
++
++	matrix_wr(AT91SAM9263_MATRIX_PRBS4, AT91SAM9263_MATRIX_M8PR_(2));
++
++	/* EBI1 */
++	matrix_wr(AT91SAM9263_MATRIX_PRAS5,
++		  AT91SAM9263_MATRIX_M0PR_(0)
++		  | AT91SAM9263_MATRIX_M1PR_(1)
++		  | AT91SAM9263_MATRIX_M2PR_(0)
++		  | AT91SAM9263_MATRIX_M3PR_(0)
++		  | AT91SAM9263_MATRIX_M4PR_(3)
++		  | AT91SAM9263_MATRIX_M5PR_(2)
++		  | AT91SAM9263_MATRIX_M6PR_(3)
++		  | AT91SAM9263_MATRIX_M7PR_(2));
++
++	matrix_wr(AT91SAM9263_MATRIX_PRBS5, AT91SAM9263_MATRIX_M8PR_(1));
++
++	/* APB */
++	matrix_wr(AT91SAM9263_MATRIX_PRAS6,
++		  AT91SAM9263_MATRIX_M0PR_(1)
++		  | AT91SAM9263_MATRIX_M1PR_(0)
++		  | AT91SAM9263_MATRIX_M2PR_(2)
++		  | AT91SAM9263_MATRIX_M3PR_(1)
++		  | AT91SAM9263_MATRIX_M4PR_(0)
++		  | AT91SAM9263_MATRIX_M5PR_(0)
++		  | AT91SAM9263_MATRIX_M6PR_(3)
++		  | AT91SAM9263_MATRIX_M7PR_(3));
++
++	matrix_wr(AT91SAM9263_MATRIX_PRBS6, AT91SAM9263_MATRIX_M8PR_(2));
++}
++
++static void sam9263_rstc_init(void)
++{
++	writel(AT91_RSTC_KEY | AT91_RSTC_URSTEN, IOMEM(AT91SAM926X_BASE_RSTC + AT91_RSTC_MR));
++}
++
++void sam9263_lowlevel_init(const struct sam92_pmc_config *config)
++{
++	arm_cpu_lowlevel_init();
++	at91_wdt_disable(IOMEM(AT91SAM9263_BASE_WDT));
++	sam9263_pmc_init(config);
++	sam9263_matrix_init();
++	sam9263_rstc_init();
++}
 -- 
 2.34.1
 
