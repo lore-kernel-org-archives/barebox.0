@@ -1,62 +1,70 @@
-Delivery-date: Sat, 14 May 2022 17:58:36 +0200
+Delivery-date: Sun, 15 May 2022 21:40:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1npuA8-00D5Tu-DN
-	for lore@lore.pengutronix.de; Sat, 14 May 2022 17:58:36 +0200
+	id 1nqK6P-00EWSm-C7
+	for lore@lore.pengutronix.de; Sun, 15 May 2022 21:40:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1npuA6-0002CZ-OL
-	for lore@pengutronix.de; Sat, 14 May 2022 17:58:35 +0200
+	id 1nqK6L-0005v8-OX
+	for lore@pengutronix.de; Sun, 15 May 2022 21:40:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=PceeP/LV1L+0xeoRDdIqn+XcKb5j4T73mmZ6JQ5o7Nk=; b=YLUugf3ulnrGDm
-	D101C5UjVvMHL2BSPXDr0XSQqVkRN7IY036e5teS2m+43sC4ONyPi6DMALl6eMr9xvIsdZQMHVeN+
-	94jN/FZCfnUG7kTz846+Xmae6EjBlLEGaDSxDRYzR8/RPZhx1YrnistUqtVrgiQYNiOck36TMoyBG
-	AJOIwZmYhDLsOzWoEe7gwVrULL9DQdAPK30nX1Mm/ATlEnWuFkpH1sh+NxvIdYU3kh3IYpMDQdy6S
-	IIsKB2HwzzLR5xj2pHJn4Myn4k6QD3Mz83jdH9Hwyag6avrJAyhP0WY/KpS0udA1/WjfW7YTk6QAx
-	WWvxPGr3iH/50K37M2lQ==;
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=lyXTt+2MjMZE20tPEAckVqvusOzqmp6APeQDfWtpUKc=; b=pTEVikOz/hwTLD
+	9ZSPQcPo+Wpy8tkQ6yOLKM4cUglA9C+IGjbl8JrMSW8HuJ0uT9+vwm/F/b69nyFgXDgKLX6fT8oUw
+	rCi7YvVMdB5DDyVyrYCHiCGxrBk3ayI1jaEyEN8gwLW0lUAzaLaa4F4CPWWeOuqJAjZcpjts82gds
+	MTN5exUA9nXnuPfCfODa+MrCO3cQKc3MMgTDKc8XCi4zc/05/aAmVqxm8gUFXcO9cotopsxRmGvbO
+	PwL8sDfcygQF49a8tT/eWTVcFq4wroyPbJ7HTYJj3dptd2SUyBJ50Fr7pZDVauSgWag24ecbpzQ/8
+	5rPZkp92ilat6keebb8Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1npu85-001mzA-JL; Sat, 14 May 2022 15:56:29 +0000
-Received: from mxout4.routing.net ([2a03:2900:1:a::9])
+	id 1nqK4q-004ndl-FT; Sun, 15 May 2022 19:38:52 +0000
+Received: from mailrelay2-1.pub.mailoutpod1-cph3.one.com ([46.30.210.183])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1npu80-001my3-SN
- for barebox@lists.infradead.org; Sat, 14 May 2022 15:56:26 +0000
-Received: from mxbox4.masterlogin.de (unknown [192.168.10.79])
- by mxout4.routing.net (Postfix) with ESMTP id 063FC10079E;
- Sat, 14 May 2022 15:56:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
- s=20200217; t=1652543776;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=ggwi2qgO0GpQVMxDGt2vrQ2xMisbRDvbSyKipKgXXKA=;
- b=fTsHrQ/xTRv619Qi8aNPYmoSyp3VePwwhg2GiICYaJi/2s9De4obT7Qyxb/6g2qVAZmzvL
- Ugafp1hqZGcArLiroI7XAkK4XTAQze3IEDKSdfZlyE32rMH5xWQ4Rn4sJU0rAU2fMfdmKP
- mL7w5e0rZ3osWqP8tbilbLGBUJdSwVo=
-Received: from localhost.localdomain (fttx-pool-217.61.148.252.bambit.de
- [217.61.148.252])
- by mxbox4.masterlogin.de (Postfix) with ESMTPSA id 7509C801E8;
- Sat, 14 May 2022 15:56:15 +0000 (UTC)
-From: Frank Wunderlich <linux@fw-web.de>
+ id 1nqK4U-004nVw-0W
+ for barebox@lists.infradead.org; Sun, 15 May 2022 19:38:32 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ravnborg.org; s=rsa1;
+ h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+ subject:cc:to:from:from;
+ bh=Yx4vvaPY5s+yhaMSkdiddyu9ZYylh9PVxp0IiZf1LJ0=;
+ b=StqbYrEV0g9amq1X3mZGfbLlKCuGhk+4lh6/3BgHnb7V0gGOCKYBYLdNzW+HTDMiUvji3bv95sPcw
+ pFqceUIlcBG7w6IKleOfLGOiiSYHzMknUn01TX82gDotiwFsORg1Ue+PzPJTrAEec3mi4j25SN7xjR
+ JUNSMoCsXqFrwfT2lqn8KC+Tyq6/roaoUqzw+wpEPotGGQtp36RB5TLqMCiQrpxopmQD9NHzmcMGVF
+ AF8gOH0FKYFsUizPKCmXVnXaBSxXFm75kwwolvNpnEqohJKG2sc4ufJ5JpSEhnuWbgYrFjD2qBMzI0
+ tcfho9EnhHOkDLVBj8JQduvXp8r27wg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+ d=ravnborg.org; s=ed1;
+ h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+ subject:cc:to:from:from;
+ bh=Yx4vvaPY5s+yhaMSkdiddyu9ZYylh9PVxp0IiZf1LJ0=;
+ b=m5QWrjZZUJuEX6RS65oJBgzp4QamSglSXofNXc84WDd0082ZIUpy6kAkx1uzAxFsbH1HEyLRVnjG3
+ iaUQGLgDA==
+X-HalOne-Cookie: 447d5a928ca8173f24f440ed3f1cf730a85794df
+X-HalOne-ID: 97f1bebf-d486-11ec-a908-d0431ea8a290
+Received: from mailproxy4.cst.dirpod4-cph3.one.com
+ (80-162-45-141-cable.dk.customer.tdc.net [80.162.45.141])
+ by mailrelay2.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
+ id 97f1bebf-d486-11ec-a908-d0431ea8a290;
+ Sun, 15 May 2022 19:38:28 +0000 (UTC)
+From: Sam Ravnborg <sam@ravnborg.org>
 To: barebox@lists.infradead.org
-Date: Sat, 14 May 2022 17:56:09 +0200
-Message-Id: <20220514155609.8306-1-linux@fw-web.de>
-X-Mailer: git-send-email 2.25.1
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Date: Sun, 15 May 2022 21:38:06 +0200
+Message-Id: <20220515193807.354903-8-sam@ravnborg.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220515193807.354903-1-sam@ravnborg.org>
+References: <20220515193807.354903-1-sam@ravnborg.org>
 MIME-Version: 1.0
-X-Mail-ID: da56330e-da13-4e80-b469-7000c8ef43d9
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220514_085625_157605_6317FBB3 
-X-CRM114-Status: UNSURE (   9.55  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220515_123830_303429_AA89EBB4 
+X-CRM114-Status: GOOD (  19.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,7 +76,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Frank Wunderlich <frank-w@public-files.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
@@ -77,67 +84,138 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [urgent] ARM: rockchip: fix iodomain for r2pro V1.0
+Subject: [PATCH v1 7/8] ARM: at91: Add initialize function to sdramc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Frank Wunderlich <frank-w@public-files.de>
+Port the sdramc initialize function from at91bootstrap.
+It is needed from lowlevel code and is a replacement for the
+sdramc init code in at91sam926x_board_init.h
 
-Current code sets vccio4 and vccio6 both to 1v8. R2Pro v1.0 needs 3v3
-setting on vccio4, else gmac0 (switch for lan-ports) will be damaged.
-
-IO-domain is per default 3v3 so only vccio6 needs to be set to 1v8 and
-clear this bit in the 3v3 register.
-
-Fixes: 8ba96c5942d6 ("ARM: rockchip: add BPI-R2-Pro V00 board")
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c | 9 ++++++---
- arch/arm/mach-rockchip/include/mach/rockchip.h       | 3 +++
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ arch/arm/mach-at91/Makefile                   |  2 +-
+ arch/arm/mach-at91/at91sam9_sdramc_ll.c       | 67 +++++++++++++++++++
+ .../mach-at91/include/mach/at91sam9_sdramc.h  | 12 ++++
+ 3 files changed, 80 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-at91/at91sam9_sdramc_ll.c
 
-diff --git a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
-index 4c5b4751b3fb..2a6e0700233a 100644
---- a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
-+++ b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
-@@ -17,10 +17,13 @@ static noinline void rk3568_start(void *fdt_blob_fixed_offset)
- 	void *fdt;
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 56c2a3170..390d49d03 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
  
- 	/*
--	 * Enable vccio4 1.8V and vccio6 1.8V
--	 * Needed for GMAC to work.
-+	 * set iodomain vccio6 to 1.8V needed for GMAC1 to work.
-+	 * vccio4 (gmac0/switch) needs to stay at 3v3 (default)
- 	 */
--	writel(RK_SETBITS(0x50), 0xfdc20140);
-+	//set bit 6 in PMU_GRF_IO_VSEL0 for vccio6 1v8
-+	writel(RK_SETBITS(BIT(6)), PMU_GRF_IO_VSEL0);
-+	//clear bit 6 for 3v3 as it was set to 1v8
-+	writel(RK_CLRBITS(BIT(6)), PMU_GRF_IO_VSEL1);
+ obj-y += setup.o aic.o
+-lwl-y += at91_pmc_ll.o ddramc_ll.o matrix.o
++lwl-y += at91_pmc_ll.o ddramc_ll.o at91sam9_sdramc_ll.o matrix.o
+ lwl-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += early_udelay.o
  
- 	fdt = fdt_blob_fixed_offset;
+ ifeq ($(CONFIG_COMMON_CLK_OF_PROVIDER),)
+diff --git a/arch/arm/mach-at91/at91sam9_sdramc_ll.c b/arch/arm/mach-at91/at91sam9_sdramc_ll.c
+new file mode 100644
+index 000000000..b43654364
+--- /dev/null
++++ b/arch/arm/mach-at91/at91sam9_sdramc_ll.c
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: BSD-1-Clause
++/*
++ * Copyright (c) 2006, Atmel Corporation
++ */
++#include <mach/at91sam9_sdramc.h>
++
++static inline void sdramc_wr(const struct at91sam9_sdramc_config *config,
++			     unsigned int offset,
++			     const unsigned int value)
++{
++	writel(value, config->sdramc + offset);
++}
++
++int at91sam9_sdramc_initialize(const struct at91sam9_sdramc_config *config,
++			       unsigned int sdram_address)
++{
++	unsigned int i;
++
++	/* Step#1 SDRAM feature must be in the configuration register */
++	sdramc_wr(config, AT91_SDRAMC_CR, config->cr);
++
++	/* Step#2 For mobile SDRAM, temperature-compensated self refresh(TCSR),... */
++
++	/* Step#3 The SDRAM memory type must be set in the Memory Device Register */
++	sdramc_wr(config, AT91_SDRAMC_MDR, config->mdr);
++
++	/* Step#4 The minimum pause of 200 us is provided to precede any single toggle */
++	for (i = 0; i < 1000; i++) ;
++
++	/* Step#5 A NOP command is issued to the SDRAM devices */
++	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_NOP);
++	writel(0x00000000, sdram_address);
++
++	/* Step#6 An All Banks Precharge command is issued to the SDRAM devices  */
++	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_PRECHARGE);
++	writel(0x00000000, sdram_address);
++
++	for (i = 0; i < 10000; i++) ;
++
++	/* Step#7 Eight auto-refresh cycles are provided */
++	for (i = 0; i < 8; i++) {
++		sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_REFRESH);
++		writel(0x00000001 + i, sdram_address + 4 + 4 * i);
++	}
++
++	/*  Pause cycles */
++	for (i = 0; i < 1000; i++) ;
++
++	/* Step#8 A Mode Register set (MRS) cyscle is issued to program the SDRAM parameters(TCSR, PASR, DS) */
++	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_LMR);
++	writel(0xcafedede, sdram_address + 0x24);
++
++	/*  Pause cycles */
++	for (i = 0; i < 1000; i++) ;
++
++	/* Step#9 For mobile SDRAM initialization, an Extended Mode Register set cycle is issued to ... */
++
++	/* Step#10 The application must go into Normal Mode, setting Mode to 0 in the Mode Register
++	   and perform a write access at any location in the SDRAM. */
++	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_NORMAL);	// Set Normal mode
++	writel(0x00000000, sdram_address);	// Perform Normal mode
++
++	/* Step#11 Write the refresh rate into the count field in the SDRAMC Refresh Timer Rgister. */
++	sdramc_wr(config, AT91_SDRAMC_TR, config->tr);
++
++	return 0;
++}
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h b/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
+index fe76f60b0..0e05387aa 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
+@@ -181,6 +181,18 @@
+ #include <mach/at91sam9261.h>
+ #include <mach/at91sam9263.h>
  
-diff --git a/arch/arm/mach-rockchip/include/mach/rockchip.h b/arch/arm/mach-rockchip/include/mach/rockchip.h
-index f24db36f0161..ff8b1109f858 100644
---- a/arch/arm/mach-rockchip/include/mach/rockchip.h
-+++ b/arch/arm/mach-rockchip/include/mach/rockchip.h
-@@ -23,6 +23,9 @@ static inline int rk3288_init(void)
- 
- #ifdef CONFIG_ARCH_RK3568
- int rk3568_init(void);
-+#define PMU_GRF		0xfdc20000
-+#define PMU_GRF_IO_VSEL0	(PMU_GRF + 0x140)
-+#define PMU_GRF_IO_VSEL1	(PMU_GRF + 0x144)
- #else
- static inline int rk3568_init(void)
++struct at91sam9_sdramc_config {
++	void __iomem *sdramc;
++	unsigned int mr;
++	unsigned int tr;
++	unsigned int cr;
++	unsigned int lpr;
++	unsigned int mdr;
++};
++
++int at91sam9_sdramc_initialize(const struct at91sam9_sdramc_config *config,
++			       unsigned int sdram_address);
++
+ static inline u32 at91_get_sdram_size(void *base)
  {
+ 	u32 val;
 -- 
-2.25.1
+2.34.1
 
 
 _______________________________________________
