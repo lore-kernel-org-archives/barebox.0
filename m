@@ -1,64 +1,64 @@
-Delivery-date: Mon, 16 May 2022 10:09:40 +0200
+Delivery-date: Mon, 16 May 2022 10:10:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqVnQ-00FLiN-RY
-	for lore@lore.pengutronix.de; Mon, 16 May 2022 10:09:40 +0200
+	id 1nqVoC-00FLlU-CK
+	for lore@lore.pengutronix.de; Mon, 16 May 2022 10:10:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqVnP-00012l-FP
-	for lore@pengutronix.de; Mon, 16 May 2022 10:09:40 +0200
+	id 1nqVoB-00019z-3H
+	for lore@pengutronix.de; Mon, 16 May 2022 10:10:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=2X8Jw6hsOIHJAvovGYoRttDTlDxsPpMV7erImaRWATw=; b=4zuihoH5YHTaZA
-	Jt99GTyUdNoTdrE4dqofjqTEWqj5ZkILSm2gzF9slNLFT2hQbWTbZot3yIQP5iF+j6epiJ9aNxzqj
-	izaV3aKGIKCx5bXVxGinxSuskRpUd9l3STqtCz14XHzeoYzgGSwohmKU94FRYJD6GTt1TjL6Xnqct
-	wmak8f2rG9JOCGbucLGCrnDiNIYPyoX5pWEduIsWeKpB69cCqvKwcd3NWcD8Cb8aAhUHiNjseisx+
-	HGD+rTcrkpVi7QFm1J9wCMe6gOpkdjRwMrViRptXXaMjO62jVNTGyeEHDrkZylkh1RDpO3ReZ0qLb
-	OMf81xfEPJUWSspp74CA==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=+wT4zcSXKltojMgQOrRPPZ1FbVNMj+LjuhEoaWdmE+s=; b=ltD0Lw6JpdzJiB8qUPRit+ts/P
+	VvbjZTN6yoT2RZnIsVune1OlRNK31SyfOkO3HRUYboaYzmccRAvyO8eom88Coqqowwl6gTmJZjp7W
+	Rey5K4UJg6gLjZazMR4nwC+r0B86FCkQE5T8ZCUtogBIFf2uAJvWqryiFzlKybdn1OCeMS19FYy93
+	pVBM1xpFKsoB3KmONQT6+qRDMA9kkuV7Zv5HNZ/NSlwCPdSaymg5Qbxsyl+Zvg8e9S8cAIwsGRLap
+	CvTMuvlH7W5iNVcsdP0LXUhlrOXnLf1psqSwTbzo0OL5Kk+5O/4fpOIZ4lJFokGzF+lKyGcEHAthj
+	7tB4D3VQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nqVlt-006b6f-01; Mon, 16 May 2022 08:08:05 +0000
+	id 1nqVmy-006bIz-Et; Mon, 16 May 2022 08:09:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nqVln-006b5i-K6
- for barebox@lists.infradead.org; Mon, 16 May 2022 08:08:01 +0000
+ id 1nqVmt-006bIN-7R
+ for barebox@lists.infradead.org; Mon, 16 May 2022 08:09:08 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nqVlh-0000vx-UT; Mon, 16 May 2022 10:07:53 +0200
+ id 1nqVms-0000zk-0z; Mon, 16 May 2022 10:09:06 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nqVlh-00022S-Br; Mon, 16 May 2022 10:07:53 +0200
-Date: Mon, 16 May 2022 10:07:53 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-To: Matthias Fend <matthias.fend@emfend.at>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220516080753.GG25578@pengutronix.de>
-References: <1607cab4-d2d3-b5be-99f1-f9f7347d1888@emfend.at>
- <20220513110055.GE25578@pengutronix.de>
- <a73d1cf7-7548-3439-4369-8da061fad5ca@emfend.at>
+ id 1nqVmn-00024h-Qy; Mon, 16 May 2022 10:09:01 +0200
+Date: Mon, 16 May 2022 10:09:01 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org,
+ Joacim Zetterling <joacim.zetterling@westermo.com>
+Message-ID: <20220516080901.GH25578@pengutronix.de>
+References: <20220513135352.2061026-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <a73d1cf7-7548-3439-4369-8da061fad5ca@emfend.at>
+In-Reply-To: <20220513135352.2061026-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:04:43 up 46 days, 20:34, 76 users,  load average: 0.65, 0.68, 0.47
+X-Uptime: 10:08:51 up 46 days, 20:38, 76 users,  load average: 0.18, 0.41, 0.41
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220516_010759_696782_D58BF863 
-X-CRM114-Status: GOOD (  33.66  )
+X-CRM114-CacheID: sfid-20220516_010907_308850_E74C78D1 
+X-CRM114-Status: GOOD (  26.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,50 +83,79 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: One barebox image for multiple boards
+Subject: Re: [PATCH v2] ARM: i.MX7: esdctl: fix out-of-bounds read on memory
+ size calculation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, May 13, 2022 at 02:10:32PM +0200, Matthias Fend wrote:
-> Hi Sascha,
+On Fri, May 13, 2022 at 03:53:52PM +0200, Ahmad Fatoum wrote:
+> addrmap[] has 9 elements on i.MX8M platforms and 7 elements on i.MX7.
+> Checking unconditionally for addrmap[8] is thus out-of-bounds on the
+> i.MX7. Get both arrays to the same size to fix this. This is ok,
+> because an addrmap of 0 is a no-op.
 > 
-> Am 13.05.2022 um 13:00 schrieb Sascha Hauer:
-> > Hi Matthias,
-> > 
-> > On Fri, May 13, 2022 at 10:55:02AM +0200, Matthias Fend wrote:
-> > > Hi,
-> > > 
-> > > I'm looking for a solution to support multiple boards with just one barebox
-> > > image. The few core components that are relevant for barebox are the same on
-> > > all boards, so that the same barebox image runs on all boards. It is
-> > > possible to dynamically detect the board type inside barebox, but as this
-> > > requires some infrastructure it is not possible during lowlevel init. So
-> > > basically Barebox should boot with a minimal core device tree, detect the
-> > > board type and then use the corresponding device tree of the detected board.
-> > > Something similar to arch/arm/boards/stm32mp15xx-dkx/lowlevel.c but not at
-> > > low level.
-> > 
-> > Do you even need the full device tree in barebox? The minimal core
-> > device tree might be enough for barebox and only the kernel is then
-> > booted with the full device tree.
-> 
-> If there is no trick to changing the used device tree at boardlevel init,
-> then this might be a possibility.
+> Fixes: 42d45ef380c5 ("ARM: imx: Add imx8 support for SDRAM with two or more bank groups")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> v1 -> v2:
+>   - Just align array sizes to reduce surprise. No functional change
+>  arch/arm/mach-imx/esdctl.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 
-Replacing the live tree after it has been partly probed already is
-dangerous and barebox is not really prepared for that.
-
-> The core device tree might not be as minimal then and in exceptional cases
-> minor fixups in the board code will be needed, but I think it could work.
-> 
-> In such a case, how should one ensure that the appropriate blspec entry is
-> booted? Maybe by simply replacing/updating the compatible string in the live
-> device tree after the board was detected?
-
-As it happens Oleksij has just introduced of_prepend_machine_compatible()
-exactly for this usecase. You can find it in current next branch.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+> index d3dbfff423da..c1ed2f0b2fd4 100644
+> --- a/arch/arm/mach-imx/esdctl.c
+> +++ b/arch/arm/mach-imx/esdctl.c
+> @@ -350,6 +350,8 @@ static int vf610_ddrmc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+>  #define DDRC_ADDRMAP8_BG_B1			GENMASK(13,  8)
+>  #define DDRC_ADDRMAP8_BG_B0			GENMASK(4,  0)
+>  
+> +#define DDRC_ADDRMAP_LENGTH			9
+> +
+>  static unsigned int
+>  imx_ddrc_count_bits(unsigned int bits, const u8 config[],
+>  		     unsigned int config_num)
+> @@ -365,7 +367,7 @@ imx_ddrc_count_bits(unsigned int bits, const u8 config[],
+>  }
+>  
+>  static resource_size_t
+> -imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[],
+> +imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[DDRC_ADDRMAP_LENGTH],
+>  		    u8 col_max, const u8 col_b[], unsigned int col_b_num,
+>  		    u8 row_max, const u8 row_b[], unsigned int row_b_num,
+>  		    bool reduced_adress_space, bool is_imx8)
+> @@ -446,7 +448,7 @@ imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[],
+>  
+>  static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc)
+>  {
+> -	const u32 addrmap[] = {
+> +	const u32 addrmap[DDRC_ADDRMAP_LENGTH] = {
+>  		readl(ddrc + DDRC_ADDRMAP(0)),
+>  		readl(ddrc + DDRC_ADDRMAP(1)),
+>  		readl(ddrc + DDRC_ADDRMAP(2)),
+> @@ -498,7 +500,7 @@ static int imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+>  
+>  static resource_size_t imx7d_ddrc_sdram_size(void __iomem *ddrc)
+>  {
+> -	const u32 addrmap[] = {
+> +	const u32 addrmap[DDRC_ADDRMAP_LENGTH] = {
+>  		readl(ddrc + DDRC_ADDRMAP(0)),
+>  		readl(ddrc + DDRC_ADDRMAP(1)),
+>  		readl(ddrc + DDRC_ADDRMAP(2)),
+> -- 
+> 2.30.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
