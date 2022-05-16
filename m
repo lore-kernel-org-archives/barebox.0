@@ -1,62 +1,62 @@
-Delivery-date: Mon, 16 May 2022 10:42:49 +0200
+Delivery-date: Mon, 16 May 2022 11:08:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqWJV-00FNhm-GE
-	for lore@lore.pengutronix.de; Mon, 16 May 2022 10:42:49 +0200
+	id 1nqWih-00FPDC-Pz
+	for lore@lore.pengutronix.de; Mon, 16 May 2022 11:08:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqWJT-00056m-A9
-	for lore@pengutronix.de; Mon, 16 May 2022 10:42:48 +0200
+	id 1nqWig-0000I6-Fn
+	for lore@pengutronix.de; Mon, 16 May 2022 11:08:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
 	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=MRJeUs384bWbNme0yVYEwmelVz5X3hV+ZOlNpa9NEwE=; b=eDiaTDJkCbRamZ
-	zWiDOwAHCsLvdpOx4KvZ4N6psnE9Tuu8vi2jES3sjNTStMbDMacX7kmZtbYKLH0AXrWvl8iVre4og
-	akgW2vT6+8TEMHjl+axwOojVze1E1TbuokvSfdtG0EHcKFfIgvDkNGgi+t6yvM2JUJ05igu/o6uEs
-	35M3V4UPvqgFJgHtHSqw+K5Vepk4XjVbHP/KbCc0DTAMkAIgsgwe2ijjAjwpYMcBWQV6W70Ss0a4G
-	SFVUZIbwX5RtBa5qyICfdpBpGRiCUfvxPirPTpcfDpuMCG9WqNH6x6VCEvTJcYNEcta4ofPPoudZm
-	6A1EMUN0H7u+gpl2hTqg==;
+	List-Owner; bh=EK8msxwlBvOBbA2qMwYZIpo7/uiVg9Znw5doeInImnQ=; b=fdHGZhr/cfZJdl
+	PUbhHv/C0TuPNZdanD+gVWgFbvIFIHFLFgqZSKM/Klgdl5gVuZF4TFYW8iAFRwWC+kYQGJ9sWqcaV
+	ly72ZdNiPb3JlZ++mlGOepe9n7PKn4NWYPFhYwwfK/q4Q2ZsDHlnADge6PPj9EQEF5THOh7dqZiBq
+	yoTzljOfcXO43gOFnVDwXHHid1Ty6pSzkrGoqZpCMj7TfuSTWm+Hb4CTsUR7clJY9iaePzYHZx0Zg
+	sRvNw6hnjla7GJZTAxUUPaxmVTgbQeu3rJPDawVl+6YYsK7h1x6NDIPAsq8elHvE2jsiAJpj6fV2U
+	L1/NLDwA99ciVPBaNFPA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nqWIG-006i18-JR; Mon, 16 May 2022 08:41:32 +0000
+	id 1nqWhM-006pVU-Gs; Mon, 16 May 2022 09:07:28 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nqWIB-006i0e-RV
- for barebox@lists.infradead.org; Mon, 16 May 2022 08:41:29 +0000
+ id 1nqWhH-006pUh-95
+ for barebox@lists.infradead.org; Mon, 16 May 2022 09:07:24 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nqWIA-0004u7-FQ; Mon, 16 May 2022 10:41:26 +0200
+ id 1nqWhF-00005b-NE; Mon, 16 May 2022 11:07:21 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nqWIA-0004Xt-6L; Mon, 16 May 2022 10:41:26 +0200
-Date: Mon, 16 May 2022 10:41:26 +0200
+ id 1nqWhF-0006UR-6h; Mon, 16 May 2022 11:07:21 +0200
+Date: Mon, 16 May 2022 11:07:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Frank Wunderlich <linux@fw-web.de>
-Cc: barebox@lists.infradead.org, Frank Wunderlich <frank-w@public-files.de>
-Message-ID: <20220516084126.GL25578@pengutronix.de>
-References: <20220514155609.8306-1-linux@fw-web.de>
+To: Denis Orlov <denorl2009@gmail.com>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220516090721.GN25578@pengutronix.de>
+References: <20220516070049.11963-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220514155609.8306-1-linux@fw-web.de>
+In-Reply-To: <20220516070049.11963-1-denorl2009@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:38:05 up 46 days, 21:07, 77 users,  load average: 0.18, 0.22, 0.36
+X-Uptime: 10:57:18 up 46 days, 21:26, 78 users,  load average: 0.02, 0.04, 0.12
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220516_014127_932851_ABC61C54 
-X-CRM114-Status: GOOD (  27.61  )
+X-CRM114-CacheID: sfid-20220516_020723_378630_72B3BB1C 
+X-CRM114-Status: GOOD (  28.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,72 +81,53 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [urgent] ARM: rockchip: fix iodomain for r2pro V1.0
+Subject: Re: [PATCH] clk: fix clk_round_rate() behaviour
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sat, May 14, 2022 at 05:56:09PM +0200, Frank Wunderlich wrote:
-> From: Frank Wunderlich <frank-w@public-files.de>
-> 
-> Current code sets vccio4 and vccio6 both to 1v8. R2Pro v1.0 needs 3v3
-> setting on vccio4, else gmac0 (switch for lan-ports) will be damaged.
+Hi Denis,
 
-By damaged you mean physically damaged? How can this happen? Does that
-mean some input signals are not 3v3 tolerant when the domain is supplied
-with 1v8?
+On Mon, May 16, 2022 at 10:00:49AM +0300, Denis Orlov wrote:
+> Right now this function returns the current rate of the clock in the
+> case when the round_rate() is not given in the clock's ops. This breaks
+> clk_set_rate(), which calls clk_round_rate() to check if the resulting
+> frequency would be the same as the one that is already set.
+> Make it so that clk_round_rate() returns the frequency that was given as
+> argument in this case.
+> 
+> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+> ---
+>  drivers/clk/clk.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+> index 52e309e877..7492717d3c 100644
+> --- a/drivers/clk/clk.c
+> +++ b/drivers/clk/clk.c
+> @@ -139,16 +139,16 @@ long clk_round_rate(struct clk *clk, unsigned long rate)
+>  	if (IS_ERR(clk))
+>  		return 0;
+>  
+> +	if (!clk->ops->round_rate)
+> +		return rate;
+> +
+>  	parent = clk_get_parent(clk);
+>  	if (parent)
+>  		parent_rate = clk_get_rate(parent);
+>  
+>  	hw = clk_to_clk_hw(clk);
+>  
+> -	if (clk->ops->round_rate)
+> -		return clk->ops->round_rate(hw, rate, &parent_rate);
+> -
+> -	return clk_get_rate(clk);
+> +	return clk->ops->round_rate(hw, rate, &parent_rate);
+>  }
+
+I smell problems with this patch. Which clocks do you have that do not
+have a round_rate hook but still allow to set its rate?
 
 Sascha
-
-> 
-> IO-domain is per default 3v3 so only vccio6 needs to be set to 1v8 and
-> clear this bit in the 3v3 register.
-> 
-> Fixes: 8ba96c5942d6 ("ARM: rockchip: add BPI-R2-Pro V00 board")
-> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-> ---
->  arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c | 9 ++++++---
->  arch/arm/mach-rockchip/include/mach/rockchip.h       | 3 +++
->  2 files changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
-> index 4c5b4751b3fb..2a6e0700233a 100644
-> --- a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
-> +++ b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
-> @@ -17,10 +17,13 @@ static noinline void rk3568_start(void *fdt_blob_fixed_offset)
->  	void *fdt;
->  
->  	/*
-> -	 * Enable vccio4 1.8V and vccio6 1.8V
-> -	 * Needed for GMAC to work.
-> +	 * set iodomain vccio6 to 1.8V needed for GMAC1 to work.
-> +	 * vccio4 (gmac0/switch) needs to stay at 3v3 (default)
->  	 */
-> -	writel(RK_SETBITS(0x50), 0xfdc20140);
-> +	//set bit 6 in PMU_GRF_IO_VSEL0 for vccio6 1v8
-> +	writel(RK_SETBITS(BIT(6)), PMU_GRF_IO_VSEL0);
-> +	//clear bit 6 for 3v3 as it was set to 1v8
-> +	writel(RK_CLRBITS(BIT(6)), PMU_GRF_IO_VSEL1);
->  
->  	fdt = fdt_blob_fixed_offset;
->  
-> diff --git a/arch/arm/mach-rockchip/include/mach/rockchip.h b/arch/arm/mach-rockchip/include/mach/rockchip.h
-> index f24db36f0161..ff8b1109f858 100644
-> --- a/arch/arm/mach-rockchip/include/mach/rockchip.h
-> +++ b/arch/arm/mach-rockchip/include/mach/rockchip.h
-> @@ -23,6 +23,9 @@ static inline int rk3288_init(void)
->  
->  #ifdef CONFIG_ARCH_RK3568
->  int rk3568_init(void);
-> +#define PMU_GRF		0xfdc20000
-> +#define PMU_GRF_IO_VSEL0	(PMU_GRF + 0x140)
-> +#define PMU_GRF_IO_VSEL1	(PMU_GRF + 0x144)
->  #else
->  static inline int rk3568_init(void)
->  {
-> -- 
-> 2.25.1
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
