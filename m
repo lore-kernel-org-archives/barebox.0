@@ -1,48 +1,48 @@
-Delivery-date: Mon, 16 May 2022 10:38:46 +0200
+Delivery-date: Mon, 16 May 2022 10:42:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqWFa-00FNVU-4r
-	for lore@lore.pengutronix.de; Mon, 16 May 2022 10:38:46 +0200
+	id 1nqWJV-00FNhm-GE
+	for lore@lore.pengutronix.de; Mon, 16 May 2022 10:42:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqWFY-0004aS-VY
-	for lore@pengutronix.de; Mon, 16 May 2022 10:38:45 +0200
+	id 1nqWJT-00056m-A9
+	for lore@pengutronix.de; Mon, 16 May 2022 10:42:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
 	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=SqmB5aNA6OC/Fwgzl7LvP2i9+FsOIjPtQwPWT1e893c=; b=r/yyuziIawVUtE
-	Y24BFzFdAKnAaHMvq5Awijy0I4V84FrZPfkpbw7dbZXgMLeJegUloU4uOueT4iNWPkgB9U6Qraixy
-	rW3WdftUe1Qp1x1dHh8l1qztT8uJLJT7GYUvb91OE86ugcCJOdw6ImQxoVOyq/MOJUGTcL79gZiAd
-	h5f6kejYJha+LzyWIPu4vWkeVO9VaPr1hUZ2xZjEsK2R898lnC2NyDafJFd8XQwa9Kg2vhbJrP+Xg
-	7KKGHfvDGHXIRFpXw/hTv1/1phS6JobYFEEZ+AzF2AFhbECjuAorbPVHH5LdKyUbia+nPcpEzPdEa
-	quwfKwpjFB18zOz0OkpA==;
+	List-Owner; bh=MRJeUs384bWbNme0yVYEwmelVz5X3hV+ZOlNpa9NEwE=; b=eDiaTDJkCbRamZ
+	zWiDOwAHCsLvdpOx4KvZ4N6psnE9Tuu8vi2jES3sjNTStMbDMacX7kmZtbYKLH0AXrWvl8iVre4og
+	akgW2vT6+8TEMHjl+axwOojVze1E1TbuokvSfdtG0EHcKFfIgvDkNGgi+t6yvM2JUJ05igu/o6uEs
+	35M3V4UPvqgFJgHtHSqw+K5Vepk4XjVbHP/KbCc0DTAMkAIgsgwe2ijjAjwpYMcBWQV6W70Ss0a4G
+	SFVUZIbwX5RtBa5qyICfdpBpGRiCUfvxPirPTpcfDpuMCG9WqNH6x6VCEvTJcYNEcta4ofPPoudZm
+	6A1EMUN0H7u+gpl2hTqg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nqWEF-006hCo-KQ; Mon, 16 May 2022 08:37:23 +0000
+	id 1nqWIG-006i18-JR; Mon, 16 May 2022 08:41:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nqWE8-006hAv-C3
- for barebox@lists.infradead.org; Mon, 16 May 2022 08:37:20 +0000
+ id 1nqWIB-006i0e-RV
+ for barebox@lists.infradead.org; Mon, 16 May 2022 08:41:29 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nqWE6-0004IW-WB; Mon, 16 May 2022 10:37:15 +0200
+ id 1nqWIA-0004u7-FQ; Mon, 16 May 2022 10:41:26 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
  (envelope-from <sha@pengutronix.de>)
- id 1nqWE6-0004NF-9A; Mon, 16 May 2022 10:37:14 +0200
-Date: Mon, 16 May 2022 10:37:14 +0200
+ id 1nqWIA-0004Xt-6L; Mon, 16 May 2022 10:41:26 +0200
+Date: Mon, 16 May 2022 10:41:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Frank Wunderlich <linux@fw-web.de>
 Cc: barebox@lists.infradead.org, Frank Wunderlich <frank-w@public-files.de>
-Message-ID: <20220516083714.GK25578@pengutronix.de>
+Message-ID: <20220516084126.GL25578@pengutronix.de>
 References: <20220514155609.8306-1-linux@fw-web.de>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -52,11 +52,11 @@ X-URL: http://www.pengutronix.de/
 X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 10:37:04 up 46 days, 21:06, 77 users,  load average: 0.11, 0.20, 0.36
+X-Uptime: 10:38:05 up 46 days, 21:07, 77 users,  load average: 0.18, 0.22, 0.36
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220516_013716_444538_24AA6F16 
-X-CRM114-Status: GOOD (  26.57  )
+X-CRM114-CacheID: sfid-20220516_014127_932851_ABC61C54 
+X-CRM114-Status: GOOD (  27.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,6 +90,13 @@ On Sat, May 14, 2022 at 05:56:09PM +0200, Frank Wunderlich wrote:
 > 
 > Current code sets vccio4 and vccio6 both to 1v8. R2Pro v1.0 needs 3v3
 > setting on vccio4, else gmac0 (switch for lan-ports) will be damaged.
+
+By damaged you mean physically damaged? How can this happen? Does that
+mean some input signals are not 3v3 tolerant when the domain is supplied
+with 1v8?
+
+Sascha
+
 > 
 > IO-domain is per default 3v3 so only vccio6 needs to be set to 1v8 and
 > clear this bit in the 3v3 register.
@@ -100,11 +107,6 @@ On Sat, May 14, 2022 at 05:56:09PM +0200, Frank Wunderlich wrote:
 >  arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c | 9 ++++++---
 >  arch/arm/mach-rockchip/include/mach/rockchip.h       | 3 +++
 >  2 files changed, 9 insertions(+), 3 deletions(-)
-
-Applied, thanks
-
-Sascha
-
 > 
 > diff --git a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
 > index 4c5b4751b3fb..2a6e0700233a 100644
