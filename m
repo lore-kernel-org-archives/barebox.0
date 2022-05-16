@@ -1,81 +1,53 @@
-Delivery-date: Mon, 16 May 2022 11:13:01 +0200
+Delivery-date: Mon, 16 May 2022 12:49:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqWmj-00FPRJ-Hh
-	for lore@lore.pengutronix.de; Mon, 16 May 2022 11:13:01 +0200
+	id 1nqYIG-00FUPD-L7
+	for lore@lore.pengutronix.de; Mon, 16 May 2022 12:49:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nqWmh-0001E3-TY
-	for lore@pengutronix.de; Mon, 16 May 2022 11:13:00 +0200
+	id 1nqYIF-0006lS-5X
+	for lore@pengutronix.de; Mon, 16 May 2022 12:49:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Message-ID:From:CC:To:Subject:
-	MIME-Version:References:In-Reply-To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=JWlbWDt3iH/ejKNFM1P/Ro9w5I4ODPML1mYLAvXYygk=; b=0zidBLvSlTi/+JkX1eyriaIWiE
-	lcweNCtI8PU8GeI3Sy6gb3x6q4+DPV3QVR6J08HL067R5myw+dqUBVEClas9Hbqcazl6cA0FAbaw7
-	uPKBHIdSFdlhk78osp2nxGUL4KHgneHlKN5vdl6thiTqUdU5FK864QG3nxTL6dRl2Tvs5MjSaL9Uo
-	uIS+JvF3i2vHWLy5U+OUSCQeGsKEiEeciLm7uuemB3BxivZJRRWd49U/2Vl02qalIi1M8os620nYE
-	1z1M/oQhoYXlCQEm0Pm4YL+jj6vWGij0myXCFDp53RkebRYfH6HagQTkP2FUWoTVV0J2OXCTc4s5l
-	S9NtTCpA==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:From:References:To:Subject:
+	MIME-Version:Date:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=nZIzwOtal5Y0UASNlem90q2NxQL6wIQvukPHECrFdis=; b=Te+tOFipy+Qmx+
+	Ue3BZ0StkzpSJUCRg8d5C7EI3kB8M/35sHAFx7dEQpXkj9LcpbLewVfZGBhevZ5t+DiwPgzr+zF78
+	Kcz3KhxoAOWsLlF4vX6/JVKwtnCN8wJ3IRWaqnTNPulgpg1+QXc1W2GQ406v75R0XE472E1KiFTKS
+	mEYZL5V20snqLKILhHTqadyhh6VRGDbFK50PDvM12YNEbU+TbugsSmfTn1Q7wTl9X4TkPswcxYIJs
+	HuJkZHuspvN1US0UPgsIDgvTIr2TUH3FS850AzPQNeEjLo76VMmbOdMtg7DBBUfiWQGBT86jWM/Jz
+	k+LAT8ADibYVt2dlzlkQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nqWlF-006qfH-4m; Mon, 16 May 2022 09:11:29 +0000
-Received: from mout.gmx.net ([212.227.15.18])
+	id 1nqYGh-007BxT-PQ; Mon, 16 May 2022 10:48:03 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nqWl8-006qc8-MN
- for barebox@lists.infradead.org; Mon, 16 May 2022 09:11:24 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1652692276;
- bh=IN3yvVa3Kcee30FxWaG6TJco2NwEcWMSmaaVypKYpgw=;
- h=X-UI-Sender-Class:Date:In-Reply-To:References:Subject:To:CC:From;
- b=RLdKPyHNwBCGXMOD/8/RwsYl+Ax2nG1gAAo8glQDEVtiHxSb+cGXgU9a5j+h5R9/V
- OjIk8o/3DoxXpAOIP7V4gu2h0Nqxgkx4f7S3J0bCnYBVNQVELAOqhuSdA2rAuZX8GC
- VWxGA4Racl97AP82EvLC7Pqleq8/VryV5TfEMPQs=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from frank-s9 ([80.245.74.14]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MVN6j-1oHqnj2JLL-00SOBW; Mon, 16
- May 2022 11:11:16 +0200
-Date: Mon, 16 May 2022 11:11:12 +0200
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20220516084126.GL25578@pengutronix.de>
-References: <20220514155609.8306-1-linux@fw-web.de>
- <20220516084126.GL25578@pengutronix.de>
+ id 1nqYGc-007Bvh-QI
+ for barebox@lists.infradead.org; Mon, 16 May 2022 10:48:00 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77]
+ helo=[127.0.0.1]) by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1nqYGX-0006g2-DK; Mon, 16 May 2022 12:47:53 +0200
+Message-ID: <24dc9774-0a3e-b699-e933-1bbb4e3d65e7@pengutronix.de>
+Date: Mon, 16 May 2022 12:47:52 +0200
 MIME-Version: 1.0
-To: Sascha Hauer <s.hauer@pengutronix.de>,Frank Wunderlich <linux@fw-web.de>
-CC: barebox@lists.infradead.org
-From: Frank Wunderlich <frank-w@public-files.de>
-Message-ID: <1E485C63-33A8-4A4B-8C5A-A3BD5B4A8467@public-files.de>
-X-Provags-ID: V03:K1:mFXyq5LKs0jsePEvNYhmhpCxItOLpGA7ORcLXZM0ZZ3WsE+Kflf
- cAwoMAdq47I+jjgc0hja07bswAhiUSwdxcoNGxvJv4f05SHyAYE416B7wHXm7Kg6DnwN+h+
- 44oBa/k4LVB0c3LeIt8TUxOWcb91Vc5qR+X1AuGCsKQEVyuXUTZIcSQPpLAiJuhKtTJjzcA
- ZvSfb4Le60xGuptLhQGTQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:BLnEKKVHGBA=:tm/KDITwDxAcf3Fg/c8BZr
- x+pj0lD0BpJJRorPDlKUUJ9E2aqkAVZUZ35/aCIx7QoixAMTotn88jLhxP/vQypjI+mg086nj
- 3j18vIxsqxUX9imlRWMJWAB9QWl/72gocdGTBoMjiCUcH8cMCIdWIe1pV6LSOZkxO6ItZ4t0U
- 8HxQcOtoEsHf3SZZPO6b81UhFpt2r5tjc3+z/MIknmc6ZNbu0OEbw1WWe629inU3hjN9DQQa3
- vghtnX/6dsVhycbemnNGN0C2/aJ4Tk48OHgMG+uxlCTQ05kUC+bf7tZxzn+v6BzZW2kqAwFoy
- JLWOKcNFLijn94tR7ST0m9VTZwTuchfAHzy6AVT4zUVbTMVd3KiBo7FLeVjt9TakZQDJzgIY3
- vJXstU/fuaRwTJzq6OX3FZthga3ErLR+LD6MRLM1M2kpq2+c3/Y3peSwEIi8J46FaYQVFYjKG
- hFQZar2MLOD02Wfzub+3IjAbfXmG1b+eQpcfXygoVn4yokicrMRtNYUxjnkjmndTmAdbZyiAn
- tWnjjPUW7Xrvho1GjndjJ+MIwF9I5SMH+8EbpwVt8u7IcOdO+CVgOn14oOYDgrf0HvNaZ2Y5b
- O6F9pC4PLKHT87TUiHABI2YkJ0j8NEgKP1QEyIFOEq31E96XK5ZrOpjMOb86Cdh+nXj4tGjRp
- tGPwSZuYyGQ1YuJp0LIxCRQvAKVbrXZrajrr0mlvz0mR6s6BdGvBrDKYP//C5mUz7tWbi7L+7
- HDBv6GV3D7pynAVzBaHyqihgQ9axpVyNatS8VR+TCITYY+LkLe32o1uMkw+vuDPSELC+Jr0LH
- EmOajIatmaHexfexjbwCyM4kUryiRkP1/ZZLaLvl41ktwK6Ig0IPKR4zxNsi/mhbPZJ4UZbIv
- lqNhVEFB9WCH9YfOIOh//gzbYMCpAwheSTfaU3jupFgMEVWMNrS8gAm3lri+PQYV3tWhwrs0k
- 7IBRLvSxNFv9kba73CRcEpYqlsyc7TyiSDEWIExZbQOxmZeXt9ilYvXr8Db2OfLptfNq8XhG+
- EgiWuca3e/6fv1j7XSOYK+stxv7DGm/dvvokj8l01prQ0NObbTcITqb/I7a7zmt409pRZP0Vi
- HC20br1FKy8/78=
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Content-Language: en-US
+To: Sam Ravnborg <sam@ravnborg.org>, barebox@lists.infradead.org
+References: <20220515193807.354903-1-sam@ravnborg.org>
+ <20220515193807.354903-8-sam@ravnborg.org>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220515193807.354903-8-sam@ravnborg.org>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220516_021123_325228_BCBBC2F5 
-X-CRM114-Status: GOOD (  15.40  )
+X-CRM114-CacheID: sfid-20220516_034758_898002_788D0747 
+X-CRM114-Status: GOOD (  23.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,88 +67,111 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [urgent] ARM: rockchip: fix iodomain for r2pro V1.0
+Subject: Re: [PATCH v1 7/8] ARM: at91: Add initialize function to sdramc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Am 16. Mai 2022 10:41:26 MESZ schrieb Sascha Hauer <s.hauer@pengutronix.de>:
->On Sat, May 14, 2022 at 05:56:09PM +0200, Frank Wunderlich wrote:
->> From: Frank Wunderlich <frank-w@public-files.de>
->> 
->> Current code sets vccio4 and vccio6 both to 1v8. R2Pro v1.0 needs 3v3
->> setting on vccio4, else gmac0 (switch for lan-ports) will be damaged.
->
->By damaged you mean physically damaged? How can this happen? Does that
->mean some input signals are not 3v3 tolerant when the domain is
->supplied
->with 1v8?
+Hello Sam,
 
-Yes, if iodomain is set to 1v8 and board works with 3v3 signals it breaks hardware physically (affected me). I know this for device tree,but did not noticed this direct register write.
+On 15.05.22 21:38, Sam Ravnborg wrote:
+> +int at91sam9_sdramc_initialize(const struct at91sam9_sdramc_config *config,
+> +			       unsigned int sdram_address)
+> +{
+> +	unsigned int i;
+> +
+> +	/* Step#1 SDRAM feature must be in the configuration register */
+> +	sdramc_wr(config, AT91_SDRAMC_CR, config->cr);
+> +
+> +	/* Step#2 For mobile SDRAM, temperature-compensated self refresh(TCSR),... */
+> +
+> +	/* Step#3 The SDRAM memory type must be set in the Memory Device Register */
+> +	sdramc_wr(config, AT91_SDRAMC_MDR, config->mdr);
+> +
+> +	/* Step#4 The minimum pause of 200 us is provided to precede any single toggle */
+> +	for (i = 0; i < 1000; i++) ;
 
->Sascha
->
->> 
->> IO-domain is per default 3v3 so only vccio6 needs to be set to 1v8
->and
->> clear this bit in the 3v3 register.
->> 
->> Fixes: 8ba96c5942d6 ("ARM: rockchip: add BPI-R2-Pro V00 board")
->> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
->> ---
->>  arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c | 9 ++++++---
->>  arch/arm/mach-rockchip/include/mach/rockchip.h       | 3 +++
->>  2 files changed, 9 insertions(+), 3 deletions(-)
->> 
->> diff --git a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
->b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
->> index 4c5b4751b3fb..2a6e0700233a 100644
->> --- a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
->> +++ b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
->> @@ -17,10 +17,13 @@ static noinline void rk3568_start(void
->*fdt_blob_fixed_offset)
->>  	void *fdt;
->>  
->>  	/*
->> -	 * Enable vccio4 1.8V and vccio6 1.8V
->> -	 * Needed for GMAC to work.
->> +	 * set iodomain vccio6 to 1.8V needed for GMAC1 to work.
->> +	 * vccio4 (gmac0/switch) needs to stay at 3v3 (default)
->>  	 */
->> -	writel(RK_SETBITS(0x50), 0xfdc20140);
->> +	//set bit 6 in PMU_GRF_IO_VSEL0 for vccio6 1v8
->> +	writel(RK_SETBITS(BIT(6)), PMU_GRF_IO_VSEL0);
->> +	//clear bit 6 for 3v3 as it was set to 1v8
->> +	writel(RK_CLRBITS(BIT(6)), PMU_GRF_IO_VSEL1);
->>  
->>  	fdt = fdt_blob_fixed_offset;
->>  
->> diff --git a/arch/arm/mach-rockchip/include/mach/rockchip.h
->b/arch/arm/mach-rockchip/include/mach/rockchip.h
->> index f24db36f0161..ff8b1109f858 100644
->> --- a/arch/arm/mach-rockchip/include/mach/rockchip.h
->> +++ b/arch/arm/mach-rockchip/include/mach/rockchip.h
->> @@ -23,6 +23,9 @@ static inline int rk3288_init(void)
->>  
->>  #ifdef CONFIG_ARCH_RK3568
->>  int rk3568_init(void);
->> +#define PMU_GRF		0xfdc20000
->> +#define PMU_GRF_IO_VSEL0	(PMU_GRF + 0x140)
->> +#define PMU_GRF_IO_VSEL1	(PMU_GRF + 0x144)
->>  #else
->>  static inline int rk3568_init(void)
->>  {
->> -- 
->> 2.25.1
->> 
->> 
+This and similar instances below must be replaced by proper delays.
+You can use early_udelay for this as you already initialize the PIT.
+
+Did you test SDRAM worked with this setup? I assumed this to be at least
+one of the reasons current at91bootstrap fails to work with current compilers
+for the 9263. (Newer SoCs use a different DRAM controller and thus a different
+driver that doesn't use compile-time removable delay loops).
+
+> +
+> +	/* Step#5 A NOP command is issued to the SDRAM devices */
+> +	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_NOP);
+> +	writel(0x00000000, sdram_address);
+> +
+> +	/* Step#6 An All Banks Precharge command is issued to the SDRAM devices  */
+> +	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_PRECHARGE);
+> +	writel(0x00000000, sdram_address);
+> +
+> +	for (i = 0; i < 10000; i++) ;
+> +
+> +	/* Step#7 Eight auto-refresh cycles are provided */
+> +	for (i = 0; i < 8; i++) {
+> +		sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_REFRESH);
+> +		writel(0x00000001 + i, sdram_address + 4 + 4 * i);
+> +	}
+> +
+> +	/*  Pause cycles */
+> +	for (i = 0; i < 1000; i++) ;
+> +
+> +	/* Step#8 A Mode Register set (MRS) cyscle is issued to program the SDRAM parameters(TCSR, PASR, DS) */
+> +	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_LMR);
+> +	writel(0xcafedede, sdram_address + 0x24);
+> +
+> +	/*  Pause cycles */
+> +	for (i = 0; i < 1000; i++) ;
+> +
+> +	/* Step#9 For mobile SDRAM initialization, an Extended Mode Register set cycle is issued to ... */
+> +
+> +	/* Step#10 The application must go into Normal Mode, setting Mode to 0 in the Mode Register
+> +	   and perform a write access at any location in the SDRAM. */
+> +	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_NORMAL);	// Set Normal mode
+> +	writel(0x00000000, sdram_address);	// Perform Normal mode
+> +
+> +	/* Step#11 Write the refresh rate into the count field in the SDRAMC Refresh Timer Rgister. */
+> +	sdramc_wr(config, AT91_SDRAMC_TR, config->tr);
+> +
+> +	return 0;
+> +}
+> diff --git a/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h b/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
+> index fe76f60b0..0e05387aa 100644
+> --- a/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
+> +++ b/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
+> @@ -181,6 +181,18 @@
+>  #include <mach/at91sam9261.h>
+>  #include <mach/at91sam9263.h>
+>  
+> +struct at91sam9_sdramc_config {
+> +	void __iomem *sdramc;
+> +	unsigned int mr;
+> +	unsigned int tr;
+> +	unsigned int cr;
+> +	unsigned int lpr;
+> +	unsigned int mdr;
+> +};
+> +
+> +int at91sam9_sdramc_initialize(const struct at91sam9_sdramc_config *config,
+> +			       unsigned int sdram_address);
+> +
+>  static inline u32 at91_get_sdram_size(void *base)
+>  {
+>  	u32 val;
 
 
-regards Frank
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
