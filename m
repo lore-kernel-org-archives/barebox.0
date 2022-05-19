@@ -1,75 +1,68 @@
-Delivery-date: Thu, 19 May 2022 10:14:09 +0200
+Delivery-date: Thu, 19 May 2022 11:27:56 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nrbIP-001r6c-Jj
-	for lore@lore.pengutronix.de; Thu, 19 May 2022 10:14:09 +0200
+	id 1nrcRo-001u9c-NW
+	for lore@lore.pengutronix.de; Thu, 19 May 2022 11:27:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:e::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nrbIO-0004uY-DH
-	for lore@pengutronix.de; Thu, 19 May 2022 10:14:09 +0200
+	id 1nrcRn-000630-FO
+	for lore@pengutronix.de; Thu, 19 May 2022 11:27:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
-	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Content-Type:
+	Content-Transfer-Encoding:List-Subscribe:List-Help:List-Post:List-Archive:
+	List-Unsubscribe:List-Id:In-Reply-To:From:References:Cc:To:Subject:
+	MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Z5+cDhxthCQEje7pknG3hcd8VzfRwSAtRGnJddKF9b0=; b=n7Lr3MDN4ZAwoV
-	yb+IBwtV6AJcUvnhNp9k/aMydk+lLW4J7QRMbJRst7/tg0WHDT+VcjPjcEeGdF+2F7fUAb1kgr0bn
-	8ToNuDKnPNGBi5E90fyQGW37kxMb7hqx/9jhJqFkvnALueNWaOg+pduQzrimuIBuytwhScNju9fjV
-	Abj0sl0lZH4C+n3VPcn8PDYH3ntNFktM7YumpD7/AUY7zwz5teTnZPH5CT4+KUfN6kaufR7x91eqf
-	j6Vo+sVCyOWu/rEAL7OPamRiWPn4MRnvUY1aURkRlQmTTtNdbh8OptbIIiZlyg2Se3h/0PMNrKR8f
-	EIFAFDNIV92lrKC78tIw==;
+	List-Owner; bh=tWT8u2rFtOaB6mwyp/gTAUUZQL9Yo0GqG1Of7e6lUHM=; b=zRTrhbzlo+ick4
+	TC6V6kQCCJOzOAjU4G+KmXZHUdhryiEqN1pn+2DgrmzUAwZN3cSJUySN7ZHfwjNIjDbPsoON7IReD
+	8/empbKHs94sxB4p7ysUqtXUz6W2nKJ+bV9CXv6O07OvKwxrh+fG56R6+ZwC1UkR+2FYHrG5Ix3Em
+	+jPZ+SN09qPM8+VlNYEZ2nv4UgFe1ufV1wPqB8lyt/NLNyPzMjAj/CKX1AXewdZekJnYg0yrYA1Ax
+	vL9Mzz2HcIoduiUTbEAUWsd0ZF2WYObhnxftopdMtU0hWDtkFAfr1/StizPFd09ez3jkcMk9IKIo1
+	oIvHRkcjfxZgKGdqHTew==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nrbHF-005itn-33; Thu, 19 May 2022 08:12:57 +0000
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+	id 1nrcQ7-0066TM-2n; Thu, 19 May 2022 09:26:11 +0000
+Received: from lx20.hoststar.hosting ([168.119.41.54])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nrbHA-005iri-L6
- for barebox@lists.infradead.org; Thu, 19 May 2022 08:12:54 +0000
-Received: by mail-ej1-x630.google.com with SMTP id m20so8345621ejj.10
- for <barebox@lists.infradead.org>; Thu, 19 May 2022 01:12:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=F3yXxukkUVD4uW4r7sul54qfwYiod1X+AjfrDo1h6VA=;
- b=L89hCMoEzLdxXPh7TUfM6mg+dZAOksPw4ovvlTZtkdlvhonRmaJmEbPv4Wqo5Mxo3H
- EMeyMpuhGwR0V+4VJ+eM2sXm73JhtQXFB9YrjRvOCf024fegc93tYzsm6Qe/Gcq4KiE4
- Pp1hRvjNmc+aBlM/unvtaerSHZiBbirmWgHiVAbMtpqs31Iyay6A0PS0OUA0mrD2ClFD
- 4conLq3PQRd57u0wD2Y2jBKR6xi44xDwO/DY3qdnqna4vkFutdj68ca/Fha+mIjcApum
- JXN6A+yZbeYS720Mn1I3oDyxSRp+IZVr40m6MjiHQa7flufCGAyaGjYCwF8EmEio9f8G
- gmSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=F3yXxukkUVD4uW4r7sul54qfwYiod1X+AjfrDo1h6VA=;
- b=lEnZUsXcwwskDGDth7mYRLl6VEHWygC4Z/cZK/3EjI6xPuyCryfEUbvVNQPZga+mtS
- wuGkAUL+c2IOlJPMObkUC38b07egjNVgkuBkMtPca2DyU6g/Z0kw3+EYw797ftzQXqkR
- vRRQfbN4g/XP/7BDQuEFYGUOkL/6IyyDDeulX54bHFlpidM3ucEkIAcwLq68P4dIVoQx
- GkOouvyTPEtUv0ljMIgIeWyFjwpy5Qa532cpDoK4r7wI3mgIoEefWzEVVUPuxzXCYZkj
- TgXAFH7/kPLGi/Q9J2JdjU4f41E+KBzGdn9QlG3itKUhmRSy3UtUkAAp2MW5x0b9u5UZ
- MWPw==
-X-Gm-Message-State: AOAM531f/wBLgyN+NiVq3U4bZp4T1JmVBX8fOe+20GxPRX6/YpOKFoF1
- 2n6vGTzn2Q8yNGL03BrEcNs/Ps0eDxq83PMuD1H7TzG2NHvMVLy6
-X-Google-Smtp-Source: ABdhPJy3jchIvBuvR53xBraPGhmLzYycllPplRqJNvOkCe1yhHvjU5S8n4+9BVPM+xqcF+w3Yy1RD5sjHCWrivM/T1Q=
-X-Received: by 2002:a17:907:9805:b0:6f4:fe0e:5547 with SMTP id
- ji5-20020a170907980500b006f4fe0e5547mr3035746ejc.426.1652947968815; Thu, 19
- May 2022 01:12:48 -0700 (PDT)
+ id 1nrcQ1-0066Fl-6Y
+ for barebox@lists.infradead.org; Thu, 19 May 2022 09:26:07 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=emfend.at; 
+ s=mail;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References
+ :Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=JIYctlXtvKgZVPJoisdzkB6hufyYPzFLj9AyW+zEzmo=; b=m6pKXu2IF9M7XxNeOlhAes8y/T
+ E25/yjF46UrUbe91m6zYzSZWVA4sW3uhmox7t1Mtmd6d2tAnWuRKTTZFYtN9RmQwEIq4yxtvb2vBX
+ dVXU9rRhT+y/+8mx91ltrqbaILixJ/2HecOldlbVgOtMQ8tZ+t/TREEcbaaNsKNGQMow=;
+Received: from 194-208-208-245.tele.net ([194.208.208.245]:53200
+ helo=[192.168.100.101])
+ by lx20.hoststar.hosting with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 (Exim 4.93)
+ (envelope-from <matthias.fend@emfend.at>)
+ id 1nrcPX-000rcu-Oy; Thu, 19 May 2022 11:25:36 +0200
+Message-ID: <9f5d781d-452e-28fb-bc5b-413313439fc0@emfend.at>
+Date: Thu, 19 May 2022 11:25:34 +0200
 MIME-Version: 1.0
-References: <20220516070049.11963-1-denorl2009@gmail.com>
- <20220516090721.GN25578@pengutronix.de>
-In-Reply-To: <20220516090721.GN25578@pengutronix.de>
-From: =?UTF-8?B?0JTQtdC90LjRgSDQntGA0LvQvtCy?= <denorl2009@gmail.com>
-Date: Thu, 19 May 2022 11:12:37 +0300
-Message-ID: <CALHb5ug+DS=F424FDZhbYJgwpPyP27-hCQvyeLQcS7XxmqBEjw@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Content-Language: de-DE
+To: Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
+References: <1607cab4-d2d3-b5be-99f1-f9f7347d1888@emfend.at>
+ <20220513110055.GE25578@pengutronix.de>
+ <a73d1cf7-7548-3439-4369-8da061fad5ca@emfend.at>
+ <20220516080753.GG25578@pengutronix.de>
+From: Matthias Fend <matthias.fend@emfend.at>
+In-Reply-To: <20220516080753.GG25578@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220519_011252_726149_55FD04DC 
-X-CRM114-Status: GOOD (  13.00  )
+X-CRM114-CacheID: sfid-20220519_022605_598710_7015FAE0 
+X-CRM114-Status: GOOD (  18.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,43 +74,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:e::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] clk: fix clk_round_rate() behaviour
+X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: One barebox image for multiple boards
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hi,
 
-On Mon, 16 May 2022 at 12:07, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> I smell problems with this patch. Which clocks do you have that do not
-> have a round_rate hook but still allow to set its rate?
+I was pleasantly surprised to get so many comments on this topic.
+Thank you everyone for your input!
 
-Well, the reason for making this patch was actually the lack of any
-output from the clk_set_rate command if there was no set_rate (together
-with round_rate) hook set for a given clock. In this case set_rate()
-would check round_rate() to be equal to the current rate and leave
-without returning an error. But I would like to actually receive some
-response about the fact that this clock does not support setting its
-rate.
-However, I agree with you that this solution may lead to problems.
-Maybe instead we should explicitly check in a command whether the given
-clock has an appropriate hook set and output some message if this is not
-the case. What do you think?
+Since I want to avoid duplicating the i2c bus driver in a PBL capable 
+version, I decided to have a common barebox device tree for all boards.
+This means that the detection takes place in the board init code and 
+then prepends the compatible with the matching board-specific entry.
 
-Regards,
-Denis
+If at some point the hardware no longer allows this approach, I still 
+can switch to the i2c-early solution.
+
+Thanks
+  ~Matthias
+
+Am 16.05.2022 um 10:07 schrieb Sascha Hauer:
+> On Fri, May 13, 2022 at 02:10:32PM +0200, Matthias Fend wrote:
+>> Hi Sascha,
+>>
+>> Am 13.05.2022 um 13:00 schrieb Sascha Hauer:
+>>> Hi Matthias,
+>>>
+>>> On Fri, May 13, 2022 at 10:55:02AM +0200, Matthias Fend wrote:
+>>>> Hi,
+>>>>
+>>>> I'm looking for a solution to support multiple boards with just one barebox
+>>>> image. The few core components that are relevant for barebox are the same on
+>>>> all boards, so that the same barebox image runs on all boards. It is
+>>>> possible to dynamically detect the board type inside barebox, but as this
+>>>> requires some infrastructure it is not possible during lowlevel init. So
+>>>> basically Barebox should boot with a minimal core device tree, detect the
+>>>> board type and then use the corresponding device tree of the detected board.
+>>>> Something similar to arch/arm/boards/stm32mp15xx-dkx/lowlevel.c but not at
+>>>> low level.
+>>>
+>>> Do you even need the full device tree in barebox? The minimal core
+>>> device tree might be enough for barebox and only the kernel is then
+>>> booted with the full device tree.
+>>
+>> If there is no trick to changing the used device tree at boardlevel init,
+>> then this might be a possibility.
+> 
+> Replacing the live tree after it has been partly probed already is
+> dangerous and barebox is not really prepared for that.
+> 
+>> The core device tree might not be as minimal then and in exceptional cases
+>> minor fixups in the board code will be needed, but I think it could work.
+>>
+>> In such a case, how should one ensure that the appropriate blspec entry is
+>> booted? Maybe by simply replacing/updating the compatible string in the live
+>> device tree after the board was detected?
+> 
+> As it happens Oleksij has just introduced of_prepend_machine_compatible()
+> exactly for this usecase. You can find it in current next branch.
+> 
+> Sascha
+> 
 
 _______________________________________________
 barebox mailing list
