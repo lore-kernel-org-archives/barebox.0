@@ -1,80 +1,57 @@
-Delivery-date: Tue, 24 May 2022 09:32:21 +0200
+Delivery-date: Tue, 24 May 2022 09:37:09 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ntP1h-007JEj-VW
-	for lore@lore.pengutronix.de; Tue, 24 May 2022 09:32:21 +0200
+	id 1ntP6L-007JM9-3D
+	for lore@lore.pengutronix.de; Tue, 24 May 2022 09:37:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ntP1g-0005E3-Ui
-	for lore@pengutronix.de; Tue, 24 May 2022 09:32:21 +0200
+	id 1ntP6J-0005u4-Qr
+	for lore@pengutronix.de; Tue, 24 May 2022 09:37:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=fP37ObQJ86DdmgjEBGx+YRMnm+g7zqEcUJILffvWwkw=; b=pPlFnn2SYGg+gq
-	6d7C8MG9wybG4kEJLyevXyw9D05vmW0HHZShi7kgcNqYhh25JObXzVekFSRO6krg/CyzUe5m2thUF
-	yj1V7XkVDSFL4pHt+e8TUqUz3yIGuM7yV0ZwSN5zfZrBl7J1vrAWP2DuNgo8u+JaaILLlB59L05gw
-	ZS9M1iNVUIIQ86KXt45mH/tGVsghr+RDtPFny8wYuWllY0lVCtUYbiPTEKOhVp0uZD/Pg5rQDqUeq
-	amBHAnupPXg0pq/tvD9+g00OXyU0iUHm7yhkc9/jTuphMr84cV++DWcgSQrF+mZL55u/7fAwPUE77
-	WW2YpxVpFnn5kp3t9xww==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:From:References:Cc:To:
+	Subject:MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=NAUgfxaRkAnjWPIthV9488vove/gx4PVCmAx8Pw7NKY=; b=1La4pOZPBzVuJ+
+	vCuPdKN2ME8PsChnVenBsrD3lvDdbTs4Smc1z5T4Rb6j6hj/lUQHNtL65Kz9s+ElTim5zKj4+KS9M
+	WZyXgI5uDnwT9qEPX/lvOfiob4NleUCf//A0qW9hs5FJbmYnvKjoQMyd+ax77vc+mXwOBa13GKoBd
+	Dsr/aEOySmJgnFlpKlsAQYlwRt61hOEWUKY7CnGtl09R9sRtzKlfBNyyZoclrWbuu9ZUqL9J7Bp4j
+	6nshVDcCOazYGQHGi7uyzHcIHIgQgJiDdOGkijcIbpPKff+H6032+TM3GnrzKY+3N6smZqNrjl1yx
+	d9NTsQRvIOGWEi0fac9w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ntP0S-0075k9-EP; Tue, 24 May 2022 07:31:04 +0000
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+	id 1ntP50-0076pz-G9; Tue, 24 May 2022 07:35:46 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ntP0H-0075gR-NO
- for barebox@lists.infradead.org; Tue, 24 May 2022 07:30:55 +0000
-Received: by mail-lj1-x231.google.com with SMTP id r3so12980035ljd.7
- for <barebox@lists.infradead.org>; Tue, 24 May 2022 00:30:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=5a68Ssfv0subu44yDV+0i6fZb0KAFmsXKK77E9xk/Bw=;
- b=ondU/INW1QuYf/tWepD0a1p8b9jzi5mnj0zfnhs66c/wpO7iMxjzQ/Xld970pnlRn9
- ZbM/Z1uZIArXeXiD+CTYUDajeo9jYgi5ngWZUdGrAPXGJ+sAbQDialdjsH1HCeCIeErq
- lRfeBPv+22HOdrkvBTz9e3GbcTHSLlRhoTLDS5/hmWM+qro6iQqnRngpQiOGNugWy7eA
- mqXpDDBDQjqpnVe/2+3rRgNXC+D9lVc5wM/Crc7lxnHYfGvefEpgrbToPUMkEqHGufVu
- mdEV/LGzUd/KfjognKJ4dN7yGBEb4PYtMrnipjASgfAWaB21t93rhzS1U84cXf5UrwJl
- ogAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=5a68Ssfv0subu44yDV+0i6fZb0KAFmsXKK77E9xk/Bw=;
- b=bSOvov+FzWOpQe3WzfVX0swv1UUJm9LySVmKCFSZt4Z+O1GoNvH05nGUxyCnJz5hrA
- bIlAC3D0oSgELRXUIaTpe0gX4yNcpm+8ZKPgQjKrDwopLx0gQ7Zantyh4fhbWnAU8LsN
- JG4j2OG5NSdbb6zzPWgTBNbLuSNycMKgXNKYt9GGUpRKqeSlM4yUYD0GCqr/NpzXqdmJ
- o5pk88CKsZjOTEAc0Dj0jIxvJCUdN5u8hP1If4HV4LflLBPTeQwOKzMAsmFnf1REUsz0
- HhtDuw60H3dJ1f4n++g5Q2H330am/3m9cTejFrp6kJfFrZ/yFWPsU9mY+eepcc1+AJHa
- luDA==
-X-Gm-Message-State: AOAM532TOnsMdX836N3sVM4CtG+OP87CbxM6Xbap9pExViJj9GbZgYlP
- l1kOGrUod6LXPK6fGFGYxjqaaRq0/5k=
-X-Google-Smtp-Source: ABdhPJz4PKGuBeAqGkktOb7hMwhNDokN0GGOgBMGEtWD0YYRp3mewt4mrQGERkg7pYuwftoc7XIy3A==
-X-Received: by 2002:a2e:8e78:0:b0:253:c31b:d059 with SMTP id
- t24-20020a2e8e78000000b00253c31bd059mr14607400ljk.393.1653377450459; 
- Tue, 24 May 2022 00:30:50 -0700 (PDT)
-Received: from shc.milas.spb.ru ([188.243.217.78])
- by smtp.gmail.com with ESMTPSA id
- b9-20020a056512024900b0047255d21148sm2383734lfo.119.2022.05.24.00.30.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 May 2022 00:30:50 -0700 (PDT)
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-To: barebox@lists.infradead.org
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 24 May 2022 10:30:48 +0300
-Message-Id: <20220524073048.18467-1-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.32.0
+ id 1ntP4v-0076oh-6J
+ for barebox@lists.infradead.org; Tue, 24 May 2022 07:35:42 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77]
+ helo=[127.0.0.1]) by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1ntP4t-0005WA-Nf; Tue, 24 May 2022 09:35:39 +0200
+Message-ID: <ec9c3122-4001-5841-167b-1385944678dc@pengutronix.de>
+Date: Tue, 24 May 2022 09:35:39 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Content-Language: en-US
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20220523092526.791716-1-a.fatoum@pengutronix.de>
+ <20220523092526.791716-5-a.fatoum@pengutronix.de>
+ <20220523110405.GN25578@pengutronix.de>
+ <ec148873-3595-2226-2967-d2c0a330d44f@pengutronix.de>
+ <20220523112534.GO25578@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220523112534.GO25578@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220524_003053_798208_4CC0548B 
-X-CRM114-Status: UNSURE (   8.86  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220524_003541_294808_5344DD65 
+X-CRM114-Status: GOOD (  20.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,44 +71,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: DTS: myir-x335x: Add GPIO aliases
+X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 5/8] serial: imx: add $global.bootm.earlycon fixup support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-For the correct work of GPIO driver, we need to define aliases.
-Let's add them to the devicetree.
+On 23.05.22 13:25, Sascha Hauer wrote:
+> On Mon, May 23, 2022 at 01:10:13PM +0200, Ahmad Fatoum wrote:
+>> Hi,
+>>
+>> On 23.05.22 13:04, Sascha Hauer wrote:
+>>> On Mon, May 23, 2022 at 11:25:23AM +0200, Ahmad Fatoum wrote:
+>>>> Allow barebox compute a suitable earlycon parameter.
+>>>>
+>>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>> ---
+>>>>  drivers/serial/serial_imx.c | 2 ++
+>>>>  1 file changed, 2 insertions(+)
+>>>>
+>>>> diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+>>>> index 6a933c930e9b..cf9c3f02a7ef 100644
+>>>> --- a/drivers/serial/serial_imx.c
+>>>> +++ b/drivers/serial/serial_imx.c
+>>>> @@ -234,6 +234,8 @@ static int imx_serial_probe(struct device_d *dev)
+>>>>  	cdev->flush = imx_serial_flush;
+>>>>  	cdev->setbrg = imx_serial_setbaudrate;
+>>>>  	cdev->linux_console_name = "ttymxc";
+>>>> +	cdev->linux_earlycon_name = "ec_imx6q";
+>>>
+>>> "ec_imx6q" sounds wrong for the older i.MX SoCs. I don't know how
+>>> OF_EARLYCON_DECLARE works, but this:
+>>>
+>>> OF_EARLYCON_DECLARE(ec_imx6q, "fsl,imx6q-uart", imx_console_early_setup);
+>>> OF_EARLYCON_DECLARE(ec_imx21, "fsl,imx21-uart", imx_console_early_setup);
+>>>
+>>> looks like it matches a device tree compatible entry. For the older SoCs
+>>> you should likely use "ec_imx21".
+>>
+>> Oh, I can fix this for v2.
+>>
+>>> Anyway, plain "earlycon" just works, why the hassle?
+>>
+>> Not all boards have a DT with stdout-path or probe from device tree.
+>> I ran into this issue three times now (twice DT-enabled boards, but no
+>> stdout-path, once on x86 with no DT) and figured it would be nifty
+>> if barebox could just optionally generate it.
+> 
+> Can't we set the stdout-path property in barebox?
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
----
- arch/arm/dts/am335x-myirtech-myd.dts | 7 +++++++
- 1 file changed, 7 insertions(+)
+We could, but that doesn't help on x86.
 
-diff --git a/arch/arm/dts/am335x-myirtech-myd.dts b/arch/arm/dts/am335x-myirtech-myd.dts
-index 6ec65e533d..1ea0f2a440 100644
---- a/arch/arm/dts/am335x-myirtech-myd.dts
-+++ b/arch/arm/dts/am335x-myirtech-myd.dts
-@@ -6,6 +6,13 @@
- #include <arm/am335x-myirtech-myd.dts>
- 
- / {
-+	aliases {
-+		gpio0 = &gpio0;
-+		gpio1 = &gpio1;
-+		gpio2 = &gpio2;
-+		gpio3 = &gpio3;
-+	};
-+
- 	chosen {
- 		environment {
- 			compatible = "barebox,environment";
+> 
+> Sascha
+> 
+
+
 -- 
-2.32.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
