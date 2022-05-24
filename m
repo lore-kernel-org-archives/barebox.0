@@ -1,57 +1,59 @@
-Delivery-date: Tue, 24 May 2022 09:37:09 +0200
+Delivery-date: Tue, 24 May 2022 10:55:02 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ntP6L-007JM9-3D
-	for lore@lore.pengutronix.de; Tue, 24 May 2022 09:37:09 +0200
+	id 1ntQJi-007MLV-Of
+	for lore@lore.pengutronix.de; Tue, 24 May 2022 10:55:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ntP6J-0005u4-Qr
-	for lore@pengutronix.de; Tue, 24 May 2022 09:37:08 +0200
+	id 1ntQJh-0007R6-IQ
+	for lore@pengutronix.de; Tue, 24 May 2022 10:55:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:From:References:Cc:To:
 	Subject:MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=NAUgfxaRkAnjWPIthV9488vove/gx4PVCmAx8Pw7NKY=; b=1La4pOZPBzVuJ+
-	vCuPdKN2ME8PsChnVenBsrD3lvDdbTs4Smc1z5T4Rb6j6hj/lUQHNtL65Kz9s+ElTim5zKj4+KS9M
-	WZyXgI5uDnwT9qEPX/lvOfiob4NleUCf//A0qW9hs5FJbmYnvKjoQMyd+ax77vc+mXwOBa13GKoBd
-	Dsr/aEOySmJgnFlpKlsAQYlwRt61hOEWUKY7CnGtl09R9sRtzKlfBNyyZoclrWbuu9ZUqL9J7Bp4j
-	6nshVDcCOazYGQHGi7uyzHcIHIgQgJiDdOGkijcIbpPKff+H6032+TM3GnrzKY+3N6smZqNrjl1yx
-	d9NTsQRvIOGWEi0fac9w==;
+	List-Owner; bh=ivHLC6JN34127H3w8tatBbWk6T7CA7aqybEBEsgH7LA=; b=SibujyBIMbm/k6
+	xc1aEDcf0C5YzPoQGUrgbLdsltCqPTlrtVeKm+gJKcQuJ7nYlrWnNBClfonnePzIpzFuB4tcPuOK+
+	O9TJmwSE2UTVTKav2xIJvJ1aB/UWLokTcHXlqbDpOk0H+pkb8Gw9Ztc8evjbVTvawWwOio647SpN9
+	XvzxPz99nfA6t85GnBYx4EuzkF0/MiVlRB6yAjQd3MudZdakjw3pzPlbImrdgB3wWz9Qut/l3SiZr
+	/TwpmbwY2rgqsfLRmcpvFoXBsB+t+lMKZQLl6wPCF85fSWnYr3/ZdO3mT6bgMzeEukXfaxImf8Fh2
+	HxeJJWmtP5iLhiVJM3Iw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ntP50-0076pz-G9; Tue, 24 May 2022 07:35:46 +0000
+	id 1ntQI4-007KLn-0J; Tue, 24 May 2022 08:53:20 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ntP4v-0076oh-6J
- for barebox@lists.infradead.org; Tue, 24 May 2022 07:35:42 +0000
+ id 1ntQHy-007KKU-Kx
+ for barebox@lists.infradead.org; Tue, 24 May 2022 08:53:16 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77]
  helo=[127.0.0.1]) by metis.ext.pengutronix.de with esmtp (Exim 4.92)
  (envelope-from <a.fatoum@pengutronix.de>)
- id 1ntP4t-0005WA-Nf; Tue, 24 May 2022 09:35:39 +0200
-Message-ID: <ec9c3122-4001-5841-167b-1385944678dc@pengutronix.de>
-Date: Tue, 24 May 2022 09:35:39 +0200
+ id 1ntQHx-0007L2-1O; Tue, 24 May 2022 10:53:13 +0200
+Message-ID: <da75544b-8a44-9c0e-f3bc-1bf216523ed2@pengutronix.de>
+Date: Tue, 24 May 2022 10:53:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
 Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>
+To: Frank Wunderlich <frank-w@public-files.de>,
+ Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
-References: <20220523092526.791716-1-a.fatoum@pengutronix.de>
- <20220523092526.791716-5-a.fatoum@pengutronix.de>
- <20220523110405.GN25578@pengutronix.de>
- <ec148873-3595-2226-2967-d2c0a330d44f@pengutronix.de>
- <20220523112534.GO25578@pengutronix.de>
+References: <1694C0B0-A962-420E-BA70-8061E8E9CA7F@public-files.de>
+ <20220519115450.GV25578@pengutronix.de>
+ <trinity-e8816284-959b-432a-bb6a-f33a6cd573df-1652964180567@3c-app-gmx-bs49>
+ <e0e7cd6c-aa14-a09c-71d2-681842575398@pengutronix.de>
+ <20220519131019.GZ25578@pengutronix.de>
+ <trinity-58fee77a-48b6-48ff-99a5-8eaa6c480d0b-1653129114535@3c-app-gmx-bs49>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220523112534.GO25578@pengutronix.de>
+In-Reply-To: <trinity-58fee77a-48b6-48ff-99a5-8eaa6c480d0b-1653129114535@3c-app-gmx-bs49>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220524_003541_294808_5344DD65 
-X-CRM114-Status: GOOD (  20.13  )
+X-CRM114-CacheID: sfid-20220524_015314_738064_675ABD41 
+X-CRM114-Status: GOOD (  24.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,57 +78,71 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 5/8] serial: imx: add $global.bootm.earlycon fixup support
+Subject: Re: Aw: Re: Re: Driver load order
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 23.05.22 13:25, Sascha Hauer wrote:
-> On Mon, May 23, 2022 at 01:10:13PM +0200, Ahmad Fatoum wrote:
->> Hi,
->>
->> On 23.05.22 13:04, Sascha Hauer wrote:
->>> On Mon, May 23, 2022 at 11:25:23AM +0200, Ahmad Fatoum wrote:
->>>> Allow barebox compute a suitable earlycon parameter.
->>>>
->>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>> ---
->>>>  drivers/serial/serial_imx.c | 2 ++
->>>>  1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
->>>> index 6a933c930e9b..cf9c3f02a7ef 100644
->>>> --- a/drivers/serial/serial_imx.c
->>>> +++ b/drivers/serial/serial_imx.c
->>>> @@ -234,6 +234,8 @@ static int imx_serial_probe(struct device_d *dev)
->>>>  	cdev->flush = imx_serial_flush;
->>>>  	cdev->setbrg = imx_serial_setbaudrate;
->>>>  	cdev->linux_console_name = "ttymxc";
->>>> +	cdev->linux_earlycon_name = "ec_imx6q";
->>>
->>> "ec_imx6q" sounds wrong for the older i.MX SoCs. I don't know how
->>> OF_EARLYCON_DECLARE works, but this:
->>>
->>> OF_EARLYCON_DECLARE(ec_imx6q, "fsl,imx6q-uart", imx_console_early_setup);
->>> OF_EARLYCON_DECLARE(ec_imx21, "fsl,imx21-uart", imx_console_early_setup);
->>>
->>> looks like it matches a device tree compatible entry. For the older SoCs
->>> you should likely use "ec_imx21".
->>
->> Oh, I can fix this for v2.
->>
->>> Anyway, plain "earlycon" just works, why the hassle?
->>
->> Not all boards have a DT with stdout-path or probe from device tree.
->> I ran into this issue three times now (twice DT-enabled boards, but no
->> stdout-path, once on x86 with no DT) and figured it would be nifty
->> if barebox could just optionally generate it.
-> 
-> Can't we set the stdout-path property in barebox?
+Hello Frank,
 
-We could, but that doesn't help on x86.
+On 21.05.22 12:31, Frank Wunderlich wrote:
+> Hi,
+> 
+> current state is that pmu/ldo regulators work, but not the SWITCH ones.
+> 
+> these are read by linux using the supply of the regulator itself
+> 
+> 	} else if (rdev->supply) {
+> 		ret = regulator_get_voltage_rdev(rdev->supply->rdev);
+> 
+> tried to port this to barebox, but regulator-struct there does not have the supply member
+> 
+> 	} else if (rdev->supply) {
+> 		ret = regulator_get_voltage(rdev->supply);
+> 
+> so i added it here:
+> 
+> +++ b/include/regulator.h
+> @@ -86,6 +86,7 @@ struct regulator_dev {
+>         struct regmap *regmap;
+>         bool boot_on;
+>         bool always_on;
+> +       struct regulator *supply;
+
+I think this should go into struct regulator_internal instead?
+(You'll need to rename the current const char *supply there).
+
+>         /* the device this regulator device belongs to */
+>         struct device_d *dev;
+> 
+> but now this needs to be set somwhere...linux set this in
+> 
+> set_supply(struct regulator_dev *rdev,
+> 		      struct regulator_dev *supply_rdev)
+> which is called in regulator_resolve_supply (called by _regulator_get).
+
+Ah, I missed b8074eba2a6b ("regulator: RK808: Add proper input supplies
+for rk808"). I recall now that I had ported an older version of the Linux
+driver to make porting work easier. 
+
+You should probably add a supply_name member into struct regulator_desc
+and then propagate this to core, so core can request it.
+
+Cheers,
+Ahmad
 
 > 
-> Sascha
+> regards Frank
+> 
+> 
+>> Gesendet: Donnerstag, 19. Mai 2022 um 15:10 Uhr
+>> Von: "Sascha Hauer" <sha@pengutronix.de>
+>> I gave it a test with your rk808 driver. It just works \o/
+>>
+>> regulator_get() triggers probing of the rk808 regulator driver and
+>> returns a valid regulator.
+>>
+>> Sascha
+> 
 > 
 
 
