@@ -1,76 +1,58 @@
-Delivery-date: Tue, 24 May 2022 11:23:31 +0200
+Delivery-date: Tue, 24 May 2022 14:05:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ntQlH-007NgX-NJ
-	for lore@lore.pengutronix.de; Tue, 24 May 2022 11:23:31 +0200
+	id 1ntTHl-007W9k-GR
+	for lore@lore.pengutronix.de; Tue, 24 May 2022 14:05:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ntQlG-0002vc-C0
-	for lore@pengutronix.de; Tue, 24 May 2022 11:23:31 +0200
+	id 1ntTHh-0007fk-7w
+	for lore@pengutronix.de; Tue, 24 May 2022 14:05:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
-	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=vZ/oTFEt/aX6GH725vQruWdWhNyaG2nqsTKVeWd0L5c=; b=rPyI3RWQK3UQ6r
-	hGqdpYZHZio8PeLn2Iac0wa/R5sMIy5cmaTh+Y1TJxN2CP/L43HxsWbPRLvJUvagEXURNcw3KofOd
-	XreyY3tAvoQjMu3dOHSAm1PnW5mpMk+uLcNcBT+cMU9CuvzuGc9LceaEpK4qbitokQEBbFPTVW55N
-	Z98mWdvZH0kIAJysMyk8VSP1wKkuJPxiv7twcFbtDoqo7liiFpf+zsSsWN/POyQf1rYnyf7iwdMvP
-	LOcvrWrX9/K0Qm8DmpuaJQ9Xr732ndqouhcSquS70s5H0scxf04dLQnty4O37uH3k4F7z3DBbk9Z9
-	StYVqxvm+fWH37kYxgEw==;
+	List-Owner; bh=oNrfVTwwcblEFRoLjEtSmPzjgBUMc0SDxU0t294PCws=; b=U2U+SnkWM/F1RI
+	leA1MxytGLHQH5rykMRV0sjcV8EpWAeO7xlZ9f7GHHeQkcB9pVnJRwzJpT9xAuWJR+U1bVtkfXn/4
+	+4DvR73Vp0i1ebOkxGwr0Quj7oeqU8X9PQn2j94dbkkLQxPBWdRcpdMVfqVvO74YPuAj7m7x2h+wc
+	kRNy0gd6u2niy5eV+GFfznANIxIM1I+8fbbj0PG8pY5t1wzVTD7gR2pxr3bFfUJEGeow2R8HWotLJ
+	d2LS9DywWGOIHyrHSNb4QQ0+IVOPFoKgOv+QnL+SJV+gwbIZvc82rSWLP8QisOKz3GQ4KUNVV07DM
+	0VLNc5Uuy5MKfDC6RoVA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ntQk4-007OyA-Nj; Tue, 24 May 2022 09:22:16 +0000
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+	id 1ntTG4-007u1G-S6; Tue, 24 May 2022 12:03:28 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ntQk0-007OxS-GQ
- for barebox@lists.infradead.org; Tue, 24 May 2022 09:22:13 +0000
-Received: by mail-pg1-x531.google.com with SMTP id c22so15868172pgu.2
- for <barebox@lists.infradead.org>; Tue, 24 May 2022 02:22:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=rfUxupwA8gcleelB+UGmRjrJAEWuYerjvcnsrn36aP8=;
- b=C7430aXqGpV7pLlV3sbSMYXrrlbXkOOypLnLuZfLX0V6lOC7Txl0WZuYh39SVoWblU
- PPlG5qn2att8lOyI5xBbAXn6Brtjp5e1ZgOqivnxI9QQSERPGTGc+9bLkpz6oJx98nFm
- Q0Q0Z0asDx/VXtzDf2mIfhM7VQgoJcEu1meDrJFvZiuOTGoo60ExYoVKdZXpww+F5rPb
- IVCN1K6s2LVSxrTUy9kkIu95UBlQzdeH3by0HNjqajdx1RXYXRkKe8gGj9k6mn6RIVHP
- 1Tredu/8jrqNcrx/04hdqEJKE6yi0oBa1Yf5DyBT0OKs4EIO/piaCTWH8F3o4ck/UtTh
- M9YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=rfUxupwA8gcleelB+UGmRjrJAEWuYerjvcnsrn36aP8=;
- b=TahW8aufXeKzpG2BwyYpbv60iv4MIIcraEMhpvwK9guMM7PBDAdAfkCqvkiwmiFxbM
- RoiKZp6MyA76CKKMCqhXGiI+zOJ1XQHWtAq+C6vQ7a+T78EY9erhjKZ5ud1THNbi6RJM
- X4ovi0pGB1fs24Q+bcX2ZlYmp/JQXD9lWptvEthvs9yVafZgwR6iay5MKHYGtqxMA4/+
- Ma91+yLtqdNZPvmqel2RRbmUMbgMaQEhy/pqQZGYlp/EOxqBp/21HvFpk8BStUTIvD6/
- n2VNcGhAzl7FGw9mb3d77FHp2lryHGkIrj0cUOQa6o0HJVCBkaxrl2im0XNnjvp1unuf
- 6Jww==
-X-Gm-Message-State: AOAM530DMYE3r0RPieGgRN8fAxVjvvAWvvxZj5qk7TGFkPErLCU8bPCJ
- kDAGtpVrsg03NIHZj6cmjZAOBFMl83zunEv9AKKAeTxPEN0=
-X-Google-Smtp-Source: ABdhPJxva9bSG1VBpoTmjB/f/y2THE0Q/+QpmgpSLxiBz+fBq+7K2RawN8zdmKb5lcO9HnnBkLyeXvADWhCMKnEGLso=
-X-Received: by 2002:a65:6bd6:0:b0:39d:4f85:9ecf with SMTP id
- e22-20020a656bd6000000b0039d4f859ecfmr23870150pgw.336.1653384130748; Tue, 24
- May 2022 02:22:10 -0700 (PDT)
-MIME-Version: 1.0
+ id 1ntTG0-007tyl-7Z
+ for barebox@lists.infradead.org; Tue, 24 May 2022 12:03:25 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mfe@pengutronix.de>)
+ id 1ntTFt-0007KC-2I; Tue, 24 May 2022 14:03:17 +0200
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mfe@pengutronix.de>)
+ id 1ntTFs-0002CM-NX; Tue, 24 May 2022 14:03:16 +0200
+Date: Tue, 24 May 2022 14:03:16 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Alexander Shiyan <eagle.alexander923@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20220524120316.3vpnuglam6vofs7m@pengutronix.de>
 References: <20220524073048.18467-1-eagle.alexander923@gmail.com>
  <20220524090314.sdb3tt6jhtjpmm6o@pengutronix.de>
-In-Reply-To: <20220524090314.sdb3tt6jhtjpmm6o@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 24 May 2022 12:21:58 +0300
-Message-ID: <CAP1tNvScB7n4u0HuEkqtM8_KVXy_izWuT2vkRk-bfqfVAjHA4A@mail.gmail.com>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+ <CAP1tNvScB7n4u0HuEkqtM8_KVXy_izWuT2vkRk-bfqfVAjHA4A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAP1tNvScB7n4u0HuEkqtM8_KVXy_izWuT2vkRk-bfqfVAjHA4A@mail.gmail.com>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220524_022212_602397_0F6AB4E1 
-X-CRM114-Status: GOOD (  10.60  )
+X-CRM114-CacheID: sfid-20220524_050324_303912_7F16E525 
+X-CRM114-Status: GOOD (  14.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,28 +72,31 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-	autolearn_force=no version=3.4.2
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+	autolearn=unavailable autolearn_force=no version=3.4.2
 Subject: Re: [PATCH] ARM: DTS: myir-x335x: Add GPIO aliases
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-0LLRgiwgMjQg0LzQsNGPIDIwMjIg0LMuINCyIDEyOjAzLCBNYXJjbyBGZWxzY2ggPG0uZmVsc2No
-QHBlbmd1dHJvbml4LmRlPjoKPiBPbiAyMi0wNS0yNCwgQWxleGFuZGVyIFNoaXlhbiB3cm90ZToK
-PiA+IEZvciB0aGUgY29ycmVjdCB3b3JrIG9mIEdQSU8gZHJpdmVyLCB3ZSBuZWVkIHRvIGRlZmlu
-ZSBhbGlhc2VzLgo+ID4gTGV0J3MgYWRkIHRoZW0gdG8gdGhlIGRldmljZXRyZWUuCi4uLgo+ID4g
-KyAgICAgYWxpYXNlcyB7Cj4gPiArICAgICAgICAgICAgIGdwaW8wID0gJmdwaW8wOwo+ID4gKyAg
-ICAgICAgICAgICBncGlvMSA9ICZncGlvMTsKPiA+ICsgICAgICAgICAgICAgZ3BpbzIgPSAmZ3Bp
-bzI7Cj4gPiArICAgICAgICAgICAgIGdwaW8zID0gJmdwaW8zOwo+ID4gKyAgICAgfTsKPgo+IE91
-dCBvZiBjdXJpb3VzaXR5LCBhcmUgdGhvc2UgYWxpYXNlcyBub3QgZGVmaW5lZCBpbiB0aGUgInVw
-c3RyZWFtIiBsaW51eAo+IGRldmljZS10cmVlPyBJZiBub3QsIHdvdWxkbid0IGl0IGJlIGJldHRl
-ciB0byBkZWZpbmVkIGl0IHRoZXJlPwoKSGVsbG8uCgpUaGUgbGludXggZ3Bpby1vbWFwIGRyaXZl
-ciBkb2VzIG5vdCB1c2UgYWxpYXNlcywgaXQgd291bGQgYmUgaGFyZCBmb3IKbWUgdG8gZXhwbGFp
-biB0aGUgbmVlZCB0byBtYWtlIHN1Y2ggY2hhbmdlcyB0byB0aGUgbGludXggZHRzIHRyZWUgOikK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+T24gMjItMDUtMjQsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4g0LLRgiwgMjQg0LzQsNGPIDIw
+MjIg0LMuINCyIDEyOjAzLCBNYXJjbyBGZWxzY2ggPG0uZmVsc2NoQHBlbmd1dHJvbml4LmRlPjoK
+PiA+IE9uIDIyLTA1LTI0LCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gPiBGb3IgdGhlIGNv
+cnJlY3Qgd29yayBvZiBHUElPIGRyaXZlciwgd2UgbmVlZCB0byBkZWZpbmUgYWxpYXNlcy4KPiA+
+ID4gTGV0J3MgYWRkIHRoZW0gdG8gdGhlIGRldmljZXRyZWUuCj4gLi4uCj4gPiA+ICsgICAgIGFs
+aWFzZXMgewo+ID4gPiArICAgICAgICAgICAgIGdwaW8wID0gJmdwaW8wOwo+ID4gPiArICAgICAg
+ICAgICAgIGdwaW8xID0gJmdwaW8xOwo+ID4gPiArICAgICAgICAgICAgIGdwaW8yID0gJmdwaW8y
+Owo+ID4gPiArICAgICAgICAgICAgIGdwaW8zID0gJmdwaW8zOwo+ID4gPiArICAgICB9Owo+ID4K
+PiA+IE91dCBvZiBjdXJpb3VzaXR5LCBhcmUgdGhvc2UgYWxpYXNlcyBub3QgZGVmaW5lZCBpbiB0
+aGUgInVwc3RyZWFtIiBsaW51eAo+ID4gZGV2aWNlLXRyZWU/IElmIG5vdCwgd291bGRuJ3QgaXQg
+YmUgYmV0dGVyIHRvIGRlZmluZWQgaXQgdGhlcmU/Cj4gCj4gSGVsbG8uCj4gCj4gVGhlIGxpbnV4
+IGdwaW8tb21hcCBkcml2ZXIgZG9lcyBub3QgdXNlIGFsaWFzZXMsIGl0IHdvdWxkIGJlIGhhcmQg
+Zm9yCj4gbWUgdG8gZXhwbGFpbiB0aGUgbmVlZCB0byBtYWtlIHN1Y2ggY2hhbmdlcyB0byB0aGUg
+bGludXggZHRzIHRyZWUgOikKCkFoLi4gVGhhbmtzIGZvciB0aGUgZXhwbGFuYXRpb24sIG9mIGNv
+dXJzZSB0aGlzIHdvdWxkIGJlIGEgYml0IGhhcmQgdG8KZXhwbGFpbi4gU28gZXZlcnl0aGluZyBm
+aW5lIGZyb20gcG92IDopCgpSZWdhcmRzLAogIE1hcmNvCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
 
