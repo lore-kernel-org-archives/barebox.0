@@ -1,57 +1,61 @@
-Delivery-date: Wed, 25 May 2022 10:53:58 +0200
+Delivery-date: Wed, 25 May 2022 11:32:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ntmmE-008SZ7-8c
-	for lore@lore.pengutronix.de; Wed, 25 May 2022 10:53:58 +0200
+	id 1ntnNk-008Ugy-TG
+	for lore@lore.pengutronix.de; Wed, 25 May 2022 11:32:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ntmmC-0000f7-H0
-	for lore@pengutronix.de; Wed, 25 May 2022 10:53:57 +0200
+	id 1ntnNj-0005QZ-9N
+	for lore@pengutronix.de; Wed, 25 May 2022 11:32:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:From:References:Cc:To:
-	Subject:MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=BXQ+4C/MutjqSFYkejMf6aOxv0Pf8gc22y01UMGjwOw=; b=h8OX19ifObi81i
-	5Wuwa+mcLAmL7l20l6QYPRNhXufK5Kz2bMDn83bef83XqnxCwnNcnnPKKB5RJL/Sa2G47SqMthDo0
-	MbxOlUEdZv0EnwbqV9oPyG8z+wCPFdUSmqt36TTjCVJu0zBiyLeGx4oSGGhcf/70gba6hSZk96aJr
-	Z3YgVDsxtXwp8w7F8Hd6wI2mPjZqS86TbrCnVgD0Xxdvf7FemhcQuDljxeT3gnbDIDIAL08HtlASy
-	0paQj/jSLsosqXs/SVnlVX7xlCvq5eK2JiMVxV//gY0zavrDzlhz21BKP3xjT2rh9GnHblfi9wdUF
-	GcJfeeNZ5Zib49m8jImg==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=qEgpQPmgs8PTR4Inj9kXfWeco51yL3gZFQG3nyptLW4=; b=5ENlyPPyBnw+XBPANvX1H1KheU
+	F95nLTzg0KOmMrvcxG3nPuGWVrAYGxMUcgwqQC1BDxhQiVjpBvuI4NrRP+SM8qNRTcNwHNrQ4yNeZ
+	VwOsBzCGZs9pIiPWPzhOy2ejKJIY9Ihpde7jsOCJgY+sxDJm9Ruye9RCWtO7qyh13Vzq0MpWcXGrc
+	CJpBCPqRgBuOgMpH9xtEKbjNXomg030ZMUWbWvedXOyA5wrpB63DKKlkHceTZ6A/ZYHGjbc3mLYbl
+	nELTO564RvSUk2tzsL72bM12lfUdhAxOC+7Fpyd6/KlCFKSfX1ZtbKgAzVlSAeHZk31EqQ7kl/aSs
+	br2wXolw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ntmks-00AUUH-42; Wed, 25 May 2022 08:52:34 +0000
+	id 1ntnMA-00AaTV-40; Wed, 25 May 2022 09:31:06 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ntmkn-00AUTd-In
- for barebox@lists.infradead.org; Wed, 25 May 2022 08:52:31 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77]
- helo=[127.0.0.1]) by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1ntmkl-0000ZP-Tr; Wed, 25 May 2022 10:52:27 +0200
-Message-ID: <2219b846-67e1-ba45-cca2-11d304e55bcd@pengutronix.de>
-Date: Wed, 25 May 2022 10:52:27 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Content-Language: en-US
+ id 1ntnM5-00AaSk-9m
+ for barebox@lists.infradead.org; Wed, 25 May 2022 09:31:02 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1ntnM0-000569-6u; Wed, 25 May 2022 11:30:56 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1ntnLz-0000XI-UM; Wed, 25 May 2022 11:30:55 +0200
+Date: Wed, 25 May 2022 11:30:55 +0200
 To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
-References: <20220524073048.18467-1-eagle.alexander923@gmail.com>
- <76dbfceb-1651-2659-7209-2c37c3f8f7d5@pengutronix.de>
- <CAP1tNvQVWjG1=jsJRh-eCpHzUPOct1BysgXQy-MxDvYkHFY6wg@mail.gmail.com>
- <1db17488-d759-712a-6014-8d2cde412474@pengutronix.de>
- <CAP1tNvTqa-qVTBCR1QQptsfvgTWsWNCEGSFG+ZnvNrBT62cabg@mail.gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <CAP1tNvTqa-qVTBCR1QQptsfvgTWsWNCEGSFG+ZnvNrBT62cabg@mail.gmail.com>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220525093055.GD1615@pengutronix.de>
+References: <20220525052632.3169-1-eagle.alexander923@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20220525052632.3169-1-eagle.alexander923@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220525_015229_665672_71E6FE77 
-X-CRM114-Status: GOOD (  14.13  )
+X-CRM114-CacheID: sfid-20220525_023101_373392_93D2D111 
+X-CRM114-Status: GOOD (  18.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,40 +75,47 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] ARM: DTS: myir-x335x: Add GPIO aliases
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] .gitignore: Add directories generated by MAKEALL script
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Alexander,
+On Wed, May 25, 2022 at 08:26:32AM +0300, Alexander Shiyan wrote:
+> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+> ---
+>  .gitignore | 2 ++
+>  1 file changed, 2 insertions(+)
 
-On 25.05.22 10:33, Alexander Shiyan wrote:
->>> Most likely this is the result of double inclusion of the file arm/am33xx.dtsi,
->>> first time from "am33xx.dtsi" and second from arm/am335x-myirtech-myd.dts.
->>
->> Hi, you need to include if after the upstream DT. That's why it doesn't have
->> a /dts-v1/;
-> 
-> Yes, if "am33xx.dtsi" is after <arm/am335x-myirtech-myd.dts>, it compiles fine.
-> But in this case, upstreaming <arm/am33xx.dtsi> (from local
-> am33xx.dtsi) overwrites
-> any binding changes from the board file.
+Applied, thanks
 
-Argh. Other platforms (e.g. imx6q.dtsi) intentionally skip dts/ includes to avoid
-just that... One could remedy that at the cost of annoying out-of-tree users, but
-that's not something that you need to do IMO.
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Cheers,
-Ahmad
+Sascha
 
 > 
-
+> diff --git a/.gitignore b/.gitignore
+> index 0382202bf7..cb87e9314f 100644
+> --- a/.gitignore
+> +++ b/.gitignore
+> @@ -60,6 +60,8 @@ Module.symvers
+>  # Generated files
+>  Documentation/commands/*.rst
+>  doctrees/
+> +log/
+> +makeall_builddir/
+>  
+>  # stgit generated dirs
+>  patches-*
+> -- 
+> 2.32.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
