@@ -1,49 +1,60 @@
-Delivery-date: Mon, 30 May 2022 19:54:43 +0200
+Delivery-date: Tue, 31 May 2022 10:08:27 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nvjbH-00FVPS-6b
-	for lore@lore.pengutronix.de; Mon, 30 May 2022 19:54:43 +0200
+	id 1nvwvT-00G1X3-4N
+	for lore@lore.pengutronix.de; Tue, 31 May 2022 10:08:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nvjbF-0000gX-SQ
-	for lore@pengutronix.de; Mon, 30 May 2022 19:54:42 +0200
+	id 1nvwvR-0007ZJ-QQ
+	for lore@pengutronix.de; Tue, 31 May 2022 10:08:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=jumrfwGlpj+rfp/mWdJyv9rXRYC7FIbFtwcUdWPBt9Q=; b=ewawkKq3F6fSBa
-	8lUHRJJT3h2E2AMpKdvRqLDmsWqwvt4T8VIz5q5ejsVSGokIYrtbwKvL6QcOIqv/b+WA4bb6+3XmN
-	1qYH4bhiNZnyqD4ul4e16RoHCqHyH/zPL2Juy4ZhVwgdXd/bymaZO9wVcE7noUra+Fdg1282KZCMQ
-	ZoALfTN589voHBV9v203Rm5sPKQppbifbqz9HKwYbPDERWnPK+xow30bZgmoIJGj5+a8WW2JZX/Jo
-	JM/0Nz6vDEim76VEnhrntGGV+F4Y1iMc8EN6F4EtikBto1kYPxjdmL/7+eC8tLGmnCGZcxjf5/cet
-	c0wGwctP4ghXlMglU+mw==;
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=JUprWzp+FzmtbueRQqTqZ8SlsTlm90ZF7Y1vQvQM9KY=; b=0SZ37uKqowz3kn
+	5267wwxOBA1x89ZP4/WHe1Fp3Y8V4k9mloW8DTSZkv9zQZE8yp0vZbU1qErQ5gEYIAuevF5myA4yz
+	j9ua9cnT2y8/5r5srhPGPH+ItUAzlMNWmD1Sv+V5LkNxw7B+p3QJO8yVWlQMa8a/xK9lmDlYpqcDW
+	prIuXmvoYd2WlHGUwstpgJgnSrSCYrUOlao+NMAOJUv8g5x38rUvFuu/4Ri67t1k94yzWrhsv+bjg
+	C7VPn2EVkpbS4voWf9sypL8MWOm6PJx5lyDCFKaXi6B1CY2F4N7EQwpwmCp0Dy89XvSIHEjn5RU5v
+	4MeslvX2LLf6r7IaHo8Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nvjYJ-007khy-AE; Mon, 30 May 2022 17:51:39 +0000
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
-	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nvjYD-007kgz-LM
-	for barebox@lists.infradead.org; Mon, 30 May 2022 17:51:35 +0000
-Received: by lynxeye.de (Postfix, from userid 501)
-	id 05E55E74011; Mon, 30 May 2022 19:50:55 +0200 (CEST)
-Received: from astat.fritz.box (a89-183-80-55.net-htp.de [89.183.80.55])
-	by lynxeye.de (Postfix) with ESMTPA id 2F939E74004
-	for <barebox@lists.infradead.org>; Mon, 30 May 2022 19:50:55 +0200 (CEST)
-From: Lucas Stach <l.stach@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Mon, 30 May 2022 19:50:51 +0200
-Message-Id: <20220530175051.507579-1-l.stach@pengutronix.de>
-X-Mailer: git-send-email 2.36.1
+	id 1nvwtc-009mIa-BH; Tue, 31 May 2022 08:06:32 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1nvwtX-009mH2-FD
+	for barebox@lists.infradead.org; Tue, 31 May 2022 08:06:29 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1nvwtQ-0007Ql-5Q; Tue, 31 May 2022 10:06:20 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1nvwtP-0001uq-SZ; Tue, 31 May 2022 10:06:19 +0200
+Date: Tue, 31 May 2022 10:06:19 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, lst@pengutronix.de
+Message-ID: <20220531080619.GQ1615@pengutronix.de>
+References: <20220530073948.632014-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20220530073948.632014-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220530_105133_887212_D4C4F7DA 
-X-CRM114-Status: GOOD (  10.21  )
+X-CRM114-CacheID: sfid-20220531_010627_551574_8A8B7B29 
+X-CRM114-Status: GOOD (  29.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,35 +78,57 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: nxp-imx8mq-evk: install Barebox into eMMC boot partitions
+Subject: Re: [PATCH master] ARM: cpu: don't clobber sp when booted in HYP mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Switch the Barebox update handler to install Barebox in the eMMC boot
-partitions, which is preferred due to the capability to do atomic
-updates.
+On Mon, May 30, 2022 at 09:39:48AM +0200, Ahmad Fatoum wrote:
+> arm_cpu_lowlevel_init() is usually called first thing and will ensure
+> barebox runs in SVC mode. If barebox is started in HYP mode instead,
+> like is the case on Raspberry Pi 2-3, it will do an exception return
+> into SVC mode, which will bank the previously used SP_Hyp and
+> restore SP_Svc that may not have been properly initialized by barebox.
+> 
+> This wasn't too bad so far, because arm_setup_stack was usually called
+> after arm_cpu_lowlevel_init, but with ENTRY_FUNCTION_WITHSTACK, SP is
+> initialized early on in the naked entry point with
+> arm_cpu_lowlevel_init() being called after that.
+> 
+> This can lead to spurious boot hangs in the Raspberry Pi 2 and 3 entry
+> points. Fix this by always saving sp to r3 and restoring it, like we do
+> with lr. This is safe to do, because r3 isn't clobbered by any
+> instruction in arm_cpu_lowlevel_init() and because it's an argument
+> register, callers have to expect it being overwritten by the callee.
+> 
+> Fixes: b267578d0567 ("ARM: rpi: use ENTRY_FUNCTION_WITHSTACK to prepare for ARM64 support")
+> Fixes: 41292192c01b ("ARM: safely switch from HYP to SVC mode if required")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/cpu/lowlevel.S | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/arm/cpu/lowlevel.S b/arch/arm/cpu/lowlevel.S
+> index 5a7dd3c2093f..2199d9416cb3 100644
+> --- a/arch/arm/cpu/lowlevel.S
+> +++ b/arch/arm/cpu/lowlevel.S
+> @@ -9,6 +9,7 @@
+>  ENTRY(arm_cpu_lowlevel_init)
+>  	/* save lr, since it may be banked away with a processor mode change */
+>  	mov	r2, lr
+> +	mov	r3, sp
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- arch/arm/boards/nxp-imx8mq-evk/board.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Can you add a comment why this is necessary? We can look at the commit
+message for the elaborated description, but a reminder in the code still
+seems useful, otherwise I might be trapped into applying a "remove
+useless code" patch.
 
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/board.c b/arch/arm/boards/nxp-imx8mq-evk/board.c
-index c28107cb1751..8d88bfe8c249 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/board.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/board.c
-@@ -40,7 +40,7 @@ static int nxp_imx8mq_evk_init(void)
- 	barebox_set_hostname("imx8mq-evk");
- 
- 	flags = bootsource_get_instance() == 0 ? BBU_HANDLER_FLAG_DEFAULT : 0;
--	imx8m_bbu_internal_mmc_register_handler("eMMC", "/dev/mmc0.barebox", flags);
-+	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0", flags);
- 
- 	flags = bootsource_get_instance() == 1 ? BBU_HANDLER_FLAG_DEFAULT : 0;
- 	imx8m_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox", flags);
+Sascha
+
 -- 
-2.36.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
