@@ -1,80 +1,79 @@
-Delivery-date: Wed, 01 Jun 2022 08:04:23 +0200
+Delivery-date: Wed, 01 Jun 2022 08:04:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nwHSx-00Gt4q-Bx
-	for lore@lore.pengutronix.de; Wed, 01 Jun 2022 08:04:23 +0200
+	id 1nwHSy-00Gt5Z-DX
+	for lore@lore.pengutronix.de; Wed, 01 Jun 2022 08:04:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nwHSw-0005KM-7J
-	for lore@pengutronix.de; Wed, 01 Jun 2022 08:04:22 +0200
+	id 1nwHSx-0005Kx-2C
+	for lore@pengutronix.de; Wed, 01 Jun 2022 08:04:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=CnKImc6Z7YMPg+5vT0MEWWyqhk4H0ULPUd3YbmyDaak=; b=asddwObMLcM9iC
-	zic4HK2znpm3HhFPcUzq4Qw7OOfR1Z8YrFToF5RwULl9D+6q8vzYr5w9C8rN21jou1QzRG1Te1VgZ
-	Tps7Kp+Hc9/ejNj1GBALHLidYhn1UcTFUJ3KHmfjD42PuWQhnKgHirxLl7HkeIgMJRKNQS7MtkpcF
-	yLsKHjCEZp2uBFz1027h85OQ6n19lPD/O3JE/yoYxEnhwGHDi6PD73QLKchsX2EyUM37/0/auXCUZ
-	BwnQBcoVrkRPEM78jNa/emk5XE37XpSbo+y3En0w9mw8ef9CLC0quS/zWfcpUGXxgWJdVINdgbxPm
-	GPg7tSY+wA3sJBhhhNwA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=qqczqHRQHNJMNFjTEPEIdiOxVtf0zD2SYOEVvXhP/vE=; b=a0PwIjSor+oC6k
+	49MAZPFO30rNcKnKu0sMeAn6WYzfxm+ISMBM57O6cj+Akg9G2XdSwyS7PnlGVIAy6oHKfgon7/6oj
+	aX/LCIdXc2Ik8h6gM6OX4Kk5OHVkEDaK1CdPiTCmzBd1bl+xQLI5rQi+M26cr34jzrEPFJAm+x/6e
+	8j/0jiUc7rYjLZ4PNJ+U1+6v2rWlgP5XmfQgVN8xU31KmG1UY9LOuq8lWEac60XGsCtRKy8bty9Tr
+	anKaq8cn6JOeVesgUYTAJkH5nxy1Ss/kyXDP3epMX3LKoxMtdl6u91byb3Z3hqyApUvppA0VCTS5V
+	JN0anAMt3vnWq0ReQWdA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nwHRM-00E2TC-MZ; Wed, 01 Jun 2022 06:02:44 +0000
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+	id 1nwHRK-00E2S6-F0; Wed, 01 Jun 2022 06:02:42 +0000
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nwHRH-00E2RB-17
-	for barebox@lists.infradead.org; Wed, 01 Jun 2022 06:02:40 +0000
-Received: by mail-lj1-x22b.google.com with SMTP id q1so845331ljb.5
-        for <barebox@lists.infradead.org>; Tue, 31 May 2022 23:02:36 -0700 (PDT)
+	id 1nwHRF-00E2RA-Eh
+	for barebox@lists.infradead.org; Wed, 01 Jun 2022 06:02:38 +0000
+Received: by mail-lf1-x134.google.com with SMTP id h23so1017241lfe.4
+        for <barebox@lists.infradead.org>; Tue, 31 May 2022 23:02:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=wH9bX0poSgC4vuQJTsgjzAz7uAbtvgiuwnSg4Vaok1Y=;
-        b=X3iQnnJgGBLZQA587niVNBGHdRo39QThMA2CD9ZeEKQjzFJUS6b6Lz4/gIU+e2uprL
-         HjvmGbLYgKA5HTn160BqD2kAibxKey7FJ2bzl/zapFky8sjWa9+fwbTcQcopQ/9EcFYH
-         jZ/aWzm5cL/7FGGKM3XinQbUudmLSgLecMyN+Nh15DY1kzELKJAEiV0myzffT4JSRwLl
-         ZGOm2e+d8kLuVYmyaz8Hce0jcpYKmHO+qH7WP+Mym8LqLYMfy2rhWqVxdWhBRDYMbnw3
-         S89KSZ9gl6dh8QNNUs9spMRB4P2kEqfClqlI9QM+jPMsJr7/R/kQMY0aeiX/b3OKdzhB
-         FPKQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UEUackTRExX115kjGSLhMHVZJJ13q7+A45srGc8778k=;
+        b=iWACzPXEBZB8h7ch+Tr3a6ud78qEuGPo1lhHFfM07Vv1NlHDqRer4DMvdM/kVwdXLK
+         0TRnLtty5dPHBAws8iWFVDmUxnH3LQ+OJat+GcIIXxATHe5mL3YhRVhkTZdEz297Zl8y
+         ZZM0lX3/MO9BuwCTwIAiqxWFW9HyqZuE/W6HaGGIygHJlgTMAJ0mTxVGT5gCVaoKfClT
+         c/PgPdJZZ6jxaiTaYNeyUaKYP010DVnSHudwr1q3JHu3BSkuVaZSbqNzwC+bOqRIGbJ0
+         RlDjaz97ZbS/6394XKu79eFMLuHy59oQYDTJGy+X63W84Ip1PrObXaaLL3L7TlBmUvbw
+         unTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=wH9bX0poSgC4vuQJTsgjzAz7uAbtvgiuwnSg4Vaok1Y=;
-        b=p001Wf3mrFH62bDjzldaqjZ8SQ29DMkiU4yulws7ZObLIH3yGF+nPp4fb9WxR6N5en
-         qilp9ozYbV9bMHE05RwAIiCu3i4Lq0JfvqhDBIugwNNIJU52mpZg6QBV2cu3zKL16paN
-         AXat6zrEqD5wYW+ib4G3AXSJd2/z3Dl4hlO4Gdbn+Hv0zzAfEOwCtTvtWmxASKC4UtGB
-         ZDKCpTxcWVesDsHQxebM6s3/HnmuP9hYukRgvInMctHHkzGD04Ops6S7GXM0NCMNfq0s
-         q8jdADlVeyoVMClKN9Se4JziHKvBAspvYWjw/bj067T0XD02MEAJkH2GBaBgPcUHvilV
-         KYEA==
-X-Gm-Message-State: AOAM530ZzgsiH8YIQ4w0dghH3+JBFvwepGTi9fXmfrHD56aAZkCKhyL+
-	bohZUE2coKNddU0N5w83uY0vE8kW5EA=
-X-Google-Smtp-Source: ABdhPJyijjO8YIu1leETc/w0Zz2RA31R424f9Hu9wIOqpkp6RE4t0/hM2JHf1pk68d3UYcxA+lEmvw==
-X-Received: by 2002:a2e:b690:0:b0:255:6067:fa7a with SMTP id l16-20020a2eb690000000b002556067fa7amr3532343ljo.93.1654063354833;
-        Tue, 31 May 2022 23:02:34 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UEUackTRExX115kjGSLhMHVZJJ13q7+A45srGc8778k=;
+        b=lWp+uNeDNBWY/kCRvKy5zg9PDMqJW6ad0couy4rkr7y8s+QQvLmyz5fKbRP2fQ9MRj
+         CEoay8TuF5OQVD70R82U+Qa8inyCD/tpyA+pVtYzSXhAIMjoLLDeHA3B3pmSBTwHBFn8
+         5RjJcXD41pf1iOxyiHlrATsKxUE1i1q605GQXtRyPFDOCWRdSmWHD9KFOB7HvsYuGFKG
+         hn2aA5AeVr9OvpWRKcA4TRks3ogtPskNzADciB0OzejxlO1lmYShwC2Smt84GgiRwBNN
+         20ViQ5lv4syylzXryvm2pZ0Mv0zTHlva/dUQRs4jUkWu7NcophcWPIjO5PT1Wito5UFa
+         1JqQ==
+X-Gm-Message-State: AOAM532zMSj6mvYHRXKqjoA/U0rusjppwHtxGE3IYTTzm3vXq9kOoizh
+	ERDht2yTIT9tqUazUTe9C4ixi7gkMrw=
+X-Google-Smtp-Source: ABdhPJwHAQtMuyW/foQDacNcSrtpoYF+5YKIMvKZbZDECapCttTx0RorfJ3dtUTlM8MTqh8IuTMVEA==
+X-Received: by 2002:a05:6512:1324:b0:478:e5ef:1ed4 with SMTP id x36-20020a056512132400b00478e5ef1ed4mr8186961lfu.462.1654063353887;
+        Tue, 31 May 2022 23:02:33 -0700 (PDT)
 Received: from shc.milas.spb.ru ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id 4-20020a2e1644000000b0025552d57beasm129691ljw.89.2022.05.31.23.02.33
+        by smtp.gmail.com with ESMTPSA id 4-20020a2e1644000000b0025552d57beasm129691ljw.89.2022.05.31.23.02.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 May 2022 23:02:34 -0700 (PDT)
+        Tue, 31 May 2022 23:02:33 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed,  1 Jun 2022 09:02:22 +0300
-Message-Id: <20220601060226.3756-2-eagle.alexander923@gmail.com>
+Date: Wed,  1 Jun 2022 09:02:21 +0300
+Message-Id: <20220601060226.3756-1-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220601060226.3756-1-eagle.alexander923@gmail.com>
-References: <20220601060226.3756-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220531_230239_107262_B22D6EEE 
-X-CRM114-Status: GOOD (  10.52  )
+X-CRM114-CacheID: sfid-20220531_230237_531539_2315727B 
+X-CRM114-Status: UNSURE (   8.20  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,49 +98,26 @@ X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] ARM: at91sam9n12ek: Use xz compression
+Subject: [PATCH 0/5] Misc fixes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The binary created with at91sam9n12ek_defconfig got too big over time.
-Use xz compression to match the bounds.
+Unsorted various fixes for the barebox.
 
-CHKFILESIZE images/start_pbl.pblb
-images/start_pbl.pblb size 270996 > maximum size 262144
+Alexander Shiyan (5):
+  ARM: at91sam9n12ek: Use xz compression
+  ARM: boards: Fix unconditional compilation of imx51-babbage directory
+  drivers: soc: Fix unconditional compilation of imx directory
+  globalvar: Add missing empty prototype for globalvar_set()
+  of: Fix of_prepend_machine_compatible() defined but unused warning
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
----
+ arch/arm/boards/Makefile                 | 2 +-
  arch/arm/configs/at91sam9n12ek_defconfig | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/soc/Makefile                     | 4 ++--
+ include/globalvar.h                      | 2 ++
+ include/of.h                             | 2 +-
+ 5 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/configs/at91sam9n12ek_defconfig b/arch/arm/configs/at91sam9n12ek_defconfig
-index b7c3a4b1f4..ce97ad62dc 100644
---- a/arch/arm/configs/at91sam9n12ek_defconfig
-+++ b/arch/arm/configs/at91sam9n12ek_defconfig
-@@ -4,12 +4,12 @@ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_PBL_IMAGE=y
-+CONFIG_IMAGE_COMPRESSION_XZKERN=y
- CONFIG_MMU=y
- CONFIG_MALLOC_SIZE=0xa00000
- CONFIG_EXPERIMENTAL=y
- CONFIG_MALLOC_TLSF=y
- CONFIG_PROMPT="9G20-EK:"
--CONFIG_GLOB=y
- CONFIG_PROMPT_HUSH_PS2="y"
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
-@@ -60,9 +60,6 @@ CONFIG_MTD=y
- # CONFIG_MTD_OOB_DEVICE is not set
- CONFIG_MTD_M25P80=y
- CONFIG_NAND=y
--# CONFIG_NAND_ECC_SOFT is not set
--# CONFIG_NAND_ECC_HW_SYNDROME is not set
--# CONFIG_NAND_ECC_HW_NONE is not set
- CONFIG_NAND_ATMEL=y
- CONFIG_NAND_ATMEL_PMECC=y
- CONFIG_USB_GADGET=y
 -- 
 2.32.0
 
