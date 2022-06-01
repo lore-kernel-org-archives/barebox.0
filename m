@@ -1,80 +1,78 @@
-Delivery-date: Wed, 01 Jun 2022 08:04:26 +0200
+Delivery-date: Wed, 01 Jun 2022 09:16:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nwHT0-00Gt5x-0G
-	for lore@lore.pengutronix.de; Wed, 01 Jun 2022 08:04:26 +0200
+	id 1nwIax-00Gvo2-Vl
+	for lore@lore.pengutronix.de; Wed, 01 Jun 2022 09:16:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nwHSy-0005LW-03
-	for lore@pengutronix.de; Wed, 01 Jun 2022 08:04:24 +0200
+	id 1nwIaw-0005HO-Fh
+	for lore@pengutronix.de; Wed, 01 Jun 2022 09:16:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=f0HvU1dFRT3fDBjUowPjn3pBGsIt0hyImsVc3b0SFJg=; b=YeHHmZFU4A+wVT
-	uL8/65UrWIQDPiW5dWwLKA4tlHWL0HngVIMEWIUzsy3Ln4aXRt+KPM48M9blu9Hk/6egDdqB1t4pV
-	rydbtwMV8xGZeZM/ykCcSKJaQ7bLDPaQ3QrI3KxhWzYfNGcDu6Y5IebLrBXuFt+2DYdRPVPoJJAWC
-	cKccCToy/vWPebkRs+nGVYrPaChfINzhBO2w2L+/lWflfUBHwbnw2Ae85LTYdq5xFZN2uxWuagFcP
-	e1+qFveYtKu31T7b50t1I+XHBM/t+Ib8S4Z894IG8+R76rZT18B1WptjTETroMr8Do5ItdFGeZw9P
-	I0c2dfJBwxxVxSZIFTUg==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Ma8scAerrXpqyd+qPCEkVfoi16bIvfZN8CZ9M9lBr70=; b=CyO4kRk6kTLjmF
+	DzzQgTuCV9Kz/uD9k5k2iaVSKoAJOJ8T8mUvbJTL+hZix1cSFFvK7007G/bIXstDQcjMRJVHe8H/M
+	I8O+do4KU+4pAelQsqtU1nSzLFztktD6Mn1AgDBzpXfRFmz7AkRc2sWaxNhHroeyJxSX5Buqpk+6K
+	WIbvP2nnCkaGxBLIUcF4P/rFhWWPIoKmaQPmWoMSYPUpBTuuLKVLTXv9Q7wZUZgBpjzrymx+OBprl
+	PWtn5uaiE0QyAWKn1AY0WN8a3S7PufYoVQz2pasi/7D4Yntw2NIbAimt5DlKVkUFk0gBSMI5xd0Ie
+	S4ZGj2oU9Uhwj36W3Whw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nwHRT-00E2UN-KE; Wed, 01 Jun 2022 06:02:51 +0000
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+	id 1nwIZK-00ELn4-Tp; Wed, 01 Jun 2022 07:15:03 +0000
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nwHRI-00E2RV-16
-	for barebox@lists.infradead.org; Wed, 01 Jun 2022 06:02:41 +0000
-Received: by mail-lf1-x129.google.com with SMTP id be31so986792lfb.10
-        for <barebox@lists.infradead.org>; Tue, 31 May 2022 23:02:38 -0700 (PDT)
+	id 1nwIZG-00ELmG-74
+	for barebox@lists.infradead.org; Wed, 01 Jun 2022 07:14:59 +0000
+Received: by mail-lf1-x132.google.com with SMTP id be31so1218353lfb.10
+        for <barebox@lists.infradead.org>; Wed, 01 Jun 2022 00:14:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=5kP6e6DhCC7oBMK7GOKcPFkS8AySfz7ZKyT1r7oouiw=;
-        b=hu4kn5HkPXzA2WLIgWb9+1BLKwiNsNtUVpP2k5tqnZnXYlV2JrsM/FbZBd8JyLPiTZ
-         QmoHHzwJHqGMfT2CUhkKUXk2UMY1zHkbuL6aFwDsx+WnGtVw/meIVq4pMKBCTbXp5Zto
-         ygtBQ3fLB7QwFbhOXW8lKvBamiE3TAsaBl6cx2WzNl892+cIXRFubv0MU0/IHrR+ouvt
-         M1T292GOFKQhR063B9Rb5+uup8ls4WRt469OJOTuNxT1L/Ai5kbf3b/zjiEgfTULfPPY
-         tswzuGd7M2795saXweBdTmJ0pFQPE9gGZOJvVp3gj+2uKA2qAGu0OREFVjz4ZW3Ur+Ol
-         4Wgw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lHq5ZX3S+4LQgf2C3Ijf6wJI0U1Z6r2IbdKq7WSx2Nc=;
+        b=E6/orICd81zUwl/qQnGKRSPIbyjkcgCocMZ779SdkTYIfr9yvHp57lbPrd5HaFbOJ/
+         pVqnnKrcZRiTrU1y68HXHfCzHj0T6cUImggPKGG8GFlLOT2/wvWgHw8b1RL6TjhqCODT
+         LqPv8ZUeWKCNgd4XK1vyGc+gk2ZKGo2Q5sEwwYIWMcPC4Pdjn2HgghM1K0s+i5RxxH8H
+         T57yZZBwGaLQRn768kX6d9slcdAW9mT72ji5PdcLjbt01e5k5VQQnWwLZdv5cOhcw5d2
+         8368oG0AnAqi/12PPPHCb/vW5l+x6DSAk9RmO7vfj1dEUKegRscHBGRcaOcWvN9/m6eA
+         b2Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=5kP6e6DhCC7oBMK7GOKcPFkS8AySfz7ZKyT1r7oouiw=;
-        b=fa+gxYUMjXIwnd2XpLROlWRHlgsmyYwR0EPeL3n/OBGZseFc1GoUNkK3xwgzw5sDtM
-         lb2umb9lAnxOvfeLM+QTCIG1o0zrdWDzu31qYfGKus/kPko1Bzw3MuPPZvrkC1dbBsF8
-         qif9XkVzNQ11cEmqkgAZqeZfJbSVdpDhrFw3W0S+Xjq6kch3tzzn8NL50YG8cvWZMdr3
-         iopWlFlqHu1Rutbq5j9JruBntOhkmTjCdeFG45Z7akBU77hOfCQTVJObegSf8ZTPmAHi
-         9ZY62DiZANU/Ve2xUkC7vvr9I6IEGyHjoYOy6NPE9RGt11sCAN4MHvnW32mqYqcCe14g
-         9uDg==
-X-Gm-Message-State: AOAM532w7V2x0hMyXKntV0PbA4EC9dswre/zO+MY8yJ2KMO32pVF5bDy
-	4tkw7QcvSJOkPNrdis97QKr/N8LoJY4=
-X-Google-Smtp-Source: ABdhPJxqYc/3m6gMwlLboZxftl04L7AdofjgD0Bs3VGhIceFXDQpnhkdaz7se+504ZyXQ/Fep9q6+Q==
-X-Received: by 2002:a05:6512:238e:b0:478:6db8:a615 with SMTP id c14-20020a056512238e00b004786db8a615mr34593165lfv.492.1654063356907;
-        Tue, 31 May 2022 23:02:36 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lHq5ZX3S+4LQgf2C3Ijf6wJI0U1Z6r2IbdKq7WSx2Nc=;
+        b=kBqOfksMKdNLDyMuESh4In9D20H5WUOsZFn+RIPOTecq+yEXDc3wLKd4kbfPGSCwyx
+         7e1jUfEPGpvrs+RvUHQcnABCCcirGUVwhp0H4oS6nIgMMB5QSV6/c47IOmsdwgUAANJR
+         yQwPWe1Jfr06zKr0DJn3u1AaVymzsobexISGXu0mp5l/rhurDmgc2kaJaJaQn33oV9Sz
+         KQKk+4bpJB5Q5KhzWphkmdjhp5KgQwxuH7yH3hK2XwMyfUVKiQHnhr3otTNi5QordVcg
+         pKxpe+fn7kLhhdijTBmYwdY7NTwbo+sbb4Epzjsa2BFjrqgEE/jAXlKWoLh3d2rdvW88
+         Yk6g==
+X-Gm-Message-State: AOAM532A0UOrDsm/Dcclp4oeD7Vo2SGJT7D/QBGvp3dUj+6qh1Wkgy8N
+	RRKqGxD6SG1kGaiPcKS7+cmA222R69A=
+X-Google-Smtp-Source: ABdhPJwFYeOe6GiPliGInBeDrYkVEg0s87sXbSlVnbO6oxlpP6DZgyIcy5Af+IKCt0TwxBp6X/FJ5A==
+X-Received: by 2002:a05:6512:4018:b0:477:ccbe:8e3d with SMTP id br24-20020a056512401800b00477ccbe8e3dmr41972575lfb.672.1654067694811;
+        Wed, 01 Jun 2022 00:14:54 -0700 (PDT)
 Received: from shc.milas.spb.ru ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id 4-20020a2e1644000000b0025552d57beasm129691ljw.89.2022.05.31.23.02.35
+        by smtp.gmail.com with ESMTPSA id q27-20020ac2511b000000b00477cc59e376sm189521lfb.161.2022.06.01.00.14.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 May 2022 23:02:36 -0700 (PDT)
+        Wed, 01 Jun 2022 00:14:53 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed,  1 Jun 2022 09:02:24 +0300
-Message-Id: <20220601060226.3756-4-eagle.alexander923@gmail.com>
+Date: Wed,  1 Jun 2022 10:14:52 +0300
+Message-Id: <20220601071452.17033-1-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220601060226.3756-1-eagle.alexander923@gmail.com>
-References: <20220601060226.3756-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220531_230240_173788_F1A56AC7 
-X-CRM114-Status: GOOD (  10.86  )
+X-CRM114-CacheID: sfid-20220601_001458_293810_DC961698 
+X-CRM114-Status: GOOD (  15.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,35 +92,144 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,
+X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,
 	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/5] drivers: soc: Fix unconditional compilation of imx directory
+Subject: [PATCH] ARM: OMAP: xload: Fix compile without CONFIG_MTD
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-As a side change, this patch sorts entries alphabetically.
+arm-linux-ld: arch/arm/mach-omap/xload.o: in function read_mtd_barebox':
+/home/ARM/barebox/arch/arm/mach-omap/xload.c:75: undefined reference to mtd_peb_read_file'
 
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- drivers/soc/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-omap/xload.c | 72 ++++++++++++++++++--------------------
+ 1 file changed, 34 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
-index e5b319e6da..a23e81ffb3 100644
---- a/drivers/soc/Makefile
-+++ b/drivers/soc/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+index 6d3704b8cf..78b2221304 100644
+--- a/arch/arm/mach-omap/xload.c
++++ b/arch/arm/mach-omap/xload.c
+@@ -53,46 +53,44 @@ static void *read_mtd_barebox(const char *part, unsigned int start, unsigned int
+ 	struct mtd_info *mtd;
+ 	unsigned int ps, pe;
  
--obj-y	+= imx/
-+obj-$(CONFIG_ARCH_IMX)		+= imx/
-+obj-$(CONFIG_KVX)		+= kvx/
- obj-$(CONFIG_CPU_SIFIVE)	+= sifive/
- obj-$(CONFIG_SOC_STARFIVE)	+= starfive/
--obj-$(CONFIG_KVX)	+= kvx/
+-	if (!IS_ENABLED(CONFIG_MTD)) {
+-		printf("Cannot load from nand/nor: MTD support is disabled\n");
+-		return NULL;
+-	}
++	if (IS_ENABLED(CONFIG_MTD)) {
++		cdev = cdev_open_by_name(part, O_RDONLY);
++		if (!cdev) {
++			printf("failed to open partition\n");
++			return NULL;
++		}
+ 
+-	cdev = cdev_open_by_name(part, O_RDONLY);
+-	if (!cdev) {
+-		printf("failed to open partition\n");
+-		return NULL;
+-	}
++		mtd = cdev->mtd;
++		if (!mtd)
++			return NULL;
+ 
+-	mtd = cdev->mtd;
+-	if (!mtd)
+-		return NULL;
++		if (mtd_mod_by_eb(start, mtd) != 0) {
++			printf("Start must be eraseblock aligned\n");
++			return NULL;
++		}
+ 
+-	if (mtd_mod_by_eb(start, mtd) != 0) {
+-		printf("Start must be eraseblock aligned\n");
+-		return NULL;
+-	}
++		to = xmalloc(size);
+ 
+-	to = xmalloc(size);
++		ps = mtd_div_by_eb(start, mtd);
++		pe = mtd_div_by_eb(start + size, mtd);
++		ret = mtd_peb_read_file(mtd, ps, pe, to, size);
++		if (ret) {
++			printf("Can't read image from %s: %d\n", part, ret);
++			goto err;
++		}
+ 
+-	ps = mtd_div_by_eb(start, mtd);
+-	pe = mtd_div_by_eb(start + size, mtd);
+-	ret = mtd_peb_read_file(mtd, ps, pe, to, size);
+-	if (ret) {
+-		printf("Can't read image from %s: %d\n", part, ret);
+-		goto err;
+-	}
++		size = get_image_size(to);
++		if (!size) {
++			printf("failed to get image size\n");
++			goto err;
++		}
+ 
+-	size = get_image_size(to);
+-	if (!size) {
+-		printf("failed to get image size\n");
+-		goto err;
+-	}
++		return to;
+ 
+-	return to;
++		err:
++		free(to);
++	}
+ 
+-err:
+-	free(to);
+ 	return NULL;
+ }
+ 
+@@ -292,7 +290,7 @@ static void *am33xx_net_boot(void)
+  */
+ static __noreturn int omap_xload(void)
+ {
+-	void *func;
++	void *func = NULL;
+ 
+ 	if (!barebox_part)
+ 		barebox_part = &default_part;
+@@ -310,10 +308,8 @@ static __noreturn int omap_xload(void)
+ 		} else if (IS_ENABLED(CONFIG_FS_OMAP4_USBBOOT)) {
+ 			printf("booting from USB\n");
+ 			func = omap4_xload_boot_usb();
+-		} else {
++		} else
+ 			printf("booting from USB not enabled\n");
+-			func = NULL;
+-		}
+ 		break;
+ 	case BOOTSOURCE_NAND:
+ 		printf("booting from NAND\n");
+@@ -327,16 +323,16 @@ static __noreturn int omap_xload(void)
+ 		if (IS_ENABLED(CONFIG_OMAP_SERIALBOOT)) {
+ 			printf("booting from serial\n");
+ 			func = omap_serial_boot();
+-			break;
+ 		}
++		break;
+ 	case BOOTSOURCE_NET:
+ 		if (IS_ENABLED(CONFIG_AM33XX_NET_BOOT)) {
+ 			printf("booting from NET\n");
+ 			func = am33xx_net_boot();
+-			break;
+ 		} else {
+ 			printf("booting from network not enabled\n");
+ 		}
++		break;
+ 	default:
+ 		printf("unknown boot source. Fall back to nand\n");
+ 		func = omap_xload_boot_nand(barebox_part);
 -- 
 2.32.0
 
