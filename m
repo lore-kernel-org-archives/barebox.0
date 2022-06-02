@@ -1,59 +1,79 @@
-Delivery-date: Thu, 02 Jun 2022 11:04:04 +0200
+Delivery-date: Thu, 02 Jun 2022 11:11:58 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nwgkO-000NvN-Np
-	for lore@lore.pengutronix.de; Thu, 02 Jun 2022 11:04:04 +0200
+	id 1nwgs2-000OHW-51
+	for lore@lore.pengutronix.de; Thu, 02 Jun 2022 11:11:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nwgkN-0007Gw-0E
-	for lore@pengutronix.de; Thu, 02 Jun 2022 11:04:04 +0200
+	id 1nwgs0-0000Gc-UI
+	for lore@pengutronix.de; Thu, 02 Jun 2022 11:11:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	List-Archive:List-Unsubscribe:List-Id:Cc:To:Subject:Message-ID:Date:From:
+	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=pF6B+KwPvnkpSECl6MHxqel6yLwk8RuM2mR2/K7Hpqg=; b=40tSRglDSXZqxx
-	AjpQzKV9Jl/pzrHAERvbuwFfD19V8Baps0Gy7OCLff5Bv8UN1Uh2CUlX9QODepe3bOvyF3LpsTWXJ
-	TbBnGFCT5ge8w7kPAAScC5EZLon+qpUyRHeQ/7+59G/m86erkEfUdHoBG0Ba7VkTPWAGpUh0r64n2
-	GyVzApKyqnJn5e+DRrwRT286YAHth37oE2jij0E26IQu4nac1X2dB3POrI2Hi4cMtQLZy/n69CFVm
-	1beNIT5sjX7cDFjC7TAhuiJ3hVMgEa2B7OIUNzJ9ydZPL6Di2vCizKAqICCLmrtALp/Y+UkT8eFfs
-	eF+meUTkfMSedMFHXkKQ==;
+	List-Owner; bh=p+AV/BHIKDWl+UBbjtrlB0gSYnfRvqZ3W7PZlZdGuQE=; b=M+Pi8PZXj3/cG/
+	hwz5cPhBmohlz1kWkytAMFCW3uMfIWgy5+kySBuZQHhSu3nVpqDGELiALZxBeBMciO2K7oz+M135p
+	kZ2JbsysR9yKWBxH67wr2rjo5bItzHicxtZi/tyaGA1jM46sKKaatQZxY5cpNm4Fm6/94LoU7Bitu
+	DZVz15UZMZBcUWhUjlu+u19+drv3+ZdlDOQke6m8zC1P2e7eA1JmbTKKcFZeaohxJaxJ+udVchcqW
+	w6ymoCSdDlgWPyWAUuGpBcIDUJlf3dStzrhKKPuC4eM35RIS1Q8EVwdyMJ9flCSwsqsd+XfrhCOlz
+	4nvBxr9JoEmxVbUDoKpg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nwgj1-002LCj-6u; Thu, 02 Jun 2022 09:02:39 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1nwgqc-002NxA-PM; Thu, 02 Jun 2022 09:10:30 +0000
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nwgiE-002Kqe-9s
-	for barebox@lists.infradead.org; Thu, 02 Jun 2022 09:01:51 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1nwgi5-0006aM-1J; Thu, 02 Jun 2022 11:01:41 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1nwgi5-005zkq-JL; Thu, 02 Jun 2022 11:01:40 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1nwgi3-00DOLZ-05; Thu, 02 Jun 2022 11:01:39 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 Jun 2022 11:01:31 +0200
-Message-Id: <20220602090133.3190450-6-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220602090133.3190450-1-a.fatoum@pengutronix.de>
-References: <20220602090133.3190450-1-a.fatoum@pengutronix.de>
+	id 1nwgqY-002Nuq-7I
+	for barebox@lists.infradead.org; Thu, 02 Jun 2022 09:10:27 +0000
+Received: by mail-pj1-x1033.google.com with SMTP id 3-20020a17090a174300b001e426a02ac5so5633306pjm.2
+        for <barebox@lists.infradead.org>; Thu, 02 Jun 2022 02:10:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=F8FWdezeUB3lCtCqdeB3KoQ4JAEZwzXQJKuqNX5OnZg=;
+        b=i9LKUzGHzSjZL7qTU5QKdxdphuvwnQ7rlwe3EawPsA+B7bPCVAaW0hM4jQhqfj8n3k
+         Lp1qGLvddUS0VF8OV1r1zUOURtsFfFVAhXjZutE3bUM8G/xM2LDUp9ZGbrH7tndSAdtN
+         +IdMzLxBDui3ubEdz9oos5mK9NYfti/O/0pvVRpbEluoAx6o0p1FK6XsJuaTvfqXGP2b
+         cFNgFKfz09hoL/9V2Q4selhm93Y0/uTMKWFg7Iv823RK7p12Fl+I3b1mJMAi+4iIqwzO
+         GWBbIIHGgYIwiuA4/8BroTPDvd4epyw4EkLj09G7Wbhghw60AqxSrXsI57Ct5VdckY/L
+         0B4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=F8FWdezeUB3lCtCqdeB3KoQ4JAEZwzXQJKuqNX5OnZg=;
+        b=vilNlst0YtlsyU8uRnVPf1f5Ykz9D7blbxwStSbeXEfY+5IwPrrGHEiTGg89Ia80Nt
+         fIvnM9CzcndQ6OApxevI2+yDB29QBNEhAUv1OVGFuoKoc+6F/XgYSFi2CgFWgHLidDW2
+         i44DkOIKdHCOK9OwSlfuI/7dBVI7VTp5KP6yEYZlyFNY8WTpkFvDcWBnJzQmUaJV7a6P
+         wbtYuiEd252A/ApbVWxegfibIlAC5LR9wFznBY/HgPDUpTCCgDEAc9Cckql++J8JMVYZ
+         vArUM6WF1GurcaitLj99wbaWAppOeekiViH+AljgO1rTIR7tnxSIakobmAgsgfsR8n85
+         V/jg==
+X-Gm-Message-State: AOAM530kBj4HPCLMn+WS2KQL2dM0MUr2f71QPF0PBSJj3Yp6bbvWyWTz
+	/Wt2wpQi/ht1ZMHn+6GshiwM1BjYE6RKNH+14f1r6//FitE=
+X-Google-Smtp-Source: ABdhPJyPKBWhMhtC8qNB8Typ2SkQ/k2r4P7k/7b3yRznrFH//IarHTlqml8G6riDwSkjIoCp2EWOPrtVt5njK5+XAz8=
+X-Received: by 2002:a17:90a:5985:b0:1e3:39f:ec1b with SMTP id
+ l5-20020a17090a598500b001e3039fec1bmr20167872pji.88.1654161019834; Thu, 02
+ Jun 2022 02:10:19 -0700 (PDT)
 MIME-Version: 1.0
+References: <20220601071452.17033-1-eagle.alexander923@gmail.com>
+ <53dfc2e7-7271-e872-dbf9-ffb9ed7e7802@pengutronix.de> <CAP1tNvTeo5S3k4CPm3dFw7-TxJUFaS-82Cu=R+DN1VWwQY+iCg@mail.gmail.com>
+ <f4ef4f26-d4b8-85f5-e438-d51e0d9a109c@pengutronix.de>
+In-Reply-To: <f4ef4f26-d4b8-85f5-e438-d51e0d9a109c@pengutronix.de>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Thu, 2 Jun 2022 12:10:08 +0300
+Message-ID: <CAP1tNvS=gBA-L9pKdxX1LV1wGkVXwciAia=rgypu8UG1u27n6A@mail.gmail.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220602_020150_412386_E137283F 
-X-CRM114-Status: GOOD (  15.55  )
+X-CRM114-CacheID: sfid-20220602_021026_323164_874807B2 
+X-CRM114-Status: UNSURE (   6.74  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,115 +85,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 5/7] filetype: differentiate between STM32MP FSBL and SSBL images
+X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] ARM: OMAP: xload: Fix compile without CONFIG_MTD
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We have some special handling for legacy (non-FIP) STM32 images:
-We have a bootm handler for chainloading and an update handler
-for use with GPT ssbl partitions. Both aren't applicable to the
-TF-A image used as FSBL. As barebox always has 0x00000000 at
-offset 0xfc and TF-A alrways has 0x10000000, we can use that
-to differentiate between the two images to make sure we refuse
-TF-A images when barebox images are expected.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-stm32mp/include/mach/bbu.h |  2 +-
- arch/arm/mach-stm32mp/stm32image.c       |  2 +-
- common/filetype.c                        | 13 ++++++++++---
- include/filetype.h                       |  3 ++-
- 4 files changed, 14 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm/mach-stm32mp/include/mach/bbu.h b/arch/arm/mach-stm32mp/include/mach/bbu.h
-index d49fb045ea06..3a6951a8f1a0 100644
---- a/arch/arm/mach-stm32mp/include/mach/bbu.h
-+++ b/arch/arm/mach-stm32mp/include/mach/bbu.h
-@@ -10,7 +10,7 @@ static inline int stm32mp_bbu_mmc_register_handler(const char *name,
- 						   unsigned long flags)
- {
- 	return bbu_register_std_file_update(name, flags, devicefile,
--					    filetype_stm32_image_v1);
-+					    filetype_stm32_image_ssbl_v1);
- }
- 
- #endif /* MACH_STM32MP_BBU_H_ */
-diff --git a/arch/arm/mach-stm32mp/stm32image.c b/arch/arm/mach-stm32mp/stm32image.c
-index caff68651c47..7867418e6caa 100644
---- a/arch/arm/mach-stm32mp/stm32image.c
-+++ b/arch/arm/mach-stm32mp/stm32image.c
-@@ -40,7 +40,7 @@ static int do_bootm_stm32image(struct image_data *data)
- static struct image_handler image_handler_stm32_image_v1_handler = {
- 	.name = "STM32 image (v1)",
- 	.bootm = do_bootm_stm32image,
--	.filetype = filetype_stm32_image_v1,
-+	.filetype = filetype_stm32_image_ssbl_v1,
- };
- 
- static int stm32mp_register_stm32image_image_handler(void)
-diff --git a/common/filetype.c b/common/filetype.c
-index 0ded64b83c00..3e9e14c1d79e 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -71,7 +71,8 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_layerscape_qspi_image] = { "Layerscape QSPI image", "layerscape-qspi-PBL" },
- 	[filetype_ubootvar] = { "U-Boot environmemnt variable data",
- 				"ubootvar" },
--	[filetype_stm32_image_v1] = { "STM32 image (v1)", "stm32-image-v1" },
-+	[filetype_stm32_image_fsbl_v1] = { "STM32MP FSBL image (v1)", "stm32-fsbl-v1" },
-+	[filetype_stm32_image_ssbl_v1] = { "STM32MP SSBL image (v1)", "stm32-ssbl-v1" },
- 	[filetype_zynq_image] = { "Zynq image", "zynq-image" },
- 	[filetype_mxs_sd_image] = { "i.MX23/28 SD card image", "mxs-sd-image" },
- 	[filetype_rockchip_rkns_image] = { "Rockchip boot image", "rk-image" },
-@@ -372,8 +373,14 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 		return filetype_unknown;
- 
- 	if (strncmp(buf8, "STM\x32", 4) == 0) {
--		if (buf8[74] == 0x01)
--			return filetype_stm32_image_v1;
-+		if (buf8[74] == 0x01) {
-+			switch(le32_to_cpu(buf[63])) {
-+			case 0x00000000:
-+				return filetype_stm32_image_ssbl_v1;
-+			case 0x10000000:
-+				return filetype_stm32_image_fsbl_v1;
-+			}
-+		}
- 	}
- 
- 	if (bufsize < 512)
-diff --git a/include/filetype.h b/include/filetype.h
-index 9b7499fdf307..00d54e48d528 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -52,7 +52,8 @@ enum filetype {
- 	filetype_layerscape_image,
- 	filetype_layerscape_qspi_image,
- 	filetype_ubootvar,
--	filetype_stm32_image_v1,
-+	filetype_stm32_image_fsbl_v1,
-+	filetype_stm32_image_ssbl_v1,
- 	filetype_zynq_image,
- 	filetype_mxs_sd_image,
- 	filetype_rockchip_rkns_image,
--- 
-2.30.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+0YfRgiwgMiDQuNGO0L0uIDIwMjIg0LMuINCyIDEyOjAxLCBBaG1hZCBGYXRvdW0gPGEuZmF0b3Vt
+QHBlbmd1dHJvbml4LmRlPjoKPiBPbiAwMi4wNi4yMiAxMDo1OSwgQWxleGFuZGVyIFNoaXlhbiB3
+cm90ZToKPiA+IEhlbGxvLgo+ID4KPiA+IEl0J3MganVzdCB0aGUgcmVzdWx0IG9mIHRoZSBteSBt
+YXN0ZXIgYnJhbmNoIG5vdCBiZWluZyB1cGRhdGVkCj4gPiBmcm9tIHJlbW90ZSBiZWZvcmUgSSBt
+YWRlIHRoZSBjaGFuZ2VzLi4uIFNvcnJ5IDopCi4uLgo+IGkuZS4gdGhpcyBwYXRjaCBjYW4gYmUg
+ZHJvcHBlZCBhZ2Fpbj8KClRoZSBsb2dpYyBkb2Vzbid0IGNoYW5nZSB3aXRoIG9yIHdpdGhvdXQg
+YSBwYXRjaCwgYnV0IHllcywgd2UgY2FuIGRyb3AgaXQuCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
 
