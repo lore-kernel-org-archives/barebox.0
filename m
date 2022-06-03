@@ -1,57 +1,61 @@
-Delivery-date: Thu, 02 Jun 2022 22:01:13 +0200
+Delivery-date: Fri, 03 Jun 2022 08:52:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nwr0L-000vgN-9g
-	for lore@lore.pengutronix.de; Thu, 02 Jun 2022 22:01:13 +0200
+	id 1nx1Av-001WXT-SE
+	for lore@lore.pengutronix.de; Fri, 03 Jun 2022 08:52:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nwr0K-0002b4-5j
-	for lore@pengutronix.de; Thu, 02 Jun 2022 22:01:12 +0200
+	id 1nx1Au-0003b2-Lg
+	for lore@pengutronix.de; Fri, 03 Jun 2022 08:52:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=wHVZY+lboXlDxA/i4Q02W08a5HrK63rdIq0iBr3mFaY=; b=LNmzDNWPQ9AoqY
-	y7AIvCUqTUhldW25skh07YXK+x1Z/AU7c2P78SHRhyrcAQD2UZe/a3iQ8gciC9aT4COTZi8wcHWLT
-	nJQhbXqy8rfRVM/W2kfzaNOGZEMutPigPIzeIdIQySQjO80SDAA7lpQb8D7otA5dnNMS5OYNeTaCD
-	eDmhZy+nFhJlveAR3U17Ym7H27JyyFAl4TgNAZJTmI0dqJD1rnk39FB3fHZ4gjWZ271tftDeV9DjH
-	FKjt5fR06Fx0iNHsij5yx4e0Rr4ieOmft6rTuVJ6jhR0DfI/9EtbDdwgVmZfgc6H+QweKfmRzsCcm
-	6wWn4SsjSyOKkon8ZzTg==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=tXdBpnXBiJgNIjLEeAfUoozK/xA7rawGzD65TLDjhYQ=; b=iu1YiE0/kf2moeIC5/+2duwLKi
+	n3n3TcncFrGffnhp/KCpddZRPfz9lWGT5/IvQ5zBp9GWOxahmBgshDYBzj5fjqlqpooyaXrLNdHc2
+	pjmz/TP5zMuN4D0QgmHOIw51rriCzP1ByKP/LOOyeu3hVtwd2IeAfYdTvnnw9LaDJZIi9esiLj18p
+	upzXdnVLnfQi6iWYOH48/j0UpR7N1UKkYw521VaoB9WPLxCX5O6/wCBn28hOAJDDS46XmHqFe2qjh
+	SoaD8agAX+zfhjWswtcxl6R6kmLYhp6h/8laVdRxxlbMAesvC8s9kQVOdNyz2fZR7qdnHyVdgLVpE
+	gHdHeKAQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nwqye-004BTX-RA; Thu, 02 Jun 2022 19:59:28 +0000
+	id 1nx19B-00671T-Lr; Fri, 03 Jun 2022 06:51:01 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nwqyZ-004BRh-UP
-	for barebox@lists.infradead.org; Thu, 02 Jun 2022 19:59:25 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1nx196-0066zM-DF
+	for barebox@lists.infradead.org; Fri, 03 Jun 2022 06:50:58 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1nwqyU-00021y-Mb; Thu, 02 Jun 2022 21:59:18 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1nwqyV-0065OM-B8; Thu, 02 Jun 2022 21:59:17 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1nwqyT-0002N5-4r; Thu, 02 Jun 2022 21:59:17 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 Jun 2022 21:59:15 +0200
-Message-Id: <20220602195916.9061-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1nx18z-00037b-8a; Fri, 03 Jun 2022 08:50:49 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1nx18y-0004Xc-Un; Fri, 03 Jun 2022 08:50:48 +0200
+Date: Fri, 3 Jun 2022 08:50:48 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220603065048.GG1615@pengutronix.de>
+References: <20220602102850.3421547-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20220602102850.3421547-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220602_125924_043740_C49B8F1D 
-X-CRM114-Status: GOOD (  12.17  )
+X-CRM114-CacheID: sfid-20220602_235056_484695_00D6D5DE 
+X-CRM114-Status: GOOD (  21.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,77 +75,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/2] commands: ls: explicitly check for directories with S_ISDIR
+Subject: Re: [PATCH] ARM: cpuinfo: print exception level
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-S_ISDIR(mode) is implemented as (mode & S_IFMT) == S_IFDIR, which
-accounts for file modes setting multiple bits. So far, this was not the
-case, but upcoming S_IFBLK equals (S_IFCHR | S_IFDIR), which would fail
-the existing checks, so prepare for that by fixing them.
+On Thu, Jun 02, 2022 at 12:28:50PM +0200, Ahmad Fatoum wrote:
+> barebox boot on ARMv8 usually involves switching exception level, but
+> nevertheless during bring up, it can be useful to query exception level
+> from the command line. Thus add it to cpuinfo output. There's no
+> straight equivalent for ARMv7, so we #ifdef it out for non-v8.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/cpu/cpuinfo.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-No functional change. There are no other instances of this elsewhere in
-the code base.
+Applied, thanks
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - new patch
----
- commands/ls.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Sascha
 
-diff --git a/commands/ls.c b/commands/ls.c
-index bedf2e1c4288..1192aed971cf 100644
---- a/commands/ls.c
-+++ b/commands/ls.c
-@@ -63,10 +63,10 @@ int ls(const char *path, ulong flags)
- 	if (stat(path, &s))
- 		return -errno;
- 
--	if (flags & LS_SHOWARG && s.st_mode & S_IFDIR)
-+	if (flags & LS_SHOWARG && S_ISDIR(s.st_mode))
- 		printf("%s:\n", path);
- 
--	if (!(s.st_mode & S_IFDIR)) {
-+	if (!S_ISDIR(s.st_mode)) {
- 		ls_one(path, path);
- 		return 0;
- 	}
-@@ -112,7 +112,7 @@ int ls(const char *path, ulong flags)
- 			continue;
- 		}
- 
--		if (s.st_mode & S_IFDIR)
-+		if (S_ISDIR(s.st_mode))
- 			ls(tmp, flags);
- 	}
- 
-@@ -171,7 +171,7 @@ static int do_ls(int argc, char *argv[])
- 			continue;
- 		}
- 
--		if (!(s.st_mode & S_IFDIR)) {
-+		if (!S_ISDIR(s.st_mode)) {
- 			if (flags & LS_COLUMN)
- 				string_list_add_sorted(&sl, argv[o]);
- 			else
-@@ -197,7 +197,7 @@ static int do_ls(int argc, char *argv[])
- 			continue;
- 		}
- 
--		if (s.st_mode & S_IFDIR) {
-+		if (S_ISDIR(s.st_mode)) {
- 			ret = ls(argv[o], flags);
- 			if (ret) {
- 				perror("ls");
+> 
+> diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
+> index 8a92432e904f..aea50e80d194 100644
+> --- a/arch/arm/cpu/cpuinfo.c
+> +++ b/arch/arm/cpu/cpuinfo.c
+> @@ -230,6 +230,10 @@ static int do_cpuinfo(int argc, char *argv[])
+>  			printf("core: %s r%up%u\n", part, major, minor);
+>  	}
+>  
+> +#ifdef CONFIG_CPU_64v8
+> +	printf("exception level: %u\n", current_el());
+> +#endif
+> +
+>  	if (cache & (1 << 24)) {
+>  		/* separate I/D cache */
+>  		printf("I-cache: ");
+> -- 
+> 2.30.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
