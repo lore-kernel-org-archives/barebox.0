@@ -3,76 +3,78 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nx5St-001kVQ-Ez
+	id 1nx5St-001kVS-FN
 	for lore@lore.pengutronix.de; Fri, 03 Jun 2022 13:27:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nx5Sq-0003uJ-RA
+	id 1nx5Sr-0003ue-37
 	for lore@pengutronix.de; Fri, 03 Jun 2022 13:27:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
-	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=EI3bK3px47IRloGCHpKL64Hy9O54X977PxpmjD1D3ww=; b=Gt+hW1b4KwKYyv
-	1fG9Sl1oTneiraLzc4al1Ul2jLfDAq+q+xL1nmyhk02iYuake9Au8Hu/O8PjZltgUW4kdx1uPJVPB
-	XaXrPjPC1jFBn9MB74+KgB3rkzawGYDDTm0okgKr4PegQnc001F6ECO60xQeSfsLj6FJp2basj3Mp
-	an4HK2h5ZuSP6ErjF7i3W/CBgoz+SB8f/abwTBooeEt/we61BWn1dZDf+SaYW8A1KJU9EseTxAYhG
-	eekz7lVJWY0XgXkXXG35terMQzR3b0ctvTAoJZqii6NVGJ22RH/bOfs0xpwNjIbKfJO9jxCsUthAH
-	EQjxXHPkCRE3ZPuVHkzQ==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=tDq0u1R5QCcBdvPzvk0jsSHyIyrukiPFJhj7lJOlEkQ=; b=kxAyn0uzxhnB/H
+	Fdj5kC16xj217haIZqK0rGJGgdm/s9zzCr7NMLehZKHns2J+b1FnJVN2TuR60y4ownn8LFzVZrjgZ
+	u9ZrH+hBDhHqYzczBmvbBV9uhnfKKE0cMVMOHNkaP8/Z8ker9J9ZH6/dbaZB5k70WNWeKI5zyXJ0W
+	kbEnT2obacf1X0TBRj3KCKoFWh88KXGNDkYcgw7qhRddS4EL4vREspv97bCVHXqKsRGbphyuNSDwQ
+	PFIHhtnYdiiQ5qbhHXXEEVBfe3hJHcE5laWSW3mSR9ATzvbJ2gwEqHpw5rInT6rj+OEGtYtKApwpB
+	XR6UoGcBavr/g+C0FEwA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nx5RC-007BRD-4e; Fri, 03 Jun 2022 11:25:54 +0000
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+	id 1nx5Rc-007BeZ-4Y; Fri, 03 Jun 2022 11:26:20 +0000
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nx5R6-007BPV-Rw
-	for barebox@lists.infradead.org; Fri, 03 Jun 2022 11:25:50 +0000
-Received: by mail-lj1-x235.google.com with SMTP id g25so8066433ljm.2
-        for <barebox@lists.infradead.org>; Fri, 03 Jun 2022 04:25:45 -0700 (PDT)
+	id 1nx5RG-007BSK-Dj
+	for barebox@lists.infradead.org; Fri, 03 Jun 2022 11:26:00 +0000
+Received: by mail-lf1-x12a.google.com with SMTP id j10so12086302lfe.12
+        for <barebox@lists.infradead.org>; Fri, 03 Jun 2022 04:25:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=rLBLEHiI3W197xU/QAK0zmTP7PTQTcuwbLltYnI54Mg=;
-        b=OSW0LfKN3lht9r/Ut4bCS5wTY09DZQuaVvRsnYTKPwkeEnlY4Ubqe5kkdoCfnDBNEw
-         EFv1s91OVazOTZei8KlySAbppNexlzI8DNS/KceB5GJc1btIq30G+MipLJZt7LazaVGN
-         Rz0fH+FnRkOiwBKsV+FXCPwaC51kVVmN2ktYUS9AVgjtjANga3r5UtVjdOoYnd/IyBMb
-         pzRqqwxSC6bszNs9yAUip3oyI3I+8odmjL6iQs5OpVXLRp5BEYbNnj2iUDDMIfXdxR/2
-         ua3KMSbEaRGPg2/Kg7qCP7Isu23MAHQh1E8UCAZ3ID5MDA+DnUmBUqujMK6VTZt1ZWVs
-         dL/Q==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=9Q89104iGF+LU8/tt0Oe9SvC0OlEixcDrGIteWNLS9o=;
+        b=Rkd/fA4j3QiYENLOKfqIQA1y6cI8tCGOgyezzb3tGG/z81WBAd3jnOOsrGqJXc1wGY
+         aPgek6BlyGR8Bs4Rpr+nD/4lStq7SeNsp6l0OVxeF9D6OFURsSmzK598vBRAvRoGGa3h
+         dEUmbLryZ87kpdSfG64L+sJJMhGpEHhFtCOlzvP7uSgtyvCd50ExkLh+JlRNBcfGb2Hs
+         nhuOWSZQxsj3YQNHBhdVkwiQ7Ig01DqOR4CVgChbMyKfXqocJwwy+ShLqWoSTmue5JdS
+         cu77y7+ZRx9r2XHMfjw/hnbAJ9tlLaXOTrbYZnEFAJjZxs89y2sBYJp+kyhp5XLS4lYh
+         NBEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=rLBLEHiI3W197xU/QAK0zmTP7PTQTcuwbLltYnI54Mg=;
-        b=tmeX1yshtuIYIuqSlfBwFHc4LwJ5xsrhiPMvV6wtTkiAGB82QFVL0NRk7wk7Ywy5oS
-         eSH4BPQZn9dfqwuN+SNfy4LQvzw0zWHOhnPKsIKdsXQ0ftdw+Q+1KDpxPex6BphIGdDd
-         5ErUeMW+mVR4m9AW4XoiorNSmMJXULEAo4+BnPVAy5A5/6PPQGHuSenf/ALqf4trI6Vx
-         YwLku6QKew8WfhIjwA8daXtHrebRt8KX3NYWs0+zkAuc1Q198BiR1ZcM83hJTUvQ+kBQ
-         kT/ck59uTqpbmuO2G2tz2ItdZQ4+YeMN/JJ00I8u+n9pNEN+U3BArSkRJ+zlOrLf1vvJ
-         kXtQ==
-X-Gm-Message-State: AOAM531x3Wvp6AF8o/bwtLc91ndxRf4k539/XZy2nnreuJ34YAWRttZ6
-	n3sdnAAV+SiHb6XQUMqc5u41mzL6i4g=
-X-Google-Smtp-Source: ABdhPJyEtrn6PRQuzPYbISsuCywEKguhqZ0Nm0jreUHtKdIm9dT25vY9d7KubrFS7+LnxtfNFU/5WA==
-X-Received: by 2002:a05:651c:1a11:b0:255:82f8:f622 with SMTP id by17-20020a05651c1a1100b0025582f8f622mr594999ljb.479.1654255543852;
-        Fri, 03 Jun 2022 04:25:43 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=9Q89104iGF+LU8/tt0Oe9SvC0OlEixcDrGIteWNLS9o=;
+        b=KIBjSt66qPJbo5vENteiS4kiGH2mssS3GAAB4bzPkOsyk0vPUzFTb+vuT4l3PaYQ1k
+         ByVrC2lawvWjKNAP95FInYVXK7ghaN0EHzwgxKLs3wj5dWwSkoIcpBtrl9HIGT1oYZXj
+         jfy5nyQoE9mJkEQMp61Z9dThQsJOuaOTcfi3LWIJTg5I+EqLU8887/i1EVKeHT4oIpbR
+         dWMpDf2tJ81Y0lIQxk5hI1Ey2DD4lEA4SJVBZpCZXvPaRyJHgmt5ClIHnzpRXVxBvxEn
+         GvvlZZ3LY7SGgFi7+whBUmugleXRvF2DiJnkaWsaWpsiT5e8nz+GTZ5RgJtH/gHHgdMU
+         OsBA==
+X-Gm-Message-State: AOAM532peY8OLC2TVA5x3RWXPlF0E5opagwY2rzcnsPI6QrPL5BC/ZjM
+	xw+ZYqatNjFfNugbMK6coCxwi2EU2I8=
+X-Google-Smtp-Source: ABdhPJxHJ1Fq16rGO9qTVsYZg3SpXii+bHrJUQ5hPE3IKxpNc6va5CsFyvopRjop6jvO9zO/SpnJmQ==
+X-Received: by 2002:a05:6512:2511:b0:479:1723:a743 with SMTP id be17-20020a056512251100b004791723a743mr2684634lfb.433.1654255554148;
+        Fri, 03 Jun 2022 04:25:54 -0700 (PDT)
 Received: from shc.milas.spb.ru ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id q17-20020ac246f1000000b004790105d0cfsm1546121lfo.16.2022.06.03.04.25.42
+        by smtp.gmail.com with ESMTPSA id q17-20020ac246f1000000b004790105d0cfsm1546121lfo.16.2022.06.03.04.25.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jun 2022 04:25:42 -0700 (PDT)
+        Fri, 03 Jun 2022 04:25:53 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri,  3 Jun 2022 14:25:33 +0300
-Message-Id: <20220603112540.51644-1-eagle.alexander923@gmail.com>
+Date: Fri,  3 Jun 2022 14:25:40 +0300
+Message-Id: <20220603112540.51644-8-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220603112540.51644-1-eagle.alexander923@gmail.com>
+References: <20220603112540.51644-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220603_042548_963001_E17183F7 
-X-CRM114-Status: GOOD (  13.28  )
+X-CRM114-CacheID: sfid-20220603_042558_522937_7885C56A 
+X-CRM114-Status: GOOD (  15.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,182 +99,203 @@ X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [RFC 1/8] ARM: OMAP: Rearranging EMIF4 definitions
+Subject: [RFC 8/8] ARM: OMAP: Move am33xx_sdram_size() into EMIF module and make it generic
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Currently we have three different definitions for EMIF management:
-- Offsets
-- Offsets relative to the base address
-- Offsets in the structure
-
-The patch represents the first attempt to unify this.
-
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- arch/arm/boards/afi-gf/lowlevel.c             | 39 +++++++++---------
- arch/arm/mach-omap/am33xx_generic.c           | 41 +++++++++----------
- .../mach-omap/include/mach/am33xx-silicon.h   | 10 +----
- 3 files changed, 42 insertions(+), 48 deletions(-)
+ arch/arm/mach-omap/Makefile                   |  2 +-
+ arch/arm/mach-omap/am33xx_generic.c           | 53 +------------------
+ arch/arm/mach-omap/am33xx_scrm.c              |  4 +-
+ arch/arm/mach-omap/emif4.c                    | 50 +++++++++++++++++
+ .../mach-omap/include/mach/am33xx-silicon.h   |  1 -
+ arch/arm/mach-omap/include/mach/emif4.h       |  2 +
+ 6 files changed, 58 insertions(+), 54 deletions(-)
 
-diff --git a/arch/arm/boards/afi-gf/lowlevel.c b/arch/arm/boards/afi-gf/lowlevel.c
-index de40f6c5af..88ffcfae5b 100644
---- a/arch/arm/boards/afi-gf/lowlevel.c
-+++ b/arch/arm/boards/afi-gf/lowlevel.c
-@@ -130,34 +130,35 @@ static void board_config_vtp(void)
- 
- static void board_config_emif_ddr(void)
- {
-+	const void __iomem *emif4 = IOMEM(AM33XX_EMIF4_BASE);
- 	u32 i;
- 
- 	/*Program EMIF0 CFG Registers*/
--	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_1));
--	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_1_SHADOW));
--	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_2));
--	__raw_writel(EMIF_TIM1, AM33XX_EMIF4_0_REG(SDRAM_TIM_1));
--	__raw_writel(EMIF_TIM1, AM33XX_EMIF4_0_REG(SDRAM_TIM_1_SHADOW));
--	__raw_writel(EMIF_TIM2, AM33XX_EMIF4_0_REG(SDRAM_TIM_2));
--	__raw_writel(EMIF_TIM2, AM33XX_EMIF4_0_REG(SDRAM_TIM_2_SHADOW));
--	__raw_writel(EMIF_TIM3, AM33XX_EMIF4_0_REG(SDRAM_TIM_3));
--	__raw_writel(EMIF_TIM3, AM33XX_EMIF4_0_REG(SDRAM_TIM_3_SHADOW));
--
--	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG));
--	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG2));
--
--	__raw_writel(0x00004650, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
--	__raw_writel(0x00004650, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
-+	__raw_writel(EMIF_READ_LATENCY, emif4 + EMIF4_DDR_PHY_CTRL_1);
-+	__raw_writel(EMIF_READ_LATENCY, emif4 + EMIF4_DDR_PHY_CTRL_1_SHADOW);
-+	__raw_writel(EMIF_READ_LATENCY, emif4 + EMIF4_DDR_PHY_CTRL_2);
-+	__raw_writel(EMIF_TIM1, emif4 + EMIF4_SDRAM_TIM_1);
-+	__raw_writel(EMIF_TIM1, emif4 + EMIF4_SDRAM_TIM_1_SHADOW);
-+	__raw_writel(EMIF_TIM2, emif4 + EMIF4_SDRAM_TIM_2);
-+	__raw_writel(EMIF_TIM2, emif4 + EMIF4_SDRAM_TIM_2_SHADOW);
-+	__raw_writel(EMIF_TIM3, emif4 + EMIF4_SDRAM_TIM_3);
-+	__raw_writel(EMIF_TIM3, emif4 + EMIF4_SDRAM_TIM_3_SHADOW);
-+
-+	__raw_writel(EMIF_SDCFG, emif4 + EMIF4_SDRAM_CONFIG);
-+	__raw_writel(EMIF_SDCFG, emif4 + EMIF4_SDRAM_CONFIG2);
-+
-+	__raw_writel(0x00004650, emif4 + EMIF4_SDRAM_REF_CTRL);
-+	__raw_writel(0x00004650, emif4 + EMIF4_SDRAM_REF_CTRL_SHADOW);
- 
- 	for (i = 0; i < 5000; i++) {
- 
- 	}
- 
--	__raw_writel(EMIF_SDREF, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
--	__raw_writel(EMIF_SDREF, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
-+	__raw_writel(EMIF_SDREF, emif4 + EMIF4_SDRAM_REF_CTRL);
-+	__raw_writel(EMIF_SDREF, emif4 + EMIF4_SDRAM_REF_CTRL_SHADOW);
- 
--	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG));
--	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG2));
-+	__raw_writel(EMIF_SDCFG, emif4 + EMIF4_SDRAM_CONFIG);
-+	__raw_writel(EMIF_SDCFG, emif4 + EMIF4_SDRAM_CONFIG2);
- }
- 
- static void board_config_ddr(void)
+diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
+index 2c7f577856..88c6b1d594 100644
+--- a/arch/arm/mach-omap/Makefile
++++ b/arch/arm/mach-omap/Makefile
+@@ -21,7 +21,7 @@ obj-$(CONFIG_ARCH_OMAP3) += omap3_generic.o auxcr.o
+ pbl-$(CONFIG_ARCH_OMAP3) += omap3_generic.o auxcr.o
+ obj-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
+ pbl-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
+-obj-pbl-$(CONFIG_ARCH_AM33XX) += am33xx_generic.o am33xx_clock.o am33xx_mux.o am3xxx.o
++obj-pbl-$(CONFIG_ARCH_AM33XX) += am33xx_generic.o am33xx_clock.o am33xx_mux.o am3xxx.o emif4.o
+ obj-pbl-$(CONFIG_ARCH_AM35XX) += am3xxx.o emif4.o
+ obj-$(CONFIG_ARCH_AM33XX) += am33xx_scrm.o
+ obj-$(CONFIG_ARCH_OMAP3) += omap3_clock.o
 diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
-index 3c5cdf065c..896968f2f3 100644
+index 2727ebdf7f..bfe5b3dc73 100644
 --- a/arch/arm/mach-omap/am33xx_generic.c
 +++ b/arch/arm/mach-omap/am33xx_generic.c
-@@ -307,18 +307,20 @@ void am33xx_ddr_phydata_cmd_macro(const struct am33xx_cmd_control *cmd_ctrl)
- 
- void am33xx_config_sdram(const struct am33xx_emif_regs *regs)
- {
--	writel(regs->emif_read_latency, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_1));
--	writel(regs->emif_read_latency, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_1_SHADOW));
--	writel(regs->emif_read_latency, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_2));
--	writel(regs->emif_tim1, AM33XX_EMIF4_0_REG(SDRAM_TIM_1));
--	writel(regs->emif_tim1, AM33XX_EMIF4_0_REG(SDRAM_TIM_1_SHADOW));
--	writel(regs->emif_tim2, AM33XX_EMIF4_0_REG(SDRAM_TIM_2));
--	writel(regs->emif_tim2, AM33XX_EMIF4_0_REG(SDRAM_TIM_2_SHADOW));
--	writel(regs->emif_tim3, AM33XX_EMIF4_0_REG(SDRAM_TIM_3));
--	writel(regs->emif_tim3, AM33XX_EMIF4_0_REG(SDRAM_TIM_3_SHADOW));
-+	const void __iomem *emif4 = IOMEM(AM33XX_EMIF4_BASE);
-+
-+	writel(regs->emif_read_latency, emif4 + EMIF4_DDR_PHY_CTRL_1);
-+	writel(regs->emif_read_latency, emif4 + EMIF4_DDR_PHY_CTRL_1_SHADOW);
-+	writel(regs->emif_read_latency, emif4 + EMIF4_DDR_PHY_CTRL_2);
-+	writel(regs->emif_tim1, emif4 + EMIF4_SDRAM_TIM_1);
-+	writel(regs->emif_tim1, emif4 + EMIF4_SDRAM_TIM_1_SHADOW);
-+	writel(regs->emif_tim2, emif4 + EMIF4_SDRAM_TIM_2);
-+	writel(regs->emif_tim2, emif4 + EMIF4_SDRAM_TIM_2_SHADOW);
-+	writel(regs->emif_tim3, emif4 + EMIF4_SDRAM_TIM_3);
-+	writel(regs->emif_tim3, emif4 + EMIF4_SDRAM_TIM_3_SHADOW);
- 
- 	if (regs->ocp_config)
--		writel(regs->ocp_config, AM33XX_EMIF4_0_REG(OCP_CONFIG));
-+		writel(regs->ocp_config, emif4 + EMIF4_OCP_CONFIG);
- 
- 	if (regs->zq_config) {
- 		/*
-@@ -326,20 +328,17 @@ void am33xx_config_sdram(const struct am33xx_emif_regs *regs)
- 		 * about 570us for a delay, which will be long enough
- 		 * to configure things.
- 		 */
--		writel(0x2800, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
--		writel(regs->zq_config, AM33XX_EMIF4_0_REG(ZQ_CONFIG));
-+		writel(0x2800, emif4 + EMIF4_SDRAM_REF_CTRL);
-+		writel(regs->zq_config, emif4 + EMIF4_ZQ_CONFIG);
- 		writel(regs->sdram_config, CM_EMIF_SDRAM_CONFIG);
--		writel(regs->sdram_config, AM33XX_EMIF4_0_REG(SDRAM_CONFIG));
--		writel(regs->sdram_ref_ctrl,
--				AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
--		writel(regs->sdram_ref_ctrl,
--			AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
--
-+		writel(regs->sdram_config, emif4 + EMIF4_SDRAM_CONFIG);
-+		writel(regs->sdram_ref_ctrl, emif4 + EMIF4_SDRAM_REF_CTRL);
-+		writel(regs->sdram_ref_ctrl, emif4 + EMIF4_SDRAM_REF_CTRL_SHADOW);
- 	}
- 
--	writel(regs->sdram_ref_ctrl, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
--	writel(regs->sdram_ref_ctrl, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
--	writel(regs->sdram_config, AM33XX_EMIF4_0_REG(SDRAM_CONFIG));
-+	writel(regs->sdram_ref_ctrl, emif4 + EMIF4_SDRAM_REF_CTRL);
-+	writel(regs->sdram_ref_ctrl, emif4 + EMIF4_SDRAM_REF_CTRL_SHADOW);
-+	writel(regs->sdram_config, emif4 + EMIF4_SDRAM_CONFIG);
+@@ -342,59 +342,10 @@ void am33xx_config_sdram(const struct am33xx_emif_regs *regs)
+ 	writel(regs->sdram_config, emif4 + EMIF4_SDRAM_CONFIG);
  }
  
- /**
+-/**
+- * am335x_sdram_size - read back SDRAM size from sdram_config register
+- *
+- * @return: The SDRAM size
+- */
+-unsigned long am335x_sdram_size(void)
+-{
+-	uint32_t sdram_config = readl(IOMEM(AM33XX_EMIF4_BASE + EMIF4_SDRAM_CONFIG));
+-	int rows, cols, width, banks;
+-	unsigned long size;
+-
+-	rows = ((sdram_config >> 7) & 0x7) + 9;
+-	cols = (sdram_config & 0x7) + 8;
+-
+-	switch ((sdram_config >> 14) & 0x3) {
+-	case 0:
+-		width = 4;
+-		break;
+-	case 1:
+-		width = 2;
+-		break;
+-	default:
+-		return 0;
+-	}
+-
+-	switch ((sdram_config >> 4) & 0x7) {
+-	case 0:
+-		banks = 1;
+-		break;
+-	case 1:
+-		banks = 2;
+-		break;
+-	case 2:
+-		banks = 4;
+-		break;
+-	case 3:
+-		banks = 8;
+-		break;
+-	default:
+-		return 0;
+-	}
+-
+-	size = (1 << rows) * (1 << cols) * banks * width;
+-
+-	debug("%s: sdram_config: 0x%08x cols: %2d rows: %2d width: %2d banks: %2d size: 0x%08lx\n",
+-			__func__, sdram_config, cols, rows, width, banks, size);
+-
+-	return size;
+-}
+-
+ void __noreturn am335x_barebox_entry(void *boarddata)
+ {
+-	barebox_arm_entry(0x80000000, am335x_sdram_size(), boarddata);
++	barebox_arm_entry(0x80000000,
++			  emif4_sdram_size(IOMEM(AM33XX_EMIF4_BASE)), boarddata);
+ }
+ 
+ void am33xx_config_io_ctrl(int ioctrl)
+diff --git a/arch/arm/mach-omap/am33xx_scrm.c b/arch/arm/mach-omap/am33xx_scrm.c
+index 0f13a9deb6..e10e80ce31 100644
+--- a/arch/arm/mach-omap/am33xx_scrm.c
++++ b/arch/arm/mach-omap/am33xx_scrm.c
+@@ -21,10 +21,12 @@
+ #include <asm/barebox-arm.h>
+ #include <asm/memory.h>
+ #include <mach/am33xx-silicon.h>
++#include <mach/emif4.h>
+ 
+ static int am33xx_scrm_probe(struct device_d *dev)
+ {
+-	return arm_add_mem_device("ram0", 0x80000000, am335x_sdram_size());
++	return arm_add_mem_device("ram0", 0x80000000,
++				  emif4_sdram_size(IOMEM(AM33XX_EMIF4_BASE)));
+ }
+ 
+ static __maybe_unused struct of_device_id am33xx_scrm_dt_ids[] = {
+diff --git a/arch/arm/mach-omap/emif4.c b/arch/arm/mach-omap/emif4.c
+index e61cf00c57..b5a53e8c63 100644
+--- a/arch/arm/mach-omap/emif4.c
++++ b/arch/arm/mach-omap/emif4.c
+@@ -65,6 +65,56 @@
+ #define EMIF4_DDR1_PWRDN_EN	(0x1 << 6)
+ #define EMIF4_DDR1_READ_LAT	(0x6 << 0)
+ 
++/**
++ * emif4_sdram_size - read back SDRAM size from sdram_config register
++ *
++ * @return: The SDRAM size
++ */
++unsigned long emif4_sdram_size(const void __iomem *emif4)
++{
++	uint32_t sdram_config = readl(emif4 + EMIF4_SDRAM_CONFIG);
++	int rows, cols, width, banks;
++	unsigned long size;
++
++	rows = ((sdram_config >> 7) & 0x7) + 9;
++	cols = (sdram_config & 0x7) + 8;
++
++	switch ((sdram_config >> 14) & 0x3) {
++	case 0:
++		width = 4;
++		break;
++	case 1:
++		width = 2;
++		break;
++	default:
++		return 0;
++	}
++
++	switch ((sdram_config >> 4) & 0x7) {
++	case 0:
++		banks = 1;
++		break;
++	case 1:
++		banks = 2;
++		break;
++	case 2:
++		banks = 4;
++		break;
++	case 3:
++		banks = 8;
++		break;
++	default:
++		return 0;
++	}
++
++	size = (1 << rows) * (1 << cols) * banks * width;
++
++	debug("SDRAM_CONFIG: 0x%08x, cols: %2d, rows: %2d, width: %2d, banks: %2d, size: 0x%08lx\n",
++	      sdram_config, cols, rows, width, banks, size);
++
++	return size;
++}
++
+ /*
+  *  - Init the emif4 module for DDR access
+  *  - Early init routines, called from flash or SRAM.
 diff --git a/arch/arm/mach-omap/include/mach/am33xx-silicon.h b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-index 0467dac03b..d090b0f29c 100644
+index 671706ff49..74b0b7638e 100644
 --- a/arch/arm/mach-omap/include/mach/am33xx-silicon.h
 +++ b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-@@ -37,9 +37,6 @@
- #define AM33XX_GPIO2_BASE		(AM33XX_L4_PER_BASE + 0x1AC000 + 0x100)
- #define AM33XX_GPIO3_BASE		(AM33XX_L4_PER_BASE + 0x1AE000 + 0x100)
+@@ -220,7 +220,6 @@ void am33xx_config_ddr_data(const struct am33xx_ddr_data *data, int macronr);
+ void am335x_sdram_init(int ioctrl, const struct am33xx_cmd_control *cmd_ctrl,
+ 			const struct am33xx_emif_regs *emif_regs,
+ 			const struct am33xx_ddr_data *ddr_data);
+-unsigned long am335x_sdram_size(void);
+ void am335x_barebox_entry(void *boarddata);
  
--/* EMFI Registers */
--#define AM33XX_EMFI0_BASE		0x4C000000
--
- #define AM33XX_DRAM_ADDR_SPACE_START	0x80000000
- #define AM33XX_DRAM_ADDR_SPACE_END	0xC0000000
+ #endif
+diff --git a/arch/arm/mach-omap/include/mach/emif4.h b/arch/arm/mach-omap/include/mach/emif4.h
+index 10ecfe6c6b..00702e60e8 100644
+--- a/arch/arm/mach-omap/include/mach/emif4.h
++++ b/arch/arm/mach-omap/include/mach/emif4.h
+@@ -45,6 +45,8 @@
+ #define EMIF4_DDR_PHY_CTRL_2					0xec
+ #define EMIF4_IODFT_TLGC					0x60
  
-@@ -83,8 +80,8 @@
- #define AM33XX_WDT_BASE			0x44E35000
- 
- /* EMIF Base address */
--#define AM33XX_EMIF4_0_CFG_BASE		0x4C000000
--#define AM33XX_EMIF4_1_CFG_BASE		0x4D000000
-+#define AM33XX_EMIF4_BASE		0x4c000000
++unsigned long emif4_sdram_size(const void __iomem *emif4);
 +
- #define AM33XX_DMM_BASE			0x4E000000
+ void am35xx_emif4_init(const void __iomem *emif4);
  
- #define AM335X_CPSW_BASE		0x4A100000
-@@ -97,9 +94,6 @@
- #define AM33XX_DMM_LISA_MAP__3		(AM33XX_DMM_BASE + 0x4C)
- #define AM33XX_DMM_PAT_BASE_ADDR	(AM33XX_DMM_BASE + 0x460)
- 
--#define AM33XX_EMIF4_0_REG(REGNAME)	(AM33XX_EMIF4_0_CFG_BASE + EMIF4_##REGNAME)
--#define AM33XX_EMIF4_1_REG(REGNAME)	(AM33XX_EMIF4_1_CFG_BASE + EMIF4_##REGNAME)
--
- #define EMIF4_MOD_ID_REV		0x0
- #define EMIF4_SDRAM_STATUS		0x04
- #define EMIF4_SDRAM_CONFIG		0x08
+ #endif /* endif _EMIF_H_ */
 -- 
 2.32.0
 
