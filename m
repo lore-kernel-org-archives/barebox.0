@@ -1,80 +1,79 @@
-Delivery-date: Fri, 03 Jun 2022 13:27:40 +0200
+Delivery-date: Mon, 06 Jun 2022 08:42:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nx5Su-001kVz-F4
-	for lore@lore.pengutronix.de; Fri, 03 Jun 2022 13:27:40 +0200
+	id 1ny6Ro-004ylm-NK
+	for lore@lore.pengutronix.de; Mon, 06 Jun 2022 08:42:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nx5Ss-0003vH-CR
-	for lore@pengutronix.de; Fri, 03 Jun 2022 13:27:39 +0200
+	id 1ny6Rn-00008B-80
+	for lore@pengutronix.de; Mon, 06 Jun 2022 08:42:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=wVjL5PuoEjEC06bf3PETnwxIBrR56SpG1XqVNUM4Ej0=; b=q5VU99Nv5HPcG9
-	dXdziqb+/DUhN9Py7JW4E7iJBCX0Ms7gNKRX3fsyaudgPrSrYMyI8zeFBu3i2XCQlelTiJC2tNgld
-	jsC0A1JpKrH5LXahu6qWmA5BoZRj6MVc1taav5hnGo8PqSZDBSF09mrd4bEeJCaAJKwxyfRBQUWdv
-	rJrXQ8/8ZgK/MFDKgnX2d7nqTTYEN+vzkxRYsbvrJUlBmQ8WVeTe5fgFGCUkUChqEb3pX13vu8/Sr
-	mz/q4bwa9mTzQ4jFIS4nxuvMAwFwaFhJoOFTJogspgVGdot0odC7FZJCj8oSsh0vQSSs0+kSPD8U6
-	xNt4jwdFMcVpbNQWB1sA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=qfXOZlq20S2PIgmBu65TUD3ejSDUifEHMkR3C20yFRM=; b=2Gsz1grEMbvnqU
+	WUsV1RfkuyQacsMC06q5okBZPoxzAH5fJ8oMvYXsO4dXstzjuwtmTPyvaN+9sZ8Cr9FJj0a5M6kLD
+	4zrkj2od9xmf3iB4nMDN/PAKarnVKeoV+DXlnL0bPMIOXCHXcaubgIhCikex79lqgQYxkGghU567S
+	3eAHoEbuWj8Cm617tNjUGrtkhQ6IaN828ul/AnZXJGoFj78Vb2unZ/VpHqFHHd1AWD4xrgkdLynvK
+	pyteV49nz5c3TXjsrAxMlAkw0oM4eHSqo12cxlklcMCKBX+6Af/k47VDXGkRYXv54oBF5aikXspO0
+	EtSiij3/K3uwRYRaqbzA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nx5RE-007BRo-JF; Fri, 03 Jun 2022 11:25:56 +0000
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+	id 1ny6Q1-00HKyO-RP; Mon, 06 Jun 2022 06:40:53 +0000
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nx5R7-007BPw-9o
-	for barebox@lists.infradead.org; Fri, 03 Jun 2022 11:25:50 +0000
-Received: by mail-lf1-x130.google.com with SMTP id s6so12095497lfo.13
-        for <barebox@lists.infradead.org>; Fri, 03 Jun 2022 04:25:48 -0700 (PDT)
+	id 1ny6Px-00HKpD-8a
+	for barebox@lists.infradead.org; Mon, 06 Jun 2022 06:40:50 +0000
+Received: by mail-lj1-x22e.google.com with SMTP id a23so14730781ljd.9
+        for <barebox@lists.infradead.org>; Sun, 05 Jun 2022 23:40:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=G82nsKK64ANgBAmzKxsgbsIb4X9JPlR935LpyM+w4Dc=;
-        b=Jz/I/xlWSKA4DmvwlOmOvA1CoitF0MUfX8mFPJHP5PlSGkIXldYFIIb9mnc8Ww0/VO
-         MzMA4UGdrTTqbxCL1rG2a9lciq5HGF/cedS+aZ/nnTrPZ9io2vkxpAHwRmQ1Ucv/Wva0
-         q17a2QhxnZ+QETsKwckjrH27tAw5R/DqPb7v5uYxo28k97w4W5w/vkbrkCRbql6xIsYA
-         2I4oJr6MHKronRnPgd3UtQhE8wzJKiF+BHowRAGHjMFOXxEt70WgOUqEOaHrILASfNAG
-         TxvHth3j5XsELpTW/XbrlS4hvIpp9WvtFPApVUrj2B2lBMwCgbletMe0cIoBzaZ+f7Mv
-         yQVw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8SJulD3fkoQlFwPsjvN1ac3zxryjf7PjcB6iw+6i5yk=;
+        b=Sn1JYYewyMWk5eViquq1ZWBGPWQK8XTo8DYNaVnBB/VkM5KFyIeM6U9obStFv+aMHg
+         ppBUROAfG/d5IeFXidjVSF+4T1AE8OlblYLhK/Jh3lEp+UL6PEO2xu2bTheOig8MRCxs
+         5D0ambo4DU9S/LAr5UCRa9XzR3iB8d5Kn9xnDf2ts2DWtiQnIhl7/t8/gBwowAqumT0b
+         2E7eqCRSpCr5LUSITABc0/rBWU5j8AFwdNx70ToX9OExMONeEBAUbl5nm6IwrC0zy7KF
+         05w7SFLUDtfDR6vWgs7xTmOzAKFtOXrenJZsUdlAwdHGGO1Ph6ub/+sLyDI0ghSbaKA6
+         uHNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=G82nsKK64ANgBAmzKxsgbsIb4X9JPlR935LpyM+w4Dc=;
-        b=tCWrc+m+kRYj7LTPfj6yJK4g0CmNDQyZpS8/p+UuVxshVfMiAlgEqh0dC3metRMuLX
-         XQ5AoohFtKrxuEaQhylXsSN3LSZaL8qW+Le/uARUXQ0FIL8piflmjhzaeMkBAt22yxBw
-         Uqw8VT9zm984qUST4xdP0YEp7XyBEhwnZFueJ9sfGRHeF2vEpbbIES+nfOb8qiB2onf1
-         RsCZEMAx3qTFG14kdXA56RG5fAedFODME9sZBaJTM2fAXjo1HkOJ+CQzEAd2tD4E3VYb
-         O4P20NB4B1qvxCV+En5Dy7rhtVBSAWb8Huke4Xdx8LV7tS1723QqGPSvUKN1GVxqJWvF
-         elrw==
-X-Gm-Message-State: AOAM530HbviPHtqnYcoTi59d+t9keIqlWDfGSj7nMB0dPgNCP2y/WUVv
-	vFgdwHvwRwkUJGrRwt+EyiOL11mHy7o=
-X-Google-Smtp-Source: ABdhPJz/keVLBC5lTliaVfV4dXlWAU8+/zWosq6yBKG8OCxCPGiKrRpm/eMQuZbcksb/nwa6VvscwA==
-X-Received: by 2002:a05:6512:3989:b0:477:caeb:1a13 with SMTP id j9-20020a056512398900b00477caeb1a13mr6810352lfu.64.1654255546677;
-        Fri, 03 Jun 2022 04:25:46 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8SJulD3fkoQlFwPsjvN1ac3zxryjf7PjcB6iw+6i5yk=;
+        b=wrsVdrlOuBHIusqvGy4AjVzoyJEkz2VTwqCEUm/arvEs5tNO/yjS6AMstOokjQUha1
+         Af+rbuOkZQPZfpbfrZ2LBD2+0aUQZJlBCcmDFVUzg3IZEfXprrfnXjgjeAPPIhmIxdZM
+         CJXY8JxH+RAfIziGug7m97Nz1xX1VuHZJoqtABZP8aiH0alou9LJ5SohartWY7F5g8AO
+         arboSdW88+OGKp4lp/cVka1mYFLW87DdxIWFpYePQA5yNxILd+MPY0dMorwACojeoHAZ
+         pinx1czFCxi75oTFd1H6BJ2HfoHvITT+Ljm9VjRvg6yqL10yLbAGLwJFPakQoxqdXNXY
+         gxDA==
+X-Gm-Message-State: AOAM530e4X/3MVCjT/v2qse6uOHknKYtQhRhS7by4aN5tlDioJLFl07u
+	yPMc/rks3mRXWP+NxqZiIAi8XJeSXmc=
+X-Google-Smtp-Source: ABdhPJxSgLmkbukjXU+sFczXxvVzC2TK9IlS0FELDel1LOlIHpGzAUX8tBIButRA9blOXvIOfXNKow==
+X-Received: by 2002:a2e:5c88:0:b0:255:8ec0:47e9 with SMTP id q130-20020a2e5c88000000b002558ec047e9mr4687152ljb.293.1654497643613;
+        Sun, 05 Jun 2022 23:40:43 -0700 (PDT)
 Received: from shc.milas.spb.ru ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id q17-20020ac246f1000000b004790105d0cfsm1546121lfo.16.2022.06.03.04.25.45
+        by smtp.gmail.com with ESMTPSA id f9-20020a2e6a09000000b00254319f8e63sm2358361ljc.91.2022.06.05.23.40.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jun 2022 04:25:45 -0700 (PDT)
+        Sun, 05 Jun 2022 23:40:42 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri,  3 Jun 2022 14:25:35 +0300
-Message-Id: <20220603112540.51644-3-eagle.alexander923@gmail.com>
+Date: Mon,  6 Jun 2022 09:40:34 +0300
+Message-Id: <20220606064034.9568-1-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220603112540.51644-1-eagle.alexander923@gmail.com>
-References: <20220603112540.51644-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220603_042549_376461_393CD867 
-X-CRM114-Status: GOOD (  11.68  )
+X-CRM114-CacheID: sfid-20220605_234049_381561_0D753D19 
+X-CRM114-Status: UNSURE (   8.84  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,145 +93,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,
+X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,
 	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [RFC 3/8] ARM: OMAP: Adopt am35xx_emif4_init() to use fixed offset definitions
+Subject: [PATCH] ARM: OMAP: syslib: Optimize wait_on_value() function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+Saves up to 8 bytes in THUMB mode.
+
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- arch/arm/mach-omap/am35xx_emif4.c       | 40 ++++++++++++-------------
- arch/arm/mach-omap/include/mach/emif4.h | 24 ---------------
- 2 files changed, 20 insertions(+), 44 deletions(-)
+ arch/arm/mach-omap/syslib.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/mach-omap/am35xx_emif4.c b/arch/arm/mach-omap/am35xx_emif4.c
-index 678a338fd6..8780dfb539 100644
---- a/arch/arm/mach-omap/am35xx_emif4.c
-+++ b/arch/arm/mach-omap/am35xx_emif4.c
-@@ -21,58 +21,58 @@
+diff --git a/arch/arm/mach-omap/syslib.c b/arch/arm/mach-omap/syslib.c
+index 42da348c5a..488f0ab859 100644
+--- a/arch/arm/mach-omap/syslib.c
++++ b/arch/arm/mach-omap/syslib.c
+@@ -52,19 +52,16 @@ void sdelay(unsigned long loops)
+  * @param[in] read_addr  address to read from
+  * @param[in] bound max iterations
+  *
+- * @return 1 if match_value is found, else if bound iterations reached,
++ * @return non zero if match_value is found, else if bound iterations reached,
+  *         returns 0
   */
- void am35xx_emif4_init(void)
+ u32 wait_on_value(u32 read_bit_mask, u32 match_value, u32 read_addr, u32 bound)
  {
-+	const void __iomem *emif4 = IOMEM(OMAP3_SDRC_BASE);
- 	unsigned int regval;
--	struct emif4 *emif4_base = IOMEM(OMAP3_SDRC_BASE);
+-	u32 i = 0, val;
+ 	do {
+-		++i;
+-		val = readl(read_addr) & read_bit_mask;
++		u32 val = readl(read_addr) & read_bit_mask;
+ 		if (val == match_value)
+-			return 1;
+-		if (i == bound)
+-			return 0;
+-	} while (1);
+-}
++			break;
++	} while (--bound);
  
- 	/* Set the DDR PHY parameters in PHY ctrl registers */
- 	regval = (EMIF4_DDR1_READ_LAT | EMIF4_DDR1_PWRDN_DIS |
- 		EMIF4_DDR1_EXT_STRB_DIS);
--	writel(regval, &emif4_base->ddr_phyctrl1);
--	writel(regval, &emif4_base->ddr_phyctrl1_shdw);
--	writel(0, &emif4_base->ddr_phyctrl2);
-+	writel(regval, emif4 + EMIF4_DDR_PHY_CTRL_1);
-+	writel(regval, emif4 + EMIF4_DDR_PHY_CTRL_1_SHADOW);
-+	writel(0, emif4 + EMIF4_DDR_PHY_CTRL_2);
- 
- 	/* Reset the DDR PHY and wait till completed */
--	regval = readl(&emif4_base->sdram_iodft_tlgc);
-+	regval = readl(emif4 + EMIF4_IODFT_TLGC);
- 	regval |= (1 << 10);
--	writel(regval, &emif4_base->sdram_iodft_tlgc);
-+	writel(regval, emif4 + EMIF4_IODFT_TLGC);
- 
- 	/* Wait till that bit clears*/
--	while (readl(&emif4_base->sdram_iodft_tlgc) & (1 << 10));
-+	while (readl(emif4 + EMIF4_IODFT_TLGC) & (1 << 10));
- 
- 	/* Re-verify the DDR PHY status*/
--	while ((readl(&emif4_base->sdram_sts) & (1 << 2)) == 0x0);
-+	while ((readl(emif4 + EMIF4_STATUS) & (1 << 2)) == 0x0);
- 
- 	regval |= (1 << 0);
--	writel(regval, &emif4_base->sdram_iodft_tlgc);
-+	writel(regval, emif4 + EMIF4_IODFT_TLGC);
- 
- 	/* Set SDR timing registers */
- 	regval = (EMIF4_TIM1_T_WTR | EMIF4_TIM1_T_RRD |
- 		EMIF4_TIM1_T_RC | EMIF4_TIM1_T_RAS |
- 		EMIF4_TIM1_T_WR | EMIF4_TIM1_T_RCD |
- 		EMIF4_TIM1_T_RP);
--	writel(regval, &emif4_base->sdram_time1);
--	writel(regval, &emif4_base->sdram_time1_shdw);
-+	writel(regval, emif4 + EMIF4_SDRAM_TIM_1);
-+	writel(regval, emif4 + EMIF4_SDRAM_TIM_1_SHADOW);
- 
- 	regval = (EMIF4_TIM2_T_CKE | EMIF4_TIM2_T_RTP |
- 		EMIF4_TIM2_T_XSRD | EMIF4_TIM2_T_XSNR |
- 		EMIF4_TIM2_T_ODT | EMIF4_TIM2_T_XP);
--	writel(regval, &emif4_base->sdram_time2);
--	writel(regval, &emif4_base->sdram_time2_shdw);
-+	writel(regval, emif4 + EMIF4_SDRAM_TIM_2);
-+	writel(regval, emif4 + EMIF4_SDRAM_TIM_2_SHADOW);
- 
- 	regval = (EMIF4_TIM3_T_RAS_MAX | EMIF4_TIM3_T_RFC);
--	writel(regval, &emif4_base->sdram_time3);
--	writel(regval, &emif4_base->sdram_time3_shdw);
-+	writel(regval, emif4 + EMIF4_SDRAM_TIM_3);
-+	writel(regval, emif4 + EMIF4_SDRAM_TIM_3_SHADOW);
- 
- 	/* Set the PWR control register */
- 	regval = (EMIF4_PWR_PM_TIM | EMIF4_PWR_LP_MODE |
- 		EMIF4_PWR_DPD_DIS | EMIF4_PWR_IDLE_MODE);
--	writel(regval, &emif4_base->sdram_pwr_mgmt);
--	writel(regval, &emif4_base->sdram_pwr_mgmt_shdw);
-+	writel(regval, emif4 + EMIF4_POWER_MANAGEMENT_CTRL);
-+	writel(regval, emif4 + EMIF4_POWER_MANAGEMENT_CTRL_SHADOW);
- 
- 	/* Set the DDR refresh rate control register */
- 	regval = (EMIF4_REFRESH_RATE | EMIF4_INITREF_DIS);
--	writel(regval, &emif4_base->sdram_refresh_ctrl);
--	writel(regval, &emif4_base->sdram_refresh_ctrl_shdw);
-+	writel(regval, emif4 + EMIF4_SDRAM_REF_CTRL);
-+	writel(regval, emif4 + EMIF4_SDRAM_REF_CTRL_SHADOW);
- 
- 	/* set the SDRAM configuration register */
- 	regval = (EMIF4_CFG_PGSIZE | EMIF4_CFG_EBANK |
-@@ -81,5 +81,5 @@ void am35xx_emif4_init(void)
- 		EMIF4_CFG_SDR_DRV | EMIF4_CFG_DDR_DIS_DLL |
- 		EMIF4_CFG_DDR2_DDQS | EMIF4_CFG_DDR_TERM |
- 		EMIF4_CFG_IBANK_POS | EMIF4_CFG_SDRAM_TYP);
--	writel(regval, &emif4_base->sdram_config);
-+	writel(regval, emif4 + EMIF4_SDRAM_CONFIG);
- }
-diff --git a/arch/arm/mach-omap/include/mach/emif4.h b/arch/arm/mach-omap/include/mach/emif4.h
-index 559443c9a6..06dabc5939 100644
---- a/arch/arm/mach-omap/include/mach/emif4.h
-+++ b/arch/arm/mach-omap/include/mach/emif4.h
-@@ -97,30 +97,6 @@
- #define EMIF4_DDR1_PWRDN_EN	(0x1 << 6)
- #define EMIF4_DDR1_READ_LAT	(0x6 << 0)
- 
--struct emif4 {
--	unsigned int emif_mod_id_rev;
--	unsigned int sdram_sts;
--	unsigned int sdram_config;
--	unsigned int res1;
--	unsigned int sdram_refresh_ctrl;
--	unsigned int sdram_refresh_ctrl_shdw;
--	unsigned int sdram_time1;
--	unsigned int sdram_time1_shdw;
--	unsigned int sdram_time2;
--	unsigned int sdram_time2_shdw;
--	unsigned int sdram_time3;
--	unsigned int sdram_time3_shdw;
--	unsigned char res2[8];
--	unsigned int sdram_pwr_mgmt;
--	unsigned int sdram_pwr_mgmt_shdw;
--	unsigned char res3[32];
--	unsigned int sdram_iodft_tlgc;
--	unsigned char res4[128];
--	unsigned int ddr_phyctrl1;
--	unsigned int ddr_phyctrl1_shdw;
--	unsigned int ddr_phyctrl2;
--};
--
- void am35xx_emif4_init(void);
- 
- #endif /* endif _EMIF_H_ */
++	return bound;
++}
 -- 
 2.32.0
 
