@@ -1,16 +1,16 @@
-Delivery-date: Tue, 07 Jun 2022 09:11:35 +0200
+Delivery-date: Tue, 07 Jun 2022 09:19:54 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nyTNH-0067Tx-Kz
-	for lore@lore.pengutronix.de; Tue, 07 Jun 2022 09:11:35 +0200
+	id 1nyTVK-0067sJ-U7
+	for lore@lore.pengutronix.de; Tue, 07 Jun 2022 09:19:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nyTNF-0002bG-Sp
-	for lore@pengutronix.de; Tue, 07 Jun 2022 09:11:34 +0200
+	id 1nyTVJ-0003kI-KN
+	for lore@pengutronix.de; Tue, 07 Jun 2022 09:19:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,35 +18,35 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=xiwZvz1TLNuLItyUU2S7au+OZXIg/sPdN9m1FZaQu+o=; b=4y6N+X9l5S4KnjrRmqY+YkK38O
-	mfXronGebUbFiMeCvaXkLJpp5xZ4UmDFIpMSFPFjSnidoMdB2Gx3ihD0Pb7Xv/917PJJIy6+22Rqf
-	orQ59jcJaha+WdInp8NmmsvYDGBAYdnF9kao1tOjwVRM5YyxAhHvQH22mKFV+6ytXac1MTomYU4Wq
-	V/TJoiuHU5Au1bnmpIeAiW26Gx/YndGc6w98i6ca0e2OwM0c5pMWVu/V9QnQZOhMyhYDaJO6T5y2P
-	yyXLIj4lXn6b/5/vN2RbxG54IKyGfdhs3eebf/OIzonwAFYALl85OgG0dolFE40qrA2hDv4zf2GBx
-	YtsO4tsA==;
+	bh=5ddYG3rEG8ykQ+LRXbSeWLGNjIWOoZwKYeJrr0A/v14=; b=kE19yPJpk5VhB3zn++8pdAkGyk
+	IXDh0TG49OTm9vhvwM+K3Pys97R5BZ6WjM//CbjMncFCN8u89hcWPsT1yKpndgxpbpNQ9WgzKkctS
+	83BHgw54NYi10UG9j7SW1g5XXZrPnaDUXNS2F0BAeWvaxSf3McnC6pQftXULhcoyvStMbVUGHjxbu
+	e46c8LehfIt11CxmPLFwTNqE2gWPvM/zIbbtl6GeY7zNJ9tOu98VP8aJfRrtDwBPr9loQ1YWNoNXH
+	mhzaBj0veOuteR4NjzUZz/OI9mqgeTEzcEnTErepxsJEV1+j3mCkwnVDBaQCM53+yWCPkYFNfQRcx
+	746huPIg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nyTLy-005LKJ-Vd; Tue, 07 Jun 2022 07:10:15 +0000
+	id 1nyTTZ-005OjL-Jz; Tue, 07 Jun 2022 07:18:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nyTLj-005LFy-G8
-	for barebox@lists.infradead.org; Tue, 07 Jun 2022 07:10:01 +0000
+	id 1nyTTS-005Ohw-Vv
+	for barebox@lists.infradead.org; Tue, 07 Jun 2022 07:18:00 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1nyTLh-0001xf-Ub; Tue, 07 Jun 2022 09:09:57 +0200
+	id 1nyTTR-0003bW-Ke; Tue, 07 Jun 2022 09:17:57 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1nyTLh-00009J-Lk; Tue, 07 Jun 2022 09:09:57 +0200
-Date: Tue, 7 Jun 2022 09:09:57 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	id 1nyTTR-0000ZX-4L; Tue, 07 Jun 2022 09:17:57 +0200
+Date: Tue, 7 Jun 2022 09:17:57 +0200
+To: Alexander Shiyan <eagle.alexander923@gmail.com>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220607070957.GL1615@pengutronix.de>
-References: <20220603072612.1580380-1-a.fatoum@pengutronix.de>
+Message-ID: <20220607071757.GM1615@pengutronix.de>
+References: <20220606064034.9568-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220603072612.1580380-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220606064034.9568-1-eagle.alexander923@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220607_000959_642706_5F6D4588 
-X-CRM114-Status: GOOD (  24.69  )
+X-CRM114-CacheID: sfid-20220607_001759_075109_E4BDDD75 
+X-CRM114-Status: GOOD (  23.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,78 +79,55 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM64/RISC-V: booti: support global.bootm.image.loadaddr
+Subject: Re: [PATCH] ARM: OMAP: syslib: Optimize wait_on_value() function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jun 03, 2022 at 09:26:12AM +0200, Ahmad Fatoum wrote:
-> So far $global.bootm.image.loadaddr was ignored. Fix this, so user code
-> may explicitly decide placement if needed. barebox will still sanity
-> check the address and align it if necessary, but won't go below it.
+On Mon, Jun 06, 2022 at 09:40:34AM +0300, Alexander Shiyan wrote:
+> Saves up to 8 bytes in THUMB mode.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 > ---
->  common/booti.c | 29 +++++++++++++++++++++++------
->  1 file changed, 23 insertions(+), 6 deletions(-)
+>  arch/arm/mach-omap/syslib.c | 15 ++++++---------
+>  1 file changed, 6 insertions(+), 9 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/booti.c b/common/booti.c
-> index a2d63d8c3188..fbf0d8008443 100644
-> --- a/common/booti.c
-> +++ b/common/booti.c
-> @@ -6,11 +6,30 @@
->  #include <bootm.h>
->  #include <linux/sizes.h>
->  
-> +static unsigned long get_kernel_address(unsigned long os_address,
-> +					unsigned long text_offset)
-> +{
-> +	resource_size_t start, end;
-> +	int ret;
-> +
-> +	if (os_address == UIMAGE_SOME_ADDRESS) {
-> +		ret = memory_bank_first_find_space(&start, &end);
-> +		if (ret)
-> +			return UIMAGE_INVALID_ADDRESS;
-> +
-> +		return ALIGN(start, SZ_2M) + text_offset;
-> +	}
-> +
-> +	if (os_address >= text_offset && IS_ALIGNED(os_address - text_offset, SZ_2M))
-> +		return os_address;
-> +
-> +	return ALIGN(os_address, SZ_2M) + text_offset;
-> +}
-> +
->  void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
+> diff --git a/arch/arm/mach-omap/syslib.c b/arch/arm/mach-omap/syslib.c
+> index 42da348c5a..488f0ab859 100644
+> --- a/arch/arm/mach-omap/syslib.c
+> +++ b/arch/arm/mach-omap/syslib.c
+> @@ -52,19 +52,16 @@ void sdelay(unsigned long loops)
+>   * @param[in] read_addr  address to read from
+>   * @param[in] bound max iterations
+>   *
+> - * @return 1 if match_value is found, else if bound iterations reached,
+> + * @return non zero if match_value is found, else if bound iterations reached,
+>   *         returns 0
+>   */
+>  u32 wait_on_value(u32 read_bit_mask, u32 match_value, u32 read_addr, u32 bound)
 >  {
->  	const void *kernel_header =
->  			data->os_fit ? data->fit_kernel : data->os_header;
-> -	resource_size_t start, end;
->  	unsigned long text_offset, image_size, devicetree, kernel;
->  	unsigned long image_end;
->  	int ret;
-> @@ -19,11 +38,9 @@ void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
->  	text_offset = le64_to_cpup(kernel_header + 8);
->  	image_size = le64_to_cpup(kernel_header + 16);
+> -	u32 i = 0, val;
+>  	do {
+> -		++i;
+> -		val = readl(read_addr) & read_bit_mask;
+> +		u32 val = readl(read_addr) & read_bit_mask;
+>  		if (val == match_value)
+> -			return 1;
+> -		if (i == bound)
+> -			return 0;
+> -	} while (1);
+> -}
+> +			break;
+> +	} while (--bound);
 >  
-> -	ret = memory_bank_first_find_space(&start, &end);
-> -	if (ret)
-> -		return ERR_PTR(ret);
-> -
-> -	kernel = ALIGN(start, SZ_2M) + text_offset;
-> +	kernel = get_kernel_address(data->os_address, text_offset);
-> +	if (kernel == UIMAGE_INVALID_ADDRESS)
-> +		return ERR_PTR(-ENOENT);
->  
->  	ret = bootm_load_os(data, kernel);
->  	if (ret)
+> +	return bound;
+> +}
 > -- 
-> 2.30.2
+> 2.32.0
 > 
 > 
 > _______________________________________________
