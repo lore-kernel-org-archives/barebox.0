@@ -1,16 +1,16 @@
-Delivery-date: Thu, 09 Jun 2022 11:04:45 +0200
+Delivery-date: Thu, 09 Jun 2022 11:15:41 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzE5t-008aiL-35
-	for lore@lore.pengutronix.de; Thu, 09 Jun 2022 11:04:45 +0200
+	id 1nzEGT-008bnY-8K
+	for lore@lore.pengutronix.de; Thu, 09 Jun 2022 11:15:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzE5q-0006cs-FS
-	for lore@pengutronix.de; Thu, 09 Jun 2022 11:04:44 +0200
+	id 1nzEGS-0008LH-3h
+	for lore@pengutronix.de; Thu, 09 Jun 2022 11:15:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
@@ -18,35 +18,36 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Owner;
-	bh=UjIrkK1urzdUkLQEaRcgOm088BJHNvfhZH5OKwRS8X4=; b=BQgfPghudz7lC2AZlEf9BX0Li0
-	YwAopyVuPpn4DCd2wTzy8zoUkcGMflhe5OmlwMzBEo/WNavlhyxyejr/mo4miyIgmCuJGXe3hVtT2
-	47LaOFIRfSPOA8BOio9E6mKt1zchg3JWk/i/6ptnaqtI6wunMzVjfABQbcBh/gWNkihK2oHSwIVvf
-	AWYF/x9pCocttBGAsMfkASYIjGvSxepPyAYh0jR02V8kIwm8PBIOI4ltEA01FuCirtEmzY2GzLP0H
-	MJg/vW5gmiZMkALw133qyVNUQKnRRl0jKSLh4ofHbhX8/mPT/RCQ4m/ngRMJD3hvUxOOZ2kO7DEcY
-	tTG5zo1w==;
+	bh=G7H7zI23+/PcDzFXrv01zoxEfNmEwLrA1DnTJ1Caf+Q=; b=Jehil7BKryi2fNxV7KU35yfAh0
+	82qRwyX/1OjHHQjTcVSZ9Vzg/Lkrq6bQ1XXjvWi6/CcfPMjq4TBUiMxi86ykzRt3d2Dn50IBePOuP
+	ytu6c7OT0i6B6/3HTtWhO46eVlFe1AlOMXq2vfkAWLyQZdXApoLrNWtZfi/72hUuowBUG1kZs3AzB
+	esp7HpBVBsnL9UdnB6WWwGAJmvCrPcnRBygSvdMHsKizaVs1RI+cj4ry+zb9ipZOM6iF6+d9X4VuD
+	0V9wvRhiby5OBXLumi9ZGmaew8UNhlZpLgOuwRESbbormD2PlrnXNZ9zgHPaUGr0HD7ywrl2MKUgS
+	DUY9mwLg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzE4M-000VQx-Ov; Thu, 09 Jun 2022 09:03:11 +0000
+	id 1nzEFB-000aft-AL; Thu, 09 Jun 2022 09:14:21 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzDxu-000S3y-BR
-	for barebox@lists.infradead.org; Thu, 09 Jun 2022 08:56:31 +0000
+	id 1nzEF7-000aet-FK
+	for barebox@lists.infradead.org; Thu, 09 Jun 2022 09:14:18 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1nzDxs-0005J9-Sb; Thu, 09 Jun 2022 10:56:28 +0200
+	id 1nzEF5-00088E-IL; Thu, 09 Jun 2022 11:14:15 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1nzDxs-00027j-Ja; Thu, 09 Jun 2022 10:56:28 +0200
-Date: Thu, 9 Jun 2022 10:56:28 +0200
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220609085628.GK1615@pengutronix.de>
-References: <20220609075124.16925-1-eagle.alexander923@gmail.com>
+	id 1nzEF5-0003o2-9Y; Thu, 09 Jun 2022 11:14:15 +0200
+Date: Thu, 9 Jun 2022 11:14:15 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, rcz@pengutronix.de
+Message-ID: <20220609091415.GL1615@pengutronix.de>
+References: <20220609054342.661505-1-a.fatoum@pengutronix.de>
+ <20220609054342.661505-4-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20220609075124.16925-1-eagle.alexander923@gmail.com>
+In-Reply-To: <20220609054342.661505-4-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +55,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220609_015630_437806_BC22F495 
-X-CRM114-Status: GOOD (  20.85  )
+X-CRM114-CacheID: sfid-20220609_021417_556635_005ADE59 
+X-CRM114-Status: GOOD (  16.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,52 +81,29 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] serial: Kconfig: Remove
- DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS option
+Subject: Re: [PATCH 3/4] of: add of_get_reserve_map stub for !CONFIG_OFTREE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Jun 09, 2022 at 10:51:24AM +0300, Alexander Shiyan wrote:
-> The DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS Kconfig option does nothing,
-> so let's remove it.
+On Thu, Jun 09, 2022 at 07:43:41AM +0200, Ahmad Fatoum wrote:
+> From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > 
-> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+> This allows us to unconditionally include of.h in files which did not
+> require CONFIG_OFTREE, required for the MMU code in later patches.
+> 
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/serial/Kconfig | 7 -------
->  1 file changed, 7 deletions(-)
+> Compared with Rouven's v2, give extern declaration an extern
+> in front like functions around it. Move static inline stub
+> to top of #else for symmetry.
+> ---
+>  include/of.h | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 
-Applied, thanks
+Applied this patch only.
 
 Sascha
-
-> 
-> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-> index 9d4a534580..6fda32d44c 100644
-> --- a/drivers/serial/Kconfig
-> +++ b/drivers/serial/Kconfig
-> @@ -92,13 +92,6 @@ config DRIVER_SERIAL_ATMEL
->  	default y
->  	bool "Atmel serial driver"
->  
-> -config DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
-> -	bool "OMAP Extensions for NS16550"
-> -	depends on DRIVER_SERIAL_NS16550
-> -	depends on ARCH_OMAP
-> -	help
-> -	  Say Y here if you are using OMAP extensions to NS16550
-> -
->  config DRIVER_SERIAL_NS16550_PCI
->  	depends on DRIVER_SERIAL_NS16550
->  	depends on PCI
-> -- 
-> 2.32.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
