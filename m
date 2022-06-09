@@ -1,59 +1,59 @@
-Delivery-date: Thu, 09 Jun 2022 08:02:16 +0200
+Delivery-date: Thu, 09 Jun 2022 08:02:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzBFI-008S6r-Cy
-	for lore@lore.pengutronix.de; Thu, 09 Jun 2022 08:02:16 +0200
+	id 1nzBFU-008S7h-UO
+	for lore@lore.pengutronix.de; Thu, 09 Jun 2022 08:02:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzBFG-0001Zd-GD
-	for lore@pengutronix.de; Thu, 09 Jun 2022 08:02:15 +0200
+	id 1nzBFS-0001gM-Qx
+	for lore@pengutronix.de; Thu, 09 Jun 2022 08:02:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To
-	:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=CubnfA+xMkYHnb4vnQnAUtqRAg7hHn8ZuDK7XN7S1Pw=; b=QLZHWt3c+4LWKN
-	41l592l2xVcXwjqsmvvwHAbC3Zv78/iEsLUI7rFrugcpRp6m8ICcUcDEWSVxJSAatVNbWZ/pA6uxr
-	foSpUu0t91/V+VsSlurrtWyu5I2poSzOkGJo3zVAvQWUCmafCg8PFrZkiopbvN5Bwv0eHa9LAWF5I
-	pPeK7WlHIC4Yv/BsDK3HUw6evKsocS1b14zCxyomYQ/omIPGQ4N2VxgRrP6Sv8TKKsQySPvrMvK6Q
-	uipk3XfkTM5tak4UwU/T+NAOn7oxXGe5HgWc0n2H2TMHjpxp+tD5QwEqL9ICSdNTpA17z0A1Kf7g1
-	Wf5owrNaNusWcfKw+l7Q==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=xrDXBEG7kLM7EDbneQlLp9JsiAam6ay5itZ6xawWSEw=; b=O4pgJQ7rE7gjAG
+	My60tB74aWRO0m0dIdzvli66SBQPjcBQpi+6eI3RXR6UIxYuavKrJTgScyeQhZdlwGlw1uonQKLFK
+	wkHF0dBiHZcIMtSF4dJWgWqsUI4t7cKlYg+4s3qMh8SSspeR1MTRkbdn36VSdmwv5Qz8J9YFRSdDR
+	XXZk8+UjbJUIvwFllXHWPSZ4vRKLgNxda2glm6kSbNDbsxBkJqYZ+BMJJR96+1Hr48GRjD6S2LaE5
+	GrLFsNCpkFvrAkfBWOb4Ef5qIxu/nOgmsp2h69cU2JS0+uFrBvFrO04ppezDv68JIoCAsNo3jdgNo
+	hiXdzYvPd4dXma+nMPAQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzBDi-00Gvk6-EQ; Thu, 09 Jun 2022 06:00:38 +0000
+	id 1nzBDs-00Gvoj-29; Thu, 09 Jun 2022 06:00:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzBCa-00Gv02-Ko
+	id 1nzBCb-00Gv0U-0v
 	for barebox@lists.infradead.org; Thu, 09 Jun 2022 05:59:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1nzBCZ-0008Hs-FK
-	for barebox@lists.infradead.org; Thu, 09 Jun 2022 07:59:27 +0200
+	id 1nzBCZ-0008IB-Or; Thu, 09 Jun 2022 07:59:27 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1nzBCa-007K9c-16
-	for barebox@lists.infradead.org; Thu, 09 Jun 2022 07:59:26 +0200
+	id 1nzBCa-007K9p-8y; Thu, 09 Jun 2022 07:59:26 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1nzBCV-002nZR-8H
-	for barebox@lists.infradead.org; Thu, 09 Jun 2022 07:59:23 +0200
+	id 1nzBCV-002na3-Cr; Thu, 09 Jun 2022 07:59:23 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu,  9 Jun 2022 07:59:01 +0200
-Message-Id: <20220609055922.667016-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu,  9 Jun 2022 07:59:14 +0200
+Message-Id: <20220609055922.667016-14-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220609055922.667016-1-a.fatoum@pengutronix.de>
+References: <20220609055922.667016-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220608_225928_740189_8B5742DE 
-X-CRM114-Status: GOOD (  17.18  )
+X-CRM114-CacheID: sfid-20220608_225929_090370_9511C4D4 
+X-CRM114-Status: GOOD (  13.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,8 +65,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -78,98 +78,147 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 00/21] ARM: rpi: add basic Raspberry Pi 4 support
+Subject: [PATCH v2 13/21] ARM: rpi: add Raspberry Pi 3 64-bit build support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SnVzdCBiYXNpYyBzdXBwb3J0LCBzbyB3ZSBnZXQgYSBzaGVsbCBvbiBtaW5pLXVhcnQgYW5kIFNE
-CndvcmtpbmcgYW5kIGNhbiBib290IGEgTGludXgga2VybmVsIHdpdGggYWxsIGNvcmVzIHVzYWJs
-ZS4KTmVlZHMgbW9yZSB3b3JrIGZvciBVU0IgYW5kIEV0aGVybmV0LCBidXQgSSdsbCBsZWF2ZSB0
-aGF0CnRvIG90aGVycyBub3cgdGhhdCB0aGUgaW5pdGlhbCBodXJkbGUgaXMgb3ZlcmNvbWUuCgpJ
-IHRlc3RlZCB0aGlzIHNlcmllcyBvbiBSYXNwYmVycnkgUGkgM2IgKGJvdGggMzItYml0IGFuZCBu
-ZXdseQphZGRlZCA2NC1iaXQgc3VwcG9ydCkgYW5kIFJhc3BiZXJyeSBQaSA0YiAoYm90aCAzMi82
-NC1iaXQpLgoKdjEgLT4gdjI6CiAgLSBhZGQgbmV3IGNvbW1vbiBiYXJlYm94LXJhc3BiZXJyeS1w
-aS5pbWcgdGhhdCBpbmNsdWRlcyBhbGwKICAgIGVuYWJsZWQgRFRzLiBUaGUgb2xkIGFwcHJvYWNo
-IHdpdGggYmFyZWJveC1kdC0ybmQuaW1nIHByb3ZlZAogICAgaW5hZGVxdWF0ZSwgYmVjYXVzZSBW
-aWRlb0NvcmUgYXBwbGllZCBvdmVybGF5cyB0byBiYXJlYm94IERULAogICAgd2hlbiB0aGV5IHdl
-cmUgbmVlZGVkIGZvciB0aGUga2VybmVsIGFuZCBpdCBtYWRlIHN1cHBvcnQKICAgIGZvciBSYXNw
-YmVycnkgUGkga2VybmVsICh3aXRoIGRpZmZlcmVudCBiaW5kaW5ncykgaGFyZGVyLgogIC0gVXNl
-IG1haWxib3ggaW4gUEJMIHRvIGRldGVybWluZSB3aGljaCBEVCB0byB1c2UKICAtIFVzZSBjb21w
-cmVzc2VkIERUQnMKICAtIGZpeCBicmVha2FnZSBmb3IgZXhpc3RpbmcgNjQtYml0IHBsYXRmb3Jt
-cyBkdWUgdG8KICAgIGhvdyBDUFUvU1lTX1NVUFBPUlRTXzY0QklUX0tFUk5FTCB3YXMgbWlzaGFu
-ZGxlZAogIC0gZml4IC9lbnYvYm9vdC9ycGkgZm9yIDY0LWJpdAogIC0gcmVwbGFjZSBuczE2NTUw
-IGRyaXZlciBoYWNrIHdpdGggRFQgaGFjawoKQm9vdCBsb2c6CgogID5EZWVwIHByb2JlIHN1cHBv
-cnRlZCBkdWUgdG8gcmFzcGJlcnJ5cGksNC1tb2RlbC1iCiAgU3dpdGNoIHRvIGNvbnNvbGUgW2Nz
-MF0KICAKICAKICBiYXJlYm94IDIwMjIuMDUuMC0wMDE1Mi1nNjI4ZGEzMTQ5M2U0ICMxNCBXZWQg
-SnVuIDggMjI6MzU6MDcgQ0VTVCAyMDIyCiAgCiAgCiAgQm9hcmQ6IFJhc3BiZXJyeSBQaSA0IE1v
-ZGVsIEIKICBEZWVwIHByb2JlIHN1cHBvcnRlZCBkdWUgdG8gcmFzcGJlcnJ5cGksNC1tb2RlbC1i
-CiAgcmVzZXJ2ZWQtbWVtb3J5OiByZWdpb24gL21lbXJlc2VydmUgMHgwMDAwMDAwMC0weDAwMDAw
-ZmZmCiAgV0FSTklORzogZHdjMiBmZTk4MDAwMC51c2JAN2U5ODAwMDAub2Y6IGR3YzJfY29yZV9y
-ZXNldDogVGltZW91dCEKICBXYWl0aW5nIGZvciBDb3JlIFNvZnQgUmVzZXQKICBFUlJPUjogZHdj
-MiBmZTk4MDAwMC51c2JAN2U5ODAwMDAub2Y6IHByb2JlIGZhaWxlZDogQ29ubmVjdGlvbiB0aW1l
-ZCBvdXQKICBXQVJOSU5HOiBiY20yODM1X21jaSBmZTM0MDAwMC5tbWNAN2UzNDAwMDAub2Y6IEZh
-aWxlZCB0byBnZXQgJ3ZtbWMnCiAgcmVndWxhdG9yIChpZ25vcmVkKS4KICBiY20yODM1X21jaSBm
-ZTM0MDAwMC5tbWNAN2UzNDAwMDAub2Y6IHJlZ2lzdGVyZWQgYXMgbWNpMAogIG1hbGxvYyBzcGFj
-ZTogMHgxZDg3ZjFlMCAtPiAweDNiMGZlM2JmIChzaXplIDQ3Mi41IE1pQikKICBtY2kwOiBkZXRl
-Y3RlZCBTRCBjYXJkIHZlcnNpb24gMi4wCiAgbWNpMDogcmVnaXN0ZXJlZCBkaXNrMAogIGVudmly
-b25tZW50IGxvYWQgL2Jvb3QvYmFyZWJveC5lbnY6IE5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnkK
-ICBNYXliZSB5b3UgaGF2ZSB0byBjcmVhdGUgdGhlIHBhcnRpdGlvbi4KCkFobWFkIEZhdG91bSAo
-MjApOgogIEFSTTY0OiBhc206IGltcGxlbWVudCByZWFkX2NwdWlkX2lkKCkKICBkbWE6IGFkZCBk
-bWFfc3luYyBub3Agc3R1YnMgZm9yIFBCTAogIEFSTTogcnBpOiBtb3ZlIGJjbTI4MzVfYWRkX2Rl
-dmljZV9zZHJhbSgpIGludG8gaGVhZGVyCiAgQVJNOiBycGk6IHN1cHBvcnQgUEJMIHVzZSBvZiBt
-Ym94CiAgQVJNOiBycGk6IHNwbGl0IG91dCBtYm94IGhlbHBlcnMgdG8gc2hhcmUgY29kZSB3aXRo
-IFBCTAogIEFSTTogcnBpOiBzd2l0Y2ggdG8gQVJNX1VTRV9DT01QUkVTU0VEX0RUQgogIEFSTTog
-cnBpOiBhZGQgZ2VuZXJpYyBSYXNwYmVycnkgUGkgaW1hZ2UKICBBUk06IHJwaTogc3VwcG9ydCBG
-RFQgaW4geDAgZm9yIDY0Yml0IGNvbmZpZ3VyYXRpb25zCiAgc2VyaWFsOiBuczE2NTUwOiBycGk6
-IHJlbW92ZSB1bmdhdGluZyBub3cgZG9uZSBieSBwcm9wZXIgY2xrIGRyaXZlcgogIEFSTTogY3B1
-OiBwcmV2ZW50IHJlY3Vyc2l2ZSBkZXBlbmRlbmNpZXMgdmlhIENQVV9TVVBQT1JUU182NEJJVF9L
-RVJORUwKICBBUk06IGNwdTogcmVtb3ZlIHVubmVjZXNzYXJ5IENPTkZJR19TWVNfU1VQUE9SVFNf
-NjRCSVRfS0VSTkVMCiAgQVJNOiBjcHU6IHJlbW92ZSB1bnVzZWQgU1lTX1NVUFBPUlRTXzMyQklU
-X0tFUk5FTAogIEFSTTogcnBpOiBhZGQgUmFzcGJlcnJ5IFBpIDMgNjQtYml0IGJ1aWxkIHN1cHBv
-cnQKICBBUk06IHJwaTogcnBpMzogZGlzYWxsb3cgTU1VX0VBUkxZICYmIDY0QklUCiAgY2xrOiBy
-cGk6IGFkZCBSYXNwYmVycnkgUGkgNCBzdXBwb3J0CiAgY2xvY2tzb3VyY2U6IGJjbTI4MzU6IGJ1
-bXAgYmVsb3cgYXJjaGl0ZWNlZCB0aW1lciBmb3IgQUFyY2g2NAogIEFSTTogcnBpOiBhZGQgUmFz
-cGJlcnJ5IFBpIDQgc3VwcG9ydAogIEFSTTogcnBpOiBhZGQgZGVidWdfbGwgc3VwcG9ydCBmb3Ig
-UmFzcGJlcnJ5IFBpIDQKICBkb2M6IGJjbTI4M3g6IHJlZmVyZW5jZSBuZXdlciBmaXJtd2FyZQog
-IEFSTTogcnBpOiB1c2UgY29ycmVjdCBrZXJuZWw4LmltZyBhcyBuYW1lIGZvciA2NC1iaXQKClV3
-ZSBLbGVpbmUtS8O2bmlnICgxKToKICBtY2k6IGJjbTI4MzU6IGFkZCBiY20yNzExLWVtbWMyIChS
-cGk0KSBzdXBwb3J0CgogRG9jdW1lbnRhdGlvbi9ib2FyZHMvYmNtMjgzNS5yc3QgICAgICAgICAg
-ICAgIHwgIDE3ICsrLQogYXJjaC9hcm0vS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwgIDEwICstCiBhcmNoL2FybS9ib2FyZHMvcmFzcGJlcnJ5LXBpL01ha2VmaWxlICAgICAg
-ICAgfCAgIDEgKwogYXJjaC9hcm0vYm9hcmRzL3Jhc3BiZXJyeS1waS9sb3dsZXZlbC5jICAgICAg
-IHwgMTI5ICsrKysrKysrKysrKysrKy0tLQogYXJjaC9hcm0vYm9hcmRzL3Jhc3BiZXJyeS1waS9s
-b3dsZXZlbC5oICAgICAgIHwgICA1ICsKIGFyY2gvYXJtL2JvYXJkcy9yYXNwYmVycnktcGkvbWJv
-eC1oZWxwZXJzLmMgICB8ICA3MyArKysrKysrKysrCiBhcmNoL2FybS9ib2FyZHMvcmFzcGJlcnJ5
-LXBpL3JwaS1jb21tb24uYyAgICAgfCAxMjkgKysrKysrLS0tLS0tLS0tLS0tCiBhcmNoL2FybS9j
-b25maWdzL3JwaV92OGFfZGVmY29uZmlnICAgICAgICAgICAgfCAxMTEgKysrKysrKysrKysrKysr
-CiBhcmNoL2FybS9jcHUvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDcgLQog
-YXJjaC9hcm0vZHRzL01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsKIGFy
-Y2gvYXJtL2R0cy9iY20yNzExLXJwaS00LmR0cyAgICAgICAgICAgICAgICB8ICAxOCArKysKIGFy
-Y2gvYXJtL2luY2x1ZGUvYXNtL2NwdXR5cGUuaCAgICAgICAgICAgICAgICB8ICAyMiArKy0KIGFy
-Y2gvYXJtL2luY2x1ZGUvYXNtL3N5c3RlbV9pbmZvLmggICAgICAgICAgICB8ICAgNiArCiBhcmNo
-L2FybS9tYWNoLWJjbTI4M3gvS2NvbmZpZyAgICAgICAgICAgICAgICAgfCAgMjkgKysrLQogYXJj
-aC9hcm0vbWFjaC1iY20yODN4L01ha2VmaWxlICAgICAgICAgICAgICAgIHwgICAyICstCiBhcmNo
-L2FybS9tYWNoLWJjbTI4M3gvY29yZS5jICAgICAgICAgICAgICAgICAgfCAgNTcgKysrKy0tLS0K
-IGFyY2gvYXJtL21hY2gtYmNtMjgzeC9pbmNsdWRlL21hY2gvY29yZS5oICAgICB8ICAyMyArKy0t
-CiBhcmNoL2FybS9tYWNoLWJjbTI4M3gvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmggfCAgMjYgKysr
-KwogYXJjaC9hcm0vbWFjaC1iY20yODN4L2luY2x1ZGUvbWFjaC9tYm94LmggICAgIHwgICA0ICsK
-IGFyY2gvYXJtL21hY2gtYmNtMjgzeC9pbmNsdWRlL21hY2gvcGxhdGZvcm0uaCB8ICAgNSArLQog
-YXJjaC9hcm0vbWFjaC1iY20yODN4L21ib3guYyAgICAgICAgICAgICAgICAgIHwgIDI2ICsrLS0K
-IGFyY2gvYXJtL21hY2gtaW14L0tjb25maWcgICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQog
-YXJjaC9hcm0vbWFjaC1sYXllcnNjYXBlL0tjb25maWcgICAgICAgICAgICAgIHwgICAyICstCiBh
-cmNoL2FybS9tYWNoLXJvY2tjaGlwL0tjb25maWcgICAgICAgICAgICAgICAgfCAgIDIgKy0KIGNv
-bW1vbi9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNyArCiBkcml2
-ZXJzL2Nsay9jbGstcnBpLmMgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNDIgKysrKy0tCiBk
-cml2ZXJzL2Nsb2Nrc291cmNlL2JjbTI4MzUuYyAgICAgICAgICAgICAgICAgfCAgIDMgKy0KIGRy
-aXZlcnMvbWNpL21jaS1iY20yODM1LmMgICAgICAgICAgICAgICAgICAgICB8ICAgNCArLQogZHJp
-dmVycy9zZXJpYWwvc2VyaWFsX25zMTY1NTAuYyAgICAgICAgICAgICAgIHwgICA0IC0KIGltYWdl
-cy9NYWtlZmlsZS5iY20yODN4ICAgICAgICAgICAgICAgICAgICAgICB8ICAxMCArKwogaW5jbHVk
-ZS9kbWEuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDE5ICsrKwogMzEgZmls
-ZXMgY2hhbmdlZCwgNTkzIGluc2VydGlvbnMoKyksIDIwMyBkZWxldGlvbnMoLSkKIGNyZWF0ZSBt
-b2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvcmFzcGJlcnJ5LXBpL21ib3gtaGVscGVycy5jCiBj
-cmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vY29uZmlncy9ycGlfdjhhX2RlZmNvbmZpZwogY3Jl
-YXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2R0cy9iY20yNzExLXJwaS00LmR0cwoKLS0gCjIuMzAu
-MgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Have the subarch select the needed symbols to display a 32-bit/64-bit
+menu and hide the boards that aren't capable of 64-bit when
+CONFIG_64BIT=y. Building for 64-bit throws some warning about mismatched
+type sizes, so fix those as well.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/Kconfig                              |  2 ++
+ arch/arm/mach-bcm283x/Kconfig                 | 21 +++++++++++++++----
+ arch/arm/mach-bcm283x/include/mach/platform.h |  4 ++--
+ arch/arm/mach-bcm283x/mbox.c                  |  2 +-
+ images/Makefile.bcm283x                       |  6 ++++++
+ 5 files changed, 28 insertions(+), 7 deletions(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 03a7e4b6600c..59fce0c601b4 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -60,6 +60,8 @@ config ARCH_BCM283X
+ 	select OFTREE
+ 	select OFDEVICE
+ 	select HAVE_PBL_MULTI_IMAGES
++	select CPU_SUPPORTS_32BIT_KERNEL
++	select CPU_SUPPORTS_64BIT_KERNEL
+ 
+ config ARCH_CLPS711X
+ 	bool "Cirrus Logic EP711x/EP721x/EP731x"
+diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
+index 5be236a68419..af34d1c973e1 100644
+--- a/arch/arm/mach-bcm283x/Kconfig
++++ b/arch/arm/mach-bcm283x/Kconfig
+@@ -10,29 +10,42 @@ config MACH_RPI_COMMON
+ 	bool
+ 	select ARM_USE_COMPRESSED_DTB
+ 
++config MACH_RPI_AARCH_32_64
++	select MACH_RPI_COMMON
++	select CPU_V7 if 32BIT
++	select ARM_SECURE_MONITOR if 32BIT
++	select CPU_V8 if 64BIT
++	select BOARD_ARM_GENERIC_DT if 64BIT
++	bool
++	help
++	  Select this from CPUs that support both AArch32 and AArch64
++	  execution modes. barebox can be compiled for only one of
++	  these states, depending on the value of
++	  CONFIG_32BIT/CONFIG_64BIT.
++
+ menu "select Broadcom BCM283X boards to be built"
+ 
+ config MACH_RPI
+ 	bool "RaspberryPi (BCM2835/ARM1176JZF-S)"
++	depends on 32BIT
+ 	select CPU_V6
+ 	select MACH_RPI_COMMON
+ 
+ config MACH_RPI2
+ 	bool "RaspberryPi 2 (BCM2836/CORTEX-A7)"
++	depends on 32BIT
+ 	select CPU_V7
+ 	select MACH_RPI_COMMON
+ 
+ config MACH_RPI3
+ 	bool "RaspberryPi 3 (BCM2837/CORTEX-A53)"
+-	select CPU_V7
++	select MACH_RPI_AARCH_32_64
+ 	select MACH_RPI_COMMON
+-	select ARM_SECURE_MONITOR
+ 
+ config MACH_RPI_CM3
+ 	bool "RaspberryPi Compute Module 3 (BCM2837/CORTEX-A53)"
+-	select CPU_V7
++	select MACH_RPI_AARCH_32_64
+ 	select MACH_RPI_COMMON
+-	select ARM_SECURE_MONITOR
+ 
+ endmenu
+ 
+diff --git a/arch/arm/mach-bcm283x/include/mach/platform.h b/arch/arm/mach-bcm283x/include/mach/platform.h
+index 310f2463f2e5..6917e1f345d7 100644
+--- a/arch/arm/mach-bcm283x/include/mach/platform.h
++++ b/arch/arm/mach-bcm283x/include/mach/platform.h
+@@ -31,9 +31,9 @@
+ #define BCM2835_CACHELINE_SIZE	64
+ 
+ #define BCM2835_PL011_BASE 0x20201000
+-#define BCM2836_PL011_BASE 0x3f201000
++#define BCM2836_PL011_BASE 0x3f201000UL
+ #define BCM2835_MINIUART_BASE 0x20215040
+-#define BCM2836_MINIUART_BASE 0x3f215040
++#define BCM2836_MINIUART_BASE 0x3f215040UL
+ 
+ #endif
+ 
+diff --git a/arch/arm/mach-bcm283x/mbox.c b/arch/arm/mach-bcm283x/mbox.c
+index b77065ab305f..4959a1a652ec 100644
+--- a/arch/arm/mach-bcm283x/mbox.c
++++ b/arch/arm/mach-bcm283x/mbox.c
+@@ -151,7 +151,7 @@ int bcm2835_mbox_call_prop(u32 chan, struct bcm2835_mbox_hdr *buffer)
+ 	ret = bcm2835_mbox_call_raw(chan, buffer, &rbuffer);
+ 	if (ret)
+ 		return ret;
+-	if (rbuffer != (u32)buffer) {
++	if (rbuffer != (uintptr_t)buffer) {
+ 		pr_err("mbox: Response buffer mismatch\n");
+ 		return -EIO;
+ 	}
+diff --git a/images/Makefile.bcm283x b/images/Makefile.bcm283x
+index b591cd58f563..f4ef7f447ccc 100644
+--- a/images/Makefile.bcm283x
++++ b/images/Makefile.bcm283x
+@@ -3,6 +3,10 @@
+ # barebox image generation Makefile for BCM283x images
+ #
+ 
++# New boards use board-dt-2nd.img as common binary
++# and have the videocore pass the correct DT.
++ifeq ($(CONFIG_32BIT),y)
++
+ pblb-$(CONFIG_MACH_RPI) += start_raspberry_pi1
+ FILE_barebox-raspberry-pi-1.img = start_raspberry_pi1.pblb
+ image-$(CONFIG_MACH_RPI) += barebox-raspberry-pi-1.img
+@@ -19,6 +23,8 @@ pblb-$(CONFIG_MACH_RPI_CM3) += start_raspberry_pi_cm3
+ FILE_barebox-raspberry-pi-cm3.img = start_raspberry_pi_cm3.pblb
+ image-$(CONFIG_MACH_RPI_CM3) += barebox-raspberry-pi-cm3.img
+ 
++endif
++
+ pblb-$(CONFIG_MACH_RPI_COMMON) += start_raspberry_pi_generic
+ FILE_barebox-raspberry-pi.img = start_raspberry_pi_generic.pblb
+ image-$(CONFIG_MACH_RPI_COMMON) += barebox-raspberry-pi.img
+-- 
+2.30.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
