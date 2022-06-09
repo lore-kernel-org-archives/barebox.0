@@ -1,60 +1,62 @@
-Delivery-date: Thu, 09 Jun 2022 15:17:17 +0200
+Delivery-date: Thu, 09 Jun 2022 16:00:17 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzI2H-008laz-AN
-	for lore@lore.pengutronix.de; Thu, 09 Jun 2022 15:17:17 +0200
+	id 1nzIht-008muO-HI
+	for lore@lore.pengutronix.de; Thu, 09 Jun 2022 16:00:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzI2F-0006Pa-B5
-	for lore@pengutronix.de; Thu, 09 Jun 2022 15:17:16 +0200
+	id 1nzIhs-0003wb-7G
+	for lore@pengutronix.de; Thu, 09 Jun 2022 16:00:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=L6tLZXASIYtRYv2KwGwsvUyme53Y7/0weRoEMFBqdZA=; b=ZbSyXmr5tTbhU1
-	MrDknOKO6bbZT17UGxoYXGkO9sNl7M6r9zGYuE3of+Knfat9loPKfBHPC7b3b/Y/E/DrDrxvSQ0Ip
-	j1Dh93ezv6EthVd+pWjsk1v2Hv+d3to0jbKQ/ez+wWlhDpN5oaPQkKJRLiOJOqe6eE2ctrYi2vgwb
-	iGKmYwlYeohw/wmuO74o+6H+A+HL3JSMW/ITLq60GZ9VzNgAqL+tRPC3iArrFo/k+e9dsLRI8amJB
-	/wa7Dket5LpwvXm5sUqoICk0AILfliC/uHgXB0MNMtUcHHqDKxyjUcjQn8Na+SeaEFlT3PNeRcz0H
-	sjEP5bIeUjuki3IEPCIw==;
+	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
+	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Owner;
+	bh=TZ4Dr1Ctr0j8el1GI13SMTlq9WBub+A0d4PJxvSbkbQ=; b=dOU+L/t2s8EX1JBgL0Ck3sWAg0
+	g+S+PrGVYJAdpM9WOV/3cJQhDUc/xmhgQ6g8VelmLkeJXWRuCYikdobspgNJXaReWjMSNwuBO+Ecc
+	BI3A4EQAbbhqMqQEhY4BHsFDVo+FDkg2isJtcFlxRHzUw8chAdrpVUwV+ndQ2803X6znMKUw39BsS
+	2x+Dj8D4jbfYnuKlqQ9BZod3aJUuhBYwnHXP6g56hzu6Z1cjfjt5VINywmL6STdSB8+mpfoLWsTjP
+	7awNlmN0cORa/pvalPMaN0vv3/EXJv+2uXYf83ywjkcU6CLWOKlWxB93p/TppOqxLu6wMhZ2EWMpP
+	nDUg53MQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzI0j-00249m-D9; Thu, 09 Jun 2022 13:15:42 +0000
+	id 1nzIgK-002MzJ-BR; Thu, 09 Jun 2022 13:58:40 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzHwV-0021WW-0c
-	for barebox@lists.infradead.org; Thu, 09 Jun 2022 13:11:20 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1nzIgF-002MuB-3z
+	for barebox@lists.infradead.org; Thu, 09 Jun 2022 13:58:36 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1nzHwT-00053K-NV; Thu, 09 Jun 2022 15:11:17 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1nzHwU-007OMs-Bg; Thu, 09 Jun 2022 15:11:17 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1nzHwR-00FBvm-Rt; Thu, 09 Jun 2022 15:11:15 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  9 Jun 2022 15:11:14 +0200
-Message-Id: <20220609131114.3620658-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220609130936.3616309-2-a.fatoum@pengutronix.de>
-References: <20220609130936.3616309-2-a.fatoum@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1nzIgB-0003lh-HT; Thu, 09 Jun 2022 15:58:31 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1nzIgB-0003VB-8m; Thu, 09 Jun 2022 15:58:31 +0200
+Date: Thu, 9 Jun 2022 15:58:31 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220609135831.GV1615@pengutronix.de>
+References: <20220609055922.667016-1-a.fatoum@pengutronix.de>
+ <20220609055922.667016-16-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20220609055922.667016-16-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220609_061119_093841_566DFF38 
-X-CRM114-Status: UNSURE (   8.40  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220609_065835_228432_2D77C585 
+X-CRM114-Status: GOOD (  30.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,32 +81,131 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] fixup! fastboot: bail if update handler couldn't be found for bbu-partition
+Subject: Re: [PATCH v2 15/21] clk: rpi: add Raspberry Pi 4 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-No longer used.
+On Thu, Jun 09, 2022 at 07:59:16AM +0200, Ahmad Fatoum wrote:
+> Our Raspberry Pi block driver is a hack, but it works well enough for
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/fastboot.c | 1 -
- 1 file changed, 1 deletion(-)
+s/block/clock?
 
-diff --git a/common/fastboot.c b/common/fastboot.c
-index a5cf04b39ecd..baa1851e7fb2 100644
---- a/common/fastboot.c
-+++ b/common/fastboot.c
-@@ -716,7 +716,6 @@ static void cb_flash(struct fastboot *fb, const char *cmd)
- 		goto out;
- 	}
- 
--copy:
- 	ret = copy_file(fb->tempname, filename, 1);
- 	if (ret)
- 		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL,
+Sascha
+
+> older Rpis and just needs one more clock to support the SD-Card on the
+> Raspberry Pi 4, so add that. In return, we remove bcm2835-cs, which we
+> won't use on Raspberry Pi 4, because we'll leverage the ARM architected
+> timer instead.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/mach-bcm283x/include/mach/mbox.h |  1 +
+>  drivers/clk/clk-rpi.c                     | 42 +++++++++++++++++------
+>  2 files changed, 32 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/arm/mach-bcm283x/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
+> index a9f06512bc23..46f9dfc9ea65 100644
+> --- a/arch/arm/mach-bcm283x/include/mach/mbox.h
+> +++ b/arch/arm/mach-bcm283x/include/mach/mbox.h
+> @@ -273,6 +273,7 @@ struct bcm2835_mbox_tag_set_power_state {
+>  #define BCM2835_MBOX_CLOCK_ID_SDRAM	8
+>  #define BCM2835_MBOX_CLOCK_ID_PIXEL	9
+>  #define BCM2835_MBOX_CLOCK_ID_PWM	10
+> +#define BCM2835_MBOX_CLOCK_ID_EMMC2	12
+>  
+>  struct bcm2835_mbox_tag_get_clock_rate {
+>  	struct bcm2835_mbox_tag_hdr tag_hdr;
+> diff --git a/drivers/clk/clk-rpi.c b/drivers/clk/clk-rpi.c
+> index 59ae8e59bac5..71badc04c0f0 100644
+> --- a/drivers/clk/clk-rpi.c
+> +++ b/drivers/clk/clk-rpi.c
+> @@ -40,10 +40,29 @@ static struct clk *rpi_register_firmware_clock(u32 clock_id, const char *name)
+>  	return clk_fixed(name, msg->get_clock_rate.body.resp.rate_hz);
+>  }
+>  
+> -static int bcm2835_cprman_probe(struct device_d *dev)
+> +static int bcm2835_cprman_init(struct device_d *dev)
+>  {
+>  	struct clk *clk_cs;
+>  
+> +	clk_cs = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
+> +	clk_register_clkdev(clk_cs, NULL, "bcm2835-cs");
+> +
+> +	return 0;
+> +}
+> +
+> +static int rpi_cprman_probe(struct device_d *dev)
+> +{
+> +	int (*init)(struct device_d *dev);
+> +
+> +	init = device_get_match_data(dev);
+> +	if (init) {
+> +		int ret;
+> +
+> +		ret = init(dev);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	clks[BCM2835_CLOCK_EMMC] =
+>  		rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_EMMC,
+>  					 "bcm2835_mci0");
+> @@ -56,12 +75,15 @@ static int bcm2835_cprman_probe(struct device_d *dev)
+>  	if (IS_ERR(clks[BCM2835_CLOCK_VPU]))
+>  		return PTR_ERR(clks[BCM2835_CLOCK_VPU]);
+>  
+> +	clks[BCM2711_CLOCK_EMMC2] =
+> +		rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_EMMC2,
+> +					 "bcm2711_emmc2");
+> +	if (IS_ERR(clks[BCM2711_CLOCK_EMMC2]))
+> +		return PTR_ERR(clks[BCM2711_CLOCK_EMMC2]);
+> +
+>  	clks[BCM2835_CLOCK_UART] = clk_fixed("uart0-pl0110", 48 * 1000 * 1000);
+>  	clk_register_clkdev(clks[BCM2835_CLOCK_UART], NULL, "uart0-pl0110");
+>  
+> -	clk_cs = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
+> -	clk_register_clkdev(clk_cs, NULL, "bcm2835-cs");
+> -
+>  	clk_data.clks = clks;
+>  	clk_data.clk_num = BCM2711_CLOCK_END;
+>  	of_clk_add_provider(dev->device_node, of_clk_src_onecell_get, &clk_data);
+> @@ -70,16 +92,14 @@ static int bcm2835_cprman_probe(struct device_d *dev)
+>  }
+>  
+>  static __maybe_unused struct of_device_id bcm2835_cprman_dt_ids[] = {
+> -	{
+> -		.compatible = "brcm,bcm2835-cprman",
+> -	}, {
+> -		/* sentinel */
+> -	}
+> +	{ .compatible = "brcm,bcm2835-cprman", .data = bcm2835_cprman_init },
+> +	{ .compatible = "brcm,bcm2711-cprman" },
+> +	{ /* sentinel */ }
+>  };
+>  
+>  static struct driver_d bcm2835_cprman_driver = {
+> -	.probe	= bcm2835_cprman_probe,
+> -	.name	= "bcm2835-cprman",
+> +	.probe	= rpi_cprman_probe,
+> +	.name	= "raspberrypi-cprman",
+>  	.of_compatible = DRV_OF_COMPAT(bcm2835_cprman_dt_ids),
+>  };
+>  core_platform_driver(bcm2835_cprman_driver);
+> -- 
+> 2.30.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
