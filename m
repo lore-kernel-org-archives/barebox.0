@@ -1,59 +1,59 @@
-Delivery-date: Thu, 09 Jun 2022 08:01:19 +0200
+Delivery-date: Thu, 09 Jun 2022 08:01:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzBEN-008S28-HY
-	for lore@lore.pengutronix.de; Thu, 09 Jun 2022 08:01:19 +0200
+	id 1nzBEX-008S2m-15
+	for lore@lore.pengutronix.de; Thu, 09 Jun 2022 08:01:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzBEK-0000l0-IF
-	for lore@pengutronix.de; Thu, 09 Jun 2022 08:01:18 +0200
+	id 1nzBET-00010f-M3
+	for lore@pengutronix.de; Thu, 09 Jun 2022 08:01:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=OJnqY9vqKbMyH4Tbu491lUIYrQ8Drb9GOOiXjCVMmy0=; b=CO3TcKBGRKiBcm
-	N6AeUQtF7w14XI6cvN6j7YXQE9yjiOx5t3CKhDFzn8MNfxF2kV9e8+7CgyXT/YyuQrtp2fxKdDijS
-	uG15kyDOen8H/2iSe8qL08dvDrYVjRo9MP6MPfXM086PSl93kppYMCNcGCP7GmcBKg8DwbTY0I9aA
-	lBilhm6UCJrudjaiAFxvZ2mGpGC9S1qH6Xd5ZQwoTGidA1gJPI72Er0zzQW3UkcwnYHnIiOf5WPd6
-	MMQxQuZ9/Mizd1aeiVyvklSDj/+mR1q1TeIhZHxtUkHePR4cgt7CuW/22dkIxxcwePoRX6/GdI/vR
-	5EsqMfwG4Zb4ANXRh7xg==;
+	List-Owner; bh=SM3AAct+mH/0wi9dKk1Oo1lcvsiCmHEyGgQjGJVOwBI=; b=fjoz4kxkQJZP8m
+	DuuxYC5w9EHAuVhFR49mJZnlUVwa/1qHS6W/HLfkUl4+vC2BManUhETCG+Faw9K47rJXkgUIwbNvh
+	+odQ1h+8pqi7RnONiSeqn2OKLuZ5Lvfse8LbblJc5fmtbbz7GIqnRvXhKC1h7hcv4OSiqp2DH3fA4
+	+Ct2zFUUfGU+5ruS+eAJHRuiQNv3aDbXquP2CG7fdGX17THlcSBMq+w2B9cX1Syo9awtNHKKUL9yW
+	+uDEzFGuOq+jbvi38N4bhAzYUBIlbOUq1xOA1EYHw3kR2Nq9QMp4eR03GB0wBE766xrt+bgpcprxr
+	KZBK+X0mo6IAZY+Qct7Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzBD1-00GvG1-Ke; Thu, 09 Jun 2022 05:59:55 +0000
+	id 1nzBD6-00GvJD-7k; Thu, 09 Jun 2022 06:00:00 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzBCa-00GuzR-Bq
+	id 1nzBCa-00Guyw-1x
 	for barebox@lists.infradead.org; Thu, 09 Jun 2022 05:59:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1nzBCZ-0008Hg-3q; Thu, 09 Jun 2022 07:59:27 +0200
+	id 1nzBCY-0008Gn-QN; Thu, 09 Jun 2022 07:59:26 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1nzBCZ-007K9R-MN; Thu, 09 Jun 2022 07:59:26 +0200
+	id 1nzBCZ-007K9J-BK; Thu, 09 Jun 2022 07:59:25 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1nzBCV-002nZu-C3; Thu, 09 Jun 2022 07:59:23 +0200
+	id 1nzBCV-002naL-EU; Thu, 09 Jun 2022 07:59:23 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  9 Jun 2022 07:59:11 +0200
-Message-Id: <20220609055922.667016-11-a.fatoum@pengutronix.de>
+Date: Thu,  9 Jun 2022 07:59:20 +0200
+Message-Id: <20220609055922.667016-20-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220609055922.667016-1-a.fatoum@pengutronix.de>
 References: <20220609055922.667016-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220608_225928_493199_CDF4F0D9 
-X-CRM114-Status: GOOD (  10.66  )
+X-CRM114-CacheID: sfid-20220608_225928_155221_F4423E81 
+X-CRM114-Status: GOOD (  11.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,94 +78,90 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 10/21] ARM: cpu: prevent recursive dependencies via CPU_SUPPORTS_64BIT_KERNEL
+Subject: [PATCH v2 19/21] ARM: rpi: add debug_ll support for Raspberry Pi 4
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-For ARM, CONFIG_CPU_SUPPORTS_64BIT_KERNEL's only function, along with
-CONFIG_SYS_SUPPORTS_64BIT_KERNEL is to control visibility of the 64BIT
-symbol. Select it from CPU_V8 is detrimental, because subarches may
-want to select CPU_SUPPORTS_64BIT_KERNEL unconditionally and select
-CPU_V8 only if 64BIT was chosen. This currently leads to a recursive
-dependency, so break this up. No functional change just yet.
+The mini uart (Pins 8/10) is the primary UART on the Raspberry Pi 4 and
+can be set up in firmware by specifying enable_uart=1 in the config.txt.
+
+Add a DEBUG_LL implementation to use this for early debugging.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/Kconfig                 | 2 ++
- arch/arm/cpu/Kconfig             | 1 -
- arch/arm/mach-imx/Kconfig        | 1 +
- arch/arm/mach-layerscape/Kconfig | 1 +
- arch/arm/mach-rockchip/Kconfig   | 1 +
- 5 files changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/mach-bcm283x/include/mach/debug_ll.h | 20 +++++++++++++++++++
+ arch/arm/mach-bcm283x/include/mach/platform.h |  1 +
+ common/Kconfig                                |  7 +++++++
+ 3 files changed, 28 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 8a1d75c19b65..215abd19b553 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -276,6 +276,7 @@ config ARCH_ZYNQMP
- 	select OFDEVICE
- 	select OFTREE
- 	select RELOCATABLE
-+	select CPU_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select HAS_MACB
+diff --git a/arch/arm/mach-bcm283x/include/mach/debug_ll.h b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
+index db23112aa07e..fdb63b4f5a40 100644
+--- a/arch/arm/mach-bcm283x/include/mach/debug_ll.h
++++ b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
+@@ -18,6 +18,7 @@
+ #define __MACH_BCM2835_DEBUG_LL_H__
  
-@@ -286,6 +287,7 @@ config ARCH_ARM64_VIRT
- 	select OFDEVICE
- 	select OFTREE
- 	select RELOCATABLE
-+	select CPU_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select ARM_AMBA
- 	select BOARD_ARM_VIRT
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index 0a493754a418..5639d1eeffc3 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -87,7 +87,6 @@ config CPU_V7
- config CPU_V8
- 	bool
- 	select CPU_64v8
--	select CPU_SUPPORTS_64BIT_KERNEL
- 	select ARM_EXCEPTIONS
- 	select GENERIC_FIND_NEXT_BIT
- 	select ARCH_HAS_STACK_DUMP
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 6b962dcf7e34..9b9f5a472ef9 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -177,6 +177,7 @@ config ARCH_IMX8M
- 	select CPU_V8
- 	select PINCTRL_IMX_IOMUX_V3
- 	select OFTREE
-+	select CPU_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select COMMON_CLK_OF_PROVIDER
- 	select ARCH_HAS_FEC_IMX
-diff --git a/arch/arm/mach-layerscape/Kconfig b/arch/arm/mach-layerscape/Kconfig
-index bdd7d0dbfe52..9ad58eba5575 100644
---- a/arch/arm/mach-layerscape/Kconfig
-+++ b/arch/arm/mach-layerscape/Kconfig
-@@ -17,6 +17,7 @@ config ARCH_LAYERSCAPE_PPA
+ #include <mach/platform.h>
++#include <io.h>
  
- config ARCH_LS1046
- 	select CPU_V8
-+	select CPU_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	bool
+ #ifdef CONFIG_DEBUG_RPI1_UART
  
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 4b6dfd2c17a9..e09c4837d59d 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -30,6 +30,7 @@ config ARCH_RK3288
- config ARCH_ROCKCHIP_V8
- 	bool
- 	select CPU_V8
-+	select CPU_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select ARM_ATF
- 	select RELOCATABLE
+@@ -66,6 +67,25 @@ static inline void debug_ll_init(void)
+ 	debug_ll_ns16550_init(divisor);
+ }
+ 
++#elif defined CONFIG_DEBUG_RPI4_MINI_UART
++
++static inline uint8_t debug_ll_read_reg(int reg)
++{
++	return readb(BCM2711_MINIUART_BASE + (reg << 2));
++}
++
++static inline void debug_ll_write_reg(int reg, uint8_t val)
++{
++	writeb(val, BCM2711_MINIUART_BASE + (reg << 2));
++}
++
++#include <debug_ll/ns16550.h>
++
++static inline void debug_ll_init(void)
++{
++	/* Configured by ROM */
++}
++
+ #else
+ 
+ static inline void debug_ll_init(void)
+diff --git a/arch/arm/mach-bcm283x/include/mach/platform.h b/arch/arm/mach-bcm283x/include/mach/platform.h
+index 6917e1f345d7..b957ac8de35e 100644
+--- a/arch/arm/mach-bcm283x/include/mach/platform.h
++++ b/arch/arm/mach-bcm283x/include/mach/platform.h
+@@ -34,6 +34,7 @@
+ #define BCM2836_PL011_BASE 0x3f201000UL
+ #define BCM2835_MINIUART_BASE 0x20215040
+ #define BCM2836_MINIUART_BASE 0x3f215040UL
++#define BCM2711_MINIUART_BASE 0xfe215040UL
+ 
+ #endif
+ 
+diff --git a/common/Kconfig b/common/Kconfig
+index f7a6a96e877c..4054bd838dec 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1413,6 +1413,13 @@ config DEBUG_RPI3_MINI_UART
+ 	  Say Y here if you want low-level debugging support on
+ 	  RaspberryPi 3 board mini UART.
+ 
++config DEBUG_RPI4_MINI_UART
++	bool "RaspberryPi 4 mini UART"
++	depends on ARCH_BCM283X
++	help
++	  Say Y here if you want low-level debugging support on
++	  RaspberryPi 4 board mini UART.
++
+ config DEBUG_ERIZO
+ 	bool "Erizo ns16550 port"
+ 	depends on SOC_ERIZO
 -- 
 2.30.2
 
