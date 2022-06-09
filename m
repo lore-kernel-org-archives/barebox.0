@@ -1,61 +1,79 @@
-Delivery-date: Thu, 09 Jun 2022 11:32:00 +0200
+Delivery-date: Thu, 09 Jun 2022 11:44:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzEWG-008cxj-Kz
-	for lore@lore.pengutronix.de; Thu, 09 Jun 2022 11:32:00 +0200
+	id 1nzEii-008dX0-6S
+	for lore@lore.pengutronix.de; Thu, 09 Jun 2022 11:44:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzEWE-0002cT-M1
-	for lore@pengutronix.de; Thu, 09 Jun 2022 11:31:59 +0200
+	id 1nzEig-0004mK-O2
+	for lore@pengutronix.de; Thu, 09 Jun 2022 11:44:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:MIME-Version:
-	References:Message-ID:Subject:Cc:To:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Owner;
-	bh=m6w+3XVoq3+dn7mKEz223BIO2lnqSSPoFrOo2kLScSs=; b=EzWwdOOQ5ebcD1vfR35SSfUeX/
-	eZfOBiWCjhNVB4yKIcWToypbMhM0hdsXVcmSMTV6+wM1M7M0zSzrqeplkGlQes3JJiIweOU3wkukK
-	63vBMkw+Ud0uCVmZCyIMuljVL20ta8LhAGqHbhy2dAFanMZydX/EwzRLm82YXd30BnC/WyRdbA4RR
-	XrwKWYuDE/ZqCicvkfdHgUtz4iGEtOCrYgfscucGX6jZyzSlUvHOtcY6fFWSrFocsvEi/i4nzFoOO
-	vhyC1gqOrta7HBYVoy0F1FR9JZktZSUpIcdmTqpjxr3489IOIw3fBw9we91rY4ESuvKjfj0LnmT/n
-	B6xXBiyA==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=pOunCKjyW3gEmJcqeSoedLehYJVvfIjvr3ow6G2Ag4U=; b=0/B+0FuILi1+N9
+	rc106Cy+VFc40KWshyH1+SOH2RTe4v94zcQ6fsHFsuUDSGGSOXhZGtt7kB8os57+cnDiLfI1Ocxet
+	02Dl2cmg6bsmNFnRVx+Yl/y65Uj/5Fhdx9knBbHAtmFtuBUNr4cHyQcRAR5OHrWU57d2ovaRq+9yN
+	g3dnjkvQE2ML+b9WL/3UOC8WGW8LRhzphZLmkHGv6HiOjNBjm6KsB3MybhLlZUecFZIlPIujyj0v0
+	zILp87C6VjbuoJsHddeCEHANyyv43EErUJMWbueh05daC8HpStw141QGME4vM4WZTUQLp97R4F1/0
+	lCTRg4PWyinOJ387nLwA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzEUy-000fAR-7h; Thu, 09 Jun 2022 09:30:40 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1nzEhG-000k76-8e; Thu, 09 Jun 2022 09:43:22 +0000
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzEUs-000f8P-Ow
-	for barebox@lists.infradead.org; Thu, 09 Jun 2022 09:30:36 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1nzEUq-000259-VB; Thu, 09 Jun 2022 11:30:32 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1nzEUq-0004T9-Lj; Thu, 09 Jun 2022 11:30:32 +0200
-Date: Thu, 9 Jun 2022 11:30:32 +0200
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220609093032.GP1615@pengutronix.de>
-References: <20220609072629.15723-1-eagle.alexander923@gmail.com>
+	id 1nzEh1-000k1m-Cb
+	for barebox@lists.infradead.org; Thu, 09 Jun 2022 09:43:10 +0000
+Received: by mail-lf1-x136.google.com with SMTP id u26so36383753lfd.8
+        for <barebox@lists.infradead.org>; Thu, 09 Jun 2022 02:43:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UEwRG1U6eWdl8av4UQS9USFVxW2ZP4SHkNFQA2BfZnk=;
+        b=Z6oo8NALsHG6152LjaKDfb+GTW5XHIKpapMB3I6hrQluNjqe3K2p62qkdNLVf56F7n
+         5PbbdmkGInS49zvjc95F9/3poSWagy0qsDD1iOmPtqDiiy/D/fFwJd2OQrJeLfU8G7C8
+         53zy9GB5glThIitxIe3hdSPJmCZ0Y5uZV2PWqyfeMaqUSdLyk+za55PrzYts6tMLtgyl
+         ZDLkaRbcs4/PaFp1+18NOVFaMJ6OeHMadFysAoUECMxcp24chm97ukvPdnS2lfHkaenj
+         Vcau5CN9adtDzSVslvNORRLMopM1ZZb66uIOYKmVE2xPRFJbIRBOwo0rebvmIqeOnpMv
+         pd2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UEwRG1U6eWdl8av4UQS9USFVxW2ZP4SHkNFQA2BfZnk=;
+        b=t5l9dHGNzBYQVAhIi+G7wmaVj6lfnQOOyLS2yevouJjk7ssjn1BdT41MpnsaqFP369
+         OF8xKrJ0RO5jI3Lyef+YPBwVNn0BRpLGs3YK4HkoU/RqJ31HOJRGUENMJH1KnOq5J4Kw
+         A+2XHGD4Jwg9KiE7mSpOCHerZOG8R0zDNqmcTFNzFtw5R4qLDJK10eEQ7eRyxPScPy9i
+         eS/Amgg0CAcS8OxGGNPxgIyASFnB0eFzgc3fay6ZMQNpbHrje7u9L7wuirTpusshFM4X
+         rIdHPMKqi0ftAeystI2noL+opKRo7vsqEyZnQNSsyY8Q9y3+0fiwz3TrYG0frqKljk9u
+         UDdg==
+X-Gm-Message-State: AOAM532TX+U/qW7OFoBY5um3ufTw2w3RbNV/cGNRHvuSILdVZVTDEF/S
+	ut/IQ4ZDpgjIgEDo0yMBA3ZCs63JgF4=
+X-Google-Smtp-Source: ABdhPJzAiu9veYc2VkrC73tC8EdevZkh9I8eDsc8Qu4NKDQ/cuKZ6dt7W1MTjtcrr/O6ySiqQ9fVGw==
+X-Received: by 2002:ac2:5150:0:b0:479:119d:5ba6 with SMTP id q16-20020ac25150000000b00479119d5ba6mr22374128lfd.507.1654767783122;
+        Thu, 09 Jun 2022 02:43:03 -0700 (PDT)
+Received: from shc.milas.spb.ru ([188.243.217.78])
+        by smtp.gmail.com with ESMTPSA id h40-20020a0565123ca800b004785b66a9a4sm4150680lfv.126.2022.06.09.02.43.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jun 2022 02:43:02 -0700 (PDT)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Thu,  9 Jun 2022 12:43:00 +0300
+Message-Id: <20220609094300.24818-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20220609072629.15723-1-eagle.alexander923@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220609_023034_854213_7418A68F 
-X-CRM114-Status: GOOD (  25.83  )
+X-CRM114-CacheID: sfid-20220609_024307_511782_97109195 
+X-CRM114-Status: UNSURE (   9.84  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,220 +93,66 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH next] read_file: Pass NULL for the size parameter if the
- return value is not used
+X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] ARM: OMAP: watchdog: Fix compiler errors
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Jun 09, 2022 at 10:26:29AM +0300, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-> ---
->  arch/arm/boards/kindle-mx50/board.c  |  3 +--
->  arch/arm/boards/vscom-baltos/board.c |  3 +--
->  arch/arm/mach-omap/xload.c           | 14 +++++---------
->  commands/spd_decode.c                |  3 +--
->  common/menutree.c                    |  3 +--
->  lib/libfile.c                        |  3 +--
->  6 files changed, 10 insertions(+), 19 deletions(-)
+Fix for "ARM: OMAP: Rework watchdog code" commit.
 
-Applied, thanks
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ arch/arm/boards/myirtech-x335x/lowlevel.c | 2 +-
+ arch/arm/mach-omap/Makefile               | 2 +-
+ arch/arm/mach-omap/omap_generic.c         | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/arch/arm/boards/kindle-mx50/board.c b/arch/arm/boards/kindle-mx50/board.c
-> index 8fc5af8320..4cfd68a258 100644
-> --- a/arch/arm/boards/kindle-mx50/board.c
-> +++ b/arch/arm/boards/kindle-mx50/board.c
-> @@ -84,10 +84,9 @@ static char *mac;
->  static void kindle_rev_init(void)
->  {
->  	int ret;
-> -	size_t size;
->  	void *buf;
->  	const char userdata[] = "/dev/mmc2.boot0.userdata";
-> -	ret = read_file_2(userdata, &size, &buf, 128);
-> +	ret = read_file_2(userdata, NULL, &buf, 128);
->  	if (ret && ret != -EFBIG) {
->  		pr_err("Could not read board info from %s\n", userdata);
->  		return;
-> diff --git a/arch/arm/boards/vscom-baltos/board.c b/arch/arm/boards/vscom-baltos/board.c
-> index 59782d2990..83c7dbc8b0 100644
-> --- a/arch/arm/boards/vscom-baltos/board.c
-> +++ b/arch/arm/boards/vscom-baltos/board.c
-> @@ -85,7 +85,6 @@ static uint8_t get_dip_switch(uint16_t id, uint32_t rev)
->  static int baltos_read_eeprom(void)
->  {
->  	struct bsp_vs_hwparam hw_param;
-> -	size_t size;
->  	char *buf, var_buf[32];
->  	int rc;
->  	unsigned char mac_addr[6];
-> @@ -95,7 +94,7 @@ static int baltos_read_eeprom(void)
->  		return 0;
->  
->  	rc = read_file_2("/dev/eeprom0",
-> -			 &size,
-> +			 NULL,
->  			 (void *)&buf,
->  			 sizeof(hw_param));
->  	if (rc && rc != -EFBIG)
-> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-> index 6d3704b8cf..6a02e2b589 100644
-> --- a/arch/arm/mach-omap/xload.c
-> +++ b/arch/arm/mach-omap/xload.c
-> @@ -115,7 +115,6 @@ static void *omap_xload_boot_mmc(void)
->  {
->  	int ret;
->  	void *buf;
-> -	int len;
->  	const char *diskdev;
->  	char *partname;
->  
-> @@ -137,9 +136,9 @@ static void *omap_xload_boot_mmc(void)
->  
->  	free(partname);
->  
-> -	buf = read_file("/barebox.bin", &len);
-> +	buf = read_file("/barebox.bin", NULL);
->  	if (!buf)
-> -		buf = read_file("/boot/barebox.bin", &len);
-> +		buf = read_file("/boot/barebox.bin", NULL);
->  	if (!buf) {
->  		printf("could not read barebox.bin from sd card\n");
->  		return NULL;
-> @@ -156,7 +155,6 @@ static void *omap_xload_boot_spi(struct omap_barebox_part *part)
->  static void *omap4_xload_boot_usb(void){
->  	int ret;
->  	void *buf;
-> -	int len;
->  
->  	ret = mount("omap4_usbboot", "omap4_usbbootfs", "/", NULL);
->  	if (ret) {
-> @@ -164,7 +162,7 @@ static void *omap4_xload_boot_usb(void){
->  		return NULL;
->  	}
->  
-> -	buf = read_file("/barebox.bin", &len);
-> +	buf = read_file("/barebox.bin", NULL);
->  	if (!buf)
->  		printf("could not read barebox.bin from omap4_usbbootfs\n");
->  
-> @@ -175,7 +173,6 @@ static void *omap_serial_boot(void){
->  	struct console_device *cdev;
->  	int ret;
->  	void *buf;
-> -	int len;
->  	int fd;
->  
->  	/* need temporary place to store file */
-> @@ -203,7 +200,7 @@ static void *omap_serial_boot(void){
->  		return NULL;
->  	}
->  
-> -	buf = read_file("/barebox.bin", &len);
-> +	buf = read_file("/barebox.bin", NULL);
->  	if (!buf)
->  		printf("could not read barebox.bin from serial\n");
->  
-> @@ -216,7 +213,6 @@ static void *am33xx_net_boot(void)
->  {
->  	void *buf = NULL;
->  	int err;
-> -	int len;
->  	struct dhcp_req_param dhcp_param;
->  	const char *bootfile;
->  	IPaddr_t ip;
-> @@ -276,7 +272,7 @@ static void *am33xx_net_boot(void)
->  
->  	file = basprintf("%s/%s", TFTP_MOUNT, bootfile);
->  
-> -	buf = read_file(file, &len);
-> +	buf = read_file(file, NULL);
->  	if (!buf)
->  		printf("could not read %s.\n", bootfile);
->  
-> diff --git a/commands/spd_decode.c b/commands/spd_decode.c
-> index e8ee339a91..fa8fe86cf8 100644
-> --- a/commands/spd_decode.c
-> +++ b/commands/spd_decode.c
-> @@ -16,13 +16,12 @@
->  static int do_spd_decode(int argc, char *argv[])
->  {
->  	int ret;
-> -	size_t size;
->  	void *data;
->  
->  	if (argc != 2)
->  		return COMMAND_ERROR_USAGE;
->  
-> -	ret = read_file_2(argv[1], &size, &data, 256);
-> +	ret = read_file_2(argv[1], NULL, &data, 256);
->  	if (ret && ret != -EFBIG) {
->  		printf("unable to read %s: %s\n", argv[1], strerror(-ret));
->  		return COMMAND_ERROR;
-> diff --git a/common/menutree.c b/common/menutree.c
-> index 9a14005ea2..7fa835a7fe 100644
-> --- a/common/menutree.c
-> +++ b/common/menutree.c
-> @@ -87,7 +87,6 @@ int menutree(const char *path, int toplevel)
->  	glob_t g = {};
->  	int i;
->  	char *globpath, *display;
-> -	size_t size;
->  
->  	menu = menu_alloc();
->  
-> @@ -100,7 +99,7 @@ int menutree(const char *path, int toplevel)
->  	}
->  
->  	globpath = basprintf("%s/title", path);
-> -	display = read_file(globpath, &size);
-> +	display = read_file(globpath, NULL);
->  	free(globpath);
->  	if (!display) {
->  		eprintf("no title found in %s/title\n", path);
-> diff --git a/lib/libfile.c b/lib/libfile.c
-> index 1f533133c5..3b7985fbca 100644
-> --- a/lib/libfile.c
-> +++ b/lib/libfile.c
-> @@ -162,7 +162,6 @@ char *read_file_line(const char *fmt, ...)
->  	va_list args;
->  	char *filename;
->  	char *buf, *line = NULL;
-> -	size_t size;
->  	int ret;
->  	struct stat s;
->  
-> @@ -177,7 +176,7 @@ char *read_file_line(const char *fmt, ...)
->  	if (s.st_size > 1024)
->  		goto out;
->  
-> -	buf = read_file(filename, &size);
-> +	buf = read_file(filename, NULL);
->  	if (!buf)
->  		goto out;
->  
-> -- 
-> 2.32.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/boards/myirtech-x335x/lowlevel.c b/arch/arm/boards/myirtech-x335x/lowlevel.c
+index 4d32d2da1e..c394253320 100644
+--- a/arch/arm/boards/myirtech-x335x/lowlevel.c
++++ b/arch/arm/boards/myirtech-x335x/lowlevel.c
+@@ -69,7 +69,7 @@ ENTRY_FUNCTION(start_am33xx_myirtech_sram, bootinfo, r1, r2)
+ 
+ 	fdt = __dtb_z_am335x_myirtech_myd_start;
+ 
+-	omap_watchdog_disable(IOMEM((AM33XX_WDT_BASE));
++	omap_watchdog_disable(IOMEM(AM33XX_WDT_BASE));
+ 
+ 	mpupll = MPUPLL_M_800;
+ 	if (am33xx_get_cpu_rev() == AM335X_ES2_1) {
+diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
+index 88c6b1d594..6b42196b23 100644
+--- a/arch/arm/mach-omap/Makefile
++++ b/arch/arm/mach-omap/Makefile
+@@ -16,7 +16,7 @@
+ #
+ #
+ obj-$(CONFIG_ARCH_OMAP) += syslib.o omap_devices.o omap_generic.o
+-pbl-$(CONFIG_ARCH_OMAP) += syslib.o
++pbl-$(CONFIG_ARCH_OMAP) += syslib.o omap_generic.o
+ obj-$(CONFIG_ARCH_OMAP3) += omap3_generic.o auxcr.o
+ pbl-$(CONFIG_ARCH_OMAP3) += omap3_generic.o auxcr.o
+ obj-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
+diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
+index c0f8cea999..6bb26a6ef0 100644
+--- a/arch/arm/mach-omap/omap_generic.c
++++ b/arch/arm/mach-omap/omap_generic.c
+@@ -85,7 +85,7 @@ void omap_watchdog_disable(const void __iomem *wdt)
+ 	do {
+ 	} while (__raw_readl(wdt + OMAP_WDT_WWPS));
+ 
+-	__raw_writel(WDT_DISABLE_CODE2, wdt + WSPR);
++	__raw_writel(WDT_DISABLE_CODE2, wdt + OMAP_WDT_WSPR);
+ }
+ 
+ #ifdef CONFIG_BOOTM
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.32.0
+
 
 _______________________________________________
 barebox mailing list
