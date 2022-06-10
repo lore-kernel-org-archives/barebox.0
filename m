@@ -1,64 +1,57 @@
-Delivery-date: Fri, 10 Jun 2022 08:58:53 +0200
+Delivery-date: Fri, 10 Jun 2022 09:07:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzYbd-009lBn-Dn
-	for lore@lore.pengutronix.de; Fri, 10 Jun 2022 08:58:53 +0200
+	id 1nzYk0-009lZG-N5
+	for lore@lore.pengutronix.de; Fri, 10 Jun 2022 09:07:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzYbb-0001xK-Kx
-	for lore@pengutronix.de; Fri, 10 Jun 2022 08:58:52 +0200
+	id 1nzYjz-0002vr-As
+	for lore@pengutronix.de; Fri, 10 Jun 2022 09:07:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
 	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=uSN82e/Y/33uGiypc9wBodJKiQnTcaXurGzhRSirWeg=; b=uw/i73eWfL0tXB
-	TtgNycwKMtMEgQeG4EfMxLpqR3M5C7MCTm+rKUk8yuBe/QC1zp+3tUKve8gLlEJusn62fp4+Zodb8
-	7eosNWzstqnjdisxarwEgmfxW6Hktp8R+Q3BpBIozTiA5baLL3WnZKmJXtyRQcYHfQJ0PmiyiVYwb
-	EF/5j6VrNEazPDucuqlnuGrko3BQ9zalZHllVAGYamTBQt3CWpxR0EpwPTgtAf7zEz9ezPhroDiPo
-	9IZEmgp5itdp5yWftaXrCBMh13K6mEluTBW6FDsBNy75V/vrXcr3/E2A+knQCK4ZK+PqZ2FPAcf9d
-	X/Z4mkatV0ma0nWBGzcQ==;
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
+	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=3QleL2GIJR639tTkOHjYqFPPygtVckudtTdxaBJjpDY=; b=Zfa9Gi7p2ZbPkz
+	HAkv7e2eG5tUNW7tYLBEArc4Ma7bOorlhhgu9c2JDG1iaB3vH1y6hTaFXPnSQhRNwzKNdabFUo042
+	vZjzmQHrIuXBH4ANiH5IsTorh+q1U2q7WFcepnKQ0u3eX9OXnWcaC8KDNeAjKNUwSAerXyb2nf608
+	MzmgjYTAdWssuja9Q1L/LEwbJuBWayq3epIap21JS72sv5FaL/uuw8+8Ia+FN5gt1uBktXNKqozpx
+	JSJFgLekf4kF2K+sFWg5MX+7LLaJlM8ibxGtfIGuOlmR0jEuE2PriRjrPF55sRl2y8jy7CI5CS/wz
+	1cJmOnJqbOG/Yg37NcPA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzYaG-006IiC-4E; Fri, 10 Jun 2022 06:57:28 +0000
+	id 1nzYii-006KZ0-9A; Fri, 10 Jun 2022 07:06:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzYa8-006IgA-7V
-	for barebox@lists.infradead.org; Fri, 10 Jun 2022 06:57:24 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1nzYia-006KXX-4o
+	for barebox@lists.infradead.org; Fri, 10 Jun 2022 07:06:09 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1nzYa6-0001fT-Pn; Fri, 10 Jun 2022 08:57:18 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1nzYa6-0003VK-Gx; Fri, 10 Jun 2022 08:57:18 +0200
-Date: Fri, 10 Jun 2022 08:57:18 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-To: Michael Olbrich <m.olbrich@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <20220610065718.GY1615@pengutronix.de>
-References: <20220609130936.3616309-1-a.fatoum@pengutronix.de>
- <20220609130936.3616309-2-a.fatoum@pengutronix.de>
- <20220609141038.GW1615@pengutronix.de>
- <0bc9c029-ee77-ae1c-f9a5-083c3db5544a@pengutronix.de>
- <20220610063635.GF16749@pengutronix.de>
+	(envelope-from <ukl@pengutronix.de>)
+	id 1nzYiW-0002aX-77; Fri, 10 Jun 2022 09:06:00 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1nzYiW-007XDG-Sj; Fri, 10 Jun 2022 09:05:59 +0200
+Received: from ukl by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1nzYiU-00B8Ez-Mb; Fri, 10 Jun 2022 09:05:58 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?J=C3=BCrgen=20Borleis?= <jbe@pengutronix.de>
+Date: Fri, 10 Jun 2022 09:05:57 +0200
+Message-Id: <20220610070557.2651943-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20220610063635.GF16749@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220609_235720_308667_3979C497 
-X-CRM114-Status: GOOD (  34.60  )
+X-CRM114-CacheID: sfid-20220610_000604_225303_BA8E2F4B 
+X-CRM114-Status: GOOD (  10.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,107 +63,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 2/2] fastboot: bail if update handler couldn't be
- found for bbu-partition
+Subject: [PATCH] ARM: i.MX7/8M: Make sure the output parameter is always assigned
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jun 10, 2022 at 08:36:35AM +0200, Michael Olbrich wrote:
-> On Thu, Jun 09, 2022 at 04:12:39PM +0200, Ahmad Fatoum wrote:
-> > On 09.06.22 16:10, Sascha Hauer wrote:
-> > > On Thu, Jun 09, 2022 at 03:09:36PM +0200, Ahmad Fatoum wrote:
-> > >> Fastboot would fall back to a raw copy even for bbu- partitions if
-> > >> no barebox_update handler was found. Prevent this by bailing out
-> > >> with an error code.
-> > >>
-> > >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > >> ---
-> > >> v2 -> v3:
-> > >>   - bail out instead of only printing message and falling back
-> > >>     to raw copy (Sascha)
-> > >> v1 -> v2:
-> > >>   - print message in case barebox_update handler is not found
-> > >> ---
-> > >>  common/fastboot.c | 9 +++++++--
-> > >>  1 file changed, 7 insertions(+), 2 deletions(-)
-> > >>
-> > >> diff --git a/common/fastboot.c b/common/fastboot.c
-> > >> index 330a06f5a32f..a5cf04b39ecd 100644
-> > >> --- a/common/fastboot.c
-> > >> +++ b/common/fastboot.c
-> > >> @@ -683,8 +683,13 @@ static void cb_flash(struct fastboot *fb, const char *cmd)
-> > >>  		};
-> > >>  
-> > >>  		handler = bbu_find_handler_by_device(data.devicefile);
-> > >> -		if (!handler)
-> > >> -			goto copy;
-> > >> +		if (!handler) {
-> > >> +			fastboot_tx_print(fb, FASTBOOT_MSG_FAIL,
-> > >> +					  "No barebox update handler registered for %s",
-> > >> +					  data.devicefile);
-> > >> +			ret = -ENOENT;
-> > >> +			goto out;
-> > >> +		}
-> > > 
-> > > I didn't verify that, but I believe a full raw bootable disk image
-> > > generated for i.MX will be detected as barebox image. With this patch we
-> > > wouldn't be able to flash that anymore.
-> > 
-> > Can we just apply v2 and see how often we see the message?
-> 
-> Or maybe the 'is a barebox image' detection is not strict enough? We know
-> the image size, right? Is there a way to determine the size of the actual
-> barebox image? If the two differ then it's not a barebox image after all.
-
-filetype_is_barebox_image() looks like this:
-
-bool filetype_is_barebox_image(enum filetype ft)
-{
-        switch (ft) {
-        case filetype_arm_barebox:
-        case filetype_mips_barebox:
-        case filetype_ch_image:
-        case filetype_ch_image_be:
-        case filetype_layerscape_image:
-        case filetype_layerscape_qspi_image:
-        case filetype_stm32_image_fsbl_v1:
-        case filetype_fip:
-                return true;
-        default:
-                return false;
-        }
-}
-
-There's likely a way to determine the size for some of the images, but
-probably not for all.
-
-We could check the size of the image. If it's too big for a barebox
-image then it is none. I don't have a very good feeling about such a
-heuristic though.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Q2FsbGVycyBvZiAqX2dldF9ib290X3NvdXJjZSAoZS5nLiBzdGFydF9hdGYoKSBvZgpueHAtaW14
+OG1tLWV2ayBvciBwcm90b25pYy1pbXg4bSkgZXhwZWN0IHNyYyB0byBob2xkIHRoZSBib290c291
+cmNlCmFmdGVyIHJldHVybi4gU28gYXNzaWduIGEgdmFsdWUgcmVsaWFibHkuCgpGaXhlczogZWE1
+NTc3MDMwOGMwICgiQVJNOiBpLk1YOiBBZGQgaS5NWDcgYmFzZSBhcmNoaXRlY3R1cmUgc3VwcG9y
+dCIpClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVu
+Z3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vbWFjaC1pbXgvYm9vdC5jIHwgMSArCiAxIGZpbGUg
+Y2hhbmdlZCwgMSBpbnNlcnRpb24oKykKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9i
+b290LmMgYi9hcmNoL2FybS9tYWNoLWlteC9ib290LmMKaW5kZXggNjNhZmRmMWVmNGVkLi42NTJl
+Mjg2OWYyZDcgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2Jvb3QuYworKysgYi9hcmNo
+L2FybS9tYWNoLWlteC9ib290LmMKQEAgLTUyNiw2ICs1MjYsNyBAQCBzdGF0aWMgdm9pZCBfX2lt
+eDdfZ2V0X2Jvb3Rfc291cmNlKGVudW0gYm9vdHNvdXJjZSAqc3JjLCBpbnQgKmluc3RhbmNlLAog
+CQkqc3JjID0gQk9PVFNPVVJDRV9TRVJJQUw7CiAJCWJyZWFrOwogCWRlZmF1bHQ6CisJCSpzcmMg
+PSBCT09UU09VUkNFX1VOS05PV047CiAJCWJyZWFrOwogCX0KIH0KCmJhc2UtY29tbWl0OiA2YTNm
+OWVkMWY1YzU1OTU3YjJlZDRmNDYwOTU1MjgxNTM5ZThlNzg1Ci0tIAoyLjMwLjIKCgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
 
