@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzXPm-009fKS-Aj
+	id 1nzXPm-009fKT-Hw
 	for lore@lore.pengutronix.de; Fri, 10 Jun 2022 07:42:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1nzXPk-0007L8-TQ
+	id 1nzXPk-0007Ke-9i
 	for lore@pengutronix.de; Fri, 10 Jun 2022 07:42:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
@@ -17,64 +17,64 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=e/g2hPMYjyK77Qv09NAdCrLa1gDrIge3oowx9A5uj4Y=; b=q7lE8uOPL7YMgh
-	5s+trxtScAwmechWYokRX10WE7a5XRlWSOHGPv5LtRU3uDYEKJipssBQ0PsSj0fqU4D6DGE3nc1zr
-	GcbqY1QvebuQzcJIRDlQAXq89b6FUdyu9wIagNIK84MIrsDtdeyHkXQYcJ8XCDHhfULBcpo61Zezp
-	H4rVdrYxmIj2/cMIHBm/lE760RP16tvfqPpXy0ar6almv904In+MDIXSvQiJIkAlDLndSIx1fxeVu
-	jBDEXZ29v6ZpvJVH38qhjMUidUu22wgZAp4s3JnOiH/57UgKqSl+xDfwrtLYBYxscmdVv8BFkjj5o
-	P+CTlvWKqARPHR8TJVkw==;
+	List-Owner; bh=Ye/5jI7w4AkqRzTg+o55H+zn5Iz52u9kCKCTCoG6bto=; b=0Ql7SniesY1jc3
+	zeNVcaSw6KgekfGzO8AedCjeJb0d5PTrVkbE06rx5fI7AYiGH/NJ+N4o2YRb+8rCLmjKLjnYnNhsD
+	xIfvEBHZPQ4s7aed1I53D1CFKCSHyUH8RHkhh1bPz1P0ZSKttSoQ1vFvcAY9ujxsi4wrjlWOr7nFR
+	BBjqiiZcUXIaI2bx4RjVklU0xwkvMaeDX6MH9pGJfGcyw6yxbcI1p+g/Pd3/45pw1FUJlZNo2Zc8m
+	fqG46q70PO0Sb+O7YnAiM0iEWMfRlYCD+/wqKmozIEf9v5haQSJ6a9VW5MggEouRj3ft7mTGgbY42
+	z6fbIKI2ZE6BB5Ld5gLw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzXON-005zul-6x; Fri, 10 Jun 2022 05:41:07 +0000
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+	id 1nzXOP-005zw5-Ld; Fri, 10 Jun 2022 05:41:09 +0000
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzXOE-005zq6-Ia
-	for barebox@lists.infradead.org; Fri, 10 Jun 2022 05:40:59 +0000
-Received: by mail-lf1-x133.google.com with SMTP id i29so24423611lfp.3
-        for <barebox@lists.infradead.org>; Thu, 09 Jun 2022 22:40:57 -0700 (PDT)
+	id 1nzXOF-005zqj-Dh
+	for barebox@lists.infradead.org; Fri, 10 Jun 2022 05:41:00 +0000
+Received: by mail-lf1-x12a.google.com with SMTP id h23so41167703lfe.4
+        for <barebox@lists.infradead.org>; Thu, 09 Jun 2022 22:40:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=TfQRdKpCnywVVE5DXQpZNXR2/GNgT8/hXSpLD1ZsviA=;
-        b=Bov3vKDl82ldvIT4UOIwxVIswGmhr+9/utdcdUr7hCUZ3mcykFDKfJprU7Wyb5Xfsq
-         gNlJad1gLuAeUaLgX/cGcaTwwJOHoQbopykfiQAyl37vN3/j2EKvnhs/bVf1Zw9NE5+K
-         ewOS10YnoIdY9wnSSLVu/8/yV+ZqWDpy9UFXq9RRLoQFQnu7DJSiU/mWo++XDI66iHcv
-         AlrKmdNEAvrq4n5R94FNI3hXXEcEcaHqTX/ydm9jwmMc+zsG0ocmDnNKxKVmFWSswEDZ
-         7EfIg69AYCBazhgmFBcf9g0PtgCBAYuyfgk68NlkCXJmisjeIGri3jjDr0/MqiAp+k4f
-         kQSQ==
+        bh=fzfsd78O8Y9hAw7e2osZ/DeqWHVJkwjIK/IYLqm2xlA=;
+        b=iud6luH2KJraWsBl8QgdpzWe1fPNSk7cNGmmR6lprcug3xJDziITPrXINddf8pUs6a
+         gU/KNSiqF63IvRDkAIg6gIqTn0GgBujO398uZGuvDAq34rKzj3J5oXSpNIZp3UXVasZY
+         932DhDWxOL9k9ey1IfQMfbYSm/bYHBYC+XkurF/ZxcazNOFg/E5MRVaF7kBzn5SFdIMx
+         7p4qZIBcBoKOMgvyCXu2SaKtJJKgc5vFlrBjMdhxQESkSZxIZnWfY1zuN3R+qped4yhq
+         +N6okqmXce+Tlase83q5FbAPBuFS8d4gY9Akgc6I30URReY3HfL0CGAHJDS/FgYmAKXI
+         OUrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=TfQRdKpCnywVVE5DXQpZNXR2/GNgT8/hXSpLD1ZsviA=;
-        b=wpcp+D83k6XIDsdJAij/be7QsxZKd28oCeFmvDDk9L7yjAnlJ4SHsd3An3tO0fIUPc
-         wuyFg3Z8L4MF0k8t45Zc5Oq+Oq6Ku7A8E5dNgBXwx6KJNrtPIhQpwtg4/Rycj8DkKBCr
-         D4KKRdNcP3bUvKuIfIOmHI/tGG14o3qK1/acZ8lGntKwCysux+Ml5uLa3R2bjQptnX8r
-         tHzunvxhWxof3aVGAjm4F0QChH/Hk31k90kgnyCbbjWNt5M1unUCsWm0N6KXNwoDUzl0
-         +KyF8eYgtCkObg5X8S28UXfcCH+3luVXIClyEmpAzKV1QSqXFLrRvqi9FKzRVOytLgIM
-         Up4w==
-X-Gm-Message-State: AOAM532Y4F6K8oBRblk1sDNmfu5ILdM6jrzZI9ly6fLgdauRbX739L4Y
-	W+9OQyWzvcIbel170O4X96tL/grTg/Y=
-X-Google-Smtp-Source: ABdhPJzkJRtxMOjPu8Mw3jYzltP9xfnGjKq19ccskH6n+jiOSErELdgJ0GQcb/8atIJDGOAMS5Nw3g==
-X-Received: by 2002:a05:6512:32b2:b0:479:b04:c0af with SMTP id q18-20020a05651232b200b004790b04c0afmr26604327lfe.384.1654839655967;
-        Thu, 09 Jun 2022 22:40:55 -0700 (PDT)
+        bh=fzfsd78O8Y9hAw7e2osZ/DeqWHVJkwjIK/IYLqm2xlA=;
+        b=IcaqJOamtEpoiNKwXJ8L/RTfmpSrAsiipuQpX8OSq1/UmyTNmEL4R8kg1VvLac2PzM
+         fw3ixse7X7BvXPPhIc0bgjvZMVp/GCjBaBLtUnSR7ZtMvjXRzigWf6SwkqlIFXrj0WKC
+         CuFPGWdsNzZ7d6MFP5b+fRlmgXrTMcWGNVnlHGJ3DXn1L/snSaCMFSo50m8cjzCnZUrQ
+         x2WTZgg5F5ghskl+qTZWu6W61fZBwbJusrCqALh7FRGfkb9Hz/AQsP3RJcULHgBIoFc+
+         95JcRD8AqzEJoUjE9U8Js9wIPhc/x9eRxoTExcxPnD+QcOhR12Ij1910gqi829q7vLTu
+         kGpg==
+X-Gm-Message-State: AOAM533LxqV3/WW5SuVGmI+ayx1imsxV9yCAzmFXN7Lp4psd7muFXmKr
+	Y1M9s/XNFU8McSRnCVfbhByjRP5pqy0=
+X-Google-Smtp-Source: ABdhPJzrdHMa7/N7rv+2srjTzeAKbbVWh10zUkzfYewSoQ9wfwhn2rVpb7f//wHgt0WQUEWwLxSIug==
+X-Received: by 2002:a05:6512:31d3:b0:479:478e:2628 with SMTP id j19-20020a05651231d300b00479478e2628mr16020398lfe.153.1654839656842;
+        Thu, 09 Jun 2022 22:40:56 -0700 (PDT)
 Received: from shc.milas.spb.ru ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id v21-20020a2e87d5000000b0024f3d1dae84sm4009770ljj.12.2022.06.09.22.40.55
+        by smtp.gmail.com with ESMTPSA id v21-20020a2e87d5000000b0024f3d1dae84sm4009770ljj.12.2022.06.09.22.40.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jun 2022 22:40:55 -0700 (PDT)
+        Thu, 09 Jun 2022 22:40:56 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 10 Jun 2022 08:40:44 +0300
-Message-Id: <20220610054051.4911-3-eagle.alexander923@gmail.com>
+Date: Fri, 10 Jun 2022 08:40:45 +0300
+Message-Id: <20220610054051.4911-4-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220610054051.4911-1-eagle.alexander923@gmail.com>
 References: <20220610054051.4911-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220609_224058_650953_BE8C9A52 
-X-CRM114-Status: GOOD (  10.58  )
+X-CRM114-CacheID: sfid-20220609_224059_502296_15B174C6 
+X-CRM114-Status: GOOD (  12.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,54 +99,47 @@ X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/8] ata: ahci: Fix format string
+Subject: [PATCH 3/8] gui: image_renderer: Fix empty prototype for image_renderer_image()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-drivers/ata/ahci.c: In function 'ahci_print_info':
-drivers/ata/ahci.c:517:9: warning: too many arguments for format [-Wformat-extra-args]
+In file included from lib/gui/png.c:9:
+include/gui/image_renderer.h: In function 'image_renderer_file':
+include/gui/image_renderer.h:67:29: warning: passing argument 1 of 'image_renderer_image' from incompatible pointer type [-Wincompatible-pointer-types]
+ret = image_renderer_image(sc, s, img);
+include/gui/image_renderer.h:56:42: note: expected 'struct surface *' but argument is of type 'struct screen *'
+int image_renderer_image(struct surface *s, struct image *img);
+include/gui/image_renderer.h:67:33: warning: passing argument 2 of 'image_renderer_image' from incompatible pointer type [-Wincompatible-pointer-types]
+ret = image_renderer_image(sc, s, img);
+include/gui/image_renderer.h:56:59: note: expected 'struct image *' but argumentis of type 'struct surface *'
+int image_renderer_image(struct surface *s, struct image *img);
+include/gui/image_renderer.h:67:8: error: too many arguments to function 'image_renderer_image'
+ret = image_renderer_image(sc, s, img);
+include/gui/image_renderer.h:56:5: note: declared here
+int image_renderer_image(struct surface *s, struct image *img);
 
-Fixes: b5da6970bf23 ("ata: ahci: add missing capability in ahci_print_info()")
+Fixes: 3fa8d74abea3 ("gui: introduce screen and surface to factorize and simplify code")
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- drivers/ata/ahci.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/gui/image_renderer.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index eb9e1bd133..f4b93183ce 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -304,8 +304,8 @@ static int ahci_init_port(struct ahci_port *ahci_port)
- 	ahci_port->cmd_slot = mem;
- 	ahci_port->cmd_slot_dma = mem_dma;
+diff --git a/include/gui/image_renderer.h b/include/gui/image_renderer.h
+index bfdea1b14e..323ad741b3 100644
+--- a/include/gui/image_renderer.h
++++ b/include/gui/image_renderer.h
+@@ -53,7 +53,10 @@ static inline struct image *image_renderer_open(const char* file)
  
--	ahci_port_debug(ahci_port, "cmd_slot = 0x%p (0x%pa)\n",
--			ahci_port->cmd_slot, ahci_port->cmd_slot_dma);
-+	ahci_port_debug(ahci_port, "cmd_slot = 0x%p (0x%pad)\n",
-+			ahci_port->cmd_slot, &ahci_port->cmd_slot_dma);
+ static inline void image_renderer_close(struct image *img) {}
  
- 	/*
- 	 * Second item: Received-FIS area
-@@ -320,8 +320,8 @@ static int ahci_init_port(struct ahci_port *ahci_port)
- 	ahci_port->cmd_tbl = mem + AHCI_CMD_LIST_SZ + AHCI_RX_FIS_SZ;
- 	ahci_port->cmd_tbl_dma = mem_dma + AHCI_CMD_LIST_SZ + AHCI_RX_FIS_SZ;
+-int image_renderer_image(struct surface *s, struct image *img);
++static inline int image_renderer_image(struct screen *sc, struct surface *s, struct image *img)
++{
++	return -EINVAL;
++}
+ #endif
  
--	ahci_port_debug(ahci_port, "cmd_tbl = 0x%p (0x%pa)\n",
--			ahci_port->cmd_tbl, ahci_port->cmd_tbl_dma);
-+	ahci_port_debug(ahci_port, "cmd_tbl = 0x%p (0x%pad)\n",
-+			ahci_port->cmd_tbl, &ahci_port->cmd_tbl_dma);
- 
- 	ahci_port->cmd_tbl_sg = ahci_port->cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
- 
-@@ -517,7 +517,7 @@ void ahci_print_info(struct ahci_device *ahci)
- 	printf("flags: "
- 	       "%s%s%s%s%s%s%s"
- 	       "%s%s%s%s%s%s%s"
--	       "%s%s%s%s%s%s\n",
-+	       "%s%s%s%s%s%s%s\n",
- 	       cap & HOST_CAP_64 ? "64bit " : "",
- 	       cap & HOST_CAP_NCQ ? "ncq " : "",
- 	       cap & HOST_CAP_SNTF ? "sntf " : "",
+ static inline int image_renderer_file(struct screen *sc, struct surface *s, const char* file)
 -- 
 2.32.0
 
