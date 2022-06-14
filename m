@@ -1,94 +1,55 @@
-Delivery-date: Tue, 14 Jun 2022 12:35:59 +0200
+Delivery-date: Tue, 14 Jun 2022 21:09:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o13ts-002771-DN
-	for lore@lore.pengutronix.de; Tue, 14 Jun 2022 12:35:59 +0200
+	id 1o1BuZ-002Q5R-8U
+	for lore@lore.pengutronix.de; Tue, 14 Jun 2022 21:09:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o13ts-0000nn-DY
-	for lore@pengutronix.de; Tue, 14 Jun 2022 12:35:57 +0200
+	id 1o1BuY-0007cF-Cv
+	for lore@pengutronix.de; Tue, 14 Jun 2022 21:09:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZfMHApSbXicGonMlZINOYXlrTyDRsxv6Z7FYUQYCxNM=; b=IRaDfdlAqtFDUaautwt+7uDVtE
-	xX6TmimfIHM4+zivPT7bb5YjlgMmaKbPza7Mj9ioYjeH3Mbz1LOMPuxcv2dMZMRoC4fCHGL3m8fse
-	4g4jikZGsFSqu+upEYj/cRBz79M0oeyWMdvegDxAVgIPgHlQbsHXdqgzZH/z/t4s1YwoAA9vtaaxl
-	gg/+P3mV2Ka/v16D/6hxp6FClhcph2TUnb+QILAJAtlHD6VV8SeQU9xXGLdN2W38OD80Qd1Zrorcu
-	33+6Lh01tdyx4c5OV4vAImwSe27tinIrXZWjRa+gd0rTv9bnMiSnchycu2mjItcEqbxwgUMyB8Aw2
-	XIkClrdg==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=qs7lJnmLTLw+PQYqGkzAKzhHiCcldjersFv8NODxOnE=; b=JkDsgahgIMGMXzNNpNh1POidKa
+	PQ+qL+zCEH5vUAcX+Ny5HFBYQi3wji8Pu0lE6CaDQE2/6sH/JV8dBPuzR9Uc+WVWKxr59bAjz2qh5
+	+hU50ySRsnI+OJ++N75BMg8IxdNs/BevVlfQS2cL7rRp0TTbtmQ3bu7jBy6L4FXDgmOkmYh+CqwCe
+	N5iBtkaMjSi94jBWq02a7p0EuScTUf1zTjHAbvx4luxBn3OYjSVOG9m3p8Q1onMn9PhM8SheBh/z+
+	scYfEQWw9Ol2BJMDaBkwgV+jegvZRHoheqxEgrh/dh1v3BVZ8+KwWARCA9cSSUHV0jyjnwZZ91aiE
+	bD8lVqpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o13sE-0093m4-Gv; Tue, 14 Jun 2022 10:34:14 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1o1Bsh-00AsSB-Bt; Tue, 14 Jun 2022 19:07:15 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o13sA-0093lN-RY
-	for barebox@bombadil.infradead.org; Tue, 14 Jun 2022 10:34:10 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=ZfMHApSbXicGonMlZINOYXlrTyDRsxv6Z7FYUQYCxNM=; b=qO7NiibKClAkUJ0ALiq8+HCX2J
-	3k0J80CZqBDF7v3B8PtazXCfJakb0BoS6nwV5xfg/GiApx7Hm9aKqFM4dMnNEXW8O4ku9bk8jhltr
-	22VrYxX6XEfEr7RPIVZrt6X+GNw/xtSkaDEhbbMwHGKyttvoIPj0Qa/Y7QdDOmxUE4G2SLl6b+aTG
-	RaIbmnuFqWtLpSLcdaXCgrHjxSON7yoKM/mGEpjCBznKFOmFHawicHvocBk/04YpTM6e4dkJ5kEgB
-	/QAEoxiLjyhzWGCVbz9Hg5Sm90cOuiOfsbZ4XZWrAKZFyMOH8hco0lka3Mm4U42VqG1l7bbgwsaFZ
-	zuABWY+Q==;
-Received: from smtp-cpanel.siel.si ([46.19.9.86] helo=cpanel.siel.si)
-	by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o13rz-007pgq-IY
-	for barebox@lists.infradead.org; Tue, 14 Jun 2022 10:34:08 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ZfMHApSbXicGonMlZINOYXlrTyDRsxv6Z7FYUQYCxNM=; b=WZltKjyvccu55r5QjNo3Vy2sdO
-	JANogjfTe4JlaPVLT5EtgdjvxKyi2IWH5wxB6wE0MKXtygN+bV8DMspBzw49DQIp+Tkczl1xH+/g1
-	WZutMHAUHP9Z5WI/5MXqZmmXHBN1lrCVceCqvDiRgRSRen+8pfDdBJnRadwsuK4CPY/E+pi1iXKXt
-	aIUwhYlcvL1mPKwsNrZ+Kw5aD6UEXZWlhZSqi8YYZ2Vx4B6UblQyEuPTY95AyhD87Nf9uN4jatNEx
-	zHsXt5X9t996h84LcSxhztoEm4ipsiiuPNB7MLeBPUzAQ8DCdzxuyf6+FISs3qa6I3uS+okkuHw7o
-	BbleMp+g==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:43624 helo=[192.168.69.86])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.95)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1o13rk-001NVE-Na;
-	Tue, 14 Jun 2022 12:33:44 +0200
-Message-ID: <2962db0d-44a9-9a52-ef5d-e357aee5a3ae@norik.com>
-Date: Tue, 14 Jun 2022 12:33:48 +0200
+	id 1o1Bsc-00AsQW-3f
+	for barebox@lists.infradead.org; Tue, 14 Jun 2022 19:07:12 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1o1BsW-0007X9-Sq; Tue, 14 Jun 2022 21:07:05 +0200
+Message-ID: <8af39019-b398-4b2a-7739-22f48cac7532@pengutronix.de>
+Date: Tue, 14 Jun 2022 21:07:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Content-Language: en-GB
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-References: <c51b2c94-61b7-df44-5d4c-025d18c4b24f@norik.com>
- <20220614082711.GQ1615@pengutronix.de>
-From: Andrej Picej <andrej.picej@norik.com>
-In-Reply-To: <20220614082711.GQ1615@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.infradead.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ Thunderbird/91.9.0
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_Br=c3=a1t?= <danek.brat@gmail.com>,
+ barebox@lists.infradead.org
+References: <20220613211651.14454-1-danek.brat@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220613211651.14454-1-danek.brat@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220614_113403_749905_15EB9D88 
-X-CRM114-Status: GOOD (  18.59  )
+X-CRM114-CacheID: sfid-20220614_120710_517031_9D8956FE 
+X-CRM114-Status: GOOD (  34.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -106,65 +67,399 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: Ethernet reinit on phyCORE hangs the device
+Subject: Re: [PATCH v2] ARM: rpi: parse useful data from vc fdt
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Sascha,
+Hello Daniel,
 
-On 14. 06. 22 10:27, Sascha Hauer wrote:
-> On Tue, Jun 14, 2022 at 09:12:23AM +0200, Andrej Picej wrote:
->> Hi all,
->>
->> when testing barebox ethernet on i.MX6 (phyCORE) we encountered a bug:
->> the ethernet re-init on barebox doesn't work! If we do:
->> $ ifup eth0
->> $ ifdown eth0
->> and then:
->> $ ifup eth0
->> $ ping HOST_IP
->> the device hangs and can only be saved by resetting the board manually.
+On 13.06.22 23:16, Daniel Brát wrote:
+> Videocore first-stage loader on rpi passes us many useful information
+> inside the vc fdt, including the real value of PM_RSTS register, not
+> easily available by other means and which we can use to determine
+> the reset cause.
+> Also make the relevant funtions just print error/warning and continue
+> in case of some errors, since the fdt from vc is now optional for
+> barebox's basic function.
 > 
-> I can confirm the behaviour is the same here.
-
-Great.
-
+> Signed-off-by: Daniel Brát <danek.brat@gmail.com>
+> ---
+>  arch/arm/boards/raspberry-pi/rpi-common.c | 200 +++++++++++++++++-----
+>  drivers/watchdog/bcm2835_wdt.c            |  23 +--
+>  include/soc/bcm283x/wdt.h                 |  40 +++++
+>  3 files changed, 200 insertions(+), 63 deletions(-)
+>  create mode 100644 include/soc/bcm283x/wdt.h
 > 
->>
->> We narrowed the problem down to the "fec_tx_task_enable". It seems that
->> enabling tx task with writing to TDAR reg hangs the device shortly after.
->>
->> Did you guys maybe encounter something similar on i.MX6 boards or on any
->> other boards?
->>
->> I guess this is a really specific problem as people don't normally do
->> ifup/ifdown with ethernet in bootloader :D.
-> 
-> Nope :)
-> 
->>
->> Do you have any idea what could be the reason or how could this be solved?
->> Any useful information would be greatly appreciated.
-> 
-> Part of the problem is that fec_halt() tears down the device completely.
-> The counterpart of that is fec_init(), but that is called from during
-> probe only. I think fec_init() should be called from fec_open() as well.
+> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+> index 12a4f4a0a..5d2196986 100644
+> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
+> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+> @@ -23,13 +23,27 @@
+>  #include <linux/sizes.h>
+>  #include <globalvar.h>
+>  #include <asm/system_info.h>
+> +#include <reset_source.h>
+>  
+>  #include <mach/core.h>
+>  #include <mach/mbox.h>
+>  #include <mach/platform.h>
+>  
+> +#include <soc/bcm283x/wdt.h>
+> +
+>  #include "lowlevel.h"
+>  
+> +//https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#BOOT_ORDER
+> +static const char * const boot_mode_names[] = {
 
-Hmm I thought I already tried that, guess not...
+[0x0] = "unknown"
 
-> 
-> A quick test revealed this is really only part of the problem. The next
-> one is that fec_update_linkspeed() is not called on second open, so the
-> fec speed registers will not get their correct value.
+I am not sure how devinfo global would look like if there are NULL
+members.
 
-Ok, I'll check that out.
-Thanks for your help so far.
+> +	[0x1] = "sd",
+> +	[0x2] = "net",
+> +	[0x3] = "rpiboot",
+> +	[0x4] = "usbmsd",
+> +	[0x5] = "usbc",
+> +	[0x6] = "nvme",
+> +	[0x7] = "http",
+> +};
+> +
+>  struct rpi_priv;
+>  struct rpi_machine_data {
+>  	int (*init)(struct rpi_priv *priv);
+> @@ -186,54 +200,151 @@ static int rpi_env_init(void)
+>  	return 0;
+>  }
+>  
+> -/* Extract /chosen/bootargs from the VideoCore FDT into vc.bootargs
+> - * global variable. */
+> -static int rpi_vc_fdt_bootargs(void *fdt)
+> +/* Extract useful information from the VideoCore FDT we got.
+> + * Some parameters are defined here:
+> + * https://www.raspberrypi.com/documentation/computers/configuration.html#part4
+> + */
+> +static void rpi_vc_fdt_parse(void *fdt)
+>  {
+> -	int ret = 0;
+> -	struct device_node *root = NULL, *node;
+> -	const char *cmdline;
+> +	int ret, len;
+> +	struct device_node *root, *chosen, *bootloader;
+> +	enum reset_src_type rst_src = RESET_UKWN;
+> +	const char *str;
+> +	char *dynstr;
+> +	u32 num, *pnum;
+>  
+>  	root = of_unflatten_dtb(fdt, INT_MAX);
+> -	if (IS_ERR(root)) {
+> -		ret = PTR_ERR(root);
+> -		root = NULL;
+> -		goto out;
+> +	if (IS_ERR(root))
+> +		return;
+> +
+> +	str = of_get_property(root, "serial-number", &len);
+> +	if (!str) {
+> +		pr_warn("no 'serial-number' property found in vc fdt\n");
+> +	} else {
+> +		if (str[len - 1] == '\0') {
+> +			barebox_set_serial_number(str);
+> +		} else {
+> +			pr_warn("Malformed property 'serial-number' (not null "
+> +				"terminated)\n");
+> +			dynstr = xstrndup(str, len);
+> +			barebox_set_serial_number(dynstr);
+> +			free(dynstr);
+> +		}
+>  	}
 
-Andrej
+Sorry, some miscommunication here. Just use your normal approach in
+the else clause. I had forgotten that some of these properties are
+malformed. You can also drop the warning message about null
+termination here.
+
+>  
+> -	node = of_find_node_by_path_from(root, "/chosen");
+> -	if (!node) {
+> -		pr_err("no /chosen node\n");
+> -		ret = -ENOENT;
+> -		goto out;
+> +	str = of_get_property(root, "model", &len);
+> +	if (!str) {
+> +		pr_warn("no 'model' property found in vc fdt\n");
+> +	} else {
+> +		if (str[len - 1] == '\0') {
+> +			barebox_set_model(str);
+> +		} else {
+> +			pr_warn("Malformed property 'model' (not null "
+> +				"terminated)\n");
+
+As above.
+
+> +			dynstr = xstrndup(str, len);
+> +			barebox_set_model(dynstr);
+> +			free(dynstr);
+> +		}
+>  	}
+>  
+> -	cmdline = of_get_property(node, "bootargs", NULL);
+> -	if (!cmdline) {
+> -		pr_err("no bootargs property in the /chosen node\n");
+> -		ret = -ENOENT;
+> +	chosen = of_find_node_by_path_from(root, "/chosen");
+> +	if (!chosen) {
+> +		pr_err("no '/chosen' node found in vc fdt\n");
+>  		goto out;
+>  	}
+>  
+> -	globalvar_add_simple("vc.bootargs", cmdline);
+> +	bootloader = of_find_node_by_name(chosen, "bootloader");
+>  
+> -	switch(cpu_architecture()) {
+> -	case CPU_ARCH_ARMv6:
+> -		globalvar_add_simple("vc.kernel", "kernel.img");
+> -		break;
+> -	case CPU_ARCH_ARMv7:
+> -		globalvar_add_simple("vc.kernel", "kernel7.img");
+> -		break;
+> -	case CPU_ARCH_ARMv8:
+> -		globalvar_add_simple("vc.kernel", "kernel8.img");
+> -		break;
+> +	str = of_get_property(chosen, "bootargs", &len);
+> +	if (!str) {
+> +		pr_warn("no 'bootargs' property in the /chosen node\n");
+> +	} else {
+> +		if (str[len - 1] == '\0') {
+> +			globalvar_add_simple("vc.bootargs", str);
+> +		} else {
+> +			pr_warn("Malformed property 'bootargs' (not null "
+> +				"terminated)\n");
+> +			globalvar_add_simple("vc.bootargs", xstrndup(str, len));
+> +		}
+> +	}
+> +
+> +	str = of_get_property(chosen, "overlay_prefix", &len);
+> +	if (!str) {
+> +		pr_warn("no 'overlay_prefix' property in the /chosen node\n");
+> +	} else {
+> +		if (str[len - 1] == '\0'){
+> +			globalvar_add_simple("vc.overlay_prefix", str);
+> +		} else {
+> +			pr_warn("Malformed property 'overlay_prefix' (not null "
+> +				"terminated)\n");
+> +			globalvar_add_simple("vc.overlay_prefix",
+> +					     xstrndup(str, len));
+> +		}
+> +	}
+> +
+> +	str = of_get_property(chosen, "os_prefix", &len);
+> +	if (!str) {
+> +		pr_warn("no 'os_prefix' property in the /chosen node\n");
+> +	} else {
+> +		if (str[len - 1] == '\0') {
+> +			globalvar_add_simple("vc.os_prefix", str);
+> +		} else {
+> +			pr_warn("Malformed property 'os_prefix' (not null "
+> +				"terminated)\n");
+> +			globalvar_add_simple("vc.os_prefix", xstrndup(str, len));
+> +		}
+> +	}
+> +
+> +	ret = of_property_read_u32(chosen, "boot-mode", &num);
+> +	if (ret && bootloader)
+> +		ret = of_property_read_u32(bootloader, "boot-mode", &num);
+> +	if (ret) {
+> +		pr_warn("'boot-mode' property not found\n");
+> +	} else {
+> +		pnum = xmalloc(sizeof(u32));
+> +		*pnum = num;
+> +		globalvar_add_simple_enum("vc.boot_mode", pnum,
+> +					  boot_mode_names,
+> +					  ARRAY_SIZE(boot_mode_names));
+>  	}
+>  
+> +	ret = of_property_read_u32(chosen, "partition", &num);
+> +	if (ret && bootloader)
+> +		ret = of_property_read_u32(bootloader, "partition", &num);
+> +	if (ret) {
+> +		pr_warn("'partition' property not found\n");
+> +	} else {
+> +		pnum = xmalloc(sizeof(u32));
+> +		*pnum = num;
+> +		globalvar_add_simple_int("vc.boot_partition", pnum, "%u");
+> +	}
+> +
+> +	if (IS_ENABLED(CONFIG_RESET_SOURCE)) {
+> +		ret = of_property_read_u32(chosen, "pm_rsts", &num);
+> +		if (ret && bootloader)
+> +			 ret = of_property_read_u32(bootloader, "rsts", &num);
+> +
+> +		if (ret) {
+> +			pr_warn("'pm_rsts'/'rsts' property not found\n");
+> +		} else {
+> +/*
+> + * https://github.com/raspberrypi/linux/issues/932#issuecomment-93989581
+> + */
+> +			if (num & PM_RSTS_HADPOR_SET)
+> +				rst_src = RESET_POR;
+> +			else if (num & PM_RSTS_HADDR_SET)
+> +				rst_src = RESET_JTAG;
+> +			else if (num & PM_RSTS_HADWR_SET)
+> +				rst_src = RESET_WDG;
+> +			else if (num & PM_RSTS_HADSR_SET)
+> +				rst_src = RESET_RST;
+> +			reset_source_set(rst_src);
+> +		}
+> +	}
+>  out:
+>  	if (root)
+>  		of_delete_node(root);
+> -
+> -	return ret;
+> +	return;
+>  }
+>  
+>  static void rpi_vc_fdt(void)
+> @@ -241,7 +352,6 @@ static void rpi_vc_fdt(void)
+>  	void *saved_vc_fdt;
+>  	struct fdt_header *oftree;
+>  	unsigned long magic, size;
+> -	int ret;
+>  
+>  	/* VideoCore FDT was copied in PBL just above Barebox memory */
+>  	saved_vc_fdt = (void *)(arm_mem_endmem_get());
+> @@ -260,16 +370,23 @@ static void rpi_vc_fdt(void)
+>  		return;
+>  
+>  	size = be32_to_cpu(oftree->totalsize);
+> -	if (write_file("/vc.dtb", saved_vc_fdt, size)) {
+> +	if (write_file("/vc.dtb", saved_vc_fdt, size))
+>  		pr_err("failed to save videocore fdt to a file\n");
+> -		return;
+> -	}
+>  
+> -	ret = rpi_vc_fdt_bootargs(saved_vc_fdt);
+> -	if (ret) {
+> -		pr_err("failed to extract bootargs from videocore fdt: %d\n",
+> -									ret);
+> -		return;
+> +	rpi_vc_fdt_parse(saved_vc_fdt);
+> +}
+> +
+> +static void rpi_set_kernel_name(void) {
+> +	switch(cpu_architecture()) {
+> +	case CPU_ARCH_ARMv6:
+> +		globalvar_add_simple("vc.kernel", "kernel.img");
+> +		break;
+> +	case CPU_ARCH_ARMv7:
+> +		globalvar_add_simple("vc.kernel", "kernel7.img");
+> +		break;
+> +	case CPU_ARCH_ARMv8:
+> +		globalvar_add_simple("vc.kernel", "kernel8.img");
+> +		break;
+>  	}
+>  }
+>  
+> @@ -348,6 +465,7 @@ static int rpi_devices_probe(struct device_d *dev)
+>  	armlinux_set_architecture(MACH_TYPE_BCM2708);
+>  	rpi_env_init();
+>  	rpi_vc_fdt();
+> +	rpi_set_kernel_name();
+>  
+>  	if (dcfg && dcfg->init)
+>  		dcfg->init(priv);
+> diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
+> index ece80837b..c6e6a289f 100644
+> --- a/drivers/watchdog/bcm2835_wdt.c
+> +++ b/drivers/watchdog/bcm2835_wdt.c
+> @@ -10,28 +10,7 @@
+>  #include <restart.h>
+>  #include <watchdog.h>
+>  
+> -#define PM_RSTC		0x1c
+> -#define PM_RSTS		0x20
+> -#define PM_WDOG		0x24
+> -
+> -#define PM_WDOG_RESET				0000000000
+> -#define PM_PASSWORD				0x5a000000
+> -#define PM_WDOG_TIME_SET			0x000fffff
+> -#define PM_RSTC_WRCFG_CLR			0xffffffcf
+> -#define PM_RSTC_WRCFG_SET			0x00000030
+> -#define PM_RSTC_WRCFG_FULL_RESET		0x00000020
+> -#define PM_RSTC_RESET				0x00000102
+> -
+> -#define PM_RSTS_HADPOR_SET			0x00001000
+> -#define PM_RSTS_HADSRH_SET			0x00000400
+> -#define PM_RSTS_HADSRF_SET			0x00000200
+> -#define PM_RSTS_HADSRQ_SET			0x00000100
+> -#define PM_RSTS_HADWRH_SET			0x00000040
+> -#define PM_RSTS_HADWRF_SET			0x00000020
+> -#define PM_RSTS_HADWRQ_SET			0x00000010
+> -#define PM_RSTS_HADDRH_SET			0x00000004
+> -#define PM_RSTS_HADDRF_SET			0x00000002
+> -#define PM_RSTS_HADDRQ_SET			0x00000001
+> +#include <soc/bcm283x/wdt.h>
+>  
+>  #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
+>  
+> diff --git a/include/soc/bcm283x/wdt.h b/include/soc/bcm283x/wdt.h
+> new file mode 100644
+> index 000000000..ce97b1eb5
+> --- /dev/null
+> +++ b/include/soc/bcm283x/wdt.h
+> @@ -0,0 +1,40 @@
+> +/*
+> + * Copyright (C) 2017 Pengutronix, Lucas Stach <l.stach@pengutronix.de>
+> + *
+> + * Based on code from  Carlo Caione <carlo@carlocaione.org>
+> + */
+> +
+> +#ifndef __BCM2835_WDT_H
+> +#define __BCM2835_WDT_H
+> +
+> +#define PM_RSTC				0x1c
+> +#define PM_RSTS				0x20
+> +#define PM_WDOG				0x24
+> +
+> +#define PM_WDOG_RESET			0000000000
+> +#define PM_PASSWORD			0x5a000000
+> +#define PM_WDOG_TIME_SET		0x000fffff
+> +#define PM_RSTC_WRCFG_CLR		0xffffffcf
+> +#define PM_RSTC_WRCFG_SET		0x00000030
+> +#define PM_RSTC_WRCFG_FULL_RESET	0x00000020
+> +#define PM_RSTC_RESET			0x00000102
+> +
+> +#define PM_RSTS_HADPOR_SET		0x00001000
+> +#define PM_RSTS_HADSRH_SET		0x00000400
+> +#define PM_RSTS_HADSRF_SET		0x00000200
+> +#define PM_RSTS_HADSRQ_SET		0x00000100
+> +#define PM_RSTS_HADWRH_SET		0x00000040
+> +#define PM_RSTS_HADWRF_SET		0x00000020
+> +#define PM_RSTS_HADWRQ_SET		0x00000010
+> +#define PM_RSTS_HADDRH_SET		0x00000004
+> +#define PM_RSTS_HADDRF_SET		0x00000002
+> +#define PM_RSTS_HADDRQ_SET		0x00000001
+> +
+> +#define PM_RSTS_HADDR_SET \
+> +	(PM_RSTS_HADDRQ_SET | PM_RSTS_HADDRF_SET | PM_RSTS_HADDRH_SET)
+> +#define PM_RSTS_HADWR_SET \
+> +	(PM_RSTS_HADWRQ_SET | PM_RSTS_HADWRF_SET | PM_RSTS_HADWRH_SET)
+> +#define PM_RSTS_HADSR_SET \
+> +	(PM_RSTS_HADSRQ_SET | PM_RSTS_HADSRF_SET | PM_RSTS_HADSRH_SET)
+> +
+> +#endif
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
