@@ -1,53 +1,94 @@
-Delivery-date: Tue, 14 Jun 2022 11:53:56 +0200
+Delivery-date: Tue, 14 Jun 2022 12:35:59 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o13FD-0025Xd-Gh
-	for lore@lore.pengutronix.de; Tue, 14 Jun 2022 11:53:56 +0200
+	id 1o13ts-002771-DN
+	for lore@lore.pengutronix.de; Tue, 14 Jun 2022 12:35:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o13FD-0002pF-Bk
-	for lore@pengutronix.de; Tue, 14 Jun 2022 11:53:56 +0200
+	id 1o13ts-0000nn-DY
+	for lore@pengutronix.de; Tue, 14 Jun 2022 12:35:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
-	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:From:References:To:Subject:
-	MIME-Version:Date:Message-ID:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=4fUlhU5UZR/UysxQZn5vSF1hNLDJIpnuXMf52uC61tY=; b=uuUHxuz7vyq5gq
-	lsS15sDpwaIM7jAEMAEi2t7dE/0FpZEfeF2oXJgBTaq3GRNdiPbNgPFiYXORkknO3OuZCySLQ5PD7
-	w1QQF8bKSOEZw+80nOYl5bx/of9HuhCCL51jRd17JKrbpJuP35heXe/PYYr2+2rs9w1NK8lhqYDQO
-	QUKcgJzpmi53u2tYRANSxxDTzIYdvuD1gOy4gOgywawwKlNv0EiPowgtV0v2cd8JENuo4aELlyUJ/
-	Qg+GAfMlb+nv+ESnQmEtqoqU+WzsHEcgf4JIOJQZaN4PvYNhzOGskBePNw0puu/yaR1YIGpRqhrVc
-	5wdZgOewlfqAxFyWnTWQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ZfMHApSbXicGonMlZINOYXlrTyDRsxv6Z7FYUQYCxNM=; b=IRaDfdlAqtFDUaautwt+7uDVtE
+	xX6TmimfIHM4+zivPT7bb5YjlgMmaKbPza7Mj9ioYjeH3Mbz1LOMPuxcv2dMZMRoC4fCHGL3m8fse
+	4g4jikZGsFSqu+upEYj/cRBz79M0oeyWMdvegDxAVgIPgHlQbsHXdqgzZH/z/t4s1YwoAA9vtaaxl
+	gg/+P3mV2Ka/v16D/6hxp6FClhcph2TUnb+QILAJAtlHD6VV8SeQU9xXGLdN2W38OD80Qd1Zrorcu
+	33+6Lh01tdyx4c5OV4vAImwSe27tinIrXZWjRa+gd0rTv9bnMiSnchycu2mjItcEqbxwgUMyB8Aw2
+	XIkClrdg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o13Du-008uT7-Ar; Tue, 14 Jun 2022 09:52:34 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1o13sE-0093m4-Gv; Tue, 14 Jun 2022 10:34:14 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o13Dp-008uSC-86
-	for barebox@lists.infradead.org; Tue, 14 Jun 2022 09:52:31 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1o13Dm-0002dy-Cr; Tue, 14 Jun 2022 11:52:26 +0200
-Message-ID: <4f2eca20-3afa-d521-fa02-55070140f759@pengutronix.de>
-Date: Tue, 14 Jun 2022 11:52:26 +0200
+	id 1o13sA-0093lN-RY
+	for barebox@bombadil.infradead.org; Tue, 14 Jun 2022 10:34:10 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=ZfMHApSbXicGonMlZINOYXlrTyDRsxv6Z7FYUQYCxNM=; b=qO7NiibKClAkUJ0ALiq8+HCX2J
+	3k0J80CZqBDF7v3B8PtazXCfJakb0BoS6nwV5xfg/GiApx7Hm9aKqFM4dMnNEXW8O4ku9bk8jhltr
+	22VrYxX6XEfEr7RPIVZrt6X+GNw/xtSkaDEhbbMwHGKyttvoIPj0Qa/Y7QdDOmxUE4G2SLl6b+aTG
+	RaIbmnuFqWtLpSLcdaXCgrHjxSON7yoKM/mGEpjCBznKFOmFHawicHvocBk/04YpTM6e4dkJ5kEgB
+	/QAEoxiLjyhzWGCVbz9Hg5Sm90cOuiOfsbZ4XZWrAKZFyMOH8hco0lka3Mm4U42VqG1l7bbgwsaFZ
+	zuABWY+Q==;
+Received: from smtp-cpanel.siel.si ([46.19.9.86] helo=cpanel.siel.si)
+	by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1o13rz-007pgq-IY
+	for barebox@lists.infradead.org; Tue, 14 Jun 2022 10:34:08 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ZfMHApSbXicGonMlZINOYXlrTyDRsxv6Z7FYUQYCxNM=; b=WZltKjyvccu55r5QjNo3Vy2sdO
+	JANogjfTe4JlaPVLT5EtgdjvxKyi2IWH5wxB6wE0MKXtygN+bV8DMspBzw49DQIp+Tkczl1xH+/g1
+	WZutMHAUHP9Z5WI/5MXqZmmXHBN1lrCVceCqvDiRgRSRen+8pfDdBJnRadwsuK4CPY/E+pi1iXKXt
+	aIUwhYlcvL1mPKwsNrZ+Kw5aD6UEXZWlhZSqi8YYZ2Vx4B6UblQyEuPTY95AyhD87Nf9uN4jatNEx
+	zHsXt5X9t996h84LcSxhztoEm4ipsiiuPNB7MLeBPUzAQ8DCdzxuyf6+FISs3qa6I3uS+okkuHw7o
+	BbleMp+g==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:43624 helo=[192.168.69.86])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.95)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1o13rk-001NVE-Na;
+	Tue, 14 Jun 2022 12:33:44 +0200
+Message-ID: <2962db0d-44a9-9a52-ef5d-e357aee5a3ae@norik.com>
+Date: Tue, 14 Jun 2022 12:33:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_Br=c3=a1t?= <danek.brat@gmail.com>,
- barebox@lists.infradead.org
-References: <20220611212842.6413-1-danek.brat@gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220611212842.6413-1-danek.brat@gmail.com>
+ Thunderbird/91.9.1
+Content-Language: en-GB
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+References: <c51b2c94-61b7-df44-5d4c-025d18c4b24f@norik.com>
+ <20220614082711.GQ1615@pengutronix.de>
+From: Andrej Picej <andrej.picej@norik.com>
+In-Reply-To: <20220614082711.GQ1615@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.infradead.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220614_025229_325699_D805CC8B 
-X-CRM114-Status: GOOD (  20.02  )
+X-CRM114-CacheID: sfid-20220614_113403_749905_15EB9D88 
+X-CRM114-Status: GOOD (  18.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -59,64 +100,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] i2c: add bcm283x i2c host controller support
+Subject: Re: Ethernet reinit on phyCORE hangs the device
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGVsbG8gRGFuaWVsLAoKVGhhbmtzIGZvciB5b3VyIHBhdGNoLgoKT24gMTEuMDYuMjIgMjM6Mjgs
-IERhbmllbCBCcsOhdCB3cm90ZToKPiBBZGQgYSBkcml2ZXIgdG8gc3VwcG9ydCB0aGUgaTJjIGhv
-c3QgY29udHJvbGxlciAoQlNDKQo+IGZvdW5kIG9uIGJjbTI4M3ggZmFtaWx5IG9zIFNvQ3MuCgpz
-L29zL29mLwoKPiAKPiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgQnLDoXQgPGRhbmVrLmJyYXRAZ21h
-aWwuY29tPgo+IC0tLQo+ICBhcmNoL2FybS9jb25maWdzL3JwaV92OGFfZGVmY29uZmlnIHwgICAz
-ICstCgpZb3UgY2FuIGVuYWJsZSBpdCBmb3IgcnBpX2RlZmNvbmZpZyB0b28KCj4gIGRyaXZlcnMv
-aTJjL2J1c3Nlcy9LY29uZmlnICAgICAgICAgfCAgIDQgKwo+ICBkcml2ZXJzL2kyYy9idXNzZXMv
-TWFrZWZpbGUgICAgICAgIHwgICAxICsKPiAgZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1iY20yODN4
-LmMgICB8IDM3MiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ICA0IGZpbGVzIGNoYW5n
-ZWQsIDM3OSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4gIGNyZWF0ZSBtb2RlIDEwMDY0
-NCBkcml2ZXJzL2kyYy9idXNzZXMvaTJjLWJjbTI4M3guYwo+IAo+IGRpZmYgLS1naXQgYS9hcmNo
-L2FybS9jb25maWdzL3JwaV92OGFfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9ycGlfdjhh
-X2RlZmNvbmZpZwo+IGluZGV4IDY4Y2QyNDM4Yi4uZTIxODMxMWE3IDEwMDY0NAo+IC0tLSBhL2Fy
-Y2gvYXJtL2NvbmZpZ3MvcnBpX3Y4YV9kZWZjb25maWcKPiArKysgYi9hcmNoL2FybS9jb25maWdz
-L3JwaV92OGFfZGVmY29uZmlnCj4gQEAgLTgxLDYgKzgxLDggQEAgQ09ORklHX1NFUklBTF9BTUJB
-X1BMMDExPXkKPiAgQ09ORklHX0RSSVZFUl9TRVJJQUxfTlMxNjU1MD15Cj4gIENPTkZJR19ORVRf
-VVNCPXkKPiAgQ09ORklHX05FVF9VU0JfU01TQzk1WFg9eQo+ICtDT05GSUdfSTJDPXkKPiArQ09O
-RklHX0kyQ19CQ00yODNYPXkKPiAgQ09ORklHX1VTQl9IT1NUPXkKPiAgQ09ORklHX1VTQl9EV0My
-X0hPU1Q9eQo+ICBDT05GSUdfVVNCX0RXQzJfR0FER0VUPXkKPiBAQCAtMTA4LDQgKzExMCwzIEBA
-IENPTkZJR19GU19GQVQ9eQo+ICBDT05GSUdfRlNfRkFUX1dSSVRFPXkKPiAgQ09ORklHX0ZTX0ZB
-VF9MRk49eQo+ICBDT05GSUdfWkxJQj15Cj4gLUNPTkZJR19MWk9fREVDT01QUkVTUz15Cj4gZGlm
-ZiAtLWdpdCBhL2RyaXZlcnMvaTJjL2J1c3Nlcy9LY29uZmlnIGIvZHJpdmVycy9pMmMvYnVzc2Vz
-L0tjb25maWcKPiBpbmRleCA1OGY4NjU2MDYuLjQyOWY1YmE0MiAxMDA2NDQKPiAtLS0gYS9kcml2
-ZXJzL2kyYy9idXNzZXMvS2NvbmZpZwo+ICsrKyBiL2RyaXZlcnMvaTJjL2J1c3Nlcy9LY29uZmln
-Cj4gQEAgLTE3LDYgKzE3LDEwIEBAIGNvbmZpZyBJMkNfQVQ5MQo+ICAJYm9vbCAiQVQ5MSBJMkMg
-TWFzdGVyIGRyaXZlciIKPiAgCWRlcGVuZHMgb24gQVJDSF9BVDkxCj4gIAo+ICtjb25maWcgSTJD
-X0JDTTI4M1gKPiArCWJvb2wgIkJDTTI4M1ggSTJDIE1hc3RlciBkcml2ZXIiCj4gKwlkZXBlbmRz
-IG9uIEFSQ0hfQkNNMjgzWAoKfHwgQ09NUElMRV9URVNUCgo+ICsJCQlpZiAocmV0KSB7Cj4gKwkJ
-CQlkZXZfZXJyKGRldiwgInRpbWVvdXQ6IDEwYml0IGFkZHIgIgo+ICsJCQkJCSAgICAgInJlYWQg
-aW5pdGlsaXphdGlvblxuIik7CgpEb24ndCBsaW5lLWJyZWFrIHN0cmluZ3MuIEl0IG5lZWRsZXNz
-bHkgY29tcGxpY2F0ZXMgc2VhcmNoaW5nIGZvciBtZXNzYWdlcwppbiB0aGUgY29kZS4gQWxzbyB5
-b3UgZG9uJ3QgbmVlZCB0byBhZGhlcmUgcmVsaWdpb3VzbHkgdG8gODAgY2hhcmFjdGVycy4KVXAg
-dG8gMTAwIGNoYXJhY3RlcnMgaXMgdXN1YWxseSBvay4gSWYgeW91IGdvIGJleW9uZCB0aGF0LCBy
-ZWV2YWx1YXRlCmlmIGl0IHdvdWxkbid0IGJlIG1vcmUgcmVhZGFibGUgdG8gcmVkdWNlIGluZGVu
-dGF0aW9uLgoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAg
-ICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8CjMxMTM3IEhp
-bGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5
-MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZh
-eDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+Hi Sascha,
+
+On 14. 06. 22 10:27, Sascha Hauer wrote:
+> On Tue, Jun 14, 2022 at 09:12:23AM +0200, Andrej Picej wrote:
+>> Hi all,
+>>
+>> when testing barebox ethernet on i.MX6 (phyCORE) we encountered a bug:
+>> the ethernet re-init on barebox doesn't work! If we do:
+>> $ ifup eth0
+>> $ ifdown eth0
+>> and then:
+>> $ ifup eth0
+>> $ ping HOST_IP
+>> the device hangs and can only be saved by resetting the board manually.
+> 
+> I can confirm the behaviour is the same here.
+
+Great.
+
+> 
+>>
+>> We narrowed the problem down to the "fec_tx_task_enable". It seems that
+>> enabling tx task with writing to TDAR reg hangs the device shortly after.
+>>
+>> Did you guys maybe encounter something similar on i.MX6 boards or on any
+>> other boards?
+>>
+>> I guess this is a really specific problem as people don't normally do
+>> ifup/ifdown with ethernet in bootloader :D.
+> 
+> Nope :)
+> 
+>>
+>> Do you have any idea what could be the reason or how could this be solved?
+>> Any useful information would be greatly appreciated.
+> 
+> Part of the problem is that fec_halt() tears down the device completely.
+> The counterpart of that is fec_init(), but that is called from during
+> probe only. I think fec_init() should be called from fec_open() as well.
+
+Hmm I thought I already tried that, guess not...
+
+> 
+> A quick test revealed this is really only part of the problem. The next
+> one is that fec_update_linkspeed() is not called on second open, so the
+> fec speed registers will not get their correct value.
+
+Ok, I'll check that out.
+Thanks for your help so far.
+
+Andrej
+
 
