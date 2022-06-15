@@ -1,80 +1,80 @@
-Delivery-date: Wed, 15 Jun 2022 20:43:55 +0200
+Delivery-date: Wed, 15 Jun 2022 22:41:08 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o1Xzd-003EGT-Lq
-	for lore@lore.pengutronix.de; Wed, 15 Jun 2022 20:43:55 +0200
+	id 1o1Zp5-003IZc-AJ
+	for lore@lore.pengutronix.de; Wed, 15 Jun 2022 22:41:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o1Xzc-00032p-Uz
-	for lore@pengutronix.de; Wed, 15 Jun 2022 20:43:54 +0200
+	id 1o1Zp4-0007uy-Jm
+	for lore@pengutronix.de; Wed, 15 Jun 2022 22:41:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=r7zWkcrx3h458c/xyZRKV8pLBMG252whUO24+QBY00U=; b=fmdmQXp/fcfBtRZnGn+9fW3yew
-	8XvU5hF/sBdNS2TtAOEr8dFZDo5z19Kxyu2flbHHhycynzBbrxIxtBYk+cjDM+vXUb/9mQZOekWkl
-	gYVmeGlPHHO398Me7HWBkDaX0M4ZGDUEWJkzaulCKQpmgzuBti2k3kPEyeGlWmCEUR8v6/zOSsFwl
-	zQM5yT4tdkI1GeeokyzUCXQewuw1H/I2AiOwGYua/bkVVpcyw1IQ1e3xXiB3fIgW/YDjjTCniMiUZ
-	XkfWGnTXD0/+8EJ46bL49oN15ChfDHch7L2JCO5m4TdZTJT9Ei8Xuk+VXCDxH94BRSMec6zoQRDtZ
-	UY3orLwA==;
+	bh=XEdjmAlPePxrV5+vXdQm+CAt8hl+pf5e9r4dD3gzw+A=; b=Yxi5XG75YI6D6uBxWHK6DKSsN7
+	K2b3u+sEdn1+ih3NdROc7sJ/UR7R3eX0gVT8lYPHLhnqIsDN7nzNDV5w11U8B0pblWLRXPX1wrvly
+	8I92iUcWbZXZAE1dDfcBNAOIxwSlV1N9Vuxiqp4DEwQjvccaxfxVP001gtMsD2oLNFE7sPc1AwoRV
+	HCPt0LiVeRGUosDd34BePHk2+Mim6/yMelqbyMKjnfZDbPDfgZ2vwj/gP1Co+7VCWhJuFAhBqlEtF
+	MtBfc20Nkk4kjhGB5+qAwBFRGDg4eNfSKeaO9ffGHGo4iiAR5fCH6iSdEM8n9r3UfXg46R4UC+fL+
+	p2LK9vNA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o1Xxo-00Fwkf-WB; Wed, 15 Jun 2022 18:42:01 +0000
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+	id 1o1ZnM-00GGZX-8t; Wed, 15 Jun 2022 20:39:20 +0000
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o1Xxj-00FwjO-Ml
-	for barebox@lists.infradead.org; Wed, 15 Jun 2022 18:41:57 +0000
-Received: by mail-ej1-x636.google.com with SMTP id me5so25016115ejb.2
-        for <barebox@lists.infradead.org>; Wed, 15 Jun 2022 11:41:52 -0700 (PDT)
+	id 1o1ZnG-00GGXl-0y
+	for barebox@lists.infradead.org; Wed, 15 Jun 2022 20:39:17 +0000
+Received: by mail-ej1-x62f.google.com with SMTP id u12so25457161eja.8
+        for <barebox@lists.infradead.org>; Wed, 15 Jun 2022 13:39:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=r7zWkcrx3h458c/xyZRKV8pLBMG252whUO24+QBY00U=;
-        b=QHe1HMLF0vMCCE1y33hkoEdlPKde+PzQ2AYB6MStsWMrkSjyBvDhHuIalJ8ennJPk4
-         aUfIFRbGzzkgvtB5rxdqGeWU2VXc1tu5cu/n5c0dkZrm1hJ9KJvr3MRkpAgzUcmo6i21
-         atKAB/DDXI5UDwhroa2rWUErrvtgVuEr3dmfjqRJpTad3ATfhv/KCKQoXoxs+zbr+ryb
-         Xr7JkZ/UTISyE2LC9xLUvUwC77MrtvsydsiNLvT4B8EvEIy36kiUnHlf7rIsLv+V0Lm6
-         VzfQHT9Ya6a4KIYFYcMKD33Cctg4+hXOfZEjxbHZtKvahuc0JuZHYMkJfRqpOVrfTciz
-         NVNA==
+        bh=XEdjmAlPePxrV5+vXdQm+CAt8hl+pf5e9r4dD3gzw+A=;
+        b=K2ujqXAUxFyhYZ3IexmHFUUL1eWbjFkx8Cmk1yUi5DFgAkLO/h6aZIcJh3TWDwOe6X
+         3QcPm+FU1iV2Z7+ujrT+5/UiYkpCakv56TXIy+7HDdAaQCQxvghY22J7Qkh2BYSnEh/8
+         Dr1KX8TRSzuNjr+xunW3+gOkt5+jLfZ2TozCd1K0G+0IRbnMOgQHXqXUSE0KGTlpJCrx
+         Is+i8EUSuOtKC72PY4rFrikjoloeWxSIwt1ff2a9mtSbD0a8ud2l1GKqlzjBJlkBs4D3
+         Yx8SkpJv/ZF7piEKOXa6vQ1RFeHRkiT2FpOfJ6dCLxAiJlJZ8iQlx8FjM1POAmYy/+PA
+         PWGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=r7zWkcrx3h458c/xyZRKV8pLBMG252whUO24+QBY00U=;
-        b=sSxl/S0kR3WExpJ9YAE3fsN+O4RrxQMUwe2HgQGCJRdOSfDXpoPk9j7uJzKzZD1E1g
-         b4Nzm85USRsqvP+CsHmxTuxM9K6hkvUVmH0ugJddtXZp7kGd1h4rhfH60BcQwACOJbN7
-         uzE0wUehKroWY/mERLKRp94mJtdVbEthue1HDCNFO/cOtawOAvTWPUux5OjXaJUJiXSL
-         EKlUmslw4suoCDLnU+DkwSO4HY+6Ui/ZMUn0cjO2tF9s6Xb0KqeWNUQKVJ90HrxC1fhJ
-         1GBdzgQNNHR77ct3KIUFbZ7/3KkdryvafNghilvfAjuzc5lC2UQK1hJKsDmF4HxaRbeS
-         N2NA==
-X-Gm-Message-State: AJIora+pnsdqJj+IGde/nQeUqG0jPQVeDRJ+v4msLIudrTVguvRRypkr
-	Om2JX4LnzJel0FrlrvxdYkA9JrNBBnc=
-X-Google-Smtp-Source: AGRyM1v7fjDOmLEsG9w1i2sSeAxV4wjw7r7xz6Yd3vVirRlOwiujiNoweERstDIrjdWLDZPjerCkmQ==
-X-Received: by 2002:a17:906:891:b0:70b:c30e:c1f1 with SMTP id n17-20020a170906089100b0070bc30ec1f1mr987560eje.733.1655318510943;
-        Wed, 15 Jun 2022 11:41:50 -0700 (PDT)
+        bh=XEdjmAlPePxrV5+vXdQm+CAt8hl+pf5e9r4dD3gzw+A=;
+        b=PBjIgOMG3X+ee3z1QSzzdGrFfKlAYYYaB1rHbtpipBFryCcpTN1rUrNr/bUZY+B2dz
+         tsaCpZhwGrRUuQ2McHfonlCiqyxCim+X5iyJ7mN+NV+O1XJNcfb7nNSQrwf4KGCySdGY
+         3DdTDRIyYeBUNko3+n35ou9wUpSwYupq5eaRlCfowTYeOW2IX0TKJ13n3LQI2NE6cKh2
+         2jD3cXCQS0c4WnZnyo83a4d2mWf1ev8eCf8SeqjHh0HvAGVXRTcadaFHQrgAgXbqnlWS
+         Y/tYmRwkfvshgx1LCkXUY17CKpnEOdjvr/QZMnrD5StXzF8ZNG+mYwzKflSISPin8LDo
+         ih9w==
+X-Gm-Message-State: AJIora+ieMB31rXHPxqkg/0vX4RmAcVVoqWczWq2CArCLN8xTM318PRt
+	lx/RSKM2P2lK7p1RY7hH6YOKB6YT1Fo=
+X-Google-Smtp-Source: AGRyM1tvs+Nx3RUpVV/cdpTNeb9FIAIRzwZGI+RILl1GUF7lJKMl1+MucqbG94zgPViGQW0ianlrxg==
+X-Received: by 2002:a17:906:3f4f:b0:715:85b4:54be with SMTP id f15-20020a1709063f4f00b0071585b454bemr1514586ejj.368.1655325551246;
+        Wed, 15 Jun 2022 13:39:11 -0700 (PDT)
 Received: from DESKTOP-KJS3OJ9.localdomain (ip-78-45-69-229.net.upcbroadband.cz. [78.45.69.229])
-        by smtp.gmail.com with ESMTPSA id l9-20020a056402028900b0042dd3bf1403sm9840319edv.54.2022.06.15.11.41.49
+        by smtp.gmail.com with ESMTPSA id v2-20020a170906380200b006fea2035036sm6729347ejc.86.2022.06.15.13.39.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 11:41:50 -0700 (PDT)
+        Wed, 15 Jun 2022 13:39:10 -0700 (PDT)
 From: =?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>
 To: barebox@lists.infradead.org
 Cc: =?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>
-Date: Wed, 15 Jun 2022 20:41:47 +0200
-Message-Id: <20220615184147.365-1-danek.brat@gmail.com>
+Date: Wed, 15 Jun 2022 22:39:09 +0200
+Message-Id: <20220615203909.27363-1-danek.brat@gmail.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220615_114155_827048_35EFFB93 
-X-CRM114-Status: GOOD (  21.96  )
+X-CRM114-CacheID: sfid-20220615_133914_151062_57F8ACE3 
+X-CRM114-Status: GOOD (  28.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,342 +92,426 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3] ARM: rpi: parse useful data from vc fdt
+Subject: [PATCH v2] i2c: add bcm283x i2c host controller support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Videocore first-stage loader on rpi passes us many useful information
-inside the vc fdt, including the real value of PM_RSTS register, not
-easily available by other means and which we can use to determine
-the reset cause.
-Also make the relevant funtions just print error/warning and continue
-in case of some errors, since the fdt from vc is now optional for
-barebox's basic function.
+Add a driver to support the i2c host controller (BSC)
+found in Broadcom's bcm283x family of SoCs (used by rpi boards).
 
 Signed-off-by: Daniel Brát <danek.brat@gmail.com>
 ---
- arch/arm/boards/raspberry-pi/rpi-common.c | 167 ++++++++++++++++------
- drivers/watchdog/bcm2835_wdt.c            |  23 +--
- include/soc/bcm283x/wdt.h                 |  40 ++++++
- 3 files changed, 167 insertions(+), 63 deletions(-)
- create mode 100644 include/soc/bcm283x/wdt.h
+ arch/arm/configs/rpi_defconfig     |   3 +-
+ arch/arm/configs/rpi_v8a_defconfig |   3 +-
+ drivers/i2c/busses/Kconfig         |   4 +
+ drivers/i2c/busses/Makefile        |   1 +
+ drivers/i2c/busses/i2c-bcm283x.c   | 327 +++++++++++++++++++++++++++++
+ 5 files changed, 336 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/i2c/busses/i2c-bcm283x.c
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index 12a4f4a0a..308a7085c 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -23,13 +23,28 @@
- #include <linux/sizes.h>
- #include <globalvar.h>
- #include <asm/system_info.h>
-+#include <reset_source.h>
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+index e0e149748..e7d695f8a 100644
+--- a/arch/arm/configs/rpi_defconfig
++++ b/arch/arm/configs/rpi_defconfig
+@@ -24,7 +24,6 @@ CONFIG_BOOTM_OFTREE=y
+ CONFIG_BLSPEC=y
+ CONFIG_CONSOLE_ALLOW_COLOR=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_DEFAULT_ENVIRONMENT_PATH=""
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+@@ -83,6 +82,8 @@ CONFIG_SERIAL_AMBA_PL011=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_NET_USB=y
+ CONFIG_NET_USB_SMSC95XX=y
++CONFIG_I2C=y
++CONFIG_I2C_BCM283X=y
+ CONFIG_USB_HOST=y
+ CONFIG_USB_DWC2_HOST=y
+ CONFIG_MCI=y
+diff --git a/arch/arm/configs/rpi_v8a_defconfig b/arch/arm/configs/rpi_v8a_defconfig
+index 68cd2438b..e218311a7 100644
+--- a/arch/arm/configs/rpi_v8a_defconfig
++++ b/arch/arm/configs/rpi_v8a_defconfig
+@@ -81,6 +81,8 @@ CONFIG_SERIAL_AMBA_PL011=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_NET_USB=y
+ CONFIG_NET_USB_SMSC95XX=y
++CONFIG_I2C=y
++CONFIG_I2C_BCM283X=y
+ CONFIG_USB_HOST=y
+ CONFIG_USB_DWC2_HOST=y
+ CONFIG_USB_DWC2_GADGET=y
+@@ -108,4 +110,3 @@ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
+ CONFIG_ZLIB=y
+-CONFIG_LZO_DECOMPRESS=y
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 58f865606..766aa5edf 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -17,6 +17,10 @@ config I2C_AT91
+ 	bool "AT91 I2C Master driver"
+ 	depends on ARCH_AT91
  
- #include <mach/core.h>
- #include <mach/mbox.h>
- #include <mach/platform.h>
- 
-+#include <soc/bcm283x/wdt.h>
++config I2C_BCM283X
++	bool "BCM283X I2C Master driver"
++	depends on ARCH_BCM283X || COMPILE_TEST
 +
- #include "lowlevel.h"
- 
-+//https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#BOOT_ORDER
-+static const char * const boot_mode_names[] = {
-+	[0x0] = "unknown",
-+	[0x1] = "sd",
-+	[0x2] = "net",
-+	[0x3] = "rpiboot",
-+	[0x4] = "usbmsd",
-+	[0x5] = "usbc",
-+	[0x6] = "nvme",
-+	[0x7] = "http",
+ config I2C_IMX
+ 	bool "MPC85xx/MPC5200/i.MX I2C Master driver"
+ 	depends on ARCH_IMX || ARCH_MPC85XX || ARCH_MPC5200 || ARCH_LAYERSCAPE
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index a8661f605..a1ab46fb2 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_I2C_AT91)		+= i2c-at91.o
++obj-$(CONFIG_I2C_BCM283X)	+= i2c-bcm283x.o
+ obj-$(CONFIG_I2C_GPIO)		+= i2c-gpio.o
+ obj-$(CONFIG_I2C_IMX)		+= i2c-imx.o
+ lwl-$(CONFIG_I2C_IMX_EARLY)	+= i2c-imx-early.o
+diff --git a/drivers/i2c/busses/i2c-bcm283x.c b/drivers/i2c/busses/i2c-bcm283x.c
+new file mode 100644
+index 000000000..097f73d98
+--- /dev/null
++++ b/drivers/i2c/busses/i2c-bcm283x.c
+@@ -0,0 +1,327 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * I2C bus driver for the BSC peripheral on Broadcom's bcm283x family of SoCs
++ *
++ * Based on documentation published by Raspberry Pi foundation and the kernel
++ * driver written by Stephen Warren.
++ *
++ * Copyright (C) Stephen Warren
++ * Copyright (C) 2022 Daniel Brát
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <malloc.h>
++#include <i2c/i2c.h>
++#include <i2c/i2c-algo-bit.h>
++#include <linux/iopoll.h>
++#include <linux/clk.h>
++#include <init.h>
++#include <of_address.h>
++
++// BSC C (Control) register
++#define BSC_C_READ		BIT(0)
++#define BSC_C_CLEAR1		BIT(4)
++#define BSC_C_CLEAR2		BIT(5)
++#define BSC_C_ST		BIT(7)
++#define BSC_C_INTD		BIT(8)
++#define BSC_C_INTT		BIT(9)
++#define BSC_C_INTR		BIT(10)
++#define BSC_C_I2CEN		BIT(15)
++
++// BSC S (Status) register
++#define BSC_S_TA		BIT(0)
++#define BSC_S_DONE		BIT(1)
++#define BSC_S_TXW		BIT(2)
++#define BSC_S_RXR		BIT(3)
++#define BSC_S_TXD		BIT(4)
++#define BSC_S_RXD		BIT(5)
++#define BSC_S_TXE		BIT(6)
++#define BSC_S_RXF		BIT(7)
++#define BSC_S_ERR		BIT(8)
++#define BSC_S_CLKT		BIT(9)
++
++// BSC A (Address) register
++#define BSC_A_MASK		0x7f
++
++// Constants
++#define BSC_CDIV_MIN		0x0002
++#define BSC_CDIV_MAX		0xfffe
++#define BSC_FIFO_SIZE		16U
++
++struct __packed bcm283x_i2c_regs {
++	u32 c;
++	u32 s;
++	u32 dlen;
++	u32 a;
++	u32 fifo;
++	u32 div;
++	u32 del;
++	u32 clkt;
 +};
 +
- struct rpi_priv;
- struct rpi_machine_data {
- 	int (*init)(struct rpi_priv *priv);
-@@ -186,54 +201,117 @@ static int rpi_env_init(void)
- 	return 0;
- }
- 
--/* Extract /chosen/bootargs from the VideoCore FDT into vc.bootargs
-- * global variable. */
--static int rpi_vc_fdt_bootargs(void *fdt)
-+/* Extract useful information from the VideoCore FDT we got.
-+ * Some parameters are defined here:
-+ * https://www.raspberrypi.com/documentation/computers/configuration.html#part4
-+ */
-+static void rpi_vc_fdt_parse(void *fdt)
- {
--	int ret = 0;
--	struct device_node *root = NULL, *node;
--	const char *cmdline;
-+	int ret, len;
-+	struct device_node *root, *chosen, *bootloader;
-+	enum reset_src_type rst_src = RESET_UKWN;
-+	const char *str;
-+	char *dynstr;
-+	u32 num, *pnum;
- 
- 	root = of_unflatten_dtb(fdt, INT_MAX);
--	if (IS_ERR(root)) {
--		ret = PTR_ERR(root);
--		root = NULL;
--		goto out;
-+	if (IS_ERR(root))
-+		return;
++struct bcm283x_i2c {
++	struct i2c_adapter adapter;
++	struct clk *mclk;
++	struct bcm283x_i2c_regs __iomem *regs;
++	u32 bitrate;
++};
 +
-+	str = of_get_property(root, "serial-number", &len);
-+	if (!str) {
-+		pr_warn("no 'serial-number' property found in vc fdt\n");
-+	} else {
-+		dynstr = xstrndup(str, len);
-+		barebox_set_serial_number(dynstr);
-+		free(dynstr);
- 	}
- 
--	node = of_find_node_by_path_from(root, "/chosen");
--	if (!node) {
--		pr_err("no /chosen node\n");
--		ret = -ENOENT;
--		goto out;
-+	str = of_get_property(root, "model", &len);
-+	if (!str) {
-+		pr_warn("no 'model' property found in vc fdt\n");
-+	} else {
-+		dynstr = xstrndup(str, len);
-+		barebox_set_model(dynstr);
-+		free(dynstr);
- 	}
- 
--	cmdline = of_get_property(node, "bootargs", NULL);
--	if (!cmdline) {
--		pr_err("no bootargs property in the /chosen node\n");
--		ret = -ENOENT;
-+	chosen = of_find_node_by_path_from(root, "/chosen");
-+	if (!chosen) {
-+		pr_err("no '/chosen' node found in vc fdt\n");
- 		goto out;
- 	}
- 
--	globalvar_add_simple("vc.bootargs", cmdline);
-+	bootloader = of_find_node_by_name(chosen, "bootloader");
-+
-+	str = of_get_property(chosen, "bootargs", &len);
-+	if (!str)
-+		pr_warn("no 'bootargs' property in the /chosen node\n");
-+	else
-+		globalvar_add_simple("vc.bootargs", xstrndup(str, len));
-+
-+	str = of_get_property(chosen, "overlay_prefix", &len);
-+	if (!str)
-+		pr_warn("no 'overlay_prefix' property in the /chosen node\n");
-+	else
-+		globalvar_add_simple("vc.overlay_prefix", xstrndup(str, len));
-+
-+	str = of_get_property(chosen, "os_prefix", &len);
-+	if (!str)
-+		pr_warn("no 'os_prefix' property in the /chosen node\n");
-+	else
-+		globalvar_add_simple("vc.os_prefix", xstrndup(str, len));
-+
-+	ret = of_property_read_u32(chosen, "boot-mode", &num);
-+	if (ret && bootloader)
-+		ret = of_property_read_u32(bootloader, "boot-mode", &num);
-+	if (ret) {
-+		pr_warn("'boot-mode' property not found\n");
-+	} else {
-+		pnum = xmalloc(sizeof(u32));
-+		*pnum = num;
-+		globalvar_add_simple_enum("vc.boot_mode", pnum,
-+					  boot_mode_names,
-+					  ARRAY_SIZE(boot_mode_names));
-+	}
- 
--	switch(cpu_architecture()) {
--	case CPU_ARCH_ARMv6:
--		globalvar_add_simple("vc.kernel", "kernel.img");
--		break;
--	case CPU_ARCH_ARMv7:
--		globalvar_add_simple("vc.kernel", "kernel7.img");
--		break;
--	case CPU_ARCH_ARMv8:
--		globalvar_add_simple("vc.kernel", "kernel8.img");
--		break;
-+	ret = of_property_read_u32(chosen, "partition", &num);
-+	if (ret && bootloader)
-+		ret = of_property_read_u32(bootloader, "partition", &num);
-+	if (ret) {
-+		pr_warn("'partition' property not found\n");
-+	} else {
-+		pnum = xmalloc(sizeof(u32));
-+		*pnum = num;
-+		globalvar_add_simple_int("vc.boot_partition", pnum, "%u");
- 	}
- 
-+	if (IS_ENABLED(CONFIG_RESET_SOURCE)) {
-+		ret = of_property_read_u32(chosen, "pm_rsts", &num);
-+		if (ret && bootloader)
-+			 ret = of_property_read_u32(bootloader, "rsts", &num);
-+
-+		if (ret) {
-+			pr_warn("'pm_rsts'/'rsts' property not found\n");
-+		} else {
-+/*
-+ * https://github.com/raspberrypi/linux/issues/932#issuecomment-93989581
-+ */
-+			if (num & PM_RSTS_HADPOR_SET)
-+				rst_src = RESET_POR;
-+			else if (num & PM_RSTS_HADDR_SET)
-+				rst_src = RESET_JTAG;
-+			else if (num & PM_RSTS_HADWR_SET)
-+				rst_src = RESET_WDG;
-+			else if (num & PM_RSTS_HADSR_SET)
-+				rst_src = RESET_RST;
-+			reset_source_set(rst_src);
-+		}
-+	}
- out:
- 	if (root)
- 		of_delete_node(root);
--
--	return ret;
-+	return;
- }
- 
- static void rpi_vc_fdt(void)
-@@ -241,7 +319,6 @@ static void rpi_vc_fdt(void)
- 	void *saved_vc_fdt;
- 	struct fdt_header *oftree;
- 	unsigned long magic, size;
--	int ret;
- 
- 	/* VideoCore FDT was copied in PBL just above Barebox memory */
- 	saved_vc_fdt = (void *)(arm_mem_endmem_get());
-@@ -260,16 +337,23 @@ static void rpi_vc_fdt(void)
- 		return;
- 
- 	size = be32_to_cpu(oftree->totalsize);
--	if (write_file("/vc.dtb", saved_vc_fdt, size)) {
-+	if (write_file("/vc.dtb", saved_vc_fdt, size))
- 		pr_err("failed to save videocore fdt to a file\n");
--		return;
--	}
- 
--	ret = rpi_vc_fdt_bootargs(saved_vc_fdt);
--	if (ret) {
--		pr_err("failed to extract bootargs from videocore fdt: %d\n",
--									ret);
--		return;
-+	rpi_vc_fdt_parse(saved_vc_fdt);
++static inline struct bcm283x_i2c *to_bcm283x_i2c(struct i2c_adapter *adapter)
++{
++	return container_of(adapter, struct bcm283x_i2c, adapter);
 +}
 +
-+static void rpi_set_kernel_name(void) {
-+	switch(cpu_architecture()) {
-+	case CPU_ARCH_ARMv6:
-+		globalvar_add_simple("vc.kernel", "kernel.img");
-+		break;
-+	case CPU_ARCH_ARMv7:
-+		globalvar_add_simple("vc.kernel", "kernel7.img");
-+		break;
-+	case CPU_ARCH_ARMv8:
-+		globalvar_add_simple("vc.kernel", "kernel8.img");
-+		break;
- 	}
- }
- 
-@@ -348,6 +432,7 @@ static int rpi_devices_probe(struct device_d *dev)
- 	armlinux_set_architecture(MACH_TYPE_BCM2708);
- 	rpi_env_init();
- 	rpi_vc_fdt();
-+	rpi_set_kernel_name();
- 
- 	if (dcfg && dcfg->init)
- 		dcfg->init(priv);
-diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
-index ece80837b..c6e6a289f 100644
---- a/drivers/watchdog/bcm2835_wdt.c
-+++ b/drivers/watchdog/bcm2835_wdt.c
-@@ -10,28 +10,7 @@
- #include <restart.h>
- #include <watchdog.h>
- 
--#define PM_RSTC		0x1c
--#define PM_RSTS		0x20
--#define PM_WDOG		0x24
--
--#define PM_WDOG_RESET				0000000000
--#define PM_PASSWORD				0x5a000000
--#define PM_WDOG_TIME_SET			0x000fffff
--#define PM_RSTC_WRCFG_CLR			0xffffffcf
--#define PM_RSTC_WRCFG_SET			0x00000030
--#define PM_RSTC_WRCFG_FULL_RESET		0x00000020
--#define PM_RSTC_RESET				0x00000102
--
--#define PM_RSTS_HADPOR_SET			0x00001000
--#define PM_RSTS_HADSRH_SET			0x00000400
--#define PM_RSTS_HADSRF_SET			0x00000200
--#define PM_RSTS_HADSRQ_SET			0x00000100
--#define PM_RSTS_HADWRH_SET			0x00000040
--#define PM_RSTS_HADWRF_SET			0x00000020
--#define PM_RSTS_HADWRQ_SET			0x00000010
--#define PM_RSTS_HADDRH_SET			0x00000004
--#define PM_RSTS_HADDRF_SET			0x00000002
--#define PM_RSTS_HADDRQ_SET			0x00000001
-+#include <soc/bcm283x/wdt.h>
- 
- #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
- 
-diff --git a/include/soc/bcm283x/wdt.h b/include/soc/bcm283x/wdt.h
-new file mode 100644
-index 000000000..ce97b1eb5
---- /dev/null
-+++ b/include/soc/bcm283x/wdt.h
-@@ -0,0 +1,40 @@
++static inline int bcm283x_i2c_init(struct bcm283x_i2c *bcm_i2c)
++{
++	struct device_d *dev = &bcm_i2c->adapter.dev;
++	u32 mclk_rate, cdiv, redl, fedl;
++
++	/*
++	 * Reset control reg, flush FIFO, clear all flags and disable
++	 * clock stretching
++	 */
++	writel(0UL, &bcm_i2c->regs->c);
++	writel(BSC_C_CLEAR1, &bcm_i2c->regs->c);
++	writel(BSC_S_DONE | BSC_S_ERR | BSC_S_CLKT, &bcm_i2c->regs->s);
++	writel(0UL, &bcm_i2c->regs->clkt);
++
++	/*
++	 * Set the divider based on the master clock frequency and the
++	 * requested i2c bitrate
++	 */
++	mclk_rate = clk_get_rate(bcm_i2c->mclk);
++	cdiv = DIV_ROUND_UP(mclk_rate, bcm_i2c->bitrate);
++	dev_dbg(dev, "bcm283x_i2c_init: mclk_rate=%u, cdiv=%08x\n",
++		mclk_rate, cdiv);
++	/* Note from kernel driver:
++	 *   Per the datasheet, the register is always interpreted as an even
++	 *   number, by rounding down. In other words, the LSB is ignored. So,
++	 *   if the LSB is set, increment the divider to avoid any issue.
++	 */
++	if (cdiv & 1)
++		cdiv++;
++	if ((cdiv < BSC_CDIV_MIN) || (cdiv > BSC_CDIV_MAX)) {
++		dev_err(dev, "failed to calculate valid clock divider value\n");
++		return -EINVAL;
++	}
++	dev_dbg(dev, "bcm283x_i2c_init: cdiv adjusted to %04x\n", cdiv);
++	fedl = max(cdiv / 16, 1U);
++	redl = max(cdiv / 4, 1U);
++	dev_dbg(dev, "bcm283x_i2c_init: fedl=%04x, redl=%04x\n", fedl, redl);
++	writel(cdiv & 0xffff, &bcm_i2c->regs->div);
++	writel((fedl << 16) | redl, &bcm_i2c->regs->del);
++	dev_dbg(dev, "bcm283x_i2c_init: regs->div=%08x, regs->del=%08x\n",
++		readl(&bcm_i2c->regs->div), readl(&bcm_i2c->regs->del));
++
++	return 0;
++}
++
 +/*
-+ * Copyright (C) 2017 Pengutronix, Lucas Stach <l.stach@pengutronix.de>
-+ *
-+ * Based on code from  Carlo Caione <carlo@carlocaione.org>
++ * Macro to calculate generous timeout for given bitrate and number of bytes
 + */
++#define calc_byte_timeout_us(bitrate) \
++	(3 * 9 * DIV_ROUND_UP(1000000, bitrate))
++#define calc_msg_timeout_us(bitrate, bytes) \
++	((bytes + 1) * calc_byte_timeout_us(bitrate))
 +
-+#ifndef __BCM2835_WDT_H
-+#define __BCM2835_WDT_H
++static int bcm283x_i2c_msg_xfer(struct bcm283x_i2c *bcm_i2c,
++				struct i2c_msg *msg)
++{
++	int ret;
++	u32 reg_c, reg_s, reg_dlen, timeout;
++	struct device_d *dev = &bcm_i2c->adapter.dev;
++	bool msg_read = (msg->flags & I2C_M_RD) > 0;
++	bool msg_10bit = (msg->flags & I2C_M_TEN) > 0;
++	u16 buf_pos = 0;
++	u32 bytes_left = reg_dlen = msg->len;
 +
-+#define PM_RSTC				0x1c
-+#define PM_RSTS				0x20
-+#define PM_WDOG				0x24
++	if (msg_10bit && msg_read) {
++		timeout = calc_byte_timeout_us(bcm_i2c->bitrate);
++		writel(1UL, &bcm_i2c->regs->dlen);
++		writel(msg->addr & 0xff, &bcm_i2c->regs->fifo);
++		writel(((msg->addr >> 8) | 0x78) & BSC_A_MASK, &bcm_i2c->regs->a);
++		writel(BSC_C_ST | BSC_C_I2CEN, &bcm_i2c->regs->c);
++		ret = readl_poll_timeout(&bcm_i2c->regs->s, reg_s,
++					 reg_s & (BSC_S_TA | BSC_S_ERR), timeout);
 +
-+#define PM_WDOG_RESET			0000000000
-+#define PM_PASSWORD			0x5a000000
-+#define PM_WDOG_TIME_SET		0x000fffff
-+#define PM_RSTC_WRCFG_CLR		0xffffffcf
-+#define PM_RSTC_WRCFG_SET		0x00000030
-+#define PM_RSTC_WRCFG_FULL_RESET	0x00000020
-+#define PM_RSTC_RESET			0x00000102
++		if (ret) {
++			dev_err(dev, "timeout: 10bit read initilization\n");
++			return ret;
++		}
++		if (reg_s & BSC_S_ERR)
++			goto nack;
 +
-+#define PM_RSTS_HADPOR_SET		0x00001000
-+#define PM_RSTS_HADSRH_SET		0x00000400
-+#define PM_RSTS_HADSRF_SET		0x00000200
-+#define PM_RSTS_HADSRQ_SET		0x00000100
-+#define PM_RSTS_HADWRH_SET		0x00000040
-+#define PM_RSTS_HADWRF_SET		0x00000020
-+#define PM_RSTS_HADWRQ_SET		0x00000010
-+#define PM_RSTS_HADDRH_SET		0x00000004
-+#define PM_RSTS_HADDRF_SET		0x00000002
-+#define PM_RSTS_HADDRQ_SET		0x00000001
++	} else if (msg_10bit) {
++		reg_dlen++;
++		writel(msg->addr & 0xff, &bcm_i2c->regs->fifo);
++		writel(((msg->addr >> 8) | 0x78) & BSC_A_MASK, &bcm_i2c->regs->a);
++	} else {
++		writel(msg->addr & BSC_A_MASK, &bcm_i2c->regs->a);
++	}
 +
-+#define PM_RSTS_HADDR_SET \
-+	(PM_RSTS_HADDRQ_SET | PM_RSTS_HADDRF_SET | PM_RSTS_HADDRH_SET)
-+#define PM_RSTS_HADWR_SET \
-+	(PM_RSTS_HADWRQ_SET | PM_RSTS_HADWRF_SET | PM_RSTS_HADWRH_SET)
-+#define PM_RSTS_HADSR_SET \
-+	(PM_RSTS_HADSRQ_SET | PM_RSTS_HADSRF_SET | PM_RSTS_HADSRH_SET)
++	writel(reg_dlen, &bcm_i2c->regs->dlen);
++	reg_c = BSC_C_ST | BSC_C_I2CEN;
++	if (msg_read)
++		reg_c |= BSC_C_READ;
++	writel(reg_c, &bcm_i2c->regs->c);
 +
-+#endif
++	if (msg_read) {
++		/*
++		 * Read out data from FIFO as soon as it is available
++		 */
++		timeout = calc_byte_timeout_us(bcm_i2c->bitrate);
++		for (; bytes_left; bytes_left--) {
++			ret = readl_poll_timeout(&bcm_i2c->regs->s, reg_s,
++						 reg_s & (BSC_S_RXD | BSC_S_ERR),
++						 timeout);
++
++			if (ret) {
++				dev_err(dev, "timeout: waiting for data in FIFO\n");
++				return ret;
++			}
++			if (reg_s & BSC_S_ERR)
++				goto nack;
++
++			msg->buf[buf_pos++] = (u8) readl(&bcm_i2c->regs->fifo);
++		}
++	} else {
++		timeout = calc_byte_timeout_us(bcm_i2c->bitrate);
++		/*
++		 * Feed data to FIFO as soon as there is space for them
++		 */
++		for (; bytes_left; bytes_left--) {
++			ret = readl_poll_timeout(&bcm_i2c->regs->s, reg_s,
++						 reg_s & (BSC_S_TXD | BSC_S_ERR),
++						 timeout);
++
++			if (ret) {
++				dev_err(dev, "timeout: waiting for space in FIFO\n");
++				return ret;
++			}
++			if (reg_s & BSC_S_ERR)
++				goto nack;
++
++			writel(msg->buf[buf_pos++], &bcm_i2c->regs->fifo);
++		}
++	}
++
++	/*
++	 * Wait for the current transfer to finish and then flush FIFO
++	 * and clear any flags so that we are ready for next msg
++	 */
++	timeout = calc_msg_timeout_us(bcm_i2c->bitrate, reg_dlen);
++	ret = readl_poll_timeout(&bcm_i2c->regs->s, reg_s,
++				 reg_s & (BSC_S_DONE | BSC_S_ERR), timeout);
++
++	if (ret) {
++		dev_err(dev, "timeout: waiting for transfer to end\n");
++		return ret;
++	}
++	if (reg_s & BSC_S_ERR)
++		goto nack;
++	writel(BSC_S_DONE | BSC_S_ERR | BSC_S_CLKT, &bcm_i2c->regs->s);
++	writel(BSC_C_CLEAR1 | BSC_C_I2CEN, &bcm_i2c->regs->c);
++	return 0;
++nack:
++	dev_dbg(dev, "device with addr %x didn't ACK\n", msg->addr);
++	return -EREMOTEIO;
++}
++
++static int bcm283x_i2c_xfer(struct i2c_adapter *adapter,
++			    struct i2c_msg *msgs, int count)
++{
++	int ret, i;
++	struct i2c_msg *msg;
++	struct bcm283x_i2c *bcm_i2c = to_bcm283x_i2c(adapter);
++
++	/*
++	 * Reset control reg, flush FIFO, clear flags and enable the BSC
++	 */
++	writel(0UL, &bcm_i2c->regs->c);
++	writel(BSC_C_CLEAR1, &bcm_i2c->regs->c);
++	writel(BSC_S_DONE | BSC_S_ERR | BSC_S_CLKT, &bcm_i2c->regs->s);
++	writel(BSC_C_I2CEN, &bcm_i2c->regs->c);
++
++	for (i = 0; i < count; i++) {
++		msg = &msgs[i];
++		ret = bcm283x_i2c_msg_xfer(bcm_i2c, msg);
++		if (ret)
++			goto out;
++	}
++
++	writel(0UL, &bcm_i2c->regs->c);
++	return count;
++out:
++	writel(0UL, &bcm_i2c->regs->c);
++	writel(BSC_C_CLEAR1, &bcm_i2c->regs->c);
++	writel(BSC_S_DONE | BSC_S_ERR | BSC_S_CLKT, &bcm_i2c->regs->s);
++	return ret;
++}
++
++static int bcm283x_i2c_probe(struct device_d *dev)
++{
++	int ret;
++	struct resource *iores;
++	struct bcm283x_i2c *bcm_i2c;
++	struct device_node *np = dev->device_node;
++
++	bcm_i2c = xzalloc(sizeof(*bcm_i2c));
++
++	if (!np) {
++		ret = -ENXIO;
++		goto err;
++	}
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores)) {
++		dev_err(dev, "could not get iomem region\n");
++		ret = PTR_ERR(iores);
++		goto err;
++	}
++	bcm_i2c->regs = IOMEM(iores->start);
++
++	bcm_i2c->mclk = clk_get(dev, NULL);
++	if (IS_ERR(bcm_i2c->mclk)) {
++		dev_err(dev, "could not acquire clock\n");
++		ret = PTR_ERR(bcm_i2c->mclk);
++		goto err;
++	}
++	clk_enable(bcm_i2c->mclk);
++
++	bcm_i2c->bitrate = I2C_MAX_STANDARD_MODE_FREQ;
++	of_property_read_u32(np, "clock-frequency", &bcm_i2c->bitrate);
++	if (bcm_i2c->bitrate > I2C_MAX_FAST_MODE_FREQ) {
++		dev_err(dev, "clock frequency of %u is not supported\n",
++			bcm_i2c->bitrate);
++		ret = -EINVAL;
++		goto err;
++	}
++
++	bcm_i2c->adapter.master_xfer = bcm283x_i2c_xfer;
++	bcm_i2c->adapter.nr = dev->id;
++	bcm_i2c->adapter.dev.parent = dev;
++	bcm_i2c->adapter.dev.device_node = np;
++
++	ret = bcm283x_i2c_init(bcm_i2c);
++	if (ret)
++		goto err;
++
++	return i2c_add_numbered_adapter(&bcm_i2c->adapter);
++err:
++	free(bcm_i2c);
++	return ret;
++}
++
++static struct of_device_id bcm283x_i2c_dt_ids[] = {
++	{ .compatible = "brcm,bcm2835-i2c", },
++	{ .compatible = "brcm,bcm2711-i2c", },
++	{ /* sentinel */ }
++};
++
++static struct driver_d bcm283x_i2c_driver = {
++	.name		= "i2c-bcm283x",
++	.probe		= bcm283x_i2c_probe,
++	.of_compatible	= DRV_OF_COMPAT(bcm283x_i2c_dt_ids),
++};
++device_platform_driver(bcm283x_i2c_driver);
 -- 
 2.17.1
 
