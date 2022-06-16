@@ -1,62 +1,63 @@
-Delivery-date: Thu, 16 Jun 2022 16:07:23 +0200
+Delivery-date: Thu, 16 Jun 2022 16:09:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o1q9a-003zH2-Mm
-	for lore@lore.pengutronix.de; Thu, 16 Jun 2022 16:07:23 +0200
+	id 1o1qBX-003zdA-KD
+	for lore@lore.pengutronix.de; Thu, 16 Jun 2022 16:09:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o1q9Z-0002z9-Va
-	for lore@pengutronix.de; Thu, 16 Jun 2022 16:07:23 +0200
+	id 1o1qBX-0003Ir-Hc
+	for lore@pengutronix.de; Thu, 16 Jun 2022 16:09:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2kchFJV1uqV3xBgIC9m+TPK/YN6o/quY4NBAaHCOSzY=; b=god7Kd1xhLYsPq4LFMv9NmqXKR
-	GZ8ln8Y+vLQyx8e7+jCvAkbgkMSz0kiXEIh9F052NpiK8hXsUkZvG+PHBbNq2SGBIl9BgUm9glPyk
-	Cpp3V4uPDnfbltaPBnz8t2SdcJSuxRAsgiun8v7GQl5DjNFX1UAql/Cg1HrW0viFkW6p9CJ+TESql
-	ZrNZwZ7RQLIhisZRgixNeu+I25HtuE1lcfLsHXIc95soEXgJ56mBrABQr+MNoCyL1j6G/HgAJYz5s
-	Qpqx+9fJjlWNRmDq+QHi8A6C+M1pN4qGCGflVDA5NzSigcWhSaF6sjt5cTQQ2kK/Q5ZoeZeN76bBV
-	o5gKBsmQ==;
+	bh=XqxWmmKdD+bLVP6wEm0gRbKOrPyXhIdYwZcUccXE9OE=; b=UmENOZWauygBWl/xpl/ojELV9p
+	uo/2ROk273EWKvr6CNMqAkWHtzL+q+809FJHE1Mf6/1PQAs+jQR68qaz00YhY0iBYDYsDpngqVGYo
+	jkFEskU7QzmHSDKGdiphVNnwhvFVOhft303rQnaNYsuQPgIjqq/Ai/3ljmpgMRidAKSDudePQZoN8
+	7FHv4n1CsBypAIXsiZpQ2Up2IvkZiG38Cww4osok+FYDkpbp29ODhkQGRDniM1tsEgPIQ8etWRU27
+	H0xY+6wsL31hI44Vc2+29xYgsVvfT61VjXL7+tL9CQJL2vyXUAX5EVXgbnaKbgAVA5BURDcnyvK3d
+	nN/dYs6Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o1q8G-002i6b-MB; Thu, 16 Jun 2022 14:06:00 +0000
+	id 1o1qAA-002jCn-2e; Thu, 16 Jun 2022 14:07:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o1q7g-002htk-Gx
-	for barebox@lists.infradead.org; Thu, 16 Jun 2022 14:05:26 +0000
+	id 1o1q9s-002j9z-Rf
+	for barebox@lists.infradead.org; Thu, 16 Jun 2022 14:07:42 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1o1q7f-0002Rd-9Y
-	for barebox@lists.infradead.org; Thu, 16 Jun 2022 16:05:23 +0200
+	id 1o1q9r-00034B-KS
+	for barebox@lists.infradead.org; Thu, 16 Jun 2022 16:07:39 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1o1q7d-000t4L-6b
-	for barebox@lists.infradead.org; Thu, 16 Jun 2022 16:05:22 +0200
+	id 1o1q9p-000t4c-Gy
+	for barebox@lists.infradead.org; Thu, 16 Jun 2022 16:07:38 +0200
 Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1o1q7d-009Yh0-RT
-	for barebox@lists.infradead.org; Thu, 16 Jun 2022 16:05:21 +0200
+	id 1o1q9q-009cr6-6r
+	for barebox@lists.infradead.org; Thu, 16 Jun 2022 16:07:38 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 16 Jun 2022 16:05:21 +0200
-Message-Id: <20220616140521.2263016-2-m.felsch@pengutronix.de>
+Date: Thu, 16 Jun 2022 16:07:37 +0200
+Message-Id: <20220616140737.2294226-2-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220616140521.2263016-1-m.felsch@pengutronix.de>
-References: <20220616140521.2263016-1-m.felsch@pengutronix.de>
+In-Reply-To: <20220616140737.2294226-1-m.felsch@pengutronix.de>
+References: <20220616140737.2294226-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220616_070524_764522_4E3DA434 
-X-CRM114-Status: GOOD (  10.57  )
+X-CRM114-CacheID: sfid-20220616_070740_927233_4D92B1CE 
+X-CRM114-Status: UNSURE (   9.67  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,127 +80,40 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/2] clk: imx8mn: remove SYS PLL 1/2 clock gates
+Subject: [PATCH 2/2] regulator: fixed: add off-on-delay-us device-tree parsing support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This commit is based on commit dd977acd6 ("clk: imx8mp: remove SYS PLL
-1/2 clock gates") and adopts kernel commit:
-
-| commit 38ce00adc16319544c8c56edd36324d2c1b98a50
-| Author:     Peng Fan <peng.fan@nxp.com>
-| AuthorDate: Fri Feb 25 16:17:32 2022 +0800
-| Commit:     Abel Vesa <abel.vesa@nxp.com>
-| CommitDate: Fri Mar 4 17:06:29 2022 +0200
-|
-|     clk: imx8mn: remove SYS PLL 1/2 clock gates
-|
-|     Remove the PLL 1/2 gates as it make AMP clock management harder without
-|     obvious benifit.
-|
-|     Signed-off-by: Peng Fan <peng.fan@nxp.com>
-|     Reviewed-by: Abel Vesa <abel.vesa@nxp.com>
-|     Link: https://lore.kernel.org/r/20220225081733.2294166-3-peng.fan@oss.nxp.com
-|     Signed-off-by: Abel Vesa <abel.vesa@nxp.com>
-
-Unlike the original patch this one also makes sure that the removed
-gates are enabled as they are needed for their consumers.
+The core already handles the off_on_delay if we set it. So parse the
+official device-tree property and set it if present.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/clk/imx/clk-imx8mn.c | 65 ++++++++++++++++++------------------
- 1 file changed, 33 insertions(+), 32 deletions(-)
+ drivers/regulator/fixed.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx8mn.c b/drivers/clk/imx/clk-imx8mn.c
-index a57bfffcb6..02522add39 100644
---- a/drivers/clk/imx/clk-imx8mn.c
-+++ b/drivers/clk/imx/clk-imx8mn.c
-@@ -281,6 +281,7 @@ static int imx8mn_clocks_init(struct device_node *ccm_np)
+diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
+index 9c660d5781..ae16df8a0c 100644
+--- a/drivers/regulator/fixed.c
++++ b/drivers/regulator/fixed.c
+@@ -52,6 +52,7 @@ static int regulator_fixed_probe(struct device_d *dev)
  {
- 	struct device_node *anatop_np;
- 	void __iomem *ccm, *ana;
-+	u32 val;
+ 	struct device_node *np = dev->device_node;
+ 	struct regulator_fixed *fix;
++	u32 delay;
  	int ret;
  
- 	anatop_np = of_find_compatible_node(NULL, NULL, "fsl,imx8mn-anatop");
-@@ -341,45 +342,45 @@ static int imx8mn_clocks_init(struct device_node *ccm_np)
- 	clks[IMX8MN_SYS_PLL3_OUT] = imx_clk_gate("sys_pll3_out", "sys_pll3_bypass", ana + 0x114, 11);
+ 	if (!dev->device_node)
+@@ -72,6 +73,9 @@ static int regulator_fixed_probe(struct device_d *dev)
+ 	fix->rdev.desc = &fix->rdesc;
+ 	fix->rdev.dev = dev;
  
- 	/* SYS PLL1 fixed output */
--	clks[IMX8MN_SYS_PLL1_40M_CG] = imx_clk_gate("sys_pll1_40m_cg", "sys_pll1", ana + 0x94, 27);
--	clks[IMX8MN_SYS_PLL1_80M_CG] = imx_clk_gate("sys_pll1_80m_cg", "sys_pll1", ana + 0x94, 25);
--	clks[IMX8MN_SYS_PLL1_100M_CG] = imx_clk_gate("sys_pll1_100m_cg", "sys_pll1", ana + 0x94, 23);
--	clks[IMX8MN_SYS_PLL1_133M_CG] = imx_clk_gate("sys_pll1_133m_cg", "sys_pll1", ana + 0x94, 21);
--	clks[IMX8MN_SYS_PLL1_160M_CG] = imx_clk_gate("sys_pll1_160m_cg", "sys_pll1", ana + 0x94, 19);
--	clks[IMX8MN_SYS_PLL1_200M_CG] = imx_clk_gate("sys_pll1_200m_cg", "sys_pll1", ana + 0x94, 17);
--	clks[IMX8MN_SYS_PLL1_266M_CG] = imx_clk_gate("sys_pll1_266m_cg", "sys_pll1", ana + 0x94, 15);
--	clks[IMX8MN_SYS_PLL1_400M_CG] = imx_clk_gate("sys_pll1_400m_cg", "sys_pll1", ana + 0x94, 13);
-+	/*
-+	 * The gates in CCM_ANALOG_SYS_PLL1_GEN_CTRL are not handled by the
-+	 * driver, make sure they are all enabled.
-+	 */
-+	val = readl(ana + 0x94);
-+	val |= BIT(13) | BIT(15) | BIT(17) | BIT(19) | BIT(21) | BIT(23) | BIT(25) | BIT(27);
-+	writel(val, ana + 0x94);
++	if (!of_property_read_u32(np, "off-on-delay-us", &delay))
++		fix->rdesc.off_on_delay = delay;
 +
- 	clks[IMX8MN_SYS_PLL1_OUT] = imx_clk_gate("sys_pll1_out", "sys_pll1", ana + 0x94, 11);
- 
--	clks[IMX8MN_SYS_PLL1_40M] = imx_clk_fixed_factor("sys_pll1_40m", "sys_pll1_40m_cg", 1, 20);
--	clks[IMX8MN_SYS_PLL1_80M] = imx_clk_fixed_factor("sys_pll1_80m", "sys_pll1_80m_cg", 1, 10);
--	clks[IMX8MN_SYS_PLL1_100M] = imx_clk_fixed_factor("sys_pll1_100m", "sys_pll1_100m_cg", 1, 8);
--	clks[IMX8MN_SYS_PLL1_133M] = imx_clk_fixed_factor("sys_pll1_133m", "sys_pll1_133m_cg", 1, 6);
--	clks[IMX8MN_SYS_PLL1_160M] = imx_clk_fixed_factor("sys_pll1_160m", "sys_pll1_160m_cg", 1, 5);
--	clks[IMX8MN_SYS_PLL1_200M] = imx_clk_fixed_factor("sys_pll1_200m", "sys_pll1_200m_cg", 1, 4);
--	clks[IMX8MN_SYS_PLL1_266M] = imx_clk_fixed_factor("sys_pll1_266m", "sys_pll1_266m_cg", 1, 3);
--	clks[IMX8MN_SYS_PLL1_400M] = imx_clk_fixed_factor("sys_pll1_400m", "sys_pll1_400m_cg", 1, 2);
-+	clks[IMX8MN_SYS_PLL1_40M] = imx_clk_fixed_factor("sys_pll1_40m", "sys_pll1_out", 1, 20);
-+	clks[IMX8MN_SYS_PLL1_80M] = imx_clk_fixed_factor("sys_pll1_80m", "sys_pll1_out", 1, 10);
-+	clks[IMX8MN_SYS_PLL1_100M] = imx_clk_fixed_factor("sys_pll1_100m", "sys_pll1_out", 1, 8);
-+	clks[IMX8MN_SYS_PLL1_133M] = imx_clk_fixed_factor("sys_pll1_133m", "sys_pll1_out", 1, 6);
-+	clks[IMX8MN_SYS_PLL1_160M] = imx_clk_fixed_factor("sys_pll1_160m", "sys_pll1_out", 1, 5);
-+	clks[IMX8MN_SYS_PLL1_200M] = imx_clk_fixed_factor("sys_pll1_200m", "sys_pll1_out", 1, 4);
-+	clks[IMX8MN_SYS_PLL1_266M] = imx_clk_fixed_factor("sys_pll1_266m", "sys_pll1_out", 1, 3);
-+	clks[IMX8MN_SYS_PLL1_400M] = imx_clk_fixed_factor("sys_pll1_400m", "sys_pll1_out", 1, 2);
- 	clks[IMX8MN_SYS_PLL1_800M] = imx_clk_fixed_factor("sys_pll1_800m", "sys_pll1_out", 1, 1);
- 
- 	/* SYS PLL2 fixed output */
--	clks[IMX8MN_SYS_PLL2_50M_CG] = imx_clk_gate("sys_pll2_50m_cg", "sys_pll2", ana + 0x104, 27);
--	clks[IMX8MN_SYS_PLL2_100M_CG] = imx_clk_gate("sys_pll2_100m_cg", "sys_pll2", ana + 0x104, 25);
--	clks[IMX8MN_SYS_PLL2_125M_CG] = imx_clk_gate("sys_pll2_125m_cg", "sys_pll2", ana + 0x104, 23);
--	clks[IMX8MN_SYS_PLL2_166M_CG] = imx_clk_gate("sys_pll2_166m_cg", "sys_pll2", ana + 0x104, 21);
--	clks[IMX8MN_SYS_PLL2_200M_CG] = imx_clk_gate("sys_pll2_200m_cg", "sys_pll2", ana + 0x104, 19);
--	clks[IMX8MN_SYS_PLL2_250M_CG] = imx_clk_gate("sys_pll2_250m_cg", "sys_pll2", ana + 0x104, 17);
--	clks[IMX8MN_SYS_PLL2_333M_CG] = imx_clk_gate("sys_pll2_333m_cg", "sys_pll2", ana + 0x104, 15);
--	clks[IMX8MN_SYS_PLL2_500M_CG] = imx_clk_gate("sys_pll2_500m_cg", "sys_pll2", ana + 0x104, 13);
-+	/*
-+	 * The gates in CCM_ANALOG_SYS_PLL2_GEN_CTRL are not handled by the
-+	 * driver, make sure they are all enabled.
-+	 */
-+	val = readl(ana + 0x104);
-+	val |= BIT(13) | BIT(15) | BIT(17) | BIT(19) | BIT(21) | BIT(23) | BIT(25) | BIT(27);
-+	writel(val, ana + 0x104);
-+
- 	clks[IMX8MN_SYS_PLL2_OUT] = imx_clk_gate("sys_pll2_out", "sys_pll2", ana + 0x104, 11);
- 
--	clks[IMX8MN_SYS_PLL2_50M] = imx_clk_fixed_factor("sys_pll2_50m", "sys_pll2_50m_cg", 1, 20);
--	clks[IMX8MN_SYS_PLL2_100M] = imx_clk_fixed_factor("sys_pll2_100m", "sys_pll2_100m_cg", 1, 10);
--	clks[IMX8MN_SYS_PLL2_125M] = imx_clk_fixed_factor("sys_pll2_125m", "sys_pll2_125m_cg", 1, 8);
--	clks[IMX8MN_SYS_PLL2_166M] = imx_clk_fixed_factor("sys_pll2_166m", "sys_pll2_166m_cg", 1, 6);
--	clks[IMX8MN_SYS_PLL2_200M] = imx_clk_fixed_factor("sys_pll2_200m", "sys_pll2_200m_cg", 1, 5);
--	clks[IMX8MN_SYS_PLL2_250M] = imx_clk_fixed_factor("sys_pll2_250m", "sys_pll2_250m_cg", 1, 4);
--	clks[IMX8MN_SYS_PLL2_333M] = imx_clk_fixed_factor("sys_pll2_333m", "sys_pll2_333m_cg", 1, 3);
--	clks[IMX8MN_SYS_PLL2_500M] = imx_clk_fixed_factor("sys_pll2_500m", "sys_pll2_500m_cg", 1, 2);
-+	clks[IMX8MN_SYS_PLL2_50M] = imx_clk_fixed_factor("sys_pll2_50m", "sys_pll2_out", 1, 20);
-+	clks[IMX8MN_SYS_PLL2_100M] = imx_clk_fixed_factor("sys_pll2_100m", "sys_pll2_out", 1, 10);
-+	clks[IMX8MN_SYS_PLL2_125M] = imx_clk_fixed_factor("sys_pll2_125m", "sys_pll2_out", 1, 8);
-+	clks[IMX8MN_SYS_PLL2_166M] = imx_clk_fixed_factor("sys_pll2_166m", "sys_pll2_out", 1, 6);
-+	clks[IMX8MN_SYS_PLL2_200M] = imx_clk_fixed_factor("sys_pll2_200m", "sys_pll2_out", 1, 5);
-+	clks[IMX8MN_SYS_PLL2_250M] = imx_clk_fixed_factor("sys_pll2_250m", "sys_pll2_out", 1, 4);
-+	clks[IMX8MN_SYS_PLL2_333M] = imx_clk_fixed_factor("sys_pll2_333m", "sys_pll2_out", 1, 3);
-+	clks[IMX8MN_SYS_PLL2_500M] = imx_clk_fixed_factor("sys_pll2_500m", "sys_pll2_out", 1, 2);
- 	clks[IMX8MN_SYS_PLL2_1000M] = imx_clk_fixed_factor("sys_pll2_1000m", "sys_pll2_out", 1, 1);
- 
- 	clks[IMX8MN_CLK_CLKOUT1_SEL] = imx_clk_mux("clkout1_sel", ana + 0x128, 4, 4, clkout_sels, ARRAY_SIZE(clkout_sels));
+ 	if (of_find_property(np, "regulator-always-on", NULL) ||
+ 	    of_find_property(np, "regulator-boot-on", NULL)) {
+ 		fix->always_on = 1;
 -- 
 2.30.2
 
