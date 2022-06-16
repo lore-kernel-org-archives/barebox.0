@@ -1,61 +1,62 @@
-Delivery-date: Thu, 16 Jun 2022 15:56:17 +0200
+Delivery-date: Thu, 16 Jun 2022 16:06:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o1pyq-003yAr-ND
-	for lore@lore.pengutronix.de; Thu, 16 Jun 2022 15:56:17 +0200
+	id 1o1q92-003yyC-Hk
+	for lore@lore.pengutronix.de; Thu, 16 Jun 2022 16:06:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o1pyq-0000K7-Bx
-	for lore@pengutronix.de; Thu, 16 Jun 2022 15:56:17 +0200
+	id 1o1q92-0002rk-AB
+	for lore@pengutronix.de; Thu, 16 Jun 2022 16:06:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mz/LQnt1FAm2j07Fuqo2qT2fJB5ZIDRFojO07QaIq1I=; b=Qcx3ZcF0PWvM+EWoYcHn+wFhRc
-	fwTRgHKXJZidbug1uOIf9FIr1DpFYgAifbTKhCG30jG/1UAgvDXmpysoYI5VR2td6BcAHQw/6ds+t
-	XXypXBpTY9shyB9XRbZBczJhJdKzk3EpeeacqZFUd5//fE/rpfdp/K3glhnQx6OrtzUkCVvgV+ZtI
-	+EL1yhhvkhPJbTQXKWxH9h5GGIPzewrMnn01R065srvu5CpQF3rEg+UUeB/LT893uvJ4njePBuvb8
-	1AXrBbbN2wQpN/7dZ9ek5N1t+KIyuYepGmTBv9T/4Hfv4L7zLkMJlLkHLnCcp8ri7gEQJgulJsO7S
-	qgpam1Dg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=GLwV8x+rKxzfZ3KEXDmCABAaf1QH5AxCKS/ssPIT+a0=; b=oqjnI9vTeGpgLtDJdwP2Bn/HTI
+	tkEdaEJAWG/sYfAjyoVH6y/6tjiUzWN9PXNywjGV6DMBSPUaFaJm+v9VyrWv0uohJE8ejZXniIxok
+	b0lk+y2eZqOm8JSEVtBljj3kwLYZZQBAN9QTNZS/f1FPw5YyPdR8N+47msj8EP4+obMCZFqSftFhO
+	VoB29+B09Ka4xFMmoJxJvc8zvZcZGQKt000bwNogP/w8G+HigA1DUsVLAbg9zi3f4erwhHC1BBmQM
+	lT1WyCKpTe4+4rh+viXSzXRhkCVcbgC6nAvcfjSb3ZhpVdQTugityO/lL9g3fRFxj6AX7bOk8StQw
+	bzj1qaog==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o1pxE-002cfI-Ve; Thu, 16 Jun 2022 13:54:37 +0000
+	id 1o1q7Z-002hjY-CG; Thu, 16 Jun 2022 14:05:18 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o1ptI-002aSY-B4
-	for barebox@lists.infradead.org; Thu, 16 Jun 2022 13:50:34 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1o1q5E-002gdD-LX
+	for barebox@lists.infradead.org; Thu, 16 Jun 2022 14:02:54 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1o1ptH-0007HK-0o; Thu, 16 Jun 2022 15:50:31 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1o1ptG-0000Us-LU; Thu, 16 Jun 2022 15:50:30 +0200
-Date: Thu, 16 Jun 2022 15:50:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Robin van der Gracht <robin@protonic.nl>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220616135030.GX1615@pengutronix.de>
-References: <20220616125040.212193-1-robin@protonic.nl>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1o1q5B-0001hc-Di
+	for barebox@lists.infradead.org; Thu, 16 Jun 2022 16:02:49 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1o1q59-000sfw-Ay
+	for barebox@lists.infradead.org; Thu, 16 Jun 2022 16:02:48 +0200
+Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1o1q59-009G6l-Up
+	for barebox@lists.infradead.org; Thu, 16 Jun 2022 16:02:47 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Thu, 16 Jun 2022 16:02:46 +0200
+Message-Id: <20220616140246.2191569-2-m.felsch@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220616140246.2191569-1-m.felsch@pengutronix.de>
+References: <20220616140246.2191569-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220616125040.212193-1-robin@protonic.nl>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220616_065032_431158_EC0F7BAE 
-X-CRM114-Status: GOOD (  23.45  )
+X-CRM114-CacheID: sfid-20220616_070252_757213_58AA9EA3 
+X-CRM114-Status: GOOD (  10.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,54 +74,63 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] lib: parameter: Free previous string value in
- param_string_set
+Subject: [PATCH 2/2] ARM: i.MX8MM: increase off-on delay on the SD Vcc regulator
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Jun 16, 2022 at 02:50:40PM +0200, Robin van der Gracht wrote:
-> When the parameter has no set function the previous (saved_value) is not
-> freed up on completion.
-> 
-> Signed-off-by: Robin van der Gracht <robin@protonic.nl>
-> ---
->  lib/parameter.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/parameter.c b/lib/parameter.c
-> index adc3c7cdea..fe7e7b1ba4 100644
-> --- a/lib/parameter.c
-> +++ b/lib/parameter.c
-> @@ -262,8 +262,10 @@ static int param_string_set(struct device_d *dev, struct param_d *p, const char
->  	value_new = strim(value_new);
->  	*ps->value = value_new;
->  
-> -	if (!ps->set)
-> +	if (!ps->set) {
-> +		free(value_save);
->  		return 0;
-> +	}
+This commit is ported from u-boot commit 247bbeb74c ("ARM: dts: imx8m:
+increase off-on delay on the SD Vcc regulator"). Currently barebox
+supports only SDR25/HS mode but it gets important as soon as barebox
+supports faster modes.
 
-Fixing this bug reveals another one. We do a:
+8<---------------------------------------------------------------------
+    ARM: dts: imx8m: increase off-on delay on the SD Vcc regulator
 
-	value_new = xstrdup(val);
-	value_new = strim(value_new);
+    Some SD Card controller and power circuitry has increased capacitance,
+    which keeps the internal logic remains powered after regulator is switch
+    off. This is generally the case when card is switched to SD104 mode,
+    where a power cycle should be performed. In case if the card internal
+    logic remains powered, it causes a subsequent failure of mode
+    transition, effectively leading to failed enumeration.
 
-When 'val' has whitespaces at the beginning we no longer free the
-pointer originally returned from xstrdup, but the pointer with
-whitespaces stripped. I'll queue a fix for this before this patch.
+    Introduce a delay of 20 msec in order to provide a possibility for
+    internal card circuitry to drain voltages and perform a power cycle
+    correctly.
 
-Sascha
+    Similar fix is done in commit c49d0ac38a76 ("ARM: dts: rmobile: Increase
+    off-on delay on the SD Vcc regulator") targeted Renesas SOCs.
 
+    Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
+    Cc: Stefano Babic <sbabic@denx.de>
+8<---------------------------------------------------------------------
+
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ arch/arm/dts/imx8mm-evk.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm/dts/imx8mm-evk.dts b/arch/arm/dts/imx8mm-evk.dts
+index 854e9db869..6c06ad7e47 100644
+--- a/arch/arm/dts/imx8mm-evk.dts
++++ b/arch/arm/dts/imx8mm-evk.dts
+@@ -24,6 +24,10 @@
+ 	};
+ };
+ 
++&reg_usdhc2_vmmc {
++	off-on-delay-us = <20000>;
++};
++
+ &usdhc2 {
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
