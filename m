@@ -1,55 +1,62 @@
-Delivery-date: Fri, 17 Jun 2022 09:10:04 +0200
+Delivery-date: Fri, 17 Jun 2022 09:16:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o267H-004vvR-4v
-	for lore@lore.pengutronix.de; Fri, 17 Jun 2022 09:10:04 +0200
+	id 1o26Dl-004wG0-H8
+	for lore@lore.pengutronix.de; Fri, 17 Jun 2022 09:16:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o267G-0002tH-7M
-	for lore@pengutronix.de; Fri, 17 Jun 2022 09:10:03 +0200
+	id 1o26Dl-00053Z-1n
+	for lore@pengutronix.de; Fri, 17 Jun 2022 09:16:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JyeM3ou26QlTITz0oxgYN129PjkLjQYe+3gRSHuhCYU=; b=hpvL0DTHZKYMkOuT4tTM10UHdX
-	x28WFUBQ395LL8Dyj2fdUuJf4G2YjseDpfS6DwGe87C3/z1bvwD9SsOF60aP88oJymG77Zzd5/p3/
-	c1niMKSgMpqbLDLZwQjXqv1KR+YSKREsPxncDsy+6TN6bYMWIgQ4bgvppV2VVHUlekTS50mAwvOeP
-	v/1nX+oAJiBeJ/w3iNBiB/Z3d1Loh9RYj+ES5ByjkHBPIYKj+v1/bpRqULpELFO5WIrupAMdnho0M
-	aao070qopYlpE2dYUi1gTzBz6Nq7wNsYJjH4yKIl2jUfBuVfj4AZddKvSCtF390VeSbxm63Sg8Bcs
-	27L5YCZw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4Ln4ycccz1xnSegS2b3DwERnhymrWN1OCR5xuUsED/E=; b=TDMEpLTAvPv+rhgWVvFZxb5qfW
+	rhBoSX/v2XcyeSqk8NbKCllw6baMuBhUhUnpzStlbwl4nvmdSkR64lOLS32f8ULEPBcmPHLwFCRke
+	HmNVvLBlQVyn2cjc+CB+YKuzQF/uckyJymqXSs7RLbE2tvusHrqRucxbnZtYvvRsia8F3x3BusdUV
+	G1vZt4VGaRTo6j/liP+v0rhQLw95p3tIpwYj1MlvL5q8I+3L3By0r6fnbkIvUVszFobnBNCweLtJB
+	lNwUa7QsQ4XjkbAdAdYSFpedLAiJ+c3DfNmtxKD3eDa1o9MxCIbey0XJF8XsEzaAQpOhaaT2+DsYu
+	Cz0x9IvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o265q-005qT5-AK; Fri, 17 Jun 2022 07:08:34 +0000
+	id 1o26CM-005stx-2K; Fri, 17 Jun 2022 07:15:18 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o265k-005qRv-8M
-	for barebox@lists.infradead.org; Fri, 17 Jun 2022 07:08:30 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1o265i-00023T-OR; Fri, 17 Jun 2022 09:08:26 +0200
-Message-ID: <f5eb7b28-fa80-99bd-f75d-3cd48391e38f@pengutronix.de>
-Date: Fri, 17 Jun 2022 09:08:26 +0200
+	id 1o267k-005r55-8n
+	for barebox@lists.infradead.org; Fri, 17 Jun 2022 07:10:33 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1o267j-000328-1E; Fri, 17 Jun 2022 09:10:31 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1o267i-0005DP-LF; Fri, 17 Jun 2022 09:10:30 +0200
+Date: Fri, 17 Jun 2022 09:10:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Robin van der Gracht <robin@protonic.nl>
+Cc: barebox@lists.infradead.org, david@protonic.nl,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Message-ID: <20220617071030.GE1615@pengutronix.de>
+References: <20220616131114.214628-1-robin@protonic.nl>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_Br=c3=a1t?= <danek.brat@gmail.com>,
- barebox@lists.infradead.org
-References: <20220615184147.365-1-danek.brat@gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220615184147.365-1-danek.brat@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220616131114.214628-1-robin@protonic.nl>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220617_000828_479651_EFDE67A8 
-X-CRM114-Status: GOOD (  34.33  )
+X-CRM114-CacheID: sfid-20220617_001032_377982_1CA59D4F 
+X-CRM114-Status: GOOD (  17.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,379 +74,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v3] ARM: rpi: parse useful data from vc fdt
+Subject: Re: (subset) [PATCH 0/9] ARM: boards: protonic-imx6: Updates
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Daniel,
-
-On 15.06.22 20:41, Daniel Brát wrote:
-> Videocore first-stage loader on rpi passes us many useful information
-> inside the vc fdt, including the real value of PM_RSTS register, not
-> easily available by other means and which we can use to determine
-> the reset cause.
-> Also make the relevant funtions just print error/warning and continue
-> in case of some errors, since the fdt from vc is now optional for
-> barebox's basic function.
+On Thu, Jun 16, 2022 at 03:11:05PM +0200, Robin van der Gracht wrote:
+> Our USB FIT boot is now broken and we can no longer aquire the RFID I2C
+> eeprom chips we're using to store board serial and MAC address.
 > 
-> Signed-off-by: Daniel Brát <danek.brat@gmail.com>
-> ---
->  arch/arm/boards/raspberry-pi/rpi-common.c | 167 ++++++++++++++++------
->  drivers/watchdog/bcm2835_wdt.c            |  23 +--
->  include/soc/bcm283x/wdt.h                 |  40 ++++++
->  3 files changed, 167 insertions(+), 63 deletions(-)
->  create mode 100644 include/soc/bcm283x/wdt.h
+> With this patchstack I'm proposing fusing the serial in the ocotp GP1
+> register as an alternative to the RFID eeprom and making the usb boot
+> sequence a boot entry to avoid the race condition we now have.
 > 
-> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-> index 12a4f4a0a..308a7085c 100644
-> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
-> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-> @@ -23,13 +23,28 @@
->  #include <linux/sizes.h>
->  #include <globalvar.h>
->  #include <asm/system_info.h>
-> +#include <reset_source.h>
->  
->  #include <mach/core.h>
->  #include <mach/mbox.h>
->  #include <mach/platform.h>
->  
-> +#include <soc/bcm283x/wdt.h>
-> +
->  #include "lowlevel.h"
->  
-> +//https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#BOOT_ORDER
-> +static const char * const boot_mode_names[] = {
-> +	[0x0] = "unknown",
-> +	[0x1] = "sd",
-> +	[0x2] = "net",
-> +	[0x3] = "rpiboot",
-> +	[0x4] = "usbmsd",
-> +	[0x5] = "usbc",
-> +	[0x6] = "nvme",
-> +	[0x7] = "http",
-> +};
-> +
->  struct rpi_priv;
->  struct rpi_machine_data {
->  	int (*init)(struct rpi_priv *priv);
-> @@ -186,54 +201,117 @@ static int rpi_env_init(void)
->  	return 0;
->  }
->  
-> -/* Extract /chosen/bootargs from the VideoCore FDT into vc.bootargs
-> - * global variable. */
-> -static int rpi_vc_fdt_bootargs(void *fdt)
-> +/* Extract useful information from the VideoCore FDT we got.
-> + * Some parameters are defined here:
-> + * https://www.raspberrypi.com/documentation/computers/configuration.html#part4
-> + */
-> +static void rpi_vc_fdt_parse(void *fdt)
->  {
-> -	int ret = 0;
-> -	struct device_node *root = NULL, *node;
-> -	const char *cmdline;
-> +	int ret, len;
-> +	struct device_node *root, *chosen, *bootloader;
-> +	enum reset_src_type rst_src = RESET_UKWN;
-> +	const char *str;
-> +	char *dynstr;
-> +	u32 num, *pnum;
->  
->  	root = of_unflatten_dtb(fdt, INT_MAX);
-> -	if (IS_ERR(root)) {
-> -		ret = PTR_ERR(root);
-> -		root = NULL;
-> -		goto out;
-> +	if (IS_ERR(root))
-> +		return;
-> +
-> +	str = of_get_property(root, "serial-number", &len);
-> +	if (!str) {
-> +		pr_warn("no 'serial-number' property found in vc fdt\n");
-> +	} else {
-> +		dynstr = xstrndup(str, len);
-> +		barebox_set_serial_number(dynstr);
-> +		free(dynstr);
->  	}
+> The patchstack also includes some minor fixes/changes I found during
+> implementation of the above.
+> 
+> - Robin
+> 
+> Robin van der Gracht (9):
+>   ARM: boards: protonic-imx6: prtvt7 hardkey inputs are active low
+>   ARM: boards: protonic-imx6: Update comment to match a recent code
+>     update
+>   ARM: boards: protonic-imx6: Free allocated autoboot_timeout string
+>   ARM: boards: protonic-imx6: Always free allocated alias string
+>   ARM: boards: protonic-imx6: Remove unsused argument from
+>     prt_imx6_usb_mount
+>   ARM: boards: protonic-imx6: Register prt-usb boot entry
+>   ARM: boards: protonic-imx6: Remove usb_delay from the priv struct
+>   ARM: boards: protonic-imx6: Read serial and mac from fuses if
+>     available
+>   ARM: boards: protonic-imx6: Register serial_number parameter with
+>     ocotp
 
-How about:
+Applied 3-9, thanks
 
-static const char *of_read_vc_string(struct device_node *root,
-                                     const char *propname)
-{
-        const char *str;
-        char *dynstr;
-        int len;
-
-        str = of_get_property(root, propname, &len);
-        if (!str) {
-                pr_warn("no '%s' property found in vc fdt\n", propname);
-                return NULL;
-        };
-
-        return xstrndup(str, len);
-}
-
-and then use it throughout?
-
-This should make the code much better readable IMO.
-
->  
-> -	node = of_find_node_by_path_from(root, "/chosen");
-> -	if (!node) {
-> -		pr_err("no /chosen node\n");
-> -		ret = -ENOENT;
-> -		goto out;
-> +	str = of_get_property(root, "model", &len);
-> +	if (!str) {
-> +		pr_warn("no 'model' property found in vc fdt\n");
-> +	} else {
-> +		dynstr = xstrndup(str, len);
-> +		barebox_set_model(dynstr);
-> +		free(dynstr);
->  	}
->  
-> -	cmdline = of_get_property(node, "bootargs", NULL);
-> -	if (!cmdline) {
-> -		pr_err("no bootargs property in the /chosen node\n");
-> -		ret = -ENOENT;
-> +	chosen = of_find_node_by_path_from(root, "/chosen");
-> +	if (!chosen) {
-> +		pr_err("no '/chosen' node found in vc fdt\n");
->  		goto out;
->  	}
->  
-> -	globalvar_add_simple("vc.bootargs", cmdline);
-> +	bootloader = of_find_node_by_name(chosen, "bootloader");
-> +
-> +	str = of_get_property(chosen, "bootargs", &len);
-> +	if (!str)
-> +		pr_warn("no 'bootargs' property in the /chosen node\n");
-> +	else
-> +		globalvar_add_simple("vc.bootargs", xstrndup(str, len));
-
-second argument is xstrdup'd, so this leaks.
-
-> +
-> +	str = of_get_property(chosen, "overlay_prefix", &len);
-> +	if (!str)
-> +		pr_warn("no 'overlay_prefix' property in the /chosen node\n");
-> +	else
-> +		globalvar_add_simple("vc.overlay_prefix", xstrndup(str, len));
-> +
-> +	str = of_get_property(chosen, "os_prefix", &len);
-> +	if (!str)
-> +		pr_warn("no 'os_prefix' property in the /chosen node\n");
-> +	else
-> +		globalvar_add_simple("vc.os_prefix", xstrndup(str, len));
-> +
-> +	ret = of_property_read_u32(chosen, "boot-mode", &num);
-> +	if (ret && bootloader)
-> +		ret = of_property_read_u32(bootloader, "boot-mode", &num);
-> +	if (ret) {
-> +		pr_warn("'boot-mode' property not found\n");
-
-Nitpick: Did they always populate this property? I would skip this warning here, so
-it doesn't spam old firmware + new barebox.
-
-> +	} else {
-> +		pnum = xmalloc(sizeof(u32));
-
-Just make it a static variable?
-
-> +		*pnum = num;
-> +		globalvar_add_simple_enum("vc.boot_mode", pnum,
-> +					  boot_mode_names,
-> +					  ARRAY_SIZE(boot_mode_names));
-> +	}
->  
-> -	switch(cpu_architecture()) {
-> -	case CPU_ARCH_ARMv6:
-> -		globalvar_add_simple("vc.kernel", "kernel.img");
-> -		break;
-> -	case CPU_ARCH_ARMv7:
-> -		globalvar_add_simple("vc.kernel", "kernel7.img");
-> -		break;
-> -	case CPU_ARCH_ARMv8:
-> -		globalvar_add_simple("vc.kernel", "kernel8.img");
-> -		break;
-> +	ret = of_property_read_u32(chosen, "partition", &num);
-> +	if (ret && bootloader)
-> +		ret = of_property_read_u32(bootloader, "partition", &num);
-> +	if (ret) {
-> +		pr_warn("'partition' property not found\n");
-> +	} else {
-> +		pnum = xmalloc(sizeof(u32));
-> +		*pnum = num;
-> +		globalvar_add_simple_int("vc.boot_partition", pnum, "%u");
->  	}
->  
-> +	if (IS_ENABLED(CONFIG_RESET_SOURCE)) {
-> +		ret = of_property_read_u32(chosen, "pm_rsts", &num);
-> +		if (ret && bootloader)
-> +			 ret = of_property_read_u32(bootloader, "rsts", &num);
-> +
-> +		if (ret) {
-> +			pr_warn("'pm_rsts'/'rsts' property not found\n");
-> +		} else {
-> +/*
-> + * https://github.com/raspberrypi/linux/issues/932#issuecomment-93989581
-> + */
-> +			if (num & PM_RSTS_HADPOR_SET)
-> +				rst_src = RESET_POR;
-> +			else if (num & PM_RSTS_HADDR_SET)
-> +				rst_src = RESET_JTAG;
-> +			else if (num & PM_RSTS_HADWR_SET)
-> +				rst_src = RESET_WDG;
-> +			else if (num & PM_RSTS_HADSR_SET)
-> +				rst_src = RESET_RST;
-> +			reset_source_set(rst_src);
-> +		}
-> +	}
->  out:
->  	if (root)
->  		of_delete_node(root);
-> -
-> -	return ret;
-> +	return;
->  }
->  
->  static void rpi_vc_fdt(void)
-> @@ -241,7 +319,6 @@ static void rpi_vc_fdt(void)
->  	void *saved_vc_fdt;
->  	struct fdt_header *oftree;
->  	unsigned long magic, size;
-> -	int ret;
->  
->  	/* VideoCore FDT was copied in PBL just above Barebox memory */
->  	saved_vc_fdt = (void *)(arm_mem_endmem_get());
-> @@ -260,16 +337,23 @@ static void rpi_vc_fdt(void)
->  		return;
->  
->  	size = be32_to_cpu(oftree->totalsize);
-> -	if (write_file("/vc.dtb", saved_vc_fdt, size)) {
-> +	if (write_file("/vc.dtb", saved_vc_fdt, size))
->  		pr_err("failed to save videocore fdt to a file\n");
-> -		return;
-> -	}
->  
-> -	ret = rpi_vc_fdt_bootargs(saved_vc_fdt);
-> -	if (ret) {
-> -		pr_err("failed to extract bootargs from videocore fdt: %d\n",
-> -									ret);
-> -		return;
-> +	rpi_vc_fdt_parse(saved_vc_fdt);
-> +}
-> +
-> +static void rpi_set_kernel_name(void) {
-> +	switch(cpu_architecture()) {
-> +	case CPU_ARCH_ARMv6:
-> +		globalvar_add_simple("vc.kernel", "kernel.img");
-> +		break;
-> +	case CPU_ARCH_ARMv7:
-> +		globalvar_add_simple("vc.kernel", "kernel7.img");
-> +		break;
-> +	case CPU_ARCH_ARMv8:
-> +		globalvar_add_simple("vc.kernel", "kernel8.img");
-> +		break;
->  	}
->  }
->  
-> @@ -348,6 +432,7 @@ static int rpi_devices_probe(struct device_d *dev)
->  	armlinux_set_architecture(MACH_TYPE_BCM2708);
->  	rpi_env_init();
->  	rpi_vc_fdt();
-> +	rpi_set_kernel_name();
->  
->  	if (dcfg && dcfg->init)
->  		dcfg->init(priv);
-> diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
-> index ece80837b..c6e6a289f 100644
-> --- a/drivers/watchdog/bcm2835_wdt.c
-> +++ b/drivers/watchdog/bcm2835_wdt.c
-> @@ -10,28 +10,7 @@
->  #include <restart.h>
->  #include <watchdog.h>
->  
-> -#define PM_RSTC		0x1c
-> -#define PM_RSTS		0x20
-> -#define PM_WDOG		0x24
-> -
-> -#define PM_WDOG_RESET				0000000000
-> -#define PM_PASSWORD				0x5a000000
-> -#define PM_WDOG_TIME_SET			0x000fffff
-> -#define PM_RSTC_WRCFG_CLR			0xffffffcf
-> -#define PM_RSTC_WRCFG_SET			0x00000030
-> -#define PM_RSTC_WRCFG_FULL_RESET		0x00000020
-> -#define PM_RSTC_RESET				0x00000102
-> -
-> -#define PM_RSTS_HADPOR_SET			0x00001000
-> -#define PM_RSTS_HADSRH_SET			0x00000400
-> -#define PM_RSTS_HADSRF_SET			0x00000200
-> -#define PM_RSTS_HADSRQ_SET			0x00000100
-> -#define PM_RSTS_HADWRH_SET			0x00000040
-> -#define PM_RSTS_HADWRF_SET			0x00000020
-> -#define PM_RSTS_HADWRQ_SET			0x00000010
-> -#define PM_RSTS_HADDRH_SET			0x00000004
-> -#define PM_RSTS_HADDRF_SET			0x00000002
-> -#define PM_RSTS_HADDRQ_SET			0x00000001
-> +#include <soc/bcm283x/wdt.h>
->  
->  #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
->  
-> diff --git a/include/soc/bcm283x/wdt.h b/include/soc/bcm283x/wdt.h
-> new file mode 100644
-> index 000000000..ce97b1eb5
-> --- /dev/null
-> +++ b/include/soc/bcm283x/wdt.h
-> @@ -0,0 +1,40 @@
-> +/*
-> + * Copyright (C) 2017 Pengutronix, Lucas Stach <l.stach@pengutronix.de>
-> + *
-> + * Based on code from  Carlo Caione <carlo@carlocaione.org>
-> + */
-> +
-> +#ifndef __BCM2835_WDT_H
-> +#define __BCM2835_WDT_H
-> +
-> +#define PM_RSTC				0x1c
-> +#define PM_RSTS				0x20
-> +#define PM_WDOG				0x24
-> +
-> +#define PM_WDOG_RESET			0000000000
-> +#define PM_PASSWORD			0x5a000000
-> +#define PM_WDOG_TIME_SET		0x000fffff
-> +#define PM_RSTC_WRCFG_CLR		0xffffffcf
-> +#define PM_RSTC_WRCFG_SET		0x00000030
-> +#define PM_RSTC_WRCFG_FULL_RESET	0x00000020
-> +#define PM_RSTC_RESET			0x00000102
-> +
-> +#define PM_RSTS_HADPOR_SET		0x00001000
-> +#define PM_RSTS_HADSRH_SET		0x00000400
-> +#define PM_RSTS_HADSRF_SET		0x00000200
-> +#define PM_RSTS_HADSRQ_SET		0x00000100
-> +#define PM_RSTS_HADWRH_SET		0x00000040
-> +#define PM_RSTS_HADWRF_SET		0x00000020
-> +#define PM_RSTS_HADWRQ_SET		0x00000010
-> +#define PM_RSTS_HADDRH_SET		0x00000004
-> +#define PM_RSTS_HADDRF_SET		0x00000002
-> +#define PM_RSTS_HADDRQ_SET		0x00000001
-> +
-> +#define PM_RSTS_HADDR_SET \
-> +	(PM_RSTS_HADDRQ_SET | PM_RSTS_HADDRF_SET | PM_RSTS_HADDRH_SET)
-> +#define PM_RSTS_HADWR_SET \
-> +	(PM_RSTS_HADWRQ_SET | PM_RSTS_HADWRF_SET | PM_RSTS_HADWRH_SET)
-> +#define PM_RSTS_HADSR_SET \
-> +	(PM_RSTS_HADSRQ_SET | PM_RSTS_HADSRF_SET | PM_RSTS_HADSRH_SET)
-> +
-> +#endif
-
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
