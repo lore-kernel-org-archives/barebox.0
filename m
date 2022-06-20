@@ -1,59 +1,56 @@
-Delivery-date: Mon, 20 Jun 2022 11:42:18 +0200
+Delivery-date: Mon, 20 Jun 2022 14:07:07 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o3DvF-007wva-Jf
-	for lore@lore.pengutronix.de; Mon, 20 Jun 2022 11:42:18 +0200
+	id 1o3GBO-0083pj-E8
+	for lore@lore.pengutronix.de; Mon, 20 Jun 2022 14:07:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o3DvF-0007TJ-29
-	for lore@pengutronix.de; Mon, 20 Jun 2022 11:42:18 +0200
+	id 1o3GBM-0002oF-FH
+	for lore@pengutronix.de; Mon, 20 Jun 2022 14:07:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HmEwptiRGbQa2qSO+E+9SRhcH9acKtE4gVd0qhE98JE=; b=iQbSBBrpPet1oFrb+n3Xac6ALg
-	Wfxal3pjHkXrTdxYo793uYdWGxCa5dvBQqq58PBLq1PnH25a4dLoTpaHO+zvVl9cgE+HXZSN6hVg0
-	UDP3H1J8h00zcdmZki8hUMLBUnEo79H40S5PzLCW86e7ecoEV1Nu7mN0+qwrKfFoWN/l9vJqf9jwV
-	+PVXGJqS36FgZRgekbyckZdWsY6v7Ugc8LUIIs3Frg9zHgFVAPJmXqzYGOEOAax3SJVSFCXJwi2A0
-	U4EscX3FCamO9ZRrP5YpuiM6duySJrWY7UbZ7jGzb1XrzEvohOG8HQthpuAJR8B4WnbQjPsxBWRpG
-	bHDvKB5g==;
+	bh=nOIs4VQO8nf938SAh8HNavLWihkvLt7b4NpFrrie5zI=; b=F5xZ/YiYCupG+W7yC4RT9EGJo6
+	zj2I/kDz2LfxGy10UfL+4B5ZgXxz9lXpkOV+HtW2/AozBrYckDjyRJ0GhVtgRsvs6lfQRXvJWduRr
+	4+b9nxb3ApcmtirD15ANyYRu4qHb/gOW8x/gGD49I9qI6lwM8e8GHaF2CQC6v7EXIVAP4LLJP9ZnO
+	2uoX+1V5JGpdc5On5dz9P0r6YZCj0jes24q6ng0BeKnmOuTsWPIKmq8wxtnkDC3h3csoMhcds48l7
+	SCOMWPwBCptvkvZ/62JJ1R1ddlAKv//Wns3c5d2mT1QmdcQITJNeFhO1i9TgFzj8yb3m+bLxIfpWY
+	qSeTha5g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o3Dtp-00HGqj-Vh; Mon, 20 Jun 2022 09:40:50 +0000
+	id 1o3G9a-000FNg-HM; Mon, 20 Jun 2022 12:05:14 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o3Dt9-00HGdG-M9
-	for barebox@lists.infradead.org; Mon, 20 Jun 2022 09:40:10 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1o3Dt8-0006xO-Cr; Mon, 20 Jun 2022 11:40:06 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1o3Dt5-001cCf-IE; Mon, 20 Jun 2022 11:40:04 +0200
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1o3Dt6-0007VA-AW; Mon, 20 Jun 2022 11:40:04 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 20 Jun 2022 11:39:53 +0200
-Message-Id: <20220620093953.24822-3-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220620093953.24822-1-s.hauer@pengutronix.de>
-References: <20220620093953.24822-1-s.hauer@pengutronix.de>
+	id 1o3G70-000E8F-IO
+	for barebox@lists.infradead.org; Mon, 20 Jun 2022 12:02:36 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1o3G6w-0001EL-A6; Mon, 20 Jun 2022 14:02:30 +0200
+Message-ID: <134ee58e-b58e-4551-d834-c4d115f91d99@pengutronix.de>
+Date: Mon, 20 Jun 2022 14:02:29 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Content-Language: en-US
+To: Teresa Remmet <t.remmet@phytec.de>, barebox@lists.infradead.org,
+ Lucas Stach <lst@pengutronix.de>
+Cc: upstream@phytec.de
+References: <20220520142337.993417-1-t.remmet@phytec.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220520142337.993417-1-t.remmet@phytec.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220620_024007_822009_0C675107 
-X-CRM114-Status: GOOD (  14.78  )
+X-CRM114-CacheID: sfid-20220620_050234_712420_9C4F3BFB 
+X-CRM114-Status: GOOD (  21.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,182 +68,56 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 3/3] treewide: Simplify setenv() calls
+Subject: Re: [PATCH] arm: imx: mmdc_size: Increase row_max for imx8m
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We now have pr_setenv() which is a setenv() variant that takes a
-format string. Use it where appropriate.
+Hello,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/clk.c      | 10 +++-------
- commands/crc.c      | 14 ++++----------
- commands/hwclock.c  |  4 +---
- commands/loadb.c    |  4 +---
- commands/loads.c    |  4 +---
- common/bootsource.c |  8 ++------
- common/menutree.c   |  9 +--------
- 7 files changed, 13 insertions(+), 40 deletions(-)
+On 20.05.22 16:23, Teresa Remmet wrote:
+> As DDRC_ADDRMAP7_ROW_B16 and DDRC_ADDRMAP7_ROW_B17 are used
+> now for the row size calculation we need to increase row_max to 18.
+> 
+> For LPDDR4 this only works in combination with ram timings
+> created with recent configuration spreadsheet versions.
+> With older versions the register DDRC_ADDRMAP7 may not be set and
+> calculation will lead to wrong results even with this patch.
+> 
+> Fixes: dad2b5636bd8 ("ARM: imx: Add imx8 support for 18 bit SDRAM row size handle")
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 
-diff --git a/commands/clk.c b/commands/clk.c
-index dfbc7c988f..b1741b9da4 100644
---- a/commands/clk.c
-+++ b/commands/clk.c
-@@ -139,13 +139,9 @@ static int do_clk_get_rate(int argc, char *argv[])
- 
- 	rate = clk_get_rate(clk);
- 
--	if (variable_name) {
--		char *t;
--
--		t = basprintf("%lu", rate);
--		setenv(variable_name, t);
--		free(t);
--	} else
-+	if (variable_name)
-+		pr_setenv(variable_name, "%lu", rate);
-+	else
- 		printf("%lu\n", rate);
- 
- 	return COMMAND_SUCCESS;
-diff --git a/commands/crc.c b/commands/crc.c
-index 80ecf7fe29..23ffd4360b 100644
---- a/commands/crc.c
-+++ b/commands/crc.c
-@@ -83,17 +83,11 @@ static int do_crc(int argc, char *argv[])
- 	printf("CRC32 for %s 0x%08lx ... 0x%08lx ==> 0x%08lx",
- 			filename, (ulong)start, (ulong)start + total - 1, crc);
- 
--	if (crcvarname) {
--		char *crcstr = basprintf("0x%lx", crc);
--		setenv(crcvarname, crcstr);
--		kfree(crcstr);
--	}
-+	if (crcvarname)
-+		pr_setenv(crcvarname, "0x%lx", crc);
- 
--	if (sizevarname) {
--		char *sizestr = basprintf("0x%lx", total);
--		setenv(sizevarname, sizestr);
--		kfree(sizestr);
--	}
-+	if (sizevarname)
-+		pr_setenv(sizevarname, "0x%lx", total);
- 
- #ifdef CONFIG_CMD_CRC_CMP
- 	if (vfilename) {
-diff --git a/commands/hwclock.c b/commands/hwclock.c
-index abb0500e6a..c594e070ac 100644
---- a/commands/hwclock.c
-+++ b/commands/hwclock.c
-@@ -153,11 +153,9 @@ static int do_hwclock(int argc, char *argv[])
- 
- 	if (env_name) {
- 		unsigned long time;
--		char t[12];
- 
- 		rtc_tm_to_time(&tm, &time);
--		snprintf(t, 12, "%lu", time);
--		setenv(env_name, t);
-+		pr_setenv(env_name, "%lu", time);
- 	} else {
- 		printf("%s\n", time_str(&tm));
- 	}
-diff --git a/commands/loadb.c b/commands/loadb.c
-index 17d3af84b5..7ab989f459 100644
---- a/commands/loadb.c
-+++ b/commands/loadb.c
-@@ -542,7 +542,6 @@ packet_error:
- static ulong load_serial_bin(void)
- {
- 	int size, i;
--	char buf[32];
- 
- 	/* Try to allocate the buffer we shall write to files */
- 	write_buffer = malloc(MAX_WRITE_BUFFER);
-@@ -576,8 +575,7 @@ static ulong load_serial_bin(void)
- 		write_idx = 0;
- 	}
- 	printf("## Total Size      = 0x%08x = %d Bytes\n", size, size);
--	sprintf(buf, "%X", size);
--	setenv("filesize", buf);
-+	pr_setenv("filesize", "%X", size);
- 
- err_quit:
- 	free(write_buffer);
-diff --git a/commands/loads.c b/commands/loads.c
-index 8260673c51..7c5df31251 100644
---- a/commands/loads.c
-+++ b/commands/loads.c
-@@ -65,7 +65,6 @@ static ulong load_serial(ulong offset)
- 	int	type;				/* return code for record type	*/
- 	ulong	addr;				/* load address from S-Record	*/
- 	ulong	size;				/* number of bytes transferred	*/
--	char	buf[32];
- 	ulong	store_addr;
- 	ulong	start_addr = ~0;
- 	ulong	end_addr   =  0;
-@@ -100,8 +99,7 @@ static ulong load_serial(ulong offset)
- 			    "## Total Size      = 0x%08lX = %ld Bytes\n",
- 			    start_addr, end_addr, size, size
- 			    );
--			sprintf(buf, "%lX", size);
--			setenv("filesize", buf);
-+			pr_setenv("filesize", "%lX", size);
- 			return addr;
- 		case SREC_START:
- 			break;
-diff --git a/common/bootsource.c b/common/bootsource.c
-index 1f8d053a81..79dacfd1d0 100644
---- a/common/bootsource.c
-+++ b/common/bootsource.c
-@@ -113,16 +113,12 @@ void bootsource_set(enum bootsource src)
- 
- void bootsource_set_instance(int instance)
- {
--	char buf[32];
--
- 	bootsource_instance = instance;
- 
- 	if (instance < 0)
--		sprintf(buf, "unknown");
-+		setenv("bootsource_instance","unknown");
- 	else
--		snprintf(buf, sizeof(buf), "%d", instance);
--
--	setenv("bootsource_instance", buf);
-+		pr_setenv("bootsource_instance", "%d", instance);
- }
- 
- enum bootsource bootsource_get(void)
-diff --git a/common/menutree.c b/common/menutree.c
-index 7fa835a7fe..751350d754 100644
---- a/common/menutree.c
-+++ b/common/menutree.c
-@@ -34,14 +34,7 @@ static void menutree_action(struct menu *m, struct menu_entry *me)
- 
- static void setenv_bool(const char *var, bool val)
- {
--	const char *str;
--
--	if (val)
--		str = "1";
--	else
--		str = "0";
--
--	setenv(var, str);
-+	pr_setenv(var, "%d", val);
- }
- 
- static void menutree_box(struct menu *m, struct menu_entry *me)
+I have an out-of-tree i.MX8MM board with LPDDR4 that reported a correct size of 1G
+prior to this patch and now it reports 4G. DDRC_ADDRMAP7 is not explicitly initialized,
+but it's being read as zero, so the calculation seems to still be broken..
+
+> ---
+>  arch/arm/mach-imx/esdctl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+> index 8dd0ddbbc965..b070ebc62a45 100644
+> --- a/arch/arm/mach-imx/esdctl.c
+> +++ b/arch/arm/mach-imx/esdctl.c
+> @@ -488,7 +488,7 @@ static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc)
+>  
+>  	return imx_ddrc_sdram_size(ddrc, addrmap,
+>  				   12, ARRAY_AND_SIZE(col_b),
+> -				   16, ARRAY_AND_SIZE(row_b),
+> +				   18, ARRAY_AND_SIZE(row_b),
+>  				   reduced_adress_space, true);
+>  }
+>  
+
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
