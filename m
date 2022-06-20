@@ -1,62 +1,63 @@
-Delivery-date: Mon, 20 Jun 2022 09:49:07 +0200
+Delivery-date: Mon, 20 Jun 2022 09:53:17 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o3C9i-007r8S-38
-	for lore@lore.pengutronix.de; Mon, 20 Jun 2022 09:49:07 +0200
+	id 1o3CDk-007rOT-GX
+	for lore@lore.pengutronix.de; Mon, 20 Jun 2022 09:53:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o3C9h-0005Wu-LA
-	for lore@pengutronix.de; Mon, 20 Jun 2022 09:49:06 +0200
+	id 1o3CDk-00063y-Ep
+	for lore@pengutronix.de; Mon, 20 Jun 2022 09:53:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5XF0tCHUyOaVqUPHGoE5GJDMKGeG/L24aZLl4JtMOLc=; b=agYg3rtm0zB8iksVk37CRRlARA
-	+IpmXodXOC/SNaNQmiNF7LW9s3QL0omfW4FyfhbeaMJidioHv7iDpHwkCTIQF/fnoyPmCZm7Lul6S
-	7vA+PjIQwhSeIuybhXc/mECkZpZuhTVtJCL0g9iED24KDoSKxqhuG+1rlaBkPaflQk+OYdDdNCOnV
-	nfAjk7tFqLeZ39EVyRvqDf39c6sk1WyUKLXPjRNC2or/n1T235POUB5Bn1vk9Kmxtt9I29lDhl59j
-	/icP+f84hA6UocA47AH6L6s310xvmt0bFvWeCzbYTHMXTLgCtbvT+fUWFX/+aCc+t8v8zJPhwa66e
-	Fn+Nd68g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=LwSEwtUiefPFG2IsZLhDoEoFeah+KjaBUIsAdwn/0Xo=; b=QwQoV7j6Dj220pjiIa37GSBK3E
+	csxYObhbHGnCcaKbEKwRpbB2Wsom0XgLGtfNXy715craNr48/d8RhUH9xMHs/voK9ngydLziyVnbm
+	3rAUW7GKAx7uhW6ajlX1DP8YjXlylwFeaGS7q2xm6cpwLDHnk/UvGhs36nv5L5D9LdNYMpYSfYaKV
+	jInfgT5Q01+WuN9Jn91XagDzqPzmf8hI8b4mPaiBqblcrvDIzBagzn3QNgi7RrGefKZGsOE9X2Q57
+	9HyZYS0yvivlWJ1eciZry0JTChpRG5GEOs51LPFr6/rHemFQlcNyWj9mf+PHqYYkUqfF3EqexkXLD
+	hmowSlxg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o3C8F-00GkUd-Oy; Mon, 20 Jun 2022 07:47:35 +0000
+	id 1o3CCY-00GmiG-Ag; Mon, 20 Jun 2022 07:52:02 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o3C8A-00GkQX-KH
-	for barebox@lists.infradead.org; Mon, 20 Jun 2022 07:47:32 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1o3C87-0005Qh-0d; Mon, 20 Jun 2022 09:47:27 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1o3C86-0006Ue-Nx; Mon, 20 Jun 2022 09:47:26 +0200
-Date: Mon, 20 Jun 2022 09:47:26 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220620074726.GM1615@pengutronix.de>
-References: <20220617215338.5497-1-danek.brat@gmail.com>
- <20220620072138.1460886-1-a.fatoum@pengutronix.de>
+	id 1o3CCS-00Gmew-Ls
+	for barebox@lists.infradead.org; Mon, 20 Jun 2022 07:51:59 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1o3CCO-0005zY-Nz; Mon, 20 Jun 2022 09:51:52 +0200
+Message-ID: <ead464cf-803f-5795-4269-7ff4d15cf9ed@pengutronix.de>
+Date: Mon, 20 Jun 2022 09:51:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220620072138.1460886-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>, Sascha Hauer <sha@pengutronix.de>
+Cc: Oleksij Rempel <linux@rempel-privat.de>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Robin van der Gracht <robin@protonic.nl>, barebox@lists.infradead.org,
+ david@protonic.nl
+References: <20220616131114.214628-1-robin@protonic.nl>
+ <20220616131114.214628-2-robin@protonic.nl>
+ <20220616162833.GD28995@pengutronix.de>
+ <85d82f53-5290-613f-2214-924dc2135cb6@rempel-privat.de>
+ <20220617065757.GC1615@pengutronix.de>
+ <20220617084437.fvfwaxaxxediqm3t@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220617084437.fvfwaxaxxediqm3t@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220620_004730_703537_FA603A41 
-X-CRM114-Status: GOOD (  34.49  )
+X-CRM114-CacheID: sfid-20220620_005156_781186_B3FF8A67 
+X-CRM114-Status: GOOD (  15.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,198 +75,57 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] env: let setenv() take printf arguments
+Subject: Re: [PATCH 1/9] ARM: boards: protonic-imx6: prtvt7 hardkey inputs are
+ active low
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jun 20, 2022 at 09:21:39AM +0200, Ahmad Fatoum wrote:
-> From: Sascha Hauer <s.hauer@pengutronix.de>
+Hello,
+
+On 17.06.22 10:44, Marco Felsch wrote:
+> On 22-06-17, Sascha Hauer wrote:
+>>> Or, it is active low and your patch is correct :D
+>>
+>> If they are, can we add a comment or _N suffix to the names?
 > 
-> It's a common pattern to (ba)sprintf to a string and then call setenv()
-> with this string. Let setenv() take printf arguments to make that
-> easier. To avoid the overhead that goes with changing other callers
-> to using setenv(var, "%s", val) to avoid security implications (and
-> GCC warnings), fallback to the non-formatted version when there are
-> only two arguments.
+> Does barebox not have gpiod? The board code just should check if it is
+> active or not. Whatever active means in this case.
+
+There is gpiod_get(), but there's also gpio-keys support. See
+drivers/input/specialkeys.c for an example on how to register an input
+notifier.
+
+Robin, did you test this works with barebox v2022.05.0?
+I'd have assumed this to be broken by f349b662674e ("gpio: allocate dynamic
+gpio numbers top down"). Especially, with deep probe, you can't and shouldn't
+depend on GPIO expanders numbering being fixed. If you use an input notifier,
+you should sidestep this issue altogether.
+
+Cheers,
+Ahmad
+
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> [afa: fall back to non-formatted version on old two arg version]
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> Thoughts?
-
-While I'm impressed by this macro I don't like this very much. My desire
-was to simplify things, now with this patch I'm no longer sure I reached
-that goal.
-
-Alternatively we could
-
-a) Drop the original patch
-b) Replace the problematic places with setenv(foo, "%s", not_a_string_literal);
-c) Pass -Wno-format-security, The Kernel does this for over a decade.
-
-My vote is c)
-
-Sascha
-
-> ---
->  common/env.c           | 37 +++++++++++++++++++++++++++++++++----
->  include/environment.h  | 19 +++++++++++++++++--
->  include/linux/kernel.h | 12 ++++++++++++
->  3 files changed, 62 insertions(+), 6 deletions(-)
+> Regards,
+>   Marco
 > 
-> diff --git a/common/env.c b/common/env.c
-> index 05add63f625c..c36f6846ee21 100644
-> --- a/common/env.c
-> +++ b/common/env.c
-> @@ -243,15 +243,15 @@ static int dev_setenv(const char *name, const char *val)
->  }
->  
->  /**
-> - * setenv - set environment variables
-> + * __setenv_str - set environment variables
->   * @_name - Variable name
->   * @value - the value to set, empty string not handled specially
->   *
->   * Returns 0 for success and a negative error code otherwise
-> - * Use unsetenv() to unset.
-> + * Use unsetenv() to unset. Don't use directly, use setenv()
->   */
->  
-> -int setenv(const char *_name, const char *value)
-> +int __setenv_str(const char *_name, const char *value)
->  {
->  	char *name = strdup(_name);
->  	int ret = 0;
-> @@ -275,7 +275,36 @@ out:
->  
->  	return ret;
->  }
-> -EXPORT_SYMBOL(setenv);
-> +EXPORT_SYMBOL(__setenv_str);
-> +
-> +/**
-> + * __setenv_fmt - set environment variables
-> + * @name - Variable name
-> + * @fmt - format string describing how to format arguments to come
-> + *
-> + * Returns 0 for success and a negative error code otherwise
-> + * Use unsetenv() to unset. Don't use directly, use setenv()
-> + */
-> +
-> +int __setenv_fmt(const char *name, const char *fmt, ...)
-> +{
-> +	va_list ap;
-> +	int ret;
-> +	char *value;
-> +
-> +	va_start(ap, fmt);
-> +	ret = vasprintf(&value, fmt, ap);
-> +	va_end(ap);
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = __setenv_str(name, value);
-> +
-> +	free(value);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(__setenv_fmt);
->  
->  int export(const char *varname)
->  {
-> diff --git a/include/environment.h b/include/environment.h
-> index 19e522cfb6b4..e5b9a9da3167 100644
-> --- a/include/environment.h
-> +++ b/include/environment.h
-> @@ -7,6 +7,7 @@
->  #ifndef _ENVIRONMENT_H_
->  #define _ENVIRONMENT_H_
->  
-> +#include <linux/kernel.h>
->  #include <linux/list.h>
->  #include <errno.h>
->  
-> @@ -31,7 +32,8 @@ char *var_name(struct variable_d *);
->  
->  #ifdef CONFIG_ENVIRONMENT_VARIABLES
->  const char *getenv(const char *);
-> -int setenv(const char *, const char *);
-> +int __setenv_str(const char *, const char *val);
-> +int __setenv_fmt(const char *, const char *fmt, ...) __printf(2, 3);
->  void export_env_ull(const char *name, unsigned long long val);
->  int getenv_ull(const char *name, unsigned long long *val);
->  int getenv_ul(const char *name, unsigned long *val);
-> @@ -44,7 +46,13 @@ static inline char *getenv(const char *var)
->  	return NULL;
->  }
->  
-> -static inline int setenv(const char *var, const char *val)
-> +static inline int __setenv_str(const char *var, const char *val)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline __printf(2, 3) int __setenv_fmt(
-> +	const char *var, const char *fmt, ...)
->  {
->  	return 0;
->  }
-> @@ -82,6 +90,13 @@ static inline const char *getenv_nonempty(const char *var)
->  }
->  #endif
->  
-> +/*
-> + * avoid the varargs overhead when using a fixed string
-> + */
-> +#undef setenv
-> +#define setenv(args...) \
-> +	__optionally_variadic2(__setenv_str, __setenv_fmt, args)
-> +
->  int env_pop_context(void);
->  int env_push_context(void);
->  
-> diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-> index 4483d33e65bb..ebae8f666cf6 100644
-> --- a/include/linux/kernel.h
-> +++ b/include/linux/kernel.h
-> @@ -7,6 +7,7 @@
->  #include <linux/barebox-wrapper.h>
->  #include <linux/limits.h>
->  #include <linux/math64.h>
-> +#include <linux/stringify.h>
->  
->  #define ALIGN(x, a)		__ALIGN_MASK(x, (typeof(x))(a) - 1)
->  #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
-> @@ -17,6 +18,17 @@
->  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
->  #define ARRAY_AND_SIZE(x)	(x), ARRAY_SIZE(x)
->  
-> +/*
-> + * Call func_variadic, when more than 2 arguments and func_fixed otherwise
-> + */
-> +#define __optionally_variadic2(func_fixed, func_variadic, arg1, arg2, ...) ({ \
-> +		char _______STR[] = __stringify((__VA_ARGS__));  \
-> +		sizeof(_______STR) > 3 ?                         \
-> +			func_variadic(arg1, arg2, ##__VA_ARGS__) \
-> +		:                                                \
-> +			func_fixed(arg1, arg2);                  \
-> +	})
-> +
->  /*
->   * This looks more complex than it should be. But we need to
->   * get the type for the ~ right in round_down (it needs to be
-> -- 
-> 2.30.2
+>>
+>> Sascha
+>>
+>> -- 
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>
+>>
 > 
 > 
-> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
