@@ -1,66 +1,67 @@
-Delivery-date: Mon, 20 Jun 2022 08:42:09 +0200
+Delivery-date: Mon, 20 Jun 2022 08:50:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o3B6t-007owQ-V4
-	for lore@lore.pengutronix.de; Mon, 20 Jun 2022 08:42:09 +0200
+	id 1o3BEZ-007p7R-UR
+	for lore@lore.pengutronix.de; Mon, 20 Jun 2022 08:50:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o3B6t-0004Y6-Ly
-	for lore@pengutronix.de; Mon, 20 Jun 2022 08:42:08 +0200
+	id 1o3BEY-0005iJ-K5
+	for lore@pengutronix.de; Mon, 20 Jun 2022 08:50:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Reply-To:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:Content-Type:Message-ID:References:In-Reply-To:
 	Subject:Cc:To:From:Date:MIME-Version:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Z+clkqrrKfh/nu/2UXzyYgHoLbNdNETPrdY1S162GBc=; b=ctDbwK0rzrwuW4
-	IfvwcVNwsuStnpVKzEX/4UbIpdNBhcIaPa3Ryv8W7AlXEC6P43VKdHk6oCva6l0QHzAFx1hKA/kgg
-	8uQwyQY0II9yhKvYmw7L+9hfq5Q2C5140c25CePBOviJOdjeVD4HliaYt/QWBpqp81l/n/U8+iyeT
-	0Qex4p9X+dJFI4qNOJADCcT8qPxy4+YjJpN9W+DOPCbViUv+r9xyy7W7BNYpZua/XmfSFp0/ydhrE
-	rTgFh3MFJ/1DaW6xcZbXp88zGa2AybnDjiHNhy1rqbH8yeN4IKSOq21BEt9zZqx+tmLbjk4vC8ItI
-	XQKC8h1xpG76mAhh/EnQ==;
+	List-Owner; bh=mGYthteFWcmCChy4atxiihPEE50LAouRUU2AE3L/E4k=; b=1XSKmgRwrFQh7b
+	o1hXfczFFYcyLlIFZ7vUs9gnPAOwTVyr6+bW3pIbBWGO/RK0R49g99AhSnToxZJP587kMTXltmz6V
+	gr4215vL6Ha/uDzFJsZV+SsmVkIYbwrUocHvpcFQXSsmDNhNyHKcj/i2641DsmRGG3ffZOOslo14Q
+	rGkDAFwzrmFT3Pk+i7q/V4OkMiBRfX1JWvK7NRs+xAaRvVl9fGUNfIitwi5fSyMscDvGVTb754Nh0
+	1QYGFDeLVEjqWmw9bm8mkvh/nb9KknJfXrWPStfr8eR//qpe5yUnw41GErx+++39tjIwSBr/MoODV
+	Bqab+92XYJ1umKm7Wvtw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o3B58-00GSWR-Hk; Mon, 20 Jun 2022 06:40:18 +0000
+	id 1o3BDH-00GUxC-7R; Mon, 20 Jun 2022 06:48:43 +0000
 Received: from smtp28.bhosted.nl ([2a02:9e0:8000::40])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o3B53-00GSU0-6P
-	for barebox@lists.infradead.org; Mon, 20 Jun 2022 06:40:15 +0000
+	id 1o3BD8-00GUvF-Ka
+	for barebox@lists.infradead.org; Mon, 20 Jun 2022 06:48:38 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=protonic.nl; s=202111;
 	h=content-transfer-encoding:content-type:message-id:references:in-reply-to:
 	 reply-to:subject:cc:to:from:date:mime-version:from;
-	bh=Z+clkqrrKfh/nu/2UXzyYgHoLbNdNETPrdY1S162GBc=;
-	b=Dt1Hgka+mEbYAJNxb43R8yTUM0W75twptFSh3+ggCX7fxSRHA+t0HEMD/jW79pNc4fOvbP7fgDzd7
-	 MsPC0PPA6QHxiIR+QmZe8j1k/FxhjHN2J1Uovzn4BHqMneq7xvfDEbmVEI/G9jrTCeNOvi7Alhf4Ns
-	 eRRTVtG6eRT8FH3dBtEzgb3cKxmS877WBLHlBheX/aKEIr6/CJ0hVSCwnCcljiClRWXYrZbCsdEEsN
-	 WEO226bdUeaHd/h/YLhpwPBVcYWdj5M39To8kHWMx8eS+vyIT5FSKkE9E3Lmksjpyq7mdiNdWHETTG
-	 ry/PprYvNvAQOQ8CsJLaj2RxGSD36Qw==
-X-MSG-ID: d0fc8218-f063-11ec-8a45-0050569d11ae
+	bh=mGYthteFWcmCChy4atxiihPEE50LAouRUU2AE3L/E4k=;
+	b=b0Ifa8Dhh7Hh5F+EnGlheRxNO2/beLWbpvOVoCqSqGoJ9Db9AwXFAIdvFml2I1bu/gZc06KAy4sRn
+	 99zGWXMUfrFITnGEMrafz35u1TPpxqe9W3isD/k2pfcY6rlQiOGihA4O5XzWVPLgqd83mZjKuLDhsp
+	 PDQEc7jd0KSqk0orFYvHOsXHEyunTCr5ZRDfW6AbLZJx/uaxHZ06TczQgrsxRQ4NxWWkThAlr85Gvg
+	 x+FaAPIG7/8A+sDNPwHDr4o3gItxpGGhei6r3NypyIKcMcYoHV4evuqEWdx4Db/LtdkAf3UpCSy1YJ
+	 ajsFbxl0GrVkWsDKUSNn7qyScILOBEw==
+X-MSG-ID: ffe7d701-f064-11ec-8a45-0050569d11ae
 MIME-Version: 1.0
-Date: Mon, 20 Jun 2022 08:40:03 +0200
+Date: Mon, 20 Jun 2022 08:48:32 +0200
 From: Robin van der Gracht <robin@protonic.nl>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, david@protonic.nl, Oleksij Rempel
- <o.rempel@pengutronix.de>
-In-Reply-To: <20220617070046.GD1615@pengutronix.de>
+To: Oleksij Rempel <linux@rempel-privat.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org,
+ david@protonic.nl
+In-Reply-To: <85d82f53-5290-613f-2214-924dc2135cb6@rempel-privat.de>
 References: <20220616131114.214628-1-robin@protonic.nl>
- <20220616131114.214628-3-robin@protonic.nl>
- <20220617070046.GD1615@pengutronix.de>
+ <20220616131114.214628-2-robin@protonic.nl>
+ <20220616162833.GD28995@pengutronix.de>
+ <85d82f53-5290-613f-2214-924dc2135cb6@rempel-privat.de>
 User-Agent: Roundcube Webmail/1.4.11
-Message-ID: <421d42ad4180ea979f4c78156cd1bdf9@protonic.nl>
+Message-ID: <4f38fe1638998e667dd18f6a673179db@protonic.nl>
 X-Sender: robin@protonic.nl
 Organization: Protonic Holland
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220619_234013_709493_900F5ECF 
-X-CRM114-Status: UNSURE (   7.60  )
+X-CRM114-CacheID: sfid-20220619_234834_882390_8326F610 
+X-CRM114-Status: UNSURE (   9.66  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,38 +86,49 @@ X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 2/9] ARM: boards: protonic-imx6: Update comment to match a
- recent code update
+Subject: Re: [PATCH 1/9] ARM: boards: protonic-imx6: prtvt7 hardkey inputs are
+ active low
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 2022-06-17 09:00, Sascha Hauer wrote:
-> On Thu, Jun 16, 2022 at 03:11:07PM +0200, Robin van der Gracht wrote:
->> Fixes: 1e817b64bc45968320597344e6b05463edd9c5e5
+On 2022-06-16 18:38, Oleksij Rempel wrote:
+> Am 16.06.22 um 18:28 schrieb Oleksij Rempel:
+>> Hi Robin,
+>> 
+>> On Thu, Jun 16, 2022 at 03:11:06PM +0200, Robin van der Gracht wrote:
+>>> The usb check needs to be skipped unless both keys are pressed
+>>> simultaneously.
+>>> 
+>>> Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+>>> ---
+>>>   arch/arm/boards/protonic-imx6/board.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>> 
+>>> diff --git a/arch/arm/boards/protonic-imx6/board.c 
+>>> b/arch/arm/boards/protonic-imx6/board.c
+>>> index cdbb8debe6..8f8a0c745e 100644
+>>> --- a/arch/arm/boards/protonic-imx6/board.c
+>>> +++ b/arch/arm/boards/protonic-imx6/board.c
+>>> @@ -645,7 +645,7 @@ static int prt_imx6_init_prtvt7(struct prt_imx6_priv 
+>>> *priv)
+>>>   	gpio_direction_input(GPIO_KEY_F6);
+>>>   	gpio_direction_input(GPIO_KEY_CYCLE);
+>>> 
+>>> -	if (gpio_get_value(GPIO_KEY_CYCLE) && gpio_get_value(GPIO_KEY_F6))
+>>> +	if (gpio_get_value(GPIO_KEY_CYCLE) || gpio_get_value(GPIO_KEY_F6))
+>>>   		priv->no_usb_check = 1;
+>> 
+>> Hm, you probably wont:
+>> 	if (!(gpio_get_value(GPIO_KEY_CYCLE) && gpio_get_value(GPIO_KEY_F6)))
+>> 
+>> otherwise usb check will be always skipped.
 > 
-> We don't have this commit in mainline, could you reference the
-> corresponding upstream commit instead? Please write as
-> aabbccddeeff ("subject")
+> Or, it is active low and your patch is correct :D
 
-I must have mixed those up. The commit that my commit amends:
+They are active low. I mentoned that in the patch subject ;)
+I want both keys pressed simultaniously as a requirement for the usb check
+because it adds a delay (autoboot_timeout) to the boot process.
 
-commit 8d4698e793d823590f050b36b26f67f73d5f9e85
-Author: Oleksij Rempel <o.rempel@pengutronix.de>
-Date:   Mon Mar 28 14:09:56 2022 +0200
-
-     ARM: boards: protonic-imx6: fix file system access warning
-
-     We should not access a file system from the poller. So, do it from the
-     worker. This patch will fix warning on FS access for Protonic board
-     code.
-
-     Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-     Link: 
-https://lore.barebox.org/20220328120956.2402132-1-o.rempel@pengutronix.de
-     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-
-
-
+- Robin
 
 
