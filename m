@@ -1,61 +1,62 @@
-Delivery-date: Wed, 22 Jun 2022 09:28:41 +0200
+Delivery-date: Wed, 22 Jun 2022 09:52:42 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o3un2-00AFpe-AN
-	for lore@lore.pengutronix.de; Wed, 22 Jun 2022 09:28:41 +0200
+	id 1o3vAG-00AGj5-Vh
+	for lore@lore.pengutronix.de; Wed, 22 Jun 2022 09:52:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o3un2-0007Ac-8a
-	for lore@pengutronix.de; Wed, 22 Jun 2022 09:28:40 +0200
+	id 1o3vAG-0001U7-W3
+	for lore@pengutronix.de; Wed, 22 Jun 2022 09:52:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bpOE4du0vOuh5Ivg4Fz2QzX2GVMP5lXyrt3f3cqxfis=; b=IfDg0EmtQeB2mlcQSsTte3W88A
-	s7Id3/otw+ca0zI+D0yOD7qdNMQ0+IiTHQP+wQl+iGIHELzNomIDiUVok8wwQbvwWld3yAbzfMpzT
-	2RIYc1OYaH0jVCmf1hj4Ye/lqJUUq4YBzeiupaXFPJCBt8Ugys8VIEkB5oQ7gg7sfhD0HOssKHB/8
-	ZadTgaGLg5KK5hXB2wcTH0nuVqg7Ltnno8jdtuAZABS5Gz1pi9rA0n6yoEZqzJaSANMD8hNhmHvnt
-	B3KaZ2hY/6GW7ucbSdkX9Q6PIONIzVRuGwKBad9NoZUddnfUeqD28T670gzNCNbzpdESLyZFpINOt
-	tOd2g6bA==;
+	bh=lN7l7YR3OvDnK55bGis8Rjq+IH+7r8KQCxnKmKG0Wmw=; b=sreVMYJu82Z+txCp/CLiumPDhT
+	OPnDJyXY9pd7YEzEg3JonWrmA59FsA5bCDTIabv+z/WfE517xlMwgm3v3NxeYV5Hr8zRhw7yn7VLB
+	gDCnjrMz8tlF4ULUC5uGRMC5NtG/VMKdir7Bc6SB6q4ipQd2WZ0EVqk3LzZ2KqLCKCDeE/58uSvMx
+	OjwlU3smYTIr+GT3T4t+5yT2noG3xrlfTu5VbUDxGVLMFjCVcAR4NrhEP9l5csjTSVvgWD6qsVtR1
+	D8pmpZUWnUbSBfJsspOHkkjDV9SYyS/34AkLq3bcTqP0pMYoYA2/eWlQ/sGZSogf0+7qYAPa3T8OQ
+	otUrsydA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o3ulI-0093rH-EG; Wed, 22 Jun 2022 07:26:52 +0000
+	id 1o3v8p-0097Xb-4J; Wed, 22 Jun 2022 07:51:11 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o3ulD-0093pu-KQ
-	for barebox@lists.infradead.org; Wed, 22 Jun 2022 07:26:49 +0000
+	id 1o3v8k-0097Wp-HE
+	for barebox@lists.infradead.org; Wed, 22 Jun 2022 07:51:08 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1o3ulC-00073H-E2; Wed, 22 Jun 2022 09:26:46 +0200
+	id 1o3v8i-0001GJ-7F; Wed, 22 Jun 2022 09:51:04 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1o3ulC-0000FJ-1t; Wed, 22 Jun 2022 09:26:46 +0200
-Date: Wed, 22 Jun 2022 09:26:46 +0200
-To: Michael Riesch <michael.riesch@wolfvision.net>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220622072646.GU1615@pengutronix.de>
-References: <20220621083637.33660-1-michael.riesch@wolfvision.net>
+	id 1o3v8h-000177-Jj; Wed, 22 Jun 2022 09:51:03 +0200
+Date: Wed, 22 Jun 2022 09:51:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Robin van der Gracht <robin@protonic.nl>
+Cc: Barebox <barebox@lists.infradead.org>,
+	Andrey Smirnov <andrew.smirnov@gmail.com>
+Message-ID: <20220622075103.GV1615@pengutronix.de>
+References: <20220621101529.554322-1-robin@protonic.nl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220621083637.33660-1-michael.riesch@wolfvision.net>
+In-Reply-To: <20220621101529.554322-1-robin@protonic.nl>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220622_002647_704929_E298E25A 
-X-CRM114-Status: GOOD (  18.05  )
+X-CRM114-CacheID: sfid-20220622_005106_611309_6576F1C9 
+X-CRM114-Status: GOOD (  23.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,44 +79,44 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] arm: rockchip: radxa-rock3: enable deep probe support
+Subject: Re: [PATCH] mci: imx-esdhc-common: Don't clear unhandled status bits
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Jun 21, 2022 at 10:36:37AM +0200, Michael Riesch wrote:
-> Enable deep probe support on the Radxa ROCK3 boards.
+On Tue, Jun 21, 2022 at 12:15:29PM +0200, Robin van der Gracht wrote:
+> A DMA cmd + data transfer can finish or stop (i.e. on a block gap) before
+> the status register is cleared. In that case we'll lose track of state
+> causing sdhci_transfer_data_dma() to loop forever waiting for status bits
+> that are already cleared.
 > 
-> Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
+> Clearing SDHCI_INT_CMD_COMPLETE should suffice here. Since it's not
+> evaluated a second time, clearing it at the start of the function is
+> sufficient so we can just remove the erroneous status write.
+> 
+> Signed-off-by: Robin van der Gracht <robin@protonic.nl>
 > ---
->  arch/arm/boards/radxa-rock3/board.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  drivers/mci/imx-esdhc-common.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-Applied, thanks
+Applied to master, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/boards/radxa-rock3/board.c b/arch/arm/boards/radxa-rock3/board.c
-> index 30ad594d0a..aef5ec5df6 100644
-> --- a/arch/arm/boards/radxa-rock3/board.c
-> +++ b/arch/arm/boards/radxa-rock3/board.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  #include <bootsource.h>
->  #include <common.h>
-> +#include <deep-probe.h>
->  #include <init.h>
->  #include <mach/bbu.h>
+> diff --git a/drivers/mci/imx-esdhc-common.c b/drivers/mci/imx-esdhc-common.c
+> index a12db43c88..27293e44b7 100644
+> --- a/drivers/mci/imx-esdhc-common.c
+> +++ b/drivers/mci/imx-esdhc-common.c
+> @@ -176,7 +176,6 @@ int __esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd,
+>  	}
 >  
-> @@ -50,3 +51,5 @@ static struct driver_d rock3_board_driver = {
->  	.of_compatible = rock3_of_match,
->  };
->  coredevice_platform_driver(rock3_board_driver);
-> +
-> +BAREBOX_DEEP_PROBE_ENABLE(rock3_of_match);
+>  	irqstat = sdhci_read32(&host->sdhci, SDHCI_INT_STATUS);
+> -	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, irqstat);
+>  
+>  	if (irqstat & CMD_ERR)
+>  		return -EIO;
 > -- 
-> 2.30.2
-> 
+> 2.34.1
 > 
 > 
 
