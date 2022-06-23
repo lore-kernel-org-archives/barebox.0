@@ -1,63 +1,55 @@
-Delivery-date: Thu, 23 Jun 2022 14:15:42 +0200
+Delivery-date: Thu, 23 Jun 2022 14:18:36 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o4LkL-00BwGi-Ey
-	for lore@lore.pengutronix.de; Thu, 23 Jun 2022 14:15:42 +0200
+	id 1o4Ln9-00BwPT-73
+	for lore@lore.pengutronix.de; Thu, 23 Jun 2022 14:18:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o4LkK-0003kY-Pv
-	for lore@pengutronix.de; Thu, 23 Jun 2022 14:15:42 +0200
+	id 1o4Ln8-0004C4-F4
+	for lore@pengutronix.de; Thu, 23 Jun 2022 14:18:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cC0lcBLd/MkUvABy4j5md1OqdS5bJYhNdKyn2zeNYGk=; b=2oYrwalCRLgNyVY/ME5sR4j84x
-	diYSN9qxeSXneHP2PAgSu/P2f8+EXOt6AWRtlaDaINVDaUoW5jhzzEda/VCDkMAoFWvi2cHVh7kkA
-	kLZlutmR13+pyfPSg4Trc+1YzSMxd66Un0QoURQrKZjoqTgq1aMM8gcK1wPnCA4zBfo0G7TOJjaiP
-	8k9b9MrL5uK7duzQYQK5XUnfZNq03QVSGKgVlMxdqDxsoIEKPqbTYtmD5eBccCVBv0w3AdCQherAK
-	RdT0vkIStoUMFRPuYsnPw2EzTY6Tz9/3YcLaa2MZvDsSggSbTV5LqTkJNB/pEw6lhIQvuAoAo+y/i
-	ygq6sTgQ==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=PIOb88YyT6OZfhx6Rh4txGjWq9lpC4UlAODrgWjrCI4=; b=rBE4t1CqhuomdunNBqfSuYGz72
+	JRkkp/FC4MCK4sSoE0Q3qPzM+YC47smtwA9ulslMeBoPChXPznvPJYEuk3Jg1j/ptZ5VKmutsSnun
+	xm4fvEjud64vKgJwr+Ha7hXU7xjQ244ofvSW1dO7BVATXCifZuw35jpl7Gimnbwhspd+JBqgs4lVE
+	qHz5FMbbeWcPi+je+d/bWsBOP79TySPt/nEGnCaZRU2V7W+0ULI5w4gDrRE4d2p7SMPeUGMWvAOwG
+	tQDt/7np+yRLT33xzZB47prnA1crp/8ewdJx2r3dWCU0UQAZft5O0LLFmrQTJf4/71a4ddG2YeJAz
+	Z3QEKgdg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o4Lie-00Evov-Md; Thu, 23 Jun 2022 12:13:57 +0000
+	id 1o4Lld-00Ex74-LW; Thu, 23 Jun 2022 12:17:01 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o4LZS-00Erlz-LU
-	for barebox@lists.infradead.org; Thu, 23 Jun 2022 12:04:29 +0000
+	id 1o4Lf3-00EuMl-Q2
+	for barebox@lists.infradead.org; Thu, 23 Jun 2022 12:10:16 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1o4LZN-0000xR-Le; Thu, 23 Jun 2022 14:04:21 +0200
-Message-ID: <dfbccd80-419d-6091-c9f5-591d6f39d569@pengutronix.de>
-Date: Thu, 23 Jun 2022 14:04:17 +0200
+	id 1o4Lf1-0002iv-Pq; Thu, 23 Jun 2022 14:10:11 +0200
+Message-ID: <00c2841a-a006-b43d-5df8-0026f1c05962@pengutronix.de>
+Date: Thu, 23 Jun 2022 14:10:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
 Content-Language: en-US
-To: Teresa Remmet <T.Remmet@phytec.de>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Cc: "andrew.smirnov@gmail.com" <andrew.smirnov@gmail.com>,
- "joacim.zetterling@westermo.com" <joacim.zetterling@westermo.com>,
- "lst@pengutronix.de" <lst@pengutronix.de>
-References: <20220623103051.572885-1-a.fatoum@pengutronix.de>
- <20220623103051.572885-4-a.fatoum@pengutronix.de>
- <bc2b59694db2e9871fce0e0113009e4d05c2b3a6.camel@phytec.de>
- <6a5b1c31-5c83-b5e9-1912-669121092c62@pengutronix.de>
- <12b29350135ad59a7e5fb9713a85e8f15e5b4e73.camel@phytec.de>
- <c4f5ec448c17c8111c69dbdabd87ddaa01eb8ea1.camel@phytec.de>
+To: =?UTF-8?Q?Daniel_Br=c3=a1t?= <danek.brat@gmail.com>,
+ barebox@lists.infradead.org
+References: <20220621200201.24899-1-danek.brat@gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <c4f5ec448c17c8111c69dbdabd87ddaa01eb8ea1.camel@phytec.de>
+In-Reply-To: <20220621200201.24899-1-danek.brat@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220623_050426_765894_370C5E4A 
-X-CRM114-Status: GOOD (  24.42  )
+X-CRM114-CacheID: sfid-20220623_051013_922940_72AFC9A0 
+X-CRM114-Status: GOOD (  29.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,156 +72,200 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master 3/4] ddr: imx8m: workaround old spreadsheets not
- initializing ADDRMAP7
+Subject: Re: [PATCH] ARM: rpi: cleanup parsing of vc fdt
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 23.06.22 13:47, Teresa Remmet wrote:
-> Am Donnerstag, dem 23.06.2022 um 13:26 +0200 schrieb Teresa Remmet:
->> Am Donnerstag, dem 23.06.2022 um 13:14 +0200 schrieb Ahmad Fatoum:
->>>> I have just played around also setting ADDRMAP7 right before 
->>>> ddr_cfg_umctl2() without fixing the timings and the register was
->>>> 0
->>>> again after startup and so the RAM size wrong.
->>>> So it seems to me that the value is overwritten/resetted at some
->>>> other
->>>> point again ... or maybe I just did something wrong.
->>>
->>> Strange. What SoC/board is this on?
->>
->> phyCORE-i.MX8MQ but with a not upstreamed 2GB RAM configuration.
->>
->> I applied this patch now with the same result. Wrong RAM size. 
+On 21.06.22 22:02, Daniel Brát wrote:
+> Refactoring and cleanup of vc fdt parsing based on advice
+> from Ahmad Fatoum.
 > 
-> I now have also tried some out of tree phyCORE-i.MX8MM implementation
-> without and with this patch and the patch works for our MM. too. RAM
-> size is corrected.
-> So maybe the MQ is somehow different here?
+> Signed-off-by: Daniel Brát <danek.brat@gmail.com>
 
-The PhyCORE with i.MX8MQ upstream doesn't use the generic DRAM register
-setup in drivers/ddr/imx8m, so you wouldn't get a warning there and we
-can't add one easily, because there is no suitable hook point.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Could this be your issue?
+> ---
+> I originally wanted to send these as part of v5 of
+> 'ARM: rpi: parse useful data from vc fdt' patch, but you
+> were quicker with accepting the v4 :)
+> Hope that's not a problem.
 
-For i.MX8MM, the generic setup is used, so you get the fixup and the
-warning.
-
+Original patch is in next, so this should be squashable.
 
 > 
-> Teresa
+>  arch/arm/boards/raspberry-pi/rpi-common.c | 114 +++++++++++-----------
+>  1 file changed, 58 insertions(+), 56 deletions(-)
 > 
-> 
-> 
-> 
->> Regards,
->> Teresa
->>
->>> Cheers,
->>> Ahmad
->>>
->>>> Regards,
->>>> Teresa
->>>>
->>>>> Fixes: dad2b5636bd8 ("ARM: imx: Add imx8 support for 18 bit
->>>>> SDRAM
->>>>> row
->>>>> size handle")
->>>>> Fixes: 6cf197fa61f9 ("arm: imx: mmdc_size: Increase row_max for
->>>>> imx8m")
->>>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>>> ---
->>>>>  drivers/ddr/imx8m/ddr_init.c | 18 ++++++++++++++++++
->>>>>  drivers/ddr/imx8m/helper.c   |  6 ++++++
->>>>>  include/soc/imx8m/ddr.h      |  1 +
->>>>>  3 files changed, 25 insertions(+)
->>>>>
->>>>> diff --git a/drivers/ddr/imx8m/ddr_init.c
->>>>> b/drivers/ddr/imx8m/ddr_init.c
->>>>> index ae05b136229c..9a4b4e2ca88a 100644
->>>>> --- a/drivers/ddr/imx8m/ddr_init.c
->>>>> +++ b/drivers/ddr/imx8m/ddr_init.c
->>>>> @@ -13,14 +13,32 @@
->>>>>  #include <mach/imx8m-regs.h>
->>>>>  #include <mach/imx8m-ccm-regs.h>
->>>>>  
->>>>> +bool imx8m_ddr_old_spreadsheet = true;
->>>>> +
->>>>>  static void ddr_cfg_umctl2(struct dram_cfg_param *ddrc_cfg,
->>>>> int
->>>>> num)
->>>>>  {
->>>>>  	int i = 0;
->>>>>  
->>>>>  	for (i = 0; i < num; i++) {
->>>>> +		if (ddrc_cfg->reg == DDRC_ADDRMAP7(0))
->>>>> +		    imx8m_ddr_old_spreadsheet = false;
->>>>>  		reg32_write((unsigned long)ddrc_cfg->reg,
->>>>> ddrc_cfg-
->>>>>> val);
->>>>>  		ddrc_cfg++;
->>>>>  	}
->>>>> +
->>>>> +	/*
->>>>> +	 * Older NXP DDR configuration spreadsheets don't
->>>>> initialize
->>>>> ADDRMAP7,
->>>>> +	 * which falsifies the memory size read back from the
->>>>> controller
->>>>> +	 * in barebox proper.
->>>>> +	 */
->>>>> +	if (imx8m_ddr_old_spreadsheet) {
->>>>> +		pr_warn("Working around old spreadsheet. Please
->>>>> regenerate\n");
->>>>> +		/*
->>>>> +		 * Alternatively, stick { DDRC_ADDRMAP7(0),
->>>>> 0xf0f }
->>>>> into
->>>>> +		 * struct dram_timing_info::ddrc_cfg of your
->>>>> old timing
->>>>> file
->>>>> +		 */
->>>>> +		reg32_write(DDRC_ADDRMAP7(0), 0xf0f);
->>>>> +	}
->>>>>  }
->>>>>  
->>>>>  /*
->>>>> diff --git a/drivers/ddr/imx8m/helper.c
->>>>> b/drivers/ddr/imx8m/helper.c
->>>>> index 94bbb811576d..98e40849584b 100644
->>>>> --- a/drivers/ddr/imx8m/helper.c
->>>>> +++ b/drivers/ddr/imx8m/helper.c
->>>>> @@ -62,6 +62,12 @@ void dram_config_save(struct
->>>>> dram_timing_info
->>>>> *timing_info,
->>>>>  		cfg++;
->>>>>  	}
->>>>>  
->>>>> +	if (imx8m_ddr_old_spreadsheet) {
->>>>> +		cfg->reg = DDRC_ADDRMAP7(0);
->>>>> +		cfg->val = 0xf0f;
->>>>> +		cfg++;
->>>>> +	}
->>>>> +
->>>>>  	/* save ddrphy config */
->>>>>  	saved_timing->ddrphy_cfg = cfg;
->>>>>  	for (i = 0; i < timing_info->ddrphy_cfg_num; i++) {
->>>>> diff --git a/include/soc/imx8m/ddr.h b/include/soc/imx8m/ddr.h
->>>>> index 9ae7cb877686..147a7d499aaf 100644
->>>>> --- a/include/soc/imx8m/ddr.h
->>>>> +++ b/include/soc/imx8m/ddr.h
->>>>> @@ -407,6 +407,7 @@ static inline void reg32setbit(unsigned
->>>>> long
->>>>> addr, u32 bit)
->>>>>  #define dwc_ddrphy_apb_rd(addr) \
->>>>>  	reg32_read(IOMEM(IP2APB_DDRPHY_IPS_BASE_ADDR(0)) + 4 *
->>>>> (addr))
->>>>>  
->>>>> +extern bool imx8m_ddr_old_spreadsheet;
->>>>>  extern struct dram_cfg_param ddrphy_trained_csr[];
->>>>>  extern uint32_t ddrphy_trained_csr_num;
->>>>>  
+> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+> index eaca4edef..77935e5c8 100644
+> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
+> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+> @@ -202,22 +202,52 @@ static int rpi_env_init(void)
+>  }
+>  
+>  /* Some string properties in fdt passed to us from vc may be
+> - * malformed by not being null terminated. In that case, create and
+> - * return a null terminated copy.
+> + * malformed by not being null terminated, so just create and
+> + * return a fixed copy.
+>   */
+>  static char *of_read_vc_string(struct device_node *node,
+> -				     const char *prop_name,
+> -				     bool *is_dyn)
+> +			       const char *prop_name)
+>  {
+>  	int len;
+> -	char *str;
+> +	const char *str;
+>  
+> -	str = (char *)of_get_property(node, prop_name, &len);
+> -	if (!str || len <= 0)
+> +	str = of_get_property(node, prop_name, &len);
+> +	if (!str) {
+> +		pr_warn("no property '%s' found in vc fdt's '%s' node\n",
+> +			prop_name, node->full_name);
+>  		return NULL;
+> -	if (is_dyn)
+> -		*is_dyn = str[len - 1] != '\0';
+> -	return str[len - 1] == '\0' ? str : xstrndup(str, len);
+> +	}
+> +	return xstrndup(str, len);
+> +}
+> +
+> +static enum reset_src_type rpi_decode_pm_rsts(struct device_node *chosen,
+> +					      struct device_node *bootloader)
+> +{
+> +	u32 pm_rsts;
+> +	int ret;
+> +
+> +	ret = of_property_read_u32(chosen, "pm_rsts", &pm_rsts);
+> +	if (ret && bootloader)
+> +		 ret = of_property_read_u32(bootloader, "rsts", &pm_rsts);
+> +
+> +	if (ret) {
+> +		pr_warn("'pm_rsts' value not found in vc fdt\n");
+> +		return RESET_UKWN;
+> +	}
+> +	/*
+> +	 * https://github.com/raspberrypi/linux/issues/932#issuecomment-93989581
+> +	 */
+> +
+> +	if (pm_rsts & PM_RSTS_HADPOR_SET)
+> +		return RESET_POR;
+> +	if (pm_rsts & PM_RSTS_HADDR_SET)
+> +		return RESET_JTAG;
+> +	if (pm_rsts & PM_RSTS_HADWR_SET)
+> +		return RESET_WDG;
+> +	if (pm_rsts & PM_RSTS_HADSR_SET)
+> +		return RESET_RST;
+> +
+> +	return RESET_UKWN;
+>  }
+>  
+>  static u32 rpi_boot_mode, rpi_boot_part;
+> @@ -229,31 +259,22 @@ static void rpi_vc_fdt_parse(void *fdt)
+>  {
+>  	int ret;
+>  	struct device_node *root, *chosen, *bootloader;
+> -	enum reset_src_type rst_src = RESET_UKWN;
+>  	char *str;
+> -	bool is_dyn;
+> -	u32 pm_rsts;
+>  
+>  	root = of_unflatten_dtb(fdt, INT_MAX);
+>  	if (IS_ERR(root))
+>  		return;
+>  
+> -	str = of_read_vc_string(root, "serial-number", &is_dyn);
+> +	str = of_read_vc_string(root, "serial-number");
+>  	if (str) {
+>  		barebox_set_serial_number(str);
+> -		if (is_dyn)
+> -			free(str);
+> -	} else {
+> -		pr_warn("no 'serial-number' property found in vc fdt root\n");
+> +		free(str);
+>  	}
+>  
+> -	str = of_read_vc_string(root, "model", &is_dyn);
+> +	str = of_read_vc_string(root, "model");
+>  	if (str) {
+>  		barebox_set_model(str);
+> -		if (is_dyn)
+> -			free(str);
+> -	} else {
+> -		pr_warn("no 'model' property found in vc fdt root\n");
+> +		free(str);
+>  	}
+>  
+>  	chosen = of_find_node_by_path_from(root, "/chosen");
+> @@ -264,23 +285,23 @@ static void rpi_vc_fdt_parse(void *fdt)
+>  
+>  	bootloader = of_find_node_by_name(chosen, "bootloader");
+>  
+> -	str = of_read_vc_string(chosen, "bootargs", NULL);
+> -	if (str)
+> +	str = of_read_vc_string(chosen, "bootargs");
+> +	if (str) {
+>  		globalvar_add_simple("vc.bootargs", str);
+> -	else
+> -		pr_warn("no 'bootargs' property found in vc fdt '/chosen'\n");
+> +		free(str);
+> +	}
+>  
+> -	str = of_read_vc_string(chosen, "overlay_prefix", NULL);
+> -	if (str)
+> +	str = of_read_vc_string(chosen, "overlay_prefix");
+> +	if (str) {
+>  		globalvar_add_simple("vc.overlay_prefix", str);
+> -	else
+> -		pr_warn("no 'overlay_prefix' property found in vc fdt '/chosen'\n");
+> +		free(str);
+> +	}
+>  
+> -	str = of_read_vc_string(chosen, "os_prefix", NULL);
+> -	if (str)
+> +	str = of_read_vc_string(chosen, "os_prefix");
+> +	if (str) {
+>  		globalvar_add_simple("vc.os_prefix", str);
+> -	else
+> -		pr_warn("no 'os_prefix' property found in vc fdt '/chosen'\n");
+> +		free(str);
+> +	}
+>  
+>  	ret = of_property_read_u32(chosen, "boot-mode", &rpi_boot_mode);
+>  	if (ret && bootloader)
+> @@ -300,28 +321,9 @@ static void rpi_vc_fdt_parse(void *fdt)
+>  	else
+>  		globalvar_add_simple_int("vc.boot_partition", &rpi_boot_part, "%u");
+>  
+> -	if (IS_ENABLED(CONFIG_RESET_SOURCE)) {
+> -		ret = of_property_read_u32(chosen, "pm_rsts", &pm_rsts);
+> -		if (ret && bootloader)
+> -			 ret = of_property_read_u32(bootloader, "rsts", &pm_rsts);
+> +	if (IS_ENABLED(CONFIG_RESET_SOURCE))
+> +		reset_source_set(rpi_decode_pm_rsts(chosen, bootloader));
+>  
+> -		if (ret) {
+> -			pr_warn("pm_rsts could not be get from vc fdt\n");
+> -		} else {
+> -/*
+> - * https://github.com/raspberrypi/linux/issues/932#issuecomment-93989581
+> - */
+> -			if (pm_rsts & PM_RSTS_HADPOR_SET)
+> -				rst_src = RESET_POR;
+> -			else if (pm_rsts & PM_RSTS_HADDR_SET)
+> -				rst_src = RESET_JTAG;
+> -			else if (pm_rsts & PM_RSTS_HADWR_SET)
+> -				rst_src = RESET_WDG;
+> -			else if (pm_rsts & PM_RSTS_HADSR_SET)
+> -				rst_src = RESET_RST;
+> -			reset_source_set(rst_src);
+> -		}
+> -	}
+>  out:
+>  	if (root)
+>  		of_delete_node(root);
 
 
 -- 
