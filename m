@@ -1,47 +1,47 @@
-Delivery-date: Thu, 23 Jun 2022 15:09:03 +0200
+Delivery-date: Thu, 23 Jun 2022 15:09:06 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o4MZy-00BzD4-4m
-	for lore@lore.pengutronix.de; Thu, 23 Jun 2022 15:09:03 +0200
+	id 1o4Ma1-00BzEi-K8
+	for lore@lore.pengutronix.de; Thu, 23 Jun 2022 15:09:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o4MZx-0007C3-MA
-	for lore@pengutronix.de; Thu, 23 Jun 2022 15:09:02 +0200
+	id 1o4Ma1-0007E6-CA
+	for lore@pengutronix.de; Thu, 23 Jun 2022 15:09:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wZxPRtijciw0L+QRmsEN+nF3ASgRtvBw4KAeL8hBL68=; b=3TEx8Gi/0lEeuaWrb0iEX30xgA
-	vFzmErAjzhD2b0LrIAWgYGFMXsoI8XSzGZxFm/Xu/fPo/iXwQMoA0zV1BjBR6QMGi+duOthF8xRm3
-	YfP+lOaDElE+uzcyxqcBa2enLDU8iodR03toDBpzyHlAtlLL+CIZUq6hQe4OMGzr6UlVi2cgnAjlb
-	EcUXeC57lpOg44BbmxT1F29jJeSZKMnisX7QWfMHcw2qNOKpsPD/pc25dfIJP6o9BoIBKaNeSD6gH
-	aiBKzneOGNC5ldLp/kJjC73d/qvgddHRqogeviCYvcqKfKrU9dnipbF/eTLwaby1UhCqCzHDGuzoM
-	VepQCPWw==;
+	bh=d66jY12yRZCZ8oZv4GGTiwXbXm7BWE/W34e7FFv49mw=; b=jfpBwsSaPnXvoGDhL++JCR8on1
+	ZIJrqD2hjb2f1hd6/Urdm9Syj9ptZXg9sSpv/cnBrjfOKn3jVJzCUsIjfOTx3uqWPgyLPk25m8OjT
+	DZkTy6f3O5bt/xIGWsDOLa9m2TKVS9vkf2Ed2argjFoGQGgGiF1+az3PtlKVi/+kNsdIwg0X/xk9S
+	7JDMBm0k/LEoAzIdfimU96dsIyAT0VNGnVxA35w1xyl4qQAqIQRwkKyG4cIfUrn1tTKgGtOuDo8Sq
+	ZvlgkANYHg3lZ6wwKPUDAM4wUB8SCjPIeHUYFcws83SqXEMIv7DnspZKlMIDKbBCeUut5AsDBF9m7
+	tOED1LBA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o4MYa-00FFmF-37; Thu, 23 Jun 2022 13:07:36 +0000
+	id 1o4MYc-00FFmr-7u; Thu, 23 Jun 2022 13:07:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o4MYQ-00FFkh-1p
-	for barebox@lists.infradead.org; Thu, 23 Jun 2022 13:07:31 +0000
+	id 1o4MYX-00FFlr-2M
+	for barebox@lists.infradead.org; Thu, 23 Jun 2022 13:07:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1o4MYN-0006vi-I7; Thu, 23 Jun 2022 15:07:23 +0200
+	id 1o4MYN-0006vf-ID; Thu, 23 Jun 2022 15:07:23 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1o4MYL-002FGV-BJ; Thu, 23 Jun 2022 15:07:22 +0200
+	id 1o4MYL-002FGM-6P; Thu, 23 Jun 2022 15:07:22 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1o4MYL-006rWx-JC; Thu, 23 Jun 2022 15:07:21 +0200
+	id 1o4MYL-006rWh-Ic; Thu, 23 Jun 2022 15:07:21 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Teresa Remmet <t.remmet@phytec.de>,
@@ -49,16 +49,16 @@ Cc: Teresa Remmet <t.remmet@phytec.de>,
 	Joacim Zetterling <joacim.zetterling@westermo.com>,
 	Andrey Smirnov <andrew.smirnov@gmail.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 23 Jun 2022 15:07:17 +0200
-Message-Id: <20220623130717.1447999-6-a.fatoum@pengutronix.de>
+Date: Thu, 23 Jun 2022 15:07:15 +0200
+Message-Id: <20220623130717.1447999-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220623130717.1447999-1-a.fatoum@pengutronix.de>
 References: <20220623130717.1447999-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220623_060726_171688_8115C54A 
-X-CRM114-Status: GOOD (  14.49  )
+X-CRM114-CacheID: sfid-20220623_060733_161222_447B8089 
+X-CRM114-Status: GOOD (  16.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,100 +81,67 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 master 5/5] ddr: imx8m: workaround old spreadsheets not initializing ADDRMAP7
+Subject: [PATCH v2 master 3/5] ARM: i.MX8M: esdctl: ignore ADDRMAP8 for non-DDR4
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Older NXP DDR spreadsheets don't initialize ADDRMAP7, leaving it at its
-POR default of zero. Now that barebox looks at ADDRMAP7 to be able to
-correctly detect bigger memory sizes, barebox proper on out-of-tree
-boards with older spreadsheets may read back 4x times as much RAM
-as actually fitted.
+ADDRMAP8 handling was added for i.MX8MN DDR4 handling,
+but as done currently has a few issues:
 
-Work around this by writing a trailing 0xf0f (the neutral ignore-me
-value for the register) if the register wasn't written through
-dram_timing_info::ddrc_cfg. We consider this safe to do, because
-the DDRC is held in reset while these values are programmed.
+  - Bank groups are a DDR4 feature (well, borrowed from GDDR5),
+    so we should just skip it for other RAM types
 
-Fixes: dad2b5636bd8 ("ARM: imx: Add imx8 support for 18 bit SDRAM row size handle")
-Fixes: 6cf197fa61f9 ("arm: imx: mmdc_size: Increase row_max for imx8m")
-Tested-by: Teresa Remmet <t.remmet@phytec.de>
+  - addrmap[8] == 0 is actually a valid value according
+    to both reference manual and spreadsheet
+
+  - Spreadsheet claims DDRC_ADDRMAP8_BG_B0 to be 6-bit, while
+    reference manual claims 5-bit
+
+  - Spreadsheet claims DDRC_ADDRMAP8_BG_B0 == 63 to be the
+    neutral value. The code assumes 31 and the reference manual
+    describes all values 0-31 to have an effect.
+
+This commit fixes the first two issues. The calculation may still
+be wrong, but at least for the i.MX8MN-DDR4-EVK it seems to return
+a correct value of 2G.
+
+Fixes: 42d45ef380c5 ("ARM: imx: Add imx8 support for SDRAM with two or more bank groups")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - added Teresa's Tested-by
+  - remove is_imx8 && in condition. The bit is reserved on i.MX7 and
+    0 by default and the variable has been replaced in a previous
+    patch
 ---
- drivers/ddr/imx8m/ddr_init.c | 18 ++++++++++++++++++
- drivers/ddr/imx8m/helper.c   |  6 ++++++
- include/soc/imx8m/ddr.h      |  1 +
- 3 files changed, 25 insertions(+)
+ arch/arm/mach-imx/esdctl.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ddr/imx8m/ddr_init.c b/drivers/ddr/imx8m/ddr_init.c
-index ae05b136229c..9a4b4e2ca88a 100644
---- a/drivers/ddr/imx8m/ddr_init.c
-+++ b/drivers/ddr/imx8m/ddr_init.c
-@@ -13,14 +13,32 @@
- #include <mach/imx8m-regs.h>
- #include <mach/imx8m-ccm-regs.h>
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index 35c9fa9a4248..a55ee06b8346 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -317,6 +317,7 @@ static int vf610_ddrmc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+ #define DDRC_ADDRMAP0_CS_BIT0			GENMASK(4, 0)
  
-+bool imx8m_ddr_old_spreadsheet = true;
-+
- static void ddr_cfg_umctl2(struct dram_cfg_param *ddrc_cfg, int num)
- {
- 	int i = 0;
+ #define DDRC_MSTR				0x0000
++#define DDRC_MSTR_DDR4				BIT(4)
+ #define DDRC_MSTR_LPDDR4			BIT(5)
+ #define DDRC_MSTR_DATA_BUS_WIDTH		GENMASK(13, 12)
+ #define DDRC_MSTR_ACTIVE_RANKS			GENMASK(27, 24)
+@@ -424,7 +425,12 @@ imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[DDRC_ADDRMAP_LENGTH],
+ 	if (FIELD_GET(DDRC_ADDRMAP1_BANK_B2, addrmap[1]) != 0b11111)
+ 		banks++;
  
- 	for (i = 0; i < num; i++) {
-+		if (ddrc_cfg->reg == DDRC_ADDRMAP7(0))
-+		    imx8m_ddr_old_spreadsheet = false;
- 		reg32_write((unsigned long)ddrc_cfg->reg, ddrc_cfg->val);
- 		ddrc_cfg++;
- 	}
-+
-+	/*
-+	 * Older NXP DDR configuration spreadsheets don't initialize ADDRMAP7,
-+	 * which falsifies the memory size read back from the controller
-+	 * in barebox proper.
-+	 */
-+	if (imx8m_ddr_old_spreadsheet) {
-+		pr_warn("Working around old spreadsheet. Please regenerate\n");
-+		/*
-+		 * Alternatively, stick { DDRC_ADDRMAP7(0), 0xf0f } into
-+		 * struct dram_timing_info::ddrc_cfg of your old timing file
+-	if (addrmap[8]) {
++	if (mstr & DDRC_MSTR_DDR4) {
++		/* FIXME: DDR register spreasheet claims this to be
++		 * 6-bit and 63 meaning bank group address bit 0 is 0,
++		 * but reference manual claims 5-bit without 'neutral' value
++		 * See MX8M_Mini_DDR4_RPA_v17, MX8M_Nano_DDR4_RPA_v8
 +		 */
-+		reg32_write(DDRC_ADDRMAP7(0), 0xf0f);
-+	}
- }
- 
- /*
-diff --git a/drivers/ddr/imx8m/helper.c b/drivers/ddr/imx8m/helper.c
-index 94bbb811576d..98e40849584b 100644
---- a/drivers/ddr/imx8m/helper.c
-+++ b/drivers/ddr/imx8m/helper.c
-@@ -62,6 +62,12 @@ void dram_config_save(struct dram_timing_info *timing_info,
- 		cfg++;
- 	}
- 
-+	if (imx8m_ddr_old_spreadsheet) {
-+		cfg->reg = DDRC_ADDRMAP7(0);
-+		cfg->val = 0xf0f;
-+		cfg++;
-+	}
-+
- 	/* save ddrphy config */
- 	saved_timing->ddrphy_cfg = cfg;
- 	for (i = 0; i < timing_info->ddrphy_cfg_num; i++) {
-diff --git a/include/soc/imx8m/ddr.h b/include/soc/imx8m/ddr.h
-index 9ae7cb877686..147a7d499aaf 100644
---- a/include/soc/imx8m/ddr.h
-+++ b/include/soc/imx8m/ddr.h
-@@ -407,6 +407,7 @@ static inline void reg32setbit(unsigned long addr, u32 bit)
- #define dwc_ddrphy_apb_rd(addr) \
- 	reg32_read(IOMEM(IP2APB_DDRPHY_IPS_BASE_ADDR(0)) + 4 * (addr))
- 
-+extern bool imx8m_ddr_old_spreadsheet;
- extern struct dram_cfg_param ddrphy_trained_csr[];
- extern uint32_t ddrphy_trained_csr_num;
- 
+ 		if (FIELD_GET(DDRC_ADDRMAP8_BG_B0, addrmap[8]) != 0b11111)
+ 			banks++;
+ 		if (FIELD_GET(DDRC_ADDRMAP8_BG_B1, addrmap[8]) != 0b111111)
 -- 
 2.30.2
 
