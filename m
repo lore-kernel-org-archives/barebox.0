@@ -1,59 +1,50 @@
-Delivery-date: Fri, 24 Jun 2022 10:47:08 +0200
+Delivery-date: Fri, 24 Jun 2022 16:19:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o4ey2-00D1yV-Fu
-	for lore@lore.pengutronix.de; Fri, 24 Jun 2022 10:47:08 +0200
+	id 1o4k9o-00DHxp-7n
+	for lore@lore.pengutronix.de; Fri, 24 Jun 2022 16:19:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o4ey2-0005s7-G2
-	for lore@pengutronix.de; Fri, 24 Jun 2022 10:47:07 +0200
+	id 1o4k9o-0000cK-8B
+	for lore@pengutronix.de; Fri, 24 Jun 2022 16:19:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Subject:To:From:Date:Message-ID:Reply-To:Cc:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ExP1krnDmsDVflpbDk6ltVzUMXKJp/Z42vsVJQ9Hl04=; b=meAkoBiwZOQlmW56HdF8IpAgEg
-	YFnx5k3juZ3kKaVxvWwmTLq5J+VkP/GkSMWsAOSz7ZhKziQZ4txCahIc7vx1dRuZLCB/5lHxTo0cY
-	6OMJaVwiYbm6VhJeBShRXOtdljReaptD9KNPyPwotzkCVlQC4gyNSXV6b9B4AOMhNPCYLFf46442g
-	N36Auo+uhUA1kTfaia+NKEPWUjNFvjDITOfpHEfC4NkIr0+1TuTXDJ+CnV264Zy0Mec+NQS7BziZO
-	3tZVZB2+gx8t6d8x2JPOF50ezDuvKf/juuR5gDY3X1KekDN+wdrLtePXHvfrdBfxOwbN0NuOZDyBg
-	D036mxEQ==;
+	bh=gSU6TB27RH5PtdRufZxyOh+oLcuGSj6VHmCjRAMMie4=; b=SkqBVz0zQ7V1ESjo8orwt8EUtG
+	hD242rCeES7ceKaHrEn8QtXgysvO0kGbVvXwJxhUcTgPOX1o5LfpuqIs/jxV9Tsc/q1SYDwLxaFUY
+	Mq1nN9mBUP2Xe0pzKKrSYSXqrY5hz9/+gk/e79Mvg/oa4GJ4WUfYVhdnvLS2HlrLhnvJFSWoRL1+H
+	lhsx4shwD6mGnKpuWV8UATcz+M294ZxYiFfwWMaP98Q1FOS5SMbel8iXuCdJXRQsDLHR9TAcnR3R6
+	Z5TyjI2PaxoJsZXKw0ERbqKWeFi+unXKOGwhSkGyZX5fvJzAq4UtCTKUTjWYJ51LXHVYNgwC+5ig/
+	u76etVYQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o4ewd-001H0Z-Gn; Fri, 24 Jun 2022 08:45:39 +0000
-Received: from mail.comprest24.com ([51.195.235.37])
+	id 1o4k73-002ZA9-Rh; Fri, 24 Jun 2022 14:16:45 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o4ewY-001Gzn-Jc
-	for barebox@lists.infradead.org; Fri, 24 Jun 2022 08:45:35 +0000
-Received: by mail.comprest24.com (Postfix, from userid 1002)
-	id 512ACA239C; Fri, 24 Jun 2022 08:45:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=comprest24.com;
-	s=mail; t=1656060333;
-	bh=ExP1krnDmsDVflpbDk6ltVzUMXKJp/Z42vsVJQ9Hl04=;
-	h=Date:From:To:Subject:From;
-	b=wvngHuTFyVM3dsu30I2PZV7l9o+6lAqsYlaFjuJQIlkprY1MTMBF1zzviXQHe6Csp
-	 4UIQ7AnP/Mvl9FrmDjAP6GGTgye8o7YzVntPQqR1e7dpE3o2Eo2q64P6g/aUDF5utS
-	 ZAM5nMOOndAQ0lzLDMRtgUpYRwMvKUmnqu66jKVgUj94uIAILGi8nVuFWIF8I6ffUp
-	 cdaIauFh0h8rpBi5d7BnIw0RaOxtZ6fF7z+MSBrKDyBWBkm26hAMuslWQE+lm4rd2k
-	 m5XeyCYDX+EVY6ZEtpaghYPnIS0Yg4H8Smebrrdr6OfcewYMhCnw8vy5kswF16ezny
-	 JnUbRHe7SZvQQ==
-Received: by mail.comprest24.com for <barebox@lists.infradead.org>; Fri, 24 Jun 2022 08:45:02 GMT
-Message-ID: <20220624081957-0.1.38.b3yj.0.faqy77959a@comprest24.com>
-Date: Fri, 24 Jun 2022 08:45:02 GMT
-From: "Luca Gauthier" <luca.gauthier@comprest24.com>
-To: <barebox@lists.infradead.org>
-X-Mailer: mail.comprest24.com
+	id 1o4k6y-002Z8h-1H
+	for barebox@lists.infradead.org; Fri, 24 Jun 2022 14:16:41 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <bst@pengutronix.de>)
+	id 1o4k6t-0000ET-7c; Fri, 24 Jun 2022 16:16:35 +0200
+From: Bastian Krause <bst@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Bastian Krause <bst@pengutronix.de>
+Date: Fri, 24 Jun 2022 16:16:32 +0200
+Message-Id: <20220624141632.380159-1-bst@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220624_014534_816895_6F728DA5 
-X-CRM114-Status: UNSURE (   1.52  )
+X-CRM114-CacheID: sfid-20220624_071640_111155_C7A7DCC4 
+X-CRM114-Status: UNSURE (   9.68  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -72,35 +63,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.4 required=4.0 tests=AWL,BAYES_20,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: New collaboration
+Subject: [PATCH] crypto: skip make dependency for CONFIG_CRYPTO_RSA_KEY=__ENV__*
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
+CONFIG_CRYPTO_RSA_KEY allows referring to environment variables, e.g.
+__ENV__FOO tells barebox' rsatoc to use the value of the environment
+variable "FOO".
 
-I would like to discuss your needs in the scope of acquiring new Clients.
+There is no point in creating a make dependency for such values.
+Actually looking into the environment variable and deciding whether it is
+a PKCS#11 URI or a file seems unnecessarily complex. Let's filter out
+these special values and leave the error handling to rsatoc.
 
-We operate in the Internet marketing sector, have the largest Technical D=
-epartment in Europe and have implemented more than 200 campaigns in the U=
-SA and Asia.
+Fixes: a05ac5545c ("crypto: simplify $(srctree)/ handling and remove config_filename macro")
+Signed-off-by: Bastian Krause <bst@pengutronix.de>
+---
+ crypto/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We are broadening the group of our Business Partners (currently more than=
- 237 companies) and therefore we would like to offer you cooperation whic=
-h we base on mutual support in activities aimed at acquiring new clients =
-and strengthening the company=E2=80=99s image.
-Our Business Partners receive commission on the value of an agreement sig=
-ned and the group of new clients.
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 7e67f58bc7..762d7e543b 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -28,7 +28,7 @@ $(obj)/rsa.o: $(obj)/rsa-keys.h
+ 
+ CONFIG_CRYPTO_RSA_KEY := $(CONFIG_CRYPTO_RSA_KEY:"%"=%)
+ 
+-ifneq ($(filter-out pkcs11:%, $(CONFIG_CRYPTO_RSA_KEY)),)
++ifneq ($(filter-out pkcs11:% __ENV__%, $(CONFIG_CRYPTO_RSA_KEY)),)
+ RSA_DEP := $(CONFIG_CRYPTO_RSA_KEY)
+ endif
+ 
+-- 
+2.30.2
 
-If I could present the details =E2=80=93 let me know when I can contact y=
-ou
-
-
-Best regards=20
-Luca Gauthier
 
 
