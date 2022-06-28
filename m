@@ -1,82 +1,79 @@
-Delivery-date: Tue, 28 Jun 2022 08:21:45 +0200
+Delivery-date: Tue, 28 Jun 2022 10:06:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o64bW-00HVtb-4E
-	for lore@lore.pengutronix.de; Tue, 28 Jun 2022 08:21:45 +0200
+	id 1o66Eg-00014x-Gk
+	for lore@lore.pengutronix.de; Tue, 28 Jun 2022 10:06:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o64bX-0001eo-UX
-	for lore@pengutronix.de; Tue, 28 Jun 2022 08:21:44 +0200
+	id 1o66Ei-0006eu-BL
+	for lore@pengutronix.de; Tue, 28 Jun 2022 10:06:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qVNxh+UWgNMe/dI6y8gLSuOf6DXyOyxZz3wAWQumZbs=; b=Yl/16YC4sE3ZimMtLfwjVsPQlJ
-	CFUAnTHCrgOK/b5otV1ISmlDXeFkCwhZ2SkG4mqy9asL3j2nGMiOdCL7cs0oU8Eq3SA6ACZ13/qI8
-	CLh+DRgRbouVWnlwFQeekTf8N2o7abKGcVKgs29kY+3vkxhSAoSO19WOzK7c0FIyXAbDkktluPAGU
-	pvKNgD2IJBvE8EGFda2YctTrZjo5lwl6Uw3H0VmnyneErwOpNueDJ/qqPyjEpcOFFjsCDyXyQ4IKE
-	cDXzkD22RQCR8F9Sq2CJajOujRV1ABXA/nvZTupCuOVqqI/a/bvdDTAWwlgAhzNPk38wPCPexxicJ
-	O13R18Hg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=YDSg5k6lfpfgxaNLEJ86b92bVz2gDKMhf0nEi2MVjtc=; b=P4sYmnDF6mFI8VzjB/389xrNit
+	2kHM8KAn+zsNNiuLvp/+DOT52g3cj0odlYyDD4VzpBCYPbn5MmYeI4rioUc3m+dv81g7HtXFWF3Uf
+	M/pUKowP5ZK4pSJNT4kn2S44CRcDlm7Tl5pwWc8TX0n4HCSWBI58ie4Tg858ud1w9wj3OVwBhfuBg
+	DjahtDQbZrW7TrhBVoDDGYmdadjzUCRaDVVbJBJBmEtPuXbH+cB56NuquGmZaFhgFw/9VfU5f1/T8
+	kuJu3OKNTVfVTWB5wCn9D2Q+zwEnrBWhcdtqjhu3DDOLX0ZOhiQKIKaOBmCFERx79oCWA4NgjA7bP
+	JeSoIvAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o64Zx-004fhZ-EF; Tue, 28 Jun 2022 06:20:05 +0000
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+	id 1o66Cy-0058ew-FL; Tue, 28 Jun 2022 08:04:28 +0000
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o64Zn-004fdK-Kp
-	for barebox@lists.infradead.org; Tue, 28 Jun 2022 06:19:56 +0000
-Received: by mail-lf1-x136.google.com with SMTP id a2so20489027lfg.5
-        for <barebox@lists.infradead.org>; Mon, 27 Jun 2022 23:19:50 -0700 (PDT)
+	id 1o66Ct-0058d4-GG
+	for barebox@lists.infradead.org; Tue, 28 Jun 2022 08:04:24 +0000
+Received: by mail-lj1-x22e.google.com with SMTP id a39so12759855ljq.11
+        for <barebox@lists.infradead.org>; Tue, 28 Jun 2022 01:04:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=qVNxh+UWgNMe/dI6y8gLSuOf6DXyOyxZz3wAWQumZbs=;
-        b=ZvbmVnSX1z2kCGMzjaoZzJ3uyjpoptLrdfVcJAyFK+gvQcheFaGfMvgcUT4EKA8XjD
-         tQrHfN6ndyCsMTENO+W5Pk6IS3+dsTtbApDG9dR/E/krWNQfi7+3+SOXuVdcpBt2+d5d
-         RA3T+rqm8UJxU68tYfnZ3yvPb1lQgkzepTbaYKko9O0pQlh7X2oSBpQ/acwQby9VUoBo
-         50k9ophR1I1MDvheq+atAx03PC9QxTO7yFtBcV4af/yWlkgQCYsG/opd37lUorASsi13
-         JKm4pxhm8ce+GbY/+TLzyNhKfE2Up8i1p1r6sWmLLU/1YnqVZ3/x0gN4v+GlgFx4pgiO
-         9gEQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YDSg5k6lfpfgxaNLEJ86b92bVz2gDKMhf0nEi2MVjtc=;
+        b=qL17cYeWc66A0e3o9h48YNx1T1op4k+kpW3mIXiZyusV3tF4g3aFFyJ9HbWCmpf1cj
+         NDvVICunKiviH0RlzOvSLbxZo5hzkGD6v+ma2hxBfVXGMijsDbcRAgEiNskOrPjuzwaD
+         KrqCbctZCmQ+borI4d98DJcJrXRoF2pJSSfmKqdlSnYrZvOkK1o34kIzDQz0/X5xt0ZA
+         J/vJcu9w56T8Q/1rxHJEv4HtDwh8Ynf/W7MLb9kT3O5QDMnC2+U+5QsDHNy5eu0NCALX
+         mzL1topKdrBt37JctTzzE3Ez1jg4NGlQl7AfZ2jpwchcqS8y0Nwi6rwvqXTpVqbPTF0i
+         4DkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=qVNxh+UWgNMe/dI6y8gLSuOf6DXyOyxZz3wAWQumZbs=;
-        b=ejt93tvqP+PuLJhuoj5oYtStuh2EJytG8VB1UX7lvN7tGh83gtQwpxiIAXUYsikNZd
-         amaV3xy/xs0t7DCDFTFRP1YX243ZrhPMDBW3Q/ydqPlTpQ6+lw9/xGJi3SuyABiKtLnT
-         1i5JsbmVIgsnHhHknKq2d82nM2PVggu1Se40Wi9tTe0SUpzdhqe4ZJgWOwbuVA2KJPpU
-         P0TwHUUGElaQSR5MsJJj3RJAS4GvHulspBfhDmyfkR5DEQM6GM1uuDMwlIpjRdOXL6Ns
-         AwFZ4Qfo3Arfzs9bwnvJ/kRNTZARjfDFDlBaK3VyQfMbGK4a8reSogYPLkIs/uJqPFFL
-         Qydg==
-X-Gm-Message-State: AJIora+838dCbCf2HuzZAg3wZ41GYMo5QsjwxLWzHJHOF/jYvOvab4jb
-	0qFBXs0j6VI5LDkI3NDkzBq4xTND/b8=
-X-Google-Smtp-Source: AGRyM1v/qOE4sbINKpH26e2/gZuv6napIy1eHZ7B9WG9keWldOqAWF487HIUXDrx2tQhkvMLEIVkBw==
-X-Received: by 2002:a05:6512:128d:b0:481:3378:61c1 with SMTP id u13-20020a056512128d00b00481337861c1mr563921lfs.51.1656397189045;
-        Mon, 27 Jun 2022 23:19:49 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YDSg5k6lfpfgxaNLEJ86b92bVz2gDKMhf0nEi2MVjtc=;
+        b=cUW2AtuFUfGw5A/s6lgQW+GLjtAKj58hqSEDqvm1tykJyFTxgrl43aJ/d2eWw7FFEs
+         Om7/NRJUhns9sbNpUbSFFkuCogCcA5YFsxHc/qK+SJ0t+zY5U4eignPMBcanLV5F0wlt
+         LtsKz96rlgBxz5KIbUbO4VqkwOtBo1vnunK2UMrJNwZwYdlYPKvZqVl86lrtEohqFkKp
+         Vu/YKzmoVjggY/QJPimZ6idpc/og8k+Foxi62O2PqOUbldRh4O4rE3ldcyKnwjmG6leE
+         tmsV4QrSgD1GG61dssxLZIbAFK4/WcYFkZruUdhmODDQ1pSz9VYefidGN5CsPGMoTvQr
+         QR5A==
+X-Gm-Message-State: AJIora82jtt/Gb4ioF+tLN0VNid354Oq4KcgCZI/URyVmz1QvXaQv3/L
+	E4ngnLTYxgCBn/EQSepByx0HymFrUoU=
+X-Google-Smtp-Source: AGRyM1t1l/xP7QvHv/XEQ6kbW8fLQEdD4utVJnpT6M3figUv8PE8gTBZiS41Dd/Vr3N/1Fme3bFyAw==
+X-Received: by 2002:a2e:8881:0:b0:255:7790:25e6 with SMTP id k1-20020a2e8881000000b00255779025e6mr8839212lji.525.1656403460720;
+        Tue, 28 Jun 2022 01:04:20 -0700 (PDT)
 Received: from shc.milas.spb.ru ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id b14-20020a056512070e00b00480a75d54a3sm1739014lfs.72.2022.06.27.23.19.48
+        by smtp.gmail.com with ESMTPSA id 10-20020a2e164a000000b00255cb942318sm1473907ljw.110.2022.06.28.01.04.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jun 2022 23:19:48 -0700 (PDT)
+        Tue, 28 Jun 2022 01:04:20 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 28 Jun 2022 09:19:40 +0300
-Message-Id: <20220628061941.24199-2-eagle.alexander923@gmail.com>
+Date: Tue, 28 Jun 2022 11:04:14 +0300
+Message-Id: <20220628080414.28960-1-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220628061941.24199-1-eagle.alexander923@gmail.com>
-References: <20220628061941.24199-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220627_231955_722573_1F0B6BD4 
-X-CRM114-Status: UNSURE (   9.67  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220628_010423_559104_91B65B62 
+X-CRM114-Status: GOOD (  13.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,40 +96,87 @@ X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] drivers: firmware: arm-scmi: Use core_platform_driver() macro
+Subject: [PATCH] serial: ns16550: Reuse 48MHz default clock definition for non-DT OMAP boards
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- drivers/firmware/arm_scmi/driver.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/arm/mach-omap/omap_devices.c | 8 +-------
+ drivers/serial/serial_ns16550.c   | 8 ++++----
+ 2 files changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index ef3d76b3f4..ad91a60e0c 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -1252,6 +1252,7 @@ static struct driver_d scmi_driver = {
- 	.of_compatible = scmi_of_match,
- 	.probe = scmi_probe,
- };
-+core_platform_driver(scmi_driver);
+diff --git a/arch/arm/mach-omap/omap_devices.c b/arch/arm/mach-omap/omap_devices.c
+index beae59f74d..022616ba54 100644
+--- a/arch/arm/mach-omap/omap_devices.c
++++ b/arch/arm/mach-omap/omap_devices.c
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
- static int __init scmi_bus_driver_init(void)
- {
-@@ -1267,12 +1268,6 @@ static int __init scmi_bus_driver_init(void)
+ #include <driver.h>
+-#include <platform_data/serial-ns16550.h>
+ #include <asm/armlinux.h>
+ 
+ #include <mach/omap3-devices.h>
+@@ -16,15 +15,10 @@ void omap_add_sram0(resource_size_t base, resource_size_t size)
+ 	add_mem_device("sram0", base, size, IORESOURCE_MEM_WRITEABLE);
  }
- pure_initcall(scmi_bus_driver_init);
  
--static int __init scmi_platform_driver_init(void)
--{
--	return platform_driver_register(&scmi_driver);
--}
--core_initcall(scmi_platform_driver_init);
+-static struct NS16550_plat serial_plat = {
+-	.clock = 48000000,      /* 48MHz (APLL96/2) */
+-	.shift = 2,
+-};
 -
- MODULE_ALIAS("platform: arm-scmi");
- MODULE_AUTHOR("Sudeep Holla <sudeep.holla@arm.com>");
- MODULE_DESCRIPTION("ARM SCMI protocol driver");
+ struct device_d *omap_add_uart(int id, unsigned long base)
+ {
+ 	return add_generic_device("omap-uart", id, NULL, base, 1024,
+-				  IORESOURCE_MEM | IORESOURCE_MEM_8BIT, &serial_plat);
++				  IORESOURCE_MEM | IORESOURCE_MEM_8BIT, NULL);
+ }
+ 
+ #if defined(CONFIG_DRIVER_VIDEO_OMAP)
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 07f951e535..5998065c56 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -313,7 +313,7 @@ static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
+ 	u32 offset;
+ 	u32 width = 1;
+ 
+-	if (!IS_ENABLED(CONFIG_OFDEVICE))
++	if (!IS_ENABLED(CONFIG_OFDEVICE) || !np)
+ 		return;
+ 
+ 	of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
+@@ -368,7 +368,7 @@ static __maybe_unused struct ns16550_drvdata omap_drvdata = {
+ 	.linux_earlycon_name = "omap8250",
+ };
+ 
+-static __maybe_unused struct ns16550_drvdata am43xx_drvdata = {
++static __maybe_unused struct ns16550_drvdata omap_clk48m_drvdata = {
+ 	.init_port = ns16550_omap_init_port,
+ 	.linux_console_name = "ttyO",
+ 	.clk_default = 48000000,
+@@ -561,7 +561,7 @@ static struct of_device_id ns16550_serial_dt_ids[] = {
+ 		.data = &omap_drvdata,
+ 	}, {
+ 		.compatible = "ti,am4372-uart",
+-		.data = &am43xx_drvdata,
++		.data = &omap_clk48m_drvdata,
+ 	},
+ #endif
+ #if IS_ENABLED(CONFIG_MACH_MIPS_XBURST)
+@@ -584,7 +584,7 @@ static struct of_device_id ns16550_serial_dt_ids[] = {
+ static __maybe_unused struct platform_device_id ns16550_serial_ids[] = {
+ 	{
+ 		.name = "omap-uart",
+-		.driver_data = (unsigned long)&omap_drvdata,
++		.driver_data = (unsigned long)&omap_clk48m_drvdata,
+ 	}, {
+ 		/* sentinel */
+ 	},
+
+base-commit: 18767e06f63166a0f1db0292ffaff5347c138d54
 -- 
 2.32.0
 
