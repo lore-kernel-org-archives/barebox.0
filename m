@@ -1,61 +1,55 @@
-Delivery-date: Wed, 29 Jun 2022 09:34:47 +0200
+Delivery-date: Wed, 29 Jun 2022 09:39:04 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6SDk-000yCu-G8
-	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 09:34:47 +0200
+	id 1o6SHs-000yJE-WF
+	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 09:39:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6SDm-0007Qz-4T
-	for lore@pengutronix.de; Wed, 29 Jun 2022 09:34:47 +0200
+	id 1o6SHv-0008CD-9b
+	for lore@pengutronix.de; Wed, 29 Jun 2022 09:39:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=u5MCO6pK4EQtvF2X34zb8gDN7DFtVwfZ8yRRr6Kc1eY=; b=v4tlgH9zjPZC8TYxS1hbgQdwVa
-	D+lt9vqzck70cOoQ66p05x3cDHPghvPRksG8K6XB+Vz8P4F/4HY0rsO4ztNA1bG/9tucWyMHrAMik
-	GLvAMmlOHtvkICQk9imHteSK3XDMHtEne1KxY4fAwLNK/VBOAdhCu0I+/2cvHP/VaI3GrER5weo0C
-	aG+9o4Xzhn1IYNz5flVIHq9VNLh/H/SBhdq48hcd2HVdf/qECKD58sMUQDCdziQnLyy+70tAX+SVI
-	F/P9OsX6M7fHsO/lZloeXZmMIDYsV9UGu84fVs5UrnZg2NlwwVot9Q/ykgoOrFlV/5jzR0poacQ5s
-	v6aGdHzA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=38v0/lormZW+AnUTQobST40Y2ZJEIVSxZY2r4fLQZUs=; b=oMTeOVYLBrCpH72iDIok+6w7Un
+	bUkMQLs4S075p3f9z4chne9Pxec+bA+uAJHVntAtNyt9Ai6PE5XlTCqiOJSE9ZT63EQaYwMUH+2/Z
+	6dNLjQsqNrl7GgbLTzjkZjUrLwiTO9el2gQQdhGYe4gxOMcreRVkAFC+/lFbUNA70rr8m+0PnRlD1
+	YdUzS+oVicmp+3A+HqDbcOjDsDvksdX/R+RSu/6PN/UQyZ/SQ1kMOQi8DFRtpRunKJgmysf4D7pfs
+	t7F3Rmh4Y7bZ+sFEm0cfjvfYr2uwHr2FNFjwpRIuXF1lnVMvFf4f9LxJWmsjpNQBScv/mKVZQMOYd
+	aVG8YARg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6SCI-00A7Wv-1c; Wed, 29 Jun 2022 07:33:14 +0000
+	id 1o6SGh-00A8eu-Ey; Wed, 29 Jun 2022 07:37:47 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6SCA-00A7Ud-Db
-	for barebox@lists.infradead.org; Wed, 29 Jun 2022 07:33:10 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1o6SC9-0007Dv-1L; Wed, 29 Jun 2022 09:33:05 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1o6SC8-000326-DM; Wed, 29 Jun 2022 09:33:04 +0200
-Date: Wed, 29 Jun 2022 09:33:04 +0200
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220629073304.GR19026@pengutronix.de>
-References: <20220629063024.3945-1-eagle.alexander923@gmail.com>
+	id 1o6SGc-00A8dW-Gq
+	for barebox@lists.infradead.org; Wed, 29 Jun 2022 07:37:43 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1o6SGb-0007zp-A6; Wed, 29 Jun 2022 09:37:41 +0200
+Message-ID: <98ba3d2a-f940-3b77-2a5c-a21fbedaec92@pengutronix.de>
+Date: Wed, 29 Jun 2022 09:37:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220629063024.3945-1-eagle.alexander923@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Content-Language: en-US
+To: Michael Riesch <michael.riesch@wolfvision.net>,
+ Barebox <barebox@lists.infradead.org>
+References: <95ff064f-aa11-c1ce-9d41-e38f2040c565@wolfvision.net>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <95ff064f-aa11-c1ce-9d41-e38f2040c565@wolfvision.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220629_003306_495783_8960CB24 
-X-CRM114-Status: GOOD (  19.67  )
+X-CRM114-CacheID: sfid-20220629_003742_604290_9268406A 
+X-CRM114-Status: GOOD (  17.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,54 +67,42 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/6] drivers: rtc: pcf8536: Remove redundant variable
+Subject: Re: Handle null pointer returned by of_overlay_fix_path properly
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jun 29, 2022 at 09:30:19AM +0300, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-> ---
->  drivers/rtc/rtc-pcf85363.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+Hello Michael,
 
-Applied, thanks
+On 22.06.22 10:07, Michael Riesch wrote:
+> Hi all,
+> 
+> The function of_overlay_fix_path returns NULL in certain error cases but
+> of_overlay_apply_symbols (which is the only caller) does not check the
+> return value. For broken overlays this may result in an exception, which
+> is probably not the best way to deal with this situation. I am not sure
+> though what would be a good way to handle this error condition. Since
+> the call happens in a loop, we may want to ignore the symbol in question
+> and continue? Any thoughts?
 
-Sascha
+I would abort overlay application on first error. If this can only
+happen because of a malformed overlay, it makes no sense to apply
+the overlay partially. Exiting with an error message is a service
+to the user to investigate where it went wrong.
+
+Cheers,
+Ahmad
 
 > 
-> diff --git a/drivers/rtc/rtc-pcf85363.c b/drivers/rtc/rtc-pcf85363.c
-> index 7b785d6a77..b9f0fc6012 100644
-> --- a/drivers/rtc/rtc-pcf85363.c
-> +++ b/drivers/rtc/rtc-pcf85363.c
-> @@ -131,7 +131,6 @@ static int pcf85363_probe(struct device_d *dev)
->  	struct i2c_client *client = to_i2c_client(dev);
->  	struct pcf85363 *pcf85363;
->  	struct regmap *regmap;
-> -	int ret;
->  
->  	regmap = regmap_init_i2c(client,
->  				&pcf85363_regmap_i2c_config);
-> @@ -147,9 +146,7 @@ static int pcf85363_probe(struct device_d *dev)
->  	pcf85363->rtc.ops = &rtc_ops;
->  	pcf85363->rtc.dev = dev;
->  
-> -	ret = rtc_register(&pcf85363->rtc);
-> -
-> -	return ret;
-> +	return rtc_register(&pcf85363->rtc);
->  }
->  
->  static struct platform_device_id dev_ids[] = {
-> -- 
-> 2.32.0
+> Best regards,
+> Michael
 > 
 > 
-> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
