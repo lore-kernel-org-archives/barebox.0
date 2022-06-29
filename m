@@ -1,81 +1,55 @@
-Delivery-date: Wed, 29 Jun 2022 08:32:18 +0200
+Delivery-date: Wed, 29 Jun 2022 08:51:47 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6RFG-000w5p-S7
-	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 08:32:18 +0200
+	id 1o6RY7-000whm-OB
+	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 08:51:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6RFI-0005vP-PU
-	for lore@pengutronix.de; Wed, 29 Jun 2022 08:32:17 +0200
+	id 1o6RY9-0008Tc-Aj
+	for lore@pengutronix.de; Wed, 29 Jun 2022 08:51:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2IYu8rEOVP6jziEu4leoNLDeyoKyhxzgGqGQqFoE2W4=; b=ohiZTFd3/H1NbHA5+EMvqT+Y8o
-	96NijN3RwEvKJnb/jA/2PQZZ6fHdyHUyMgrul+x5xBwAT1SlllAMPBfM2GEVTHh1uAXbPWqgw3AqH
-	cI0vQAQwrCT2vSQMzcwsgrQepDtq3GpoNmxNN/fzaXhLXX9tC6SMQJMUNHPlF7ijWntR04vpg+Hrr
-	Cmz5rq1CAHmUmppdBftaEL5iWKFChEJrEeateFzeCeZeuFTZSkhhnaONPoTusG2Cp5e62AUQ2ehVw
-	u0K2XF7sRSArvOXVXdhpSl0q+TWpec3Jus6ddQQ7q4mT+FFUqjAV0TmzdoD5cbc8es1+0xix29aoF
-	CPYa8LBg==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=zYJU4Rq1Y+6soHcrbdSQ7Oxn/N01B0h3oS8mxBBObAY=; b=VDwXm7+NoFyCXpHmF2KJEZU1UM
+	ffH8kjhkNHwXZ4G2ETFGbc2VQXCaXoo9kQPhOsNpxvFD6pQfp0DUOgFhB0q4TG6xGms+6NFl7dpzb
+	F4SzbNCIr367srks/lqUYLMJTbWdDK425Viv9VJXzeSH+k22IvVxkWbWZSUiX1FxHoFSZ1Bx5lC7+
+	UHmc5VLHBdLajP6GIsfHQFfcotBG4tTgzOprrWCTXxyPza7ZZx8lhQGRbv0xVmEQOgeMzcov615Pl
+	XTS89HZ04zjHk0/ckPbyf5pRZ1V43z2vyJ6R/5QlWWfNfkxhPwQArmpMHoQnijxI8gQwYkdbBqKNb
+	umFKPE+A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6RDj-009mZL-EY; Wed, 29 Jun 2022 06:30:39 +0000
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+	id 1o6RWm-009tYx-6J; Wed, 29 Jun 2022 06:50:20 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6RDc-009mWd-Cs
-	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:30:33 +0000
-Received: by mail-lf1-x12e.google.com with SMTP id t25so26224713lfg.7
-        for <barebox@lists.infradead.org>; Tue, 28 Jun 2022 23:30:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=2IYu8rEOVP6jziEu4leoNLDeyoKyhxzgGqGQqFoE2W4=;
-        b=oN5D0s9QPi4cEhfaa8dbrkkdJE5jeIwJSd4iqwjSb4uUPgeUCwA3BjoRFARiudur4e
-         ds27Krs+h6MfAyMtQLuM9VhAJ7zBh/poM9t3J0TgLbHMPn9Rx+I4UO7KtGUJK3b1wofh
-         HtclbQxsKzZfyGju5x3QxB6c0RX0bwpHJDK5B8F7sZ4ogJPs1R1k1jhqgoVFwaqtvYJ6
-         TfiTfcVmJCmT2P5oc2QX3oH+YHO9QKO9mFflwbveGtSmdi1k5CSq2zwNlIDrXasOT+uA
-         FKkKsQWEZrUtMWyyLIjW7kU5O2/uJ7fYnkLizxXzQImM2VMkZtKMntwHS3EKS7DbDkKU
-         Cmcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=2IYu8rEOVP6jziEu4leoNLDeyoKyhxzgGqGQqFoE2W4=;
-        b=rbOD1m4m0qnQZtbTY1kSEcSltF447BLAZIIzErO38kZ5pw0edgXTaxU/A05JllIg/6
-         UMtq5gQxJqrKxQM/BI1ie/5M/m6XJBuu5LeyGXye3p+VgHU41OcrqyXkB55n8cTrXzIT
-         ClF5q/XKvejWNO5Pn6eocrWD2WWq3JHHBXMjOcAGsE+J/sK9REu19urP1Y992/pOUU6O
-         GR9PjZlO5JHDOG+iYL97X/mRqVokvue9Nb+lrS7Gu4anIjK2t8hO9KaR2pBjDsZI7z9g
-         W188TWChmAw4tYnQaF4QSCzcWCoQcUpNpLPpa95j8sgx3gFa5wj8/luAyMpfAqJbXmqk
-         b9Jg==
-X-Gm-Message-State: AJIora94BovDL+lsgn97IaoP4sEXOnwsMqdr7ZZnWRjnEoEIP8CkUDNS
-	hgJN32zdnKQZsNjpE4X5txtacxY5UD0=
-X-Google-Smtp-Source: AGRyM1v52zapFAnaVgmEz0u07pGtz0pctEjDZZmHdICxvQLVZETH0pE631m8f/QkUMQyMM0l+PF5ug==
-X-Received: by 2002:a05:6512:4c3:b0:47f:6f6e:a7e7 with SMTP id w3-20020a05651204c300b0047f6f6ea7e7mr1080585lfq.674.1656484229545;
-        Tue, 28 Jun 2022 23:30:29 -0700 (PDT)
-Received: from shc.milas.spb.ru ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id r25-20020a2e9959000000b0025a70f7ea3asm2019078ljj.138.2022.06.28.23.30.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jun 2022 23:30:28 -0700 (PDT)
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-To: barebox@lists.infradead.org
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed, 29 Jun 2022 09:30:21 +0300
-Message-Id: <20220629063024.3945-3-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220629063024.3945-1-eagle.alexander923@gmail.com>
-References: <20220629063024.3945-1-eagle.alexander923@gmail.com>
+	id 1o6RWf-009tUM-Jb
+	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:50:15 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1o6RWU-0007tP-9i; Wed, 29 Jun 2022 08:50:02 +0200
+Message-ID: <31aa1db1-0802-a475-a406-7bf4fee5d036@pengutronix.de>
+Date: Wed, 29 Jun 2022 08:50:02 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Content-Language: en-US
+To: Sam Ravnborg <sam@ravnborg.org>, barebox@lists.infradead.org
+References: <20220628203849.2785611-1-sam@ravnborg.org>
+ <20220628203849.2785611-7-sam@ravnborg.org>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220628203849.2785611-7-sam@ravnborg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220628_233032_468256_84E5FDE4 
-X-CRM114-Status: GOOD (  10.64  )
+X-CRM114-CacheID: sfid-20220628_235013_695491_6992F615 
+X-CRM114-Status: GOOD (  29.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,39 +67,187 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/6] drivers: regulator: fixed: Fix error path in probe
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH v2 06/11] ARM: at91: Add at91sam9 xload_mmc for PBL use
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
----
- drivers/regulator/fixed.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+On 28.06.22 22:38, Sam Ravnborg wrote:
+> Add xload support to at91sam9263 similar to what is already
+> present for the sama5d3.
+> The xload supports reading barebox.bin from a SDCARD from the
+> PBL and load the full barebox.bin and starts it.
 
-diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
-index f068fded62..ddcc1bcb97 100644
---- a/drivers/regulator/fixed.c
-+++ b/drivers/regulator/fixed.c
-@@ -78,10 +78,9 @@ static int regulator_fixed_probe(struct device_d *dev)
- 	}
- 
- 	ret = of_regulator_register(&fix->rdev, dev->device_node);
--	if (ret)
--		return ret;
-+	if (!ret)
-+		return 0;
- 
--	return 0;
- err:
- 	free(fix);
- 
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> 
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> ---
+>  arch/arm/mach-at91/Makefile             |   1 +
+>  arch/arm/mach-at91/at91sam9_xload_mmc.c | 118 ++++++++++++++++++++++++
+>  arch/arm/mach-at91/include/mach/xload.h |   4 +
+>  3 files changed, 123 insertions(+)
+>  create mode 100644 arch/arm/mach-at91/at91sam9_xload_mmc.c
+> 
+> diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+> index 12e64291b..b171d682f 100644
+> --- a/arch/arm/mach-at91/Makefile
+> +++ b/arch/arm/mach-at91/Makefile
+> @@ -17,6 +17,7 @@ obj-y += at91sam9_reset.o
+>  obj-y += at91sam9g45_reset.o
+>  obj-pbl-$(CONFIG_HAVE_AT91_DDRAMC) += ddramc.o
+>  pbl-$(CONFIG_AT91_MCI_PBL) +=  xload-mmc.o
+> +pbl-$(CONFIG_AT91_MCI_PBL) +=  at91sam9_xload_mmc.o
+>  
+>  obj-$(CONFIG_AT91SAM9_SMC) += sam9_smc.o
+>  obj-$(CONFIG_HAVE_AT91SAM9_RST) += at91sam9_rst.o
+> diff --git a/arch/arm/mach-at91/at91sam9_xload_mmc.c b/arch/arm/mach-at91/at91sam9_xload_mmc.c
+> new file mode 100644
+> index 000000000..64266757d
+> --- /dev/null
+> +++ b/arch/arm/mach-at91/at91sam9_xload_mmc.c
+> @@ -0,0 +1,118 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/* SPDX-FileCopyrightText: 2022 Sam Ravnborg */
+> +
+> +#include <debug_ll.h>
+> +#include <common.h>
+> +#include <pbl.h>
+> +
+> +#include <linux/sizes.h>
+> +#include <asm/cache.h>
+> +
+> +#include <mach/at91_pmc_ll.h>
+> +#include <mach/at91sam9263.h>
+> +#include <mach/at91sam926x.h>
+> +#include <mach/hardware.h>
+> +#include <mach/iomux.h>
+> +#include <mach/xload.h>
+> +#include <mach/gpio.h>
+> +
+> +typedef void (*func)(int zero, int arch, void *params);
+> +
+> +/*
+> + * Load barebox.bin and start executing the first byte in the barebox image.
+> + * barebox.bin is loaded to AT91_CHIPSELECT_1.
+> + *
+> + * To be able to load barebox.bin do a minimal init of the pheriferals
+> + * used by MCI.
+> + * This functions runs in PBL code and uses the PBL variant of the
+> + * atmel_mci driver.
+> + */
+> +void __noreturn sam9263_atmci_start_image(u32 mmc_id, unsigned int clock,
+> +					  bool slot_b)
+> +{
+> +	void __iomem *pio = IOMEM(AT91SAM9263_BASE_PIOA);
+> +	void *buf = (void *)AT91_CHIPSELECT_1;
+> +	void __iomem *base;
+> +	struct pbl_bio bio;
+> +	int ret;
+> +
+> +	at91_pmc_enable_periph_clock(IOMEM(AT91SAM926X_BASE_PMC), AT91SAM9263_ID_PIOA);
+> +
+> +	if (mmc_id == 0) {
+> +		base = IOMEM(AT91SAM9263_BASE_MCI0);
+> +
+> +		/* CLK */
+> +		at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA12), AT91_MUX_PERIPH_A, 0);
+> +
+> +		if (!slot_b) {
+> +			/* CMD */
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA1), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +
+> +			/* DAT0 to DAT3 */
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA0), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA3), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA4), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA5), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +		} else {
+> +			/* CMD */
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA16), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +
+> +			/* DAT0 to DAT3 */
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA17), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA18), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA19), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA20), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +		}
+> +
+> +		at91_pmc_enable_periph_clock(IOMEM(AT91SAM926X_BASE_PMC),  AT91SAM9263_ID_MCI0);
+> +	} else {
+> +		base = IOMEM(AT91SAM9263_BASE_MCI1);
+> +
+> +		/* CLK */
+> +		at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA6), AT91_MUX_PERIPH_A, 0);
+> +
+> +		if (!slot_b) {
+> +			/* CMD */
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA7), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +
+> +			/* DAT0 to DAT3 */
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA8), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA9), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA10), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA11), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +		} else {
+> +			/* CMD */
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA21), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +
+> +			/* DAT0 to DAT3 */
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA22), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA23), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA24), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA25), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +		}
+> +
+> +		at91_pmc_enable_periph_clock(IOMEM(AT91SAM926X_BASE_PMC),  AT91SAM9263_ID_MCI1);
+> +	}
+> +
+> +	ret = at91_mci_bio_init(&bio, base, clock, (int)slot_b);
+> +	if (ret) {
+> +		pr_err("atmci_start_image: bio init faild: %d\n", ret);
+> +		goto out_panic;
+> +	}
+> +
+> +	/* at91sam9x do not support high capacity */
+> +	at91_mci_bio_set_highcapacity(false);
+> +
+> +	ret = pbl_fat_load(&bio, "barebox.bin", buf, SZ_16M);
+> +	if (ret < 0) {
+> +		pr_err("pbl_fat_load: error %d\n", ret);
+> +		goto out_panic;
+> +	}
+> +
+> +	sync_caches_for_execution();
+> +
+> +	((func)buf)(0, 0, NULL);
+> +
+> +out_panic:
+> +	panic("FAT chainloading failed\n");
+> +}
+> diff --git a/arch/arm/mach-at91/include/mach/xload.h b/arch/arm/mach-at91/include/mach/xload.h
+> index 488279c1a..82db65e30 100644
+> --- a/arch/arm/mach-at91/include/mach/xload.h
+> +++ b/arch/arm/mach-at91/include/mach/xload.h
+> @@ -15,4 +15,8 @@ int at91_mci_bio_init(struct pbl_bio *bio, void __iomem *base,
+>  		      unsigned int clock, unsigned int slot);
+>  void at91_mci_bio_set_highcapacity(bool highcapacity_card);
+>  
+> +void __noreturn sam9263_atmci_start_image(u32 mmc_id, unsigned int clock,
+> +					  bool slot_b);
+> +
+> +
+>  #endif /* __MACH_XLOAD_H */
+
+
 -- 
-2.32.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
