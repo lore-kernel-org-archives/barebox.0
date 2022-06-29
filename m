@@ -3,79 +3,79 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6RFF-000w4u-2w
+	id 1o6RFF-000w55-E0
 	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 08:32:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6RFH-0005uI-1j
-	for lore@pengutronix.de; Wed, 29 Jun 2022 08:32:15 +0200
+	id 1o6RFH-0005uh-IY
+	for lore@pengutronix.de; Wed, 29 Jun 2022 08:32:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mekmzaqY8YgfaOMmN2tnjZ9TL+lHKRas8H80E6eW6ZQ=; b=U77E9M+wM3ykzbzO4XYdA4y5R5
-	2UVDPRpLvvVM0D9jCTlSxrNe0KRfLn4zElDRiAhQU/Kps6NWCnVHN5BciaZfJJ2gLDyS7RottcGbU
-	JMT5L7pGwSvdQN8n6NZaL07WvsUfStnZZINpooTRYYUSeL8ak547ia6NYOpCBkfMVq7jerZQiemxb
-	eiMSPKpluN3ys2OcEjDFlSgaDYS+N6+XYwlM6yv6Vcx/p0i2GkDW6YAZxLzH7ajm0H0/3PeOLnkBJ
-	c4bpgbCOMOzVRmmsPQAzhgZNN39vmyUeU+nuYJolir/Fp0M6Z5jQXDNt8C/sUhUAL2Ksz15sZf+Pi
-	1UVUASGw==;
+	bh=7c8Dc2Y8tfZPDcJBgen2bcheL50NHHMLk9KrKHkzj7Q=; b=CpRXOYCETxdiJFV7o4vHcyOl0I
+	hrzrgjb7bo+5YJ+4O35Kfg0jSfkp4cPjnudIo1IuWK8Bztp/ofn5vmmoBBgkiVL4FamSJX0TbfSca
+	WVJeFNxqKGNTo0GsYeePXXi7IGFCESIanjW/nT4kY4j0JrkF80TLAm+cDACQMc/DinkLRYK1z39Qa
+	OusZnKGtIbrjNbm23Vh/ihau4c3AGFmBPzkrTCDNIguEteIo85u8Jppug1LyzY0BLwr2TOJgicSCl
+	ji+UpWB9JYFRbAfCTu4HiwxER8IyzwjjrWzVfdID2kVAcZIsY5hIR7vbUuYempNQ0jIkDl0kzE7N2
+	y1J2x7Ig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6RDx-009mdO-Uw; Wed, 29 Jun 2022 06:30:54 +0000
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+	id 1o6RDr-009mc2-ML; Wed, 29 Jun 2022 06:30:47 +0000
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6RDg-009mXG-2S
-	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:30:37 +0000
-Received: by mail-lj1-x22b.google.com with SMTP id o23so17615286ljg.13
-        for <barebox@lists.infradead.org>; Tue, 28 Jun 2022 23:30:33 -0700 (PDT)
+	id 1o6RDe-009mWz-3F
+	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:30:35 +0000
+Received: by mail-lf1-x12c.google.com with SMTP id i18so26235504lfu.8
+        for <barebox@lists.infradead.org>; Tue, 28 Jun 2022 23:30:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=mekmzaqY8YgfaOMmN2tnjZ9TL+lHKRas8H80E6eW6ZQ=;
-        b=ACrJTbF37p3byr+2QgCn1UqbIb1ln5m+lKVSP6WPzP1wS6VLRP8apc8Hog+2JDsAWX
-         MM5sGugV5vXec+BMRYqVN7tHXOXagb//w3symhnc5byUmNAIiCZZMuEL45tNw5d2GSzp
-         axYEFcKXFiSCWQzsrzZUmAYfPmF12DrB+tc6lQZ+n/K76pVK0Hp1eCUHz7f6OcNbMJ4O
-         ItSHyMZfRPkGlQjSv8JZ8inGof2aOFfKFbPBgmPNjIXA6hovK19aZZ96kry35HDmS7LC
-         jIoAw3Ju3auuLqitkqWOXzTptpDWtLouRoL9RyTG5Uwq8AZgAeCohsqNFhhterY22FNl
-         exmw==
+        bh=7c8Dc2Y8tfZPDcJBgen2bcheL50NHHMLk9KrKHkzj7Q=;
+        b=U2CSRna5QM34EZA8R9t1M5k9KHwL5ZwwDUtGcN1cksUXhkkI3tMn6WYqs3ehbDJCWh
+         UGdbRbE0swbkkma4Le5bMNU7vdpPZMbSHvJIcqFkKBi6xKjA9O/bAKrIq3HarWhvgRID
+         ZimDGmBvcsDN/sVdnRmep5guiC06AfiIgsKJidqo5cZshQn+L5U/cEpKkWw+ooy0rFHF
+         GgFRcsRSzeERDKZAcjDFAWwP1BPR9QJVMUEN3E0AIy/IsnzE7C1Y5FCE1oUpF5UVMkJU
+         VzBWoNoUkzrgnoOs/d86VKHuxf8o26KoiX9guSynDKDviepxs9/1EHq98aSMbVgXxdTD
+         zbIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=mekmzaqY8YgfaOMmN2tnjZ9TL+lHKRas8H80E6eW6ZQ=;
-        b=GJNnu64Sk5YA7vcruT38Sthjg4EDKAPWnIfMPHbNEn5/4uh0CFqHnR7aQL63+PjqRI
-         wab4E+H2EQFxbcx6/+vbm3wl1uOz1bj2bcFLji8vXU7yXjDMhhcas3I2v/K1Zfeb4axy
-         HzdZYnrMzh6jwxt6lcj4PSs9NVBhsb7I9NUaa4bQgusctMXwS3PvVvceFTqmPpVaNQqk
-         Nt2ZzvowEzPWtvyrip7XYE4w/c9etEQqdYEwDwL3+tuBdjWKEBWxJVgBbpnl20QBAdwo
-         jT0/IHupBQwRC1ut9DwvqICLIQVXbXeW3J9wEP1bSxPgta0XDgOM6x7PQy0EJIwbPubc
-         Jaiw==
-X-Gm-Message-State: AJIora8QhgTC4aT2TV4V0ZjJ8Dep5uobfqWu0+68g+TafR2JMQp1STl1
-	FVuuuIML1AZnNIRjayVSf2L69nA+kkc=
-X-Google-Smtp-Source: AGRyM1sPDbY/Rbse0p5zZUKQg7KnlC2T03W0H6Mzns7U7nOCgaRMhApOQzYjvEFmYm4/hTVZZoUc9Q==
-X-Received: by 2002:a2e:312:0:b0:25b:dc9f:9e7e with SMTP id 18-20020a2e0312000000b0025bdc9f9e7emr840320ljd.57.1656484231971;
+        bh=7c8Dc2Y8tfZPDcJBgen2bcheL50NHHMLk9KrKHkzj7Q=;
+        b=ryVguEV1A/8Y+EP7UM3XDIG6gj0As3hTQDAeQBLxwqM4CNzg/JAZfWyJG+JACkuoKT
+         4iKqC1YBzQHwEI22vNfMeJg3aH0uemgMsy8ESfpYqbB9Sj3Chi3OxbLwkVc5RsAdKfXH
+         4ahSkGw93vh8m2yDXUjzWhzt2UYp4Wrv40HR/GKykf2sxsPRHKAW+ymvL3787Kw6GDOV
+         pYPBxF6ijePpLpKz1qI8fusQMpfYmYQbEsSYWP6BVxjgV/zuE5X4zqrQRdf/BI4EjLBU
+         YSXm84Ssyv+70l30Gy2d/Mf6zcRdDBw+BLOofblHya6/xGnvBDFe24K1dA94bij9Z0Y0
+         AXBw==
+X-Gm-Message-State: AJIora/DD31xAmoLp2a38rrOoLanatWakIrTJXRcoTXurqcH/9QW6ViR
+	lfPSYY4mdpFLIVLeBp/pjzwZXnWQo9o=
+X-Google-Smtp-Source: AGRyM1tLFCAtszKPj5EHNThlY/NywdGX086oRcFvgUNCaUM/M07ABYFjNwUuudN7ja3rdsrYZxba8g==
+X-Received: by 2002:ac2:558e:0:b0:47f:777c:a5ed with SMTP id v14-20020ac2558e000000b0047f777ca5edmr1069829lfg.190.1656484231135;
         Tue, 28 Jun 2022 23:30:31 -0700 (PDT)
 Received: from shc.milas.spb.ru ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id r25-20020a2e9959000000b0025a70f7ea3asm2019078ljj.138.2022.06.28.23.30.31
+        by smtp.gmail.com with ESMTPSA id r25-20020a2e9959000000b0025a70f7ea3asm2019078ljj.138.2022.06.28.23.30.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jun 2022 23:30:31 -0700 (PDT)
+        Tue, 28 Jun 2022 23:30:30 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed, 29 Jun 2022 09:30:24 +0300
-Message-Id: <20220629063024.3945-6-eagle.alexander923@gmail.com>
+Date: Wed, 29 Jun 2022 09:30:23 +0300
+Message-Id: <20220629063024.3945-5-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220629063024.3945-1-eagle.alexander923@gmail.com>
 References: <20220629063024.3945-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220628_233036_150360_E8944FE0 
-X-CRM114-Status: GOOD (  11.23  )
+X-CRM114-CacheID: sfid-20220628_233034_176419_7AC3E8EA 
+X-CRM114-Status: GOOD (  10.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,33 +98,32 @@ X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 6/6] drivers: led: pca955x: Remove redundant assignment
+Subject: [PATCH 5/6] drivers: gpio: pcf857x: Remove redundant assignment
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- drivers/led/led-pca955x.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-pcf857x.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/led/led-pca955x.c b/drivers/led/led-pca955x.c
-index 848feb9773..aa518fe738 100644
---- a/drivers/led/led-pca955x.c
-+++ b/drivers/led/led-pca955x.c
-@@ -387,11 +387,10 @@ static int led_pca955x_probe(struct device_d *dev)
- 	err = pca955x_write_psc(client, 0, 0);
- 	if (err)
- 		return err;
-+
- 	err = pca955x_write_psc(client, 1, 0);
--	if (err)
--		return err;
+diff --git a/drivers/gpio/gpio-pcf857x.c b/drivers/gpio/gpio-pcf857x.c
+index fefd20de6f..612ef3a82e 100644
+--- a/drivers/gpio/gpio-pcf857x.c
++++ b/drivers/gpio/gpio-pcf857x.c
+@@ -219,11 +219,7 @@ static int pcf857x_probe(struct device_d *dev)
+ 	 */
+ 	gpio->out = ~n_latch;
  
--	return 0;
-+	return err;
+-	ret = gpiochip_add(&gpio->chip);
+-	if (ret)
+-		return ret;
+-
+-	return ret;
++	return gpiochip_add(&gpio->chip);
  }
  
- static struct driver_d led_pca955x_driver = {
+ static const struct of_device_id pcf857x_dt_ids[] = {
 -- 
 2.32.0
 
