@@ -1,58 +1,65 @@
-Delivery-date: Wed, 29 Jun 2022 08:57:09 +0200
+Delivery-date: Wed, 29 Jun 2022 09:01:14 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6RdK-000wt6-3B
-	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 08:57:09 +0200
+	id 1o6RhH-000wyd-8j
+	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 09:01:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6RdM-0000yK-5j
-	for lore@pengutronix.de; Wed, 29 Jun 2022 08:57:08 +0200
+	id 1o6RhJ-0001Ke-1d
+	for lore@pengutronix.de; Wed, 29 Jun 2022 09:01:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9ixY9Knnvd0UTnm0jaPz7/JMz4gsn7yOWD/Nko01H1A=; b=YIDjBsY88Y12gUbOqsPBUBeMnt
-	HBviXEw5CkQ6MCV4x1+oPzHIXwhRRjFecd8yRVpT4SvcCClKGBAQl+09MHsacnfR872+cH7JhiO8F
-	Li0cubEvCz+lrFNEiALSsYJ7SFFLj63VKsV9d6EkdgfNqtYNa5XDO34M1wMwXFlHlTz1zk+kXSvVr
-	zFNVxOjyXaDadSDifCB8T8CSPvC/WI4Ug+lf7KqbZdrdoeYpI4AV0HeMfAGW1KBw1fLGVXm5QPkGl
-	w8VBqEt2tGQCVsJaG9b4g5mJ0wWnhs80Yof+J6FbBMPxOiDL2OPLqquHkOkjXwkt8YAOjLHsxIfE0
-	223C08hw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=/AOYaxh8JjLu5RidtAmy2y7V7NAtchg6rzGM5cqcurU=; b=ZiVS3v/sNfE3FD3QG8rPDqIJ4E
+	G3iPM1+bGf8fHufCynTwYL9AAjDkEvgm1hTFaM0YT/5v8mUlhEPahO2qVHiJeZ/dWUkVJpTBoTOGZ
+	ly4fxgYUS/pn+hz+uHHndQAJ6AHBKs9NE/h0sqyDT8qCEecM0oWj55jVfYDIeOFRxVKvsj/SKrRmg
+	txUmuH1nP1YAJlM3TAR0OGjKppiUKotpbTYlYTkLqFjb36fUBDjeSXtxUWJMKN73lG0HoxRTmAslt
+	CvYorpYcEQF6AH/BeQmU2MLsUf75xDI/r+4LyKbpGZ0O4ukJtIhAWhEr7JV/Lq6inqhyiNnP28W+D
+	oU4SOojg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6Rc8-009vrq-QZ; Wed, 29 Jun 2022 06:55:52 +0000
+	id 1o6Rg5-009yIg-Ho; Wed, 29 Jun 2022 06:59:57 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6Rc4-009vr3-Fr
-	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:55:49 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1o6Rc2-0000dH-Dd; Wed, 29 Jun 2022 08:55:46 +0200
-Message-ID: <f565caf9-ecfc-04cd-d587-85728c9665e2@pengutronix.de>
-Date: Wed, 29 Jun 2022 08:55:46 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>,
- Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <afa@pengutronix.de>
+	id 1o6Rg1-009yGz-7Q
+	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:59:54 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1o6Rfz-00017P-TL; Wed, 29 Jun 2022 08:59:51 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1o6Rfz-0000pa-KT; Wed, 29 Jun 2022 08:59:51 +0200
+Date: Wed, 29 Jun 2022 08:59:51 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>,
+	barebox@lists.infradead.org, Ahmad Fatoum <afa@pengutronix.de>
+Message-ID: <20220629065951.GK19026@pengutronix.de>
 References: <20220627102500.18427-1-eagle.alexander923@gmail.com>
  <20220627102500.18427-5-eagle.alexander923@gmail.com>
  <20220629065251.GJ19026@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220629065251.GJ19026@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <f565caf9-ecfc-04cd-d587-85728c9665e2@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f565caf9-ecfc-04cd-d587-85728c9665e2@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220628_235548_578486_C2C1E284 
-X-CRM114-Status: GOOD (  14.41  )
+X-CRM114-CacheID: sfid-20220628_235953_284646_0767D303 
+X-CRM114-Status: GOOD (  18.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,40 +77,39 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
 Subject: Re: [PATCH 4/8] usb: gadget: Fix Kconfig dependencies
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Sascha,
-
-On 29.06.22 08:52, Sascha Hauer wrote:
-> Without GLOBALVAR selected the USB gadget autostart stuff can be
-> compiled, but without any functionality, as all functionality is
-> behind globalvars, so adding this dependency mykes sense.
+On Wed, Jun 29, 2022 at 08:55:46AM +0200, Ahmad Fatoum wrote:
+> Hello Sascha,
 > 
->>  	select SYSTEM_PARTITIONS if USB_GADGET_MASS_STORAGE
+> On 29.06.22 08:52, Sascha Hauer wrote:
+> > Without GLOBALVAR selected the USB gadget autostart stuff can be
+> > compiled, but without any functionality, as all functionality is
+> > behind globalvars, so adding this dependency mykes sense.
+> > 
+> >>  	select SYSTEM_PARTITIONS if USB_GADGET_MASS_STORAGE
+> > 
+> > I am not sure why SYSTEM_PARTITIONS is selected here. Maybe Ahmad can
+> > comment on that. From what I can see with USB_GADGET_AUTOSTART selected
+> > without SYSTEM_PARTITIONS we still get autostart functionality, but
+> > without global.system.partitions support which seems ok.
 > 
-> I am not sure why SYSTEM_PARTITIONS is selected here. Maybe Ahmad can
-> comment on that. From what I can see with USB_GADGET_AUTOSTART selected
-> without SYSTEM_PARTITIONS we still get autostart functionality, but
-> without global.system.partitions support which seems ok.
+> Instead of adding yet another gadget-specific global variable,
+> the mass storage gadget only uses system partitions, so this
+> select makes sense IMO.
 
-Instead of adding yet another gadget-specific global variable,
-the mass storage gadget only uses system partitions, so this
-select makes sense IMO.
+I would argument that USB_GADGET_AUTOSTART is functional without system
+partitions, and the additional support for system partitions can be
+manually selected by the user.
 
-Cheers,
-Ahmad
-
-> 
-> Sascha
-> 
-
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
