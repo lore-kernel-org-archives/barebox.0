@@ -1,55 +1,55 @@
-Delivery-date: Wed, 29 Jun 2022 08:51:47 +0200
+Delivery-date: Wed, 29 Jun 2022 08:51:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6RY7-000whm-OB
-	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 08:51:47 +0200
+	id 1o6RY8-000wi8-P3
+	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 08:51:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6RY9-0008Tc-Aj
-	for lore@pengutronix.de; Wed, 29 Jun 2022 08:51:46 +0200
+	id 1o6RYA-0008Ty-Oo
+	for lore@pengutronix.de; Wed, 29 Jun 2022 08:51:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zYJU4Rq1Y+6soHcrbdSQ7Oxn/N01B0h3oS8mxBBObAY=; b=VDwXm7+NoFyCXpHmF2KJEZU1UM
-	ffH8kjhkNHwXZ4G2ETFGbc2VQXCaXoo9kQPhOsNpxvFD6pQfp0DUOgFhB0q4TG6xGms+6NFl7dpzb
-	F4SzbNCIr367srks/lqUYLMJTbWdDK425Viv9VJXzeSH+k22IvVxkWbWZSUiX1FxHoFSZ1Bx5lC7+
-	UHmc5VLHBdLajP6GIsfHQFfcotBG4tTgzOprrWCTXxyPza7ZZx8lhQGRbv0xVmEQOgeMzcov615Pl
-	XTS89HZ04zjHk0/ckPbyf5pRZ1V43z2vyJ6R/5QlWWfNfkxhPwQArmpMHoQnijxI8gQwYkdbBqKNb
-	umFKPE+A==;
+	bh=0zlYnnijyiv0EpsBlZQBDCmpv5GM/vniBiZy5pAOP5A=; b=Kb8lBfCh93scj8F6uqXPgEbioq
+	C+FpeYvsVoX69lPLbipz/71ljRKeIDagFuCEgYJvNXb7qt09nANYkhgdj/ldDoH+RxA235IlIB14N
+	sNvlUozPqrpn7MxYcjSp0IJHAbcKCne9GVG8m5KiTTK1QByL7WDj07ab9Mze3Q5QSueilusfu3EoC
+	qs5rylrwVoZYpM5/Uxnh4+ImTCIiAhvSiEy+SkDy/O+5LPNB3q/IxifC/rqarBgi/Lm2NAJdcly2u
+	RjmLdfZyFO6+adWO7LGMZTjsfTQ5hPrPIPv/ycpBbKEAzUF7T9R22X9b0ML4HWPNO0B5fOBEufCTl
+	aywfXKXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6RWm-009tYx-6J; Wed, 29 Jun 2022 06:50:20 +0000
+	id 1o6RWu-009td6-W5; Wed, 29 Jun 2022 06:50:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6RWf-009tUM-Jb
-	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:50:15 +0000
+	id 1o6RWp-009tb1-QG
+	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:50:25 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1o6RWU-0007tP-9i; Wed, 29 Jun 2022 08:50:02 +0200
-Message-ID: <31aa1db1-0802-a475-a406-7bf4fee5d036@pengutronix.de>
-Date: Wed, 29 Jun 2022 08:50:02 +0200
+	id 1o6RWo-0007wB-K9; Wed, 29 Jun 2022 08:50:22 +0200
+Message-ID: <5ad122b8-b50f-91b5-683c-f85b752f53a9@pengutronix.de>
+Date: Wed, 29 Jun 2022 08:50:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
 Content-Language: en-US
 To: Sam Ravnborg <sam@ravnborg.org>, barebox@lists.infradead.org
 References: <20220628203849.2785611-1-sam@ravnborg.org>
- <20220628203849.2785611-7-sam@ravnborg.org>
+ <20220628203849.2785611-4-sam@ravnborg.org>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220628203849.2785611-7-sam@ravnborg.org>
+In-Reply-To: <20220628203849.2785611-4-sam@ravnborg.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220628_235013_695491_6992F615 
-X-CRM114-Status: GOOD (  29.53  )
+X-CRM114-CacheID: sfid-20220628_235023_907236_C71E55A1 
+X-CRM114-Status: GOOD (  20.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,177 +72,76 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 06/11] ARM: at91: Add at91sam9 xload_mmc for PBL use
+Subject: Re: [PATCH v2 03/11] ARM: at91: Add initialize function to sdramc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 On 28.06.22 22:38, Sam Ravnborg wrote:
-> Add xload support to at91sam9263 similar to what is already
-> present for the sama5d3.
-> The xload supports reading barebox.bin from a SDCARD from the
-> PBL and load the full barebox.bin and starts it.
+> Port the sdramc initialize function from at91bootstrap.
+> It is needed from lowlevel code and is a replacement for the
+> sdramc init code in at91sam926x_board_init.h
+> 
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-> 
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> ---
->  arch/arm/mach-at91/Makefile             |   1 +
->  arch/arm/mach-at91/at91sam9_xload_mmc.c | 118 ++++++++++++++++++++++++
->  arch/arm/mach-at91/include/mach/xload.h |   4 +
->  3 files changed, 123 insertions(+)
->  create mode 100644 arch/arm/mach-at91/at91sam9_xload_mmc.c
-> 
-> diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-> index 12e64291b..b171d682f 100644
-> --- a/arch/arm/mach-at91/Makefile
-> +++ b/arch/arm/mach-at91/Makefile
-> @@ -17,6 +17,7 @@ obj-y += at91sam9_reset.o
->  obj-y += at91sam9g45_reset.o
->  obj-pbl-$(CONFIG_HAVE_AT91_DDRAMC) += ddramc.o
->  pbl-$(CONFIG_AT91_MCI_PBL) +=  xload-mmc.o
-> +pbl-$(CONFIG_AT91_MCI_PBL) +=  at91sam9_xload_mmc.o
->  
->  obj-$(CONFIG_AT91SAM9_SMC) += sam9_smc.o
->  obj-$(CONFIG_HAVE_AT91SAM9_RST) += at91sam9_rst.o
-> diff --git a/arch/arm/mach-at91/at91sam9_xload_mmc.c b/arch/arm/mach-at91/at91sam9_xload_mmc.c
-> new file mode 100644
-> index 000000000..64266757d
-> --- /dev/null
-> +++ b/arch/arm/mach-at91/at91sam9_xload_mmc.c
-> @@ -0,0 +1,118 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/* SPDX-FileCopyrightText: 2022 Sam Ravnborg */
-> +
-> +#include <debug_ll.h>
-> +#include <common.h>
-> +#include <pbl.h>
-> +
-> +#include <linux/sizes.h>
-> +#include <asm/cache.h>
-> +
-> +#include <mach/at91_pmc_ll.h>
-> +#include <mach/at91sam9263.h>
-> +#include <mach/at91sam926x.h>
-> +#include <mach/hardware.h>
-> +#include <mach/iomux.h>
-> +#include <mach/xload.h>
-> +#include <mach/gpio.h>
-> +
-> +typedef void (*func)(int zero, int arch, void *params);
-> +
-> +/*
-> + * Load barebox.bin and start executing the first byte in the barebox image.
-> + * barebox.bin is loaded to AT91_CHIPSELECT_1.
-> + *
-> + * To be able to load barebox.bin do a minimal init of the pheriferals
-> + * used by MCI.
-> + * This functions runs in PBL code and uses the PBL variant of the
-> + * atmel_mci driver.
-> + */
-> +void __noreturn sam9263_atmci_start_image(u32 mmc_id, unsigned int clock,
-> +					  bool slot_b)
+> +int at91sam9_sdramc_initialize(const struct at91sam9_sdramc_config *config,
+> +			       unsigned int sdram_address)
 > +{
-> +	void __iomem *pio = IOMEM(AT91SAM9263_BASE_PIOA);
-> +	void *buf = (void *)AT91_CHIPSELECT_1;
-> +	void __iomem *base;
-> +	struct pbl_bio bio;
-> +	int ret;
+> +	unsigned int i;
 > +
-> +	at91_pmc_enable_periph_clock(IOMEM(AT91SAM926X_BASE_PMC), AT91SAM9263_ID_PIOA);
+> +	/* Step#1 SDRAM feature must be in the configuration register */
+> +	sdramc_wr(config, AT91_SDRAMC_CR, config->cr);
 > +
-> +	if (mmc_id == 0) {
-> +		base = IOMEM(AT91SAM9263_BASE_MCI0);
+> +	/* Step#2 For mobile SDRAM, temperature-compensated self refresh(TCSR),... */
 > +
-> +		/* CLK */
-> +		at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA12), AT91_MUX_PERIPH_A, 0);
+> +	/* Step#3 The SDRAM memory type must be set in the Memory Device Register */
+> +	sdramc_wr(config, AT91_SDRAMC_MDR, config->mdr);
 > +
-> +		if (!slot_b) {
-> +			/* CMD */
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA1), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +	/* Step#4 The minimum pause of 200 us is provided to precede any single toggle */
+> +	early_udelay(200);
 > +
-> +			/* DAT0 to DAT3 */
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA0), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA3), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA4), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA5), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +		} else {
-> +			/* CMD */
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA16), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
+> +	/* Step#5 A NOP command is issued to the SDRAM devices */
+> +	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_NOP);
+> +	writel(0x00000000, sdram_address);
 > +
-> +			/* DAT0 to DAT3 */
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA17), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA18), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA19), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA20), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +		}
+> +	/* Step#6 An All Banks Precharge command is issued to the SDRAM devices  */
+> +	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_PRECHARGE);
+> +	writel(0x00000000, sdram_address);
 > +
-> +		at91_pmc_enable_periph_clock(IOMEM(AT91SAM926X_BASE_PMC),  AT91SAM9263_ID_MCI0);
-> +	} else {
-> +		base = IOMEM(AT91SAM9263_BASE_MCI1);
+> +	/* Pause cycles */
+> +	early_udelay(2000);
 > +
-> +		/* CLK */
-> +		at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA6), AT91_MUX_PERIPH_A, 0);
-> +
-> +		if (!slot_b) {
-> +			/* CMD */
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA7), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +
-> +			/* DAT0 to DAT3 */
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA8), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA9), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA10), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA11), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +		} else {
-> +			/* CMD */
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA21), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +
-> +			/* DAT0 to DAT3 */
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA22), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA23), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA24), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +			at91_mux_pio_pin(pio, pin_to_mask(AT91_PIN_PA25), AT91_MUX_PERIPH_A, GPIO_PULL_UP);
-> +		}
-> +
-> +		at91_pmc_enable_periph_clock(IOMEM(AT91SAM926X_BASE_PMC),  AT91SAM9263_ID_MCI1);
+> +	/* Step#7 Eight auto-refresh cycles are provided */
+> +	for (i = 0; i < 8; i++) {
+> +		sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_REFRESH);
+> +		writel(0x00000001 + i, sdram_address + 4 + 4 * i);
 > +	}
 > +
-> +	ret = at91_mci_bio_init(&bio, base, clock, (int)slot_b);
-> +	if (ret) {
-> +		pr_err("atmci_start_image: bio init faild: %d\n", ret);
-> +		goto out_panic;
-> +	}
+> +	/* Pause cycles */
+> +	early_udelay(200);
 > +
-> +	/* at91sam9x do not support high capacity */
-> +	at91_mci_bio_set_highcapacity(false);
+> +	/* Step#8 A Mode Register set (MRS) cycle is issued to program (TCSR, PASR, DS) */
+> +	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_LMR);
+> +	writel(0xcafedede, sdram_address + 0x24);
 > +
-> +	ret = pbl_fat_load(&bio, "barebox.bin", buf, SZ_16M);
-> +	if (ret < 0) {
-> +		pr_err("pbl_fat_load: error %d\n", ret);
-> +		goto out_panic;
-> +	}
+> +	/*  Pause cycles */
+> +	early_udelay(200);
 > +
-> +	sync_caches_for_execution();
+> +	/* Step#9 For mobile SDRAM initialization, an Extended Mode Register set ... */
 > +
-> +	((func)buf)(0, 0, NULL);
+> +	/* Step#10 The application must go into Normal Mode, setting Mode to 0
+> +	 * and perform a write access at any location in the SDRAM.
+> +	 */
+> +	sdramc_wr(config, AT91_SDRAMC_MR, AT91_SDRAMC_MODE_NORMAL);	// Set mode
+> +	writel(0x00000000, sdram_address);				// Perform mode
 > +
-> +out_panic:
-> +	panic("FAT chainloading failed\n");
-> +}
-> diff --git a/arch/arm/mach-at91/include/mach/xload.h b/arch/arm/mach-at91/include/mach/xload.h
-> index 488279c1a..82db65e30 100644
-> --- a/arch/arm/mach-at91/include/mach/xload.h
-> +++ b/arch/arm/mach-at91/include/mach/xload.h
-> @@ -15,4 +15,8 @@ int at91_mci_bio_init(struct pbl_bio *bio, void __iomem *base,
->  		      unsigned int clock, unsigned int slot);
->  void at91_mci_bio_set_highcapacity(bool highcapacity_card);
->  
-> +void __noreturn sam9263_atmci_start_image(u32 mmc_id, unsigned int clock,
-> +					  bool slot_b);
+> +	/* Step#11 Write the refresh rate into the count field in the Refresh Register. */
+> +	sdramc_wr(config, AT91_SDRAMC_TR, config->tr);
 > +
-> +
->  #endif /* __MACH_XLOAD_H */
+> +	return 0;
 
+Nitpick: Function can be void if it always reports success.
 
 -- 
 Pengutronix e.K.                           |                             |
