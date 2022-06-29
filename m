@@ -1,15 +1,15 @@
-Delivery-date: Wed, 29 Jun 2022 08:32:16 +0200
+Delivery-date: Wed, 29 Jun 2022 08:32:17 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6RFF-000w55-E0
-	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 08:32:16 +0200
+	id 1o6RFG-000w5c-7f
+	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 08:32:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6RFH-0005uh-IY
+	id 1o6RFI-0005v6-2L
 	for lore@pengutronix.de; Wed, 29 Jun 2022 08:32:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,65 +17,65 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7c8Dc2Y8tfZPDcJBgen2bcheL50NHHMLk9KrKHkzj7Q=; b=CpRXOYCETxdiJFV7o4vHcyOl0I
-	hrzrgjb7bo+5YJ+4O35Kfg0jSfkp4cPjnudIo1IuWK8Bztp/ofn5vmmoBBgkiVL4FamSJX0TbfSca
-	WVJeFNxqKGNTo0GsYeePXXi7IGFCESIanjW/nT4kY4j0JrkF80TLAm+cDACQMc/DinkLRYK1z39Qa
-	OusZnKGtIbrjNbm23Vh/ihau4c3AGFmBPzkrTCDNIguEteIo85u8Jppug1LyzY0BLwr2TOJgicSCl
-	ji+UpWB9JYFRbAfCTu4HiwxER8IyzwjjrWzVfdID2kVAcZIsY5hIR7vbUuYempNQ0jIkDl0kzE7N2
-	y1J2x7Ig==;
+	bh=xF2ZbdtRgoaAB5tUIRirrHPWsRkyA/fhXJ68Gnwccpo=; b=08258sT0E3KPnBqsxW03gI4qUp
+	0wBWBjqx3sAxzVNn0fkctkL9sT+3ZcvlARjhHGuErdtxvFG3p3xXN3NyQ03nFiyIlYNWKzgn/rCVk
+	P5sYOFokpywMfmZXcjsUqyyiew3TYgr8a2FLjrfmDHBiTKTfUsEjswckv3NNh9tjb9pH7c8AOk4sF
+	aVmZvG+YZEGDfqNaCpRyW61pWySedkhe4Xd82zazASQybkxBUEEY1KDLcR8Y+JNdfZIBIC9zCrKFY
+	6R6NFBtn2XRK7gXnmVMKC3aQsj4ejVPAgQlvb7g71xHaiUlJAbdIzH3aLluiCJnwRMPQiVrCzD9Hl
+	iBaxtvkw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6RDr-009mc2-ML; Wed, 29 Jun 2022 06:30:47 +0000
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+	id 1o6RDm-009mZi-1l; Wed, 29 Jun 2022 06:30:42 +0000
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6RDe-009mWz-3F
-	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:30:35 +0000
-Received: by mail-lf1-x12c.google.com with SMTP id i18so26235504lfu.8
-        for <barebox@lists.infradead.org>; Tue, 28 Jun 2022 23:30:32 -0700 (PDT)
+	id 1o6RDc-009mWW-OC
+	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:30:34 +0000
+Received: by mail-lf1-x12d.google.com with SMTP id a13so26231440lfr.10
+        for <barebox@lists.infradead.org>; Tue, 28 Jun 2022 23:30:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=7c8Dc2Y8tfZPDcJBgen2bcheL50NHHMLk9KrKHkzj7Q=;
-        b=U2CSRna5QM34EZA8R9t1M5k9KHwL5ZwwDUtGcN1cksUXhkkI3tMn6WYqs3ehbDJCWh
-         UGdbRbE0swbkkma4Le5bMNU7vdpPZMbSHvJIcqFkKBi6xKjA9O/bAKrIq3HarWhvgRID
-         ZimDGmBvcsDN/sVdnRmep5guiC06AfiIgsKJidqo5cZshQn+L5U/cEpKkWw+ooy0rFHF
-         GgFRcsRSzeERDKZAcjDFAWwP1BPR9QJVMUEN3E0AIy/IsnzE7C1Y5FCE1oUpF5UVMkJU
-         VzBWoNoUkzrgnoOs/d86VKHuxf8o26KoiX9guSynDKDviepxs9/1EHq98aSMbVgXxdTD
-         zbIQ==
+        bh=xF2ZbdtRgoaAB5tUIRirrHPWsRkyA/fhXJ68Gnwccpo=;
+        b=dagxbuQCRJKlFHuGPHBvPV2s/fYAQyfgT4RhlC8pQ45cHYtowUByGeNqowRoF8BZ2M
+         WYY+YE1LnHX6Op935GDD5XfcRMjrYP6v3r6LE7d+ij0yG44bGKMZPPJwpLBF/zPSjtwQ
+         PA+bdz5iGkIohFv6xI6immIGe4kYxYixBS77o0T9RswyGN1rDMjlPpmUztL1cHEkJ3Gv
+         lb0+PSLqgE+uNY10aE7GzF72eIV7JOmSFj6hjxcKI1Fz+D/3N1OdkomyQ25PNUTQIeoR
+         Lf3lmuuJtTFk3TtpRkn3gLFoG99r5J1WsgC1+fbX4ByCCjYDCmvby2wLezhZV4k5A5ZO
+         uRhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=7c8Dc2Y8tfZPDcJBgen2bcheL50NHHMLk9KrKHkzj7Q=;
-        b=ryVguEV1A/8Y+EP7UM3XDIG6gj0As3hTQDAeQBLxwqM4CNzg/JAZfWyJG+JACkuoKT
-         4iKqC1YBzQHwEI22vNfMeJg3aH0uemgMsy8ESfpYqbB9Sj3Chi3OxbLwkVc5RsAdKfXH
-         4ahSkGw93vh8m2yDXUjzWhzt2UYp4Wrv40HR/GKykf2sxsPRHKAW+ymvL3787Kw6GDOV
-         pYPBxF6ijePpLpKz1qI8fusQMpfYmYQbEsSYWP6BVxjgV/zuE5X4zqrQRdf/BI4EjLBU
-         YSXm84Ssyv+70l30Gy2d/Mf6zcRdDBw+BLOofblHya6/xGnvBDFe24K1dA94bij9Z0Y0
-         AXBw==
-X-Gm-Message-State: AJIora/DD31xAmoLp2a38rrOoLanatWakIrTJXRcoTXurqcH/9QW6ViR
-	lfPSYY4mdpFLIVLeBp/pjzwZXnWQo9o=
-X-Google-Smtp-Source: AGRyM1tLFCAtszKPj5EHNThlY/NywdGX086oRcFvgUNCaUM/M07ABYFjNwUuudN7ja3rdsrYZxba8g==
-X-Received: by 2002:ac2:558e:0:b0:47f:777c:a5ed with SMTP id v14-20020ac2558e000000b0047f777ca5edmr1069829lfg.190.1656484231135;
-        Tue, 28 Jun 2022 23:30:31 -0700 (PDT)
+        bh=xF2ZbdtRgoaAB5tUIRirrHPWsRkyA/fhXJ68Gnwccpo=;
+        b=1m1q7km/bTyDKW42+QBsrEuficYP4bX4qibgvZ4FUzfxyetJaHzih1+yYQuK9AWx2d
+         ID3GnT2G+SVgYbO49ybz3fDJ75nprlWdZWCLNi9ZqOpvWSNYMe9Rkn224fCGGZzXYTSp
+         ZXoGy5Re219vI+3yJdO95MCH2H81Q9TxeDZwqSa3UYq0jdNPM3UCfRboeUTjAAA76Pcv
+         jPCIu2uZ+eHjOjeB3FtgOl7HK9rPxdeloNsf12L+Wbg/DFyodx+7DelCKj0pQbS7sfEc
+         YkEbeIS+yWnngqhYx6JhL0dObfk4HvD7yJYSedVmw4RMcGkObg6JNACnlgYBCVFWLcMj
+         y2ow==
+X-Gm-Message-State: AJIora/iJupDV+96XokBQzY1zyTjUjz751TpxEOrdksROlxqB4/2zd8y
+	S7a/a9tq601ilwYgLNO9ZGiBqpfRH98=
+X-Google-Smtp-Source: AGRyM1u79vwK00agAdYeJy0OWM5MHM3OeT97d/F0uWPq7U7k9fj80iRB8mRtNQOPUgydaCRpucXd6Q==
+X-Received: by 2002:a05:6512:2a8d:b0:47f:b3ba:4922 with SMTP id dt13-20020a0565122a8d00b0047fb3ba4922mr1131013lfb.38.1656484228687;
+        Tue, 28 Jun 2022 23:30:28 -0700 (PDT)
 Received: from shc.milas.spb.ru ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id r25-20020a2e9959000000b0025a70f7ea3asm2019078ljj.138.2022.06.28.23.30.30
+        by smtp.gmail.com with ESMTPSA id r25-20020a2e9959000000b0025a70f7ea3asm2019078ljj.138.2022.06.28.23.30.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jun 2022 23:30:30 -0700 (PDT)
+        Tue, 28 Jun 2022 23:30:28 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed, 29 Jun 2022 09:30:23 +0300
-Message-Id: <20220629063024.3945-5-eagle.alexander923@gmail.com>
+Date: Wed, 29 Jun 2022 09:30:20 +0300
+Message-Id: <20220629063024.3945-2-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220629063024.3945-1-eagle.alexander923@gmail.com>
 References: <20220629063024.3945-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220628_233034_176419_7AC3E8EA 
-X-CRM114-Status: GOOD (  10.47  )
+X-CRM114-CacheID: sfid-20220628_233032_826717_323D7DBE 
+X-CRM114-Status: GOOD (  10.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,32 +98,38 @@ X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 5/6] drivers: gpio: pcf857x: Remove redundant assignment
+Subject: [PATCH 2/6] drivers: rtc: abracon: Remove redundant variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- drivers/gpio/gpio-pcf857x.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/rtc/rtc-abracon.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio-pcf857x.c b/drivers/gpio/gpio-pcf857x.c
-index fefd20de6f..612ef3a82e 100644
---- a/drivers/gpio/gpio-pcf857x.c
-+++ b/drivers/gpio/gpio-pcf857x.c
-@@ -219,11 +219,7 @@ static int pcf857x_probe(struct device_d *dev)
- 	 */
- 	gpio->out = ~n_latch;
+diff --git a/drivers/rtc/rtc-abracon.c b/drivers/rtc/rtc-abracon.c
+index 6144fc0aa9..585b95c4a7 100644
+--- a/drivers/rtc/rtc-abracon.c
++++ b/drivers/rtc/rtc-abracon.c
+@@ -84,7 +84,6 @@ static int abracon_probe(struct device_d *dev)
+ {
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	struct abracon *abracon;
+-	int ret;
  
--	ret = gpiochip_add(&gpio->chip);
--	if (ret)
--		return ret;
+ 	abracon = xzalloc(sizeof(*abracon));
+ 
+@@ -93,9 +92,7 @@ static int abracon_probe(struct device_d *dev)
+ 	abracon->rtc.ops = &ds13xx_rtc_ops;
+ 	abracon->rtc.dev = dev;
+ 
+-	ret = rtc_register(&abracon->rtc);
 -
 -	return ret;
-+	return gpiochip_add(&gpio->chip);
- }
++	return rtc_register(&abracon->rtc);
+ };
  
- static const struct of_device_id pcf857x_dt_ids[] = {
+ static struct platform_device_id abracon_id[] = {
 -- 
 2.32.0
 
