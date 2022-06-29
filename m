@@ -1,58 +1,80 @@
-Delivery-date: Tue, 28 Jun 2022 23:22:14 +0200
+Delivery-date: Wed, 29 Jun 2022 08:32:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6Iex-000d16-JK
-	for lore@lore.pengutronix.de; Tue, 28 Jun 2022 23:22:14 +0200
+	id 1o6RFD-000w4J-SW
+	for lore@lore.pengutronix.de; Wed, 29 Jun 2022 08:32:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6Iez-0000qr-Ke
-	for lore@pengutronix.de; Tue, 28 Jun 2022 23:22:14 +0200
+	id 1o6RFG-0005tT-0t
+	for lore@pengutronix.de; Wed, 29 Jun 2022 08:32:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Pkb+qJjlRbo/4xK/ou8b1XlblEP51Z78i8aWotzEr0E=; b=nwFD15biz7ZcbSYRxqfz2Kicu5
-	q0IBdx5GGZYAhZpboHZhXRcaE7Z3b7gDwCwpmT+43cNA/4kU64p8K2j7BGVkVLC3HH+2GcK0BMN8T
-	C3SeI5jgxdQBTZ9MqbmeUtjYZIynmLdicrt/mdqQt1QQfTeXglzU4/tr4CD2vqzowRYdStvdikfF1
-	8FaaHuAcp8AiCjRzqGLs9UuMz2CGRSoSbIcg9f86Y1OGZjEqjBzB//RL1kbNOwx2bzbPI01YYPTCW
-	TctU9osS4WVs+rjZSeZ2jzgNMjCO8JByp2EVimxFpu4691FD882qR2MWWRfFap2NqecOK/r69I7Sv
-	nK+qH7fA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=2Cds0b1fftXAEzPgFi7TMnTzsCQqub/3IB8j3u88Zes=; b=WSfapdISP1VZ53xnKKJ+lPaG73
+	x/QebjCQnRJiSpkzoGO4fm+m8am4wlbEPmFzhrROmjEj7/0OkfkR6n0Td49ZBOtQ5DmlpLnKCvCKG
+	0GUwIIq1SRwIp7lQVyjJz83BmAcRN3zvggkuQEE8NdN1hbFG85bbpIT28Fjvbk2YeO85JDHD9lBrE
+	jeSLK8pOtqTJEurrILsJ396QuMdDlFIQPfjQHhioduzAgrINHhKEY4vqJfZedtSS+RJk46N9K/diR
+	hqcj5uxAHStdhMXfKAnO3IENwVizNHR1Aka7F9veqviTK9tCZR029Ey0CxVVqMn7MJ1jYRjfngxwB
+	99zS7few==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6Idi-008Elm-HN; Tue, 28 Jun 2022 21:20:54 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1o6RDh-009mYa-6z; Wed, 29 Jun 2022 06:30:37 +0000
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6Idd-008EkP-JR
-	for barebox@lists.infradead.org; Tue, 28 Jun 2022 21:20:51 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1o6IdZ-0000d5-Tc; Tue, 28 Jun 2022 23:20:45 +0200
-Message-ID: <1e708951-feee-8656-d785-381b733da57c@pengutronix.de>
-Date: Tue, 28 Jun 2022 23:20:46 +0200
+	id 1o6RDb-009mWK-KW
+	for barebox@lists.infradead.org; Wed, 29 Jun 2022 06:30:32 +0000
+Received: by mail-lj1-x236.google.com with SMTP id r9so12320072ljp.9
+        for <barebox@lists.infradead.org>; Tue, 28 Jun 2022 23:30:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2Cds0b1fftXAEzPgFi7TMnTzsCQqub/3IB8j3u88Zes=;
+        b=D12f+t3rP4mdOfmm0TcZuUPuROdmIq0HVr7MbgvTJdzugD05g2eUUZ3c2ZoEBaAiuv
+         n6OiazlyqZ8BrLrhgwZaZ+rWWE5TJlKbTsg780gK/yvlBClsldMXWATdQ3zOTKukB1Q0
+         uWZhma9nAqMONnNjy7EQGO0ZUeLQVlOApCR7r34fClS2w6kCaFUlMBp0yKCLUT12asJJ
+         zFfzdq0Edp7iMtDK/d3CtZzB1Akmk2HIq228KuUnKTJVB9Lb26CDEslr8agRLPltyfq0
+         7TX1pcm/sSWPguC2R4yi9wvUk4mHBVlwJn1uGpk6XMW+o81r6thOgiFJbglOezdilNjq
+         C1vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2Cds0b1fftXAEzPgFi7TMnTzsCQqub/3IB8j3u88Zes=;
+        b=fs2miOJVLYre/W3V6eZLUuaPTKH/S/bnasfm3Zkc839lL6IdFWBDEc2vnjKfccS5VM
+         uwPz481jJFTqsc3T+RY9JFUSUmvvGTh3mO+SDlKas0w7y8SmbNHdEkZAV5weZds8Ha9W
+         5I2fQi0WfwCsfLgdiV/3OtxTKeHjphcD8CA2AAUhgrPxGy4xRkjV+bfJZU/3lLcNy9CV
+         +WI/JetuqmXUq1lxeamhgcbckeAa+0B6XBTiiBMao+VW/4B7d7wZK6sJxGx1ALIG+lmy
+         bmACtAlphvt6Cp0YcDoN+JdAExZ/T11mZS4bEbslJ3KVuLTw/+Y8d0B4nkV5ToCqfE1U
+         y4Dg==
+X-Gm-Message-State: AJIora9q8StMkxX2+7lJ04HsWT8pVlL4XwLo9RFIyPr/Djakr/Zej26H
+	EmMpXiMD7Iuo2h1v3GqXUJc47bjQG5w=
+X-Google-Smtp-Source: AGRyM1viZZEe2XLXRihbyo1tS8pggNNZq8LW9loWqDYPEi6nre1tOOp+kgZyT4NnqnZ9HcHGx6ePIQ==
+X-Received: by 2002:a05:651c:14e:b0:25b:bd40:33a2 with SMTP id c14-20020a05651c014e00b0025bbd4033a2mr821734ljd.414.1656484227769;
+        Tue, 28 Jun 2022 23:30:27 -0700 (PDT)
+Received: from shc.milas.spb.ru ([188.243.217.78])
+        by smtp.gmail.com with ESMTPSA id r25-20020a2e9959000000b0025a70f7ea3asm2019078ljj.138.2022.06.28.23.30.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jun 2022 23:30:27 -0700 (PDT)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Wed, 29 Jun 2022 09:30:19 +0300
+Message-Id: <20220629063024.3945-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Content-Language: en-US
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: barebox@lists.infradead.org
-References: <20220515193807.354903-1-sam@ravnborg.org>
- <YrtVGZ0M5Yde6rNd@ravnborg.org>
- <2ff476fa-0a73-3726-c905-5796691f740f@pengutronix.de>
- <YrtwON6WWPSAzaCe@ravnborg.org>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <YrtwON6WWPSAzaCe@ravnborg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220628_142049_706049_E69684EE 
-X-CRM114-Status: GOOD (  25.49  )
+X-CRM114-CacheID: sfid-20220628_233031_707665_76E4E10E 
+X-CRM114-Status: UNSURE (   9.94  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,68 +92,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [RFC PATCH v1 0/8] ARM: at91: Add pbl support to skov-arm9cpu
+X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 1/6] drivers: rtc: pcf8536: Remove redundant variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Sam,
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ drivers/rtc/rtc-pcf85363.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-On 28.06.22 23:18, Sam Ravnborg wrote:
-> Hi Ahmad,
-> 
-> On Tue, Jun 28, 2022 at 11:12:39PM +0200, Ahmad Fatoum wrote:
->> Hello Sam,
->>
->> On 28.06.22 21:23, Sam Ravnborg wrote:
->>> Hi Ahmad,
->>> On Sun, May 15, 2022 at 09:37:59PM +0200, Sam Ravnborg wrote:
->>>> The following is the current set of patches so far to support
->>>> PBL for the skov-arm9cpu.
->>> ...
->>>> This is an RFC - because the code does not yet work :-(
->>>> It fails to mount the SD Card - for reasons I am yet to discover.
->>>>
->>>> Most of the code is attempted to be generic so we can use it
->>>> for other targets.
->>>
->>> I noticed you posted an issue on at91bootstrap about the sdram driver
->>> today where you wrote that you are looking into at91samxxx bootstrap.
->>>
->>> I have something that works - and I can post an updated series tomorrow.
->>> I was planning to get my drm driver functional again and update the
->>> binding before posting v2 - so I had a complete barebox + linux kernel
->>> solution. But as weather is good, there is less time for hacking.
->>>
->>> Let me know if it is of any help to post something.
->>> Knowing your speed you may already be far ahead of what I made :-)
->>
->> No hurry. I figured we give the Atmel guys a heads up that the older
->> platforms are broken. I am not actively working on this.
-> OK, thanks for the quick update.
-> I already went ahead and posted what I have as the commits was ready,
-> so it was quick to do. You can just ignore, but ofc any comments are
-> welcome and I consider most of the patches ready.
-
-I agree, Looked good from a quick glance. I will give this a more thorough
-review tomorrow.
-
-Cheers,
-Ahmad
-
-> 
-> 	Sam
-> 
-
-
+diff --git a/drivers/rtc/rtc-pcf85363.c b/drivers/rtc/rtc-pcf85363.c
+index 7b785d6a77..b9f0fc6012 100644
+--- a/drivers/rtc/rtc-pcf85363.c
++++ b/drivers/rtc/rtc-pcf85363.c
+@@ -131,7 +131,6 @@ static int pcf85363_probe(struct device_d *dev)
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	struct pcf85363 *pcf85363;
+ 	struct regmap *regmap;
+-	int ret;
+ 
+ 	regmap = regmap_init_i2c(client,
+ 				&pcf85363_regmap_i2c_config);
+@@ -147,9 +146,7 @@ static int pcf85363_probe(struct device_d *dev)
+ 	pcf85363->rtc.ops = &rtc_ops;
+ 	pcf85363->rtc.dev = dev;
+ 
+-	ret = rtc_register(&pcf85363->rtc);
+-
+-	return ret;
++	return rtc_register(&pcf85363->rtc);
+ }
+ 
+ static struct platform_device_id dev_ids[] = {
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.32.0
+
 
 
