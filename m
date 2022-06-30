@@ -1,60 +1,61 @@
-Delivery-date: Thu, 30 Jun 2022 14:26:32 +0200
+Delivery-date: Thu, 30 Jun 2022 14:26:33 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6tFd-0020Oe-96
-	for lore@lore.pengutronix.de; Thu, 30 Jun 2022 14:26:32 +0200
+	id 1o6tFe-0020Oz-4u
+	for lore@lore.pengutronix.de; Thu, 30 Jun 2022 14:26:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6tFf-00066k-Hx
+	id 1o6tFg-00066r-2Y
 	for lore@pengutronix.de; Thu, 30 Jun 2022 14:26:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=kmUCwhdXxj4niIozIF/h9qMRW1fnmJJfgg5wBz6/jhI=; b=mVvhbSXdPFTvKvbqzZmKGn7GtU
-	XQeJAolh1+XmLWVWyu1qG3nJn8BfU5Qj9XsapHPoCrIFED8Ov9oldw2b1fHkuqEiKEJny7NLkH6Tb
-	5SQvrTV1FvLK/L2shzMJI2as3uewP71QXYpKrIh08iqmgzzLM2BxQWeQlqgIF00UIy2OEgTd3ZbgL
-	/JUloHgl083oX9eoOox89u2WH16yaUbsrek5QLEPS/sxRj1qdT571TdDs7DhxtxFt8YHMOZ4s7EpB
-	K+sxl8hqR5GCAeZTP9PQKEO3RKcHPvN/TVvbdlZf8qwVv7DkY1mmSQkpmnD0m/hT8XAyFcXz98ivq
-	y0f52+0w==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=BEhd2L5rkrSvOmcpr7otuWUGOuKmdNYL02c7MsjBM0s=; b=1SU3TBfge2TMht1M1P65MVPsB2
+	ukmefPMoo0E72Jo4FbrWtMZMuGcM1Ln1PzsDoCgXwsVwF5D+9IflUDyJizo/8dPmgBU7SHfvaI9O+
+	PXLxeKoIYh6+BNg2nXkn59zPU9WQmgMGO4KjbpD20qH0JXgp8BRNpir+mavkUPCtW8lxRw6c6SWRD
+	Rs9AwQ43eZkAaOr7Oj2x+szoRIOVAltkCKnb57zznP/VYKL2k0YzGT4/0vRJR1846YuS7A+Rr/jIl
+	Nn8X1hve3ehn3OpP6He/0Vp8eKey+9KbpYLQO4YfsIDpoGXz+ez1D0r43lzXJPRp2QXqzur3VjjMa
+	xom7WZ2Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6tEI-00H4S8-RV; Thu, 30 Jun 2022 12:25:06 +0000
+	id 1o6tEL-00H4SX-0t; Thu, 30 Jun 2022 12:25:09 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6tEE-00H4Q1-Nh
-	for barebox@lists.infradead.org; Thu, 30 Jun 2022 12:25:03 +0000
+	id 1o6tEF-00H4QK-4f
+	for barebox@lists.infradead.org; Thu, 30 Jun 2022 12:25:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1o6tEB-0005j4-5D; Thu, 30 Jun 2022 14:24:59 +0200
+	id 1o6tEC-0005jM-7A; Thu, 30 Jun 2022 14:25:00 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1o6tE6-003aRn-UR; Thu, 30 Jun 2022 14:24:58 +0200
+	id 1o6tE8-003aRr-0B; Thu, 30 Jun 2022 14:24:59 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1o6tE9-00Gp9e-Sn; Thu, 30 Jun 2022 14:24:57 +0200
+	id 1o6tE9-00Gp9g-TJ; Thu, 30 Jun 2022 14:24:57 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: has@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 30 Jun 2022 14:24:56 +0200
-Message-Id: <20220630122457.4009827-1-a.fatoum@pengutronix.de>
+Date: Thu, 30 Jun 2022 14:24:57 +0200
+Message-Id: <20220630122457.4009827-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220630122457.4009827-1-a.fatoum@pengutronix.de>
+References: <20220630122457.4009827-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220630_052502_808842_1CA327E1 
-X-CRM114-Status: UNSURE (   8.53  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220630_052503_217347_39CEA98D 
+X-CRM114-Status: GOOD (  19.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,34 +78,146 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/2] partitions: efi: register guid device parameter for disk GUID
+Subject: [PATCH 2/2] commands: implement devlookup to find device behind device file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We already register an nt_signature parameter for MBR partitions.
-Register an equivalent guid parameter for GPT partitions as well.
-This is less critical because disk GUID isn't used for root=
-Linux boot argument computation, as each partition has its own
-PARTUUID. It's still useful to allow shell scripts to check
-against it to detect e.g. a factory flash image.
+For OF-enabled platforms with aliases, device file naming is pretty much
+solved: If there is mmc2 = &something, then we have a mmc2 device and
+a /dev/mmc2 device file. For other platforms like x86, EFI-provided
+devices are harder to get ahold of. Add a command to make this
+straight-forward to do in scripts. The main use of this is probably to
+access parameters like nt_signature or guid:
+
+  devloop /dev/disk0 guid
+
+This would print to console, but we have no output capture yet, so add
+an optional -v VARIABLE parameter as well to allow easy use from
+scripts.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/partitions/efi.c | 1 +
- 1 file changed, 1 insertion(+)
+ commands/Kconfig     | 13 ++++++++
+ commands/Makefile    |  1 +
+ commands/devlookup.c | 73 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 87 insertions(+)
+ create mode 100644 commands/devlookup.c
 
-diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-index 848bed22610f..0f3f790539cd 100644
---- a/common/partitions/efi.c
-+++ b/common/partitions/efi.c
-@@ -446,6 +446,7 @@ static void efi_partition(void *buf, struct block_device *blk,
- 	}
+diff --git a/commands/Kconfig b/commands/Kconfig
+index fb4dcefed8bf..5bab78fd1ce7 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -75,6 +75,19 @@ config CMD_DEVINFO
+ 	  If called with a device path being the argument, devinfo shows more
+ 	  default information about this device and its parameters.
  
- 	snprintf(blk->cdev.uuid, sizeof(blk->cdev.uuid), "%pUl", &gpt->disk_guid);
-+	dev_add_param_string_fixed(blk->dev, "guid", blk->cdev.uuid);
- 
- 	nb_part = le32_to_cpu(gpt->num_partition_entries);
- 
++config CMD_DEVLOOKUP
++	tristate
++	prompt "devlookup"
++	help
++	  Look up device behind device file and its parameters
++
++	  devlookup [-v VAR] /dev/DEVICE [parameter]
++
++          Detects the device behind a device file and outputs it,
++          unless a second argument is given. In that case the device
++          parameter with that name is looked up. Specifying -v VARIABLE
++          will write output to VARIABLE instead of printing it.
++
+ config CMD_DEVUNBIND
+ 	tristate
+ 	prompt "devunbind"
+diff --git a/commands/Makefile b/commands/Makefile
+index 6c3a7a1dabcd..b43da1a80173 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -110,6 +110,7 @@ obj-$(CONFIG_CMD_DETECT)	+= detect.o
+ obj-$(CONFIG_CMD_BOOT)		+= boot.o
+ obj-$(CONFIG_CMD_DEVINFO)	+= devinfo.o
+ obj-$(CONFIG_CMD_DEVUNBIND)	+= devunbind.o
++obj-$(CONFIG_CMD_DEVLOOKUP)	+= devlookup.o
+ obj-$(CONFIG_CMD_DRVINFO)	+= drvinfo.o
+ obj-$(CONFIG_CMD_READF)		+= readf.o
+ obj-$(CONFIG_CMD_MENUTREE)	+= menutree.o
+diff --git a/commands/devlookup.c b/commands/devlookup.c
+new file mode 100644
+index 000000000000..9599df7b10bc
+--- /dev/null
++++ b/commands/devlookup.c
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <common.h>
++#include <command.h>
++#include <fs.h>
++#include <getopt.h>
++#include <malloc.h>
++#include <linux/stat.h>
++#include <linux/ctype.h>
++#include <environment.h>
++
++static int report(const char *variable, const char *val)
++{
++	if (variable)
++		return setenv(variable, val);
++
++	if (!val)
++		return -errno;
++
++	printf("%s\n", val);
++	return 0;
++}
++
++static int do_devlookup(int argc, char *argv[])
++{
++	const char *variable = NULL, *devicefile, *paramname;
++	struct cdev *cdev;
++	int opt;
++
++	while ((opt = getopt(argc, argv, "v:")) > 0) {
++		switch(opt) {
++		case 'v':
++			variable = optarg;
++			break;
++		}
++	}
++
++	if (argc - optind == 0 || argc - optind > 2)
++		return COMMAND_ERROR_USAGE;
++
++	devicefile = argv[optind];
++	paramname  = argv[optind+1];
++
++	if (!strstarts(devicefile, "/dev/"))
++		return COMMAND_ERROR_USAGE;
++
++	devicefile += sizeof "/dev/" - 1;
++
++	cdev = cdev_by_name(devicefile);
++	if (!cdev)
++		return -ENOENT;
++
++	if (paramname)
++		return report(variable, dev_get_param(cdev->dev, paramname));
++
++	return report(variable, dev_name(cdev->dev));
++}
++
++BAREBOX_CMD_HELP_START(devlookup)
++BAREBOX_CMD_HELP_TEXT("Detects the device behind a device file and outputs it,")
++BAREBOX_CMD_HELP_TEXT("unless a second argument is given. In that case the device")
++BAREBOX_CMD_HELP_TEXT("parameter with that name is looked up. Specifying -v VARIABLE")
++BAREBOX_CMD_HELP_TEXT("will write output to VARIABLE instead of printing it")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(devlookup)
++	.cmd		= do_devlookup,
++	BAREBOX_CMD_DESC("look up device behind device file and its parameters")
++	BAREBOX_CMD_OPTS("[-v VAR] /dev/DEVICE [parameter]")
++	BAREBOX_CMD_GROUP(CMD_GRP_SCRIPT)
++	BAREBOX_CMD_HELP(cmd_devlookup_help)
++BAREBOX_CMD_END
++
 -- 
 2.30.2
 
