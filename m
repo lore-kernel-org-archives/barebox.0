@@ -1,61 +1,61 @@
-Delivery-date: Thu, 30 Jun 2022 14:26:33 +0200
+Delivery-date: Thu, 30 Jun 2022 14:42:09 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6tFe-0020Oz-4u
-	for lore@lore.pengutronix.de; Thu, 30 Jun 2022 14:26:33 +0200
+	id 1o6tUk-0020va-FR
+	for lore@lore.pengutronix.de; Thu, 30 Jun 2022 14:42:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6tFg-00066r-2Y
-	for lore@pengutronix.de; Thu, 30 Jun 2022 14:26:32 +0200
+	id 1o6tUm-00084f-9y
+	for lore@pengutronix.de; Thu, 30 Jun 2022 14:42:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BEhd2L5rkrSvOmcpr7otuWUGOuKmdNYL02c7MsjBM0s=; b=1SU3TBfge2TMht1M1P65MVPsB2
-	ukmefPMoo0E72Jo4FbrWtMZMuGcM1Ln1PzsDoCgXwsVwF5D+9IflUDyJizo/8dPmgBU7SHfvaI9O+
-	PXLxeKoIYh6+BNg2nXkn59zPU9WQmgMGO4KjbpD20qH0JXgp8BRNpir+mavkUPCtW8lxRw6c6SWRD
-	Rs9AwQ43eZkAaOr7Oj2x+szoRIOVAltkCKnb57zznP/VYKL2k0YzGT4/0vRJR1846YuS7A+Rr/jIl
-	Nn8X1hve3ehn3OpP6He/0Vp8eKey+9KbpYLQO4YfsIDpoGXz+ez1D0r43lzXJPRp2QXqzur3VjjMa
-	xom7WZ2Q==;
+	bh=hJpv6ckS2fpeUSOzelua759jWHSAddLXAR7P+Lq40rU=; b=ZrlxJe++b3sSD+Js0yPtw49YR8
+	TgOu4HzHLIQAtESvSbsg5sF2R+3Rb9WYJYuD7WVv0aRReubDx5rrjR8h4caELINrTXyQhnWiM1+fj
+	F+Rh2ri5MAPEsiPId9FpjVhi/8BIM/+S3EGwH1Iqig/ScAx14Uyy4ubtlEYij4s8r7h1VrulR1kxe
+	EbCK62jplr0kLAQhNQIbe+3W30Hn2QQYdeQx6hKtM3AFddmPzyemm93SLwcOggOA34jWhEwqhNysF
+	LBTatGREUiSVL6KduOuPVhOHjg06SiH6On7gi5vqoATIwZE+r7kx9Yb/y4VOxZCPpA4WOjslcupq3
+	FpDNIiyg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6tEL-00H4SX-0t; Thu, 30 Jun 2022 12:25:09 +0000
+	id 1o6tTS-00H7I6-VC; Thu, 30 Jun 2022 12:40:47 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6tEF-00H4QK-4f
-	for barebox@lists.infradead.org; Thu, 30 Jun 2022 12:25:04 +0000
+	id 1o6tTL-00H7Fg-Ny
+	for barebox@lists.infradead.org; Thu, 30 Jun 2022 12:40:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1o6tEC-0005jM-7A; Thu, 30 Jun 2022 14:25:00 +0200
+	id 1o6tTK-0007fx-Ag; Thu, 30 Jun 2022 14:40:38 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1o6tE8-003aRr-0B; Thu, 30 Jun 2022 14:24:59 +0200
+	id 1o6tTG-003ar6-3d; Thu, 30 Jun 2022 14:40:37 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1o6tE9-00Gp9g-TJ; Thu, 30 Jun 2022 14:24:57 +0200
+	id 1o6tTI-00Grht-Mb; Thu, 30 Jun 2022 14:40:36 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: has@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 30 Jun 2022 14:24:57 +0200
-Message-Id: <20220630122457.4009827-2-a.fatoum@pengutronix.de>
+Date: Thu, 30 Jun 2022 14:40:35 +0200
+Message-Id: <20220630124035.4019644-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220630122457.4009827-1-a.fatoum@pengutronix.de>
-References: <20220630122457.4009827-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220630124035.4019644-1-a.fatoum@pengutronix.de>
+References: <20220630124035.4019644-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220630_052503_217347_39CEA98D 
-X-CRM114-Status: GOOD (  19.23  )
+X-CRM114-CacheID: sfid-20220630_054039_823352_CBFC0FB0 
+X-CRM114-Status: GOOD (  16.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,146 +78,93 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/2] commands: implement devlookup to find device behind device file
+Subject: [PATCH 3/3] block: efi: allow disabling /dev/usbdiskX renaming
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-For OF-enabled platforms with aliases, device file naming is pretty much
-solved: If there is mmc2 = &something, then we have a mmc2 device and
-a /dev/mmc2 device file. For other platforms like x86, EFI-provided
-devices are harder to get ahold of. Add a command to make this
-straight-forward to do in scripts. The main use of this is probably to
-access parameters like nt_signature or guid:
+Some buggy UEFI implementations have been observed to not set
+EFI_USB_IO protocol on handles that were instantiated from
+USB mass storage. This leads to confusing behavior when barebox
+uses /dev/usbdisk for some USB sticks and doesn't for some others.
 
-  devloop /dev/disk0 guid
+The proper behavior is not relying on the UEFI and instead check
+e.g. GUID of the boot disk image:
 
-This would print to console, but we have no output capture yet, so add
-an optional -v VARIABLE parameter as well to allow easy use from
-scripts.
+  if [ "$bootsource" = usb ]; then
+    mydisk = /dev/usbdisk${bootsource_instance}
+  else
+    mydisk = /dev/disk${bootsource_instance}
+  fi
+
+  devlookup -v bootdiskguid $mydisk guid
+  if [ "$bootdiskguid" = "my-guid" ]; then
+    boot ${mydisk}.1
+  else
+    boot boochooser
+  fi
+
+When going that way, the renaming to usbdisk is just annoying,
+so allow disabling it to simplify scripting.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/Kconfig     | 13 ++++++++
- commands/Makefile    |  1 +
- commands/devlookup.c | 73 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 87 insertions(+)
- create mode 100644 commands/devlookup.c
+ drivers/block/Kconfig        | 21 +++++++++++++++++++++
+ drivers/block/Makefile       |  2 +-
+ drivers/block/efi-block-io.c |  3 ++-
+ 3 files changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index fb4dcefed8bf..5bab78fd1ce7 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -75,6 +75,19 @@ config CMD_DEVINFO
- 	  If called with a device path being the argument, devinfo shows more
- 	  default information about this device and its parameters.
- 
-+config CMD_DEVLOOKUP
-+	tristate
-+	prompt "devlookup"
+diff --git a/drivers/block/Kconfig b/drivers/block/Kconfig
+index 68a11438dcf3..625e81a4ec97 100644
+--- a/drivers/block/Kconfig
++++ b/drivers/block/Kconfig
+@@ -5,3 +5,24 @@ config VIRTIO_BLK
+         help
+           This is the virtual block driver for virtio.  It can be used with
+           QEMU based VMMs (like KVM or Xen).
++
++config EFI_BLK
++	bool "EFI block I/O driver"
++	default y
++	depends on EFI_BOOTUP
++
++config EFI_BLK_SEPARATE_USBDISK
++	bool "rename USB devices to /dev/usbdiskX"
++	default y
++	depends on EFI_BLK
 +	help
-+	  Look up device behind device file and its parameters
++	  EFI block devices will be normally called /dev/diskX. Setting this
++	  option will cause block devices instantiated from handles with a
++	  EFI_USB_IO protocol to be called /dev/usbdiskX instead. Note that
++	  some buggy UEFI implementations have been observed to not do this
++	  consistently for all USB mass storage. If you need to absolutely
++	  be sure your boot device is a USB mass storage device and you can't
++	  fix your UEFI, consider disabling this options and setting a GUID
++	  for your disk and checking against it with
 +
-+	  devlookup [-v VAR] /dev/DEVICE [parameter]
-+
-+          Detects the device behind a device file and outputs it,
-+          unless a second argument is given. In that case the device
-+          parameter with that name is looked up. Specifying -v VARIABLE
-+          will write output to VARIABLE instead of printing it.
-+
- config CMD_DEVUNBIND
- 	tristate
- 	prompt "devunbind"
-diff --git a/commands/Makefile b/commands/Makefile
-index 6c3a7a1dabcd..b43da1a80173 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -110,6 +110,7 @@ obj-$(CONFIG_CMD_DETECT)	+= detect.o
- obj-$(CONFIG_CMD_BOOT)		+= boot.o
- obj-$(CONFIG_CMD_DEVINFO)	+= devinfo.o
- obj-$(CONFIG_CMD_DEVUNBIND)	+= devunbind.o
-+obj-$(CONFIG_CMD_DEVLOOKUP)	+= devlookup.o
- obj-$(CONFIG_CMD_DRVINFO)	+= drvinfo.o
- obj-$(CONFIG_CMD_READF)		+= readf.o
- obj-$(CONFIG_CMD_MENUTREE)	+= menutree.o
-diff --git a/commands/devlookup.c b/commands/devlookup.c
-new file mode 100644
-index 000000000000..9599df7b10bc
---- /dev/null
-+++ b/commands/devlookup.c
-@@ -0,0 +1,73 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <common.h>
-+#include <command.h>
-+#include <fs.h>
-+#include <getopt.h>
-+#include <malloc.h>
-+#include <linux/stat.h>
-+#include <linux/ctype.h>
-+#include <environment.h>
-+
-+static int report(const char *variable, const char *val)
-+{
-+	if (variable)
-+		return setenv(variable, val);
-+
-+	if (!val)
-+		return -errno;
-+
-+	printf("%s\n", val);
-+	return 0;
-+}
-+
-+static int do_devlookup(int argc, char *argv[])
-+{
-+	const char *variable = NULL, *devicefile, *paramname;
-+	struct cdev *cdev;
-+	int opt;
-+
-+	while ((opt = getopt(argc, argv, "v:")) > 0) {
-+		switch(opt) {
-+		case 'v':
-+			variable = optarg;
-+			break;
-+		}
-+	}
-+
-+	if (argc - optind == 0 || argc - optind > 2)
-+		return COMMAND_ERROR_USAGE;
-+
-+	devicefile = argv[optind];
-+	paramname  = argv[optind+1];
-+
-+	if (!strstarts(devicefile, "/dev/"))
-+		return COMMAND_ERROR_USAGE;
-+
-+	devicefile += sizeof "/dev/" - 1;
-+
-+	cdev = cdev_by_name(devicefile);
-+	if (!cdev)
-+		return -ENOENT;
-+
-+	if (paramname)
-+		return report(variable, dev_get_param(cdev->dev, paramname));
-+
-+	return report(variable, dev_name(cdev->dev));
-+}
-+
-+BAREBOX_CMD_HELP_START(devlookup)
-+BAREBOX_CMD_HELP_TEXT("Detects the device behind a device file and outputs it,")
-+BAREBOX_CMD_HELP_TEXT("unless a second argument is given. In that case the device")
-+BAREBOX_CMD_HELP_TEXT("parameter with that name is looked up. Specifying -v VARIABLE")
-+BAREBOX_CMD_HELP_TEXT("will write output to VARIABLE instead of printing it")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(devlookup)
-+	.cmd		= do_devlookup,
-+	BAREBOX_CMD_DESC("look up device behind device file and its parameters")
-+	BAREBOX_CMD_OPTS("[-v VAR] /dev/DEVICE [parameter]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_SCRIPT)
-+	BAREBOX_CMD_HELP(cmd_devlookup_help)
-+BAREBOX_CMD_END
-+
++	    devlookup -v $bootguid /dev/disk$bootsource_instance guid
+diff --git a/drivers/block/Makefile b/drivers/block/Makefile
+index c50bdc1d02bd..a4e14a559cf7 100644
+--- a/drivers/block/Makefile
++++ b/drivers/block/Makefile
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_EFI_BOOTUP) += efi-block-io.o
++obj-$(CONFIG_EFI_BLK) += efi-block-io.o
+ obj-$(CONFIG_VIRTIO_BLK) += virtio_blk.o
+diff --git a/drivers/block/efi-block-io.c b/drivers/block/efi-block-io.c
+index 086afb378ab4..120e4d8f1ad2 100644
+--- a/drivers/block/efi-block-io.c
++++ b/drivers/block/efi-block-io.c
+@@ -140,7 +140,8 @@ static void efi_bio_print_info(struct device_d *dev)
+ 
+ static bool is_bio_usbdev(struct efi_device *efidev)
+ {
+-	return efi_device_has_guid(efidev, EFI_USB_IO_PROTOCOL_GUID);
++	return IS_ENABLED(CONFIG_EFI_BLK_SEPARATE_USBDISK) &&
++		efi_device_has_guid(efidev, EFI_USB_IO_PROTOCOL_GUID);
+ }
+ 
+ static int efi_bio_probe(struct efi_device *efidev)
 -- 
 2.30.2
 
