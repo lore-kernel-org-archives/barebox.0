@@ -1,55 +1,60 @@
-Delivery-date: Thu, 30 Jun 2022 15:21:22 +0200
+Delivery-date: Thu, 30 Jun 2022 15:28:16 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6u6g-0023CW-Pf
-	for lore@lore.pengutronix.de; Thu, 30 Jun 2022 15:21:22 +0200
+	id 1o6uDN-0023Xw-8p
+	for lore@lore.pengutronix.de; Thu, 30 Jun 2022 15:28:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6u6j-0004t6-3n
-	for lore@pengutronix.de; Thu, 30 Jun 2022 15:21:21 +0200
+	id 1o6uDP-0005ks-4t
+	for lore@pengutronix.de; Thu, 30 Jun 2022 15:28:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pwfW5KdXc0psPi3USwqbseiuQTGdyIuYrIitztJgSnQ=; b=DszlWLJmrcFRUypYIB3DfbPzrt
-	/FcY/lEEukZZH95t1xjJR5vFwWqO5OpPRG9ezZOb3PGmfBw5SP9MthsncCbIhBxuMt4xvGI0S2knx
-	dyCn4QO4Lp7SZfivH1Z0Hq6/mvCeBSFS3HZVFwRG+doCVx6naGCgf5oMPyi1i2M+35gkXTzrwEeq6
-	PoLIFfKQW5p/5C0XeHUuJ4YuUOPVX9w0TP+pjKNTgUdkX1CWqrtnkkMHWSelKb2uVnubqKibWqQi7
-	y7fCLCm5ksqTxrNdi46sMvRJUs1FRluENfvEQNbTWSPGKVribW03bzZX0HVSKJaW0Ij86Ajv1AmXN
-	w+nhZVNA==;
+	bh=QVlIbwGkDvzitOILrpBSqulqoSRP2jBpHKBwhnqKZkE=; b=QA3awP0/zP2Je62Roy5GZtHmP3
+	g+gtsf0D/5+RfysToOOXDfOEenP3L/9kpGCsZduDyJCzpwxjh/gFz4FgHGmYY66E14IlrukfP2fB/
+	WdOaEzgMkJWVj8FLXYE2j4XCKoQ0hUPbodjDRBQ6wUkAVLyuk40A8f7YP6NsdgPrnvndVbw9MZJoa
+	VzVyIeDXmZ3FFPWOb3W7tngUzR5tR8xn55XPiRIML0PI4AUf7wzYILypI7h+KJ5YIf1IXTdAvAuMM
+	rcKdrhq9Efq8ywboPsXoJbY3OfnqZdKXA25+FXXDbqWg9fTvGiWTPWJH3vqrqk9oryf/UNSOGqgog
+	ocnPoLcg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6u52-00HGXk-2G; Thu, 30 Jun 2022 13:19:36 +0000
+	id 1o6uC1-00HI8H-HL; Thu, 30 Jun 2022 13:26:49 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6u4x-00HGWi-DY
-	for barebox@lists.infradead.org; Thu, 30 Jun 2022 13:19:32 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1o6u4u-0004W2-Ac; Thu, 30 Jun 2022 15:19:28 +0200
-Message-ID: <bfd75b6d-d5f7-195a-d0e1-997a883255a6@pengutronix.de>
-Date: Thu, 30 Jun 2022 15:19:28 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Content-Language: en-US
-To: barebox@lists.infradead.org
-Cc: has@pengutronix.de
-References: <20220630122457.4009827-1-a.fatoum@pengutronix.de>
+	id 1o6uBx-00HI6f-6b
+	for barebox@lists.infradead.org; Thu, 30 Jun 2022 13:26:46 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1o6uBr-0005XS-I1; Thu, 30 Jun 2022 15:26:39 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1o6uBn-003bJy-B7; Thu, 30 Jun 2022 15:26:38 +0200
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1o6uBq-00Gx79-3n; Thu, 30 Jun 2022 15:26:38 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220630122457.4009827-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 30 Jun 2022 15:26:36 +0200
+Message-Id: <20220630132636.4040435-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220630124035.4019644-3-a.fatoum@pengutronix.de>
+References: <20220630124035.4019644-3-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220630_061931_508262_A671E81F 
-X-CRM114-Status: GOOD (  17.35  )
+X-CRM114-CacheID: sfid-20220630_062645_299014_F708CB7E 
+X-CRM114-Status: GOOD (  10.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,48 +74,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/2] partitions: efi: register guid device parameter for
- disk GUID
+Subject: [PATCH] fixup! commands: implement new devlookup command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 30.06.22 14:24, Ahmad Fatoum wrote:
-> We already register an nt_signature parameter for MBR partitions.
-> Register an equivalent guid parameter for GPT partitions as well.
-> This is less critical because disk GUID isn't used for root=
-> Linux boot argument computation, as each partition has its own
-> PARTUUID. It's still useful to allow shell scripts to check
-> against it to detect e.g. a factory flash image.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Propagate error correctly when writing into environment variable as
+well. While at it, ensure we do return an error value.
 
-Please dismiss. Premature emailing.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ commands/devlookup.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> ---
->  common/partitions/efi.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-> index 848bed22610f..0f3f790539cd 100644
-> --- a/common/partitions/efi.c
-> +++ b/common/partitions/efi.c
-> @@ -446,6 +446,7 @@ static void efi_partition(void *buf, struct block_device *blk,
->  	}
->  
->  	snprintf(blk->cdev.uuid, sizeof(blk->cdev.uuid), "%pUl", &gpt->disk_guid);
-> +	dev_add_param_string_fixed(blk->dev, "guid", blk->cdev.uuid);
->  
->  	nb_part = le32_to_cpu(gpt->num_partition_entries);
->  
-
-
+diff --git a/commands/devlookup.c b/commands/devlookup.c
+index 9599df7b10bc..ce4cf2e10f45 100644
+--- a/commands/devlookup.c
++++ b/commands/devlookup.c
+@@ -11,12 +11,12 @@
+ 
+ static int report(const char *variable, const char *val)
+ {
++	if (!val)
++		return -(errno ?: EINVAL);
++
+ 	if (variable)
+ 		return setenv(variable, val);
+ 
+-	if (!val)
+-		return -errno;
+-
+ 	printf("%s\n", val);
+ 	return 0;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
