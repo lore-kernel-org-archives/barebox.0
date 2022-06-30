@@ -1,62 +1,65 @@
-Delivery-date: Thu, 30 Jun 2022 09:25:26 +0200
+Delivery-date: Thu, 30 Jun 2022 13:59:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6oYF-001nyC-1h
-	for lore@lore.pengutronix.de; Thu, 30 Jun 2022 09:25:26 +0200
+	id 1o6spQ-001z4F-Vg
+	for lore@lore.pengutronix.de; Thu, 30 Jun 2022 13:59:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o6oYH-0002XH-24
-	for lore@pengutronix.de; Thu, 30 Jun 2022 09:25:25 +0200
+	id 1o6spT-000277-4Z
+	for lore@pengutronix.de; Thu, 30 Jun 2022 13:59:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hbSUxxYvd/gNBlNKBjnLGuSH49F+adnDiaL6v+SSfAE=; b=3tir3jnN0r+NDpJUgmaIEgoQdW
-	w6nLFoM6sQRTe5mcL57fiD0SG/1vousaTOnd70n+0cde/7WMv7KBzn9Ol8C3XVndCKVjDRfQc+NwG
-	YzpQajcPfHMmUpSW1FHd13SH1mWfzAVSGLbLCClnjXn1ZbGv2fTdch8ItVfhANHTEvAWwxdFzhxD2
-	uk8qgiECsBDLcpgeL20sFl7unjmLSEzKvWrNshYaamblEey+wXMmpgwm7dMHP+QGOycwVH41Lilkx
-	1hFIpl2/whIi6fh8CBeBhfOsoPiFq8NGvoZECh/w1nsZJeTZbjIVk/l2/Z/YIaoTIavqWjkid3xpj
-	ENt8K/gA==;
+	bh=7Y3Gdbi666q3kSlu8TKQE99dvMJLdalixNTo6kubKd8=; b=pTB922Y5ElFRQ1HQEbLLDxB+CI
+	UrbHRrrnAsw/EJSQJ/NoGNRQeJVyDtSWUOfEqTxPkxP7c0ycCvokclmlXiMyEiFkvkM/0GCIJfPmC
+	mKB15BjthigW7jhnYL3t/YqhCTfaq/G8Gj7JZA3qv8dwZuXkl97ySet6orRGUxjcD9wQL1GAeBEoN
+	/8pNAijSG/dDARl/Y4cvMRCI6DIljduNOQ2CNMWJgHahC8mAUSKsqyUIawLwlYNo9OM6n+sX7GVWJ
+	aFAGlo3dlq/59K+CAtWy5rXX5Sk3PA5HbBVZWojYb/PrhYg1vLglAlBVuyvPpUXxPCyXaADTBbdwq
+	2RL8pGAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6oWD-00FlDW-I5; Thu, 30 Jun 2022 07:23:17 +0000
+	id 1o6snj-00Gz09-D3; Thu, 30 Jun 2022 11:57:39 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6oW8-00FlBT-4H
-	for barebox@lists.infradead.org; Thu, 30 Jun 2022 07:23:13 +0000
+	id 1o6sne-00GyyM-B6
+	for barebox@lists.infradead.org; Thu, 30 Jun 2022 11:57:35 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1o6oW1-0002PM-2V; Thu, 30 Jun 2022 09:23:05 +0200
+	id 1o6snc-0001hJ-PQ; Thu, 30 Jun 2022 13:57:32 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1o6oW0-0003Ir-Q4; Thu, 30 Jun 2022 09:23:04 +0200
-Date: Thu, 30 Jun 2022 09:23:04 +0200
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+	id 1o6snc-0002ZT-Fc; Thu, 30 Jun 2022 13:57:32 +0200
+Date: Thu, 30 Jun 2022 13:57:32 +0200
+To: Alexander Shiyan <eagle.alexander923@gmail.com>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220630072304.GT19026@pengutronix.de>
-References: <20220629085628.106086-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20220630115732.GB2387@pengutronix.de>
+References: <20220627102500.18427-1-eagle.alexander923@gmail.com>
+ <20220627102500.18427-7-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220629085628.106086-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20220627102500.18427-7-eagle.alexander923@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
+X-Uptime: 13:51:15 up 92 days, 20 min, 86 users,  load average: 0.03, 0.10,
+ 0.21
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220630_002312_210778_FB811B17 
-X-CRM114-Status: GOOD (  21.51  )
+X-CRM114-CacheID: sfid-20220630_045734_406865_286E2293 
+X-CRM114-Status: GOOD (  17.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,55 +82,46 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 1/2] watchdog: imxwd: Convert error messages in .probe
- to dev_err_probe()
+Subject: Re: [PATCH 6/8] pbl: Fix Kconfig dependencies
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jun 29, 2022 at 10:56:27AM +0200, Uwe Kleine-König wrote:
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/watchdog/imxwd.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+On Mon, Jun 27, 2022 at 01:24:58PM +0300, Alexander Shiyan wrote:
+> WARNING: unmet direct dependencies detected for PBL_IMAGE
+> Depends on [n]: HAVE_PBL_IMAGE [=n]
+> Selected by [y]:
+> - PBL_MULTI_IMAGES [=y] && HAVE_PBL_MULTI_IMAGES [=y]
+> 
+> WARNING: unmet direct dependencies detected for PBL_VERIFY_PIGGY
+> Depends on [n]: PBL_IMAGE [=n] && ARM [=y]
+> Selected by [y]:
+> - ARCH_IMX8M [=y] && ARCH_IMX [=y] && HABV4 [=y]
+> 
+> WARNING: unmet direct dependencies detected for BOARD_GENERIC_DT
+> Depends on [n]: PBL_IMAGE [=n]
+> Selected by [y]:
+> - BOARD_ARM_GENERIC_DT [=y] && HAVE_PBL_MULTI_IMAGES [=y] && OFDEVICE [=y]
 
-Applied, thanks
+I had to revert this one as it breaks for example am335x_mlo_defconfig.
+It breaks because HAVE_PBL_MULTI_IMAGES is set. With this
+PBL_MULTI_IMAGES becomes enabled because it is default y. That option
+in turn selects PBL_IMAGE. Now with this patch applied we end up
+with PBL_IMAGE disabled and the config doesn't compile anymore.
+
+I think we have to split this patch up further. What I trapped in was:
+
+> WARNING: unmet direct dependencies detected for PBL_IMAGE
+> Depends on [n]: HAVE_PBL_IMAGE [=n]
+> Selected by [y]:
+> - PBL_MULTI_IMAGES [=y] && HAVE_PBL_MULTI_IMAGES [=y]
+
+And I think that one could be fixed with:
+
+config HAVE_PBL_MULTI_IMAGES
+	select HAVE_PBL_IMAGE
+	bool
 
 Sascha
-
-> 
-> diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-> index 31ea388c2cf2..e9856c94c2fc 100644
-> --- a/drivers/watchdog/imxwd.c
-> +++ b/drivers/watchdog/imxwd.c
-> @@ -239,10 +239,9 @@ static int imx_wd_probe(struct device_d *dev)
->  
->  	priv = xzalloc(sizeof(struct imx_wd));
->  	iores = dev_request_mem_resource(dev, 0);
-> -	if (IS_ERR(iores)) {
-> -		dev_err(dev, "could not get memory region\n");
-> -		return PTR_ERR(iores);
-> -	}
-> +	if (IS_ERR(iores))
-> +		return dev_err_probe(dev, PTR_ERR(iores),
-> +				     "could not get memory region\n");
->  
->  	clk = clk_get(dev, NULL);
->  	if (IS_ERR(clk))
-> @@ -279,7 +278,8 @@ static int imx_wd_probe(struct device_d *dev)
->  	if (priv->ops->init) {
->  		ret = priv->ops->init(priv);
->  		if (ret) {
-> -			dev_err(dev, "Failed to init watchdog device %d\n", ret);
-> +			dev_err_probe(dev, ret,
-> +				      "Failed to init watchdog device\n");
->  			goto error_unregister;
->  		}
->  	}
-> -- 
-> 2.36.1
-> 
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
