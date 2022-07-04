@@ -1,61 +1,59 @@
-Delivery-date: Mon, 04 Jul 2022 16:19:39 +0200
+Delivery-date: Mon, 04 Jul 2022 16:20:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o8MvH-005bmW-TS
-	for lore@lore.pengutronix.de; Mon, 04 Jul 2022 16:19:39 +0200
+	id 1o8MwU-005boM-He
+	for lore@lore.pengutronix.de; Mon, 04 Jul 2022 16:20:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o8MvK-00063S-9A
-	for lore@pengutronix.de; Mon, 04 Jul 2022 16:19:38 +0200
+	id 1o8MwW-0006Gz-IB
+	for lore@pengutronix.de; Mon, 04 Jul 2022 16:20:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=kk8zYdtfMFieyaIebfWsXH29Mfw4kCNrco4r7qhfvwc=; b=cyWbS9zdfKyzYMMhV4jFQU7E4F
-	shJ5RGbqPtv+iMpiwDMAgK0ZHzAqEXXaI5FfUfUs3Ocqs3HQCd+KV9Z28HWuQauQFtz3RBnQCmtZJ
-	Nu/xnm9e8lPaYTVwOwMRjM1zF/rK2UKNlWhkxGrpIIaJ0JbdUH47oNVZGByiWcnqwdQmFY7sVeQMi
-	2jfEH4pizQdow2BA01PLo3Qty+QH3KiJBcfpM5POc00JFH21kxxSsBOBkiQ+rZmi+tTYB2dd3k6ER
-	jxWmvje7BzmQ6IZEProEnAnLbB+1VgwGi0vD4RM7pxLzBGcQTkCaFRQrBDBt+p7u596lNdygNKP44
-	kFQq0Iaw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=YbHc6hSMCMl0iLLyikSuhnW+ifUfv461TVR4EmfUufk=; b=ucd+Hf6RkwW0PEaedFkzLYqSkL
+	vJ/Ysn4V529Qgxs2N8IDhVJKDkHs1+1vPoe2ND2obOKJcyscwyhwCeOfDivJL1HkhcXjIOhPmVs3o
+	pFh6UGBXZs9Ev+Z4czwaewBFLa2JnvbVR5bAoXGMT9IEpXtjbblPGRiKqhJKuFgs6KvZHAzTIHPlS
+	7I6h0vN723sqYbYT3Aec+ChX7scEsJXPWH1Iait5iO0aR3ALj7PdYbG3XjzwTsvg9Ga3s0YPPIYyC
+	h45e+32wGtEqIHUraItjszRun/qE1TpwhaPPif1ML+S0HFvWLT7TJV8jk/fUGJ1GIsXQrLT2pb5KU
+	gGg5mzeQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o8Mu3-009PSe-47; Mon, 04 Jul 2022 14:18:19 +0000
+	id 1o8MvF-009Peg-RP; Mon, 04 Jul 2022 14:19:33 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o8Mty-009PRx-Rk
-	for barebox@lists.infradead.org; Mon, 04 Jul 2022 14:18:16 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1o8MvB-009PdR-39
+	for barebox@lists.infradead.org; Mon, 04 Jul 2022 14:19:30 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1o8Mtw-0005gg-Sn
-	for barebox@lists.infradead.org; Mon, 04 Jul 2022 16:18:12 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	id 1o8Mv9-00061t-U3; Mon, 04 Jul 2022 16:19:27 +0200
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1o8Mts-004OCN-Ln
-	for barebox@lists.infradead.org; Mon, 04 Jul 2022 16:18:12 +0200
-Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1o8Mtv-001uwC-8Y
-	for barebox@lists.infradead.org; Mon, 04 Jul 2022 16:18:11 +0200
+	id 1o8Mv9-0007mc-JU; Mon, 04 Jul 2022 16:19:27 +0200
+Date: Mon, 4 Jul 2022 16:19:27 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Mon,  4 Jul 2022 16:18:09 +0200
-Message-Id: <20220704141809.457135-1-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220704141927.77efktpwibhvjcn7@pengutronix.de>
+References: <20220704123338.337162-1-m.felsch@pengutronix.de>
+ <8e63b111f09391b345edc89f4333237f53ba4dbc.camel@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <8e63b111f09391b345edc89f4333237f53ba4dbc.camel@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220704_071814_941775_DA2C6BCD 
-X-CRM114-Status: UNSURE (   8.19  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220704_071929_176434_84AC3B52 
+X-CRM114-Status: GOOD (  24.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,39 +71,90 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] common: bootm: print error in case of appendroot failed
+Subject: Re: [PATCH] ARM: i.MX8MP: adapt atf bl31 base addr
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Inform the user that appendroot failed instead of silently dropping the
-request. This makes the debugging easier e.g. if nt-signature wasn't set
-correctly.
+On 22-07-04, Lucas Stach wrote:
+> Am Montag, dem 04.07.2022 um 14:33 +0200 schrieb Marco Felsch:
+> > The usptream TF-A was shifting around the base address from version to
+> > version. But finally with upstream TF-A v2.7 it is correctly set to
+> > 0x970000. This change was done since the final silicium has an SRAM size
+>                                                  ^ silicon
+> > of 576KB where as the pre-silicium had only 512KB.
+> Please specify the tapeout version (A1) here. 
+> 
+> pre-silicon is a very different thing than a pre-release tapeout.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- common/bootm.c | 2 ++
- 1 file changed, 2 insertions(+)
+I will change that.
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 3c80e8bf94..1c722afc80 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -729,6 +729,8 @@ int bootm_boot(struct bootm_data *bootm_data)
- 			globalvar_add_simple("linux.bootargs.bootm.appendroot",
- 					     rootarg);
- 			free(rootarg);
-+		} else {
-+			pr_err("Failed to append kernel cmdline parameter 'root='\n");
- 		}
- 	}
- 
--- 
-2.30.2
+Regards,
+  Marco
 
+> > 
+> > The upstream TF-A has adapt it in verion v2.5 so the BL31 blob is at the
+> > end of the SRAM. Unfortunately they had (accidental) reverted back to
+> > 0x960000 in v2.6. They noticed that and changed (again) back to 0x970000.
+> > with v2.7.
+> > 
+> > This commit also adapts the documentation for the i.MX8MP-EVK to
+> > reference the upstream TF-A. The new warning should point out that we
+> > strongly recommended to use versions from v2.7 onwards, due to the
+> > version mess explained above.
+> > 
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > ---
+> >  Documentation/boards/imx/nxp-imx8mp-evk.rst | 11 +++++++----
+> >  arch/arm/mach-imx/include/mach/atf.h        |  2 +-
+> >  2 files changed, 8 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/Documentation/boards/imx/nxp-imx8mp-evk.rst b/Documentation/boards/imx/nxp-imx8mp-evk.rst
+> > index 366c1de500..1074992f2f 100644
+> > --- a/Documentation/boards/imx/nxp-imx8mp-evk.rst
+> > +++ b/Documentation/boards/imx/nxp-imx8mp-evk.rst
+> > @@ -40,15 +40,18 @@ As a last step of this process those files need to be placed in
+> >  	      firmware/${f}; \
+> >    done
+> >  
+> > -Get and Build the ARM Trusted firmware
+> > ---------------------------------------
+> > +Get and Build the Trusted Firmware A
+> > +------------------------------------
+> >  
+> > -Get ATF from https://source.codeaurora.org/external/imx/imx-atf, branch
+> > -imx_5.4.3_2.0.0::
+> > +Get TF-A from https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git/ and
+> > +checkout version v2.7::
+> >  
+> >    make PLAT=imx8mp bl31
+> >    cp build/imx8mp/release/bl31.bin ${barebox_srctree}/imx8mp-bl31.bin
+> >  
+> > +.. warning:: It is important to use a version >= v2.7 else your system
+> > +   might not boot.
+> > +
+> >  Build Barebox
+> >  -------------
+> >  
+> > diff --git a/arch/arm/mach-imx/include/mach/atf.h b/arch/arm/mach-imx/include/mach/atf.h
+> > index 09396f4646..bc400ddbad 100644
+> > --- a/arch/arm/mach-imx/include/mach/atf.h
+> > +++ b/arch/arm/mach-imx/include/mach/atf.h
+> > @@ -10,7 +10,7 @@
+> >  
+> >  #define MX8MM_ATF_BL31_BASE_ADDR	0x00920000
+> >  #define MX8MN_ATF_BL31_BASE_ADDR	0x00960000
+> > -#define MX8MP_ATF_BL31_BASE_ADDR	0x00960000
+> > +#define MX8MP_ATF_BL31_BASE_ADDR	0x00970000
+> >  #define MX8MQ_ATF_BL31_BASE_ADDR	0x00910000
+> >  #define MX8M_ATF_BL33_BASE_ADDR		0x40200000
+> >  #define MX8MM_ATF_BL33_BASE_ADDR	MX8M_ATF_BL33_BASE_ADDR
+> 
+> 
+> 
 
 
