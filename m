@@ -1,57 +1,78 @@
-Delivery-date: Tue, 05 Jul 2022 14:06:06 +0200
+Delivery-date: Tue, 05 Jul 2022 14:52:55 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o8hJa-006Uai-T2
-	for lore@lore.pengutronix.de; Tue, 05 Jul 2022 14:06:06 +0200
+	id 1o8i2t-006WXV-SL
+	for lore@lore.pengutronix.de; Tue, 05 Jul 2022 14:52:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o8hJc-0007Ag-W7
-	for lore@pengutronix.de; Tue, 05 Jul 2022 14:06:05 +0200
+	id 1o8i2v-00061M-RY
+	for lore@pengutronix.de; Tue, 05 Jul 2022 14:52:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=m/58FHvo+t1ufG9IIYN3vYFfjVxQgtf9+ygUTRAKcuM=; b=IwcKlun5QDTsvm9DJHy1qF9I2h
-	efD9D1lxQmiNAqgu4osflHuOarXfm2U2awZlQlC9o2zao57L9PjeDHH7dwzagXeHq/d4jsKIe0lcq
-	6K/dxnr3oWm9G1D2jlY52/Zt0GHubhJtwElTiyDzYZ6G3i2zsIc20riHSEn2JeAukV0tgryAnV97g
-	tOE+fPtfz689gm1hSrO66J3jSzAUqjy/2DB2LEHX6foe7x2PYfJd6APQfe+OIiWeU7RZul3ROkR2s
-	tuvsYj5h4pxXdxPWoySObqlmPd7oOoySvTbi3Z1D16Nlatoj+6C28WjMB9P5Kz3NwOXUCZUO8lRX3
-	KDHFTtyA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
+	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ie02WognSJmFLssZSJeSpaefMLOK3Dkwjp7/CwIaxBk=; b=cX7XTZccf1hnC01XZPEi5K+y0l
+	VK8egoVzF3niqaNsdqF0F7w/MY4WmNjWbidEQrnZK2S1IdXKl1pvvUkFBKupOgu770pRMiFXh24wp
+	0WvhSmddEMZ5at3FmFzP32nedwxYxK5CsX1v5LkgiOh8098L4cXU9sFXH46KwFD8ailZkqkzb+SL6
+	FoTV2NJTqyUDCGFQPavoJz23B7YjVQswBCgReDDjlVFnQ4Ogu7zrtCtn+LfZ46Bhkc42NfHXv9uk4
+	Q7gYs2hxnrExFTeNFqqB6x/eLKHH+hFBZBJECW2fJDZoZHubUYADLp8gH7yLhF+tbOPsZiCMDCxjW
+	z2MZGN6w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o8hIJ-0001BV-Fq; Tue, 05 Jul 2022 12:04:43 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1o8i1Q-000HkR-64; Tue, 05 Jul 2022 12:51:20 +0000
+Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o8hIE-00019q-IG
-	for barebox@lists.infradead.org; Tue, 05 Jul 2022 12:04:40 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1o8hIC-0006kg-HJ; Tue, 05 Jul 2022 14:04:36 +0200
-Message-ID: <13c7f54e-86c5-3b95-ccd5-d35cd6bf174e@pengutronix.de>
-Date: Tue, 5 Jul 2022 14:04:36 +0200
+	id 1o8i1L-000Hjc-86
+	for barebox@lists.infradead.org; Tue, 05 Jul 2022 12:51:16 +0000
+Received: by mail-yb1-xb2d.google.com with SMTP id i7so21602724ybe.11
+        for <barebox@lists.infradead.org>; Tue, 05 Jul 2022 05:51:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ie02WognSJmFLssZSJeSpaefMLOK3Dkwjp7/CwIaxBk=;
+        b=XWL/z1Ufz8+9RXtyASJKlUj0Cv38fINZby0LFLRoGUZKjbHlU5jefL+zSBe6aBANZ0
+         kjv5ZVDdjxPA2DJN1yLjo0uP2qtdd+Ch+KhhmrIZ18esBSe/Cxn/DFthCEZs6WGwZSGH
+         W2hSIgVnGgaLlrInLAUbT86sYUya/p7YxZw/ArHFgVgiBmeaV+upU+FCTn2aBuhZb0Di
+         zSXKurGgwkaej+fNn9CVLWNqIQVCw0AYjLkLdHpIvkKYePg5SceMC15fC8mSg0a6w9u+
+         OTDzjk7aHrm727cweqTJj5aA+7zHktRQa1vLGhNqEj1ggoaQdxEvJro9r7cOP7At/DXz
+         c4eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ie02WognSJmFLssZSJeSpaefMLOK3Dkwjp7/CwIaxBk=;
+        b=cKxwDT/YAqKtPbghe5HhF9o1fc6L96xf2MGd3L1MBNVQjVlgBGut8BPYOksFZZ9mZj
+         qHV7uEySoegxqVWH/sLpxOMOMORH6PtCyDcErzPocQTxoBcuflT3qEZbr10pbjMhxqu7
+         5HbWujBHQydPcPXmVD0FafZ8vDahN2BEYa8oGcpJ3yrBthgtz8Ov7I1Hk8Um5tNYPkL6
+         IL6ASvrxOXuFLcQkUKoBrHKUKmjD9k9bzVWDsdayTi2ecj4EO77PS+Hk3fxs/fDVzDV5
+         vpVmNkfI7VNF4nVLuLcyo04mJYZ22Ik5KeOSgAG1BGcCvoS+tSXCZc8K8l8yIl0hVGr+
+         Y7tQ==
+X-Gm-Message-State: AJIora+3Ov/d4e9qwEjym1km7LWWiAXdQPOoNmButO355xINPoXoqKo+
+	u/jrPaBnZiAd+/NWKWPu3n+AiEk8Pod7REfWEWhbY3To+rlq/g==
+X-Google-Smtp-Source: AGRyM1vULdvuFNGNFijGMxXK67+pDOv4UXJn8SffBW2jWzOaVQl2dEwQLwF9ecMREsk0GRrGAcy1pi1uy1zr8BicGYo=
+X-Received: by 2002:a25:2182:0:b0:66e:2a27:7d30 with SMTP id
+ h124-20020a252182000000b0066e2a277d30mr18420539ybh.491.1657025474279; Tue, 05
+ Jul 2022 05:51:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Content-Language: en-US
+References: <CAGm1_kss73npzzCzoD44kO4C24PNwPHZcOV_nZWwq_sW12zxww@mail.gmail.com>
+ <20220705085217.GC5208@pengutronix.de>
+In-Reply-To: <20220705085217.GC5208@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Tue, 5 Jul 2022 14:51:03 +0200
+Message-ID: <CAGm1_kuWWpkrOojH8zve3YhpAiejBbWf6abA7dnC6S6gG2MYcQ@mail.gmail.com>
 To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20220705115538.3248502-1-a.fatoum@pengutronix.de>
- <20220705115538.3248502-2-a.fatoum@pengutronix.de>
- <20220705115923.GG5208@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220705115923.GG5208@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Cc: barebox <barebox@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220705_050438_654756_1A86E17B 
-X-CRM114-Status: GOOD (  28.77  )
+X-CRM114-CacheID: sfid-20220705_055115_323530_9F8717AA 
+X-CRM114-Status: GOOD (  11.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,153 +90,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH v2 2/3] commands: implement devlookup to find device
- behind device file
+X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: am335x: baltos
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 05.07.22 13:59, Sascha Hauer wrote:
-> On Tue, Jul 05, 2022 at 01:55:37PM +0200, Ahmad Fatoum wrote:
->> For OF-enabled platforms with aliases, device file naming is pretty much
->> solved: If there is mmc2 = &something, then we have a mmc2 device and
->> a /dev/mmc2 device file. For other platforms like x86, EFI-provided
->> devices are harder to get ahold of. Add a command to make this
->> straight-forward to do in scripts. The main use of this is probably to
->> access parameters like nt_signature or guid:
->>
->>   devlookup /dev/disk0 guid
->>
->> This would print to console, but we have no output capture yet, so add
->> an optional -v VARIABLE parameter as well to allow easy use from
->> scripts.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->> v1 -> v2:
->>   - fix typo in commit message (Michael)
->>   - accept cdev without /dev/ prefix (Sascha)
->>   - early exit on cdev without dev, e.g. /dev/zero
->> ---
->>  commands/Kconfig     | 13 ++++++++
->>  commands/Makefile    |  1 +
->>  commands/devlookup.c | 78 ++++++++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 92 insertions(+)
->>  create mode 100644 commands/devlookup.c
->>
->> diff --git a/commands/Kconfig b/commands/Kconfig
->> index c5505321cfd9..037b41155695 100644
->> --- a/commands/Kconfig
->> +++ b/commands/Kconfig
->> @@ -75,6 +75,19 @@ config CMD_DEVINFO
->>  	  If called with a device path being the argument, devinfo shows more
->>  	  default information about this device and its parameters.
->>  
->> +config CMD_DEVLOOKUP
->> +	tristate
->> +	prompt "devlookup"
->> +	help
->> +	  Look up device behind device file and its parameters
->> +
->> +	  devlookup [-v VAR] /dev/DEVICE [parameter]
->> +
->> +          Detects the device behind a device file and outputs it,
->> +          unless a second argument is given. In that case the device
->> +          parameter with that name is looked up. Specifying -v VARIABLE
->> +          will write output to VARIABLE instead of printing it.
->> +
->>  config CMD_DEVUNBIND
->>  	tristate
->>  	prompt "devunbind"
->> diff --git a/commands/Makefile b/commands/Makefile
->> index b3b7bafe6b64..0aae8893d696 100644
->> --- a/commands/Makefile
->> +++ b/commands/Makefile
->> @@ -110,6 +110,7 @@ obj-$(CONFIG_CMD_DETECT)	+= detect.o
->>  obj-$(CONFIG_CMD_BOOT)		+= boot.o
->>  obj-$(CONFIG_CMD_DEVINFO)	+= devinfo.o
->>  obj-$(CONFIG_CMD_DEVUNBIND)	+= devunbind.o
->> +obj-$(CONFIG_CMD_DEVLOOKUP)	+= devlookup.o
->>  obj-$(CONFIG_CMD_DRVINFO)	+= drvinfo.o
->>  obj-$(CONFIG_CMD_READF)		+= readf.o
->>  obj-$(CONFIG_CMD_MENUTREE)	+= menutree.o
->> diff --git a/commands/devlookup.c b/commands/devlookup.c
->> new file mode 100644
->> index 000000000000..c361d5b58860
->> --- /dev/null
->> +++ b/commands/devlookup.c
->> @@ -0,0 +1,78 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +
->> +#include <common.h>
->> +#include <command.h>
->> +#include <fs.h>
->> +#include <getopt.h>
->> +#include <malloc.h>
->> +#include <linux/stat.h>
->> +#include <linux/ctype.h>
->> +#include <environment.h>
->> +
->> +static int report(const char *variable, const char *val)
->> +{
->> +	if (!val)
->> +		return -(errno ?: EINVAL);
->> +
->> +	if (variable)
->> +		return setenv(variable, val);
->> +
->> +	printf("%s\n", val);
->> +	return 0;
->> +}
->> +
->> +static int do_devlookup(int argc, char *argv[])
->> +{
->> +	const char *variable = NULL, *devicefile, *paramname;
->> +	struct cdev *cdev;
->> +	int opt;
->> +
->> +	while ((opt = getopt(argc, argv, "v:")) > 0) {
->> +		switch(opt) {
->> +		case 'v':
->> +			variable = optarg;
->> +			break;
->> +		}
->> +	}
->> +
->> +	if (argc - optind == 0 || argc - optind > 2)
->> +		return COMMAND_ERROR_USAGE;
->> +
->> +	devicefile = argv[optind];
->> +	paramname  = argv[optind+1];
->> +
->> +	if (strstarts(devicefile, "/dev/"))
->> +		devicefile += sizeof("/dev/") - 1;
-> 
-> Forgot to mention: We have devpath_to_name() which does exactly that.
-> Also I merged your last series with that change, so unless you have
-> made other changes we should be fine.
+Hi Sascha,
 
-Yes, I added a check below for deviceless cdevs, which otherwise
-would crash on devlookup /dev/full
+On Tue, Jul 5, 2022 at 10:52 AM Sascha Hauer <sha@pengutronix.de> wrote:
+>
+> Hi Yegor,
+>
+> On Mon, Jul 04, 2022 at 02:54:48PM +0200, Yegor Yefremov wrote:
+> > am335x-baltos got broken between 2022.06 and the current master. The
+> > symptoms: no barebox console output at all i.e. the system freezes.
+> >
+> > Here is git bisect log but I don't really see the reason for the failure:
+> >
+> > # first bad commit: [8828e1226981b6a31b12a643768cac63fae3576e] Merge
+> > branch 'for-next/imx'
+>
+> There's nothing in this branch that is even compiled on your board, so I
+> would guess that you gave a wrong answer somewhere during bisecting.
+> Apart from bisecting again you could enable some debugging:
+>
+> [*] Low level debug messages (read help)
+>     Kernel low-level debugging port (AM33XX Debug UART)  --->
+>     (0) OMAP Debug UART Port Selection
+>     [*] Trace initcalls
 
-Do you need me to create a v3 or will you fix this up?
+I always forget about this feature. So, the problem was "Compressed
+data violation". Changing to CONFIG_CONSOLE_SIMPLE to reduce the NLO
+size helped.
 
-Cheers,
-Ahmad
+Thanks.
 
-> 
-> Sascha
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Yegor
 
 
