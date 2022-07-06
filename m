@@ -1,60 +1,62 @@
-Delivery-date: Wed, 06 Jul 2022 15:28:25 +0200
+Delivery-date: Wed, 06 Jul 2022 16:22:43 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o954o-007kpJ-I4
-	for lore@lore.pengutronix.de; Wed, 06 Jul 2022 15:28:25 +0200
+	id 1o95vL-007nPl-Ol
+	for lore@lore.pengutronix.de; Wed, 06 Jul 2022 16:22:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o954q-0007c9-Nc
-	for lore@pengutronix.de; Wed, 06 Jul 2022 15:28:25 +0200
+	id 1o95vN-0007wK-KN
+	for lore@pengutronix.de; Wed, 06 Jul 2022 16:22:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ZbqM2OuhTEmNF3d8VIjLHGw7L28F61G297hU+koS/GQ=; b=f66hTNj6I8H7yaFEQqaQnSqt0l
-	idyFHr3mWlTt4ffmDuf8zb5LnXx9lQml5yeIhvhlSKRaCANRnO3vMdQx4whpLwaqYZGPLxEkK0U2N
-	xorb7u5Nhflod/+dDo9fnzoewlxA2mMIlNCOR+oZtPkPaPmMeMGLXztD8gGs5fRQ21szHDw36FnZ2
-	XhEtOP/uQsKCanrBntQiNbiSmIKHZSQQz9j/jC+mKwJJ4IOmYLoyjqbQFAs9scv6eqlsSzziczccY
-	cXMr5rWHaPFzugzLT50+iEtC9y8khPzVZmh4/hnfGObAgGFCYY1PjanQ8xPD6Cnkdxdkiwyz9m/dK
-	ScMg7SRQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=CkkPUgelOfRP1YpdDQEUq1LFJrQ19MSyeo+8wJoPM1o=; b=N367Kf8XYhXo/3X4s/euaHB+wy
+	wEghMBTwIN8vZIGAjBkiYRtjw3/DBey3nJtpZoPJpnXHW7gp5j5GNVF7Ys6U1Zb24ESueLtKxPcq1
+	xtWpvVpbYb9slXdakPxTy7sB/bcSbzKHmE5YpVF3E3Z/Ovy9DTXZZyTF0Hah9isAhvl8bMfkAKv5s
+	nCFfE2yRDhxYetOzs7AgKD5q5grRhVFzNWJIFMW19+iqqGD+XAFDI2fRTak4jo7MQxeG25WC3M8U1
+	V7Mr/9QAjIn50WY201x7Yc7Twc1ri2nSI6c6//tE3nm09zhwWrIC+BdlfM9f0P4pwC87Pyev9jUYr
+	DJpyAkBw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o953K-00AGD3-3d; Wed, 06 Jul 2022 13:26:50 +0000
+	id 1o95u4-00Ab0D-Kd; Wed, 06 Jul 2022 14:21:20 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o953F-00AGC8-HF
-	for barebox@lists.infradead.org; Wed, 06 Jul 2022 13:26:47 +0000
+	id 1o95tu-00AawP-Rr
+	for barebox@lists.infradead.org; Wed, 06 Jul 2022 14:21:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1o953A-0007GC-RO
-	for barebox@lists.infradead.org; Wed, 06 Jul 2022 15:26:40 +0200
+	id 1o95tt-0007dJ-Ma
+	for barebox@lists.infradead.org; Wed, 06 Jul 2022 16:21:09 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1o9536-004lkf-KO
-	for barebox@lists.infradead.org; Wed, 06 Jul 2022 15:26:40 +0200
+	id 1o95tp-004mEW-FJ
+	for barebox@lists.infradead.org; Wed, 06 Jul 2022 16:21:09 +0200
 Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1o9539-0096kk-FQ
-	for barebox@lists.infradead.org; Wed, 06 Jul 2022 15:26:39 +0200
+	id 1o95tr-009Wd8-JJ
+	for barebox@lists.infradead.org; Wed, 06 Jul 2022 16:21:07 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed,  6 Jul 2022 15:26:37 +0200
-Message-Id: <20220706132637.2170562-1-m.felsch@pengutronix.de>
+Date: Wed,  6 Jul 2022 16:21:02 +0200
+Message-Id: <20220706142105.2266956-2-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220706142105.2266956-1-m.felsch@pengutronix.de>
+References: <20220706142105.2266956-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220706_062645_606283_0CB275D3 
-X-CRM114-Status: GOOD (  11.71  )
+X-CRM114-CacheID: sfid-20220706_072111_011515_A1003DA8 
+X-CRM114-Status: GOOD (  11.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,58 +79,48 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] console: add new CONSOLE_FULL_BUFFERSIZE option
+Subject: [PATCH 1/4] phy: fix deep probe support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Make the early printk buffer size adjustable since I noticed truncated
-log buffers if I enable DEBUG_INITCALLS and DEBUG_PROBES.
+Commit 9474a29003 ("phy: Add deep probe support") added the deep probe
+support but this commit was missing the of_phy_get_by_phandle() isn't
+calling the internal _of_phy_get() helper. Fix this by moving the
+of_device_ensure_probed() call into the of_phy_provider_lookup() helper
+which gets called by both functions.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- common/Kconfig   | 15 +++++++++++++++
- common/console.c |  2 +-
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/phy/phy-core.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index f7a6a96e87..365fef872f 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -761,6 +761,21 @@ config CONSOLE_NONE
- 
- endchoice
- 
-+if CONSOLE_FULL
+diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+index b298da0000..ef7bd76648 100644
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -220,6 +220,11 @@ static struct phy_provider *of_phy_provider_lookup(struct device_node *node)
+ {
+ 	struct phy_provider *phy_provider;
+ 	struct device_node *child;
++	int ret;
 +
-+config CONSOLE_FULL_BUFFERSIZE
-+	int
-+	prompt "Console buffer size in Bytes"
-+	default 1024
-+	help
-+	  Size Bytes of the early console buffer. This buffer is used
-+	  before malloc is intialized. In rare cases the buffer is to
-+	  small to hold all early messages e.g. if DEBUG_INITCALLS and
-+	  DEBUG_PROBES are enabled. In such cases you can adapt the size
-+	  by the option, if unsure don't change it.
-+
-+endif
-+
- choice
- 	prompt "Console activation strategy"
- 	depends on CONSOLE_FULL
-diff --git a/common/console.c b/common/console.c
-index 8727b187cf..6c3c1f2b3c 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -36,7 +36,7 @@ EXPORT_SYMBOL(console_list);
++	ret = of_device_ensure_probed(node);
++	if (ret)
++		return ERR_PTR(ret);
  
- static int initialized = 0;
+ 	list_for_each_entry(phy_provider, &phy_provider_list, list) {
+ 		if (phy_provider->dev->device_node == node)
+@@ -255,10 +260,6 @@ static struct phy *_of_phy_get(struct device_node *np, int index)
+ 	if (ret)
+ 		return ERR_PTR(-ENODEV);
  
--#define CONSOLE_BUFFER_SIZE	1024
-+#define CONSOLE_BUFFER_SIZE	CONFIG_CONSOLE_FULL_BUFFERSIZE
- 
- static char console_input_buffer[CONSOLE_BUFFER_SIZE];
- static char console_output_buffer[CONSOLE_BUFFER_SIZE];
+-	ret = of_device_ensure_probed(args.np);
+-	if (ret)
+-		return ERR_PTR(ret);
+-
+ 	phy_provider = of_phy_provider_lookup(args.np);
+ 	if (IS_ERR(phy_provider)) {
+ 		return ERR_CAST(phy_provider);
 -- 
 2.30.2
 
