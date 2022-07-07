@@ -1,54 +1,54 @@
-Delivery-date: Thu, 07 Jul 2022 16:41:26 +0200
+Delivery-date: Thu, 07 Jul 2022 16:41:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o9Sh1-009NXx-Hd
-	for lore@lore.pengutronix.de; Thu, 07 Jul 2022 16:41:26 +0200
+	id 1o9ShL-009NaA-77
+	for lore@lore.pengutronix.de; Thu, 07 Jul 2022 16:41:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o9Sh3-00071y-IH
-	for lore@pengutronix.de; Thu, 07 Jul 2022 16:41:26 +0200
+	id 1o9ShN-00075c-8Y
+	for lore@pengutronix.de; Thu, 07 Jul 2022 16:41:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Content-Type:References:In-Reply-To:Date:To:From:Subject:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZAZcAYOXqNVH1GHXvXCSMfeqH0fjfHWwzdEFGYfv4Dc=; b=Jpt9mK6cX8y8b+sLaaRbdZzOnW
-	T6iHvvpcuG55uRMF89C28sauPcuvlZ4Ehm0/rG3Q5lG6+7m9MncnXWk9JoQO/ebbqY13BlZKJt8K2
-	U/VD+s3zHS+bJgP1thN37huznaPUnPaGG/Jwrzb8GbujUB99vphRxjG7SWAZD78LIoytmzZpTDZQC
-	tL4/XHa7My0LIM/DVOh4HSdR0/tK3loO0uhgzYCh7wAyWHoMeHY8/hQtql1UwMyhNjgxOfLZwcCwo
-	W/6HhyCyYt3Zcs56gPkGIVuhOYT8iXX9ipa0jrCubkcuVwPJgU1Nn1cm+5np/94luotTo3ycU+WFx
-	RHn7PXyA==;
+	bh=IfpZr24hnA6KzH9B/+Jm6/YlMZjbGZC13v8T/K9XH3Q=; b=DmcdF6ojx97ioAMUhJLCrxMa0D
+	XHEV4AamBgLcwKMKVbu5VJCez8TrUt+kS68o6e8sh+P1Ux/+eFx1tn3PC9bn8EymMZ9Dv+Q/OqdgQ
+	QHW41Txmd6xFHAgusMTZc23/eB+HlJ/XOQYpLaFYooDV85W2nYQFYLN4p+3zX6YzTXyXh+XmgdK0q
+	KvTllaOupXaz5mERMaiEWRqdM73Y9DpNlzHC6YOxIvNSgvXrFUiu5T4zMt6qUKoeeAZHAcT5YidAt
+	+fzDHkKm0uKi903e8UU1uNRmE9N88i949yxR4IXSQeqGkgFczYN02TAvIwUEe9JbkflAMOI4EjyyX
+	mTpKm9XQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o9Sfh-00GWCm-31; Thu, 07 Jul 2022 14:40:01 +0000
+	id 1o9Sg9-00GWV2-L9; Thu, 07 Jul 2022 14:40:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o9Sfc-00GWA9-18
-	for barebox@lists.infradead.org; Thu, 07 Jul 2022 14:39:57 +0000
+	id 1o9Sg2-00GWQx-UF
+	for barebox@lists.infradead.org; Thu, 07 Jul 2022 14:40:24 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=irc.pengutronix.de)
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <j.zink@pengutronix.de>)
-	id 1o9Sfa-0006Y3-PR
-	for barebox@lists.infradead.org; Thu, 07 Jul 2022 16:39:54 +0200
-Message-ID: <2394c1d02e1311d5797e02bbb83de2b5b825112e.camel@pengutronix.de>
+	id 1o9Sg1-0006ey-MV
+	for barebox@lists.infradead.org; Thu, 07 Jul 2022 16:40:21 +0200
+Message-ID: <81282e81cd16d8933407e07a8c53144d94353cdc.camel@pengutronix.de>
 From: Johannes Zink <j.zink@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 07 Jul 2022 16:39:51 +0200
-In-Reply-To: <20220706142105.2266956-3-m.felsch@pengutronix.de>
+Date: Thu, 07 Jul 2022 16:40:18 +0200
+In-Reply-To: <20220706142105.2266956-4-m.felsch@pengutronix.de>
 References: <20220706142105.2266956-1-m.felsch@pengutronix.de>
-	 <20220706142105.2266956-3-m.felsch@pengutronix.de>
+	 <20220706142105.2266956-4-m.felsch@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220707_073956_084448_0B57A5BC 
-X-CRM114-Status: GOOD (  13.76  )
+X-CRM114-CacheID: sfid-20220707_074022_997399_CDAB1B38 
+X-CRM114-Status: GOOD (  26.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,39 +66,82 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 2/4] phy: propagate error in of_phy_get_by_phandle
+Subject: Re: [PATCH 3/4] usb: chipidea: imx: call enable_clk after all
+ resources are requested
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 On Wed, 2022-07-06 at 16:21 +0200, Marco Felsch wrote:
-> Don't return -ENODEV if of_phy_provider_lookup() fails instead
-> propagate
-> the error. So errors like -EPROBE_DEFER are propagated correctly.
+> Currently we enable the clock immediately after requesting it and
+> leave
+> it on the whole time. Afterwards if the phy request is failing we
+> leave
+> the usb-controller <-> usb-phy connection in a partly initialized
+> state.
+> At least on i.MX8M SoCs this can cause strange system hangs during
+> boot.
+> 
+> The (more) correct way would be to have the whole power-domain
+> framework
+> and the blk-ctrl driver support within barebox. So we can leave the
+> power-domain in a known good state for linux. Since this is not the
+> case
+> we can move the clk_enable() call so it gets called after we know
+> that
+> all ressources are available. So the probability to leave the system
+> in
+> a partly initialized state is lesser.
+> 
+> Drop the !IS_ERR() since NULL and errors are handled in clk_enable()
+> as
+> well.
 > 
 > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > ---
->  drivers/phy/phy-core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/usb/imx/chipidea-imx.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-> index ef7bd76648..8a57bd1aa9 100644
-> --- a/drivers/phy/phy-core.c
-> +++ b/drivers/phy/phy-core.c
-> @@ -317,7 +317,7 @@ struct phy *of_phy_get_by_phandle(struct device_d
-> *dev, const char *phandle,
+> diff --git a/drivers/usb/imx/chipidea-imx.c
+> b/drivers/usb/imx/chipidea-imx.c
+> index bf8b6f1eb8..f71cf80b7d 100644
+> --- a/drivers/usb/imx/chipidea-imx.c
+> +++ b/drivers/usb/imx/chipidea-imx.c
+> @@ -260,8 +260,6 @@ static int imx_chipidea_probe(struct device_d
+> *dev)
+>          * devices which have only one.
+>          */
+>         ci->clk = clk_get(dev, NULL);
+> -       if (!IS_ERR(ci->clk))
+> -               clk_enable(ci->clk);
 >  
->         phy_provider = of_phy_provider_lookup(np);
->         if (IS_ERR(phy_provider)) {
-> -               return ERR_PTR(-ENODEV);
-> +               return ERR_CAST(phy_provider);
->         }
+>         /* Device trees are using both "phys" and "fsl,usbphy". 
+> Prefer the
+>          * more modern former one but fall back to the old one.
+> @@ -302,6 +300,14 @@ static int imx_chipidea_probe(struct device_d
+> *dev)
+>         ci->data.drvdata = ci;
+>         ci->data.usbphy = ci->usbphy;
 >  
->         return phy_provider->of_xlate(phy_provider->dev, NULL);
+> +       /*
+> +        * Enable the clock after we ensured that all resources are
+> available.
+> +        * This is crucial since the phy can be missing which and so
+> the
+> +        * usb-controller <-> usb-phy communication is only partly
+> initialized.
+> +        * This can trigger strange system hangs at least on i.MX8M
+> SoCs.
+> +        */
+> +       clk_enable(ci->clk);
+> +
+>         if ((ci->flags & MXC_EHCI_PORTSC_MASK) == MXC_EHCI_MODE_HSIC)
+>                 imx_chipidea_port_init(ci);
+>  
 
 Tested-by: Johannes Zink <j.zink@pengutronix.de> # i.MX7
 
