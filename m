@@ -1,49 +1,54 @@
-Delivery-date: Fri, 08 Jul 2022 07:57:01 +0200
+Delivery-date: Fri, 08 Jul 2022 08:04:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o9gz4-00AA69-D9
-	for lore@lore.pengutronix.de; Fri, 08 Jul 2022 07:57:01 +0200
+	id 1o9h61-00AAor-TQ
+	for lore@lore.pengutronix.de; Fri, 08 Jul 2022 08:04:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o9gz6-0001WC-Cm
-	for lore@pengutronix.de; Fri, 08 Jul 2022 07:57:01 +0200
+	id 1o9h63-0002m6-Vn
+	for lore@pengutronix.de; Fri, 08 Jul 2022 08:04:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=W5xMV591xO+WmFnozTWTJsjp8Ogb/F5Hyq2lJTLG0S4=; b=OBe9npa9mm1E0kVnjUdoKo2sLu
-	4rC7ijZTnp0uM5Qzw1weztwTIBiDHlRBJKk/CmJW8zEkkiyPo6SqlRCitA/5blFR5As2k0d4Y/rkn
-	crdg5nughO4SoDciTnxlQwFOOg8AKrGF9MBMbaSMvs9YVvl4lHsKbapaupxAhe004zjNOtd/LvTdp
-	3B7gsN69nrp2zup9gCHBneDxn8jyYg5ChM76EWejVwJI1csdzjfhL6zCKpR8aYyOHX1/QM8/1417e
-	hZ/1naLKKH49yrHf2Mrh9M0ck2TjCBi3NzdA3VfboPrOprV3/sCDka38mSdWuxSeP/TgkpDMwMBo4
-	0AxT76tw==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4HI1srrJCa+cTo6Faa8XapTR/GVt2Tpsg2e+AegdfTM=; b=J9r07vZpbJUH1H4R8tLnM49kBD
+	ajHdqaRHWBD3FSQBsstDZyoKvy85AdhtjbV+n+G5fKYl45FbrJNfd0sCD5A+67QgCkjXv+B5bIL2K
+	W1uzxZ8iTkxlL8dfbki9KH4J840UQBlWaKjbuC6uTXRUfcuVEyYOnVsBmHnWvOH+UNK/cPR9zdNCK
+	P0NXGi5g7M4STDiNTFMhJM/5bx6vb2XBulGiCtOFSlucbAvqVm0dK8FsW237JWCooI2PBEVxmk0oG
+	gRNFm5xheoI9USicPpC7XuMwKpwxrP+pOwWR7mgD8O/JNqqalGmCbetz0apw8fKLWaUlON5pSNzKz
+	QkrnrTBA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o9gxt-001sv1-6o; Fri, 08 Jul 2022 05:55:45 +0000
-Received: from relay2-d.mail.gandi.net ([2001:4b98:dc4:8::222])
+	id 1o9h4i-001uX1-3Y; Fri, 08 Jul 2022 06:02:48 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o9gxm-001sqM-K8
-	for barebox@lists.infradead.org; Fri, 08 Jul 2022 05:55:40 +0000
-Received: (Authenticated sender: ahmad@a3f.at)
-	by mail.gandi.net (Postfix) with ESMTPSA id 95E1940004;
-	Fri,  8 Jul 2022 05:55:30 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Fri,  8 Jul 2022 07:55:26 +0200
-Message-Id: <20220708055526.1177941-1-ahmad@a3f.at>
-X-Mailer: git-send-email 2.34.1
+	id 1o9h4d-001uUt-1c
+	for barebox@lists.infradead.org; Fri, 08 Jul 2022 06:02:44 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1o9h4W-0002OE-7c; Fri, 08 Jul 2022 08:02:36 +0200
+Message-ID: <ed29b5c7-ea3c-9ba9-26a1-f51dba9ea5ff@pengutronix.de>
+Date: Fri, 8 Jul 2022 08:02:35 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Content-Language: en-US
+To: Ahmad Fatoum <ahmad@a3f.at>, barebox@lists.infradead.org
+References: <20220708055359.1176212-1-ahmad@a3f.at>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220708055359.1176212-1-ahmad@a3f.at>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220707_225539_041547_A30503FA 
-X-CRM114-Status: GOOD (  18.17  )
+X-CRM114-CacheID: sfid-20220707_230243_144974_0849FAD4 
+X-CRM114-Status: GOOD (  20.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,187 +66,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] aiodev: add ST L3GD20 Gyroscope and temperature sensor support
+Subject: Re: [PATCH] regulator: fixed: remove duplicate always-on handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The L3GD0 is an on-board peripheral of the STM32F429-DISCOVERY and as
-such a good target to test out SPI driver support. Add a simple aiodev
-driver to interface with it. It can read the chip's angular rate in
-three dimensions as well as the temperature sensor embedded in it.
+On 08.07.22 07:53, Ahmad Fatoum wrote:
+> Regulator core already handles always-on property, so remove handling in
+> fixed-regulator driver. For this to have no functional change, all
+> regulator uses must be balanced as regulator code implements always-on
+> by initializing use count to baseline of 1, while fixed-regulator
+> prevents disabling altogether. As mismatched regulator enable/disable
+> is a bug in need of fixing anyway, this is tolerated.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- drivers/aiodev/Kconfig   |   6 ++
- drivers/aiodev/Makefile  |   1 +
- drivers/aiodev/st_gyro.c | 122 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 129 insertions(+)
- create mode 100644 drivers/aiodev/st_gyro.c
+Rethinking it, I guess we should just move this into regulator core
+instead. That's what Linux does as well.
 
-diff --git a/drivers/aiodev/Kconfig b/drivers/aiodev/Kconfig
-index 88a3b9a3431c..6bd697702ecf 100644
---- a/drivers/aiodev/Kconfig
-+++ b/drivers/aiodev/Kconfig
-@@ -30,6 +30,12 @@ config LM75
- 	help
- 	  Support for LM75 and similar devices
- 
-+config ST_GYRO
-+	tristate "ST L3GD20 SPI gyro driver"
-+	depends on SPI
-+	help
-+	  Support for L3GD20 three-axis angular rate sensor.
-+
- config MC13XXX_ADC
- 	tristate "MC13XXX ADC driver"
- 	depends on MFD_MC13XXX
-diff --git a/drivers/aiodev/Makefile b/drivers/aiodev/Makefile
-index 4c92a403a293..06a63b0d2d78 100644
---- a/drivers/aiodev/Makefile
-+++ b/drivers/aiodev/Makefile
-@@ -3,6 +3,7 @@
- obj-$(CONFIG_AIODEV) += core.o
- obj-$(CONFIG_IMX_THERMAL) += imx_thermal.o
- obj-$(CONFIG_LM75) += lm75.o
-+obj-$(CONFIG_ST_GYRO) += st_gyro.o
- obj-$(CONFIG_MC13XXX_ADC) += mc13xxx_adc.o
- obj-$(CONFIG_QORIQ_THERMAL) += qoriq_thermal.o
- obj-$(CONFIG_AM335X_ADC) += am335x_adc.o
-diff --git a/drivers/aiodev/st_gyro.c b/drivers/aiodev/st_gyro.c
-new file mode 100644
-index 000000000000..3938d8239e4b
---- /dev/null
-+++ b/drivers/aiodev/st_gyro.c
-@@ -0,0 +1,122 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-FileCopyrightText: 2022 Ahmad Fatoum
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <xfuncs.h>
-+#include <spi/spi.h>
-+#include <aiodev.h>
-+
-+#define ST_GYRO_WHO_AM_I    0x0F
-+#define ST_GYRO_CTRL_REG1   0x20
-+
-+#define ST_GYRO_DEFAULT_OUT_TEMP_ADDR           0x26
-+#define ST_GYRO_DEFAULT_OUT_X_L_ADDR            0x28
-+#define ST_GYRO_DEFAULT_OUT_Y_L_ADDR            0x2a
-+#define ST_GYRO_DEFAULT_OUT_Z_L_ADDR            0x2c
-+
-+#define ST_GYRO_OUT_L_ADDR(idx)		\
-+	(ST_GYRO_DEFAULT_OUT_X_L_ADDR + 2 * (idx))
-+
-+#define ST_GYRO_OUT_H_ADDR(idx)		\
-+	(ST_GYRO_OUT_L_ADDR(idx) + 1)
-+
-+#define ST_GYRO_READ		0x80
-+#define ST_GYRO_WRITE		0x00
-+#define ST_GYRO_MULTI		0x40
-+
-+struct st_gyro {
-+	struct aiodevice aiodev;
-+	struct aiochannel aiochan[4];
-+	struct spi_device *spi;
-+};
-+#define to_st_gyro(chan) container_of(chan->aiodev, struct st_gyro, aiodev)
-+
-+static int st_gyro_read(struct aiochannel *chan, int *val)
-+{
-+	struct st_gyro *gyro = to_st_gyro(chan);
-+	int ret;
-+	u8 tx;
-+	u8 rx_h, rx_l;
-+
-+	if (chan->index == 3) {
-+		tx = ST_GYRO_DEFAULT_OUT_TEMP_ADDR | ST_GYRO_READ;
-+		ret = spi_write_then_read(gyro->spi, &tx, 1, &rx_l, 1);
-+		if (ret)
-+			return ret;
-+
-+		*val = (s8)rx_l;
-+		return 0;
-+	}
-+
-+	tx = ST_GYRO_OUT_H_ADDR(chan->index) | ST_GYRO_READ;
-+	ret = spi_write_then_read(gyro->spi, &tx, 1, &rx_h, 1);
-+	if (ret)
-+		return ret;
-+
-+	tx = ST_GYRO_OUT_L_ADDR(chan->index) | ST_GYRO_READ;
-+	ret = spi_write_then_read(gyro->spi, &tx, 1, &rx_l, 1);
-+	if (ret)
-+		return ret;
-+
-+	*val = (s16)((rx_h << 8) | rx_l);
-+	*val *= 250;
-+	*val >>= 16;
-+
-+	return 0;
-+}
-+
-+static int st_gyro_probe(struct device_d *dev)
-+{
-+	u8 tx[2], rx[2];
-+	struct st_gyro *gyro;
-+	int ret, i;
-+
-+	gyro = xzalloc(sizeof(*gyro));
-+	gyro->spi = to_spi_device(dev);
-+
-+	tx[0] = ST_GYRO_WHO_AM_I | ST_GYRO_READ;
-+	ret = spi_write_then_read(gyro->spi, tx, 1, rx, 1);
-+	if (ret)
-+		return -EIO;
-+	if (rx[0] != 0xD4)
-+		return dev_err_probe(dev, -ENODEV, "unexpected device WAI: %02x\n", rx[0]);
-+
-+	/* initialize device */
-+	tx[0] = ST_GYRO_CTRL_REG1 | ST_GYRO_WRITE;
-+	tx[1] = 0xF; /* normal mode, 3 channels */
-+	ret = spi_write(gyro->spi, tx, 2);
-+	if (ret)
-+		return -EIO;
-+
-+	gyro->aiodev.num_channels = 4;
-+	gyro->aiodev.hwdev = dev;
-+	gyro->aiodev.read = st_gyro_read;
-+	gyro->aiodev.name = "gyroscope";
-+	gyro->aiodev.channels =
-+		xmalloc(gyro->aiodev.num_channels *
-+			sizeof(gyro->aiodev.channels[0]));
-+	for (i = 0; i < 3; i++) {
-+		gyro->aiodev.channels[i] = &gyro->aiochan[i];
-+		gyro->aiochan[i].unit = "dps";
-+		gyro->aiochan[i].index = i;
-+	}
-+
-+	gyro->aiodev.channels[3] = &gyro->aiochan[3];
-+	gyro->aiochan[3].unit = "C";
-+	gyro->aiochan[3].index = 3;
-+
-+	return aiodevice_register(&gyro->aiodev);
-+}
-+
-+static const struct of_device_id st_gyro_match[] = {
-+	{ .compatible = "st,l3gd20-gyro"  },
-+	{ /* sentinel */ }
-+};
-+
-+static struct driver_d st_gyro_driver = {
-+	.name  = "st_gyro",
-+	.probe = st_gyro_probe,
-+	.of_compatible = st_gyro_match,
-+};
-+device_spi_driver(st_gyro_driver);
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  drivers/regulator/fixed.c | 10 ----------
+>  1 file changed, 10 deletions(-)
+> 
+> diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
+> index c5f97d78df40..ec64f39b86c7 100644
+> --- a/drivers/regulator/fixed.c
+> +++ b/drivers/regulator/fixed.c
+> @@ -15,7 +15,6 @@
+>  
+>  struct regulator_fixed {
+>  	int gpio;
+> -	int always_on;
+>  	struct regulator_dev rdev;
+>  	struct regulator_desc rdesc;
+>  };
+> @@ -34,9 +33,6 @@ static int regulator_fixed_disable(struct regulator_dev *rdev)
+>  {
+>  	struct regulator_fixed *fix = container_of(rdev, struct regulator_fixed, rdev);
+>  
+> -	if (fix->always_on)
+> -		return 0;
+> -
+>  	if (!gpio_is_valid(fix->gpio))
+>  		return 0;
+>  
+> @@ -76,12 +72,6 @@ static int regulator_fixed_probe(struct device_d *dev)
+>  	if (!of_property_read_u32(np, "off-on-delay-us", &delay))
+>  		fix->rdesc.off_on_delay = delay;
+>  
+> -	if (of_find_property(np, "regulator-always-on", NULL) ||
+> -	    of_find_property(np, "regulator-boot-on", NULL)) {
+> -		fix->always_on = 1;
+> -		regulator_fixed_enable(&fix->rdev);
+> -	}
+> -
+>  	ret = of_regulator_register(&fix->rdev, np);
+>  	if (ret)
+>  		goto err;
+
+
 -- 
-2.34.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
