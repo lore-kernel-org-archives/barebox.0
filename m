@@ -1,55 +1,56 @@
-Delivery-date: Fri, 08 Jul 2022 10:16:20 +0200
+Delivery-date: Fri, 08 Jul 2022 10:26:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o9j9t-00AHqM-F8
-	for lore@lore.pengutronix.de; Fri, 08 Jul 2022 10:16:20 +0200
+	id 1o9jJz-00AIEF-Az
+	for lore@lore.pengutronix.de; Fri, 08 Jul 2022 10:26:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o9j9v-0003w2-7Z
-	for lore@pengutronix.de; Fri, 08 Jul 2022 10:16:20 +0200
+	id 1o9jK0-0005jb-RB
+	for lore@pengutronix.de; Fri, 08 Jul 2022 10:26:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XMc3284loGt6lc8KsdVktuaJlQ1fdqoYWk3AIdczNC4=; b=MbwfHDMlfn6frO3fIVtefsqUGr
-	+LAndlizUoWu/wwFEg7uOxjf0HXonWujWiV2UenDGWK1RlL09gInon9dEsA4BgUXsv/hvQtnwocVr
-	2NoDybXYWrgYwAvPMOjDaBV0tqffD0+9tXhGjfKL83lyVgol+NNeC0Y7iI0ESygWa7Lhs5+jZMO1v
-	o/pMjvKhGcfSwbSzYe5/44sitcneh9ZMZoo7LZJV0yZzN92LsB47q/A91mCsRw9nUJj/Ub6ceH4+T
-	OZtMmA5j2q0gPDYW4QjwkREuTy8wihnHGcw8cgIMJRGHgX6PnCwGcs2xVK1/RSWcE6oN8JOYDU8fL
-	nqZO7x4A==;
+	bh=oswbOISQEKPFC5gEzsHN4NSuoW3ScfMCMQcFPnmbI+g=; b=ky6A0RWtCrCVimTou8hStwEDWw
+	b4KgTeDK8xwVF66KvHfJEyjPWlX7F7z3z3JflfNnJseTVYJCYiaAwtGWQm7Zb0PEkzLt0YdGHiWL5
+	EDwplKEvU/rq2qgtz8L3F5rrXQRW2Glb0jJZiL3aptZkn6guvRo34HZZr0vD0Zb8oMZ/InILtkSfq
+	Omg8IitC/SWBwFNZ1M7UY/41KetIXD8OXPV7rLhCbmjgUvY2Yo1dmodwGKNzcl2BsH2xxyD/Gd1B/
+	O7H0dYNDvHls3H+l6mt710AXZfFeICkklF++SUjHPB50jSJrl7AGxL/RxIDirR9sKsq+fdYYUMzk8
+	6yDh8sBw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o9j88-002R34-Ks; Fri, 08 Jul 2022 08:14:28 +0000
+	id 1o9jIS-002W3s-QI; Fri, 08 Jul 2022 08:25:09 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o9j71-002QWQ-9g
-	for barebox@lists.infradead.org; Fri, 08 Jul 2022 08:13:20 +0000
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1o9j6v-0003LD-Nq; Fri, 08 Jul 2022 10:13:13 +0200
-Message-ID: <5005d887bc0885c563d5f853c0938d587ec8f319.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
+	id 1o9jI6-002W0B-6C
+	for barebox@lists.infradead.org; Fri, 08 Jul 2022 08:24:48 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1o9jI4-0005By-JW; Fri, 08 Jul 2022 10:24:44 +0200
+Message-ID: <b3c4ab3e-59d9-6fbc-1a3e-85161ef9a8c1@pengutronix.de>
+Date: Fri, 8 Jul 2022 10:24:44 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Content-Language: en-US
 To: Steffen Trumtrar <str@pengutronix.de>, barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 08 Jul 2022 10:13:13 +0200
-In-Reply-To: <20220708062411.711639-3-str@pengutronix.de>
 References: <20220708062411.711639-1-str@pengutronix.de>
-	 <20220708062411.711639-3-str@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4 (3.40.4-1.fc34) 
-MIME-Version: 1.0
+ <20220708062411.711639-3-str@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220708062411.711639-3-str@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220708_011319_381295_7F170647 
-X-CRM114-Status: GOOD (  14.68  )
+X-CRM114-CacheID: sfid-20220708_012446_312398_2B8C34E4 
+X-CRM114-Status: GOOD (  19.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,17 +68,17 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
 Subject: Re: [PATCH v2 3/5] ARM: socfpga: achilles: use
  ENTRY_FUNCTION_WITHSTACK
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Am Freitag, dem 08.07.2022 um 08:24 +0200 schrieb Steffen Trumtrar:
+On 08.07.22 08:24, Steffen Trumtrar wrote:
 > From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > 
 > Use the newer function ENTRY_FUNCTION_WITHSTACK.
@@ -105,17 +106,11 @@ Am Freitag, dem 08.07.2022 um 08:24 +0200 schrieb Steffen Trumtrar:
 >  	int bitstream = 0;
 >  
 > +	arm_cpu_lowlevel_init();
-
-Drive-by comment, as I've spotted it in the context of this patch: the
-Arria10 CPU is a Cortex A9, which has quite a few known errata, some of
-which need to be worked around in the bootloader. You might want to
-consider adding a SoC specific cpu lowlevel init function, like the
-ones for i.MX6 and Zynq, to apply the relevant workarounds.
-
-Regards,
-Lucas
-
 > +	arm_setup_stack(ARRIA10_OCRAM_ADDR + SZ_256K);
+
+Only safe to call in a naked function. Drop it as you are now using
+ENTRY_FUNCTION_WITHSTACK, which does setup for you.
+
 >  
 >  	relocate_to_current_adr();
 >  	setup_c();
@@ -144,5 +139,10 @@ Lucas
 >  
 
 
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
