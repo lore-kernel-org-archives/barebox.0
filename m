@@ -3,49 +3,50 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o9gxB-00AA0T-0z
+	id 1o9gxB-00AA0U-70
 	for lore@lore.pengutronix.de; Fri, 08 Jul 2022 07:55:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1o9gxC-0000z1-VN
-	for lore@pengutronix.de; Fri, 08 Jul 2022 07:55:03 +0200
+	id 1o9gxD-0000z2-0s
+	for lore@pengutronix.de; Fri, 08 Jul 2022 07:55:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1AL2K+o0iJP1sE/N+Y6E5KGniDo96QOAA6rCvkXullg=; b=4WNafVOXhenIWl/MZimPhkSRix
-	oG+IFPOxHvVGuKtT4D91TymGlIe1HWcKSUIjV+OJET9JW9O5jsyWgjmKlIAlIjrRNBTkQCDlfem7x
-	BO2eOG+2ZOLmmQMlmVAZPxfVTvJ21kEsgkbfiQqSiSkfEmuKPf27iJHU9E26qIBxpRRW+D3/13qE6
-	7962CtJhzbudmGFHWD+GlXhev82UCjFOcC8kNJxrt63vOjyHgdoisFwjGgA4cFTAI9VxOn2AtxMhi
-	ZloS68cLYbPXhxfrJ+DaKteJ9kGKOWuqnJbg61GdVbXhzY+hgquc1Hm1Doib2BEyckiTee9XdRR8e
-	+xk04p8Q==;
+	bh=QJWAaAZC+lOmcCV4esuBThVRmmxSSyggojB86xgoHh4=; b=BNOuYm5yZVMbBbIRbmK57hB2FR
+	2ISaJ/4y+uH8NgnwxJdouuup1EeMY3Wq/Zo1yRwVLoG4uoNrNf7t7bYdlW9Bte3YVPrcLGxhu2oiL
+	7l9kteSnw+OT4TtdX7o3T+nwQZ7kllFrU6E6PKhEsZqRUjwlwOzoGwuQNO2ObKhh0cSzOZzZVBe21
+	5QP3yIdyCMYMczxmZkoLwXZ7+EyG2YpeYKJuqUTmt2aOjimtvL/pcjm/sJtmaFcKx2VHy4UkL+NjN
+	L1MkK6NPLeuSml5so075JznVBrhLufqTY4CnXOszaRA+VUzaFOh8D5hl91f6gdCrmcVGzBsFdf8TJ
+	yJ79AuAQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o9gvd-001rxn-OK; Fri, 08 Jul 2022 05:53:25 +0000
+	id 1o9gvZ-001rx9-9A; Fri, 08 Jul 2022 05:53:21 +0000
 Received: from relay5-d.mail.gandi.net ([2001:4b98:dc4:8::225])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o9gvN-001rtI-8i
-	for barebox@lists.infradead.org; Fri, 08 Jul 2022 05:53:12 +0000
+	id 1o9gvM-001rtS-MD
+	for barebox@lists.infradead.org; Fri, 08 Jul 2022 05:53:10 +0000
 Received: (Authenticated sender: ahmad@a3f.at)
-	by mail.gandi.net (Postfix) with ESMTPSA id B19531C000B;
-	Fri,  8 Jul 2022 05:53:02 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 6A1EF1C000C;
+	Fri,  8 Jul 2022 05:53:03 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Fri,  8 Jul 2022 07:52:49 +0200
-Message-Id: <20220708055250.1175444-2-ahmad@a3f.at>
+Date: Fri,  8 Jul 2022 07:52:50 +0200
+Message-Id: <20220708055250.1175444-3-ahmad@a3f.at>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220708055250.1175444-1-ahmad@a3f.at>
 References: <20220708055250.1175444-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220707_225309_648261_B610E256 
-X-CRM114-Status: GOOD (  12.02  )
+X-CRM114-CacheID: sfid-20220707_225308_910124_A34420EF 
+X-CRM114-Status: UNSURE (   9.67  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,147 +69,70 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/3] pinctrl: stm32: keep GPIO bank clocks enabled throughout
+Subject: [PATCH 3/3] spi: stm32: fix reads for sizes bigger than SZ_64K-1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Mirror the Linux change of always keeping the clocks running. For
-barebox. This simplifies the code and improves bitbanging throughput.
+stm32_spi_transfer_one() can transfer no more than SPI_CR2_TSIZE (64K - 1),
+while e.g. imd tends to read more than  (64K - 1) from SPI flash:
 
-Origin: https://lore.kernel.org/all/20220422143608.226580-1-fabien.dessenne@foss.st.com/
+  barebox:/ imd /dev/m25p0
+  imd: error 90
+
+Define spi_controller_mem_ops::exec_op for the SPI controller to fix
+this.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/pinctrl/pinctrl-stm32.c | 42 +++++++--------------------------
- 1 file changed, 9 insertions(+), 33 deletions(-)
+ drivers/spi/stm32_spi.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-stm32.c b/drivers/pinctrl/pinctrl-stm32.c
-index cee10636cef9..fc0cc78f430d 100644
---- a/drivers/pinctrl/pinctrl-stm32.c
-+++ b/drivers/pinctrl/pinctrl-stm32.c
-@@ -24,7 +24,6 @@
- struct stm32_gpio_bank {
- 	void __iomem *base;
- 	struct gpio_chip chip;
--	struct clk *clk;
- 	const char *name;
- };
- 
-@@ -154,8 +153,6 @@ static int __stm32_pinctrl_set_state(struct device_d *dev, struct device_node *p
- 			"fn %u, mode %u, alt %u\n",
- 			bank->name, offset, func, mode, alt);
- 
--		clk_enable(bank->clk);
--
- 		__stm32_pmx_set_mode(bank->base, offset, mode, alt);
- 
- 		if (adjust_slew_rate)
-@@ -173,8 +170,6 @@ static int __stm32_pinctrl_set_state(struct device_d *dev, struct device_node *p
- 			__stm32_pmx_gpio_output(bank->base, offset, 0);
- 		else if (dir == PIN_OUTPUT_HIGH)
- 			__stm32_pmx_gpio_output(bank->base, offset, 1);
--
--		clk_disable(bank->clk);
- 	}
- 
- 	return 0;
-@@ -219,8 +214,6 @@ static int stm32_gpio_get_direction(struct gpio_chip *chip, unsigned int gpio)
- 	int ret;
- 	u32 mode, alt;
- 
--	clk_enable(bank->clk);
--
- 	__stm32_pmx_get_mode(bank->base, stm32_gpio_pin(gpio, NULL), &mode, &alt);
- 	if ((alt == 0) && (mode == 0))
- 		ret = 1;
-@@ -229,8 +222,6 @@ static int stm32_gpio_get_direction(struct gpio_chip *chip, unsigned int gpio)
- 	else
- 		ret = -EINVAL;
- 
--	clk_disable(bank->clk);
--
+diff --git a/drivers/spi/stm32_spi.c b/drivers/spi/stm32_spi.c
+index 0cb04a968c8a..d38207edac5f 100644
+--- a/drivers/spi/stm32_spi.c
++++ b/drivers/spi/stm32_spi.c
+@@ -11,6 +11,7 @@
+ #include <init.h>
+ #include <errno.h>
+ #include <linux/reset.h>
++#include <linux/spi/spi-mem.h>
+ #include <spi/spi.h>
+ #include <linux/bitops.h>
+ #include <clock.h>
+@@ -474,6 +475,24 @@ out:
  	return ret;
  }
  
-@@ -238,37 +229,22 @@ static void stm32_gpio_set(struct gpio_chip *chip, unsigned gpio, int value)
- {
- 	struct stm32_gpio_bank *bank = to_stm32_gpio_bank(chip);
- 
--	clk_enable(bank->clk);
--
- 	__stm32_pmx_gpio_set(bank->base, stm32_gpio_pin(gpio, NULL), value);
--
--	clk_disable(bank->clk);
- }
- 
- static int stm32_gpio_get(struct gpio_chip *chip, unsigned gpio)
- {
- 	struct stm32_gpio_bank *bank = to_stm32_gpio_bank(chip);
--	int ret;
--
--	clk_enable(bank->clk);
--
--	ret = __stm32_pmx_gpio_get(bank->base, stm32_gpio_pin(gpio, NULL));
- 
--	clk_disable(bank->clk);
--
--	return ret;
-+	return __stm32_pmx_gpio_get(bank->base, stm32_gpio_pin(gpio, NULL));
- }
- 
- static int stm32_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
- {
- 	struct stm32_gpio_bank *bank = to_stm32_gpio_bank(chip);
- 
--	clk_enable(bank->clk);
--
- 	__stm32_pmx_gpio_input(bank->base, stm32_gpio_pin(gpio, NULL));
- 
--	clk_disable(bank->clk);
--
- 	return 0;
- }
- 
-@@ -277,12 +253,8 @@ static int stm32_gpio_direction_output(struct gpio_chip *chip,
- {
- 	struct stm32_gpio_bank *bank = to_stm32_gpio_bank(chip);
- 
--	clk_enable(bank->clk);
--
- 	__stm32_pmx_gpio_output(bank->base, stm32_gpio_pin(gpio, NULL), value);
- 
--	clk_disable(bank->clk);
--
- 	return 0;
- }
- 
-@@ -302,6 +274,7 @@ static int stm32_gpiochip_add(struct stm32_gpio_bank *bank,
- 	struct resource *iores;
- 	enum { PINCTRL_PHANDLE, GPIOCTRL_OFFSET, PINCTRL_OFFSET, PINCOUNT, GPIO_RANGE_NCELLS };
- 	const __be32 *gpio_ranges;
-+	struct clk *clk;
- 	u32 ngpios;
- 	int ret, size;
- 
-@@ -350,12 +323,15 @@ static int stm32_gpiochip_add(struct stm32_gpio_bank *bank,
- 	bank->chip.base = be32_to_cpu(gpio_ranges[PINCTRL_OFFSET]);
- 	bank->chip.ops  = &stm32_gpio_ops;
- 	bank->chip.dev  = dev;
--	bank->clk = clk_get(dev, NULL);
--	if (IS_ERR(bank->clk)) {
--		dev_err(dev, "failed to get clk (%ld)\n", PTR_ERR(bank->clk));
--		return PTR_ERR(bank->clk);
++static int stm32_spi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
++{
++	if (op->data.nbytes > SPI_CR2_TSIZE)
++		op->data.nbytes = SPI_CR2_TSIZE;
 +
-+	clk = clk_get(dev, NULL);
-+	if (IS_ERR(clk)) {
-+		dev_err(dev, "failed to get clk (%ld)\n", PTR_ERR(clk));
-+		return PTR_ERR(clk);
- 	}
- 
-+	clk_enable(clk);
++	return 0;
++}
 +
- 	return gpiochip_add(&bank->chip);
- }
++static int stm32_spi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
++{
++	return -ENOTSUPP;
++}
++
++static const struct spi_controller_mem_ops stm32_spi_mem_ops = {
++	.adjust_op_size = stm32_spi_adjust_op_size,
++	.exec_op = stm32_spi_exec_op,
++};
++
+ static int stm32_spi_get_fifo_size(struct stm32_spi_priv *priv)
+ {
+ 	u32 count = 0;
+@@ -522,6 +541,7 @@ static int stm32_spi_probe(struct device_d *dev)
  
+ 	master->setup = stm32_spi_setup;
+ 	master->transfer = stm32_spi_transfer;
++	master->mem_ops = stm32_spi_mem_ops;
+ 
+ 	master->bus_num = -1;
+ 	stm32_spi_dt_probe(priv);
 -- 
 2.34.1
 
