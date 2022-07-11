@@ -1,61 +1,63 @@
-Delivery-date: Mon, 11 Jul 2022 11:23:44 +0200
+Delivery-date: Mon, 11 Jul 2022 11:25:06 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oApdp-002L0G-Ko
-	for lore@lore.pengutronix.de; Mon, 11 Jul 2022 11:23:44 +0200
+	id 1oApf9-002L79-0J
+	for lore@lore.pengutronix.de; Mon, 11 Jul 2022 11:25:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oApdn-0000I9-IP
-	for lore@pengutronix.de; Mon, 11 Jul 2022 11:23:44 +0200
+	id 1oApf7-0000Rt-3Y
+	for lore@pengutronix.de; Mon, 11 Jul 2022 11:25:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=inSGCQ0XtcFt0viirq9vrVsEuNhBVw2qrs97HQrfxD0=; b=HOCZ0ts2GtbE/GBSWlLL42m+qc
-	7SjHC+7NCWytsXVx06WcgXbu3Bay0okt6E3K/YGYg7MXGiFqfhMH0Jc/PZYAL7iAJA1tIjBwQD9UD
-	P6263nVrkcGCXttdyhcOqlN5pSjfuOJZ/ArcF9j6LgdfeBa52r4AY31cnf8aT65U2wu+KOfTPhjtp
-	NwlsXUo0A5oaKRx8mtB2P0aHoLwQm44y74jgTK+K+8Bqmtq0x1TF2+Ku/D5ooBGnwJmN4Wk3dskNa
-	3CHhgz4xsmeYYuO51QJ7HLA+GcajRn4LkbHi5hwMDzvX5gVh1ynB/nWA3uMAQfwAluptQ8PapNSJ6
-	reOM78mA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=x8Dfk+AVK4JFUAZqaI3G33+jyF4RrEf4W0ZMkc3YRkE=; b=b6K1gNE44Uha+iH3upDBRmgl2d
+	JqtXkjSmcXyL/sunLzH0v9/hesvo6io2klqhhG0cclXkOfp9h69wxJ/1o/zGkeLo7BRgMupbdtnxN
+	Uo1+D0Iz4T7AkxpLMeMRKUAXhyhbF68YBr31XvoF+0WS4cI7a7I9e/vLwaJ8/GkkEcBWEqMsyEN+J
+	J71vzonLLt+p6CdnJnkOKhphhCtYgFWtn7EmOYqyNELth+PAbEhF1A/9+3Xde3J8eyjIpbIQ4Yw5G
+	PM1Sggezsf0q+kYm2LcXIAwwt/IK+8wu6F3VQEIwz9LffmamGRjmEDh7ZCNneSyEhMmmOc6xsi/pJ
+	EL+cTJVw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oApcV-0001AQ-6O; Mon, 11 Jul 2022 09:22:23 +0000
+	id 1oApdv-00026Z-5m; Mon, 11 Jul 2022 09:23:51 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oApcO-00016d-8k
-	for barebox@lists.infradead.org; Mon, 11 Jul 2022 09:22:17 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1oApdr-000237-DK
+	for barebox@lists.infradead.org; Mon, 11 Jul 2022 09:23:48 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oApcL-0008NL-BN; Mon, 11 Jul 2022 11:22:13 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oApcL-0003rT-2d; Mon, 11 Jul 2022 11:22:13 +0200
-Date: Mon, 11 Jul 2022 11:22:13 +0200
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220711092213.GN5208@pengutronix.de>
-References: <20220706142105.2266956-1-m.felsch@pengutronix.de>
+	(envelope-from <ukl@pengutronix.de>)
+	id 1oApdq-0000Ig-6W; Mon, 11 Jul 2022 11:23:46 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1oApdp-000HSL-Fw; Mon, 11 Jul 2022 11:23:45 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1oApdo-004UM5-Cg; Mon, 11 Jul 2022 11:23:44 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Mon, 11 Jul 2022 11:09:15 +0200
+Message-Id: <20220711090915.1487105-2-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220711090915.1487105-1-u.kleine-koenig@pengutronix.de>
+References: <20220711083128.kwazqb2wbmqqvdub@pengutronix.de>
+ <20220711090915.1487105-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220706142105.2266956-1-m.felsch@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=813; h=from:subject; bh=vko2rtoJrn+Af5pOCkMUjufcrDimh5fNOPYKRIDa72I=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBiy+i4rNU1e+sBt/Un00earJHBLpmedi/HIuWKyyLM yMsbwQqJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYsvouAAKCRDB/BR4rcrsCSiCB/ 4vItc5kpCMdkeqYV5Cg0ei3m2PpHh8nz6XR057ulzdIkDyFGfwtpScE7HQjqFtK2nJy1pOV5uAuZpf gJqnbk3kQOeB0jS8Wh1cXijB5a02cZqoSvkv2drnFjjICXETZ06JzVgwO1u6/NPI4u8mtiwYoM4PnO Z2b9pvs89tlmimV/opiSqsc3KfFgZ+wGjsoMdUGfWbqzodYGIWjid5pUjCokEB8bikBC0n1AeMCqvc m/alGduGzGc5RNZDpzlu8Raf8N893MiUxoSBPrpGsXUPztx3WA0/p85g0gUKlnKbzoEW7ONsZUA4fw r3m3YanyNni1ZwaC5NLEax36er9f9Q
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220711_022216_354434_10079E8D 
-X-CRM114-Status: GOOD (  17.95  )
+X-CRM114-CacheID: sfid-20220711_022347_465882_3F6EC0AF 
+X-CRM114-Status: GOOD (  11.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,62 +75,38 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 0/4] MX8MN-EVK DDR4 Support
+Subject: [PATCH 2/2] devfs: Fix device name in overlap error message
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jul 06, 2022 at 04:21:01PM +0200, Marco Felsch wrote:
-> Hi,
-> 
-> this small series adds the correct DDR4 support for the imx8mn-evk since
-> till now we misused the LPDDR4 DT for it.
-> 
-> Before applying Ahmads patch the preceding patches must be applied else
-> the deep probe support will cause odd boot issues.
-> 
-> Regards,
->   Marco
-> 
-> Ahmad Fatoum (1):
->   ARM: i.MX8MN: pass along correct DT depending on variant
-> 
-> Marco Felsch (3):
->   phy: fix deep probe support
->   phy: propagate error in of_phy_get_by_phandle
->   usb: chipidea: imx: call enable_clk after all resources are requested
+cpart->name contains the partition name, not the device name. Use
+cdev->name instead.
 
-Applied, thanks
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ fs/devfs-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-> 
->  arch/arm/boards/nxp-imx8mn-evk/board.c    | 21 ++++--
->  arch/arm/boards/nxp-imx8mn-evk/lowlevel.c | 13 +++-
->  arch/arm/dts/Makefile                     |  2 +-
->  arch/arm/dts/imx8mn-ddr4-evk.dts          |  6 ++
->  arch/arm/dts/imx8mn-evk.dts               | 84 +----------------------
->  arch/arm/dts/imx8mn-evk.dtsi              | 83 ++++++++++++++++++++++
->  drivers/phy/phy-core.c                    | 11 +--
->  drivers/usb/imx/chipidea-imx.c            | 10 ++-
->  8 files changed, 131 insertions(+), 99 deletions(-)
->  create mode 100644 arch/arm/dts/imx8mn-ddr4-evk.dts
->  create mode 100644 arch/arm/dts/imx8mn-evk.dtsi
-> 
-> -- 
-> 2.30.2
-> 
-> 
-> 
-
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index dca5e10191d4..1d8b2664f216 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -418,7 +418,7 @@ static int check_overlap(struct cdev *cdev, const char *name, loff_t offset, lof
+ conflict:
+ 	pr_err("New partition %s (0x%08llx-0x%08llx) on %s "
+ 		"overlaps with partition %s (0x%08llx-0x%08llx), not creating it\n",
+-		name, offset, offset + size - 1, cpart->name,
++		name, offset, offset + size - 1, cdev->name,
+ 		cpart->name, cpart_offset, cpart_offset + cpart->size - 1);
+ 
+ 	return -EINVAL;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.36.1
+
 
 
