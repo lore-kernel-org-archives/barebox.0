@@ -1,60 +1,60 @@
-Delivery-date: Mon, 11 Jul 2022 09:53:58 +0200
+Delivery-date: Mon, 11 Jul 2022 09:54:00 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oAoEx-002C6u-K9
-	for lore@lore.pengutronix.de; Mon, 11 Jul 2022 09:53:58 +0200
+	id 1oAoEy-002C7P-Qs
+	for lore@lore.pengutronix.de; Mon, 11 Jul 2022 09:54:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oAoEu-0001Kx-Mc
-	for lore@pengutronix.de; Mon, 11 Jul 2022 09:53:58 +0200
+	id 1oAoEw-0001Ln-NE
+	for lore@pengutronix.de; Mon, 11 Jul 2022 09:53:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WZkXfyN2yXefT182KAC4o/PV9qnTrvkMvJsyNhaSnUM=; b=10YEgUcSpjRHWh199PqErUWokW
-	mcaV6J6ECDOLEgMfeh1zzu76X4/Z49IQizbbVvsDY22F74mseYvPYxp6O/Az5hdpmzBmhh9RcBhpT
-	XG4gedax2zTBvUVU7zbdN+ipjXB+B3Mduqysi571CCiF26qY+555z4i6+RVb0iBlqnG2Ddaxbh+X+
-	/FDrT74MRcIC6kGmYuBdzLufye02oRR/kDcsqDl8Zfq5AF5OieRpwLfOq7xvGyFE48Cq/n0gr5tjh
-	SLNVJlRdn855pOCgLKrXuP+ZWZRBQE8vidL4CMgdApjruGZujpcucZJSNeRi/cDf/hHT5LvNI+mas
-	0U/Kd2hA==;
+	bh=63Z/79myK+OJeVHpg9HBku440D6hl0DhRTIynScjPek=; b=qUVpISeSdcRkOwu2BM1/bE2tVZ
+	MHy4rjgh3r8RCVlavf78d0Tw0CMmmPalU0iSN4zE64XpLme3vdBLZdiGJq//mB+B4cpp45AiUuwUT
+	mhJ912uq9LTbEryb415Ql9zlg4mBubMGGmvEDXo+Sfk3niZzLU0UtC8zViYiaNLOuieVcnCYUK0P/
+	/DtasFGtPkuo7021lVrpgLnVdHCiVcDCbQfBXTjvgBCBOJL8G6R4lhMocE4bLTQqSQ6teKxug2fn6
+	14wDqZ/IeOEx5pMS08fu6SU86598y4AT3ZWT0NhbwaRxXo8EyuS2Dexzkb+GGoXRYRNAR7OarZcG0
+	glPBtznA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oAoDS-00Gyxo-NF; Mon, 11 Jul 2022 07:52:26 +0000
+	id 1oAoDV-00GyzV-KF; Mon, 11 Jul 2022 07:52:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oAoDL-00Gytx-4n
-	for barebox@lists.infradead.org; Mon, 11 Jul 2022 07:52:20 +0000
+	id 1oAoDL-00Gyu0-C9
+	for barebox@lists.infradead.org; Mon, 11 Jul 2022 07:52:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <str@pengutronix.de>)
-	id 1oAoDI-0000lD-AQ; Mon, 11 Jul 2022 09:52:16 +0200
+	id 1oAoDI-0000lF-GA; Mon, 11 Jul 2022 09:52:16 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <str@pengutronix.de>)
-	id 1oAoDH-000GVS-KK; Mon, 11 Jul 2022 09:52:15 +0200
+	id 1oAoDH-000GVY-Pe; Mon, 11 Jul 2022 09:52:15 +0200
 Received: from str by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <str@pengutronix.de>)
-	id 1oAoDG-00A3gH-E8; Mon, 11 Jul 2022 09:52:14 +0200
+	id 1oAoDG-00A3jp-Jy; Mon, 11 Jul 2022 09:52:14 +0200
 From: Steffen Trumtrar <str@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 11 Jul 2022 09:52:05 +0200
-Message-Id: <20220711075209.2377254-2-str@pengutronix.de>
+Date: Mon, 11 Jul 2022 09:52:09 +0200
+Message-Id: <20220711075209.2377254-6-str@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220711075209.2377254-1-str@pengutronix.de>
 References: <20220711075209.2377254-1-str@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220711_005219_201548_5D9138B8 
-X-CRM114-Status: UNSURE (   8.43  )
+X-CRM114-CacheID: sfid-20220711_005219_458201_955AC2B7 
+X-CRM114-Status: UNSURE (   8.49  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -78,41 +78,29 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 2/6] ARM: socfpga: achilles: remove cargo-cult
+Subject: [PATCH v3 6/6] ARM: socfpga: defconfig: add aa1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-This is actually unneccessary and is just here because of copy-pasta
-from other lowlevel code.
+Enable the new Enclustra AA1 in the defconfig for Arria10.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/boards/reflex-achilles/lowlevel.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/arm/configs/socfpga-arria10_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boards/reflex-achilles/lowlevel.c b/arch/arm/boards/reflex-achilles/lowlevel.c
-index e8d1a9cee4..e213feb9f0 100644
---- a/arch/arm/boards/reflex-achilles/lowlevel.c
-+++ b/arch/arm/boards/reflex-achilles/lowlevel.c
-@@ -37,7 +37,6 @@ static noinline void achilles_start(void)
- 	int barebox = 0;
- 	int bitstream = 0;
- 
--	arm_early_mmu_cache_invalidate();
- 
- 	relocate_to_current_adr();
- 	setup_c();
-@@ -100,8 +99,6 @@ ENTRY_FUNCTION(start_socfpga_achilles_bringup, r0, r1, r2)
- 
- 	arm_setup_stack(ARRIA10_OCRAM_ADDR + SZ_256K);
- 
--	arm_early_mmu_cache_invalidate();
--
- 	relocate_to_current_adr();
- 	setup_c();
- 
+diff --git a/arch/arm/configs/socfpga-arria10_defconfig b/arch/arm/configs/socfpga-arria10_defconfig
+index a37bae6217..5ac2198d41 100644
+--- a/arch/arm/configs/socfpga-arria10_defconfig
++++ b/arch/arm/configs/socfpga-arria10_defconfig
+@@ -1,4 +1,5 @@
+ CONFIG_ARCH_SOCFPGA=y
++CONFIG_MACH_SOCFPGA_ENCLUSTRA_AA1=y
+ CONFIG_MACH_SOCFPGA_REFLEX_ACHILLES=y
+ CONFIG_AEABI=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
 -- 
 2.30.2
 
