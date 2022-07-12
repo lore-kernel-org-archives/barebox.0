@@ -1,55 +1,61 @@
-Delivery-date: Tue, 12 Jul 2022 08:30:15 +0200
+Delivery-date: Tue, 12 Jul 2022 09:32:42 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oB9PU-0045sh-JE
-	for lore@lore.pengutronix.de; Tue, 12 Jul 2022 08:30:15 +0200
+	id 1oBANv-004AKq-5T
+	for lore@lore.pengutronix.de; Tue, 12 Jul 2022 09:32:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oB9PS-0001wY-DZ
-	for lore@pengutronix.de; Tue, 12 Jul 2022 08:30:15 +0200
+	id 1oBANs-0001P1-SO
+	for lore@pengutronix.de; Tue, 12 Jul 2022 09:32:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
-	Message-ID:In-reply-to:Date:Subject:Cc:To:From:References:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NvTBTwHoQBemhtcwymSiw4Cn0UBHB+iRfYvwwi2nVvQ=; b=WXbh5J1AUYpI+nK5ecN+GE039V
-	VE6aKVduMV7mKE9J6aRTp9SA3ZdzykKmDfsLcf+NrlW9V3FCRNLvoF2OugvmGtKgNj0Efku1aGnYL
-	gabjuLhKB6eDSXNj3ppL4jdy7Jc7Et5ZeUulAAkpWsthwFOQPa9nMnmTHzeRZ5AlgDRy1kkJSe+bK
-	eqPcBJ0MZvjNzm2xFOYhXoSA5LorFMDm4CUD94wZv8WaCS7dEF0GWZShe/WsbS2tWliAwb6bPVfBt
-	10yVTvVWWMe42gQR5MqZgyWIBtFtOrSCuphNONo6nYk98mkb9otQ7eL6yOmnTMvOFK8qxXIBW1CIC
-	lINRGu5w==;
+	bh=yJLEoz1DE62PKKjbce2xCbxPruVKIILhfY/DOiHCd3g=; b=yx6sT9068rM9Z1zUxRBT7yXeuS
+	3ZEdNJxq/VF2JsqZ20nHJSdLry5OaZi04WovW/T/A+yD91Ehu3PobWXAlss7rId0zeU/FtpON92s3
+	EBx4ijf3z+TSMMGlLJ+t9tsXYJfWjgE25fUo8OvbPUbx0u1y1ULQYh8GcM6emP/SAQtvobOGrqx5B
+	tgDq5ecYB5w04jt6JAhWGNREwmMKIaIDtS4AbXFEbMjsU6fjreURfhwOHqZ9S/NmfGIoDjHscVjxq
+	46+WRKtyyD3Xg7/Hpfo9fhgCMc32X7iGgBqImdyKK6OxGl2aiUilZME/+PGyvK8+fWM+DMcrT/2YE
+	ckt4chCg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oB9Nq-0081HE-CV; Tue, 12 Jul 2022 06:28:34 +0000
+	id 1oBAMD-008LV0-Uy; Tue, 12 Jul 2022 07:30:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oB9Nm-0081GK-Dp
-	for barebox@lists.infradead.org; Tue, 12 Jul 2022 06:28:32 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0] helo=igor.pengutronix.de)
+	id 1oBAM8-008LO7-0V
+	for barebox@lists.infradead.org; Tue, 12 Jul 2022 07:30:54 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1oB9Nj-0001qh-Sh; Tue, 12 Jul 2022 08:28:27 +0200
-References: <20220711075209.2377254-1-str@pengutronix.de>
- <20220711075209.2377254-5-str@pengutronix.de>
- <20220711085415.GM5208@pengutronix.de>
-User-agent: mu4e 1.8.5; emacs 29.0.50
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-To: Sascha Hauer <sha@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1oBAM1-0000yV-37; Tue, 12 Jul 2022 09:30:45 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oBAM0-0007Uo-QT; Tue, 12 Jul 2022 09:30:44 +0200
+Date: Tue, 12 Jul 2022 09:30:44 +0200
+To: Johannes Zink <j.zink@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Date: Tue, 12 Jul 2022 07:48:04 +0200
-In-reply-to: <20220711085415.GM5208@pengutronix.de>
-Message-ID: <87sfn6n8ty.fsf@pengutronix.de>
+Message-ID: <20220712073044.GC23482@pengutronix.de>
+References: <20220708094138.112060-1-j.zink@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220708094138.112060-1-j.zink@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220711_232830_489125_6B8D62C8 
-X-CRM114-Status: GOOD (  22.44  )
+X-CRM114-CacheID: sfid-20220712_003052_076577_84E20AD9 
+X-CRM114-Status: GOOD (  37.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,187 +73,194 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v3 5/6] ARM: socfpga: add support for Enclustra AA1
+Subject: Re: [PATCH v3] base: driver: print dev_err_probe message on
+ permanent probe deferral
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+On Fri, Jul 08, 2022 at 11:41:38AM +0200, Johannes Zink wrote:
+> This stores the probe deferral reason in the device structure.
+> If a probe is permanently deferred, the last reason is displayed.
+> 
+> Example output on a permanently deferred probe:
+>   ERROR: imx-pgc-domain0: probe permanently deferred (Failed to get domain's regulator)
+> 
+> Other dev_err_probe outputs are displayed as before.
+> 
+> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+> ---
 
-Hi!
+Applied, thanks
 
-Sascha Hauer <sha@pengutronix.de> writes:
+Sascha
 
-(...)
->> +++ b/arch/arm/boards/enclustra-aa1/board.c
-(...)
->> +	pbl_index = readl(0xFFD06210);
->
-> This is ARRIA10_SYSMGR_ROM_INITSWLASTLD, right? Please use it.
->
+> v1 -> v2:
+>   - improved commit message
+>   - improved function prototypes
+>   - improved debug output, device name is displayed once only per
+>     message
+>   - reverted removal of MSG_DEBUG output on deferred probe
+>   - replaced kfree by free
+>   - removed unnecessary null checks before free
+>   - fixed several typos
+>   - fixed compiler warnings
+>   - fixed coding style issues
+> v2 -> v3:
+>   - dropped const from dev_err_probe
+>   - use xasprintf instead of basprintf: guarantee memory allocation
+>   - prevent newline within message on permanent deferral
+>   - removed unnecessary helper functions
+>   - fixed remaining typos and whitespace changes
+>   - improved comments
+>   - reverted removal of kernel doc comment 
+>   - added example in commit message
+> ---
+>  drivers/base/driver.c  | 44 +++++++++++++++++++++++++++++++++++-------
+>  include/driver.h       |  5 +++++
+>  include/linux/printk.h |  6 +++---
+>  3 files changed, 45 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+> index 303ca061c..4898e0114 100644
+> --- a/drivers/base/driver.c
+> +++ b/drivers/base/driver.c
+> @@ -283,6 +283,7 @@ void free_device_res(struct device_d *dev)
+>  	dev->name = NULL;
+>  	free(dev->unique_name);
+>  	dev->unique_name = NULL;
+> +	free(dev->deferred_probe_reason);
+>  }
+>  EXPORT_SYMBOL(free_device_res);
+>  
+> @@ -333,9 +334,13 @@ static int device_probe_deferred(void)
+>  		}
+>  	} while (success);
+>  
+> -	list_for_each_entry(dev, &deferred, active)
+> -		dev_err(dev, "probe permanently deferred\n");
+> -
+> +	list_for_each_entry(dev, &deferred, active) {
+> +		if (dev->deferred_probe_reason)
+> +			dev_err(dev, "probe permanently deferred (%s)\n",
+> +				dev->deferred_probe_reason);
+> +		else
+> +			dev_err(dev, "probe permanently deferred\n");
+> +	}
+>  	return 0;
+>  }
+>  late_initcall(device_probe_deferred);
+> @@ -573,6 +578,24 @@ const void *device_get_match_data(struct device_d *dev)
+>  	return NULL;
+>  }
+>  
+> +static void device_set_deferred_probe_reason(struct device_d *dev, const struct va_format *vaf)
+> +{
+> +	char *reason;
+> +	char *last_char;
+> +
+> +	free(dev->deferred_probe_reason);
+> +
+> +	reason = xasprintf("%pV", vaf);
+> +
+> +	/* drop newline char at end of reason string */
+> +	last_char = reason + strlen(reason) - 1;
+> +
+> +	if (*last_char == '\n')
+> +		*last_char = '\0';
+> +
+> +	dev->deferred_probe_reason = reason;
+> +}
+> +
+>  /**
+>   * dev_err_probe - probe error check and log helper
+>   * @loglevel: log level configured in source file
+> @@ -584,8 +607,12 @@ const void *device_get_match_data(struct device_d *dev)
+>   * This helper implements common pattern present in probe functions for error
+>   * checking: print debug or error message depending if the error value is
+>   * -EPROBE_DEFER and propagate error upwards.
+> - * In case of -EPROBE_DEFER it sets also defer probe reason, which can be
+> - * checked later by reading devices_deferred debugfs attribute.
+> + *
+> + * In case of -EPROBE_DEFER it sets the device's deferred_probe_reason attribute,
+> + * but does not report an error. The error is recorded and displayed later, if
+> + * (and only if) the probe is permanently deferred. For all other error codes,
+> + * it just outputs the error along with the formatted message.
+> + *
+>   * It replaces code sequence::
+>   *
+>   * 	if (err != -EPROBE_DEFER)
+> @@ -601,8 +628,8 @@ const void *device_get_match_data(struct device_d *dev)
+>   * Returns @err.
+>   *
+>   */
+> -int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...);
+> -int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...)
+> +int dev_err_probe(struct device_d *dev, int err, const char *fmt, ...);
+> +int dev_err_probe(struct device_d *dev, int err, const char *fmt, ...)
+>  {
+>  	struct va_format vaf;
+>  	va_list args;
+> @@ -611,6 +638,9 @@ int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...)
+>  	vaf.fmt = fmt;
+>  	vaf.va = &args;
+>  
+> +	if (err == -EPROBE_DEFER)
+> +		device_set_deferred_probe_reason(dev, &vaf);
+> +
+>  	dev_printf(err == -EPROBE_DEFER ? MSG_DEBUG : MSG_ERR,
+>  		   dev, "error %pe: %pV", ERR_PTR(err), &vaf);
+>  
+> diff --git a/include/driver.h b/include/driver.h
+> index b35b5f397..a89ce7af9 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -88,6 +88,11 @@ struct device_d {
+>  	 * when the driver should actually detect client devices
+>  	 */
+>  	int     (*detect) (struct device_d *);
+> +
+> +	/*
+> +	 * if a driver probe is deferred, this stores the last error
+> +	 */
+> +	char *deferred_probe_reason;
+>  };
+>  
+>  /** @brief Describes a driver present in the system */
+> diff --git a/include/linux/printk.h b/include/linux/printk.h
+> index 39523b057..e21e859bf 100644
+> --- a/include/linux/printk.h
+> +++ b/include/linux/printk.h
+> @@ -76,12 +76,12 @@ static inline int pr_print(int level, const char *format, ...)
+>  	__dev_printf(8, (dev) , format , ## arg)
+>  
+>  #if LOGLEVEL >= MSG_ERR
+> -int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...)
+> +int dev_err_probe(struct device_d *dev, int err, const char *fmt, ...)
+>  	__attribute__ ((format(__printf__, 3, 4)));
+>  #elif !defined(dev_err_probe)
+> -static int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...)
+> +static int dev_err_probe(struct device_d *dev, int err, const char *fmt, ...)
+>  	__attribute__ ((format(__printf__, 3, 4)));
+> -static inline int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...)
+> +static inline int dev_err_probe(struct device_d *dev, int err, const char *fmt, ...)
+>  {
+>  	return err;
+>  }
+> -- 
+> 2.30.2
+> 
+> 
+> 
 
-Sure.
-
->> +
->> +	pr_debug("Current barebox instance %d\n", pbl_index);
->> +
->> +	switch (pbl_index) {
->> +	case 0:
->> +		flag_barebox1 |= BBU_HANDLER_FLAG_DEFAULT;
->> +		break;
->> +	case 1:
->> +		flag_barebox2 |= BBU_HANDLER_FLAG_DEFAULT;
->> +		break;
->> +	};
->> +
->> +	bbu_register_std_file_update("emmc-barebox1-xload", flag_barebox1,
->> +					"/dev/mmc0.barebox1-xload",
->> +					filetype_socfpga_xload);
->> +
->> +	bbu_register_std_file_update("emmc-barebox1", 0,
->> +					"/dev/mmc0.barebox1",
->> +					filetype_arm_barebox);
->> +
->> +	bbu_register_std_file_update("emmc-barebox2-xload", flag_barebox2,
->> +					"/dev/mmc0.barebox2-xload",
->> +					filetype_socfpga_xload);
->> +
->> +	bbu_register_std_file_update("emmc-barebox2", 0,
->> +					"/dev/mmc0.barebox2",
->> +					filetype_arm_barebox);
->
-> Should this be turned into something more intelligent like failsafe
-> update?
->
-
-You mean like you did for rockchip? Might be a good idea.
-
->> +	return 0;
->> +}
->> +postcore_initcall(aa1_init);
->
-> You could turn this into a postcore_platform_driver.
->
->> +#define BAREBOX_PART 0
->> +#define BITSTREAM_PART 1
->> +#define BAREBOX1_OFFSET    SZ_1M
->> +#define BAREBOX2_OFFSET    BAREBOX1_OFFSET + SZ_512K
->> +#define BAREBOX3_OFFSET    BAREBOX2_OFFSET + SZ_512K
->> +#define BAREBOX4_OFFSET    BAREBOX3_OFFSET + SZ_512K
->> +#define BITSTREAM1_OFFSET  0x0
->
-> From looking into the device tree I would expect BITSTREAM1_OFFSET to be 0x700000.
->
-
-Ack.
-
->> +#define BITSTREAM2_OFFSET  BITSTREAM1_OFFSET + SZ_32M
->
-> You should add braces around the macro definitions to make them safe
-> to use.
->
-
-Ack.
-
->> +
->> +extern char __dtb_z_socfpga_arria10_mercury_aa1_start[];
->> +
->> +#define ARRIA10_STACKTOP	ARRIA10_OCRAM_ADDR + SZ_256K
->> +
->> +ENTRY_FUNCTION_WITHSTACK(start_socfpga_aa1_xload, ARRIA10_STACKTOP, r0, r1, r2)
->> +{
->> +	int pbl_index = 0;
->> +	int barebox = 0;
->> +	int bitstream = 0;
->> +
->> +	arm_cpu_lowlevel_init();
->> +
->> +	relocate_to_current_adr();
->> +
->> +	setup_c();
->> +
->> +	arria10_init(&mainpll_cfg, &perpll_cfg, pinmux);
->> +
->> +	arria10_prepare_mmc(BAREBOX_PART, BITSTREAM_PART);
->> +
->> +	pbl_index = readl(ARRIA10_SYSMGR_ROM_INITSWLASTLD);
->> +
->> +	/* Allow booting from both PBL0 and PBL1 to allow atomic updates.
->> +	 * Bitstreams redundant too and expected to reside in the second
->> +	 * partition.
->> +	 * There is a fixed relation between the PBL/barebox instance and its
->> +	 * bitstream location (offset) that requires to update them together */
->> +	switch (pbl_index) {
->> +	case 0:
->> +		barebox = BAREBOX1_OFFSET;
->> +		bitstream = BITSTREAM1_OFFSET;
->> +		break;
->> +	case 1:
->> +		barebox = BAREBOX2_OFFSET;
->> +		bitstream = BITSTREAM1_OFFSET;
->> +		break;
->> +	case 2:
->> +	case 3:
->> +		/* Left blank for future extension */
->> +		break;
->
-> You should either bail out or use a sane default for unhandled cases.
->
-
-Ack.
-
->> diff --git a/arch/arm/dts/socfpga_arria10_mercury_aa1.dts b/arch/arm/dts/socfpga_arria10_mercury_aa1.dts
->> new file mode 100644
->> index 0000000000..ef3afc9b98
->> --- /dev/null
->> +&mmc {
->> +	bus-width = <8>;
->> +	non-removable;
->> +	disable-wp;
->> +	no-sd;
->> +
->> +	partitions {
->> +		compatible = "fixed-partitions";
->> +		#size-cells = <1>;
->> +		#address-cells = <1>;
->> +
->> +		barebox1_xload: partition@100000 {
->> +			label = "barebox1-xload";
->> +			reg = <0x100000 0x40000>;
->> +		};
->> +
->> +		barebox2_xload: partition@140000 {
->> +			label = "barebox2-xload";
->> +			reg = <0x140000 0x40000>;
->> +		};
->> +
->> +		barebox1: partition@200000 {
->> +			label = "barebox1";
->> +			reg = <0x200000 0x80000>;
->> +		};
->> +
->> +		barebox2: partition@280000 {
->> +			label = "barebox2";
->> +			reg = <0x280000 0x80000>;
->> +		};
->
-> It might be worth increasing the size to 1MiB. It's easy to make barebox
-> bigger than 512KiB.
->
-
-Sure.
-
-
-Thanks,
-Steffen
-
---
-Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
