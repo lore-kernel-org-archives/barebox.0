@@ -1,62 +1,55 @@
-Delivery-date: Tue, 12 Jul 2022 08:01:16 +0200
+Delivery-date: Tue, 12 Jul 2022 08:30:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oB8xR-00433S-Bj
-	for lore@lore.pengutronix.de; Tue, 12 Jul 2022 08:01:16 +0200
+	id 1oB9PU-0045sh-JE
+	for lore@lore.pengutronix.de; Tue, 12 Jul 2022 08:30:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oB8xP-0006yF-C6
-	for lore@pengutronix.de; Tue, 12 Jul 2022 08:01:16 +0200
+	id 1oB9PS-0001wY-DZ
+	for lore@pengutronix.de; Tue, 12 Jul 2022 08:30:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:In-reply-to:Date:Subject:Cc:To:From:References:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KEAycxVRD2Dq0+98RL6muJD2q/TJ40qs2cz8xPX0tfQ=; b=3hwvb2e3G3HqLaRUv/R9e+O0Yv
-	eRQWxoRbJYBsLhtOjp+3Ixb0TSUNzuXVhZxAYSyUKc/TCbDiqfQ5cQeik+kk//wDxg17fXV3x7WwM
-	6fP7aI1zCO8rqQJWbE9zRV3kStevgk0CKIQGdcHF5nB4sNxghjZh9epsjr8S/ySGEcGuaWyq+OCSP
-	U5dbpo+T8P0LTTMsmS+bQJYCw5LeguCdzMosRSedEI5PF52yvFLOij8eDziCMtcjJF8Dl+XdHvtsm
-	BWZbL5wDLLMHdV6iPbmVOF3m+zvjUr1Sd9dxuHXTcEz2kMk2YbSiC1o/oJ8SSKGmGIHqcOOaG4xIx
-	CXrg4qug==;
+	bh=NvTBTwHoQBemhtcwymSiw4Cn0UBHB+iRfYvwwi2nVvQ=; b=WXbh5J1AUYpI+nK5ecN+GE039V
+	VE6aKVduMV7mKE9J6aRTp9SA3ZdzykKmDfsLcf+NrlW9V3FCRNLvoF2OugvmGtKgNj0Efku1aGnYL
+	gabjuLhKB6eDSXNj3ppL4jdy7Jc7Et5ZeUulAAkpWsthwFOQPa9nMnmTHzeRZ5AlgDRy1kkJSe+bK
+	eqPcBJ0MZvjNzm2xFOYhXoSA5LorFMDm4CUD94wZv8WaCS7dEF0GWZShe/WsbS2tWliAwb6bPVfBt
+	10yVTvVWWMe42gQR5MqZgyWIBtFtOrSCuphNONo6nYk98mkb9otQ7eL6yOmnTMvOFK8qxXIBW1CIC
+	lINRGu5w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oB8vl-007u6X-I8; Tue, 12 Jul 2022 05:59:33 +0000
+	id 1oB9Nq-0081HE-CV; Tue, 12 Jul 2022 06:28:34 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oB8vh-007u5h-Ij
-	for barebox@lists.infradead.org; Tue, 12 Jul 2022 05:59:31 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1oB9Nm-0081GK-Dp
+	for barebox@lists.infradead.org; Tue, 12 Jul 2022 06:28:32 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0] helo=igor.pengutronix.de)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oB8vf-0006Rw-Io; Tue, 12 Jul 2022 07:59:27 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oB8vf-0001QI-A9; Tue, 12 Jul 2022 07:59:27 +0200
-Date: Tue, 12 Jul 2022 07:59:27 +0200
-To: Johannes Zink <j.zink@pengutronix.de>
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1oB9Nj-0001qh-Sh; Tue, 12 Jul 2022 08:28:27 +0200
+References: <20220711075209.2377254-1-str@pengutronix.de>
+ <20220711075209.2377254-5-str@pengutronix.de>
+ <20220711085415.GM5208@pengutronix.de>
+User-agent: mu4e 1.8.5; emacs 29.0.50
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+To: Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220712055927.GB23482@pengutronix.de>
-References: <20220711141246.3331160-2-j.zink@pengutronix.de>
- <20220712050449.3593253-1-j.zink@pengutronix.de>
+Date: Tue, 12 Jul 2022 07:48:04 +0200
+In-reply-to: <20220711085415.GM5208@pengutronix.de>
+Message-ID: <87sfn6n8ty.fsf@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220712050449.3593253-1-j.zink@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220711_225929_635106_3E90BD90 
-X-CRM114-Status: GOOD (  26.69  )
+X-CRM114-CacheID: sfid-20220711_232830_489125_6B8D62C8 
+X-CRM114-Status: GOOD (  22.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,95 +67,187 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] fixup! ARM: i.MX7: add 96Boards Meerkat96 support
+Subject: Re: [PATCH v3 5/6] ARM: socfpga: add support for Enclustra AA1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Johannes,
 
-On Tue, Jul 12, 2022 at 07:04:49AM +0200, Johannes Zink wrote:
-> This is a fixup for the documentation: fixed line breaks, whitespace changes 
-> and typos as requested.
-> 
-> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
-> ---
->  Documentation/boards/imx/meerkat96.rst | 28 ++++++++++++++++++--------
->  1 file changed, 20 insertions(+), 8 deletions(-)
+Hi!
 
-Still many trailing whitespaces with this fixup. I fixed it up locally
-and applied, thanks
+Sascha Hauer <sha@pengutronix.de> writes:
 
-Sascha
+(...)
+>> +++ b/arch/arm/boards/enclustra-aa1/board.c
+(...)
+>> +	pbl_index = readl(0xFFD06210);
+>
+> This is ARRIA10_SYSMGR_ROM_INITSWLASTLD, right? Please use it.
+>
 
-> 
-> diff --git a/Documentation/boards/imx/meerkat96.rst b/Documentation/boards/imx/meerkat96.rst
-> index 3cdb1beaf..3a51b9144 100644
-> --- a/Documentation/boards/imx/meerkat96.rst
-> +++ b/Documentation/boards/imx/meerkat96.rst
-> @@ -1,28 +1,40 @@
->  Meerkat 96
->  ==========
->  
-> -The Meerkat96 is a single board computer based on an i.MX7D SoC by NXP, featuring a dual core ARM Cortex-A7 at 1 GHz and a Cortex-M4 at 266MHz and 512 MB DRAM. For further details on the board's features check the manufacturers page at https://www.96boards.org/product/imx7-96
-> +The Meerkat96 is a single board computer based on an i.MX7D SoC by NXP, 
-> +featuring a dual core ARM Cortex-A7 at 1 GHz and a Cortex-M4 at 266MHz 
-> +and 512 MB DRAM. For further details on the board's features check the 
-> +manufacturers page at https://www.96boards.org/product/imx7-96
->  
->  Serial console
->  --------------
->  
-> -UART6 of the i.MX7D is broken out to Pinheader J3, on the Silkscreen the Pins are labeled with B (Ground), W (UART 6 TX) and G (UART 6 RX). If you use the UART-To-Serial-Converter provided with the board, you can just connect the Black jumper to B, the White to W and the Green to G. The UART uses 3.3V levels. 
-> +UART6 of the i.MX7D is broken out to Pinheader J3, on the Silkscreen 
-> +the Pins are labeled with B (Ground), W (UART 6 TX) and G (UART 6 RX). 
-> +If you use the UART-To-USB-Converter provided with the board, you can 
-> +just connect the Black jumper to B, the White to W and the Green to G. 
-> +
-> +The UART uses 3.3V levels. 
->  
->  Building Barebox                                                        
->  ----------------                                                        
->                                                                          
-> -To build Barebox for ZII i.MX7 based boards do the following:           
-> -                                                                        
-> -.. code-block:: sh                                                      
-> -           
-> -  make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix> mrproper   
-> +To build Barebox for the meerkat96 board do the following:
-> +
-> +.. code-block:: sh
-> +
-> +  make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix> mrproper
->    make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix> imx_v7_defconfig
->    make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix>
->  
->  Bringup
->  -------
->  
-> -flash the resulting barebox-meerkat96.img to an sdcard at address 0. Make sure the pmic is set to power-on state by setting the dipswitch SW3 on the boards bottom side to 1-1 (i.e. all switches on, which is the factory default).
-> +flash the resulting barebox-meerkat96.img to an sdcard at address 0. 
-> +
-> +Make sure the pmic is set to power-on state by setting the dipswitch 
-> +SW3 on the boards bottom side to 1-1 (i.e. all switches on, which is 
-> +the factory default).
->  
->  Schematics
->  ----------
-> -- 
-> 2.30.2
-> 
-> 
-> 
+Sure.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>> +
+>> +	pr_debug("Current barebox instance %d\n", pbl_index);
+>> +
+>> +	switch (pbl_index) {
+>> +	case 0:
+>> +		flag_barebox1 |= BBU_HANDLER_FLAG_DEFAULT;
+>> +		break;
+>> +	case 1:
+>> +		flag_barebox2 |= BBU_HANDLER_FLAG_DEFAULT;
+>> +		break;
+>> +	};
+>> +
+>> +	bbu_register_std_file_update("emmc-barebox1-xload", flag_barebox1,
+>> +					"/dev/mmc0.barebox1-xload",
+>> +					filetype_socfpga_xload);
+>> +
+>> +	bbu_register_std_file_update("emmc-barebox1", 0,
+>> +					"/dev/mmc0.barebox1",
+>> +					filetype_arm_barebox);
+>> +
+>> +	bbu_register_std_file_update("emmc-barebox2-xload", flag_barebox2,
+>> +					"/dev/mmc0.barebox2-xload",
+>> +					filetype_socfpga_xload);
+>> +
+>> +	bbu_register_std_file_update("emmc-barebox2", 0,
+>> +					"/dev/mmc0.barebox2",
+>> +					filetype_arm_barebox);
+>
+> Should this be turned into something more intelligent like failsafe
+> update?
+>
+
+You mean like you did for rockchip? Might be a good idea.
+
+>> +	return 0;
+>> +}
+>> +postcore_initcall(aa1_init);
+>
+> You could turn this into a postcore_platform_driver.
+>
+>> +#define BAREBOX_PART 0
+>> +#define BITSTREAM_PART 1
+>> +#define BAREBOX1_OFFSET    SZ_1M
+>> +#define BAREBOX2_OFFSET    BAREBOX1_OFFSET + SZ_512K
+>> +#define BAREBOX3_OFFSET    BAREBOX2_OFFSET + SZ_512K
+>> +#define BAREBOX4_OFFSET    BAREBOX3_OFFSET + SZ_512K
+>> +#define BITSTREAM1_OFFSET  0x0
+>
+> From looking into the device tree I would expect BITSTREAM1_OFFSET to be 0x700000.
+>
+
+Ack.
+
+>> +#define BITSTREAM2_OFFSET  BITSTREAM1_OFFSET + SZ_32M
+>
+> You should add braces around the macro definitions to make them safe
+> to use.
+>
+
+Ack.
+
+>> +
+>> +extern char __dtb_z_socfpga_arria10_mercury_aa1_start[];
+>> +
+>> +#define ARRIA10_STACKTOP	ARRIA10_OCRAM_ADDR + SZ_256K
+>> +
+>> +ENTRY_FUNCTION_WITHSTACK(start_socfpga_aa1_xload, ARRIA10_STACKTOP, r0, r1, r2)
+>> +{
+>> +	int pbl_index = 0;
+>> +	int barebox = 0;
+>> +	int bitstream = 0;
+>> +
+>> +	arm_cpu_lowlevel_init();
+>> +
+>> +	relocate_to_current_adr();
+>> +
+>> +	setup_c();
+>> +
+>> +	arria10_init(&mainpll_cfg, &perpll_cfg, pinmux);
+>> +
+>> +	arria10_prepare_mmc(BAREBOX_PART, BITSTREAM_PART);
+>> +
+>> +	pbl_index = readl(ARRIA10_SYSMGR_ROM_INITSWLASTLD);
+>> +
+>> +	/* Allow booting from both PBL0 and PBL1 to allow atomic updates.
+>> +	 * Bitstreams redundant too and expected to reside in the second
+>> +	 * partition.
+>> +	 * There is a fixed relation between the PBL/barebox instance and its
+>> +	 * bitstream location (offset) that requires to update them together */
+>> +	switch (pbl_index) {
+>> +	case 0:
+>> +		barebox = BAREBOX1_OFFSET;
+>> +		bitstream = BITSTREAM1_OFFSET;
+>> +		break;
+>> +	case 1:
+>> +		barebox = BAREBOX2_OFFSET;
+>> +		bitstream = BITSTREAM1_OFFSET;
+>> +		break;
+>> +	case 2:
+>> +	case 3:
+>> +		/* Left blank for future extension */
+>> +		break;
+>
+> You should either bail out or use a sane default for unhandled cases.
+>
+
+Ack.
+
+>> diff --git a/arch/arm/dts/socfpga_arria10_mercury_aa1.dts b/arch/arm/dts/socfpga_arria10_mercury_aa1.dts
+>> new file mode 100644
+>> index 0000000000..ef3afc9b98
+>> --- /dev/null
+>> +&mmc {
+>> +	bus-width = <8>;
+>> +	non-removable;
+>> +	disable-wp;
+>> +	no-sd;
+>> +
+>> +	partitions {
+>> +		compatible = "fixed-partitions";
+>> +		#size-cells = <1>;
+>> +		#address-cells = <1>;
+>> +
+>> +		barebox1_xload: partition@100000 {
+>> +			label = "barebox1-xload";
+>> +			reg = <0x100000 0x40000>;
+>> +		};
+>> +
+>> +		barebox2_xload: partition@140000 {
+>> +			label = "barebox2-xload";
+>> +			reg = <0x140000 0x40000>;
+>> +		};
+>> +
+>> +		barebox1: partition@200000 {
+>> +			label = "barebox1";
+>> +			reg = <0x200000 0x80000>;
+>> +		};
+>> +
+>> +		barebox2: partition@280000 {
+>> +			label = "barebox2";
+>> +			reg = <0x280000 0x80000>;
+>> +		};
+>
+> It might be worth increasing the size to 1MiB. It's easy to make barebox
+> bigger than 512KiB.
+>
+
+Sure.
+
+
+Thanks,
+Steffen
+
+--
+Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
+Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
 
 
