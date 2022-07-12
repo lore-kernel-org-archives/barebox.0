@@ -1,61 +1,60 @@
-Delivery-date: Tue, 12 Jul 2022 09:32:42 +0200
+Delivery-date: Tue, 12 Jul 2022 15:34:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oBANv-004AKq-5T
-	for lore@lore.pengutronix.de; Tue, 12 Jul 2022 09:32:42 +0200
+	id 1oBG1l-004Y8o-QU
+	for lore@lore.pengutronix.de; Tue, 12 Jul 2022 15:34:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oBANs-0001P1-SO
-	for lore@pengutronix.de; Tue, 12 Jul 2022 09:32:42 +0200
+	id 1oBG1h-000640-OB
+	for lore@pengutronix.de; Tue, 12 Jul 2022 15:34:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yJLEoz1DE62PKKjbce2xCbxPruVKIILhfY/DOiHCd3g=; b=yx6sT9068rM9Z1zUxRBT7yXeuS
-	3ZEdNJxq/VF2JsqZ20nHJSdLry5OaZi04WovW/T/A+yD91Ehu3PobWXAlss7rId0zeU/FtpON92s3
-	EBx4ijf3z+TSMMGlLJ+t9tsXYJfWjgE25fUo8OvbPUbx0u1y1ULQYh8GcM6emP/SAQtvobOGrqx5B
-	tgDq5ecYB5w04jt6JAhWGNREwmMKIaIDtS4AbXFEbMjsU6fjreURfhwOHqZ9S/NmfGIoDjHscVjxq
-	46+WRKtyyD3Xg7/Hpfo9fhgCMc32X7iGgBqImdyKK6OxGl2aiUilZME/+PGyvK8+fWM+DMcrT/2YE
-	ckt4chCg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=2+nJ8Fkl6i1lSALEPRe54ucy9f6NCpZ0aSrlZ8YmHlw=; b=CW/TQf3aTevoqGoGalbZNtn/4Y
+	EWIWTXsV8Ku0vrRjvz5f1V7xq64jK4g8mO7WYDHBUhY1xLSCMVWWRNG7oqA0Oig9dxOW5j1vkDdzM
+	YRIr+DDxBV8jV4kvH8aDRbfVjJ48qHWCOATDzyFZi6PFKaEwqtvty5NtS2ajyDtxwN4R2mgWTMJHN
+	riq+8RUGUP3nJ/JuJIFFk4iQaKqVY3HEpZrlBhrl9UFughJ4b87r2qSBQARmDN8SbKHX59SdOrKQb
+	bYrGRhlheghlFXymfebW52SPxclKF8LIyjs0/gSrrjh5azLAVDysF5Kgtv9aSofL8sVRALPzVahYq
+	uekLbLgA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oBAMD-008LV0-Uy; Tue, 12 Jul 2022 07:30:58 +0000
+	id 1oBFzq-00BMob-Q3; Tue, 12 Jul 2022 13:32:14 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oBAM8-008LO7-0V
-	for barebox@lists.infradead.org; Tue, 12 Jul 2022 07:30:54 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1oBFzm-00BMka-2q
+	for barebox@lists.infradead.org; Tue, 12 Jul 2022 13:32:11 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oBAM1-0000yV-37; Tue, 12 Jul 2022 09:30:45 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	id 1oBFzg-0005dG-QL; Tue, 12 Jul 2022 15:32:04 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oBAM0-0007Uo-QT; Tue, 12 Jul 2022 09:30:44 +0200
-Date: Tue, 12 Jul 2022 09:30:44 +0200
-To: Johannes Zink <j.zink@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220712073044.GC23482@pengutronix.de>
-References: <20220708094138.112060-1-j.zink@pengutronix.de>
+	id 1oBFzg-000WMW-3V; Tue, 12 Jul 2022 15:32:04 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oBFzf-00AN8A-F9; Tue, 12 Jul 2022 15:32:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue, 12 Jul 2022 15:32:02 +0200
+Message-Id: <20220712133202.2472149-2-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220712133202.2472149-1-s.hauer@pengutronix.de>
+References: <20220712133202.2472149-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220708094138.112060-1-j.zink@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220712_003052_076577_84E20AD9 
-X-CRM114-Status: GOOD (  37.69  )
+X-CRM114-CacheID: sfid-20220712_063210_138571_B3052A51 
+X-CRM114-Status: UNSURE (   9.24  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,194 +72,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v3] base: driver: print dev_err_probe message on
- permanent probe deferral
+Subject: [PATCH 2/2] ARM: i.MX8MP-EVK: Use compressed dtb
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jul 08, 2022 at 11:41:38AM +0200, Johannes Zink wrote:
-> This stores the probe deferral reason in the device structure.
-> If a probe is permanently deferred, the last reason is displayed.
-> 
-> Example output on a permanently deferred probe:
->   ERROR: imx-pgc-domain0: probe permanently deferred (Failed to get domain's regulator)
-> 
-> Other dev_err_probe outputs are displayed as before.
-> 
-> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
-> ---
+Use a compressed dtb to save some space in OCRAM.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sascha
-
-> v1 -> v2:
->   - improved commit message
->   - improved function prototypes
->   - improved debug output, device name is displayed once only per
->     message
->   - reverted removal of MSG_DEBUG output on deferred probe
->   - replaced kfree by free
->   - removed unnecessary null checks before free
->   - fixed several typos
->   - fixed compiler warnings
->   - fixed coding style issues
-> v2 -> v3:
->   - dropped const from dev_err_probe
->   - use xasprintf instead of basprintf: guarantee memory allocation
->   - prevent newline within message on permanent deferral
->   - removed unnecessary helper functions
->   - fixed remaining typos and whitespace changes
->   - improved comments
->   - reverted removal of kernel doc comment 
->   - added example in commit message
-> ---
->  drivers/base/driver.c  | 44 +++++++++++++++++++++++++++++++++++-------
->  include/driver.h       |  5 +++++
->  include/linux/printk.h |  6 +++---
->  3 files changed, 45 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index 303ca061c..4898e0114 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -283,6 +283,7 @@ void free_device_res(struct device_d *dev)
->  	dev->name = NULL;
->  	free(dev->unique_name);
->  	dev->unique_name = NULL;
-> +	free(dev->deferred_probe_reason);
->  }
->  EXPORT_SYMBOL(free_device_res);
->  
-> @@ -333,9 +334,13 @@ static int device_probe_deferred(void)
->  		}
->  	} while (success);
->  
-> -	list_for_each_entry(dev, &deferred, active)
-> -		dev_err(dev, "probe permanently deferred\n");
-> -
-> +	list_for_each_entry(dev, &deferred, active) {
-> +		if (dev->deferred_probe_reason)
-> +			dev_err(dev, "probe permanently deferred (%s)\n",
-> +				dev->deferred_probe_reason);
-> +		else
-> +			dev_err(dev, "probe permanently deferred\n");
-> +	}
->  	return 0;
->  }
->  late_initcall(device_probe_deferred);
-> @@ -573,6 +578,24 @@ const void *device_get_match_data(struct device_d *dev)
->  	return NULL;
->  }
->  
-> +static void device_set_deferred_probe_reason(struct device_d *dev, const struct va_format *vaf)
-> +{
-> +	char *reason;
-> +	char *last_char;
-> +
-> +	free(dev->deferred_probe_reason);
-> +
-> +	reason = xasprintf("%pV", vaf);
-> +
-> +	/* drop newline char at end of reason string */
-> +	last_char = reason + strlen(reason) - 1;
-> +
-> +	if (*last_char == '\n')
-> +		*last_char = '\0';
-> +
-> +	dev->deferred_probe_reason = reason;
-> +}
-> +
->  /**
->   * dev_err_probe - probe error check and log helper
->   * @loglevel: log level configured in source file
-> @@ -584,8 +607,12 @@ const void *device_get_match_data(struct device_d *dev)
->   * This helper implements common pattern present in probe functions for error
->   * checking: print debug or error message depending if the error value is
->   * -EPROBE_DEFER and propagate error upwards.
-> - * In case of -EPROBE_DEFER it sets also defer probe reason, which can be
-> - * checked later by reading devices_deferred debugfs attribute.
-> + *
-> + * In case of -EPROBE_DEFER it sets the device's deferred_probe_reason attribute,
-> + * but does not report an error. The error is recorded and displayed later, if
-> + * (and only if) the probe is permanently deferred. For all other error codes,
-> + * it just outputs the error along with the formatted message.
-> + *
->   * It replaces code sequence::
->   *
->   * 	if (err != -EPROBE_DEFER)
-> @@ -601,8 +628,8 @@ const void *device_get_match_data(struct device_d *dev)
->   * Returns @err.
->   *
->   */
-> -int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...);
-> -int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...)
-> +int dev_err_probe(struct device_d *dev, int err, const char *fmt, ...);
-> +int dev_err_probe(struct device_d *dev, int err, const char *fmt, ...)
->  {
->  	struct va_format vaf;
->  	va_list args;
-> @@ -611,6 +638,9 @@ int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...)
->  	vaf.fmt = fmt;
->  	vaf.va = &args;
->  
-> +	if (err == -EPROBE_DEFER)
-> +		device_set_deferred_probe_reason(dev, &vaf);
-> +
->  	dev_printf(err == -EPROBE_DEFER ? MSG_DEBUG : MSG_ERR,
->  		   dev, "error %pe: %pV", ERR_PTR(err), &vaf);
->  
-> diff --git a/include/driver.h b/include/driver.h
-> index b35b5f397..a89ce7af9 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -88,6 +88,11 @@ struct device_d {
->  	 * when the driver should actually detect client devices
->  	 */
->  	int     (*detect) (struct device_d *);
-> +
-> +	/*
-> +	 * if a driver probe is deferred, this stores the last error
-> +	 */
-> +	char *deferred_probe_reason;
->  };
->  
->  /** @brief Describes a driver present in the system */
-> diff --git a/include/linux/printk.h b/include/linux/printk.h
-> index 39523b057..e21e859bf 100644
-> --- a/include/linux/printk.h
-> +++ b/include/linux/printk.h
-> @@ -76,12 +76,12 @@ static inline int pr_print(int level, const char *format, ...)
->  	__dev_printf(8, (dev) , format , ## arg)
->  
->  #if LOGLEVEL >= MSG_ERR
-> -int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...)
-> +int dev_err_probe(struct device_d *dev, int err, const char *fmt, ...)
->  	__attribute__ ((format(__printf__, 3, 4)));
->  #elif !defined(dev_err_probe)
-> -static int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...)
-> +static int dev_err_probe(struct device_d *dev, int err, const char *fmt, ...)
->  	__attribute__ ((format(__printf__, 3, 4)));
-> -static inline int dev_err_probe(const struct device_d *dev, int err, const char *fmt, ...)
-> +static inline int dev_err_probe(struct device_d *dev, int err, const char *fmt, ...)
->  {
->  	return err;
->  }
-> -- 
-> 2.30.2
-> 
-> 
-> 
-
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 54a4f7a33a..fb96234de2 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -591,6 +591,7 @@ config MACH_NXP_IMX8MP_EVK
+ 	select IMX8M_DRAM
+ 	select I2C_IMX_EARLY
+ 	select USB_GADGET_DRIVER_ARC_PBL
++	select ARM_USE_COMPRESSED_DTB
+ 
+ config MACH_NXP_IMX8MQ_EVK
+ 	bool "NXP i.MX8MQ EVK Board"
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
