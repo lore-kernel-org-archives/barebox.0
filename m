@@ -1,60 +1,60 @@
-Delivery-date: Wed, 13 Jul 2022 12:10:56 +0200
+Delivery-date: Wed, 13 Jul 2022 12:10:58 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oBZKa-005vqw-SG
-	for lore@lore.pengutronix.de; Wed, 13 Jul 2022 12:10:56 +0200
+	id 1oBZKd-005vrR-0d
+	for lore@lore.pengutronix.de; Wed, 13 Jul 2022 12:10:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oBZKY-0002gL-01
-	for lore@pengutronix.de; Wed, 13 Jul 2022 12:10:55 +0200
+	id 1oBZKa-0002hv-Ug
+	for lore@pengutronix.de; Wed, 13 Jul 2022 12:10:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=7AOtK7TEi+/21okQtFA5e7gPbSHpckYp7UKNZgVy/so=; b=bFl5XoPZIZ7O+4enz4qLZDyMgq
-	iXlljkOjL4/D83h4msIbAh4ixkt3IOSTZ5Isoi/SnXf04MNE7T6tREW/cuOmO2CJ7Uu2crILGugcp
-	9haJzpcc9zlTcPuoUrqxizI7FpRn0ldIGr9ce2EVoPRWpUbpy83gSfKCJiR5mNfKFsqgJBILdAM4D
-	yGeIbF9EiQNPzLYxAFRmmGwqrbL8pJOiPvlYbrEwH3nH+CS3hqOeln5BrB4UycScVsxHsCKygsftg
-	4q2WAL7kIrbZ1bZF8uC+m3DI/NFXgcidxVPifOx2yZRHHZcXNBHsBM1PYW9o79sqZuV9aiP+UJSR1
-	vp/TJjFg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=0SIjOz/96KujZPUrtu+mGzv/rJIzDQGDOS4Y32O3oIU=; b=jPmdBBXVK0G/3srp4RjyEtSChG
+	TcS/ooDfsZ/BnHGlO78S6i1e4R+ju5+/vzfhRkwUznPgXvLch0cSSqmpKleH3pKigpjrGHFR+AIyb
+	zhEFM0hkLKB+GMzUQnwuhd1KMhJjTwzEErIUQt9nCzzldLzpqoebqxO5OkRZYYXi187MCnF8V+O9W
+	AUBulODL8kUsAhHrDRCJjmPLZrXOyHWbwDhc1jk2Q3aoO89jU2QPUwzmTKw4tJ70RjNMRR48Ung1p
+	SKCvWbiUV+Becf1CQGW+iFCW+IUVOa2DcTTPe6XBx3Whi4N0h36bsHo2fHpcf3Bai929FzYg5NRd5
+	sP9U08ww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oBZJG-002aCx-NH; Wed, 13 Jul 2022 10:09:34 +0000
+	id 1oBZJE-002aC9-F0; Wed, 13 Jul 2022 10:09:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oBZJ8-002a75-Hr
+	id 1oBZJ8-002a7B-Rs
 	for barebox@lists.infradead.org; Wed, 13 Jul 2022 10:09:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oBZJ7-0002Fx-5L
-	for barebox@lists.infradead.org; Wed, 13 Jul 2022 12:09:25 +0200
+	id 1oBZJ7-0002GO-Ks; Wed, 13 Jul 2022 12:09:25 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oBZJ6-000gVg-Du
-	for barebox@lists.infradead.org; Wed, 13 Jul 2022 12:09:24 +0200
+	id 1oBZJ6-000gVn-SN; Wed, 13 Jul 2022 12:09:24 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oBZJ5-008ChN-Rk
-	for barebox@lists.infradead.org; Wed, 13 Jul 2022 12:09:23 +0200
+	id 1oBZJ5-008ChP-SJ; Wed, 13 Jul 2022 12:09:23 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 13 Jul 2022 12:09:17 +0200
-Message-Id: <20220713100922.1880282-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 13 Jul 2022 12:09:18 +0200
+Message-Id: <20220713100922.1880282-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220713100922.1880282-1-a.fatoum@pengutronix.de>
+References: <20220713100922.1880282-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220713_030926_614376_D62AF8A6 
-X-CRM114-Status: GOOD (  12.85  )
+X-CRM114-CacheID: sfid-20220713_030926_921198_18F83016 
+X-CRM114-Status: GOOD (  10.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,131 +77,71 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 0/5] lib: zstd: allow use in PBL and shell
+Subject: [PATCH 1/5] lib: zstd: adopt Linux directory structure
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-So far, zstd use was only possible from squashfs and ubifs.
-Give it an update and add the necessary hooks to have it usable
-everywhere where LZO and friends can be used. zstd would've
-been a good default for barebox proper compression, but unfortunately,
-the decompressor going into the PBL would be quite big:
+In preparation for syncing with Linux, adopt Linux' current directory
+layout to reduce the diff.
 
-                        lz4    lzo    gzip   xz     zstd   uncompressed
-thumb2 barebox proper   671K   614K   544K   456K   531K   1022K
-thumb2 barebox PBL       10K    10K    18K    17K    41K   9K   
-RIoTboard FDT            12K    11K     9K     7K     8K   39K
-total thumb2 image      693K   635K   571K   480K   580K   974K
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ lib/zstd/Makefile                          | 20 ++++++++++++++++----
+ lib/zstd/{ => common}/entropy_common.c     |  0
+ lib/zstd/{ => common}/fse_decompress.c     |  0
+ lib/zstd/{ => common}/zstd_common.c        |  0
+ lib/zstd/{ => decompress}/huf_decompress.c |  0
+ 5 files changed, 16 insertions(+), 4 deletions(-)
+ rename lib/zstd/{ => common}/entropy_common.c (100%)
+ rename lib/zstd/{ => common}/fse_decompress.c (100%)
+ rename lib/zstd/{ => common}/zstd_common.c (100%)
+ rename lib/zstd/{ => decompress}/huf_decompress.c (100%)
 
-So, don't touch the defaults for now.
-
-Series applies on top of
-https://lore.barebox.org/barebox/20220713095730.1878941-1-a.fatoum@pengutronix.de/T/#t
-
-Ahmad Fatoum (5):
-  lib: zstd: adopt Linux directory structure
-  lib: zstd: sync with Linux
-  decompressor: define macros for non-PBL case as well
-  ARM: cpu: uncompress: increase early malloc pool to 256K
-  lib: uncompress: add general zstd support
-
- arch/arm/include/asm/barebox-arm.h            |    2 +-
- common/bootm.c                                |    8 +
- common/filetype.c                             |    4 +
- fs/squashfs/zstd_wrapper.c                    |    4 +-
- fs/ubifs/ubifs.c                              |    4 +-
- include/filetype.h                            |    2 +
- include/linux/decompress/mm.h                 |   11 +-
- include/linux/decompress/unzstd.h             |   11 +
- include/linux/limits.h                        |    1 +
- include/linux/zstd.h                          | 1252 ++------
- include/linux/zstd_errors.h                   |   77 +
- include/linux/zstd_lib.h                      | 2432 ++++++++++++++++
- lib/Makefile                                  |    1 +
- lib/decompress_unzstd.c                       |  351 +++
- lib/uncompress.c                              |    6 +
- lib/zstd/Makefile                             |   27 +-
- lib/zstd/bitstream.h                          |  374 ---
- lib/zstd/common/bitstream.h                   |  437 +++
- lib/zstd/common/compiler.h                    |  177 ++
- lib/zstd/common/cpu.h                         |  194 ++
- lib/zstd/common/debug.c                       |   24 +
- lib/zstd/common/debug.h                       |  101 +
- lib/zstd/common/entropy_common.c              |  357 +++
- lib/zstd/common/error_private.c               |   56 +
- lib/zstd/common/error_private.h               |   69 +
- lib/zstd/common/fse.h                         |  710 +++++
- lib/zstd/common/fse_decompress.c              |  390 +++
- lib/zstd/common/huf.h                         |  356 +++
- lib/zstd/common/mem.h                         |  259 ++
- lib/zstd/common/zstd_common.c                 |   83 +
- lib/zstd/common/zstd_deps.h                   |  125 +
- lib/zstd/common/zstd_internal.h               |  450 +++
- lib/zstd/decompress.c                         | 2528 -----------------
- lib/zstd/decompress/huf_decompress.c          | 1206 ++++++++
- lib/zstd/decompress/zstd_ddict.c              |  241 ++
- lib/zstd/decompress/zstd_ddict.h              |   44 +
- lib/zstd/decompress/zstd_decompress.c         | 2085 ++++++++++++++
- lib/zstd/decompress/zstd_decompress_block.c   | 1540 ++++++++++
- lib/zstd/decompress/zstd_decompress_block.h   |   62 +
- .../decompress/zstd_decompress_internal.h     |  202 ++
- lib/zstd/decompress_sources.h                 |   28 +
- lib/zstd/entropy_common.c                     |  243 --
- lib/zstd/error_private.h                      |   53 -
- lib/zstd/fse.h                                |  575 ----
- lib/zstd/fse_decompress.c                     |  332 ---
- lib/zstd/huf.h                                |  212 --
- lib/zstd/huf_decompress.c                     |  960 -------
- lib/zstd/mem.h                                |  151 -
- lib/zstd/zstd_common.c                        |   75 -
- lib/zstd/zstd_decompress_module.c             |  105 +
- lib/zstd/zstd_internal.h                      |  263 --
- lib/zstd/zstd_opt.h                           | 1014 -------
- pbl/Kconfig                                   |    4 +
- pbl/decomp.c                                  |    4 +
- scripts/Makefile.lib                          |   29 +
- 55 files changed, 12538 insertions(+), 7773 deletions(-)
- create mode 100644 include/linux/decompress/unzstd.h
- create mode 100644 include/linux/zstd_errors.h
- create mode 100644 include/linux/zstd_lib.h
- create mode 100644 lib/decompress_unzstd.c
- delete mode 100644 lib/zstd/bitstream.h
- create mode 100644 lib/zstd/common/bitstream.h
- create mode 100644 lib/zstd/common/compiler.h
- create mode 100644 lib/zstd/common/cpu.h
- create mode 100644 lib/zstd/common/debug.c
- create mode 100644 lib/zstd/common/debug.h
- create mode 100644 lib/zstd/common/entropy_common.c
- create mode 100644 lib/zstd/common/error_private.c
- create mode 100644 lib/zstd/common/error_private.h
- create mode 100644 lib/zstd/common/fse.h
- create mode 100644 lib/zstd/common/fse_decompress.c
- create mode 100644 lib/zstd/common/huf.h
- create mode 100644 lib/zstd/common/mem.h
- create mode 100644 lib/zstd/common/zstd_common.c
- create mode 100644 lib/zstd/common/zstd_deps.h
- create mode 100644 lib/zstd/common/zstd_internal.h
- delete mode 100644 lib/zstd/decompress.c
- create mode 100644 lib/zstd/decompress/huf_decompress.c
- create mode 100644 lib/zstd/decompress/zstd_ddict.c
- create mode 100644 lib/zstd/decompress/zstd_ddict.h
- create mode 100644 lib/zstd/decompress/zstd_decompress.c
- create mode 100644 lib/zstd/decompress/zstd_decompress_block.c
- create mode 100644 lib/zstd/decompress/zstd_decompress_block.h
- create mode 100644 lib/zstd/decompress/zstd_decompress_internal.h
- create mode 100644 lib/zstd/decompress_sources.h
- delete mode 100644 lib/zstd/entropy_common.c
- delete mode 100644 lib/zstd/error_private.h
- delete mode 100644 lib/zstd/fse.h
- delete mode 100644 lib/zstd/fse_decompress.c
- delete mode 100644 lib/zstd/huf.h
- delete mode 100644 lib/zstd/huf_decompress.c
- delete mode 100644 lib/zstd/mem.h
- delete mode 100644 lib/zstd/zstd_common.c
- create mode 100644 lib/zstd/zstd_decompress_module.c
- delete mode 100644 lib/zstd/zstd_internal.h
- delete mode 100644 lib/zstd/zstd_opt.h
-
+diff --git a/lib/zstd/Makefile b/lib/zstd/Makefile
+index 4e8689a4855d..099c26c378f8 100644
+--- a/lib/zstd/Makefile
++++ b/lib/zstd/Makefile
+@@ -1,8 +1,20 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-
++# SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
++# ################################################################
++# Copyright (c) Facebook, Inc.
++# All rights reserved.
++#
++# This source code is licensed under both the BSD-style license (found in the
++# LICENSE file in the root directory of this source tree) and the GPLv2 (found
++# in the COPYING file in the root directory of this source tree).
++# You may select, at your option, one of the above-listed licenses.
++# ################################################################
+ obj-$(CONFIG_ZSTD_DECOMPRESS) += zstd_decompress.o
+ 
+ ccflags-y += -O3
+ 
+-zstd_decompress-y := huf_decompress.o decompress.o
+-zstd_decompress-y += entropy_common.o fse_decompress.o zstd_common.o
++zstd_decompress-y := \
++		decompress.o \
++		common/entropy_common.o \
++		common/fse_decompress.o \
++		common/zstd_common.o \
++		decompress/huf_decompress.o
+diff --git a/lib/zstd/entropy_common.c b/lib/zstd/common/entropy_common.c
+similarity index 100%
+rename from lib/zstd/entropy_common.c
+rename to lib/zstd/common/entropy_common.c
+diff --git a/lib/zstd/fse_decompress.c b/lib/zstd/common/fse_decompress.c
+similarity index 100%
+rename from lib/zstd/fse_decompress.c
+rename to lib/zstd/common/fse_decompress.c
+diff --git a/lib/zstd/zstd_common.c b/lib/zstd/common/zstd_common.c
+similarity index 100%
+rename from lib/zstd/zstd_common.c
+rename to lib/zstd/common/zstd_common.c
+diff --git a/lib/zstd/huf_decompress.c b/lib/zstd/decompress/huf_decompress.c
+similarity index 100%
+rename from lib/zstd/huf_decompress.c
+rename to lib/zstd/decompress/huf_decompress.c
 -- 
 2.30.2
 
