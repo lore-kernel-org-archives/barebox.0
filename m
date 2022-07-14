@@ -1,59 +1,59 @@
-Delivery-date: Thu, 14 Jul 2022 09:29:18 +0200
+Delivery-date: Thu, 14 Jul 2022 09:29:22 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oBtHi-007JZV-V4
-	for lore@lore.pengutronix.de; Thu, 14 Jul 2022 09:29:18 +0200
+	id 1oBtHn-007Ja2-6b
+	for lore@lore.pengutronix.de; Thu, 14 Jul 2022 09:29:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oBtHe-0002K2-V4
-	for lore@pengutronix.de; Thu, 14 Jul 2022 09:29:17 +0200
+	id 1oBtHj-0002MK-UZ
+	for lore@pengutronix.de; Thu, 14 Jul 2022 09:29:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4QLpNec3D2Lwyh1H9Ng14Qu4VAV5XyNgftEHcrmxV38=; b=wRlv9cSi/gJSoS43ZTcY6ZWrzF
-	la7GtrQbi/6Z4Tnna7nq5si6XbU7sjaB1q4J4OxHDcRuRISPDkGr8AAbXgNF/3Eiyu4o4GgTSlmps
-	40y56TdUAFeIHUDpzRw9n+Upn8Y8SDleAm9KmiYtLAqIs1DV7kgnzzivT9Sf9zxOWJ9VJsffsxpmI
-	fbukhDjqiN+/pLPUubfLmNIXEvwJfanexNK5DRPJKa4DLjHASS56cqNRqom8Bo9AAI209fn87nXkC
-	gZITaRQ+yJx0mTYqzjZqvJpfWuXcErVLRhphdZHi0D/RYqmw4zvtvs46IiGU0gNewefvtcSQg8+iP
-	Xd9Un4xQ==;
+	bh=RvB/wh8SIdOVk/7mwN9oExP6VryInlMu2tcKTQgBX44=; b=bAlDqLqu4Wma1MnLEJ6unCW3qM
+	SvYMfTUdL54yDSYUx7WlAeIZxUHT/6QmLlcXY8zC90ycPjv0s1lYClJgJgjLW+ziJ8VT3X17PTOCn
+	W4XI2hDINQbqNKG4zhE5G2HWMAI+4kE03ESnAYADCOs7TlVU1J9uJ2lXkB4V3unoVRYt1Yyl0o5am
+	AzYXJwTGAlf8aS77IaRZ5L2aBTSy3U78glBS9ijNBJgNhShSw/lnF5eHiUJG+IBDd3+Q4EPK6IJLN
+	5Oxa0gcufqHYqDs8qvak2e2mE1cHu4eh7lBlOGK2mPhM2UhNFHDxAZy8TyjKx0+v0rj68wjK+KlRi
+	dfyeazvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oBtGJ-00BokO-Qx; Thu, 14 Jul 2022 07:27:52 +0000
+	id 1oBtGP-00Boof-IT; Thu, 14 Jul 2022 07:27:57 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oBtFx-00BoV7-Vz
-	for barebox@lists.infradead.org; Thu, 14 Jul 2022 07:27:32 +0000
+	id 1oBtFy-00BoVP-3H
+	for barebox@lists.infradead.org; Thu, 14 Jul 2022 07:27:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oBtFt-0001g0-Fp; Thu, 14 Jul 2022 09:27:25 +0200
+	id 1oBtFt-0001gK-W8; Thu, 14 Jul 2022 09:27:26 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oBtFs-000rqN-N3; Thu, 14 Jul 2022 09:27:24 +0200
+	id 1oBtFt-000rqa-7i; Thu, 14 Jul 2022 09:27:25 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oBtFr-00C1Vg-9w; Thu, 14 Jul 2022 09:27:23 +0200
+	id 1oBtFr-00C1Vm-B2; Thu, 14 Jul 2022 09:27:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 14 Jul 2022 09:27:12 +0200
-Message-Id: <20220714072722.2863571-3-s.hauer@pengutronix.de>
+Date: Thu, 14 Jul 2022 09:27:14 +0200
+Message-Id: <20220714072722.2863571-5-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220714072722.2863571-1-s.hauer@pengutronix.de>
 References: <20220714072722.2863571-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220714_002730_106334_975FE01D 
-X-CRM114-Status: GOOD (  19.08  )
+X-CRM114-CacheID: sfid-20220714_002730_324215_043D0DE2 
+X-CRM114-Status: GOOD (  14.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,142 +76,78 @@ X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 02/12] ARM: i.MX8M: Add romapi support
+Subject: [PATCH 04/12] ARM: i.MX8MP-EVK: Use imx8mp_load_and_start_image_via_tfa()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The i.MX8MP and i.MX8MN have a C API to the bootrom to chainload images
-for example via USB. This patch adds support for the API based on the
-corresponding U-Boot code.
+Use recently introduced imx8mp_load_and_start_image_via_tfa() instead
+of open coding it. With this we gain image loading via USB for the
+i.MX8MP-EVK board.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Makefile              |  2 +-
- arch/arm/mach-imx/include/mach/romapi.h | 37 +++++++++++++++++++++
- arch/arm/mach-imx/romapi.c              | 44 +++++++++++++++++++++++++
- include/asm-generic/sections.h          |  1 +
- 4 files changed, 83 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-imx/include/mach/romapi.h
- create mode 100644 arch/arm/mach-imx/romapi.c
+ arch/arm/boards/nxp-imx8mp-evk/lowlevel.c | 34 ++---------------------
+ 1 file changed, 2 insertions(+), 32 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 2cafcd77e0..fa5133a229 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -18,7 +18,7 @@ lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
- obj-$(CONFIG_ARCH_IMX7) += imx7.o
- obj-$(CONFIG_ARCH_VF610) += vf610.o
- obj-pbl-$(CONFIG_ARCH_IMX8M) += imx8m.o
--lwl-$(CONFIG_ARCH_IMX8M) += atf.o
-+lwl-$(CONFIG_ARCH_IMX8M) += atf.o romapi.o
- obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_NAND_IMX) += nand.o
- lwl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
-diff --git a/arch/arm/mach-imx/include/mach/romapi.h b/arch/arm/mach-imx/include/mach/romapi.h
-new file mode 100644
-index 0000000000..8022fc411e
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/romapi.h
-@@ -0,0 +1,37 @@
-+#ifndef __MACH_IMX_ROMAPI_H
-+#define __MACH_IMX_ROMAPI_H
-+
-+struct rom_api {
-+	u16 ver;
-+	u16 tag;
-+	u32 reserved1;
-+	u32 (*download_image)(u8 *dest, u32 offset, u32 size,  u32 xor);
-+	u32 (*query_boot_infor)(u32 info_type, u32 *info, u32 xor);
-+};
-+
-+enum boot_dev_type_e {
-+	BT_DEV_TYPE_SD = 1,
-+	BT_DEV_TYPE_MMC = 2,
-+	BT_DEV_TYPE_NAND = 3,
-+	BT_DEV_TYPE_FLEXSPINOR = 4,
-+	BT_DEV_TYPE_SPI_NOR = 6,
-+
-+	BT_DEV_TYPE_USB = 0xE,
-+	BT_DEV_TYPE_MEM_DEV = 0xF,
-+
-+	BT_DEV_TYPE_INVALID = 0xFF
-+};
-+
-+#define QUERY_ROM_VER		1
-+#define QUERY_BT_DEV		2
-+#define QUERY_PAGE_SZ		3
-+#define QUERY_IVT_OFF		4
-+#define QUERY_BT_STAGE		5
-+#define QUERY_IMG_OFF		6
-+
-+#define ROM_API_OKAY		0xF0
-+
-+int imx8mp_bootrom_load_image(void);
-+int imx8mn_bootrom_load_image(void);
-+
-+#endif /* __MACH_IMX_ROMAPI_H */
-diff --git a/arch/arm/mach-imx/romapi.c b/arch/arm/mach-imx/romapi.c
-new file mode 100644
-index 0000000000..f7d421d737
---- /dev/null
-+++ b/arch/arm/mach-imx/romapi.c
-@@ -0,0 +1,44 @@
-+#include <common.h>
-+#include <asm/sections.h>
-+#include <mach/romapi.h>
-+#include <mach/atf.h>
-+
-+static int imx8m_bootrom_load(struct rom_api *rom_api, void *adr, size_t size)
-+{
-+	while (size) {
-+		size_t chunksize = min(size, (size_t)1024);
-+		int ret;
-+
-+		ret = rom_api->download_image(adr, 0, chunksize,
-+					      (uintptr_t)adr ^ chunksize);
-+		if (ret != ROM_API_OKAY) {
-+			pr_err("Failed to load piggy data (ret = %x)\n", ret);
-+			return -EIO;
-+		}
-+
-+		adr += chunksize;
-+		size -= chunksize;
-+	}
-+
-+	return 0;
-+}
-+
-+/* read piggydata via a bootrom callback and place it behind our copy in SDRAM */
-+static int imx8m_bootrom_load_image(struct rom_api *rom_api)
-+{
-+	return imx8m_bootrom_load(rom_api,
-+				  (void *)MX8M_ATF_BL33_BASE_ADDR + barebox_pbl_size,
-+				  __piggydata_end - __piggydata_start);
-+}
-+
-+int imx8mp_bootrom_load_image(void)
-+{
-+	struct rom_api *rom_api = (void *)0x980;
-+
-+	return imx8m_bootrom_load_image(rom_api);
-+}
-+
-+int imx8mn_bootrom_load_image(void)
-+{
-+	return imx8mp_bootrom_load_image();
-+}
-diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
-index 0b2ed5615b..e54123de0e 100644
---- a/include/asm-generic/sections.h
-+++ b/include/asm-generic/sections.h
-@@ -11,6 +11,7 @@ extern char _end[];
- extern char __image_start[];
- extern char __image_end[];
- extern char __piggydata_start[];
-+extern char __piggydata_end[];
- extern void *_barebox_image_size;
- extern void *_barebox_bare_init_size;
- extern void *_barebox_pbl_size;
+diff --git a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
+index 3306392e9e..df4925f533 100644
+--- a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
+@@ -22,6 +22,7 @@
+ #include <mfd/pca9450.h>
+ #include <soc/imx8m/ddr.h>
+ #include <soc/fsl/fsl_udc.h>
++#include <soc/imx8m.h>
+ 
+ extern char __dtb_z_imx8mp_evk_start[];
+ 
+@@ -104,11 +105,6 @@ extern struct dram_timing_info imx8mp_evk_dram_timing;
+ 
+ static void start_atf(void)
+ {
+-	size_t bl31_size;
+-	const u8 *bl31;
+-	enum bootsource src;
+-	int instance;
+-
+ 	/*
+ 	 * If we are in EL3 we are running for the first time and need to
+ 	 * initialize the DRAM and run TF-A (BL31). The TF-A will then jump
+@@ -121,33 +117,7 @@ static void start_atf(void)
+ 
+ 	imx8mp_ddr_init(&imx8mp_evk_dram_timing, DRAM_TYPE_LPDDR4);
+ 
+-	imx8mp_get_boot_source(&src, &instance);
+-	switch (src) {
+-	case BOOTSOURCE_MMC:
+-		imx8mp_esdhc_load_image(instance, false);
+-		break;
+-	default:
+-		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
+-		hang();
+-	}
+-
+-
+-	/*
+-	 * On completion the TF-A will jump to MX8M_ATF_BL33_BASE_ADDR
+-	 * in EL2. Copy the image there, but replace the PBL part of
+-	 * that image with ourselves. On a high assurance boot only the
+-	 * currently running code is validated and contains the checksum
+-	 * for the piggy data, so we need to ensure that we are running
+-	 * the same code in DRAM.
+-	 */
+-	memcpy((void *)MX8M_ATF_BL33_BASE_ADDR,
+-	       __image_start, barebox_pbl_size);
+-
+-	get_builtin_firmware(imx8mp_bl31_bin, &bl31, &bl31_size);
+-
+-	imx8mp_atf_load_bl31(bl31, bl31_size);
+-
+-	/* not reached */
++	imx8mp_load_and_start_image_via_tfa();
+ }
+ 
+ /*
 -- 
 2.30.2
 
