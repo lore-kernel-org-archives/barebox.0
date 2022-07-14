@@ -1,53 +1,53 @@
-Delivery-date: Thu, 14 Jul 2022 10:46:55 +0200
+Delivery-date: Thu, 14 Jul 2022 10:48:00 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oBuUq-007NwS-DW
-	for lore@lore.pengutronix.de; Thu, 14 Jul 2022 10:46:55 +0200
+	id 1oBuVt-007O0B-Hf
+	for lore@lore.pengutronix.de; Thu, 14 Jul 2022 10:48:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oBuUo-0006Zr-3y
-	for lore@pengutronix.de; Thu, 14 Jul 2022 10:46:54 +0200
+	id 1oBuVr-0006ez-4N
+	for lore@pengutronix.de; Thu, 14 Jul 2022 10:47:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7CIjHnUGkjDZ84CrGZvmNlIvu5Mi4lcYZxgdg9K72BE=; b=Hmr/Nc5TOeB1padXVHYb5sJGQy
-	kpuVIhLd5jJ9fp5ZP928TdOAX2tgLMvX3H0rEt0jdujotngkPy/5z1/gr/AflqZ0JG8UYc46WiYDg
-	bfSIhP0l1lJuV0fJFpcsJa5Fhs3VQf8PKlEyn25HH80HcSu30bFi7vgM8flvWqxCqDJ7LD9LEYvE6
-	jM+da2dReIilbRcJBUwWNDwDAIavLI7XoAsbu+Fmsebbp2SbyVOUzyMMlOXLSFpEhuRh1p+H4pOIi
-	ghByaBPHsT2zeJab8w1xr7SA8FOklDgcENgZVcyyM08EKXUNq7IPumxhR9W2s6EghV7u2Njx8+4Kp
-	Ex7qpbGw==;
+	bh=r14WZHcu7rPH2/HGwOJDpBfMfAsSqEsMufKzFltQUNI=; b=ziyTHL4fZxt/qjxUMcUhsjEZGH
+	SXLbqEsecDS8kduMAq2grBvieVwiyaAzmGqsGluTpPH2hNbKodeqfP2mntWqKEPBuOWYehmNFmvxw
+	DZKO3wF6rYzMCipl5mPUosrOrpwaYvl/La0cy+o8OeISZLnil4ip4WoWcaJPmWbxDkJM+zE6dT9F+
+	vRvkns2/ug10yjAj6sL6L/ROf4062Mzvtw7qaqOJL/o9TR4XSWL8aLpzGSf+7wQ9Nvnnq7KWD6N12
+	YgmfzUYIffTcFmGuBg7yFhCdoNQOxmp73E6ywZwnVE9mFlseYO4uoYXGHxjek6OlYkdKCFtpgnJkU
+	wxPpnzUw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oBuTI-00CTcU-7c; Thu, 14 Jul 2022 08:45:20 +0000
+	id 1oBuUb-00CUIT-Kz; Thu, 14 Jul 2022 08:46:41 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oBuTC-00CTZV-RN
-	for barebox@lists.infradead.org; Thu, 14 Jul 2022 08:45:16 +0000
+	id 1oBuUW-00CUGL-Ro
+	for barebox@lists.infradead.org; Thu, 14 Jul 2022 08:46:38 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oBuTB-0006DA-E4; Thu, 14 Jul 2022 10:45:13 +0200
+	id 1oBuUV-0006Xr-9l; Thu, 14 Jul 2022 10:46:35 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oBuTB-0005KO-4Q; Thu, 14 Jul 2022 10:45:13 +0200
-Date: Thu, 14 Jul 2022 10:45:13 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	id 1oBuUV-0005Pw-0s; Thu, 14 Jul 2022 10:46:35 +0200
+Date: Thu, 14 Jul 2022 10:46:34 +0200
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220714084513.GJ23482@pengutronix.de>
-References: <20220713100922.1880282-1-a.fatoum@pengutronix.de>
- <20220713100922.1880282-6-a.fatoum@pengutronix.de>
+Message-ID: <20220714084634.GK23482@pengutronix.de>
+References: <20220714081108.101094-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <20220713100922.1880282-6-a.fatoum@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220714081108.101094-1-u.kleine-koenig@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -55,8 +55,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220714_014514_903850_D16E6744 
-X-CRM114-Status: GOOD (  12.56  )
+X-CRM114-CacheID: sfid-20220714_014636_918352_55718D13 
+X-CRM114-Status: GOOD (  24.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,28 +79,126 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 5/5] lib: uncompress: add general zstd support
+Subject: Re: [PATCH 1/2] ARM: imx/bbu-external-nand: Rename offset ->
+ nand_offset
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jul 13, 2022 at 12:09:22PM +0200, Ahmad Fatoum wrote:
-> So far, we only supported zstd in squashfs and ubifs. Add support
-> everywhere else: In PBL for decompressing barebox proper, in uncompress
-> for compression arbitrary files and for bootm to decompress zstd
-> kernel images.
+On Thu, Jul 14, 2022 at 10:11:07AM +0200, Uwe Kleine-König wrote:
+> The next commit introduces a new offset variable for image. To be better
+> able to differentiate the two, pick a better name for the already
+> existing one. There is no functional change.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/imx-bbu-external-nand.c | 26 +++++++++++------------
+>  1 file changed, 13 insertions(+), 13 deletions(-)
 
-Have you tested this with the uncompress command?
-
-a zstd compressed barebox works here, but using uncompress
-on a zstd compressed file results in:
-
-ZSTD-compressed data is corrupt
-
-or sometimes:
-
-Out of memory while allocating ZSTD_DStream
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/arm/mach-imx/imx-bbu-external-nand.c b/arch/arm/mach-imx/imx-bbu-external-nand.c
+> index 392497e43423..4d3493f9e1e0 100644
+> --- a/arch/arm/mach-imx/imx-bbu-external-nand.c
+> +++ b/arch/arm/mach-imx/imx-bbu-external-nand.c
+> @@ -29,7 +29,7 @@ static int imx_bbu_external_nand_update(struct bbu_handler *handler, struct bbu_
+>  	int size_available, size_need;
+>  	int ret;
+>  	uint32_t num_bb = 0, bbt = 0;
+> -	loff_t offset = 0;
+> +	loff_t nand_offset = 0;
+>  	int block = 0, len, now, blocksize;
+>  	void *image = NULL;
+>  
+> @@ -61,27 +61,27 @@ static int imx_bbu_external_nand_update(struct bbu_handler *handler, struct bbu_
+>  	 * Collect bad blocks and construct BBT
+>  	 */
+>  	while (size_need > 0) {
+> -		ret = ioctl(fd, MEMGETBADBLOCK, &offset);
+> +		ret = ioctl(fd, MEMGETBADBLOCK, &nand_offset);
+>  		if (ret < 0)
+>  			goto out;
+>  
+>  		if (ret) {
+> -			if (!offset) {
+> +			if (!nand_offset) {
+>  				printf("1st block is bad. This is not supported\n");
+>  				ret = -EINVAL;
+>  				goto out;
+>  			}
+>  
+> -			debug("bad block at 0x%08llx\n", offset);
+> +			debug("bad block at 0x%08llx\n", nand_offset);
+>  			num_bb++;
+>  			bbt |= (1 << block);
+> -			offset += blocksize;
+> +			nand_offset += blocksize;
+>  			block++;
+>  			continue;
+>  		}
+>  		size_need -= blocksize;
+>  		size_available -= blocksize;
+> -		offset += blocksize;
+> +		nand_offset += blocksize;
+>  		block++;
+>  
+>  		if (size_available < 0) {
+> @@ -124,7 +124,7 @@ static int imx_bbu_external_nand_update(struct bbu_handler *handler, struct bbu_
+>  	}
+>  
+>  	len = data->len;
+> -	offset = 0;
+> +	nand_offset = 0;
+>  
+>  	/* last chance before erasing the flash */
+>  	ret = bbu_confirm(data);
+> @@ -137,13 +137,13 @@ static int imx_bbu_external_nand_update(struct bbu_handler *handler, struct bbu_
+>  	while (len > 0) {
+>  		now = min(len, blocksize);
+>  
+> -		ret = ioctl(fd, MEMGETBADBLOCK, &offset);
+> +		ret = ioctl(fd, MEMGETBADBLOCK, &nand_offset);
+>  		if (ret < 0)
+>  			goto out;
+>  
+>  		if (ret) {
+> -			offset += blocksize;
+> -			if (lseek(fd, offset, SEEK_SET) != offset) {
+> +			nand_offset += blocksize;
+> +			if (lseek(fd, nand_offset, SEEK_SET) != nand_offset) {
+>  				ret = -errno;
+>  				goto out;
+>  			}
+> @@ -151,9 +151,9 @@ static int imx_bbu_external_nand_update(struct bbu_handler *handler, struct bbu_
+>  			continue;
+>  		}
+>  
+> -		debug("writing %d bytes at 0x%08llx\n", now, offset);
+> +		debug("writing %d bytes at 0x%08llx\n", now, nand_offset);
+>  
+> -		ret = erase(fd, blocksize, offset);
+> +		ret = erase(fd, blocksize, nand_offset);
+>  		if (ret)
+>  			goto out;
+>  
+> @@ -163,7 +163,7 @@ static int imx_bbu_external_nand_update(struct bbu_handler *handler, struct bbu_
+>  
+>  		len -= now;
+>  		image += now;
+> -		offset += now;
+> +		nand_offset += now;
+>  	}
+>  
+>  	ret = 0;
+> 
+> base-commit: 298727bc7931fe878fd72a1fa6f35c18bd7c593c
+> -- 
+> 2.36.1
+> 
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
