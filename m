@@ -1,75 +1,73 @@
-Delivery-date: Mon, 18 Jul 2022 14:25:12 +0200
+Delivery-date: Mon, 18 Jul 2022 14:25:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oDPoH-00D7AI-5Z
-	for lore@lore.pengutronix.de; Mon, 18 Jul 2022 14:25:12 +0200
+	id 1oDPoI-00D7AQ-9l
+	for lore@lore.pengutronix.de; Mon, 18 Jul 2022 14:25:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oDPoD-00083L-Mh
+	id 1oDPoD-00083A-Ji
 	for lore@pengutronix.de; Mon, 18 Jul 2022 14:25:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uMND0r5AyD2sOmchzYXNoprTQg0aEpfsdX9A+XGrqnU=; b=x2NS3vO0spamjXB7ryVfG5MAtU
-	QK5HPN5u0KaMSblv8D0x+bYoQxAMzFJlCtWEmRJyNjW4591THLarWUOeT0W7w53DWNsB1/0IHCORn
-	cuM+2Y/X3gzZ81bviMbuF66ZbJOWnTpi1tyNX6/s3aFChp/FSHTynHRtVXZzyO6TrNy7LBQlxGnw6
-	n8d4ANe2filURs1WQ/1cMgEyz1wihtFVt6Nuvtf9PZF6SRbDfG1anH5rl6oBEyJfYWpizzYAl4yIe
-	HT/fFC/1Ol6zjDLuN4KQCH7/YbQOw/mDX901tiwM99w2AoMivCqVBuqzLii0Iv61N1rFk3qIbn/4X
-	Swl+ct0Q==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=8shnPxeZgVvnhsZhZe1ntv2gfRJ0Yf75blr14cN5ptw=; b=Eq9xoJO99R411gs00RHt6gQP+y
+	1ey46Y4vmI9xeqPLdRdvj8h/SXlovsfbqPHlEox05iuxPB9mRQvzqBkK5l7seRTi0szPWmKk/BE/B
+	BvIzd5eBXSRIlCb1HR5S8SM51DdcI9dhjg17Dz4B3PoNzD4qqYrI1ePabpqvceLxTFSQCPozQFLO0
+	/OgLVhVV/Jm40iGIT83jQQi9IJgG4c2WhB/lSA1iKY8oqjsP2eGEM5hPYxaCd4rTLKVdgExEUayBR
+	37SI0fYu5a0Ak3gUfS/u0CR/p1bodFqW0wbDEBifgBdIWenExZi9ug02wrYtvJn36CIRJ3IZk0FNC
+	3dnOxLPw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oDPmi-00DDtb-In; Mon, 18 Jul 2022 12:23:36 +0000
-Received: from smtpout-3.cvg.de ([2003:49:a034:1067:5::3])
+	id 1oDPmr-00DE09-Lp; Mon, 18 Jul 2022 12:23:45 +0000
+Received: from smtpout-2.cvg.de ([2003:49:a034:1067:5::2])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oDPmY-00DDXi-Nb
-	for barebox@lists.infradead.org; Mon, 18 Jul 2022 12:23:28 +0000
-Received: from mail-mta-3.intern.sigma-chemnitz.de (mail-mta-3.intern.sigma-chemnitz.de [192.168.12.71])
-	by mail-out-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMpVg575053
+	id 1oDPmZ-00DDPj-MU
+	for barebox@lists.infradead.org; Mon, 18 Jul 2022 12:23:30 +0000
+Received: from mail-mta-2.intern.sigma-chemnitz.de (mail-mta-2.intern.sigma-chemnitz.de [192.168.12.70])
+	by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMbv5390600
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
-	for <barebox@lists.infradead.org>; Mon, 18 Jul 2022 14:22:51 +0200
+	for <barebox@lists.infradead.org>; Mon, 18 Jul 2022 14:22:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
-	s=v2022040800; t=1658146971;
-	bh=uMND0r5AyD2sOmchzYXNoprTQg0aEpfsdX9A+XGrqnU=; l=1778;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K2OrwquzlilW99DW8Aea2hKnzKV/7qqI1C4uXS2ckFLv5VCpWj0pHfBlLeHD4Gnij
-	 DTr5DgjR96lZnrqDPPErgz5RKc4DEyFigObb8dDlt9kg3PXJ0k2Oxi/JWaAaxIn6kh
-	 /1uleEWrBnruWwCQS3iST8T9ayAz39TAdDq94GnyL8ZM0ijmrksdYA42J8jpRp+WyA
-	 ga9xiWqpvJ9cPDoMNK4I9KRoK5TYIw36323i+MKsKPo+C1SrI7td2B1u0jMvC7fUoG
-	 7BfubVpSKGbkmIaGcL/jj6FFH7WiXUINQqUoyU7mbRdOW7PrUT5BWy2X41hh535e8/
-	 25m0H08MXAk4A==
+	s=v2022040800; t=1658146957;
+	bh=8shnPxeZgVvnhsZhZe1ntv2gfRJ0Yf75blr14cN5ptw=; l=2586;
+	h=From:To:Cc:Subject:Date;
+	b=CtKjT2FAHJGqpAQfHeU1dUtJ8kTELSVlF62yvhyeQkyu9OjucRIF8GhxzN/ISJKfV
+	 qI6nbMmXELrblq0ZjVhjr45thMZDU1zVkVyPOJk751ziGVTcgKHGkMg8sPouSU+663
+	 raEuMMbBNbS1fZ23N0d+tUj2V1bO0OD3OYUOZC9DDiNCu7FQy3+uOi4mt017XGjauO
+	 7uH0+EJgV2oifzSyzAiRHhJY2y2W2BsL5jeCEez04gjT4VM/b9exw0xMwTG+wQDU0L
+	 nEd9sIecCGUKo1isTlXm9i6PVW9I06c3vKI+f29m534NTQpXb3AQo4vjR61ZDmiUZu
+	 Gg82hM2cr8c4Q==
 Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
-	by mail-mta-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 26ICMaBv1699975
-	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Mon, 18 Jul 2022 14:22:38 +0200
+	by mail-mta-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 26ICMYg1487148
+	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Mon, 18 Jul 2022 14:22:34 +0200
 Received: from mail-msa-2.intern.sigma-chemnitz.de ( [192.168.12.72]) by reddoxx.intern.sigma-chemnitz.de
-	(Reddoxx engine) with SMTP id 2186CDA8CC8; Mon, 18 Jul 2022 14:22:33 +0200
+	(Reddoxx engine) with SMTP id 16B30789147; Mon, 18 Jul 2022 14:22:32 +0200
 Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
-	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMX3N371872
+	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMWGB371847
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 18 Jul 2022 14:22:33 +0200
+	Mon, 18 Jul 2022 14:22:32 +0200
 Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.95)
 	(envelope-from <ensc@sigma-chemnitz.de>)
-	id 1oDPlh-002g3u-2D;
-	Mon, 18 Jul 2022 14:22:33 +0200
+	id 1oDPlg-002g34-KI;
+	Mon, 18 Jul 2022 14:22:32 +0200
 From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 To: barebox@lists.infradead.org
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Date: Mon, 18 Jul 2022 14:22:28 +0200
-Message-Id: <e6880d7e8421f02f41802ae6d91533a5c8d7019b.1658144543.git.enrico.scholz@sigma-chemnitz.de>
+Date: Mon, 18 Jul 2022 14:22:15 +0200
+Message-Id: <cover.1658144543.git.enrico.scholz@sigma-chemnitz.de>
 X-Mailer: git-send-email 2.36.1
-In-Reply-To: <cover.1658144543.git.enrico.scholz@sigma-chemnitz.de>
-References: <cover.1658144543.git.enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220718_052327_092062_4B2BA25E 
-X-CRM114-Status: GOOD (  11.74  )
+X-CRM114-CacheID: sfid-20220718_052328_083362_96632BBF 
+X-CRM114-Status: GOOD (  11.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,70 +90,78 @@ X-Spam-Status: No, score=-104.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 13/13] tftp: add sanity check for OACK response
+Subject: [PATCH 00/13] add "windowsize" (RFC 7440) support for tftp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Catch bad 'blocksize' or 'windowsize' responses from the server.
+The tftp "windowsize" greatly improves the performance of tftp
+transfers.  This patchset adds support for it.
 
-Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
----
- fs/tftp.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+The first two patches are a little bit unrelated and enhance the 'cp
+-v' output by giving information about the transfer speed.  They can
+be dropped if they are unwanted.
 
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 400209c26023..c6491b537481 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -290,7 +290,7 @@ static int tftp_poll(struct file_priv *priv)
- 	return 0;
- }
- 
--static void tftp_parse_oack(struct file_priv *priv, unsigned char *pkt, int len)
-+static int tftp_parse_oack(struct file_priv *priv, unsigned char *pkt, int len)
- {
- 	unsigned char *opt, *val, *s;
- 
-@@ -307,7 +307,7 @@ static void tftp_parse_oack(struct file_priv *priv, unsigned char *pkt, int len)
- 		opt = s;
- 		val = s + strlen(s) + 1;
- 		if (val > s + len)
--			return;
-+			break;
- 		if (!strcmp(opt, "tsize"))
- 			priv->filesize = simple_strtoull(val, NULL, 10);
- 		if (!strcmp(opt, "blksize"))
-@@ -317,6 +317,15 @@ static void tftp_parse_oack(struct file_priv *priv, unsigned char *pkt, int len)
- 		pr_debug("OACK opt: %s val: %s\n", opt, val);
- 		s = val + strlen(val) + 1;
- 	}
-+
-+	if (priv->blocksize > TFTP_MTU_SIZE ||
-+	    priv->windowsize > TFTP_MAX_WINDOW_SIZE ||
-+	    priv->windowsize == 0) {
-+		pr_warn("tftp: invalid oack response");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
- }
- 
- static void tftp_timer_reset(struct file_priv *priv)
-@@ -498,10 +507,12 @@ static void tftp_recv(struct file_priv *priv,
- 		break;
- 
- 	case TFTP_OACK:
--		tftp_parse_oack(priv, pkt, len);
- 		priv->tftp_con->udp->uh_dport = uh_sport;
- 
--		if (priv->push) {
-+		if (tftp_parse_oack(priv, pkt, len) < 0) {
-+			priv->err = -EINVAL;
-+			priv->state = STATE_DONE;
-+		} else if (priv->push) {
- 			/* send first block */
- 			priv->state = STATE_WDATA;
- 			priv->block = 1;
+I tested the function with an iMX8MP platform in three environments:
+
+  - at home over OpenVPN on an ADSL 50 line  -->  27x speedup
+  - 1 Gb/s connection --> 9x speedup
+  - connection over 100 Mb/s switch  -->  4x speedup
+
+In the test, I downloaded variable sized files which were filled from
+/dev/urandom.  E.g.
+
+| :/ global tftp.windowsize=128
+| :/ cp -v /mnt/tftp/data-100MiB /tmp/data && sha1sum /tmp/data
+|         [################################################################] 104857600 bytes, 98550375 bytes/s
+
+For slow connection speed, smaller files (1MiB, 4 MiB + 20 MiB) were
+used.
+
+
+The numbers (bytes/s) are
+
+ | windowsize | VPN       | 1 Gb/s     | 100 Mb/s   |
+ |------------|-----------|------------|------------|
+ | 128        | 3.869.284 | 98.643.085 | 11.434.852 |
+ |  64        | 3.863.581 | 98.550.375 | 11.434.852 |
+ |  48        | 3.431.580 | 94.211.680 | 11.275.010 |
+ |  32        | 2.835.129 | 85.250.081 | 10.985.605 |
+ |  24        | 2.344.858 | 77.787.537 | 10.765.667 |
+ |  16        | 1.734.186 | 67.519.381 | 10.210.087 |
+ |  12        | 1.403.340 | 61.972.576 |  9.915.612 |
+ |   8        | 1.002.462 | 50.852.376 |  9.016.130 |
+ |   6        |   775.573 | 42.781.558 |  8.422.297 |
+ |   4        |   547.845 | 32.066.544 |  6.835.567 |
+ |   3        |   412.987 | 26.526.081 |  6.322.435 |
+ |   2        |   280.987 | 19.120.641 |  5.494.241 |
+ |   1        |   141.699 | 10.431.516 |  2.967.224 |
+ |------------|-----------|------------|------------|
+ | unpatched  |   140.587 | 10.553.301 |  2.978.063 |
+
+
+
+Enrico Scholz (13):
+  progress: add close_progress() to display some statistics
+  libfile:copy_file: show statistics in verbose mode
+  tftp: minor refactoring of RRQ/WRQ packet generation code
+  tftp: replace hardcoded blksize by global constant
+  tftp: record whether tftp file is opened for lookup operation only
+  tftp: reduce block size on lookup requests
+  tftp: refactor data processing
+  tftp: detect out-of-memory situations
+  tftp: implement 'windowsize' (RFC 7440) support
+  tftp: do not use 'priv->block' for RRQ
+  tftp: reorder tftp packets
+  tftp: allow to change tftp port
+  tftp: add sanity check for OACK response
+
+ fs/Kconfig          |  36 ++++++
+ fs/tftp.c           | 298 +++++++++++++++++++++++++++++++++++++-------
+ include/progress.h  |   1 +
+ lib/libfile.c       |   3 +
+ lib/show_progress.c |  25 ++++
+ 5 files changed, 319 insertions(+), 44 deletions(-)
+
 -- 
 2.36.1
 
