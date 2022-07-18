@@ -1,75 +1,75 @@
-Delivery-date: Mon, 18 Jul 2022 14:25:26 +0200
+Delivery-date: Mon, 18 Jul 2022 14:25:35 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oDPoV-00D7Dg-BH
-	for lore@lore.pengutronix.de; Mon, 18 Jul 2022 14:25:26 +0200
+	id 1oDPoe-00D7FG-4d
+	for lore@lore.pengutronix.de; Mon, 18 Jul 2022 14:25:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oDPoQ-00088y-W4
-	for lore@pengutronix.de; Mon, 18 Jul 2022 14:25:25 +0200
+	id 1oDPoa-0008De-J7
+	for lore@pengutronix.de; Mon, 18 Jul 2022 14:25:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DkdWgBMRxNO1OPMjyjWDrBDX2V1NORRLp+1J/a05V0E=; b=y7D2swescMG80e7HsfHe2Q8SA2
-	Iy3zsjrFjEPSuyI3xIzzOs2xrdrVpNpOHdLuYeObscSntNFZiBGgWpmunQ/7ywfoiGPHz4IBiSRHC
-	5XJRrGzyhBqYDeLca83BqHVfgRTSqSc9eI7smQ+PGMRzSuiyPlvIJmP+yi23EtwGsYI/MhcGE0SWT
-	pV6XqjRxgXoFuxijQ9YD7dkiAcGSAfGxkgTEU5bD9gMpZDPp6uWMPlXhg1qlU0+vq2aIMDn4Qbo7N
-	+UQl5gZLg+Cf2APTTtkd97wKXUB2acprKT0cruPk5pEYh3GdrljhE38LCG4FPdtOlXSAcolh6Eu/A
-	WEZfpTcQ==;
+	bh=RzZ7jkUJirbSxYo2MY36I2gh0hgqHFiTp4vx2PPqxX0=; b=TJZB4PKAtnWvXCY8s7xVLuula0
+	/54YkBcLH7fsa4cDqOpRSDLhVJtJzEr1V3RlRZ5conRgKIIWXLKE2wwXUtz2Xxk9MQsFd1pmeWQAt
+	sGEIjGc+LRG++Cx0QLZPRXc3uB3tqCRlA7l0xPVfcaRMDVbjhG/JXkuKTSTfaQPya7Wx8cGz7OS0K
+	l7rHqte44c7mG74yRK99sWcTqtuZVEYnaAMqxitspjWeZXxtEUEdS3ap6wGHz6ImzcHplEUGZ3aUk
+	oybhhLnQhvl0s5+npgj34EVZ3Mxxu/eKez7s0NUr9+E4LsVHNxI3oUwL53fkyRTxTgWaQGHHgNahf
+	VZk1K1LQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oDPmz-00DE4M-ED; Mon, 18 Jul 2022 12:23:53 +0000
-Received: from smtpout-3.cvg.de ([2003:49:a034:1067:5::3])
+	id 1oDPn6-00DEAj-Md; Mon, 18 Jul 2022 12:24:00 +0000
+Received: from smtpout-2.cvg.de ([2003:49:a034:1067:5::2])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oDPmY-00DDY5-Nd
+	id 1oDPmZ-00DDY4-1K
 	for barebox@lists.infradead.org; Mon, 18 Jul 2022 12:23:30 +0000
-Received: from mail-mta-3.intern.sigma-chemnitz.de (mail-mta-3.intern.sigma-chemnitz.de [192.168.12.71])
-	by mail-out-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMqtN575056
+Received: from mail-mta-2.intern.sigma-chemnitz.de (mail-mta-2.intern.sigma-chemnitz.de [192.168.12.70])
+	by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMqeh390623
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
 	for <barebox@lists.infradead.org>; Mon, 18 Jul 2022 14:22:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
 	s=v2022040800; t=1658146972;
-	bh=DkdWgBMRxNO1OPMjyjWDrBDX2V1NORRLp+1J/a05V0E=; l=7355;
+	bh=RzZ7jkUJirbSxYo2MY36I2gh0hgqHFiTp4vx2PPqxX0=; l=6704;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q9cwWe9YS38RYbEaNdLVyYhVO1DkCSm7/QkCmPy7KLmfz5OFDx+0m3yoQJNHmVsDL
-	 aSowAb8DkMk+eDe5+JNn/yO/pzfuhEiKHLi8IlJY7o6zXG/ahprGvFleoWYTVMUJ2T
-	 5IhLRpEszhMLozx4idnfWaY+8RwmsAZu7xbfLXG0ujvfqzLoS4bMH5JjePVBGMeKwe
-	 gzVYFpJIv2RqEKug0Wlq8kmOPYNHmLp9aCquZOqzuzWcWFeVQlj0pD7l4GSmp0TSb8
-	 5ZiYXb1wvh//pGUL1bil2+ze6bZ8Nj4YaTb3uZ18Jj5b9T6QthwCFV2vLBcrDAntHS
-	 XdwhN0hDASaIA==
+	b=eMUB57BRsSml5QyyQw7vtOVOMmD8bQocF8gLFC2gjnFngxdBjU+1uIPGBMGyhAlPE
+	 3pwHHhsBlHYHT3ruIIZoM6kWBSUWioGhSBFFQh8jq0Ea1yg6SR8uz6ke79uvOt4zUD
+	 s9iHDP+tmzEwsN8K9pw/Y8IC8TZ0g8J3VBYgkEdVOo5300vmXI4mQg+XLhMK1zR2HG
+	 EV+UTVvaUBEet1Z0X7PN0CjG5z98ZTsGUmwXXOi6cS7TCeKscuf2JyhtRd+gfCEbaJ
+	 wjDJe9p7BbbzUTbghmgfOdcLjzEdZ8nGzy86Op2hK6AWXBJPrS2z2WLY9vU6CcJiZ3
+	 nQAevOhs0ymAQ==
 Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
-	by mail-mta-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 26ICMaaV1699976
-	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Mon, 18 Jul 2022 14:22:39 +0200
-Received: from mail-msa-3.intern.sigma-chemnitz.de ( [192.168.12.73]) by reddoxx.intern.sigma-chemnitz.de
-	(Reddoxx engine) with SMTP id 5E222429A1D; Mon, 18 Jul 2022 14:22:33 +0200
+	by mail-mta-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 26ICMaTI487164
+	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Mon, 18 Jul 2022 14:22:37 +0200
+Received: from mail-msa-2.intern.sigma-chemnitz.de ( [192.168.12.72]) by reddoxx.intern.sigma-chemnitz.de
+	(Reddoxx engine) with SMTP id 18D55A38589; Mon, 18 Jul 2022 14:22:33 +0200
 Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
-	by mail-msa-3.intern.sigma-chemnitz.de (8.15.2/8.15.2) with ESMTPS id 26ICMX7j549160
+	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMWwu371861
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
 	Mon, 18 Jul 2022 14:22:33 +0200
 Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.95)
 	(envelope-from <ensc@sigma-chemnitz.de>)
-	id 1oDPlh-002g3n-0L;
-	Mon, 18 Jul 2022 14:22:33 +0200
+	id 1oDPlg-002g3g-Ub;
+	Mon, 18 Jul 2022 14:22:32 +0200
 From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 To: barebox@lists.infradead.org
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Date: Mon, 18 Jul 2022 14:22:26 +0200
-Message-Id: <14bf205ffe1ba093e93531b8a43758e18c18a94d.1658144543.git.enrico.scholz@sigma-chemnitz.de>
+Date: Mon, 18 Jul 2022 14:22:24 +0200
+Message-Id: <9133a12926ffb700725459d42b67618ec7d3b4f8.1658144543.git.enrico.scholz@sigma-chemnitz.de>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <cover.1658144543.git.enrico.scholz@sigma-chemnitz.de>
 References: <cover.1658144543.git.enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220718_052327_102846_5597BC3E 
-X-CRM114-Status: GOOD (  25.41  )
+X-CRM114-CacheID: sfid-20220718_052327_434615_1C4541C8 
+X-CRM114-Status: GOOD (  22.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,52 +92,56 @@ X-Spam-Status: No, score=-104.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 11/13] tftp: reorder tftp packets
+Subject: [PATCH 09/13] tftp: implement 'windowsize' (RFC 7440) support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-With the tftp "windowsize" option, reordering of udp datagrams becomes
-an issue.  Depending on the network topology, this reordering occurs
-several times with large tftp transfers and will heavily reduce the
-transfer speed.
+Results (with the reorder patch; numbers in bytes/s) on an iMX8MP are:
 
-This patch adds a packet cache so that datagrams can be reassembled in
-the correct order.
+ | windowsize | VPN       | 1 Gb/s     | 100 Mb/s   |
+ |------------|-----------|------------|------------|
+ | 128        | 3.869.284 | 98.643.085 | 11.434.852 |
+ |  64        | 3.863.581 | 98.550.375 | 11.434.852 |
+ |  48        | 3.431.580 | 94.211.680 | 11.275.010 |
+ |  32        | 2.835.129 | 85.250.081 | 10.985.605 |
+ |  24        | 2.344.858 | 77.787.537 | 10.765.667 |
+ |  16        | 1.734.186 | 67.519.381 | 10.210.087 |
+ |  12        | 1.403.340 | 61.972.576 |  9.915.612 |
+ |   8        | 1.002.462 | 50.852.376 |  9.016.130 |
+ |   6        |   775.573 | 42.781.558 |  8.422.297 |
+ |   4        |   547.845 | 32.066.544 |  6.835.567 |
+ |   3        |   412.987 | 26.526.081 |  6.322.435 |
+ |   2        |   280.987 | 19.120.641 |  5.494.241 |
+ |   1        |   141.699 | 10.431.516 |  2.967.224 |
 
-Because it increases memory usage, it is an Kconfig option.
+(VPN = OpenVPN on ADSL 50 Mb/s).
+
+The window size can be configured at runtime.
 
 Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 ---
- fs/Kconfig |  22 +++++++
- fs/tftp.c  | 165 +++++++++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 181 insertions(+), 6 deletions(-)
+ fs/Kconfig | 14 ++++++++++++++
+ fs/tftp.c  | 54 ++++++++++++++++++++++++++++++++++++++++--------------
+ 2 files changed, 54 insertions(+), 14 deletions(-)
 
 diff --git a/fs/Kconfig b/fs/Kconfig
-index 0c4934285942..02aa25d6abf7 100644
+index aeba00073eed..0c4934285942 100644
 --- a/fs/Kconfig
 +++ b/fs/Kconfig
-@@ -57,6 +57,28 @@ config FS_TFTP_MAX_WINDOW_SIZE
- 	  Requires tftp "windowsize" (RFC 7440) support on server side
- 	  to have an effect.
+@@ -43,6 +43,20 @@ config FS_TFTP
+ 	prompt "tftp support"
+ 	depends on NET
  
-+config FS_TFTP_REORDER_CACHE_SIZE
++config FS_TFTP_MAX_WINDOW_SIZE
 +	int
-+	prompt "number of out-of-order tftp packets to be cached"
++	prompt "maximum tftp window size (RFC 7440)"
 +	depends on FS_TFTP
-+	default 16 if FS_TFTP_MAX_WINDOW_SIZE > 16
-+	default  0 if FS_TFTP_MAX_WINDOW_SIZE = 1
-+        ## TODO: it should be 'FS_TFTP_MAX_WINDOW_SIZE - 1' but this
-+        ## is not supported by Kconfig
-+	default FS_TFTP_MAX_WINDOW_SIZE
-+	range 0 FS_TFTP_MAX_WINDOW_SIZE
++	default 128
++	range 1 128
 +	help
-+	  UDP allows reordering of datagrams; with this option,
-+	  unexpected tftp packets will be cached and later
-+	  reassembled.  This increases stability of the tftp download
-+	  with the cost of memory (around 1440 bytes per cache
-+	  element).
-+
-+          A value of 0 disables caching.
++	  The maximum allowed tftp "windowsize" (RFC 7440).  Higher
++	  value increase speed of the tftp download with the cost of
++	  memory (1432 bytes per slot).
 +
 +	  Requires tftp "windowsize" (RFC 7440) support on server side
 +	  to have an effect.
@@ -146,229 +150,180 @@ index 0c4934285942..02aa25d6abf7 100644
  	bool
  	prompt "Filesystem over usb boot"
 diff --git a/fs/tftp.c b/fs/tftp.c
-index f85136f03e22..2c2ff081be51 100644
+index ef2ce0200b38..7f836d36b7df 100644
 --- a/fs/tftp.c
 +++ b/fs/tftp.c
-@@ -68,6 +68,9 @@
+@@ -30,6 +30,7 @@
+ #include <linux/stat.h>
+ #include <linux/err.h>
+ #include <kfifo.h>
++#include <globalvar.h>
+ #include <linux/sizes.h>
+ 
+ #define TFTP_PORT	69	/* Well known TFTP port number */
+@@ -65,15 +66,22 @@
+ 
+ #define TFTP_BLOCK_SIZE		512	/* default TFTP block size */
  #define TFTP_MTU_SIZE		1432	/* MTU based block size */
- #define TFTP_MAX_WINDOW_SIZE	CONFIG_FS_TFTP_MAX_WINDOW_SIZE
- 
-+/* size of cache which deals with udp reordering */
-+#define TFTP_WINDOW_CACHE_NUM	CONFIG_FS_TFTP_REORDER_CACHE_SIZE
+-#define TFTP_FIFO_SIZE		4096
++#define TFTP_MAX_WINDOW_SIZE	CONFIG_FS_TFTP_MAX_WINDOW_SIZE
 +
- /* calculate fifo so that it can hold the complete window plus the incoming
-    packet.  Add some extra space just in case...  */
- #define TFTP_FIFO_SIZE		(TFTP_MTU_SIZE * TFTP_MAX_WINDOW_SIZE + 2048)
-@@ -76,6 +79,15 @@
++/* calculate fifo so that it can hold the complete window plus the incoming
++   packet.  Add some extra space just in case...  */
++#define TFTP_FIFO_SIZE		(TFTP_MTU_SIZE * TFTP_MAX_WINDOW_SIZE + 2048)
  
- static int g_tftp_window_size = TFTP_MAX_WINDOW_SIZE / 1;
+ #define TFTP_ERR_RESEND	1
  
-+struct tftp_block {
-+	uint16_t id;
-+	uint8_t data[TFTP_MTU_SIZE];
-+
-+	/* len will not exceed TFTP_MTU_SIZE; 14 bits should suffice... */
-+	uint16_t len:14;
-+	bool valid:1;
-+};
++static int g_tftp_window_size = TFTP_MAX_WINDOW_SIZE / 1;
 +
  struct file_priv {
  	struct net_connection *tftp_con;
  	int push;
-@@ -93,12 +105,49 @@ struct file_priv {
+ 	uint16_t block;
+ 	uint16_t last_block;
++	uint16_t ack_block;
+ 	int state;
+ 	int err;
+ 	char *filename;
+@@ -83,7 +91,7 @@ struct file_priv {
+ 	struct kfifo *fifo;
+ 	void *buf;
  	int blocksize;
- 	unsigned int windowsize;
+-	int block_requested;
++	unsigned int windowsize;
  	bool is_getattr;
-+#if TFTP_WINDOW_CACHE_NUM > 0
-+	struct tftp_block window_cache[TFTP_WINDOW_CACHE_NUM];
-+#endif
  };
  
- struct tftp_priv {
- 	IPaddr_t server;
- };
+@@ -114,6 +122,7 @@ static int tftp_send(struct file_priv *priv)
+ 	int len = 0;
+ 	uint16_t *s;
+ 	unsigned char *pkt = net_udp_get_payload(priv->tftp_con);
++	unsigned int window_size;
+ 	int ret;
  
-+inline static size_t tftp_window_cache_size(struct file_priv const *priv)
-+{
-+#if TFTP_WINDOW_CACHE_NUM > 0
-+	return min_t(unsigned int, priv->windowsize - 1,
-+		     ARRAY_SIZE(priv->window_cache));
-+#else
-+	return 0;
-+#endif
-+}
+ 	pr_vdebug("%s: state %s\n", __func__, tftp_states[priv->state]);
+@@ -121,6 +130,15 @@ static int tftp_send(struct file_priv *priv)
+ 	switch (priv->state) {
+ 	case STATE_RRQ:
+ 	case STATE_WRQ:
++		if (priv->push || priv->is_getattr)
++			/* atm, windowsize is suported only for RRQ and there
++			   is no need to request a full window when we are
++			   just looking up file attributes */
++			window_size = 1;
++		else
++			window_size = min_t(unsigned int, g_tftp_window_size,
++					    TFTP_MAX_WINDOW_SIZE);
 +
-+inline static struct tftp_block *tftp_window_cache_get(struct file_priv *priv,
-+						       size_t idx)
-+{
-+#if TFTP_WINDOW_CACHE_NUM > 0
-+	return &priv->window_cache[idx];
-+#else
-+	return NULL;
-+#endif
-+}
-+
-+static void tftp_window_cache_clear(struct file_priv *priv)
-+{
-+	size_t i;
-+
-+	for (i = 0; i < tftp_window_cache_size(priv); ++i) {
-+		struct tftp_block *block = tftp_window_cache_get(priv, i);
-+
-+		if (block->valid)
-+			pr_debug("cached item #%d still valid\n", block->id);
-+
-+		block->valid = false;
-+	}
-+}
-+
- static int tftp_truncate(struct device_d *dev, FILE *f, loff_t size)
- {
- 	return 0;
-@@ -185,6 +234,7 @@ static int tftp_send(struct file_priv *priv)
- 		priv->ack_block += priv->windowsize;
+ 		xp = pkt;
+ 		s = (uint16_t *)pkt;
+ 		if (priv->state == STATE_RRQ)
+@@ -136,30 +154,35 @@ static int tftp_send(struct file_priv *priv)
+ 				"tsize%c"
+ 				"%lld%c"
+ 				"blksize%c"
+-				"%u",
++				"%u%c"
++			        "windowsize%c"
++			        "%u",
+ 				priv->filename + 1, '\0',
+ 				'\0',	/* "octet" */
+ 				'\0',	/* "timeout" */
+ 				TIMEOUT, '\0',
+ 			        '\0',	/* "tsize" */
+ 				priv->filesize, '\0',
+-			       '\0',	/* "blksize" */
++				'\0',	/* "blksize" */
+ 			        /* use only a minimal blksize for getattr
+ 				   operations, */
+-			       priv->is_getattr ? TFTP_BLOCK_SIZE : TFTP_MTU_SIZE);
++			        priv->is_getattr ? TFTP_BLOCK_SIZE : TFTP_MTU_SIZE,
++			        '\0',
++				'\0',	/* windowsize */
++				window_size
++			);
+ 		pkt++;
+ 		len = pkt - xp;
+ 		break;
+ 
+ 	case STATE_RDATA:
+-		if (priv->block == priv->block_requested)
+-			return 0;
+ 	case STATE_OACK:
+ 		xp = pkt;
+ 		s = (uint16_t *)pkt;
+ 		*s++ = htons(TFTP_ACK);
+-		*s++ = htons(priv->block);
+-		priv->block_requested = priv->block;
++		*s++ = htons(priv->last_block);
++		priv->ack_block  = priv->last_block;
++		priv->ack_block += priv->windowsize;
  		pkt = (unsigned char *)s;
  		len = pkt - xp;
-+		tftp_window_cache_clear(priv);
  		break;
+@@ -202,7 +225,6 @@ static int tftp_poll(struct file_priv *priv)
+ 	if (is_timeout(priv->resend_timeout, TFTP_RESEND_TIMEOUT)) {
+ 		printf("T ");
+ 		priv->resend_timeout = get_time_ns();
+-		priv->block_requested = -1;
+ 		return TFTP_ERR_RESEND;
  	}
  
-@@ -294,6 +344,113 @@ static void tftp_put_data(struct file_priv *priv, uint16_t block,
+@@ -239,6 +261,8 @@ static void tftp_parse_oack(struct file_priv *priv, unsigned char *pkt, int len)
+ 			priv->filesize = simple_strtoull(val, NULL, 10);
+ 		if (!strcmp(opt, "blksize"))
+ 			priv->blocksize = simple_strtoul(val, NULL, 10);
++		if (!strcmp(opt, "windowsize"))
++			priv->windowsize = simple_strtoul(val, NULL, 10);
+ 		pr_debug("OACK opt: %s val: %s\n", opt, val);
+ 		s = val + strlen(val) + 1;
  	}
- }
+@@ -326,6 +350,7 @@ static void tftp_recv(struct file_priv *priv,
+ 			/* send ACK */
+ 			priv->state = STATE_OACK;
+ 			priv->block = 0;
++			priv->last_block = 0;
+ 			tftp_send(priv);
+ 		}
  
-+static bool in_window(uint16_t block, uint16_t start, uint16_t end)
-+{
-+	return ((start <= block && block <= end) ||
-+		(block <= end   && end   <= start));
-+}
-+
-+static int tftp_window_cache_insert(struct file_priv *priv, uint16_t id,
-+				    void const *data, size_t len)
-+{
-+	size_t		i;
-+
-+	if (len > sizeof tftp_window_cache_get(priv, 0)->data) {
-+		pr_err("datagram too large\n");
-+		return -ENOMEM;
-+	}
-+
-+	for (i = 0; i < tftp_window_cache_size(priv); ++i) {
-+		struct tftp_block *block = tftp_window_cache_get(priv, i);
-+
-+		if (block->valid && block->id == id) {
-+			if (len == block->len &&
-+			    memcmp(data, block->data, len) == 0) {
-+				return 0;
-+			}
-+
-+			pr_err("cached block #%d differs from actual one\n",
-+			       id);
-+
-+			return -EBADMSG;
-+		}
-+
-+		if (!block->valid) {
-+			memcpy(block->data, data, len);
-+			block->id = id;
-+			block->len = len;
-+			block->valid = true;
-+
-+			return 0;
-+		}
-+	}
-+
-+	return -ENOMEM;
-+}
-+
-+static bool tftp_window_cache_apply(struct file_priv *priv)
-+{
-+	uint16_t exp_id = priv->last_block + 1;
-+	bool res = false;
-+	size_t i;
-+
-+	for (i = 0; i < tftp_window_cache_size(priv); ++i) {
-+		struct tftp_block *block = tftp_window_cache_get(priv, i);
-+
-+		/* can be already the case when entering the function, or
-+		   caused by tftp_put_data() below */
-+		if (priv->state != STATE_RDATA)
-+			break;
-+
-+		if (!block->valid || block->id != exp_id)
-+			continue;
-+
-+		tftp_put_data(priv, block->id, block->data, block->len);
-+
-+		block->valid = false;
-+		exp_id = priv->last_block + 1;
-+
-+		res = true;
-+	}
-+
-+	return res;
-+}
-+
-+static void tftp_handle_data(struct file_priv *priv, uint16_t block,
-+			     void const *data, size_t len)
-+{
-+	uint16_t exp_block;
-+	int rc;
-+
-+	exp_block = priv->last_block + 1;
-+
-+	if (exp_block == block) {
-+		/* datagram over network is the expected one; put it in the
-+		   fifo directly and try to apply cached items then */
-+		tftp_timer_reset(priv);
-+		tftp_put_data(priv, block, data, len);
-+
-+		while (tftp_window_cache_apply(priv)) {
-+			/* noop */
-+		}
-+	} else if (!in_window(block, exp_block, priv->ack_block)) {
-+		/* completely unexpected and unrelated to actual window;
-+		   ignore the packet. */
-+		printf("B");
-+	} else {
-+		/* The 'rc < 0' below happens e.g. when datagrams in the first
-+		   part of the transfer window are dropped.
-+
-+		   TODO: this will usually result in a timeout
-+		   (TFTP_RESEND_TIMEOUT).  It should be possible to bypass
-+		   this timeout by acknowledging the last packet (e.g. by
-+		   doing 'priv->ack_block = priv->last_block' here). */
-+		rc = tftp_window_cache_insert(priv, block, data, len);
-+		if (rc < 0)
-+			printf("M");
-+	}
-+}
-+
- static void tftp_recv(struct file_priv *priv,
- 			uint8_t *pkt, unsigned len, uint16_t uh_sport)
- {
-@@ -364,6 +521,7 @@ static void tftp_recv(struct file_priv *priv,
- 			priv->state = STATE_RDATA;
- 			priv->tftp_con->udp->uh_dport = uh_sport;
- 			priv->last_block = 0;
-+			tftp_window_cache_clear(priv);
- 
- 			if (block != 1) {	/* Assertion */
- 				pr_err("error: First block is not block 1 (%d)\n",
-@@ -374,12 +532,7 @@ static void tftp_recv(struct file_priv *priv,
+@@ -349,9 +374,9 @@ static void tftp_recv(struct file_priv *priv,
  			}
  		}
  
--		if (block != (uint16_t)(priv->last_block + 1)) {
--			break;
--		}
--
--		tftp_timer_reset(priv);
--		tftp_put_data(priv, block, pkt + 2, len);
-+		tftp_handle_data(priv, block, pkt + 2, len);
+-		if (priv->block == priv->last_block)
+-			/* Same block again; ignore it. */
++		if (priv->block != (uint16_t)(priv->last_block + 1)) {
+ 			break;
++		}
  
- 		break;
+ 		tftp_timer_reset(priv);
+ 		tftp_put_data(priv, priv->block, pkt + 2, len);
+@@ -414,7 +439,6 @@ static struct file_priv *tftp_do_open(struct device_d *dev,
+ 	priv->err = -EINVAL;
+ 	priv->filename = dpath(dentry, fsdev->vfsmount.mnt_root);
+ 	priv->blocksize = TFTP_BLOCK_SIZE;
+-	priv->block_requested = -1;
+ 	priv->is_getattr = is_getattr;
  
+ 	priv->fifo = kfifo_alloc(TFTP_FIFO_SIZE);
+@@ -574,7 +598,7 @@ static int tftp_read(struct device_d *dev, FILE *f, void *buf, size_t insize)
+ 		if (priv->state == STATE_DONE)
+ 			return outsize;
+ 
+-		if (TFTP_FIFO_SIZE - kfifo_len(priv->fifo) >= priv->blocksize)
++		if (priv->last_block == priv->ack_block)
+ 			tftp_send(priv);
+ 
+ 		ret = tftp_poll(priv);
+@@ -766,6 +790,8 @@ static struct fs_driver_d tftp_driver = {
+ 
+ static int tftp_init(void)
+ {
++	globalvar_add_simple_int("tftp.windowsize", &g_tftp_window_size, "%u");
++
+ 	return register_fs_driver(&tftp_driver);
+ }
+ coredevice_initcall(tftp_init);
 -- 
 2.36.1
 
