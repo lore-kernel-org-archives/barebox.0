@@ -1,75 +1,75 @@
-Delivery-date: Mon, 18 Jul 2022 14:26:00 +0200
+Delivery-date: Mon, 18 Jul 2022 14:26:11 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oDPp3-00D7Js-If
-	for lore@lore.pengutronix.de; Mon, 18 Jul 2022 14:26:00 +0200
+	id 1oDPpE-00D7LL-J0
+	for lore@lore.pengutronix.de; Mon, 18 Jul 2022 14:26:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oDPp0-0008U1-W3
-	for lore@pengutronix.de; Mon, 18 Jul 2022 14:26:00 +0200
+	id 1oDPpB-00007Y-0M
+	for lore@pengutronix.de; Mon, 18 Jul 2022 14:26:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bHFC8AbwXEK2g6m0+N0/ep62zE3rZF6NtGjrpCYs46g=; b=v3W4rtzxQcUTBc1KlLXk1dECer
-	jhskJu+Q+rmBbjQOkXHn5QnPy33T00apAPUE/jAETebxbNXTTpCT+xKiC68+Ep2V8qOnnB1h4rpub
-	2m1kG35XHkG6eW1kIT7AqGkPJt+p7lsrPfFZ/BdvWvi0F+1dxzyHQorXgXDKbQduYr+WbtOuND9su
-	gOTSPtCCCmwy39PNY2UbahjzF8Ch3uh0/Q1xMg78YVxHInGTz/Z6JeURs3i0SHx2Qmc5CL2XZEYrg
-	kwXAytT/fitmkYzv7EtvLI0WFVQ2oveqtnF5luzzAZ5NxG7puC3Dga0HCyiG0e+18LrkdBLbg1sgW
-	F81TDNFg==;
+	bh=KoOo6dmSdREfBfGi9z6WMgc3Q4nf2s92gUJdz7t6+SI=; b=N9eb7IKaxlLzXOCN6jHAWPphYT
+	RU/lvlxEU/OJgqc7dmw+nPNkX17wFaCMVSxKADtO59IrB6CQ1ZYTX6Dy23jLU8rqizQxGCj3xIT8K
+	tE47xXRiu23/jE22/6hvU7JCO16Hv0UTZOvoHBdd43qEzQWeQ7Se6h5gS+vd57Brkr75eRJUF4Bdq
+	7T3WrMtkoP0h4g3xupp5RTuPZUmhqhn1lRxOFaHyt2SQzmOsEWhv3hhSb0dO5TcHDYUnAPf9cRcKG
+	5hxcyIBkjq7csfp3+B6AN/xY6F/YjLbQKwXxSamM8zzuDE1R6hannq9j0pBlkjcnBXAwBZGOMhosM
+	DCRZr2Wg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oDPnY-00DEY2-QG; Mon, 18 Jul 2022 12:24:28 +0000
+	id 1oDPnd-00DEfA-Tn; Mon, 18 Jul 2022 12:24:34 +0000
 Received: from smtpout-2.cvg.de ([2003:49:a034:1067:5::2])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oDPmh-00DDXZ-5R
-	for barebox@lists.infradead.org; Mon, 18 Jul 2022 12:23:36 +0000
+	id 1oDPmh-00DDXT-4v
+	for barebox@lists.infradead.org; Mon, 18 Jul 2022 12:23:38 +0000
 Received: from mail-mta-3.intern.sigma-chemnitz.de (mail-mta-3.intern.sigma-chemnitz.de [192.168.12.71])
-	by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMpht390618
+	by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMoPk390617
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
 	for <barebox@lists.infradead.org>; Mon, 18 Jul 2022 14:22:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
 	s=v2022040800; t=1658146971;
-	bh=bHFC8AbwXEK2g6m0+N0/ep62zE3rZF6NtGjrpCYs46g=; l=980;
+	bh=KoOo6dmSdREfBfGi9z6WMgc3Q4nf2s92gUJdz7t6+SI=; l=1119;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1IR7jOPQKclyjwo9mxtG34jzt8R1KXZNHDJ7Sd672qdC4CKCcON/eE5l9R5jkr5ZT
-	 Suxwxt57tFTROsqilZl3ztndO6Wx3Gxp7+2ucnKLLueTz7tU0icCQ/sRz0ljvPISZ7
-	 eVr8WwpikcPQUiPU57gZbR2gOgTUQTsSoCf8ehz3Tg9PVNtZpWC0/DLdx2QLNwNvAJ
-	 w39T6kpqe3sfQHZ7oTS3F5x6NyJV5v8yhRhc1TxBZg/glN6+3QSzGMHidO4FeOcJJm
-	 alpDF0zF/0gCROWkaDQ/LkR0RhCCv0V2e8/qPnMAR7c+kOPudB6Fw9ITBj3T8QzQjY
-	 uWH8Y5C5fZZ/g==
+	b=h3UkHYUCYCYGl3eeg/SCK6Tijqo3rshykPqk8dSnS3ZnthHXUxhlnk84osAZQzXt5
+	 kHknUmlAsyVSE0wY8rJH4g1ZjVma/0n5uqwitf3i59A15zVs630EB8REeowEOwTeyY
+	 AvMoTAssC7QR6HmM0+GMHa83JMW5HS3hxw2Fn5xpM5o9NoSfwOaDXKhj6fCDiV7Dy5
+	 OFFEaoWJTiElc57uk8h7Iu+JIx2jNY0tsYwaVedGod3F1T8P1KsrOpdoT5PPpbZoQM
+	 DpJI4NZl7QwNzCQIxZvV9RibWt2tbhRlmOpRI1oVykHyucQRoKC8vPz0QkbOLR+CJp
+	 0fw8MODeLA6Jg==
 Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
-	by mail-mta-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 26ICMZD21699961
+	by mail-mta-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 26ICMZea1699960
 	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Mon, 18 Jul 2022 14:22:35 +0200
 Received: from mail-msa-2.intern.sigma-chemnitz.de ( [192.168.12.72]) by reddoxx.intern.sigma-chemnitz.de
-	(Reddoxx engine) with SMTP id 895E0CD1837; Mon, 18 Jul 2022 14:22:33 +0200
+	(Reddoxx engine) with SMTP id 227DCFFBDB3; Mon, 18 Jul 2022 14:22:33 +0200
 Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
-	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMW1N371858
+	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 26ICMXAd371869
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
 	Mon, 18 Jul 2022 14:22:33 +0200
 Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.95)
 	(envelope-from <ensc@sigma-chemnitz.de>)
-	id 1oDPlg-002g3Y-Th;
-	Mon, 18 Jul 2022 14:22:32 +0200
+	id 1oDPlh-002g3r-1J;
+	Mon, 18 Jul 2022 14:22:33 +0200
 From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 To: barebox@lists.infradead.org
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Date: Mon, 18 Jul 2022 14:22:23 +0200
-Message-Id: <813950f89bce544f5aa84d48f0e2f53d7a0e4d3d.1658144543.git.enrico.scholz@sigma-chemnitz.de>
+Date: Mon, 18 Jul 2022 14:22:27 +0200
+Message-Id: <8990811d3a980010a7cb72f47677206491bcee49.1658144543.git.enrico.scholz@sigma-chemnitz.de>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <cover.1658144543.git.enrico.scholz@sigma-chemnitz.de>
 References: <cover.1658144543.git.enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220718_052335_413055_45D0E70C 
-X-CRM114-Status: UNSURE (   9.60  )
+X-CRM114-CacheID: sfid-20220718_052335_399122_BA15ACBD 
+X-CRM114-Status: UNSURE (   9.80  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -93,43 +93,46 @@ X-Spam-Status: No, score=-104.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 08/13] tftp: detect out-of-memory situations
+Subject: [PATCH 12/13] tftp: allow to change tftp port
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-it should never happen due to the program logic; but detect a failed
-kfifo_put() just in case...
+useful e.g. when working with a local, non-privileged tftp server
 
 Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 ---
- fs/tftp.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/tftp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/fs/tftp.c b/fs/tftp.c
-index 81141626ab91..ef2ce0200b38 100644
+index 2c2ff081be51..400209c26023 100644
 --- a/fs/tftp.c
 +++ b/fs/tftp.c
-@@ -252,11 +252,18 @@ static void tftp_timer_reset(struct file_priv *priv)
- static void tftp_put_data(struct file_priv *priv, uint16_t block,
- 			  void const *pkt, size_t len)
+@@ -78,6 +78,7 @@
+ #define TFTP_ERR_RESEND	1
+ 
+ static int g_tftp_window_size = TFTP_MAX_WINDOW_SIZE / 1;
++static int g_tftp_port = TFTP_PORT;
+ 
+ struct tftp_block {
+ 	uint16_t id;
+@@ -600,7 +601,7 @@ static struct file_priv *tftp_do_open(struct device_d *dev,
+ 		goto out;
+ 	}
+ 
+-	priv->tftp_con = net_udp_new(tpriv->server, TFTP_PORT, tftp_handler,
++	priv->tftp_con = net_udp_new(tpriv->server, g_tftp_port, tftp_handler,
+ 			priv);
+ 	if (IS_ERR(priv->tftp_con)) {
+ 		ret = PTR_ERR(priv->tftp_con);
+@@ -944,6 +945,7 @@ static struct fs_driver_d tftp_driver = {
+ static int tftp_init(void)
  {
-+	unsigned int sz;
-+
- 	priv->last_block = block;
+ 	globalvar_add_simple_int("tftp.windowsize", &g_tftp_window_size, "%u");
++	globalvar_add_simple_int("tftp.port", &g_tftp_port, "%u");
  
--	kfifo_put(priv->fifo, pkt, len);
-+	sz = kfifo_put(priv->fifo, pkt, len);
- 
--	if (len < priv->blocksize) {
-+	if (sz != len) {
-+		pr_err("tftp: not enough room in kfifo (only %u out of %zu written\n",
-+		       sz, len);
-+		priv->err = -ENOMEM;
-+		priv->state = STATE_DONE;
-+	} else if (len < priv->blocksize) {
- 		tftp_send(priv);
- 		priv->err = 0;
- 		priv->state = STATE_DONE;
+ 	return register_fs_driver(&tftp_driver);
+ }
 -- 
 2.36.1
 
