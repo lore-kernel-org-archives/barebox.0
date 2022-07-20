@@ -1,80 +1,80 @@
-Delivery-date: Wed, 20 Jul 2022 15:32:57 +0200
+Delivery-date: Wed, 20 Jul 2022 15:33:00 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oE9ow-00FddR-8v
-	for lore@lore.pengutronix.de; Wed, 20 Jul 2022 15:32:57 +0200
+	id 1oE9oz-00Fdds-4I
+	for lore@lore.pengutronix.de; Wed, 20 Jul 2022 15:33:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oE9ot-0004Tc-RI
-	for lore@pengutronix.de; Wed, 20 Jul 2022 15:32:57 +0200
+	id 1oE9ow-0004Uc-Q6
+	for lore@pengutronix.de; Wed, 20 Jul 2022 15:32:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Vp3NNat2A7j+fBnUmldiKTc6vegeJcu+DTP9P5jsXk4=; b=rO79RtUOSClg1i
-	GEEmmoQ4xp6YH+9QKnIBzEPJCJdcK3olxYOTHa7qYevDULT7mtqB6evO0FonZH7pBJF6d+2w8zfPf
-	1pjjrTfBrEylFXILHIvy4tvnisUZ/dzeNn5WU+MbHq+uiZXjlaDOxhoyFYARdTIaJ3FVJ2kbfFweG
-	l/+/0Fg23TwH+NSkLkxP0bDu9O0rR7VenWzd1uK4izZeBJPXFcezEK061bm6NEW7yPIy3MaYYZkva
-	KjP6slQNAJJUp86LSvR3NKmUpkLJoTd9DIO3K3Hfq7bJEh+vb+SrS0qfoea66ErvS0tjxoLNQVwtz
-	uMiHD6tVoQ2t/Lrpp/Vw==;
+	List-Owner; bh=qb88MZfaixnH0MVxjzVXDAP6f3lvHuYTvdlpuCzzQhQ=; b=Hnj5BqDDhGuICA
+	afbU8CVUYxPsZryHrGI9JgME928Og+mDeeC6RwtrnNO6+0Crhte0tglDMoGrSYanyhUcHkFGMrbFC
+	6g5e6sKflj5pJi9tY5U4wrWBGrrXYA78cDQdZRgRuZyjWiDZ7UznrjCJAqW2nR9VaVUVaCC3vSP67
+	kFKnGPkzr4WvDQ1hGs+t9FAYU1Xe5OfFEKV/ugCEsvrjQwqA4VwXSQHlGYKC/wAVW/HJ9h6fWO1Lt
+	maLMX0tBe7Ru9cZc2bose1IQEqO9fl7vszyK5DW5jlZS1Jddqz8xXPDCHV4KB6AJ6hXoGmyAFn0DM
+	N5VKleUhc9RoD7EWkv2w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oE9nQ-0064DM-QL; Wed, 20 Jul 2022 13:31:24 +0000
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+	id 1oE9nL-0064AD-Go; Wed, 20 Jul 2022 13:31:19 +0000
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oE9nF-006478-0q
-	for barebox@lists.infradead.org; Wed, 20 Jul 2022 13:31:14 +0000
-Received: by mail-lf1-x12e.google.com with SMTP id e28so30207999lfj.4
-        for <barebox@lists.infradead.org>; Wed, 20 Jul 2022 06:31:12 -0700 (PDT)
+	id 1oE9nC-00646F-UI
+	for barebox@lists.infradead.org; Wed, 20 Jul 2022 13:31:12 +0000
+Received: by mail-lj1-x22f.google.com with SMTP id m9so18479890ljp.9
+        for <barebox@lists.infradead.org>; Wed, 20 Jul 2022 06:31:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Vp3NNat2A7j+fBnUmldiKTc6vegeJcu+DTP9P5jsXk4=;
-        b=SMruBVdguBJFTvjQwix644hn9WUVjHNHt3WDtmi0UYOe9ZbAiv7ahsbnmtfegwPzBY
-         pNpGwMYTTFluBuTaFFHLDD2JWbFgmh6q5m7Mxk4Uvw2JdgPjcF70JTy7ItC01a6BTy6A
-         kI1PD60pXk5XzrE0G2fFMKbt0HrmPqJ1Z0UcBMU7yD5MmdJ7pETPQDFS36fGzaDsKtuR
-         5Kj3rCRoGJVpJyLrPijD00ZLRS+aqBT8p55ulADsmzGUZBUj6Kz3SL5i2brrtg+aZnV6
-         f30sBmzWVB3WUIh4GBLlkvTASougv0isp3o7MXFVrKddCQ9ptLT85A5UE4nCczaOnVfS
-         yb9A==
+        bh=qb88MZfaixnH0MVxjzVXDAP6f3lvHuYTvdlpuCzzQhQ=;
+        b=H6yWUS/OaotZ/hT3rp4+aSz06a4yUVbJw8ZjgZmkFYqS+3nBjX6xKovwBOfBjJGSuu
+         +Ee5+PbZ4B/abhJOj498vFplZ1ylPsp7h9iK20WlZzWqKKSTxR29Ga7C0VnCHG1ykCo5
+         WMeRLtnju266yu3V4jeQh7GwcqKtGQHI3lbaiPivx4ZUtchLVMjf/KSaS+nUGSHi/Wd6
+         RjVsaraV4hMRWmFpolCMJW9VPKG61rCzdGoo1NGGR1scP/jQUcoFKOxdLnonAIe4utGN
+         tSd5uaXaVI0mlTd69tOOSopsq0M98gR8vLN9d51i8RTc8OFg547/pzSH9Lp16TMO2+WK
+         PjmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Vp3NNat2A7j+fBnUmldiKTc6vegeJcu+DTP9P5jsXk4=;
-        b=EkKYY0W5inM8Owv9gwVm2pwWtn+pPLo+zTNlGvXl3E5igw+VJkcN0nfEMSNiMXyH/c
-         66Jxxs93Twn+h7rj9FcFRmDS6s1d5QZ/dWy2f/aLA3K7zpzQvhz4h/CCf8xcB5zlfWCN
-         v9krGm2v7glBWm/RK/V6HjuFy9b9QLhD9ddWnbEvaHBQpRE+oSv1J5jw9bKK2o8vYRVB
-         9zRFjUOJbZZpyBWYZ0SNbrjg1RMfNHMp18Sij8eklMdfxXWxf61h7yzghsLoEo3RndV6
-         nNbjHc4RmrWVqhm/TySCTnHUk1U5pceh3JpHESmPlBL2E7cGVarrtVU70dXAhfB5gr2W
-         RM7Q==
-X-Gm-Message-State: AJIora+dj3h0dnvkWW8BH4I8pPwKfCPbGKOJPqEJIUl6gSo23dtfjiu9
-	XIYrmt6qiWBNCTfEoVrX0SxghX+eI2EMhe17
-X-Google-Smtp-Source: AGRyM1s0hWgoHTPxfussuJSse7QpTV2xyFBCdykmD7fwh/DpfsIvgHZu+Eu9wxP0uSWb7IgrJ7SgcA==
-X-Received: by 2002:a05:6512:2588:b0:489:e8fe:5b91 with SMTP id bf8-20020a056512258800b00489e8fe5b91mr19966670lfb.336.1658323870533;
-        Wed, 20 Jul 2022 06:31:10 -0700 (PDT)
+        bh=qb88MZfaixnH0MVxjzVXDAP6f3lvHuYTvdlpuCzzQhQ=;
+        b=eMQAGo7UkOnsLwpbVXY069IBZr1hXv9Zjt84Ci1Tw0b+DTJTuQUYEF/hmaGl68lDR6
+         iWhyvDHBibd4edZiGpIycqFkIO7GtvR9J5Z4XFKtGbJ8x6YmIhUZMbJcxqCZ3XSjgzQW
+         ImmsUqlHTyjptpXqpSAmpCTAGJRSkPDZp8+whS8wHAF/DpfmYPwtex/qaIrTugxughpJ
+         +vaZs82GH/Yz6MymIB5Eqp6c32FRIW7hK4ltkvvjbEpT9aVUHrRhlvoByvBg0Vj717At
+         8mFOuoVB+KFSkPGDH5H3qBqhi7M8fgcP/fEIs5ZK4OO2uV9/GnvP7lM9kPpWg1PGwzf3
+         PH6g==
+X-Gm-Message-State: AJIora86PqPDc56GIbSAEr4tVTg8MoBrWqI79MsOD0mB5AOa2nOx0+Fa
+	Xt+aaUULV7ZTVKJU0+LViYlOrN5oJEv0hwkn
+X-Google-Smtp-Source: AGRyM1sMtagEG501WxvHT68UrKdLkvCmY+mj56+XtmKj5ALguUzJuzWkkcSE63/If8Lx19jkBWcQkw==
+X-Received: by 2002:a2e:8707:0:b0:25d:bbd5:c2f with SMTP id m7-20020a2e8707000000b0025dbbd50c2fmr6039936lji.464.1658323868271;
+        Wed, 20 Jul 2022 06:31:08 -0700 (PDT)
 Received: from localhost.localdomain ([193.232.173.109])
-        by smtp.gmail.com with ESMTPSA id k8-20020a2eb748000000b0025dd85da157sm237378ljo.5.2022.07.20.06.31.09
+        by smtp.gmail.com with ESMTPSA id k8-20020a2eb748000000b0025dd85da157sm237378ljo.5.2022.07.20.06.31.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jul 2022 06:31:09 -0700 (PDT)
+        Wed, 20 Jul 2022 06:31:07 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed, 20 Jul 2022 16:30:56 +0300
-Message-Id: <20220720133100.13580-4-denorl2009@gmail.com>
+Date: Wed, 20 Jul 2022 16:30:54 +0300
+Message-Id: <20220720133100.13580-2-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20220720133100.13580-1-denorl2009@gmail.com>
 References: <20220720133100.13580-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220720_063113_077546_A45C8DCB 
-X-CRM114-Status: UNSURE (   8.32  )
+X-CRM114-CacheID: sfid-20220720_063110_995665_D3900A35 
+X-CRM114-Status: UNSURE (   8.63  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -99,43 +99,32 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/7] net: e1000: do not actually acquire/put swfw_sync on 8254x cards
+Subject: [PATCH 1/7] net: e1000: remove superfluous allocation check
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-There is no Software-Firmware Synchronization register on these
-controllers.
+dma_alloc() calls xmemalign which panics if unable to allocate memory,
+so there is no need to check the returned pointer for validity.
 
 Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 ---
- drivers/net/e1000/main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/e1000/main.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index 3b45fb3b51..4ca598eb2f 100644
+index f67c5d867b..bfb8d8ff2f 100644
 --- a/drivers/net/e1000/main.c
 +++ b/drivers/net/e1000/main.c
-@@ -245,6 +245,10 @@ int32_t e1000_swfw_sync_acquire(struct e1000_hw *hw, uint16_t mask)
- 	int32_t timeout = 200;
+@@ -3575,9 +3575,6 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	edev->priv = hw;
  
- 	DEBUGFUNC();
-+
-+	if (hw->mac_type <= e1000_82547_rev_2)
-+		return E1000_SUCCESS;
-+
- 	while (timeout) {
- 		if (e1000_get_hw_eeprom_semaphore(hw))
- 			return -E1000_ERR_SWFW_SYNC;
-@@ -276,6 +280,9 @@ int32_t e1000_swfw_sync_release(struct e1000_hw *hw, uint16_t mask)
- {
- 	uint32_t swfw_sync;
- 
-+	if (hw->mac_type <= e1000_82547_rev_2)
-+		return E1000_SUCCESS;
-+
- 	if (e1000_get_hw_eeprom_semaphore(hw))
- 		return -E1000_ERR_SWFW_SYNC;
- 
+ 	hw->packet = dma_alloc(PAGE_SIZE);
+-	if (!hw->packet)
+-		return -ENOMEM;
+-
+ 	hw->packet_dma = dma_map_single(hw->dev, hw->packet, PAGE_SIZE,
+ 					DMA_FROM_DEVICE);
+ 	if (dma_mapping_error(hw->dev, hw->packet_dma))
 -- 
 2.20.1
 
