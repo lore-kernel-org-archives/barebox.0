@@ -1,62 +1,62 @@
-Delivery-date: Wed, 20 Jul 2022 07:52:40 +0200
+Delivery-date: Wed, 20 Jul 2022 07:52:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oE2dU-00FGdM-T0
-	for lore@lore.pengutronix.de; Wed, 20 Jul 2022 07:52:40 +0200
+	id 1oE2dZ-00FGdr-GI
+	for lore@lore.pengutronix.de; Wed, 20 Jul 2022 07:52:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oE2dS-0008Aq-4o
-	for lore@pengutronix.de; Wed, 20 Jul 2022 07:52:39 +0200
+	id 1oE2dW-0008Bo-Sw
+	for lore@pengutronix.de; Wed, 20 Jul 2022 07:52:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XXQtLKGmKIHeBbvWL8+8GLfJjeoGvMvFv7k198jKtY4=; b=tMbhDbbgDixHmWUBPdRvnWV02g
-	6Tj2B0sy8wwbdPxKf2CvCyXei7u5q13wm+eP4fmCSphRWp7xEkQ/xFJhW41ew14X9Y8Z8F4g44R3a
-	RhLJZjbB+V510YV4KQ162wlxl+mWalJLUuhkfwg0jam+/GKv+1eNn4ksLNfFcPg9dtCbOZQKB+MhB
-	gWSn/i2WE/lvb0uFHhvZy+J+PoIaREaC2N85PUqJiHzOGqlf0G1je4tEoyYVxQb0+qekH4oCMQPRH
-	U47A+4IgsNDTnp8ZIKrxQQWRWBWyeahdB20pxyRHWQgCh6HMR9KCht5MVXEArOqUhnS9ctPD7xPn4
-	/PNy9NIg==;
+	bh=VZEIdcgcxc+VKBDOev9YNw31BphibBLiFVPgHeg9n14=; b=a+RTUNwIf49FqNv9TJf0Ep3dxv
+	WS9VpyXDmR6CJ0y952N/ZxlVnGRwt7vLb2aoel9d3aDkJmst2zL2Djg2iMyQXUM3Z+/BlGRsYAmE5
+	+IfL5dNo+Oaxv9ZKi+jXp/NSI/HN4qC3uywKQSVGQLwHLu8PQayxxS1BXQ/wjll6WdNo2eYqJxBC8
+	MyXzQjgyRs6ka6zIIOyEVnpkWTFfNfjA7MRoib77SITlsotaKRNd4FpBNVIOuvIno4Jo3pVjnyS77
+	OaaxQgmTYK30WgRtFt04X0DHu0yt6QdRXiSApoC1ejMFf/ad7Q7rgeDer/5RKhdbm2obm8dvtzMm5
+	WMqjFHBg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oE2bu-000jP3-2e; Wed, 20 Jul 2022 05:51:02 +0000
+	id 1oE2bw-000jPa-Bg; Wed, 20 Jul 2022 05:51:04 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oE2bk-000jKX-Sa
-	for barebox@lists.infradead.org; Wed, 20 Jul 2022 05:50:55 +0000
+	id 1oE2bp-000jNW-9Z
+	for barebox@lists.infradead.org; Wed, 20 Jul 2022 05:50:59 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oE2bg-0007ns-0V; Wed, 20 Jul 2022 07:50:48 +0200
+	id 1oE2bg-0007nl-0T; Wed, 20 Jul 2022 07:50:48 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oE2bc-0023UP-T1; Wed, 20 Jul 2022 07:50:44 +0200
+	id 1oE2bc-0023UJ-70; Wed, 20 Jul 2022 07:50:44 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oE2bb-00EjCT-Ef; Wed, 20 Jul 2022 07:50:43 +0200
+	id 1oE2bb-00EjCQ-EC; Wed, 20 Jul 2022 07:50:43 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: michael.riesch@wolfvision.net,
 	j.zink@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 20 Jul 2022 07:50:41 +0200
-Message-Id: <20220720055042.3510276-3-a.fatoum@pengutronix.de>
+Date: Wed, 20 Jul 2022 07:50:40 +0200
+Message-Id: <20220720055042.3510276-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220720055042.3510276-1-a.fatoum@pengutronix.de>
 References: <20220720055042.3510276-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220719_225053_108163_FDE08783 
-X-CRM114-Status: GOOD (  22.51  )
+X-CRM114-CacheID: sfid-20220719_225057_523190_DB5E3E9F 
+X-CRM114-Status: GOOD (  15.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,245 +78,339 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [RFT PATCH 2/3] bootsource: allow DT aliases and bootrom numbering to differ
+Subject: [RFT PATCH 1/3] bootsource: rename existing bootsource_set to bootsource_set_raw
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-So far, we had no explicit mapping table between bootsource_instance
-and device id numbering in barebox and mostly depended on DT aliases
-reflecting the numbering of the bootrom. Add a new bootsource_set()
-that optionally consults a mapping table in the DT to arrive at the
-correct numbers.
+Patterns like [ "$bootsource" = mmc ] && boot mmc$bootsource_instance
+expect that ${bootsource_instance} and MMC aliases align, which may not
+always be the case. In preparation for adding a new bootsource_set
+function that consults an optional mapping table from bootrom
+bootsource_instance to board-specific device numbering, rename all
+existing instances to bootsource_set_raw. While at it, clean up the
+legacy split into bootsource_set and bootsource_set_instance and have
+the new bootsource_set_raw accept both arguments at once.
+
+No functional change intended.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../devicetree/bindings/barebox/aliases.rst   |  36 +++++++
- common/bootsource.c                           | 101 +++++++++++++-----
- include/bootsource.h                          |  40 ++++++-
- 3 files changed, 149 insertions(+), 28 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/barebox/aliases.rst
+ arch/arm/mach-at91/sama5d2.c                | 4 ++--
+ arch/arm/mach-imx/boot.c                    | 6 ++----
+ arch/arm/mach-layerscape/boot.c             | 4 ++--
+ arch/arm/mach-mxs/imx.c                     | 3 +--
+ arch/arm/mach-omap/am33xx_generic.c         | 3 +--
+ arch/arm/mach-omap/omap3_generic.c          | 3 +--
+ arch/arm/mach-omap/omap4_generic.c          | 3 +--
+ arch/arm/mach-rockchip/rk3288.c             | 3 +--
+ arch/arm/mach-rockchip/rk3568.c             | 3 +--
+ arch/arm/mach-socfpga/arria10-bootsource.c  | 3 +--
+ arch/arm/mach-socfpga/cyclone5-bootsource.c | 6 ++----
+ arch/arm/mach-stm32mp/init.c                | 3 +--
+ arch/arm/mach-zynq/zynq.c                   | 2 +-
+ arch/arm/mach-zynqmp/zynqmp.c               | 3 +--
+ common/bootsource.c                         | 9 +++++----
+ drivers/block/efi-block-io.c                | 2 +-
+ drivers/efi/efi-device.c                    | 3 +--
+ include/bootsource.h                        | 4 ++--
+ 18 files changed, 27 insertions(+), 40 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/barebox/aliases.rst b/Documentation/devicetree/bindings/barebox/aliases.rst
-new file mode 100644
-index 000000000000..527cc85ef696
---- /dev/null
-+++ b/Documentation/devicetree/bindings/barebox/aliases.rst
-@@ -0,0 +1,36 @@
-+barebox DT aliases
-+==================
-+
-+barebox can use the properties in the ``/aliases`` node to arrive
-+at deterministic names for devices, e.g.::
-+
-+.. code-block:: none
-+   / {
-+   	aliases {
-+   		mmc0 = &sdhci;
-+   		wdog0 = &iwdg;
-+   	};
-+   };
-+
-+will assign the MMC device created from probing the node at ``&sdhci``
-+the name ``/dev/mmc0``. Similarly, the watchdog device created from
-+probing the node at ``&iwdg`` will be named ``wdog0``.
-+
-+By default, barebox will assume the aliases in the DT to align with
-+the bootsource communicated by the firmware. If this is not the case,
-+a device tree override is possible via an
-+``/aliases/barebox,bootsource-${bootsource}${bootsource_instance}``
-+property:
-+
-+.. code-block:: none
-+
-+  &{/aliases} {
-+	mmc0 = &sdmmc0;
-+	mmc1 = &sdhci;
-+	barebox,bootsource-mmc0 = &sdhci;
-+	barebox,bootsource-mmc1 = &sdmmc0;
-+  };
-+
-+This will ensure that when booting from MMC, ``/dev/mmc${bootsource_instance}``
-+will point at the correct boot device, despite bootrom and board DT alias
-+order being different.
-diff --git a/common/bootsource.c b/common/bootsource.c
-index c37da38f7f99..d74c5e5cbe9f 100644
---- a/common/bootsource.c
-+++ b/common/bootsource.c
-@@ -33,6 +33,34 @@ static enum bootsource bootsource = BOOTSOURCE_UNKNOWN;
- static int bootsource_instance = BOOTSOURCE_INSTANCE_UNKNOWN;
- const char *bootsource_alias_name = NULL;
+diff --git a/arch/arm/mach-at91/sama5d2.c b/arch/arm/mach-at91/sama5d2.c
+index a4aa8a23399d..b05d6a56bdd8 100644
+--- a/arch/arm/mach-at91/sama5d2.c
++++ b/arch/arm/mach-at91/sama5d2.c
+@@ -62,8 +62,8 @@ static int sama5d2_bootsource_init(void)
  
-+const char *bootsource_get_alias_stem(enum bootsource bs)
-+{
-+	switch (bs) {
-+		/*
-+		 * For I2C and SPI EEPROMs we set the stem to be 'i2c'
-+		 * and 'spi' correspondingly. The resulting alias will
-+		 * be pointing at the controller said EEPROM is
-+		 * attached to.
-+		 *
-+		 * NOTE: This code assumes single bootable EEPROM per
-+		 * controller
-+		 */
-+	case BOOTSOURCE_I2C_EEPROM:
-+		return bootsource_str[BOOTSOURCE_I2C];
-+	case BOOTSOURCE_SPI_EEPROM:
-+	case BOOTSOURCE_SPI_NOR:
-+		return bootsource_str[BOOTSOURCE_SPI];
-+	case BOOTSOURCE_SERIAL:	/* FALLTHROUGH */
-+	case BOOTSOURCE_I2C:	/* FALLTHROUGH */
-+	case BOOTSOURCE_MMC:	/* FALLTHROUGH */
-+	case BOOTSOURCE_SPI:	/* FALLTHROUGH */
-+	case BOOTSOURCE_CAN:
-+		return bootsource_str[bootsource];
-+	default:
-+		return NULL;
-+	}
-+}
-+
- /**
-  * bootsource_get_alias_name() - Get the name of the bootsource alias
-  *
-@@ -58,33 +86,9 @@ char *bootsource_get_alias_name(void)
- 	if (bootsource_alias_name)
- 		return strdup(bootsource_alias_name);
+ 	at91_bootsource = __sama5d2_stashed_bootrom_r4;
  
--	switch (bootsource) {
--		/*
--		 * For I2C and SPI EEPROMs we set the stem to be 'i2c'
--		 * and 'spi' correspondingly. The resulting alias will
--		 * be pointing at the controller said EEPROM is
--		 * attached to.
--		 *
--		 * NOTE: This code assumes single bootable EEPROM per
--		 * controller
--		 */
--	case BOOTSOURCE_I2C_EEPROM:
--		stem = bootsource_str[BOOTSOURCE_I2C];
--		break;
--	case BOOTSOURCE_SPI_EEPROM:
--	case BOOTSOURCE_SPI_NOR:
--		stem = bootsource_str[BOOTSOURCE_SPI];
--		break;
--	case BOOTSOURCE_SERIAL:	/* FALLTHROUGH */
--	case BOOTSOURCE_I2C:	/* FALLTHROUGH */
--	case BOOTSOURCE_MMC:	/* FALLTHROUGH */
--	case BOOTSOURCE_SPI:	/* FALLTHROUGH */
--	case BOOTSOURCE_CAN:
--		stem = bootsource_str[bootsource];
--		break;
--	default:
-+	stem = bootsource_get_alias_stem(bootsource);
-+	if (!stem)
- 		return NULL;
--	}
+-	bootsource_set(sama5_bootsource(at91_bootsource));
+-	bootsource_set_instance(sama5_bootsource_instance(at91_bootsource));
++	bootsource_set_raw(sama5_bootsource(at91_bootsource),
++			   sama5_bootsource_instance(at91_bootsource));
  
- 	/*
- 	 * We expect SoC specific bootsource detection code to properly
-@@ -123,6 +127,51 @@ void bootsource_set_raw_instance(int instance)
- 		pr_setenv("bootsource_instance", "%d", instance);
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index 16a377341c8b..8c9febb50a65 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -34,8 +34,7 @@ imx_boot_save_loc(void (*get_boot_source)(enum bootsource *, int *))
+ 
+ 	get_boot_source(&src, &instance);
+ 
+-	bootsource_set(src);
+-	bootsource_set_instance(instance);
++	bootsource_set_raw(src, instance);
  }
  
-+int bootsource_of_alias_xlate(enum bootsource bs, int instance)
-+{
-+	char alias[sizeof("barebox,bootsource-harddisk4294967295")];
-+	const char *bootsource_stem;
-+	struct device_node *np;
-+	int alias_id;
-+
-+	if (!IS_ENABLED(CONFIG_OFDEVICE))
-+		return BOOTSOURCE_INSTANCE_UNKNOWN;
-+
-+	if (bs == BOOTSOURCE_UNKNOWN ||
-+	    instance == BOOTSOURCE_INSTANCE_UNKNOWN)
-+		return BOOTSOURCE_INSTANCE_UNKNOWN;
-+
-+	bootsource_stem = bootsource_get_alias_stem(bs);
-+	if (!bootsource_stem)
-+		return BOOTSOURCE_INSTANCE_UNKNOWN;
-+
-+	scnprintf(alias, sizeof(alias), "barebox,bootsource-%s%u",
-+		  bootsource_stem, instance);
-+
-+	np = of_find_node_by_alias(NULL, alias);
-+	if (!np)
-+		return BOOTSOURCE_INSTANCE_UNKNOWN;
-+
-+	alias_id = of_alias_get_id(np, bootsource_stem);
-+	if (alias_id < 0)
-+		return BOOTSOURCE_INSTANCE_UNKNOWN;
-+
-+	return alias_id;
-+}
-+
-+int bootsource_set(enum bootsource bs, int instance)
-+{
-+	int alias_id;
-+
-+	alias_id = bootsource_of_alias_xlate(bs, instance);
-+	if (alias_id == BOOTSOURCE_INSTANCE_UNKNOWN)
-+		alias_id = instance;
-+
-+	bootsource_set_raw(bs, alias_id);
-+
-+	return alias_id;
-+}
-+
- enum bootsource bootsource_get(void)
+ 
+@@ -309,8 +308,7 @@ void imx53_boot_save_loc(void)
+ 
+ 	imx53_get_boot_source(&src, &instance);
+ 
+-	bootsource_set(src);
+-	bootsource_set_instance(instance);
++	bootsource_set_raw(src, instance);
+ }
+ 
+ #define IMX6_SRC_SBMR1	0x04
+diff --git a/arch/arm/mach-layerscape/boot.c b/arch/arm/mach-layerscape/boot.c
+index c804977d228d..c6f816444ad5 100644
+--- a/arch/arm/mach-layerscape/boot.c
++++ b/arch/arm/mach-layerscape/boot.c
+@@ -32,8 +32,8 @@ static int ls1046a_bootsource_init(void)
+ 	if (!of_machine_is_compatible("fsl,ls1046a"))
+ 		return 0;
+ 
+-	bootsource_set(ls1046_bootsource_get());
++	bootsource_set_raw(ls1046_bootsource_get(), BOOTSOURCE_INSTANCE_UNKNOWN);
+ 
+ 	return 0;
+ }
+-coredevice_initcall(ls1046a_bootsource_init);
+\ No newline at end of file
++coredevice_initcall(ls1046a_bootsource_init);
+diff --git a/arch/arm/mach-mxs/imx.c b/arch/arm/mach-mxs/imx.c
+index 5af9cca4e9fb..a8a950091821 100644
+--- a/arch/arm/mach-mxs/imx.c
++++ b/arch/arm/mach-mxs/imx.c
+@@ -158,8 +158,7 @@ static void mxs_boot_save_loc(void)
+ 	case 0x9: src = BOOTSOURCE_MMC; break;		/* "SSP SD/MMC #0" */
+ 	}
+ 
+-	bootsource_set(src);
+-	bootsource_set_instance(instance);
++	bootsource_set_raw(src, instance);
+ }
+ 
+ static int mxs_init(void)
+diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
+index bfe5b3dc73dc..7f9a2bcf3710 100644
+--- a/arch/arm/mach-omap/am33xx_generic.c
++++ b/arch/arm/mach-omap/am33xx_generic.c
+@@ -153,8 +153,7 @@ static int am33xx_bootsource(void)
+ 	default:
+ 		src = BOOTSOURCE_UNKNOWN;
+ 	}
+-	bootsource_set(src);
+-	bootsource_set_instance(instance);
++	bootsource_set_raw(src, instance);
+ 	return 0;
+ }
+ 
+diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
+index 69f2d51a62b5..cb6105cc042f 100644
+--- a/arch/arm/mach-omap/omap3_generic.c
++++ b/arch/arm/mach-omap/omap3_generic.c
+@@ -475,8 +475,7 @@ static int omap3_bootsource(void)
+ 		src = BOOTSOURCE_UNKNOWN;
+ 	}
+ 
+-	bootsource_set(src);
+-	bootsource_set_instance(0);
++	bootsource_set_raw(src, 0);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index 6d165b7f684d..7c8374eba762 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -498,8 +498,7 @@ static int omap4_bootsource(void)
+ 		src = BOOTSOURCE_UNKNOWN;
+ 	}
+ 
+-	bootsource_set(src);
+-	bootsource_set_instance(0);
++	bootsource_set_raw(src, 0);
+ 
+ 	omap_vector_init();
+ 
+diff --git a/arch/arm/mach-rockchip/rk3288.c b/arch/arm/mach-rockchip/rk3288.c
+index 2a1d4ab7a240..f623af6731c1 100644
+--- a/arch/arm/mach-rockchip/rk3288.c
++++ b/arch/arm/mach-rockchip/rk3288.c
+@@ -69,8 +69,7 @@ static int rk3288_env_init(void)
+ 	const char *envpath = "/chosen/environment-emmc";
+ 	int ret;
+ 
+-	bootsource_set(BOOTSOURCE_MMC);
+-	bootsource_set_instance(0);
++	bootsource_set_raw(BOOTSOURCE_MMC, 0);
+ 
+ 	ret = of_device_enable_path(envpath);
+ 	if (ret < 0)
+diff --git a/arch/arm/mach-rockchip/rk3568.c b/arch/arm/mach-rockchip/rk3568.c
+index 234c6d22d171..2d80bad8a658 100644
+--- a/arch/arm/mach-rockchip/rk3568.c
++++ b/arch/arm/mach-rockchip/rk3568.c
+@@ -160,8 +160,7 @@ static enum bootsource rk3568_bootsource(void)
+ 	if (v >= ARRAY_SIZE(bootdev_map))
+ 		return BOOTSOURCE_UNKNOWN;
+ 
+-	bootsource_set(bootdev_map[v].src);
+-	bootsource_set_instance(bootdev_map[v].instance);
++	bootsource_set_raw(bootdev_map[v].src, bootdev_map[v].instance);
+ 
+ 	return bootdev_map[v].src;
+ }
+diff --git a/arch/arm/mach-socfpga/arria10-bootsource.c b/arch/arm/mach-socfpga/arria10-bootsource.c
+index 3319dc4bf968..9055570c0764 100644
+--- a/arch/arm/mach-socfpga/arria10-bootsource.c
++++ b/arch/arm/mach-socfpga/arria10-bootsource.c
+@@ -55,8 +55,7 @@ static int arria10_boot_save_loc(void)
+ 
+ 	src = arria10_get_bootsource();
+ 
+-	bootsource_set(src);
+-	bootsource_set_instance(0);
++	bootsource_set_raw(src, 0);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-socfpga/cyclone5-bootsource.c b/arch/arm/mach-socfpga/cyclone5-bootsource.c
+index 717a00342506..ab18d033022f 100644
+--- a/arch/arm/mach-socfpga/cyclone5-bootsource.c
++++ b/arch/arm/mach-socfpga/cyclone5-bootsource.c
+@@ -50,8 +50,7 @@ static int cyclone5_boot_save_loc(void)
+ 		break;
+ 	}
+ 
+-	bootsource_set(src);
+-	bootsource_set_instance(0);
++	bootsource_set_raw(src, 0);
+ 
+ 	return 0;
+ }
+@@ -84,8 +83,7 @@ static int arria10_boot_save_loc(void)
+ 		break;
+ 	}
+ 
+-	bootsource_set(src);
+-	bootsource_set_instance(0);
++	bootsource_set_raw(src, 0);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-stm32mp/init.c b/arch/arm/mach-stm32mp/init.c
+index bcd04b210a50..938dea3c3d5d 100644
+--- a/arch/arm/mach-stm32mp/init.c
++++ b/arch/arm/mach-stm32mp/init.c
+@@ -98,8 +98,7 @@ static void setup_boot_mode(void)
+ 	pr_debug("[boot_ctx=0x%x] => mode=0x%x, instance=%d\n",
+ 		 boot_ctx, boot_mode, instance);
+ 
+-	bootsource_set(src);
+-	bootsource_set_instance(instance);
++	bootsource_set_raw(src, instance);
+ }
+ 
+ static int __stm32mp_cputype;
+diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
+index 806aeb913055..5abd52f6a21f 100644
+--- a/arch/arm/mach-zynq/zynq.c
++++ b/arch/arm/mach-zynq/zynq.c
+@@ -71,7 +71,7 @@ static int zynq_init(void)
+ 
+ 	restart_handler_register_fn("soc", zynq_restart_soc);
+ 
+-	bootsource_set(zynq_bootsource_get());
++	bootsource_set_raw(zynq_bootsource_get(), BOOTSOURCE_INSTANCE_UNKNOWN);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-zynqmp/zynqmp.c b/arch/arm/mach-zynqmp/zynqmp.c
+index 610d4bba6eaf..312325956a99 100644
+--- a/arch/arm/mach-zynqmp/zynqmp.c
++++ b/arch/arm/mach-zynqmp/zynqmp.c
+@@ -148,8 +148,7 @@ static int zynqmp_init(void)
+ 	int boot_instance;
+ 
+ 	zynqmp_get_bootsource(&boot_src, &boot_instance);
+-	bootsource_set(boot_src);
+-	bootsource_set_instance(boot_instance);
++	bootsource_set_raw(boot_src, boot_instance);
+ 
+ 	reset_source_set(zynqmp_get_reset_src());
+ 
+diff --git a/common/bootsource.c b/common/bootsource.c
+index 79dacfd1d07d..c37da38f7f99 100644
+--- a/common/bootsource.c
++++ b/common/bootsource.c
+@@ -101,7 +101,7 @@ void bootsource_set_alias_name(const char *name)
+ 	bootsource_alias_name = name;
+ }
+ 
+-void bootsource_set(enum bootsource src)
++void bootsource_set_raw(enum bootsource src, int instance)
  {
- 	return bootsource;
+ 	if (src >= ARRAY_SIZE(bootsource_str))
+ 		src = BOOTSOURCE_UNKNOWN;
+@@ -109,9 +109,11 @@ void bootsource_set(enum bootsource src)
+ 	bootsource = src;
+ 
+ 	setenv("bootsource", bootsource_str[src]);
++
++	bootsource_set_raw_instance(instance);
+ }
+ 
+-void bootsource_set_instance(int instance)
++void bootsource_set_raw_instance(int instance)
+ {
+ 	bootsource_instance = instance;
+ 
+@@ -137,8 +139,7 @@ BAREBOX_MAGICVAR(bootsource_instance, "The instance of the source barebox has be
+ 
+ static int bootsource_init(void)
+ {
+-	bootsource_set(bootsource);
+-	bootsource_set_instance(bootsource_instance);
++	bootsource_set_raw(bootsource, bootsource_instance);
+ 	export("bootsource");
+ 	export("bootsource_instance");
+ 
+diff --git a/drivers/block/efi-block-io.c b/drivers/block/efi-block-io.c
+index 120e4d8f1ad2..b78117d445bf 100644
+--- a/drivers/block/efi-block-io.c
++++ b/drivers/block/efi-block-io.c
+@@ -188,7 +188,7 @@ static int efi_bio_probe(struct efi_device *efidev)
+ 		return ret;
+ 
+ 	if (efi_get_bootsource() == efidev)
+-		bootsource_set_instance(instance);
++		bootsource_set_raw_instance(instance);
+ 
+ 	parse_partition_table(&priv->blk);
+ 
+diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+index f91d09e8eaa5..af5406afa682 100644
+--- a/drivers/efi/efi-device.c
++++ b/drivers/efi/efi-device.c
+@@ -426,8 +426,7 @@ static void efi_set_bootsource(void)
+ 
+ out:
+ 
+-	bootsource_set(src);
+-	bootsource_set_instance(instance);
++	bootsource_set_raw(src, instance);
+ }
+ 
+ static int efi_init_devices(void)
 diff --git a/include/bootsource.h b/include/bootsource.h
-index 390d6f5d2b3a..9ca4fcc525b5 100644
+index 646b0e91c13e..390d6f5d2b3a 100644
 --- a/include/bootsource.h
 +++ b/include/bootsource.h
-@@ -26,9 +26,45 @@ enum bootsource {
+@@ -26,8 +26,8 @@ enum bootsource {
  
  enum bootsource bootsource_get(void);
  int bootsource_get_instance(void);
--void bootsource_set_raw(enum bootsource src, int instance);
--void bootsource_set_raw_instance(int instance);
+-void bootsource_set(enum bootsource src);
+-void bootsource_set_instance(int instance);
++void bootsource_set_raw(enum bootsource src, int instance);
++void bootsource_set_raw_instance(int instance);
  void bootsource_set_alias_name(const char *name);
  char *bootsource_get_alias_name(void);
-+const char *bootsource_get_alias_stem(enum bootsource bs);
-+int bootsource_of_alias_xlate(enum bootsource bs, int instance);
-+
-+/**
-+ * bootsource_set - set bootsource with optional DT mapping table
-+ * @bs:	bootrom reported bootsource
-+ * @instance: bootrom reported instance
-+ *
-+ * Returns computed bootsource instace
-+ *
-+ * Normal bootsource_set_raw_instance() expects numbering used by
-+ * bootrom for instance to align with DT aliases, e.g.
-+ * $bootsource = "mmc" && $bootsource_instance = 1 -> /aliases/mmc1
-+ * bootsource_set() will instead consult
-+ * /aliases/barebox,bootsource-mmc1 which may point at a different
-+ * device than mmc1. In absence of appropriate barebox,bootsource-*
-+ * alias, instance is set without translation.
-+ */
-+int bootsource_set(enum bootsource bs, int instance);
-+
-+/**
-+ * bootsource_set_raw - set bootsource as-is
-+ * @bs:	bootsource to report
-+ * @instance: bootsource instance to report
-+ *
-+ * This sets bootsource and bootsource_instance directly.
-+ * Preferably, use bootsource_set in new code.
-+ */
-+void bootsource_set_raw(enum bootsource src, int instance);
-+
-+/**
-+ * bootsource_set_raw_instance - set bootsource_instance as-is
-+ * @bs:	bootrom reported bootsource
-+ * @instance: bootrom reported instance
-+ *
-+ * This directly sets bootsource_instance without changing bootsource.
-+ */
-+void bootsource_set_raw_instance(int instance);
  
- #endif	/* __BOOTSOURCE_H__ */
 -- 
 2.30.2
 
