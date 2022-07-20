@@ -1,79 +1,80 @@
-Delivery-date: Wed, 20 Jul 2022 15:33:02 +0200
+Delivery-date: Wed, 20 Jul 2022 15:33:06 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oE9p1-00Fdel-0q
-	for lore@lore.pengutronix.de; Wed, 20 Jul 2022 15:33:02 +0200
+	id 1oE9p5-00FdfB-2I
+	for lore@lore.pengutronix.de; Wed, 20 Jul 2022 15:33:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oE9oy-0004VC-FQ
-	for lore@pengutronix.de; Wed, 20 Jul 2022 15:33:01 +0200
+	id 1oE9p1-0004Wo-Oq
+	for lore@pengutronix.de; Wed, 20 Jul 2022 15:33:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=O1yD95uj53ZJbyp2GYZo0ZeZS6rzQjXW5PcFnkCQsyI=; b=BNgmALBA+Cwti5
-	9PHBsPpjnQneHcgz0ML42UCsteEPhMyRi6PEmxlwQtJw++yBOwNWdEO3Daiw4c2vSHlPPaiR8rMTD
-	h6KYzWc/P0DYLkuPJz85SKJn/qrYeosT9WFJs4oQKGPTGt4QMemkeeVhht94jqyEgAY29CB7w6wba
-	QtKMNxz+4+CXzN/M1uMi5blCH+QUNiNDislAis8LoLRexVg9oY2ZVN0rckYbyV1OPeKgso4SJR/TL
-	DnhWR/om4X2az9xfOF6s94/gqGa88IVRzeBLJlLI2sOJ4p+XcjJCb9NVDwpXb0EjqDIObmoUyZVeT
-	dQEAVwKTWaPbL0eK6yOQ==;
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=MUZe7Z73Z34KOVYfCmwMFCa2UHzqg4Fs9NOpxsorssU=; b=q+yYZIghc7vSCF
+	PObz23phDIrCquFrKAPrHM7nPIP3A7bmzZi/MtHvzD2Ka92TGfsKa8tIrwg3IzGruTArBmQ4aa44c
+	o/JsHYlcLARi7snuD4Dhk6nVqiZ4NeajWyDo/NJOKNU7tYAjqlIrfbSHJfPtQMw/QlH/Eiz13RLdF
+	K/RLeAuFWygTlDQXJbAFSNZwsnVgD6WadhLOjgVpFGfEs6+kku2thjQUCBUoM+lfZdBaYxh1Gj+nf
+	Fvk6iYt42YBNXYxUqCcIyqfZCs+SSs52Ryn7fTKAA9MMBNl3Ig8WAtWH82O2QnsBmPNODk/WvJ4VI
+	6JU1RmWMnBHPHvH0i2ng==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oE9nI-006489-NG; Wed, 20 Jul 2022 13:31:16 +0000
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+	id 1oE9nO-0064Ch-9m; Wed, 20 Jul 2022 13:31:22 +0000
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oE9nC-006463-L2
-	for barebox@lists.infradead.org; Wed, 20 Jul 2022 13:31:11 +0000
-Received: by mail-lf1-x12d.google.com with SMTP id n18so30292896lfq.1
-        for <barebox@lists.infradead.org>; Wed, 20 Jul 2022 06:31:09 -0700 (PDT)
+	id 1oE9nE-00646b-7n
+	for barebox@lists.infradead.org; Wed, 20 Jul 2022 13:31:13 +0000
+Received: by mail-lf1-x134.google.com with SMTP id u13so30272686lfn.5
+        for <barebox@lists.infradead.org>; Wed, 20 Jul 2022 06:31:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=O1yD95uj53ZJbyp2GYZo0ZeZS6rzQjXW5PcFnkCQsyI=;
-        b=jWgfgtmvbO95XSp3MShBYVDaQ9L8dr2CVhXnyWXYShE3CYKXkFxmCZrCQ4ognqRGht
-         8vzlGh+USzy2CLgNLCgdDJmqvRH3b8iD0cHxVs1I4CAf32ajWxYgoWTCkl0yz1iXbS+y
-         Y+9g9KLtBP9e8aGXQfjqU7Pze9Bvtq7GiYcY4HYtIz056Gg5xRJcvEMbPwB2LfoNClJ/
-         fCZDQ1/jPL8vUXXaYnY+s8zSAKEWD8Hz9gVEGeSAcanbrtUh0DPCYXp7D7Rd3ce/S4HQ
-         Cfc7LjVwRuwScQAjfM1EalajyCUPfXA4bNC8jMlHl+irYg4ZfUfZypswOHbW7ibWoFi4
-         eadA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=MUZe7Z73Z34KOVYfCmwMFCa2UHzqg4Fs9NOpxsorssU=;
+        b=SCJUCLhvWedzCUQzcNQpA540fEdeDeTbnWWN2/siUJ4OsmhJwlwc2ocXaJoUEg/Taq
+         iSQUg6kA5qPM3q5Qvp3nrAm/ekRUNABhMu5GoL5dfWA5WcoidgPUgEBzdLDAxI8Z9xH/
+         +UspYmbUS6eHLrUJsv8aBGO1fgZbbdxEQpRfFFqeezaiuw5wzkD2Es8+gtDClnR+8BQB
+         tt0rjeS7V64exImFwmVwaY4vedBelK77Xdzhv47fug+7inSMdT06XMud7xAQirvTmEMq
+         r24QMn5jbCai0Zhnuv+zJ9Ab9grWf2wa4Uv+rvUcYKSVSAdxNvvqw5UdxHcYejBt4ySy
+         svUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=O1yD95uj53ZJbyp2GYZo0ZeZS6rzQjXW5PcFnkCQsyI=;
-        b=jTwKPoTkIkVUdql/oTIShOKj4ziBMpRuitrRLdVGUDhA8YzOssBpXYV1bQlRrvG//Y
-         am7A8RiqpLF8XzXKt8nRK5UnkGIq8iNYnFruJS6cJLaCfD92H5gPF/i2XrQXM8YF8P9h
-         gaCnqeLz0T7E2QpRQ1hHgf8lFIDq/B73iU8o1UOyAv5R2yFUWtwTF0SyeE/B+LglXoSl
-         s17BjtXWLm7n0LgsGCRhmj5Xkr1CSD4FTGFl5u/CSiReZKApZZSgU+6+GRJPdjpVaAYI
-         ysKOfxyXlDau5Tl0oj4YOqRrpddrdRLWHtstLkbwJgf1WG2NE3yezOtUKZOvRXSox3W4
-         M5Mg==
-X-Gm-Message-State: AJIora/ruo3rUXFNCmXaIY6iI1CWjzkc5TSDIv9qHvpxzr2CMlUCwSUi
-	Oyo0FRO30blwySm+tiQwe+f7vYqFdSS1tFCE
-X-Google-Smtp-Source: AGRyM1scZnGCC5JQRTabkG+7hOugV/QhEPWMBg173jUpZnGZOlbN+htVkobcU7iqf5VhLWU90vqfoA==
-X-Received: by 2002:a05:6512:2245:b0:489:dc6e:afdd with SMTP id i5-20020a056512224500b00489dc6eafddmr18650408lfu.628.1658323867095;
-        Wed, 20 Jul 2022 06:31:07 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=MUZe7Z73Z34KOVYfCmwMFCa2UHzqg4Fs9NOpxsorssU=;
+        b=ECIVlXRTxFtoHaLUYvS7QAsW/wfPsfMZgqKeb+QzHXK/T1NdT6w23SGdkrt/PUvE2t
+         qj8fHOTZ/Ji18hUYz5EAKtVw7uQbnvj2PutfbWcTXnNW32s6jGqWjUMINvxe4myj4t+K
+         yCox4Y2b8sz73pEY3hmGVeyzhI6CfqRLXcwWFv9uX1PnvoM7fmtcEiGTtY/4zoJGY95z
+         E2w9XRobKZ70Eh//tT6CeEtQILaRuzk+MDS/63O0t24e+LC8gIme0Orf+K0AKwyO+FVp
+         87Z7IUljDvyDIbOYGyBHtk2OgjNnZRkZf9Qa6JWOxsIV1kHkXOJPx+Y5c/2WhtcUHEnF
+         +lQg==
+X-Gm-Message-State: AJIora/2gVzlcqyf31vtrSxLGgdfO0QzDoZLp4rBaK+qsVRST7Qx/FlA
+	wkxZ1xOoiJrRdkiSOrPBFuWfwvJgYahQkL8p
+X-Google-Smtp-Source: AGRyM1sn8E8RFSxcFynJD315gG2+Rlou5AQdU/I+bdehKBHfLHo87LWrRiJl7/oT0BPTRVpvNdLr5w==
+X-Received: by 2002:a05:6512:1153:b0:48a:2836:692f with SMTP id m19-20020a056512115300b0048a2836692fmr12654433lfg.650.1658323869349;
+        Wed, 20 Jul 2022 06:31:09 -0700 (PDT)
 Received: from localhost.localdomain ([193.232.173.109])
-        by smtp.gmail.com with ESMTPSA id k8-20020a2eb748000000b0025dd85da157sm237378ljo.5.2022.07.20.06.31.05
+        by smtp.gmail.com with ESMTPSA id k8-20020a2eb748000000b0025dd85da157sm237378ljo.5.2022.07.20.06.31.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jul 2022 06:31:06 -0700 (PDT)
+        Wed, 20 Jul 2022 06:31:08 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed, 20 Jul 2022 16:30:53 +0300
-Message-Id: <20220720133100.13580-1-denorl2009@gmail.com>
+Date: Wed, 20 Jul 2022 16:30:55 +0300
+Message-Id: <20220720133100.13580-3-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20220720133100.13580-1-denorl2009@gmail.com>
+References: <20220720133100.13580-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220720_063110_726788_65F800FB 
-X-CRM114-Status: UNSURE (   6.24  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220720_063112_311100_D1C9983C 
+X-CRM114-Status: GOOD (  12.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,24 +98,79 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 0/7] e1000 and rtl8169 drivers fixes
+Subject: [PATCH 2/7] net: e1000: properly read/write MDI registers on 8254x cards
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Denis Orlov (7):
-  net: e1000: remove superfluous allocation check
-  net: e1000: properly read/write MDI registers on 8254x cards
-  net: e1000: do not actually acquire/put swfw_sync on 8254x cards
-  net: e1000: configure tx/rx and rctl in open() instead of init()
-  net: rtl8169: properly map rx/tx buffers for dma
-  net: rtl8169: enable pci device bus mastering on ifup
-  net: rtl8169: free allocated memory on halt()
+Taken from Linux e1000 driver.
 
+Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+---
  drivers/net/e1000/e1000.h |  3 +++
- drivers/net/e1000/main.c  | 44 +++++++++++++++++++++++++++------
- drivers/net/rtl8169.c     | 51 ++++++++++++++++++++++++++-------------
- 3 files changed, 73 insertions(+), 25 deletions(-)
+ drivers/net/e1000/main.c  | 22 ++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
+diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
+index 52ad3d4cdb..3a5ee9988e 100644
+--- a/drivers/net/e1000/e1000.h
++++ b/drivers/net/e1000/e1000.h
+@@ -1388,6 +1388,9 @@ struct e1000_eeprom_info {
+ #define PHY_1000T_STATUS		0x0A	/* 1000Base-T Status Reg */
+ #define PHY_EXT_STATUS			0x0F	/* Extended Status Reg */
+ 
++#define MAX_PHY_REG_ADDRESS		0x1F	/* 5 bit address bus (0-0x1F) */
++#define MAX_PHY_MULTI_PAGE_REG		0xF	/* Registers equal on all pages */
++
+ /* M88E1000 Specific Registers */
+ #define M88E1000_PHY_SPEC_CTRL		0x10	/* PHY Specific Control Register */
+ #define M88E1000_PHY_SPEC_STATUS	0x11	/* PHY Specific Status Register */
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index bfb8d8ff2f..3b45fb3b51 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -54,6 +54,8 @@ static int e1000_get_speed_and_duplex(struct e1000_hw *hw, uint16_t *speed,
+ 				       uint16_t *duplex);
+ static int e1000_read_phy_reg(struct e1000_hw *hw, uint32_t reg_addr,
+ 			      uint16_t *phy_data);
++static int e1000_phy_write(struct mii_bus *bus, int phy_addr, int reg_addr,
++			   u16 phy_data);
+ static int e1000_write_phy_reg(struct e1000_hw *hw, uint32_t reg_addr,
+ 			       uint16_t phy_data);
+ static int32_t e1000_phy_hw_reset(struct e1000_hw *hw);
+@@ -2627,6 +2629,15 @@ static int e1000_read_phy_reg(struct e1000_hw *hw, uint32_t reg_addr,
+ {
+ 	int ret;
+ 
++	if ((hw->phy_type == e1000_phy_igp) && (reg_addr > MAX_PHY_MULTI_PAGE_REG)) {
++		ret = e1000_phy_write(&hw->miibus, 1, IGP01E1000_PHY_PAGE_SELECT,
++				      (u16)reg_addr);
++		if (ret)
++			return ret;
++
++		reg_addr &= MAX_PHY_REG_ADDRESS;
++	}
++
+ 	ret = e1000_phy_read(&hw->miibus, 1, reg_addr);
+ 	if (ret < 0)
+ 		return ret;
+@@ -2702,6 +2713,17 @@ static int e1000_phy_write(struct mii_bus *bus, int phy_addr,
+  ******************************************************************************/
+ static int e1000_write_phy_reg(struct e1000_hw *hw, uint32_t reg_addr, uint16_t phy_data)
+ {
++	int ret;
++
++	if ((hw->phy_type == e1000_phy_igp) && (reg_addr > MAX_PHY_MULTI_PAGE_REG)) {
++		ret = e1000_phy_write(&hw->miibus, 1, IGP01E1000_PHY_PAGE_SELECT,
++				      (u16)reg_addr);
++		if (ret)
++			return ret;
++
++		reg_addr &= MAX_PHY_REG_ADDRESS;
++	}
++
+ 	return e1000_phy_write(&hw->miibus, 1, reg_addr, phy_data);
+ }
+ 
 -- 
 2.20.1
 
