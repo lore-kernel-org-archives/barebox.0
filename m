@@ -1,54 +1,80 @@
-Delivery-date: Wed, 20 Jul 2022 11:32:06 +0200
+Delivery-date: Wed, 20 Jul 2022 12:17:16 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oE63r-00FRtk-1k
-	for lore@lore.pengutronix.de; Wed, 20 Jul 2022 11:32:06 +0200
+	id 1oE6lY-00FUcF-GM
+	for lore@lore.pengutronix.de; Wed, 20 Jul 2022 12:17:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oE63o-000602-Lw
-	for lore@pengutronix.de; Wed, 20 Jul 2022 11:32:05 +0200
+	id 1oE6lW-0003as-9x
+	for lore@pengutronix.de; Wed, 20 Jul 2022 12:17:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Content-Type:References:In-Reply-To:Date:To:From:Subject:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GvPtKoWpMqEv5D2sp3B2rSyv/eRZgS5JG1lENSyZXos=; b=ItIZ+75lgSf5aUynXRQM+YUhtK
-	arkSWhtU4TivN5k1DLp2CaaKakAv6b5DGy7PbRp+K/9iY0EjUhMcMtXrpptbRcK70m50lOUPE+xB4
-	NKCeN28+Q3ghDbTMXKkEoUe0vFDvkzrpmaNOoMsFFkfzcDPG7/rnpmRcMdQ4eXbMrVS2fObjfSXQC
-	Vp5Cuhsg3kVQepv+6MFLB/okFV53rEce4rohDPaua3dWq8w0hSJ/z8E+XVXW+mfj/TByJ4olQ4kW6
-	OlaF18ai8RhrhxSuCb4LwD8X935GZddvvZlcckbDIEQNqDgoXXX2RzQqPjODfxjYeBcNu0FnPrpie
-	5z8+4MwA==;
+	MIME-Version:Content-Type:Date:To:From:Subject:Message-ID:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=VqYKNeRX1UIKXpT5q9rqY7L8t5RkAHtzIzxZMkPxowI=; b=YXbo/f2szu9Y7NtKWz/YLJrDIU
+	1THduPyOBoGdVE2U47TBz8ZxXK+upYWB3ssM4AaZindsLGnzh1bACKZVL7GXc4rc/x1Lg56nfotlP
+	ncKlGFeziNVAUQ92xbzhKTqfmevJGfOKKBvOXCqKY1AO+EcEsIpmG3FmXYvQbAcWxAjOMbNhmr510
+	r68abwsUgzYPRJtxDTDvLxFYX1XuJMl2AX+CKTnLeH20ydfu8YgSSwhpX6/x8fRedrdYCxBOt7U8A
+	szKtXImbQ1KOQwHsJySHSOzDTEKk0uAAB0a2g3xRlzyJv6NSq/8TAIq1Rxbq/ygiOMuvquWU1XpGg
+	aFIDkABg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oE62X-003Ij0-2x; Wed, 20 Jul 2022 09:30:45 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1oE6jv-003tu3-Sp; Wed, 20 Jul 2022 10:15:36 +0000
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oE62N-003Ig2-II
-	for barebox@lists.infradead.org; Wed, 20 Jul 2022 09:30:37 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=irc.pengutronix.de)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <j.zink@pengutronix.de>)
-	id 1oE62M-0005R5-77
-	for barebox@lists.infradead.org; Wed, 20 Jul 2022 11:30:34 +0200
-Message-ID: <f1b94d187fc66e204d3eefbe8582ee5e0d4de5ce.camel@pengutronix.de>
-From: Johannes Zink <j.zink@pengutronix.de>
+	id 1oE6jq-003toU-6p
+	for barebox@lists.infradead.org; Wed, 20 Jul 2022 10:15:31 +0000
+Received: by mail-wm1-x32a.google.com with SMTP id a18-20020a05600c349200b003a30de68697so2190121wmq.0
+        for <barebox@lists.infradead.org>; Wed, 20 Jul 2022 03:15:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:date:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=VqYKNeRX1UIKXpT5q9rqY7L8t5RkAHtzIzxZMkPxowI=;
+        b=UwnulXhQ880irn6HUMl8Tamj/eb+Ri2cLUL9LjDCyR+HV32bE0y2Q54pkgCWjMvvn8
+         mZbUuBQCJWAdNEMpTya1QTMzgMG43PjzvSMqIoRo+6qdz6BemsfDw03Az3N+92gQFEYY
+         iZHfvC9tF9CZKlptt0o5GbGEjSpQ3xTiv7off0z5i8EOaktuRn4O9BHRAnMgR50UCXJ7
+         FXU2+N8gUgpMvHv1FtCbIdfYhZC113jvkOfrpc6l9poHCIwxk7HavC2+x740QwUBkoLQ
+         tqoOc1HCxyP86Da/7CHrNwAKBVW4x8g3CdKljrB3w8ziM2WgmEsNa9yYv5co6Bzbehdo
+         upGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:date:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=VqYKNeRX1UIKXpT5q9rqY7L8t5RkAHtzIzxZMkPxowI=;
+        b=tnWS2BNbbp7kNwlxng4uJreLJVOKNYf5AXmsX4dccZTMMHVMhJmaR+XN1BMh9SqyDr
+         r4OlU41aIqlsrZi3fk7BvSje2HLKgJ0kyMX+6da7GBfmfg30zuBFPrNRqnugEbtg5mvA
+         9gRck2AklEg00nRB7COb1ha3+KmxXKrBskK1pTAk/8fwDHnP489hHDkSA+h70ecpZjFV
+         xsLvPBUbmx6f1ygAXfjxAac+qKP030nRUZrWd6kQiXn2GLVL/Ka9QassYPkAat/a85nz
+         /kb37SoaONy7qi7nk+5eCSHaNigaCkHxY4sE236P+/Mfmw74NmaFmK3i7b0IIKMdFBeA
+         YRqQ==
+X-Gm-Message-State: AJIora+MqtsFqMgZYte9RbrPoDG1cqePhZVnD2yEhDEdfi1V+esiH+BD
+	+ISQlKK650EV7+xN0pqQO6ADMt0lMtB6g1Zt
+X-Google-Smtp-Source: AGRyM1uShU+pMbUqa01cQOOin3UldsVsIKyDvJemleeTqzhOKUEIlDLsxtZA9sNrJwZiRSCYZTn6zw==
+X-Received: by 2002:a1c:7213:0:b0:3a3:155a:dd5d with SMTP id n19-20020a1c7213000000b003a3155add5dmr3005977wmc.178.1658312124703;
+        Wed, 20 Jul 2022 03:15:24 -0700 (PDT)
+Received: from vaio (93-33-9-224.ip42.fastwebnet.it. [93.33.9.224])
+        by smtp.gmail.com with ESMTPSA id x11-20020a5d60cb000000b0021e42e7c7dbsm3314548wrt.83.2022.07.20.03.15.23
+        for <barebox@lists.infradead.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Jul 2022 03:15:24 -0700 (PDT)
+Message-ID: <02bcbd486b7f41e5dc86bf9d228dcbf6e1fe9957.camel@gmail.com>
+From: Stefano Manni <stefano.manni@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed, 20 Jul 2022 11:30:28 +0200
-In-Reply-To: <20220720055042.3510276-4-a.fatoum@pengutronix.de>
-References: <20220720055042.3510276-1-a.fatoum@pengutronix.de>
-	 <20220720055042.3510276-4-a.fatoum@pengutronix.de>
+Date: Wed, 20 Jul 2022 12:15:22 +0200
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220720_023035_830226_9D3D86CF 
-X-CRM114-Status: GOOD (  29.89  )
+X-CRM114-CacheID: sfid-20220720_031530_315693_625D184A 
+X-CRM114-Status: GOOD (  12.86  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,209 +92,90 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [RFT PATCH 3/3] ARM: dts: rk356x: align bootsource_instance
- numbering and MMC DT aliases
+X-Spam-Status: No, score=-3.2 required=4.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] kbuild: make FIT public key overwritable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, 2022-07-20 at 07:50 +0200, Ahmad Fatoum wrote:
-> A common scripting pattern in barebox is continuing boot from
-> the current bootsource:
-> 
->   if [ "$bootsource" = "mmc" ]; then
->         global.boot.default="mmc${bootsource_instance}
-> ${global.boot.default}"
->   fi
-> 
-> This fails on the RK356x boards, because of a mismatch in numbering:
-> block device numbering is dictated by the mmc* DT aliases and
-> numbering
-> used for bootsource_instance is taken as is from what the bootrom
-> reports.
-> 
-> On SoCs like i.MX, this is a much rarer issue, because the upstream
-> DT
-> has predefined aliases in the same order as reported by the bootrom.
-> 
-> In Rockchip DTs on the other hand, aliases are delegated to the board
-> device trees and all boards we support have aliases in an order
-> different from what the bootrom numbering.
-> 
-> Fix this by employing the newly supported barebox,bootsource-*
-> mapping
-> table. As a result $bootsource_instance will change. We fix the
-> upstream
-> code depending on specific numbering here, but custom scripts and
-> board
-> code may still be broken.
-> 
-> Co-developed-by: Johannes Zink <j.zink@pengutronix.de>
-> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/boards/radxa-rock3/board.c               | 2 +-
->  arch/arm/boards/rockchip-rk3568-bpi-r2pro/board.c | 2 +-
->  arch/arm/boards/rockchip-rk3568-evb/board.c       | 2 +-
->  arch/arm/dts/rk3566-quartz64-a.dts                | 1 +
->  arch/arm/dts/rk3568-bpi-r2-pro.dts                | 1 +
->  arch/arm/dts/rk3568-evb1-v10.dts                  | 1 +
->  arch/arm/dts/rk3568-rock-3a.dts                   | 1 +
->  arch/arm/dts/rk356x.dtsi                          | 9 +++++++++
->  arch/arm/mach-rockchip/rk3568.c                   | 8 +++-----
->  9 files changed, 19 insertions(+), 8 deletions(-)
->  create mode 100644 arch/arm/dts/rk356x.dtsi
-> 
-> diff --git a/arch/arm/boards/radxa-rock3/board.c
-> b/arch/arm/boards/radxa-rock3/board.c
-> index aef5ec5df669..2413ea6cacc0 100644
-> --- a/arch/arm/boards/radxa-rock3/board.c
-> +++ b/arch/arm/boards/radxa-rock3/board.c
-> @@ -21,7 +21,7 @@ static int rock3_probe(struct device_d *dev)
->         barebox_set_model(model->name);
->         barebox_set_hostname(model->shortname);
->  
-> -       if (bootsource == BOOTSOURCE_MMC && instance == 1)
-> +       if (bootsource == BOOTSOURCE_MMC && instance == 0)
->                 of_device_enable_path("/chosen/environment-sd");
->         else
->                 of_device_enable_path("/chosen/environment-emmc");
-> diff --git a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/board.c
-> b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/board.c
-> index e472f13c8bbf..1a5faa8afb12 100644
-> --- a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/board.c
-> +++ b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/board.c
-> @@ -23,7 +23,7 @@ static int rk3568_bpi_r2pro_probe(struct device_d
-> *dev)
->         barebox_set_hostname("bpi-r2pro");
->         machine_is_bpi_r2pro = true;
->  
-> -       if (bootsource == BOOTSOURCE_MMC && instance == 1)
-> +       if (bootsource == BOOTSOURCE_MMC && instance == 0)
->                 of_device_enable_path("/chosen/environment-sd");
->         else
->                 of_device_enable_path("/chosen/environment-emmc");
-> diff --git a/arch/arm/boards/rockchip-rk3568-evb/board.c
-> b/arch/arm/boards/rockchip-rk3568-evb/board.c
-> index a466d385a223..212c801c93d3 100644
-> --- a/arch/arm/boards/rockchip-rk3568-evb/board.c
-> +++ b/arch/arm/boards/rockchip-rk3568-evb/board.c
-> @@ -23,7 +23,7 @@ static int rk3568_evb_probe(struct device_d *dev)
->         barebox_set_hostname("rk3568-evb");
->         machine_is_rk3568_evb = true;
->  
-> -       if (bootsource == BOOTSOURCE_MMC && instance == 1)
-> +       if (bootsource == BOOTSOURCE_MMC && instance == 0)
->                 of_device_enable_path("/chosen/environment-sd");
->         else
->                 of_device_enable_path("/chosen/environment-emmc");
-> diff --git a/arch/arm/dts/rk3566-quartz64-a.dts
-> b/arch/arm/dts/rk3566-quartz64-a.dts
-> index 8639ca0886f1..0036ef31f13a 100644
-> --- a/arch/arm/dts/rk3566-quartz64-a.dts
-> +++ b/arch/arm/dts/rk3566-quartz64-a.dts
-> @@ -3,6 +3,7 @@
->  /dts-v1/;
->  
->  #include <arm64/rockchip/rk3566-quartz64-a.dts>
-> +#include "rk356x.dtsi"
->  
->  / {
->         memory@a00000 {
-> diff --git a/arch/arm/dts/rk3568-bpi-r2-pro.dts
-> b/arch/arm/dts/rk3568-bpi-r2-pro.dts
-> index da76ab64c106..8c13ddd5c103 100644
-> --- a/arch/arm/dts/rk3568-bpi-r2-pro.dts
-> +++ b/arch/arm/dts/rk3568-bpi-r2-pro.dts
-> @@ -9,6 +9,7 @@
->  #include <dt-bindings/leds/common.h>
->  #include <dt-bindings/pinctrl/rockchip.h>
->  #include "rk3568.dtsi"
-> +#include "rk356x.dtsi"
->  
->  / {
->         model = "Bananapi-R2 Pro (RK3568) DDR4 Board";
-> diff --git a/arch/arm/dts/rk3568-evb1-v10.dts b/arch/arm/dts/rk3568-
-> evb1-v10.dts
-> index d2c1fc89a8cb..82186ff86ead 100644
-> --- a/arch/arm/dts/rk3568-evb1-v10.dts
-> +++ b/arch/arm/dts/rk3568-evb1-v10.dts
-> @@ -7,6 +7,7 @@
->  /dts-v1/;
->  
->  #include <arm64/rockchip/rk3568-evb1-v10.dts>
-> +#include "rk356x.dtsi"
->  
->  / {
->         chosen: chosen {
-> diff --git a/arch/arm/dts/rk3568-rock-3a.dts b/arch/arm/dts/rk3568-
-> rock-3a.dts
-> index 44d4fc9686df..25a0c05737d0 100644
-> --- a/arch/arm/dts/rk3568-rock-3a.dts
-> +++ b/arch/arm/dts/rk3568-rock-3a.dts
-> @@ -3,6 +3,7 @@
->  /dts-v1/;
->  
->  #include <arm64/rockchip/rk3568-rock-3a.dts>
-> +#include "rk356x.dtsi"
->  
->  / {
->         chosen: chosen {
-> diff --git a/arch/arm/dts/rk356x.dtsi b/arch/arm/dts/rk356x.dtsi
-> new file mode 100644
-> index 000000000000..254450d78fa8
-> --- /dev/null
-> +++ b/arch/arm/dts/rk356x.dtsi
-> @@ -0,0 +1,9 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +
-> +/ {
-> +       aliases {
-> +               barebox,bootsource-mmc0 = &sdhci;
-> +               barebox,bootsource-mmc1 = &sdmmc0;
-> +               barebox,bootsource-mmc2 = &sdmmc1;
-> +       };
-> +};
-> diff --git a/arch/arm/mach-rockchip/rk3568.c b/arch/arm/mach-
-> rockchip/rk3568.c
-> index 2d80bad8a658..19dfa9b87151 100644
-> --- a/arch/arm/mach-rockchip/rk3568.c
-> +++ b/arch/arm/mach-rockchip/rk3568.c
-> @@ -151,18 +151,16 @@ static struct rk_bootsource bootdev_map[] = {
->         [0xa] = { .src = BOOTSOURCE_USB, .instance = 0 },
->  };
->  
-> -static enum bootsource rk3568_bootsource(void)
-> +static void rk3568_bootsource(void)
->  {
->         u32 v;
->  
->         v = readl(RK3568_IRAM_BASE + 0x10);
->  
->         if (v >= ARRAY_SIZE(bootdev_map))
-> -               return BOOTSOURCE_UNKNOWN;
-> +               return;
->  
-> -       bootsource_set_raw(bootdev_map[v].src,
-> bootdev_map[v].instance);
-> -
-> -       return bootdev_map[v].src;
-> +       bootsource_set(bootdev_map[v].src, bootdev_map[v].instance);
->  }
->  
->  int rk3568_init(void)
+The path to the public key used to verify FIT images can be
+specified with Kconfig variable. For a better build system
+integration we also want to be able to specify the path in
+environment variables.
 
-Tested-by: Johannes Zink <j.zink@pengutronix.de> # Radxa Rockpi3A
-(RK3568)
+Signed-off-by: Stefano Manni <stefano.manni@gmail.com>
+---
+ common/Kconfig       | 17 +++++++++++++++++
+ scripts/Makefile.lib |  8 +++++++-
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
+diff --git a/common/Kconfig b/common/Kconfig
+index 658437f..ceacf28 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -643,6 +643,21 @@ config BOOTM_FITIMAGE_SIGNATURE
+ 	  Additionally the barebox device tree needs a /signature node with the
+ 	  public key with which the image has been signed.
+ 
++config BOOTM_FITIMAGE_PUBKEY_ENV
++	bool "Specify path to public key in environment"
++	depends on BOOTM_FITIMAGE_SIGNATURE
++	help
++	  If this option is enabled the path to the public key for verifying
++	  FIT images signature is taken from environment which allows for
++	  better integration with build systems.
++
++	  The environment variable has the same name as the corresponding
++	  Kconfig variable:
++
++	  CONFIG_BOOTM_FITIMAGE_PUBKEY
++
++if BOOTM_FITIMAGE_SIGNATURE && !BOOTM_FITIMAGE_PUBKEY_ENV
++
+ config BOOTM_FITIMAGE_PUBKEY
+ 	string "Path to dtsi containing pubkey"
+ 	default "../fit/pubkey.dtsi"
+@@ -652,6 +667,8 @@ config BOOTM_FITIMAGE_PUBKEY
+ 	  snippet can then be included in a device tree with
+ 	  "#include CONFIG_BOOTM_FITIMAGE_PUBKEY".
+ 
++endif
++
+ config BOOTM_FORCE_SIGNED_IMAGES
+ 	bool
+ 	prompt "Force booting of signed images"
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 3799e77..891b8dd 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -479,6 +479,11 @@ overwrite-hab-env = $(shell set -e; \
+       test -n "$$$(1)"; \
+       echo -D$(1)=\\\"$(shell echo $$$(1))\\\")
+ 
++overwrite-fit-env = $(shell set -e; \
++      test -n "$(CONFIG_BOOTM_FITIMAGE_PUBKEY_ENV)"; \
++      test -n "$$$(1)"; \
++      echo -D$(1)=\\\"$(shell echo $$$(1))\\\")
++
+ imxcfg_cpp_flags  = -Wp,-MD,$(depfile) -nostdinc -x assembler-with-cpp \
+       -I $(srctree)/include -I $(srctree)/arch/arm/mach-imx/include \
+       -include include/generated/autoconf.h \
+@@ -487,7 +492,8 @@ imxcfg_cpp_flags  = -Wp,-MD,$(depfile) -nostdinc -x assembler-with-cpp \
+       $(call overwrite-hab-env,CONFIG_HABV3_IMG_CRT_DER) \
+       $(call overwrite-hab-env,CONFIG_HABV4_TABLE_BIN) \
+       $(call overwrite-hab-env,CONFIG_HABV4_CSF_CRT_PEM) \
+-      $(call overwrite-hab-env,CONFIG_HABV4_IMG_CRT_PEM)
++      $(call overwrite-hab-env,CONFIG_HABV4_IMG_CRT_PEM) \
++      $(call overwrite-fit-env,CONFIG_BOOTM_FITIMAGE_PUBKEY) \
+ 
+ dcd-tmp = $(subst $(comma),_,$(dot-target).dcd.tmp)
+ 
 -- 
-Pengutronix e.K.                | Johannes Zink                  |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
+2.7.4
+
 
 
 
