@@ -1,57 +1,61 @@
-Delivery-date: Wed, 20 Jul 2022 10:25:25 +0200
+Delivery-date: Wed, 20 Jul 2022 10:33:54 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oE51J-00FOll-Rx
-	for lore@lore.pengutronix.de; Wed, 20 Jul 2022 10:25:25 +0200
+	id 1oE59X-00FPMr-CU
+	for lore@lore.pengutronix.de; Wed, 20 Jul 2022 10:33:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oE51H-00042Q-Ra
-	for lore@pengutronix.de; Wed, 20 Jul 2022 10:25:24 +0200
+	id 1oE59V-0005S5-4h
+	for lore@pengutronix.de; Wed, 20 Jul 2022 10:33:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5p2UNoudj1eF0NqiYbIY4xFrLpE/nfFyZa32kn+vjFU=; b=wY7lu790jKo6jEuA4ky+UlZhgV
-	DfcjoZ+/pKtdxsxzQo+CTt+xze20zKUEsVhTRgjY0JnhZ7/CffxWbo0NcMer9z2GWj1gxjvZgSaNV
-	gCisE/PX01rZHLDxwYtp8EJnoE/KUEc00nFSwW3AuM1HbfgpfqX8ni2RDXL+emJVjZD9ecWj/r+55
-	L7d4Eppje08A2xP6cl1c5QTZqrIq9EjxHFoy5bSKTqgfo15dqv/zys/FrGcHP3llGIYfSj+i+e1Gx
-	5lkAr9QDgeocL5BFuiBweWnBLdVsH8j50fmKqTt9D+ubgjsFOP6IBp6OyEmy75qCEaDmxYWH9gqZZ
-	TkTuEooQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=6apowxhmsOmEA5IOx9W2Fi5KBb9c3vUdzdgUIL+WiIE=; b=e4m33yrIPrUM9ip+06NA7mCEor
+	nNPjZdDg+BMMsZhsXdcCIc74z4emr655NMZSl+skqvOl0ucoPh4Wzmy142R9Sp+mei7HTy9HYxSli
+	y/SBA6gr+pHjp4uYR3VVpoNl4Kf7Xap0hyHAgA2leCXOtPJvkenXLga5DjzY8OZ162VvaiDDBnHkd
+	j84ikoyOlTGk1dWwWv4QWak2H5egJqwTIg5+buqdyIaalbMJ0qzpQALpsaz6m9+OqeoPRDkKIxUe1
+	4fS09n2ymoehwxacROdP2v42Tss52zW+r7AFbT+P8UCU8gn4ddsCIEp+JOs6/q2uF40zKCxKmrG6n
+	0p+Dvzsw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oE4zV-002Wqj-Ng; Wed, 20 Jul 2022 08:23:33 +0000
+	id 1oE588-002cF6-6T; Wed, 20 Jul 2022 08:32:28 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oE4zR-002Wmv-BV
-	for barebox@lists.infradead.org; Wed, 20 Jul 2022 08:23:30 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1oE581-002c63-MX
+	for barebox@lists.infradead.org; Wed, 20 Jul 2022 08:32:23 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1oE4zO-0003sR-Fh; Wed, 20 Jul 2022 10:23:26 +0200
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1oE4zO-0004S4-6t; Wed, 20 Jul 2022 10:23:26 +0200
-Date: Wed, 20 Jul 2022 10:23:26 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220720082326.jxs7rawn3nfaj72q@pengutronix.de>
-References: <20220720041525.3454022-1-a.fatoum@pengutronix.de>
+	(envelope-from <jzi@pengutronix.de>)
+	id 1oE57y-0005Ew-9B; Wed, 20 Jul 2022 10:32:18 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <jzi@pengutronix.de>)
+	id 1oE57x-0024xo-JC; Wed, 20 Jul 2022 10:32:17 +0200
+Received: from jzi by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <jzi@pengutronix.de>)
+	id 1oE57w-005E7h-SJ; Wed, 20 Jul 2022 10:32:16 +0200
+From: Johannes Zink <j.zink@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: afa@pengutronix.de,
+	Johannes Zink <j.zink@pengutronix.de>
+Date: Wed, 20 Jul 2022 10:32:15 +0200
+Message-Id: <20220720083215.1245844-1-j.zink@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220720055042.3510276-3-a.fatoum@pengutronix.de>
+References: <20220720055042.3510276-3-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220720041525.3454022-1-a.fatoum@pengutronix.de>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220720_012329_419524_05426A19 
-X-CRM114-Status: GOOD (  27.89  )
+X-CRM114-CacheID: sfid-20220720_013221_755547_B51AB895 
+X-CRM114-Status: GOOD (  11.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,130 +73,92 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mci: add new MCI_BROKEN_CD option for testing
+Subject: [PATCH] fixup! bootsource: allow DT aliases and bootrom numbering to differ
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Ahmad,
+bootsource was used when src should have been instead. While at it,
+rename bs to src for alignment with other functions.
 
-On 22-07-20, Ahmad Fatoum wrote:
-> In remote labs co-located with other hardware, we've observed card
-> detect levers of different boards to sporadically fail to detect
-> the card, e.g. because the cable on the usbsdmux was yanked around
-> by accident. When this happens, barebox usually boots up normally as
-> the card detect is ignored and then Linux waits indefinitely for
-> the card-detect to turn active. Add a new config option that can be
-> enabled to avoid these issues altogether.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+---
+ common/bootsource.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-what do you think about to have a device property instead of a compile
-time depend behaviour? One use case could be a field return customer
-board and the customer didn't enabled this Kconfig option since he had
-no issues. This board can't be reprogrammed because it is secure locked.
-It would be cool to have your live-patching on such boards.
+diff --git a/common/bootsource.c b/common/bootsource.c
+index d74c5e5cb..70bac945d 100644
+--- a/common/bootsource.c
++++ b/common/bootsource.c
+@@ -33,9 +33,9 @@ static enum bootsource bootsource = BOOTSOURCE_UNKNOWN;
+ static int bootsource_instance = BOOTSOURCE_INSTANCE_UNKNOWN;
+ const char *bootsource_alias_name = NULL;
+ 
+-const char *bootsource_get_alias_stem(enum bootsource bs)
++const char *bootsource_get_alias_stem(enum bootsource src)
+ {
+-	switch (bs) {
++	switch (src) {
+ 		/*
+ 		 * For I2C and SPI EEPROMs we set the stem to be 'i2c'
+ 		 * and 'spi' correspondingly. The resulting alias will
+@@ -55,7 +55,7 @@ const char *bootsource_get_alias_stem(enum bootsource bs)
+ 	case BOOTSOURCE_MMC:	/* FALLTHROUGH */
+ 	case BOOTSOURCE_SPI:	/* FALLTHROUGH */
+ 	case BOOTSOURCE_CAN:
+-		return bootsource_str[bootsource];
++		return bootsource_str[src];
+ 	default:
+ 		return NULL;
+ 	}
+@@ -127,7 +127,7 @@ void bootsource_set_raw_instance(int instance)
+ 		pr_setenv("bootsource_instance", "%d", instance);
+ }
+ 
+-int bootsource_of_alias_xlate(enum bootsource bs, int instance)
++int bootsource_of_alias_xlate(enum bootsource src, int instance)
+ {
+ 	char alias[sizeof("barebox,bootsource-harddisk4294967295")];
+ 	const char *bootsource_stem;
+@@ -137,11 +137,11 @@ int bootsource_of_alias_xlate(enum bootsource bs, int instance)
+ 	if (!IS_ENABLED(CONFIG_OFDEVICE))
+ 		return BOOTSOURCE_INSTANCE_UNKNOWN;
+ 
+-	if (bs == BOOTSOURCE_UNKNOWN ||
++	if (src == BOOTSOURCE_UNKNOWN ||
+ 	    instance == BOOTSOURCE_INSTANCE_UNKNOWN)
+ 		return BOOTSOURCE_INSTANCE_UNKNOWN;
+ 
+-	bootsource_stem = bootsource_get_alias_stem(bs);
++	bootsource_stem = bootsource_get_alias_stem(src);
+ 	if (!bootsource_stem)
+ 		return BOOTSOURCE_INSTANCE_UNKNOWN;
+ 
+@@ -159,15 +159,15 @@ int bootsource_of_alias_xlate(enum bootsource bs, int instance)
+ 	return alias_id;
+ }
+ 
+-int bootsource_set(enum bootsource bs, int instance)
++int bootsource_set(enum bootsource src, int instance)
+ {
+ 	int alias_id;
+ 
+-	alias_id = bootsource_of_alias_xlate(bs, instance);
++	alias_id = bootsource_of_alias_xlate(src, instance);
+ 	if (alias_id == BOOTSOURCE_INSTANCE_UNKNOWN)
+ 		alias_id = instance;
+ 
+-	bootsource_set_raw(bs, alias_id);
++	bootsource_set_raw(src, alias_id);
+ 
+ 	return alias_id;
+ }
+-- 
+2.30.2
 
-Regards,
-  Marco
-
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/mci/Kconfig    | 15 +++++++++++++++
->  drivers/mci/mci-core.c | 35 +++++++++++++++++++++++++++++++----
->  2 files changed, 46 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-> index 21d53c0c3f0b..651e59259790 100644
-> --- a/drivers/mci/Kconfig
-> +++ b/drivers/mci/Kconfig
-> @@ -56,6 +56,21 @@ config MCI_MMC_GPP_PARTITIONS
->  	  Note: by default, 'MMC' devices have no 'general purpose partitions',
->  	  it requires a special one-time configuration step to enable them.
->  
-> +config MCI_BROKEN_CD
-> +	bool "ignore card-detect pin on boot and in OS"
-> +	help
-> +	  Say 'y' here to have barebox unconditionally ignore the
-> +	  card-detect pin for its own operation and manipulate the
-> +	  kernel DT, so all detected MCI cards are polled instead
-> +	  of expecting the card detect lever to behave correctly.
-> +	  If you need more fine grained control use of_property
-> +	  in an init script:
-> +
-> +	    of_property -fd mmc0 cd-gpios
-> +	    of_property -fs mmc0 broken-cd
-> +
-> +	  If unsure, say 'n' here.
-> +
->  comment "--- MCI host drivers ---"
->  
->  config MCI_DW
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index b8f71e15986e..6018391e1abb 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -1739,6 +1739,27 @@ static int mci_register_partition(struct mci_part *part)
->  	return 0;
->  }
->  
-> +static int of_broken_cd_fixup(struct device_node *root, void *ctx)
-> +{
-> +	struct device_d *hw_dev = ctx;
-> +	struct device_node *np;
-> +	char *name;
-> +
-> +	name = of_get_reproducible_name(hw_dev->device_node);
-> +	np = of_find_node_by_reproducible_name(root, name);
-> +	free(name);
-> +	if (!np) {
-> +		dev_warn(hw_dev, "Cannot find nodepath %s, cannot fixup\n",
-> +			 hw_dev->device_node->full_name);
-> +		return -EINVAL;
-> +	}
-> +
-> +	of_property_write_bool(np, "cd-gpios", false);
-> +	of_property_write_bool(np, "broken-cd", true);
-> +
-> +	return 0;
-> +}
-> +
->  /**
->   * Probe an MCI card at the given host interface
->   * @param mci MCI device instance
-> @@ -1750,10 +1771,13 @@ static int mci_card_probe(struct mci *mci)
->  	int i, rc, disknum, ret;
->  	bool has_bootpart = false;
->  
-> -	if (host->card_present && !host->card_present(host) &&
-> -	    !host->non_removable) {
-> -		dev_err(&mci->dev, "no card inserted\n");
-> -		return -ENODEV;
-> +	if (host->card_present && !host->card_present(host) && !host->non_removable) {
-> +		if (IS_ENABLED(CONFIG_MCI_BROKEN_CD)) {
-> +			dev_info(&mci->dev, "no card inserted (ignoring)\n");
-> +		} else {
-> +			dev_err(&mci->dev, "no card inserted\n");
-> +			return -ENODEV;
-> +		}
->  	}
->  
->  	ret = regulator_enable(host->supply);
-> @@ -1839,6 +1863,9 @@ static int mci_card_probe(struct mci *mci)
->  					   &mci->boot_ack_enable, mci);
->  	}
->  
-> +	if (IS_ENABLED(CONFIG_MCI_BROKEN_CD) && !host->no_sd && dev_of_node(host->hw_dev))
-> +		return of_register_fixup(of_broken_cd_fixup, host->hw_dev);
-> +
->  	dev_dbg(&mci->dev, "SD Card successfully added\n");
->  
->  on_error:
-> -- 
-> 2.30.2
-> 
-> 
-> 
 
 
