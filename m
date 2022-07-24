@@ -1,60 +1,60 @@
-Delivery-date: Sun, 24 Jul 2022 21:01:50 +0200
+Delivery-date: Sun, 24 Jul 2022 21:01:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oFgrO-002HjF-Se
-	for lore@lore.pengutronix.de; Sun, 24 Jul 2022 21:01:50 +0200
+	id 1oFgrS-002Hji-Dt
+	for lore@lore.pengutronix.de; Sun, 24 Jul 2022 21:01:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oFgrM-0004YU-LM
-	for lore@pengutronix.de; Sun, 24 Jul 2022 21:01:49 +0200
+	id 1oFgrP-0004ZY-Rz
+	for lore@pengutronix.de; Sun, 24 Jul 2022 21:01:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PSJfIPAbq50QESX5PM4bVrVfh6fMctQcUiRO9b6tyEw=; b=VmuUA8/ot5uU2cJvKZA4Q9JNQ4
-	HmNGtjunn1al/rhLiXvJ9fJNITgs5NnF3KGwc6H2cZ1FK4iNZn7RnStVzRjHY8odvhqfX19LYn5qj
-	HMQbGFYNodN//ABX7EnOeJ1Ca+sbwVQRQa3c/X+Nq2UK051Ly8fu+rC7d4VvT60IYBjw8UkmME9/p
-	ziKe+hTu4glu4B9GR/28+ot4t38hjo2u1GiQWI7Ta5FOT/Ea5lwL1F3AvwDUjY4avPB3A14etscx+
-	LH7W1W6ec5M7KRK+BJa5tSN9cZkSrPp8Bz/11TJmK0zSJYTowddLdNlN2x/klUleIyCOcWxsPh8+z
-	tjlUPpCQ==;
+	bh=ir3O50zTKnabh50MddwV1N4V/OIl5LJI58rVJTE3qp4=; b=bA7Wk8jB/74bGz+NPkk1dXXgJQ
+	3QA/jASYI5CRrBbP/kZk49wspPhBebr6m4KBjO6iHx/KJfSdEOALseBUfO4jUWc4hRNjSNZ/pGBve
+	Ca1YWAejrHq+R/a9N1v0GYyAKkHYhL/aXodryL0w8H/lvCEXXcOGhnBMXjEy8YSfTV/cmuJEkhgHV
+	AezSZgN4RNgTaH0WPqA4HY9LrvYMhUbBZ4FE9V1TpPcoBfIiTP8YZH1nqUz3D78qfGv1qVLlPXJvO
+	LM2dXdsimB+Q9ZU5zo6unCaF7t6s1axyimoLBp1asAVq+D7MmvnNUVU/WBOrUigmESzq82wBt5WN2
+	qtcC0p9Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oFgpz-008rJt-IC; Sun, 24 Jul 2022 19:00:23 +0000
+	id 1oFgq5-008rSc-4E; Sun, 24 Jul 2022 19:00:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oFgpp-008r48-AA
-	for barebox@lists.infradead.org; Sun, 24 Jul 2022 19:00:15 +0000
+	id 1oFgpp-008r4Q-Ui
+	for barebox@lists.infradead.org; Sun, 24 Jul 2022 19:00:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oFgpn-00045M-Qy; Sun, 24 Jul 2022 21:00:11 +0200
+	id 1oFgpo-00045Q-Nm; Sun, 24 Jul 2022 21:00:12 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oFgpm-002y04-UL; Sun, 24 Jul 2022 21:00:10 +0200
+	id 1oFgpn-002y0D-3Q; Sun, 24 Jul 2022 21:00:11 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oFgpm-0094A7-1z; Sun, 24 Jul 2022 21:00:10 +0200
+	id 1oFgpm-0094A1-17; Sun, 24 Jul 2022 21:00:10 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sun, 24 Jul 2022 21:00:04 +0200
-Message-Id: <20220724190006.2160802-4-a.fatoum@pengutronix.de>
+Date: Sun, 24 Jul 2022 21:00:02 +0200
+Message-Id: <20220724190006.2160802-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220724190006.2160802-1-a.fatoum@pengutronix.de>
 References: <20220724190006.2160802-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220724_120013_401457_8CEC7349 
-X-CRM114-Status: GOOD (  22.97  )
+X-CRM114-CacheID: sfid-20220724_120014_073793_DC13A6B7 
+X-CRM114-Status: GOOD (  11.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,198 +76,85 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 4/6] regulator: recursively enable/disable regulator dependency tree
+Subject: [PATCH v4 2/6] regmap: implement regmap_init_i2c_smbus
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Regulators may themself have other regulators supplying them.
-The regulators need to be enabled recursively for proper operation.
-
-Linux handles this by allows drivers to provide
-struct regulator_desc::supply_name, which will be requested when the
-regulator itself is requested and enabled/disabled as necessary.
-
-As no driver yet uses this new member, this should introduce no
-functional change.
+Some i2c devices need the SMBus accessors instead of the raw i2c access,
+so provide a regmap helper for that.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v3 -> v4:
   - no change
 v2 -> v3:
-  - rebase on v3 of previous patch
+  - no change
 v1 -> v2:
-  - resolve parent supply in regulator_enable for always_on || boot_on
-    regulators
-  - don't propagate resolution breakage for non-deep probe systems
+  - no change
 ---
- drivers/regulator/core.c | 61 ++++++++++++++++++++++++++++++++++++++--
- include/regulator.h      |  5 ++++
- 2 files changed, 63 insertions(+), 3 deletions(-)
+ drivers/base/regmap/regmap-i2c.c | 37 ++++++++++++++++++++++++++++++++
+ include/regmap.h                 |  3 +++
+ 2 files changed, 40 insertions(+)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 640fdf3b349e..496e0e84944e 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -9,6 +9,7 @@
- #include <of.h>
- #include <malloc.h>
- #include <linux/err.h>
-+#include <deep-probe.h>
- 
- static LIST_HEAD(regulator_list);
- 
-@@ -42,6 +43,7 @@ static int regulator_map_voltage(struct regulator_dev *rdev, int min_uV,
- 
- static int regulator_enable_internal(struct regulator_internal *ri)
+diff --git a/drivers/base/regmap/regmap-i2c.c b/drivers/base/regmap/regmap-i2c.c
+index 5e3705162c92..756bc224cc3b 100644
+--- a/drivers/base/regmap/regmap-i2c.c
++++ b/drivers/base/regmap/regmap-i2c.c
+@@ -42,3 +42,40 @@ struct regmap *regmap_init_i2c(struct i2c_client *client,
  {
-+	struct regulator_dev *rdev = ri->rdev;
- 	int ret;
- 
- 	if (ri->enable_count) {
-@@ -49,13 +51,20 @@ static int regulator_enable_internal(struct regulator_internal *ri)
- 		return 0;
- 	}
- 
--	if (!ri->rdev->desc->ops->enable)
-+	if (!rdev->desc->ops->enable)
- 		return -ENOSYS;
- 
--	ret = ri->rdev->desc->ops->enable(ri->rdev);
-+	/* turn on parent regulator */
-+	ret = regulator_enable(rdev->supply);
- 	if (ret)
- 		return ret;
- 
-+	ret = rdev->desc->ops->enable(ri->rdev);
-+	if (ret) {
-+		regulator_disable(rdev->supply);
-+		return ret;
-+	}
+ 	return  regmap_init(&client->dev, &regmap_regmap_i2c_bus, client, config);
+ }
 +
- 	if (ri->enable_time_us)
- 		udelay(ri->enable_time_us);
- 
-@@ -90,7 +99,7 @@ static int regulator_disable_internal(struct regulator_internal *ri)
- 
- 	ri->enable_count--;
- 
--	return 0;
-+	return regulator_disable(rdev->supply);
- }
- 
- static int regulator_set_voltage_internal(struct regulator_internal *ri,
-@@ -120,6 +129,41 @@ static int regulator_set_voltage_internal(struct regulator_internal *ri,
- 	return -ENOSYS;
- }
- 
-+static int regulator_resolve_supply(struct regulator_dev *rdev)
++static int regmap_smbus_byte_reg_read(void *client, unsigned int reg, unsigned int *val)
 +{
-+	struct regulator *supply;
-+	const char *supply_name;
++	int ret;
 +
-+	if (!rdev || rdev->supply)
-+		return 0;
++	if (reg > 0xff)
++		return -EINVAL;
 +
-+	supply_name = rdev->desc->supply_name;
-+	if (!supply_name)
-+		return 0;
++	ret = i2c_smbus_read_byte_data(client, reg);
++	if (ret < 0)
++		return ret;
 +
-+	supply = regulator_get(rdev->dev, supply_name);
-+	if (IS_ERR(supply)) {
-+		if (deep_probe_is_supported())
-+			return PTR_ERR(supply);
++	*val = ret;
 +
-+		/* For historic reasons, some regulator consumers don't handle
-+		 * -EPROBE_DEFER (e.g. vmmc-supply). If we now start propagating
-+		 * parent EPROBE_DEFER, previously requested vmmc-supply with
-+		 * always-on parent that worked before will end up not being
-+		 * requested breaking MMC use. So for non-deep probe systems,
-+		 * just make best effort to resolve, but don't fail the get if
-+		 * we couldn't. If you want to get rid of this warning, consider
-+		 * migrating your platform to have deep probe support.
-+		 */
-+		dev_warn(rdev->dev, "Failed to get '%s' regulator (ignored).\n",
-+			 supply_name);
-+		return 0;
-+	}
-+
-+	rdev->supply = supply;
 +	return 0;
 +}
 +
- static struct regulator_internal * __regulator_register(struct regulator_dev *rd, const char *name)
- {
- 	struct regulator_internal *ri;
-@@ -136,6 +180,10 @@ static struct regulator_internal * __regulator_register(struct regulator_dev *rd
- 		ri->name = xstrdup(name);
- 
- 	if (rd->boot_on || rd->always_on) {
-+		ret = regulator_resolve_supply(ri->rdev);
-+		if (ret < 0)
-+			goto err;
++static int regmap_smbus_byte_reg_write(void *client, unsigned int reg, unsigned int val)
++{
++	if (val > 0xff || reg > 0xff)
++		return -EINVAL;
 +
- 		ret = regulator_enable_internal(ri);
- 		if (ret && ret != -ENOSYS)
- 			goto err;
-@@ -338,6 +386,7 @@ struct regulator *regulator_get(struct device_d *dev, const char *supply)
- {
- 	struct regulator_internal *ri = NULL;
- 	struct regulator *r;
-+	int ret;
- 
- 	if (dev->device_node) {
- 		ri = of_regulator_get(dev, supply);
-@@ -354,6 +403,10 @@ struct regulator *regulator_get(struct device_d *dev, const char *supply)
- 	if (!ri)
- 		return NULL;
- 
-+	ret = regulator_resolve_supply(ri->rdev);
-+	if (ret < 0)
-+		return ERR_PTR(ret);
++	return i2c_smbus_write_byte_data(client, reg, val);
++}
 +
- 	r = xzalloc(sizeof(*r));
- 	r->ri = ri;
- 	r->dev = dev;
-@@ -597,6 +650,8 @@ int regulator_get_voltage(struct regulator *regulator)
- 		ret = rdev->desc->fixed_uV;
- 	} else if (ri->min_uv && ri->min_uv == ri->max_uv) {
- 		ret = ri->min_uv;
-+	} else if (rdev->supply) {
-+		ret = regulator_get_voltage(rdev->supply);
- 	} else {
- 		return -EINVAL;
- 	}
-diff --git a/include/regulator.h b/include/regulator.h
-index dfdfbf033262..1ae31ad7cf23 100644
---- a/include/regulator.h
-+++ b/include/regulator.h
-@@ -32,6 +32,8 @@ struct regulator_bulk_data {
-  * structure contains the non-varying parts of the regulator
-  * description.
++static const struct regmap_bus regmap_smbus_byte = {
++	.reg_write = regmap_smbus_byte_reg_write,
++	.reg_read = regmap_smbus_byte_reg_read,
++};
++
++struct regmap *regmap_init_i2c_smbus(struct i2c_client *client,
++			       const struct regmap_config *config)
++{
++	if (config->val_bits != 8 || config->reg_bits != 8)
++		return ERR_PTR(-ENOSYS);
++	return regmap_init(&client->dev, &regmap_smbus_byte, client, config);
++}
+diff --git a/include/regmap.h b/include/regmap.h
+index 4b30c2177629..5bedb30d8a78 100644
+--- a/include/regmap.h
++++ b/include/regmap.h
+@@ -89,6 +89,9 @@ struct i2c_client;
+ struct regmap *regmap_init_i2c(struct i2c_client *i2c,
+ 			       const struct regmap_config *config);
+ 
++struct regmap *regmap_init_i2c_smbus(struct i2c_client *client,
++			       const struct regmap_config *config);
++
+ /**
+  * regmap_init_mmio() - Initialise register map
   *
-+ * @supply_name: Identifying the supply of this regulator
-+ *
-  * @n_voltages: Number of selectors available for ops.list_voltage().
-  * @ops: Regulator operations table.
-  *
-@@ -57,6 +59,7 @@ struct regulator_bulk_data {
-  */
- 
- struct regulator_desc {
-+	const char *supply_name;
- 	unsigned n_voltages;
- 	const struct regulator_ops *ops;
- 
-@@ -88,6 +91,8 @@ struct regulator_dev {
- 	bool always_on;
- 	/* the device this regulator device belongs to */
- 	struct device_d *dev;
-+	/* The regulator powering this device */
-+	struct regulator *supply;
- };
- 
- struct regulator_ops {
 -- 
 2.30.2
 
