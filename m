@@ -1,62 +1,61 @@
-Delivery-date: Sun, 24 Jul 2022 14:23:43 +0200
+Delivery-date: Sun, 24 Jul 2022 20:49:53 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oFae7-001yb3-R4
-	for lore@lore.pengutronix.de; Sun, 24 Jul 2022 14:23:43 +0200
+	id 1oFgfq-002GvY-DL
+	for lore@lore.pengutronix.de; Sun, 24 Jul 2022 20:49:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oFae4-0000GJ-QM
-	for lore@pengutronix.de; Sun, 24 Jul 2022 14:23:42 +0200
+	id 1oFgfo-000388-9j
+	for lore@pengutronix.de; Sun, 24 Jul 2022 20:49:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=zA/+XSGUeKsN+5FiR2mg6RcU5NsZt33NIZmORd9d+is=; b=MlU8qSN7IID8ng1U+mbpC8mVqr
-	5OFnUHj0p9M7P90a1CjcGeA2grOHqLo9v3WkPAIv+QfH9tysGvOeyzY6FS4jhx1by/FmwGhxF1bwY
-	QC1iYuYkfqvboQ1KtsavZm2C0TR9L83Wb8dUYbWVG7cw1A0BX+yh3wUDgILsqXHJ77JWA6xnAFdfN
-	ay5jhBlqv8j9+xXb0dGCtdYWBWMkoaP07GovwhlfnVli2/z0w4MYobwUmsFjo0Qf4vL9WbNlOoNsZ
-	zzPfJ3ExsU43xWapWW7+jtrSZCqvfBwAsGHAnp2guSbUAnR0Pbjk0VZpBX2ZtFdeb0wNvrvYtp5cY
-	4ukK615Q==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=iUK0tY6e6x4Vvhuta828QLpAXC3VXg3rwc+PCGiO8/A=; b=1svHBWSui7VFg4RnkqHLTTVGrH
+	uyQlMOz8pJguVOQmKCtneWBcViwaFyTvT0kYud6eyfsV5Z1M965vF1OKL/5xiadyq827TsJ5QQqGG
+	VcFGd32ETR8Y0gOCBzpKzMPCJb0o9pj0YzrRQ0NYCwHC1LadlVH9SExAX43TFC1NOjpV/ovx0N56U
+	b4VLFlBiObL3rlNZbOV4klcgXbE338QlC4yBjjOelsz7SNqOudurQLa0Jbz70GN5YaZ6X+q25M4Ql
+	ifIwVuH0uFBnRXbgQHJCrx1FC+9SH6kp2iV4jW89v4VPEOdicIOGyVYsIjqiJ0WQthJQ2+lGYBVTU
+	I6XpjtfQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oFacB-005zPV-7C; Sun, 24 Jul 2022 12:21:43 +0000
-Received: from mxout1.routing.net ([2a03:2900:1:a::a])
+	id 1oFgeJ-008h6D-SL; Sun, 24 Jul 2022 18:48:20 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oFac5-005zNA-BX
-	for barebox@lists.infradead.org; Sun, 24 Jul 2022 12:21:39 +0000
-Received: from mxbox1.masterlogin.de (unknown [192.168.10.88])
-	by mxout1.routing.net (Postfix) with ESMTP id 15B994009A;
-	Sun, 24 Jul 2022 12:21:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
-	s=20200217; t=1658665287;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zA/+XSGUeKsN+5FiR2mg6RcU5NsZt33NIZmORd9d+is=;
-	b=upg87JJqeg+51U6v69WFtLRXQxuJaIVFpS4bLOpofqc4hq0ln2F0YfDIXTOsCwzNqpLUkS
-	ECWLx5yaQ5cUQ2Mlc0PzuO/uCLQGyb1s31W6JnWDtQT7yvV4Jo+LZAUbnglVqRO4TABZfl
-	MVPPcKPUGUs1g9URqWhI/M15NVNXgiU=
-Received: from frank-G5.. (fttx-pool-80.245.73.250.bambit.de [80.245.73.250])
-	by mxbox1.masterlogin.de (Postfix) with ESMTPSA id A49A8402A9;
-	Sun, 24 Jul 2022 12:21:26 +0000 (UTC)
-From: Frank Wunderlich <linux@fw-web.de>
+	id 1oFgeE-008h1E-Ja
+	for barebox@lists.infradead.org; Sun, 24 Jul 2022 18:48:16 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1oFgeA-00030Z-Fv; Sun, 24 Jul 2022 20:48:10 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1oFge9-002xyK-M4; Sun, 24 Jul 2022 20:48:09 +0200
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1oFge8-008uRA-Vv; Sun, 24 Jul 2022 20:48:08 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Frank Wunderlich <frank-w@public-files.de>
-Date: Sun, 24 Jul 2022 14:21:19 +0200
-Message-Id: <20220724122119.62031-1-linux@fw-web.de>
-X-Mailer: git-send-email 2.34.1
+Cc: Frank Wunderlich <frank-w@public-files.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Sun, 24 Jul 2022 20:48:06 +0200
+Message-Id: <20220724184807.2123459-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220724184807.2123459-1-a.fatoum@pengutronix.de>
+References: <20220724184807.2123459-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Mail-ID: 984ac8f7-01e5-44af-9dc4-078c236c6571
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220724_052137_769458_7E405AB2 
-X-CRM114-Status: GOOD (  10.34  )
+X-CRM114-CacheID: sfid-20220724_114814_718300_3308364E 
+X-CRM114-Status: GOOD (  12.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,645 +73,109 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] arm: rockchip: switch to mainline dts for bpi-r2-pro
+Subject: [PATCH 2/3] blspec: iterate over entries in lexical order
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Frank Wunderlich <frank-w@public-files.de>
+We already iterate over boot scripts in lexical order, so it makes sense
+to do the same for bootspec entries. This way, it's stable which boot
+entry will be taken, when multiple match.
 
-Use mainline DTS for Bananapi R2 Pro like the other rk356x devices.
-
-Xhci0 has to be set to host again, as board has no id-pin to switch between
-otg and hostmode.
-
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../boards/rockchip-rk3568-bpi-r2pro/board.c  |   5 +-
- arch/arm/dts/rk3568-bpi-r2-pro.dts            | 562 +-----------------
- 2 files changed, 4 insertions(+), 563 deletions(-)
+ common/blspec.c | 43 ++++++++++---------------------------------
+ 1 file changed, 10 insertions(+), 33 deletions(-)
 
-diff --git a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/board.c b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/board.c
-index ce633266f52c..9853bf275f9f 100644
---- a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/board.c
-+++ b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/board.c
-@@ -36,8 +36,9 @@ static int rk3568_bpi_r2pro_probe(struct device_d *dev)
- 
- 	defaultenv_append_directory(defaultenv);
- 
--	rk3568_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT, "/dev/emmc");
--	rk3568_bbu_mmc_register("sd", 0, "/dev/sd");
-+	rk3568_bbu_mmc_register("sd", 0, "/dev/mmc0");
-+	rk3568_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT,
-+				"/dev/mmc1");
- 
- 	return 0;
- }
-diff --git a/arch/arm/dts/rk3568-bpi-r2-pro.dts b/arch/arm/dts/rk3568-bpi-r2-pro.dts
-index c5cc300359c2..58a2bc442fdf 100644
---- a/arch/arm/dts/rk3568-bpi-r2-pro.dts
-+++ b/arch/arm/dts/rk3568-bpi-r2-pro.dts
-@@ -5,23 +5,9 @@
+diff --git a/common/blspec.c b/common/blspec.c
+index d798f6f38a4b..cbaa211cb16f 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -15,6 +15,7 @@
+ #include <libbb.h>
+ #include <init.h>
+ #include <bootm.h>
++#include <glob.h>
+ #include <net.h>
+ #include <fs.h>
+ #include <of.h>
+@@ -570,54 +571,30 @@ int blspec_scan_file(struct bootentries *bootentries, const char *root,
   */
+ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
+ {
+-	DIR *dir;
+-	struct dirent *d;
++	glob_t globb;
+ 	char *abspath;
+ 	int ret, found = 0;
+ 	const char *dirname = "loader/entries";
++	int i;
  
- /dts-v1/;
--#include <dt-bindings/gpio/gpio.h>
--#include <dt-bindings/leds/common.h>
--#include <dt-bindings/pinctrl/rockchip.h>
--#include "rk3568.dtsi"
--
-+#include "arm64/rockchip/rk3568-bpi-r2-pro.dts"
- / {
--	model = "Bananapi-R2 Pro (RK3568) DDR4 Board";
--	compatible = "rockchip,rk3568-bpi-r2pro", "rockchip,rk3568";
--
--	aliases {
--		emmc = &sdhci;
--		sd = &sdmmc0;
--	};
--
- 	chosen {
--		stdout-path = "serial2:1500000n8";
--
- 		environment-sd {
- 			compatible = "barebox,environment";
- 			device-path = &environment_sd;
-@@ -39,462 +25,10 @@
- 		device_type = "memory";
- 		reg = <0x0 0x00a00000 0x0 0x7f600000>;
- 	};
--
--	leds {
--		compatible = "gpio-leds";
--		pinctrl-names = "default";
--		pinctrl-0 = <&blue_led_pin &green_led_pin>;
--
--		blue_led: led-0 {
--			color = <LED_COLOR_ID_BLUE>;
--			default-state = "off";
--			function = LED_FUNCTION_STATUS;
--			gpios = <&gpio0 RK_PD6 GPIO_ACTIVE_HIGH>;
--		};
--
--		green_led: led-1 {
--			color = <LED_COLOR_ID_GREEN>;
--			default-state = "on";
--			function = LED_FUNCTION_POWER;
--			gpios = <&gpio0 RK_PD5 GPIO_ACTIVE_HIGH>;
--		};
--	};
--
--	dc_12v: dc-12v {
--		compatible = "regulator-fixed";
--		regulator-name = "dc_12v";
--		regulator-always-on;
--		regulator-boot-on;
--		regulator-min-microvolt = <12000000>;
--		regulator-max-microvolt = <12000000>;
--	};
--
--	vcc3v3_sys: vcc3v3-sys {
--		compatible = "regulator-fixed";
--		regulator-name = "vcc3v3_sys";
--		regulator-always-on;
--		regulator-boot-on;
--		regulator-min-microvolt = <3300000>;
--		regulator-max-microvolt = <3300000>;
--		vin-supply = <&dc_12v>;
--	};
--
--	vcc5v0_sys: vcc5v0-sys {
--		compatible = "regulator-fixed";
--		regulator-name = "vcc5v0_sys";
--		regulator-always-on;
--		regulator-boot-on;
--		regulator-min-microvolt = <5000000>;
--		regulator-max-microvolt = <5000000>;
--		vin-supply = <&dc_12v>;
--	};
--
--	vcc3v3_lcd0_n: vcc3v3-lcd0-n {
--		compatible = "regulator-fixed";
--		regulator-name = "vcc3v3_lcd0_n";
--		regulator-boot-on;
--
--		regulator-state-mem {
--			regulator-off-in-suspend;
--		};
--	};
--
--	vcc3v3_lcd1_n: vcc3v3-lcd1-n {
--		compatible = "regulator-fixed";
--		regulator-name = "vcc3v3_lcd1_n";
--		regulator-boot-on;
--
--		regulator-state-mem {
--			regulator-off-in-suspend;
--		};
--	};
--
--	vcc5v0_usb: vcc5v0_usb {
--		compatible = "regulator-fixed";
--		regulator-name = "vcc5v0_usb";
--		regulator-always-on;
--		regulator-boot-on;
--		regulator-min-microvolt = <5000000>;
--		regulator-max-microvolt = <5000000>;
--		vin-supply = <&dc_12v>;
--	};
--
--	vcc5v0_usb_host: vcc5v0-usb-host {
--		compatible = "regulator-fixed";
--		enable-active-high;
--		gpio = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&vcc5v0_usb_host_en>;
--		regulator-name = "vcc5v0_usb_host";
--		regulator-min-microvolt = <5000000>;
--		regulator-max-microvolt = <5000000>;
--		vin-supply = <&vcc5v0_usb>;
--	};
--
--	vcc5v0_usb_otg: vcc5v0-usb-otg {
--		compatible = "regulator-fixed";
--		enable-active-high;
--		gpio = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&vcc5v0_usb_otg_en>;
--		regulator-name = "vcc5v0_usb_otg";
--		regulator-min-microvolt = <5000000>;
--		regulator-max-microvolt = <5000000>;
--		vin-supply = <&vcc5v0_usb>;
--	};
--};
--
--&gmac1 {
--	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
--	assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&cru CLK_MAC1_2TOP>;
--	clock_in_out = "output";
--	phy-handle = <&rgmii_phy1>;
--	phy-mode = "rgmii";
--	pinctrl-names = "default";
--	pinctrl-0 = <&gmac1m1_miim
--		     &gmac1m1_tx_bus2
--		     &gmac1m1_rx_bus2
--		     &gmac1m1_rgmii_clk
--		     &gmac1m1_rgmii_bus>;
--
--	snps,reset-gpio = <&gpio3 RK_PB0 GPIO_ACTIVE_LOW>;
--	snps,reset-active-low;
--	/* Reset time is 20ms, 100ms for rtl8211f */
--	snps,reset-delays-us = <0 20000 100000>;
--	tx_delay = <0x3c>;
--	rx_delay = <0x2f>;
--	status = "okay";
--};
--
--&i2c0 {
--	status = "okay";
--
--	rk809: pmic@20 {
--		compatible = "rockchip,rk809";
--		reg = <0x20>;
--		interrupt-parent = <&gpio0>;
--		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_LOW>;
--		#clock-cells = <1>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&pmic_int>;
--
--		clock-output-names = "rk808-clkout1", "rk808-clkout2";
--		/* 1: rst regs (default in codes), 0: rst the pmic */
--		pmic-reset-func = <0>;
--
--		rockchip,system-power-controller;
--		vcc1-supply = <&vcc3v3_sys>;
--		vcc2-supply = <&vcc3v3_sys>;
--		vcc3-supply = <&vcc3v3_sys>;
--		vcc4-supply = <&vcc3v3_sys>;
--		vcc5-supply = <&vcc3v3_sys>;
--		vcc6-supply = <&vcc3v3_sys>;
--		vcc7-supply = <&vcc3v3_sys>;
--		vcc8-supply = <&vcc3v3_sys>;
--		vcc9-supply = <&vcc3v3_sys>;
--		wakeup-source;
--
--		regulators {
--			vdd_logic: DCDC_REG1 {
--				regulator-name = "vdd_logic";
--				regulator-always-on;
--				regulator-boot-on;
--				regulator-init-microvolt = <900000>;
--				regulator-initial-mode = <0x2>;
--				regulator-min-microvolt = <500000>;
--				regulator-max-microvolt = <1350000>;
--				regulator-ramp-delay = <6001>;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vdd_gpu: DCDC_REG2 {
--				regulator-name = "vdd_gpu";
--				regulator-init-microvolt = <900000>;
--				regulator-initial-mode = <0x2>;
--				regulator-min-microvolt = <500000>;
--				regulator-max-microvolt = <1350000>;
--				regulator-ramp-delay = <6001>;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vcc_ddr: DCDC_REG3 {
--				regulator-name = "vcc_ddr";
--				regulator-always-on;
--				regulator-boot-on;
--				regulator-initial-mode = <0x2>;
--
--				regulator-state-mem {
--					regulator-on-in-suspend;
--				};
--			};
--
--			vdd_npu: DCDC_REG4 {
--				regulator-name = "vdd_npu";
--				regulator-init-microvolt = <900000>;
--				regulator-initial-mode = <0x2>;
--				regulator-min-microvolt = <500000>;
--				regulator-max-microvolt = <1350000>;
--				regulator-ramp-delay = <6001>;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vcc_1v8: DCDC_REG5 {
--				regulator-name = "vcc_1v8";
--				regulator-always-on;
--				regulator-boot-on;
--				regulator-min-microvolt = <1800000>;
--				regulator-max-microvolt = <1800000>;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vdda0v9_image: LDO_REG1 {
--				regulator-name = "vdda0v9_image";
--				regulator-min-microvolt = <900000>;
--				regulator-max-microvolt = <900000>;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vdda_0v9: LDO_REG2 {
--				regulator-name = "vdda_0v9";
--				regulator-always-on;
--				regulator-boot-on;
--				regulator-min-microvolt = <900000>;
--				regulator-max-microvolt = <900000>;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vdda0v9_pmu: LDO_REG3 {
--				regulator-name = "vdda0v9_pmu";
--				regulator-always-on;
--				regulator-boot-on;
--				regulator-min-microvolt = <900000>;
--				regulator-max-microvolt = <900000>;
--
--				regulator-state-mem {
--					regulator-on-in-suspend;
--					regulator-suspend-microvolt = <900000>;
--				};
--			};
--
--			vccio_acodec: LDO_REG4 {
--				regulator-name = "vccio_acodec";
--				regulator-always-on;
--				regulator-boot-on;
--				regulator-min-microvolt = <3300000>;
--				regulator-max-microvolt = <3300000>;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vccio_sd: LDO_REG5 {
--				regulator-name = "vccio_sd";
--				regulator-min-microvolt = <1800000>;
--				regulator-max-microvolt = <3300000>;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vcc3v3_pmu: LDO_REG6 {
--				regulator-name = "vcc3v3_pmu";
--				regulator-always-on;
--				regulator-boot-on;
--				regulator-min-microvolt = <3300000>;
--				regulator-max-microvolt = <3300000>;
--
--				regulator-state-mem {
--					regulator-on-in-suspend;
--					regulator-suspend-microvolt = <3300000>;
--				};
--			};
--
--			vcca_1v8: LDO_REG7 {
--				regulator-name = "vcca_1v8";
--				regulator-always-on;
--				regulator-boot-on;
--				regulator-min-microvolt = <1800000>;
--				regulator-max-microvolt = <1800000>;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vcca1v8_pmu: LDO_REG8 {
--				regulator-name = "vcca1v8_pmu";
--				regulator-always-on;
--				regulator-boot-on;
--				regulator-min-microvolt = <1800000>;
--				regulator-max-microvolt = <1800000>;
--
--				regulator-state-mem {
--					regulator-on-in-suspend;
--					regulator-suspend-microvolt = <1800000>;
--				};
--			};
--
--			vcca1v8_image: LDO_REG9 {
--				regulator-name = "vcca1v8_image";
--				regulator-min-microvolt = <1800000>;
--				regulator-max-microvolt = <1800000>;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vcc_3v3: SWITCH_REG1 {
--				regulator-name = "vcc_3v3";
--				regulator-always-on;
--				regulator-boot-on;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--
--			vcc3v3_sd: SWITCH_REG2 {
--				regulator-name = "vcc3v3_sd";
--				regulator-always-on;
--
--				regulator-state-mem {
--					regulator-off-in-suspend;
--				};
--			};
--		};
--	};
--};
--
--&i2c5 {
--	/* pin 3 (SDA) + 4 (SCL) of header con2 */
--	status = "disabled";
--};
--
--&pmu_io_domains {
--	pmuio1-supply = <&vcc3v3_pmu>;
--	pmuio2-supply = <&vcc3v3_pmu>;
--	vccio1-supply = <&vccio_acodec>;
--	vccio3-supply = <&vccio_sd>;
--	vccio4-supply = <&vcc_3v3>;
--	vccio5-supply = <&vcc_3v3>;
--	vccio6-supply = <&vcc_1v8>;
--	vccio7-supply = <&vcc_3v3>;
--	status = "okay";
--};
--
--&mdio1 {
--	rgmii_phy1: ethernet-phy@0 {
--		compatible = "ethernet-phy-ieee802.3-c22";
--		reg = <0x0>;
--	};
--};
--
--&pinctrl {
--	leds {
--		blue_led_pin: blue-led-pin {
--			rockchip,pins = <0 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
--		};
--		green_led_pin: green-led-pin {
--			rockchip,pins = <0 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
--		};
--	};
--
--	pmic {
--		pmic_int: pmic_int {
--			rockchip,pins =
--				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
--		};
--
--	};
--
--	usb {
--		vcc5v0_usb_host_en: vcc5v0_usb_host_en {
--			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
--		};
--
--		vcc5v0_usb_otg_en: vcc5v0_usb_otg_en {
--			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
--		};
--	};
--};
--
--&pwm8 {
--	/* fan 5v - gnd - pwm */
--	status = "okay";
--};
--
--&pwm10 {
--	/* pin 7 of header con2 */
--	status = "disabled";
--};
--
--&pwm11 {
--	/* pin 15 of header con2 */
--	status = "disabled";
--};
--
--&pwm12 {
--	/* pin 21 of header con2 */
--	/* shared with uart9 + spi3 */
--	pinctrl-0 = <&pwm12m1_pins>;
--	status = "disabled";
--};
--
--&pwm13 {
--	/* pin 24 of header con2 */
--	/* shared with uart9 */
--	pinctrl-0 = <&pwm13m1_pins>;
--	status = "disabled";
--};
--
--&pwm14 {
--	/* pin 23 of header con2 */
--	/* shared with spi3 */
--	pinctrl-0 = <&pwm14m1_pins>;
--	status = "disabled";
--};
--
--&pwm15 {
--	/* pin 19 of header con2 */
--	/* shared with spi3 */
--	pinctrl-0 = <&pwm15m1_pins>;
--	status = "disabled";
--};
--
--&saradc {
--	vref-supply = <&vcca_1v8>;
--	status = "okay";
- };
+ 	pr_debug("%s: %s %s\n", __func__, root, dirname);
  
- &sdhci {
--	bus-width = <8>;
--	max-frequency = <200000000>;
--	non-removable;
- 	no-sd;
--	pinctrl-names = "default";
--	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd &emmc_datastrobe>;
--	status = "okay";
+-	abspath = basprintf("%s/%s", root, dirname);
++	abspath = basprintf("%s/%s/*.conf", root, dirname);
  
- 	partitions {
- 		compatible = "fixed-partitions";
-@@ -509,18 +43,6 @@
- };
+-	dir = opendir(abspath);
+-	if (!dir) {
++	ret = glob(abspath, 0, NULL, &globb);
++	if (ret) {
+ 		pr_debug("%s: %s: %s\n", __func__, abspath, strerror(errno));
+ 		ret = -errno;
+ 		goto err_out;
+ 	}
  
- &sdmmc0 {
--	bus-width = <4>;
--	cap-sd-highspeed;
--	cd-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_LOW>;
--	disable-wp;
--	max-frequency = <150000000>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
--	sd-uhs-sdr104;
--	vmmc-supply = <&vcc3v3_sd>;
--	vqmmc-supply = <&vccio_sd>;
--	status = "okay";
+-	while ((d = readdir(dir))) {
+-		char *configname;
++	for (i = 0; i < globb.gl_pathc; i++) {
++		const char *configname = globb.gl_pathv[i];
+ 		struct stat s;
+-		char *dot;
 -
- 	partitions {
- 		compatible = "fixed-partitions";
- 		#address-cells = <2>;
-@@ -533,88 +55,6 @@
- 	};
- };
+-		if (*d->d_name == '.')
+-			continue;
+-
+-		configname = basprintf("%s/%s", abspath, d->d_name);
+-
+-		dot = strrchr(configname, '.');
+-		if (!dot) {
+-			free(configname);
+-			continue;
+-		}
+-
+-		if (strcmp(dot, ".conf")) {
+-			free(configname);
+-			continue;
+-		}
  
--&uart0 {
--	/* pin 8 (TX) + 10 (RX) (RTS:16, CTS:18) of header con2 */
--	status = "disabled";
--};
+ 		ret = stat(configname, &s);
+-		if (ret) {
+-			free(configname);
++		if (ret || !S_ISREG(s.st_mode))
+ 			continue;
+-		}
 -
--&uart2 {
--	/* debug-uart */
--	status = "okay";
--};
--
--&uart7 {
--	/* pin 11 (TX) + 13 (RX) of header con2 */
--	pinctrl-0 = <&uart7m1_xfer>;
--	status = "disabled";
--};
--
--&uart9 {
--	/* pin 21 (TX) + 24 (RX) of header con2 */
--	/* shared with pwm13 and pwm12/spi3 */
--	pinctrl-0 = <&uart9m1_xfer>;
--	status = "disabled";
--};
--
--&u2phy0_host {
--	phy-supply = <&vcc5v0_usb_host>;
--	status = "okay";
--};
--
--&u2phy0_otg {
--	phy-supply = <&vcc5v0_usb_otg>;
--	status = "okay";
--};
--
--/*&u2phy1_host {
--	phy-supply = <&vcc5v0_usb_host>;
--	status = "okay";
--};
--
--&u2phy1_otg {
--	phy-supply = <&vcc5v0_usb_otg>;
--	status = "okay";
--};*/
--
--&usb2phy0 {
--	status = "okay";
--};
--
--/*&usb2phy1 {
--	status = "okay";
--};*/
--
--&usb_host0_ehci {
--	status = "okay";
--};
--
--&usb_host0_ohci {
--	status = "okay";
--};
--
--&usb_host1_ehci {
--	status = "okay";
--};
--
--&usb_host1_ohci {
--	status = "okay";
--};
--
- &usb_host0_xhci {
- 	dr_mode = "host";
--	extcon = <&usb2phy0>;
--	status = "okay";
--};
--
--&usb_host1_xhci {
--	dr_mode = "host";
--	status = "okay";
--};
--
--&combphy0_us {
--	status = "okay";
--};
--
--&combphy1_usq {
--	status = "okay";
- };
+-		if (!S_ISREG(s.st_mode)) {
+-			free(configname);
+-			continue;
+-		}
+ 
+ 		ret = blspec_scan_file(bootentries, root, configname);
+ 		if (ret == 1)
+@@ -626,7 +603,7 @@ int blspec_scan_directory(struct bootentries *bootentries, const char *root)
+ 
+ 	ret = found;
+ 
+-	closedir(dir);
++	globfree(&globb);
+ err_out:
+ 	free(abspath);
+ 
 -- 
-2.34.1
+2.30.2
 
 
 
