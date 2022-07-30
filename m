@@ -1,62 +1,60 @@
-Delivery-date: Sat, 30 Jul 2022 11:53:39 +0200
+Delivery-date: Sat, 30 Jul 2022 11:53:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oHjAB-004r6n-L5
-	for lore@lore.pengutronix.de; Sat, 30 Jul 2022 11:53:39 +0200
+	id 1oHjAC-004r78-NI
+	for lore@lore.pengutronix.de; Sat, 30 Jul 2022 11:53:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oHjAA-0007mQ-BY
-	for lore@pengutronix.de; Sat, 30 Jul 2022 11:53:39 +0200
+	id 1oHjAB-0007mk-D8
+	for lore@pengutronix.de; Sat, 30 Jul 2022 11:53:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gfYqQWkIu0rAlrrQtrv8BbjBQ7PYCBefRa+3FJxftcM=; b=1VbYdrNNxsXV/09gyj3FGM2gZs
-	S85TTwdgYhCalZTv3ZcMm4WiRfdsCr59HumEbaN7zYaHeigbAIZnIy/O+IXyp7DHZ2HTCWjZFdV4Y
-	m9czN8yC6ObtvrqNPVNMObpuQxGerV5/UJnOeiSL9nVkXk2Hsc0vt5N8U/pd1dTm2o/8YR4Hv53P8
-	+6uHCeAswwxac0HlFz3NW3ggL+RQTZlZoCvgEv/VaZKnJkT2e5qXF7yGmOPX1FVe/w8jYAlkpEI7l
-	VsaVKVj8Ixz47NLTBl9REkHsOurvaXxc/9HZfJyP6YP4turuLe7S9W+c4g0KIJtRkibBbDq6ps2gR
-	IfV65NFw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=6WuIwIvyVi37rjf+etYFBky2VkbnKUrThmNgzLmtBAE=; b=lEQj2xTz25mYKeLuY/LRH0+0rr
+	zTIPB9nQGIFG3BeWnCS3vh/I0xg0DIGUXOAIf8h/lpfQwkzK5XVxvjbxN03Xg2pE35vp9GetuGoaV
+	OzPSM3Rb81MccOdmYBL491QrsIm18Ohcf0NBgRofEvEiffEki8ME/qkKo7u83JGrZ4l3JWGlt01HP
+	MWLrot0C+dv1H0Yyqi7StzjIdCwixhtdCqDkjA+UmXCtz26dn5peIEssz2xTOQS12hWoe6Vd+dMDO
+	72dMFIvQdMqNKRNtrF3Uy3WzYny5QK+C421PUS4zheeMPrc0ohCJfXcKU0H105TOuavFZrsEDlWkU
+	NGeLQeEA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oHj8x-00H8os-G2; Sat, 30 Jul 2022 09:52:23 +0000
+	id 1oHj90-00H8q8-LI; Sat, 30 Jul 2022 09:52:26 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oHj8t-00H8nL-Np
-	for barebox@lists.infradead.org; Sat, 30 Jul 2022 09:52:20 +0000
+	id 1oHj8t-00H8nM-Np
+	for barebox@lists.infradead.org; Sat, 30 Jul 2022 09:52:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oHj8s-0007Ul-4h; Sat, 30 Jul 2022 11:52:18 +0200
+	id 1oHj8s-0007Uw-9h; Sat, 30 Jul 2022 11:52:18 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oHj8r-000gPJ-Dx; Sat, 30 Jul 2022 11:52:17 +0200
+	id 1oHj8r-000gPO-JO; Sat, 30 Jul 2022 11:52:17 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oHj8q-007QFo-Pi; Sat, 30 Jul 2022 11:52:16 +0200
+	id 1oHj8q-007QFj-Oi; Sat, 30 Jul 2022 11:52:16 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: lst@pengutronix.de,
 	mfe@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sat, 30 Jul 2022 11:52:11 +0200
-Message-Id: <20220730095211.1769119-3-a.fatoum@pengutronix.de>
+Date: Sat, 30 Jul 2022 11:52:09 +0200
+Message-Id: <20220730095211.1769119-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220730095211.1769119-1-a.fatoum@pengutronix.de>
-References: <20220730095211.1769119-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220730_025219_823550_A7F168A7 
-X-CRM114-Status: GOOD (  14.22  )
+X-CRM114-CacheID: sfid-20220730_025219_815024_9910A5A2 
+X-CRM114-Status: GOOD (  15.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,55 +76,78 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 3/3] ARM: i.MX8MN: assume USBOTG power domains to be powered
+Subject: [PATCH master 1/3] drivers: power: ignore power domains with barebox,allow-dummy
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-When i.MX8MN support was first added, upstream device tree did list no
-power domains. Now it does and we defer probe of USB indefinitely
-because we have no power domain driver. If we need to do PCI on the
-i.MX8MM in barebox, there'll likely be no way around importing the power
-domain driver, but for USB which used to work, only thing we need to do
-is ignore the new power domain specification. Do so by adding the
-new barebox,allow-dummy property to the new known-enabled power domain.
+With deep probe enabled, we can know for certain whether a driver will
+be found for a device or not. This allows us to specially handle devices
+that lack a driver. We already do that for regulators, where the device
+tree can specify barebox,allow-dummy-supply for regulators that are
+known to be enabled by the time barebox runs. Add the same functionality
+for power domains as well.
 
-Fixes: b01786baa849 ("dts: update to v5.18-rc1")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Untested on actual i.MX8MN HW, but close enough i.MX8MM. i.MX8MP is
-also affect since v5.19-rc1 sync, but we have no USB support there yet.
-Power domains also seems more complicated on 8MPlus where we have a
-blk-ctrl power domain driver in-between usbotg and gpcv2.
----
- arch/arm/dts/imx8mn-evk.dtsi | 2 ++
- arch/arm/dts/imx8mn.dtsi     | 5 +++++
- 2 files changed, 7 insertions(+)
- create mode 100644 arch/arm/dts/imx8mn.dtsi
+ drivers/base/power.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/dts/imx8mn-evk.dtsi b/arch/arm/dts/imx8mn-evk.dtsi
-index ceeb5f8b9384..aeb357007991 100644
---- a/arch/arm/dts/imx8mn-evk.dtsi
-+++ b/arch/arm/dts/imx8mn-evk.dtsi
-@@ -4,6 +4,8 @@
-  * Copyright (C) 2017 Pengutronix, Lucas Stach <kernel@pengutronix.de>
-  */
+diff --git a/drivers/base/power.c b/drivers/base/power.c
+index 96cac1a091f3..4a206051b137 100644
+--- a/drivers/base/power.c
++++ b/drivers/base/power.c
+@@ -139,14 +139,32 @@ static struct generic_pm_domain *genpd_get_from_provider(
+ 					struct of_phandle_args *genpdspec)
+ {
+ 	struct generic_pm_domain *genpd = ERR_PTR(-ENOENT);
++	struct device_node *node = genpdspec->np;
+ 	struct of_genpd_provider *provider;
++	int ret;
  
-+#include "imx8mn.dtsi"
+ 	if (!genpdspec)
+ 		return ERR_PTR(-EINVAL);
+ 
++	ret = of_device_ensure_probed(node);
++	if (ret) {
++		struct device_node *parent;
 +
- / {
- 	chosen {
- 		environment-sd {
-diff --git a/arch/arm/dts/imx8mn.dtsi b/arch/arm/dts/imx8mn.dtsi
-new file mode 100644
-index 000000000000..176125e73bce
---- /dev/null
-+++ b/arch/arm/dts/imx8mn.dtsi
-@@ -0,0 +1,5 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++		/*
++		 * If "barebox,allow-dummy" property is set for power domain
++		 * provider, assume it's turned on.
++		 */
++		parent = of_get_parent(node);
++		if (of_get_property(node, "barebox,allow-dummy", NULL) ||
++		    of_get_property(parent, "barebox,allow-dummy", NULL))
++			return NULL;
 +
-+&pgc_otg1 {
-+	barebox,allow-dummy;
-+};
++		return ERR_PTR(ret);
++	}
++
+ 	/* Check if we have such a provider in our array */
+ 	list_for_each_entry(provider, &of_genpd_providers, link) {
+-		if (provider->node == genpdspec->np)
++		if (provider->node == node)
+ 			genpd = provider->xlate(genpdspec, provider->data);
+ 		if (!IS_ERR(genpd))
+ 			break;
+@@ -175,7 +193,7 @@ static int genpd_power_on(struct generic_pm_domain *genpd, unsigned int depth)
+ {
+ 	int ret;
+ 
+-	if (genpd_status_on(genpd))
++	if (!genpd || genpd_status_on(genpd))
+ 		return 0;
+ 
+ 	ret = _genpd_power_on(genpd, true);
+@@ -211,7 +229,7 @@ static int __genpd_dev_pm_attach(struct device_d *dev, struct device_node *np,
+ 		return (ret == -ENOENT) ? -EPROBE_DEFER : ret;
+ 	}
+ 
+-	dev_dbg(dev, "adding to PM domain %s\n", pd->name);
++	dev_dbg(dev, "adding to PM domain %s\n", pd ? pd->name : "dummy");
+ 
+ 	if (power_on)
+ 		ret = genpd_power_on(pd, 0);
 -- 
 2.30.2
 
