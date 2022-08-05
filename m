@@ -1,58 +1,49 @@
-Delivery-date: Thu, 04 Aug 2022 17:03:43 +0200
+Delivery-date: Fri, 05 Aug 2022 06:11:25 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oJcNw-00BNsv-Vb
-	for lore@lore.pengutronix.de; Thu, 04 Aug 2022 17:03:43 +0200
+	id 1oJogF-00C3lp-PR
+	for lore@lore.pengutronix.de; Fri, 05 Aug 2022 06:11:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oJcNx-0002b4-WA
-	for lore@pengutronix.de; Thu, 04 Aug 2022 17:03:42 +0200
+	id 1oJogG-0007ch-IY
+	for lore@pengutronix.de; Fri, 05 Aug 2022 06:11:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=LfmLNm9DdSMmIMricByNpt7PoxrWzmczNPZwObf/l0Y=; b=3lgEE/OCmjFR9hDd2CpoXAwLJR
-	1cC4GZywJnYak0Ti/IRIWTXC6qdrQn19BKLwtU1FPrY0YcJ17qdqxpzRo7sA5BGLvOUn1Hq1JuP5s
-	eqMhYVxWEkCmTkoe9tOvJEHsD7pAYputI5loLZp3Rb22wX6w2VdjSw+iHQulQnUqFDx/K+tng624w
-	02AR5mscZ0fE61YyD8tzzo3z1tfGyosTj5L1tiIG5sKu0gDsyPI0I/hFB7s4KIem8yaRmUg7fa93C
-	aX9F3Mf4dFAntS9cNyOiKggzzIahKC+10VVbhe8Z8WD2e7UeBneo7hu6oOMFYDrwBmv2SNeRSuDZl
-	a9jZWZsg==;
+	bh=4AaFIwlIIXXWzxqlXbx3UbyXxZgfMk2Xaww9c/+Cr/Y=; b=QFT0/rvPYmrm6oYBctIrxdQKzL
+	hr+LocjShXP/nN36eJM7on79kWvW3QC/0DdGvTf5r8aFFb9pYl+En3kIWue9WNEGOYLj5B3y+5zpF
+	Cl9QfWnVl9QCXL+2VNAG2LayFTfvtxSpq6CCG4a2u0DYBlkRcuQrhYUXu2DwC4HfuilgV6hwx6Yqf
+	z3hWv/QGOqxxWd5sydaozAfkPG0qYHOByZirpJJ0IH1Kmor93FBxnV49g8OcvYgvKK5N4PdngdIic
+	XjJI0ymXlWDUtWK1TCOe0cGu4bHjVq27TNFj6tXENABUkDkfLMN83WUNGqtASLf5RXjGojl8KFQIP
+	ZI3eEUlA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oJcMB-006xQD-Jo; Thu, 04 Aug 2022 15:01:51 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1oJoef-00BdRC-2a; Fri, 05 Aug 2022 04:09:45 +0000
+Received: from relay9-d.mail.gandi.net ([217.70.183.199])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oJcM7-006xNQ-1h
-	for barebox@lists.infradead.org; Thu, 04 Aug 2022 15:01:48 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1oJcM1-0002Sc-P8; Thu, 04 Aug 2022 17:01:41 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1oJcLy-001iFL-Po; Thu, 04 Aug 2022 17:01:41 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1oJcM0-00Fq9E-Cj; Thu, 04 Aug 2022 17:01:40 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	id 1oJoeZ-00BdNw-2c
+	for barebox@lists.infradead.org; Fri, 05 Aug 2022 04:09:41 +0000
+Received: (Authenticated sender: ahmad@a3f.at)
+	by mail.gandi.net (Postfix) with ESMTPSA id 413B4FF803;
+	Fri,  5 Aug 2022 04:09:31 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  4 Aug 2022 17:01:39 +0200
-Message-Id: <20220804150139.3760886-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Fri,  5 Aug 2022 06:09:26 +0200
+Message-Id: <20220805040927.1658824-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220804_080147_107649_84689BDE 
-X-CRM114-Status: UNSURE (   9.73  )
+X-CRM114-CacheID: sfid-20220804_210939_279938_7CDE7674 
+X-CRM114-Status: UNSURE (   7.49  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -71,36 +62,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] net: dsa: fix format string mismatch
+Subject: [PATCH 1/2] Documentation: devel: project-ideas: update after DSA framework addition
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-ds->num_ports has type size_t, but is printed with %u. Fix this.
+We have a proper abstraction for switches now, so drop this idea
+from the list.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/net/dsa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devel/project-ideas.rst | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
-index d9e629cefc53..7a64a7941223 100644
---- a/drivers/net/dsa.c
-+++ b/drivers/net/dsa.c
-@@ -383,7 +383,7 @@ static int dsa_switch_parse_ports_of(struct dsa_switch *ds,
- 		}
+diff --git a/Documentation/devel/project-ideas.rst b/Documentation/devel/project-ideas.rst
+index a3643298ab08..e49bfa6ca4da 100644
+--- a/Documentation/devel/project-ideas.rst
++++ b/Documentation/devel/project-ideas.rst
+@@ -20,10 +20,8 @@ For GSoC, following barebox developers are mentoring:
+   - Rouven Czerwinski (IRC: ``Emantor``)
  
- 		if (reg >= ds->num_ports) {
--			dev_err(ds->dev, "port %pOF index %u exceeds num_ports (%u)\n",
-+			dev_err(ds->dev, "port %pOF index %u exceeds num_ports (%zu)\n",
- 				port, reg, ds->num_ports);
- 			ret = -EINVAL;
- 			goto out_put_node;
+ This list can be edited and extended by sending patches to the mailing list.
+-Other interesting ideas: Support for new file systems (EROFS, extfat, btrfs).
+-Switch device framework (currently scripts write into a ``/dev/switch`` file
+-to configure passthrough), Improvements for barebox-efi (e.g. as a coreboot
+-payload), ... etc.
++Other interesting ideas: Support for new file systems (EROFS, extfat, btrfs),
++Improvements for barebox-efi (e.g. as a coreboot payload), ... etc.
+ 
+ Ideas listed below should contain a title, description, expected outcomes,
+ skills (and HW if any) required and a difficulty rating.
 -- 
-2.30.2
+2.34.1
 
 
 
