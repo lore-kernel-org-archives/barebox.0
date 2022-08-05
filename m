@@ -1,61 +1,61 @@
-Delivery-date: Fri, 05 Aug 2022 14:56:21 +0200
+Delivery-date: Fri, 05 Aug 2022 14:56:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oJwsE-00CWJE-Tf
-	for lore@lore.pengutronix.de; Fri, 05 Aug 2022 14:56:21 +0200
+	id 1oJwsV-00CWKp-Gn
+	for lore@lore.pengutronix.de; Fri, 05 Aug 2022 14:56:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oJwsE-0005JW-0m
-	for lore@pengutronix.de; Fri, 05 Aug 2022 14:56:20 +0200
+	id 1oJwsS-0005Tn-WA
+	for lore@pengutronix.de; Fri, 05 Aug 2022 14:56:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5UQ2Jfd4UnLzNlTBtGly2E6Kf0hlsPFXEn7lncXMEcU=; b=t3YkBBTRceS2gQldKnU5SRf/BV
-	QEh6vZqeALHGEStZRlbZqs3WqQ1lbt0Tlz79AxsM+LQgXljtHatHYOzQYwGOX8vFXNwANV9ww8wZW
-	K//0sAc0u7H7UDe7zguM3Zms2gOBZregQO19zLATheLv4ps5qVhX3sV/SNZnP/5qQIa/QPHFKW2Ca
-	J6K1UPs9OcKKRzU1BCQhSgP7CY31j7UAXbCs80rmueXyTGa027fbUfJnY23RkQePp1NC30az3gNsE
-	Rk5X8TOf4ApUvvVlvkkYKDoiHcA0QoJZPKxufv5wA7AlgDN+QyrEA545A+t5n5ta79BYKvX8A64ys
-	tgzvEyWA==;
+	bh=olwg2C9FGqabLBQ/8/fqV67JiJcAFWQwHoYQJMZuEmw=; b=fK77/imjyVpENZi4JRFAUQ695K
+	ZaQCS7GTCrMHJfAQgj2Qa6xsFRLheyXMp7lKiI3aO/G89JkD8uaiwJ2wuUzrg8tPsNu6h0B9RIIi5
+	cVDbsJmI2q1n60FsQG6Br9W09XfANqxbroRH+RNqqCMmqeio0eE6Jix/kZJNy+LLqgT5ZXR4O/fcR
+	W2Xbe5DrmcCJ81MoVxVRKE4LjThfFT8CgtBEGC/030X7olb88q24RnrAz4QmLXk58MSXZNa+ITyAz
+	syKzwFqqyEQd6oNUV7pA8qVVgN0ImvdOS0sWl4YlqawT9t3KKQz6xOONKQMf9CKdynJVusNPEiYzG
+	y/5gqhJw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oJwqi-00FAF7-6b; Fri, 05 Aug 2022 12:54:45 +0000
+	id 1oJwqx-00FAIl-I5; Fri, 05 Aug 2022 12:54:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oJwqJ-00FA0a-AL
+	id 1oJwqJ-00FA0G-7w
 	for barebox@lists.infradead.org; Fri, 05 Aug 2022 12:54:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oJwqI-0004cz-1p; Fri, 05 Aug 2022 14:54:18 +0200
+	id 1oJwqH-0004be-Gn; Fri, 05 Aug 2022 14:54:17 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oJwqF-001tgi-2t; Fri, 05 Aug 2022 14:54:17 +0200
+	id 1oJwqE-001tgc-G1; Fri, 05 Aug 2022 14:54:16 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oJwqF-004w27-EB; Fri, 05 Aug 2022 14:54:15 +0200
+	id 1oJwqF-004vxa-9F; Fri, 05 Aug 2022 14:54:15 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: mfe@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  5 Aug 2022 14:54:13 +0200
-Message-Id: <20220805125413.1046239-10-a.fatoum@pengutronix.de>
+Date: Fri,  5 Aug 2022 14:54:09 +0200
+Message-Id: <20220805125413.1046239-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220805125413.1046239-1-a.fatoum@pengutronix.de>
 References: <20220805125413.1046239-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220805_055419_637946_56641684 
-X-CRM114-Status: GOOD (  18.10  )
+X-CRM114-CacheID: sfid-20220805_055419_531504_C7CB1FD1 
+X-CRM114-Status: GOOD (  16.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,358 +78,234 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 9/9] ARM: i.MX8M: use new pbl/pmic.h API
+Subject: [PATCH 5/9] ddr: imx8m: rename type to more fitting ddrc|dram_type
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This cuts down on code size a bit and removes the i2c xfer boilerplate
-out of the drivers.
+type is ambiguous and can mean either DDR controller (SoC) type, DRAM
+type or firmware (1D/2D) type. Replace variables called type plainly,
+with more descriptive ddrc_type, dram_type and fw_type.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/mnt-reform/lowlevel.c     | 18 +----
- arch/arm/boards/nxp-imx8mm-evk/lowlevel.c | 52 ++++---------
- arch/arm/boards/nxp-imx8mn-evk/lowlevel.c | 95 ++++++-----------------
- arch/arm/boards/nxp-imx8mp-evk/lowlevel.c | 56 +++++--------
- 4 files changed, 58 insertions(+), 163 deletions(-)
+ drivers/ddr/imx8m/ddr_init.c     | 12 +++----
+ drivers/ddr/imx8m/ddrphy_train.c |  4 +--
+ include/soc/imx8m/ddr.h          | 54 ++++++++++++++++----------------
+ 3 files changed, 35 insertions(+), 35 deletions(-)
 
-diff --git a/arch/arm/boards/mnt-reform/lowlevel.c b/arch/arm/boards/mnt-reform/lowlevel.c
-index a845d36263fe..d22c8b8a7494 100644
---- a/arch/arm/boards/mnt-reform/lowlevel.c
-+++ b/arch/arm/boards/mnt-reform/lowlevel.c
-@@ -8,6 +8,7 @@
- #include <debug_ll.h>
- #include <firmware.h>
- #include <pbl/i2c.h>
-+#include <pbl/pmic.h>
- #include <mach/atf.h>
- #include <mach/esdctl.h>
- #include <mach/generic.h>
-@@ -57,22 +58,7 @@ static void i2c_mux_set(struct pbl_i2c *i2c, u8 channel)
+diff --git a/drivers/ddr/imx8m/ddr_init.c b/drivers/ddr/imx8m/ddr_init.c
+index 41e1fba38a52..f046ea52df7f 100644
+--- a/drivers/ddr/imx8m/ddr_init.c
++++ b/drivers/ddr/imx8m/ddr_init.c
+@@ -50,7 +50,7 @@ static void ddr_cfg_umctl2(struct dram_cfg_param *ddrc_cfg, int num)
+ #define IMX8M_SAVED_DRAM_TIMING_BASE		0x180000
  
- static void i2c_regulator_set_voltage(struct pbl_i2c *i2c, u8 reg, u8 voffs)
+ int imx8m_ddr_init(struct dram_timing_info *dram_timing,
+-		   enum ddrc_type type)
++		   enum ddrc_type ddrc_type)
  {
--	int ret;
--	u8 buf[2];
--	struct i2c_msg msgs[] = {
--		{
--			.addr = 0x60,
--			.buf = buf,
--			.len = 2,
--		},
--	};
--
--	buf[0] = reg;
--	buf[1] = 0x80 + voffs;
--
--	ret = pbl_i2c_xfer(i2c, msgs, ARRAY_SIZE(msgs));
--	if (ret != 1)
--		pr_err("failed to set voltage\n");
-+	pmic_reg_write(i2c, 0x60, reg, 0x80 + voffs);
- }
+ 	unsigned long src_ddrc_rcr = MX8M_SRC_DDRC_RCR_ADDR;
+ 	unsigned int tmp, initial_drate, target_freq;
+@@ -59,7 +59,7 @@ int imx8m_ddr_init(struct dram_timing_info *dram_timing,
+ 	pr_debug("start DRAM init\n");
  
- #define I2C_PAD_CTRL	MUX_PAD_CTRL(MX8MQ_PAD_CTL_DSE_45R | \
-diff --git a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-index e52d0f29a4c9..6132df53ec75 100644
---- a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-@@ -8,6 +8,7 @@
- #include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
- #include <pbl/i2c.h>
-+#include <pbl/pmic.h>
- #include <linux/sizes.h>
- #include <mach/esdctl.h>
- #include <mach/generic.h>
-@@ -37,28 +38,20 @@ static void setup_uart(void)
- 	putc_ll('>');
- }
+ 	/* Step1: Follow the power up procedure */
+-	switch (type) {
++	switch (ddrc_type) {
+ 	case DDRC_TYPE_MQ:
+ 		reg32_write(src_ddrc_rcr + 0x04, 0x8f00000f);
+ 		reg32_write(src_ddrc_rcr, 0x8f00000f);
+@@ -81,7 +81,7 @@ int imx8m_ddr_init(struct dram_timing_info *dram_timing,
  
--static void pmic_reg_write(struct pbl_i2c *i2c, int reg, uint8_t val)
--{
--	int ret;
--	u8 buf[32];
--	struct i2c_msg msgs[] = {
--		{
--			.addr = 0x4b,
--			.buf = buf,
--		},
--	};
--
--	buf[0] = reg;
--	buf[1] = val;
--
--	msgs[0].len = 2;
--
--	ret = pbl_i2c_xfer(i2c, msgs, ARRAY_SIZE(msgs));
--	if (ret != 1)
--		pr_err("Failed to write to pmic\n");
--}
-+static struct pmic_config bd71837_cfg[] = {
-+	/* decrease RESET key long push time from the default 10s to 10ms */
-+	{ BD718XX_PWRONCONFIG1, 0x0 },
-+	/* unlock the PMIC regs */
-+	{ BD718XX_REGLOCK, 0x1 },
-+	/* increase VDD_SOC to typical value 0.85v before first DRAM access */
-+	{ BD718XX_BUCK1_VOLT_RUN, 0x0f },
-+	/* increase VDD_DRAM to 0.975v for 3Ghz DDR */
-+	{ BD718XX_1ST_NODVS_BUCK_VOLT, 0x83 },
-+	/* lock the PMIC regs */
-+	{ BD718XX_REGLOCK, 0x11 },
-+};
+ 	initial_drate = dram_timing->fsp_msg[0].drate;
+ 	/* default to the frequency point 0 clock */
+-	ddrphy_init_set_dfi_clk(initial_drate, type);
++	ddrphy_init_set_dfi_clk(initial_drate, ddrc_type);
  
--static int power_init_board(void)
-+static void power_init_board(void)
- {
- 	struct pbl_i2c *i2c;
+ 	/* D-aasert the presetn */
+ 	reg32_write(src_ddrc_rcr, 0x8F000006);
+@@ -107,7 +107,7 @@ int imx8m_ddr_init(struct dram_timing_info *dram_timing,
  
-@@ -70,22 +63,7 @@ static int power_init_board(void)
+ 	/* if ddr type is LPDDR4, do it */
+ 	tmp = reg32_read(DDRC_MSTR(0));
+-	if (tmp & (0x1 << 5) && type != DDRC_TYPE_MN)
++	if (tmp & (0x1 << 5) && ddrc_type != DDRC_TYPE_MN)
+ 		reg32_write(DDRC_DDR_SS_GPR0, 0x01); /* LPDDR4 mode */
  
- 	i2c = imx8m_i2c_early_init(IOMEM(MX8MQ_I2C1_BASE_ADDR));
- 
--	/* decrease RESET key long push time from the default 10s to 10ms */
--	pmic_reg_write(i2c, BD718XX_PWRONCONFIG1, 0x0);
--
--	/* unlock the PMIC regs */
--	pmic_reg_write(i2c, BD718XX_REGLOCK, 0x1);
--
--	/* increase VDD_SOC to typical value 0.85v before first DRAM access */
--	pmic_reg_write(i2c, BD718XX_BUCK1_VOLT_RUN, 0x0f);
--
--	/* increase VDD_DRAM to 0.975v for 3Ghz DDR */
--	pmic_reg_write(i2c, BD718XX_1ST_NODVS_BUCK_VOLT, 0x83);
--
--	/* lock the PMIC regs */
--	pmic_reg_write(i2c, BD718XX_REGLOCK, 0x11);
--
--	return 0;
-+	pmic_configure(i2c, 0x4b, bd71837_cfg, ARRAY_SIZE(bd71837_cfg));
- }
- 
- extern struct dram_timing_info imx8mm_evk_dram_timing;
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-index 37b983f6387a..7da9c3356573 100644
---- a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
-@@ -10,6 +10,7 @@
- #include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
- #include <pbl/i2c.h>
-+#include <pbl/pmic.h>
- #include <linux/sizes.h>
- #include <mach/atf.h>
- #include <mach/xload.h>
-@@ -36,94 +37,44 @@ static void setup_uart(void)
- 	putc_ll('>');
- }
- 
--static void pmic_reg_write(struct pbl_i2c *i2c, int addr, int reg, uint8_t val)
--{
--	int ret;
--	u8 buf[32];
--	struct i2c_msg msgs[] = {
--		{
--			.addr = addr,
--			.buf = buf,
--		},
--	};
--
--	buf[0] = reg;
--	buf[1] = val;
--
--	msgs[0].len = 2;
--
--	ret = pbl_i2c_xfer(i2c, msgs, ARRAY_SIZE(msgs));
--	if (ret != 1)
--		pr_err("Failed to write to pmic@%x: %d\n", addr, ret);
--}
--
--static int i2c_dev_detect(struct pbl_i2c *i2c, int addr)
--{
--	u8 buf[1];
--	struct i2c_msg msgs[] = {
--		{
--			.addr = addr,
--			.buf = buf,
--			.flags = I2C_M_RD,
--			.len = 1,
--		},
--	};
--
--	return pbl_i2c_xfer(i2c, msgs, 1) == 1 ? 0 : -ENODEV;
--}
--
--static void power_init_board_pca9450(struct pbl_i2c *i2c, int addr)
--{
-+static struct pmic_config pca9450_cfg[] = {
- 	/* BUCKxOUT_DVS0/1 control BUCK123 output */
--	pmic_reg_write(i2c, addr, PCA9450_BUCK123_DVS, 0x29);
--
-+	{ PCA9450_BUCK123_DVS, 0x29 },
- 	/*
- 	 * increase VDD_SOC to typical value 0.95V before first
- 	 * DRAM access, set DVS1 to 0.85v for suspend.
- 	 * Enable DVS control through PMIC_STBY_REQ and
- 	 * set B1_ENMODE=1 (ON by PMIC_ON_REQ=H)
+ 	/* determine the initial boot frequency */
+@@ -134,7 +134,7 @@ int imx8m_ddr_init(struct dram_timing_info *dram_timing,
  	 */
--	pmic_reg_write(i2c, addr, PCA9450_BUCK1OUT_DVS0, 0x1C);
--
-+	{ PCA9450_BUCK1OUT_DVS0, 0x1C },
- 	/* Set DVS1 to 0.85v for suspend */
- 	/* Enable DVS control through PMIC_STBY_REQ and set B1_ENMODE=1 (ON by PMIC_ON_REQ=H) */
--	pmic_reg_write(i2c, addr, PCA9450_BUCK1OUT_DVS1, 0x14);
--	pmic_reg_write(i2c, addr, PCA9450_BUCK1CTRL, 0x59);
--
-+	{ PCA9450_BUCK1OUT_DVS1, 0x14 },
-+	{ PCA9450_BUCK1CTRL, 0x59 },
- 	/* set VDD_SNVS_0V8 from default 0.85V */
--	pmic_reg_write(i2c, addr, PCA9450_LDO2CTRL, 0xC0);
--
-+	{ PCA9450_LDO2CTRL, 0xC0 },
- 	/* enable LDO4 to 1.2v */
--	pmic_reg_write(i2c, addr, PCA9450_LDO4CTRL, 0x44);
--
-+	{ PCA9450_LDO4CTRL, 0x44 },
- 	/* set WDOG_B_CFG to cold reset */
--	pmic_reg_write(i2c, addr, PCA9450_RESET_CTRL, 0xA1);
--}
-+	{ PCA9450_RESET_CTRL, 0xA1 },
-+};
+ 	pr_debug("ddrphy config start\n");
  
--static void power_init_board_bd71837(struct pbl_i2c *i2c, int addr)
--{
-+static struct pmic_config bd71837_cfg[] = {
- 	/* decrease RESET key long push time from the default 10s to 10ms */
--	pmic_reg_write(i2c, addr, BD718XX_PWRONCONFIG1, 0x0);
--
-+	{ BD718XX_PWRONCONFIG1, 0x0 },
- 	/* unlock the PMIC regs */
--	pmic_reg_write(i2c, addr, BD718XX_REGLOCK, 0x1);
--
-+	{ BD718XX_REGLOCK, 0x1 },
- 	/* Set VDD_ARM to typical value 0.85v for 1.2Ghz */
--	pmic_reg_write(i2c, addr, BD718XX_BUCK2_VOLT_RUN, 0xf);
--
-+	{ BD718XX_BUCK2_VOLT_RUN, 0xf },
- 	/* Set VDD_SOC/VDD_DRAM to typical value 0.85v for nominal mode */
--	pmic_reg_write(i2c, addr, BD718XX_BUCK1_VOLT_RUN, 0xf);
--
-+	{ BD718XX_BUCK1_VOLT_RUN, 0xf },
- 	/* Set VDD_SOC 0.85v for suspend */
--	pmic_reg_write(i2c, addr, BD718XX_BUCK1_VOLT_SUSP, 0xf);
--
--	/* increase NVCC_DRAM_1V2 to 1.2v for DDR4
--	 * */
--	pmic_reg_write(i2c, addr, BD718XX_4TH_NODVS_BUCK_CTRL, 0x28);
--
-+	{ BD718XX_BUCK1_VOLT_SUSP, 0xf },
-+	/* increase NVCC_DRAM_1V2 to 1.2v for DDR4 */
-+	{ BD718XX_4TH_NODVS_BUCK_CTRL, 0x28 },
- 	/* lock the PMIC regs */
--	pmic_reg_write(i2c, addr, BD718XX_REGLOCK, 0x11);
--}
-+	{ BD718XX_REGLOCK, 0x11 },
-+};
+-	ret = ddr_cfg_phy(dram_timing, type);
++	ret = ddr_cfg_phy(dram_timing, ddrc_type);
+ 	if (ret)
+ 		return ret;
  
- extern struct dram_timing_info imx8mn_evk_ddr4_timing, imx8mn_evk_lpddr4_timing;
+@@ -154,7 +154,7 @@ int imx8m_ddr_init(struct dram_timing_info *dram_timing,
+ 	reg32_write(DDRC_SWCTL(0), 0x00000000);
  
-@@ -147,11 +98,11 @@ static void start_atf(void)
+ 	/* Apply rank-to-rank workaround */
+-	update_umctl2_rank_space_setting(dram_timing->fsp_msg_num - 1, type);
++	update_umctl2_rank_space_setting(dram_timing->fsp_msg_num - 1, ddrc_type);
  
- 	i2c = imx8m_i2c_early_init(IOMEM(MX8MN_I2C1_BASE_ADDR));
- 
--	if (i2c_dev_detect(i2c, 0x25) == 0) {
--		power_init_board_pca9450(i2c, 0x25);
-+	if (i2c_dev_probe(i2c, 0x25, true) == 0) {
-+		pmic_configure(i2c, 0x25, pca9450_cfg, ARRAY_SIZE(pca9450_cfg));
- 		imx8mn_ddr_init(&imx8mn_evk_lpddr4_timing, DRAM_TYPE_LPDDR4);
- 	} else {
--		power_init_board_bd71837(i2c, 0x4b);
-+		pmic_configure(i2c, 0x4b, bd71837_cfg, ARRAY_SIZE(bd71837_cfg));
- 		imx8mn_ddr_init(&imx8mn_evk_ddr4_timing, DRAM_TYPE_DDR4);
- 	}
- 
-diff --git a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-index 43f7d194d806..4f24dd4cd426 100644
---- a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-@@ -11,6 +11,7 @@
- #include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
- #include <pbl/i2c.h>
-+#include <pbl/pmic.h>
- #include <linux/sizes.h>
- #include <mach/atf.h>
- #include <mach/xload.h>
-@@ -48,28 +49,23 @@ static void setup_uart(void)
- 	putc_ll('>');
+ 	/* Step16: Set DFIMISC.dfi_init_start to 1 */
+ 	setbits_le32(DDRC_DFIMISC(0), (0x1 << 5));
+diff --git a/drivers/ddr/imx8m/ddrphy_train.c b/drivers/ddr/imx8m/ddrphy_train.c
+index 2190b5341307..f739c6510703 100644
+--- a/drivers/ddr/imx8m/ddrphy_train.c
++++ b/drivers/ddr/imx8m/ddrphy_train.c
+@@ -93,7 +93,7 @@ void ddr_load_train_code(enum dram_type dram_type, enum fw_type fw_type)
+ 			       DDRC_PHY_DMEM, dmem, dsize);
  }
  
--static void pmic_reg_write(struct pbl_i2c *i2c, int reg, uint8_t val)
--{
--	int ret;
--	u8 buf[32];
--	struct i2c_msg msgs[] = {
--		{
--			.addr = 0x25,
--			.buf = buf,
--		},
--	};
--
--	buf[0] = reg;
--	buf[1] = val;
--
--	msgs[0].len = 2;
--
--	ret = pbl_i2c_xfer(i2c, msgs, ARRAY_SIZE(msgs));
--	if (ret != 1)
--		pr_err("Failed to write to pmic\n");
--}
-+static struct pmic_config pca9450_cfg[] = {
-+	/* BUCKxOUT_DVS0/1 control BUCK123 output */
-+	{ PCA9450_BUCK123_DVS, 0x29 },
-+	/*
-+	 * increase VDD_SOC to typical value 0.95V before first
-+	 * DRAM access, set DVS1 to 0.85v for suspend.
-+	 * Enable DVS control through PMIC_STBY_REQ and
-+	 * set B1_ENMODE=1 (ON by PMIC_ON_REQ=H)
-+	 */
-+	{ PCA9450_BUCK1OUT_DVS0, 0x1C },
-+	{ PCA9450_BUCK1OUT_DVS1, 0x14 },
-+	{ PCA9450_BUCK1CTRL, 0x59 },
-+	/* set WDOG_B_CFG to cold reset */
-+	{ PCA9450_RESET_CTRL, 0xA1 },
-+};
- 
--static int power_init_board(void)
-+static void power_init_board(void)
+-int ddr_cfg_phy(struct dram_timing_info *dram_timing, enum ddrc_type type)
++int ddr_cfg_phy(struct dram_timing_info *dram_timing, enum ddrc_type ddrc_type)
  {
- 	struct pbl_i2c *i2c;
+ 	struct dram_cfg_param *dram_cfg;
+ 	struct dram_fsp_msg *fsp_msg;
+@@ -116,7 +116,7 @@ int ddr_cfg_phy(struct dram_timing_info *dram_timing, enum ddrc_type type)
+ 	for (i = 0; i < dram_timing->fsp_msg_num; i++) {
+ 		pr_debug("DRAM PHY training for %dMTS\n", fsp_msg->drate);
+ 		/* set dram PHY input clocks to desired frequency */
+-		ddrphy_init_set_dfi_clk(fsp_msg->drate, type);
++		ddrphy_init_set_dfi_clk(fsp_msg->drate, ddrc_type);
  
-@@ -81,23 +77,7 @@ static int power_init_board(void)
+ 		/* load the dram training firmware image */
+ 		dwc_ddrphy_apb_wr(0xd0000, 0x0);
+diff --git a/include/soc/imx8m/ddr.h b/include/soc/imx8m/ddr.h
+index ad13632d28d9..e90adc37df87 100644
+--- a/include/soc/imx8m/ddr.h
++++ b/include/soc/imx8m/ddr.h
+@@ -333,6 +333,13 @@ enum dram_type {
+ 	DRAM_TYPE_DDR4,
+ };
  
- 	i2c = imx8m_i2c_early_init(IOMEM(MX8MP_I2C1_BASE_ADDR));
++enum ddrc_type {
++	DDRC_TYPE_MM,
++	DDRC_TYPE_MN,
++	DDRC_TYPE_MQ,
++	DDRC_TYPE_MP,
++};
++
+ struct dram_cfg_param {
+ 	unsigned int reg;
+ 	unsigned int val;
+@@ -368,71 +375,64 @@ struct dram_timing_info {
  
--	/* BUCKxOUT_DVS0/1 control BUCK123 output */
--	pmic_reg_write(i2c, PCA9450_BUCK123_DVS, 0x29);
+ extern struct dram_timing_info dram_timing;
+ 
+-enum ddrc_type {
+-	DDRC_TYPE_MM,
+-	DDRC_TYPE_MN,
+-	DDRC_TYPE_MQ,
+-	DDRC_TYPE_MP,
+-};
 -
--	/*
--	 * increase VDD_SOC to typical value 0.95V before first
--	 * DRAM access, set DVS1 to 0.85v for suspend.
--	 * Enable DVS control through PMIC_STBY_REQ and
--	 * set B1_ENMODE=1 (ON by PMIC_ON_REQ=H)
--	 */
--	pmic_reg_write(i2c, PCA9450_BUCK1OUT_DVS0, 0x1C);
--	pmic_reg_write(i2c, PCA9450_BUCK1OUT_DVS1, 0x14);
--	pmic_reg_write(i2c, PCA9450_BUCK1CTRL, 0x59);
--
--	/* set WDOG_B_CFG to cold reset */
--	pmic_reg_write(i2c, PCA9450_RESET_CTRL, 0xA1);
--
--	return 0;
-+	pmic_configure(i2c, 0x25, pca9450_cfg, ARRAY_SIZE(pca9450_cfg));
+ void ddr_get_firmware_lpddr4(void);
+ void ddr_get_firmware_ddr(void);
+ 
+-static void ddr_get_firmware(enum dram_type type)
++static void ddr_get_firmware(enum dram_type dram_type)
+ {
+-	if (type == DRAM_TYPE_LPDDR4)
++	if (dram_type == DRAM_TYPE_LPDDR4)
+ 		ddr_get_firmware_lpddr4();
+ 	else
+ 		ddr_get_firmware_ddr();
  }
  
- extern struct dram_timing_info imx8mp_evk_dram_timing;
+ int imx8m_ddr_init(struct dram_timing_info *dram_timing,
+-		   enum ddrc_type type);
++		   enum ddrc_type ddrc_type);
+ 
+ static inline int imx8mm_ddr_init(struct dram_timing_info *dram_timing,
+-				  enum dram_type type)
++				  enum dram_type dram_type)
+ {
+-	ddr_get_firmware(type);
++	ddr_get_firmware(dram_type);
+ 
+ 	return imx8m_ddr_init(dram_timing, DDRC_TYPE_MM);
+ }
+ 
+ static inline int imx8mn_ddr_init(struct dram_timing_info *dram_timing,
+-				  enum dram_type type)
++				  enum dram_type dram_type)
+ {
+-	ddr_get_firmware(type);
++	ddr_get_firmware(dram_type);
+ 
+ 	return imx8m_ddr_init(dram_timing, DDRC_TYPE_MN);
+ }
+ 
+ static inline int imx8mq_ddr_init(struct dram_timing_info *dram_timing,
+-				  enum dram_type type)
++				  enum dram_type dram_type)
+ {
+-	ddr_get_firmware(type);
++	ddr_get_firmware(dram_type);
+ 
+ 	return imx8m_ddr_init(dram_timing, DDRC_TYPE_MQ);
+ }
+ 
+ static inline int imx8mp_ddr_init(struct dram_timing_info *dram_timing,
+-				  enum dram_type type)
++				  enum dram_type dram_type)
+ {
+-	ddr_get_firmware(type);
++	ddr_get_firmware(dram_type);
+ 
+ 	return imx8m_ddr_init(dram_timing, DDRC_TYPE_MP);
+ }
+ 
+-int ddr_cfg_phy(struct dram_timing_info *timing_info, enum ddrc_type type);
++int ddr_cfg_phy(struct dram_timing_info *timing_info, enum ddrc_type ddrc_type);
+ void load_lpddr4_phy_pie(void);
+ void ddrphy_trained_csr_save(struct dram_cfg_param *param, unsigned int num);
+ void dram_config_save(struct dram_timing_info *info, unsigned long base);
+ 
+ /* utils function for ddr phy training */
+ int wait_ddrphy_training_complete(void);
+-void ddrphy_init_set_dfi_clk(unsigned int drate, enum ddrc_type type);
+-void ddrphy_init_read_msg_block(enum fw_type type);
++void ddrphy_init_set_dfi_clk(unsigned int drate, enum ddrc_type ddrc_type);
++void ddrphy_init_read_msg_block(enum fw_type fw_type);
+ 
+ void update_umctl2_rank_space_setting(unsigned int pstat_num,
+-				      enum ddrc_type type);
++				      enum ddrc_type ddrc_type);
+ void get_trained_CDD(unsigned int fsp);
+ 
+ #define reg32_write(a, v)	writel(v, a)
+@@ -457,22 +457,22 @@ enum ddrc_phy_firmware_offset {
+ 	DDRC_PHY_DMEM = 0x00054000U,
+ };
+ 
+-void ddr_load_train_code(enum dram_type dram_type, enum fw_type type);
++void ddr_load_train_code(enum dram_type dram_type, enum fw_type fw_type);
+ 
+ void ddrc_phy_load_firmware(void __iomem *,
+ 			    enum ddrc_phy_firmware_offset,
+ 			    const u16 *, size_t);
+ 
+-static inline bool dram_is_lpddr4(enum dram_type type)
++static inline bool dram_is_lpddr4(enum dram_type dram_type)
+ {
+ 	return IS_ENABLED(CONFIG_FIRMWARE_IMX_LPDDR4_PMU_TRAIN) &&
+-		type == DRAM_TYPE_LPDDR4;
++		dram_type == DRAM_TYPE_LPDDR4;
+ }
+ 
+-static inline bool dram_is_ddr4(enum dram_type type)
++static inline bool dram_is_ddr4(enum dram_type dram_type)
+ {
+ 	return IS_ENABLED(CONFIG_FIRMWARE_IMX_DDR4_PMU_TRAIN) &&
+-		type == DRAM_TYPE_DDR4;
++		dram_type == DRAM_TYPE_DDR4;
+ }
+ 
+ #define DDRC_PHY_REG(x)	((x) * 4)
 -- 
 2.30.2
 
