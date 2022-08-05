@@ -1,58 +1,58 @@
-Delivery-date: Fri, 05 Aug 2022 10:23:06 +0200
+Delivery-date: Fri, 05 Aug 2022 10:55:10 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oJsbo-00CHrv-Kh
-	for lore@lore.pengutronix.de; Fri, 05 Aug 2022 10:23:06 +0200
+	id 1oJt6q-00CJ6C-Co
+	for lore@lore.pengutronix.de; Fri, 05 Aug 2022 10:55:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oJsbp-0004LT-9O
-	for lore@pengutronix.de; Fri, 05 Aug 2022 10:23:06 +0200
+	id 1oJt6q-0007kh-Vv
+	for lore@pengutronix.de; Fri, 05 Aug 2022 10:55:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=+mjpdR7jP2wttB8CMSfTJukLMtadRDYe6IziZ2ZtCAs=; b=W/J6PUCnwnCuLpmOOYDoVXMWop
-	IgU78uK5D4CjGFYLXpBFJBDm+CiocRmZtcdpgQWnDO0n1TcgncJjL//S4Ig+3zaKgMpt1JG2INgIS
-	60XYD005dmPBAqn0QpC+tmRF8h8SIuV9NbcvCrNYOES/v5dyqqRGZFw6w4yvLMfKHkb5kU3zHn8WL
-	fsaqAoB2bLAcqtNrgnuiJ5Wycc+W4UvFYVlkI4ezpg+4IHHGpYYjwaELhwaDiMKmqc41NkROqtj16
-	kNQsJLXqIrJC7QKh964BV43jzm6XOpHmgh6WBXHtPFGPkMqLwoUX5sZM/8j5KRhzrR4aU9g7bC7a6
-	RFA3m1aA==;
+	bh=NjiGPsCInjjzd3bdpgn7EL1EMLpGVujc48zWKtA3/f0=; b=Z0ZvXEeF0L4t1SA48Mr8XR2NGr
+	E4m1ZXJrIdSG4z/pcLnt2W8y9y3mpfo2sfJe9f3TeB+TbSnta2aUEn70iVeFgd0FdoCe9Fx5MALDp
+	Gt7tRBGH/YWE+ZWTOx3gAGYe4uvJKW7EtLzxMBnMzhB59MAmrr0kd45nz7oaKvN0GviiaSRpkF6AV
+	/j4hTacXTdEWB5musTwFp8mG9QP1P0nmqkVFMnrkJs7Q7q2/foe2oh50aPEk/56CCZdRe55VqaK5U
+	uCc+TFRuwDGA9edcHskWkxqrIjaUN/bfxbJczFNSedlA+d/R3U8kNKJWi3diYKKXU4qjZJZ1++Pd3
+	5Hr6kVlQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oJsaZ-00D7wo-8N; Fri, 05 Aug 2022 08:21:47 +0000
+	id 1oJt5T-00DK3y-DD; Fri, 05 Aug 2022 08:53:43 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oJsaT-00D7vV-Sz
-	for barebox@lists.infradead.org; Fri, 05 Aug 2022 08:21:43 +0000
+	id 1oJt5K-00DJzs-JQ
+	for barebox@lists.infradead.org; Fri, 05 Aug 2022 08:53:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oJsaS-0004FS-14; Fri, 05 Aug 2022 10:21:40 +0200
+	id 1oJt5F-0007eL-UV; Fri, 05 Aug 2022 10:53:29 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oJsaP-001rDc-1j; Fri, 05 Aug 2022 10:21:39 +0200
+	id 1oJt5C-001rI4-VA; Fri, 05 Aug 2022 10:53:29 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oJsaQ-009FWV-KN; Fri, 05 Aug 2022 10:21:38 +0200
+	id 1oJt5E-00EJMP-EK; Fri, 05 Aug 2022 10:53:28 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  5 Aug 2022 10:21:37 +0200
-Message-Id: <20220805082137.2202560-1-a.fatoum@pengutronix.de>
+Date: Fri,  5 Aug 2022 10:53:13 +0200
+Message-Id: <20220805085314.3404920-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220805_012141_972250_4F949606 
-X-CRM114-Status: GOOD (  15.21  )
+X-CRM114-CacheID: sfid-20220805_015334_664306_6F7F298F 
+X-CRM114-Status: GOOD (  12.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,144 +75,85 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] pbl: factor out pbl_bio API into pbl/bio.h
+Subject: [PATCH 1/2] gitignore: add device tree blobs to top-level .gitignore
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We'll be adding more PBL driver interface definitions into
-include/pbl, so move the block I/O stuff there as well.
-
-No functional change.
+We have device trees outside of the usual directories, e.g. for
+overlays, so move the .gitignore rule to top-level.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/at91sam9_xload_mmc.c |  2 +-
- arch/arm/mach-at91/include/mach/xload.h |  2 +-
- arch/arm/mach-at91/xload-mmc.c          |  2 +-
- drivers/mci/atmel-sdhci-pbl.c           |  2 +-
- fs/fat/fat-pbl.c                        |  2 +-
- include/pbl.h                           | 13 -------------
- include/pbl/bio.h                       | 19 +++++++++++++++++++
- 7 files changed, 24 insertions(+), 18 deletions(-)
- create mode 100644 include/pbl/bio.h
+ .gitignore                           | 2 ++
+ arch/arm/boards/qemu-virt/.gitignore | 3 ---
+ arch/arm/dts/.gitignore              | 1 -
+ arch/mips/dts/.gitignore             | 1 -
+ arch/openrisc/dts/.gitignore         | 1 -
+ arch/riscv/dts/.gitignore            | 1 -
+ arch/sandbox/dts/.gitignore          | 1 -
+ 7 files changed, 2 insertions(+), 8 deletions(-)
+ delete mode 100644 arch/arm/boards/qemu-virt/.gitignore
+ delete mode 100644 arch/arm/dts/.gitignore
+ delete mode 100644 arch/mips/dts/.gitignore
+ delete mode 100644 arch/riscv/dts/.gitignore
+ delete mode 100644 arch/sandbox/dts/.gitignore
 
-diff --git a/arch/arm/mach-at91/at91sam9_xload_mmc.c b/arch/arm/mach-at91/at91sam9_xload_mmc.c
-index 64266757d63a..5cf41c483d0f 100644
---- a/arch/arm/mach-at91/at91sam9_xload_mmc.c
-+++ b/arch/arm/mach-at91/at91sam9_xload_mmc.c
-@@ -3,7 +3,7 @@
+diff --git a/.gitignore b/.gitignore
+index cb87e9314f40..dd36d5083b17 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -35,6 +35,8 @@
+ *.symtypes
+ *.tab.[ch]
+ Module.symvers
++*.dtb
++*.dtb.*
  
- #include <debug_ll.h>
- #include <common.h>
--#include <pbl.h>
-+#include <pbl/bio.h>
- 
- #include <linux/sizes.h>
- #include <asm/cache.h>
-diff --git a/arch/arm/mach-at91/include/mach/xload.h b/arch/arm/mach-at91/include/mach/xload.h
-index 82db65e30768..6b9492193b96 100644
---- a/arch/arm/mach-at91/include/mach/xload.h
-+++ b/arch/arm/mach-at91/include/mach/xload.h
-@@ -4,7 +4,7 @@
- #define __MACH_XLOAD_H
- 
- #include <linux/compiler.h>
--#include <pbl.h>
-+#include <pbl/bio.h>
- 
- void __noreturn sama5d2_sdhci_start_image(u32 r4);
- void __noreturn sama5d3_atmci_start_image(u32 r4, unsigned int clock,
-diff --git a/arch/arm/mach-at91/xload-mmc.c b/arch/arm/mach-at91/xload-mmc.c
-index 28d122f0a357..33e5b203fe90 100644
---- a/arch/arm/mach-at91/xload-mmc.c
-+++ b/arch/arm/mach-at91/xload-mmc.c
-@@ -9,7 +9,7 @@
- #include <mach/gpio.h>
- #include <linux/sizes.h>
- #include <asm/cache.h>
--#include <pbl.h>
-+#include <pbl/bio.h>
- 
- static void at91_fat_start_image(struct pbl_bio *bio,
- 				 void *buf, unsigned int len,
-diff --git a/drivers/mci/atmel-sdhci-pbl.c b/drivers/mci/atmel-sdhci-pbl.c
-index 626e4008fe85..2c5f107abd7e 100644
---- a/drivers/mci/atmel-sdhci-pbl.c
-+++ b/drivers/mci/atmel-sdhci-pbl.c
-@@ -8,7 +8,7 @@
-  */
- 
- #include <common.h>
--#include <pbl.h>
-+#include <pbl/bio.h>
- #include <mci.h>
- #include <debug_ll.h>
- #include <mach/xload.h>
-diff --git a/fs/fat/fat-pbl.c b/fs/fat/fat-pbl.c
-index 93cd6decbcb0..6b8a807657d4 100644
---- a/fs/fat/fat-pbl.c
-+++ b/fs/fat/fat-pbl.c
-@@ -8,10 +8,10 @@
- #define pr_fmt(fmt) "fat-pbl: " fmt
- 
- #include <common.h>
-+#include <pbl/bio.h>
- #include "integer.h"
- #include "ff.h"
- #include "diskio.h"
--#include "pbl.h"
- 
- DRESULT disk_read(FATFS *fat, BYTE *buf, DWORD sector, BYTE count)
- {
-diff --git a/include/pbl.h b/include/pbl.h
-index f58daec7351a..0dc23c72dcf5 100644
---- a/include/pbl.h
-+++ b/include/pbl.h
-@@ -15,19 +15,6 @@ void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len
- 
- #ifdef __PBL__
- #define IN_PBL	1
+ #
+ # Top-level generic files
+diff --git a/arch/arm/boards/qemu-virt/.gitignore b/arch/arm/boards/qemu-virt/.gitignore
+deleted file mode 100644
+index 3e3932a3bfba..000000000000
+--- a/arch/arm/boards/qemu-virt/.gitignore
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
 -
--struct pbl_bio {
--	void *priv;
--	int (*read)(struct pbl_bio *bio, off_t block_off, void *buf, unsigned nblocks);
--};
--
--static inline int pbl_bio_read(struct pbl_bio *bio, off_t block_off,
--			       void *buf, unsigned nblocks)
--{
--	return bio->read(bio, block_off, buf, nblocks);
--}
--
--ssize_t pbl_fat_load(struct pbl_bio *, const char *filename, void *dest, size_t len);
- #else
- #define IN_PBL	0
- #endif
-diff --git a/include/pbl/bio.h b/include/pbl/bio.h
-new file mode 100644
-index 000000000000..79e47451a0e4
---- /dev/null
-+++ b/include/pbl/bio.h
-@@ -0,0 +1,19 @@
-+#ifndef __PBL_BIO_H__
-+#define __PBL_BIO_H__
-+
-+#include <linux/types.h>
-+
-+struct pbl_bio {
-+	void *priv;
-+	int (*read)(struct pbl_bio *bio, off_t block_off, void *buf, unsigned nblocks);
-+};
-+
-+static inline int pbl_bio_read(struct pbl_bio *bio, off_t block_off,
-+			       void *buf, unsigned nblocks)
-+{
-+	return bio->read(bio, block_off, buf, nblocks);
-+}
-+
-+ssize_t pbl_fat_load(struct pbl_bio *, const char *filename, void *dest, size_t len);
-+
-+#endif /* __PBL_H__ */
+-*.dtb*
+diff --git a/arch/arm/dts/.gitignore b/arch/arm/dts/.gitignore
+deleted file mode 100644
+index 077903c50a26..000000000000
+--- a/arch/arm/dts/.gitignore
++++ /dev/null
+@@ -1 +0,0 @@
+-*dtb*
+diff --git a/arch/mips/dts/.gitignore b/arch/mips/dts/.gitignore
+deleted file mode 100644
+index 077903c50a26..000000000000
+--- a/arch/mips/dts/.gitignore
++++ /dev/null
+@@ -1 +0,0 @@
+-*dtb*
+diff --git a/arch/openrisc/dts/.gitignore b/arch/openrisc/dts/.gitignore
+index 077903c50a26..e69de29bb2d1 100644
+--- a/arch/openrisc/dts/.gitignore
++++ b/arch/openrisc/dts/.gitignore
+@@ -1 +0,0 @@
+-*dtb*
+diff --git a/arch/riscv/dts/.gitignore b/arch/riscv/dts/.gitignore
+deleted file mode 100644
+index 077903c50a26..000000000000
+--- a/arch/riscv/dts/.gitignore
++++ /dev/null
+@@ -1 +0,0 @@
+-*dtb*
+diff --git a/arch/sandbox/dts/.gitignore b/arch/sandbox/dts/.gitignore
+deleted file mode 100644
+index 077903c50a26..000000000000
+--- a/arch/sandbox/dts/.gitignore
++++ /dev/null
+@@ -1 +0,0 @@
+-*dtb*
 -- 
 2.30.2
 
