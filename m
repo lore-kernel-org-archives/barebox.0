@@ -1,61 +1,61 @@
-Delivery-date: Mon, 08 Aug 2022 15:24:27 +0200
+Delivery-date: Mon, 08 Aug 2022 15:32:33 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oL2k5-00GDNB-P1
-	for lore@lore.pengutronix.de; Mon, 08 Aug 2022 15:24:27 +0200
+	id 1oL2ru-00GDea-TE
+	for lore@lore.pengutronix.de; Mon, 08 Aug 2022 15:32:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oL2k6-00026v-FC
-	for lore@pengutronix.de; Mon, 08 Aug 2022 15:24:27 +0200
+	id 1oL2rv-0003Sz-7Y
+	for lore@pengutronix.de; Mon, 08 Aug 2022 15:32:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BRw9kBIaDv9KDdpXPmPipLu/lq7iqulSXfT3y7zqyH0=; b=qSPGDrw6a/Xd1WSVskslYmFQC/
-	4k5JFc7BbY3Ex2Ykhul7EW+5e0lP83msbCfBC+SMxs5TM94GyR8t6WSUh+FaLG8eRDcS/iuf7w6rO
-	BbjkApVJ3cEk5/RGTmDdpFqQrh7HsTQvVNQTKuN78Gf9PslGeETYu83yxh8TzQlYBhZ5VnNyMqXye
-	W8/sD9apw36l9+eT59if0+GzU+cNeCYgItIyiEsuq9SAcUW6Y+0agLoRcWcwonLsJXoaMGK0oIc5J
-	2/PhnM+tkpGXJcV5wypCmgvmuJrl97E6b/TE9ENtC5DKg/OaI7crg5GKsBDRPrGP8uI6sKlQfD7E6
-	0tkIs3Yw==;
+	bh=TFp6we5hWCvFuQU/qIYeLdqFr4vHDQKt6QigbTZ5Kek=; b=Kv3IqWedv5xswPrj1M8iIu9o96
+	7pBOkE23kqBW+M8cjkZetXw8sPiwguG4ld82slXMpOc+GThdxwLtXB7ZOX61HhPv04oBoJoS6qCfm
+	3Ds6nd3zNuc05/L/Vduv67DF6xflsdMKBP+TFR5SYeSYXSI9g5s8mVVWmR9zCeZ0tOvNFMVn5Vbhx
+	8E+q05hhsCHc+4Bz5/v2feJdN1ItcPcYI1AHHn2NNCCxbNVgLNHctL7KXLZAtubg8L8VmeUL/dpkH
+	I4/OL5WWt3ONb10rm9itnO3UoeBQlMnyaAWxCinaQ18WOfYSc1AGB6xuNBY5i66VtMFQzFIrFBawT
+	TMoIBfEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oL2it-00E3I9-5h; Mon, 08 Aug 2022 13:23:11 +0000
+	id 1oL2qX-00E6wc-0q; Mon, 08 Aug 2022 13:31:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oL2io-00E3Gt-8K
-	for barebox@lists.infradead.org; Mon, 08 Aug 2022 13:23:08 +0000
+	id 1oL2qR-00E6uo-H0
+	for barebox@lists.infradead.org; Mon, 08 Aug 2022 13:31:01 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oL2in-000219-0F; Mon, 08 Aug 2022 15:23:05 +0200
+	id 1oL2qP-0003AV-TW; Mon, 08 Aug 2022 15:30:57 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oL2im-0003bm-Nb; Mon, 08 Aug 2022 15:23:04 +0200
-Date: Mon, 8 Aug 2022 15:23:04 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20220808132304.GQ31528@pengutronix.de>
-References: <20220726102412.1104232-1-antonynpavlov@gmail.com>
+	id 1oL2qP-00042T-Fw; Mon, 08 Aug 2022 15:30:57 +0200
+Date: Mon, 8 Aug 2022 15:30:57 +0200
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220808133057.GR31528@pengutronix.de>
+References: <20220726054136.267069-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220726102412.1104232-1-antonynpavlov@gmail.com>
+In-Reply-To: <20220726054136.267069-1-ahmad@a3f.at>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220808_062306_357380_BF9732D5 
-X-CRM114-Status: GOOD (  27.04  )
+X-CRM114-CacheID: sfid-20220808_063059_592876_36286BF1 
+X-CRM114-Status: GOOD (  32.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,173 +73,162 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] asm-generic: provide phys_to_virt() and virt_to_phys()
+Subject: Re: [PATCH] commands: boot: support preselecting boot entry in menu
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Jul 26, 2022 at 01:24:12PM +0300, Antony Pavlov wrote:
-> The arm, riscv, sandbox and x86 architectures use
-> just the same phys_to_virt()/virt_to_phys() implementation.
-> Only the mips architecture has its own special implementation.
+On Tue, Jul 26, 2022 at 07:41:36AM +0200, Ahmad Fatoum wrote:
+> boot -m -t 3 already opens a boot menu with a countdown of 3 seconds
+> before selecting the first element. So far, only way to influence
+> preselection was shifting around boot entries, so they are iterated over
+> differently. Add a new -M option that works analogously to -m, but
+> takes an integer index of the boot menu entry to preselect. This allows
+> simple customizable interactive boots:
 > 
-> So we can move phys_to_virt() and virt_to_phys()
-> generic implementation to include/asm-generic/io.h.
+>     #!/bin/sh
+>     boot -M "$nv.bootmenu_default" -t 3 mmc0.0
 > 
-> Use override functions way introduced in the 9216efafc52ff99e
-> ("asm-generic/io.h: Reconcile I/O accessor overrides")
-> linux kernel commit.
+> With mmc0.0 containing multiple bootloader spec files that would be iterated
+> over in lexical order. The index is 1-based like the index displayed in
+> the boot menu.
 > 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 > ---
->  arch/arm/include/asm/io.h     | 10 ----------
->  arch/mips/include/asm/io.h    |  2 ++
->  arch/riscv/include/asm/io.h   | 10 ----------
->  arch/sandbox/include/asm/io.h | 10 ----------
->  arch/x86/include/asm/io.h     | 10 ----------
->  include/asm-generic/io.h      | 20 ++++++++++++++++++++
->  6 files changed, 22 insertions(+), 40 deletions(-)
+> For lexically ordered bootspec files, following series is required:
+> https://lore.barebox.org/barebox/20220724184807.2123459-1-a.fatoum@pengutronix.de/T/#t
+> ---
+>  commands/boot.c | 18 +++++++++++++++---
+>  common/boot.c   | 10 +++++++++-
+>  include/boot.h  |  2 +-
+>  3 files changed, 25 insertions(+), 5 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-> index 1c0f522d1d4..486b1429502 100644
-> --- a/arch/arm/include/asm/io.h
-> +++ b/arch/arm/include/asm/io.h
-> @@ -18,14 +18,4 @@ extern void memcpy_fromio(void *, const volatile void __iomem *, size_t);
->  extern void memcpy_toio(volatile void __iomem *, const void *, size_t);
->  extern void memset_io(volatile void __iomem *, int, size_t);
+> diff --git a/commands/boot.c b/commands/boot.c
+> index 18f4e36ec733..485559bc46b8 100644
+> --- a/commands/boot.c
+> +++ b/commands/boot.c
+> @@ -28,13 +28,14 @@ static int do_boot(int argc, char *argv[])
+>  	char *freep = NULL;
+>  	int opt, ret = 0, do_list = 0, do_menu = 0;
+>  	int dryrun = 0, verbose = 0, timeout = -1;
+> +	unsigned default_menu_entry = 0;
+>  	struct bootentries *entries;
+>  	struct bootentry *entry;
+>  	void *handle;
+>  	const char *name;
+>  	char *(*next)(void *);
 >  
-> -static inline void *phys_to_virt(unsigned long phys)
-> -{
-> -	return (void *)phys;
-> -}
-> -
-> -static inline unsigned long virt_to_phys(volatile void *mem)
-> -{
-> -	return (unsigned long)mem;
-> -}
-> -
->  #endif	/* __ASM_ARM_IO_H */
-> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-> index 0d228aa0f51..a3acbd7017c 100644
-> --- a/arch/mips/include/asm/io.h
-> +++ b/arch/mips/include/asm/io.h
-> @@ -27,6 +27,7 @@ void dma_inv_range(unsigned long, unsigned long);
->   *     The returned physical address is the physical (CPU) mapping for
->   *     the memory address given.
+> -	while ((opt = getopt(argc, argv, "vldmt:w:")) > 0) {
+> +	while ((opt = getopt(argc, argv, "vldmM:t:w:")) > 0) {
+>  		switch (opt) {
+>  		case 'v':
+>  			verbose++;
+> @@ -45,6 +46,16 @@ static int do_boot(int argc, char *argv[])
+>  		case 'd':
+>  			dryrun = 1;
+>  			break;
+> +		case 'M':
+> +			/* To simplify scripting, an empty string is treated as 1 */
+> +			if (*optarg == '\0') {
+> +				default_menu_entry = 1;
+> +			} else {
+> +				ret = kstrtouint(optarg, 0, &default_menu_entry);
+> +				if (ret)
+> +					return ret;
+> +			}
+> +			fallthrough;
+>  		case 'm':
+>  			do_menu = 1;
+>  			break;
+> @@ -104,7 +115,7 @@ static int do_boot(int argc, char *argv[])
+>  	if (do_list)
+>  		bootsources_list(entries);
+>  	else if (do_menu)
+> -		bootsources_menu(entries, timeout);
+> +		bootsources_menu(entries, default_menu_entry, timeout);
+>  
+>  	ret = 0;
+>  out:
+> @@ -136,6 +147,7 @@ BAREBOX_CMD_HELP_OPT ("-v","Increase verbosity")
+>  BAREBOX_CMD_HELP_OPT ("-d","Dryrun. See what happens but do no actually boot")
+>  BAREBOX_CMD_HELP_OPT ("-l","List available boot sources")
+>  BAREBOX_CMD_HELP_OPT ("-m","Show a menu with boot options")
+> +BAREBOX_CMD_HELP_OPT ("-M INDEX","Show a menu with boot options with entry INDEX preselected")
+>  BAREBOX_CMD_HELP_OPT ("-w SECS","Start watchdog with timeout SECS before booting")
+>  BAREBOX_CMD_HELP_OPT ("-t SECS","specify timeout in SECS")
+>  BAREBOX_CMD_HELP_END
+> @@ -143,7 +155,7 @@ BAREBOX_CMD_HELP_END
+>  BAREBOX_CMD_START(boot)
+>  	.cmd	= do_boot,
+>  	BAREBOX_CMD_DESC("boot from script, device, ...")
+> -	BAREBOX_CMD_OPTS("[-vdlmwt] [BOOTSRC...]")
+> +	BAREBOX_CMD_OPTS("[-vdlmMwt] [BOOTSRC...]")
+>  	BAREBOX_CMD_GROUP(CMD_GRP_BOOT)
+>  	BAREBOX_CMD_HELP(cmd_boot_help)
+>  BAREBOX_CMD_END
+> diff --git a/common/boot.c b/common/boot.c
+> index 8220b8d3fbd7..52b03eb64d2e 100644
+> --- a/common/boot.c
+> +++ b/common/boot.c
+> @@ -313,10 +313,12 @@ int bootentry_create_from_name(struct bootentries *bootentries,
+>  /*
+>   * bootsources_menu - show a menu from an array of names
 >   */
-> +#define virt_to_phys virt_to_phys
->  static inline unsigned long virt_to_phys(const void *address)
+> -void bootsources_menu(struct bootentries *bootentries, int timeout)
+> +void bootsources_menu(struct bootentries *bootentries,
+> +		      unsigned default_entry, int timeout)
 >  {
->  	return (unsigned long)CPHYSADDR(address);
-> @@ -39,6 +40,7 @@ static inline unsigned long virt_to_phys(const void *address)
->   *     The returned virtual address is a current CPU mapping for
->   *     the memory address given.
->   */
-> +#define phys_to_virt phys_to_virt
->  static inline void *phys_to_virt(unsigned long address)
->  {
->  	if (IS_ENABLED(CONFIG_MMU)) {
-> diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
-> index 978f6443407..76d66c0a3b8 100644
-> --- a/arch/riscv/include/asm/io.h
-> +++ b/arch/riscv/include/asm/io.h
-> @@ -7,14 +7,4 @@
+>  	struct bootentry *entry;
+>  	struct menu_entry *back_entry;
+> +	int i = 1;
 >  
->  #include <asm-generic/io.h>
->  
-> -static inline void *phys_to_virt(unsigned long phys)
-> -{
-> -	return (void *)phys;
-> -}
-> -
-> -static inline unsigned long virt_to_phys(volatile void *mem)
-> -{
-> -	return (unsigned long)mem;
-> -}
-> -
->  #endif /* __ASM_RISCV_IO_H */
-> diff --git a/arch/sandbox/include/asm/io.h b/arch/sandbox/include/asm/io.h
-> index 71cf50cd9a0..eec279b8883 100644
-> --- a/arch/sandbox/include/asm/io.h
-> +++ b/arch/sandbox/include/asm/io.h
-> @@ -11,14 +11,4 @@ extern unsigned char __pci_iobase[IO_SPACE_LIMIT];
->  
->  #include <asm-generic/io.h>
->  
-> -static inline void *phys_to_virt(unsigned long phys)
-> -{
-> -       return (void *)phys;
-> -}
-> -
-> -static inline unsigned long virt_to_phys(volatile void *mem)
-> -{
-> -       return (unsigned long)mem;
-> -}
-> -
->  #endif /* __ASM_SANDBOX_IO_H */
-> diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
-> index 41c5cb3c14f..d4b5c269190 100644
-> --- a/arch/x86/include/asm/io.h
-> +++ b/arch/x86/include/asm/io.h
-> @@ -84,16 +84,6 @@ static inline void io_delay(void)
->  	inb(0x80);
->  }
->  
-> -static inline void *phys_to_virt(unsigned long phys)
-> -{
-> -	return (void *)phys;
-> -}
-> -
-> -static inline unsigned long virt_to_phys(volatile void *mem)
-> -{
-> -	return (unsigned long)mem;
-> -}
-> -
->  #include <asm-generic/io.h>
->  
->  #endif	/* __ASM_X86_IO_H */
-> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-> index 47f8c3ec1be..e41b4df4036 100644
-> --- a/include/asm-generic/io.h
-> +++ b/include/asm-generic/io.h
-> @@ -421,6 +421,26 @@ static inline void iowrite64be(u64 value, volatile void __iomem *addr)
->  #endif
->  #endif /* CONFIG_64BIT */
->  
-> +/*
-> + * Change virtual addresses to physical addresses and vv.
-> + * These are pretty trivial
-> + */
-> +#ifndef virt_to_phys
-> +#define virt_to_phys virt_to_phys
-> +static inline unsigned long virt_to_phys(volatile void *mem)
-> +{
-> +	return (unsigned long)mem;
-> +}
-> +#endif
+>  	if (!IS_ENABLED(CONFIG_MENU)) {
+>  		pr_warn("no menu support available\n");
+> @@ -328,6 +330,9 @@ void bootsources_menu(struct bootentries *bootentries, int timeout)
+>  			entry->me.display = xstrdup(entry->title);
+>  		entry->me.action = bootsource_action;
+>  		menu_add_entry(bootentries->menu, &entry->me);
 > +
-> +#ifndef phys_to_virt
-> +#define phys_to_virt phys_to_virt
-> +static inline void *phys_to_virt(unsigned long phys)
-> +{
-> +	return (void *)phys;
-> +}
-> +#endif
+> +		if (i++ == default_entry)
+> +			bootentries->menu->selected = &entry->me;
+>  	}
+>  
+>  	back_entry = xzalloc(sizeof(*back_entry));
+> @@ -336,6 +341,9 @@ void bootsources_menu(struct bootentries *bootentries, int timeout)
+>  	back_entry->non_re_ent = 1;
+>  	menu_add_entry(bootentries->menu, back_entry);
+>  
+> +	if (i == default_entry)
+> +		bootentries->menu->selected = back_entry;
 > +
->  #ifndef IOMEM
->  #define IOMEM(addr)	((void __force __iomem *)(addr))
->  #endif
+>  	if (timeout >= 0)
+>  		bootentries->menu->auto_select = timeout;
+>  
+> diff --git a/include/boot.h b/include/boot.h
+> index 3d5dd1cb6e2c..c9e8c0fd0d87 100644
+> --- a/include/boot.h
+> +++ b/include/boot.h
+> @@ -50,7 +50,7 @@ struct bootentries *bootentries_alloc(void);
+>  void bootentries_free(struct bootentries *bootentries);
+>  int bootentry_create_from_name(struct bootentries *bootentries,
+>  				      const char *name);
+> -void bootsources_menu(struct bootentries *bootentries, int timeout);
+> +void bootsources_menu(struct bootentries *bootentries, unsigned default_entry, int timeout);
+>  void bootsources_list(struct bootentries *bootentries);
+>  int boot_entry(struct bootentry *be, int verbose, int dryrun);
+>  
 > -- 
-> 2.36.1
+> 2.34.1
+> 
 > 
 > 
 
