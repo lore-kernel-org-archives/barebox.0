@@ -1,64 +1,57 @@
-Delivery-date: Tue, 09 Aug 2022 11:54:27 +0200
+Delivery-date: Tue, 09 Aug 2022 11:55:42 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oLLwP-00HEeg-1I
-	for lore@lore.pengutronix.de; Tue, 09 Aug 2022 11:54:27 +0200
+	id 1oLLxc-00HEk6-5m
+	for lore@lore.pengutronix.de; Tue, 09 Aug 2022 11:55:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oLLwQ-0000VN-16
-	for lore@pengutronix.de; Tue, 09 Aug 2022 11:54:26 +0200
+	id 1oLLxc-0000nQ-E8
+	for lore@pengutronix.de; Tue, 09 Aug 2022 11:55:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nq6j66KVor8/8K6IdnqN3ShMUJPGQDhGALSFuPJL8lA=; b=FpfOD8/j4+5r4wcSBW8f6Pduwk
-	SEWm97BY6DfrWKh8v5dlYJIQNpx84w73cugTFwl+6tVWrCidkF2Ld3Yv9lcXovpLFKnrdp+WgPuB+
-	qTgA49KFxqGumeQpXwvmUCdPRVevXW6jXLy2RGTDEao/tEVMUv54oPBQO/jLphK6HwlxyIrs0RD6v
-	l9Vs+QeY8SSUPUXGyep2aCeYuliKznA+NSEZdjWUf0t4UUsFBWBzjJ+g1dmVsW/UoGlMqYx06gDx8
-	WbRlX30etkeqkFR6jVLGg1YYMsBoXTX8Ngsqm0qUSTcmJZkH/ccHI+TfpFh0G/X2bVBCaelJzF2d2
-	moE/m5AA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=pHo3ndwt6bNwM5sM6+f0pyJSfU0bhzdRfPa4xMZEaRA=; b=HmDRxtllt4t7Od3+9Bevxra6MD
+	6sNfNuf9b0IOmeEO4nbFBB2OjjXETpa++NNhwcolQqdpDdlZq88cNnPiosM1SEzS/kS+wDM/OZ21P
+	QACJUsodjUZVDwmpV9xzvV9DNxopbrhTbWp5FJDUWYKcceRqViACUkuebcWBDaRFkdEg92PSptUXj
+	nst3ckFCjc6bIaNcNNxdwkU+VbinYoA+c88A2iwTMo0SFhwAMvHFE9YrOYLvXXhZmgaGOARHj51/t
+	SRjC5yB2I5P1mSmQQIyT/F9J5MSP8naHEVKELp2poxsU6HZ78J1EaBUoj/mI40Owu9uRUIZHguooh
+	xCyP/JdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLLv5-0038ye-3k; Tue, 09 Aug 2022 09:53:03 +0000
+	id 1oLLwL-0039ID-Eh; Tue, 09 Aug 2022 09:54:21 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLLv1-0038xv-1t
-	for barebox@lists.infradead.org; Tue, 09 Aug 2022 09:53:00 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oLLuz-0000Nl-RE; Tue, 09 Aug 2022 11:52:57 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oLLuz-00046Z-IH; Tue, 09 Aug 2022 11:52:57 +0200
-Date: Tue, 9 Aug 2022 11:52:57 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220809095257.GQ31528@pengutronix.de>
-References: <9133a12926ffb700725459d42b67618ec7d3b4f8.1658144543.git.enrico.scholz@sigma-chemnitz.de>
- <20220731113645.4092241-1-enrico.scholz@sigma-chemnitz.de>
- <20220809084900.GJ31528@pengutronix.de>
- <lyiln1zryn.fsf@ensc-pc.intern.sigma-chemnitz.de>
+	id 1oLLwF-0039H0-Rb
+	for barebox@lists.infradead.org; Tue, 09 Aug 2022 09:54:17 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1oLLwE-0000Ug-5q; Tue, 09 Aug 2022 11:54:14 +0200
+Message-ID: <82e482ad-7c4e-edd1-49d1-4c16ee4fbb3a@pengutronix.de>
+Date: Tue, 9 Aug 2022 11:54:13 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <lyiln1zryn.fsf@ensc-pc.intern.sigma-chemnitz.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Content-Language: en-US
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20220809062938.1750369-1-a.fatoum@pengutronix.de>
+ <20220809062938.1750369-4-a.fatoum@pengutronix.de>
+ <20220809094902.GP31528@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220809094902.GP31528@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220809_025259_113934_D21C2114 
-X-CRM114-Status: GOOD (  23.15  )
+X-CRM114-CacheID: sfid-20220809_025415_936904_C320CA92 
+X-CRM114-Status: GOOD (  23.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,50 +69,75 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 09/13] tftp: implement 'windowsize' (RFC 7440) support
+Subject: Re: [PATCH 4/4] ARM: dts: stm32mp: add bootrom serial (DFU) reboot
+ mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Aug 09, 2022 at 11:28:16AM +0200, Enrico Scholz wrote:
-> Sascha Hauer <sha@pengutronix.de> writes:
-> 
-> >> +config FS_TFTP_MAX_WINDOW_SIZE
-> >> +	int
-> >> +	prompt "maximum tftp window size (RFC 7440)"
-> >> +	depends on FS_TFTP
-> >> +	default 128
-> >> +	range 1 128
-> >> +	help
-> >> +	  The maximum allowed tftp "windowsize" (RFC 7440).  Higher
-> >> +	  value increase speed of the tftp download with the cost of
-> >> +	  memory (1432 bytes per slot).
-> >> +
-> >> +	  Requires tftp "windowsize" (RFC 7440) support on server side
-> >> +	  to have an effect.
-> >
-> > Can we agree on some sane default here and drop this from Kconfig?
-> 
-> I think, it is difficult to find a sane default.  Processors like iMX8
-> can deal with large window sizes, but low end ones like iMX6ULL can not
-> handle data fast enough and require smaller sizes (around max 30).
-> 
-> Workloads like writing to slow memory (cp /mnt/tftp/... /dev/nand) might
-> require smaller sizes too.  Or networks with high drop rates.
-> 
-> That's why, I think it should be possible to configure it in some
-> _defconfig.
+Hello Sascha,
 
-It's exposed to global.tftp.windowsize and with this you can store a
-good value on the device and you can provide different defaults for different
-boards in their default environments during compile time. It's much more
-flexible than Kconfig.
+On 09.08.22 11:49, Sascha Hauer wrote:
+> On Tue, Aug 09, 2022 at 08:29:38AM +0200, Ahmad Fatoum wrote:
+>> The same register we use for the reboot mode communication between Linux
+>> and barebox is also sampled by the bootrom. If the lowest 16 bits of it
+>> are 0x00FF, the bootrom will enter DFU mode. Add the appropriate
+>> reboot-mode, but with a barebox, prefix, so Linux doesn't automatically
+>> provide it to userspace along with the existing loader and recovery
+>> modes.
+> 
+> Why do we need to prevent Linux from providing dfu mode to userspace?
+> Isn't that a vlid usecase?
 
-Sascha
+It is, but I don't want a barebox update to add this feature by default.
+So, communication with BootROM = not exported by default
+Communication with Linux = exported by default
+
+and this can be overridden on a per-board basis via device tree.
+We do this likewise for the i.MX6 and i.MX8 where we have
+barebox,syscon-reboot-mode which isn't processed by Linux, but we
+can't use this here because the same register is used for both
+modes of communication.
+
+Cheers,
+Ahmad
+
+> 
+> Sascha
+> 
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  arch/arm/dts/stm32mp151.dtsi | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
+>> index ed7cf6192bea..ac6536a556a9 100644
+>> --- a/arch/arm/dts/stm32mp151.dtsi
+>> +++ b/arch/arm/dts/stm32mp151.dtsi
+>> @@ -41,9 +41,10 @@
+>>  	reboot_mode_tamp: reboot-mode {
+>>  		compatible = "syscon-reboot-mode";
+>>  		offset = <0x150>; /* reg20 */
+>> -		mask = <0xff>;
+>> +		mask = <0xffff>;
+>>  		mode-normal = <0>;
+>>  		mode-loader = <0xBB>;
+>>  		mode-recovery = <0xBC>;
+>> +		barebox,mode-serial = <0xFF>;
+>>  	};
+>>  };
+>> -- 
+>> 2.30.2
+>>
+>>
+>>
+> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
