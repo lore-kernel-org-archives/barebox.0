@@ -1,61 +1,77 @@
-Delivery-date: Tue, 09 Aug 2022 11:33:58 +0200
+Delivery-date: Tue, 09 Aug 2022 11:37:01 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oLLca-00HDKT-1x
-	for lore@lore.pengutronix.de; Tue, 09 Aug 2022 11:33:58 +0200
+	id 1oLLfW-00HDXh-UM
+	for lore@lore.pengutronix.de; Tue, 09 Aug 2022 11:37:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oLLca-0006Jt-RB
-	for lore@pengutronix.de; Tue, 09 Aug 2022 11:33:57 +0200
+	id 1oLLfX-0006tK-W3
+	for lore@pengutronix.de; Tue, 09 Aug 2022 11:37:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:In-Reply-To:Date:References:Subject:Cc:To:From:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dIs4RKHkdBz2SWjUsaCGSWDrLYiSfeQ1Mov4Vsb0sao=; b=EatsEEJayrhuwxTxXsr91hbARw
-	mG5HReShjlbLQJCYs0R7WPD+vkKXSS8o59d0gUyFTHC0bkC6r7XrBV0Zj3sPwa7U19nA7sAC2imT8
-	yNzNHM+Saqe0X8HOH1uN01trwb9RlK/fecyxZPsKxUjkEkSBvsgQpvkMgmiWMQ+HDfPuFqcfXHeX8
-	0THbD0KZQFaybIPrhITf2CQ0wWmre5VKuogCJnucc2YRRjm+hXaNPbZMcAQfK0p823UWS3NYtHt/V
-	7DizPBDZ4VWKSejcynuLtAwC9g8veIgOkZWCunM0QgiZRFuWI9kauMgV7dZoGbgIuqnRWzL3FDmof
-	TmUSPRyw==;
+	bh=AwnheDJadtPHnmI3oZRZckF6bWrmzChkkbqbhY2Iync=; b=H/IC6Es49xYbC04sGXv1L2d1XF
+	hzxmwOb15s6g9R+qv99p5WwhYFB8Z3BRI4GOYEOaWDTEQXyG6pzwvYvxtO3+CgmbgIXdu6X9oQRuC
+	T01KcyDIJHNwwFZHqhjrEsnxXsGcoe/XRhNFglodXjeSzoWtWM4ebCasArJ1qj+O6HvqqQdge4sik
+	N5wq3SpwilORB8dnHMNbZcEMpR7brzvNBy67Ej38nnyU0DaZS4ds1ay1xV9rqzl3kwP27os1WilZR
+	F+NdzkF1h2s3yxX2rq9pomE4CGwkJvNWmaN3K/CWE/KP35Wez3TRyGSNuG4T0IX5DPutOc3uDTqTa
+	RuQVSFQg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLLbK-0034A7-2s; Tue, 09 Aug 2022 09:32:38 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1oLLeG-0034wh-Fs; Tue, 09 Aug 2022 09:35:40 +0000
+Received: from smtpout-3.cvg.de ([2003:49:a034:1067:5::3])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLLbE-003491-EU
-	for barebox@lists.infradead.org; Tue, 09 Aug 2022 09:32:34 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oLLbA-0006Ax-FO; Tue, 09 Aug 2022 11:32:28 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oLLbA-0008O4-6g; Tue, 09 Aug 2022 11:32:28 +0200
-Date: Tue, 9 Aug 2022 11:32:28 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	id 1oLLeB-0034uS-2l
+	for barebox@lists.infradead.org; Tue, 09 Aug 2022 09:35:37 +0000
+Received: from mail-mta-2.intern.sigma-chemnitz.de (mail-mta-2.intern.sigma-chemnitz.de [192.168.12.70])
+	by mail-out-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 2799ZUuM790347
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
+	for <barebox@lists.infradead.org>; Tue, 9 Aug 2022 11:35:30 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
+	s=v2022040800; t=1660037730;
+	bh=AwnheDJadtPHnmI3oZRZckF6bWrmzChkkbqbhY2Iync=; l=940;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To;
+	b=Z/mKIYlNwph8AoQe1eeKZR4EkD3z07uXkizXo45gPrRuGu4cxwUFtEjDCzsBLzuh3
+	 7O/a+6N3tqYIPC3CJoxkKyTye9haYHta6QdO/qMCMIDlJtJY3Ceosv3fK3BG768ku7
+	 R8Zrp0K98ZUNcL4FeOiIcgrLj6aOy0vjBo9KNJmevLCFfmFGwywReDKOPNaRE9/at5
+	 zqV0pK82d1+8eTy81NU1hHLyE43DcNsK7SCjxw55Gc4fszOM9hDmcENMDyeZ/G/oe7
+	 wy1T3IAM+dzuQuQ9gQER2BKJyMwzs3gyx+/ni+BIh3Z2SArFd4sm+KATzMXovPzbZS
+	 QsXhPpI5uEc5Q==
+Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
+	by mail-mta-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 2799ZSGp752256
+	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Tue, 9 Aug 2022 11:35:29 +0200
+Received: from mail-msa-2.intern.sigma-chemnitz.de ( [192.168.12.72]) by reddoxx.intern.sigma-chemnitz.de
+	(Reddoxx engine) with SMTP id 2849E8E3D24; Tue, 9 Aug 2022 11:35:24 +0200
+Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
+	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 2799ZORS578158
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Tue, 9 Aug 2022 11:35:24 +0200
+Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.95)
+	(envelope-from <ensc@sigma-chemnitz.de>)
+	id 1oLLe0-002wqE-Nt;
+	Tue, 09 Aug 2022 11:35:24 +0200
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+To: Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220809093228.GN31528@pengutronix.de>
-References: <20220809062422.1749563-1-a.fatoum@pengutronix.de>
+References: <cover.1658144543.git.enrico.scholz@sigma-chemnitz.de>
+	<20220809090230.GL31528@pengutronix.de>
+Date: Tue, 09 Aug 2022 11:35:24 +0200
+In-Reply-To: <20220809090230.GL31528@pengutronix.de> (Sascha Hauer's message
+	of "Tue, 9 Aug 2022 11:02:30 +0200")
+Message-ID: <lyh72lzrmr.fsf@ensc-pc.intern.sigma-chemnitz.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220809062422.1749563-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220809_023232_507201_26E6F932 
-X-CRM114-Status: GOOD (  24.21  )
+X-CRM114-CacheID: sfid-20220809_023535_469983_41CEA32A 
+X-CRM114-Status: GOOD (  11.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,151 +89,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-104.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 1/4] net: designware: rework Kconfig text and menu
- structure
+	T_SCC_BODY_TEXT_LINE,USER_IN_WELCOMELIST,USER_IN_WHITELIST
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 00/13] add "windowsize" (RFC 7440) support for tftp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Aug 09, 2022 at 08:24:19AM +0200, Ahmad Fatoum wrote:
-> Instead of depending on the common code being enabled, just select it if
-> needed and reword the Kconfig text to fix some typos and to make
-> configuration easier.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/net/Kconfig | 64 ++++++++++++++++++++++++---------------------
->  1 file changed, 34 insertions(+), 30 deletions(-)
+Sascha Hauer <sha@pengutronix.de> writes:
 
-Applied, thanks
+>> The tftp "windowsize" greatly improves the performance of tftp
+>> transfers.  This patchset adds support for it.
+>
+> TCP for the poor, nice ;)
+>
+> Very nice stuff indeed. I gave it a quick test and TFTP works as before,
+> that's good to start with, but to gain speed improvements I need a
+> RFC7440 capable server on the other end. Which server did you test it
+> with? Have any RFC7440 capable servers made it to the distributions
+> already?
 
-Sascha
+https://github.com/ensc/r-tftpd ;)
 
-> 
-> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-> index 803444cc44a4..341d02a1da5e 100644
-> --- a/drivers/net/Kconfig
-> +++ b/drivers/net/Kconfig
-> @@ -55,71 +55,75 @@ config DRIVER_NET_DAVINCI_EMAC
->  	select PHYLIB
->  
->  config DRIVER_NET_DESIGNWARE
-> -	bool "Designware Universal MAC1000 ethernet platform support"
-> +	bool "Designware DWMAC1000 Ethernet driver support" if COMPILE_TEST
->  	depends on HAS_DMA
->  	select PHYLIB
->  	help
-> -	  This option enables support for the Synopsys
-> -	  Designware Core Univesal MAC 10M/100M/1G ethernet IP.
-> -
-> -if DRIVER_NET_DESIGNWARE
-> +	  This option is selected by platform glue drivers that contain
-> +	  a DWMAC1000-compatible Ethernet IP.
->  
->  config DRIVER_NET_DESIGNWARE_GENERIC
-> -	bool "Designware Universal MAC ethernet generic driver"
-> +	bool "Generic Synopsis Designware Ethernet driver"
-> +	select DRIVER_NET_DESIGNWARE
-> +	depends on HAS_DMA
->  	help
-> -	  This option enables support for the Synopsys
-> -	  Designware Core Univesal MAC 10M/100M/1G ethernet IP on SoCFPGA.
-> +	  This option enables support for the generic Synopsys
-> +	  Designware Core Universal MAC 10M/100M/1G binding. Supported
-> +	  are 3.70a and 3.72. Most integrations additionally require
-> +	  access to platform-specific registers, e.g. for clocking.
-> +	  If you are on such a platform, use the platform specific
-> +	  driver instead.
->  
->  config DRIVER_NET_DESIGNWARE_SOCFPGA
-> -	bool "Designware Universal MAC ethernet driver for SoCFPGA platforms"
-> -	depends on ARCH_SOCFPGA || COMPILE_TEST
-> +	bool "SOCFPGA Designware Ethernet driver"
-> +	depends on HAS_DMA && (ARCH_SOCFPGA || COMPILE_TEST)
-> +	select DRIVER_NET_DESIGNWARE
->  	select MFD_SYSCON
->  	select RESET_CONTROLLER
->  	help
->  	  This option enables support for the Synopsys
-> -	  Designware Core Univesal MAC 10M/100M/1G ethernet IP on SoCFPGA.
-> +	  Designware Core Universal MAC 10M/100M/1G Ethernet IP on SoCFPGA.
->  
->  config DRIVER_NET_DESIGNWARE_STARFIVE
-> -	bool "Designware Universal MAC ethernet driver for StarFive platforms"
-> -	depends on SOC_STARFIVE || COMPILE_TEST
-> +	bool "StarFive Designware Ethernet driver"
-> +	depends on HAS_DMA && (SOC_STARFIVE || COMPILE_TEST)
-> +	select DRIVER_NET_DESIGNWARE
->  	select MFD_SYSCON
->  	help
->  	  This option enables support for the Synopsys
-> -	  Designware Core Univesal MAC 10M/100M/1G ethernet IP on StarFive.
-> -
-> -endif
-> +	  Designware Core Universal MAC 10M/100M/1G Ethernet IP on StarFive.
->  
->  config DRIVER_NET_DESIGNWARE_EQOS
-> -	bool "Designware Designware Ethernet QoS support"
-> -	depends on HAS_DMA
-> -	depends on COMMON_CLK
-> -	depends on OFTREE
-> +	bool "Designware EQOS (GMAC4) Ethernet driver support" if COMPILE_TEST
-> +	depends on HAS_DMA && OFTREE
->  	select PHYLIB
->  	help
->  	  This option enables support for the Synopsys
->  	  Designware Ethernet Quality-of-Service (GMAC4).
->  
-> -if DRIVER_NET_DESIGNWARE_EQOS
-> -
->  config DRIVER_NET_DESIGNWARE_STM32
-> -	bool "Designware EQOS STM32 driver"
-> +	bool "STM32 Designware Ethernet driver"
-> +	depends on HAS_DMA && COMMON_CLK && OFTREE && (ARCH_STM32MP || COMPILE_TEST)
-> +	select DRIVER_NET_DESIGNWARE_EQOS
->  	select MFD_SYSCON
->  	help
-> -	  This option enables support for the ethernet MAC on the STM32MP platforms.
-> +	  This option enables support for the Ethernet MAC on the STM32MP platforms.
->  
->  config DRIVER_NET_DESIGNWARE_TEGRA186
-> -	bool "Designware Universal MAC ethernet driver for Tegra 186 platforms"
-> +	bool "Tegra 186/194 Designware Ethernet driver"
-> +	depends on HAS_DMA && COMMON_CLK && OFTREE && (ARCH_TEGRA || COMPILE_TEST)
-> +	select DRIVER_NET_DESIGNWARE_EQOS
->  	select RESET_CONTROLLER
->  	help
-> -	  This option enables support for the ethernet MAC on the Tegra186 & 194.
-> +	  This option enables support for the Ethernet MAC on the Tegra186 & 194.
->  
->  config DRIVER_NET_DESIGNWARE_ROCKCHIP
-> -	bool "Designware Universal MAC ethernet driver for Rockchip platforms"
-> +	bool "Rockchip Designware Ethernet driver"
-> +	select DRIVER_NET_DESIGNWARE_EQOS
-> +	depends on HAS_DMA && COMMON_CLK && OFTREE && (ARCH_ROCKCHIP || COMPILE_TEST)
->  	select MFD_SYSCON
->  	help
-> -	  This option enables support for the ethernet MAC on different Rockchip SoCs
-> -
-> -endif
-> +	  This option enables support for the Ethernet MAC on different Rockchip SoCs
->  
->  config DRIVER_NET_DM9K
->  	bool "Davicom dm9k[E|A|B] ethernet driver"
-> -- 
-> 2.30.2
-> 
-> 
-> 
+yes... it is problem to implement both server and client side.  But the
+window size feature also works with PXE clients and u-boot, so I think
+it is correct.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I started to implement it with transparent proxying support in mind
+(e.g. translate tftp requests to http ones, or fetch cached images with
+'rsync').
+
+But when I saw the effects of windows size support, I focused on that.
+
+
+Enrico
 
 
