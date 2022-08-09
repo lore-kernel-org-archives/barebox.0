@@ -1,76 +1,57 @@
-Delivery-date: Tue, 09 Aug 2022 08:52:05 +0200
+Delivery-date: Tue, 09 Aug 2022 09:28:58 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oLJ5v-00H1MQ-Rm
-	for lore@lore.pengutronix.de; Tue, 09 Aug 2022 08:52:05 +0200
+	id 1oLJfb-00H41B-VN
+	for lore@lore.pengutronix.de; Tue, 09 Aug 2022 09:28:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oLJ5v-0001oR-Um
-	for lore@pengutronix.de; Tue, 09 Aug 2022 08:52:04 +0200
+	id 1oLJfc-00061d-Fi
+	for lore@pengutronix.de; Tue, 09 Aug 2022 09:28:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hnae6jqaDkHmrfL1ZHrSSO2DTFGFr79C5JZF0K4U+10=; b=v7YAFiTDSMeFuuBHpat7NaxmAp
-	7HoIuyRtjstAjKWzjvHZY2nC1b4YDdAcedYKEeuH+ZuUfK2voWVLV/m6a21+gT3dYLIqKPQGV9UtH
-	201Y7ffvMAVaWtV4Ai9xqc1GL4AIROuRCOTkl8X/vEilNTf/QDngHJGI9HAsBCT7N3lz4Jj/sUPBt
-	Q7JXcvE0duZLPkqnDpOJi2baFUtktgAE8GgpIObwijaN6DUdemnkIQRYc5pUnMMag9/N21cotFUt7
-	vDlqcHhaMrPJy5FjEFAvH/PR++M/xkOGC//BxuV/tnReGZBE+0AopY0Tz1oKAyDAQhqqZDKV0VE3B
-	YcWsdZJg==;
+	bh=6fdh362d6fmB0o5mmmxYa06Ds2bUGKPuCbtFC7IjeTM=; b=KuxvY//64nof4/Wb7p0CP5NLg1
+	ICyFSiqWQohFBOPrEHAZ+BllxxSdX83D/mGNkW5qyfPfnVr3JuZOyc9+KanyQSbOHjs1EQ92IHnk8
+	gpRk1OssG0an9Bj8AacXlfU0Y7I30vOLpA94k3gNsBMb5AvwTKkzaJxnOERXl7IrVd79tGHZ5DWyu
+	FPIaCMcpctnqJZywgtbuHXA5j2VIwGPypmxmyz1E2IsyWQxP1RiUo++IFaHelozKwgUBDLnNHQ7mm
+	HgvV4vQKE/hxRk/wMMlxOxof0h5jUj4n1ntq2HmZU0/F1kMFiLzw6ftyE9QjEoQTF9bQKTgxpqhLy
+	yoY9mtHw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLJ4b-0026Rb-4N; Tue, 09 Aug 2022 06:50:41 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLJ4T-0026PO-Qc
-	for barebox@bombadil.infradead.org; Tue, 09 Aug 2022 06:50:33 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=From:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Sender:Reply-To:Content-ID:Content-Description;
-	bh=hnae6jqaDkHmrfL1ZHrSSO2DTFGFr79C5JZF0K4U+10=; b=b58Dleu5atNnniO8S5ew1ZwKr6
-	j6tUhQO7USITALdSeffAADpF1RaAp19ZrfTdBZH196OR3gin94nfV9CNuJwF5NxfC7OQGRyfh8EGU
-	b00NAgnYhRRvopFqkcf0Yiwk0bkcJuEiRI+PKX+xd41tghNg3razIbU39tiXvSCz1CIxA944ihxSD
-	1NEsvtsVZ8h8Q1Ptc+qKgpa6ojT0zvGtVay2pz34KftmUraSzGFBDi4oxsqJV9vIUT4XZQDFNmv5a
-	YCANFP8scrz1SIpxR65d2I/7+Sf4Y2jtuE7rEY4NuzNDAkiAfINsAIn7O5WkRIgcqxNXa2qmXut6p
-	GnmMJvWQ==;
+	id 1oLJdv-002N36-Mq; Tue, 09 Aug 2022 07:27:11 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
-	by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLJ4P-000PSG-TE
-	for barebox@lists.infradead.org; Tue, 09 Aug 2022 06:50:32 +0000
+	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oLJdn-002Mxk-W6
+	for barebox@lists.infradead.org; Tue, 09 Aug 2022 07:27:07 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oLJ4P-0001Dt-Co; Tue, 09 Aug 2022 08:50:29 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oLJ4P-0000EP-3Q; Tue, 09 Aug 2022 08:50:29 +0200
-Date: Tue, 9 Aug 2022 08:50:29 +0200
-To: Daniel =?iso-8859-15?Q?Br=E1t?= <danek.brat@gmail.com>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1oLJdj-0005xP-T5; Tue, 09 Aug 2022 09:26:59 +0200
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1oLJdj-0000Ky-KL; Tue, 09 Aug 2022 09:26:59 +0200
+Date: Tue, 9 Aug 2022 09:26:59 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220809065029.GF31528@pengutronix.de>
-References: <20220720103313.7837-1-danek.brat@gmail.com>
+Message-ID: <20220809072659.qq7pdgm3rqwhoiwv@pengutronix.de>
+References: <20220809055733.1544311-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220720103313.7837-1-danek.brat@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <20220809055733.1544311-1-a.fatoum@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220809_075030_401040_AC85E092 
-X-CRM114-Status: GOOD (  24.10  )
+X-CRM114-CacheID: sfid-20220809_002704_071752_3A0EAEA7 
+X-CRM114-Status: GOOD (  19.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,95 +74,105 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] i2c: bcm283x: fix ending of transfer in case of NACK
+Subject: Re: [PATCH 1/2] of: implement of_append_property
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jul 20, 2022 at 12:33:13PM +0200, Daniel Brát wrote:
-> Fixes an issue where the driver in case of NACK error would not properly
-> terminate the tranfer, resulting in BSC not sending the STOP condition
-> until just before the next xfer.
-> 
-> Signed-off-by: Daniel Brát <danek.brat@gmail.com>
+Hi Ahmad,
+
+On 22-08-09, Ahmad Fatoum wrote:
+> board code fix up the device tree for OS consumption. Sometimes it's
+> useful for the fixup to append onto an existing property.
+> Add a helper that simplifies this.
+
+do you have a particular use-case for this?
+
+Regards,
+  Marco
+
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/i2c/busses/i2c-bcm283x.c | 23 +++++++++++++++--------
->  1 file changed, 15 insertions(+), 8 deletions(-)
-
-Applied, thanks
-
-Sascha
-
+>  drivers/of/base.c | 36 ++++++++++++++++++++++++++++++++++++
+>  include/of.h      |  8 ++++++++
+>  2 files changed, 44 insertions(+)
 > 
-> diff --git a/drivers/i2c/busses/i2c-bcm283x.c b/drivers/i2c/busses/i2c-bcm283x.c
-> index 097f73d983..fdba3b91bd 100644
-> --- a/drivers/i2c/busses/i2c-bcm283x.c
-> +++ b/drivers/i2c/busses/i2c-bcm283x.c
-> @@ -147,7 +147,7 @@ static int bcm283x_i2c_msg_xfer(struct bcm283x_i2c *bcm_i2c,
->  
->  		if (ret) {
->  			dev_err(dev, "timeout: 10bit read initilization\n");
-> -			return ret;
-> +			goto out;
->  		}
->  		if (reg_s & BSC_S_ERR)
->  			goto nack;
-> @@ -178,7 +178,7 @@ static int bcm283x_i2c_msg_xfer(struct bcm283x_i2c *bcm_i2c,
->  
->  			if (ret) {
->  				dev_err(dev, "timeout: waiting for data in FIFO\n");
-> -				return ret;
-> +				goto out;
->  			}
->  			if (reg_s & BSC_S_ERR)
->  				goto nack;
-> @@ -197,7 +197,7 @@ static int bcm283x_i2c_msg_xfer(struct bcm283x_i2c *bcm_i2c,
->  
->  			if (ret) {
->  				dev_err(dev, "timeout: waiting for space in FIFO\n");
-> -				return ret;
-> +				goto out;
->  			}
->  			if (reg_s & BSC_S_ERR)
->  				goto nack;
-> @@ -216,16 +216,23 @@ static int bcm283x_i2c_msg_xfer(struct bcm283x_i2c *bcm_i2c,
->  
->  	if (ret) {
->  		dev_err(dev, "timeout: waiting for transfer to end\n");
-> -		return ret;
-> +		goto out;
->  	}
->  	if (reg_s & BSC_S_ERR)
->  		goto nack;
-> -	writel(BSC_S_DONE | BSC_S_ERR | BSC_S_CLKT, &bcm_i2c->regs->s);
-> -	writel(BSC_C_CLEAR1 | BSC_C_I2CEN, &bcm_i2c->regs->c);
-> -	return 0;
-> +	goto out;
->  nack:
->  	dev_dbg(dev, "device with addr %x didn't ACK\n", msg->addr);
-> -	return -EREMOTEIO;
-> +	writel(BSC_S_ERR, &bcm_i2c->regs->s);
-> +	timeout = calc_byte_timeout_us(bcm_i2c->bitrate);
-> +	// Wait for end of transfer so BSC has time to send STOP condition
-> +	readl_poll_timeout(&bcm_i2c->regs->s, reg_s, ~reg_s & BSC_S_TA, timeout);
-> +	ret = -EREMOTEIO;
-> +out:
-> +	// Return to default state for next xfer
-> +	writel(BSC_S_DONE | BSC_S_ERR | BSC_S_CLKT, &bcm_i2c->regs->s);
-> +	writel(BSC_C_CLEAR1 | BSC_C_I2CEN, &bcm_i2c->regs->c);
-> +	return ret;
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 101b2f74c74f..0893bdf3e04f 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -2321,6 +2321,42 @@ int of_set_property(struct device_node *np, const char *name, const void *val, i
+>  	return 0;
 >  }
 >  
->  static int bcm283x_i2c_xfer(struct i2c_adapter *adapter,
+> +int of_append_property(struct device_node *np, const char *name, const void *val, int len)
+> +{
+> +	struct property *pp;
+> +	void *buf = NULL;
+> +	int orig_len = 0;
+> +
+> +	if (!np)
+> +		return -ENOENT;
+> +
+> +	pp = of_find_property(np, name, NULL);
+> +	if (pp) {
+> +		buf = pp->value;
+> +		orig_len = pp->length;
+> +	}
+> +
+> +	buf = realloc(buf, orig_len + len);
+> +	if (!buf)
+> +		return -ENOMEM;
+> +
+> +	memcpy(buf + orig_len, val, len);
+> +
+> +	if (pp) {
+> +		pp->value = buf;
+> +		pp->length += len;
+> +
+> +		if (pp->value_const) {
+> +			memcpy(buf, pp->value_const, orig_len);
+> +			pp->value_const = NULL;
+> +		}
+> +	} else {
+> +		pp = __of_new_property(np, name, buf, len);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  int of_property_sprintf(struct device_node *np,
+>  			const char *propname, const char *fmt, ...)
+>  {
+> diff --git a/include/of.h b/include/of.h
+> index c65cef5a5a7c..97b4b3dd79bd 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -131,6 +131,8 @@ extern struct device_node *of_get_cpu_node(int cpu, unsigned int *thread);
+>  
+>  extern int of_set_property(struct device_node *node, const char *p,
+>  			const void *val, int len, int create);
+> +extern int of_append_property(struct device_node *np, const char *p,
+> +			      const void *val, int len);
+>  extern struct property *of_new_property(struct device_node *node,
+>  				const char *name, const void *data, int len);
+>  extern struct property *of_new_property_const(struct device_node *node,
+> @@ -515,6 +517,12 @@ static inline int of_set_property(struct device_node *node, const char *p,
+>  	return -ENOSYS;
+>  }
+>  
+> +static inline int of_append_property(struct device_node *np, const char *p,
+> +				      const void *val, int len)
+> +{
+> +	return -ENOSYS;
+> +}
+> +
+>  static inline struct property *of_new_property(struct device_node *node,
+>  				const char *name, const void *data, int len)
+>  {
 > -- 
-> 2.37.0
+> 2.30.2
 > 
 > 
 > 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
