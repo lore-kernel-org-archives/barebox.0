@@ -1,63 +1,85 @@
-Delivery-date: Tue, 09 Aug 2022 15:07:15 +0200
+Delivery-date: Tue, 09 Aug 2022 15:22:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oLOwz-00HOmk-Pw
-	for lore@lore.pengutronix.de; Tue, 09 Aug 2022 15:07:15 +0200
+	id 1oLPBb-00HPfx-Cg
+	for lore@lore.pengutronix.de; Tue, 09 Aug 2022 15:22:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oLOwz-0007ub-O9
-	for lore@pengutronix.de; Tue, 09 Aug 2022 15:07:15 +0200
+	id 1oLPBb-0001v7-A6
+	for lore@pengutronix.de; Tue, 09 Aug 2022 15:22:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:MIME-Version:Content-Type:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=R6QYEtNx5f2Tx8ok/m8ISxR8QKvoKQL9NxR7CiTfbJY=; b=RKJDCBka0hGNmpi18cjiXW0Zji
-	V7vDgBMGMddyi0op28g2nmA+XOh7OKn4lg0O0rc1MmQX0HvMS9wKpeI31TKRyecUz5snupYI3EBAU
-	lk5f0gahkbYyQbyz5DRrCcou/cXt8JUz8JyxihiakV3FX9c1JPc4coVE7Wo+JlB8rR5g2A6NZJGzX
-	0nO/gxLQ7aTe8eSxKCgv9l1E9lmApv6TigXH7r9rWaJ03K28uSt+hOPetSjQevzs5cSiWNmOvcy5B
-	aih1USCyoZVZ1MTcob0GvT/6+zAOn7qCOueFjmGPPfybNdyUGLfrDVoH7D53/Gw44xWbKcGmwtOKH
-	uIoxXH0g==;
+	bh=N6XRh0/GP6KkdGk7XQacDgblZdBHKhUn1FcDg8wrCgU=; b=XqpOeRsEO3w7Jp3n0e5icc3nMv
+	3gUd6LNoYHpGd5AHyh39C8XYGXH/JVFUq1QKddjnYFZdA0q6EqtyRKeK/6Z0qMlDIEbvr/rrRPoWZ
+	PhPWRhL6d6GhUqw8s6uid9lP90dHYuJIvy51ZANEZ6UA0oJ/tmJGwapUsxWm7a7JkAFvy//3WHAM2
+	JRpTgMRC49wkzMtdqOdwPTz9LzYYzFSqcnbeu/31MyDYCHgdkYnnk8B/wBDpHYydK/yH5Oxy0vYdQ
+	yJ7pwvsQ63oZ7/WrIPVuRjwcrrXFCOH32TBNBjBUeFCmi8hfY5LSFANNiLsDVxOnIcix5jTQMJJNQ
+	dW+RLdqg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLOvK-003zgO-CP; Tue, 09 Aug 2022 13:05:30 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1oLPA5-0044Sz-SO; Tue, 09 Aug 2022 13:20:45 +0000
+Received: from smtpout140.security-mail.net ([85.31.212.146])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLOvF-003zeU-5n
-	for barebox@lists.infradead.org; Tue, 09 Aug 2022 13:05:26 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1oLOvB-0007dM-HV; Tue, 09 Aug 2022 15:05:21 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1oLOv8-002i4z-ID; Tue, 09 Aug 2022 15:05:20 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1oLOvA-00AZp9-0j; Tue, 09 Aug 2022 15:05:20 +0200
-Date: Tue, 9 Aug 2022 15:05:19 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20220809130519.5ka6umrrn2dgt4g2@pengutronix.de>
-References: <20220714193509.2134503-1-s.hauer@pengutronix.de>
- <20220714211238.pedcpd47vx5gisum@pengutronix.de>
- <20220809100638.GR31528@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ju7jn7lupmv6yfa4"
-Content-Disposition: inline
-In-Reply-To: <20220809100638.GR31528@pengutronix.de>
+	id 1oLP9z-0044P2-Q5
+	for barebox@lists.infradead.org; Tue, 09 Aug 2022 13:20:41 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by fx601.security-mail.net (Postfix) with ESMTP id 7C8C83ACE09
+	for <barebox@lists.infradead.org>; Tue,  9 Aug 2022 15:20:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
+	s=sec-sig-email; t=1660051231;
+	bh=HkDoT2GjMeY0hXsEFWThq2yXG3HHu+yzLe+5ReSurGw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=tLY6x+33lM13uGdWeZItCYCvM/puQhz/aZTl5QgUOy4e5dQawA3mcAJ7NT63eDuB0
+	 d/7RwBHYGv8Wz3NArR+SxCfPWiBDh1s9fDV2ozlb92q5NsFSh6khXfLmg322NpXldO
+	 rzBeSACiy3FzIBACmxLb+ylkcTK8q9ia4MKEerVI=
+Received: from fx601 (localhost [127.0.0.1])
+	by fx601.security-mail.net (Postfix) with ESMTP id E173D3ACDEE
+	for <barebox@lists.infradead.org>; Tue,  9 Aug 2022 15:20:30 +0200 (CEST)
+X-Virus-Scanned: E-securemail
+Secumail-id: <70be.62f25f1d.d7f62.0>
+Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
+	by fx601.security-mail.net (Postfix) with ESMTPS id 4A5B63ACDA8
+	for <barebox@lists.infradead.org>; Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
+Received: from zimbra2.kalray.eu (localhost [127.0.0.1])
+	by zimbra2.kalray.eu (Postfix) with ESMTPS id 9E25F27E0544;
+	Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra2.kalray.eu (Postfix) with ESMTP id 874E727E0549;
+	Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 874E727E0549
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+	s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1660051229;
+	bh=N6XRh0/GP6KkdGk7XQacDgblZdBHKhUn1FcDg8wrCgU=;
+	h=From:To:Date:Message-Id;
+	b=U67YaTU6mQqHUDTr0jFGyzfZ/KjRd92OIiUlwJX61XApWd/mxX+q9AUb++b+H8753
+	 vVZ5QQSMbUfJUB0S3RJ0zP6EsjDaK8nH1E9rrDsnI9N2uliU1vB6l6k5evjTWJrl7B
+	 21vPCA2NlfMJ1H6+idUKGjvv40BoxGwEdgTsAZuA=
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+	by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 7lCqeLiYiOSe; Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
+	by zimbra2.kalray.eu (Postfix) with ESMTPSA id 6FE2927E0544;
+	Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
+From: Jules Maselbas <jmaselbas@kalray.eu>
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Tue,  9 Aug 2022 15:20:18 +0200
+Message-Id: <20220809132021.7110-2-jmaselbas@kalray.eu>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20220809132021.7110-1-jmaselbas@kalray.eu>
+References: <20220809132021.7110-1-jmaselbas@kalray.eu>
+X-Virus-Scanned: by Secumail
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220809_060525_241796_281E58CE 
-X-CRM114-Status: GOOD (  21.85  )
+X-CRM114-CacheID: sfid-20220809_062040_160190_CE673C97 
+X-CRM114-Status: GOOD (  12.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,82 +97,80 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] fs: Check if automount actually mounts something
+Subject: [RFC PATCH 2/5] net: Implement source port randomization
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+The source port can now be randomized for UDP connections in the range
+32768 to 65535. The port number selection follows the Algorithm 1 as
+described by the RFC6056, and goes as follow: A random port number is
+generated, if the port is already taken then it search forward for the
+next available port.
 
---ju7jn7lupmv6yfa4
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Note from the RFC6056:
+      random() is a function that returns a 32-bit pseudo-random
+      unsigned integer number.  Note that the output needs to be
+      unpredictable, and typical implementations of POSIX random()
+      function do not necessarily meet this requirement.  See [RFC4086]
+      for randomness requirements for security.
 
-Hello,
+This implementation uses random32 which might not meet the randomness
+requirements. The random32 call can be easily replaced by a better
+suited pseudo-random number generator when availabe.
 
-On Tue, Aug 09, 2022 at 12:06:38PM +0200, Sascha Hauer wrote:
-> On Thu, Jul 14, 2022 at 11:12:38PM +0200, Uwe Kleine-K=F6nig wrote:
-> > On Thu, Jul 14, 2022 at 09:35:09PM +0200, Sascha Hauer wrote:
-> > > An automount command that returns successfully but doesn't mount
-> > > anything makes barebox hang as can be reproduced with:
-> > >=20
-> > > automount -d /mnt/foo true
-> > > ls /mnt/foo
-> > >=20
-> > > Check if the current dentry is a mountpoint after running the automou=
-nt
-> > > command, otherwise return with an error from automount_mount().
-> >=20
-> > While I think the intention of this patch is fine, I have little doubts
-> > if that breaks some workflows, e.g. something like:
-> >=20
-> > 	automount -d /mnt/tralala 'for p in 0 1 2; do mkdir ${automount_path}/=
-${p} && mount /dev/disk0.${p} ${automount_path}/${p} || break; done'
->=20
-> You would create 3 automountpoints for that.
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+---
+ net/net.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-Yeah, if you go one step further and create a directory for each
-partition of the thumb drive, this is a dynamic thing though and solving
-that with an automount might make sense, so something like:
+diff --git a/net/net.c b/net/net.c
+index c01bf49b92..9f799f252d 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -310,18 +310,31 @@ static int init_net_poll(void)
+ }
+ device_initcall(init_net_poll);
+ 
+-static uint16_t net_udp_new_localport(void)
++static uint16_t net_new_localport(int proto)
+ {
+-	static uint16_t localport;
++	const uint16_t min_port = 32768;
++	const uint16_t max_port = 65535;
++	const uint16_t num_port = max_port - min_port + 1;
++	uint16_t localport;
+ 
+-	localport++;
++	/* port randomization with the Algorithm 1 as defined in RFC6056 */
++	localport = min_port + random32() % num_port;
+ 
+-	if (localport < 1024)
+-		localport = 1024;
++	while (net_ip_get_con(proto, localport) != NULL) {
++		if (localport == max_port)
++			localport = min_port;
++		else
++			localport++;
++	}
+ 
+ 	return localport;
+ }
+ 
++static uint16_t net_udp_new_localport(void)
++{
++	return net_new_localport(IPPROTO_UDP);
++}
++
+ IPaddr_t net_get_serverip(void)
+ {
+ 	IPaddr_t ip;
+-- 
+2.17.1
 
-	automount -d /mnt/tralala "for p in /dev/disk0.*; do mp=3D$(\${automount_p=
-ath}/\$(basename $p)); automount -d \$mp 'mount \$p \$mp'"
-
-(don't know if that would work, but you get the idea I guess).
-
-> > I admit it's a bit constructed, but maybe that's only because I'm not
-> > creative enough?
->=20
-> Yes, it is constructed ;)
-
-OK, we can still adapt that later if and when such a need arises :-)
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ju7jn7lupmv6yfa4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmLyW40ACgkQwfwUeK3K
-7An36ggAnWExx7C+I4D4Xl0A48dW36REfdVaJmWO9c6zNG9rb/uCnONv+GuXK4s/
-Jo3LHhavtH7TY50NEYywhrrh95Ut4PgXRKTMe/Uye0CkwrNDcHvPfD7Wu4H1KmAg
-N3+9KhQCY7pqt2UNzxxeWGBTW4hOUFlZglsqLGf7bo3gmgJ+/MqZyDhi9r7wZ0Lx
-K5TxnfcZmQ2h0eiJxVPjMPwnW6ttKHM7IeTOQ2wtyRecmHMS2C2nDFsDp/cmouad
-oFDnWfPCJIRzLxgYdTKTyVIrO7XJQ+I1acLYM50bTiPJynff8ZE3j36kCSc1USOt
-b9OmUFG2jBY3Lleg3XlWbi+9K0RYNQ==
-=VVNz
------END PGP SIGNATURE-----
-
---ju7jn7lupmv6yfa4--
 
 
