@@ -1,85 +1,83 @@
-Delivery-date: Tue, 09 Aug 2022 15:22:21 +0200
+Delivery-date: Tue, 09 Aug 2022 15:22:23 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oLPBb-00HPfx-Cg
-	for lore@lore.pengutronix.de; Tue, 09 Aug 2022 15:22:21 +0200
+	id 1oLPBd-00HPgG-Jy
+	for lore@lore.pengutronix.de; Tue, 09 Aug 2022 15:22:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oLPBb-0001v7-A6
-	for lore@pengutronix.de; Tue, 09 Aug 2022 15:22:20 +0200
+	id 1oLPBc-0001vS-Mf
+	for lore@pengutronix.de; Tue, 09 Aug 2022 15:22:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Reply-To:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=N6XRh0/GP6KkdGk7XQacDgblZdBHKhUn1FcDg8wrCgU=; b=XqpOeRsEO3w7Jp3n0e5icc3nMv
-	3gUd6LNoYHpGd5AHyh39C8XYGXH/JVFUq1QKddjnYFZdA0q6EqtyRKeK/6Z0qMlDIEbvr/rrRPoWZ
-	PhPWRhL6d6GhUqw8s6uid9lP90dHYuJIvy51ZANEZ6UA0oJ/tmJGwapUsxWm7a7JkAFvy//3WHAM2
-	JRpTgMRC49wkzMtdqOdwPTz9LzYYzFSqcnbeu/31MyDYCHgdkYnnk8B/wBDpHYydK/yH5Oxy0vYdQ
-	yJ7pwvsQ63oZ7/WrIPVuRjwcrrXFCOH32TBNBjBUeFCmi8hfY5LSFANNiLsDVxOnIcix5jTQMJJNQ
-	dW+RLdqg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:Subject:Cc:
+	To:From:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=HJpwMtRP3ifjjbvczitLc6pDgp4rodkRUP0X9sbdXJM=; b=3pFWvdJuOPNT/70yPUczax54mA
+	LdTZFElCH5CfGrLl+jNESp4qLCKXnWBQF/FmoeXXDfxJyVFujKSAZTAgX30GsmUbr0eJpYOLxvu45
+	6TuFx5mN89n3dEtkBAhiQxmpfQDb+A6wcoK/lISEXAqBEW9BF0kjRl1IxL9DCC+EZ0VAyztFtz1vb
+	I8QXXTsM8amIJssu+h2ND31LUaQRPinEX7+a5S7rgKstxQsj/oJIvR/6BpcS9yCpgVVKRqCQZN51P
+	nRf2d/mZe2nyToqHLC3pZlw//D6aY+gwFP7cpKV4zhfVXbK5LUQGmCslRam8oNgtAOOWvvD4cDMx4
+	26DHDaUw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLPA5-0044Sz-SO; Tue, 09 Aug 2022 13:20:45 +0000
-Received: from smtpout140.security-mail.net ([85.31.212.146])
+	id 1oLPAF-0044Ut-IZ; Tue, 09 Aug 2022 13:20:56 +0000
+Received: from smtpout140.security-mail.net ([85.31.212.145])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oLP9z-0044P2-Q5
-	for barebox@lists.infradead.org; Tue, 09 Aug 2022 13:20:41 +0000
+	id 1oLPA2-0044RY-FP
+	for barebox@lists.infradead.org; Tue, 09 Aug 2022 13:20:46 +0000
 Received: from localhost (localhost [127.0.0.1])
-	by fx601.security-mail.net (Postfix) with ESMTP id 7C8C83ACE09
-	for <barebox@lists.infradead.org>; Tue,  9 Aug 2022 15:20:31 +0200 (CEST)
+	by fx405.security-mail.net (Postfix) with ESMTP id AAFDA3236BD
+	for <barebox@lists.infradead.org>; Tue,  9 Aug 2022 15:20:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
-	s=sec-sig-email; t=1660051231;
-	bh=HkDoT2GjMeY0hXsEFWThq2yXG3HHu+yzLe+5ReSurGw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tLY6x+33lM13uGdWeZItCYCvM/puQhz/aZTl5QgUOy4e5dQawA3mcAJ7NT63eDuB0
-	 d/7RwBHYGv8Wz3NArR+SxCfPWiBDh1s9fDV2ozlb92q5NsFSh6khXfLmg322NpXldO
-	 rzBeSACiy3FzIBACmxLb+ylkcTK8q9ia4MKEerVI=
-Received: from fx601 (localhost [127.0.0.1])
-	by fx601.security-mail.net (Postfix) with ESMTP id E173D3ACDEE
-	for <barebox@lists.infradead.org>; Tue,  9 Aug 2022 15:20:30 +0200 (CEST)
+	s=sec-sig-email; t=1660051239;
+	bh=yFjrOQmWN7JhXXDx/AoEX7Nn++ciygqjBX44LcIK/l0=;
+	h=From:To:Cc:Subject:Date;
+	b=Iz+EaEjyDaMbxA2jx5G8HqOtA2vvnnK3cLRx1+LtxpR5A3t4TlkCSTumAy7BXrFqB
+	 BRP0bjDbMr8VS12ea8JD7WcqR+W4rKrm+GBKsHvA7jW1ekzAiROAe2dAitfmB++V0y
+	 fuHE9gZ2ltCqBwRMyjuAiT3TsCMU+Gw6A/RNCW0g=
+Received: from fx405 (localhost [127.0.0.1])
+	by fx405.security-mail.net (Postfix) with ESMTP id 1C7BE323811
+	for <barebox@lists.infradead.org>; Tue,  9 Aug 2022 15:20:31 +0200 (CEST)
 X-Virus-Scanned: E-securemail
-Secumail-id: <70be.62f25f1d.d7f62.0>
+Secumail-id: <f403.62f25f1d.b620e.0>
 Received: from zimbra2.kalray.eu (unknown [217.181.231.53])
-	by fx601.security-mail.net (Postfix) with ESMTPS id 4A5B63ACDA8
+	by fx405.security-mail.net (Postfix) with ESMTPS id B850F3235E5
 	for <barebox@lists.infradead.org>; Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
 Received: from zimbra2.kalray.eu (localhost [127.0.0.1])
-	by zimbra2.kalray.eu (Postfix) with ESMTPS id 9E25F27E0544;
+	by zimbra2.kalray.eu (Postfix) with ESMTPS id 93EF727E0541;
 	Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by zimbra2.kalray.eu (Postfix) with ESMTP id 874E727E0549;
+	by zimbra2.kalray.eu (Postfix) with ESMTP id 7D05B27E0545;
 	Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 874E727E0549
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 7D05B27E0545
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
 	s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1660051229;
-	bh=N6XRh0/GP6KkdGk7XQacDgblZdBHKhUn1FcDg8wrCgU=;
+	bh=HJpwMtRP3ifjjbvczitLc6pDgp4rodkRUP0X9sbdXJM=;
 	h=From:To:Date:Message-Id;
-	b=U67YaTU6mQqHUDTr0jFGyzfZ/KjRd92OIiUlwJX61XApWd/mxX+q9AUb++b+H8753
-	 vVZ5QQSMbUfJUB0S3RJ0zP6EsjDaK8nH1E9rrDsnI9N2uliU1vB6l6k5evjTWJrl7B
-	 21vPCA2NlfMJ1H6+idUKGjvv40BoxGwEdgTsAZuA=
+	b=AbUhWrMAnNkZxeC8qBJ8M8ensRqmBwWiTcKfkPTfawmNf67XlI9rvQrvOWXyAVPy9
+	 vYHfm6/Zkt8c0p09YYClB+uUuKW5W6goRdDOO/Pv4JzU+URxkS0ryUvdQtvBziUhlJ
+	 sYLGlX+mHK9bGjarD5s7RnrB+WEW77qoaiAxk0B4=
 Received: from zimbra2.kalray.eu ([127.0.0.1])
 	by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7lCqeLiYiOSe; Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
+	with ESMTP id Z1UshfaEy49f; Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
 Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206])
-	by zimbra2.kalray.eu (Postfix) with ESMTPSA id 6FE2927E0544;
+	by zimbra2.kalray.eu (Postfix) with ESMTPSA id 6401927E0541;
 	Tue,  9 Aug 2022 15:20:29 +0200 (CEST)
 From: Jules Maselbas <jmaselbas@kalray.eu>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Tue,  9 Aug 2022 15:20:18 +0200
-Message-Id: <20220809132021.7110-2-jmaselbas@kalray.eu>
+Date: Tue,  9 Aug 2022 15:20:17 +0200
+Message-Id: <20220809132021.7110-1-jmaselbas@kalray.eu>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220809132021.7110-1-jmaselbas@kalray.eu>
-References: <20220809132021.7110-1-jmaselbas@kalray.eu>
 X-Virus-Scanned: by Secumail
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220809_062040_160190_CE673C97 
-X-CRM114-Status: GOOD (  12.11  )
+X-CRM114-CacheID: sfid-20220809_062042_841047_5E187689 
+X-CRM114-Status: GOOD (  11.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -102,73 +100,74 @@ X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [RFC PATCH 2/5] net: Implement source port randomization
+Subject: [RFC PATCH 1/5] net: Add a function to retrieve UDP connection
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The source port can now be randomized for UDP connections in the range
-32768 to 65535. The port number selection follows the Algorithm 1 as
-described by the RFC6056, and goes as follow: A random port number is
-generated, if the port is already taken then it search forward for the
-next available port.
-
-Note from the RFC6056:
-      random() is a function that returns a 32-bit pseudo-random
-      unsigned integer number.  Note that the output needs to be
-      unpredictable, and typical implementations of POSIX random()
-      function do not necessarily meet this requirement.  See [RFC4086]
-      for randomness requirements for security.
-
-This implementation uses random32 which might not meet the randomness
-requirements. The random32 call can be easily replaced by a better
-suited pseudo-random number generator when availabe.
+Add a function that search for a UDP connection based on it's source
+port. This function can be easily extended to do the same for TCP.
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- net/net.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ net/net.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
 diff --git a/net/net.c b/net/net.c
-index c01bf49b92..9f799f252d 100644
+index eae45e1843..c01bf49b92 100644
 --- a/net/net.c
 +++ b/net/net.c
-@@ -310,18 +310,31 @@ static int init_net_poll(void)
- }
- device_initcall(init_net_poll);
+@@ -36,6 +36,22 @@ IPaddr_t net_gateway;
+ static IPaddr_t net_nameserver;
+ static char *net_domainname;
  
--static uint16_t net_udp_new_localport(void)
-+static uint16_t net_new_localport(int proto)
- {
--	static uint16_t localport;
-+	const uint16_t min_port = 32768;
-+	const uint16_t max_port = 65535;
-+	const uint16_t num_port = max_port - min_port + 1;
-+	uint16_t localport;
- 
--	localport++;
-+	/* port randomization with the Algorithm 1 as defined in RFC6056 */
-+	localport = min_port + random32() % num_port;
- 
--	if (localport < 1024)
--		localport = 1024;
-+	while (net_ip_get_con(proto, localport) != NULL) {
-+		if (localport == max_port)
-+			localport = min_port;
-+		else
-+			localport++;
-+	}
- 
- 	return localport;
- }
- 
-+static uint16_t net_udp_new_localport(void)
++static LIST_HEAD(connection_list);
++
++static struct net_connection *net_ip_get_con(int proto, uint16_t port)
 +{
-+	return net_new_localport(IPPROTO_UDP);
++	struct net_connection *con;
++
++	list_for_each_entry(con, &connection_list, list) {
++		if (con->proto != proto)
++			continue;
++		if (con->proto == IPPROTO_UDP && ntohs(con->udp->uh_sport) == port)
++			return con;
++	}
++
++	return NULL;
 +}
 +
- IPaddr_t net_get_serverip(void)
+ void net_set_nameserver(IPaddr_t nameserver)
  {
- 	IPaddr_t ip;
+ 	net_nameserver = nameserver;
+@@ -358,8 +374,6 @@ IPaddr_t net_get_gateway(void)
+ 	return net_gateway;
+ }
+ 
+-static LIST_HEAD(connection_list);
+-
+ static struct net_connection *net_new(struct eth_device *edev, IPaddr_t dest,
+ 				      rx_handler_f *handler, void *ctx)
+ {
+@@ -587,15 +601,12 @@ static int net_handle_udp(unsigned char *pkt, int len)
+ 	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
+ 	struct net_connection *con;
+ 	struct udphdr *udp;
+-	int port;
+ 
+ 	udp = (struct udphdr *)(ip + 1);
+-	port = ntohs(udp->uh_dport);
+-	list_for_each_entry(con, &connection_list, list) {
+-		if (con->proto == IPPROTO_UDP && port == ntohs(con->udp->uh_sport)) {
+-			con->handler(con->priv, pkt, len);
+-			return 0;
+-		}
++	con = net_ip_get_con(IPPROTO_UDP, ntohs(udp->uh_dport));
++	if (con) {
++		con->handler(con->priv, pkt, len);
++		return 0;
+ 	}
+ 	return -EINVAL;
+ }
 -- 
 2.17.1
 
