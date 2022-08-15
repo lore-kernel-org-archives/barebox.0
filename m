@@ -1,76 +1,75 @@
-Delivery-date: Mon, 15 Aug 2022 10:46:54 +0200
+Delivery-date: Mon, 15 Aug 2022 10:46:58 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNVkJ-006ETc-Vt
-	for lore@lore.pengutronix.de; Mon, 15 Aug 2022 10:46:54 +0200
+	id 1oNVkO-006EU1-QJ
+	for lore@lore.pengutronix.de; Mon, 15 Aug 2022 10:46:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNVkJ-0000lK-Rr
-	for lore@pengutronix.de; Mon, 15 Aug 2022 10:46:53 +0200
+	id 1oNVkO-0000mD-Qc
+	for lore@pengutronix.de; Mon, 15 Aug 2022 10:46:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=omTvnrfCLhacWK69HPDMcNGG8Dkr+eNeFSzoblfSNfg=; b=qxXKcYutoKdJ6otEm/CoIgyTah
-	ZmfVAkqZb4ngKevUZDbmf3Bd5MZG4pTQD2ZT4jS7ou3yi5AAd3RR2sVV1T/+LnKZ5CBWwZF9imu3o
-	mDThWYW93A2SqNHDD5t+/HY02n0Lp64OvPA74644L+/o+8ibKFbQqCIBdWRHT1NzlBwlcfgA4MVn8
-	QGfCJoCDdSZZHS8EyPxQ7co9wmCyzjt/315kC67j4yeypBhlAwKdOd4XHio6W2MXtMTIrhdZc+huo
-	4PIC4boAsH81m6OUtvrQLKwvhfW1mXYcpci5LHIGwirZOs2El6F1YwxDy96ieDJ1FkWN+gJ9Fl4B+
-	EuMJYAkA==;
+	bh=VuH+tDGnY39nq+1994CHFckSEClF9VXHYkvTI4IBwEA=; b=or2WssP7yUMyrjgt7XQm+qVocW
+	dULulsJ0LfkIYt4WO+jmMSEFsIU7apazGq479XVFwzWRIbbVa9utIECxe9bZX6OpD5ZBmB+FCmVQh
+	X35ilKVkqAEOfyJKxROtmtGyy1G1OmGEiI630HB0vRtEFDRRsFF14j0vSEqD3WnRZsfESbmaRxyDe
+	jurKxoyLxAMciyGG/Ot/ddqIOkzuk1Oe1Mv57QStkAnKPr34KxiZZ3ZvTXmd86pMhRAshfnw85fKH
+	WTwVgw3I2oFPOmQPg+5dTm4fTs8oLmP9hKcvajrHwFHWAwb5tIvM+Z5Hhvbjm0bEqEKROsVVnXogo
+	ukkm94EA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNViN-00DKxx-1j; Mon, 15 Aug 2022 08:44:51 +0000
-Received: from smtpout-3.cvg.de ([2003:49:a034:1067:5::3])
+	id 1oNVij-00DLBS-Lk; Mon, 15 Aug 2022 08:45:14 +0000
+Received: from smtpout-2.cvg.de ([2003:49:a034:1067:5::2])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNVgw-00DJgB-9a
-	for barebox@lists.infradead.org; Mon, 15 Aug 2022 08:43:26 +0000
+	id 1oNVgw-00DJgF-6u
+	for barebox@lists.infradead.org; Mon, 15 Aug 2022 08:43:28 +0000
 Received: from mail-mta-3.intern.sigma-chemnitz.de (mail-mta-3.intern.sigma-chemnitz.de [192.168.12.71])
-	by mail-out-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 27F8gbit848746
+	by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 27F8gbBo661993
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
 	for <barebox@lists.infradead.org>; Mon, 15 Aug 2022 10:42:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
 	s=v2022040800; t=1660552957;
-	bh=omTvnrfCLhacWK69HPDMcNGG8Dkr+eNeFSzoblfSNfg=; l=666;
+	bh=VuH+tDGnY39nq+1994CHFckSEClF9VXHYkvTI4IBwEA=; l=1914;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TDonPCD322U8PRgGABn/5snmkPHJOk/4w/Jv2J7+gPhHaGtbNG2IbkTHwrDk7Ocyb
-	 FG3LvU9iFQlgARXlCtqTu0Rx3oDodUAd3EepW1N1YLV8+NIFLExUMUgijk1L+HByFA
-	 ve2Rsf+nOvu7fH/G2WM4t21t0cq8QE73RALiTjgzBjLNlO5Y/3c/oaq5v6OcywO/o+
-	 HxkwXDWtsMwh+thr2pmkXVP/oehCAUuS4qTbFMryLQI6cnN1Zciq8cTgR4TcVj6ggx
-	 E/DS92TVAdAKXGmAFTfluijco7HfHxG5GZVJaZiQxKqUjGFxtQlo7fkhjhoavlCLyO
-	 SSzxP5mFz8/qw==
+	b=nc9qSxf3iQltc4/ONnSLgjlOwVQNcFIKaNDDOLh36pqk4ohC8UIs8/H8bF+133UOY
+	 3DWvl5pRN5hjKfTlVClofYseocI4DwDENOBLtZqMFx3qLxCWcsaRghckz5hMJbtSkM
+	 Vs5h202V/qJDA/jpGCxdsLkVFkqFtXSplMEHwZBn9R+5QnCGKkPAnAOsSfyNtOwYkW
+	 VDV/QO5VkzWFJndSGLEkQinICFKQZKinnOr+q2TtN5+H4x0eVRAZq1iJYyJSHbvj/e
+	 deJKF2Z/ofOyIpgDZieQGV9jVwQSH0jGVfJ6MKB1nsfGmfpU0GZDLDh70tn0myogmU
+	 paEtWTOTuF3GA==
 Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
-	by mail-mta-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 27F8gXok2540861
+	by mail-mta-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 27F8gXeE2540862
 	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Mon, 15 Aug 2022 10:42:33 +0200
 Received: from mail-msa-3.intern.sigma-chemnitz.de ( [192.168.12.73]) by reddoxx.intern.sigma-chemnitz.de
-	(Reddoxx engine) with SMTP id 4C8F24FFE34; Mon, 15 Aug 2022 10:42:27 +0200
+	(Reddoxx engine) with SMTP id 06F28F3CD3; Mon, 15 Aug 2022 10:42:27 +0200
 Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
-	by mail-msa-3.intern.sigma-chemnitz.de (8.15.2/8.15.2) with ESMTPS id 27F8gQJa811079
+	by mail-msa-3.intern.sigma-chemnitz.de (8.15.2/8.15.2) with ESMTPS id 27F8gPmf811075
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
 	Mon, 15 Aug 2022 10:42:27 +0200
 Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.95)
 	(envelope-from <ensc@sigma-chemnitz.de>)
-	id 1oNVg1-000EJ9-W6;
-	Mon, 15 Aug 2022 10:42:26 +0200
+	id 1oNVg1-000EIq-QS;
+	Mon, 15 Aug 2022 10:42:25 +0200
 From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 To: barebox@lists.infradead.org
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Date: Mon, 15 Aug 2022 10:42:15 +0200
-Message-Id: <905928e19313adf61990b67bca5087853868ae08.1660552646.git.enrico.scholz@sigma-chemnitz.de>
+Date: Mon, 15 Aug 2022 10:42:09 +0200
+Message-Id: <3715a37c0ec44b42533c960240a68e81ff569676.1660552646.git.enrico.scholz@sigma-chemnitz.de>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <cover.1660552646.git.enrico.scholz@sigma-chemnitz.de>
 References: <cover.1660552646.git.enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220815_014324_367620_8235C709 
-X-CRM114-Status: UNSURE (   9.56  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220815_014324_319766_7B435630 
+X-CRM114-Status: GOOD (  10.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,33 +92,75 @@ X-Spam-Status: No, score=-103.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,USER_IN_WELCOMELIST,USER_IN_WHITELIST
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 11/18] tftp: reduce block size on lookup requests
+Subject: [PATCH v3 05/18] cmd:tftp: add '-P' option to set tftp server port number
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Save some bytes on network traffic by reducing the server response for
-lookup requests.
-
 Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 ---
- fs/tftp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ commands/tftp.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 9f881249ce07..2ed62b77901b 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -148,7 +148,9 @@ static int tftp_send(struct file_priv *priv)
- 				'\0',	/* "tsize" */
- 				priv->filesize, '\0',
- 				'\0',	/* "blksize" */
--				TFTP_MTU_SIZE);
-+				/* use only a minimal blksize for getattr
-+				   operations, */
-+				priv->is_getattr ? TFTP_BLOCK_SIZE : TFTP_MTU_SIZE);
- 		pkt++;
- 		len = pkt - xp;
- 		break;
+diff --git a/commands/tftp.c b/commands/tftp.c
+index 48ff00c6217c..6ac822c9e832 100644
+--- a/commands/tftp.c
++++ b/commands/tftp.c
+@@ -21,15 +21,24 @@ static int do_tftpb(int argc, char *argv[])
+ 	char *source, *dest, *freep;
+ 	int opt;
+ 	int tftp_push = 0;
++	int port = -1;
+ 	int ret;
+ 	IPaddr_t ip;
+ 	char ip4_str[sizeof("255.255.255.255")];
++	char mount_opts[sizeof("port=12345")];
+ 
+-	while ((opt = getopt(argc, argv, "p")) > 0) {
++	while ((opt = getopt(argc, argv, "pP:")) > 0) {
+ 		switch(opt) {
+ 		case 'p':
+ 			tftp_push = 1;
+ 			break;
++		case 'P':
++			port = simple_strtoul(optarg, NULL, 0);
++			if (port <= 0 || port > 0xffff) {
++				pr_err("invalid port '%s'\n", optarg);
++				return COMMAND_ERROR_USAGE;
++			}
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -59,7 +68,13 @@ static int do_tftpb(int argc, char *argv[])
+ 
+ 	ip = net_get_serverip();
+ 	sprintf(ip4_str, "%pI4", &ip);
+-	ret = mount(ip4_str, "tftp", TFTP_MOUNT_PATH, NULL);
++
++	if (port >= 0)
++		sprintf(mount_opts, "port=%u", port);
++	else
++		mount_opts[0] = '\0';
++
++	ret = mount(ip4_str, "tftp", TFTP_MOUNT_PATH, mount_opts);
+ 	if (ret)
+ 		goto err_rmdir;
+ 
+@@ -84,12 +99,13 @@ BAREBOX_CMD_HELP_TEXT("server address is taken from the environment (ethX.server
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT ("-p", "push to TFTP server")
++BAREBOX_CMD_HELP_OPT ("-P PORT", "tftp server port number")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(tftp)
+ 	.cmd		= do_tftpb,
+ 	BAREBOX_CMD_DESC("load (or save) a file using TFTP")
+-	BAREBOX_CMD_OPTS("[-p] SOURCE [DEST]")
++	BAREBOX_CMD_OPTS("[-p] [-P <port>] SOURCE [DEST]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_NET)
+ 	BAREBOX_CMD_HELP(cmd_tftp_help)
+ BAREBOX_CMD_END
 -- 
 2.37.1
 
