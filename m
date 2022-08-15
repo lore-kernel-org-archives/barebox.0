@@ -1,89 +1,59 @@
-Delivery-date: Mon, 15 Aug 2022 10:54:22 +0200
+Delivery-date: Mon, 15 Aug 2022 11:42:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNVrY-006EkR-Js
-	for lore@lore.pengutronix.de; Mon, 15 Aug 2022 10:54:22 +0200
+	id 1oNWbj-006GxY-BF
+	for lore@lore.pengutronix.de; Mon, 15 Aug 2022 11:42:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNVrV-0002PA-O3
-	for lore@pengutronix.de; Mon, 15 Aug 2022 10:54:21 +0200
+	id 1oNWbk-0000WM-2P
+	for lore@pengutronix.de; Mon, 15 Aug 2022 11:42:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rss8goYlU2A05LYh7clTUFFqOkGqFNsDNlMO0uENGi4=; b=qdGSyDS8BiHxGRYg0RGGDOGIZq
-	Dut0Qh1mn331dgm4cGuD+nBTh/Tqt6PLKz8gSnClr1Nk9Hx/scb4TRXZyI5Z03usIHwDKkvq/2w2T
-	ihqhnlFbv8cCtDeXWYCo52ZXWDTgXInY9qb6ujY4Mjgrs3diL33vFAENDRZQX9oxpLt2sxtA2/L76
-	sUH8PxAM7vNJmAlY4/Ot/Ec/iryD+PkCWnMHPNrV7W7C9y8W08SqMEDg1TMEVkcaMKUMs6Hx7B4kB
-	xuL5F+xDM9qY9Z6oCkSyDaIBdwSH6dESTlZOrIsIFWKcTFLnpA/vgGi0koFo9a0hxPqXY4Vr7jDFO
-	LVtlUN3g==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=WGqhkqVlzgxX84A+VIIDiMIU/wciG7wT3e1Jzjldjwo=; b=Rt/1l0coa+2EU+Sz7pL9wV+Ux3
+	chBTMHca/F+ByfJswuynd2CfeNJmIA9PvY2wj115dq+9rfQYxy6DwdLsI4Bjs75jfDWk5YA08mzOT
+	2ssVPbG4g1J31X7a4+nbWYoGl+f3+XDF41WZ3WpS/C3dODbuIdwPpQSRe10UOmFSOHd9q6fk13Fhg
+	bAPmfgXAJoshkjiSFwEQ45N38aCnKopcfqVW8+CHtR4NX40jy8GOeDAVqFRf7anuwrMtqt+ESkfjU
+	UMNwhF0NQwM+VULD6h8RHPSy3Y/UXdpdUk75D0F8xPB2u5XUvcV1V07HhhVLDvuwtlxI2gJ501kDn
+	DMZ7Ou3Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNVpb-00DPSR-Bu; Mon, 15 Aug 2022 08:52:22 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1oNWaB-00DzxM-Et; Mon, 15 Aug 2022 09:40:27 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNVhH-00DKFR-Ed
-	for barebox@bombadil.infradead.org; Mon, 15 Aug 2022 08:43:43 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=rss8goYlU2A05LYh7clTUFFqOkGqFNsDNlMO0uENGi4=; b=SJ5AKQd6va1S1gKyfD/HhdoZrq
-	bBS7QtrB0BGFrqC0PtrAbrTkQjsTzD20GMhH4zDteTQ+63LGguWJ6jA8raaj5i39Bj8zU6ZkZinJG
-	CdQQgW3iA2TnIY0P6OVu7jjM0XBn+D4K8CGStdC6glS916VElP08auMkzkgK+0mut4eeHfSw90vdx
-	NPJCz6KidpBWu3T3BRozXWj/DDJicSfTHNY6lJZZp0DnOUxw5E2rut+zDUIJi8fqNE+awyyqiKLrr
-	ouEnQVqqC2xYTsK3x7CJur9tmOmklKC4Q/f0kbxDwWj/oB8INV1r3vvdU76wp4VZ6Jo0w/7X1VReQ
-	onRI2Q4w==;
-Received: from smtpout-2.cvg.de ([2003:49:a034:1067:5::2])
-	by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNVhD-002cwE-P0
-	for barebox@lists.infradead.org; Mon, 15 Aug 2022 08:43:41 +0000
-Received: from mail-mta-3.intern.sigma-chemnitz.de (mail-mta-3.intern.sigma-chemnitz.de [192.168.12.71])
-	by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 27F8gmun662031
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
-	for <barebox@lists.infradead.org>; Mon, 15 Aug 2022 10:42:48 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
-	s=v2022040800; t=1660552968;
-	bh=rss8goYlU2A05LYh7clTUFFqOkGqFNsDNlMO0uENGi4=; l=2150;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X9htlxwSWNiXFZUPs+syG3ZFRTZQOtZlnBI0otEFGzDrJBDA+hcQ82hmxjsKFEGGk
-	 reF3gue17e7Y/QWv+jsquq6ebNWO61XBQ84Vy2Z7yJsoS0vwrMRNsQeQAmV1pya7KF
-	 c/Clzth7MGssmORu0DrpwWDlt2rq9vX0TT/SB5d9pYLwCWcwlfhiIlXzI9r2vmXvXO
-	 6CcShhXR/2/3rx97BGbuV1bxqC6kLHT8BwE3cCuL9ItVQwCzqjRpFvXZfaIxUcgHgi
-	 StaUIJt/6JXvJaVbe6UyGSSPdJEOD9JyGj5B0vdeiJTcJGDOYkUcylnEwCcS5q8VVv
-	 0Lzi+RboqLbww==
-Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
-	by mail-mta-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 27F8gYUd2540873
-	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Mon, 15 Aug 2022 10:42:34 +0200
-Received: from mail-msa-2.intern.sigma-chemnitz.de ( [192.168.12.72]) by reddoxx.intern.sigma-chemnitz.de
-	(Reddoxx engine) with SMTP id 8C8227DEC39; Mon, 15 Aug 2022 10:42:29 +0200
-Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
-	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 27F8gP13634056
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 15 Aug 2022 10:42:27 +0200
-Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.95)
-	(envelope-from <ensc@sigma-chemnitz.de>)
-	id 1oNVg1-000EJ6-VD;
-	Mon, 15 Aug 2022 10:42:25 +0200
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+	id 1oNWE9-00Dimn-1D
+	for barebox@lists.infradead.org; Mon, 15 Aug 2022 09:17:50 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1oNWE4-0005uX-OA; Mon, 15 Aug 2022 11:17:36 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1oNWE1-003tKJ-Op; Mon, 15 Aug 2022 11:17:36 +0200
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1oNWE2-008HTI-SU; Mon, 15 Aug 2022 11:17:34 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Date: Mon, 15 Aug 2022 10:42:14 +0200
-Message-Id: <7882d2bd463dd3e0ec1b9ca60261a597ca99f54b.1660552646.git.enrico.scholz@sigma-chemnitz.de>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <cover.1660552646.git.enrico.scholz@sigma-chemnitz.de>
-References: <cover.1660552646.git.enrico.scholz@sigma-chemnitz.de>
+Cc: mfe@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 15 Aug 2022 11:17:33 +0200
+Message-Id: <20220815091733.1973736-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220815_094340_148164_16804991 
-X-CRM114-Status: GOOD (  11.28  )
+X-CRM114-CacheID: sfid-20220815_021741_127784_951E21F6 
+X-CRM114-Status: GOOD (  15.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,83 +71,86 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-103.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,USER_IN_WELCOMELIST,USER_IN_WHITELIST
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 10/18] tftp: record whether tftp file is opened for lookup operation only
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] usbgadget: autostart: add usbgadget_autostart helper for board code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Opening a tftp is done in two steps: at first `tftp_lookup()` is
-called to get the filesize and then it is opened again and data are
-read.
+barebox will rerun a setter if a nv variable changes its global variable's
+default. If setter is accessing other nv variables though, the setter
+will not rerun when they change. For this reason, usbgadget_autostart_init()
+must be registered at postenvironment_initcall() level, but this makes
+the variable only reliably usable from the shell as there's no later
+initcall level than postenvironment_initcall() for board code to run at.
 
-The `tftp_lookup()` call sends only a RRQ/WRQ, reads then the "tsize"
-from the response and closes the transfer by sending an error datagram.
-The tftp server will send a full data window.
+Add a new usbgadget_autostart(boot enable) function that board code can
+use instead.
 
-To prevent unneeded traffic, later patches set parameters to reduce
-the size of the server response.
-
-We need knowledge about type of operation which is recorded in an
-"is_getattr" attribute.
-
-Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/tftp.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ common/usbgadget.c         | 15 ++++++++++++++-
+ include/usb/gadget-multi.h |  3 +++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 38a9e955ee92..9f881249ce07 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -87,6 +87,7 @@ struct file_priv {
- 	void *buf;
- 	int blocksize;
- 	int block_requested;
-+	bool is_getattr;
- };
- 
- struct tftp_priv {
-@@ -415,7 +416,7 @@ static int tftp_start_transfer(struct file_priv *priv)
+diff --git a/common/usbgadget.c b/common/usbgadget.c
+index 2ec6d9226cca..161fd16fedb7 100644
+--- a/common/usbgadget.c
++++ b/common/usbgadget.c
+@@ -121,6 +121,12 @@ static int usbgadget_autostart_set(struct param_d *param, void *ctx)
+ 	return err;
  }
  
- static struct file_priv *tftp_do_open(struct device_d *dev,
--		int accmode, struct dentry *dentry)
-+		int accmode, struct dentry *dentry, bool is_getattr)
++void usbgadget_autostart(bool enable)
++{
++	globalvar_set("usbgadget.autostart", enable ? "1" : "0");
++	autostart = enable;
++}
++
+ static int usbgadget_globalvars_init(void)
  {
- 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
- 	struct file_priv *priv;
-@@ -444,6 +445,7 @@ static struct file_priv *tftp_do_open(struct device_d *dev,
- 	priv->filename = dpath(dentry, fsdev->vfsmount.mnt_root);
- 	priv->blocksize = TFTP_BLOCK_SIZE;
- 	priv->block_requested = -1;
-+	priv->is_getattr = is_getattr;
+ 	globalvar_add_simple_bool("usbgadget.acm", &acm);
+@@ -132,8 +138,15 @@ device_initcall(usbgadget_globalvars_init);
  
- 	parseopt_hu(fsdev->options, "port", &port);
- 
-@@ -494,7 +496,7 @@ static int tftp_open(struct device_d *dev, FILE *file, const char *filename)
+ static int usbgadget_autostart_init(void)
  {
- 	struct file_priv *priv;
+-	if (IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART))
++	if (IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART)) {
+ 		globalvar_add_bool("usbgadget.autostart", usbgadget_autostart_set, &autostart, NULL);
++		/* We are already at latest initcall level, yet board code
++		 * may want to set this variable without resorting to scripts.
++		 * Check autostart manually here, so we don't miss it.
++		 */
++		if (autostart)
++			globalvar_set("usbgadget.autostart", "1");
++	}
+ 	return 0;
+ }
+ postenvironment_initcall(usbgadget_autostart_init);
+diff --git a/include/usb/gadget-multi.h b/include/usb/gadget-multi.h
+index 2d8d7533a816..e67ca165c18b 100644
+--- a/include/usb/gadget-multi.h
++++ b/include/usb/gadget-multi.h
+@@ -3,6 +3,7 @@
+ #ifndef __USB_GADGET_MULTI_H
+ #define __USB_GADGET_MULTI_H
  
--	priv = tftp_do_open(dev, file->flags, file->dentry);
-+	priv = tftp_do_open(dev, file->flags, file->dentry, false);
- 	if (IS_ERR(priv))
- 		return PTR_ERR(priv);
++#include <linux/types.h>
+ #include <usb/fastboot.h>
+ #include <usb/dfu.h>
+ #include <usb/usbserial.h>
+@@ -36,4 +37,6 @@ struct usbgadget_funcs {
  
-@@ -710,7 +712,7 @@ static struct dentry *tftp_lookup(struct inode *dir, struct dentry *dentry,
- 	struct file_priv *priv;
- 	loff_t filesize;
+ int usbgadget_register(const struct usbgadget_funcs *funcs);
  
--	priv = tftp_do_open(&fsdev->dev, O_RDONLY, dentry);
-+	priv = tftp_do_open(&fsdev->dev, O_RDONLY, dentry, true);
- 	if (IS_ERR(priv))
- 		return NULL;
- 
++void usbgadget_autostart(bool enable);
++
+ #endif /* __USB_GADGET_MULTI_H */
 -- 
-2.37.1
+2.30.2
 
 
 
