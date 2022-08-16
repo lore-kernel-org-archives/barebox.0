@@ -1,52 +1,52 @@
-Delivery-date: Tue, 16 Aug 2022 10:20:26 +0200
+Delivery-date: Tue, 16 Aug 2022 10:28:17 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNroJ-000TZr-38
-	for lore@lore.pengutronix.de; Tue, 16 Aug 2022 10:20:26 +0200
+	id 1oNrvu-000Tu8-1o
+	for lore@lore.pengutronix.de; Tue, 16 Aug 2022 10:28:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNroG-0000i7-US
-	for lore@pengutronix.de; Tue, 16 Aug 2022 10:20:25 +0200
+	id 1oNrvq-00024T-So
+	for lore@pengutronix.de; Tue, 16 Aug 2022 10:28:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ml+XiqnjJ1OkNjXQIGcRSEs0evrg2jtO9Qj1VIoByPk=; b=gNjJyn+6J7CtwA7eEDhusgf+mD
-	XciNPtEc8ZATK1vUXLieXbDwQgkZUiClsCW1IvAIIj1kepFfPqd5CVcySuBycSCDh+7A/DTgMSYyb
-	fme/L01BwaNUpIxkckiid/Tyva8+hkvTxEKpvia5DQfwCaCltuYEvgD4TmVluXpNfihJTrTSnAmkt
-	oSv3ccQ7HJE+3SwCKXmtOYiRNfB1iWmA9MZlIbTtylVpJ2TA8qugxT4MY7ImNwREMdTwWJXtAo2ax
-	+wcnlln/yknEv/7WyLLNTR/AhXGUQvx3mzxLjq2ADvuT42x+zu1d07LXD3MN/bMpM+J77cumlI8MQ
-	coRUy68w==;
+	bh=R/gbup5uMiCWXKv8ijrc5aUb+xZDHgHNi1ssZVr9gVY=; b=u0LibIEDfKmCm/UXFNPXGyadgY
+	XEJTeooZmosPuBnJ8agTRfj8+ApqpUql7kiGXRngbUS5lVR7f3WyBJIxLYS1iDh6mi6f2wIHMgPCP
+	n4b1Kb+ASH1Mgz2dO3Jp9SVXj3KPjXgIQC+LfCD6B3Woft+cGqAl13NsN8RQDUfVyFAzuVYMGhDzi
+	lbOUuEU9p17sHRQG95HPDP8Qj78g0zbqdqBkkMJZZu1CGACICyoYN85Kyx5ye2ZPyqX2CPFhBePHI
+	aJmHOJm9PCe5voUfwTjl6AOzvuhpQgZMqqUBt5Acwz5kRiaLsjTxsLAdGgq7gxRXIdEgXAU9nN9C2
+	PnMLUsSA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNrmt-00GVUt-JK; Tue, 16 Aug 2022 08:18:59 +0000
+	id 1oNruU-00GbdS-Ls; Tue, 16 Aug 2022 08:26:50 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNrmj-00GVNu-7H
-	for barebox@lists.infradead.org; Tue, 16 Aug 2022 08:18:56 +0000
+	id 1oNruP-00GbWk-1A
+	for barebox@lists.infradead.org; Tue, 16 Aug 2022 08:26:46 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oNrmh-0000QX-Ur; Tue, 16 Aug 2022 10:18:47 +0200
+	id 1oNruN-0001oR-6C; Tue, 16 Aug 2022 10:26:43 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oNrmh-0006PE-M5; Tue, 16 Aug 2022 10:18:47 +0200
-Date: Tue, 16 Aug 2022 10:18:47 +0200
+	id 1oNruM-0006hL-KJ; Tue, 16 Aug 2022 10:26:42 +0200
+Date: Tue, 16 Aug 2022 10:26:42 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220816081847.GI17485@pengutronix.de>
-References: <20220815114246.2275465-1-a.fatoum@pengutronix.de>
+Message-ID: <20220816082642.GJ17485@pengutronix.de>
+References: <20220815114835.2277946-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220815114246.2275465-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220815114835.2277946-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220816_011855_135847_4121EEB3 
-X-CRM114-Status: GOOD (  27.25  )
+X-CRM114-CacheID: sfid-20220816_012645_171049_5D8B4D72 
+X-CRM114-Status: GOOD (  29.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,100 +73,131 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] of: add new of_fixup_reserved_memory() helper
+Subject: Re: [PATCH 1/2] fs: export cdev_get_linux_rootarg() for reuse
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Aug 15, 2022 at 01:42:45PM +0200, Ahmad Fatoum wrote:
-> We are opencoding the reserved memory fixup in fs/pstore/ram.c and the
-> sequence is generic enough that we could use it for other fixups as
-> well, e.g. rmem, barebox as secure monitor or OP-TEE which is not
-> configured to generate an overlay or fix up the device tree itself.
+On Mon, Aug 15, 2022 at 01:48:34PM +0200, Ahmad Fatoum wrote:
+> We've the root=PARTUUID=%s generation at two places: Once to populate
+> fsdev->linux_rootarg and once to handle struct bootm_data::root_dev.
 > 
-> Add a helper that can be directly registered and reads all the necessary
-> information out of a struct resource.
+> In preparation for dropping the duplicate out-of-sync code in the bootm
+> code, export the originl fs/fs.c code as cdev_get_linux_rootarg().
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  common/oftree.c | 41 +++++++++++++++++++++++++++++++++++++++++
->  include/of.h    |  2 ++
->  2 files changed, 43 insertions(+)
+>  fs/fs.c      | 50 +++++++++++++++++++++++++++++++++++---------------
+>  include/fs.h |  1 +
+>  2 files changed, 36 insertions(+), 15 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/oftree.c b/common/oftree.c
-> index 91b3fcc9fad6..e459f84601a3 100644
-> --- a/common/oftree.c
-> +++ b/common/oftree.c
-> @@ -271,6 +271,47 @@ static int of_register_bootargs_fixup(void)
+> diff --git a/fs/fs.c b/fs/fs.c
+> index bd6f144742ac..620cd6597a63 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -2876,12 +2876,23 @@ int popd(char *oldcwd)
+>  	return ret;
 >  }
->  late_initcall(of_register_bootargs_fixup);
 >  
-> +int of_fixup_reserved_memory(struct device_node *root, void *_res)
-> +{
-> +	struct resource *res = _res;
-> +	struct device_node *node, *child;
-> +	struct property *pp;
-> +	unsigned addr_n_cells = sizeof(void *) / sizeof(__be32),
-> +		 size_n_cells = sizeof(void *) / sizeof(__be32);
-> +	unsigned rangelen = 0;
-> +	__be32 reg[4];
-> +	int ret;
-> +
-> +	node = of_get_child_by_name(root, "reserved-memory") ?: of_new_node(root, "reserved-memory");
-> +
-> +	ret = of_property_read_u32(node, "#address-cells", &addr_n_cells);
-> +	if (ret)
-> +		of_property_write_u32(node, "#address-cells", addr_n_cells);
-> +
-> +	ret = of_property_read_u32(node, "#size-cells", &size_n_cells);
-> +	if (ret)
-> +		of_property_write_u32(node, "#size-cells", size_n_cells);
-> +
-> +	pp = of_find_property(node, "ranges", &rangelen) ?: of_new_property(node, "ranges", NULL, 0);
-> +	if (rangelen) {
-> +		pr_warn("reserved-memory ranges not 1:1 mapped. Aborting fixup\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	child = of_get_child_by_name(node, res->name) ?: of_new_node(node, res->name);
-> +
-> +	if (res->flags & IORESOURCE_BUSY)
-> +		of_property_write_bool(child, "no-map", true);
-> +
-> +	of_write_number(reg, res->start, addr_n_cells);
-> +	of_write_number(reg + addr_n_cells, resource_size(res), size_n_cells);
-> +
-> +	of_new_property(child, "reg", reg,
-> +			(addr_n_cells + size_n_cells) * sizeof(*reg));
-> +
-> +	return 0;
+> -static char *get_linux_mmcblkdev(struct fs_device_d *fsdev)
+> +static bool cdev_partname_equal(const struct cdev *a,
+> +				const struct cdev *b)
+>  {
+> -	struct cdev *cdevm, *cdev;
+> +	return a->partname && b->partname &&
+> +		!strcmp(a->partname, b->partname);
 > +}
 > +
->  struct of_fixup_status_data {
->  	const char *path;
->  	bool status;
-> diff --git a/include/of.h b/include/of.h
-> index 9130a36d372d..223c634bc88a 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -113,6 +113,8 @@ int of_parse_dtb(struct fdt_header *fdt);
->  struct device_node *of_unflatten_dtb(const void *fdt, int size);
->  struct device_node *of_unflatten_dtb_const(const void *infdt, int size);
+> +static char *get_linux_mmcblkdev(const struct cdev *root_cdev)
+> +{
+> +	struct cdev *cdevm = root_cdev->master, *cdev;
+>  	int id, partnum;
 >  
-> +int of_fixup_reserved_memory(struct device_node *node, void *data);
+> -	cdevm = fsdev->cdev->master;
+> +	if (!IS_ENABLED(CONFIG_MMCBLKDEV_ROOTARG))
+> +		return NULL;
+> +	if (!cdevm || !cdev_is_mci_main_part_dev(cdevm))
+> +		return NULL;
 > +
->  struct cdev;
+>  	id = of_alias_get_id(cdevm->device_node, "mmc");
+>  	if (id < 0)
+>  		return NULL;
+> @@ -2894,8 +2905,7 @@ static char *get_linux_mmcblkdev(struct fs_device_d *fsdev)
+>  		 * in the partitions list so we need to count it instead of
+>  		 * skipping it.
+>  		 */
+> -		if (cdev->partname &&
+> -		    !strcmp(cdev->partname, fsdev->cdev->partname))
+> +		if (cdev_partname_equal(root_cdev, cdev))
+>  			return basprintf("root=/dev/mmcblk%dp%d", id, partnum);
+>  		partnum++;
+>  	}
+> @@ -2903,6 +2913,23 @@ static char *get_linux_mmcblkdev(struct fs_device_d *fsdev)
+>  	return NULL;
+>  }
 >  
->  #ifdef CONFIG_OFTREE
+> +char *cdev_get_linux_rootarg(const struct cdev *cdev)
+> +{
+> +	char *str;
+> +
+> +	if (!cdev)
+> +		return NULL;
+> +
+> +	str = get_linux_mmcblkdev(cdev);
+> +	if (str)
+> +		return str;
+> +
+> +	if (cdev->uuid[0] != 0)
+> +		return basprintf("root=PARTUUID=%s", cdev->uuid);
+> +
+> +	return NULL;
+> +}
+> +
+>  /*
+>   * Mount a device to a directory.
+>   * We do this by registering a new device on which the filesystem
+> @@ -2991,17 +3018,10 @@ int mount(const char *device, const char *fsname, const char *pathname,
+>  
+>  	fsdev->vfsmount.mnt_root = fsdev->sb.s_root;
+>  
+> -	if (!fsdev->linux_rootarg && fsdev->cdev) {
+> -		char *str = NULL;
+> -
+> -		if (IS_ENABLED(CONFIG_MMCBLKDEV_ROOTARG) &&
+> -		    fsdev->cdev->master &&
+> -		    cdev_is_mci_main_part_dev(fsdev->cdev->master))
+> -			str = get_linux_mmcblkdev(fsdev);
+> -
+> -		if (!str && fsdev->cdev->uuid[0] != 0)
+> -			str = basprintf("root=PARTUUID=%s", fsdev->cdev->uuid);
+> +	if (!fsdev->linux_rootarg) {
+> +		char *str;
+>  
+> +		str = cdev_get_linux_rootarg(fsdev->cdev);
+>  		if (str)
+>  			fsdev_set_linux_rootarg(fsdev, str);
+>  	}
+> diff --git a/include/fs.h b/include/fs.h
+> index cd5eb571e08e..894cae3e4c2f 100644
+> --- a/include/fs.h
+> +++ b/include/fs.h
+> @@ -168,6 +168,7 @@ void mount_all(void);
+>  
+>  void fsdev_set_linux_rootarg(struct fs_device_d *fsdev, const char *str);
+>  char *path_get_linux_rootarg(const char *path);
+> +char *cdev_get_linux_rootarg(const struct cdev *cdev);
+>  
+>  static inline const char *devpath_to_name(const char *devpath)
+>  {
 > -- 
 > 2.30.2
 > 
