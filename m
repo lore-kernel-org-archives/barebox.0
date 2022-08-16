@@ -3,50 +3,50 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNqBZ-000OL5-4w
+	id 1oNqBb-000OLB-0K
 	for lore@lore.pengutronix.de; Tue, 16 Aug 2022 08:36:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNqBW-0001e6-Q8
-	for lore@pengutronix.de; Tue, 16 Aug 2022 08:36:19 +0200
+	id 1oNqBY-0001fG-QY
+	for lore@pengutronix.de; Tue, 16 Aug 2022 08:36:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TFUJSB3MdS1Tuys6DmnaI3gdTG8P2cQqZNCDDso8u3Y=; b=HPdESFGlaVcTRERiGaUHTl2M/k
-	8Q8P+96Abc/lvYfxjJeiMxH8FABH3BlmWTBhsPthgm4QZMIAMYDyfFgb4+X5j5/vtpgdd9KbHsuIA
-	E9I2AYktMYYZywCeihmvnsexBijB2/nj2NXLagcbq0lleVOxYLYz3/NDFsXmgsCRxOkXqwY6mMNvH
-	l1p3EsM2IoGb42K0e8GYEI/4eY4xR3fvVTGHDFqVuXsbrofqGEThOTffSHNyW7mmDF2pYtTZ1EedV
-	LW0ccjry6yjQ8HgPRg/gW71ijQ3cPYJaOsyFOQiCv/tSyS1MYsj8q0X2Yph9+mqgSbc1B07cgIjk3
-	ASsOA94A==;
+	bh=CJNhn4X8B8D7Ma8qv0D2F/lu16UbC/qdPslgSr7h57Y=; b=H2IJWRMsLCizpwTlXT1LpfHZOa
+	ub+PyOvtYuVKfbNMLja+bHJvDaNkCToW2jIkuTE5v81ntBjp/PvsXgUrpGczWNBCuLKLcP9i04FUl
+	4BPBFzA7uRrPfBOkuUR1FvdLvkgsoWJ7mY/yIueX9Ns0CUasknmGMTWPS4u05kx5KS8jSsRHxctAW
+	LGoz8J21zJDCnv8/Enae8lzpwIVZ8hC/bWTPK0GdXo0uha7krtGfP1HdEiy16pzuCy2NcENLNr1kz
+	1OWJMrjdAw3OgPF72F/1Ib/ATdl4jgQgwzWmO8RAxxHlYrOsUH2Dj/0RYQ6k7pJ7IJ5VlVg9Ag8so
+	WjAqOMbQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNq9Y-00Dp3K-08; Tue, 16 Aug 2022 06:34:16 +0000
+	id 1oNq9v-00Dpvu-3D; Tue, 16 Aug 2022 06:34:39 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNq9F-00Dor2-2t
-	for barebox@lists.infradead.org; Tue, 16 Aug 2022 06:34:01 +0000
+	id 1oNq9l-00DplP-18
+	for barebox@lists.infradead.org; Tue, 16 Aug 2022 06:34:30 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oNq9A-00016p-Uw; Tue, 16 Aug 2022 08:33:52 +0200
+	id 1oNq9j-00018d-OV; Tue, 16 Aug 2022 08:34:27 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oNq9A-0007tI-MD; Tue, 16 Aug 2022 08:33:52 +0200
-Date: Tue, 16 Aug 2022 08:33:52 +0200
+	id 1oNq9j-0007tv-FE; Tue, 16 Aug 2022 08:34:27 +0200
+Date: Tue, 16 Aug 2022 08:34:27 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220816063352.GD17485@pengutronix.de>
-References: <20220815064001.702879-1-a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, rcz@pengutronix.de
+Message-ID: <20220816063427.GE17485@pengutronix.de>
+References: <20220815063853.672239-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220815064001.702879-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220815063853.672239-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220815_233357_556196_4A376C69 
-X-CRM114-Status: GOOD (  20.26  )
+X-CRM114-CacheID: sfid-20220815_233429_126085_866BC9AB 
+X-CRM114-Status: GOOD (  20.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,38 +78,46 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] pstore: disable double memory reservation fixup
+Subject: Re: [PATCH master] ARM: i.MX8M: HABv4: make barebox SHA256 embedding
+ POSIX-shell compatible
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Aug 15, 2022 at 08:40:01AM +0200, Ahmad Fatoum wrote:
-> Device tree fixup ramoops_of_fixup registered directly after
-> of_add_reserve_entry already takes care to create a /reserved-memory
-> entry, so adding one to the FDT reserved memory list is redundant.
-> Thus keep only the /reserved-memory entry.
+On Mon, Aug 15, 2022 at 08:38:53AM +0200, Ahmad Fatoum wrote:
+> C-Style printf "\xHH" is not supported by a POSIX shell,
+> while printf "\oOOO" is. As we use printf "\xHH" for converting the
+> textual output of sha256sum into binary, systems using dash as shell
+> will end up embedding literal \xHH characters in the output resulting in
+> an ubootable barebox when CONFIG_PBL_VERIFY_PIGGY=y:
+> 
+>   !hash mismatch, refusing to decompress
+> 
+> Fix this by using octal escape sequences instead.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  fs/pstore/ram.c | 1 -
->  1 file changed, 1 deletion(-)
+>  images/Makefile | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
-> index 0d8bb8f418f4..b484ecd55201 100644
-> --- a/fs/pstore/ram.c
-> +++ b/fs/pstore/ram.c
-> @@ -639,7 +639,6 @@ static int ramoops_probe(struct device_d *dev)
->  			  ramoops_ecc);
->  		globalvar_add_simple("linux.bootargs.ramoops", kernelargs);
->  	} else {
-> -		of_add_reserve_entry(cxt->phys_addr, cxt->phys_addr + mem_size);
->  		of_register_fixup(ramoops_of_fixup, pdata);
->  	}
+> diff --git a/images/Makefile b/images/Makefile
+> index c79f1a272e9c..7a8bb94fe0df 100644
+> --- a/images/Makefile
+> +++ b/images/Makefile
+> @@ -113,7 +113,8 @@ $(obj)/piggy.o: $(obj)/barebox.z FORCE
+>  $(obj)/sha_sum.o: $(obj)/barebox.sha.bin FORCE
 >  
+>  quiet_cmd_sha256bin ?= SHA-BIN $@
+> -      cmd_sha256bin ?= printf "$(shell awk '{printf $$1}' < $(obj)/barebox.sum | sed -e 's/../\\x&/g' )" > $@
+> +      cmd_sha256bin = printf "$(shell sed 's/ .*$$//;s/../0x&\n/g;s/\n$$//' $(obj)/barebox.sum | \
+> +			while read -r byte; do printf '\%o' $$byte; done)" > $@
+>  
+>  quiet_cmd_sha256sum ?= SHA     $@
+>        cmd_sha256sum ?= sha256sum $(obj)/barebox.z > $@
 > -- 
 > 2.30.2
 > 
