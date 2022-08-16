@@ -1,53 +1,52 @@
-Delivery-date: Tue, 16 Aug 2022 10:48:26 +0200
+Delivery-date: Tue, 16 Aug 2022 10:55:33 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNsFO-000Up0-T8
-	for lore@lore.pengutronix.de; Tue, 16 Aug 2022 10:48:26 +0200
+	id 1oNsMI-000VB9-Hs
+	for lore@lore.pengutronix.de; Tue, 16 Aug 2022 10:55:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNsFM-0004mN-TS
-	for lore@pengutronix.de; Tue, 16 Aug 2022 10:48:25 +0200
+	id 1oNsMG-0005eM-3b
+	for lore@pengutronix.de; Tue, 16 Aug 2022 10:55:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=saY31UxhbNkJYmkf31QvneAWQlr8QEa0IQvZ0u8HhrA=; b=0TAsmjjDcwe/hRjGTmDfVwxiol
-	Q1JAKuPXc4kPzViCZluJmAeFYa37EQjxyqCs7PEU7EAZZXzpJnjbYrpPZUMGyBR2PWGHc98o08vLO
-	4TtrqShj2lV6Ia4jK6CAwkT7U8qPXGGftI/QlMOxB1HqNkjW8M6ZF6iAhgp4wix82/TJVruqHOY8y
-	lwPuMevdsWsKnx2yWn9QHsF2SjaIflaDmRk4rcZTeMMwfgxuPQO7ZZ+hbaO9eq67bTbXoXa62A/Bp
-	cEeGTb6p4KbotL+F1okG7YcKB5xsIRGWN7erlyHOrRqWvG7kzf6yob+RK0H27gVxEMvynAovwmwMl
-	cDTSzDpA==;
+	bh=R5oIMxjv3J95/S9ZvFHRJpomMe9B86RnXi5HRlqO0LE=; b=o5f79DBs9Fw9K16P08C8LyQHa7
+	H4hM0sc+ndOQEPYw4+3Yk6iEfpvu9ITtKPttnal0kJFmJmrPlUu67LuRz/PyoXEO/SAzjpCiLPDia
+	nFZ7LiQusFta5pukaztTFUrtj1JjakTFB3GD6s7EYJXt/wnEGpH/80JnCDncUvP3PnH810009R4/F
+	GSX57SlagJp0XuOyVdkLKfPTb4EpO9Ni0wrnnSSAsl5IWGs5S+SReHsBtMnYZ0/6+/m7MoMexdctl
+	nzVcP1CASj7ut1fS+mJOzw/LYeM+DCKKKh7jXgEB/K40uqRBIPsLmnE/DHHRpaWOZjrvOIgqVX+m1
+	ta6eQ0kw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNsDw-00GxtM-82; Tue, 16 Aug 2022 08:46:56 +0000
+	id 1oNsKj-00H1lH-IR; Tue, 16 Aug 2022 08:53:57 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNsDk-00Gxmf-6a
-	for barebox@lists.infradead.org; Tue, 16 Aug 2022 08:46:52 +0000
+	id 1oNsKf-00H1j2-1b
+	for barebox@lists.infradead.org; Tue, 16 Aug 2022 08:53:54 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oNsDi-0004bf-FI; Tue, 16 Aug 2022 10:46:42 +0200
+	id 1oNsKd-0005M2-Kb; Tue, 16 Aug 2022 10:53:51 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oNsDi-0007RO-5w; Tue, 16 Aug 2022 10:46:42 +0200
-Date: Tue, 16 Aug 2022 10:46:42 +0200
+	id 1oNsKd-0007cT-Bz; Tue, 16 Aug 2022 10:53:51 +0200
+Date: Tue, 16 Aug 2022 10:53:51 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, rcz@pengutronix.de
-Message-ID: <20220816084642.GL17485@pengutronix.de>
-References: <20220815153209.2422662-1-a.fatoum@pengutronix.de>
- <20220815153209.2422662-4-a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220816085351.GM17485@pengutronix.de>
+References: <20220815160708.2430433-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220815153209.2422662-4-a.fatoum@pengutronix.de>
+In-Reply-To: <20220815160708.2430433-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -55,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220816_014650_813596_C98EF148 
-X-CRM114-Status: GOOD (  24.88  )
+X-CRM114-CacheID: sfid-20220816_015353_108619_4D6980FC 
+X-CRM114-Status: GOOD (  24.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,66 +78,103 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 03/10] memory: define reserve_sdram_region helper
+Subject: Re: [PATCH] of: move of_get_node_by_reproducible_name() into common
+ code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Aug 15, 2022 at 05:32:02PM +0200, Ahmad Fatoum wrote:
-> We use request_sdram_regions both for code that barebox wants to use for
-> itself (e.g. barebox stack or initrd) and to reserve regions for secure
-> firmware that barebox shouldn't overwrite. We need to differentiate
-> between them, so we can apply difference caching flags depending on
-
-s/difference/different/
-
-Sascha
-
-> region, so add a new reserve_sdram_region helper that may be used and
-> also add an for_each_reserved_region iterator for use in the MMU code
-> that applied the different caching flags later on.
+On Mon, Aug 15, 2022 at 06:07:08PM +0200, Ahmad Fatoum wrote:
+> The function already has a good generic name and can be useful for board
+> code or for other drivers seeking to fix up the kernel device tree
+> according to information within the barebox DT.
+> Thus move it to a central location.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  include/memory.h | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  drivers/of/base.c                 | 13 +++++++++++++
+>  drivers/power/reset/reboot-mode.c | 13 -------------
+>  include/of.h                      |  9 +++++++++
+>  3 files changed, 22 insertions(+), 13 deletions(-)
+
+Applied, thanks
+  Sascha
+
 > 
-> diff --git a/include/memory.h b/include/memory.h
-> index 31da5d74d568..ffd66db02ba0 100644
-> --- a/include/memory.h
-> +++ b/include/memory.h
-> @@ -4,6 +4,7 @@
->  
->  #include <linux/types.h>
->  #include <linux/list.h>
-> +#include <linux/ioport.h>
->  
->  void mem_malloc_init(void *start, void *end);
->  ulong mem_malloc_start(void);
-> @@ -22,6 +23,9 @@ int barebox_add_memory_bank(const char *name, resource_size_t start,
->  				    resource_size_t size);
->  
->  #define for_each_memory_bank(mem)	list_for_each_entry(mem, &memory_banks, list)
-> +#define for_each_reserved_region(mem, rsv) \
-> +	list_for_each_entry(rsv, &(mem)->res->children, sibling) \
-> +	if (((rsv)->flags & IORESOURCE_BUSY))
->  
->  struct resource *__request_sdram_region(const char *name, unsigned flags,
->  					resource_size_t start, resource_size_t size);
-> @@ -34,6 +38,14 @@ static inline struct resource *request_sdram_region(const char *name,
->  	return __request_sdram_region(name, 0, start, size);
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index b91ee92e1b88..52e6a9294e11 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -2865,6 +2865,19 @@ struct device_node *of_find_node_by_reproducible_name(struct device_node *from,
+>  	return NULL;
 >  }
 >  
-> +/* use for secure firmware to inhibit speculation */
-> +static inline struct resource *reserve_sdram_region(const char *name,
-> +						    resource_size_t start,
-> +						    resource_size_t size)
+> +struct device_node *of_get_node_by_reproducible_name(struct device_node *dstroot,
+> +						     struct device_node *srcnp)
 > +{
-> +	return __request_sdram_region(name, IORESOURCE_BUSY, start, size);
+> +	struct device_node *dstnp;
+> +	char *name;
+> +
+> +	name = of_get_reproducible_name(srcnp);
+> +	dstnp = of_find_node_by_reproducible_name(dstroot, name);
+> +	free(name);
+> +
+> +	return dstnp;
 > +}
 > +
->  int release_sdram_region(struct resource *res);
+>  /**
+>   * of_graph_parse_endpoint() - parse common endpoint node properties
+>   * @node: pointer to endpoint device_node
+> diff --git a/drivers/power/reset/reboot-mode.c b/drivers/power/reset/reboot-mode.c
+> index 1316af4213fb..5761128f8e5a 100644
+> --- a/drivers/power/reset/reboot-mode.c
+> +++ b/drivers/power/reset/reboot-mode.c
+> @@ -48,19 +48,6 @@ static int reboot_mode_add_param(struct device_d *dev,
+>  	return PTR_ERR_OR_ZERO(param);
+>  }
 >  
->  void memory_bank_find_space(struct memory_bank *bank, resource_size_t *retstart,
+> -static struct device_node *of_get_node_by_reproducible_name(struct device_node *dstroot,
+> -							    struct device_node *srcnp)
+> -{
+> -	struct device_node *dstnp;
+> -	char *name;
+> -
+> -	name = of_get_reproducible_name(srcnp);
+> -	dstnp = of_find_node_by_reproducible_name(dstroot, name);
+> -	free(name);
+> -
+> -	return dstnp;
+> -}
+> -
+>  static int of_reboot_mode_fixup(struct device_node *root, void *ctx)
+>  {
+>  	struct reboot_mode_driver *reboot = ctx;
+> diff --git a/include/of.h b/include/of.h
+> index 91c3766992aa..995e9b591399 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -195,6 +195,9 @@ extern struct device_node *of_get_compatible_child(const struct device_node *par
+>  extern struct device_node *of_get_child_by_name(const struct device_node *node,
+>  					const char *name);
+>  extern char *of_get_reproducible_name(struct device_node *node);
+> +extern struct device_node *of_get_node_by_reproducible_name(struct device_node *dstroot,
+> +							    struct device_node *srcnp);
+> +
+>  extern struct device_node *of_find_node_by_reproducible_name(struct device_node
+>  							     *from,
+>  							     const char *name);
+> @@ -493,6 +496,12 @@ of_find_node_by_reproducible_name(struct device_node *from, const char *name)
+>  	return NULL;
+>  }
+>  
+> +
+> +static iline struct device_node *of_get_node_by_reproducible_name(struct device_node *dstroot,
+> +								  struct device_node *srcnp)
+> +{
+> +	return NULL;
+> +}
+>  static inline struct property *of_find_property(const struct device_node *np,
+>  						const char *name,
+>  						int *lenp)
 > -- 
 > 2.30.2
 > 
