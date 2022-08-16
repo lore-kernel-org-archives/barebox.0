@@ -1,58 +1,61 @@
-Delivery-date: Tue, 16 Aug 2022 09:49:12 +0200
+Delivery-date: Tue, 16 Aug 2022 09:59:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNrK5-000RnX-52
-	for lore@lore.pengutronix.de; Tue, 16 Aug 2022 09:49:12 +0200
+	id 1oNrTe-000SCH-1w
+	for lore@lore.pengutronix.de; Tue, 16 Aug 2022 09:59:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oNrK2-0003Ig-N3
-	for lore@pengutronix.de; Tue, 16 Aug 2022 09:49:11 +0200
+	id 1oNrTb-00051N-RO
+	for lore@pengutronix.de; Tue, 16 Aug 2022 09:59:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:In-reply-to:Date:Subject:Cc:To:From:
-	References:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fnk2TX3aOQlPafg0lStMxwrwTFTvVCpedZjPJXF8IAA=; b=ZHi3vydCBq/bKJnuNBHl2gZsZR
-	p4HkWitsbEacXdqiKT7B1v3WUJRHGmRGgvBdbs2a0WEwErKeIbeykY5m2084qkvfiRqUE281/HaJV
-	JcY4v/2UqdrcFCd8d6k484w1N6fVXj9ghVhdpMs6u3Mj/t+NDYqkUhAl8FwroSQ0vAdFAwql3bv5H
-	stZ2xMrPIiNIP1sfGav6BJieSIL4snm9qqxHtVKp+21Ha2Tsus0JrcbmFwX+l8FGwy760X6UGPw8+
-	VN9P04AZeHzzb+sog8OIS7AmIoAzc61npCcVjkGz7cJoFEgPBYto6FB4ftM5JiJIUnYP5oFsPTKSU
-	F1ADWZqA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=1v+14Bu+zY+h+LlNGHNPYDHsR39m5G+chTj//ORw/7E=; b=J0BjDqvWVkIzXZN5v9VzOdn9sT
+	r3sIrTFTK0bedWLWES+w7acx8JvA12v2/PXxSmqHfnqaf5d/DHBtAEYhrBMCjyGGm/7gFL4+sNLoa
+	pAxNq/i0NGCTEo8Ojk6g3PcpwzGqwRe31DGUhnmJH0DXturuHS/Q1fmXvSs0DBnP9SZgxqoMX2KZI
+	6w2rhtYAPdytzi6YPkYmkdDJWr8YLZw5wEkXO4aeiLpFzCc8GH9mUxLdriL94ZX1EogVK6VwsSPCt
+	B3EiBf29dA6oND7dzQFGVD99JShmLh3kIQwpRT39x9fwJaMv4dnHNZmgxFLLO3N0jQYUf0OEQ4JD+
+	81s2RdmQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNrI1-00FhY3-CJ; Tue, 16 Aug 2022 07:47:05 +0000
+	id 1oNrRy-00Fsmr-R0; Tue, 16 Aug 2022 07:57:23 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oNrHX-00FgXE-Gc
-	for barebox@lists.infradead.org; Tue, 16 Aug 2022 07:46:37 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+	id 1oNrRo-00Fsdm-Lo
+	for barebox@lists.infradead.org; Tue, 16 Aug 2022 07:57:16 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1oNrHU-00036C-Ah; Tue, 16 Aug 2022 09:46:32 +0200
-Received: from uol by dude.hi.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1oNrHT-008Yyc-S0; Tue, 16 Aug 2022 09:46:31 +0200
-References: <20220815153209.2422662-1-a.fatoum@pengutronix.de>
- <20220815153209.2422662-3-a.fatoum@pengutronix.de>
-User-agent: mu4e 1.6.9; emacs 29.0.50
-From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1oNrRm-0004k1-VX; Tue, 16 Aug 2022 09:57:10 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oNrRm-0004Jv-Mh; Tue, 16 Aug 2022 09:57:10 +0200
+Date: Tue, 16 Aug 2022 09:57:10 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: rcz@pengutronix.de, barebox@lists.infradead.org
-Date: Tue, 16 Aug 2022 09:35:41 +0200
-In-reply-to: <20220815153209.2422662-3-a.fatoum@pengutronix.de>
-Message-ID: <6rczd0ocko.fsf@pengutronix.de>
+Cc: barebox@lists.infradead.org, mfe@pengutronix.de
+Message-ID: <20220816075710.GG17485@pengutronix.de>
+References: <20220815091733.1973736-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220815091733.1973736-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220816_004635_578400_332658B4 
-X-CRM114-Status: GOOD (  23.57  )
+X-CRM114-CacheID: sfid-20220816_005713_866983_5FB1C378 
+X-CRM114-Status: GOOD (  44.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,117 +73,206 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 02/10] common: allow requesting SDRAM regions with
- custom flags
+Subject: Re: [PATCH] usbgadget: autostart: add usbgadget_autostart helper for
+ board code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hi Ahmad,
 
-On Mon, Aug 15 2022 at 17:32 +0200, Ahmad Fatoum <a.fatoum@pengutronix.de> =
-wrote:
-> Now that __request_region accepts a flag parameter, define
-> __request_sdram_region, which also accepts a flag parameter and passes
-> it through. The default flags for request_sdram_region() will be
-> IORESOURCE_MEM as that ensures resource_contains behaves correctly when
-> comparing against another memory resource.
->
+On Mon, Aug 15, 2022 at 11:17:33AM +0200, Ahmad Fatoum wrote:
+> barebox will rerun a setter if a nv variable changes its global variable's
+> default. If setter is accessing other nv variables though, the setter
+> will not rerun when they change. For this reason, usbgadget_autostart_init()
+> must be registered at postenvironment_initcall() level, but this makes
+> the variable only reliably usable from the shell as there's no later
+> initcall level than postenvironment_initcall() for board code to run at.
+> 
+> Add a new usbgadget_autostart(boot enable) function that board code can
+> use instead.
+> 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  common/memory.c   |  8 +++++---
->  common/resource.c |  2 +-
->  include/memory.h  | 13 +++++++++++--
->  3 files changed, 17 insertions(+), 6 deletions(-)
->
-> diff --git a/common/memory.c b/common/memory.c
-> index 03fec1f1eb0e..347f83fd4cf8 100644
-> --- a/common/memory.c
-> +++ b/common/memory.c
-> @@ -200,16 +200,18 @@ mmu_initcall(add_mem_devices);
->  /*
->   * Request a region from the registered sdram
->   */
-> -struct resource *request_sdram_region(const char *name, resource_size_t =
-start,
-> -		resource_size_t size)
-> +struct resource *__request_sdram_region(const char *name, unsigned flags,
-> +					resource_size_t start, resource_size_t size)
->  {
->  	struct memory_bank *bank;
->=20=20
-> +	flags |=3D IORESOURCE_MEM;
-> +
->  	for_each_memory_bank(bank) {
->  		struct resource *res;
->=20=20
->  		res =3D __request_region(bank->res, start, start + size - 1,
-> -				       name, 0);
-> +				       name, flags);
->  		if (!IS_ERR(res))
->  			return res;
->  	}
-> diff --git a/common/resource.c b/common/resource.c
-> index 81f337668ef1..8678609229ab 100644
-> --- a/common/resource.c
-> +++ b/common/resource.c
-> @@ -73,7 +73,7 @@ struct resource *__request_region(struct resource *pare=
-nt,
->  	}
->=20=20
->  ok:
-> -	debug("%s ok: 0x%08llx:0x%08llx flags=3D%u\n", __func__,
-> +	debug("%s ok: 0x%08llx:0x%08llx flags=3D0x%x\n", __func__,
-
-this hunk should be squashed/amended into patch 01/10 where the flags
-parameter has originally been introduced into this debug message.
-
-Best regards
-Ulrich
-
-
->  			(unsigned long long)start,
->  			(unsigned long long)end, flags);
->=20=20
-> diff --git a/include/memory.h b/include/memory.h
-> index c793bb51ed77..31da5d74d568 100644
-> --- a/include/memory.h
-> +++ b/include/memory.h
-> @@ -23,8 +23,17 @@ int barebox_add_memory_bank(const char *name, resource=
-_size_t start,
->=20=20
->  #define for_each_memory_bank(mem)	list_for_each_entry(mem, &memory_banks=
-, list)
->=20=20
-> -struct resource *request_sdram_region(const char *name, resource_size_t =
-start,
-> -		resource_size_t size);
-> +struct resource *__request_sdram_region(const char *name, unsigned flags,
-> +					resource_size_t start, resource_size_t size);
-> +
-> +static inline struct resource *request_sdram_region(const char *name,
-> +						    resource_size_t start,
-> +						    resource_size_t size)
+>  common/usbgadget.c         | 15 ++++++++++++++-
+>  include/usb/gadget-multi.h |  3 +++
+>  2 files changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/common/usbgadget.c b/common/usbgadget.c
+> index 2ec6d9226cca..161fd16fedb7 100644
+> --- a/common/usbgadget.c
+> +++ b/common/usbgadget.c
+> @@ -121,6 +121,12 @@ static int usbgadget_autostart_set(struct param_d *param, void *ctx)
+>  	return err;
+>  }
+>  
+> +void usbgadget_autostart(bool enable)
 > +{
-> +	/* IORESOURCE_MEM is implicit for all SDRAM regions */
-> +	return __request_sdram_region(name, 0, start, size);
+> +	globalvar_set("usbgadget.autostart", enable ? "1" : "0");
+> +	autostart = enable;
 > +}
 > +
->  int release_sdram_region(struct resource *res);
->=20=20
->  void memory_bank_find_space(struct memory_bank *bank, resource_size_t *r=
-etstart,
+>  static int usbgadget_globalvars_init(void)
+>  {
+>  	globalvar_add_simple_bool("usbgadget.acm", &acm);
+> @@ -132,8 +138,15 @@ device_initcall(usbgadget_globalvars_init);
+>  
+>  static int usbgadget_autostart_init(void)
+>  {
+> -	if (IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART))
+> +	if (IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART)) {
+>  		globalvar_add_bool("usbgadget.autostart", usbgadget_autostart_set, &autostart, NULL);
+> +		/* We are already at latest initcall level, yet board code
+> +		 * may want to set this variable without resorting to scripts.
+> +		 * Check autostart manually here, so we don't miss it.
+> +		 */
+> +		if (autostart)
+> +			globalvar_set("usbgadget.autostart", "1");
+> +	}
+>  	return 0;
+>  }
 
+The code is a bit hard to follow with the approach of starting the
+gadget exclusively from the setter function of global.usbgadget.autostart
 
---=20
-Pengutronix e.K.                           | Ulrich =C3=96lmann            =
-   |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Can we go with the following approach? It moves the starting of the usb
+gadget to a function that first checks if all prerequisites are
+fulfilled to start the gadget and then starts it if desired.
+
+Sascha
+
+--------------------------8<---------------------------------
+
+>From e246fc934cbd0423cb8d98353f8cd747f875011d Mon Sep 17 00:00:00 2001
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 15 Aug 2022 11:17:33 +0200
+Subject: [PATCH] usbgadget: autostart: add usbgadget_autostart() for board
+ code
+
+global.usbgadget.autostart is registered at postenvironment level
+initcall, so changing its value before that doesn't have the desired
+effect of automatically starting the usb gadget.
+
+Refactor the code so that we have a usbgadget_do_autostart() function
+that first checks if it should run at all and that it's the right time
+to run. This function can be called at any time and based on that
+implement usbgadget_autostart() to let board code be able to trigger
+the autorun functionality.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/usbgadget.c         | 37 ++++++++++++++++++++++++++++++++-----
+ include/usb/gadget-multi.h |  3 +++
+ 2 files changed, 35 insertions(+), 5 deletions(-)
+
+diff --git a/common/usbgadget.c b/common/usbgadget.c
+index 2ec6d9226c..7291fbf4d5 100644
+--- a/common/usbgadget.c
++++ b/common/usbgadget.c
+@@ -20,6 +20,7 @@
+ #include <system-partitions.h>
+ 
+ static int autostart;
++static int nv_loaded;
+ static int acm;
+ static char *dfu_function;
+ 
+@@ -98,13 +99,20 @@ err:
+ 	return ret;
+ }
+ 
+-static int usbgadget_autostart_set(struct param_d *param, void *ctx)
++static int usbgadget_do_autostart(void)
+ {
+ 	struct usbgadget_funcs funcs = {};
+ 	static bool started;
+ 	int err;
+ 
+-	if (!autostart || started)
++	if (!IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART))
++		return 0;
++
++	/*
++	 * We want to run this function exactly once when the
++	 * environment is loaded and autostart is requested
++	 */
++	if (!nv_loaded || !autostart || started)
+ 		return 0;
+ 
+ 	if (get_fastboot_bbu())
+@@ -121,19 +129,38 @@ static int usbgadget_autostart_set(struct param_d *param, void *ctx)
+ 	return err;
+ }
+ 
++static int usbgadget_autostart_set(struct param_d *param, void *ctx)
++{
++	usbgadget_do_autostart();
++
++	return 0;
++}
++
++void usbgadget_autostart(bool enable)
++{
++	autostart = enable;
++
++	usbgadget_do_autostart();
++}
++
+ static int usbgadget_globalvars_init(void)
+ {
+ 	globalvar_add_simple_bool("usbgadget.acm", &acm);
+ 	globalvar_add_simple_string("usbgadget.dfu_function", &dfu_function);
++	if (IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART))
++		globalvar_add_bool("usbgadget.autostart", usbgadget_autostart_set,
++				   &autostart, NULL);
+ 
+ 	return 0;
+ }
+-device_initcall(usbgadget_globalvars_init);
++coredevice_initcall(usbgadget_globalvars_init);
+ 
+ static int usbgadget_autostart_init(void)
+ {
+-	if (IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART))
+-		globalvar_add_bool("usbgadget.autostart", usbgadget_autostart_set, &autostart, NULL);
++	nv_loaded = true;
++
++	usbgadget_do_autostart();
++
+ 	return 0;
+ }
+ postenvironment_initcall(usbgadget_autostart_init);
+diff --git a/include/usb/gadget-multi.h b/include/usb/gadget-multi.h
+index 2d8d7533a8..e67ca165c1 100644
+--- a/include/usb/gadget-multi.h
++++ b/include/usb/gadget-multi.h
+@@ -3,6 +3,7 @@
+ #ifndef __USB_GADGET_MULTI_H
+ #define __USB_GADGET_MULTI_H
+ 
++#include <linux/types.h>
+ #include <usb/fastboot.h>
+ #include <usb/dfu.h>
+ #include <usb/usbserial.h>
+@@ -36,4 +37,6 @@ struct usbgadget_funcs {
+ 
+ int usbgadget_register(const struct usbgadget_funcs *funcs);
+ 
++void usbgadget_autostart(bool enable);
++
+ #endif /* __USB_GADGET_MULTI_H */
+-- 
+2.30.2
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
