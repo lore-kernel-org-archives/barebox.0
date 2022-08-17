@@ -1,56 +1,63 @@
-Delivery-date: Wed, 17 Aug 2022 08:31:57 +0200
+Delivery-date: Wed, 17 Aug 2022 09:12:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oOCar-001bbn-UT
-	for lore@lore.pengutronix.de; Wed, 17 Aug 2022 08:31:57 +0200
+	id 1oODE5-001dEx-TK
+	for lore@lore.pengutronix.de; Wed, 17 Aug 2022 09:12:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oOCap-00023F-Vg
-	for lore@pengutronix.de; Wed, 17 Aug 2022 08:31:56 +0200
+	id 1oODE3-0007A8-Uh
+	for lore@pengutronix.de; Wed, 17 Aug 2022 09:12:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7dy7dZaQdv1/rVqUz4ZpwPjBvMODesFoLiyJ++MmK6I=; b=hcGwAqY5iioWINuowaGoNt8sBZ
-	rkwER0mwcOleOYqJfokcpknWJgDQzsgtReNb2WzHz58PZcmmBI/zASkWt8Pk++H+P1rvPE6kHrjMR
-	YcmSiywYDjDqRL13xvyo2IotkJ8CQjLFMZGFcjH3uUEfMRvC537bV1hzNJelt+/p5/M/nW/YclmU+
-	Wd2oO4K1myyFlZScXaf4I7o81fFZMVLnbRh4UlVLtnCahJJflbPnt7hf0GPbTZSdw0O1PWCaaWZul
-	sPWPlvJo1N64NZytiFVadH72QFsbFYU2H8p0kFQ50mQa7epl7do1uxSkhig23GC2AugfIVPGmEYKe
-	0i9/AnyA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=EjkvGqULp9I8j4s8NaNqgcxCkaOlQdB+T+5sm3plRbI=; b=c1OfIvonlLy6J+jP4RS5tdpmPX
+	xRYxK3jlhRBrfOAKh15Sk6GPJ5h5IKCoKc/v9NF+0scOGHOwRVYedta/1M0hKfJTT6hmtwzoG+OCg
+	HlwK5qNZMaWnOH/nw/KTdSWIO0FTasO8n/e63A/cCfVf0kI3rT9LjPoAXeGFz4ycM4sx2quGm1DHz
+	AElTW0PRi49PvIrdI1asbuXS33ioqpdB2InLR1qWcUPZ2CcI346pmv/vl1XWGn9b6VUN3h2Lx+sZh
+	ymiAHUsKPzX8oZjdswrHET/3f2pRsA9ccUUrkkaSk9oXX2uPqMZOto8leAsmiiHbj3DR21hDcdDJM
+	IKb2Ktvg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oOCZF-00ByiR-Fw; Wed, 17 Aug 2022 06:30:17 +0000
+	id 1oODCW-00Cpsy-8I; Wed, 17 Aug 2022 07:10:52 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oOCZA-00BygA-AH
-	for barebox@lists.infradead.org; Wed, 17 Aug 2022 06:30:13 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1oOCZ8-0001dq-0w; Wed, 17 Aug 2022 08:30:10 +0200
-Message-ID: <80d3e34a-37aa-1d04-ff21-5ccd7a9cadc4@pengutronix.de>
-Date: Wed, 17 Aug 2022 08:30:10 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>
+	id 1oODCO-00Cpkj-W7
+	for barebox@lists.infradead.org; Wed, 17 Aug 2022 07:10:46 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oODCN-0006dR-9G; Wed, 17 Aug 2022 09:10:43 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oODCM-0004Oh-Vi; Wed, 17 Aug 2022 09:10:42 +0200
+Date: Wed, 17 Aug 2022 09:10:42 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org, mfe@pengutronix.de
+Message-ID: <20220817071042.GR17485@pengutronix.de>
 References: <20220815091733.1973736-1-a.fatoum@pengutronix.de>
  <20220816075710.GG17485@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220816075710.GG17485@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <80d3e34a-37aa-1d04-ff21-5ccd7a9cadc4@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <80d3e34a-37aa-1d04-ff21-5ccd7a9cadc4@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220816_233012_420714_8319BBC8 
-X-CRM114-Status: GOOD (  14.91  )
+X-CRM114-CacheID: sfid-20220817_001045_074495_4B8A9C60 
+X-CRM114-Status: GOOD (  19.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,31 +75,32 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
 Subject: Re: [PATCH] usbgadget: autostart: add usbgadget_autostart helper for
  board code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Sascha,
-
-On 16.08.22 09:57, Sascha Hauer wrote:
-> The code is a bit hard to follow with the approach of starting the
-> gadget exclusively from the setter function of global.usbgadget.autostart
+On Wed, Aug 17, 2022 at 08:30:10AM +0200, Ahmad Fatoum wrote:
+> Hello Sascha,
 > 
-> Can we go with the following approach? It moves the starting of the usb
-> gadget to a function that first checks if all prerequisites are
-> fulfilled to start the gadget and then starts it if desired.
+> On 16.08.22 09:57, Sascha Hauer wrote:
+> > The code is a bit hard to follow with the approach of starting the
+> > gadget exclusively from the setter function of global.usbgadget.autostart
+> > 
+> > Can we go with the following approach? It moves the starting of the usb
+> > gadget to a function that first checks if all prerequisites are
+> > fulfilled to start the gadget and then starts it if desired.
+> 
+> Just tested it and works for me. Please apply.
 
-Just tested it and works for me. Please apply.
+Did that.
 
-Thanks!
-Ahmad
-
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
