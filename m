@@ -1,61 +1,61 @@
-Delivery-date: Wed, 17 Aug 2022 13:44:55 +0200
+Delivery-date: Wed, 17 Aug 2022 13:45:03 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oOHTk-001pba-22
-	for lore@lore.pengutronix.de; Wed, 17 Aug 2022 13:44:55 +0200
+	id 1oOHTr-001pcG-Rh
+	for lore@lore.pengutronix.de; Wed, 17 Aug 2022 13:45:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oOHTg-0001xh-Gu
-	for lore@pengutronix.de; Wed, 17 Aug 2022 13:44:54 +0200
+	id 1oOHTo-0001zN-5H
+	for lore@pengutronix.de; Wed, 17 Aug 2022 13:45:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BHWeiie5AG2ZVYNaiEWhBFQ3y9Oe4LKVrBe9wIMNEHU=; b=ogYKQyyhFBFDvE9C+X+H+DLnr5
-	80DKzMNvMUR0lLlz76aKnDHZrLWDp8KYBy4NkVB9+0mZW6JvsEZG+TBVO1prHhUMINb7Qf57wy8gX
-	6AipwgDqxZaM78/hCv/Hc8+Nq/FICt9yUXUC0RKBWigSscBDSVK+RW1cZZymQR8S5wSAS3JiJytTS
-	jRpLmPRXecVQbyjsOZ0/0l0oacqQkWWWuCJFxAvPKkO78SkKm25N8k4pFvcR4+2xULLo0J45ySFzg
-	B+GOMEfz2M0Qek0YYL2ike5xSQvalgh50eW0rizCKb3Z53AjeERtd/TJB9sdPGTkfN9xqYB0wu2ha
-	5H9TDm9Q==;
+	bh=AQCV1ktDwg/0/ysyEckG9VJ16GnsZ7xrgQfhQh+2rGM=; b=xYaKKXnSSxRxlwT2MZVV7A33FH
+	OkwB7KGyxxuNI08H3we+VL6GFgGCYzu658sKvRbEOXWczdH5GweBAgAttBnO3Fzi7pYGdkoPITZuM
+	ZnovxOzTVkBm6jDaHU1xvpD1YFi52BJf9hMgutp8l2ILXTcaL6xqg1TovuIZcyW3CKHoHr9us5QI6
+	u06CG/Z0jOFgWFJuK6J3sCehFvvlMrkwsAwLIPMNQ5fLDNAdbRkSXuJpAHAtWiXZmMY8FjdWDGyt3
+	jU+vupa0VdXgzoJ6cBCAYlMVtQPbOFjLSLXRM/m/R6NMpontPUiSpGFzxw2r0jrfCL83Uz5Up+sQZ
+	0KhUMfnA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oOHSJ-001ZTl-CI; Wed, 17 Aug 2022 11:43:27 +0000
+	id 1oOHSO-001ZYK-9f; Wed, 17 Aug 2022 11:43:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oOHRp-001ZA2-Uz
+	id 1oOHRp-001ZAB-V1
 	for barebox@lists.infradead.org; Wed, 17 Aug 2022 11:43:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oOHRg-0001Nw-Ai; Wed, 17 Aug 2022 13:42:48 +0200
+	id 1oOHRg-0001OB-II; Wed, 17 Aug 2022 13:42:48 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oOHRf-000IqF-JO; Wed, 17 Aug 2022 13:42:47 +0200
+	id 1oOHRf-000IqL-Q7; Wed, 17 Aug 2022 13:42:47 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oOHRd-007dD1-MK; Wed, 17 Aug 2022 13:42:45 +0200
+	id 1oOHRd-007dCs-LS; Wed, 17 Aug 2022 13:42:45 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: uol@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 17 Aug 2022 13:42:42 +0200
-Message-Id: <20220817114244.1810531-9-a.fatoum@pengutronix.de>
+Date: Wed, 17 Aug 2022 13:42:39 +0200
+Message-Id: <20220817114244.1810531-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220817114244.1810531-1-a.fatoum@pengutronix.de>
 References: <20220817114244.1810531-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220817_044258_124220_39B287D7 
-X-CRM114-Status: GOOD (  17.74  )
+X-CRM114-CacheID: sfid-20220817_044258_071179_19EA8B2F 
+X-CRM114-Status: GOOD (  14.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,111 +78,164 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 08/10] ARM: mmu: use reserve mem entries to modify maps
+Subject: [PATCH v2 05/10] of: reserved-mem: reserve regions prior to mmu_initcall()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Now that we both have a way to mark SDRAM regions requested as reserved
+and an postmem_initcall() to do this add, change device tree memory
+reservation parsing code to use them instead of requesting them as
+normal memory at coredevice_initcall() level. This allows us to
+reuse this information for MMU setup in the follow-up commit.
 
-Like done for ARM64, use the reserved memory regions marked in the SDRAM
-bank to map these regions uncached and eXecute Never to avoid speculative
-access into these regions from causing hard-to-debug data aborts.
-
-Unlike with mmu_64, for CONFIG_MMU_EARLY systems, the MMU isn't turned
-off before changing the page table. So what we do instead is allocating
-a 16K shadow buffer and modifying that and afterwards overwriting the
-active TTB with it.
-
-We could instead use set_ttbr() to move the page table, but in interest
-of minimizing chance of breaking older ARM platforms, we keep the online
-changing of the entries for now.
-
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-[afa: use SDRAM regions instead of FDT reserve entries]
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/cpu/mmu.c | 40 +++++++++++++++++++++++++++++-----------
- 1 file changed, 29 insertions(+), 11 deletions(-)
+ common/memory.c           | 15 +++------------
+ drivers/of/reserved-mem.c | 34 +++++++++++++++++++++++-----------
+ include/of.h              |  7 -------
+ 3 files changed, 26 insertions(+), 30 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 6388e1bf14f6..f9c629c0f19d 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -413,6 +413,7 @@ static void vectors_init(void)
- void __mmu_init(bool mmu_on)
- {
- 	struct memory_bank *bank;
-+	void *oldttb = NULL;
- 
- 	arm_set_cache_functions();
- 
-@@ -430,15 +431,17 @@ void __mmu_init(bool mmu_on)
- 		pte_flags_uncached = PTE_FLAGS_UNCACHED_V4;
- 	}
- 
-+	ttb = xmemalign(ARM_TTB_SIZE, ARM_TTB_SIZE);
-+
-+	/*
-+	 * Early MMU code may have already enabled the MMU. We assume a
-+	 * flat 1:1 section mapping in this case.
-+	 */
- 	if (mmu_on) {
--		/*
--		 * Early MMU code has already enabled the MMU. We assume a
--		 * flat 1:1 section mapping in this case.
--		 */
--		/* Clear unpredictable bits [13:0] */
--		ttb = (uint32_t *)(get_ttbr() & ~0x3fff);
-+		oldttb = (uint32_t *)(get_ttbr() & ~0x3fff);
-+		memcpy(ttb, oldttb, ARM_TTB_SIZE);
- 
--		if (!request_sdram_region("ttb", (unsigned long)ttb, SZ_16K))
-+		if (!request_sdram_region("ttb", (unsigned long)oldttb, SZ_16K))
- 			/*
- 			 * This can mean that:
- 			 * - the early MMU code has put the ttb into a place
-@@ -447,10 +450,8 @@ void __mmu_init(bool mmu_on)
- 			 *   the ttb will get corrupted.
- 			 */
- 			pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
--					ttb);
-+				oldttb);
- 	} else {
--		ttb = xmemalign(ARM_TTB_SIZE, ARM_TTB_SIZE);
--
- 		set_ttbr(ttb);
- 
- 		/* For the XN bit to take effect, we can't be using DOMAIN_MANAGER. */
-@@ -468,11 +469,28 @@ void __mmu_init(bool mmu_on)
- 	vectors_init();
- 
- 	for_each_memory_bank(bank) {
-+		struct resource *rsv;
-+
- 		create_sections(ttb, bank->start, bank->start + bank->size - 1,
- 				PMD_SECT_DEF_CACHED);
--		__mmu_cache_flush();
-+
-+		for_each_reserved_region(bank, rsv) {
-+			create_sections(ttb, resource_first_page(rsv),
-+					resource_count_pages(rsv),
-+					attrs_uncached_mem());
-+		}
- 	}
- 
-+	/*
-+	 * We could set_ttbr(ttb) here instead and save on the copy, but
-+	 * for now we play it safe, so we don't mess with the older ARMs.
-+	 */
-+	if (oldttb) {
-+		memcpy(oldttb, ttb, ARM_TTB_SIZE);
-+		free(ttb);
-+	}
-+
-+	__mmu_cache_flush();
- 	__mmu_cache_on();
+diff --git a/common/memory.c b/common/memory.c
+index 40c795d2cde1..7e24ecb2bd03 100644
+--- a/common/memory.c
++++ b/common/memory.c
+@@ -56,17 +56,6 @@ void mem_malloc_init(void *start, void *end)
+ 	mem_malloc_initialized = 1;
  }
  
+-static int request_reservation(const struct resource *res)
+-{
+-	if (!(res->flags & IORESOURCE_EXCLUSIVE))
+-		return 0;
+-
+-	pr_debug("region %s %pa-%pa\n", res->name, &res->start, &res->end);
+-
+-	request_sdram_region(res->name, res->start, resource_size(res));
+-	return 0;
+-}
+-
+ static int mem_malloc_resource(void)
+ {
+ #if !defined __SANDBOX__
+@@ -96,7 +85,7 @@ static int mem_malloc_resource(void)
+ 	request_sdram_region("stack", STACK_BASE, STACK_SIZE);
+ #endif
+ 
+-	return of_reserved_mem_walk(request_reservation);
++	return 0;
+ }
+ coredevice_initcall(mem_malloc_resource);
+ 
+@@ -173,6 +162,8 @@ int barebox_add_memory_bank(const char *name, resource_size_t start,
+ 	if (IS_ERR(res))
+ 		return PTR_ERR(res);
+ 
++	res->flags = IORESOURCE_MEM;
++
+ 	bank = xzalloc(sizeof(*bank));
+ 
+ 	bank->res = res;
+diff --git a/drivers/of/reserved-mem.c b/drivers/of/reserved-mem.c
+index 34e61dfea343..f50a0bd8374d 100644
+--- a/drivers/of/reserved-mem.c
++++ b/drivers/of/reserved-mem.c
+@@ -4,16 +4,31 @@
+ #include <stdio.h>
+ #include <of.h>
+ #include <of_address.h>
++#include <memory.h>
++#include <linux/ioport.h>
+ 
+ #define MEMRESERVE_NCELLS	2
+-#define MEMRESERVE_FLAGS	(IORESOURCE_MEM | IORESOURCE_EXCLUSIVE)
+ 
+-int of_reserved_mem_walk(int (*handler)(const struct resource *res))
++static void request_region(struct resource *r)
++{
++	struct memory_bank *bank;
++
++	for_each_memory_bank(bank) {
++		if (!resource_contains(bank->res, r))
++			continue;
++
++		if (!reserve_sdram_region(r->name, r->start, resource_size(r)))
++			pr_warn("couldn't request reserved sdram region %pa-%pa\n",
++				&r->start, &r->end);
++		break;
++	}
++}
++
++static int of_reserved_mem_walk(void)
+ {
+ 	struct device_node *node, *child;
+ 	int ncells = 0;
+ 	const __be32 *reg;
+-	int ret;
+ 
+ 	node = of_find_node_by_path("/reserved-memory");
+ 	if (node) {
+@@ -27,11 +42,9 @@ int of_reserved_mem_walk(int (*handler)(const struct resource *res))
+ 			of_address_to_resource(child, 0, &resource);
+ 
+ 			resource.name = child->name;
+-			resource.flags = MEMRESERVE_FLAGS;
++			resource.flags = IORESOURCE_MEM;
+ 
+-			ret = handler(&resource);
+-			if (ret)
+-				return ret;
++			request_region(&resource);
+ 		}
+ 	}
+ 
+@@ -48,7 +61,7 @@ int of_reserved_mem_walk(int (*handler)(const struct resource *res))
+ 
+ 			snprintf(name, sizeof(name), "fdt-memreserve-%u", n++);
+ 			resource.name = name;
+-			resource.flags = MEMRESERVE_FLAGS;
++			resource.flags = IORESOURCE_MEM;
+ 
+ 			resource.start = of_read_number(reg + i, MEMRESERVE_NCELLS);
+ 			i += MEMRESERVE_NCELLS;
+@@ -61,11 +74,10 @@ int of_reserved_mem_walk(int (*handler)(const struct resource *res))
+ 
+ 			resource.end = resource.start + size - 1;
+ 
+-			ret = handler(&resource);
+-			if (ret)
+-				return ret;
++			request_region(&resource);
+ 		}
+ 	}
+ 
+ 	return 0;
+ }
++postmem_initcall(of_reserved_mem_walk);
+diff --git a/include/of.h b/include/of.h
+index 37320da5ec76..995e9b591399 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -328,8 +328,6 @@ int of_autoenable_device_by_path(char *path);
+ int of_autoenable_i2c_by_component(char *path);
+ int of_prepend_machine_compatible(struct device_node *root, const char *compat);
+ 
+-int of_reserved_mem_walk(int (*handler)(const struct resource *res));
+-
+ #else
+ static inline struct of_reserve_map *of_get_reserve_map(void)
+ {
+@@ -877,11 +875,6 @@ static inline int of_prepend_machine_compatible(struct device_node *root,
+ 	return -ENODEV;
+ }
+ 
+-static inline int of_reserved_mem_walk(int (*handler)(const struct resource *res))
+-{
+-	return 0;
+-}
+-
+ #endif
+ 
+ #define for_each_property_of_node(dn, pp) \
 -- 
 2.30.2
 
