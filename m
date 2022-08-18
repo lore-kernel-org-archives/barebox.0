@@ -3,57 +3,58 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oOXk4-002c7d-G1
+	id 1oOXk4-002c7m-MD
 	for lore@lore.pengutronix.de; Thu, 18 Aug 2022 07:06:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oOXk1-0006zn-4P
-	for lore@pengutronix.de; Thu, 18 Aug 2022 07:06:50 +0200
+	id 1oOXk2-00070M-4S
+	for lore@pengutronix.de; Thu, 18 Aug 2022 07:06:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=zG1LaWUnY7i1jnovOizTKJ5vKIa1/2SN8TAsS7bF5wY=; b=v6Mk1II6SxCwIuoNCtS+cIuJmn
-	pNizGDJhqbc1FFBdQqM6J1Di/qMgzdArUYxfGxz12ptfYmBDQ8gBGGJ8InfCuQ+diFQWSeqvcVFmQ
-	HncYNy78bJS7t0des4oJTIdY5Vz8v9CVGAq3gSgE+/69EKK+ib9IDnl16zZlbkKMo5mkZXPERd3Ud
-	61jJP4gvzRG6Cgss+38+Yljh8FPc43pcrLhsQr4vQL5zFC5odcCNeCDgTRQRaYWaU//yQzmRJs66T
-	AlzdWaWaBdckWP3wwQRL49AKHLzW02dummJbR1wTnvNlQmI5kSAOUpzwJrThKkisKWTbgv/gLC4zH
-	Xok4/2Uw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=gaJ4g/r7oMI+bkWkycKu37SJvN+HLlOM/pWWF1rWDus=; b=ZHbxVbE51y2nI7JamAHbRNqz8B
+	qzh4JugEXwAXYRSQeBjh6/IwkkZc00YDzs2aoc2KQcaX3sdJHeVptzBWEMh6DrP663D15sgyUjkzF
+	wyD9zoXKiCLVZbo8EB97/Z3mLWqsOps8r2/zpQ2cJxC1S3ahmPATTBjRbpNThcLLPg3+Dqfngzb0/
+	lzRh7anEHd8f8E15V2cJhWJIW3hVljhQvRp1ObouB7n9eRuATZ44hl/Eby48ohcU1ox5ND/uHVUh1
+	DaSpg3bX+Nybo68tVnSt8GlREgqnxjBacByytBEMDCiYUdZTYo3a6Aq780pp0i2QYSNykNVK85IJp
+	WNteLpBg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oOXiP-00FLzS-9A; Thu, 18 Aug 2022 05:05:09 +0000
+	id 1oOXiN-00FLz5-4Z; Thu, 18 Aug 2022 05:05:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oOXiA-00FLmw-AC
+	id 1oOXiA-00FLn1-AD
 	for barebox@lists.infradead.org; Thu, 18 Aug 2022 05:05:00 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oOXi5-0006TM-H3; Thu, 18 Aug 2022 07:04:49 +0200
+	id 1oOXi5-0006TN-RN; Thu, 18 Aug 2022 07:04:49 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oOXi4-000S1r-QA; Thu, 18 Aug 2022 07:04:48 +0200
+	id 1oOXi5-000S1u-5b; Thu, 18 Aug 2022 07:04:49 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oOXi4-008hJ9-27; Thu, 18 Aug 2022 07:04:48 +0200
+	id 1oOXi4-008hJB-2a; Thu, 18 Aug 2022 07:04:48 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Aug 2022 07:04:44 +0200
-Message-Id: <20220818050447.2072932-1-a.fatoum@pengutronix.de>
+Date: Thu, 18 Aug 2022 07:04:45 +0200
+Message-Id: <20220818050447.2072932-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220818050447.2072932-1-a.fatoum@pengutronix.de>
+References: <20220818050447.2072932-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220817_220454_430222_864E0007 
-X-CRM114-Status: UNSURE (   9.25  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220817_220454_430226_3BF21917 
+X-CRM114-Status: GOOD (  14.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,64 +77,75 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/4] kbuild: make sha256sum command available generally
+Subject: [PATCH v2 2/4] pbl: export pbl_barebox_verify
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We currently use the command only for generation a SHA256 sum of the
-barebox proper binary. In preparation for using it in othe Makefiles
-as well, move it to a central location and use the occasion to give
-it a short comment.
+There's no downside to always build the digest verification code in PBL
+and export pbl_barebox_verify to access it. This allows board code to
+use the function for verifying other firmware blobs and
+CONFIG_PBL_VERIFY_PIGGY=y will remain to enable the verification at
+barebox proper extraction time. Code not using it will have the function
+sections garbage collected by the linker, so no functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
   - no change
 ---
- images/Makefile      |  7 -------
- scripts/Makefile.lib | 11 +++++++++++
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ crypto/Makefile | 3 +--
+ include/pbl.h   | 3 +++
+ pbl/decomp.c    | 6 +++---
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/images/Makefile b/images/Makefile
-index 7a8bb94fe0df..218a24ff1ddd 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -112,13 +112,6 @@ $(obj)/piggy.o: $(obj)/barebox.z FORCE
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 762d7e543be4..22035d4f69ee 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -10,8 +10,7 @@ obj-$(CONFIG_DIGEST_MD5_GENERIC)	+= md5.o
+ obj-$(CONFIG_DIGEST_SHA1_GENERIC)	+= sha1.o
+ obj-$(CONFIG_DIGEST_SHA224_GENERIC)	+= sha2.o
+ obj-$(CONFIG_DIGEST_SHA256_GENERIC)	+= sha2.o
+-pbl-$(CONFIG_PBL_VERIFY_PIGGY)		+= sha2.o
+-pbl-$(CONFIG_PBL_VERIFY_PIGGY)		+= digest.o
++pbl-y					+= sha2.o digest.o
+ obj-$(CONFIG_DIGEST_SHA384_GENERIC)	+= sha4.o
+ obj-$(CONFIG_DIGEST_SHA512_GENERIC)	+= sha4.o
+ obj-y	+= memneq.o
+diff --git a/include/pbl.h b/include/pbl.h
+index 0dc23c72dcf5..7dc4fa309257 100644
+--- a/include/pbl.h
++++ b/include/pbl.h
+@@ -30,4 +30,7 @@ const void *
+ fdt_device_get_match_data(const void *fdt, const char *nodepath,
+ 			  const struct fdt_device_id ids[]);
  
- $(obj)/sha_sum.o: $(obj)/barebox.sha.bin FORCE
- 
--quiet_cmd_sha256bin ?= SHA-BIN $@
--      cmd_sha256bin = printf "$(shell sed 's/ .*$$//;s/../0x&\n/g;s/\n$$//' $(obj)/barebox.sum | \
--			while read -r byte; do printf '\%o' $$byte; done)" > $@
--
--quiet_cmd_sha256sum ?= SHA     $@
--      cmd_sha256sum ?= sha256sum $(obj)/barebox.z > $@
--
- $(obj)/barebox.sha.bin: $(obj)/barebox.sum FORCE
- 	$(call if_changed,sha256bin)
- 
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 46042dab3c8f..16308497b845 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -272,6 +272,17 @@ cmd_ld = $(LD) $(KBUILD_LDFLAGS) $(EXTRA_LDFLAGS) $(LDFLAGS_$(@F)) \
- quiet_cmd_objcopy = OBJCOPY $@
- cmd_objcopy = $(OBJCOPY) $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
- 
-+# Hashing
-+# ---------------------------------------------------------------------------
-+# POSIX printf (e.g. dash's) doesn't support \xHH, but octal sequences are fine
++int pbl_barebox_verify(const void *compressed_start, unsigned int len,
++		       const void *hash, unsigned int hash_len);
 +
-+quiet_cmd_sha256bin ?= SHA-BIN $@
-+      cmd_sha256bin = printf "$(shell sed 's/ .*$$//;s/../0x&\n/g;s/\n$$//' $< | \
-+			while read -r byte; do printf '\%o' $$byte; done)" > $@
-+
-+quiet_cmd_sha256sum ?= SHA     $@
-+      cmd_sha256sum ?= sha256sum $< > $@
-+
- # Decompressor for barebox proper binary when using PBL
- # ---------------------------------------------------------------------------
+ #endif /* __PBL_H__ */
+diff --git a/pbl/decomp.c b/pbl/decomp.c
+index 1e0ef81ada00..553895bac5e8 100644
+--- a/pbl/decomp.c
++++ b/pbl/decomp.c
+@@ -54,14 +54,14 @@ static void noinline errorfn(char *error)
+ extern unsigned char sha_sum[];
+ extern unsigned char sha_sum_end[];
  
+-static int pbl_barebox_verify(void *compressed_start, unsigned int len, void *hash,
+-			      unsigned int hash_len)
++int pbl_barebox_verify(const void *compressed_start, unsigned int len,
++		       const void *hash, unsigned int hash_len)
+ {
+ 	struct sha256_state sha_state = { 0 };
+ 	struct digest d = { .ctx = &sha_state };
+ 	char computed_hash[SHA256_DIGEST_SIZE];
+ 	int i;
+-	char *char_hash = hash;
++	const char *char_hash = hash;
+ 
+ 	if (hash_len != SHA256_DIGEST_SIZE)
+ 		return -1;
 -- 
 2.30.2
 
