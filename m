@@ -1,57 +1,61 @@
-Delivery-date: Thu, 18 Aug 2022 10:36:03 +0200
+Delivery-date: Thu, 18 Aug 2022 15:01:09 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oOb0W-002ozu-JA
-	for lore@lore.pengutronix.de; Thu, 18 Aug 2022 10:36:03 +0200
+	id 1oOf94-0031MQ-50
+	for lore@lore.pengutronix.de; Thu, 18 Aug 2022 15:01:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oOb0U-0007ap-9x
-	for lore@pengutronix.de; Thu, 18 Aug 2022 10:36:03 +0200
+	id 1oOf90-0007hd-O9
+	for lore@pengutronix.de; Thu, 18 Aug 2022 15:01:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=N/Ubm+dle/yzKkkb2P0ozZdCKapD5YKDQAEdn7Jxga8=; b=mFtvARa63CErMrDy4PNavDC4KH
-	Rmtj4Xl3wyue5S8ioy/VM4yCD2ehUbq2jDNYA3aWbtf9mzkVmihxkfKC6umiakEULcjIbaTQ3HNct
-	Oia0rmCF0zmqubFn2BEchM65X7wupgbpqBDUuqgqnLLUwFQJkgHrMmgekQZVSy2StrlVOwmW0hWAy
-	1FhxG0WuyDvony25v7YJan5g8tp2Hyzae/SwQM+B6CTSUfZqnKheB86++apjTu0j3m63AA4TDBdLQ
-	A9tHUoypXxf98Rk9kG3YqqI+Q6oxkEGmuu0wgsLwCAm9qzkNyIerUY9shoVEm0pa5NDJXUqwaQGDf
-	6oH6L+PQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=QDCuFLFr+odHgmQ0oNwSrxSzV69I6K17cI7s6A64wSU=; b=nmkXo5Qi0Z6ezg4aH2Xdn/RugH
+	3KdWpOsc3gmtvmzer7ugYH/ttw4tb024dCbk2DLpu0/7DR0U59NVGiZB5kSz97dWbQlDgETUz3RYg
+	ByBRWzCeP1CV/ReNxdBRlN9Zo1zaUu3HBpeFP4VYLNscjiKSbQWBJ4JWHgPUKZIQW9NuT49D3+zFS
+	2hPWNY668/qzuIId5u4zQ2+A8UItg83dQORamjtQQT/1RpW62VD+JERI9yfKD8ZioHK6LLp5EZJm+
+	F/k/piqMQWWtwWvCFlgmA6XhkX8EPMA/JXGAhVprxR5oQPcRO9I14u/y5oLwfGhvh+wzXUzfJ/b5s
+	A5lf/LAw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oOazB-000vpf-2e; Thu, 18 Aug 2022 08:34:41 +0000
+	id 1oOf6p-004wep-DF; Thu, 18 Aug 2022 12:58:51 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oOaz2-000veX-4t
-	for barebox@lists.infradead.org; Thu, 18 Aug 2022 08:34:33 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1oOaz0-0007Eq-AN; Thu, 18 Aug 2022 10:34:30 +0200
-Message-ID: <03ac6176-a090-f2ac-e01c-c01043cd5088@pengutronix.de>
-Date: Thu, 18 Aug 2022 10:34:29 +0200
+	id 1oOeoB-004iF2-D1
+	for barebox@lists.infradead.org; Thu, 18 Aug 2022 12:39:37 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oOeo5-0004ST-AD; Thu, 18 Aug 2022 14:39:29 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oOeo5-0004a8-1T; Thu, 18 Aug 2022 14:39:29 +0200
+Date: Thu, 18 Aug 2022 14:39:29 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, uol@pengutronix.de
+Message-ID: <20220818123929.GW17485@pengutronix.de>
+References: <20220817114244.1810531-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Content-Language: en-US
-To: Philipp Zabel <p.zabel@pengutronix.de>, barebox@lists.infradead.org
-Cc: lst@pengutronix.de, ukl@pengutronix.de
-References: <20220818051955.2088238-1-a.fatoum@pengutronix.de>
- <20220818051955.2088238-3-a.fatoum@pengutronix.de>
- <ceb58cd4e79f540e5036b15e545aa758df3aaeba.camel@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <ceb58cd4e79f540e5036b15e545aa758df3aaeba.camel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220817114244.1810531-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220818_013432_339425_F1C4408C 
-X-CRM114-Status: GOOD (  17.87  )
+X-CRM114-CacheID: sfid-20220818_053935_506977_CFC1D1FA 
+X-CRM114-Status: GOOD (  29.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,51 +73,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 02/10] driver: consult feature controller prior to device
- probe
+Subject: Re: [PATCH v2 00/10] ARM: mmu: inhibit speculation into secure memory
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Philipp,
-
-On 18.08.22 10:19, Philipp Zabel wrote:
-> Hi Ahmad,
+On Wed, Aug 17, 2022 at 01:42:34PM +0200, Ahmad Fatoum wrote:
+> v1 -> v2:
+>   - fold misplaced hunk changing %u added in [01/10] into 0x%x in
+>     [02/10] directly into [01/10] (Ulrich)
+>   - Correct typo in commit message (Sascha)
 > 
-> On Do, 2022-08-18 at 07:19 +0200, Ahmad Fatoum wrote:
->> The newly added feature controller framework has two goals: Avoid
->> probing device in barebox that aren't indeed available
+> When setting up page tables, barebox marks all the address space as
+> eXecute Never and uncached, except for the memory banks. If we happen to
+> have secure memory, this is andequate as speculative execution may read
+> from secure memory or even attempt to execute it leading to spurious
+> data aborts. The way around this so far was either having OP-TEE in SRAM
+> (which normally isn't a barebox memory bank) or having it at the end of
+> DRAM, but adjusting size, so it's not covered by a memory bank.
 > 
-> This specific wording makes me wonder why this isn't implemented inside
-> of_device_is_available().
+> This adds a generic solution to the issue. We already request the SDRAM
+> regions described by the reserved memory entries in the DT. We go a step
+> further and mark them as IORESOURCE_BUSY, which we can then evaluat in
+> the MMU setup code to map these regions uncached and eXecute Never.
 > 
-> This would also take care of other devices querying device node
-> availability, for example via of_graph_port_is_available(), if that
-> ever happens.
-
-I admit that restricting the barebox-side of feature controllers to device
-probe can be limiting. For kernel fixup, any node may be disabled, unlike
-with barebox, where only device probes can be skipped.
-
-Placing the feature controller check in of_device_is_available is not
-trivial. We currently do a single pass through the device tree and create
-devices that are of_device_is_available(). If we start to look up the
-feature controller there, we will need to do device creation in multiple
-passes. While of_probe() can be called multiple times, I think there are
-quite a few cornercase we will need to take into consideration when
-doing this and are thus better addressed separately when the need arises.
-
-Thanks,
-Ahmad
-
+> There has been previous attempts by Rouven to achieve this, the latest
+> being:
 > 
-> regards
-> Philipp
+>   https://lore.barebox.org/barebox/20210803094418.475609-1-r.czerwinski@pengutronix.de/
 > 
+> While this series tries to achieve the same end goal, it goes about it
+> in a different manner: We don't use FDT fixup table to tell us what to
+> nstead have both the FDT fixup table and the /reserved-memory child
+> nodes feed into the barebox request_sdram_region allocator and then
+> use to apply caching attributes.
+> 
+> Note that this doesn't yet solve all problems. For example, PPA secure
+> monitor installation on Layerscape may happen with CONFIG_MMU_EARLY=y,
+> in which case barebox in EL2 may speculate into the secure memory
+> before any device tree reserved-memory settings are considered. For this
+> reason, both early MMU and normal MMU setup must be aware of the
+> reserved memory regions. The original patch set by Rouven used FDT
+> parsing in PBL to achieve this, but this is omitted here to limit
+> scope of the patch series. Instead we only handle the CONFIG_OPTEE_SIZE
+> case out-of-the-box.
+> 
+> Ahmad Fatoum (9):
+>   resource: add flags parameter to __request_region
+>   common: allow requesting SDRAM regions with custom flags
+>   memory: define reserve_sdram_region helper
+>   init: define new postmem_initcall()
+>   of: reserved-mem: reserve regions prior to mmu_initcall()
+>   ARM: mmu64: map reserved regions uncached
+>   ARM: mmu: define attrs_uncached_mem() helper
+>   ARM: early-mmu: don't cache/prefetch OPTEE_SIZE bytes from end of
+>     memory
+>   commands: iomem: point out [R]eserved regions
+> 
+> Rouven Czerwinski (1):
+>   ARM: mmu: use reserve mem entries to modify maps
+
+Applied, thanks
+
+Sascha
 
 
 -- 
