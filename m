@@ -1,53 +1,52 @@
-Delivery-date: Fri, 19 Aug 2022 09:23:09 +0200
+Delivery-date: Fri, 19 Aug 2022 09:23:38 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oOwLW-003pxl-4y
-	for lore@lore.pengutronix.de; Fri, 19 Aug 2022 09:23:09 +0200
+	id 1oOwLz-003q0A-1c
+	for lore@lore.pengutronix.de; Fri, 19 Aug 2022 09:23:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oOwLT-0003kh-WE
-	for lore@pengutronix.de; Fri, 19 Aug 2022 09:23:08 +0200
+	id 1oOwLx-0003np-2X
+	for lore@pengutronix.de; Fri, 19 Aug 2022 09:23:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=G80hIEpRrre0/RvJFftRDGy9WQ6nMcc7XsAL2EQvl1g=; b=Sd1tvX+uk+Tw0JvLu3DORariDX
-	Yz+uIQzoDfuWX0dJJQw3kfvT3I4LDE6cuvsOpl42+k2SDUFBQGJBYDrsdNp3YLSLSYcf6VzRb04Dl
-	LJQql997STZ+K8gLki977egDVuY5rx7VrCgtMiWDLNGhEGOowvZnYFVLaGB8XFlVoqPQnvudZo0G6
-	PcfqKZ6YpRjWhYBatGTffXaLcWD4i4u8aSVcRrxDf3B4D9b4awaOHMjVPF1UD+CAgBYZev/wdW+Rb
-	5vGX+8eN46jJxVNGIwJZgWuqHuMNIrYu+9uq0ivCjBPM6gExumeXrIl/Olkx1mIYqJqD7utAfYfeb
-	nFxAQhYg==;
+	bh=H/iJYyYVgVmtPv9LGXIrUDJ+Zzy2hLSY2D3tm/8zjqM=; b=j+CYA/oKHg+TwQfZB+NbmhU5DJ
+	idV+80PamvSK2TG5L4VgR/SpUe6PaimhXbGv+kfZAupoiLrsICtiZ1jg5lxf49aFS/puRm615ORh0
+	nASQsY8OnHCYHrb68arbYOkZs1XBRnjk4VjKRn4kB1HDNasTnPSoEMdxiHCRdV2ugrUopbJfmkH1W
+	7aaFMEDZJb9U7W/QUIy5o1OodvTObF0RlDMIodYfpYtmdp3vXGduLVaBVYjubajQ7CpU//So6QiQo
+	9g/I8d6hZ6NXGjItnjqkpnVYkvodyYm3FOkA/syquZfj4IDMTP47hz9iHEDxQMsNbLko5Z9EC+Gbg
+	0mvfGSYg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oOwKP-003GnZ-5a; Fri, 19 Aug 2022 07:22:01 +0000
+	id 1oOwLC-003HF0-AI; Fri, 19 Aug 2022 07:22:50 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oOwKL-003Gjm-6m
-	for barebox@lists.infradead.org; Fri, 19 Aug 2022 07:21:58 +0000
+	id 1oOwL8-003HE4-Fr
+	for barebox@lists.infradead.org; Fri, 19 Aug 2022 07:22:47 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oOwKJ-0003Xx-BV; Fri, 19 Aug 2022 09:21:55 +0200
+	id 1oOwL7-0003fM-9N; Fri, 19 Aug 2022 09:22:45 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oOwKJ-0006Tl-2k; Fri, 19 Aug 2022 09:21:55 +0200
-Date: Fri, 19 Aug 2022 09:21:55 +0200
+	id 1oOwL7-0006UM-0U; Fri, 19 Aug 2022 09:22:45 +0200
+Date: Fri, 19 Aug 2022 09:22:44 +0200
 To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220819072155.GY17485@pengutronix.de>
+Message-ID: <20220819072244.GZ17485@pengutronix.de>
 References: <cover.1660552646.git.enrico.scholz@sigma-chemnitz.de>
- <71267fc55b72c3d2c86e9b58ef95f3e2f3ba93f4.1660552646.git.enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <71267fc55b72c3d2c86e9b58ef95f3e2f3ba93f4.1660552646.git.enrico.scholz@sigma-chemnitz.de>
+In-Reply-To: <cover.1660552646.git.enrico.scholz@sigma-chemnitz.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -55,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220819_002157_277094_E6E64C7A 
-X-CRM114-Status: GOOD (  26.38  )
+X-CRM114-CacheID: sfid-20220819_002246_585026_0843B523 
+X-CRM114-Status: GOOD (  19.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,78 +78,35 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v3 01/18] progress: add close_progress() to display some
- statistics
+Subject: Re: [PATCH v3 00/18] add "windowsize" (RFC 7440) support for tftp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Aug 15, 2022 at 10:42:05AM +0200, Enrico Scholz wrote:
-> With a later patch, this will produce output like
+On Mon, Aug 15, 2022 at 10:42:04AM +0200, Enrico Scholz wrote:
+> The tftp "windowsize" greatly improves the performance of tftp
+> transfers.  This patchset adds support for it.
 > 
-> | :/ cp -v /mnt/tftp/tmp /tmp/
-> |         [########...#########] 29138411 bytes, 127413 bytes/s
+> The first two patches are a little bit unrelated and enhance the 'cp
+> -v' output by giving information about the transfer speed.  They can
+> be dropped if they are unwanted.
 > 
-> Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-> ---
->  include/progress.h  |  1 +
->  lib/show_progress.c | 25 +++++++++++++++++++++++++
->  2 files changed, 26 insertions(+)
+> I tested the function with an iMX8MP platform in three environments:
 > 
-> diff --git a/include/progress.h b/include/progress.h
-> index 7230bd3a9bd5..219d772201bf 100644
-> --- a/include/progress.h
-> +++ b/include/progress.h
-> @@ -16,6 +16,7 @@ void init_progression_bar(loff_t max);
->   * spinner is printed.
->   */
->  void show_progress(loff_t now);
-> +void close_progress(loff_t total);
->  
->  extern struct notifier_head progress_notifier;
->  
-> diff --git a/lib/show_progress.c b/lib/show_progress.c
-> index 1b624bcb9af8..5b42a2d74b8f 100644
-> --- a/lib/show_progress.c
-> +++ b/lib/show_progress.c
-> @@ -24,6 +24,7 @@
->  static loff_t printed;
->  static loff_t progress_max;
->  static unsigned spin;
-> +static uint64_t start_tm;
->  
->  void show_progress(loff_t now)
->  {
-> @@ -47,11 +48,35 @@ void show_progress(loff_t now)
->  	}
->  }
->  
-> +void close_progress(loff_t total)
-> +{
-> +	uint64_t now = get_time_ns();
-> +	unsigned long speed;
-> +	unsigned long delta;
-> +
-> +	if (now <= start_tm) {
-> +		pr_crit("tm mismatch");
-> +		return;
-> +	}
-> +
-> +	if (total < 0)
-> +		return;
-> +
-> +	/* convert to ms and add '1' to avoid div-by-zero */
-> +	delta = div_u64(now - start_tm, 1000000) + 1;
-> +
-> +	/* speed is bytes/s */
-> +	speed = div_u64(total * 1000, delta);
-> +
-> +	printf("] %llu bytes, %lu bytes/s", (unsigned long long)total, speed);
-> +}
+>   - at home over OpenVPN on an ADSL 50 line  -->  27x speedup
+>   - 1 Gb/s connection --> 9x speedup
+>   - connection over 100 Mb/s switch  -->  4x speedup
+> 
+> In the test, I downloaded variable sized files which were filled from
+> /dev/urandom.  E.g.
+> 
+> | :/ global tftp.windowsize=128
+> | :/ cp -v /mnt/tftp/data-100MiB /tmp/data && sha1sum /tmp/data
+> |         [################################################################] 104857600 bytes, 98550375 bytes/s
+> 
+> For slow connection speeds, smaller files (1MiB, 4 MiB + 20 MiB) were
+> used.
 
-show_progress() doesn't necessarily show the progress in bytes, it could
-also be percent, megabytes or anything else. We could maybe rename this
-to close_progress_bytes(). Also it would be nice to print the sizes in
-human readable form, maybe size_human_readable() could be used here.
+Applied this series beginning with patch 3 for now.
 
 Sascha
 
