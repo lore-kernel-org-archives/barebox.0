@@ -1,54 +1,52 @@
-Delivery-date: Tue, 30 Aug 2022 09:32:42 +0200
+Delivery-date: Tue, 30 Aug 2022 09:34:19 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oSvjm-001U11-3B
-	for lore@lore.pengutronix.de; Tue, 30 Aug 2022 09:32:42 +0200
+	id 1oSvlL-001U4f-OG
+	for lore@lore.pengutronix.de; Tue, 30 Aug 2022 09:34:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oSvjk-0001Y6-Kr
-	for lore@pengutronix.de; Tue, 30 Aug 2022 09:32:41 +0200
+	id 1oSvlK-0001lB-Jx
+	for lore@pengutronix.de; Tue, 30 Aug 2022 09:34:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fz5ZmX0tR7ryPGiacVdl95dp5F19H2QdoJKe4SZOhec=; b=XMbzqbA/7xhRqEpKG4N96hsFOl
-	8HwutCV4oVMl9iMd986eca8OUQENpSCaCJW53RIQC1Hete5dc/EGV5xR7HvPV64rEcAnT8+c/nu8x
-	tPve0iuK36g6CF02iq1UODqPCJ5y2fQqqdrSoP3Nnqw6QVa94v8SLVuikosuxfuTEwALJuYZkvK9B
-	MgXWNDz9d1d9dvdhsQWZImobsMTS2P5xRuUlcMKmYMZ5x/3O9jdxwPApdqelwpRIr9vZqX1o2uJtK
-	XjEciq4OYK+e7gyqjTtXtDMPAOJMWbir5uTXX8oo9yMn1t2CqQI+ocN//9Na6Lv9ELYu9GZ4Ws+ZA
-	lDTNsp/Q==;
+	bh=m6GrCkXSvg4wkz5ylofB6kCjZXr1F2MQsa1OpOySNDE=; b=W3HO1E9USIsY4S2b1jaWdpNCFK
+	7Pvq5ij61MKElo3d56jtnXXz6Nppx5lKK04vD0hHVdOuFtTi/r9a6vOBKwsdpEhLTgRrByzT007AI
+	vSj4ryPJmVAW5klMZgcsFNRtfS3lQRknQ9EZMGvAKrHqeyUqSP3/m9NocouD23PRWaALiJ2U1de7s
+	5RKdKnqI/hglmrlTHNM8pef9hcjn+lmQaxmlNr1cslg2xHgJ5EfDuOd0m3Tm5ZZTgHq+An9p4m2X9
+	frhidZWrlJbtXfZ8UNOarCmm5WX1Bi9tWBZyY5N+AjZ+pO+L8evcohp+eB9r/pHYWDLe673Meth3J
+	Ukq4+3Kg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oSvhw-00ElbI-Iu; Tue, 30 Aug 2022 07:30:48 +0000
+	id 1oSvjz-00EmNE-K2; Tue, 30 Aug 2022 07:32:55 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oSvhm-00ElXx-Pi
-	for barebox@lists.infradead.org; Tue, 30 Aug 2022 07:30:40 +0000
+	id 1oSvju-00EmL8-GF
+	for barebox@lists.infradead.org; Tue, 30 Aug 2022 07:32:52 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oSvhj-00018C-6W; Tue, 30 Aug 2022 09:30:35 +0200
+	id 1oSvjs-0001ZM-T5; Tue, 30 Aug 2022 09:32:48 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oSvhi-00080D-D3; Tue, 30 Aug 2022 09:30:34 +0200
-Date: Tue, 30 Aug 2022 09:30:34 +0200
+	id 1oSvjs-00082K-Ka; Tue, 30 Aug 2022 09:32:48 +0200
+Date: Tue, 30 Aug 2022 09:32:48 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>,
-	barebox@lists.infradead.org
-Message-ID: <20220830073034.GE24324@pengutronix.de>
-References: <20220828140231.930643-1-enrico.scholz@sigma-chemnitz.de>
- <ad848886-ba94-1e34-0ae8-4157a19e8404@pengutronix.de>
+Cc: barebox@lists.infradead.org, lst@pengutronix.de, ukl@pengutronix.de
+Message-ID: <20220830073248.GF24324@pengutronix.de>
+References: <20220818051955.2088238-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ad848886-ba94-1e34-0ae8-4157a19e8404@pengutronix.de>
+In-Reply-To: <20220818051955.2088238-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220830_003038_874485_C4C8C959 
-X-CRM114-Status: GOOD (  21.19  )
+X-CRM114-CacheID: sfid-20220830_003250_566499_5BBB105D 
+X-CRM114-Status: GOOD (  25.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,36 +78,42 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/8] tftp fixups
+Subject: Re: [PATCH 00/10] Add new feature controller framework
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Aug 29, 2022 at 12:52:16PM +0200, Ahmad Fatoum wrote:
-> Hello Enrico,
-> 
-> On 28.08.22 16:02, Enrico Scholz wrote:
-> > The "tftp: allocate buffers and fifo dynamically" patch in the last
-> > patchset broke interaction with non rfc 2347 servers (e.g. when data
-> > transfer starts immediately after RRQ/WRQ without the OACK negotiation
-> > phase).
-> > 
-> > This has been fixed for both RRQ and WRQ requests.
-> > 
-> > For WRQ requests (push), the "tsize" option will not be sent anymore
-> > because it is always '0' and can confuse servers.
-> > 
-> > New patches add some sanity checks which prevent modification of
-> > internal information (blocksize or port numbers) when OACK packets
-> > arrive in the middle of a transfer.
-> 
-> The patch introducing the regression is still in next, which can be
-> rebased unlike master. Perhaps it would be best you provide a fixup
-> for the commit in question (or a revised series, if it would cause
-> conflicts for later commits)? That way, we don't end up with breakage
-> when doing a bisect in future.
+Hi Ahmad,
 
-Yes, please. Both a fixup patch or a revised series would be fine with
-me.
+On Thu, Aug 18, 2022 at 07:19:45AM +0200, Ahmad Fatoum wrote:
+> The i.MX8MM exists in a Lite variant with no VPUs as well as Solo and
+> Dual variants with one or two cores respectively instead of the default
+> four. For i.MX6, we had a manual fixup taking care of deleting the
+> excess CPUs, but for e.g. the i.MX8MP, we have fuses for the M7, VPUs, CAN,
+> CAN-FD, ISPs, NPU, ... etc. Describing all that in the DT is overly verbose
+> as we need to take care not to rely on specific device node names that
+> should be disabled. There has been an upstream attempt to get a binding
+> for U-Boot to act on:
+> 
+>   https://lore.kernel.org/all/20220324042024.26813-1-peng.fan@oss.nxp.com/
+> 
+> This was refused by the DT maintainer, because any solution to this
+> problem should also be flexible enough to cover the case of partitioning
+> devices between the secure and normal world.
+> 
+> There's a patch series upstream to describe a domain-controller binding
+> that allows a hypervisor to partition devices into domains. With the
+> naming generalized, this fits nicely the use case of gating devices
+> behind specific features:
+> 
+> https://lore.kernel.org/all/3ca7cd75-4b62-2380-adb0-646bbeb647a2@pengutronix.de/
+> 
+> This series does that. See the first two commit messages for details.
+> We use a barebox, prefix as the naming isn't set in stone, but the intention
+> is to drop the prefix and potentially rename once an upstream binding is
+> approved.
+
+I am fine with this series. Is this still the way you want to have it
+merged or do you have an update?
 
 Sascha
 
