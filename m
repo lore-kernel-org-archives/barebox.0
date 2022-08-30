@@ -1,56 +1,75 @@
-Delivery-date: Tue, 30 Aug 2022 09:41:23 +0200
+Delivery-date: Tue, 30 Aug 2022 09:41:41 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oSvsB-001UI7-A5
-	for lore@lore.pengutronix.de; Tue, 30 Aug 2022 09:41:23 +0200
+	id 1oSvsT-001UJ6-OU
+	for lore@lore.pengutronix.de; Tue, 30 Aug 2022 09:41:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oSvs9-0003PN-L0
-	for lore@pengutronix.de; Tue, 30 Aug 2022 09:41:22 +0200
+	id 1oSvsR-0003Sm-B1
+	for lore@pengutronix.de; Tue, 30 Aug 2022 09:41:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WzEEsgdF0PRs/3Ae4q53jAMl5TtkLv95lN7D0ArFUiM=; b=sOgy15Lyyete3tji6LtNrMGeKM
-	Fbxnumv/jXeODIYUz65Ywsi2dyTmCMP+wOhvv9L3czGuDsUzdMEx05ap9+qp5ToLlIYM1FSFjvrhy
-	iAQrNaXT2ubEYap0LmvO8YFAUeZrRCds9ZAhMUtQ6mN6m5EeuwaCq+WJsIOwudyLSmzYHDPerViy4
-	GT5sqsB+a+rHVJdWJx+0YtnYg7WaeYU4yenrRqGdwYx6AA1NqQfX5U01Z7AHURmbajHbrNYSivexi
-	/lbPEEjxBxohBEJqFNBtLXTZeKxSBfs7A4rYNGD7WPm4r/7jZBY3ObbFXXQT9l3wJpnQLGPvvgpxD
-	lATmhpQA==;
+	bh=wBit4VP+G48aMy/uKyE/QsIG/1dRa18yFutL5buUVQM=; b=U9TOj7BTAAHOwIIpUcEr99ub6n
+	kJrTCHRYQJNmWjWkAcRt6FXKFFoEELP3aBKFjt5dF2gAn0V6geuoC2wtL0TCJ+nG4P/KUAA4Pgjo5
+	iw4Qf7yubFGgQYeDtmkPKrjdxEdRaY8wSLCoEbzq+NEeEqDsk5/87ZGS1Yi/ytxv2i7Ld6LM+jSny
+	PihFcxPu0e8DjNZNMuUD2wJ2jgoZ4TBjCANVx6Uitdjflaaaa/CeO/O2nkCwOnXsxCmG333XP7q9N
+	/jb0scJdBjxSYsdgEMsjpW/9vtfLwy6in63BhYoh/5O6fcTBkCOM2B1M+E1ZHxOwqnHbaAh0SMSEs
+	vTU0gOKw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oSvqd-00EpZk-TG; Tue, 30 Aug 2022 07:39:48 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1oSvqq-00Eph4-FZ; Tue, 30 Aug 2022 07:40:01 +0000
+Received: from smtpout-2.cvg.de ([2003:49:a034:1067:5::2])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oSvpr-00EpEN-Ru
-	for barebox@lists.infradead.org; Tue, 30 Aug 2022 07:39:07 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1oSvpq-0002jO-1J; Tue, 30 Aug 2022 09:38:58 +0200
-Message-ID: <395895f6-0d75-9935-a42d-1c089d5c6272@pengutronix.de>
-Date: Tue, 30 Aug 2022 09:38:57 +0200
+	id 1oSvq3-00Ep57-AO
+	for barebox@lists.infradead.org; Tue, 30 Aug 2022 07:39:13 +0000
+Received: from mail-mta-2.intern.sigma-chemnitz.de (mail-mta-2.intern.sigma-chemnitz.de [192.168.12.70])
+	by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 27U7calQ806691
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
+	for <barebox@lists.infradead.org>; Tue, 30 Aug 2022 09:38:36 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
+	s=v2022040800; t=1661845116;
+	bh=wBit4VP+G48aMy/uKyE/QsIG/1dRa18yFutL5buUVQM=; l=923;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=1ST7CX/X3ijWslGwHoqsoMlwFO1Db8qi8o56cFsciivBUEBjh0Q27HlRXbKX31X3s
+	 LF6A4TheSf8mTmuXwoxesi5UU2b4NDPSYfHdZAkJhGjDU2HnCEF+uLtTEF3GCPlTcB
+	 ZjP7QD1f6aCt/XvprP1HUNd5IRA174GopXPvazgxf08RAWuVUvRi1lcG0Puzd+4efH
+	 fljwEfW7c3WuLQwRA7v315MbDGzisSlmIvxmGehYAhDuykO1/GM7+zZmcYAE1aiZk4
+	 OG9zhO1hBnBoG6fUDzMs6T9954WfBmk6umN5/e/QCGvWFbOAKcNLQe6bKtQy7ZNHj9
+	 UfDksRbCyzpOw==
+Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
+	by mail-mta-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 27U7cQuR1001085
+	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Tue, 30 Aug 2022 09:38:27 +0200
+Received: from mail-msa-2.intern.sigma-chemnitz.de ( [192.168.12.72]) by reddoxx.intern.sigma-chemnitz.de
+	(Reddoxx engine) with SMTP id 4A2187D934B; Tue, 30 Aug 2022 09:38:22 +0200
+Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
+	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 27U7cKdx772620
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Tue, 30 Aug 2022 09:38:20 +0200
+Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.95)
+	(envelope-from <ensc@sigma-chemnitz.de>)
+	id 1oSvpE-00BJ3Z-CO;
+	Tue, 30 Aug 2022 09:38:20 +0200
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+To: barebox@lists.infradead.org
+Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Date: Tue, 30 Aug 2022 09:38:12 +0200
+Message-Id: <20220830073816.2694734-18-enrico.scholz@sigma-chemnitz.de>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20220830073816.2694734-1-enrico.scholz@sigma-chemnitz.de>
+References: <20220830073816.2694734-1-enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org, lst@pengutronix.de, ukl@pengutronix.de
-References: <20220818051955.2088238-1-a.fatoum@pengutronix.de>
- <20220830073248.GF24324@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220830073248.GF24324@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220830_003906_354605_4994DDC4 
-X-CRM114-Status: GOOD (  24.33  )
+X-CRM114-CacheID: sfid-20220830_003911_550301_12B18B02 
+X-CRM114-Status: GOOD (  10.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,68 +87,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 00/10] Add new feature controller framework
+X-Spam-Status: No, score=-102.6 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_WELCOMELIST,
+	USER_IN_WHITELIST autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH v4 17/21] tftp: do not use 'priv->block' for RRQ
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Sascha,
+attribute is not used outside tftp_recv() for RRQ.
 
-On 30.08.22 09:32, Sascha Hauer wrote:
-> Hi Ahmad,
-> 
-> On Thu, Aug 18, 2022 at 07:19:45AM +0200, Ahmad Fatoum wrote:
->> The i.MX8MM exists in a Lite variant with no VPUs as well as Solo and
->> Dual variants with one or two cores respectively instead of the default
->> four. For i.MX6, we had a manual fixup taking care of deleting the
->> excess CPUs, but for e.g. the i.MX8MP, we have fuses for the M7, VPUs, CAN,
->> CAN-FD, ISPs, NPU, ... etc. Describing all that in the DT is overly verbose
->> as we need to take care not to rely on specific device node names that
->> should be disabled. There has been an upstream attempt to get a binding
->> for U-Boot to act on:
->>
->>   https://lore.kernel.org/all/20220324042024.26813-1-peng.fan@oss.nxp.com/
->>
->> This was refused by the DT maintainer, because any solution to this
->> problem should also be flexible enough to cover the case of partitioning
->> devices between the secure and normal world.
->>
->> There's a patch series upstream to describe a domain-controller binding
->> that allows a hypervisor to partition devices into domains. With the
->> naming generalized, this fits nicely the use case of gating devices
->> behind specific features:
->>
->> https://lore.kernel.org/all/3ca7cd75-4b62-2380-adb0-646bbeb647a2@pengutronix.de/
->>
->> This series does that. See the first two commit messages for details.
->> We use a barebox, prefix as the naming isn't set in stone, but the intention
->> is to drop the prefix and potentially rename once an upstream binding is
->> approved.
-> 
-> I am fine with this series. Is this still the way you want to have it
-> merged or do you have an update?
+Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+---
+ fs/tftp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-No updates, please apply series, except for last two RFC commits.
-I'll revise the naming once there is an upstream binding,
-but we can do with the barebox, prefixed binding until then.
-
-Cheers,
-Ahmad
-
-
-> 
-> Sascha
-> 
-
-
+diff --git a/fs/tftp.c b/fs/tftp.c
+index 88767223b052..c6c7a2e3c887 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -425,7 +425,7 @@ static void tftp_recv(struct file_priv *priv,
+ 
+ 	case TFTP_DATA:
+ 		len -= 2;
+-		priv->block = ntohs(*(uint16_t *)pkt);
++		block = ntohs(*(uint16_t *)pkt);
+ 
+ 		if (priv->state == STATE_RRQ) {
+ 			/* first block received; entered only with non rfc
+@@ -440,11 +440,11 @@ static void tftp_recv(struct file_priv *priv,
+ 				break;
+ 		}
+ 
+-		if (priv->block != (uint16_t)(priv->last_block + 1))
++		if (block != (uint16_t)(priv->last_block + 1))
+ 			break;
+ 
+ 		tftp_timer_reset(priv);
+-		tftp_put_data(priv, priv->block, pkt + 2, len);
++		tftp_put_data(priv, block, pkt + 2, len);
+ 
+ 		break;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.37.2
+
 
 
