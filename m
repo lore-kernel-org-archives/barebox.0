@@ -1,85 +1,57 @@
-Delivery-date: Tue, 30 Aug 2022 13:06:37 +0200
+Delivery-date: Tue, 30 Aug 2022 15:40:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oSz4n-001dai-Hf
-	for lore@lore.pengutronix.de; Tue, 30 Aug 2022 13:06:37 +0200
+	id 1oT1TZ-001jid-2W
+	for lore@lore.pengutronix.de; Tue, 30 Aug 2022 15:40:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oSz4j-00070l-PJ
-	for lore@pengutronix.de; Tue, 30 Aug 2022 13:06:36 +0200
+	id 1oT1TX-0003kH-Pw
+	for lore@pengutronix.de; Tue, 30 Aug 2022 15:40:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Mime-Version:References:In-Reply-To:Message-Id:Subject:Cc:To:
-	From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vT3xpdAmIlx1SYTGKu/Mpa7wyfTKREnHtHIhHb0XIRE=; b=mnmrA/lTcfRz9EjlX/hHqPkhjJ
-	fo/7PhsT7euGhpolpIYffxXOHISraJPygTO3g5UheZi7ItZBkCpYn2H4kmoRDQtqh5VRRMF8sCJW9
-	MKVf9+nSmStPgwvOdpPSZ6n89NiaU59F7gyaoWyaA3MhmJfzyT2dm4hRpn9vBlxKyJQ2ZrBeSdXmL
-	iUJfPU/ElBUFFfHyO0sVY7/+iErSfT5oV59zh5x7KYU1KQDNPPy2veVfGoaY6AwRZuIBr0WHLcqFP
-	BCH54vRa9TvVxXV7aeU7E7gQoVbPCMqEMVy9M87aYH1GgQbKo4SXcPlm241BBv8jO3tiX8WyQJMJ8
-	RJIYewkg==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=YrqxAI543dkQech2W6zW2E+KvEV5s2OGs2x5dJtZAy0=; b=SO5LhrIR4psufr5hzZ0QaCG1IJ
+	zmAo2rwS7dONoDs8qr/dSsOsxKzj5gJXj7nuuAS5BZ1TGM4RgrVSskOr0SrJsvGNx5FE/ou3QoTHp
+	EzLtPowuBKHKjKc61K6EQbgmvNfhkmbIRQd7gqZG2bxHs9e4hvlaid08wk197Z1uPSA2ftnXth0u0
+	6YdmRBU2f6kgAsnVKYaEOoOa70DCl0gBOr1nqSgXTwI6yihOR3MtXO5JQ2emYjfZ1xh9a5WbOR9fG
+	yvWZR9C/rUSavn/AwxqXX2zeU57MBumXP1GWPUhFRVYhh1Nq0IItuahQPWWRwR1GzUZmzaNyCPEzp
+	069+VhAA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oSz1o-00GO94-KO; Tue, 30 Aug 2022 11:03:36 +0000
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+	id 1oT1Rs-00HPFR-SB; Tue, 30 Aug 2022 13:38:37 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oSz0x-00GNmp-GR
-	for barebox@lists.infradead.org; Tue, 30 Aug 2022 11:02:44 +0000
-Received: by mail-lf1-x12f.google.com with SMTP id p7so3864257lfu.3
-        for <barebox@lists.infradead.org>; Tue, 30 Aug 2022 04:02:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc;
-        bh=vT3xpdAmIlx1SYTGKu/Mpa7wyfTKREnHtHIhHb0XIRE=;
-        b=DBKq49xLa7YHcjgPcSDT44JXOAYZyJClev7d28YaZfXZ/s0QrL237avdmRZKOR29BB
-         /qgHph6lUTpGHi4ZMndaH48yZB02WDgkZHuaIJ+rWiiM59lMWikKLb3oIKdT1wdYTHoX
-         H0KDZWI+5t+W07P13AqqY2Njb/F/1b9eXVj1QxE6i7tu2HRivWtaYD738oUIr2FBglxA
-         9mN1ItBzLS6tlVxpI2EAjjxDHidon6eu3Q/b44xLfy/TUDul/plWQU7FqiGByuxLO9dH
-         fcoYgovEHp7Ijtk9+jkDSaIHamyT/VOZDcO+OgTD96FlVg3nJJfc2LsPHFfD3trP47TY
-         RS2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=vT3xpdAmIlx1SYTGKu/Mpa7wyfTKREnHtHIhHb0XIRE=;
-        b=YOZbBO7SwB9j58dKD34fbxGCiRaur6cAlS7SF7fm4JFRNM0o0NIOKN9f8rhrls7Rzq
-         Lz2zIz0oVIXvOr+U35c+Xr9ZEgxxrBCrja+pe1tssH2p632NNfiDI4H64U6VR9HXJr/c
-         ebIHoDQhaIXvblkR6D2oRiSUSsc3ZwqUjLL5ZiCwYuFmrojM+PMjDTweL3MniFMsKRcD
-         2t62Z6cYzdBD/HFWNlYcvbdZanBDpHls1gchy9zaKpTRxFB13dbNCkLneUTxnpPC0S0S
-         tzoBdymSlSbLM4K5atzA7TVEsvXer5mUUexV0V30of1++LvQmHPt9TF9GGnXdXylDJJm
-         SPqQ==
-X-Gm-Message-State: ACgBeo3LhtVLo2J6WQszNIo4L2uIoN31sWXxl30AUeCKATJVT8wVLMUS
-	V2CP/6LrQrZiNzNwEHM7bs2vX0mTGjUGMg==
-X-Google-Smtp-Source: AA6agR42VqZYSUqI9WFnCtIgvVHHbZzVcsrJ9uUytZJlu8qpUCXFs7/Lk2hzfnVyJV0yklH0vLAlzw==
-X-Received: by 2002:a05:6512:13a4:b0:479:3b9f:f13c with SMTP id p36-20020a05651213a400b004793b9ff13cmr7259412lfa.380.1661857353408;
-        Tue, 30 Aug 2022 04:02:33 -0700 (PDT)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id x25-20020a056512131900b0048afbe8a6a1sm1571958lfu.241.2022.08.30.04.02.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Aug 2022 04:02:32 -0700 (PDT)
-Date: Tue, 30 Aug 2022 14:05:33 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Ahmad Fatoum <ahmad@a3f.at>, barebox@lists.infradead.org
-Message-Id: <20220830140533.deb229d3e3f32c827e6ff521@gmail.com>
-In-Reply-To: <afdbea2b-35a5-840d-e8e0-3548fc6203fc@pengutronix.de>
-References: <20220426064604.422292-1-ahmad@a3f.at>
-	<20220426064604.422292-2-ahmad@a3f.at>
-	<20220822143242.a7937c979f582c4989303380@gmail.com>
-	<afdbea2b-35a5-840d-e8e0-3548fc6203fc@pengutronix.de>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+	id 1oT1Rm-00HPDA-Hn
+	for barebox@lists.infradead.org; Tue, 30 Aug 2022 13:38:31 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oT1Rl-0003Me-4N; Tue, 30 Aug 2022 15:38:29 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oT1Rk-002si0-EA; Tue, 30 Aug 2022 15:38:28 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oT1Rj-005r0m-AP; Tue, 30 Aug 2022 15:38:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue, 30 Aug 2022 15:38:26 +0200
+Message-Id: <20220830133826.1395373-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220830_040240_076423_FC87DABA 
-X-CRM114-Status: GOOD (  16.81  )
+X-CRM114-CacheID: sfid-20220830_063830_620789_31E29D36 
+X-CRM114-Status: GOOD (  10.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,71 +69,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/2] RISC-V: sifive: enable SPI Flash and SD in
- config
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH] mdio_bus: Configure pinctrl for phy devices
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, 23 Aug 2022 07:18:02 +0200
-Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+Some phys registered from devicetree have pinctrl settings attached to
+them. Configure the pinctrl state to make sure they can be accessed
+before trying to reset and detect the phy devices.
 
-Hi Ahmad,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/phy/mdio_bus.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> Hello Antony,
->=20
-> On 22.08.22 13:32, Antony Pavlov wrote:
-> > On Tue, 26 Apr 2022 08:46:04 +0200
-> > Ahmad Fatoum <ahmad@a3f.at> wrote:
-> >=20
-> > Hi Ahmad!
-> >=20
-> > I'm trying to run SiFive target with emulate.pl, e.g.
-> >=20
-> > barebox$ dd if=3D/dev/zero of=3D/tmp/1M count=3D1 bs=3D1M
-> > barebox$ ./test/emulate.pl sifive_defconfig  -- -drive file=3D/tmp/1M,i=
-f=3Dsd
-> > ...
-> > qemu-system-riscv64: -drive file=3D/tmp/1M,if=3Dsd: machine type does n=
-ot support if=3Dsd,bus=3D0,unit=3D0
-> > Error running emulator: 256
-> >=20
-> > I use QEMU emulator version 5.2.0 (Debian 1:5.2+dfsg-11+deb11u2), pleas=
-e see https://gitlab.com/frantony/barebox-gitlab-ci-runner .
->=20
-> I am running QEMU emulator version 7.0.0 (Debian 1:7.0+dfsg-2~bpo11+2), w=
-here the above
-> worked for just fine.
->=20
-> > If I skip the '-drive file=3D/tmp/1M,if=3Dsd' qemu option then I see "L=
-oad access fault", e.g.
-> >=20
-> > barebox$ ./test/emulate.pl sifive_defconfig
-> > ...
-> > barebox 2022.08.0-00162-g7fce4ae853b0 #1 @1661158478
->=20
-> Without -drive if=3Dsd, MMC controller is probed, but no card can be dete=
-cted:
->=20
->   WARNING: mci0: Cannot reset the SD/MMC card
->   WARNING: mci0: Cannot reset the SD/MMC card
->=20
-> No crashes here. Can you update to a newer QEMU version on your CI host?
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 99d23ffedf..e37ab79f3e 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -22,6 +22,7 @@
+ #include <linux/phy.h>
+ #include <linux/err.h>
+ #include <of_device.h>
++#include <pinctrl.h>
+ 
+ #define DEFAULT_GPIO_RESET_ASSERT       1000      /* us */
+ #define DEFAULT_GPIO_RESET_DEASSERT     1000      /* us */
+@@ -202,6 +203,7 @@ static int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
+ 			continue;
+ 		}
+ 
++		of_pinctrl_select_state_default(child);
+ 		of_mdiobus_reset_phy(mdio, child);
+ 		of_mdiobus_register_phy(mdio, child, addr);
+ 	}
+-- 
+2.30.2
 
-I have update QEMU. At the moment almost all tests were passed successfully.
-
-There is the problem with emulate.pl test_bselftest, please see https://git=
-lab.com/frantony/barebox/-/jobs/2952886676#L242
-
-Can you please run emulate.pl from the master branch in your software envir=
-onment?
-
---=20
-Best regards,
-=A0 Antony Pavlov
 
 
