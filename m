@@ -1,56 +1,61 @@
-Delivery-date: Wed, 31 Aug 2022 20:31:11 +0200
+Delivery-date: Thu, 01 Sep 2022 10:46:20 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oTSUX-002pZD-Vp
-	for lore@lore.pengutronix.de; Wed, 31 Aug 2022 20:31:11 +0200
+	id 1oTfq6-003KhL-7B
+	for lore@lore.pengutronix.de; Thu, 01 Sep 2022 10:46:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oTSUX-0006CB-Vq
-	for lore@pengutronix.de; Wed, 31 Aug 2022 20:31:11 +0200
+	id 1oTfq6-0003TE-Px
+	for lore@pengutronix.de; Thu, 01 Sep 2022 10:46:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jViWaWjnMoPj197vXRU+3iD3Dvye/VUtR5Fm0KYdklc=; b=nKoASKPxWjSfu/zTc/AVQZu2rf
-	iCsx+D1b27tTrG5XD9gPf8zj8szZYmWbHCMpW1Gilr+YLptROPwNybZjE53+dE/REwBO1mWhMFHU6
-	IVR940HLxqayEDLcGm7Ozowwvd7KVMpUoJZqjfXEo2mfZgThDlg/ZgDFZ7ZjO0dci3DA09sl5RPjM
-	hjrNSWXA6ZhAQMfSeltbJAR340Hu7nUFX/2H57TsQMhx2ZpgjXydE+0j8NpSk+BhqNoNagxuNa510
-	dgYbpsspHgQtoOX41aXcF7oK+ZX4bmg6gFU/XzlIeG/lXScgnhMMkN9W8KEMjad9asCSttcECnqEl
-	JtU4zHKg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8yr44ttCUJ33JJBp/tuk+e3AzJk1qYRNQzXU2jTIt9E=; b=fEaZCW8kluP7NplJZj09jkSWdP
+	O03mA+X4wZZbmAnDuMD2+aj5aravXTSot5VdUY3anlyv0+/jEGj/uTyGtYgYK3H82BMNb2z0lS+sN
+	he/IuA4Eiql6MfIw01rTlUExj5RqzUZUt1uX8NYWa6mwsWps4zuh234IG+NRrMzdLDCwQ9dbtOSsQ
+	8S4LkrVqOSKYkzo/ADiLw0MJPq0TFxSrD+jZrgvOPj8JO3nKXk5nmQ1K903J3QGYZuNOMjcNRMmoY
+	O20fZ8xwe572jYHiCmpZaXZWclqxg6PMwdG/UigmW3Vyyg7Q7SkeBpUx8La0vShRpyvXEg19z8SNl
+	CLAVfQng==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oTSSs-007a6a-Ma; Wed, 31 Aug 2022 18:29:27 +0000
+	id 1oTfoU-00AdDl-1V; Thu, 01 Sep 2022 08:44:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oTSRS-007ZC9-8e
-	for barebox@lists.infradead.org; Wed, 31 Aug 2022 18:28:00 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1oTSRO-0005SI-Ki; Wed, 31 Aug 2022 20:27:54 +0200
-Message-ID: <1558b35f-1ed2-f3f2-366c-042f092cc69b@pengutronix.de>
-Date: Wed, 31 Aug 2022 20:27:53 +0200
+	id 1oTfoO-00AdCI-S1
+	for barebox@lists.infradead.org; Thu, 01 Sep 2022 08:44:34 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oTfoK-00034C-94; Thu, 01 Sep 2022 10:44:28 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oTfoJ-0002ko-MZ; Thu, 01 Sep 2022 10:44:27 +0200
+Date: Thu, 1 Sep 2022 10:44:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <20220901084427.GR24324@pengutronix.de>
+References: <20220831092614.68259-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20220831125248.2105893-1-s.hauer@pengutronix.de>
- <20220831125248.2105893-6-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220831125248.2105893-6-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220831092614.68259-1-antonynpavlov@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220831_112758_338440_C571E543 
-X-CRM114-Status: GOOD (  17.19  )
+X-CRM114-CacheID: sfid-20220901_014432_924111_311E3214 
+X-CRM114-Status: GOOD (  22.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,53 +73,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 5/6] Revert "ARM: i.MX8MM: assume USBOTG power domains to
- be powered"
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] fixup-next: linux/nvmem-consumer.h: fix warning
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 31.08.22 14:52, Sascha Hauer wrote:
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Wed, Aug 31, 2022 at 12:26:14PM +0300, Antony Pavlov wrote:
+> This fixes the commit 06825a0ec35343a1
+> ("nvmem: import Linux nvmem_cell_read_variable_le_u32")
+> from the next branch.
 > 
-> This was a workaround and the barebox gpcv2 driver has since gained
-> support for the i.MX8M Mini, so we can drop the device tree level
-> override again.
+> The warning is:
 > 
-> This reverts commit e30131c06b2b81bfc458fa9bbaa30b2e3a6dad88.
-
-I don't know if just deleting code requires a s-o-b, but FWIW:
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
+> include/linux/nvmem-consumer.h:84:9: warning: returning 'void *' from a
+> function with return type 'int' makes integer from pointer without a
+> cast [-Wint-conversion]
+>    84 |  return ERR_PTR(-EOPNOTSUPP);
+>       |         ^~~~~~~~~~~~~~~~~~~~
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  arch/arm/dts/imx8mm.dtsi | 8 --------
->  1 file changed, 8 deletions(-)
-> 
-> diff --git a/arch/arm/dts/imx8mm.dtsi b/arch/arm/dts/imx8mm.dtsi
-> index cdf2128205..78bbacb2b1 100644
-> --- a/arch/arm/dts/imx8mm.dtsi
-> +++ b/arch/arm/dts/imx8mm.dtsi
-> @@ -5,14 +5,6 @@
->  	};
->  };
->  
-> -&pgc_otg1 {
-> -	barebox,allow-dummy;
-> -};
-> -
-> -&pgc_otg2 {
-> -	barebox,allow-dummy;
-> -};
-> -
->  &src {
->  	compatible = "fsl,imx8mm-src", "fsl,imx8mq-src", "syscon", "simple-mfd";
->  
+>  include/linux/nvmem-consumer.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
+> index b461f840957..1fce7e1ae09 100644
+> --- a/include/linux/nvmem-consumer.h
+> +++ b/include/linux/nvmem-consumer.h
+> @@ -81,7 +81,7 @@ static inline int nvmem_cell_read_variable_le_u32(struct device_d *dev,
+>  						  const char *cell_id,
+>  						  u32 *val)
+>  {
+> -	return ERR_PTR(-EOPNOTSUPP);
+> +	return -EOPNOTSUPP;
+>  }
+>  
+>  static inline int nvmem_cell_write(struct nvmem_cell *cell,
+> -- 
+> 2.37.2
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
