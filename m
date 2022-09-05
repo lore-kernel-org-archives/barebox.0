@@ -1,59 +1,56 @@
-Delivery-date: Mon, 05 Sep 2022 17:26:59 +0200
+Delivery-date: Mon, 05 Sep 2022 17:28:42 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oVE01-007dsN-Hm
-	for lore@lore.pengutronix.de; Mon, 05 Sep 2022 17:26:59 +0200
+	id 1oVE1g-007dxJ-AY
+	for lore@lore.pengutronix.de; Mon, 05 Sep 2022 17:28:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oVE01-0000VF-IV
-	for lore@pengutronix.de; Mon, 05 Sep 2022 17:26:58 +0200
+	id 1oVE1g-0000vv-Ga
+	for lore@pengutronix.de; Mon, 05 Sep 2022 17:28:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=6H5M6pOxCH6IUy+OdUvGwdyqStq1V8TZqIuvG2xDNlo=; b=BloZhpHXURPsDkW9FBoWv2gvcN
-	nfLZ8MOjU260t61Yka240l87r2zZGahW0RNq3K07TRTB+mDNGGgrxkwGm39y/YwHIQ7FFtANy3kuj
-	HI6C31TP0FTkAciwEahI9fo4cOda1ABJZCr2LEGm2fWk+hJv4x35SDdgO2VqUq7gTR3WfaCg7Rr0S
-	nccuzazSwiMCwRivwyQ9v+UdYXGsl0D7nT8/lPLe2A0JmyR3R+XdRYm46LGwuKQND7DjnoGuW5GJc
-	J678UpVRQUNtx4A06YDcB7J97KlCWcPAkRln6x9YM/T2zRbWilGtsBLFqG4Vj2T8JyqDwtoNUI2Cg
-	RgWCaynA==;
+	Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=anESYXc0L7NO7Z7/+ie0m88NDVvWjtGEcTRBOiAY+LY=; b=4ogqUxnvLzdjhE1d0UDf8ljw62
+	LQvOZVZkHSnw7z2Vs7dPTOhCTJLczrPCgElOPKWeyV8o9SFg4ralj6eGjyC6ni0ax/HkFjZMwQLli
+	ggHNGFZ08OntoecmY9OKFKOinSnizJoOYNTg/rDNzqSG5M7b9BH4hea0sSJC7IqCSDbleH/Mwmv1b
+	5qMyrAECjAdTAVb67bvmBFCb9+sIMmt6jNs095JHJV6ApbVqOshBhZ1fm0TflThRTte1Gnir9ZpZt
+	o0Z0qXOOK5HTod9QtpeboUCKBLhbczQmgwvOHn1NDEnk8Iso6pbsQKC5ObrMD+SoNUCrtsyOiQMZ4
+	fmJirYIw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oVDyP-005tSR-7K; Mon, 05 Sep 2022 15:25:17 +0000
+	id 1oVE0Q-005vXv-FE; Mon, 05 Sep 2022 15:27:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oVAlY-001gcT-Mn
-	for barebox@lists.infradead.org; Mon, 05 Sep 2022 11:59:59 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1oVAlW-0008Ri-KV; Mon, 05 Sep 2022 13:59:46 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1oVAlU-0043FQ-26; Mon, 05 Sep 2022 13:59:45 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1oVAlV-0081EH-AE; Mon, 05 Sep 2022 13:59:45 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  5 Sep 2022 13:59:44 +0200
-Message-Id: <20220905115944.1911301-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	id 1oVAt3-001p9D-9y
+	for barebox@lists.infradead.org; Mon, 05 Sep 2022 12:07:35 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1oVAt1-0001gg-IS; Mon, 05 Sep 2022 14:07:31 +0200
+Message-ID: <0b0bc5d9-90d7-0fd0-906e-e3a7a893b33b@pengutronix.de>
+Date: Mon, 5 Sep 2022 14:07:31 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Cc: barebox@lists.infradead.org
+References: <20220905070032.536912-1-a.fatoum@pengutronix.de>
+ <ly1qsq2nxy.fsf@ensc-pc.intern.sigma-chemnitz.de>
+Content-Language: en-US
+In-Reply-To: <ly1qsq2nxy.fsf@ensc-pc.intern.sigma-chemnitz.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220905_045958_420610_16F59C1E 
-X-CRM114-Status: UNSURE (   9.85  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220905_050733_612611_0EA6AF8E 
+X-CRM114-Status: GOOD (  15.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,74 +68,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] of: platform: propagate of_devices_ensure_probed_by(name|property) errors
+Subject: Re: [PATCH] tftp: allocate at least 4096 bytes for FIFO
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The of_devices_ensure_probed_by functions are expected to return an
-error code after iterating over all matching devices should any device
-have failed its of_device_ensure_probed. Doing this unearths one common
-failure: a matching node has status = "disabled". These will have
-of_device_ensure_probed return -ENODEV, which makes sense for users
-wanting to ensure a specific device is probed, but doesn't when
-iterating over multiple nodes.
+Hello Enrico,
 
-We already have of_devices_ensure_probed_by_dev_id, which does an early
-of_device_is_available check, so do likewise for the other to
-ensure_probed_by_* functions.
+On 05.09.22 11:03, Enrico Scholz wrote:
+> Ahmad Fatoum <a.fatoum@pengutronix.de> writes:
+> 
+>> On one board, boots from /mnt/tftp currently fail for me with:
+>>
+>> ERROR: tftp: tftp: not enough room in kfifo (only 1376 out of 1432 written
+> 
+> Thanks for noticing that; I sent fixups for the recent patchset.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/of/platform.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+Thanks for the prompt reply and series.
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index dc784ea8e550..a9a5d4c2daf2 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -525,12 +525,15 @@ int of_devices_ensure_probed_by_property(const char *property_name)
- 		return 0;
- 
- 	for_each_node_with_property(node, property_name) {
--		ret = of_device_ensure_probed(node);
-+		if (!of_device_is_available(node))
-+			continue;
-+
-+		err = of_device_ensure_probed(node);
- 		if (err)
- 			ret = err;
- 	}
- 
--	return 0;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(of_devices_ensure_probed_by_property);
- 
-@@ -543,12 +546,15 @@ int of_devices_ensure_probed_by_name(const char *name)
- 		return 0;
- 
- 	for_each_node_by_name(node, name) {
--		ret = of_device_ensure_probed(node);
-+		if (!of_device_is_available(node))
-+			continue;
-+
-+		err = of_device_ensure_probed(node);
- 		if (err)
- 			ret = err;
- 	}
- 
--	return 0;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(of_devices_ensure_probed_by_name);
- 
+> Perhaps, can you test it on your failing platform with changing
+> 
+> | #define TFTP_EXTRA_BLOCKS	2
+> 
+> to
+> 
+> | #define TFTP_EXTRA_BLOCKS	0
+> 
+> ?
+> 
+> This should turn off the workaround of over-allocating memory and isolate
+> (and verify) the fix for the real problem.
+
+Issue was not reproducible with TFTP_EXTRA_BLOCKS 0.
+
+FWIW, the same barebox binary only had the issue when booting via USB network adapter
+(DUB-E100) on one board, but not when booting from i.MX8MM FEC on another board.
+
+Cheers,
+Ahmad
+
+> 
+> 
+> 
+> Enrico
+> 
+
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
