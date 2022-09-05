@@ -1,74 +1,58 @@
-Delivery-date: Mon, 05 Sep 2022 17:40:36 +0200
+Delivery-date: Mon, 05 Sep 2022 17:44:20 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oVEDC-007eyc-PY
-	for lore@lore.pengutronix.de; Mon, 05 Sep 2022 17:40:36 +0200
+	id 1oVEGp-007f89-1O
+	for lore@lore.pengutronix.de; Mon, 05 Sep 2022 17:44:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oVEDD-0003DG-D8
-	for lore@pengutronix.de; Mon, 05 Sep 2022 17:40:36 +0200
+	id 1oVEGp-0003fa-7k
+	for lore@pengutronix.de; Mon, 05 Sep 2022 17:44:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=59++CvzwhHAXhNTIxSUxYA2ZUh11b/It6BNLV2cO/7c=; b=XXig41iKoEKPC5CbYOxZY6Hma0
-	YJPmk9ptxJBQ3TI4JfHas1LkICo7FpSF9oL14RPr/iUIcPWzkszyR4tNEpVJk4wEvT26zvWYrQo9L
-	837tqIMOjfoWNhLYgdmx0wn+AepDVqaLJwE8sewa3PbypdIfT0TyccWHAvjaLhImXkGrFAyoyEHCW
-	LraMouuPsI3MVoDAMiUflrYAnp54nMDb7/OC6ELFhEcg9yUqzUA3vF9jpzUJddE8ofMZZ00MsIW0n
-	PcuUuvSh8d/MKHlMCbILVTRZSIiFTg/P8vHkJSId+hZcyQTMtw/XO+WLawgXiQm30S14neyKBK+cG
-	8kSUJy2Q==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=W2Jn6gL0/n2B8z45XR6bJeJYzGaP6UrCH/zzQlMUXMc=; b=h2xKfj3hvnU7wCxW9BXURnohll
+	Y11um4Pfq2+cPFJz/oIcZPQTZOpzhRy7kOu277v8ftEfNeUggsUZ6t7HsgDMt/UPleRRlGQ9BHUwp
+	Rdy63tX2o9psi1XdI1UXR92BJsb8/HAFjOajaPWVhCJpftTOnHEio5l5/LbmxwSyBhw88YS/J5lGM
+	f4b7rQM2qFYLOy32kJcJIDyx0/OICZme7LpLyFsnUxmBmCvTB0DRCehYNzlIy38pkYsoc/7uR4mxN
+	uw4GwPJkn5P/UTRXk90P9maZxbA3YoflB1a4260kJC1fcRyrJRBcwp3qRvHxpRrty4EY9KVlpQtd1
+	GDDKbdsg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oVEBK-0065gX-2g; Mon, 05 Sep 2022 15:38:39 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1oVEFO-006A4z-SX; Mon, 05 Sep 2022 15:42:50 +0000
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oV8q9-00H4KJ-O5
-	for barebox@bombadil.infradead.org; Mon, 05 Sep 2022 09:56:30 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=59++CvzwhHAXhNTIxSUxYA2ZUh11b/It6BNLV2cO/7c=; b=IxRQTWyG3FsMLnOl1PFXRNThff
-	gp90gLw4vt2gMZIGivr/iPO39Pq4G4JWRxCGxvci+BBvqrc6rnWMhsXEe2H3yLjuUC2nMY23Tn8i6
-	MwY2OrkWakyDCUOBxiG6yhcq+mswNwdb7+6u6B7uvOdfhK6EutccFUsz8dHt5zVbqARqNeGzRH9a2
-	0Nj3PbowyOf2iR1owG4QM8KgA/zFZTOlQ1yeHuvNdlmrsjOvDO7jeZ/xU8YOxJgN7CrdW5izyOmwt
-	XGCViigJnL3+QUzIxkqleeka4m711uiL6UpoSm5qh2xvfc8VD4e9WSJQk0z52iOwInQ4HF/KH/7aD
-	524AvwjA==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
-	by desiato.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oV8q0-009UjM-KK
-	for barebox@lists.infradead.org; Mon, 05 Sep 2022 09:56:24 +0000
+	id 1oV9T9-000ReH-GQ
+	for barebox@lists.infradead.org; Mon, 05 Sep 2022 10:36:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oV8pr-0008Hd-SH; Mon, 05 Sep 2022 11:56:07 +0200
+	id 1oV9T8-0005w9-1o; Mon, 05 Sep 2022 12:36:42 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oV8pp-0042Gp-4f; Mon, 05 Sep 2022 11:56:07 +0200
+	id 1oV9T5-0042k6-Bm; Mon, 05 Sep 2022 12:36:41 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oV8pm-002WeC-0O; Mon, 05 Sep 2022 11:56:02 +0200
+	id 1oV9T6-007LSB-DG; Mon, 05 Sep 2022 12:36:40 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  5 Sep 2022 11:55:37 +0200
-Message-Id: <20220905095557.596891-13-a.fatoum@pengutronix.de>
+Date: Mon,  5 Sep 2022 12:36:39 +0200
+Message-Id: <20220905103639.1750714-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220905095557.596891-1-a.fatoum@pengutronix.de>
-References: <20220905095557.596891-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220905_105617_229795_17D02EB2 
-X-CRM114-Status: GOOD (  10.00  )
+X-CRM114-CacheID: sfid-20220905_033643_577530_58C08356 
+X-CRM114-Status: GOOD (  13.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,42 +75,130 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 12/32] commands: trigger: drop unused variable
+Subject: [PATCH] of: implement of_rename_property()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Static analyzer correctly identifies led as being set, but always
-overwritten later on. As the later assignments all have their own
-argument count check, so we can just drop the first assignment.
+It's often desirable to have the same barebox binary for multiple
+variants. DT-level differences between the variants are often handled
+by having extra device tree nodes that are disabled by default and
+patched as appropriate by board code. It can be useful to have a finer
+granularity for patching though, that covers only a select property, e.g.:
+
+   usbotg1 {
+	vbus-supply = <&reg_vbus_common>;
+	vendor,specialvariant-vbus-supply = <&reg_vbus_specialvariant>;
+   };
+
+The new of_rename_property allows board code to easily activate the
+alternative vbus supply on the specialvariant:
+
+  of_rename_property(np, "vendor,specialvariant-vbus-supply",
+			 "vbus-supply");
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/trigger.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/of/base.c             | 16 ++++++++++++++++
+ include/of.h                  |  8 ++++++++
+ test/self/of_manipulation.c   | 10 ++++++++++
+ test/self/of_manipulation.dts |  6 ++++--
+ 4 files changed, 38 insertions(+), 2 deletions(-)
 
-diff --git a/commands/trigger.c b/commands/trigger.c
-index c1402b66f049..d2802080b96f 100644
---- a/commands/trigger.c
-+++ b/commands/trigger.c
-@@ -16,7 +16,7 @@
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 6a51dd71793d..212b226eb55c 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2301,6 +2301,22 @@ void of_delete_property(struct property *pp)
+ 	free(pp);
+ }
  
- static int do_trigger(int argc, char *argv[])
++struct property *of_rename_property(struct device_node *np,
++				    const char *old_name, const char *new_name)
++{
++	struct property *pp;
++
++	pp = of_find_property(np, old_name, NULL);
++	if (!pp)
++		return NULL;
++
++	of_property_write_bool(np, new_name, false);
++
++	free(pp->name);
++	pp->name = xstrdup(new_name);
++	return pp;
++}
++
+ /**
+  * of_set_property - create a property for a given node
+  * @node - the node
+diff --git a/include/of.h b/include/of.h
+index 29df7d912b33..153e75d3e51d 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -143,6 +143,8 @@ extern struct property *of_new_property_const(struct device_node *node,
+ extern struct property *__of_new_property(struct device_node *node,
+ 					  const char *name, void *data, int len);
+ extern void of_delete_property(struct property *pp);
++extern struct property *of_rename_property(struct device_node *np,
++					   const char *old_name, const char *new_name);
+ 
+ extern struct device_node *of_find_node_by_name(struct device_node *from,
+ 	const char *name);
+@@ -550,6 +552,12 @@ static inline void of_delete_property(struct property *pp)
  {
--	struct led *led = NULL;
-+	struct led *led;
- 	int opt, ret = 0;
- 	int cmd = LED_COMMAND_SHOW_INFO;
- 	enum led_trigger trigger;
-@@ -35,9 +35,6 @@ static int do_trigger(int argc, char *argv[])
- 		}
- 	}
+ }
  
--	if (optind < argc)
--		led = led_by_name_or_number(argv[optind]);
--
- 	switch (cmd) {
- 	case LED_COMMAND_SHOW_INFO:
- 		led_triggers_show_info();
++static inline struct property *of_rename_property(struct device_node *np,
++						  const char *old_name, const char *new_name)
++{
++	return NULL;
++}
++
+ static inline int of_property_read_u32_index(const struct device_node *np,
+ 				const char *propname, u32 index, u32 *out_value)
+ {
+diff --git a/test/self/of_manipulation.c b/test/self/of_manipulation.c
+index 6eb6062e126b..7e30a60ca687 100644
+--- a/test/self/of_manipulation.c
++++ b/test/self/of_manipulation.c
+@@ -57,6 +57,16 @@ static void test_of_basics(struct device_node *root)
+ 	of_property_write_bool(node1, "property1", true);
+ 
+ 	assert_equal(node1, node2);
++
++	of_property_write_bool(node2, "property1", false);
++	of_property_write_u32(node2, "property1", 1);
++	of_property_write_u32(node2, "property2", 2);
++
++	of_property_write_u32(node1, "property3", 1);
++	of_property_write_u32(node1, "property2", 2);
++	of_rename_property(node1, "property3", "property1");
++
++	assert_equal(node1, node2);
+ }
+ 
+ static void test_of_property_strings(struct device_node *root)
+diff --git a/test/self/of_manipulation.dts b/test/self/of_manipulation.dts
+index a69d944c1eb5..2cc6773fa98e 100644
+--- a/test/self/of_manipulation.dts
++++ b/test/self/of_manipulation.dts
+@@ -4,12 +4,14 @@
+ 
+ / {
+ 	node1 {
+-		property1;
++		property1 = <1>;
++		property2 = <2>;
+ 		node21 { };
+ 	};
+ 
+ 	node2 {
+-		property1;
++		property1 = <1>;
++		property2 = <2>;
+ 		node21 { };
+ 	};
+ 
 -- 
 2.30.2
 
