@@ -1,60 +1,60 @@
-Delivery-date: Mon, 05 Sep 2022 17:36:02 +0200
+Delivery-date: Mon, 05 Sep 2022 17:36:07 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oVE8m-007ei3-Pj
-	for lore@lore.pengutronix.de; Mon, 05 Sep 2022 17:36:02 +0200
+	id 1oVE8r-007eiY-La
+	for lore@lore.pengutronix.de; Mon, 05 Sep 2022 17:36:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oVE8n-0001vt-2s
-	for lore@pengutronix.de; Mon, 05 Sep 2022 17:36:02 +0200
+	id 1oVE8q-0001xw-UK
+	for lore@pengutronix.de; Mon, 05 Sep 2022 17:36:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OvYRNHP1beoA79K/+cFiPE/ueZ3ECiU8V0rLuz9DUM8=; b=Hmv9imsssmJw/+0tRitS85g/Ea
-	kPeB8MrvO/MBhaA6NBG7FRZulQ5hFp7ybx5s+5DXvXo/5doqg8kV7CIoRUjKStSLEd+jArRIp5qUn
-	WlotZQrUGU1/R/C7LJipxEEy8jLejMD+/wmbsTnr/xOmu51IzAhjYzC3Pg9kBfiH/JhoCcyXyqw+K
-	dCU1RKbRAP3ArYvu+qJBkvD6Mgxg6Uf6UEhvgTwJOEZi3btHagdbMSk+imcF4W8OsXTtlSnQRgeZm
-	WirxitIgpEc+Q+YxQAglPL5jOhTG2rVIfemCK+grIKB1ONjWUXnMTPmXIqi3MEHmpMPcGPrGp0fBn
-	HrtEeyYQ==;
+	bh=HB+ickbip77BxQp+8rpMfeCsvontRSEbq/opEKv0U4g=; b=aLqnmyCXx5/gOVkotA8d0DA28U
+	v3N4xLp5LUR/VLQaUA6Wv+2rjA07ZYJGz/5oY6azqpeDs203Xd2lwBOXONt2jlxZMK3+OLUwFMbQu
+	Jt9L40BikHQs7F90Tn3VCYTaxlaMGgsaYtpSeSC0PVPB2s2kchEcATWq/O3YAAiGR9/XlqD5PL9Cf
+	rLen/2h3sA+f0Yt1cC0lAyfl3DNI6g7+tZzYQ5MVb4LLiRgAkvnxSljWbR0pZxmLXpUM3XuWPaJt+
+	OLfMZXIGgryIdAfWRvG8ZoMddgcVrD9UyVK8JKOkjwuFOoXQL5I6tCs6Cc6b4hQLj38+tt9Ju+yqz
+	iFBOyrJw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oVE7A-006229-F6; Mon, 05 Sep 2022 15:34:20 +0000
+	id 1oVE77-006203-9W; Mon, 05 Sep 2022 15:34:17 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oV8ps-00H3jq-6z
+	id 1oV8pq-00H3hK-RS
 	for barebox@lists.infradead.org; Mon, 05 Sep 2022 09:56:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oV8pq-0008Gf-Uu; Mon, 05 Sep 2022 11:56:06 +0200
+	id 1oV8pp-0008FD-HC; Mon, 05 Sep 2022 11:56:05 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oV8po-0042GL-6f; Mon, 05 Sep 2022 11:56:06 +0200
+	id 1oV8pm-0042Fw-Or; Mon, 05 Sep 2022 11:56:04 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1oV8pl-002Wdf-TW; Mon, 05 Sep 2022 11:56:01 +0200
+	id 1oV8pl-002We0-Vf; Mon, 05 Sep 2022 11:56:01 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  5 Sep 2022 11:55:26 +0200
-Message-Id: <20220905095557.596891-2-a.fatoum@pengutronix.de>
+Date: Mon,  5 Sep 2022 11:55:33 +0200
+Message-Id: <20220905095557.596891-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220905095557.596891-1-a.fatoum@pengutronix.de>
 References: <20220905095557.596891-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220905_025609_335435_902ACA84 
-X-CRM114-Status: GOOD (  10.71  )
+X-CRM114-CacheID: sfid-20220905_025607_417787_347CB04F 
+X-CRM114-Status: GOOD (  13.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,63 +77,80 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 01/32] clk: define stub implementation for clk_get_parent
+Subject: [PATCH 08/32] usb: otg: always propagate failure to register parameters
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-To make it easier to build drivers utilizing clk_get_parent on sandbox
-for static analysis, provide a stub implementation of the function.
+We assign the result of the first dev_add_param_enum() to a variable,
+but don't use the variable for anything. Refactor device registration
+and parameter addition to a new helper function and do error checking
+right.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/clk.h | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/usb/otg/otgdev.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 42c64d650d1f..b18fc733843d 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -128,14 +128,6 @@ int clk_hw_set_rate(struct clk_hw *hw, unsigned long rate);
- int clk_set_parent(struct clk *clk, struct clk *parent);
- int clk_hw_set_parent(struct clk_hw *hw, struct clk_hw *hwp);
+diff --git a/drivers/usb/otg/otgdev.c b/drivers/usb/otg/otgdev.c
+index 129b1cf5e14b..29cb0d362b9b 100644
+--- a/drivers/usb/otg/otgdev.c
++++ b/drivers/usb/otg/otgdev.c
+@@ -42,6 +42,22 @@ static const char *otg_mode_names[] = {
+ 	[USB_DR_MODE_OTG] = "otg",
+ };
  
--/**
-- * clk_get_parent - get the parent clock source for this clock
-- * @clk: clock source
-- *
-- * Returns struct clk corresponding to parent clock source, or
-- * valid IS_ERR() condition containing errno.
-- */
--struct clk *clk_get_parent(struct clk *clk);
- struct clk_hw *clk_hw_get_parent(struct clk_hw *hw);
- 
- int clk_set_phase(struct clk *clk, int degrees);
-@@ -658,6 +650,14 @@ struct clk_hw *of_clk_hw_simple_get(struct of_phandle_args *clkspec, void *data)
- struct clk *of_clk_get(struct device_node *np, int index);
- struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
- struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec);
-+/**
-+ * clk_get_parent - get the parent clock source for this clock
-+ * @clk: clock source
-+ *
-+ * Returns struct clk corresponding to parent clock source, or
-+ * valid IS_ERR() condition containing errno.
-+ */
-+struct clk *clk_get_parent(struct clk *clk);
- unsigned int of_clk_get_parent_count(struct device_node *np);
- int of_clk_parent_fill(struct device_node *np, const char **parents,
- 		       unsigned int size);
-@@ -717,6 +717,10 @@ static inline unsigned int of_clk_get_parent_count(struct device_node *np)
- {
- 	return 0;
- }
-+static inline struct clk *clk_get_parent(struct clk *clk)
++static int register_otg_device(struct device_d *dev, struct otg_mode *otg)
 +{
-+	return ERR_PTR(-ENOENT);
++	struct param_d *param_mode;
++	int ret;
++
++	ret = register_device(dev);
++	if (ret)
++		return ret;
++
++	param_mode = dev_add_param_enum(dev, "mode",
++			otg_set_mode, NULL, &otg->var_mode,
++			otg_mode_names, ARRAY_SIZE(otg_mode_names), otg);
++
++	return PTR_ERR_OR_ZERO(param_mode);
 +}
- static inline int of_clk_init(struct device_node *root,
- 			      const struct of_device_id *matches)
++
+ static struct device_d otg_device = {
+ 	.name = "otg",
+ 	.id = DEVICE_ID_SINGLE,
+@@ -51,7 +67,6 @@ int usb_register_otg_device(struct device_d *parent,
+ 			    int (*set_mode)(void *ctx, enum usb_dr_mode mode), void *ctx)
  {
+ 	int ret;
+-	struct param_d *param_mode;
+ 	struct otg_mode *otg;
+ 
+ 	otg = xzalloc(sizeof(*otg));
+@@ -68,22 +83,10 @@ int usb_register_otg_device(struct device_d *parent,
+ 	/* register otg.mode as an alias of otg0.mode */
+ 	if (otg_device.parent == NULL) {
+ 		otg_device.parent = parent;
+-		ret = register_device(&otg_device);
++		ret = register_otg_device(&otg_device, otg);
+ 		if (ret)
+ 			return ret;
+-
+-		param_mode = dev_add_param_enum(&otg_device, "mode",
+-				otg_set_mode, NULL, &otg->var_mode,
+-				otg_mode_names, ARRAY_SIZE(otg_mode_names), otg);
+ 	}
+ 
+-	ret = register_device(&otg->dev);
+-	if (ret)
+-		return ret;
+-
+-	param_mode = dev_add_param_enum(&otg->dev, "mode",
+-			otg_set_mode, NULL, &otg->var_mode,
+-			otg_mode_names, ARRAY_SIZE(otg_mode_names), otg);
+-
+-	return PTR_ERR_OR_ZERO(param_mode);
++	return register_otg_device(&otg->dev, otg);
+ }
 -- 
 2.30.2
 
