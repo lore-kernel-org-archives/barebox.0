@@ -1,55 +1,59 @@
-Delivery-date: Mon, 05 Sep 2022 21:36:20 +0200
+Delivery-date: Tue, 06 Sep 2022 12:22:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oVHtK-007qJG-QP
-	for lore@lore.pengutronix.de; Mon, 05 Sep 2022 21:36:20 +0200
+	id 1oVVjG-008VNJ-0D
+	for lore@lore.pengutronix.de; Tue, 06 Sep 2022 12:22:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oVHtK-0000gg-Vc
-	for lore@pengutronix.de; Mon, 05 Sep 2022 21:36:20 +0200
+	id 1oVVjF-0004Dm-CH
+	for lore@pengutronix.de; Tue, 06 Sep 2022 12:22:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jtmY5vBxoFmpC+8bOVsX+U+iIMRBAND40J6vkzjtkCw=; b=lIdSaFqkfnxuMIM6yGNwRwAXHJ
-	+COts1H7KRiTeWhLkZyCwdBeTE6jQJLTqUmNO5yao04N258oLIwOmy8B3P5AncmIbTeFSRHKi9mBk
-	43o70URTx0w6mk6Rz0QbIv7Le+VsLTd6XcVlak3LuCWm73o3GzavnlcwUVbJgd+mzbxHuBqJe2N2Y
-	AxGv6aOtV4B+YDR5bwzvCU8m0QDWUQ0Hcj5p0hPo61IzhPjsyUDeRRSoVtuMZ4dXXokK/IaWtJCZu
-	a7ZBkogcrzQkMoD5AdG/m3nQWCqwKftNEjLaiWAtCZyDJzPNieX3CUBa9PybcmrY6rTd+A07gViWK
-	J76AFs4w==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=QFI38U5bBPHiXstr69ozWhyBra0wRYEYk7cylzV6hgk=; b=Ocij5p5r/grHBDdX8nGOmV0aPf
+	UFk50HDQo2QmwcNGqhVPEVsOXz7zLTWrCdv0FSoOh3BdbDUIm0d2WtP7SgtLdsBtDjsNzZecSjcjY
+	OcPdPbklvmXBBBg8YQ4tZulZ4dLXQ9zDF4zBu1PjFlBUYg8yqhSYPSuMajERcjuEJWs2k04sjl52Z
+	MQipnChECB4dx0OixKLGHjKCjF2Rh3fAHKaManipuI6H3W6DI57bavE092CFZeW2s2yeudbOlgQmf
+	xZ4F1nmO5WO8pkxSQ1Dpyw0fEunZvGIFlwDPEzMlr9VbCihc25FifQ1bw6dw4xFDBOwO0Dpc/UB1i
+	X28HPpcw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oVHrW-009Of5-RO; Mon, 05 Sep 2022 19:34:27 +0000
+	id 1oVVhY-00CMlx-Gw; Tue, 06 Sep 2022 10:21:04 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oVAqy-001mWc-7O
-	for barebox@lists.infradead.org; Mon, 05 Sep 2022 12:05:26 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1oVAqu-0001Ne-Hc; Mon, 05 Sep 2022 14:05:20 +0200
-Message-ID: <3d648a4b-591d-2fb9-a333-ef973a55434c@pengutronix.de>
-Date: Mon, 5 Sep 2022 14:05:20 +0200
+	id 1oVVhR-00CMgs-Mv
+	for barebox@lists.infradead.org; Tue, 06 Sep 2022 10:20:59 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oVVhN-0003gW-7m; Tue, 06 Sep 2022 12:20:53 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oVVhK-004ESj-Lq; Tue, 06 Sep 2022 12:20:52 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oVVhL-005j0L-Hk; Tue, 06 Sep 2022 12:20:51 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue,  6 Sep 2022 12:20:49 +0200
+Message-Id: <20220906102049.1364561-5-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220906102049.1364561-1-s.hauer@pengutronix.de>
+References: <20220906102049.1364561-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Content-Language: en-US
-To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>,
- barebox@lists.infradead.org
-References: <20220905085658.3854939-1-enrico.scholz@sigma-chemnitz.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220905085658.3854939-1-enrico.scholz@sigma-chemnitz.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220905_050524_348214_E83DE7C3 
-X-CRM114-Status: GOOD (  12.12  )
+X-CRM114-CacheID: sfid-20220906_032057_784446_8C75A781 
+X-CRM114-Status: GOOD (  11.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,40 +71,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 0/3] tftp fixups
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 4/4] ratp: i2c: Do not return error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 05.09.22 10:56, Enrico Scholz wrote:
-> Fixups for the "tftp" branch in next.
-> 
-> Enrico Scholz (3):
->   fixup! tftp: implement 'windowsize' (RFC 7440) support
->   fixup! tftp: detect out-of-memory situations
->   tftp: make read() fail in error case
+The RATP command implementations should only return an error on internal
+failures. When an i2c command failed we should return 0 though to
+actually send the error message. Without it the remote would just wait
+for a response until it times out.
 
-This fixes the issue of kfifo underflow I run into.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/ratp/i2c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Thanks,
-Ahmad
-
-> 
->  fs/tftp.c | 29 ++++++++++++++++++++++-------
->  1 file changed, 22 insertions(+), 7 deletions(-)
-> 
-
-
+diff --git a/common/ratp/i2c.c b/common/ratp/i2c.c
+index c14bbbf9b9..404ddd2ece 100644
+--- a/common/ratp/i2c.c
++++ b/common/ratp/i2c.c
+@@ -162,7 +162,7 @@ out:
+ 	*rsp = (struct ratp_bb *)i2c_read_rsp;
+ 	*rsp_len = i2c_read_rsp_len;
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ BAREBOX_RATP_CMD_START(I2C_READ)
+@@ -271,7 +271,7 @@ out:
+ 	*rsp = (struct ratp_bb *)i2c_write_rsp;
+ 	*rsp_len = sizeof(*i2c_write_rsp);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ BAREBOX_RATP_CMD_START(I2C_WRITE)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
