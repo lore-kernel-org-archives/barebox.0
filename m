@@ -1,59 +1,60 @@
-Delivery-date: Thu, 08 Sep 2022 11:31:57 +0200
+Delivery-date: Thu, 08 Sep 2022 11:32:01 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oWDt5-00AX6q-Ig
-	for lore@lore.pengutronix.de; Thu, 08 Sep 2022 11:31:57 +0200
+	id 1oWDt9-00AX7J-Oc
+	for lore@lore.pengutronix.de; Thu, 08 Sep 2022 11:32:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oWDt5-0001nh-Su
-	for lore@pengutronix.de; Thu, 08 Sep 2022 11:31:56 +0200
+	id 1oWDt8-0001oQ-Ur
+	for lore@pengutronix.de; Thu, 08 Sep 2022 11:32:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=QFI38U5bBPHiXstr69ozWhyBra0wRYEYk7cylzV6hgk=; b=w5CepkEoSBoELiAB7O5hW7bmHv
-	S/m+VEi7+Vt9XqsbTjmOyrf7JBQuBL0YYm9mzjIqSo2hCKVLTA7S2YEVoxD4adt2RamoPvnHt7gbV
-	k0CdV8B8u5OmeB7qJS1bxfvZ4yQ/9C+hTqIVw2Z3KDX0j3J57vDhohXzQnL2NgjuiYIbBXOcgSZDJ
-	zx6F+1MlxhbPwmFl9sPaj7Oq5kp9NoEZ/s/YUZ3C34zsd0jMvN1QDLz7CQWeNYIW+R55dg+ajTGmZ
-	dzAnQ19VU4oabBpL7SE5+nz51PbcgtaDBKiCgZYTjodLkcGvHATHvrAY+XDtbhSCuOJ8VjYeXbKrp
-	Ch7oq8YQ==;
+	bh=S1oE15ZxSzXsXuu07UczRvrFIXk5ZqSwdn5h87dkufw=; b=IP45dW6ziMugparnPPMjrlHJbf
+	SSNdBs1Uuxa8kSgqkquP91YzEEzi7UQTSqc+ufBpdWk/BFqKNALB5raCs3ohD78thTrMl05fSy+P7
+	TM8rWtD6cZ0ak2Ok21LBUl9xyslcM3xf3y4jLy7yFSVKFjbwqSow1Vlmq2T2Aq3u5yh0d6K0jHpgg
+	P+gKyV2FKSGSMwQ+HNiSfU1s/a4P0wMnp197MpUUdx8ueUPTBKaYKL5K21Pzi6kXLu+qKLY5+F3pY
+	cLh8MUxzrY0bf7ZIeey25qDFivoV9DaXZ9Pl0XZUs902VuXllGYqsyRCkgV7iWiDTkA1Tb+PebxyD
+	dXzdQhWg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oWDrW-001gT2-6Y; Thu, 08 Sep 2022 09:30:18 +0000
+	id 1oWDrm-001gbF-BG; Thu, 08 Sep 2022 09:30:34 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oWDrQ-001gPV-7V
-	for barebox@lists.infradead.org; Thu, 08 Sep 2022 09:30:13 +0000
+	id 1oWDrW-001gTa-0k
+	for barebox@lists.infradead.org; Thu, 08 Sep 2022 09:30:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oWDrM-0001IZ-Lv; Thu, 08 Sep 2022 11:30:08 +0200
+	id 1oWDrM-0001IY-ND; Thu, 08 Sep 2022 11:30:08 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oWDrK-004bOe-1o; Thu, 08 Sep 2022 11:30:07 +0200
+	id 1oWDrK-004bOb-04; Thu, 08 Sep 2022 11:30:07 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oWDrK-00CjeW-GK; Thu, 08 Sep 2022 11:30:06 +0200
+	id 1oWDrK-00CjeZ-Gh; Thu, 08 Sep 2022 11:30:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  8 Sep 2022 11:30:04 +0200
-Message-Id: <20220908093005.3035259-5-s.hauer@pengutronix.de>
+Date: Thu,  8 Sep 2022 11:30:05 +0200
+Message-Id: <20220908093005.3035259-6-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220908093005.3035259-1-s.hauer@pengutronix.de>
 References: <20220908093005.3035259-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220908_023012_298693_A98D480B 
-X-CRM114-Status: GOOD (  11.76  )
+X-CRM114-CacheID: sfid-20220908_023018_082739_AFE70EEF 
+X-CRM114-Status: UNSURE (   8.27  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,42 +77,47 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/5] ratp: i2c: Do not return error
+Subject: [PATCH v2 5/5] bbremote: Print usage when no command is given
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The RATP command implementations should only return an error on internal
-failures. When an i2c command failed we should return 0 though to
-actually send the error message. Without it the remote would just wait
-for a response until it times out.
+Instead of dumping a backtrace, print usage information when no
+subcommand is given.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/ratp/i2c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/ratp/i2c.c b/common/ratp/i2c.c
-index c14bbbf9b9..404ddd2ece 100644
---- a/common/ratp/i2c.c
-+++ b/common/ratp/i2c.c
-@@ -162,7 +162,7 @@ out:
- 	*rsp = (struct ratp_bb *)i2c_read_rsp;
- 	*rsp_len = i2c_read_rsp_len;
+Notes:
+    Changes since v1:
+    - new patch
+
+ scripts/remote/main.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/scripts/remote/main.py b/scripts/remote/main.py
+index 2f3ce370ae..5aa176fdc4 100644
+--- a/scripts/remote/main.py
++++ b/scripts/remote/main.py
+@@ -206,6 +206,7 @@ parser.add_argument('--port', type=str, default=os.environ.get('BBREMOTE_PORT',
+ parser.add_argument('--baudrate', type=int, default=os.environ.get('BBREMOTE_BAUDRATE', 115200))
+ parser.add_argument('--export', type=str, default=os.environ.get('BBREMOTE_EXPORT', None))
+ parser.add_argument('-w', '--wait', action='count', default=0)
++parser.set_defaults(func=None)
+ subparsers = parser.add_subparsers(help='sub-command help')
  
--	return ret;
-+	return 0;
- }
- 
- BAREBOX_RATP_CMD_START(I2C_READ)
-@@ -271,7 +271,7 @@ out:
- 	*rsp = (struct ratp_bb *)i2c_write_rsp;
- 	*rsp_len = sizeof(*i2c_write_rsp);
- 
--	return ret;
-+	return 0;
- }
- 
- BAREBOX_RATP_CMD_START(I2C_WRITE)
+ parser_run = subparsers.add_parser('run', help="run a barebox command")
+@@ -277,6 +278,11 @@ parser_console.set_defaults(func=handle_console)
+ args = parser.parse_args()
+ logging.basicConfig(level=VERBOSITY[args.verbose],
+                     format='%(levelname)-8s %(module)-8s %(funcName)-16s %(message)s')
++
++if args.func is None:
++    parser.print_help()
++    exit(1)
++
+ try:
+     res = args.func(args)
+     exit(res)
 -- 
 2.30.2
 
