@@ -1,58 +1,64 @@
-Delivery-date: Wed, 07 Sep 2022 10:55:17 +0200
+Delivery-date: Thu, 08 Sep 2022 10:18:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oVqq4-009RWy-21
-	for lore@lore.pengutronix.de; Wed, 07 Sep 2022 10:55:17 +0200
+	id 1oWCk2-00ATmc-F9
+	for lore@lore.pengutronix.de; Thu, 08 Sep 2022 10:18:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oVqq3-0001iN-KZ
-	for lore@pengutronix.de; Wed, 07 Sep 2022 10:55:17 +0200
+	id 1oWCk2-0000Bc-Rm
+	for lore@pengutronix.de; Thu, 08 Sep 2022 10:18:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UITZhg4h3hhSfgLlO/1lr2c29b8KZw3BgyM8+uqgSKA=; b=QNXwiPNvfyrie0Tug86VK4Fkjw
-	3zsOwn1x9HsKl5FFpqBcm5Of10cDjkcEJRaZPMy19L68iFHkgg+cyBYJaj40HU1gA+XIqsTJK391I
-	Q2+FLswB/OKIQu7Q2hv4gMaERr3Vd74vBvTv+v2HLIHCykvYK6/XT2oxisIvEGhmpHHhW8U3FnaY2
-	4gThAxdXbkqcn024haWZkSgngGfMlVIj1/iudOKXY5BnJPtcGLSRKDgsgXLsdb90FwpuFCngymNeA
-	aD6txNjsp6PaZWt0v4VW3Wg4GoauGT2DVrBJPHnb3ZIrBQD1UIJavOF//JFUjyLZjYORg819r2KnK
-	Whmfm7Og==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=IgKpkE835blV286c7SnZCH6At7C0MfR1+UbKpg/NVMU=; b=R0uBFH9kY6W/5VJNAYeGf/PM4B
+	myxrT3LoUQ7O4lBye1BdlcgTn2rVAHE1Cx+cX4lpzQoG25/mPDKleuvjqqMEn/neNJcmt9y2Yr3pJ
+	K+0o1U3lXQ4oY2X7N+xG4VEFrcP+2wVQQU/gUuanZHJQtdXxwi34rK3ZymYlcQx/Wt6T7uvqOU8sk
+	Ss66LscyeXnsK/nQBzXBFWP1t9BKPXtmI0BoScCYgMM2C2iPareRzEeweoJihfZcBtKTk4rgqHA8v
+	LT7dHufDBL2LS1rj/aUHMVVlw2JQIOqybRNHULeYd5HF6TiN7svHLSQAYxzM/qvaYNmlSv6ODo4O+
+	KP3C+T9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oVqoE-004Wm2-GI; Wed, 07 Sep 2022 08:53:23 +0000
+	id 1oWCiG-000zIM-0B; Thu, 08 Sep 2022 08:16:40 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oVqZ4-004Mak-Gm
-	for barebox@lists.infradead.org; Wed, 07 Sep 2022 08:37:45 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1oVqYv-0007Qy-Ok; Wed, 07 Sep 2022 10:37:33 +0200
-Message-ID: <558b762f-18d7-7e4a-2f05-464e522f32d8@pengutronix.de>
-Date: Wed, 7 Sep 2022 10:37:33 +0200
+	id 1oWCiB-000zGp-9P
+	for barebox@lists.infradead.org; Thu, 08 Sep 2022 08:16:36 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oWCi9-0008Ni-AM; Thu, 08 Sep 2022 10:16:33 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oWCi9-0001vx-1V; Thu, 08 Sep 2022 10:16:33 +0200
+Date: Thu, 8 Sep 2022 10:16:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jan =?iso-8859-15?Q?L=FCbbe?= <jlu@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20220908081633.GA24324@pengutronix.de>
+References: <20220906102049.1364561-1-s.hauer@pengutronix.de>
+ <20220906102049.1364561-3-s.hauer@pengutronix.de>
+ <1019c1be5617830df3edd0a47b7f7fbd9bc2a311.camel@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20220725115856.1288819-1-a.fatoum@pengutronix.de>
- <20220808134048.GS31528@pengutronix.de>
- <c8b16aab-e4a1-3ed3-1502-ac5e16884311@pengutronix.de>
- <20220808135527.GU31528@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220808135527.GU31528@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1019c1be5617830df3edd0a47b7f7fbd9bc2a311.camel@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220907_013742_798967_4D225633 
-X-CRM114-Status: GOOD (  28.52  )
+X-CRM114-CacheID: sfid-20220908_011635_350981_76B1D173 
+X-CRM114-Status: GOOD (  25.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,147 +76,124 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH v2] mci: add new MCI_BROKEN_CD option for testing
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 2/4] bbremote: Convert to python3
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
-
-On 08.08.22 15:55, Sascha Hauer wrote:
-> On Mon, Aug 08, 2022 at 03:43:17PM +0200, Ahmad Fatoum wrote:
->> Hello Sascha,
->>
->> On 08.08.22 15:40, Sascha Hauer wrote:
->>> On Mon, Jul 25, 2022 at 01:58:56PM +0200, Ahmad Fatoum wrote:
->>>> In remote labs co-located with other hardware, we've observed card
->>>> detect levers of different boards to sporadically fail to detect
->>>> the card, e.g. because the cable on the usbsdmux was yanked around
->>>> by accident. When this happens, barebox usually boots up normally as
->>>> the card detect is ignored and then Linux waits indefinitely for
->>>> the card-detect to turn active. Add a new config option that can be
->>>> enabled to avoid these issues altogether.
->>>>
->>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>> ---
->>>> v1 -> v2:
->>>>   - use early exit instead of if-else
->>>>   - don't fail mci_card_probe if of_register_fixup fails
->>>> ---
->>>>  drivers/mci/Kconfig    | 15 +++++++++++++++
->>>>  drivers/mci/mci-core.c | 36 ++++++++++++++++++++++++++++++++----
->>>>  2 files changed, 47 insertions(+), 4 deletions(-)
->>>>
->>>> diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
->>>> index 21d53c0c3f0b..651e59259790 100644
->>>> --- a/drivers/mci/Kconfig
->>>> +++ b/drivers/mci/Kconfig
->>>> @@ -56,6 +56,21 @@ config MCI_MMC_GPP_PARTITIONS
->>>>  	  Note: by default, 'MMC' devices have no 'general purpose partitions',
->>>>  	  it requires a special one-time configuration step to enable them.
->>>>  
->>>> +config MCI_BROKEN_CD
->>>> +	bool "ignore card-detect pin on boot and in OS"
->>>> +	help
->>>> +	  Say 'y' here to have barebox unconditionally ignore the
->>>> +	  card-detect pin for its own operation and manipulate the
->>>> +	  kernel DT, so all detected MCI cards are polled instead
->>>> +	  of expecting the card detect lever to behave correctly.
->>>> +	  If you need more fine grained control use of_property
->>>> +	  in an init script:
->>>> +
->>>> +	    of_property -fd mmc0 cd-gpios
->>>> +	    of_property -fs mmc0 broken-cd
->>>> +
->>>> +	  If unsure, say 'n' here.
->>>> +
->>>>  comment "--- MCI host drivers ---"
->>>>  
->>>>  config MCI_DW
->>>> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
->>>> index 82e2f82f5377..4db2253c3a80 100644
->>>> --- a/drivers/mci/mci-core.c
->>>> +++ b/drivers/mci/mci-core.c
->>>> @@ -1727,6 +1727,27 @@ static int mci_register_partition(struct mci_part *part)
->>>>  	return 0;
->>>>  }
->>>>  
->>>> +static int of_broken_cd_fixup(struct device_node *root, void *ctx)
->>>> +{
->>>> +	struct device_d *hw_dev = ctx;
->>>> +	struct device_node *np;
->>>> +	char *name;
->>>> +
->>>> +	name = of_get_reproducible_name(hw_dev->device_node);
->>>> +	np = of_find_node_by_reproducible_name(root, name);
->>>> +	free(name);
->>>> +	if (!np) {
->>>> +		dev_warn(hw_dev, "Cannot find nodepath %s, cannot fixup\n",
->>>> +			 hw_dev->device_node->full_name);
->>>> +		return -EINVAL;
->>>> +	}
->>>> +
->>>> +	of_property_write_bool(np, "cd-gpios", false);
->>>> +	of_property_write_bool(np, "broken-cd", true);
->>>> +
->>>> +	return 0;
->>>> +}
->>>> +
->>>>  /**
->>>>   * Probe an MCI card at the given host interface
->>>>   * @param mci MCI device instance
->>>> @@ -1737,10 +1758,13 @@ static int mci_card_probe(struct mci *mci)
->>>>  	struct mci_host *host = mci->host;
->>>>  	int i, rc, disknum, ret;
->>>>  
->>>> -	if (host->card_present && !host->card_present(host) &&
->>>> -	    !host->non_removable) {
->>>> -		dev_err(&mci->dev, "no card inserted\n");
->>>> -		return -ENODEV;
->>>> +	if (host->card_present && !host->card_present(host) && !host->non_removable) {
->>>> +		if (!IS_ENABLED(CONFIG_MCI_BROKEN_CD)) {
->>>> +			dev_err(&mci->dev, "no card inserted\n");
->>>> +			return -ENODEV;
->>>> +		}
->>>> +
->>>> +		dev_info(&mci->dev, "no card inserted (ignoring)\n");
->>>>  	}
->>>>  
->>>>  	ret = regulator_enable(host->supply);
->>>> @@ -1818,6 +1842,10 @@ static int mci_card_probe(struct mci *mci)
->>>>  		}
->>>>  	}
->>>>  
->>>> +	if (IS_ENABLED(CONFIG_MCI_BROKEN_CD) && !host->no_sd &&
->>>> +	    dev_of_node(host->hw_dev))
->>>> +		of_register_fixup(of_broken_cd_fixup, host->hw_dev);
->>>
->>> This fixup is only registered when the card is probed, i.e. when it's
->>> used in barebox. Shouldn't it be registered in mci_register() instead?
->>
->> This is intentional. We only know that cards barebox successfully probed
->> are indeed available.
+On Tue, Sep 06, 2022 at 03:02:34PM +0200, Jan Lübbe wrote:
+> On Tue, 2022-09-06 at 12:20 +0200, Sascha Hauer wrote:
+> > This is the long overdue conversion from python2 to python3.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  scripts/bbremote              |  2 +-
+> >  scripts/remote/controller.py  | 21 +++++++++++----------
+> >  scripts/remote/main.py        |  8 ++++----
+> >  scripts/remote/messages.py    | 15 +++++++++++++--
+> >  scripts/remote/ratp.py        |  4 ++--
+> >  scripts/remote/ratpfs.py      |  4 ++--
+> >  scripts/remote/threadstdio.py |  4 ++--
+> >  7 files changed, 35 insertions(+), 23 deletions(-)
+> > 
+> > diff --git a/scripts/bbremote b/scripts/bbremote
+> > index bc5351dbae..1eeabd08d1 100755
+> > --- a/scripts/bbremote
+> > +++ b/scripts/bbremote
+> > @@ -1,3 +1,3 @@
+> > -#!/usr/bin/env python2
+> > +#!/usr/bin/env python3
+> >  
+> >  import remote.main
+> > diff --git a/scripts/remote/controller.py b/scripts/remote/controller.py
+> > index b4493591dd..a3ae260558 100644
+> > --- a/scripts/remote/controller.py
+> > +++ b/scripts/remote/controller.py
+> > @@ -1,4 +1,4 @@
+> > -#!/usr/bin/env python2
+> > +#!/usr/bin/env python3
+> >  # -*- coding: utf-8 -*-
+> >  
+> >  from __future__ import absolute_import, division, print_function
+> > @@ -8,7 +8,7 @@ import logging
+> >  import sys
+> >  import os
+> >  from threading import Thread
+> > -from Queue import Queue, Empty
+> > +from queue import Queue, Empty
+> >  from .ratpfs import RatpFSServer
+> >  from .messages import *
+> >  from .ratp import RatpError
+> > @@ -105,7 +105,7 @@ class Controller(Thread):
+> >          self.rxq = None
+> >          self.conn.connect(timeout=5.0)
+> >          self._txq = Queue()
+> > -        self._stop = False
+> > +        self._stopit = False
 > 
-> I don't get this argument. If card detect is broken then why can't we
-> let Linux go through the same steps as barebox when barebox hasn't done
-> so?
+> Is this rename needed?
+
+Yes. It seems the Thread class now has a member _stop itself, see:
+
+https://github.com/python/cpython/blob/3.10/Lib/threading.py#L1028
+
+Without this rename we get:
+
+Traceback (most recent call last):
+  File "/ptx/work/WORK_EIHEI/sha/projects/barebox/barebox/./scripts/bbremote", line 3, in <module>
+    import remote.main
+  File "/ptx/work/WORK_EIHEI/sha/projects/barebox/barebox/scripts/remote/main.py", line 281, in <module>
+    res = args.func(args)
+  File "/ptx/work/WORK_EIHEI/sha/projects/barebox/barebox/scripts/remote/main.py", line 185, in handle_console
+    ctrl.stop()
+  File "/ptx/work/WORK_EIHEI/sha/projects/barebox/barebox/scripts/remote/controller.py", line 239, in stop
+    self.join()
+  File "/usr/lib/python3.9/threading.py", line 1033, in join
+    self._wait_for_tstate_lock()
+  File "/usr/lib/python3.9/threading.py", line 1051, in _wait_for_tstate_lock
+    self._stop()
+TypeError: 'bool' object is not callable
+
+> >  
+> >      def _unpack_payload(self, payload):
+> > +        assert isinstance(payload, bytes)
+> >          self.cmd = payload
+> >  
+> >      def _pack_payload(self):
+> > @@ -94,6 +97,8 @@ class BBPacketCommandReturn(BBPacket):
+> >  
+> >  class BBPacketConsoleMsg(BBPacket):
+> >      def __init__(self, raw=None, text=None):
+> > +        if text != None:
 > 
-> Letting the card work in Linux only when it was previously used in barebox
-> is surprising to me.
+> Use 'if text is not None:'.
 
-I'll change it into a device parameter applicable to all cards in v3.
+Ok.
 
-Cheers,
-Ahmad
-
+> > +++ b/scripts/remote/ratpfs.py
+> > @@ -1,4 +1,4 @@
+> > -#!/usr/bin/env python2
+> > +#!/usr/bin/env python3
+> >  # -*- coding: utf-8 -*-
+> >  
+> >  from __future__ import absolute_import, division, print_function
+> > @@ -97,7 +97,7 @@ class RatpFSServer(object):
+> >                           os.O_TRUNC)
+> >          path = params[4:]
+> >          try:
+> > -            f = os.open(self._resolve(path), flags, 0666)
+> > +            f = os.open(self._resolve(path), flags, 0o666)
 > 
-> Sascha
-> 
+> This looks like an unrelated fix.
 
+It depends how you see it. This was accepted in python2, but no longer in python3,
+so this is a step to python3 conversion.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
