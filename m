@@ -1,53 +1,53 @@
-Delivery-date: Mon, 12 Sep 2022 11:25:15 +0200
+Delivery-date: Mon, 12 Sep 2022 11:42:55 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oXfgp-00252m-KX
-	for lore@lore.pengutronix.de; Mon, 12 Sep 2022 11:25:15 +0200
+	id 1oXfxv-0026Vp-KC
+	for lore@lore.pengutronix.de; Mon, 12 Sep 2022 11:42:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oXfgo-0003t8-57
-	for lore@pengutronix.de; Mon, 12 Sep 2022 11:25:15 +0200
+	id 1oXfxu-0005z6-6K
+	for lore@pengutronix.de; Mon, 12 Sep 2022 11:42:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Xi7/8wIZjGS9C41O5yIZMf0NIGLm65jzcfNCJkv80vg=; b=sMKAIgiObtkOOdfwzSoL1nTAG7
-	FVOyRjg7q39Hw4cwTMK2f0HkvFMg0q+4FiAk1CKqE9dqKTUksida9VRfRAZ4L+1BTtvqOxnuvDICk
-	A8aRoxoHj0tg8NuiGnOpr71jSffEyGmxm1dyk0ISGOX00FvHLdooGq2l1RtctIS9xG9Ltd3B30kVb
-	pKRzkjge3Jdcc28n14pngf2yddXIP81GuuaQhFkFBOF/DhDxzZANpjZW21mWbUF6t9NbXhe7LwU2d
-	i0qX7rehEug0st+7ZFuk5nBx7znS85nlGCV9EgyphWnkNxpIdrKKR9RRqQXloN7JpMQBVKUTcGdwt
-	IO8AOruA==;
+	bh=FQYUASuyEh9ySrOA3j0GbD9oQVRsjDA2+uHJrVLXj5U=; b=K8rsrHg+w+J/y9IkAxtow++6m5
+	CaUaYbNlrygONlK2ECuWSffIC6CHExDGD/WqA/c21gFRrtERxRfxKtpXhozDV+CjENczZhsEeIMrW
+	NbxP+FpdkAXLiGN9osTIUO/PbAl7PsaFjv/3nxPd3LN18jXvVTMRPqIYjN70feBBucHAtVb1Ln/N1
+	N2rMdYR0JnX0VRqiEG/qApLluPtI0rR9hb0BOXRS2ZKCO0fw15TQFsBzirtvv0m7oiU4+DHo/Bdgq
+	jH8XdFJt2LPVswRChlntBDcJbwNRgC57TdtI1DOzRAXIbOkaeHSBufa4K/EvW0/oB5WCbAZ48U8Gm
+	xNUWaD4Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oXffN-008DdY-Ie; Mon, 12 Sep 2022 09:23:45 +0000
+	id 1oXfwT-008LJg-88; Mon, 12 Sep 2022 09:41:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oXffD-008Da9-MU
-	for barebox@lists.infradead.org; Mon, 12 Sep 2022 09:23:38 +0000
+	id 1oXfwO-008LIF-02
+	for barebox@lists.infradead.org; Mon, 12 Sep 2022 09:41:21 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oXffB-0003mf-FG; Mon, 12 Sep 2022 11:23:33 +0200
+	id 1oXfwM-0005ps-F7; Mon, 12 Sep 2022 11:41:18 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oXffB-0007XS-6h; Mon, 12 Sep 2022 11:23:33 +0200
-Date: Mon, 12 Sep 2022 11:23:33 +0200
+	id 1oXfwM-0008H7-68; Mon, 12 Sep 2022 11:41:18 +0200
+Date: Mon, 12 Sep 2022 11:41:18 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220912092333.GL24324@pengutronix.de>
+Message-ID: <20220912094118.GM24324@pengutronix.de>
 References: <20220905095557.596891-1-a.fatoum@pengutronix.de>
- <20220905095557.596891-2-a.fatoum@pengutronix.de>
+ <20220905095557.596891-12-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220905095557.596891-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20220905095557.596891-12-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -55,8 +55,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220912_022336_041976_F4DA1325 
-X-CRM114-Status: GOOD (  25.02  )
+X-CRM114-CacheID: sfid-20220912_024120_070522_7E7D5C47 
+X-CRM114-Status: GOOD (  20.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,72 +79,45 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 01/32] clk: define stub implementation for clk_get_parent
+Subject: Re: [PATCH 11/32] of: silence warning about never-read error
+ assignment
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Sep 05, 2022 at 11:55:26AM +0200, Ahmad Fatoum wrote:
-> To make it easier to build drivers utilizing clk_get_parent on sandbox
-> for static analysis, provide a stub implementation of the function.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  include/linux/clk.h | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
+On Mon, Sep 05, 2022 at 11:55:36AM +0200, Ahmad Fatoum wrote:
+> err is assigned specific error codes, but they are not propagated and
+> instead NULL is returned for error. Make it explicit that we handle all
+> errors the same by typecasting to (void).
 
-This will break architectures which do not use the common clk framework
-and implement clk_get_parent themselves.
+This warning likely goes back to assigning the variable 'err' right
+before jumping to the label 'err':
 
-Fortunately there's only one architecture left doing this: AT91
+	err = -EINVAL;
+	goto err;
+
+The assignment is indeed unused. We should remove this assignment
+rather than suppressing the resulting warning.
 
 Sascha
 
 > 
-> diff --git a/include/linux/clk.h b/include/linux/clk.h
-> index 42c64d650d1f..b18fc733843d 100644
-> --- a/include/linux/clk.h
-> +++ b/include/linux/clk.h
-> @@ -128,14 +128,6 @@ int clk_hw_set_rate(struct clk_hw *hw, unsigned long rate);
->  int clk_set_parent(struct clk *clk, struct clk *parent);
->  int clk_hw_set_parent(struct clk_hw *hw, struct clk_hw *hwp);
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/of/resolver.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
+> index 2457ae96a412..510d36f95192 100644
+> --- a/drivers/of/resolver.c
+> +++ b/drivers/of/resolver.c
+> @@ -272,6 +272,7 @@ out:
+>  err:
+>  	of_delete_node(result);
 >  
-> -/**
-> - * clk_get_parent - get the parent clock source for this clock
-> - * @clk: clock source
-> - *
-> - * Returns struct clk corresponding to parent clock source, or
-> - * valid IS_ERR() condition containing errno.
-> - */
-> -struct clk *clk_get_parent(struct clk *clk);
->  struct clk_hw *clk_hw_get_parent(struct clk_hw *hw);
+> +	(void)err;
+>  	return NULL;
 >  
->  int clk_set_phase(struct clk *clk, int degrees);
-> @@ -658,6 +650,14 @@ struct clk_hw *of_clk_hw_simple_get(struct of_phandle_args *clkspec, void *data)
->  struct clk *of_clk_get(struct device_node *np, int index);
->  struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
->  struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec);
-> +/**
-> + * clk_get_parent - get the parent clock source for this clock
-> + * @clk: clock source
-> + *
-> + * Returns struct clk corresponding to parent clock source, or
-> + * valid IS_ERR() condition containing errno.
-> + */
-> +struct clk *clk_get_parent(struct clk *clk);
->  unsigned int of_clk_get_parent_count(struct device_node *np);
->  int of_clk_parent_fill(struct device_node *np, const char **parents,
->  		       unsigned int size);
-> @@ -717,6 +717,10 @@ static inline unsigned int of_clk_get_parent_count(struct device_node *np)
->  {
->  	return 0;
 >  }
-> +static inline struct clk *clk_get_parent(struct clk *clk)
-> +{
-> +	return ERR_PTR(-ENOENT);
-> +}
->  static inline int of_clk_init(struct device_node *root,
->  			      const struct of_device_id *matches)
->  {
 > -- 
 > 2.30.2
 > 
