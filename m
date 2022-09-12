@@ -1,79 +1,61 @@
-Delivery-date: Mon, 12 Sep 2022 10:49:49 +0200
+Delivery-date: Mon, 12 Sep 2022 10:51:55 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oXf8X-0022Hm-Nt
-	for lore@lore.pengutronix.de; Mon, 12 Sep 2022 10:49:49 +0200
+	id 1oXfAZ-0022QJ-LS
+	for lore@lore.pengutronix.de; Mon, 12 Sep 2022 10:51:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oXf8W-0006az-2O
-	for lore@pengutronix.de; Mon, 12 Sep 2022 10:49:49 +0200
+	id 1oXfAY-000775-7Z
+	for lore@pengutronix.de; Mon, 12 Sep 2022 10:51:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=y56yUDzkwfP+T93Z4jWw1Dy2YuOLdxTZOZjeTdsMLgM=; b=AanAYzDRTWM5xebpW22VpsJbJr
-	UcuMJAozQ8Gu54cV5zHoEONHPWm8ekq1SvXVmeV+FmoYO5+TVC/VcU4WddOvHvzmxulqO9Ci9U+bM
-	DemhS/RkTZW2nzvdeiiynTTyD+xyH9UVFokkEbilESOvqM7CHh4GKDvfYvW6FvJwS8e/4md7h5s0L
-	oUau1Xiy+BUMh2HNsVfoDjpn0j+9YDVhllh+DEWXpeVsRqcyzP+rPBeRrah92iCZ9m3y95JLegnX6
-	ONfbe7s11udJ9ZzXKYevrcL+gB87zCRtVreRRvayEEvFW4cT7ZaXaZWjTc7NmZ9cKVdJP7gNK4J8V
-	RmX7EQ8A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=dAbw5fyeTd03EzEa0b8SjomZ5e+FJcP3ThlEgY8Ptuo=; b=v/uBSudrTc0O0AkKiL2TswWY4N
+	BiwTOOMGJ/XJQC7Wh7943hlclKWeBQeONo8VTZKxUIJwEbdFSD9TsGd6jfnDTdH7BIKtnUjjBdkkX
+	oLRSacZ0VN+4xHJ/Fn7J62frehDIgbo6uIHfbYc8D7FZLhIb0AFSkX7oZ+y4p32hRAc8vtVGr6wfu
+	W3zYubAmXRfEt+D0PSYu++Y8b0IK5kJcbKYWAxkA8xce3GLb3ZzS/NYw5mZgz/Lw6UGqSkCxTJhN9
+	WxMbzkeDYDMxm+jDVNw4L2NgnZK1z6tDyU3qU1rS43QqhepzcJaVjXzeYAN0Gt5hNjGKzzfNM7+h3
+	JJMiW2Dg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oXf6x-007wWL-0W; Mon, 12 Sep 2022 08:48:12 +0000
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+	id 1oXf9D-007yBM-T6; Mon, 12 Sep 2022 08:50:32 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oXf5N-007vhZ-UV
-	for barebox@lists.infradead.org; Mon, 12 Sep 2022 08:46:36 +0000
-Received: by mail-lf1-x12e.google.com with SMTP id f9so12932131lfr.3
-        for <barebox@lists.infradead.org>; Mon, 12 Sep 2022 01:46:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=y56yUDzkwfP+T93Z4jWw1Dy2YuOLdxTZOZjeTdsMLgM=;
-        b=O+al2l9/1NnTjA65fc5td5+M+zQBYSssG5wdD7QCxLuG8kMZxArOixE8ffF9j3z1bD
-         3jNVrQBG2x5Ot43P5q2hJwX8mB/MvdXy69ThApdh7RYXSFEyFgjwR9SpBUuR848k99SW
-         bxsq7glNrRs5nS+4hyvtH39uH6s3NBLMm8KO8X9q8zpfqlvB1orkE/9/OA8g8tm+086J
-         oCJaSKD20gQwRMHL/JOS3h+yOwd1asImS4vRyugQouWdyRpHgXJrTXfKb/+e0eVj8ACD
-         DS2Ucl6M3vZFDdQnrMHIf7tbiFYHWH7s8EmNYGYdiFXsHCZDBofA3G3cZwWjBl7r3Ul4
-         ujvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=y56yUDzkwfP+T93Z4jWw1Dy2YuOLdxTZOZjeTdsMLgM=;
-        b=2ZLhBps0xKtVzVGE6htiUkxJiSmIkAQ+x+ACS/7JUQ2ZrLODKM00XPcX7Fr8jqLZtZ
-         qUAgsqy/SFNGjZ8eXFVKFPaPe9n11+zMGL/Rk8PVewWcO/Dy3T7x/miun1KXPEpjIKmz
-         5ATacehRja6fBx+lMBRzaFdeElsbVkgL93Ad+7MdXsh5QHgFAvgHQyPQRCgIiWKjF39p
-         zRgw9dDpMXE7+CgpbiHlWUHAARDpveoweXvNg3erUWvnDvaW3uwAkvDNkTJ5MSgaD6B7
-         L4daUUtKyshKbcUCXH+EE9MBn0iiPiaxQAw4t4JhHClbIjNDeBFbPMjD9qPWzhkeSPFD
-         I80Q==
-X-Gm-Message-State: ACgBeo0GfJglotF4qETheaD5u2wUo94QHtma5CwFKm7gZc0lpxZIYZYa
-	K7Kh8x+ElxEB+PyCint5lXrKh/x0wdSVLA==
-X-Google-Smtp-Source: AA6agR4xFd2p7ZYvbC7Ubd4yyh/Y444czm7iRVUw2aRvxbXyrD/R5Pl2xvsEp0BPGeMRGYY2O6VCwQ==
-X-Received: by 2002:ac2:4c54:0:b0:49b:182c:2051 with SMTP id o20-20020ac24c54000000b0049b182c2051mr357174lfk.369.1662972389425;
-        Mon, 12 Sep 2022 01:46:29 -0700 (PDT)
-Received: from localhost.localdomain (109-252-10-171.nat.spd-mgts.ru. [109.252.10.171])
-        by smtp.gmail.com with ESMTPSA id i10-20020a056512340a00b0048d076373d0sm945457lfr.98.2022.09.12.01.46.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Sep 2022 01:46:28 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: barebox@lists.infradead.org
-Date: Mon, 12 Sep 2022 11:46:27 +0300
-Message-Id: <20220912084627.84575-1-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 2.37.2
+	id 1oXf91-007y6b-24
+	for barebox@lists.infradead.org; Mon, 12 Sep 2022 08:50:21 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oXf8z-0006cw-G6; Mon, 12 Sep 2022 10:50:17 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oXf8z-0004TZ-4t; Mon, 12 Sep 2022 10:50:17 +0200
+Date: Mon, 12 Sep 2022 10:50:17 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220912085017.GG24324@pengutronix.de>
+References: <20220905115944.1911301-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220905115944.1911301-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220912_014634_047540_DBDA34E5 
-X-CRM114-Status: GOOD (  10.17  )
+X-CRM114-CacheID: sfid-20220912_015019_275167_B50DA38F 
+X-CRM114-Status: GOOD (  22.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,37 +73,89 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [RFC] Documentation/conf.py: fix copyright years
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] of: platform: propagate
+ of_devices_ensure_probed_by(name|property) errors
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-N.B. N-dash is used!
+On Mon, Sep 05, 2022 at 01:59:44PM +0200, Ahmad Fatoum wrote:
+> The of_devices_ensure_probed_by functions are expected to return an
+> error code after iterating over all matching devices should any device
+> have failed its of_device_ensure_probed. Doing this unearths one common
+> failure: a matching node has status = "disabled". These will have
+> of_device_ensure_probed return -ENODEV, which makes sense for users
+> wanting to ensure a specific device is probed, but doesn't when
+> iterating over multiple nodes.
+> 
+> We already have of_devices_ensure_probed_by_dev_id, which does an early
+> of_device_is_available check, so do likewise for the other to
+> ensure_probed_by_* functions.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/of/platform.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- Documentation/conf.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/Documentation/conf.py b/Documentation/conf.py
-index bcd8633c919..5fb8b07c380 100644
---- a/Documentation/conf.py
-+++ b/Documentation/conf.py
-@@ -44,7 +44,7 @@ master_doc = 'index'
- 
- # General information about the project.
- project = u'barebox'
--copyright = u'2014, The barebox project'
-+copyright = u'2014–2022, The barebox project'
- 
- # The version info for the project you're documenting, acts as replacement for
- # |version| and |release|, also used in various other places throughout the
+Sascha
+
+> 
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index dc784ea8e550..a9a5d4c2daf2 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -525,12 +525,15 @@ int of_devices_ensure_probed_by_property(const char *property_name)
+>  		return 0;
+>  
+>  	for_each_node_with_property(node, property_name) {
+> -		ret = of_device_ensure_probed(node);
+> +		if (!of_device_is_available(node))
+> +			continue;
+> +
+> +		err = of_device_ensure_probed(node);
+>  		if (err)
+>  			ret = err;
+>  	}
+>  
+> -	return 0;
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(of_devices_ensure_probed_by_property);
+>  
+> @@ -543,12 +546,15 @@ int of_devices_ensure_probed_by_name(const char *name)
+>  		return 0;
+>  
+>  	for_each_node_by_name(node, name) {
+> -		ret = of_device_ensure_probed(node);
+> +		if (!of_device_is_available(node))
+> +			continue;
+> +
+> +		err = of_device_ensure_probed(node);
+>  		if (err)
+>  			ret = err;
+>  	}
+>  
+> -	return 0;
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(of_devices_ensure_probed_by_name);
+>  
+> -- 
+> 2.30.2
+> 
+> 
+> 
+
 -- 
-2.37.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
