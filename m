@@ -1,82 +1,79 @@
-Delivery-date: Mon, 12 Sep 2022 10:48:24 +0200
+Delivery-date: Mon, 12 Sep 2022 10:49:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oXf7A-0022Cf-DO
-	for lore@lore.pengutronix.de; Mon, 12 Sep 2022 10:48:24 +0200
+	id 1oXf8X-0022Hm-Nt
+	for lore@lore.pengutronix.de; Mon, 12 Sep 2022 10:49:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oXf78-0006KZ-7R
-	for lore@pengutronix.de; Mon, 12 Sep 2022 10:48:23 +0200
+	id 1oXf8W-0006az-2O
+	for lore@pengutronix.de; Mon, 12 Sep 2022 10:49:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=KedzIupOBIZrauK1Soqkduo/UyVdDzrPA1De+2HO8ZI=; b=Ki5ALtN40Qt70f
-	r7RL1qNSm8GnnmIf7wR3qbakjlhyV9xcPK5AkpQ4JmqaRWf9Pitv8iSpesbcX0wm2MXen51gRb/DC
-	SaT+7nwOY36j/kCbYZiUnq0GUEfMV6v+OILCOvEm2uGJlFHHL/MAYtjXqm8WapLJNj2uhq1onIrsX
-	QEs9NInaGBUlzeg7NF1D0HaqWDp3k03sVD9zLh3BhwsSlEl3Rj8gPX6YYL1TcJIh1Pwnou50jpHJy
-	5WuxdsSqTqUpXtQWFPNW0cNd3P73/p2VmrFwhjfCU/xyvbS5Xp5QVZwmZE32PNPjV9/ovl8Zxsk5G
-	jFt7niyOErv+D6oL+G8Q==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=y56yUDzkwfP+T93Z4jWw1Dy2YuOLdxTZOZjeTdsMLgM=; b=AanAYzDRTWM5xebpW22VpsJbJr
+	UcuMJAozQ8Gu54cV5zHoEONHPWm8ekq1SvXVmeV+FmoYO5+TVC/VcU4WddOvHvzmxulqO9Ci9U+bM
+	DemhS/RkTZW2nzvdeiiynTTyD+xyH9UVFokkEbilESOvqM7CHh4GKDvfYvW6FvJwS8e/4md7h5s0L
+	oUau1Xiy+BUMh2HNsVfoDjpn0j+9YDVhllh+DEWXpeVsRqcyzP+rPBeRrah92iCZ9m3y95JLegnX6
+	ONfbe7s11udJ9ZzXKYevrcL+gB87zCRtVreRRvayEEvFW4cT7ZaXaZWjTc7NmZ9cKVdJP7gNK4J8V
+	RmX7EQ8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oXf5a-007vkU-Ro; Mon, 12 Sep 2022 08:46:47 +0000
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+	id 1oXf6x-007wWL-0W; Mon, 12 Sep 2022 08:48:12 +0000
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oXf3Z-007uhO-St
-	for barebox@lists.infradead.org; Mon, 12 Sep 2022 08:44:49 +0000
-Received: by mail-lf1-x135.google.com with SMTP id z25so13683051lfr.2
-        for <barebox@lists.infradead.org>; Mon, 12 Sep 2022 01:44:39 -0700 (PDT)
+	id 1oXf5N-007vhZ-UV
+	for barebox@lists.infradead.org; Mon, 12 Sep 2022 08:46:36 +0000
+Received: by mail-lf1-x12e.google.com with SMTP id f9so12932131lfr.3
+        for <barebox@lists.infradead.org>; Mon, 12 Sep 2022 01:46:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=KedzIupOBIZrauK1Soqkduo/UyVdDzrPA1De+2HO8ZI=;
-        b=KquSGVkAncWWZL9ZoaE+IyhO+An3+N3FLybcAYNDUU0obzweRMI7lrrXDqe4OKVabe
-         TZvvd/O5KHXjzvWmWni81aPEZd+ZxvQJhd6SgtVeuuMql8sRM7SNuUkmSEl+W8WgyT3V
-         7YqQ99MefD17wkVpPY467hSXnAGr/nBzjc33hMnm/YHZaUm/6C/sae/Gph91yNIbNzLF
-         fBapjNNjJRob7b1skMvCx1DDxFPBwi0pdlyP1o6dnFVF6W2EuLq7CHCyoV6MpAmljHm1
-         fDZSlXHZtGx87iINAebUBuyigxLtcY9bE7rPLvo6/5pOUfawv4b3f6cpsScMrXYPiPdj
-         P3QQ==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=y56yUDzkwfP+T93Z4jWw1Dy2YuOLdxTZOZjeTdsMLgM=;
+        b=O+al2l9/1NnTjA65fc5td5+M+zQBYSssG5wdD7QCxLuG8kMZxArOixE8ffF9j3z1bD
+         3jNVrQBG2x5Ot43P5q2hJwX8mB/MvdXy69ThApdh7RYXSFEyFgjwR9SpBUuR848k99SW
+         bxsq7glNrRs5nS+4hyvtH39uH6s3NBLMm8KO8X9q8zpfqlvB1orkE/9/OA8g8tm+086J
+         oCJaSKD20gQwRMHL/JOS3h+yOwd1asImS4vRyugQouWdyRpHgXJrTXfKb/+e0eVj8ACD
+         DS2Ucl6M3vZFDdQnrMHIf7tbiFYHWH7s8EmNYGYdiFXsHCZDBofA3G3cZwWjBl7r3Ul4
+         ujvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=KedzIupOBIZrauK1Soqkduo/UyVdDzrPA1De+2HO8ZI=;
-        b=AbF5F5coT3/ZTiZlfjmW7qMRsNkxXh6wbrEEIZ0Zvta6ZlGOMNBfi2EU8ubJxiOmEo
-         aAg5LEBNEu6OCmO+Waa+aNCY/RKrucEGtAMm6V6Pv7rzS+DgXHW1cCBa7KhblykhchrP
-         YiSVLk7BsoZdg0KVwwC3SqvRnnnl/mGzpO85SiEOxej98CKRnjEnOF5uaroEpyOWuKtM
-         oGalfr5kqnUslGvFRnq0mIuhaqWuFYtfb17hpT6rCETdHv/FvYbpOqoislOuS+82p7Nc
-         TLzyYiCRP9CQsBMlU44yr7yL5TGat8SLfUvna//eJXxnhkst+o/dHDzBRddKEDgxDbCl
-         jEag==
-X-Gm-Message-State: ACgBeo0AOgsnt1ecTaUlPo1ZDuPPFa47EFfHtqPkCVfglfJkizmMHv4r
-	vbA8kFR17hUZbOsxTpfKHJY520ejo7HuTQ==
-X-Google-Smtp-Source: AA6agR6HR1EZ9B6evnc+uQXFe6DAqtm7LSNGobB0FTZ8IC0df0TugiMBg6upvIaotJ+1zoyh8RqjSA==
-X-Received: by 2002:a05:6512:1590:b0:49a:9db4:5a31 with SMTP id bp16-20020a056512159000b0049a9db45a31mr1596799lfb.667.1662972277772;
-        Mon, 12 Sep 2022 01:44:37 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=y56yUDzkwfP+T93Z4jWw1Dy2YuOLdxTZOZjeTdsMLgM=;
+        b=2ZLhBps0xKtVzVGE6htiUkxJiSmIkAQ+x+ACS/7JUQ2ZrLODKM00XPcX7Fr8jqLZtZ
+         qUAgsqy/SFNGjZ8eXFVKFPaPe9n11+zMGL/Rk8PVewWcO/Dy3T7x/miun1KXPEpjIKmz
+         5ATacehRja6fBx+lMBRzaFdeElsbVkgL93Ad+7MdXsh5QHgFAvgHQyPQRCgIiWKjF39p
+         zRgw9dDpMXE7+CgpbiHlWUHAARDpveoweXvNg3erUWvnDvaW3uwAkvDNkTJ5MSgaD6B7
+         L4daUUtKyshKbcUCXH+EE9MBn0iiPiaxQAw4t4JhHClbIjNDeBFbPMjD9qPWzhkeSPFD
+         I80Q==
+X-Gm-Message-State: ACgBeo0GfJglotF4qETheaD5u2wUo94QHtma5CwFKm7gZc0lpxZIYZYa
+	K7Kh8x+ElxEB+PyCint5lXrKh/x0wdSVLA==
+X-Google-Smtp-Source: AA6agR4xFd2p7ZYvbC7Ubd4yyh/Y444czm7iRVUw2aRvxbXyrD/R5Pl2xvsEp0BPGeMRGYY2O6VCwQ==
+X-Received: by 2002:ac2:4c54:0:b0:49b:182c:2051 with SMTP id o20-20020ac24c54000000b0049b182c2051mr357174lfk.369.1662972389425;
+        Mon, 12 Sep 2022 01:46:29 -0700 (PDT)
 Received: from localhost.localdomain (109-252-10-171.nat.spd-mgts.ru. [109.252.10.171])
-        by smtp.gmail.com with ESMTPSA id n17-20020a05651203f100b0049a4862966fsm555472lfq.146.2022.09.12.01.44.36
+        by smtp.gmail.com with ESMTPSA id i10-20020a056512340a00b0048d076373d0sm945457lfr.98.2022.09.12.01.46.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Sep 2022 01:44:37 -0700 (PDT)
+        Mon, 12 Sep 2022 01:46:28 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Mon, 12 Sep 2022 11:44:28 +0300
-Message-Id: <20220912084430.84451-6-antonynpavlov@gmail.com>
+Date: Mon, 12 Sep 2022 11:46:27 +0300
+Message-Id: <20220912084627.84575-1-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20220912084430.84451-1-antonynpavlov@gmail.com>
-References: <20220912084430.84451-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220912_014443_735479_09E612A4 
-X-CRM114-Status: UNSURE (   9.19  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220912_014634_047540_DBDA34E5 
+X-CRM114-Status: GOOD (  10.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,7 +85,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -100,27 +96,30 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 5/7] Documentation: barebox environment: fix list rendering
+Subject: [RFC] Documentation/conf.py: fix copyright years
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+N.B. N-dash is used!
+
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- .../devicetree/bindings/barebox/barebox,environment.rst          | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/conf.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/barebox/barebox,environment.rst b/Documentation/devicetree/bindings/barebox/barebox,environment.rst
-index 918efd15f55..8a57bf1add8 100644
---- a/Documentation/devicetree/bindings/barebox/barebox,environment.rst
-+++ b/Documentation/devicetree/bindings/barebox/barebox,environment.rst
-@@ -9,6 +9,7 @@ Required properties:
- * ``device-path``: path to the device environment is on
+diff --git a/Documentation/conf.py b/Documentation/conf.py
+index bcd8633c919..5fb8b07c380 100644
+--- a/Documentation/conf.py
++++ b/Documentation/conf.py
+@@ -44,7 +44,7 @@ master_doc = 'index'
  
- Optional properties:
-+
- * ``file-path``: path to a file in the device named by device-path
+ # General information about the project.
+ project = u'barebox'
+-copyright = u'2014, The barebox project'
++copyright = u'2014–2022, The barebox project'
  
- The device-path is a multistring property. The first string should contain
+ # The version info for the project you're documenting, acts as replacement for
+ # |version| and |release|, also used in various other places throughout the
 -- 
 2.37.2
 
