@@ -1,52 +1,52 @@
-Delivery-date: Tue, 13 Sep 2022 10:15:35 +0200
+Delivery-date: Tue, 13 Sep 2022 10:17:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oY14x-003PRI-PM
-	for lore@lore.pengutronix.de; Tue, 13 Sep 2022 10:15:35 +0200
+	id 1oY174-003PfH-FF
+	for lore@lore.pengutronix.de; Tue, 13 Sep 2022 10:17:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oY14w-0000s5-B5
-	for lore@pengutronix.de; Tue, 13 Sep 2022 10:15:35 +0200
+	id 1oY173-0001Tn-5b
+	for lore@pengutronix.de; Tue, 13 Sep 2022 10:17:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=y52NECiMTovf0h2VUmbRiJkcFRSaW+e+6FMq78BZ5DA=; b=mY6oVUBShDZEIjoZhGSNjCfAYr
-	LRNcuZhHlFV8BKw5Ov5YxCt2fLBZmT/k2pccnRpRFlKBIXLB6yTlAE0ily+gKj6axEu13OYSGpuiw
-	H6pyDL+SAM3Ed1GdDMVjppT5kUb29sZ196JRUGgQq+NK9LCzQjBBEWHOwqd3CRN24EyIAcZjWkv19
-	gxESBJ1MKY+/76eufdDrpDBwRA6Prxt3dGgqk8/l60n6Ox66L8feoz5sMKzw5I3AWCbKGfCUmeocH
-	MdOlODL+gfVL0mmBeNlznuyhzJpCBViBEsysaxmc9hhWO0qrAxQINUXIO9tZ1PaAPU+/8nHk/Ce8b
-	ehK7FHVQ==;
+	bh=b7bFqksRzYiuBqVChJy72MDfpFx0Weom6dnoF0k9Luc=; b=J4glhzILoOX+uEWlghMI74QFqw
+	RkYOAzlREna29vdmTyM+8hNCd1w03BnqaYbjyHE3sF1iXaHevQ03l+E11fzbGlSdFETo0HgJwAJaB
+	M5kvi+/EHbWCvEPHC0ka5XpZtb/xLmgZdg2HRI93yKap7mq91P9LgIIQ/jY62KnToC4THXXKuMAXO
+	6zacUjeD/uAXhTC5sxls6k3Suvsi//8OfSa0/qyEYQ+3+Nb+XjQ8NICN5qZDimyyHh0tc2BmWPjDE
+	zK8ui6d6fBQpFcwtZ66zvyyc24dJ1Zwr2AVW/BigQjjTgQ7E9q50A5wkKct/PoJ7NDLWdEsQ6C/Im
+	WeskKjSw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oY13f-0049k1-Fu; Tue, 13 Sep 2022 08:14:15 +0000
+	id 1oY15l-004BWc-Dy; Tue, 13 Sep 2022 08:16:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oY13U-0049gr-5W
-	for barebox@lists.infradead.org; Tue, 13 Sep 2022 08:14:05 +0000
+	id 1oY15e-004BPT-L2
+	for barebox@lists.infradead.org; Tue, 13 Sep 2022 08:16:20 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oY13S-0000kC-Li; Tue, 13 Sep 2022 10:14:02 +0200
+	id 1oY15d-00017Y-Cz; Tue, 13 Sep 2022 10:16:17 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oY13S-0003g0-Cd; Tue, 13 Sep 2022 10:14:02 +0200
-Date: Tue, 13 Sep 2022 10:14:02 +0200
+	id 1oY15d-0003og-3x; Tue, 13 Sep 2022 10:16:17 +0200
+Date: Tue, 13 Sep 2022 10:16:17 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220913081402.GI6477@pengutronix.de>
-References: <20220905070125.537483-1-a.fatoum@pengutronix.de>
+Message-ID: <20220913081617.GJ6477@pengutronix.de>
+References: <20220905070247.538308-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220905070125.537483-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220905070247.538308-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220913_011404_242298_6A7CB411 
-X-CRM114-Status: GOOD (  25.76  )
+X-CRM114-CacheID: sfid-20220913_011618_728066_218079E5 
+X-CRM114-Status: GOOD (  23.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,105 +78,81 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] test: self: provide selftest_is_running()
+Subject: Re: [PATCH] blspec: fix memory leak handling NFS URLs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Sep 05, 2022 at 09:01:25AM +0200, Ahmad Fatoum wrote:
-> For debugging during self-test run, it can be useful to enable select
-> logging only when the selftest is running. Provide a selftest_is_running()
-> function that can be used to determine whether a test is running.
+On Mon, Sep 05, 2022 at 09:02:47AM +0200, Ahmad Fatoum wrote:
+> parse_nfs_url() returns either an allocated string on success or an
+> error pointer otherwise. blspec_bootentry_provider() will early
+> exit if the path couldn't be resolved and thus not free() the string.
+> 
+> Fix this memory leak. While at it, change parse_nfs_url() to return NULL
+> on error. The error code is unused and just returning NULL, simplifies
+> the code.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  commands/selftest.c |  2 +-
->  include/bselftest.h |  5 +++++
->  test/self/core.c    | 26 +++++++++++++++++++++++++-
->  3 files changed, 31 insertions(+), 2 deletions(-)
+>  common/blspec.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/commands/selftest.c b/commands/selftest.c
-> index a10f1467fece..bb62575aa7bb 100644
-> --- a/commands/selftest.c
-> +++ b/commands/selftest.c
-> @@ -24,7 +24,7 @@ static int run_selftest(const char *match, bool list)
->  		if (match && strcmp(test->name, match))
->  			continue;
+> diff --git a/common/blspec.c b/common/blspec.c
+> index 9bb25ee72123..d391f690ad0c 100644
+> --- a/common/blspec.c
+> +++ b/common/blspec.c
+> @@ -341,10 +341,10 @@ static char *parse_nfs_url(const char *url)
+>  	int ret;
 >  
-> -		err |= test->func();
-> +		err |= selftest_run(test);
->  		matches++;
+>  	if (!IS_ENABLED(CONFIG_FS_NFS))
+> -		return ERR_PTR(-ENOSYS);
+> +		return NULL;
+>  
+>  	if (strncmp(url, "nfs://", 6))
+> -		return ERR_PTR(-EINVAL);
+> +		return NULL;
+>  
+>  	url += 6;
+>  
+> @@ -413,7 +413,7 @@ out:
+>  	if (ret)
+>  		free(mountpath);
+>  
+> -	return ret ? ERR_PTR(ret) : mountpath;
+> +	return ret ? NULL : mountpath;
+>  }
+>  
+>  /*
+> @@ -824,12 +824,12 @@ static int blspec_bootentry_provider(struct bootentries *bootentries,
+>  	if (*name == '/' || !strncmp(name, "nfs://", 6)) {
+>  		char *nfspath = parse_nfs_url(name);
+>  
+> -		if (!IS_ERR(nfspath))
+> +		if (nfspath)
+>  			name = nfspath;
+>  
+>  		ret = stat(name, &s);
+>  		if (ret)
+> -			return found;
+> +			goto out;
+>  
+>  		if (S_ISDIR(s.st_mode))
+>  			ret = blspec_scan_directory(bootentries, name);
+> @@ -838,8 +838,8 @@ static int blspec_bootentry_provider(struct bootentries *bootentries,
+>  		if (ret > 0)
+>  			found += ret;
+>  
+> -		if (!IS_ERR(nfspath))
+> -			free(nfspath);
+> +out:
+> +		free(nfspath);
 >  	}
 >  
-> diff --git a/include/bselftest.h b/include/bselftest.h
-> index 21eeba0526ef..f03c803b6553 100644
-> --- a/include/bselftest.h
-> +++ b/include/bselftest.h
-> @@ -15,6 +15,7 @@ struct selftest {
->  	const char *name;
->  	int (*func)(void);
->  	struct list_head list;
-> +	bool running;
->  };
->  
->  static inline int selftest_report(unsigned int total_tests, unsigned int failed_tests,
-> @@ -71,4 +72,8 @@ static inline void selftests_run(void)
->  	}							\
->  	__bselftest_initcall(_func##_bselftest_register);
->  
-> +
-> +int selftest_run(struct selftest *test);
-> +bool selftest_is_running(struct selftest *test);
-> +
->  #endif
-> diff --git a/test/self/core.c b/test/self/core.c
-> index caa4c27f6def..40f5ee842d16 100644
-> --- a/test/self/core.c
-> +++ b/test/self/core.c
-> @@ -7,6 +7,30 @@
->  
->  LIST_HEAD(selftests);
->  
-> +int selftest_run(struct selftest *test)
-> +{
-> +	int err;
-> +
-> +	test->running = true;
-> +	err = test->func();
-> +	test->running = false;
-> +
-> +	return err;
-> +}
-> +
-> +bool selftest_is_running(struct selftest *test)
-> +{
-> +	if (test)
-> +		return test->running;
-> +
-> +	list_for_each_entry(test, &selftests, list) {
-> +		if (selftest_is_running(test))
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
->  void selftests_run(void)
->  {
->  	struct selftest *test;
-> @@ -15,7 +39,7 @@ void selftests_run(void)
->  	pr_notice("Configured tests will run now\n");
->  
->  	list_for_each_entry(test, &selftests, list)
-> -		err |= test->func();
-> +		err |= selftest_run(test);
->  
->  	if (err)
->  		pr_err("Some selftests failed\n");
+>  	return found;
 > -- 
 > 2.30.2
 > 
