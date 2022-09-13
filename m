@@ -1,52 +1,52 @@
-Delivery-date: Tue, 13 Sep 2022 10:33:58 +0200
+Delivery-date: Tue, 13 Sep 2022 10:41:04 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oY1Mk-003Qqn-Bo
-	for lore@lore.pengutronix.de; Tue, 13 Sep 2022 10:33:58 +0200
+	id 1oY1Tc-003RGF-4J
+	for lore@lore.pengutronix.de; Tue, 13 Sep 2022 10:41:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oY1Mi-0003rt-7j
-	for lore@pengutronix.de; Tue, 13 Sep 2022 10:33:57 +0200
+	id 1oY1TZ-0004nh-Qn
+	for lore@pengutronix.de; Tue, 13 Sep 2022 10:41:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=44SMdsmy/JTltJ30Mpr9jB6rXl9GaZEqtydziPHM8VE=; b=ucDOuXoJpKgOLbATAYMxJdtT3x
-	P7ArQfahZxLCo7qxx5AQQfyBxMXLHSPjaswwfEsCvrf/LNqIXOrcMcXtogNdSJQfoyu6YBIP0VzMd
-	ImhvRG5FgbyeYRrWsCcGXNWSU9o+K8JBB1A989y6qyh8f5L++xlxZ9gpfNvqObKu23JkxXrrK7Z17
-	Np0DNrzaMqsaSyCsuQwQe+m3IqszxLNRW+Gy9vAryZyWbOQ7jQqDdeMRkVGZSI/xUS3290aD3iQNI
-	YozKiFn/ibW3DLNM+xpiwdkhuZZ53Q6AyUvYBYZJ63Hgwau/eNtzrFXsv9ssjbFOY5+Mzwtk49g2p
-	9mx3Dplg==;
+	bh=2/wceoinvJt5lJ+bcHoqlxOJ+ZZf4XZzIZRbzBw4dfI=; b=DIss1Uut2ZfbWV/5Gv2Uye6x+A
+	JItcREGMApxF6zYABiLkks1Dkz+iMR0PloIFZAOEGtD/SSwB3cNFu0p+nBSkDNe3minsP9wVMcSV2
+	i5/Jv3CdZCXo4JVLMZcEHd7LgtSdWl7QNOv0Q6EWKTx7pGfrgSoTX5MDERi1030rPEg1flcZq61lH
+	dM2bhR3pMVEvCRMrmjTYNqldaFV8Fsrlnur67XcwudTmBQlUe+6SFxdBCVicHYi6jmhrChG1ftOhQ
+	oPPXWLxk7NNktqg/a3IlvxU0kcCNYcwPHmRjI5PIDgs5JOVVKCDI4YXIjjl5/m0fyEpgNpPNui4tV
+	jTUckl8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oY1Kw-004QAh-Rc; Tue, 13 Sep 2022 08:32:07 +0000
+	id 1oY1RP-004Ude-Ps; Tue, 13 Sep 2022 08:38:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oY1Gv-004MX3-Em
-	for barebox@lists.infradead.org; Tue, 13 Sep 2022 08:27:59 +0000
+	id 1oY1QY-004TvH-JY
+	for barebox@lists.infradead.org; Tue, 13 Sep 2022 08:37:56 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oY1Gt-0002wG-SA; Tue, 13 Sep 2022 10:27:55 +0200
+	id 1oY1QW-0004Qw-6y; Tue, 13 Sep 2022 10:37:52 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oY1Gt-00048B-JY; Tue, 13 Sep 2022 10:27:55 +0200
-Date: Tue, 13 Sep 2022 10:27:55 +0200
+	id 1oY1QV-0004Wz-UB; Tue, 13 Sep 2022 10:37:51 +0200
+Date: Tue, 13 Sep 2022 10:37:51 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20220913082755.GL6477@pengutronix.de>
-References: <20220905070208.538012-1-a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, ukl@pengutronix.de
+Message-ID: <20220913083751.GE12909@pengutronix.de>
+References: <20220811135804.271071-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220905070208.538012-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220811135804.271071-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220913_012757_542214_1A23AC62 
-X-CRM114-Status: GOOD (  25.11  )
+X-CRM114-CacheID: sfid-20220913_013754_692107_AFA3D97F 
+X-CRM114-Status: GOOD (  20.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,61 +78,42 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] of: of_probe: create board's machine device at the
- earliest
+Subject: Re: [PATCH] fs: ubifs: remove always-false check
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Sep 05, 2022 at 09:02:08AM +0200, Ahmad Fatoum wrote:
-> We currently create devices for matching reserved memory entries and
-> firmware before creating the machine device. In a deep probe system, the
-> machine driver would be probed directly at registration and as such
-> needs to be probed before other devices are created, so it can disable
-> other devices if needed. Move the machine device registration to the
-> top, so board drivers can disabled reserved memory entries and firmware
-> if they need to.
+On Thu, Aug 11, 2022 at 03:58:04PM +0200, Ahmad Fatoum wrote:
+> GCC correctly warns that two bit wide compr_type can't
+> exceed or be equal to UBIFS_COMPR_TYPES_CNT (== 4).
+> 
+> Remove the check. The check is there in the kernel as well,
+> but the warning is disabled there.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/of/base.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  fs/ubifs/super.c | 5 -----
+>  1 file changed, 5 deletions(-)
+> 
+> diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+> index b48e21fae636..6a0074bd1a5c 100644
+> --- a/fs/ubifs/super.c
+> +++ b/fs/ubifs/super.c
+> @@ -86,11 +86,6 @@ static int validate_inode(struct ubifs_info *c, const struct inode *inode)
+>  		return 1;
+>  	}
+>  
+> -	if (ui->compr_type >= UBIFS_COMPR_TYPES_CNT) {
+> -		ubifs_err(c, "unknown compression type %d", ui->compr_type);
+> -		return 2;
+> -	}
+> -
 
-Applied, thanks
+Although Richard decided for the Kernel to keep the check I decided to
+take this patch for barebox. The warning is annoying and doesn't tell us
+anything. Once this is solved in the Kernel we'll get the solution with
+the next UBIFS sync.
 
 Sascha
-
-> 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 52e6a9294e11..6a51dd71793d 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2503,6 +2503,12 @@ int of_probe(void)
->  	if(!root_node)
->  		return -ENODEV;
->  
-> +	/*
-> +	 * We do this first thing, so board drivers can patch the device
-> +	 * tree prior to device creation if needed.
-> +	 */
-> +	of_platform_device_create_root(root_node);
-> +
->  	/*
->  	 * Handle certain compatibles explicitly, since we don't want to create
->  	 * platform_devices for every node in /reserved-memory with a
-> @@ -2515,8 +2521,6 @@ int of_probe(void)
->  	if (node)
->  		of_platform_populate(node, NULL, NULL);
->  
-> -	of_platform_device_create_root(root_node);
-> -
->  	of_platform_populate(root_node, of_default_bus_match_table, NULL);
->  
->  	return 0;
-> -- 
-> 2.30.2
-> 
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
