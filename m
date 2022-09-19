@@ -1,61 +1,77 @@
-Delivery-date: Mon, 19 Sep 2022 15:59:24 +0200
+Delivery-date: Mon, 19 Sep 2022 16:26:20 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oaHIy-009cY2-30
-	for lore@lore.pengutronix.de; Mon, 19 Sep 2022 15:59:24 +0200
+	id 1oaHj2-009e7W-3n
+	for lore@lore.pengutronix.de; Mon, 19 Sep 2022 16:26:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oaHIw-0003O4-Gz
-	for lore@pengutronix.de; Mon, 19 Sep 2022 15:59:23 +0200
+	id 1oaHj0-0000em-8Z
+	for lore@pengutronix.de; Mon, 19 Sep 2022 16:26:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:In-Reply-To:Date:References:Subject:Cc:To:From:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lnplYLjUEpV9ZuWqwJAR6Hk2i732+/ZlM77fHpynr1Q=; b=n2YCo0Sgmcr2jMJn3odXKXuo24
-	WhEaQfMys4f81Caj/amhVU7zZn+pZhGs45jPANzX0J+t5KAb1DXmx+BpcpVxxRkkG0WcLebN+wi1R
-	MAAbinXSVJYSkvwEZg6kH+xICwh48/oPHp7l0SUbbCrCNITXvbRU/khiQALrM9Ejd6a4Xr5DmSFcn
-	ASKvu1AoOqt2JRLIopZbcEyC5VNGl/XMwd5+DyMHIBIHOnG8/c9nS06doyscPK16tsITn5wZWZzBf
-	isQgka4nTONjqOuPjRyJALQ5AiD4mItmwOWZMtAN05b3GHZpAFRZGN2rmQ2ZBk5WR8W/59H1unjl/
-	JMRupZsg==;
+	bh=9duNjtZ5xDgycEpH/3k7YBcO5ENfynfndMRoQcJn08c=; b=rmcSBaBNg0BHfaac9sjPuUTRIY
+	bXrOlhkuSdqKrGvavvFYz0FivjEmui4JNZws+4VnmMA51vGCqMqawlo93qkEegepfQK+B3yTpeAOz
+	pIW2E8veVaBrSGxdWcIvnYQfgN+raqxd/7GrMVhf0dB8DUM0Vh9t7MBYOnnXyKCIpYvkIymipv+tZ
+	R7yQ8xdYa1zpvNQ1Dc2P/t29FMOfT/LXe8RncboMjEPpd5KAXf3ZpdAyn0AYvNKi3Ml+Df0FCjgRj
+	80HIrLuSy43EfGXCUgbF6ASuyOe2qPJDbwG4Vv20Av3F+IyUhuBf+WfYCQNB+592ZuY9Ao/f25MHv
+	HIRP0vNg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaHHd-00By53-4o; Mon, 19 Sep 2022 13:58:01 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1oaHhP-00C4ob-Tt; Mon, 19 Sep 2022 14:24:40 +0000
+Received: from smtpout-3.cvg.de ([2003:49:a034:1067:5::3])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaHHX-00By4E-VF
-	for barebox@lists.infradead.org; Mon, 19 Sep 2022 13:57:57 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oaHHW-0003Bo-4Q; Mon, 19 Sep 2022 15:57:54 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oaHHT-0007X3-Uz; Mon, 19 Sep 2022 15:57:51 +0200
-Date: Mon, 19 Sep 2022 15:57:51 +0200
-To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+	id 1oaHhK-00C4nQ-D2
+	for barebox@lists.infradead.org; Mon, 19 Sep 2022 14:24:36 +0000
+Received: from mail-mta-2.intern.sigma-chemnitz.de (mail-mta-2.intern.sigma-chemnitz.de [192.168.12.70])
+	by mail-out-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 28JEOUKc1191779
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
+	for <barebox@lists.infradead.org>; Mon, 19 Sep 2022 16:24:30 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
+	s=v2022040800; t=1663597470;
+	bh=9duNjtZ5xDgycEpH/3k7YBcO5ENfynfndMRoQcJn08c=; l=1201;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To;
+	b=I16xLQT0rdkEVQpzaWq+s5KbFjb8ATNF9vcwKFOgegq9gcQ5ga277isbT2tAgARgI
+	 1VlCnJTj4WClHw9VV3qVO9Gyw2DomwdIk9E5lURUW3SBFdCVxHeOuUw6kwtpNnLrlY
+	 x/k4t8FIiTOnrbVi7zc0vRjFGiqFeGKHhflJLtg5WRAS6ZK5j/AREbLjSRDnuMJKHi
+	 DZFrXcLuOefN5K5g1NfRzBvGRhMBRvGtTIIDfjpaiJUZ5bQinPOmDeBSgqGsCLO/92
+	 oFY7/gsKDqgJRUt/xvpR6FeWhFtDCITcMCR4ibUcLaJD4pS7oM2x14PElwno9njPGp
+	 W5bA/6i0J5+ng==
+Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
+	by mail-mta-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 28JEOSsS1246042
+	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Mon, 19 Sep 2022 16:24:28 +0200
+Received: from mail-msa-3.intern.sigma-chemnitz.de ( [192.168.12.73]) by reddoxx.intern.sigma-chemnitz.de
+	(Reddoxx engine) with SMTP id 1549BD0A4AE; Mon, 19 Sep 2022 16:24:20 +0200
+Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
+	by mail-msa-3.intern.sigma-chemnitz.de (8.15.2/8.15.2) with ESMTPS id 28JEOJlK1139184
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Mon, 19 Sep 2022 16:24:20 +0200
+Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.96)
+	(envelope-from <ensc@sigma-chemnitz.de>)
+	id 1oaHh5-00BSBu-2v;
+	Mon, 19 Sep 2022 16:24:19 +0200
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+To: Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20220919135751.GD6477@pengutronix.de>
 References: <ly7d1z1qvs.fsf@ensc-pc.intern.sigma-chemnitz.de>
+	<20220919135751.GD6477@pengutronix.de>
+Date: Mon, 19 Sep 2022 16:24:19 +0200
+In-Reply-To: <20220919135751.GD6477@pengutronix.de> (Sascha Hauer's message of
+	"Mon, 19 Sep 2022 15:57:51 +0200")
+Message-ID: <ly35cn1lyk.fsf@ensc-pc.intern.sigma-chemnitz.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ly7d1z1qvs.fsf@ensc-pc.intern.sigma-chemnitz.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220919_065756_028701_64D66A1C 
-X-CRM114-Status: GOOD (  26.31  )
+X-CRM114-CacheID: sfid-20220919_072434_760773_0CD07DAA 
+X-CRM114-Status: GOOD (  10.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,116 +89,50 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
+X-Spam-Status: No, score=-104.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
+	autolearn_force=no version=3.4.2
 Subject: Re: malloc() alignment on 32 bit
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Enrico,
+Sascha Hauer <sha@pengutronix.de> writes:
 
-On Mon, Sep 19, 2022 at 02:37:59PM +0200, Enrico Scholz wrote:
-> Hello,
-> 
-> on an iMX6ull I stumpled across
-> 
-> | zstd_decomp_init:536 workspace=8ff1a004+161320
-> | ERROR: initcall ubifs_init+0x1/0xc4 failed: Invalid argument
-> 
-> which is caused by
-> 
-> | static int zstd_decomp_init(void)
-> |	void *wksp = malloc(wksp_size);
-> | ...
-> | ZSTD_DCtx* ZSTD_initStaticDCtx(void *workspace, size_t workspaceSize)
-> |    if ((size_t)workspace & 7) return NULL;  /* 8-aligned */
-> 
-> 
-> Trivial fix would be 'memalign(8, wksp_size)', but is it really ok that
-> malloc() for 32 bit has only an alignment of 4?
-> 
-> Relevant code seems to be in common/tlsf.c
-> 
-> | enum tlsf_private
-> | {
-> | #if defined (TLSF_64BIT)
-> | 	/* All allocation sizes and addresses are aligned to 8 bytes. */
-> | 	ALIGN_SIZE_LOG2 = 3,
-> | #else
-> | 	/* All allocation sizes and addresses are aligned to 4 bytes. */
-> | 	ALIGN_SIZE_LOG2 = 2,
-> | #endif
-> 
-> 'ldrd/strd' require 8 byte alignment which might break with such
-> alignment.
+>> | zstd_decomp_init:536 workspace=8ff1a004+161320
+>> | ERROR: initcall ubifs_init+0x1/0xc4 failed: Invalid argument
+>> 
+> If you had asked me which alignment we have then I would have said it's
+> bigger. OTOH I never received any reports about insufficient alignment
+> on ARM or any other 32bit architecture.
 
-If you had asked me which alignment we have then I would have said it's
-bigger. OTOH I never received any reports about insufficient alignment
-on ARM or any other 32bit architecture.
+The code which failed for me was added 3 months ago
 
-I suspect we could just drop the check without any harm, but that's just
-a gut feeling because we never had any alignment issues.
+| commit b4a9782d4f56333e897dccc35c2c27e2605f6b93
+| Author: Ahmad Fatoum <a.fatoum@pengutronix.de>
+| Date:   Wed Jul 13 12:09:18 2022 +0200
+| 
+|     lib: zstd: sync with Linux
 
-BTW are you sure ldrd/strd need 8 byte alignment? I just tested it with
-the following patch and this works without problems. I verified the
-compiler indeed generates ldrd/strd for accessing the 64bit field.
+and the Kconfig options (FS_UBIFS_COMPRESSION_ZSTD) are set to "off"...
 
-Sascha
 
--------------------------8<----------------------------
+> I suspect we could just drop the check without any harm, but that's just
+> a gut feeling because we never had any alignment issues.
+>
+> BTW are you sure ldrd/strd need 8 byte alignment?
 
-diff --git a/common/startup.c b/common/startup.c
-index f53b73f81a..f261b1bdac 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -334,10 +334,31 @@ static void do_ctors(void)
- 
- int (*barebox_main)(void);
- 
-+struct bar {
-+	uint64_t foo;
-+};
-+
-+struct bar *myfoo(void)
-+{
-+	struct bar *x;
-+	void *ptr;
-+
-+	ptr = malloc(16);
-+
-+	ptr = (void *)((unsigned long)ptr | 4);
-+
-+	x = ptr;
-+
-+	x->foo = get_time_ns();
-+
-+	return x;
-+}
-+
- void __noreturn start_barebox(void)
- {
- 	initcall_t *initcall;
- 	int result;
-+	struct bar *b;
- 
- 	if (!IS_ENABLED(CONFIG_SHELL_NONE) && IS_ENABLED(CONFIG_COMMAND_SUPPORT))
- 		barebox_main = run_init;
-@@ -355,6 +376,9 @@ void __noreturn start_barebox(void)
- 
- 	pr_debug("initcalls done\n");
- 
-+	b = myfoo();
-+	printf("V: %lld\n", b->foo);
-+
- 	if (IS_ENABLED(CONFIG_SELFTEST_AUTORUN))
- 		selftests_run();
- 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Their EX variants (LDREXD + STREXD; see [1]).  Unaligned access on
+plain LDRD/STRD is allowed on ARMv7-A.  But not on ARMv7-M or ARMv6 and
+earlier.
+
+
+
+
+Enrico
+
+Footnotes:
+[1]  https://developer.arm.com/documentation/ddi0406/c/Application-Level-Architecture/Application-Level-Memory-Model/Alignment-support/Unaligned-data-access
 
 
