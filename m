@@ -1,63 +1,59 @@
-Delivery-date: Mon, 19 Sep 2022 09:36:35 +0200
+Delivery-date: Mon, 19 Sep 2022 10:03:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oaBKR-009NCQ-UL
-	for lore@lore.pengutronix.de; Mon, 19 Sep 2022 09:36:35 +0200
+	id 1oaBkH-009ODK-3D
+	for lore@lore.pengutronix.de; Mon, 19 Sep 2022 10:03:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oaBKQ-0005TB-Mo
-	for lore@pengutronix.de; Mon, 19 Sep 2022 09:36:31 +0200
+	id 1oaBkF-0000TS-FY
+	for lore@pengutronix.de; Mon, 19 Sep 2022 10:03:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mIQW/RKE86hRr723nu04raM09mUfCkx7tHhjurf+/jw=; b=qEhSPjdd5ICnovXiWq3mCIY9vP
-	6fp2M6d2ryYRVwCl5D5shFxckFmG+4zrSr90I44V6Kw68PeO/GJAGfNarfBADPJHktB47A61qjsrS
-	XR2C4vjhJputeFlPrg0CuTWNTlMtpAeajkeYGMXEf0igI4keBZDUc+qFNKqk/xVo/t57lydrxmJJt
-	kmqKRLk0xjyj8NokMjVFh3R5kc/bmvnzTWtKelL9Hriluox+5wcIGhf1OBLV3POgCt7i5+otAwS70
-	/hQT3JNVy0UcZjgoJ65KnXpTYS2DobitnRRwCb5TzS+av5cjhcvBihJlSLk2nH4WGwEFAa7IpLvXg
-	bzTOYI3g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=J9UTDSjlkqFG03uMbQM1Ic02M2gkMzjvDmsmzmhSWlU=; b=QaebBbA+jSuOu3iiXLFS+65M93
+	XXGofqpYt5QnDBm7Q18y+Vf7iviIvjDFvmMX3OGFdedvlz7pQHxxOX5Ape8Hrz61vLga1XP9DQmHv
+	CurGlKZ67nPoiPgU4IkVShcINgGlLLNgjllSxmpdi8cpjacTSNB4ePkYnnX9yhNqsd2PmhUSb5vwJ
+	9i1ir33Vxmo5uvN7Nujefk7+54YtbFksF/YwofK0KR18PK9OcxpxCdda1qhiqxJSGNPiAFz3k0O64
+	fNnOAiStEpw3KX/8tnzGSCJ4gxyUwY4RBoSr3B6nwos6E7z6m2Btux7dQtwQLEINWTPe6Stj+sJCr
+	63Xa+57g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaBIH-009ID1-SK; Mon, 19 Sep 2022 07:34:18 +0000
+	id 1oaBiv-009fY5-FP; Mon, 19 Sep 2022 08:01:49 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaBHs-009HvU-NH
-	for barebox@lists.infradead.org; Mon, 19 Sep 2022 07:34:10 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1oaBik-009fP5-6C
+	for barebox@lists.infradead.org; Mon, 19 Sep 2022 08:01:40 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oaBHl-0005AX-WE; Mon, 19 Sep 2022 09:33:46 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	id 1oaBii-0008Lc-VA; Mon, 19 Sep 2022 10:01:37 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oaBHl-0006nc-7A; Mon, 19 Sep 2022 09:33:45 +0200
-Date: Mon, 19 Sep 2022 09:33:45 +0200
+	id 1oaBij-001cXj-KT; Mon, 19 Sep 2022 10:01:36 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oaBig-003gf1-FV; Mon, 19 Sep 2022 10:01:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20220919073345.GA6477@pengutronix.de>
-References: <20220916125232.3775559-1-s.hauer@pengutronix.de>
- <20220916125232.3775559-3-s.hauer@pengutronix.de>
- <lypmfv8l3c.fsf@ensc-pc.intern.sigma-chemnitz.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 19 Sep 2022 10:01:28 +0200
+Message-Id: <20220919080133.877651-5-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220919080133.877651-1-s.hauer@pengutronix.de>
+References: <20220919080133.877651-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <lypmfv8l3c.fsf@ensc-pc.intern.sigma-chemnitz.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220919_003352_808146_EB1D28B5 
-X-CRM114-Status: GOOD (  34.15  )
+X-CRM114-CacheID: sfid-20220919_010138_327862_A6FFE1BD 
+X-CRM114-Status: GOOD (  12.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,103 +71,58 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/3] tftp: implement UDP reorder cache using lists
+Subject: [PATCH 4/9] net: liteeth: Do not use NetRxPackets
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Enrico,
+Use a driver private buffer as network receive buffer rather than the
+globally allocated ones which will be removed soon.
 
-On Fri, Sep 16, 2022 at 04:12:07PM +0200, Enrico Scholz wrote:
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
-> 
-> > The UDP reorder cache can be much easier implemented using lists.
-> > As a bonus the cache grows and shrinks on demand and no fixed size
-> > has to be configured at compile time.
-> 
-> There are three variants of the cache
-> 
-> - small, fixed sized array with linear search (very first
->   implementation)  -->  O(n)
-> - list --> O(n) on insert, O(1) on lookup
-> - bitmap --> O(1)
-> 
-> 
-> Performance wise, I think the list implementation is the slowest one
-> (although the fixed sized array is O(n) on every operation, this should
-> be still faster for small n than the list operations and the related
-> memory management).
-> 
-> From code size, the list implementation is in the middle.
-> 
-> I am not sure whether dynamic shrinking/growing of the cache is so
-> important or whether a small, fixed sized cache suffices.  In my
-> experience, only the first couple of packets really matter regarding
-> reordering.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/liteeth.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-I don't think that the performance of the cache limits the tftp
-performance, given the low number of entries in the cache. You may prove
-me wrong here, I don't have any setup here where I could test packet
-reordering. What happens here instead is that packets get dropped
-because of the RX queue of the network interface get overwhelmed by
-packets, see my patch reducing the windowsize setting for i.MX. Packets
-get cached then, but the missing packets come in later when retransmits
-are triggered. Performance is very bad then anyway.
-
-What counts for me here is the simplicity of the implementation and
-the ability to check it for correctness. Here the list implementation
-has clear advantages.
-
-The dynamic shrinking/growing of the cache hasn't been a goal for me,
-it's just easier to implement then having to maintain a fixed size
-pool.
-
-> 
-> Of course, the 'kfifo' could be replaced completely by a custom buffer
-> implementation where packets are inserted at the correct position.  O(1)
-> for every operation + zero additional memory.
-
-Yes, that could be a next step, although the kfifo makes it easy to
-decouple the fixed sized blocks coming in from the read() call with
-varying sizes.
-
-> 
-> 
-> > -static inline bool is_block_before(uint16_t a, uint16_t b)
-> > -{
-> > -	return (int16_t)(b - a) > 0;
-> > -}
-> > -
-> > ....
-> >  static int tftp_window_cache_insert(struct tftp_cache *cache, uint16_t id,
-> >  				    void const *data, size_t len)
-> >  {
-> > ...
-> > +	list_for_each_entry(block, &cache->blocks, list) {
-> 
-> fwiw, iterating in the reverse direction will find the position probably
-> faster
-> 
-> 
-> > +		if (block->id == id)
-> > +			return 0;
-> > +		if (block->id < id)
-> 
-> This will break when wrapping at 65535; the removed 'is_block_before()'
-> function was written for this case.
-
-Oh, yes, I missed this. I'll fix it here and elsewhere. Thanks for
-noting.
-
-Sascha
-
+diff --git a/drivers/net/liteeth.c b/drivers/net/liteeth.c
+index 771f57eead..547f5486ae 100644
+--- a/drivers/net/liteeth.c
++++ b/drivers/net/liteeth.c
+@@ -73,6 +73,8 @@ struct liteeth {
+ 	int rx_slot;
+ 	int num_rx_slots;
+ 	void __iomem *rx_base;
++
++	void *rx_buf;
+ };
+ 
+ static inline void litex_write8(void __iomem *addr, u8 val)
+@@ -230,9 +232,9 @@ static int liteeth_eth_rx(struct eth_device *edev)
+ 
+ 	rx_slot = litex_read8(priv->base + LITEETH_WRITER_SLOT);
+ 
+-	memcpy(NetRxPackets[0], priv->rx_base + rx_slot * LITEETH_BUFFER_SIZE, len);
++	memcpy(priv->rx_buf, priv->rx_base + rx_slot * LITEETH_BUFFER_SIZE, len);
+ 
+-	net_receive(edev, NetRxPackets[0], len);
++	net_receive(edev, priv->rx_buf, len);
+ 
+ 	litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, reg);
+ 
+@@ -323,6 +325,8 @@ static int liteeth_probe(struct device_d *dev)
+ 	priv->tx_base = buf_base + priv->num_rx_slots * LITEETH_BUFFER_SIZE;
+ 	priv->tx_slot = 0;
+ 
++	priv->rx_buf = xmalloc(PKTSIZE);
++
+ 	edev->init = liteeth_init_dev;
+ 	edev->open = liteeth_eth_open;
+ 	edev->send = liteeth_eth_send;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
