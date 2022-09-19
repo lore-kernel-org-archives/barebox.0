@@ -1,77 +1,77 @@
-Delivery-date: Mon, 19 Sep 2022 16:26:20 +0200
+Delivery-date: Mon, 19 Sep 2022 19:23:02 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oaHj2-009e7W-3n
-	for lore@lore.pengutronix.de; Mon, 19 Sep 2022 16:26:20 +0200
+	id 1oaKU2-009klT-NB
+	for lore@lore.pengutronix.de; Mon, 19 Sep 2022 19:23:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oaHj0-0000em-8Z
-	for lore@pengutronix.de; Mon, 19 Sep 2022 16:26:18 +0200
+	id 1oaKU1-0001ID-IV
+	for lore@pengutronix.de; Mon, 19 Sep 2022 19:23:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
-	Message-ID:In-Reply-To:Date:References:Subject:Cc:To:From:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
+	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9duNjtZ5xDgycEpH/3k7YBcO5ENfynfndMRoQcJn08c=; b=rmcSBaBNg0BHfaac9sjPuUTRIY
-	bXrOlhkuSdqKrGvavvFYz0FivjEmui4JNZws+4VnmMA51vGCqMqawlo93qkEegepfQK+B3yTpeAOz
-	pIW2E8veVaBrSGxdWcIvnYQfgN+raqxd/7GrMVhf0dB8DUM0Vh9t7MBYOnnXyKCIpYvkIymipv+tZ
-	R7yQ8xdYa1zpvNQ1Dc2P/t29FMOfT/LXe8RncboMjEPpd5KAXf3ZpdAyn0AYvNKi3Ml+Df0FCjgRj
-	80HIrLuSy43EfGXCUgbF6ASuyOe2qPJDbwG4Vv20Av3F+IyUhuBf+WfYCQNB+592ZuY9Ao/f25MHv
-	HIRP0vNg==;
+	bh=9Epps4qlGH5pyQ+K1I5uPIt6WFfP3EutXZPcbXg308U=; b=R4hVA8thxa/fIJiAarZBzKlHIA
+	e+Pte1ffU3wfTm2+8r9HSWqhGeLJ6m2v4ndUHes9cPX+VHlFaqWV7zcZsnPjmFinYMEnhW+4IjiIo
+	cMn3rUAJLXLKE9xWSvXz6TxUEPiCPyjQtTcBM8Zv2DqvE8jkEoiC6Z2VHgBVpNqswaxBYpUu7exq0
+	w5BMUaICl4ciSq+mSU1QUIQdHZ1DYey9L6MuJyfNr8T6Qky9uNDQQHPENA1KZtQXEGQyAuJEHk77o
+	NT8erwAZJg+jqPRG8av4hdlbJ1QPq4NyTscuCvIJoT9sqyKN8E/Ix38i3MxOFidF1+tlhJqGj/QSJ
+	DtjLS+UQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaHhP-00C4ob-Tt; Mon, 19 Sep 2022 14:24:40 +0000
-Received: from smtpout-3.cvg.de ([2003:49:a034:1067:5::3])
+	id 1oaKSH-00DEZQ-5k; Mon, 19 Sep 2022 17:21:13 +0000
+Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaHhK-00C4nQ-D2
-	for barebox@lists.infradead.org; Mon, 19 Sep 2022 14:24:36 +0000
-Received: from mail-mta-2.intern.sigma-chemnitz.de (mail-mta-2.intern.sigma-chemnitz.de [192.168.12.70])
-	by mail-out-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 28JEOUKc1191779
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
-	for <barebox@lists.infradead.org>; Mon, 19 Sep 2022 16:24:30 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
-	s=v2022040800; t=1663597470;
-	bh=9duNjtZ5xDgycEpH/3k7YBcO5ENfynfndMRoQcJn08c=; l=1201;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To;
-	b=I16xLQT0rdkEVQpzaWq+s5KbFjb8ATNF9vcwKFOgegq9gcQ5ga277isbT2tAgARgI
-	 1VlCnJTj4WClHw9VV3qVO9Gyw2DomwdIk9E5lURUW3SBFdCVxHeOuUw6kwtpNnLrlY
-	 x/k4t8FIiTOnrbVi7zc0vRjFGiqFeGKHhflJLtg5WRAS6ZK5j/AREbLjSRDnuMJKHi
-	 DZFrXcLuOefN5K5g1NfRzBvGRhMBRvGtTIIDfjpaiJUZ5bQinPOmDeBSgqGsCLO/92
-	 oFY7/gsKDqgJRUt/xvpR6FeWhFtDCITcMCR4ibUcLaJD4pS7oM2x14PElwno9njPGp
-	 W5bA/6i0J5+ng==
-Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
-	by mail-mta-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 28JEOSsS1246042
-	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Mon, 19 Sep 2022 16:24:28 +0200
-Received: from mail-msa-3.intern.sigma-chemnitz.de ( [192.168.12.73]) by reddoxx.intern.sigma-chemnitz.de
-	(Reddoxx engine) with SMTP id 1549BD0A4AE; Mon, 19 Sep 2022 16:24:20 +0200
-Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
-	by mail-msa-3.intern.sigma-chemnitz.de (8.15.2/8.15.2) with ESMTPS id 28JEOJlK1139184
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 19 Sep 2022 16:24:20 +0200
-Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.96)
-	(envelope-from <ensc@sigma-chemnitz.de>)
-	id 1oaHh5-00BSBu-2v;
-	Mon, 19 Sep 2022 16:24:19 +0200
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <ly7d1z1qvs.fsf@ensc-pc.intern.sigma-chemnitz.de>
-	<20220919135751.GD6477@pengutronix.de>
-Date: Mon, 19 Sep 2022 16:24:19 +0200
-In-Reply-To: <20220919135751.GD6477@pengutronix.de> (Sascha Hauer's message of
-	"Mon, 19 Sep 2022 15:57:51 +0200")
-Message-ID: <ly35cn1lyk.fsf@ensc-pc.intern.sigma-chemnitz.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.1 (gnu/linux)
+	id 1oaKSA-00DEY9-V9
+	for barebox@lists.infradead.org; Mon, 19 Sep 2022 17:21:09 +0000
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-333a4a5d495so347421627b3.10
+        for <barebox@lists.infradead.org>; Mon, 19 Sep 2022 10:21:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=igorinstitute-com.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=9Epps4qlGH5pyQ+K1I5uPIt6WFfP3EutXZPcbXg308U=;
+        b=H8OS7Ujh1N195qwGr1zUsiz8x7A6Kiv3JxTgM/LzZIitq96qboUZnFb3nRQsFNw900
+         JPU3iBeeWexECYjlMvJcbpYJk937blTcik5ES8+MBkEdl4VzvVUj11UUYjiw3Eg0yfCx
+         BkiYlJ67V0qbR831X3nNgG0XcWkJYZ2FYfCr8P3YerI5I/s0NOq5F7s1kZOkBdinHDTZ
+         MeUh6QfXZRcZq95Cc0cHT34wvwRZUPDbRdaeltdAAIYjcRGKRbCW7N83G5sreblIFF07
+         /I+4fzNRN6BzbC/4HveewOvdDC6dQyHnSLYLBFe01WtP/aaAU7HMODT1I56qii9OCugT
+         HB5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=9Epps4qlGH5pyQ+K1I5uPIt6WFfP3EutXZPcbXg308U=;
+        b=35fheBGVt1eIi5Y2vH043YF8r9qZNLtYE7xIb+PNuyR3oo/unYzk/5Tj4gKLExkgMI
+         wJK8if8WgRa0QpOFJRs8Q338qj5inoDPg/wdXMv/9BKD0o10CP5/datNMLBCXDJelWl7
+         iNDU4s+12W04gb2pl1kZDlExGgX3E+kf1+SgDqhNFs2nyBKb7A741CFuH0tpn2wQ47cZ
+         +S5CrTlW3epjf8zgew7Sr05XMI4JYFLdlcxAryiZGy2CT9/qAobR0XwfEbyeohidQP+6
+         gGOowA3gY/RDr8Jfp8WTqVjG3U+GBfO2CnxtbPYTD6+eOocg3I4VVzlILZalB4QiKMSP
+         auSQ==
+X-Gm-Message-State: ACrzQf1upUHbfCWnjVm0M+PkDCN2W+yisaEcoAnzsyGwdB3RXnrcYmc9
+	KPhnKNtwwTYhGVlxPe0vsrMYtC6sbhryUGdHimYRKeXKtUA=
+X-Google-Smtp-Source: AMsMyM4GH0QWWrTmP5gB1C9SEvLzZsclZcamLo/83mJehbGcLC4X1tiPUiWPJIwJTh20ei+lRlN7ZP++5Er+S5N/9EY=
+X-Received: by 2002:a81:5883:0:b0:345:1065:8762 with SMTP id
+ m125-20020a815883000000b0034510658762mr16138236ywb.386.1663608064279; Mon, 19
+ Sep 2022 10:21:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20220916124942.3751131-1-s.hauer@pengutronix.de> <20220916131606.GZ6477@pengutronix.de>
+In-Reply-To: <20220916131606.GZ6477@pengutronix.de>
+From: Trent Piepho <trent.piepho@igorinstitute.com>
+Date: Mon, 19 Sep 2022 10:20:53 -0700
+Message-ID: <CAMHeXxOuxZnVcavXvwi1Y13kfRBP+opRgqwyEvSGBjQK6dSX1A@mail.gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220919_072434_760773_0CD07DAA 
-X-CRM114-Status: GOOD (  10.85  )
+X-CRM114-CacheID: sfid-20220919_102107_234739_524B86CE 
+X-CRM114-Status: GOOD (  13.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,50 +89,34 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: malloc() alignment on 32 bit
+Subject: Re: [PATCH] net: Bring up all interfaces before going interactive
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Sascha Hauer <sha@pengutronix.de> writes:
-
->> | zstd_decomp_init:536 workspace=8ff1a004+161320
->> | ERROR: initcall ubifs_init+0x1/0xc4 failed: Invalid argument
->> 
-> If you had asked me which alignment we have then I would have said it's
-> bigger. OTOH I never received any reports about insufficient alignment
-> on ARM or any other 32bit architecture.
-
-The code which failed for me was added 3 months ago
-
-| commit b4a9782d4f56333e897dccc35c2c27e2605f6b93
-| Author: Ahmad Fatoum <a.fatoum@pengutronix.de>
-| Date:   Wed Jul 13 12:09:18 2022 +0200
-| 
-|     lib: zstd: sync with Linux
-
-and the Kconfig options (FS_UBIFS_COMPRESSION_ZSTD) are set to "off"...
-
-
-> I suspect we could just drop the check without any harm, but that's just
-> a gut feeling because we never had any alignment issues.
+On Fri, Sep 16, 2022 at 6:16 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
 >
-> BTW are you sure ldrd/strd need 8 byte alignment?
+> On Fri, Sep 16, 2022 at 02:49:42PM +0200, Sascha Hauer wrote:
+> > So far we only bring up network interfaces when we actually need them.
+> > This means we could be idling in the shell for long and once the user
+> > decides to do networking he has to wait for the link to be established.
+>
+> We could make the user experience even a bit better by doing this call
+> before waiting for the autoboot timeout which then speeds up netboot a
+> bit.
 
-Their EX variants (LDREXD + STREXD; see [1]).  Unaligned access on
-plain LDRD/STRD is allowed on ARMv7-A.  But not on ARMv7-M or ARMv6 and
-earlier.
+The Linux phy driver almost invariably does not bother to avoid
+resetting the network phy when not necessary.  So if network
+auto-negotiation is started in barebox, it will be reset and then
+restarted shortly after in Linux.  The link auto-negotiation impacts
+the LAN's spanning tree if that is in use.
 
-
-
-
-Enrico
-
-Footnotes:
-[1]  https://developer.arm.com/documentation/ddi0406/c/Application-Level-Architecture/Application-Level-Memory-Model/Alignment-support/Unaligned-data-access
+So there is a drawback, besides the small added boot time to
+initialize the network hardware, to adding an unneeded network restart
+in Barebox in the case where interactive mode is not entered and
+network boot is not used.
 
 
