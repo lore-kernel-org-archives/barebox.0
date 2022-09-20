@@ -1,79 +1,58 @@
-Delivery-date: Tue, 20 Sep 2022 11:49:30 +0200
+Delivery-date: Tue, 20 Sep 2022 14:59:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oaZsf-00AMxi-W3
-	for lore@lore.pengutronix.de; Tue, 20 Sep 2022 11:49:30 +0200
+	id 1oacqM-00ATGD-0x
+	for lore@lore.pengutronix.de; Tue, 20 Sep 2022 14:59:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oaZse-0001La-CL
-	for lore@pengutronix.de; Tue, 20 Sep 2022 11:49:29 +0200
+	id 1oacqK-0005F1-2a
+	for lore@pengutronix.de; Tue, 20 Sep 2022 14:59:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
-	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=RJ4q2GT9vnDuR1GSSIy06gTdGBSh3ymU6VGTEDROYTc=; b=rLMJnF41HRmDhWnBY4Z70RbMeE
-	TcmDU37UPnhjievomk4Diy2/+1cNszeeH7h6rFSbOLeDzmDlEvFZIKpbJ4i50hC+nYk0pLYtvyrXB
-	h4vP/qvP9dUgLH+u5WDUOqVtbm+dKOtJhHmXslBYw5/G/NmzXlupwu19syFV5UwpxvpLxeCosowwp
-	pk15vt81mS1D0zgIdxWgRqgIWUHj+0cOG4S18xuFIrfuDTLvb80XlNxhU9bVk1wYRPD5Ps3DYD0tC
-	2mppHfMeNK1kLbo7rp0hcxPnMH/q9pBQAl7naOwfoHXrO32rIWrakwusmrXnHtNK32r+0oBlmam0U
-	2v7hl8SA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=w5wFbUQx8lQTJ7AOqaI9Xi29EO5jW7znUXKFKa2si3w=; b=Zm7/x5Rk8jd0WmNxgp3QEF4Z1M
+	QI2MxGTBC/s2gphH1HEBxTK8Ae7AFC/aoHwh5miUaxbcIqBRZ5JahwX3sMzwALRlkQGscLgGEyQf+
+	+VvdKoHSSAeXO87MdcQtvWM7/IwccEARnerRvw9HBBxzPZJXYolaQ0C9VvGDXxInZy86hndAo9iGZ
+	cdkdNFFhJqzwbEeIKU7ydp2HgZq0YegdTYa2uspHeiTku24X8eQfda0ilcUjya6wBSa+tYokP2SI5
+	YJAxT46nY9pJg4i3XaIZPKD9aqTykjSPRQYNfV0gAG3fh93HNajpUSJbCuXF+GLwAqJY3OJyzR78Z
+	rtgOawfw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaZqw-002aRK-LX; Tue, 20 Sep 2022 09:47:43 +0000
-Received: from mail-yb1-xb33.google.com ([2607:f8b0:4864:20::b33])
+	id 1oacoP-003sAc-8j; Tue, 20 Sep 2022 12:57:18 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaZqZ-002aMW-HJ
-	for barebox@lists.infradead.org; Tue, 20 Sep 2022 09:47:22 +0000
-Received: by mail-yb1-xb33.google.com with SMTP id g5so2525469ybg.11
-        for <barebox@lists.infradead.org>; Tue, 20 Sep 2022 02:47:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=igorinstitute-com.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=RJ4q2GT9vnDuR1GSSIy06gTdGBSh3ymU6VGTEDROYTc=;
-        b=tMvlTyH8hoKhmqTt0oHqz12+byA9AYpTrjknfOj6Pe4w3n4M33d1UUF8wqa8bStbai
-         9egIBujdSzer9YFIOIJh6Rjcf4kBRPPgapXK3tm0wrVv9tLjX1Vt3mpJL8lEHGDBNmR+
-         hC4J/s7FQdP8Jy2L+PwKBoAVUV728dYo/Tr/Ppu/Xkarj2IF69pSuStEHmvTdjTlHmf0
-         WxkkBx8Xsyjz1SXSIVQ6IBbYXJ9cTfakm+WCTQoUtVdu4wJzL7ELkmpUQi0Wblh4kaWR
-         FoGZf8r1nvAaXf3lO6tfCCvM0RMoHKbZOVVAoBO0G3e/YdaUeZDmCikTfCFvGaDtP5Gg
-         MaRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=RJ4q2GT9vnDuR1GSSIy06gTdGBSh3ymU6VGTEDROYTc=;
-        b=7cEAR4/g+7lAVC8jz61n2UzwYQc3SajiqWqq1vpj3hrLDFKAmV/lUJMH9LaX7+N9pY
-         e4VCuwgxQSZ5ouyeZZABNIgiDx/VtKmDVxNgwDczIqP4wYtqjTUelg0miARU3Bn0Zekh
-         gfgBd5Ia4dVINKzSM7d1UxJjLawZHsatX3AbTcIfBjPZj1IERBnz7ifDHJdVI1jIfNaQ
-         JeoP+Ry5SY9G+DlaC8pc3UoT8npZyYSYVx1MzevHRuHzYvbIiiRXD2w/Jnp+p1ahs3XE
-         VmmBUQCPKkkJ8BvtZqZOYpbK+1I7E5LTPBaSl4tYaJa59hMC/I/hio3KuS8YuNC/luII
-         JLrA==
-X-Gm-Message-State: ACrzQf1BYrGJoPpy7y5QgNM+327ZvZdRe5tzUlVDoh2HiaVKfkgGIOc8
-	i+EE0GUjsef5R0cy7usVB65dsJOPMF7BV/qAMWLvlw==
-X-Google-Smtp-Source: AMsMyM5KVvgljcT+9k5N7iTgMHQf4S3XbTxzw2S7oz2cRuLLO1u5ZVSHFh6z/fWyVJQyST+ntJsHdWgfILmg7KkVYNQ=
-X-Received: by 2002:a25:80d0:0:b0:6b3:f287:93a4 with SMTP id
- c16-20020a2580d0000000b006b3f28793a4mr8152764ybm.427.1663667238118; Tue, 20
- Sep 2022 02:47:18 -0700 (PDT)
+	id 1oacms-003rKw-Ge
+	for barebox@lists.infradead.org; Tue, 20 Sep 2022 12:55:45 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1oacmm-0002zZ-Q9; Tue, 20 Sep 2022 14:55:36 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1oacmn-001rYn-GM; Tue, 20 Sep 2022 14:55:36 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1oacml-00ATcn-80; Tue, 20 Sep 2022 14:55:35 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue, 20 Sep 2022 14:55:31 +0200
+Message-Id: <20220920125533.2497108-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20220916124942.3751131-1-s.hauer@pengutronix.de>
- <20220916131606.GZ6477@pengutronix.de> <CAMHeXxOuxZnVcavXvwi1Y13kfRBP+opRgqwyEvSGBjQK6dSX1A@mail.gmail.com>
- <20220920074120.GF6477@pengutronix.de>
-In-Reply-To: <20220920074120.GF6477@pengutronix.de>
-From: Trent Piepho <trent.piepho@igorinstitute.com>
-Date: Tue, 20 Sep 2022 02:47:07 -0700
-Message-ID: <CAMHeXxPJoHO6_eL9sf-_Fu+oqJQv278f9D8RifBkG2YV_yYYmw@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220920_024720_002517_AA8A49C5 
-X-CRM114-Status: GOOD (  19.92  )
+X-CRM114-CacheID: sfid-20220920_055542_827128_D9C70AAC 
+X-CRM114-Status: GOOD (  19.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,42 +70,109 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] net: Bring up all interfaces before going interactive
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v1 1/3] net: port support for microchip SMI0 MDIO bus
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Sep 20, 2022 at 12:41 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Mon, Sep 19, 2022 at 10:20:53AM -0700, Trent Piepho wrote:
-> > On Fri, Sep 16, 2022 at 6:16 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > >
-> > > We could make the user experience even a bit better by doing this call
-> > > before waiting for the autoboot timeout which then speeds up netboot a
-> > > bit.
-> >
-> > The Linux phy driver almost invariably does not bother to avoid
-> > resetting the network phy when not necessary.  So if network
-> > auto-negotiation is started in barebox, it will be reset and then
-> > restarted shortly after in Linux.  The link auto-negotiation impacts
-> > the LAN's spanning tree if that is in use.
-> >
-> > So there is a drawback, besides the small added boot time to
-> > initialize the network hardware, to adding an unneeded network restart
-> > in Barebox in the case where interactive mode is not entered and
-> > network boot is not used.
->
-> So is this a vote to only do the autonegotiaton when going interactive
-> in barebox, or a vote to do autonegotiation only when the network is
-> being used in barebox?
+SMI0 is a mangled version of MDIO. The main low level difference is
+the MDIO C22 OP code is always 0, not 0x2 or 0x1 for Read/Write. The
+read/write information is instead encoded in the PHY address.
 
-I would vote to only do it when going interactive.
+Extend the bit-bang code to allow the op code to be overridden, but
+default to normal C22 values. Add an extra compatible to the mdio-gpio
+driver, and when this compatible is present, set the op codes to 0.
 
-It also seems reasonable to bring the network up quickly when network
-booting, but I think determining if the system will network boot,
-before actually trying to boot, is probably unreasonably difficult to
-do.
+A higher level driver, sitting on top of the basic MDIO bus driver can
+then implement the rest of the microchip SMI0 odderties.
+
+This code was ported from the kernel v6.0-rc2.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/phy/mdio-bitbang.c | 8 ++++++--
+ drivers/net/phy/mdio-gpio.c    | 8 ++++++++
+ include/linux/mdio-bitbang.h   | 3 +++
+ 3 files changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/phy/mdio-bitbang.c b/drivers/net/phy/mdio-bitbang.c
+index 839a7d1eb8..656557589d 100644
+--- a/drivers/net/phy/mdio-bitbang.c
++++ b/drivers/net/phy/mdio-bitbang.c
+@@ -158,7 +158,7 @@ static int mdiobb_read(struct mii_bus *bus, int phy, int reg)
+ 		reg = mdiobb_cmd_addr(ctrl, phy, reg);
+ 		mdiobb_cmd(ctrl, MDIO_C45_READ, phy, reg);
+ 	} else
+-		mdiobb_cmd(ctrl, MDIO_READ, phy, reg);
++		mdiobb_cmd(ctrl, ctrl->op_c22_read, phy, reg);
+ 
+ 	ctrl->ops->set_mdio_dir(ctrl, 0);
+ 
+@@ -188,7 +188,7 @@ static int mdiobb_write(struct mii_bus *bus, int phy, int reg, u16 val)
+ 		reg = mdiobb_cmd_addr(ctrl, phy, reg);
+ 		mdiobb_cmd(ctrl, MDIO_C45_WRITE, phy, reg);
+ 	} else
+-		mdiobb_cmd(ctrl, MDIO_WRITE, phy, reg);
++		mdiobb_cmd(ctrl, ctrl->op_c22_write, phy, reg);
+ 
+ 	/* send the turnaround (10) */
+ 	mdiobb_send_bit(ctrl, 1);
+@@ -219,6 +219,10 @@ struct mii_bus *alloc_mdio_bitbang(struct mdiobb_ctrl *ctrl)
+ 	bus->write = mdiobb_write;
+ 	bus->reset = mdiobb_reset;
+ 	bus->priv = ctrl;
++	if (!ctrl->override_op_c22) {
++		ctrl->op_c22_read = MDIO_READ;
++		ctrl->op_c22_write = MDIO_WRITE;
++	}
+ 
+ 	return bus;
+ }
+diff --git a/drivers/net/phy/mdio-gpio.c b/drivers/net/phy/mdio-gpio.c
+index 80d2394f4b..c64f2b3925 100644
+--- a/drivers/net/phy/mdio-gpio.c
++++ b/drivers/net/phy/mdio-gpio.c
+@@ -193,6 +193,13 @@ static int mdio_gpio_probe(struct device_d *dev)
+ 		goto free_mdo;
+ 	}
+ 
++	if (np &&
++	    of_device_is_compatible(np, "microchip,mdio-smi0")) {
++		info->ctrl.op_c22_read = 0;
++		info->ctrl.op_c22_write = 0;
++		info->ctrl.override_op_c22 = 1;
++	}
++
+ 	bus = alloc_mdio_bitbang(&info->ctrl);
+ 	bus->parent = dev;
+ 	bus->dev.device_node = np;
+@@ -217,6 +224,7 @@ free_info:
+ 
+ static const struct of_device_id gpio_mdio_dt_ids[] = {
+ 	{ .compatible = "virtual,mdio-gpio", },
++	{ .compatible = "microchip,mdio-smi0" },
+ 	{ /* sentinel */ }
+ };
+ 
+diff --git a/include/linux/mdio-bitbang.h b/include/linux/mdio-bitbang.h
+index a6e6057886..49fe435429 100644
+--- a/include/linux/mdio-bitbang.h
++++ b/include/linux/mdio-bitbang.h
+@@ -36,6 +36,9 @@ struct mdiobb_ctrl {
+ 	const struct mdiobb_ops *ops;
+ 	/* reset callback */
+ 	int (*reset)(struct mii_bus *bus);
++	unsigned int override_op_c22;
++	u8 op_c22_read;
++	u8 op_c22_write;
+ };
+ 
+ /* The returned bus is not yet registered with the phy layer. */
+-- 
+2.30.2
+
 
 
