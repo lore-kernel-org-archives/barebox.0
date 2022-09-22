@@ -1,58 +1,88 @@
-Delivery-date: Thu, 22 Sep 2022 15:26:12 +0200
+Delivery-date: Thu, 22 Sep 2022 18:22:47 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1obMDU-00CCV4-Qq
-	for lore@lore.pengutronix.de; Thu, 22 Sep 2022 15:26:12 +0200
+	id 1obOyL-00CITK-7z
+	for lore@lore.pengutronix.de; Thu, 22 Sep 2022 18:22:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1obMDT-0004UU-8y
-	for lore@pengutronix.de; Thu, 22 Sep 2022 15:26:12 +0200
+	id 1obOyK-0007kn-1Y
+	for lore@pengutronix.de; Thu, 22 Sep 2022 18:22:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=0tc8jrmGldz4axXY9wyImCmt95UMjZRIxCliiHAdF0k=; b=u3qvFoeCbzDf5RTo4s72nmLZuh
-	QJ4x4ltjCK5DLum2fIB4vohdL48NW4xPMNoywj7v3Ij41Ksug7P60K/uPR+j1cTAYRpWyYqmBDszp
-	5PL8lUhFcpmYPXTEsVRjxN2pvWbcayHcrtxkFJwb60VlJ0g4B3weTqjtixYgPs5ZSXl+KlAdOk0Nj
-	W6xYZ1EvLxPW2RiXnixL1J50O5fmZ0DCX3xIBpQpW5zv71ku8hhvYKCOTY0gl6H3vUXsYBqIJtU8h
-	dEA8IifBovheWumvq4kG1mJ59T0IH/gBxAcVYrSrXJNdkfsnZXA0Oz9Dq4ezcEW3psr9kzJ/I1Z11
-	KNfoH/pA==;
+	Content-Type:Mime-Version:References:In-Reply-To:Message-Id:Subject:Cc:To:
+	From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=5OELL/MxftnVFju8Gg+gas5ti/y2XJdpDh8WJzyVuUM=; b=zBpZtHX3TZS+sqhtwK/KER61uU
+	CBcwjiW2POrVrzMn9zjTDq4TyrEs6/DDiqWJRm704ErPwYn7qcewOzMzO5UwVG0Sa8UvmlYvvwwto
+	yfIlsUB8qEuNzCO7eZrCxjUCeKXmqcNr5G4zLK1hr3oexlM3G45Lz7AlFkuQ1CX3iqOGCnC2nDBCP
+	vlwJ7Fft5XEa2Nrj0EF/ip2HtDt7wdK0D/z4LENHVWUXFT70X3PWqG9rWnU5TNt17P1oOhOZgCL9c
+	O6AVJdyPyXJNNido/UbaTmMRMSTRi/IbNmgiFBajBTE/LDETRucaLhetaAGcZuMgqv982lP5vinPk
+	AXIO8FzA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1obMBm-00FeQA-5s; Thu, 22 Sep 2022 13:24:26 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1obOwh-00Ghgq-D2; Thu, 22 Sep 2022 16:21:03 +0000
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1obMBh-00FeO6-66
-	for barebox@lists.infradead.org; Thu, 22 Sep 2022 13:24:22 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <jzi@pengutronix.de>)
-	id 1obMBd-00046S-Pz; Thu, 22 Sep 2022 15:24:17 +0200
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <jzi@pengutronix.de>)
-	id 1obMBe-002GRN-IF; Thu, 22 Sep 2022 15:24:17 +0200
-Received: from jzi by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <jzi@pengutronix.de>)
-	id 1obMBb-00B8Lo-Mt; Thu, 22 Sep 2022 15:24:15 +0200
-From: Johannes Zink <j.zink@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Johannes Zink <j.zink@pengutronix.de>
-Date: Thu, 22 Sep 2022 15:24:10 +0200
-Message-Id: <20220922132410.2653284-1-j.zink@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	id 1obOwZ-00GheX-L4
+	for barebox@lists.infradead.org; Thu, 22 Sep 2022 16:20:57 +0000
+Received: by mail-lf1-x12e.google.com with SMTP id z25so15561412lfr.2
+        for <barebox@lists.infradead.org>; Thu, 22 Sep 2022 09:20:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=5OELL/MxftnVFju8Gg+gas5ti/y2XJdpDh8WJzyVuUM=;
+        b=m4lB+2ypudezPwj05Joz4BxcZepNU0UtWvn/MfDe/Tx3x5ihJHqhXQTeMzElkW2VgR
+         k0dZ2qFfK4NnUVTiXA6n28U8f3hQ6efyoUYpt/7lZ9oG9MoQ27i5ltDags3gJzoxThIa
+         HZ24o/qLBREO2tMm1wT1bfx+jOByKiI4a3pJG3MmTzvY0f0Mx7u6fVa2mcaRKVukTfMu
+         uIweK+iY0QvTES26ZgZxd4RappKFx2WUG8HkV8vrgfr6YlcfJ7xPIyrfG8uwU9yLeOAZ
+         Bv1eFR0ZJq28ioPUV1kslTSD2/8x7392LIUV63WSdhSiZtsXUVHjZMBqRJe364HxzKLY
+         ynoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=5OELL/MxftnVFju8Gg+gas5ti/y2XJdpDh8WJzyVuUM=;
+        b=u0VqN+SHIVS+Xre8sTNMM3o9dAl9a7YpNuvq5TsFEn3mmrA7USXx1wZTJmV09Wu4tE
+         +NrGjF3ohXS4taB1TMPbyO1BLqRK1QgI9GaGYIpPZoSZ8k0B6iFKxxTl0MmOGYfV24z8
+         bistWbyIJy87RGGSICFmeQOdywJN9UodxXBKbVxRQ/Hrzy9cELvkE0Tgz/F4A+oBRChy
+         YWCToErtgOEmKxmuWHsF7h7KpjL+C6IozTgys7rb+kzwpwbC4bVPcOsiXi7nZMHdJ6DX
+         x8dfOKNqxWRHn7xStAIB8owQ6xX+5kk6IZ1arRtNsnUyhQKiHOtax91WNdKhVauYJs3X
+         nvvQ==
+X-Gm-Message-State: ACrzQf2DKWButHctQQj58MhAq+TDK5fKkjS/gV5UihQ09MFZUQFkvK9y
+	GHthSeRqkyDYlc1K8p9SeLE=
+X-Google-Smtp-Source: AMsMyM6ElRMuGlsUh50p87NtNE5qms4av0Eusxy3ws16kVA1XA+rhh71/W1pzGR0skBlMTa998FfeQ==
+X-Received: by 2002:a05:6512:13a1:b0:48d:f14:9059 with SMTP id p33-20020a05651213a100b0048d0f149059mr1723419lfa.110.1663863653150;
+        Thu, 22 Sep 2022 09:20:53 -0700 (PDT)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id c3-20020a05651221a300b0048b08e25979sm1000328lft.199.2022.09.22.09.20.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Sep 2022 09:20:52 -0700 (PDT)
+Date: Thu, 22 Sep 2022 19:24:21 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Trent Piepho <trent.piepho@igorinstitute.com>, Oleksij Rempel
+ <o.rempel@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Barebox
+ List <barebox@lists.infradead.org>
+Message-Id: <20220922192421.62a169b0993a454da401cc8f@gmail.com>
+In-Reply-To: <20220919091410.GC6477@pengutronix.de>
+References: <20220907112118.71575e3650222736432b3086@gmail.com>
+	<20220912080152.GE24324@pengutronix.de>
+	<20220912120734.3fa82231ca6d16ba604ee262@gmail.com>
+	<20220919091410.GC6477@pengutronix.de>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220922_062421_242563_31B31F87 
-X-CRM114-Status: GOOD (  19.84  )
+X-CRM114-CacheID: sfid-20220922_092055_728408_3B00CA7A 
+X-CRM114-Status: GOOD (  20.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,119 +100,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2] USB: gadget: fastboot: introduce optional flag for fastboot partitions
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: Makefile.lib: cmd_dtc: warning: missing whitespace after the
+ macro name
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On some boards, some partitions exposed to fastboot may become
-unavailable under certain circumstances, e.g. if an SD-Card exposed to
-fastboot is removed.
+On Mon, 19 Sep 2022 11:14:10 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-Previously, this lead to an error and the fastboot gadget did not
-initialize the remaining partitions exposed via fastboot, e.g. an
-eMMC which usually is permanently soldered on the board.
+Hi Sascha!
 
-This patch allows to append an optional flag 'o' to the description of a
-fastboot partition. If this partition is unavailable at the
-initialization of the fastboot gadget, said partition is skipped, while
-the remaining available partitions are still exposed.
+> Hi Antony,
+>=20
+> On Mon, Sep 12, 2022 at 12:07:34PM +0300, Antony Pavlov wrote:
+> > On Mon, 12 Sep 2022 10:01:52 +0200
+> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> >=20
+> > > One side effect is that this gets even less readable.
+> >=20
+> > Yes, you are right :)
+> >=20
+> > > Another one would be that two dts filenames which only differ in the
+> > > usage of '.' and '_' would result in the same define, but I think that
+> > > case is negligible as this define is unused in barebox itself. It cou=
+ld
+> >                                        ^^^^^^^^^^^^^^^^^^^^^^^^
+> > > be used by external dts fragments passed in via CONFIG_EXTERNAL_DTS_F=
+RAGMENTS.
+> > >=20
+> > > Other than that, what side effects are you afraid of?
+> >=20
+> > I have an idea that someone relies on these *_dts macros.
+> >=20
+> > Now I see (as you have noted above) that there is no macro users in mai=
+nline source tree:
+>=20
+> Could you create a formal patch from this?
 
-Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
----
-Changes since v1:
- - moved check for FILE_LIST_OPTIONAL flag to fastboot_add_partition_variables().
-   This allows for cleaner error checking on error conditions (Thanks Sascha)
- - reworded info message to indicate intended condition on skipping optional
-   partitions rather than indicating an error condition (Thanks Ahmad)
- - added FILE_LIST_OPTIONAL flag to flags_to_str() (Thanks Ahmad
+I'll a formal patch in a few days.
 
- Documentation/user/usb.rst | 1 +
- common/fastboot.c          | 8 ++++++++
- common/file-list.c         | 7 ++++++-
- include/file-list.h        | 1 +
- 4 files changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-index 2479efe9d6..f2f57ead98 100644
---- a/Documentation/user/usb.rst
-+++ b/Documentation/user/usb.rst
-@@ -65,6 +65,7 @@ Several **flags** are supported, each denoted by a single character:
- * ``r`` Readback. The partition is allowed to be read back (DFU specific)
- * ``c`` The file shall be created if it doesn't exist. Needed when a regular file is exported.
- * ``u`` The partition is a MTD device and shall be flashed with a UBI image.
-+* ``o`` The partition is optional, i.e. if it is not available at initialization time, it is skipped instead of aborting the initialization
- 
- Example:
- 
-diff --git a/common/fastboot.c b/common/fastboot.c
-index 330a06f5a3..249e953ad6 100644
---- a/common/fastboot.c
-+++ b/common/fastboot.c
-@@ -95,6 +95,14 @@ static int fastboot_add_partition_variables(struct fastboot *fb,
- 	}
- 
- 	if (ret) {
-+		if (fentry->flags & FILE_LIST_FLAG_OPTIONAL) {
-+			pr_info("skipping unavailable optional partition %s for fastboot gadget\n",
-+				fentry->filename);
-+			ret = 0;
-+			type = "unavailable";
-+			goto out;
-+		}
-+
- 		if (fentry->flags & FILE_LIST_FLAG_CREATE) {
- 			ret = 0;
- 			type = "file";
-diff --git a/common/file-list.c b/common/file-list.c
-index 407b312833..3bb3b39d05 100644
---- a/common/file-list.c
-+++ b/common/file-list.c
-@@ -88,6 +88,9 @@ static int file_list_parse_one(struct file_list *files, const char *partstr, con
- 			case 'u':
- 				flags |= FILE_LIST_FLAG_UBI;
- 				break;
-+			case 'o':
-+				flags |= FILE_LIST_FLAG_OPTIONAL;
-+				break;
- 			default:
- 				pr_err("Unknown flag '%c'\n", *partstr);
- 				return -EINVAL;
-@@ -113,7 +116,7 @@ static int file_list_parse_one(struct file_list *files, const char *partstr, con
- 
- static const char *flags_to_str(int flags)
- {
--	static char str[sizeof "srcu"];
-+	static char str[sizeof "srcuo"];
- 	char *s = str;;
- 
- 	if (flags & FILE_LIST_FLAG_SAFE)
-@@ -124,6 +127,8 @@ static const char *flags_to_str(int flags)
- 		*s++ = 'c';
- 	if (flags & FILE_LIST_FLAG_UBI)
- 		*s++ = 'u';
-+	if (flags & FILE_LIST_FLAG_OPTIONAL)
-+		*s++ = 'o';
- 
- 	*s = '\0';
- 
-diff --git a/include/file-list.h b/include/file-list.h
-index 5090313739..bcb06979c8 100644
---- a/include/file-list.h
-+++ b/include/file-list.h
-@@ -8,6 +8,7 @@
- #define FILE_LIST_FLAG_READBACK	(1 << 1)
- #define FILE_LIST_FLAG_CREATE	(1 << 2)
- #define FILE_LIST_FLAG_UBI	(1 << 3)
-+#define FILE_LIST_FLAG_OPTIONAL (1 << 4)
- 
- struct file_list_entry {
- 	char *name;
--- 
-2.30.2
-
+--=20
+Best regards,
+=A0 Antony Pavlov
 
 
