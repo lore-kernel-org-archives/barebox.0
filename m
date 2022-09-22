@@ -1,64 +1,54 @@
-Delivery-date: Thu, 22 Sep 2022 10:05:12 +0200
+Delivery-date: Thu, 22 Sep 2022 10:15:20 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1obHCq-00C0vQ-HY
-	for lore@lore.pengutronix.de; Thu, 22 Sep 2022 10:05:12 +0200
+	id 1obHMe-00C1dN-Fx
+	for lore@lore.pengutronix.de; Thu, 22 Sep 2022 10:15:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1obHCo-0000Dt-ON
-	for lore@pengutronix.de; Thu, 22 Sep 2022 10:05:11 +0200
+	id 1obHMc-0001v6-Uc
+	for lore@pengutronix.de; Thu, 22 Sep 2022 10:15:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IEL1thhgS5NWTL8rg8B/qNpCEYrGEV/ryQSplLYElok=; b=gDJZDKNSPCBVc1KScqqL6Aoz46
-	sSn48Qy8pzqTWzMQ77SjoblHU2TT5qNjHIZX1yZGPbJD5/gYQ10xG1LFt6bUrXUM5ZvWG5v5u8PaD
-	uSes1Euv0+9xZNDBQv2/zZQg8lTpnxAjZG3Ib3eP062DjQJpa0DpD+f1NIaVhUyxF3jVMn4agGKod
-	mKvwPKBu8LmLNduft5zfZjQ20dB+kEoNAg03daTg+EzR1p2e1LpMpH6wJea8DDneAM4FxLPPy9xRj
-	YvGvvff3zvi2ZQIVLbK53e1d6NyQi7qMjo9lr9p4wZDGVjVjNgkmyjc+T4GjSTh8HlEuHhFc2Sm3C
-	3j2Co9YA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8sFMyfFDDhq+Gj/Q/cptWPIPq1PebAoAEdgFvfaKyp4=; b=i4nYvofKs2faIDb40YK6sRej69
+	elmFMmLG0MqabfQMfg9kqW87LkluAMzWTCvEQkLOw9psjSgBWVQCwhXyBo5MhN6slq6qno7lPhTzZ
+	w59H2vNukjayzRWex1lCQycGGtMrM2+mZ7XCQmCZEycks8Nozom7+GASJR6bdzHcsulIizfO0T32A
+	58MVGikY+YvzStDFYDdiv1IU9YlSUHSMDL9p169Pu4UG8xxplrlARAaAR94FaWRJxZHJSoUTN3tvw
+	7wJDrVruESEOc9+W7DpmLnR8WW6LGxNDMutAnKZVlWfLl9KJmns6N7i0aco1LynLExzB/dpenOG+S
+	SYCR8h2g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1obHBK-00E0Nt-FG; Thu, 22 Sep 2022 08:03:38 +0000
+	id 1obHLH-00E39w-MM; Thu, 22 Sep 2022 08:13:55 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1obHBE-00E0MY-Tt
-	for barebox@lists.infradead.org; Thu, 22 Sep 2022 08:03:35 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1obHBC-00089e-0X; Thu, 22 Sep 2022 10:03:30 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1obHBB-0000GD-Ji; Thu, 22 Sep 2022 10:03:29 +0200
-Date: Thu, 22 Sep 2022 10:03:29 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-To: Michael Riesch <michael.riesch@wolfvision.net>
-Cc: barebox@lists.infradead.org, Frank Wunderlich <frank-w@public-files.de>
-Message-ID: <20220922080329.GG986@pengutronix.de>
-References: <20220919113948.991245-1-michael.riesch@wolfvision.net>
- <20220919113948.991245-2-michael.riesch@wolfvision.net>
- <20220921094649.GC986@pengutronix.de>
- <223f9b7c-a95a-7847-503d-e51cb2abaf64@wolfvision.net>
+	id 1obHL9-00E373-Cs
+	for barebox@lists.infradead.org; Thu, 22 Sep 2022 08:13:49 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1obHL8-0001Qe-62; Thu, 22 Sep 2022 10:13:46 +0200
+Message-ID: <5ffe5490-4c93-f183-28d5-2f127da3fd9d@pengutronix.de>
+Date: Thu, 22 Sep 2022 09:13:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <223f9b7c-a95a-7847-503d-e51cb2abaf64@wolfvision.net>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Content-Language: en-US
+To: Johannes Zink <j.zink@pengutronix.de>, barebox@lists.infradead.org
+References: <20220922072723.1559333-1-j.zink@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20220922072723.1559333-1-j.zink@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220922_010333_005473_549E240C 
-X-CRM114-Status: GOOD (  43.91  )
+X-CRM114-CacheID: sfid-20220922_011347_466115_1E745DED 
+X-CRM114-Status: GOOD (  31.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,133 +66,110 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/7] soc: rockchip: add driver for rockchip io domains
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] USB: gadget: fastboot: introduce optional flag for
+ fastboot partitions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Sep 21, 2022 at 01:49:49PM +0200, Michael Riesch wrote:
-> Hi Sascha,
+Hi,
+
+On 22.09.22 08:27, Johannes Zink wrote:
+> On some boards, some partitions exposed to fastboot may become
+> unavailable under certain circumstances, e.g. if an SD-Card exposed to
+> fastboot is removed.
 > 
-> On 9/21/22 11:46, Sascha Hauer wrote:
-> > On Mon, Sep 19, 2022 at 01:39:42PM +0200, Michael Riesch wrote:
-> >> The IO domains in Rockchip SoCs need to be configured to match the
-> >> corresponding bank voltage. In Linux this is achieved by means of a
-> >> platform driver that reads the voltage value of the supplies and
-> >> configures the bits in the general register file (GRF) accordingly.
-> >> Port this driver to barebox to provide support for the Rockchip
-> >> RK356x SoCs.
-> >>
-> >> Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
-> >> ---
-> >>  drivers/soc/Kconfig              |   1 +
-> >>  drivers/soc/Makefile             |   1 +
-> >>  drivers/soc/rockchip/Kconfig     |  17 +++
-> >>  drivers/soc/rockchip/Makefile    |   6 +
-> >>  drivers/soc/rockchip/io-domain.c | 223 +++++++++++++++++++++++++++++++
-> >>  5 files changed, 248 insertions(+)
-> >>  create mode 100644 drivers/soc/rockchip/Kconfig
-> >>  create mode 100644 drivers/soc/rockchip/Makefile
-> >>  create mode 100644 drivers/soc/rockchip/io-domain.c
-> > 
-> > There's nothing in this driver that makes sure it is probed before the
-> > users of the io domains. What happens when the users are probed before
-> > the io domain driver?
+> Previously, this lead to an error and the fastboot gadget did not
+> initialize the remaining partitions exposed via fastboot, e.g. an
+> eMMC which usually is permanently soldered on the board.
 > 
-> Correct. Unfortunately, the situation is quite the same in the kernel.
-> Only recently there was a discussion as to how to resolve this issue
-> [0]. While the RFC in [0] was received well there is no mainline
-> solution to this problem. I would suggest that the mainline kernel
-> solution is adopted once there is one.
+> This patch allows to append an optional flag 'o' to the description of a
+> fastboot partition. If this partition is unavailable at the
+> initialization of the fastboot gadget, said partition is skipped, while
+> the remaining available partitions are still exposed.
 > 
-> In the mean time we could
->  - accept that it just works for some reason (TM)
->  - leave the magic bits in the low-level initialization to be on the
->    safe side
+> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+> ---
+>  Documentation/user/usb.rst | 1 +
+>  common/fastboot.c          | 6 +++++-
+>  common/file-list.c         | 3 +++
+>  include/file-list.h        | 1 +
+>  4 files changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+> index 2479efe9d6..f2f57ead98 100644
+> --- a/Documentation/user/usb.rst
+> +++ b/Documentation/user/usb.rst
+> @@ -65,6 +65,7 @@ Several **flags** are supported, each denoted by a single character:
+>  * ``r`` Readback. The partition is allowed to be read back (DFU specific)
+>  * ``c`` The file shall be created if it doesn't exist. Needed when a regular file is exported.
+>  * ``u`` The partition is a MTD device and shall be flashed with a UBI image.
+> +* ``o`` The partition is optional, i.e. if it is not available at initialization time, it is skipped instead of aborting the initialization
+>  
+>  Example:
+>  
+> diff --git a/common/fastboot.c b/common/fastboot.c
+> index 330a06f5a3..6bd1191325 100644
+> --- a/common/fastboot.c
+> +++ b/common/fastboot.c
+> @@ -177,7 +177,11 @@ int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
+>  	file_list_for_each_entry(fb->files, fentry) {
+>  		ret = fastboot_add_partition_variables(fb, fentry);
+>  		if (ret)
+> -			return ret;
+> +			if((fentry->flags & FILE_LIST_FLAG_OPTIONAL))
+> +				pr_info("failed to add optional partition %s to fastboot gadget\n",
 
-Decided for this solution for now.
+s/failed to add/skipping unavailable/
 
-I added the following as a reminder that there's still something
-to do.
+to make this more in line with the chosen log level.
 
-Sascha
+> +					fentry->filename);
+> +			else
+> +				return ret;
 
----------------------------8<---------------------------
+Please avoid dangling else here, either with braces or by having an 
+if (ret && fentry->flags & FILE_LIST_FLAG_OPTIONAL)) as first condition.
 
->From 502c4e819b80a6ccaefbce4af4c55b830b7e2c73 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 22 Sep 2022 09:56:57 +0200
-Subject: [PATCH] ARM: Rockchip: Add FIXME comment to io domain setup
+>  	}
+>  
+>  	return 0;
+> diff --git a/common/file-list.c b/common/file-list.c
+> index 407b312833..68a7768696 100644
+> --- a/common/file-list.c
+> +++ b/common/file-list.c
+> @@ -88,6 +88,9 @@ static int file_list_parse_one(struct file_list *files, const char *partstr, con
+>  			case 'u':
+>  				flags |= FILE_LIST_FLAG_UBI;
+>  				break;
+> +			case 'o':
+> +				flags |= FILE_LIST_FLAG_OPTIONAL;
+> +				break;
+>  			default:
+>  				pr_err("Unknown flag '%c'\n", *partstr);
+>  				return -EINVAL;
 
-We have a io-domain driver for rockchip boards which correctly
-configures the io domain voltages, but currently there is no way
-to make sure the io-domain driver is probed before its consumers.
+When adding new flags, search for all instances of a similar flag and add
+your new flag there as well. You're missing flags_to_str().
 
-To be on the safe side keep the io domain setup in the lowlevel code
-for now, but add a comment that it should be removed once this issue
-is resolved.
+> diff --git a/include/file-list.h b/include/file-list.h
+> index 5090313739..bcb06979c8 100644
+> --- a/include/file-list.h
+> +++ b/include/file-list.h
+> @@ -8,6 +8,7 @@
+>  #define FILE_LIST_FLAG_READBACK	(1 << 1)
+>  #define FILE_LIST_FLAG_CREATE	(1 << 2)
+>  #define FILE_LIST_FLAG_UBI	(1 << 3)
+> +#define FILE_LIST_FLAG_OPTIONAL (1 << 4)
+>  
+>  struct file_list_entry {
+>  	char *name;
 
-To solve this issue we need a phandle from the consumers to the io
-domain node. We could add this in barebox locally, but decided to
-wait until the upstream dts files have them.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/radxa-rock3/lowlevel.c               | 4 ++++
- arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c | 4 ++++
- arch/arm/boards/rockchip-rk3568-evb/lowlevel.c       | 4 ++++
- 3 files changed, 12 insertions(+)
-
-diff --git a/arch/arm/boards/radxa-rock3/lowlevel.c b/arch/arm/boards/radxa-rock3/lowlevel.c
-index 2a449c17ae..a62f60dff8 100644
---- a/arch/arm/boards/radxa-rock3/lowlevel.c
-+++ b/arch/arm/boards/radxa-rock3/lowlevel.c
-@@ -17,6 +17,10 @@ static noinline void rk3568_start(void)
- 	/*
- 	 * Enable vccio4 1.8V and vccio6 1.8V
- 	 * Needed for GMAC to work.
-+	 * FIXME: This is done by the io-domain driver as well, but there
-+	 * currently is no mechanism to make sure the driver gets probed
-+	 * before its consumers. Remove this setup once this issue is
-+	 * resolved.
- 	 */
- 	writel(RK_SETBITS(0x50), 0xfdc20140);
- 
-diff --git a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
-index f79f975080..4336d99365 100644
---- a/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
-+++ b/arch/arm/boards/rockchip-rk3568-bpi-r2pro/lowlevel.c
-@@ -18,6 +18,10 @@ static noinline void rk3568_start(void)
- 	/*
- 	 * set iodomain vccio6 to 1.8V needed for GMAC1 to work.
- 	 * vccio4 (gmac0/switch) needs to stay at 3v3 (default)
-+	 * FIXME: This is done by the io-domain driver as well, but there
-+	 * currently is no mechanism to make sure the driver gets probed
-+	 * before its consumers. Remove this setup once this issue is
-+	 * resolved.
- 	 */
- 	//set bit 6 in PMU_GRF_IO_VSEL0 for vccio6 1v8
- 	writel(RK_SETBITS(BIT(6)), PMU_GRF_IO_VSEL0);
-diff --git a/arch/arm/boards/rockchip-rk3568-evb/lowlevel.c b/arch/arm/boards/rockchip-rk3568-evb/lowlevel.c
-index 363639d21b..9ab436135c 100644
---- a/arch/arm/boards/rockchip-rk3568-evb/lowlevel.c
-+++ b/arch/arm/boards/rockchip-rk3568-evb/lowlevel.c
-@@ -18,6 +18,10 @@ static noinline void rk3568_start(void)
- 	/*
- 	 * Enable vccio4 1.8V and vccio6 1.8V
- 	 * Needed for GMAC to work.
-+	 * FIXME: This is done by the io-domain driver as well, but there
-+	 * currently is no mechanism to make sure the driver gets probed
-+	 * before its consumers. Remove this setup once this issue is
-+	 * resolved.
- 	 */
- 	writel(RK_SETBITS(0x50), 0xfdc20140);
- 
--- 
-2.30.2
+Cheers,
 
 -- 
 Pengutronix e.K.                           |                             |
