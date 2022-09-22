@@ -1,63 +1,58 @@
-Delivery-date: Wed, 21 Sep 2022 19:22:50 +0200
+Delivery-date: Thu, 22 Sep 2022 09:29:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ob3Qw-00BUzT-By
-	for lore@lore.pengutronix.de; Wed, 21 Sep 2022 19:22:50 +0200
+	id 1obGeP-00C07w-Ov
+	for lore@lore.pengutronix.de; Thu, 22 Sep 2022 09:29:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ob3Qu-0004hf-EX
-	for lore@pengutronix.de; Wed, 21 Sep 2022 19:22:49 +0200
+	id 1obGeO-0002Rv-2c
+	for lore@pengutronix.de; Thu, 22 Sep 2022 09:29:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=D4Ft4v2oxlovRguYs4KoHn/9gVDh6W+BGF58WC0MfbE=; b=E+kU0dIs3N2P+87bE4ivY3oWu1
-	uQc00tqmHQwdOXvW+SmTWtPKOTPP1+G5qAzWCskZYXiK7ptNNv5sn83BV11iFnbJTDAekFxoV/3+a
-	4GzEqqmaKqEI20RifY7ljXf9nw2sg/BncHEmPZiAlIfordUZGmmYBv3VkxOYkYVGIskt7r6BSJxFK
-	lxGEWeB3brBQYwrAzAwog9KjEJdDCgE9FZqmcVouxcE33LmVHxmpjwO8SoVQfX7b8GTKu2kp4JcZJ
-	q5687OOsWG4S77VMkAHycCd455KKF3CjsT3q2+VYPEkx4Dk4c2n++eEpw4J5334UlcidWnEo1Uztk
-	1WuOTvuw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=OgkAexuxPlNPscYidkkRQH8S+Dg/faT4MAaaf6Yb4Es=; b=HXJNC6Hq32U6OZ7npbjM/p7zxD
+	kWk/Wm5YiOMoOcZYKbwbmvTggffan9KwGtVDtR3KD5ROMTGDBcPgamXiLynTasCTIQVa1vrI2J4Qz
+	jHenIkyMsxYSGdL2uyPqwcRmdDa/blAI6/jkDj9SwYDqH5th3l2BQghZbjfYY5wmAVAaeUv8/eyTT
+	/fWU6lF2Vy88kBEpX4Nqlzs11GOPN9mhTQsvAFvZJU8bhwgXvR1TfWc1/FpNmpnintPpgzcNF/a01
+	40wMqK8fO+D80etmKiGpX/rvFRNb7ntW6f/2uOt/MluGNxDw9Nj8VgaR2B4hX1Wch0ZE8m8LS0iJ+
+	KOxp8f9A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ob3PG-00CAXz-Jn; Wed, 21 Sep 2022 17:21:06 +0000
+	id 1obGce-00DpoW-G1; Thu, 22 Sep 2022 07:27:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ob3PB-00CAW3-7F
-	for barebox@lists.infradead.org; Wed, 21 Sep 2022 17:21:02 +0000
+	id 1obGcZ-00DplU-AN
+	for barebox@lists.infradead.org; Thu, 22 Sep 2022 07:27:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ob3P6-0004Lr-LL
-	for barebox@lists.infradead.org; Wed, 21 Sep 2022 19:20:56 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <jzi@pengutronix.de>)
+	id 1obGcR-0002G9-1T; Thu, 22 Sep 2022 09:27:35 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ob3P7-0026GP-E6
-	for barebox@lists.infradead.org; Wed, 21 Sep 2022 19:20:55 +0200
-Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ob3P4-00CYAJ-Dw
-	for barebox@lists.infradead.org; Wed, 21 Sep 2022 19:20:54 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
+	(envelope-from <jzi@pengutronix.de>)
+	id 1obGcR-002D5r-Q0; Thu, 22 Sep 2022 09:27:34 +0200
+Received: from jzi by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <jzi@pengutronix.de>)
+	id 1obGcP-006Xi7-G1; Thu, 22 Sep 2022 09:27:33 +0200
+From: Johannes Zink <j.zink@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 21 Sep 2022 19:20:52 +0200
-Message-Id: <20220921172052.2989506-2-m.felsch@pengutronix.de>
+Cc: Johannes Zink <j.zink@pengutronix.de>
+Date: Thu, 22 Sep 2022 09:27:23 +0200
+Message-Id: <20220922072723.1559333-1-j.zink@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220921172052.2989506-1-m.felsch@pengutronix.de>
-References: <20220921172052.2989506-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220921_102101_274637_F13C7652 
-X-CRM114-Status: UNSURE (   9.81  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220922_002743_394976_2CC64EAB 
+X-CRM114-Status: GOOD (  17.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,66 +70,90 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] ARM: i.MX8M: remove fsp_table entry
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] USB: gadget: fastboot: introduce optional flag for fastboot partitions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Barebox now have the support to write the fsp_table entries
-automatically based on fsp_msg.drata information. Remove the fsp_table
-entry and let the common code do the rest for us.
+On some boards, some partitions exposed to fastboot may become
+unavailable under certain circumstances, e.g. if an SD-Card exposed to
+fastboot is removed.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Previously, this lead to an error and the fastboot gadget did not
+initialize the remaining partitions exposed via fastboot, e.g. an
+eMMC which usually is permanently soldered on the board.
+
+This patch allows to append an optional flag 'o' to the description of a
+fastboot partition. If this partition is unavailable at the
+initialization of the fastboot gadget, said partition is skipped, while
+the remaining available partitions are still exposed.
+
+Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
 ---
- arch/arm/boards/mnt-reform/lpddr4-timing.c     | 1 -
- arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c   | 1 -
- arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c | 1 -
- arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c | 1 -
- 4 files changed, 4 deletions(-)
+ Documentation/user/usb.rst | 1 +
+ common/fastboot.c          | 6 +++++-
+ common/file-list.c         | 3 +++
+ include/file-list.h        | 1 +
+ 4 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/mnt-reform/lpddr4-timing.c b/arch/arm/boards/mnt-reform/lpddr4-timing.c
-index 0b5853000d..38fa2c50f1 100644
---- a/arch/arm/boards/mnt-reform/lpddr4-timing.c
-+++ b/arch/arm/boards/mnt-reform/lpddr4-timing.c
-@@ -1008,5 +1008,4 @@ struct dram_timing_info mnt_reform_dram_timing = {
- 	.fsp_msg_num = ARRAY_SIZE(mnt_reform_lpddr4_dram_fsp_msg),
- 	.ddrphy_pie = mnt_reform_lpddr4_phy_pie,
- 	.ddrphy_pie_num = ARRAY_SIZE(mnt_reform_lpddr4_phy_pie),
--	.fsp_table = { 3200, 667, },
- };
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c b/arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c
-index 131a63156e..df10bdcc9d 100644
---- a/arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c
-+++ b/arch/arm/boards/nxp-imx8mn-evk/ddr4-timing.c
-@@ -1050,5 +1050,4 @@ struct dram_timing_info imx8mn_evk_ddr4_timing = {
- 	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
- 	.ddrphy_pie = ddr_phy_pie,
- 	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
--	.fsp_table = { 2400, 1066, },
- };
-diff --git a/arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c
-index 940b21cedb..63851c87d4 100644
---- a/arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c
-+++ b/arch/arm/boards/nxp-imx8mn-evk/lpddr4-timing.c
-@@ -1586,5 +1586,4 @@ struct dram_timing_info imx8mn_evk_lpddr4_timing = {
- 	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
- 	.ddrphy_pie = ddr_phy_pie,
- 	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
--	.fsp_table = { 3200, 400, 100, },
- };
-diff --git a/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
-index 3028bc084c..b8c6b78017 100644
---- a/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
-+++ b/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
-@@ -1844,5 +1844,4 @@ struct dram_timing_info imx8mp_evk_dram_timing = {
- 	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
- 	.ddrphy_pie = ddr_phy_pie,
- 	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
--	.fsp_table = { 4000, 400, 100, },
- };
+diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+index 2479efe9d6..f2f57ead98 100644
+--- a/Documentation/user/usb.rst
++++ b/Documentation/user/usb.rst
+@@ -65,6 +65,7 @@ Several **flags** are supported, each denoted by a single character:
+ * ``r`` Readback. The partition is allowed to be read back (DFU specific)
+ * ``c`` The file shall be created if it doesn't exist. Needed when a regular file is exported.
+ * ``u`` The partition is a MTD device and shall be flashed with a UBI image.
++* ``o`` The partition is optional, i.e. if it is not available at initialization time, it is skipped instead of aborting the initialization
+ 
+ Example:
+ 
+diff --git a/common/fastboot.c b/common/fastboot.c
+index 330a06f5a3..6bd1191325 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -177,7 +177,11 @@ int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
+ 	file_list_for_each_entry(fb->files, fentry) {
+ 		ret = fastboot_add_partition_variables(fb, fentry);
+ 		if (ret)
+-			return ret;
++			if((fentry->flags & FILE_LIST_FLAG_OPTIONAL))
++				pr_info("failed to add optional partition %s to fastboot gadget\n",
++					fentry->filename);
++			else
++				return ret;
+ 	}
+ 
+ 	return 0;
+diff --git a/common/file-list.c b/common/file-list.c
+index 407b312833..68a7768696 100644
+--- a/common/file-list.c
++++ b/common/file-list.c
+@@ -88,6 +88,9 @@ static int file_list_parse_one(struct file_list *files, const char *partstr, con
+ 			case 'u':
+ 				flags |= FILE_LIST_FLAG_UBI;
+ 				break;
++			case 'o':
++				flags |= FILE_LIST_FLAG_OPTIONAL;
++				break;
+ 			default:
+ 				pr_err("Unknown flag '%c'\n", *partstr);
+ 				return -EINVAL;
+diff --git a/include/file-list.h b/include/file-list.h
+index 5090313739..bcb06979c8 100644
+--- a/include/file-list.h
++++ b/include/file-list.h
+@@ -8,6 +8,7 @@
+ #define FILE_LIST_FLAG_READBACK	(1 << 1)
+ #define FILE_LIST_FLAG_CREATE	(1 << 2)
+ #define FILE_LIST_FLAG_UBI	(1 << 3)
++#define FILE_LIST_FLAG_OPTIONAL (1 << 4)
+ 
+ struct file_list_entry {
+ 	char *name;
 -- 
 2.30.2
 
