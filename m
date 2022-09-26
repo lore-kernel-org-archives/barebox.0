@@ -1,88 +1,61 @@
-Delivery-date: Thu, 22 Sep 2022 18:22:47 +0200
+Delivery-date: Mon, 26 Sep 2022 08:04:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1obOyL-00CITK-7z
-	for lore@lore.pengutronix.de; Thu, 22 Sep 2022 18:22:47 +0200
+	id 1ochEG-00F5FF-8x
+	for lore@lore.pengutronix.de; Mon, 26 Sep 2022 08:04:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1obOyK-0007kn-1Y
-	for lore@pengutronix.de; Thu, 22 Sep 2022 18:22:44 +0200
+	id 1ochEE-0007lV-Uo
+	for lore@pengutronix.de; Mon, 26 Sep 2022 08:04:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Mime-Version:References:In-Reply-To:Message-Id:Subject:Cc:To:
-	From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5OELL/MxftnVFju8Gg+gas5ti/y2XJdpDh8WJzyVuUM=; b=zBpZtHX3TZS+sqhtwK/KER61uU
-	CBcwjiW2POrVrzMn9zjTDq4TyrEs6/DDiqWJRm704ErPwYn7qcewOzMzO5UwVG0Sa8UvmlYvvwwto
-	yfIlsUB8qEuNzCO7eZrCxjUCeKXmqcNr5G4zLK1hr3oexlM3G45Lz7AlFkuQ1CX3iqOGCnC2nDBCP
-	vlwJ7Fft5XEa2Nrj0EF/ip2HtDt7wdK0D/z4LENHVWUXFT70X3PWqG9rWnU5TNt17P1oOhOZgCL9c
-	O6AVJdyPyXJNNido/UbaTmMRMSTRi/IbNmgiFBajBTE/LDETRucaLhetaAGcZuMgqv982lP5vinPk
-	AXIO8FzA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=07ukaHXNJsWqNaKwLouZMufjkoHXCGOwsIHv0pF3Xj8=; b=bMn2IPdTLCtBr64/ypdIAIZ/sV
+	rAPXwl0FFxA4CZRINDbIZAoIwvO4XsIezihWv70QN67lc+crrjPsvsEQ6JlSbzsQl4xYcve69qcoZ
+	Yo68N/yHi7Q1KbyPWDu/vHjw5EJ/ZGrl2FyZbiFMXoBkr1yF0CSkDvZg5zgz1EO+LFWeofuvQKXMb
+	D6GLdAXCXD/ICi0PTh0sIJoZmxcI57jMfT5DcvwlIWRqj/XOME7UFayUjAWw96XDnJc7ujvvc+ucO
+	yQ69OVnBDuaEPypMt9bUnSaN+XUZD5bu/y1t9C55atjiqdC8+kyMJvT1w21FZViW/ZIt7nl8K0oIU
+	e+rujSnQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1obOwh-00Ghgq-D2; Thu, 22 Sep 2022 16:21:03 +0000
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+	id 1ochBr-002A3H-2j; Mon, 26 Sep 2022 06:02:03 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1obOwZ-00GheX-L4
-	for barebox@lists.infradead.org; Thu, 22 Sep 2022 16:20:57 +0000
-Received: by mail-lf1-x12e.google.com with SMTP id z25so15561412lfr.2
-        for <barebox@lists.infradead.org>; Thu, 22 Sep 2022 09:20:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=5OELL/MxftnVFju8Gg+gas5ti/y2XJdpDh8WJzyVuUM=;
-        b=m4lB+2ypudezPwj05Joz4BxcZepNU0UtWvn/MfDe/Tx3x5ihJHqhXQTeMzElkW2VgR
-         k0dZ2qFfK4NnUVTiXA6n28U8f3hQ6efyoUYpt/7lZ9oG9MoQ27i5ltDags3gJzoxThIa
-         HZ24o/qLBREO2tMm1wT1bfx+jOByKiI4a3pJG3MmTzvY0f0Mx7u6fVa2mcaRKVukTfMu
-         uIweK+iY0QvTES26ZgZxd4RappKFx2WUG8HkV8vrgfr6YlcfJ7xPIyrfG8uwU9yLeOAZ
-         Bv1eFR0ZJq28ioPUV1kslTSD2/8x7392LIUV63WSdhSiZtsXUVHjZMBqRJe364HxzKLY
-         ynoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=5OELL/MxftnVFju8Gg+gas5ti/y2XJdpDh8WJzyVuUM=;
-        b=u0VqN+SHIVS+Xre8sTNMM3o9dAl9a7YpNuvq5TsFEn3mmrA7USXx1wZTJmV09Wu4tE
-         +NrGjF3ohXS4taB1TMPbyO1BLqRK1QgI9GaGYIpPZoSZ8k0B6iFKxxTl0MmOGYfV24z8
-         bistWbyIJy87RGGSICFmeQOdywJN9UodxXBKbVxRQ/Hrzy9cELvkE0Tgz/F4A+oBRChy
-         YWCToErtgOEmKxmuWHsF7h7KpjL+C6IozTgys7rb+kzwpwbC4bVPcOsiXi7nZMHdJ6DX
-         x8dfOKNqxWRHn7xStAIB8owQ6xX+5kk6IZ1arRtNsnUyhQKiHOtax91WNdKhVauYJs3X
-         nvvQ==
-X-Gm-Message-State: ACrzQf2DKWButHctQQj58MhAq+TDK5fKkjS/gV5UihQ09MFZUQFkvK9y
-	GHthSeRqkyDYlc1K8p9SeLE=
-X-Google-Smtp-Source: AMsMyM6ElRMuGlsUh50p87NtNE5qms4av0Eusxy3ws16kVA1XA+rhh71/W1pzGR0skBlMTa998FfeQ==
-X-Received: by 2002:a05:6512:13a1:b0:48d:f14:9059 with SMTP id p33-20020a05651213a100b0048d0f149059mr1723419lfa.110.1663863653150;
-        Thu, 22 Sep 2022 09:20:53 -0700 (PDT)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id c3-20020a05651221a300b0048b08e25979sm1000328lft.199.2022.09.22.09.20.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Sep 2022 09:20:52 -0700 (PDT)
-Date: Thu, 22 Sep 2022 19:24:21 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Trent Piepho <trent.piepho@igorinstitute.com>, Oleksij Rempel
- <o.rempel@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Barebox
- List <barebox@lists.infradead.org>
-Message-Id: <20220922192421.62a169b0993a454da401cc8f@gmail.com>
-In-Reply-To: <20220919091410.GC6477@pengutronix.de>
-References: <20220907112118.71575e3650222736432b3086@gmail.com>
-	<20220912080152.GE24324@pengutronix.de>
-	<20220912120734.3fa82231ca6d16ba604ee262@gmail.com>
-	<20220919091410.GC6477@pengutronix.de>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+	id 1ochBl-0029yA-Se
+	for barebox@lists.infradead.org; Mon, 26 Sep 2022 06:02:00 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ochBg-0007Eq-Ch; Mon, 26 Sep 2022 08:01:52 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ochBg-0004p8-2i; Mon, 26 Sep 2022 08:01:52 +0200
+Date: Mon, 26 Sep 2022 08:01:52 +0200
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20220926060152.GQ12909@pengutronix.de>
+References: <20220921172052.2989506-1-m.felsch@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220921172052.2989506-1-m.felsch@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220922_092055_728408_3B00CA7A 
-X-CRM114-Status: GOOD (  20.26  )
+X-CRM114-CacheID: sfid-20220925_230157_938583_7FF2FB5B 
+X-CRM114-Status: GOOD (  28.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,52 +73,86 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Makefile.lib: cmd_dtc: warning: missing whitespace after the
- macro name
+Subject: Re: [PATCH 1/2] ddr: imx8m: write fsp_table entry automatically
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, 19 Sep 2022 11:14:10 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Wed, Sep 21, 2022 at 07:20:51PM +0200, Marco Felsch wrote:
+> Currently the fsp_table must be set manually within the 'struct
+> dram_timing_info'. Since the 'struct fsp_msg' already has all
+> information needed for the fsp_table we can use it to set it
+> automatically. This approach is less error-prone and avoids information
+> duplication.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  drivers/ddr/imx8m/ddrphy_train.c |  3 +++
+>  drivers/ddr/imx8m/helper.c       | 19 +++++++++++++++++++
+>  include/soc/imx8m/ddr.h          |  2 ++
+>  3 files changed, 24 insertions(+)
+> 
+> diff --git a/drivers/ddr/imx8m/ddrphy_train.c b/drivers/ddr/imx8m/ddrphy_train.c
+> index e9d35afdfb..09f1e77295 100644
+> --- a/drivers/ddr/imx8m/ddrphy_train.c
+> +++ b/drivers/ddr/imx8m/ddrphy_train.c
+> @@ -165,6 +165,9 @@ int ddr_cfg_phy(struct dram_timing_info *dram_timing, unsigned type)
+>  
+>  		dwc_ddrphy_apb_wr(0xd0000, 0x1);
+>  
+> +		/* Training done, add entry to fsp_table */
+> +		dram_write_fsp_table_entry(dram_timing, fsp_msg->drate);
+> +
+>  		fsp_msg++;
+>  	}
+>  
+> diff --git a/drivers/ddr/imx8m/helper.c b/drivers/ddr/imx8m/helper.c
+> index 98e4084958..e71401c1b2 100644
+> --- a/drivers/ddr/imx8m/helper.c
+> +++ b/drivers/ddr/imx8m/helper.c
+> @@ -18,6 +18,25 @@
+>  #define DMEM_OFFSET_ADDR 0x00054000
+>  #define DDR_TRAIN_CODE_BASE_ADDR IP2APB_DDRPHY_IPS_BASE_ADDR(0)
+>  
+> +void dram_write_fsp_table_entry(struct dram_timing_info *timing_info,
+> +				unsigned int data_rate)
+> +{
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(timing_info->fsp_table); i++) {
+> +		unsigned int entry = timing_info->fsp_table[i];
+> +
+> +		/* Skip already existing entries */
+> +		if (entry == data_rate)
+> +			return;
+> +
+> +		if (entry == 0) {
+> +			timing_info->fsp_table[i] = data_rate;
+> +			return;
+> +		}
+> +	}
+> +}
 
-Hi Sascha!
+The input struct dram_timing_info * comes directly from the boards and
+should be treated as const. If you go that route please parse the
+.fsp_msg data directly in dram_config_save().
 
-> Hi Antony,
->=20
-> On Mon, Sep 12, 2022 at 12:07:34PM +0300, Antony Pavlov wrote:
-> > On Mon, 12 Sep 2022 10:01:52 +0200
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >=20
-> > > One side effect is that this gets even less readable.
-> >=20
-> > Yes, you are right :)
-> >=20
-> > > Another one would be that two dts filenames which only differ in the
-> > > usage of '.' and '_' would result in the same define, but I think that
-> > > case is negligible as this define is unused in barebox itself. It cou=
-ld
-> >                                        ^^^^^^^^^^^^^^^^^^^^^^^^
-> > > be used by external dts fragments passed in via CONFIG_EXTERNAL_DTS_F=
-RAGMENTS.
-> > >=20
-> > > Other than that, what side effects are you afraid of?
-> >=20
-> > I have an idea that someone relies on these *_dts macros.
-> >=20
-> > Now I see (as you have noted above) that there is no macro users in mai=
-nline source tree:
->=20
-> Could you create a formal patch from this?
+Another way could be to just check the .fsp_msg and .fsp_table for
+consistency and warn about it if necessary.
+In the end the input data from the boards is redundant here. We are
+not going to change the input data format as that comes from the NXP
+DRAM tools. Just ignoring the .fsp_table like you do here might be
+confusing as well.
 
-I'll a formal patch in a few days.
+Sascha
 
---=20
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
