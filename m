@@ -1,80 +1,80 @@
-Delivery-date: Wed, 28 Sep 2022 11:31:16 +0200
+Delivery-date: Wed, 28 Sep 2022 12:20:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1odTPQ-00HEEe-36
-	for lore@lore.pengutronix.de; Wed, 28 Sep 2022 11:31:16 +0200
+	id 1odUAp-00HG09-9r
+	for lore@lore.pengutronix.de; Wed, 28 Sep 2022 12:20:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1odTPO-0002X1-Cl
-	for lore@pengutronix.de; Wed, 28 Sep 2022 11:31:15 +0200
+	id 1odUAn-0002pm-3I
+	for lore@pengutronix.de; Wed, 28 Sep 2022 12:20:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
-	Message-ID:In-Reply-To:Date:References:Subject:Cc:To:From:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tR60X1DJuV1P1mmcTMubi+B5caOyIHob4U1BHW0qwIo=; b=iWtdDIoutsFLnB3P+1p1HHT3It
-	h4y+F+erWeWyqNnja8lU5KxT4S2ilcQ2BKmx2neJwpkHKokmiCZvsJFAdcEcefMfFh+Ncb7lhNDW4
-	Yeml9dKwkyzzgc2pv5kGLfWfW48wmYqklx9Re3aCA56a3llJqHwz+rK4H6O/PEMNC2npFz3GQiYOy
-	6LQy2T3HGIerMdN7wXUQtskT+1RpRa29QP9SQ+Cef8mf4RHaG70OJf/N5U95N1E7YyGCAV4wn3m1Z
-	fbra9BwBrE+5I7OHOrPInZ+nuf/qKxtBsmsYDIQ5mqBpGZnl7J8mbJ8sw+96hUvUTxrQdSrDl/Jba
-	uAGVqL1g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
+	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=+0PAKt0VI84hOUhCrkpbqc48UVGGfVN0OylROu/mAbk=; b=Q1s1Rbk2nulYNwv+MITvjF1Jnm
+	B1n+BhzUMvlhRR9+9NWjtHYUie3rGKX6Zstx7nQ73KC66hYucuobZ1Hp871KEqfVZaBzRmSU81b3A
+	MIf0pO7HBjb/JivEnFfYU0WbssDst6G4UrNcVDx61IIRAOoHuidczhE31UOh8sMuOwEAfagNk4xtV
+	eadq8XmxRNPHQaW7rB6E1pvfYtRD9YYX3WvE9tengVf1nzrvYWG+xnxtB/WwRWfBz2pVxV3K2mr54
+	oe03X1teMPLA/qhoW8RBY4Crq4mDKqKuJVcZiHafBO9ERs43dCmA1fRMUFSVq8lIvGEU9lCpJJFyt
+	YHNQ4F4Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1odTNs-00FCru-Vp; Wed, 28 Sep 2022 09:29:41 +0000
-Received: from smtpout-2.cvg.de ([2003:49:a034:1067:5::2])
+	id 1odU96-00FY3I-Dx; Wed, 28 Sep 2022 10:18:28 +0000
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1odTNn-00FCnd-6T
-	for barebox@lists.infradead.org; Wed, 28 Sep 2022 09:29:37 +0000
-Received: from mail-mta-2.intern.sigma-chemnitz.de (mail-mta-2.intern.sigma-chemnitz.de [192.168.12.70])
-	by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 28S9TPHY1091658
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
-	for <barebox@lists.infradead.org>; Wed, 28 Sep 2022 11:29:25 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
-	s=v2022040800; t=1664357365;
-	bh=tR60X1DJuV1P1mmcTMubi+B5caOyIHob4U1BHW0qwIo=; l=305;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To;
-	b=Q1GeDBpK6xrnpKto7Nx01o3WiNlgxr4ewePb96gdlX7emgwen0d7ti2H4Bf2bTM40
-	 ZWCPLAl2C1mZTGSPRqf+mSe7ghDiiI+W6U0BmxiSQh2XvACA+cmm+eYwwef4vXekBs
-	 YRP/ppNNBxXFh8P6iUjMVjIVuC0MnkN1sc4WvixR/iVqsfB3BiMCtTSWhRbtDUSccZ
-	 lhRenrykGSWRVu1q+39EtJMFKOPb/eODg82WxXF1ZDN0WzWih4zOWLuS+cqg4LmypB
-	 asMIiiO3PwxbTu6BcgOnJ5cTgVv+fOWMfbT395L9LAl7xpbs/FdWzbZBBYKcf3gtDJ
-	 yBZgxO60THMMw==
-Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
-	by mail-mta-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 28S9TN7D1353424
-	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Wed, 28 Sep 2022 11:29:23 +0200
-Received: from mail-msa-2.intern.sigma-chemnitz.de ([192.168.12.72])
-	by reddoxx.intern.sigma-chemnitz.de with ESMTP
-	id PI6SZV7IIT; Wed, 28 Sep 2022 11:29:22 +0200
-Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
-	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 28S9TMST1044698
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 28 Sep 2022 11:29:22 +0200
-Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.96)
-	(envelope-from <ensc@sigma-chemnitz.de>)
-	id 1odTNa-00BvVa-1o;
-	Wed, 28 Sep 2022 11:29:22 +0200
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20220927172217.662321-1-enrico.scholz@sigma-chemnitz.de>
-	<20220928091141.GV986@pengutronix.de>
-Date: Wed, 28 Sep 2022 11:29:22 +0200
-In-Reply-To: <20220928091141.GV986@pengutronix.de> (Sascha Hauer's message of
-	"Wed, 28 Sep 2022 11:11:41 +0200")
-Message-ID: <lywn9nyhhp.fsf@ensc-pc.intern.sigma-chemnitz.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.1 (gnu/linux)
+	id 1odU8x-00FY0K-BS
+	for barebox@lists.infradead.org; Wed, 28 Sep 2022 10:18:20 +0000
+Received: by mail-ed1-x531.google.com with SMTP id m3so16587716eda.12
+        for <barebox@lists.infradead.org>; Wed, 28 Sep 2022 03:18:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=skymem-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=+0PAKt0VI84hOUhCrkpbqc48UVGGfVN0OylROu/mAbk=;
+        b=4Lknjh+wANjo57w7IIi6hcv5hNAJTrvRtvqAVBEIVwy/af+pjQviosDlNeXNeWWK7O
+         WHFQ0cye3BWBjkBRMO6SfYaQ92DcCnb54j3fC1g+fOu5o1KVk/ksPfbWDHju8XsebXUa
+         9XDKhuaf4rM4MHni5YB2yJCTTEpqnV4vjVnuQTLj7i+7AWJc3Jr3i0EMxaX45EVcAyGj
+         LdfGdrB0QvlqC3RsL/zFutRxeUGqBsa44dAnatjrvbfHBLbQKd63da2ocSBlG8HEuo0u
+         c2hT2bJE6Cn117kQ3B+4WrcI8MvwUDPSA+rpGMSiTtuR2suAK2upqXCz3dMjydoe8lxn
+         cSqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=+0PAKt0VI84hOUhCrkpbqc48UVGGfVN0OylROu/mAbk=;
+        b=IyBWVKr1OgOKYXiofVpbhgUf8KYTvzcHbWBpANWIAcICP9CqHZlVwSZyidjQX/Oqcv
+         jvG2HdaedR4LqvMF/ql+HSZuLJ1PZ/vpHojD3lMm8+Jecqonx7mPlTfCnld7+1fp9dvL
+         ce+UQ9k4B94Os1Dzygj2nXQ0Uu2l9QuqGKsrKNx8kPFbiw4bXBkakWXw8TT4IHxC5PPC
+         wV9teEohKzGask/D+entHZ7mqEfispNThfYKg3pTcbmS7hbt4srp+5uKQpVyUuO18rze
+         2N9kc9Jv5FF223skB6nMcRjM/uGVIJvSLWlW156/uC9XFxuiskeuce2MaUJBFre96Zxq
+         kBVg==
+X-Gm-Message-State: ACrzQf2+vLVC/af66vVAX6uNYHZAr2XzFHSsvzCGQNEFcf8cTf2JilAm
+	ql96YYYZeVoZyl5KHmxNFeypyoVJsSTGsXAz3sk8334QDWH7it9iZmo=
+X-Google-Smtp-Source: AMsMyM6TPMPg2DbFl21HEmzMjZI+YcGOUDlYWLQm9Byskw7dl8H38oeDbRGPGMVWhW4it9cGEjfj3NUj3X93chJcU6Y=
+X-Received: by 2002:a05:6402:847:b0:453:943b:bf4 with SMTP id
+ b7-20020a056402084700b00453943b0bf4mr32248781edz.301.1664360296667; Wed, 28
+ Sep 2022 03:18:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-REDDOXX-Id: 633413f2934b9d3e05358924
+References: <20220927173101.1696673-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220927173101.1696673-1-a.fatoum@pengutronix.de>
+From: Info Skymem <info@skymem.com>
+Date: Wed, 28 Sep 2022 12:18:04 +0200
+Message-ID: <CAKvd=_hjXcUTcg5qz2Zwmk2Ofd7r9+1dFMp+yM-+_1BAC+aUKQ@mail.gmail.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, 
+	=?UTF-8?Q?Hans_Christian_L=C3=B8nstad?= <hcl@datarespons.no>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220928_022935_410890_39F10D49 
-X-CRM114-Status: UNSURE (   8.61  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20220928_031819_438320_4E1FD59C 
+X-CRM114-Status: GOOD (  15.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,25 +92,71 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] zstd: fix assert() logic
+Subject: Re: [PATCH master] imx-usb-loader: skip initial SDP_ERROR_STATUS
+ query for SDPS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Sascha Hauer <sha@pengutronix.de> writes:
+Hi,
+thank you for your information.
 
-> On Tue, Sep 27, 2022 at 07:22:17PM +0200, Enrico Scholz wrote:
->> It should warn when condition does **not** hold
+On our website you can find email addresses of companies and people.
+https://www.skymem.info
+
+In short, it=E2=80=99s like Google for emails.
+
+Best regards,
+Robert,
+Skymem team
+
+On Tue, Sep 27, 2022 at 7:33 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrot=
+e:
 >
-> That fixes only the warnings, not the regression, right?
-
-no; sorry.  I stumpled over it while looking at this regression.
-
-
-Enrico
+> We do an initial do_status() every time, which fails for i.MX8MP and
+> i.MX8MN:
+>
+>   found i.MX8MP USB device [1fc9:0146]
+>   4 in err=3D-9, last_trans=3D0  00 00 00 00
+>   status failed
+>
+> If we instead skip it for SDPS (i.e. hid_endpoint), upload works as
+> expected (tested on i.MX8M Nano).
+>
+> Reported-by: Hans Christian L=C3=B8nstad <hcl@datarespons.no>
+> Fixes: 23e2203150b6 ("imx-usb-loader: Add i.MX8MP support")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  scripts/imx/imx-usb-loader.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+>
+> diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+> index 1242f2dedda5..a98ab0e33f8a 100644
+> --- a/scripts/imx/imx-usb-loader.c
+> +++ b/scripts/imx/imx-usb-loader.c
+> @@ -1628,10 +1628,12 @@ int main(int argc, char *argv[])
+>                 goto out;
+>         }
+>
+> -       err =3D do_status();
+> -       if (err) {
+> -               printf("status failed\n");
+> -               goto out;
+> +       if (!mach_id->hid_endpoint) {
+> +               err =3D do_status();
+> +               if (err) {
+> +                       printf("status failed\n");
+> +                       goto out;
+> +               }
+>         }
+>
+>         if (initfile) {
+> --
+> 2.30.2
+>
+>
 
 
