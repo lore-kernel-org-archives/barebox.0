@@ -1,57 +1,58 @@
-Delivery-date: Thu, 29 Sep 2022 11:52:35 +0200
+Delivery-date: Thu, 29 Sep 2022 12:06:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1odqDb-000W3L-B7
-	for lore@lore.pengutronix.de; Thu, 29 Sep 2022 11:52:35 +0200
+	id 1odqRK-000Wxt-1s
+	for lore@lore.pengutronix.de; Thu, 29 Sep 2022 12:06:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1odqDa-0000q9-AI
-	for lore@pengutronix.de; Thu, 29 Sep 2022 11:52:34 +0200
+	id 1odqRI-0003jr-Q9
+	for lore@pengutronix.de; Thu, 29 Sep 2022 12:06:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ch4QJPjgVCWGOCkuUOAQJzCQv3SwdTfTDFqOxkW/ZVA=; b=opUgnqLB4jLGrSWyYuLFtlsXgX
-	gd2coMQoeYoxbp2Y1wZchG2lB+D4lyiASW1nLnSgKj8bA4fyzmuyeCA0/AP8vDcmAc6NqT5IsbPNo
-	y6rG8DO+0ThSksTWugn9iy0mRy1Ws0bfD6HwcTqH2Ig0MR1ZfXzLa0ujVNsSK2nLYT7MQnU0dtSlQ
-	bo4BefMuoEUGq7DGAxy356zeLQ3kVOeqiAiThzgMFCfufj0FyhtH8oW+sJYeRjqMHhPGGr97rXjfq
-	AQ/LvGMupLNjiBOfXbkZxB0t6SM7hLgvBLA4EmwGdC0ywfzV/qu6DW7hSusBZHN8VklmZCecDRb4e
-	1S+cahzg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=MP5eojQGX9razYZqvUV63yCx/Pgcfrdr8r6XBLw/6jc=; b=vNjeEefYDsq6GnwyJN/p42wtCf
+	R602QEWaiHXL2cIHWD7FtJSpibeYpZ1vk15kim8TXDCeOm0SApTc475VD8x+iBtPWTBu0b7ad9imm
+	6K+qdFJstmnFNtKDddhUhbQkA/Bn2uGeEV+EIqJ2j7RLmyNqd+Noc1Es7SieaAhTrUa0kI2xhr48+
+	hmNz4TvH2MXbjW9Ko+zOm+wqWWdkL9jI48B6ZHB8VjujEn2FmlnKac/julhXc9Rwa8HD1kObBUVXw
+	LLpC8RHQVkCQNe2vl2iIHFYhUAU5AIyko/YqBJdG1RV0pzpUqg5kGWYHyTv5Ut+BxZ+xvclJReYPF
+	W+B0hKcQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1odqBi-002DqY-BW; Thu, 29 Sep 2022 09:50:38 +0000
+	id 1odqPu-002Ip8-6t; Thu, 29 Sep 2022 10:05:18 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1odqBd-002Do9-7Z
-	for barebox@lists.infradead.org; Thu, 29 Sep 2022 09:50:34 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1odqBX-0000TI-TD; Thu, 29 Sep 2022 11:50:27 +0200
-Message-ID: <ff7948a7-71c5-5cf4-2f96-f7c165d34e11@pengutronix.de>
-Date: Thu, 29 Sep 2022 10:50:20 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Content-Language: en-US
-To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Cc: barebox@lists.infradead.org
-References: <20220905103546.1476277-1-a.fatoum@pengutronix.de>
- <20220905103546.1476277-5-a.fatoum@pengutronix.de>
- <lyv8p7wrfp.fsf@ensc-pc.intern.sigma-chemnitz.de>
+	id 1odqPo-002Ilf-1r
+	for barebox@lists.infradead.org; Thu, 29 Sep 2022 10:05:13 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1odqPk-0003JI-DI; Thu, 29 Sep 2022 12:05:08 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1odqPl-003aak-7X; Thu, 29 Sep 2022 12:05:07 +0200
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1odqPj-003lWC-08; Thu, 29 Sep 2022 12:05:07 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <lyv8p7wrfp.fsf@ensc-pc.intern.sigma-chemnitz.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 29 Sep 2022 12:05:02 +0200
+Message-Id: <20220929100502.895553-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20220929_025033_294435_F96B9C87 
-X-CRM114-Status: GOOD (  14.94  )
+X-CRM114-CacheID: sfid-20220929_030512_113412_E39AC26C 
+X-CRM114-Status: GOOD (  12.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,50 +70,64 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 4/5] commands: gpio: add -d argument to set/get commands
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] usb: have usb_rescan return count of enumerated devices
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 28.09.22 14:37, Enrico Scholz wrote:
-> Ahmad Fatoum <a.fatoum@pengutronix.de> writes:
-> 
->> For debugging, it can be useful to reference GPIOs relative to a
->> controller, e.g.:
->>
->>   gpio_direction_output -d gpio4 20 1
->>
->> -	if (argc < count)
->> +	if (optind < count)
->>  		return COMMAND_ERROR_USAGE;
-> 
-> This change seems to make '-d ...' mandatory.  E.g.
-> 
-> | :/ gpio_get_value 65
-> | 
-> | gpio_get_value - return value of a GPIO pin
-> | 
-> | Usage: gpio_get_value [-d CONTROLLER] GPIO
+Some USB mass storage devices can take a comparatively long time after
+vbus is applied until they can be enumerated. Board code can reissue
+usb_rescan() to retry enumeration at a later time. It's useful for
+board code to check whether any new devices have been detected by a
+usb_rescan() call. To facilitate this, have usb_rescan() return the
+number of devices found in addition to printing it to the log.
 
-Seems I had the blinders on when I drafted this patch
-series. Thanks for reporting and thanks Sascha for
-the fixes.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/usb/core/usb.c | 4 +++-
+ include/usb/usb.h      | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-
-> 
-> 
-> Enrico
-> 
-
-
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 34a0f004f7bb..ed3a96cb9e5e 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -599,7 +599,7 @@ int usb_host_detect(struct usb_host *host)
+ 	return 0;
+ }
+ 
+-void usb_rescan(void)
++int usb_rescan(void)
+ {
+ 	struct usb_host *host;
+ 	int ret;
+@@ -613,6 +613,8 @@ void usb_rescan(void)
+ 	}
+ 
+ 	pr_info("%d USB Device(s) found\n", dev_count);
++
++	return dev_count;
+ }
+ 
+ /*-------------------------------------------------------------------
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index 39f475091617..04b433ba73ca 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -201,7 +201,7 @@ int usb_clear_halt(struct usb_device *dev, int pipe);
+ int usb_string(struct usb_device *dev, int index, char *buf, size_t size);
+ int usb_set_interface(struct usb_device *dev, int interface, int alternate);
+ 
+-void usb_rescan(void);
++int usb_rescan(void);
+ 
+ /* big endian -> little endian conversion */
+ /* some CPUs are already little endian e.g. the ARM920T */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
