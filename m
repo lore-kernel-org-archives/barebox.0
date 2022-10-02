@@ -1,67 +1,60 @@
-Delivery-date: Sun, 02 Oct 2022 00:48:44 +0200
+Delivery-date: Sun, 02 Oct 2022 09:17:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oelHo-002q3h-3t
-	for lore@lore.pengutronix.de; Sun, 02 Oct 2022 00:48:44 +0200
+	id 1oetEK-0039Ms-9x
+	for lore@lore.pengutronix.de; Sun, 02 Oct 2022 09:17:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oelHm-0004nA-V3
-	for lore@pengutronix.de; Sun, 02 Oct 2022 00:48:43 +0200
+	id 1oetEJ-0002QI-8a
+	for lore@pengutronix.de; Sun, 02 Oct 2022 09:17:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=78ArbpS+MX7FxuZXq49R157qE0Wc8Xe7wlyjEwfZans=; b=J64PumA2LgjKbAbPPgZy+qNEfM
-	otNW9cbKG93sdaVY4+GyLepSGgsszJ35PWJ6kg3vzvHDNoCM9BHBT70c8dnSa1151E+ShWvwV/dx3
-	EIKiSV9XILXc1IkC5NWsPdGdSQTB/w3uMQy8UpTOiOAOv7gcZuPQflPtO0UAPc12wxnKTputXCMRd
-	FVfHzXtCwjMkNCtlIoS2XcuYCKc0sQWBtYnQa92smPr/6XKeA6+FP4d1d3XC895pkaqZea3hwwyRW
-	d6+omYoXfFKPcrblDOxl3sUKcG+pkMQ4PWPqeIAGF4V7dL0Uj1vsOZjP9r4K6UT/pwP6EVXxZQre/
-	5rLg5Q3w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=r5YvOgpkJky0O9UIfjpxgl7DGN6Ash6L9ohxlXWlhsc=; b=DqsBCKt5roBDz3YQU06J7CnSjK
+	k5wL8IZfOwFoAR7gSaPBziOZANDPPxbEKT4ZsRCDlSv8qEm9HE47PcVNMciVTFhcwbPry5TgBdnwL
+	lAvfHjA25gaX9zx1j61bteu18uNnlZwwVOPlMQW54y0u5ZHBCSjT5NyGPSlR8/SVvhlhhh+BRV/ah
+	s2rRJqtvKWlRibBlVblQZtfo1IHs10DzRx8Ao0K0PkibK+yI8G+nZVMdg/NLIEQrCQdlcm2A1ywUd
+	V/u3Wd/3ntxAkKlfLESUIpxGRlHUcQjSjCXgPeuKiFQxAtv5OgKIgrn6pYGmXO6bU2A7NTY3ZK+am
+	aRTb7X6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oelFM-00GP5d-FK; Sat, 01 Oct 2022 22:46:12 +0000
-Received: from mail.skyhub.de ([5.9.137.197])
+	id 1oetCR-000APv-RD; Sun, 02 Oct 2022 07:15:43 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oelFC-00GP3x-M8
-	for barebox@lists.infradead.org; Sat, 01 Oct 2022 22:46:08 +0000
-Received: from zn.tnic (p200300ea9733e7b3329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7b3:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1FBFA1EC0657;
-	Sun,  2 Oct 2022 00:45:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1664664352;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=78ArbpS+MX7FxuZXq49R157qE0Wc8Xe7wlyjEwfZans=;
-	b=EddN4d5SoC1sFt620IUcnZsknZ3P+dlpL5H+cYZkJofAn6uB6+nXDQrmbGtY1krLjZhFzf
-	haIm1nyN2qI8dlSKYRlQ1KoqcM+LtkTbU1YAhEZtav1t6Cei0ACeyuVn33GJHirguwBYzP
-	LkLNLlSLb7oHSjnZqQgGnqAdRh+lXQQ=
-Date: Sun, 2 Oct 2022 00:45:48 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: hpa@zytor.com, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Jonathan Corbet <corbet@lwn.net>, barebox@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Message-ID: <YzjDHOWkIoWF+h/R@zn.tnic>
-References: <20220513143039.2065756-1-a.fatoum@pengutronix.de>
+	id 1oetCL-000AO2-TU
+	for barebox@lists.infradead.org; Sun, 02 Oct 2022 07:15:40 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1oetBv-00021X-Pp; Sun, 02 Oct 2022 09:15:11 +0200
+Message-ID: <5da3593c-1607-9075-e1ac-1e384fd62b93@pengutronix.de>
+Date: Sun, 2 Oct 2022 09:15:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220513143039.2065756-1-a.fatoum@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Content-Language: en-US
+To: Borislav Petkov <bp@alien8.de>
+Cc: hpa@zytor.com, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ barebox@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20220513143039.2065756-1-a.fatoum@pengutronix.de>
+ <YzjDHOWkIoWF+h/R@zn.tnic>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <YzjDHOWkIoWF+h/R@zn.tnic>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221001_154602_919139_A496B3E3 
-X-CRM114-Status: UNSURE (   8.36  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20221002_001537_956811_63A6C70A 
+X-CRM114-Status: GOOD (  16.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,38 +72,53 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.2
 Subject: Re: [PATCH] Documentation: x86: boot: reserve type_of_loader=13 for
  barebox
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, May 13, 2022 at 04:30:39PM +0200, Ahmad Fatoum wrote:
-> barebox built as EFI payload has been booting Linux on x86 with
-> type_of_loader=0xff since v2015.09.0.
+Hello,
 
-What is barebox?
+On 02.10.22 00:45, Borislav Petkov wrote:
+> On Fri, May 13, 2022 at 04:30:39PM +0200, Ahmad Fatoum wrote:
+>> barebox built as EFI payload has been booting Linux on x86 with
+>> type_of_loader=0xff since v2015.09.0.
+> 
+> What is barebox?
+> 
+> That https://en.wikipedia.org/wiki/Barebox ?
 
-That https://en.wikipedia.org/wiki/Barebox ?
+Yes.
 
-That version number v2015 - am I to understand it that it has been
-booting Linux since the year 2015?
+> 
+> That version number v2015 - am I to understand it that it has been
+> booting Linux since the year 2015?
+> 
+> In any case, it would be useful to explain a bit what it is here.
 
-In any case, it would be useful to explain a bit what it is here.
+Release cadence is monthly. Starting with release v2015.09.0,
+type_of_loader=0xff was being used. I figured it's about time, we
+allocate an ID for it.
 
-> Reserve 13, the next free id, so this can be used instead.
+> 
+>> Reserve 13, the next free id, so this can be used instead.
+> 
+> Sure, I guess, why not.
+> 
+> Thx.
+Cheers,
+Ahmad
 
-Sure, I guess, why not.
-
-Thx.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
