@@ -1,52 +1,52 @@
-Delivery-date: Tue, 04 Oct 2022 09:48:56 +0200
+Delivery-date: Tue, 04 Oct 2022 09:50:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofcfg-005Klg-Nm
-	for lore@lore.pengutronix.de; Tue, 04 Oct 2022 09:48:56 +0200
+	id 1ofchG-005KoX-69
+	for lore@lore.pengutronix.de; Tue, 04 Oct 2022 09:50:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofcff-000585-KY
-	for lore@pengutronix.de; Tue, 04 Oct 2022 09:48:56 +0200
+	id 1ofchE-0005Qm-TA
+	for lore@pengutronix.de; Tue, 04 Oct 2022 09:50:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OPdL51JG9iHCC/+o97RkbLLqxiDYi/7pjwAWtnLHCrY=; b=uoSA6hLP83UmA66URNvPqc0591
-	fEH0VA6l5mbgt32B1v7FCdAgWBkzFOfbgC/6Z1nWBAZuZdwAGGdD4rbN0SWVZbYFnBuLqVsyn1fpv
-	w71dmdDdNuPOWfyPZdaUHgeVoi0Z4r4GdV/pTJrciR2bnkEU1Nf9EtzwG0g4v3EvVuX7YlbrXD0T7
-	wFm8isAID9ZMuvxFYqk6QDPTEACnWRjixi6MStMJ46jG8qC4S3REABFq4katfmkLh7vzeB8iAlZ+K
-	/sMGSfeDvA2PYlhGiFJNOvYr93V+cJwdO8Yo8AWfYcjUe6f8aojBevPDmYDejwNaS1+WIBj3GaKa4
-	5Q9IIXFw==;
+	bh=HExPHCtW/dGveNfPraTFR8bmAjOdxNdlBAfbfqng1FE=; b=HeGKT+LzL85hMp3zF+/UNrZBj5
+	rV/6MBQey9pLhoZzeIO+aP/1g5311w27DbDXtCwrRsPjiaK3ALibhLskXtY85NCY1jVRCBhDyLX18
+	INim1IdXx29rYNZYcwPn7Pre5YcztBV+hGHPBE+hWJpOh4ioTiqPV4orXm26ECkKwsu+RPN+hhIbF
+	DgV2vlg3m5Q09cioS0/WoEF4LqyDAPMGGAzYCWmIR47qWocP+uzon1CfGkQRe8xTROf1LHT6/1yyz
+	aGUPnvkSbxeSuNdg+KgpVXwliNvnVU+QieZFtkDTu86B/aP2K03UCUkU9SFDte31ii1SEItg97XeY
+	vEdCDCrg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofce7-008noF-R6; Tue, 04 Oct 2022 07:47:19 +0000
+	id 1ofcfe-008o7d-Sg; Tue, 04 Oct 2022 07:48:54 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofcdw-008nml-F5
-	for barebox@lists.infradead.org; Tue, 04 Oct 2022 07:47:13 +0000
+	id 1ofcfL-008o6b-V7
+	for barebox@lists.infradead.org; Tue, 04 Oct 2022 07:48:37 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ofcdv-0004xI-8P; Tue, 04 Oct 2022 09:47:07 +0200
+	id 1ofcfK-000574-La; Tue, 04 Oct 2022 09:48:34 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ofcdv-0004ri-17; Tue, 04 Oct 2022 09:47:07 +0200
-Date: Tue, 4 Oct 2022 09:47:07 +0200
+	id 1ofcfK-0004xH-EP; Tue, 04 Oct 2022 09:48:34 +0200
+Date: Tue, 4 Oct 2022 09:48:34 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20221004074706.GG986@pengutronix.de>
-References: <20220928085052.2599436-1-a.fatoum@pengutronix.de>
+Message-ID: <20221004074834.GH986@pengutronix.de>
+References: <20220929100502.895553-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220928085052.2599436-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220929100502.895553-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221004_004712_255239_A9DC961A 
-X-CRM114-Status: GOOD (  24.51  )
+X-CRM114-CacheID: sfid-20221004_004836_024707_BA443E9A 
+X-CRM114-Status: GOOD (  22.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,53 +77,64 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mfd: axp20x: export axp20x-regulator child for AXP152
+Subject: Re: [PATCH] usb: have usb_rescan return count of enumerated devices
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Sep 28, 2022 at 10:50:52AM +0200, Ahmad Fatoum wrote:
-> While the upstream Linux driver doesn't support regulator configuration
-> for the AXP152, we may need this in barebox for initial regulator setup.
-> Thus have the MFD driver register the appropriate child device as done
-> for the other drivers. While at it, pass along the axp20x driver data
-> object. This is needed, so the regulator driver can query the variant;
-> so far it was only possible to retrieve the parent regmap and redo the
-> revision readout.
+On Thu, Sep 29, 2022 at 12:05:02PM +0200, Ahmad Fatoum wrote:
+> Some USB mass storage devices can take a comparatively long time after
+> vbus is applied until they can be enumerated. Board code can reissue
+> usb_rescan() to retry enumeration at a later time. It's useful for
+> board code to check whether any new devices have been detected by a
+> usb_rescan() call. To facilitate this, have usb_rescan() return the
+> number of devices found in addition to printing it to the log.
 > 
-> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/mfd/axp20x.c | 5 +++++
->  1 file changed, 5 insertions(+)
+>  drivers/usb/core/usb.c | 4 +++-
+>  include/usb/usb.h      | 2 +-
+>  2 files changed, 4 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
-> index da1e8ce35a7d..0a53eaea7cfa 100644
-> --- a/drivers/mfd/axp20x.c
-> +++ b/drivers/mfd/axp20x.c
-> @@ -141,6 +141,9 @@ static const struct mfd_cell axp152_cells[] = {
->  	{
->  		.name		= "axp20x-pek",
->  	},
-> +	{
-> +		.name		= "axp20x-regulator",
-> +	},
->  };
+> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+> index 34a0f004f7bb..ed3a96cb9e5e 100644
+> --- a/drivers/usb/core/usb.c
+> +++ b/drivers/usb/core/usb.c
+> @@ -599,7 +599,7 @@ int usb_host_detect(struct usb_host *host)
+>  	return 0;
+>  }
 >  
->  static const struct mfd_cell axp288_cells[] = {
-> @@ -337,6 +340,8 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
->  				     AXP806_REG_ADDR_EXT_ADDR_SLAVE_MODE);
+> -void usb_rescan(void)
+> +int usb_rescan(void)
+>  {
+>  	struct usb_host *host;
+>  	int ret;
+> @@ -613,6 +613,8 @@ void usb_rescan(void)
 >  	}
 >  
-> +	axp20x->dev->priv = axp20x;
+>  	pr_info("%d USB Device(s) found\n", dev_count);
 > +
->  	ret = mfd_add_devices(axp20x->dev, axp20x->cells, axp20x->nr_cells);
->  	if (ret)
->  		return dev_err_probe(axp20x->dev, ret, "failed to add MFD devices\n");
+> +	return dev_count;
+>  }
+>  
+>  /*-------------------------------------------------------------------
+> diff --git a/include/usb/usb.h b/include/usb/usb.h
+> index 39f475091617..04b433ba73ca 100644
+> --- a/include/usb/usb.h
+> +++ b/include/usb/usb.h
+> @@ -201,7 +201,7 @@ int usb_clear_halt(struct usb_device *dev, int pipe);
+>  int usb_string(struct usb_device *dev, int index, char *buf, size_t size);
+>  int usb_set_interface(struct usb_device *dev, int interface, int alternate);
+>  
+> -void usb_rescan(void);
+> +int usb_rescan(void);
+>  
+>  /* big endian -> little endian conversion */
+>  /* some CPUs are already little endian e.g. the ARM920T */
 > -- 
 > 2.30.2
 > 
