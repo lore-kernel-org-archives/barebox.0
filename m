@@ -1,61 +1,58 @@
-Delivery-date: Tue, 04 Oct 2022 17:57:12 +0200
+Delivery-date: Tue, 04 Oct 2022 18:02:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofkIC-005iHQ-6b
-	for lore@lore.pengutronix.de; Tue, 04 Oct 2022 17:57:12 +0200
+	id 1ofkNY-005iTE-2f
+	for lore@lore.pengutronix.de; Tue, 04 Oct 2022 18:02:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofkIA-0006hm-9w
-	for lore@pengutronix.de; Tue, 04 Oct 2022 17:57:11 +0200
+	id 1ofkNW-0007pC-VP
+	for lore@pengutronix.de; Tue, 04 Oct 2022 18:02:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JQT3qqjpUV3GEUW8RzbAuOR7rcS7EOIsMMiFk9RQleE=; b=aCX5RqDqvhy2swyIJeH1UV8hRv
-	chZJHPeARv+CPmsJEm08woqEZBq7Yr1FFCFFFDRcCd+erHggFhZXFrK152BdxWn9a5BZnCv+ChHT6
-	Tb0Nt/y4T7rBd/RJuxQMboiRt6aQoVOgwhDilAZbMN92oVfGMdGBI47NCIQPg+zVqpxw1gWowF9kp
-	olgQKTF27WOvaob0mHU3+vwsN3ctAxnlLI121FYRaiA/XHhmR5HV9Oak9zPYHUvTOhzscYCIwX3uF
-	CUlWDPa3a9iwgP22tKetVpIZcDuJDeiVRYZ7LaxxtBGg++HcHboDEsjviY822JlmWmxrEdO2/4+u5
-	KlE4XdWA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=oeOu2EgpjaXVheHOMhNzLkJRwHlIC4rwQUJYUfjlNvQ=; b=xxeIRV6m2ZXWzB42uDQa7VXYcW
+	puuAJYZDgxGUEcLz97Sn10UerqXyYRftx9WXjTz6EM+fAtuBMZRiB+aZZ6nR4XIMBdTzMBA5hT6dY
+	GaZk333FEkdbPVbbZcaWzJYv2qmLh1yncD8ez6iwJT1q7s46TsRLGjG0afQ+TT08PkzocbBOUMcd0
+	LS4XjJFwv0qAPk3qjZ0JZ2WcsCwan8tzJ83qGEMtJD2aMp64tf9+8Lo4ecFXg5tntCKjf5ZDRX17+
+	CnprxIU3ItMb/kk94n8yy9Fm2CUF0PuyvI33xYFgZ6k+PcB1fmjwqgNoUbBnG2kF+V1crrdT9xXSG
+	rKVGv6ZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofkGq-00A88r-Mp; Tue, 04 Oct 2022 15:55:48 +0000
+	id 1ofkME-00A9tE-SF; Tue, 04 Oct 2022 16:01:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofkGE-00A7pE-3y
-	for barebox@lists.infradead.org; Tue, 04 Oct 2022 15:55:12 +0000
+	id 1ofkMA-00A9si-C3
+	for barebox@lists.infradead.org; Tue, 04 Oct 2022 16:01:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ofkG4-0005gd-S4; Tue, 04 Oct 2022 17:55:00 +0200
+	id 1ofkM8-0007Oi-Gy; Tue, 04 Oct 2022 18:01:16 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ofkG5-004alp-JJ; Tue, 04 Oct 2022 17:55:00 +0200
+	id 1ofkM9-004an1-AO; Tue, 04 Oct 2022 18:01:15 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ofkG2-00EW8P-C7; Tue, 04 Oct 2022 17:54:58 +0200
+	id 1ofkM6-001lJy-D7; Tue, 04 Oct 2022 18:01:14 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  4 Oct 2022 17:54:06 +0200
-Message-Id: <20221004155405.3458479-9-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  4 Oct 2022 18:01:12 +0200
+Message-Id: <20221004160112.183814-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221004155405.3458479-1-a.fatoum@pengutronix.de>
-References: <20221004155405.3458479-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221004_085510_208104_9F14CE63 
-X-CRM114-Status: GOOD (  13.26  )
+X-CRM114-CacheID: sfid-20221004_090118_430853_15C16651 
+X-CRM114-Status: GOOD (  10.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,157 +74,62 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 8/9] test: self: refactor to allow alignment check
+Subject: [PATCH master] Revert "mci: bcm2835: reset host controller on barebox shutdown"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Have The expect_alloc_* functions currently only know whether the
-pointer is NULL or not. Have them get the full pointer value and return
-it instead.
+The patch is wrong and issue is still reproducible with it. We have no
+alternate fix yet, but drop the non-functional fix until we do.
 
-No functional change.
+This reverts commit c7428c02d72d1c74295226e7c9483e0f62f6a2aa.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/self/malloc.c | 78 +++++++++++++++++++++++++++++++++-------------
- 1 file changed, 57 insertions(+), 21 deletions(-)
+Issue is spurious, which suggests to me that it's related to:
+https://patchwork.kernel.org/project/linux-arm-kernel/patch/1495126660-25044-1-git-send-email-srinath.mannam@broadcom.com/#20487621
 
-diff --git a/test/self/malloc.c b/test/self/malloc.c
-index c25b416b9751..6b3002ff0996 100644
---- a/test/self/malloc.c
-+++ b/test/self/malloc.c
-@@ -7,26 +7,62 @@
- #include <malloc.h>
- #include <memory.h>
- #include <linux/sizes.h>
-+#include <linux/bitops.h>
+Haven't found a proper solution yet though.
+---
+ drivers/mci/mci-bcm2835.c | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
+index c5b226ba033c..f092156f9a83 100644
+--- a/drivers/mci/mci-bcm2835.c
++++ b/drivers/mci/mci-bcm2835.c
+@@ -385,8 +385,6 @@ static int bcm2835_mci_probe(struct device_d *hw_dev)
+ 	host->sdhci.read32 = bcm2835_sdhci_read32;
+ 	host->sdhci.write32 = bcm2835_sdhci_write32;
  
- BSELFTEST_GLOBALS();
+-	hw_dev->priv = host;
+-
+ 	mci_of_parse(&host->mci);
  
--static void __expect(bool cond, bool expect,
-+#define get_alignment(val) \
-+	BIT(__builtin_constant_p(val) ?  __builtin_ffsll(val) : __ffs64(val))
-+
-+static_assert(get_alignment(0x1)	!= 1);
-+static_assert(get_alignment(0x2)	!= 2);
-+static_assert(get_alignment(0x3)	!= 1);
-+static_assert(get_alignment(0x4)	!= 4);
-+static_assert(get_alignment(0x5)	!= 1);
-+static_assert(get_alignment(0x6)	!= 2);
-+static_assert(get_alignment(0x8)	!= 8);
-+static_assert(get_alignment(0x99)	!= 0x1);
-+static_assert(get_alignment(0xDEADBEE0)	!= 0x10);
-+
-+static bool __expect_cond(bool cond, bool expect,
-+			  const char *condstr, const char *func, int line)
-+{
-+	total_tests++;
-+	if (cond == expect)
-+		return true;
-+
-+	failed_tests++;
-+	printf("%s:%d: %s to %s\n", func, line,
-+	       expect ? "failed" : "unexpectedly succeeded",
-+	       condstr);
-+	return false;
-+
-+}
-+
-+static void *__expect(void *ptr, bool expect,
- 		     const char *condstr, const char *func, int line)
- {
-+	bool ok;
- 	total_tests++;
--	if (cond != expect) {
--		failed_tests++;
--		printf("%s:%d: %s to %s\n", func, line,
--		       expect ? "failed" : "unexpectedly succeeded",
--		       condstr);
-+
-+	ok = __expect_cond(ptr != NULL, expect, condstr, func, line);
-+	if (ok && ptr) {
-+		unsigned alignment = get_alignment((uintptr_t)ptr);
-+		if (alignment < CONFIG_MALLOC_ALIGNMENT) {
-+			failed_tests++;
-+			printf("%s:%d: invalid alignment of %u in %s = %p\n", func, line,
-+			       alignment, condstr, ptr);
-+		}
- 	}
-+
-+	return ptr;
+ 	iores = dev_request_mem_resource(hw_dev, 0);
+@@ -422,15 +420,6 @@ static int bcm2835_mci_probe(struct device_d *hw_dev)
+ 	return mci_register(&host->mci);
  }
  
--#define expect_alloc_ok(cond) \
--	__expect((cond), true, #cond, __func__, __LINE__)
-+#define expect_alloc_ok(ptr) \
-+	__expect((ptr), true, #ptr, __func__, __LINE__)
+-static void bcm2835_mci_remove(struct device_d *dev)
+-{
+-	struct bcm2835_mci_host *host = dev->priv;
+-
+-	sdhci_write32(&host->sdhci,
+-		      SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
+-		      0x00);
+-}
+-
+ static __maybe_unused struct of_device_id bcm2835_mci_compatible[] = {
+ 	{
+ 		.compatible = "brcm,bcm2835-sdhci",
+@@ -444,7 +433,6 @@ static __maybe_unused struct of_device_id bcm2835_mci_compatible[] = {
+ static struct driver_d bcm2835_mci_driver = {
+ 	.name = "bcm2835_mci",
+ 	.probe = bcm2835_mci_probe,
+-	.remove = bcm2835_mci_remove,
+ 	.of_compatible = DRV_OF_COMPAT(bcm2835_mci_compatible),
+ };
  
--#define expect_alloc_fail(cond) \
--	__expect((cond), false, #cond, __func__, __LINE__)
-+#define expect_alloc_fail(ptr) \
-+	__expect((ptr), false, #ptr, __func__, __LINE__)
- 
- static void test_malloc(void)
- {
-@@ -45,14 +81,14 @@ static void test_malloc(void)
- 		mem_malloc_size = 0;
- 	}
- 
--	expect_alloc_ok(p = malloc(1));
-+	p = expect_alloc_ok(malloc(1));
- 	free(p);
- 
- 	if (mem_malloc_size) {
- 		expect_alloc_fail(malloc(SIZE_MAX));
- 
- 		if (0xf0000000 > mem_malloc_size) {
--			expect_alloc_fail((tmp = malloc(0xf0000000)));
-+			tmp = expect_alloc_fail(malloc(0xf0000000));
- 			free(tmp);
- 		}
- 	} else {
-@@ -60,22 +96,22 @@ static void test_malloc(void)
- 	}
- 
- 	p = realloc(NULL, 1);
--	expect_alloc_ok(p = realloc(NULL, 1));
-+	p = expect_alloc_ok(realloc(NULL, 1));
- 
- 	*p = 0x42;
- 
--	expect_alloc_ok(tmp = realloc(p, 2));
-+	tmp = expect_alloc_ok(realloc(p, 2));
- 
- 	p = tmp;
--	__expect(*p == 0x42, true, "reread after realloc", __func__, __LINE__);
-+	__expect_cond(*p == 0x42, true, "reread after realloc", __func__, __LINE__);
- 
- 	if (mem_malloc_size) {
--		expect_alloc_fail(tmp = realloc(p, mem_malloc_size));
-+		tmp = expect_alloc_fail(realloc(p, mem_malloc_size));
- 
- 		if (0xf0000000 > mem_malloc_size)
--			expect_alloc_fail((tmp = realloc(p, 0xf0000000)));
-+			tmp = expect_alloc_fail(realloc(p, 0xf0000000));
- 
--		expect_alloc_fail(tmp = realloc(p, SIZE_MAX));
-+		tmp = expect_alloc_fail(realloc(p, SIZE_MAX));
- 
- 	} else {
- 		skipped_tests += 3;
-@@ -83,9 +119,9 @@ static void test_malloc(void)
- 
- 	free(p);
- 
--	expect_alloc_ok(p = malloc(0));
--	expect_alloc_ok(tmp = malloc(0));
-+	p = expect_alloc_ok(malloc(0));
-+	tmp = expect_alloc_ok(malloc(0));
- 
--	__expect(p != tmp, true, "allocate distinct 0-size buffers", __func__, __LINE__);
-+	__expect_cond(p != tmp, true, "allocate distinct 0-size buffers", __func__, __LINE__);
- }
- bselftest(core, test_malloc);
 -- 
 2.30.2
 
