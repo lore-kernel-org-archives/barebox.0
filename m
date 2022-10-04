@@ -1,54 +1,52 @@
-Delivery-date: Tue, 04 Oct 2022 09:47:17 +0200
+Delivery-date: Tue, 04 Oct 2022 09:48:56 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofce5-005Ki8-VD
-	for lore@lore.pengutronix.de; Tue, 04 Oct 2022 09:47:17 +0200
+	id 1ofcfg-005Klg-Nm
+	for lore@lore.pengutronix.de; Tue, 04 Oct 2022 09:48:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofce4-0004z1-Qb
-	for lore@pengutronix.de; Tue, 04 Oct 2022 09:47:17 +0200
+	id 1ofcff-000585-KY
+	for lore@pengutronix.de; Tue, 04 Oct 2022 09:48:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=myfhYOW6ohlPqEvRPyo93r5XTa1otSKhGuXzi90tgoE=; b=GhI9Kpuzu6BE6Uq+SzxNZRg1Q6
-	lJ2Wl340MuOXS3ZWqipdJfCa79I+Msiv+uTUmc9Fq3uCibM3vJWWH1RKPkXqy69B/20eTo9AzTevH
-	3mGrZQfJokWjv41qouOPdtnpG5lK4ne1U2Q453lxko+4b1L8qY8gizQyZ3FpSAEs1C9DUPUbkpp37
-	m8/pHi84Z33kb6DKZqo1jIPvj8r+9BiSvf5QVOjFSkhzB3BnaU/ey2UwFEhH8xGMPf1FCSxFMZbV4
-	+Y+0dcXxuTryhn0uJYvlxp4a3K479B2J4wpx2+m76YI1j4QXk/QKUBXndfoT0m3pBLgthDGm5TReo
-	gm4lpalg==;
+	bh=OPdL51JG9iHCC/+o97RkbLLqxiDYi/7pjwAWtnLHCrY=; b=uoSA6hLP83UmA66URNvPqc0591
+	fEH0VA6l5mbgt32B1v7FCdAgWBkzFOfbgC/6Z1nWBAZuZdwAGGdD4rbN0SWVZbYFnBuLqVsyn1fpv
+	w71dmdDdNuPOWfyPZdaUHgeVoi0Z4r4GdV/pTJrciR2bnkEU1Nf9EtzwG0g4v3EvVuX7YlbrXD0T7
+	wFm8isAID9ZMuvxFYqk6QDPTEACnWRjixi6MStMJ46jG8qC4S3REABFq4katfmkLh7vzeB8iAlZ+K
+	/sMGSfeDvA2PYlhGiFJNOvYr93V+cJwdO8Yo8AWfYcjUe6f8aojBevPDmYDejwNaS1+WIBj3GaKa4
+	5Q9IIXFw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofcca-008nNX-CO; Tue, 04 Oct 2022 07:45:44 +0000
+	id 1ofce7-008noF-R6; Tue, 04 Oct 2022 07:47:19 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofccT-008nKe-Eg
-	for barebox@lists.infradead.org; Tue, 04 Oct 2022 07:45:38 +0000
+	id 1ofcdw-008nml-F5
+	for barebox@lists.infradead.org; Tue, 04 Oct 2022 07:47:13 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ofccS-0004Wz-6e; Tue, 04 Oct 2022 09:45:36 +0200
+	id 1ofcdv-0004xI-8P; Tue, 04 Oct 2022 09:47:07 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ofccR-0004or-N4; Tue, 04 Oct 2022 09:45:35 +0200
-Date: Tue, 4 Oct 2022 09:45:35 +0200
+	id 1ofcdv-0004ri-17; Tue, 04 Oct 2022 09:47:07 +0200
+Date: Tue, 4 Oct 2022 09:47:07 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org,
-	Hans Christian =?iso-8859-15?Q?L=F8nstad?= <hcl@datarespons.no>
-Message-ID: <20221004074535.GF986@pengutronix.de>
-References: <20220927173101.1696673-1-a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20221004074706.GG986@pengutronix.de>
+References: <20220928085052.2599436-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220927173101.1696673-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220928085052.2599436-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221004_004537_517031_2EC43C6E 
-X-CRM114-Status: GOOD (  21.14  )
+X-CRM114-CacheID: sfid-20221004_004712_255239_A9DC961A 
+X-CRM114-Status: GOOD (  24.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,55 +77,53 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] imx-usb-loader: skip initial SDP_ERROR_STATUS
- query for SDPS
+Subject: Re: [PATCH] mfd: axp20x: export axp20x-regulator child for AXP152
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Sep 27, 2022 at 07:31:01PM +0200, Ahmad Fatoum wrote:
-> We do an initial do_status() every time, which fails for i.MX8MP and
-> i.MX8MN:
+On Wed, Sep 28, 2022 at 10:50:52AM +0200, Ahmad Fatoum wrote:
+> While the upstream Linux driver doesn't support regulator configuration
+> for the AXP152, we may need this in barebox for initial regulator setup.
+> Thus have the MFD driver register the appropriate child device as done
+> for the other drivers. While at it, pass along the axp20x driver data
+> object. This is needed, so the regulator driver can query the variant;
+> so far it was only possible to retrieve the parent regmap and redo the
+> revision readout.
 > 
->   found i.MX8MP USB device [1fc9:0146]
->   4 in err=-9, last_trans=0  00 00 00 00
->   status failed
-> 
-> If we instead skip it for SDPS (i.e. hid_endpoint), upload works as
-> expected (tested on i.MX8M Nano).
-> 
-> Reported-by: Hans Christian Lønstad <hcl@datarespons.no>
-> Fixes: 23e2203150b6 ("imx-usb-loader: Add i.MX8MP support")
+> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  scripts/imx/imx-usb-loader.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
+>  drivers/mfd/axp20x.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-> index 1242f2dedda5..a98ab0e33f8a 100644
-> --- a/scripts/imx/imx-usb-loader.c
-> +++ b/scripts/imx/imx-usb-loader.c
-> @@ -1628,10 +1628,12 @@ int main(int argc, char *argv[])
->  		goto out;
+> diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+> index da1e8ce35a7d..0a53eaea7cfa 100644
+> --- a/drivers/mfd/axp20x.c
+> +++ b/drivers/mfd/axp20x.c
+> @@ -141,6 +141,9 @@ static const struct mfd_cell axp152_cells[] = {
+>  	{
+>  		.name		= "axp20x-pek",
+>  	},
+> +	{
+> +		.name		= "axp20x-regulator",
+> +	},
+>  };
+>  
+>  static const struct mfd_cell axp288_cells[] = {
+> @@ -337,6 +340,8 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
+>  				     AXP806_REG_ADDR_EXT_ADDR_SLAVE_MODE);
 >  	}
 >  
-> -	err = do_status();
-> -	if (err) {
-> -		printf("status failed\n");
-> -		goto out;
-> +	if (!mach_id->hid_endpoint) {
-> +		err = do_status();
-> +		if (err) {
-> +			printf("status failed\n");
-> +			goto out;
-> +		}
->  	}
->  
->  	if (initfile) {
+> +	axp20x->dev->priv = axp20x;
+> +
+>  	ret = mfd_add_devices(axp20x->dev, axp20x->cells, axp20x->nr_cells);
+>  	if (ret)
+>  		return dev_err_probe(axp20x->dev, ret, "failed to add MFD devices\n");
 > -- 
 > 2.30.2
 > 
