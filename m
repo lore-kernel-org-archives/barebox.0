@@ -1,58 +1,79 @@
-Delivery-date: Tue, 04 Oct 2022 18:02:44 +0200
+Delivery-date: Tue, 04 Oct 2022 18:26:20 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofkNY-005iTE-2f
-	for lore@lore.pengutronix.de; Tue, 04 Oct 2022 18:02:44 +0200
+	id 1ofkkN-005kOA-Vj
+	for lore@lore.pengutronix.de; Tue, 04 Oct 2022 18:26:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofkNW-0007pC-VP
-	for lore@pengutronix.de; Tue, 04 Oct 2022 18:02:43 +0200
+	id 1ofkkM-0002N2-Ne
+	for lore@pengutronix.de; Tue, 04 Oct 2022 18:26:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=oeOu2EgpjaXVheHOMhNzLkJRwHlIC4rwQUJYUfjlNvQ=; b=xxeIRV6m2ZXWzB42uDQa7VXYcW
-	puuAJYZDgxGUEcLz97Sn10UerqXyYRftx9WXjTz6EM+fAtuBMZRiB+aZZ6nR4XIMBdTzMBA5hT6dY
-	GaZk333FEkdbPVbbZcaWzJYv2qmLh1yncD8ez6iwJT1q7s46TsRLGjG0afQ+TT08PkzocbBOUMcd0
-	LS4XjJFwv0qAPk3qjZ0JZ2WcsCwan8tzJ83qGEMtJD2aMp64tf9+8Lo4ecFXg5tntCKjf5ZDRX17+
-	CnprxIU3ItMb/kk94n8yy9Fm2CUF0PuyvI33xYFgZ6k+PcB1fmjwqgNoUbBnG2kF+V1crrdT9xXSG
-	rKVGv6ZA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:In-Reply-To:Date:References:Subject:Cc:To:From:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=+GeqX3Qw2gxQ2RKgSbXy6//Il6MBBlWT0l/N1hIWs1g=; b=r9JO2MNqwxEUXsXAFiQ7XZ5AW6
+	dgL2AUxjuLD9brZ7+NJqsonaVIxmAgdDU94mm+lIOHsTiht3uKsiC1HvvGZw13Wj1CPgH+40N58bG
+	qZdk1raCSEK0xKho3NwzvryFbUXzLZQyI5gcgDTuIzTDIhj9lNQvkRq/GqdQyhRr7jPEKxwd1EXUU
+	b2piq4Q2yN05sbmmkc/iiEsXnAI0yuz9mMcrZ1zSJpsabc5CjX1VvWIjDOrLafOjAWYT3t9IeG7xh
+	kuIIY8bmeCDI8oJYHy01oqPd5RQp2afgyke/h0vMkB1fvQJDjbuO5qFjMVgr803BKJ5l53ZBylKWs
+	HwMr2EyA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofkME-00A9tE-SF; Tue, 04 Oct 2022 16:01:22 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1ofkiU-00ACUB-39; Tue, 04 Oct 2022 16:24:22 +0000
+Received: from smtpout-2.cvg.de ([2003:49:a034:1067:5::2])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofkMA-00A9si-C3
-	for barebox@lists.infradead.org; Tue, 04 Oct 2022 16:01:19 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1ofkM8-0007Oi-Gy; Tue, 04 Oct 2022 18:01:16 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1ofkM9-004an1-AO; Tue, 04 Oct 2022 18:01:15 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1ofkM6-001lJy-D7; Tue, 04 Oct 2022 18:01:14 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  4 Oct 2022 18:01:12 +0200
-Message-Id: <20221004160112.183814-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	id 1ofkiO-00ACLR-1O
+	for barebox@lists.infradead.org; Tue, 04 Oct 2022 16:24:18 +0000
+Received: from mail-mta-3.intern.sigma-chemnitz.de (mail-mta-3.intern.sigma-chemnitz.de [192.168.12.71])
+	by mail-out-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 294GNT921152488
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
+	for <barebox@lists.infradead.org>; Tue, 4 Oct 2022 18:23:30 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
+	s=v2022040800; t=1664900610;
+	bh=+GeqX3Qw2gxQ2RKgSbXy6//Il6MBBlWT0l/N1hIWs1g=; l=1187;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To;
+	b=l+tCMWYEpp8bS+c+qfMVy3wqberNn08MTAivZTOoSjtf1c/GG0F5myjsFKAHWphrD
+	 8jj4nGiBG8k7u/KJRUI0xsM/m81D0W8nGm/l6RPYnDUsSyiNZzatUqpBieTLk1MkJQ
+	 0kni7saULvHq7kRMlf/mfVvrRa5MlNvnma9PvP8+ewtYStOdL+nwsb+N9kwAH7JFgV
+	 9zd7bBxEHgeLGtOhCH/W7DSZqPLABdwvxhVPhaPVbg3GnK3A0w9SzIjY0LWB3UY50E
+	 SrR2eZTbBJlxbbglfi64nDxaXMXdO4w8Uuok+YQPTOZRu684LD02C8EQfAh5To6pIy
+	 ZQsJAVO0y6b8w==
+Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
+	by mail-mta-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id 294GNPNM4153823
+	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Tue, 4 Oct 2022 18:23:26 +0200
+Received: from mail-msa-2.intern.sigma-chemnitz.de ([192.168.12.72])
+	by reddoxx.intern.sigma-chemnitz.de with ESMTP
+	id 7KSEGQ0CBB; Tue, 04 Oct 2022 18:23:25 +0200
+Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
+	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id 294GNPYf1103157
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Tue, 4 Oct 2022 18:23:25 +0200
+Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.96)
+	(envelope-from <ensc@sigma-chemnitz.de>)
+	id 1ofkhZ-00H0bJ-1O;
+	Tue, 04 Oct 2022 18:23:25 +0200
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20221004155405.3458479-1-a.fatoum@pengutronix.de>
+Date: Tue, 04 Oct 2022 18:23:25 +0200
+In-Reply-To: <20221004155405.3458479-1-a.fatoum@pengutronix.de> (Ahmad
+	Fatoum's message of "Tue, 4 Oct 2022 17:53:58 +0200")
+Message-ID: <lyr0znzhfm.fsf@ensc-pc.intern.sigma-chemnitz.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-REDDOXX-Id: 633c5dfdc12256ade0c40f3c
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221004_090118_430853_15C16651 
-X-CRM114-Status: GOOD (  10.62  )
+X-CRM114-CacheID: sfid-20221004_092416_726297_16103E94 
+X-CRM114-Status: UNSURE (   9.61  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,68 +91,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] Revert "mci: bcm2835: reset host controller on barebox shutdown"
+X-Spam-Status: No, score=-104.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 0/9] tlsf: use 8-byte alignment for normal malloc
+ allocations
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The patch is wrong and issue is still reproducible with it. We have no
-alternate fix yet, but drop the non-functional fix until we do.
+Ahmad Fatoum <a.fatoum@pengutronix.de> writes:
 
-This reverts commit c7428c02d72d1c74295226e7c9483e0f62f6a2aa.
+> TLSF currently uses only 4-byte alignment on 32-bit platforms, which isn't
+> enough for ldrd/strd on ARMv7. This series reworks TLSF a bit, so we always
+> have at least 8 byte alignment.  dlmalloc already has 8 byte alignment
+> minimum, so nothing to do there.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Issue is spurious, which suggests to me that it's related to:
-https://patchwork.kernel.org/project/linux-arm-kernel/patch/1495126660-25044-1-git-send-email-srinath.mannam@broadcom.com/#20487621
+I am wondering whether alignment should be increased on 64 bit archs to
+16 bytes as well.  ARMv8 spec [1] says
 
-Haven't found a proper solution yet though.
----
- drivers/mci/mci-bcm2835.c | 12 ------------
- 1 file changed, 12 deletions(-)
+| exclusive pair access must be aligned to twice the data size, that is,
+| 128 bits for a pair of 64-bit values.
 
-diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
-index c5b226ba033c..f092156f9a83 100644
---- a/drivers/mci/mci-bcm2835.c
-+++ b/drivers/mci/mci-bcm2835.c
-@@ -385,8 +385,6 @@ static int bcm2835_mci_probe(struct device_d *hw_dev)
- 	host->sdhci.read32 = bcm2835_sdhci_read32;
- 	host->sdhci.write32 = bcm2835_sdhci_write32;
- 
--	hw_dev->priv = host;
--
- 	mci_of_parse(&host->mci);
- 
- 	iores = dev_request_mem_resource(hw_dev, 0);
-@@ -422,15 +420,6 @@ static int bcm2835_mci_probe(struct device_d *hw_dev)
- 	return mci_register(&host->mci);
- }
- 
--static void bcm2835_mci_remove(struct device_d *dev)
--{
--	struct bcm2835_mci_host *host = dev->priv;
--
--	sdhci_write32(&host->sdhci,
--		      SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
--		      0x00);
--}
--
- static __maybe_unused struct of_device_id bcm2835_mci_compatible[] = {
- 	{
- 		.compatible = "brcm,bcm2835-sdhci",
-@@ -444,7 +433,6 @@ static __maybe_unused struct of_device_id bcm2835_mci_compatible[] = {
- static struct driver_d bcm2835_mci_driver = {
- 	.name = "bcm2835_mci",
- 	.probe = bcm2835_mci_probe,
--	.remove = bcm2835_mci_remove,
- 	.of_compatible = DRV_OF_COMPAT(bcm2835_mci_compatible),
- };
- 
+A github issue [2] mentions this alignment too.
+
+
+> While this fixes real issues like what Enrico ran into, I'd suggest we only
+> this be taken into next only after v2022.10.0 is tagged,
+
+This is ok for me; the issue disappeared with reverting the zstd patch.
+
+
+
+Enrico
+
+Footnotes:
+[1]  https://developer.arm.com/documentation/den0024/a/An-Introduction-to-the-ARMv8-Instruction-Sets/The-ARMv8-instruction-sets/Addressing
+
+[2]  https://github.com/mattconte/tlsf/issues/16
+
 -- 
-2.30.2
-
+SIGMA Chemnitz GmbH       Registergericht:   Amtsgericht Chemnitz HRB 1750
+Am Erlenwald 13           Geschaeftsfuehrer: Grit Freitag, Frank Pyritz
+09128 Chemnitz
 
 
