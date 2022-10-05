@@ -1,53 +1,52 @@
-Delivery-date: Wed, 05 Oct 2022 08:32:15 +0200
+Delivery-date: Wed, 05 Oct 2022 08:37:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofxx1-006Sre-Lp
-	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 08:32:15 +0200
+	id 1ofy2G-006T0m-7H
+	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 08:37:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofxx0-0005Eq-58
-	for lore@pengutronix.de; Wed, 05 Oct 2022 08:32:14 +0200
+	id 1ofy2F-0005js-2S
+	for lore@pengutronix.de; Wed, 05 Oct 2022 08:37:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dgUFT0NvKKd+0AfzEVNXTdnGWB8U7TDpJ8uMD7X7r4g=; b=FR7bCC1Nd4GRyWw8QsY5usSMWA
-	H7GlCqRvoto4icSpBfu2KGWz79PTmiKoJcSiY4tgSpPOji2TkHbVvW/tCo3zm6sblkAG/W1Cmx1NS
-	bR4Mw3MceQJ6tIef9upP3xvsO6zdAHepPI3hpS4JyLHZWN4ynBOYiiwTrDTv8qnwNnrxXjmuwp2w4
-	UUu43w1aH7JuUB+Wi9l+fLGIlBKj/gnjvJ3HKTE/YVpSel1O1eoE6abaU3uI22ft+0WcnuoDpgK9J
-	z0I1fgdVEf5BcvFQSuFJ5YYhXibU4e9IZOhXKGo/c9wYYRnYqwQp5FFEVEip+yHT+04R0BumhqIEA
-	Wdlic7nA==;
+	bh=3jkYm7Z0R5VR5R7yHT007R8N2T2Uhgbv6FdqD1aB4oo=; b=2DBI3NUmTDgVDHwdMdY5RBepJZ
+	BwE7MOQY4T4giv5UrYMFDWq8ZLlhycAuJSmxk9guwV6FoHeP1f3be3nn52yvLECALgc2qnIVP+f8l
+	tPmAYix6HjtrgrQV2fguIhkRosulaR4B8IJgLTjX9wgFjw6ejFLRfpxrpcFYv2emFSCtWvTzFfaTV
+	AwGkIgHIEXuR6V1RcOHwKOYOuasSzOgjZ7yi7rx+1N9aC4tN0nps8grXzUEUgQ68JAgHWm2XIWKHs
+	5CKsUi3J29dZduek0P6UVwCUfpnNJwkwLYDKyr3gSVnET11hSOvE3FEGu+txDsICb6WDhNIDUC0LB
+	1VK9km2Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofxvj-00CfmL-TF; Wed, 05 Oct 2022 06:30:55 +0000
+	id 1ofy0x-00CgJa-Rm; Wed, 05 Oct 2022 06:36:19 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofxvf-00Cflb-AR
-	for barebox@lists.infradead.org; Wed, 05 Oct 2022 06:30:52 +0000
+	id 1ofy0s-00CgJF-Lq
+	for barebox@lists.infradead.org; Wed, 05 Oct 2022 06:36:16 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ofxve-0004wJ-12; Wed, 05 Oct 2022 08:30:50 +0200
+	id 1ofy0q-0005f2-Pj; Wed, 05 Oct 2022 08:36:12 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ofxvd-00054F-P4; Wed, 05 Oct 2022 08:30:49 +0200
-Date: Wed, 5 Oct 2022 08:30:49 +0200
+	id 1ofy0q-0005Do-IN; Wed, 05 Oct 2022 08:36:12 +0200
+Date: Wed, 5 Oct 2022 08:36:12 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20221005063049.GO986@pengutronix.de>
-References: <20220930154247.756577-1-a.fatoum@pengutronix.de>
- <20220930154247.756577-2-a.fatoum@pengutronix.de>
+Message-ID: <20221005063612.GP986@pengutronix.de>
+References: <20221004154800.3457742-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220930154247.756577-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20221004154800.3457742-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -55,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221004_233051_382167_328DD973 
-X-CRM114-Status: GOOD (  24.35  )
+X-CRM114-CacheID: sfid-20221004_233614_750164_1FA9D54C 
+X-CRM114-Status: GOOD (  21.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,86 +77,78 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] relocate_to_current_adr: hang directly on error
- instead of panic()
+Subject: Re: [PATCH] sandbox: implement DEBUG_LL support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Sep 30, 2022 at 05:42:47PM +0200, Ahmad Fatoum wrote:
-> panic() will format a panic message, turn on a panic LED, dump a
-> stack trace and finally either restart the system or print a
-> message to ask the user to restart the system before hanging.
+On Tue, Oct 04, 2022 at 05:48:00PM +0200, Ahmad Fatoum wrote:
+> We can't currently debug malloc() or early parts of the driver model on
+> sandbox, because we require both to allocate the sandbox console device.
 > 
-> When relocation fails, all of these aren't possible, so instead of
-> devolving into undefined behavior, fall directly into an infinite loop.
-> 
-> Motivation for this change is to avoid linking printf code when it's
-> only usage is the relocation error case.
+> To make debugging such early startup easier in future, add some simple
+> DEBUG_LL support.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/arm/cpu/common.c  | 4 ++--
->  arch/riscv/lib/reloc.c | 2 +-
->  include/common.h       | 6 ++++++
->  3 files changed, 9 insertions(+), 3 deletions(-)
+>  arch/sandbox/Kconfig                |  1 +
+>  arch/sandbox/Makefile               |  3 ++-
+>  arch/sandbox/include/asm/debug_ll.h | 16 ++++++++++++++++
+>  3 files changed, 19 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/sandbox/include/asm/debug_ll.h
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
-> index 5ccacf204751..7cd97e938b3d 100644
-> --- a/arch/arm/cpu/common.c
-> +++ b/arch/arm/cpu/common.c
-> @@ -90,7 +90,7 @@ void relocate_to_current_adr(void)
->  			putc_ll(' ');
->  			puthex_ll(rel->r_addend);
->  			putc_ll('\n');
-> -			panic("");
-> +			__hang();
->  		}
+> diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+> index a8bca8757f28..d3889fcac03c 100644
+> --- a/arch/sandbox/Kconfig
+> +++ b/arch/sandbox/Kconfig
+> @@ -16,6 +16,7 @@ config SANDBOX
+>  	select ARCH_HAS_STACK_DUMP if ASAN
+>  	select GENERIC_FIND_NEXT_BIT
+>  	select HAS_ARCH_SJLJ
+> +	select HAS_ASM_DEBUG_LL
+>  	default y
 >  
->  		dstart += sizeof(*rel);
-> @@ -120,7 +120,7 @@ void relocate_to_current_adr(void)
->  			putc_ll(' ');
->  			puthex_ll(rel->r_offset);
->  			putc_ll('\n');
-> -			panic("");
-> +			__hang();
->  		}
+>  config ARCH_TEXT_BASE
+> diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
+> index aee6bccc9c14..d5ba05ba866f 100644
+> --- a/arch/sandbox/Makefile
+> +++ b/arch/sandbox/Makefile
+> @@ -30,7 +30,8 @@ KBUILD_CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
+>  		-Dopendir=barebox_opendir -Dreaddir=barebox_readdir \
+>  		-Dclosedir=barebox_closedir -Dreadlink=barebox_readlink \
+>  		-Doptarg=barebox_optarg -Doptind=barebox_optind \
+> -		-Dsetjmp=barebox_setjmp -Dlongjmp=barebox_longjmp
+> +		-Dsetjmp=barebox_setjmp -Dlongjmp=barebox_longjmp \
+> +		-Dputchar=barebox_putchar
 >  
->  		dstart += sizeof(*rel);
-> diff --git a/arch/riscv/lib/reloc.c b/arch/riscv/lib/reloc.c
-> index da53c50448d7..13118a9ac54f 100644
-> --- a/arch/riscv/lib/reloc.c
-> +++ b/arch/riscv/lib/reloc.c
-> @@ -66,7 +66,7 @@ void relocate_to_current_adr(void)
->  			putc_ll(' ');
->  			puthex_ll(rela->r_addend);
->  			putc_ll('\n');
-> -			panic("");
-> +			__hang();
->  		}
->  	}
+>  machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
 >  
-> diff --git a/include/common.h b/include/common.h
-> index bd120356883a..cf3e0447a09a 100644
-> --- a/include/common.h
-> +++ b/include/common.h
-> @@ -43,6 +43,12 @@
->   */
->  void reginfo(void);
->  
-> +/* For use when unrelocated */
-> +static inline void __hang(void)
+> diff --git a/arch/sandbox/include/asm/debug_ll.h b/arch/sandbox/include/asm/debug_ll.h
+> new file mode 100644
+> index 000000000000..7bef8710581e
+> --- /dev/null
+> +++ b/arch/sandbox/include/asm/debug_ll.h
+> @@ -0,0 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +
+> +#ifndef __ASM_DEBUG_LL__
+> +#define __ASM_DEBUG_LL__
+> +
+> +#undef putchar
+> +
+> +static inline void PUTC_LL(char ch)
 > +{
-> +	while (1);
+> +	int putchar(int c);
+> +	putchar(ch);
 > +}
 > +
->  void __noreturn hang (void);
->  
->  char *size_human_readable(unsigned long long size);
+> +#define putchar barebox_putchar
+> +
+> +#endif /* __ASM_DEBUG_LL__ */
 > -- 
 > 2.30.2
 > 
