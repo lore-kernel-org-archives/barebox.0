@@ -1,61 +1,60 @@
-Delivery-date: Wed, 05 Oct 2022 08:59:00 +0200
+Delivery-date: Wed, 05 Oct 2022 13:14:31 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofyMu-006U0P-7T
-	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 08:59:00 +0200
+	id 1og2MB-006etK-Ex
+	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 13:14:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofyMs-0007eB-V1
-	for lore@pengutronix.de; Wed, 05 Oct 2022 08:58:59 +0200
+	id 1og2MA-0004E4-6s
+	for lore@pengutronix.de; Wed, 05 Oct 2022 13:14:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8nV+q+YtYHfuoITuOPqtzGVzpE/AgA2d39HOlTcRKn8=; b=IDx3/NxAkTS0DLj1jlly9lSigl
-	MD+0ttPJXmpijKQ/fFntHeWj3qevu1mcRJ6XUNfQr0kaLNcwYjHBJjIW7JYPwa5IADBlRIyt6pPja
-	EeT701BEADIul5q1ZDf9NwlODGSNFYK8syJTeP076ppmjQN+UgOtuQG3mN41vu8eqHKD2nIy4vv9S
-	lw86pGqsXXdBV66oZE2fESAkQ7sLtytj4mJ1KCfbD5S3JN9ClrhPDKqYGMdNARBu7ARUOVRY7beAs
-	4p0Oudqsx8szob33IkulG7t3QgDOfOz2WMpQYGqPdnnKDmgTTU2Yz35dFIszGGMKesnJJidVm+3OX
-	v7Su/Bhw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=opFxiqZf4/MSD6xXpHqUhHQf+0Fd5DPLEhgypg0CbdI=; b=wyBXINrM47Nb6h2OUudRe5inDK
+	C6Rz1CKPW2+h2rquYC4fPzfYLYA8wxwQwjA1k7QwrWJhHM8JO535fb/3+YlIgo6mTK3z3UNewuGBr
+	0RkfhjeqMeXkUGFfaG8nE2ng4t2fy4G7HO0dm5kLEKfAFJ9ml+Wx8rHNJ7lqJiBKFKHapD4P0nAQM
+	PEkewOpAbNRqV22heZTR2/+A/BNGtHrIXXz83qxYm9lu8AwKwW4VszOiI9FXPtDknGzEUjQdUxKuE
+	hG4k2o3RLHuyr8eqJYUwMWwqYw4X0XXmyVLtHv8BuyLxOD0x9l3xSk3aU3c4dK6+n0RgHntYEoVmb
+	9rUH0ZCA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofyLT-00Cjgb-3a; Wed, 05 Oct 2022 06:57:31 +0000
+	id 1og2K7-00DjOF-JA; Wed, 05 Oct 2022 11:12:23 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofyLO-00CjfO-H2
-	for barebox@lists.infradead.org; Wed, 05 Oct 2022 06:57:27 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1og2K3-00DjKc-6a
+	for barebox@lists.infradead.org; Wed, 05 Oct 2022 11:12:20 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1ofyLN-0007a4-2n; Wed, 05 Oct 2022 08:57:25 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1ofyLM-0005yc-Rs; Wed, 05 Oct 2022 08:57:24 +0200
-Date: Wed, 5 Oct 2022 08:57:24 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20221005065724.GQ986@pengutronix.de>
-References: <20221004160112.183814-1-a.fatoum@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1og2K1-0003lJ-WA
+	for barebox@lists.infradead.org; Wed, 05 Oct 2022 13:12:18 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1og2K2-004kI3-Mf
+	for barebox@lists.infradead.org; Wed, 05 Oct 2022 13:12:17 +0200
+Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1og2K0-000crd-9R
+	for barebox@lists.infradead.org; Wed, 05 Oct 2022 13:12:16 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Wed,  5 Oct 2022 13:12:08 +0200
+Message-Id: <20221005111214.148844-1-m.felsch@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221004160112.183814-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221004_235726_580535_1F67A0B7 
-X-CRM114-Status: GOOD (  22.88  )
+X-CRM114-CacheID: sfid-20221005_041219_260745_D72E9A14 
+X-CRM114-Status: GOOD (  10.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,83 +72,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] Revert "mci: bcm2835: reset host controller on
- barebox shutdown"
+Subject: [PATCH v2 1/7] RISC-V: cache: fix local_flush_icache_all enabling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Oct 04, 2022 at 06:01:12PM +0200, Ahmad Fatoum wrote:
-> The patch is wrong and issue is still reproducible with it. We have no
-> alternate fix yet, but drop the non-functional fix until we do.
-> 
-> This reverts commit c7428c02d72d1c74295226e7c9483e0f62f6a2aa.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> Issue is spurious, which suggests to me that it's related to:
-> https://patchwork.kernel.org/project/linux-arm-kernel/patch/1495126660-25044-1-git-send-email-srinath.mannam@broadcom.com/#20487621
-> 
-> Haven't found a proper solution yet though.
-> ---
->  drivers/mci/mci-bcm2835.c | 12 ------------
->  1 file changed, 12 deletions(-)
+Commit fe181ffda9 ("RISC-V: support incoherent I-Cache") added the
+support to handle non-coherent caches and introduced the HAS_CACHE
+Kconfig symbol. The symbol must be used with CONFIG_ prefixed since this
+is the final Kconfig symbol which can be used within the code.
 
-Applied, thanks
+Fixes: fe181ffda9 ("RISC-V: support incoherent I-Cache")
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ arch/riscv/include/asm/cache.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-> 
-> diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
-> index c5b226ba033c..f092156f9a83 100644
-> --- a/drivers/mci/mci-bcm2835.c
-> +++ b/drivers/mci/mci-bcm2835.c
-> @@ -385,8 +385,6 @@ static int bcm2835_mci_probe(struct device_d *hw_dev)
->  	host->sdhci.read32 = bcm2835_sdhci_read32;
->  	host->sdhci.write32 = bcm2835_sdhci_write32;
->  
-> -	hw_dev->priv = host;
-> -
->  	mci_of_parse(&host->mci);
->  
->  	iores = dev_request_mem_resource(hw_dev, 0);
-> @@ -422,15 +420,6 @@ static int bcm2835_mci_probe(struct device_d *hw_dev)
->  	return mci_register(&host->mci);
->  }
->  
-> -static void bcm2835_mci_remove(struct device_d *dev)
-> -{
-> -	struct bcm2835_mci_host *host = dev->priv;
-> -
-> -	sdhci_write32(&host->sdhci,
-> -		      SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
-> -		      0x00);
-> -}
-> -
->  static __maybe_unused struct of_device_id bcm2835_mci_compatible[] = {
->  	{
->  		.compatible = "brcm,bcm2835-sdhci",
-> @@ -444,7 +433,6 @@ static __maybe_unused struct of_device_id bcm2835_mci_compatible[] = {
->  static struct driver_d bcm2835_mci_driver = {
->  	.name = "bcm2835_mci",
->  	.probe = bcm2835_mci_probe,
-> -	.remove = bcm2835_mci_remove,
->  	.of_compatible = DRV_OF_COMPAT(bcm2835_mci_compatible),
->  };
->  
-> -- 
-> 2.30.2
-> 
-> 
-> 
-
+diff --git a/arch/riscv/include/asm/cache.h b/arch/riscv/include/asm/cache.h
+index 9a0b9326b2..6d69ed49bd 100644
+--- a/arch/riscv/include/asm/cache.h
++++ b/arch/riscv/include/asm/cache.h
+@@ -8,7 +8,7 @@
+ 
+ static inline void local_flush_icache_all(void)
+ {
+-#ifdef HAS_CACHE
++#ifdef CONFIG_HAS_CACHE
+ 	asm volatile ("fence.i" ::: "memory");
+ #endif
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
