@@ -1,56 +1,61 @@
-Delivery-date: Tue, 04 Oct 2022 18:36:19 +0200
+Delivery-date: Wed, 05 Oct 2022 08:30:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofku3-005kq3-6B
-	for lore@lore.pengutronix.de; Tue, 04 Oct 2022 18:36:19 +0200
+	id 1ofxvE-006SlP-7B
+	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 08:30:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofku1-0003Rg-JF
-	for lore@pengutronix.de; Tue, 04 Oct 2022 18:36:18 +0200
+	id 1ofxvD-0004qJ-5d
+	for lore@pengutronix.de; Wed, 05 Oct 2022 08:30:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=m9h6QH7Lmwo1bZ3sYijXIUQMc/Q2Bl3ciAwq1wRXAgs=; b=yaBRE/MihC1yaij+bKobp2uqjS
-	K5UhhK2DSLDR1IINYMpJr/KkKC1keHJ3yIlbaEbJ+H7y2IfC5TvTOWnWoa0EL4WzsRKfs2MlQ3FyL
-	GjbVuTOvZldBYbTX0I1T+gQehwP1QiR33Kt9X5LorJuZNXhF1yCT1ZsxJ8YUQ+axKIPHR73+OAqff
-	igYSxcuNBQo7aNUoA1fUzT4CZVjb0YcDZf0Fr4jydUVEIC0aYJGLgo8VqMoWsjdK154EHfP2sajK7
-	IS72btUDvnlgs3QG8mmnJm0+uvZCB2u58rzxzEDDfaxNZ6GO/KxgwCko+QCKaWg7HDtZhtsKI+vBf
-	QUcRmagA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=YA5ZYL2MnWbGoJ+sK2zekdn6Ix4onyZSXSaV/8i1B0Q=; b=Wbj2N2dkOeQlO2MhAJ5BOVLNnj
+	dPl9npALNsk1MHfE3ujCmmOZsIVDSviiEbpj/9YgQEobO3SlkD8VeiREWT1Ky+tq/PnDb5NRsezER
+	aIlQyweoAVxBzGe0EA8A/KzgxOVkry+F3jZCkJuuRSinq3Y7caThIy19KuTP1RoPgZrNlPF+SXOuD
+	JK4IgldQkr97/lYjnXDtVgtSD3faE8hndz927IQmM9Ntzv8++sUSsCU/om6aWnhdL1HQJDZ+JiyiY
+	74o9A70vSCf7E9iCxwU5e3wA7zXdTa+ojRYPR4PRujhwUcaWrZGLwRa8WArmp4rrwd3suNR3eSQZ/
+	kbxzrgeQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofksh-00ADTM-9q; Tue, 04 Oct 2022 16:34:55 +0000
+	id 1ofxsv-00CfGI-8b; Wed, 05 Oct 2022 06:28:01 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofksc-00ADST-D3
-	for barebox@lists.infradead.org; Tue, 04 Oct 2022 16:34:51 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ofksY-00039r-RX; Tue, 04 Oct 2022 18:34:46 +0200
-Message-ID: <d0ab47b8-dc15-f9e5-acb9-1f2f6dcbc98c@pengutronix.de>
-Date: Tue, 4 Oct 2022 18:34:46 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+	id 1ofxsq-00CfFO-ET
+	for barebox@lists.infradead.org; Wed, 05 Oct 2022 06:27:58 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ofxsm-0004ZP-Lg; Wed, 05 Oct 2022 08:27:52 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ofxsm-0004ut-E8; Wed, 05 Oct 2022 08:27:52 +0200
+Date: Wed, 5 Oct 2022 08:27:52 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-References: <20221004155405.3458479-1-a.fatoum@pengutronix.de>
- <lyr0znzhfm.fsf@ensc-pc.intern.sigma-chemnitz.de>
-Content-Language: en-US
-In-Reply-To: <lyr0znzhfm.fsf@ensc-pc.intern.sigma-chemnitz.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-ID: <20221005062752.GM986@pengutronix.de>
+References: <20220930154053.752237-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220930154053.752237-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221004_093450_501598_54E3E14D 
-X-CRM114-Status: GOOD (  16.69  )
+X-CRM114-CacheID: sfid-20221004_232756_500778_C8890D72 
+X-CRM114-Status: GOOD (  20.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,65 +73,67 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/9] tlsf: use 8-byte alignment for normal malloc
- allocations
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] fs: export file system detection functionality
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Enrico,
-
-On 04.10.22 18:23, Enrico Scholz wrote:
-> Ahmad Fatoum <a.fatoum@pengutronix.de> writes:
+On Fri, Sep 30, 2022 at 05:40:53PM +0200, Ahmad Fatoum wrote:
+> This will come in handy when using barebox as EFI loader, so give it a
+> more generic name and export it.
 > 
->> TLSF currently uses only 4-byte alignment on 32-bit platforms, which isn't
->> enough for ldrd/strd on ARMv7. This series reworks TLSF a bit, so we always
->> have at least 8 byte alignment.  dlmalloc already has 8 byte alignment
->> minimum, so nothing to do there.
-> 
-> I am wondering whether alignment should be increased on 64 bit archs to
-> 16 bytes as well.  ARMv8 spec [1] says
-> 
-> | exclusive pair access must be aligned to twice the data size, that is,
-> | 128 bits for a pair of 64-bit values.
-> 
-> A github issue [2] mentions this alignment too.
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  fs/fs.c      | 4 ++--
+>  include/fs.h | 2 ++
+>  2 files changed, 4 insertions(+), 2 deletions(-)
 
-Your quote is addressing exclusive pair access, which I think is something
-a compiler would generate for lock-free __int128 access, not something that
-we should encounter in barebox.
+Applied, thanks
 
-But yes, I believe we should have 16-byte alignment on 64-bit systems with
-TLSF as we already do with dlmalloc, if only to be on the safe side.
-
-This is unfortunately more complicated than what this PR does with 32-bit,
-so I am leaving that as future exercise (or until we have a real world
-example where this is required in barebox).
-
->> While this fixes real issues like what Enrico ran into, I'd suggest we only
->> this be taken into next only after v2022.10.0 is tagged,
-> 
-> This is ok for me; the issue disappeared with reverting the zstd patch.
-
-Feel free to give it a test with the zstd patch reverted though. :)
-
-Thanks,
-Ahmad
+Sascha
 
 > 
+> diff --git a/fs/fs.c b/fs/fs.c
+> index a314a49b2db7..95813b6089c7 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -756,7 +756,7 @@ int register_fs_driver(struct fs_driver_d *fsdrv)
+>  }
+>  EXPORT_SYMBOL(register_fs_driver);
+>  
+> -static const char *detect_fs(const char *filename, const char *fsoptions)
+> +const char *fs_detect(const char *filename, const char *fsoptions)
+>  {
+>  	enum filetype type;
+>  	struct driver_d *drv;
+> @@ -2980,7 +2980,7 @@ int mount(const char *device, const char *fsname, const char *pathname,
+>  			device, pathname, fsname, fsoptions);
+>  
+>  	if (!fsname)
+> -		fsname = detect_fs(device, fsoptions);
+> +		fsname = fs_detect(device, fsoptions);
+>  
+>  	if (!fsname) {
+>  		ret = -ENOENT;
+> diff --git a/include/fs.h b/include/fs.h
+> index 9ea522dc2cc3..b501db38addd 100644
+> --- a/include/fs.h
+> +++ b/include/fs.h
+> @@ -179,4 +179,6 @@ static inline const char *devpath_to_name(const char *devpath)
+>  	return devpath;
+>  }
+>  
+> +const char *fs_detect(const char *filename, const char *fsoptions);
+> +
+>  #endif /* __FS_H */
+> -- 
+> 2.30.2
 > 
 > 
-> Enrico
 > 
-> Footnotes:
-> [1]  https://developer.arm.com/documentation/den0024/a/An-Introduction-to-the-ARMv8-Instruction-Sets/The-ARMv8-instruction-sets/Addressing
-> 
-> [2]  https://github.com/mattconte/tlsf/issues/16
-> 
-
 
 -- 
 Pengutronix e.K.                           |                             |
