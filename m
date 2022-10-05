@@ -1,15 +1,15 @@
-Delivery-date: Wed, 05 Oct 2022 13:14:35 +0200
+Delivery-date: Wed, 05 Oct 2022 13:14:36 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1og2MF-006euu-LH
-	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 13:14:35 +0200
+	id 1og2MG-006euz-0E
+	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 13:14:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1og2ME-0004GH-4G
+	id 1og2ME-0004GW-AD
 	for lore@pengutronix.de; Wed, 05 Oct 2022 13:14:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,46 +17,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VTuWYvcFo8yG7O2mAsvrthwrduKKoLnkW87TnUxFF4U=; b=OWSK++c/XIZclfr1sL9Ogia85+
-	WeUZDRX8jqjt3RIQ6PbjmzuyBceNtqZfgcYS1l/dwVAxMVKyXh3QftIzvM3p1awr49K9TdaCOZtqA
-	f0b9+QenmfWe/2/5kHri8++Thkffr2vTRB2iuqksdnnWTdlQt4pzM0QZWwM5+ZCMj14A6bwd+KMs+
-	FClVorNB4q0lNU1i7jy2erqAPZsFkSxcwHZpX+idNc7vFq6/0pATu9dAAdLu2dlYJrtGVxFbBJsNy
-	UIDStsrlDWTWgg/5i3SnoQ3popUCywCPysQuXwMmQ7GMbaHvbF20uTR7aqApk0/qgYZvdvkqBtmkC
-	BJadJWhg==;
+	bh=WvF9TA0MFTC+g1sE3cAmPtwfx29bz08F7TklhxdqFIM=; b=B04yauCMroXIL7g07YI53ndkej
+	/9ROH95BP3Vggs1wP73oD2WCYKvbDAupdJ6hiHbKvPFZOlyue4KWFN7M/E8zYM8Vy2PMi3fofCv3/
+	lqd5HotaJZShJ+rZcyS+1XnF3LGntch8K43rn+LZVoU+xiK0K92m6rPUi+8MmF+T+T89IgO0FC3DU
+	JfolHTNBU2iOWIKDi0KBSsQZF/jA1Pe9ALRnHiZ88riPUkMLPndWNupiGvcdsWF4yBsjuJIzShT4v
+	9D4htJT84VXwwpmgfqpSnpF9Hf8vPV4LYLEIWUupPifc7u4WAcpC85lXJJUC0PUwI94gSGZswEj6r
+	n9wpUDRA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1og2KF-00DjT7-VK; Wed, 05 Oct 2022 11:12:32 +0000
+	id 1og2KI-00DjU9-2y; Wed, 05 Oct 2022 11:12:34 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1og2K3-00DjKz-Ih
+	id 1og2K3-00DjL2-Qq
 	for barebox@lists.infradead.org; Wed, 05 Oct 2022 11:12:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1og2K2-0003lL-D7
+	id 1og2K2-0003lS-Kd
 	for barebox@lists.infradead.org; Wed, 05 Oct 2022 13:12:18 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1og2K3-004kI9-4X
+	id 1og2K3-004kIH-CM
 	for barebox@lists.infradead.org; Wed, 05 Oct 2022 13:12:17 +0200
 Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1og2K0-000crl-HH
+	id 1og2K0-000cru-JS
 	for barebox@lists.infradead.org; Wed, 05 Oct 2022 13:12:16 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed,  5 Oct 2022 13:12:11 +0200
-Message-Id: <20221005111214.148844-4-m.felsch@pengutronix.de>
+Date: Wed,  5 Oct 2022 13:12:14 +0200
+Message-Id: <20221005111214.148844-7-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221005111214.148844-1-m.felsch@pengutronix.de>
 References: <20221005111214.148844-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221005_041219_799242_AD40F8BC 
-X-CRM114-Status: GOOD (  20.86  )
+X-CRM114-CacheID: sfid-20221005_041220_050171_5516E5EF 
+X-CRM114-Status: GOOD (  22.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,253 +78,270 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/7] RISC-V: use m/sscratch registers for barebox_riscv_pbl_flags
+Subject: [PATCH v2 7/7] RISC-V: add Allwinner Sun20i D1 Nezha support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Use the dedicated scratch register for setting the pbl flags. Each mode
-has it's own scratch register so we are not conflicting with M-mode
-running firmware e.g. OpenSBI. Using the scratch register has two main
-advantages:
- 1st) It can be used in PBL and non-PBL use-case.
- 2nd) It is not affected by the relocation code.
-
-This commit prepares barebox to add support for the special cache ops
-used by several T-Head CPUs.
+Add Allwinner sun20i SoC and D1-Nezha board support.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
 v2:
-- adapt switch-case to fix compile error
+- drop own defconfig instead use the new rv64i_defconfig
 
- arch/riscv/boot/entry.c         |  3 +-
- arch/riscv/boot/entry.h         |  6 ++--
- arch/riscv/boot/start.c         | 13 +++----
- arch/riscv/boot/uncompress.c    |  8 ++---
- arch/riscv/include/asm/system.h | 63 ++++++++++++++++++++-------------
- 5 files changed, 51 insertions(+), 42 deletions(-)
+ Documentation/boards/riscv.rst            | 102 ++++++++++++++++++++++
+ arch/riscv/Kconfig.socs                   |  16 ++++
+ arch/riscv/boards/Makefile                |   1 +
+ arch/riscv/boards/allwinner-d1/Makefile   |   3 +
+ arch/riscv/boards/allwinner-d1/lowlevel.c |  12 +++
+ arch/riscv/configs/rv64i_defconfig        |   3 +
+ arch/riscv/include/asm/debug_ll.h         |   5 ++
+ common/Kconfig                            |   5 ++
+ images/Makefile.riscv                     |   4 +
+ 9 files changed, 151 insertions(+)
+ create mode 100644 arch/riscv/boards/allwinner-d1/Makefile
+ create mode 100644 arch/riscv/boards/allwinner-d1/lowlevel.c
 
-diff --git a/arch/riscv/boot/entry.c b/arch/riscv/boot/entry.c
-index e4a5c2208d..f5a536fc78 100644
---- a/arch/riscv/boot/entry.c
-+++ b/arch/riscv/boot/entry.c
-@@ -25,6 +25,7 @@ void __noreturn __naked barebox_riscv_entry(unsigned long membase,
- {
- 	unsigned long stack_top = riscv_mem_stack_top(membase, membase + memsize);
- 	asm volatile ("move sp, %0" : : "r"(stack_top));
--	barebox_pbl_start(membase, memsize, boarddata, flags);
-+	riscv_set_flags(flags);
-+	barebox_pbl_start(membase, memsize, boarddata);
- }
+diff --git a/Documentation/boards/riscv.rst b/Documentation/boards/riscv.rst
+index e69eca78c8..92f663cfb9 100644
+--- a/Documentation/boards/riscv.rst
++++ b/Documentation/boards/riscv.rst
+@@ -188,3 +188,105 @@ Next, start barebox from DRAM::
+   running /env/bin/init...
+   /env/bin/init not found
+   barebox:/
++
++Allwinner D1 Nezha
++------------------
++
++Barebox has limited second-stage support for the Allwinner D1 Nezha (sun20i)::
++
++  ARCH=riscv make rv64i_defconfig
++  ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- make
++
++The resulting ``./images/barebox-allwinner-d1.img`` can be used as 2nd stage
++image which gets called by opensbi::
++
++  git clone https://github.com/tekkamanninja/opensbi -b allwinner_d1
++  cd opensbi
++  CROSS_COMPILE=riscv64-linux-gnu- PLATFORM=generic FW_PIC=y make
++
++The resulting ``./build/platform/generic/firmware/fw_dynamic.bin`` is loaded
++by the 1st stage (spl) loader, which is basically a u-boot spl::
++
++  git clone https://github.com/smaeul/sun20i_d1_spl -b mainline
++  cd sun20i_d1_spl
++  CROSS_COMPILE=riscv64-linux-gnu- make p=sun20iw1p1 mmc
++
++The resulting ``./nboot/boot0_sdcard_sun20iw1p1.bin`` image used as 1st stage
++bootloader which loads all necessary binaries: dtb, opensbi and barebox to the
++dedicated places in DRAM. After loading it jumps to the opensbi image.  The
++initial dtb can be taken from u-boot::
++
++  git clone https://github.com/smaeul/u-boot.git -b d1-wip
++  cd u-boot
++  ARCH=riscv make nezha_defconfig
++  ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- make
++
++Make will print two warnings at the end of this command but those can be ignored
++since we only want the devicetree blob which can be found under ``./u-boot.dtb``.
++
++The final image is build by mkimage. It is some sort of a self-defined toc1
++format. So we need to compile the mkimage with the toc1 format support as
++first::
++
++  cd u-boot
++  make tools-only
++
++The resulting ``tools/mkimage`` is used to build the toc1 image which is loaded
++by the 1st stage bootloader from the mmc interface. To build the final toc1 image
++we need to specify a toc1.cfg like::
++
++  [opensbi]
++  file = <ABSOLUT_PATH_TO>/opensbi/build/platform/generic/firmware/fw_dynamic.bin
++  addr = 0x40000000
++  [dtb]
++  file = <ABSOLUT_PATH_TO>/u-boot/u-boot.dtb
++  addr = 0x44000000
++  [u-boot]
++  file = <ABSOLUT_PATH_TO>/barebox/images/barebox-allwinner-d1.img
++  addr = 0x4a000000
++
++Then we need to call::
++
++  mkimage -T sunxi_toc1 -d toc1.cfg boot.toc1
++
++The last part is to place the 1st stage bootloader and the ``boot.toc1`` image
++onto the correct places. So the ROM loader can find the 1st stage bootloader
++and the 1st bootloader can find the ``boot.toc1`` image. This is done by::
++
++  dd if=boot0_sdcard_sun20iw1p1.bin of=/dev/sd<X> bs=512 seek=16
++  dd if=boot.toc1 of=/dev/sd<X> bs=512 seek=32800
++
++Now plug in the sdcard and power device and you will see::
++
++  [309]HELLO! BOOT0 is starting!
++  [312]BOOT0 commit : 882671f-dirty
++  [315]set pll start
++  [317]periph0 has been enabled
++  [320]set pll end
++  [322]board init ok
++
++  ...
++
++  OpenSBI v0.9-204-gc9024b5
++     ____                    _____ ____ _____
++    / __ \                  / ____|  _ \_   _|
++   | |  | |_ __   ___ _ __ | (___ | |_) || |
++   | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
++   | |__| | |_) |  __/ | | |____) | |_) || |_
++    \____/| .__/ \___|_| |_|_____/|____/_____|
++          | |
++          |_|
++
++  Platform Name             : Allwinner D1 Nezha
++  Platform Features         : medeleg
++
++  ...
++
++  barebox 2022.08.0-00262-g38678340903b #1 Tue Sep 13 12:54:29 CEST 2022
++
++
++  Board: Allwinner D1 Nezha
++
++  ...
++
++  barebox@Allwinner D1 Nezha:/
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index 828b65a0c1..0f03637a66 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -110,6 +110,22 @@ config BOARD_BEAGLEV_BETA
  
-diff --git a/arch/riscv/boot/entry.h b/arch/riscv/boot/entry.h
-index fb4af5eae5..b3a24d2783 100644
---- a/arch/riscv/boot/entry.h
-+++ b/arch/riscv/boot/entry.h
-@@ -6,12 +6,10 @@
+ endif
  
- void __noreturn barebox_non_pbl_start(unsigned long membase,
- 				      unsigned long memsize,
--				      void *boarddata,
--				      unsigned flags);
-+				      void *boarddata);
++config SOC_ALLWINNER_SUN20I
++	bool "Allwinner Sun20i SoCs"
++	depends on ARCH_RV64I
++	select HAS_ASM_DEBUG_LL
++	select HAS_CACHE
++
++if SOC_ALLWINNER_SUN20I
++
++config BOARD_ALLWINNER_D1
++	bool "Allwinner D1 Nezha"
++	select RISCV_S_MODE
++	select RISCV_M_MODE
++	def_bool y
++
++endif
++
+ comment "CPU features"
  
- void __noreturn barebox_pbl_start(unsigned long membase,
- 				  unsigned long memsize,
--				  void *boarddata,
--				  unsigned flags);
-+				  void *boarddata);
- 
- #endif
-diff --git a/arch/riscv/boot/start.c b/arch/riscv/boot/start.c
-index 8b4c8bb2f0..27d9066243 100644
---- a/arch/riscv/boot/start.c
-+++ b/arch/riscv/boot/start.c
-@@ -27,7 +27,6 @@ static unsigned long riscv_barebox_size;
- static unsigned long riscv_endmem;
- static void *barebox_boarddata;
- static unsigned long barebox_boarddata_size;
--unsigned barebox_riscv_pbl_flags;
- 
- void *barebox_riscv_boot_dtb(void)
- {
-@@ -108,7 +107,7 @@ device_initcall(barebox_memory_areas_init);
-  */
- __noreturn __no_sanitize_address __section(.text_entry)
- void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
--			   void *boarddata, unsigned flags)
-+			   void *boarddata)
- {
- 	unsigned long endmem = membase + memsize;
- 	unsigned long malloc_start, malloc_end;
-@@ -121,7 +120,7 @@ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
- 
- 	barrier();
- 
--	irq_init_vector(__riscv_mode(flags));
-+	irq_init_vector(riscv_mode());
- 
- 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
- 
-@@ -171,20 +170,18 @@ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
- 
- 	mem_malloc_init((void *)malloc_start, (void *)malloc_end - 1);
- 
--	barebox_riscv_pbl_flags = flags;
--
- 	pr_debug("starting barebox...\n");
- 
- 	start_barebox();
- }
- 
--void start(unsigned long membase, unsigned long memsize, void *boarddata, unsigned flags);
-+void start(unsigned long membase, unsigned long memsize, void *boarddata);
- /*
-  * First function in the uncompressed image. We get here from
-  * the pbl. The stack already has been set up by the pbl.
-  */
- void __no_sanitize_address __section(.text_entry) start(unsigned long membase,
--		unsigned long memsize, void *boarddata, unsigned flags)
-+		unsigned long memsize, void *boarddata)
- {
--	barebox_non_pbl_start(membase, memsize, boarddata, flags);
-+	barebox_non_pbl_start(membase, memsize, boarddata);
- }
-diff --git a/arch/riscv/boot/uncompress.c b/arch/riscv/boot/uncompress.c
-index 4ed9b4d371..ee24f81e01 100644
---- a/arch/riscv/boot/uncompress.c
-+++ b/arch/riscv/boot/uncompress.c
-@@ -24,16 +24,16 @@ unsigned long free_mem_ptr;
- unsigned long free_mem_end_ptr;
- 
- void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
--				  void *fdt, unsigned flags)
-+				  void *fdt)
- {
- 	uint32_t pg_len, uncompressed_len;
--	void __noreturn (*barebox)(unsigned long, unsigned long, void *, unsigned);
-+	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
- 	unsigned long endmem = membase + memsize;
- 	unsigned long barebox_base;
- 	void *pg_start, *pg_end;
- 	unsigned long pc = get_pc();
- 
--	irq_init_vector(__riscv_mode(flags));
-+	irq_init_vector(riscv_mode());
- 
- 	/* piggy data is not relocated, so determine the bounds now */
- 	pg_start = input_data + get_runtime_offset();
-@@ -72,5 +72,5 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 
- 	pr_debug("jumping to uncompressed image at 0x%p. dtb=0x%p\n", barebox, fdt);
- 
--	barebox(membase, memsize, fdt, flags);
-+	barebox(membase, memsize, fdt);
- }
-diff --git a/arch/riscv/include/asm/system.h b/arch/riscv/include/asm/system.h
-index 89516f075b..f0b6bf2945 100644
---- a/arch/riscv/include/asm/system.h
-+++ b/arch/riscv/include/asm/system.h
-@@ -15,7 +15,39 @@ enum riscv_mode {
-     RISCV_M_MODE	= 3,
- };
- 
--static inline enum riscv_mode __riscv_mode(u32 flags)
-+static inline void riscv_set_flags(unsigned flags)
+ config SIFIVE_L2
+diff --git a/arch/riscv/boards/Makefile b/arch/riscv/boards/Makefile
+index 3b763ff308..df16d38496 100644
+--- a/arch/riscv/boards/Makefile
++++ b/arch/riscv/boards/Makefile
+@@ -1,4 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_BOARD_ALLWINNER_D1)	+= allwinner-d1/
+ obj-$(CONFIG_BOARD_ERIZO_GENERIC)	+= erizo/
+ obj-$(CONFIG_BOARD_HIFIVE)		+= hifive/
+ obj-$(CONFIG_BOARD_BEAGLEV)		+= beaglev/
+diff --git a/arch/riscv/boards/allwinner-d1/Makefile b/arch/riscv/boards/allwinner-d1/Makefile
+new file mode 100644
+index 0000000000..3d217ffe0b
+--- /dev/null
++++ b/arch/riscv/boards/allwinner-d1/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
++
++pbl-y += lowlevel.o
+diff --git a/arch/riscv/boards/allwinner-d1/lowlevel.c b/arch/riscv/boards/allwinner-d1/lowlevel.c
+new file mode 100644
+index 0000000000..2b07a81edb
+--- /dev/null
++++ b/arch/riscv/boards/allwinner-d1/lowlevel.c
+@@ -0,0 +1,12 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <common.h>
++#include <debug_ll.h>
++#include <asm/barebox-riscv.h>
++
++#define DRAM_BASE	0x40000000
++
++ENTRY_FUNCTION(start_allwinner_d1, a0, a1, a2)
 +{
-+	switch (flags & RISCV_MODE_MASK) {
-+	case RISCV_S_MODE:
-+		__asm__ volatile("csrw sscratch, %0" : : "r"(flags));
-+		break;
-+	case RISCV_M_MODE:
-+		__asm__ volatile("csrw mscratch, %0" : : "r"(flags));
-+		break;
-+	default:
-+		/* Other modes are not implemented yet */
-+		break;
-+	}
++	barebox_riscv_supervisor_entry(DRAM_BASE, SZ_1G, a0, (void *)a1);
 +}
-+
-+static inline u32 riscv_get_flags(void)
-+{
-+	u32 flags = 0;
-+
-+	if (IS_ENABLED(CONFIG_RISCV_S_MODE))
-+		__asm__ volatile("csrr %0, sscratch" : "=r"(flags));
-+
-+	/*
-+	 * Since we always set the scratch register on the very beginning, a
-+	 * empty flags indicates that we are running in M-mode.
-+	 */
-+	if (!flags)
-+		__asm__ volatile("csrr %0, mscratch" : "=r"(flags));
-+
-+	return flags;
-+}
-+
-+static inline enum riscv_mode riscv_mode(void)
- {
- 	/* allow non-LTO builds to discard code for unused modes */
- 	if (!IS_ENABLED(CONFIG_RISCV_MULTI_MODE)) {
-@@ -25,14 +57,14 @@ static inline enum riscv_mode __riscv_mode(u32 flags)
- 			return RISCV_S_MODE;
- 	}
- 
--	return flags & RISCV_MODE_MASK;
-+	return riscv_get_flags() & RISCV_MODE_MASK;
- }
- 
--static inline long __riscv_hartid(u32 flags)
-+static inline long riscv_hartid(void)
- {
- 	long hartid = -1;
- 
--	switch (__riscv_mode(flags)) {
-+	switch (riscv_mode()) {
- 	case RISCV_S_MODE:
- 		__asm__ volatile("mv %0, tp\n" : "=r"(hartid) :);
- 		break;
-@@ -44,12 +76,12 @@ static inline long __riscv_hartid(u32 flags)
- 	return hartid;
- }
- 
--static inline long __riscv_vendor_id(u32 flags)
-+static inline long riscv_vendor_id(void)
- {
- 	struct sbiret ret;
- 	long id;
- 
--	switch (__riscv_mode(flags)) {
-+	switch (riscv_mode()) {
- 	case RISCV_M_MODE:
- 		__asm__ volatile("csrr %0, mvendorid\n" : "=r"(id));
- 		return id;
-@@ -68,25 +100,6 @@ static inline long __riscv_vendor_id(u32 flags)
- 	}
- }
- 
--#ifndef __PBL__
--extern unsigned barebox_riscv_pbl_flags;
--
--static inline enum riscv_mode riscv_mode(void)
--{
--	return __riscv_mode(barebox_riscv_pbl_flags);
--}
--
--static inline long riscv_hartid(void)
--{
--	return __riscv_hartid(barebox_riscv_pbl_flags);
--}
--
--static inline long riscv_vendor_id(void)
--{
--	return __riscv_vendor_id(barebox_riscv_pbl_flags);
--}
--#endif
--
+diff --git a/arch/riscv/configs/rv64i_defconfig b/arch/riscv/configs/rv64i_defconfig
+index 6c8409567d..2c5bfd2df1 100644
+--- a/arch/riscv/configs/rv64i_defconfig
++++ b/arch/riscv/configs/rv64i_defconfig
+@@ -1,7 +1,9 @@
+ CONFIG_ARCH_RV64I=y
++CONFIG_SOC_ALLWINNER_SUN20I=y
+ CONFIG_SOC_SIFIVE=y
+ CONFIG_SOC_STARFIVE=y
+ CONFIG_SOC_VIRT=y
++CONFIG_BOARD_ALLWINNER_D1=y
+ CONFIG_BOARD_BEAGLEV=y
+ CONFIG_BOARD_BEAGLEV_BETA=y
+ CONFIG_BOARD_HIFIVE=y
+@@ -95,6 +97,7 @@ CONFIG_NET_FASTBOOT=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_OF_BAREBOX_ENV_IN_FS=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_SERIAL_SBI=y
+ CONFIG_VIRTIO_CONSOLE=y
+ CONFIG_SERIAL_SIFIVE=y
+ CONFIG_DRIVER_NET_MACB=y
+diff --git a/arch/riscv/include/asm/debug_ll.h b/arch/riscv/include/asm/debug_ll.h
+index de9bc5f5fd..34294b09dd 100644
+--- a/arch/riscv/include/asm/debug_ll.h
++++ b/arch/riscv/include/asm/debug_ll.h
+@@ -29,6 +29,11 @@
+ #define DEBUG_LL_UART_CLK       (58982400  / 16)
+ #define DEBUG_LL_UART_SHIFT	0
+ #define DEBUG_LL_UART_IOSIZE8
++#elif defined CONFIG_DEBUG_SUN20I
++#define DEBUG_LL_UART_ADDR	0x2500000
++#define DEBUG_LL_UART_CLK       (24000000 / 16)
++#define DEBUG_LL_UART_SHIFT	2
++#define DEBUG_LL_UART_IOSIZE32
  #endif
  
- #endif
+ #define DEBUG_LL_UART_BPS       CONFIG_BAUDRATE
+diff --git a/common/Kconfig b/common/Kconfig
+index 350e6aeea7..fb2bf49683 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1469,6 +1469,11 @@ config DEBUG_LITEX
+ 	bool "LiteX serial port"
+ 	depends on SOC_LITEX
+ 
++config DEBUG_SUN20I
++	bool "Allwinner Sun20i ns16550 serial0 port"
++	depends on SOC_ALLWINNER_SUN20I
++	select DEBUG_LL_NS16550
++
+ endchoice
+ 
+ config DEBUG_LL_NS16550
+diff --git a/images/Makefile.riscv b/images/Makefile.riscv
+index 0645238c43..df0e5a9146 100644
+--- a/images/Makefile.riscv
++++ b/images/Makefile.riscv
+@@ -23,3 +23,7 @@ image-$(CONFIG_BOARD_BEAGLEV) += barebox-beaglev-starlight.img
+ pblb-$(CONFIG_BOARD_LITEX_LINUX) += start_litex_linux
+ FILE_barebox-litex-linux.img = start_litex_linux.pblb
+ image-$(CONFIG_BOARD_LITEX_LINUX) += barebox-litex-linux.img
++
++pblb-$(CONFIG_BOARD_ALLWINNER_D1) += start_allwinner_d1
++FILE_barebox-allwinner-d1.img = start_allwinner_d1.pblb
++image-$(CONFIG_BOARD_ALLWINNER_D1) += barebox-allwinner-d1.img
 -- 
 2.30.2
 
