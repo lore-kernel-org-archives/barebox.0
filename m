@@ -1,52 +1,52 @@
-Delivery-date: Wed, 05 Oct 2022 08:37:40 +0200
+Delivery-date: Wed, 05 Oct 2022 08:59:00 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofy2G-006T0m-7H
-	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 08:37:40 +0200
+	id 1ofyMu-006U0P-7T
+	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 08:59:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofy2F-0005js-2S
-	for lore@pengutronix.de; Wed, 05 Oct 2022 08:37:39 +0200
+	id 1ofyMs-0007eB-V1
+	for lore@pengutronix.de; Wed, 05 Oct 2022 08:58:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3jkYm7Z0R5VR5R7yHT007R8N2T2Uhgbv6FdqD1aB4oo=; b=2DBI3NUmTDgVDHwdMdY5RBepJZ
-	BwE7MOQY4T4giv5UrYMFDWq8ZLlhycAuJSmxk9guwV6FoHeP1f3be3nn52yvLECALgc2qnIVP+f8l
-	tPmAYix6HjtrgrQV2fguIhkRosulaR4B8IJgLTjX9wgFjw6ejFLRfpxrpcFYv2emFSCtWvTzFfaTV
-	AwGkIgHIEXuR6V1RcOHwKOYOuasSzOgjZ7yi7rx+1N9aC4tN0nps8grXzUEUgQ68JAgHWm2XIWKHs
-	5CKsUi3J29dZduek0P6UVwCUfpnNJwkwLYDKyr3gSVnET11hSOvE3FEGu+txDsICb6WDhNIDUC0LB
-	1VK9km2Q==;
+	bh=8nV+q+YtYHfuoITuOPqtzGVzpE/AgA2d39HOlTcRKn8=; b=IDx3/NxAkTS0DLj1jlly9lSigl
+	MD+0ttPJXmpijKQ/fFntHeWj3qevu1mcRJ6XUNfQr0kaLNcwYjHBJjIW7JYPwa5IADBlRIyt6pPja
+	EeT701BEADIul5q1ZDf9NwlODGSNFYK8syJTeP076ppmjQN+UgOtuQG3mN41vu8eqHKD2nIy4vv9S
+	lw86pGqsXXdBV66oZE2fESAkQ7sLtytj4mJ1KCfbD5S3JN9ClrhPDKqYGMdNARBu7ARUOVRY7beAs
+	4p0Oudqsx8szob33IkulG7t3QgDOfOz2WMpQYGqPdnnKDmgTTU2Yz35dFIszGGMKesnJJidVm+3OX
+	v7Su/Bhw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofy0x-00CgJa-Rm; Wed, 05 Oct 2022 06:36:19 +0000
+	id 1ofyLT-00Cjgb-3a; Wed, 05 Oct 2022 06:57:31 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofy0s-00CgJF-Lq
-	for barebox@lists.infradead.org; Wed, 05 Oct 2022 06:36:16 +0000
+	id 1ofyLO-00CjfO-H2
+	for barebox@lists.infradead.org; Wed, 05 Oct 2022 06:57:27 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ofy0q-0005f2-Pj; Wed, 05 Oct 2022 08:36:12 +0200
+	id 1ofyLN-0007a4-2n; Wed, 05 Oct 2022 08:57:25 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ofy0q-0005Do-IN; Wed, 05 Oct 2022 08:36:12 +0200
-Date: Wed, 5 Oct 2022 08:36:12 +0200
+	id 1ofyLM-0005yc-Rs; Wed, 05 Oct 2022 08:57:24 +0200
+Date: Wed, 5 Oct 2022 08:57:24 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20221005063612.GP986@pengutronix.de>
-References: <20221004154800.3457742-1-a.fatoum@pengutronix.de>
+Message-ID: <20221005065724.GQ986@pengutronix.de>
+References: <20221004160112.183814-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221004154800.3457742-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20221004160112.183814-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221004_233614_750164_1FA9D54C 
-X-CRM114-Status: GOOD (  21.65  )
+X-CRM114-CacheID: sfid-20221004_235726_580535_1F67A0B7 
+X-CRM114-Status: GOOD (  22.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,78 +77,69 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] sandbox: implement DEBUG_LL support
+Subject: Re: [PATCH master] Revert "mci: bcm2835: reset host controller on
+ barebox shutdown"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Oct 04, 2022 at 05:48:00PM +0200, Ahmad Fatoum wrote:
-> We can't currently debug malloc() or early parts of the driver model on
-> sandbox, because we require both to allocate the sandbox console device.
+On Tue, Oct 04, 2022 at 06:01:12PM +0200, Ahmad Fatoum wrote:
+> The patch is wrong and issue is still reproducible with it. We have no
+> alternate fix yet, but drop the non-functional fix until we do.
 > 
-> To make debugging such early startup easier in future, add some simple
-> DEBUG_LL support.
+> This reverts commit c7428c02d72d1c74295226e7c9483e0f62f6a2aa.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/sandbox/Kconfig                |  1 +
->  arch/sandbox/Makefile               |  3 ++-
->  arch/sandbox/include/asm/debug_ll.h | 16 ++++++++++++++++
->  3 files changed, 19 insertions(+), 1 deletion(-)
->  create mode 100644 arch/sandbox/include/asm/debug_ll.h
+> Issue is spurious, which suggests to me that it's related to:
+> https://patchwork.kernel.org/project/linux-arm-kernel/patch/1495126660-25044-1-git-send-email-srinath.mannam@broadcom.com/#20487621
+> 
+> Haven't found a proper solution yet though.
+> ---
+>  drivers/mci/mci-bcm2835.c | 12 ------------
+>  1 file changed, 12 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-> index a8bca8757f28..d3889fcac03c 100644
-> --- a/arch/sandbox/Kconfig
-> +++ b/arch/sandbox/Kconfig
-> @@ -16,6 +16,7 @@ config SANDBOX
->  	select ARCH_HAS_STACK_DUMP if ASAN
->  	select GENERIC_FIND_NEXT_BIT
->  	select HAS_ARCH_SJLJ
-> +	select HAS_ASM_DEBUG_LL
->  	default y
+> diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
+> index c5b226ba033c..f092156f9a83 100644
+> --- a/drivers/mci/mci-bcm2835.c
+> +++ b/drivers/mci/mci-bcm2835.c
+> @@ -385,8 +385,6 @@ static int bcm2835_mci_probe(struct device_d *hw_dev)
+>  	host->sdhci.read32 = bcm2835_sdhci_read32;
+>  	host->sdhci.write32 = bcm2835_sdhci_write32;
 >  
->  config ARCH_TEXT_BASE
-> diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-> index aee6bccc9c14..d5ba05ba866f 100644
-> --- a/arch/sandbox/Makefile
-> +++ b/arch/sandbox/Makefile
-> @@ -30,7 +30,8 @@ KBUILD_CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
->  		-Dopendir=barebox_opendir -Dreaddir=barebox_readdir \
->  		-Dclosedir=barebox_closedir -Dreadlink=barebox_readlink \
->  		-Doptarg=barebox_optarg -Doptind=barebox_optind \
-> -		-Dsetjmp=barebox_setjmp -Dlongjmp=barebox_longjmp
-> +		-Dsetjmp=barebox_setjmp -Dlongjmp=barebox_longjmp \
-> +		-Dputchar=barebox_putchar
+> -	hw_dev->priv = host;
+> -
+>  	mci_of_parse(&host->mci);
 >  
->  machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
+>  	iores = dev_request_mem_resource(hw_dev, 0);
+> @@ -422,15 +420,6 @@ static int bcm2835_mci_probe(struct device_d *hw_dev)
+>  	return mci_register(&host->mci);
+>  }
 >  
-> diff --git a/arch/sandbox/include/asm/debug_ll.h b/arch/sandbox/include/asm/debug_ll.h
-> new file mode 100644
-> index 000000000000..7bef8710581e
-> --- /dev/null
-> +++ b/arch/sandbox/include/asm/debug_ll.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +
-> +#ifndef __ASM_DEBUG_LL__
-> +#define __ASM_DEBUG_LL__
-> +
-> +#undef putchar
-> +
-> +static inline void PUTC_LL(char ch)
-> +{
-> +	int putchar(int c);
-> +	putchar(ch);
-> +}
-> +
-> +#define putchar barebox_putchar
-> +
-> +#endif /* __ASM_DEBUG_LL__ */
+> -static void bcm2835_mci_remove(struct device_d *dev)
+> -{
+> -	struct bcm2835_mci_host *host = dev->priv;
+> -
+> -	sdhci_write32(&host->sdhci,
+> -		      SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
+> -		      0x00);
+> -}
+> -
+>  static __maybe_unused struct of_device_id bcm2835_mci_compatible[] = {
+>  	{
+>  		.compatible = "brcm,bcm2835-sdhci",
+> @@ -444,7 +433,6 @@ static __maybe_unused struct of_device_id bcm2835_mci_compatible[] = {
+>  static struct driver_d bcm2835_mci_driver = {
+>  	.name = "bcm2835_mci",
+>  	.probe = bcm2835_mci_probe,
+> -	.remove = bcm2835_mci_remove,
+>  	.of_compatible = DRV_OF_COMPAT(bcm2835_mci_compatible),
+>  };
+>  
 > -- 
 > 2.30.2
 > 
