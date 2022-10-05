@@ -1,62 +1,62 @@
-Delivery-date: Wed, 05 Oct 2022 13:14:34 +0200
+Delivery-date: Wed, 05 Oct 2022 13:14:35 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1og2ME-006eu7-3J
-	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 13:14:34 +0200
+	id 1og2MF-006euu-LH
+	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 13:14:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1og2MC-0004Fe-Px
-	for lore@pengutronix.de; Wed, 05 Oct 2022 13:14:33 +0200
+	id 1og2ME-0004GH-4G
+	for lore@pengutronix.de; Wed, 05 Oct 2022 13:14:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qTi9nz2hEjqA0Rb1QUDa9EfqxdVxohE5y7me5YQeTK4=; b=ICZGb2Sj7BPlmc1XZpTP4SP/EG
-	YqKa5nW7tDv1Y+ZpF0ZgyaAtgSvvR6ELkv4ypchvhDA04s5C1ET+UlezpMzPU0GEcYbmqw0JYlgPQ
-	B0is7UOGflZG3lDhmr919W9R8l0yD7pPNuK2zCD1EhdcFnPpTOgpsbyNKP2iAKivL+nYPAzMM/GYk
-	t8DsLzqsLpu24+PI8blsJ2hH51c3/YLdQuAorQEE/aabmWSa9QX7n4VG2Dd92OiHIA2g2+WTe2TQ6
-	NJLU2z+fhfAFbxHcqbivnTscheObDjiQ/7etyP9LIaDohQAYdMAutVChMknoYH9IQ5mHA6Ada9It4
-	rrQ5D4jA==;
+	bh=VTuWYvcFo8yG7O2mAsvrthwrduKKoLnkW87TnUxFF4U=; b=OWSK++c/XIZclfr1sL9Ogia85+
+	WeUZDRX8jqjt3RIQ6PbjmzuyBceNtqZfgcYS1l/dwVAxMVKyXh3QftIzvM3p1awr49K9TdaCOZtqA
+	f0b9+QenmfWe/2/5kHri8++Thkffr2vTRB2iuqksdnnWTdlQt4pzM0QZWwM5+ZCMj14A6bwd+KMs+
+	FClVorNB4q0lNU1i7jy2erqAPZsFkSxcwHZpX+idNc7vFq6/0pATu9dAAdLu2dlYJrtGVxFbBJsNy
+	UIDStsrlDWTWgg/5i3SnoQ3popUCywCPysQuXwMmQ7GMbaHvbF20uTR7aqApk0/qgYZvdvkqBtmkC
+	BJadJWhg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1og2KD-00DjSd-SC; Wed, 05 Oct 2022 11:12:29 +0000
+	id 1og2KF-00DjT7-VK; Wed, 05 Oct 2022 11:12:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1og2K4-00DjL5-09
-	for barebox@lists.infradead.org; Wed, 05 Oct 2022 11:12:21 +0000
+	id 1og2K3-00DjKz-Ih
+	for barebox@lists.infradead.org; Wed, 05 Oct 2022 11:12:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1og2K2-0003lX-QK
+	id 1og2K2-0003lL-D7
 	for barebox@lists.infradead.org; Wed, 05 Oct 2022 13:12:18 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1og2K3-004kIM-Hl
-	for barebox@lists.infradead.org; Wed, 05 Oct 2022 13:12:18 +0200
+	id 1og2K3-004kI9-4X
+	for barebox@lists.infradead.org; Wed, 05 Oct 2022 13:12:17 +0200
 Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1og2K0-000crf-GQ
+	id 1og2K0-000crl-HH
 	for barebox@lists.infradead.org; Wed, 05 Oct 2022 13:12:16 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed,  5 Oct 2022 13:12:09 +0200
-Message-Id: <20221005111214.148844-2-m.felsch@pengutronix.de>
+Date: Wed,  5 Oct 2022 13:12:11 +0200
+Message-Id: <20221005111214.148844-4-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221005111214.148844-1-m.felsch@pengutronix.de>
 References: <20221005111214.148844-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221005_041220_054484_6264A329 
-X-CRM114-Status: GOOD (  13.40  )
+X-CRM114-CacheID: sfid-20221005_041219_799242_AD40F8BC 
+X-CRM114-Status: GOOD (  20.86  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,75 +78,250 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/7] RISC-V: add riscv_vendor_id() support
+Subject: [PATCH v2 4/7] RISC-V: use m/sscratch registers for barebox_riscv_pbl_flags
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Add the support to query the vendorid which is stored within the
-mvendorid register. This register is only accessible from M-Mode so we
-need to use the sbi interface if we are running from S-Mode.
+Use the dedicated scratch register for setting the pbl flags. Each mode
+has it's own scratch register so we are not conflicting with M-mode
+running firmware e.g. OpenSBI. Using the scratch register has two main
+advantages:
+ 1st) It can be used in PBL and non-PBL use-case.
+ 2nd) It is not affected by the relocation code.
+
+This commit prepares barebox to add support for the special cache ops
+used by several T-Head CPUs.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
 v2:
-- adapt switch-case to fix compile error.
+- adapt switch-case to fix compile error
 
- arch/riscv/include/asm/system.h | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ arch/riscv/boot/entry.c         |  3 +-
+ arch/riscv/boot/entry.h         |  6 ++--
+ arch/riscv/boot/start.c         | 13 +++----
+ arch/riscv/boot/uncompress.c    |  8 ++---
+ arch/riscv/include/asm/system.h | 63 ++++++++++++++++++++-------------
+ 5 files changed, 51 insertions(+), 42 deletions(-)
 
-diff --git a/arch/riscv/include/asm/system.h b/arch/riscv/include/asm/system.h
-index adf856f9e9..89516f075b 100644
---- a/arch/riscv/include/asm/system.h
-+++ b/arch/riscv/include/asm/system.h
-@@ -5,6 +5,8 @@
- 
- #ifndef __ASSEMBLY__
- 
-+#include <asm/sbi.h>
-+
- #define RISCV_MODE_MASK 0x3
- enum riscv_mode {
-     RISCV_U_MODE	= 0,
-@@ -42,6 +44,30 @@ static inline long __riscv_hartid(u32 flags)
- 	return hartid;
+diff --git a/arch/riscv/boot/entry.c b/arch/riscv/boot/entry.c
+index e4a5c2208d..f5a536fc78 100644
+--- a/arch/riscv/boot/entry.c
++++ b/arch/riscv/boot/entry.c
+@@ -25,6 +25,7 @@ void __noreturn __naked barebox_riscv_entry(unsigned long membase,
+ {
+ 	unsigned long stack_top = riscv_mem_stack_top(membase, membase + memsize);
+ 	asm volatile ("move sp, %0" : : "r"(stack_top));
+-	barebox_pbl_start(membase, memsize, boarddata, flags);
++	riscv_set_flags(flags);
++	barebox_pbl_start(membase, memsize, boarddata);
  }
  
-+static inline long __riscv_vendor_id(u32 flags)
+diff --git a/arch/riscv/boot/entry.h b/arch/riscv/boot/entry.h
+index fb4af5eae5..b3a24d2783 100644
+--- a/arch/riscv/boot/entry.h
++++ b/arch/riscv/boot/entry.h
+@@ -6,12 +6,10 @@
+ 
+ void __noreturn barebox_non_pbl_start(unsigned long membase,
+ 				      unsigned long memsize,
+-				      void *boarddata,
+-				      unsigned flags);
++				      void *boarddata);
+ 
+ void __noreturn barebox_pbl_start(unsigned long membase,
+ 				  unsigned long memsize,
+-				  void *boarddata,
+-				  unsigned flags);
++				  void *boarddata);
+ 
+ #endif
+diff --git a/arch/riscv/boot/start.c b/arch/riscv/boot/start.c
+index 8b4c8bb2f0..27d9066243 100644
+--- a/arch/riscv/boot/start.c
++++ b/arch/riscv/boot/start.c
+@@ -27,7 +27,6 @@ static unsigned long riscv_barebox_size;
+ static unsigned long riscv_endmem;
+ static void *barebox_boarddata;
+ static unsigned long barebox_boarddata_size;
+-unsigned barebox_riscv_pbl_flags;
+ 
+ void *barebox_riscv_boot_dtb(void)
+ {
+@@ -108,7 +107,7 @@ device_initcall(barebox_memory_areas_init);
+  */
+ __noreturn __no_sanitize_address __section(.text_entry)
+ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
+-			   void *boarddata, unsigned flags)
++			   void *boarddata)
+ {
+ 	unsigned long endmem = membase + memsize;
+ 	unsigned long malloc_start, malloc_end;
+@@ -121,7 +120,7 @@ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
+ 
+ 	barrier();
+ 
+-	irq_init_vector(__riscv_mode(flags));
++	irq_init_vector(riscv_mode());
+ 
+ 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
+ 
+@@ -171,20 +170,18 @@ void barebox_non_pbl_start(unsigned long membase, unsigned long memsize,
+ 
+ 	mem_malloc_init((void *)malloc_start, (void *)malloc_end - 1);
+ 
+-	barebox_riscv_pbl_flags = flags;
+-
+ 	pr_debug("starting barebox...\n");
+ 
+ 	start_barebox();
+ }
+ 
+-void start(unsigned long membase, unsigned long memsize, void *boarddata, unsigned flags);
++void start(unsigned long membase, unsigned long memsize, void *boarddata);
+ /*
+  * First function in the uncompressed image. We get here from
+  * the pbl. The stack already has been set up by the pbl.
+  */
+ void __no_sanitize_address __section(.text_entry) start(unsigned long membase,
+-		unsigned long memsize, void *boarddata, unsigned flags)
++		unsigned long memsize, void *boarddata)
+ {
+-	barebox_non_pbl_start(membase, memsize, boarddata, flags);
++	barebox_non_pbl_start(membase, memsize, boarddata);
+ }
+diff --git a/arch/riscv/boot/uncompress.c b/arch/riscv/boot/uncompress.c
+index 4ed9b4d371..ee24f81e01 100644
+--- a/arch/riscv/boot/uncompress.c
++++ b/arch/riscv/boot/uncompress.c
+@@ -24,16 +24,16 @@ unsigned long free_mem_ptr;
+ unsigned long free_mem_end_ptr;
+ 
+ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+-				  void *fdt, unsigned flags)
++				  void *fdt)
+ {
+ 	uint32_t pg_len, uncompressed_len;
+-	void __noreturn (*barebox)(unsigned long, unsigned long, void *, unsigned);
++	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
+ 	unsigned long endmem = membase + memsize;
+ 	unsigned long barebox_base;
+ 	void *pg_start, *pg_end;
+ 	unsigned long pc = get_pc();
+ 
+-	irq_init_vector(__riscv_mode(flags));
++	irq_init_vector(riscv_mode());
+ 
+ 	/* piggy data is not relocated, so determine the bounds now */
+ 	pg_start = input_data + get_runtime_offset();
+@@ -72,5 +72,5 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 
+ 	pr_debug("jumping to uncompressed image at 0x%p. dtb=0x%p\n", barebox, fdt);
+ 
+-	barebox(membase, memsize, fdt, flags);
++	barebox(membase, memsize, fdt);
+ }
+diff --git a/arch/riscv/include/asm/system.h b/arch/riscv/include/asm/system.h
+index 89516f075b..f0b6bf2945 100644
+--- a/arch/riscv/include/asm/system.h
++++ b/arch/riscv/include/asm/system.h
+@@ -15,7 +15,39 @@ enum riscv_mode {
+     RISCV_M_MODE	= 3,
+ };
+ 
+-static inline enum riscv_mode __riscv_mode(u32 flags)
++static inline void riscv_set_flags(unsigned flags)
 +{
-+	struct sbiret ret;
-+	long id;
-+
-+	switch (__riscv_mode(flags)) {
-+	case RISCV_M_MODE:
-+		__asm__ volatile("csrr %0, mvendorid\n" : "=r"(id));
-+		return id;
++	switch (flags & RISCV_MODE_MASK) {
 +	case RISCV_S_MODE:
-+		/*
-+		 * We need to use the sbi_ecall() since it can be that we got
-+		 * called without a working stack
-+		 */
-+		ret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MVENDORID,
-+				0, 0, 0, 0, 0, 0);
-+		if (!ret.error)
-+			return ret.value;
-+		return -1;
++		__asm__ volatile("csrw sscratch, %0" : : "r"(flags));
++		break;
++	case RISCV_M_MODE:
++		__asm__ volatile("csrw mscratch, %0" : : "r"(flags));
++		break;
 +	default:
-+		return -1;
++		/* Other modes are not implemented yet */
++		break;
 +	}
 +}
 +
- #ifndef __PBL__
- extern unsigned barebox_riscv_pbl_flags;
- 
-@@ -54,6 +80,11 @@ static inline long riscv_hartid(void)
- {
- 	return __riscv_hartid(barebox_riscv_pbl_flags);
- }
-+
-+static inline long riscv_vendor_id(void)
++static inline u32 riscv_get_flags(void)
 +{
-+	return __riscv_vendor_id(barebox_riscv_pbl_flags);
++	u32 flags = 0;
++
++	if (IS_ENABLED(CONFIG_RISCV_S_MODE))
++		__asm__ volatile("csrr %0, sscratch" : "=r"(flags));
++
++	/*
++	 * Since we always set the scratch register on the very beginning, a
++	 * empty flags indicates that we are running in M-mode.
++	 */
++	if (!flags)
++		__asm__ volatile("csrr %0, mscratch" : "=r"(flags));
++
++	return flags;
 +}
++
++static inline enum riscv_mode riscv_mode(void)
+ {
+ 	/* allow non-LTO builds to discard code for unused modes */
+ 	if (!IS_ENABLED(CONFIG_RISCV_MULTI_MODE)) {
+@@ -25,14 +57,14 @@ static inline enum riscv_mode __riscv_mode(u32 flags)
+ 			return RISCV_S_MODE;
+ 	}
+ 
+-	return flags & RISCV_MODE_MASK;
++	return riscv_get_flags() & RISCV_MODE_MASK;
+ }
+ 
+-static inline long __riscv_hartid(u32 flags)
++static inline long riscv_hartid(void)
+ {
+ 	long hartid = -1;
+ 
+-	switch (__riscv_mode(flags)) {
++	switch (riscv_mode()) {
+ 	case RISCV_S_MODE:
+ 		__asm__ volatile("mv %0, tp\n" : "=r"(hartid) :);
+ 		break;
+@@ -44,12 +76,12 @@ static inline long __riscv_hartid(u32 flags)
+ 	return hartid;
+ }
+ 
+-static inline long __riscv_vendor_id(u32 flags)
++static inline long riscv_vendor_id(void)
+ {
+ 	struct sbiret ret;
+ 	long id;
+ 
+-	switch (__riscv_mode(flags)) {
++	switch (riscv_mode()) {
+ 	case RISCV_M_MODE:
+ 		__asm__ volatile("csrr %0, mvendorid\n" : "=r"(id));
+ 		return id;
+@@ -68,25 +100,6 @@ static inline long __riscv_vendor_id(u32 flags)
+ 	}
+ }
+ 
+-#ifndef __PBL__
+-extern unsigned barebox_riscv_pbl_flags;
+-
+-static inline enum riscv_mode riscv_mode(void)
+-{
+-	return __riscv_mode(barebox_riscv_pbl_flags);
+-}
+-
+-static inline long riscv_hartid(void)
+-{
+-	return __riscv_hartid(barebox_riscv_pbl_flags);
+-}
+-
+-static inline long riscv_vendor_id(void)
+-{
+-	return __riscv_vendor_id(barebox_riscv_pbl_flags);
+-}
+-#endif
+-
  #endif
  
  #endif
