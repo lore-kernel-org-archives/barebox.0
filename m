@@ -1,52 +1,52 @@
-Delivery-date: Wed, 05 Oct 2022 08:30:24 +0200
+Delivery-date: Wed, 05 Oct 2022 08:31:14 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofxvE-006SlP-7B
-	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 08:30:24 +0200
+	id 1ofxw2-006Sol-39
+	for lore@lore.pengutronix.de; Wed, 05 Oct 2022 08:31:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ofxvD-0004qJ-5d
-	for lore@pengutronix.de; Wed, 05 Oct 2022 08:30:23 +0200
+	id 1ofxw0-00056z-Vp
+	for lore@pengutronix.de; Wed, 05 Oct 2022 08:31:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YA5ZYL2MnWbGoJ+sK2zekdn6Ix4onyZSXSaV/8i1B0Q=; b=Wbj2N2dkOeQlO2MhAJ5BOVLNnj
-	dPl9npALNsk1MHfE3ujCmmOZsIVDSviiEbpj/9YgQEobO3SlkD8VeiREWT1Ky+tq/PnDb5NRsezER
-	aIlQyweoAVxBzGe0EA8A/KzgxOVkry+F3jZCkJuuRSinq3Y7caThIy19KuTP1RoPgZrNlPF+SXOuD
-	JK4IgldQkr97/lYjnXDtVgtSD3faE8hndz927IQmM9Ntzv8++sUSsCU/om6aWnhdL1HQJDZ+JiyiY
-	74o9A70vSCf7E9iCxwU5e3wA7zXdTa+ojRYPR4PRujhwUcaWrZGLwRa8WArmp4rrwd3suNR3eSQZ/
-	kbxzrgeQ==;
+	bh=x7zftKMa8DccQ/aLB1QucUqDvYonB5CcYFlZ68ByWaY=; b=Z12yZ5ucQYTesWPf392dcXYmZ2
+	iu6WZJ6SOZQ/KGS/JrFmRO5531RZ2YkFYoXoznoUMoaTomoidRX96eW1nP/t0NmS8rX/jxJjBD7eL
+	mCzRMC3v7rCX46Cx8FQF4zOLbkZRNMU/5K0ne8VXTd3tKdYrp08BbifxvhcM+JY8cd8zARTw/0YDn
+	WpoV1yuL113ifHwz5orwAIxKKlMaBc+RefDWSZh/19nMP5Y5i4Hgz74byzYfo6/tf9ARh2opoP7gK
+	6XzGkKf4qNJmcCvS389UuHxsc319dRvFub0A69InfG/JDEO3iV8TYETI6aiQ70u2A4Fq20UIU6kBv
+	W7BZepRQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofxsv-00CfGI-8b; Wed, 05 Oct 2022 06:28:01 +0000
+	id 1ofxud-00CfVt-2V; Wed, 05 Oct 2022 06:29:47 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ofxsq-00CfFO-ET
-	for barebox@lists.infradead.org; Wed, 05 Oct 2022 06:27:58 +0000
+	id 1ofxuX-00CfV7-W8
+	for barebox@lists.infradead.org; Wed, 05 Oct 2022 06:29:43 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ofxsm-0004ZP-Lg; Wed, 05 Oct 2022 08:27:52 +0200
+	id 1ofxuW-0004dI-Nf; Wed, 05 Oct 2022 08:29:40 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ofxsm-0004ut-E8; Wed, 05 Oct 2022 08:27:52 +0200
-Date: Wed, 5 Oct 2022 08:27:52 +0200
+	id 1ofxuW-0004w9-Gt; Wed, 05 Oct 2022 08:29:40 +0200
+Date: Wed, 5 Oct 2022 08:29:40 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20221005062752.GM986@pengutronix.de>
-References: <20220930154053.752237-1-a.fatoum@pengutronix.de>
+Message-ID: <20221005062940.GN986@pengutronix.de>
+References: <20220930154145.754181-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220930154053.752237-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20220930154145.754181-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221004_232756_500778_C8890D72 
-X-CRM114-Status: GOOD (  20.69  )
+X-CRM114-CacheID: sfid-20221004_232942_052751_8305E33E 
+X-CRM114-Status: GOOD (  28.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,58 +77,110 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fs: export file system detection functionality
+Subject: Re: [PATCH] common: console_common: output log messages to
+ CONSOLE_STDERR
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Sep 30, 2022 at 05:40:53PM +0200, Ahmad Fatoum wrote:
-> This will come in handy when using barebox as EFI loader, so give it a
-> more generic name and export it.
+On Fri, Sep 30, 2022 at 05:41:45PM +0200, Ahmad Fatoum wrote:
+> Like U-Boot, barebox has two standard output streams:
+> CONSOLE_STDOUT and CONSOLE_STDERR in addition to the input stream
+> CONSOLE_STDIN.
+> 
+> From a consumer view, the console.active device parameter allows
+> restricting which of these streams interact with a given console.
+> 
+> From a provider view, only CONSOLE_STDOUT is ever used. dputs
+> dputc allow passing in CONSOLE_STDERR instead, but nothing in-tree
+> does so.
+> 
+> Change this by having all log messages (e.g. pr_debug or dev_err)
+> go to CONSOLE_STDERR. For nearly all systems that just use the default
+> of console.active="ioe" or "oe", there is no difference. But now
+> systems that use either "o" or "e" can use different console
+> devices for barebox log messages and for standard output by commands.
+> This is especially useful to debug interactive applications like edit
+> or for monitoring barebox debug messages during execution of payloads
+> when barebox acts as EFI loader.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  fs/fs.c      | 4 ++--
->  include/fs.h | 2 ++
->  2 files changed, 4 insertions(+), 2 deletions(-)
+>  common/console_common.c | 10 +++++-----
+>  pbl/console.c           |  6 +++---
+>  2 files changed, 8 insertions(+), 8 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/fs/fs.c b/fs/fs.c
-> index a314a49b2db7..95813b6089c7 100644
-> --- a/fs/fs.c
-> +++ b/fs/fs.c
-> @@ -756,7 +756,7 @@ int register_fs_driver(struct fs_driver_d *fsdrv)
+> diff --git a/common/console_common.c b/common/console_common.c
+> index 7bef74c54391..ca1dad0f159f 100644
+> --- a/common/console_common.c
+> +++ b/common/console_common.c
+> @@ -68,7 +68,7 @@ void log_clean(unsigned int limit)
+>  	}
 >  }
->  EXPORT_SYMBOL(register_fs_driver);
 >  
-> -static const char *detect_fs(const char *filename, const char *fsoptions)
-> +const char *fs_detect(const char *filename, const char *fsoptions)
+> -static void print_colored_log_level(const int level)
+> +static void print_colored_log_level(unsigned int ch, const int level)
 >  {
->  	enum filetype type;
->  	struct driver_d *drv;
-> @@ -2980,7 +2980,7 @@ int mount(const char *device, const char *fsname, const char *pathname,
->  			device, pathname, fsname, fsoptions);
+>  	if (!console_allow_color())
+>  		return;
+> @@ -77,7 +77,7 @@ static void print_colored_log_level(const int level)
+>  	if (!colored_log_level[level])
+>  		return;
 >  
->  	if (!fsname)
-> -		fsname = detect_fs(device, fsoptions);
-> +		fsname = fs_detect(device, fsoptions);
->  
->  	if (!fsname) {
->  		ret = -ENOENT;
-> diff --git a/include/fs.h b/include/fs.h
-> index 9ea522dc2cc3..b501db38addd 100644
-> --- a/include/fs.h
-> +++ b/include/fs.h
-> @@ -179,4 +179,6 @@ static inline const char *devpath_to_name(const char *devpath)
->  	return devpath;
+> -	puts(colored_log_level[level]);
+> +	console_puts(ch, colored_log_level[level]);
 >  }
 >  
-> +const char *fs_detect(const char *filename, const char *fsoptions);
-> +
->  #endif /* __FS_H */
+>  static void pr_puts(int level, const char *str)
+> @@ -112,8 +112,8 @@ nolog:
+>  	if (level > barebox_loglevel)
+>  		return;
+>  
+> -	print_colored_log_level(level);
+> -	puts(str);
+> +	print_colored_log_level(CONSOLE_STDERR, level);
+> +	console_puts(CONSOLE_STDERR, str);
+>  }
+>  
+>  int pr_print(int level, const char *fmt, ...)
+> @@ -217,7 +217,7 @@ void log_print(unsigned flags, unsigned levels)
+>  
+>  		if (!(flags & (BAREBOX_LOG_PRINT_RAW | BAREBOX_LOG_PRINT_TIME
+>  			       | BAREBOX_LOG_DIFF_TIME)))
+> -			print_colored_log_level(log->level);
+> +			print_colored_log_level(CONSOLE_STDOUT, log->level);
+>  
+>  		if (flags & BAREBOX_LOG_PRINT_RAW)
+>  			printf("<%i>", log->level);
+> diff --git a/pbl/console.c b/pbl/console.c
+> index fc8e8cdf1383..a147e2a19e49 100644
+> --- a/pbl/console.c
+> +++ b/pbl/console.c
+> @@ -39,9 +39,9 @@ int console_puts(unsigned int ch, const char *str)
+>  
+>  	while (*str) {
+>  		if (*str == '\n')
+> -			console_putc(CONSOLE_STDOUT, '\r');
+> +			console_putc(ch, '\r');
+>  
+> -		console_putc(CONSOLE_STDOUT, *str);
+> +		console_putc(ch, *str);
+>  		str++;
+>  		n++;
+>  	}
+> @@ -74,7 +74,7 @@ int pr_print(int level, const char *fmt, ...)
+>  	i = vsnprintf(printbuffer, sizeof(printbuffer), fmt, args);
+>  	va_end(args);
+>  
+> -	console_puts(CONSOLE_STDOUT, printbuffer);
+> +	console_puts(CONSOLE_STDERR, printbuffer);
+>  
+>  	return i;
+>  }
 > -- 
 > 2.30.2
 > 
