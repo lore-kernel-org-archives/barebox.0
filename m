@@ -1,61 +1,57 @@
-Delivery-date: Mon, 10 Oct 2022 08:18:10 +0200
+Delivery-date: Mon, 10 Oct 2022 08:34:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ohm79-0033sD-Fc
-	for lore@lore.pengutronix.de; Mon, 10 Oct 2022 08:18:10 +0200
+	id 1ohmMf-0034eT-A9
+	for lore@lore.pengutronix.de; Mon, 10 Oct 2022 08:34:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ohm77-0002c0-5i
-	for lore@pengutronix.de; Mon, 10 Oct 2022 08:18:09 +0200
+	id 1ohmMd-0004AQ-Bc
+	for lore@pengutronix.de; Mon, 10 Oct 2022 08:34:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=unHSviPpOkXicjxw0P72LxTvO5RCLNrqtsm/VVsyRV4=; b=ZcUzaIGvLsNMR/jOTMBQUB0NYg
-	7M22SQv5hCU6uAPMWCXDja7vUIRnOcikfPdZUTi78L4sk7AlNQpSnUrALUxVEiAe5CWXFc5+S7Y9x
-	DxtQUb+Zl95DNUXI8/tf99WtmQNysU2L929GUXWoYl1mwlk9ej8CJgJy/tq1FqOr8YBT1WX1MMtu1
-	vHFZ+GYG0a1ZOUXQJMAx8yOn2qsSvXp/7NN4rom8mfPFiO7urtlKMU/0GVOWBbPOX6SZYvDTCKQvH
-	iwBRydQN646Ql8Z5ciRUOOw1FhtPB9qyXF34+hq2n6ggBM99Kf2whXmbXQWoX1zGhUlraJw3tv5dY
-	k1RvM6xA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8jBwSdbkIpH5kKJjL2vFWjnxoZP9JU0v1WbU80xICQM=; b=lbqZwX+Hz+lQfyulS/jG0oYr6T
+	Gk1bNU7AfW1/el9EIN7HF6PmCJeqmQKl+OJ3IysBZeAREowMZ6uXDvhIsjjEKaH0Zfuhm2jDMutS2
+	qDZnJaT7guVKPacCX+4aGkh2z+byw/yk537xFwVIziGrA+NJrvZqxGwIb1yMyJyK5DlZdW3hWXDuG
+	yBozaO2yCPmtZu9fWLHzfRg9ZTUp5X9eP5nAN+jMmAvFpK7r37/K80wNNlh+K/S+g7hF8STKDD6Zt
+	1C5ERHOiK84BU6soVgDlBM87A5+WCmYSiqIno3PIcda7R5pYbAcLTXexqB+/ho7ry2zNF7jYcS6/q
+	NCol/mqg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ohm5u-00HDSD-B9; Mon, 10 Oct 2022 06:16:54 +0000
+	id 1ohmLE-00HEnD-5I; Mon, 10 Oct 2022 06:32:44 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ohm5m-00HDPX-4P
-	for barebox@lists.infradead.org; Mon, 10 Oct 2022 06:16:47 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1ohm5j-0002Nf-NZ; Mon, 10 Oct 2022 08:16:43 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1ohm5j-0001uh-G8; Mon, 10 Oct 2022 08:16:43 +0200
-Date: Mon, 10 Oct 2022 08:16:43 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20221010061643.GC986@pengutronix.de>
-References: <20221010060504.2082266-1-a.fatoum@pengutronix.de>
+	id 1ohmL8-00HEms-Np
+	for barebox@lists.infradead.org; Mon, 10 Oct 2022 06:32:41 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1ohmL5-0003ye-1L; Mon, 10 Oct 2022 08:32:35 +0200
+Message-ID: <7830e940-d03f-a4e2-0759-0c3739cc5dfd@pengutronix.de>
+Date: Mon, 10 Oct 2022 08:32:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221010060504.2082266-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>,
+ Johannes Zink <j.zink@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20220930133702.518949-1-j.zink@pengutronix.de>
+ <20221004075414.y6wm4sb4qqocfww7@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20221004075414.y6wm4sb4qqocfww7@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221009_231646_189977_B08FA4EA 
-X-CRM114-Status: GOOD (  18.36  )
+X-CRM114-CacheID: sfid-20221009_233238_827075_0BFB53E5 
+X-CRM114-Status: GOOD (  22.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,47 +69,72 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] test: emulate.pl: fix support for multiple block
- devices
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH master] ARM: i.MX7: enable caches when booted over USB
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Oct 10, 2022 at 08:05:04AM +0200, Ahmad Fatoum wrote:
-> Block devices on QEMU command line need a unique id. The id factors in
-> $i, which we failed to increment.
+On 04.10.22 09:54, Marco Felsch wrote:
+> Hi,
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  test/emulate.pl | 2 ++
->  1 file changed, 2 insertions(+)
+> On 22-09-30, Johannes Zink wrote:
+>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>
+>> BootROM on the i.MX7 doesn't set the SMP bit when booted
+>> over serial download. This leads to vastly worse performance
+>> when doing memory-heavy operations in a USB-booted system,
+>> as the caches are not utilized. Example running md5sum over
+>> a 25M image in ramfs:
+>>
+>>   without patch: 10796ms
+>>   with    patch: 457ms
+>>
+>> This issue isn't unique to the i.MX7, but exists for the i.MX6UL as
+>> well, which also has the Cortex-A7 as CPU. Like with
+>> imx6ul_cpu_lowlevel_init(), adapt imx7_cpu_lowlevel_init() to avoid this
+>> slow down.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+>> ---
+>>  arch/arm/mach-imx/cpu_init.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+>> index ea36215419..ede2076102 100644
+>> --- a/arch/arm/mach-imx/cpu_init.c
+>> +++ b/arch/arm/mach-imx/cpu_init.c
+>> @@ -49,7 +49,7 @@ void imx6ul_cpu_lowlevel_init(void)
+>>  
+>>  void imx7_cpu_lowlevel_init(void)
+>>  {
+>> -	arm_cpu_lowlevel_init();
+>> +	cortex_a7_lowlevel_init();
+> 
+> Out of curiosity, arm_cpu_lowlevel_init() does a lot more than
+> cortex_a7_lowlevel_init() e.g. cache invalidation. Is it save to only
+> call cortex_a7_lowlevel_init() here?
 
-Applied, thanks
-
-Sascha
+It's not and this was an oversight. Thanks for catching.
 
 > 
-> diff --git a/test/emulate.pl b/test/emulate.pl
-> index 77b751a329b3..b5e2188b86dd 100755
-> --- a/test/emulate.pl
-> +++ b/test/emulate.pl
-> @@ -253,6 +253,8 @@ sub emulate {
->  		} else {
->  		    die "--blk unsupported for target\n";
->  		}
-> +
-> +		$i++;
->  	    }
->  
->  	    # note that barebox doesn't yet support multiple virtio consoles
-> -- 
-> 2.30.2
+> Regards,
+>   Marco
+> 
+>>  	imx_cpu_timer_init(IOMEM(MX7_SYSCNT_CTRL_BASE_ADDR));
+>>  }
+>>  
+>> -- 
+>> 2.30.2
+>>
+>>
+>>
 > 
 > 
-> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
