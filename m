@@ -1,60 +1,60 @@
-Delivery-date: Mon, 10 Oct 2022 08:12:56 +0200
+Delivery-date: Mon, 10 Oct 2022 08:13:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ohm25-0033ed-G9
-	for lore@lore.pengutronix.de; Mon, 10 Oct 2022 08:12:56 +0200
+	id 1ohm2L-0033fY-PN
+	for lore@lore.pengutronix.de; Mon, 10 Oct 2022 08:13:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ohm23-00019x-6Z
-	for lore@pengutronix.de; Mon, 10 Oct 2022 08:12:55 +0200
+	id 1ohm2J-0001BA-EM
+	for lore@pengutronix.de; Mon, 10 Oct 2022 08:13:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=HLC7qzBXn+mSzkYVhwomTR1sEW10Dj/CkeAf/lbNas8=; b=ax2H/mHaKgtFEfIibILR22UZdF
-	7UsG3EotNivpnJic06L+ILn7QU7/TlU0YWsNmUQAmfrjCY6MJNDuq4NUyslw1SC/lVAOT31EshBCz
-	YMM65xBDbN6oSksjMM5KLl/hCBRi5Yr04uDvt3Xi9+XtqFg18LTK745PqJUdDAGZzu7FQJSt7R/2R
-	k6k5B1pHiwI/T1YGy87jrU15U9bySkaIMbG+1AozUJKegk6jAewLwd2kdY/7x67CQNKYA2U3dTyFf
-	HDg/ZrxSj1Mk0B2WAG4YcNtkTa8OlDMSJ9O0LELc3yVTN+YjohXnMvuAuOrqBS/BqfM1JLKe4CbZ8
-	aEKceEhw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Ow0xn15eX1xGhicrXiGFeha43nJ+IBvIc/rL3AJhhiQ=; b=MliTONiBkXDyxIna3/wNeibYWh
+	HLsOJM3U02d50oazOxALH7VUByBXCkpUpkOCWRzQXqHUsoyYGBhIv+BxO4tuZDAjZKPjieUmMl9iK
+	D3fyfvJsSCw9CZ52/oM2meaa1Ed3k9h8zPNUZp3uEIFuEBffHdQFhDCXSospbLeLm8yKhkhaZ7hQE
+	2VEDvLncQ9deNEU8Iy8hXf84TbdMm9uQM8ObAPS2bHQEBzHICli82m0VJdTCI/gL2TE9b5NKC3jMS
+	Am6NtxnsSx/pgh5X9VqRhIfFSklfp91MLWLAtD3Tg2kUyFQuBfJH1Sx0Qcvl6QYPUVxzXTYHYAKC4
+	IvcQRqpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ohm0r-00HAd8-5T; Mon, 10 Oct 2022 06:11:41 +0000
+	id 1ohm0t-00HAep-Uq; Mon, 10 Oct 2022 06:11:44 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ohm0d-00HAWa-E8
+	id 1ohm0d-00HAWf-Tv
 	for barebox@lists.infradead.org; Mon, 10 Oct 2022 06:11:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ohm0c-0000Xs-7z
-	for barebox@lists.infradead.org; Mon, 10 Oct 2022 08:11:26 +0200
+	id 1ohm0c-0000YK-Mi; Mon, 10 Oct 2022 08:11:26 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ohm0b-000d9m-GZ
-	for barebox@lists.infradead.org; Mon, 10 Oct 2022 08:11:25 +0200
+	id 1ohm0c-000dA1-14; Mon, 10 Oct 2022 08:11:26 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ohm0a-008kAf-3F
-	for barebox@lists.infradead.org; Mon, 10 Oct 2022 08:11:24 +0200
+	id 1ohm0a-008kB5-6t; Mon, 10 Oct 2022 08:11:24 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Mon, 10 Oct 2022 08:11:12 +0200
-Message-Id: <20221010061122.2084009-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 10 Oct 2022 08:11:21 +0200
+Message-Id: <20221010061122.2084009-10-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20221010061122.2084009-1-a.fatoum@pengutronix.de>
+References: <20221010061122.2084009-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221009_231127_495050_DC247430 
-X-CRM114-Status: GOOD (  11.08  )
+X-CRM114-CacheID: sfid-20221009_231127_983559_8632EC18 
+X-CRM114-Status: GOOD (  13.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,90 +76,144 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 00/10] treewide: misc cleanup for efiloader prep
+Subject: [PATCH 09/10] common: bootm: factor out FIT parsing code into bootm_open_bit
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The patches have in common that no functional change sould be introduced
-and that they resulted during efiloader implementation.
+We already have counterpart functions for ELF and uimage. Add one for
+FIT as well in preparation for moving to a more readable switch statement.
 
-Ahmad Fatoum (10):
-  block: have cdev_get_block_device accept const cdev
-  treewide: replace errno_str() with %m printf format specifier
-  common: misc: remove now unused errno_str
-  driver: don't crash when dev_name/dev_id is called with NULL dev
-  lds: introduce <asm/barebox.lds.h>
-  lds: move OUTPUT_FORMAT/ARCH definition into header
-  ARM: lds: define and use BAREBOX_RELOCATION_TABLE
-  lib: random: add hwrng_get_crypto_bytes
-  common: bootm: factor out FIT parsing code into bootm_open_bit
-  common: bootm: use switch-case
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/bootm.c | 107 +++++++++++++++++++++++++++----------------------
+ 1 file changed, 59 insertions(+), 48 deletions(-)
 
- arch/arm/include/asm/barebox.lds.h       |  30 +++++
- arch/arm/lib/pbl.lds.S                   |  24 +---
- arch/arm/lib32/barebox.lds.S             |  14 +--
- arch/arm/lib64/barebox.lds.S             |  14 +--
- arch/arm/mach-at91/boot_test_cmd.c       |   2 +-
- arch/arm/mach-omap/am33xx_bbu_emmc.c     |  15 ++-
- arch/arm/mach-omap/am33xx_bbu_spi_mlo.c  |   6 +-
- arch/kvx/cpu/barebox.lds.S               |   2 +-
- arch/kvx/include/asm/barebox.lds.h       |   6 +
- arch/mips/include/asm/barebox.lds.h      |   5 +
- arch/mips/lib/barebox.lds.S              |   4 +-
- arch/mips/lib/pbl.lds.S                  |   4 +-
- arch/mips/pbl/zbarebox.lds.S             |   4 +-
- arch/openrisc/cpu/barebox.lds.S          |   4 +-
- arch/openrisc/include/asm/barebox.lds.h  |   5 +
- arch/powerpc/boards/pcm030/barebox.lds.S |   4 +-
- arch/powerpc/include/asm/barebox.lds.h   |   5 +
- arch/powerpc/mach-mpc85xx/barebox.lds.S  |   4 +-
- arch/riscv/include/asm/barebox.lds.h     |  10 ++
- arch/riscv/lib/barebox.lds.S             |  10 +-
- arch/riscv/lib/pbl.lds.S                 |  10 +-
- arch/sandbox/board/barebox.lds.S         |   2 +-
- arch/sandbox/include/asm/barebox.lds.h   |   3 +
- arch/x86/include/asm/barebox.lds.h       |  11 ++
- arch/x86/mach-efi/elf_ia32_efi.lds.S     |   6 +-
- arch/x86/mach-efi/elf_x86_64_efi.lds.S   |   6 +-
- commands/cat.c                           |   2 +-
- commands/edit.c                          |   4 +-
- commands/flash.c                         |   8 +-
- commands/ls.c                            |   3 +-
- commands/mkdir.c                         |   2 +-
- commands/rm.c                            |   2 +-
- commands/rmdir.c                         |   2 +-
- common/block.c                           |   2 +-
- common/bootm.c                           | 150 ++++++++++++-----------
- common/elf.c                             |  13 +-
- common/envfs-core.c                      |   3 +-
- common/environment.c                     |  11 +-
- common/firmware.c                        |   5 +-
- common/misc.c                            |   8 +-
- common/module.lds.S                      |   2 +-
- common/uimage.c                          |   4 +-
- fs/bpkfs.c                               |   6 +-
- fs/uimagefs.c                            |   4 +-
- include/asm-generic/barebox.lds.h        |   4 -
- include/block.h                          |   4 +-
- include/driver.h                         |   2 +
- include/errno.h                          |   1 -
- include/linux/hw_random.h                |   6 +-
- include/stdlib.h                         |   2 +
- lib/libfile.c                            |   6 +-
- lib/logo/Makefile                        |   2 +-
- lib/random.c                             |  25 ++--
- scripts/Makefile.lib                     |   4 +-
- scripts/gen-dtb-s                        |   2 +-
- 55 files changed, 270 insertions(+), 229 deletions(-)
- create mode 100644 arch/arm/include/asm/barebox.lds.h
- create mode 100644 arch/kvx/include/asm/barebox.lds.h
- create mode 100644 arch/mips/include/asm/barebox.lds.h
- create mode 100644 arch/openrisc/include/asm/barebox.lds.h
- create mode 100644 arch/powerpc/include/asm/barebox.lds.h
- create mode 100644 arch/riscv/include/asm/barebox.lds.h
- create mode 100644 arch/sandbox/include/asm/barebox.lds.h
- create mode 100644 arch/x86/include/asm/barebox.lds.h
-
+diff --git a/common/bootm.c b/common/bootm.c
+index 2f02c156e56f..f507aece8c18 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -519,6 +519,62 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 	return 0;
+ }
+ 
++static int bootm_open_fit(struct image_data *data)
++{
++	struct fit_handle *fit;
++	static const char *kernel_img = "kernel";
++	int ret;
++
++	if (!IS_ENABLED(CONFIG_FITIMAGE))
++		return 0;
++
++	fit = fit_open(data->os_file, data->verbose, data->verify);
++	if (IS_ERR(fit)) {
++		pr_err("Loading FIT image %s failed with: %pe\n", data->os_file, fit);
++		return PTR_ERR(fit);
++	}
++
++	data->os_fit = fit;
++
++	data->fit_config = fit_open_configuration(data->os_fit,
++						  data->os_part);
++	if (IS_ERR(data->fit_config)) {
++		pr_err("Cannot open FIT image configuration '%s'\n",
++		       data->os_part ? data->os_part : "default");
++		return PTR_ERR(data->fit_config);
++	}
++
++	ret = fit_open_image(data->os_fit, data->fit_config, kernel_img,
++			     &data->fit_kernel, &data->fit_kernel_size);
++	if (ret)
++		return ret;
++	if (data->os_address == UIMAGE_SOME_ADDRESS) {
++		ret = fit_get_image_address(data->os_fit,
++					    data->fit_config,
++					    kernel_img,
++					    "load", &data->os_address);
++		if (!ret)
++			pr_info("Load address from FIT '%s': 0x%lx\n",
++				kernel_img, data->os_address);
++		/* Note: Error case uses default value. */
++	}
++	if (data->os_entry == UIMAGE_SOME_ADDRESS) {
++		unsigned long entry;
++		ret = fit_get_image_address(data->os_fit,
++					    data->fit_config,
++					    kernel_img,
++					    "entry", &entry);
++		if (!ret) {
++			data->os_entry = entry - data->os_address;
++			pr_info("Entry address from FIT '%s': 0x%lx\n",
++				kernel_img, entry);
++		}
++		/* Note: Error case uses default value. */
++	}
++
++	return 0;
++}
++
+ static int bootm_open_elf(struct image_data *data)
+ {
+ 	if (!IS_ENABLED(CONFIG_ELF))
+@@ -633,55 +689,10 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		}
+ 	}
+ 
+-	if (IS_ENABLED(CONFIG_FITIMAGE) && os_type == filetype_oftree) {
+-		struct fit_handle *fit;
+-		static const char *kernel_img = "kernel";
+-
+-		fit = fit_open(data->os_file, data->verbose, data->verify);
+-		if (IS_ERR(fit)) {
+-			pr_err("Loading FIT image %s failed with: %pe\n", data->os_file, fit);
+-			ret = PTR_ERR(fit);
+-			goto err_out;
+-		}
+-
+-		data->os_fit = fit;
+-
+-		data->fit_config = fit_open_configuration(data->os_fit,
+-							  data->os_part);
+-		if (IS_ERR(data->fit_config)) {
+-			pr_err("Cannot open FIT image configuration '%s'\n",
+-			       data->os_part ? data->os_part : "default");
+-			ret = PTR_ERR(data->fit_config);
+-			goto err_out;
+-		}
+-
+-		ret = fit_open_image(data->os_fit, data->fit_config, kernel_img,
+-				     &data->fit_kernel, &data->fit_kernel_size);
++	if (os_type == filetype_oftree) {
++		ret = bootm_open_fit(data);
+ 		if (ret)
+-			goto err_out;
+-		if (data->os_address == UIMAGE_SOME_ADDRESS) {
+-			ret = fit_get_image_address(data->os_fit,
+-						    data->fit_config,
+-						    kernel_img,
+-						    "load", &data->os_address);
+-			if (!ret)
+-				pr_info("Load address from FIT '%s': 0x%lx\n",
+-					kernel_img, data->os_address);
+-			/* Note: Error case uses default value. */
+-		}
+-		if (data->os_entry == UIMAGE_SOME_ADDRESS) {
+-			unsigned long entry;
+-			ret = fit_get_image_address(data->os_fit,
+-						    data->fit_config,
+-						    kernel_img,
+-						    "entry", &entry);
+-			if (!ret) {
+-				data->os_entry = entry - data->os_address;
+-				pr_info("Entry address from FIT '%s': 0x%lx\n",
+-					kernel_img, entry);
+-			}
+-			/* Note: Error case uses default value. */
+-		}
++			return ret;
+ 	}
+ 
+ 	if (os_type == filetype_uimage) {
 -- 
 2.30.2
 
