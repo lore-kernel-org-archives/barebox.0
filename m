@@ -1,58 +1,61 @@
-Delivery-date: Fri, 07 Oct 2022 16:23:14 +0200
+Delivery-date: Mon, 10 Oct 2022 07:55:54 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ogoFu-000XJI-Rf
-	for lore@lore.pengutronix.de; Fri, 07 Oct 2022 16:23:14 +0200
+	id 1ohllb-0032i4-7m
+	for lore@lore.pengutronix.de; Mon, 10 Oct 2022 07:55:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ogoFs-0003oi-Hk
-	for lore@pengutronix.de; Fri, 07 Oct 2022 16:23:13 +0200
+	id 1ohllZ-0005yX-2U
+	for lore@pengutronix.de; Mon, 10 Oct 2022 07:55:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AJ9OeZdmuRk11ncfzLmFSnuHMfPaVR2KQEJYDs/ihcE=; b=mEY8EwZ3V9F0tgsz0kZHVr/zlK
-	6um/IL6dVYJ/LnAXOx+dA7N1BEbrI5gacXlTw0UgttV3B0FdfDM9KOouay0fnXUawwAefQXB7j6px
-	H6fB+8ZgSKEgBvD2nSq3jtWSkfmFUy/65ZVCdShpqBbhUFzle2yY+3mQlhTBZOGhEajGC22Nvzq85
-	lvlBZLkW1LbVbRp3m2waV6oKbKL1kIts01JeoQ9wmPgffqTw99e41IlD4PKJVpXmRopiOkqjNSOOX
-	GUArj3XY04K6h2OWtMe2CN9127KDh4VMyJwMptQAnXkFKBzfNcy9+6BJPA52jtEy+tfgSQO2nxMm5
-	7R6CpgIQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=dFMFqggTtLYhWKQRZUBMou2/B2WmjxEBLnPFN2nvwtE=; b=e3tBFG7lusqWyWwdimwju0AkoB
+	Vm7t+fDt8OwGIvxDfaleuHvKgp7ZfGQ8M75hdTBQUIa4YkQp+XtrsxVnf4WlwTbkVRaEuqyWTA3KC
+	/029T74NQNmo1ag2XxSbN8OXDm/+NInyosIyqqRuRfAaWA4Wkv3yIPRBYPKbox6GUS/UFlq+ILEEt
+	9RYnREu5idE0QC5hoHlIIb4H8tUU/gwmdxRikrL/dzwYBRGiiy6lYN0koeEe3GCVVfWauo/aOHh6H
+	q0LDAgmlWC0RZEZSFPkvtcryNKVCO+sghWjdom7PIsFqpPH3oAB1WzpBDwjy6j7RtoZDwAyWl0TwI
+	0fH2Gk1w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ogoEX-009G2H-Ij; Fri, 07 Oct 2022 14:21:49 +0000
+	id 1ohlil-00H7yV-Kj; Mon, 10 Oct 2022 05:52:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ogoES-009G10-KM
-	for barebox@lists.infradead.org; Fri, 07 Oct 2022 14:21:47 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ogoEM-0003Ya-BL; Fri, 07 Oct 2022 16:21:38 +0200
-Message-ID: <de8a546e-5706-a153-f5bb-da8f6017fcd1@pengutronix.de>
-Date: Fri, 7 Oct 2022 16:21:36 +0200
+	id 1ohlig-00H7xr-MT
+	for barebox@lists.infradead.org; Mon, 10 Oct 2022 05:52:56 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ohlia-0005nh-N5; Mon, 10 Oct 2022 07:52:48 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ohlia-00080z-Fh; Mon, 10 Oct 2022 07:52:48 +0200
+Date: Mon, 10 Oct 2022 07:52:48 +0200
+To: Johannes Zink <j.zink@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20221010055248.GB986@pengutronix.de>
+References: <20220930133702.518949-1-j.zink@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Content-Language: en-US
-To: michael.graichen@hotmail.com,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>,
- Yann Sionneau <ysionneau@kalray.eu>
-References: <AM9P192MB08709ED9E86625C99913EA2FAB5C9@AM9P192MB0870.EURP192.PROD.OUTLOOK.COM>
- <5ab7d76d-2d89-4aa5-3f9b-1eeffefd9437@pengutronix.de>
- <AM9P192MB08707A8AB46C16C0CB350FDEAB5F9@AM9P192MB0870.EURP192.PROD.OUTLOOK.COM>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <AM9P192MB08707A8AB46C16C0CB350FDEAB5F9@AM9P192MB0870.EURP192.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220930133702.518949-1-j.zink@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221007_072144_719531_2043317C 
-X-CRM114-Status: GOOD (  24.33  )
+X-CRM114-CacheID: sfid-20221009_225254_774389_6371103E 
+X-CRM114-Status: GOOD (  25.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,112 +73,51 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: AW: arasan-sdhci eMMC Problem 'command timeout'
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH master] ARM: i.MX7: enable caches when booted over USB
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 07.10.22 16:13, michael.graichen@hotmail.com wrote:
+On Fri, Sep 30, 2022 at 03:37:02PM +0200, Johannes Zink wrote:
+> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > 
-> Hey, 
+> BootROM on the i.MX7 doesn't set the SMP bit when booted
+> over serial download. This leads to vastly worse performance
+> when doing memory-heavy operations in a USB-booted system,
+> as the caches are not utilized. Example running md5sum over
+> a 25M image in ramfs:
 > 
-> thanks for your advices. Adding "no-sd" really solved it.
+>   without patch: 10796ms
+>   with    patch: 457ms
+> 
+> This issue isn't unique to the i.MX7, but exists for the i.MX6UL as
+> well, which also has the Cortex-A7 as CPU. Like with
+> imx6ul_cpu_lowlevel_init(), adapt imx7_cpu_lowlevel_init() to avoid this
+> slow down.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/cpu_init.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+> index ea36215419..ede2076102 100644
+> --- a/arch/arm/mach-imx/cpu_init.c
+> +++ b/arch/arm/mach-imx/cpu_init.c
+> @@ -49,7 +49,7 @@ void imx6ul_cpu_lowlevel_init(void)
+>  
+>  void imx7_cpu_lowlevel_init(void)
+>  {
+> -	arm_cpu_lowlevel_init();
+> +	cortex_a7_lowlevel_init();
 
-Good to know. Keep in mind that's just a work-around though.
-I highly encourage you to debug it... :D
+Why do you remove the call to arm_cpu_lowlevel_init() here?
 
-Cheers,
-Ahmad
-
-> 
-> Best Regards 
-> Michael
-> 
-> 
-> ________________________________________
-> Von: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Gesendet: Donnerstag, 6. Oktober 2022 15:13
-> An: michael.graichen@hotmail.com; barebox@lists.infradead.org
-> Betreff: Re: arasan-sdhci eMMC Problem 'command timeout'
-> 
-> Hello,
-> 
-> On 06.10.22 15:03, michael.graichen@hotmail.com wrote:
->> Hey,
->>
->> I have connected an eMMC to sdhci0 and a uSD Card to sdhci1 of a Zynq.
->> while the uSD Card seams to work fine i'm getting the error
->>
->> arasan-sdhci e0100000.mmc@e0100000.of: registered as mmc0
->> arasan-sdhci e0100000.mmc@e0100000.of: SDHCI_INT_ERROR: 0x00000001
->> arasan-sdhci e0100000.mmc@e0100000.of: error while transfering data for command 8
->> arasan-sdhci e0100000.mmc@e0100000.of: state = 0x01ff0001 , interrupt = 0x00018000
->> arasan-sdhci e0100000.mmc@e0100000.of: SDHCI_INT_ERROR: 0x00000001
->> arasan-sdhci e0100000.mmc@e0100000.of: error while transfering data for command 55
->> arasan-sdhci e0100000.mmc@e0100000.of: state = 0x01ff0001 , interrupt = 0x00018000
->>
->> from the eMMC.
-> 
-> Please try adding no-sd to your eMMC device tree node and try again.
-> I don't know why it's necessary, because falling back to MMC after
-> SD fails is normal operation on all other hosts. I don't have the
-> hardware, but I've seen that the recently added device trees that
-> use the arasan, set this in barebox for the eMMC node.
-> 
->>
->> arasan-sdhci e0101000.mmc@e0101000.of: registered as mmc1
->> mmc1: detected SD card version 2.0
->> mmc1: registered mmc1
->>
->> both eMMC and SDCard work fine in Linux. So I think the Problem is some confuguration difference between Linux and barebox.
->> The MMC is from type MTFC8G but Linux detects it as
->>
->> [    2.012122] mmc0: new high speed MMC card at address 0001
->> [    2.021129] mmcblk0: mmc0:0001 Q2J55L 7.09 GiB
->> [    2.026355] Btrfs loaded, crc32c=crc32c-generic, zoned=no, fsverity=no
->> [    2.027458] mmcblk0boot0: mmc0:0001 Q2J55L 16.0 MiB
->> [    2.031509] mmcblk0boot1: mmc0:0001 Q2J55L 16.0 MiB
->> [    2.039829] mmcblk0rpmb: mmc0:0001 Q2J55L 4.00 MiB, chardev (245:0)
->>
->> Unfortunattly I'm not very familliar with SDHCI, so I would apreciate any help.
-> 
-> If it's indeed resolved by no-sd, this sound like a good occasion to dig
-> deeper into the SDHCI. ;)
-> 
-> Let me know if that works for you.
-> 
-> Cheers,
-> Ahmad
-> 
-> 
->>
->> Best Regards
->> Michael
->>
->>
->>
->>
->>
->>
->>
->>
->>
->>
->>
-> 
-> 
-> --
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-> 
-
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
