@@ -1,60 +1,60 @@
-Delivery-date: Mon, 10 Oct 2022 08:13:19 +0200
+Delivery-date: Mon, 10 Oct 2022 08:13:20 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ohm2S-0033gU-6B
-	for lore@lore.pengutronix.de; Mon, 10 Oct 2022 08:13:19 +0200
+	id 1ohm2S-0033ge-Oq
+	for lore@lore.pengutronix.de; Mon, 10 Oct 2022 08:13:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ohm2O-0001Dt-MH
-	for lore@pengutronix.de; Mon, 10 Oct 2022 08:13:18 +0200
+	id 1ohm2P-0001En-8Z
+	for lore@pengutronix.de; Mon, 10 Oct 2022 08:13:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5sA33YBhI2t1DT58ApMSeo8A1BCFNNmGmKXzIvFCE98=; b=vaUbAXrMAAAjYxAaySTYN4TlIh
-	Pb37WP/PwfBNumZgsnVzB+OMH/DT3Ota/TKxHirv8uNprzMNuPzBVchlFEnGNKxuricp0L+CcvKte
-	lVjuHRvyoGPKGGnbd3/Doe9K8YO4ygb849ySPV4hlKfSt/l8M0BjczAN/EwMgFn6ofxSmH5hsfxx/
-	m+DB4xMXEXdr2BYIaNSE0nHhHsyJpS+eKXS9tGD/JG9zbgw1usAaKMy/UpKkWYtPhDowNxD3Io5y8
-	Dg2+qac173Lbmnv+gqhLl86zWCodePp3+pu8bN3oMbHZzJE8GufVCLKaBO5mYSy1cfyrV2R5cgmOk
-	teR9APIg==;
+	bh=XNGq7EbTHxSlkqiPuBKvSJuwRe3UER67UO6UdCpgzIo=; b=o41hSukM6jjcJRivQ2xPaIlhFn
+	zGIAHINEZIxILBiyxau+ntC9D05Vw/rFW9CBaGwYUYyo0Mz1Ioa2WbsJ6XzsFIo1NybYcLBKbfNe8
+	dc3lOh1vyX44dpQEY769u45ZwkIfn4KpNx2bN/JrLFkMTPOKhhrh8fjpAGts8r3a7eMKOVrsnhhjJ
+	nRGMu8xTI7H+sjHkjde6oLaaNRG9AAWSQFOQtIf2tx1wcvamLU4f1kQl80c5omm7JNe+kIY2wtAuk
+	TuQlwa2ULo41NmyWnu/euxsZynlxdFvqb8tE2qLHdDLPC8/Rd4E+g/PESISTC7y43vO4qtbpJLZqn
+	YF4gTcyQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ohm10-00HAk5-EY; Mon, 10 Oct 2022 06:11:50 +0000
+	id 1ohm14-00HAmY-Mx; Mon, 10 Oct 2022 06:11:54 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ohm0d-00HAWe-Mx
-	for barebox@lists.infradead.org; Mon, 10 Oct 2022 06:11:31 +0000
+	id 1ohm0d-00HAWg-Uk
+	for barebox@lists.infradead.org; Mon, 10 Oct 2022 06:11:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ohm0c-0000Y6-Dm; Mon, 10 Oct 2022 08:11:26 +0200
+	id 1ohm0c-0000YH-M6; Mon, 10 Oct 2022 08:11:26 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ohm0b-000d9u-N8; Mon, 10 Oct 2022 08:11:25 +0200
+	id 1ohm0b-000d9y-VW; Mon, 10 Oct 2022 08:11:25 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ohm0a-008kAl-4D; Mon, 10 Oct 2022 08:11:24 +0200
+	id 1ohm0a-008kAt-5X; Mon, 10 Oct 2022 08:11:24 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 10 Oct 2022 08:11:14 +0200
-Message-Id: <20221010061122.2084009-3-a.fatoum@pengutronix.de>
+Date: Mon, 10 Oct 2022 08:11:17 +0200
+Message-Id: <20221010061122.2084009-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221010061122.2084009-1-a.fatoum@pengutronix.de>
 References: <20221010061122.2084009-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221009_231128_099147_FF56C93C 
-X-CRM114-Status: GOOD (  16.85  )
+X-CRM114-CacheID: sfid-20221009_231128_334199_45957820 
+X-CRM114-Status: GOOD (  16.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,530 +76,402 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 02/10] treewide: replace errno_str() with %m printf format specifier
+Subject: [PATCH 05/10] lds: introduce <asm/barebox.lds.h>
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Both errno_str() and printf("%m" end up calling strerror(). %m is
-more convenient to use, so switch over all instances to it.
+We have a separate linker script for each architecture and one more for
+PBL if supported. All linker scripts include <asm-generic/barebox.lds.h>.
 
-No functional change.
+In future, we may want to use a linker script common to more than one
+architecture. Prepare for this by having each architecture define a
+<asm/barebox.lds.h>. Currently, these files contain little more than
+1-2 #include directives, but this will change in later commits.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/boot_test_cmd.c      |  2 +-
- arch/arm/mach-omap/am33xx_bbu_emmc.c    | 15 +++++++--------
- arch/arm/mach-omap/am33xx_bbu_spi_mlo.c |  6 +++---
- commands/cat.c                          |  2 +-
- commands/edit.c                         |  4 ++--
- commands/flash.c                        |  8 ++++----
- commands/ls.c                           |  3 +--
- commands/mkdir.c                        |  2 +-
- commands/rm.c                           |  2 +-
- commands/rmdir.c                        |  2 +-
- common/elf.c                            | 13 ++++++-------
- common/envfs-core.c                     |  3 +--
- common/environment.c                    | 11 +++++------
- common/firmware.c                       |  5 ++---
- common/misc.c                           |  2 +-
- common/uimage.c                         |  4 ++--
- fs/bpkfs.c                              |  6 +++---
- fs/uimagefs.c                           |  4 ++--
- lib/libfile.c                           |  6 +++---
- 19 files changed, 47 insertions(+), 53 deletions(-)
+ arch/arm/include/asm/barebox.lds.h       | 7 +++++++
+ arch/arm/lib/pbl.lds.S                   | 2 +-
+ arch/arm/lib32/barebox.lds.S             | 2 +-
+ arch/arm/lib64/barebox.lds.S             | 2 +-
+ arch/kvx/cpu/barebox.lds.S               | 2 +-
+ arch/kvx/include/asm/barebox.lds.h       | 3 +++
+ arch/mips/include/asm/barebox.lds.h      | 3 +++
+ arch/mips/lib/barebox.lds.S              | 2 +-
+ arch/mips/lib/pbl.lds.S                  | 2 +-
+ arch/mips/pbl/zbarebox.lds.S             | 2 +-
+ arch/openrisc/cpu/barebox.lds.S          | 2 +-
+ arch/openrisc/include/asm/barebox.lds.h  | 3 +++
+ arch/powerpc/boards/pcm030/barebox.lds.S | 2 +-
+ arch/powerpc/include/asm/barebox.lds.h   | 3 +++
+ arch/powerpc/mach-mpc85xx/barebox.lds.S  | 2 +-
+ arch/riscv/include/asm/barebox.lds.h     | 3 +++
+ arch/riscv/lib/barebox.lds.S             | 2 +-
+ arch/riscv/lib/pbl.lds.S                 | 2 +-
+ arch/sandbox/board/barebox.lds.S         | 2 +-
+ arch/sandbox/include/asm/barebox.lds.h   | 3 +++
+ arch/x86/include/asm/barebox.lds.h       | 3 +++
+ arch/x86/mach-efi/elf_ia32_efi.lds.S     | 2 +-
+ arch/x86/mach-efi/elf_x86_64_efi.lds.S   | 2 +-
+ common/module.lds.S                      | 2 +-
+ include/asm-generic/barebox.lds.h        | 4 ----
+ lib/logo/Makefile                        | 2 +-
+ scripts/Makefile.lib                     | 4 ++--
+ scripts/gen-dtb-s                        | 2 +-
+ 28 files changed, 48 insertions(+), 24 deletions(-)
+ create mode 100644 arch/arm/include/asm/barebox.lds.h
+ create mode 100644 arch/kvx/include/asm/barebox.lds.h
+ create mode 100644 arch/mips/include/asm/barebox.lds.h
+ create mode 100644 arch/openrisc/include/asm/barebox.lds.h
+ create mode 100644 arch/powerpc/include/asm/barebox.lds.h
+ create mode 100644 arch/riscv/include/asm/barebox.lds.h
+ create mode 100644 arch/sandbox/include/asm/barebox.lds.h
+ create mode 100644 arch/x86/include/asm/barebox.lds.h
 
-diff --git a/arch/arm/mach-at91/boot_test_cmd.c b/arch/arm/mach-at91/boot_test_cmd.c
-index 7bb40f2e4026..9a5c0e3e4e06 100644
---- a/arch/arm/mach-at91/boot_test_cmd.c
-+++ b/arch/arm/mach-at91/boot_test_cmd.c
-@@ -57,7 +57,7 @@ static int do_at91_boot_test(int argc, char *argv[])
+diff --git a/arch/arm/include/asm/barebox.lds.h b/arch/arm/include/asm/barebox.lds.h
+new file mode 100644
+index 000000000000..327beaf4bfb8
+--- /dev/null
++++ b/arch/arm/include/asm/barebox.lds.h
+@@ -0,0 +1,7 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#if defined CONFIG_ARCH_EP93XX
++#include <mach/barebox.lds.h>
++#endif
++
++#include <asm-generic/barebox.lds.h>
+diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+index d48f27bc43b5..cc4b12f44893 100644
+--- a/arch/arm/lib/pbl.lds.S
++++ b/arch/arm/lib/pbl.lds.S
+@@ -2,7 +2,7 @@
+ /* SPDX-FileCopyrightText: 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix */
  
- 	fd = open(sram, O_WRONLY);
- 	if (fd < 0) {
--		printf("could not open %s: %s\n", sram, errno_str());
-+		printf("could not open %s: %m\n", sram);
- 		ret = fd;
- 		goto err;
- 	}
-diff --git a/arch/arm/mach-omap/am33xx_bbu_emmc.c b/arch/arm/mach-omap/am33xx_bbu_emmc.c
-index 29e13de778aa..c3d4f9c42236 100644
---- a/arch/arm/mach-omap/am33xx_bbu_emmc.c
-+++ b/arch/arm/mach-omap/am33xx_bbu_emmc.c
-@@ -42,16 +42,15 @@ static int emmc_mlo_handler(struct bbu_handler *handler, struct bbu_data *data)
+ #include <linux/sizes.h>
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
+ #include <asm-generic/memory_layout.h>
  
- 	fd = open(handler->devicefile, O_RDWR);
- 	if (fd < 0) {
--		pr_err("could not open %s: %s\n", handler->devicefile,
--			errno_str());
-+		pr_err("could not open %s: %m\n", handler->devicefile);
- 		return fd;
- 	}
+ #ifdef CONFIG_PBL_RELOCATABLE
+diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
+index 77a5c525c5ae..2bf66657a367 100644
+--- a/arch/arm/lib32/barebox.lds.S
++++ b/arch/arm/lib32/barebox.lds.S
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+ /* SPDX-FileCopyrightText: 2000-2004 Wolfgang Denk <wd@denx.de>, DENX Software Engineering */
  
- 	/* save the partition table */
- 	ret = pread(fd, part_table, PART_TABLE_SIZE, PART_TABLE_OFFSET);
- 	if (ret < 0) {
--		pr_err("could not read partition table from fd %s: %s\n",
--			handler->devicefile, errno_str());
-+		pr_err("could not read partition table from fd %s: %m\n",
-+			handler->devicefile);
- 		goto error;
- 	}
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
+ #include <asm/secure.h>
  
-@@ -59,8 +58,8 @@ static int emmc_mlo_handler(struct bbu_handler *handler, struct bbu_data *data)
- 	for (i = 0; i < 4; i++) {
- 		ret = pwrite(fd, image, size, i * 0x20000);
- 		if (ret < 0) {
--			pr_err("could not write MLO %i/4 to fd %s: %s\n",
--				i + 1, handler->devicefile, errno_str());
-+			pr_err("could not write MLO %i/4 to fd %s: %m\n",
-+				i + 1, handler->devicefile);
- 			goto error_save_part_table;
- 		}
- 	}
-@@ -69,8 +68,8 @@ error_save_part_table:
- 	/* write the partition table back */
- 	ret = pwrite(fd, part_table, PART_TABLE_SIZE, PART_TABLE_OFFSET);
- 	if (ret < 0)
--		pr_err("could not write partition table to fd %s: %s\n",
--			handler->devicefile, errno_str());
-+		pr_err("could not write partition table to fd %s: %m\n",
-+			handler->devicefile);
+ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
+index 2ebaabef0f1d..c1069c896f27 100644
+--- a/arch/arm/lib64/barebox.lds.S
++++ b/arch/arm/lib64/barebox.lds.S
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+ /* SPDX-FileCopyrightText: 2000-2004 Wolfgang Denk <wd@denx.de>, DENX Software Engineering */
  
- error:
- 	close(fd);
-diff --git a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
-index 7d2ef1f0f225..f36c2c3bf02b 100644
---- a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
-+++ b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
-@@ -51,7 +51,7 @@ static int spi_nor_mlo_handler(struct bbu_handler *handler,
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
  
- 	ret = stat(data->devicefile, &s);
- 	if (ret) {
--		printf("could not open %s: %s", data->devicefile, errno_str());
-+		printf("could not open %s: %m", data->devicefile);
- 		return ret;
- 	}
+ OUTPUT_FORMAT("elf64-littleaarch64", "elf64-littleaarch64", "elf64-littleaarch64")
+ OUTPUT_ARCH(aarch64)
+diff --git a/arch/kvx/cpu/barebox.lds.S b/arch/kvx/cpu/barebox.lds.S
+index 77ebaf0aeac0..a22998190f78 100644
+--- a/arch/kvx/cpu/barebox.lds.S
++++ b/arch/kvx/cpu/barebox.lds.S
+@@ -5,7 +5,7 @@
  
-@@ -66,14 +66,14 @@ static int spi_nor_mlo_handler(struct bbu_handler *handler,
+ #include <asm/common.h>
+ #include <asm/sys_arch.h>
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
  
- 	dstfd = open(data->devicefile, O_WRONLY);
- 	if (dstfd < 0) {
--		printf("could not open %s: %s", data->devicefile, errno_str());
-+		printf("could not open %s: %m", data->devicefile);
- 		ret = dstfd;
- 		goto out;
- 	}
+ OUTPUT_FORMAT("elf64-kvx")
+ OUTPUT_ARCH("kvx:kv3-1:64")
+diff --git a/arch/kvx/include/asm/barebox.lds.h b/arch/kvx/include/asm/barebox.lds.h
+new file mode 100644
+index 000000000000..540d740959ff
+--- /dev/null
++++ b/arch/kvx/include/asm/barebox.lds.h
+@@ -0,0 +1,3 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <asm-generic/barebox.lds.h>
+diff --git a/arch/mips/include/asm/barebox.lds.h b/arch/mips/include/asm/barebox.lds.h
+new file mode 100644
+index 000000000000..540d740959ff
+--- /dev/null
++++ b/arch/mips/include/asm/barebox.lds.h
+@@ -0,0 +1,3 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <asm-generic/barebox.lds.h>
+diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+index c954df41f3cc..87668c7a7320 100644
+--- a/arch/mips/lib/barebox.lds.S
++++ b/arch/mips/lib/barebox.lds.S
+@@ -4,7 +4,7 @@
+  */
  
- 	ret = erase(dstfd, ERASE_SIZE_ALL, 0);
- 	if (ret < 0) {
--		printf("could not erase %s: %s", data->devicefile, errno_str());
-+		printf("could not erase %s: %m", data->devicefile);
- 		goto out1;
- 	}
  
-diff --git a/commands/cat.c b/commands/cat.c
-index 17c31ed08368..503520dc64a5 100644
---- a/commands/cat.c
-+++ b/commands/cat.c
-@@ -40,7 +40,7 @@ static int do_cat(int argc, char *argv[])
- 		fd = open(argv[args], O_RDONLY);
- 		if (fd < 0) {
- 			err = 1;
--			printf("could not open %s: %s\n", argv[args], errno_str());
-+			printf("could not open %s: %m\n", argv[args]);
- 			goto out;
- 		}
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
  
-diff --git a/commands/edit.c b/commands/edit.c
-index 12695d39e4fd..dea383aae7a6 100644
---- a/commands/edit.c
-+++ b/commands/edit.c
-@@ -185,7 +185,7 @@ static int edit_read_file(const char *path)
- 	if (!stat(path, &s)) {
- 		filebuffer = read_file(path, NULL);
- 		if (!filebuffer) {
--			printf("could not read %s: %s\n", path, errno_str());
-+			printf("could not read %s: %m\n", path);
- 			return -1;
- 		}
+ OUTPUT_ARCH(mips)
+ ENTRY(_start)
+diff --git a/arch/mips/lib/pbl.lds.S b/arch/mips/lib/pbl.lds.S
+index 413f24b9ab05..521333df0be0 100644
+--- a/arch/mips/lib/pbl.lds.S
++++ b/arch/mips/lib/pbl.lds.S
+@@ -4,7 +4,7 @@
+  * (C) Copyright 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+  */
  
-@@ -249,7 +249,7 @@ static int save_file(const char *path)
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
+ #include <asm-generic/memory_layout.h>
+ #include <linux/sizes.h>
  
- 	fd = open(path, O_WRONLY | O_TRUNC | O_CREAT);
- 	if (fd < 0) {
--		printf("could not open file for writing: %s\n", errno_str());
-+		printf("could not open file for writing: %m\n");
- 		return fd;
- 	}
+diff --git a/arch/mips/pbl/zbarebox.lds.S b/arch/mips/pbl/zbarebox.lds.S
+index 04b5b8680f27..2d82065bce08 100644
+--- a/arch/mips/pbl/zbarebox.lds.S
++++ b/arch/mips/pbl/zbarebox.lds.S
+@@ -3,7 +3,7 @@
+  * (C) Copyright 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+  */
  
-diff --git a/commands/flash.c b/commands/flash.c
-index 3d7c8fd5773d..5b7060aeadfb 100644
---- a/commands/flash.c
-+++ b/commands/flash.c
-@@ -25,7 +25,7 @@ static int do_flerase(int argc, char *argv[])
- 	filename = argv[1];
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
+ #include <asm-generic/memory_layout.h>
  
- 	if (stat(filename, &s)) {
--		printf("stat %s: %s\n", filename, errno_str());
-+		printf("stat %s: %m\n", filename);
- 		return 1;
- 	}
+ OUTPUT_ARCH("mips")
+diff --git a/arch/openrisc/cpu/barebox.lds.S b/arch/openrisc/cpu/barebox.lds.S
+index 45c5f2553951..f6999a113438 100644
+--- a/arch/openrisc/cpu/barebox.lds.S
++++ b/arch/openrisc/cpu/barebox.lds.S
+@@ -14,7 +14,7 @@
+  */
  
-@@ -33,7 +33,7 @@ static int do_flerase(int argc, char *argv[])
+ #include <config.h>
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
  
- 	fd = open(filename, O_WRONLY);
- 	if (fd < 0) {
--		printf("open %s: %s\n", filename, errno_str());
-+		printf("open %s: %m\n", filename);
- 		return 1;
- 	}
+ OUTPUT_FORMAT("elf32-or1k", "elf32-or1k", "elf32-or1k")
+ ENTRY(__reset)
+diff --git a/arch/openrisc/include/asm/barebox.lds.h b/arch/openrisc/include/asm/barebox.lds.h
+new file mode 100644
+index 000000000000..540d740959ff
+--- /dev/null
++++ b/arch/openrisc/include/asm/barebox.lds.h
+@@ -0,0 +1,3 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <asm-generic/barebox.lds.h>
+diff --git a/arch/powerpc/boards/pcm030/barebox.lds.S b/arch/powerpc/boards/pcm030/barebox.lds.S
+index 2536db745cf8..b90e88058113 100644
+--- a/arch/powerpc/boards/pcm030/barebox.lds.S
++++ b/arch/powerpc/boards/pcm030/barebox.lds.S
+@@ -14,7 +14,7 @@
+  *
+  */
  
-@@ -89,7 +89,7 @@ static int do_protect(int argc, char *argv[])
- 		prot = 0;
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
  
- 	if (stat(filename, &s)) {
--		printf("stat %s: %s\n", filename, errno_str());
-+		printf("stat %s: %m\n", filename);
- 		return 1;
- 	}
+ OUTPUT_ARCH("powerpc")
+ ENTRY(_start)
+diff --git a/arch/powerpc/include/asm/barebox.lds.h b/arch/powerpc/include/asm/barebox.lds.h
+new file mode 100644
+index 000000000000..540d740959ff
+--- /dev/null
++++ b/arch/powerpc/include/asm/barebox.lds.h
+@@ -0,0 +1,3 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <asm-generic/barebox.lds.h>
+diff --git a/arch/powerpc/mach-mpc85xx/barebox.lds.S b/arch/powerpc/mach-mpc85xx/barebox.lds.S
+index 2b73fda4e6b8..253fd3735e48 100644
+--- a/arch/powerpc/mach-mpc85xx/barebox.lds.S
++++ b/arch/powerpc/mach-mpc85xx/barebox.lds.S
+@@ -13,7 +13,7 @@
+  * GNU General Public License for more details.
+  */
  
-@@ -97,7 +97,7 @@ static int do_protect(int argc, char *argv[])
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
  
- 	fd = open(filename, O_WRONLY);
- 	if (fd < 0) {
--		printf("open %s: %s\n", filename, errno_str());
-+		printf("open %s: %m\n", filename);
- 		return 1;
- 	}
+ #ifdef CONFIG_RESET_VECTOR_ADDRESS
+ #define RESET_VECTOR_ADDRESS    CONFIG_RESET_VECTOR_ADDRESS
+diff --git a/arch/riscv/include/asm/barebox.lds.h b/arch/riscv/include/asm/barebox.lds.h
+new file mode 100644
+index 000000000000..540d740959ff
+--- /dev/null
++++ b/arch/riscv/include/asm/barebox.lds.h
+@@ -0,0 +1,3 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <asm-generic/barebox.lds.h>
+diff --git a/arch/riscv/lib/barebox.lds.S b/arch/riscv/lib/barebox.lds.S
+index 7856b57a5220..5de32a47e7c0 100644
+--- a/arch/riscv/lib/barebox.lds.S
++++ b/arch/riscv/lib/barebox.lds.S
+@@ -11,7 +11,7 @@
+  *
+  */
  
-diff --git a/commands/ls.c b/commands/ls.c
-index 1192aed971cf..09a20e0a2342 100644
---- a/commands/ls.c
-+++ b/commands/ls.c
-@@ -164,8 +164,7 @@ static int do_ls(int argc, char *argv[])
- 	while (o < argc) {
- 		ret = stat(argv[o], &s);
- 		if (ret) {
--			printf("%s: %s: %s\n", argv[0],
--					argv[o], errno_str());
-+			printf("%s: %s: %m\n", argv[0], argv[o]);
- 			o++;
- 			exitcode = COMMAND_ERROR;
- 			continue;
-diff --git a/commands/mkdir.c b/commands/mkdir.c
-index e7153b8732c5..01fc0b083b1a 100644
---- a/commands/mkdir.c
-+++ b/commands/mkdir.c
-@@ -37,7 +37,7 @@ static int do_mkdir(int argc, char *argv[])
- 			ret = mkdir(argv[optind], 0);
- 		}
- 		if (ret) {
--			printf("could not create %s: %s\n", argv[optind], errno_str());
-+			printf("could not create %s: %m\n", argv[optind]);
- 			return 1;
- 		}
- 		optind++;
-diff --git a/commands/rm.c b/commands/rm.c
-index ba52b185cb34..be5c19222141 100644
---- a/commands/rm.c
-+++ b/commands/rm.c
-@@ -37,7 +37,7 @@ static int do_rm(int argc, char *argv[])
- 		else
- 			ret = unlink(argv[i]);
- 		if (ret) {
--			printf("could not remove %s: %s\n", argv[i], errno_str());
-+			printf("could not remove %s: %m\n", argv[i]);
- 			return 1;
- 		}
- 		i++;
-diff --git a/commands/rmdir.c b/commands/rmdir.c
-index 9b2938a5563c..44793ca56e7f 100644
---- a/commands/rmdir.c
-+++ b/commands/rmdir.c
-@@ -14,7 +14,7 @@ static int do_rmdir(int argc, char *argv[])
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
  
- 	while (i < argc) {
- 		if (rmdir(argv[i])) {
--			printf("could not remove %s: %s\n", argv[i], errno_str());
-+			printf("could not remove %s: %m\n", argv[i]);
- 			return 1;
- 		}
- 		i++;
-diff --git a/common/elf.c b/common/elf.c
-index f10fb7795325..eec62cad6141 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -109,7 +109,7 @@ static int load_elf_to_memory(struct elf_image *elf)
- 	if (elf->filename) {
- 		fd = open(elf->filename, O_RDONLY);
- 		if (fd < 0) {
--			pr_err("could not open: %s\n", errno_str());
-+			pr_err("could not open: %m\n");
- 			return -errno;
- 		}
- 	}
-@@ -133,8 +133,7 @@ static int load_elf_to_memory(struct elf_image *elf)
- 			}
+ OUTPUT_ARCH(riscv)
+ ENTRY(start)
+diff --git a/arch/riscv/lib/pbl.lds.S b/arch/riscv/lib/pbl.lds.S
+index ccf64fc6d3aa..ba59024ae037 100644
+--- a/arch/riscv/lib/pbl.lds.S
++++ b/arch/riscv/lib/pbl.lds.S
+@@ -2,7 +2,7 @@
+ /* SPDX-FileCopyrightText: 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix */
  
- 			if (read_full(fd, dst, p_filesz) < 0) {
--				pr_err("could not read elf segment: %s\n",
--				       errno_str());
-+				pr_err("could not read elf segment: %m\n");
- 				close(fd);
- 				return -errno;
- 			}
-@@ -256,13 +255,13 @@ static struct elf_image *elf_check_init(const char *filename)
- 	/* First pass is to read elf header only */
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0) {
--		pr_err("could not open: %s\n", errno_str());
-+		pr_err("could not open: %m\n");
- 		ret = -errno;
- 		goto err_free_elf;
- 	}
+ #include <linux/sizes.h>
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
+ #include <asm-generic/memory_layout.h>
  
- 	if (read_full(fd, &hdr, sizeof(hdr)) < 0) {
--		pr_err("could not read elf header: %s\n", errno_str());
-+		pr_err("could not read elf header: %m\n");
- 		close(fd);
- 		ret = -errno;
- 		goto err_free_elf;
-@@ -290,13 +289,13 @@ static struct elf_image *elf_check_init(const char *filename)
- 	 */
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0) {
--		pr_err("could not open: %s\n", errno_str());
-+		pr_err("could not open: %m\n");
- 		ret = -errno;
- 		goto err_free_hdr_buf;
- 	}
+ OUTPUT_ARCH(riscv)
+diff --git a/arch/sandbox/board/barebox.lds.S b/arch/sandbox/board/barebox.lds.S
+index 84d085a25911..ab2801f3d207 100644
+--- a/arch/sandbox/board/barebox.lds.S
++++ b/arch/sandbox/board/barebox.lds.S
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
  
- 	if (read_full(fd, elf->hdr_buf, hdr_size) < 0) {
--		pr_err("could not read elf program headers: %s\n", errno_str());
-+		pr_err("could not read elf program headers: %m\n");
- 		ret = -errno;
- 		close(fd);
- 		goto err_free_hdr_buf;
-diff --git a/common/envfs-core.c b/common/envfs-core.c
-index 0984d538734f..20b3e647d3c3 100644
---- a/common/envfs-core.c
-+++ b/common/envfs-core.c
-@@ -24,7 +24,6 @@
- #include <environment.h>
- #include <libfile.h>
- #else
--# define errno_str(x) ("void")
- #define pr_info(fmt, ...)	printf(pr_fmt(fmt), ##__VA_ARGS__)
- #define pr_warn(fmt, ...)	printf(pr_fmt(fmt), ##__VA_ARGS__)
- #endif
-@@ -151,7 +150,7 @@ int envfs_load_data(struct envfs_super *super, void *buf, size_t size,
- 			fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
- 			free(str);
- 			if (fd < 0) {
--				printf("Open %s\n", errno_str());
-+				printf("Open %m\n");
- 				ret = fd;
- 				goto out;
- 			}
-diff --git a/common/environment.c b/common/environment.c
-index 0d31f5b4f786..e8c487c1a2e2 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -27,7 +27,6 @@
- #include <globalvar.h>
- #include <libfile.h>
- #else
--# define errno_str(x) ("void")
- #define EXPORT_SYMBOL(x)
- #endif
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
  
-@@ -297,7 +296,7 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
- 
- 	envfd = open(filename, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
- 	if (envfd < 0) {
--		printf("could not open %s: %s\n", filename, errno_str());
-+		printf("could not open %s: %m\n", filename);
- 		ret = -errno;
- 		goto out1;
- 	}
-@@ -306,7 +305,7 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
- 
- 	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
- 	if (ret && errno != ENOSYS && errno != EOPNOTSUPP) {
--		printf("could not unprotect %s: %s\n", filename, errno_str());
-+		printf("could not unprotect %s: %m\n", filename);
- 		goto out;
- 	}
- 
-@@ -314,7 +313,7 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
- 
- 	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
- 	if (ret && errno != ENOSYS && errno != EOPNOTSUPP) {
--		printf("could not erase %s: %s\n", filename, errno_str());
-+		printf("could not erase %s: %m\n", filename);
- 		goto out;
- 	}
- 
-@@ -337,7 +336,7 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
- 
- 	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
- 	if (ret && errno != ENOSYS && errno != EOPNOTSUPP) {
--		printf("could not protect %s: %s\n", filename, errno_str());
-+		printf("could not protect %s: %m\n", filename);
- 		goto out;
- 	}
- 
-@@ -385,7 +384,7 @@ int envfs_load(const char *filename, const char *dir, unsigned flags)
- 
- 	envfd = open(filename, O_RDONLY);
- 	if (envfd < 0) {
--		printf("environment load %s: %s\n", filename, errno_str());
-+		printf("environment load %s: %m\n", filename);
- 		if (errno == ENOENT)
- 			printf("Maybe you have to create the partition.\n");
- 		return -1;
-diff --git a/common/firmware.c b/common/firmware.c
-index b87d7da38fa7..e4ad6ac867b0 100644
---- a/common/firmware.c
-+++ b/common/firmware.c
-@@ -272,8 +272,7 @@ int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
- 
- 	firmwarefd = open(firmware, O_RDONLY);
- 	if (firmwarefd < 0) {
--		printf("could not open %s: %s\n", firmware,
--		       errno_str());
-+		printf("could not open %s: %m\n", firmware);
- 		ret = firmwarefd;
- 		goto out;
- 	}
-@@ -282,7 +281,7 @@ int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
- 
- 	devicefd = open(dst, O_WRONLY);
- 	if (devicefd < 0) {
--		printf("could not open %s: %s\n", dst, errno_str());
-+		printf("could not open %s: %m\n", dst);
- 		ret = devicefd;
- 		goto out;
- 	}
-diff --git a/common/misc.c b/common/misc.c
-index e0e32f47c59d..0c4bbe361db6 100644
---- a/common/misc.c
-+++ b/common/misc.c
-@@ -114,7 +114,7 @@ EXPORT_SYMBOL(errno_str);
- void perror(const char *s)
+ SECTIONS
  {
- #ifdef CONFIG_ERRNO_MESSAGES
--	printf("%s: %s\n", s, errno_str());
-+	printf("%s: %m\n", s);
- #else
- 	printf("%s returned with %d\n", s, errno);
+diff --git a/arch/sandbox/include/asm/barebox.lds.h b/arch/sandbox/include/asm/barebox.lds.h
+new file mode 100644
+index 000000000000..540d740959ff
+--- /dev/null
++++ b/arch/sandbox/include/asm/barebox.lds.h
+@@ -0,0 +1,3 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <asm-generic/barebox.lds.h>
+diff --git a/arch/x86/include/asm/barebox.lds.h b/arch/x86/include/asm/barebox.lds.h
+new file mode 100644
+index 000000000000..540d740959ff
+--- /dev/null
++++ b/arch/x86/include/asm/barebox.lds.h
+@@ -0,0 +1,3 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <asm-generic/barebox.lds.h>
+diff --git a/arch/x86/mach-efi/elf_ia32_efi.lds.S b/arch/x86/mach-efi/elf_ia32_efi.lds.S
+index ac89fd89a4d3..14ae702e5049 100644
+--- a/arch/x86/mach-efi/elf_ia32_efi.lds.S
++++ b/arch/x86/mach-efi/elf_ia32_efi.lds.S
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ 
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
+ 
+ OUTPUT_FORMAT("elf32-i386", "elf32-i386", "elf32-i386")
+ OUTPUT_ARCH(i386)
+diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+index b620ba5b3797..8c666235ce1a 100644
+--- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
++++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ 
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
+ 
+ /* Same as elf_x86_64_fbsd_efi.lds, except for OUTPUT_FORMAT below - KEEP IN SYNC */
+ 
+diff --git a/common/module.lds.S b/common/module.lds.S
+index 76f3b6d1bba1..b2d685670bb0 100644
+--- a/common/module.lds.S
++++ b/common/module.lds.S
+@@ -15,7 +15,7 @@
+  *
+  */
+ 
+-#include <asm-generic/barebox.lds.h>
++#include <asm/barebox.lds.h>
+ 
+ SECTIONS
+ {
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index 48c10b173852..d3736ebaed59 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -8,10 +8,6 @@
+ #define STRUCT_ALIGNMENT 32
+ #define STRUCT_ALIGN() . = ALIGN(STRUCT_ALIGNMENT)
+ 
+-#if defined CONFIG_ARCH_EP93XX
+-#include <mach/barebox.lds.h>
+-#endif
+-
+ #ifndef PRE_IMAGE
+ #define PRE_IMAGE
  #endif
-diff --git a/common/uimage.c b/common/uimage.c
-index 42e9d9023f3f..72c37b7d15dd 100644
---- a/common/uimage.c
-+++ b/common/uimage.c
-@@ -98,7 +98,7 @@ struct uimage_handle *uimage_open(const char *filename)
+diff --git a/lib/logo/Makefile b/lib/logo/Makefile
+index d076a19a7657..382701fb365c 100644
+--- a/lib/logo/Makefile
++++ b/lib/logo/Makefile
+@@ -25,7 +25,7 @@ obj-$(CONFIG_BAREBOX_LOGO) += logo.o
+ quiet_cmd_logo_S = LOGO.S  $@
+ cmd_logo_S =							\
+ (								\
+-	echo '\#include <asm-generic/barebox.lds.h>';		\
++	echo '\#include <asm/barebox.lds.h>';			\
+ 	echo '.section .bblogo.rodata.$(subst -,_,$(*F)),"a"';	\
+ 	echo '.balign STRUCT_ALIGNMENT';			\
+ 	echo '.global __bblogo_$(subst -,_,$(*F))_start';	\
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 16308497b845..85d18f07a2b6 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -379,7 +379,7 @@ dtc-tmp = $(subst $(comma),_,$(dot-target).dts)
+ quiet_cmd_env_S = ENV.S   $@
+ cmd_env_S =							\
+ (								\
+-	echo '\#include <asm-generic/barebox.lds.h>';		\
++	echo '\#include <asm/barebox.lds.h>';			\
+ 	echo '.section .bbenv.rodata.$(subst -,_,$(*F)),"a"';	\
+ 	echo '.balign STRUCT_ALIGNMENT';			\
+ 	echo '.global __bbenv_$(subst -,_,$(*F))_start';	\
+@@ -528,7 +528,7 @@ quiet_cmd_check_file_size = CHKFILESIZE $2
+ quiet_cmd_imximage__S_dcd= DCD_S   $@
+ cmd_imximage_S_dcd=						\
+ (								\
+-	echo '\#include <asm-generic/barebox.lds.h>';		\
++	echo '\#include <asm/barebox.lds.h>';			\
+ 	echo '.balign STRUCT_ALIGNMENT';			\
+ 	echo '.global $(subst -,_,$(*F))_start';		\
+ 	echo '$(subst -,_,$(*F))_start:';			\
+diff --git a/scripts/gen-dtb-s b/scripts/gen-dtb-s
+index eadf4d76f313..c5c46a4d8675 100755
+--- a/scripts/gen-dtb-s
++++ b/scripts/gen-dtb-s
+@@ -4,7 +4,7 @@ name=$1
+ dtb=$2
+ imd=$3
  
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0) {
--		printf("could not open: %s\n", errno_str());
-+		printf("could not open: %m\n");
- 		free(copy);
- 		return NULL;
- 	}
-@@ -109,7 +109,7 @@ struct uimage_handle *uimage_open(const char *filename)
- 	handle->copy = copy;
+-echo "#include <asm-generic/barebox.lds.h>"
++echo "#include <asm/barebox.lds.h>"
  
- 	if (read(fd, header, sizeof(*header)) < 0) {
--		printf("could not read: %s\n", errno_str());
-+		printf("could not read: %m\n");
- 		goto err_out;
- 	}
- 
-diff --git a/fs/bpkfs.c b/fs/bpkfs.c
-index 8fc4df65de09..147f4735d9ea 100644
---- a/fs/bpkfs.c
-+++ b/fs/bpkfs.c
-@@ -381,7 +381,7 @@ static int bpkfs_probe(struct device_d *dev)
- 
- 	ret = read(fd, header, sizeof(*header));
- 	if (ret < 0) {
--		dev_err(dev, "could not read: %s (ret = %d)\n", errno_str(), ret);
-+		dev_err(dev, "could not read: %m\n");
- 		goto err;
- 	}
- 
-@@ -407,7 +407,7 @@ static int bpkfs_probe(struct device_d *dev)
- 
- 		ret = read(fd, &data_header, sizeof(data_header));
- 		if (ret < 0) {
--			dev_err(dev, "could not read: %s\n", errno_str());
-+			dev_err(dev, "could not read: %m\n");
- 			goto err;
- 		} else if (ret == 0) {
- 			dev_err(dev, "EOF: to_read %llu\n", size);
-@@ -456,7 +456,7 @@ static int bpkfs_probe(struct device_d *dev)
- 		priv->nb_data_entries++;
- 
- 		if (lseek(fd, d->size, SEEK_CUR) != d->size) {
--			dev_err(dev, "could not seek: %s\n", errno_str());
-+			dev_err(dev, "could not seek: %m\n");
- 			ret = -errno;
- 			goto err;
- 		}
-diff --git a/fs/uimagefs.c b/fs/uimagefs.c
-index daaa3ad24bae..8de2b8881f8e 100644
---- a/fs/uimagefs.c
-+++ b/fs/uimagefs.c
-@@ -373,7 +373,7 @@ static int __uimage_open(struct uimagefs_handle *priv)
- 
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0) {
--		printf("could not open: %s\n", errno_str());
-+		printf("could not open: %m\n");
- 		return fd;
- 	}
- 
-@@ -381,7 +381,7 @@ static int __uimage_open(struct uimagefs_handle *priv)
- 
- 	ret = read(fd, header, sizeof(*header));
- 	if (ret < 0) {
--		printf("could not read: %s\n", errno_str());
-+		printf("could not read: %m\n");
- 		goto err_out;
- 	}
- 	offset += sizeof(*header);
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 3b7985fbcabb..b967232d198e 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -387,7 +387,7 @@ int copy_file(const char *src, const char *dst, int verbose)
- 
- 	srcfd = open(src, O_RDONLY);
- 	if (srcfd < 0) {
--		printf("could not open %s: %s\n", src, errno_str());
-+		printf("could not open %s: %m\n", src);
- 		ret = srcfd;
- 		goto out;
- 	}
-@@ -396,7 +396,7 @@ int copy_file(const char *src, const char *dst, int verbose)
- 
- 	s = stat(dst, &dststat);
- 	if (s && s != -ENOENT) {
--		printf("could not stat %s: %s\n", dst, errno_str());
-+		printf("could not stat %s: %m\n", dst);
- 		ret = s;
- 		goto out;
- 	}
-@@ -407,7 +407,7 @@ int copy_file(const char *src, const char *dst, int verbose)
- 
- 	dstfd = open(dst, mode);
- 	if (dstfd < 0) {
--		printf("could not open %s: %s\n", dst, errno_str());
-+		printf("could not open %s: %m\n", dst);
- 		ret = dstfd;
- 		goto out;
- 	}
+ le32() {
+ 	printf ".byte 0x%02x, 0x%02x, 0x%02x, 0x%02x\n" \
 -- 
 2.30.2
 
