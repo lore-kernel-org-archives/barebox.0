@@ -1,62 +1,55 @@
-Delivery-date: Mon, 10 Oct 2022 09:50:11 +0200
+Delivery-date: Mon, 10 Oct 2022 11:55:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ohnYC-0037R3-73
-	for lore@lore.pengutronix.de; Mon, 10 Oct 2022 09:50:11 +0200
+	id 1ohpVd-003DUW-LX
+	for lore@lore.pengutronix.de; Mon, 10 Oct 2022 11:55:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ohnY9-0005Ql-S5
-	for lore@pengutronix.de; Mon, 10 Oct 2022 09:50:10 +0200
+	id 1ohpVb-00058f-E5
+	for lore@pengutronix.de; Mon, 10 Oct 2022 11:55:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=9rYcg4PjonB/uEkXDqsnwbFKaEch1/IAmOF+ODdonts=; b=2cle9tAvex7kOkk/T9HB3ou4n5
-	kDR5Tss4+hy2+rnxj5xsw42ICEW3CxJModXfowgmxLHCxPYXJGTXpVcdnnquc+d5MKBrYeOsXye0C
-	OkXBQZpUc2GalbVoRGc2SPBxGVjLLUiJrqVXTakVZqiBZ1QRDE3UX4KUO+6EN7j5QmEK72tnNfWR4
-	B4UKtN3rRRjY2CbUqiFgHpTq+OQ/bTrsLwZTJCiQ9a4i25VipRO4e0DwMN7OUM47dJfXuFSc+m/ip
-	lgUEBBIsTLiQEUKBT4pzfEGaiP0gv1BbD3FzaX8JcSKK9lZLyS/oWca1hftx1AzEA9Iy3tkTjMqIn
-	iNF8Xb5g==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=W1YOUcAPagU0wSKXYy3Z0VyZ0J4HNPStqLRNdUpTH6s=; b=jRRySQSKfcBSMB3NryCs3pKWnG
+	DtBxOOb8bYzYLn3bo85lfdhg7q02XNhXqNY0aPANiW2UjShX1G3gmg7bExpV+4bo8CDRDr80JQid8
+	BsLA9FZaT+/Ys2dOL7EgntZ8JVVWFqttjjKJGzSm2bB1tQVynctRC1TXB41UWj4Dy0Z7XkE4Rsjvo
+	pao7ziBgihJvKpt1HpRMGmX8zPdR/T2dAQx37qkVsd0mJ/JHgPvcMqfZbxT/wOXXjuWc+zZnoWMFP
+	xIKJFM1L3JmDlDi5knUBjU8DPTEP/nUecXxACeUe+7ilgK8ExZMkAsV7dklNuR5hhW/OIXPL9Tk9c
+	XM9ynJ4g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ohnWo-00HQBs-CF; Mon, 10 Oct 2022 07:48:46 +0000
+	id 1ohpTp-000GxO-7p; Mon, 10 Oct 2022 09:53:49 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ohnWj-00HQBN-VA
-	for barebox@lists.infradead.org; Mon, 10 Oct 2022 07:48:43 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1ohnWi-0005LG-1F; Mon, 10 Oct 2022 09:48:40 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1ohnWh-000eA2-AV; Mon, 10 Oct 2022 09:48:39 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1ohnWg-009uDw-Dc; Mon, 10 Oct 2022 09:48:38 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Johannes Zink <j.zink@pengutronix.de>,
-	Lars Pedersen <lapeddk@gmail.com>,
-	Bruno Thomsen <bruno.thomsen@gmail.com>,
-	Andrey Smirnov <andrew.smirnov@gmail.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 10 Oct 2022 09:48:34 +0200
-Message-Id: <20221010074834.2361014-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	id 1ohpTi-000GwR-FJ
+	for barebox@lists.infradead.org; Mon, 10 Oct 2022 09:53:45 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <bst@pengutronix.de>)
+	id 1ohpTc-0004zy-6w; Mon, 10 Oct 2022 11:53:36 +0200
+Message-ID: <cef33a0d-c2d3-d954-ed74-320cfbba6500@pengutronix.de>
+Date: Mon, 10 Oct 2022 11:53:35 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.1
+Content-Language: en-US
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Cc: lst@pengutronix.de
+References: <20221010061235.2084562-1-a.fatoum@pengutronix.de>
+From: Bastian Krause <bst@pengutronix.de>
+In-Reply-To: <20221010061235.2084562-1-a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221010_004842_019063_B63468BB 
-X-CRM114-Status: GOOD (  13.92  )
+X-CRM114-CacheID: sfid-20221010_025342_541332_61130974 
+X-CRM114-Status: GOOD (  27.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,140 +67,174 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: i.MX7: don't hardcode UART1 in imx7_early_setup_uart_clock
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [RFT PATCH master 1/2] ARM: MXS: fix breakage for non-DT boards
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-imx7_early_setup_uart_clock() has a very generic sounding name, but so
-far only set up clocks for UART1. This can lead board code authors
-astray that intend to user a different UART for DEBUG_LL.
+On 10/10/22 08:12, Ahmad Fatoum wrote:
+> boarddata, the third argument passed from barebox PBL to barebox proper,
+> is usually either a pointer to an optionally compressed flattened device tree
+> or a machien type integer casted to a pointer.
+> 
+> In order to support device trees located in the first 8192 bytes of
+> address space, barebox has been trying to dereference boarddata, before
+> falling back to treating it as integer.
+> 
+> This resulted in breakage as boarddata may be an integer not divisible
+> by 4 and thus an unaligned exception would occur.
+> 
+> The already existing barebox_arm_boarddata mechanism sidesteps this
+> issue: With it, the machine type integer is not passed as is, but the
+> address of a suitably aligned structure that contains it is passed
+> instead.
+> 
+> Searching for MACHINE_TYPE in arch/arm/boards shows 5 boards to be
+> affected in-tree, which are all fixed with this commit.
 
-This issue affects board code for kamstrup-mx7-concentrator, meerkat96
-and zii-imx7d-dev, which use UART4, UART6 and UART2 respectively.
+No matches for MACHINE_TYPE in arch/arm/boards. The search string should
+probably be something like ".machine =", right?
 
-As I don't have this boards available to test and clock changes may have
-adverse effect elsewhere, we have all existing users setup UART1 as
-before, but note with a comment that this may not be the original
-author's intention.
+> 
+> Fixes: 390bc7834ffc ("ARM: start: check for machine type last")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> @Bastian, could you give this a test on your i.MX23 board?
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-I have CC'd authors of the three likely misconfigured boards,
-in case they want to fix them and test.
----
- arch/arm/boards/ac-sxb/lowlevel.c             |  2 +-
- .../boards/freescale-mx7-sabresd/lowlevel.c   |  2 +-
- .../kamstrup-mx7-concentrator/lowlevel.c      |  3 ++-
- arch/arm/boards/meerkat96/lowlevel.c          |  3 ++-
- arch/arm/boards/zii-imx7d-dev/lowlevel.c      |  3 ++-
- .../arm/mach-imx/include/mach/imx7-ccm-regs.h | 21 +++++++++----------
- 6 files changed, 18 insertions(+), 16 deletions(-)
+This does not work, yet. The board code is not executed.
 
-diff --git a/arch/arm/boards/ac-sxb/lowlevel.c b/arch/arm/boards/ac-sxb/lowlevel.c
-index a910555f9bd7..a26454968304 100644
---- a/arch/arm/boards/ac-sxb/lowlevel.c
-+++ b/arch/arm/boards/ac-sxb/lowlevel.c
-@@ -93,7 +93,7 @@ extern char __dtb_z_ac_sxb_start[];
- 
- static inline void setup_uart(void)
- {
--	imx7_early_setup_uart_clock();
-+	imx7_early_setup_uart_clock(1);
- 
- 	imx7_setup_pad(MX7D_PAD_UART1_TX_DATA__UART1_DCE_TX);
- 
-diff --git a/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c b/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
-index a8733d62091f..6d393bf2b10e 100644
---- a/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
-+++ b/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
-@@ -17,7 +17,7 @@ extern char __dtb_imx7d_sdb_start[];
- 
- static inline void setup_uart(void)
- {
--	imx7_early_setup_uart_clock();
-+	imx7_early_setup_uart_clock(1);
- 
- 	imx7_setup_pad(MX7D_PAD_UART1_TX_DATA__UART1_DCE_TX);
- 
-diff --git a/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c b/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c
-index 4a9eae80d153..511f01757c46 100644
---- a/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c
-+++ b/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c
-@@ -17,7 +17,8 @@ extern char __dtb_z_imx7d_flex_concentrator_mfg_start[];
- 
- static inline void setup_uart(void)
- {
--	imx7_early_setup_uart_clock();
-+	/* FIXME: Below UART4 is muxed, not UART1 */
-+	imx7_early_setup_uart_clock(1);
- 
- 	imx7_setup_pad(MX7D_PAD_SAI2_TX_BCLK__UART4_DCE_TX);
- 
-diff --git a/arch/arm/boards/meerkat96/lowlevel.c b/arch/arm/boards/meerkat96/lowlevel.c
-index 1c9baeacfb2a..e65726ef1c27 100644
---- a/arch/arm/boards/meerkat96/lowlevel.c
-+++ b/arch/arm/boards/meerkat96/lowlevel.c
-@@ -14,7 +14,8 @@ extern char __dtb_z_imx7d_meerkat96_start[];
- 
- static void setup_uart(void)
- {
--	imx7_early_setup_uart_clock();
-+	/* FIXME: Below UART6 is muxed, not UART1 */
-+	imx7_early_setup_uart_clock(1);
- 	imx7_setup_pad(MX7D_PAD_SD1_WP__UART6_DCE_TX);
- 	imx7_uart_setup_ll();
- 	putc_ll('>');
-diff --git a/arch/arm/boards/zii-imx7d-dev/lowlevel.c b/arch/arm/boards/zii-imx7d-dev/lowlevel.c
-index 7579a2a8a050..0e316b602436 100644
---- a/arch/arm/boards/zii-imx7d-dev/lowlevel.c
-+++ b/arch/arm/boards/zii-imx7d-dev/lowlevel.c
-@@ -23,7 +23,8 @@ extern char __dtb_z_imx7d_zii_rmu2_start[];
- 
- static inline void setup_uart(void)
- {
--	imx7_early_setup_uart_clock();
-+	/* FIXME: Below UART2 is muxed, not UART1 */
-+	imx7_early_setup_uart_clock(1);
- 
- 	imx7_setup_pad(MX7D_PAD_UART2_TX_DATA__UART2_DCE_TX);
- 
-diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-index aecf9a26d017..0ef0742bb65d 100644
---- a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-@@ -39,16 +39,15 @@
- #define IMX7_CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	IMX7_CCM_CCGR_SETTINGn(n, 0b10)
- #define IMX7_CCM_CCGR_SETTINGn_NEEDED(n)		IMX7_CCM_CCGR_SETTINGn(n, 0b11)
- 
--static inline void imx7_early_setup_uart_clock(void)
--{
--	void __iomem *ccm   = IOMEM(MX7_CCM_BASE_ADDR);
--
--	writel(IMX7_CCM_CCGR_SETTINGn_NEEDED(0),
--	       ccm + IMX7_CCM_CCGRn_CLR(IMX7_CCM_CCGR_UART1));
--	writel(IMX7_CCM_TARGET_ROOTn_ENABLE | IMX7_UART1_CLK_ROOT__OSC_24M,
--	       ccm + IMX7_CCM_TARGET_ROOTn(IMX7_UART1_CLK_ROOT));
--	writel(IMX7_CCM_CCGR_SETTINGn_NEEDED(0),
--	       ccm + IMX7_CCM_CCGRn_SET(IMX7_CCM_CCGR_UART1));
--}
-+/* UART counting starts for 1, like in the datasheet/dt-bindings */
-+#define imx7_early_setup_uart_clock(uart) do { \
-+	void __iomem *ccm   = IOMEM(MX7_CCM_BASE_ADDR); \
-+	writel(IMX7_CCM_CCGR_SETTINGn_NEEDED(0), \
-+	       ccm + IMX7_CCM_CCGRn_CLR(IMX7_CCM_CCGR_UART ## uart)); \
-+	writel(IMX7_CCM_TARGET_ROOTn_ENABLE | IMX7_UART ## uart ## _CLK_ROOT__OSC_24M, \
-+	       ccm + IMX7_CCM_TARGET_ROOTn(IMX7_UART ## uart ## _CLK_ROOT)); \
-+	writel(IMX7_CCM_CCGR_SETTINGn_NEEDED(0), \
-+	       ccm + IMX7_CCM_CCGRn_SET(IMX7_CCM_CCGR_UART ## uart)); \
-+} while (0)
- 
- #endif
+Regards,
+Bastian
+
+> ---
+>   arch/arm/boards/chumby_falconwing/lowlevel.c     | 10 +++++++++-
+>   arch/arm/boards/crystalfontz-cfa10036/lowlevel.c | 10 +++++++++-
+>   arch/arm/boards/freescale-mx23-evk/lowlevel.c    | 10 +++++++++-
+>   arch/arm/boards/imx233-olinuxino/lowlevel.c      | 10 +++++++++-
+>   arch/arm/boards/karo-tx28/lowlevel.c             | 10 +++++++++-
+>   5 files changed, 45 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/arm/boards/chumby_falconwing/lowlevel.c b/arch/arm/boards/chumby_falconwing/lowlevel.c
+> index 091dd1955260..367f348ee829 100644
+> --- a/arch/arm/boards/chumby_falconwing/lowlevel.c
+> +++ b/arch/arm/boards/chumby_falconwing/lowlevel.c
+> @@ -7,8 +7,16 @@
+>   #include <mach/imx23-regs.h>
+>   #include <generated/mach-types.h>
+>   
+> +static struct barebox_arm_boarddata boarddata = {
+> +	.magic = BAREBOX_ARM_BOARDDATA_MAGIC,
+> +	.machine = MACH_TYPE_CHUMBY,
+> +};
+> +
+>   ENTRY_FUNCTION(start_chumby_falconwing, r0, r1, r2)
+>   {
+> +	void *bd = &boarddata;
+> +
+>   	arm_cpu_lowlevel_init();
+> -	barebox_arm_entry(IMX_MEMORY_BASE, SZ_64M, (void *)MACH_TYPE_CHUMBY);
+> +	barebox_arm_entry(IMX_MEMORY_BASE, SZ_64M,
+> +			  bd + get_runtime_offset());
+>   }
+> diff --git a/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c b/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
+> index 92b42aa89350..794cbd89a13a 100644
+> --- a/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
+> +++ b/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
+> @@ -7,8 +7,16 @@
+>   #include <mach/imx28-regs.h>
+>   #include <generated/mach-types.h>
+>   
+> +static struct barebox_arm_boarddata boarddata = {
+> +	.magic = BAREBOX_ARM_BOARDDATA_MAGIC,
+> +	.machine = MACH_TYPE_CFA10036,
+> +};
+> +
+>   ENTRY_FUNCTION(start_cfa10036, r0, r1, r2)
+>   {
+> +	void *bd = &boarddata;
+> +
+>   	arm_cpu_lowlevel_init();
+> -	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, (void *)MACH_TYPE_CFA10036);
+> +	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M,
+> +			  bd + get_runtime_offset());
+>   }
+> diff --git a/arch/arm/boards/freescale-mx23-evk/lowlevel.c b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
+> index 62560bbff733..c795019d8b76 100644
+> --- a/arch/arm/boards/freescale-mx23-evk/lowlevel.c
+> +++ b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
+> @@ -7,8 +7,16 @@
+>   #include <asm/barebox-arm.h>
+>   #include <mach/imx23-regs.h>
+>   
+> +static struct barebox_arm_boarddata boarddata = {
+> +	.magic = BAREBOX_ARM_BOARDDATA_MAGIC,
+> +	.machine = MACH_TYPE_MX23EVK,
+> +};
+> +
+>   ENTRY_FUNCTION(start_imx23_evk, r0, r1, r2)
+>   {
+> +	void *bd = &boarddata;
+> +
+>   	arm_cpu_lowlevel_init();
+> -	barebox_arm_entry(IMX_MEMORY_BASE, SZ_32M, (void *)MACH_TYPE_MX23EVK);
+> +	barebox_arm_entry(IMX_MEMORY_BASE, SZ_32M,
+> +			  bd + get_runtime_offset());
+>   }
+> diff --git a/arch/arm/boards/imx233-olinuxino/lowlevel.c b/arch/arm/boards/imx233-olinuxino/lowlevel.c
+> index 71fc379f0487..9dd45e78062b 100644
+> --- a/arch/arm/boards/imx233-olinuxino/lowlevel.c
+> +++ b/arch/arm/boards/imx233-olinuxino/lowlevel.c
+> @@ -11,9 +11,17 @@
+>   #include <mach/iomux.h>
+>   #include <generated/mach-types.h>
+>   
+> +static struct barebox_arm_boarddata boarddata = {
+> +	.magic = BAREBOX_ARM_BOARDDATA_MAGIC,
+> +	.machine = MACH_TYPE_IMX233_OLINUXINO,
+> +};
+> +
+>   ENTRY_FUNCTION(start_barebox_olinuxino_imx23, r0, r1, r2)
+>   {
+> -	barebox_arm_entry(IMX_MEMORY_BASE, SZ_64M, (void *)MACH_TYPE_IMX233_OLINUXINO);
+> +	void *bd = &boarddata;
+> +
+> +	barebox_arm_entry(IMX_MEMORY_BASE, SZ_64M,
+> +			  bd + get_runtime_offset());
+>   }
+>   
+>   static const uint32_t pad_setup[] = {
+> diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
+> index 28d96f3e1a5f..868218f83b86 100644
+> --- a/arch/arm/boards/karo-tx28/lowlevel.c
+> +++ b/arch/arm/boards/karo-tx28/lowlevel.c
+> @@ -15,9 +15,17 @@
+>   #include <stmp-device.h>
+>   #include <generated/mach-types.h>
+>   
+> +static struct barebox_arm_boarddata boarddata = {
+> +	.magic = BAREBOX_ARM_BOARDDATA_MAGIC,
+> +	.machine = MACH_TYPE_TX28,
+> +};
+> +
+>   ENTRY_FUNCTION(start_barebox_karo_tx28, r0, r1, r2)
+>   {
+> -	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, (void *)MACH_TYPE_TX28);
+> +	void *bd = &boarddata;
+> +
+> +	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M,
+> +			  bd + get_runtime_offset());
+>   }
+>   
+>   static const uint32_t iomux_pads[] = {
+
 -- 
-2.30.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
