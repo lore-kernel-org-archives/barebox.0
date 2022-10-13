@@ -1,52 +1,52 @@
-Delivery-date: Thu, 13 Oct 2022 09:17:21 +0200
+Delivery-date: Thu, 13 Oct 2022 09:33:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oisT4-0074hu-Lp
-	for lore@lore.pengutronix.de; Thu, 13 Oct 2022 09:17:21 +0200
+	id 1oisix-0075Ig-8V
+	for lore@lore.pengutronix.de; Thu, 13 Oct 2022 09:33:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oisT2-0005Vw-NB
-	for lore@pengutronix.de; Thu, 13 Oct 2022 09:17:21 +0200
+	id 1oisiv-00077u-1c
+	for lore@pengutronix.de; Thu, 13 Oct 2022 09:33:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Zh/aB9+jqWp8jTwlvTwF/tqzBJdgYS8O9CU36UCICxA=; b=Df3zTTHF5LDDcu1rRCK+aLXn5H
-	Bp7vggd4nKaePPxP/vU88F0cRrmLuM7b7nhTEGuG5lIPOUUnwcrcdt/5KE/o6VNTRKkWJfhDpcXu7
-	sxYrBm69x4O6xv22KKSk2jSNkHfAJK5ucPErSWN0RmVxkLU5ZyzqbVwoRF/7lzwTwQVvjNqhsZJEz
-	uWQb1Ta3aTnVSznMIaYL5eFzu4s9Gt919muVwJEVnCmIhfPni2zBJawG4AW82vxPb/+29Z/THgK9Z
-	otSW5xn1Xg6TVTudnji/goAfY96NqU3dQzpnoq9mS7wndjfZ5pQ8CqCZi6aC/E/UUVpGnhFYAf3U5
-	Jf51WWcA==;
+	bh=TtaldtXs0UmcWmmEsUi56cCwLQg33/Ke80mJhd7/lnQ=; b=ybsiNRsZk5S2imoKbXF6XOTDU+
+	D+YH+QbTUXcDD3A9OtGBDOtwlmPjLTBgzWNDEUpoKA2LJchiVz8C93B3WOIAjfRbxh0PuOr6cFGhp
+	+qE9TvQeS8bycYtq/vWbkxIJb2uJKasosvfwfb/1WOC6NSBBVGF0z4TZelliRltUJ6HWgOejt8WKk
+	V3pIvg7vDxn6siskD6s99hqxB7VMAgz7+USIwntZyZ8X5+neyIOfuywewPO4crdMBaVwBlr9nl3AS
+	dOJPNrGUoHZ8IKY7ao8VWrnNBhrtanR93/yVJ99NOsCrvyWCv9h8qW4LUkiWbETjKoSvPWDL/Yi7U
+	k7a2J/qA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oisRM-00Axy5-J4; Thu, 13 Oct 2022 07:15:36 +0000
+	id 1oishQ-00Az3A-UM; Thu, 13 Oct 2022 07:32:13 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oisRI-00Axxe-D7
-	for barebox@lists.infradead.org; Thu, 13 Oct 2022 07:15:33 +0000
+	id 1oishL-00Az2T-RM
+	for barebox@lists.infradead.org; Thu, 13 Oct 2022 07:32:09 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oisRH-0005IC-08; Thu, 13 Oct 2022 09:15:31 +0200
+	id 1oishJ-00073L-6E; Thu, 13 Oct 2022 09:32:05 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1oisRG-0004jv-PF; Thu, 13 Oct 2022 09:15:30 +0200
-Date: Thu, 13 Oct 2022 09:15:30 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20221013071530.GD6702@pengutronix.de>
-References: <20221010064358.2119629-1-a.fatoum@pengutronix.de>
+	id 1oishI-0005JU-Qu; Thu, 13 Oct 2022 09:32:04 +0200
+Date: Thu, 13 Oct 2022 09:32:04 +0200
+To: BAUER Bernd <bernd.bauer@ses-imagotag.com>
+Cc: Barebox Mailingliste <barebox@lists.infradead.org>
+Message-ID: <20221013073204.GE6702@pengutronix.de>
+References: <PR0P264MB328928CED65F8A4275814502D2259@PR0P264MB3289.FRAP264.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221010064358.2119629-1-a.fatoum@pengutronix.de>
+In-Reply-To: <PR0P264MB328928CED65F8A4275814502D2259@PR0P264MB3289.FRAP264.PROD.OUTLOOK.COM>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221013_001532_458647_7F99A72B 
-X-CRM114-Status: GOOD (  18.02  )
+X-CRM114-CacheID: sfid-20221013_003207_924360_1367397F 
+X-CRM114-Status: GOOD (  24.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,71 +77,57 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] commands: add new stat command
+Subject: Re: HAB/SecureBoot on IMX8MN
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Oct 10, 2022 at 08:43:58AM +0200, Ahmad Fatoum wrote:
-> +#include <common.h>
-> +#include <command.h>
-> +#include <fs.h>
-> +#include <linux/stat.h>
-> +#include <errno.h>
-> +#include <malloc.h>
-> +#include <getopt.h>
-> +#include <stringlist.h>
-> +
-> +static int do_stat(int argc, char *argv[])
-> +{
-> +	int (*statfn)(const char *, struct stat *) = stat;
-> +	int ret, opt, exitcode = 0;
-> +	char **filename;
-> +	struct stat st;
-> +
-> +	while((opt = getopt(argc, argv, "L")) > 0) {
-> +		switch(opt) {
-> +		case 'L':
-> +			statfn = lstat;
-> +			break;
+Hi Bernd,
 
-That's the wrong way round. You have to use lstat() by default and
-stat() when -L is given.
+On Thu, Oct 13, 2022 at 05:20:06AM +0000, BAUER Bernd wrote:
+> Hi!
+> 
+> I have a question regarding SecureBoot/HAB and IMX8MN.
+> In barebox I can only enable HAB if the architecture is set to IMX8MQ.
+> My project is based on an IMX8MN.
+> 
+> Can I just extend the definition to IMX8MN and enable SecureBoot for the IMX8MN?
+> Does this work? Or are there differences in the registers that have to be implemented first?
 
-> +void stat_print(const char *filename, const struct stat *st)
-> +{
-> +	struct block_device *bdev = NULL;
-> +	struct fs_device_d *fdev;
-> +	struct cdev *cdev = NULL;
-> +	const char *type = NULL;
-> +	char modestr[11];
-> +
-> +	mkmodestr(st->st_mode, modestr);
-> +
-> +	switch (st->st_mode & S_IFMT) {
-> +		case S_IFDIR:    type = "directory"; break;
-> +		case S_IFBLK:    type = "block special file"; break;
-> +		case S_IFCHR:    type = "character special file"; break;
-> +		case S_IFIFO:    type = "fifo"; break;
-> +		case S_IFLNK:    type = "symbolic link"; break;
-> +		case S_IFSOCK:   type = "socket"; break;
-> +		case S_IFREG:    type = "regular file"; break;
-> +	}
-> +
-> +	printf("  File: %s\n", filename);
-> +
-> +	if (st->st_mode & S_IFCHR) {
-> +		const char *devicefile;
-> +
-> +		devicefile = devpath_to_name(filename);
-
-This doesn't work really well. I think it's ok this time because there's
-enough prior art, but we really need something better. For example "stat
-/dev/mmc0" works, but "stat dev/mmc0" does not. You could improve this a
-bit by calling canonicalize_path() on filename.
-
-To solve this issue we could add a struct cdev * to struct filep.
+>From a quick glance at the corresponding U-Boot code I'd say that
+HAB support is identical between the different i.MX8M variants, so
+the following might indeed be a good start exploring it. I have no idea
+though if there are any subtle differences between the SoCs.
 
 Sascha
+
+--------------------------------8<--------------------------
+
+>From 0daeceb70f0dfe0d2fdb65c986a613fe2d3d6203 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 13 Oct 2022 09:30:23 +0200
+Subject: [PATCH] Enable HAB on i.MX8M
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index dcb70c8c1a..8d3f75e3d1 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -902,7 +902,7 @@ config HABV4
+ 	select HAB
+ 	select NVMEM
+ 	select IMX_OCOTP
+-	depends on ARCH_IMX6 || ARCH_IMX8MQ
++	depends on ARCH_IMX6 || ARCH_IMX8M
+ 	depends on OFDEVICE
+ 	help
+ 	  High Assurance Boot, as found on i.MX28/i.MX6/i.MX8MQ.
+-- 
+2.30.2
+
 
 -- 
 Pengutronix e.K.                           |                             |
