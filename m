@@ -1,130 +1,59 @@
-Delivery-date: Thu, 13 Oct 2022 09:36:19 +0200
+Delivery-date: Thu, 13 Oct 2022 10:18:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oislP-0075PG-Tb
-	for lore@lore.pengutronix.de; Thu, 13 Oct 2022 09:36:19 +0200
+	id 1oitQ2-0079O8-P2
+	for lore@lore.pengutronix.de; Thu, 13 Oct 2022 10:18:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oislN-0007cW-G9
-	for lore@pengutronix.de; Thu, 13 Oct 2022 09:36:18 +0200
+	id 1oitQ0-0005BY-8O
+	for lore@pengutronix.de; Thu, 13 Oct 2022 10:18:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
-	:Subject:CC:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=M4ySe6eTPMJiCxuR9XGVn3PlHyWyEM4wXrbyJwLl+o4=; b=QHqvP66AKZkCAMSVS0WZaejQLM
-	grcxoZn/uvOYv1u5o8mWo2uVjWNFf3OyuPxUKuvusBkYcBUdnblqCZ94reBNRYaJlF4fjxVrKSHos
-	H5aH27PpDMQIEGMuGp86s02S/EidwYRAq7+zcpv0VYQP++dZUcV7jmhhjHN7DCW83H8n7eTSz695T
-	6edzdzqgI6iPl1w0rzNyNQZBwyuzTw2fxQ4Ubbi6ELG4pPD1wlNhNh2DZVVHv6grnJo0X+NzMG3aD
-	sd6FKxRTiUlbCvTh7/jiz+mV4iI0F76gQFyHLAP5j1yEFvj7nflhSwXN4lK0xiSwNAf9mCDNdedH5
-	o0DHegXw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Subject:To:
+	Date:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=TuTVbGzj9LFEpHGDP7wRBWxgIJ6bwhbaBq8Vcek2nX0=; b=wNVeZMhh4AG5WA
+	AGbwn/EmAwSWC20T8ouf028ty1oeV6cNKtdRr88AorHXLvM9/fMnsk928r8+T+/06FYGGkCIZa/N3
+	sAy/7MJCmwvudJ2KHBJOtecUc7vjgUt08UoEbdCeTjHcMIhWIvjL8qKM9J+mJzYMgY3Vx2SakPsTm
+	eDPNXv12jR5+H3Net/OoJ/+Tmd4j6Xc7EVkZkF7m8jH7jS82+XBQBUTVbOD+Vpwg2yfKavkkWLWDt
+	jtwbbTJ8M56INO6BAdSrPKJGKRGdn0Bs7Inr0TVSZ27jPur7GCWrRutR3PFLi7BO3s7oFgN7pclSY
+	XLTxge/+MzIMASyfy5bg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oisju-00AzK3-EU; Thu, 13 Oct 2022 07:34:46 +0000
-Received: from mail-eopbgr90085.outbound.protection.outlook.com ([40.107.9.85] helo=FRA01-MR2-obe.outbound.protection.outlook.com)
+	id 1oitOB-00B2u7-5B; Thu, 13 Oct 2022 08:16:23 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oisjp-00AzIx-B7
-	for barebox@lists.infradead.org; Thu, 13 Oct 2022 07:34:43 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q3rBTG/6smh4ENGW0Zzgd16cSJiPrLzoArNdr9batagcbWKE0oC/nyJUNDhWdfNEUFbwZWKX2DsWOI/XQX5CQR2UOHDDkGhQk02tZKG68zwFZRxxaekr+YG7hmdfQ7TQl1dSZliMvhFwXu2CJ+q9gbAdsMYtqZQ6rl9PDSO5tpRX2wiDQOlxpOXYUCxyHCFvUSUflcYE11ZDX51AZzR7PsnPzgb1KC5kdj+pLLkrKrNXhl2dcaFtx88F8+Cygh+lBPXrCD7Yk6wnH0DxO/Gbr+u4U3wWFuBWTAgT9+E0lvc4kT7MiunQGZbQWLi5I6Bo/Q1oQ/gmf9XsmXMq4EWCmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M4ySe6eTPMJiCxuR9XGVn3PlHyWyEM4wXrbyJwLl+o4=;
- b=n+WHwLEjYHIqcQPq6GA7HajEkAXEWDS0XYEUp0CpoJRzFOiHMmnNhvxQcLONsRq+gE7/6s/AD5WiuAS3ozTqUOBvTnaAlFwHElUpQ5f7FN9I8o5BIunU7zd44PCIck41FKD3XLFS0vTyVs3MCbEgCv3BuJ5xWuhyL6XfEB3VuBN/qjjJAJB6TP+hlwcFY1qHHzpJDzrjXfj0V0T/ze6sZQfPyL6XIRftSbkVDufXIIc5zTkjXsO/Kwjt4klUjOv7++BY685+xCD80sWvS+SulPZYnDyYbM9pMY7rzWmWnXqYn8/vE9+wFePMAfVG3D5ZsrptIPjVb/AfzIWG/6SEJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ses-imagotag.com; dmarc=pass action=none
- header.from=ses-imagotag.com; dkim=pass header.d=ses-imagotag.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ses-imagotag.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M4ySe6eTPMJiCxuR9XGVn3PlHyWyEM4wXrbyJwLl+o4=;
- b=wvZGtbW4EP9qiIY8Pacn6IokkSPrfXz3Xn5NE2n5mIDJ0rTz9CLuHU5EBDkur3mgnivpNzvWsx5jUbJRjJjJHimn88lzyKudN5IG8poFiNpW1zTPVrmOhcSIqpA9hEGDH4LxinD5ngVuUnN9kSC/mTxvuzpJ2sWI3t/Hc81mjIw=
-Received: from PR0P264MB3289.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:110::13)
- by PR0P264MB2918.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1d1::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.26; Thu, 13 Oct
- 2022 07:34:37 +0000
-Received: from PR0P264MB3289.FRAP264.PROD.OUTLOOK.COM
- ([fe80::d93f:dce1:6eef:fbf9]) by PR0P264MB3289.FRAP264.PROD.OUTLOOK.COM
- ([fe80::d93f:dce1:6eef:fbf9%7]) with mapi id 15.20.5723.026; Thu, 13 Oct 2022
- 07:34:36 +0000
-From: BAUER Bernd <bernd.bauer@ses-imagotag.com>
-To: Sascha Hauer <sha@pengutronix.de>
-CC: Barebox Mailingliste <barebox@lists.infradead.org>
-Thread-Topic: HAB/SecureBoot on IMX8MN
-Thread-Index: Adjew3QqlZdjr+/eQJKZCbpzh8lxTwAEm+0AAAAOdRA=
-Date: Thu, 13 Oct 2022 07:34:36 +0000
-Message-ID:  <PR0P264MB3289835436E9D3C600F7FD3CD2259@PR0P264MB3289.FRAP264.PROD.OUTLOOK.COM>
-References:  <PR0P264MB328928CED65F8A4275814502D2259@PR0P264MB3289.FRAP264.PROD.OUTLOOK.COM>
- <20221013073204.GE6702@pengutronix.de>
-In-Reply-To: <20221013073204.GE6702@pengutronix.de>
-Accept-Language: en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=ses-imagotag.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PR0P264MB3289:EE_|PR0P264MB2918:EE_
-x-ms-office365-filtering-correlation-id: 4ae34dce-b16e-46ed-3cbe-08daaced6121
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  804KKAuh9EYhcwozwOiVTObxB78WVmCs5tmR4/KDROsHF/MyzRbUspeNLfjrouQLmXODK/MUwQPDya5VxYKXPvVk0JW/bUkdOOV5m1CbXj++JIqwzFI4kJ7cWWYlRRZjSW42tpfFEpHNkbT417bA5unuff4n1EPPEKGwsa4jidLIsnui/+PXZBQkuJQmcE8plhgd71DE+37E+/B0PWj3ZqYgJai+YqBtu49ZYiDSD9pieL+YbNzxJn/cfp+zr1yK0MbKK0ebqYQi1Jtwe9Rzen54stAc2d6jTGo/0VgSOuFQyQ4KzpdVuukbcmcpnybU1B+7lThUBOdomEk05pFQJCltRwCioxEnlGrdVocG7TzL18VB5Hp8c2/fPLjcrymvVu7M1CDTx0/ln3MWHO/xJrDXrRR0gbiXt2/FX6LLjpslz8zEMYuEw7bu2I8uK4/kxiRiiJuzMXj4gRvmZnXhCOdFEeuLAM36fbjGtyaMUYiLyYg9Pd2c0oPhhmwY1EmdRZ5SF0hCkBbnEnMeOna6BnJdAaFfL+61BRujAakQpUxePlLdPDEmG6VhE/xjOIDg4qye0ZsIKLA+bkFSO/5gPoScI8SJlYj+Oi2kihk6sss7zEn9GL57dpP0cfIBopgwkHtRwP5ZIt4SIt4na4eN9xdft46YXEYpJSfP3YUyP7bo72yGJJwvXrIr3YcvX5X7mlClgGBiaqao92y3uYw/9UzMCSGH8RAeQtwKTfxq9cP1eeQweRUjMVBeaSqA1Y+bAYWSRPnxdUHTmdlG9Mvmqg2A1jt8BMkL0CuxWCEH/ESmkKwuOKFlNrpXvhdk6zedcj5Lm2jgsWeeVBuYbyXeptttgp6eyLoIhv8BgjpzWt2q1UEQila40nOf8goA+sGl
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR0P264MB3289.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(376002)(366004)(346002)(396003)(136003)(451199015)(66574015)(53546011)(26005)(6506007)(83380400001)(86362001)(38100700002)(6916009)(41300700001)(7696005)(64756008)(4326008)(8676002)(66446008)(66476007)(76116006)(66946007)(66556008)(2906002)(186003)(52536014)(5660300002)(33656002)(9686003)(8936002)(19627235002)(55016003)(316002)(71200400001)(478600001)(45080400002)(122000001)(966005)(38070700005)(32563001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?iso-8859-1?Q?ZYLdUuYzf5luD+GNjqK+AcM5BkeBI+pelMvaSGBaLUr8Vw74q/DXhm8Typ?=
- =?iso-8859-1?Q?t/kcE/A4RBWrx4EKscMXVAMYMMFOeCbfKkRbm4cEoYxMuh8UdHQGHUq1H2?=
- =?iso-8859-1?Q?1ygHncm5gX1Cy7z4pciHyY2mxbl1Ac4Uu2jEwAAZ1hecr3TS2UOh/n25jk?=
- =?iso-8859-1?Q?+XHP4Wl0gY0Oz0y0zNRIrZGoUW1eirKP5TlEutA3nKeMsdkuRJWPa99hhX?=
- =?iso-8859-1?Q?SFpnB9tgrN2VsgkXGQtkDzPFkVORNkuQ4Lb3n3jPYf0X6ef6PUyrC3M1mN?=
- =?iso-8859-1?Q?UECtWESFz2J9R6MydTiWrZG09B4lZdH5BcQRsvBSSPHAKPjiokAtUL4CJS?=
- =?iso-8859-1?Q?FDI28stEIwajoYpGyuit+mGoW1J+0qzYvCt1jdqYtBG8AtTkkOUhtqfENO?=
- =?iso-8859-1?Q?rde24cKA5+3e/HI71rUnu7UIpr2TsT5SmgUWxF34UPycuo1DT6xCu20rOe?=
- =?iso-8859-1?Q?f2akfOOd3t5Kyo1DNHMNAd44c2GqDTWdkxLs/muiBsyA9yLXM7nnVjFdSL?=
- =?iso-8859-1?Q?SNu+mqkHgNbmGoBUzuCXYuxUJsGKXsHwcCWN8rAhU5CnZnnJzjxTvuqFGn?=
- =?iso-8859-1?Q?D1lv7T4CvEkybtHBhOoDFkEh3bipYJ8QEQsk5cO9lPqrCZrzXbDrM/fhD1?=
- =?iso-8859-1?Q?ogdxmvROi90Uerycwb/jWLQ3ekAkzY8SCgW06QVPqDZ+xKMYr4g49Lx3Qh?=
- =?iso-8859-1?Q?441F758ONbyLC1q5x8HrZnLbb6arYw3g59vaBZtRymSCksMMTzXLyjjNfy?=
- =?iso-8859-1?Q?5frTcDZIFfZrMJk3nHst2lHhzGMSehKmsyNookuwyrTlMXtxOoj4FNKNYv?=
- =?iso-8859-1?Q?fxKzZk+T1oDDZ4l75UNronGaSj7PK2L7MNV/Ty+kIAZ68anM3KxhtwDKnl?=
- =?iso-8859-1?Q?MwYVc10hJIboUaSp9GWbhg8v+TReREAjjVIz09FDh4wg0OqQTnfUAMsEZi?=
- =?iso-8859-1?Q?TgBpoc3niJWGX3Nl29R1w9vrll6BvQ4pS765qtY2CpShZp241CEiMCI0tS?=
- =?iso-8859-1?Q?o0tJsUodHdXbMXNpPFJpk6radPkzGQp/yF/BNLIkPJDrkk5X5ebdWpxgq+?=
- =?iso-8859-1?Q?nlhn5esjMvB0ohB07pa50DaA267PJ7q4HSFBZoZYg6ywrHXEqLt8V7evHV?=
- =?iso-8859-1?Q?pBgc0qJxWDcDcUcIkc7Fsk7jUXMo92f+GmPyu3YvkZ6GUtZB8XUcHXuK4n?=
- =?iso-8859-1?Q?avmzY+sOTjR+sf0vW/0B4IgkOBfqOgq5inves1XJRy0aAPEnHexTYiOjgZ?=
- =?iso-8859-1?Q?LMb7nImLn4BruNV6rRa5BkXi8u1gvtrzAzaqprh9VXs0+sFoaLD95vsMVR?=
- =?iso-8859-1?Q?eba4uqTQJSO7f6YZocyArp3tVrCw3MViwhNvpqYW4unaoU55k4WgjOaLAG?=
- =?iso-8859-1?Q?B8COvBAVVyCjCVq59Gngt1kYmXLpRZtxr1Jqy2RsG1xPO3lPiVLVQ+bcYU?=
- =?iso-8859-1?Q?w+RdjoY3niay+X1zJ4HlQZOGiuSiFpZBmVJC8gUuCCfASfWGBKlkdWCVvR?=
- =?iso-8859-1?Q?O/PMmddlrcz4EgprLiBQ/LZq9VSQhwmfH3+l+5NGUYI6teZ8ajGtGctZ1l?=
- =?iso-8859-1?Q?z+q5uGn2iySBHsYbSwxfgLZBjSOORU1TRi/8qQAuAZT7suUSjEedPyADMS?=
- =?iso-8859-1?Q?VO9my8trNn5R6E/E9K/ZZMTJTRMRvnDsX/LDRxLH2lcNXYJrZMolEUKg?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	id 1oitO5-00B2t6-Dw
+	for barebox@lists.infradead.org; Thu, 13 Oct 2022 08:16:19 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oitO1-00051a-Qs; Thu, 13 Oct 2022 10:16:13 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oitO1-0008PL-Ix; Thu, 13 Oct 2022 10:16:13 +0200
+Date: Thu, 13 Oct 2022 10:16:13 +0200
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20221013081613.GF6702@pengutronix.de>
 MIME-Version: 1.0
-X-OriginatorOrg: ses-imagotag.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PR0P264MB3289.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ae34dce-b16e-46ed-3cbe-08daaced6121
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Oct 2022 07:34:36.3141
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 026f3f97-f463-4c41-ba74-bc156c3be494
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rBKxA1M3PLcYROUnzj/jsWCD5QVGoMVtmR/PDe72zG6WlptzFKwudv7nt2HpzGCN/YhK2y7rB5KaI06AWsYMkLiZX31ryAgWwaZQH4LqTjk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2918
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221013_003441_594860_5343E066 
-X-CRM114-Status: GOOD (  22.26  )
+X-CRM114-CacheID: sfid-20221013_011617_652946_50321CF3 
+X-CRM114-Status: GOOD (  19.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -142,86 +71,240 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: AW: HAB/SecureBoot on IMX8MN
+Subject: v2022.10.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Sasha!
 
-Thank you! I'll try it.
+Hi All,
 
-Greets Bernd
+I am happy to annouce barebox-2022.10.0.
 
------Urspr=FCngliche Nachricht-----
-Von: Sascha Hauer <sha@pengutronix.de>=20
-Gesendet: Donnerstag, 13. Oktober 2022 09:32
-An: BAUER Bernd <bernd.bauer@ses-imagotag.com>
-Cc: Barebox Mailingliste <barebox@lists.infradead.org>
-Betreff: Re: HAB/SecureBoot on IMX8MN
+This time we have some interesting new features. First of all our TFTP
+implementation now supports RFC7440 aka windowsize support. This greatly
+improves speed for TFTP transfers on servers which also support this
+(atftpd-0.8.0 being one of them). Also barebox is now finally Python-2
+free. The barebox-remote infrastructure has now been ported to Python-3
+and works fluently on modern systems. One new board has been merged, the
+InnoComm WB15 i.MX8MM board. Several fixes and improvements all over the
+place have been merged as well, as usual see below for a full list of
+changes that went into this release.
 
-Hi Bernd,
+Have Fun!
+ Sascha
 
-On Thu, Oct 13, 2022 at 05:20:06AM +0000, BAUER Bernd wrote:
-> Hi!
->=20
-> I have a question regarding SecureBoot/HAB and IMX8MN.
-> In barebox I can only enable HAB if the architecture is set to IMX8MQ.
-> My project is based on an IMX8MN.
->=20
-> Can I just extend the definition to IMX8MN and enable SecureBoot for the =
-IMX8MN?
-> Does this work? Or are there differences in the registers that have to be=
- implemented first?
+----------------------------------------------------------------
+Ahmad Fatoum (101):
+      pstore: disable double memory reservation fixup
+      ARM: i.MX8M: add TrustZone Address Space Controller 380 init function
+      of: add new of_fixup_reserved_memory() helper
+      pstore: ram: use new of_fixup_reserved_memory() helper
+      fs: export cdev_get_linux_rootarg() for reuse
+      common: bootm: reuse cdev_get_linux_rootarg()
+      ARM: i.MX8M: atf: mark ATF start functions as __noreturn
+      ARM: i.MX8M: rename imx8m_atf_load_bl31 for clarity
+      ARM: i.MX8M: define imx8mX_load_bl33 and imx8mX_load_and_start_tfa
+      of: move of_get_node_by_reproducible_name() into common code
+      reset: starfive: add dependency on CONFIG_COMMON_CLK
+      usbgadget: autostart: add usbgadget_autostart() for board code
+      resource: add flags parameter to __request_region
+      common: allow requesting SDRAM regions with custom flags
+      memory: define reserve_sdram_region helper
+      init: define new postmem_initcall()
+      of: reserved-mem: reserve regions prior to mmu_initcall()
+      ARM: mmu64: map reserved regions uncached
+      ARM: mmu: define attrs_uncached_mem() helper
+      kbuild: make sha256sum command available generally
+      pbl: export pbl_barebox_verify
+      firmware: add external firmware PBL support
+      pbl: replace __piggydata_end with __image_end
+      mfd: axp20x: add mfd axp20x driver
+      driver: add feature controller framework
+      driver: consult feature controller prior to device probe
+      driver: featctrl: fixup kernel device tree
+      dt-bindings: add i.MX8M feature controller bindings
+      soc: imx: add i.MX8M feature controller driver
+      nvmem: import Linux nvmem_cell_read_variable_le_u32
+      nvmem: ocotp: add i.MX8M[MN] feature controller support
+      ARM: dts: i.MX8MN: describe feature controller
+      ARM: dts: i.MX8MM: describe feature controller
+      soc: imx: gpcv2: switch to regmap
+      soc: imx: gpcv2: split power_up/power_off
+      soc: imx: gpcv2: align with upstream Linux driver
+      soc: imx: gpcv2: extend for i.MX8M Mini/Nano/Plus support
+      Revert "ARM: i.MX8MM: assume USBOTG power domains to be powered"
+      Revert "ARM: i.MX8MN: assume USBOTG power domains to be powered"
+      usb: gadget: fsl_udc: add imx6_barebox_(load/start)_usb
+      of: platform: propagate of_devices_ensure_probed_by(name|property) errors
+      of: implement of_rename_property()
+      i2c: implement of_i2c_register_devices_by_node()
+      i2c: implement of_i2c_device_enable_and_register_by_alias()
+      clk: have SCMI and SiFive clock controllers depend on COMMON_CLK
+      meminfo: support SANDBOX build with DEBUG log level
+      net: phy: micrel: drop useless assignment of dummy read
+      mci: core: drop useless assignment
+      nvmem: core: propagate read failure
+      fs: remove never-read initializer in mount_all()
+      usb: otg: always propagate failure to register parameters
+      usb: dwc2: gracefully handle unknown hs_phy_type
+      state: propagate failure to fixup enum32 into DT
+      commands: trigger: drop unused variable
+      commands: tutorial: fix memory leak
+      bthread: fix null pointer dereference in error path
+      common: env: drop never-read initialization
+      password: avoid static analyzer false positive
+      regmap-mmio: regmap_mmio_get_min_stride: unify branches for readability
+      crypto: caam - delete unused variable
+      misc: ubootvar: always initialize struct ubootvar_data::flag
+      nvmem: core: drop always true condition
+      of: fdt: gracefully handle out-of-place properties
+      of: overlay: drop unused variable of_overlay_apply_dir()
+      of: partition: drop unused variable
+      serial: ns16550_pci: drop useless assignment
+      phy: core: drop useless else clause
+      fs: ext4: ext_barebox: handle ext_get_inode() errors
+      fs: fat: propagate f_lseek failure
+      fs: drop duplicate follow_managed() call
+      lib: parse_area_spec: guard against NULL pointer dereference
+      net: ping: propagate failure
+      net: fastboot: keep error message initialized at all times
+      ARM: early-mmu: don't cache/prefetch OPTEE_SIZE bytes from end of memory
+      commands: iomem: point out [R]eserved regions
+      soc: imx: gpcv2: make available to all i.MX8M
+      ARM: i.MX8MM: add InnoComm WB15 support
+      gpiolib: implement gpio_get_chip_by_dev()
+      of: platform: optimize of_find_device_by_node when deep probing
+      driver: implement find_device() helper
+      commands: gpio: add -d argument to set/get commands
+      gpiolib: gpioinfo: add optional CONTROLLER command line argument
+      of: refactor for of_fixup_reserved_memory() for clarity
+      commands: add pm_domain for listing power domains
+      commands: mm: don't ignore pread() errors for larger access sizes
+      of: implement of_prepend_property
+      test: self: provide selftest_is_running()
+      blspec: fix memory leak handling NFS URLs
+      of: of_probe: create board's machine device at the earliest
+      fs: ubifs: remove always-false check
+      mci: bcm2835: reset host controller on barebox shutdown
+      bbu: fix exporting i.MX NAND bbu handler over fastboot
+      imx-usb-loader: skip initial SDP_ERROR_STATUS query for SDPS
+      Revert "mci: bcm2835: reset host controller on barebox shutdown"
+      clks: imx7: fix initial clock setup with deep probe enabled
+      test: emulate.pl: fix support for multiple block devices
+      efi: payload: image: fix commandline-less boot
+      ARM: i.MX7: enable caches when booted over USB
+      block: fix calling cdev_get_block_device with partitions
+      ARM: MXS: fix breakage for non-DT boards
+      ARM: start: drop support for machine type casted to boarddata pointer
 
->From a quick glance at the corresponding U-Boot code I'd say that HAB suppo=
-rt is identical between the different i.MX8M variants, so the following mig=
-ht indeed be a good start exploring it. I have no idea though if there are =
-any subtle differences between the SoCs.
+Antony Pavlov (9):
+      Documentation/gen_commands.py: use python3
+      Documentation: OKUD Max9331: fix sphinx warning
+      Documentation: Altera SOCFPGA FPGA Manager: fix sphinx error
+      Documentation: Altera FPGAs in passive-serial mode: fix sphinx issues
+      Documentation: barebox DT aliases: fix sphinx issues
+      Documentation: barebox environment: fix list rendering
+      Documentation: Common leds properties: fix 'panic-indicator' list entry rendering
+      Documentation: Voltage/Current Regulators: fix sphinx error
+      Documentation/conf.py: fix copyright years
 
-Sascha
+Enrico Scholz (23):
+      tftp: add some 'const' annotations
+      tftp: allow to change tftp port
+      cmd:tftp: add '-P' option to set tftp server port number
+      tftp: do not set 'tsize' in WRQ requests
+      tftp: assign 'priv->block' later in WRQ
+      tftp: minor refactoring of RRQ/WRQ packet generation code
+      tftp: replace hardcoded blksize by global constant
+      tftp: remove sanity check of first block
+      tftp: add debug_assert() macro
+      tftp: allocate buffers and fifo dynamically
+      tftp: add sanity check for OACK response
+      tftp: record whether tftp file is opened for lookup operation only
+      tftp: reduce block size on lookup requests
+      tftp: refactor data processing
+      tftp: detect out-of-memory situations
+      tftp: implement 'windowsize' (RFC 7440) support
+      tftp: do not use 'priv->block' for RRQ
+      tftp: reorder tftp packets
+      tftp: add selftest
+      tftp: accept OACK + DATA datagrams only in certain states
+      tftp: add some documentation about windowsize support
+      tftp: make read() fail in error case
+      zstd: fix assert() logic
 
---------------------------------8<--------------------------
+Frank Wunderlich (1):
+      arm: rockchip: switch to mainline dts for bpi-r2-pro
 
->From 0daeceb70f0dfe0d2fdb65c986a613fe2d3d6203 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Oct 2022 09:30:23 +0200
-Subject: [PATCH] Enable HAB on i.MX8M
+Hans Christian Lonstad (1):
+      usb: dwc3: support snps,dis-u2-freeclk-exists-quirk for i.MX8MP
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Johannes Zink (1):
+      drivers: mtd: nand: nand_mxs: enable nand_mxs on imx7
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig index dc=
-b70c8c1a..8d3f75e3d1 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -902,7 +902,7 @@ config HABV4
- 	select HAB
- 	select NVMEM
- 	select IMX_OCOTP
--	depends on ARCH_IMX6 || ARCH_IMX8MQ
-+	depends on ARCH_IMX6 || ARCH_IMX8M
- 	depends on OFDEVICE
- 	help
- 	  High Assurance Boot, as found on i.MX28/i.MX6/i.MX8MQ.
---
-2.30.2
+Michael Riesch (2):
+      of: overlay: improve error handling in of_overlay_apply_tree
+      of: overlay: avoid potential null pointer exception
 
+Sascha Hauer (41):
+      dts: update to v5.19-rc7
+      dts: update to v5.19-rc8
+      dts: update to v5.19
+      dts: update to v6.0-rc1
+      dts: update to v6.0-rc2
+      dts: update to v6.0-rc3
+      mdio_bus: Configure pinctrl for phy devices
+      net: Add driver for bcmgenet
+      ARM: rpi: enable bcmgenet driver
+      remove local pyserial
+      bbremote: Convert to python3
+      ratp: getenv: Do not crash on non-existing variables
+      ratp: i2c: Do not return error
+      bbremote: Print usage when no command is given
+      dts: update to v6.0-rc4
+      dts: update to v6.0-rc5
+      ARM: i.MX: Atlascopco: Fix wrong #address-cells warning
+      ARM: rdu2: Drop redundant of graph link
+      ARM: rdu2: fix dtc warning
+      ubifs: Fix pointer type mismatch in gzip decompressor
+      ARM: imx_v7_defconfig: Limit TFTP window size
+      Merge branch 'for-next/arm'
+      Merge branch 'for-next/clang-analyze'
+      Merge branch 'for-next/doc'
+      Merge branch 'for-next/dts'
+      Merge branch 'for-next/imx'
+      Merge branch 'for-next/misc'
+      Merge branch 'for-next/ratp'
+      Merge branch 'for-next/rockchip'
+      Merge branch 'for-next/rpi'
+      Merge branch 'for-next/sha256'
+      Merge branch 'for-next/socfpga'
+      Merge branch 'for-next/tftp'
+      net: Use dma_alloc to allocate net packet
+      Merge branch 'bugfix/issue13' of https://github.com/hcl-dr/barebox-imx8mp into hcl-dr-bugfix/issue13
+      Merge branch 'hcl-dr-bugfix/issue13'
+      arm: rk3568 boards: call setup_c() before accessing global pointers
+      gpiolib: Fix gpioinfo without args
+      gpio: Fix gpio commands called without -d option
+      Revert "lib: zstd: sync with Linux"
+      Release v2022.10.0
 
---=20
+Steffen Trumtrar (4):
+      ARM: socfpga: achilles: fix entry_function usage
+      ARM: socfpga: add Arria10-specific errata init
+      ARM: socfpga: Enclustra AA1: enable ARM errata
+      ARM: Socfpga: Achilles: Enable ARM errata
+
+Uwe Kleine-König (2):
+      clk: imx25: Add comments to clk list with offsets
+      clk: imx25: Add support for watchdog clock
+-- 
 Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://eur03.safelinks.protec=
-tion.outlook.com/?url=3Dhttp%3A%2F%2Fwww.pengutronix.de%2F&amp;data=3D05%7C=
-01%7Cbernd.bauer%40ses-imagotag.com%7C34e74f243dea4f0185bd08daaced0750%7C02=
-6f3f97f4634c41ba74bc156c3be494%7C0%7C0%7C638012431286975126%7CUnknown%7CTWF=
-pbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D=
-%7C3000%7C%7C%7C&amp;sdata=3DRykG7xxwLLJK87kdqhDTBHJmAEfS7EyaL0smddx4OZk%3D=
-&amp;reserved=3D0  |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
