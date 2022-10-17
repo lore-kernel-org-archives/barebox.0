@@ -1,61 +1,66 @@
-Delivery-date: Mon, 17 Oct 2022 15:52:18 +0200
+Delivery-date: Mon, 17 Oct 2022 16:34:41 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1okQXT-00BfBn-Ga
-	for lore@lore.pengutronix.de; Mon, 17 Oct 2022 15:52:18 +0200
+	id 1okRCT-00BgYR-Nk
+	for lore@lore.pengutronix.de; Mon, 17 Oct 2022 16:34:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1okQXR-0001Zb-Eu
-	for lore@pengutronix.de; Mon, 17 Oct 2022 15:52:18 +0200
+	id 1okRCR-0007f7-6n
+	for lore@pengutronix.de; Mon, 17 Oct 2022 16:34:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JAdEw4BnsrBTPfoSgjjpwI/jD9NmEsqKT2cp78IJfuk=; b=3V0R2MzMb/c0LW0OjDVVfHv6sU
-	JrNW/Pfg7IGJw7MkS4mFSC6eWmvJx31vWCqht3veINbk2CCq1U7MEDAyKVjoi7uyYNQfSSo/TxCyU
-	xSdhtHIE65KVdg3aL1v5Nrnpj0Wp71zXrN0ID6WzeLhvaBZ63xjRH8snXyfKUFbT7xyhay+15eqkE
-	5ZkH5df0ddLmS75uIS2zQTcd2xoTMkB3oD4B75Amh+jPgFG08cI3yKdApgHvFMfjjlKC72l1h6zZE
-	UHqomuplWCNsyPKIlVzNDm5/4Wdaabd8WaWy6LqaqMqoNDiUJfcj4XgFZIw3GbffJwsVAkGMPw/fG
-	ySVsJUEQ==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=imJ+82zWb5GXUCzXmMQuIHTVsTNkwCFc+fSCWF4Z3Zc=; b=4zVCOCmHdeuMMyxF6jozEhcbX0
+	T0H0C6bjC4+Zo/VqNKzLTJJUj1fQSHiZqMS+gjWNTSMA2w7M3HsLsVc+evSekgRtFJB3LsvYS7NYQ
+	oQP3zN45TOUONbkruJ3dei5lnEwAWoJIfE7ON3ffA1G1S1mppPWmv5y6fJE0xHB6h7AiGNmK5TgKp
+	rHhHPm2Fs/K+PR6J94g546DeGbh5sdHdQQqBfh4R96qUfGPUfoS/0FV71OiNblnByvPDYtuDkZ7Fp
+	Ow+p8mebZl0EyI/zmpLRyNjxcnW8hUgpcKl4/aFDzczeCdumHJozN8daa1W2BnR77HVs+egvlgtYy
+	Ge0ojaIA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1okQV1-00CJoU-1j; Mon, 17 Oct 2022 13:49:47 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1okRAa-00CgQl-J2; Mon, 17 Oct 2022 14:32:44 +0000
+Received: from smtp74.iad3a.emailsrvr.com ([173.203.187.74])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1okQUn-00CJY0-Mz
-	for barebox@lists.infradead.org; Mon, 17 Oct 2022 13:49:36 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1okQUm-00011u-8S; Mon, 17 Oct 2022 15:49:32 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1okQUl-0025Xc-6Y; Mon, 17 Oct 2022 15:49:31 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1okQUk-00374F-Dc; Mon, 17 Oct 2022 15:49:30 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Hans Christian Lonstad <hcl@datarespons.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 17 Oct 2022 15:49:29 +0200
-Message-Id: <20221017134929.622022-4-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221017134929.622022-1-a.fatoum@pengutronix.de>
-References: <20221017134929.622022-1-a.fatoum@pengutronix.de>
+	id 1okRAV-00CgOb-MH
+	for barebox@lists.infradead.org; Mon, 17 Oct 2022 14:32:41 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20190130-41we5z8j; t=1666017154;
+	bh=WhXjz1nvfMuOvmtmztK2USSbgRLLJ8pITyDJKAdKM4M=;
+	h=Date:Subject:To:From:From;
+	b=ijrPXkbpgW85Bk0eo4DM4WucFp2G3jSZWcSkIoxXeGN/10NFCmqf3rhYefn+QUeG3
+	 I4KsI+Bh2b7rMzCecLTIZlZamzzOVNvk1nMJISngsPdK6M6fYSlOtZQJMOa7ISB0xC
+	 bcR9huk2Ye9CD7W8W65Ct9OwxULizn5PAcBIyCOU=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp34.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 0CE8823B04;
+	Mon, 17 Oct 2022 10:32:33 -0400 (EDT)
+Message-ID: <4ac3297e-0d69-1ce4-c404-1684ed888c8b@mev.co.uk>
+Date: Mon, 17 Oct 2022 15:32:33 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.2
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+References: <98fb1314-e0c9-c75c-c89f-7bcc36a2b9c0@mev.co.uk>
+ <dcd83566-6923-dff8-4329-bce9fa473e6e@pengutronix.de>
+ <15b5c180-09f0-0a6e-da52-4c21051ec403@mev.co.uk>
+ <962d3f49-3125-1c02-3cc3-5e811ceca7a1@pengutronix.de>
+Content-Language: en-GB
+From: Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+In-Reply-To: <962d3f49-3125-1c02-3cc3-5e811ceca7a1@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Classification-ID: 3f06633a-20dc-4ab8-8b53-9f7d98794828-1-1
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221017_064933_787497_5BBF385A 
-X-CRM114-Status: GOOD (  13.95  )
+X-CRM114-CacheID: sfid-20221017_073239_949303_0AAEA218 
+X-CRM114-Status: GOOD (  20.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,190 +78,88 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [RFT PATCH master 3/3] ARM: i.MX8MP: add feature controller support for Plus
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [v2022.10.0] initcall of of_probe_memory failed (EBUSY)
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Plus has lots of peripherals that need be disabled, depending on fusebox
-settings. Some of these are already described in the upstream device tree,
-so reference them in the barebox DT and add the necessary glue for
-disabling them like we already do on i.MX8MM/N.
+On 17/10/2022 14:41, Ahmad Fatoum wrote:
+> Hello Ian,
+> 
+> On 17.10.22 15:10, Ian Abbott wrote:
+>> On 17/10/2022 13:24, Ahmad Fatoum wrote:
+>>> On 17.10.22 14:03, Ian Abbott wrote:
+>>>> Barebox v2022.10.0 seems to work for me, but I now get this (harmless?) error during initialization:
+>>>>
+>>>> initcall of_probe_memory+0x1/0x34 failed: Device or resource busy
+>>>>
+>>>> (This is on a 32-bit ARM SoCFPGA/CycloneV based system.)
+>>>>
+>>>> git bisect is blaming commit d0b5f6bde15b ("of: reserved-mem: reserve regions prior to mmu_initcall()").
+>>>
+>>> Can you define #define DEBUG at the top of common/resource.c and paste
+>>> the output?
+>>
+>> Here is what I get for a Terasic DE0-Nano-SoC.  (I was using a custom board for the original report, but the symptoms are the same.)
+> 
+> Thanks for the debug output.
+> 
+>> Board: Terasic DE-0(Atlas)
+>> __request_region ok: 0x00000000:0x3fffffff flags=0x0
+> 
+> Here socfpga_detect_sdram() will register ram0 after reading it
+> from hardware.
+> 
+>> __request_region ok: 0xffd04000:0xffd04fff flags=0x0
+>> __request_region ok: 0xffd05000:0xffd05fff flags=0x0
+>> __request_region ok: 0xffc02000:0xffc02fff flags=0x0
+>> __request_region ok: 0xffc03000:0xffc03fff flags=0x0
+>> __request_region: 0x00000000:0x3fffffff (ram0) conflicts with 0x00000000:0x3fffffff (ram0)
+> 
+> And then when device-tree is parsed, of_probe_memory()
+> will register the same memory bank again. The error reports this unexpected
+> situation, but as you noted should not break the boot.
+> 
+> The correct solution would be removing the memory@0 node from the
+> device tree. After all, if barebox has read it from hardware,
+> why hardcode it in the device tree?
 
-We omit CPU fusing for now. These are handled by tester3 and would need
-a bit more rework.
+Most of those device trees are copied from Linux where it makes sense to 
+have the memory node.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/dts/imx8mp.dtsi             | 43 ++++++++++++++++++++++++++++
- drivers/nvmem/ocotp.c                |  9 ++++++
- drivers/soc/imx/imx8m-featctrl.c     | 20 ++++++++-----
- include/dt-bindings/features/imx8m.h |  4 ++-
- include/soc/imx8m/featctrl.h         |  3 ++
- 5 files changed, 71 insertions(+), 8 deletions(-)
+> 
+> Still, barebox was supposed to have logic to fuse identical and
+> overlapping memory banks. Can you try the patch I just sent out?
 
-diff --git a/arch/arm/dts/imx8mp.dtsi b/arch/arm/dts/imx8mp.dtsi
-index b251ebeadab2..4ffc3a8de7c0 100644
---- a/arch/arm/dts/imx8mp.dtsi
-+++ b/arch/arm/dts/imx8mp.dtsi
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: (GPL-2.0 OR MIT)
- 
-+#include <dt-bindings/features/imx8m.h>
-+
- / {
- 	remoteproc_cm7: remoteproc-cm7 {
- 		compatible = "fsl,imx8mp-cm7";
-@@ -7,3 +9,44 @@
- 		syscon = <&src>;
- 	};
- };
-+
-+feat: &ocotp {
-+	#feature-cells = <1>;
-+	barebox,feature-controller;
-+};
-+
-+&pgc_mipi_phy1 {
-+	barebox,feature-gates = <&feat IMX8M_FEAT_MIPI_DSI>;
-+};
-+
-+&pgc_gpu2d {
-+	barebox,feature-gates = <&feat IMX8M_FEAT_GPU>;
-+};
-+
-+&pgc_gpu3d {
-+	barebox,feature-gates = <&feat IMX8M_FEAT_GPU>;
-+};
-+
-+&pgc_gpumix {
-+	barebox,feature-gates = <&feat IMX8M_FEAT_GPU>;
-+};
-+
-+&pgc_mediamix {
-+	barebox,feature-gates = <&feat IMX8M_FEAT_ISP>;
-+};
-+
-+&pgc_mipi_phy2 {
-+	barebox,feature-gates = <&feat IMX8M_FEAT_MIPI_DSI>;
-+};
-+
-+&pgc_ispdwp {
-+	barebox,feature-gates = <&feat IMX8M_FEAT_ISP>;
-+};
-+
-+&gpu3d {
-+	barebox,feature-gates = <&feat IMX8M_FEAT_GPU>;
-+};
-+
-+&gpu2d {
-+	barebox,feature-gates = <&feat IMX8M_FEAT_GPU>;
-+};
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index 9fcbd1a6a414..08171cb5cde9 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -890,12 +890,19 @@ static struct imx_ocotp_data vf610_ocotp_data = {
- 	.fuse_read = imx6_fuse_read_addr,
- };
- 
-+static struct imx8m_featctrl_data imx8mp_featctrl_data = {
-+	.gpu_bitmask = 0xc0,
-+	.mipi_dsi_bitmask = 0x60000,
-+	.isp_bitmask = 0x3,
-+};
-+
- static struct imx_ocotp_data imx8mp_ocotp_data = {
- 	.num_regs = 1024,
- 	.addr_to_offset = imx6sl_addr_to_offset,
- 	.mac_offsets_num = 2,
- 	.mac_offsets = { 0x90, 0x96 },
- 	.format_mac = imx_ocotp_format_mac,
-+	.feat = &imx8mp_featctrl_data,
- };
- 
- static struct imx_ocotp_data imx8mq_ocotp_data = {
-@@ -911,6 +918,7 @@ static struct imx_ocotp_data imx8mq_ocotp_data = {
- 
- static struct imx8m_featctrl_data imx8mm_featctrl_data = {
- 	.vpu_bitmask = 0x1c0000,
-+	.check_cpus = true,
- };
- 
- static struct imx_ocotp_data imx8mm_ocotp_data = {
-@@ -927,6 +935,7 @@ static struct imx_ocotp_data imx8mm_ocotp_data = {
- 
- static struct imx8m_featctrl_data imx8mn_featctrl_data = {
- 	.gpu_bitmask = 0x1000000,
-+	.check_cpus = true,
- };
- 
- static struct imx_ocotp_data imx8mn_ocotp_data = {
-diff --git a/drivers/soc/imx/imx8m-featctrl.c b/drivers/soc/imx/imx8m-featctrl.c
-index 1798d0fc2863..f2c57ac136ad 100644
---- a/drivers/soc/imx/imx8m-featctrl.c
-+++ b/drivers/soc/imx/imx8m-featctrl.c
-@@ -53,13 +53,19 @@ int imx8m_feat_ctrl_init(struct device_d *dev, u32 tester4,
- 		clear_bit(IMX8M_FEAT_VPU, features);
- 	if (is_fused(tester4, data->gpu_bitmask))
- 		clear_bit(IMX8M_FEAT_GPU, features);
--
--	switch (tester4 & 3) {
--	case 0b11:
--		clear_bit(IMX8M_FEAT_CPU_DUAL, features);
--		fallthrough;
--	case 0b10:
--		clear_bit(IMX8M_FEAT_CPU_QUAD, features);
-+	if (is_fused(tester4, data->mipi_dsi_bitmask))
-+		clear_bit(IMX8M_FEAT_MIPI_DSI, features);
-+	if (is_fused(tester4, data->isp_bitmask))
-+		clear_bit(IMX8M_FEAT_ISP, features);
-+
-+	if (data->check_cpus) {
-+		switch (tester4 & 3) {
-+		case 0b11:
-+			clear_bit(IMX8M_FEAT_CPU_DUAL, features);
-+			fallthrough;
-+		case 0b10:
-+			clear_bit(IMX8M_FEAT_CPU_QUAD, features);
-+		}
- 	}
- 
- 	priv->feat.dev = dev;
-diff --git a/include/dt-bindings/features/imx8m.h b/include/dt-bindings/features/imx8m.h
-index 8de69ba28b26..e1ed40413ca2 100644
---- a/include/dt-bindings/features/imx8m.h
-+++ b/include/dt-bindings/features/imx8m.h
-@@ -8,7 +8,9 @@
- #define IMX8M_FEAT_CPU_QUAD	2
- #define IMX8M_FEAT_VPU		3
- #define IMX8M_FEAT_GPU		4
-+#define IMX8M_FEAT_MIPI_DSI	5
-+#define IMX8M_FEAT_ISP		6
- 
--#define IMX8M_FEAT_END		5
-+#define IMX8M_FEAT_END		7
- 
- #endif
-diff --git a/include/soc/imx8m/featctrl.h b/include/soc/imx8m/featctrl.h
-index af94995a916a..b3eb1a56a5f6 100644
---- a/include/soc/imx8m/featctrl.h
-+++ b/include/soc/imx8m/featctrl.h
-@@ -9,6 +9,9 @@
- struct imx8m_featctrl_data {
- 	u32 vpu_bitmask;
- 	u32 gpu_bitmask;
-+	u32 mipi_dsi_bitmask;
-+	u32 isp_bitmask;
-+	bool check_cpus;
- };
- 
- #ifdef CONFIG_IMX8M_FEATCTRL
+The patch seems to work, thanks!
+
+The only conflict in the debug output is between the "fdt-memreserve-0" 
+and "zero page" regions, but I think that is normal:
+
+initcall-> of_reserved_mem_walk+0x1/0xfc
+__request_region ok: 0x00000000:0x00000fff flags=0x80000200
+initcall-> mmu_init+0x1/0x60
+__request_region ok: 0x3ffe4000:0x3ffe7fff flags=0x200
+mmu: ttb: 0x3ffe4000
+mmu: Vectors are at 0x3fe00020
+__request_region: 0x00000000:0x00000fff (zero page) conflicts with 
+0x00000000:0x00000fff (fdt-memreserve-0)
+mmu: Created zero page
+
+(I defined DEBUG in "arch/arm/cpu/mmu.c" to get the "mmu: Created zero 
+page" log.  Note: the "fdt-memreserve-0" region comes from the 
+"/memreserve/" line in "dts/src/arm/socfpga_cyclone5.dtsi".)
+
+Thanks again!
+
 -- 
-2.30.2
+-=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
+-=( registered in England & Wales.  Regd. number: 02862268.  )=-
+-=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
+-=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
 
 
 
