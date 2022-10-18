@@ -1,52 +1,52 @@
-Delivery-date: Tue, 18 Oct 2022 11:07:37 +0200
+Delivery-date: Tue, 18 Oct 2022 11:08:14 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1okiZV-00CTPx-Qf
-	for lore@lore.pengutronix.de; Tue, 18 Oct 2022 11:07:37 +0200
+	id 1okia7-00CTRY-Er
+	for lore@lore.pengutronix.de; Tue, 18 Oct 2022 11:08:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1okiZT-000603-Lw
-	for lore@pengutronix.de; Tue, 18 Oct 2022 11:07:36 +0200
+	id 1okia5-00066T-Fv
+	for lore@pengutronix.de; Tue, 18 Oct 2022 11:08:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Mo3s6KCsHbxOzHC8sBlfNsHSl1ycM8xtJNjC3zpBVQk=; b=HeR8Wdcz/yPI51VQQCoQus/FbV
-	HGor5BZyEC+NkPx3uIQtqEp0oiUMSNV7EqredAMzvFJZvq1DpvUuFDUW3EpBW7jKVS8wHjVBvb0mV
-	GmBYa8TxykqOCsFM9WJxw6OBuBTJjrbitulPyW0AuYQDtnFIt8OTnlJ2JiJHp6sllMtdN/Ejtk8Kt
-	68bV8tAA8bN/PA2aE9SfLnWfMl94VPYOaCdGK3+ETDPKhNdJ/dwq/KcVtG97f8V4qsglnG8348l0k
-	DCT+GzLExhG9MlQtl+5R3qV8RvF3MoQXQzYWcHH0SvY8HW7YfsZVJ5jlBbgW7c8DkDXFznRTuFuW4
-	Ih89l4NQ==;
+	bh=6JqlxsGJRL3+Tm9M6IoMMaYSOsKJdpN/n6F/bHV3rOg=; b=lOhjpTiRPcilZYpHx4l9OCXO5n
+	43Zt5WZX2A+TDj5ESDI7JOEqIEUtVgyRbOanJXPQ73058OmOGYCkNfBvV2gBtX8A9AR+uWffLI5iX
+	xDjuiL1l6+Xi1D4h38PW/NbVoMvsy+RM0P+3nJxPmIIwPx1GshxelZk5Xn7/f4hwuv8S2K5qpNqAX
+	V2OlqhLYClPkqmgxOmIhA2te9mxQswEpoHFjS0Z0DTXhU9DCOzjThu9Y1CR5rol9XRY39zTDkXryj
+	sCJpjJ8ujhf1NgOj+tEU7rVZL7aSfLgdX9D0S+w/GccoNis8gIrYn5Vpwab6JmbbLouFdwHZnfUfx
+	YyrBqHhQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1okiY3-004hkk-Hn; Tue, 18 Oct 2022 09:06:07 +0000
+	id 1okiYm-004iTv-Nz; Tue, 18 Oct 2022 09:06:52 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1okiXq-004hdx-AC
-	for barebox@lists.infradead.org; Tue, 18 Oct 2022 09:05:56 +0000
+	id 1okiYa-004iOZ-Nz
+	for barebox@lists.infradead.org; Tue, 18 Oct 2022 09:06:42 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1okiXo-0005gP-Ve; Tue, 18 Oct 2022 11:05:52 +0200
+	id 1okiYZ-0005s2-Bn; Tue, 18 Oct 2022 11:06:39 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1okiXo-0007iY-Hi; Tue, 18 Oct 2022 11:05:52 +0200
-Date: Tue, 18 Oct 2022 11:05:52 +0200
+	id 1okiYZ-0007j7-4M; Tue, 18 Oct 2022 11:06:39 +0200
+Date: Tue, 18 Oct 2022 11:06:39 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Andrej Picej <andrej.picej@norik.com>
-Message-ID: <20221018090552.GP6702@pengutronix.de>
-References: <20221017071127.1459152-1-a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20221018090639.GQ6702@pengutronix.de>
+References: <20221017071036.1458761-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221017071127.1459152-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20221017071036.1458761-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221018_020554_387938_A35677BB 
-X-CRM114-Status: GOOD (  28.36  )
+X-CRM114-CacheID: sfid-20221018_020640_841464_C6D76D50 
+X-CRM114-Status: GOOD (  19.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,170 +77,70 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX: xload-gpmi-nand: refactor for more SoC support
+Subject: Re: [PATCH] usb: gadget: fsl_udc: add imx7_barebox_(load/start)_usb
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Oct 17, 2022 at 09:11:27AM +0200, Ahmad Fatoum wrote:
-> The code hardcodes i.MX6 addresses, which needs to be factored out for
-> use in other SoCs' startup. Do this by creating a new imx_nand_params
-> to hold these information and passing it into the now more generic
-> code.
-> 
-> No functional change intended. Untested as I got no i.MX6 directly
-> booting from NAND.
+On Mon, Oct 17, 2022 at 09:10:36AM +0200, Ahmad Fatoum wrote:
+> These can be called from barebox PBL when booted from USB to continue
+> USB boot. This isn't necessary in the general case when RAM setup is
+> done via DCD, but for cases where setup is done in PBL, these helpers
+> come in handy. Tested on i.MX7D revision 1.2.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/arm/mach-imx/include/mach/imx6-regs.h |  2 +
->  arch/arm/mach-imx/xload-gpmi-nand.c        | 76 ++++++++++++----------
->  2 files changed, 44 insertions(+), 34 deletions(-)
+>  drivers/usb/gadget/fsl_udc_pbl.c | 11 +++++++++++
+>  include/soc/fsl/fsl_udc.h        |  3 +++
+>  2 files changed, 14 insertions(+)
 
-Looks good. Nevertheless I'll delay this until the rest of i.MX7 NAND
-boot is in place.
+Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/mach-imx/include/mach/imx6-regs.h b/arch/arm/mach-imx/include/mach/imx6-regs.h
-> index 35f03036cb5b..39e275153317 100644
-> --- a/arch/arm/mach-imx/include/mach/imx6-regs.h
-> +++ b/arch/arm/mach-imx/include/mach/imx6-regs.h
-> @@ -3,7 +3,9 @@
->  #ifndef __MACH_IMX6_REGS_H
->  #define __MACH_IMX6_REGS_H
+> diff --git a/drivers/usb/gadget/fsl_udc_pbl.c b/drivers/usb/gadget/fsl_udc_pbl.c
+> index 8b714d4c8b02..d2f2b9e1959e 100644
+> --- a/drivers/usb/gadget/fsl_udc_pbl.c
+> +++ b/drivers/usb/gadget/fsl_udc_pbl.c
+> @@ -5,6 +5,7 @@
+>  #include <soc/fsl/fsl_udc.h>
+>  #include <mach/imx8mm-regs.h>
+>  #include <mach/imx6-regs.h>
+> +#include <mach/imx7-regs.h>
 >  
-> +#define MX6_APBH_BASE_ADDR		0x00110000
->  #define MX6_GPMI_BASE_ADDR		0x00112000
-> +#define MX6_BCH_BASE_ADDR		0x00114000
->  
->  #define MX6_FAST1_BASE_ADDR		0x00c00000
->  #define MX6_FAST2_BASE_ADDR		0x00b00000
-> diff --git a/arch/arm/mach-imx/xload-gpmi-nand.c b/arch/arm/mach-imx/xload-gpmi-nand.c
-> index 3a4f331ce648..bc3562acb341 100644
-> --- a/arch/arm/mach-imx/xload-gpmi-nand.c
-> +++ b/arch/arm/mach-imx/xload-gpmi-nand.c
-> @@ -1124,49 +1124,44 @@ static int read_firmware(struct mxs_nand_info *info, int startpage,
->  	return 0;
+>  static void fsl_queue_td(struct usb_dr_device *dr, struct ep_td_struct *dtd,
+>  			 int ep_is_in)
+> @@ -210,6 +211,16 @@ int imx6_barebox_start_usb(void *dest)
+>  	return imx_barebox_start_usb(IOMEM(MX6_OTG_BASE_ADDR), dest);
 >  }
 >  
-> -static int __maybe_unused imx6_nand_load_image(void *cmdbuf, void *descs,
-> -	void *databuf, void *dest, int len)
-> +struct imx_nand_params {
-> +	struct mxs_nand_info info;
-> +	struct apbh_dma apbh;
-> +	void *sdram;
-> +};
-> +
-> +static int __maybe_unused imx6_nand_load_image(struct imx_nand_params *params,
-> +					       void *databuf, void *dest, int len)
->  {
-> -	struct mxs_nand_info info = {
-> -		.io_base = (void *)0x00112000,
-> -		.bch_base = (void *)0x00114000,
-> -	};
-> -	struct apbh_dma apbh = {
-> -		.id = IMX28_DMA,
-> -		.regs = (void *)0x00110000,
-> -	};
-> +	struct mxs_nand_info *info = &params->info;
->  	struct mxs_dma_chan pchan = {
->  		.channel = 0, /* MXS: MXS_DMA_CHANNEL_AHB_APBH_GPMI0 */
-> -		.apbh = &apbh,
-> +		.apbh = &params->apbh,
->  	};
->  	int ret;
->  	struct fcb_block *fcb;
->  
-> -	info.dma_channel = &pchan;
-> +	info->dma_channel = &pchan;
->  
->  	pr_debug("cmdbuf: 0x%p descs: 0x%p databuf: 0x%p dest: 0x%p\n",
-> -			cmdbuf, descs, databuf, dest);
-> -
-> -	/* Command buffers */
-> -	info.cmd_buf = cmdbuf;
-> -	info.desc = descs;
-> +			info->cmd_buf, info->desc, databuf, dest);
->  
-> -	ret = mxs_nand_get_info(&info, databuf);
-> +	ret = mxs_nand_get_info(info, databuf);
->  	if (ret)
->  		return ret;
->  
-> -	ret = get_fcb(&info, databuf);
-> +	ret = get_fcb(info, databuf);
->  	if (ret)
->  		return ret;
->  
-> -	fcb = &info.fcb;
-> +	fcb = &info->fcb;
->  
-> -	get_dbbt(&info, databuf);
-> +	get_dbbt(info, databuf);
->  
-> -	ret = read_firmware(&info, fcb->Firmware1_startingPage, dest, len);
-> +	ret = read_firmware(info, fcb->Firmware1_startingPage, dest, len);
->  	if (ret) {
->  		pr_err("Failed to read firmware1, trying firmware2\n");
-> -		ret = read_firmware(&info, fcb->Firmware2_startingPage,
-> +		ret = read_firmware(info, fcb->Firmware2_startingPage,
->  			dest, len);
->  		if (ret) {
->  			pr_err("Failed to also read firmware2\n");
-> @@ -1177,24 +1172,21 @@ static int __maybe_unused imx6_nand_load_image(void *cmdbuf, void *descs,
->  	return 0;
->  }
->  
-> -int imx6_nand_start_image(void)
-> +static int imx_nand_start_image(struct imx_nand_params *params)
->  {
-> +	struct mxs_nand_info *info = &params->info;
->  	int ret;
-> -	void *sdram = (void *)0x10000000;
->  	void __noreturn (*bb)(void);
-> -	void *cmdbuf, *databuf, *descs;
-> +	void *databuf;
->  
-> -	cmdbuf = sdram;
-> -	descs = sdram + MXS_NAND_COMMAND_BUFFER_SIZE;
-> -	databuf = descs +
-> +	/* Command buffers */
-> +	info->cmd_buf = params->sdram;
-> +	info->desc = params->sdram + MXS_NAND_COMMAND_BUFFER_SIZE;
-> +	databuf = info->desc +
->  		sizeof(struct mxs_dma_cmd) * MXS_NAND_DMA_DESCRIPTOR_COUNT;
->  	bb = (void *)PAGE_ALIGN((unsigned long)databuf + SZ_8K);
->  
-> -	/* Apply ERR007117 workaround */
-> -	imx6_errata_007117_enable();
-> -
-> -	ret = imx6_nand_load_image(cmdbuf, descs, databuf,
-> -		bb, imx_image_size());
-> +	ret = imx6_nand_load_image(params, databuf, bb, imx_image_size());
->  	if (ret) {
->  		pr_err("Loading image failed: %d\n", ret);
->  		return ret;
-> @@ -1207,3 +1199,19 @@ int imx6_nand_start_image(void)
->  
->  	bb();
->  }
-> +
-> +int imx6_nand_start_image(void)
+> +int imx7_barebox_load_usb(void *dest)
 > +{
-> +	static struct imx_nand_params params = {
-> +		.info.io_base = IOMEM(MX6_GPMI_BASE_ADDR),
-> +		.info.bch_base = IOMEM(MX6_BCH_BASE_ADDR),
-> +		.apbh.regs = IOMEM(MX6_APBH_BASE_ADDR),
-> +		.apbh.id = IMX28_DMA,
-> +		.sdram = (void *)MX6_MMDC_PORT01_BASE_ADDR,
-> +	};
-> +
-> +	/* Apply ERR007117 workaround */
-> +	imx6_errata_007117_enable();
-> +
-> +	return imx_nand_start_image(&params);
+> +	return imx_barebox_load_usb(IOMEM(MX7_OTG1_BASE_ADDR), dest);
 > +}
+> +
+> +int imx7_barebox_start_usb(void *dest)
+> +{
+> +	return imx_barebox_start_usb(IOMEM(MX7_OTG1_BASE_ADDR), dest);
+> +}
+> +
+>  int imx8mm_barebox_load_usb(void *dest)
+>  {
+>  	return imx_barebox_load_usb(IOMEM(MX8MM_USB1_BASE_ADDR), dest);
+> diff --git a/include/soc/fsl/fsl_udc.h b/include/soc/fsl/fsl_udc.h
+> index aa1db2fb3816..c1abe222ba2a 100644
+> --- a/include/soc/fsl/fsl_udc.h
+> +++ b/include/soc/fsl/fsl_udc.h
+> @@ -385,6 +385,9 @@ int imx_barebox_start_usb(void __iomem *dr, void *dest);
+>  int imx6_barebox_load_usb(void *dest);
+>  int imx6_barebox_start_usb(void *dest);
+>  
+> +int imx7_barebox_load_usb(void *dest);
+> +int imx7_barebox_start_usb(void *dest);
+> +
+>  int imx8mm_barebox_load_usb(void *dest);
+>  int imx8mm_barebox_start_usb(void *dest);
+>  
 > -- 
 > 2.30.2
 > 
