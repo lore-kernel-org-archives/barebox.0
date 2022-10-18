@@ -1,52 +1,52 @@
-Delivery-date: Tue, 18 Oct 2022 11:08:14 +0200
+Delivery-date: Tue, 18 Oct 2022 11:15:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1okia7-00CTRY-Er
-	for lore@lore.pengutronix.de; Tue, 18 Oct 2022 11:08:14 +0200
+	id 1okigs-00CUAX-7O
+	for lore@lore.pengutronix.de; Tue, 18 Oct 2022 11:15:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1okia5-00066T-Fv
-	for lore@pengutronix.de; Tue, 18 Oct 2022 11:08:14 +0200
+	id 1okigq-0007BL-9A
+	for lore@pengutronix.de; Tue, 18 Oct 2022 11:15:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6JqlxsGJRL3+Tm9M6IoMMaYSOsKJdpN/n6F/bHV3rOg=; b=lOhjpTiRPcilZYpHx4l9OCXO5n
-	43Zt5WZX2A+TDj5ESDI7JOEqIEUtVgyRbOanJXPQ73058OmOGYCkNfBvV2gBtX8A9AR+uWffLI5iX
-	xDjuiL1l6+Xi1D4h38PW/NbVoMvsy+RM0P+3nJxPmIIwPx1GshxelZk5Xn7/f4hwuv8S2K5qpNqAX
-	V2OlqhLYClPkqmgxOmIhA2te9mxQswEpoHFjS0Z0DTXhU9DCOzjThu9Y1CR5rol9XRY39zTDkXryj
-	sCJpjJ8ujhf1NgOj+tEU7rVZL7aSfLgdX9D0S+w/GccoNis8gIrYn5Vpwab6JmbbLouFdwHZnfUfx
-	YyrBqHhQ==;
+	bh=xQUyKVyHiXb6ldXNv+q8UfPxGKWg3aTKkW4T7pFoZ58=; b=CWXRRokGtZsPDGo/qQSzi62kAJ
+	IgdF8Spk0QuQ2JAJTkOBYbkk+TpHPw2zCNU1rHJjssV0MXPC3UH3SH0ngewp6wzGO2NY8+3XU73P1
+	CeSl2QOkVhy+snDUcWi2KH2oublsINRxj6sGsISzDho+A7WCAL9PQUO8I0GO/YC0v26lqHWju0bIx
+	VK+ksJGt6ql9wL1TCmNr/kQdlx21mNySc2bDdoOiLkZRLe9NPSBJtPsm4bBaxAcc93+upVUbV5UdK
+	cjUkn1e2qfmCqluGZwq6J0Ed2CXAKo3mXuL834V961JhaHhD3+aoxEdJa8OQga1fUJfbcWj1/67U4
+	7Oyseeow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1okiYm-004iTv-Nz; Tue, 18 Oct 2022 09:06:52 +0000
+	id 1okifd-004nbH-8G; Tue, 18 Oct 2022 09:13:57 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1okiYa-004iOZ-Nz
-	for barebox@lists.infradead.org; Tue, 18 Oct 2022 09:06:42 +0000
+	id 1okifY-004nZe-Q9
+	for barebox@lists.infradead.org; Tue, 18 Oct 2022 09:13:54 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1okiYZ-0005s2-Bn; Tue, 18 Oct 2022 11:06:39 +0200
+	id 1okifX-0006tY-4p; Tue, 18 Oct 2022 11:13:51 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1okiYZ-0007j7-4M; Tue, 18 Oct 2022 11:06:39 +0200
-Date: Tue, 18 Oct 2022 11:06:39 +0200
+	id 1okifW-0008Lt-UJ; Tue, 18 Oct 2022 11:13:50 +0200
+Date: Tue, 18 Oct 2022 11:13:50 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20221018090639.GQ6702@pengutronix.de>
-References: <20221017071036.1458761-1-a.fatoum@pengutronix.de>
+Message-ID: <20221018091350.GR6702@pengutronix.de>
+References: <20221017071000.1458292-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221017071036.1458761-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20221017071000.1458292-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221018_020640_841464_C6D76D50 
-X-CRM114-Status: GOOD (  19.16  )
+X-CRM114-CacheID: sfid-20221018_021352_868139_8CB17844 
+X-CRM114-Status: GOOD (  20.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,70 +77,58 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] usb: gadget: fsl_udc: add imx7_barebox_(load/start)_usb
+Subject: Re: [PATCH 0/8] ARM: i.MX7: add serial download reboot mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Oct 17, 2022 at 09:10:36AM +0200, Ahmad Fatoum wrote:
-> These can be called from barebox PBL when booted from USB to continue
-> USB boot. This isn't necessary in the general case when RAM setup is
-> done via DCD, but for cases where setup is done in PBL, these helpers
-> come in handy. Tested on i.MX7D revision 1.2.
+On Mon, Oct 17, 2022 at 09:09:52AM +0200, Ahmad Fatoum wrote:
+> BootROM can be forced into USB recovery on i.MX7 just like on the
+> i.MX8M, with the difference that reset is a bit more involved,
+> because warm resets via watchdogs are broken on this SoC.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/usb/gadget/fsl_udc_pbl.c | 11 +++++++++++
->  include/soc/fsl/fsl_udc.h        |  3 +++
->  2 files changed, 14 insertions(+)
+> We do a bit of cleanup and then tackle that via a syscon-reboot
+> device describing the Cortex-A7 CPU0 reset.
+> 
+> Ahmad Fatoum (8):
+>   restart: make restart.h header self-contained
+>   restart: do restart-priority OF parsing in restart_handler_register
+>   restart: add reset -w for warm bootrom reset
+>   watchdog: imxwd: don't register broken imxwd-warm for i.MX7
+>   watchdog: imxwd: set imxwd-warm as reboot mode default handler
+>   Documentations: devicetree: bindings: document watchdog-priority
+>   ARM: i.MX7: describe USB serial download boot mode
+>   ARM: stm32mp: mark iwdg2 with barebox,restart-warm-bootrom
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/usb/gadget/fsl_udc_pbl.c b/drivers/usb/gadget/fsl_udc_pbl.c
-> index 8b714d4c8b02..d2f2b9e1959e 100644
-> --- a/drivers/usb/gadget/fsl_udc_pbl.c
-> +++ b/drivers/usb/gadget/fsl_udc_pbl.c
-> @@ -5,6 +5,7 @@
->  #include <soc/fsl/fsl_udc.h>
->  #include <mach/imx8mm-regs.h>
->  #include <mach/imx6-regs.h>
-> +#include <mach/imx7-regs.h>
->  
->  static void fsl_queue_td(struct usb_dr_device *dr, struct ep_td_struct *dtd,
->  			 int ep_is_in)
-> @@ -210,6 +211,16 @@ int imx6_barebox_start_usb(void *dest)
->  	return imx_barebox_start_usb(IOMEM(MX6_OTG_BASE_ADDR), dest);
->  }
->  
-> +int imx7_barebox_load_usb(void *dest)
-> +{
-> +	return imx_barebox_load_usb(IOMEM(MX7_OTG1_BASE_ADDR), dest);
-> +}
-> +
-> +int imx7_barebox_start_usb(void *dest)
-> +{
-> +	return imx_barebox_start_usb(IOMEM(MX7_OTG1_BASE_ADDR), dest);
-> +}
-> +
->  int imx8mm_barebox_load_usb(void *dest)
->  {
->  	return imx_barebox_load_usb(IOMEM(MX8MM_USB1_BASE_ADDR), dest);
-> diff --git a/include/soc/fsl/fsl_udc.h b/include/soc/fsl/fsl_udc.h
-> index aa1db2fb3816..c1abe222ba2a 100644
-> --- a/include/soc/fsl/fsl_udc.h
-> +++ b/include/soc/fsl/fsl_udc.h
-> @@ -385,6 +385,9 @@ int imx_barebox_start_usb(void __iomem *dr, void *dest);
->  int imx6_barebox_load_usb(void *dest);
->  int imx6_barebox_start_usb(void *dest);
->  
-> +int imx7_barebox_load_usb(void *dest);
-> +int imx7_barebox_start_usb(void *dest);
-> +
->  int imx8mm_barebox_load_usb(void *dest);
->  int imx8mm_barebox_start_usb(void *dest);
->  
+>  Documentation/boards/imx.rst                  |  2 +-
+>  Documentation/boards/stm32mp.rst              |  6 ++-
+>  .../devicetree/bindings/power/restart.rst     | 15 ++++++++
+>  .../devicetree/bindings/watchdog/watchdog.rst | 10 +++++
+>  Documentation/user/reboot-mode.rst            |  7 +++-
+>  arch/arm/configs/imx_v7_defconfig             |  2 +
+>  arch/arm/dts/imx7.dtsi                        | 37 +++++++++++++++++++
+>  arch/arm/dts/stm32mp131.dtsi                  |  4 ++
+>  arch/arm/dts/stm32mp151.dtsi                  |  4 ++
+>  commands/reset.c                              | 16 +++++---
+>  common/restart.c                              | 37 +++++++++----------
+>  drivers/clk/clk-stm32mp1.c                    |  2 +-
+>  drivers/mfd/da9053.c                          |  2 +-
+>  drivers/mfd/da9063.c                          |  2 +-
+>  drivers/mfd/rn5t568.c                         |  2 +-
+>  drivers/power/reset/stm32-reboot.c            |  6 ++-
+>  drivers/power/reset/syscon-reboot.c           |  1 +
+>  drivers/watchdog/imxwd.c                      | 31 ++++++++++++----
+>  include/restart.h                             | 15 ++++++--
+>  include/soc/stm32/reboot.h                    |  6 ++-
+>  20 files changed, 161 insertions(+), 46 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/power/restart.rst
+>  create mode 100644 Documentation/devicetree/bindings/watchdog/watchdog.rst
+>  create mode 100644 arch/arm/dts/imx7.dtsi
+> 
 > -- 
 > 2.30.2
 > 
