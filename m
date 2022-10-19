@@ -1,58 +1,58 @@
-Delivery-date: Wed, 19 Oct 2022 14:41:02 +0200
+Delivery-date: Wed, 19 Oct 2022 14:45:02 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ol8Nc-000gc6-5L
-	for lore@lore.pengutronix.de; Wed, 19 Oct 2022 14:41:02 +0200
+	id 1ol8RU-000gu9-7R
+	for lore@lore.pengutronix.de; Wed, 19 Oct 2022 14:45:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ol8NZ-0000ba-IT
-	for lore@pengutronix.de; Wed, 19 Oct 2022 14:41:02 +0200
+	id 1ol8RR-00017l-8j
+	for lore@pengutronix.de; Wed, 19 Oct 2022 14:45:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=shoOZ52hi6Zf0pdotwo8p33WWGfydY1K1+zwhB+TTig=; b=UzR8Y+tpdaRsOmegJOht/KJnoJ
-	6ldFGb3SCNgDBnrDPgwSOHyAt7hf6b/j3hTHTLV60ELz2H8gcN1R9a3dM84JsSKRnM63qzC9w6KFd
-	5XPpSgLkdwgp97v0bRAyIQeqjRW3KJhpv6K2x+3FP9RsiTA5uRekeBYOpUgGtaTV2L9q+ByrtxEsj
-	uqrAVVpQDrVTNpjA1sNx4QHcKW7U+h6wix02o4meCNjPRaASpyD+NoBo83I5n2lKghL3vJvTw3y09
-	Od+hD6CShmhfEDZZCR+fy8Wp61NRrd9Ko1oF4PG8tso+NRyeJPF8htmuANmHl2NYfL34dyZnS9Y8m
-	s3HKYDxA==;
+	bh=q09IZMslUiEwllCJpI7JpA5EPzqUiW0tVWhNHRMZxeI=; b=JpgWIO4eEK2m+HyeRXGHEXr3If
+	4+6LqWY+qW2+wFF12KydElGQe+Uwwn/Z098XLhqZjdbrb4y51NU9O5zWdbWVggLr/nswjAdcJIaCl
+	+4W7wY4wiSmr+zPszeSKE2T37WZsY1ZxTRhUN6Vdo3wqmqUEE5L+7ojhRLbsh1o4ru8hXabldm976
+	gYjxiguP2k+PswrwucQreh0cz52BITUmx00Sv7ncDJcTr/jkrBE8MZSznSD/D6mzuWx533ZZ85xF9
+	NH4a1c0/9iMGoM7fu2iVukHns/VSHt5R/QuUb1SqeNG39sMu40w5q3yYnb4kKjBeDQpgfma/uLEjO
+	LDbywddQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ol8M1-001Y9J-HS; Wed, 19 Oct 2022 12:39:25 +0000
+	id 1ol8QA-001cL3-71; Wed, 19 Oct 2022 12:43:42 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ol8Lv-001Y5p-4W
-	for barebox@lists.infradead.org; Wed, 19 Oct 2022 12:39:20 +0000
+	id 1ol8Q4-001c4s-Uo
+	for barebox@lists.infradead.org; Wed, 19 Oct 2022 12:43:38 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ol8Lo-0000FE-TC; Wed, 19 Oct 2022 14:39:12 +0200
+	id 1ol8Q3-0000u7-FY; Wed, 19 Oct 2022 14:43:35 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ol8Lo-0007il-6a; Wed, 19 Oct 2022 14:39:12 +0200
+	id 1ol8Q2-0007jQ-P3; Wed, 19 Oct 2022 14:43:34 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1ol8Ln-007Em0-BG; Wed, 19 Oct 2022 14:39:11 +0200
+	id 1ol8Q2-007MEI-6U; Wed, 19 Oct 2022 14:43:34 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 19 Oct 2022 14:38:15 +0200
-Message-Id: <20221019123817.1659468-1-a.fatoum@pengutronix.de>
+Date: Wed, 19 Oct 2022 14:43:33 +0200
+Message-Id: <20221019124333.1753693-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221019_053919_191770_2B009E07 
-X-CRM114-Status: GOOD (  11.71  )
+X-CRM114-CacheID: sfid-20221019_054337_013690_A291004B 
+X-CRM114-Status: GOOD (  10.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,63 +74,46 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] include: debug_ll: define puthexc_ll
+Subject: [PATCH master] Kbuild: disable ARM64 pointer authentication
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-puthex_ll prints a single zero-padded unsigned long, which for a single
-byte is not very readable, especially on 64-bit systems. Define
-puthexc_ll() as well, which just accepts a byte and formats its nibbles
-as hexadecimal characters.
+The aarch64 cross-compiler built with Yocto's kirkstone release
+configures -mbranch-protection=standard as default.
+
+The resulting PACIASP/AUTIASP instructions are interpreted as NOPs by
+existing CPUs, but they increase image size and misalign the barebox
+header in ENTRY_FUNCTION(). Also on ARMv8.3+, where they serve a
+purpose, we wouldn't benefit from them as we don't setup any pointer
+authentication keys. Thus disable it.
+
+This fixes a breakage to the extended firmware mechanism when
+building my i.MX8M barebox with the Kirkstone toolchain.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/debug_ll.h | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+This is a workaround. ENTRY_FUNCTION() should be rewritten for ARM64,
+so we don't expect function prologue to be exactly two bytes long.
+---
+ Makefile | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/debug_ll.h b/include/debug_ll.h
-index 735033b314cc..856a157bf52c 100644
---- a/include/debug_ll.h
-+++ b/include/debug_ll.h
-@@ -33,17 +33,25 @@ static inline void putc_ll(char value)
- 	PUTC_LL(value);
- }
+diff --git a/Makefile b/Makefile
+index 98da09f18523..3737265316e9 100644
+--- a/Makefile
++++ b/Makefile
+@@ -659,6 +659,11 @@ KBUILD_CFLAGS  += $(call cc-option,-fno-stack-check)
+ # Platforms that have their setjmp appropriately implemented may override this
+ KBUILD_CFLAGS += $(call cc-option,-fcf-protection=none)
  
--static inline void puthex_ll(unsigned long value)
-+static inline void puthexc_ll(unsigned char value)
- {
- 	int i; unsigned char ch;
- 
--	for (i = sizeof(unsigned long) * 2; i--; ) {
-+	for (i = 2; i--; ) {
- 		ch = ((value >> (i * 4)) & 0xf);
- 		ch += (ch >= 10) ? 'a' - 10 : '0';
- 		putc_ll(ch);
- 	}
- }
- 
-+static inline void puthex_ll(unsigned long value)
-+{
-+	int i;
++# We don't have the necessary infrastructure to benefit from ARMv8.3+ pointer
++# authentication. On older CPUs, they are interpreted as NOPs and blot the
++# code and break less portable code that expects a very specific code layout
++KBUILD_CFLAGS += $(call cc-option,-mbranch-protection=none)
 +
-+	for (i = sizeof(unsigned long); i--; )
-+		puthexc_ll(value >> (i * 8));
-+}
-+
- /*
-  * Be careful with puts_ll, it only works if the binary is running at the
-  * link address which often is not the case during early startup. If in doubt
-@@ -66,6 +74,10 @@ static inline void putc_ll(char value)
- {
- }
+ KBUILD_CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
  
-+static inline void puthexc_ll(unsigned char value)
-+{
-+}
-+
- static inline void puthex_ll(unsigned long value)
- {
- }
+ # Align the bit size of userspace programs with the kernel
 -- 
 2.30.2
 
