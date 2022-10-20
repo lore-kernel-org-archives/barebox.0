@@ -1,60 +1,80 @@
-Delivery-date: Thu, 20 Oct 2022 15:35:05 +0200
+Delivery-date: Thu, 20 Oct 2022 16:43:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1olVhT-001oOw-8R
-	for lore@lore.pengutronix.de; Thu, 20 Oct 2022 15:35:05 +0200
+	id 1olWle-001qHc-AV
+	for lore@lore.pengutronix.de; Thu, 20 Oct 2022 16:43:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1olVhQ-0003zZ-31
-	for lore@pengutronix.de; Thu, 20 Oct 2022 15:35:05 +0200
+	id 1olWlb-0006tE-2q
+	for lore@pengutronix.de; Thu, 20 Oct 2022 16:43:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=v9di8I67Vofuci5SuXsILRzL7SLr/vRECXjX2RLOhwA=; b=ZsFuowqzNQxZsK2Ersa8ePLx8U
-	EHTv+GjI+lYyBfGeHe3n6NzZocz2Ytrc048K66IwaOfUugVw3aCqIJddnGKfWSjFL9KpvB/p4rtsY
-	8UKqynIzW7RdZn1Hp7vmjoAhSaRYowih1tTOXdlbo+5MPaT8VBbVn2nsmN3np6pEXb8nbK4NWeX/C
-	+B1ZJ5vWVdL+ZsumK4raBEr7GQpTXKk4yIbQoIzmAmYpxc+9ULys7uLqJr7IqDIu5HXY5/8xg5Cw+
-	5mmBz42B4FatvvRIVLEIbR6vL4WTGeBGvX40nNDMwgxoIaZWU/aqkeKcYDsi5B0o/8GIOc6MZR0X+
-	spk2XJDg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=7EbmxqvXQFVIA1rS7Bi0z8EJ1hIKROZfypLgEXQlCmY=; b=KgB7HELtjzMNRtDA5hm1P/pvdQ
+	SAq+lVDK1jj0hS6PXhKq2TbFkm0rXyyOldcG4f5sN3d9QYpgWBiz951V+uvwD9XdcAfyG7wbkiIqS
+	LxSlZDGotdXAT6TLm9J1ovNNY2A2B1bTQL+RLo3EcSdGTso17NFWALZfUN8Hk7xSh7Sfwbumk0AZ9
+	GffeWSvGxvDW5BycWUUFKlksZR2DDH5iWH77NKK9EZMMIzYsaB/sUi/7blwLEiPKX2KnTK/5Lh46r
+	KliXn1ghD6O1fTVIQs/ESu81lwdd7emh5TnkDt+2jeyKCSkVz1iNQgf7FkCbZ72CvZz17CL0wiqx4
+	ShC5iWJg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1olVfw-00FVeo-GR; Thu, 20 Oct 2022 13:33:32 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1olWju-00GKDC-2J; Thu, 20 Oct 2022 14:41:42 +0000
+Received: from mickerik.phytec.de ([91.26.50.163])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1olVOG-00FKgT-CF
-	for barebox@lists.infradead.org; Thu, 20 Oct 2022 13:15:19 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1olVOD-0000lK-GC; Thu, 20 Oct 2022 15:15:13 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1olVO9-000KdK-OS; Thu, 20 Oct 2022 15:15:12 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1olVOB-00Ffby-80; Thu, 20 Oct 2022 15:15:11 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 20 Oct 2022 15:15:09 +0200
-Message-Id: <20221020131510.3734338-3-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221020131510.3734338-1-a.fatoum@pengutronix.de>
-References: <20221020131510.3734338-1-a.fatoum@pengutronix.de>
+	id 1olWjh-00GK9n-Rh
+	for barebox@lists.infradead.org; Thu, 20 Oct 2022 14:41:32 +0000
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+	q=dns/txt; i=@phytec.de; t=1666276883; x=1668868883;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=UnAQ7UN+1VXqaTOHBxlpB2V6JMW74d6vLajp0Aw/s1Q=;
+	b=nadWxSyyfudu4AjqCvA/MCA0iiUbnra1bngv9qfcM4o30HliO7Fetnd+/JXMlIbv
+	FQD/QcYdV0+aODMuOwYg9LIYaxJG9xACxJlpDBTuUSpMIFvCAtw2jm8F8AnbdAlF
+	wR13DDng+ZMVZiHmfeLjn8L/dJVhaKNR9rV0up363Mk=;
+X-AuditID: ac14000a-83bf370000003940-0b-63515e13eb5e
+Received: from florix.phytec.de (Unknown_Domain [172.25.0.13])
+	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id F4.78.14656.31E51536; Thu, 20 Oct 2022 16:41:23 +0200 (CEST)
+Received: from lws-dhaller.phytec.de (172.25.0.11) by Florix.phytec.de
+ (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Thu, 20 Oct
+ 2022 16:41:23 +0200
+From: Dominik Haller <d.haller@phytec.de>
+To: <s.hauer@pengutronix.de>, <barebox@lists.infradead.org>
+CC: <upstream@phytec.de>
+Date: Thu, 20 Oct 2022 16:41:12 +0200
+Message-ID: <20221020144112.52506-1-d.haller@phytec.de>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.25.0.11]
+X-ClientProxiedBy: Berlix.phytec.de (172.25.0.12) To Florix.phytec.de
+ (172.25.0.13)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrALMWRmVeSWpSXmKPExsWyRpKBV1c4LjDZYOlOUYsTi/uZLf5u38Ti
+	wOSxeUm9R/9fgwCmKC6blNSczLLUIn27BK6MxtuHWAtmhVXsObOfuYHxhHcXIweHhICJxOlr
+	WV2MXBxCAkuYJL6u6GKHcJ4ySrTMusHWxcjJwSagKTF90lZGkAYRAWuJo828IGFmAQmJV53r
+	wUqEBWwlnp9rBrNZBFQlenfuALN5BcwlLsxYyAJiSwjIS8y89J0dIi4ocXLmExaIOfISzVtn
+	M8PMPPjiBZgtBFK/ppsVpnfaudfMEHaoROef+ywTGAVmIRk1C8moWUhGLWBkXsUolJuZnJ1a
+	lJmtV5BRWZKarJeSuokRFIoiDFw7GPvmeBxiZOJgPMQowcGsJMJb8C4gWYg3JbGyKrUoP76o
+	NCe1+BCjNAeLkjjv/R6mRCGB9MSS1OzU1ILUIpgsEwenVAPjdAsPTSvl5AbHP5cjJX1vnjSf
+	dLbwxCWRvO72xe+spWb8fMHZzvzk0CzWVvHn0fP/nTn04c7uvrfB01j6qoOn8b5Ia9qetODN
+	9geZaR69TO7Hr5Ropnj+aJCN8NCyvl542YH3l1tf6xSX4ETZu1aX9uz0CxWcxuwfOnXVaqOW
+	uotyXmcivI8psRRnJBpqMRcVJwIAWBQB+zMCAAA=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221020_061516_462589_A0084CA5 
-X-CRM114-Status: GOOD (  15.91  )
+X-CRM114-CacheID: sfid-20221020_074130_380410_DCE3254B 
+X-CRM114-Status: UNSURE (   9.56  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,136 +92,266 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master v2 2/3] ARM: cpu: add compiler barrier around unrelocated access
+Subject: [PATCH] ARM: configs: Remove NS16550_OMAP_EXTENSIONS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-GCC v11.1.1 was observed miscompiling relocate_to_current_adr() while
-generating THUMB2 code:
+Config NS16550_OMAP_EXTENSIONS has been removed a while ago in
+commit 11a1f28cbf22 ("serial: Kconfig: Remove DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS option").
 
-        dynsym = (void *)__dynsym_start + offset_var;
-    178c:       4b48            ldr     r3, [pc, #288]  ; (18b0 <relocate_to_current_adr+0x13c>)
-    178e:       5869            ldr     r1, [r5, r1]
-        dend = (void *)__rel_dyn_end + offset_var;
-    1790:       4407            add     r7, r0
-        dynsym = (void *)__dynsym_start + offset_var;
-    1792:       58e8            ldr     r0, [r5, r3]
-    1794:       f102 0308       add.w   r3, r2, #8
-    1798:       440b            add     r3, r1
-    179a:       4410            add     r0, r2
-        dynend = (void *)__dynsym_end + offset_var;
+Remove it from the defconfigs too.
 
-        while (dstart < dend) {
-    179c:       f1a3 0608       sub.w   r6, r3, #8
-    17a0:       42b7            cmp     r7, r6
-    17a2:       d80a            bhi.n   17ba <relocate_to_current_adr+0x46>
-        dynend = (void *)__dynsym_end + offset_var;
-    17a4:       4b43            ldr     r3, [pc, #268]  ; (18b4 <relocate_to_current_adr+0x140>)
-                }
-
-                dstart += sizeof(*rel);
-        }
-
-        __memset(dynsym, 0, (unsigned long)dynend - (unsigned long)dynsym);
-    17a6:       2100            movs    r1, #0
-        dynend = (void *)__dynsym_end + offset_var;
-    17a8:       58eb            ldr     r3, [r5, r3]
-    17aa:       441a            add     r2, r3
-        __memset(dynsym, 0, (unsigned long)dynend - (unsigned long)dynsym);
-    17ac:       1a12            subs    r2, r2, r0
-    17ae:       f000 fda5       bl      22fc <__memset>
-
-Both &__dynsym_start and &__dynsym_end will change value after relocation,
-so we absolutely want address calculation and addition of offset_var to
-happen before relocation. Compiler is within rights though to assume
-variables to be already relocated though and thus proves that &__dynsym_end
-may not change in the loop and thus move dynend calculation below the
-relocation loop and thus we end up with dynend being incremented by
-offset_var once more. The resulting out-of-bounds memset() will overwrite
-parts of barebox and break its startup.
-
-The naive solution of moving dynsym/dynend calculation beyond the
-relocation loop is insufficient as the compiler may decide to move
-it back. Instead the only solution short of rewriting this all in
-assembly seems to be hiding the origin of dynsym's value, so the
-optimizer may not prove the assumption that relocation would not affect
-its value. This is done using runtime_address, which was introduced in
-a previous commit. With this, the __memset call now uses precomputed
-values as expected: no last minute ldr, everything tidily placed into
-registers prior to the relocation loop:
-
-	17be:       2100            movs    r1, #0
-	17c0:       1b52            subs    r2, r2, r5
-	17c2:       4628            mov     r0, r5
-	17c4:       f000 fdaa       bl      231c <__memset>
-
-Fixes: a8b788ba61eb ("relocate_to_current_adr: hang directly on error instead of panic()")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Dominik Haller <d.haller@phytec.de>
 ---
- arch/arm/cpu/common.c     | 15 +++++++++------
- arch/arm/cpu/uncompress.c |  4 ++--
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ arch/arm/configs/am335x_mlo_defconfig                         | 1 -
+ arch/arm/configs/am35xx_pfc200_xload_defconfig                | 1 -
+ arch/arm/configs/archosg9_defconfig                           | 1 -
+ arch/arm/configs/archosg9_xload_defconfig                     | 1 -
+ arch/arm/configs/omap3430_sdp3430_per_uart_defconfig          | 1 -
+ arch/arm/configs/omap3530_beagle_defconfig                    | 1 -
+ arch/arm/configs/omap3530_beagle_per_uart_defconfig           | 1 -
+ arch/arm/configs/omap3530_beagle_xload_defconfig              | 1 -
+ arch/arm/configs/omap3_evm_defconfig                          | 1 -
+ arch/arm/configs/omap_defconfig                               | 1 -
+ arch/arm/configs/panda_defconfig                              | 1 -
+ arch/arm/configs/panda_xload_defconfig                        | 1 -
+ arch/arm/configs/phytec-phycard-omap3-xload_defconfig         | 1 -
+ arch/arm/configs/phytec-phycard-omap3_defconfig               | 1 -
+ arch/arm/configs/phytec-phycard-omap4-xload_defconfig         | 1 -
+ arch/arm/configs/phytec-phycard-omap4_defconfig               | 1 -
+ arch/arm/configs/phytec-phycore-omap4460-xload-mmc_defconfig  | 1 -
+ arch/arm/configs/phytec-phycore-omap4460-xload-nand_defconfig | 1 -
+ arch/arm/configs/phytec-phycore-omap4460_defconfig            | 1 -
+ 19 files changed, 19 deletions(-)
 
-diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
-index 5ccacf204751..62781b76ce68 100644
---- a/arch/arm/cpu/common.c
-+++ b/arch/arm/cpu/common.c
-@@ -61,16 +61,19 @@ void pbl_barebox_break(void)
-  */
- void relocate_to_current_adr(void)
- {
--	unsigned long offset, offset_var;
-+	unsigned long offset;
- 	unsigned long __maybe_unused *dynsym, *dynend;
- 	void *dstart, *dend;
- 
- 	/* Get offset between linked address and runtime address */
- 	offset = get_runtime_offset();
--	offset_var = global_variable_offset();
- 
--	dstart = (void *)__rel_dyn_start + offset_var;
--	dend = (void *)__rel_dyn_end + offset_var;
-+	/*
-+	 * We have yet to relocate, so using runtime_address
-+	 * to compute the relocated address
-+	 */
-+	dstart = runtime_address(__rel_dyn_start);
-+	dend = runtime_address(__rel_dyn_end);
- 
- #if defined(CONFIG_CPU_64)
- 	while (dstart < dend) {
-@@ -96,8 +99,8 @@ void relocate_to_current_adr(void)
- 		dstart += sizeof(*rel);
- 	}
- #elif defined(CONFIG_CPU_32)
--	dynsym = (void *)__dynsym_start + offset_var;
--	dynend = (void *)__dynsym_end + offset_var;
-+	dynsym = runtime_address(__dynsym_start);
-+	dynend = runtime_address(__dynsym_end);
- 
- 	while (dstart < dend) {
- 		struct elf32_rel *rel = dstart;
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index 537ee63229d7..65de87f10923 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -53,8 +53,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 	unsigned long pc = get_pc();
- 
- 	/* piggy data is not relocated, so determine the bounds now */
--	pg_start = input_data + global_variable_offset();
--	pg_end = input_data_end + global_variable_offset();
-+	pg_start = runtime_address(input_data);
-+	pg_end = runtime_address(input_data_end);
- 
- 	if (IS_ENABLED(CONFIG_PBL_RELOCATABLE)) {
- 		/*
+diff --git a/arch/arm/configs/am335x_mlo_defconfig b/arch/arm/configs/am335x_mlo_defconfig
+index 83bb20e4b50c..57602ba30918 100644
+--- a/arch/arm/configs/am335x_mlo_defconfig
++++ b/arch/arm/configs/am335x_mlo_defconfig
+@@ -21,7 +21,6 @@ CONFIG_SHELL_NONE=y
+ CONFIG_CONSOLE_ACTIVATE_NONE=y
+ CONFIG_OFDEVICE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_SPI_OMAP3=y
+ CONFIG_MTD=y
+ # CONFIG_MTD_WRITE is not set
+diff --git a/arch/arm/configs/am35xx_pfc200_xload_defconfig b/arch/arm/configs/am35xx_pfc200_xload_defconfig
+index da55382f0566..710e39ff61da 100644
+--- a/arch/arm/configs/am35xx_pfc200_xload_defconfig
++++ b/arch/arm/configs/am35xx_pfc200_xload_defconfig
+@@ -17,7 +17,6 @@ CONFIG_SHELL_NONE=y
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_CONSOLE_SIMPLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
+ # CONFIG_MTD_WRITE is not set
+diff --git a/arch/arm/configs/archosg9_defconfig b/arch/arm/configs/archosg9_defconfig
+index aafd849185c7..dd509fca7266 100644
+--- a/arch/arm/configs/archosg9_defconfig
++++ b/arch/arm/configs/archosg9_defconfig
+@@ -67,7 +67,6 @@ CONFIG_CMD_TIME=y
+ CONFIG_NET=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT=y
+ CONFIG_NET_USB=y
+ CONFIG_NET_USB_SMSC95XX=y
+diff --git a/arch/arm/configs/archosg9_xload_defconfig b/arch/arm/configs/archosg9_xload_defconfig
+index 27f471cf0bbb..b6a0475d40fb 100644
+--- a/arch/arm/configs/archosg9_xload_defconfig
++++ b/arch/arm/configs/archosg9_xload_defconfig
+@@ -14,7 +14,6 @@ CONFIG_SHELL_NONE=y
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_CONSOLE_SIMPLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT=y
+ # CONFIG_SPI is not set
+ CONFIG_MCI=y
+diff --git a/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig b/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig
+index d43355cdf1e3..646a392b6b56 100644
+--- a/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig
++++ b/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig
+@@ -23,5 +23,4 @@ CONFIG_CMD_LOADB=y
+ # CONFIG_CMD_CLEAR is not set
+ # CONFIG_CMD_ECHO is not set
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/omap3530_beagle_defconfig b/arch/arm/configs/omap3530_beagle_defconfig
+index 5d09abf61550..e959bdfde304 100644
+--- a/arch/arm/configs/omap3530_beagle_defconfig
++++ b/arch/arm/configs/omap3530_beagle_defconfig
+@@ -72,7 +72,6 @@ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_NET_USB=y
+ CONFIG_NET_USB_ASIX=y
+ CONFIG_NET_USB_SMSC95XX=y
+diff --git a/arch/arm/configs/omap3530_beagle_per_uart_defconfig b/arch/arm/configs/omap3530_beagle_per_uart_defconfig
+index e4112b49107f..2439bd955ed5 100644
+--- a/arch/arm/configs/omap3530_beagle_per_uart_defconfig
++++ b/arch/arm/configs/omap3530_beagle_per_uart_defconfig
+@@ -22,5 +22,4 @@ CONFIG_CMD_LOADB=y
+ # CONFIG_CMD_CLEAR is not set
+ # CONFIG_CMD_ECHO is not set
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/omap3530_beagle_xload_defconfig b/arch/arm/configs/omap3530_beagle_xload_defconfig
+index e9484ed852bb..0a47479f1892 100644
+--- a/arch/arm/configs/omap3530_beagle_xload_defconfig
++++ b/arch/arm/configs/omap3530_beagle_xload_defconfig
+@@ -17,7 +17,6 @@ CONFIG_SHELL_NONE=y
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_CONSOLE_SIMPLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
+ # CONFIG_MTD_WRITE is not set
+diff --git a/arch/arm/configs/omap3_evm_defconfig b/arch/arm/configs/omap3_evm_defconfig
+index 973acbff683d..8c5df029a75a 100644
+--- a/arch/arm/configs/omap3_evm_defconfig
++++ b/arch/arm/configs/omap3_evm_defconfig
+@@ -21,5 +21,4 @@ CONFIG_CMD_RESET=y
+ # CONFIG_CMD_RM is not set
+ # CONFIG_CMD_RMDIR is not set
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/omap_defconfig b/arch/arm/configs/omap_defconfig
+index ae4d1a67da3a..433d9bdd7d09 100644
+--- a/arch/arm/configs/omap_defconfig
++++ b/arch/arm/configs/omap_defconfig
+@@ -100,7 +100,6 @@ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_NET_CPSW=y
+ CONFIG_DRIVER_NET_DAVINCI_EMAC=y
+ CONFIG_MICREL_PHY=y
+diff --git a/arch/arm/configs/panda_defconfig b/arch/arm/configs/panda_defconfig
+index 9c1efe168a1c..b199e7990bfe 100644
+--- a/arch/arm/configs/panda_defconfig
++++ b/arch/arm/configs/panda_defconfig
+@@ -62,7 +62,6 @@ CONFIG_CMD_TIME=y
+ CONFIG_NET=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_NET_USB=y
+ CONFIG_NET_USB_SMSC95XX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/panda_xload_defconfig b/arch/arm/configs/panda_xload_defconfig
+index e3d87c42dd53..bc33882c855a 100644
+--- a/arch/arm/configs/panda_xload_defconfig
++++ b/arch/arm/configs/panda_xload_defconfig
+@@ -12,7 +12,6 @@ CONFIG_SHELL_NONE=y
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_CONSOLE_SIMPLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+diff --git a/arch/arm/configs/phytec-phycard-omap3-xload_defconfig b/arch/arm/configs/phytec-phycard-omap3-xload_defconfig
+index 6eab808f7c07..26a539f7f784 100644
+--- a/arch/arm/configs/phytec-phycard-omap3-xload_defconfig
++++ b/arch/arm/configs/phytec-phycard-omap3-xload_defconfig
+@@ -17,7 +17,6 @@ CONFIG_SHELL_NONE=y
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_CONSOLE_SIMPLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
+ # CONFIG_MTD_WRITE is not set
+diff --git a/arch/arm/configs/phytec-phycard-omap3_defconfig b/arch/arm/configs/phytec-phycard-omap3_defconfig
+index 6cc1c1e80b3f..a9abf12a138f 100644
+--- a/arch/arm/configs/phytec-phycard-omap3_defconfig
++++ b/arch/arm/configs/phytec-phycard-omap3_defconfig
+@@ -54,7 +54,6 @@ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_NET_SMC911X=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
+diff --git a/arch/arm/configs/phytec-phycard-omap4-xload_defconfig b/arch/arm/configs/phytec-phycard-omap4-xload_defconfig
+index af3ada634375..a1859140db0d 100644
+--- a/arch/arm/configs/phytec-phycard-omap4-xload_defconfig
++++ b/arch/arm/configs/phytec-phycard-omap4-xload_defconfig
+@@ -13,7 +13,6 @@ CONFIG_SHELL_NONE=y
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_CONSOLE_SIMPLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
+ # CONFIG_MTD_WRITE is not set
+diff --git a/arch/arm/configs/phytec-phycard-omap4_defconfig b/arch/arm/configs/phytec-phycard-omap4_defconfig
+index 2f3970725dce..a0bb846a6d59 100644
+--- a/arch/arm/configs/phytec-phycard-omap4_defconfig
++++ b/arch/arm/configs/phytec-phycard-omap4_defconfig
+@@ -36,7 +36,6 @@ CONFIG_CMD_GPIO=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_NET_KS8851_MLL=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
+diff --git a/arch/arm/configs/phytec-phycore-omap4460-xload-mmc_defconfig b/arch/arm/configs/phytec-phycore-omap4460-xload-mmc_defconfig
+index 61f85c837f89..19365a6fcd92 100644
+--- a/arch/arm/configs/phytec-phycore-omap4460-xload-mmc_defconfig
++++ b/arch/arm/configs/phytec-phycore-omap4460-xload-mmc_defconfig
+@@ -15,7 +15,6 @@ CONFIG_SHELL_NONE=y
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_CONSOLE_SIMPLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+diff --git a/arch/arm/configs/phytec-phycore-omap4460-xload-nand_defconfig b/arch/arm/configs/phytec-phycore-omap4460-xload-nand_defconfig
+index 77f124b33f14..14cab44b5dce 100644
+--- a/arch/arm/configs/phytec-phycore-omap4460-xload-nand_defconfig
++++ b/arch/arm/configs/phytec-phycore-omap4460-xload-nand_defconfig
+@@ -16,7 +16,6 @@ CONFIG_SHELL_NONE=y
+ CONFIG_CONSOLE_SIMPLE=y
+ CONFIG_PARTITION=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
+ # CONFIG_MTD_WRITE is not set
+diff --git a/arch/arm/configs/phytec-phycore-omap4460_defconfig b/arch/arm/configs/phytec-phycore-omap4460_defconfig
+index e65a76570b3f..7d5369cb23be 100644
+--- a/arch/arm/configs/phytec-phycore-omap4460_defconfig
++++ b/arch/arm/configs/phytec-phycore-omap4460_defconfig
+@@ -49,7 +49,6 @@ CONFIG_CMD_TIME=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_NET_SMC911X=y
+ CONFIG_SMSC_PHY=y
+ # CONFIG_SPI is not set
 -- 
-2.30.2
+2.25.1
 
 
 
