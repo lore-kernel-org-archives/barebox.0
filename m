@@ -1,60 +1,60 @@
-Delivery-date: Thu, 20 Oct 2022 15:35:02 +0200
+Delivery-date: Thu, 20 Oct 2022 15:35:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1olVhQ-001oOU-6c
-	for lore@lore.pengutronix.de; Thu, 20 Oct 2022 15:35:02 +0200
+	id 1olVhT-001oOw-8R
+	for lore@lore.pengutronix.de; Thu, 20 Oct 2022 15:35:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1olVhN-0003xe-0C
-	for lore@pengutronix.de; Thu, 20 Oct 2022 15:35:02 +0200
+	id 1olVhQ-0003zZ-31
+	for lore@pengutronix.de; Thu, 20 Oct 2022 15:35:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Q/h0x01CwezYmkNfkJlfsNaqCZM6XUeRVStAmqKGCcI=; b=CZQDW0KVxtILpiBzsMtXWimD+Q
-	H1oCrsO4OWYTYhJMYoTuSo/+tu2ycsbKgaTU8KLDpCSkLlcyh9iiU0RkMheHioQOfWkfenQFcv56M
-	tvbgDFG//dDbWUtenIKicnrjN8/oZVRA7U1byLlMDuIFCR7R9bpK3Yys4DKxcKA3dsq1qxmama4x7
-	LMwQrKcCnv+lcHWN7kt2vYLz4Ppjml3ewYjL309Htqe3rORl7hQGM1DONoTBJCqYq+QrUpQMooFN0
-	zDuNx/lM2NG5IKBKgVJBigIjmIR0eQQZ46VO6HdvGXwXLeconrB4V6ErvfoLlprTc16SAGqP67ikR
-	8m3ZW2JQ==;
+	bh=v9di8I67Vofuci5SuXsILRzL7SLr/vRECXjX2RLOhwA=; b=ZsFuowqzNQxZsK2Ersa8ePLx8U
+	EHTv+GjI+lYyBfGeHe3n6NzZocz2Ytrc048K66IwaOfUugVw3aCqIJddnGKfWSjFL9KpvB/p4rtsY
+	8UKqynIzW7RdZn1Hp7vmjoAhSaRYowih1tTOXdlbo+5MPaT8VBbVn2nsmN3np6pEXb8nbK4NWeX/C
+	+B1ZJ5vWVdL+ZsumK4raBEr7GQpTXKk4yIbQoIzmAmYpxc+9ULys7uLqJr7IqDIu5HXY5/8xg5Cw+
+	5mmBz42B4FatvvRIVLEIbR6vL4WTGeBGvX40nNDMwgxoIaZWU/aqkeKcYDsi5B0o/8GIOc6MZR0X+
+	spk2XJDg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1olVfl-00FVUG-6M; Thu, 20 Oct 2022 13:33:21 +0000
+	id 1olVfw-00FVeo-GR; Thu, 20 Oct 2022 13:33:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1olVOF-00FKg8-PR
-	for barebox@lists.infradead.org; Thu, 20 Oct 2022 13:15:18 +0000
+	id 1olVOG-00FKgT-CF
+	for barebox@lists.infradead.org; Thu, 20 Oct 2022 13:15:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1olVOC-0000lM-RA; Thu, 20 Oct 2022 15:15:12 +0200
+	id 1olVOD-0000lK-GC; Thu, 20 Oct 2022 15:15:13 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1olVO9-000KdN-Sm; Thu, 20 Oct 2022 15:15:12 +0200
+	id 1olVO9-000KdK-OS; Thu, 20 Oct 2022 15:15:12 +0200
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1olVOB-00Ffbv-7N; Thu, 20 Oct 2022 15:15:11 +0200
+	id 1olVOB-00Ffby-80; Thu, 20 Oct 2022 15:15:11 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 20 Oct 2022 15:15:08 +0200
-Message-Id: <20221020131510.3734338-2-a.fatoum@pengutronix.de>
+Date: Thu, 20 Oct 2022 15:15:09 +0200
+Message-Id: <20221020131510.3734338-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221020131510.3734338-1-a.fatoum@pengutronix.de>
 References: <20221020131510.3734338-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221020_061515_889172_AEAB71C6 
-X-CRM114-Status: GOOD (  23.76  )
+X-CRM114-CacheID: sfid-20221020_061516_462589_A0084CA5 
+X-CRM114-Status: GOOD (  15.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,134 +76,130 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master v2 1/3] include: asm-generic: reloc: implement runtime_address()
+Subject: [PATCH master v2 2/3] ARM: cpu: add compiler barrier around unrelocated access
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This introduces runtime_address(__linker_defined_symbol) as an
-alternative to error-prone __linker_defined_symbol +
-get_runtime_offset()/global_variable_offset().
+GCC v11.1.1 was observed miscompiling relocate_to_current_adr() while
+generating THUMB2 code:
 
-While most code is better served by doing a
+        dynsym = (void *)__dynsym_start + offset_var;
+    178c:       4b48            ldr     r3, [pc, #288]  ; (18b0 <relocate_to_current_adr+0x13c>)
+    178e:       5869            ldr     r1, [r5, r1]
+        dend = (void *)__rel_dyn_end + offset_var;
+    1790:       4407            add     r7, r0
+        dynsym = (void *)__dynsym_start + offset_var;
+    1792:       58e8            ldr     r0, [r5, r3]
+    1794:       f102 0308       add.w   r3, r2, #8
+    1798:       440b            add     r3, r1
+    179a:       4410            add     r0, r2
+        dynend = (void *)__dynsym_end + offset_var;
 
-  relocate_to_current_adr(); setup_c();
+        while (dstart < dend) {
+    179c:       f1a3 0608       sub.w   r6, r3, #8
+    17a0:       42b7            cmp     r7, r6
+    17a2:       d80a            bhi.n   17ba <relocate_to_current_adr+0x46>
+        dynend = (void *)__dynsym_end + offset_var;
+    17a4:       4b43            ldr     r3, [pc, #268]  ; (18b4 <relocate_to_current_adr+0x140>)
+                }
 
-and jumping to a noinline function for anything remotely complicated,
-we can't do that always:
+                dstart += sizeof(*rel);
+        }
 
-  - In relocation code, PBL uncompressing preparatory code, we _must_
-    access linker defined symbols before relocation unless we
-    reimplement them in assembly.
+        __memset(dynsym, 0, (unsigned long)dynend - (unsigned long)dynsym);
+    17a6:       2100            movs    r1, #0
+        dynend = (void *)__dynsym_end + offset_var;
+    17a8:       58eb            ldr     r3, [r5, r3]
+    17aa:       441a            add     r2, r3
+        __memset(dynsym, 0, (unsigned long)dynend - (unsigned long)dynsym);
+    17ac:       1a12            subs    r2, r2, r0
+    17ae:       f000 fda5       bl      22fc <__memset>
 
-  - I believe GCC doesn't guarantee that an external object referenced
-    in a noinline function has its address computed in the same
-    function. Compiler may see occasion to pc-relative read e.g. two
-    addresses located after function return into registers, believing
-    that relocation must have happened before C code first runs.
-    We then do the relocation, but the addresses are never touched
-    again, so we dereference an unrelocated address later on.
+Both &__dynsym_start and &__dynsym_end will change value after relocation,
+so we absolutely want address calculation and addition of offset_var to
+happen before relocation. Compiler is within rights though to assume
+variables to be already relocated though and thus proves that &__dynsym_end
+may not change in the loop and thus move dynend calculation below the
+relocation loop and thus we end up with dynend being incremented by
+offset_var once more. The resulting out-of-bounds memset() will overwrite
+parts of barebox and break its startup.
 
-For these situation we introduce a new runtime_address() macro that
-hides behind assembly the origin of the address it returns and so the
-compiler can not assume that it may move it around across calls to
-functions like relocate_to_current_adr() or the relocation loop in
-relocate_to_current_adr() itself.
+The naive solution of moving dynsym/dynend calculation beyond the
+relocation loop is insufficient as the compiler may decide to move
+it back. Instead the only solution short of rewriting this all in
+assembly seems to be hiding the origin of dynsym's value, so the
+optimizer may not prove the assumption that relocation would not affect
+its value. This is done using runtime_address, which was introduced in
+a previous commit. With this, the __memset call now uses precomputed
+values as expected: no last minute ldr, everything tidily placed into
+registers prior to the relocation loop:
 
-This has one major shortcoming that exists with the opencoded
-addition as well: Compiler will generate PC-relative access to data
-defined in the same translation unit, so we end up adding the offset
-twice. We employ some GCC builtin magic to catch most of this at
-compile-time. If we just did RELOC_HIDE() with a cast, we may lull
-board code authors into false security when they use it for non
-linker defined symbols.
+	17be:       2100            movs    r1, #0
+	17c0:       1b52            subs    r2, r2, r5
+	17c2:       4628            mov     r0, r5
+	17c4:       f000 fdaa       bl      231c <__memset>
 
+Fixes: a8b788ba61eb ("relocate_to_current_adr: hang directly on error instead of panic()")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/asm-generic/reloc.h | 69 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+ arch/arm/cpu/common.c     | 15 +++++++++------
+ arch/arm/cpu/uncompress.c |  4 ++--
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/include/asm-generic/reloc.h b/include/asm-generic/reloc.h
-index 90459371ebe8..06fccbd6f367 100644
---- a/include/asm-generic/reloc.h
-+++ b/include/asm-generic/reloc.h
-@@ -3,8 +3,77 @@
- #ifndef _ASM_GENERIC_RELOC_H_
- #define _ASM_GENERIC_RELOC_H_
+diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
+index 5ccacf204751..62781b76ce68 100644
+--- a/arch/arm/cpu/common.c
++++ b/arch/arm/cpu/common.c
+@@ -61,16 +61,19 @@ void pbl_barebox_break(void)
+  */
+ void relocate_to_current_adr(void)
+ {
+-	unsigned long offset, offset_var;
++	unsigned long offset;
+ 	unsigned long __maybe_unused *dynsym, *dynend;
+ 	void *dstart, *dend;
  
-+#include <linux/build_bug.h>
-+#include <linux/compiler.h>
-+
- #ifndef global_variable_offset
- #define global_variable_offset() get_runtime_offset()
- #endif
+ 	/* Get offset between linked address and runtime address */
+ 	offset = get_runtime_offset();
+-	offset_var = global_variable_offset();
  
-+/*
-+ * Using sizeof() on incomplete types always fails, so we use GCC's
-+ * __builtin_object_size() instead. This is the mechanism underlying
-+ * FORTIFY_SOURCE. &symbol should always be something GCC can compute
-+ * a size for, even without annotations, unless it's incomplete.
-+ * The second argument ensures we get 0 for failure.
-+ */
-+#define __has_type_complete(sym) __builtin_object_size(&(sym), 2)
-+
-+#define __has_type_byte_array(sym) (sizeof(*sym) == 1 + __must_be_array(sym))
-+
-+/*
-+ * runtime_address() defined below is supposed to be used exclusively
-+ * with linker defined symbols, e.g. unsigned char input_end[].
-+ *
-+ * We can't completely ensure that, but this gets us close enough
-+ * to avoid most abuse of runtime_address().
-+ */
-+#define __is_incomplete_byte_array(sym) \
-+	(!__has_type_complete(sym) && __has_type_byte_array(sym))
-+
-+/*
-+ * While accessing global variables before C environment is setup is
-+ * questionable, we can't avoid it when we decide to write our
-+ * relocation routines in C. This invites a tricky problem with
-+ * this naive code:
-+ *
-+ *   var = &variable + global_variable_offset(); relocate_to_current_adr();
-+ *
-+ * Compiler is within rights to rematerialize &variable after
-+ * relocate_to_current_adr(), which is unfortunate because we
-+ * then end up adding a relocated &variable with the relocation
-+ * offset once more. We avoid this here by hiding address with
-+ * RELOC_HIDE. This is required as a simple compiler barrier()
-+ * with "memory" clobber is not immune to compiler proving that
-+ * &sym fits in a register and as such is unaffected by the memory
-+ * clobber. barrier_data(&sym) would work too, but that comes with
-+ * aforementioned compiler "memory" barrier, that we don't care for.
-+ *
-+ * We don't necessarily need the volatile variable assignment when
-+ * using the compiler-gcc.h RELOC_HIDE implementation as __asm__
-+ * __volatile__ takes care of it, but the generic RELOC_HIDE
-+ * implementation has GCC misscompile runtime_address() when not passing
-+ * in a volatile object. Volatile casts instead of variable assignments
-+ * also led to miscompilations with GCC v11.1.1 for THUMB2.
-+ */
-+
-+#define runtime_address(sym) ({					\
-+	void *volatile __addrof_sym = (sym);			\
-+	if (!__is_incomplete_byte_array(sym))			\
-+		__unsafe_runtime_address();			\
-+	RELOC_HIDE(__addrof_sym, global_variable_offset());	\
-+})
-+
-+/*
-+ * Above will fail for "near" objects, e.g. data in the same
-+ * translation unit or with LTO, as the compiler can be smart
-+ * enough to omit relocation entry and just generate PC relative
-+ * accesses leading to base address being added twice. We try to
-+ * catch most of these here by triggering an error when runtime_address()
-+ * is used with anything that is not a byte array of unknown size.
-+ */
-+extern void *__compiletime_error(
-+	"runtime_address() may only be called on linker defined symbols."
-+) __unsafe_runtime_address(void);
-+
- #endif
+-	dstart = (void *)__rel_dyn_start + offset_var;
+-	dend = (void *)__rel_dyn_end + offset_var;
++	/*
++	 * We have yet to relocate, so using runtime_address
++	 * to compute the relocated address
++	 */
++	dstart = runtime_address(__rel_dyn_start);
++	dend = runtime_address(__rel_dyn_end);
+ 
+ #if defined(CONFIG_CPU_64)
+ 	while (dstart < dend) {
+@@ -96,8 +99,8 @@ void relocate_to_current_adr(void)
+ 		dstart += sizeof(*rel);
+ 	}
+ #elif defined(CONFIG_CPU_32)
+-	dynsym = (void *)__dynsym_start + offset_var;
+-	dynend = (void *)__dynsym_end + offset_var;
++	dynsym = runtime_address(__dynsym_start);
++	dynend = runtime_address(__dynsym_end);
+ 
+ 	while (dstart < dend) {
+ 		struct elf32_rel *rel = dstart;
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index 537ee63229d7..65de87f10923 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -53,8 +53,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	unsigned long pc = get_pc();
+ 
+ 	/* piggy data is not relocated, so determine the bounds now */
+-	pg_start = input_data + global_variable_offset();
+-	pg_end = input_data_end + global_variable_offset();
++	pg_start = runtime_address(input_data);
++	pg_end = runtime_address(input_data_end);
+ 
+ 	if (IS_ENABLED(CONFIG_PBL_RELOCATABLE)) {
+ 		/*
 -- 
 2.30.2
 
