@@ -1,75 +1,61 @@
-Delivery-date: Fri, 21 Oct 2022 11:55:44 +0200
+Delivery-date: Fri, 21 Oct 2022 13:45:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1olokk-002k2z-7l
-	for lore@lore.pengutronix.de; Fri, 21 Oct 2022 11:55:44 +0200
+	id 1olqT7-002pEr-Ss
+	for lore@lore.pengutronix.de; Fri, 21 Oct 2022 13:45:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1olokh-0000vr-J8
-	for lore@pengutronix.de; Fri, 21 Oct 2022 11:55:44 +0200
+	id 1olqT5-0006ue-04
+	for lore@pengutronix.de; Fri, 21 Oct 2022 13:45:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:To:Subject:
-	Message-ID:Date:From:MIME-Version:Reply-To:Cc:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=AgJju+RpDj8W1lCTFj09vH7bKN0qd/ncK9b2MZ9XexQ=; b=ujijbUE5a1hwDZx5DPWMijv8r6
-	Ybo4X0Xqx5dk4UkYv7mdViauqT+MoSoPC694Vtd9KO103c656861BfUwUar1Q6xaXCYF6f5+c+SfN
-	1fC3oh6F0RHa689nbXtCyyCx1h78PogDF7r22Uut3m5O+nPFEQjPqUvS86YtBnZUvcBN81xraDw4F
-	btJOIPJa/3OR0Y5bHs0UEpsvvdN4mP9HbHAm2QUZ0ykvGZATLNxR8rSqUg/EGIPFLgBoj9dGBMijc
-	JTsHa1zU9qBjHhMmzUmWGRh0QYpQctghqi6uxWYROIRRJ5IXMSYmwDLOW9+sKzlQv/1ClgbifQ1V5
-	8UvJx/Bg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=kjGDmcYcOzzQcMnWMzSsRRfypqlV2rhThGu2WpDf9Ak=; b=seJhG8aewrhhBtD5a0d4yg7LRa
+	R5UTklg+toSQwKNfONNDXOTL2ycnFfO7JzOvvmXqLlDGULHaN/sbr3q/G1WCzaFa8/eQRYcXfp3+s
+	SkodqLpmpJI5ms/mrb/d4kYFWJ/ntt3u2hw2dFAIJW1aR1XoWpDBobcH8xScV2Kw0TLJ2AakARoMs
+	0At3JIOEGfvvMgT9ir+dxLzRQJwm4RJKqc3RofUK63lY6ggCMjqCLUGw1DE43iaeOAEHY7lznZ0F3
+	dsoE3QzjSswSmf3TYJRqO7ZF9jvEYu0QktrnWA2wpu/JBDTb3bcd3BAlKqpeqDUhdd6pdW2zlgrwf
+	Czk2BU9Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1olojK-006uSM-IS; Fri, 21 Oct 2022 09:54:18 +0000
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+	id 1olqRV-007Rq3-1H; Fri, 21 Oct 2022 11:44:01 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1olojG-006uQp-3p
-	for barebox@lists.infradead.org; Fri, 21 Oct 2022 09:54:15 +0000
-Received: by mail-pg1-x529.google.com with SMTP id h185so2090651pgc.10
-        for <barebox@lists.infradead.org>; Fri, 21 Oct 2022 02:54:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AgJju+RpDj8W1lCTFj09vH7bKN0qd/ncK9b2MZ9XexQ=;
-        b=WkJM4ZX1mcF2Q+VxYBGGcW6QePwwyA8UnSoCSqFzwIWHq4fr/S2xerR5lLE17T9ThX
-         /AqHH/xpgVrM8M6QoB1AvXS3TcaGlSj3UphchW2Nn/UYdZP24saNTk9WBg23kiNWw4zs
-         OsM3IrZMMPhJNbH2YyTcVTrS0JctgLJtK5MGtxLOCU2grbcaDUIc3Cfq7Lr5j3UtyVcM
-         sNDnOPMpyUtuDDBRSjhfGO+ktTY+w45zs5NLobKq7T6VtjVoaTtQQ3bOVY//9zq4spXR
-         FzEnHPguocpZd4ZzBNCyQCp/SR+E2HuiI8ALocT6O4pCI7+sHDiSkmihvdWisGry5h4D
-         lSrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AgJju+RpDj8W1lCTFj09vH7bKN0qd/ncK9b2MZ9XexQ=;
-        b=Lb7jnn3QqftedC2RN6yeQzh/B/4yMVaR9RzYAcSltjZZN6FZi4+s6lguxFGclymZl/
-         nGoNXat+6vF23rIwp12fQ+7ZW5VfDQpu+vras38W41PzcXknQVjl2Yz/Lc0+GAOLNqM1
-         SY1pguT+N3W1iUiRhVji70LY8uGUV68a1WA953wvpIjq/VFkrDIGGrazs/Pj7WTwfVgo
-         YYiA2C8hFMxRKxQ1gZjfoVvNZq1uTucBiHQZWJhgLMAYg4jeJr6Ybv3cQRAoXFaQhQ3s
-         UdLXOsYLI9DacnpIa1tUI3jGVEF1fePzdE/WW1jwYCAwE8ulQolleHxqCnHZaE8Gv1X/
-         kdww==
-X-Gm-Message-State: ACrzQf15slXMA6+p+/fCAH402aMnd9GNqseg5z22ez4tzqjSRBNGjq6C
-	X+Di6VtC2WCi5lYX6eB+qLcYfWCKVqjxPaOv0xhqSTLLgkc=
-X-Google-Smtp-Source: AMsMyM53gTEywCSExV2YgnfOTvPtUoFookAYoZd/DGHVQUNaQR2Vj9YGuTf8aYaq8/W2nOqnIXij8b1iqBZ0WaHcwDI=
-X-Received: by 2002:a63:c117:0:b0:46b:208e:fd76 with SMTP id
- w23-20020a63c117000000b0046b208efd76mr15748567pgf.577.1666346051327; Fri, 21
- Oct 2022 02:54:11 -0700 (PDT)
+	id 1olqRQ-007RoR-1y
+	for barebox@lists.infradead.org; Fri, 21 Oct 2022 11:43:57 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1olqRK-0006Y0-Fc; Fri, 21 Oct 2022 13:43:50 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1olqRK-0002ck-8l; Fri, 21 Oct 2022 13:43:50 +0200
+Date: Fri, 21 Oct 2022 13:43:50 +0200
+To: Alexander Shiyan <eagle.alexander923@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20221021114350.GA6702@pengutronix.de>
+References: <CAP1tNvRrPDLuzS3NSEO3DF4wF8NeXsoDiBh6hTCA5sxaKR1rKA@mail.gmail.com>
 MIME-Version: 1.0
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 21 Oct 2022 12:53:59 +0300
-Message-ID: <CAP1tNvRrPDLuzS3NSEO3DF4wF8NeXsoDiBh6hTCA5sxaKR1rKA@mail.gmail.com>
-To: Barebox List <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAP1tNvRrPDLuzS3NSEO3DF4wF8NeXsoDiBh6hTCA5sxaKR1rKA@mail.gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221021_025414_168012_A5862254 
-X-CRM114-Status: UNSURE (   5.37  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20221021_044356_116101_61CD9214 
+X-CRM114-Status: GOOD (  17.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,33 +73,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: i.MX watchdog druver regression
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: i.MX watchdog druver regression
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello!
+On Fri, Oct 21, 2022 at 12:53:59PM +0300, Alexander Shiyan wrote:
+> Hello!
+> 
+> An error occurred while registering the i.MX watchdog driver:
+> 
+> barebox 2022.06.0-00530-g31d9ff81c63c-dirty #44 Fri Oct 21 12:13:36 MSK 2022
+> ...
+> ERROR: imx-watchdog 73f98000.watchdog@73f98000.of: probe failed: No
+> such file or directory
+> ...
+> 
+> Thought it was the result of a patch "watchdog: imxwd: get and enable clock",
+> and added the line:
+> clks[IMX5_CLK_DUMMY] = clk_fixed("dummy", 0);
+> into the beginning of the mx5_clocks_common_init() function, but this
+> does not help...
 
-An error occurred while registering the i.MX watchdog driver:
+If the missing clock is the problem then you also have to tell the clock
+core that the dummy clock shall be provided to the watchdog, something
+like:
 
-barebox 2022.06.0-00530-g31d9ff81c63c-dirty #44 Fri Oct 21 12:13:36 MSK 2022
-...
-ERROR: imx-watchdog 73f98000.watchdog@73f98000.of: probe failed: No
-such file or directory
-...
+	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX53_WDOG1_BASE_ADDR, NULL);
+	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX53_WDOG2_BASE_ADDR, NULL);
 
-Thought it was the result of a patch "watchdog: imxwd: get and enable clock",
-and added the line:
-clks[IMX5_CLK_DUMMY] = clk_fixed("dummy", 0);
-into the beginning of the mx5_clocks_common_init() function, but this
-does not help...
+similar is missing for i.MX51 as well
 
-Does anyone have any ideas about this?
+Sascha
 
-Thanks!
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
