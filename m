@@ -1,58 +1,75 @@
-Delivery-date: Fri, 21 Oct 2022 11:07:22 +0200
+Delivery-date: Fri, 21 Oct 2022 11:55:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1olnzv-002icc-PO
-	for lore@lore.pengutronix.de; Fri, 21 Oct 2022 11:07:22 +0200
+	id 1olokk-002k2z-7l
+	for lore@lore.pengutronix.de; Fri, 21 Oct 2022 11:55:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1olnzs-0002em-L9
-	for lore@pengutronix.de; Fri, 21 Oct 2022 11:07:21 +0200
+	id 1olokh-0000vr-J8
+	for lore@pengutronix.de; Fri, 21 Oct 2022 11:55:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:To:Subject:
+	Message-ID:Date:From:MIME-Version:Reply-To:Cc:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=RNsz/NcS53usslx2wtk0Vpb3u3NCzFjfO0pWcfxvMuw=; b=SzVW+vEBmAD09QgpEZzq6XjYwy
-	+GF/ePjcvHYrJnvOFXdo5Q9QUu6oMFOjPMc4kdZed/2Shfvj3LLX6IX0c+0Vo9nFMCxLOgFmQF5g4
-	6rfxMb9a4iCmNT0q1PAmuvTlLqU+L5l8V7SFoGRA/ycGeFSRUkVRLfwWcXSoOQc7XBtmHAiVEKUKd
-	y4Fwqo92Oxa0w5u+HZ4DBriWjyRWE+wNSgz+iDTx8BQGy38k+TnLBQo17uI5nQHtbBNeQ/HwN+XE4
-	SzLFy7+FY0k55V93D6NdDNjhXozYBP7spHsFE3pMC1EMIPDJFr89urF5qA0cItrHqTD+kLCNAOw7U
-	7VQ5c+Jw==;
+	bh=AgJju+RpDj8W1lCTFj09vH7bKN0qd/ncK9b2MZ9XexQ=; b=ujijbUE5a1hwDZx5DPWMijv8r6
+	Ybo4X0Xqx5dk4UkYv7mdViauqT+MoSoPC694Vtd9KO103c656861BfUwUar1Q6xaXCYF6f5+c+SfN
+	1fC3oh6F0RHa689nbXtCyyCx1h78PogDF7r22Uut3m5O+nPFEQjPqUvS86YtBnZUvcBN81xraDw4F
+	btJOIPJa/3OR0Y5bHs0UEpsvvdN4mP9HbHAm2QUZ0ykvGZATLNxR8rSqUg/EGIPFLgBoj9dGBMijc
+	JTsHa1zU9qBjHhMmzUmWGRh0QYpQctghqi6uxWYROIRRJ5IXMSYmwDLOW9+sKzlQv/1ClgbifQ1V5
+	8UvJx/Bg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1olny1-006egj-EZ; Fri, 21 Oct 2022 09:05:25 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1olojK-006uSM-IS; Fri, 21 Oct 2022 09:54:18 +0000
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1olnxv-006edZ-Do
-	for barebox@lists.infradead.org; Fri, 21 Oct 2022 09:05:21 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1olnxp-0002Ij-55; Fri, 21 Oct 2022 11:05:13 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1olnxm-000UNs-35; Fri, 21 Oct 2022 11:05:12 +0200
-Received: from rhi by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1olnxn-001ful-MM; Fri, 21 Oct 2022 11:05:11 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Roland Hieber <rhi@pengutronix.de>
-Date: Fri, 21 Oct 2022 11:05:10 +0200
-Message-Id: <20221021090510.399348-1-rhi@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	id 1olojG-006uQp-3p
+	for barebox@lists.infradead.org; Fri, 21 Oct 2022 09:54:15 +0000
+Received: by mail-pg1-x529.google.com with SMTP id h185so2090651pgc.10
+        for <barebox@lists.infradead.org>; Fri, 21 Oct 2022 02:54:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AgJju+RpDj8W1lCTFj09vH7bKN0qd/ncK9b2MZ9XexQ=;
+        b=WkJM4ZX1mcF2Q+VxYBGGcW6QePwwyA8UnSoCSqFzwIWHq4fr/S2xerR5lLE17T9ThX
+         /AqHH/xpgVrM8M6QoB1AvXS3TcaGlSj3UphchW2Nn/UYdZP24saNTk9WBg23kiNWw4zs
+         OsM3IrZMMPhJNbH2YyTcVTrS0JctgLJtK5MGtxLOCU2grbcaDUIc3Cfq7Lr5j3UtyVcM
+         sNDnOPMpyUtuDDBRSjhfGO+ktTY+w45zs5NLobKq7T6VtjVoaTtQQ3bOVY//9zq4spXR
+         FzEnHPguocpZd4ZzBNCyQCp/SR+E2HuiI8ALocT6O4pCI7+sHDiSkmihvdWisGry5h4D
+         lSrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AgJju+RpDj8W1lCTFj09vH7bKN0qd/ncK9b2MZ9XexQ=;
+        b=Lb7jnn3QqftedC2RN6yeQzh/B/4yMVaR9RzYAcSltjZZN6FZi4+s6lguxFGclymZl/
+         nGoNXat+6vF23rIwp12fQ+7ZW5VfDQpu+vras38W41PzcXknQVjl2Yz/Lc0+GAOLNqM1
+         SY1pguT+N3W1iUiRhVji70LY8uGUV68a1WA953wvpIjq/VFkrDIGGrazs/Pj7WTwfVgo
+         YYiA2C8hFMxRKxQ1gZjfoVvNZq1uTucBiHQZWJhgLMAYg4jeJr6Ybv3cQRAoXFaQhQ3s
+         UdLXOsYLI9DacnpIa1tUI3jGVEF1fePzdE/WW1jwYCAwE8ulQolleHxqCnHZaE8Gv1X/
+         kdww==
+X-Gm-Message-State: ACrzQf15slXMA6+p+/fCAH402aMnd9GNqseg5z22ez4tzqjSRBNGjq6C
+	X+Di6VtC2WCi5lYX6eB+qLcYfWCKVqjxPaOv0xhqSTLLgkc=
+X-Google-Smtp-Source: AMsMyM53gTEywCSExV2YgnfOTvPtUoFookAYoZd/DGHVQUNaQR2Vj9YGuTf8aYaq8/W2nOqnIXij8b1iqBZ0WaHcwDI=
+X-Received: by 2002:a63:c117:0:b0:46b:208e:fd76 with SMTP id
+ w23-20020a63c117000000b0046b208efd76mr15748567pgf.577.1666346051327; Fri, 21
+ Oct 2022 02:54:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Fri, 21 Oct 2022 12:53:59 +0300
+Message-ID: <CAP1tNvRrPDLuzS3NSEO3DF4wF8NeXsoDiBh6hTCA5sxaKR1rKA@mail.gmail.com>
+To: Barebox List <barebox@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221021_020519_647381_94C8B41A 
-X-CRM114-Status: GOOD (  38.57  )
+X-CRM114-CacheID: sfid-20221021_025414_168012_A5862254 
+X-CRM114-Status: UNSURE (   5.37  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,161 +87,33 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] doc: slightly improve the porting guide
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: i.MX watchdog druver regression
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Turn the first board code excerpt into a full example by adding the
-necessary includes files. Then in the line-by-line explanation, ensure a
-line break after each explained line by turning the list into a
-definition list, and be a bit more verbose when explaining some lines.
+Hello!
 
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
----
- Documentation/devel/porting.rst | 58 +++++++++++++++++++++------------
- 1 file changed, 37 insertions(+), 21 deletions(-)
+An error occurred while registering the i.MX watchdog driver:
 
-diff --git a/Documentation/devel/porting.rst b/Documentation/devel/porting.rst
-index 01ee26e0d65f..dea5ebd1c511 100644
---- a/Documentation/devel/porting.rst
-+++ b/Documentation/devel/porting.rst
-@@ -113,6 +113,9 @@ there depends on the previously running code. If a previous stage has already
- initialized the DRAM, the only thing you need to do is to set up a stack and
- call the common PBL code with a memory region and your device tree blob::
- 
-+  #include <asm/barebox-arm.h>
-+  #include <console.h>
-+
-   ENTRY_FUNCTION_WITHSTACK(start_my_board, MY_STACK_TOP, r0, r1, r2)
-   {
-   	extern char __dtb_my_board_start[];
-@@ -128,22 +131,24 @@ call the common PBL code with a memory region and your device tree blob::
- 
- Lets look at this line by line:
- 
-- - ``ENTRY_FUNCTION_WITHSTACK(start_my_board, STACK_TOP, r0, r1, r2)``
-+``ENTRY_FUNCTION_WITHSTACK(start_my_board, MY_STACK_TOP, r0, r1, r2)``
-    The entry point is special: It needs to be located at the beginning of the
-    image, it does not return and may run before a stack is set up.
-    To make it possible to write this entry point in C, the macro places
--   a machine code prologue that uses ``STACK_TOP`` as the initial stack
-+   a machine code prologue that uses ``MY_STACK_TOP`` as the initial stack
-    pointer. If the stack is already set up, you may pass 0 here.
- 
-    Additionally, the macro passes along a number of registers, in case the
-    Boot ROM has placed something interesting there.
- 
-- - ``extern char __dtb_my_board_start[];``
-+``extern char __dtb_my_board_start[];``
-    When a device tree is built as part of the PBL, ``__dtb_*_start`` and
--   ``__dtb_*_end`` will be defined for it. Declare the start variable, so
--   you can pass along the address of the device tree.
-+   ``__dtb_*_end`` will be defined for it by the build system;
-+   its name is determined by the name of the device tree source file.
-+   Declare the start variable, so you can pass along the address of the device
-+   tree.
- 
-- - ``relocate_to_current_adr();``
-+``relocate_to_current_adr();``
-    Machine code contains a mixture of relative and absolute addressing.
-    Because the PBL doesn't know in advance which address it's loaded to,
-    the link address of global variables may not be correct. To correct
-@@ -152,28 +157,34 @@ Lets look at this line by line:
-    by this function. Note that this is self-modifying code, so it's not
-    safe to call this when executing in-place from flash or ROM.
- 
-- - ``setup_c();``
-+``setup_c();``
-    As a size optimization, zero-initialized variables of static storage
-    duration are not written to the executable. Instead only the region
-    where they should be located is described and at runtime that region
-    is zeroed. This is what ``setup_c()`` does.
- 
-- - ``pbl_set_putc(my_serial_putc, (void *)BASE_ADDR);``
-+``pbl_set_putc(my_serial_putc, (void *)BASE_ADDR);``
-    Now that we have a C environment set up, lets set our first global
--   variable. ``pbl_set_putc`` saves a function pointer that can be used
--   to output a single character. This can be used for the early PBL
--   console to output messages even before any drivers are initialized.
-+   variable. ``pbl_set_putc`` saves a pointer to a function
-+   (``my_serial_putc``) that is called by the ``pr_*`` functions to output a
-+   single character. This can be used for the early PBL console to output
-+   messages even before any drivers are initialized.
-+   The second parameter (UART register base address in this instance) is passed
-+   as a user parameter when the provided function is called.
- 
-- - ``barebox_arm_entry`` will compute a new stack top from the supplied memory
--   region and uncompress barebox proper and pass along its arguments.
-+``barebox_arm_entry(...)``
-+   This will compute a new stack top from the supplied memory
-+   region, uncompress barebox proper and pass along its arguments.
- 
- Looking at other boards you might see some different patterns:
- 
-- - ``*_cpu_lowlevel_init();``: Often some common initialization and quirk handling
-+``*_cpu_lowlevel_init();``
-+   Often some common initialization and quirk handling
-    needs to be done at start. If a board similar to yours does this, you probably
-    want to do likewise.
- 
-- - ``__naked``: All functions called before stack is correctly initialized must be
-+``__naked``
-+   All functions called before stack is correctly initialized must be
-    marked with this attribute. Otherwise, function prologue and epilogue may access
-    the uninitialized stack. Note that even with ``__naked``, the compiler may still
-    spill excess local C variables used in a naked function to the stack before it
-@@ -187,34 +198,39 @@ Looking at other boards you might see some different patterns:
-    no reason to use ``__naked``, just use ``ENTRY_FNCTION_WITHSTACK`` with a zero
-    stack top.
- 
-- - ``noinline``: Compiler code inlining is oblivious to stack manipulation in
-+``noinline``
-+   Compiler code inlining is oblivious to stack manipulation in
-    inline assembly. If you want to ensure a new function has its own stack frame
-    (e.g. after setting up the stack in a ``__naked`` function), you must jump to
-    a ``__noreturn noinline`` function.
- 
-- - ``arm_setup_stack``: For 32-bit ARM, ``arm_setup_stack`` initializes the stack
-+``arm_setup_stack``
-+   For 32-bit ARM, ``arm_setup_stack`` initializes the stack
-    top when called from a naked C function, which allowed to write the entry point
-    directly in C. Modern code should use ``ENTRY_FUNCTION_WITHSTACK`` instead.
-    Note that in both cases the stack pointer will be decremented before pushing values.
-    Avoid interleaving with C-code. See ``__naked`` above for more details.
- 
-- - ``__dtb_z_my_board_start[];``: Because the PBL normally doesn't parse anything out
-+``__dtb_z_my_board_start[];``
-+   Because the PBL normally doesn't parse anything out
-    of the device tree blob, boards can benefit from keeping the device tree blob
-    compressed and only unpack it in barebox proper. Such LZO-compressed device trees
-    are prefixed with ``__dtb_z_``. It's usually a good idea to use this.
- 
-- - ``imx6q_barebox_entry(...);`` Sometimes it's possible to query the memory
-+``imx6q_barebox_entry(...);``
-+   Sometimes it's possible to query the memory
-    controller for the size of RAM. If there are SoC-specific helpers to achieve
-    this, you should use them.
- 
-- - ``get_runtime_offset()/global_variable_offset()`` returns the difference
-+``get_runtime_offset()/global_variable_offset()``
-+   This functions return the difference
-    between the link and load address. This is zero after relocation, but the
-    function can be useful to pass along the correct address of a variable when
-    relocation has not yet occurred. If you need to use this for anything more
-    then passing along the FDT address, you should reconsider and probably rather
-    call ``relocate_to_current_adr();``.
- 
-- - ``*_start_image(...)/*_load_image(...)/*_xload_*(...)``:
-+``*_start_image(...)/*_load_image(...)/*_xload_*(...)``
-    If the SRAM couldn't fit both PBL and the compressed barebox proper, PBL
-    will need to chainload full barebox binary from disk.
- 
--- 
-2.30.2
+barebox 2022.06.0-00530-g31d9ff81c63c-dirty #44 Fri Oct 21 12:13:36 MSK 2022
+...
+ERROR: imx-watchdog 73f98000.watchdog@73f98000.of: probe failed: No
+such file or directory
+...
 
+Thought it was the result of a patch "watchdog: imxwd: get and enable clock",
+and added the line:
+clks[IMX5_CLK_DUMMY] = clk_fixed("dummy", 0);
+into the beginning of the mx5_clocks_common_init() function, but this
+does not help...
+
+Does anyone have any ideas about this?
+
+Thanks!
 
 
