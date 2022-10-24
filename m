@@ -1,58 +1,57 @@
-Delivery-date: Mon, 24 Oct 2022 11:59:05 +0200
+Delivery-date: Mon, 24 Oct 2022 12:03:55 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1omuEb-000WAi-9d
-	for lore@lore.pengutronix.de; Mon, 24 Oct 2022 11:59:05 +0200
+	id 1omuJG-000WLG-V4
+	for lore@lore.pengutronix.de; Mon, 24 Oct 2022 12:03:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1omuEY-00025T-Sw
-	for lore@pengutronix.de; Mon, 24 Oct 2022 11:59:04 +0200
+	id 1omuJF-0003Ku-KS
+	for lore@pengutronix.de; Mon, 24 Oct 2022 12:03:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=HRVWyM605Dgd8qvLziQGfKxB6puuyxaiUwe1lGTExa4=; b=ZF+vtrcyRP+5UbVmQ8wUHruyGA
-	LSn4wuwOEj0CNfF9b0YB+GBLj9kFknVRhnpjG58B1j/2qwEoVlw28Bch5DVeCNKLUAz9AXK/U1PZa
-	VSOqWaHj1vkXPwZNmXqmLNh26vdnnKMvSTG8yNbx6lpWzkgMM3kefKgs39y3ytcWe/QYOSBp1Q9Ba
-	Jtb/ldfZuM5pptSqEuJBJGXkGpwJB8+IWUuc0lvKPrntZPeYqyXJKZaOq63JY0UslyAdTjGZWRpvi
-	/+FRsqBgyKfbshr2yrQ50Mz1vfXyV7O4hta+t9hC1n+1+O35rQjJNDyAvUME+FoDhBSUyfhQ4ZWp6
-	KI8Ni5ng==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=0LW/8pvcHucBuucjGAfJX+e4/oSOQKdmer6TKKxiMVU=; b=f3M0aF1KqVbPYpu99jz9BeESQw
+	2v9HoxplMl3rdjxIEvXF5avtR0t9JOFYGJYX9hJpXXFp/S46VDl2ZieTJeewnBSyjhh30NtXUS5ay
+	Rr10CP95yvET1LwqSAq7axIrebOqLKm1Bm/NVq24LZ1XdfDIf3NSAVc4XLpxm7aaDPChKYHjjmSQh
+	YnKENYcgvOSa59HbUe2UnI50fIsLhWmy/uT0FED5PpAf5zrxtyl4kx0K5DeYNiHEFV+cDqnCbDMXe
+	LkAFd80TgccNr1iZ2TyKMy1lKIhg/6dKHbKiZqZat1GEZsdpOHkqLJcwUd7qpBRgN88HeyKS4Mjsl
+	yPz4gRdA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1omuCi-000YGs-1Y; Mon, 24 Oct 2022 09:57:08 +0000
+	id 1omuHx-000aaE-Cv; Mon, 24 Oct 2022 10:02:33 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1omuBw-000Y29-Po
-	for barebox@lists.infradead.org; Mon, 24 Oct 2022 09:56:24 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1omuBr-0001is-Fn; Mon, 24 Oct 2022 11:56:15 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1omuBr-0005Q4-Mr; Mon, 24 Oct 2022 11:56:14 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1omuBp-006S2Y-UC; Mon, 24 Oct 2022 11:56:13 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 24 Oct 2022 11:56:12 +0200
-Message-Id: <20221024095612.1537704-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	id 1omuHp-000aXy-1C
+	for barebox@lists.infradead.org; Mon, 24 Oct 2022 10:02:26 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1omuHn-0002u7-ET; Mon, 24 Oct 2022 12:02:23 +0200
+Message-ID: <9219ec41-4893-d3ff-4c77-2e61438e970d@pengutronix.de>
+Date: Mon, 24 Oct 2022 12:02:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Content-Language: en-US
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20221024065716.1215046-1-a.fatoum@pengutronix.de>
+ <20221024065716.1215046-6-a.fatoum@pengutronix.de>
+ <20221024085519.GJ6702@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20221024085519.GJ6702@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221024_025621_223970_BDDE7782 
-X-CRM114-Status: GOOD (  26.05  )
+X-CRM114-CacheID: sfid-20221024_030225_125128_5E6AC826 
+X-CRM114-Status: GOOD (  28.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,501 +69,149 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] aiodev: port Linux imx7d-adc driver
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 5/8] ARM64: asm: rewrite ENTRY_FUNCTION(_WITHSTACK) fully
+ in assembly
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The i.MX7 has two ADCs of 4 logical channels each. Port the Linux v6.0
-driver of the peripheral to make them usable in barebox. This can be useful
-for board type/revision detection that employs voltage dividers.
+Hello Sascha,
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - squash fixup for functional devinfo/driver removal
-  - remove unused macro definitions (Sascha)
-  - define IMX7D_REG_ADC_CFG1/2(ch) instead of opencoded arithmetic
-    (Sascha)
-  - reduce (logical) channel count to 4 from 16 (Sascha)
-  - use xzalloc for channels instead of xmalloc (Sascha)
-  - rename original ISR function for readability (Sascha)
-  - u32 i -> unsigned i (Sascha)
----
- drivers/aiodev/Kconfig     |   8 +
- drivers/aiodev/Makefile    |   1 +
- drivers/aiodev/imx7d_adc.c | 431 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 440 insertions(+)
- create mode 100644 drivers/aiodev/imx7d_adc.c
 
-diff --git a/drivers/aiodev/Kconfig b/drivers/aiodev/Kconfig
-index 6bd697702ecf..5c8706ffef4a 100644
---- a/drivers/aiodev/Kconfig
-+++ b/drivers/aiodev/Kconfig
-@@ -65,4 +65,12 @@ config ROCKCHIP_SARADC
- 	help
- 	  Support for Successive Approximation Register (SAR) ADC in Rockchip
- 	  SoCs.
-+
-+config IMX7D_ADC
-+	tristate "Freescale IMX7D ADC driver"
-+	depends on ARCH_IMX7 || COMPILE_TEST
-+	depends on OFDEVICE
-+	help
-+	  Say yes here to build support for IMX7D ADC.
-+
- endif
-diff --git a/drivers/aiodev/Makefile b/drivers/aiodev/Makefile
-index 06a63b0d2d78..9cb11605ed09 100644
---- a/drivers/aiodev/Makefile
-+++ b/drivers/aiodev/Makefile
-@@ -9,3 +9,4 @@ obj-$(CONFIG_QORIQ_THERMAL) += qoriq_thermal.o
- obj-$(CONFIG_AM335X_ADC) += am335x_adc.o
- obj-$(CONFIG_STM32_ADC) += stm32-adc.o stm32-adc-core.o
- obj-$(CONFIG_ROCKCHIP_SARADC) += rockchip_saradc.o
-+obj-$(CONFIG_IMX7D_ADC) += imx7d_adc.o
-diff --git a/drivers/aiodev/imx7d_adc.c b/drivers/aiodev/imx7d_adc.c
-new file mode 100644
-index 000000000000..21cb06368695
---- /dev/null
-+++ b/drivers/aiodev/imx7d_adc.c
-@@ -0,0 +1,431 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Freescale i.MX7D ADC driver
-+ *
-+ * Copyright (C) 2015 Freescale Semiconductor, Inc.
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <io.h>
-+#include <linux/printk.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <linux/kernel.h>
-+#include <linux/bitops.h>
-+#include <regulator.h>
-+#include <linux/barebox-wrapper.h>
-+
-+#include <linux/iopoll.h>
-+#include <aiodev.h>
-+
-+/* ADC register */
-+#define IMX7D_REG_ADC_TIMER_UNIT		0x90
-+#define IMX7D_REG_ADC_INT_STATUS		0xe0
-+#define IMX7D_REG_ADC_CHA_B_CNV_RSLT		0xf0
-+#define IMX7D_REG_ADC_CHC_D_CNV_RSLT		0x100
-+#define IMX7D_REG_ADC_ADC_CFG			0x130
-+
-+#define IMX7D_REG_ADC_CFG1(ch)			((ch) * 0x20)
-+#define IMX7D_REG_ADC_CFG2(ch)			((ch) * 0x20 + 0x10)
-+
-+#define IMX7D_REG_ADC_CH_CFG1_CHANNEL_EN			(0x1 << 31)
-+#define IMX7D_REG_ADC_CH_CFG1_CHANNEL_SINGLE			BIT(30)
-+#define IMX7D_REG_ADC_CH_CFG1_CHANNEL_AVG_EN			BIT(29)
-+#define IMX7D_REG_ADC_CH_CFG1_CHANNEL_SEL(x)			((x) << 24)
-+
-+#define IMX7D_REG_ADC_CH_CFG2_AVG_NUM_4				(0x0 << 12)
-+#define IMX7D_REG_ADC_CH_CFG2_AVG_NUM_8				(0x1 << 12)
-+#define IMX7D_REG_ADC_CH_CFG2_AVG_NUM_16			(0x2 << 12)
-+#define IMX7D_REG_ADC_CH_CFG2_AVG_NUM_32			(0x3 << 12)
-+
-+#define IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_4			(0x0 << 29)
-+#define IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_8			(0x1 << 29)
-+#define IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_16			(0x2 << 29)
-+#define IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_32			(0x3 << 29)
-+#define IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_64			(0x4 << 29)
-+#define IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_128			(0x5 << 29)
-+
-+#define IMX7D_REG_ADC_ADC_CFG_ADC_CLK_DOWN			BIT(31)
-+#define IMX7D_REG_ADC_ADC_CFG_ADC_POWER_DOWN			BIT(1)
-+#define IMX7D_REG_ADC_ADC_CFG_ADC_EN				BIT(0)
-+
-+#define IMX7D_REG_ADC_INT_STATUS_CHANNEL_INT_STATUS		0xf00
-+#define IMX7D_REG_ADC_INT_STATUS_CHANNEL_CONV_TIME_OUT		0xf0000
-+
-+#define IMX7D_ADC_TIMEOUT_NSEC		(100 * NSEC_PER_MSEC)
-+#define IMX7D_ADC_INPUT_CLK		24000000
-+
-+enum imx7d_adc_clk_pre_div {
-+	IMX7D_ADC_ANALOG_CLK_PRE_DIV_4,
-+	IMX7D_ADC_ANALOG_CLK_PRE_DIV_8,
-+	IMX7D_ADC_ANALOG_CLK_PRE_DIV_16,
-+	IMX7D_ADC_ANALOG_CLK_PRE_DIV_32,
-+	IMX7D_ADC_ANALOG_CLK_PRE_DIV_64,
-+	IMX7D_ADC_ANALOG_CLK_PRE_DIV_128,
-+};
-+
-+enum imx7d_adc_average_num {
-+	IMX7D_ADC_AVERAGE_NUM_4,
-+	IMX7D_ADC_AVERAGE_NUM_8,
-+	IMX7D_ADC_AVERAGE_NUM_16,
-+	IMX7D_ADC_AVERAGE_NUM_32,
-+};
-+
-+struct imx7d_adc_feature {
-+	enum imx7d_adc_clk_pre_div clk_pre_div;
-+	enum imx7d_adc_average_num avg_num;
-+
-+	u32 core_time_unit;	/* impact the sample rate */
-+};
-+
-+struct imx7d_adc {
-+	struct device_d *dev;
-+	void __iomem *regs;
-+	struct clk *clk;
-+	struct aiodevice aiodev;
-+	void (*aiodev_info)(struct device_d *);
-+
-+	u32 vref_uv;
-+	u32 pre_div_num;
-+
-+	struct regulator *vref;
-+	struct imx7d_adc_feature adc_feature;
-+
-+	struct aiochannel aiochan[16];
-+};
-+
-+struct imx7d_adc_analogue_core_clk {
-+	u32 pre_div;
-+	u32 reg_config;
-+};
-+
-+#define IMX7D_ADC_ANALOGUE_CLK_CONFIG(_pre_div, _reg_conf) {	\
-+	.pre_div = (_pre_div),					\
-+	.reg_config = (_reg_conf),				\
-+}
-+
-+static const struct imx7d_adc_analogue_core_clk imx7d_adc_analogue_clk[] = {
-+	IMX7D_ADC_ANALOGUE_CLK_CONFIG(4, IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_4),
-+	IMX7D_ADC_ANALOGUE_CLK_CONFIG(8, IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_8),
-+	IMX7D_ADC_ANALOGUE_CLK_CONFIG(16, IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_16),
-+	IMX7D_ADC_ANALOGUE_CLK_CONFIG(32, IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_32),
-+	IMX7D_ADC_ANALOGUE_CLK_CONFIG(64, IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_64),
-+	IMX7D_ADC_ANALOGUE_CLK_CONFIG(128, IMX7D_REG_ADC_TIMER_UNIT_PRE_DIV_128),
-+};
-+
-+static const u32 imx7d_adc_average_num[] = {
-+	IMX7D_REG_ADC_CH_CFG2_AVG_NUM_4,
-+	IMX7D_REG_ADC_CH_CFG2_AVG_NUM_8,
-+	IMX7D_REG_ADC_CH_CFG2_AVG_NUM_16,
-+	IMX7D_REG_ADC_CH_CFG2_AVG_NUM_32,
-+};
-+
-+static void imx7d_adc_feature_config(struct imx7d_adc *info)
-+{
-+	info->adc_feature.clk_pre_div = IMX7D_ADC_ANALOG_CLK_PRE_DIV_4;
-+	info->adc_feature.avg_num = IMX7D_ADC_AVERAGE_NUM_32;
-+	info->adc_feature.core_time_unit = 1;
-+}
-+
-+static void imx7d_adc_sample_rate_set(struct imx7d_adc *info)
-+{
-+	struct imx7d_adc_feature *adc_feature = &info->adc_feature;
-+	struct imx7d_adc_analogue_core_clk adc_analogue_clk;
-+	unsigned i;
-+	u32 tmp_cfg1;
-+	u32 sample_rate = 0;
-+
-+	/*
-+	 * Before sample set, disable channel A,B,C,D. Here we
-+	 * clear the bit 31 of register REG_ADC_CH_A\B\C\D_CFG1.
-+	 */
-+	for (i = 0; i < 4; i++) {
-+		tmp_cfg1 = readl(info->regs + IMX7D_REG_ADC_CFG1(i));
-+		tmp_cfg1 &= ~IMX7D_REG_ADC_CH_CFG1_CHANNEL_EN;
-+		writel(tmp_cfg1, info->regs + IMX7D_REG_ADC_CFG1(i));
-+	}
-+
-+	adc_analogue_clk = imx7d_adc_analogue_clk[adc_feature->clk_pre_div];
-+	sample_rate |= adc_analogue_clk.reg_config;
-+	info->pre_div_num = adc_analogue_clk.pre_div;
-+
-+	sample_rate |= adc_feature->core_time_unit;
-+	writel(sample_rate, info->regs + IMX7D_REG_ADC_TIMER_UNIT);
-+}
-+
-+static void imx7d_adc_hw_init(struct imx7d_adc *info)
-+{
-+	u32 cfg;
-+
-+	/* power up and enable adc analogue core */
-+	cfg = readl(info->regs + IMX7D_REG_ADC_ADC_CFG);
-+	cfg &= ~(IMX7D_REG_ADC_ADC_CFG_ADC_CLK_DOWN |
-+		 IMX7D_REG_ADC_ADC_CFG_ADC_POWER_DOWN);
-+	cfg |= IMX7D_REG_ADC_ADC_CFG_ADC_EN;
-+	writel(cfg, info->regs + IMX7D_REG_ADC_ADC_CFG);
-+
-+	imx7d_adc_sample_rate_set(info);
-+}
-+
-+static void imx7d_adc_channel_set(struct imx7d_adc *info, u32 channel)
-+{
-+	u32 cfg1 = 0;
-+	u32 cfg2;
-+
-+	/* the channel choose single conversion, and enable average mode */
-+	cfg1 |= (IMX7D_REG_ADC_CH_CFG1_CHANNEL_EN |
-+		 IMX7D_REG_ADC_CH_CFG1_CHANNEL_SINGLE |
-+		 IMX7D_REG_ADC_CH_CFG1_CHANNEL_AVG_EN);
-+
-+	/*
-+	 * physical channel 0 chose logical channel A
-+	 * physical channel 1 chose logical channel B
-+	 * physical channel 2 chose logical channel C
-+	 * physical channel 3 chose logical channel D
-+	 */
-+	cfg1 |= IMX7D_REG_ADC_CH_CFG1_CHANNEL_SEL(channel);
-+
-+	/*
-+	 * read register REG_ADC_CH_A\B\C\D_CFG2, according to the
-+	 * channel chosen
-+	 */
-+	cfg2 = readl(info->regs + IMX7D_REG_ADC_CFG2(channel));
-+
-+	cfg2 |= imx7d_adc_average_num[info->adc_feature.avg_num];
-+
-+	/*
-+	 * write the register REG_ADC_CH_A\B\C\D_CFG2, according to
-+	 * the channel chosen
-+	 */
-+	writel(cfg2, info->regs + IMX7D_REG_ADC_CFG2(channel));
-+	writel(cfg1, info->regs + IMX7D_REG_ADC_CFG1(channel));
-+}
-+
-+static u16 __imx7d_adc_read_data(struct imx7d_adc *info, u32 channel)
-+{
-+	u32 value;
-+
-+	/*
-+	 * channel A and B conversion result share one register,
-+	 * bit[27~16] is the channel B conversion result,
-+	 * bit[11~0] is the channel A conversion result.
-+	 * channel C and D is the same.
-+	 */
-+	if (channel < 2)
-+		value = readl(info->regs + IMX7D_REG_ADC_CHA_B_CNV_RSLT);
-+	else
-+		value = readl(info->regs + IMX7D_REG_ADC_CHC_D_CNV_RSLT);
-+	if (channel & 0x1)	/* channel B or D */
-+		value = (value >> 16) & 0xFFF;
-+	else			/* channel A or C */
-+		value &= 0xFFF;
-+
-+	return value;
-+}
-+
-+static int imx7d_adc_read_data(struct imx7d_adc *info, u32 channel)
-+{
-+	int ret = -EAGAIN;
-+	int status;
-+
-+	status = readl(info->regs + IMX7D_REG_ADC_INT_STATUS);
-+	if (status & IMX7D_REG_ADC_INT_STATUS_CHANNEL_INT_STATUS) {
-+		ret = __imx7d_adc_read_data(info, channel);
-+
-+		/*
-+		 * The register IMX7D_REG_ADC_INT_STATUS can't clear
-+		 * itself after read operation, need software to write
-+		 * 0 to the related bit. Here we clear the channel A/B/C/D
-+		 * conversion finished flag.
-+		 */
-+		status &= ~IMX7D_REG_ADC_INT_STATUS_CHANNEL_INT_STATUS;
-+		writel(status, info->regs + IMX7D_REG_ADC_INT_STATUS);
-+	}
-+
-+	/*
-+	 * If the channel A/B/C/D conversion timeout, report it and clear these
-+	 * timeout flags.
-+	 */
-+	if (status & IMX7D_REG_ADC_INT_STATUS_CHANNEL_CONV_TIME_OUT) {
-+		dev_err(info->dev,
-+			"ADC got conversion time out interrupt: 0x%08x\n",
-+			status);
-+		status &= ~IMX7D_REG_ADC_INT_STATUS_CHANNEL_CONV_TIME_OUT;
-+		writel(status, info->regs + IMX7D_REG_ADC_INT_STATUS);
-+		ret = -ETIMEDOUT;
-+	}
-+
-+	return ret;
-+}
-+
-+
-+static int imx7d_adc_read_raw(struct aiochannel *chan, int *data)
-+{
-+	struct imx7d_adc *info = container_of(chan->aiodev, struct imx7d_adc, aiodev);
-+	u64 raw64, start;
-+	u32 channel;
-+	int ret;
-+
-+	channel = chan->index & 0x03;
-+	imx7d_adc_channel_set(info, channel);
-+
-+	start = get_time_ns();
-+	do {
-+		if (is_timeout(start, IMX7D_ADC_TIMEOUT_NSEC)) {
-+			ret = -ETIMEDOUT;
-+			break;
-+		}
-+
-+		ret = imx7d_adc_read_data(info, channel);
-+	} while (ret == -EAGAIN);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	raw64 = ret;
-+	raw64 *= info->vref_uv;
-+	raw64 = div_u64(raw64, 1000);
-+	*data = div_u64(raw64, (1 << 12));
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id imx7d_adc_match[] = {
-+	{ .compatible = "fsl,imx7d-adc", },
-+	{ /* sentinel */ }
-+};
-+
-+static void imx7d_adc_power_down(struct imx7d_adc *info)
-+{
-+	u32 adc_cfg;
-+
-+	adc_cfg = readl(info->regs + IMX7D_REG_ADC_ADC_CFG);
-+	adc_cfg |= IMX7D_REG_ADC_ADC_CFG_ADC_CLK_DOWN |
-+		   IMX7D_REG_ADC_ADC_CFG_ADC_POWER_DOWN;
-+	adc_cfg &= ~IMX7D_REG_ADC_ADC_CFG_ADC_EN;
-+	writel(adc_cfg, info->regs + IMX7D_REG_ADC_ADC_CFG);
-+}
-+
-+static int imx7d_adc_enable(struct imx7d_adc *info)
-+{
-+	struct device_d *dev = info->dev;
-+	int ret;
-+
-+	ret = regulator_enable(info->vref);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "Can't enable adc reference top voltage\n");
-+
-+	ret = clk_enable(info->clk);
-+	if (ret) {
-+		regulator_disable(info->vref);
-+		return dev_err_probe(dev, ret, "Could not enable clock.\n");
-+	}
-+
-+	imx7d_adc_hw_init(info);
-+
-+	ret = regulator_get_voltage(info->vref);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "can't get vref-supply value\n");
-+
-+	info->vref_uv = ret;
-+	return 0;
-+}
-+
-+static u32 imx7d_adc_get_sample_rate(struct imx7d_adc *info)
-+{
-+	u32 analogue_core_clk;
-+	u32 core_time_unit = info->adc_feature.core_time_unit;
-+	u32 tmp;
-+
-+	analogue_core_clk = IMX7D_ADC_INPUT_CLK / info->pre_div_num;
-+	tmp = (core_time_unit + 1) * 6;
-+
-+	return analogue_core_clk / tmp;
-+}
-+
-+static void imx7d_adc_devinfo(struct device_d *dev)
-+{
-+	struct imx7d_adc *info = dev->parent->priv;
-+
-+	if (info->aiodev_info)
-+		info->aiodev_info(dev);
-+
-+	printf("Sample Rate: %u\n", imx7d_adc_get_sample_rate(info));
-+}
-+
-+static int imx7d_adc_probe(struct device_d *dev)
-+{
-+	struct aiodevice *aiodev;
-+	struct imx7d_adc *info;
-+	int ret, i;
-+
-+	info = xzalloc(sizeof(*info));
-+
-+	info->dev = dev;
-+
-+	info->clk = clk_get(dev, "adc");
-+	if (IS_ERR(info->clk))
-+		return dev_err_probe(dev, PTR_ERR(info->clk), "Failed getting clock\n");
-+
-+	info->vref = regulator_get(dev, "vref");
-+	if (IS_ERR(info->vref))
-+		return dev_err_probe(dev, PTR_ERR(info->vref),
-+				     "Failed getting reference voltage\n");
-+
-+	info->regs = dev_request_mem_region(dev, 0);
-+	if (IS_ERR(info->regs))
-+		return dev_err_probe(dev, PTR_ERR(info->regs),
-+				     "Failed to get memory region\n");
-+
-+	dev->priv = info;
-+	aiodev = &info->aiodev;
-+
-+	aiodev->num_channels = 4;
-+	aiodev->hwdev = dev;
-+	aiodev->read = imx7d_adc_read_raw;
-+	aiodev->channels = xzalloc(aiodev->num_channels * sizeof(aiodev->channels[0]));
-+
-+	for (i = 0; i < aiodev->num_channels; i++) {
-+		aiodev->channels[i] = &info->aiochan[i];
-+		info->aiochan[i].unit = "mV";
-+	}
-+
-+	imx7d_adc_feature_config(info);
-+
-+	ret = imx7d_adc_enable(info);
-+	if (ret)
-+		return ret;
-+
-+	ret = aiodevice_register(aiodev);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to register aiodev\n");
-+
-+	info->aiodev_info = aiodev->dev.info;
-+	aiodev->dev.info = imx7d_adc_devinfo;
-+
-+	return 0;
-+}
-+
-+static void imx7d_adc_disable(struct device_d *dev)
-+{
-+	struct imx7d_adc *info = dev->priv;
-+
-+	imx7d_adc_power_down(info);
-+
-+	clk_disable(info->clk);
-+	regulator_disable(info->vref);
-+}
-+
-+static struct driver_d imx7d_adc_driver = {
-+	.probe		= imx7d_adc_probe,
-+	.name		= "imx7d_adc",
-+	.of_compatible	= imx7d_adc_match,
-+	.remove		= imx7d_adc_disable,
-+};
-+device_platform_driver(imx7d_adc_driver);
-+
-+MODULE_AUTHOR("Haibo Chen <haibo.chen@freescale.com>");
-+MODULE_DESCRIPTION("Freescale IMX7D ADC driver");
-+MODULE_LICENSE("GPL v2");
+On 24.10.22 10:55, Sascha Hauer wrote:
+> On Mon, Oct 24, 2022 at 08:57:13AM +0200, Ahmad Fatoum wrote:
+>> Recent episode with pointer authentication showed again that for
+>> platforms without __attribute__((naked)), we are better off writing
+>> the early header in assembly. We still want to keep the board specific
+>> entry points in C for ease of use, so we have ENTRY_FUNCTION_WITHSTACK
+>> generate two symbols:
+>>
+>>   - A 32-bit stack top value that's placed in .rodata
+>>
+>>   - An entry point with the normal C code, including stack-using
+>>     prologues
+>>
+>> The new common assembly head code will access the stack pointer in a
+>> position-independent manner and set it up, before continuing with the
+>> C code. The barebox header is part of the common assembly head code
+>> ensuring it's not moved around due to compiler code generation.
+>>
+>> The common code will need access to board-specific entry point and stack
+>> top. The former is readily available as the alias __pbl_board_entry.
+>> The latter is a bit more complicated, as the symbol may not exist for
+>> boards not using the common header in a multi-image build.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  Makefile                           |  3 +--
+>>  arch/arm/cpu/Makefile              |  2 ++
+>>  arch/arm/cpu/head_64.S             | 36 ++++++++++++++++++++++++++++++
+>>  arch/arm/include/asm/barebox-arm.h | 28 +++++++----------------
+>>  arch/arm/lib/pbl.lds.S             |  9 ++++++++
+>>  5 files changed, 56 insertions(+), 22 deletions(-)
+>>  create mode 100644 arch/arm/cpu/head_64.S
+>>
+>> diff --git a/Makefile b/Makefile
+>> index 81ef44122367..a4b9f3c021d7 100644
+>> --- a/Makefile
+>> +++ b/Makefile
+>> @@ -660,8 +660,7 @@ KBUILD_CFLAGS  += $(call cc-option,-fno-stack-check)
+>>  KBUILD_CFLAGS += $(call cc-option,-fcf-protection=none)
+>>  
+>>  # We don't have the necessary infrastructure to benefit from ARMv8.3+ pointer
+>> -# authentication. On older CPUs, they are interpreted as NOPs and blot the
+>> -# code and break less portable code that expects a very specific code layout
+>> +# authentication. On older CPUs, they are interpreted as NOPs bloating the code
+>>  KBUILD_CFLAGS += $(call cc-option,-mbranch-protection=none)
+>>  
+>>  KBUILD_CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
+>> diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+>> index c0993c1abe5d..7674c1464c1f 100644
+>> --- a/arch/arm/cpu/Makefile
+>> +++ b/arch/arm/cpu/Makefile
+>> @@ -13,6 +13,8 @@ AFLAGS_hyp.pbl.o :=-Wa,-march=armv7-a -Wa,-mcpu=all
+>>  obj-y += start.o entry.o entry_ll$(S64).o
+>>  KASAN_SANITIZE_start.o := n
+>>  
+>> +pbl-$(CONFIG_CPU_64) += head_64.o
+>> +
+>>  pbl-$(CONFIG_BOARD_ARM_GENERIC_DT) += board-dt-2nd.o
+>>  pbl-$(CONFIG_BOARD_ARM_GENERIC_DT_AARCH64) += board-dt-2nd-aarch64.o
+>>  
+>> diff --git a/arch/arm/cpu/head_64.S b/arch/arm/cpu/head_64.S
+>> new file mode 100644
+>> index 000000000000..4ed4ffb05250
+>> --- /dev/null
+>> +++ b/arch/arm/cpu/head_64.S
+>> @@ -0,0 +1,36 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>> +#include <linux/linkage.h>
+>> +#include <asm/barebox-arm64.h>
+>> +#include <asm/image.h>
+>> +
+>> +/* Linker will point these at board-specific symbols */
+>> +.globl __pbl_board_stack_top
+>> +.globl __pbl_board_entry
+>> +
+>> +.section .text_head_prologue_common, "x"
+>> +ENTRY(__barebox_arm64_head)
+>> +	nop
+>> +	nop
+>> +	nop
+> 
+> Why these nops here?
+
+Perhaps we decide to place something there in future.
+For example, `ccmp    x18, #0, #0xd, pl` is a fancy nop
+whose first 2 bytes are the ELF/PE magic 'MZ' when read in
+little-endian.
+
+For now, I left it as normal nops. The .org 20 below is
+not (only) for alignment, but as a sanity check, if we
+add too much code here.
+
+>> +	adr x9, __pbl_board_stack_top
+>> +	ldr w9, [x9]
+>> +	cbz x9, 1f
+>> +	mov sp, x9
+>> +	b 1f
+>> +	.org 0x20
+>> +	.asciz "barebox"
+>> +	.word 0xffffffff
+>> +	.word _barebox_image_size	/* image size to copy */
+>> +	.rept 8
+>> +	.word 0x55555555
+>> +	.endr
+>> +1:
+>> +#ifdef CONFIG_PBL_BREAK
+>> +	brk #17
+>> +	nop
+>> +#else
+>> +	nop
+>> +	nop
+>> +#endif
+> 
+> Why do you jump over the barebox header? You could put all the code
+> before it.
+
+I want to keep at the same location as ARM32.
+
+Cheers,
+Ahmad
+
+
+> 
+> Sascha
+> 
+
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
