@@ -1,58 +1,58 @@
-Delivery-date: Mon, 24 Oct 2022 14:39:45 +0200
+Delivery-date: Mon, 24 Oct 2022 16:13:58 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1omwk4-000hKg-Uq
-	for lore@lore.pengutronix.de; Mon, 24 Oct 2022 14:39:45 +0200
+	id 1omyDG-000nOi-Ha
+	for lore@lore.pengutronix.de; Mon, 24 Oct 2022 16:13:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1omwk2-0005Rn-Um
-	for lore@pengutronix.de; Mon, 24 Oct 2022 14:39:43 +0200
+	id 1omyDF-0004VW-FU
+	for lore@pengutronix.de; Mon, 24 Oct 2022 16:13:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5q5dULXOf+EG2cBgsP5X1gQYOkwe59a3Go6u+DqKyqg=; b=Fqo7E3milWpjVF9g8SNPXjS25Q
-	EQQj63IxFeAWt3fySWLNhLlJKmjmcE5DjFmkHNZ1DwD3Y17XCDggJC5mgg3Al0Mh/GVosQosg1VYF
-	UoXGe20jEgb7wTzRLaaYllw9TZXtHQfA5CaZZrRBlD5qpu+vAJCppc+ew2znmhE3GDsMdw2MA4W1L
-	dyUtYN8wMrPxOBmTEKYH+XZvPa+8yldr0DvTWBo/rdt/q2h/PHxheXeLZsEAzdaX+wS83uaeMur28
-	P7h90uUmZC7lEuuBN5F8p62PYD/aU8QxCiu3GIt/4//gjncE21ezfWSfAx14ri7hOhPPI0YunGe3b
-	EOogiT6Q==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=0yr2Evay1TETtK6qgcT84Ro1NK14f2dWpEM77BIL5Jo=; b=strdyeRsKZmsYKp1TYm3oAO0Of
+	jpReV9o0yk9RGp+A/6gWJvMyOZOOSiRYnNO+3VyMSSX0Mp4xNeHf0aPskd4q1z0ZGK5mgYTHmweEC
+	cJ5XbPzE2A2hNBHKQ3vcYDc4gpCilQkf35FyoMdyibSg1Is6seAVSexGYwyeTmXyChDFsAtyUFBIa
+	FMsFEuxJ25Wx9swKYJ3i2DLx51afwrSyid0BrwBPZk7bJmynJyHXV1Fl7THVqekGNplC5/SwAyP1K
+	mrRDzbBvB5NqSRADpMNJv/5MdMy7/A17/ar427GPE9Y5vt8GAwQvfafyoAc/jXwPrdEMIyUyaqSfC
+	cFk9EfyA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1omwid-001TdW-Fb; Mon, 24 Oct 2022 12:38:15 +0000
+	id 1omyBZ-001qeY-1g; Mon, 24 Oct 2022 14:12:13 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1omwi1-001TSg-W6
-	for barebox@lists.infradead.org; Mon, 24 Oct 2022 12:37:40 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1omwi0-0004ys-JE; Mon, 24 Oct 2022 14:37:36 +0200
-Message-ID: <e53673fa-ecf7-02db-d90a-5a29c1ba55fb@pengutronix.de>
-Date: Mon, 24 Oct 2022 14:37:36 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>,
- Holger Assmann <h.assmann@pengutronix.de>
-Cc: barebox@lists.infradead.org, =?UTF-8?Q?Leonard_G=c3=b6hrs?=
- <l.goehrs@pengutronix.de>
-References: <20221024120952.2162839-1-h.assmann@pengutronix.de>
- <20221024123239.GN6702@pengutronix.de>
+	id 1omyBU-001qcz-4l
+	for barebox@lists.infradead.org; Mon, 24 Oct 2022 14:12:09 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1omyBS-0004IH-M9; Mon, 24 Oct 2022 16:12:06 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1omyBS-0008Cw-TK; Mon, 24 Oct 2022 16:12:05 +0200
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1omyBR-00ANWC-AI; Mon, 24 Oct 2022 16:12:05 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20221024123239.GN6702@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 24 Oct 2022 16:12:03 +0200
+Message-Id: <20221024141203.2473619-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221024_053738_267387_F7FF154F 
-X-CRM114-Status: GOOD (  27.02  )
+X-CRM114-CacheID: sfid-20221024_071208_205456_AF912933 
+X-CRM114-Status: GOOD (  10.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,195 +72,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX8MP: add TQ mba8mpxl board
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] ARM: i.MX8MM: innocom-wb15: imply AT803X_PHY for EVK
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 24.10.22 14:32, Sascha Hauer wrote:
-> On Mon, Oct 24, 2022 at 02:09:52PM +0200, Holger Assmann wrote:
->> This commit adds support for the TQ MBa8MPxL with TQMa8MPxL module with
->> i.MX8M Plus Quad/Dual SoC. This very combination results in configuration
->> symbol "MACH_TQ_MBA8MPXL". A possible variant based on i.MX8M Plus Dual
->> would be supported transparently, once barebox deleted the CPU nodes
->> when it detects that they were fused away. It already does so for
->> i.MX8MM and i.MX8MN.
->>
->> We use the respective Linux upstream device trees and their implications
->> regarding hardware support.
->>
->> Known to be unsupported for now is the second Ethernet interface around
->> the eqos dwmac IP. This has to be resolved by porting over the fitting
->> wrapper from Linux.
->>
->> Signed-off-by: Leonard Göhrs <l.goehrs@pengutronix.de>
->> Signed-off-by: Holger Assmann <h.assmann@pengutronix.de>
->> ---
->>  arch/arm/boards/Makefile                      |    1 +
->>  arch/arm/boards/mba8mpxl/Makefile             |    4 +
->>  arch/arm/boards/mba8mpxl/board.c              |   54 +
->>  .../mba8mpxl/flash-header-tqma8mpxl.imxcfg    |    7 +
->>  arch/arm/boards/mba8mpxl/lowlevel.c           |  111 +
->>  arch/arm/boards/mba8mpxl/lpddr4-timing.c      | 1856 +++++++++++++++++
->>  arch/arm/dts/Makefile                         |    1 +
->>  arch/arm/dts/imx8mp-tqma8mpql-mba8mpxl.dts    |   59 +
->>  arch/arm/mach-imx/Kconfig                     |   10 +
->>  images/Makefile.imx                           |    5 +
->>  10 files changed, 2108 insertions(+)
->>  create mode 100644 arch/arm/boards/mba8mpxl/Makefile
->>  create mode 100644 arch/arm/boards/mba8mpxl/board.c
->>  create mode 100644 arch/arm/boards/mba8mpxl/flash-header-tqma8mpxl.imxcfg
->>  create mode 100644 arch/arm/boards/mba8mpxl/lowlevel.c
->>  create mode 100644 arch/arm/boards/mba8mpxl/lpddr4-timing.c
->>  create mode 100644 arch/arm/dts/imx8mp-tqma8mpql-mba8mpxl.dts
->>
->> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
->> index a0e84c24d7..9db3669a5e 100644
->> --- a/arch/arm/boards/Makefile
->> +++ b/arch/arm/boards/Makefile
->> @@ -91,6 +91,7 @@ obj-$(CONFIG_MACH_NXP_IMX8MQ_EVK)		+= nxp-imx8mq-evk/
->>  obj-$(CONFIG_MACH_NXP_IMX8MM_EVK)		+= nxp-imx8mm-evk/
->>  obj-$(CONFIG_MACH_NXP_IMX8MN_EVK)		+= nxp-imx8mn-evk/
->>  obj-$(CONFIG_MACH_NXP_IMX8MP_EVK)		+= nxp-imx8mp-evk/
->> +obj-$(CONFIG_MACH_TQ_MBA8MPXL)			+= mba8mpxl/
->>  obj-$(CONFIG_MACH_OMAP343xSDP)			+= omap343xdsp/
->>  obj-$(CONFIG_MACH_OMAP3EVM)			+= omap3evm/
->>  obj-$(CONFIG_MACH_PANDA)			+= panda/
->> diff --git a/arch/arm/boards/mba8mpxl/Makefile b/arch/arm/boards/mba8mpxl/Makefile
->> new file mode 100644
->> index 0000000000..35d8640087
->> --- /dev/null
->> +++ b/arch/arm/boards/mba8mpxl/Makefile
->> @@ -0,0 +1,4 @@
->> +# SPDX-License-Identifier: GPL-2.0-only
->> +
->> +obj-y += board.o
->> +lwl-y += lowlevel.o lpddr4-timing.o
->> diff --git a/arch/arm/boards/mba8mpxl/board.c b/arch/arm/boards/mba8mpxl/board.c
->> new file mode 100644
->> index 0000000000..f654a64995
->> --- /dev/null
->> +++ b/arch/arm/boards/mba8mpxl/board.c
->> @@ -0,0 +1,54 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Copyright (C) 2022 Holger Assmann <h.assmann@pengutronix.de>
->> + */
->> +
->> +#include <asm/memory.h>
->> +#include <bootsource.h>
->> +#include <common.h>
->> +#include <deep-probe.h>
->> +#include <init.h>
->> +#include <linux/phy.h>
->> +#include <linux/sizes.h>
->> +#include <mach/bbu.h>
->> +#include <mach/iomux-mx8mp.h>
->> +#include <gpio.h>
->> +#include <envfs.h>
->> +
->> +static int tqma8mpxl_probe(struct device_d *dev)
->> +{
->> +	int emmc_bbu_flag = 0;
->> +	int sd_bbu_flag = 0;
->> +
->> +	if (bootsource_get() == BOOTSOURCE_MMC) {
->> +		if (bootsource_get_instance() == 2) {
->> +			of_device_enable_path("/chosen/environment-emmc");
->> +			emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
->> +		} else {
->> +			of_device_enable_path("/chosen/environment-sd");
->> +			sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
->> +		}
->> +	} else {
->> +		of_device_enable_path("/chosen/environment-emmc");
->> +		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
->> +	}
-> 
-> You can write this as:
-> 
-> 	if (bootsource_get() == BOOTSOURCE_MMC && bootsource_get_instance() == 2) {
+EVK has Atheros 8035 Ethernet PHY and DHCP times out when using the
+generic PHY driver instead of the at803x driver. Link is detected with
+both though. Make user lives easier by adding an imply to the PHY driver
+when the board is selected. This is chosen instead of a select to allow
+users to disable the driver if they use a different base board for the
+SoM.
 
-s/2/1/
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/mach-imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 		of_device_enable_path("/chosen/environment-sd");
-> 		sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-> 	} else {
-> 		of_device_enable_path("/chosen/environment-emmc");
-> 		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-> 	}
-> 
->> +static __noreturn noinline void tqma8mpxl_start(void)
->> +{
->> +	extern char __dtb_z_imx8mp_tqma8mpql_mba8mpxl_start[];
->> +
->> +	setup_uart();
->> +
->> +	if (current_el() == 3) {
->> +		extern struct dram_timing_info dram_timing_2gb_no_ecc;
->> +
->> +		power_init_board();
->> +
->> +		imx8mp_ddr_init(&dram_timing_2gb_no_ecc, DRAM_TYPE_LPDDR4);
->> +	
-> 
-> Trailing whitespace here.
-> 
->> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
->> index 99f44e7b04..5ceb97129f 100644
->> --- a/arch/arm/dts/Makefile
->> +++ b/arch/arm/dts/Makefile
->> @@ -146,6 +146,7 @@ lwl-$(CONFIG_MACH_NXP_IMX8MN_EVK) += imx8mn-evk.dtb.o imx8mn-ddr4-evk.dtb.o
->>  lwl-$(CONFIG_MACH_NXP_IMX8MP_EVK) += imx8mp-evk.dtb.o
->>  lwl-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += imx8mq-evk.dtb.o
->>  lwl-$(CONFIG_MACH_INNOCOMM_WB15) += imx8mm-innocomm-wb15-evk.dtb.o
->> +lwl-$(CONFIG_MACH_TQ_MBA8MPXL) += imx8mp-tqma8mpql-mba8mpxl.dtb.o
->>  lwl-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
->>  lwl-$(CONFIG_MACH_TOSHIBA_AC100) += tegra20-paz00.dtb.o
->>  lwl-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
->> diff --git a/arch/arm/dts/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm/dts/imx8mp-tqma8mpql-mba8mpxl.dts
->> new file mode 100644
->> index 0000000000..8bd9efbaef
->> --- /dev/null
->> +++ b/arch/arm/dts/imx8mp-tqma8mpql-mba8mpxl.dts
->> @@ -0,0 +1,59 @@
->> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
->> +/*
->> + * Copyright 2017 NXP
->> + * Copyright (C) 2017 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
->> + */
->> +
->> +/dts-v1/;
->> +
->> +#include <arm64/freescale/imx8mp-tqma8mpql-mba8mpxl.dts>
->> +#include "imx8mp.dtsi"
->> +
->> +/ {
->> +	chosen {
->> +		environment-sd {
->> +			compatible = "barebox,environment";
->> +			device-path = &usdhc2, "partname:barebox-environment";
-> 
-> Please add a label to the environment partition and point to that here.
-> 
->> +			status = "disabled";
->> +		};
->> +		environment-emmc {
->> +			compatible = "barebox,environment";
->> +			device-path = &usdhc3, "partname:barebox-environment";
-> 
-> ditto.
-> 
-> Sascha
-> 
-> 
-
-
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index c9e4c9a00ba4..da71480887ad 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -371,6 +371,7 @@ config MACH_INNOCOMM_WB15
+ 	select IMX8M_DRAM
+ 	select I2C_IMX_EARLY
+ 	select USB_GADGET_DRIVER_ARC_PBL
++	imply AT803X_PHY
+ 
+ config MACH_BEO_ASE2
+ 	bool "Bang & Olufsen (i.MX7D) ASE2"
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
