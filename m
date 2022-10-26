@@ -1,58 +1,61 @@
-Delivery-date: Mon, 24 Oct 2022 16:13:58 +0200
+Delivery-date: Wed, 26 Oct 2022 06:22:45 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1omyDG-000nOi-Ha
-	for lore@lore.pengutronix.de; Mon, 24 Oct 2022 16:13:58 +0200
+	id 1onXwD-002b9r-0O
+	for lore@lore.pengutronix.de; Wed, 26 Oct 2022 06:22:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1omyDF-0004VW-FU
-	for lore@pengutronix.de; Mon, 24 Oct 2022 16:13:58 +0200
+	id 1onXwB-000298-RN
+	for lore@pengutronix.de; Wed, 26 Oct 2022 06:22:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=0yr2Evay1TETtK6qgcT84Ro1NK14f2dWpEM77BIL5Jo=; b=strdyeRsKZmsYKp1TYm3oAO0Of
-	jpReV9o0yk9RGp+A/6gWJvMyOZOOSiRYnNO+3VyMSSX0Mp4xNeHf0aPskd4q1z0ZGK5mgYTHmweEC
-	cJ5XbPzE2A2hNBHKQ3vcYDc4gpCilQkf35FyoMdyibSg1Is6seAVSexGYwyeTmXyChDFsAtyUFBIa
-	FMsFEuxJ25Wx9swKYJ3i2DLx51afwrSyid0BrwBPZk7bJmynJyHXV1Fl7THVqekGNplC5/SwAyP1K
-	mrRDzbBvB5NqSRADpMNJv/5MdMy7/A17/ar427GPE9Y5vt8GAwQvfafyoAc/jXwPrdEMIyUyaqSfC
-	cFk9EfyA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=y9Lkoynan324/fQrn3EeIGoysHybqzD9D7A+IQDhnEk=; b=OwdWWd0jc7KYRmxuj533m3vA0N
+	3Hs1qRplkcj5URXhYop5AtMQbWH6hssjxsZIZcv0UfCqwOvWByMXXKHP0sVHbHdufG2scyIdDRH/n
+	in7UBBghdkGO4rN7aabLRESiNvwi0ptcTD5+uZ/5elF+vz2jsivmkC0qVeMZEhN2sZ36MtSKCHObj
+	SF2olM7j49pSFdENbL5O5gBZ2G3rvCLpjFr7lvnjXqChdDh14OQvsifMXZU2IR01E+5cc+eMhjSYy
+	BdShOLWk++C11uDwJLCmwnUyoJjPxx4X540z/jknjmEmwfdRWzxMFyugpWdz92zt8QrLFV4JakFUe
+	gfsyRSIQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1omyBZ-001qeY-1g; Mon, 24 Oct 2022 14:12:13 +0000
+	id 1onXuI-007xf9-W8; Wed, 26 Oct 2022 04:20:47 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1omyBU-001qcz-4l
-	for barebox@lists.infradead.org; Mon, 24 Oct 2022 14:12:09 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1onXuE-007xdl-Kw
+	for barebox@lists.infradead.org; Wed, 26 Oct 2022 04:20:44 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1omyBS-0004IH-M9; Mon, 24 Oct 2022 16:12:06 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1omyBS-0008Cw-TK; Mon, 24 Oct 2022 16:12:05 +0200
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1omyBR-00ANWC-AI; Mon, 24 Oct 2022 16:12:05 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 24 Oct 2022 16:12:03 +0200
-Message-Id: <20221024141203.2473619-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1onXu3-0001s3-IU; Wed, 26 Oct 2022 06:20:31 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1onXu3-0000WH-Ay; Wed, 26 Oct 2022 06:20:31 +0200
+Date: Wed, 26 Oct 2022 06:20:31 +0200
+To: Alexander Shiyan <eagle.alexander923@gmail.com>
+Cc: barebox@lists.infradead.org
+Message-ID: <20221026042031.GO6702@pengutronix.de>
+References: <20221024114940.26197-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221024114940.26197-1-eagle.alexander923@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221024_071208_205456_AF912933 
-X-CRM114-Status: GOOD (  10.12  )
+X-CRM114-CacheID: sfid-20221025_212042_705660_48A669BA 
+X-CRM114-Status: GOOD (  22.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,36 +77,74 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: i.MX8MM: innocom-wb15: imply AT803X_PHY for EVK
+Subject: Re: [PATCH] clk: imx5: Add support for watchdog clock
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-EVK has Atheros 8035 Ethernet PHY and DHCP times out when using the
-generic PHY driver instead of the at803x driver. Link is detected with
-both though. Make user lives easier by adding an imply to the PHY driver
-when the board is selected. This is chosen instead of a select to allow
-users to disable the driver if they use a different base board for the
-SoM.
+On Mon, Oct 24, 2022 at 02:49:40PM +0300, Alexander Shiyan wrote:
+> This adds a dummy clock definition for i.MX-50/51/53 CPUs,
+> what makes the driver work.
+> 
+> Fixes: 87cad179648 ("watchdog: imxwd: get and enable clock")
+> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+> ---
+>  drivers/clk/imx/clk-imx5.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-imx/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Applied to master, thanks
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index c9e4c9a00ba4..da71480887ad 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -371,6 +371,7 @@ config MACH_INNOCOMM_WB15
- 	select IMX8M_DRAM
- 	select I2C_IMX_EARLY
- 	select USB_GADGET_DRIVER_ARC_PBL
-+	imply AT803X_PHY
- 
- config MACH_BEO_ASE2
- 	bool "Bang & Olufsen (i.MX7D) ASE2"
+Sascha
+
+> 
+> diff --git a/drivers/clk/imx/clk-imx5.c b/drivers/clk/imx/clk-imx5.c
+> index c7a1818bd7..81af9a9c88 100644
+> --- a/drivers/clk/imx/clk-imx5.c
+> +++ b/drivers/clk/imx/clk-imx5.c
+> @@ -205,6 +205,8 @@ static void __init mx5_clocks_common_init(struct device_d *dev, void __iomem *ba
+>  	writel(0xffffffff, base + CCM_CCGR6);
+>  	writel(0xffffffff, base + CCM_CCGR7);
+>  
+> +	clks[IMX5_CLK_DUMMY] = clk_fixed("dummy", 0);
+> +
+>  	if (!IS_ENABLED(CONFIG_COMMON_CLK_OF_PROVIDER) || !dev->device_node) {
+>  		clks[IMX5_CLK_CKIL] = clk_fixed("ckil", 32768);
+>  		clks[IMX5_CLK_OSC] = clk_fixed("osc", 24000000);
+> @@ -312,6 +314,7 @@ static int __init mx50_clocks_init(struct device_d *dev, void __iomem *regs)
+>  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX50_PWM1_BASE_ADDR, "per");
+>  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX50_PWM2_BASE_ADDR, "per");
+>  	clkdev_add_physbase(clks[IMX5_CLK_AHB], MX50_OTG_BASE_ADDR, NULL);
+> +	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX50_WDOG1_BASE_ADDR, NULL);
+>  
+>  	return 0;
+>  }
+> @@ -392,6 +395,8 @@ static int __init mx51_clocks_init(struct device_d *dev, void __iomem *regs)
+>  	clkdev_add_physbase(clks[IMX5_CLK_IPG], MX51_ATA_BASE_ADDR, NULL);
+>  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX51_PWM1_BASE_ADDR, "per");
+>  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX51_PWM2_BASE_ADDR, "per");
+> +	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX51_WDOG_BASE_ADDR, NULL);
+> +	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX51_WDOG2_BASE_ADDR, NULL);
+>  
+>  	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_IMX_IPUV3))
+>  		mx51_clocks_ipu_init(regs);
+> @@ -488,6 +493,8 @@ static int __init mx53_clocks_init(struct device_d *dev, void __iomem *regs)
+>  	clkdev_add_physbase(clks[IMX5_CLK_AHB], MX53_SATA_BASE_ADDR, NULL);
+>  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX53_PWM1_BASE_ADDR, "per");
+>  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX53_PWM2_BASE_ADDR, "per");
+> +	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX53_WDOG1_BASE_ADDR, NULL);
+> +	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX53_WDOG2_BASE_ADDR, NULL);
+>  
+>  	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_IMX_IPUV3))
+>  		mx53_clocks_ipu_init(regs);
+> -- 
+> 2.37.3
+> 
+> 
+> 
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
