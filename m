@@ -1,61 +1,59 @@
-Delivery-date: Wed, 26 Oct 2022 06:22:45 +0200
+Delivery-date: Wed, 26 Oct 2022 08:40:23 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1onXwD-002b9r-0O
-	for lore@lore.pengutronix.de; Wed, 26 Oct 2022 06:22:45 +0200
+	id 1ona5P-002gp2-5c
+	for lore@lore.pengutronix.de; Wed, 26 Oct 2022 08:40:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1onXwB-000298-RN
-	for lore@pengutronix.de; Wed, 26 Oct 2022 06:22:44 +0200
+	id 1ona5N-0008DY-Kh
+	for lore@pengutronix.de; Wed, 26 Oct 2022 08:40:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=y9Lkoynan324/fQrn3EeIGoysHybqzD9D7A+IQDhnEk=; b=OwdWWd0jc7KYRmxuj533m3vA0N
-	3Hs1qRplkcj5URXhYop5AtMQbWH6hssjxsZIZcv0UfCqwOvWByMXXKHP0sVHbHdufG2scyIdDRH/n
-	in7UBBghdkGO4rN7aabLRESiNvwi0ptcTD5+uZ/5elF+vz2jsivmkC0qVeMZEhN2sZ36MtSKCHObj
-	SF2olM7j49pSFdENbL5O5gBZ2G3rvCLpjFr7lvnjXqChdDh14OQvsifMXZU2IR01E+5cc+eMhjSYy
-	BdShOLWk++C11uDwJLCmwnUyoJjPxx4X540z/jknjmEmwfdRWzxMFyugpWdz92zt8QrLFV4JakFUe
-	gfsyRSIQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=zMiiR7BaHyKe3jVJ+hmL4ftLvYz35ymkAhYDbWa9Db8=; b=SwqerF2QW1jdF7hV/OaTmiXfxi
+	1vMT9EMyiJDU6pQszw9rf873kUM2Y8wyMGcRzu/93h32ZyD5sy8girHFlXuwTbNlgRKDVX1jFwnrl
+	PwvhxbUNw2ZxqGIc6nCI2K3dxibzb49n+CYC0Cygs/xnoZVz3Dp9fZWblKZWW5a0HZ67ujXr4kE7I
+	+suyGCTn9xlR9QlotTpBTJjbFJur3n+xymIq0O2VAHSuryHzSUKy8aWJwtIsXG6fn+hezgfST+xVE
+	Ab7k2B2RVvmbnHPBN9DJ+1mriTMnbdU8UaqydwKS60kBrOUVJSrXyZQjf5V6s3g25e5kCqPVOFqs0
+	4b2d1Z0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1onXuI-007xf9-W8; Wed, 26 Oct 2022 04:20:47 +0000
+	id 1ona3e-008HFb-0o; Wed, 26 Oct 2022 06:38:34 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1onXuE-007xdl-Kw
-	for barebox@lists.infradead.org; Wed, 26 Oct 2022 04:20:44 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1ona3X-008HDb-EG
+	for barebox@lists.infradead.org; Wed, 26 Oct 2022 06:38:30 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1onXu3-0001s3-IU; Wed, 26 Oct 2022 06:20:31 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1onXu3-0000WH-Ay; Wed, 26 Oct 2022 06:20:31 +0200
-Date: Wed, 26 Oct 2022 06:20:31 +0200
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20221026042031.GO6702@pengutronix.de>
-References: <20221024114940.26197-1-eagle.alexander923@gmail.com>
+	(envelope-from <afa@pengutronix.de>)
+	id 1ona3T-0007sP-B7; Wed, 26 Oct 2022 08:38:23 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1ona3T-000SGp-Jl; Wed, 26 Oct 2022 08:38:22 +0200
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1ona3R-009snu-T4; Wed, 26 Oct 2022 08:38:21 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 26 Oct 2022 08:38:19 +0200
+Message-Id: <20221026063819.2355568-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221024114940.26197-1-eagle.alexander923@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221025_212042_705660_48A669BA 
-X-CRM114-Status: GOOD (  22.05  )
+X-CRM114-CacheID: sfid-20221025_233827_683150_81E07BF3 
+X-CRM114-Status: GOOD (  20.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,74 +75,275 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] clk: imx5: Add support for watchdog clock
+Subject: [PATCH v2] commands: add new stat command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Oct 24, 2022 at 02:49:40PM +0300, Alexander Shiyan wrote:
-> This adds a dummy clock definition for i.MX-50/51/53 CPUs,
-> what makes the driver work.
-> 
-> Fixes: 87cad179648 ("watchdog: imxwd: get and enable clock")
-> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-> ---
->  drivers/clk/imx/clk-imx5.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+We have a couple of commands to help with debugging the VFS:
+ll, devinfo, devlookup, but we lack a command that can just dump all
+information we have in a struct stat or struct cdev. Add stat as such a
+command. For most uses, it's not needed, but it can come in handy for
+development. The stat_print and cdev_print functions underlying it are
+exported, so they can called for debugging purposes.
 
-Applied to master, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - support non absolute paths, e.g. dev/mmc0 (Sascha)
+  - use lstat by default (Sascha)
+---
+ commands/Kconfig  |  14 +++++++
+ commands/Makefile |   1 +
+ commands/stat.c   |  62 +++++++++++++++++++++++++++
+ fs/fs.c           | 105 +++++++++++++++++++++++++++++++++++++++++++++-
+ include/fs.h      |   3 ++
+ 5 files changed, 184 insertions(+), 1 deletion(-)
+ create mode 100644 commands/stat.c
 
-Sascha
-
-> 
-> diff --git a/drivers/clk/imx/clk-imx5.c b/drivers/clk/imx/clk-imx5.c
-> index c7a1818bd7..81af9a9c88 100644
-> --- a/drivers/clk/imx/clk-imx5.c
-> +++ b/drivers/clk/imx/clk-imx5.c
-> @@ -205,6 +205,8 @@ static void __init mx5_clocks_common_init(struct device_d *dev, void __iomem *ba
->  	writel(0xffffffff, base + CCM_CCGR6);
->  	writel(0xffffffff, base + CCM_CCGR7);
->  
-> +	clks[IMX5_CLK_DUMMY] = clk_fixed("dummy", 0);
-> +
->  	if (!IS_ENABLED(CONFIG_COMMON_CLK_OF_PROVIDER) || !dev->device_node) {
->  		clks[IMX5_CLK_CKIL] = clk_fixed("ckil", 32768);
->  		clks[IMX5_CLK_OSC] = clk_fixed("osc", 24000000);
-> @@ -312,6 +314,7 @@ static int __init mx50_clocks_init(struct device_d *dev, void __iomem *regs)
->  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX50_PWM1_BASE_ADDR, "per");
->  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX50_PWM2_BASE_ADDR, "per");
->  	clkdev_add_physbase(clks[IMX5_CLK_AHB], MX50_OTG_BASE_ADDR, NULL);
-> +	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX50_WDOG1_BASE_ADDR, NULL);
->  
->  	return 0;
->  }
-> @@ -392,6 +395,8 @@ static int __init mx51_clocks_init(struct device_d *dev, void __iomem *regs)
->  	clkdev_add_physbase(clks[IMX5_CLK_IPG], MX51_ATA_BASE_ADDR, NULL);
->  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX51_PWM1_BASE_ADDR, "per");
->  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX51_PWM2_BASE_ADDR, "per");
-> +	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX51_WDOG_BASE_ADDR, NULL);
-> +	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX51_WDOG2_BASE_ADDR, NULL);
->  
->  	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_IMX_IPUV3))
->  		mx51_clocks_ipu_init(regs);
-> @@ -488,6 +493,8 @@ static int __init mx53_clocks_init(struct device_d *dev, void __iomem *regs)
->  	clkdev_add_physbase(clks[IMX5_CLK_AHB], MX53_SATA_BASE_ADDR, NULL);
->  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX53_PWM1_BASE_ADDR, "per");
->  	clkdev_add_physbase(clks[IMX5_CLK_PER_ROOT], MX53_PWM2_BASE_ADDR, "per");
-> +	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX53_WDOG1_BASE_ADDR, NULL);
-> +	clkdev_add_physbase(clks[IMX5_CLK_DUMMY], MX53_WDOG2_BASE_ADDR, NULL);
->  
->  	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_IMX_IPUV3))
->  		mx53_clocks_ipu_init(regs);
-> -- 
-> 2.37.3
-> 
-> 
-> 
-
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 9894ecb9aa31..2ce990b5616a 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -947,6 +947,20 @@ config CMD_LS
+ 		  -C	column format (opposite of long format)
+ 		  -R	list subdirectories recursively
+ 
++config CMD_STAT
++	tristate
++	prompt "stat"
++	select PRINTF_UUID
++	help
++	  Display file status
++
++	  Usage: stat [-L] [FILEDIR...]
++
++	  Display status information about the specified files or directories.
++
++	  Options:
++		  -L	follow symlinks
++
+ config CMD_MD5SUM
+ 	tristate
+ 	select COMPILE_HASH
+diff --git a/commands/Makefile b/commands/Makefile
+index 068fbb32dad7..68d0d05365a5 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -26,6 +26,7 @@ obj-$(CONFIG_CMD_POWEROFF)	+= poweroff.o
+ obj-$(CONFIG_CMD_GO)		+= go.o
+ obj-$(CONFIG_CMD_PARTITION)	+= partition.o
+ obj-$(CONFIG_CMD_LS)		+= ls.o
++obj-$(CONFIG_CMD_STAT)		+= stat.o
+ obj-$(CONFIG_CMD_CD)		+= cd.o
+ obj-$(CONFIG_CMD_PWD)		+= pwd.o
+ obj-$(CONFIG_CMD_MKDIR)		+= mkdir.o
+diff --git a/commands/stat.c b/commands/stat.c
+new file mode 100644
+index 000000000000..153eac50f1fa
+--- /dev/null
++++ b/commands/stat.c
+@@ -0,0 +1,62 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: © 2022 Ahmad Fatoum, Pengutronix
++
++#include <common.h>
++#include <command.h>
++#include <fs.h>
++#include <linux/stat.h>
++#include <errno.h>
++#include <malloc.h>
++#include <getopt.h>
++#include <stringlist.h>
++
++static int do_stat(int argc, char *argv[])
++{
++	int (*statfn)(const char *, struct stat *) = lstat;
++	int ret, opt, exitcode = 0;
++	char **filename;
++	struct stat st;
++
++	while((opt = getopt(argc, argv, "L")) > 0) {
++		switch(opt) {
++		case 'L':
++			statfn = stat;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	if (optind == argc)
++		return COMMAND_ERROR_USAGE;
++
++	for (filename = &argv[optind]; *filename; filename++) {
++		ret = statfn(*filename, &st);
++
++		if (ret) {
++			printf("%s: %s: %m\n", argv[0], *filename);
++			exitcode = COMMAND_ERROR;
++			continue;
++		}
++
++		stat_print(*filename, &st);
++	}
++
++	return exitcode;
++}
++
++BAREBOX_CMD_HELP_START(stat)
++BAREBOX_CMD_HELP_TEXT("Display status information about the specified files")
++BAREBOX_CMD_HELP_TEXT("or directories.")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-L",  "follow links")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(stat)
++	.cmd		= do_stat,
++	BAREBOX_CMD_DESC("display file status")
++	BAREBOX_CMD_OPTS("[-L] [FILEDIR...]")
++	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
++	BAREBOX_CMD_HELP(cmd_stat_help)
++BAREBOX_CMD_END
+diff --git a/fs/fs.c b/fs/fs.c
+index 24a33195440f..8f214204947a 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -67,6 +67,110 @@ char *mkmodestr(unsigned long mode, char *str)
+ }
+ EXPORT_SYMBOL(mkmodestr);
+ 
++void cdev_print(const struct cdev *cdev)
++{
++	bool uuid_set;
++
++	if (cdev->dev || cdev->master || cdev->partname) {
++		printf("Origin: %s", dev_name(cdev->dev) ?: "None");
++		if (cdev->master)
++			printf("\tMaster: %s", cdev->master->name);
++		if (cdev->partname)
++			printf("\tPartition: %s", cdev->partname);
++		printf("\n");
++	}
++	printf("Ocount: %d\tFlags: 0x%02x", cdev->open, cdev->flags);
++	if (cdev->flags) {
++		printf(" (");
++		if (cdev->flags & DEVFS_IS_CHARACTER_DEV)
++			printf(" cdev");
++		if (cdev->flags & DEVFS_PARTITION_FIXED)
++			printf(" fixed-partition");
++		if (cdev->flags & DEVFS_PARTITION_READONLY)
++			printf(" readonly-partition");
++		if (cdev->flags & DEVFS_PARTITION_FROM_TABLE)
++			printf(" table-partition");
++		if (cdev->flags & DEVFS_IS_MCI_MAIN_PART_DEV)
++			printf(" mci-main-partition");
++		if (cdev->mtd)
++			printf(" mtd");
++		printf(" )");
++	}
++	printf("\n");
++
++	uuid_set = memchr_inv(cdev->uuid, 0x00 ,sizeof(cdev->uuid));
++	if (cdev->filetype || cdev->dos_partition_type || uuid_set) {
++		if (cdev->filetype)
++			printf("Filetype: %s\t", file_type_to_string(cdev->filetype));
++		if (cdev->dos_partition_type)
++			printf("DOS parttype: 0x%02x\t", cdev->dos_partition_type);
++		if (uuid_set)
++			printf("UUID: %pUl", cdev->uuid);
++		printf("\n");
++	}
++}
++EXPORT_SYMBOL(cdev_print);
++
++static struct fs_device_d *get_fsdevice_by_path(const char *path);
++
++void stat_print(const char *filename, const struct stat *st)
++{
++	struct block_device *bdev = NULL;
++	struct fs_device_d *fdev;
++	struct cdev *cdev = NULL;
++	const char *type = NULL;
++	char modestr[11];
++
++	mkmodestr(st->st_mode, modestr);
++
++	switch (st->st_mode & S_IFMT) {
++		case S_IFDIR:    type = "directory"; break;
++		case S_IFBLK:    type = "block special file"; break;
++		case S_IFCHR:    type = "character special file"; break;
++		case S_IFIFO:    type = "fifo"; break;
++		case S_IFLNK:    type = "symbolic link"; break;
++		case S_IFSOCK:   type = "socket"; break;
++		case S_IFREG:    type = "regular file"; break;
++	}
++
++	printf("  File: %s\n", filename);
++
++	if (st->st_mode & S_IFCHR) {
++		char *path;
++
++		path = canonicalize_path(filename);
++		if (path) {
++			const char *devicefile = devpath_to_name(path);
++
++			cdev = cdev_by_name(devicefile);
++			if (cdev)
++				bdev = cdev_get_block_device(cdev);
++
++			free(path);
++		}
++	}
++
++	printf("  Size: %-20llu", st->st_size);
++	if (bdev)
++		printf("Blocks: %llu\tIO Block: %u\t",
++		       (u64)bdev->num_blocks, 1 << bdev->blockbits);
++
++	if (type)
++		printf("  %s", type);
++
++	fdev = get_fsdevice_by_path(filename);
++
++	printf("\nDevice: %s\tInode: %lu\tLinks: %u\n",
++	       fdev ? dev_name(&fdev->dev) : "<unknown>",
++	       st->st_ino, st->st_nlink);
++	printf("Access: (%04o/%s)\tUid: (%u)\tGid: (%u)\n",
++	       st->st_mode & 07777, modestr, st->st_uid, st->st_gid);
++
++	if (cdev)
++		cdev_print(cdev);
++}
++EXPORT_SYMBOL(stat_print);
++
+ static char *cwd;
+ static struct dentry *cwd_dentry;
+ static struct vfsmount *cwd_mnt;
+@@ -91,7 +195,6 @@ postcore_initcall(init_fs);
+ 
+ struct filename;
+ 
+-static struct fs_device_d *get_fsdevice_by_path(const char *path);
+ static int filename_lookup(struct filename *name, unsigned flags,
+ 			   struct path *path);;
+ static struct filename *getname(const char *filename);
+diff --git a/include/fs.h b/include/fs.h
+index b501db38addd..f96839f9ebf4 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -147,6 +147,9 @@ int ls(const char *path, ulong flags);
+ 
+ char *mkmodestr(unsigned long mode, char *str);
+ 
++void stat_print(const char *filename, const struct stat *st);
++void cdev_print(const struct cdev *cdev);
++
+ char *canonicalize_path(const char *pathname);
+ 
+ char *get_mounted_path(const char *path);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
