@@ -1,59 +1,57 @@
-Delivery-date: Thu, 27 Oct 2022 10:49:32 +0200
+Delivery-date: Thu, 27 Oct 2022 10:49:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1onyZw-003uAo-3V
-	for lore@lore.pengutronix.de; Thu, 27 Oct 2022 10:49:32 +0200
+	id 1onyZy-003uBC-8Z
+	for lore@lore.pengutronix.de; Thu, 27 Oct 2022 10:49:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1onyZv-0002W4-4Z
-	for lore@pengutronix.de; Thu, 27 Oct 2022 10:49:31 +0200
+	id 1onyZx-0002Wg-1S
+	for lore@pengutronix.de; Thu, 27 Oct 2022 10:49:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=NCTt6K92LHeQrpScDat3dIDL6HEboPqp0hZSUoBhaBA=; b=sjJp+iYK4j6OK3
-	39bWzB/n/9ZNgLr/fpwb7uXBvwsJTZB+ELF4LrA6R3FVgpIFGhQj96bnGf4fJG1SnYjhdbU8ElAVW
-	W+kdb9TzaHVVobYQyuKFnfN6ZJvCFXpOs3PfjB143N/4hRA/mOPc78aWyT7lItqCHXZlRq47q0P76
-	5ohoXD4ajtxUQYbReQAeyOH4+xjOKc+D4+fYhZhAEUWWeuVZlOKkBK9O9HlphK0h9WLmJW5y02zGC
-	D4yPaJH4x6M9WS8cBjpllDOGdlHkykPt0dRadMhkr1LZzxy9gKY+f3kfZXWzWZGFIBxUBbKgWgXUq
-	wt34Cu/ttEwfUz0Tl13A==;
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=noYpMldPOVm59LFft9qrjHb551RUp1w2W/jfi1fw6Rw=; b=m+nc1EHimwghxi
+	N7bxQTcIDNpwje3fZ1YhTg27sNnrdio0AYLaYXQGywxkuGuEpg5Pq8bv4wdoJnuh/bvwuyy8hlzrP
+	gzsl61yH2QyFE+prEXk3d/fJcu1MxOpatCm6Jin1U4Ik6FB58ZPYTmgex/K4/4HWOMDjph3tqNHFG
+	vUdkr1YhLZqXnPyly0n+XLWbULRc9scRhNYf/auzvfuTSwAZKssBP00ieTRZY/rbGUz1tY2xW8ikv
+	KHZ3YWPacj+6QT7CmosiFvyfEs7rNyvSghoq6v66ped6t1raIU5Ale5Gu3e1xPgjJV1Xo5ptD2Oob
+	jWs55Cig8BsXVDKO/LCg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1onyYR-00CSc8-Mq; Thu, 27 Oct 2022 08:47:59 +0000
+	id 1onyYP-00CSby-Lx; Thu, 27 Oct 2022 08:47:57 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1onyYL-00CSb1-HI
+	id 1onyYL-00CSb2-HH
 	for barebox@lists.infradead.org; Thu, 27 Oct 2022 08:47:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1onyYH-0002IQ-CM; Thu, 27 Oct 2022 10:47:49 +0200
+	id 1onyYI-0002IR-56; Thu, 27 Oct 2022 10:47:50 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1onyYH-000fPZ-Km; Thu, 27 Oct 2022 10:47:48 +0200
+	id 1onyYH-000fPa-L7; Thu, 27 Oct 2022 10:47:48 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1onyYF-001etF-ST; Thu, 27 Oct 2022 10:47:47 +0200
+	id 1onyYF-001esU-Rm; Thu, 27 Oct 2022 10:47:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 27 Oct 2022 10:47:45 +0200
-Message-Id: <20221027084745.395052-2-s.hauer@pengutronix.de>
+Date: Thu, 27 Oct 2022 10:47:44 +0200
+Message-Id: <20221027084745.395052-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221027084745.395052-1-s.hauer@pengutronix.de>
-References: <20221027084745.395052-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221027_014753_609949_8DC45209 
-X-CRM114-Status: GOOD (  11.25  )
+X-CRM114-CacheID: sfid-20221027_014753_609808_BEA8244C 
+X-CRM114-Status: GOOD (  11.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,42 +74,58 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] readline: Complete strings containing whitespaces correctly
+Subject: [PATCH 1/2] hush: Fix handling '\ '
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Completion strings containing whitespaces have to end up as a single
-argv[] argument, thus the whitespaces have to be escaped. Fix this.
+Currently when doing:
 
-Ideally the whitespaces should only be escaped when we are outside of
-double or single quotes, but our completion currently doesn't trigger
-at all when invokes inside quotes, so we can ignore this case for now.
+echo foo\ bar
+
+we will get argv[1] = "foo\" and argv[2] = "bar".
+
+An unquoted escaped whitespace should be replaced by a whitespace.
+With this the above will correctly result in argv[1] = "foo bar"
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- lib/readline.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ common/hush.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/lib/readline.c b/lib/readline.c
-index 37d5b0a343..92bec3d1d8 100644
---- a/lib/readline.c
-+++ b/lib/readline.c
-@@ -230,9 +230,14 @@ int readline(const char *prompt, char *buf, int len)
- 			}
+diff --git a/common/hush.c b/common/hush.c
+index 6a089fabf1..5138a1a45a 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -617,6 +617,7 @@ static int builtin_exit(struct p_context *ctx, struct child_prog *child,
+ static void remove_quotes_in_str(char *src)
+ {
+ 	char *trg = src;
++	bool in_double_quotes = false;
  
- 			i = 0;
--			while (completestr[i])
-+			while (completestr[i]) {
-+				if (completestr[i] == ' ' && completestr[i + 1])
-+					cread_add_char('\\', insert, &num,
-+						&eol_num, buf, len);
+ 	while (*src) {
+ 		if (*src == '\'') {
+@@ -629,6 +630,7 @@ static void remove_quotes_in_str(char *src)
+ 
+ 		/* drop quotes */
+ 		if (*src == '"') {
++			in_double_quotes = !in_double_quotes;
+ 			src++;
+ 			continue;
+ 		}
+@@ -654,6 +656,13 @@ static void remove_quotes_in_str(char *src)
+ 			continue;
+ 		}
+ 
++		/* replace '\ ' with ' ' */
++		if (!in_double_quotes && *src == '\\' && *(src + 1) == ' ') {
++			*trg++ = ' ';
++			src += 2;
++			continue;
++		}
 +
- 				cread_add_char(completestr[i++], insert, &num,
- 						&eol_num, buf, len);
-+			}
- #endif
- 			break;
- 
+ 		*trg++ = *src++;
+ 	}
+ 	*trg = 0;
 -- 
 2.30.2
 
