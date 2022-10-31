@@ -1,79 +1,79 @@
-Delivery-date: Thu, 27 Oct 2022 20:37:49 +0200
+Delivery-date: Mon, 31 Oct 2022 08:35:39 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oo7lF-004OlE-2Z
-	for lore@lore.pengutronix.de; Thu, 27 Oct 2022 20:37:49 +0200
+	id 1opPKb-008u2b-Lw
+	for lore@lore.pengutronix.de; Mon, 31 Oct 2022 08:35:39 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oo7lD-0006e6-J6
-	for lore@pengutronix.de; Thu, 27 Oct 2022 20:37:48 +0200
+	id 1opPKZ-0004wT-Jx
+	for lore@pengutronix.de; Mon, 31 Oct 2022 08:35:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
-	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=b/H8aAVozfQuOuYxaB/Sx7FjsJrJ8RQG2EYWvM+nYhs=; b=nlH5aGTxD7gL1e0fwEjQQ/31Pd
-	dodiOxJSjXxTP1PK+wAiSNWkFT+hzL9TyvkQ9fx/Hk50WXuEhoZOVdpZCBTvjH2rUus0MydHptdLY
-	9bkFCLzL/1roDfyKhkCyylA5sH6DmH9PNHFGzkBWNSITEAJkcCAgTI1/9dvReQYzwiPDyn1TfhggQ
-	6W+kkozBN560wHfmFy6vDkfzrLmxnXCL/NzOYxueE/kgt2rWk4Hj53t2qVVf3cr8ygix5E5JF81Uo
-	WrdN6BInkkJ3EUXqNg9a7cn/Hyt4rGInKrvTgn4Aixs5BVwtQnp6niMh0wARnf5aRtGG8SPyzntWS
-	Gf1Sn/zw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=6tEbMDK7oP2q2rksLtBbgJdCy0Jiq7h+yRI9bZfaIOI=; b=g9ctZdr2K64Xcb
+	aRv1ySDPWMvZNcn2mrB446B8i8i3NJQLuvtO6I5yX9S0h4deoYCGGuMUEfvSmQ5RLKFOa24SjKhEu
+	GiKKivHcbbINk87VvHih0feSwSZ/TKBvYj7KhEn9zIX1IfYmcYtWtBAPk5d55ACD0YO/L6rvpSofK
+	7a0PeVFiNDV6AILu+cyfGU/hWRpFv7JU6pvm5oQzJP6FVT/UOhHU2O7+EkE1leXUvwRLhC59Um2IG
+	D1Qi3s6NimjiKEWKsNm60xSVr/WExpMxeO765hdhwYlxsVYqfiJJf787z/24cYYZmvIAasUWhCpPM
+	t7FV/g13hbYnf9HI7MDg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oo7jD-00EXBn-UE; Thu, 27 Oct 2022 18:35:44 +0000
-Received: from mail-vs1-xe2a.google.com ([2607:f8b0:4864:20::e2a])
+	id 1opPIc-009BSu-QN; Mon, 31 Oct 2022 07:33:34 +0000
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oo7j8-00EXAY-Lk
-	for barebox@lists.infradead.org; Thu, 27 Oct 2022 18:35:40 +0000
-Received: by mail-vs1-xe2a.google.com with SMTP id 3so2685547vsh.5
-        for <barebox@lists.infradead.org>; Thu, 27 Oct 2022 11:35:34 -0700 (PDT)
+	id 1opPIX-009BRQ-4O
+	for barebox@lists.infradead.org; Mon, 31 Oct 2022 07:33:30 +0000
+Received: by mail-lf1-x131.google.com with SMTP id d6so17919073lfs.10
+        for <barebox@lists.infradead.org>; Mon, 31 Oct 2022 00:33:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=b/H8aAVozfQuOuYxaB/Sx7FjsJrJ8RQG2EYWvM+nYhs=;
-        b=IAFQgQ5Crn0G4stmIYjrnHCVAgtuFVS0ITHE8yop6cebujvhPEXBxIN8Hk2vixF6fn
-         nnpGfoeiufEzKg8PNHbLoixHbceTpL8tA3JRg2IrU/8cPuKzqXUdPSqRkPY3t1ajzP4M
-         00JPJ0eMo4oEADMZQ0SAfl8W2ukvPVlOOGQ3Us/mPdjjXBsOsdLYB+o5Sjdq42gUNKBx
-         bn6FuxTtMWtpi6Wux8qrVLc3t+Dnx4BSzToPOeOnhvmq9gySloljv/O3Ehs02k8EivBm
-         CLNdQ1rK8Qpr+sf/EfR3saSRCz8Kq9e2OwXk9NmxNH4XiuBbHyOwAUc55a7C35tZOzu0
-         H0Uw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6tEbMDK7oP2q2rksLtBbgJdCy0Jiq7h+yRI9bZfaIOI=;
+        b=QlQSmCrSYDKBarXdIYTgRZpYga+VvU9EbBOOqtZqBEdeNNrlfIlfPVf8jBWTRQqyGT
+         z/avLoxwdLXmqAeMw/0kRnIEaI7u3PQrsMJHFMTp3regR9qCgwhS3c/0FqcG2Y55+t+9
+         pGy5bUHnTqWE5xj0arsvD6wiqykiHxGy942zms5WZwR0/6QTL6ElhXI1vX2CRR7s6nZl
+         jVSaC3N75mAxjVEnAHsMpSr2Vl155TxhJFR4Tc0UeX1DS4HwTjebqruvh3ZMZHfxTEsH
+         qVRsIBjJfvdEPSlveR5Hw9Orhzo7Pc8fj7FfzFhpHpsXsMtXcGXyJcl8eEX+xr9/FwwX
+         uCMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=b/H8aAVozfQuOuYxaB/Sx7FjsJrJ8RQG2EYWvM+nYhs=;
-        b=IpZ2gvNVrn+FpC762dOXaXKYJE0nwvKhVm4XN1CcUirwgMxb331MAvuscu8WyA3+mT
-         SglJkNo4c2ROwhIOLm/tjThmgRpXxfVce8GDt+NAXEnzJE8fhcl2IVTQ4jFqazijUZsP
-         Gm+PSOKBXBtk977NiytxD+S6w6LBLsxcxYX1wwUFmC1MGQA3YrSvYPu/u0HoXL448GJc
-         QMSYMkjOO7oGGn4jOztlmcQg3AQ4rFuln8u0rpMuhBCB8/3//KQHoEb3MnlQmQOpXd8Y
-         u17FBNVv+wTqBWsb4ZNq1OIiyAIC+qW3FKYbyvurMUMAp6YiZk0czGnUv88TECoNWOJh
-         3E/w==
-X-Gm-Message-State: ACrzQf16epEkZp6zKM+gukbf8XqbP0xJCzJWgo4E4RyNQK5jILUJVUKk
-	qz+s8UXDXbaKlOKMvppgMTTwi+ieGsrrtdw7+MTOd2AiWM0=
-X-Google-Smtp-Source: AMsMyM6k/GKy2d7cZIKnpvhlXC7tY9Zp0aZWGI4cP8lpVlYq8SfmDy5Bx2bJl+5uL512PWBxzOWdO9yzGXaCCGk7NUU=
-X-Received: by 2002:a05:6102:a88:b0:3a6:842b:4c67 with SMTP id
- n8-20020a0561020a8800b003a6842b4c67mr28836466vsg.63.1666895733476; Thu, 27
- Oct 2022 11:35:33 -0700 (PDT)
+        bh=6tEbMDK7oP2q2rksLtBbgJdCy0Jiq7h+yRI9bZfaIOI=;
+        b=wqBPQChzLTle5GdBgphB9ttaMdeA9u8cI6W1wrQrrJKliAXckuUNuNtEb/8cvRNpob
+         R8oP1xtfAuKEaUZER261haUJzphaHBt/ZqaC7N2SvotCZLDFqkywCbvFVE33RgzuyMIk
+         oAz1PL2129nNERfjF50+uiaS7yJBtCQXDXW7eQGLOs2hSXMpjOoQD8mtyKQL40t4htXC
+         FiYOJm9aQLPe4jA0cTmdziiMVyLxFotjHJJpimXvRu91HczFJhQkgMdg7YhqJJ86Qiq2
+         AFQF94FCBwn8EOXLrKpm8WRMsByMe2C/GwnDRQ2/AF3h/+IAMHpKsKHy+9bcc9ClK3BA
+         ArQg==
+X-Gm-Message-State: ACrzQf3I4s9P7Z4eQsaxbfrT/DKtjhcdP7WtlT7TRVOkc4a60hX2rhyI
+	54A8kS6pcpkplIxHDh5Nhkd8JUBlC+Xh+c7t
+X-Google-Smtp-Source: AMsMyM5a8QtRMHjE0aco1LCA0JW8CFyBWgzYeLB6lUhYjMNAhtit0ktr7x/eig5pA5PNGufW0I+6RA==
+X-Received: by 2002:a05:6512:511:b0:4a1:7ac2:2a83 with SMTP id o17-20020a056512051100b004a17ac22a83mr4548026lfb.175.1667201605375;
+        Mon, 31 Oct 2022 00:33:25 -0700 (PDT)
+Received: from localhost.localdomain ([193.232.173.109])
+        by smtp.gmail.com with ESMTPSA id p13-20020a2eb98d000000b0026c42f67eb8sm1201714ljp.7.2022.10.31.00.33.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Oct 2022 00:33:24 -0700 (PDT)
+From: Denis Orlov <denorl2009@gmail.com>
+To: barebox@lists.infradead.org
+Date: Mon, 31 Oct 2022 10:33:19 +0300
+Message-Id: <20221031073319.1656130-1-denorl2009@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20221010074834.2361014-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20221010074834.2361014-1-a.fatoum@pengutronix.de>
-From: Bruno Thomsen <bruno.thomsen@gmail.com>
-Date: Thu, 27 Oct 2022 20:35:17 +0200
-Message-ID: <CAH+2xPCAE2eEiyAJnq=pDOxy6EY71h3tDr4tjm2PQ-wtTN8brA@mail.gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Johannes Zink <j.zink@pengutronix.de>, 
-	Lars Pedersen <lapeddk@gmail.com>, Andrey Smirnov <andrew.smirnov@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221027_113538_749983_F76EDBB8 
-X-CRM114-Status: GOOD (  21.28  )
+X-CRM114-CacheID: sfid-20221031_003329_353432_5A39F549 
+X-CRM114-Status: GOOD (  12.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,156 +85,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Denis Orlov <denorl2009@gmail.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX7: don't hardcode UART1 in imx7_early_setup_uart_clock
+Subject: [PATCH] net: e1000: fix <NULL>s in log messages
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Ahmad,
+We do not have an edev.dev set up yet when we are filling in the device
+structure and reading an EEPROM in probe. Besides, using hw->dev for
+those messages seems more appropriate.
 
-Den man. 10. okt. 2022 kl. 09.48 skrev Ahmad Fatoum <a.fatoum@pengutronix.de>:
->
-> imx7_early_setup_uart_clock() has a very generic sounding name, but so
-> far only set up clocks for UART1. This can lead board code authors
-> astray that intend to user a different UART for DEBUG_LL.
->
-> This issue affects board code for kamstrup-mx7-concentrator, meerkat96
-> and zii-imx7d-dev, which use UART4, UART6 and UART2 respectively.
->
-> As I don't have this boards available to test and clock changes may have
-> adverse effect elsewhere, we have all existing users setup UART1 as
-> before, but note with a comment that this may not be the original
-> author's intention.
->
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> I have CC'd authors of the three likely misconfigured boards,
-> in case they want to fix them and test.
-> ---
->  arch/arm/boards/ac-sxb/lowlevel.c             |  2 +-
->  .../boards/freescale-mx7-sabresd/lowlevel.c   |  2 +-
->  .../kamstrup-mx7-concentrator/lowlevel.c      |  3 ++-
->  arch/arm/boards/meerkat96/lowlevel.c          |  3 ++-
->  arch/arm/boards/zii-imx7d-dev/lowlevel.c      |  3 ++-
->  .../arm/mach-imx/include/mach/imx7-ccm-regs.h | 21 +++++++++----------
->  6 files changed, 18 insertions(+), 16 deletions(-)
->
-> diff --git a/arch/arm/boards/ac-sxb/lowlevel.c b/arch/arm/boards/ac-sxb/lowlevel.c
-> index a910555f9bd7..a26454968304 100644
-> --- a/arch/arm/boards/ac-sxb/lowlevel.c
-> +++ b/arch/arm/boards/ac-sxb/lowlevel.c
-> @@ -93,7 +93,7 @@ extern char __dtb_z_ac_sxb_start[];
->
->  static inline void setup_uart(void)
->  {
-> -       imx7_early_setup_uart_clock();
-> +       imx7_early_setup_uart_clock(1);
->
->         imx7_setup_pad(MX7D_PAD_UART1_TX_DATA__UART1_DCE_TX);
->
-> diff --git a/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c b/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
-> index a8733d62091f..6d393bf2b10e 100644
-> --- a/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
-> +++ b/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
-> @@ -17,7 +17,7 @@ extern char __dtb_imx7d_sdb_start[];
->
->  static inline void setup_uart(void)
->  {
-> -       imx7_early_setup_uart_clock();
-> +       imx7_early_setup_uart_clock(1);
->
->         imx7_setup_pad(MX7D_PAD_UART1_TX_DATA__UART1_DCE_TX);
->
-> diff --git a/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c b/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c
-> index 4a9eae80d153..511f01757c46 100644
-> --- a/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c
-> +++ b/arch/arm/boards/kamstrup-mx7-concentrator/lowlevel.c
-> @@ -17,7 +17,8 @@ extern char __dtb_z_imx7d_flex_concentrator_mfg_start[];
->
->  static inline void setup_uart(void)
->  {
-> -       imx7_early_setup_uart_clock();
-> +       /* FIXME: Below UART4 is muxed, not UART1 */
-> +       imx7_early_setup_uart_clock(1);
->
+Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+---
+ drivers/net/e1000/eeprom.c | 6 +++---
+ drivers/net/e1000/main.c   | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-You are right, this should setup UART4 and not UART1.
+diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
+index 1072bc54ef..27143bd6d0 100644
+--- a/drivers/net/e1000/eeprom.c
++++ b/drivers/net/e1000/eeprom.c
+@@ -800,7 +800,7 @@ int e1000_validate_eeprom_checksum(struct e1000_hw *hw)
+ 
+ 	/* Read the EEPROM */
+ 	if (e1000_read_eeprom(hw, 0, EEPROM_CHECKSUM_REG + 1, buf) < 0) {
+-		dev_err(&hw->edev.dev, "Unable to read EEPROM!\n");
++		dev_err(hw->dev, "Unable to read EEPROM!\n");
+ 		return -E1000_ERR_EEPROM;
+ 	}
+ 
+@@ -816,8 +816,8 @@ int e1000_validate_eeprom_checksum(struct e1000_hw *hw)
+ 		return 0;
+ 
+ 	/* Hrm, verification failed, print an error */
+-	dev_err(&hw->edev.dev, "EEPROM checksum is incorrect!\n");
+-	dev_err(&hw->edev.dev, "  ...register was 0x%04hx, calculated 0x%04hx\n",
++	dev_err(hw->dev, "EEPROM checksum is incorrect!\n");
++	dev_err(hw->dev, "  ...register was 0x%04hx, calculated 0x%04hx\n",
+ 			checksum_reg, checksum);
+ 
+ 	return -E1000_ERR_EEPROM;
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index 363730de0a..1f84cf2949 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -3226,7 +3226,7 @@ static int e1000_sw_init(struct eth_device *edev)
+ 	/* identify the MAC */
+ 	result = e1000_set_mac_type(hw);
+ 	if (result) {
+-		dev_err(&hw->edev.dev, "Unknown MAC Type\n");
++		dev_err(hw->dev, "Unknown MAC Type\n");
+ 		return result;
+ 	}
+ 
+-- 
+2.30.2
 
-Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
-
->         imx7_setup_pad(MX7D_PAD_SAI2_TX_BCLK__UART4_DCE_TX);
->
-> diff --git a/arch/arm/boards/meerkat96/lowlevel.c b/arch/arm/boards/meerkat96/lowlevel.c
-> index 1c9baeacfb2a..e65726ef1c27 100644
-> --- a/arch/arm/boards/meerkat96/lowlevel.c
-> +++ b/arch/arm/boards/meerkat96/lowlevel.c
-> @@ -14,7 +14,8 @@ extern char __dtb_z_imx7d_meerkat96_start[];
->
->  static void setup_uart(void)
->  {
-> -       imx7_early_setup_uart_clock();
-> +       /* FIXME: Below UART6 is muxed, not UART1 */
-> +       imx7_early_setup_uart_clock(1);
->         imx7_setup_pad(MX7D_PAD_SD1_WP__UART6_DCE_TX);
->         imx7_uart_setup_ll();
->         putc_ll('>');
-> diff --git a/arch/arm/boards/zii-imx7d-dev/lowlevel.c b/arch/arm/boards/zii-imx7d-dev/lowlevel.c
-> index 7579a2a8a050..0e316b602436 100644
-> --- a/arch/arm/boards/zii-imx7d-dev/lowlevel.c
-> +++ b/arch/arm/boards/zii-imx7d-dev/lowlevel.c
-> @@ -23,7 +23,8 @@ extern char __dtb_z_imx7d_zii_rmu2_start[];
->
->  static inline void setup_uart(void)
->  {
-> -       imx7_early_setup_uart_clock();
-> +       /* FIXME: Below UART2 is muxed, not UART1 */
-> +       imx7_early_setup_uart_clock(1);
->
->         imx7_setup_pad(MX7D_PAD_UART2_TX_DATA__UART2_DCE_TX);
->
-> diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-> index aecf9a26d017..0ef0742bb65d 100644
-> --- a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-> +++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-> @@ -39,16 +39,15 @@
->  #define IMX7_CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)      IMX7_CCM_CCGR_SETTINGn(n, 0b10)
->  #define IMX7_CCM_CCGR_SETTINGn_NEEDED(n)               IMX7_CCM_CCGR_SETTINGn(n, 0b11)
->
-> -static inline void imx7_early_setup_uart_clock(void)
-> -{
-> -       void __iomem *ccm   = IOMEM(MX7_CCM_BASE_ADDR);
-> -
-> -       writel(IMX7_CCM_CCGR_SETTINGn_NEEDED(0),
-> -              ccm + IMX7_CCM_CCGRn_CLR(IMX7_CCM_CCGR_UART1));
-> -       writel(IMX7_CCM_TARGET_ROOTn_ENABLE | IMX7_UART1_CLK_ROOT__OSC_24M,
-> -              ccm + IMX7_CCM_TARGET_ROOTn(IMX7_UART1_CLK_ROOT));
-> -       writel(IMX7_CCM_CCGR_SETTINGn_NEEDED(0),
-> -              ccm + IMX7_CCM_CCGRn_SET(IMX7_CCM_CCGR_UART1));
-> -}
-> +/* UART counting starts for 1, like in the datasheet/dt-bindings */
-> +#define imx7_early_setup_uart_clock(uart) do { \
-> +       void __iomem *ccm   = IOMEM(MX7_CCM_BASE_ADDR); \
-> +       writel(IMX7_CCM_CCGR_SETTINGn_NEEDED(0), \
-> +              ccm + IMX7_CCM_CCGRn_CLR(IMX7_CCM_CCGR_UART ## uart)); \
-> +       writel(IMX7_CCM_TARGET_ROOTn_ENABLE | IMX7_UART ## uart ## _CLK_ROOT__OSC_24M, \
-> +              ccm + IMX7_CCM_TARGET_ROOTn(IMX7_UART ## uart ## _CLK_ROOT)); \
-> +       writel(IMX7_CCM_CCGR_SETTINGn_NEEDED(0), \
-> +              ccm + IMX7_CCM_CCGRn_SET(IMX7_CCM_CCGR_UART ## uart)); \
-> +} while (0)
->
->  #endif
-> --
-> 2.30.2
->
 
 
