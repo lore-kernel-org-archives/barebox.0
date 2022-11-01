@@ -1,60 +1,60 @@
-Delivery-date: Tue, 01 Nov 2022 07:28:09 +0100
+Delivery-date: Tue, 01 Nov 2022 07:28:11 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1opkkr-00APT2-H9
-	for lore@lore.pengutronix.de; Tue, 01 Nov 2022 07:28:09 +0100
+	id 1opkkt-00APTX-Pj
+	for lore@lore.pengutronix.de; Tue, 01 Nov 2022 07:28:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1opkkq-0001zr-AA
-	for lore@pengutronix.de; Tue, 01 Nov 2022 07:28:09 +0100
+	id 1opkks-00020c-Au
+	for lore@pengutronix.de; Tue, 01 Nov 2022 07:28:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LeystF1fy/u/zBCViEEy6kDIMbv42Zg2DcOeb+EqLLw=; b=nEsHr1hys3/XesJ98CBuQmLa4y
-	QnRQ1XDOdtElBpvqRaM/inwmETGmAwDyY/pie2kGEO0YH4xXQdkK9xygoskKi2PQUczY621lJgqQq
-	ptDdsqYyGop+T4bK93njO3R2F2MhkSlUA7iDVwxyrLeR4Q7hhoOiO4es6b5qLkeJHIMhZukLbJF1i
-	dDBtE9GxgMg/Vrn8Ucgv/kiWLutTETY9JsM13e+KKPoX02/Vosxy5LfQHtfDFA4BggY/e/ddiUYMj
-	YR7lOR63J6fakZ1POWzydupQOFGXXoJXR6fISn/smtunxjZP+Lr/Y+nFjUwO8GubUvzZziXRWN30m
-	rsIvMRMQ==;
+	bh=dCRalzBkU/lJNXdbNMWwR82dg07wNwHHb/oPvKfCtxk=; b=3FhZw/V9kqF43+P7lXQYPU4jHr
+	4YPowXN9sTrijw8EQTsSUqga4J0PHxVC2Q6XAdbRkQLTgUi84zP7zvjYkT3AH22RG+L8p+uJNW9B4
+	w0bd0sdAcW9ayIwXb/z3wZQvDqpUYj6E0odZGniVjMfWv6dBpnieIMQlMJYVn/I46bhFpLgP6o+Iq
+	0FizHPrw6BAu/a4s4w7ETe8AlIegU+zmKeyk6Aj797VMRf1zzbpLVGNtruIAJrINwdnjVFTSrrYzZ
+	ZfJuQZi6JvTRN8TpxJiI4JAArODuaD5y43gHIZzjMU+bFQU/Mq+V0tlT69SzCnX/jgGMLu/zE7vt0
+	qkAipQEQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1opkjg-002PqX-2d; Tue, 01 Nov 2022 06:26:56 +0000
+	id 1opkjb-002Poq-93; Tue, 01 Nov 2022 06:26:51 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1opkjW-002Pn9-Iz
-	for barebox@lists.infradead.org; Tue, 01 Nov 2022 06:26:49 +0000
+	id 1opkjW-002Pn6-J0
+	for barebox@lists.infradead.org; Tue, 01 Nov 2022 06:26:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1opkjV-0001mx-3t; Tue, 01 Nov 2022 07:26:45 +0100
+	id 1opkjU-0001mw-U4; Tue, 01 Nov 2022 07:26:44 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1opkjV-001cia-Dg; Tue, 01 Nov 2022 07:26:44 +0100
+	id 1opkjV-001ciX-55; Tue, 01 Nov 2022 07:26:44 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1opkjT-00DSKm-9o; Tue, 01 Nov 2022 07:26:43 +0100
+	id 1opkjT-00DSKj-9S; Tue, 01 Nov 2022 07:26:43 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  1 Nov 2022 07:26:41 +0100
-Message-Id: <20221101062642.3207113-4-a.fatoum@pengutronix.de>
+Date: Tue,  1 Nov 2022 07:26:40 +0100
+Message-Id: <20221101062642.3207113-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221101062642.3207113-1-a.fatoum@pengutronix.de>
 References: <20221101062642.3207113-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221031_232646_663227_880E30F7 
-X-CRM114-Status: GOOD (  14.23  )
+X-CRM114-CacheID: sfid-20221031_232646_649136_976FF8D1 
+X-CRM114-Status: GOOD (  12.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,59 +76,41 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 3/4] ARM: psci: client: always register OF fixup
+Subject: [PATCH master 2/4] ARM: psci: client: match most specific compatible first
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We currently only register the device tree fixup if PSCI version in
-device tree disagrees with version read from firmware. The barebox
-PSCI DT version may differ from the kernel version though, so we
-should rather run the fixup always. If the kernel has already an
-up-to-date compatible, it won't change. But for cases where firmware is
-expected to fill out the correct PSCI version, barebox will do what's
-expected.
+The PSCI client driver will use the barebox compatible to determine
+whether it's safe to use the ARM_PSCI_0_2_FN_PSCI_VERSION command.
 
-While at it, move the of_version logic together to make it easier
-to follow.
+For this reason, we need to match against the newer PSCI compatibles
+first, because otherwise
+
+  compatible = "arm,psci-1.0", "arm,psci-0.2", "arm,psci";
+
+would have us end up with PSCI v0.1 instead.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/cpu/psci-client.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/arm/cpu/psci-client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/cpu/psci-client.c b/arch/arm/cpu/psci-client.c
-index 8e151177c2d7..218170dfa4ba 100644
+index 7d5b3768b59e..8e151177c2d7 100644
 --- a/arch/arm/cpu/psci-client.c
 +++ b/arch/arm/cpu/psci-client.c
-@@ -119,10 +119,6 @@ static int __init psci_probe(struct device_d *dev)
- 	ulong of_version, actual_version;
- 	int ret;
+@@ -176,9 +176,9 @@ static int __init psci_probe(struct device_d *dev)
+ }
  
--	ret = dev_get_drvdata(dev, (const void **)&of_version);
--	if (ret)
--		return -ENODEV;
--
- 	ret = of_property_read_string(dev->device_node, "method", &method);
- 	if (ret) {
- 		dev_warn(dev, "missing \"method\" property\n");
-@@ -139,6 +135,7 @@ static int __init psci_probe(struct device_d *dev)
- 	}
+ static __maybe_unused struct of_device_id psci_dt_ids[] = {
+-	{ .compatible = "arm,psci",	.data = (void*)ARM_PSCI_VER(0,1) },
+-	{ .compatible = "arm,psci-0.2",	.data = (void*)ARM_PSCI_VER(0,2) },
+ 	{ .compatible = "arm,psci-1.0",	.data = (void*)ARM_PSCI_VER(1,0) },
++	{ .compatible = "arm,psci-0.2",	.data = (void*)ARM_PSCI_VER(0,2) },
++	{ .compatible = "arm,psci",	.data = (void*)ARM_PSCI_VER(0,1) },
+ 	{ /* sentinel */ },
+ };
  
- 
-+	of_version = (ulong)device_get_match_data(dev);
- 	if (of_version < ARM_PSCI_VER(0,2)) {
- 		version = of_version;
- 
-@@ -155,8 +152,7 @@ static int __init psci_probe(struct device_d *dev)
- 	dev_info(dev, "detected version %u.%u\n",
- 		 version >> 16, version & 0xffff);
- 
--	if (actual_version != of_version)
--		of_register_fixup(of_psci_do_fixup, &version);
-+	of_register_fixup(of_psci_do_fixup, &version);
- 
- 	ret = poweroff_handler_register_fn(psci_poweroff);
- 	if (ret)
 -- 
 2.30.2
 
