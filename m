@@ -1,60 +1,60 @@
-Delivery-date: Tue, 01 Nov 2022 19:08:12 +0100
+Delivery-date: Tue, 01 Nov 2022 19:08:15 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1opvgK-00BAyo-3S
-	for lore@lore.pengutronix.de; Tue, 01 Nov 2022 19:08:12 +0100
+	id 1opvgN-00BAzD-B1
+	for lore@lore.pengutronix.de; Tue, 01 Nov 2022 19:08:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1opvgI-0007Ch-8W
-	for lore@pengutronix.de; Tue, 01 Nov 2022 19:08:11 +0100
+	id 1opvgM-0007DQ-15
+	for lore@pengutronix.de; Tue, 01 Nov 2022 19:08:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uZhEGFZQHLlrJfxwqZbR8+Uw8OjYzxZ4JT1WJAexO8w=; b=pU2L+qAm2ZsA0eP+uw2caxAZNn
-	hRPjrM711BJyo8JJfutHfyulFklscG5aAIGgNaV/4+FHheZSmA3jOpfQXwFkzt7J4Z3IVbV59VFDA
-	Gs9RQ1PSAdckLCUG2e21fueKkVvzLWlIEAu75TzV9FW6nDkc03sU6p1GDQ0tZQq0bYJZe65+vMcFY
-	rZlpaMTQi9XzxMlLAbMRfWSURYrW97sd6H+3HkWqF0q+SG47QeiOWPJly3khZnqHmbd6vmLmerc/L
-	Wy0fhLQChSZ/x4I6WIguny/lwepaKNhFbYPUyUO5Kxkf0wANSxFtwVyIUOEe1EMr89TuFh2JKMGmH
-	KYiQkQhA==;
+	bh=xToaM7mETtM8J8CH10yOz6jtvWyJiptKSRAlqSSLrSA=; b=LzCkhFgmc9Cv2khkHMssbmZoTo
+	Nu8VWTXWfs0fG32pUGvzeV9Pil3v7Wt0KNTIuUiBPsmVg8EI/FSPnSv7ZfG2nD3mVVqgE5IbHEdm8
+	qh8S+2ZTQQIeSn/1LGVz/Ce0Yuism9i7boLHLksp+xmvw9999RwkMueHLTrtfzXKdFYnM/JBX/hrB
+	+UeVmPk9vqYANHAvlrE51qCIlcVHEZrERCGZY8Q6F+afkcPd3nomqscuw817RFQhDBl1oaCcOKz03
+	50AAfco4R6RR1N9/T6oN2JbbnEH+vYhEvV/uWgBrCdw0QKTiPOF36f/MQLp51687Uyshr/LN15Vzp
+	DkD21bcA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1opvf6-006PeY-Q1; Tue, 01 Nov 2022 18:06:56 +0000
+	id 1opvf9-006PfP-8M; Tue, 01 Nov 2022 18:06:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1opvex-006PaR-Oa
+	id 1opvex-006PaM-OX
 	for barebox@lists.infradead.org; Tue, 01 Nov 2022 18:06:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1opvew-0006y2-GW; Tue, 01 Nov 2022 19:06:46 +0100
+	id 1opvew-0006xv-8b; Tue, 01 Nov 2022 19:06:46 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1opvew-001j4P-Qa; Tue, 01 Nov 2022 19:06:45 +0100
+	id 1opvew-001j4M-IR; Tue, 01 Nov 2022 19:06:45 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1opveu-0011aN-Dy; Tue, 01 Nov 2022 19:06:44 +0100
+	id 1opveu-0011aQ-ER; Tue, 01 Nov 2022 19:06:44 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  1 Nov 2022 19:06:39 +0100
-Message-Id: <20221101180643.244270-2-a.fatoum@pengutronix.de>
+Date: Tue,  1 Nov 2022 19:06:40 +0100
+Message-Id: <20221101180643.244270-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221101180643.244270-1-a.fatoum@pengutronix.de>
 References: <20221101180643.244270-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221101_110647_840214_A22493B3 
-X-CRM114-Status: GOOD (  10.05  )
+X-CRM114-CacheID: sfid-20221101_110647_860336_F0C9B042 
+X-CRM114-Status: GOOD (  12.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,46 +76,69 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] ARM: asm: set aside new arm_mem_scratch space
+Subject: [PATCH 2/5] ARM: i.MX8M: esdctl: export imx8m_barebox_earlymem_size
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-While ARMv7 and later allow mapping the interrupt vector table at
-arbitrary address, older ARMs only accept 0x0000_0000 and 0xFFFF_0000
-(i.e. SZ_4G - SZ_64K).
-
-For this reason, barebox grows its stack down from the last SZ_64K
-of the early memory bank and leaves the last 64K for MMU IVT setup.
-That way if the early memory bank extends till the end of the 4G
-address space, installing the IVT at 0xFFFF_0000 won't break anything.
-
-SZ_64K is way more than any IVT would need, so let us repurpose the
-last SZ_32K to be some generic scratch space for prebootloader to report
-data to barebox proper. No functional change.
+Board code will need to find out early endmem to use newly defined
+scratch space, so factor out a new helper function to get earlymem size.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/include/asm/barebox-arm.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm/mach-imx/esdctl.c              | 11 ++++++++---
+ arch/arm/mach-imx/include/mach/esdctl.h |  3 +++
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index dd12f642d993..2dcd4153200f 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -73,6 +73,13 @@ static inline void arm_fixup_vectors(void)
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index a55ee06b8346..8de20ed42338 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -923,7 +923,7 @@ void __noreturn vf610_barebox_entry(void *boarddata)
+ 			  boarddata);
+ }
  
- void *barebox_arm_boot_dtb(void);
+-static void __noreturn imx8m_barebox_entry(void *boarddata, unsigned buswidth)
++resource_size_t imx8m_barebox_earlymem_size(unsigned buswidth)
+ {
+ 	resource_size_t size;
  
-+#define __arm_mem_scratch(endmem) ((endmem) - SZ_32K)
-+
-+static inline const void *arm_mem_scratch_get(void)
-+{
-+	return (const void *)__arm_mem_scratch(arm_mem_endmem_get());
+@@ -937,8 +937,13 @@ static void __noreturn imx8m_barebox_entry(void *boarddata, unsigned buswidth)
+ 	 * pool placement. The rest of the system should be able to
+ 	 * detect and utilize full amount of memory.
+ 	 */
+-	size = min_t(resource_size_t, SZ_4G - MX8M_DDR_CSD1_BASE_ADDR, size);
+-	barebox_arm_entry(MX8M_DDR_CSD1_BASE_ADDR, size, boarddata);
++	return min_t(resource_size_t, SZ_4G - MX8M_DDR_CSD1_BASE_ADDR, size);
 +}
 +
- #define __arm_mem_stack_top(membase, endmem) ((endmem) - SZ_64K)
++static void __noreturn imx8m_barebox_entry(void *boarddata, unsigned buswidth)
++{
++	barebox_arm_entry(MX8M_DDR_CSD1_BASE_ADDR,
++			  imx8m_barebox_earlymem_size(buswidth), boarddata);
+ }
  
- #if defined(CONFIG_BOOTM_OPTEE) || defined(CONFIG_PBL_OPTEE)
+ void __noreturn imx8mm_barebox_entry(void *boarddata)
+diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
+index b0b531aed4a2..01533478cce8 100644
+--- a/arch/arm/mach-imx/include/mach/esdctl.h
++++ b/arch/arm/mach-imx/include/mach/esdctl.h
+@@ -131,6 +131,8 @@
+ #define ESDCFGx_tRC_16			0x0000000f
+ 
+ #ifndef __ASSEMBLY__
++#include <linux/types.h>
++
+ void __noreturn imx1_barebox_entry(void *boarddata);
+ void __noreturn imx25_barebox_entry(void *boarddata);
+ void __noreturn imx27_barebox_entry(void *boarddata);
+@@ -148,6 +150,7 @@ void __noreturn imx8mq_barebox_entry(void *boarddata);
+ void __noreturn imx7d_barebox_entry(void *boarddata);
+ #define imx6sx_barebox_entry(boarddata) imx6ul_barebox_entry(boarddata)
+ void imx_esdctl_disable(void);
++resource_size_t imx8m_barebox_earlymem_size(unsigned buswidth);
+ #endif
+ 
+ #endif /* __MACH_ESDCTL_V2_H */
 -- 
 2.30.2
 
