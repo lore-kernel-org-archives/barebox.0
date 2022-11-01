@@ -1,59 +1,54 @@
-Delivery-date: Tue, 01 Nov 2022 07:44:38 +0100
+Delivery-date: Tue, 01 Nov 2022 10:02:47 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1opl0o-00AQO7-SM
-	for lore@lore.pengutronix.de; Tue, 01 Nov 2022 07:44:38 +0100
+	id 1opnAV-00AXoE-7w
+	for lore@lore.pengutronix.de; Tue, 01 Nov 2022 10:02:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1opl0n-0003r9-AX
-	for lore@pengutronix.de; Tue, 01 Nov 2022 07:44:37 +0100
+	id 1opnAU-0002Q0-21
+	for lore@pengutronix.de; Tue, 01 Nov 2022 10:02:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Sk7HCLWONgyX39EugaQmBfNnkZDid45v5T2G09Un7Qk=; b=ycgWAEg8cxRbEqjox4jAmxEJvT
-	EqmGWJdpQBzLmuNFLp2yQjPkIYPADrEgwdbJrk6gNDygCI5Xi3Noh01YiRElJ4l47LK+cHxrkyWIK
-	elLjdHhSSLyBk1laorn4I03hxq3qeKB+XekytQvDW0NS/Uu5CL/WfyIfIh2UDiQmVyj6ZKanb4IEC
-	ao0r1ewCuhWNcubBDSUwrnzKTipwBl0A+YS/zjk/AdpsXisWaVwjJhtun0MTiddDu6uAAYdMkG4jL
-	m4+FTga749tM/DWbQjecOvfF6ZJoaBNpEcStfvlJO4LmCiHloPiqp7OqyJF5uRWoJ00x3lwgaf8o4
-	6lBSZmyg==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=xjYL9y1FWgwWoawXnngy3qXly+x5YrbFwI3zBIhIzKI=; b=F/zX8BM7UNDO8ZjfvOEHlDRY5C
+	Fi/S4+rBBMwikoSomQ6VtDnKWnrJm84Po7V+CvuUICskfXbtcSR1+tp+pJtpSkhfm6e18jFTJu/L2
+	SoWImhUCg7Li8hqBeuxKncZUpdMSfMNjBxf3EQsfyFwVTJGp8dhAJ5y2u3bmh4VKYn2s4nB39t2GX
+	+t6aaNHoGklB455xSgW4gGknFOz8ldsrgDj5MT7asFNg5V9Gnh8TA3bVYxZ7QYxU8LA3mk2cTHhzk
+	2i4puIlUmrUDl8YgLCxWGix7TIYNoKZQLobQTPZo1yAptLZMPayNa3nZZKD3RGFVI8f0FQteZZka1
+	JX4DdpmA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1opkzX-002SXE-9g; Tue, 01 Nov 2022 06:43:19 +0000
+	id 1opn8i-003QBO-IP; Tue, 01 Nov 2022 09:00:56 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1opkzS-002SRS-RB
-	for barebox@lists.infradead.org; Tue, 01 Nov 2022 06:43:16 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1opkzQ-0003ld-Tf; Tue, 01 Nov 2022 07:43:12 +0100
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1opkzR-001ckl-5h; Tue, 01 Nov 2022 07:43:12 +0100
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1opkzP-00DXbs-6H; Tue, 01 Nov 2022 07:43:11 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  1 Nov 2022 07:43:10 +0100
-Message-Id: <20221101064310.3227410-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	id 1opn8d-003QAe-T9
+	for barebox@lists.infradead.org; Tue, 01 Nov 2022 09:00:53 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1opn8a-0001n1-Db; Tue, 01 Nov 2022 10:00:48 +0100
+Message-ID: <a778d7f4-15cb-6a17-342a-72bed5d1bb5e@pengutronix.de>
+Date: Tue, 1 Nov 2022 10:00:47 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Content-Language: en-US
+To: Denis Orlov <denorl2009@gmail.com>, barebox@lists.infradead.org
+References: <20221031073429.1656245-1-denorl2009@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20221031073429.1656245-1-denorl2009@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221031_234314_977325_6F350195 
-X-CRM114-Status: UNSURE (   9.81  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20221101_020051_988126_EF8DFF3F 
+X-CRM114-Status: GOOD (  20.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,60 +66,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] lib: string: implement mempcpy
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] reset: add missing stub for of_reset_control_get()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-mempcpy(3) is a GNU libc extension that like stpcpy returns not the
-start of the destination buffer, but the first byte after its end.
+On 31.10.22 08:34, Denis Orlov wrote:
+> Every other function in reset.h has a corresponding stub that is used
+> when the option RESET_CONTROLLER is disabled in config. This allows for
+> code that uses this function to still be compilable even when the reset
+> controller subsystem is disabled.
+> 
+> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 
-Provide it as it is useful when concatenating buffers or known-size
-strings.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - split off function from series using it. Other series needs
-    commits reordered.
----
- include/string.h | 1 +
- lib/string.c     | 5 +++++
- 2 files changed, 6 insertions(+)
+> ---
+>  include/linux/reset.h | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/include/linux/reset.h b/include/linux/reset.h
+> index c1282a84c7..2d788547f4 100644
+> --- a/include/linux/reset.h
+> +++ b/include/linux/reset.h
+> @@ -48,6 +48,12 @@ static inline int reset_control_deassert(struct reset_control *rstc)
+>  	return 0;
+>  }
+>  
+> +static inline struct reset_control *
+> +of_reset_control_get(struct device_node *node, const char *id)
+> +{
+> +	return NULL;
+> +}
+> +
+>  static inline struct reset_control *
+>  reset_control_get(struct device_d *dev, const char *id)
+>  {
 
-diff --git a/include/string.h b/include/string.h
-index 2cc727fd1d7a..596440ca8164 100644
---- a/include/string.h
-+++ b/include/string.h
-@@ -4,6 +4,7 @@
- 
- #include <linux/string.h>
- 
-+void *mempcpy(void *dest, const void *src, size_t count);
- int strtobool(const char *str, int *val);
- char *strsep_unescaped(char **, const char *);
- char *stpcpy(char *dest, const char *src);
-diff --git a/lib/string.c b/lib/string.c
-index fd4d7da10a7c..edd36da4d4f2 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -603,6 +603,11 @@ void *__memcpy(void * dest, const void *src, size_t count)
- 	__alias(__default_memcpy);
- #endif
- 
-+void *mempcpy(void *dest, const void *src, size_t count)
-+{
-+	return memcpy(dest, src, count) + count;
-+}
-+EXPORT_SYMBOL(mempcpy);
- 
- #ifndef __HAVE_ARCH_MEMMOVE
- /**
 -- 
-2.30.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
