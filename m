@@ -3,57 +3,57 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1optGi-00B02p-IR
+	id 1optGi-00B02r-Lx
 	for lore@lore.pengutronix.de; Tue, 01 Nov 2022 16:33:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1optGg-0005Mw-Em
-	for lore@pengutronix.de; Tue, 01 Nov 2022 16:33:35 +0100
+	id 1optGg-0005N9-Tq
+	for lore@pengutronix.de; Tue, 01 Nov 2022 16:33:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GqbtAZNjAWowqSRegMFytTeNrtKBJVn1W0ZpGSNyfd4=; b=nUJgWkm9SsKz0XlkdPiJEyizoQ
-	hjwfm0daglgl0bwaqwp0+Q3+f4j1YBbyKJzgL+oRmdfO56ZBK9pZf2BiJRmprC4c+HgilXKsfmFts
-	vIi4qEVBUGAr3sHuwpjsKBpagJBjziTU8Unizq0x0Ao01bad16MisHNwiFOZpTpC6qKRekUXyHVei
-	dC16dSXLKx3uo79ncuhDqA32ko6mGmewTFgj2On8OIWYOmPtNsZnO4ARTb5tSn/Mh1SFf7eLmv2sh
-	vfDThisq8y+wdJsFcwgKqZTQFPTafZMVcRB8AL0k9PJKg25elUmUPPZes0QPg34HeJUH7uitHVoF8
-	ciTEj2nQ==;
+	bh=f3lKvoGaa5fCHhJmfmz4HDKLqXdynmD1xibVqTGPv6o=; b=wLQLVJPRmjEIu7qSUHK82Oj14E
+	eQzN6b2Kwdz5wecFT9MGTN+f6FOwDsGG6RB6a6WBxRSvrFaI6BglMiKS4WnkGHyhVuEKM8mcTZpsN
+	lV84wWRO4wGqvQn+PJOepbcuhx3+cf1EPJVpVS5r1zdik/lsn5dmMZDy6KkOmBMk9XlBqK+wsh7So
+	1+NfK6pEnMTiOUscMyKFcGHOAO1QzZNqxRoZIvhUZ8FakhT43/sl3STgzPEy8HSxb1RakG+FC8w3O
+	w44iZisL0OO6f2JDA/J2r/PbhT3TGPAQUv72BMEDjWxnu4Pm/qhGTD5NFbJDkKqy2TZOlQBfd01+l
+	BTIWUp5Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1optF9-005oux-Ns; Tue, 01 Nov 2022 15:31:59 +0000
+	id 1optFF-005owG-QS; Tue, 01 Nov 2022 15:32:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1optEu-005oXG-4A
+	id 1optEu-005oXC-44
 	for barebox@lists.infradead.org; Tue, 01 Nov 2022 15:31:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1optE4-0004f8-4R; Tue, 01 Nov 2022 16:30:52 +0100
+	id 1optE3-0004ft-U5; Tue, 01 Nov 2022 16:30:51 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1optE3-001hdO-Gh; Tue, 01 Nov 2022 16:30:50 +0100
+	id 1optE4-001hdk-7B; Tue, 01 Nov 2022 16:30:51 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1optE1-003Ey2-E8; Tue, 01 Nov 2022 16:30:49 +0100
+	id 1optE1-003EyE-GW; Tue, 01 Nov 2022 16:30:49 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  1 Nov 2022 16:30:42 +0100
-Message-Id: <20221101153048.772146-9-s.hauer@pengutronix.de>
+Date: Tue,  1 Nov 2022 16:30:46 +0100
+Message-Id: <20221101153048.772146-13-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221101153048.772146-1-s.hauer@pengutronix.de>
 References: <20221101153048.772146-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221101_083144_300317_E214DDE8 
-X-CRM114-Status: GOOD (  15.23  )
+X-CRM114-CacheID: sfid-20221101_083144_351982_B8EEEDCA 
+X-CRM114-Status: GOOD (  15.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,105 +75,114 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 08/14] ARM: i.MX: xload nand: Pull ECC status checking out of read page
+Subject: [PATCH 12/14] ARM: i.MX: xload nand: Move mxs_nand_mode_fcb_62bit() to header file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The read page code can be reused by upcoming i.MX7 support, but the ECC
-checking will be different. Pull ECC status checking out of the read
-page code to make that reusable on i.MX7.
+mxs_nand_mode_fcb_62bit() can be shared between the regular MTD NAND
+driver and the upcoming i.MX7 xload driver. Move to header file.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/xload-gpmi-nand.c | 42 ++++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 13 deletions(-)
+ drivers/mtd/nand/nand_mxs.c | 34 ++--------------------------------
+ include/soc/imx/gpmi-nand.h | 27 +++++++++++++++++++++++++++
+ 2 files changed, 29 insertions(+), 32 deletions(-)
 
-diff --git a/arch/arm/mach-imx/xload-gpmi-nand.c b/arch/arm/mach-imx/xload-gpmi-nand.c
-index dc4cc45be0..543ec108ba 100644
---- a/arch/arm/mach-imx/xload-gpmi-nand.c
-+++ b/arch/arm/mach-imx/xload-gpmi-nand.c
-@@ -236,8 +236,6 @@ static int mxs_nand_read_page(struct mxs_nand_info *info, int writesize,
- 	int cmd_queue_len;
- 	u8 *cmd_buf;
- 	int ret;
--	uint8_t	*status;
--	int i;
- 	int timeout;
- 	int descnum = 0;
- 	int max_pagenum = info->nand_size /
-@@ -375,20 +373,26 @@ static int mxs_nand_read_page(struct mxs_nand_info *info, int writesize,
- 	writel(BCH_CTRL_COMPLETE_IRQ,
- 		bch_regs + BCH_CTRL + STMP_OFFSET_REG_CLR);
- 
--	/* Loop over status bytes, accumulating ECC status. */
--	status = databuf + writesize + mxs_nand_aux_status_offset();
--	for (i = 0; i < writesize / MXS_NAND_CHUNK_DATA_CHUNK_SIZE; i++) {
--		if (status[i] == 0xfe) {
--			ret = -EBADMSG;
--			goto err;
--		}
--	}
--
- 	ret = 0;
- err:
- 	return ret;
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index b162c23743..79a8fbdefa 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -1123,36 +1123,6 @@ static int mxs_nand_block_markbad(struct nand_chip *chip , loff_t ofs)
+ 	return 0;
  }
  
-+static int mxs_nand_get_ecc_status(struct mxs_nand_info *info, void *databuf)
+-#define BCH62_WRITESIZE		1024
+-#define BCH62_OOBSIZE		838
+-#define BCH62_PAGESIZE		(BCH62_WRITESIZE + BCH62_OOBSIZE)
+-
+-static void mxs_nand_mode_fcb_62bit(struct mxs_nand_info *nand_info)
+-{
+-	void __iomem *bch_regs;
+-	u32 fl0, fl1;
+-
+-	bch_regs = nand_info->bch_base;
+-
+-	/* 8 ecc_chunks */
+-	fl0 = FIELD_PREP(BCH_FLASHLAYOUT0_NBLOCKS, 7);
+-	/* 32 bytes for metadata */
+-	fl0 |= FIELD_PREP(BCH_FLASHLAYOUT0_META_SIZE, 32);
+-	/* using ECC62 level to be performed */
+-	fl0 |= FIELD_PREP(IMX6_BCH_FLASHLAYOUT0_ECC0, 0x1f);
+-	/* 0x20 * 4 bytes of the data0 block */
+-	fl0 |= FIELD_PREP(BCH_FLASHLAYOUT0_DATA0_SIZE, 0x20);
+-	writel(fl0, bch_regs + BCH_FLASH0LAYOUT0);
+-
+-	/* 1024 for data + 838 for OOB */
+-	fl1 = FIELD_PREP(BCH_FLASHLAYOUT1_PAGE_SIZE, BCH62_PAGESIZE);
+-	/* using ECC62 level to be performed */
+-	fl1 |= FIELD_PREP(IMX6_BCH_FLASHLAYOUT1_ECCN, 0x1f);
+-	/* 0x20 * 4 bytes of the data0 block */
+-	fl1 |= FIELD_PREP(BCH_FLASHLAYOUT1_DATAN_SIZE, 0x20);
+-	writel(fl1, bch_regs + BCH_FLASH0LAYOUT1);
+-}
+-
+ int mxs_nand_read_fcb_bch62(unsigned int block, void *buf, size_t size)
+ {
+ 	struct nand_chip *chip;
+@@ -1174,7 +1144,7 @@ int mxs_nand_read_fcb_bch62(unsigned int block, void *buf, size_t size)
+ 
+ 	page = block * (mtd->erasesize / mtd->writesize);
+ 
+-	mxs_nand_mode_fcb_62bit(nand_info);
++	mxs_nand_mode_fcb_62bit(nand_info->bch_base);
+ 
+ 	nand_read_page_op(chip, page, 0, NULL, 0);
+ 
+@@ -1238,7 +1208,7 @@ int mxs_nand_write_fcb_bch62(unsigned int block, void *buf, size_t size)
+ 	nand_info = chip->priv;
+ 	channel = nand_info->dma_channel_base;
+ 
+-	mxs_nand_mode_fcb_62bit(nand_info);
++	mxs_nand_mode_fcb_62bit(nand_info->bch_base);
+ 
+ 	nand_select_target(chip, 0);
+ 
+diff --git a/include/soc/imx/gpmi-nand.h b/include/soc/imx/gpmi-nand.h
+index f7a2caa1d6..8c30dee8ab 100644
+--- a/include/soc/imx/gpmi-nand.h
++++ b/include/soc/imx/gpmi-nand.h
+@@ -111,4 +111,31 @@
+ 
+ #define	MXS_NAND_BCH_TIMEOUT			10000
+ 
++#define BCH62_WRITESIZE		1024
++#define BCH62_OOBSIZE		838
++#define BCH62_PAGESIZE		(BCH62_WRITESIZE + BCH62_OOBSIZE)
++
++static void mxs_nand_mode_fcb_62bit(void __iomem *bch_regs)
 +{
-+	uint8_t	*status;
-+	int i;
++	u32 fl0, fl1;
 +
-+	/* Loop over status bytes, accumulating ECC status. */
-+	status = databuf + info->organization.pagesize + mxs_nand_aux_status_offset();
-+	for (i = 0; i < info->organization.pagesize / MXS_NAND_CHUNK_DATA_CHUNK_SIZE; i++) {
-+		if (status[i] == 0xfe)
-+			return -EBADMSG;
-+	}
++	/* 8 ecc_chunks */
++	fl0 = FIELD_PREP(BCH_FLASHLAYOUT0_NBLOCKS, 7);
++	/* 32 bytes for metadata */
++	fl0 |= FIELD_PREP(BCH_FLASHLAYOUT0_META_SIZE, 32);
++	/* using ECC62 level to be performed */
++	fl0 |= FIELD_PREP(IMX6_BCH_FLASHLAYOUT0_ECC0, 0x1f);
++	/* 0x20 * 4 bytes of the data0 block */
++	fl0 |= FIELD_PREP(BCH_FLASHLAYOUT0_DATA0_SIZE, 0x20);
++	writel(fl0, bch_regs + BCH_FLASH0LAYOUT0);
 +
-+	return 0;
++	/* 1024 for data + 838 for OOB */
++	fl1 = FIELD_PREP(BCH_FLASHLAYOUT1_PAGE_SIZE, BCH62_PAGESIZE);
++	/* using ECC62 level to be performed */
++	fl1 |= FIELD_PREP(IMX6_BCH_FLASHLAYOUT1_ECCN, 0x1f);
++	/* 0x20 * 4 bytes of the data0 block */
++	fl1 |= FIELD_PREP(BCH_FLASHLAYOUT1_DATAN_SIZE, 0x20);
++	writel(fl1, bch_regs + BCH_FLASH0LAYOUT1);
 +}
 +
- static int mxs_nand_get_read_status(struct mxs_nand_info *info, void *databuf)
- {
- 	int ret;
-@@ -851,6 +855,10 @@ static int get_fcb(struct mxs_nand_info *info, void *databuf)
- 		if (ret)
- 			continue;
- 
-+		ret = mxs_nand_get_ecc_status(info, databuf);
-+		if (ret)
-+			continue;
-+
- 		memcpy(fcb, databuf + mxs_nand_aux_status_offset(),
- 			sizeof(*fcb));
- 
-@@ -886,7 +894,11 @@ static int get_dbbt(struct mxs_nand_info *info, void *databuf)
- 		page = startpage + i * info->organization.pages_per_eraseblock;
- 
- 		ret = mxs_nand_read_page(info, info->organization.pagesize,
--			info->organization.oobsize, page, databuf, 0);
-+			info->organization.oobsize, page, databuf, 0, false);
-+		if (ret)
-+			continue;
-+
-+		ret = mxs_nand_get_ecc_status(info, databuf);
- 		if (ret)
- 			continue;
- 
-@@ -900,7 +912,11 @@ static int get_dbbt(struct mxs_nand_info *info, void *databuf)
- 			return -ENOENT;
- 
- 		ret = mxs_nand_read_page(info, info->organization.pagesize,
--			info->organization.oobsize, page + 4, databuf, 0);
-+			info->organization.oobsize, page + 4, databuf, 0, false);
-+		if (ret)
-+			continue;
-+
-+		ret = mxs_nand_get_ecc_status(info, databuf);
- 		if (ret)
- 			continue;
- 
+ #endif /* __SOC_IMX_GPMI_NAND_H */
 -- 
 2.30.2
 
