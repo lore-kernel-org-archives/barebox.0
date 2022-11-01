@@ -1,54 +1,83 @@
-Delivery-date: Tue, 01 Nov 2022 10:03:23 +0100
+Delivery-date: Tue, 01 Nov 2022 10:54:47 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1opnB5-00AXpQ-7s
-	for lore@lore.pengutronix.de; Tue, 01 Nov 2022 10:03:23 +0100
+	id 1opnyp-00Aabb-Bi
+	for lore@lore.pengutronix.de; Tue, 01 Nov 2022 10:54:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1opnB4-0002Zk-5y
-	for lore@pengutronix.de; Tue, 01 Nov 2022 10:03:22 +0100
+	id 1opnyn-0001R2-SB
+	for lore@pengutronix.de; Tue, 01 Nov 2022 10:54:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xZJhRHKd9PaKZClqegpmI16QT2prmGNEuUK5JRK378U=; b=BrKEwqAS9nrhNMNSV1AP5Oitx/
-	EEvkk79CfzRzTzW6q8ECGqhxE+72yQ5n2B1OxlffVxn3mZMFFyQnRGzjuNzyI+5vgbgk4JgiUS3Gs
-	ag1UcHLCGr7OGzCy0EeKn3/QYyAlz5vjdUCJOyunFcGgveg8+g7+o8kJ/Nbcq092biZaQqLkjTaIX
-	OtgtQ0/z9E92A0mLT0r7H3uuPUHNpz0YseEfHT/2/FyP6UiOEVaCg394k5iRw0bxktVv4xQ04nw/o
-	VjiTgOdC+kTZpe31VXj0PHFY5gjiX5MyarNLZjknflyr+FO3OeM8l7/hUHOjnG/z4WwWY/L1qoD/y
-	NCUVU70Q==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3BiKUwIQdAxVm2MpX6fO6GfeYyAdShe9UnmF5lUl4IY=; b=gkWkUPIWeq5jZlRaKuH2cvz2oD
+	rHrB7C1DGIXf6Je6sn0koj6pcXrE/8GD8VVB23lMMA0BrSpPt2uAem4ZfBFYlNj819FjPJVqQc1z/
+	3O9EGNHUDnc9SMnLEciJJqcdMCINc4XBW2Hf4dxDlPFzCKZD8/IGE2rP/NN6ho4ki3qIgkeljZImA
+	iSc0eeC3krkYADnYgSj00YBOWKhmuPJqnSSNORcoUq4JiAqDl6UurvotuwHUBv6al4Hm02UXl1f38
+	/t2iyt2kvUUvkf47VEPk6YtrDZJNiJ4u0nAX5/PqEKLSpXFpTBHRMwMy3pIgEVIdEkHQ0vDLhdzIM
+	ZbkwDIDA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1opn9k-003QSW-Lr; Tue, 01 Nov 2022 09:02:00 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1opnxL-003oJj-2I; Tue, 01 Nov 2022 09:53:15 +0000
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1opn9g-003QR3-0Z
-	for barebox@lists.infradead.org; Tue, 01 Nov 2022 09:01:57 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1opn9e-000290-Rb; Tue, 01 Nov 2022 10:01:54 +0100
-Message-ID: <d69f44c4-3efc-8b93-fbf7-91c6c9d0f3b6@pengutronix.de>
-Date: Tue, 1 Nov 2022 10:01:54 +0100
+	id 1opnxF-003oGq-FZ
+	for barebox@lists.infradead.org; Tue, 01 Nov 2022 09:53:10 +0000
+Received: by mail-ej1-x62d.google.com with SMTP id y14so35696239ejd.9
+        for <barebox@lists.infradead.org>; Tue, 01 Nov 2022 02:53:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3BiKUwIQdAxVm2MpX6fO6GfeYyAdShe9UnmF5lUl4IY=;
+        b=KzdmFGf7ftPYrN+pEwRdZOT95rzWCdjk41mZZVqMN5mmlrmifLtx0fAxzdYSLoN8IX
+         AaBx7boCT+vsPgVkL4Y2LyAZQIac7y0Tg4iMjtQL1EiStAtTOfqzDvqt8SdOLMeDLEC+
+         DdtDJDsTEKClraaJ94J+IBJwrpMcAutae4kMZfFJ57NeYUcUZiwTOq8ilwqZ503ca4K2
+         mv6EfsTMiFx4FI9VWcYnpuSzybd0NTSMPXKFMhMjrcgmoD9RQrQgdQgy+woUskd5AFwn
+         W6hgrQLII5H2LpRxkPGs+4kZFJGtdbbhE03+gBJKgoPf7OMrVnn5OSKUlnqLGghdfeVV
+         shew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3BiKUwIQdAxVm2MpX6fO6GfeYyAdShe9UnmF5lUl4IY=;
+        b=U4ra+10iBE6rT1DuPYvrap3fuqrCFnPAThs4E3VPO8bVakAUqeN2+vDnF8Oazof6aF
+         PU1ldfaoCfxVx+MXeWG/DoSxZs3DojrjoSAvwoKotFrKrOpF5RnR+N+bOoyeI89e+nnn
+         0mmXwo8GxpbdRiR5Fd0q58giBm/OYTsx8BA9F8zHicwzyakZtPwsJPiqYzF+UMkzru0M
+         uECgGgPBsnNq1KwF/eh0pPbsKktaZUyP/VSon0VGXRr7IIFf+qjl3n3G2VIT3C21lzfd
+         ysze7cf0gioBCwcKG+xzELAkFtoybRBaXaHI3rRFQ6BC6TauVpZoBh/OCzekH3uR6Wgr
+         Bkeg==
+X-Gm-Message-State: ACrzQf3ycEb7qNBYrBh00+PPTVltsve4gG4JBhenbe49mKgInNM7NqHx
+	VNpiuw88kcxId0tQNhMLXlK3M6fSQkKBeQ==
+X-Google-Smtp-Source: AMsMyM4swTGTr3hxjeA8xd6FCPX76lCHSXx7MgcU1ECbOnV7i+g+6MOJuwYRQY0oz9Pcccus40DSCw==
+X-Received: by 2002:a17:907:160e:b0:791:8ae7:4fb8 with SMTP id hb14-20020a170907160e00b007918ae74fb8mr17690306ejc.271.1667296385662;
+        Tue, 01 Nov 2022 02:53:05 -0700 (PDT)
+Received: from uvv-2004-vm.localdomain (dslb-002-205-236-027.002.205.pools.vodafone-ip.de. [2.205.236.27])
+        by smtp.gmail.com with ESMTPSA id hv13-20020a17090760cd00b0078d21574986sm3924904ejc.203.2022.11.01.02.53.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Nov 2022 02:53:05 -0700 (PDT)
+From: Vyacheslav Yurkov <uvv.mail@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
+Date: Tue,  1 Nov 2022 10:52:41 +0100
+Message-Id: <20221101095241.984845-2-uvv.mail@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20221101095241.984845-1-uvv.mail@gmail.com>
+References: <20221101095241.984845-1-uvv.mail@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Content-Language: en-US
-To: Denis Orlov <denorl2009@gmail.com>, barebox@lists.infradead.org
-References: <20221031073319.1656130-1-denorl2009@gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20221031073319.1656130-1-denorl2009@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221101_020156_081079_B5582F04 
-X-CRM114-Status: GOOD (  21.79  )
+X-CRM114-CacheID: sfid-20221101_025309_544741_EC4ABBA8 
+X-CRM114-Status: GOOD (  10.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,72 +95,59 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] net: e1000: fix <NULL>s in log messages
+X-Spam-Status: No, score=-5.0 required=4.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 2/2] ARM: socfpga: Configure F2SDRAM bridges
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 31.10.22 08:33, Denis Orlov wrote:
-> We do not have an edev.dev set up yet when we are filling in the device
-> structure and reading an EEPROM in probe. Besides, using hw->dev for
-> those messages seems more appropriate.
-> 
-> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+From: Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+When DDR firewall configuration is updated the F2SDRAM bridges need to
+be brought from reset.
 
-> ---
->  drivers/net/e1000/eeprom.c | 6 +++---
->  drivers/net/e1000/main.c   | 2 +-
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-> index 1072bc54ef..27143bd6d0 100644
-> --- a/drivers/net/e1000/eeprom.c
-> +++ b/drivers/net/e1000/eeprom.c
-> @@ -800,7 +800,7 @@ int e1000_validate_eeprom_checksum(struct e1000_hw *hw)
->  
->  	/* Read the EEPROM */
->  	if (e1000_read_eeprom(hw, 0, EEPROM_CHECKSUM_REG + 1, buf) < 0) {
-> -		dev_err(&hw->edev.dev, "Unable to read EEPROM!\n");
-> +		dev_err(hw->dev, "Unable to read EEPROM!\n");
->  		return -E1000_ERR_EEPROM;
->  	}
->  
-> @@ -816,8 +816,8 @@ int e1000_validate_eeprom_checksum(struct e1000_hw *hw)
->  		return 0;
->  
->  	/* Hrm, verification failed, print an error */
-> -	dev_err(&hw->edev.dev, "EEPROM checksum is incorrect!\n");
-> -	dev_err(&hw->edev.dev, "  ...register was 0x%04hx, calculated 0x%04hx\n",
-> +	dev_err(hw->dev, "EEPROM checksum is incorrect!\n");
-> +	dev_err(hw->dev, "  ...register was 0x%04hx, calculated 0x%04hx\n",
->  			checksum_reg, checksum);
->  
->  	return -E1000_ERR_EEPROM;
-> diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-> index 363730de0a..1f84cf2949 100644
-> --- a/drivers/net/e1000/main.c
-> +++ b/drivers/net/e1000/main.c
-> @@ -3226,7 +3226,7 @@ static int e1000_sw_init(struct eth_device *edev)
->  	/* identify the MAC */
->  	result = e1000_set_mac_type(hw);
->  	if (result) {
-> -		dev_err(&hw->edev.dev, "Unknown MAC Type\n");
-> +		dev_err(hw->dev, "Unknown MAC Type\n");
->  		return result;
->  	}
->  
+Signed-off-by: Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
+---
+ arch/arm/mach-socfpga/arria10-sdram.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
+diff --git a/arch/arm/mach-socfpga/arria10-sdram.c b/arch/arm/mach-socfpga/arria10-sdram.c
+index b7eade0b17..a6eb63299a 100644
+--- a/arch/arm/mach-socfpga/arria10-sdram.c
++++ b/arch/arm/mach-socfpga/arria10-sdram.c
+@@ -468,6 +468,18 @@ static void arria10_sdram_mmr_init(void)
+ 	}
+ }
+ 
++static void arria10_f2sdram_bridges_reset(void)
++{
++	uint32_t val;
++
++	/* Release F2SDRAM bridges from reset */
++	val = readl(ARRIA10_RSTMGR_ADDR + ARRIA10_RSTMGR_BRGMODRST);
++	val &= ~(ARRIA10_RSTMGR_BRGMODRST_F2SSDRAM0 |
++		ARRIA10_RSTMGR_BRGMODRST_F2SSDRAM1 |
++		ARRIA10_RSTMGR_BRGMODRST_F2SSDRAM2);
++	writel(val, ARRIA10_RSTMGR_ADDR + ARRIA10_RSTMGR_BRGMODRST);
++}
++
+ static int arria10_sdram_firewall_setup(void)
+ {
+ 	uint32_t mpu_en = 0;
+@@ -512,6 +524,8 @@ static int arria10_sdram_firewall_setup(void)
+ 	writel(0xffff0000, ARRIA10_NOC_FW_DDR_L3_HPSREGION0ADDR);
+ 	writel(ARRIA10_NOC_FW_DDR_L3_HPSREG0EN, ARRIA10_NOC_FW_DDR_L3_EN);
+ 
++	arria10_f2sdram_bridges_reset();
++
+ 	return 0;
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.1
 
 
 
