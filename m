@@ -1,61 +1,58 @@
-Delivery-date: Wed, 02 Nov 2022 09:28:13 +0100
+Delivery-date: Wed, 02 Nov 2022 09:34:37 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oq96b-00C2KE-Em
-	for lore@lore.pengutronix.de; Wed, 02 Nov 2022 09:28:13 +0100
+	id 1oq9Cm-00C2tv-VX
+	for lore@lore.pengutronix.de; Wed, 02 Nov 2022 09:34:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oq96a-00040L-AI
-	for lore@pengutronix.de; Wed, 02 Nov 2022 09:28:12 +0100
+	id 1oq9Cl-0004dv-Im
+	for lore@pengutronix.de; Wed, 02 Nov 2022 09:34:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ChC1h13SyQzdUiXUUkajzrW57EcFHWuiWozzlplKi90=; b=L+aOrFqu1H/p1lQZDcfhMtVz7/
-	yG7/uekLrJ2vg0tHxBjaXEfLRU35SN8W3vKNjAT7isgzyPU0YNyEvODUBh/4WNt9W56h5TdyKynj8
-	GgfAG/u/XcCHecBOO2+XP5dRXX0fGjx6oUbR/8QUwZNP8saYf/PK14hAM4UFma/hSJVpyCgI5N4Vj
-	8aPupOiCKHAwcBKwP6gn4D4eUC2p6Wf/d/5A3xJrkBK/7NRc4myT2p9nKnDBOQyrDZeldRm/r8MJy
-	WYaunDbaEu0dg4Et6FkReUSXiHnTQMZkLLjRvT1l0yZeo7mdHPz7KW4ma0uaD0oHFAe1N9eIoO4t4
-	2lpT+f+Q==;
+	bh=enupEc8SPtKI8GUUKT/SNa61Zjm8SjxlNbsHgS/VU3c=; b=LkS45on6kbS4rJLe6GaMOU2xfg
+	2ZQ3JinzBndZJ8fVBrAAFG+ZKg7uXOwPCU6tLBYJnn+LxG6Yln0O519/PlpeTF8K3U1eoLzOORt1o
+	GYsHv8zzo/ErzTN066MMoqoqmEYoRI+7C1sEu45fqk0iH9FxAGyIJBwtCHgRj5YH/Vz4cOkEmZmal
+	FA3uqBfYM/t75Bcz69uvpTRM5ByKWBaokTaHduyL8K0tGf7oiVa2eQpEbWwak8HbLhgZdY2yp3jb6
+	ZZmBonjf9EZwEzSCUTKvoTN3ILAq+FoYV4QTO7V7WyNlIFctmGdt8ghvlFPwljunTad7fFQQzbdN7
+	aVCom4Qg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oq95L-008uDA-AQ; Wed, 02 Nov 2022 08:26:55 +0000
+	id 1oq9BY-008ytg-HX; Wed, 02 Nov 2022 08:33:20 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oq95G-008uCF-Uw
-	for barebox@lists.infradead.org; Wed, 02 Nov 2022 08:26:52 +0000
+	id 1oq9BU-008yrT-0K
+	for barebox@lists.infradead.org; Wed, 02 Nov 2022 08:33:17 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oq95F-0003tN-0p; Wed, 02 Nov 2022 09:26:49 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1oq95E-00007F-PN; Wed, 02 Nov 2022 09:26:48 +0100
-Date: Wed, 2 Nov 2022 09:26:48 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20221102082648.GI3143@pengutronix.de>
-References: <20221019123817.1659468-1-a.fatoum@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1oq9BS-0004Wy-JA; Wed, 02 Nov 2022 09:33:14 +0100
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1oq9BS-0000JX-Bv; Wed, 02 Nov 2022 09:33:14 +0100
+Date: Wed, 2 Nov 2022 09:33:14 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20221102083314.2zebgpxr6pyyutuo@pengutronix.de>
+References: <20221101153048.772146-1-s.hauer@pengutronix.de>
+ <20221101153048.772146-9-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221019123817.1659468-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <20221101153048.772146-9-s.hauer@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221102_012651_019080_52221660 
-X-CRM114-Status: GOOD (  24.23  )
+X-CRM114-CacheID: sfid-20221102_013316_069971_2BF8274A 
+X-CRM114-Status: GOOD (  23.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,79 +74,120 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/3] include: debug_ll: define puthexc_ll
+Subject: Re: [PATCH 08/14] ARM: i.MX: xload nand: Pull ECC status checking
+ out of read page
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Oct 19, 2022 at 02:38:15PM +0200, Ahmad Fatoum wrote:
-> puthex_ll prints a single zero-padded unsigned long, which for a single
-> byte is not very readable, especially on 64-bit systems. Define
-> puthexc_ll() as well, which just accepts a byte and formats its nibbles
-> as hexadecimal characters.
+Hi Sascha,
+
+On 22-11-01, Sascha Hauer wrote:
+> The read page code can be reused by upcoming i.MX7 support, but the ECC
+> checking will be different. Pull ECC status checking out of the read
+> page code to make that reusable on i.MX7.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  include/debug_ll.h | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
-
-Applied, thanks
-
-Sascha
-
+>  arch/arm/mach-imx/xload-gpmi-nand.c | 42 ++++++++++++++++++++---------
+>  1 file changed, 29 insertions(+), 13 deletions(-)
 > 
-> diff --git a/include/debug_ll.h b/include/debug_ll.h
-> index 735033b314cc..856a157bf52c 100644
-> --- a/include/debug_ll.h
-> +++ b/include/debug_ll.h
-> @@ -33,17 +33,25 @@ static inline void putc_ll(char value)
->  	PUTC_LL(value);
+> diff --git a/arch/arm/mach-imx/xload-gpmi-nand.c b/arch/arm/mach-imx/xload-gpmi-nand.c
+> index dc4cc45be0..543ec108ba 100644
+> --- a/arch/arm/mach-imx/xload-gpmi-nand.c
+> +++ b/arch/arm/mach-imx/xload-gpmi-nand.c
+> @@ -236,8 +236,6 @@ static int mxs_nand_read_page(struct mxs_nand_info *info, int writesize,
+>  	int cmd_queue_len;
+>  	u8 *cmd_buf;
+>  	int ret;
+> -	uint8_t	*status;
+> -	int i;
+>  	int timeout;
+>  	int descnum = 0;
+>  	int max_pagenum = info->nand_size /
+> @@ -375,20 +373,26 @@ static int mxs_nand_read_page(struct mxs_nand_info *info, int writesize,
+>  	writel(BCH_CTRL_COMPLETE_IRQ,
+>  		bch_regs + BCH_CTRL + STMP_OFFSET_REG_CLR);
+>  
+> -	/* Loop over status bytes, accumulating ECC status. */
+> -	status = databuf + writesize + mxs_nand_aux_status_offset();
+> -	for (i = 0; i < writesize / MXS_NAND_CHUNK_DATA_CHUNK_SIZE; i++) {
+> -		if (status[i] == 0xfe) {
+> -			ret = -EBADMSG;
+> -			goto err;
+> -		}
+> -	}
+> -
+>  	ret = 0;
+>  err:
+>  	return ret;
 >  }
 >  
-> -static inline void puthex_ll(unsigned long value)
-> +static inline void puthexc_ll(unsigned char value)
->  {
->  	int i; unsigned char ch;
->  
-> -	for (i = sizeof(unsigned long) * 2; i--; ) {
-> +	for (i = 2; i--; ) {
->  		ch = ((value >> (i * 4)) & 0xf);
->  		ch += (ch >= 10) ? 'a' - 10 : '0';
->  		putc_ll(ch);
->  	}
->  }
->  
-> +static inline void puthex_ll(unsigned long value)
+> +static int mxs_nand_get_ecc_status(struct mxs_nand_info *info, void *databuf)
 > +{
+> +	uint8_t	*status;
 > +	int i;
 > +
-> +	for (i = sizeof(unsigned long); i--; )
-> +		puthexc_ll(value >> (i * 8));
+> +	/* Loop over status bytes, accumulating ECC status. */
+> +	status = databuf + info->organization.pagesize + mxs_nand_aux_status_offset();
+> +	for (i = 0; i < info->organization.pagesize / MXS_NAND_CHUNK_DATA_CHUNK_SIZE; i++) {
+> +		if (status[i] == 0xfe)
+> +			return -EBADMSG;
+> +	}
+> +
+> +	return 0;
 > +}
 > +
->  /*
->   * Be careful with puts_ll, it only works if the binary is running at the
->   * link address which often is not the case during early startup. If in doubt
-> @@ -66,6 +74,10 @@ static inline void putc_ll(char value)
+>  static int mxs_nand_get_read_status(struct mxs_nand_info *info, void *databuf)
 >  {
->  }
+>  	int ret;
+> @@ -851,6 +855,10 @@ static int get_fcb(struct mxs_nand_info *info, void *databuf)
+>  		if (ret)
+>  			continue;
 >  
-> +static inline void puthexc_ll(unsigned char value)
-> +{
-> +}
+> +		ret = mxs_nand_get_ecc_status(info, databuf);
+> +		if (ret)
+> +			continue;
 > +
->  static inline void puthex_ll(unsigned long value)
->  {
->  }
+>  		memcpy(fcb, databuf + mxs_nand_aux_status_offset(),
+>  			sizeof(*fcb));
+>  
+> @@ -886,7 +894,11 @@ static int get_dbbt(struct mxs_nand_info *info, void *databuf)
+>  		page = startpage + i * info->organization.pages_per_eraseblock;
+>  
+>  		ret = mxs_nand_read_page(info, info->organization.pagesize,
+> -			info->organization.oobsize, page, databuf, 0);
+> +			info->organization.oobsize, page, databuf, 0, false);
+
+Maybe I didn't saw the change, but where did you changed the function
+declaration?
+
+Regards,
+  Marco
+
+> +		if (ret)
+> +			continue;
+> +
+> +		ret = mxs_nand_get_ecc_status(info, databuf);
+>  		if (ret)
+>  			continue;
+>  
+> @@ -900,7 +912,11 @@ static int get_dbbt(struct mxs_nand_info *info, void *databuf)
+>  			return -ENOENT;
+>  
+>  		ret = mxs_nand_read_page(info, info->organization.pagesize,
+> -			info->organization.oobsize, page + 4, databuf, 0);
+> +			info->organization.oobsize, page + 4, databuf, 0, false);
+> +		if (ret)
+> +			continue;
+> +
+> +		ret = mxs_nand_get_ecc_status(info, databuf);
+>  		if (ret)
+>  			continue;
+>  
 > -- 
 > 2.30.2
 > 
 > 
 > 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
