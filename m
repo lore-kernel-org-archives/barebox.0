@@ -1,58 +1,63 @@
-Delivery-date: Wed, 02 Nov 2022 11:49:53 +0100
+Delivery-date: Wed, 02 Nov 2022 11:57:00 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oqBJh-00CDPK-Nx
-	for lore@lore.pengutronix.de; Wed, 02 Nov 2022 11:49:53 +0100
+	id 1oqBQa-00CDyi-KK
+	for lore@lore.pengutronix.de; Wed, 02 Nov 2022 11:57:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oqBJg-0000qI-M7
-	for lore@pengutronix.de; Wed, 02 Nov 2022 11:49:53 +0100
+	id 1oqBQZ-0001s2-DR
+	for lore@pengutronix.de; Wed, 02 Nov 2022 11:56:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=xOT10gn9osQuC9pn5ySsSMDA6sxyZN7S9qMJnZGapPY=; b=hoZICUuifDONl5z4maRqiugts/
-	fcbsv7R8EaNUlYlYv4Nbc9JMHRMTP4uNlX4KaPaBvgisZL4XdfS0np5bMkL23dKrMjEAaZ9HaMnYU
-	kzG4oWFUej0zLx4YjHd5IYThdhc8XDkHGKeWlNDF7mBG4NZiv0g2zeYQHw4sOrtOfrxrTFC6hMgU9
-	Hgs+584fcU6EwIuwhr7esDp0ClR5EQExaU2NFgNcCC5p37/GQGeHoELyZ2kG5pcCzuYKsiHR9uhX6
-	pshSTfDTxArGkpzypMYizr5BdkL1iaYKrHkuq/nBRF0YzB5mLFOBKugE+e9p/5a1Hc61TV57S2Nf2
-	ex/+N04w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=BaSbbTmYbI++aQKzrKJDm/yo4bUFpwQBIQUerTIkR5E=; b=1cpZs9rlhwGNwgiQMFO9zpgqB3
+	tjeqrmoRL/xYxsjvcCTwCRNvV80L5PMfB5jXJEQvminT66lFzNENU1NSZcNooe49DY6WTn79kJ/K7
+	Tq1MTfjeoB8UMmj/YKnq/UTHR3M7BE053LXRAu0MvEda3OvFwYP9hKYu0EelohLe1peRn9MIp1WwM
+	HDrTw2MGrq5e6rMd3GTq3K41XvdRjDk22TyGjJ95KEqE6SgmeKW+l0GmxTw9Cn7h5LnlRq2q3r8Ky
+	AwYJ5ex7DGLuDDuDArcpJqiEf9aeUESvABZMmQSueDmZcbjLBgCdaHile0h+TE7jVit6GmAAM2cwh
+	efXml49g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oqBIG-00Aajc-3q; Wed, 02 Nov 2022 10:48:24 +0000
+	id 1oqBPJ-00AdJ6-I9; Wed, 02 Nov 2022 10:55:41 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oqBIA-00AahW-W5
-	for barebox@lists.infradead.org; Wed, 02 Nov 2022 10:48:20 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1oqBPE-00AdHU-Jk
+	for barebox@lists.infradead.org; Wed, 02 Nov 2022 10:55:38 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1oqBI8-0000eQ-TK; Wed, 02 Nov 2022 11:48:16 +0100
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1oqBI9-001qzA-5Q; Wed, 02 Nov 2022 11:48:16 +0100
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1oqBI7-008gdr-DJ; Wed, 02 Nov 2022 11:48:15 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  2 Nov 2022 11:48:14 +0100
-Message-Id: <20221102104814.2070367-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1oqBPA-0001V5-Vr; Wed, 02 Nov 2022 11:55:32 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1oqBPA-0001XW-OJ; Wed, 02 Nov 2022 11:55:32 +0100
+Date: Wed, 2 Nov 2022 11:55:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20221102105532.GK3143@pengutronix.de>
+References: <20221101153048.772146-1-s.hauer@pengutronix.de>
+ <20221101153048.772146-15-s.hauer@pengutronix.de>
+ <20221102084441.o53v5zl3ki5if43r@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221102084441.o53v5zl3ki5if43r@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221102_034819_051553_FD76361C 
-X-CRM114-Status: GOOD (  11.47  )
+X-CRM114-CacheID: sfid-20221102_035536_666350_35EC861F 
+X-CRM114-Status: GOOD (  18.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,33 +79,51 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: rk356x: rk3568-evb: add missing new line to log message
+Subject: Re: [PATCH 14/14] imx-bbu-nand-fcb: Add fcb command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-If ADC is available, but read out returns an error, we end up with a log
-line that's not new line terminated. Fix this.
+On Wed, Nov 02, 2022 at 09:44:41AM +0100, Marco Felsch wrote:
+> > +static void dump_fcb_n(struct fcb_block **fcbs, int n)
+> > +{
+> > +	int i;
+> > +
+> > +	if (!n || !fcbs[n])
+> > +		goto skip_compare;
+> > +
+> > +	for (i = 0; i < n; i++) {
+> > +		if (!fcbs[i] || !fcbs[n])
+> > +			continue;
+> > +
+> > +		if (!memcmp(fcbs[i], fcbs[n], sizeof(struct fcb_block))) {
+> > +			printf("FCB block#%d: same as FCB block#%d\n", n, i);
+> > +			return;
+> > +		}
+> > +	}
+> > +
+> > +skip_compare:
+> > +	if (fcbs[n]) {
+> > +		printf("FCB block#%d:\n", n);
+> > +		dump_fcb(fcbs[n]);
+> > +	} else {
+> > +		printf("FCB block#%d: NULL\n", n);
+> > +	}
+> > +}
+> > +
+> > +#ifdef CONFIG_ARCH_IMX28
+> 
+> Why this #ifdef? Can't we do this by cpu_is_mx28()?
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/boards/rockchip-rk3568-evb/board.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+i.MX28 is a different architecture in barebox, it's in
+arch/arm/mach-mxs/. We do not have the cpu_is_mx7() and cpu_is_mx6ul()
+macros there.
 
-diff --git a/arch/arm/boards/rockchip-rk3568-evb/board.c b/arch/arm/boards/rockchip-rk3568-evb/board.c
-index 212c801c93d3..ef886e67ed15 100644
---- a/arch/arm/boards/rockchip-rk3568-evb/board.c
-+++ b/arch/arm/boards/rockchip-rk3568-evb/board.c
-@@ -94,7 +94,7 @@ static int rk3568_evb_detect_hwid(void)
- 	return 0;
- 
- err_hwid:
--	pr_err("couldn't retrieve hardware ID");
-+	pr_err("couldn't retrieve hardware ID\n");
- 	return ret;
- }
- late_initcall(rk3568_evb_detect_hwid);
+Sascha
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
