@@ -1,55 +1,57 @@
-Delivery-date: Wed, 02 Nov 2022 13:56:41 +0100
+Delivery-date: Wed, 02 Nov 2022 14:55:23 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oqDIP-00CN9k-Bd
-	for lore@lore.pengutronix.de; Wed, 02 Nov 2022 13:56:41 +0100
+	id 1oqEDD-00CR8A-B8
+	for lore@lore.pengutronix.de; Wed, 02 Nov 2022 14:55:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oqDIN-0000Ed-8e
-	for lore@pengutronix.de; Wed, 02 Nov 2022 13:56:39 +0100
+	id 1oqEDA-0000Mn-W8
+	for lore@pengutronix.de; Wed, 02 Nov 2022 14:55:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=O4vYvP0FHAyTMM3/0Yabcsqg0I0t1b+sfEcOwFYrbb8=; b=ywSvLcRI0kMqFtVr5b522JAWW+
-	LQOcVvAldzF4eNdVjkeEq+dgygvE9v54tRX/2DrXgJLCHyHpkpmBdKTJQNk+5OCAh4/bE7vw2Im0n
-	HALdXIhNcC2HmTG9jUj5gMDcAmSg8PwlXmeNKyO4qLB+TsiZXzEpXQUCmEeW+jBcJ9JhBI14jxMCS
-	EkKM7H6Hv+TBSonIrTUkdSbMlCDdVSVtHMnil/VGDrDbLVTxI2i8Zfnryd5wuPxQofy7zHs0WyYDh
-	PmxCPyKQniikHTaVBUkQtEcR+jJykrPihDPltQyUjLp2O8yGoZdPo2B8u7Uc/gb1qqO1O/t5UricH
-	dWD5liyA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Q3KqVCgey0OSiOtso2UVajQlylGo43BFWVQ4goOZlP0=; b=RLR4jgwq37SsES
+	YpHRRVoz9yNM9v5IwcrE8M01P7n3iOBu7EZjPFdURnGA6kRs6ZmqETzn7O6H+efeoOULbG/XxVysK
+	OXjw1NJEBZDB6+AVAAsLr5e8DaKX5pc3p8+zbiMFAxFkJ22w/M1alnrk7NP5xdzDlgodrcG9J/V3r
+	tew97aiYEkhmbWbB+/RiAqcax+RWkY+jvgrz4jkEbje24YrTcYPqbcUJC8YlqBdy/B4BX5zt3yq2G
+	LhleT/DOBxYTJOwemUuJoTSKD3yW07ReUYbP+/YDeQmlokPV2XLpWJugRvcZTNSbbQ1Xhqn0+nuMo
+	P9ZsafsgwiOm8WUMxQpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oqDH4-00B6tq-M8; Wed, 02 Nov 2022 12:55:18 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1oqEB5-00BMpQ-WE; Wed, 02 Nov 2022 13:53:12 +0000
+Received: from smtp15.bhosted.nl ([2a02:9e0:8000::26])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oqDGy-00B6qH-JR
-	for barebox@lists.infradead.org; Wed, 02 Nov 2022 12:55:15 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1oqDGr-0008DL-Mg; Wed, 02 Nov 2022 13:55:05 +0100
-Message-ID: <59a5ac67-c503-cf43-d847-1f83d69bf98a@pengutronix.de>
-Date: Wed, 2 Nov 2022 13:55:04 +0100
+	id 1oqEAy-00BMk3-Ep
+	for barebox@lists.infradead.org; Wed, 02 Nov 2022 13:53:08 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=Q3KqVCgey0OSiOtso2UVajQlylGo43BFWVQ4goOZlP0=;
+	b=Z5RP8erxAHvg3Qwr8nioxj9BnWt/HXKoZR41P0ZUopXE2A369WAyJtV8y8pzec/sq+SiYn+gN/u3o
+	 u3a4HyQMgdiWQyDLDuYS/2sFuozESOcP/4eCxv+LKVSgDpgvLtp+5myZqreVnXK9EIkOEJ2/lNYcTE
+	 q0XGa2u89UwlqFShlHOj+WYRFVLaSgyZKsJSQqvUn0DlPnvxlzzN8kHW8MNwEYlBdJjMPgidUqVIuM
+	 V9xm74NfHkenJsZRFqKNVkwXjeXcCoL9OphoxIi4XOjHEKnPftOPB3Le4VojEuWsxTk1S+Ot242Zh0
+	 2vxIPLd6jtMN3NPTEGp+mj4RBbbmZ0Q==
+X-MSG-ID: a0fc8074-5ab5-11ed-b61c-0050569d3a82
+From: Robin van der Gracht <robin@protonic.nl>
+To: barebox@lists.infradead.org
+Date: Wed,  2 Nov 2022 14:53:14 +0100
+Message-Id: <20221102135314.123789-1-robin@protonic.nl>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Content-Language: en-US
-To: Ahmad Fatoum <ahmad@a3f.at>, barebox@lists.infradead.org
-Cc: Christian Melki <christian.melki@t2data.com>
-References: <20221102124842.2520783-1-ahmad@a3f.at>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20221102124842.2520783-1-ahmad@a3f.at>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221102_055512_672643_D50DD4D5 
-X-CRM114-Status: GOOD (  19.40  )
+X-CRM114-CacheID: sfid-20221102_065304_957136_6534B48E 
+X-CRM114-Status: UNSURE (   6.53  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,62 +63,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Robin van der Gracht <robin@protonic.nl>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] Kbuild: link barebox with -z noexecstack
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] ARM: mach-imx: Add missing ocotp dependency to protonic-imx6 platform
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 02.11.22 13:48, Ahmad Fatoum wrote:
-> We don't care for permission of ELF segments, but GNU ld (BFD)
-> does and now with binutils 2.39+, it reports:
-> 
->   ld: warning: defaultenv/defaultenv-2-menu.bbenv.o: missing
->   .note.GNU-stack section implies executable stack
-> 
->   ld: NOTE: This behaviour is deprecated and will be removed in a future
->   version of the linker
-> 
-> Instead of touching all assembly objects and scripts creating them to
-> add the section, just set -z noexecstack at link-time. This is already
-> the LLVM linker (lld) default.
-> 
-> Reported-by: Christian Melki <christian.melki@t2data.com>
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
+The protonic-imx6 board code calls imx_ocotp_read/write_field functions.
+Compiling without IMX_OCOTP results in a build failure.
 
-Please dismiss. I think we should just add it to KBUILD_LDFLAGS globally.
+Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+---
+ arch/arm/mach-imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
->  Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 26a0999a2e20..e57b8a4a1364 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -450,7 +450,7 @@ KBUILD_CFLAGS_KERNEL :=
->  KBUILD_AFLAGS_MODULE := -DMODULE
->  KBUILD_CFLAGS_MODULE := -DMODULE
->  
-> -LDFLAGS_barebox	:= -Map barebox.map
-> +LDFLAGS_barebox	:= -Map barebox.map -z noexecstack
->  
->  # Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
->  LDFLAGS_barebox += $(call ld-option, --no-dynamic-linker)
-
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index dcb70c8c1a..b95c6e456e 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -350,6 +350,7 @@ config MACH_PROTONIC_IMX6
+ 	select ARCH_IMX6
+ 	select ARCH_IMX6UL
+ 	select ARM_USE_COMPRESSED_DTB
++	select IMX_OCOTP
+ 
+ config MACH_PROTONIC_IMX8M
+ 	bool "Protonic-Holland i.MX8Mx based boards"
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.37.2
 
 
 
