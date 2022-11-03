@@ -3,56 +3,58 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oqa4V-00Deeu-8Q
+	id 1oqa4V-00Deez-K9
 	for lore@lore.pengutronix.de; Thu, 03 Nov 2022 14:15:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oqa4T-0004MW-9O
+	id 1oqa4T-0004Mq-UZ
 	for lore@pengutronix.de; Thu, 03 Nov 2022 14:15:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ed0ywzy0CBUWOICaJaoOXsJm6g0/8Qe70GrBTpEEntw=; b=FV1xos82VEFiB+50fBwZfCpVHa
-	QA40a8m+kp1u/4FaiyLJlMz86OPA90TTcrTuG/0I/uopy1WUBaqf2XxEVEsRcBHx7zs5ajvVXiD3Q
-	iiVlBLzreHwLFwUCa5LiMyljJOemO0NxFQZpQkUCwjZw6//Gkjfs6yU8q/8zv49Ku7iq6ersSSMON
-	gfp1N8gzQOnhSGYvgubUPH4tZ+XeIV63TRVCyu7EYZwHNz//LZki2nWKPS08Kl7c9JkZpogV65lrO
-	Ia2s9Fy94toGT2MUHVSxwlOcawLv0xAlm8DXIMGOB/p3aPSiKMZw2JYLELZAIg5huPq0KsexR8+5r
-	HvxTuEeA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=YXy260di7Fw+lvt1N1Rw7+BgNHv9qK2/Bx2I7U2ChXg=; b=vaf9AUFpmxXLg1sTzDnxXjKDWV
+	1auLSdqDayDS9tYLbRShX5Q3InvjknvoZVpa9N9ub367MVZ4AhmLJ+qP8y3echacChpol12nX5H87
+	mJLaKi77MFVGZ9WLliHlxapxm9Lvl+wNGcc3BSr4tM5usqHkG0eJdYfp2p9oYAGHAkv8DG7zL1oDY
+	cRLeVZXN4BqCFnAfWQ6jtt2ofXDXztRGyHdblo49r1Y8fbHOTAUkq+sTAxHF0XpvNFaXMwMwx4NV0
+	c2NIgibOI51syE/bokJriC35vbcjEvVTmnbIXDi9zZ5q6TAE+VtLO7KLcR2lMSLj27F4lHfFHFeIq
+	5eC5voIQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oqa2q-00HScR-OB; Thu, 03 Nov 2022 13:14:08 +0000
+	id 1oqa2v-00HSdV-Ak; Thu, 03 Nov 2022 13:14:13 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oqa2i-00HSYV-4z
-	for barebox@lists.infradead.org; Thu, 03 Nov 2022 13:14:01 +0000
+	id 1oqa2i-00HSYU-5i
+	for barebox@lists.infradead.org; Thu, 03 Nov 2022 13:14:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1oqa2d-0003oV-0H; Thu, 03 Nov 2022 14:13:55 +0100
+	id 1oqa2c-0003oG-R6; Thu, 03 Nov 2022 14:13:54 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1oqa2d-00250l-74; Thu, 03 Nov 2022 14:13:54 +0100
+	id 1oqa2d-00250i-1l; Thu, 03 Nov 2022 14:13:54 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1oqa2b-008dpf-A5; Thu, 03 Nov 2022 14:13:53 +0100
+	id 1oqa2b-008dpn-BH; Thu, 03 Nov 2022 14:13:53 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu,  3 Nov 2022 14:13:46 +0100
-Message-Id: <20221103131351.2059683-1-o.rempel@pengutronix.de>
+Date: Thu,  3 Nov 2022 14:13:49 +0100
+Message-Id: <20221103131351.2059683-4-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20221103131351.2059683-1-o.rempel@pengutronix.de>
+References: <20221103131351.2059683-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221103_061400_213931_E9714544 
-X-CRM114-Status: GOOD (  11.73  )
+X-CRM114-CacheID: sfid-20221103_061400_230966_7CF28A86 
+X-CRM114-Status: GOOD (  15.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,61 +76,82 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/6] net: add promiscuous mode configuration support
+Subject: [PATCH v2 4/6] net: dsa: fix of_device_ensure_probed*() for switch ports
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This configuration is mostly needed for controllers attached to switches
-with different MAC address configurations.
+Crete ports by using of_platform_device_create() in the same way as it
+is used by of_device_ensure_probed*(). Otherwise we are creating
+multiple devices for the same node.
+
+At same time we need to link dummy driver to make this logic work.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- include/net.h |  3 +++
- net/eth.c     | 10 ++++++++++
- 2 files changed, 13 insertions(+)
+ drivers/net/dsa.c | 18 +++++-------------
+ include/dsa.h     |  2 +-
+ 2 files changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/include/net.h b/include/net.h
-index 338033d698..96c2ed1d11 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -49,6 +49,8 @@ struct eth_device {
- 				 int *length);
- 	void (*rx_monitor) (struct eth_device*, void *packet, int length);
- 	void (*tx_monitor) (struct eth_device*, void *packet, int length);
-+	/* Set promiscuous mode */
-+	int  (*set_promiscuous_mode) (struct eth_device*, bool enable);
- 
- 	struct eth_device *next;
- 	void *priv;
-@@ -113,6 +115,7 @@ int eth_send(struct eth_device *edev, void *packet, int length);	   /* Send a pa
- int eth_rx(void);			/* Check for received packets	*/
- void eth_open_all(void);
- struct eth_device *of_find_eth_device_by_node(struct device_node *np);
-+int eth_set_promiscuous_mode(struct eth_device *edev, bool enable);
- 
- /* associate a MAC address to a ethernet device. Should be called by
-  * board code for boards which store their MAC address at some unusual
-diff --git a/net/eth.c b/net/eth.c
-index 8f6ff7db3a..ad4b9d5987 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -31,6 +31,16 @@ struct eth_ethaddr {
- 
- static LIST_HEAD(ethaddr_list);
- 
-+int eth_set_promiscuous_mode(struct eth_device *edev, bool enable)
-+{
-+	int ret = 0;
-+
-+	if (edev->set_promiscuous_mode)
-+		ret = edev->set_promiscuous_mode(edev, enable);
-+
-+	return ret;
-+}
-+
- int eth_set_ethaddr(struct eth_device *edev, const char *ethaddr)
- {
+diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
+index 14ef8f4c4f..4f3a5ca28a 100644
+--- a/drivers/net/dsa.c
++++ b/drivers/net/dsa.c
+@@ -59,7 +59,7 @@ static int dsa_port_probe(struct eth_device *edev)
  	int ret;
+ 
+ 	if (ops->port_probe) {
+-		interface = of_get_phy_mode(dp->dev.device_node);
++		interface = of_get_phy_mode(dp->dev->device_node);
+ 		ret = ops->port_probe(dp, dp->index, interface);
+ 		if (ret)
+ 			return ret;
+@@ -93,7 +93,7 @@ static int dsa_port_start(struct eth_device *edev)
+ 	if (dp->enabled)
+ 		return -EBUSY;
+ 
+-	interface = of_get_phy_mode(dp->dev.device_node);
++	interface = of_get_phy_mode(dp->dev->device_node);
+ 
+ 	if (ops->port_pre_enable) {
+ 		/* In case of RMII interface we need to enable RMII clock
+@@ -237,21 +237,13 @@ static int dsa_switch_register_edev(struct dsa_switch *ds,
+ 	struct eth_device *edev;
+ 	struct device_d *dev;
+ 	struct dsa_port *dp;
+-	int ret;
+ 
+ 	ds->dp[port] = xzalloc(sizeof(*dp));
+-
+ 	dp = ds->dp[port];
+-	dev = &dp->dev;
+-
+-	dev_set_name(dev, "dsa_port");
+-	dev->id = DEVICE_ID_DYNAMIC;
+-	dev->parent = ds->dev;
+-	dev->device_node = dn;
+ 
+-	ret = register_device(dev);
+-	if (ret)
+-		return ret;
++	dev = of_platform_device_create(dn, ds->dev);
++	of_platform_device_dummy_drv(dev);
++	dp->dev = dev;
+ 
+ 	dp->rx_buf = xmalloc(DSA_PKTSIZE);
+ 	dp->ds = ds;
+diff --git a/include/dsa.h b/include/dsa.h
+index 75a939f2cb..f428aa74a5 100644
+--- a/include/dsa.h
++++ b/include/dsa.h
+@@ -58,7 +58,7 @@ struct dsa_ops {
+ };
+ 
+ struct dsa_port {
+-	struct device_d dev;
++	struct device_d *dev;
+ 	struct dsa_switch *ds;
+ 	unsigned int index;
+ 	struct eth_device edev;
 -- 
 2.30.2
 
