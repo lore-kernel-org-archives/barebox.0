@@ -1,58 +1,54 @@
-Delivery-date: Fri, 04 Nov 2022 09:36:17 +0100
+Delivery-date: Fri, 04 Nov 2022 09:38:39 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oqsBV-00EjDJ-J4
-	for lore@lore.pengutronix.de; Fri, 04 Nov 2022 09:36:17 +0100
+	id 1oqsDn-00EjK2-MJ
+	for lore@lore.pengutronix.de; Fri, 04 Nov 2022 09:38:39 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1oqsBU-0004Fj-I7
-	for lore@pengutronix.de; Fri, 04 Nov 2022 09:36:17 +0100
+	id 1oqsDm-0004QI-Ke
+	for lore@pengutronix.de; Fri, 04 Nov 2022 09:38:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lqiCMnl/k75Fur/EfvvN5MG+S1PPS7h2/JQB4tWSwQ0=; b=s6IvIuDOdsfoV0cGrOKCMMtp9s
-	YQ4Nq2bj3KSdA4Qir+bw6x95KZ/X3/MhQ3waBJLPYmkfqOBozFZibL144MX0kwsrLStZW/6Uqgphn
-	VXq/cZU0jy/+wxIG2RGeehN32sSVTMCy3sjPNlnbxZUcaPmTXlWyccp0sDlavB7y5Jveb46NNQl6F
-	6f6hmEfsSQ3qvJGYGwuK+4ZXe+dInOSxWTHtYX0eemfd7wjP1UJ+Nrm1iwgWNrk0xSJ7wjD39p4H4
-	QLqFwB++RtNd8X4ho2H6Axe0gl6THc5b6ZGTJrVGoL6h781AkZgCwvMlLWX7NFjexh+N6u0FbnZ5P
-	tv02bLIA==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=tIrFu/FYuyetibAEBTUwVUTZ7RCJp8U4i+lri1QFVgI=; b=zG0aRbMICT/D4XLtLGDjq3/kNr
+	6CAqnfCwbLF4wdnA/Y4F5CCio/UWYAMUGgZiI3EvNUM4chlE7hlnvHPpZ9CJL1GQLr1NtzSUa+tdn
+	tQK0s57HHKu+iZCoOXZ+7dONuJkalxnx+bODeEGQgyy3K7vlEZK+b8SwEskA5HtHwDh0w8AtBYmNS
+	cVRNX6eMyp6PQNf9PSQdrSikVsFcWtR4ugedqlHnVrPrNmdTWpfo7viVDqGdicXSDU1KhJtSmNtDY
+	0j5KTdjg63JvxDJ6/fC/RjbDlxLr5MXIr4coqxFnHBKmQ4wNmC1yyrEO3V7nFlau7KHVf8MV04B2V
+	12gUhdxA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oqsA9-002yak-Lc; Fri, 04 Nov 2022 08:34:53 +0000
+	id 1oqsCY-002z7y-SW; Fri, 04 Nov 2022 08:37:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oqsA3-002yZp-MB
-	for barebox@lists.infradead.org; Fri, 04 Nov 2022 08:34:50 +0000
+	id 1oqsCU-002z72-0j
+	for barebox@lists.infradead.org; Fri, 04 Nov 2022 08:37:19 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1oqsA0-0003pb-EK; Fri, 04 Nov 2022 09:34:44 +0100
-Message-ID: <94bc24cc-2675-de3d-0b3c-541ab7a3fdac@pengutronix.de>
-Date: Fri, 4 Nov 2022 09:34:44 +0100
+	id 1oqsCS-0004Lx-FE; Fri, 04 Nov 2022 09:37:16 +0100
+Message-ID: <0bf2eb6a-5c5a-2456-6080-7092291c524f@pengutronix.de>
+Date: Fri, 4 Nov 2022 09:37:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.0
 Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
 References: <20221103131351.2059683-1-o.rempel@pengutronix.de>
- <20221103131351.2059683-2-o.rempel@pengutronix.de>
- <20221104082653.GR3143@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20221104082653.GR3143@pengutronix.de>
+In-Reply-To: <20221103131351.2059683-1-o.rempel@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221104_013447_754000_815920B9 
-X-CRM114-Status: GOOD (  21.98  )
+X-CRM114-CacheID: sfid-20221104_013718_091130_AAC7A022 
+X-CRM114-Status: GOOD (  25.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,57 +70,71 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/6] net: dsa: enable promiscuous mode for switch
- master edev
+Subject: Re: [PATCH v2 1/6] net: add promiscuous mode configuration support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hello Oleksij,
 
-On 04.11.22 09:26, Sascha Hauer wrote:
-> On Thu, Nov 03, 2022 at 02:13:47PM +0100, Oleksij Rempel wrote:
->> Typical use case for DSA framework on barebox a port multiplexer. This
->> means, we mostly have different MAC addresses on each port. To make this
->> work, we need to enable promiscuous mode on the master Ethernet
->> controller.
->>
->> With this patch, promiscuous mode will be enabled automatically, as soon
->> as at least one switch port is enabled and this mode will be disabled
->> after all switch ports are disabled as well.
->>
->> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
->> ---
->>  drivers/net/dsa.c | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
->> index 040ba897e2..14ef8f4c4f 100644
->> --- a/drivers/net/dsa.c
->> +++ b/drivers/net/dsa.c
->> @@ -129,6 +129,7 @@ static int dsa_port_start(struct eth_device *edev)
->>  				return ret;
->>  		}
->>  
->> +		eth_set_promiscuous_mode(ds->edev_master, true);
->>  		eth_open(ds->edev_master);
->>  	}
->>  
->> @@ -160,6 +161,7 @@ static void dsa_port_stop(struct eth_device *edev)
->>  			ops->port_disable(dpc, ds->cpu_port,
->>  					ds->cpu_port_fixed_phy);
->>  
->> +		eth_set_promiscuous_mode(ds->edev_master, false);
+On 03.11.22 14:13, Oleksij Rempel wrote:
+> This configuration is mostly needed for controllers attached to switches
+> with different MAC address configurations.
 
-Can you change the name to eth_set_promisc[_mode] ?
-This aligns it with the kernel IFF_PROMISC and it's easier to type
-without looking up correct spelling ^^'.
+I think all interfaces should have a promisc parameter to be able to
+configure this. This can be added in future, but for now it would be
+great if ethlog could have an optional parameter to enable promisc
+on the interface it's listening at. Should be useful for future
+debugging.
 
 > 
-> Please check the error code. When eth_set_promiscuous_mode() is not
-> implemented for the current ethernet device we should notice the user.
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  include/net.h |  3 +++
+>  net/eth.c     | 10 ++++++++++
+>  2 files changed, 13 insertions(+)
 > 
-> Sascha
-> 
+> diff --git a/include/net.h b/include/net.h
+> index 338033d698..96c2ed1d11 100644
+> --- a/include/net.h
+> +++ b/include/net.h
+> @@ -49,6 +49,8 @@ struct eth_device {
+>  				 int *length);
+>  	void (*rx_monitor) (struct eth_device*, void *packet, int length);
+>  	void (*tx_monitor) (struct eth_device*, void *packet, int length);
+> +	/* Set promiscuous mode */
+> +	int  (*set_promiscuous_mode) (struct eth_device*, bool enable);
+>  
+>  	struct eth_device *next;
+>  	void *priv;
+> @@ -113,6 +115,7 @@ int eth_send(struct eth_device *edev, void *packet, int length);	   /* Send a pa
+>  int eth_rx(void);			/* Check for received packets	*/
+>  void eth_open_all(void);
+>  struct eth_device *of_find_eth_device_by_node(struct device_node *np);
+> +int eth_set_promiscuous_mode(struct eth_device *edev, bool enable);
+>  
+>  /* associate a MAC address to a ethernet device. Should be called by
+>   * board code for boards which store their MAC address at some unusual
+> diff --git a/net/eth.c b/net/eth.c
+> index 8f6ff7db3a..ad4b9d5987 100644
+> --- a/net/eth.c
+> +++ b/net/eth.c
+> @@ -31,6 +31,16 @@ struct eth_ethaddr {
+>  
+>  static LIST_HEAD(ethaddr_list);
+>  
+> +int eth_set_promiscuous_mode(struct eth_device *edev, bool enable)
+> +{
+> +	int ret = 0;
+> +
+> +	if (edev->set_promiscuous_mode)
+> +		ret = edev->set_promiscuous_mode(edev, enable);
+> +
+> +	return ret;
+> +}
+> +
+>  int eth_set_ethaddr(struct eth_device *edev, const char *ethaddr)
+>  {
+>  	int ret;
 
 -- 
 Pengutronix e.K.                           |                             |
