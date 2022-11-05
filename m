@@ -1,52 +1,56 @@
-Delivery-date: Sat, 05 Nov 2022 13:14:33 +0100
+Delivery-date: Sat, 05 Nov 2022 13:16:52 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1orI4H-00G6gf-U1
-	for lore@lore.pengutronix.de; Sat, 05 Nov 2022 13:14:33 +0100
+	id 1orI6W-00G6o0-PC
+	for lore@lore.pengutronix.de; Sat, 05 Nov 2022 13:16:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1orI4G-0003pz-RL
-	for lore@pengutronix.de; Sat, 05 Nov 2022 13:14:33 +0100
+	id 1orI6V-0004Iw-00
+	for lore@pengutronix.de; Sat, 05 Nov 2022 13:16:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zwHPUkRHJQaRZnLr9hVtEtVVgDwgvV3/0MVbwjb38Uw=; b=Xkn40hIMZosZcojQupEhlGDdvD
-	WddFKjR8R6e6e35fnr9fGdO6JbnaWWECkhbb6r+hbaCICwv//8XzRWOvm5101GqbJNs/M9pEUnuAP
-	X0QjMoTxFlZFJPnB9DBsyY41QNcJFXcu+B1gLJi66zkN7Unc6GAUQIIS9PAc8kednbmoLGHYB1g3j
-	7gUG5NB4+EQ/qh7A/NCuM246h28OwXh5Sy7rBuK0Xn3US1PzaI0ODSUqoJxdV4zeXfh/ZrItMPKmK
-	FW6Tbx8UPPBhF21qqNiwOA+rPyjkQFuVD+I7NOd7VQuialp9B1gWn2545hYiFL1wq6v0LTvRaO47G
-	/9tTwwSA==;
+	bh=nKlfV04mOykAZsYZMX8TvmtsnuGQ+Yx7/xW4LqdWkeU=; b=4gKjAbYtI1DNjgZOgM6u9rpwXR
+	T+6qMcgyVNBfidtbmYukDGqkZzYfN+sO2DK94YCpP1YKYLNvd9ZzUoWaJTuWkgiHvvZnJpMPqmYfn
+	Q6WSyqqMpCsNszVnulHd0cprmwvyNSTj/s/VySzy9scQE9I4zJNjn1AR9uLSZLmyECaMBau5wJG00
+	y7wVoCIF7YJdRlqnDOGrcgj4MmddUilmrxT0uUjrQHNlWOVtR0XMeVLjET4bEC/Jw2E1Ra9QzuQto
+	QZ4FIF+sOz8QTmMZDNvTrjNYIsno3YV+ASIfvGnZMbYyrjfCnfHO6VcHRChIw9g5i037BJsHfjy0C
+	jKY3rwrg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1orI22-006U8w-VO; Sat, 05 Nov 2022 12:12:15 +0000
-Received: from relay9-d.mail.gandi.net ([217.70.183.199])
+	id 1orI5E-006Uf3-Ju; Sat, 05 Nov 2022 12:15:32 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1orI1x-006U7X-VL
-	for barebox@lists.infradead.org; Sat, 05 Nov 2022 12:12:11 +0000
-Received: (Authenticated sender: ahmad@a3f.at)
-	by mail.gandi.net (Postfix) with ESMTPSA id 49C18FF807;
-	Sat,  5 Nov 2022 12:11:59 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sat,  5 Nov 2022 13:11:54 +0100
-Message-Id: <20221105121154.3716964-2-ahmad@a3f.at>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20221105121154.3716964-1-ahmad@a3f.at>
-References: <20221105121154.3716964-1-ahmad@a3f.at>
+	id 1orI59-006Ud0-3D
+	for barebox@lists.infradead.org; Sat, 05 Nov 2022 12:15:29 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1orI4s-0003uP-Mo; Sat, 05 Nov 2022 13:15:10 +0100
+Message-ID: <f4a9de94-9466-89e9-ede6-d6b0710c881b@pengutronix.de>
+Date: Sat, 5 Nov 2022 13:15:09 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Ahmad Fatoum <ahmad@a3f.at>, barebox@lists.infradead.org
+Cc: Christian Melki <christian.melki@t2data.com>
+References: <20221102124842.2520783-1-ahmad@a3f.at>
+ <59a5ac67-c503-cf43-d847-1f83d69bf98a@pengutronix.de>
+In-Reply-To: <59a5ac67-c503-cf43-d847-1f83d69bf98a@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221105_051210_175962_7F105C96 
-X-CRM114-Status: UNSURE (   9.90  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20221105_051527_163482_C7EFB2C6 
+X-CRM114-Status: GOOD (  17.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -64,59 +68,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master v2 2/2] ARM: psci: client: don't hardcode method smc in fixup
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] Kbuild: link barebox with -z noexecstack
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-When barebox is booted as QEMU -kernel, PSCI will have method = "hvc",
-because QEMU will act as Hypervisor. barebox handles this correctly and
-will use hvc instead of smc, but of_psci_fixup() always fixes up
-method = "smc" thereby breaking kernel boot.
+On 02.11.22 13:55, Ahmad Fatoum wrote:
+> On 02.11.22 13:48, Ahmad Fatoum wrote:
+>> We don't care for permission of ELF segments, but GNU ld (BFD)
+>> does and now with binutils 2.39+, it reports:
+>>
+>>   ld: warning: defaultenv/defaultenv-2-menu.bbenv.o: missing
+>>   .note.GNU-stack section implies executable stack
+>>
+>>   ld: NOTE: This behaviour is deprecated and will be removed in a future
+>>   version of the linker
+>>
+>> Instead of touching all assembly objects and scripts creating them to
+>> add the section, just set -z noexecstack at link-time. This is already
+>> the LLVM linker (lld) default.
+>>
+>> Reported-by: Christian Melki <christian.melki@t2data.com>
+>> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+>> ---
+> 
+> Please dismiss. I think we should just add it to KBUILD_LDFLAGS globally.
 
-Fix this by forwarding the method read from barebox DT into the kernel
-DT.
+I'll be away for a few weeks, so noting here how Linux does it:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ffcf9c5700e49c0aee42dcba9a12ba21338e8136
+https://lore.kernel.org/all/20220808192321.3490995-1-ndesaulniers@google.com/
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
-v1 -> v2:
-  - instead of avoiding fixup, just do it with the method read from DT
-  - Drop the other patches. There are nice to have, but can follow
-    later
----
- arch/arm/cpu/psci-client.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+In case someone else wants to get rid of the warning in the meantime.
 
-diff --git a/arch/arm/cpu/psci-client.c b/arch/arm/cpu/psci-client.c
-index 613280ad3f23..f9b1c684bfe5 100644
---- a/arch/arm/cpu/psci-client.c
-+++ b/arch/arm/cpu/psci-client.c
-@@ -108,9 +108,9 @@ static u32 invoke_psci_fn_smc(ulong function, ulong arg0, ulong arg1, ulong arg2
- 	return res.a0;
- }
- 
--static int of_psci_do_fixup(struct device_node *root, void *context)
-+static int of_psci_do_fixup(struct device_node *root, void *method)
- {
--	return of_psci_fixup(root, *(u32 *)context, "smc");
-+	return of_psci_fixup(root, version, (const void *)method);
- }
- 
- static int __init psci_probe(struct device_d *dev)
-@@ -156,7 +156,7 @@ static int __init psci_probe(struct device_d *dev)
- 		 version >> 16, version & 0xffff);
- 
- 	if (actual_version != of_version)
--		of_register_fixup(of_psci_do_fixup, &version);
-+		of_register_fixup(of_psci_do_fixup, (void *)method);
- 
- 	ret = poweroff_handler_register_fn(psci_poweroff);
- 	if (ret)
+Cheers,
+Ahmad
+
+
+> 
+>>  Makefile | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/Makefile b/Makefile
+>> index 26a0999a2e20..e57b8a4a1364 100644
+>> --- a/Makefile
+>> +++ b/Makefile
+>> @@ -450,7 +450,7 @@ KBUILD_CFLAGS_KERNEL :=
+>>  KBUILD_AFLAGS_MODULE := -DMODULE
+>>  KBUILD_CFLAGS_MODULE := -DMODULE
+>>  
+>> -LDFLAGS_barebox	:= -Map barebox.map
+>> +LDFLAGS_barebox	:= -Map barebox.map -z noexecstack
+>>  
+>>  # Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
+>>  LDFLAGS_barebox += $(call ld-option, --no-dynamic-linker)
+> 
+
 -- 
-2.37.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
