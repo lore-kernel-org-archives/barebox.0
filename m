@@ -1,54 +1,54 @@
-Delivery-date: Mon, 07 Nov 2022 14:06:18 +0100
+Delivery-date: Mon, 07 Nov 2022 14:06:36 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1os1pS-000Qwl-1E
-	for lore@lore.pengutronix.de; Mon, 07 Nov 2022 14:06:18 +0100
+	id 1os1pk-000Qxe-Rc
+	for lore@lore.pengutronix.de; Mon, 07 Nov 2022 14:06:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1os1pQ-0005CV-Dg
-	for lore@pengutronix.de; Mon, 07 Nov 2022 14:06:17 +0100
+	id 1os1pj-0005En-Kw
+	for lore@pengutronix.de; Mon, 07 Nov 2022 14:06:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Content-Type:References:In-Reply-To:Date:To:From:Subject:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JrD/lLFXqkVd7RVVDheyiY1AWpIlDZJlIhohosgjG/I=; b=oJYvYmsPYFr36Zv6j2DVdX28Wt
-	xu46BfV8gBgn4PwFBuIAhVuoBGvI6c8T9P6vwdurkDkhAtrgfSyz4oTwKjokMd/OKflLg0n+9sEU8
-	Bl5Iton0VQRQzVIraT1CaQV03tcRsOZPAqF5uWQL0nWhLuEHvG94UpYoK6IdDieu/pAc/Jw6nhKE4
-	lCozpR5XfrHQ+fW+0rblmvQ8QUf3LxV5RjF0BwaaCOee0GU+YaxQ0IGN8zTwJPcZqNxiyrgWoP0F2
-	mbESazGuUifJAkzqek7mogI7vVO4jDFyl++TmjBl8r3Hnd+8zaDragJ1cvF0OxKtSrG3qmFsUy0ao
-	BvjVwT7A==;
+	bh=sYHmJSXeRqWPjd4aPFuwrBcgMkTHi3zwlVCNIbUcbyM=; b=KEb7liSq0GdTvPpnhXdiqjsUaY
+	tLV1NL26jtTOgupAI8eeZ9dfqK5kkC8XQlldzT/hgFcesDjbxamfWJ23EoLFKFi7TqU8qbWWaFowM
+	uurhqde0fTsrwjfR0yWFV81yD8H0CAFGtB5yok2dP3c15fflx38knT/Wgn8cbDcmpuSOnUymZ0lJK
+	fKFZnPIILy4g9APy4KL+CB+sr4c/JNEZkaxEt/YhZyMqWj11y0hiViVR5lsjhyp/vEDElknZGq5XJ
+	OPmyIouZXuC35yruTBmZkqj15CI9d9/qxr2L7EPWE69/70q7T8e/0ACa6bnjAZUcXE2cknbQnqs9J
+	/iQP1o+A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1os1nc-00EeXe-LJ; Mon, 07 Nov 2022 13:04:24 +0000
+	id 1os1oR-00EfEo-Og; Mon, 07 Nov 2022 13:05:15 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1os1nM-00EeQg-1Q
-	for barebox@lists.infradead.org; Mon, 07 Nov 2022 13:04:09 +0000
+	id 1os1oL-00EfB1-BN
+	for barebox@lists.infradead.org; Mon, 07 Nov 2022 13:05:10 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=irc.pengutronix.de)
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <j.zink@pengutronix.de>)
-	id 1os1nH-0004UU-Vi
-	for barebox@lists.infradead.org; Mon, 07 Nov 2022 14:04:04 +0100
-Message-ID: <eb51a31b14f879640ad4a6e237894733df357c9f.camel@pengutronix.de>
+	id 1os1oK-0004iL-0S
+	for barebox@lists.infradead.org; Mon, 07 Nov 2022 14:05:08 +0100
+Message-ID: <d7622ccfc070baf2516321a208f14cc80e6af4b2.camel@pengutronix.de>
 From: Johannes Zink <j.zink@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Mon, 07 Nov 2022 14:04:02 +0100
-In-Reply-To: <20221107111701.2570303-5-o.rempel@pengutronix.de>
+Date: Mon, 07 Nov 2022 14:05:06 +0100
+In-Reply-To: <20221107111701.2570303-6-o.rempel@pengutronix.de>
 References: <20221107111701.2570303-1-o.rempel@pengutronix.de>
-	 <20221107111701.2570303-5-o.rempel@pengutronix.de>
+	 <20221107111701.2570303-6-o.rempel@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221107_050408_152729_316067D5 
-X-CRM114-Status: GOOD (  21.59  )
+X-CRM114-CacheID: sfid-20221107_050509_408142_8817FB1C 
+X-CRM114-Status: GOOD (  21.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,104 +70,95 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 5/8] drivers: net: fec_imx: add promiscuous mode
- configuration support
+Subject: Re: [PATCH v3 6/8] net: dsa: fix of_device_ensure_probed*() for
+ switch ports
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hi Oleksij,
 
 On Mon, 2022-11-07 at 12:16 +0100, Oleksij Rempel wrote:
-> Add promiscuous mode configuration support to allow using multiple
-> MAC address
-> on same FEC interfaces.
-> 
-minor nitpick: s/interfaces/interface/
+> Crete ports by using of_platform_device_create() in the same way as
+
+another nitpick: s/Crete/Create/
 
 Best regards
 Johannes
 
+> it
+> is used by of_device_ensure_probed*(). Otherwise we are creating
+> multiple devices for the same node.
+> 
+> At same time we need to link dummy driver to make this logic work.
+> 
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  drivers/net/fec_imx.c | 24 +++++++++++++++++++++++-
->  drivers/net/fec_imx.h |  1 +
->  2 files changed, 24 insertions(+), 1 deletion(-)
+>  drivers/net/dsa.c | 18 +++++-------------
+>  include/dsa.h     |  2 +-
+>  2 files changed, 6 insertions(+), 14 deletions(-)
 > 
-> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> index 673555a48a..da42a479d9 100644
-> --- a/drivers/net/fec_imx.c
-> +++ b/drivers/net/fec_imx.c
-> @@ -25,6 +25,22 @@
+> diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
+> index 124059ee3c..bc33892f39 100644
+> --- a/drivers/net/dsa.c
+> +++ b/drivers/net/dsa.c
+> @@ -59,7 +59,7 @@ static int dsa_port_probe(struct eth_device *edev)
+>         int ret;
 >  
->  #include "fec_imx.h"
+>         if (ops->port_probe) {
+> -               interface = of_get_phy_mode(dp->dev.device_node);
+> +               interface = of_get_phy_mode(dp->dev->device_node);
+>                 ret = ops->port_probe(dp, dp->index, interface);
+>                 if (ret)
+>                         return ret;
+> @@ -93,7 +93,7 @@ static int dsa_port_start(struct eth_device *edev)
+>         if (dp->enabled)
+>                 return -EBUSY;
 >  
-> +static int fec_set_promisc(struct eth_device *edev, bool enable)
-> +{
-> +       struct fec_priv *fec = (struct fec_priv *)edev->priv;
-> +       u32 rcntl;
-> +
-> +       rcntl = readl(fec->regs + FEC_R_CNTRL);
-> +
-> +       if (enable)
-> +               rcntl |= FEC_R_CNTRL_PROMISC;
-> +       else
-> +               rcntl &= ~FEC_R_CNTRL_PROMISC;
-> +
-> +       writel(rcntl, fec->regs + FEC_R_CNTRL);
-> +
-> +       return 0;
-> +}
+> -       interface = of_get_phy_mode(dp->dev.device_node);
+> +       interface = of_get_phy_mode(dp->dev->device_node);
 >  
->  /*
->   * MII-interface related functions
-> @@ -257,10 +273,13 @@ static int fec_init(struct eth_device *dev)
->          */
->         writel(0x00000000, fec->regs + FEC_IMASK);
+>         if (ops->port_pre_enable) {
+>                 /* In case of RMII interface we need to enable RMII
+> clock
+> @@ -241,21 +241,13 @@ static int dsa_switch_register_edev(struct
+> dsa_switch *ds,
+>         struct eth_device *edev;
+>         struct device_d *dev;
+>         struct dsa_port *dp;
+> -       int ret;
 >  
-> +       rcntl = readl(fec->regs + FEC_R_CNTRL);
-> +       rcntl &= FEC_R_CNTRL_PROMISC;
-> +
->         /*
->          * Set FEC-Lite receive control register(R_CNTRL):
->          */
-> -       rcntl = FEC_R_CNTRL_MAX_FL(1518);
-> +       rcntl |= FEC_R_CNTRL_MAX_FL(1518);
+>         ds->dp[port] = xzalloc(sizeof(*dp));
+> -
+>         dp = ds->dp[port];
+> -       dev = &dp->dev;
+> -
+> -       dev_set_name(dev, "dsa_port");
+> -       dev->id = DEVICE_ID_DYNAMIC;
+> -       dev->parent = ds->dev;
+> -       dev->device_node = dn;
 >  
->         rcntl |= FEC_R_CNTRL_MII_MODE;
->         /*
-> @@ -768,6 +787,7 @@ static int fec_probe(struct device_d *dev)
->         edev->halt = fec_halt;
->         edev->get_ethaddr = fec_get_hwaddr;
->         edev->set_ethaddr = fec_set_hwaddr;
-> +       edev->set_promisc = fec_set_promisc;
->         edev->parent = dev;
+> -       ret = register_device(dev);
+> -       if (ret)
+> -               return ret;
+> +       dev = of_platform_device_create(dn, ds->dev);
+> +       of_platform_device_dummy_drv(dev);
+> +       dp->dev = dev;
 >  
->         dma_set_mask(dev, DMA_BIT_MASK(32));
-> @@ -834,6 +854,8 @@ static int fec_probe(struct device_d *dev)
->         if (ret)
->                 goto free_gpio;
+>         dp->rx_buf = xmalloc(DSA_PKTSIZE);
+>         dp->ds = ds;
+> diff --git a/include/dsa.h b/include/dsa.h
+> index 75a939f2cb..f428aa74a5 100644
+> --- a/include/dsa.h
+> +++ b/include/dsa.h
+> @@ -58,7 +58,7 @@ struct dsa_ops {
+>  };
 >  
-> +       fec_set_promisc(edev, false);
-> +
->         /*
->          * reserve memory for both buffer descriptor chains at once
->          * Datasheet forces the startaddress of each chain is 16 byte
-> aligned
-> diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
-> index 316eefe48f..9bb1c64b55 100644
-> --- a/drivers/net/fec_imx.h
-> +++ b/drivers/net/fec_imx.h
-> @@ -58,6 +58,7 @@
->  #define FEC_R_CNTRL_RMII_10T           (1 << 9) /* i.MX28 specific
-> */
->  #define FEC_R_CNTRL_RMII_MODE          (1 << 8) /* i.MX28 specific
-> */
->  #define FEC_R_CNTRL_FCE                        (1 << 5)
-> +#define FEC_R_CNTRL_PROMISC            (1 << 3)
->  #define FEC_R_CNTRL_MII_MODE           (1 << 2)
->  
->  #define FEC_IEVENT_HBERR                0x80000000 /* Note: Not on
-> i.MX28 */
+>  struct dsa_port {
+> -       struct device_d dev;
+> +       struct device_d *dev;
+>         struct dsa_switch *ds;
+>         unsigned int index;
+>         struct eth_device edev;
 
 -- 
 Pengutronix e.K.                | Johannes Zink                  |
