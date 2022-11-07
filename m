@@ -1,54 +1,59 @@
-Delivery-date: Mon, 07 Nov 2022 14:06:36 +0100
+Delivery-date: Mon, 07 Nov 2022 16:01:56 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1os1pk-000Qxe-Rc
-	for lore@lore.pengutronix.de; Mon, 07 Nov 2022 14:06:36 +0100
+	id 1os3dM-000W3s-NL
+	for lore@lore.pengutronix.de; Mon, 07 Nov 2022 16:01:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1os1pj-0005En-Kw
-	for lore@pengutronix.de; Mon, 07 Nov 2022 14:06:36 +0100
+	id 1os3dL-0007WH-AY
+	for lore@pengutronix.de; Mon, 07 Nov 2022 16:01:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Content-Type:References:In-Reply-To:Date:To:From:Subject:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sYHmJSXeRqWPjd4aPFuwrBcgMkTHi3zwlVCNIbUcbyM=; b=KEb7liSq0GdTvPpnhXdiqjsUaY
-	tLV1NL26jtTOgupAI8eeZ9dfqK5kkC8XQlldzT/hgFcesDjbxamfWJ23EoLFKFi7TqU8qbWWaFowM
-	uurhqde0fTsrwjfR0yWFV81yD8H0CAFGtB5yok2dP3c15fflx38knT/Wgn8cbDcmpuSOnUymZ0lJK
-	fKFZnPIILy4g9APy4KL+CB+sr4c/JNEZkaxEt/YhZyMqWj11y0hiViVR5lsjhyp/vEDElknZGq5XJ
-	OPmyIouZXuC35yruTBmZkqj15CI9d9/qxr2L7EPWE69/70q7T8e/0ACa6bnjAZUcXE2cknbQnqs9J
-	/iQP1o+A==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=k3UEnSpTaqmtuMvwxndJpX4XnQaoyde9MHZSfwZTBcs=; b=O8SZmFdy+mlQxwUmBdobeTa+oJ
+	Onqr7qOrRwgz3JFas9Z99tdAi5dWZpv3URPb8aI6LVGAVy5ydqtUZMZAElbqOdp5AIR8rbNooHnI8
+	63LbVk785DsLxv+ef86FxspYm9ejJhaLFdxuBq4zliIy3D8ysblswY8Vb2+wSh6RD4T47ynVA+QFM
+	D3QmTm+erD1IfDLot+cs79lFdm+YbC6gVVmU5EzqeTorcNhdfsKpTaWpSBxOARJmHsy4zDNoCpY7R
+	BxV4IYTm9y3gav3A7ccnkXn5yiGiN4f7ggVwhWohqdr6LhbviZ+6QInFmtfkaxeSdudn2WIeReqh8
+	vkfx+j9A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1os1oR-00EfEo-Og; Mon, 07 Nov 2022 13:05:15 +0000
+	id 1os3bd-00FT8T-IA; Mon, 07 Nov 2022 15:00:09 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1os1oL-00EfB1-BN
-	for barebox@lists.infradead.org; Mon, 07 Nov 2022 13:05:10 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=irc.pengutronix.de)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <j.zink@pengutronix.de>)
-	id 1os1oK-0004iL-0S
-	for barebox@lists.infradead.org; Mon, 07 Nov 2022 14:05:08 +0100
-Message-ID: <d7622ccfc070baf2516321a208f14cc80e6af4b2.camel@pengutronix.de>
-From: Johannes Zink <j.zink@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Mon, 07 Nov 2022 14:05:06 +0100
-In-Reply-To: <20221107111701.2570303-6-o.rempel@pengutronix.de>
-References: <20221107111701.2570303-1-o.rempel@pengutronix.de>
-	 <20221107111701.2570303-6-o.rempel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+	id 1os3NT-00FKuD-N1
+	for barebox@lists.infradead.org; Mon, 07 Nov 2022 14:45:34 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1os3NQ-00037w-35; Mon, 07 Nov 2022 15:45:28 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1os3NO-002sID-Gr; Mon, 07 Nov 2022 15:45:27 +0100
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1os3NO-0023fI-3C; Mon, 07 Nov 2022 15:45:26 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon,  7 Nov 2022 15:45:22 +0100
+Message-Id: <20221107144524.489471-3-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20221107144524.489471-1-s.hauer@pengutronix.de>
+References: <20221107144524.489471-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221107_050509_408142_8817FB1C 
-X-CRM114-Status: GOOD (  21.75  )
+X-CRM114-CacheID: sfid-20221107_064531_802480_57EE9D89 
+X-CRM114-Status: GOOD (  10.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,105 +71,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 6/8] net: dsa: fix of_device_ensure_probed*() for
- switch ports
+Subject: [PATCH 2/4] bitops: include linux/types.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Oleksij,
+linux/types.h includes asm/types.h. linux/types.h declares 'bool' we
+need in the next patch, so include the former rather than the latter.
 
-On Mon, 2022-11-07 at 12:16 +0100, Oleksij Rempel wrote:
-> Crete ports by using of_platform_device_create() in the same way as
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/linux/bitops.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-another nitpick: s/Crete/Create/
-
-Best regards
-Johannes
-
-> it
-> is used by of_device_ensure_probed*(). Otherwise we are creating
-> multiple devices for the same node.
-> 
-> At same time we need to link dummy driver to make this logic work.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  drivers/net/dsa.c | 18 +++++-------------
->  include/dsa.h     |  2 +-
->  2 files changed, 6 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
-> index 124059ee3c..bc33892f39 100644
-> --- a/drivers/net/dsa.c
-> +++ b/drivers/net/dsa.c
-> @@ -59,7 +59,7 @@ static int dsa_port_probe(struct eth_device *edev)
->         int ret;
->  
->         if (ops->port_probe) {
-> -               interface = of_get_phy_mode(dp->dev.device_node);
-> +               interface = of_get_phy_mode(dp->dev->device_node);
->                 ret = ops->port_probe(dp, dp->index, interface);
->                 if (ret)
->                         return ret;
-> @@ -93,7 +93,7 @@ static int dsa_port_start(struct eth_device *edev)
->         if (dp->enabled)
->                 return -EBUSY;
->  
-> -       interface = of_get_phy_mode(dp->dev.device_node);
-> +       interface = of_get_phy_mode(dp->dev->device_node);
->  
->         if (ops->port_pre_enable) {
->                 /* In case of RMII interface we need to enable RMII
-> clock
-> @@ -241,21 +241,13 @@ static int dsa_switch_register_edev(struct
-> dsa_switch *ds,
->         struct eth_device *edev;
->         struct device_d *dev;
->         struct dsa_port *dp;
-> -       int ret;
->  
->         ds->dp[port] = xzalloc(sizeof(*dp));
-> -
->         dp = ds->dp[port];
-> -       dev = &dp->dev;
-> -
-> -       dev_set_name(dev, "dsa_port");
-> -       dev->id = DEVICE_ID_DYNAMIC;
-> -       dev->parent = ds->dev;
-> -       dev->device_node = dn;
->  
-> -       ret = register_device(dev);
-> -       if (ret)
-> -               return ret;
-> +       dev = of_platform_device_create(dn, ds->dev);
-> +       of_platform_device_dummy_drv(dev);
-> +       dp->dev = dev;
->  
->         dp->rx_buf = xmalloc(DSA_PKTSIZE);
->         dp->ds = ds;
-> diff --git a/include/dsa.h b/include/dsa.h
-> index 75a939f2cb..f428aa74a5 100644
-> --- a/include/dsa.h
-> +++ b/include/dsa.h
-> @@ -58,7 +58,7 @@ struct dsa_ops {
->  };
->  
->  struct dsa_port {
-> -       struct device_d dev;
-> +       struct device_d *dev;
->         struct dsa_switch *ds;
->         unsigned int index;
->         struct eth_device edev;
-
+diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+index 645fd2e6f6..84161e43a3 100644
+--- a/include/linux/bitops.h
++++ b/include/linux/bitops.h
+@@ -2,7 +2,7 @@
+ 
+ #ifndef _LINUX_BITOPS_H
+ #define _LINUX_BITOPS_H
+-#include <asm/types.h>
++#include <linux/types.h>
+ 
+ #ifdef	__KERNEL__
+ #define BIT(nr)			(1UL << (nr))
 -- 
-Pengutronix e.K.                | Johannes Zink                  |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
+2.30.2
 
 
 
