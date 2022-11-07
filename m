@@ -1,57 +1,60 @@
-Delivery-date: Mon, 07 Nov 2022 12:16:10 +0100
+Delivery-date: Mon, 07 Nov 2022 12:18:31 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1os06s-000N79-2x
-	for lore@lore.pengutronix.de; Mon, 07 Nov 2022 12:16:10 +0100
+	id 1os099-000NBG-7k
+	for lore@lore.pengutronix.de; Mon, 07 Nov 2022 12:18:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1os06q-0005TA-T2
-	for lore@pengutronix.de; Mon, 07 Nov 2022 12:16:09 +0100
+	id 1os097-0005wh-Ge
+	for lore@pengutronix.de; Mon, 07 Nov 2022 12:18:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=np8TpQxy64UhgppfUuAFIBHZd8pFwqHCBwGjawhOdCY=; b=f1PrByP166Ki9BshaYx+Fdq9dj
-	aUqhSDiuCoUAs3gfnv3rWItLlD5urkJjeY92fW+tJwrqE5vGAKFICGtMEUijHdWOipUmVwlvQ+YYT
-	K90t7GmoEZzyt+PLxUGIRu4NGuIVzdSrkvLFl0bJ8GNJQWjMGjE2FeHRilUQJJEZygIHJ/t+lCo4g
-	aBN2qf/WL7R6JUWyO9feSth/Mtzrhz/vFKPP0FyCIQ8DQL/2GMn5mt7/UcXf8yZ35Upgd77xUvwj+
-	q2p5wzVk8sIYOemW7e7pH1gE8mU5iSZgkIf9tgzcSonWIkWWcKMmDYqyQdT6iarns/qdv5mmwqmBL
-	D+6Ry+nw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ZT1tDont3rxLFHu5V5jFxQRbYeIzmsQcBf6T838l1q4=; b=Xmmn/34aBrAV/LNEGP0s38TSRk
+	gLIytHLL5HMw1fhhrJAI3PeylabEs/JPh2khyylAFcgcT2miyucY/7tMxvA1dyLUViqheTx7Yca0d
+	z0KBC2Oiu6zt6eeli/3Dn2denTJcFawODLkUZ//uF5qpAG8FrZBJkI8aSuk6X8J1uijnE0BLRgdJE
+	iGdv8+lvx8EW1wUSG60gddEupzbMykWGVcfXKzJKotDkO6kgwZ7YkJx5fAkchP7zQyOZAwP4FOl9H
+	K4SO12swIZNuhgx2nKwOpYs8iuKk30V2PdKEbMzX+pLytMszDjewluhQiCg68xzqjPrPLWKXWWXY/
+	zRwY/CwQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1os05G-00E4C2-TR; Mon, 07 Nov 2022 11:14:30 +0000
+	id 1os07u-00E51D-Nt; Mon, 07 Nov 2022 11:17:14 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1os05B-00E4AX-Jc
-	for barebox@lists.infradead.org; Mon, 07 Nov 2022 11:14:27 +0000
+	id 1os07n-00E4xY-QF
+	for barebox@lists.infradead.org; Mon, 07 Nov 2022 11:17:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1os057-00052t-Dp; Mon, 07 Nov 2022 12:14:21 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <ore@pengutronix.de>)
+	id 1os07k-0005aE-UH; Mon, 07 Nov 2022 12:17:04 +0100
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1os055-002qHV-QQ; Mon, 07 Nov 2022 12:14:20 +0100
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1os055-00339N-Kb; Mon, 07 Nov 2022 12:14:19 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Mon,  7 Nov 2022 12:14:19 +0100
-Message-Id: <20221107111419.722978-1-s.hauer@pengutronix.de>
+	(envelope-from <ore@pengutronix.de>)
+	id 1os07j-002qI3-A0; Mon, 07 Nov 2022 12:17:04 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1os07j-00Amfh-0L; Mon, 07 Nov 2022 12:17:03 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon,  7 Nov 2022 12:16:58 +0100
+Message-Id: <20221107111701.2570303-5-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20221107111701.2570303-1-o.rempel@pengutronix.de>
+References: <20221107111701.2570303-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221107_031425_847605_7B55E07D 
-X-CRM114-Status: GOOD (  25.26  )
+X-CRM114-CacheID: sfid-20221107_031707_875756_9EAD2908 
+X-CRM114-Status: GOOD (  14.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,227 +76,90 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: fix unwinding for XIP kernels
+Subject: [PATCH v3 5/8] drivers: net: fec_imx: add promiscuous mode configuration support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Newer gcc versions generate a warning about accessing an array out of
-bounds:
+Add promiscuous mode configuration support to allow using multiple MAC address
+on same FEC interfaces.
 
-In function 'search_index',
-    inlined from 'unwind_find_idx' at arch/arm/lib32/unwind.c:109: ,
-    inlined from 'unwind_frame' at arch/arm/lib32/unwind.c:248:8:
-arch/arm/lib32/unwind.c:86:32: warning: array subscript -1 is outside array bounds of 'struct unwind_idx[268435455]' [-Warray-bounds]
-   86 |         } else if (addr >= last->addr)
-      |                            ~~~~^~~~~~
-arch/arm/lib32/unwind.c: In function 'unwind_frame':
-arch/arm/lib32/unwind.c:46:26: note: at offset -8 into object '__stop_unwind_idx' of size [0, 2147483647]
-   46 | extern struct unwind_idx __stop_unwind_idx[];
-      |                          ^~~~~~~~~~~~~~~~~
-
-This was fixed by accident in the Kernel back in 2011 in
-de66a979012d ("ARM: 7187/1: fix unwinding for XIP kernels") . Adopt that
-commit for barebox.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/include/asm/unwind.h |   7 +-
- arch/arm/lib32/unwind.c       | 116 +++++++++++++++++++++++-----------
- 2 files changed, 84 insertions(+), 39 deletions(-)
+ drivers/net/fec_imx.c | 24 +++++++++++++++++++++++-
+ drivers/net/fec_imx.h |  1 +
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/unwind.h b/arch/arm/include/asm/unwind.h
-index 319527ec9b..37aba2aa4c 100644
---- a/arch/arm/include/asm/unwind.h
-+++ b/arch/arm/include/asm/unwind.h
-@@ -16,14 +16,15 @@ enum unwind_reason_code {
- };
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 673555a48a..da42a479d9 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -25,6 +25,22 @@
  
- struct unwind_idx {
--	unsigned long addr;
-+	unsigned long addr_offset;
- 	unsigned long insn;
- };
+ #include "fec_imx.h"
  
- struct unwind_table {
- 	struct list_head list;
--	struct unwind_idx *start;
--	struct unwind_idx *stop;
-+	const struct unwind_idx *start;
-+	const struct unwind_idx *origin;
-+	const struct unwind_idx *stop;
- 	unsigned long begin_addr;
- 	unsigned long end_addr;
- };
-diff --git a/arch/arm/lib32/unwind.c b/arch/arm/lib32/unwind.c
-index 79bf7420d7..6f73cb1b73 100644
---- a/arch/arm/lib32/unwind.c
-+++ b/arch/arm/lib32/unwind.c
-@@ -28,7 +28,7 @@ EXPORT_SYMBOL(__aeabi_unwind_cpp_pr2);
- 
- struct unwind_ctrl_block {
- 	unsigned long vrs[16];		/* virtual register set */
--	unsigned long *insn;		/* pointer to the current instructions word */
-+	const unsigned long *insn;	/* pointer to the current instructions word */
- 	int entries;			/* number of entries left to interpret */
- 	int byte;			/* current byte number in the instructions word */
- };
-@@ -42,8 +42,9 @@ enum regs {
- 
- #define THREAD_SIZE               8192
- 
--extern struct unwind_idx __start_unwind_idx[];
--extern struct unwind_idx __stop_unwind_idx[];
-+extern const struct unwind_idx __start_unwind_idx[];
-+static const struct unwind_idx *__origin_unwind_idx;
-+extern const struct unwind_idx __stop_unwind_idx[];
- 
- /* Convert a prel31 symbol to an absolute address */
- #define prel31_to_addr(ptr)				\
-@@ -71,44 +72,99 @@ static void dump_backtrace_entry(unsigned long where, unsigned long from,
- }
- 
- /*
-- * Binary search in the unwind index. The entries entries are
-+ * Binary search in the unwind index. The entries are
-  * guaranteed to be sorted in ascending order by the linker.
-+ *
-+ * start = first entry
-+ * origin = first entry with positive offset (or stop if there is no such entry)
-+ * stop - 1 = last entry
-  */
--static struct unwind_idx *search_index(unsigned long addr,
--				       struct unwind_idx *first,
--				       struct unwind_idx *last)
-+static const struct unwind_idx *search_index(unsigned long addr,
-+					const struct unwind_idx *start,
-+					const struct unwind_idx *origin,
-+					const struct unwind_idx *stop)
- {
--	pr_debug("%s(%08lx, %p, %p)\n", __func__, addr, first, last);
-+	unsigned long addr_prel31;
++static int fec_set_promisc(struct eth_device *edev, bool enable)
++{
++	struct fec_priv *fec = (struct fec_priv *)edev->priv;
++	u32 rcntl;
 +
-+	pr_debug("%s(%08lx, %p, %p, %p)\n",
-+			__func__, addr, start, origin, stop);
++	rcntl = readl(fec->regs + FEC_R_CNTRL);
 +
-+	/*
-+	 * only search in the section with the matching sign. This way the
-+	 * prel31 numbers can be compared as unsigned longs.
-+	 */
-+	if (addr < (unsigned long)start)
-+		/* negative offsets: [start; origin) */
-+		stop = origin;
++	if (enable)
++		rcntl |= FEC_R_CNTRL_PROMISC;
 +	else
-+		/* positive offsets: [origin; stop) */
-+		start = origin;
++		rcntl &= ~FEC_R_CNTRL_PROMISC;
 +
-+	/* prel31 for address relavive to start */
-+	addr_prel31 = (addr - (unsigned long)start) & 0x7fffffff;
++	writel(rcntl, fec->regs + FEC_R_CNTRL);
 +
-+	while (start < stop - 1) {
-+		const struct unwind_idx *mid = start + ((stop - start) >> 1);
-+
-+		/*
-+		 * As addr_prel31 is relative to start an offset is needed to
-+		 * make it relative to mid.
-+		 */
-+		if (addr_prel31 - ((unsigned long)mid - (unsigned long)start) <
-+				mid->addr_offset)
-+			stop = mid;
-+		else {
-+			/* keep addr_prel31 relative to start */
-+			addr_prel31 -= ((unsigned long)mid -
-+					(unsigned long)start);
-+			start = mid;
-+		}
-+	}
- 
--	if (addr < first->addr) {
-+	if (likely(start->addr_offset <= addr_prel31))
-+		return start;
-+	else {
- 		pr_warning("unwind: Unknown symbol address %08lx\n", addr);
- 		return NULL;
--	} else if (addr >= last->addr)
--		return last;
-+	}
++	return 0;
 +}
  
--	while (first < last - 1) {
--		struct unwind_idx *mid = first + ((last - first + 1) >> 1);
-+static const struct unwind_idx *unwind_find_origin(
-+		const struct unwind_idx *start, const struct unwind_idx *stop)
-+{
-+	pr_debug("%s(%p, %p)\n", __func__, start, stop);
-+	while (start < stop - 1) {
-+		const struct unwind_idx *mid = start + ((stop - start) >> 1);
+ /*
+  * MII-interface related functions
+@@ -257,10 +273,13 @@ static int fec_init(struct eth_device *dev)
+ 	 */
+ 	writel(0x00000000, fec->regs + FEC_IMASK);
  
--		if (addr < mid->addr)
--			last = mid;
-+		if (mid->addr_offset >= 0x40000000)
-+			/* negative offset */
-+			start = mid;
- 		else
--			first = mid;
-+			/* positive offset */
-+			stop = mid;
- 	}
- 
--	return first;
--}
-+	pr_debug("%s -> %p\n", __func__, stop);
-+	return stop;
-+ }
- 
--static struct unwind_idx *unwind_find_idx(unsigned long addr)
-+static const struct unwind_idx *unwind_find_idx(unsigned long addr)
- {
--	struct unwind_idx *idx = NULL;
-+	const struct unwind_idx *idx = NULL;
- 
- 	pr_debug("%s(%08lx)\n", __func__, addr);
- 
--	if (is_kernel_text(addr))
-+	if (is_kernel_text(addr)) {
-+		if (unlikely(!__origin_unwind_idx))
-+			__origin_unwind_idx =
-+				unwind_find_origin(__start_unwind_idx,
-+						__stop_unwind_idx);
++	rcntl = readl(fec->regs + FEC_R_CNTRL);
++	rcntl &= FEC_R_CNTRL_PROMISC;
 +
- 		/* main unwind table */
- 		idx = search_index(addr, __start_unwind_idx,
--				   __stop_unwind_idx - 1);
--	else {
-+					__origin_unwind_idx,
-+					__stop_unwind_idx);
-+	} else {
- 		/* module unwinding not supported */
- 	}
+ 	/*
+ 	 * Set FEC-Lite receive control register(R_CNTRL):
+ 	 */
+-	rcntl = FEC_R_CNTRL_MAX_FL(1518);
++	rcntl |= FEC_R_CNTRL_MAX_FL(1518);
  
-@@ -232,7 +288,7 @@ static int unwind_exec_insn(struct unwind_ctrl_block *ctrl)
- int unwind_frame(struct stackframe *frame)
- {
- 	unsigned long high, low;
--	struct unwind_idx *idx;
-+	const struct unwind_idx *idx;
- 	struct unwind_ctrl_block ctrl;
+ 	rcntl |= FEC_R_CNTRL_MII_MODE;
+ 	/*
+@@ -768,6 +787,7 @@ static int fec_probe(struct device_d *dev)
+ 	edev->halt = fec_halt;
+ 	edev->get_ethaddr = fec_get_hwaddr;
+ 	edev->set_ethaddr = fec_set_hwaddr;
++	edev->set_promisc = fec_set_promisc;
+ 	edev->parent = dev;
  
- 	/* only go to a higher address on the stack */
-@@ -342,15 +398,3 @@ void dump_stack(void)
- {
- 	unwind_backtrace(NULL);
- }
--
--static int unwind_init(void)
--{
--	struct unwind_idx *idx;
--
--	/* Convert the symbol addresses to absolute values */
--	for (idx = __start_unwind_idx; idx < __stop_unwind_idx; idx++)
--		idx->addr = prel31_to_addr(&idx->addr);
--
--	return 0;
--}
--core_initcall(unwind_init);
+ 	dma_set_mask(dev, DMA_BIT_MASK(32));
+@@ -834,6 +854,8 @@ static int fec_probe(struct device_d *dev)
+ 	if (ret)
+ 		goto free_gpio;
+ 
++	fec_set_promisc(edev, false);
++
+ 	/*
+ 	 * reserve memory for both buffer descriptor chains at once
+ 	 * Datasheet forces the startaddress of each chain is 16 byte aligned
+diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
+index 316eefe48f..9bb1c64b55 100644
+--- a/drivers/net/fec_imx.h
++++ b/drivers/net/fec_imx.h
+@@ -58,6 +58,7 @@
+ #define FEC_R_CNTRL_RMII_10T		(1 << 9) /* i.MX28 specific */
+ #define FEC_R_CNTRL_RMII_MODE		(1 << 8) /* i.MX28 specific */
+ #define FEC_R_CNTRL_FCE			(1 << 5)
++#define FEC_R_CNTRL_PROMISC		(1 << 3)
+ #define FEC_R_CNTRL_MII_MODE		(1 << 2)
+ 
+ #define FEC_IEVENT_HBERR                0x80000000 /* Note: Not on i.MX28 */
 -- 
 2.30.2
 
