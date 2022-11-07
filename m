@@ -1,56 +1,61 @@
-Delivery-date: Sat, 05 Nov 2022 13:16:52 +0100
+Delivery-date: Mon, 07 Nov 2022 08:50:42 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1orI6W-00G6o0-PC
-	for lore@lore.pengutronix.de; Sat, 05 Nov 2022 13:16:52 +0100
+	id 1orwu0-000FnQ-75
+	for lore@lore.pengutronix.de; Mon, 07 Nov 2022 08:50:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1orI6V-0004Iw-00
-	for lore@pengutronix.de; Sat, 05 Nov 2022 13:16:51 +0100
+	id 1orwty-0006ek-TA
+	for lore@pengutronix.de; Mon, 07 Nov 2022 08:50:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nKlfV04mOykAZsYZMX8TvmtsnuGQ+Yx7/xW4LqdWkeU=; b=4gKjAbYtI1DNjgZOgM6u9rpwXR
-	T+6qMcgyVNBfidtbmYukDGqkZzYfN+sO2DK94YCpP1YKYLNvd9ZzUoWaJTuWkgiHvvZnJpMPqmYfn
-	Q6WSyqqMpCsNszVnulHd0cprmwvyNSTj/s/VySzy9scQE9I4zJNjn1AR9uLSZLmyECaMBau5wJG00
-	y7wVoCIF7YJdRlqnDOGrcgj4MmddUilmrxT0uUjrQHNlWOVtR0XMeVLjET4bEC/Jw2E1Ra9QzuQto
-	QZ4FIF+sOz8QTmMZDNvTrjNYIsno3YV+ASIfvGnZMbYyrjfCnfHO6VcHRChIw9g5i037BJsHfjy0C
-	jKY3rwrg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=OZXk5i+9GYxyohhk8OtU31TrIbM8y5riWcbBr/ylmic=; b=z0ru1r00cA9/opE7OxGn2GHmGN
+	LrLSbVX8Yl4GqQV5aILGnHtlUh2xh8jsPNkiPNqxfbyBS/6b3bqHqB15cfyLMQO5dlUPivgKLtwPw
+	y7xnNDLm4in3PM46Nexv8NoqteIuHuRSktaiURiU0sxjZgub5vnqAPyLryP9X5tKaBtzVcwS0Kjr1
+	qObOImdug1dUz/zdkBkKp+5Jf6UYd+998P3O0zTTyrMRa2NhnITyuLZ7xo7tqMcVDGUEZgnf4SWQO
+	v96fdCyJH14nBMPrdU8qTpc+FdJALK32LuIBVcVVEyFdm815rQb6rnC9GJi4u+yaVUynb4vrs1waN
+	e6o1XSlg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1orI5E-006Uf3-Ju; Sat, 05 Nov 2022 12:15:32 +0000
+	id 1orws2-00Cd7b-1P; Mon, 07 Nov 2022 07:48:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1orI59-006Ud0-3D
-	for barebox@lists.infradead.org; Sat, 05 Nov 2022 12:15:29 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1orI4s-0003uP-Mo; Sat, 05 Nov 2022 13:15:10 +0100
-Message-ID: <f4a9de94-9466-89e9-ede6-d6b0710c881b@pengutronix.de>
-Date: Sat, 5 Nov 2022 13:15:09 +0100
+	id 1orwrw-00Cd0R-NU
+	for barebox@lists.infradead.org; Mon, 07 Nov 2022 07:48:34 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1orwrp-0006VL-RV; Mon, 07 Nov 2022 08:48:25 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1orwrp-0007PQ-AO; Mon, 07 Nov 2022 08:48:25 +0100
+Date: Mon, 7 Nov 2022 08:48:25 +0100
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
+Message-ID: <20221107074825.GX3143@pengutronix.de>
+References: <20221105121154.3716964-1-ahmad@a3f.at>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Ahmad Fatoum <ahmad@a3f.at>, barebox@lists.infradead.org
-Cc: Christian Melki <christian.melki@t2data.com>
-References: <20221102124842.2520783-1-ahmad@a3f.at>
- <59a5ac67-c503-cf43-d847-1f83d69bf98a@pengutronix.de>
-In-Reply-To: <59a5ac67-c503-cf43-d847-1f83d69bf98a@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221105121154.3716964-1-ahmad@a3f.at>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221105_051527_163482_C7EFB2C6 
-X-CRM114-Status: GOOD (  17.14  )
+X-CRM114-CacheID: sfid-20221106_234832_798263_9B7BEC67 
+X-CRM114-Status: GOOD (  24.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,63 +73,120 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] Kbuild: link barebox with -z noexecstack
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH master v2 1/2] ARM: psci: make PSCI method a
+ of_psci_fixup parameter
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 02.11.22 13:55, Ahmad Fatoum wrote:
-> On 02.11.22 13:48, Ahmad Fatoum wrote:
->> We don't care for permission of ELF segments, but GNU ld (BFD)
->> does and now with binutils 2.39+, it reports:
->>
->>   ld: warning: defaultenv/defaultenv-2-menu.bbenv.o: missing
->>   .note.GNU-stack section implies executable stack
->>
->>   ld: NOTE: This behaviour is deprecated and will be removed in a future
->>   version of the linker
->>
->> Instead of touching all assembly objects and scripts creating them to
->> add the section, just set -z noexecstack at link-time. This is already
->> the LLVM linker (lld) default.
->>
->> Reported-by: Christian Melki <christian.melki@t2data.com>
->> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
->> ---
+On Sat, Nov 05, 2022 at 01:11:53PM +0100, Ahmad Fatoum wrote:
+> We currently assume PSCI fixups to always be of method smc, but this is
+> not true when barebox fixes up the node while running under QEMU.
 > 
-> Please dismiss. I think we should just add it to KBUILD_LDFLAGS globally.
+> In preparation for handling QEMU boot properly when psci-client driver
+> is enabled, give of_psci_fixup an extra parameter.
+> 
+> No functional change.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+> v1 -> v2:
+>   - new patch
+> ---
+>  arch/arm/cpu/psci-client.c     | 2 +-
+>  arch/arm/cpu/psci-of.c         | 5 +++--
+>  arch/arm/cpu/psci.c            | 2 +-
+>  arch/arm/include/asm/psci.h    | 3 ++-
+>  arch/arm/mach-layerscape/ppa.c | 2 +-
+>  5 files changed, 8 insertions(+), 6 deletions(-)
 
-I'll be away for a few weeks, so noting here how Linux does it:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ffcf9c5700e49c0aee42dcba9a12ba21338e8136
-https://lore.kernel.org/all/20220808192321.3490995-1-ndesaulniers@google.com/
+Applied, thanks
 
-In case someone else wants to get rid of the warning in the meantime.
-
-Cheers,
-Ahmad
-
+Sascha
 
 > 
->>  Makefile | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/Makefile b/Makefile
->> index 26a0999a2e20..e57b8a4a1364 100644
->> --- a/Makefile
->> +++ b/Makefile
->> @@ -450,7 +450,7 @@ KBUILD_CFLAGS_KERNEL :=
->>  KBUILD_AFLAGS_MODULE := -DMODULE
->>  KBUILD_CFLAGS_MODULE := -DMODULE
->>  
->> -LDFLAGS_barebox	:= -Map barebox.map
->> +LDFLAGS_barebox	:= -Map barebox.map -z noexecstack
->>  
->>  # Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
->>  LDFLAGS_barebox += $(call ld-option, --no-dynamic-linker)
+> diff --git a/arch/arm/cpu/psci-client.c b/arch/arm/cpu/psci-client.c
+> index 7d5b3768b59e..613280ad3f23 100644
+> --- a/arch/arm/cpu/psci-client.c
+> +++ b/arch/arm/cpu/psci-client.c
+> @@ -110,7 +110,7 @@ static u32 invoke_psci_fn_smc(ulong function, ulong arg0, ulong arg1, ulong arg2
+>  
+>  static int of_psci_do_fixup(struct device_node *root, void *context)
+>  {
+> -	return of_psci_fixup(root, *(u32 *)context);
+> +	return of_psci_fixup(root, *(u32 *)context, "smc");
+>  }
+>  
+>  static int __init psci_probe(struct device_d *dev)
+> diff --git a/arch/arm/cpu/psci-of.c b/arch/arm/cpu/psci-of.c
+> index ef83b0edee69..be16b08617ec 100644
+> --- a/arch/arm/cpu/psci-of.c
+> +++ b/arch/arm/cpu/psci-of.c
+> @@ -7,7 +7,8 @@
+>  #include <asm/psci.h>
+>  #include <linux/arm-smccc.h>
+>  
+> -int of_psci_fixup(struct device_node *root, unsigned long psci_version)
+> +int of_psci_fixup(struct device_node *root, unsigned long psci_version,
+> +		  const char *method)
+>  {
+>  	struct device_node *psci;
+>  	int ret;
+> @@ -46,7 +47,7 @@ int of_psci_fixup(struct device_node *root, unsigned long psci_version)
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = of_property_write_string(psci, "method", "smc");
+> +	ret = of_property_write_string(psci, "method", method);
+>  	if (ret)
+>  		return ret;
+>  
+> diff --git a/arch/arm/cpu/psci.c b/arch/arm/cpu/psci.c
+> index d1056e0659da..70c97e03a5ff 100644
+> --- a/arch/arm/cpu/psci.c
+> +++ b/arch/arm/cpu/psci.c
+> @@ -189,7 +189,7 @@ static int of_psci_do_fixup(struct device_node *root, void *unused)
+>  	if (bootm_arm_security_state() < ARM_STATE_NONSECURE)
+>  		return 0;
+>  
+> -	return of_psci_fixup(root, ARM_PSCI_VER_1_0);
+> +	return of_psci_fixup(root, ARM_PSCI_VER_1_0, "smc");
+>  }
+>  
+>  int psci_cpu_entry_c(void)
+> diff --git a/arch/arm/include/asm/psci.h b/arch/arm/include/asm/psci.h
+> index 3c1d046eb990..dbb9adfc3e43 100644
+> --- a/arch/arm/include/asm/psci.h
+> +++ b/arch/arm/include/asm/psci.h
+> @@ -144,6 +144,7 @@ static inline int psci_printf(const char *fmt, ...)
+>  
+>  int psci_get_cpu_id(void);
+>  
+> -int of_psci_fixup(struct device_node *root, unsigned long psci_version);
+> +int of_psci_fixup(struct device_node *root, unsigned long psci_version,
+> +		  const char *method);
+>  
+>  #endif /* __ARM_PSCI_H__ */
+> diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
+> index d962fba75105..144d0524754b 100644
+> --- a/arch/arm/mach-layerscape/ppa.c
+> +++ b/arch/arm/mach-layerscape/ppa.c
+> @@ -46,7 +46,7 @@ static int of_psci_do_fixup(struct device_node *root, void *unused)
+>  		break;
+>  	}
+>  
+> -	return of_psci_fixup(root, psci_version);
+> +	return of_psci_fixup(root, psci_version, "smc");
+>  }
+>  
+>  static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
+> -- 
+> 2.37.2
+> 
+> 
 > 
 
 -- 
@@ -132,6 +194,5 @@ Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
