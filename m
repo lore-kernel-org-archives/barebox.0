@@ -1,61 +1,57 @@
-Delivery-date: Mon, 07 Nov 2022 08:50:42 +0100
+Delivery-date: Mon, 07 Nov 2022 11:09:25 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1orwu0-000FnQ-75
-	for lore@lore.pengutronix.de; Mon, 07 Nov 2022 08:50:42 +0100
+	id 1orz4H-000L4N-4J
+	for lore@lore.pengutronix.de; Mon, 07 Nov 2022 11:09:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1orwty-0006ek-TA
-	for lore@pengutronix.de; Mon, 07 Nov 2022 08:50:39 +0100
+	id 1orz4F-0003YU-Va
+	for lore@pengutronix.de; Mon, 07 Nov 2022 11:09:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OZXk5i+9GYxyohhk8OtU31TrIbM8y5riWcbBr/ylmic=; b=z0ru1r00cA9/opE7OxGn2GHmGN
-	LrLSbVX8Yl4GqQV5aILGnHtlUh2xh8jsPNkiPNqxfbyBS/6b3bqHqB15cfyLMQO5dlUPivgKLtwPw
-	y7xnNDLm4in3PM46Nexv8NoqteIuHuRSktaiURiU0sxjZgub5vnqAPyLryP9X5tKaBtzVcwS0Kjr1
-	qObOImdug1dUz/zdkBkKp+5Jf6UYd+998P3O0zTTyrMRa2NhnITyuLZ7xo7tqMcVDGUEZgnf4SWQO
-	v96fdCyJH14nBMPrdU8qTpc+FdJALK32LuIBVcVVEyFdm815rQb6rnC9GJi4u+yaVUynb4vrs1waN
-	e6o1XSlg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=HvSwtl8JwjAv4e6vp6sEZQiAihpf6Owf6nAySgaOtT0=; b=HP83PYSPSUZlTRLaX/sSnH8uRQ
+	BeZA1xqOLyc1S3R4gsTv/SxAodTzlFVR2iaQqJPeo+Ax7wN7lJh4z4fwtayAVyuqOYVUEjCBvsZ/1
+	ekBKXPVs61/7pCxs/TFA1GCInrs+3R7FaxNE1vWQxCNqoj+gWSJ2JJHQ0E4zI4TBsK+y2XPIztiPx
+	OnbV01Z1EKlMCjsZNZGlLtQ+n0Kfat6mOYcZ6fv7Z9cIxGU7XrYFA0PDtOygvj9aBVBqDCKoa6OUC
+	LyiNHDCHBIbtTC52lRmis6NlPRqaSq2HmlbO4MGRcYOvGU8W8sztPQkKpEEm7pYAufZverLHJFmdw
+	K57SfPbw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1orws2-00Cd7b-1P; Mon, 07 Nov 2022 07:48:38 +0000
+	id 1orz2Y-00DfQp-Du; Mon, 07 Nov 2022 10:07:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1orwrw-00Cd0R-NU
-	for barebox@lists.infradead.org; Mon, 07 Nov 2022 07:48:34 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1orz2T-00DfP9-Te
+	for barebox@lists.infradead.org; Mon, 07 Nov 2022 10:07:35 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1orwrp-0006VL-RV; Mon, 07 Nov 2022 08:48:25 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	id 1orz2P-0003Ol-Ss; Mon, 07 Nov 2022 11:07:29 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1orwrp-0007PQ-AO; Mon, 07 Nov 2022 08:48:25 +0100
-Date: Mon, 7 Nov 2022 08:48:25 +0100
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
-Message-ID: <20221107074825.GX3143@pengutronix.de>
-References: <20221105121154.3716964-1-ahmad@a3f.at>
+	id 1orz2O-002pkV-7P; Mon, 07 Nov 2022 11:07:29 +0100
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1orz2O-00AX4E-Kg; Mon, 07 Nov 2022 11:07:28 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon,  7 Nov 2022 11:07:26 +0100
+Message-Id: <20221107100727.2510346-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221105121154.3716964-1-ahmad@a3f.at>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221106_234832_798263_9B7BEC67 
-X-CRM114-Status: GOOD (  24.96  )
+X-CRM114-CacheID: sfid-20221107_020733_981740_906118E8 
+X-CRM114-Status: GOOD (  14.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,126 +69,124 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master v2 1/2] ARM: psci: make PSCI method a
- of_psci_fixup parameter
+Subject: [PATCH 1/2] nvmem: remove IS_ERR_VALUE abuses
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sat, Nov 05, 2022 at 01:11:53PM +0100, Ahmad Fatoum wrote:
-> We currently assume PSCI fixups to always be of method smc, but this is
-> not true when barebox fixes up the node while running under QEMU.
-> 
-> In preparation for handling QEMU boot properly when psci-client driver
-> is enabled, give of_psci_fixup an extra parameter.
-> 
-> No functional change.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
-> v1 -> v2:
->   - new patch
-> ---
->  arch/arm/cpu/psci-client.c     | 2 +-
->  arch/arm/cpu/psci-of.c         | 5 +++--
->  arch/arm/cpu/psci.c            | 2 +-
->  arch/arm/include/asm/psci.h    | 3 ++-
->  arch/arm/mach-layerscape/ppa.c | 2 +-
->  5 files changed, 8 insertions(+), 6 deletions(-)
+>From Kernel commit 287980e49ffc ("remove lots of IS_ERR_VALUE abuses"):
 
-Applied, thanks
+| Most users of IS_ERR_VALUE() in the kernel are wrong, as they
+| pass an 'int' into a function that takes an 'unsigned long'
+| argument. This happens to work because the type is sign-extended
+| on 64-bit architectures before it gets converted into an
+| unsigned type.
 
-Sascha
+Based on the Kernel commit remove usage of IS_ERR_VALUE() from the
+nvmem core.
 
-> 
-> diff --git a/arch/arm/cpu/psci-client.c b/arch/arm/cpu/psci-client.c
-> index 7d5b3768b59e..613280ad3f23 100644
-> --- a/arch/arm/cpu/psci-client.c
-> +++ b/arch/arm/cpu/psci-client.c
-> @@ -110,7 +110,7 @@ static u32 invoke_psci_fn_smc(ulong function, ulong arg0, ulong arg1, ulong arg2
->  
->  static int of_psci_do_fixup(struct device_node *root, void *context)
->  {
-> -	return of_psci_fixup(root, *(u32 *)context);
-> +	return of_psci_fixup(root, *(u32 *)context, "smc");
->  }
->  
->  static int __init psci_probe(struct device_d *dev)
-> diff --git a/arch/arm/cpu/psci-of.c b/arch/arm/cpu/psci-of.c
-> index ef83b0edee69..be16b08617ec 100644
-> --- a/arch/arm/cpu/psci-of.c
-> +++ b/arch/arm/cpu/psci-of.c
-> @@ -7,7 +7,8 @@
->  #include <asm/psci.h>
->  #include <linux/arm-smccc.h>
->  
-> -int of_psci_fixup(struct device_node *root, unsigned long psci_version)
-> +int of_psci_fixup(struct device_node *root, unsigned long psci_version,
-> +		  const char *method)
->  {
->  	struct device_node *psci;
->  	int ret;
-> @@ -46,7 +47,7 @@ int of_psci_fixup(struct device_node *root, unsigned long psci_version)
->  	if (ret)
->  		return ret;
->  
-> -	ret = of_property_write_string(psci, "method", "smc");
-> +	ret = of_property_write_string(psci, "method", method);
->  	if (ret)
->  		return ret;
->  
-> diff --git a/arch/arm/cpu/psci.c b/arch/arm/cpu/psci.c
-> index d1056e0659da..70c97e03a5ff 100644
-> --- a/arch/arm/cpu/psci.c
-> +++ b/arch/arm/cpu/psci.c
-> @@ -189,7 +189,7 @@ static int of_psci_do_fixup(struct device_node *root, void *unused)
->  	if (bootm_arm_security_state() < ARM_STATE_NONSECURE)
->  		return 0;
->  
-> -	return of_psci_fixup(root, ARM_PSCI_VER_1_0);
-> +	return of_psci_fixup(root, ARM_PSCI_VER_1_0, "smc");
->  }
->  
->  int psci_cpu_entry_c(void)
-> diff --git a/arch/arm/include/asm/psci.h b/arch/arm/include/asm/psci.h
-> index 3c1d046eb990..dbb9adfc3e43 100644
-> --- a/arch/arm/include/asm/psci.h
-> +++ b/arch/arm/include/asm/psci.h
-> @@ -144,6 +144,7 @@ static inline int psci_printf(const char *fmt, ...)
->  
->  int psci_get_cpu_id(void);
->  
-> -int of_psci_fixup(struct device_node *root, unsigned long psci_version);
-> +int of_psci_fixup(struct device_node *root, unsigned long psci_version,
-> +		  const char *method);
->  
->  #endif /* __ARM_PSCI_H__ */
-> diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
-> index d962fba75105..144d0524754b 100644
-> --- a/arch/arm/mach-layerscape/ppa.c
-> +++ b/arch/arm/mach-layerscape/ppa.c
-> @@ -46,7 +46,7 @@ static int of_psci_do_fixup(struct device_node *root, void *unused)
->  		break;
->  	}
->  
-> -	return of_psci_fixup(root, psci_version);
-> +	return of_psci_fixup(root, psci_version, "smc");
->  }
->  
->  static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
-> -- 
-> 2.37.2
-> 
-> 
-> 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/nvmem/core.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index c89ad08f81..8e07bdb501 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -526,7 +526,7 @@ static int __nvmem_cell_read(struct nvmem_device *nvmem,
+ 	int rc;
+ 
+ 	rc = nvmem->bus->read(nvmem->priv, cell->offset, buf, cell->bytes);
+-	if (IS_ERR_VALUE(rc))
++	if (rc)
+ 		return rc;
+ 
+ 	/* shift bits in-place */
+@@ -561,7 +561,7 @@ void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	rc = __nvmem_cell_read(nvmem, cell, buf, len);
+-	if (IS_ERR_VALUE(rc)) {
++	if (rc) {
+ 		kfree(buf);
+ 		return ERR_PTR(rc);
+ 	}
+@@ -591,7 +591,7 @@ static inline void *nvmem_cell_prepare_write_buffer(struct nvmem_cell *cell,
+ 
+ 		/* setup the first byte with lsb bits from nvmem */
+ 		rc = nvmem->bus->read(nvmem->priv, cell->offset, &v, 1);
+-		if (IS_ERR_VALUE(rc))
++		if (rc)
+ 			return ERR_PTR(rc);
+ 
+ 		*b++ |= GENMASK(bit_offset - 1, 0) & v;
+@@ -612,7 +612,7 @@ static inline void *nvmem_cell_prepare_write_buffer(struct nvmem_cell *cell,
+ 		/* setup the last byte with msb bits from nvmem */
+ 		rc = nvmem->bus->read(nvmem->priv, cell->offset + cell->bytes - 1,
+ 				      &v, 1);
+-		if (IS_ERR_VALUE(rc))
++		if (rc)
+ 			return ERR_PTR(rc);
+ 
+ 		*p |= GENMASK(7, (nbits + bit_offset) % BITS_PER_BYTE) & v;
+@@ -652,7 +652,7 @@ int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len)
+ 	if (cell->bit_offset || cell->nbits)
+ 		kfree(buf);
+ 
+-	if (IS_ERR_VALUE(rc))
++	if (rc)
+ 		return rc;
+ 
+ 	return len;
+@@ -680,11 +680,11 @@ ssize_t nvmem_device_cell_read(struct nvmem_device *nvmem,
+ 		return -EINVAL;
+ 
+ 	rc = nvmem_cell_info_to_nvmem_cell(nvmem, info, &cell);
+-	if (IS_ERR_VALUE(rc))
++	if (rc)
+ 		return rc;
+ 
+ 	rc = __nvmem_cell_read(nvmem, &cell, buf, &len);
+-	if (IS_ERR_VALUE(rc))
++	if (rc)
+ 		return rc;
+ 
+ 	return len;
+@@ -710,7 +710,7 @@ int nvmem_device_cell_write(struct nvmem_device *nvmem,
+ 		return -EINVAL;
+ 
+ 	rc = nvmem_cell_info_to_nvmem_cell(nvmem, info, &cell);
+-	if (IS_ERR_VALUE(rc))
++	if (rc)
+ 		return rc;
+ 
+ 	return nvmem_cell_write(&cell, buf, cell.bytes);
+@@ -744,8 +744,7 @@ int nvmem_device_read(struct nvmem_device *nvmem,
+ 		return 0;
+ 
+ 	rc = nvmem->bus->read(nvmem->priv, offset, buf, bytes);
+-
+-	if (IS_ERR_VALUE(rc))
++	if (rc)
+ 		return rc;
+ 
+ 	return bytes;
+@@ -778,8 +777,7 @@ int nvmem_device_write(struct nvmem_device *nvmem,
+ 		return 0;
+ 
+ 	rc = nvmem->bus->write(nvmem->priv, offset, buf, bytes);
+-
+-	if (IS_ERR_VALUE(rc))
++	if (rc)
+ 		return rc;
+ 
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
