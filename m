@@ -1,58 +1,60 @@
-Delivery-date: Tue, 08 Nov 2022 07:12:02 +0100
+Delivery-date: Tue, 08 Nov 2022 07:12:03 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1osHq6-0018Qs-4X
-	for lore@lore.pengutronix.de; Tue, 08 Nov 2022 07:12:02 +0100
+	id 1osHq7-0018RH-CN
+	for lore@lore.pengutronix.de; Tue, 08 Nov 2022 07:12:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1osHq4-000099-P3
-	for lore@pengutronix.de; Tue, 08 Nov 2022 07:12:01 +0100
+	id 1osHq6-00009u-4D
+	for lore@pengutronix.de; Tue, 08 Nov 2022 07:12:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=AJHNgxl1eNLEf52jY3y7xg5JEZMagJzNOQYqGAfpI0U=; b=AbbzOdGcCWOIFCcZdYgoN3AcXi
-	gBjAe8OCorSJiJkW7IJaCDOyqyTsVGoV9dHqibNMbLYvIMbbBlelsFgSctTjVvaDPbQJ0A7ZmwVJW
-	7lCCUdOsbYcxql/vDxVZAow1/usins3yh+MNBDweqFR1z4I5Px2/ZhgQ/Le/VaP8e5b+AjyWE3BaN
-	lmrUFA+2pcw+GvvCn0Y0rOjJ3hLXV/78wmgYiuFNF481Zpie3nOwh3Ogm19Aq+yL46OMrZ9MAxhHv
-	JZTS36W2b+4qRgG4BuKIBV9NRv80bhW0M1xPX/ViL4S6pSQIjMp5gYhTzrBMa/K0smvZSGf8rlR1+
-	UQJxUo3g==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=YZq/lytFsHvdYEGkogCU1khAwzuonxRcwIB+14cU2zk=; b=0Qr2zTDlCV/bipKsFUhoDbCkl/
+	fy5l1nbC/ALFyqjDA+RxuJhzUSm1sB5+AB+5GA0Gw/S4FGe+Vj4wC0oQ66IjLKYoK+d4E5Aj8dweT
+	ny5LSui+B5bnGLVYH46PaedVnry2ikq7Ovpg1wPOh4sjKGWdD6YrXfwzRFS08Gh/qD6RyqmgPspq9
+	AsadCXcXcrUVDQF/lNlnLyqTMApv2s32SySgf8EK23IK4Y0Rrsb4SdxwWA0pPqdVeoUzB7xh2MfjA
+	9r2HwEsFHcE7TWaD7c9nWAjUlqIXEua+g+7ckpeTjB/GHmlqlyP60PK5WuUnWVDFv+AgLD51x6hLN
+	+OPb4+GQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1osHoW-0035E4-9Y; Tue, 08 Nov 2022 06:10:24 +0000
+	id 1osHoe-0035Hq-Is; Tue, 08 Nov 2022 06:10:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1osHoR-0035Da-MZ
-	for barebox@lists.infradead.org; Tue, 08 Nov 2022 06:10:20 +0000
+	id 1osHoV-0035EC-Kk
+	for barebox@lists.infradead.org; Tue, 08 Nov 2022 06:10:26 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1osHoN-0007sC-4S; Tue, 08 Nov 2022 07:10:15 +0100
+	id 1osHoU-0007tu-FT; Tue, 08 Nov 2022 07:10:22 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1osHoL-002zpR-Hf; Tue, 08 Nov 2022 07:10:14 +0100
+	id 1osHoS-002zpo-Tc; Tue, 08 Nov 2022 07:10:21 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1osHoL-00HUUZ-Rw; Tue, 08 Nov 2022 07:10:13 +0100
+	id 1osHoS-00HUUd-5p; Tue, 08 Nov 2022 07:10:20 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue,  8 Nov 2022 07:10:02 +0100
-Message-Id: <20221108061009.4168735-1-o.rempel@pengutronix.de>
+Date: Tue,  8 Nov 2022 07:10:03 +0100
+Message-Id: <20221108061009.4168735-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20221108061009.4168735-1-o.rempel@pengutronix.de>
+References: <20221108061009.4168735-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221107_221019_744533_B54DE025 
-X-CRM114-Status: GOOD (  12.28  )
+X-CRM114-CacheID: sfid-20221107_221023_680861_65F2CC05 
+X-CRM114-Status: GOOD (  10.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,60 +76,55 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v4 1/8] net: add promiscuous mode configuration support
+Subject: [PATCH v4 2/8] net: usb: asix: add promisc mode support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This configuration is mostly needed for controllers attached to switches
-with different MAC address configurations or for debugging networking
-issues.
+Add promisc mode configuration support
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- include/net.h | 3 +++
- net/eth.c     | 8 ++++++++
- 2 files changed, 11 insertions(+)
+ drivers/net/usb/asix.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/include/net.h b/include/net.h
-index 338033d698..f9d1fbfc18 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -49,6 +49,8 @@ struct eth_device {
- 				 int *length);
- 	void (*rx_monitor) (struct eth_device*, void *packet, int length);
- 	void (*tx_monitor) (struct eth_device*, void *packet, int length);
-+	/* Set promiscuous mode */
-+	int  (*set_promisc) (struct eth_device*, bool enable);
+diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
+index 28a3534bcf..2d7114e5b1 100644
+--- a/drivers/net/usb/asix.c
++++ b/drivers/net/usb/asix.c
+@@ -427,6 +427,25 @@ static int asix_set_ethaddr(struct eth_device *edev, const unsigned char *adr)
+ 	return 0;
+ }
  
- 	struct eth_device *next;
- 	void *priv;
-@@ -113,6 +115,7 @@ int eth_send(struct eth_device *edev, void *packet, int length);	   /* Send a pa
- int eth_rx(void);			/* Check for received packets	*/
- void eth_open_all(void);
- struct eth_device *of_find_eth_device_by_node(struct device_node *np);
-+int eth_set_promisc(struct eth_device *edev, bool enable);
- 
- /* associate a MAC address to a ethernet device. Should be called by
-  * board code for boards which store their MAC address at some unusual
-diff --git a/net/eth.c b/net/eth.c
-index 8f6ff7db3a..19654cdd51 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -31,6 +31,14 @@ struct eth_ethaddr {
- 
- static LIST_HEAD(ethaddr_list);
- 
-+int eth_set_promisc(struct eth_device *edev, bool enable)
++static int asix_set_promisc(struct eth_device *edev, bool enable)
 +{
-+	if (!edev->set_promisc)
-+		return -EOPNOTSUPP;
++	struct usbnet *dev = container_of(edev, struct usbnet, edev);
++	u16 rx_ctl;
++	int ret;
 +
-+	return edev->set_promisc(edev, enable);
++	rx_ctl = asix_read_rx_ctl(dev);
++
++	if (enable)
++		rx_ctl |= AX_RX_CTL_PRO;
++	else
++		rx_ctl &= ~AX_RX_CTL_PRO;
++
++	if ((ret = asix_write_rx_ctl(dev, rx_ctl)) < 0)
++		return ret;
++
++	return 0;
 +}
 +
- int eth_set_ethaddr(struct eth_device *edev, const char *ethaddr)
+ static int ax88172_get_ethaddr(struct eth_device *edev, unsigned char *adr)
  {
- 	int ret;
+ 	struct usbnet *udev = container_of(edev, struct usbnet, edev);
+@@ -664,6 +683,7 @@ static int ax88772_bind(struct usbnet *dev)
+ 
+ 	dev->edev.get_ethaddr = asix_get_ethaddr;
+ 	dev->edev.set_ethaddr = asix_set_ethaddr;
++	dev->edev.set_promisc = asix_set_promisc;
+ 	asix_init_mii(dev);
+ 
+ 	if ((ret = asix_sw_reset(dev, AX_SWRESET_PRL)) < 0)
 -- 
 2.30.2
 
