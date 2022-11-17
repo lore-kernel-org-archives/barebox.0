@@ -1,138 +1,58 @@
-Delivery-date: Thu, 17 Nov 2022 08:30:05 +0100
+Delivery-date: Thu, 17 Nov 2022 13:08:20 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ovZLW-00A2gL-Ol
-	for lore@lore.pengutronix.de; Thu, 17 Nov 2022 08:30:05 +0100
+	id 1ovdgq-00AEN5-Ee
+	for lore@lore.pengutronix.de; Thu, 17 Nov 2022 13:08:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ovZLU-0007WI-TR
-	for lore@pengutronix.de; Thu, 17 Nov 2022 08:30:02 +0100
+	id 1ovdgn-0000nj-Jq
+	for lore@pengutronix.de; Thu, 17 Nov 2022 13:08:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:To:Subject
-	:Date:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CA2PZmdMUSOT7SX9xQk6m8Ftxa0u9FQuwmJf61v4Xv0=; b=EeP60gNDW08Fat3fOQ3sh6MAqH
-	DwB19Gfhz2KN8+edCLX3ADfQbRvrmeW6/9nDeS99m4yMDnZob09+H9GvFkxpOh0htFRb3beyeIyCX
-	UbVZCY1/uT3xqTk1KpbLTegQPDkn/XdoyFLRn1k5x98W187TWJH9aeIgEwrDZiL/r62CfC2O1unaw
-	zOAnsXG+85avmxDyCG6ChYt/hplWxEundEGpn+lq9GvOxTGTL88+tWeYXO40keVO80935J4wdmLzn
-	2bXLY7c2sybrZI7a48m6ep1mnsynKbm/3nlFPBz29frUkg+p+7R8bh0KhBU3BHhHGs00xrLbuMceH
-	2geWpYkw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=EjKB5Hz2Jr+k6bumyuOWflHi6Mmt7cyYRSkCZS8Pc+8=; b=wMp/5KCEHfcwLnE+L0s0Jow640
+	a7uAhHtm3/BSDDm8iQ5oPRdaC7r3NlDb19FRsVtd1bhoh3pObBurK14Yy3XBOtIqq/iqkNI9lABhm
+	Th+AmYcfLrYweZby/TEaI08slCZc1ue13GEK5y3m7dnEDZekt0htraMv8Zq50QT9M9D6liuro+p/k
+	daheVtpVbP+rCP4Dfs55vYOD5U2qPkHd+FSmmY2cyWCaPOuEmFLSU/kM88mYXlG9PP+WSAqUstaEc
+	34HcHOT18Nov1zGOgblNT84uvjt52pMhoQ6rihcsRppVOUCRdBYmjSOpJ/flkKTxKXJXmW89jpnSi
+	q3jk3L2Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ovZHq-00BEkg-UC; Thu, 17 Nov 2022 07:26:15 +0000
-Received: from mail-db3eur04on062a.outbound.protection.outlook.com ([2a01:111:f400:fe0c::62a] helo=EUR04-DB3-obe.outbound.protection.outlook.com)
+	id 1ovdeq-00DfUx-92; Thu, 17 Nov 2022 12:06:16 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ovZHl-00BEio-M6
-	for barebox@lists.infradead.org; Thu, 17 Nov 2022 07:26:11 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OfkvrGvIGOOPVtaDq+aa9uB4wW+LJ0VmaQ6H9zMmLp5viA1bsvh+hHbGPc7znSL66d/t5lvxsVTFySK0FrHC+CjZ/JT5bMyi/baymlCqGbEqZbUmr4tofXElJq0CtqQUYHsZhbXPHGAKquzcYCm43vpuIiltZJhRj68NrpeWY4bm9aCTEH4nhblRncIZ9P86GzzHQ5vG5/qTb9k37ndIFeuaEEp47c2G1NZvBuY7BQHmxZiUCSkiawKgsF18GZPEDYeGTcNQZ2o6xFDnm/TEZneX+faDnpCsafHvB9K5Ra8TXs3gw+/JbogWzHT+s1xVP2N1jND4LKOTBQ2p5smnvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CA2PZmdMUSOT7SX9xQk6m8Ftxa0u9FQuwmJf61v4Xv0=;
- b=BFmtFMQC4PsFbloK+NOLVp3oepm5Cr3I2ebctS7ctptVJ2c6kPvxyZ5LLFpjwv3A9nXIZB56gJH/f37XmOKesh9mEZ4zU0cc1knhyE7B6IMBdSfDYi8H+1A7BE1wI56YyxV2ZfI2hjVHRZ7b2osK0IEiXEvjnDjnLT2fpUGVJ9mTUaa/jm0zRIU55Z6ilhAdv8jk2MPGxPYjXSyVFVbrXoTIYmNbdGoztl59Zl36GtP6ZYiCwNcgRg/jop1+HCBhPrUxb2nfVxgrHO7DH6F8+aEb8KJ/exl4fcSa3Mjdd6JeSBPxPwdJP7f7LsTUTwzTRZxEGqA5xOqF6WrYAttjGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wolfvision.net; dmarc=pass action=none
- header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CA2PZmdMUSOT7SX9xQk6m8Ftxa0u9FQuwmJf61v4Xv0=;
- b=H3GAvvQ2YZxSaeUgJ0viG1Eqqj3n+RoEQzWF/p/+DHu0MsExeTqczdkX0T311NGNdJ1XYztxVSq+twNrBcWD5/u8n4SP99topyEho+OkK2Om4d0kv+2kZR2E8R0E6Yc6Q+0ImCyo+Qj81MNGwPEHfugjYlwHhBHq31MCIpBF1OM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wolfvision.net;
-Received: from DU0PR08MB9155.eurprd08.prod.outlook.com (2603:10a6:10:416::5)
- by AM9PR08MB5938.eurprd08.prod.outlook.com (2603:10a6:20b:2da::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5834.9; Thu, 17 Nov
- 2022 07:26:02 +0000
-Received: from DU0PR08MB9155.eurprd08.prod.outlook.com
- ([fe80::3643:6226:28c:e637]) by DU0PR08MB9155.eurprd08.prod.outlook.com
- ([fe80::3643:6226:28c:e637%2]) with mapi id 15.20.5834.007; Thu, 17 Nov 2022
- 07:26:02 +0000
-Message-ID: <52d826a4-4b41-fcc3-0482-44763d8833aa@wolfvision.net>
-Date: Thu, 17 Nov 2022 08:25:59 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Content-Language: en-US
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-References: <20220724190006.2160802-1-a.fatoum@pengutronix.de>
- <20220724190006.2160802-6-a.fatoum@pengutronix.de>
-From: Michael Riesch <michael.riesch@wolfvision.net>
-Organization: WolfVision GmbH
-In-Reply-To: <20220724190006.2160802-6-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR07CA0258.eurprd07.prod.outlook.com
- (2603:10a6:803:b4::25) To DU0PR08MB9155.eurprd08.prod.outlook.com
- (2603:10a6:10:416::5)
+	id 1ovdeh-00DfRJ-94
+	for barebox@lists.infradead.org; Thu, 17 Nov 2022 12:06:12 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ovdef-0000Qo-Vj; Thu, 17 Nov 2022 13:06:06 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ovdee-004qDT-En; Thu, 17 Nov 2022 13:06:05 +0100
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1ovdee-00G73W-O1; Thu, 17 Nov 2022 13:06:04 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu, 17 Nov 2022 13:06:04 +0100
+Message-Id: <20221117120604.3840211-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR08MB9155:EE_|AM9PR08MB5938:EE_
-X-MS-Office365-Filtering-Correlation-Id: 989c6764-3cbc-4235-cdb3-08dac86cfb19
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	e1CXRjIaAuLVrRlqUZVmxkKyuWGDyCYGPvNR+qWX3R6PpARRWl8kFEbB/hi4+zFLwuSK8uXDY6epJLNv9gnuNcW3wSxUrTG1ywm5yhUnl+4qUQ78T3ckOW4wmS2oWSHXinFFjMYtV7iz7aSxPRVRbCTRvX85plzTaWrydjWsWrrdfr2KfVsVInlO6yb4QZrbmS6VADDf4QbxwtSH4kTF+ugjvYVn+0LDTx1BSBMx/+D9r9oUCoRaqt8qNxNWboaxlH6Wz8Z0/B4q6zShKESKLf6cx5ovd/GExdc0NymzuAW+UzsrPR2dPuAo5MvPvuWfTtiPKR4ZQ+su62NUEpAGm1v0pHqU6vE3pHlvX7jBxjZ/j5/UYnWy2VwJnKSk70ShAqEUspaDPPFyXoBuN/vrdqSo9vHaPOIM4d4hh0DfhPoQwrX68ESEfRc13DGIuEAaKw5lAjgeYCCthpcPN+L919BLtP/AOsh1Dav314kCP/Qaqil/AHTYAxPoNCHZPVeluE2vveBExf4mq8XiOIFo5uZVtPpCejM+VABZXKhzPgfYjMcObuZUnyIC7HhTqc178+p7nkd3ZdnXA6luwM0ZamxEuecRJPNlERgWEl4cCOsCez8Kbzv36K0RafkNE49F9X/Rp9bfHjNpZDuo4Rd9TL15BEKp9P41siTEEOqCrQC6OOCN3PkBUWu1+hlanQJg0cJ8GkBx+DDUXyOZGFeFoJKLxTBLIdsiGB3BlkLfL7kkZnQWRWDpE678Xn/vaKtz
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9155.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(346002)(376002)(39850400004)(366004)(396003)(451199015)(53546011)(52116002)(6506007)(6512007)(6666004)(44832011)(26005)(8676002)(66476007)(8936002)(66946007)(66556008)(38100700002)(36756003)(5660300002)(186003)(2616005)(41300700001)(38350700002)(478600001)(36916002)(6486002)(86362001)(31696002)(316002)(31686004)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?RVJOZHBsMXd4WWl4TWNZR3M0RHVOdzNPS28yN0JVbG80ei9lV1M4ZXNDSXhp?=
- =?utf-8?B?VHFBSnZ2bDdXQi9uc3NUTjJEVXZ6WWkra21yL2ZuaS9JaHFGMlhJRlJsbnNv?=
- =?utf-8?B?Rkk1bFoyUnNCY0ZKV1lUVDQvT1d4Wk9vYjFrMXZZUjBlUThlWnNmM1ltZ3Br?=
- =?utf-8?B?aTh3SkNIL0V6Y01HVXAxS1JFOUJYYlJYalRJTFVIYTNTV1BxYVlVdnJ5Mnlp?=
- =?utf-8?B?SVVaNjFkSS9IcWFzSWl3ZHZRZzlzalg0YnNqM000TEc3b0ZPcTh3UnJVV2Zy?=
- =?utf-8?B?ZWNzK2dwQUlrVm1sT2lhUmtyVkc5K1pVU3hiekdUb1RGYlpCL0VSanJlS2JI?=
- =?utf-8?B?NHFwUlg2eWx2WWN0a29mVVhWWmE0SnNTN0hYMDQxd24zYUQrZmpVVDlOc05z?=
- =?utf-8?B?VDNDWWNtM1E3RGxzTno0Z215SVJSelg4SnFEa0kvczNKd0dyVXdWMzdwVmVN?=
- =?utf-8?B?ekp3Umh4d3dUSXEwdFkrb0V6aDVzaElwTjMyc1l3ZlhrZWpmdUVhajFuWVBD?=
- =?utf-8?B?MjdaNGZseml5ZGtRVVZsdEcvemhTeEFmSW95Uy9FNHJmYTlVVCs5Um1tRmw5?=
- =?utf-8?B?eFlXS0kzYkpGTEo0Ynh6VUM1Rmh2L1U4QUxXeUpLK0haY082SE1vZ0xRZXJ3?=
- =?utf-8?B?ZkpDaWlOTndOOCtTU05TeVlBc3A4MlJhU3hVdlcxY0s1dWRFeEV1MGdHNDQx?=
- =?utf-8?B?am5UeEE0TENOTWd2RTdhNTF3YXZVM1RUdU1GU1JSMEF4Sy92dEtpNER1ajBn?=
- =?utf-8?B?NDB3cEw5Q21VeTJLSjM0ckxnVExndVovMjY2Y0hiNmhCZzNYWC9HZ0VQdHFm?=
- =?utf-8?B?MXQ5cFFzWDcxS2VmRUswZDVzZmd6NzdVSkR2M2U2eElXOEJ1cFJad3hCdkc1?=
- =?utf-8?B?WjVuRG5PaDNkOHdKc0dtR0VleEdkZWQyWEN4UFd1RGVGSnlBblhMMzRCYzJW?=
- =?utf-8?B?TGtRUDBlcWcvTDAvL1cvclN4T1BKdUJ2SzZocklFVHJNa0daOU0rQXJNVWd5?=
- =?utf-8?B?QnFXUlVYNjNHb01TWjQ1a1NvWnZGYnRCYUtsWlh6azllWE5MQzFuRy9BYTEv?=
- =?utf-8?B?cjJnQTB0WEZqdGJOcFZJSTdsTDd2Q0tSL2lpdWZwOVNQR25CKzFOM29UVW00?=
- =?utf-8?B?N1JWTm1PMTZCZ2ZwaFMrWmRKeEZWTzVBOFB1OGQrdEROVGVjT1laRzVaRkZ5?=
- =?utf-8?B?cFpXUmxIb2NVTGlDbk1UUG9YTGJhR0JPNVh2UnZpUnNLc2xOS2xNL0xia1hO?=
- =?utf-8?B?R05RRkU4YUd5dnUyOTBTNjlFNnZUUmUxcG55OTFxNVg5V1MwdmpzT3c2TWsz?=
- =?utf-8?B?VWFaSyt2eERjeEZlWThTaHFIeHFSeWIwR3VFUGpPUnhTK21nMmUza3hPS1hZ?=
- =?utf-8?B?TERBa3pNZlhkbHhzM3lGY3BieEtrVkplU1VYRHArc3dPaC9uOFBaUjRNckZm?=
- =?utf-8?B?Sm5ILzJYRkM1QjlMRUMrT2g5NFp5K3ZtakhHd3BCYnMvbG90TThZWjVsQTBL?=
- =?utf-8?B?R2hnYnZEUW5LSXcxNGRxOG9RQ1BsZmI1RjNpL3JnUG82NEkwdlduTlF3QXZE?=
- =?utf-8?B?WlJNSzZEUXhoSG1NWGZka1RsZzBFdmtHdGU0ZWNFQlF0amtxZlQwelRGL2ts?=
- =?utf-8?B?TnhvUkd2MU1HNWh1eGZFMHJVQUxmR1ZNd0NGRTlEeC8wV0F3QytFRnh0dU9y?=
- =?utf-8?B?U3RMZ25BZlBZblh4RjJJWjY0OENGd09mem1ONW4ya21MMFJDeWIzSnJib3Fw?=
- =?utf-8?B?dTFlaktJOFA2bjlVTXJEZ2hudklRM1daWEJnRWxjK05MUHU4VEp4MlFBZ0dB?=
- =?utf-8?B?eXp5NFoyUTRYVms5Ni9kNGx5VU9VUHlaT09CWEozWkwxSFk2dDBrTVRzVlp6?=
- =?utf-8?B?cEVEV041TGVZcXlCN0ZlWFJqMEJzYXFBdVhIdTZCZDRIT2d6NU5kS1JUWjc5?=
- =?utf-8?B?NGQxZG01Qk5xTjFjYm43bFlOTEJTbURqeG5LakFxSEllRkE5bnVsQ2ZZd05H?=
- =?utf-8?B?RE9mQWF4MjZSZGdMQTJoZjFMQnFaMFdQNEZFSUpuUzhHUVZMRWdhRDdweGtn?=
- =?utf-8?B?STdkMVIrc2lac2FnOXl5YW91V1hUOWxZVnRreDM4Mmh4NndsWWpNOHh2YlVO?=
- =?utf-8?B?Y0daN2E1bUExMlM3eEMwWkNDb1ZjQnZBbGtoTWJxWHpNbElhbm4rdjg5Zzk0?=
- =?utf-8?B?dXc9PQ==?=
-X-OriginatorOrg: wolfvision.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 989c6764-3cbc-4235-cdb3-08dac86cfb19
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR08MB9155.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2022 07:26:02.2235
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lb38p1bsYafDtICn2kC/3pDrRRPmv344kP4ZVpyofSzsGZ9/Qf3GZTCo8hCHXud7uu4G7g2uamxDG1ny4uetdfm3yV2OjVulVsoFFEBCadQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR08MB5938
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221116_232610_110838_B9FB0082 
-X-CRM114-Status: GOOD (  13.97  )
+X-CRM114-CacheID: sfid-20221117_040607_889684_5F009982 
+X-CRM114-Status: UNSURE (   9.53  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -150,214 +70,1039 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH v4 6/6] regulator: add Rockchip rk808 support
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] Remove unused struct partition
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Ahmad,
+struct partition from include/partition.h is entirely unused. Remove it.
 
-I was tracking down some strange behavior and found something:
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/a9m2410/a9m2410.c             |  1 -
+ arch/arm/boards/a9m2440/a9m2440.c             |  1 -
+ arch/arm/boards/animeo_ip/init.c              |  1 -
+ arch/arm/boards/at91rm9200ek/init.c           |  1 -
+ arch/arm/boards/at91sam9261ek/init.c          |  1 -
+ arch/arm/boards/at91sam9263ek/init.c          |  1 -
+ arch/arm/boards/at91sam9m10g45ek/init.c       |  1 -
+ arch/arm/boards/at91sam9m10ihd/init.c         |  1 -
+ arch/arm/boards/at91sam9n12ek/init.c          |  1 -
+ arch/arm/boards/at91sam9x5ek/init.c           |  1 -
+ arch/arm/boards/datamodul-edm-qmx6/board.c    |  1 -
+ arch/arm/boards/dss11/init.c                  |  1 -
+ arch/arm/boards/edb93xx/edb93xx.c             |  1 -
+ arch/arm/boards/efika-mx-smartbook/board.c    |  1 -
+ arch/arm/boards/element14-warp7/board.c       |  1 -
+ arch/arm/boards/embedsky-e9/board.c           |  1 -
+ .../boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |  1 -
+ .../boards/eukrea_cpuimx27/eukrea_cpuimx27.c  |  1 -
+ .../boards/eukrea_cpuimx35/eukrea_cpuimx35.c  |  1 -
+ .../boards/eukrea_cpuimx51/eukrea_cpuimx51.c  |  1 -
+ arch/arm/boards/freescale-mx21-ads/imx21ads.c |  1 -
+ arch/arm/boards/freescale-mx25-3ds/3stack.c   |  1 -
+ arch/arm/boards/freescale-mx27-ads/imx27ads.c |  1 -
+ arch/arm/boards/freescale-mx35-3ds/3stack.c   |  1 -
+ .../arm/boards/freescale-mx51-babbage/board.c |  1 -
+ arch/arm/boards/freescale-mx53-qsb/board.c    |  1 -
+ arch/arm/boards/freescale-mx53-smd/board.c    |  1 -
+ .../boards/freescale-mx6-sabrelite/board.c    |  1 -
+ arch/arm/boards/freescale-mx6-sabresd/board.c |  1 -
+ .../boards/freescale-mx6sx-sabresdb/board.c   |  1 -
+ .../boards/friendlyarm-mini2440/mini2440.c    |  1 -
+ arch/arm/boards/guf-cupid/board.c             |  1 -
+ arch/arm/boards/guf-neso/board.c              |  1 -
+ arch/arm/boards/haba-knx/init.c               |  1 -
+ arch/arm/boards/karo-tx25/board.c             |  1 -
+ arch/arm/boards/karo-tx53/board.c             |  1 -
+ arch/arm/boards/kindle-mx50/board.c           |  1 -
+ arch/arm/boards/lubbock/board.c               |  1 -
+ arch/arm/boards/mainstone/board.c             |  1 -
+ arch/arm/boards/mioa701/board.c               |  1 -
+ arch/arm/boards/nhk8815/setup.c               |  1 -
+ arch/arm/boards/phytec-phycard-imx27/pca100.c |  1 -
+ .../boards/phytec-phycard-omap3/pca-a-l1.c    |  1 -
+ .../boards/phytec-phycard-omap4/pca-a-xl2.c   |  1 -
+ arch/arm/boards/phytec-phycore-imx31/pcm037.c |  1 -
+ arch/arm/boards/phytec-phycore-imx35/pcm043.c |  1 -
+ arch/arm/boards/phytec-phycore-imx7/board.c   |  1 -
+ .../boards/phytec-phycore-omap4460/board.c    |  1 -
+ arch/arm/boards/phytec-phycore-pxa270/board.c |  1 -
+ arch/arm/boards/pm9261/init.c                 |  1 -
+ arch/arm/boards/pm9263/init.c                 |  1 -
+ arch/arm/boards/pm9g45/init.c                 |  1 -
+ arch/arm/boards/qil-a926x/init.c              |  1 -
+ arch/arm/boards/sama5d3xek/init.c             |  1 -
+ .../sama5d4_xplained/sama5d4_xplained.c       |  1 -
+ arch/arm/boards/sama5d4ek/sama5d4ek.c         |  1 -
+ arch/arm/boards/scb9328/scb9328.c             |  1 -
+ arch/arm/boards/tny-a926x/init.c              |  1 -
+ arch/arm/boards/tqma6x/board.c                |  1 -
+ arch/arm/boards/udoo/board.c                  |  1 -
+ arch/arm/boards/usb-a926x/init.c              |  1 -
+ arch/arm/boards/variscite-mx6/board.c         |  1 -
+ arch/arm/boards/versatile/versatilepb.c       |  1 -
+ arch/arm/boards/zylonite/board.c              |  1 -
+ arch/arm/mach-omap/xload.c                    |  1 -
+ .../boards/freescale-p1010rdb/p1010rdb.c      |  1 -
+ .../boards/freescale-p1022ds/p1022ds.c        |  1 -
+ .../boards/freescale-p2020rdb/p2020rdb.c      |  1 -
+ arch/powerpc/boards/owc-da923rc/da923rc.c     |  1 -
+ arch/powerpc/boards/pcm030/pcm030.c           |  1 -
+ commands/partition.c                          |  1 -
+ drivers/misc/storage-by-uuid.c                |  1 -
+ drivers/misc/ubootvar.c                       |  1 -
+ drivers/of/barebox.c                          |  1 -
+ fs/devfs.c                                    |  1 -
+ include/partition.h                           | 21 -------------------
+ lib/bootstrap/devfs.c                         |  1 -
+ 77 files changed, 97 deletions(-)
+ delete mode 100644 include/partition.h
 
-On 7/24/22 21:00, Ahmad Fatoum wrote:
-> [...]
-> +static struct rk_regulator_cfg rk809_reg[] = {
-> +	{{
-> +		/* .name = "DCDC_REG1", */
-> +		.supply_name = "vcc1",
-> +		.ops = &rk817_buck_ops_range,
-> +		.n_voltages = RK817_BUCK1_SEL_CNT + 1,
-> +		.linear_ranges = rk817_buck1_voltage_ranges,
-> +		.n_linear_ranges = ARRAY_SIZE(rk817_buck1_voltage_ranges),
-> +		.vsel_reg = RK817_BUCK1_ON_VSEL_REG,
-> +		.vsel_mask = RK817_BUCK_VSEL_MASK,
-> +		.enable_reg = RK817_POWER_EN_REG(0),
-> +		.enable_mask = ENABLE_MASK(RK817_ID_DCDC1),
-> +		.enable_val = ENABLE_MASK(RK817_ID_DCDC1),
-> +		.disable_val = DISABLE_VAL(RK817_ID_DCDC1),
-> +	}}, {{
-> +		/* .name = "DCDC_REG2", */
-> +		.supply_name = "vcc2",
-> +		.ops = &rk817_buck_ops_range,
-> +		.n_voltages = RK817_BUCK1_SEL_CNT + 1,
-> +		.linear_ranges = rk817_buck1_voltage_ranges,
-> +		.n_linear_ranges = ARRAY_SIZE(rk817_buck1_voltage_ranges),
-> +		.vsel_reg = RK817_BUCK2_ON_VSEL_REG,
-> +		.vsel_mask = RK817_BUCK_VSEL_MASK,
-> +		.enable_reg = RK817_POWER_EN_REG(0),
-> +		.enable_mask = ENABLE_MASK(RK817_ID_DCDC2),
-> +		.enable_val = ENABLE_MASK(RK817_ID_DCDC2),
-> +		.disable_val = DISABLE_VAL(RK817_ID_DCDC2),
-> +	}}, {{
-> +		/* .name = "DCDC_REG3", */
-> +		.supply_name = "vcc3",
-> +		.ops = &rk817_buck_ops_range,
-> +		.n_voltages = RK817_BUCK1_SEL_CNT + 1,
-> +		.linear_ranges = rk817_buck1_voltage_ranges,
-> +		.n_linear_ranges = ARRAY_SIZE(rk817_buck1_voltage_ranges),
-> +		.vsel_reg = RK817_BUCK3_ON_VSEL_REG,
-> +		.vsel_mask = RK817_BUCK_VSEL_MASK,
-> +		.enable_reg = RK817_POWER_EN_REG(0),
-> +		.enable_mask = ENABLE_MASK(RK817_ID_DCDC3),
-> +		.enable_val = ENABLE_MASK(RK817_ID_DCDC3),
-> +		.disable_val = DISABLE_VAL(RK817_ID_DCDC3),
-> +	}}, {{
-> +		/* .name = "DCDC_REG4", */
-> +		.supply_name = "vcc4",
-> +		.ops = &rk817_buck_ops_range,
-> +		.n_voltages = RK817_BUCK3_SEL_CNT + 1,
-> +		.linear_ranges = rk817_buck3_voltage_ranges,
-> +		.n_linear_ranges = ARRAY_SIZE(rk817_buck3_voltage_ranges),
-> +		.vsel_reg = RK817_BUCK4_ON_VSEL_REG,
-> +		.vsel_mask = RK817_BUCK_VSEL_MASK,
-> +		.enable_reg = RK817_POWER_EN_REG(0),
-> +		.enable_mask = ENABLE_MASK(RK817_ID_DCDC4),
-> +		.enable_val = ENABLE_MASK(RK817_ID_DCDC4),
-> +		.disable_val = DISABLE_VAL(RK817_ID_DCDC4),
-> +	}}, {{
-> +		/* .name = "DCDC_REG5", */
-> +		.supply_name = "vcc9",
-> +		.ops = &rk809_buck5_ops_range,
-> +		.n_voltages = RK809_BUCK5_SEL_CNT,
-> +		.linear_ranges = rk809_buck5_voltage_ranges,
-> +		.n_linear_ranges = ARRAY_SIZE(rk809_buck5_voltage_ranges),
-> +		.vsel_reg = RK809_BUCK5_CONFIG(0),
-> +		.vsel_mask = RK809_BUCK5_VSEL_MASK,
-> +		.enable_reg = RK817_POWER_EN_REG(3),
-> +		.enable_mask = ENABLE_MASK(1),
-> +		.enable_val = ENABLE_MASK(1),
-> +		.disable_val = DISABLE_VAL(1),
-> +	}},
+diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410/a9m2410.c
+index ef727f664d..25022abde2 100644
+--- a/arch/arm/boards/a9m2410/a9m2410.c
++++ b/arch/arm/boards/a9m2410/a9m2410.c
+@@ -7,7 +7,6 @@
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+ #include <asm/sections.h>
+-#include <partition.h>
+ #include <nand.h>
+ #include <io.h>
+ #include <mach/devices-s3c24xx.h>
+diff --git a/arch/arm/boards/a9m2440/a9m2440.c b/arch/arm/boards/a9m2440/a9m2440.c
+index de18ea0120..9a3eaef294 100644
+--- a/arch/arm/boards/a9m2440/a9m2440.c
++++ b/arch/arm/boards/a9m2440/a9m2440.c
+@@ -7,7 +7,6 @@
+ #include <asm/armlinux.h>
+ #include <asm/sections.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <nand.h>
+ #include <io.h>
+ #include <mach/devices-s3c24xx.h>
+diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
+index ed0b9b7f87..127bb31dbb 100644
+--- a/arch/arm/boards/animeo_ip/init.c
++++ b/arch/arm/boards/animeo_ip/init.c
+@@ -10,7 +10,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/at91rm9200ek/init.c b/arch/arm/boards/at91rm9200ek/init.c
+index 8c61a72e0b..5d5a0ba70b 100644
+--- a/arch/arm/boards/at91rm9200ek/init.c
++++ b/arch/arm/boards/at91rm9200ek/init.c
+@@ -7,7 +7,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <gpio.h>
+ #include <fcntl.h>
+diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
+index 3904cbf9ca..1ae7d94876 100644
+--- a/arch/arm/boards/at91sam9261ek/init.c
++++ b/arch/arm/boards/at91sam9261ek/init.c
+@@ -8,7 +8,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/at91sam9263ek/init.c b/arch/arm/boards/at91sam9263ek/init.c
+index bf2f1e8f9a..e1eeb78347 100644
+--- a/arch/arm/boards/at91sam9263ek/init.c
++++ b/arch/arm/boards/at91sam9263ek/init.c
+@@ -9,7 +9,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
+index dcb8f9b17f..cb5cfe6b94 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/init.c
++++ b/arch/arm/boards/at91sam9m10g45ek/init.c
+@@ -11,7 +11,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/at91sam9m10ihd/init.c b/arch/arm/boards/at91sam9m10ihd/init.c
+index e629900d5a..6a6ce9a187 100644
+--- a/arch/arm/boards/at91sam9m10ihd/init.c
++++ b/arch/arm/boards/at91sam9m10ihd/init.c
+@@ -11,7 +11,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/at91sam9n12ek/init.c b/arch/arm/boards/at91sam9n12ek/init.c
+index edc45819b2..97ab150c14 100644
+--- a/arch/arm/boards/at91sam9n12ek/init.c
++++ b/arch/arm/boards/at91sam9n12ek/init.c
+@@ -7,7 +7,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index a1c80bf441..8796702a1a 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -7,7 +7,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/datamodul-edm-qmx6/board.c b/arch/arm/boards/datamodul-edm-qmx6/board.c
+index 5a24ca0806..76fb17b4bd 100644
+--- a/arch/arm/boards/datamodul-edm-qmx6/board.c
++++ b/arch/arm/boards/datamodul-edm-qmx6/board.c
+@@ -4,7 +4,6 @@
+ #include <generated/mach-types.h>
+ #include <environment.h>
+ #include <bootsource.h>
+-#include <partition.h>
+ #include <common.h>
+ #include <envfs.h>
+ #include <linux/sizes.h>
+diff --git a/arch/arm/boards/dss11/init.c b/arch/arm/boards/dss11/init.c
+index 6ce986fc39..e24e69f302 100644
+--- a/arch/arm/boards/dss11/init.c
++++ b/arch/arm/boards/dss11/init.c
+@@ -8,7 +8,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <asm/io.h>
+diff --git a/arch/arm/boards/edb93xx/edb93xx.c b/arch/arm/boards/edb93xx/edb93xx.c
+index 4b5db60216..0112866c30 100644
+--- a/arch/arm/boards/edb93xx/edb93xx.c
++++ b/arch/arm/boards/edb93xx/edb93xx.c
+@@ -6,7 +6,6 @@
+ #include <environment.h>
+ #include <fs.h>
+ #include <init.h>
+-#include <partition.h>
+ #include <asm/armlinux.h>
+ #include <io.h>
+ #include <malloc.h>
+diff --git a/arch/arm/boards/efika-mx-smartbook/board.c b/arch/arm/boards/efika-mx-smartbook/board.c
+index bf58eff718..0d979876a5 100644
+--- a/arch/arm/boards/efika-mx-smartbook/board.c
++++ b/arch/arm/boards/efika-mx-smartbook/board.c
+@@ -3,7 +3,6 @@
+ 
+ #include <environment.h>
+ #include <bootsource.h>
+-#include <partition.h>
+ #include <common.h>
+ #include <envfs.h>
+ #include <fcntl.h>
+diff --git a/arch/arm/boards/element14-warp7/board.c b/arch/arm/boards/element14-warp7/board.c
+index 9427b467d0..50b628ba58 100644
+--- a/arch/arm/boards/element14-warp7/board.c
++++ b/arch/arm/boards/element14-warp7/board.c
+@@ -7,7 +7,6 @@
+ #include <mach/bbu.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <mach/generic.h>
+ #include <linux/sizes.h>
+ 
+diff --git a/arch/arm/boards/embedsky-e9/board.c b/arch/arm/boards/embedsky-e9/board.c
+index 0938a6d096..bca714f977 100644
+--- a/arch/arm/boards/embedsky-e9/board.c
++++ b/arch/arm/boards/embedsky-e9/board.c
+@@ -16,7 +16,6 @@
+ #include <mach/imx6-regs.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <linux/phy.h>
+ #include <asm/io.h>
+ #include <asm/mmu.h>
+diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+index 494b89f53f..ec0063ed9b 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
++++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+@@ -16,7 +16,6 @@
+ #include <led.h>
+ #include <envfs.h>
+ 
+-#include <partition.h>
+ #include <generated/mach-types.h>
+ #include <mach/imx-nand.h>
+ #include <mach/imxfb.h>
+diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+index e8ac0cc8fa..19afadec4d 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -18,7 +18,6 @@
+ #include <asm/sections.h>
+ #include <asm/barebox-arm.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <nand.h>
+diff --git a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+index 9835452ddf..2506ae8b06 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
++++ b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+@@ -22,7 +22,6 @@
+ #include <init.h>
+ #include <nand.h>
+ #include <net.h>
+-#include <partition.h>
+ #include <gpio.h>
+ #include <envfs.h>
+ 
+diff --git a/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c b/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
+index 8d0d4a0e8a..06608c133b 100644
+--- a/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
++++ b/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
+@@ -11,7 +11,6 @@
+ #include <gpio.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <envfs.h>
+ #include <fcntl.h>
+diff --git a/arch/arm/boards/freescale-mx21-ads/imx21ads.c b/arch/arm/boards/freescale-mx21-ads/imx21ads.c
+index 92207b02d3..beedacd7a7 100644
+--- a/arch/arm/boards/freescale-mx21-ads/imx21ads.c
++++ b/arch/arm/boards/freescale-mx21-ads/imx21ads.c
+@@ -18,7 +18,6 @@
+ #include <io.h>
+ #include <gpio.h>
+ #include <mach/weim.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <linux/sizes.h>
+ #include <fcntl.h>
+diff --git a/arch/arm/boards/freescale-mx25-3ds/3stack.c b/arch/arm/boards/freescale-mx25-3ds/3stack.c
+index 8707e02a64..824e986f74 100644
+--- a/arch/arm/boards/freescale-mx25-3ds/3stack.c
++++ b/arch/arm/boards/freescale-mx25-3ds/3stack.c
+@@ -12,7 +12,6 @@
+ #include <asm/barebox-arm.h>
+ #include <io.h>
+ #include <envfs.h>
+-#include <partition.h>
+ #include <generated/mach-types.h>
+ #include <mach/imx-nand.h>
+ #include <platform_data/eth-fec.h>
+diff --git a/arch/arm/boards/freescale-mx27-ads/imx27ads.c b/arch/arm/boards/freescale-mx27-ads/imx27ads.c
+index 670ea2186f..1ea4b39ae3 100644
+--- a/arch/arm/boards/freescale-mx27-ads/imx27ads.c
++++ b/arch/arm/boards/freescale-mx27-ads/imx27ads.c
+@@ -11,7 +11,6 @@
+ #include <platform_data/eth-fec.h>
+ #include <gpio.h>
+ #include <mach/weim.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <generated/mach-types.h>
+diff --git a/arch/arm/boards/freescale-mx35-3ds/3stack.c b/arch/arm/boards/freescale-mx35-3ds/3stack.c
+index 5b91c601f8..f18703fc7f 100644
+--- a/arch/arm/boards/freescale-mx35-3ds/3stack.c
++++ b/arch/arm/boards/freescale-mx35-3ds/3stack.c
+@@ -22,7 +22,6 @@
+ #include <net.h>
+ #include <envfs.h>
+ #include <linux/sizes.h>
+-#include <partition.h>
+ #include <gpio.h>
+ 
+ #include <asm/armlinux.h>
+diff --git a/arch/arm/boards/freescale-mx51-babbage/board.c b/arch/arm/boards/freescale-mx51-babbage/board.c
+index 330d8e4f52..c0c3e88039 100644
+--- a/arch/arm/boards/freescale-mx51-babbage/board.c
++++ b/arch/arm/boards/freescale-mx51-babbage/board.c
+@@ -10,7 +10,6 @@
+ #include <gpio.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <of.h>
+ #include <fcntl.h>
+diff --git a/arch/arm/boards/freescale-mx53-qsb/board.c b/arch/arm/boards/freescale-mx53-qsb/board.c
+index f2cb5c56e7..ee2277cfc7 100644
+--- a/arch/arm/boards/freescale-mx53-qsb/board.c
++++ b/arch/arm/boards/freescale-mx53-qsb/board.c
+@@ -3,7 +3,6 @@
+ // SPDX-FileCopyrightText: 2011 Marc Kleine-Budde <mkl@pengutronix.de>
+ 
+ #include <environment.h>
+-#include <partition.h>
+ #include <common.h>
+ #include <linux/sizes.h>
+ #include <gpio.h>
+diff --git a/arch/arm/boards/freescale-mx53-smd/board.c b/arch/arm/boards/freescale-mx53-smd/board.c
+index 98d3048dac..ca3badf490 100644
+--- a/arch/arm/boards/freescale-mx53-smd/board.c
++++ b/arch/arm/boards/freescale-mx53-smd/board.c
+@@ -10,7 +10,6 @@
+ #include <init.h>
+ #include <nand.h>
+ #include <net.h>
+-#include <partition.h>
+ #include <linux/sizes.h>
+ #include <gpio.h>
+ #include <mci.h>
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index f6eac4c0f3..300a85839b 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -14,7 +14,6 @@
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+ #include <of.h>
+-#include <partition.h>
+ #include <deep-probe.h>
+ #include <linux/phy.h>
+ #include <asm/io.h>
+diff --git a/arch/arm/boards/freescale-mx6-sabresd/board.c b/arch/arm/boards/freescale-mx6-sabresd/board.c
+index 82da8bb1dd..04df051882 100644
+--- a/arch/arm/boards/freescale-mx6-sabresd/board.c
++++ b/arch/arm/boards/freescale-mx6-sabresd/board.c
+@@ -13,7 +13,6 @@
+ #include <mach/imx6-regs.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <linux/phy.h>
+ #include <asm/io.h>
+ #include <asm/mmu.h>
+diff --git a/arch/arm/boards/freescale-mx6sx-sabresdb/board.c b/arch/arm/boards/freescale-mx6sx-sabresdb/board.c
+index 3285e1f290..8718e5a752 100644
+--- a/arch/arm/boards/freescale-mx6sx-sabresdb/board.c
++++ b/arch/arm/boards/freescale-mx6sx-sabresdb/board.c
+@@ -4,7 +4,6 @@
+ #define pr_fmt(fmt) "imx6sx-sdb: " fmt
+ 
+ #include <environment.h>
+-#include <partition.h>
+ #include <common.h>
+ #include <linux/sizes.h>
+ #include <gpio.h>
+diff --git a/arch/arm/boards/friendlyarm-mini2440/mini2440.c b/arch/arm/boards/friendlyarm-mini2440/mini2440.c
+index 413537d247..5933f664b5 100644
+--- a/arch/arm/boards/friendlyarm-mini2440/mini2440.c
++++ b/arch/arm/boards/friendlyarm-mini2440/mini2440.c
+@@ -10,7 +10,6 @@
+ #include <driver.h>
+ #include <init.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <platform_data/eth-dm9000.h>
+ #include <nand.h>
+ #include <mci.h>
+diff --git a/arch/arm/boards/guf-cupid/board.c b/arch/arm/boards/guf-cupid/board.c
+index 0c62b573c9..419b3e2464 100644
+--- a/arch/arm/boards/guf-cupid/board.c
++++ b/arch/arm/boards/guf-cupid/board.c
+@@ -15,7 +15,6 @@
+ #include <asm/armlinux.h>
+ #include <io.h>
+ #include <gpio.h>
+-#include <partition.h>
+ #include <nand.h>
+ #include <generated/mach-types.h>
+ #include <mach/imx-nand.h>
+diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
+index 9eb862db64..4662ab0ef8 100644
+--- a/arch/arm/boards/guf-neso/board.c
++++ b/arch/arm/boards/guf-neso/board.c
+@@ -7,7 +7,6 @@
+ #include <environment.h>
+ #include <platform_data/eth-fec.h>
+ #include <notifier.h>
+-#include <partition.h>
+ #include <gpio.h>
+ #include <fs.h>
+ #include <envfs.h>
+diff --git a/arch/arm/boards/haba-knx/init.c b/arch/arm/boards/haba-knx/init.c
+index d55739ee2a..4c7bb3978a 100644
+--- a/arch/arm/boards/haba-knx/init.c
++++ b/arch/arm/boards/haba-knx/init.c
+@@ -8,7 +8,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/karo-tx25/board.c b/arch/arm/boards/karo-tx25/board.c
+index 6086da53cc..bbcc32227c 100644
+--- a/arch/arm/boards/karo-tx25/board.c
++++ b/arch/arm/boards/karo-tx25/board.c
+@@ -14,7 +14,6 @@
+ #include <asm/sections.h>
+ #include <asm/barebox-arm.h>
+ #include <io.h>
+-#include <partition.h>
+ #include <generated/mach-types.h>
+ #include <mach/imx-nand.h>
+ #include <mach/iomux-mx25.h>
+diff --git a/arch/arm/boards/karo-tx53/board.c b/arch/arm/boards/karo-tx53/board.c
+index 738faf8f18..92a44a893d 100644
+--- a/arch/arm/boards/karo-tx53/board.c
++++ b/arch/arm/boards/karo-tx53/board.c
+@@ -10,7 +10,6 @@
+ #include <init.h>
+ #include <nand.h>
+ #include <net.h>
+-#include <partition.h>
+ #include <linux/sizes.h>
+ #include <gpio.h>
+ #include <mci.h>
+diff --git a/arch/arm/boards/kindle-mx50/board.c b/arch/arm/boards/kindle-mx50/board.c
+index 4cfd68a258..76472d71bb 100644
+--- a/arch/arm/boards/kindle-mx50/board.c
++++ b/arch/arm/boards/kindle-mx50/board.c
+@@ -10,7 +10,6 @@
+ #include <driver.h>
+ #include <param.h>
+ #include <magicvar.h>
+-#include <partition.h>
+ #include <libfile.h>
+ #include <globalvar.h>
+ #include <asm/armlinux.h>
+diff --git a/arch/arm/boards/lubbock/board.c b/arch/arm/boards/lubbock/board.c
+index 2f3b6ad16b..9383a0c7af 100644
+--- a/arch/arm/boards/lubbock/board.c
++++ b/arch/arm/boards/lubbock/board.c
+@@ -6,7 +6,6 @@
+ #include <environment.h>
+ #include <fs.h>
+ #include <init.h>
+-#include <partition.h>
+ #include <led.h>
+ #include <gpio.h>
+ #include <pwm.h>
+diff --git a/arch/arm/boards/mainstone/board.c b/arch/arm/boards/mainstone/board.c
+index f95bf057a7..2e4b634e35 100644
+--- a/arch/arm/boards/mainstone/board.c
++++ b/arch/arm/boards/mainstone/board.c
+@@ -6,7 +6,6 @@
+ #include <environment.h>
+ #include <fs.h>
+ #include <init.h>
+-#include <partition.h>
+ #include <led.h>
+ #include <gpio.h>
+ #include <pwm.h>
+diff --git a/arch/arm/boards/mioa701/board.c b/arch/arm/boards/mioa701/board.c
+index 963fefbf77..5147750a3d 100644
+--- a/arch/arm/boards/mioa701/board.c
++++ b/arch/arm/boards/mioa701/board.c
+@@ -6,7 +6,6 @@
+ #include <environment.h>
+ #include <fs.h>
+ #include <init.h>
+-#include <partition.h>
+ #include <led.h>
+ #include <gpio.h>
+ #include <pwm.h>
+diff --git a/arch/arm/boards/nhk8815/setup.c b/arch/arm/boards/nhk8815/setup.c
+index ed32218ac8..d0ac9a0250 100644
+--- a/arch/arm/boards/nhk8815/setup.c
++++ b/arch/arm/boards/nhk8815/setup.c
+@@ -5,7 +5,6 @@
+ #include <init.h>
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/nand.h>
+-#include <partition.h>
+ #include <nand.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+diff --git a/arch/arm/boards/phytec-phycard-imx27/pca100.c b/arch/arm/boards/phytec-phycard-imx27/pca100.c
+index ed243fa01e..4abac31a8a 100644
+--- a/arch/arm/boards/phytec-phycard-imx27/pca100.c
++++ b/arch/arm/boards/phytec-phycard-imx27/pca100.c
+@@ -11,7 +11,6 @@
+ #include <asm/armlinux.h>
+ #include <asm/sections.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <nand.h>
+diff --git a/arch/arm/boards/phytec-phycard-omap3/pca-a-l1.c b/arch/arm/boards/phytec-phycard-omap3/pca-a-l1.c
+index e3b148a0ed..0128401e1a 100644
+--- a/arch/arm/boards/phytec-phycard-omap3/pca-a-l1.c
++++ b/arch/arm/boards/phytec-phycard-omap3/pca-a-l1.c
+@@ -37,7 +37,6 @@
+ #include <errno.h>
+ #include <init.h>
+ #include <nand.h>
+-#include <partition.h>
+ #include <linux/sizes.h>
+ #include <asm/armlinux.h>
+ #include <asm/io.h>
+diff --git a/arch/arm/boards/phytec-phycard-omap4/pca-a-xl2.c b/arch/arm/boards/phytec-phycard-omap4/pca-a-xl2.c
+index ab5976ff8a..1724bc6dc6 100644
+--- a/arch/arm/boards/phytec-phycard-omap4/pca-a-xl2.c
++++ b/arch/arm/boards/phytec-phycard-omap4/pca-a-xl2.c
+@@ -16,7 +16,6 @@
+ #include <mach/control.h>
+ #include <linux/err.h>
+ #include <linux/sizes.h>
+-#include <partition.h>
+ #include <nand.h>
+ #include <asm/mmu.h>
+ #include <mach/gpmc.h>
+diff --git a/arch/arm/boards/phytec-phycore-imx31/pcm037.c b/arch/arm/boards/phytec-phycore-imx31/pcm037.c
+index 52b97fe777..a736919daf 100644
+--- a/arch/arm/boards/phytec-phycore-imx31/pcm037.c
++++ b/arch/arm/boards/phytec-phycore-imx31/pcm037.c
+@@ -18,7 +18,6 @@
+ #include <io.h>
+ #include <platform_data/eth-smc911x.h>
+ #include <asm/mmu.h>
+-#include <partition.h>
+ #include <generated/mach-types.h>
+ #include <asm/barebox-arm.h>
+ #include <mach/imx-nand.h>
+diff --git a/arch/arm/boards/phytec-phycore-imx35/pcm043.c b/arch/arm/boards/phytec-phycore-imx35/pcm043.c
+index 360a607bd5..76615e6c44 100644
+--- a/arch/arm/boards/phytec-phycore-imx35/pcm043.c
++++ b/arch/arm/boards/phytec-phycore-imx35/pcm043.c
+@@ -15,7 +15,6 @@
+ #include <mach/imx35-regs.h>
+ #include <asm/armlinux.h>
+ #include <io.h>
+-#include <partition.h>
+ #include <nand.h>
+ #include <generated/mach-types.h>
+ #include <mach/imx-nand.h>
+diff --git a/arch/arm/boards/phytec-phycore-imx7/board.c b/arch/arm/boards/phytec-phycore-imx7/board.c
+index f173ee233f..f603ef3c2e 100644
+--- a/arch/arm/boards/phytec-phycore-imx7/board.c
++++ b/arch/arm/boards/phytec-phycore-imx7/board.c
+@@ -7,7 +7,6 @@
+ #include <mach/bbu.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <mach/generic.h>
+ #include <linux/sizes.h>
+ #include <asm/psci.h>
+diff --git a/arch/arm/boards/phytec-phycore-omap4460/board.c b/arch/arm/boards/phytec-phycore-omap4460/board.c
+index e25ff5eb31..6c69fb7e1b 100644
+--- a/arch/arm/boards/phytec-phycore-omap4460/board.c
++++ b/arch/arm/boards/phytec-phycore-omap4460/board.c
+@@ -20,7 +20,6 @@
+ #include <mach/control.h>
+ #include <linux/err.h>
+ #include <linux/sizes.h>
+-#include <partition.h>
+ #include <nand.h>
+ #include <asm/mmu.h>
+ #include <mach/gpmc.h>
+diff --git a/arch/arm/boards/phytec-phycore-pxa270/board.c b/arch/arm/boards/phytec-phycore-pxa270/board.c
+index 9740a3a7af..5d31617c82 100644
+--- a/arch/arm/boards/phytec-phycore-pxa270/board.c
++++ b/arch/arm/boards/phytec-phycore-pxa270/board.c
+@@ -7,7 +7,6 @@
+ #include <environment.h>
+ #include <fs.h>
+ #include <init.h>
+-#include <partition.h>
+ #include <linux/sizes.h>
+ 
+ #include <gpio.h>
+diff --git a/arch/arm/boards/pm9261/init.c b/arch/arm/boards/pm9261/init.c
+index b316b85d7d..5747a9e995 100644
+--- a/arch/arm/boards/pm9261/init.c
++++ b/arch/arm/boards/pm9261/init.c
+@@ -9,7 +9,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/pm9263/init.c b/arch/arm/boards/pm9263/init.c
+index bce612d001..fb9f336afe 100644
+--- a/arch/arm/boards/pm9263/init.c
++++ b/arch/arm/boards/pm9263/init.c
+@@ -8,7 +8,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <gpio.h>
+ #include <fcntl.h>
+diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
+index b347de4157..1630cb2d4e 100644
+--- a/arch/arm/boards/pm9g45/init.c
++++ b/arch/arm/boards/pm9g45/init.c
+@@ -8,7 +8,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <gpio.h>
+diff --git a/arch/arm/boards/qil-a926x/init.c b/arch/arm/boards/qil-a926x/init.c
+index 63c7089d7d..e0b85f6423 100644
+--- a/arch/arm/boards/qil-a926x/init.c
++++ b/arch/arm/boards/qil-a926x/init.c
+@@ -11,7 +11,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
+index 6e8fbea4c8..d364705056 100644
+--- a/arch/arm/boards/sama5d3xek/init.c
++++ b/arch/arm/boards/sama5d3xek/init.c
+@@ -7,7 +7,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/sama5d4_xplained/sama5d4_xplained.c b/arch/arm/boards/sama5d4_xplained/sama5d4_xplained.c
+index b7c9c49ded..8dd9edea60 100644
+--- a/arch/arm/boards/sama5d4_xplained/sama5d4_xplained.c
++++ b/arch/arm/boards/sama5d4_xplained/sama5d4_xplained.c
+@@ -12,7 +12,6 @@
+ #include <init.h>
+ #include <environment.h>
+ #include <asm/armlinux.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/sama5d4ek/sama5d4ek.c b/arch/arm/boards/sama5d4ek/sama5d4ek.c
+index 3673d4816b..350e6c4302 100644
+--- a/arch/arm/boards/sama5d4ek/sama5d4ek.c
++++ b/arch/arm/boards/sama5d4ek/sama5d4ek.c
+@@ -12,7 +12,6 @@
+ #include <init.h>
+ #include <environment.h>
+ #include <asm/armlinux.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
+index 1c78fac441..759fa8afa4 100644
+--- a/arch/arm/boards/scb9328/scb9328.c
++++ b/arch/arm/boards/scb9328/scb9328.c
+@@ -10,7 +10,6 @@
+ #include <asm/armlinux.h>
+ #include <mach/weim.h>
+ #include <io.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <envfs.h>
+ #include <mach/iomux-mx1.h>
+diff --git a/arch/arm/boards/tny-a926x/init.c b/arch/arm/boards/tny-a926x/init.c
+index 2df8efd448..a8422f14ee 100644
+--- a/arch/arm/boards/tny-a926x/init.c
++++ b/arch/arm/boards/tny-a926x/init.c
+@@ -7,7 +7,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/tqma6x/board.c b/arch/arm/boards/tqma6x/board.c
+index 10faadf5a1..7a770bd3c3 100644
+--- a/arch/arm/boards/tqma6x/board.c
++++ b/arch/arm/boards/tqma6x/board.c
+@@ -4,7 +4,6 @@
+ #include <generated/mach-types.h>
+ #include <environment.h>
+ #include <bootsource.h>
+-#include <partition.h>
+ #include <common.h>
+ #include <envfs.h>
+ #include <linux/sizes.h>
+diff --git a/arch/arm/boards/udoo/board.c b/arch/arm/boards/udoo/board.c
+index 36dd58cc98..ae65ba41a5 100644
+--- a/arch/arm/boards/udoo/board.c
++++ b/arch/arm/boards/udoo/board.c
+@@ -12,7 +12,6 @@
+ #include <mach/bbu.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <linux/phy.h>
+ #include <asm/io.h>
+ #include <asm/mmu.h>
+diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
+index c39992c91b..010e094587 100644
+--- a/arch/arm/boards/usb-a926x/init.c
++++ b/arch/arm/boards/usb-a926x/init.c
+@@ -7,7 +7,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/variscite-mx6/board.c b/arch/arm/boards/variscite-mx6/board.c
+index 99cd15b1c0..6dd89e6f7b 100644
+--- a/arch/arm/boards/variscite-mx6/board.c
++++ b/arch/arm/boards/variscite-mx6/board.c
+@@ -17,7 +17,6 @@
+ #include <environment.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+ #include <asm/io.h>
+ #include <asm/mmu.h>
+ #include <mach/generic.h>
+diff --git a/arch/arm/boards/versatile/versatilepb.c b/arch/arm/boards/versatile/versatilepb.c
+index ac6ea9951a..9a9ef0e095 100644
+--- a/arch/arm/boards/versatile/versatilepb.c
++++ b/arch/arm/boards/versatile/versatilepb.c
+@@ -17,7 +17,6 @@
+ #include <mach/init.h>
+ #include <mach/platform.h>
+ #include <environment.h>
+-#include <partition.h>
+ #include <linux/sizes.h>
+ #include <platform_data/eth-smc91111.h>
+ 
+diff --git a/arch/arm/boards/zylonite/board.c b/arch/arm/boards/zylonite/board.c
+index eb69b37549..d5b717474a 100644
+--- a/arch/arm/boards/zylonite/board.c
++++ b/arch/arm/boards/zylonite/board.c
+@@ -8,7 +8,6 @@
+ #include <fs.h>
+ #include <gpio.h>
+ #include <init.h>
+-#include <partition.h>
+ #include <led.h>
+ #include <platform_data/eth-smc91111.h>
+ #include <platform_data/mtd-nand-mrvl.h>
+diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+index 6a02e2b589..5591f01c9c 100644
+--- a/arch/arm/mach-omap/xload.c
++++ b/arch/arm/mach-omap/xload.c
+@@ -2,7 +2,6 @@
+ 
+ #include <common.h>
+ #include <bootsource.h>
+-#include <partition.h>
+ #include <nand.h>
+ #include <init.h>
+ #include <driver.h>
+diff --git a/arch/powerpc/boards/freescale-p1010rdb/p1010rdb.c b/arch/powerpc/boards/freescale-p1010rdb/p1010rdb.c
+index f2f6d00b77..e769933412 100644
+--- a/arch/powerpc/boards/freescale-p1010rdb/p1010rdb.c
++++ b/arch/powerpc/boards/freescale-p1010rdb/p1010rdb.c
+@@ -23,7 +23,6 @@
+ #include <i2c/i2c.h>
+ #include <gpio.h>
+ #include <envfs.h>
+-#include <partition.h>
+ #include <memory.h>
+ #include <asm/cache.h>
+ #include <asm/fsl_ddr_sdram.h>
+diff --git a/arch/powerpc/boards/freescale-p1022ds/p1022ds.c b/arch/powerpc/boards/freescale-p1022ds/p1022ds.c
+index 956b830c5d..fd07b6f89f 100644
+--- a/arch/powerpc/boards/freescale-p1022ds/p1022ds.c
++++ b/arch/powerpc/boards/freescale-p1022ds/p1022ds.c
+@@ -21,7 +21,6 @@
+ #include <net.h>
+ #include <types.h>
+ #include <i2c/i2c.h>
+-#include <partition.h>
+ #include <memory.h>
+ #include <envfs.h>
+ #include <asm/cache.h>
+diff --git a/arch/powerpc/boards/freescale-p2020rdb/p2020rdb.c b/arch/powerpc/boards/freescale-p2020rdb/p2020rdb.c
+index cfbcc61e35..2c154db77c 100644
+--- a/arch/powerpc/boards/freescale-p2020rdb/p2020rdb.c
++++ b/arch/powerpc/boards/freescale-p2020rdb/p2020rdb.c
+@@ -20,7 +20,6 @@
+ #include <platform_data/serial-ns16550.h>
+ #include <types.h>
+ #include <i2c/i2c.h>
+-#include <partition.h>
+ #include <memory.h>
+ #include <envfs.h>
+ #include <asm/cache.h>
+diff --git a/arch/powerpc/boards/owc-da923rc/da923rc.c b/arch/powerpc/boards/owc-da923rc/da923rc.c
+index 2665a15091..b9eb2520cf 100644
+--- a/arch/powerpc/boards/owc-da923rc/da923rc.c
++++ b/arch/powerpc/boards/owc-da923rc/da923rc.c
+@@ -25,7 +25,6 @@
+ #include <gpio.h>
+ #include <envfs.h>
+ #include <platform_data/serial-ns16550.h>
+-#include <partition.h>
+ #include <environment.h>
+ #include <i2c/i2c.h>
+ #include <asm/fsl_ddr_sdram.h>
+diff --git a/arch/powerpc/boards/pcm030/pcm030.c b/arch/powerpc/boards/pcm030/pcm030.c
+index c603643d58..2bdbc6695d 100644
+--- a/arch/powerpc/boards/pcm030/pcm030.c
++++ b/arch/powerpc/boards/pcm030/pcm030.c
+@@ -25,7 +25,6 @@
+ #include <init.h>
+ #include <platform_data/eth-fec.h>
+ #include <types.h>
+-#include <partition.h>
+ #include <memory.h>
+ #include <linux/sizes.h>
+ #include <linux/stat.h>
+diff --git a/commands/partition.c b/commands/partition.c
+index 44ee0359bf..14f400ccb4 100644
+--- a/commands/partition.c
++++ b/commands/partition.c
+@@ -16,7 +16,6 @@
+ #include <complete.h>
+ #include <driver.h>
+ #include <malloc.h>
+-#include <partition.h>
+ #include <errno.h>
+ #include <xfuncs.h>
+ #include <fs.h>
+diff --git a/drivers/misc/storage-by-uuid.c b/drivers/misc/storage-by-uuid.c
+index 12a06076a2..c57cbb57d8 100644
+--- a/drivers/misc/storage-by-uuid.c
++++ b/drivers/misc/storage-by-uuid.c
+@@ -4,7 +4,6 @@
+ #include <io.h>
+ #include <of.h>
+ #include <malloc.h>
+-#include <partition.h>
+ #include <envfs.h>
+ #include <fs.h>
+ 
+diff --git a/drivers/misc/ubootvar.c b/drivers/misc/ubootvar.c
+index 723e9e2b54..e5095bb2d2 100644
+--- a/drivers/misc/ubootvar.c
++++ b/drivers/misc/ubootvar.c
+@@ -11,7 +11,6 @@
+ #include <io.h>
+ #include <of.h>
+ #include <malloc.h>
+-#include <partition.h>
+ #include <envfs.h>
+ #include <fs.h>
+ #include <libfile.h>
+diff --git a/drivers/of/barebox.c b/drivers/of/barebox.c
+index f6e795e047..d3a5ae04dc 100644
+--- a/drivers/of/barebox.c
++++ b/drivers/of/barebox.c
+@@ -10,7 +10,6 @@
+ #include <io.h>
+ #include <of.h>
+ #include <malloc.h>
+-#include <partition.h>
+ #include <envfs.h>
+ #include <fs.h>
+ 
+diff --git a/fs/devfs.c b/fs/devfs.c
+index 49cd48f6d8..3e9d68e91e 100644
+--- a/fs/devfs.c
++++ b/fs/devfs.c
+@@ -28,7 +28,6 @@
+ #include <linux/err.h>
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/mtd-abi.h>
+-#include <partition.h>
+ #include <block.h>
+ 
+ struct devfs_inode {
+diff --git a/include/partition.h b/include/partition.h
+deleted file mode 100644
+index 373134afad..0000000000
+--- a/include/partition.h
++++ /dev/null
+@@ -1,21 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-#ifndef __PARTITION_H
+-#define __PARTITION_H
+-
+-#include <driver.h>
+-
+-struct partition {
+-        int num;
+-
+-	int flags;
+-
+-        loff_t offset;
+-
+-        struct device_d *physdev;
+-        struct device_d device;
+-
+-        char name[16];
+-	struct cdev cdev;
+-};
+-
+-#endif /* __PARTITION_H */
+diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
+index 873c4b0170..603e6744f2 100644
+--- a/lib/bootstrap/devfs.c
++++ b/lib/bootstrap/devfs.c
+@@ -6,7 +6,6 @@
+  */
+ 
+ #include <common.h>
+-#include <partition.h>
+ #include <nand.h>
+ #include <driver.h>
+ #include <linux/mtd/mtd.h>
+-- 
+2.30.2
 
-The RK809 features an additional BUCK converter (DCDC_REG5), here on
-index 4 of the array...
-
-> +	RK817_DESC(/* "LDO_REG1", */ "vcc5", 600, 3400, 25,
-> +		   RK817_LDO_ON_VSEL_REG(0), RK817_LDO_VSEL_MASK,
-> +		   RK817_POWER_EN_REG(1), ENABLE_MASK(0),
-> +		   DISABLE_VAL(0), 400),
-> +	RK817_DESC(/* "LDO_REG2", */ "vcc5", 600, 3400, 25,
-> +		   RK817_LDO_ON_VSEL_REG(1), RK817_LDO_VSEL_MASK,
-> +		   RK817_POWER_EN_REG(1), ENABLE_MASK(1),
-> +		   DISABLE_VAL(1), 400),
-> +	RK817_DESC(/* "LDO_REG3", */ "vcc5", 600, 3400, 25,
-> +		   RK817_LDO_ON_VSEL_REG(2), RK817_LDO_VSEL_MASK,
-> +		   RK817_POWER_EN_REG(1), ENABLE_MASK(2),
-> +		   DISABLE_VAL(2), 400),
-> +	RK817_DESC(/* "LDO_REG4", */ "vcc6", 600, 3400, 25,
-> +		   RK817_LDO_ON_VSEL_REG(3), RK817_LDO_VSEL_MASK,
-> +		   RK817_POWER_EN_REG(1), ENABLE_MASK(3),
-> +		   DISABLE_VAL(3), 400),
-> +	RK817_DESC(/* "LDO_REG5", */ "vcc6", 600, 3400, 25,
-> +		   RK817_LDO_ON_VSEL_REG(4), RK817_LDO_VSEL_MASK,
-> +		   RK817_POWER_EN_REG(2), ENABLE_MASK(0),
-> +		   DISABLE_VAL(0), 400),
-> +	RK817_DESC(/* "LDO_REG6", */ "vcc6", 600, 3400, 25,
-> +		   RK817_LDO_ON_VSEL_REG(5), RK817_LDO_VSEL_MASK,
-> +		   RK817_POWER_EN_REG(2), ENABLE_MASK(1),
-> +		   DISABLE_VAL(1), 400),
-> +	RK817_DESC(/* "LDO_REG7", */ "vcc7", 600, 3400, 25,
-> +		   RK817_LDO_ON_VSEL_REG(6), RK817_LDO_VSEL_MASK,
-> +		   RK817_POWER_EN_REG(2), ENABLE_MASK(2),
-> +		   DISABLE_VAL(2), 400),
-> +	RK817_DESC(/* "LDO_REG8", */ "vcc7", 600, 3400, 25,
-> +		   RK817_LDO_ON_VSEL_REG(7), RK817_LDO_VSEL_MASK,
-> +		   RK817_POWER_EN_REG(2), ENABLE_MASK(3),
-> +		   DISABLE_VAL(3), 400),
-> +	RK817_DESC(/* "LDO_REG9", */ "vcc7", 600, 3400, 25,
-> +		   RK817_LDO_ON_VSEL_REG(8), RK817_LDO_VSEL_MASK,
-> +		   RK817_POWER_EN_REG(3), ENABLE_MASK(0),
-> +		   DISABLE_VAL(0), 400),
-> +	RK817_DESC_SWITCH(/* "SWITCH_REG1", */ "vcc9",
-> +			  RK817_POWER_EN_REG(3), ENABLE_MASK(2), DISABLE_VAL(2)),
-> +	RK817_DESC_SWITCH(/* "SWITCH_REG2", */ "vcc8",
-> +			  RK817_POWER_EN_REG(3), ENABLE_MASK(3), DISABLE_VAL(3)),
-> +};
-> +static_assert(ARRAY_SIZE(rk809_reg) == RK809_NUM_REGULATORS);
-> [...]
-> +static struct of_regulator_match rk809_reg_matches[] = {
-> +	MATCH(809, DCDC_REG1, DCDC1),
-> +	MATCH(809, DCDC_REG2, DCDC2),
-> +	MATCH(809, DCDC_REG3, DCDC3),
-> +	MATCH(809, DCDC_REG4, DCDC4),
-> +	MATCH(809, LDO_REG1, LDO1),
-> +	MATCH(809, LDO_REG2, LDO2),
-> +	MATCH(809, LDO_REG3, LDO3),
-> +	MATCH(809, LDO_REG4, LDO4),
-> +	MATCH(809, LDO_REG5, LDO5),
-> +	MATCH(809, LDO_REG6, LDO6),
-> +	MATCH(809, LDO_REG7, LDO7),
-> +	MATCH(809, LDO_REG8, LDO8),
-> +	MATCH(809, LDO_REG9, LDO9),
-> +	MATCH(809, DCDC_REG5, DCDC5),
-
-Here, BUCK 5 is at index 13...
-
-> +	MATCH(809, SWITCH_REG1, SW1),
-> +	MATCH(809, SWITCH_REG2, SW2),
-> +};
-> +static_assert(ARRAY_SIZE(rk809_reg_matches) == RK809_NUM_REGULATORS);
-> [...]
-> +static int rk808_regulator_probe(struct device_d *dev)
-> +{
-> +	struct rk808 *rk808 = dev->parent->priv;
-> +	struct rk_regulator_cfg *regulators;
-> +	struct of_regulator_match *matches;
-> +	int ret, i, nregulators;
-> +
-> +	switch (rk808->variant) {
-> +	case RK805_ID:
-> +		regulators = rk805_reg;
-> +		matches = rk805_reg_matches;
-> +		nregulators = RK805_NUM_REGULATORS;
-> +		break;
-> +	case RK808_ID:
-> +		regulators = rk808_reg;
-> +		matches = rk808_reg_matches;
-> +		nregulators = RK809_NUM_REGULATORS;
-> +		break;
-> +	case RK809_ID:
-> +		regulators = rk809_reg;
-> +		matches = rk809_reg_matches;
-> +		nregulators = RK809_NUM_REGULATORS;
-> +		break;
-> +	case RK817_ID:
-> +		regulators = rk817_reg;
-> +		matches = rk817_reg_matches;
-> +		nregulators = RK817_NUM_REGULATORS;
-> +		break;
-> +	case RK818_ID:
-> +		regulators = rk818_reg;
-> +		matches = rk818_reg_matches;
-> +		nregulators = RK818_NUM_REGULATORS;
-> +		break;
-> +	default:
-> +		dev_err(dev, "unsupported RK8XX ID %lu\n", rk808->variant);
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = rk808_regulator_dt_parse(&rk808->i2c->dev, matches, nregulators);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Instantiate the regulators */
-> +	for (i = 0; i < nregulators; i++) {
-> +		ret = rk808_regulator_register(rk808, i, &matches[i],
-> +					       &regulators[i]);
-
-... but here it a 1:1 mapping between matches and regulators is assumed.
-In technical terms, board go brzzz.
-
-I moved the DCDC_REG5 regulator description to index 13 for a quick fix.
-If this is the desired solution, I can spin a patch. What do you think?
-
-Best regards,
-Michael
-
-> [...]
 
 
