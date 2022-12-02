@@ -1,58 +1,61 @@
-Delivery-date: Thu, 01 Dec 2022 16:39:31 +0100
+Delivery-date: Fri, 02 Dec 2022 08:48:33 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p0les-007ZRt-DX
-	for lore@lore.pengutronix.de; Thu, 01 Dec 2022 16:39:31 +0100
+	id 1p10mf-008Hxq-5A
+	for lore@lore.pengutronix.de; Fri, 02 Dec 2022 08:48:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p0ler-0001SC-Hn
-	for lore@pengutronix.de; Thu, 01 Dec 2022 16:39:30 +0100
+	id 1p10me-0001hp-Pk
+	for lore@pengutronix.de; Fri, 02 Dec 2022 08:48:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=WuIdhdq9GPbciP4qGUGh1irPm6F4hp1VgsZx+eLnvq4=; b=X3+qdq2OgVaO2EGirkBDwg1l3T
-	s+hV9Of3lz7c/tpV3gK3tH3sP88e3lMATkKFN86SsMn2I5YCi2zEKj5MtaNuTHNZrDau9k42rQoUH
-	lZDeDOP3017yhWVqHiUz1+8A5NivNLMPW+qo8/FmHP3bw0/rIEb6aZoAv4e4QkqVAdEvyEiLPXgiw
-	RzbrtMBw9wwCXYLwMGHvJ5xyovi//2UrfoIFkQZaUK00DDqNmPBrTvbTS7FwPsafK+/YmYF88B1IY
-	i4iz09P19Bap43ozEn/wGvB41IKw7kJxfPFb6kadCNoJEOKh8oSVb323U5auTqHaXmD2KJgtvNsA1
-	KYS/8XLw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Ecf7x77ZtmgE0M2tNP3ZbmT+9p0NWOWtJqbPKKYNUig=; b=lspjAZ1QEycchLjBavr3y+kfZv
+	c2ztUxgPnHOWTDF7BPgH+X7sNLLhAUbcs9vY4BlFigDhhDAF8Ozo7CBo3Y0+jZXS+x7QSWjWWvNqb
+	dYkpH5BQDhnAE6ugBSOJCmXjrklvxBeabM1MLp0Tiq/MnRqlQcFCAU7/oaE1Q3pE5vZFqX5onqHWz
+	/vGhfH4LfI74+6SQkUjT4SpFhD1MAkOLjYr6aHQqea+QrNyt7cUBsQAAcOhY8B9nwvS3ZdJlbDXa/
+	QmFOFFRkb4i+dYdBcNW1t+WJ9mP//fZWtlveHypWLrEz7lD6/dZzmEBKjkkX/hMjZIeK+cZ3NCur+
+	dMcjHGDw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p0ldV-008HJ5-GM; Thu, 01 Dec 2022 15:38:05 +0000
+	id 1p10kr-00EE3D-14; Fri, 02 Dec 2022 07:46:41 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p0ldP-008HFz-Ae
-	for barebox@lists.infradead.org; Thu, 01 Dec 2022 15:38:00 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1p10kl-00EDyE-U3
+	for barebox@lists.infradead.org; Fri, 02 Dec 2022 07:46:38 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <jzi@pengutronix.de>)
-	id 1p0ldM-00018K-4e; Thu, 01 Dec 2022 16:37:56 +0100
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <jzi@pengutronix.de>)
-	id 1p0ldK-001c05-OG; Thu, 01 Dec 2022 16:37:55 +0100
-Received: from jzi by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <jzi@pengutronix.de>)
-	id 1p0ldK-00GxLh-Qj; Thu, 01 Dec 2022 16:37:54 +0100
-From: Johannes Zink <j.zink@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Johannes Zink <j.zink@pengutronix.de>
-Date: Thu,  1 Dec 2022 16:37:49 +0100
-Message-Id: <20221201153749.4041301-1-j.zink@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1p10kh-0001RD-Gl; Fri, 02 Dec 2022 08:46:31 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1p10kh-00034z-9J; Fri, 02 Dec 2022 08:46:31 +0100
+Date: Fri, 2 Dec 2022 08:46:31 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20221202074631.GJ29728@pengutronix.de>
+References: <20221125100959.3981619-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221125100959.3981619-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221201_073759_388615_4B908952 
-X-CRM114-Status: GOOD (  14.58  )
+X-CRM114-CacheID: sfid-20221201_234635_989970_87B02AA8 
+X-CRM114-Status: GOOD (  22.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,152 +73,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] mfd: axp20x: support AXP313A PMIC
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] ARM64: asm: mark __barebox_arm64_head as function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This adds the register definitions for the AXP313A PMIC to the AXP20X
-mfd driver.
+On Fri, Nov 25, 2022 at 11:09:59AM +0100, Ahmad Fatoum wrote:
+> Calling objdump -d on the PBL ELF file will not disassemble the
+> instructions comprising __barebox_arm64_head and instead will just
+> print a hexdump. This is because we use linker magic to get the section
+> in front of the text segment and GAS fails to detect that
+> __barebox_arm64_head too is of function type. This is no longer the case
+> with ENDPROC as it uses the GAS .type directive to explicitly mark
+> a symbol as being a function:
+> 
+>   #define ENDPROC(name) \
+>     .type name, @function; \
+>     END(name)
+> 
+> This only has effect on the ELF and introduces no functional change for
+> the objcopied image.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/cpu/head_64.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Wei Chen <wei.chen@streamunlimited.com>
-Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
----
- drivers/mfd/axp20x-i2c.c   |  1 +
- drivers/mfd/axp20x.c       | 21 ++++++++++++++++++++-
- include/linux/mfd/axp20x.h | 28 ++++++++++++++++++++++++++++
- 3 files changed, 49 insertions(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/drivers/mfd/axp20x-i2c.c b/drivers/mfd/axp20x-i2c.c
-index d0f6a0f394..d1bb96e735 100644
---- a/drivers/mfd/axp20x-i2c.c
-+++ b/drivers/mfd/axp20x-i2c.c
-@@ -51,6 +51,7 @@ static const struct of_device_id axp20x_i2c_of_match[] = {
- 	{ .compatible = "x-powers,axp152", .data = (void *)AXP152_ID },
- 	{ .compatible = "x-powers,axp202", .data = (void *)AXP202_ID },
- 	{ .compatible = "x-powers,axp209", .data = (void *)AXP209_ID },
-+	{ .compatible = "x-powers,axp313a", .data = (void *)AXP313A_ID },
- 	{ .compatible = "x-powers,axp221", .data = (void *)AXP221_ID },
- 	{ .compatible = "x-powers,axp223", .data = (void *)AXP223_ID },
- 	{ .compatible = "x-powers,axp803", .data = (void *)AXP803_ID },
-diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
-index 8d9de59e7d..62df91ff01 100644
---- a/drivers/mfd/axp20x.c
-+++ b/drivers/mfd/axp20x.c
-@@ -38,6 +38,7 @@ static const char * const axp20x_model_names[] = {
- 	"AXP221",
- 	"AXP223",
- 	"AXP288",
-+	"AXP313A",
- 	"AXP803",
- 	"AXP806",
- 	"AXP809",
-@@ -68,6 +69,12 @@ static const struct regmap_config axp288_regmap_config = {
- 	.max_register	= AXP288_FG_TUNE5,
- };
- 
-+static const struct regmap_config axp313a_regmap_config = {
-+	.reg_bits	= 8,
-+	.val_bits	= 8,
-+	.max_register	= AXP313A_POK_CONTROL,
-+};
-+
- static const struct regmap_config axp806_regmap_config = {
- 	.reg_bits	= 8,
- 	.val_bits	= 8,
-@@ -160,6 +167,13 @@ static const struct mfd_cell axp288_cells[] = {
- 	},
- };
- 
-+static const struct mfd_cell axp313a_cells[] = {
-+	{
-+		.name		= "axp313a-regulator"
-+	},
-+};
-+
-+
- static const struct mfd_cell axp803_cells[] = {
- 	{
- 		.name		= "axp221-pek",
-@@ -271,6 +285,11 @@ int axp20x_match_device(struct axp20x_dev *axp20x)
- 		axp20x->nr_cells = ARRAY_SIZE(axp288_cells);
- 		axp20x->regmap_cfg = &axp288_regmap_config;
- 		break;
-+	case AXP313A_ID:
-+		axp20x->cells = axp313a_cells;
-+		axp20x->nr_cells = ARRAY_SIZE(axp313a_cells);
-+		axp20x->regmap_cfg = &axp313a_regmap_config;
-+		break;
- 	case AXP803_ID:
- 		axp20x->nr_cells = ARRAY_SIZE(axp803_cells);
- 		axp20x->cells = axp803_cells;
-@@ -351,7 +370,7 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
- 	axp20x->poweroff.poweroff = axp20x_power_off;
- 	axp20x->poweroff.priority = 200;
- 
--	if (axp20x->variant != AXP288_ID)
-+	if (!(axp20x->variant == AXP288_ID) || (axp20x->variant == AXP313A_ID))
- 		poweroff_handler_register(&axp20x->poweroff);
- 
- 	return 0;
-diff --git a/include/linux/mfd/axp20x.h b/include/linux/mfd/axp20x.h
-index 5e068eb6ba..150ff063b8 100644
---- a/include/linux/mfd/axp20x.h
-+++ b/include/linux/mfd/axp20x.h
-@@ -18,6 +18,7 @@ enum axp20x_variants {
- 	AXP221_ID,
- 	AXP223_ID,
- 	AXP288_ID,
-+	AXP313A_ID,
- 	AXP803_ID,
- 	AXP806_ID,
- 	AXP809_ID,
-@@ -287,6 +288,24 @@ enum axp20x_variants {
- #define AXP288_FG_TUNE4             0xec
- #define AXP288_FG_TUNE5             0xed
- 
-+#define AXP313A_ON_INDICATE          0x00
-+#define AXP313A_OFF_INDICATE         0x01
-+#define AXP313A_IC_TYPE              0x03
-+#define AXP313A_OUTPUT_CONTROL       0x10
-+#define AXP313A_DCDC_DVM_PWM         0x12
-+#define AXP313A_DCDC1_CONTROL        0x13
-+#define AXP313A_DCDC2_CONTROL        0x14
-+#define AXP313A_DCDC3_CONTROL        0x15
-+#define AXP313A_ALDO1_CONTROL        0x16
-+#define AXP313A_DLDO1_CONTROL        0x17
-+#define AXP313A_POWER_STATUS         0x1A
-+#define AXP313A_PWROK_SET            0x1B
-+#define AXP313A_WAKEUP_CONRTOL       0x1C
-+#define AXP313A_OUTOUT_MONITOR       0x1D
-+#define AXP313A_POK_CONTROL          0x1E
-+#define AXP313A_IRQ_ENABLE1          0x20
-+#define AXP313A_IRQ_STATUS1          0x21
-+
- /* Regulators IDs */
- enum {
- 	AXP20X_LDO1 = 0,
-@@ -323,6 +342,15 @@ enum {
- 	AXP22X_REG_ID_MAX,
- };
- 
-+enum {
-+	AXP313A_DCDC1 = 0,
-+	AXP313A_DCDC2,
-+	AXP313A_DCDC3,
-+	AXP313A_LDO1,  /* RTCLDO */
-+	AXP313A_LDO2,  /* RTCLDO1 */
-+	AXP313A_REG_ID_MAX,
-+};
-+
- enum {
- 	AXP806_DCDCA = 0,
- 	AXP806_DCDCB,
+Sascha
+
+> 
+> diff --git a/arch/arm/cpu/head_64.S b/arch/arm/cpu/head_64.S
+> index f934e96c6eaf..398c4d3471e0 100644
+> --- a/arch/arm/cpu/head_64.S
+> +++ b/arch/arm/cpu/head_64.S
+> @@ -30,4 +30,4 @@ ENTRY(__barebox_arm64_head)
+>  	.rept 8
+>  	.word 0x55555555
+>  	.endr
+> -END(__barebox_arm64_head)
+> +ENDPROC(__barebox_arm64_head)
+> -- 
+> 2.30.2
+> 
+> 
+> 
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
