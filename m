@@ -1,56 +1,57 @@
-Delivery-date: Fri, 02 Dec 2022 10:05:13 +0100
+Delivery-date: Fri, 02 Dec 2022 11:54:22 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p11yq-008M1N-ER
-	for lore@lore.pengutronix.de; Fri, 02 Dec 2022 10:05:13 +0100
+	id 1p13gR-008RKD-Eh
+	for lore@lore.pengutronix.de; Fri, 02 Dec 2022 11:54:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p11yp-0005ld-5F
-	for lore@pengutronix.de; Fri, 02 Dec 2022 10:05:12 +0100
+	id 1p13gQ-0004mg-C3
+	for lore@pengutronix.de; Fri, 02 Dec 2022 11:54:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3N4KolA+RoBra39/K3uEATK0xM02qv/8i2a59B5LKSU=; b=zpnxTGldAkZNtvpD2PoppTfooR
-	IFS8zlhWhweZ6R+Q+CQ5a5olShFeZnxQMSeaQ55a+qVgDlVe2zbtpSkjJ1pz16xCIA9mrDJgUmEag
-	z+7aR8q4/Uc+FF7/KY0X6tGCY9C8Y9aRWijLglJTjjkTwht29ET5jKJZ4Dn6vR1lXhL9ngrVGpNyR
-	pQ9zS6ooKXN+oy/tdLmkXAlZvHmXHWCnuHPGFjSNEAgDsj3A87VnmlVGp6pI/vP6j0kCmd5HRq8fq
-	FZkhGXwV9uV42N7v5m4qZqx1O8r4WEVMRndl2LIvmfpgFR+dNCVfeoZopd4je+U0Ex8vCUarUsW7Q
-	sNN65itA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=niP4BspKAH+ime1eD2juzR87krcYGGm8fQup23c2B8M=; b=1Gsmrd3Qjp8NiI
+	l5DYbumyJspSwMBXFDm72YhHtpkVMYfhT47ZBxGtbxrLgrchEoXBmo+rIUGN7bJnsj8bKZ2h/uuc5
+	9UlSCZAyvdJMmFhMIEcTXuOVxvTg2LbmeerngBnCD+lJEbUXLeFuPMpAnFolFwuQkdxyZDocB7k33
+	NGzSVMFfFaew41QbEQDawGPm4l5Ckco0aItrwyIzFEcZ5rXXXCyL8EJBM3eEqyeN9ZkKg9yqtJXzv
+	EAXR7SafnD9YbrsfDwpur29wex2SDQIuiK5QagclUO93p1y5vtQ7YEbDACjRHtHqhGusluB7jd6i0
+	80rUsEH7h45K1592KBZg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p11xc-00EmO6-9m; Fri, 02 Dec 2022 09:03:56 +0000
+	id 1p13ed-00FkCs-2q; Fri, 02 Dec 2022 10:52:27 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p11xW-00EmLw-QL
-	for barebox@lists.infradead.org; Fri, 02 Dec 2022 09:03:52 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1p11xV-0005NA-Ff; Fri, 02 Dec 2022 10:03:49 +0100
-Message-ID: <e308926f-74db-f117-2d8e-947b947bb634@pengutronix.de>
-Date: Fri, 2 Dec 2022 10:03:49 +0100
+	id 1p13eO-00Fk5v-PX
+	for barebox@lists.infradead.org; Fri, 02 Dec 2022 10:52:18 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1p13eK-0004UX-50; Fri, 02 Dec 2022 11:52:08 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1p13eI-001mW7-PE; Fri, 02 Dec 2022 11:52:07 +0100
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1p13eI-00Cug3-QN; Fri, 02 Dec 2022 11:52:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Fri,  2 Dec 2022 11:52:04 +0100
+Message-Id: <20221202105204.3076891-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20221201133853.639287-1-a.fatoum@pengutronix.de>
- <20221202085038.m3pygfh4hojzjcez@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20221202085038.m3pygfh4hojzjcez@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221202_010350_879233_A703A5E3 
-X-CRM114-Status: GOOD (  18.75  )
+X-CRM114-CacheID: sfid-20221202_025212_859476_4D2CD314 
+X-CRM114-Status: GOOD (  12.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -62,81 +63,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] regulator: core: don't call of_regulator_get with NULL
- argument
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] net: bcmgenet: Fix MAC address setting
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 02.12.22 09:50, Marco Felsch wrote:
-> On 22-12-01, Ahmad Fatoum wrote:
->> regulator_get calls either of_regulator_get or dev_regulator_get, both
->> of which accept a supply parameter. Only dev_regulator_get gracefully
->> handles a NULL supply by considering all registered regulators.
-> 
-> Wouldn't it be better to align of_regulator_get behaviour with
-> dev_regulator_get?
+bcmgenet_set_hwaddr() only copies the MAC address only into internal
+state, but not into hardware. Copying to hardware is done in
+__bcmgenet_set_hwaddr() called during open time. Depending on
+nv.dev.eth0.ethaddr being set the order in which both functions
+are called changes.
 
-Nope, not specifying a supply id is legacy behavior. Consumers
-should be expected to know the name of the supply they want to
-control. In Linux, regulator_get(dev, NULL) is already an error. 
+Copy the state into hardware as well in bcmgenet_set_hwaddr(). This
+fixes sending packets when nv.dev.eth0.ethaddr is not set.
 
-> 
->> of_regulator_get on the other hand, will complain at debug level,
->> before returning NULL:
->>
->>   uart-pl011 fe201000.serial@7e201000.of: No <NULL>-supply node found,
->>   using dummy regulator
->>
->> Avoid this message by skipping of_regulator_get if no supply was found
->> and directly call dev_regulator_get.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  drivers/regulator/core.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
->> index 4876f0f44bdd..d25aba38c3e2 100644
->> --- a/drivers/regulator/core.c
->> +++ b/drivers/regulator/core.c
->> @@ -388,7 +388,7 @@ struct regulator *regulator_get(struct device_d *dev, const char *supply)
->>  	struct regulator *r;
->>  	int ret;
->>  
->> -	if (dev->device_node) {
->> +	if (dev->device_node && supply) {
->>  		ri = of_regulator_get(dev, supply);
->>  		if (IS_ERR(ri))
->>  			return ERR_CAST(ri);
-> 
-> Nevertheless the change is correct, so:
-> 
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-> 
-> Regards,
->   Marco
->> -- 
->> 2.30.2
->>
->>
->>
-> 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/bcmgenet.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/net/bcmgenet.c b/drivers/net/bcmgenet.c
+index 79514dfa69..8df5fd5dea 100644
+--- a/drivers/net/bcmgenet.c
++++ b/drivers/net/bcmgenet.c
+@@ -215,15 +215,6 @@ static void bcmgenet_umac_reset(struct bcmgenet_eth_priv *priv)
+ 	writel(1, (priv->mac_reg + RBUF_TBUF_SIZE_CTRL));
+ }
+ 
+-static int bcmgenet_set_hwaddr(struct eth_device *dev, const unsigned char *addr)
+-{
+-	struct bcmgenet_eth_priv *priv = dev->priv;
+-
+-	memcpy(priv->addr, addr, 6);
+-
+-	return 0;
+-}
+-
+ static int __bcmgenet_set_hwaddr(struct bcmgenet_eth_priv *priv)
+ {
+ 	const unsigned char *addr = priv->addr;
+@@ -238,6 +229,17 @@ static int __bcmgenet_set_hwaddr(struct bcmgenet_eth_priv *priv)
+ 	return 0;
+ }
+ 
++static int bcmgenet_set_hwaddr(struct eth_device *dev, const unsigned char *addr)
++{
++	struct bcmgenet_eth_priv *priv = dev->priv;
++
++	memcpy(priv->addr, addr, 6);
++
++	__bcmgenet_set_hwaddr(priv);
++
++	return 0;
++}
++
+ static int bcmgenet_get_hwaddr(struct eth_device *edev, unsigned char *mac)
+ {
+ 	return -1;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
 
 
 
