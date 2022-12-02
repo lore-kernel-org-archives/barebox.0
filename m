@@ -1,61 +1,61 @@
-Delivery-date: Fri, 02 Dec 2022 08:48:33 +0100
+Delivery-date: Fri, 02 Dec 2022 09:31:44 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p10mf-008Hxq-5A
-	for lore@lore.pengutronix.de; Fri, 02 Dec 2022 08:48:33 +0100
+	id 1p11SS-008JrU-0r
+	for lore@lore.pengutronix.de; Fri, 02 Dec 2022 09:31:44 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p10me-0001hp-Pk
-	for lore@pengutronix.de; Fri, 02 Dec 2022 08:48:33 +0100
+	id 1p11SQ-0000AI-UH
+	for lore@pengutronix.de; Fri, 02 Dec 2022 09:31:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ecf7x77ZtmgE0M2tNP3ZbmT+9p0NWOWtJqbPKKYNUig=; b=lspjAZ1QEycchLjBavr3y+kfZv
-	c2ztUxgPnHOWTDF7BPgH+X7sNLLhAUbcs9vY4BlFigDhhDAF8Ozo7CBo3Y0+jZXS+x7QSWjWWvNqb
-	dYkpH5BQDhnAE6ugBSOJCmXjrklvxBeabM1MLp0Tiq/MnRqlQcFCAU7/oaE1Q3pE5vZFqX5onqHWz
-	/vGhfH4LfI74+6SQkUjT4SpFhD1MAkOLjYr6aHQqea+QrNyt7cUBsQAAcOhY8B9nwvS3ZdJlbDXa/
-	QmFOFFRkb4i+dYdBcNW1t+WJ9mP//fZWtlveHypWLrEz7lD6/dZzmEBKjkkX/hMjZIeK+cZ3NCur+
-	dMcjHGDw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=3jQfku6eilbjdhu/88m+RDV/iY8ljfXZZNWRfD1d9rk=; b=2H1BrvIAy8nvWYKgHNMy3XSHS7
+	c6H5ZwRw7JenaI1mJ/7JSoWRDox6da4AvjTVUDcHR57NKpwqNe2eETDJ1H9cMy9wNr8VYlVxUESJI
+	Ht0Hi3LczAm/DJ7R8R7aMXmZoDg1oNL8h7bSfXNoxkAK16XDfomW8a3t4TZhEYR8zoEHQA7sSgG/0
+	IVHd6iHnKirm6jAQpBHujckWJJFc2fIy7ARXkAc8z1ZSRamzoNjvJ8tiT3ILhsxiZwgzdUWykfbS5
+	qijrKjRTmvwbilhG3gfdAU6Fo3upcQfCOsQG9Om8KrxPc4Ny2jKTiOCrNIMf7aVTq1GM27Il/NBE0
+	D2mQEmNw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p10kr-00EE3D-14; Fri, 02 Dec 2022 07:46:41 +0000
+	id 1p11Qz-00EWn6-VA; Fri, 02 Dec 2022 08:30:14 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p10kl-00EDyE-U3
-	for barebox@lists.infradead.org; Fri, 02 Dec 2022 07:46:38 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1p11Qv-00EWkl-9R
+	for barebox@lists.infradead.org; Fri, 02 Dec 2022 08:30:10 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1p10kh-0001RD-Gl; Fri, 02 Dec 2022 08:46:31 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1p10kh-00034z-9J; Fri, 02 Dec 2022 08:46:31 +0100
-Date: Fri, 2 Dec 2022 08:46:31 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20221202074631.GJ29728@pengutronix.de>
-References: <20221125100959.3981619-1-a.fatoum@pengutronix.de>
+	(envelope-from <ukl@pengutronix.de>)
+	id 1p11Qt-00089b-Pk; Fri, 02 Dec 2022 09:30:07 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1p11Qr-001lKK-Do; Fri, 02 Dec 2022 09:30:06 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1p11Qp-00202b-1k; Fri, 02 Dec 2022 09:30:03 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Fri,  2 Dec 2022 09:29:54 +0100
+Message-Id: <20221202082954.3413605-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221125100959.3981619-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2162; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=pSdi9iKRFDTq0pccZIm0Q/NHBxXKWGpLKOAGvX7lWxQ=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjibd/sR22B3gkDdDykEKXHQhXXa7WzL7uFofj+3/5 Dn4ipSWJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY4m3fwAKCRDB/BR4rcrsCXx6CA CGhJiaFaAs0jqUMZjXAiIYa/IbW7CIHLFG4YlOK+eeBK2yfU58aZULIepZjf0+z/8L+eSYHj1/0t5e Gr1/plk1GDMZfDF8NizEDNlh+vB/hYuce//IWLqAuTiIiWg5wDd4ugd+S+L5/y6lgIvDAxhW8UvzwB qMU6W1139MuoyAwcs0o1RQDpjnwsz0Z5MPgn90L23/FJDXzx9vOWya1KiHIc1sDiYBw9yIb5GmE7Z2 Z40f+qaeJ6cryfKWBd1yMc8Bz6N0RQtiG+Zj125lMTWWvRuJB/HxgLv4XMFCmybG4CIedim6el6ipQ 6d+Ir6m6O6kmOra3nPMSZUWYWmWBnX
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221201_234635_989970_87B02AA8 
-X-CRM114-Status: GOOD (  22.00  )
+X-CRM114-CacheID: sfid-20221202_003009_388693_DF06558E 
+X-CRM114-Status: UNSURE (   9.37  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,56 +77,68 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM64: asm: mark __barebox_arm64_head as function
+Subject: [PATCH] kvx,openrisc,riscv,sandbox/dts: harmonize clean-files definition
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Nov 25, 2022 at 11:09:59AM +0100, Ahmad Fatoum wrote:
-> Calling objdump -d on the PBL ELF file will not disassemble the
-> instructions comprising __barebox_arm64_head and instead will just
-> print a hexdump. This is because we use linker magic to get the section
-> in front of the text segment and GAS fails to detect that
-> __barebox_arm64_head too is of function type. This is no longer the case
-> with ENDPROC as it uses the GAS .type directive to explicitly mark
-> a symbol as being a function:
-> 
->   #define ENDPROC(name) \
->     .type name, @function; \
->     END(name)
-> 
-> This only has effect on the ELF and introduces no functional change for
-> the objcopied image.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/cpu/head_64.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+I noticed while playing around with the sandbox that the mrproper make
+target doesn't remove arch/sandbox/dts/sandbox.dtb.z.
 
-Applied, thanks
+Fix all dts clean-files defintion to match arm's defintion which seems
+to be the most complete one.
 
-Sascha
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ arch/kvx/dts/Makefile      | 2 +-
+ arch/openrisc/dts/Makefile | 2 +-
+ arch/riscv/dts/Makefile    | 2 +-
+ arch/sandbox/dts/Makefile  | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-> 
-> diff --git a/arch/arm/cpu/head_64.S b/arch/arm/cpu/head_64.S
-> index f934e96c6eaf..398c4d3471e0 100644
-> --- a/arch/arm/cpu/head_64.S
-> +++ b/arch/arm/cpu/head_64.S
-> @@ -30,4 +30,4 @@ ENTRY(__barebox_arm64_head)
->  	.rept 8
->  	.word 0x55555555
->  	.endr
-> -END(__barebox_arm64_head)
-> +ENDPROC(__barebox_arm64_head)
-> -- 
-> 2.30.2
-> 
-> 
-> 
+diff --git a/arch/kvx/dts/Makefile b/arch/kvx/dts/Makefile
+index 3f03192750bc..41613033ce81 100644
+--- a/arch/kvx/dts/Makefile
++++ b/arch/kvx/dts/Makefile
+@@ -11,4 +11,4 @@ endif
+ 
+ obj-$(CONFIG_BOARD_K200) += k200.dtb.o
+ 
+-clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
++clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+diff --git a/arch/openrisc/dts/Makefile b/arch/openrisc/dts/Makefile
+index f43a28d6b905..6778abe1b4fd 100644
+--- a/arch/openrisc/dts/Makefile
++++ b/arch/openrisc/dts/Makefile
+@@ -3,4 +3,4 @@
+ BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
+ obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
+ 
+-clean-files := *.dtb *.dtb.S
++clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
+index 17d7d249e41a..a3c8fbd9d0d7 100644
+--- a/arch/riscv/dts/Makefile
++++ b/arch/riscv/dts/Makefile
+@@ -10,4 +10,4 @@ pbl-$(CONFIG_BOARD_HIFIVE) += hifive-unmatched-a00.dtb.o \
+ pbl-$(CONFIG_BOARD_BEAGLEV) += jh7100-beaglev-starlight.dtb.o
+ pbl-$(CONFIG_BOARD_LITEX_LINUX) += litex-linux.dtb.o
+ 
+-clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
++clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+diff --git a/arch/sandbox/dts/Makefile b/arch/sandbox/dts/Makefile
+index 9af91cb72c03..79625b103eba 100644
+--- a/arch/sandbox/dts/Makefile
++++ b/arch/sandbox/dts/Makefile
+@@ -7,4 +7,4 @@ obj-$(CONFIG_OFTREE) += \
+ # created.
+ obj- += dummy.o
+ 
+-clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
++clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
 
+base-commit: cbb5ef3d18ba7dfed9324985ea70b6bd9203622f
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.38.1
+
 
 
