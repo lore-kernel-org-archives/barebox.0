@@ -1,62 +1,56 @@
-Delivery-date: Fri, 02 Dec 2022 10:03:35 +0100
+Delivery-date: Fri, 02 Dec 2022 10:05:13 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p11xG-008LUY-GD
-	for lore@lore.pengutronix.de; Fri, 02 Dec 2022 10:03:35 +0100
+	id 1p11yq-008M1N-ER
+	for lore@lore.pengutronix.de; Fri, 02 Dec 2022 10:05:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p11xF-0005Fo-O4
-	for lore@pengutronix.de; Fri, 02 Dec 2022 10:03:34 +0100
+	id 1p11yp-0005ld-5F
+	for lore@pengutronix.de; Fri, 02 Dec 2022 10:05:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sz4ZFfjo7Krry0mFdmWmoFMqFHeVg1BGlDFJMTOBb68=; b=CKivoRFiCzqRfXnfta/tYFSaSZ
-	FlDJHCBLUwLXB7jQ50+gBvWGBCcPgOcFT2hHeO7K3dTdHnQ6aqMBd5MHyCnf6nZ/MC1s4j0tG0H3m
-	KFfjsqIUrRNjFPVvsGZpXLUWyBP6S2iMTg77sW3Y5j+CzEi8bWC7Lj9ISDg+ueu8zWVzCEyTJTYOk
-	YsF1mBG7WRjimhE3puxJYIrZTDrl3G/JjYuTCZY4tsQJ9RrxRo3G4SF/RG3HUyWQbjyRVA9Q8Z52f
-	rbNTtx+q1DNcgDLkPae44ETNnx8m1fq1MvX9uCcTuJ181/26IG2A76fZMlIfeg2nypIZKx7a8y/CZ
-	WeduB61Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3N4KolA+RoBra39/K3uEATK0xM02qv/8i2a59B5LKSU=; b=zpnxTGldAkZNtvpD2PoppTfooR
+	IFS8zlhWhweZ6R+Q+CQ5a5olShFeZnxQMSeaQ55a+qVgDlVe2zbtpSkjJ1pz16xCIA9mrDJgUmEag
+	z+7aR8q4/Uc+FF7/KY0X6tGCY9C8Y9aRWijLglJTjjkTwht29ET5jKJZ4Dn6vR1lXhL9ngrVGpNyR
+	pQ9zS6ooKXN+oy/tdLmkXAlZvHmXHWCnuHPGFjSNEAgDsj3A87VnmlVGp6pI/vP6j0kCmd5HRq8fq
+	FZkhGXwV9uV42N7v5m4qZqx1O8r4WEVMRndl2LIvmfpgFR+dNCVfeoZopd4je+U0Ex8vCUarUsW7Q
+	sNN65itA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p11vy-00ElYi-6n; Fri, 02 Dec 2022 09:02:14 +0000
+	id 1p11xc-00EmO6-9m; Fri, 02 Dec 2022 09:03:56 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p11vt-00ElWv-E4
-	for barebox@lists.infradead.org; Fri, 02 Dec 2022 09:02:10 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1p11vr-0004oP-Qu; Fri, 02 Dec 2022 10:02:07 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1p11vr-0007Y7-Kl; Fri, 02 Dec 2022 10:02:07 +0100
-Date: Fri, 2 Dec 2022 10:02:07 +0100
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20221202090207.GR29728@pengutronix.de>
-References: <20221202082954.3413605-1-u.kleine-koenig@pengutronix.de>
+	id 1p11xW-00EmLw-QL
+	for barebox@lists.infradead.org; Fri, 02 Dec 2022 09:03:52 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1p11xV-0005NA-Ff; Fri, 02 Dec 2022 10:03:49 +0100
+Message-ID: <e308926f-74db-f117-2d8e-947b947bb634@pengutronix.de>
+Date: Fri, 2 Dec 2022 10:03:49 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221202082954.3413605-1-u.kleine-koenig@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20221201133853.639287-1-a.fatoum@pengutronix.de>
+ <20221202085038.m3pygfh4hojzjcez@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20221202085038.m3pygfh4hojzjcez@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221202_010209_498772_36A83372 
-X-CRM114-Status: GOOD (  18.63  )
+X-CRM114-CacheID: sfid-20221202_010350_879233_A703A5E3 
+X-CRM114-Status: GOOD (  18.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,81 +68,68 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] kvx,openrisc,riscv,sandbox/dts: harmonize clean-files
- definition
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] regulator: core: don't call of_regulator_get with NULL
+ argument
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Dec 02, 2022 at 09:29:54AM +0100, Uwe Kleine-König wrote:
-> I noticed while playing around with the sandbox that the mrproper make
-> target doesn't remove arch/sandbox/dts/sandbox.dtb.z.
+On 02.12.22 09:50, Marco Felsch wrote:
+> On 22-12-01, Ahmad Fatoum wrote:
+>> regulator_get calls either of_regulator_get or dev_regulator_get, both
+>> of which accept a supply parameter. Only dev_regulator_get gracefully
+>> handles a NULL supply by considering all registered regulators.
 > 
-> Fix all dts clean-files defintion to match arm's defintion which seems
-> to be the most complete one.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> ---
->  arch/kvx/dts/Makefile      | 2 +-
->  arch/openrisc/dts/Makefile | 2 +-
->  arch/riscv/dts/Makefile    | 2 +-
->  arch/sandbox/dts/Makefile  | 2 +-
->  4 files changed, 4 insertions(+), 4 deletions(-)
+> Wouldn't it be better to align of_regulator_get behaviour with
+> dev_regulator_get?
 
-Applied, thanks
-
-Sascha
+Nope, not specifying a supply id is legacy behavior. Consumers
+should be expected to know the name of the supply they want to
+control. In Linux, regulator_get(dev, NULL) is already an error. 
 
 > 
-> diff --git a/arch/kvx/dts/Makefile b/arch/kvx/dts/Makefile
-> index 3f03192750bc..41613033ce81 100644
-> --- a/arch/kvx/dts/Makefile
-> +++ b/arch/kvx/dts/Makefile
-> @@ -11,4 +11,4 @@ endif
->  
->  obj-$(CONFIG_BOARD_K200) += k200.dtb.o
->  
-> -clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
-> +clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
-> diff --git a/arch/openrisc/dts/Makefile b/arch/openrisc/dts/Makefile
-> index f43a28d6b905..6778abe1b4fd 100644
-> --- a/arch/openrisc/dts/Makefile
-> +++ b/arch/openrisc/dts/Makefile
-> @@ -3,4 +3,4 @@
->  BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
->  obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
->  
-> -clean-files := *.dtb *.dtb.S
-> +clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
-> diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
-> index 17d7d249e41a..a3c8fbd9d0d7 100644
-> --- a/arch/riscv/dts/Makefile
-> +++ b/arch/riscv/dts/Makefile
-> @@ -10,4 +10,4 @@ pbl-$(CONFIG_BOARD_HIFIVE) += hifive-unmatched-a00.dtb.o \
->  pbl-$(CONFIG_BOARD_BEAGLEV) += jh7100-beaglev-starlight.dtb.o
->  pbl-$(CONFIG_BOARD_LITEX_LINUX) += litex-linux.dtb.o
->  
-> -clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
-> +clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
-> diff --git a/arch/sandbox/dts/Makefile b/arch/sandbox/dts/Makefile
-> index 9af91cb72c03..79625b103eba 100644
-> --- a/arch/sandbox/dts/Makefile
-> +++ b/arch/sandbox/dts/Makefile
-> @@ -7,4 +7,4 @@ obj-$(CONFIG_OFTREE) += \
->  # created.
->  obj- += dummy.o
->  
-> -clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
-> +clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+>> of_regulator_get on the other hand, will complain at debug level,
+>> before returning NULL:
+>>
+>>   uart-pl011 fe201000.serial@7e201000.of: No <NULL>-supply node found,
+>>   using dummy regulator
+>>
+>> Avoid this message by skipping of_regulator_get if no supply was found
+>> and directly call dev_regulator_get.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  drivers/regulator/core.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+>> index 4876f0f44bdd..d25aba38c3e2 100644
+>> --- a/drivers/regulator/core.c
+>> +++ b/drivers/regulator/core.c
+>> @@ -388,7 +388,7 @@ struct regulator *regulator_get(struct device_d *dev, const char *supply)
+>>  	struct regulator *r;
+>>  	int ret;
+>>  
+>> -	if (dev->device_node) {
+>> +	if (dev->device_node && supply) {
+>>  		ri = of_regulator_get(dev, supply);
+>>  		if (IS_ERR(ri))
+>>  			return ERR_CAST(ri);
 > 
-> base-commit: cbb5ef3d18ba7dfed9324985ea70b6bd9203622f
-> -- 
-> 2.38.1
+> Nevertheless the change is correct, so:
 > 
+> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 > 
+> Regards,
+>   Marco
+>> -- 
+>> 2.30.2
+>>
+>>
+>>
 > 
 
 -- 
@@ -156,5 +137,6 @@ Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
