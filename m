@@ -1,58 +1,52 @@
-Delivery-date: Wed, 07 Dec 2022 19:48:43 +0100
+Delivery-date: Wed, 07 Dec 2022 23:11:46 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p2zTG-00Due3-Jr
-	for lore@lore.pengutronix.de; Wed, 07 Dec 2022 19:48:43 +0100
+	id 1p32dl-00E4xx-NI
+	for lore@lore.pengutronix.de; Wed, 07 Dec 2022 23:11:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p2zTF-0000xN-VB
-	for lore@pengutronix.de; Wed, 07 Dec 2022 19:48:42 +0100
+	id 1p32dk-0006cZ-QO
+	for lore@pengutronix.de; Wed, 07 Dec 2022 23:11:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=xGsE/g21h2uIg5e5inWZj4gxWSIB8eXf0JBOZEzibAk=; b=iUw/8bCPURAVEIkPyGhuzr5ieS
-	nXMM81/rGcaq9pxbGa/czZs40pmGn5E5CaiQ00BXEJ3jK8oimoydGJhjyx9SwGJufvlpcdcCm6pqJ
-	LyuBGD45CxMNQ+lsrLCvAVOMSbtquUakwZOp81nF6Edu7FJhWXB87lT47ZK4USsa/78kUhr/xS2pn
-	f3e7DIOVaphqQ8e6TyA66n0nJyCnva1qyo/cojaC7DZqJQi4/QT9vDRtmW3zRkfJTrYLUc9p3Z9R4
-	ueV4j5xAC7aIWwzpoiHe6VZ3JyUgxbshiNYtROMfm0W9qgWykV/9n46Vs61YCNi6eI4C+hgrFndSA
-	2UY4w3DA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ICQQFhT2ofVekGqKv6GUy81kR6DG34mBNvEpx+/lDK8=; b=SA0zT7UP1UUxwUd1ng9aJvsXO6
+	7ysISajbMk0+HW4q8W2dO5POVsBJAPQkpiEWNy7a54KEPfYldv9BFtnkrMHQseruSi4M+MI5rhqFw
+	qQpF0GKQL5G8xevraoJwGHHBWTpG40Hjw1kAS8ZjdTHf92PqcyzHhKNX0bcjzePAK7RLbEA0Ew3XX
+	wekDo3MYcY84j0iSaTTRBQ96WJ0JY62VPBV/XFjHD3bQuC/3UmT1dJwnv0OU4aiyeq+UIiFksybay
+	e+fajQJ1I0yfIQMupXZcLKrOdiCXRoTGF14YRAikGHIzH+CtvQjVsB7E0bG9x53z1GqXhoCOflsuE
+	omX21zQw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p2zRX-009Rzg-5A; Wed, 07 Dec 2022 18:46:55 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p2zRN-009RMh-1u
-	for barebox@lists.infradead.org; Wed, 07 Dec 2022 18:46:47 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1p2zRF-0000tC-2Y; Wed, 07 Dec 2022 19:46:37 +0100
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1p2zRD-002yfL-MC; Wed, 07 Dec 2022 19:46:36 +0100
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1p2zRD-000aUO-Ox; Wed, 07 Dec 2022 19:46:35 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	id 1p32cR-00DnEn-7O; Wed, 07 Dec 2022 22:10:23 +0000
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1p32cA-00Dmky-Fg
+	for barebox@lists.infradead.org; Wed, 07 Dec 2022 22:10:10 +0000
+Received: by lynxeye.de (Postfix, from userid 501)
+	id 8E550E74013; Wed,  7 Dec 2022 23:09:31 +0100 (CET)
+Received: from astat.fritz.box (a89-183-231-163.net-htp.de [89.183.231.163])
+	by lynxeye.de (Postfix) with ESMTPA id 78D16E74016
+	for <barebox@lists.infradead.org>; Wed,  7 Dec 2022 23:09:28 +0100 (CET)
+From: Lucas Stach <l.stach@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 Dec 2022 19:46:34 +0100
-Message-Id: <20221207184634.140081-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+Date: Wed,  7 Dec 2022 23:09:24 +0100
+Message-Id: <20221207220924.148327-4-l.stach@pengutronix.de>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221207220924.148327-1-l.stach@pengutronix.de>
+References: <20221207220924.148327-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221207_104645_145026_41CB2279 
-X-CRM114-Status: GOOD (  12.15  )
+X-CRM114-CacheID: sfid-20221207_141006_764113_C467C7F0 
+X-CRM114-Status: GOOD (  10.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,123 +64,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] nvmem: core: don't fail on positive callback value return
+Subject: [PATCH 4/4] ARM: phytec-som-imx8mq: include DDR firmware in image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-A sizable number of barebox NVMEM drivers returns a positive value of
-number of bytes read on success, while others return 0 unless an error
-occurred.
+This board uses the legacy DRAM initialization and doesn't call
+imx8mq_ddr_init(), so there is no point where the DRAM firmware is
+referenced from the image. Fix this by calling ddr_get_firmware()
+from the legacy DRAM init.
 
-When we used to check for errors with IS_ERR_VALUE, both cases worked,
-because it wouldn't evaluate to true for positive numbers. Now with
-IS_ERR_VALUE removed, we need to explicitly check for negative values
-to determinte errors. Otherwise nvmem_cell_read becomes a death trap
-that returns values like (void *)2, which IS_ERR() won't catch and
-best case kfree() will crash on.
-
-Fixes: eb05a8e1d2b4 ("nvmem: remove IS_ERR_VALUE abuses")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Fixes: e770d18108de ("ARM: i.MX8M: include only necessary ddrphy firmwares in image")
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/nvmem/core.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index 8e07bdb5013e..fded8b6f4b02 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -526,7 +526,7 @@ static int __nvmem_cell_read(struct nvmem_device *nvmem,
- 	int rc;
+diff --git a/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c b/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c
+index 2c84a0f5fd5a..2ed6578093af 100644
+--- a/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c
++++ b/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c
+@@ -12,6 +12,8 @@
+ void ddr_cfg_phy(void) {
+ 	unsigned int tmp, tmp_t;
  
- 	rc = nvmem->bus->read(nvmem->priv, cell->offset, buf, cell->bytes);
--	if (rc)
-+	if (rc < 0)
- 		return rc;
- 
- 	/* shift bits in-place */
-@@ -561,7 +561,7 @@ void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
- 		return ERR_PTR(-ENOMEM);
- 
- 	rc = __nvmem_cell_read(nvmem, cell, buf, len);
--	if (rc) {
-+	if (rc < 0) {
- 		kfree(buf);
- 		return ERR_PTR(rc);
- 	}
-@@ -591,7 +591,7 @@ static inline void *nvmem_cell_prepare_write_buffer(struct nvmem_cell *cell,
- 
- 		/* setup the first byte with lsb bits from nvmem */
- 		rc = nvmem->bus->read(nvmem->priv, cell->offset, &v, 1);
--		if (rc)
-+		if (rc < 0)
- 			return ERR_PTR(rc);
- 
- 		*b++ |= GENMASK(bit_offset - 1, 0) & v;
-@@ -612,7 +612,7 @@ static inline void *nvmem_cell_prepare_write_buffer(struct nvmem_cell *cell,
- 		/* setup the last byte with msb bits from nvmem */
- 		rc = nvmem->bus->read(nvmem->priv, cell->offset + cell->bytes - 1,
- 				      &v, 1);
--		if (rc)
-+		if (rc < 0)
- 			return ERR_PTR(rc);
- 
- 		*p |= GENMASK(7, (nbits + bit_offset) % BITS_PER_BYTE) & v;
-@@ -652,7 +652,7 @@ int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len)
- 	if (cell->bit_offset || cell->nbits)
- 		kfree(buf);
- 
--	if (rc)
-+	if (rc < 0)
- 		return rc;
- 
- 	return len;
-@@ -680,11 +680,11 @@ ssize_t nvmem_device_cell_read(struct nvmem_device *nvmem,
- 		return -EINVAL;
- 
- 	rc = nvmem_cell_info_to_nvmem_cell(nvmem, info, &cell);
--	if (rc)
-+	if (rc < 0)
- 		return rc;
- 
- 	rc = __nvmem_cell_read(nvmem, &cell, buf, &len);
--	if (rc)
-+	if (rc < 0)
- 		return rc;
- 
- 	return len;
-@@ -710,7 +710,7 @@ int nvmem_device_cell_write(struct nvmem_device *nvmem,
- 		return -EINVAL;
- 
- 	rc = nvmem_cell_info_to_nvmem_cell(nvmem, info, &cell);
--	if (rc)
-+	if (rc < 0)
- 		return rc;
- 
- 	return nvmem_cell_write(&cell, buf, cell.bytes);
-@@ -744,7 +744,7 @@ int nvmem_device_read(struct nvmem_device *nvmem,
- 		return 0;
- 
- 	rc = nvmem->bus->read(nvmem->priv, offset, buf, bytes);
--	if (rc)
-+	if (rc < 0)
- 		return rc;
- 
- 	return bytes;
-@@ -777,7 +777,7 @@ int nvmem_device_write(struct nvmem_device *nvmem,
- 		return 0;
- 
- 	rc = nvmem->bus->write(nvmem->priv, offset, buf, bytes);
--	if (rc)
-+	if (rc < 0)
- 		return rc;
- 
- 
++	ddr_get_firmware(DRAM_TYPE_LPDDR4);
++
+ 	//Init DDRPHY register...
+ 	reg32_write(0x3c080440,0x2);
+ 	reg32_write(0x3c080444,0x3);
 -- 
-2.30.2
+2.38.1
 
 
 
