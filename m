@@ -1,61 +1,58 @@
-Delivery-date: Wed, 07 Dec 2022 08:04:40 +0100
+Delivery-date: Wed, 07 Dec 2022 19:48:43 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p2oTv-00DLYb-OT
-	for lore@lore.pengutronix.de; Wed, 07 Dec 2022 08:04:40 +0100
+	id 1p2zTG-00Due3-Jr
+	for lore@lore.pengutronix.de; Wed, 07 Dec 2022 19:48:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p2oTv-0000xn-4O
-	for lore@pengutronix.de; Wed, 07 Dec 2022 08:04:39 +0100
+	id 1p2zTF-0000xN-VB
+	for lore@pengutronix.de; Wed, 07 Dec 2022 19:48:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5wKx+kZaqqKEHLfuc0iI9miTwl6MdyzQOEs0fp23+CU=; b=UuhMN9cNIL/7ToNOPYTrGw08D2
-	xcvyH52vflEFRXa8hiVUWEzq6QQuAhEcgMPQQwByR9vjNs8uUICdA9Hppha8JPGH0xEMZXD90rW+A
-	4u/UkwaFbgn+SecoUBbrRMCJLTQB0FJEMZCOJelyHVFum4RkdamloATeypu5fzQwZ5JNT7ZJmz0no
-	Go4g082kKxKiQsOEtwiipNH7RMOOSIja+uBhBzSpK7AjdISe7jZ/rEmF4PWrAgpXVwWI3fFqJw7hn
-	We9cXN3+chm3MjL22f5937fc8pQvkRorOH8E1ZGxqsR7XVzBr8z4vcABMtJ+BfcaOyY1kl/oh9Xrk
-	oNEP6hHA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=xGsE/g21h2uIg5e5inWZj4gxWSIB8eXf0JBOZEzibAk=; b=iUw/8bCPURAVEIkPyGhuzr5ieS
+	nXMM81/rGcaq9pxbGa/czZs40pmGn5E5CaiQ00BXEJ3jK8oimoydGJhjyx9SwGJufvlpcdcCm6pqJ
+	LyuBGD45CxMNQ+lsrLCvAVOMSbtquUakwZOp81nF6Edu7FJhWXB87lT47ZK4USsa/78kUhr/xS2pn
+	f3e7DIOVaphqQ8e6TyA66n0nJyCnva1qyo/cojaC7DZqJQi4/QT9vDRtmW3zRkfJTrYLUc9p3Z9R4
+	ueV4j5xAC7aIWwzpoiHe6VZ3JyUgxbshiNYtROMfm0W9qgWykV/9n46Vs61YCNi6eI4C+hgrFndSA
+	2UY4w3DA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p2oSh-00DieZ-Qc; Wed, 07 Dec 2022 07:03:23 +0000
+	id 1p2zRX-009Rzg-5A; Wed, 07 Dec 2022 18:46:55 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p2oSd-00Didy-E6
-	for barebox@lists.infradead.org; Wed, 07 Dec 2022 07:03:20 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1p2zRN-009RMh-1u
+	for barebox@lists.infradead.org; Wed, 07 Dec 2022 18:46:47 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1p2oSb-0000hD-S5; Wed, 07 Dec 2022 08:03:17 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1p2oSb-0001gj-Kv; Wed, 07 Dec 2022 08:03:17 +0100
-Date: Wed, 7 Dec 2022 08:03:17 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20221207070317.GD29728@pengutronix.de>
-References: <20221206115839.1847916-1-a.fatoum@pengutronix.de>
+	(envelope-from <afa@pengutronix.de>)
+	id 1p2zRF-0000tC-2Y; Wed, 07 Dec 2022 19:46:37 +0100
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1p2zRD-002yfL-MC; Wed, 07 Dec 2022 19:46:36 +0100
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1p2zRD-000aUO-Ox; Wed, 07 Dec 2022 19:46:35 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  7 Dec 2022 19:46:34 +0100
+Message-Id: <20221207184634.140081-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221206115839.1847916-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221206_230319_488455_0EAD1104 
-X-CRM114-Status: GOOD (  18.55  )
+X-CRM114-CacheID: sfid-20221207_104645_145026_41CB2279 
+X-CRM114-Status: GOOD (  12.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,60 +74,119 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fixup! ARM: i.MX8M: implement bootrom log viewing command
+Subject: [PATCH master] nvmem: core: don't fail on positive callback value return
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Dec 06, 2022 at 12:58:39PM +0100, Ahmad Fatoum wrote:
-> FAIL is reported even for non-HAB boot, so skip that.
-> 0x82 is apparently documented wrongly in application note, see:
-> https://patchwork.ozlabs.org/project/uboot/patch/20220414163623.16500-1-fedor.ross@ifm.com/
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/mach-imx/bootrom-cmd.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+A sizable number of barebox NVMEM drivers returns a positive value of
+number of bytes read on success, while others return 0 unless an error
+occurred.
 
-Applied, thanks
+When we used to check for errors with IS_ERR_VALUE, both cases worked,
+because it wouldn't evaluate to true for positive numbers. Now with
+IS_ERR_VALUE removed, we need to explicitly check for negative values
+to determinte errors. Otherwise nvmem_cell_read becomes a death trap
+that returns values like (void *)2, which IS_ERR() won't catch and
+best case kfree() will crash on.
 
-Sascha
+Fixes: eb05a8e1d2b4 ("nvmem: remove IS_ERR_VALUE abuses")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/nvmem/core.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-> 
-> diff --git a/arch/arm/mach-imx/bootrom-cmd.c b/arch/arm/mach-imx/bootrom-cmd.c
-> index 6269f86cbc0d..0238d09b169f 100644
-> --- a/arch/arm/mach-imx/bootrom-cmd.c
-> +++ b/arch/arm/mach-imx/bootrom-cmd.c
-> @@ -117,7 +117,8 @@ static int imx8m_bootrom_decode_log(const u32 *rom_log)
->  			       rom_log[++i]);
->  			continue;
->  		case 0x82:
-> -			printf("Start to execute boot device driver pre-config\n");
-> +			printf("Start to execute boot device driver pre-config @%u ticks\n",
-> +			       rom_log[++i]);
->  			continue;
->  		case 0x83:
->  			printf("Boot device driver pre-config completes\n");
-> @@ -144,8 +145,8 @@ static int imx8m_bootrom_decode_log(const u32 *rom_log)
->  			continue;
->  
->  		case 0xa0:
-> -			printf("Image authentication result: %s (0x%08x) @%u ticks\n",
-> -			       (rom_log[i+1] & 0xFF) == 0xF0 ? "PASS" : "FAIL",
-> +			printf("Image authentication result: %s(0x%08x) @%u ticks\n",
-> +			       (rom_log[i+1] & 0xFF) == 0xF0 ? "PASS " : "",
->  			       rom_log[i+1], rom_log[i+2]);
->  			i += 2;
->  			continue;
-> -- 
-> 2.30.2
-> 
-> 
-> 
-
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 8e07bdb5013e..fded8b6f4b02 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -526,7 +526,7 @@ static int __nvmem_cell_read(struct nvmem_device *nvmem,
+ 	int rc;
+ 
+ 	rc = nvmem->bus->read(nvmem->priv, cell->offset, buf, cell->bytes);
+-	if (rc)
++	if (rc < 0)
+ 		return rc;
+ 
+ 	/* shift bits in-place */
+@@ -561,7 +561,7 @@ void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	rc = __nvmem_cell_read(nvmem, cell, buf, len);
+-	if (rc) {
++	if (rc < 0) {
+ 		kfree(buf);
+ 		return ERR_PTR(rc);
+ 	}
+@@ -591,7 +591,7 @@ static inline void *nvmem_cell_prepare_write_buffer(struct nvmem_cell *cell,
+ 
+ 		/* setup the first byte with lsb bits from nvmem */
+ 		rc = nvmem->bus->read(nvmem->priv, cell->offset, &v, 1);
+-		if (rc)
++		if (rc < 0)
+ 			return ERR_PTR(rc);
+ 
+ 		*b++ |= GENMASK(bit_offset - 1, 0) & v;
+@@ -612,7 +612,7 @@ static inline void *nvmem_cell_prepare_write_buffer(struct nvmem_cell *cell,
+ 		/* setup the last byte with msb bits from nvmem */
+ 		rc = nvmem->bus->read(nvmem->priv, cell->offset + cell->bytes - 1,
+ 				      &v, 1);
+-		if (rc)
++		if (rc < 0)
+ 			return ERR_PTR(rc);
+ 
+ 		*p |= GENMASK(7, (nbits + bit_offset) % BITS_PER_BYTE) & v;
+@@ -652,7 +652,7 @@ int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len)
+ 	if (cell->bit_offset || cell->nbits)
+ 		kfree(buf);
+ 
+-	if (rc)
++	if (rc < 0)
+ 		return rc;
+ 
+ 	return len;
+@@ -680,11 +680,11 @@ ssize_t nvmem_device_cell_read(struct nvmem_device *nvmem,
+ 		return -EINVAL;
+ 
+ 	rc = nvmem_cell_info_to_nvmem_cell(nvmem, info, &cell);
+-	if (rc)
++	if (rc < 0)
+ 		return rc;
+ 
+ 	rc = __nvmem_cell_read(nvmem, &cell, buf, &len);
+-	if (rc)
++	if (rc < 0)
+ 		return rc;
+ 
+ 	return len;
+@@ -710,7 +710,7 @@ int nvmem_device_cell_write(struct nvmem_device *nvmem,
+ 		return -EINVAL;
+ 
+ 	rc = nvmem_cell_info_to_nvmem_cell(nvmem, info, &cell);
+-	if (rc)
++	if (rc < 0)
+ 		return rc;
+ 
+ 	return nvmem_cell_write(&cell, buf, cell.bytes);
+@@ -744,7 +744,7 @@ int nvmem_device_read(struct nvmem_device *nvmem,
+ 		return 0;
+ 
+ 	rc = nvmem->bus->read(nvmem->priv, offset, buf, bytes);
+-	if (rc)
++	if (rc < 0)
+ 		return rc;
+ 
+ 	return bytes;
+@@ -777,7 +777,7 @@ int nvmem_device_write(struct nvmem_device *nvmem,
+ 		return 0;
+ 
+ 	rc = nvmem->bus->write(nvmem->priv, offset, buf, bytes);
+-	if (rc)
++	if (rc < 0)
+ 		return rc;
+ 
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
