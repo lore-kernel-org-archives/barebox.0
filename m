@@ -1,52 +1,54 @@
-Delivery-date: Wed, 07 Dec 2022 23:11:54 +0100
+Delivery-date: Thu, 08 Dec 2022 15:14:08 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p32dt-00E4z6-Ub
-	for lore@lore.pengutronix.de; Wed, 07 Dec 2022 23:11:54 +0100
+	id 1p3Hf5-00Eq32-TI
+	for lore@lore.pengutronix.de; Thu, 08 Dec 2022 15:14:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p32ds-0006eP-TX
-	for lore@pengutronix.de; Wed, 07 Dec 2022 23:11:53 +0100
+	id 1p3Hf5-0006cd-8k
+	for lore@pengutronix.de; Thu, 08 Dec 2022 15:14:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7fom0qSBBC/8eufNrXEOVawwCiX7RZ50C3ludE/ywA0=; b=lV8oxJOICwgW7aIo+GdCJrI926
-	6wF8QsciPiPXcE1Cxnv5Q12k8+vnIBhQ6J0hL3GavBy08dLTzrc4TbF66vLZ3dsVg4b53ovbkTn2f
-	ZeiWddpiizwB6XLM6UwHgMLrPRK7lscRm45G6EDdACCfzaZGBDlKHGm880yYVOlP+FHPydwqu6Be8
-	HZd1lUMn837+5sS55fiSwlF/HdvOocp6cA8RiIlgc5HABjH7gJ2WVoAquV2hj3arQ+DG/e/tP7ItM
-	xlTT5Idwi2c/fssNbMcGBaIuxZIw0KEL0bPR1FzhcTIB9VFsK7c95DtK+L4q2mlSTMclIFvAxan9N
-	2pZojdJw==;
+	bh=qrNi8ao2IEqnrROdrwKJyFyyC3CAvoUTG8Pj6FxC5fE=; b=1YDurcOeiz62eQ0mEMtPvzr02Q
+	lv+X09bRNllBP7No8MqvnZUIqjoZQNhE3P1Ugnq58iK2OxseV7qW1rkz0xNuuSW+z1GgEI1ZUjdrD
+	XIsdpP25UEHVA3WvRnXJNgCFrauhrq5v+z/6rzJcpjXsOZTVPMc3mFRq55et7g6ZcidWeivx0He6r
+	5asHJ1wY552iICjDXs+Rae7D3AeSm1zlqUQJrYdWwyaYtXnwVY07S9j3HWP83v6nLFMN61UmKYaO3
+	0B7OYY7LSKRTQOiJcgFJpRNZi3YnHOk0HFcATyhVEdjoIOTIygpfr18IVKVdqz1ovIlicOf+NX4KE
+	C7Z6hY8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p32cG-00Dmy4-Uh; Wed, 07 Dec 2022 22:10:13 +0000
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
-	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p32cA-00DmjC-Fl
-	for barebox@lists.infradead.org; Wed, 07 Dec 2022 22:10:09 +0000
-Received: by lynxeye.de (Postfix, from userid 501)
-	id 2D088E74011; Wed,  7 Dec 2022 23:09:29 +0100 (CET)
-Received: from astat.fritz.box (a89-183-231-163.net-htp.de [89.183.231.163])
-	by lynxeye.de (Postfix) with ESMTPA id D0EB2E74011
-	for <barebox@lists.infradead.org>; Wed,  7 Dec 2022 23:09:27 +0100 (CET)
-From: Lucas Stach <l.stach@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Wed,  7 Dec 2022 23:09:22 +0100
-Message-Id: <20221207220924.148327-2-l.stach@pengutronix.de>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221207220924.148327-1-l.stach@pengutronix.de>
-References: <20221207220924.148327-1-l.stach@pengutronix.de>
+	id 1p3HdV-001eSO-2j; Thu, 08 Dec 2022 14:12:29 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1p3HdP-001e5h-4R
+	for barebox@lists.infradead.org; Thu, 08 Dec 2022 14:12:25 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=irc.pengutronix.de)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <j.zink@pengutronix.de>)
+	id 1p3Hd8-0006WW-FW; Thu, 08 Dec 2022 15:12:06 +0100
+Message-ID: <53712712eb694f6be6a09746eb569a78f38b8ae5.camel@pengutronix.de>
+From: Johannes Zink <j.zink@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List
+	 <barebox@lists.infradead.org>
+Cc: Johannes Zink <jzi@pengutronix.de>
+Date: Thu, 08 Dec 2022 15:12:04 +0100
+In-Reply-To: <20221123114245.3258194-1-s.hauer@pengutronix.de>
+References: <20221123114245.3258194-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221207_141006_750974_534C7F13 
-X-CRM114-Status: GOOD (  10.78  )
+X-CRM114-CacheID: sfid-20221208_061223_193280_CB5B2D79 
+X-CRM114-Status: GOOD (  18.79  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -64,40 +66,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/4] ARM: nxp-imx8mq-evk: include DDR firmware in image
+Subject: Re: [PATCH 1/2] mtd: peb: return success for reading/writing 0 bytes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This board uses the legacy DRAM initialization and doesn't call
-imx8mq_ddr_init(), so there is no point where the DRAM firmware is
-referenced from the image. Fix this by calling ddr_get_firmware()
-from the legacy DRAM init.
+On Wed, 2022-11-23 at 12:42 +0100, Sascha Hauer wrote:
+> Return successfully when mtd_peb_read() or mtd_peb_write() is passed
+> a
+> zero length so that the callers do not have to handle this case.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: Johannes Zink <j.zink@pengutronix.de> (i.MX7 with ubi on
+NAND Flash)
 
-Fixes: e770d18108de ("ARM: i.MX8M: include only necessary ddrphy firmwares in image")
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c | 2 ++
- 1 file changed, 2 insertions(+)
+> ---
+>  drivers/mtd/peb.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mtd/peb.c b/drivers/mtd/peb.c
+> index 8443ed86bc..a17d42885e 100644
+> --- a/drivers/mtd/peb.c
+> +++ b/drivers/mtd/peb.c
+> @@ -205,10 +205,12 @@ int mtd_peb_read(struct mtd_info *mtd, void
+> *buf, int pnum, int offset,
+>                 return -EINVAL;
+>         if (offset < 0 || offset + len > mtd->erasesize)
+>                 return -EINVAL;
+> -       if (len <= 0)
+> +       if (len < 0)
+>                 return -EINVAL;
+>         if (mtd_peb_is_bad(mtd, pnum))
+>                 return -EINVAL;
+> +       if (!len)
+> +               return 0;
+>  
+>         /* Deliberately corrupt the buffer */
+>         *((uint8_t *)buf) ^= 0xFF;
+> @@ -388,12 +390,14 @@ int mtd_peb_write(struct mtd_info *mtd, const
+> void *buf, int pnum, int offset,
+>                 return -EINVAL;
+>         if (offset < 0 || offset + len > mtd->erasesize)
+>                 return -EINVAL;
+> -       if (len <= 0)
+> +       if (len < 0)
+>                 return -EINVAL;
+>         if (len % (mtd->writesize >> mtd->subpage_sft))
+>                 return -EINVAL;
+>         if (mtd_peb_is_bad(mtd, pnum))
+>                 return -EINVAL;
+> +       if (!len)
+> +               return 0;
+>  
+>         if (mtd_peb_emulate_write_failure()) {
+>                 dev_err(&mtd->dev, "Cannot write %d bytes to PEB
+> %d:%d (emulated)\n",
 
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c b/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
-index d2c73fc7ce22..e8577369dc8b 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
-@@ -11,6 +11,8 @@
- void ddr_cfg_phy(void) {
- 	unsigned int tmp, tmp_t;
- 
-+	ddr_get_firmware(DRAM_TYPE_LPDDR4);
-+
- 	//Init DDRPHY register...
- 	reg32_write(0x3c080440,0x2);
- 	reg32_write(0x3c080444,0x3);
 -- 
-2.38.1
+Pengutronix e.K.                | Johannes Zink                  |
+Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
 
 
 
