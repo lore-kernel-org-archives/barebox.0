@@ -1,58 +1,61 @@
-Delivery-date: Fri, 09 Dec 2022 08:11:39 +0100
+Delivery-date: Fri, 09 Dec 2022 08:15:54 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p3XXm-00FmBY-Db
-	for lore@lore.pengutronix.de; Fri, 09 Dec 2022 08:11:38 +0100
+	id 1p3Xbt-00FmSR-DE
+	for lore@lore.pengutronix.de; Fri, 09 Dec 2022 08:15:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p3XXl-00063I-U7
-	for lore@pengutronix.de; Fri, 09 Dec 2022 08:11:38 +0100
+	id 1p3Xbt-0006ZI-2g
+	for lore@pengutronix.de; Fri, 09 Dec 2022 08:15:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=OSwoPmsHgBKaurRT74JhUE8re1HQ9/XjJjiWLC8F+zA=; b=Gsi6SnrkMqq1onZXbRfjmgIrC9
-	eDSeBp3R3WP0MPhngWe4HUg7ZeW6o+5b8JBmFvXlMEFxECbrPf9Dp1RNFrwIXGa93ppOhNa6zjX2s
-	/4opTqGrDtjjmZ7GSaIKlLdeIwe9Wa+3sJuCFfmA2lRPx2K/9bVjb1Y1PQrSz7ZEd4qK7Hrtq5ZVk
-	LYqQ+/HY4ofpKuwINDRuJebtfR16QoFjaxLUK9IJ3ZtZX5yIa0JXutKeVe04fkskNobMFE7KegDTh
-	Q0TUKOi5+by4bkhGwMlWG696Ky3zSMM8i3n+UCmPuvteSBzG+nmv4UP0+FSsSUM0/urTe5ufYBcdr
-	Oz7E8irQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=mS1rI++prMpN44tp2Q4c+y4UFAzfl/U22B7YIjic4F8=; b=VWHSUCPTvnkgZuRRMklSVN4tHz
+	pkSrLHrcc3xE0W9opvmcVv5EBpgrQTcUReyjevuhnD6M4qoTqK1IN981L5tOX/L9tfEBc+aoJvwAq
+	X6gf/SX0gHSVWGsWAqM5Rtsfm5WLE1B2is6zJwTWFewW6lId4hU6gbbvudjzrm6QlL17qApdq/64e
+	hjM59HooDQywGTxotPmRsBlRpOE9ru9O9FbHZ7YRzXQB3H1wvA7C6OU+tfr71RkUuGebKCjOvkM0Q
+	WyjqeS+h7IjO63sVusPowIesjKduwidzXAwBjEpx8yXsnD4m+AFcszSyTm+HBtgapEWA3vQQhdNzk
+	B862shKw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p3XWR-004stI-4h; Fri, 09 Dec 2022 07:10:15 +0000
+	id 1p3Xai-004uSD-DE; Fri, 09 Dec 2022 07:14:40 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p3XWK-004sqg-K8
-	for barebox@lists.infradead.org; Fri, 09 Dec 2022 07:10:10 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1p3Xae-004uRH-Bq
+	for barebox@lists.infradead.org; Fri, 09 Dec 2022 07:14:37 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1p3XWH-0005X0-Gq; Fri, 09 Dec 2022 08:10:05 +0100
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1p3XWG-003JMQ-5W; Fri, 09 Dec 2022 08:10:04 +0100
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1p3XWF-00FnVC-Tz; Fri, 09 Dec 2022 08:10:03 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  9 Dec 2022 08:10:00 +0100
-Message-Id: <20221209071002.3765134-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1p3Xad-0006CT-0P; Fri, 09 Dec 2022 08:14:35 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1p3Xac-0003Ce-P9; Fri, 09 Dec 2022 08:14:34 +0100
+Date: Fri, 9 Dec 2022 08:14:34 +0100
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20221209071434.GG29728@pengutronix.de>
+References: <20221207220924.148327-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221207220924.148327-1-l.stach@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221208_231008_682994_CD1A1C63 
-X-CRM114-Status: GOOD (  10.97  )
+X-CRM114-CacheID: sfid-20221208_231436_418627_2E2C822A 
+X-CRM114-Status: GOOD (  17.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,52 +77,45 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] driver: support Linux device/driver OF struct member names
+Subject: Re: [PATCH 1/4] ARM: imx8m: allow ddr_get_firmware to be called from
+ other units
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-When porting drivers from Linux, one of the modifications that needs to
-be done is to rename all .of_node to .device_node and of_match_table
-to of_compatible. Just accept both names. It comes at no extra cost.
+On Wed, Dec 07, 2022 at 11:09:21PM +0100, Lucas Stach wrote:
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  include/soc/imx8m/ddr.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Once all barebox drivers use the Linux naming, we could drop the union
-again.
+Applied to master, thanks
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- include/driver.h | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Sascha
 
-diff --git a/include/driver.h b/include/driver.h
-index 2386949c312a..1c50b79886c1 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -74,7 +74,10 @@ struct device_d {
- 	struct list_head cdevs;
- 
- 	const struct platform_device_id *id_entry;
--	struct device_node *device_node;
-+	union {
-+		struct device_node *device_node;
-+		struct device_node *of_node;
-+	};
- 
- 	const struct of_device_id *of_id_entry;
- 
-@@ -113,7 +116,10 @@ struct driver_d {
- 	struct bus_type *bus;
- 
- 	const struct platform_device_id *id_table;
--	const struct of_device_id *of_compatible;
-+	union {
-+		const struct of_device_id *of_compatible;
-+		const struct of_device_id *of_match_table;
-+	};
- };
- 
- /*@}*/	/* do not delete, doxygen relevant */
+> 
+> diff --git a/include/soc/imx8m/ddr.h b/include/soc/imx8m/ddr.h
+> index 2149ae432554..0b3c4d47e39d 100644
+> --- a/include/soc/imx8m/ddr.h
+> +++ b/include/soc/imx8m/ddr.h
+> @@ -389,7 +389,7 @@ extern struct dram_timing_info dram_timing;
+>  void ddr_get_firmware_lpddr4(void);
+>  void ddr_get_firmware_ddr(void);
+>  
+> -static void ddr_get_firmware(enum dram_type dram_type)
+> +static inline void ddr_get_firmware(enum dram_type dram_type)
+>  {
+>  	if (dram_type == DRAM_TYPE_LPDDR4)
+>  		ddr_get_firmware_lpddr4();
+> -- 
+> 2.38.1
+> 
+> 
+> 
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
