@@ -1,64 +1,57 @@
-Delivery-date: Fri, 09 Dec 2022 10:18:51 +0100
+Delivery-date: Fri, 09 Dec 2022 10:21:22 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p3ZWt-00Fu2u-4p
-	for lore@lore.pengutronix.de; Fri, 09 Dec 2022 10:18:51 +0100
+	id 1p3ZZJ-00FuAw-RP
+	for lore@lore.pengutronix.de; Fri, 09 Dec 2022 10:21:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p3ZWs-0004v8-Fr
-	for lore@pengutronix.de; Fri, 09 Dec 2022 10:18:51 +0100
+	id 1p3ZZI-0005O2-So
+	for lore@pengutronix.de; Fri, 09 Dec 2022 10:21:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=enVC2Hy1eG88eAvTRZif+F7MtsFcTxfwiXCLUFW86OE=; b=wfQsJf3KaImJ+RFgGkWJ5REBjZ
-	d88q2HuMlJxSWQ4EL48Ryz/la0lkdZrmWpDD/6KRNdwAqS84rmxswdz9mVLCzvdcOIxsZ5wcj8ROf
-	Ol/oCS3cwoDV4essRUrvULAIHEhVxrFwp+elts7Ayk5mK9a32X3ciKjnrLI+c6MdQoEnssdTYbh+n
-	VbmK64RNjwRWJT7IxHCUxUJdCPb8kem0HfEnCp4HUUSqoH8vDg/kXILIDVd8qmLxWnDSsEq8Qdonq
-	OR6czwq8iPIe7OFssIB2AcefZW61+ULcH36uLxAJHqZVOl9M0Uo1+f12VhNH1m/PwomTev99CUU6j
-	XUq7yIOA==;
+	bh=qO6k6aeJP0I5QxLYKhsSI+Nf+4dSn+fWQ496XHbYn/8=; b=nwaa83vG2+bsUkMD5aJLlRLCIv
+	bomxLtqIHpyJ4cYMG/G7/3gPcQjEgXlzXNeYIUrozqatYBSokUtFW4Wi0RdW/v+Bqjg6C7VynLTUK
+	SBnip8bQ8IWI7x+LDEaK3iglHPIrWW3/P3gCFr1vEHbDbegtodZJIk78xg990DO7CBqgMpZATDuBL
+	DzuPpw0ESk1bq++m52Mar46A3a7nD7PdUXI3BOLsBMHIjsCCX+mSiWZbPZDU9wlptAkC2W32F1OKN
+	pkNx0TWny3Mt73eCVJmoxNCwlXxxtVvvTeR9yJaPH64UIgQWc4AuyKL/Gb9jGP/deFxj63wNvuWIN
+	adWS4jhA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p3ZVa-0069o6-SZ; Fri, 09 Dec 2022 09:17:30 +0000
+	id 1p3ZY7-006AM8-F9; Fri, 09 Dec 2022 09:20:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p3ZVW-0069n4-FH
-	for barebox@lists.infradead.org; Fri, 09 Dec 2022 09:17:27 +0000
+	id 1p3ZY2-006AL0-I3
+	for barebox@lists.infradead.org; Fri, 09 Dec 2022 09:20:03 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1p3ZVU-0004qd-Hk; Fri, 09 Dec 2022 10:17:24 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1p3ZVU-0001XU-AT; Fri, 09 Dec 2022 10:17:24 +0100
-Date: Fri, 9 Dec 2022 10:17:24 +0100
-From: Sascha Hauer <sha@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1p3ZXz-0004zV-JQ; Fri, 09 Dec 2022 10:19:59 +0100
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1p3ZXz-0001ab-Bs; Fri, 09 Dec 2022 10:19:59 +0100
+Date: Fri, 9 Dec 2022 10:19:59 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Message-ID: <20221209091724.GL29728@pengutronix.de>
-References: <20221101062350.3206890-1-a.fatoum@pengutronix.de>
- <db8fc67f-6bb1-0c75-9df5-8423b5aa8f04@pengutronix.de>
- <20221209073258.GH29728@pengutronix.de>
- <c8ee99ad-22de-2cd8-cddf-2dbf988c5584@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20221209091959.yuhljzmieofxm2zr@pengutronix.de>
+References: <20221209071002.3765134-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c8ee99ad-22de-2cd8-cddf-2dbf988c5584@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20221209071002.3765134-1-a.fatoum@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221209_011726_527346_C1B9923D 
-X-CRM114-Status: GOOD (  26.52  )
+X-CRM114-CacheID: sfid-20221209_012002_616729_BBF812CC 
+X-CRM114-Status: GOOD (  16.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,61 +73,61 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: start: print debugging info when
- CONFIG_DEBUG_INITCALLS
+Subject: Re: [PATCH 1/3] driver: support Linux device/driver OF struct member
+ names
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Dec 09, 2022 at 08:49:09AM +0100, Ahmad Fatoum wrote:
-> Hi,
+On 22-12-09, Ahmad Fatoum wrote:
+> When porting drivers from Linux, one of the modifications that needs to
+> be done is to rename all .of_node to .device_node and of_match_table
+> to of_compatible. Just accept both names. It comes at no extra cost.
 > 
-> On 09.12.22 08:32, Sascha Hauer wrote:
-> > On Fri, Dec 09, 2022 at 08:15:49AM +0100, Ahmad Fatoum wrote:
-> >> On 01.11.22 07:23, Ahmad Fatoum wrote:
-> >>> Like we now do during PBL, have CONFIG_DEBUG_INITCALLS also activate
-> >>> the early barebox start debug logging just prior to initcall execution.
-> >>>
-> >>> This is useful when debugging early hands and will only be visible if
-> >>> CONFIG_DEBUG_LL is enabled and configured appropriately.
-> >>>
-> >>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >>
-> >> Ping.
-> >>
-> >>> ---
-> >>>  arch/arm/cpu/start.c | 4 ++++
-> >>>  1 file changed, 4 insertions(+)
-> >>>
-> >>> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-> >>> index f9b617aa855a..be303514c23d 100644
-> >>> --- a/arch/arm/cpu/start.c
-> >>> +++ b/arch/arm/cpu/start.c
-> >>> @@ -3,6 +3,10 @@
-> >>>  
-> >>>  #define pr_fmt(fmt) "start.c: " fmt
-> >>>  
-> >>> +#ifdef CONFIG_DEBUG_INITCALLS
-> >>> +#define DEBUG
-> >>> +#endif
-> > 
-> > I am hesitating to apply this. The main reason is that enabling DEBUG
-> > here might break PBL startup and you no longer get to the point for
-> > which you enabled CONFIG_DEBUG_INITCALLS in the first hand.
+> Once all barebox drivers use the Linux naming, we could drop the union
+> again.
+
+Nice :)
+
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+
+> ---
+>  include/driver.h | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 > 
-> I can understand the reasoning for the other patch that defines DEBUG
-> globally for PBL, but this one is in barebox proper, so I can't see why
-> itwe would expect DEBUG_INITCALLS to work, but not the debug output
-> in start.c.
-
-Ah, I didn't realize that there are two different patches. Take what I
-said to the other patch and consider this one applied.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> diff --git a/include/driver.h b/include/driver.h
+> index 2386949c312a..1c50b79886c1 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -74,7 +74,10 @@ struct device_d {
+>  	struct list_head cdevs;
+>  
+>  	const struct platform_device_id *id_entry;
+> -	struct device_node *device_node;
+> +	union {
+> +		struct device_node *device_node;
+> +		struct device_node *of_node;
+> +	};
+>  
+>  	const struct of_device_id *of_id_entry;
+>  
+> @@ -113,7 +116,10 @@ struct driver_d {
+>  	struct bus_type *bus;
+>  
+>  	const struct platform_device_id *id_table;
+> -	const struct of_device_id *of_compatible;
+> +	union {
+> +		const struct of_device_id *of_compatible;
+> +		const struct of_device_id *of_match_table;
+> +	};
+>  };
+>  
+>  /*@}*/	/* do not delete, doxygen relevant */
+> -- 
+> 2.30.2
+> 
+> 
+> 
 
 
